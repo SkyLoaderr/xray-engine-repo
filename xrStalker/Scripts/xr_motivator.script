@@ -65,8 +65,8 @@ function motivator_binder:reinit()
     object_binder.reinit(self)
     self.object:set_pda_callback(pda_callback)
 
-	self.object:set_hear_callback(hear_callback)
-    
+  self.object:set_hear_callback(hear_callback)
+
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
@@ -89,15 +89,15 @@ function motivator_binder:update(delta)
         xr_bandit.bandits[nn]:update()
     end
 
---' Проверка ТИМ СКВАД ГРУП 
-if false then	
-	if memtsg[self.object:id()] == nil then
-		printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
-												  self.object:team(),
-												  self.object:squad(),
-												  self.object:group())
-		memtsg[self.object:id()] = self.object:id()
-	end
+--' Проверка ТИМ СКВАД ГРУП
+if false then
+  if memtsg[self.object:id()] == nil then
+    printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+                          self.object:team(),
+                          self.object:squad(),
+                          self.object:group())
+    memtsg[self.object:id()] = self.object:id()
+  end
 end
 
 end
@@ -134,10 +134,10 @@ function motivator_binder:reload (section)
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
-	xr_sound.load_sound(self.object)
+  xr_sound.load_sound(self.object)
     xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
     xr_motivator.storage[self.object:id()] = {  followers = {} }
-    -- Положения тела 
+    -- Положения тела
     xr_motivator.storage[self.object:id()].state = {
             body_state = 0,
             target_state = 0,
@@ -147,23 +147,23 @@ function motivator_binder:reload (section)
         }
     xr_state.add_to_binder(self.object)
     -- Настройка схемы реакции
-	xr_motivator.storage[self.object:id()].reactions = {
-		enabled = true,
-		time_wait = 5*60*1000,
-		evn = xr_reactions.events(self.object),
-		obj = {position = nil,
-			id = nil,
-			type = nil,
-			time = nil,
-			visibility = nil
-			},
-		rules = {}
-		}
-    xr_reactions.add_to_binder(self.object, char_ini)    
+  xr_motivator.storage[self.object:id()].reactions = {
+    enabled = true,
+    time_wait = 5*60*1000,
+    evn = xr_reactions.events(self.object),
+    obj = {position = nil,
+      id = nil,
+      type = nil,
+      time = nil,
+      visibility = nil
+      },
+    rules = {}
+    }
+    xr_reactions.add_to_binder(self.object, char_ini)
     -- схема привязки к позиции
     xr_position.add_to_binder(self.object)
     -- Ответ на PDA сообщение
-    xr_motivator.storage[self.object:id()].tradeseller = {   
+    xr_motivator.storage[self.object:id()].tradeseller = {
         Buyer = nil,
             Seller = self.object,
             -- Задается время ожидания в секундах
@@ -174,12 +174,12 @@ function motivator_binder:reload (section)
         }
     xr_meet.add_to_binder_pda(self.object, char_ini)
 
-    xr_motivator.storage[self.object:id()].helper = {   
-			position,
+    xr_motivator.storage[self.object:id()].helper = {
+      position,
             enabled = false
         }
     //xr_meet.add_to_binder_pda(self.object, char_ini)
-    
+
     --Motivations
     manager:remove_motivation (motivations["solve_zone_puzzle"])
 
@@ -271,9 +271,9 @@ xr_guard.add_to_binder(self.object, char_ini)
             action = nil,
             path_main = nil,
             path_side = nil,
-	    path_guard = nil,
-	    path_guard_radius = 0,
-	    path_center = nil
+      path_guard = nil,
+      path_guard_radius = 0,
+      path_center = nil
         }
 xr_bodyguard.add_to_binder(self.object, char_ini)
     -- схема командира
@@ -315,20 +315,20 @@ xr_patrol.add_to_binder(self.object, char_ini)
 xr_follower.add_to_binder(self.object, char_ini)
         --chaser
         xr_motivator.storage[self.object:id()].chaser = {
-                enabled = false,        --enabled or disabled 
+                enabled = false,        --enabled or disabled
                 npc = nil,              --sacrifice game_object
                 ret_vertex = -1         --level vertex id for return
         }
-xr_chaser.add_to_binder (self.object, char_ini)            
-	-- бандиты в засаде
-	xr_motivator.storage[self.object:id()].ambush = {
-		enabled = false,
-		path = nil,
-		dist_sqr = 0
-	}
+xr_chaser.add_to_binder (self.object, char_ini)
+  -- бандиты в засаде
+  xr_motivator.storage[self.object:id()].ambush = {
+    enabled = false,
+    path = nil,
+    dist_sqr = 0
+  }
 xr_ambush.add_to_binder(self.object, char_ini)
-	-- построение солдат на плацу
-	xr_motivator.storage[self.object:id()].formation = {}
+  -- построение солдат на плацу
+  xr_motivator.storage[self.object:id()].formation = {}
 xr_formation.add_to_binder( self.object )
 
     --Привязка к организации
@@ -348,16 +348,16 @@ xr_formation.add_to_binder( self.object )
     xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
 
 -- помощник, мля !!!
-xr_motivator.storage[self.object:id ()].sos = 
+xr_motivator.storage[self.object:id ()].sos =
     {
     enabled = false,
     npc = nil,
     initialized = false,
     code = 0,
-	need_follow = false
+  need_follow = false
     }
 xr_sos.add_to_binder (self.object, char_ini)
- 
+
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)
@@ -367,7 +367,7 @@ function pda_callback(recepient, who, msg_type)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function hear_callback(self, who, sound_type, sound_position, sound_power)
-    printf("SOUNDCHECK")
+--    printf("SOUNDCHECK")
 end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
@@ -383,8 +383,8 @@ function checkStorage(npc)
            k == "guard" or
            k == "bodyguard" or
            k == "commander" or
-	   k == "ambush" or
-	   k == "bodyguard"
+     k == "ambush" or
+     k == "bodyguard"
         then
             if v.enabled == true then
                 count = count + 1
@@ -400,8 +400,8 @@ function checkStorage(npc)
                k == "guard" or
                k == "bodyguard" or
                k == "commander" or
-	       k == "ambush" or
-	       k == "bodyguard"
+         k == "ambush" or
+         k == "bodyguard"
             then
                 if v.enabled == true then
                     printf("ERROR: %s", k)
