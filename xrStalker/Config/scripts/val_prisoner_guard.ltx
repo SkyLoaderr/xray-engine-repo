@@ -7,12 +7,12 @@ combat_ignore = combat_ignore
 [walker@button]
 path_walk = val_prisoner_guard_button_walk
 path_look = val_prisoner_guard_button_look
-combat_ignore_cond = {+val_sacrifice_plr_detected} never, {=fighting_actor}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner}
+combat_ignore_cond = {+val_sacrifice_plr_detected} never, {=fighting_actor =val_actor_in_cage}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner =val_prisoner_in_cage}
 on_signal = pressed | walker@leave %-val_prisoner_door_unlocked -val_prisoner_door_unlocked_demo%
 
 [walker@leave]
 path_walk = val_prisoner_guard_leave_walk
 path_look = val_prisoner_guard_leave_look
-combat_ignore_cond = {+val_sacrifice_plr_detected} never, {=fighting_actor}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner}
+combat_ignore_cond = {+val_sacrifice_plr_detected} never, {=fighting_actor =val_actor_in_cage}, {=val_fighting_sacrifice_victim}, {=val_fighting_prisoner =val_prisoner_in_cage}
 
 
