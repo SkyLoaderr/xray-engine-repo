@@ -74,7 +74,7 @@ To ALEX-MX:
 
 
 To DIMA:
--D	xrServer::Process_event_reject(...) вылетает R_ASSERT(0xffff != e_entity->ID_Parent) в симуляции
++D	xrServer::Process_event_reject(...) вылетает R_ASSERT(0xffff != e_entity->ID_Parent) в симуляции
 -S  маршруты между несвязанными по высоте нодами
 -S	вороны вылетают в ai_primary_func.cpp ffGetValue() -NODEFAULT
 -Y	на уровне "occ_part_dandy/single" два AI сталкера-врага начинают съедать FPS со временем
