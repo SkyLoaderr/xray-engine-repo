@@ -4,8 +4,8 @@
 #define _DETAIL_FORMAT_H_
 #pragma pack(push,1)
 
-#define DETAIL_VERSION		1
-#define DETAIL_SLOT_SIZE	4.f
+#define DETAIL_VERSION		2
+#define DETAIL_SLOT_SIZE	2.f
 
 //	int s_x	= iFloor			(EYE.x/slot_size+.5f)+offs_x;		// [0...size_x)
 //	int s_z	= iFloor			(EYE.z/slot_size+.5f)+offs_z;		// [0...size_z)
@@ -79,8 +79,6 @@ struct ENGINE_API DetailItem
 struct ENGINE_API DetailSlot
 {
 	float			y_min,y_max;
-	u32				r_yaw;
-	u32 			r_scale;
 	DetailItem		items[4];
 	u16				color;
 };
