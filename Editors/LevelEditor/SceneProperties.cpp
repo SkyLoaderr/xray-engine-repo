@@ -116,6 +116,7 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
 
     // Light maps
     m_BuildParams->m_lm_pixels_per_meter 	= seLMPixelsPerMeter->Value;
+ 	m_BuildParams->m_lm_jitter_samples   	= JS[rgLMJitterSamples->ItemIndex];
     m_BuildParams->m_lm_rms				 	= seLMRMS->Value;
     m_BuildParams->m_lm_rms_zero			= seLMRMSZero->Value;
 
@@ -138,6 +139,7 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
 
     // Light maps
     seLMPixelsPerMeter->Value      	= m_BuildParams->m_lm_pixels_per_meter;
+    rgLMJitterSamples->ItemIndex   	= JS2[m_BuildParams->m_lm_jitter_samples];
     seLMRMS->Value				   	= m_BuildParams->m_lm_rms;
 	seLMRMSZero->Value				= m_BuildParams->m_lm_rms_zero;
 

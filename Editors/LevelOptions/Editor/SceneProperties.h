@@ -64,6 +64,8 @@ __published:	// IDE-managed Components
 	TEdit *edLevelPath;
 	TLabel *MxLabel1;
 	TMultiObjSpinEdit *seLMRMSZero;
+	TLabel *Label1;
+	TRadioGroup *rgLMJitterSamples;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall btContinueClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
