@@ -138,7 +138,7 @@
 			RelativePath=".\CreateDX.cpp">
 		</File>
 		<File
-			RelativePath="D3DX_Wraper.h">
+			RelativePath="D3DX_Wrapper.h">
 		</File>
 		<File
 			RelativePath=".\StdAfx.cpp">
