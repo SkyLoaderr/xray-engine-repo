@@ -327,7 +327,7 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	VERIFY(ll_dwReference);
 
 	Device.dwFrame				+= 1;
-	Device.Begin();
+	Device.Begin				();
 
 	// Draw logo
 	u32	Offset;
@@ -356,10 +356,11 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	pFontSystem->Out			(0.f,0.93f,F,S,S2);
 	pFontSystem->OnRender		();
 
-	Device.End	();
+	Device.End					();
+	CheckCopyProtection			();
 }
 
-void CApplication::LoadSwitch()
+void CApplication::LoadSwitch	()
 {
 	if (ll_hLogo == ll_hLogo1)	ll_hLogo = ll_hLogo2;
 	else						ll_hLogo = ll_hLogo1;
