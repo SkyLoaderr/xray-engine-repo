@@ -14,6 +14,7 @@ public:
 	Fmatrix*													val_pTransform;
 	BOOL														val_bHUD;
 	BOOL														val_bInvisible;
+	u32															marker;
 public:
 	// Dynamic scene graph
 	R_dsgraph::mapNormal_T										mapNormal	[2];	// 2==(priority/2)

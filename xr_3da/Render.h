@@ -83,35 +83,34 @@ public:
 	// Data
 	CFrustum						ViewBase;
 	CFrustum*						View;
-	u32								marker;
 public:
 	// Loading / Unloading
-	virtual	void					create					()								= 0;
-	virtual	void					destroy					()								= 0;
+	virtual	void					create					()											= 0;
+	virtual	void					destroy					()											= 0;
 
-	virtual	void					level_Load				()								= 0;
-	virtual void					level_Unload			()								= 0;
+	virtual	void					level_Load				()											= 0;
+	virtual void					level_Unload			()											= 0;
 
 	// Information
-	virtual ref_shader				getShader				(int id)						= 0;
-	virtual IRender_Sector*			getSector				(int id)						= 0;
-	virtual IRender_Visual*			getVisual				(int id)						= 0;
-	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)						= 0;
-	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
-	virtual IDirect3DIndexBuffer9*	getIB					(int id)						= 0;
-	virtual IRender_Sector*			detectSector			(Fvector& P)					= 0;
-	virtual IRender_Target*			getTarget				()								= 0;
+	virtual ref_shader				getShader				(int id)									= 0;
+	virtual IRender_Sector*			getSector				(int id)									= 0;
+	virtual IRender_Visual*			getVisual				(int id)									= 0;
+	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)									= 0;
+	virtual IDirect3DVertexBuffer9*	getVB					(int id)									= 0;
+	virtual IDirect3DIndexBuffer9*	getIB					(int id)									= 0;
+	virtual IRender_Sector*			detectSector			(Fvector& P)								= 0;
+	virtual IRender_Target*			getTarget				()											= 0;
 
 	// Main 
-	IC		void					set_Frustum				(CFrustum*	O	)				{ VERIFY(O);	View = O;			}
-	virtual void					set_Transform			(Fmatrix*	M	);
-	virtual void					set_HUD					(BOOL 		V	);
-	virtual void					set_Invisible			(BOOL 		V	);
+	IC		void					set_Frustum				(CFrustum*	O	)							{ VERIFY(O);	View = O;			}
+	virtual void					set_Transform			(Fmatrix*	M	)							= 0;
+	virtual void					set_HUD					(BOOL 		V	)							= 0;
+	virtual void					set_Invisible			(BOOL 		V	)							= 0;
 	virtual void					flush					()											= 0;	
 	virtual void					set_Object				(IRenderable*		O	)					= 0;
 	virtual void					add_Visual				(IRender_Visual*	V	)					= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	)					= 0;	// add visual(s)	(all culling performed)
-	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)				= 0;
+	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)	= 0;
 
 	virtual IBlender*				blender_create			(CLASS_ID cls)								= 0;
 	virtual void					blender_destroy			(IBlender* &)								= 0;
