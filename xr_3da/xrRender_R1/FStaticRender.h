@@ -54,7 +54,7 @@ public:
 	// Sector detection and visibility
 	IRender_Sector*											pLastSector;
 	Fvector													vLastCameraPos;
-	vector<IRender_Portal>									Portals;
+	vector<IRender_Portal*>									Portals;
 	vector<IRender_Sector*>									Sectors;
 	CDB::MODEL*												rmPortals;
 	CHOM													HOM;
