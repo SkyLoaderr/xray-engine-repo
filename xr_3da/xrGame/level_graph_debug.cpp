@@ -1053,6 +1053,9 @@ void CLevelGraph::build_detail_path(
 	dest.direction.normalize				();
 	m_tpTravelLine.clear					();
 
+	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters()))
+		return;
+
 	VERIFY									(!m_tpaNodes.empty());
 	if (m_tpaNodes.size() == 1) {
 		if (!compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
