@@ -80,7 +80,7 @@ CObject*	IGame_ObjectPool::create			( LPCSTR	name	)
 		return				O;
 	} else {
 		// Create and load _new instance
-		Msg					("! Uncached loading '%s'...",name);
+		// Msg				("! Uncached loading '%s'...",name);
 		CLASS_ID CLS		=	pSettings->r_clsid		(name,"class");
 		CObject* O			=	(CObject*) NEW_INSTANCE	(CLS);
 		O->Load				(name);
