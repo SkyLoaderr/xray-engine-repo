@@ -62,7 +62,7 @@ struct FS_QueryItem
     {
     	size	= sz;
         modif	= mf;
-        flags.set(fl);
+        flags.assign(fl);
     }
 };
 DEFINE_MAP(AnsiString,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
