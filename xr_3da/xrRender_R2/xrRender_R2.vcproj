@@ -553,6 +553,12 @@
 				RelativePath="blender_light_point.h">
 			</File>
 			<File
+				RelativePath=".\blender_light_reflected.cpp">
+			</File>
+			<File
+				RelativePath=".\blender_light_reflected.h">
+			</File>
+			<File
 				RelativePath="blender_light_spot.cpp">
 			</File>
 			<File

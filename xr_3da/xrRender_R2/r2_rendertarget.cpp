@@ -5,6 +5,7 @@
 #include "blender_light_direct.h"
 #include "blender_light_point.h"
 #include "blender_light_spot.h"
+#include "blender_light_reflected.h"
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
 #include "blender_decompress.h"
@@ -128,6 +129,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
 	b_accum_point					= xr_new<CBlender_accum_point>			();
 	b_accum_spot					= xr_new<CBlender_accum_spot>			();
+	b_accum_reflected				= xr_new<CBlender_accum_reflected>		();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
 	b_combine						= xr_new<CBlender_combine>				();
 	b_decompress					= xr_new<CBlender_decompress>			();
@@ -429,6 +431,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	xr_delete					(b_decompress			);
 	xr_delete					(b_combine				);
 	xr_delete					(b_bloom				);
+	xr_delete					(b_accum_reflected		);
 	xr_delete					(b_accum_spot			);
 	xr_delete					(b_accum_point			);
 	xr_delete					(b_accum_direct			);
