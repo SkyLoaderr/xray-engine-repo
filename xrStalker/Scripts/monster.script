@@ -12,7 +12,7 @@ module("monster_gameplay")
 
 function bind(obj)
 	printf("_bp: monster bind: name='%s'", obj:name())
-
+    printf ("BIND MONSTER WITH ID : %d", obj:id ())
 	-- Old schemes support
 	local char_ini = obj:spawn_ini()
 	if not char_ini then
