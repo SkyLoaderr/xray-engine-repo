@@ -115,12 +115,14 @@ function Defender:process ()
 	if self.has_freed == true then
 	   self.npc:script (false, self.script)
 	   self.freed = true
+	   printf ("Stalker freed 1")
 	   return
 	end
 	--если таблица монстров не задана или в ней нет элементов, то отпускаем нпц       
     if self.monsters == nil or table.getn (self.monsters) == 0 then
 	   self.npc:script (false, self.script)
 	   self.freed = true
+	   printf ("Stalker freed 2")
 	   return
 	end
 	--найдем врага
@@ -141,15 +143,16 @@ function Defender:process ()
     if enemy == nil then
 	   self.npc:script (false, self.script)
 	   self.freed = true
+	   printf ("Stalker freed 3")
 	   return
     end	   
 	
 	--целимся во врага
 	update_action (self.npc, self.script, look (look.fire_point, enemy.npc))
-	
+    printf ("Stalker see enemy 1")
 	--если дистанция более 30 метров, то ничего не делаем
 	if tdist > 30 then return end
-	
+    printf ("Stalker see enemy 2")
 	--стреляем
     update_action (self.npc, self.script, object (self.npc:get_active_item (), object.fire1))
 	
@@ -165,10 +168,7 @@ end
 
 function main ()
 	local monster = s_test2.Monster (get_level_object ("boar_attack"), patrol ("attack_way"), s_test2.script_name ())
---	local stalker = get_level_object ("stalker_defend")
 	monster:initialize ()
---	stalker:script (true, s_test2.script_name ())
---	action (stalker, anim (anim.free), cond (cond.time_end, time_infinite))
 	local azone = get_level_object ("attack_zone")
 	azone:set_callback (s_test2.zone_callback, true)
 
@@ -189,15 +189,6 @@ function main ()
 	      wait ()
     end
 	
---	reset_action (stalker, s_test2.script_name ())
---	action (stalker, move (move.standing, move.run, move.line, patrol ("defend_way")), anim (anim.danger), cond (cond.move_end))
-	
---	while stalker:action () do 
---		  if stalker:see (monster.npc) == true then printf ("Stalker see monster") end	
---		  wait () 
---    end
-	
---	stalker:script (false, s_test2.script_name())
 			  
 end
 
