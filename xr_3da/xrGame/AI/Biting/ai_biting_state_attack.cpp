@@ -155,7 +155,7 @@ void CBitingAttack::Run()
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 
 			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
+			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 2000);
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
