@@ -209,19 +209,161 @@ void xrMU_Model::calc_lighting		()
 	color.assign		(m_vertices.size(),ref);
 }
 
+float	simple_optimize				(vector<float>& A, vector<float>& B, float& scale, float& bias)
+{
+	float	accum;
+	u32		it;
+
+	float	error	= flt_max;
+	float	elements= float(A.size());
+	u32		count	= 0;
+	clMsg	("---");
+	for (;;)
+	{
+		clMsg			("%d : %f",count,error);
+
+		count++;
+		if (count>64)	return error;
+
+		float	old_scale	= scale;
+		float	old_bias	= bias;
+
+		//1. scale
+		for (accum=0, it=0; it<A.size(); it++)
+			accum	+= (B[it]-bias)/A[it];
+		float	s	= accum	/ elements;
+
+		//2. bias
+		for (accum=0, it=0; it<A.size(); it++)
+			accum	+= B[it]-A[it]/scale;
+		float	b	= accum	/ elements;
+
+		// mix
+		float	conv	= float(count+11.f)*2.f;
+		scale			= ((conv-1)*scale+s)/conv;
+		bias			= ((conv-1)*bias +b)/conv;
+
+		// error
+		for (accum=0, it=0; it<A.size(); it++)
+			accum	+= _sqr(B[it] - (A[it]*scale + bias));
+		float	err	= _sqrt(accum)/elements;
+
+		if (err<error)	error = err;
+		else 
+		{
+			// exit
+			scale	= old_scale;
+			bias	= old_bias;
+			return	error;
+		}
+	}
+}
+
 void xrMU_Reference::calc_lighting	()
 {
 	model->calc_lighting	(color,xform,RCAST_Model,0);
 
 	// A*C + D = B
-	vector<vector<REAL> >	A;
-	vector<vector<REAL> >	B;
-	vector<REAL>			C;
-	vector<REAL>			D;
+	clMsg("-----------------");
+	{
+		vector<vector<REAL> >	A;
+		vector<vector<REAL> >	B;
+		vector<REAL>			C;
+		vector<REAL>			D;
 
+		// build data
+		A.clear();	A.resize	(color.size());
+		B.clear();	B.resize	(color.size());
+		for (u32 it=0; it<color.size(); it++)
+		{
+			Fcolor&		__A		= model->color	[it];
+			A[it].push_back		(__A.r);
+			Fcolor&		__B		= color			[it];
+			B[it].push_back		(__B.r);
+		}
+		vfOptimizeParameters	(A,B,C,D);
+		c_scale.x			= C[0];
+		c_bias.x			= D[0];
+
+		// build data
+		A.clear();	A.resize	(color.size());
+		B.clear();	B.resize	(color.size());
+		for (u32 it=0; it<color.size(); it++)
+		{
+			Fcolor&		__A		= model->color	[it];
+			A[it].push_back		(__A.g);
+			Fcolor&		__B		= color			[it];
+			B[it].push_back		(__B.g);
+		}
+		vfOptimizeParameters	(A,B,C,D);
+		c_scale.y			= C[0];
+		c_bias.y			= D[0];
+
+		// build data
+		A.clear();	A.resize	(color.size());
+		B.clear();	B.resize	(color.size());
+		for (u32 it=0; it<color.size(); it++)
+		{
+			Fcolor&		__A		= model->color	[it];
+			A[it].push_back		(__A.b);
+			Fcolor&		__B		= color			[it];
+			B[it].push_back		(__B.b);
+		}
+		vfOptimizeParameters	(A,B,C,D);
+		c_scale.z			= C[0];
+		c_bias.z			= D[0];
+
+		c_scale.w			= 0;
+		c_bias.w			= 1;
+		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
+			c_scale.x,c_scale.y,c_scale.z,
+			c_bias.x,c_bias.y,c_bias.z
+			);
+	}
+
+	//
+	{
+		vector<float>			A;
+		vector<float>			B;
+		c_scale.set				(1,1,1,0);
+		c_bias.set				(0,0,0,1);
+		Fvector					E;
+
+		// build data (x)
+		A.clear();	B.clear();
+		for (u32 it=0; it<color.size(); it++) {
+			A.push_back			(model->color	[it].r);
+			B.push_back			(color			[it].r);
+		}
+		E.x	= simple_optimize	(A,B,c_scale.x,c_bias.x);
+
+		// build data (y)
+		A.clear();	B.clear();
+		for (u32 it=0; it<color.size(); it++) {
+			A.push_back			(model->color	[it].g);
+			B.push_back			(color			[it].g);
+		}
+		E.y	= simple_optimize	(A,B,c_scale.y,c_bias.y);
+
+		// build data (z)
+		A.clear();	B.clear();
+		for (u32 it=0; it<color.size(); it++) {
+			A.push_back			(model->color	[it].b);
+			B.push_back			(color			[it].b);
+		}
+		E.z	= simple_optimize	(A,B,c_scale.z,c_bias.z);
+
+		// 
+		clMsg				("E[%1.5f,%1.5f,%1.5f], scale[%1.5f, %1.5f, %1.5f], bias[%1.5f, %1.5f, %1.5f]",
+			E.x,E.y,E.z,
+			c_scale.x,c_scale.y,c_scale.z,
+			c_bias.x,c_bias.y,c_bias.z
+			);
+	}
+}
+
+/*
 	// build data
-	A.resize				(color.size());
-	B.resize				(color.size());
 	for (u32 it=0; it<color.size(); it++)
 	{
 		Fcolor&		__A		= model->color	[it];
@@ -237,13 +379,17 @@ void xrMU_Reference::calc_lighting	()
 	vfOptimizeParameters	(A,B,C,D);
 
 	// 
-	c_scale.x			= 0; //C[0];
-	c_scale.y			= 1; //C[1];
-	c_scale.z			= 0; //C[2];
+	c_scale.x			= C[0];
+	c_scale.y			= C[1];
+	c_scale.z			= C[2];
 	c_scale.w			= 0;
 
-	c_bias.x			= 0;	//D[0];
-	c_bias.y			= .5f;	//D[1];
-	c_bias.z			= 0;	//D[2];
+	c_bias.x			= D[0];
+	c_bias.y			= D[1];
+	c_bias.z			= D[2];
 	c_bias.w			= 1;
-}
+	clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
+		c_scale.x,c_scale.y,c_scale.z,
+		c_bias.x,c_bias.y,c_bias.z
+		);
+ */
