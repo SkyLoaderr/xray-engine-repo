@@ -7,7 +7,7 @@ function evaluator_allow_death:__init(name, storage) super (nil, name)
   self.a = storage
 end
 function evaluator_allow_death:evaluate ()
-      return self.a.condition == nil
+    return self.a.condition == nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -26,6 +26,11 @@ function action_process_death:initialize()
     self.object:set_desired_direction()        
 end
 function action_process_death:execute()
+	local actor = level.actor()
+	if actor ~= nil then
+		xr_logic.pick_section_from_condlist(actor,nil,self.a.condition.condlist)
+		self.a.condition = nil
+	end
 	action_base.execute(self)
 end
 function action_process_death:finalize()
@@ -42,7 +47,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	xr_motivator.storage[npc:id()].death = {
 		condition = xr_logic.cfg_get_condlist(ini,"death","on_info",npc)
 	}
-  	
+   	
   	local manager = npc:motivation_action_manager()
 
   	properties["allow_death"]   	= xr_evaluators_id.death + 1
