@@ -19,8 +19,8 @@ class CPhysicsShellHolder;
 class CGameObject;
 class NET_Packet;
 struct SBoneShape;
+class  CPHShellSplitterHolder;
 class CKinematics;
-
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -249,6 +249,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual CPHIsland*			PIsland					()													= 0;
 
 	virtual bool				isFractured				()													= 0;
+	virtual CPHShellSplitterHolder*	SplitterHolder		()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
