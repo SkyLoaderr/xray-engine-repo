@@ -26,8 +26,7 @@
 const int max_patches = 512;
 
 // definition
-class CRender	:  
-	public CRender_interface
+class CRender	:	public IRender_interface
 {
 public:
 	// Dynamic scene graph

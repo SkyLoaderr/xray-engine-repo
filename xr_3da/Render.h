@@ -5,8 +5,6 @@
 #include "vis_common.h"
 
 // refs
-class ENGINE_API	CSector;
-class ENGINE_API	CPortal;
 class ENGINE_API	CVisual;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
@@ -18,8 +16,20 @@ namespace PS	{
 
 const float							fLightSmoothFactor = 4.f;
 
+// definition (Portal)
+class	ENGINE_API	IRender_Portal
+{
+	virtual ~IRender_Portal()		{};
+};
+
+// definition (Sector)
+class	ENGINE_API	IRender_Sector
+{
+	virtual ~IRender_Sector()		{};
+};
+
 // definition (Target)
-class	ENGINE_API	CRender_target
+class	ENGINE_API	IRender_target
 {
 public:
 	virtual void					eff_load			(LPCSTR n)	= 0;
@@ -36,7 +46,7 @@ public:
 };
 
 // definition (Renderer)
-class	ENGINE_API	CRender_interface	:
+class	ENGINE_API	IRender_interface	:
 	public pureDeviceCreate,
 	public pureDeviceDestroy
 {
@@ -54,14 +64,14 @@ public:
 
 	// Information
 	virtual int						getVisualsCount			()								= 0;
-	virtual CPortal*				getPortal				(int id)						= 0;
-	virtual CSector*				getSector				(int id)						= 0;
-	virtual CSector*				getSectorActive			()								= 0;
+	virtual IRender_Portal*			getPortal				(int id)						= 0;
+	virtual IRender_Sector*			getSector				(int id)						= 0;
+	virtual IRender_Sector*			getSectorActive			()								= 0;
 	virtual CVisual*				getVisual				(int id)						= 0;
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)						= 0;
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)						= 0;
-	virtual CSector*				detectSector			(Fvector& P)					= 0;
+	virtual IRender_Sector*			detectSector			(Fvector& P)					= 0;
 	virtual CRender_target*			getTarget				()								= 0;
 
 	// Main 
@@ -83,27 +93,27 @@ public:
 	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)	= 0;
 
 	// Models
-	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)	= 0;
-	virtual CVisual*				model_Create			(LPCSTR name)					= 0;
-	virtual CVisual*				model_Create			(LPCSTR name, IReader* data)	= 0;
-	virtual CVisual*				model_Duplicate			(CVisual* V)					= 0;
-	virtual void					model_Delete			(CVisual* &V)					= 0;
+	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
+	virtual CVisual*				model_Create			(LPCSTR name)							= 0;
+	virtual CVisual*				model_Create			(LPCSTR name, IReader* data)			= 0;
+	virtual CVisual*				model_Duplicate			(CVisual* V)							= 0;
+	virtual void					model_Delete			(CVisual* &V)							= 0;
 
 	// Occlusion culling
-	virtual BOOL					occ_visible				(vis_data&	V)					= 0;
-	virtual BOOL					occ_visible				(Fbox&		B)					= 0;
-	virtual BOOL					occ_visible				(sPoly&		P)					= 0;
+	virtual BOOL					occ_visible				(vis_data&	V)							= 0;
+	virtual BOOL					occ_visible				(Fbox&		B)							= 0;
+	virtual BOOL					occ_visible				(sPoly&		P)							= 0;
 
 	// Main
-	virtual void					Calculate				()								= 0;
-	virtual void					Render					()								= 0;
-	virtual void					RenderBox				(CSector* S, Fbox& BB, int sh)	= 0;
-	virtual void					Screenshot				(BOOL bSquare=FALSE)			= 0;
+	virtual void					Calculate				()										= 0;
+	virtual void					Render					()										= 0;
+	virtual void					RenderBox				(IRender_Sector* S, Fbox& BB, int sh)	= 0;
+	virtual void					Screenshot				(BOOL bSquare=FALSE)					= 0;
 
 	// Render mode
-	virtual void					rmNear					()								= 0;
-	virtual void					rmFar					()								= 0;
-	virtual void					rmNormal				()								= 0;
+	virtual void					rmNear					()										= 0;
+	virtual void					rmFar					()										= 0;
+	virtual void					rmNormal				()										= 0;
 
 	// Constructor/destructor
 	CRender_interface();

@@ -10,11 +10,8 @@ class ENGINE_API CVisual;
 class ENGINE_API CObject;
 class ENGINE_API CTempObject;
 
-class CPortal;
-class CSector;
-
 // Connector
-class CPortal
+class CPortal				: public IRender_Portal
 {
 private:
 	vector<Fvector>			poly;
@@ -45,12 +42,13 @@ public:
 	{
 		return _abs(P.classify(V));
 	}
+	virtual ~CPortal		();
 };
 
 // Main 'Sector' class
 typedef svector<CObject*,256>	objSET;
 typedef BOOL	__fastcall		objQualifier(CObject* O, void* P);
-class CSector
+class CSector				: public IRender_Sector
 {
 public:
 	struct	objQuery
