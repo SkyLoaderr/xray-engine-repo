@@ -615,7 +615,7 @@ void CMotionManager::FX_ConvertMap()
 	}
 }
 
-#define FX_CAN_PLAY_MIN_INTERVAL	500
+#define FX_CAN_PLAY_MIN_INTERVAL	50
 
 void CMotionManager::FX_Play(u16 bone, bool is_front, float amount) 
 {

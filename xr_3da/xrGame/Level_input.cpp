@@ -123,6 +123,34 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
+	
+
+
+// TEST	
+		
+	CObject			*obj	= Level().Objects.FindObjectByName("blood");
+	CEntityAlive	*pE		= dynamic_cast<CEntityAlive *>(obj);
+	Fvector dir, dir_inv;
+	dir.set(0.f,1.0f,0.f);
+	dir_inv.set(0.f,-1.0f,0.f);
+
+	if (pE) {
+		switch (key) {
+		case DIK_1:
+			pE->m_pPhysicsShell->applyImpulse(dir, 5.0f * pE->m_pPhysicsShell->getMass());
+			break;
+		case DIK_2:
+			pE->m_pPhysicsShell->applyImpulse(dir_inv, 1.5f * pE->m_pPhysicsShell->getMass());
+			break;
+		case DIK_9:
+			pE->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+			break;
+		case DIK_0:
+			pE->m_pPhysicsShell->set_ApplyByGravity(FALSE);
+			break;
+		}
+	}
+
 
 //	//////////////////////////////////////////////////////////////////////////
 //	// Squad Testing

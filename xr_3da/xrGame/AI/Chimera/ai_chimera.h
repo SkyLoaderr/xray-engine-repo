@@ -1,37 +1,39 @@
 #pragma once
 
-#include "../biting/ai_biting.h"
-#include "../ai_monster_bones.h"
+#include "../../CustomMonster.h"
+#include "../../state_internal.h"
 
-class CAI_Chimera : public CAI_Biting {
+class CCharacterPhysicsSupport;
 
-	typedef		CAI_Biting	inherited;
+class CAI_Chimera : 	public CCustomMonster { 
+						//public CStateInternal<CAI_Chimera>  {
+
+	typedef CCustomMonster		inherited;
+
+
+	CCharacterPhysicsSupport	*m_pPhysics_support;
+
 public:
-							CAI_Chimera			();
-	virtual					~CAI_Chimera		();	
+	CMotionDef					*cur_anim;
+public:
+							CAI_Chimera					();
+	virtual					~CAI_Chimera				();	
 
-			void			Init				();
-	virtual	void			Load				(LPCSTR section);
+			void			Init						();
+	virtual	void			Load						(LPCSTR section);
+	virtual	void			reinit						();
+	virtual void			reload						(LPCSTR	section );	
+	virtual BOOL			net_Spawn					(LPVOID DC);
+			void			net_Destroy					();
 
-	virtual void			StateSelector		();
+	virtual void			UpdateCL					();
+	virtual void			shedule_Update				(u32 dt);
+	virtual void			Think						();
+	virtual void			Die							();
 
-	virtual BOOL			net_Spawn			(LPVOID DC);
-
-	// Bone manipulation
-			void			vfAssignBones		(CInifile *ini, const char *section);
-	static	void __stdcall	SpinCallback		(CBoneInstance *B);
-			void			SpinBoneInMotion	(CBoneInstance *B);
-			void			SpinBoneInAttack	(CBoneInstance *B);
-
-	virtual	bool			CanJump				();
-	virtual void			Jump				(Fvector to_pos);
-			
-	// реализация плавного поворота	
-	float	fSpinYaw;				// угол поворота для боны
-	TTime	timeLastSpin;			// последнее время изменения SpinYaw
-	float	fStartYaw, fFinishYaw;	// начальный и конечный углы поворота монстра
-	float	fPrevMty;				// предыдущее значение target.yaw
-
-	bonesManipulation		Bones;
-
+	virtual void			SelectAnimation				(const Fvector& _view, const Fvector& _move, float speed );
+	virtual BOOL			feel_vision_isRelevant		(CObject *O);
+	
+	virtual void			HitSignal					(float amount, Fvector& vLocalDir, CObject* who, s16 element) {}
 };
+

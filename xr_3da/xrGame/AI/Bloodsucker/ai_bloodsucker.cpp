@@ -125,7 +125,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 600, 700, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
-	//MotionMan.FX_LoadMap(section); 
+	MotionMan.FX_LoadMap(section); 
 
 	END_LOAD_SHARED_MOTION_DATA();
 
