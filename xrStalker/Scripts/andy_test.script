@@ -1,7 +1,9 @@
 
 
 function fe(item, parent)
-	parent:drop_item(item)
+	local p = parent:position()
+	p.z = p.z+7
+	parent:drop_item(item,p)
 end
 
 function main ()
