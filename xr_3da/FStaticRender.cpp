@@ -520,12 +520,6 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP.End();
 }
 
-void CRender::RenderBox	(Fbox& bounds, int sh_id)
-{
-
-}
-
-
 // Device events
 void CRender::OnDeviceCreate()
 {

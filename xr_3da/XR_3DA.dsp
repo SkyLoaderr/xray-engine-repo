@@ -2753,6 +2753,10 @@ SOURCE=.\FStaticRender_Types.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\FStaticRender_Volume.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Render.h
 # End Source File
 # Begin Source File

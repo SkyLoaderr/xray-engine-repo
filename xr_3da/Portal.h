@@ -82,7 +82,7 @@ public:
 		void*			Param;
 	};
 protected:
-	CVisual*			pRoot;		// whole geometry of that sector
+	CVisual*				pRoot;		// whole geometry of that sector
 	vector<CPortal*>		Portals;
 	vector<CObject*>		Objects;
 	vector<CTempObject*>	tempObjects;// временные псевдостатические объекты
@@ -116,6 +116,7 @@ public:
 	void					Render		(CFrustum& F);
 	void					Load		(CStream& fs);
 	void					DebugDump	();
+	CVisual*				Root		()	{ return pRoot; }
 
 	void					GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
 
