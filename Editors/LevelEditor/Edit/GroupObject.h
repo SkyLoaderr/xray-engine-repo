@@ -8,25 +8,34 @@
 class CGroupObject: public CCustomObject{
 	ObjectList      m_Objects;
     typedef CCustomObject inherited;
-    bool			AppendObject	(CCustomObject* object);
-    void			RemoveObject	(CCustomObject* object);
-    Fbox			m_BBox;
-
+    bool			LL_AppendObject	(CCustomObject* object, bool append);
+    bool			AppendObjectCB	(CCustomObject* object);
     enum{
-    	flInitFromFirstObject
+    	flStateOpened	= (1<<0),
     };
     Flags32			m_Flags;
-	void 			OnDestroy		();
+    SStringVec*		m_PObjects;
+    shared_str		m_ReferenceName;
+	bool 			UpdateReference	();
+	void 			ReferenceChange	(PropValue* sender);
+    void			Clear			();
 public:
 					CGroupObject	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);
 	virtual 		~CGroupObject	();
     void			GroupObjects	(ObjectList& lst);
     void			UngroupObjects	();
+    void			OpenGroup		();
+    void			CloseGroup		();
     IC ObjectList&  GetObjects		(){return m_Objects;}
     IC int			ObjectCount		(){return m_Objects.size();}
 
-	void			UpdateBBoxAndPivot(bool bInitFromFirstObject);
+    bool 			IsOpened		(){return m_Flags.is(flStateOpened);}
+    bool			SetReference	(LPCSTR nm);
+	LPCSTR    		GetRefName		(){return m_ReferenceName.c_str();}
+	bool    		RefCompare		(LPCSTR nm){return m_ReferenceName.equal(nm);}
+    
+	void			UpdatePivot		(LPCSTR nm, bool center);
 	virtual bool 	GetBox			(Fbox& box);
     virtual bool	CanAttach		() {return false;}
 
@@ -54,6 +63,10 @@ public:
     // device dependent routine
 	virtual void 	OnDeviceCreate 	();
 	virtual void 	OnDeviceDestroy	();
+
+    virtual void    OnShowHint      (AStringVec& dest);
+    virtual void 	OnObjectRemove	(const CCustomObject* object);
+	virtual void 	OnSceneUpdate	();
 
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 };

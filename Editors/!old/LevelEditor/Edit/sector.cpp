@@ -110,8 +110,7 @@ int CSector::DelMesh	(CSceneObject* O, CEditableMesh* M)
 	if (sector_items.empty()){
     	res = 2;
     	ELog.Msg(mtInformation,"Last mesh deleted.\nSector has no meshes and will be removed.");
-		Scene->RemoveObject(this,false);
-        delete this;
+        DeleteThis();
     }
     return res;
 }

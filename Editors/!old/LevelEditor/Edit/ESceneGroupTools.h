@@ -7,6 +7,7 @@
 class ESceneGroupTools: public ESceneCustomOTools
 {
 	typedef ESceneCustomOTools inherited;
+    xr_string			m_CurrentObject;
 protected:
     // controls
     virtual void 		CreateControls			();
@@ -28,12 +29,21 @@ public:
 
     virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt);
 
+	virtual void 		OnActivate				();
+
     // group function
     void				UngroupObjects			(bool bUndo=true);
 	void 				GroupObjects			(bool bUndo=true);
+    void				OpenGroups				(bool bUndo=true);
+	void 				CloseGroups				(bool bUndo=true);
+    
 	void 				CenterToGroup			();
     void 				AlignToObject			();
 
+    void 				SaveSelectedObject		();
+    void 				SetCurrentObject		(LPCSTR nm);
+    LPCSTR				GetCurrentObject		(){return m_CurrentObject.c_str();}
+    
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 };
 //---------------------------------------------------------------------------

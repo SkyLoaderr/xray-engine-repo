@@ -10,6 +10,16 @@
 #include "d3dutils.h"
 #include "PropertiesListHelper.h"
 //----------------------------------------------------
+static const float EMPTY_GROUP_SIZE = 0.5f;
+//----------------------------------------------------
+#define GROUPOBJ_CURRENT_VERSION		0x0011
+//----------------------------------------------------
+#define GROUPOBJ_CHUNK_VERSION		  	0x0000
+#define GROUPOBJ_CHUNK_OBJECT_LIST     	0x0001
+#define GROUPOBJ_CHUNK_FLAGS	     	0x0003
+#define GROUPOBJ_CHUNK_REFERENCE	  	0x0004
+#define GROUPOBJ_CHUNK_OPEN_OBJECT_LIST	0x0005
+//----------------------------------------------------
 //------------------------------------------------------------------------------
 // !!! при разворачивании груп использовать prefix если нужно имя !!!
 //------------------------------------------------------------------------------
@@ -23,30 +33,46 @@ void CGroupObject::Construct(LPVOID data)
 {
 	ClassID		= OBJCLASS_GROUP;
     m_Flags.zero();
-    m_BBox.invalidate();
+    m_PObjects	= 0;
 }
 
 CGroupObject::~CGroupObject	()
 {
-	OnDestroy();
+	Clear();
 }
 
-void CGroupObject::OnDestroy()
+void CGroupObject::Clear()
 {
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-    	(*it)->m_pOwnerObject=0;	//
-    	xr_delete(*it);
+	if (!IsOpened()){
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+            (*it)->m_pOwnerObject=0;	//
+            xr_delete(*it);
+        }
     }
     m_Objects.clear();
+    xr_delete(m_PObjects);
 }
 
 bool CGroupObject::GetBox(Fbox& bb)
 {
-	if (m_BBox.is_valid()){
-	    bb.xform(m_BBox,_Transform());
-        return true;
+    bb.invalidate		();
+    // update box
+    for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+        switch((*it)->ClassID){
+        case OBJCLASS_SCENEOBJECT:{
+            Fbox 	box;
+            if ((*it)->GetBox(box))
+                bb.merge(box);
+        }break;
+        default:
+            bb.modify((*it)->PPosition);
+        }
     }
-    return false;
+    if (!bb.is_valid()){
+    	bb.set			(PPosition,PPosition);
+        bb.grow			(EMPTY_GROUP_SIZE);
+    }
+    return bb.is_valid();
 }
 
 void CGroupObject::OnUpdateTransform()
@@ -63,7 +89,7 @@ void CGroupObject::OnFrame()
     	(*it)->OnFrame();
 }
 
-bool CGroupObject::AppendObject(CCustomObject* object)
+bool CGroupObject::LL_AppendObject(CCustomObject* object, bool append)
 {
     if (!object->CanAttach()){
     	ELog.Msg(mtError,"Can't attach object: '%s'",object->Name);
@@ -75,67 +101,53 @@ bool CGroupObject::AppendObject(CCustomObject* object)
 	    object->OnDetach();
     }
 	object->OnAttach		(this);
-	m_Objects.push_back		(object);
+    if (append)				m_Objects.push_back(object);
     return true;
 }
-void CGroupObject::UpdateBBoxAndPivot(bool bInitFromFirstObject)
+bool CGroupObject::AppendObjectCB(CCustomObject* object)
 {
-	Fbox box;
-    Fvector p;
-    m_BBox.invalidate();
+    object->m_pOwnerObject	= this;
+    m_Objects.push_back		(object);
+    return true;
+}
+void CGroupObject::UpdatePivot(LPCSTR nm, bool center)
+{
     // first init
-    if (bInitFromFirstObject){
-        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-            if ((*it)->ClassID==OBJCLASS_SCENEOBJECT){
-                PPosition = (*it)->PPosition;
-                PRotation = (*it)->PRotation;
-                PScale	  = (*it)->PScale;
-                UpdateTransform(true);
-                if ((*it)->GetUTBox(box)) m_BBox.merge(box);
-        	    break;
-	        }
+    if (false==center){
+    	CCustomObject* object = 0;
+    	if (nm&&nm[0]){
+            for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+            	if (0==strcmp(nm,(*it)->Name)){
+                	object = *it;
+                	break;
+                }
+            }
+        }else{
+            for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+                if ((*it)->ClassID==OBJCLASS_SCENEOBJECT){
+                	object		= (*it);
+                    break;
+                }
+            }
         }
-    }
-    if (!m_BBox.is_valid()){
+        if (object){
+            PPosition = object->PPosition;
+            PRotation = object->PRotation;
+//.			PScale	  = object->PScale;
+			UpdateTransform(true);
+//..		if (object->GetUTBox(box)) m_BBox.merge(box);
+        }
+    }else{
+        // center alignment
         ObjectIt it=m_Objects.begin();
         Fvector C; C.set((*it)->PPosition); it++;
         for (; it!=m_Objects.end(); it++)
-        	C.add((*it)->PPosition);
+            C.add((*it)->PPosition);
         FPosition.div(C,m_Objects.size());
         FRotation.set(0,0,0);
-        FScale.set(1.f,1.f,1.f);
-        UpdateTransform(true);
-        m_BBox.set(0,0,0,0,0,0);
+//.		FScale.set(1.f,1.f,1.f);
+		UpdateTransform(true);
     }
-    // update box
-    for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        switch((*it)->ClassID){
-        case OBJCLASS_SCENEOBJECT:
-            if ((*it)->GetBox(box)){
-                box.xform(FITransform);
-                m_BBox.merge(box);
-            }
-        break;
-        default:
-        	FITransform.transform_tiny(p,(*it)->PPosition);
-        	m_BBox.modify(p);
-        }
-    }
-}
-
-void CGroupObject::GroupObjects(ObjectList& lst)
-{
-	R_ASSERT(lst.size());
-	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
-    	AppendObject(*it);
-    UpdateBBoxAndPivot(true);
-}
-
-void CGroupObject::UngroupObjects()
-{
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-        (*it)->OnDetach();
-    m_Objects.clear();
 }
 
 void CGroupObject::MoveTo(const Fvector& pos, const Fvector& up)
@@ -278,47 +290,58 @@ void CGroupObject::Render(int priority, bool strictB2F)
     	}
     }
 	if ((1==priority)&&(false==strictB2F)){
-    	if (Selected()&&m_BBox.is_valid()){
+    	Fbox bb;
+    	if (Selected()&&GetBox(bb)){
             Device.SetShader(Device.m_WireShader);
-            RCache.set_xform_world(FTransform);
-            u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-            DU.DrawSelectionBox(m_BBox,&clr);
+            RCache.set_xform_world(Fidentity);
+            u32 clr = Locked()?0xFFFF0000:(IsOpened()?0xFF7070FF:0xFFFFFFFF);
+            DU.DrawSelectionBox(bb,&clr);
         }
     }
 }
 
 bool CGroupObject::FrustumPick(const CFrustum& frustum)
 {
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	if ((*it)->FrustumPick(frustum)) return true;
+    if (m_Objects.empty()){
+        Fbox 		bb;
+        GetBox		(bb);
+        u32 mask	= u32(-1); 
+        return (frustum.testAABB(bb.data(),mask));
+    }else{
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+            if ((*it)->FrustumPick(frustum)) return true;
+    }
     return false;
 }
 
 bool CGroupObject::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
 	bool bPick = false;
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	if ((*it)->RayPick(distance,start,direction,pinf)) bPick=true;
+    if (m_Objects.empty()){
+/*		Fbox 		bb;
+        GetBox		(bb);
+        u32 mask	= u32(-1); 
+        return (frustum.testAABB(bb.data(),mask));
+*/
+    }else{
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+            if ((*it)->RayPick(distance,start,direction,pinf)) bPick=true;
+    }
     return bPick;
 }
 
-void CGroupObject::OnDeviceCreate(){
+void CGroupObject::OnDeviceCreate()
+{
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceCreate();
 }
 
-void CGroupObject::OnDeviceDestroy(){
+void CGroupObject::OnDeviceDestroy()
+{
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceDestroy();
 }
-
-//----------------------------------------------------
-#define GROUPOBJ_CURRENT_VERSION		0x0011
-//----------------------------------------------------
-#define GROUPOBJ_CHUNK_VERSION		  	0x0000
-#define GROUPOBJ_CHUNK_OBJECT_LIST     	0x0001
-#define GROUPOBJ_CHUNK_FLAGS	     	0x0003
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool CGroupObject::Load(IReader& F)
 {
@@ -331,15 +354,27 @@ bool CGroupObject::Load(IReader& F)
     }
 	CCustomObject::Load(F);
 
-	// objects
-    Scene->ReadObjects(F,GROUPOBJ_CHUNK_OBJECT_LIST,AppendObject,0);
-
     F.r_chunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
 
-	// update bounding volume
-	UpdateBBoxAndPivot(m_Flags.is(flInitFromFirstObject));
+	// objects
+    if (IsOpened()){
+    	m_PObjects	= xr_new<SStringVec>();
+        R_ASSERT(F.find_chunk(GROUPOBJ_CHUNK_OPEN_OBJECT_LIST));
+        u32 cnt 	= F.r_u32();
+        xr_string 	tmp;
+        for (u32 k=0; k<cnt; k++){
+            F.r_stringZ				(tmp);
+        	m_PObjects->push_back	(tmp);
+        }
+    }else{
+	    Scene->ReadObjects(F,GROUPOBJ_CHUNK_OBJECT_LIST,AppendObjectCB,0);
+    }
+    VERIFY(m_Objects.size()||(0!=m_PObjects));
 
-    return true;
+    if (F.find_chunk(GROUPOBJ_CHUNK_REFERENCE))	
+    	F.r_stringZ	(m_ReferenceName);
+
+    return 			true;
 }
 
 void CGroupObject::Save(IWriter& F)
@@ -350,10 +385,22 @@ void CGroupObject::Save(IWriter& F)
 	F.w_u16			(GROUPOBJ_CURRENT_VERSION);
 	F.close_chunk	();
 
-    // objects
-    Scene->SaveObjects(m_Objects,GROUPOBJ_CHUNK_OBJECT_LIST,F);
-
     F.w_chunk		(GROUPOBJ_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
+
+    // objects
+    if (IsOpened()){
+        F.open_chunk(GROUPOBJ_CHUNK_OPEN_OBJECT_LIST);
+        F.w_u32		(m_Objects.size());
+		for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+            F.w_stringZ	((*it)->Name);
+		F.close_chunk	();
+    }else{
+	    Scene->SaveObjects(m_Objects,GROUPOBJ_CHUNK_OBJECT_LIST,F);
+    }
+
+    F.open_chunk	(GROUPOBJ_CHUNK_REFERENCE);
+    F.w_stringZ		(m_ReferenceName);
+	F.close_chunk	();
 }
 //----------------------------------------------------
 
@@ -366,12 +413,131 @@ bool CGroupObject::ExportGame(SExportStreams& data)
 }
 //----------------------------------------------------
 
+void CGroupObject::ReferenceChange(PropValue* sender)
+{
+	UpdateReference		();
+}
+//----------------------------------------------------
+
+bool CGroupObject::SetReference(LPCSTR ref_name)
+{
+	shared_str old_refs	= m_ReferenceName;
+    m_ReferenceName		= ref_name;
+    bool bres 			=  UpdateReference();
+	if (false==bres)	m_ReferenceName	= old_refs;
+    return bres;
+}
+
+bool CGroupObject::UpdateReference()
+{
+    xr_string fn		= m_ReferenceName.c_str();
+    fn					= EFS.ChangeFileExt(fn,".group");
+    IReader* R			= FS.r_open(_groups_,fn.c_str());
+    bool bres			= false;
+    if (R){
+    	CloseGroup		();
+		Clear			();
+        xr_string nm	= Name;
+		shared_str old_refs	= m_ReferenceName;
+        Fvector old_pos	= PPosition;
+        Fvector old_rot	= PRotation;
+        Fvector old_sc	= PScale;
+        if (Load(*R)){
+            Name 		= nm.c_str();
+            bres		= true;
+	        UpdateTransform	(true);
+        }
+	    m_ReferenceName	= old_refs;
+        NumSetPosition	(old_pos);
+        NumSetRotation	(old_rot);
+        NumSetScale		(old_sc);
+        UpdateTransform	(true);
+        FS.r_close		(R);
+    }else{
+        ELog.DlgMsg		(mtError,"Can't open group file: '%s'.",fn);
+    }
+    return bres;
+}
+//----------------------------------------------------
+
 void CGroupObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
-
+    PropValue* V		= PHelper().CreateChoose	(items,PrepareKey(pref,"Reference"),&m_ReferenceName, smGroup); 
+    V->OnChangeEvent.bind(this,&CGroupObject::ReferenceChange);
+    PHelper().CreateCaption							(items,PrepareKey(pref,"State"), 	IsOpened()?"Opened":"Closed");
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-	    PHelper().CreateCaption	(items,	PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),ParentTools->ClassDesc(),(*it)->Name), "");
+	    PHelper().CreateCaption						(items,PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),ParentTools->ClassDesc(),(*it)->Name), "");
+}
+//----------------------------------------------------
+
+void CGroupObject::OnShowHint(AStringVec& dest)
+{
+	inherited::OnShowHint(dest);
+    dest.push_back(AnsiString("Reference: ")+m_ReferenceName.c_str());
+    dest.push_back(AnsiString("-------"));
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+	    dest.push_back((*it)->Name);
+}
+//----------------------------------------------------
+
+void CGroupObject::OnObjectRemove(const CCustomObject* object)
+{
+	if (IsOpened()){
+	    m_Objects.remove((CCustomObject*)object);
+        if (m_Objects.empty()){
+            ELog.Msg	(mtInformation,"Group '%s' has no objects and will be removed.",Name);
+            DeleteThis	();
+        }
+    }
+}
+//----------------------------------------------------
+
+void CGroupObject::OnSceneUpdate()
+{
+	inherited::OnSceneUpdate();
+    if (IsOpened()&&(0!=m_PObjects)){
+    	for (SStringVecIt it=m_PObjects->begin(); it!=m_PObjects->end(); it++){
+        	CCustomObject* obj	= Scene->FindObjectByName(it->c_str(),0); VERIFY2(obj,"Can't find open group object.");
+		    m_Objects.push_back	(obj);
+        }
+        xr_delete	(m_PObjects);
+        if (m_Objects.empty()){
+            ELog.Msg	(mtInformation,"Group '%s' has no objects and will be removed.",Name);
+            DeleteThis	();
+        }
+    }
+}
+//----------------------------------------------------
+
+void CGroupObject::GroupObjects(ObjectList& lst)
+{
+	R_ASSERT(lst.size());
+	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	LL_AppendObject(*it,true);
+    UpdatePivot(0,false);
+}
+void CGroupObject::UngroupObjects()
+{
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+        (*it)->OnDetach();
+    m_Objects.clear();
+}
+void CGroupObject::OpenGroup()
+{
+	if (!IsOpened()){
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+            (*it)->OnDetach();
+        m_Flags.set(flStateOpened,TRUE);
+    }
+}
+void CGroupObject::CloseGroup()
+{
+	if (IsOpened()){
+        m_Flags.set(flStateOpened,FALSE);										// последовательность очень важна!!! иначе удалим себя из списка
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+        	LL_AppendObject(*it,false);
+    }
 }
 //----------------------------------------------------
 

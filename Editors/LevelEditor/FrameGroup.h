@@ -11,6 +11,8 @@
 
 #include "ExtBtn.hpp"
 #include "ESceneCustomMTools.h"
+#include "MXCtrls.hpp"
+#include "multi_edit.hpp"
 // refs
 class ESceneGroupTools;
 //---------------------------------------------------------------------------
@@ -22,16 +24,49 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn2;
 	TExtBtn *ebUngroup;
 	TExtBtn *ebGroup;
+	TPanel *paCurrentObject;
+	TLabel *APHeadLabel2;
+	TPanel *Panel2;
+	TLabel *Label1;
 	TExtBtn *ebCenterToGroup;
-	TLabel *Label5;
 	TExtBtn *ebAlignToObject;
+	TExtBtn *ebSaveSelected;
+	TExtBtn *ebSelect;
+	TMxLabel *MxLabel1;
+	TMxLabel *lbCurrent;
+	TPanel *paSelectObject;
+	TBevel *Bevel3;
+	TLabel *Label2;
+	TExtBtn *ExtBtn1;
+	TExtBtn *ExtBtn3;
+	TLabel *APHeadLabel3;
+	TExtBtn *ExtBtn5;
+	TExtBtn *ExtBtn6;
+	TLabel *Label4;
+	TExtBtn *ExtBtn7;
+	TLabel *Label6;
+	TMultiObjSpinEdit *seSelPercent;
+	TExtBtn *ebOpen;
+	TExtBtn *ebClose;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebMakeGroupClick(TObject *Sender);
 	void __fastcall ebUngroupClick(TObject *Sender);
 	void __fastcall ebCenterToGroupClick(TObject *Sender);
+	void __fastcall ebAlignToObjectClick(TObject *Sender);
+	void __fastcall ebSelectClick(TObject *Sender);
+	void __fastcall ebSaveSelectedClick(TObject *Sender);
+	void __fastcall ExtBtn1Click(TObject *Sender);
+	void __fastcall ExtBtn3Click(TObject *Sender);
+	void __fastcall ExtBtn6Click(TObject *Sender);
+	void __fastcall ExtBtn7Click(TObject *Sender);
+	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
+	void __fastcall ebOpenClick(TObject *Sender);
+	void __fastcall ebCloseClick(TObject *Sender);
 private:	// User declarations
 	ESceneGroupTools* ParentTools;
+	void 			SelByRefObject		( bool flag );
+	void 			MultiSelByRefObject ( bool clear_prev );
 public:		// User declarations
 	__fastcall TfraGroup(TComponent* Owner, ESceneGroupTools* gt);
 };

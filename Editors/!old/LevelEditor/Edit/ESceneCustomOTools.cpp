@@ -37,7 +37,6 @@ BOOL ESceneCustomOTools::_AppendObject(CCustomObject* object)
 
 BOOL ESceneCustomOTools::_RemoveObject(CCustomObject* object)
 {
-	m_ObjectsInGroup.remove(object);
 	m_Objects.remove(object);
     return FALSE;
 }
@@ -53,8 +52,19 @@ void ESceneCustomOTools::Clear(bool bInternal)
 
 void ESceneCustomOTools::OnFrame()
 {
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	(*it)->OnFrame();
+	ObjectList remove_objects;
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	(*it)->OnFrame			();
+        if ((*it)->IsDeleted())	remove_objects.push_back(*it);
+    }
+    bool need_undo = remove_objects.size();
+    while (!remove_objects.empty()){
+    	CCustomObject* O	= remove_objects.back();
+        Scene->RemoveObject	(O,false);
+        xr_delete			(O);
+        remove_objects.pop_back();
+    }
+    if (need_undo) Scene->UndoSave();
 }
 //----------------------------------------------------
 
@@ -113,7 +123,7 @@ bool ESceneCustomOTools::IsNeedSave()
 void ESceneCustomOTools::OnObjectRemove(CCustomObject* O)
 {
     for(ObjectIt _F = m_Objects.begin();_F!=m_Objects.end();_F++)
-        (*_F)->OnObjectRemove(*_F);
+        (*_F)->OnObjectRemove(O);
 }
 
 void ESceneCustomOTools::SelectObjects(bool flag)

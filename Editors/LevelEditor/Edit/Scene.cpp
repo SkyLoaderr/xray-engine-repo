@@ -117,8 +117,9 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
     ESceneCustomOTools* mt 	= GetOTools(object->ClassID);
     if (mt){
     	mt->_RemoveObject(object);
-        if (object->ClassID==OBJCLASS_SCENEOBJECT){
-            // signal everyone "I'm deleting"
+        // signal everyone "I'm deleting"
+//        if (object->ClassID==OBJCLASS_SCENEOBJECT)
+        {
             m_ESO_SnapObjects.remove			(object);
 
             SceneToolsMapPairIt _I = m_SceneTools.begin();

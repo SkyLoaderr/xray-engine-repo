@@ -77,6 +77,32 @@ void __stdcall  DrawObjectTHM(LPCSTR name, HDC hdc, const Irect& r)
     xr_delete						(thm);
 }
 //---------------------------------------------------------------------------
+void __stdcall  FillGroup(ChooseItemVec& items, void* param)
+{
+    FS_QueryMap lst;
+    if (FS.file_list(lst,_groups_,FS_ListFiles|FS_ClampExt,".group")){
+	    FS_QueryPairIt	it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+    }
+}
+void __stdcall  SelectGroup(SChooseItem* item, PropItemVec& info_items)
+{
+/*
+	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(*item->name);
+    if (thm->Valid()) thm->FillInfo	(info_items);
+    xr_delete						(thm);
+*/
+}
+void __stdcall  DrawGroupTHM(LPCSTR name, HDC hdc, const Irect& r)
+{
+/*
+	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(name);
+    if (thm->Valid()) thm->Draw		(hdc,r);
+    xr_delete						(thm);
+*/
+}
+//---------------------------------------------------------------------------
 void __stdcall  FillVisual(ChooseItemVec& items, void* param)
 {
     FS_QueryMap lst;
@@ -235,6 +261,7 @@ void FillChooseEvents()
 	TfrmChoseItem::AppendEvents	(smSoundSource,		"Select Sound Source",		ChoseEvents::FillSoundSource,	ChoseEvents::SelectSoundSource,	    0,							ChoseEvents::CloseSoundSource,	0);
 	TfrmChoseItem::AppendEvents	(smSoundEnv,		"Select Sound Environment",	ChoseEvents::FillSoundEnv,		0,								    0,							0,								0);
 	TfrmChoseItem::AppendEvents	(smObject,			"Select Library Object",	ChoseEvents::FillObject,		ChoseEvents::SelectObject,		    ChoseEvents::DrawObjectTHM,	0,								0);
+	TfrmChoseItem::AppendEvents	(smGroup,			"Select Group",				ChoseEvents::FillGroup,			ChoseEvents::SelectGroup,		    ChoseEvents::DrawGroupTHM,	0,								0);
 	TfrmChoseItem::AppendEvents	(smEShader,			"Select Engine Shader",		ChoseEvents::FillEShader,		0,								    0,							0,								0);
 	TfrmChoseItem::AppendEvents	(smCShader,			"Select Compiler Shader",	ChoseEvents::FillCShader,		0,					                0,							0,								0);
 	TfrmChoseItem::AppendEvents	(smPE,				"Select Particle Effect",	ChoseEvents::FillPE,			0,					                0,							0,								0);

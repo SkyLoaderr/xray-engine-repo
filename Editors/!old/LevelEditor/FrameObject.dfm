@@ -128,7 +128,7 @@ object fraObject: TfraObject
   end
   object paSelectObject: TPanel
     Left = 0
-    Top = 0
+    Top = 55
     Width = 218
     Height = 46
     Align = alTop
@@ -296,7 +296,7 @@ object fraObject: TfraObject
   end
   object paCommands: TPanel
     Left = 0
-    Top = 46
+    Top = 0
     Width = 218
     Height = 55
     Align = alTop

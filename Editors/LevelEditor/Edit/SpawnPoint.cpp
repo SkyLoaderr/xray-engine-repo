@@ -236,6 +236,8 @@ void CSpawnPoint::Construct(LPVOID data)
     if (data){
         if (strcmp(LPSTR(data),RPOINT_CHOOSE_NAME)==0){
             m_Type 		= ptRPoint;
+            m_RP_Type	= rptActorSpawn;
+            m_RP_GameType= rpgtGameAny;
             m_RP_TeamID	= 0;
         }else if (strcmp(LPSTR(data),ENVMOD_CHOOSE_NAME)==0){
             m_Type 				= ptEnvMod;
@@ -568,7 +570,8 @@ bool CSpawnPoint::Load(IReader& F){
 		    if (F.find_chunk(SPAWNPOINT_CHUNK_RPOINT)){ 
             	m_RP_TeamID	= F.r_u8();
                 m_RP_Type	= F.r_u8();
-                F.advance	(2);
+                m_RP_GameType=F.r_u8();
+                F.advance	(1);
             }
         break;
         case ptEnvMod:
@@ -616,7 +619,8 @@ void CSpawnPoint::Save(IWriter& F){
         	F.open_chunk(SPAWNPOINT_CHUNK_RPOINT);
             F.w_u8		(m_RP_TeamID);
             F.w_u8		(m_RP_Type);
-            F.w_u16		(0);
+            F.w_u8 		(m_RP_GameType);
+            F.w_u8		(0);
             F.close_chunk();
         break;
         case ptEnvMod:
@@ -665,7 +669,8 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
             F.rpoint.stream.w_fvector3	(PRotation);
             F.rpoint.stream.w_u8		(m_RP_TeamID);
             F.rpoint.stream.w_u8		(m_RP_Type);
-            F.rpoint.stream.w_u16		(0);
+            F.rpoint.stream.w_u8		(m_RP_GameType);
+            F.rpoint.stream.w_u8		(0);
 			F.rpoint.stream.close_chunk	();
         break;
         case ptEnvMod:
@@ -697,8 +702,9 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper().CreateU8	(items, PrepareKey(pref,"Respawn Point\\Team"), 	&m_RP_TeamID, 	0,7);
-			PHelper().CreateToken8(items, PrepareKey(pref,"Respawn Point\\Type"), 	&m_RP_Type, 	rpoint_type);
+			PHelper().CreateU8	(items, PrepareKey(pref,"Respawn Point\\Team"), 		&m_RP_TeamID, 	0,7);
+			PHelper().CreateToken8(items, PrepareKey(pref,"Respawn Point\\Spawn Type"),	&m_RP_Type, 	rpoint_type);
+			PHelper().CreateToken8(items, PrepareKey(pref,"Respawn Point\\Game Type"), 	&m_RP_GameType, rpoint_game_type);
         }break;
         case ptEnvMod:{
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
@@ -707,7 +713,7 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
         	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
         	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
-        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\LMap Color"), 		&m_EM_LMapColor);
+        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\LMap Color"), 	&m_EM_LMapColor);
         }break;
         default: THROW;
         }

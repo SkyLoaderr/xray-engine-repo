@@ -76,7 +76,8 @@ public:
     	struct{
 		    u8		m_RP_TeamID;
 		    u8		m_RP_Type;
-            u16		reserved;
+		    u8		m_RP_GameType;
+            u8		reserved;
         };
         struct{
         	float	m_EM_Radius;
