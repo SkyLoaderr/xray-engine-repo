@@ -47,16 +47,18 @@ struct b_light_control						// controller or "layer", 30fps
 	// DWORD			data[];
 };
 
-struct b_light_static						// For static lighting
+struct b_light
 {
 	DWORD				controller_ID;		// 0 = base layer
 	Flight				data;
 };
 
-struct b_light_dynamic						// For dynamic models
+struct b_light_static	: public b_light	// For static lighting
 {
-	DWORD				controller_ID;		// 0 = base layer
-	Flight				data;
+};
+
+struct b_light_dynamic	: public b_light	// For dynamic models
+{
 	svector<WORD,16>	sectors;
 };
 
