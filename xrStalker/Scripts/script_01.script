@@ -59,7 +59,7 @@ function main()
 		sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
-	wait(2000)
+	wait(4000)
 	action(                                                                                                       
 	    stalker2,
 		sound	("scripts\\idle\\say_holodno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
