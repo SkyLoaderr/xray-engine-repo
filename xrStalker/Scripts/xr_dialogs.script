@@ -45,15 +45,17 @@ function dialog_mgr:reset( npc, team )
 
 		self.team = team
 
-		if not teams[team] then
-			teams[team] = { npcs = {}, npcs_num = 0, idle_end = 0 }
+		if team then
+			if not teams[team] then
+				teams[team] = { npcs = {}, npcs_num = 0, idle_end = 0 }
+			end
+
+			self.a = teams[team]
+--			self.a.npcs[npc:id()] = npc
+			table.insert( self.a.npcs, npc )
+
+--			printf( "[dialogs] adding %s to dlgteam %s", npc:name(), team )
 		end
-
-		self.a = teams[team]
---		self.a.npcs[npc:id()] = npc
-		table.insert( self.a.npcs, npc )
-
---		printf( "[dialogs] adding %s to dlgteam %s", npc:name(), team )
 	end
 end
 
@@ -199,6 +201,11 @@ end
 
 -- обновление
 function dialog_mgr:update()
+	-- если сталкер не состоит в команде для диалогов
+	if not self.team then
+		return
+	end
+
 	if self.a.cur_dlg then	-- активен ли диалог?
 		if self.object:id() == self.a.cur_npc:id() then	-- обновление текущего говорящего?
 			if self.a.phrase_delay_end < device():time_global() then -- окончилась ли необходимая задержка перед фразой?
