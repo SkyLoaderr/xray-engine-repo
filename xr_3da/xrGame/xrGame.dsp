@@ -19,6 +19,7 @@ CFG=xrGame - Win32 Debug
 !MESSAGE 
 !MESSAGE "xrGame - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE "xrGame - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "xrGame - Win32 Mixed" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -82,12 +83,42 @@ LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib x:\game\xr_3da.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "xrGame___Win32_Mixed"
+# PROP BASE Intermediate_Dir "xrGame___Win32_Mixed"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "xrGame___Win32_Mixed"
+# PROP Intermediate_Dir "xrGame___Win32_Mixed"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRGAME_EXPORTS" /Yu"stdafx.h" /FD /c
+# SUBTRACT BASE CPP /Fr
+# ADD CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRGAME_EXPORTS" /Yu"stdafx.h" /FD /c
+# SUBTRACT CPP /Fr
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD BASE RSC /l 0x419 /d "NDEBUG"
+# ADD RSC /l 0x419 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib x:\game\xr_3da.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib x:\game\xr_3da.lib /nologo /dll /machine:I386
+
 !ENDIF 
 
 # Begin Target
 
 # Name "xrGame - Win32 Release"
 # Name "xrGame - Win32 Debug"
+# Name "xrGame - Win32 Mixed"
 # Begin Group "Kernel"
 
 # PROP Default_Filter ""
@@ -253,12 +284,42 @@ SOURCE=.\WeaponGroza.h
 # Begin Source File
 
 SOURCE=.\WeaponRail.cpp
+
+!IF  "$(CFG)" == "xrGame - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\WeaponRail.h
+
+!IF  "$(CFG)" == "xrGame - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # End Group
 # Begin Group "Weapon Protecta"
