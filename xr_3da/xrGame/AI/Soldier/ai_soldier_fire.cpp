@@ -155,6 +155,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	if (Known.size()==0) {
+#ifdef LIGHT_FITTING
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// this code is dummy
 		// only for fitting light coefficients
@@ -162,6 +163,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 		if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
 			Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
 		return;
 	}
 	
@@ -179,6 +181,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			if (!Group.m_bEnemyNoticed)
+#ifdef LIGHT_FITTING
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				// this code is dummy
 				// only for fitting light coefficients
@@ -198,14 +201,14 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 				else
 					if (!bfCheckForVisibility(E))
 						continue;
+#else
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				// this code is correct
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				//if (!bfCheckForVisibility(E))
-				//	continue;
+				if (!bfCheckForVisibility(E))
+					continue;
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+#endif
 				// Calculate local visibility
 				CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
 				bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
@@ -218,6 +221,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 				}
 		}
 	}
+#ifdef LIGHT_FITTING
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// this code is dummy
 	// only for fitting light coefficients
@@ -225,4 +229,5 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
 		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#endif
 }
