@@ -175,8 +175,6 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 	// on state change
 	if (st_target!=st_current)
 	{
-		if (st_target == eFire) UpdateFP(bHUDView);
-
 		switch(st_target)
 		{
 		case eIdle:
@@ -185,6 +183,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			bFlame			= FALSE;
 			break;
 		case eFire:
+			UpdateFP		(bHUDView);
 			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 			pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 			break;

@@ -30,7 +30,6 @@ private:
 
 	Fvector			vFirePoint;
 
-	Fvector			vLastFP, vLastFD;
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 
@@ -41,8 +40,8 @@ private:
 	EGrozaState		st_current, st_target;
 
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
-	void			UpdateFP		(BOOL bHUD);
-	void			UpdateXForm		(BOOL bHUD);
+	virtual void	UpdateFP		(BOOL bHUD);
+	virtual void	UpdateXForm		(BOOL bHUD);
 
 protected:
 	void			FlameLOAD		();

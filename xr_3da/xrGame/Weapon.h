@@ -38,6 +38,8 @@ protected:
 	float			fTimeToFire;
 	int				iHitPower;
 
+	Fvector			vLastFP, vLastFD;
+	
 	float			fireDistance;
 	float			fireDispersion;
 	float			fireDispersion_Inc;
@@ -68,6 +70,9 @@ protected:
 	virtual void	FireShotmark	(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	UpdatePosition	(const Fmatrix& transform);
 
+	virtual void	UpdateFP		(BOOL bHUD)	= 0;
+	virtual void	UpdateXForm		(BOOL bHUD)	= 0;
+	
 	void			signal_HideComplete		();
 public:
 					CWeapon			(LPCSTR name);

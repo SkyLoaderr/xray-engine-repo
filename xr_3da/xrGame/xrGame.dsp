@@ -320,6 +320,7 @@ SOURCE=.\WeaponRail.h
 # Begin Source File
 
 SOURCE=.\WeaponProtecta.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
