@@ -646,3 +646,9 @@ void	CShaderManager::Evict()
 {
 	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
 }
+
+BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,string256& T, string256& M)
+{
+	if (0==TD)	return FALSE;
+
+}

@@ -95,7 +95,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Matrices
 	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
 	{
-		R_ASSERT	(0==m->second->dwReference);
+		if (m->second->dwMode!=CMatrix::modeDetail)	R_ASSERT(0==m->second->dwReference);
 		xr_free		(m->first);
 		delete		m->second;
 	}
@@ -128,6 +128,15 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		delete	b->second;
 	}
 	blenders.clear	();
+
+	// destroy TD
+	for (TDPairIt _t=td.begin(); _t!=td.end(); _t++)
+	{
+		xr_free(_t->first);
+		xr_free(_t->second->T);
+		xr_free(_t->second->M);
+	}
+	td.clear();
 }
 
 void	CShaderManager::OnDeviceCreate	(CStream* FS){
@@ -188,6 +197,48 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS){
 			chunk_id		+= 1;
 		}
 		fs->Close();
+	}
+
+	// Load detail textures assotiation
+	LPCSTR		Iname		= "data\\textures\\textures.ltx";
+	if (Engine.FS.Exist(Iname))	
+	{
+		CInifile	ini		(Iname);
+		CInifile::Sect& 	data = ini.ReadSection("assosiation");
+		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)
+		{
+			texture_detail	D;
+			string256		T,M;
+			float			s;
+
+			Item& item		= *I;
+			sscanf			(item.second,"%s,%f",T,&s);
+
+			// Search or create matrix
+			M[0]			= 0;
+			for (MatrixPairIt m=matrices.begin(); m!=matrices.end(); m++)
+			{
+				if (CMatrix::modeDetail == m->second->dwMode)
+				{
+					if (fsimilar(m->second->xform._11,s)) {
+						// ok
+						strcpy(M,m->first);
+						break;
+					}
+				}
+			}
+			if (0==M[0])	{
+				strconcat		(M,"$user$td$",T);
+				CMatrix* _M		= _CreateMatrix	(M);
+				M->dwMode		= CMatrix::modeDetail;
+				M->xform.scale	(s,s,s);
+			}
+
+			// 
+			D.T				= xr_strdup		(T);
+			D.M				= xr_strdup		(M);
+			TDMap.insert	(xr_strdup(item.first),D);
+		}
 	}
 }
 

@@ -18,6 +18,11 @@ private:
 		IC bool operator()(LPCSTR x, LPCSTR y) const
 		{	return strcmp(x,y)<0;	}
 	};
+	struct texture_detail
+	{
+		LPCSTR T;
+		LPCSTR M;
+	};
 public:
 	DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
@@ -26,6 +31,7 @@ public:
 	DEFINE_MAP_PRED(LPSTR,CRT*,RTMap,RTPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CVS*,VSMap,VSPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CPS*,PSMap,PSPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,texture_detail,TDMap,TDPairIt,str_pred);
 private:
 	// data
 	BlenderMap						blenders;
@@ -35,6 +41,7 @@ private:
 	RTMap							rtargets;
 	VSMap							vs;
 	PSMap							ps;
+	TDMap							td;
 	
 	// shader code array
 	struct sh_Code {

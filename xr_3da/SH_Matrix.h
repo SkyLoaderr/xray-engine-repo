@@ -10,7 +10,7 @@ class	ENGINE_API	CFS_Base;
 class	ENGINE_API	CMatrix
 {
 public:
-	enum { modeProgrammable=0, modeTCM, modeS_refl, modeC_refl	};
+	enum { modeProgrammable=0, modeTCM, modeS_refl, modeC_refl, modeDetail	};
 	enum 
 	{
 		tcmScale		= (1<<0),
@@ -44,7 +44,9 @@ public:
 
 		// Switch on mode
 		switch (dwMode) {
-		case modeProgrammable:			return;
+		case modeProgrammable:			
+		case modeDetail:
+			return;
 		case modeTCM: 
 			{
 				Fmatrix		T;
