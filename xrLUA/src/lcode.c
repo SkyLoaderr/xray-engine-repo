@@ -1,21 +1,16 @@
 /*
-** $Id: lcode.c,v 2.6 2004/08/24 20:09:11 roberto Exp $
+** $Id: lcode.c,v 1.117 2003/04/03 13:35:34 roberto Exp $
 ** Code generator for Lua
 ** See Copyright Notice in lua.h
 */
-
-
-#include <stdlib.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lcode_c
-#define LUA_CORE
-
-#include "lua.h"
 
 #include "lcode.h"
 #include "ldebug.h"
 #include "ldo.h"
-#include "lgc.h"
 #include "llex.h"
 #include "lmem.h"
 #include "lobject.h"
@@ -90,7 +85,7 @@ static int luaK_getjump (FuncState *fs, int pc) {
 
 static Instruction *getjumpcontrol (FuncState *fs, int pc) {
   Instruction *pi = &fs->f->code[pc];
-  if (pc >= 1 && testTMode(GET_OPCODE(*(pi-1))))
+  if (pc >= 1 && testOpMode(GET_OPCODE(*(pi-1)), OpModeT))
     return pi-1;
   else
     return pi;
@@ -195,7 +190,7 @@ void luaK_reserveregs (FuncState *fs, int n) {
 
 
 static void freereg (FuncState *fs, int reg) {
-  if (!ISK(reg) && reg >= fs->nactvar) {
+  if (reg >= fs->nactvar && reg < MAXSTACK) {
     fs->freereg--;
     lua_assert(reg == fs->freereg);
   }
@@ -208,70 +203,52 @@ static void freeexp (FuncState *fs, expdesc *e) {
 }
 
 
-static int addk (FuncState *fs, TValue *k, TValue *v) {
-  lua_State *L = fs->L;
-  TValue *idx = luaH_set(L, fs->h, k);
-  Proto *f = fs->f;
-  int oldsize = f->sizek;
+static int addk (FuncState *fs, TObject *k, TObject *v) {
+  const TObject *idx = luaH_get(fs->h, k);
   if (ttisnumber(idx)) {
     lua_assert(luaO_rawequalObj(&fs->f->k[cast(int, nvalue(idx))], v));
     return cast(int, nvalue(idx));
   }
   else {  /* constant not found; create a new entry */
-    setnvalue(idx, cast(lua_Number, fs->nk));
-    luaM_growvector(L, f->k, fs->nk, f->sizek, TValue,
+    Proto *f = fs->f;
+    luaM_growvector(fs->L, f->k, fs->nk, f->sizek, TObject,
                     MAXARG_Bx, "constant table overflow");
-    while (oldsize < f->sizek) setnilvalue(&f->k[oldsize++]);
-    setobj(L, &f->k[fs->nk], v);
-    luaC_barriert(L, f, v);
+    setobj2n(&f->k[fs->nk], v);
+    setnvalue(luaH_set(fs->L, fs->h, k), cast(lua_Number, fs->nk));
     return fs->nk++;
   }
 }
 
 
 int luaK_stringK (FuncState *fs, TString *s) {
-  TValue o;
-  setsvalue(fs->L, &o, s);
+  TObject o;
+  setsvalue(&o, s);
   return addk(fs, &o, &o);
 }
 
 
 int luaK_numberK (FuncState *fs, lua_Number r) {
-  TValue o;
+  TObject o;
   setnvalue(&o, r);
   return addk(fs, &o, &o);
 }
 
 
 static int nil_constant (FuncState *fs) {
-  TValue k, v;
+  TObject k, v;
   setnilvalue(&v);
-  /* cannot use nil as key; instead use table itself to represent nil */
-  sethvalue(fs->L, &k, fs->h);
+  sethvalue(&k, fs->h);  /* cannot use nil as key; instead use table itself */
   return addk(fs, &k, &v);
 }
 
 
-void luaK_setreturns (FuncState *fs, expdesc *e, int nresults) {
+void luaK_setcallreturns (FuncState *fs, expdesc *e, int nresults) {
   if (e->k == VCALL) {  /* expression is an open function call? */
     SETARG_C(getcode(fs, e), nresults+1);
-  }
-  else if (e->k == VVARARG) {
-    SETARG_B(getcode(fs, e), nresults+1);
-    SETARG_A(getcode(fs, e), fs->freereg);
-    luaK_reserveregs(fs, 1);
-  }
-}
-
-
-void luaK_setoneret (FuncState *fs, expdesc *e) {
-  if (e->k == VCALL) {  /* expression is an open function call? */
-    e->k = VNONRELOC;
-    e->info = GETARG_A(getcode(fs, e));
-  }
-  else if (e->k == VVARARG) {
-    SETARG_B(getcode(fs, e), 2);
-    e->k = VRELOCABLE;  /* can relocate its simple result */
+    if (nresults == 1) {  /* `regular' expression? */
+      e->k = VNONRELOC;
+      e->info = GETARG_A(getcode(fs, e));
+    }
   }
 }
 
@@ -299,9 +276,8 @@ void luaK_dischargevars (FuncState *fs, expdesc *e) {
       e->k = VRELOCABLE;
       break;
     }
-    case VVARARG:
     case VCALL: {
-      luaK_setoneret(fs, e);
+      luaK_setcallreturns(fs, e, 1);
       break;
     }
     default: break;  /* there is one value available (somewhere) */
@@ -418,16 +394,16 @@ int luaK_exp2RK (FuncState *fs, expdesc *e) {
   luaK_exp2val(fs, e);
   switch (e->k) {
     case VNIL: {
-      if (fs->nk <= MAXINDEXRK) {  /* constant fit in RK operand? */
+      if (fs->nk + MAXSTACK <= MAXARG_C) {  /* constant fit in argC? */
         e->info = nil_constant(fs);
         e->k = VK;
-        return RKASK(e->info);
+        return e->info + MAXSTACK;
       }
       else break;
     }
     case VK: {
-      if (e->info <= MAXINDEXRK)  /* constant fit in argC? */
-        return RKASK(e->info);
+      if (e->info + MAXSTACK <= MAXARG_C)  /* constant fit in argC? */
+        return e->info + MAXSTACK;
       else break;
     }
     default: break;
@@ -437,25 +413,25 @@ int luaK_exp2RK (FuncState *fs, expdesc *e) {
 }
 
 
-void luaK_storevar (FuncState *fs, expdesc *var, expdesc *ex) {
+void luaK_storevar (FuncState *fs, expdesc *var, expdesc *exp) {
   switch (var->k) {
     case VLOCAL: {
-      freeexp(fs, ex);
-      luaK_exp2reg(fs, ex, var->info);
+      freeexp(fs, exp);
+      luaK_exp2reg(fs, exp, var->info);
       return;
     }
     case VUPVAL: {
-      int e = luaK_exp2anyreg(fs, ex);
+      int e = luaK_exp2anyreg(fs, exp);
       luaK_codeABC(fs, OP_SETUPVAL, e, var->info, 0);
       break;
     }
     case VGLOBAL: {
-      int e = luaK_exp2anyreg(fs, ex);
+      int e = luaK_exp2anyreg(fs, exp);
       luaK_codeABx(fs, OP_SETGLOBAL, e, var->info);
       break;
     }
     case VINDEXED: {
-      int e = luaK_exp2RK(fs, ex);
+      int e = luaK_exp2RK(fs, exp);
       luaK_codeABC(fs, OP_SETTABLE, var->info, var->aux, e);
       break;
     }
@@ -464,7 +440,7 @@ void luaK_storevar (FuncState *fs, expdesc *var, expdesc *ex) {
       break;
     }
   }
-  freeexp(fs, ex);
+  freeexp(fs, exp);
 }
 
 
@@ -483,7 +459,8 @@ void luaK_self (FuncState *fs, expdesc *e, expdesc *key) {
 
 static void invertjump (FuncState *fs, expdesc *e) {
   Instruction *pc = getjumpcontrol(fs, e->info);
-  lua_assert(testTMode(GET_OPCODE(*pc)) && GET_OPCODE(*pc) != OP_TEST);
+  lua_assert(testOpMode(GET_OPCODE(*pc), OpModeT) &&
+             GET_OPCODE(*pc) != OP_TEST);
   SETARG_A(*pc, !(GETARG_A(*pc)));
 }
 
@@ -723,15 +700,12 @@ int luaK_code (FuncState *fs, Instruction i, int line) {
 
 int luaK_codeABC (FuncState *fs, OpCode o, int a, int b, int c) {
   lua_assert(getOpMode(o) == iABC);
-  lua_assert(getBMode(o) != OpArgN || b == 0);
-  lua_assert(getCMode(o) != OpArgN || c == 0);
   return luaK_code(fs, CREATE_ABC(o, a, b, c), fs->ls->lastline);
 }
 
 
 int luaK_codeABx (FuncState *fs, OpCode o, int a, unsigned int bc) {
   lua_assert(getOpMode(o) == iABx || getOpMode(o) == iAsBx);
-  lua_assert(getCMode(o) == OpArgN);
   return luaK_code(fs, CREATE_ABx(o, a, bc), fs->ls->lastline);
 }
 

@@ -1,5 +1,5 @@
 /*
-** $Id: ldo.h,v 2.2 2004/05/14 19:25:09 roberto Exp $
+** $Id: ldo.h,v 1.56 2002/12/04 17:29:32 roberto Exp $
 ** Stack and Call structure of Lua
 ** See Copyright Notice in lua.h
 */
@@ -24,7 +24,7 @@
 
 
 #define luaD_checkstack(L,n)	\
-  if ((char *)L->stack_last - (char *)L->top <= (n)*(int)sizeof(TValue)) \
+  if ((char *)L->stack_last - (char *)L->top <= (n)*(int)sizeof(TObject)) \
     luaD_growstack(L, n); \
   else condhardstacktests(luaD_reallocstack(L, L->stacksize));
 
@@ -32,25 +32,19 @@
 #define incr_top(L) {luaD_checkstack(L,1); L->top++;}
 
 #define savestack(L,p)		((char *)(p) - (char *)L->stack)
-#define restorestack(L,n)	((TValue *)((char *)L->stack + (n)))
+#define restorestack(L,n)	((TObject *)((char *)L->stack + (n)))
 
 #define saveci(L,p)		((char *)(p) - (char *)L->base_ci)
 #define restoreci(L,n)		((CallInfo *)((char *)L->base_ci + (n)))
-
-
-/* results from luaD_precall */
-#define PCRLUA		0	/* initiated a call to a Lua function */
-#define PCRC		1	/* did a call to a C function */
-#define PCRYIELD	2	/* C funtion yielded */
 
 
 /* type of protected functions, to be ran by `runprotected' */
 typedef void (*Pfunc) (lua_State *L, void *ud);
 
 void luaD_resetprotection (lua_State *L);
-int luaD_protectedparser (lua_State *L, ZIO *z, const char *name);
+int luaD_protectedparser (lua_State *L, ZIO *z, int bin);
 void luaD_callhook (lua_State *L, int event, int line);
-int luaD_precall (lua_State *L, StkId func, int nresults);
+StkId luaD_precall (lua_State *L, StkId func);
 void luaD_call (lua_State *L, StkId func, int nResults);
 int luaD_pcall (lua_State *L, Pfunc func, void *u,
                 ptrdiff_t oldtop, ptrdiff_t ef);

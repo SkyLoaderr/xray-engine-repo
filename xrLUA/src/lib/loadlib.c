@@ -1,5 +1,5 @@
 /*
-** $Id: loadlib.c,v 1.6 2004/04/30 20:13:38 roberto Exp $
+** $Id: loadlib.c,v 1.4 2003/04/07 20:11:53 roberto Exp $
 ** Dynamic library loader for Lua
 ** See Copyright Notice in lua.h
 *
@@ -25,13 +25,9 @@
 * on top of which loadlib could be implemented.
 *
 */
+#include "stdafx.h"
+#pragma hdrstop
 
-#define loadlib_c
-#define LUA_LIB
-
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
 
 
 #undef LOADLIB
@@ -139,12 +135,32 @@ static int loadlib(lua_State *L)
 ** Those systems support dlopen, so they should have defined USE_DLOPEN.
 ** The default (no)implementation gives them a special error message.
 */
-#if defined(linux) || defined(sun) || defined(sgi) || defined(BSD) || defined(_WIN32)
+#ifdef linux
+#define LOADLIB
+#endif
+
+#ifdef sun
+#define LOADLIB
+#endif
+
+#ifdef sgi
+#define LOADLIB
+#endif
+
+#ifdef BSD
+#define LOADLIB
+#endif
+
+#ifdef _WIN32
+#define LOADLIB
+#endif
+
+#ifdef LOADLIB
+#undef LOADLIB
 #define LOADLIB	"`loadlib' not installed (check your Lua configuration)"
 #else
 #define LOADLIB	"`loadlib' not supported"
 #endif
-
 
 static int loadlib(lua_State *L)
 {

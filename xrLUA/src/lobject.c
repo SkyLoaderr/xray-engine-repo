@@ -1,18 +1,12 @@
 /*
-** $Id: lobject.c,v 2.4 2004/07/09 16:01:38 roberto Exp $
+** $Id: lobject.c,v 1.97 2003/04/03 13:35:34 roberto Exp $
 ** Some generic functions over Lua objects
 ** See Copyright Notice in lua.h
 */
-
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lobject_c
-#define LUA_CORE
-
-#include "lua.h"
 
 #include "ldo.h"
 #include "lmem.h"
@@ -22,8 +16,13 @@
 #include "lvm.h"
 
 
+/* function to convert a string to a lua_Number */
+#ifndef lua_str2number
+#define lua_str2number(s,p)     strtod((s), (p))
+#endif
 
-const TValue luaO_nilobject = {LUA_TNIL, {NULL}};
+
+const TObject luaO_nilobject = {LUA_TNIL, {NULL}};
 
 
 /*
@@ -41,24 +40,33 @@ int luaO_int2fb (unsigned int x) {
 
 
 int luaO_log2 (unsigned int x) {
-  static const lu_byte log_2[256] = {
-    0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+  static const lu_byte log_8[255] = {
+    0,
+    1,1,
+    2,2,2,2,
+    3,3,3,3,3,3,3,3,
+    4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+    5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+    6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
     6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
     7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
     7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-    8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
+    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+    7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
   };
-  int l = -1;
-  while (x >= 256) { l += 8; x >>= 8; }
-  return l + log_2[x];
-
+  if (x >= 0x00010000) {
+    if (x >= 0x01000000) return log_8[((x>>24) & 0xff) - 1]+24;
+    else return log_8[((x>>16) & 0xff) - 1]+16;
+  }
+  else {
+    if (x >= 0x00000100) return log_8[((x>>8) & 0xff) - 1]+8;
+    else if (x) return log_8[(x & 0xff) - 1];
+    return -1;  /* special `log' for 0 */
+  }
 }
 
 
-int luaO_rawequalObj (const TValue *t1, const TValue *t2) {
+int luaO_rawequalObj (const TObject *t1, const TObject *t2) {
   if (ttype(t1) != ttype(t2)) return 0;
   else switch (ttype(t1)) {
     case LUA_TNIL:
@@ -75,6 +83,7 @@ int luaO_rawequalObj (const TValue *t1, const TValue *t2) {
   }
 }
 
+#pragma warning(disable:4244)
 
 int luaO_str2d (const char *s, lua_Number *result) {
   char *endptr;
@@ -86,28 +95,28 @@ int luaO_str2d (const char *s, lua_Number *result) {
   return 1;
 }
 
+#pragma warning(default:4244)
 
 
 static void pushstr (lua_State *L, const char *str) {
-  setsvalue2s(L, L->top, luaS_new(L, str));
+  setsvalue2s(L->top, luaS_new(L, str));
   incr_top(L);
 }
 
 
-/* this function handles only `%d', `%c', %f, %p, and `%s' formats */
+/* this function handles only `%d', `%c', %f, and `%s' formats */
 const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp) {
   int n = 1;
   pushstr(L, "");
   for (;;) {
     const char *e = strchr(fmt, '%');
     if (e == NULL) break;
-    setsvalue2s(L, L->top, luaS_newlstr(L, fmt, e-fmt));
+    setsvalue2s(L->top, luaS_newlstr(L, fmt, e-fmt));
     incr_top(L);
     switch (*(e+1)) {
-      case 's': {
+      case 's':
         pushstr(L, va_arg(argp, char *));
         break;
-      }
       case 'c': {
         char buff[2];
         buff[0] = cast(char, va_arg(argp, int));
@@ -115,40 +124,24 @@ const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp) {
         pushstr(L, buff);
         break;
       }
-      case 'd': {
+      case 'd':
         setnvalue(L->top, cast(lua_Number, va_arg(argp, int)));
         incr_top(L);
         break;
-      }
-      case 'f': {
+      case 'f':
         setnvalue(L->top, cast(lua_Number, va_arg(argp, l_uacNumber)));
         incr_top(L);
         break;
-      }
-      case 'p': {
-        char buff[4*sizeof(void *) + 8]; /* should be enough space for a `%p' */
-        sprintf(buff, "%p", va_arg(argp, void *));
-        pushstr(L, buff);
-        break;
-      }
-      case '%': {
+      case '%':
         pushstr(L, "%");
         break;
-      }
-      default: {
-        char buff[3];
-        buff[0] = '%';
-        buff[1] = *(e+1);
-        buff[2] = '\0';
-        pushstr(L, buff);
-        break;
-      }
+      default: lua_assert(0);
     }
     n += 2;
     fmt = e+2;
   }
   pushstr(L, fmt);
-  luaV_concat(L, n+1, L->top - L->base - 1);
+  luaV_concat(L, n+1, int(L->top - L->base - 1));
   L->top -= n;
   return svalue(L->top - 1);
 }
@@ -174,7 +167,7 @@ void luaO_chunkid (char *out, const char *source, int bufflen) {
       int l;
       source++;  /* skip the `@' */
       bufflen -= sizeof(" `...' ");
-      l = strlen(source);
+      l = xr_strlen(source);
       strcpy(out, "");
       if (l>bufflen) {
         source += (l-bufflen);  /* get last part of file name */
@@ -183,7 +176,7 @@ void luaO_chunkid (char *out, const char *source, int bufflen) {
       strcat(out, source);
     }
     else {  /* out = [string "string"] */
-      int len = strcspn(source, "\n\r");  /* stop at first newline */
+      int len = (int)strcspn(source, "\n");  /* stop at first newline */
       bufflen -= sizeof(" [string \"...\"] ");
       if (len > bufflen) len = bufflen;
       strcpy(out, "[string \"");

@@ -1,19 +1,12 @@
 /*
-** $Id: ltablib.c,v 1.26 2004/06/15 13:37:21 roberto Exp $
+** $Id: ltablib.c,v 1.21 2003/04/03 13:35:34 roberto Exp $
 ** Library for Table Manipulation
 ** See Copyright Notice in lua.h
 */
-
-
-#include <stddef.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ltablib_c
-#define LUA_LIB
-
-#include "lua.h"
-
-#include "lauxlib.h"
-#include "lualib.h"
 
 
 #define aux_getn(L,n)	(luaL_checktype(L, n, LUA_TTABLE), luaL_getn(L, n))
@@ -23,9 +16,9 @@ static int luaB_foreachi (lua_State *L) {
   int i;
   int n = aux_getn(L, 1);
   luaL_checktype(L, 2, LUA_TFUNCTION);
-  for (i=LUA_FIRSTINDEX; i < n+LUA_FIRSTINDEX; i++) {
+  for (i=1; i<=n; i++) {
     lua_pushvalue(L, 2);  /* function */
-    lua_pushinteger(L, i);  /* 1st argument */
+    lua_pushnumber(L, (lua_Number)i);  /* 1st argument */
     lua_rawgeti(L, 1, i);  /* 2nd argument */
     lua_call(L, 2, 1);
     if (!lua_isnil(L, -1))
@@ -55,7 +48,7 @@ static int luaB_foreach (lua_State *L) {
 
 
 static int luaB_getn (lua_State *L) {
-  lua_pushinteger(L, aux_getn(L, 1));
+  lua_pushnumber(L, (lua_Number)aux_getn(L, 1));
   return 1;
 }
 
@@ -63,26 +56,25 @@ static int luaB_getn (lua_State *L) {
 static int luaB_setn (lua_State *L) {
   luaL_checktype(L, 1, LUA_TTABLE);
   luaL_setn(L, 1, luaL_checkint(L, 2));
-  lua_pushvalue(L, 1);
-  return 1;
+  return 0;
 }
 
 
 static int luaB_tinsert (lua_State *L) {
   int v = lua_gettop(L);  /* number of arguments */
-  int e = aux_getn(L, 1) + LUA_FIRSTINDEX;  /* first empty element */
+  int n = aux_getn(L, 1) + 1;
   int pos;  /* where to insert new element */
   if (v == 2)  /* called with only 2 arguments */
-    pos = e;  /* insert new element at the end */
+    pos = n;  /* insert new element at the end */
   else {
     pos = luaL_checkint(L, 2);  /* 2nd argument is the position */
-    if (pos > e) e = pos;  /* `grow' array if necessary */
+    if (pos > n) n = pos;  /* `grow' array if necessary */
     v = 3;  /* function may be called with more than 3 args */
   }
-  luaL_setn(L, 1, e - LUA_FIRSTINDEX + 1);  /* new size */
-  while (--e >= pos) {  /* move up elements */
-    lua_rawgeti(L, 1, e);
-    lua_rawseti(L, 1, e+1);  /* t[e+1] = t[e] */
+  luaL_setn(L, 1, n);  /* new size */
+  while (--n >= pos) {  /* move up elements */
+    lua_rawgeti(L, 1, n);
+    lua_rawseti(L, 1, n+1);  /* t[n+1] = t[n] */
   }
   lua_pushvalue(L, v);
   lua_rawseti(L, 1, pos);  /* t[pos] = v */
@@ -91,17 +83,17 @@ static int luaB_tinsert (lua_State *L) {
 
 
 static int luaB_tremove (lua_State *L) {
-  int e = aux_getn(L, 1) + LUA_FIRSTINDEX - 1;
-  int pos = luaL_optint(L, 2, e);
-  if (e < LUA_FIRSTINDEX) return 0;  /* table is `empty' */
-  luaL_setn(L, 1, e - LUA_FIRSTINDEX);  /* t.n = n-1 */
+  int n = aux_getn(L, 1);
+  int pos = luaL_optint(L, 2, n);
+  if (n <= 0) return 0;  /* table is `empty' */
+  luaL_setn(L, 1, n-1);  /* t.n = n-1 */
   lua_rawgeti(L, 1, pos);  /* result = t[pos] */
-  for ( ;pos<e; pos++) {
+  for ( ;pos<n; pos++) {
     lua_rawgeti(L, 1, pos+1);
     lua_rawseti(L, 1, pos);  /* t[pos] = t[pos+1] */
   }
   lua_pushnil(L);
-  lua_rawseti(L, 1, e);  /* t[e] = nil */
+  lua_rawseti(L, 1, n);  /* t[n] = nil */
   return 1;
 }
 
@@ -110,17 +102,16 @@ static int str_concat (lua_State *L) {
   luaL_Buffer b;
   size_t lsep;
   const char *sep = luaL_optlstring(L, 2, "", &lsep);
-  int i = luaL_optint(L, 3, LUA_FIRSTINDEX);
-  int last = luaL_optint(L, 4, -2);
+  int i = luaL_optint(L, 3, 1);
+  int n = luaL_optint(L, 4, 0);
   luaL_checktype(L, 1, LUA_TTABLE);
-  if (last == -2)
-    last = luaL_getn(L, 1) + LUA_FIRSTINDEX - 1;
+  if (n == 0) n = luaL_getn(L, 1);
   luaL_buffinit(L, &b);
-  for (; i <= last; i++) {
+  for (; i <= n; i++) {
     lua_rawgeti(L, 1, i);
     luaL_argcheck(L, lua_isstring(L, -1), 1, "table contains non-strings");
     luaL_addvalue(&b);
-    if (i != last)
+    if (i != n)
       luaL_addlstring(&b, sep, lsep);
   }
   luaL_pushresult(&b);
@@ -226,7 +217,7 @@ static int luaB_sort (lua_State *L) {
   if (!lua_isnoneornil(L, 2))  /* is there a 2nd argument? */
     luaL_checktype(L, 2, LUA_TFUNCTION);
   lua_settop(L, 2);  /* make sure there is two arguments */
-  auxsort(L, LUA_FIRSTINDEX, n + LUA_FIRSTINDEX - 1);
+  auxsort(L, 1, n);
   return 0;
 }
 

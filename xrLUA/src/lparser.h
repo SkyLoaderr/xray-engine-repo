@@ -1,5 +1,5 @@
 /*
-** $Id: lparser.h,v 1.51 2004/05/31 18:51:50 roberto Exp $
+** $Id: lparser.h,v 1.47 2003/02/11 10:46:24 roberto Exp $
 ** Lua Parser
 ** See Copyright Notice in lua.h
 */
@@ -30,8 +30,7 @@ typedef enum {
   VJMP,		/* info = instruction pc */
   VRELOCABLE,	/* info = instruction pc */
   VNONRELOC,	/* info = result register */
-  VCALL,	/* info = instruction pc */
-  VVARARG	/* info = instruction pc */
+  VCALL		/* info = result register */
 } expkind;
 
 typedef struct expdesc {
@@ -40,12 +39,6 @@ typedef struct expdesc {
   int t;  /* patch list of `exit when true' */
   int f;  /* patch list of `exit when false' */
 } expdesc;
-
-
-typedef struct upvaldesc {
-  lu_byte k;
-  lu_byte info;
-} upvaldesc;
 
 
 struct BlockCnt;  /* defined in lparser.c */
@@ -62,17 +55,17 @@ typedef struct FuncState {
   int pc;  /* next position to code (equivalent to `ncode') */
   int lasttarget;   /* `pc' of last `jump target' */
   int jpc;  /* list of pending jumps to `pc' */
-  int freereg;  /* first free register */
+  int freereg;  /* first _free register */
   int nk;  /* number of elements in `k' */
   int np;  /* number of elements in `p' */
   int nlocvars;  /* number of elements in `locvars' */
-  lu_byte nactvar;  /* number of active local variables */
-  upvaldesc upvalues[MAXUPVALUES];  /* upvalues */
-  unsigned short actvar[MAXVARS];  /* declared-variable stack */
+  int nactvar;  /* number of active local variables */
+  expdesc upvalues[MAXUPVALUES];  /* upvalues */
+  int actvar[MAXVARS];  /* declared-variable stack */
 } FuncState;
 
 
-Proto *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff, const char *name);
+Proto *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff);
 
 
 #endif
