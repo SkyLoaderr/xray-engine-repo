@@ -164,7 +164,7 @@ void CDetailManager::hw_Render()
 	hw_Render_dump			(hwc_array,		1, 0, c_hdr );
 
 	// Wave1
-	wave.set				(1.f/3.f,	1.f/7.f,	1.f/5.f,		Device.fTimeGlobal*ps_r__Detail_w_speed);
+	wave.set				(1.f/3.f,		1.f/7.f,	1.f/5.f,	Device.fTimeGlobal*ps_r__Detail_w_speed);
 	RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
 	RCache.set_c			(hwc_wind,		dir2);																					// wind-dir
 	hw_Render_dump			(hwc_array,		2, 0, c_hdr );
