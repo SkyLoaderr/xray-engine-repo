@@ -490,7 +490,7 @@ void CCustomMonster::OnRender()
 	if (psAI_Flags&aiMotion) {
 		Movement.dbg_Draw();
 	}
-//	if (bDebug) PKinematics(pVisual)->DebugRender(mTransform);
+	if (bDebug) PKinematics(pVisual)->DebugRender(clTransform);
 }
 
 void CCustomMonster::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
