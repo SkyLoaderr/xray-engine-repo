@@ -49,7 +49,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				precision = 1.f;
 #endif
 
-	if (!enabled() || path_completed() || (CDetailPathManager::path().size() - 1 <= CDetailPathManager::curr_travel_point_index()))	{
+	if (!enabled() || CDetailPathManager::path().empty() || path_completed() || (CDetailPathManager::path().size() - 1 <= CDetailPathManager::curr_travel_point_index()))	{
 		m_speed			= 0.f;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(movement_control->IsCharacterEnabled()) {
