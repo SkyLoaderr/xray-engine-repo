@@ -191,13 +191,13 @@ void CAI_Space::Render()
 							CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);
 							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
 								CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
-								if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
-									Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
+								if (tpALifeHuman && tpALifeHuman->m_tpPath.size()) {
+									Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpPath[0]].tGlobalPoint;
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-									for (int i=1; i<(int)tpALifeHuman->m_tpaVertices.size(); i++) {
-										Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpaVertices[i]].tGlobalPoint;
+									for (int i=1; i<(int)tpALifeHuman->m_tpPath.size(); i++) {
+										Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpPath[i]].tGlobalPoint;
 										t2.y += .6f;
 										NORMALIZE_VECTOR(t2);
 										RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));

@@ -768,7 +768,7 @@ void CSE_ALifeMonsterChimera::FillProp	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
-	m_tpaVertices.clear			();
+	m_tpPath.clear				();
 	m_baVisitedVertices.clear	();
 	m_dwCurTaskID				= _TASK_ID(-1);
 	m_tTaskState				= eTaskStateChooseTask;
@@ -787,7 +787,7 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	save_data					(m_tpaVertices,tNetPacket);
+	save_data					(m_tpPath,tNetPacket);
 	save_data					(m_baVisitedVertices,tNetPacket);
 	tNetPacket.w_string			(m_caKnownCustomers);
 	save_data					(m_tpKnownCustomers,tNetPacket);
@@ -798,7 +798,7 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
 	if (m_wVersion > 19) {
-		load_data				(m_tpaVertices,tNetPacket);
+		load_data				(m_tpPath,tNetPacket);
 		load_data				(m_baVisitedVertices,tNetPacket);
 		if (m_wVersion > 35) {
 			tNetPacket.r_string	(m_caKnownCustomers);

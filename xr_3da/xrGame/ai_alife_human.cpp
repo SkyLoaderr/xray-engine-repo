@@ -65,8 +65,8 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint(CSE_ALifeSimulator *tpALife)
 			}
 		}
 		else {
-			if (++m_dwCurNode < m_tpaVertices.size()) {
-				m_tNextGraphID		= _GRAPH_ID(m_tpaVertices[m_dwCurNode]);
+			if (++m_dwCurNode < m_tpPath.size()) {
+				m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
 				m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(m_tGraphID,m_tNextGraphID);
 				bOk = true;
 			}
@@ -142,10 +142,9 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask(CSE_ALifeSimulator *tpALife)
 		
 		TASK_SET_IT				i = (*J).second.begin();
 		TASK_SET_IT				e = (*J).second.end();
-		for ( ; i != e; i++) {
+		for ( ; i != e; i++)
 			if (!tpALife->tpfGetTaskByID(*i)->m_dwTryCount)
 				break;
-		}
 		
 		if (i != e) {
 			vfSetCurrentTask	(tpALife,*i);

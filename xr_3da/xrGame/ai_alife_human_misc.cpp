@@ -13,7 +13,7 @@
 
 bool CSE_ALifeHumanAbstract::HealthIsGood			()
 {
-	return(fHealth > 50);
+	return(true);
 }
 
 bool CSE_ALifeHumanAbstract::CanTreat				()

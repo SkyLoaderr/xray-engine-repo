@@ -158,13 +158,14 @@ SERVER_ENTITY_DECLARE_END
 
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
-	DWORD_VECTOR					m_tpaVertices;
+	DWORD_VECTOR					m_tpPath;
+	u32								m_dwCurNode;
+	_GRAPH_ID						m_tDestGraphPointIndex;								
 	xr_vector<bool>					m_baVisitedVertices;
 	ETaskState						m_tTaskState;
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTaskID;
 	float							m_fSearchSpeed;
-	u32								m_dwCurNode;
 	string128						m_caKnownCustomers;
 	OBJECT_VECTOR					m_tpKnownCustomers;
 
