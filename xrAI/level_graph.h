@@ -238,5 +238,7 @@ public:
 #endif
 };
 
+extern void test_smooth_path(LPCSTR name);
+
 #include "level_graph_inline.h"
 #include "level_graph_vertex_inline.h"

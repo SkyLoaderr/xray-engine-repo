@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "profile.h"
+
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 {
 	return				(*m_header);
@@ -15,7 +17,10 @@ IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 
 IC bool CLevelGraph::valid_vertex_id	(u32 id) const
 {
-	return				(id < header().vertex_count());
+	TIMER_START			(ValidVertexID)
+	bool				b = id < header().vertex_count();
+	TIMER_STOP			(ValidVertexID)
+	return				(b);
 }
 
 IC	CLevelGraph::CVertex	*CLevelGraph::vertex(const u32 vertex_id) const
@@ -93,8 +98,8 @@ IC const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CL
 IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const
 {
 	float				sp = 1/header().cell_size();
-	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_L + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp   + EPS_L + .5f);
-	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_L);
+	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp   + EPS_S + .5f);
+	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_S);
 	clamp				(pxz,0,(1 << 21) - 1);
 	dest_position.xz	(u32(pxz));
 	clamp				(py,0,65535);
@@ -104,7 +109,10 @@ IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPos
 
 IC  const Fvector CLevelGraph::vertex_position(u32 vertex_id) const
 {
-	return				(vertex_position(vertex(vertex_id)));
+	TIMER_START			(VertexPosition)
+	Fvector				t = vertex_position(vertex(vertex_id));
+	TIMER_STOP			(VertexPosition)
+	return				(t);
 }
 
 IC  const Fvector CLevelGraph::vertex_position(const CLevelGraph::CVertex &vertex) const
@@ -152,7 +160,10 @@ IC bool	CLevelGraph::inside				(const u32 vertex_id, const CLevelGraph::CPositio
 
 IC bool CLevelGraph::inside				(const u32 vertex_id, const Fvector &position) const
 {
-	return				(inside(vertex(vertex_id),position));
+	TIMER_START			(Inside)
+	bool				b = inside(vertex(vertex_id),position);
+	TIMER_STOP			(Inside)
+	return				(b);
 }
 
 IC bool	CLevelGraph::inside				(const CLevelGraph::CVertex &vertex, const CLevelGraph::CPosition &_vertex_position, const float epsilon) const
@@ -187,6 +198,7 @@ IC bool CLevelGraph::inside				(const u32 vertex_id, const Fvector &position, co
 
 IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex, const float X, const float Z) const
 {
+	TIMER_START			(VertexPlaneY)
 	Fvector				DUP, normal, v, v1, P;
 	Fplane				PL; 
 
@@ -196,6 +208,7 @@ IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex, const 
 	PL.build			(P,normal);
 	v.set				(X,P.y,Z);	
 	PL.intersectRayPoint(v,DUP,v1);	
+	TIMER_STOP			(VertexPlaneY)
 	return				(v1.y);
 }
 

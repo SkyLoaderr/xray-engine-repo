@@ -9,8 +9,11 @@
 #include "stdafx.h"
 #include "level_graph.h"
 #include "game_level_cross_table.h"
+
 #ifndef AI_COMPILER
-#include "ai_space.h"
+	#define TIMER_START(a)
+	#define TIMER_STOP(a)
+	#include "ai_space.h"
 #endif
 
 #pragma todo("Jim to Dima: CAbstractVertexEvaluator uses large amount of memory. Currently 372 bytes!!!")
@@ -130,52 +133,11 @@ void CLevelGraph::choose_point(const Fvector &start_point, const Fvector &finish
 	}
 }
 
-bool CLevelGraph::check_vertex_in_direction_old(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const
-{
-	TIMER_START			(CheckVertexInDirection)
-	SContour				_contour;
-	const_iterator			I,E;
-	int						saved_index, iPrevIndex = -1, iNextNode;
-	Fvector					start_point = start_position, temp_point = start_position, finish_point = vertex_position(finish_vertex_id);;
-	float					fCurDistance = 0.f, fDistance = start_position.distance_to_xz(vertex_position(finish_vertex_id));
-	u32						dwCurNode = start_vertex_id;
-
-	while ((dwCurNode != finish_vertex_id) && (fCurDistance < (fDistance + EPS_L))) {
-		if (inside(vertex(dwCurNode),finish_point))
-			break;
-		begin				(dwCurNode,I,E);
-		saved_index			= -1;
-		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I) {
-			iNextNode = value(dwCurNode,I);
-			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
-				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
-		}
-
-		if (saved_index > -1) {
-			fCurDistance	= start_point.distance_to_xz(temp_point);
-			iPrevIndex		= dwCurNode;
-			dwCurNode		= saved_index;
-		}
-		else {
-			TIMER_STOP			(CheckVertexInDirection)
-			return(false);
-		}
-	}
-	TIMER_STOP			(CheckVertexInDirection)
-	return(dwCurNode == finish_vertex_id);
-}
-
 bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const
 {
 	TIMER_START(CheckVertexInDirection)
 	if (start_vertex_id == finish_vertex_id) {
 		TIMER_STOP(CheckVertexInDirection)
-		bool				b = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-		if (!b) {
-			bool			b1 = check_vertex_in_direction(start_vertex_id,start_position,finish_vertex_id);
-			bool			b2 = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-		}
 		return				(true);
 	}
 
@@ -215,11 +177,6 @@ bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &
 					if (box.contains(dest)) {
 						VERIFY	(next_vertex_id == finish_vertex_id);
 						TIMER_STOP(CheckVertexInDirection)
-						bool				b = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-						if (!b) {
-							bool			b1 = check_vertex_in_direction(start_vertex_id,start_position,finish_vertex_id);
-							bool			b2 = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-						}
 						return(true);
 					}
 				}
@@ -242,11 +199,6 @@ bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &
 				if (box.contains(dest)) {
 					VERIFY	(next_vertex_id == finish_vertex_id);
 					TIMER_STOP(CheckVertexInDirection)
-					bool				b = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-					if (!b) {
-						bool			b1 = check_vertex_in_direction(start_vertex_id,start_position,finish_vertex_id);
-						bool			b2 = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-					}
 					return		(true);
 				}
 				found			= true;
@@ -257,11 +209,6 @@ bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &
 		}
 		if (!found) {
 			TIMER_STOP(CheckVertexInDirection)
-			bool				b = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-			if (b) {
-				bool			b1 = check_vertex_in_direction(start_vertex_id,start_position,finish_vertex_id);
-				bool			b2 = check_vertex_in_direction_old(start_vertex_id,start_position,finish_vertex_id);
-			}
 			return			(false);
 		}
 	}
@@ -510,34 +457,8 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 			dwCurNode			= saved_index;
 		}
 		else {
-//			int					node_id;
-//			begin				(dwCurNode,I,E);
-//			bool				bOk = false;
-//			for ( ; I != E; ++I) {
-//				node_id			= value(dwCurNode,I);
-//				if (!valid_vertex_id(node_id))
-//					continue;
-//				CLevelGraph::CVertex *tpLastNode = vertex(node_id);
-//				if (inside(tpLastNode,finish_point)) {
-//					SContour			tNextContour;
-//					SSegment			tNextSegment;
-//					contour				(tNextContour,node_id);
-//					intersect			(tNextSegment,tNextContour,_contour);
-//					Fvector				tAdditionalPoint = finish_point.distance_to_xz(tNextSegment.v1) < finish_point.distance_to_xz(tNextSegment.v2) ? tNextSegment.v1 : tNextSegment.v2;
-//					tAdditionalPoint.y	= vertex_plane_y(vertex(dwCurNode),tAdditionalPoint.x,tAdditionalPoint.z);
-//
-//					tpaOutputPoints.push_back(tAdditionalPoint);
-//					tpaOutputNodes.push_back(node_id);
-//
-//					fCurDistance		= fDistance;
-//					dwCurNode			= node_id;
-//					bOk					= true;
-//					break;
-//				}
-//			}
-//			if (!bOk)
 			TIMER_STOP			(CreateStraightPath)
-				return(false);
+			return(false);
 		}
 	}
 

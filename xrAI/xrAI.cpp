@@ -10,7 +10,7 @@
 #include "xr_graph_merge.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
-#include "path_test.h"
+//#include "path_test.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 
@@ -105,7 +105,8 @@ void Startup(LPSTR     lpCmdLine)
 				}
 				else
 					if (strstr(cmd,"-t")) {
-						path_test			(prjName);
+						//path_test			(prjName);
+						test_smooth_path	(prjName);
 					}
 		}
 	// Show statistic
