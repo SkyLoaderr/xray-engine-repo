@@ -472,6 +472,7 @@ function loadStates(gname, type)
 				if enemy ~= nil then
 --					level.check_object(enemy)
 --					printf("%s",enemy:name())
+					printf	("stalker %s asked for the enemy",v:name())
 					enemy_type = get_clsid(enemy)
 					if enemy_type == clsid.actor or
 	  	   			   enemy_type == clsid.soldier or
