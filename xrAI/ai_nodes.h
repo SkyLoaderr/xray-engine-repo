@@ -146,13 +146,13 @@ class CGraphThread : public CThread
 	const CAI_Map		*m_tpAI_Map;
 
 public:
-	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CAI_Map &tAI_Map) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, const CAI_Map *tAI_Map) : CThread(ID)
 	{
 		m_dwStart				= dwStart;
 		m_dwEnd					= dwEnd;
 		m_fMaxDistance			= fMaxDistance;
 		m_tpCriticalSection		= tpCriticalSection;
-		m_tpAI_Map				= &tAI_Map;
+		m_tpAI_Map				= tAI_Map;
 		
 		m_dwAStarStaticCounter	= 0;
 		u32 S1					= (m_tpAI_Map->m_header.count + 2)*sizeof(SNode);
