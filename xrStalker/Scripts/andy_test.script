@@ -11,7 +11,7 @@ end
 function main ()
 	local info = "tutorial_artefact_start" 
 	if db.actor:has_info(info) then
-		db.actor:give_info_portion(info)
+		db.actor:disable_info_portion(info)
 	else
 		db.actor:give_info_portion(info) 
 	end
