@@ -39,3 +39,14 @@ void IGame_Persistent::OnFrame		()
 {
 	Environment.OnFrame				();
 }
+
+void IGame_Persistent::OnDeviceCreate()
+{
+	Environment.OnDeviceCreate		();
+}
+
+void IGame_Persistent::OnDeviceDestroy()
+{
+	Environment.OnDeviceDestroy		();
+}
+

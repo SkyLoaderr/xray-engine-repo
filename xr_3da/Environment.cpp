@@ -95,11 +95,11 @@ static	u16			hbox_faces[18*3]	=
 // environment
 CEnvironment::CEnvironment	()
 {
-	sh_2sky.create			(&b_skybox,"skybox_2t");
-	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
+	OnDeviceCreate			();
 }
 CEnvironment::~CEnvironment	()
 {
+	OnDeviceDestroy			();
 }
 
 void CEnvDescriptor::load	(LPCSTR S)
@@ -218,3 +218,16 @@ void CEnvironment::RenderLast		()
 
 	eff_Rain.Render					();
 }
+
+void CEnvironment::OnDeviceCreate()
+{
+	sh_2sky.create			(&b_skybox,"skybox_2t");
+	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
+}
+
+void CEnvironment::OnDeviceDestroy()
+{
+	sh_2sky.destroy			();
+	sh_2geom.destroy		();
+}
+

@@ -55,6 +55,9 @@ public:
 
 	void			RenderFirst			();
 	void			RenderLast			();
+
+    void			OnDeviceCreate		();
+    void			OnDeviceDestroy		();
 };
 
 ENGINE_API extern Flags32	psEnvFlags;

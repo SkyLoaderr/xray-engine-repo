@@ -28,6 +28,9 @@ public:
 
 	IGame_Persistent				();
 	virtual ~IGame_Persistent		();
+
+    void							OnDeviceCreate	();
+    void							OnDeviceDestroy	();
 };
 
 extern ENGINE_API	IGame_Persistent*	g_pGamePersistent;
