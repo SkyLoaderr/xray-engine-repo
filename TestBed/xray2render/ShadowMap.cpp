@@ -750,6 +750,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
 	// Set up the stencil states
+	/*
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_GREATER		);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x00				);
@@ -758,6 +759,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
+	*/
 
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Light_Direct.ps);
