@@ -88,7 +88,35 @@ void CDetailManager::soft_Render	()
 					CDetail::fvfVertexOut	*dstIt = vDest;
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
+						float tm			= Device.fTimeGlobal*0.1f; 
+						Fvector origin;		origin.set				(20,0,20);
+
+						//
+						Fvector pos;		mXform.transform_tiny	(pos,srcIt->P);
+						Fvector pos2D;		pos2D.set				(pos.x,0,pos.y);
+						Fvector dir;		dir.sub					(pos2D,origin);
+						float	H			= pos.y-mXform.c.y;
+						float	frac		= srcIt->P.y/(Object.bv_bb.max.y-Object.bv_bb.min.y);
+						float inten			= sinf					(tm+.1f*dir.magnitude())*H;
+						dir.normalize		();
+
+						//
+						Fvector ctrl1;		ctrl1.set	(0,				0,		0			);
+						Fvector ctrl2;		ctrl2.set	(0,				H/2,	0			);
+						Fvector ctrl3;		ctrl3.set	(dir.x*inten,	H,		dir.z*inten	);
+
+						//
+						Fvector temp;		temp.lerp	(ctrl1, ctrl2, frac);
+						Fvector temp2;		temp2.lerp	(ctrl2, ctrl3, frac);
+						Fvector result;		result.lerp	(temp,	temp2, frac);
+						pos2D.add			(pos2D,result);
+						pos2D.y				+=	mXform.c.y;
+						dstIt->P			=	pos2D;
+
+						// 
+						/*
 						mXform.transform_tiny	(dstIt->P,srcIt->P);
+						*/
 						dstIt->C	= C;
 						dstIt->u	= srcIt->u;
 						dstIt->v	= srcIt->v;
