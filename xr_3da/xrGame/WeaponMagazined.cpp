@@ -142,6 +142,11 @@ void CWeaponMagazined::FireEnd			()
 	}
 }
 
+void CWeaponMagazined::Reload			()
+{
+	st_target	= eReload;
+}
+
 void CWeaponMagazined::OnMagazineEmpty	()
 {
 	st_target			=	eMagEmpty;
