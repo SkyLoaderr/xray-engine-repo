@@ -7,7 +7,6 @@ function main()
 	local prof_privet_hosh_potorgovat2 = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat2")
 
 	wait(1000)			
-	stalker_zomby:script	(true,this.script_name())
 
 	action(
 		stalker_zomby,
