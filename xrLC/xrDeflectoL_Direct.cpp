@@ -6,7 +6,7 @@
 extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
-void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
+void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
 {
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
@@ -39,7 +39,7 @@ void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, UVpoint& p1, UVpoint& p2, 
 		// ok - perform lighting
 		Fcolor	C; C.set(0,0,0,0);
 		Fvector	P; P.direct(v1,vdir,time);
-		LightPoint	(DB, C, P, N, LightsSelected.begin(), LightsSelected.end());
+		LightPoint	(DB, C, P, N, LightsSelected->begin(), LightsSelected->end());
 		
 		Fcolor	R;
 		R.lerp	(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
