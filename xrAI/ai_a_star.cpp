@@ -17,7 +17,6 @@
 #define OPEN_MASK				1
 #define mNodeStructure(x)		(*(Node(x)))
 #define mNode(x)				(Node(x))
-#define MAX_VALUE				1000000.0
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
@@ -72,7 +71,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance)
+void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance, Fvector tStartPosition, Fvector tFinishPosition, vector<u32> &tpaNodes)
 {
 	// initialization
 	dwAStarStaticCounter++;
@@ -118,6 +117,26 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 		// check if that node is our goal
 		if (tpBestNode->iIndex == (int)dwGoalNode) {
 			fDistance = tpBestNode->g;
+			/**/
+			tpTemp1 = tpBestNode;
+			tpTemp = tpTemp1->tpBack;
+
+			for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
+
+			tpaNodes.resize(i);
+
+			tpTemp1 = tpBestNode;
+			tpaNodes[--i] = tpBestNode->iIndex;
+			tpTemp = tpTemp1->tpBack;
+			for (u32 j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
+				tpaNodes[i - j] = tpTemp->iIndex;
+
+			float fCumulativeDistance = 0;
+			u32 dwStartNode = tpaNodes[0];
+			for (i=1; i<(int)tpaNodes.size(); i++) {
+				float fDirectDistance = ffCheckPositionInDirection(dwStartNode,tStartPosition,tfGetNodeCenter(tpaNodes[i]),fMaxDistance)
+			}
+			/**/
 			return;
 		}
 		
