@@ -115,7 +115,7 @@ void CWeaponHUD::OnDeviceCreate	()
 }
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {
-	return PKinematics(Visual())->ID_Cycle(name);
+	return PKinematics(Visual())->ID_Cycle_Safe(name);
 }
 
 static void __stdcall animCallback	(CBlend* B)

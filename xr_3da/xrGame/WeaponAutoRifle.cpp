@@ -60,9 +60,13 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	mhud_reload			= m_pHUD->animGet("reload");
 	mhud_show			= m_pHUD->animGet("draw");
 	mhud_hide			= m_pHUD->animGet("holster");
-	mhud_shots.push_back( m_pHUD->animGet("shoot0"));
-	mhud_shots.push_back( m_pHUD->animGet("shoot1"));
-	mhud_shots.push_back( m_pHUD->animGet("shoot2"));
+	for (int i=0; i<32; i++)
+	{
+		string128		sh_anim;
+		sprintf			(sh_anim,"shoot%d",i);
+		CMotionDef* M	= m_pHUD->animGet(sh_anim);
+		if (M)			mhud_shots.push_back(M);
+	}
 }
 
 void CWeaponAutoRifle::MediaLOAD		()
