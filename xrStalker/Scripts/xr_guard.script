@@ -161,6 +161,8 @@ function action_guard_activity:reset_scheme()
 		s[self.object:id()] = last_index
 	end
 
+	self.pt_wait_time = 0
+
 	self:simulate_callback_if_neccessary()
 end	
 
@@ -234,6 +236,18 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		self.prev_phrase = phrase
 	end
 	]]
+
+	local flag_18 = ptr:flag(index, 18)
+	local flag_19 = ptr:flag(index, 19)
+	if not flag_18 and not flag_19 then
+		self.pt_wait_time = 5000
+	elseif not flag_18 and flag_19 then
+		self.pt_wait_time = 10000
+	elseif flag_18 and not flag_19 then
+		self.pt_wait_time = 20000
+	else
+		self.pt_wait_time = 30000
+	end
 	
 	if ptr:flag(index, 28) then
 		self.shall_shoot = 1
@@ -253,7 +267,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	end
 
 	local flagnum = nil
-	for f = 2, 19 do
+	for f = 2, 17 do
 		if ptr:flag(index, f) then
 			flagnum = f
 			if self.st.sync_id then
@@ -463,7 +477,7 @@ function action_guard_activity:execute()
 			--self.expiration_time = device():time_global() + 5000
 			if self.is_shooting then
 				-- При стрельбе не ждать синхронизации (так весь магазин можно выстрелять :))
-				self.expiration_time = device():time_global() + 5000
+				self.expiration_time = device():time_global() + self.pt_wait_time
 				self.state = self.state_anim_playing
 			else
 				self.state = self.state_before_anim_playing
@@ -475,7 +489,7 @@ function action_guard_activity:execute()
 	if self.state == self.state_before_anim_playing then
 		if self:sync_ok() then
 			printf("_bp [%s]: anim counter activated", self.object:name())
-			self.expiration_time = device():time_global() + 5000
+			self.expiration_time = device():time_global() + self.pt_wait_time
 			self.state = self.state_anim_playing
 		end
 	end
@@ -661,7 +675,7 @@ end
 -- 0 - зарезервирован
 -- 1 - пусть состоит из одной точки (по нему нельзя ходить), ставится в единственную точку, куда прийдет охранник
 --
--- 2-19 - флажки для пометки общих точек
+-- 2-17 - флажки для пометки общих точек
 --
 --
 --
