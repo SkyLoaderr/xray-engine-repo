@@ -113,9 +113,9 @@ void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
 }
 void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
 {
-	m_pHUD->animPlay			(mhud_hide);
+	m_pHUD->animPlay			(mhud_hide,TRUE,this);
 }
-void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
+void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
 {
 	m_pHUD->animPlay			(mhud_show);
 }
@@ -151,7 +151,8 @@ void CWeaponAutoRifle::OnAnimationEnd()
 {
 	switch (st_current)
 	{
-	case eReload:	ReloadMagazine();	break;	// End of reload animation
+	case eReload:	ReloadMagazine();		break;	// End of reload animation
+	case eHiding:	signal_HideComplete();	break;
 	}
 }
 void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)

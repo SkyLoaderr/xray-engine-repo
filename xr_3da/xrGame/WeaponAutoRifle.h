@@ -36,6 +36,8 @@ protected:
 	virtual void	switch2_Fire	(BOOL bHUDView);
 	virtual void	switch2_Empty	(BOOL bHUDView);
 	virtual void	switch2_Reload	(BOOL bHUDView);
+	virtual void	switch2_Hiding	(BOOL bHUDView);
+	virtual void	switch2_Showing	(BOOL bHUDView);
 	virtual void	OnShot			(BOOL bHUDView);
 	virtual void	OnEmptyClick	(BOOL bHUDView);
 	virtual void	OnDrawFlame		(BOOL bHUDView);
