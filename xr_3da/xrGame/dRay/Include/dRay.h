@@ -1,3 +1,7 @@
+ 
+
+
+//////////////////////////////////////////
 #include <ode\ode.h>
 
 // Class ID 
@@ -22,7 +26,8 @@ dReal   dGeomRayGetLength(dxGeom* g);
 void  dGeomRaySet(dxGeom* g, dVector3 Origin, dVector3 Direction);
 
 void   dGeomRayGet(dxGeom* g, dVector3 Origin, dVector3 Direction);
-
 int dRayClassGet();
 
 //////////////////////
+
+
