@@ -50,8 +50,8 @@ void CAI_Zombie::vfAdjustSpeed()
 	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0 + m_fMinSpeed;
-			m_fASpeed = PI;
-			r_torso_target.yaw = fAngle;
+			m_fASpeed = .4f;
+			//r_torso_target.yaw = fAngle;
 		}
 		else 
 		{
@@ -63,8 +63,8 @@ void CAI_Zombie::vfAdjustSpeed()
 		if (fabsf(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0 + m_fMinSpeed;
-				m_fASpeed = PI;
-				r_torso_target.yaw = fAngle;
+				m_fASpeed = .4f;
+				//r_torso_target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
@@ -80,8 +80,8 @@ void CAI_Zombie::vfAdjustSpeed()
 			if (fabsf(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0 + m_fMinSpeed;
-					m_fASpeed = PI;
-					r_torso_target.yaw = fAngle;
+					m_fASpeed = .4f;
+					//r_torso_target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
@@ -99,9 +99,9 @@ void CAI_Zombie::vfAdjustSpeed()
 						}
 			}
 			else {
-				r_torso_target.yaw = fAngle;
+				//r_torso_target.yaw = fAngle;
 				m_fSpeed = 0 + m_fMinSpeed;
-				m_fASpeed = PI;
+				m_fASpeed = .4f;
 			}
 }
 
@@ -360,8 +360,8 @@ bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		}
 		m_bResult = true;
 	}
-	else 
-		m_fSpeed = m_fSafeSpeed;
+	//else 
+	//	m_fSpeed = m_fSafeSpeed;
 
 	return(m_bResult);
 }
