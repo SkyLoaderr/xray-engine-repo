@@ -69,6 +69,7 @@ class CHenSelectorBase : public AI::NodeEstimator
 		NodeCompressed* m_tpLeaderNode;
 		Fvector			m_tLeaderPosition;
 		Fvector			m_tLeaderDirection;
+		DWORD			m_tLeaderNode;
 
 		// enemy
 		CEntity*        m_tEnemy;

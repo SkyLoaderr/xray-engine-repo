@@ -166,13 +166,73 @@ void CAI_Hen::SelectEnemy(SEnemySelected& S)
 
 IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
 	Fvector tMemberDirection;
-	tMemberDirection.x = tMyPoint.x - tMemberPoint.x;
-	tMemberDirection.y = tMyPoint.y - tMemberPoint.y;
-	tMemberDirection.z = tMyPoint.z - tMemberPoint.z;
+	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
 	return(fAlpha < PI/10);
 	//return(false);
+}
+
+bool CAI_Hen::bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
+	for (int i=0; i<Path.Nodes.size(); i++) 
+		for (int j=0; j<taMembers.size(); j++)
+			if (Path.Nodes[i] == taMembers[j])
+				return(false);
+	return(true);
+}
+
+bool CAI_Hen::bfCheckPath(AI::Path &Path,MemberNodes &taMembers, DWORD dwLeader) {
+	for (int i=0; i<Path.Nodes.size(); i++) {
+		for (int j=0; j<taMembers.size(); j++)
+			if (Path.Nodes[i] == taMembers[j])
+				return(false);
+		if (Path.Nodes[i] == dwLeader)
+			return(false);
+	}
+	return(true);
+}
+
+#define LEFT_NODE(Index)  ((Index + 3) & 3)
+#define RIGHT_NODE(Index) ((Index + 5) & 3)
+
+void CAI_Hen::SetLessCoverLook(NodeCompressed *tNode)
+{
+	//Fvector tWatchDirection;
+	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
+		if (tNode->cover[i] > iMaxOpen) {
+			iMaxOpenIndex = i; 
+			iMaxOpen = tNode->cover[i];
+		}
+	
+	if (tNode->cover[iMaxOpenIndex]) {
+		float fAngleOfView = eye_fov/180.f*PI;
+		float fDirection = fAngleOfView/2 + (PI - fAngleOfView)*(float(tNode->cover[iMaxOpenIndex])/255.f + float(tNode->cover[RIGHT_NODE(iMaxOpenIndex)])/255.f)/(2*float(tNode->cover[iMaxOpenIndex])/255.f + float(tNode->cover[LEFT_NODE(iMaxOpenIndex)])/255.f + float(tNode->cover[RIGHT_NODE(iMaxOpenIndex)])/255.f);
+		float fSinus,fCosinus;
+		_sincos(fDirection,fSinus,fCosinus);
+		switch (iMaxOpenIndex) {
+			case 0 : {
+				tWatchDirection.set(-fSinus,0,fCosinus);
+				break;
+			}
+			case 1 : {
+				tWatchDirection.set(fCosinus,0,fSinus);
+				break;
+			}
+			case 2 : {
+				tWatchDirection.set(fSinus,0,-fCosinus);
+				break;
+			}
+			case 3 : {
+				tWatchDirection.set(-fCosinus,0,-fSinus);
+				break;
+			}
+		}
+	}
+	else 
+		tWatchDirection.set(1,0,0);
+	
+	q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+	q_look.o_look_speed=_FB_look_speed;
 }
 
 void CAI_Hen::Attack()
@@ -230,12 +290,14 @@ void CAI_Hen::Attack()
 					S.m_tLeader = Leader;
 					S.m_tLeaderPosition = Leader->Position();
 					S.m_tpLeaderNode = Leader->AI_Node;
+					S.m_tLeaderNode = Leader->AI_NodeID;
 				}
 				// otherwise assign leader to null
 				else {
 					S.m_tLeader = 0;
 					S.m_tLeaderPosition.set(0,0,0);
 					S.m_tpLeaderNode = NULL;
+					S.m_tLeaderNode = -1;
 				}
 				S.m_tHitDir			= tHitDir;
 				S.m_dwHitTime		= dwHitTime;
@@ -252,6 +314,9 @@ void CAI_Hen::Attack()
 				S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 				
 				S.taMembers = Squad.Groups[g_Group()].Members;
+				if (S.m_tLeader)
+					S.taMembers.push_back(S.m_tLeader);
+
 				// checking if I need to rebuild the path i.e. previous search
 				// has found better destination node
 				if (AI_Path.bNeedRebuild) {
@@ -259,10 +324,7 @@ void CAI_Hen::Attack()
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
 					if (AI_Path.Nodes.size() > 2) {
 					// if path is long enough then build travel line
-						Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
-						if (S.m_tLeader)
-							S.taMemberPositions.push_back(S.m_tLeader->Position());
-						AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
+						AI_Path.BuildTravelLine(Position());
 					}
 					else {
 					// if path is too short then clear it (patch for ExecMove)
@@ -271,29 +333,19 @@ void CAI_Hen::Attack()
 					}
 				} 
 				else {
-					Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+					Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
 					// search for the best node according to the 
 					// SelectFollow evaluation function in the radius N meteres
-					S.Init();
-					Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S);
+					float fOldCost;
+					Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 					// if search has found new best node then 
-					if (AI_Path.DestNode != S.BestNode) {
-						NodeCompressed* OLD	= Level().AI.Node(AI_Path.DestNode);
-						BOOL dummy = FALSE;
-						float fBestCost = S.BestCost;
-						S.BestCost = MAX_NODE_ESTIMATION_COST;
-						float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-						// if old cost minus new cost is a little then hen is too lazy
-						// to move there
-						if (fBestCost < (old_cost-S.fLaziness)) {
-							AI_Path.DestNode		= S.BestNode;
-							AI_Path.bNeedRebuild	= TRUE;
-						}
+					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes))) && (S.BestCost < (fOldCost - S.fLaziness))){
+						AI_Path.DestNode		= S.BestNode;
+						AI_Path.bNeedRebuild	= TRUE;
 					} 
-					else {
+					else
 						// search hasn't found a better node we have to look around
 						bWatch = true;
-					}
 					if (AI_Path.Nodes.size() <= 2)
 						AI_Path.bNeedRebuild = TRUE;
 				}
@@ -354,17 +406,21 @@ void CAI_Hen::Attack()
 					// for finding the best node in the area
 					CHenSelectorAttack S = SelectorAttack;
 					// if i am not a leader then assign leader
+					/**/
 					if (Leader != this) {
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
 						S.m_tpLeaderNode = Leader->AI_Node;
+						S.m_tLeaderNode = Leader->AI_NodeID;
 					}
 					// otherwise assign leader to null
 					else {
 						S.m_tLeader = 0;
 						S.m_tLeaderPosition.set(0,0,0);
 						S.m_tpLeaderNode = NULL;
+						S.m_tLeaderNode = -1;
 					}
+					/**/
 					S.m_tHitDir			= tHitDir;
 					S.m_dwHitTime		= dwHitTime;
 					
@@ -379,15 +435,14 @@ void CAI_Hen::Attack()
 					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 					
 					S.taMembers = Squad.Groups[g_Group()].Members;
+					if (S.m_tLeader)
+						S.taMembers.push_back(S.m_tLeader);
 					// building a path from and to
 					AI_Path.DestNode = dwSavedEnemyNodeID;
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 					if (AI_Path.Nodes.size() > 2) {
 					// if path is long enough then build travel line
-						Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
-						if (S.m_tLeader)
-							S.taMemberPositions.push_back(S.m_tLeader->Position());
-						AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
+						AI_Path.BuildTravelLine(Position());
 					}
 					else
 					// if path is too short then clear it (patch for ExecMove)
@@ -399,6 +454,7 @@ void CAI_Hen::Attack()
 					&Enemy,
 					1000);
 				q_look.o_look_speed=_FB_look_speed;
+				
 				q_action.setup(AI::AIC_Action::FireEnd);
 
 				// checking flag to stop processing more states
@@ -432,57 +488,6 @@ void CAI_Hen::Die()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
 	bStopThinking = true;
-}
-
-bool CAI_Hen::bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
-	for (int i=0; i<Path.Nodes.size(); i++) 
-		for (int j=0; j<taMembers.size(); j++)
-			if (Path.Nodes[i] == taMembers[j])
-				return(false);
-	return(true);
-}
-
-#define LEFT_NODE(Index)  ((Index + 3) & 3)
-#define RIGHT_NODE(Index) ((Index + 5) & 3)
-
-void CAI_Hen::SetLessCoverLook(NodeCompressed *tNode)
-{
-	//Fvector tWatchDirection;
-	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
-		if (tNode->cover[i] > iMaxOpen) {
-			iMaxOpenIndex = i; 
-			iMaxOpen = tNode->cover[i];
-		}
-	
-	if (tNode->cover[iMaxOpenIndex]) {
-		float fAngleOfView = eye_fov/180.f*PI;
-		float fDirection = fAngleOfView/2 + (PI - fAngleOfView)*(float(tNode->cover[iMaxOpenIndex])/255.f + float(tNode->cover[RIGHT_NODE(iMaxOpenIndex)])/255.f)/(2*float(tNode->cover[iMaxOpenIndex])/255.f + float(tNode->cover[LEFT_NODE(iMaxOpenIndex)])/255.f + float(tNode->cover[RIGHT_NODE(iMaxOpenIndex)])/255.f);
-		float fSinus,fCosinus;
-		_sincos(fDirection,fSinus,fCosinus);
-		switch (iMaxOpenIndex) {
-			case 0 : {
-				tWatchDirection.set(-fSinus,0,fCosinus);
-				break;
-			}
-			case 1 : {
-				tWatchDirection.set(fCosinus,0,fSinus);
-				break;
-			}
-			case 2 : {
-				tWatchDirection.set(fSinus,0,-fCosinus);
-				break;
-			}
-			case 3 : {
-				tWatchDirection.set(-fCosinus,0,-fSinus);
-				break;
-			}
-		}
-	}
-	else 
-		tWatchDirection.set(1,0,0);
-	
-	q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
-	q_look.o_look_speed=_FB_look_speed;
 }
 
 void CAI_Hen::FollowMe()
@@ -543,12 +548,14 @@ void CAI_Hen::FollowMe()
 							S.m_tLeader = Leader;
 							S.m_tLeaderPosition = Leader->Position();
 							S.m_tpLeaderNode = Leader->AI_Node;
+							S.m_tLeaderNode = Leader->AI_NodeID;
 						}
 						// otherwise assign leader to null
 						else {
 							S.m_tLeader = 0;
 							S.m_tLeaderPosition.set(0,0,0);
 							S.m_tpLeaderNode = NULL;
+							S.m_tLeaderNode = -1;
 						}
 						S.m_tHitDir			= tHitDir;
 						S.m_dwHitTime		= dwHitTime;
@@ -570,10 +577,7 @@ void CAI_Hen::FollowMe()
 							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
-								Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
-								if (S.m_tLeader)
-									S.taMemberPositions.push_back(S.m_tLeader->Position());
-								AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
+								AI_Path.BuildTravelLine(Position());
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
@@ -583,31 +587,22 @@ void CAI_Hen::FollowMe()
 						} 
 						else {
 							// fill arrays of members and exclude myself
-							Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
 							// search for the best node according to the 
 							// SelectFollow evaluation function in the radius 35 meteres
-							S.Init();
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S);
+							float fOldCost;
+							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
 							// if search has found new best node then 
-							S.taMemberNodes.push_back(Leader->AI_NodeID);
-							if ((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes))) {
-							//if (AI_Path.DestNode != S.BestNode) {
-								NodeCompressed* OLD		= Level().AI.Node(AI_Path.DestNode);
-								BOOL			dummy	= FALSE;
-								float fBestCost = S.BestCost;
-								S.BestCost = MAX_NODE_ESTIMATION_COST;
-								float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
 								// if old cost minus new cost is a little then hen is too lazy
 								// to move there
-								if (fBestCost < (old_cost-S.fLaziness)) {
-									AI_Path.DestNode		= S.BestNode;
-									AI_Path.bNeedRebuild	= TRUE;
-								}
+								AI_Path.DestNode		= S.BestNode;
+								AI_Path.bNeedRebuild	= TRUE;
 							}
-							else {
+							else 
 								// search hasn't found a better node we have to look around
 								bWatch = true;
-							}
+							
 							if (AI_Path.TravelPath.size() < 2)
 								AI_Path.bNeedRebuild	= TRUE;
 						}
@@ -615,42 +610,6 @@ void CAI_Hen::FollowMe()
 						// getting my current node
 						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
 						// if we are going somewhere
-						/**
-						if (!bWatch) {
-							// determining node cover
-							tWatchDirection.y = 0.f;
-							tWatchDirection.x = float(tNode->cover[2])/255.f - float(tNode->cover[0])/255.f;
-							tWatchDirection.z = float(tNode->cover[1])/255.f - float(tNode->cover[3])/255.f;
-							tWatchDirection.normalize();
-							// setting up a look to watch at the least safe direction
-							q_look.setup
-								(
-								AI::AIC_Look::Look, 
-								AI::t_Direction, 
-								&(tWatchDirection),
-								1000
-								);
-							// setting up look speed
-							q_look.o_look_speed=_FB_look_speed;
-						}
-						// if we are staying
-						else {
-							// looking around
-							Fmatrix M;
-							M.rotateY(PI/60.f);
-							M.transform(tWatchDirection);
-							// setting up a look to watch around
-							q_look.setup
-								(
-								AI::AIC_Look::Look, 
-								AI::t_Direction, 
-								&(tWatchDirection),
-								1000
-								);
-							// setting up look speed
-							q_look.o_look_speed = 5;
-						}
-						/**/
 						SetLessCoverLook(tNode);
 						// setting up an action
 						q_action.setup(AI::AIC_Action::FireEnd);
@@ -718,12 +677,14 @@ void CAI_Hen::FreeHunting()
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
 						S.m_tpLeaderNode = Leader->AI_Node;
+						S.m_tLeaderNode = Leader->AI_NodeID;
 					}
 					// otherwise assign leader to null
 					else {
 						S.m_tLeader = 0;
 						S.m_tLeaderPosition.set(0,0,0);
 						S.m_tpLeaderNode = NULL;
+						S.m_tLeaderNode = -1;
 					}
 					S.m_tHitDir			= tHitDir;
 					S.m_dwHitTime		= dwHitTime;
@@ -745,10 +706,7 @@ void CAI_Hen::FreeHunting()
 						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
-							Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
-							if (S.m_tLeader)
-								S.taMemberPositions.push_back(S.m_tLeader->Position());
-							AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
+							AI_Path.BuildTravelLine(Position());
 						}
 						else
 						// if path is too short then clear it (patch for ExecMove)
@@ -756,34 +714,27 @@ void CAI_Hen::FreeHunting()
 					} 
 					else {
 						// fill arrays of members and exclude myself
-						Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+						Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
 						// SelectFollow evaluation function in the radius 35 meteres
-						S.Init();
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S);
+						float fOldCost;
+						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (AI_Path.DestNode != S.BestNode) {
-							NodeCompressed* OLD		= Level().AI.Node(AI_Path.DestNode);
-							BOOL			dummy	= FALSE;
-							float fBestCost = S.BestCost;
-							S.BestCost = MAX_NODE_ESTIMATION_COST;
-							float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-							// if old cost minus new cost is a little then hen is too lazy
-							// to move there
-							if (fBestCost < (old_cost-S.fLaziness)) {
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							}
-						} else {
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							AI_Path.DestNode		= S.BestNode;
+							AI_Path.bNeedRebuild	= TRUE;
+						} 
+						else 
 							// search hasn't found a better node we have to look around
 							bWatch = true;
-						}
 						if (AI_Path.TravelPath.size() < 2)
 							AI_Path.bNeedRebuild	= TRUE;
 					}
 					// setting up a look
 					// getting my current node
 					NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
+					
 					SetLessCoverLook(tNode);
+					
 					q_action.setup(AI::AIC_Action::FireEnd);
 					// checking flag to stop processing more states
 					m_fCurSpeed = m_fMaxSpeed;
@@ -865,12 +816,14 @@ void CAI_Hen::Pursuit()
 							S.m_tLeader = Leader;
 							S.m_tLeaderPosition = Leader->Position();
 							S.m_tpLeaderNode = Leader->AI_Node;
+							S.m_tLeaderNode = Leader->AI_NodeID;
 						}
 						// otherwise assign leader to null
 						else {
 							S.m_tLeader = 0;
 							S.m_tLeaderPosition.set(0,0,0);
 							S.m_tpLeaderNode = NULL;
+							S.m_tLeaderNode = -1;
 						}
 						S.m_tHitDir			= tHitDir;
 						S.m_dwHitTime		= dwHitTime;
@@ -893,10 +846,7 @@ void CAI_Hen::Pursuit()
 							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
-								Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
-								if (S.m_tLeader)
-									S.taMemberPositions.push_back(S.m_tLeader->Position());
-								AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
+								AI_Path.BuildTravelLine(Position());
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
@@ -906,28 +856,19 @@ void CAI_Hen::Pursuit()
 						} 
 						else {
 							// fill arrays of members and exclude myself
-							Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
 							// search for the best node according to the 
 							// SelectFollow evaluation function in the radius 35 meteres
-							S.Init();
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S);
+							float fOldCost;
+							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 							// if search has found new best node then 
-							if (AI_Path.DestNode != S.BestNode) {
-								NodeCompressed* OLD		= Level().AI.Node(AI_Path.DestNode);
-								BOOL			dummy	= FALSE;
-								float fBestCost = S.BestCost;
-								S.BestCost = MAX_NODE_ESTIMATION_COST;
-								float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-								// if old cost minus new cost is a little then hen is too lazy
-								// to move there
-								if (fBestCost < (old_cost-S.fLaziness)) {
-									AI_Path.DestNode		= S.BestNode;
-									AI_Path.bNeedRebuild	= TRUE;
-								}
-							} else {
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+								AI_Path.DestNode		= S.BestNode;
+								AI_Path.bNeedRebuild	= TRUE;
+							} 
+							else
 								// search hasn't found a better node we have to look around
 								bWatch = true;
-							}
 							if (AI_Path.TravelPath.size() < 2)
 								AI_Path.bNeedRebuild	= TRUE;
 						}
@@ -1038,12 +979,14 @@ void CAI_Hen::UnderFire()
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
 						S.m_tpLeaderNode = Leader->AI_Node;
+						S.m_tLeaderNode = Leader->AI_NodeID;
 					}
 					// otherwise assign leader to null
 					else {
 						S.m_tLeader = 0;
 						S.m_tLeaderPosition.set(0,0,0);
 						S.m_tpLeaderNode = NULL;
+						S.m_tLeaderNode = -1;
 					}
 					S.m_tHitDir			= tHitDir;
 					S.m_dwHitTime		= dwHitTime;
@@ -1066,10 +1009,7 @@ void CAI_Hen::UnderFire()
 						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
-							Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
-							if (S.m_tLeader)
-								S.taMemberPositions.push_back(S.m_tLeader->Position());
-							AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
+							AI_Path.BuildTravelLine(Position());
 						}
 						else {
 						// if path is too short then clear it (patch for ExecMove)
@@ -1079,32 +1019,19 @@ void CAI_Hen::UnderFire()
 					} 
 					else {
 						// fill arrays of members and exclude myself
-						Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+						Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
 						// search for the best node according to the 
 						// SelectFollow evaluation function in the radius 35 meteres
-						S.Init();
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S);
+						float fOldCost;
+						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (S.m_tLeader)
-							S.taMemberNodes.push_back(Leader->AI_NodeID);
-						if ((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes))) {
-						//if (AI_Path.DestNode != S.BestNode) {
-							NodeCompressed* OLD		= Level().AI.Node(AI_Path.DestNode);
-							BOOL			dummy	= FALSE;
-							float fBestCost = S.BestCost;
-							S.BestCost = MAX_NODE_ESTIMATION_COST;
-							float old_cost = S.Estimate(OLD,Level().AI.u_SqrDistance2Node(Position(),OLD),dummy);
-							// if old cost minus new cost is a little then hen is too lazy
-							// to move there
-							if (fBestCost < (old_cost-S.fLaziness)) {
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							}
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							AI_Path.DestNode		= S.BestNode;
+							AI_Path.bNeedRebuild	= TRUE;
 						}
-						else {
+						else
 							// search hasn't found a better node we have to look around
 							bWatch = true;
-						}
 						if (AI_Path.TravelPath.size() < 2)
 							AI_Path.bNeedRebuild	= TRUE;
 					}

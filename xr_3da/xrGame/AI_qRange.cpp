@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ai_space.h"
 
-void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator)
+void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost)
 {
 	if (0==vfs)	return;
 
@@ -16,8 +16,8 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	q_mark [StartNode]	+= 1;
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
 	Estimator.BestNode	= StartNode;
-	Estimator.BestCost	= MAX_NODE_ESTIMATION_COST;
-	Estimator.BestCost	= Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
+	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
+	fOldCost = Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
 	float range_sqr		= Range*Range;
 
 	// Cycle
