@@ -405,27 +405,39 @@ CSE_SpawnGroup::~CSE_SpawnGroup				()
 
 void CSE_SpawnGroup::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
-	tNetPacket.r_float						(m_fGroupProbability);
-};
+	tNetPacket.r_float						(m_spawn_probability);
+	if (m_wVersion > 80) {
+		tNetPacket.r_u32					(m_spawn_interval);
+		m_flags.set							(tNetPacket.r_u32());
+	}
+}
 
 void CSE_SpawnGroup::STATE_Write			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_float						(m_fGroupProbability);
-};
+	tNetPacket.w_float						(m_spawn_probability);
+	tNetPacket.w_u32						(m_spawn_interval);
+	tNetPacket.w_u32						(m_flags.get());
+}
 
 void CSE_SpawnGroup::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
-};
+	tNetPacket.r_float						(m_spawn_probability);
+	tNetPacket.r_u32						(m_spawn_interval);
+	m_flags.set								(tNetPacket.r_u32());
+}
 
 void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
-};
+	tNetPacket.w_float						(m_spawn_probability);
+	tNetPacket.w_u32						(m_spawn_interval);
+	tNetPacket.w_u32						(m_flags.get());
+}
 
 void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps				(pref,values);
 	PHelper().CreateFloat				(values,PrepareKey(pref,*s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
-};
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_PHSkeleton

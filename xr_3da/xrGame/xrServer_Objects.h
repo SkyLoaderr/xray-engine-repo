@@ -97,8 +97,9 @@
 // 78 - CSE_AlifeTraderAbstract			appended with flags for infinite ammo
 // 79 - CSE_AlifeAnomalousZone			appended with power properties (3)
 // 80 - CSE_Abstract					m_tSpawnID property moved from CSE_ALifeObject to CSE_Abstract
+// 81 - CSE_SpawnGroup					appended with 2 properties
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(80)
+#define SPAWN_VERSION	u16(81)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
@@ -187,11 +188,21 @@ add_to_type_list(CSE_Event)
 #define script_type_list save_type_list(CSE_Event)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
-	float							m_fGroupProbability;
-	u32								m_dwSpawnGroup;
-	
-									CSE_SpawnGroup	(LPCSTR caSection);
-	virtual							~CSE_SpawnGroup	();
+public:
+	enum ESpawnGroupFlags {
+		flSpawnGroupActive				= u32(1 << 0),
+		flSpawnGroupSpawnOnSurgeOnly	= u32(1 << 1),
+		flSpawnGroupSequential			= u32(1 << 2),
+		flSpawnGroupIfNotDestroyed		= u32(1 << 3),
+	};
+
+public:
+	float								m_spawn_probability;
+	u32									m_spawn_interval;
+	Flags32								m_flags;
+
+										CSE_SpawnGroup	(LPCSTR caSection);
+	virtual								~CSE_SpawnGroup	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_SpawnGroup)
 #define script_type_list save_type_list(CSE_SpawnGroup)
