@@ -34,8 +34,11 @@ CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
 {
 	R_ASSERT(*particles_name);
 	
+	CObject* pObject = dynamic_cast<CObject*>(this);
+	VERIFY(pObject);
+
 	CParticlesObject* pParticlesObject = NULL;
-	pParticlesObject = xr_new<CParticlesObject>(*particles_name, Sector(), false);
+	pParticlesObject = xr_new<CParticlesObject>(*particles_name, pObject->Sector(), false);
 
 	SParticlesInfo* pParticlesInfo = xr_new<SParticlesInfo>();
 	pParticlesInfo->particles_name = particles_name;
@@ -167,21 +170,41 @@ void CParticlesPlayer::UpdateParticles()
 void CParticlesPlayer::UpdateParticlesPosition(CParticlesObject* pParticles,
 											   const SParticlesInfo* pInfo)
 {
-	CObject				*object = dynamic_cast<CObject*>(this);
-	VERIFY				(object);
+	CObject	*object = dynamic_cast<CObject*>(this);
+
+	UpdateParticlesPosition(object, pParticles, 
+							pInfo->bone, 
+							pInfo->bone_pos, 
+							pInfo->dir);
+}
+
+void CParticlesPlayer::UpdateParticlesPosition(CObject* pObject, 
+												CParticlesObject* pParticles,
+												int bone_num, 
+												const Fvector& bone_pos,
+												const Fvector& dir)
+{
+	VERIFY				(pObject);
 
 	Fmatrix				  l_tMatrix;
-	CBoneInstance	  	 &l_tBoneInstance = PKinematics(object->Visual())->LL_GetBoneInstance((u16)pInfo->bone);
+
+//#pragma todo("Dandy to Oles : Create 'CObject::Visual() const' if possible")
+	CBoneInstance	  	 &l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_num);
 	
 	l_tMatrix.identity();
-	l_tMatrix.translate_over(pInfo->bone_pos);
-	l_tMatrix.k.normalize(pInfo->dir);
+	l_tMatrix.translate_over(bone_pos);
+	l_tMatrix.k.normalize(dir);
 	Fvector::generate_orthonormal_basis(l_tMatrix.k, l_tMatrix.i, l_tMatrix.j);
 	l_tMatrix.mulA(l_tBoneInstance.mTransform);
-	l_tMatrix.mulA(object->XFORM());
+	l_tMatrix.mulA(pObject->XFORM());
 
 	Fvector vel;
-	PHGetLinearVell(vel);
-	
+	CGameObject* pGameObject = dynamic_cast<CGameObject*>(pObject);
+	if(pGameObject)
+		pGameObject->PHGetLinearVell(vel);
+	else
+		vel = zero_vel;
+
+
 	pParticles->UpdateParent(l_tMatrix, vel);
 }

@@ -44,7 +44,7 @@ void CMissile::Load(LPCSTR section)
 	m_fMaxForce			= pSettings->r_float(section,"force_max");
 	m_fForceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
 
-	m_dwDestroyTimeMax	= pSettings->r_u32	(section,"destroy_time");
+	m_dwDestroyTimeMax	= pSettings->r_u32(section,"destroy_time");
 	
 	Fvector				position_offset, angle_offset;
 	position_offset		= pSettings->r_fvector3(section,"position_offset");
@@ -433,15 +433,17 @@ void CMissile::UpdateXForm()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
+
+		UpdateHudPosition	();
 	}
 }
 
 void CMissile::renderable_Render() 
 {
-	inherited::renderable_Render();
-
 	UpdateXForm();
 	UpdateFP();
+
+	inherited::renderable_Render();
 }
 
 void CMissile::Show() 
@@ -541,8 +543,7 @@ void  CMissile::UpdateFP()
 		dwFP_Frame = Device.dwFrame;
 
 		UpdateXForm			();
-		UpdateHudPosition	();
-
+		
 		if (hud_mode && !IsHidden())
 		{
 			// 1st person view - skeletoned

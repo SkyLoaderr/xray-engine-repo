@@ -106,7 +106,7 @@ void CWeaponShotgun::OnShotBoth()
 
 	//звук выстрела дуплетом
 	UpdateFP();
-	Sound->play_at_pos			(sndShotBoth,H_Root(),vLastFP);
+	sndShotBoth.play_at_pos	(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	// Camera
 	if (hud_mode)

@@ -44,22 +44,27 @@ void CHudItem::Load(LPCSTR section)
 
 void CHudItem::renderable_Render()
 {
-	if (m_pHUD)	PSkeletonAnimated(m_pHUD->Visual())->Update	();
-	
-	CActor *pActor = dynamic_cast<CActor*>(H_Parent());
-	if (m_pHUD && pActor && hud_mode && !m_pHUD->IsHidden())
+	//CActor *pActor = dynamic_cast<CActor*>(H_Parent());
+	//if (m_pHUD && pActor && hud_mode && 
+	//	!IsHidden() &&	!m_pHUD->IsHidden())
+
+	if(hud_mode && !m_pHUD->IsHidden())
 	{ 
 		// HUD render
-		UpdateHudPosition	();
+		UpdateHudPosition			();
 		::Render->set_Transform		(&m_pHUD->Transform());
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
-	else if(!pActor || !hud_mode)
+	//else if(!pActor || !hud_mode)
+	else if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden()))
 	{
 		// normal render
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
+
+	if(m_pHUD)
+		PSkeletonAnimated(m_pHUD->Visual())->Update	();
 }
 
 bool CHudItem::Action(s32 cmd, u32 flags) 
@@ -125,7 +130,8 @@ void CHudItem::Deactivate()
 
 void CHudItem::UpdateHudPosition	()
 {
-	if (Device.dwFrame == dwHudUpdate_Frame) return;
+//	if (Device.dwFrame == dwHudUpdate_Frame) 
+//		return;
 	
 	dwHudUpdate_Frame = Device.dwFrame;
 
@@ -141,4 +147,15 @@ void CHudItem::UpdateCL()
 {
 	inherited::UpdateCL();
 	m_dwStateTime += Device.dwTimeDelta;
+}
+
+void CHudItem::OnH_A_Chield		()
+{
+	hud_mode = FALSE;
+	inherited::OnH_A_Chield		();
+}
+void CHudItem::OnH_B_Independent	()
+{
+	hud_mode = FALSE;
+	inherited::OnH_B_Independent	();
 }

@@ -5,8 +5,32 @@
 
 struct SZonePPInfo 
 {
-	f32 duality_h, duality_v, blur, gray, noise, noise_scale;
+	float duality_h, duality_v, blur, gray, noise, noise_scale;
 	u32 r, g, b, a;
+};
+
+//информация о объекте, находящемся в зоне
+struct SZoneObjectInfo
+{
+	SZoneObjectInfo() 
+	{
+		zone_ignore = false;
+		time_in_zone = 0;
+		hit_num = 0;
+		total_damage = 0;
+	};
+
+	//игнорирование объекта в зоне
+	bool	zone_ignore;
+	//присоединенные партиклы
+	PARTICLES_PTR_VECTOR particles_vector;
+	//время прибывания в зоне
+	u32		time_in_zone;
+	//количество раз, сколько зона воздействовала на объект
+	u32		hit_num;
+	//количество повреждений нанесенных зоной
+	float	total_damage;
+	
 };
 
 
@@ -25,6 +49,7 @@ public:
 	virtual void net_Destroy();
 
 	virtual void UpdateCL();
+	virtual void shedule_Update		(u32 dt);
 
 	virtual void feel_touch_new(CObject* O);
 	virtual void feel_touch_delete(CObject* O);
@@ -49,11 +74,13 @@ public:
 	virtual void Affect(CObject* O);
 
 protected:
+	//список объетков, находящихся в зоне
 	xr_set<CObject*> m_inZone;
 	CActor *m_pLocalActor;
 
 	//максимальная сила заряда зоны
 	float m_fMaxPower;
+
 	//линейный коэффициент затухания в зависимости от расстояния
 	float m_fAttenuation;
 	
@@ -62,6 +89,11 @@ protected:
 	u32 m_dwDeltaTime;
 	u32 m_dwPeriod;
 	BOOL m_bZoneReady;
+	
+	//время, через которое, зона перестает реагировать 
+	//на объект мертвый объект (-1 если не указано)
+	int m_iDisableHitTime;
+	int m_iDisableIdleTime;
 
 	////////////////////////////////
 	// имена партиклов зоны
@@ -90,9 +122,10 @@ protected:
 	//объект партиклов обычного состояния зоны
 	CParticlesObject* m_pIdleParticles;
 
-	//список партиклов для объетов внутри зоны (каждому объету соответствует вектор указателей партиклов)
-	DEFINE_MAP (CObject*, PARTICLES_PTR_VECTOR, ATTACHED_PARTICLES_MAP, ATTACHED_PARTICLES_MAP_IT);
-	ATTACHED_PARTICLES_MAP m_IdleParticlesMap;
+	//список партиклов для объетов внутри зоны
+	DEFINE_MAP (CObject*, SZoneObjectInfo, OBJECT_INFO_MAP, OBJECT_INFO_MAP_IT);
+	OBJECT_INFO_MAP m_ObjectInfoMap;
+
 
 	virtual	void Hit (float P, Fvector &dir,	
 					  CObject* who, s16 element,

@@ -45,8 +45,11 @@ void CCustomZone::Load(LPCSTR section)
 
 	inherited::Load(section);
 
+	m_iDisableHitTime = pSettings->r_s32(section,"disable_time");	
+	m_iDisableIdleTime = pSettings->r_s32(section,"disable_idle_time");	
 	m_fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");	
-	
+
+
 	
 //////////////////////////////////////////////////////////////////////////
 	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
@@ -79,43 +82,6 @@ void CCustomZone::Load(LPCSTR section)
 		m_entrance_sound.create(TRUE, sound_str, st_SourceType);
 	}
 
-
-/*	string512		m_effectsSTR;
-	strcpy			(m_effectsSTR,pSettings->r_string(section,"effects"));
-	
-	char* l_effectsSTR	= m_effectsSTR; 
-	
-	R_ASSERT		(l_effectsSTR);
-	
-
-	//no particles, that distinguish zone
-	if(l_effectsSTR[0] == 'n' &&
-		l_effectsSTR[1] == 'o' &&
-		l_effectsSTR[2] == 'n' &&
-		l_effectsSTR[3] == 'e')
-	{
-		m_effects.clear();
-		return;
-	}
-	
-	m_effects.clear		(); 
-	m_effects.push_back	(l_effectsSTR);
-
-	//parse the string
-	while(*l_effectsSTR)
-	{
-		if(*l_effectsSTR == ',')
-		{
-			*l_effectsSTR = 0;
-			++l_effectsSTR;
-
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t')
-				++l_effectsSTR;
-
-			m_effects.push_back(l_effectsSTR);
-		}
-		++l_effectsSTR;
-	}*/
 
 	if(pSettings->line_exist(section,"idle_particles")) 
 		m_sIdleParticles	= pSettings->r_string(section,"idle_particles");
@@ -181,11 +147,6 @@ void CCustomZone::net_Destroy()
 {
 	inherited::net_Destroy();
 	
-/*	while(m_effectsPSs.size()) 
-	{ 
-		xr_delete(*(m_effectsPSs.begin())); 
-		m_effectsPSs.pop_front(); 
-	}*/
 	StopIdleParticles();
 }
 
@@ -224,6 +185,34 @@ void CCustomZone::UpdateCL()
 	}
 }
 
+void CCustomZone::shedule_Update(u32 dt)
+{
+	//пройтись по всем объектам в зоне
+	//и проверить их состояние
+	for(OBJECT_INFO_MAP_IT it = m_ObjectInfoMap.begin(); 
+								m_ObjectInfoMap.end() != it; ++it) 
+	{
+		CObject* pObject = (*it).first;
+		CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(pObject);
+		SZoneObjectInfo& info = (*it).second;
+
+		info.time_in_zone += dt;
+		
+		if(m_iDisableHitTime != -1 && (int)info.time_in_zone > m_iDisableHitTime)
+		{
+			if(!pEntityAlive || !pEntityAlive->g_Alive())
+				info.zone_ignore = true;
+		}
+		if(m_iDisableIdleTime != -1 && (int)info.time_in_zone > m_iDisableIdleTime)
+		{
+			if(!pEntityAlive || !pEntityAlive->g_Alive())
+				StopObjectIdleParticles(dynamic_cast<CGameObject*>(pObject));
+		}
+	}
+
+	inherited::shedule_Update(dt);
+}
+
 void CCustomZone::feel_touch_new(CObject* O) 
 {
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
@@ -232,6 +221,10 @@ void CCustomZone::feel_touch_new(CObject* O)
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
 	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	
+	SZoneObjectInfo object_info;
+	m_ObjectInfoMap[O] = object_info;
+
 	PlayEntranceParticles(pGameObject);
 	PlayObjectIdleParticles(pGameObject);
 }
@@ -244,6 +237,8 @@ void CCustomZone::feel_touch_delete(CObject* O)
 	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
 	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
 	StopObjectIdleParticles(pGameObject);
+
+	m_ObjectInfoMap.erase(O);
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) 
@@ -331,7 +326,9 @@ void CCustomZone::Affect(CObject* O)
 {
 	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
 	if(!pGameObject) return;
-	
+
+	if(m_ObjectInfoMap[O].zone_ignore) return;
+
 	Fvector P; 
 	XFORM().transform_tiny(P,CFORM()->getSphere().P);
 	
@@ -350,6 +347,10 @@ void CCustomZone::Affect(CObject* O)
 	
 	float power = Power(pGameObject->Position().distance_to(P));
 	float impulse = m_fHitImpulseScale*power*pGameObject->GetMass();
+
+	//статистика по объекту
+	m_ObjectInfoMap[O].total_damage += power;
+	m_ObjectInfoMap[O].hit_num++;
 	
 	if(power > 0.01f) 
 	{
@@ -377,7 +378,7 @@ void CCustomZone::Affect(CObject* O)
 
 void CCustomZone::PlayIdleParticles()
 {
-	Sound->play_at_pos	(m_idle_sound ,this, Position(), true);
+	m_idle_sound.play_at_pos(this, Position(), true);
 
 	if(!m_sIdleParticles) return;
 	m_pIdleParticles = xr_new<CParticlesObject>(*m_sIdleParticles,Sector(),false);
@@ -397,7 +398,7 @@ void CCustomZone::StopIdleParticles()
 
 void CCustomZone::PlayBlowoutParticles()
 {
-	Sound->play_at_pos	(m_blowout_sound ,this, Position());
+	m_blowout_sound.play_at_pos	(this, Position());
 
 	if(!m_sBlowoutParticles) return;
 
@@ -453,8 +454,14 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 	//выбрать случайную косточку на объекте
 	BONE_INFO_VECTOR_IT it = pObject->GetParticleBones().begin() +
 							::Random.randI(0,pObject->GetParticleBones().size());
-	pObject->StartParticles(*particle_str, (*it).index, (*it).offset,
-						     Fvector().set(0,1,0), (u16)ID(), true);
+	
+	CParticlesObject* pParticles = NULL;
+	pParticles = CParticlesObject::Create(*m_sEntranceParticlesSmall,Sector());
+	pParticles->Play();
+	
+	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
+											(*it).index, (*it).offset, 
+											Fvector().set(0,1,0));
 }
 
 
@@ -493,26 +500,23 @@ void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 
 	
 	//запустить партиклы на объекте
-	PARTICLES_PTR_VECTOR particles_vector;
-	pObject->StartParticlesOnAllBones(particles_vector,
+	pObject->StartParticlesOnAllBones(m_ObjectInfoMap[pObject].particles_vector,
 									  *particle_str,
 									  (u16)ID(), false);
-	//запомнить добавленные партиклы
-	m_IdleParticlesMap[pObject] = particles_vector;
 }
 void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 {
-	ATTACHED_PARTICLES_MAP_IT it = m_IdleParticlesMap.find(pObject);
-	if(m_IdleParticlesMap.end() == it) return;
+	OBJECT_INFO_MAP_IT it = m_ObjectInfoMap.find(pObject);
+	if(m_ObjectInfoMap.end() == it) return;
 	//остановить партиклы
-	pObject->StopParticles(it->second);
+	pObject->StopParticles(it->second.particles_vector);
 }
 
 
-void  CCustomZone::Hit(float P, Fvector &dir,	
+void  CCustomZone::Hit(float P, Fvector &dir,
 					  CObject* who, s16 element,
-					  Fvector position_in_object_space, 
-					  float impulse, 
+					  Fvector position_in_object_space,
+					  float impulse,
 					  ALife::EHitType hit_type)
 {
 	Fmatrix M;
@@ -521,5 +525,46 @@ void  CCustomZone::Hit(float P, Fvector &dir,
 	M.mulA(XFORM());
 	PlayBulletParticles(M.c);
 
+
 	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 }
+
+
+
+
+/*	string512		m_effectsSTR;
+	strcpy			(m_effectsSTR,pSettings->r_string(section,"effects"));
+	
+	char* l_effectsSTR	= m_effectsSTR; 
+	
+	R_ASSERT		(l_effectsSTR);
+	
+
+	//no particles, that distinguish zone
+	if(l_effectsSTR[0] == 'n' &&
+		l_effectsSTR[1] == 'o' &&
+		l_effectsSTR[2] == 'n' &&
+		l_effectsSTR[3] == 'e')
+	{
+		m_effects.clear();
+		return;
+	}
+	
+	m_effects.clear		(); 
+	m_effects.push_back	(l_effectsSTR);
+
+	//parse the string
+	while(*l_effectsSTR)
+	{
+		if(*l_effectsSTR == ',')
+		{
+			*l_effectsSTR = 0;
+			++l_effectsSTR;
+
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t')
+				++l_effectsSTR;
+
+			m_effects.push_back(l_effectsSTR);
+		}
+		++l_effectsSTR;
+	}*/

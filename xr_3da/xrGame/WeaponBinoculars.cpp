@@ -31,7 +31,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	CInventoryItem::Load	(section);
+	CHudItem::Load	(section);
 
 	m_slot = pSettings->r_s32(section,"slot");
 

@@ -15,7 +15,6 @@
 #include "actor.h"
 #include "inventory.h"
 
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -192,6 +191,8 @@ void CWeapon::UpdateXForm	()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
+
+		UpdateHudPosition	();
 	}
 }
 
@@ -202,7 +203,6 @@ void CWeapon::UpdateFP		()
 		dwFP_Frame = Device.dwFrame;
 
 		UpdateXForm			();
-		UpdateHudPosition	();
 
 		if (hud_mode && (0!=H_Parent()))// && Local())
 		{
@@ -583,6 +583,12 @@ void CWeapon::OnH_B_Independent	()
 	}
 }
 
+
+void CWeapon::OnH_A_Chield		()
+{
+	inherited::OnH_A_Chield		();
+}
+
 void CWeapon::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
@@ -591,6 +597,8 @@ void CWeapon::OnH_B_Chield		()
 	setEnabled					(false);
 
 	if(m_pHUD)					m_pHUD->Hide();
+
+	STATE = NEXT_STATE = eHidden;
 	
 	OnZoomOut();
 
@@ -635,6 +643,8 @@ void CWeapon::renderable_Render		()
 		UpdateFP	();
 		Light_Render(vLastFP);
 	}
+
+	UpdateXForm();
 	inherited::renderable_Render		();
 }
 
@@ -1004,9 +1014,4 @@ void CWeapon::PH_I_CrPr			()
 void CWeapon::PH_A_CrPr			()
 {
 	inherited::PH_A_CrPr		();
-}
-
-void CWeapon::OnH_A_Chield		()
-{
-	inherited::OnH_A_Chield		();
 }

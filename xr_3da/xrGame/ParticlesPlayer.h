@@ -40,10 +40,6 @@ public:
 	virtual ~CParticlesPlayer	(void);
 
 	
-	//функции, которые определяются в порожденном объекте
-	virtual IRender_Sector*	Sector  () = 0;
-	virtual void PHGetLinearVell (Fvector& velocity) = 0;
-
 	virtual void UpdateParticles	();
 
 	virtual CParticlesObject* StartParticles(ref_str particles_name,
@@ -67,6 +63,13 @@ public:
 
 	virtual void UpdateParticlesPosition(CParticlesObject* pParticles,
 										 const SParticlesInfo* pInfo);
+
+	//размещение партиклов на конкретной косточке объекта
+	static void UpdateParticlesPosition(CObject* pObject,
+										CParticlesObject* pParticles,
+										int bone_num, 
+										const Fvector& bone_pos,
+										const Fvector& dir);
 
 	virtual BONE_INFO_VECTOR& GetParticleBones() {return m_ParticlesBonesList;}
 
