@@ -17,9 +17,7 @@
 //глобальный указатель на функтор, который
 //запускает функцию сочетания артефактов из 
 //скиптов
-luabind::functor<void> g_ArtifactMergeFunctor;
-
-
+luabind::functor<void> *g_ArtifactMergeFunctor = NULL;
 
 CArtifactMerger::CArtifactMerger(void) 
 {
@@ -29,11 +27,12 @@ CArtifactMerger::CArtifactMerger(void)
 CArtifactMerger::~CArtifactMerger(void) 
 {
 	m_ArtifactList.clear();
+	xr_delete			(g_ArtifactMergeFunctor);
 }
 
 void SetArtifactMergeFunctor(const luabind::functor<void>& artifactMergeFunctor)
 {
-	g_ArtifactMergeFunctor = artifactMergeFunctor;
+	g_ArtifactMergeFunctor = xr_new<luabind::functor<void> >(artifactMergeFunctor);
 }
 
 BOOL CArtifactMerger::net_Spawn(LPVOID DC) 
@@ -101,12 +100,12 @@ void CArtifactMerger::RemoveAllArtifacts()
 //(вызов скриптованной процедуры)
 bool CArtifactMerger::PerformMerge()
 {
-	R_ASSERT2(g_ArtifactMergeFunctor.is_valid(), "The function that perform artifact merge doesn't set yet");
+	R_ASSERT2(g_ArtifactMergeFunctor->is_valid(), "The function that perform artifact merge doesn't set yet");
 	
 	m_ArtifactDeletedList.clear();
 	m_ArtifactNewList.clear();
 	
-	g_ArtifactMergeFunctor(this);
+	(*g_ArtifactMergeFunctor)(this);
 	return false;
 }
 
