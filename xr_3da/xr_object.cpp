@@ -5,7 +5,6 @@
 #include "render.h"
 #include "xrLevel.h"
 #include "fbasicvisual.h"
-#include "lighttrack.h"
 
 #include "x_ray.h"
 #include "GameFont.h"
@@ -68,11 +67,11 @@ CObject::CObject		( )
 
 	cfModel						= NULL;
 	pVisual						= NULL;
-	pLights						= NULL;
 
 	FLAGS.storage				= 0;
 
 	pSector						= 0;
+	pROS						= NULL;
 
 	Parent						= 0;
 
@@ -84,7 +83,7 @@ CObject::CObject		( )
 CObject::~CObject( )
 {
 	Sector_Move					( 0 );
-	xr_delete					( pLights		);
+	::Render->ros_destroy		( pROS	);
 	xr_delete					( cfModel		);
 
 	cNameVisual_set				( 0 );
@@ -120,7 +119,7 @@ void CObject::Load				(LPCSTR section )
 	// Visual and light-track
 	if (pSettings->line_exist(section,"visual")) 
 		cNameVisual_set	(pSettings->r_string(section,"visual"));
-	pLights						= xr_new<CLightTrack> ();
+	pROS						= ::Render->ros_create(this);
 	setVisible					(false);
 }
 

@@ -69,11 +69,18 @@ public:
 	virtual ~IRender_Light()		{};
 };
 
+// definition (Per-object render-specific data)
+class	ENGINE_API	IRender_ObjectSpecific
+{
+public:
+	virtual ~IRender_ObjectSpecific()	{};
+};
+
 // definition (Portal)
 class	ENGINE_API	IRender_Portal
 {
 public:
-	virtual ~IRender_Portal()		{};
+	virtual ~IRender_Portal()			{};
 };
 
 // definition (Sector)
@@ -151,6 +158,9 @@ public:
 
 	virtual CBlender*				blender_create			(CLASS_ID cls)							= 0;
 	virtual void					blender_destroy			(CBlender* &)							= 0;
+
+	virtual IRender_ObjectSpecific*	ros_create				(CObject* parent)						= 0;
+	virtual void					ros_destroy				(IRender_ObjectSpecific* &)				= 0;
 
 	// Lighting
 	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)			= 0;

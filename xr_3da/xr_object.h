@@ -7,10 +7,9 @@
 // refs
 class	ENGINE_API IVisual;
 class	ENGINE_API CCFModel;
-class	ENGINE_API CInifile;
 class	ENGINE_API IRender_Sector;
+class	ENGINE_API IRender_ObjectSpecific;
 class	ENGINE_API CCustomHUD;
-class	ENGINE_API CLightTrack;
 class	ENGINE_API NET_Packet;
 struct	ENGINE_API NodeCompressed;
 
@@ -53,7 +52,7 @@ private:
 
 	// Visibility detection
 	IRender_Sector*						pSector;
-	CLightTrack*						pLights;
+	IRender_ObjectSpecific*				pROS;
 protected:
 	// Geometric (transformation)
 	Fvector								vPosition;
