@@ -11,7 +11,6 @@
 template <
 	typename _DataStorage, 
 	typename _PathManager, 
-	typename _Graph, 
 	typename _iteration_type = u32, 
 	typename _dist_type = float
 > class CAStar 
@@ -48,7 +47,7 @@ public:
 		data_storage.add_opened	(start);
 	}
 
-	IC		bool		step			(_DataStorage &data_storage, _PathManager &path_manager, _Graph &graph)
+	IC		bool		step			(_DataStorage &data_storage, _PathManager &path_manager)
 	{
 		// get the best node, i.e. a node with the minimum 'f'
 		CGraphNode				&best = data_storage.get_best();
@@ -67,23 +66,23 @@ public:
 		data_storage.remove_best_opened();
 
 		// iterating on the best node neighbours
-		_Graph::const_iterator	i;
-		_Graph::const_iterator	e;
-		graph.begin				(best.index(),i,e);
+		_PathManager::const_iterator	i;
+		_PathManager::const_iterator	e;
+		path_manager.begin				(best.index(),i,e);
 		for (  ; i != e; ++i) {
 			// check if neighbour is accessible
-			if (!path_manager.is_accessible(graph.get_value(i)))
+			if (!path_manager.is_accessible(path_manager.get_value(i)))
 				continue;
 			// check if neighbour is visited, i.e. is in the opened or 
 			// closed lists
-			if (data_storage.is_visited(graph.get_value(i))) {
+			if (data_storage.is_visited(path_manager.get_value(i))) {
 				// so, this neighbour node has been already visited
 				// therefore get the pointer to this node
-				CGraphNode				&neighbour	= data_storage.get_node(graph.get_value(i));
+				CGraphNode				&neighbour	= data_storage.get_node(path_manager.get_value(i));
 				// check if this node is in the opened list
 				if (data_storage.is_opened(neighbour)) {
 					// compute 'g' for the node
-					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
+					_dist_type	g = best.g() + path_manager.evaluate(best.index(),path_manager.get_value(i),i);
 					// check if new path is better than the older one
 					if (neighbour.g() > g) {
 						// so, new path is better
@@ -107,7 +106,7 @@ public:
 				// here is a _nuance_ : if we don't use any heuristics, 
 				// i.e. it is not A*, but Dijkstra algorithm, or we use 
 				// a heuristics which _guarantees_ that found path is 
-				// the best among the others (if we have a graph with 
+				// the best among the others (if we have a path_manager with 
 				// euclidian metrics and use distance between current 
 				// and goal points as an estimation value), then it is 
 				// impossible that we can find a better path for a node 
@@ -121,7 +120,7 @@ public:
 					// then we found the _best_ path
 					
 					// check if new path is better than the older one
-					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
+					_dist_type	g = best.g() + path_manager.evaluate(best.index(),path_manager.get_value(i),i);
 					if (neighbour.g() > g) {
 						// so, new path is better
 						// assign corresponding values to the node
@@ -146,9 +145,9 @@ public:
 			else {
 				// so, this neighbour node is not in the opened or closed lists
 				// put neighbour node to the opened list
-				CGraphNode				&neighbour = data_storage.create_node(graph.get_value(i));
+				CGraphNode				&neighbour = data_storage.create_node(path_manager.get_value(i));
 				// fill the corresponding node parameters 
-				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
+				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),path_manager.get_value(i),i);
 				neighbour.h()			= path_manager.estimate(neighbour.index());
 				neighbour.f()			= neighbour.g() + neighbour.h();
 				// assign best node as its parent
@@ -164,7 +163,7 @@ public:
 		return					(false);
 	}
 
-	IC		bool		find			(_DataStorage &data_storage, _PathManager &path_manager, _Graph &graph)
+	IC		bool		find			(_DataStorage &data_storage, _PathManager &path_manager)
 	{
 		// initialize data structures with new search
 		init					(data_storage, path_manager);
@@ -177,7 +176,7 @@ public:
 			
 			// so, limit is not reached
 			// check if new step will get us success
-			if (step(data_storage, path_manager, graph))
+			if (step(data_storage, path_manager))
 				// so this step reached the goal, return success
 				return			(true);
 		}

@@ -949,11 +949,6 @@ extern "C" {
 			case  CLSID_OBJECT_W_SILENCER:	P = xr_new<CSilencer>();			break;
 			case  CLSID_OBJECT_W_GLAUNCHER:	P = xr_new<CGrenadeLauncher>();		break;
 
-			//Weapons Add-on
-			case  CLSID_OBJECT_W_SCOPE:		P = xr_new<CScope>();				break;
-			case  CLSID_OBJECT_W_SILENCER:	P = xr_new<CSilencer>();			break;
-			case  CLSID_OBJECT_W_GLAUNCHER:	P = xr_new<CGrenadeLauncher>();		break;
-
 			// Inventory
 			case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
 			case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;

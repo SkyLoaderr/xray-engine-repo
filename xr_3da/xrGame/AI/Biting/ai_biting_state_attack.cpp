@@ -189,13 +189,13 @@ void CBitingAttack::Run()
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
 				float yaw, pitch;
 				Fvector dir;
-				yaw = pMonster->r_torso_target.yaw;
-				pMonster->AI_Path.TravelPath.clear();
+				yaw = pMonster->m_body.target.yaw;
+				pMonster->enable_movement(false);
 				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
 				dir.getHP(yaw,pitch);
 				yaw *= -1;
 				yaw = angle_normalize(yaw);
-				pMonster->r_torso_target.yaw = yaw;
+				pMonster->m_body.target.yaw = yaw;
 			DO_IN_TIME_INTERVAL_END();
 
 			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;

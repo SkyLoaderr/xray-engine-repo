@@ -75,7 +75,7 @@ void CBitingEat::Run()
 	if (pCorpse != ve.obj) Init();
 
 	// ќпределить позицию ближайшей боны у трупа
-	Fvector nearest_bone_pos = pMonster->Movement.PHCaptureGetNearestElemPos(pCorpse);
+	Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl.PHCaptureGetNearestElemPos(pCorpse);
 	float cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 
 	// temp show out
@@ -126,7 +126,7 @@ void CBitingEat::Run()
 			pMonster->ChangeSatiety(0.02f);
 			pCorpse->m_fFood -= pMonster->_sd->m_fHitPower/5.f;
 
-			//Fmatrix M = pMonster->Movement.PHCaptureGetNearestElemTransform(pCorpse);
+			//Fmatrix M = pMonster->m_PhysicMovementControl.PHCaptureGetNearestElemTransform(pCorpse);
 //			Fvector fv;
 //			fv.set(0.f,0.f,0.f);
 //			Fvector dir;
@@ -180,9 +180,9 @@ void CBitingEat::Run()
 
 			if (!bEatRat && bCanDrag) {	// ≈сли не труп крысы и может тащить
 				// пытатьс€ вз€ть труп
-				pMonster->Movement.PHCaptureObject(pCorpse);
+				pMonster->m_PhysicMovementControl.PHCaptureObject(pCorpse);
 
-				if (!pMonster->Movement.PHCapture()->Failed()) {
+				if (!pMonster->m_PhysicMovementControl.PHCapture()->Failed()) {
 					// тащить труп
 					bDragging = true;
 					m_tAction = ACTION_DRAG;
@@ -201,11 +201,11 @@ void CBitingEat::Run()
 		pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
 
 		// если не может тащить
-		if (0 == pMonster->Movement.PHCapture()) m_tAction = ACTION_EAT; 
+		if (0 == pMonster->m_PhysicMovementControl.PHCapture()) m_tAction = ACTION_EAT; 
 
 		if (saved_dist > m_fDistToDrag) {
 			// бросить труп
-			pMonster->Movement.PHReleaseObject();
+			pMonster->m_PhysicMovementControl.PHReleaseObject();
 
 			bDragging = false; 
 			m_tAction = ACTION_EAT;
