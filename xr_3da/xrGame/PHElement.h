@@ -114,11 +114,12 @@ public:
 	void			destroy									();
 	Fvector			get_mc_data								();
 	Fvector			get_mc_geoms							();
+	void			calc_volume_data						();
 	void			Start									();
 	void			RunSimulation							();
 
 
-	float			get_volume								()	{get_mc_data();return m_volume;};
+	float			get_volume								()	{calc_volume_data();return m_volume;};
 	void			SetTransform							(const Fmatrix& m0);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +135,8 @@ public:
 	virtual void			setMass					(float M);
 	virtual float			getMass					(){return m_mass.mass;}
 	virtual void			setDensity				(float M);
+	virtual void			setMassMC				(float M,const Fvector& mass_center);
+	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
 	dMass*					GetMass					()
 	{

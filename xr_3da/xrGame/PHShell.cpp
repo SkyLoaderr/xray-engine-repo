@@ -366,6 +366,9 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id)
 			CPhysicsElement* E	= P_create_Element();
 			E->mXFORM.set		(fm_position);
 			E->SetMaterial(bone_data.game_mtl);
+			Fvector mc;
+			fm_position.transform_tiny(mc,bone_data.center_of_mass);
+			E->setMassMC(bone_data.mass,mc);
 			E->set_ParentElement(root_e);
 			B.set_callback(GetBonesCallback(),E);
 			E->add_Shape(bone_data.shape);

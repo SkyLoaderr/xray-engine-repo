@@ -245,7 +245,8 @@ void CPHElement::			build	(dSpaceID space){
 		//m_group=dCreateGeomGroup(space);
 		m_group=dCreateGeomGroup(0);
 
-	Fvector mc=get_mc_data();
+	Fvector mc;//=get_mc_data();
+	mc.set(m_mass_center);
 	//m_start=mc;
 
 	m_inverse_local_transform.identity();
@@ -364,6 +365,39 @@ Fvector CPHElement::			get_mc_data	(){
 	m_mass_center=mc;
 	return mc;
 }
+
+void CPHElement::			calc_volume_data	(){
+
+	float pv,volume=0.f;
+
+	xr_vector<Fobb>::iterator i_box;
+	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
+		pv=(*i_box).m_halfsize.x*(*i_box).m_halfsize.y*(*i_box).m_halfsize.z*8;
+		
+		volume+=pv;
+
+	}
+	xr_vector<Fsphere>::iterator i_sphere;
+	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
+		pv=(*i_sphere).R*(*i_sphere).R*(*i_sphere).R*4/3*M_PI;
+		
+		volume+=pv;
+
+	}
+
+
+	xr_vector<Pcylinder>::iterator i_cylider;
+	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
+		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_halflength*2.f;
+		
+		volume+=pv;
+
+	}
+
+	m_volume=volume;
+
+}
+
 Fvector CPHElement::			get_mc_geoms	(){
 	////////////////////to be implemented
 	Fvector mc;
@@ -495,20 +529,29 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 
 
 
-void		CPHElement::	setDensity		(float M){
-
-	//calculate_it_data(get_mc_data(),M);
-
+void		CPHElement::	setDensity		(float M)
+{
 	calculate_it_data_use_density(get_mc_data(),M);
-
 }
 
-void		CPHElement::	setMass		(float M){
+void		CPHElement::	setMass		(float M)
+{
 
 	calculate_it_data(get_mc_data(),M);
+}
 
-	//calculate_it_data_use_density(get_mc_data(),M);
+void		CPHElement::	setDensityMC		(float M,const Fvector& mass_center)
+{
+	m_mass_center.set(mass_center);
+	calc_volume_data();
+	calculate_it_data_use_density(mass_center,M);
+}
 
+void		CPHElement::	setMassMC		(float M,const Fvector& mass_center)
+{
+	m_mass_center.set(mass_center);
+	calc_volume_data();
+	calculate_it_data(mass_center,M);
 }
 
 void		CPHElement::Start(){
