@@ -61,7 +61,6 @@ protected:
 	virtual	void					ClearLists				();
 	
 	virtual CUIBuyWeaponWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
-	virtual void					FillDefItems			(const char* caSection, CUIBuyWeaponWnd* pMenu);
 
 	virtual CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
 

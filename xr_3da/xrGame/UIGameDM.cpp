@@ -381,7 +381,6 @@ void CUIGameDM::OnBuyMenu_Ok	()
 
 bool		CUIGameDM::CanBeReady				()
 {
-	u8 res = 0xff;
 
 	SetCurrentSkinMenu();
 
@@ -396,11 +395,11 @@ bool		CUIGameDM::CanBeReady				()
 		return false;
 	};
 
+	u8 res = 0xff;
 	res &=	pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT);
-	res &=	~(pCurBuyMenu->GetBeltSize());
 
 	if (res == 0xff || !pCurBuyMenu->CanBuyAllItems())
 	{
@@ -413,25 +412,6 @@ bool		CUIGameDM::CanBeReady				()
 };
 
 //--------------------------------------------------------------------
-void		CUIGameDM::FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu)
-{
-	if (!pSettings->section_exist(caSection)) return;
-
-	if (!pSettings->line_exist(caSection, "default_items")) return;
-
-	string4096			DefItems;
-	string256			SingleItem;
-
-	std::strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
-	u32 count	= _GetItemCount(DefItems);
-	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
-	for (u32 i = 0; i < count; ++i)
-	{
-		_GetItem(DefItems, i, SingleItem);
-		pMenu->MoveWeapon(SingleItem, false);
-	};
-};
-//--------------------------------------------------------------------
 CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 {
 	if (Team == -1)
@@ -443,14 +423,6 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 
 	
 	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((LPCSTR)pTeamSect->c_str(), BasePriceSection);
-		/*
-	}
-	else
-	{
-		pMenu->ReInitItems((char*)pTeamSect->c_str());
-	};
-	*/
-//	FillDefItems(pTeamSect->c_str(), pMenu);
 	pMenu->SetSkin(0);
 	return pMenu;
 };
