@@ -31,7 +31,7 @@ public:
 public:
 	T r,g,b,a;
 
-	IC	SelfRef	set		(u32 dw)
+	ICF	SelfRef	set		(u32 dw)
 	{
 		const T f = T(1.0) / T(255.0);
 		a = f * T((dw >> 24)& 0xff);

@@ -195,7 +195,7 @@ public:
 	}
 
 	// Safe-Normalize
-	IC	SelfRef	normalize_safe(void) 
+	ICF	SelfRef	normalize_safe(void) 
 	{
 		T magnitude=x*x + y*y + z*z;
 		if (magnitude> std::numeric_limits<T>::min()) {
@@ -219,7 +219,7 @@ public:
 	}
 
 	// Safe-Normalize
-	IC	SelfRef	normalize_safe(const Self &v) {
+	ICF	SelfRef	normalize_safe(const Self &v) {
 		T magnitude=v.x*v.x + v.y*v.y + v.z*v.z;
 		if (magnitude>std::numeric_limits<T>::min()) {
 			magnitude=_sqrt(1/magnitude);
