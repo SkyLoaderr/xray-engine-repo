@@ -201,7 +201,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
 	for ( ; I != E; ++I) {
     	S.sprintf				("Slot #%d",I-B+1).c_str();
-		V=PHelper.CreateEntity	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections));
+		V=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections), smEntity);
         V->Owner()->subitem		= 8;
 		PHelper.CreateU32		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
 		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
@@ -1067,8 +1067,8 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
-	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	&m_caKnownCustomers,  OBJCLASS_SPAWNPOINT, "m_trader_e")	;
-	V->Owner()->subitem			= 8;
+//.	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	&m_caKnownCustomers,  OBJCLASS_SPAWNPOINT, "m_trader_e")	;
+//.	V->Owner()->subitem			= 8;
 }
 #endif
 

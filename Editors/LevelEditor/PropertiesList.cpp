@@ -4,6 +4,8 @@
 // 	- OnDrawValue
 //------------------------------------------------------------------------------
 
+/* TODO 1 -oAlexMX -cTODO: ref_str גלוסעמ AnsiString ג ךאקוסעגו edit_val*/
+
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -504,9 +506,19 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 BOOLValue* V		= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
                 OutBOOL				(V->GetValue(),Surface,R,prop->Enabled());
             }break;
-            case PROP_TEXTURE:
+            case PROP_CHOOSE:{
+                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                ChooseValueCustom* V= dynamic_cast<ChooseValueCustom*>(prop->GetFrontValue());
+                switch(V->choose_mode){
+                case smTexture:
+                    if (miDrawThumbnails->Checked){ 
+                        R.top+=tvProperties->LineHeight-4;
+                        FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
+                    }
+                break;
+                }
+            }break;
             case PROP_TEXTURE2:
-            case PROP_A_TEXTURE:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->LineHeight-4;
@@ -514,28 +526,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 }
             break;
             case PROP_WAVE:
-//            case PROP_LIBPS:
-            case PROP_LIBPE:
-            case PROP_LIBPARTICLES:
-            case PROP_SOUNDSRC:
-            case PROP_SOUNDENV:
-            case PROP_LIGHTANIM:
-            case PROP_LIBOBJECT:
-            case PROP_GAMEOBJECT:
-            case PROP_ENTITY:
-            case PROP_SCENE_ITEM:
-            case PROP_GAMEMTL:
-            case PROP_A_LIBOBJECT:
-            case PROP_A_GAMEMTL:
-//			case PROP_A_LIBPS:
-            case PROP_A_LIBPE:
-            case PROP_A_LIBPARTICLES:
-            case PROP_A_SOUNDSRC:
-            case PROP_A_SOUNDENV:
-            case PROP_A_ESHADER:
-            case PROP_A_CSHADER:
-            case PROP_ESHADER:
-            case PROP_CSHADER:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_TOKEN:
@@ -754,30 +744,30 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_WAVE: 			WaveFormClick(item); 		break;
                 case PROP_FCOLOR:
                 case PROP_COLOR: 			ColorClick(item); 			break;
-                case PROP_GAMEMTL:
-//                case PROP_LIBPS:
-	            case PROP_LIBPE:
-                case PROP_LIBPARTICLES:
-                case PROP_SOUNDSRC:
-                case PROP_SOUNDENV:
-                case PROP_LIGHTANIM:
-                case PROP_LIBOBJECT:
-                case PROP_GAMEOBJECT:
-                case PROP_ENTITY:
-                case PROP_SCENE_ITEM:
-                case PROP_TEXTURE:
-                case PROP_ESHADER:
-                case PROP_CSHADER:		CustomTextClick(item);      break;
-                case PROP_A_LIBOBJECT:
-                case PROP_A_GAMEMTL:
-//				case PROP_A_LIBPS:
-	            case PROP_A_LIBPE:
-                case PROP_A_LIBPARTICLES:
-                case PROP_A_SOUNDSRC:
-                case PROP_A_SOUNDENV:
-                case PROP_A_TEXTURE:
-                case PROP_A_ESHADER:
-                case PROP_A_CSHADER:	CustomAnsiTextClick(item);	break;
+                case PROP_CHOOSE:{
+                	{
+                		ChooseValue* V		= dynamic_cast<ChooseValue*>(prop->GetFrontValue());
+                        if (V){
+                        	ChooseTextClick(item);
+                            break;
+                        }
+                    }
+                	{
+                		AChooseValue* V		= dynamic_cast<AChooseValue*>(prop->GetFrontValue());
+                        if (V){
+                        	ChooseATextClick(item);
+                            break;
+                        }
+                    }
+                	{
+                		RChooseValue* V		= dynamic_cast<RChooseValue*>(prop->GetFrontValue());
+                        if (V){
+                        	ChooseRTextClick(item);
+                            break;
+                        }
+                    }
+                    THROW2("Unknown choose type");
+                }break;
                 case PROP_U8:
                 case PROP_U16:
                 case PROP_U32:
@@ -964,7 +954,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             LPCSTR new_val 		 	= 0;
             bool bRes				= true;
         	if (mi->Tag==0){
-            	bRes				= TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,new_val,prop->subitem,edit_val.c_str(),true);
+            	bRes				= TfrmChoseItem::SelectItem(smTexture,new_val,prop->subitem,edit_val.c_str());//,true);
             }else if (mi->Tag>=2){
             	new_val			 	= TEXTUREString[mi->Tag];
             }
@@ -1055,42 +1045,29 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
+void __fastcall TProperties::ChooseTextClick(TElTreeItem* item)
 {
 	PropItem* prop			= (PropItem*)item->Tag;
 	TextValue* V			= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+	ChooseValueCustom* CV	= dynamic_cast<ChooseValueCustom*>(V); R_ASSERT(CV);
 	AnsiString edit_val		= V->GetValue();
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
-    TfrmChoseItem::ESelectMode mode;
     AStringVec items;
-    bool bIgnoreExt 		= false;
-    switch (prop->type){
-    case PROP_ESHADER:		mode = TfrmChoseItem::smShader;							break;
-	case PROP_CSHADER:		mode = TfrmChoseItem::smShaderXRLC;						break;
-    case PROP_TEXTURE:		mode = TfrmChoseItem::smTexture;	bIgnoreExt = true; 	break;
-	case PROP_LIGHTANIM:	mode = TfrmChoseItem::smLAnim;		                    break;
-    case PROP_LIBOBJECT:	mode = TfrmChoseItem::smObject;		                    break;
-    case PROP_GAMEOBJECT:	mode = TfrmChoseItem::smGameObject;	                    break;
-    case PROP_ENTITY:		mode = TfrmChoseItem::smEntity;		                    break;
-    case PROP_SOUNDSRC:		mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true; 	break;
-    case PROP_SOUNDENV:		mode = TfrmChoseItem::smSoundEnv;						break;
-//    case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
-    case PROP_LIBPE:		mode = TfrmChoseItem::smPE;			                    break;
-    case PROP_LIBPARTICLES:	mode = TfrmChoseItem::smParticles;	                    break;
-    case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; 					break;
-    case PROP_SCENE_ITEM:{ 
+    if (CV->choose_mode==smCustom)
+    	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
+/*    
 #ifdef _LEVEL_EDITOR
+    case PROP_SCENE_ITEM:{ 
 		SceneItemValue* SI	= dynamic_cast<SceneItemValue*>(V); R_ASSERT(SI);
         ObjectList& lst 	= Scene.ListObj(SI->clsID);
         for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	if ((*_F)->OnChooseQuery(SI->specific.c_str())) items.push_back((*_F)->Name);
-#endif
      	mode = TfrmChoseItem::smCustom;
     }break;
-    default: THROW2("Unknown prop");
-    }
-    if (TfrmChoseItem::SelectItem(mode,new_val,prop->subitem,edit_val.c_str(),bIgnoreExt,&items)){
+#endif
+*/
+    if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
         edit_val			= new_val;
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(edit_val.c_str())){
@@ -1101,32 +1078,43 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
+void __fastcall TProperties::ChooseATextClick(TElTreeItem* item)
 {
 	PropItem* prop			= (PropItem*)item->Tag;
 	ATextValue* V			= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+	ChooseValueCustom* CV	= dynamic_cast<ChooseValueCustom*>(V); R_ASSERT(CV);
 	AnsiString edit_val		= V->GetValue();
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
-    TfrmChoseItem::ESelectMode mode;
-    bool bIgnoreExt 		= false;
-    switch (prop->type){
-    case PROP_A_ESHADER:   	mode = TfrmChoseItem::smShader;		                    break;
-	case PROP_A_CSHADER:   	mode = TfrmChoseItem::smShaderXRLC;	                    break;
-    case PROP_A_TEXTURE:   	mode = TfrmChoseItem::smTexture;	bIgnoreExt = true;  break;
-    case PROP_A_LIBOBJECT:	mode = TfrmChoseItem::smObject;		                    break;
-    case PROP_A_SOUNDSRC:  	mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true;  break;
-    case PROP_A_SOUNDENV:	mode = TfrmChoseItem::smSoundEnv;						break;
-//	case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
-	case PROP_A_LIBPE:		mode= TfrmChoseItem::smPE;			                    break;
-    case PROP_A_LIBPARTICLES:mode= TfrmChoseItem::smParticles;	                    break;
-    case PROP_A_GAMEMTL:	mode = TfrmChoseItem::smGameMaterial; 					break;
-    default: THROW2("Unknown prop type");
-    }
-    if (TfrmChoseItem::SelectItem(mode,new_val,prop->subitem,edit_val.c_str(),bIgnoreExt)){
+    AStringVec items;
+    if (CV->choose_mode==smCustom)
+    	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
+    if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
         edit_val				= new_val;
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(&edit_val)){
+        	Modified();
+        }
+        item->ColumnText->Strings[0]= prop->GetText();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::ChooseRTextClick(TElTreeItem* item)
+{
+	PropItem* prop			= (PropItem*)item->Tag;
+	RTextValue* V			= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+	ChooseValueCustom* CV	= dynamic_cast<ChooseValueCustom*>(V); R_ASSERT(CV);
+	AnsiString edit_val		= *V->GetValue();
+	prop->OnBeforeEdit		(&edit_val);
+    LPCSTR new_val			= 0;
+    AStringVec items;
+    if (CV->choose_mode==smCustom)
+    	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
+    if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
+        edit_val				= new_val;
+        prop->OnAfterEdit	(&edit_val);
+        if (prop->ApplyValue(edit_val.c_str())){
         	Modified();
         }
         item->ColumnText->Strings[0]= prop->GetText();

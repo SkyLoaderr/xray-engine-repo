@@ -83,8 +83,10 @@ private:	// User declarations
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
 	void __fastcall 	ColorClick		(TElTreeItem* item);
 	void __fastcall 	VectorClick		(TElTreeItem* item);
-	void __fastcall 	CustomTextClick(TElTreeItem* item);
-	void __fastcall 	CustomAnsiTextClick(TElTreeItem* item);
+    // choose
+	void __fastcall 	ChooseTextClick	(TElTreeItem* item);
+	void __fastcall 	ChooseATextClick(TElTreeItem* item);
+	void __fastcall 	ChooseRTextClick(TElTreeItem* item);
 
 	TElTreeItem* 		m_FirstClickItem;
 

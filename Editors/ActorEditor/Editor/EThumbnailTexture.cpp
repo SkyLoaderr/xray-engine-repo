@@ -131,7 +131,7 @@ void ETextureThumbnail::FillProp(PropItemVec& items)
     PHelper.CreateToken<u32>	(items, "MipMaps\\Filter",			(u32*)&F.mip_filter,	tparam_token);
 
     PHelper.CreateFlag<Flags32>	(items, "Details\\Enabled",			&F.flags,				STextureParams::flHasDetailTexture);
-    PHelper.CreateTexture		(items, "Details\\Texture",			F.detail_name,			sizeof(F.detail_name));
+    PHelper.CreateChoose		(items, "Details\\Texture",			F.detail_name,			sizeof(F.detail_name), smTexture);
     PHelper.CreateFloat			(items, "Details\\Scale",			&F.detail_scale,		0.1f,10000.f,0.1f,2);
 
     PHelper.CreateFlag<Flags32>	(items, "Flags\\Grayscale",			&F.flags,				STextureParams::flGreyScale);

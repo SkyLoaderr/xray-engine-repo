@@ -19,10 +19,12 @@ void __fastcall	CEditableObject::OnChangeShader(PropValue* prop)
 void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec& items)
 {
     PropValue* V;
-    V=PHelper.CreateATexture	(items, FHelper.PrepareKey(pref,"Texture"), 	&SURF->m_Texture);					V->OnChangeEvent=OnChangeShader;
-    V=PHelper.CreateAEShader	(items, FHelper.PrepareKey(pref,"Shader"), 		&SURF->m_ShaderName);				V->OnChangeEvent=OnChangeShader;
-    V=PHelper.CreateACShader	(items, FHelper.PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName);
-    PHelper.CreateAGameMtl		(items, FHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName);
+    V=PHelper.CreateChoose		(items, FHelper.PrepareKey(pref,"Texture"), 	&SURF->m_Texture, 	smTexture);		V->OnChangeEvent=OnChangeShader;
+    V=PHelper.CreateChoose		(items, FHelper.PrepareKey(pref,"Shader"), 		&SURF->m_ShaderName,smEShader);		V->OnChangeEvent=OnChangeShader;
+	if (IsStatic()){
+	    V=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName,smCShader);
+    	PHelper.CreateChoose	(items, FHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName, smGameMaterial);
+    }
     V=PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent=OnChangeShader;
 }
 //---------------------------------------------------------------------------

@@ -500,7 +500,7 @@ void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 	FillAttProp				(pref,items);
 	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot\\Cone Angle"),	&m_D3D.phi,		0.1f,120.f,0.01f,2);
 	PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot\\Falloff"),	   	&m_D3D.falloff,	0.0f,1000.0f);
-	PHelper.CreateATexture	(items,	FHelper.PrepareKey(pref, "Spot\\Texture"),		&m_SpotAttTex);
+	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot\\Texture"),		&m_SpotAttTex, 	smTexture);
 }
 //----------------------------------------------------
 

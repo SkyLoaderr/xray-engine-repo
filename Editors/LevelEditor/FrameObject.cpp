@@ -129,7 +129,7 @@ void TfraObject::SelByRefObject( bool flag )
 void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
 {
 	LPCSTR N;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,32,0)){
+    if (TfrmChoseItem::SelectItem(smObject,N,32,0)){
     	Fvector pos={0.f,0.f,0.f};
     	Fvector up={0.f,1.f,0.f};
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
@@ -182,7 +182,7 @@ void __fastcall TfraObject::seSelPercentKeyPress(TObject *Sender,
 
 void __fastcall TfraObject::ExtBtn4Click(TObject *Sender)
 {
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,m_Current,1,m_Current))
+    if (TfrmChoseItem::SelectItem(smObject,m_Current,1,m_Current))
     	m_Items->SelectItem(m_Current,true,false,true);
 }
 //---------------------------------------------------------------------------

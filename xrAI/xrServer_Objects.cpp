@@ -283,7 +283,7 @@ void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)
 
 void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-    PropValue					*V = PHelper.CreateGameObject(values, FHelper.PrepareKey(pref,"Model"),visual_name,sizeof(visual_name));
+    PropValue					*V = PHelper.CreateChoose(values, FHelper.PrepareKey(pref,"Model"),visual_name,sizeof(visual_name), smGameObject);
     V->OnChangeEvent			= OnChangeVisual;
 }
 #endif
@@ -546,7 +546,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateGameObject	(items, FHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
+	PHelper.CreateChoose		(items, FHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model), smGameObject);
 }
 #endif
 
@@ -583,7 +583,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateGameObject	(items, FHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
+	PHelper.CreateChoose		(items, FHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model), smGameObject);
 }
 #endif
 

@@ -103,7 +103,7 @@ void __fastcall	CCustom2DProjector::OnTextureChange	(PropValue* prop)
 void CCustom2DProjector::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* P;
-    P=PHelper.CreateATexture(items, FHelper.PrepareKey(pref,"Base Texture"),	&name);
+    P=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref,"Base Texture"),	&name, smTexture);
     P->OnChangeEvent		= OnTextureChange;
 }
 

@@ -403,7 +403,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
 	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),	&m_fProbability,	0,100);
-	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
+//.	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
 #endif
 
@@ -697,10 +697,8 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 {
 	type 						= epotBox;
 	mass 						= 10.f;
-    fixed_bone[0]				=0;
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
-	startup_animation[0]		= 0;
     flags.zero					();
 }
 
@@ -724,16 +722,15 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(mass);
     
 	if (m_wVersion > 9)
-		tNetPacket.r_string		(fixed_bone);
-	// internal
-	strlwr						(fixed_bone);
+		tNetPacket.r_string		(fixed_bones);
+
 	if (m_wVersion > 28)
 		tNetPacket.r_string		(startup_animation);
 
 	if	(m_wVersion > 39)		// > 39 		
 		tNetPacket.r_u8			(flags.flags);
 #ifdef _EDITOR    
-	PlayAnimation				(startup_animation[0]?startup_animation:"$editor");
+	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
 }
 
@@ -742,7 +739,7 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_u32			(type);
 	tNetPacket.w_float			(mass);
-	tNetPacket.w_string			(fixed_bone);
+	tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_string			(startup_animation);
 	tNetPacket.w_u8				(flags.flags);
 }
@@ -768,37 +765,48 @@ xr_token po_types[]={
 
 void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 {
-	PlayAnimation				(startup_animation);
+	PlayAnimation				(*startup_animation);
+}
+
+void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(PropValue* sender, AStringVec& lst)
+{
+    CSkeletonAnimated::accel  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+    CSkeletonAnimated::accel::iterator _I, _E;
+    _I							= ll_motions->begin();
+    _E							= ll_motions->end();
+    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+}
+
+void __fastcall	CSE_ALifeObjectPhysic::OnChooseBone(PropValue* sender, AStringVec& lst)
+{
+    CSkeletonAnimated::accel  	*ll_bones	= PKinematics(visual)->LL_Bones();
+    CSkeletonAnimated::accel::iterator _I, _E;
+    _I							= ll_bones->begin();
+    _E							= ll_bones->end();
+    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
 }
 
 void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp			(pref,	 values);
 	PHelper.CreateToken<u32>	(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
-	PHelper.CreateText			(values, FHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
     PHelper.CreateFlag<Flags8>	(values, FHelper.PrepareKey(pref,s_name,"Active"), &flags, flActive);
-	if (visual && PSkeletonAnimated(visual))
-	{
-		CSkeletonAnimated::accel	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
-		CSkeletonAnimated::accel::iterator _I, _E;
-		AStringVec				vec;
-		bool					bFound;
-		// bones
-		_I						= ll_motions->begin();
-		_E						= ll_motions->end();
-		bFound					= false;
 
-		for (; _I!=_E; ++_I) {
-			vec.push_back(*_I->first);
-			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
-				bFound=true;
-		}
+    // motions
+    if (visual && PSkeletonAnimated(visual))
+    {
+        RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);
+        V->OnChangeEvent		= OnChangeAnim;
+        V->OnChooseEvent		= OnChooseAnim;
+    }
 
-		if (!bFound)
-			startup_animation[0]= 0;
-		PropValue				*tNetPacket = PHelper.CreateList	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
-		tNetPacket->OnChangeEvent			= OnChangeAnim;
-	}
+    // bones
+    if (visual && PKinematics(visual))
+    {
+	    RChooseValue* V 		= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
+        V->OnChooseEvent		= OnChooseBone;
+        V->Owner()->subitem		= 8;
+    }
 }
 #endif
 
@@ -809,13 +817,8 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 {
 	flags.set					(flPhysic,TRUE);
     mass						= 10.f;
-    startup_animation[0]		= 0;
-	spot_texture[0]				= 0;
-	color_animator[0]			= 0;
-	spot_bone[0]				= 0;
 	spot_range					= 10.f;
 	spot_cone_angle				= PI_DIV_3;
-	glow_texture[0]				= 0;
 	glow_radius					= 0.1f;
 	color						= 0xffffffff;
     spot_brightness				= 1.f;
@@ -849,16 +852,17 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_string		(startup_animation);
 
 #ifdef _EDITOR    
-	PlayAnimation				(startup_animation[0]?startup_animation:"$editor");
+	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
-
-	// internal
-	strlwr						(spot_bone);
 
 	if (m_wVersion > 42) {
 		tNetPacket.r_string		(glow_texture);
 		tNetPacket.r_float		(glow_radius);
 	}
+
+    if (m_wVersion > 43){
+	    tNetPacket.r_string		(fixed_bones);
+    }
 }
 
 void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
@@ -877,6 +881,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(startup_animation);
 	tNetPacket.w_string			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
+    tNetPacket.w_string			(fixed_bones);
 }
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -892,7 +897,25 @@ void CSE_ALifeObjectHangingLamp::UPDATE_Write(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 {
-	PlayAnimation				(startup_animation);
+	PlayAnimation				(*startup_animation);
+}
+
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(PropValue* sender, AStringVec& lst)
+{
+    CSkeletonAnimated::accel  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+    CSkeletonAnimated::accel::iterator _I, _E;
+    _I							= ll_motions->begin();
+    _E							= ll_motions->end();
+    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+}
+
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(PropValue* sender, AStringVec& lst)
+{
+    CSkeletonAnimated::accel  	*ll_bones	= PKinematics(visual)->LL_Bones();
+    CSkeletonAnimated::accel::iterator _I, _E;
+    _I							= ll_bones->begin();
+    _E							= ll_bones->end();
+    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
 }
 
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
@@ -900,57 +923,32 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp			(pref,values);
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
-	PHelper.CreateLightAnim		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	color_animator,		sizeof(color_animator));
-	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	&color_animator, 	smLAnim);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			&spot_texture,		smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
-	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture));
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	&glow_texture,		smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
 
     // motions
     if (visual && PSkeletonAnimated(visual))
     {
-    	CSkeletonAnimated::accel		*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
-        CSkeletonAnimated::accel::iterator _I, _E;
-        AStringVec				vec;
-        bool					bFound;
-        _I						= ll_motions->begin();
-        _E						= ll_motions->end();
-        bFound					= false;
-        
-		for (; _I!=_E; ++_I) {
-			vec.push_back(*_I->first);
-			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
-				bFound=true;
-		}
-        
-		if (!bFound)
-			startup_animation[0]= 0;
-        PropValue				*tNetPacket = PHelper.CreateList	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
-        tNetPacket->OnChangeEvent			= OnChangeAnim;
+        RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);
+        V->OnChangeEvent		= OnChangeAnim;
+        V->OnChooseEvent		= OnChooseAnim;
     }
 
     // bones
     if (visual && PKinematics(visual))
     {
-    	CSkeletonAnimated::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
-        CSkeletonAnimated::accel::iterator _I, _E;
-        AStringVec				vec;
-        bool					bFound;
-        _I						= ll_bones->begin();
-        _E						= ll_bones->end();
-        bFound					= false;
-        for (; _I!=_E; ++_I) {
-			vec.push_back(*_I->first);
-			if (!bFound && spot_bone[0] && (vec.back() == spot_bone))
-				bFound=true;
-		}
-        
-		if (!bFound)
-			spot_bone[0]		= 0;
-		PHelper.CreateList		(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,	sizeof(spot_bone), &vec);
+	    RChooseValue* V;
+		V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Guide bone"),		&spot_bone, smCustom);
+        V->OnChooseEvent		= OnChooseBone;
+        V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
+        V->OnChooseEvent		= OnChooseBone;
+        V->Owner()->subitem		= 8;
     }
 }
 #endif

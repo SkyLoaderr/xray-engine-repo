@@ -20,6 +20,8 @@
 #include "mxPlacemnt.hpp"
 #include "ElXPThemedControl.hpp"
 #include "Gradient.hpp"
+#include "ChooseTypes.H"
+
 //---------------------------------------------------------------------------
 // refs
 class EImageThumbnail;
@@ -85,15 +87,14 @@ private:	// User declarations
 
     bool 	bMultiSel;
     int 	iMultiSelLimit;
-    bool 	bIgnoreExt;
 // fill routines
     void __fastcall FillCustom		(AStringVec* items);
     void __fastcall FillSoundSource	();
     void __fastcall FillSoundEnv	();
     void __fastcall FillObject		();
     void __fastcall FillLAnim		();
-    void __fastcall FillShader		();
-    void __fastcall FillShaderXRLC	();
+    void __fastcall FillEShader		();
+    void __fastcall FillCShader		();
 //    void __fastcall FillPS			();
     void __fastcall FillPE			();
     void __fastcall FillParticles	();
@@ -104,29 +105,12 @@ private:	// User declarations
 
     void __fastcall AppendItem		(LPCSTR name);
 public:		// User declarations
-    enum ESelectMode{
-    	smCustom = 0,
-    	smSoundSource,
-    	smSoundEnv,
-        smObject,
-    	smShader,
-        smShaderXRLC,
-//        smPS,
-        smPE,
-        smParticles,
-        smTexture,
-        smEntity,
-        smLAnim,
-        smGameObject,
-        smGameMaterial,
-        smMaxMode
-    };
 protected:
-    ESelectMode Mode;
+    EChooseMode Mode;
     static AnsiString m_LastSelection[smMaxMode]; 
 public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
-    static int	 	__fastcall 	SelectItem		(ESelectMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, bool bIgnoreExt=false, AStringVec* items=0);
+    static int	 	__fastcall 	SelectItem		(EChooseMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, AStringVec* items=0);
     static bool 	__fastcall 	Visible			(){return !!form;}
 };
 //---------------------------------------------------------------------------

@@ -93,6 +93,11 @@ public:
 	{
 		w	(S,(u32)xr_strlen(S)+1);
 	}
+	IC void w_string			( ref_str& p )
+	{
+    	if (*p)	w(*p,(u32)xr_strlen(p)+1);
+        else	w_u8(0);
+	}
 	IC void w_matrix			(Fmatrix& M)
 	{
 		w_vec3	(M.i);
@@ -199,6 +204,11 @@ public:
 		size_t	len		= xr_strlen(data);
 		r		(S,(u32)len+1);
 	}
+    void 		r_string		(ref_str& dest)
+    {
+        dest		= LPCSTR(&B.data[r_pos]);
+        r_advance	(dest.size()+1);
+    }
 	IC void		r_matrix		(Fmatrix& M)
 	{
 		r_vec3	(M.i);	M._14_	= 0;

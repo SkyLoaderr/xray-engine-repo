@@ -119,7 +119,7 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 	if (item&&item->Tag){
     	EPropType type		= TProperties::GetItemType(item);
     	switch (type){
-        	case PROP_A_TEXTURE:{
+        	case PROP_CHOOSE:{
             	LPCSTR nm = TProperties::GetItemColumn(item,0);
             	if (nm&&nm[0]){
 	                m_Thumbnail = xr_new<ETextureThumbnail>(nm);

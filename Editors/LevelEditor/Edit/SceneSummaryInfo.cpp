@@ -51,13 +51,13 @@ void SSceneSummary::FillProp(PropItemVec& items)
             base_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Base\\")+*t_it;
             PropValue* V=0;
-            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it); V->Owner()->Enable(FALSE);
+            V=PHelper.CreateChoose(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it, smTexture); V->Owner()->Enable(FALSE);
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
         	if (T->_Format().flags.is(STextureParams::flHasDetailTexture)){
             	std::pair<AStringSetIt, bool> I=det_textures.insert(T->_Format().detail_name);
-	            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Texture"),	(AnsiString*)&*I.first); 	V->Owner()->Enable(FALSE);
+	            V=PHelper.CreateChoose(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Texture"),	(AnsiString*)&*I.first,smTexture); 	V->Owner()->Enable(FALSE);
 	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Scale"),		AnsiString().sprintf("%3.2f",T->_Format().detail_scale));
             }
 //            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Used In"),			objects);
@@ -81,7 +81,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
             det_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Detail\\")+*t_it;
             PropValue*	V	= 0;
-            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it); 	V->Owner()->Enable(FALSE);
+            V=PHelper.CreateChoose(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it, smTexture); 	V->Owner()->Enable(FALSE);
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
@@ -112,7 +112,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
             do_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Detail Objects\\Textures\\")+*t_it;
             PropValue*	V	= 0;
-            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it); 	V->Owner()->Enable(FALSE);
+            V=PHelper.CreateChoose(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it, smTexture); 	V->Owner()->Enable(FALSE);
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));

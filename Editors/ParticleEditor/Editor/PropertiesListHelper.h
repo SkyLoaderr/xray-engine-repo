@@ -95,11 +95,17 @@ public:
     void __fastcall		NameDraw		(PropValue* sender, LPVOID draw_val);
 public:
     IC CaptionValue*	CreateCaption	(PropItemVec& items, AnsiString key, AnsiString val)
-    {	return			(CaptionValue*)	AppendValue		(items,key,xr_new<CaptionValue>(val),PROP_CAPTION);		}
+    {	return			(CaptionValue*)	AppendValue		(items,key,xr_new<CaptionValue>(val),PROP_CAPTION);			}
     IC CanvasValue*		CreateCanvas	(PropItemVec& items, AnsiString key, AnsiString val, int height)
-    {	return			(CanvasValue*)	AppendValue		(items,key,xr_new<CanvasValue>(val,height),PROP_CANVAS);		}
+    {	return			(CanvasValue*)	AppendValue		(items,key,xr_new<CanvasValue>(val,height),PROP_CANVAS);  	}
     IC ButtonValue*		CreateButton	(PropItemVec& items, AnsiString key, AnsiString val, u32 flags)
     {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val,flags),PROP_BUTTON);		}
+    IC ChooseValue*		CreateChoose	(PropItemVec& items, AnsiString key, LPSTR val, int len, EChooseMode mode)
+    {	return			(ChooseValue*)	AppendValue		(items,key,xr_new<ChooseValue>(val,len,mode),PROP_CHOOSE);	}
+    IC AChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, AnsiString* val, EChooseMode mode)
+    {	return			(AChooseValue*)	AppendValue		(items,key,xr_new<AChooseValue>(val,mode),PROP_CHOOSE);	}
+    IC RChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, ref_str* val, EChooseMode mode)
+    {	return			(RChooseValue*)	AppendValue		(items,key,xr_new<RChooseValue>(val,mode),PROP_CHOOSE);	}
     IC S8Value* 		CreateS8		(PropItemVec& items, AnsiString key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)
     {	return			(S8Value*)		AppendValue		(items,key,xr_new<S8Value>(val,mn,mx,inc,0),PROP_S8);	}
     IC S16Value* 		CreateS16		(PropItemVec& items, AnsiString key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)
@@ -149,56 +155,10 @@ public:
     {   return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXT);        }
 	IC RTextValue* 		CreateRText		(PropItemVec& items, AnsiString key, ref_str* val)
     {   return			(RTextValue*)	AppendValue		(items,key,xr_new<RTextValue>(val),PROP_R_TEXT);        }
-	IC TextValue* 	 	CreateEShader	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {   return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ESHADER);    }
-	IC TextValue* 	   	CreateCShader	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_CSHADER);	}
-	IC TextValue* 	   	CreateTexture	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE,PropItem::flDrawThumbnail);}
 	IC TextValue* 	  	CreateTexture2	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXTURE2,PropItem::flDrawThumbnail);}
-	IC ATextValue* 		CreateAEShader	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_ESHADER);     }
-	IC ATextValue* 		CreateACShader	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_CSHADER);     }
-    IC ATextValue*	   	CreateAGameMtl	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_GAMEMTL);		}
-	IC ATextValue* 		CreateATexture	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXTURE,PropItem::flDrawThumbnail);}
-	IC TextValue*	 	CreateLightAnim	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIGHTANIM);  }
-	IC TextValue* 	 	CreateLibObject	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBOBJECT);  }
-	IC ATextValue* 		CreateALibObject(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBOBJECT);   }
-	IC TextValue* 	 	CreateGameObject(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEOBJECT); }
-    IC TextValue*		CreateSoundSrc	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDSRC);   }
-    IC ATextValue*	  	CreateASoundSrc	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDSRC);    }
-    IC TextValue*		CreateSoundEnv	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDENV);   }
-    IC ATextValue*	  	CreateASoundEnv	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDENV);    }
-//	IC TextValue*	 	CreateLibPS		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-//	{	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPS);      }
-//	IC ATextValue*	 	CreateALibPS	(PropItemVec& items, AnsiString key, AnsiString* val)
-//	{	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
-    IC TextValue*	 	CreateLibPE		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPE);		}
-    IC ATextValue*	 	CreateALibPE	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPE);       }
-    IC TextValue*	 	CreateLibParticles	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPARTICLES);		}
-    IC ATextValue*	 	CreateALibParticles	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPARTICLES);       }
-	IC TextValue* 		CreateEntity	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ENTITY);     }
 	IC WaveValue* 		CreateWave		(PropItemVec& items, AnsiString key, WaveForm* val)
     {	return			(WaveValue*)	AppendValue		(items,key,xr_new<WaveValue>(val),PROP_WAVE);           }
-    IC TextValue* 		CreateGameMtl	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);    }
     IC FloatValue* 		CreateTime		(PropItemVec& items, AnsiString key, float* val, float mn=0.f, float mx=86400.f)
     {	return			(FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,0,0),PROP_TIME);    }
     
@@ -252,8 +212,6 @@ public:
 	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }
-    IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, AnsiString key, ref_str* val, EObjClass cls, LPCSTR type)
-    {	return			(SceneItemValue*)AppendValue(items,key,xr_new<SceneItemValue>(val,cls,type),PROP_SCENE_ITEM);    }
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------

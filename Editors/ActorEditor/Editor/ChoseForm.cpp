@@ -38,15 +38,13 @@ TfrmChoseItem *TfrmChoseItem::form=0;
 AnsiString TfrmChoseItem::select_item="";
 AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 //---------------------------------------------------------------------------
-int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, bool bIgnoreExt, AStringVec* items)
+int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, AStringVec* items)
 {
 	VERIFY(!form);
-	ESelectMode Mode				= mode;
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
-	form->Mode						= Mode;
+	form->Mode						= mode;
     form->bMultiSel 				= sel_cnt>1;
     form->iMultiSelLimit 			= sel_cnt;
-    form->bIgnoreExt 				= bIgnoreExt;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
 	form->tvItems->IsUpdating		= true;
@@ -62,8 +60,8 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     case smSoundSource:	form->FillSoundSource();break;
     case smSoundEnv:	form->FillSoundEnv();	break;
     case smObject: 		form->FillObject();		break;
-    case smShader: 		form->FillShader();		break;
-    case smShaderXRLC: 	form->FillShaderXRLC();	break;
+    case smEShader:		form->FillEShader();	break;
+    case smCShader: 	form->FillCShader();	break;
 //    case smPS: 			form->FillPS();			break;
     case smPE:			form->FillPE();			break;
     case smParticles:	form->FillParticles();	break;
@@ -84,18 +82,8 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     dest				= 0;
     if (bRes){
 		int item_cnt	= _GetItemCount(select_item.c_str(),',');
-	    if (bIgnoreExt){
-	    	AnsiString	temp="", p;
-            for (int k=0; k<item_cnt; k++){
-                if(k!=0)temp+=",";
-            	_GetItem(select_item.c_str(),k,p,',');
-	        	p = ChangeFileExt(p,"");
-                temp	+= p;
-            }
-            select_item	= temp;
-        }
     	dest 			= (select_item==NONE_CAPTION)?0:select_item.c_str();
-	    m_LastSelection[Mode]=select_item;
+	    m_LastSelection[mode]=select_item;
         return 			item_cnt;
     }
     return 0;
@@ -185,7 +173,7 @@ void __fastcall TfrmChoseItem::FillLAnim()
     for (; it!=_E; it++)			AppendItem((*it)->cName);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillShader()
+void __fastcall TfrmChoseItem::FillEShader()
 {
     form->Caption					= "Select Engine Shader";
     CResourceManager::map_Blender& blenders = Device.Resources->_GetBlenders();
@@ -194,7 +182,7 @@ void __fastcall TfrmChoseItem::FillShader()
 	for (; _S!=_E; _S++)AppendItem(_S->first);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillShaderXRLC()
+void __fastcall TfrmChoseItem::FillCShader()
 {
     form->Caption					= "Select Compiler Shader";
     Shader_xrLCVec& shaders 		= Device.ShaderXRLC.Library();
@@ -253,7 +241,6 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     bMultiSel = false;
     tvItems->ShowCheckboxes = false;
 	DEFINE_INI(fsStorage);
-    bIgnoreExt = false;
     grdFon->Caption = "";
 }
 //---------------------------------------------------------------------------
@@ -312,7 +299,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 	if (bMultiSel){
 	    string256 T;
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0,bIgnoreExt);
+            TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0);//,bIgnoreExt);
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
 				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T),(void*)TYPE_OBJECT);
@@ -323,7 +310,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FHelper.FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0,bIgnoreExt);
+        TElTreeItem* itm_node = FHelper.FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0);//,bIgnoreExt);
         TElTreeItem* fld_node = 0;
         if (itm_node){
             tvItems->Selected = itm_node;

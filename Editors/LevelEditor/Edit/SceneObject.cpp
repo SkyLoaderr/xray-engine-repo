@@ -260,7 +260,7 @@ void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
 void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
-    PropValue* V		= PHelper.CreateALibObject	(items,FHelper.PrepareKey(pref,"Reference"),		&m_ReferenceName); 
+    PropValue* V		= PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,"Reference"),		&m_ReferenceName, smObject); 
     V->OnChangeEvent 	= ReferenceChange;
     if (IsDynamic())
 	    inherited::AnimationFillProp(pref,items);

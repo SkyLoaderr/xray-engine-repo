@@ -3,10 +3,13 @@
 #define PropertiesListTypesH
 
 #include "ElTree.hpp"
+#include "ChooseTypes.H"
+
 //---------------------------------------------------------------------------
 enum EPropType{
 	PROP_CAPTION	= 0x1000,
 	PROP_BUTTON,
+    PROP_CHOOSE,
 	PROP_S8,
 	PROP_S16,
 	PROP_S32,
@@ -28,32 +31,8 @@ enum EPropType{
 	PROP_TEXT,
     PROP_A_TEXT,
 	PROP_R_TEXT,
-	PROP_ESHADER,
-	PROP_CSHADER,
-	PROP_TEXTURE,
 	PROP_TEXTURE2,
-	PROP_A_ESHADER,
-	PROP_A_CSHADER,
-	PROP_A_TEXTURE,
-    PROP_LIGHTANIM,
-    PROP_LIBOBJECT,
-    PROP_A_LIBOBJECT,
-    PROP_SOUNDSRC,
-    PROP_A_SOUNDSRC,
-    PROP_SOUNDENV,
-    PROP_A_SOUNDENV,
-//    PROP_LIBPS,
-	PROP_LIBPE,
-    PROP_LIBPARTICLES,
-//    PROP_A_LIBPS,
-	PROP_A_LIBPE,
-    PROP_A_LIBPARTICLES,
-    PROP_GAMEOBJECT,
-    PROP_GAMEMTL,
-	PROP_A_GAMEMTL,
-    PROP_ENTITY,
 	PROP_WAVE,
-    PROP_SCENE_ITEM,
     PROP_CANVAS,
     PROP_TIME,
 };
@@ -75,6 +54,7 @@ typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
 typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef bool 	__fastcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
+typedef void 	__fastcall (__closure *TOnChoose)			(PropValue* sender, AStringVec& lst);
 //------------------------------------------------------------------------------
 extern AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
@@ -361,6 +341,29 @@ public:
         }
         return 			false;
     }
+};
+
+class ChooseValueCustom{
+public:
+	EChooseMode			choose_mode;
+    TOnChoose			OnChooseEvent;
+public:
+						ChooseValueCustom	(EChooseMode mode):choose_mode(mode),OnChooseEvent(0){;}
+};
+
+class ChooseValue: public TextValue, public ChooseValueCustom{
+public:
+						ChooseValue			(LPSTR val, int len, EChooseMode mode):TextValue(val,len),ChooseValueCustom(mode){;}
+};
+
+class AChooseValue: public ATextValue, public ChooseValueCustom{
+public:
+						AChooseValue		(AnsiString* val, EChooseMode mode):ATextValue(val),ChooseValueCustom(mode){;}
+};
+
+class RChooseValue: public RTextValue, public ChooseValueCustom{
+public:
+						RChooseValue		(ref_str* val, EChooseMode mode):RTextValue(val),ChooseValueCustom(mode){;}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;

@@ -130,7 +130,7 @@ void ESceneObjectTools::FillAppendRandomProperties()
     PHelper.CreateFlag<Flags32>	(items,"Rotate",&m_Flags, flAppendRandomRotation);
     PHelper.CreateAngle3		(items,"Rotate\\Minimum",&m_AppendRandomMinRotation);
     PHelper.CreateAngle3		(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
-    V=PHelper.CreateALibObject	(items,"Objects",&temp); V->Owner()->subitem = 32;
+    V=PHelper.CreateChoose		(items,"Objects",&temp,smObject); V->Owner()->subitem = 32;
 
     m_Props->AssignItems		(items,true);
     
