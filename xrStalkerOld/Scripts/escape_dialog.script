@@ -33,7 +33,7 @@ end
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:has_info("escape_stalker_done") and
+	   actor:has_info("escape_stalker_to_trader_done") and
 	   actor:dont_has_info("escape_blockpost_case") and
 	   actor:dont_has_info("escape_blockpost_case_have") and
 	   actor:dont_has_info("escape_blockpost_case_done")
@@ -46,8 +46,8 @@ function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	first_speaker:transfer_item (case, second_speaker)
 	second_speaker:transfer_money (500, first_speaker)
-	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 2)		
-	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 0)
+	first_speaker:set_task_state(task.completed, "esc_blockpost_case_to_trader", 2)		
+	first_speaker:set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
 end
 
 --' Escape trader artefact
@@ -101,6 +101,27 @@ function trader_need_military_document(first_speaker, second_speaker)
 	end
 	return false
 end
+
+--' Wolf has a job
+function wolf_dont_has_job(first_speaker, second_speaker)
+    if wolf_need_dynamite(first_speaker, second_speaker) == false
+	then
+		return true
+	end
+	return false
+end
+function wolf_need_dynamite(first_speaker, second_speaker)
+	local actor = level.actor()
+    if actor ~= nil and
+	   actor:dont_has_info("esc_dynamite_start") and
+	   actor:dont_has_info("esc_dynamite_have") and
+	   actor:dont_has_info("esc_dynamite_done")
+	then
+		return true
+	end
+	return false
+end
+
 
 --' Escape dynamite for Wolf
 function have_dynamite(first_speaker, second_speaker)

@@ -49,7 +49,7 @@
         <text>Про Стрелка не слышал?</text>
     </string>
     <string id="escape_lager_hlam_flame_111">
-        <text>Попадался мне как-то костюм с надписью &amp;amp;amp;amp;amp;quot;группировка Стрелка&amp;amp;amp;amp;amp;quot;. Перепродал с хорошим наваром. Что-то такое увидишь - тащи ко мне.</text>
+        <text>Попадался мне как-то костюм с надписью &amp;amp;amp;amp;amp;amp;amp;amp;quot;группировка Стрелка&amp;amp;amp;amp;amp;amp;amp;amp;quot;. Перепродал с хорошим наваром. Что-то такое увидишь - тащи ко мне.</text>
     </string>
     <string id="escape_lager_hlam_flame_12">
         <text>Как жизнь? Чем занимаешься?</text>
@@ -65,6 +65,12 @@
     </string>
     <string id="escape_lager_hlam_hello_0">
         <text>Здравствуй. Не желаешь чего нибудь продать?</text>
+    </string>
+    <string id="escape_lager_volk_dynamite_done_0">
+        <text>Возьми динамит. Теперь ты свободен.</text>
+    </string>
+    <string id="escape_lager_volk_dynamite_done_1">
+        <text>Да! При первой же возможности рвану подальше из зоны, продам хабар и на море отдыхать!</text>
     </string>
     <string id="escape_lager_volk_flame_0">
         <text>Можно задать тебе пару вопросов?</text>
@@ -85,7 +91,7 @@
         <text>Что за Бармен такой?</text>
     </string>
     <string id="escape_lager_volk_flame_11111">
-        <text>На заводе &amp;amp;amp;amp;amp;amp;amp;quot;Росток&amp;amp;amp;amp;amp;amp;amp;quot; есть бар сталкеров. Вот он там главный. Но вход открыт только для ветеранов.</text>
+        <text>На заводе &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Росток&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; есть бар сталкеров. Вот он там главный. Но вход открыт только для ветеранов.</text>
     </string>
     <string id="escape_lager_volk_flame_1112">
         <text>А где находится лагерь Ученых?</text>
@@ -100,7 +106,7 @@
         <text>Большинство разбогатеть хотят - на артефакты охотятся. Однако есть кое-что получше, чем россыпь артефактов… Исполнитель желаний там, а это гораздо ценнее любых богатств.</text>
     </string>
     <string id="escape_lager_volk_flame_1211">
-        <text>&amp;amp;amp;amp;amp;amp;amp;quot;Исполнитель желаний&amp;amp;amp;amp;amp;amp;amp;quot;? Это еще что такое?</text>
+        <text>&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Исполнитель желаний&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;? Это еще что такое?</text>
     </string>
     <string id="escape_lager_volk_flame_12111">
         <text>Сам не знаю. Но он там точно есть... Я надеюсь…</text>
@@ -128,6 +134,27 @@
     </string>
     <string id="escape_lager_volk_hello_12">
         <text>Привет. Мне передали, что ты одного из наших от смерти спас. Спасибо тебе. Держи артефакт в знак нашей благодарности - его можешь поменять у Торговца на оружие, патроны или еду.</text>
+    </string>
+    <string id="escape_lager_volk_job_0">
+        <text>Есть чем заняться?</text>
+    </string>
+    <string id="escape_lager_volk_job_1">
+        <text>Я давно уже в зоне. Сыт этим всем по горло. Рвануть решил. Все спланировал, как через военных прорваться. Не хватает только динамита. Мои ребята несли его мне, да бандиты их отловили и обокрали. Вот теперь надо вернуть обратно. Бандиты сейчас обосновались на фабрике, мои ребята их там рядом караулят. Вообщем дело такое - принесешь мне динамит - я в долгу не останусь.</text>
+    </string>
+    <string id="escape_lager_volk_job_11">
+        <text>Хорошо, по рукам.</text>
+    </string>
+    <string id="escape_lager_volk_job_111">
+        <text>Договорились. Осторожнее там смотри.</text>
+    </string>
+    <string id="escape_lager_volk_job_12">
+        <text>Не, давай уж как нибудь сам.</text>
+    </string>
+    <string id="escape_lager_volk_job_121">
+        <text>Ты такой же трус, как и все.</text>
+    </string>
+    <string id="escape_lager_volk_job_2">
+        <text>Ничего нет.</text>
     </string>
     <string id="escape_raid_wounded_0">
         <text>Слышь, худо мне. Возвращался из рейда глубокого, почти до мертвого города добрался, много интересного видел. А когда возвращался, нарвался на кровососа, еле живой ушел. Поделись аптечкой, если есть.</text>
@@ -167,6 +194,12 @@
     </string>
     <string id="escape_trader_done_blockpost_box_2">
         <text>Тааак, 1000 или нет, 500 рублей и мы в рассчете.</text>
+    </string>
+    <string id="escape_trader_done_gift_0">
+        <text>Тут тебе сталкер этот, который из зоны покалеченный вернулся, передал [передан абстрактный предмет торговцу].</text>
+    </string>
+    <string id="escape_trader_done_gift_1">
+        <text>Ага, спасибо.</text>
     </string>
     <string id="escape_trader_jobs_0">
         <text>Какая у тебя есть работа?</text>

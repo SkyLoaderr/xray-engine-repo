@@ -175,12 +175,12 @@
 		<task>esc_dinamit_to_volk</task>
 	</info_portion>
 
-	<info_portion id="escape_dynamite_gain">
-		<disable>esc_dinamite_start</disable>
+	<info_portion id="escape_dynamite_have">
+		<disable>escape_dynamite_start</disable>
 	</info_portion>
 
 	<info_portion id="escape_dynamite_done">
-		<disable>esc_dinamite_start</disable>
+		<disable>escape_dynamite_start</disable>
 	</info_portion>
 
 

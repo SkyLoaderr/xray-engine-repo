@@ -25,6 +25,8 @@
 					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
 		<actor_dialog>escape_lager_volk_flame</actor_dialog>
+		<actor_dialog>escape_lager_volk_job</actor_dialog>
+		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_esc_bariga" team_default = "1">

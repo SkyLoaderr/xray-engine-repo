@@ -63,6 +63,10 @@ end
 		self.object:set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
 	end
 
+	if self.object:has_info("escape_stalker_to_trader_done") then
+		self.object:set_task_state(task.completed, "esc_wounded_to_trader_gift", 0)
+	end
+
 	if	self.object:has_info("escape_artefact_start") and
 		self.object:dont_has_info("escape_artefact_gain") and 
 		(self.object:object("af_vyvert") ~= nil or
@@ -73,14 +77,21 @@ end
 		self.object:set_task_state(task.completed, "esc_trader_need_electra_artefact", 1)
 	end 
 
---[[
-       		if self.object:has_info("escape_need_blockpost_case") and
-       		   self.object:object("quest_case_01") ~= nil
-       		then
-       			self.object:give_info_portion("escape_take_blockpost_case")
-				self.object:set_task_state(task.completed, "escape_blockpost_case", 1)
-       		end       	
+	if self.object:has_info("escape_blockpost_case") and
+	   self.object:object("quest_case_01") ~= nil
+	then
+		self.object:give_info_portion("escape_blockpost_case_have")
+		self.object:set_task_state(task.completed, "esc_blockpost_case_to_trader", 1)
+	end       	
 
+	if self.object:has_info("escape_dynamite_start") and
+	   self.object:object("dynamite") ~= nil
+	then
+		self.object:give_info_portion("escape_dynamite_have")
+		self.object:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+	end       	
+
+--[[
        		if self.object:has_info("escape_need_agroprom_documents") and
        		   self.object:object("quest_case_02") ~= nil
        		then

@@ -58,10 +58,10 @@
 	</game_task>
 
 	<game_task id="esc_wounded_to_trader_gift">
-		<title>Помочь сталкеру.</title>
+		<title>Передайте посылку торговцу.</title>
 		<objective>
-			<text>Помочь сталкеру, возвращающемуся из рейда к центру Зоны.</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<text>Передайте посылку торговцу. Возможно, это поможет и вам.</text>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
@@ -93,7 +93,7 @@
 		</objective>
 		<objective>
 			<text>Принести динамит Волку.</text>
-			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="0" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
