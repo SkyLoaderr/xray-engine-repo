@@ -42,12 +42,12 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 
 	if (data->find_chunk(OGF_GCONTAINER)) {
 		// verts
-		u32 ID				= data->r_u32				();
-		vBase				= data->r_u32				();
-		vCount				= data->r_u32				();
-		pVertices			= ::Render->getVB			(ID);
+		u32 ID				= data->r_u32					();
+		vBase				= data->r_u32					();
+		vCount				= data->r_u32					();
+		pVertices			= RImplementation.getVB			(ID);
 		pVertices->AddRef	();
-		vFormat				= ::Render->getVB_Format	(ID);
+		vFormat				= RImplementation.getVB_Format	(ID);
 		loaded_v			= true;
 
 		// indices
@@ -55,7 +55,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		iBase				= data->r_u32			();
 		iCount				= data->r_u32			();
 		dwPrimitives		= iCount/3;
-		pIndices			= ::Render->getIB		(ID);
+		pIndices			= RImplementation.getIB		(ID);
 		pIndices->AddRef	();
 		loaded_f			= true;
 	}
