@@ -56,7 +56,7 @@ struct	game_TeamState
 };
 #pragma pack(pop)
 
-class	game_GameState
+class	game_GameState : public DLL_Pure
 {
 public:
 	s32								type;

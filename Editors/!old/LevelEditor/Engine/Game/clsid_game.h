@@ -187,4 +187,12 @@
 #define CLSID_EQUIPMENT_MILITARY	MK_CLSID('E','Q','U','_','M','L','T','R')
 #define CLSID_EQUIPMENT_EXO			MK_CLSID('E','Q','U','_','E','X','O',' ')
 
+// Game types
+#define CLSID_GAME_SINGLE			MK_CLSID('G','M','_','S','I','N','G','L')
+#define CLSID_GAME_DEATHMATCH		MK_CLSID('G','M','_','D','M',' ',' ',' ')
+#define CLSID_GAME_CTF				MK_CLSID('G','M','_','C','T','F',' ',' ')
+#define CLSID_GAME_ASSAULT			MK_CLSID('G','M','_','A','S','S','L','T')
+#define CLSID_GAME_CS				MK_CLSID('G','M','_','C','S',' ',' ',' ')
+#define CLSID_GAME_TEAMDEATHMATCH	MK_CLSID('G','M','_','T','D','M',' ',' ')
+#define CLSID_GAME_ARTEFACTHUNT		MK_CLSID('G','M','_','A','H','U','N','T')
 
