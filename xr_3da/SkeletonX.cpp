@@ -192,7 +192,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			}
 			if	(1==bids.size())	{
 				// HW- single bone
-				RenderMode						= RM_SINGLE;
+				RenderMode						= hw_bones?RM_SINGLE:RM_SKINNING_SOFT;
 				RMS_boneid						= *bids.begin();
 				Render->shader_option_skinning	(0);
 			} else if (sw_bones<=hw_bones) {
