@@ -7,8 +7,6 @@
 // added to an action list.
 #include "stdafx.h"
 
-#include "general.h"
-
 namespace PAPI{
 
 extern void _pAddActionToList(ParticleAction *S, int size);
