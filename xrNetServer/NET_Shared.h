@@ -10,6 +10,12 @@
 	#pragma comment(lib,	"x:\\xrNetServer"	)
 #endif
 
+XRNETSERVER_API Flags32	psNET_Flags;
+XRNETSERVER_API int		psNET_ClientUpdate;
+XRNETSERVER_API int		psNET_ClientPending;
+XRNETSERVER_API char	psNET_Name;
+XRNETSERVER_API int		psNET_Port;
+
 IC u32 TimeGlobal(CTimer* timer)
 {
 	u64	qTime	= timer->GetElapsed_clk();
