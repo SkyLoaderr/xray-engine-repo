@@ -47,7 +47,7 @@
 
 #define RANDOM_JOINT_ORDER
 //#define FAST_FACTOR	//use a factorization approximation to the LCP solver (fast, theoretically less accurate)
-#define SLOW_LCP		//use the old LCP solver
+#define SLOW_LCP      //use the old LCP solver
 //#define NO_ISLANDS    //does not perform island creation code (3~4% of simulation time), body disabling doesn't work
 //#define TIMING
 
@@ -131,6 +131,7 @@ MultiplyAdd2_sym_p8p (dReal * A, dReal * B, dReal * C, int p, int Askip)
 
 
 // this assumes the 4th and 8th rows of B are zero.
+
 static void
 Multiply0_p81 (dReal * A, dReal * B, dReal * C, int p)
 {
@@ -174,6 +175,7 @@ MultiplyAdd0_p81 (dReal * A, dReal * B, dReal * C, int p)
 
 
 // this assumes the 4th and 8th rows of B are zero.
+
 static void
 Multiply1_8q1 (dReal * A, dReal * B, dReal * C, int q)
 {
@@ -636,17 +638,14 @@ dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * Gin
 void
 dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoint * const *_joints, int nj, dReal stepsize, int maxiterations)
 {
-	if ( 0 == (maxiterations%2)) maxiterations++;	// make 1 center iteration
-	//maxiterations = 2*maxiterations + 1;
-
 #   ifdef TIMING
 	dTimerNow ("preprocessing");
 #   endif
-	dxBody	*bodyPair[2], *body;
-	dReal	*GIPair[2], *GinvIPair[2];
+	dxBody *bodyPair[2], *body;
+	dReal *GIPair[2], *GinvIPair[2];
 	dxJoint *joint;
-	int		iter, b, j, i;
-	dReal	ministep = stepsize / maxiterations;
+	int iter, b, j, i;
+	dReal ministep = stepsize / maxiterations;
 
 	// make a local copy of the joint array, because we might want to modify it.
 	// (the "dxJoint *const*" declaration says we're allowed to modify the joints
@@ -859,9 +858,10 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 				GIPair[0] = globalI + bodyPair[0]->tag * 12;
 				GinvIPair[0] = globalInvI + bodyPair[0]->tag * 12;
 			}
-			if (bodyPair[1])	{
-				GIPair[1]		= globalI + bodyPair[1]->tag * 12;
-				GinvIPair[1]	= globalInvI + bodyPair[1]->tag * 12;
+			if (bodyPair[1])
+			{
+				GIPair[1] = globalI + bodyPair[1]->tag * 12;
+				GinvIPair[1] = globalInvI + bodyPair[1]->tag * 12;
 			}
 
 			joints[j]->vtable->getInfo2 (joints[j], Jinfo + j);
@@ -879,7 +879,8 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		dTimerNow ("moving bodies");
 #	endif
 		//Now we can simulate all the free floating bodies, and move them.
-		for (b = 0; b < nb; b++) {
+		for (b = 0; b < nb; b++)
+		{
 			body = bodies[b];
 
 			for (i = 0; i < 4; i++)
@@ -903,6 +904,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		for (j = 0; j < 4; j++)
 			bodies[b]->facc[j] = bodies[b]->tacc[j] = 0;
 }
+
 
 #ifdef NO_ISLANDS
 
@@ -1110,56 +1112,4 @@ void dWorldStepFast1 (dWorldID w, dReal stepsize, int maxiterations)
 	dUASSERT (w, "bad world argument");
 	dUASSERT (stepsize > 0, "stepsize must be > 0");
 	processIslandsFast (w, stepsize, maxiterations);
-}
-tions);
-}
-size > 0, "stepsize must be > 0");
-	processIslandsFast (w, stepsize, maxiterations);
-}
-SSERT (w, "bad world argument");
-	dUASSERT (stepsize > 0, "stepsize must be > 0");
-	processIslandsFast (w, stepsize, maxiterations);
-}
-psize > 0, "stepsize must be > 0");
-	processIslandsFast (w, stepsize, maxiterations);
-}
-size, maxiterations);
-}
- 0");
-	processIslandsFast (w, stepsize, maxiterations);
-}
-| (j->node[1].body && (j->node[1].body->flags & dxBodyDisabled) == 0))
-		{
-			if (!j->tag)
-				dDebug (0, "attached enabled joint not tagged");
-		}
-		else
-		{
-			if (j->tag)
-				dDebug (0, "unattached or disabled joint tagged");
-		}
-	}
-# endif
-
-#	ifdef TIMING
-	dTimerEnd ();
-	dTimerReport (stdout, 1);
-#	endif
-}
-
-#endif
-
-
-void dWorldStepFast1 (dWorldID w, dReal stepsize, int maxiterations)
-{
-	dUASSERT (w, "bad world argument");
-	dUASSERT (stepsize > 0, "stepsize must be > 0");
-	processIslandsFast (w, stepsize, maxiterations);
-}
-sFast (w, stepsize, maxiterations);
-}
- (stepsize > 0, "stepsize must be > 0");
-	processIslandsFast (w, stepsize, maxiterations);
-}
-stepsize, maxiterations);
 }
