@@ -144,13 +144,18 @@ void game_sv_GameState::OnRoundStart			()
 		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
 	}
 	Unlock	();
+
+	signal_Syncronize	();
 }
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
 {
 	phase		= GAME_PHASE_PENDING;
+
+	signal_Syncronize	();
 }
 
 void game_sv_GameState::OnPlayerConnect			(u32 id_who, LPCSTR options)
 {
+	signal_Syncronize	();
 }
