@@ -112,7 +112,7 @@ void	CBuild::BuildCForm	()
 	clMsg					("   faces: was[%d], now[%d] => %f %% left",nf_before,nf_after, 100.f*float(nf_after)/float(nf_before) );
 
 	// Decimate
-	Status		("Refactoring CFORM...");
+	Status			("Refactoring CFORM...");
 	Fbox BB;	BB.invalidate();
 	_mesh::VertexIter	vit	=mesh.vertices_begin(),vend=mesh.vertices_end();
 	for (; vit!=vend; ++vit)
@@ -142,8 +142,9 @@ void	CBuild::BuildCForm	()
 	Status			("Saving...");
 	string512		fn;
 	IWriter*		MFS	= FS.w_open	(strconcat(fn,pBuild->path,"level.cform"));
+	
 	// Header
-	hdrCFORM hdr;
+	hdrCFORM		hdr;
 	hdr.version		= CFORM_CURRENT_VERSION;
 	hdr.vertcount	= (u32)CL.getVS();
 	hdr.facecount	= (u32)CL.getTS();
