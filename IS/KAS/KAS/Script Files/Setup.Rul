@@ -688,9 +688,11 @@ begin
 	// Note: the ISUS Starter Edition does not support checking for updates programatically.  So, 
 	// only set this to true if you have at least the ISUS Professional Edition.
 	bShowUpdateServiceDlg = FALSE;
-    
+
+	// Delete ServiceManager icon
+    DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
+
     //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
-    
     if ( BATCH_INSTALL ) then
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
     else
