@@ -442,7 +442,7 @@ void CEntityCondition::UpdatePower()
 }
 void CEntityCondition::UpdateSatiety()
 {
-	if (Game().type != GAME_SINGLE) return;
+	if (GameID() != GAME_SINGLE) return;
 	if(m_fSatiety>0)
 	{
 		m_fDeltaSatiety -= m_fV_Satiety*
