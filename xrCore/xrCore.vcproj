@@ -179,7 +179,7 @@
 				TreatWChar_tAsBuiltInType="FALSE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				PrecompiledHeaderFile=".\Mixed/xrCore.pch"
 				AssemblerOutput="0"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
