@@ -185,15 +185,15 @@
 	</bar_hunter_spot>
 
 	<bar_dolg_arhive_document_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_dolg_arhive_document_spot>
 
 	<bar_dolg_petrenko_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_dolg_petrenko_spot>
 
 	<bar_dolg_voronin_spot x="0" y="0" width="32" height="32" alignment="c">
-		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_dolg_voronin_spot>
 
 	<bar_dolg_captain_ivancov_spot x="0" y="0" width="32" height="32" alignment="c">
