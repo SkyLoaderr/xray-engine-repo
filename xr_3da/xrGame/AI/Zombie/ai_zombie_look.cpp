@@ -160,6 +160,7 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 		//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
+	return;
 	if (g_Health() <= 0) {
 		tpaDynamicSounds.clear();
 		return;
@@ -240,6 +241,7 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 void CAI_Zombie::SelectSound(int &iIndex)
 {
 	iIndex = -1;
+	return;
 	float fMaxPower = 0.f;
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if ((!tpaDynamicSounds[i].tpEntity) || (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
