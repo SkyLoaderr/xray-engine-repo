@@ -165,7 +165,7 @@ public:
 				u16									ID;
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
-				P.r_string							(fName);
+				P.r_stringZ							(fName);
 				CSE_Abstract						*E = create_object(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);

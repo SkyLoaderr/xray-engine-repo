@@ -102,7 +102,7 @@ public:
 			P.r_begin			(ID);
 			R_ASSERT2			(M_SPAWN==ID,"ID doesn't match to the spawn-point ID!");
 			string64			s_name;
-			P.r_string			(s_name);
+			P.r_stringZ			(s_name);
 			// create server entity
 			CSE_Abstract		*E = create_object(s_name);
 			if (!E) {
