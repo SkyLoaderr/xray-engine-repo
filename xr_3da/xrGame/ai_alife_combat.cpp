@@ -276,12 +276,13 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 {
 	tpALifeCreatureAbstract->fHealth		= 0;
 	
-	if (tpALifeSchedulable) {
-		CSE_ALifeAnomalousZone				*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable);
-		R_ASSERT2							(l_tpALifeAnomalousZone,"Invalid object class");
-		vfAssignArtefactPosition			(l_tpALifeAnomalousZone,tpALifeCreatureAbstract);
-		return;
-	}
+#pragma todo("If monster is killed by anomaly then assign its position on the artefact spawn position of this anomaly")
+//	if (tpALifeSchedulable) {
+//		CSE_ALifeAnomalousZone				*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable);
+//		R_ASSERT2							(l_tpALifeAnomalousZone,"Invalid object class");
+//		vfAssignArtefactPosition			(l_tpALifeAnomalousZone,tpALifeCreatureAbstract);
+//		return;
+//	}
 
 	SLevelPoint*							l_tpaLevelPoints = (SLevelPoint*)(((u8*)getAI().m_tpaGraph) + getAI().m_tpaGraph[tGraphID].dwPointOffset);
 	u32										l_dwDeathpointIndex = randI(getAI().m_tpaGraph[tGraphID].tDeathPointCount);
