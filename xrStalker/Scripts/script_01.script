@@ -37,9 +37,8 @@ function main()
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 	sound_cough:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(2000)
+	wait		(3000)
 	sound_holodno:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(2000)
  	action(                                                                                                       
 	    stalker1,
 	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
