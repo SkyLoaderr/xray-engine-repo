@@ -295,7 +295,7 @@ void CActor::Load	(LPCSTR section )
 	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"), SOUND_TYPE_MONSTER_DYING);
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"), SOUND_TYPE_MONSTER_DYING);
 
-	m_HeavyBreathSnd.create(FALSE, pSettings->r_string(section,"heavy_breath_snd"), SOUND_TYPE_MONSTER_INJURING);
+	m_HeavyBreathSnd.create(TRUE, pSettings->r_string(section,"heavy_breath_snd"), SOUND_TYPE_MONSTER_INJURING);
 	m_bHeavyBreathSndPlaying = false;
 
 	cam_Set					(eacFirstEye);
