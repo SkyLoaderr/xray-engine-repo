@@ -69,7 +69,9 @@ public:
 	CStatTimer	RenderDUMP_HUD;		// ...hud rendering
 	CStatTimer	RenderDUMP_Glows;	// ...glows vis-testing,sorting,render
 	CStatTimer	RenderDUMP_WM;		// ...walmark sorting, rendering
-	CStatTimer	RenderDUMP_Detail;	// ...details
+	CStatTimer	RenderDUMP_DT_VIS;	// ...details visibility detection
+	CStatTimer	RenderDUMP_DT_Render;// ...details rendering
+	CStatTimer	RenderDUMP_DT_Cache;// ...details slot cache access
 	CStatTimer	RenderDUMP_Shads;	// ...shadows building, rendering
 
 	CStatTimer	Sound;				// total time taken by sound subsystem (accurate only in single-threaded mode)
