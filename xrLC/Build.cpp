@@ -133,14 +133,13 @@ CBuild::CBuild(b_transfer * L)
 		R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
 		
 		// load surface if it has an alpha channel or has "implicit lighting" flag
-		Msg("- loading: %s",N);
-		DWORD		w=0,h=0;
-		BT.pSurface = Surface_Load(N,w,h);
-		BT.dwWidth	= w;
-		BT.dwHeight	= h;
+		BT.dwWidth	= BT.THM.width;
+		BT.dwHeight	= BT.THM.height;
 		BT.bHasAlpha= BT.THM.HasAlphaChannel();
 		if (BT.bHasAlpha || (BT.THM.flag.bImplicitLighted))	
 		{
+			Msg			("- loading: %s",N);
+			BT.pSurface = Surface_Load(N,w,h);
 			BT.Vflip	();
 		} else {
 			// Free surface memory
