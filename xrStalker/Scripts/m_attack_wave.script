@@ -5,7 +5,7 @@ function boar_callback (obj, action_type, index)
     local ptr = patrol (obj:patrol ())
 
 	if ptr:flag (index, 1) == false then return end
-	action_first (obj, anim ("stand_attack_1"), move (move.act_stand_idle, move.default, obj:position ()), cond (cond.anim_end))
+	action_first (obj, anim ("stand_attack_1"), cond (cond.anim_end))
 	obj:clear_callback (game_object.movement)
 
 end
