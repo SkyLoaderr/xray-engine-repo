@@ -326,6 +326,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item 	= tvItems->Selected;
     PropItemVec 		items;
+    lbItemName->Caption	= "";
+    lbHint->Caption    	= "";
 	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
     	if (ebExt->Down&&!item_select_event.empty())	
         	item_select_event	((SChooseItem*)Item->Tag,items);

@@ -226,6 +226,7 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name, bool
 	TElTreeItem* last_node=0;
 	AnsiString fld;
 	int fld_cnt = _GetItemCount(full_name.c_str(),'\\')-1;
+    if (full_name[full_name.Length()]=='\\') fld_cnt++;
     _GetItems(full_name.c_str(),0,fld_cnt,fld,'\\');
 //.
     TElTreeItem* fld_node = !fld.IsEmpty()?FindItem/*FindFolder*/(tv,fld,&last_node,&idx):0;
