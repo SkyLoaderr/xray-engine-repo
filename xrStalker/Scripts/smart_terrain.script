@@ -522,7 +522,7 @@ function cl_smart_terrain:free_npc( obj_id )
 	n = type( o )
 	-- если объект уже порождён в онлайн, то вернуть его изначальные параметры.
 	if n == "userdata" then
-		self.gulag:removeObject( obj_id )
+		self.gulag:removeObject( obj_id, o )
 
 --		n = self.npcs[obj_id]
 --		o:change_team( o:team(), n.squad, n.group )

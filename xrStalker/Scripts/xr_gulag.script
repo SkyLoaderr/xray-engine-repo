@@ -1,7 +1,6 @@
 -- Автор:     Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
 fraction = {}
-restrictors = {}
 
 local i
 
@@ -23,6 +22,7 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 
 	self.Object = {}
 	self.Job = {}
+	self.restrictors = {}
 
 	self.ObjectJob = {}
 
@@ -49,13 +49,19 @@ function fract:spawn_callback( id, obj )
 
 		-- восстановить на работе, если она у него была
 		if self.ObjectJob[id] then
-			self.Job[self.ObjectJob[id]].object = obj
+			local job = self.Job[self.ObjectJob[id]]
+
+			job.object = obj
+
+			self.restrictors[id] = { r_in = job.in_rest, r_out = job.out_rest }
 		end
 	end
 end
-function fract:removeObject( npc_id )
+function fract:removeObject( npc_id, npc )
 	self:clearAllJob( npc_id )
-	self.Object[npc_id] = nil
+	self:set_restrictions( npc, "", "" )
+	self.Object[npc_id]      = nil
+	self.restrictors[npc_id] = nil
 end
 function fract:all_spawned()
 	for k,v in self.Object do
@@ -207,7 +213,7 @@ function fract:setJob(npc, job)
 	job.begin  = game.time()
 
 	--' Спейс рестрикторы
-	self:add_restrictor(job.object, job.out_rest, job.in_rest)
+	self:set_restrictions(job.object, job.out_rest, job.in_rest)
 
 	xr_logic.configure_schemes(npc, gulag_tasks_ltx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
 	local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
@@ -217,40 +223,66 @@ function fract:setJob(npc, job)
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 end
 
-function fract:add_restrictor(npc, r_out, r_in)
+function fract:set_restrictions(npc, r_out, r_in)
+	printf( "RESTR NPC        : %s", npc:name() )
+	printf( "RESTR HAVE (IN)  : %s", npc:in_restrictions() )
+	printf( "RESTR HAVE (OUT) : %s", npc:out_restrictions() )
+	printf( "RESTR NEED (IN)  : %s", r_in )
+	printf( "RESTR NEED (OUT) : %s", r_out )
 
-	if string.find(npc:in_restrictions(), r_in) then
-		r_in	= ""
+	-- узнать, какие рестрикторы уже были назначены гулагом
+	local restr = self.restrictors[npc:id()]
+
+	if not restr then
+		self.restrictors[npc:id()] = {}
+		restr = self.restrictors[npc:id()]
 	end
 
-	if string.find(npc:out_restrictions(), r_out) then
-		r_out	= ""
+	local r_in_old  = restr.r_in  or ""
+	local r_out_old = restr.r_out or ""
+
+	-- удалить те, что были проставлены гулагом
+	local change_r_in, change_r_out = "", ""
+
+	if r_in_old ~= "" and r_in_old ~= r_in then
+		change_r_in = r_in_old
+		restr.r_in  = nil
 	end
 
-	printf		("RESTR HOLD       : %s", npc:name())
-
-	--' Удаляем старые рестрикторы
-	if restrictors[npc:id()] ~= nil and (restrictors[npc:id()].r_in ~= "" or 
-								        restrictors[npc:id()].r_out ~= "") 
-	then
-		printf(  "RESTR REMOVE(IN) : %s", restrictors[npc:id()].r_in )
-		printf(  "RESTR REMOVE(OUT): %s", restrictors[npc:id()].r_out )
-		npc:remove_restrictions(restrictors[npc:id()].r_out, restrictors[npc:id()].r_in)
+	if r_out_old ~= "" and r_out_old ~= r_out then
+		change_r_out = r_out_old
+		restr.r_out  = nil
 	end
 
-	printf		("RESTR HAVE (IN)  : %s", npc:in_restrictions())
-	printf		("RESTR HAVE (OUT) : %s", npc:out_restrictions())
-	printf		("RESTR NEED (IN)  : %s", r_in)
-	printf		("RESTR NEED (OUT) : %s", r_out)
+	if change_r_in ~= "" or change_r_out ~= "" then
+		printf( "RESTR REMOVE(IN) : %s", change_r_in )
+		printf( "RESTR REMOVE(OUT): %s", change_r_out )
 
-	--' Добавляем новые рестрикторы	
-	if r_in ~= "" or r_out ~= "" then
-		npc:add_restrictions(r_out, r_in)
-		restrictors[npc:id()] = {r_in = r_in, r_out = r_out}
+		npc:remove_restrictions( change_r_out, change_r_in )
 	end
 
-	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
-	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
+	-- поставить новые
+	change_r_in, change_r_out = "", ""
+
+	if r_in ~= "" and r_in_old ~= r_in then
+		change_r_in = r_in
+		restr.r_in  = r_in
+	end
+
+	if r_out ~= "" and r_out_old ~= r_out then
+		change_r_out = r_out
+		restr.r_out  = r_out
+	end
+
+	if change_r_in ~= "" or change_r_out ~= "" then
+		printf( "RESTR ADD(IN)    : %s", change_r_in )
+		printf( "RESTR ADD(OUT)   : %s", change_r_out )
+
+		npc:add_restrictions( change_r_out, change_r_in )
+	end
+
+	printf( "RESTR AFTER (IN) : %s", npc:in_restrictions()  )
+	printf( "RESTR AFTER (OUT): %s", npc:out_restrictions() )
 end
 
 function fract:getJob(npc)
