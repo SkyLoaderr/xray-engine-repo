@@ -128,7 +128,7 @@ void CAI_ALife::vfNewGame()
 
 void CAI_ALife::Save()
 {
-	CMemoryWriter					tStream;
+	CMemoryWriter				tStream;
 	CALifeHeader::Save			(tStream);
 	CALifeGameTime::Save		(tStream);
 	CALifeObjectRegistry::Save	(tStream);
@@ -159,7 +159,7 @@ void CAI_ALife::Load()
 	m_fTimeFactor				= pSettings->ReadFLOAT	("alife","time_factor");
 
 	string256					caFileName;
-	CStream						*tpStream;
+	IReader						*tpStream;
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
 		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
 		tpStream				= Engine.FS.Open(caFileName);
