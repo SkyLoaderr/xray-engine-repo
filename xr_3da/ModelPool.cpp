@@ -70,6 +70,7 @@ FBasicVisual*	CModelPool::Instance_Duplicate	(FBasicVisual* V)
 	N->Copy	(V);
 	return N;
 }
+
 FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 {
 	FBasicVisual	*V;
@@ -81,12 +82,16 @@ FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 	else				strcpy		(name,N);
 
 	// Load data from MESHES or LEVEL
-	if (!Engine.FS.Exist(fn, Path.Current, name))
-		if (!Engine.FS.Exist(fn, Path.Meshes, name)){
-			Msg("Can't find model file '%s'.",name);
-			THROW;
-		}
-
+	if (!Engine.FS.Exist(N))	{
+		if (!Engine.FS.Exist(fn, Path.Current, name))
+			if (!Engine.FS.Exist(fn, Path.Meshes, name)){
+				Msg("Can't find model file '%s'.",name);
+				THROW;
+			}
+	} else {
+		strcpy			(fn,N);
+	}
+	
 	// Actual loading
 	CFileStream			data(fn);
 	ogf_header			H;
