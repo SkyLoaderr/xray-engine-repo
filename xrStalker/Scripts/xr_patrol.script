@@ -186,7 +186,7 @@ function patrol_binder:reload (section)
 	-- // evaluators
 	manager:add_evaluator	(properties["path_end"],	this.evaluator_const	(false))
 
-	action = this.action_path (PathsAndSoldiers (self.npc:name ())
+	action = this.action_path (PathsAndSoldiers (self.npc:name ()))
 	action:add_precondition	(world_property(self.npc.property_alive,	true))
 	action:add_precondition	(world_property(self.npc.property_items,	false))
 	action:add_precondition	(world_property(self.npc.property_enemy,	false))
