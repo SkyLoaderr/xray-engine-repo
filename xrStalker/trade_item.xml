@@ -22,7 +22,7 @@ static>
 static>
 
 	<!-- DESCRIPTION -->
-	<d	<descr_list x="20" y="100" width="285" height="115" item_height="17">
+	<d	<descr_list x="20" y="100" width="285" height="105" item_height="17">
 		<font font="letterica16" r="216" g="186" b="140"/>
 descr_list>
    indow>
