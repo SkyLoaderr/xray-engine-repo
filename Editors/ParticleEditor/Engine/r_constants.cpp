@@ -164,12 +164,13 @@ void R_constant_table::merge(R_constant_table* T)
 			C->type				=	src->type;
 			C->ps				=	src->ps;
 			C->vs				=	src->vs;
+			C->samp				=	src->samp;
 			table.push_back		(C);
 		} else {
 			C->destination		|=	src->destination;
 			VERIFY	(C->type	==	src->type);
-			R_constant_load& sL	=	(src->destination&1)?src->ps:src->vs;
-			R_constant_load& dL	=	(src->destination&1)?C->ps:C->vs;
+			R_constant_load& sL	=	(src->destination&4)?src->samp:((src->destination&1)?src->ps:src->vs);
+			R_constant_load& dL	=	(src->destination&4)?C->samp:((src->destination&1)?C->ps:C->vs);
 			dL.index			=	sL.index;
 			dL.cls				=	sL.cls;
 		}
