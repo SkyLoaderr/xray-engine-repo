@@ -60,13 +60,14 @@ void CHOM::Load			()
 	CDB::Collector		CL;
 	while (!S().eof())
 	{
-		HOM_poly			P;
-		S().r				(&P,sizeof(P));
-		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,P.flags,0.01f);
+		HOM_poly				P;
+		S().r					(&P,sizeof(P));
+		CL.add_face_packed_D	(P.v1,P.v2,P.v3,P.flags,0.01f);
 	}
 	
 	// Determine adjacency
-	CL.calc_adjacency	();
+	xr_vector<u32>		adjacency;
+	CL.calc_adjacency	(adjacency);
 
 	// Create RASTER-triangles
 	m_pTris				= (occTri*) xr_malloc(CL.getTS()*sizeof(occTri));
@@ -77,11 +78,11 @@ void CHOM::Load			()
 		Fvector&	v0	= CL.getV()[clT.IDverts()[0]];
 		Fvector&	v1	= CL.getV()[clT.IDverts()[1]];
 		Fvector&	v2	= CL.getV()[clT.IDverts()[2]];
-		rT.adjacent[0]	= (CDB::edge_open==clT.IDadj()[0])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[0]);
-		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[1]);
-		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[2]);
+		rT.adjacent[0]	= (0xffffffff==adjacency[3*it+0])?((occTri*) 0xffffffff):(m_pTris+adjacency[3*it+0]);
+		rT.adjacent[1]	= (0xffffffff==adjacency[3*it+1])?((occTri*) 0xffffffff):(m_pTris+adjacency[3*it+1]);
+		rT.adjacent[2]	= (0xffffffff==adjacency[3*it+2])?((occTri*) 0xffffffff):(m_pTris+adjacency[3*it+2]);
 		rT.flags		= clT.dummy;
-		rT.area			= Area(v0,v1,v2);
+		rT.area			= Area	(v0,v1,v2);
 		rT.plane.build	(v0,v1,v2);
 		rT.skip			= 0;
 	}
@@ -90,7 +91,6 @@ void CHOM::Load			()
 	m_pModel			= xr_new<CDB::MODEL> ();
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	bEnabled			= TRUE;
-	m_ZB.clear			();
 }
 
 void CHOM::Unload		()
@@ -136,8 +136,6 @@ void CHOM::Render_DB	(CFrustum& base)
 	{
 		// Control skipping
 		occTri& T		= m_pTris	[it->id];
-		m_ZB.push_back	(it->id);
-
 		if (T.skip)		{ T.skip--; continue; }
 		u32	next		= ::Random.randI(3,10);
 
@@ -174,7 +172,6 @@ void CHOM::Render		(CFrustum& base)
 	if (!bEnabled)		return;
 	
 	Device.Statistic.RenderCALC_HOM.Begin	();
-	m_ZB.clear			();
 	Raster.clear		();
 	Render_DB			(base);
 	Raster.propagade	();

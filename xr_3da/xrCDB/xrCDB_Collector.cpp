@@ -76,7 +76,7 @@ namespace CDB
 
 	void	Collector::calc_adjacency	(xr_vector<u32>& dest)
 	{
-		dest.resize						(faces.size()*3);
+		dest.assign		(faces.size()*3,0xffffffff);
 		// Dumb algorithm O(N^2) :)
 		for (u32 f=0; f<faces.size(); f++)
 		{
