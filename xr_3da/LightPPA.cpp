@@ -10,6 +10,7 @@
 
 const DWORD MAX_POLYGONS=1024;
 const float MAX_DISTANCE=50.f;
+const DWORD LID_HELPER  =500; 
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -110,6 +111,8 @@ void CLightPPA_Manager::Render()
 	D3D.attenuation0		= 1.f;
 	D3D.attenuation1		= 0;
 	D3D.attenuation2		= 0;
+	CHK_DX					(HW.pDevice->SetLight	(DE_LightID,DE.d3d()));
+	CHK_DX					(HW.pDevice->LightEnable(DE_LightID,TRUE));
 
 	Device.Shader.Set		(SH);
 	for (DWORD L=0; L<container.size(); L++)
@@ -122,7 +125,7 @@ void CLightPPA_Manager::Render()
 		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
 		// Setup D3D light
-		D3D.diffuse.mul_rgb	(PPL.color,alpha);
+		D3D.diffuse.mul_rgb	(PPL.color,1-alpha);
 		D3D.position.set	(PPL.sphere.P);
 
 		// Calculations and rendering
