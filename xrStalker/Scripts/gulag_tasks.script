@@ -21,8 +21,37 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	if type == "garbage_bandits" then
+		t = { section = "walker1@garbage_bandits",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@garbage_bandits",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+	end
+	if type == "garbage_stalkers" then
+		t = { section = "walker1@garbage_stalkers",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@garbage_stalkers",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+	end
+	
 	if type == "blockpost" then
-		t = { section = "esc_bl_sleeper_1",
+		t = { section = "sleeper1",
 			idle = 0,
 			prior = 0, state = {0},
 			in_rest = "", out_rest = ""
@@ -42,6 +71,25 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
+	if type == "garbage_stalkers" or type == "garbage_bandits" then
+		return function(gulag)
+			if gulag.state == 1 then return 1 end
+			
+			local actor = level.actor()
+			local zone = level.object("garbage_shooting")
+			if actor ~= nil and zone ~= nil then
+				local st = actor:position():distance_to(zone:position())
+				printf("%s", st)
+				if st < 10 then
+					return 1
+				else
+					return 0
+				end
+			else
+				return 0
+			end
+		end
+	end	
 end
 
 function get_megafone(type, name)
