@@ -661,6 +661,7 @@ public:
 			Level().Send		(net_packet,net_flags(TRUE));
 		}
 
+		strcat					(S,".dds");
 		FS.update_path			(S1,"$game_saves$",S);
 		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
 	}
