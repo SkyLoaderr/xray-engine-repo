@@ -276,7 +276,7 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	CEntityAlive* pPartnerEntityAlive = smart_cast<CEntityAlive*>(talk_partner);
 	R_ASSERT(pPartnerEntityAlive);
 	
-	ALife::ERelationType relation = pOurEntityAlive->tfGetRelationType(pPartnerEntityAlive);
+	ALife::ERelationType relation = talk_partner->CharacterInfo().Relations().GetRelationType(pOurEntityAlive->ID());
 
 	if(relation == ALife::eRelationTypeEnemy) return false;
 
