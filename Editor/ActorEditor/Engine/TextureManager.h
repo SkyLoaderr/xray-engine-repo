@@ -98,7 +98,7 @@ public:
 	void							_DeleteConstant		(CConstant* &C);
 	CRT*							_CreateRT			(LPCSTR Name, DWORD w, DWORD h);
 	void							_DeleteRT			(CRT* &RT);
-	DWORD							_CreateVS			(LPCSTR Name, LPDWORD decl);
+	CVS*							_CreateVS			(LPCSTR Name, LPDWORD decl);
 	void							_DeleteVS			(DWORD &VS);
 
 	// Shader compiling / optimizing
