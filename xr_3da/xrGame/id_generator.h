@@ -31,7 +31,7 @@ class CID_Generator {
 	};
 
 	enum {
-		m_tBlockCount = (u32(tMaxValue - tMinValue) + 1)/tBlockSize,
+		m_tBlockCount = u32(tMaxValue - tMinValue)/tBlockSize + 1,
 	};
 
 	TIME_BLOCK_MAP				m_tpTimeMap;
