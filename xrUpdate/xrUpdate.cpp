@@ -82,12 +82,12 @@ BOOL CxrUpdateApp::InitInstance()
 	HANDLE h_out =GetStdHandle(STD_OUTPUT_HANDLE);
 	HANDLE h_err =GetStdHandle(STD_ERROR_HANDLE);
 
-	_VerifyPath("x:\\upd_scripts\\");
-	SetCurrentDirectoryA("x:\\upd_scripts");
+	_VerifyPath("x:\\updater");
+	SetCurrentDirectoryA("x:\\updater");
 
 //	CreateShellRedirect();
 	Core._initialize("xrUpdate",log_cb_fn,FALSE);
-	FS._initialize(CLocatorAPI::flTargetFolderOnly,"x:\\upd_scripts");
+	FS._initialize(CLocatorAPI::flTargetFolderOnly,"x:\\updater");
 
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 	LoadStdProfileSettings(10);  // Load standard INI file options (including MRU)

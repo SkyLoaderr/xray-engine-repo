@@ -38,6 +38,7 @@ public:
 	ETaskType		type				()										{return m_type;};
 					CTask				();
 	virtual			~CTask				();
+	void			reparent			(CTask*t);
 	u32				sub_task_count		()										{return m_sub_tasks.size();};
 	CTask*			get_sub_task		(u32 idx);
 	void			add_sub_task		(CTask* t);
@@ -47,7 +48,7 @@ public:
 	virtual BOOL	load				(CInifile& ini, LPCSTR section);
 	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	virtual void	exec				();
-	CTask*			copy				();
+	CTask*			copy				(BOOL bRoot);
 	BOOL			section_exist		(LPCSTR s);
 };
 

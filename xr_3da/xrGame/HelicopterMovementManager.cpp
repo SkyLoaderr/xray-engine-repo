@@ -767,7 +767,9 @@ void CHelicopterMovManager::GoBySpecifiedPatrolPath()
 void CHelicopterMovManager::UpdatePatrolPath()
 {
 	float dist = m_heli->GetDistanceToDestPosition();
-	if( m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist){
+	if( (m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist) ||
+		(m_heli->m_last_point_range_dist < dist)								){
+
 		CPatrolPath::const_iterator b,e;
 		m_currPatrolPath->begin(m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){
@@ -776,7 +778,6 @@ void CHelicopterMovManager::UpdatePatrolPath()
 			m_currPatrolVertex =  m_currPatrolPath->vertex((*b).vertex_id());
 			Fvector p = m_currPatrolVertex->data().position();
 			m_heli->SetDestPosition(&p);
-			m_heli->m_last_point_range_dist = 1000000;
 
 		}else{
 			m_heli->setState(CHelicopter::eIdleState);

@@ -86,14 +86,30 @@ void CTask::add_sub_task (CTask* t)
 	m_sub_tasks.push_back(t); 
 	t->m_parent_task=this;
 }
+void CTask::reparent(CTask*t)
+{
+	if(m_parent_task){
+		m_parent_task->remove_sub_task(this);
+		m_parent_task->sort_sub_tasks();
+	};
+	m_parent_task = t;
+	m_parent_task->add_sub_task(this);
+	m_parent_task->sort_sub_tasks();
+}
 
-CTask*	CTask::copy()
+
+CTask*	CTask::copy(BOOL bRoot)
 {
 	string128 new_name;
 	CTask* t = CTaskFacrory::create_task( type() );
 	
-	strconcat(new_name,*m_name,"_copy");
+	if(bRoot)
+		strconcat(new_name,*m_name,"_copy");
+	else
+		strcpy(new_name,*m_name);
+		
 	t->set_name(new_name);
+	t->m_priority = m_priority;
 
 	copy_to(t);
 	return t;
@@ -106,8 +122,8 @@ void CTask::copy_to	(CTask* t)
 	//name&section already tuned
 	CTaskArray::iterator sub_task_it =	m_sub_tasks.begin();
 	for(;sub_task_it !=m_sub_tasks.end();++sub_task_it){
-		CTask* t_sub = (*sub_task_it)->copy();
-		add_sub_task(t_sub);
+		CTask* t_sub = (*sub_task_it)->copy(FALSE);
+		t->add_sub_task(t_sub);
 	}
 
 }

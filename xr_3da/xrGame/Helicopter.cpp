@@ -598,7 +598,10 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	if(state() != CHelicopter::eDead){
 
 	float dist = GetDistanceToDestPosition();
-	if( m_last_point_range_dist < m_on_point_range_dist)
+	if( (m_last_point_range_dist < m_on_point_range_dist) ||
+		(m_last_point_range_dist < dist)								)
+//	if( m_last_point_range_dist < m_on_point_range_dist)
+
 	{//GENARATE EVENT	
 		NET_Packet P;
 		P.write_start();
@@ -821,6 +824,8 @@ void CHelicopter::SetDestPosition (Fvector* pos)
 	point.y += m_data.m_wrk_altitude;
 
 	m_data.m_to_point = point;
+	m_last_point_range_dist = 1000000;
+
 }
 
 float CHelicopter::GetCurrAltitude()

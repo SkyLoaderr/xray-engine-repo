@@ -38,6 +38,13 @@ protected:
 	virtual void OnInitialUpdate											(); // called first time after construct
 
 // Implementation
+
+//dragging
+	CImageList		m_images;
+	CImageList*		m_pDragImage;	//содержит список изображений используемый  во  время переноса
+	BOOL			m_bLDragging;
+	HTREEITEM		m_hitemDrag,m_hitemDrop;
+
 public:
 	virtual ~CxrUpdateView();
 
@@ -63,6 +70,8 @@ protected:
 	HTREEITEM				FillTaskTree										(CTask*, HTREEITEM parent=NULL);
 	BOOL					ShowPropDlg											(CTask*);
 	void					CheckChildren										(HTREEITEM itm, BOOL b);
+	
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 protected:
 	virtual void			OnUpdate											(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
@@ -72,6 +81,12 @@ protected:
 	afx_msg void			OnAddExecuteTask									();
 	afx_msg void			OnAddBatchExecuteTask								();
 	void					TryAddNewTask										(int t);
+
+	HTREEITEM				CopyBranch											( HTREEITEM htiBranch, HTREEITEM htiNewParent, 
+																					HTREEITEM htiAfter = TVI_LAST );
+	HTREEITEM				CopyItem											( HTREEITEM hItem, HTREEITEM htiNewParent, 
+																				HTREEITEM htiAfter = TVI_LAST );
+
 public:
 	afx_msg void			OnBnClickedButtonAdd								();
 	afx_msg void			OnTvnSelchangedTree1								(NMHDR *pNMHDR, LRESULT *pResult);
@@ -86,6 +101,10 @@ public:
 
 	LRESULT					OnTvCheckbox										(WPARAM wp, LPARAM lp);
 	LRESULT					OnAddLogMsg											(WPARAM wp, LPARAM lp);
+
+	afx_msg void OnTvnBegindragTree1(NMHDR *pNMHDR, LRESULT *pResult);
+	virtual void OnMouseMove(UINT nFlags, CPoint point);
+	virtual void OnLButtonUp(UINT nFlags, CPoint point);
 
 };
 

@@ -38,7 +38,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="x:\xrUpdate.exe"
+				OutputFile="x:\updater\xrUpdate.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -48,7 +48,16 @@
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="FALSE"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="echo copying $(TargetPath) to e:\exchange2\updater
+copy $(TargetPath) e:\exchange2\updater
+echo copying xrCore.dll to e:\exchange2\updater
+copy x:\xrCore.dll e:\exchange2\updater
+echo copying xrUpdate.exe to e:\exchange2\updater
+copy x:\xrUpdate.exe e:\exchange2\updater
+echo copying xrCore.dll to x:\updater
+copy x:\xrCore.dll x:\updater
+"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool

@@ -12,6 +12,7 @@
 #include "SectionQueryDlg.h"
 #include "ExecAppTaskDlgProp.h"
 #include "BatchTaskDlgProp.h"
+#include ".\xrupdateview.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,6 +45,9 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButtonAdd)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, OnTvnSelchangedTree1)
 	ON_BN_CLICKED(IDC_BTN_RUN, OnBnClickedBtnRun)
+	ON_WM_CREATE()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
 
 	ON_MESSAGE(UWM_TV_CHECKBOX, OnTvCheckbox)
 
@@ -61,6 +65,7 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON5, OnBnClickedButtonMoveUp)
 	ON_BN_CLICKED(IDC_BUTTON6, OnBnClickedButtonMoveDown)
 	ON_BN_CLICKED(IDC_UPD_BTN, OnBnClickedUpdBtn)
+	ON_NOTIFY(TVN_BEGINDRAG, IDC_TREE1, OnTvnBegindragTree1)
 END_MESSAGE_MAP()
 
 // CxrUpdateView construction/destruction
@@ -102,6 +107,14 @@ CxrUpdateView::~CxrUpdateView()
 
 	m_batch_process_dlg->DestroyWindow();
 	xr_delete(m_batch_process_dlg);
+}
+int CxrUpdateView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+	if (CFormView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+
+	return 0;
 }
 
 void CxrUpdateView::DoDataExchange(CDataExchange* pDX)
@@ -148,6 +161,10 @@ void CxrUpdateView::OnInitialUpdate()
 		m_batch_process_dlg->Create(MAKEINTRESOURCE(IDD_BATCH_TASK),this);
 
 		m_task_name_edt.EnableWindow(FALSE);
+
+		m_images.Create (IDR_MAINFRAME, 16, 1, RGB(0,255,0));
+		int cc = m_images.GetImageCount();
+		m_tree_ctrl.SetImageList (&m_images, TVSIL_NORMAL);
 	}
 	g_tree_ctrl = &m_tree_ctrl;
 	b_initialized = TRUE;
@@ -253,7 +270,7 @@ void CxrUpdateView::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 
 	*pResult = 0;
 }
-
+//067-238-17-17 pasha mob
 BOOL CxrUpdateView::ShowPropDlg(CTask* t)
 {
 	m_task_name_edt.EnableWindow(TRUE);
@@ -470,7 +487,7 @@ void CxrUpdateView::OnBnClickedButtonCopyTask()
 	if( !t->parent() )
 		return;
 
-	CTask* t_new = t->copy();
+	CTask* t_new = t->copy(TRUE);
 	t->parent()->add_sub_task(t_new);
 	FillTaskTree(t_new,itm_parent);
 }
@@ -589,3 +606,139 @@ void CxrUpdateView::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
 
 }
 
+//////////////////dragding routines
+void CxrUpdateView::OnTvnBegindragTree1(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	*pResult = 0;
+
+	m_hitemDrag = pNMTreeView->itemNew.hItem;
+	m_hitemDrop = NULL;
+
+	m_pDragImage = m_tree_ctrl.CreateDragImage(m_hitemDrag);  // get the image list for dragging
+	// CreateDragImage() возвращает  NULL если нет списка изображаний
+	// связанного с деревом
+	if( !m_pDragImage )
+		return;
+
+	m_bLDragging = TRUE;
+	m_pDragImage->BeginDrag(0, CPoint(-15,-15));
+	POINT pt = pNMTreeView->ptDrag;
+	ClientToScreen( &pt );
+	m_pDragImage->DragEnter(NULL, pt);
+	SetCapture();
+
+}
+
+void CxrUpdateView::OnLButtonUp(UINT nFlags, CPoint point) 
+{
+	CFormView::OnLButtonUp(nFlags, point);
+
+	if (m_bLDragging)
+	{
+		m_bLDragging = FALSE;
+		CImageList::DragLeave(this);
+		CImageList::EndDrag();
+		ReleaseCapture();
+
+		delete m_pDragImage;
+
+		// Удаляем подсветку цели
+		m_tree_ctrl.SelectDropTarget(NULL);
+
+		if( m_hitemDrag == m_hitemDrop )
+			return;
+
+		HTREEITEM htiParent = m_hitemDrop;
+		while( (htiParent = m_tree_ctrl.GetParentItem( htiParent )) != NULL )
+		{
+			if( htiParent == m_hitemDrag ) return;
+		}
+
+		m_tree_ctrl.Expand( m_hitemDrop, TVE_EXPAND ) ;
+
+		HTREEITEM htiNew = CopyBranch( m_hitemDrag, m_hitemDrop, TVI_LAST );
+
+		m_tree_ctrl.DeleteItem(m_hitemDrag);
+		m_tree_ctrl.SelectItem( htiNew );
+
+		CTask* t = (CTask*)m_tree_ctrl.GetItemData(htiNew);
+		CTask* t_parent = (CTask*)m_tree_ctrl.GetItemData(m_hitemDrop);
+		t->reparent(t_parent);
+		BOOL b = m_tree_ctrl.GetCheck(m_hitemDrop);
+		CheckChildren(m_hitemDrop,b);
+		
+
+//		CProject* pProject = g_mainFrame->GetProject();
+//		pProject->SetModifiedFlag(TRUE);
+
+	}
+
+}
+void CxrUpdateView::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	HTREEITEM	hitem;
+	UINT		flags;
+
+	if (m_bLDragging)
+	{
+		POINT pt = point;
+		ClientToScreen( &pt );
+		CImageList::DragMove(pt);
+		if ((hitem = m_tree_ctrl.HitTest(point, &flags)) != NULL)
+		{
+			CImageList::DragShowNolock(FALSE);
+			m_tree_ctrl.SelectDropTarget(hitem);
+			m_hitemDrop = hitem;
+			CImageList::DragShowNolock(TRUE);
+		}
+	}
+	
+	CFormView::OnMouseMove(nFlags, point);
+}
+HTREEITEM CxrUpdateView::CopyBranch( HTREEITEM htiBranch, HTREEITEM htiNewParent, 
+                                                HTREEITEM htiAfter /*= TVI_LAST*/ )
+{
+        HTREEITEM hChild;
+
+        HTREEITEM hNewItem = CopyItem( htiBranch, htiNewParent, htiAfter );
+        hChild = m_tree_ctrl.GetChildItem(htiBranch);
+        while( hChild != NULL)
+        {
+                // рекурсивно переносим все элементы
+                CopyBranch(hChild, hNewItem);  
+                hChild = m_tree_ctrl.GetNextSiblingItem( hChild );
+        }
+        return hNewItem;
+}
+
+HTREEITEM CxrUpdateView::CopyItem( HTREEITEM hItem, HTREEITEM htiNewParent, 
+									HTREEITEM htiAfter /*= TVI_LAST*/ )
+{
+ TV_INSERTSTRUCT tvstruct;
+ HTREEITEM hNewItem;
+ CString sText;
+
+ // берем информацию источника
+ tvstruct.item.hItem = hItem;
+ tvstruct.item.mask = TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE | TVIF_SELECTEDIMAGE;
+ m_tree_ctrl.GetItem(&tvstruct.item);
+ sText = m_tree_ctrl.GetItemText( hItem );
+
+ tvstruct.item.cchTextMax = sText.GetLength();
+ tvstruct.item.pszText = sText.LockBuffer();
+
+ // Вставляем элемент в заданное место
+ tvstruct.hParent = htiNewParent;
+ tvstruct.hInsertAfter = htiAfter;
+ tvstruct.item.mask = TVIF_IMAGE| TVIF_SELECTEDIMAGE | TVIF_TEXT;
+ hNewItem = m_tree_ctrl.InsertItem(&tvstruct);sText.ReleaseBuffer();
+
+ // Теперь копируем данные и состояние элемента
+ m_tree_ctrl.SetItemData( hNewItem, m_tree_ctrl.GetItemData(hItem ));
+ m_tree_ctrl.SetItemState( hNewItem, m_tree_ctrl.GetItemState(hItem, TVIS_STATEIMAGEMASK ),TVIS_STATEIMAGEMASK );
+
+ // Вызываем виртуальную функцию для дальнейшей обработки наследованного класса
+// OnItemCopied( hItem, hNewItem);
+ return hNewItem;
+}
