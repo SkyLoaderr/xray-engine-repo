@@ -17,7 +17,7 @@ void CScriptSoundType::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CScriptSoundType>("snd_type")
+		class_<enum_exporter<ESoundTypes> >("snd_type")
 			.enum_("sound_types")
 			[
 				value("no_sound",				int(SOUND_TYPE_NO_SOUND					)),

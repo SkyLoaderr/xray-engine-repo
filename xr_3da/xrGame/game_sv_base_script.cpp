@@ -20,10 +20,6 @@ u32 get_time()
 	return u32(Level().GetGameTime() & u32(-1));
 }
 
-class game_messages{};
-class game_player_flags{};
-class game_phases{};
-
 void game_sv_GameState::script_register(lua_State *L)
 {
 
@@ -58,7 +54,7 @@ void game_sv_GameState::script_register(lua_State *L)
 	
 	module(L)
 	[
-	class_< game_player_flags >("game_player_flags")
+	class_<enum_exporter<EGamePlayerFlags> >("game_player_flags")
 		.enum_("flags")
 		[
 			value("GAME_PLAYER_FLAG_LOCAL",						int(GAME_PLAYER_FLAG_LOCAL)),
@@ -68,7 +64,7 @@ void game_sv_GameState::script_register(lua_State *L)
 			value("GAME_PLAYER_FLAG_SCRIPT_BEGINS_FROM",		int(GAME_PLAYER_FLAG_SCRIPT_BEGINS_FROM))
 		],
 
-	class_< game_phases >("game_phases")
+	class_<enum_exporter<EGamePhases> >("game_phases")
 		.enum_("phases")
 		[
 			value("GAME_PHASE_NONE",							int(GAME_PHASE_NONE)),
@@ -80,7 +76,7 @@ void game_sv_GameState::script_register(lua_State *L)
 			value("GAME_PHASE_SCRIPT_BEGINS_FROM",				int(GAME_PHASE_SCRIPT_BEGINS_FROM))
 		],
 
-	class_< game_messages >("game_messages")
+	class_<enum_exporter<EGameMessages> >("game_messages")
 		.enum_("messages")
 		[
 			value("GAME_EVENT_PLAYER_READY",					int(GAME_EVENT_PLAYER_READY)),

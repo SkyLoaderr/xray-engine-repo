@@ -96,7 +96,7 @@ enum {
 };
 
 
-enum{  //game_cl <----> game_sv messages
+enum EGameMessages {  //game_cl <----> game_sv messages
 	GAME_EVENT_PLAYER_READY,
 	GAME_EVENT_PLAYER_CHANGE_TEAM,
 	GAME_EVENT_PLAYER_KILL,			//player wants to die
