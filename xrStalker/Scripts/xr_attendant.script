@@ -144,18 +144,18 @@ function action_follow:execute ()
           --printf ("FOLLOWER %s, LEADER SCHEME  = %s", self.object:name (), self.st.leader_section)
        --end   
     end
+           
+    if db.storage[self.st.leader_id].active_section ~= self.st.leader_section then
+       self.st.signals["leader_section_changed"] = true 
+       self:free ()
+       return
+    end    
     
     if db.storage[self.st.leader_id].active_section ~= nil then    
        printf ("!_!FOLLOWER %s, LEADER SECTION %s, LEADER NEW SECTION %s", self.object:name (), self.st.leader_section, db.storage[self.st.leader_id].active_section)
     else   
        printf ("!_!FOLLOWER %s, LEADER SECTION %s, LEADER NEW SECTION nil", self.object:name (), self.st.leader_section)
     end       
-       
-    if db.storage[self.st.leader_id].active_section ~= self.st.leader_section then
-       self.st.signals["leader_section_changed"] = true 
-       self:free ()
-       return
-    end    
     
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
        self.st.leader_id = nil
@@ -277,11 +277,11 @@ end
 function action_follow:free ()
     -- если мы под гулагом, то запросим другую работу, иначе прямая дорога в logic
     if xr_gulag.isUnderFraction (self.object) ~= nil then
-       printf ("!!!FOLLOWER!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG") 
+       printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
        xr_gulag.resetJob (gulag, self.object)
     else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
-       printf ("!!!FOLLOWER!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC") 
+       printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
     end
     self.st.leader_section = nil
 end
