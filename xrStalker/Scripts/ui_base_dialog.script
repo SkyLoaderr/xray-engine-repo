@@ -114,7 +114,7 @@ function base_dialog:InitControls(caption)
 	
 end
 
-function options_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+function base_dialog:OnKeyboard(dik, keyboard_action)
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
 	DIK_RETURN = 28
