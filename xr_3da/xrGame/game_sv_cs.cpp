@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game_sv_cs.h"
 #include "HUDManager.h"
+#include "stdafx.h"
 
 void	game_sv_CS::Create			(LPCSTR options)
 {
@@ -17,7 +18,31 @@ void	game_sv_CS::Create			(LPCSTR options)
 
 void	game_sv_CS::OnRoundStart	()
 {
+	NET_Packet l_packet;
+	vector<CFS_Memory> l_memAr;
+	if(round>-1) {							// ≈сли раунд не первый сохран€ем игроков и их оружие
+		xrServer *l_pServer = Level().Server;
+		u32 l_chunk = 0;
+		u32 cnt = get_count();
+		l_memAr.resize(cnt);
+		for(u32 it = 0; it < cnt; it++) {
+			xrServerEntity *l_pSE = l_pServer->ID_to_client(get_it_2_id(it))->owner;
+			xrSE_Actor *l_pActor = dynamic_cast<xrSE_Actor*>(l_pSE); if(!l_pActor) continue;
+//			l_pActor->Spawn_Write(l_packet, true);
+//			l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+			CFS_Memory &l_mem = l_memAr[it];
+			vector<u16>* l_pCilds = &l_pActor->children; if(!l_pCilds) continue;
+			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
+				xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
+				if(!l_pWeapon) continue;
+				l_pWeapon->Spawn_Write(l_packet, true);
+				l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+			}
+		}
+	}
+
 	__super::OnRoundStart	();
+
 	if (0==round)	
 	{
 		// give $1000 to everybody
@@ -58,25 +83,41 @@ void	game_sv_CS::OnRoundStart	()
 		spawn_end			(A,0);
 	}
 
-	// Respawn all players and some info
-	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
-	{
-		// init
-		game_PlayerState*	ps	=	get_it	(it);
-		ps->kills				=	0;
-		ps->deaths				=	0;
+	//if(round) {
+	//} else {
+		// Respawn all players and some info
+		u32		cnt = get_count();
+		for		(u32 it=0; it<cnt; it++)	
+		{
+			// init
+			game_PlayerState*	ps	=	get_it	(it);
+			ps->kills				=	0;
+			ps->deaths				=	0;
 
-		// spawn
-		LPCSTR	options			=	get_name_it	(it);
-		xrServerEntity*		E	=	spawn_begin	(ps->team?"actor_cs_2":"actor_cs_1");													// create SE
-		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
-		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-		A->s_team				=	u8(ps->team);															// team
-		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
-		assign_RP				(A);
-		spawn_end				(A,get_it_2_id(it));
-	}
+			// spawn
+			LPCSTR	options			=	get_name_it	(it);
+			xrServerEntity*		E	=	spawn_begin	(ps->team?"actor_cs_2":"actor_cs_1");													// create SE
+			xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+			strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+			A->s_team				=	u8(ps->team);															// team
+			A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+			assign_RP				(A);
+			spawn_end				(A,get_it_2_id(it));
+
+			if(l_memAr.size() > it) {
+				CFS_Memory &l_mem = l_memAr[it];
+				u32 l_chunk = 0;
+				u16 skip_header;
+				CStream l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
+				while(NULL != (l_pS = l_stream.OpenChunk(l_chunk++))) {
+					l_packet.B.count = l_pS->Length();
+					l_pS->Read(l_packet.B.data, l_packet.B.count);
+					l_packet.r_begin(skip_header);
+					Level().Server->Process_spawn(l_packet,get_it_2_id(it),true);
+				}
+			}
+		}
+	//}
 }
 
 void	game_sv_CS::OnTeamScore		(u32 team)
