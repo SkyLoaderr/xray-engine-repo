@@ -11,37 +11,38 @@
 class CLightProjector
 {
 private:
+	const	int		P_rt_size		= 512;
+	const	int		P_o_size		= 51;
+	const	int		P_o_line		= P_rt_size/P_o_size;
+	const	int		P_o_count		= P_o_line*P_o_line;
+
 	//
 	typedef	R_dsgraph::_MatrixItem	NODE;		
-	struct	recv	{
+	struct	recv			{
 		IRenderable*		O;
 		Fvector				C;
-		float				D;
 		Fmatrix				UVgen;
 		Fvector				UVclamp_min;
 		Fvector				UVclamp_max;
+		Fbox				BB;
+		DWORD				dwFrame;
 	};
 private:
 	IRenderable*			current;
-	xr_vector<recv>			receivers;
+	xr_vector<recv>			cache;			// same as number of slots
+	xr_vector<IRenderable*>	receivers;
+	xr_vector<int>			taskid;
 
 	ref_rt					RT;
-	ref_rt					RT_temp;
-	ref_shader				sh_BlurTR;
-	ref_shader				sh_BlurRT;
-	ref_geom				geom_Blur;
-	ref_shader				sh_Screen;
-	ref_geom				geom_Screen;
-
 	ref_str					c_xform;
 	ref_str					c_clamp;
 	ref_str					c_factor;
 public:
 	void					set_object		(IRenderable*	O);
-	BOOL					shadowing		()			{ return current!=0; }
+	BOOL					shadowing		()			{ return current!=0;	}
 	void					calculate		();
 	void					setup			(int slot);
-	void					finalize		()			{ receivers.clear(); }
+	void					finalize		()			{ receivers.clear(); taskid.clear();	}
 
 #ifdef DEBUG
 	void					render			();

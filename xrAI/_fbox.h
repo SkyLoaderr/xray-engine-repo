@@ -88,20 +88,24 @@ public:
 
 	IC	void	getsize		(Tvector& R )	const 	{ R.sub( max, min ); };
 	IC	void	getradius	(Tvector& R )	const 	{ getsize(R); R.mul(0.5f); };
-	IC	T	getradius		()				const 	{ Tvector R; getradius(R); return R.magnitude();	};
-	IC	T	getvolume		()				const	{ Tvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
+	IC	T		getradius	()				const 	{ Tvector R; getradius(R); return R.magnitude();	};
+	IC	T		getvolume	()				const	{ Tvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
 	IC	void	getcenter	(Tvector& C )	const 	{
 		C.x = (min.x + max.x) * 0.5f;
 		C.y = (min.y + max.y) * 0.5f;
 		C.z = (min.z + max.z) * 0.5f;
 	};
-	IC	void	get_CD		(Tvector& bc, Tvector& bd)	// center + dimensions
+	IC	SelfRef	get_CD		(Tvector& bc, Tvector& bd)	// center + dimensions
 	{
-		bd.sub	(max,min);
-		bd.mul	(.5f);
+		bd.sub	(max,min).mul(.5f);
 		bc.add	(min,bd);
 	}
-	IC	void	getsphere	(Tvector &C, T &R) const {
+	IC	SelfRef	scale		(float s)					// 0.1 means make 110%, -0.1 means make 90%
+	{
+		Fvector	bd;	bd.sub	(max,min).mul(s);
+		grow				(bd);
+	}
+	IC	SelfRef	getsphere	(Tvector &C, T &R) const {
 		getcenter			(C);
 		R = C.distance_to	(max);
 	};

@@ -49,10 +49,11 @@ public:
 	float					ambient;
 	u32						dwFrame;
 public:
+	//CShadowGeomCache		ShadowGeomCache;			
 	u32						Shadowgen_dwFrame;
+
 	u32						Shadowed_dwFrame;
 	int						Shadowed_Slot;
-	//CShadowGeomCache		ShadowGeomCache;			
 
 	void					add				(light*			L);
 	void					ltrack			(IRenderable*	O);
