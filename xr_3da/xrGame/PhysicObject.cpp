@@ -155,6 +155,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
 
 	m_pPhysicsShell->mXFORM.set(XFORM());
+	m_pPhysicsShell->Activate(true);
 //	m_pPhysicsShell->SetAirResistance(0.0014f,
 //	1.5f);
 
