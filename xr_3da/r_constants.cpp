@@ -5,6 +5,8 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
+#include "ResourceManager.h"
+
 #include "xrPool.h"
 #include "r_constants.h"
 
