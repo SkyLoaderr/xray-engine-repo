@@ -100,6 +100,7 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 //	case CHelicopter::eMovingToAttackTraj:
 	case CHelicopter::eMovingByAttackTraj:
 	case CHelicopter::eMovingToWaitPoint:
+	case CHelicopter::eInitiateHunt:
 		{
 			Fvector pos,w;
 			pos.set(0.0f,0.0f,0.0f);
@@ -111,7 +112,11 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 			}
 		break;
 		}
-
+	default:
+		{
+			int i;
+			i = 0;
+		}
 	}//switch
 	
 }
