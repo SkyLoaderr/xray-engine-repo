@@ -7,7 +7,6 @@
 
 #pragma once
 
-#undef _DEBUG
 #include <xrCore.h>
 
 #define ENGINE_API 
