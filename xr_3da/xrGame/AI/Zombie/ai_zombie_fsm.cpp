@@ -104,7 +104,7 @@ void CAI_Zombie::Think()
 }
 void CAI_Zombie::Death()
 {
-	//WRITE_TO_LOG("Dying...");
+	WRITE_TO_LOG("Dying...");
 	bStopThinking = true;
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
@@ -132,6 +132,7 @@ void CAI_Zombie::Death()
 			//m_fFood = Movement.GetMass()*100;
 			fHealth = m_fMaxHealthValue;
 			m_tpSoundBeingPlayed = 0;
+			m_dwLastRangeSearch = Level().timeServer();
 			GO_TO_NEW_STATE(aiZombieResurrect);
 		}
 	}
@@ -140,8 +141,6 @@ void CAI_Zombie::Death()
 void CAI_Zombie::Turn()
 {
 	WRITE_TO_LOG("Turning...");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
 
 	mRotate.setHPB(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
 	UpdateTransform();
@@ -166,8 +165,6 @@ void CAI_Zombie::FreeHuntingActive()
 
 	bStopThinking = true;
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
-
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy) {
@@ -303,8 +300,6 @@ void CAI_Zombie::AttackFire()
 {
 	WRITE_TO_LOG("Attacking enemy...");
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiZombieDie)
-	
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy)
@@ -346,8 +341,6 @@ void CAI_Zombie::AttackRun()
 	WRITE_TO_LOG("Attack enemy");
 	bStopThinking = true;
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
-	
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
@@ -448,8 +441,6 @@ void CAI_Zombie::Pursuit()
 {
 	WRITE_TO_LOG("Pursuit something");
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiZombieDie)
-	
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
@@ -516,8 +507,6 @@ void CAI_Zombie::ReturnHome()
 
 	bStopThinking = true;
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
-
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < m_fMaxPursuitRadius)) {
@@ -580,8 +569,28 @@ void CAI_Zombie::Resurrect()
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 	
-	if (((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2])) && (!m_tpCurrentGlobalBlend->playing)) {
-		m_fGoalChangeTime = 0.f;
-		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
-	}
+	for (int i=0; i<3; i++)
+		if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i]) {
+			bool bOk = false;
+			switch (i) {
+				case 0 : {
+					bOk = (Level().timeServer() - m_dwLastRangeSearch) > 60*1000/30;
+					break;
+				}
+				case 1 : {
+					bOk = (Level().timeServer() - m_dwLastRangeSearch) > 80*1000/30;
+					break;
+				}
+				case 2 : {
+					bOk = (Level().timeServer() - m_dwLastRangeSearch) > 50*1000/30;
+					break;
+				}
+				default : NODEFAULT;
+			}
+			if (bOk) {
+				m_fGoalChangeTime = 0.f;
+				GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
+			}
+			break;
+		}
 }
