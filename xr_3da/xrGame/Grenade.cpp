@@ -214,7 +214,6 @@ void CGrenade::OnAnimationEnd()
 {
 	switch(inherited::State()) 
 	{
-
 	case MS_END:
 		{
 			/*
@@ -245,6 +244,18 @@ void CGrenade::OnAnimationEnd()
 
 void CGrenade::UpdateCL() 
 {
+	if (OnServer())
+	{
+		if (CMissile::State() != MS_IDLE)
+		{
+			m_throw = true;
+		};
+		if (m_constpower && CMissile::State() == MS_READY)
+		{
+			m_throw = true; 
+			SwitchState(MS_THROW);
+		}
+	};
 	////////////////////////////////////
 	inherited::UpdateCL();
 	
