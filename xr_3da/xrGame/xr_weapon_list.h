@@ -61,6 +61,9 @@ public:
 	void			Update				(float dt, BOOL bHUDView);
 	void			OnRender			(BOOL bHUDView);
 
+	// for soldiers
+	IC CWeapon*		GetWeaponByIndex	(int iIndex)	{ return ((iIndex > -1) && (iIndex < m_Weapons.size()))?m_Weapons[iIndex] : 0; }
+	//
 	IC CWeapon*		ActiveWeapon		()	{ return (m_iActiveWeapon==-1)?0:m_Weapons[m_iActiveWeapon]; }
 	IC	int			ActiveWeaponID		()	{ return m_iActiveWeapon;	}
 	IC	int			SelectedWeaponID	()	{ return m_iSelectedWeapon; }
