@@ -29,6 +29,14 @@ void CMissile::Load(LPCSTR section) {
 	m_forceGrowSpeed = pSettings->r_float(section,"force_grow_speed");
 }
 
+#define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
+	if(x>y)\
+		if(x>z){inst_x;}\
+		else{inst_z;}\
+	else\
+		if(y>z){inst_y;}\
+		else{inst_z;}
+
 BOOL CMissile::net_Spawn(LPVOID DC) {
 	R_ASSERT(!m_pInventory);
 	CKinematics* V = PKinematics(Visual());
@@ -44,8 +52,24 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 		// Physics (Elements)
 		CPhysicsElement* E					= P_create_Element	();
 		R_ASSERT							(E);
-		E->add_Box							(obb);
+		/*
+		Fvector ax;
+		float	radius;
+		CHOOSE_MAX(	obb.m_halfsize.x,ax.set(obb.m_rotate.i) ; ax.mul(obb.m_halfsize.x); radius=min(obb.m_halfsize.y,obb.m_halfsize.z),
+					obb.m_halfsize.y,ax.set(obb.m_rotate.j) ; ax.mul(obb.m_halfsize.y); radius=min(obb.m_halfsize.x,obb.m_halfsize.z),
+					obb.m_halfsize.z,ax.set(obb.m_rotate.k) ; ax.mul(obb.m_halfsize.z); radius=min(obb.m_halfsize.y,obb.m_halfsize.x)
+					)
+		Fsphere sphere1,sphere2;
+		sphere1.P.add						(obb.m_translate,ax);
+		sphere1.R							=radius;
 
+		sphere2.P.sub						(obb.m_translate,ax);
+		sphere2.R							=radius;
+*/
+		E->add_Box							(obb);
+		//E->add_Sphere						(sphere1);
+		//E->add_Sphere						(sphere2);
+	
 		// Physics (Shell)
 		m_pPhysicsShell						= P_create_Shell	();
 		R_ASSERT							(m_pPhysicsShell);
@@ -109,8 +133,14 @@ void CMissile::OnH_B_Independent() {
 		//Log("bbb",l_p2.c);
 		//m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		Fvector l_vel,a_vel;
+		float fi,teta,r;
 		l_vel.add(l_up,l_fw);
-		a_vel.set(::Random.randF(2.f*M_PI,3.f*M_PI),::Random.randF(2.f*M_PI,3.f*M_PI),::Random.randF(2.f*M_PI,3.f*M_PI));
+		fi=  ::Random.randF(0.f,2.f*M_PI);
+		teta=::Random.randF(0.f,M_PI);
+		r=	 ::Random.randF(2.f*M_PI,3.f*M_PI);
+		float rxy=r*_sin(teta);
+		a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
+		//a_vel.set(::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI));
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);
