@@ -60,13 +60,6 @@ struct xrDispatchTable
 	xrMemCopy_8b*		memCopy;
 	xrMemFill_8b*		memFill;
 	xrMemFill_32b*		memFill32;
-	
-	xrDispatchTable		()
-	{
-		ZeroMemory		(this,sizeof(*this));
-		memCopy			= CopyMemory;
-		memFill			= FillMemory;
-	}
 };
 #pragma pack(pop)
 
