@@ -65,7 +65,7 @@ bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case MonsterSpace::eObjectActionUse : {
-			if (!DoorUse(l_sBoneID))
+			if (!DoorSwitch(l_sBoneID))
 				return((l_tObjectAction.m_bCompleted = true) == false);
 			break;
 		}

@@ -922,6 +922,7 @@ return false;
 }
 bool CCar::DoorUse(u32 id)
 {
+
 	xr_map<u32,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{
@@ -935,8 +936,22 @@ bool CCar::DoorUse(u32 id)
 
 }
 
+bool CCar::DoorSwitch(u32 id)
+{
+	xr_map<u32,SDoor>::iterator i;
+	if(is_Door(id,i)) 
+	{
+		i->second.Switch();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 bool CCar::DoorClose(u32 id)
 {
+
 	xr_map<u32,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{
@@ -951,6 +966,7 @@ bool CCar::DoorClose(u32 id)
 
 bool CCar::DoorOpen(u32 id)
 {
+
 	xr_map<u32,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{

@@ -30,12 +30,7 @@ protected:
 		ectFree
 	};
 public:
-	enum EDoorAction
-	{
-		daAny,
-		daOpen,
-		daClose
-	};
+
 
 	bool rsp,lsp,fwp,bkp,brp;
 	Fmatrix m_root_transform;
@@ -162,6 +157,7 @@ public:
 		Fvector			door_dir_in_door;
 		Fmatrix			closed_door_form_in_object;
 		void Use();
+		void Switch();
 		void Init();
 		void Open();
 		void Close();
@@ -375,6 +371,7 @@ public:
 	bool					DoorOpen			(u32 id);
 	bool					DoorClose			(u32 id);
 	bool					DoorUse				(u32 id);
+	bool					DoorSwitch			(u32 id);
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
 	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);

@@ -252,6 +252,19 @@ default:	return;
 	}
 }
 
+void CCar::SDoor::Switch()
+{
+	switch(state) {
+case opened:
+	Close();
+	break;
+case closed: 
+	Open();
+	break;
+default:	return;
+	}
+}
+
 void CCar::SDoor::ApplyTorque(float atorque,float aa_vel)
 {
 	if(!joint->bActive)return;
