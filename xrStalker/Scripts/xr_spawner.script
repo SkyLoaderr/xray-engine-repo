@@ -28,6 +28,7 @@ function spawn_client(npc)
 
 	xr_spawner.create_spawner()
 	local sim = alife()
+	if sim == nil then return true end
 	sobject = sim:object(npc:id())
 	xr_spawner.spawner:addList(sobject)
 	xr_spawner.spawner:check_spawn(npc:id())
