@@ -152,6 +152,7 @@ function proceed(actor)
 
 	if	actor:has_info("bar_resque_research_start") and 
  		actor:dont_has_info("bar_resque_research_gain") and
+ 		actor:dont_has_info("bar_resque_research_fail") and
 		actor:object("bar_ecolog_flash") ~= nil 
 	then		
 		actor:give_info_portion("bar_resque_research_gain")
@@ -160,6 +161,7 @@ function proceed(actor)
 
 	if	actor:has_info("bar_get_research_start") and 
  		actor:dont_has_info("bar_get_research_gain") and
+ 		actor:dont_has_info("bar_get_research_fail") and
 		actor:object("bar_ecolog_flash") ~= nil 
 	then		
 		actor:give_info_portion("bar_get_research_gain")

@@ -294,13 +294,13 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_ecolog_crush_sniper_5", 
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "bar_ecolog_crush_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_ecolog_crush_sniper_6", 
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[1],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "bar_ecolog_crush_restrictor"
 		}
 		table.insert(sj, t)
 	end
@@ -352,6 +352,52 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
+		
+		t = { section = "logic@bar_freedom_attack_camper_1_relax", 
+			idle = 0,
+			prior = 8, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_camper_2_relax", 
+			idle = 0,
+			prior = 8, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_camper_3_relax", 
+			idle = 0,
+			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_camper_4_relax", 
+			idle = 0,
+			prior = 6, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_camper_5_relax", 
+			idle = 0,
+			prior = 6, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_camper_6_relax", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_commander_relax", 
+			idle = 0,
+			prior = 10, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "",
+			predicate = function(obj)
+				         	return obj:profile_name() == "bar_svoboda_attack_commander"
+			            end
+		}
+		table.insert(sj, t)		
 	end
 	
 	
@@ -638,6 +684,13 @@ function load_states(gname, type)
 
 	if type == "bar_freedom_attack" then        
 		return function (gulag)
+			if db.actor == nil then
+				return 0
+			end
+			
+			if db.actor:has_info("bar_resque_research_dead") then
+				return 1			
+			end
 			return 0
 		end
 	end
