@@ -123,7 +123,7 @@ void CRender::Render		()
 	{
 		// level
 		Target.phase_scene						();
-		r_dsgraph_render_hud					();
+		// r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
 		Details.Render							();
 		// mapSorted.traverseRL					(sorted_L1);
