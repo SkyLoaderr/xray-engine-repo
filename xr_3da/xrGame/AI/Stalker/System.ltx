@@ -87,14 +87,14 @@ force_grow_speed	= 25
 
 blast				= 800
 blast_r				= 15
-frags				= 20
-frags_r				= 50
-frag_hit			= 50
+frags				= 10
+frags_r				= 70
+frag_hit			= 100
 
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.05
 
-effects				= explosions\expl_02_smoke, explosions\expl_02_sparks, explosions\expl_02_dust
+effects				= explosions\expl_02_flame, explosions\expl_02_smoke, explosions\expl_02_sparks, explosions\expl_02_dust
 
 light_color		         = 0.17,0.13,0.12
 light_range		         = 30.0
@@ -124,9 +124,9 @@ force_grow_speed	= 25
 
 blast				= 800
 blast_r				= 20
-frags				= 0
-frags_r				= 50
-frag_hit			= 50
+frags				= 10
+frags_r				= 10
+frag_hit			= 100
 
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.05
@@ -1283,11 +1283,11 @@ fire_point               = 0.0, 0.1, 0.4
 flame_div                = 7
 flame_length             = .3
 flame_size               = 0.07
-flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	     = 200
 
 ; ttc
-hit_power                = 30 		;//WAS "60"!!!
+hit_power                = 10 		;//WAS "60"!!!
 hit_impulse		         = 60
 fire_distance            = 600
 rpm                      = 600
@@ -1373,7 +1373,7 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 ; ttc
-hit_power                = 45
+hit_power                = 20
 hit_impulse		 = 70
 fire_distance            = 300
 rpm                      = 500
@@ -1453,11 +1453,11 @@ fire_point               = 0.0, 0.1, 0.75
 flame_div                = 7
 flame_length             = .3
 flame_size               = 0.07
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	 = 200
 
 ; ttc
-hit_power                = 40
+hit_power                = 10
 hit_impulse		 = 70
 fire_distance            = 300
 rpm                      = 600
@@ -1714,7 +1714,7 @@ fire_point               = 0.0, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	 = 200
 
 ; ttc
@@ -2089,7 +2089,7 @@ fire_point               = 0.00, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 35
@@ -2292,7 +2292,7 @@ fire_point2              = 0.0, 0.0, 0.0
 flame_div                = 7
 flame_length             = .3
 flame_size               = 0.07
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 50
@@ -2386,10 +2386,10 @@ fire_point               = 0.0, 0.065, 0.65
 flame_div                = 7
 flame_length             = .3
 flame_size               = 0.07
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	 = 200
 ; ttc
-hit_power                = 60
+hit_power                = 25
 hit_impulse		 = 120
 fire_distance            = 800
 rpm                      = 120
@@ -2466,13 +2466,13 @@ direction                = 0, 0, 1
 shell_point		 = 0.0, 0.0, 0.0
 fire_point               = 0.0, 0.065, 0.65
 fire_point2              = 0.0, 0.0, 0.0
-flame_div                = 7
-flame_length             = .3
-flame_size               = 0.07
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame_div                = 3
+flame_length             = .1
+flame_size               = 0.04
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3, generic_shot
 rpm_empty_click 	 = 200
 ; ttc
-hit_power                = 55
+hit_power                = 25
 hit_impulse		 = 110
 fire_distance            = 600
 rpm                      = 300
