@@ -157,6 +157,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 	if (0==dtFS)	return;
 #endif
 
+	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
+
 	Fvector		EYE				= vecEYE;
 	CFrustum	View			= ::Render->ViewBase;
     
@@ -214,10 +216,13 @@ void CDetailManager::Render		(Fvector& vecEYE)
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
 								
-								if (radius*radius/dist_sq < r_ssaDISCARD) continue;
-
+								float	ssa		= radius*radius/dist_sq;
+								if (ssa < r_ssaDISCARD) continue;
+								DWORD	vis_id	= Item.vis_ID;
+								if (ssa < r_ssaCHEAP)	vis_id=0;
+								
 								Item.scale_calculated = scale;			//alpha;
-								visible[Item.vis_ID][sp.id].push_back	(siIT);
+								visible[vis_id][sp.id].push_back	(siIT);
 							}
 						}
 					}
@@ -244,10 +249,13 @@ void CDetailManager::Render		(Fvector& vecEYE)
 							float	scale	= Item.scale*(1-alpha);
 							float	radius	= R*scale;
 
-							if (radius*radius/dist_sq < r_ssaDISCARD) continue;
+							float	ssa		= radius*radius/dist_sq;
+							if (ssa < r_ssaDISCARD) continue;
+							DWORD	vis_id	= Item.vis_ID;
+							if (ssa < r_ssaCHEAP)	vis_id=0;
 
 							Item.scale_calculated = scale;			//alpha;
-							visible[Item.vis_ID][sp.id].push_back	(siIT);
+							visible[vis_id][sp.id].push_back	(siIT);
 						}
 					}
 				}
