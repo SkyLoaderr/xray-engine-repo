@@ -24,6 +24,7 @@ using std::swap;
 #define xr_multiset std::multiset
 #define xr_map std::map
 #define xr_multimap std::multimap
+#define xr_string std::string
 
 template <class T>
 class xr_vector	: public std::vector<T> {
@@ -93,6 +94,11 @@ namespace std
 	template<class _Tp1, class _Tp2>	inline	xr_allocator_t<_Tp2>	__stl_alloc_create(xr_allocator_t<_Tp1>&, const _Tp2*)		{	return xr_allocator_t<_Tp2>();			}
 };
 
+// string(char)
+template	<>												class	xr_string		: public std::basic_string<char,xr_allocator_t<char> >								{ public: 
+};
+
+// vector
 template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: 
 			xr_vector	()									: std::vector<T,xr_allocator_t<T> >	()				{}
 			xr_vector	(size_t _count, const T& _value)	: std::vector<T,xr_allocator_t<T> >	(_count,_value)	{}
@@ -152,7 +158,7 @@ template	<typename K, class V, class P=std::less<K> >	class	xr_multimap		: publi
 
 #endif
 
-template	<class _Ty1, class _Ty2> inline	std::pair<_Ty1, _Ty2>	mk_pair			(_Ty1 _Val1, _Ty2 _Val2)	{	return (std::pair<_Ty1, _Ty2>(_Val1, _Val2));	}
+template	<class _Ty1, class _Ty2> inline	std::pair<_Ty1, _Ty2>		mk_pair		(_Ty1 _Val1, _Ty2 _Val2)	{	return (std::pair<_Ty1, _Ty2>(_Val1, _Val2));	}
 
 struct pred_str		: public std::binary_function<char*, char*, bool>	{	
 	IC bool operator()(const char* x, const char* y) const				{	return xr_strcmp(x,y)<0;	}

@@ -19,6 +19,8 @@
 #include "light_render_direct.h"
 #include "LightTrack.h"
 #include "common_binders.h"
+
+#include "../irenderable.h"
 #include "../fmesh.h"
 
 // definition

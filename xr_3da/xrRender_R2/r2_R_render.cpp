@@ -2,7 +2,7 @@
 #include "..\igame_persistent.h"
 #include "..\fbasicvisual.h"
 #include "..\customhud.h"
-#include "..\irenderable.h"
+#include "..\xr_object.h"
 
 IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 {
@@ -20,7 +20,6 @@ void CRender::render_main	()
 	// Calculate sector(s) and their objects
 	if (pLastSector)
 	{
-
 		// Traverse sector/portal structure
 		PortalTraverser.traverse	
 			(
