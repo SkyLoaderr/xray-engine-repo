@@ -58,7 +58,7 @@ void CUITalkWnd::Init()
 	/////////////////////////
 	//Меню разговора
 	AttachChild(&UITalkDialogWnd);
-	UITalkDialogWnd.Init(0,0, Device.dwWidth, Device.dwHeight);
+	UITalkDialogWnd.Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	/////////////////////////
 	//Меню торговли

@@ -10,6 +10,12 @@
 #include "UIXmlInit.h"
 #include "../UI.h"
 
+//////////////////////////////////////////////////////////////////////////
+
+const char * const TALK_XML		= "talk.xml";
+
+//////////////////////////////////////////////////////////////////////////
+
 CUITalkDialogWnd::CUITalkDialogWnd()
 {
 	m_iClickedQuestion = -1;
@@ -21,7 +27,7 @@ CUITalkDialogWnd::~CUITalkDialogWnd()
 void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$","talk.xml");
+	bool xml_result = uiXml.Init("$game_data$", TALK_XML);
 	R_ASSERT2(xml_result, "xml file not found");
 	CUIXmlInit xml_init;
 
@@ -50,16 +56,20 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	UIDialogFrame.AttachChild(&UICharacterName);
 	xml_init.InitStatic(uiXml, "static", 0, &UICharacterName);
 
-	//Вопросы
-	//UIDialogFrame.AttachChild(&UIQuestionsList);
-	UIDialogFrame.AttachChild(&UIQuestionsList);
-	xml_init.InitListWnd(uiXml, "list", 0, &UIQuestionsList);
-
 	//Ответы
 	UIDialogFrame.AttachChild(&UIAnswersList);
 	xml_init.InitListWnd(uiXml, "list", 1, &UIAnswersList);
 	UIAnswersList.EnableScrollBar(true);
 	UIAnswersList.ActivateList(false);
+
+	//Вопросы
+	//UIDialogFrame.AttachChild(&UIQuestionsList);
+	UIDialogFrame.AttachChild(&UIQuestionsList);
+	xml_init.InitListWnd(uiXml, "list", 0, &UIQuestionsList);
+//	UIQuestionsList.EnableScrollBar(true);
+//	UIQuestionsList.ActivateList(true);
+	UIQuestionsList.EnableActiveBackground(false);
+	UIQuestionsList.SetMessageTarget(this);
 
 	//кнопка перехода в режим торговли
 	AttachChild(&UIToTradeButton);
