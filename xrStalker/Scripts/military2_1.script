@@ -1,10 +1,3 @@
---stalker_3_s_1
---stalker_3_s_2
---sidya_boltaet_ 0
---stalker_2_2
---stalker_2_3
---stalker_3_1
---stalker_3_3
 
 local actor_entered = false
 
@@ -12,18 +5,6 @@ function on_enter (zone, object)
     if object:id () == get_actor ():id () then actor_entered = true end
 end
 
-function move_callback (obj, action_type, index)
-	if index < 0 then return end
-  	local ptr = patrol (obj:patrol ())
-	local pt
-    if ptr:flag (index, 1) then update_action (obj, military2_1.script_name (), look (look.point, patrol ("viewpoint1"):point (0)))  return end
-	if ptr:flag (index, 2) then update_action (obj, military2_1.script_name (), look (look.point, patrol ("viewpoint2"):point (0)))  return end
-	if ptr:flag (index, 3) then
-	   update_action (obj, military2_1.script_name (), look (look.path_dir))	
-	   obj:clear_callback (game_object.movement)	
-	   return
-	end	
-end
 
 function main ()
 
@@ -36,9 +17,6 @@ function main ()
     local torch = get_level_object ("torch")
     local testway = patrol ("way_test")
 	local baseway = patrol ("way_base")
-
-    --local artefact = get_level_object ("artefact")
-    --if artefact ~= nil then printf ("Getting artefact") end
 
     local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")	
     local sound1_2 = sound_object ("scripts\\Rolik\\Stalker1_2")
@@ -130,77 +108,50 @@ function main ()
     while stalker3:action () do wait () end
     reset_action (stalker3, military2_1.script_name ())
 
-    action (stalker3, object (weapon, object.activate), cond (cond.time_end, 1000))
+    action (stalker3, object (stalker3:best_weapon (), object.activate), cond (cond.time_end, 1000))
     while stalker3:action () do wait () end
 
-    --check move
---    reset_action (stalker1, military2_1.script_name ())
---    reset_action (stalker2, military2_1.script_name ())
---	action (stalker1, anim ("stalker_1_2"), cond (cond.anim_end))
---	action (stalker2, anim ("stalker_2_1"), cond (cond.anim_end))
 
     reset_action (stalker3, military2_1.script_name ())
     action (stalker3, move (pos, 0.20), look (look.path_dir), anim ("walk_fwd_crawl"), cond (cond.move_end))
     action (stalker3, move (pos, 0.05), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
-    action (stalker3, anim ("prisluh"), cond (cond.anim_end	))
-	action (stalker3, anim ("prisluh_v_torso_idle_2"), 	cond (cond.anim_end))
-	action (stalker3, anim ("norm_torso_2_idle_0"), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.sound_end))
-
-	while stalker3:action () do wait () end
-
-    reset_action (stalker1, military2_1.script_name ())
-    reset_action (stalker2, military2_1.script_name ())
-    reset_action (stalker3, military2_1.script_name ())
-
-	stalker3:set_callback (military2_1.move_callback, game_object.movement)
-
-    action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.danger), look (look.search), cond (cond.move_end))
-    action (stalker1, anim ("stalker_2_up"), cond (cond.anim_end))
-    action (stalker2, anim ("stalker_1_up"), cond (cond.anim_end))
-    action (stalker1, move (move.standing, move.walk, move.line, patrol ("way_test")), object (weapon1, object.activate), 
-            anim (anim.free), look (look.search), cond (cond.move_end))
-    action (stalker2, move (move.standing, move.walk, move.line, patrol ("way_test")), object (weapon2, object.activate), 
-            anim (anim.free), look (look.search), cond (cond.move_end))
-
-	while true do 
-	      if distance_between (stalker3, stalker1) <= 4 and distance_between (stalker3, stalker2) <= 4 then
-			 break;
-		  end
-		  wait ()
-	end
-	
-
-    reset_action (stalker1, military2_1.script_name ())
-    reset_action (stalker2, military2_1.script_name ())
-    reset_action (stalker3, military2_1.script_name ())
-
-	local point = baseway:point (0)
-	point.y = point.y + 1.5
-	action (stalker1, look (look.point, point), cond (cond.time_end, 1000))
-	action (stalker2, look (look.point, point), cond (cond.time_end, 1000))
-	action (stalker3, look (look.point, point), cond (cond.time_end, 1000))
-
-	while stalker1:action () do wait () end
-
-    reset_action (stalker1, military2_1.script_name ())
-    reset_action (stalker2, military2_1.script_name ())
-    reset_action (stalker3, military2_1.script_name ())
-
-	printf ("Waiting for Prof :)")
-	wait (10000)
-
-    action (stalker1, move (move.standing, move.run, move.line, patrol ("way_base")),
-            anim (anim.danger), look (look.search), cond (cond.move_end))
-    action (stalker2, move (move.standing, move.run, move.line, patrol ("waybase2")),
-            anim (anim.danger), look (look.search), cond (cond.move_end))
-    action (stalker3, move (move.standing, move.run, move.line, patrol ("waybase2")),
-            anim (anim.danger), look (look.search), cond (cond.move_end))
-
-    while stalker1:action () do wait () end
-
-    stalker1:script (false, military2_1.script_name ())
-    stalker2:script (false, military2_1.script_name ())
+    action (stalker3, anim ("prisluh"), cond (cond.anim_end))
+    
+    while true do
+          if stalker3.health < 0.8 then break end
+          wait ()
+    end            
+    
     stalker3:script (false, military2_1.script_name ())
+
+    reset_action (stalker1, military2_1.script_name ())
+    reset_action (stalker2, military2_1.script_name ())
+
+    action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_test")), object (stalker1:best_weapon (), object.activate), 
+            anim (anim.danger), look (look.fire_point, stalker3), cond (cond.time_end, time_infinite))
+    action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_test")), object (stalker2:best_weapon (), object.activate), 
+            anim (anim.danger), look (look.fire_point, stalker3), cond (cond.time_end, time_infinite))
+            
+    wait (1000)            
+    
+    update_action (stalker1, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
+    update_action (stalker2, military2_1.script_name (), object (stalker1:best_weapon (), object.fire1))
+    
+    
+    int icount = 0
+    while true do
+          if stalker1.health <= 0 then 
+             icount = icount + 1 
+             stalker1:script (false, military2_1.script_name ())
+          end  
+          if stalker2.health <= 0 then 
+             icount = icount + 1 
+             stalker2:script (false, military2_1.script_name ())
+          end  
+          if icount == 2 then return end
+          wait ()
+    end                      
+
 
 end
 
