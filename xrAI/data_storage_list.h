@@ -886,8 +886,7 @@ public:
 		for (CGraphNode *i = cheap_list_head; i && (i != &node); i = i->next);
 		if (i == &node) {
 			if (i->prev && (i->prev->f() > node.f())) {
-				for ( ; i->prev && (i->prev->f() > node.f()); i = i->prev);
-				if (!i->prev) {
+				if (cheap_list_head->f() >= node.f()) {
 					node.prev->next = node.next;
 					if (node.next)
 						node.next->prev = node.prev;
@@ -900,22 +899,23 @@ public:
 					verify_cheap			();
 					return;
 				}
-				else {
-					if (node.prev)
-						node.prev->next = node.next;
-					else
-						cheap_list_tail = node.prev;
-					if (node.next)
-						node.next->prev = node.prev;
-					else
-						cheap_list_tail = node.prev;
-					node.next		= i;
-					node.prev		= i->prev;
-					i->prev->next	= &node;
-					i->prev			= &node;
-					verify_cheap			();
-					return;
-				}
+				
+				for (; i->prev->f() > node.f(); i = i->prev);
+
+				if (node.prev)
+					node.prev->next = node.next;
+				else
+					cheap_list_tail = node.prev;
+				if (node.next)
+					node.next->prev = node.prev;
+				else
+					cheap_list_tail = node.prev;
+				node.next		= i->next;
+				node.prev		= i;
+				i->prev->next	= &node;
+				i->prev			= &node;
+				verify_cheap			();
+				return;
 			}
 		}
 		else {
