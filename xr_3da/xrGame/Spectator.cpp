@@ -83,7 +83,7 @@ void CSpectator::shedule_Update		(u32 DT)
 	if (!Ready())		return;
 }
 
-static float Accel_mul = 1.0f;
+static float Accel_mul = 2.0f;
 
 void CSpectator::IR_OnKeyboardPress(int cmd)
 {
@@ -111,7 +111,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 	{
 	case kACCEL:
 		{
-			Accel_mul = 4.0f;
+			Accel_mul = 8.0f;
 		}break;
 	case kCAM_1:	cam_Set			(eacFirstEye);				break;
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
@@ -127,7 +127,7 @@ void CSpectator::IR_OnKeyboardRelease(int cmd)
 	{
 	case kACCEL:
 		{
-			Accel_mul = 1.0f;
+			Accel_mul = 2.0f;
 		}break;
 	}
 }
