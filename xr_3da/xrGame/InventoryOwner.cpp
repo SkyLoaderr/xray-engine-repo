@@ -136,7 +136,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 void CInventoryOwner::net_Destroy()
 {
-	inherited::net_Destroy		();
+	CAttachmentOwner::net_Destroy();
 }
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)

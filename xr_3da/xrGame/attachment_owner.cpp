@@ -46,7 +46,7 @@ void CAttachmentOwner::reinit	()
 void CAttachmentOwner::net_Destroy()
 {
 	while (!attached_objects().empty())
-		detach					(*attached_objects().begin())
+		detach					(*attached_objects().begin());
 }
 
 void CAttachmentOwner::renderable_Render		()
