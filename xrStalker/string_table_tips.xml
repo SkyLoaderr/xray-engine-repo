@@ -3,6 +3,7 @@
 <string_table>
 	<string id="inventory_item_use">
 		<text>Pickup item (default E)</text>
+		<text ln="rus">Поднять предмет (по-умолчанию 'E')</text>
 	</string>
 	<string id="character_use">
 		<text>Talk with the person (default E)</text>
