@@ -26,6 +26,7 @@ public:
 	int								m_iGridHeight;
 	u64								m_qwGridBitMask;
 	ALife::_OBJECT_ID				m_tPreviousParentID;
+	bool							m_can_switch_offline;
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();
@@ -34,6 +35,8 @@ public:
 		return						(ID_Parent < 0xffff);
 	}
 	virtual bool					bfUseful();
+	virtual bool					can_switch_offline	() const;
+
 	/////////// network ///////////////
 	u32								m_dwTimeStamp;
 	u16								m_u16NumItems;
@@ -44,6 +47,7 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)
 									CSE_ALifeItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeItem	();
+	virtual bool					can_switch_offline	() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
@@ -155,5 +159,6 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItemBolt,CSE_ALifeDynamicObject,CSE_ALifeInventoryItem)
 									CSE_ALifeItemBolt(LPCSTR caSection);
 	virtual							~CSE_ALifeItemBolt();
+	virtual bool					can_switch_offline	() const;
 SERVER_ENTITY_DECLARE_END
 #endif

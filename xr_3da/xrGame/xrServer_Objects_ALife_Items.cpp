@@ -55,6 +55,7 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(
 		m_qwGridBitMask			|= ((u64(1) << m_iGridWidth) - 1) << (i*RUCK_WIDTH);
 
 	m_tPreviousParentID			= 0xffff;
+	m_can_switch_offline		= true;
 }
 
 CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
@@ -79,6 +80,7 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_float				(m_fCondition);
 	tNetPacket.w_u32				(m_dwTimeStamp);
 	tNetPacket.w_u16				(m_u16NumItems);
+	tNetPacket.w_vec3				( State.position );
 
 	if (!m_u16NumItems)
 		return;	
@@ -91,7 +93,6 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_vec3				( State.force );
 	tNetPacket.w_vec3				( State.torque );
 
-	tNetPacket.w_vec3				( State.position );
 
 	tNetPacket.w_float				( State.quaternion.x );
 	tNetPacket.w_float				( State.quaternion.y );
@@ -106,6 +107,10 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_float				(m_fCondition);
 	tNetPacket.r_u32				(m_dwTimeStamp);
 	tNetPacket.r_u16				(m_u16NumItems);
+	tNetPacket.r_vec3				( State.position );
+
+	m_can_switch_offline			= true;
+	o_Position						= State.position;
 
 	if (!m_u16NumItems)
 		return;
@@ -118,15 +123,16 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_vec3				( State.force );
 	tNetPacket.r_vec3				( State.torque );
 
-	tNetPacket.r_vec3				( State.position );
-
 	tNetPacket.r_float				( State.quaternion.x );
 	tNetPacket.r_float				( State.quaternion.y );
 	tNetPacket.r_float				( State.quaternion.z );
-	tNetPacket.r_float				( State.quaternion.w );
-
-	o_Position						= State.position;
+	tNetPacket.r_float				( State.quaternion.w );	
 };
+
+bool CSE_ALifeInventoryItem::can_switch_offline	() const
+{
+	return							(m_can_switch_offline);
+}
 
 #ifdef _EDITOR
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
@@ -180,6 +186,11 @@ void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 };
+
+bool CSE_ALifeItem::can_switch_offline	() const
+{
+	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
+}
 
 #ifdef _EDITOR
 void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
@@ -785,6 +796,11 @@ void CSE_ALifeItemBolt::UPDATE_Read			(NET_Packet &tNetPacket)
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 };
+
+bool CSE_ALifeItemBolt::can_switch_offline	() const
+{
+	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
+}
 
 #ifdef _EDITOR
 void CSE_ALifeItemBolt::FillProp			(LPCSTR pref, PropItemVec& values)

@@ -864,6 +864,11 @@ void CSE_ALifeMonsterRat::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited2::UPDATE_Write	(tNetPacket);
 }
 
+bool CSE_ALifeMonsterRat::can_switch_offline	() const
+{
+	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
+}
+
 #ifdef _EDITOR
 void CSE_ALifeMonsterRat::FillProp			(LPCSTR pref, PropItemVec& items)
 {

@@ -217,6 +217,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_AL
 									CSE_ALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
 	virtual							~CSE_ALifeMonsterRat();
 	virtual bool					bfUseful();
+	virtual bool					can_switch_offline	() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)

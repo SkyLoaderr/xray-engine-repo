@@ -327,8 +327,11 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 	net_update_IItem			N;
 	P.r_u32					( N.dwTimeStamp );
 
+
 	u16	NumItems = 0;
 	P.r_u16					( NumItems);
+	P.r_vec3				( N.State.position);
+
 	if (!NumItems) return;
 
 	P.r_u8					( *((u8*)&(N.State.enabled)) );
@@ -339,7 +342,6 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 	P.r_vec3				( N.State.force);
 	P.r_vec3				( N.State.torque);
 
-	P.r_vec3				( N.State.position);
 
 	P.r_float				( N.State.quaternion.x );
 	P.r_float				( N.State.quaternion.y );
@@ -378,36 +380,38 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 //	inherited::net_Export(P);
 	P.w_float			(m_fCondition);
 	P.w_u32				(Level().timeServer());	
-	
-	u16 NumItems = PHGetSyncItemsNumber();
-	if (H_Parent() || GameID() == 1) NumItems = 0;
-	P.w_u16				(NumItems);
-	if (!NumItems) return;
 
+	///////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	SPHNetState	State;
-
-	for (u16 i=0; i<NumItems; i++)
-	{
-		pSyncObj = PHGetSyncItem(i);
-		if (!pSyncObj) continue;
+	pSyncObj = PHGetSyncItem(0);
+	if (pSyncObj) 
 		pSyncObj->get_State(State);
+	else 	
+		State.position.set(Position());
+	///////////////////////////////////////	
+	u16 NumItems = PHGetSyncItemsNumber();
+	if (H_Parent() || GameID() == 1) NumItems = 0;
 
-		P.w_u8					( State.enabled );
+	P.w_u16				(NumItems);
+	P.w_vec3			( State.position);
 
-		P.w_vec3				( State.angular_vel);
-		P.w_vec3				( State.linear_vel);
+	if (!NumItems) return;
 
-		P.w_vec3				( State.force);
-		P.w_vec3				( State.torque);
+	P.w_u8					( State.enabled );
 
-		P.w_vec3				( State.position);
+	P.w_vec3				( State.angular_vel);
+	P.w_vec3				( State.linear_vel);
 
-		P.w_float				( State.quaternion.x );
-		P.w_float				( State.quaternion.y );
-		P.w_float				( State.quaternion.z );
-		P.w_float				( State.quaternion.w );
-	};
+	P.w_vec3				( State.force);
+	P.w_vec3				( State.torque);
+
+
+	P.w_float				( State.quaternion.x );
+	P.w_float				( State.quaternion.y );
+	P.w_float				( State.quaternion.z );
+	P.w_float				( State.quaternion.w );
+
 };
 
 void CInventoryItem::PH_B_CrPr		()
