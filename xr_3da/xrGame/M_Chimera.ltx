@@ -94,6 +94,8 @@ Velocity_WalkFwdNormal	= 2.3,		1.2,			1.2,		0.02,	2.0
 Velocity_Drag			= 1.0,		3.0,			3.0,		1,		1
 Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
 Velocity_Walk_Upper		= 0.5,		1.2,			1.2,		0.02,	2.0
+Velocity_Jump_Stand		= 0,		2.4,			2.4,		1,		1	
+Velocity_Jump_Forward	= 9.0,		0.00001,		0.00001,	0.4,	1
 
 ; acceleration
 Accel_Generic			= 1.5
@@ -193,11 +195,15 @@ idle_sound_delay		= 15000
 eat_sound_delay			= 3000
 attack_sound_delay		= 2000
 
-jump_factor				= 1.6
-jump_delay				= 3000	
-jump_min_dist			= 1.0 
-jump_max_dist			= 20.0
-jump_max_angle			= 1.5
+; jump parameters
+jump_delay					= 3000
+jump_factor					= 1.5
+jump_ground_trace_range		= 0.2
+jump_hit_trace_range		= 1.0
+jump_build_line_distance	= 6.0
+jump_min_distance			= 3.5
+jump_max_distance			= 12.0
+jump_max_angle				= 0.6
 
 DamagedThreshold		= 0.5
 
