@@ -343,9 +343,31 @@ public:
 
 void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 {
-	LPCSTR	N,V;
+	LPCSTR				N,V;
+	string256			caFileName, file_name;
 	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
 		R_ASSERT		(Ini->section_exist(N));
+		// ai
+		strconcat		(caFileName,Ini->r_string(N,"name"),"\\level.ai");
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("There is no ai-map for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
+			continue;
+		}
+		// graph
+		strconcat		(caFileName,Ini->r_string(N,"name"),"\\level.graph");
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("There is no graph for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
+			continue;
+		}
+		// cross table
+		strconcat		(caFileName,Ini->r_string(N,"name"),"\\",CROSS_TABLE_NAME_RAW);
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("There is no cross table for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
+			continue;
+		}
 		levels.insert	(CLevelInfo(Ini->r_s32(N,"id"),Ini->r_string(N,"name"),Ini->r_fvector3(N,"offset")));
 	}
 }
