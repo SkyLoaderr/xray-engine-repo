@@ -563,7 +563,6 @@ void CAI_Stalker::ExploreDNE()
 
 void CAI_Stalker::ExploreDE()
 {
-//	m_dwInertion			= 60000;
 //	Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 //	if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
 //		tPoint.y			= getAI().ffGetY(*getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint.x,tPoint.z);
@@ -619,11 +618,17 @@ void CAI_Stalker::ExploreDE()
 //		}
 //		default : NODEFAULT;
 //	}
+	m_dwInertion			= 60000;
+	
 	if (!m_inventory.ActiveItem() && M) {
 		TakeItems();
 		return;
 	}
 
+	if (m_tpaDynamicSounds[m_iSoundIndex].tpEntity && !m_tpaDynamicSounds[m_iSoundIndex].tpEntity->g_Alive()) {
+		m_iSoundIndex = -1;
+		return;
+	}
 	m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
