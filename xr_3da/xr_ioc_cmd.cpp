@@ -285,6 +285,10 @@ extern float		ssaLOD_A;
 extern float		ssaLOD_B;
 extern float		psDetailDensity;
 extern int			psSheduler;
+extern float		psDetail_w_rot;
+extern float		psDetail_w_speed;
+extern float		psDetail_l_ambient;
+extern float		psDetail_l_aniso;
 
 void CCC_Register()
 {
@@ -332,6 +336,10 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
+	CMD4(CCC_Float,		"rs_detail_w_rot",		&psDetail_w_rot,	1.f,180.f	);
+	CMD4(CCC_Float,		"rs_detail_w_speed",	&psDetail_w_speed,	1.f,4.f		);
+	CMD4(CCC_Float,		"rs_detail_l_ambient",	&psDetail_l_ambient,.5f,.95f	);
+	CMD4(CCC_Float,		"rs_detail_l_aniso",	&psDetail_l_aniso,	.1f,.5f		);
 	
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
 	CMD1(CCC_Gamma,		"rs_c_brightness"		);
