@@ -1500,7 +1500,9 @@ void CSE_ALifeSmartZone::smart_touch	(CSE_ALifeMonsterAbstract *monster)
 void CSE_ALifeTraderAbstract::OnChangeProfile(PropValue* sender)
 {
 	m_iSpecificCharacter = NO_SPECIFIC_CHARACTER;
+#ifndef AI_COMPILER
 	specific_character();
+#endif
 	base()->set_editor_flag		(ISE_Abstract::flVisualChange);
 }
 
