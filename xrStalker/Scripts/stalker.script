@@ -7,10 +7,10 @@ function stalker_script:reinit		()
 	object_binder.reinit	(self)
 end
 
---[[
 function stalker_script:reload		(section)
 end
 
+--[[
 function stalker_script:net_spawn	(server_object)
 	if (object_binder.net_spawn(self,server_object) == false)
 		return		false
