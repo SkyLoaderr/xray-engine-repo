@@ -65,6 +65,7 @@ public:
 
 // Implementation
 public:
+	void			EvalWatch(CString watch, int iItem);
 	void			OpenVarTable(char* varName);
 	void			ThreadChanged(int nThreadID);
 	void			StackLevelChanged(int nLevel);

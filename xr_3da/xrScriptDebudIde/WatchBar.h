@@ -18,7 +18,7 @@ public:
 	virtual ~CWatchBar();
 
 	void Redraw() { m_watches.Redraw(); }
-
+	void SetResult(int iItem, LPSTR str);
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWatchBar)

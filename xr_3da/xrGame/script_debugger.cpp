@@ -107,9 +107,19 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			DrawVariableInfo((char*)wParam);
 		}break;
 
-	case DMSG_REDRAW_WATCHES:{
-//			m_wndWatches.Redraw();
-		}break;
+/*	case DMSG_REDRAW_WATCHES:{
+			m_wndWatches.Redraw();
+		}break;*/
+
+	case DMSG_EVAL_WATCH:{
+			string2048 res; res[0]=0;
+			Eval((const char*)wParam,res);
+
+			msg.w_int(DMSG_EVAL_WATCH);
+			msg.w_string(res);
+			msg.w_int((int)lParam);
+			SendMessageToIde(msg);
+		 }break;
 
 	}//case
 
@@ -418,6 +428,16 @@ bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 			msg->r_string(varName);
 			_SendMessage(DMSG_GET_VAR_TABLE, (WPARAM)varName, 0);
 		}break;
+
+		
+	case DMSG_EVAL_WATCH:{
+			string2048 watch; watch[0]=0;
+			int iItem;
+			msg->r_string(watch);
+			msg->r_int(iItem);
+			_SendMessage(DMSG_EVAL_WATCH, (WPARAM)watch, (LPARAM)iItem);
+		}break;
+
 
 	default:
 		return false;

@@ -35,6 +35,8 @@ public:
 	void UpdateRow(int iItem);
 	void AddEditItem(LVITEM& item);
 	void AddEmptyRow();
+	void SetResult(int iItem, LPSTR str);
+
 	virtual ~CWatchList();
 
 	// Generated message map functions

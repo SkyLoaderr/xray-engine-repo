@@ -376,8 +376,14 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			m_wndThreads.AddThread((SScriptThread*)wParam);
 		break;
 
-	case DMSG_REDRAW_WATCHES:
+/*	case DMSG_REDRAW_WATCHES:
 			m_wndWatches.Redraw();
+		break;
+*/
+
+	case DMSG_EVAL_WATCH:
+			m_wndWatches.SetResult((int)lParam, (LPSTR)wParam);
+//			SendMessage(DMSG_EVAL_WATCH,(WPARAM)(str),(LPARAM)(i));
 		break;
 
 	case DMSG_GET_BREAKPOINTS:
@@ -743,6 +749,15 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 			msg.r_buff(&st,sizeof(SScriptThread));
 			SendMessage(DMSG_ADD_THREAD,(WPARAM)(&st),0);
 		}break;
+	
+	case DMSG_EVAL_WATCH:{
+			char str[2048];str[0]=0;
+			int i;
+			
+			msg.r_string(str);
+			msg.r_int(i);
+			SendMessage(DMSG_EVAL_WATCH,(WPARAM)(str),(LPARAM)(i));
+		}break;
 
 	default:
 		break;
@@ -814,3 +829,14 @@ void CMainFrame::OpenVarTable(char* varName)
 		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 }
 
+void CMainFrame::EvalWatch(CString watch, int iItem)
+{
+//	if (!m_needAnswer)return;
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_EVAL_WATCH);
+	msg.w_string(watch.GetBuffer());
+	msg.w_int(iItem);
+	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+
+}

@@ -56,9 +56,9 @@ void CWatchList::OnLButtonDblClk(UINT nFlags, CPoint point)
 	lvhti.pt = point;
 	SubItemHitTest(&lvhti);
 
-	if (lvhti.flags & LVHT_ONITEMLABEL)
+	if (lvhti.flags & LVHT_ONITEMLABEL){
 		EditLabel(lvhti.iItem);
-	else
+	}else
 		CCJListCtrl::OnLButtonDblClk(nFlags, point);
 }
 
@@ -94,10 +94,12 @@ void CWatchList::UpdateRow(int iItem)
 	SetItemText(iItem, 0, m_exps[iItem]);
 
 	CMainFrame* pFrame = g_mainFrame;
-	if ( pFrame->GetMode() == CMainFrame::modeDebugBreak )
-	{
+
+	pFrame->EvalWatch(m_exps[iItem], iItem);
+//	if ( pFrame->GetMode() == CMainFrame::modeDebugBreak )
+//	{
 //		SetItemText(iItem, 1, pFrame->GetDebugger()->Eval(m_exps[iItem]));
-	}
+//	}
 }
 
 
@@ -107,4 +109,8 @@ void CWatchList::Redraw()
 	for ( int i=0; i<m_exps.GetSize(); ++i )
 		SetItemText(i, 1, pFrame->GetDebugger()->Eval(m_exps[i]));
 */
+}
+void CWatchList::SetResult(int iItem, LPSTR str)
+{
+	SetItemText(iItem, 1, str);
 }
