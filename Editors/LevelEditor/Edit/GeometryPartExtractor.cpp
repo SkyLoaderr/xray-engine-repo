@@ -251,13 +251,13 @@ bool SBPart::Export	(IWriter& F)
     int chield=0;
     for (split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 	    F.open_chunk(chield++);
-        split_it->Save(F,FALSE);
+        split_it->Save(F);
 	    F.close_chunk();
     }
     F.close_chunk();
 
-    // BoneNames
-    F.open_chunk(OGF_S_BONE_NAMES);
+    // BoneNames                   
+    F.open_chunk(OGF_S_BONE_NAMES); 
     F.w_u32		(bone_count);
     // write other bones
     for (u32 bone_idx=0; bone_idx<bone_count; bone_idx++){
