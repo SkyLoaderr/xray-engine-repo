@@ -113,6 +113,7 @@ public:
 	virtual		void		ApplyForce							(float x,float y, float z);
 	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel; }
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}
+	virtual		bool		JumpState							()					{return b_jumping;};
 	virtual		void		SetMas								(dReal mass)		;
 
 	virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object);
