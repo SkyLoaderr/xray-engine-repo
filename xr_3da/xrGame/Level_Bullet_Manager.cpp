@@ -198,8 +198,8 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	return true;
 }
 
-#define TRACER_WIDTH 0.07f
-#define TRACER_LENGHT 25.f
+#define TRACER_WIDTH 0.04f
+#define TRACER_LENGHT 3.f
 #define TRACER_LENGHT_MIN 0.1f
 #define TRACER_LENGTH_TO_WIDTH_RATIO 10.f
 
