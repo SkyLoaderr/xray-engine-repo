@@ -167,13 +167,7 @@ path_walk = main_enter
 path_look = camper_look2
 radius = 4
 
-
-[logic@bar_evil_veterans_patrol]
-active = walker@bar_evil_veterans_patrol
-
-[walker@bar_evil_veterans_patrol]
-path_walk = patrol_walk
-
+; Õ≈’Œ–Œÿ»≈ —“¿À ≈–€ ¬≈“≈–¿Õ€
 
 [logic@bar_evil_veterans_walker1]
 active = walker@bar_evil_veterans_walker1
@@ -189,6 +183,13 @@ active = walker@bar_evil_veterans_walker2
 path_walk = guard_2_walk
 
 
+[logic@bar_evil_veterans_walker3]
+active = walker@bar_evil_veterans_walker3
+
+[walker@bar_evil_veterans_walker3]
+path_walk = guard_3_walk
+
+
 [logic@bar_evil_veterans_kamp1]
 active = kamp@bar_evil_veterans_kamp1
 
@@ -201,3 +202,34 @@ active = kamp@bar_evil_veterans_kamp2
 
 [kamp@bar_evil_veterans_kamp2]
 center_point = sit_point1
+
+
+[logic@bar_evil_veterans_kamp3]
+active = kamp@bar_evil_veterans_kamp3
+
+[kamp@bar_evil_veterans_kamp3]
+center_point = sit_point1
+
+
+[logic@bar_evil_veterans_alarm1]
+active = walker@bar_evil_veterans_alarm1
+
+[walker@bar_evil_veterans_alarm1]
+path_walk = alarm_1_walk
+path_look = alarm_1_look
+
+
+[logic@bar_evil_veterans_alarm2]
+active = walker@bar_evil_veterans_alarm2
+
+[walker@bar_evil_veterans_alarm2]
+path_walk = alarm_2_walk
+path_look = alarm_2_look
+
+
+[logic@bar_evil_veterans_alarm3]
+active = walker@bar_evil_veterans_alarm3
+
+[walker@bar_evil_veterans_alarm3]
+path_walk = alarm_3_walk
+path_look = alarm_3_look
