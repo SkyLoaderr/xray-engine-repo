@@ -251,6 +251,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 		int			team;
 		const char*	sVal = I->second;
 		sscanf(sVal,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w);
+		pos.y += 0.1f;
 		Level().get_team(team).RespawnPoints.push_back(pos);
 	}
 	return TRUE;
