@@ -197,6 +197,9 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 				}
 			}
 			else	_hr = E_FAIL;
+		} else {
+			VERIFY	(pErrorBuf);
+			Log		("! error: ",(LPCSTR)pErrorBuf->GetBufferPointer());
 		}
 		_RELEASE	(pShaderBuf);
 		_RELEASE	(pErrorBuf);
