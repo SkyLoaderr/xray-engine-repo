@@ -108,12 +108,19 @@ void __fastcall TfrmShaderFunction::FormKeyDown(TObject *Sender,
 
 //----------------------------------------------------
 
-
 void __fastcall TfrmShaderFunction::ebOkClick(TObject *Sender)
 {
 	UpdateFuncData();
     Close();
     ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderFunction::ebApplyClick(TObject *Sender)
+{
+	UpdateFuncData();
+    _DELETE(m_SaveFunc);
+    m_SaveFunc	= new WaveForm(*m_CurFunc);
 }
 //---------------------------------------------------------------------------
 
@@ -208,5 +215,6 @@ void __fastcall TfrmShaderFunction::FormClose(TObject *Sender,
 //    form 	= 0;
 }
 //---------------------------------------------------------------------------
+
 
 

@@ -44,8 +44,6 @@ TUI::TUI()
  	m_SelectionRect = false;
     bMouseInUse		= false;
 
-	m_LastFileName[0]= 0;
-
 // create base class
     ELog.Create		("ed.log");
     FS.Init			();

@@ -302,7 +302,7 @@ object fraLeftBar: TfraLeftBar
           VertScrollBarStyles.ButtonSize = 16
           VirtualityLevel = vlNone
           BkColor = clGray
-          OnAfterSelectionChange = tvShadersAfterSelectionChange
+          OnItemFocused = tvShadersItemFocused
           OnMouseDown = tvShadersMouseDown
           OnDblClick = tvShadersDblClick
         end
@@ -351,6 +351,7 @@ object fraLeftBar: TfraLeftBar
           Font.Style = []
           ParentFont = False
           Transparent = False
+          OnClick = ebShaderRemoveClick
         end
         object ebShaderClone: TExtBtn
           Left = 95
@@ -369,6 +370,7 @@ object fraLeftBar: TfraLeftBar
           Font.Style = []
           ParentFont = False
           Transparent = False
+          OnClick = ebShaderCloneClick
         end
         object ebShaderImport: TExtBtn
           Left = 1
@@ -478,7 +480,7 @@ object fraLeftBar: TfraLeftBar
     MarginEndColor = 1644825
     BKColor = 10528425
     SelColor = clBlack
-    SelFontColor = clWhite
+    SelFontColor = 10526880
     SepHColor = 1644825
     SepLColor = 13158600
     LeftMargin = 10
@@ -502,7 +504,7 @@ object fraLeftBar: TfraLeftBar
     MarginEndColor = 1644825
     BKColor = 10528425
     SelColor = clBlack
-    SelFontColor = clWhite
+    SelFontColor = 10526880
     SepHColor = 1644825
     SepLColor = 13158600
     LeftMargin = 10
@@ -544,7 +546,7 @@ object fraLeftBar: TfraLeftBar
     MarginEndColor = 1644825
     BKColor = 10528425
     SelColor = clBlack
-    SelFontColor = clWhite
+    SelFontColor = 10526880
     SepHColor = 1644825
     SepLColor = 13158600
     LeftMargin = 10
@@ -575,7 +577,7 @@ object fraLeftBar: TfraLeftBar
     MarginEndColor = 1644825
     BKColor = 10528425
     SelColor = clBlack
-    SelFontColor = clWhite
+    SelFontColor = 10526880
     SepHColor = 1644825
     SepLColor = 13158600
     LeftMargin = 10

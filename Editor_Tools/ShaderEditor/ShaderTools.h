@@ -26,7 +26,7 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CLibObject*			m_LibObject;
 	CEditableObject*	m_EditObject;
-	BOOL				m_Modified;
+	BOOL				m_bModified;
 
 	TemplateVec			m_TemplatePalette;
 
@@ -38,7 +38,6 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 
 	CBlender*			FindBlender			(LPCSTR name);
     LPCSTR				GenerateBlenderName	(LPSTR name, LPCSTR source);
-    void				RemoveBlender		(LPCSTR name);
 
 	CMatrix*			FindMatrix			(LPSTR name, bool bDuplicate);
     LPCSTR				GenerateMatrixName	(LPSTR name);
@@ -52,6 +51,7 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 
 friend class CCollapseBlender;
 friend class CRefsBlender;
+friend class CRemoveBlender;
 friend class TfrmShaderProperties;
     void				CollapseMatrix		(LPSTR name);
     void				CollapseConstant	(LPSTR name);
@@ -66,12 +66,15 @@ friend class TfrmShaderProperties;
     bool 				m_bUpdateCurrent;
 public:
     CBlender*			m_CurrentBlender;
+    void				RemoveBlender		(LPCSTR name);
+    void				ResetSelectedBlender();
 public:
 						CShaderTools	();
     virtual 			~CShaderTools	();
 
 //    bool				Save			(LPCSTR name);
 
+	void				Reload			();
 	void				Load			();
 	void				Save			();
 
@@ -79,7 +82,8 @@ public:
     void				Update			();
 
     bool				IfModified		();
-    bool				IsModified		(){return m_Modified;}
+    bool				IsModified		(){return m_bModified;}
+    void				Modified		();
 
     void				OnCreate		();
     void				OnDestroy		();

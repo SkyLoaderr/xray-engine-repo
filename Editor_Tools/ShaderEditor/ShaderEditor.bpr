@@ -42,15 +42,14 @@
       Intermediate\Shader.obj Intermediate\Texture.obj 
       Intermediate\TextureManager.obj Intermediate\TextureManager_Loader.obj 
       Intermediate\tss_def.obj Intermediate\Blender_default_aref.obj 
-      Intermediate\Image.obj Intermediate\tga.obj Intermediate\ConstantForm.obj 
-      Intermediate\ShaderModificator.obj Intermediate\ShaderFunction.obj"/>
+      Intermediate\Image.obj Intermediate\tga.obj Intermediate\ShaderFunction.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) TopBar.dfm BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm 
       LeftBar.dfm PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm 
-      ConstantForm.dfm Editor\ShaderModificator.dfm Editor\ShaderFunction.dfm"/>
+      Editor\ShaderFunction.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib"/>
     <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>

@@ -20,7 +20,6 @@ class CShaderTools;
 class TUI: public CController{
     friend class TfrmEditorPreferences;
     friend class CRenderDevice;
-	char m_LastFileName[MAX_PATH];
     TD3DWindow* m_D3DWindow;
 
     TShiftState m_ShiftState;
@@ -81,8 +80,6 @@ public:
 
     bool OnCreate(TD3DWindow* wnd);
     void OnDestroy();
-
-    char* GetEditFileName()             {   return m_LastFileName; }
 
     void __fastcall Idle();
     void Resize()                       {   bResize = true; bRedraw = true; }

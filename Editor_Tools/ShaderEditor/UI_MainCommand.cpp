@@ -29,16 +29,18 @@ bool TUI::Command( int _Command, int p1 ){
         break;
 	case COMMAND_SAVE:
     	SHTools.Save();
+		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_RELOAD:
-//S    	SHTools.Reload();
+    	if (!SHTools.IfModified()) return false;
+    	SHTools.Reload();
+		Command(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
 		{
 	    	if (!SHTools.IfModified()) return false;
 			Device.m_Camera.Reset();
             SHTools.ResetPreviewObject();
-			m_LastFileName[0] = 0;
 			Command(COMMAND_UPDATE_CAPTION);
 		}
 		break;

@@ -67,8 +67,12 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	static TfrmShaderProperties *form;
     void __fastcall PMItemClick(TObject *Sender);
-	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0);
+	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
 	void __fastcall CustomClick(TElTreeItem* item);
+	Graphics::TBitmap* m_BMEllipsis;
+	void __fastcall AddMatrix(TElTreeItem* parent, LPSTR name);
+	void __fastcall AddConstant(TElTreeItem* parent, LPSTR name);
+//	void __fastcall AddTexture(TElTreeItem* parent, LPSTR name);
 public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();

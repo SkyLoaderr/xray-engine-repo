@@ -83,8 +83,10 @@ __published:	// IDE-managed Components
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall tvShadersAfterSelectionChange(TObject *Sender);
 	void __fastcall tvShadersDblClick(TObject *Sender);
+	void __fastcall ebShaderRemoveClick(TObject *Sender);
+	void __fastcall tvShadersItemFocused(TObject *Sender);
+	void __fastcall ebShaderCloneClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick(TObject *Sender);
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);

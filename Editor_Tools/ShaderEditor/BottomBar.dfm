@@ -226,7 +226,7 @@ object fraBottomBar: TfraBottomBar
     MarginEndColor = 1644825
     BKColor = 10528425
     SelColor = clBlack
-    SelFontColor = clWhite
+    SelFontColor = 10526880
     SepHColor = 1644825
     SepLColor = 13158600
     LeftMargin = 10
