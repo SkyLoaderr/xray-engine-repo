@@ -67,8 +67,8 @@
         <location>
             <level>l01_escape</level>
             <object>002</object>            
-			<icon name="Артефакт" x="1" y="5" width="0" height="0" r="238" g="155" b="23" marker="1"></icon>
-			<text>Возьмите артефакт.</text>
+			<icon name="" x="2" y="16" width="0" height="0" r="238" g="155" b="23" marker="1"></icon>
+			<text></text>
         </location>
         <task>escape_trader_need_artefact</task>
     </info_portion>
