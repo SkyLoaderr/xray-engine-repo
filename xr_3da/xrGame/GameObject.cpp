@@ -95,6 +95,8 @@ void CGameObject::net_Destroy	()
 	if (!H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec				(level_vertex_id());
 
+	Parent = 0;
+
 	xr_delete									(m_pPhysicsShell);
 }
 
