@@ -17,9 +17,8 @@ CBurer::CBurer()
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateNull			= xr_new<CBitingNull>		();
 
-	CurrentState		= stateRest;
-
-	Init();
+	CurrentState					= stateRest;
+	CurrentState->Reset				();
 }
 
 CBurer::~CBurer()
@@ -35,14 +34,6 @@ CBurer::~CBurer()
 
 }
 
-
-void CBurer::Init()
-{
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-}
 
 void CBurer::reinit()
 {
@@ -150,6 +141,21 @@ void CBurer::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 	
 	::Sound->create(sound_gravi_wave,TRUE, pSettings->r_string(section,"sound_gravi_wave"), SOUND_TYPE_WORLD);
+
+	m_gravi_speed					= pSettings->r_u32(section,"Gravi_Speed");
+	m_gravi_step					= pSettings->r_u32(section,"Gravi_Step");
+	m_gravi_time_to_hold			= pSettings->r_u32(section,"Gravi_Time_To_Hold");
+	m_gravi_radius					= pSettings->r_float(section,"Gravi_Radius");
+	m_gravi_impulse_to_objects		= pSettings->r_float(section,"Gravi_Impulse_To_Objects");
+	m_gravi_impulse_to_enemy		= pSettings->r_float(section,"Gravi_Impulse_To_Enemy");
+	m_gravi_hit_power				= pSettings->r_float(section,"Gravi_Hit_Power");
+	
+	m_tele_max_handled_objects		= pSettings->r_u32(section,"Tele_Max_Handled_Objects");
+	m_tele_time_to_hold				= pSettings->r_u32(section,"Tele_Time_To_Hold");
+	m_tele_object_min_mass			= pSettings->r_float(section,"Tele_Object_Min_Mass");
+	m_tele_object_max_mass			= pSettings->r_float(section,"Tele_Object_Max_Mass");
+	m_tele_find_radius				= pSettings->r_float(section,"Tele_Find_Radius");
+
 }
 
 void CBurer::StateSelector()
@@ -215,14 +221,6 @@ void CBurer::CheckSpecParams(u32 spec_params)
 {
 }
 
-// speed 30 m/sec
-#define SPEED						42/1000
-// 1 meter
-#define GRAVI_STEP					3
-
-#define GRAVI_RADIUS				3.f
-#define GRAVI_IMPULSE				8.f
-
 void CBurer::UpdateGraviObject()
 {
 	if (!m_gravi_object.active) return;
@@ -238,9 +236,9 @@ void CBurer::UpdateGraviObject()
 	}
 
 	float dt = float(Level().timeServer() - m_gravi_object.time_last_update);
-	float dist = dt * SPEED;
+	float dist = dt * float(m_gravi_speed/1000);
 		
-	if (dist < GRAVI_STEP) return;
+	if (dist < m_gravi_step) return;
 	
 	Fvector new_pos;
 	Fvector dir;
@@ -255,7 +253,7 @@ void CBurer::UpdateGraviObject()
 	dir.sub(enemy_center, new_pos);
 	dir.normalize();
 
-	float trace_dist = GRAVI_STEP * 2;
+	float trace_dist = float(m_gravi_step * 2);
 
 	Collide::rq_result	l_rq;
 	if (Level().ObjectSpace.RayPick(new_pos, dir, trace_dist, Collide::rqtBoth, l_rq)) {
@@ -276,14 +274,12 @@ void CBurer::UpdateGraviObject()
 			}
 			
 			if (b_enemy_visible) {
-				float	hit_power		= 50;
-				float	hit_impulse		= 400;
 				Fvector impulse_dir;
 
 				impulse_dir.set(0.0f,0.0f,1.0f);
 				impulse_dir.normalize();
 
-				HitEntity(m_gravi_object.enemy, hit_power, hit_impulse, impulse_dir);
+				HitEntity(m_gravi_object.enemy, m_gravi_hit_power, m_gravi_impulse_to_enemy, impulse_dir);
 				m_gravi_object.deactivate();
 				return;
 			}
@@ -309,7 +305,7 @@ void CBurer::UpdateGraviObject()
 	Level().ps_needtoplay.push_back(ps);
 	
 	// hit objects
-	Level().ObjectSpace.GetNearest(m_gravi_object.cur_pos, GRAVI_RADIUS); 
+	Level().ObjectSpace.GetNearest(m_gravi_object.cur_pos, m_gravi_radius); 
 	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
@@ -319,7 +315,7 @@ void CBurer::UpdateGraviObject()
 		Fvector dir;
 		dir.sub(obj->Position(), m_gravi_object.cur_pos);
 		dir.normalize();
-		obj->m_pPhysicsShell->applyImpulse(dir,GRAVI_IMPULSE * obj->m_pPhysicsShell->getMass());
+		obj->m_pPhysicsShell->applyImpulse(dir,m_gravi_impulse_to_objects * obj->m_pPhysicsShell->getMass());
 	}
 
 	// играть звук

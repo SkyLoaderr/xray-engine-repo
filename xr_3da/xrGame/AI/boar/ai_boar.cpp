@@ -15,8 +15,7 @@ CAI_Boar::CAI_Boar()
 	stateNull			= xr_new<CBitingNull>		();
 
 	CurrentState		= stateRest;
-
-	Init();
+	CurrentState->Reset	();
 }
 
 CAI_Boar::~CAI_Boar()
@@ -32,14 +31,6 @@ CAI_Boar::~CAI_Boar()
 }
 
 
-void CAI_Boar::Init()
-{
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-
-}
 
 void CAI_Boar::Load(LPCSTR section)
 {

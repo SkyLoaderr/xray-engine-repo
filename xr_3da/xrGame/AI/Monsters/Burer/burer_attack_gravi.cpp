@@ -3,12 +3,8 @@
 #include "burer_attack_gravi.h"
 #include "burer.h"
 
-#define MIN_DIST_FOR_GRAVI		3.f
-#define MAX_DIST_FOR_GRAVI		20.f
-
 #define GOOD_DISTANCE_FOR_GRAVI 8.f
 #define GRAVI_DELAY				5000
-#define GRAVI_HOLD				1500
 
 CBurerAttackGravi::CBurerAttackGravi(CBurer *p)
 {
@@ -91,7 +87,6 @@ bool CBurerAttackGravi::CheckStartCondition()
 	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
 
 	bool see_enemy_now		= pMonster->EnemyMan.get_enemy_time_last_seen() == Level().timeServer();
-	//bool good_time_to_start = time_next_gravi_available < Level().timeServer();
 
 	if (!see_enemy_now) return false; 
 
@@ -129,7 +124,7 @@ void CBurerAttackGravi::ExecuteGraviStart()
 void CBurerAttackGravi::ExecuteGraviContinue()
 {
 	// проверить на грави удар
-	if (time_gravi_started + GRAVI_HOLD < m_dwCurrentTime) {
+	if (time_gravi_started + pMonster->m_gravi_time_to_hold < m_dwCurrentTime) {
 		m_tAction = ACTION_GRAVI_FIRE;
 	}
 }
@@ -144,7 +139,6 @@ void CBurerAttackGravi::ExecuteGraviFire()
 	target_pos	= enemy->Position();	target_pos.y	+= 0.5f;
 	
 	pMonster->m_gravi_object.activate(enemy, from_pos, target_pos);
-	//time_next_gravi_available = m_dwCurrentTime + GRAVI_DELAY;
 	
 	pMonster->StopGraviPrepare();
 	pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);

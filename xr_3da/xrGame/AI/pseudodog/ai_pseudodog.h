@@ -27,7 +27,7 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 
-			void	Init				();
+	virtual void	reinit				();
 	virtual void	reload				(LPCSTR section);
 
 	virtual void	StateSelector		();

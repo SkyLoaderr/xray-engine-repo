@@ -18,7 +18,7 @@ public:
 	virtual void	Load				(LPCSTR section);
 	virtual void	UpdateCL			();
 
-			void	Init				();
+	virtual void	reinit				();
 	virtual void	StateSelector		();
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual	void	OnSoundPlay			();

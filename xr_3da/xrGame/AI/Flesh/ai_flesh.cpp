@@ -14,11 +14,12 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	CurrentState		= stateRest;
-
 	stateSearchEnemy	= xr_new<CBitingSearchEnemy>(this);
 
-	Init();
+	CurrentState		= stateRest;
+	CurrentState->Reset();
+	
+	m_fEyeShiftYaw		= PI_DIV_6;
 }
 
 CAI_Flesh::~CAI_Flesh()
@@ -34,15 +35,6 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreNDE);
 
 	xr_delete(stateSearchEnemy);
-}
-
-void CAI_Flesh::Init()
-{
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-	m_fEyeShiftYaw					= PI_DIV_6;
 }
 
 BOOL CAI_Flesh::net_Spawn (LPVOID DC) 

@@ -49,13 +49,27 @@ public:
 
 	ref_sound	sound_gravi_wave;
 
+	u32		m_gravi_speed;
+	u32		m_gravi_step;
+	u32		m_gravi_time_to_hold;
+	float	m_gravi_radius;
+	float	m_gravi_impulse_to_objects;
+	float	m_gravi_impulse_to_enemy;
+	float	m_gravi_hit_power;
+	
+
+	u32		m_tele_max_handled_objects;
+	u32		m_tele_time_to_hold;
+	float	m_tele_object_min_mass;
+	float	m_tele_object_max_mass;
+	float	m_tele_find_radius;
+
+
 public:
 					CBurer				();
 	virtual			~CBurer				();	
 
-	
 
-			void	Init				();
 	virtual void	reinit				();
 	virtual void	reload				(LPCSTR section);
 

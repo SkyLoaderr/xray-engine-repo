@@ -4,16 +4,9 @@
 #include "burer.h"
 #include "../../../PhysicsShell.h"
 
-
 #define GOOD_DISTANCE_FOR_TELE	15.f
 #define TELE_DELAY				4000
-#define MAX_HANDLED_OBJECTS		3
 
-#define CHECK_OBJECTS_RADIUS	10.f
-#define MINIMAL_MASS			40.f
-#define MAXIMAL_MASS			5000.f
-
-#define MIN_TIME_HOLD			1200
 #define MAX_TIME_CHECK_FAILURE	6000
 
 CBurerAttackTele::CBurerAttackTele(CBurer *p)
@@ -143,7 +136,7 @@ void CBurerAttackTele::ExecuteTeleStart()
 //////////////////////////////////////////////////////////////////////////
 void CBurerAttackTele::ExecuteTeleContinue()
 {
-	if (time_started + MIN_TIME_HOLD > m_dwCurrentTime) return;
+	if (time_started + pMonster->m_tele_time_to_hold > m_dwCurrentTime) return;
 	
 	// найти объект для атаки
 	bool object_found = false;
@@ -208,12 +201,12 @@ void CBurerAttackTele::FindObjects()
 	tele_objects.clear();
 
 	// получить список объектов вокруг монстра
-	Level().ObjectSpace.GetNearest	(pMonster->Position(), CHECK_OBJECTS_RADIUS);
+	Level().ObjectSpace.GetNearest	(pMonster->Position(), pMonster->m_tele_find_radius);
 	xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
-		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
+		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < pMonster->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > pMonster->m_tele_object_max_mass) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
 
 		tele_objects.push_back(obj);
 	}
@@ -227,12 +220,12 @@ void CBurerAttackTele::FindObjects()
 
 	Fvector pos;
 	pos.mad(pMonster->Position(), dir, dist / 2.f);
-	Level().ObjectSpace.GetNearest(pos, CHECK_OBJECTS_RADIUS); 
+	Level().ObjectSpace.GetNearest(pos, pMonster->m_tele_find_radius); 
 	tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
 		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
-		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
+		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < pMonster->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > pMonster->m_tele_object_max_mass) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
 
 		tele_objects.push_back(obj);
 	}
@@ -277,7 +270,7 @@ void CBurerAttackTele::SelectObjects()
 		tele_objects[i] = tele_objects[tele_objects.size()-1];
 		tele_objects.pop_back();
 
-		if (pMonster->CTelekinesis::get_objects_count() >= MAX_HANDLED_OBJECTS) break;
+		if (pMonster->CTelekinesis::get_objects_count() >= pMonster->m_tele_max_handled_objects) break;
 	}
 }
 

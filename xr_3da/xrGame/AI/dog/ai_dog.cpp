@@ -14,9 +14,9 @@ CAI_Dog::CAI_Dog()
 	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	
 	CurrentState		= stateRest;
-
-	Init();
+	CurrentState->Reset	();
 	
+	CJumping::Init		(this);
 }
 
 CAI_Dog::~CAI_Dog()
@@ -32,20 +32,14 @@ CAI_Dog::~CAI_Dog()
 
 }
 
-
-void CAI_Dog::Init()
+void CAI_Dog::reinit()
 {
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
+	inherited::reinit();
 
 	Bones.Reset();
-
-	CJumping::Init(this);
-
 	strike_in_jump					= false;
 }
+
 
 void CAI_Dog::Load(LPCSTR section)
 {

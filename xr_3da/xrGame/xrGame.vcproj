@@ -1673,27 +1673,6 @@
 							RelativePath=".\ai\ai_monster_jump.h">
 						</File>
 					</Filter>
-					<Filter
-						Name="PseudoGigant"
-						Filter="">
-						<File
-							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.h">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\PseudoGigant\step_effector.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\PseudoGigant\step_effector.h">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="Burer"
@@ -2100,6 +2079,27 @@
 							RelativePath=".\stalker_movement_manager_inline.h">
 						</File>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="PseudoGigant"
+					Filter="">
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.h">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\step_effector.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\step_effector.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

@@ -21,8 +21,9 @@ CAI_PseudoDog::CAI_PseudoDog()
 	stateGrowling		= xr_new<CPseudodogGrowling>(this);
 
 	CurrentState		= stateRest;
+	CurrentState->Reset	();
 
-	Init();
+	CJumping::Init		(this);
 }
 
 CAI_PseudoDog::~CAI_PseudoDog()
@@ -39,15 +40,9 @@ CAI_PseudoDog::~CAI_PseudoDog()
 
 }
 
-
-void CAI_PseudoDog::Init()
+void CAI_PseudoDog::reinit()
 {
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-
-	CJumping::Init(this);
+	inherited::reinit();
 
 	strike_in_jump					= false;
 	m_time_became_angry				= 0;

@@ -18,8 +18,7 @@ CPseudoGigant::CPseudoGigant()
 	stateNull			= xr_new<CBitingNull>		();
 
 	CurrentState		= stateRest;
-
-	Init();
+	CurrentState->Reset	();
 }
 
 CPseudoGigant::~CPseudoGigant()
@@ -34,14 +33,6 @@ CPseudoGigant::~CPseudoGigant()
 	xr_delete(stateNull);
 }
 
-
-void CPseudoGigant::Init()
-{
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-}
 
 void CPseudoGigant::Load(LPCSTR section)
 {
