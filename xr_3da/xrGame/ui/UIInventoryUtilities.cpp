@@ -15,7 +15,7 @@
 #include "../HUDManager.h"
 
 //буферный список для сортировки
-static TIItemList ruck_list;
+static std::vector<PIItem> ruck_list;
 static ref_shader g_EquipmentIconsShader	= NULL;
 static ref_shader g_CharIconsShader			= NULL;
 static ref_shader g_MPCharIconsShader		= NULL;
@@ -92,11 +92,12 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 					
 	//ruck_list = item_list;
 	
-	ruck_list.sort(GreaterRoomInRuck);
+	std::sort(ruck_list.begin(), ruck_list.end(),GreaterRoomInRuck);
 	
 	found_place = true;
 
-	for(PPIItem it = ruck_list.begin(); (ruck_list.end() != it) && found_place; ++it) 
+	for(std::vector<PIItem>::iterator it = ruck_list.begin(); 
+						(ruck_list.end() != it) && found_place; ++it) 
 	{
 		PIItem pItem = *it;
 
@@ -141,6 +142,8 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 			}
 		}
 	}
+
+	ruck_list.clear();
 
 	//для какого-то элемента места не нашлось
 	if(!found_place) return false;

@@ -75,13 +75,14 @@ IC	CPHMovementControl* PMovement()
 protected:
 	//информация о партиклах крови, огня или дыма,
 	//прицепляемых на местах ран
-	DEF_LIST(WOUND_LIST, CWound*);
+	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
 	//список ран, на которых отыгрываются партиклы
-	WOUND_LIST m_ParticlesWoundList;
+	WOUND_VECTOR m_ParticleWounds;
+
 
 	virtual void StartFireParticles(CWound* pWound);
 	virtual void UpdateFireParticles();
-	
+    	
 	virtual void LoadFireParticles(LPCSTR section);
 	//имя партиклов огня, которым может гореть EntityAlive
 	static STR_VECTOR m_FireParticlesVector;
@@ -92,8 +93,19 @@ protected:
 	//размер раны, чтоб остановить партиклы
 	static float m_fStopBurnWoundSize;
 
+
 	virtual void			BloodyWallmarks			(float P, const Fvector &dir, s16 element, const Fvector& position_in_object_space);
-	virtual void			LoadBloodyWallmarks		(LPCSTR section);
+	static  void			LoadBloodyWallmarks		(LPCSTR section);
+public:	
+	static  void			UnloadBloodyWallmarks	();
+protected:
+	static  bool			m_BloodyWallmarksLoaded;
+
+	virtual void			PlaceBloodWallmark		(const Fvector& dir, const Fvector& start_pos, 
+														float trace_dist, float wallmark_size,
+														SHADER_VECTOR& wallmarks_vector);
+
+
 
 	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
 	static SHADER_VECTOR m_BloodMarksVector;
@@ -102,4 +114,24 @@ protected:
 	static float m_fBloodMarkDistance;
 	static float m_fBloodMarkDispersion;
 	static float m_fNominalHit;
+
+
+
+	//текстурки капель крови
+	static SHADER_VECTOR m_BloodDropsVector;
+	//список ран с которых капает кровь
+	
+	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
+	WOUND_VECTOR m_BloodWounds;
+	//размер раны, чтоб начала капать кровь
+	static float m_fStartBloodWoundSize;
+	//размер раны, чтоб остановить кровь
+	static float m_fStopBloodWoundSize;
+	//время через которое с раны размером 1.0 будет падать капля крови
+	static float m_fBloodDropTime;
+
+	//обновление ран, и рисование отметок от капающей крови
+	virtual void			StartBloodDrops			(CWound* pWound);
+	virtual void			UpdateBloodDrops		();
+
 };

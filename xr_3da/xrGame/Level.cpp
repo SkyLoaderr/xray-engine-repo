@@ -120,12 +120,6 @@ CLevel::~CLevel()
 	}
 	static_Sounds.clear	();
 
-	//by Dandy
-	//destroy fog of war
-	xr_delete			(m_pFogOfWar);
-	//destroy bullet manager
-	xr_delete					(m_pBulletManager);
-
 	xr_delete					(m_patrol_path_storage);
 	
 	ai().script_engine().remove_script_processor("level");
@@ -136,7 +130,16 @@ CLevel::~CLevel()
 	xr_delete					(game);
 	xr_delete					(game_events);
 
+
+	//by Dandy
+	//destroy fog of war
+	xr_delete			(m_pFogOfWar);
+	//destroy bullet manager
+	xr_delete					(m_pBulletManager);
+	//info portions static data
 	CInfoPortion::DeleteStrToID();
+	//static shader for blood
+	CEntityAlive::UnloadBloodyWallmarks	();
 }
 
 // Game interface ////////////////////////////////////////////////////

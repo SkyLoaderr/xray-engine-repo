@@ -23,6 +23,8 @@
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
 
+#include "SleepEffector.h"
+
 #include "character_info.h"
 #include "CustomOutfit.h"
 
@@ -174,6 +176,9 @@ CActor::~CActor()
 	}
 
 	xr_delete(m_pActorEffector);
+
+	xr_delete(m_pShootingEffector);
+	xr_delete(m_pSleepEffector);
 }
 
 void CActor::reinit	()

@@ -208,6 +208,7 @@ void CWeaponHUD::StopCurrentAnimWithoutCallback		()
 		hud_info = xr_new<SHARED_HUD_INFO>(*section, pHudItem);
 		m_SharedHudInfoMap[section] = hud_info;
 		hud_info->AddRef();
+
 	}
 
 	return hud_info;

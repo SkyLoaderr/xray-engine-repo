@@ -11,8 +11,12 @@
 
 
 #define SMALL_ENTITY_RADIUS		0.6f
+#define BLOOD_DROPS_SIZE		0.03f
+
 
 SHADER_VECTOR CEntityAlive::m_BloodMarksVector;
+bool CEntityAlive::m_BloodyWallmarksLoaded = false;
+
 float CEntityAlive::m_fBloodMarkSizeMin = 0.f;
 float CEntityAlive::m_fBloodMarkSizeMax = 0.f;
 float CEntityAlive::m_fBloodMarkDistance = 0.f;
@@ -26,6 +30,13 @@ u32	  CEntityAlive::m_dwMinBurnTime = 10000;
 float CEntityAlive::m_fStartBurnWoundSize = 0.3f;
 //размер раны, чтоб остановить партиклы
 float CEntityAlive::m_fStopBurnWoundSize = 0.1f;
+//время через которое с раны размером 1.0 будет падать капля крови
+float CEntityAlive::m_fBloodDropTime = 0.9f;
+
+//капание крови
+SHADER_VECTOR CEntityAlive::m_BloodDropsVector;
+float CEntityAlive::m_fStartBloodWoundSize = 0.3f;
+float CEntityAlive::m_fStopBloodWoundSize = 0.1f;
 
 
 STR_VECTOR CEntityAlive::m_FireParticlesVector;
@@ -55,7 +66,7 @@ void CEntityAlive::Load		(LPCSTR section)
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
 	//bloody wallmarks
-	if(m_BloodMarksVector.empty())
+	if(!m_BloodyWallmarksLoaded)
 		LoadBloodyWallmarks ("bloody_marks");
 
 	if(m_FireParticlesVector.empty())
@@ -64,6 +75,9 @@ void CEntityAlive::Load		(LPCSTR section)
 
 void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 {
+	m_BloodyWallmarksLoaded = true;
+
+	//кровавые отметки на стенах
 	string256	tmp;
 	LPCSTR wallmarks_name = pSettings->r_string(section, "wallmarks"); 
 	
@@ -76,11 +90,35 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 		m_BloodMarksVector.push_back	(s);
 	}
 
+	
 	m_fBloodMarkSizeMin = pSettings->r_float(section, "min_size"); 
 	m_fBloodMarkSizeMax = pSettings->r_float(section, "max_size"); 
 	m_fBloodMarkDistance = pSettings->r_float(section, "dist"); 
 	m_fBloodMarkDispersion = pSettings->r_float(section, "dispersion"); 
 	m_fNominalHit = pSettings->r_float(section, "nominal_hit"); 
+
+
+
+	//капли крови с открытых ран
+	wallmarks_name = pSettings->r_string(section, "blood_drops");
+	cnt		=_GetItemCount(wallmarks_name);
+
+	for (int k=0; k<cnt; ++k)
+	{
+		s.create ("effects\\wallmark",_GetItem(wallmarks_name,k,tmp));
+		m_BloodDropsVector.push_back	(s);
+	}
+
+	m_fBloodDropTime		= pSettings->r_float(section, "blood_drop_time");	
+	m_fStartBloodWoundSize  = pSettings->r_float(section, "start_blood_size");
+	m_fStopBloodWoundSize   = pSettings->r_float(section, "stop_blood_size");
+}
+
+void CEntityAlive::UnloadBloodyWallmarks	()
+{
+	m_BloodyWallmarksLoaded = false;
+	m_BloodMarksVector.clear();
+	m_BloodDropsVector.clear();
 }
 
 void CEntityAlive::LoadFireParticles(LPCSTR section)
@@ -129,7 +167,9 @@ void CEntityAlive::shedule_Update(u32 dt)
 	//Обновление партиклов огня
 	UpdateFireParticles	();
 	//обновить раны
-	UpdateWounds		();
+	CEntityCondition::UpdateWounds		();
+	//капли крови
+	UpdateBloodDrops	();
 
 	//убить сущность
 	if(Local() && !g_Alive() && !AlreadyDie())
@@ -182,6 +222,8 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 	{
 		if(ALife::eHitTypeBurn == hit_type)
 			StartFireParticles(pWound);
+		else if(ALife::eHitTypeWound == hit_type || ALife::eHitTypeFireWound == hit_type)
+			StartBloodDrops(pWound);
 	}
 
 	//добавить кровь на стены
@@ -248,87 +290,68 @@ void CEntityAlive::BloodyWallmarks (float P, const Fvector &dir, s16 element,
 
 	float small_entity = 1.f;
 	if(Radius()<SMALL_ENTITY_RADIUS) small_entity = 0.5;
-	
+
+
+	float wallmark_size = m_fBloodMarkSizeMax;
+	wallmark_size *= (P/m_fNominalHit);
+	wallmark_size *= small_entity;
+	clamp(wallmark_size, m_fBloodMarkSizeMin, m_fBloodMarkSizeMax);
+
+	PlaceBloodWallmark(dir, start_pos, m_fBloodMarkDistance, 
+						wallmark_size, m_BloodMarksVector);
+
+}
+
+void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_pos, 
+									  float trace_dist, float wallmark_size,
+									  SHADER_VECTOR& wallmarks_vector)
+{
 	setEnabled(false);
+	Collide::rq_result result;
+	BOOL reach_wall = Level().ObjectSpace.RayPick(start_pos, dir, trace_dist, 
+		Collide::rqtBoth, result) && !result.O;
+	setEnabled(true);
 
-
-	//рисуем кровь по алгоритму:
-	//по направлению полета пули максимальный по размеру валмарк
-	//потом несколько маленьких с большим разбросом
-	int blood_marks_num = iFloor(0.5f + P/m_fNominalHit);
-	clamp(blood_marks_num, 1, 6);
-	//for(int i=0; i<blood_marks_num; i++)
+	//если кровь долетела до статического объекта
+	if(reach_wall)
 	{
-		float disp;
-		float main_mark;
-	//	if(i==0) 
-		{
-			//для основной отметки ставим совсем небольшую дисперсию
-			disp = 0.0f;
-			main_mark = 1.f;
-		}
-	/*	else
-		{
-			disp = m_fBloodMarkDispersion;
-			main_mark = 0.3f;
-		}*/
+		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+result.element;
+		SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->material);
 
-		Fvector rnd_dir;
-		rnd_dir.random_dir(dir, disp, Random);
-		
-		Collide::rq_result result;
-		BOOL reach_wall = Level().ObjectSpace.RayPick(start_pos, rnd_dir, m_fBloodMarkDistance, 
-			Collide::rqtBoth, result) && !result.O;
-
-		//если кровь долетела до статического объекта
-		if(reach_wall)
+		if(pMaterial->Flags.is(SGameMtl::flBloodmark))
 		{
-			CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+result.element;
-			SGameMtl*	pMaterial = GMLib.GetMaterialByIdx(pTri->material);
+			//вычислить нормаль к пораженной поверхности
+			Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
 
-			if(pMaterial->Flags.is(SGameMtl::flBloodmark))
+			//вычислить точку попадания
+			Fvector end_point;
+			end_point.set(0,0,0);
+			end_point.mad(start_pos, dir, result.range);
+
+			ref_shader* pWallmarkShader = wallmarks_vector.empty()?NULL:
+						&wallmarks_vector[::Random.randI(0,wallmarks_vector.size())];
+
+			if (pWallmarkShader)
 			{
-
-				//вычислить нормаль к пораженной поверхности
-				Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-
-				//вычислить точку попадания
-				Fvector end_point;
-				end_point.set(0,0,0);
-				end_point.mad(start_pos, rnd_dir, result.range);
-
-
-				ref_shader* pWallmarkShader = m_BloodMarksVector.empty()?NULL:
-				&m_BloodMarksVector[::Random.randI(0,m_BloodMarksVector.size())];
-
-				if (pWallmarkShader)
-				{
-					float wallmark_size = m_fBloodMarkSizeMax;
-					wallmark_size *= (P/m_fNominalHit);
-					wallmark_size *= small_entity;
-					wallmark_size *= main_mark;
-					clamp(wallmark_size, m_fBloodMarkSizeMin, m_fBloodMarkSizeMax);
-
-					//добавить отметку на материале
-					::Render->add_Wallmark(*pWallmarkShader, end_point,
-						wallmark_size, pTri, pVerts);
-				}
+				//добавить отметку на материале
+				::Render->add_Wallmark(*pWallmarkShader, end_point,
+					wallmark_size, pTri, pVerts);
 			}
 		}
 	}
-	setEnabled(true);
 }
+
 
 
 void CEntityAlive::StartFireParticles(CWound* pWound)
 {
 	if(pWound->TypeSize(ALife::eHitTypeBurn)>m_fStartBurnWoundSize)
 	{
-		if(std::find(m_ParticlesWoundList.begin(),
-			m_ParticlesWoundList.end(),
-			pWound) == m_ParticlesWoundList.end())
+		if(std::find(m_ParticleWounds.begin(),
+			m_ParticleWounds.end(),
+			pWound) == m_ParticleWounds.end())
 		{
-			m_ParticlesWoundList.push_back(pWound);
+			m_ParticleWounds.push_back(pWound);
 		}
 
 		CKinematics* V = PKinematics(Visual());
@@ -357,17 +380,14 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 	}
 }
 
-
-
-
 void CEntityAlive::UpdateFireParticles()
 {
-	if(m_ParticlesWoundList.empty()) return;
+	if(m_ParticleWounds.empty()) return;
 	
-	WOUND_LIST_it last_it;
+	WOUND_VECTOR_IT last_it;
 
-	for(WOUND_LIST_it it = m_ParticlesWoundList.begin(); 
-					  it != m_ParticlesWoundList.end();)
+	for(WOUND_VECTOR_IT it = m_ParticleWounds.begin(); 
+					  it != m_ParticleWounds.end();)
 	{
 		CWound* pWound = *it;
 		float burn_size = pWound->TypeSize(ALife::eHitTypeBurn);
@@ -377,8 +397,7 @@ void CEntityAlive::UpdateFireParticles()
 		{
 			CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(),
 												pWound->GetParticleBoneNum());
-			WOUND_LIST_it current = it; it++;
-			m_ParticlesWoundList.erase(current);
+			it = m_ParticleWounds.erase(it);
 			continue;
 		}
 		it++;
@@ -392,3 +411,55 @@ ALife::ERelationType CEntityAlive::tfGetRelationType	(const CEntityAlive *tpEnti
 	else
 		return(ALife::eRelationTypeNeutral);
 };
+
+
+void CEntityAlive::StartBloodDrops			(CWound* pWound)
+{
+	if(pWound->BloodSize()>m_fStartBloodWoundSize)
+	{
+		if(std::find(m_BloodWounds.begin(), m_BloodWounds.end(),
+			  pWound) == m_BloodWounds.end())
+		{
+			m_BloodWounds.push_back(pWound);
+		}
+	}
+}
+
+void CEntityAlive::UpdateBloodDrops()
+{
+	if(m_BloodWounds.empty()) return;
+
+	if(!g_Alive())
+	{
+		m_BloodWounds.clear();
+		return;
+	}
+
+	WOUND_VECTOR_IT last_it;
+
+	for(WOUND_VECTOR_IT it = m_BloodWounds.begin(); 
+		it != m_BloodWounds.end();)
+	{
+		CWound* pWound = *it;
+		float blood_size = pWound->BloodSize();
+
+		if(pWound->GetDestroy() || blood_size < m_fStopBloodWoundSize)
+		{
+			it =  m_BloodWounds.erase(it);
+			continue;
+		}
+
+		if(!fis_zero(blood_size))
+		{
+			pWound->m_fUpdateTime += Device.fTimeDelta;
+			float drop_time = m_fBloodDropTime*(1.f/blood_size)*Random.randF(0.8f, 1.2f);
+			if(pWound->m_fUpdateTime>drop_time)
+			{
+				PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
+								Position(), m_fBloodMarkDistance, 
+								BLOOD_DROPS_SIZE, m_BloodDropsVector);
+			}
+		}
+		it++;
+	}
+}

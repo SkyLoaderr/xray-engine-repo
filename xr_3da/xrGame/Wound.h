@@ -15,6 +15,7 @@ public:
 
 	float	TotalSize	();
 	float	TypeSize	(ALife::EHitType hit_type);
+	float	BloodSize	();
 
 	void	AddHit		(float hit_power, ALife::EHitType hit_type);
 	
@@ -32,6 +33,9 @@ public:
 	void  SetDestroy(bool destroy) {m_bToBeDestroy = destroy;}
 	bool  GetDestroy()			   {return m_bToBeDestroy;}
 
+	//время обновления (для капель крови)
+	float m_fUpdateTime;
+
 protected:
 	//косточка на которой появилась рана
 	u16 m_iBoneNum;
@@ -43,7 +47,6 @@ protected:
 
 	//список составляющих раны 
 	HitTypeSVec m_Wounds;
-
 
 	bool		m_bToBeDestroy;
 };

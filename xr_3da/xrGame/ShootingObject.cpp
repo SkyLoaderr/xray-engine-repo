@@ -60,12 +60,6 @@ void CShootingObject::Load	(LPCSTR section)
 	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
 	fireDispersionBase	= deg2rad					(fireDispersionBase);
 
-	// tracer
-	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
-	tracerTrailCoeff	= pSettings->r_float		(section,"tracer_trail_scale"	);
-	tracerStartLength	= pSettings->r_float		(section,"tracer_start_length"	);
-	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
-
 
 	//время затрачиваемое на выстрел
 	fTimeToFire			= pSettings->r_float		(section,"rpm");

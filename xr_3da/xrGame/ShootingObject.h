@@ -72,14 +72,6 @@ protected:
 	//рассеивание во время стрельбы
 	float					fireDispersionBase;
 
-	//трассеры
-	float					tracerHeadSpeed;
-	float					tracerTrailCoeff;
-	float					tracerStartLength;
-	float					tracerWidth;
-	u32						tracerFrame;
-
-
 	//счетчик времени, затрачиваемого на выстрел
 	float			fTime;
 

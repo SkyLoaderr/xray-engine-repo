@@ -17,6 +17,8 @@ CWound::CWound(u16 bone_num)
 
 	m_iBoneNum = bone_num;
 	m_iParticleBoneNum = BI_NONE;
+
+	m_fUpdateTime = 0.f;
 }
 
 CWound::~CWound(void)
@@ -40,6 +42,12 @@ float CWound::TypeSize(ALife::EHitType hit_type)
 	return m_Wounds[hit_type];
 }
 
+//кол-во кровавых ран
+float CWound::BloodSize	()
+{
+	return m_Wounds[ALife::eHitTypeWound]+ m_Wounds[ALife::eHitTypeFireWound];
+}
+
 void CWound::AddHit(float hit_power, ALife::EHitType hit_type)
 {
 	m_Wounds[hit_type] += hit_power;
@@ -59,6 +67,7 @@ void CWound::Incarnation	(float percent)
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 	{
 		m_Wounds[i] -= percent*m_Wounds[i]/total_size;
-		if(m_Wounds[i]<0) m_Wounds[i] = 0;
+		if(m_Wounds[i]<0) 
+			m_Wounds[i] = 0;
 	}
 }

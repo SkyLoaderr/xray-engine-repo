@@ -13,7 +13,6 @@
 
 CMissile::CMissile(void) 
 {
-	m_pHUD				= xr_new<CWeaponHUD>();
 	m_offset.identity	();
 	///////////////////////////////////
 	m_throw_direction.set(0.0f, 1.0f, 0.0f);
@@ -24,8 +23,6 @@ CMissile::CMissile(void)
 CMissile::~CMissile(void) 
 {
 	HUD_SOUND::DestroySound(sndPlaying);
-
-	xr_delete			(m_pHUD);
 }
 
 void CMissile::reinit		()

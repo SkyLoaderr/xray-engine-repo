@@ -15,10 +15,6 @@
 #	include "script_debugger.h"
 #endif
 
-#ifdef XRGAME_EXPORTS
-#	include "ai_script_processor.h"
-#endif
-
 extern void export_classes	(lua_State *L);
 
 #ifdef XRGAME_EXPORTS

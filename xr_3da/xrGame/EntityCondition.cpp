@@ -410,7 +410,7 @@ float CEntityCondition::BleedingSpeed()
 
 void CEntityCondition::UpdateHealth()
 {
-	m_fDeltaHealth -= BleedingSpeed() * m_iDeltaTime/1000;
+	m_fDeltaHealth -= BleedingSpeed() * float(m_iDeltaTime)/1000.f;
 	VERIFY(_valid(m_fDeltaHealth));
 
 	//затянуть раны

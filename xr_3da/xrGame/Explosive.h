@@ -5,8 +5,6 @@
 #pragma once
 
 #define SND_RIC_COUNT 5
-#define EXPLODE_TIME_MAX 5000
-
 
 #include "../feel_touch.h"
 #include "inventory_item.h"
@@ -77,10 +75,10 @@ protected:
 	//список пораженных объектов
 	xr_list<CGameObject*> m_blasted;
 
-	//продолжительность взрыва
-	u32	m_dwExplodeDuration;
-	//время взрыва
-	u32 m_dwExplodeDurationMax;
+	//текущая продолжительность взрыва
+	float m_fExplodeDuration;
+	//общее время взрыва
+	float m_fExplodeDurationMax;
 
 	//////////////////////////////////////////////
 	//для разлета осколков
@@ -101,7 +99,7 @@ protected:
 	IRender_Light*		m_pLight;
 	Fcolor				m_LightColor;
 	float				m_fLightRange;
-	u32					m_dwLightTime;
+	float				m_fLightTime;
 
 	// эффектор
 	struct {

@@ -80,7 +80,7 @@ void CExplosive::Load(LPCSTR section)
 
 	sscanf				(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
 	m_fLightRange		= pSettings->r_float(section,"light_range");
-	m_dwLightTime		= iFloor(pSettings->r_float(section,"light_time")*1000.f);
+	m_fLightTime		= pSettings->r_float(section,"light_time");
 
 	//трассы для разлета осколков
 	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
@@ -89,7 +89,7 @@ void CExplosive::Load(LPCSTR section)
 	ref_str				snd_name = pSettings->r_string(section,"snd_explode");
 	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
 
-	m_dwExplodeDurationMax= EXPLODE_TIME_MAX;
+	m_fExplodeDurationMax	= pSettings->r_float(section, "explode_duration");
 
 	effector.time			= pSettings->r_float("explode_effector","time");
 	effector.amplitude		= pSettings->r_float("explode_effector","amplitude");
@@ -142,11 +142,9 @@ void CExplosive::Explode()
 	pStaticPG->Play();
 
 	//включаем подсветку от взрыва
-	if(m_dwLightTime>0)
+	if(m_fLightTime>0)
 	{
-		m_pLight->set_color(m_LightColor.r, 
-			m_LightColor.g, 
-			m_LightColor.b);
+		m_pLight->set_color(m_LightColor.r, m_LightColor.g, m_LightColor.b);
 		m_pLight->set_range(m_fLightRange);
 		m_pLight->set_position(pos); 
 		m_pLight->set_active(true);
@@ -292,9 +290,9 @@ void CExplosive::feel_touch_new(CObject* O)
 void CExplosive::UpdateCL() 
 {
 	//время вышло, взрываем сам объект
-	if(m_dwExplodeDuration > 0 && m_dwExplodeDuration <= Device.dwTimeDelta) 
+	if(m_fExplodeDuration > 0 && m_fExplodeDuration <= Device.fTimeDelta) 
 	{
-		m_dwExplodeDuration = 0;
+		m_fExplodeDuration = 0.f;
 		m_pLight->set_active(false);
 		
 		//ликвидировать сам объект 
@@ -303,26 +301,22 @@ void CExplosive::UpdateCL()
 //		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		if (Local()) u_EventSend			(P);
 	} 
-	else if(m_dwExplodeDuration>0 && m_dwExplodeDuration < 0xffffffff) 
+	else if(m_fExplodeDuration>0)
 	{
-		m_dwExplodeDuration -= Device.dwTimeDelta;
+		m_fExplodeDuration -= Device.fTimeDelta;
 		
-		if(m_dwExplodeDuration > (m_dwExplodeDurationMax - m_dwLightTime)) 
+		if(m_fExplodeDuration > (m_fExplodeDurationMax - m_fLightTime)) 
 		{
-			if(m_dwLightTime>0)
+			if(m_fLightTime>0)
 			{
-				float scale = float(m_dwExplodeDuration - 
-					(m_dwExplodeDurationMax - m_dwLightTime))/float(m_dwLightTime);
-				m_pLight->set_color(m_LightColor.r*scale, 
-					m_LightColor.g*scale, 
-					m_LightColor.b*scale);
-
+				float scale = (m_fExplodeDuration - (m_fExplodeDurationMax - m_fLightTime))/m_fLightTime;
+				m_pLight->set_color(m_LightColor.r*scale, m_LightColor.g*scale, m_LightColor.b*scale);
 				m_pLight->set_range(m_fLightRange*scale);
 			}
 		} 
-//		else m_pLight->set_range(0);
 	} 
-	else m_pLight->set_active(false);
+	else 
+		m_pLight->set_active(false);
 }
 
 void CExplosive::OnEvent(NET_Packet& P, u16 type) 
@@ -338,7 +332,7 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 			SetCurrentParentID(parent_id);
 			ExplodeParams(pos,normal);
 			Explode();
-			m_dwExplodeDuration = m_dwExplodeDurationMax;
+			m_fExplodeDuration = m_fExplodeDurationMax;
 			break;
 		}
 	}
