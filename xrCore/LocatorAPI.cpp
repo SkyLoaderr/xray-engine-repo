@@ -532,8 +532,8 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	{
 		string_path	cpy_name;
 		FS_Path* 	P; 
-		if (fname==strstr(source_name,(P=get_path("$server_root$"))->m_Path)||
-        	fname==strstr(source_name,(P=get_path("$server_data_root$"))->m_Path)){
+		if (source_name==strstr(source_name,(P=get_path("$server_root$"))->m_Path)||
+        	source_name==strstr(source_name,(P=get_path("$server_data_root$"))->m_Path)){
 			update_path			(cpy_name,"$build_copy$",source_name+xr_strlen(P->m_Path));
 			IWriter* W = w_open	(cpy_name);
 			W->w				(R->pointer(),R->length());
