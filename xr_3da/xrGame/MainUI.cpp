@@ -363,12 +363,15 @@ void CMainUI::PushScissor(const Irect& r_tgt, bool overlapped)
 	Irect result		= r_tgt;
 	if (!m_Scissors.empty()&&!overlapped){
 		r_top			= m_Scissors.top();
-		if (!result.intersection(r_top,r_tgt))
-			result.set	(0,0,0,0);
 	}
+	if (!result.intersection(r_top,r_tgt))
+			result.set	(0,0,0,0);
+
+	VERIFY(result.x1>=0&&result.y1>=0&&result.x2<=UI_BASE_WIDTH&&result.y2<=UI_BASE_HEIGHT);
 	m_Scissors.push		(result);
 
 	ClientToScreenScaled(result,0);
+	VERIFY(result.x1>=0&&result.y1>=0&&(result.x2<=UI_BASE_WIDTH*GetScaleX())&&(result.y2<=UI_BASE_HEIGHT*GetScaleY()));
 	RCache.set_Scissor	(&result);
 }
 void CMainUI::PopScissor()
