@@ -122,7 +122,6 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
     }
 	if (bCalcInv) bone->LITransform().invert(L);
     if (bCalcRest){
-	    Fmatrix& parent 	= parent_bone?parent_bone->RTransform():Fidentity;
 	    const Fvector& r 	= bone->get_rest_rotate();
     	Fmatrix& R			= bone->RTransform();
         R.setHPB			(r.x,r.y,r.z);

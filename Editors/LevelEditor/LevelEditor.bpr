@@ -120,7 +120,8 @@
       intermediate\xrServer_Objects_ALife_Items.obj 
       intermediate\EditObjectProps.obj intermediate\du_cylinder.obj 
       intermediate\ItemListTypes.obj intermediate\ItemList.obj 
-      intermediate\ItemListHelper.obj intermediate\CustomObjectAnimation.obj"/>
+      intermediate\ItemListHelper.obj intermediate\CustomObjectAnimation.obj 
+      intermediate\BoneEditor.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -415,6 +416,7 @@
       <FILE FILENAME="edit\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

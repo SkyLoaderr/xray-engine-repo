@@ -432,11 +432,11 @@ BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* 
 BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points, const Fmatrix* soft_transform)
 {
     if (usage.is(CLight::flAffectStatic)){
-    	if (soft_points){
+    	if (soft_points&&!soft_points->empty()){
         	R_ASSERT(soft_transform);
         // make soft light
             Fcolor color		= b->data.diffuse;
-            color.normalize_rgb(b->data.diffuse);
+            color.normalize_rgb	(b->data.diffuse);
             float sample_energy	= (b->data.diffuse.magnitude_rgb())/float(soft_points->size());
             color.mul_rgb		(sample_energy);
 
