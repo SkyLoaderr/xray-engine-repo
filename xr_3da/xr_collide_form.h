@@ -102,14 +102,14 @@ public:
 	virtual BOOL	_svRayTest		( RayQuery& Q) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
 
-	IC CObject*		Owner			( )						{ return owner;}
-	IC BOOL			GetEnable		( )						{ return enabled;}
+	IC CObject*		Owner			( )	const				{ return owner;}
+	IC BOOL			GetEnable		( )	const				{ return enabled;}
 	void			Enable 			( BOOL _enable )		{ enabled_prev = enabled; enabled = _enable; }
 	void			EnableRollback	( )						{ enabled = enabled_prev; }
 
-	const Fbox&		getBBox			( )						{ return bv_box;		}
-	float			getRadius		( )						{ return bv_sphere.R;	}
-	Fsphere&		getSphere		( )						{ return bv_sphere;		}
+	const Fbox&		getBBox			( )	const				{ return bv_box;		}
+	float			getRadius		( )	const				{ return bv_sphere.R;	}
+	const Fsphere&	getSphere		( )	const				{ return bv_sphere;		}
 
 	void			OnMove			( );
 };

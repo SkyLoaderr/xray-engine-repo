@@ -141,7 +141,7 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 IC int   CObjectSpace::GetNearest( CCFModel* obj, float range ){
 	obj->Enable 		( false ); // self exclude from test
 	Fvector				P;
-	obj->Owner().clXFORM().transform_tiny(P,obj->getSphere().P);
+	obj->Owner()->clXFORM().transform_tiny(P,obj->getSphere().P);
 	int res				= GetNearest( P, range + obj->getRadius() );
 	obj->EnableRollback	( );
 	return				res;
@@ -158,7 +158,7 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	VERIFY				( obj );
 	VERIFY				( obj->owner );
 	Fbox				bb;
-	bb.xform			(obj->s_box,obj->Owner()->svXFORM());
+	bb.xform			(obj->bv_box,obj->Owner()->svXFORM());
 	rect.x1				= TransX(bb.min.x);
 	rect.y1				= TransZ(bb.min.z);
 	rect.x2				= TransX(bb.max.x);
