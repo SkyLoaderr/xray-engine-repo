@@ -157,10 +157,11 @@ namespace CDB
 		void			add_face_packed_D	( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy, float eps = EPS );
 		void			calc_adjacency		( xr_vector<u32>& dest		);
 
-		Fvector*		getV			()	{ return &*verts.begin();	}
-		size_t			getVS			() 	{ return verts.size();		}
-		TRI*			getT			()	{ return &*faces.begin();	}
-		size_t			getTS			()	{ return faces.size();		}
+		Fvector*		getV			()	{ return &*verts.begin();		}
+		size_t			getVS			() 	{ return verts.size();			}
+		TRI*			getT			()	{ return &*faces.begin();		}
+		size_t			getTS			()	{ return faces.size();			}
+		void			clear			()	{ verts.clear(); faces.clear();	}
 	};
 
 	const u32 clpMX = 28, clpMY=16, clpMZ=28;

@@ -94,19 +94,19 @@ void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 	}
 }
 
-void CWallmarksEngine::RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
+void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
 {
-	// Check if triangle already processed
-	if (std::find(sml_processed.begin(),sml_processed.end(),T)!=sml_processed.end())
-		return;
-	
-	sml_processed.push_back(T);
+	CDB::TRI*	T			= sml_collector.getT()+t;
+	if (T->dummy)			return;
+	T->dummy				= 0xffffffff;
 	
 	// Some vars
+	u32*		v_ids		= T->IDverts();
+	Fvector*	v_data		= sml_collector.getV();
 	sml_poly_src.clear		();
-	sml_poly_src.push_back	(*T->verts[0]);
-	sml_poly_src.push_back	(*T->verts[1]);
-	sml_poly_src.push_back	(*T->verts[2]);
+	sml_poly_src.push_back	(v_data[v_ids[0]]);
+	sml_poly_src.push_back	(v_data[v_ids[1]]);
+	sml_poly_src.push_back	(v_data[v_ids[2]]);
 	sml_poly_dest.clear		();
 	
 	sPoly* P = F.ClipPoly	(sml_poly_src, sml_poly_dest);
@@ -134,14 +134,16 @@ void CWallmarksEngine::RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine:
 		// recurse
 		for (i=0; i<3; i++)
 		{
-			CDB::TRI* SML = T->adj[i];
-			if (SML)	{
-				Fvector test_normal;
-				test_normal.mknormal	(*SML->verts[0],*SML->verts[1],*SML->verts[2]);
-				float cosa				= test_normal.dotproduct(sml_normal);
-				if (cosa<EPS)			continue;
-				RecurseTri				(SML,mView,W,F);
-			}
+			u32 adj					= sml_adjacency[3*t+i];
+			if (0xffffffff==adj)	continue;
+			CDB::TRI*	SML			= sml_collector.getT() + adj;
+			v_ids					= SML->IDverts();
+
+			Fvector test_normal;
+			test_normal.mknormal	(v_data[v_ids[0]],v_data[v_ids[1]],v_data[v_ids[2]]);
+			float cosa				= test_normal.dotproduct(sml_normal);
+			if (cosa<EPS)			continue;
+			RecurseTri				(adj,mView,W,F);
 		}
 	}
 }
@@ -163,6 +165,29 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 
 void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
 {
+	// query for polygons in bounding box
+	// calculate adjacency
+	{
+		Fbox				bb_query;
+		Fvector				bbc,bbd;
+		bb_query.set		(contact_point,contact_point);
+		bb_query.grow		(sz*2);
+		bb_query.get_CD		(bbc,bbd);
+		xrc.box_options		(CDB::OPT_FULL_TEST);
+		xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bbc,bbd);
+		u32	triCount		= xrc.r_count	();
+		if (0==triCount)	return;
+		CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
+		sml_collector.clear	();
+		sml_collector.add_face_packed_D	(pTri->verts[0],pTri->verts[1],pTri->verts[2],0);
+		for (u32 t=0; t<triCount; t++)
+		{
+			CDB::TRI*	T	= tris+(xrc.r_begin()[t]);
+			sml_collector.add_face_packed_D		(T->verts[0],T->verts[1],T->verts[2],0);
+		}
+		sml_collector.calc_adjacency	(sml_adjacency);
+	}
+
 	// calc face normal
 	Fvector	N;
 	N.mknormal			(*pTri->verts[0],*pTri->verts[1],*pTri->verts[2]);
@@ -173,12 +198,11 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	BuildMatrix			(mView,1/sz,contact_point);
 	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
 	mView.mulA_43		(mRot);
-	CFrustum			F;
 	F.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
 	// create wallmark
 	wallmark* W			= wm_allocate(hShader);
-	RecurseTri			(pTri,mView,*W,F);
+	RecurseTri			(0,mView,*W,F);
 	sml_processed.clear	();
 
 	// calc sphere

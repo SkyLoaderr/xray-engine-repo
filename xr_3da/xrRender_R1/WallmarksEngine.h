@@ -19,13 +19,17 @@ private:
 	xr_vector<wallmark*>			marks;
 	ref_geom						hGeom;
 
-	xr_vector<CDB::TRI*>			sml_processed;
 	Fvector							sml_normal;
+	CFrustum						sml_clipper;
 	sPoly							sml_poly_dest;
 	sPoly							sml_poly_src;
+
+	xrXRC							xrc;
+	CDB::Collector					sml_collector;
+	xr_vector<u32>					sml_adjacency;
 private:
 	void		BuildMatrix			(Fmatrix &dest, float invsz, const Fvector& from);
-	void		RecurseTri			(CDB::TRI* T, Fmatrix &mView, wallmark	&W, CFrustum &F);
+	void		RecurseTri			(u32 T,	Fmatrix &mView, wallmark	&W);
 
 	wallmark*	wm_allocate			(ref_shader&	S	);
 	void		wm_render			(wallmark*	W, FVF::LIT* &V);

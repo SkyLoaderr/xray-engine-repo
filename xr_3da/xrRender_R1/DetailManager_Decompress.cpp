@@ -48,7 +48,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	// Select polygons
 	Fvector		bC,bD;
 	D.vis.box.get_CD	(bC,bD);
-	XRC.box_options		(0); // BBOX_TRITEST
+	xrc.box_options		(CDB::OPT_FULL_TEST); 
 
 #ifdef _EDITOR
 	// Select polygons
@@ -56,8 +56,8 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	Scene.BoxPickObjects(D.vis.box,pinf,GetSnapList());
 	u32	triCount		= pinf.size();
 #else
-	XRC.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
-	u32	triCount		= XRC.r_count	();
+	xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
+	u32	triCount		= xrc.r_count	();
 	CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 #endif
 
@@ -144,7 +144,7 @@ Device.Statistic.TEST0.End		();
 					}
 				}
 #else
-				CDB::TRI&	T		= tris[XRC.r_begin()[tid].id];
+				CDB::TRI&	T		= tris[xrc.r_begin()[tid].id];
 				if (CDB::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
 				{
 					if (r_range>=0)	{
@@ -171,17 +171,17 @@ Device.Statistic.TEST0.End		();
 			Bounds.merge					(ItemBB);
 
 			// Color
-			DetailPalette*	c_pal	= (DetailPalette*)&DS.color;
+			DetailPalette*	c_pal			= (DetailPalette*)&DS.color;
 			float gray255	[4];
-			gray255[0]		=	255.f*float(c_pal->a0)/15.f;
-			gray255[1]		=	255.f*float(c_pal->a1)/15.f;
-			gray255[2]		=	255.f*float(c_pal->a2)/15.f;
-			gray255[3]		=	255.f*float(c_pal->a3)/15.f;
-			float c_f		=	Interpolate		(gray255,x,z,d_size)+.5f;
-			int c_dw		=	iFloor			(c_f);
-			clamp			(c_dw,0,255);
-			Item.C_dw		=	color_rgba		(c_dw,c_dw,c_dw,255);
-			Item.C			=	c_f/255.f;
+			gray255[0]						=	255.f*float(c_pal->a0)/15.f;
+			gray255[1]						=	255.f*float(c_pal->a1)/15.f;
+			gray255[2]						=	255.f*float(c_pal->a2)/15.f;
+			gray255[3]						=	255.f*float(c_pal->a3)/15.f;
+			float c_f						=	Interpolate		(gray255,x,z,d_size)+.5f;
+			int c_dw						=	iFloor			(c_f);
+			clamp							(c_dw,0,255);
+			Item.C_dw						=	color_rgba		(c_dw,c_dw,c_dw,255);
+			Item.C							=	c_f/255.f;
 
 			// Vis-sorting
 			if (!UseVS())
