@@ -10,6 +10,8 @@
 
 using namespace ALife;
 
+class CAI_ALife;
+
 class CALifeObjectRegistry {
 public:
 	_OBJECT_ID						m_tObjectID;			// идентификатор карты событий
@@ -59,41 +61,9 @@ public:
 			(*it).second->Save(tMemoryStream);
 		}
 	};
-
-	virtual	void					Load(CStream	&tFileStream)
-	{
-		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
-		u32 dwCount = tFileStream.Rdword();
-		for (u32 i=0; i<dwCount; i++) {
-			CALifeDynamicObject *tpALifeDynamicObject = 0;
-			switch (tFileStream.Rbyte()) {
-				case ALIFE_ITEM_ID : {
-					tpALifeDynamicObject = new CALifeItem;
-					break;
-				}
-				case ALIFE_MONSTER_ID : {
-					tpALifeDynamicObject = new CALifeMonster;
-					break;
-				}
-				case ALIFE_MONSTER_GROUP_ID : {
-					tpALifeDynamicObject = new CALifeMonsterGroup;
-					break;
-				}
-				case ALIFE_HUMAN_ID : {
-					tpALifeDynamicObject = new CALifeHuman;
-					break;
-				}
-				case ALIFE_HUMAN_GROUP_ID : {
-					tpALifeDynamicObject = new CALifeHumanGroup;
-					break;
-				}
-				default : NODEFAULT;
-			};
-			tpALifeDynamicObject->Load(tFileStream);
-			m_tppMap.insert			(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
-		}
-	};
-
+	
+	virtual	void					Load(CStream	&tFileStream, CAI_ALife *tpALife);
+	
 	virtual	void					Add	(CALifeDynamicObject *tpALifeDynamicObject)
 	{
 		m_tppMap.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));

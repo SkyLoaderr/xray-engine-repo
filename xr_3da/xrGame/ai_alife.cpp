@@ -377,7 +377,7 @@ void CAI_ALife::Load()
 		THROW;
 	
 	R_ASSERT(tpStream->FindChunk(OBJECT_CHUNK_DATA));
-	m_tObjectRegistry.Load(*tpStream);
+	m_tObjectRegistry.Load(*tpStream,this);
 	
 	R_ASSERT(tpStream->FindChunk(EVENT_CHUNK_DATA));
 	m_tEventRegistry.Load(*tpStream);
