@@ -1,4 +1,4 @@
-local flesh_distance 	= 15
+local flesh_distance 	= 10
 
 
 // Плоть которая бежит в аномалию при приближении актера
@@ -32,11 +32,16 @@ function CDeadFlesh:update(delta)
 		self.object:script(true, script_name())
 	end
 	
+	if(self.actor_near == false and self.object:get_monster_hit_info().time ~= 0) then
+		reset_action(self.object, script_name())
+		self.actor_near	= true
+	end
+
 	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
 		// Актер далеко, ходит просто по маршруту
-		if(self.object:action() == nil) then
-			action(self.object, move(move.run_fwd, patrol(self.rest_way)), sound(sound.panic), cond(cond.move_end))		
-		end
+		action(self.object, move(move.walk_fwd, patrol(self.rest_way):point(0), 1), sound(sound.idle), cond(cond.move_end))
+		action(self.object, look(look.point, patrol(self.rest_way):point(1)), anim(anim.turn, 0), sound(sound.idle), cond(cond.look_end))
+		action(self.object, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 1000000000))
 	else
 		// Актер рядом, бежит в аномалию
 		if(self.actor_near == false) then
@@ -173,7 +178,7 @@ function CBoarPlayWithCorpse:set_action()
 	end	
 end 
 
-local k 	= 400000
+local k 	= 200000
 
 function CBoarPlayWithCorpse:play()   
 	self.dir	= self.ball:position():sub(self.object:position()):normalize()
