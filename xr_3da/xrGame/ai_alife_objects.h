@@ -741,10 +741,10 @@ public:
 	DWORD_VECTOR					m_tpaVertices;
 	BOOL_VECTOR						m_baVisitedVertices;
 	PERSONAL_TASK_P_VECTOR			m_tpTasks;
+	CALifeTask						m_tCurTask;
 	ETaskState						m_tTaskState;
 	u32								m_dwCurNode;
 	u32								m_dwCurTaskLocation;
-	CALifeTask						m_tCurTask;
 	float							m_fSearchSpeed;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
@@ -755,10 +755,10 @@ public:
 		save_base_vector			(m_tpaVertices,tMemoryStream);
 		save_bool_vector			(m_baVisitedVertices,tMemoryStream);
 		save_vector					(m_tpTasks,tMemoryStream);
+		m_tCurTask.Save				(tMemoryStream);
 		tMemoryStream.Wdword		(m_tTaskState);
 		tMemoryStream.Wdword		(m_dwCurNode);
 		tMemoryStream.Wdword		(m_dwCurTaskLocation);
-		tMemoryStream.write			(&m_tCurTask,	sizeof(m_tCurTask));
 		tMemoryStream.Wfloat		(m_fSearchSpeed);
 	};
 
@@ -770,10 +770,10 @@ public:
 		load_base_vector			(m_tpaVertices,tFileStream);
 		load_bool_vector			(m_baVisitedVertices,tFileStream);
 		load_vector					(m_tpTasks,tFileStream);
+		m_tCurTask.Load				(tFileStream);
 		m_tTaskState				= ETaskState(tFileStream.Rdword());
 		m_dwCurNode					= tFileStream.Rdword();
 		m_dwCurTaskLocation			= tFileStream.Rdword();
-		tFileStream.Read			(&m_tCurTask,	sizeof(m_tCurTask));
 		m_fSearchSpeed				= tFileStream.Rfloat();
 	};
 
@@ -784,9 +784,8 @@ public:
 		m_tpaVertices.clear			();
 		m_baVisitedVertices.clear	();
 		m_tpTasks.clear				();
-		m_tTaskState				= eTaskStateNoTask;
-		memset						(&m_tCurTask,0,sizeof(m_tCurTask));
 		m_tCurTask.m_tTaskID		= u32(-1);
+		m_tTaskState				= eTaskStateNoTask;
 		m_dwCurNode					= u32(-1);
 		m_dwCurTaskLocation			= u32(-1);
 		m_fSearchSpeed				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID]->m_caModel, "search_speed");
