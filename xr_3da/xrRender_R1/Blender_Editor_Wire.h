@@ -2,8 +2,6 @@
 #define BLENDER_EDITOR_WIRE_H
 #pragma once
 
-#include "Blender.h"
-
 class CBlender_Editor_Wire : public CBlender  
 {
 	string64	oT_Factor;

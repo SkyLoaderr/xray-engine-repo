@@ -2,8 +2,6 @@
 #define BLENDER_EDITOR_SELECTION_H
 #pragma once
 
-#include "blender.h"
-
 class CBlender_Editor_Selection : public CBlender  
 {
 	string64	oT_Factor;

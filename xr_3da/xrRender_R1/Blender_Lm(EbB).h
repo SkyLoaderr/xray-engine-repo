@@ -6,8 +6,6 @@
 #define AFX_BLENDERDEFAULT_H__C12F64EE_43E7_4483_9AC3_29272E0401E7__INCLUDED_2
 #pragma once
 
-#include "Blender.h"
-
 class CBlender_LmEbB : public CBlender  
 {
 public:

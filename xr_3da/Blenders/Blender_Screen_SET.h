@@ -6,8 +6,6 @@
 #define AFX_BLENDER_SCREEN_SET_H__A215FA40_D885_4D06_9032_ED934AE295E3__INCLUDED_
 #pragma once
 
-#include "blender.h"
-
 class CBlender_Screen_SET : public CBlender  
 {
 	xrP_TOKEN	oBlend;

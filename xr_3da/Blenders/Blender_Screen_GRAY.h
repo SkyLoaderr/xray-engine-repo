@@ -6,8 +6,6 @@
 #define AFX_BLENDER_SCREEN_GRAY_H__483E49EF_23EC_4810_9231_7EE4BD72CC3B__INCLUDED_
 #pragma once
 
-#include "blender.h"
-
 class CBlender_Screen_GRAY : public CBlender  
 {
 public:

@@ -2,8 +2,6 @@
 #define BLENDER_SHADOW_TEX_H
 #pragma once
 
-#include "Blender.h"
-
 class CBlender_ShTex : public CBlender  
 {
 public:
