@@ -7,6 +7,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "ai_space.h"
+#include "alife_object_registry.h"
 
 void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 {
@@ -276,7 +277,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			if (e_dest->m_bALifeControl && ai().get_alife()) {
 				game_sv_Single	*_game = dynamic_cast<game_sv_Single*>(game);
 				VERIFY			(_game);
-				if (ai().alife().objects().object(e_dest,true))
+				if (ai().alife().objects().object(id_dest,true))
 					_game->alife().release	(e_dest,false);
 			}
 
