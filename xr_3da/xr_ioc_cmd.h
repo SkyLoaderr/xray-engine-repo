@@ -38,9 +38,9 @@ public:
 	virtual void	Execute	(LPCSTR args)	= 0;
 	virtual void	Status	(TStatus& S)	{ S[0]=0; }
 	virtual void	Info	(TInfo& I)		{ strcpy(I,"no arguments"); }
-	virtual void	Save	(FILE *F)		{
+	virtual void	Save	(IWriter *F)	{
 		TStatus		S;	Status(S);
-		if (S[0])	fprintf(F,"%s %s\n",cName,S);
+		if (S[0])	F->w_printf("%s %s\n",cName,S);
 	}
 };
 
