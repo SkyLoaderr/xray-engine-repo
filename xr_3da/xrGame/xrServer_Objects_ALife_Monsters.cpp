@@ -210,7 +210,6 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 		if (ini.section_exist("game_info") && ini.line_exist("game_info","name_id"))
 			profile_id = ini.r_string("game_info", "name_id");
 
-#ifdef XRGAME_EXPORTS
 		if(NULL == profile_id)
 			m_iCharacterProfile = NO_PROFILE;
 		else
@@ -222,7 +221,6 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 				Debug.fatal("wrong profile id %s, for %s at level %s", profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
 			}
 		}
-#endif
 	}
 
 	m_character_profile_init = true;
