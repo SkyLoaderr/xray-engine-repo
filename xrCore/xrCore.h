@@ -155,6 +155,7 @@
 #pragma warning (disable : 4127 )		// conditional expression is constant
 #pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 #pragma warning (disable : 4345 )
+#pragma warning (disable : 4714 )		// __forceinline not inlined
 
 #ifdef _M_AMD64
 #pragma warning (disable : 4512 )
