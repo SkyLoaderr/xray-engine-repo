@@ -1272,6 +1272,9 @@
 				Name="ServerEntities"
 				Filter="">
 				<File
+					RelativePath=".\InfoPortionDefs.h">
+				</File>
+				<File
 					RelativePath=".\ShapeData.h">
 				</File>
 				<File

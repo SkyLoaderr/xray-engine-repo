@@ -601,8 +601,10 @@ void CSE_ALifeItemPDA::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w				(&m_specific_character,	sizeof(SPECIFIC_CHARACTER_INDEX));
 	tNetPacket.w				(&m_info_portion,		sizeof(INFO_INDEX));
 #else
-	tNetPacket.w				(NO_SPECIFIC_CHARACTER,	sizeof(SPECIFIC_CHARACTER_INDEX));
-	tNetPacket.w				(NO_INFO_INDEX,			sizeof(INFO_INDEX));
+	SPECIFIC_CHARACTER_INDEX	tmp_1	= NO_SPECIFIC_CHARACTER;
+	INFO_INDEX					tmp_2	= NO_INFO_INDEX;
+	tNetPacket.w				(&tmp_1,	sizeof(SPECIFIC_CHARACTER_INDEX));
+	tNetPacket.w				(&tmp_2,	sizeof(INFO_INDEX));
 #endif
 
 }
