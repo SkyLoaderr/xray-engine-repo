@@ -12,7 +12,7 @@
 // you can uncomment this define, 
 // but all the loki routines are already hand-written
 
-//#define USE_BOOST_TRAITS
+#define USE_BOOST_TRAITS
 // you can uncomment this define
 // tio prevent warnings about 
 // decoration name limit exceeding
