@@ -1288,6 +1288,9 @@
 					RelativePath=".\PHSynchronize.h">
 				</File>
 				<File
+					RelativePath=".\script_export_space.h">
+				</File>
+				<File
 					RelativePath="xrMessages.h">
 				</File>
 				<File
