@@ -17,11 +17,11 @@ end
 
 function on_enter_bzone (zone, obj)
 	sound_object ("monsters\\boar\\hit_0"):play_at_pos (obj, obj:position (), 0)
-	--sound_object ("material\\wood\\wood_crash1_hl2"):play_at_pos (obj, obj:position (), 0)
-	--printf ("Sound play")
+	sound_object ("material\\wood\\wood_crash1_hl2"):play_at_pos (obj, obj:position (), 0)
 	boar:script (false, boar_attack.script_name ())
 	zone:clear_callback (true)
 	freed = true
+	printf ("Boar freed")
 end
 
 
@@ -51,5 +51,6 @@ function main ()
 		wait ()
 	end	
 	
+	printf ("End of script")
 	
 end
