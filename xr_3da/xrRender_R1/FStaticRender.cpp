@@ -347,21 +347,19 @@ void	CRender::Render		()
 	// Perform sorting based on ScreenSpaceArea
 
 	// Sorting by SSA and changes minimizations
-		if (1==pr)			{
-			RCache.set_xform_world	(Fidentity);
-			Details->Render			(Device.vCameraPosition);
+	RCache.set_xform_world	(Fidentity);
+	Details->Render			(Device.vCameraPosition);
 
-			g_pGamePersistent->Environment.RenderFirst	();
+	g_pGamePersistent->Environment.RenderFirst	();
 
-			RCache.set_xform_world	(Fidentity);
-			Wallmarks->Render		();		// Wallmarks has priority as normal geometry
+	RCache.set_xform_world	(Fidentity);
+	Wallmarks->Render		();		// Wallmarks has priority as normal geometry
 
-			RCache.set_xform_world	(Fidentity);
-			L_Dynamic->render		();		// L_DB has priority the same as normal geom
+	RCache.set_xform_world	(Fidentity);
+	L_Dynamic->render		();		// L_DB has priority the same as normal geom
 
-			RCache.set_xform_world	(Fidentity);
-			L_Shadows->render		();
-		}
+	RCache.set_xform_world	(Fidentity);
+	L_Shadows->render		();
 
 	// LODs
 	r_dsgraph_render_lods	();
