@@ -1,7 +1,75 @@
+-- Прожекторы на базе для сцены 3
+-- Объекты:
+--			projector1		-	прожектор на вышке у шлагбаума
+--			projector2		-	прожектор на вышке у пролома
+-- Для управления создан класс Projector
+
+class "Projector"
+
+function Projector:__init (obj, speedh, speedv, script, points, rand)
+	self.projector = obj
+	self.speedh = speedh
+	self.speedv = speedv
+	self.points = points
+	self.rand = rand
+	self.first_call = true
+	self.script = script
+	self.current = 1
+	self.in_process = false
+	self.time = 0
+end
+
+function Projector:process ()
+	if self.first_call == true then
+	   self.projector:script (true, self.script)
+	   self.first_call = false
+    end	
+	
+	if self.in_process = true then 
+	   self.time = self.time - game.time ()
+	   if self.time <= 0 then
+		  self.time = 0
+		  self.in_process = false
+	   end
+	   return
+	end
+
+	local point
+	if self.rand == true and table.getn (self.points) > 1 then 
+	   while true do 
+			 local rnd = math.random (1, table.getn (self.points) + 1)
+			 if rnd ~= self.current then 
+				self.current = rnd
+			    point = self.points[rnd]
+				break 
+			 end
+	   end
+	else
+	   self.current = self.current + 1
+	   if self.current > table.getn (self.points) then self.curren = 1 end
+	   point = self.points[self.current]
+	end
+
+	action (self.projector, look (point, self.speedh, self.speedv))
+
+	self.time = game.time () + 5000
+	
+	self.in_process = true			 	
+
+end	  
+
 function main ()
-	printf ("call military3_5");
 
+	local points1 = {patrol ("project1_point1"):point (0), patrol ("project1_point2"):point (0)}
+	local points2 = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
 
-	printf ("end call military3_5");
+	local proj1 = military3_5.Projector (get_level_object ("projector1"), 0.52, 0.22, military3_5.script_name (), points1, false)
+	local proj2 = military3_5.Projector (get_level_object ("projector2"), 0.52, 0.22, military3_5.script_name (), points2, false)
 
+	while true do 
+		  proj1:process ()
+		  proj2:process ()
+		  wait ()
+	end	
+	
 end
