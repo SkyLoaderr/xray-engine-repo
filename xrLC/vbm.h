@@ -47,7 +47,7 @@ public:
 		// Search for container capable of handling data
 		DWORD bytes_collected	= R_DATA.size();
 		DWORD vertices_collected= bytes_collected/dwSize;
-		for (DWORD CID = 0; CID<FVF.size(); CID++)
+		for (DWORD CID = 0; CID<vDcl.size(); CID++)
 		{
 			if (!vDcl[CID].equal(R_DCL))	continue;
 			
@@ -67,7 +67,7 @@ public:
 		
 		// No such format found
 		// Simple add it and register
-		*dwContainerID			= vDCL.size();
+		*dwContainerID			= vDcl.size();
 		*dwIndexStart			= 0;
 		vDcl.push_back			(R_DCL);	R_DCL.clear();
 		vContainers.push_back	(R_DATA);	R_DATA.clear();
