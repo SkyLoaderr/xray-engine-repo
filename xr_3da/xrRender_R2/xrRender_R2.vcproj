@@ -430,6 +430,12 @@
 				RelativePath=".\light_vis.cpp">
 			</File>
 			<File
+				RelativePath=".\LightTrack.cpp">
+			</File>
+			<File
+				RelativePath=".\LightTrack.h">
+			</File>
+			<File
 				RelativePath=".\SMAP_Allocator.h">
 			</File>
 		</Filter>

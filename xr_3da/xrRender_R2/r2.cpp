@@ -5,6 +5,7 @@
 #include "..\CustomHUD.h"
 #include "..\igame_persistent.h"
 #include "..\environment.h"
+#include "LightTrack.h"
  
 CRender										RImplementation;
 
@@ -127,7 +128,7 @@ void					CRender::reset_end				()
 }
 
 // Implementation
-IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)				{ return 0;								}
+IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)				{ return xr_new<CROS_impl>();			}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)		{ xr_delete(p);							}
 IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)		{ return Models->Create(name,data);		}
 IRender_Visual*			CRender::model_CreateChild		(LPCSTR name, IReader* data)		{ return Models->CreateChild(name,data);}
