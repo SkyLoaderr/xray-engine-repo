@@ -45,6 +45,8 @@ public:
 	void UpdateQuestions();
 	//инициализации начального диалога собеседника
 	void InitOthersStartDialog();
+
+	void SwitchToTrade();
 protected:
 
 	//диалог

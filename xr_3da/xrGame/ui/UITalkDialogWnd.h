@@ -47,10 +47,11 @@ public:
 
 	//элементы интерфейса диалога
 	CUIFrameWindow		UIDialogFrame;
+	CUIFrameWindow		UIOurPhrasesFrame;
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
-	CUIStatic			UICharacterName;
+//	CUIStatic			UICharacterName;
 
 	CUIButton			UIToTradeButton;
 

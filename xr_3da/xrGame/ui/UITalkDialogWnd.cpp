@@ -53,10 +53,13 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	//основной фрейм диалога
 	AttachChild(&UIDialogFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDialogFrame);
+	// Фрейм с нащими фразами
+	AttachChild(&UIOurPhrasesFrame);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIOurPhrasesFrame);
 
 	// поле отображения имени актра-игрока
-	UIDialogFrame.AttachChild(&UICharacterName);
-	xml_init.InitStatic(uiXml, "static", 0, &UICharacterName);
+//	UIDialogFrame.AttachChild(&UICharacterName);
+//	xml_init.InitStatic(uiXml, "static", 0, &UICharacterName);
 
 	//Ответы
 	UIDialogFrame.AttachChild(&UIAnswersList);
@@ -66,11 +69,12 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 
 	//Вопросы
 	//UIDialogFrame.AttachChild(&UIQuestionsList);
-	UIDialogFrame.AttachChild(&UIQuestionsList);
+	UIOurPhrasesFrame.AttachChild(&UIQuestionsList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIQuestionsList);
 //	UIQuestionsList.EnableScrollBar(true);
 //	UIQuestionsList.ActivateList(true);
 	UIQuestionsList.EnableActiveBackground(false);
+	UIQuestionsList.EnableScrollBar(true);
 	UIQuestionsList.SetMessageTarget(this);
 
 	//кнопка перехода в режим торговли

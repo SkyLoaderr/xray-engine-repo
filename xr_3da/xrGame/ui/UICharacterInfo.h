@@ -27,9 +27,9 @@ public:
 	void ResetAllStrings();
 
 	CUIStatic UIIcon;
+
 	CUIStatic UIName;
-	CUIStatic UIRank;
-	CUIStatic UICommunity;
-	CUIStatic UIText;
-	CUIStatic UIRelation;
+	CUIStatic UIRank, UIRankCaption;
+	CUIStatic UICommunity, UICommunityCaption;
+	CUIStatic UIRelation, UIRelationCaption;
 };

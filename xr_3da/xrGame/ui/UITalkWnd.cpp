@@ -84,10 +84,11 @@ void CUITalkWnd::InitTalkDialog()
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
-	UITalkDialogWnd.UICharacterName.SetText(m_pOurInvOwner->CharacterInfo().Name());
+	UITalkDialogWnd.UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+	UITalkDialogWnd.UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->CharacterInfo().Name());
 	
-	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pOthersInvOwner);
-	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(m_pActor));
+//	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pOthersInvOwner);
+//	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(m_pActor));
 
 	//очистить лог сообщений
 	UITalkDialogWnd.UIAnswersList.RemoveAll();
@@ -174,11 +175,12 @@ void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == &UITalkDialogWnd && msg == CUITalkDialogWnd::TRADE_BUTTON_CLICKED)
 	{
-		UITalkDialogWnd.Hide();
-
-		UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
-		UITradeWnd.Show();
-		UITradeWnd.BringAllToTop();
+//		UITalkDialogWnd.Hide();
+//
+//		UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
+//		UITradeWnd.Show();
+//		UITradeWnd.BringAllToTop();
+		SwitchToTrade();
 	}
 	else if(pWnd == &UITalkDialogWnd && msg == CUITalkDialogWnd::QUESTION_CLICKED)
 	{
@@ -330,4 +332,15 @@ void CUITalkWnd::AddAnswer(CUIString str, const CUIString &SpeakerName)
 	Local.SetText(" ");
 	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(Local, 0, UITalkDialogWnd.UIAnswersList.GetTextColor());
 	UITalkDialogWnd.UIAnswersList.ScrollToEnd();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUITalkWnd::SwitchToTrade()
+{
+	UITalkDialogWnd.Hide();
+
+	UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
+	UITradeWnd.Show();
+	UITradeWnd.BringAllToTop();
 }

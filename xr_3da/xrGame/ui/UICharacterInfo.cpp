@@ -8,19 +8,27 @@
 using namespace InventoryUtilities;
 
 #include "uicharacterinfo.h"
-#include "../entity.h"
+#include "../actor.h"
+#include "../level.h"
 #include "../character_info.h"
+#include "../string_table.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 CUICharacterInfo::CUICharacterInfo()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUICharacterInfo::~CUICharacterInfo()
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml_name)
 {
@@ -47,9 +55,10 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	}
 
 	AttachChild(&UIName);
-	if(uiXml.NavigateToNode("static", 0))
+	if(uiXml.NavigateToNode("name_static", 0))
 	{
-		xml_init.InitStatic(uiXml, "static", 0, &UIName);
+		xml_init.InitStatic(uiXml, "name_static", 0, &UIName);
+		UIName.SetElipsis(CUIStatic::eepEnd, 0);
 	}
 	else
 	{
@@ -58,71 +67,95 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	}
 
 	AttachChild(&UIRank);
-	if(uiXml.NavigateToNode("static", 1))
-		xml_init.InitStatic(uiXml, "static", 1, &UIRank);
+	if(uiXml.NavigateToNode("rank_static", 0))
+	{
+		xml_init.InitStatic(uiXml, "rank_static", 0, &UIRank);
+		UIRank.SetElipsis(CUIStatic::eepEnd, 0);
+	}
 	else
 	{
 		UIRank.Show(false);
 		UIRank.Enable(false);
 	}
 
+	AttachChild(&UIRankCaption);
+	if(uiXml.NavigateToNode("rank_caption", 0))
+	{
+		xml_init.InitStatic(uiXml, "rank_caption", 0, &UIRankCaption);
+	}
+	else
+	{
+		UIRankCaption.Show(false);
+		UIRankCaption.Enable(false);
+	}
+
 	AttachChild(&UICommunity);
-	if(uiXml.NavigateToNode("static", 2))
-		xml_init.InitStatic(uiXml, "static", 2, &UICommunity);
+	if(uiXml.NavigateToNode("community_static", 0))
+	{
+		xml_init.InitStatic(uiXml, "community_static", 0, &UICommunity);
+		UICommunity.SetElipsis(CUIStatic::eepEnd, 0);
+	}
 	else
 	{
 		UICommunity.Show(false);
 		UICommunity.Enable(false);
 	}
 
-	AttachChild(&UIText);
-	if(uiXml.NavigateToNode("description", 0))
-		xml_init.InitStatic(uiXml, "description", 0, &UIText);
+	AttachChild(&UICommunityCaption);
+	if(uiXml.NavigateToNode("community_caption", 0))
+	{
+		xml_init.InitStatic(uiXml, "community_caption", 0, &UICommunityCaption);
+	}
 	else
 	{
-		UIText.Show(false);
-		UIText.Enable(false);
+		UICommunityCaption.Show(false);
+		UICommunityCaption.Enable(false);
 	}
 
 	AttachChild(&UIRelation);
 	if(uiXml.NavigateToNode("relation_static", 0))
+	{
 		xml_init.InitStatic(uiXml, "relation_static", 0, &UIRelation);
+		UIRelation.SetElipsis(CUIStatic::eepEnd, 0);
+	}
 	else
 	{
-		UIRelation.Show(false);
 		UIRelation.Enable(false);
+		UIRelation.Show(false);
 	}
+
+	AttachChild(&UIRelationCaption);
+	if(uiXml.NavigateToNode("relation_caption", 0))
+	{
+		xml_init.InitStatic(uiXml, "relation_caption", 0, &UIRelationCaption);
+	}
+	else
+	{
+		UIRelationCaption.Enable(false);
+	}
+	UIRelationCaption.Show(false);
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefixes)
 {
 	VERIFY(pCharInfo);
 
-	static const ref_str withPrefixesPatterns[3] =
-	{
-		"name: %s",
-			"rank: %d",
-			"community: %s"
-	};
-
-	static const ref_str withoutPrefixesPatterns[3] =
-	{
-		"%s",
-			"%d",
-			"%s"
-	};
-
-	const ref_str * patterns = withPrefixes ? withPrefixesPatterns : withoutPrefixesPatterns;
-
 	string256 str;
-	sprintf(str, *patterns[0], pCharInfo->Name());
+	sprintf(str, "%s", pCharInfo->Name());
 	UIName.SetText(str);
 
-	sprintf(str, *patterns[1], pCharInfo->Rank());
+	int offset;
+
+	sprintf(str, "%d", pCharInfo->Rank());
+	offset = static_cast<int>(UIRankCaption.GetFont()->SizeOf(UIRankCaption.GetText()) + UIRankCaption.GetWndRect().left + 5);
+	UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10, UIRank.GetWndRect().bottom);
 	UIRank.SetText(str);
 
-	sprintf(str, *patterns[2], *pCharInfo->Community());
+	sprintf(str, "%s", pCharInfo->Community());
+	offset = static_cast<int>(UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5);
+	UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
 	UICommunity.SetText(str);
 
 	UIIcon.SetShader(GetCharIconsShader());
@@ -133,44 +166,56 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefix
 		pCharInfo->TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefixes)
 {
 	VERIFY(pInvOwner);
 	InitCharacter(&pInvOwner->CharacterInfo(), withPrefixes);
+
+	CActor *m_pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+
+	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(pInvOwner);
+	SetRelation(ContactEA->tfGetRelationType(m_pActor));
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, bool withPrefix)
 {
-	LPCSTR relation_str = NULL;
+	ref_str relation_str;
+
+	CStringTable stbl;
 
 	switch(relation) {
 	case ALife::eRelationTypeFriend:
-		relation_str = "%c0,200,0friend";
+		UIRelation.SetTextColor(0xff00ff00);
+		relation_str = stbl("friend");
 		break;
 	case ALife::eRelationTypeNeutral:
-		relation_str = "%c192,192,192neutral";
+		UIRelation.SetTextColor(0xffc0c0c0);
+		relation_str = stbl("neutral");
 		break;
 	case ALife::eRelationTypeEnemy:
-		relation_str = "%c200,0,0enemy";
+		UIRelation.SetTextColor(0xffff0000);
+		relation_str = stbl("enemy");
 		break;
 	default:
 		NODEFAULT;
 	}
 
-
-	string256 str;
-	if (withPrefix)
-		sprintf(str, "relation: %s", relation_str);
-	else
-		sprintf(str, "%s", relation_str);
-	UIRelation.SetText(str);
+	UIRelationCaption.Show(true);
+	UIRelation.SetText(*relation_str);
+	int offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);
+	UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICharacterInfo::ResetAllStrings()
 {
 	UIName.SetText("");
 	UIRank.SetText("");
 	UICommunity.SetText("");
-	UIText.SetText("");
 	UIRelation.SetText("");
 }

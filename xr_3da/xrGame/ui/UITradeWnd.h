@@ -48,6 +48,7 @@ public:
 	void EnableAll();
 
 	void DropCurrentItem();
+	void SwitchToTalk();
 
 protected:
 	CUIStatic			UIStaticTop;

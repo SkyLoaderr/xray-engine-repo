@@ -29,6 +29,7 @@ using namespace InventoryUtilities;
 
 const char * const TRADE_XML			= "trade.xml";
 const char * const TRADE_CHARACTER_XML	= "trade_character.xml";
+const char * const TRADE_ITEM_XML		= "trade_item.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -115,7 +116,7 @@ void CUITradeWnd::Init()
 	AttachChild(&UIDescWnd);
 	xml_init.InitFrameWindow(uiXml, "desc_frame_window", 0, &UIDescWnd);
 	UIDescWnd.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0,0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), "trade_item.xml");
+	UIItemInfo.Init(0,0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), TRADE_ITEM_XML);
 
 
 	AttachChild(&UIPropertiesBox);
@@ -191,7 +192,8 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIToTalkButton && msg == CUIButton::BUTTON_CLICKED)
 	{
-		GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
+		//GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
+		SwitchToTalk();
 	}
 	else if(pWnd == &UIMessageBox && msg == CUIMessageBox::OK_CLICKED)
 	{
@@ -587,7 +589,13 @@ void CUITradeWnd::UpdateLists()
 void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
+	const int offset = -15;
+
 	UIItemInfo.InitItem(m_pCurrentItem);
+	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -608,4 +616,11 @@ void CUITradeWnd::DropCurrentItem()
 	//-----------------------------------------------------------------------
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUITradeWnd::SwitchToTalk()
+{
+	GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
 }

@@ -16,6 +16,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "Actor.h"
+#include "string_table.h"
 
 CInventoryItem::CInventoryItem() 
 {
@@ -53,6 +54,7 @@ CInventoryItem::CInventoryItem()
 	LastVisPos.clear();
 #endif
 	m_eItemPlace = eItemPlaceUndefined;
+	m_Description = "";
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -91,6 +93,10 @@ void CInventoryItem::Load(LPCSTR section)
 		m_slot = pSettings->r_u32(section, "slot");
 	else
 		m_slot = NO_ACTIVE_SLOT;
+
+	// Description
+	if (pSettings->line_exist(section, "description"))
+		m_Description = CStringTable()(pSettings->r_string(section, "description"));
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)
