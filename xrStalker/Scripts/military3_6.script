@@ -1,0 +1,247 @@
+-- скрипт патрульных сталкеров
+
+-- состояния:
+-- 0 - в пути 
+-- 1 - ждет товарища
+-- 2 - пошел по альтернативному пути
+-- 3 - возвращаюсь по альтернативному пути
+-- 4 - отигрывание анимации
+
+
+class "Patrol"
+
+function Patrol:__init (npc_object, script_name)
+	self.npc = npc_object
+	self.script = script_name
+	self.friend = nil
+	self.paths = {}
+	self.alt_paths = {}
+	self.alt_paths_ret = {}
+	self.current_path = 1
+	self.state = 0
+	self.moved = 0
+end
+
+function Patrol:set_friend (npc_object)
+	self.friend = npc_object
+	printf ("Set friend %s for object %s", self.friend.npc:name (), self.npc:name ())
+end
+
+function Patrol:add_path (path_name, alternate)
+
+	if alternate == 0 then
+	   table.insert (self.paths, path_name)
+	   return 
+	   end		
+
+	if alternate == 1 then
+	   table.insert (self.alt_paths, path_name)
+	   return 
+	   end		
+
+    if alternate == 2 then 
+       table.insert (self.alt_paths_ret, path_name)	
+	   return
+	   end
+end		
+
+function Patrol:reset ()
+	self.npc:script (false, self.script)
+	self.npc:script (true, self.script)
+end
+
+function Patrol:start ()
+	self:reset ()
+	if table.getn (self.paths) == 0 then return end
+	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.paths[self.current_path])),
+			look (look.search), anim (anim.free), cond (cond.move_end))
+	self.state = 0
+end
+
+function Patrol:finish ()
+	self.npc:script (false, self.script)
+end
+
+function Patrol:wait_friend ()
+	if self.friend.npc:action () then return 0 end
+	return 1
+end
+
+function Patrol:move_alternate ()
+
+    if table.getn (self.alt_paths) < self.current_path then return 0 end
+	if math.random (1, 100) > 20  or self.moved == 1 then return 0 end
+	self:reset ()
+	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.alt_paths[self.current_path])),
+			look (look.search), anim (anim.free), cond (cond.move_end))
+
+	if self.current_path == 1 then
+	   action (self.npc, move (move.standing, move.stand, move.line, patrol (self.alt_paths[self.current_path])),
+			   look (), anim ("uslishal"), cond (cond.anim_end))
+	   end	
+	self.state = 2
+	self.moved = 1
+	if self.friend ~= nil then self.friend.moved = 1 end
+	return 1
+	
+end
+
+function Patrol:move_next ()
+	self.current_path = self.current_path + 1
+	if self.current_path > table.getn (self.paths) then self.current_path = 1 end
+	self:reset ()
+	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.paths[self.current_path])),
+			look (look.search), anim (anim.free), cond (cond.move_end))
+	self.state = 0
+	self.moved = 0
+	if self.friend ~= nil then self.friend.moved = 0 end
+end
+
+function Patrol:process_without_friend ()
+	--если действие не завершено, то выйдем до лучших времен
+	if self.npc:action () then return end
+	--анализ состояния
+	if self.state == 0 then
+	   if self:move_alternate () == 1 then
+		  printf ("Move alternate !")
+		  flush ()
+		  self.state = 2
+		  return
+		  end
+	   self:move_next ()
+	   self.state = 0	
+	   printf ("Move normal !")	
+	   flush ()	
+	   return
+       end		 
+
+	if self.state == 2 then 
+	   self:reset ()
+	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.alt_paths_ret[self.current_path])),
+			   look (look.search), anim (anim.free), cond (cond.move_end))
+	   self.state = 3
+	   printf ("Current path number :%d", self.current_path);	
+	   printf ("Move alternate return ! %s", self.alt_paths_ret[self.current_path])	
+	   flush ()	
+	   return 
+	   end
+
+	if self.state == 3 then
+	   printf ("Move normal !")	
+	   flush ()
+	   self:move_next ()
+       self.state = 0  		
+	   end	 
+	   				
+end
+
+-- состояния:
+-- 0 - в пути 
+-- 1 - ждет товарища
+-- 2 - пошел по альтернативному пути
+-- 3 - возвращаюсь по альтернативному пути
+-- 4 - отигрывание анимации
+
+
+function Patrol:process_with_friend ()
+	if self.friend.npc:alive () == false then
+	   self.friend = nil
+	   process_without_friend ()	
+	   return
+	   end
+
+
+	if self.state == 1 and self.friend.state == 1 then
+	   if self.friend:move_alternate () == 1 or self:move_alternate () == 1 then return end
+	   printf ("Stalker %s move to next point", self.npc:name ())	
+	   self.friend:move_next ()
+	   self:move_next ()
+	   return	
+	   end
+
+	--если действие не закончено и мы не ждем другана, то выйдем до лучших времен
+	if self.npc:action () then return end
+
+	if self.state == 2 then
+	   self:reset ()
+	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.alt_paths_ret[self.current_path])),
+			   look (look.search), anim (anim.free), cond (cond.move_end))
+	   self.state = 3
+	   printf ("Current path number :%d", self.current_path);	
+	   printf ("Move alternate return ! %s", self.alt_paths_ret[self.current_path])	
+	   flush ()	
+	   return 
+	   end
+	   
+
+	printf ("Wait for friend %s", self.friend.npc:name ())
+	self.state = 1
+	self:reset ()
+    action (self.npc, move (move.standing, move.stand, move.line, patrol (self.paths[self.current_path])), 
+  		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))	
+	
+end	 
+
+
+function Patrol:process ()
+
+	if self.friend == nil then 
+	   self:process_without_friend () 
+	   return
+	   end	 
+	self:process_with_friend ()
+end
+
+
+
+function main ()
+
+	local bredun1 = get_level_object ("stalker_ptr3")
+	local bredun2 = get_level_object ("stalker_ptr4")
+	bredun1:script (true, military3_5.script_name ())
+	bredun2:script (true, military3_5.script_name ())
+	action (bredun1, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
+		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+	action (bredun2, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
+		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+	
+
+  	local patrol1 = military3_5.Patrol (get_level_object ("stalker_ptr1"), military3_5.script_name ())
+ 	local patrol2 = military3_5.Patrol (get_level_object ("stalker_ptr2"), military3_5.script_name ())
+
+	patrol1:add_path ("way_ptr11", 0)
+	patrol1:add_path ("way_ptr12", 0)
+	patrol1:add_path ("way_ptr13", 0)
+	patrol1:add_path ("way_ptr_check10", 1)
+	patrol1:add_path ("way_ptr_check11", 2)
+	patrol1:add_path ("way_ptr_check20", 1)
+	patrol1:add_path ("way_ptr_check21", 2)
+
+	patrol2:add_path ("way_ptr21", 0)
+	patrol2:add_path ("way_ptr22", 0)
+	patrol2:add_path ("way_ptr23", 0)
+	patrol2:add_path ("way_ptr_check10", 1)
+	patrol2:add_path ("way_ptr_check11", 2)
+	patrol2:add_path ("way_ptr_check20", 1)
+	patrol2:add_path ("way_ptr_check21", 2)
+
+	patrol1:set_friend (patrol2)
+	patrol2:set_friend (patrol1)
+
+  	patrol1:start ()
+  	patrol2:start ()
+
+  	while true do
+      	  patrol1:process ()
+      	  patrol2:process ()
+      	  wait ()
+      	  end
+
+  	patrol1:finish ()
+  	patrol2:finish ()
+
+	bredun1:script (false, military3_5.script_name ())
+	bredun2:script (false, military3_5.script_name ())
+
+
+end
