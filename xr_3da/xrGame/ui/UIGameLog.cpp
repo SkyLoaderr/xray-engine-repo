@@ -93,7 +93,7 @@ void CUIGameLog::Update()
 
 		if (pPItem)
 		{
-			pPItem->UIMsgText.SetTextColor(subst_alpha(pPItem->UIMsgText.GetTextColor(), color_get_A(anm->GetColor())));
+			pPItem->SetTextColor(subst_alpha(pPItem->UIMsgText.GetTextColor(), color_get_A(anm->GetColor())));
 		}
 		else
 		{

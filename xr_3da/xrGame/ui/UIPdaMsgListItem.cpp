@@ -62,6 +62,10 @@ void CUIPdaMsgListItem::SetDelay(int iDelay){
 	m_iDelay = iDelay;
 }
 
+void CUIPdaMsgListItem::SetTextColor(u32 color){
+	UIMsgText.SetTextColor(color);
+}
+
 void CUIPdaMsgListItem::Update()
 {
 	inherited::Update();

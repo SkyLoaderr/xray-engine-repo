@@ -1090,6 +1090,9 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	else if (DIK_A == dik)
 		UIBtnAutobuy.OnClick();
 
+	else if (DIK_F12 == dik)
+		return false;
+
 
 	return true;
 }

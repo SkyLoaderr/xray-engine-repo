@@ -20,6 +20,7 @@ public:
 	virtual void InitCharacter(CInventoryOwner* pInvOwner);
 	virtual bool IsTimeToDestroy();
 	virtual void SetDelay(int iDelay);
+	virtual void SetTextColor(u32 color);
 	
 	virtual void Draw();
 	virtual void Update();

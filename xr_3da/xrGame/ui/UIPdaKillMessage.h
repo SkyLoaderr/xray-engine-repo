@@ -19,6 +19,7 @@ public:
 	virtual void Init(int x, int y, int width, int height);
 			void Init(KillMessageStruct& msg);
 	virtual void SetFont(CGameFont* pFont);
+	virtual void SetTextColor(u32 color);
 	virtual void SetColor(u32 color);
 
 protected:

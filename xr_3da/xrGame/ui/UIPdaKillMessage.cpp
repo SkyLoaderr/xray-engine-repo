@@ -71,10 +71,14 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 	return width;
 }
 
-void CUIPdaKillMessage::SetColor(u32 color){
-	m_victim_name.SetColor(color);
-	m_initiator.SetColor(color);
-	m_killer_name.SetColor(color);
+void CUIPdaKillMessage::SetTextColor(u32 color){
+	m_victim_name.SetTextColor(color);
+	m_killer_name.SetTextColor(color);
+	SetColor(color);
+}
+
+void CUIPdaKillMessage::SetColor(u32 color){	
+	m_initiator.SetColor(color);	
 	m_ext_info.SetColor(color);
 }
 
