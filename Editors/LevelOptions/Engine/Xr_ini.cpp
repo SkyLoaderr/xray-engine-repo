@@ -262,10 +262,10 @@ u32	CInifile::line_count(LPCSTR Sname)
 
 
 //--------------------------------------------------------------------------------------
-Sect&		r_section		( const ref_str& S	)					{ return	r_section(*S);		}
-BOOL		line_exist		( const ref_str& S, const ref_str& L )	{ return	line_exist(*S,*L);	}
-u32			line_count		( const ref_str& S	)					{ return	line_count(*S);		}
-BOOL		section_exist	( const ref_str& S	)					{ return	section_exist(*S);	}
+CInifile::Sect&	r_section		( const ref_str& S	)					{ return	r_section(*S);		}
+BOOL			line_exist		( const ref_str& S, const ref_str& L )	{ return	line_exist(*S,*L);	}
+u32				line_count		( const ref_str& S	)					{ return	line_count(*S);		}
+BOOL			section_exist	( const ref_str& S	)					{ return	section_exist(*S);	}
 
 //--------------------------------------------------------------------------------------
 // Read functions
