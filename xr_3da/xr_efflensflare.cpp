@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "xr_object.h"
 #include "xr_efflensflare.h"
 
 #ifdef _LEVEL_EDITOR
