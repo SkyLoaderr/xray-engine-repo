@@ -111,7 +111,7 @@ using namespace std;
 #define PropertyG(a)	__declspec( property( get=a ) )
 #define PropertyP(a)	__declspec( property( put=a ) )
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
-#define ALIGN(a) __declspec(align(a))
+#define ALIGN(a)		__declspec(align(a))
 
 // Our headers
 #define NO_XR_NETWORK
@@ -129,8 +129,11 @@ using namespace std;
 #include "device.h"
 #include "fs.h"
 #include "properties.h"
+#include "xrCDB.h"
 
 // TODO: reference additional headers your program requires here
+
+#pragma comment( lib, "xrCDB.lib"		)
 
 #pragma comment( lib, "imagehlp.lib"	)
 #pragma comment( lib, "winmm.lib"		)

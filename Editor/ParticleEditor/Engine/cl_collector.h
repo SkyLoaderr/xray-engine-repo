@@ -6,15 +6,13 @@
 #define AFX_CL_COLLECTOR_H__F107ABA0_E877_4C5A_8EFF_DAB3A86ABDB6__INCLUDED_
 #pragma once
 
-#include "cl_defs.h"
-
-namespace RAPID {
+namespace CDB {
 	const DWORD edge_open = 0xffffffff;
 
 	class Collector  
 	{
 		vector<Fvector>	verts;
-		vector<tri>		faces;
+		vector<TRI>		faces;
 
 		IC DWORD		VPack(Fvector& V, float eps)
 		{
@@ -54,7 +52,7 @@ namespace RAPID {
 			float eps = EPS
 			)
 		{
-			tri T;
+			TRI T;
 			T.IDverts()	[0] = VPack(v0,eps);
 			T.IDverts()	[1] = VPack(v1,eps);
 			T.IDverts()	[2] = VPack(v2,eps);
@@ -80,7 +78,7 @@ namespace RAPID {
 		typedef DWORDList::iterator	DWORDIt;
 
 		vector<Fvector>	verts;
-		vector<tri>		faces;
+		vector<TRI>		faces;
 
 		Fvector			VMmin, VMscale;
 		DWORDList		VM[clpMX+1][clpMY+1][clpMZ+1];
@@ -96,7 +94,7 @@ namespace RAPID {
 			WORD material, WORD sector, DWORD dummy	// misc
 			)
 		{
-			tri T;
+			TRI T;
 			T.IDverts()	[0] = VPack(v0);
 			T.IDverts()	[1] = VPack(v1);
 			T.IDverts()	[2] = VPack(v2);
