@@ -226,6 +226,10 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 		if (bShift) strcat(editor,":");
 		else		strcat(editor,";");
 		break;
+	case 0x35:
+		if (bShift) strcat(editor,"?");
+		else		strcat(editor,"/");
+		break;
 	case DIK_RETURN:
 		ExecuteCommand();
 		break;
