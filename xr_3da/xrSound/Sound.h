@@ -40,7 +40,7 @@ XRSOUND_API extern int				psSoundRelaxTime		;
 // Flags
 enum {
 	ssWaveTrace			= (1ul<<0ul),	//!< Flag to control wave-tracing
-	ssEAX				= (1ul<<1ul),	//!< Use EAX or not
+	ssEAX				= (1ul<<1ul),	//!< Use \a EAX or not
 	ssSoftware			= (1ul<<2ul),	//!< Use software mixing only
 	ss_forcedword		= u32(-1)
 };
@@ -82,9 +82,9 @@ struct	sound
 	/*!
 		\sa clone()
 		\sa destroy()
-		\param _3D Controls whenewer the source is 3D or 2D.
+		\param _3D Controls whenewer the source is \a 3D or \a 2D.
 		\param name Name of wave-file
-		\param type Sound type, usually for AI
+		\param type Sound type, usually for \a AI
 	*/
 	IC void					create					( BOOL _3D,	LPCSTR name,	int		type=0);
 
@@ -104,6 +104,7 @@ struct	sound
 	*/
 	IC void					destroy					( );
 
+	//@{
 	//! Starts playing this source
 	/*!
 		\sa stop()
@@ -112,6 +113,12 @@ struct	sound
 	IC void					play_unlimited			( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */);
 	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */);
 	IC void					play_at_pos_unlimited	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */);
+	//@}
+
+	//! Stops playing this source
+	/*!
+		\sa play(), etc
+	*/
 	IC void					stop 					( );
 
 	IC void					set_position			( const Fvector &pos);
@@ -122,19 +129,19 @@ struct	sound
 	IC const CSound_params*	get_params				( );
 };
 
-// definition (Sound Source)
+/// definition (Sound Source)
 class XRSOUND_API	CSound_source
 {
 public:
 };
 
-// definition (Sound Source)
+/// definition (Sound Source)
 class XRSOUND_API	CSound_environment
 {
 public:
 };
 
-// definition (Sound Params)
+/// definition (Sound Params)
 class XRSOUND_API	CSound_params
 {
 public:
@@ -145,7 +152,7 @@ public:
 	float			max_distance;
 };
 
-// definition (Sound Interface)
+/// definition (Sound Interface)
 class XRSOUND_API	CSound_interface
 {
 public:
@@ -157,24 +164,28 @@ public:
 	virtual	const CSound_params*	get_params				( )															= 0;
 };
 
+/// definition (Sound Stream Interface)
 class XRSOUND_API	CSound_stream_interface
 {
 public:
 };
 
-// definition (Sound Manager Interface)
+/// definition (Sound Callback)
 typedef		void __stdcall sound_event						(sound* S, float range);
 
-
+/// definition (Sound Manager Interface)
 class XRSOUND_API	CSound_manager_interface
 {
 public:
-	// General
+	//@{
+	/// General
 	virtual void					_initialize				( u32 window )																			= 0;
 	virtual void					_destroy				( )																						= 0;
 	virtual void					_restart				( )																						= 0;
+	//@}
 
-	// Sound interface
+	//@{
+	/// Sound interface
 	virtual void					create					( sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)									= 0;
 	virtual void					destroy					( sound& S)																				= 0;
 	virtual void					play					( sound& S, CObject* O,								BOOL bLoop=false)					= 0;
@@ -184,12 +195,13 @@ public:
 	virtual void					set_geometry			( CDB::MODEL* M )																		= 0;
 	virtual void					set_handler				( sound_event* E )																		= 0;
 	virtual void					set_user_environment	( CSound_environment* E)																= 0;
+	//@}
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
 };
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
-// ********* Sound ********* (utils, accessors, helpers)
+/// ********* Sound ********* (utils, accessors, helpers)
 IC void	sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
 IC void	sound::destroy						( )														{	::Sound->destroy				(*this);							}
 IC void	sound::play							( CObject* O,						BOOL bLoop)			{	::Sound->play					(*this,O,bLoop);					}
