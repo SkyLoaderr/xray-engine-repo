@@ -7,6 +7,7 @@
 			<text>Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
 			<next>1</next>
 			<next>10</next>
+			<next>14</next>
 	    	</phrase>                                                                                               
 		<phrase id="1">
 			<text>Какая у тебя есть работа?</text>
@@ -19,6 +20,7 @@
 		</phrase>
 		<phrase id="3">
 			<text>Действительно, все как обычно. Ладно - если что-то найду, постараюсь не забыть принести.</text>
+			<next>15</next>
 		</phrase>
 		<phrase id="4">
 			<text>А может у тебя найдется "особая" работа для "особого" человека?</text>
@@ -28,7 +30,7 @@
 		</phrase>
 		<phrase id="5">
 	                <precondition>escape.trader_need_blockpost_box</precondition>
-			<text>Ну чтож, ты мой должник, я попрошу тебя кое о чем. Сделаешь, и мы в рассчете.\n Нужно спереть ящик с блокпоста. Только осторожно.\n Они когда обижаются, то на уровне такой шмон наводят, что даже крысы разбегаются.</text>
+			<text>Ну чтож, ты мой должник, я попрошу тебя кое о чем. Сделаешь, и мы в рассчете.\n Нужно спереть ящик с блокпоста. Только осторожно.\n Они когда обижаются, то вокруг такой шмон наводят, что даже крысы разбегаются.</text>
 			<next>6</next>
 			<next>7</next>
 		</phrase>
@@ -43,9 +45,11 @@
 		</phrase>
 		<phrase id="8">
 			<text>Ну принесешь ящик, тогда и рассчитаемся.</text>
+			<next>14</next>
 		</phrase>
 		<phrase id="9">
 			<text>Ну и хам же ты. Немудрено, что тебя даже на том свете не приняли.</text>
+			<next>14</next>
 		</phrase>
 		<phrase id="10">
 			<has_info>escape_need_blockpost_case</has_info>
@@ -57,16 +61,26 @@
 		</phrase>
 		<phrase id="11">
 			<text>Тааак, 1000 или нет, 500 рублей и мы в рассчете.</text>
+			<next>14</next>
 		</phrase>
 		<phrase id="12">
 	                <precondition>escape.trader_dont_has_job</precondition>
 			<text>Не, пока ничего нету.</text>
+			<next>14</next>
 		</phrase>
 		<phrase id="13">
 	                <precondition>escape.trader_alredy_give_job</precondition>
 			<text>Кажется ты уже что-то обещал мне сделать, и еще не сделал. Пока не сделаешь - никаких новых заданий.</text>
+			<next>14</next>
 		</phrase>
-
+		<phrase id="14">
+			<text>До встречи.</text>
+			<action>dialogs.break_dialog</action>
+		</phrase>
+		<phrase id="15">
+			<text>Ну вот и ладненько. Что нибудь еще?</text>
+			<next>14</next>
+		</phrase>
 	</phrase_list>
     </dialog>
 
