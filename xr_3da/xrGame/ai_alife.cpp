@@ -256,6 +256,44 @@ CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 	return(tpBestTrader);
 }
 
+void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
+{
+	CALifeDynamicObject *tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
+	VERIFY(tpALifeDynamicObject);
+	m_tObjectRegistry.erase(tpServerEntity->ID);
+	
+	vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+
+	{
+		bool bOk = false;
+		ALIFE_ENTITY_P_IT	I = m_tpCurrentLevel->begin();
+		ALIFE_ENTITY_P_IT	E = m_tpCurrentLevel->end();
+		for ( ; I != E; I++)
+			if (*I == tpALifeDynamicObject) {
+				m_tpCurrentLevel->erase(I);
+				bOk			= true;
+				break;
+			}
+		VERIFY(bOk);
+	}
+
+	{
+		bool bOk = false;
+		ALIFE_MONSTER_P_IT	I = m_tpScheduledObjects.begin();
+		ALIFE_MONSTER_P_IT	E = m_tpScheduledObjects.end();
+		for ( ; I != E; I++)
+			if (*I == tpALifeDynamicObject) {
+				m_tpScheduledObjects.erase(I);
+				bOk = true;
+				break;
+			}
+		VERIFY(bOk);
+	}
+
+	tpServerEntity->m_bALifeControl = false;
+}
+
+
 void CAI_ALife::vfGenerateAnomalousZones()
 {
 }

@@ -347,6 +347,17 @@ public:
 				break;
 			}
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
+//		tServerEntity.children.push_back(tpALifeItem->ID);
+//		vector<u16>::iterator i = tServerEntity.children.begin();
+//		vector<u16>::iterator e = tServerEntity.children.end();
+//		bool bOk = true;
+//		for ( ; i != e; i++)
+//			if (*i == tpALifeItem->ID) {
+//				bOk = false;
+//				break;
+//			}
+//		VERIFY(bOk);
+//		tpALifeItem->ID_Parent = tServerEntity.ID;
 	}
 
 	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bGenEvent = true)
@@ -361,6 +372,18 @@ public:
 		VERIFY(tpTraderParams);
 		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
 		tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+//		tpALifeItem->ID_Parent = 0xffff;
+//		
+//		vector<u16>::iterator i = tServerEntity.children.begin();
+//		vector<u16>::iterator e = tServerEntity.children.end();
+//		bool bOk = false;
+//		for ( ; i != e; i++)
+//			if (*i == tpALifeItem->ID) {
+//				tServerEntity.children.erase(i);
+//				bOk = true;
+//				break;
+//			}
+//		VERIFY(bOk);
 	}
 };
 

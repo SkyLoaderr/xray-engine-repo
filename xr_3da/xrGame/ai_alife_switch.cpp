@@ -17,16 +17,19 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
+	Msg("ALife : Spawning object %s",tpALifeDynamicObject->s_name_replace);
 
 	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
+			xrServerEntity			*t = dynamic_cast<xrServerEntity*>(m_tObjectRegistry[*I]);
 			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
 			if (!tpItem)
 				continue;
 			tpItem->s_flags.or		(M_SPAWN_UPDATE);
+			Msg("ALife : Spawning item %s",tpItem->s_name_replace);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
 			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
 			tpItem->m_bOnline		= true;
@@ -41,14 +44,17 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
+			xrServerEntity			*t = dynamic_cast<xrServerEntity*>(m_tObjectRegistry[*I]);
 			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
 			if (!tpItem)
 				continue;
-			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
+			Msg("ALife : Destroying item %s",tpItem->s_name_replace);
+			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE),false);
 			tpItem->m_bOnline		= false;
 		}
 	}
-	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
+	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
+	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE),false);
 }
 
 void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
@@ -63,9 +69,6 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
 			if (tpALifeAbstractGroup->m_bCreateSpawnPositions) {
-				//Fvector tTemp;
-				//tTemp.set(::Random.randF(0,.35f),0,::Random.randF(0,.35f));
-				//(*J).second->o_Position.add(tpALifeDynamicObject->o_Position,tTemp);
 				(*J).second->o_Position	= tpALifeDynamicObject->o_Position;
 				(*J).second->m_tNodeID	= tpALifeDynamicObject->m_tNodeID;
 				xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);

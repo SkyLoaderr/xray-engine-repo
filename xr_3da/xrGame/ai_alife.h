@@ -81,6 +81,7 @@ public:
 			void					ProcessOnlineOfflineSwitches(CALifeDynamicObject *I);
 			void					vfReleaseObject				(CALifeDynamicObject *tpALifeObject);
 			void					vfNewGame					();
+			void					vfRemoveObject				(xrServerEntity *tpServerEntity);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();
 			void					vfListEvents				();
