@@ -14,7 +14,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 {
 	VERIFY					(m_path && !m_path->tpaWayPoints.empty());
 	u32						temp = u32(-1);
-	if (!actual() || (m_path->tpaWayPoints[m_curr_point_index].tWayPoint.distance_to_sqr(position) > .1f)) {
+	if (!actual() || (m_path->tpaWayPoints[m_curr_point_index].tWayPoint.distance_to_sqr(position) > .5f)) {
 		switch (m_start_type) {
 			case ePatrolStartTypeFirst : {
 				temp		= 0;

@@ -309,24 +309,28 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					if ((m_bFiring && (CWeapon::eIdle != tpWeapon->STATE)) || (eBodyStateStand != m_tBodyState))
 						tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[(IsLimping() && (eBodyStateStand == m_tBodyState)) ? 9 : 6].A[0];
 					else
-						switch (m_tMovementType) {
-							case eMovementTypeStand : {
-								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : 6].A[0];
-								break;
-							}
-							case eMovementTypeWalk : {
-								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
-								break;
-							}
-							case eMovementTypeRun : {
-								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 7 : 8].A[0];
-								break;
-							}
-							default : {
-								NODEFAULT;
-								break;
-							}
+						if (fis_zero(speed())) {
+							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : 6].A[0];
 						}
+						else
+							switch (m_tMovementType) {
+								case eMovementTypeStand : {
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 9 : 6].A[0];
+									break;
+								}
+								case eMovementTypeWalk : {
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+									break;
+								}
+								case eMovementTypeRun : {
+									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[IsLimping() ? 7 : 8].A[0];
+									break;
+								}
+								default : {
+									NODEFAULT;
+									break;
+								}
+							}
 					break;
 				}
 			}

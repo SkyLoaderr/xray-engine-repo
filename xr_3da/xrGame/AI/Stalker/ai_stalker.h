@@ -33,21 +33,48 @@ private:
 	typedef CCustomMonster inherited;
 	
 	enum EMovementParameters {
-		eMovementParameterStand						= u32(1) <<  0,
-		eMovementParameterWalkFree					= u32(1) <<  1,
-		eMovementParameterRunFree					= u32(1) <<  2,
-		eMovementParameterWalkDangerStand			= u32(1) <<  3,
-		eMovementParameterWalkDangerCrouch			= u32(1) <<  4,
-		eMovementParameterRunDangerStand			= u32(1) <<  5,
-		eMovementParameterRunDangerCrouch			= u32(1) <<  6,
-		eMovementParameterPanic						= u32(1) <<  7,
-		eMovementParameterWalkFreeDamaged			= u32(1) <<  8,
-		eMovementParameterRunFreeDamaged			= u32(1) <<  9,
-		eMovementParameterWalkDangerStandDamaged	= u32(1) << 10,
-		eMovementParameterWalkDangerCrouchDamaged	= u32(1) << 11,
-		eMovementParameterRunDangerStandDamaged		= u32(1) << 12,
-		eMovementParameterRunDangerCrouchDamaged	= u32(1) << 13,
-		eMovementParameterPanicDamaged				= u32(1) << 14,
+		eMovementParameterStanding					= u32(1) <<  0,
+		eMovementParameterWalk						= u32(1) <<  1,
+		eMovementParameterRun						= u32(1) <<  2,
+
+		eMovementParameterStand						= u32(1) <<  3,
+		eMovementParameterCrouch					= u32(1) <<  4,
+		
+		eMovementParameterDamaged					= u32(1) <<  5,
+		
+		eMovementParameterDanger					= u32(1) <<  6,
+		eMovementParameterFree						= u32(1) <<  7,
+		eMovementParameterPanic						= u32(1) <<  8,
+
+		eMovementParameterStandingFreeStand			= eMovementParameterStanding | eMovementParameterFree | eMovementParameterStand,
+		eMovementParameterStandingPanicStand		= eMovementParameterStanding | eMovementParameterPanic | eMovementParameterStand,
+		eMovementParameterStandingDangerStand		= eMovementParameterStanding | eMovementParameterDanger | eMovementParameterStand,
+		eMovementParameterStandingFreeStandDamaged	= eMovementParameterStandingFreeStand | eMovementParameterDamaged,
+		eMovementParameterStandingPanicStandDamaged	= eMovementParameterStandingPanicStand | eMovementParameterDamaged,
+		eMovementParameterStandingDangerStandDamaged= eMovementParameterStandingDangerStand | eMovementParameterDamaged,
+
+		eMovementParameterStandingFreeCrouch		= eMovementParameterStanding | eMovementParameterFree | eMovementParameterCrouch,
+		eMovementParameterStandingPanicCrouch		= eMovementParameterStanding | eMovementParameterPanic | eMovementParameterCrouch,
+		eMovementParameterStandingDangerCrouch		= eMovementParameterStanding | eMovementParameterDanger | eMovementParameterCrouch,
+		eMovementParameterStandingFreeCrouchDamaged	= eMovementParameterStandingFreeCrouch | eMovementParameterDamaged,
+		eMovementParameterStandingPanicCrouchDamaged= eMovementParameterStandingPanicCrouch | eMovementParameterDamaged,
+		eMovementParameterStandingDangerCrouchDamaged= eMovementParameterStandingDangerCrouch | eMovementParameterDamaged,
+
+		eMovementParameterWalkFree					= eMovementParameterWalk | eMovementParameterFree | eMovementParameterStand,
+		eMovementParameterWalkDangerStand			= eMovementParameterWalk | eMovementParameterDanger | eMovementParameterStand,
+		eMovementParameterWalkDangerCrouch			= eMovementParameterWalk | eMovementParameterDanger | eMovementParameterCrouch,
+		eMovementParameterRunFree					= eMovementParameterRun | eMovementParameterFree | eMovementParameterStand,
+		eMovementParameterRunDangerStand			= eMovementParameterRun | eMovementParameterDanger | eMovementParameterStand,
+		eMovementParameterRunDangerCrouch			= eMovementParameterRun | eMovementParameterDanger | eMovementParameterCrouch,
+		eMovementParameterRunPanicStand				= eMovementParameterRun | eMovementParameterPanic | eMovementParameterStand,
+		
+		eMovementParameterWalkFreeDamaged			= eMovementParameterWalkFree | eMovementParameterDamaged,
+		eMovementParameterWalkDangerStandDamaged	= eMovementParameterWalkDangerStand | eMovementParameterDamaged,
+		eMovementParameterWalkDangerCrouchDamaged	= eMovementParameterWalkDangerCrouch | eMovementParameterDamaged,
+		eMovementParameterRunFreeDamaged			= eMovementParameterRunFree | eMovementParameterDamaged,
+		eMovementParameterRunDangerStandDamaged		= eMovementParameterRunDangerStand | eMovementParameterDamaged,
+		eMovementParameterRunDangerCrouchDamaged	= eMovementParameterRunDangerCrouch | eMovementParameterDamaged,
+		eMovementParameterRunPanicDamagedStand		= eMovementParameterRunPanicStand | eMovementParameterDamaged,
 	};
 
 	typedef struct tagSHurt {

@@ -15,16 +15,16 @@
 #include "../../ef_storage.h"
 
 void CAI_Stalker::vfSetParameters(
-	PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, 
-	Fvector *tpDesiredPosition, 
-	bool bSearchNode, 
-	EObjectAction tWeaponState, 
-	EPathType tGlobalPathType, 
-	EDetailPathType tPathType, 
-	EBodyState tBodyState, 
-	EMovementType tMovementType, 
-	EMentalState tMentalState, 
-	ELookType tLookType
+	PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator, 
+	Fvector									*tpDesiredPosition, 
+	bool									bSearchNode, 
+	EObjectAction							tWeaponState, 
+	EPathType								tGlobalPathType, 
+	EDetailPathType							tPathType, 
+	EBodyState								tBodyState, 
+	EMovementType							tMovementType, 
+	EMentalState							tMentalState, 
+	ELookType								tLookType
 )
 {
 	R_ASSERT		(eLookTypePoint != tLookType);
@@ -58,97 +58,132 @@ void CAI_Stalker::vfSetParameters(
 
 	m_fCurSpeed		= 1.f;
 
-//	EMovementParameters		mask = 0;
+//	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
+//		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
+//			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
+//		else {
+//			switch (m_tBodyState) {
+//				case eBodyStateCrouch : {
+//					m_fCurSpeed *= m_fCrouchFactor;
+//					break;
+//				}
+//				case eBodyStateStand : {
+//					break;
+//				}
+//				default : NODEFAULT;
+//			}
+//			switch (m_tMovementType) {
+//				case eMovementTypeWalk : {
+//					m_body.speed	= PI_MUL_2;
+//					m_head.speed	= 3*PI_DIV_2;
+//					switch (m_tMentalState) {
+//						case eMentalStateDanger : {
+//							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
+//							break;
+//						}
+//						case eMentalStateFree : {
+//							m_fCurSpeed		*= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
+//							break;
+//						}
+//						case eMentalStatePanic : {
+//							Debug.fatal("");
+//							break;
+//						}
+//					}
+//					break;
+//				}
+//				case eMovementTypeRun : {
+//					switch (m_tMentalState) {
+//						case eMentalStateDanger : {
+//							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
+//							break;
+//						}
+//						case eMentalStateFree : {
+//							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
+//							break;
+//						}
+//						case eMentalStatePanic : {
+//							m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
+//							break;
+//						}
+//					}
+//					m_body.speed	= PI_MUL_2;
+//					m_head.speed	= 3*PI_DIV_2;
+//					break;
+//				}
+//				default : m_fCurSpeed = 0.f;
+//			}
+//		}
+//	}
+//	else {
+//		m_tMovementType = eMovementTypeStand;
+//		m_body.speed	= PI_MUL_2;
+//		m_head.speed	= 3*PI_DIV_2;
+//		m_fCurSpeed		= 0.f;
+//	}
+
+	u32					velocity_mask = IsLimping() ? eMovementParameterDamaged : 0;
+
+	switch (m_tBodyState) {
+		case eBodyStateCrouch : {
+			velocity_mask	|= eMovementParameterCrouch;
+			break;
+								}
+		case eBodyStateStand : {
+			velocity_mask	|= eMovementParameterStand;
+			break;
+								}
+		default : NODEFAULT;
+	}
+
+	switch (m_tMentalState) {
+		case eMentalStateDanger : {
+			velocity_mask	|= eMovementParameterDanger;
+			break;
+		}
+		case eMentalStateFree : {
+			velocity_mask	|= eMovementParameterFree;
+			break;
+		}
+		case eMentalStatePanic : {
+			velocity_mask	|= eMovementParameterPanic;
+			break;
+		}
+	}
 
 	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
 		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
 			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
 		else {
-		// if linear speed is too big for a turn 
-		// then decrease linear speed and 
-		// increase angular speed
-//			if ((CDetailPathManager::path().size() - 2) > CDetailPathManager::m_current_travel_point) {
-//				Fvector tPoint1, tPoint2;
-//				float	yaw1, pitch1, yaw2, pitch2;
-////				tPoint1.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P);
-////				tPoint2.sub(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 1].P,CDetailPathManager::path()[CDetailPathManager::m_current_travel_point + 2].P);
-////				tPoint1.getHP(yaw1,pitch1);
-////				tPoint2.getHP(yaw2,pitch2);
-//				if (ps_Size() > 2) {
-//					tPoint1.sub(ps_Element(ps_Size() - 2).Position(),ps_Element(ps_Size() - 3).Position());
-//					tPoint2.sub(ps_Element(ps_Size() - 1).Position(),ps_Element(ps_Size() - 2).Position());
-//					tPoint1.getHP(yaw1,pitch1);
-//					tPoint2.getHP(yaw2,pitch2);
-//					//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
-//					//GetDirectionAngles(yaw1,pitch1);
-//					if (!angle_difference(yaw1,yaw2,1*PI_DIV_6)) {
-//						m_tMovementType = eMovementTypeWalk;
-//						if (m_tMentalState == eMentalStatePanic)
-//							m_tMentalState = eMentalStateDanger;
-//					}
-//				}
-//			}
-
-			switch (m_tBodyState) {
-				case eBodyStateCrouch : {
-					m_fCurSpeed *= m_fCrouchFactor;
-					break;
-				}
-				case eBodyStateStand : {
-					break;
-				}
-				default : NODEFAULT;
-			}
 			switch (m_tMovementType) {
 				case eMovementTypeWalk : {
-					m_body.speed	= PI_MUL_2;
-					m_head.speed	= 3*PI_DIV_2;
-					switch (m_tMentalState) {
-						case eMentalStateDanger : {
-							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
-							break;
-						}
-						case eMentalStateFree : {
-							m_fCurSpeed		*= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
-							break;
-						}
-						case eMentalStatePanic : {
-							Debug.fatal("");
-							break;
-						}
-					}
+					velocity_mask	|= eMovementParameterWalk;
 					break;
 				}
 				case eMovementTypeRun : {
-					switch (m_tMentalState) {
-						case eMentalStateDanger : {
-							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
-							break;
-						}
-						case eMentalStateFree : {
-							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
-							break;
-						}
-						case eMentalStatePanic : {
-							m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
-							break;
-						}
-					}
-					m_body.speed	= PI_MUL_2;
-					m_head.speed	= 3*PI_DIV_2;
+					velocity_mask	|= eMovementParameterRun;
 					break;
 				}
-				default : m_fCurSpeed = 0.f;
+				default : 
+					velocity_mask	|= eMovementParameterStanding;
 			}
 		}
 	}
-	else {
-		m_tMovementType = eMovementTypeStand;
-		m_body.speed	= PI_MUL_2;
-		m_head.speed	= 3*PI_DIV_2;
-		m_fCurSpeed		= 0.f;
-	}
+	else
+		velocity_mask	|= eMovementParameterStanding;
+
+	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(velocity_mask);
+	VERIFY							(I != m_movement_params.end());
 	
+	m_fCurSpeed						= (*I).second.linear_velocity;
+	m_body.speed					= 2*(*I).second.angular_velocity;
+	m_head.speed					= 3*PI_DIV_2;
+
+	set_velocity_mask				(velocity_mask | eMovementParameterWalk | eMovementParameterRun | eMovementParameterStanding);
+	if ((velocity_mask & eMovementParameterStanding) != eMovementParameterStanding)
+		set_desirable_mask			(velocity_mask);
+//	set_use_dest_orientation		(true);
+
 	switch (m_tLookType) {
 		case eLookTypePathDirection : {
 			SetDirectionLook();

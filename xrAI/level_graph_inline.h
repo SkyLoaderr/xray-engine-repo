@@ -506,9 +506,9 @@ IC	void CLevelGraph::assign_y_values		(xr_vector<T> &path)
 {
 	Fvector						DUP, normal, v1, P;
 	Fplane						PL; 
+	const CVertex				*_vertex;
 	DUP.set						(0,1,0);
 	u32							prev_id = u32(-1);
-	const CVertex				*_vertex;
 
 	xr_vector<T>::iterator		I = path.begin();
 	xr_vector<T>::iterator		E = path.end();
@@ -520,6 +520,7 @@ IC	void CLevelGraph::assign_y_values		(xr_vector<T> &path)
 			PL.build			(P,normal);
 			prev_id				= (*I).get_vertex_id();
 		}
+		(*I).get_position().y	= P.y;
 		PL.intersectRayPoint	((*I).get_position(),DUP,v1);	
 		(*I).get_position().y	= v1.y;
 	}
