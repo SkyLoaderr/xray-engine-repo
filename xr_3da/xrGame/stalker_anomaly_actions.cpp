@@ -50,7 +50,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().sight().setup				(SightManager::eSightTypeCurrentDirection);
-	if (object().memory().enemy().selected() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
+	if (object().memory().enemy().selected() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
 		object().CObjectHandler::set_goal	(eObjectActionIdle,object().best_weapon());
 	else
 		object().CObjectHandler::set_goal	(eObjectActionIdle);
