@@ -17,6 +17,7 @@
 	
 	<character id="novice">
 		<rank>10</rank>
+		<reputation>50</reputation>
 	</character>
 	
 	<character id="veteran">
