@@ -6,13 +6,15 @@ CTargetCSCask::CTargetCSCask(void) {}
 
 CTargetCSCask::~CTargetCSCask(void) {}
 
-IC BOOL BE(BOOL A, BOOL B) {
+IC BOOL BE(BOOL A, BOOL B) 
+{
 	bool a = !!A;
 	bool b = !!B;
 	return a==b;
 }
 
-void CTargetCSCask::OnEvent(NET_Packet& P, u16 type) {
+void CTargetCSCask::OnEvent(NET_Packet& P, u16 type) 
+{
 	__super::OnEvent(P,type);
 	u16 id;
 	switch (type) {
