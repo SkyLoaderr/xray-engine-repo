@@ -3,6 +3,8 @@
 #include "ui\UIDialogWnd.h"
 #include "MainUI.h"
 #include "UICursor.h"
+#include "level.h"
+#include "actor.h"
 
 dlgItem::dlgItem(CUIWindow* pWnd)
 {
@@ -44,6 +46,10 @@ void CDialogHolder::StartMenu (CUIDialogWnd* pDialog)
 	pDialog->Show();
 
 	GetUICursor()->Show();
+	CActor* A = smart_cast<CActor*>( Level().CurrentViewEntity() );
+	if (A){
+		A->StopAnyMove();
+	};
 }
 
 

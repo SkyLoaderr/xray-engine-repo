@@ -410,6 +410,7 @@ public:
 	float					CameraHeight			();
 	bool					CanSprint				();
 	bool					CanRun					();
+	void					StopAnyMove				();
 protected:
 	u32						mstate_wishful;
 	u32						mstate_old;

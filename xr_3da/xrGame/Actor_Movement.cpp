@@ -565,3 +565,9 @@ bool	CActor::CanMove				()
 	else
 		return true;
 }
+
+void CActor::StopAnyMove()
+{
+	mstate_wishful	&=		~mcAnyMove;
+	mstate_real		&=		~mcAnyMove;
+}
