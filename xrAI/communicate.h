@@ -159,7 +159,6 @@ struct b_params
 
         // Light maps
         m_bLightMaps            = TRUE;
-		m_bRadiosity			= FALSE;
         m_lm_split_angle		= 87.f;
         m_lm_pixels_per_meter   = 4;
         m_lm_dither             = 0.02f;
