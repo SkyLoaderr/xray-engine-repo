@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "ai_bloodsucker_effector.h" 
-#include "..\\..\\..\\effectorPP.h"
 
 CBloodsuckerEffector::CBloodsuckerEffector(float time) 
-					 : CEffectorPP(BLOODSUCKER_EFFECTOR_TYPE_ID, time)
+					 : CEffectorPP(EEffectorPPType(BLOODSUCKER_EFFECTOR_TYPE_ID), time)
 {
 	fLifeTime = time;
 }
@@ -19,7 +18,7 @@ void CBloodsuckerEffector::Init ()
 
 BOOL CBloodsuckerEffector::Process(SPPInfo& pp)
 {
-	inherited::Process();
+	inherited::Process(pp);
 
 	pp.noise.grain	= 0.2f;
 	pp.noise.color.r = 200;

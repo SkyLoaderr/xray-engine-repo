@@ -1,11 +1,12 @@
 #pragma	once
 
-class CEffectorPP;
+#include "..\\..\\..\\effectorPP.h"
+
 
 #define BLOODSUCKER_EFFECTOR_TYPE_ID	3
 
 class CBloodsuckerEffector : public CEffectorPP {
-	typedef inherited CEffectorPP;	
+	typedef CEffectorPP inherited;	
 	float	fLifeTime;
 	
 public:
