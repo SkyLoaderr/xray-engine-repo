@@ -90,7 +90,7 @@ IC	void CSSetupManager::add_action					(const _action_id_type &action_id, _actio
 }
 
 TEMPLATE_SPECIALIZATION
-void CSSetupManager::update							(u32 time_delta)
+void CSSetupManager::update							()
 {
 	if (m_actions.empty())
 		return;

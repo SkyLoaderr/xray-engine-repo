@@ -116,7 +116,7 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 		CSActionPlanner::m_actuality	= false;
 	}
 #endif
-	inherited::update		(time_delta);
+	inherited::update		();
 	
 //	if (m_failed) {
 //		{

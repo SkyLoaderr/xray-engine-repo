@@ -152,9 +152,9 @@ IC	const typename CAbstractStateManager::CState &CAbstractStateManager::internal
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::update					(u32 time_delta)
+void CAbstractStateManager::update					()
 {
-	inherited::update		(time_delta);
+	inherited::update		();
 
 	if (current_vertex_id() == dest_vertex_id()) {
 		IGraphManager				*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());

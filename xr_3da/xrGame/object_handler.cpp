@@ -721,7 +721,7 @@ void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameO
 	set_target_state		(condition);
 }
 
-void CObjectHandler::update(u32 time_delta)
+void CObjectHandler::update()
 {
-	inherited::update		(time_delta);
+	inherited::update		();
 }

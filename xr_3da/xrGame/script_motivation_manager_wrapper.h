@@ -24,8 +24,8 @@ public:
 	static	void			Load_static						(CScriptMotivationManager *manager, LPCSTR section);
 	virtual void			reload							(LPCSTR section);
 	static	void			reload_static					(CScriptMotivationManager *manager, LPCSTR section);
-	virtual void			update							(u32 time_delta);
-	static	void			update_static					(CScriptMotivationManager *manager, u32 time_delta);
+	virtual void			update							();
+	static	void			update_static					(CScriptMotivationManager *manager);
 };
 
 #include "script_motivation_manager_wrapper_inline.h"

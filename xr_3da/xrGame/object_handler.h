@@ -79,7 +79,7 @@ public:
 	virtual	void			Load					(LPCSTR section);
 	virtual	void			reinit					(CAI_Stalker *object);
 	virtual	void			reload					(LPCSTR section);
-	virtual	void			update					(u32 time_delta);
+	virtual	void			update					();
 	virtual void			OnItemTake				(CInventoryItem *inventory_item);
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		();

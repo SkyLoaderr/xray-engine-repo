@@ -51,7 +51,7 @@ void CAgentManager::shedule_Update	(u32 time_delta)
 
 	reset_memory_masks					();
 
-	inherited::update					(time_delta);
+	inherited::update					();
 }
 
 BOOL CAgentManager::shedule_Ready	()

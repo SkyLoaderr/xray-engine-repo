@@ -347,8 +347,8 @@ void CAI_Stalker::UpdateCL(){
 		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
 		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
-		CSightManager::update		(Device.dwTimeDelta);
-		CObjectHandler::update		(Device.dwTimeDelta);
+		CSightManager::update		();
+		CObjectHandler::update		();
 		Exec_Look					(Device.fTimeDelta);
 	}
 
@@ -558,7 +558,7 @@ void CAI_Stalker::Think			()
 {
 	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
-	CSSetupManager::update			(Level().timeServer() - m_dwLastUpdateTime);
+	CSSetupManager::update			();
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)

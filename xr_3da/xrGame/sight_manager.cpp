@@ -225,10 +225,10 @@ void CSightManager::setup			(const CSightAction &sight_action)
 	add_action			(0,xr_new<CSightControlAction>(1.f,u32(-1),sight_action));
 }
 
-void CSightManager::update			(u32 time_delta)
+void CSightManager::update			()
 {
 	if (enabled())
-		inherited::update	(time_delta);
+		inherited::update	();
 	
 //	if (m_object->turn_in_place())
 //		m_object->m_body.target.yaw		= m_object->m_head.current.yaw;

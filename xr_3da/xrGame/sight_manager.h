@@ -46,7 +46,7 @@ public:
 	template <typename T1>
 	IC		void	setup								(T1 _1);
 			void	setup								(const CSightAction &sight_action);
-	virtual void	update								(u32 time_delta);
+	virtual void	update								();
 	IC		bool	enabled								() const;
 	IC		void	enable								(bool value);
 };

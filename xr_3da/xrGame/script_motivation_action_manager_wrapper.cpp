@@ -44,12 +44,12 @@ void CScriptMotivationActionManagerWrapper::reload_static	(CScriptMotivationActi
 	manager->CScriptMotivationActionManager::reload	(section);
 }
 
-void CScriptMotivationActionManagerWrapper::update			(u32 time_delta)
+void CScriptMotivationActionManagerWrapper::update			()
 {
-	call_member<void>		("update",time_delta);
+	call_member<void>		("update");
 }
 
-void CScriptMotivationActionManagerWrapper::update_static	(CScriptMotivationActionManager *manager, u32 time_delta)
+void CScriptMotivationActionManagerWrapper::update_static	(CScriptMotivationActionManager *manager)
 {
-	manager->CScriptMotivationActionManager::update	(time_delta);
+	manager->CScriptMotivationActionManager::update	();
 }

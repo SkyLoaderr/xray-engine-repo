@@ -69,7 +69,7 @@ public:
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(_Object *object);
 	virtual	void		reload					(LPCSTR section);
-	virtual	void		update					(u32 time_delta);
+	virtual	void		update					();
 };
 
 #include "state_internal_inline.h"

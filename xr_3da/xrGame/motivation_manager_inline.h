@@ -144,7 +144,7 @@ IC	bool CSMotivationManager::actual			() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSMotivationManager::update			(u32 time_delta)
+IC	void CSMotivationManager::update			()
 {
 	if (!actual()) {
 		update_motivations	();

@@ -38,6 +38,7 @@ void CPlanner::Load					(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
+	inherited_planner::m_use_log = inherited_action::m_use_log;
 	inherited_planner::reinit	(object,clear_all);
 	inherited_action::reinit	(object,storage,clear_all);
 	set_target_state			(effects());
@@ -46,6 +47,9 @@ void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool
 TEMPLATE_SPECIALIZATION
 void CPlanner::reload					(LPCSTR section)
 {
+#ifdef LOG_ACTION
+	inherited_planner::m_use_log = inherited_action::m_use_log;
+#endif
 	inherited_planner::reload	(section);
 	inherited_action::reload	(section);
 }
@@ -69,16 +73,13 @@ bool CPlanner::completed				() const
 }
 
 TEMPLATE_SPECIALIZATION
-void CPlanner::update					(u32 time_delta)
-{
-	execute						();
-	inherited_planner::update	(time_delta);
-}
-
-TEMPLATE_SPECIALIZATION
 void CPlanner::execute				()
 {
+#ifdef LOG_ACTION
+	inherited_planner::m_use_log = inherited_action::m_use_log;
+#endif
 	inherited_action::execute	();
+	inherited_planner::update	();
 }
 
 #undef TEMPLATE_SPECIALIZATION

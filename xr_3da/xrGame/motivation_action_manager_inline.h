@@ -50,11 +50,11 @@ void CSMotivationActionManager::reload	(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CSMotivationActionManager::update	(u32 time_delta)
+void CSMotivationActionManager::update	()
 {
-	CSMotivationManager::update			(time_delta);
+	CSMotivationManager::update			();
 	CSActionPlanner::set_target_state	(CSMotivationManager::selected()->goal());
-	CSActionPlanner::update				(time_delta);
+	CSActionPlanner::update				();
 }
 
 TEMPLATE_SPECIALIZATION

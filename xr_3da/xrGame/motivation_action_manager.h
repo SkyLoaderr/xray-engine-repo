@@ -42,7 +42,7 @@ public:
 	virtual void	reinit						(_object_type *object, bool clear_all = false);
 	virtual void	Load						(LPCSTR section);
 	virtual void	reload						(LPCSTR section);
-	virtual void	update						(u32 time_delta);
+	virtual void	update						();
 	virtual void	clear						();
 	IC		void	add_action					(const _edge_type &, CScriptActionPlannerAction *);
 	IC		void	clear_motivations			();

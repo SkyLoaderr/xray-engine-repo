@@ -32,7 +32,6 @@ public:
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);
-	virtual	void		update					(u32 time_delta);
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();

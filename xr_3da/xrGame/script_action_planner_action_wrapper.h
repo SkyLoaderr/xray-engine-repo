@@ -27,8 +27,6 @@ public:
 	static	void				finalize_static		(CScriptActionPlannerAction *action);
 	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 	static	_edge_value_type	weight_static		(CScriptActionPlannerAction *action, const CSConditionState &condition0, const CSConditionState &condition1);
-	virtual void				update				(u32 time_delta);
-	static	void				update_static		(CScriptActionPlannerAction *planner, u32 time_delta);
 };
 
 #include "script_action_planner_action_wrapper_inline.h"

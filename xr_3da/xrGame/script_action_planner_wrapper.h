@@ -15,8 +15,8 @@ class CScriptActionPlannerWrapper : public CScriptActionPlanner, public luabind:
 public:
 	virtual void		reinit						(CScriptGameObject *object, bool clear_all);
 	static	void		reinit_static				(CScriptActionPlanner *planner, CScriptGameObject *object, bool clear_all);
-	virtual void		update						(u32 time_delta);
-	static	void		update_static				(CScriptActionPlanner *planner, u32 time_delta);
+	virtual void		update						();
+	static	void		update_static				(CScriptActionPlanner *planner);
 };
 
 #include "script_action_planner_wrapper_inline.h"

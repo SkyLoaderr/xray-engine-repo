@@ -68,7 +68,7 @@ public:
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);
-	virtual	void		update					(u32 time_delta);
+	virtual	void		update					();
 	IC		T			&state					(const u32 state_id);
 	IC		const u32	&current_state_id		() const;
 	IC		const u32	&dest_state_id			() const;

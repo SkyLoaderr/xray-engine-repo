@@ -20,16 +20,6 @@ void CScriptActionPlannerActionWrapper::reinit_static	(CScriptActionPlannerActio
 	planner->CScriptActionPlannerAction::reinit	(object,storage,clear_all);
 }
 
-void CScriptActionPlannerActionWrapper::update		(u32 time_delta)
-{
-	call_member<void>				("update",time_delta);
-}
-
-void CScriptActionPlannerActionWrapper::update_static	(CScriptActionPlannerAction *planner, u32 time_delta)
-{
-	planner->CScriptActionPlannerAction::update	(time_delta);
-}
-
 void CScriptActionPlannerActionWrapper::initialize			()
 {
 	call_member<void>			("initialize");

@@ -124,7 +124,7 @@ void CPlanner::reload				(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CPlanner::update				(u32 time_delta)
+void CPlanner::update				()
 {
 	solve						();
 
@@ -190,10 +190,6 @@ void CPlanner::update				(u32 time_delta)
 	}
 
 	current_action().execute	();
-
-	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
-	if (action_planner)
-		action_planner->update	(time_delta);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -37,7 +37,7 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
-	virtual	void		update					(u32 time_delta);
+	virtual	void		update					();
 	virtual	bool		completed				() const;
 	IC		void		add_state				(CSStateBase *state, u32 state_id, u32 priority);
 };

@@ -58,7 +58,7 @@ void CStateInternalAbstract::reload			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateInternalAbstract::update			(u32 time_delta)
+void CStateInternalAbstract::update			()
 {
 	update_sound_info		();
 	update_enemy_info		();

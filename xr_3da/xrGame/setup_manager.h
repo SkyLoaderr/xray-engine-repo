@@ -25,7 +25,7 @@ public:
 	virtual 						~CSetupManager		();
 	IC		void					init				();
 	virtual void					reinit				(_object_type *object);
-	virtual void					update				(u32 time_delta);
+	virtual void					update				();
 	IC		void					add_action			(const _action_id_type &action_id, _action_type *action);
 	IC		_action_type			&action				(const _action_id_type &action_id) const;
 	IC		_action_type			&current_action		() const;
