@@ -93,7 +93,7 @@ void CWeaponRPG7Grenade::Explode() {
 	list<Fvector> l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
-		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst);
+		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
 		f32 l_impuls = m_blast * (1.f - l_dst/m_blastR);
 		if(l_impuls > .001f) {
 			setEnabled(false);
@@ -107,7 +107,7 @@ void CWeaponRPG7Grenade::Explode() {
 			u_EventGen		(P,GE_HIT,l_pGO->ID());
 			P.w_u16			(u16(ID()));
 			P.w_dir			(l_dir);
-			P.w_float		(0);
+			P.w_float		(l_impuls);
 			P.w_s16			(l_element);
 			P.w_vec3		(l_bs_pos);
 			P.w_float		(l_impuls);
