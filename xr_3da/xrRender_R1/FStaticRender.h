@@ -69,11 +69,12 @@ public:
 	CRenderTarget*												Target;			// Render-target
 
 	// R1-specific global constants
-	Fmatrix														r1_dlight_tcgen;
-	light*														r1_dlight_light;
-	cl_light_PR													r1_dlight_binder_PR;
-	cl_light_C													r1_dlight_binder_color;
-	cl_light_XFORM												r1_dlight_binder_xform;
+	Fmatrix														r1_dlight_tcgen			;
+	light*														r1_dlight_light			;
+	cl_light_PR													r1_dlight_binder_PR		;
+	cl_light_C													r1_dlight_binder_color	;
+	cl_light_XFORM												r1_dlight_binder_xform	;
+	shared_str													c_ldynamic_props		;
 private:
 	// Loading / Unloading
 	void								LoadBuffers				(IReader	*fs);

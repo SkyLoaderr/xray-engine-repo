@@ -64,6 +64,7 @@ void					CRender::create					()
 
 	// disasm
 	o.disasm					= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
+	c_ldynamic_props			= "L_dynamic_props";
 
 	//
 	Models						= xr_new<CModelPool>		();
@@ -186,6 +187,9 @@ void					CRender::apply_object			(IRenderable*		O )
 	if (PHASE_NORMAL==phase)	{
 		VERIFY				(O->renderable.ROS);
 		CROS_impl& LT		= *((CROS_impl*)O->renderable.ROS);
+		float o_hemi		= 0.5f*LT.get_hemi						();
+		float o_sun			= 0.5f*LT.get_sun						();
+		RCache.set_c		(c_ldynamic_props,o_sun,o_sun,o_sun,o_hemi);
 
 		// shadowing
 		if ((LT.shadow_recv_frame==Device.dwFrame) && O->renderable_ShadowReceive())	
