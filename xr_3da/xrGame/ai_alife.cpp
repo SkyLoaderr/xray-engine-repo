@@ -188,12 +188,12 @@ void CSE_ALifeSimulator::Load(LPCSTR caSaveName)
 		R_ASSERT2				(false,S);
 	}
 	Log							("* Loading simulator...");
-	CSE_ALifeHeader::Load			(*tpStream);
+	CSE_ALifeHeader::Load		(*tpStream);
 	CSE_ALifeGameTime::Load		(*tpStream);
 	Log							("* Loading objects...");
-	CSE_ALifeObjectRegistry::Load	(*tpStream);
+	CSE_ALifeObjectRegistry::Load(*tpStream);
 	Log							("* Loading events...");
-	CSE_ALifeEventRegistry::Load	(*tpStream);
+	CSE_ALifeEventRegistry::Load(*tpStream);
 	Log							("* Loading tasks...");
 	CSE_ALifeTaskRegistry::Load	(*tpStream);
 	Log							("* Building dynamic objects...");
@@ -206,7 +206,7 @@ void CSE_ALifeSimulator::Load(LPCSTR caSaveName)
 void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	CSE_ALifeGraphRegistry::Update		(tpALifeDynamicObject);
-	CSE_ALifeTraderRegistry::Update	(tpALifeDynamicObject);
+	CSE_ALifeTraderRegistry::Update		(tpALifeDynamicObject);
 	CSE_ALifeScheduleRegistry::Update	(tpALifeDynamicObject);
 }
 
@@ -239,23 +239,23 @@ void CSE_ALifeSimulator::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
 	for ( ; I != E; I++) {
 		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
 		if (tpALifeItem && !tpALifeItem->bfAttached()) {
-			CSE_ALifeTask					*tpTask = xr_new<CSE_ALifeTask>();
+			CSE_ALifeTask				*tpTask = xr_new<CSE_ALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
 			Memory.mem_copy				(tpTask->m_tLocationID,getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
 			tpTask->m_tTimeID			= tfGetGameTime();
 			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
-			CSE_ALifeTaskRegistry::Add		(tpTask);
+			CSE_ALifeTaskRegistry::Add	(tpTask);
 			tpTrader->m_tpTaskIDs.push_back(tpTask->m_tTaskID);
 			break;
 		}
 	}
 }
 
-CSE_ALifeTrader* CSE_ALifeSimulator::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
+CSE_ALifeTrader *CSE_ALifeSimulator::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
 {
 	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
-	CSE_ALifeTrader *	tpBestTrader = 0;
+	CSE_ALifeTrader *tpBestTrader = 0;
 	TRADER_P_IT		I = m_tpTraders.begin();
 	TRADER_P_IT		E = m_tpTraders.end();
 	Fvector			&tGlobalPoint = getAI().m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;

@@ -28,7 +28,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
 	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
 
-									CSE_ALifeEvent(LPCSTR caSection);
+									CSE_ALifeEvent	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,IPureServerObject)
@@ -59,7 +59,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,IPureServerObject)
 		_GRAPH_ID					m_tGraphID;
 	};
 
-									CSE_ALifeTask()
+									CSE_ALifeTask	()
 	{
 	};
 SERVER_ENTITY_DECLARE_END
@@ -86,7 +86,7 @@ public:
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
 
-									CSE_ALifeObject(LPCSTR caSection) : CSE_Abstract(caSection)
+									CSE_ALifeObject	(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
 		m_bOnline					= false;
 		m_fDistance					= 0.0f;
@@ -99,12 +99,12 @@ public:
 		m_tNodeID					= u32(-1);
 	};
 
-	virtual void					STATE_Write	(NET_Packet &tNetPacket);
-	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read	(NET_Packet &tNetPacket);
+	virtual void					STATE_Write		(NET_Packet &tNetPacket);
+	virtual void					STATE_Read		(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write	(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read		(NET_Packet &tNetPacket);
 #ifdef _EDITOR
-    virtual void					FillProp	(LPCSTR pref, PropItemVec &items);
+    virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
 #endif
 };
 

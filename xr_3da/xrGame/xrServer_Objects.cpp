@@ -21,7 +21,7 @@
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Abstract
 ////////////////////////////////////////////////////////////////////////////
-void CSE_Abstract::Spawn_Write		(NET_Packet	&tNetPacket, BOOL bLocal)
+void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 {
 	// generic
 	tNetPacket.w_begin			(M_SPAWN);
@@ -52,7 +52,7 @@ void CSE_Abstract::Spawn_Write		(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
 }
 
-BOOL CSE_Abstract::Spawn_Read		(NET_Packet	&tNetPacket)
+BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 {
 	u16							dummy16;
 	// generic
@@ -100,7 +100,7 @@ xr_token game_types[]={
 	{ 0,				0				}
 };
 
-void CSE_Abstract::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 {
 	PHelper.CreateToken			(items,	PHelper.PrepareKey(pref,"Game Type"),			&s_gameid,		game_types, 1);
     PHelper.CreateFlag16		(items,	PHelper.PrepareKey(pref, "Active"),				&s_flags, 		M_SPAWN_OBJECT_ACTIVE);
@@ -111,7 +111,7 @@ void CSE_Abstract::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Shape
 ////////////////////////////////////////////////////////////////////////////
-void CSE_Shape::cform_read			(NET_Packet	&tNetPacket)
+void CSE_Shape::cform_read					(NET_Packet	&tNetPacket)
 {
 	shapes.clear				();
 	u8							count;
@@ -133,7 +133,7 @@ void CSE_Shape::cform_read			(NET_Packet	&tNetPacket)
 	}
 }
 
-void CSE_Shape::cform_write		(NET_Packet	&tNetPacket)
+void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_u8				(u8(shapes.size()));
 	for (u32 i=0; i<shapes.size(); i++) {
@@ -153,7 +153,7 @@ void CSE_Shape::cform_write		(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Visual
 ////////////////////////////////////////////////////////////////////////////
-void CSE_Visual::set_visual		(LPCSTR name)
+void CSE_Visual::set_visual					(LPCSTR name)
 {
 	strcpy						(visual_name,name);
 #ifdef _EDITOR
@@ -161,7 +161,7 @@ void CSE_Visual::set_visual		(LPCSTR name)
 #endif
 }
 
-void CSE_Visual::visual_read		(NET_Packet	&tNetPacket)
+void CSE_Visual::visual_read				(NET_Packet	&tNetPacket)
 {
 	tNetPacket.r_string			(visual_name);
 #ifdef _EDITOR
@@ -169,7 +169,7 @@ void CSE_Visual::visual_read		(NET_Packet	&tNetPacket)
 #endif
 }
 
-void CSE_Visual::visual_write		(NET_Packet	&tNetPacket)
+void CSE_Visual::visual_write				(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_string			(visual_name);
 }
@@ -187,7 +187,7 @@ void CSE_Visual::PlayAnimation		(LPCSTR name)
     }
 }
 
-void __fastcall	CSE_Visual::OnChangeVisual(PropValue* sender)
+void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)
 {
 	Device.Models.Delete		(visual);
     if (visual_name[0]) {
@@ -207,15 +207,15 @@ void CSE_Visual::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Event
 ////////////////////////////////////////////////////////////////////////////
-void CSE_Event::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_Event::UPDATE_Read					(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Event::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_Event::UPDATE_Write				(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Event::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+void CSE_Event::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
 {
 	// CForm
 	cform_read					(tNetPacket);
@@ -237,7 +237,7 @@ void CSE_Event::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	}
 }
 
-void CSE_Event::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 {
 	// CForm
 	cform_write					(tNetPacket);
@@ -256,7 +256,7 @@ void CSE_Event::STATE_Write		(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Dummy
 ////////////////////////////////////////////////////////////////////////////
-CSE_Dummy::CSE_Dummy(LPCSTR caSection) : CSE_Abstract(caSection)
+CSE_Dummy::CSE_Dummy						(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	s_Animation					= 0;
 	s_Model						= 0;
@@ -270,7 +270,7 @@ CSE_Dummy::~CSE_Dummy()
 	xr_free						(s_Particles	);
 	xr_free						(s_Sound		);
 }
-void CSE_Dummy::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+void CSE_Dummy::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
 {
 	tNetPacket.r_u8				(s_style);
 
@@ -299,7 +299,7 @@ void CSE_Dummy::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 		s_Sound					= xr_strdup(fn);
 	}
 }
-void CSE_Dummy::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_Dummy::STATE_Write					(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_u8				(s_style		);
 	if (s_style&esAnimated)		tNetPacket.w_string			(s_Animation	);
@@ -307,16 +307,16 @@ void CSE_Dummy::STATE_Write		(NET_Packet	&tNetPacket)
 	if (s_style&esParticles)	tNetPacket.w_string			(s_Particles	);
 	if (s_style&esSound)		tNetPacket.w_string			(s_Sound		);
 }
-void CSE_Dummy::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_Dummy::UPDATE_Read					(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Dummy::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_Dummy::UPDATE_Write				(NET_Packet	&tNetPacket)
 {
 }
 
 #ifdef _EDITOR
-void CSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_Dummy::FillProp					(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp			(pref,values);
 }
@@ -325,24 +325,24 @@ void CSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Spectator
 ////////////////////////////////////////////////////////////////////////////
-void CSE_Spectator::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_Spectator::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
 }
 
-void CSE_Spectator::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_Spectator::STATE_Write				(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Spectator::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_Spectator::UPDATE_Read				(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Spectator::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_Spectator::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 }
 
 #ifdef _EDITOR
-void CSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_Spectator::FillProp				(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
 }
@@ -351,24 +351,24 @@ void CSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target
 ////////////////////////////////////////////////////////////////////////////
-void CSE_Target::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_Target::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
 {
 };
 
-void CSE_Target::STATE_Write		(NET_Packet	&tNetPacket)
+void CSE_Target::STATE_Write				(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_Target::UPDATE_Read		(NET_Packet	&tNetPacket)
+void CSE_Target::UPDATE_Read				(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_Target::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_Target::UPDATE_Write				(NET_Packet	&tNetPacket)
 {
 };
 
 #ifdef _EDITOR
-void CSE_Target::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_Target::FillProp					(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 }
@@ -377,24 +377,24 @@ void CSE_Target::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_TargetAssault
 ////////////////////////////////////////////////////////////////////////////
-void CSE_TargetAssault::STATE_Read	(NET_Packet	&tNetPacket, u16 size)	
+void CSE_TargetAssault::STATE_Read			(NET_Packet	&tNetPacket, u16 size)	
 {
 };
 
-void CSE_TargetAssault::STATE_Write(NET_Packet	&tNetPacket)
+void CSE_TargetAssault::STATE_Write			(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_TargetAssault::UPDATE_Read(NET_Packet	&tNetPacket)
+void CSE_TargetAssault::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_TargetAssault::UPDATE_Write(NET_Packet &tNetPacket)
+void CSE_TargetAssault::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 };
 
 #ifdef _EDITOR
-void CSE_TargetAssault::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_TargetAssault::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 }
@@ -403,35 +403,35 @@ void CSE_TargetAssault::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target_CS_Base
 ////////////////////////////////////////////////////////////////////////////
-CSE_Target_CS_Base::CSE_Target_CS_Base(LPCSTR caSection) : CSE_Target(caSection)
+CSE_Target_CS_Base::CSE_Target_CS_Base		(LPCSTR caSection) : CSE_Target(caSection)
 {
 	s_team						= 0;
 	radius						= 10.f;
     s_gameid					= GAME_CS;    
 };
 
-void CSE_Target_CS_Base::STATE_Read(NET_Packet	&tNetPacket, u16 size)
+void CSE_Target_CS_Base::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	tNetPacket.r_float			(radius);
 	tNetPacket.r_u8				(s_team);
 }
 
-void CSE_Target_CS_Base::STATE_Write(NET_Packet	&tNetPacket)
+void CSE_Target_CS_Base::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_float			(radius);
 	tNetPacket.w_u8				(s_team);
 }
 
-void CSE_Target_CS_Base::UPDATE_Read(NET_Packet	&tNetPacket)
+void CSE_Target_CS_Base::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target_CS_Base::UPDATE_Write(NET_Packet	&tNetPacket)
+void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 }
 
 #ifdef _EDITOR
-void CSE_Target_CS_Base::FillProp	(LPCSTR pref, PropItemVec& items)
+void CSE_Target_CS_Base::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
@@ -442,30 +442,30 @@ void CSE_Target_CS_Base::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target_CS_Cask
 ////////////////////////////////////////////////////////////////////////////
-CSE_Target_CS_Cask::CSE_Target_CS_Cask(LPCSTR caSection) : CSE_Target(caSection)
+CSE_Target_CS_Cask::CSE_Target_CS_Cask		(LPCSTR caSection) : CSE_Target(caSection)
 {
 	s_Model[0]					= 0;
 }
-void CSE_Target_CS_Cask::UPDATE_Read(NET_Packet	&tNetPacket)
+void CSE_Target_CS_Cask::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target_CS_Cask::UPDATE_Write(NET_Packet	&tNetPacket)
+void CSE_Target_CS_Cask::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target_CS_Cask::STATE_Read(NET_Packet	&tNetPacket, u16 size)
+void CSE_Target_CS_Cask::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	tNetPacket.r_string			(s_Model);
 }
 
-void CSE_Target_CS_Cask::STATE_Write(NET_Packet	&tNetPacket)
+void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_string			(s_Model);
 }
 
 #ifdef _EDITOR
-void CSE_Target_CS_Cask::FillProp	(LPCSTR pref, PropItemVec& items)
+void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	PHelper.CreateGameObject	(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
 }
@@ -474,31 +474,31 @@ void CSE_Target_CS_Cask::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target_CS
 ////////////////////////////////////////////////////////////////////////////
-CSE_Target_CS::CSE_Target_CS(LPCSTR caSection) : CSE_Target(caSection)
+CSE_Target_CS::CSE_Target_CS				(LPCSTR caSection) : CSE_Target(caSection)
 {
 	s_Model[0]					= 0;
 }
 
-void CSE_Target_CS::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_Target_CS::UPDATE_Read				(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target_CS::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_Target_CS::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target_CS::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_Target_CS::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
 	tNetPacket.r_string			(s_Model);
 }
 
-void CSE_Target_CS::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_string			(s_Model);
 }
 
 #ifdef _EDITOR
-void CSE_Target_CS::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	PHelper.CreateGameObject	(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
 }
@@ -507,28 +507,28 @@ void CSE_Target_CS::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Temporary
 ////////////////////////////////////////////////////////////////////////////
-CSE_Temporary::CSE_Temporary(LPCSTR caSection) : CSE_Abstract(caSection)
+CSE_Temporary::CSE_Temporary				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 };
 
-void CSE_Temporary::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_Temporary::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
 };
 
-void CSE_Temporary::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_Temporary::STATE_Write				(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_Temporary::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_Temporary::UPDATE_Read				(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_Temporary::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_Temporary::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 };
 
 #ifdef _EDITOR
-void CSE_Temporary::FillProp		(LPCSTR pref, PropItemVec& values)
+void CSE_Temporary::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 };
 

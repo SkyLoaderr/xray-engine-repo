@@ -17,12 +17,12 @@ void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeItem::STATE_Read					(NET_Packet &tNetPacket, u16 size)
+void CSE_ALifeItem::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 }
 
-void CSE_ALifeItem::UPDATE_Write				(NET_Packet &tNetPacket)
+void CSE_ALifeItem::UPDATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 };
@@ -35,7 +35,7 @@ void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemTorch
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemTorch::CSE_ALifeItemTorch			(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
 	strcpy						(spot_texture,"");
 	strcpy						(animator,"");
@@ -46,7 +46,7 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch			(LPCSTR caSection) : CSE_ALifeItem(caSe
 	set_visual					("lights\\lights_torch");
 }
 
-CSE_ALifeItemTorch::~CSE_ALifeItemTorch			()
+CSE_ALifeItemTorch::~CSE_ALifeItemTorch		()
 {
 }
 
@@ -63,7 +63,7 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(spot_brightness);
 }
 
-void CSE_ALifeItemTorch::STATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_u32			(color);
@@ -74,18 +74,18 @@ void CSE_ALifeItemTorch::STATE_Write			(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(spot_brightness);
 }
 
-void CSE_ALifeItemTorch::UPDATE_Read			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeItemTorch::UPDATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeItemTorch::FillProp				(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
 	PHelper.CreateColor			(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
@@ -100,7 +100,7 @@ void CSE_ALifeItemTorch::FillProp				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemWeapon
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemWeapon::CSE_ALifeItemWeapon			(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
 	a_current					= 90;
 	a_elapsed					= 0;
@@ -109,7 +109,7 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon			(LPCSTR caSection) : CSE_ALifeItem(ca
         set_visual				(pSettings->r_string(caSection,"visual"));
 }
 
-void CSE_ALifeItemWeapon::UPDATE_Read			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	tNetPacket.r_u32			(timestamp);
@@ -124,7 +124,7 @@ void CSE_ALifeItemWeapon::UPDATE_Read			(NET_Packet	&tNetPacket)
 	tNetPacket.r_angle8			(o_Angle.z	);
 }
 
-void CSE_ALifeItemWeapon::UPDATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	tNetPacket.w_u32			(timestamp);
@@ -139,7 +139,7 @@ void CSE_ALifeItemWeapon::UPDATE_Write			(NET_Packet	&tNetPacket)
 	tNetPacket.w_angle8			(o_Angle.z	);
 }
 
-void CSE_ALifeItemWeapon::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
 	tNetPacket.r_u16			(a_current);
@@ -147,7 +147,7 @@ void CSE_ALifeItemWeapon::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_u8				(state);
 }
 
-void CSE_ALifeItemWeapon::STATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_u16			(a_current);
@@ -155,7 +155,7 @@ void CSE_ALifeItemWeapon::STATE_Write			(NET_Packet	&tNetPacket)
 	tNetPacket.w_u8				(state);
 }
 
-void CSE_ALifeItemWeapon::OnEvent				(NET_Packet	&tNetPacket, u16 type, u32 time, u32 sender )
+void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, u32 sender )
 {
 	inherited::OnEvent			(tNetPacket,type,time,sender);
 	switch (type) {
@@ -165,27 +165,27 @@ void CSE_ALifeItemWeapon::OnEvent				(NET_Packet	&tNetPacket, u16 type, u32 time
 	}
 }
 
-u8	 CSE_ALifeItemWeapon::get_slot				()
+u8	 CSE_ALifeItemWeapon::get_slot			()
 {
 	return						((u8)pSettings->r_u8(s_name,"slot"));
 }
 
-u16	 CSE_ALifeItemWeapon::get_ammo_limit		()
+u16	 CSE_ALifeItemWeapon::get_ammo_limit	()
 {
 	return						(u16) pSettings->r_u16(s_name,"ammo_limit");
 }
 
-u16	 CSE_ALifeItemWeapon::get_ammo_total		()
+u16	 CSE_ALifeItemWeapon::get_ammo_total	()
 {
 	return						((u16)a_current);
 }
 
-u16	 CSE_ALifeItemWeapon::get_ammo_elapsed		()
+u16	 CSE_ALifeItemWeapon::get_ammo_elapsed	()
 {
 	return						((u16)a_elapsed);
 }
 
-u16	 CSE_ALifeItemWeapon::get_ammo_magsize		()
+u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 {
 	if (pSettings->line_exist(s_name,"ammo_mag_size"))
 		return					(pSettings->r_u16(s_name,"ammo_mag_size"));
@@ -194,7 +194,7 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize		()
 }
 
 #ifdef _EDITOR
-void CSE_ALifeItemWeapon::FillProp				(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
 	PHelper.CreateU16			(items,PHelper.PrepareKey(pref,s_name,"Ammo: total"),			&a_current,0,1000,1);
@@ -205,14 +205,14 @@ void CSE_ALifeItemWeapon::FillProp				(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemAmmo
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemAmmo::CSE_ALifeItemAmmo				(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemAmmo::CSE_ALifeItemAmmo		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
 	a_elapsed					= m_boxSize = (u16)pSettings->r_s32(caSection, "box_size");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual				(pSettings->r_string(caSection,"visual"));
 }
 
-void CSE_ALifeItemAmmo::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeItemAmmo::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
 	tNetPacket.r_u16			(a_elapsed);
@@ -230,14 +230,14 @@ void CSE_ALifeItemAmmo::UPDATE_Read			(NET_Packet	&tNetPacket)
 	tNetPacket.r_u16			(a_elapsed);
 }
 
-void CSE_ALifeItemAmmo::UPDATE_Write			(NET_Packet	&tNetPacket)
+void CSE_ALifeItemAmmo::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	tNetPacket.w_u16			(a_elapsed);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeItemAmmo::FillProp				(LPCSTR pref, PropItemVec& values) {
+void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp			(pref,values);
 	PHelper.CreateU16			(values, PHelper.PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
@@ -246,18 +246,18 @@ void CSE_ALifeItemAmmo::FillProp				(LPCSTR pref, PropItemVec& values) {
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemCar
 ////////////////////////////////////////////////////////////////////////////
-void CSE_ALifeItemCar::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeItemCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
 		inherited::STATE_Read	(tNetPacket,size);
 }
 
-void CSE_ALifeItemCar::STATE_Write				(NET_Packet	&tNetPacket)
+void CSE_ALifeItemCar::STATE_Write			(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeItemCar::UPDATE_Read				(NET_Packet	&tNetPacket)
+void CSE_ALifeItemCar::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
@@ -277,7 +277,7 @@ void CSE_ALifeItemCar::FillProp				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
-void CSE_ALifeItemDetector::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeItemDetector::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
 		inherited::STATE_Read	(tNetPacket,size);
@@ -293,13 +293,13 @@ void CSE_ALifeItemDetector::UPDATE_Read		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeItemDetector::UPDATE_Write		(NET_Packet	&tNetPacket)
+void CSE_ALifeItemDetector::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeItemDetector::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeItemDetector::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
 }

@@ -228,7 +228,7 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 	string256						m_caAnimations;
 	u32								m_dwAniPlayType;
-									CSE_ALifeObjectIdol	(LPCSTR caSection);
+									CSE_ALifeObjectIdol(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 #endif

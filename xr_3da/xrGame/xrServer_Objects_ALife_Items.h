@@ -16,7 +16,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 	u32								m_dwCost;
 	s32								m_iHealthValue;
 	
-									CSE_ALifeItem		(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+									CSE_ALifeItem	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 	{
 		m_fMass						= pSettings->r_float(caSection, "inv_weight");
 		m_dwCost					= pSettings->r_u32(caSection, "cost");
@@ -70,7 +70,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCar,CSE_ALifeItem)
-									CSE_ALifeItemCar	(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+									CSE_ALifeItemCar(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 	{
 		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	    set_visual				(pSettings->r_string(caSection,"visual"));

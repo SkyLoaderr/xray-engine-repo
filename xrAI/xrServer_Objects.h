@@ -65,7 +65,7 @@ public:
 	// for ALife control
 	bool							m_bALifeControl;
 
-									CSE_Abstract(LPCSTR caSection)
+									CSE_Abstract	(LPCSTR caSection)
 	{
 		RespawnTime					= 0;
 		net_Ready					= FALSE;
@@ -84,7 +84,7 @@ public:
 		m_wVersion					= 0;
 	}
 	
-	virtual							~CSE_Abstract()
+	virtual							~CSE_Abstract	()
 	{
 	}
 	
@@ -118,8 +118,8 @@ public:
     DEFINE_VECTOR					(shape_def,ShapeVec,ShapeIt);
 	ShapeVec						shapes;
 public:
-	void							cform_read			(NET_Packet& P);
-	void							cform_write			(NET_Packet& P);
+	void							cform_read		(NET_Packet& P);
+	void							cform_write		(NET_Packet& P);
 };
 
 class CSE_Visual
@@ -129,8 +129,8 @@ public:
 #ifdef _EDITOR
 	AnsiString						play_animation;
 	IVisual*						visual;
-    void __fastcall					OnChangeVisual		(PropValue* sender);
-    void 							PlayAnimation		(LPCSTR name);
+    void __fastcall					OnChangeVisual	(PropValue* sender);
+    void 							PlayAnimation	(LPCSTR name);
 #endif
 public:
 									CSE_Visual		(LPCSTR name=0)
@@ -142,14 +142,14 @@ public:
         OnChangeVisual				(0);
 #endif
     }
-	void							visual_read			(NET_Packet& P);
-	void							visual_write		(NET_Packet& P);
+	void							visual_read		(NET_Packet& P);
+	void							visual_write	(NET_Packet& P);
 
-    void							set_visual			(LPCSTR name);
-	LPCSTR							get_visual			() {return visual_name;};
+    void							set_visual		(LPCSTR name);
+	LPCSTR							get_visual		() {return visual_name;};
     
 #ifdef _EDITOR
-    void 							FillProp			(LPCSTR pref, PropItemVec& values);
+    void 							FillProp		(LPCSTR pref, PropItemVec& values);
 #endif
 };
 
@@ -208,7 +208,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Temporary,CSE_Abstract)
-									CSE_Temporary(LPCSTR caSection);
+									CSE_Temporary	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
@@ -221,14 +221,14 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 	};
 	xr_vector<tAction>				Actions;
 
-	void							Actions_clear		()
+	void							Actions_clear	()
 	{
 		for (u32 a=0; a<Actions.size(); a++)
 			xr_free					(Actions[a].event);
 		Actions.clear				();
 	}
 							
-									CSE_Event	(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
+									CSE_Event		(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
 	{
 	};
 SERVER_ENTITY_DECLARE_END
