@@ -19,6 +19,11 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 
 	switch( nMsg )
 	{
+	case DMSG_NEW_CONNECTION:
+		msg.w_int(DMSG_NEW_CONNECTION);
+		SendMailslotMessage(IDE_MAIL_SLOT, msg);
+		break;
+
 	case DMSG_WRITE_DEBUG:
 		msg.w_int(DMSG_WRITE_DEBUG);
 		msg.w_string((char*)wParam);
@@ -114,6 +119,8 @@ CScriptDebugger::CScriptDebugger()
 	m_mailSlot = CreateMailSlotByName(DEBUGGER_MAIL_SLOT);
 
 	m_bIdePresent = CheckExisting(IDE_MAIL_SLOT);
+	if(Active() )
+		_SendMessage(DMSG_NEW_CONNECTION,0,0);
 }
 
 CScriptDebugger::~CScriptDebugger()
