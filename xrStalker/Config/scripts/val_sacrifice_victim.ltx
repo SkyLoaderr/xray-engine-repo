@@ -4,12 +4,12 @@ combat_ignore = combat_ignore
 on_death = death
 
 [death]
-on_info = {+val_sacrifice_near_pit} %+val_sacrifice_victim_killed =val_sacrifice_victim_dead%
+on_info = {+val_sacrifice_near_pit} %+val_sacrifice_victim_killed =val_sacrifice_victim_dead +val_sacrifice_finish%
 
 [walker1]
 path_walk = val_sacrifice_victim_walk
 path_look = val_sacrifice_victim_look
-on_info = {+val_sacrifice_plr_detected} walker@flee
+on_info = {+val_sacrifice_plr_detected} walker@flee %+val_sacrifice_finish%
 on_signal = pit | remark@near_pit %+val_sacrifice_near_pit%
 combat_ignore_cond = always
 combat_ignore_keep_when_attacked = true
@@ -21,7 +21,7 @@ anim = hello
 snd = help
 combat_ignore_cond = always
 combat_ignore_keep_when_attacked = true
-on_info = {+val_sacrifice_plr_detected} walker@flee
+on_info = {+val_sacrifice_plr_detected} walker@flee %+val_sacrifice_finish%
 
 [walker@flee]
 path_walk = val_sacrifice_victim_flee_walk

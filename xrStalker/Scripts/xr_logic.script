@@ -585,7 +585,7 @@ function try_switch_to_another_section(npc, st, actor)
 			if device():time_global() >= db.storage[npc_id].activation_time + c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
-		elseif c.name == "on_actor_in_zone" then
+		elseif c.name == "on_actor_in_zone" or c.name == "on_actor_in_zone2" then
 			if npc_in_zone(actor, db.zone_by_name[c.v1]) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
@@ -843,6 +843,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer",               npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer2",              npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_in_zone",       npc))
+	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_in_zone2",      npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_not_in_zone",   npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_actor_inside",        npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_actor_outside",       npc))

@@ -31,8 +31,8 @@
 <info_portion id="val_prisoner_sit"></info_portion>
 <info_portion id="val_prisoner_raid"></info_portion>
 <info_portion id="val_prisoner_wait_actor"></info_portion>
-<info_portion id="val_prisoner_open_cage"></info_portion>
 <info_portion id="val_prisoner_door_unlocked"></info_portion>
+<info_portion id="val_prisoner_free"></info_portion>
 
 <!-- Жертвоприношение -->
 <info_portion id="val_sacrifice_start"></info_portion>

@@ -130,7 +130,7 @@
             </phrase>
             <phrase id="3">
                 <text></text>
-                <dont_has_info>val_prisoner_open_cage</dont_has_info>
+                <dont_has_info>val_prisoner_free</dont_has_info>
                 <has_info>val_prisoner_sit</has_info>
                 <next>13</next>
             </phrase>
@@ -179,7 +179,7 @@
                 <text></text>
                 <dont_has_info>val_prisoner_raid</dont_has_info>
                 <dont_has_info>val_prisoner_wait_actor</dont_has_info>
-                <has_info>val_prisoner_open_cage</has_info>
+                <has_info>val_prisoner_free</has_info>
                 <next>14</next>
             </phrase>
             <phrase id="0">
