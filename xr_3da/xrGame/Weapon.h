@@ -151,6 +151,8 @@ public:
 	virtual void			Update				(DWORD dt);
 	virtual void			UpdateCL			();
 	virtual void			OnVisible			();
+	virtual void			OnH_Chield			();
+	virtual void			OnH_Independent		();
 
 	// logic & effects
 	virtual void			SetDefaults			();

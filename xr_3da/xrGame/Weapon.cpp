@@ -394,19 +394,24 @@ void CWeapon::Update		(DWORD dT)
 	clamp					(fireDispersion_Current,0.f,1.f);
 	if (light_time>0)		light_time -= dt;
 
-	//
-
-	if (0==H_Parent()) 
-	{
-		setVisible				(true);
-		setEnabled				(true);
-		hud_mode				= FALSE;
-	} else {
-		setEnabled				(false);
-	}
-
 	// Inherited
 	inherited::Update		(dT);
+}
+
+void CWeapon::OnH_Independent	()
+{
+	inherited::OnH_Independent	();
+	setVisible					(true);
+	setEnabled					(true);
+	hud_mode					= FALSE;
+	UpdateXForm					();
+}
+
+void CWeapon::OnH_Chield		()
+{
+	inherited::OnH_Chield		();
+	setVisible					(false);
+	setEnabled					(false);
 }
 
 void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
