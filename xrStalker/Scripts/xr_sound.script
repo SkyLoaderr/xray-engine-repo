@@ -186,10 +186,10 @@ function load_sound(obj)
 	theme["esc_volk_greet2"] = load_theme("volk_greet2")
 
 	-- radio for military stalkers
-	theme["military_radio"] = load_theme ("military_radio")
+	theme["military_radio"] = load_theme("military_radio")
 
     -- радио для командира патруля
-    theme["patrol_radio_1"] = load_theme ("patrol_radio_1", true)
+    theme["patrol_radio_1"] = load_theme("patrol_radio_1", true)
 
 	-- Garbage DramMoment
 	theme["gar_dm_bandit_backoff1"] = { exec = npc_class, types = {}}
@@ -211,7 +211,7 @@ function load_sound(obj)
 
 	------------------------------------------------------------------------------------------------
 	-- radar monolith
-	theme["monolith_mumble"] = load_theme ("patrol_radio_1", true)
+	theme["monolith_mumble"] = load_theme("patrol_radio_1", true)
 	
 	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 	--print_table(theme)
