@@ -395,7 +395,7 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 	P.w_u16				(NumItems);
 	if (!NumItems) return;
 
-	Msg("CInventoryItem net_export %s - Items %d", cName(), NumItems);
+//	Msg("CInventoryItem net_export %s - Items %d", cName(), NumItems);
 
 	CPHSynchronize* pSyncObj = NULL;
 	SPHNetState	State;
