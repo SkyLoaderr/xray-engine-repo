@@ -990,7 +990,7 @@ void xrSE_Zone::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);}
 void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
-    PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Power"),	&m_maxPower,1.f,1000.f);
+    PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Power"),	&m_maxPower,0.f,1000.f);
     PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),	&m_attn,0.f,100.f);
     PHelper.CreateU32	(items,PHelper.PrepareKey(pref,s_name,"Period"), &m_period,20,10000);
 }
