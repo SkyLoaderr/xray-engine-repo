@@ -542,10 +542,37 @@
 							RelativePath="AI\Biting\ai_biting_path.cpp">
 						</File>
 						<File
-							RelativePath=".\Ai\Biting\ai_biting_state.cpp">
+							RelativePath=".\Ai\Biting\ai_biting_state.h">
 						</File>
 						<File
-							RelativePath=".\Ai\Biting\ai_biting_state.h">
+							RelativePath=".\ai\biting\ai_biting_state_attack.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_detour.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_eat.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_exploreDE.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_exploreDNE.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_exploreNDE.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_exploreNDNE.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_hide.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_panic.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_rest.cpp">
 						</File>
 					</Filter>
 					<Filter

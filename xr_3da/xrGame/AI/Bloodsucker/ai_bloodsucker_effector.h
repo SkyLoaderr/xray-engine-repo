@@ -9,6 +9,9 @@ class CBloodsuckerEffector : public CEffectorPP {
 	typedef CEffectorPP inherited;	
 	float	fLifeTime;
 	float	time;
+	
+	float	max_past;
+	SPPInfo max_power;
 
 public:
 					CBloodsuckerEffector		(float time);

@@ -67,6 +67,8 @@ void CAI_Biting::Init()
 	m_tAnimPlaying					= DEFAULT_ANIM;
 
 	flagEatNow						= false;
+
+	m_tAction						= ACT_STAND_IDLE;
 }
 
 void CAI_Biting::Die()
@@ -107,6 +109,9 @@ void CAI_Biting::Load(LPCSTR section)
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
 	m_tSelectorCover.Load			(section,"selector_cover");
+
+	m_tSelectorGetAway.Load			(section,"selector_getaway");
+	m_tSelectorApproach.Load		(section,"selector_approach");
 
 	// loading frustum parameters
 	eye_fov							= pSettings->r_float(section,"EyeFov");

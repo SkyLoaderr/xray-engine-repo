@@ -13,6 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Biting Animation class
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CAI_Biting;
 
 #define FORCE_ANIMATION_SELECT() {\
 	m_tpCurAnim = 0; \
@@ -108,4 +109,123 @@ public:
 
 	ATTACK_ANIM	&GetStack			() {return m_stack;}
 };
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+//		NEW ANIMATION MANAGMENT
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+
+enum EAction {
+	ACT_STAND_IDLE = 0,
+	ACT_SIT_IDLE,
+	ACT_LIE_IDLE,
+	ACT_WALK_FWD,
+	ACT_WALK_BKWD,
+	ACT_RUN,
+	ACT_EAT,
+	ACT_SLEEP,
+	ACT_DRAG,
+	ACT_ATTACK,
+	ACT_STEAL,
+	ACT_LOOK_AROUND
+};
+
+//EMotionAnim	anim;
+
+struct SAnimItem {
+	
+	string32	target_name;	// "stand_idle_"
+	int			spec_id;		// (-1) - any,  (0 - ...) - идентификатор 3
+
+	struct{
+		float	linear;
+		float	angular;
+	} speed;
+
+};
+
+struct STransition {
+	EMotionAnim	anim_from;
+	EMotionAnim anim_target;
+	EMotionAnim anim_transition;
+	bool		chain;
+};
+
+
+// Animation Management
+class CAnimManager {
+//	DEFINE_VECTOR(SAnimItem, ANIM_ITEM_VECTOR, ANIM_ITEM_VECTOR_IT);
+//	DEFINE_VECTOR(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
+//
+//	ANIM_ITEM_VECTOR		m_tAnims;
+//	TRANSITION_ANIM_VECTOR	m_tTransitions;
+
+public:
+
+	DEFINE_MAP(EMotionAnim, SAnimItem, ANIM_ITEM_MAP, ANIM_ITEM_MAP_IT);
+	DEFINE_VECTOR(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
+
+	ANIM_ITEM_MAP			m_tAnims;
+	TRANSITION_ANIM_VECTOR	m_tTransitions;
+
+	EMotionAnim				cur_anim; 
+	EMotionAnim				prev_anim; 
+	
+			CAnimManager	() {
+				cur_anim	 = eAnimStandIdle;
+				prev_anim	 = eAnimStandIdle;
+			}
+	void	Load			();
+	
+	void	AddAnim			(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed);
+	void	AddTransition	(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain);
+	bool	CheckTransition	(EMotionAnim from, EMotionAnim to);
+
+	
+	LPCTSTR	GetTargetName	(EMotionAnim ma);
+	void	GetSpeedParams	(EMotionAnim ma);
+	void	ApplyParams		(CAI_Biting *pM);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// Motion Management
+//////////////////////////////////////////////////////////////////////////
+
+struct SMotionItem {
+	EMotionAnim		anim;
+	bool			is_turn_params;
+
+	struct{
+		EMotionAnim	anim_left;			// speed, r_speed got from turn_left member
+		EMotionAnim	anim_right;
+		float		min_angle;
+	} turn;
+};
+
+class CMotionManager {
+	CAnimManager		*pAnimManager;
+	
+public:
+	DEFINE_VECTOR(SMotionItem, MOTION_ITEM_VECTOR, MOTION_ITEM_VECTOR_IT);
+	MOTION_ITEM_VECTOR	m_tMotions;
+
+
+	void	AddMotion		(EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
+	void	AddMotion		(EMotionAnim pmt_motion);
+	
+	void	Turn			();
+
+//	void	CheckTurn		();
+//	void	ApplyMotion		();
+//	void	CheckSpecFlags	();
+};
+
+
+
+
+
 

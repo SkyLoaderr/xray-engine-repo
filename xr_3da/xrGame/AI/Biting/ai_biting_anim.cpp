@@ -270,3 +270,98 @@ bool CAttackAnim::CheckTime(TTime cur_time, SAttackAnimation &anim)
 	return false;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+//		NEW ANIMATION MANAGMENT
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+
+void CAnimManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed)
+{
+	SAnimItem new_item;
+
+	strcpy					(new_item.target_name,tn);
+	new_item.spec_id		= s_id;
+	new_item.speed.linear	= speed;
+	new_item.speed.angular	= r_speed;
+
+	m_tAnims.insert(std::make_pair(ma, new_item));
+}
+
+void CAnimManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
+{
+	STransition new_item;
+
+	new_item.anim_from			= from;
+	new_item.anim_target		= to;
+	new_item.anim_transition	= trans;
+	new_item.chain				= chain;
+
+	m_tTransitions.push_back(new_item);
+}
+
+bool CAnimManager::CheckTransition(EMotionAnim from, EMotionAnim to)
+{
+	// поиск соответствующего перехода
+	bool bActivated = false;
+	EMotionAnim cur_from = from, cur_to = to;
+//	float	speed, r_speed;
+
+	for (u32 i=0; i<m_tTransitions.size(); i++) {
+		if ((m_tTransitions[i].anim_from == cur_from) && (m_tTransitions[i].anim_target == cur_to)) {
+			cur_from = m_tTransitions[i].anim_transition;
+
+			//GetSpeedParams(cur_from, speed, r_speed);
+			//m_tSeq.Add(cur_from,speed,r_speed,0,0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+			bActivated = true;	
+		}
+	}
+	
+	if (bActivated) {
+		//m_tSeq.Switch();
+		return true;
+	}
+	return false;
+}
+
+void CAnimManager::ApplyParams(CAI_Biting *pM)
+{
+	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim);
+	R_ASSERT(item_it != m_tAnims.end());
+	
+	pM->m_fCurSpeed		= item_it->second.speed.linear;
+	pM->r_torso_speed	= item_it->second.speed.angular;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Motion Management
+//////////////////////////////////////////////////////////////////////////
+
+void CMotionManager::AddMotion(EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle)
+{
+	SMotionItem new_item;
+
+	new_item.anim				= pmt_motion;
+	new_item.is_turn_params		= true;
+	new_item.turn.anim_left		= pmt_left;
+	new_item.turn.anim_right	= pmt_right;
+	new_item.turn.min_angle		= pmt_angle;
+
+	m_tMotions.push_back(new_item);
+}
+
+void CMotionManager::AddMotion(EMotionAnim pmt_motion)
+{
+	SMotionItem new_item;
+
+	new_item.anim				= pmt_motion;
+	new_item.is_turn_params		= false;
+
+	m_tMotions.push_back(new_item);
+}
+
+
+
+
+
+

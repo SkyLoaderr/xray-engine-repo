@@ -17,6 +17,8 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
+	stateTest			= xr_new<CTest>				(this);
+
 	Init();
 }
 
@@ -31,6 +33,8 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
+
+	xr_delete(stateTest);
 }
 
 
@@ -48,34 +52,74 @@ void CAI_Flesh::Init()
 	// ----
 }
 
+void CAI_Flesh::Load(LPCSTR section)
+{
+	inherited::Load (section);
+	
+	// define animation set
+	AnimMan.AddAnim(eAnimStandIdle,			"stand_idle_",			-1, 0,		  0);
+	AnimMan.AddAnim(eAnimStandTurnLeft,		"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimStandTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimWalkBkwd,			"stand_walk_bkwd_",		-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimWalkTurnLeft,		"stand_walk_ls_",		-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimWalkTurnRight,		"stand_walk_rs_",		-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimRun,				"stand_run_",			-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			 3, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimEat,				"lie_eat_",				-1, PI_DIV_3, PI_DIV_6);
+	AnimMan.AddAnim(eAnimStandLieDown,		"stand_lie_down_",		-1, PI_DIV_3, PI_DIV_6);
+	
+	AnimMan.AddTransition(eAnimStandIdle,	eAnimLieIdle,	eAnimStandLieDown,	false);
+	AnimMan.AddTransition(eAnimLieIdle,		eAnimStandIdle, eAnimLieStandUp,	false);
+
+	// the order is very important!!!  add motions according to EAction enum
+	MotionMan.AddMotion(eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.AddMotion(eAnimSitIdle);
+	MotionMan.AddMotion(eAnimLieIdle);
+	MotionMan.AddMotion(eAnimWalkFwd, eAnimWalkTurnLeft, eAnimWalkTurnRight, PI_DIV_6);
+	MotionMan.AddMotion(eAnimWalkBkwd);
+	MotionMan.AddMotion(eAnimRun);
+	MotionMan.AddMotion(eAnimEat);
+	MotionMan.AddMotion(eAnimSleep);
+	MotionMan.AddMotion(eAnimWalkBkwd);
+	MotionMan.AddMotion(eAnimAttack);
+	MotionMan.AddMotion(eAnimWalkFwd);
+	MotionMan.AddMotion(eAnimStandIdle);
+}
 
 void CAI_Flesh::StateSelector()
 {
-	VisionElem ve;
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
-	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
-	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-		SetState(stateEat);
-	else						SetState(stateRest); 
+	SetState(stateTest);
+	
+	//	VisionElem ve;
+//
+//	Msg("Satiety = [%f]", GetSatiety());
+//
+//	if (C && H && I)			SetState(statePanic);
+//	else if (C && H && !I)		SetState(statePanic);
+//	else if (C && !H && I)		SetState(statePanic);
+//	else if (C && !H && !I) 	SetState(statePanic);
+//	else if (D && H && I)		SetState(stateAttack);
+//	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
+//	else if (D && !H && I)		SetState(statePanic);
+//	else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
+//	else if (E && H && I)		SetState(stateAttack); 
+//	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
+//	else if (E && !H && I) 		SetState(stateDetour); 
+//	else if (E && !H && !I)		SetState(stateDetour); 
+//	else if (F && H && I) 		SetState(stateAttack); 		
+//	else if (F && H && !I)  	SetState(stateAttack); 
+//	else if (F && !H && I)  	SetState(stateDetour); 
+//	else if (F && !H && !I) 	SetState(stateHide);
+//	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+//	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+//	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+//	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+//		SetState(stateEat);
+//	else						SetState(stateRest); 
 }
 
 void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
@@ -373,5 +417,17 @@ void CAI_Flesh::MoveInAxis(Fvector &Pos, const Fvector &dir,  float dx)
 }
 
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
+CTest::CTest (CAI_Flesh *p)
+{
+	pMonster = p;
+}
+
+void CTest::Run()
+{
+	pMonster->m_tAction = ACT_STAND_IDLE;
+}
 

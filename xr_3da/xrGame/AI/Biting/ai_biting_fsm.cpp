@@ -39,9 +39,10 @@ void CAI_Biting::Think()
 		// проверяем на завершённость
 		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
 	}
-	
-	Motion.SetFrameParams(this);
-	ControlAnimation();		
+
+	ProcessAction();
+//	Motion.SetFrameParams(this);
+//	ControlAnimation();		
 }
 
 
@@ -101,14 +102,18 @@ void CBitingMotion::Init(CAI_Biting *pData)
 void CBitingMotion::SetFrameParams(CAI_Biting *pData) 
 {
 	if (!m_tSeq.isActive()) {
+		// Process action here
+//		EAction cur_act;
+//		pData->ProcessAction(cur_act);
 
-		m_tParams.ApplyData(pData);
-		m_tTurn.CheckTurning(pData);
+//		m_tParams.ApplyData(pData);
+//		m_tTurn.CheckTurning(pData);
+//
+//		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
+//		pData->CheckTransitionAnims();
+//		
+//		//!---
 
-		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
-		pData->CheckTransitionAnims();
-		
-		//!---
 	} else {
 		m_tSeq.ApplyData();
 	}

@@ -120,6 +120,9 @@ class CBitingEat : public IState {
 	enum {
 		ACTION_RUN,
 		ACTION_DRAG,
+		ACTION_WALK_LITTLE_AWAY,
+		ACTION_LOOK_AROUND,
+		ACTION_WALK,
 		ACTION_EAT,
 	} m_tAction;
 
@@ -133,11 +136,13 @@ class CBitingEat : public IState {
 	float			m_fDistToDrag;				// на какое расстояние тащить
 	bool			bDragging;
 
+	bool			flag_once_1;
+	TTime			m_dwStandStart;
+
 public:
 					CBitingEat		(CAI_Biting *p);
 
 	virtual	void	Reset			();
-	virtual bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();

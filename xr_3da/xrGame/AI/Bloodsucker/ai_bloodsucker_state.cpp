@@ -414,8 +414,8 @@ void CBloodsuckerHearNDE::Run()
 	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику
 
 		DO_ONCE_BEGIN(flag_once_2);
-		pMonster->vfInitSelector(pMonster->m_tSelectorHearSnd, true);
-		pMonster->m_tSelectorHearSnd.m_tEnemyPosition		= m_tSound.position;
+			pMonster->vfInitSelector(pMonster->m_tSelectorHearSnd, true);
+			pMonster->m_tSelectorHearSnd.m_tEnemyPosition		= m_tSound.position;
 		DO_ONCE_END();
 
 		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorHearSnd,0, true, 0, 300);
@@ -472,13 +472,8 @@ void CBloodsuckerHearDNE::Run()
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
 		Msg(" DNE : [RUN AWAY]");
 
-		pMonster->vfInitSelector(pMonster->m_tSelectorFreeHunting, true);
-		pMonster->m_tSelectorFreeHunting.m_tEnemyPosition		= m_tSound.position;
-		pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance	= m_tSound.position.distance_to(pMonster->Position()) + 3.f;
-		pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance	= pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance + pMonster->m_tSelectorFreeHunting.m_fSearchRange + m_fRunAwayDist;
-		pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance	= pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist, 2000);
 
-		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
 		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 		pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 

@@ -341,3 +341,56 @@ void CAI_Biting::vfUpdateDetourPoint()
 		
 }
 
+// high level 
+void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist, TTime rebuild_time)
+{
+	if (pE) {
+		m_tEnemy.Set(pE,0);									// forse enemy selection
+		vfInitSelector(m_tSelectorGetAway, false);
+	} else {
+		vfInitSelector(m_tSelectorGetAway, true);
+		m_tSelectorGetAway.m_tEnemyPosition = position;
+	}
+	
+	float dist_to_point = position.distance_to(Position());
+
+	m_tSelectorGetAway.m_fMinEnemyDistance = dist_to_point + 3.f;
+	m_tSelectorGetAway.m_fMaxEnemyDistance = m_tSelectorGetAway.m_fMinEnemyDistance + m_tSelectorGetAway.m_fSearchRange + dist;
+	m_tSelectorGetAway.m_fOptEnemyDistance = m_tSelectorGetAway.m_fMaxEnemyDistance;
+
+	vfChoosePointAndBuildPath(&m_tSelectorGetAway, 0, true, 0, rebuild_time);
+}
+
+void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position, float dist, TTime rebuild_time)
+{
+	if (pE) {
+		m_tEnemy.Set(pE,0); 									// forse enemy selection
+		vfInitSelector(m_tSelectorCover, false);
+	} else {
+		vfInitSelector(m_tSelectorCover, true);
+		m_tSelectorCover.m_tEnemyPosition = position;
+	}
+
+	float dist_to_point = position.distance_to(Position());
+
+	m_tSelectorCover.m_fMinEnemyDistance = dist_to_point + 3.f;
+	m_tSelectorCover.m_fMaxEnemyDistance = dist_to_point + m_tSelectorCover.m_fSearchRange;
+	m_tSelectorCover.m_fOptEnemyDistance = m_tSelectorCover.m_fMaxEnemyDistance;
+
+	vfChoosePointAndBuildPath(&m_tSelectorCover, 0, true, 0, rebuild_time);
+}
+
+void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position, TTime rebuild_time)
+{
+	if (pE) {
+		m_tEnemy.Set(pE,0); 									// forse enemy selection
+		vfInitSelector(m_tSelectorApproach, false);
+	} else {
+		vfInitSelector(m_tSelectorApproach, true);
+		m_tSelectorApproach.m_tEnemyPosition = position;
+	}
+
+	vfChoosePointAndBuildPath(&m_tSelectorApproach,0, true, 0, rebuild_time);
+}
+
+

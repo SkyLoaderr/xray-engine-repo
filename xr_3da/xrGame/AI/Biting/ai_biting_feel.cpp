@@ -20,6 +20,11 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
 		return;
 #endif
+	
+	// ignore sounds from team
+	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
+	if (E && (E->g_Team() == g_Team())) return;
+	
 
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));

@@ -106,7 +106,10 @@ public:
 			void			vfChooseNextGraphPoint			();
 			void			vfUpdateDetourPoint				();
 			void			SetReversedDirectionLook		();
-			
+			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
+			void			Path_CoverFromPoint				(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
+			void			Path_ApproachPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
+
 			void			vfUpdateParameters				();
 		
 			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch);
@@ -153,6 +156,9 @@ public:
 	xr_vector<u32>			m_tpaNodes;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorGetAway;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorApproach;
+	
 	EBitingPathState		m_tPathState;
 	u32						m_dwPathBuiltLastTime;
 	
@@ -240,6 +246,12 @@ public:
 	friend	class 			CBitingExploreNDE;
 
 	// State flags
-	bool					flagEatNow;				// true - сейчас монстр ест
+	bool					flagEatNow;				// true - сейчас монстр ест]
+
+
+	void ProcessAction(); 
+	CMotionManager			MotionMan; 
+	CAnimManager			AnimMan; 
+	EAction					m_tAction; 
 
 };
