@@ -104,17 +104,17 @@ public:
 	virtual BOOL						renderable_ShadowReceive	()			{ return TRUE;						}
 
 	// Accessors and converters
-	IC IRender_Visual*					Visual				()					{ return renderable.visual;			}
-	IC ICollisionForm*					CFORM				() const			{ return collidable.model;			}
+	ICF IRender_Visual*					Visual				()					{ return renderable.visual;			}
+	ICF ICollisionForm*					CFORM				() const			{ return collidable.model;			}
 	virtual		CObject*				dcast_CObject		()					{ return this;						}
 	virtual		IRenderable*			dcast_Renderable	()					{ return this;						}
 
 	// Name management
-	IC shared_str						cName				()			const	{ return NameObject;				}
+	ICF shared_str						cName				()			const	{ return NameObject;				}
 	void								cName_set			(shared_str N);
-	IC shared_str						cNameSect			()			const	{ return NameSection;				}
+	ICF shared_str						cNameSect			()			const	{ return NameSection;				}
 	void								cNameSect_set		(shared_str N);
-	IC shared_str						cNameVisual			()			const	{ return NameVisual;				}
+	ICF shared_str						cNameVisual			()			const	{ return NameVisual;				}
 	void								cNameVisual_set		(shared_str N);
 	
 	// Properties
