@@ -172,12 +172,12 @@ function stalker_binder:net_import	(packet)
 end
 
 function init		(obj)
-    --local name, command, group, member = str_split (obj:name ())
-    --if name == "patrol" then 
-       --printf ("Bind command %s, group %d, member %d", command, group, member)
-      -- xr_patrol.AddToPatrol (command, group, member, obj)
-       --return
-    --end
+    local name, command, group, member = str_split (obj:name ())
+    if name == "patrol" then 
+       printf ("Bind command %s, group %d, member %d", command, group, member)
+       xr_patrol.AddToPatrol (command, group, member, obj)
+       return
+    end
 --	obj:bind_object	(this.stalker_binder(obj))
 end
 
