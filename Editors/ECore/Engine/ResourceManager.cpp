@@ -178,7 +178,7 @@ Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_te
 	// Compile element
 	{
 		C.iElement			= 4;
-		C.bDetail			= FALSE;
+		C.bDetail			= TRUE;	//.$$$ HACK :)
 		ShaderElement		E;
 		C._cpp_Compile		(&E);
 		S.E[4]				= _CreateElement	(E);
