@@ -244,7 +244,7 @@ CPhysicsElement* CPHShell::get_Element		(LPCSTR bone_name)
 CPhysicsElement* CPHShell::get_ElementByStoreOrder(u16 num)
 {
 	R_ASSERT2(num<elements.size(),"argument is out of range");
-	return smart_cast<CPhysicsElement*>(elements[num]);
+	return cast_PhysicsElement(elements[num]);
 }
 
 CPHSynchronize*	CPHShell::get_ElementSync			  (u16 element)
@@ -301,7 +301,7 @@ u16			CPHShell::get_JointsNumber				()
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 	///CPHElement*	E			= smart_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
-	CPHElement*	E			= static_cast<CPHElement*>(static_cast<CPhysicsElement*>(B->Callback_Param));
+	CPHElement*	E			= cast_PHElement(B->Callback_Param);
 	E->BonesCallBack(B);
 }
 
@@ -309,7 +309,7 @@ void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 void __stdcall CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
 	///CPHElement*	E			= smart_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
-	CPHElement*	E			= static_cast<CPHElement*>(static_cast<CPhysicsElement*>(B->Callback_Param));
+	CPHElement*	E			= cast_PHElement(B->Callback_Param);
 	E->StataticRootBonesCallBack(B);
 }
 
@@ -901,7 +901,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
 		{
 
-			B.set_callback(0,static_cast<CPhysicsElement*>(elements[element]));
+			B.set_callback(0,cast_PhysicsElement(elements[element]));
 		}
 		else
 		{
@@ -909,7 +909,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 			element++;
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
-			B.set_callback(BonesCallback,static_cast<CPhysicsElement*>(elements[element]));
+			B.set_callback(BonesCallback,cast_PhysicsElement(elements[element]));
 			B.Callback_overwrite=TRUE;
 		}
 	}
@@ -951,13 +951,13 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 	if(mask.is(1ui64<<(u64)id))
 	{
 		if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1)){
-			B.set_callback(0,static_cast<CPhysicsElement*>(elements[element]));
+			B.set_callback(0,cast_PhysicsElement(elements[element]));
 		}else{
 			element_position_in_set_calbacks++;
 			element=element_position_in_set_calbacks;
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
-			B.set_callback(bones_callback,smart_cast<CPhysicsElement*>(elements[element]));
+			B.set_callback(bones_callback,cast_PhysicsElement(elements[element]));
 			//B.Callback_overwrite=TRUE;
 		}
 	}
@@ -1174,7 +1174,7 @@ u16 CPHShell::BoneIdToRootGeom(u16 id)
 
 void CPHShell::SetJointRootGeom(CPhysicsElement* root_e,CPhysicsJoint* J)
 {
-	CPHElement* e=smart_cast<CPHElement*>(root_e);
+	CPHElement* e=cast_PHElement(root_e);
 	CPHJoint*	j=smart_cast<CPHJoint*>(J);
 	R_ASSERT(e);
 	R_ASSERT(j);
@@ -1296,7 +1296,7 @@ void CPHShell::SetPrefereExactIntegration()
 }
 
 void CPHShell::add_Element					(CPhysicsElement* E)		  {
-	CPHElement* ph_element=smart_cast<CPHElement*>(E);
+	CPHElement* ph_element=cast_PHElement(E);
 	ph_element->SetShell(this);
 	elements.push_back(ph_element);
 

@@ -39,20 +39,25 @@ m_shot_up_factor				=0.f;
 m_after_death_velocity_factor	=1.f;
 };
 
-void CCharacterPhysicsSupport::Activate()
+void CCharacterPhysicsSupport::SetRemoved()
 {
-}
-
-void CCharacterPhysicsSupport::Deactivate()
-{
-}
-
-void CCharacterPhysicsSupport::Allocate()
-{
-}
-
-void CCharacterPhysicsSupport::Clear()
-{
+	m_eState=esRemoved;
+	if(b_skeleton_in_shell)
+	{
+		//if(m_pPhysicsShell->isEnabled())
+		//{
+		//	m_EntityAlife.processing_deactivate();
+		//}
+		m_pPhysicsShell->Deactivate();
+		xr_delete(m_pPhysicsShell);
+	}
+	else
+	{
+		m_physics_skeleton->Deactivate();
+		xr_delete(m_physics_skeleton);
+		//m_EntityAlife.processing_deactivate();
+	}
+	
 }
 
 void CCharacterPhysicsSupport::in_Load(LPCSTR section)
@@ -91,7 +96,7 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
 	m_PhysicMovementControl.DestroyCharacter();
-	if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)
+	if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)//.
 	{
 			m_physics_skeleton->Deactivate();
 			xr_delete(m_physics_skeleton);
@@ -173,6 +178,11 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir,s16 element,Fvector p
 
 void CCharacterPhysicsSupport::in_UpdateCL()
 {
+	if(m_eState==esRemoved)
+	{
+		m_EntityAlife.setVisible(FALSE);
+		return;
+	}
 	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
 	{
 

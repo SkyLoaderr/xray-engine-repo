@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "PhysicsShell.h"
 #include "Actor.h"
+#include "CharacterPhysicsSupport.h"
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
@@ -21,8 +22,7 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 	CActor				*A		=smart_cast<CActor*>(obj)	;
 	if(A)
 	{
-		obj->PPhysicsShell()->Deactivate();
-		xr_delete(obj->PPhysicsShell());
+		A->character_physics_support()->SetRemoved();
 		obj->setVisible(FALSE);
 		obj->setEnabled(FALSE);
 	}

@@ -474,8 +474,8 @@ CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysics
 	m_back_ref	=NULL;
 	m_destroy_info=NULL;
 	pFirstGeom	  =NULL;
-	pFirst_element=smart_cast<CPHElement*>(first);
-	pSecond_element=smart_cast<CPHElement*>(second); 
+	pFirst_element=cast_PHElement(first);
+	pSecond_element=cast_PHElement(second); 
 	m_joint=NULL;
 	m_joint1=NULL;
 	eType=type;
@@ -1145,11 +1145,11 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 }
 CPhysicsElement* CPHJoint::PFirst_element()
 {
-	return smart_cast<CPhysicsElement*>(pFirst_element);
+	return cast_PhysicsElement(pFirst_element);
 }
 CPhysicsElement* CPHJoint::PSecond_element()
 {
-	return smart_cast<CPhysicsElement*>(pSecond_element);
+	return cast_PhysicsElement(pSecond_element);
 }
 void CPHJoint::SetBreakable(float force,float torque)
 {

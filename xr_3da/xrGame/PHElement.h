@@ -228,4 +228,7 @@ public:																																				//
 	virtual ~CPHElement								();																						//aux
 };
 
+IC CPHElement* cast_PHElement(CPhysicsElement* e){return static_cast<CPHElement*>(static_cast<CPhysicsElement*>(e));}
+IC CPHElement* cast_PHElement(void* e){return static_cast<CPHElement*>(static_cast<CPhysicsElement*>(e));}
+IC CPhysicsElement* cast_PhysicsElement(CPHElement* e){return static_cast<CPhysicsElement*>(static_cast<CPHElement*>(e));}
 #endif

@@ -24,7 +24,8 @@ enum EType
 enum EState
 {
 	esDead,
-	esAlive
+	esAlive,
+	esRemoved
 };
 
 private:
@@ -79,10 +80,8 @@ protected:
 virtual void							SpawnInitPhysics				(CSE_Abstract	*D)																									;
 virtual CPhysicsShellHolder*			PPhysicsShellHolder				()	{return m_EntityAlife.PhysicsShellHolder();}	
 public:
-		void 							Deactivate						()																													;
-		void 							Activate						()																													;
-		void 							Clear							()																													;
-		void 							Allocate						()																													;
+
+		void							SetRemoved						();
 //////////////////base hierarchi methods///////////////////////////////////////////////////
 		void 							in_UpdateCL()																																		;
 		void 							in_shedule_Update				( u32 DT )																											;

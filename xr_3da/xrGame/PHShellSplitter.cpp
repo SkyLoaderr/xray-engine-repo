@@ -291,7 +291,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 				CKinematics* K = m_pShell->PKinematics();
 				dVector3 safe_pos1, safe_pos2;
 				dQuaternion safe_q1, safe_q2;
-				CPhysicsElement* el1=smart_cast<CPHElement*>(split_elem.first),*el2=joint->PSecond_element();
+				CPhysicsElement* el1=cast_PhysicsElement(split_elem.first),*el2=joint->PSecond_element();
 				dBodyID body1=el1->get_body(), body2=el2->get_body();
 				dVectorSet(safe_pos1,dBodyGetPosition(body1));
 				dVectorSet(safe_pos2,dBodyGetPosition(body2));
