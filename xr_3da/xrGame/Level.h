@@ -73,6 +73,10 @@ public:
 	// sounds
 	xr_vector<ref_sound*>			static_Sounds;
 
+	// startup options
+	LPSTR						m_caServerOptions;
+	LPSTR						m_caClientOptions;
+
 	// waypoints
 	typedef struct tagSWayPoint{
 		Fvector	tWayPoint;

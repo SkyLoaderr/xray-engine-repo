@@ -15,6 +15,7 @@ CMissile::CMissile(void) {
 	m_forceGrowSpeed = 50.f;
 	m_destroyTime = 0xffffffff;
 	m_stateTime = 0;
+	m_pInventory = 0;
 }
 
 CMissile::~CMissile(void) {
@@ -39,7 +40,8 @@ void CMissile::Load(LPCSTR section) {
 		else{inst_z;}
 
 BOOL CMissile::net_Spawn(LPVOID DC) {
-	R_ASSERT(!m_pInventory);
+	//R_ASSERT(!m_pInventory);
+	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	CKinematics* V = PKinematics(Visual());

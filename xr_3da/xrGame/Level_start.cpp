@@ -11,13 +11,15 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	{
 		pApp->LoadTitle			("SERVER: Starting...");
 
-		LPSTR					l_name = (LPSTR)xr_malloc(1024*sizeof(char));
-		strcpy					(l_name,op_server);
+		strcpy					(m_caServerOptions,op_server);
+		strcpy					(m_caClientOptions,op_client);
 		
 		// Connect
 		Server					= xr_new<xrServer>();
-		Server->Connect			(l_name);
+		Server->Connect			(m_caServerOptions);
 
+		string64				l_name;
+		strcpy					(l_name,m_caServerOptions);
 		// Activate level
 		if (strchr(l_name,'/'))
 			*strchr(l_name,'/')	= 0;
@@ -32,8 +34,6 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		pApp->Level_Set			(id);
 		
 		Server->SLS_Default		();
-		
-		xr_free					(l_name);
 	}
 
 	// Start client

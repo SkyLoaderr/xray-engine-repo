@@ -45,7 +45,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 
 CSE_Abstract::~CSE_Abstract					()
 {
-	Msg							("Destroying object %s",s_name);
+	Msg							("Destroying object %s (%x)",s_name,size_t(this));
 }
 	
 void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)

@@ -37,11 +37,16 @@ CLevel::CLevel()
 	eEnvironment				= Engine.Event.Handler_Attach	("LEVEL:Environment",this);
 
 	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
+
+	m_caServerOptions			= (LPSTR)xr_malloc(256*sizeof(char));
+	m_caClientOptions			= (LPSTR)xr_malloc(256*sizeof(char));
+	m_caServerOptions[0]		= 0;
+	m_caClientOptions[0]		= 0;
 }
 
 CLevel::~CLevel()
 {
-	Msg			("- Destroying level");
+	Msg					("- Destroying level");
 
 	Engine.Event.Handler_Detach(eEntitySpawn,	this);
 
@@ -50,7 +55,8 @@ CLevel::~CLevel()
 	Engine.Event.Handler_Detach(eDemoPlay,		this);
 	Engine.Event.Handler_Detach(eChangeRP,		this);
 
-	if (ph_world)	ph_world->Destroy		();
+	if (ph_world)
+		ph_world->Destroy();
 
 	xr_delete			(ph_world);
 
@@ -64,9 +70,11 @@ CLevel::~CLevel()
 		static_Sounds[i]->destroy();
 		xr_delete		(static_Sounds[i]);
 	}
-	static_Sounds.clear();
+	static_Sounds.clear	();
 
 	xr_delete			(tpAI_Space);
+	xr_free				(m_caServerOptions);
+	xr_free				(m_caClientOptions);
 }
 
 // Game interface ////////////////////////////////////////////////////

@@ -22,13 +22,10 @@ CSE_ALifeObjectRegistry::CSE_ALifeObjectRegistry()
 
 CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 {
-//	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-//	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
-//	for ( ; I != E; I++)
-//		if (!(*I).second->m_bOnline)
-//			xr_delete((*I).second);
-	Msg							("Destroying object registry");
-	//free_map					(m_tObjectRegistry);
+	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	for ( ; I != E; I++)
+		xr_delete				(dynamic_cast<CSE_Abstract*>((*I).second));
 }
 
 void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
@@ -75,6 +72,7 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
 		CSE_ALifeDynamicObject	*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 		R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
+		Msg						("Loading %s (%x)",s_name,size_t(tpSE_Abstract));
 		tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
 		// Update
@@ -407,12 +405,18 @@ CSE_ALifeSpawnRegistry::CSE_ALifeSpawnRegistry()
 
 CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 {
-	//free_object_vector				(m_tpSpawnPoints);
+	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
+	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	for ( ; I != E; I++)
+		xr_delete				(dynamic_cast<CSE_Abstract*>(*I));
 }
 
 void CSE_ALifeSpawnRegistry::Init()
 {
-	free_object_vector				(m_tpSpawnPoints);
+	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
+	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	for ( ; I != E; I++)
+		xr_delete				(dynamic_cast<CSE_Abstract*>(*I));
 }
 
 void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)

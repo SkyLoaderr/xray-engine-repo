@@ -35,15 +35,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	case DIK_F7:
 		if (Server->game->type == GAME_SINGLE) {
-			game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(Server->game);
-			if (tpGame && tpGame->m_tpALife) {
-				Engine.Event.Defer	("KERNEL:disconnect");
-				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup("game00/single/alife")),size_t(xr_strdup("localhost/dima")));
-			}
-			else {
-				Engine.Event.Defer	("KERNEL:disconnect");
-				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup("occ_part_ph1/single")),size_t(xr_strdup("localhost/dima")));
-			}
+			Engine.Event.Defer		("KERNEL:disconnect");
+			Engine.Event.Defer		("KERNEL:start",size_t(xr_strdup(m_caServerOptions)),size_t(xr_strdup(m_caClientOptions)));
 		}
 		return;
 	case DIK_F9:
