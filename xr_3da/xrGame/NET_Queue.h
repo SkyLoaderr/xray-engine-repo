@@ -45,6 +45,8 @@ public:
 
 IC bool operator < (const NET_Event& A, const NET_Event& B)	{ return A.timestamp<B.timestamp; }
 
+extern BOOL		g_bCheckTime;
+
 class	NET_Queue_Event
 {
 public:
@@ -58,8 +60,15 @@ public:
 	}
 	IC BOOL				available	(u32 T)
 	{
-		if (queue.empty()/* || (T<queue.begin()->timestamp)*/)	return FALSE;
-		else												return TRUE;
+//		if (queue.empty()/* || (T<queue.begin()->timestamp)*/)	return FALSE;
+//		else												return TRUE;
+		if (queue.empty()) return FALSE;
+		else 
+		{
+			if (!g_bCheckTime) return TRUE;
+			if (T<queue.begin()->timestamp) return FALSE;
+			return TRUE;
+		}
 	}
 	IC void				get			(u16& dest, u16& type, NET_Packet& P)
 	{

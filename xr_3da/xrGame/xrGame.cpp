@@ -64,6 +64,8 @@ extern	float	g_fMaxReconDist		;
 extern	float	g_fMinReconSpeed	;
 extern	float	g_fMaxReconSpeed	;
 
+BOOL	g_bCheckTime = TRUE;
+
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -985,6 +987,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Float,		"recon_min_speed",		&g_fMinReconSpeed,	1.0f, 180.0f);
 		CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	1.0f, 180.0f);
 
+		CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
 
 
 		// keyboard binding
