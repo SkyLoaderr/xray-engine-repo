@@ -91,25 +91,34 @@ class CNodeRenumberer {
 
 	xr_vector<NodeCompressed>	&m_nodes;
 	xr_vector<u32>				m_sorted;
+	xr_vector<u32>				m_renumbering;
 
 public:
 					CNodeRenumberer(xr_vector<NodeCompressed> &nodes) :
 						m_nodes(nodes)
 	{
-		for (u32 i=0; i<(int)m_nodes.size(); ++i)
-			m_sorted.push_back(i);
+		u32					N = (u32)m_nodes.size();
+		m_sorted.resize		(N);
+		m_renumbering.resize(N);
 
-		std::sort	(m_sorted.begin(),m_sorted.end(),SSortNodesPredicate());
+		for (u32 i=0; i<N; ++i)
+			m_sorted[i]		= i;
 
-		for (u32 i=0; i<(int)m_nodes.size(); ++i) {
+		std::stable_sort	(m_sorted.begin(),m_sorted.end(),SSortNodesPredicate());
+
+		for (u32 i=0; i<N; ++i)
+			m_renumbering	[m_sorted[i]] = i;
+
+		for (u32 i=0; i<N; ++i) {
 			for (u32 j=0; j<4; ++j) {
-				xr_vector<u32>::iterator I = std::lower_bound(m_sorted.begin(),m_sorted.end(),m_nodes[i].link(j));
-				if (m_sorted.end() != I)
-					m_nodes[i].link(j,u32(I - m_sorted.begin()));
+				u32			vertex_id = m_nodes[i].link(j);
+				if (vertex_id >= N)
+					continue;
+				m_nodes[i].link(j,m_renumbering[vertex_id]);
 			}
 		}
 
-		std::sort	(m_nodes.begin(),m_nodes.end(),SSortNodesPredicate());
+		std::stable_sort	(m_nodes.begin(),m_nodes.end(),SSortNodesPredicate());
 	}
 };
 
