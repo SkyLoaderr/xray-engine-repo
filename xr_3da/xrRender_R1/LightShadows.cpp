@@ -45,18 +45,18 @@ void CLightShadows::OnDeviceCreate	()
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
-	RT			= Device.Resources->_CreateRT	(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	RT_temp		= Device.Resources->_CreateRT	(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
-	sh_Texture	= Device.Resources->Create		("effects\\shadow_texture");
-	sh_World	= Device.Resources->Create		("effects\\shadow_world",	RTname);
-	geom_World	= Device.Resources->CreateGeom	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
-	sh_BlurTR	= Device.Resources->Create		("effects\\blur",			RTtemp2);
-	sh_BlurRT	= Device.Resources->Create		("effects\\blur",			RTname2);
-	geom_Blur	= Device.Resources->CreateGeom	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
+	RT.create			(RTname,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	RT_temp.create		(RTtemp,S_rt_size,S_rt_size,HW.Caps.fTarget);
+	sh_Texture.create	("effects\\shadow_texture");
+	sh_World.create		("effects\\shadow_world",	RTname);
+	geom_World.create	(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
+	sh_BlurTR.create	("effects\\blur",			RTtemp2);
+	sh_BlurRT.create	("effects\\blur",			RTname2);
+	geom_Blur.create	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// Debug
-	sh_Screen	= Device.Resources->Create		("effects\\screen_set",RTname);
-	geom_Screen	= Device.Resources->CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	sh_Screen.create	("effects\\screen_set",RTname);
+	geom_Screen.create	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 void CLightShadows::OnDeviceDestroy	()
