@@ -360,16 +360,19 @@ bool CDetailPathManager::compute_path(
 		(STravelParams&)start	= (*I);
 		real_straight_line_index= straight_line_index;
 		if (!fis_zero(start.linear_velocity) && (start.linear_velocity < 0.f)) {
-			start.direction.mul	(-1.f);
-			real_straight_line_index = straight_line_index_negative;
+			start.direction.mul			(-1.f);
+			start.linear_velocity		*= -1;
+			real_straight_line_index	= straight_line_index_negative;
 		}
 		xr_vector<STravelParamsIndex>::const_iterator i = dest_params.begin(), b = i;
 		xr_vector<STravelParamsIndex>::const_iterator e = dest_params.end();
 		for ( ; i != e; ++i) {
 			dest					= dest_save;
 			(STravelParams&)dest	= (*i);
-			if (!fis_zero(dest.linear_velocity) && (dest.linear_velocity < 0.f))
-				dest.direction.mul	(-1.f);
+			if (!fis_zero(dest.linear_velocity) && (dest.linear_velocity < 0.f)) {
+				dest.direction.mul		(-1.f);
+				dest.linear_velocity	*= -1;
+			}
 			m_temp_path.clear		();
 			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,real_straight_line_index,(*i).index)) {
 				if (!m_try_min_time || (time < min_time)) {
