@@ -60,9 +60,9 @@ void CObject::setEnabled		(BOOL _enabled)
 	}
 }
 
-void CObject::setVisible		(BOOL _visible)		
+void CObject::setVisible		(BOOL _visible)
 {
-	if (_visible)
+	if (_visible && (0==Parent))				// Parent should control object visibility itself
 	{
 		FLAGS.bVisible							= 1;
 		if (renderable.visual)	spatial.type	|=	STYPE_RENDERABLE;
