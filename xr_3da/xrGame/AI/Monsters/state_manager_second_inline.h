@@ -1,8 +1,5 @@
 #pragma once
 
-#include "../../level.h"
-#include "../../level_debug.h"
-
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -21,7 +18,7 @@ void CStateManagerSecondAbstract::update()
 	execute();
 }
 TEMPLATE_SPECIALIZATION
-void CStateManagerSecondAbstract::force_script_state(EGlobalStates state)
+void CStateManagerSecondAbstract::force_script_state(EMonsterState state)
 {
 	// установить текущее состояние
 	select_state(state);
@@ -57,11 +54,14 @@ TEMPLATE_SPECIALIZATION
 void CStateManagerSecondAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
-	
-#ifdef DEBUG
-	DBG().object_info(object,object).remove_item(u32(0));
-#endif
 }
+
+TEMPLATE_SPECIALIZATION
+EMonsterState CStateManagerSecondAbstract::get_state_type() 
+{
+	return inherited::get_state_type();
+}
+
 
 #undef CStateManagerSecondAbstract 
 #undef TEMPLATE_SPECIALIZATION

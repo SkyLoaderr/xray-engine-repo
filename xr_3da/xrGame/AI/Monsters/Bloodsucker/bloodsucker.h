@@ -53,6 +53,9 @@ public:
 	virtual	void			CheckSpecParams			(u32 spec_params);
 	virtual bool			ability_invisibility	() {return true;}
 
+
+	virtual	void			post_fsm_update			();
+
 			
 	// PP Effector		
 	

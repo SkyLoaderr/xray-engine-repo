@@ -7,18 +7,6 @@ class CStateManagerChimera : public CStateManagerSecond<CChimera> {
 	
 	typedef CStateManagerSecond<CChimera> inherited;
 
-	enum {
-		eStateRest					 = u32(0),
-		eStateEat,
-		eStateAttack,
-		eStatePanic,
-		eStateThreaten,
-		eStateDangerousSound,
-		eStateInterestingSound,
-		eStateFindEnemy,
-		eStateHitted,
-	};
-
 public:
 						CStateManagerChimera	(CChimera *obj);
 	virtual				~CStateManagerChimera	();

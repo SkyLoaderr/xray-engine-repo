@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "flesh.h"
 #include "flesh_state_manager.h"
-#include "../../../level.h"
-#include "../../../level_debug.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -15,14 +13,14 @@
 
 CStateManagerFlesh::CStateManagerFlesh(CAI_Flesh *monster) : inherited(monster)
 {
-	add_state(eStateRest,				xr_new<CStateMonsterRest<CAI_Flesh> >				(monster));
-	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CAI_Flesh> >				(monster));
-	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CAI_Flesh> >				(monster));
-	add_state(eStateEat,				xr_new<CStateMonsterEat<CAI_Flesh> >				(monster));
-	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CAI_Flesh> >(monster));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CAI_Flesh> >	(monster));
-	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CAI_Flesh> >				(monster));
-	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CAI_Flesh> >			(monster));
+	add_state(eStateRest,					xr_new<CStateMonsterRest<CAI_Flesh> >				(monster));
+	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CAI_Flesh> >				(monster));
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CAI_Flesh> >				(monster));
+	add_state(eStateEat,					xr_new<CStateMonsterEat<CAI_Flesh> >				(monster));
+	add_state(eStateHearInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CAI_Flesh> >(monster));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CAI_Flesh> >	(monster));
+	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CAI_Flesh> >				(monster));
+	add_state(eStateControlled,				xr_new<CStateMonsterControlled<CAI_Flesh> >			(monster));
 
 }
 
@@ -46,7 +44,7 @@ void CStateManagerFlesh::execute()
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
 		} else if (object->hear_interesting_sound) {
-			state_id = eStateInterestingSound;
+			state_id = eStateHearInterestingSound;
 		} else if (object->hear_dangerous_sound) {
 			state_id = eStateHearDangerousSound;	
 		} else {

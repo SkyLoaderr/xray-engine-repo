@@ -8,6 +8,8 @@
 #include "poltergeist_movement.h"
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement_space.h"
+#include "../../../level.h"
+#include "../../../level_debug.h"
 
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f

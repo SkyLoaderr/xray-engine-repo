@@ -9,6 +9,7 @@
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
 #include "ai_monster_movement_space.h"
+#include "critical_action_info.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -188,7 +189,7 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 
 
 // Установка линейной и угловой скоростей для текущей анимации
-void CMotionManager::ApplyParams()
+void CMotionManager::set_velocities_from_anim()
 {
 	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
@@ -257,13 +258,18 @@ void CMotionManager::Seq_Switch()
 		}
 	}
 
-	seq_playing = true;
+	seq_playing							= true;
 
 	// установить параметры
-	cur_anim_info().motion	= *seq_it;
-	ApplyParams ();
+	cur_anim_info().motion				= *seq_it;
+	set_velocities_from_anim			();
 
-	ForceAnimSelect();
+	ForceAnimSelect						();
+
+	// lock path
+	pMonster->movement().enable_movement		(false);
+	pMonster->CriticalActionInfo->set			(CAF_LockPath);
+	pMonster->movement().initialize_movement	();
 }
 
 
@@ -277,6 +283,8 @@ void CMotionManager::Seq_Finish()
 	} else {
 		prev_motion	= cur_anim_info().motion	= get_sd()->m_tMotions[m_tAction].anim;
 	}
+
+	pMonster->CriticalActionInfo->clear(CAF_LockPath);
 }
 
 
@@ -368,7 +376,7 @@ float CMotionManager::GetCurAnimTime()
 {
 	VERIFY(m_cur_anim.blend);
 
-	return m_cur_anim.blend->timeTotal;
+	return (m_cur_anim.blend->timeTotal / m_cur_anim.blend->speed);
 }
 
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)

@@ -16,19 +16,19 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateSleep,			xr_new<CStateMonsterRestSleep<_Object> >	(obj));
-	add_state	(eStateWalkGraphPoint,	xr_new<CStateMonsterRestWalkGraph<_Object> >(obj));
-	add_state	(eStateIdle,			xr_new<CStateMonsterRestIdle<_Object> >		(obj));
-	add_state	(eStateFun,				xr_new<CStateMonsterRestFun<_Object> >		(obj));
+	add_state	(eStateRest_Sleep,			xr_new<CStateMonsterRestSleep<_Object> >	(obj));
+	add_state	(eStateRest_WalkGraphPoint,	xr_new<CStateMonsterRestWalkGraph<_Object> >(obj));
+	add_state	(eStateRest_Idle,			xr_new<CStateMonsterRestIdle<_Object> >		(obj));
+	add_state	(eStateRest_Fun,			xr_new<CStateMonsterRestFun<_Object> >		(obj));
 }
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj, state_ptr state_sleep, state_ptr state_walk) : inherited(obj)
 {
-	add_state	(eStateSleep,			state_sleep);
-	add_state	(eStateWalkGraphPoint,	state_walk);
-	add_state	(eStateIdle,			xr_new<CStateMonsterRestIdle<_Object> >		(obj));
-	add_state	(eStateFun,				xr_new<CStateMonsterRestFun<_Object> >		(obj));
+	add_state	(eStateRest_Sleep,			state_sleep);
+	add_state	(eStateRest_WalkGraphPoint,	state_walk);
+	add_state	(eStateRest_Idle,			xr_new<CStateMonsterRestIdle<_Object> >		(obj));
+	add_state	(eStateRest_Fun,			xr_new<CStateMonsterRestFun<_Object> >		(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -52,25 +52,25 @@ void CStateMonsterRestAbstract::execute()
 
 	bool state_fun = false;
 
-	if (prev_substate == eStateFun) {
-		if (!get_state(eStateFun)->check_completion()) 
+	if (prev_substate == eStateRest_Fun) {
+		if (!get_state(eStateRest_Fun)->check_completion()) 
 			state_fun = true;
 	} else {
-		if (get_state(eStateFun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
+		if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
 			state_fun = true;
 	}
 	
 	if (state_fun) {
-		select_state	(eStateFun);
+		select_state	(eStateRest_Fun);
 	} else {
 		if (bNormalSatiety) {
-			select_state	(eStateIdle);
+			select_state	(eStateRest_Idle);
 		} else {
-			select_state	(eStateWalkGraphPoint);
+			select_state	(eStateRest_WalkGraphPoint);
 		}
 	}
 	
-	if ((prev_substate == eStateFun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
+	if ((prev_substate == eStateRest_Fun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
 
 	get_state_current()->execute();
 

@@ -19,8 +19,8 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterControlledFollowAbstract::CStateMonsterControlledFollow(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateWait,			xr_new<CStateMonsterCustomAction<_Object> >	(obj));
-	add_state	(eStateWalkToObject,	xr_new<CStateMonsterMoveToPointEx<_Object> >(obj));
+	add_state	(eStateControlled_Follow_Wait,			xr_new<CStateMonsterCustomAction<_Object> >	(obj));
+	add_state	(eStateControlled_Follow_WalkToObject,	xr_new<CStateMonsterMoveToPointEx<_Object> >(obj));
 }
 
 
@@ -32,7 +32,7 @@ void CStateMonsterControlledFollowAbstract::reselect_state()
 	const CEntity *target_object = entity->get_data().m_object;
 
 	float dist = object->Position().distance_to(target_object->Position());	
-	select_state(dist < Random.randF(STOP_DISTANCE, STAY_DISTANCE) ? eStateWait : eStateWalkToObject);
+	select_state(dist < Random.randF(STOP_DISTANCE, STAY_DISTANCE) ? eStateControlled_Follow_Wait : eStateControlled_Follow_WalkToObject);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -40,7 +40,7 @@ void CStateMonsterControlledFollowAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateWait) {
+	if (current_substate == eStateControlled_Follow_Wait) {
 		SStateDataAction data;
 		data.action			= ACT_REST;
 		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
@@ -49,16 +49,10 @@ void CStateMonsterControlledFollowAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Controlled :: Wait", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 
-	if (current_substate == eStateWalkToObject) {
+	if (current_substate == eStateControlled_Follow_WalkToObject) {
 		SStateDataMoveToPointEx data;
 
 		CControlledEntityBase *entity = smart_cast<CControlledEntityBase *>(object);
@@ -84,12 +78,6 @@ void CStateMonsterControlledFollowAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Controlled :: Follow", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 }

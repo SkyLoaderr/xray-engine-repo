@@ -7,11 +7,6 @@ template<typename _Object>
 class	CStateMonsterControlledAttack : public CStateMonsterAttack<_Object> {
 	typedef CStateMonsterAttack<_Object>	inherited;
 
-	enum EControlledStates {
-		eStateFollow		= u32(0),
-		eStateAttack,
-	};
-
 public:
 						CStateMonsterControlledAttack	(_Object *obj);
 	virtual void		initialize						();

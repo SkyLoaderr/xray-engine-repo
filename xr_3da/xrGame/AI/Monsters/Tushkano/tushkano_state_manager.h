@@ -10,6 +10,5 @@ public:
 						CStateManagerTushkano	(CTushkano *obj);
 	virtual				~CStateManagerTushkano	();
 
-	virtual void		initialize				();
 	virtual	void		execute					();
 };

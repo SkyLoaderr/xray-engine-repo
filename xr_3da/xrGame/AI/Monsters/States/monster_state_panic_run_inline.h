@@ -15,23 +15,15 @@ void CStateMonsterPanicRunAbstract::initialize()
 	inherited::initialize();
 	
 	object->movement().initialize_movement		();	
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Panic :: Run", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterPanicRunAbstract::execute()
 {
-	object->set_action									(ACT_RUN);
-	object->set_state_sound								(MonsterSpace::eMonsterSoundPanic);
-	object->MotionMan.accel_activate					(eAT_Aggressive);
-	object->MotionMan.accel_set_braking					(false);
+	object->set_action							(ACT_RUN);
+	object->set_state_sound						(MonsterSpace::eMonsterSoundPanic);
+	object->MotionMan.accel_activate			(eAT_Aggressive);
+	object->MotionMan.accel_set_braking			(false);
 	object->movement().set_retreat_from_point	(object->EnemyMan.get_enemy_position());
 	object->movement().set_generic_parameters	();
 }

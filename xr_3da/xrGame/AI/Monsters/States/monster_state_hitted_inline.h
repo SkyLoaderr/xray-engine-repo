@@ -12,8 +12,8 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterHittedAbstract::CStateMonsterHitted(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateHide,	xr_new<CStateMonsterHittedHide<_Object> >(obj));
-	add_state	(eStateMoveOut,	xr_new<CStateMonsterHittedMoveOut<_Object> >(obj));
+	add_state	(eStateHitted_Hide,	xr_new<CStateMonsterHittedHide<_Object> >(obj));
+	add_state	(eStateHitted_MoveOut,	xr_new<CStateMonsterHittedMoveOut<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -25,16 +25,16 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterHittedAbstract::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
-		select_state(eStateHide);
+		select_state(eStateHitted_Hide);
 		return;
 	}
 	
-	if (prev_substate == eStateHide) { 
-		select_state(eStateMoveOut);
+	if (prev_substate == eStateHitted_Hide) { 
+		select_state(eStateHitted_MoveOut);
 		return;
 	}
 
-	select_state(eStateHide);
+	select_state(eStateHitted_Hide);
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -367,6 +367,23 @@ void CAI_Bloodsucker::Die(CObject* who)
 	inherited::Die(who);
 }
 
+void CAI_Bloodsucker::post_fsm_update()
+{
+	inherited::post_fsm_update();
+	
+	EMonsterState state = StateMan->get_state_type();
+	
+	// установить агрессивность
+	bool aggressive =	(is_state(state, eStateAttack)) || 
+						(is_state(state, eStatePanic))	|| 
+						(is_state(state, eStateHitted));
+
+	CEnergyHolder::set_aggressive(aggressive);
+}
+
+
+
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 {

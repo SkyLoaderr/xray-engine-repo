@@ -30,10 +30,10 @@ public:
 
 	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}
-	virtual bool	CanExecRotationJump	() {return true;}
 
-	virtual bool	ability_can_drag	() {return true;}
-	virtual bool	ability_can_jump	() {return true;}
+	virtual bool	ability_can_drag		() {return true;}
+	virtual bool	ability_can_jump		() {return true;}
+	virtual bool	ability_rotation_jump	() {return true;}
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

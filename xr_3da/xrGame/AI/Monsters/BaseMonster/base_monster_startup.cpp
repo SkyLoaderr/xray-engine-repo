@@ -62,6 +62,8 @@ void CBaseMonster::reinit()
 	m_bAngry						= false;
 	m_bAggressive					= false;
 	m_bSleep						= false;
+	m_bRunTurnLeft					= false;
+	m_bRunTurnRight					= false;
 
 	state_invisible					= false;
 	m_default_bone_part				= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");

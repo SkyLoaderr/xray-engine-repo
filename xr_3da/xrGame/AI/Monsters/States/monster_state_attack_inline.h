@@ -19,23 +19,23 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateRun,			xr_new<CStateMonsterAttackRun<_Object> >		(obj));
-	add_state	(eStateMelee,		xr_new<CStateMonsterAttackMelee<_Object> >		(obj));
-	add_state	(eStateRunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
-	add_state	(eStateRunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
-	add_state	(eStateFindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
-	add_state	(eStateSteal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
+	add_state	(eStateAttack_Run,			xr_new<CStateMonsterAttackRun<_Object> >		(obj));
+	add_state	(eStateAttack_Melee,		xr_new<CStateMonsterAttackMelee<_Object> >		(obj));
+	add_state	(eStateAttack_RunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
+	add_state	(eStateAttack_RunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
+	add_state	(eStateAttack_FindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
+	add_state	(eStateAttack_Steal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterAttackAbstract::CStateMonsterAttack(_Object *obj, state_ptr state_run, state_ptr state_melee) : inherited(obj)
 {
-	add_state	(eStateRun,			state_run);
-	add_state	(eStateMelee,		state_melee);
-	add_state	(eStateRunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
-	add_state	(eStateRunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
-	add_state	(eStateFindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
-	add_state	(eStateSteal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
+	add_state	(eStateAttack_Run,			state_run);
+	add_state	(eStateAttack_Melee,		state_melee);
+	add_state	(eStateAttack_RunAttack,	xr_new<CStateMonsterAttackRunAttack<_Object> >	(obj));
+	add_state	(eStateAttack_RunAway,		xr_new<CStateMonsterHideFromPoint<_Object> >	(obj));
+	add_state	(eStateAttack_FindEnemy,	xr_new<CStateMonsterFindEnemy<_Object> >		(obj));	
+	add_state	(eStateAttack_Steal,		xr_new<CStateMonsterSteal<_Object> >			(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -61,28 +61,28 @@ void CStateMonsterAttackAbstract::execute()
 	bool selected = false;
 	
 	if (check_steal_state()) {
-		select_state	(eStateSteal);
+		select_state	(eStateAttack_Steal);
 		selected		= true;
 	} else if (check_find_enemy_state()) {
-		select_state	(eStateFindEnemy);
+		select_state	(eStateAttack_FindEnemy);
 		selected		= true;
 	} else if (check_run_away_state()) {
-		select_state	(eStateRunAway);
+		select_state	(eStateAttack_RunAway);
 		selected		= true;
 	} else if (check_run_attack_state()) {
-		select_state	(eStateRunAttack);
+		select_state	(eStateAttack_RunAttack);
 		selected		= true;
 	}
 	
 	if (!selected) {
 		// определить тип атаки
 		bool b_melee = false; 
-		if ((prev_substate == eStateMelee) && !object->MeleeChecker.should_stop_melee(object->EnemyMan.get_enemy())) b_melee = true;
+		if ((prev_substate == eStateAttack_Melee) && !object->MeleeChecker.should_stop_melee(object->EnemyMan.get_enemy())) b_melee = true;
 		else if (object->MeleeChecker.can_start_melee(object->EnemyMan.get_enemy())) b_melee = true;
 
 		// установить целевое состояние
-		if (b_melee)	select_state(eStateMelee);
-		else			select_state(eStateRun);
+		if (b_melee)	select_state(eStateAttack_Melee);
+		else			select_state(eStateAttack_Run);
 	}
 
 	get_state_current()->execute();
@@ -107,9 +107,9 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackAbstract::check_steal_state()
 {
 	if (prev_substate == u32(-1)) {
-		if (get_state(eStateSteal)->check_start_conditions())	return true;
-	} else if (prev_substate == eStateSteal) {
-		if (!get_state(eStateSteal)->check_completion())		return true;
+		if (get_state(eStateAttack_Steal)->check_start_conditions())	return true;
+	} else if (prev_substate == eStateAttack_Steal) {
+		if (!get_state(eStateAttack_Steal)->check_completion())		return true;
 	}
 	return false;
 }
@@ -125,8 +125,8 @@ bool CStateMonsterAttackAbstract::check_find_enemy_state()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackAbstract::check_run_away_state()
 {
-	if (prev_substate == eStateRunAway) {
-		if (!get_state(eStateRunAway)->check_completion()) return true;
+	if (prev_substate == eStateAttack_RunAway) {
+		if (!get_state(eStateAttack_RunAway)->check_completion()) return true;
 		else m_time_next_run_away = Device.dwTimeGlobal + 10000;
 	} else if (object->Morale.is_despondent() && (m_time_next_run_away < Device.dwTimeGlobal)) {
 		return true;
@@ -140,10 +140,10 @@ bool CStateMonsterAttackAbstract::check_run_attack_state()
 {
 	if (!object->ability_run_attack()) return false;
 
-	if (prev_substate == eStateRun) {
-		if (get_state(eStateRunAttack)->check_start_conditions())	return true;			
-	} else if (prev_substate == eStateRunAttack) {
-		if (!get_state(eStateRunAttack)->check_completion())		return true;
+	if (prev_substate == eStateAttack_Run) {
+		if (get_state(eStateAttack_RunAttack)->check_start_conditions())	return true;			
+	} else if (prev_substate == eStateAttack_RunAttack) {
+		if (!get_state(eStateAttack_RunAttack)->check_completion())			return true;
 	}
 
 	return false;
@@ -156,7 +156,7 @@ void CStateMonsterAttackAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateRunAway) {
+	if (current_substate == eStateAttack_RunAway) {
 		
 		SStateHideFromPoint		data;
 		data.point				= object->EnemyMan.get_enemy_position();
@@ -171,12 +171,6 @@ void CStateMonsterAttackAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Attack :: Run Away", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 }

@@ -3,9 +3,10 @@
 
 class IStateManagerBase {
 public:
-	virtual void	reinit					()						= 0;
-	virtual void	update					()						= 0;
-	virtual void	force_script_state		(EGlobalStates state)	= 0;
-	virtual void	execute_script_state	()						= 0;
-	virtual	void	critical_finalize		()						= 0;
+	virtual void			reinit					()						= 0;
+	virtual void			update					()						= 0;
+	virtual void			force_script_state		(EMonsterState state)	= 0;
+	virtual void			execute_script_state	()						= 0;
+	virtual	void			critical_finalize		()						= 0;
+	virtual	EMonsterState	get_state_type			()						= 0;
 };

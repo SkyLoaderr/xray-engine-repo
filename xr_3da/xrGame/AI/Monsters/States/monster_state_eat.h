@@ -8,15 +8,6 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
-	enum EStates{
-		eStateCorpseApproachRun		= u32(0),
-		eStateCorpseApproachWalk,
-		eStateCheckCorpse,
-		eStateEat,
-		eStateWalkAway,
-		eStateRest
-	};
-
 public:
 						CStateMonsterEat		(_Object *obj);
 						CStateMonsterEat		(_Object *obj, state_ptr state_eat);

@@ -13,25 +13,25 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterHearDangerousSoundAbstract::CStateMonsterHearDangerousSound(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateHide,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
-	add_state	(eStateFaceOpenPlace,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
-	add_state	(eStateStandScared,		xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateHearDangerousSound_Hide,				xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
+	add_state	(eStateHearDangerousSound_FaceOpenPlace,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
+	add_state	(eStateHearDangerousSound_StandScared,		xr_new<CStateMonsterCustomAction<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHearDangerousSoundAbstract::reselect_state()
 {
 	if (prev_substate == u32(-1)){
-		select_state(eStateHide);
+		select_state(eStateHearDangerousSound_Hide);
 		return;
 	}
 
-	if (prev_substate == eStateHide) {
-		select_state(eStateFaceOpenPlace);
+	if (prev_substate == eStateHearDangerousSound_Hide) {
+		select_state(eStateHearDangerousSound_FaceOpenPlace);
 		return;
 	}
 
-	select_state(eStateStandScared);
+	select_state(eStateHearDangerousSound_StandScared);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -39,7 +39,7 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateHide) {
+	if (current_substate == eStateHearDangerousSound_Hide) {
 		SStateHideFromPoint data;
 
 		Fvector run_away_point;
@@ -59,16 +59,10 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Danger Snd :: Hide From Point", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 
-	if (current_substate == eStateFaceOpenPlace) {
+	if (current_substate == eStateHearDangerousSound_FaceOpenPlace) {
 		SStateDataAction data;
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_STAND_SCARED;
@@ -77,18 +71,11 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
-
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Danger Snd :: Face Open Place", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		
 		return;
 	}
 
-	if (current_substate == eStateStandScared) {
+	if (current_substate == eStateHearDangerousSound_StandScared) {
 		SStateDataAction data;
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_STAND_SCARED;
@@ -96,13 +83,6 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
-
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Danger Snd :: Stand Scared", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 
 		return;
 	}

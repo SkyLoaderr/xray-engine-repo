@@ -127,6 +127,9 @@ public:
 	virtual float			get_custom_pitch_speed			(float def_speed);
 	virtual void			load_shared						(LPCSTR section);
 	virtual void			update_fsm						();
+			
+	virtual	void			post_fsm_update					();
+			void			squad_notify					();
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
@@ -166,9 +169,6 @@ public:
 	virtual void			ForceFinalAnimation				() {}
 	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 
-
-	virtual bool			CanExecRotationJump				() {return false;}
-
 	virtual	void			PitchCorrection					();
 
 	// Team	
@@ -184,6 +184,7 @@ public:
 	virtual bool			ability_can_jump				() {return false;}
 	virtual bool			ability_distant_feel			() {return false;}
 	virtual bool			ability_run_attack				() {return false;}
+	virtual bool			ability_rotation_jump			() {return false;}
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			event_on_step					() {}
@@ -228,7 +229,10 @@ public:
 	bool						m_bGrowling;
 	bool						m_bAggressive;
 	bool						m_bSleep;
-	
+	bool						m_bRunTurnLeft;
+	bool						m_bRunTurnRight;
+
+
 	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
 
 	//---------------------------------------------------------------------------------------
@@ -295,6 +299,8 @@ private:
 	bool					m_first_update_initialized;
 
 	// -----------------------------------------------------------------------------
+				void		check_rotation_jump	();
+	// -----------------------------------------------------------------------------
 
 
 // DEBUG stuff
@@ -315,6 +321,8 @@ public:
 	u8						m_show_debug_info;	// 0 - none, 1 - first column, 2 - second column
 	void					set_show_debug_info	(u8 show = 1){m_show_debug_info = show;}
 	virtual	SDebugInfo		show_debug_info		();
+
+	void					debug_fsm			();
 #endif
 };
 

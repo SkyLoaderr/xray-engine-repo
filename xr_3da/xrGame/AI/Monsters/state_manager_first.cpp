@@ -20,7 +20,7 @@ void CStateManagerFirst::reinit()
 	m_current_state	= eStateRest;
 }
 
-void CStateManagerFirst::force_script_state(EGlobalStates state)
+void CStateManagerFirst::force_script_state(EMonsterState state)
 {
 	set_state(state);
 }
@@ -39,7 +39,7 @@ void CStateManagerFirst::execute()
 	state_it->second->Execute	(Device.dwTimeGlobal);
 }
 
-void CStateManagerFirst::add_state(EGlobalStates id, IState *p_state)
+void CStateManagerFirst::add_state(EMonsterState id, IState *p_state)
 {
 	m_states.insert(mk_pair(id, p_state));
 }
@@ -53,7 +53,7 @@ void CStateManagerFirst::remove_all()
 	m_states.clear();
 }
 
-IState *CStateManagerFirst::get_state(EGlobalStates state_id)
+IState *CStateManagerFirst::get_state(EMonsterState state_id)
 {
 	STATE_MAP_IT state_it = m_states.find(state_id);
 	VERIFY(state_it != m_states.end());
@@ -61,7 +61,7 @@ IState *CStateManagerFirst::get_state(EGlobalStates state_id)
 	return state_it->second;
 }
 
-void CStateManagerFirst::set_state(EGlobalStates state)
+void CStateManagerFirst::set_state(EMonsterState state)
 {
 	if (m_current_state != state) {
 		STATE_MAP_IT state_it_prev = m_states.find(m_current_state);

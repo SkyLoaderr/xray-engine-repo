@@ -8,11 +8,6 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
-	enum {
-		eStateHide			= u32(0),
-		eStateMoveOut,
-	};
-
 public:
 					CStateMonsterHitted		(_Object *obj);
 	virtual			~CStateMonsterHitted	();

@@ -7,7 +7,7 @@ template<typename _Object>
 class CState {
 	typedef CState<_Object> CSState;
 public:
-						CState					(_Object *obj, EStateType s_type = ST_Unknown, void *data = 0);
+						CState					(_Object *obj, void *data = 0);
 	virtual 			~CState					(); 
 
 	virtual	void		reinit					();
@@ -30,14 +30,13 @@ public:
 
 			void		fill_data_with			(void *ptr_src, u32 size);
 
-			EStateType	get_state_type			();
-			void		set_state_type			(EStateType s_type) {state_type = s_type;}
-
 protected:
 			void 		select_state			(u32 new_state_id);	
 			void		add_state				(u32 state_id, CSState *s);
 
 	virtual void		setup_substates			(){}
+
+		EMonsterState	get_state_type			();
 			
 	u32					current_substate;
 	u32					prev_substate;
@@ -52,10 +51,8 @@ private:
 			void		free_mem				();
 
 	xr_map<u32, CSState*> substates;	
-	typedef typename xr_map<u32, CSState*>::iterator STATE_MAP_IT;		
+	typedef typename xr_map<u32, CSState*>::iterator STATE_MAP_IT;
 
-	EStateType			state_type;
-			
 };
 
 #include "state_inline.h"

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "pseudo_gigant.h"
 #include "pseudogigant_state_manager.h" 
-#include "../../../level.h"
-#include "../../../level_debug.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -15,14 +13,14 @@
 
 CStateManagerGigant::CStateManagerGigant(CPseudoGigant *monster) : inherited(monster)
 {
-	add_state(eStateRest,				xr_new<CStateMonsterRest<CPseudoGigant> >				(monster));
-	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CPseudoGigant> >				(monster));
-	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CPseudoGigant> >				(monster));
-	add_state(eStateEat,				xr_new<CStateMonsterEat<CPseudoGigant> >				(monster));
-	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CPseudoGigant> >(monster));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CPseudoGigant> >	(monster));
-	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CPseudoGigant> >				(monster));
-	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CPseudoGigant> >			(monster));
+	add_state(eStateRest,					xr_new<CStateMonsterRest<CPseudoGigant> >				(monster));
+	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CPseudoGigant> >				(monster));
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CPseudoGigant> >				(monster));
+	add_state(eStateEat,					xr_new<CStateMonsterEat<CPseudoGigant> >				(monster));
+	add_state(eStateHearInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CPseudoGigant> >(monster));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CPseudoGigant> >	(monster));
+	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CPseudoGigant> >				(monster));
+	add_state(eStateControlled,				xr_new<CStateMonsterControlled<CPseudoGigant> >			(monster));
 }
 
 void CStateManagerGigant::execute()
@@ -44,7 +42,7 @@ void CStateManagerGigant::execute()
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
 		} else if (object->hear_interesting_sound) {
-			state_id = eStateInterestingSound;
+			state_id = eStateHearInterestingSound;
 		} else if (object->hear_dangerous_sound) {
 			state_id = eStateHearDangerousSound;	
 		} else {

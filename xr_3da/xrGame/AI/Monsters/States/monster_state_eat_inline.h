@@ -17,23 +17,23 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateCorpseApproachRun,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateCorpseApproachWalk,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateCheckCorpse,			xr_new<CStateMonsterCustomAction<_Object> >(obj));
-	add_state	(eStateEat,					xr_new<CStateMonsterEating<_Object> >(obj));
-	add_state	(eStateWalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
-	add_state	(eStateRest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat_CorpseApproachRun,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
+	add_state	(eStateEat_CorpseApproachWalk,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
+	add_state	(eStateEat_CheckCorpse,			xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat_Eat,					xr_new<CStateMonsterEating<_Object> >(obj));
+	add_state	(eStateEat_WalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
+	add_state	(eStateEat_Rest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj, state_ptr state_eat) : inherited(obj)
 {
-	add_state	(eStateCorpseApproachRun,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateCorpseApproachWalk,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateCheckCorpse,			xr_new<CStateMonsterCustomAction<_Object> >(obj));
-	add_state	(eStateEat,					state_eat);
-	add_state	(eStateWalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
-	add_state	(eStateRest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat_CorpseApproachRun,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
+	add_state	(eStateEat_CorpseApproachWalk,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
+	add_state	(eStateEat_CheckCorpse,			xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat_Eat,					state_eat);
+	add_state	(eStateEat_WalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
+	add_state	(eStateEat_Rest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -52,44 +52,18 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterEatAbstract::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
-		select_state(eStateCorpseApproachRun);
+		select_state(eStateEat_CorpseApproachRun);
 		return;
 	}
 	
-	(prev_substate != eStateRest) ?  select_state(prev_substate+1) : select_state(eStateRest);
+	(prev_substate != eStateEat_Rest) ?  select_state(prev_substate+1) : select_state(eStateEat_Rest);
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterEatAbstract::setup_substates()
 {
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-
-		switch (current_substate) {
-			case eStateCorpseApproachRun:
-				DBG().object_info(object,object).add_item("Eat :: Approach To Corpse :: Run", D3DCOLOR_XRGB(255,0,0), 0);
-				break;
-			case eStateCorpseApproachWalk:
-				DBG().object_info(object,object).add_item("Eat :: Approach To Corpse :: Walk", D3DCOLOR_XRGB(255,0,0), 0);
-				break;
-			case eStateCheckCorpse:
-				DBG().object_info(object,object).add_item("Eat :: Check Corpse", D3DCOLOR_XRGB(255,0,0), 0);
-				break;
-			case eStateWalkAway:
-				DBG().object_info(object,object).add_item("Eat :: Walk Away", D3DCOLOR_XRGB(255,0,0), 0);
-				break;
-			case eStateRest:
-				DBG().object_info(object,object).add_item("Eat :: Little Rest", D3DCOLOR_XRGB(255,0,0), 0);
-				break;
-		}
-	}
-#endif
-
-
 	state_ptr state = get_state_current();
-	if ((current_substate == eStateCorpseApproachRun) || (current_substate == eStateCorpseApproachWalk)) {
+	if ((current_substate == eStateEat_CorpseApproachRun) || (current_substate == eStateEat_CorpseApproachWalk)) {
 		
 		// Определить позицию ближайшей боны у трупа
 		Fvector nearest_bone_pos;
@@ -102,11 +76,11 @@ void CStateMonsterEatAbstract::setup_substates()
 		SStateDataMoveToPoint data;
 		data.point			= nearest_bone_pos;
 		data.vertex			= u32(-1);
-		data.action.action	= ((current_substate == eStateCorpseApproachRun) ? ACT_RUN : ACT_WALK_FWD);
+		data.action.action	= ((current_substate == eStateEat_CorpseApproachRun) ? ACT_RUN : ACT_WALK_FWD);
 		data.accelerated	= true;
 		data.braking		= true;
 		data.accel_type 	= eAT_Calm;
-		data.completion_dist= ((current_substate == eStateCorpseApproachRun) ? 4.5f : object->get_sd()->m_fDistToCorpse);
+		data.completion_dist= ((current_substate == eStateEat_CorpseApproachRun) ? 4.5f : object->get_sd()->m_fDistToCorpse);
 		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
 		data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
 
@@ -114,7 +88,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		return;
 	}
 
-	if (current_substate == eStateCheckCorpse) {
+	if (current_substate == eStateEat_CheckCorpse) {
 		SStateDataAction data;
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_CHECK_CORPSE;
@@ -127,7 +101,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		return;
 	}
 	
-	if (current_substate == eStateWalkAway) {
+	if (current_substate == eStateEat_WalkAway) {
 		SStateHideFromPoint data;
 		
 		data.point					= object->CorpseMan.get_corpse_position();
@@ -147,7 +121,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		return;
 	}
 
-	if (current_substate == eStateRest) {
+	if (current_substate == eStateEat_Rest) {
 		SStateDataAction data;
 		data.action			= ACT_REST;
 		data.spec_params	= 0;

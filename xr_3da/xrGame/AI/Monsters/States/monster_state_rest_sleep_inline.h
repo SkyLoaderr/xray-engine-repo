@@ -7,7 +7,7 @@
 #define CStateMonsterRestSleepAbstract CStateMonsterRestSleep<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterRestSleepAbstract::CStateMonsterRestSleep(_Object *obj) : inherited(obj, ST_Rest)
+CStateMonsterRestSleepAbstract::CStateMonsterRestSleep(_Object *obj) : inherited(obj)
 {
 }
 
@@ -21,14 +21,6 @@ void CStateMonsterRestSleepAbstract::initialize()
 {
 	inherited::initialize	();
 	object->fall_asleep		();
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Rest :: Sleep", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
 }
 
 TEMPLATE_SPECIALIZATION

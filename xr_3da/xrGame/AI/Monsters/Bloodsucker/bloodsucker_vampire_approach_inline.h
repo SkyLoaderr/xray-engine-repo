@@ -36,13 +36,5 @@ void CStateBloodsuckerVampireApproachAbstract::execute()
 	object->movement().set_distance_to_end				(0.1f);
 	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
 
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Vampire :: Approach", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
-
 }
 

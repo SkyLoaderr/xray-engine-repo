@@ -9,13 +9,6 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
-	enum {
-		eStateSleep				= u32(0),
-		eStateWalkGraphPoint,
-		eStateIdle,
-		eStateFun
-	};
-
 	u32					time_last_fun;	
 
 public:

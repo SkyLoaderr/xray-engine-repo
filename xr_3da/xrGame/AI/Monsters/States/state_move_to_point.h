@@ -9,7 +9,7 @@ class CStateMonsterMoveToPoint : public CState<_Object> {
 	SStateDataMoveToPoint data;
 
 public:
-						CStateMonsterMoveToPoint	(_Object *obj) : inherited(obj, ST_MoveToPoint, &data) {}
+						CStateMonsterMoveToPoint	(_Object *obj) : inherited(obj, &data) {}
 	virtual				~CStateMonsterMoveToPoint	() {}
 
 	virtual void		initialize					();
@@ -29,7 +29,7 @@ protected:
 	SStateDataMoveToPointEx data;
 
 public:
-						CStateMonsterMoveToPointEx	(_Object *obj) : inherited(obj, ST_MoveToPoint, &data) {}
+						CStateMonsterMoveToPointEx	(_Object *obj) : inherited(obj, &data) {}
 	virtual				~CStateMonsterMoveToPointEx	() {}
 	virtual void		initialize					();
 	virtual	void		execute						();

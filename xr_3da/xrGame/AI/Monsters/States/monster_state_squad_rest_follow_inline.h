@@ -1,5 +1,8 @@
 #pragma once
 
+#include "state_custom_action.h"
+#include "state_move_to_point.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -15,8 +18,8 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterSquadRestFollowAbstract::CStateMonsterSquadRestFollow(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateIdle,		xr_new<CStateMonsterCustomAction<_Object> >	(obj));
-	add_state	(eStateWalkToPoint,	xr_new<CStateMonsterMoveToPointEx<_Object> >	(obj));
+	add_state	(eStateSquad_RestFollow_Idle,			xr_new<CStateMonsterCustomAction<_Object> >	(obj));
+	add_state	(eStateSquad_RestFollow_WalkToPoint,	xr_new<CStateMonsterMoveToPointEx<_Object> >	(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -38,9 +41,9 @@ void CStateMonsterSquadRestFollowAbstract::reselect_state()
 {
 	SSquadCommand &command = monster_squad().get_squad(object)->GetCommand(object);
 	if (command.position.distance_to(object->Position()) < Random.randF(STOP_DISTANCE, STAY_DISTANCE)) {
-		select_state(eStateIdle);
+		select_state(eStateSquad_RestFollow_Idle);
 	} else {
-		select_state(eStateWalkToPoint);
+		select_state(eStateSquad_RestFollow_WalkToPoint);
 	}
 }
 
@@ -54,7 +57,7 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateIdle) {
+	if (current_substate == eStateSquad_RestFollow_Idle) {
 		SStateDataAction data;
 		data.action			= ACT_REST;
 		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
@@ -63,16 +66,10 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Squad :: Idle", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 
-	if (current_substate == eStateWalkToPoint) {
+	if (current_substate == eStateSquad_RestFollow_WalkToPoint) {
 		SStateDataMoveToPointEx data;
 
 		Fvector dest_pos = monster_squad().get_squad(object)->GetCommand(object).position;
@@ -94,12 +91,6 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Squad :: Follow Leader", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 }

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "chimera.h"
 #include "chimera_state_manager.h"
-#include "../../../level.h"
-#include "../../../level_debug.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_panic.h"
@@ -17,14 +15,14 @@
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
-	add_state(eStateRest,				xr_new<CStateMonsterRest<CChimera> >					(obj));
-	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CChimera> >					(obj));
-	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CChimera> >					(obj));
-	add_state(eStateEat,				xr_new<CStateMonsterEat<CChimera> >						(obj));
-	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CChimera> >	(obj));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
-	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
-	add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
+	add_state(eStateRest,					xr_new<CStateMonsterRest<CChimera> >					(obj));
+	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CChimera> >					(obj));
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CChimera> >					(obj));
+	add_state(eStateEat,					xr_new<CStateMonsterEat<CChimera> >						(obj));
+	add_state(eStateHearInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CChimera> >	(obj));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
+	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CChimera> >					(obj));
+	add_state(eStateThreaten,				xr_new<CStateChimeraThreaten<CChimera> >				(obj));
 }
 
 CStateManagerChimera::~CStateManagerChimera()
@@ -50,9 +48,9 @@ void CStateManagerChimera::execute()
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
-		state_id = eStateDangerousSound;
+		state_id = eStateHearDangerousSound;
 	} else if (object->hear_interesting_sound) {
-		state_id = eStateInterestingSound;
+		state_id = eStateHearInterestingSound;
 	} else {
 		if (can_eat())	state_id = eStateEat;
 		else			state_id = eStateRest;

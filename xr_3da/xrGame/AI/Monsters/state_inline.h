@@ -7,13 +7,12 @@
 #define CStateAbstract CState<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateAbstract::CState(_Object *obj, EStateType s_type, void *data) 
+CStateAbstract::CState(_Object *obj, void *data) 
 {
 	reset		();
 
 	object		= obj;
 	_data		= data;
-	state_type	= s_type;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -147,16 +146,13 @@ CStateAbstract *CStateAbstract::get_state_current()
 
 	return it->second;
 }
-
 TEMPLATE_SPECIALIZATION
-EStateType CStateAbstract::get_state_type()
+EMonsterState CStateAbstract::get_state_type()
 {
-	// если есть подсостояния - вернуть тип текущего подсостояния
-	CStateAbstract *cur_state = get_state_current();
-	if (cur_state) return cur_state->get_state_type();
+	if (substates.empty() || (current_substate == u32(-1))) return eStateUnknown;
 	
-	// иначе вернуть свой тип
-	return state_type;
+	EMonsterState state = get_state_current()->get_state_type();
+	return ( (state == eStateUnknown) ? EMonsterState(current_substate) : state);
 }
 
 #undef TEMPLATE_SPECIALIZATION

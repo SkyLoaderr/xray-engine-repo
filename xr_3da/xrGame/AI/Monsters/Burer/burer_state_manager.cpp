@@ -21,8 +21,8 @@ CStateManagerBurer::CStateManagerBurer(CBurer *monster) : m_object(monster), inh
 
 void CStateManagerBurer::update()
 {
-	EGlobalStates state			= eStateUnknown;
-	EGlobalStates prev_state	= m_current_state;
+	EMonsterState state		= eStateUnknown;
+	EMonsterState prev_state	= m_current_state;
 
 	TTime last_hit_time = 0;
 	if (m_object->HitMemory.is_hit()) last_hit_time = m_object->HitMemory.get_last_hit_time();

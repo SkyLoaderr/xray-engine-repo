@@ -9,7 +9,7 @@ class CStateMonsterHideFromPoint : public CState<_Object> {
 	SStateHideFromPoint data;
 
 public:
-						CStateMonsterHideFromPoint	(_Object *obj) : inherited(obj, ST_HideFromPoint, &data){}
+						CStateMonsterHideFromPoint	(_Object *obj) : inherited(obj, &data){}
 	virtual				~CStateMonsterHideFromPoint	() {}
 
 	virtual void		initialize					();

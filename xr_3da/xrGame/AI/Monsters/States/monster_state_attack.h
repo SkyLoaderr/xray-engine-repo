@@ -9,15 +9,6 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
-	enum EAttackStates {
-		eStateRun			= u32(0),
-		eStateMelee,
-		eStateRunAttack,
-		eStateRunAway,
-		eStateFindEnemy,
-		eStateSteal
-	};
-
 	u32		m_time_next_run_away;
 
 public:

@@ -8,9 +8,6 @@
 #include "../../../PHCharacter.h"
 #include "../../../phcapture.h"
 
-#include "../../../level.h"
-#include "../../../level_debug.h"
-
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
 #include "../states/monster_state_rest_walk_graph.h"
@@ -71,12 +68,12 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 	);
 
 	add_state(
-		eStateInterestingSound,
+		eStateHearInterestingSound,
 		xr_new<CStateMonsterHearInterestingSound<CController> >(obj)
 	);
 
 	add_state(
-		eStateDangerousSound,
+		eStateHearDangerousSound,
 		xr_new<CStateMonsterHearDangerousSound<CController> >(obj)
 	);
 
@@ -128,9 +125,9 @@ void CStateManagerController::execute()
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
-		state_id = eStateDangerousSound;
+		state_id = eStateHearDangerousSound;
 	} else if (object->hear_interesting_sound) {
-		state_id = eStateInterestingSound;
+		state_id = eStateHearInterestingSound;
 	} else {
 		bool can_eat = false;
 		if (corpse) {

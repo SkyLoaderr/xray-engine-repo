@@ -26,14 +26,6 @@ void CStateMonsterHittedHideAbstract::execute()
 	object->MotionMan.accel_set_braking					(false);
 	object->movement().set_retreat_from_point	(object->HitMemory.get_last_hit_position());
 	object->movement().set_generic_parameters	();
-	
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Hitted :: Hide", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
 
 }
 

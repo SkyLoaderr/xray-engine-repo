@@ -70,20 +70,12 @@ void CStateZombieAttackRunAbstract::execute()
 	object->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 	object->MotionMan.accel_activate			(eAT_Aggressive);
 	object->MotionMan.accel_set_braking			(false);
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Attack :: Run", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
 }
 
 TEMPLATE_SPECIALIZATION
 bool CStateZombieAttackRunAbstract::check_completion()
 {
 	float m_fDistMin	= object->MeleeChecker.get_min_distance		();
-//	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 
 	if (dist < m_fDistMin)	return true;
@@ -94,7 +86,6 @@ bool CStateZombieAttackRunAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 bool CStateZombieAttackRunAbstract::check_start_conditions()
 {
-//	float m_fDistMin	= object->MeleeChecker.get_min_distance		();
 	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 	

@@ -38,8 +38,10 @@ void CAI_Dog::Load(LPCSTR section)
 	SVelocityParam &velocity_run		= movement().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
 	CJumping::AddState(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, velocity_run.velocity.angular_real);
 
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged,		eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged,		eAnimWalkFwd,	eAnimWalkDamaged);
+	MotionMan.AddReplacedAnim(&m_bRunTurnLeft,	eAnimRun,		eAnimRunTurnLeft);
+	MotionMan.AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
 
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
@@ -75,29 +77,27 @@ void CAI_Dog::Load(LPCSTR section)
 
 		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND);
 		MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &velocity_drag,		PS_STAND);
-		MotionMan.AddAnim(eAnimSniff,			"stand_sniff_",			-1, &velocity_none,		PS_STAND);
-		MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	&velocity_none,		PS_STAND);
-		MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, &velocity_none,		PS_STAND);
+		//MotionMan.AddAnim(eAnimSniff,			"stand_sniff_",			-1, &velocity_none,		PS_STAND);
+		//MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	&velocity_none,		PS_STAND);
+		//MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, &velocity_none,		PS_STAND);
 		MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
 		MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &velocity_none,		PS_STAND);
-		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,		PS_STAND);
 
 		MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, &velocity_none,		PS_SIT);
 		MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &velocity_none,		PS_STAND);	
 		MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &velocity_none,		PS_SIT);
-		MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	&velocity_none,		PS_LIE);
-		MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, &velocity_none,		PS_LIE);
+		//MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	&velocity_none,		PS_LIE);
+		MotionMan.AddAnim(eAnimLieSitUp,	"lie_to_sit_",		-1, &velocity_none,		PS_LIE);
 
 		MotionMan.AddAnim(eAnimJumpLeft,		"stand_jump_left_",		-1, &velocity_none,		PS_STAND);
 		MotionMan.AddAnim(eAnimJumpRight,		"stand_jump_right_",	-1, &velocity_none,		PS_STAND);
 
 		// define transitions
 		// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-		MotionMan.AddTransition(eAnimLieIdle,	eAnimSleep,	eAnimLieToSleep,	false);
-		MotionMan.AddTransition(eAnimSleep,		PS_STAND,	eAnimSleepStandUp,	false, SKIP_IF_AGGRESSIVE);
 		MotionMan.AddTransition(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
 		MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 		MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false, SKIP_IF_AGGRESSIVE);
+		MotionMan.AddTransition(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false, SKIP_IF_AGGRESSIVE);
 		
 		// todo: stand -> lie
 
@@ -140,46 +140,6 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
 		MotionMan.SetCurAnim(eAnimThreaten);
 	}
-
-	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
-		float yaw, pitch;
-		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
-		yaw *= -1;
-
-		if (angle_difference(yaw, movement().m_body.current.yaw) > 120 * PI / 180) {
-			
-			EMotionAnim anim;
-			if (from_right(yaw,movement().m_body.current.yaw)) {
-				anim = eAnimJumpRight;
-				yaw = angle_normalize(yaw + 15 * PI / 180);	
-			} else {
-				anim = eAnimJumpLeft;
-				yaw = angle_normalize(yaw - 15 * PI / 180);
-			}
-			
-			MotionMan.Seq_Add(anim);
-			MotionMan.Seq_Switch();
-
-			movement().m_body.target.yaw = yaw;
-
-			// calculate angular speed
-			float new_angular_velocity; 
-			float delta_yaw = angle_difference(yaw,movement().m_body.current.yaw);
-			float time = MotionMan.GetCurAnimTime();
-			new_angular_velocity = 1.5f * delta_yaw / time; 
-
-			MotionMan.ForceAngularSpeed(new_angular_velocity);
-		}
-	}
-
-	if (MotionMan.GetCurAnim() == eAnimRun) {
-		if ((spec_params & ASP_ROTATION_RUN_LEFT) == ASP_ROTATION_RUN_LEFT) 
-			MotionMan.SetCurAnim(eAnimRunTurnLeft);
-		else if  ((spec_params & ASP_ROTATION_RUN_RIGHT) == ASP_ROTATION_RUN_RIGHT) 
-			MotionMan.SetCurAnim(eAnimRunTurnRight);
-	}
-		 
-
 }
 
 void CAI_Dog::OnSoundPlay()

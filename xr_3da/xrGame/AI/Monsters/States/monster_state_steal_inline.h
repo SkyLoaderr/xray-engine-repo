@@ -32,13 +32,6 @@ void CStateMonsterStealAbstract::execute()
 	object->movement().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
 	object->movement().set_generic_parameters	();
 	object->set_state_sound						(MonsterSpace::eMonsterSoundSteal);
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Steal :: Steal", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
 }
 
 TEMPLATE_SPECIALIZATION

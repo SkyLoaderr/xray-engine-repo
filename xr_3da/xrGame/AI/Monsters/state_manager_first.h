@@ -7,30 +7,33 @@ class IState;
 
 class CStateManagerFirst : public IStateManagerBase {
 	
-	DEFINE_MAP		(EGlobalStates, IState*, STATES_MAP, STATE_MAP_IT);
+	DEFINE_MAP		(EMonsterState, IState*, STATES_MAP, STATE_MAP_IT);
 	STATES_MAP		m_states;
 
 protected:
 
 	CBaseMonster	*m_object;
-	EGlobalStates	m_current_state;
+	EMonsterState	m_current_state;
 
 public:
 
 					CStateManagerFirst			(CBaseMonster	*monster);
 	virtual			~CStateManagerFirst			();
 
-	virtual void	force_script_state			(EGlobalStates state);
+	virtual void	force_script_state			(EMonsterState state);
 	virtual void	execute_script_state		();
 	virtual void	reinit						();	
 	virtual	void	critical_finalize			() {}
+	
+	virtual	EMonsterState	get_state_type		() {return eStateUnknown;}
+
 
 protected:
 
-	virtual	void	add_state					(EGlobalStates id, IState *p_state);
+	virtual	void	add_state					(EMonsterState id, IState *p_state);
 	virtual void	remove_all					();
-	virtual void	set_state					(EGlobalStates state);
+	virtual void	set_state					(EMonsterState state);
 	virtual void	execute						();
 
-			IState	*get_state					(EGlobalStates state_id);
+			IState	*get_state					(EMonsterState state_id);
 };

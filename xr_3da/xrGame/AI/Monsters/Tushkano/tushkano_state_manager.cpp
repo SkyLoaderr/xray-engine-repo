@@ -10,8 +10,6 @@
 #include "../states/monster_state_hitted.h"
 #include "../states/monster_state_controlled.h"
 
-#include "../../../level.h"
-#include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 
 
@@ -20,7 +18,7 @@ CStateManagerTushkano::CStateManagerTushkano(CTushkano *obj) : inherited(obj)
 	add_state(eStateRest,				xr_new<CStateMonsterRest<CTushkano> >				(obj));
 	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CTushkano> >				(obj));
 	add_state(eStateEat,				xr_new<CStateMonsterEat<CTushkano> >				(obj));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CTushkano> >	(obj));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CTushkano> >	(obj));
 	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CTushkano> >				(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CTushkano> >				(obj));
 	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CTushkano> >			(obj));
@@ -28,11 +26,6 @@ CStateManagerTushkano::CStateManagerTushkano(CTushkano *obj) : inherited(obj)
 
 CStateManagerTushkano::~CStateManagerTushkano()
 {
-}
-
-void CStateManagerTushkano::initialize()
-{
-	inherited::initialize();
 }
 
 void CStateManagerTushkano::execute()
@@ -53,7 +46,7 @@ void CStateManagerTushkano::execute()
 		} else if (object->HitMemory.is_hit()) {
 			state_id = eStateHitted;
 		} else if (object->hear_interesting_sound || object->hear_dangerous_sound) {
-			state_id = eStateDangerousSound;
+			state_id = eStateHearDangerousSound;
 		} else {
 			bool can_eat = false;
 			if (corpse) {

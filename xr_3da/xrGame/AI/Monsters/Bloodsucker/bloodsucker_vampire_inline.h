@@ -151,13 +151,6 @@ void CStateBloodsuckerVampireAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Vampire :: Run Away", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
-
 		return;
 	}
 }

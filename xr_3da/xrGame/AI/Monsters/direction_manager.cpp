@@ -3,6 +3,7 @@
 #include "basemonster/base_monster.h"
 #include "../../detail_path_manager.h"
 #include "ai_monster_movement.h"
+#include "ai_monster_utils.h"
 
 void CDirectionManager::reinit()
 {
@@ -72,4 +73,22 @@ void CDirectionManager::force_direction(const Fvector &dir)
 
 	m_object->movement().m_body.current.yaw		= yaw;
 	m_object->movement().m_body.target.yaw		= yaw;
+}
+
+bool CDirectionManager::is_from_right(const Fvector &position)
+{
+	float			yaw, pitch;
+	Fvector().sub	(position, m_object->Position()).getHP(yaw,pitch);
+	yaw				*= -1;
+
+	return (from_right(yaw,m_object->movement().m_body.current.yaw));
+}
+
+float CDirectionManager::angle_between(const Fvector &position)
+{
+	float			yaw, pitch;
+	Fvector().sub	(position, m_object->Position()).getHP(yaw,pitch);
+	yaw				*= -1;
+	
+	return angle_difference(yaw, m_object->movement().m_body.current.yaw);
 }

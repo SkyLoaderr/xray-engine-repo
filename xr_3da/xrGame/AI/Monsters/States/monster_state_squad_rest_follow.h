@@ -1,19 +1,12 @@
 #pragma once
 
 #include "../state.h"
-#include "state_custom_action.h"
-#include "state_move_to_point.h"
 
 template<typename _Object>
 class	CStateMonsterSquadRestFollow : public CState<_Object> {
 protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
-
-	enum {
-		eStateIdle				= u32(0),
-		eStateWalkToPoint,
-	};
 
 	Fvector		last_point;
 

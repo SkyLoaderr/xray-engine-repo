@@ -10,29 +10,27 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
-#include "../../../level.h"
-#include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 
 CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherited(obj)
 {
-	add_state(eStateRest,				xr_new<CStateMonsterRest<CPoltergeist> > (obj));
-	add_state(eStateEat,				xr_new<CStateMonsterEat<CPoltergeist> >(obj));
-	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CPoltergeist> >(obj));
-	add_state(eStateAttackHidden,		xr_new<CStatePoltergeistAttackHidden<CPoltergeist> > (obj));
-	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CPoltergeist> >(obj));
-	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CPoltergeist> >(obj));
-	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CPoltergeist> >(obj));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CPoltergeist> >(obj));
+	add_state(eStateRest,					xr_new<CStateMonsterRest<CPoltergeist> > (obj));
+	add_state(eStateEat,					xr_new<CStateMonsterEat<CPoltergeist> >(obj));
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CPoltergeist> >(obj));
+	add_state(eStateAttack_AttackHidden,	xr_new<CStatePoltergeistAttackHidden<CPoltergeist> > (obj));
+	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CPoltergeist> >(obj));
+	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CPoltergeist> >(obj));
+	add_state(eStateHearInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CPoltergeist> >(obj));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CPoltergeist> >(obj));
 }
 
 CStateManagerPoltergeist::~CStateManagerPoltergeist()
 {
 }
 
-void CStateManagerPoltergeist::initialize()
+void CStateManagerPoltergeist::reinit()
 {
-	inherited::initialize();
+	inherited::reinit();
 	
 	time_next_flame_attack	= 0;
 	time_next_tele_attack	= 0;
@@ -48,7 +46,7 @@ void CStateManagerPoltergeist::execute()
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 	if (enemy) {
-		if (object->is_hidden()) state_id = eStateAttackHidden;
+		if (object->is_hidden()) state_id = eStateAttack_AttackHidden;
 		else {
 			switch (object->EnemyMan.get_danger_type()) {
 			case eVeryStrong:	state_id = eStatePanic; break;
@@ -60,10 +58,10 @@ void CStateManagerPoltergeist::execute()
 	} else if (object->HitMemory.is_hit() && !object->is_hidden()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
-		if (!object->is_hidden()) state_id = eStateDangerousSound;
-		else state_id = eStateInterestingSound;
+		if (!object->is_hidden()) state_id = eStateHearDangerousSound;
+		else state_id = eStateHearInterestingSound;
 	} else if (object->hear_interesting_sound ) {
-		state_id = eStateInterestingSound;
+		state_id = eStateHearInterestingSound;
 	} else {
 		bool can_eat = false;
 		if (corpse) {
@@ -90,7 +88,7 @@ void CStateManagerPoltergeist::execute()
 
 	}
 
-	if (state_id == eStateAttackHidden) polter_attack();
+	if (state_id == eStateAttack_AttackHidden) polter_attack();
 
 	if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
 		object->EnableHide();

@@ -12,23 +12,23 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterControlledAbstract::CStateMonsterControlled(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateAttack,		xr_new<CStateMonsterControlledAttack<_Object> >	(obj));
-	add_state	(eStateFollow,		xr_new<CStateMonsterControlledFollow<_Object> >	(obj));	
+	add_state	(eStateControlled_Attack,		xr_new<CStateMonsterControlledAttack<_Object> >	(obj));
+	add_state	(eStateControlled_Follow,		xr_new<CStateMonsterControlledFollow<_Object> >	(obj));	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterControlledAbstract::execute()
 {
 	switch (object->get_data().m_task) {
-		case eTaskFollow:	select_state(eStateFollow);	break;
+		case eTaskFollow:	select_state(eStateControlled_Follow);	break;
 		case eTaskAttack:	{
 			// проверить валидность данных атаки
 			const CEntity *enemy = object->get_data().m_object;
 			if (!enemy || enemy->getDestroy() || !enemy->g_Alive()) {
 				object->get_data().m_object = object->get_controller();
-				select_state(eStateFollow);
+				select_state(eStateControlled_Follow);
 			} else 
-				select_state(eStateAttack);	break;
+				select_state(eStateControlled_Attack);	break;
 		}
 		default:			NODEFAULT;
 	} 

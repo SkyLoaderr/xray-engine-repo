@@ -8,11 +8,6 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
-	enum {
-		eStateMoveToDest		= u32(0),
-		eStateLookAround,
-	};
-
 public:
 					CStateMonsterHearInterestingSound	(_Object *obj);
 	virtual			~CStateMonsterHearInterestingSound	(){}

@@ -6,32 +6,16 @@ template <typename _Object>
 class CStateManagerSecond : public IStateManagerBase, public CState<_Object> {
 	typedef CState<_Object> inherited;
 
-protected:
-	
-	enum {
-		eStateRest					 = u32(0),
-		eStateEat,
-		eStateAttack,
-		eStatePanic,
-		eStateInterestingSound,
-		eStateDangerousSound,
-		eStateHitted,
-		eStateThreaten,
-		eStateControlled,
-		eStateFindEnemy,
-
-		eStateCustom
-	};
-
-
 public:
 					CStateManagerSecond		(_Object *obj) : inherited(obj) {}
 
 	virtual void	reinit					();
 	virtual void	update					();
-	virtual void	force_script_state		(EGlobalStates state);
+	virtual void	force_script_state		(EMonsterState state);
 	virtual void	execute_script_state	();
 	virtual	void	critical_finalize		();
+	
+	virtual	EMonsterState get_state_type	();
 
 protected:
 			bool	can_eat					();

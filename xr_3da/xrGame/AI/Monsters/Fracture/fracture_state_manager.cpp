@@ -9,27 +9,20 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 
-#include "../../../level.h"
-#include "../../../level_debug.h"
 #include "../../../entitycondition.h"
 
 CStateManagerFracture::CStateManagerFracture(CFracture *obj) : inherited(obj)
 {
-	add_state(eStateRest,				xr_new<CStateMonsterRest<CFracture> >				(obj));
-	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CFracture> >				(obj));
-	add_state(eStateEat,				xr_new<CStateMonsterEat<CFracture> >				(obj));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CFracture> >	(obj));
-	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CFracture> >				(obj));
-	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CFracture> >				(obj));
+	add_state(eStateRest,					xr_new<CStateMonsterRest<CFracture> >				(obj));
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CFracture> >				(obj));
+	add_state(eStateEat,					xr_new<CStateMonsterEat<CFracture> >				(obj));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CFracture> >	(obj));
+	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CFracture> >				(obj));
+	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CFracture> >				(obj));
 }
 
 CStateManagerFracture::~CStateManagerFracture()
 {
-}
-
-void CStateManagerFracture::initialize()
-{
-	inherited::initialize();
 }
 
 void CStateManagerFracture::execute()
@@ -48,7 +41,7 @@ void CStateManagerFracture::execute()
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_interesting_sound || object->hear_dangerous_sound) {
-		state_id = eStateDangerousSound;
+		state_id = eStateHearDangerousSound;
 	} else {
 		bool can_eat = false;
 		if (corpse) {

@@ -550,8 +550,8 @@ void CBaseMonsterAttack::UpdateFrameFlags()
 	if (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime)	
 											frame_flags.or(AF_SEE_ENEMY);
 
-	if (pMonster->CanExecRotationJump() && CheckRotationJump()) 
-											frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
+	//if (pMonster->CanExecRotationJump() && CheckRotationJump()) 
+	//										frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
 
 	if (!pMonster->movement().MotionStats->is_good_motion(3))	
 											frame_flags.or(AF_BAD_MOTION);

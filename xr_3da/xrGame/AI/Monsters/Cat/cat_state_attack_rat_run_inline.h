@@ -33,12 +33,4 @@ void CStateCatAttackRatRunAbstract::execute()
 	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->movement().set_try_min_time			(false);
 	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Attack Rat:: Run", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
 }

@@ -6,25 +6,12 @@ class CPoltergeist;
 class CStateManagerPoltergeist : public CStateManagerSecond<CPoltergeist> {
 	typedef CStateManagerSecond<CPoltergeist> inherited;
 
-	enum {
-		eStateRest					 = u32(0),
-		eStateEat,
-		eStateAttack,
-		eStateAttackHidden,
-		eStatePanic,
-		eStateThreaten,
-		eStateDangerousSound,
-		eStateInterestingSound,
-		eStateHitted,
-		eStateFindEnemy,
-	};
-	
 
 public:
 						CStateManagerPoltergeist		(CPoltergeist *obj);
 	virtual				~CStateManagerPoltergeist	();
 
-	virtual void		initialize					();
+	virtual void		reinit						();
 	virtual	void		execute						();
 
 private:

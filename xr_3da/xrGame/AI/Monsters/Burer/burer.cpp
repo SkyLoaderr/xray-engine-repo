@@ -157,32 +157,12 @@ void CBurer::Load(LPCSTR section)
 
 void CBurer::shedule_Update(u32 dt)
 {
-	inherited::shedule_Update(dt);
+	inherited::shedule_Update		(dt);
 
-	TTelekinesis::schedule_update();
-	TScanner::schedule_update	 ();
+	TTelekinesis::schedule_update	();
+	TScanner::schedule_update		();
 
-	//CActor *obj = smart_cast<CActor *>(Level().CurrentEntity());
-
-	//if (obj->ps_Size() < 2) return;
-
-	//CObject::SavedPosition	pos0 = obj->ps_Element(obj->ps_Size() - 2);
-	//CObject::SavedPosition	pos1 = obj->ps_Element(obj->ps_Size() - 1);
-
-	//float vel = (pos1.vPosition.distance_to(pos0.vPosition) /
-	//			(float(pos1.dwTime)/1000.f - float(pos0.dwTime)/1000.f));
-
-	//if (vel > 5.0f) {
-	//	
-	//	float ph_vel	= obj->movement_control()->GetVelocityActual();
-	//	float ph_vel2	= obj->movement_control()->GetVelocityMagnitude();
-	//	Msg("-- Vel = [%f] vel_act=[%f] vel_mag=[%f]", vel, ph_vel, ph_vel2);
-	//	
-	//	//for (u32 i = 0; i<obj->ps_Size();i++) {
-	//	//	CObject::SavedPosition	val = obj->ps_Element(i);
-	//	//	Msg("P[%u] Pos = [%f,%f,%f] Time = [%u]", i, VPUSH(val.vPosition), val.dwTime);	
-	//	//}
-	//}
+	(!EnemyMan.get_enemy()) ? TScanner::enable() : TScanner::disable();
 }
 
 void CBurer::CheckSpecParams(u32 spec_params)
@@ -376,6 +356,7 @@ void CBurer::on_scan_success()
 
 	EnemyMan.add_enemy(pA);
 }
+
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBurer::show_debug_info()

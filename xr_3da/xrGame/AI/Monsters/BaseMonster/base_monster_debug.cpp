@@ -3,6 +3,10 @@
 #include "../../../level.h"
 #include "../../../level_debug.h"
 #include "../../../entitycondition.h"
+#include "../../../ai_debug.h"
+#include "../state_defs.h"
+#include "../state_manager.h"
+#include "../ai_monster_movement.h"
 
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
@@ -103,8 +107,75 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 
 	DBG().text(this).add_item(text,										 x, y+=delta_y, color);
 
+	DBG().text(this).add_item("-----------   MOVEMENT   ------------", x, y+=delta_y, delimiter_color);
+
+	sprintf(text, "Actual = [%u] Enabled = [%u]", movement().actual(), movement().enabled());
+	DBG().text(this).add_item(text,										x, y+=delta_y, color);
+
+	
 	DBG().text(this).add_item("---------------------------------------", x, y+=delta_y, delimiter_color);
 
 	return SDebugInfo(x, y, delta_y, color, delimiter_color);
 }
+
+void CBaseMonster::debug_fsm()
+{
+	if (!psAI_Flags.test(aiMonsterDebug)) return;
+	
+	EMonsterState state = StateMan->get_state_type();
+	
+	string128 st;
+
+	switch (state) {
+		case eStateRest_WalkGraphPoint:					sprintf(st,"Rest :: Walk Graph");			break;
+		case eStateRest_Idle:							sprintf(st,"Rest :: Idle");					break;
+		case eStateRest_Fun:							sprintf(st,"Rest :: Fun");					break;
+		case eStateRest_Sleep:							sprintf(st,"Rest :: Sleep");				break;
+		case eStateEat_CorpseApproachRun:				sprintf(st,"Eat :: Corpse Approach Run");	break;
+		case eStateEat_CorpseApproachWalk:				sprintf(st,"Eat :: Corpse Approach Walk");	break;
+		case eStateEat_CheckCorpse:						sprintf(st,"Eat :: Check Corpse");			break;
+		case eStateEat_Eat:								sprintf(st,"Eat :: Eating");				break;
+		case eStateEat_WalkAway:						sprintf(st,"Eat :: Walk Away");				break;
+		case eStateEat_Rest:							sprintf(st,"Eat :: Rest After Meal");		break;
+		case eStateAttack_Run:							sprintf(st,"Attack :: Run");				break;
+		case eStateAttack_Melee:						sprintf(st,"Attack :: Melee");				break;
+		case eStateAttack_RunAttack:					sprintf(st,"Attack :: Run Attack");			break;
+		case eStateAttack_RunAway:						sprintf(st,"Attack :: Run Away");			break;
+		case eStateAttack_FindEnemy:					sprintf(st,"Attack :: Find Enemy");			break;
+		case eStateAttack_Steal:						sprintf(st,"Attack :: Steal");				break;
+		case eStateAttack_AttackHidden:					sprintf(st,"Attack :: Attack Hidden");		break;
+		case eStateAttack_AttackRat:					sprintf(st,"Attack :: Attack Rat");			break;
+		case eStatePanic_Run:							sprintf(st,"Panic :: Run Away");				break;
+		case eStatePanic_FaceUnprotectedArea:			sprintf(st,"Panic :: Face Unprotected Area");	break;
+		case eStateHitted_Hide:							sprintf(st,"Hitted :: Hide");					break;
+		case eStateHitted_MoveOut:						sprintf(st,"Hitted :: MoveOut");				break;
+		case eStateHearDangerousSound_Hide:				sprintf(st,"Dangerous Snd :: Hide");			break;
+		case eStateHearDangerousSound_FaceOpenPlace:	sprintf(st,"Dangerous Snd :: FaceOpenPlace");	break;
+		case eStateHearDangerousSound_StandScared:		sprintf(st,"Dangerous Snd :: StandScared");		break;
+		case eStateHearInterestingSound_MoveToDest:		sprintf(st,"Interesting Snd :: MoveToDest");	break;
+		case eStateHearInterestingSound_LookAround:		sprintf(st,"Interesting Snd :: LookAround");	break;
+		case eStateControlled_Follow_Wait:				sprintf(st,"Controlled :: Follow : Wait");			break;
+		case eStateControlled_Follow_WalkToObject:		sprintf(st,"Controlled :: Follow : WalkToObject");	break;
+		case eStateControlled_Attack:					sprintf(st,"Controlled :: Attack");					break;
+		case eStateThreaten:							sprintf(st,"Threaten :: ");							break;
+		case eStateFindEnemy_Run:						sprintf(st,"Find Enemy :: Run");							break;
+		case eStateFindEnemy_LookAround_MoveToPoint:	sprintf(st,"Find Enemy :: Look Around : Move To Point");	break;
+		case eStateFindEnemy_LookAround_LookAround:		sprintf(st,"Find Enemy :: Look Around : Look Around");		break;
+		case eStateFindEnemy_LookAround_TurnToPoint:	sprintf(st,"Find Enemy :: Look Around : Turn To Point");	break;
+		case eStateFindEnemy_Angry:						sprintf(st,"Find Enemy :: Angry");							break;
+		case eStateFindEnemy_WalkAround:				sprintf(st,"Find Enemy :: Walk Around");					break;
+		case eStateSquad_Rest_Idle:						sprintf(st,"Squad :: Rest : Idle");					break;
+		case eStateSquad_Rest_WalkAroundLeader:			sprintf(st,"Squad :: Rest : WalkAroundLeader");		break;
+		case eStateSquad_RestFollow_Idle:				sprintf(st,"Squad :: Follow Leader : Idle");		break;
+		case eStateSquad_RestFollow_WalkToPoint:		sprintf(st,"Squad :: Follow Leader : WalkToPoint");	break;
+		case eStateCustom_Vampire:						sprintf(st,"Attack :: Vampire");			break;
+		case eStateUnknown:								sprintf(st,"Unknown State :: ");			break;
+		default:										sprintf(st,"Undefined State ::");			break;
+	}
+	
+	DBG().object_info(this,this).remove_item (u32(0));
+	DBG().object_info(this,this).add_item	 (st, D3DCOLOR_XRGB(255,0,0), 0);
+}
+
+
 #endif

@@ -59,14 +59,6 @@ void CStateControllerControlHitAbstract::execute()
 	object->DirMan.face_target(object->EnemyMan.get_enemy(), 1200);
 
 	object->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Attack :: Control Hit", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
 }
 
 TEMPLATE_SPECIALIZATION

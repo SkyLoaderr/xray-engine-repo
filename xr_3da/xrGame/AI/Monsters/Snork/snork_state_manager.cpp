@@ -21,12 +21,12 @@ CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
 	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CSnork> >					(obj));
 	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CSnork> >				(obj));
 	add_state(eStateEat,				xr_new<CStateMonsterEat<CSnork> >					(obj));
-	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CSnork> >	(obj));
-	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CSnork> >	(obj));
+	add_state(eStateHearInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CSnork> >	(obj));
+	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CSnork> >	(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CSnork> >				(obj));
 
 	add_state(eStateFindEnemy,			xr_new<CStateMonsterTurnAwayFromActor<CSnork> >			(obj));
-	add_state(eStateFakeDeath,			xr_new<CStateMonsterLookActor<CSnork> >			(obj));
+	//add_state(eStateFakeDeath,			xr_new<CStateMonsterLookActor<CSnork> >			(obj));
 }
 
 CStateManagerSnork::~CStateManagerSnork()
@@ -51,9 +51,9 @@ void CStateManagerSnork::execute()
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {
-		state_id = eStateDangerousSound;
+		state_id = eStateHearDangerousSound;
 	} else if (object->hear_interesting_sound) {
-		state_id = eStateInterestingSound;
+		state_id = eStateHearInterestingSound;
 	} else {
 		bool can_eat = false;
 		if (corpse) {

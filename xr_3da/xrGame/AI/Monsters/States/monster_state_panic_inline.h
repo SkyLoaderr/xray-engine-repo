@@ -5,7 +5,6 @@
 #include "state_custom_action.h"
 #include "state_look_unprotected_area.h"
 #include "monster_state_panic_run.h"
-#include "../../../ai_debug.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -16,8 +15,8 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterPanicAbstract::CStateMonsterPanic(_Object *obj) : inherited(obj)
 {
-	add_state(eStateRun,					xr_new<CStateMonsterPanicRun<_Object> >(obj));
-	add_state(eStateFaceUnprotectedArea,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
+	add_state(eStatePanic_Run,					xr_new<CStateMonsterPanicRun<_Object> >(obj));
+	add_state(eStatePanic_FaceUnprotectedArea,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -35,11 +34,11 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterPanicAbstract::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
-		select_state(eStateRun);
+		select_state(eStatePanic_Run);
 	}
 	
-	if (prev_substate == eStateRun) select_state(eStateFaceUnprotectedArea);
-	else select_state(eStateRun);
+	if (prev_substate == eStatePanic_Run) select_state(eStatePanic_FaceUnprotectedArea);
+	else select_state(eStatePanic_Run);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -47,7 +46,7 @@ void CStateMonsterPanicAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateFaceUnprotectedArea) {
+	if (current_substate == eStatePanic_FaceUnprotectedArea) {
 		SStateDataAction data;
 		
 		data.action			= ACT_STAND_IDLE;
@@ -58,13 +57,6 @@ void CStateMonsterPanicAbstract::setup_substates()
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
-
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Panic :: Face Unprotected Area", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 		return;
 	}
 
@@ -73,15 +65,15 @@ void CStateMonsterPanicAbstract::setup_substates()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterPanicAbstract::check_force_state()
 {
-	if ((current_substate == eStateFaceUnprotectedArea)){
+	if ((current_substate == eStatePanic_FaceUnprotectedArea)){
 		// если видит врага
 		if (object->EnemyMan.get_enemy_time_last_seen() == object->m_current_update) {
-			select_state(eStateRun);
+			select_state(eStatePanic_Run);
 			return;
 		}
 		// если получил hit
 		if (object->HitMemory.get_last_hit_time() + 5000 > object->m_current_update) {
-			select_state(eStateRun);
+			select_state(eStatePanic_Run);
 			return;
 		}
 	}

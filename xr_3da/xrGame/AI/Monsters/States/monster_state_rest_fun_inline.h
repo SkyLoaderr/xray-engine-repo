@@ -15,7 +15,7 @@
 #define TIME_IN_STATE		15000
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterRestFunAbstract::CStateMonsterRestFun(_Object *obj) : inherited(obj, ST_Rest)
+CStateMonsterRestFunAbstract::CStateMonsterRestFun(_Object *obj) : inherited(obj)
 {
 }
 
@@ -25,14 +25,6 @@ void CStateMonsterRestFunAbstract::initialize()
 	inherited::initialize	();
 
 	time_last_hit			= 0;
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiMonsterDebug)) {
-		DBG().object_info(object,object).remove_item	(u32(0));
-		DBG().object_info(object,object).add_item		("Rest :: Fun", D3DCOLOR_XRGB(255,0,0), 0);
-	}
-#endif
-
 }
 
 

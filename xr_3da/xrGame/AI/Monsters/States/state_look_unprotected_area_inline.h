@@ -9,7 +9,7 @@
 #define CStateMonsterLookToUnprotectedAreaAbstract CStateMonsterLookToUnprotectedArea<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterLookToUnprotectedAreaAbstract::CStateMonsterLookToUnprotectedArea(_Object *obj) : inherited(obj, ST_LookUnprotectedArea, &data)
+CStateMonsterLookToUnprotectedAreaAbstract::CStateMonsterLookToUnprotectedArea(_Object *obj) : inherited(obj, &data)
 {
 }
 

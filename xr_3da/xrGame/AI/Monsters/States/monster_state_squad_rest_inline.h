@@ -1,5 +1,12 @@
 #pragma once
 
+#include "../../../ai_space.h"
+#include "../../../level_navigation_graph.h"
+#include "../../../ai_object_location.h"
+#include "state_custom_action.h"
+#include "state_move_to_point.h"
+#include "../../../restricted_object.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -16,8 +23,8 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterSquadRestAbstract::CStateMonsterSquadRest(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateIdle,				xr_new<CStateMonsterCustomAction<_Object> >	(obj));
-	add_state	(eStateWalkAroundLeader,	xr_new<CStateMonsterMoveToPoint<_Object> >	(obj));
+	add_state	(eStateSquad_Rest_Idle,				xr_new<CStateMonsterCustomAction<_Object> >	(obj));
+	add_state	(eStateSquad_Rest_WalkAroundLeader,	xr_new<CStateMonsterMoveToPoint<_Object> >	(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -28,7 +35,7 @@ CStateMonsterSquadRestAbstract::~CStateMonsterSquadRest	()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterSquadRestAbstract::reselect_state()
 {
-	select_state(Random.randI(2) ? eStateIdle : eStateWalkAroundLeader);
+	select_state(Random.randI(2) ? eStateSquad_Rest_Idle : eStateSquad_Rest_WalkAroundLeader);
 }
 
 
@@ -37,7 +44,7 @@ void CStateMonsterSquadRestAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateIdle) {
+	if (current_substate == eStateSquad_Rest_Idle) {
 		SStateDataAction data;
 		data.action			= ACT_REST;
 		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
@@ -46,17 +53,10 @@ void CStateMonsterSquadRestAbstract::setup_substates()
 		
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Squad :: Sleep", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
-
 		return;
 	}
 
-	if (current_substate == eStateWalkAroundLeader) {
+	if (current_substate == eStateSquad_Rest_WalkAroundLeader) {
 		SStateDataMoveToPoint data;
 		CMonsterSquad	*squad = monster_squad().get_squad(object);
 		
@@ -82,13 +82,6 @@ void CStateMonsterSquadRestAbstract::setup_substates()
 		data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
-
-#ifdef DEBUG
-		if (psAI_Flags.test(aiMonsterDebug)) {
-			DBG().object_info(object,object).remove_item	(u32(0));
-			DBG().object_info(object,object).add_item		("Squad :: Move Around Leader", D3DCOLOR_XRGB(255,0,0), 0);
-		}
-#endif
 
 		return;
 	}

@@ -23,4 +23,7 @@ public:
 		void	use_path_direction	(bool reversed = false);
 
 		void	force_direction		(const Fvector &dir);
+
+		bool	is_from_right		(const Fvector &position);
+		float	angle_between		(const Fvector &position);
 };

@@ -6,11 +6,6 @@ template<typename _Object>
 class	CStateMonsterPanic : public CState<_Object> {
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
-
-	enum EPanicStates {
-		eStateRun			= u32(0),
-		eStateFaceUnprotectedArea,
-	};
 	
 public:
 						CStateMonsterPanic		(_Object *obj);
