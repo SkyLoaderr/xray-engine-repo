@@ -59,11 +59,7 @@ public:
 	void				OnDeviceDestroy	();
 };
 
-#ifdef _EDITOR
-	#define PSLIB_FILENAME 		"particles_km.xr"
-#else
-	#define PSLIB_FILENAME 		"particles.xr"
-#endif
+#define PSLIB_FILENAME 			"particles.xr"
 
 #define PS_LIB_SIGN 			"PS_LIB"
 
