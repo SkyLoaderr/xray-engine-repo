@@ -45,6 +45,7 @@ CInventoryOwner::~CInventoryOwner			()
 
 void CInventoryOwner::Init					()
 {
+	m_pTrade = NULL;
 	m_inventory					= xr_new<CInventory>();
 	m_trade_storage				= xr_new<CInventory>();
 }
