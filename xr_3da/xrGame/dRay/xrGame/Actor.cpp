@@ -1201,7 +1201,7 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 void	CActor::SetZoomRndSeed		(s32 Seed)
 {
 	if (0 != Seed) m_ZoomRndSeed = Seed;
-	else m_ZoomRndSeed = s32(Level()->timeServer_Async());
+	else m_ZoomRndSeed = s32(Level().timeServer_Async());
 };
 
 Fvector CActor::GetMissileOffset	() const

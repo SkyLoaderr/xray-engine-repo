@@ -660,8 +660,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	if (!g_Alive())
 		set_death_time		();
 
-	R_ASSERT				(MT_SKELETON_ANIM == Visual()->Type);
-
 	// Eyes
 	eye_bone				= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 

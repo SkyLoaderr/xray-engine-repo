@@ -12,6 +12,7 @@
 #define WIN32_LEAN_AND_MEAN			// Exclude rarely-used stuff from Windows headers
 #define STRICT						// Enable strict syntax
 #define IDIRECTPLAY2_OR_GREATER
+#define DIRECTINPUT_VERSION	0x0700
 
 // windows.h
 #define _WIN32_WINNT 0x0500        
