@@ -19,7 +19,7 @@ public:
 extern XRCORE_API pauseMngr		g_pauseMngr;
 
 class XRCORE_API CTimer {
-private:
+protected:
 	u64			qwStartTime;
 	u64			qwPaused_time;
 	float		fResult;
@@ -39,7 +39,6 @@ public:
 };
 
 class XRCORE_API CTimer_paused  : public CTimer		{
-private:
 public:
 	CTimer_paused				()		{ g_pauseMngr.Register(this);	}
 	~CTimer_paused				()		{ g_pauseMngr.UnRegister(this);	}
