@@ -700,6 +700,8 @@ BOOL FlagOnEdit				(PropItem* prop, BOOL& bRes)
 void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
+	if (m_Flags.is(plReadOnly)) return;
+    
 	CancelEditControl();
 
 	TSTItemPart 	IP=(TSTItemPart)0;

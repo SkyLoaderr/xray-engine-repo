@@ -147,6 +147,7 @@ public:
         plFullSort		= (1<<3), 
         plIFTop			= (1<<4),
         plNoClearStore	= (1<<5),
+        plReadOnly		= (1<<6),
     };
 protected:
     Flags32				m_Flags;
@@ -223,6 +224,8 @@ public:		// User declarations
         if (col<item->ColumnText->Count) t=item->ColumnText->Strings[col];
         return t.c_str();
     }
+
+    void				SetReadOnly				(BOOL val){m_Flags.set(plReadOnly,val);}
 };
 //---------------------------------------------------------------------------
 #endif
