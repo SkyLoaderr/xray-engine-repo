@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 504
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -120,7 +120,7 @@ object fraLeftBar: TfraLeftBar
         HotColor = 15790320
         BtnColor = 10528425
         CloseButton = False
-        Caption = 'Compile'
+        Caption = 'Scene'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1598,7 +1598,7 @@ object fraLeftBar: TfraLeftBar
     object N8: TMenuItem
       Caption = '-'
     end
-    object Build1: TMenuItem
+    object Build: TMenuItem
       Caption = 'Build'
       OnClick = ebBuildClick
     end
@@ -1624,13 +1624,16 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Import Error List'
       OnClick = ImportCompilerErrorsClick
     end
-    object NextError1: TMenuItem
-      Caption = 'Errors List'
-      Enabled = False
-    end
     object miClearErrorList: TMenuItem
       Caption = 'Clear Error List'
       OnClick = miClearErrorListClick
+    end
+    object N22: TMenuItem
+      Caption = '-'
+    end
+    object miSceneSummary: TMenuItem
+      Caption = 'Summary Info'
+      OnClick = miSceneSummaryClick
     end
   end
   object pmSceneCommands: TMxPopupMenu

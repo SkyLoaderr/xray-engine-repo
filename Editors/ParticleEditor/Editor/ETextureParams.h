@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: TextureParam.h
 //----------------------------------------------------
-#ifndef _INCDEF_TextureParams_H_
-#define _INCDEF_TextureParams_H_
+#ifndef ETextureParamsH
+#define ETextureParamsH
 
 #pragma pack(push,1)
 struct STextureParams{

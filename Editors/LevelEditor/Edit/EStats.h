@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_)
-#define AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_
+#ifndef EStatsH
+#define EStatsH
 #pragma once
 
 // refs
@@ -53,8 +53,6 @@ public:
 	DWORD		dwShader_Constants;	// Number of times the shader-consts changes
 	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
     DWORD		dwTotalLight,dwLightInScene;
-	DWORD		dwLevelFaceCount;	// Number of faces in scene
-	DWORD		dwLevelVertexCount;	// Number of vertices in scene
 	DWORD		dwLevelSelFaceCount;	// Number of faces in scene
 	DWORD		dwLevelSelVertexCount;	// Number of vertices in scene
 

@@ -643,8 +643,7 @@ int SceneBuilder::BuildTexture(const char* name){
 int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int sector_num)
 {
 	if (!e->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
-    AnsiString lod_name;
-	R_ASSERT(e->GetLODTextureName(lod_name));
+    AnsiString lod_name = e->GetLODTextureName();
 
 	AnsiString fname = lod_name+AnsiString(".tga");
     if (!Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str())){

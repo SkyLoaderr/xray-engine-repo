@@ -1,5 +1,5 @@
-#ifndef _INCDEF_ImageThumbnail_H_
-#define _INCDEF_ImageThumbnail_H_
+#ifndef ImageThumbnailH
+#define ImageThumbnailH
 
 #include "ETextureParams.h"
 #include "PropertiesListHelper.h"
@@ -43,6 +43,9 @@ public:
 	void 			Save			(int age=0,FSPath* path=0);
     IC bool			Valid			(){return !m_Pixels.empty();}
 	void			FillProp		(PropItemVec& values);
+
+    int				MemoryUsage		();
+    LPCSTR			FormatString	();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_Texture_H_*/

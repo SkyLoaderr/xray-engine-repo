@@ -58,7 +58,7 @@ __published:	// IDE-managed Components
 	TMenuItem *SaveAs1;
 	TMxPopupMenu *pmSceneCompile;
 	TMenuItem *Options1;
-	TMenuItem *Build1;
+	TMenuItem *Build;
 	TMenuItem *MakeGame;
 	TMenuItem *Validate1;
 	TMxPopupMenu *pmSceneCommands;
@@ -158,9 +158,10 @@ __published:	// IDE-managed Components
 	TMenuItem *N20;
 	TMenuItem *N21;
 	TMenuItem *ImportCompilerErrors;
-	TMenuItem *NextError1;
 	TExtBtn *ebTargetShape;
 	TMenuItem *miClearErrorList;
+	TMenuItem *N22;
+	TMenuItem *miSceneSummary;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -238,6 +239,7 @@ __published:	// IDE-managed Components
 	void __fastcall ImportCompilerErrorsClick(TObject *Sender);
 	void __fastcall ebIgnoreModeClick(TObject *Sender);
 	void __fastcall miClearErrorListClick(TObject *Sender);
+	void __fastcall miSceneSummaryClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

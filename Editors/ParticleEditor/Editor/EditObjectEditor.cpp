@@ -238,12 +238,13 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     }
 }
 
-LPCSTR CEditableObject::GetLODTextureName(AnsiString& l_name)
+AnsiString CEditableObject::GetLODTextureName()
 {
+	AnsiString l_name;
     string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
     l_name = "lod_"+AnsiString(nm);
     l_name = Engine.FS.UpdateTextureNameWithFolder(l_name);
-    return l_name.c_str();
+    return l_name;
 }
 
 void CEditableObject::OnDeviceCreate()
@@ -273,8 +274,7 @@ void CEditableObject::DefferedLoadRP()
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->OnDeviceCreate();
 	// создать LOD shader
-	AnsiString l_name;
-    GetLODTextureName(l_name);
+	AnsiString l_name = GetLODTextureName();
     AnsiString fname = l_name+AnsiString(".tga");
     Device.Shader.Delete(m_LODShader);
     if (Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str()))
@@ -389,4 +389,32 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
     PHelper.CreateAText(items,PHelper.PrepareKey(pref, "Game options\\Script"),&m_ClassScript);
 }
 //---------------------------------------------------------------------------
+
+#include "Scene.h"
+bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
+{
+	if (IsStatic()||IsMUStatic()){
+        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+            inf->textures.push_back((*s_it)->m_Texture);
+        if (m_Flags.is(eoUsingLOD)){ 
+            inf->textures.push_back(GetLODTextureName());
+            inf->lod_objects.push_back(m_LibName);
+            inf->object_lod_ref_cnt++;
+        }
+        if (m_Flags.is(eoMultipleUsage)){
+            inf->mu_objects.push_back(m_LibName);
+            inf->object_mu_ref_cnt++;
+        }
+
+        inf->face_cnt		+= GetFaceCount	();
+        inf->vert_cnt		+= GetVertexCount();
+    }
+	if (m_Flags.is(eoHOM)){
+    	inf->hom_face_cnt	+= GetFaceCount	();
+    	inf->hom_vert_cnt	+= GetVertexCount();
+    }
+        
+	return true;
+}
+
 

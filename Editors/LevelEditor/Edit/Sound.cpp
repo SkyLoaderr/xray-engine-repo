@@ -123,3 +123,11 @@ void CSound::FillProp(LPCSTR pref, PropItemVec& values)
 }
 //----------------------------------------------------
 
+#include "scene.h"
+bool CSound::GetSummaryInfo(SSceneSummary* inf)
+{
+	if (!m_WAVName.IsEmpty()) inf->waves.push_back(m_WAVName); 
+    inf->sound_source_cnt++;
+	return true;
+}
+

@@ -126,11 +126,7 @@ void CTexture::Load(LPCSTR cName)
 	{
 		// Sequence
 		char buffer[256];
-#ifdef _EDITOR
-		destructor<CStream>	fs(xr_new<CFileStream>(fn));
-#else
 		destructor<CStream>	fs(Engine.FS.Open(fn));
-#endif
 
 		seqCycles	= FALSE;
 		fs().Rstring	(buffer);

@@ -30,7 +30,6 @@ xr_token					tfmt_token						[ ]={
 	{ "16 bit (4:4:4:4)",	STextureParams::tf4444				},
 	{ "16 bit (1:5:5:5)",	STextureParams::tf1555				},
 	{ "16 bit (5:6:5)",		STextureParams::tf565				},
-	{ "24 bit (8:8:8)",		STextureParams::tfRGB				},
 	{ "32 bit (8:8:8:8)",	STextureParams::tfRGBA				},
 	{ 0,					0									}
 };

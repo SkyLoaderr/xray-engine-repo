@@ -14,8 +14,6 @@ CStats::CStats()
 	fFPS		= 30.f;
 	fRFPS		= 30.f;
 	fTPS		= 0;
-	dwLevelFaceCount	= 0;
-	dwLevelVertexCount	= 0;
 	dwLevelSelFaceCount	= 0;
 	dwLevelSelVertexCount=0;
 }
@@ -98,8 +96,6 @@ void CStats::Show(CGameFont* font)
 		F.OutNext	("TEST 3:       %2.2fms, %d",TEST3.result,TEST3.count);
 		F.OutSkip	(2.f);
         F.OutNext	("Level summary:");
-        F.OutNext	(" Total Faces: %d",			dwLevelFaceCount);
-        F.OutNext	(" Total Verts: %d",			dwLevelVertexCount);
         F.OutNext	(" Sel Faces:   %d",			dwLevelSelFaceCount);
         F.OutNext	(" Sel Verts:   %d",			dwLevelSelVertexCount);
 	}
@@ -136,8 +132,6 @@ void CStats::Show(CGameFont* font)
 	DPS.vb		= 0;
 	DPS.ib		= 0;
 
-	dwLevelFaceCount		= 0;
-	dwLevelVertexCount		= 0;
 	dwLevelSelFaceCount		= 0;
 	dwLevelSelVertexCount	= 0;
 }

@@ -264,6 +264,15 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         }
 		break;
 
+	case COMMAND_SCENE_SUMMARY:
+		if( !Scene.locked() ){
+        	Scene.ShowSummaryInfo();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+        
 	case COMMAND_OPTIONS:
 		if( !Scene.locked() ){
             if (mrOk==frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false))

@@ -20,6 +20,7 @@
 #include "leftbar.h"    
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "PropertiesList.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
@@ -99,6 +100,7 @@ EScene::EScene(){
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
     m_SkyDome 		= 0;
+    m_SummaryInfo	= 0;
     ClearSnapList	();
 }
 
@@ -107,28 +109,32 @@ EScene::~EScene(){
     m_SnapObjects.clear();
 }
 
-void EScene::OnCreate(){
+void EScene::OnCreate()
+{
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_DetailObjects			= xr_new<EDetailManager>();
 	m_LastAvailObject 		= 0;
-    m_LevelOp.Reset();
-	ELog.Msg( mtInformation, "Scene: initialized" );
-	m_Valid = true;
-    m_Modified = false;
-	UI.Command(COMMAND_UPDATE_CAPTION);
+    m_LevelOp.Reset			();
+	ELog.Msg				( mtInformation, "Scene: initialized" );
+	m_Valid 				= true;
+    m_Modified 				= false;
+	UI.Command				(COMMAND_UPDATE_CAPTION);
+	m_SummaryInfo 			= TProperties::CreateForm();
 }
 
-void EScene::OnDestroy(){
-    Unload		();
-    UndoClear	();
+void EScene::OnDestroy()
+{
+	TProperties::DestroyForm(m_SummaryInfo);
+    Unload					();
+    UndoClear				();
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
-	ELog.Msg( mtInformation, "Scene: cleared" );
-	m_LastAvailObject = 0;
-	m_Valid = false;
-    xr_delete(m_DetailObjects);
-    xr_delete(m_SkyDome);
+	ELog.Msg				( mtInformation, "Scene: cleared" );
+	m_LastAvailObject 		= 0;
+	m_Valid 				= false;
+    xr_delete				(m_DetailObjects);
+    xr_delete				(m_SkyDome);
 }
 
 void EScene::AddObject( CCustomObject* object, bool bUndo ){
@@ -652,6 +658,7 @@ bool EScene::IfModified(){
 void EScene::Unload(){
 	m_LastAvailObject = 0;
 	ClearObjects(true);
+	if (m_SummaryInfo) m_SummaryInfo->HideProperties();
 }
 
 
@@ -838,18 +845,97 @@ ObjectList* EScene::GetSnapList()
 }
 //--------------------------------------------------------------------------------------------------
 
+#include "ImageThumbnail.h"
+void SSceneSummary::FillProp(PropItemVec& items)
+{
+	AStringIt new_end;
+    // unique textures
+    sort				(textures.begin(),textures.end());
+	new_end	= unique	(textures.begin(),textures.end());
+    textures.erase		(new_end,textures.end());
+	// unique lod
+    sort				(lod_objects.begin(),lod_objects.end());
+    new_end = unique	(lod_objects.begin(),lod_objects.end());
+    lod_objects.erase	(new_end,lod_objects.end());
+    // unique mu
+    sort				(mu_objects.begin(),mu_objects.end());
+    new_end = unique	(mu_objects.begin(),mu_objects.end());
+    mu_objects.erase	(new_end,mu_objects.end());
+    // unique waves
+    sort				(waves.begin(),waves.end());
+	new_end	= unique	(waves.begin(),waves.end());
+    waves.erase			(new_end,waves.end());
+    
+    int mem_usage		= 0;
+    // fill items
+    PHelper.CreateCaption(items,"Level Name",					Scene.m_LevelOp.m_FNLevelPath);
+    PHelper.CreateCaption(items,"Geometry\\Total Faces",   		face_cnt);
+    PHelper.CreateCaption(items,"Geometry\\Total Vertices",		vert_cnt);
+    PHelper.CreateCaption(items,"Geometry\\MU Objects",			mu_objects.size());
+    PHelper.CreateCaption(items,"Geometry\\MU References", 		object_mu_ref_cnt);
+    PHelper.CreateCaption(items,"Geometry\\LOD Objects",		lod_objects.size());
+    PHelper.CreateCaption(items,"Geometry\\LOD References",		object_lod_ref_cnt);
+    PHelper.CreateCaption(items,"Visibility\\HOM Faces",		hom_face_cnt);
+    PHelper.CreateCaption(items,"Visibility\\HOM Vertices",		hom_vert_cnt);
+    PHelper.CreateCaption(items,"Visibility\\Sectors",			sector_cnt);
+    PHelper.CreateCaption(items,"Visibility\\Portals",			portal_cnt);
+    PHelper.CreateCaption(items,"Lights\\Count",				light_sun_cnt+light_point_cnt+light_spot_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Type\\Sun",			light_sun_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Type\\Point",		light_point_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Type\\Spot",		light_spot_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Usage\\Dynamic",	light_dynamic_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Usage\\Static",		light_static_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Usage\\Breakable",	light_breakable_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Usage\\Procedural",	light_procedural_cnt);
+    PHelper.CreateCaption(items,"Glows\\Count",					glow_cnt);
+    // textures
+    PHelper.CreateCaption(items,"Textures\\Count",				textures.size());
+    PropValue* item = PHelper.CreateCaption(items,"Textures\\Memory Usage",	"");
+    UI.ProgressStart(textures.size(),"Collect textures info: ");
+    for (AStringIt t_it=textures.begin(); t_it!=textures.end(); t_it++){
+        UI.ProgressInc	(t_it->c_str());
+        EImageThumbnail* T = xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
+        if (!T->Valid()){
+        	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
+        }else{
+            int tex_mem		= T->MemoryUsage();
+            mem_usage		+= tex_mem;
+            PHelper.CreateCaption(items,PHelper.PrepareKey("Textures", t_it->c_str(), "Format"),		T->FormatString());
+            PHelper.CreateCaption(items,PHelper.PrepareKey("Textures", t_it->c_str(), "Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper.CreateCaption(items,PHelper.PrepareKey("Textures", t_it->c_str(), "Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+        }
+        xr_delete(T);
+    }
+    AnsiString temp;
+    temp.sprintf("%d Kb",iFloor(mem_usage/1024));
+    item->ApplyValue(&temp);
+    UI.ProgressEnd();
+	// sound
+    PHelper.CreateCaption(items,"Sounds\\Sources",				sound_source_cnt);
+    PHelper.CreateCaption(items,"Sounds\\Waves\\Count",			waves.size());
+    for (AStringIt w_it=waves.begin(); w_it!=waves.end(); w_it++)
+        PHelper.CreateCaption(items,PHelper.PrepareKey("Sounds\\Waves",w_it->c_str()),"...");
+}
+
 void EScene::ShowSummaryInfo()
 {
-	AStringVec textures;
-	int face_cnt=0, vert_cnt=0;
+	SSceneSummary summary;
 	bool bRes=false;
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if ((*_F)->GetSummaryInfo(textures, face_cnt, vert_cnt)) bRes=true;
+    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+            if ((*_F)->GetSummaryInfo(&summary)) bRes=true;
+        }
 	}
+	PropItemVec items;
 	if (bRes){
+        // fill items
+        summary.FillProp(items);
+        m_SummaryInfo->ShowProperties();
+    }else{
+    	ELog.DlgMsg(mtInformation,"Scene doesn't contain summary info.");
     }
+	m_SummaryInfo->AssignItems(items,false,"Level Summary Info");
 }
 //--------------------------------------------------------------------------------------------------
 

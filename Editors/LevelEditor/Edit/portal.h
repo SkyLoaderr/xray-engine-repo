@@ -1,5 +1,5 @@
-#ifndef _INCDEF_Portal_H_
-#define _INCDEF_Portal_H_
+#ifndef PortalH
+#define PortalH
 
 // refs
 class CSector;
@@ -37,6 +37,8 @@ public:
 
     FvectorVec&		Vertices()	{return m_Vertices;}
     void			SetSectors	(CSector* sf, CSector* sb){m_SectorFront=sf; m_SectorBack=sb;}
+
+    virtual bool 	GetSummaryInfo(SSceneSummary* inf);
 };
 
 #endif /*_INCDEF_Portal_H_*/

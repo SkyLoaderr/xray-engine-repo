@@ -96,7 +96,7 @@ public:
         *(float*)draw_val = rad2deg(*(float*)draw_val);
     }
 public:
-    IC CaptionValue*	CreateCaption	(PropItemVec& items, LPCSTR key, LPCSTR val)
+    IC CaptionValue*	CreateCaption	(PropItemVec& items, LPCSTR key, AnsiString val)
     {
     	return			(CaptionValue*)	AppendValue		(items,key,xr_new<CaptionValue>(val),PROP_CAPTION);
     }

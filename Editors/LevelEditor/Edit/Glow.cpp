@@ -196,3 +196,10 @@ void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
+bool CGlow::GetSummaryInfo(SSceneSummary* inf)
+{
+	if (!m_TexName.IsEmpty()) inf->textures.push_back(m_TexName);
+	inf->glow_cnt++;
+	return true;
+}
+

@@ -231,11 +231,11 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 class CaptionValue: public PropValue{
 	AnsiString			value;
 public:
-						CaptionValue	(LPCSTR val){value=val;}
+						CaptionValue	(AnsiString val){value=val;}
     virtual LPCSTR		GetText			(TOnDrawEvent){return value.c_str();}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val){return true;}
-    virtual	bool		ApplyValue		(LPVOID val){return false;}
+    virtual	bool		ApplyValue		(LPVOID val){value=*(AnsiString*)val; return false;}
 };
 
 class TextValue: public PropValue{

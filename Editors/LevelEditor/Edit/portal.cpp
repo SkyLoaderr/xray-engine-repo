@@ -543,3 +543,9 @@ void CPortal::Save(CFS_Base& F){
 }
 //------------------------------------------------------------------------------
 
+bool CPortal::GetSummaryInfo(SSceneSummary* inf)
+{
+	inf->portal_cnt++;
+	return true;
+}
+

@@ -25,12 +25,40 @@ class EDetailManager;
 class CInifile;
 class CStream;
 class CFS_Base;
+class TProperties;
 /*
 int __cdecl _CompareByDist( const void *a, const void *b)
 {
     return ((SRayPickInfo*)a)->rp_inf.range - ((SRayPickInfo*)b)->rp_inf.range;
 }
 */
+
+struct SSceneSummary{
+	AStringVec	textures;
+	AStringVec	lod_objects;
+	AStringVec	mu_objects;
+	AStringVec	waves;
+    int			face_cnt;
+    int			vert_cnt;
+    int			hom_face_cnt;
+    int			hom_vert_cnt;
+    int 		object_mu_ref_cnt;
+    int 		object_lod_ref_cnt;
+    int 		light_sun_cnt;
+    int 		light_point_cnt;
+    int 		light_spot_cnt;
+    int 		light_dynamic_cnt;
+    int 		light_static_cnt;
+    int 		light_breakable_cnt;
+    int 		light_procedural_cnt;
+    int			glow_cnt;
+    int			sector_cnt;
+    int			portal_cnt;
+    int 		sound_source_cnt;
+    
+    			SSceneSummary(){ZeroMemory(this,sizeof(SSceneSummary));}
+    void		FillProp	(PropItemVec& items);
+};
 
 struct st_Environment{
     float 		m_ViewDist;
@@ -106,6 +134,7 @@ protected:
 	deque<UndoItem> m_UndoStack;
 	deque<UndoItem> m_RedoStack;
 
+	TProperties* m_SummaryInfo;
 public:
     struct ERR{
 	    struct Face{

@@ -32,6 +32,10 @@ __published:	// IDE-managed Components
 	TEdit 				*edText;
 	TBevel 				*Bevel1;
 	TElPopupButton *pbExtBtn;
+	TMxPopupMenu *pmSystem;
+	TMenuItem *ExpandAll1;
+	TMenuItem *N1;
+	TMenuItem *CollapseAll1;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
@@ -56,6 +60,8 @@ __published:	// IDE-managed Components
 	void __fastcall pbExtBtnClick(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall CollapseAll1Click(TObject *Sender);
+	void __fastcall ExpandAll1Click(TObject *Sender);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);
@@ -99,6 +105,7 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TProperties		        	(TComponent* Owner);
 	static TProperties* CreateForm			(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
+	static TProperties* CreateModalForm		(const AnsiString& title, PropItemVec& items, bool bFullExpand=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
 	static void 	DestroyForm				(TProperties*& props);
     void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();

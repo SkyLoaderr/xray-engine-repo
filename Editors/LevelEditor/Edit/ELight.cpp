@@ -429,6 +429,21 @@ void CLight::OnDeviceDestroy()
 }
 //----------------------------------------------------
 
+bool CLight::GetSummaryInfo(SSceneSummary* inf)
+{
+    switch (m_D3D.type){
+    case D3DLIGHT_DIRECTIONAL:	inf->light_sun_cnt++; 	break;
+    case D3DLIGHT_POINT:		inf->light_point_cnt++; break;
+    case D3DLIGHT_SPOT:			inf->light_spot_cnt++; 	break;
+    }
+    
+    if (m_Flags.is(flAffectStatic))		inf->light_static_cnt++;
+    if (m_Flags.is(flAffectDynamic))	inf->light_dynamic_cnt++;
+    if (m_Flags.is(flProcedural))		inf->light_procedural_cnt++;
+    if (m_Flags.is(flBreaking))			inf->light_breakable_cnt++;
+	return true;
+}
+
 //----------------------------------------------------
 // Edit Flare
 //----------------------------------------------------
@@ -523,4 +538,5 @@ void CEditFlare::CreateShaders()
     CLensFlare::DDLoad();
 }
 //----------------------------------------------------
+
 

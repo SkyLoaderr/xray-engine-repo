@@ -29,6 +29,62 @@ bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, in
 }
 //----------------------------------------------------
 
+LPCSTR EImageThumbnail::FormatString()
+{
+	LPCSTR c_fmt = 0;
+    switch (m_Type){
+    case EITObject: 
+    break;
+    case EITTexture:
+		for(int i=0; tfmt_token[i].name; i++) 
+        	if (tfmt_token[i].id==m_TexParams.fmt){
+            	c_fmt=tfmt_token[i].name;
+                break;
+            }
+    break;
+    }
+    return c_fmt;
+}
+//----------------------------------------------------
+
+int EImageThumbnail::MemoryUsage()
+{
+	int mem_usage = 0;
+    switch (m_Type){
+    case EITObject: 
+    break;
+    case EITTexture:{
+    	mem_usage = _Width()*_Height()*4;
+        switch (m_TexParams.fmt){
+        case STextureParams::tfDXT1:	
+        case STextureParams::tfADXT1: 	mem_usage/=6; break;
+        case STextureParams::tfDXT3: 	
+        case STextureParams::tfDXT5: 	mem_usage/=4; break;
+        case STextureParams::tf4444: 	
+        case STextureParams::tf1555: 	
+        case STextureParams::tf565: 	mem_usage/=2; break;
+        case STextureParams::tfRGBA:	break;
+        }
+		AnsiString fn 	= ChangeFileExt(m_Name,".seq");
+        Engine.FS.m_GameTextures.Update(fn);
+        if (Engine.FS.Exist(fn.c_str())){
+        	string128		buffer;
+			destructor<CStream>	fs(Engine.FS.Open(fn.c_str()));
+            fs().Rstring	(buffer);
+			int cnt = 0;
+            while (!fs().Eof()){
+                fs().Rstring(buffer);
+                cnt++;
+            }
+	        mem_usage *= cnt?cnt:1;
+        }
+    }
+    break;
+    }
+    return mem_usage;
+}
+//----------------------------------------------------
+
 void EImageThumbnail::VFlip()
 {
 //	return;

@@ -2,8 +2,8 @@
 // file: Glow.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_Glow_H_
-#define _INCDEF_Glow_H_
+#ifndef GlowH
+#define GlowH
 
 #include "tlsprite.h"
 #include "customobject.h"
@@ -47,6 +47,8 @@ public:
     // device dependent routine
 	virtual void 	OnDeviceCreate 	();
 	virtual void 	OnDeviceDestroy	();
+
+	virtual bool 	GetSummaryInfo(SSceneSummary* inf);
 };
 
 #endif /*_INCDEF_Glow_H_*/

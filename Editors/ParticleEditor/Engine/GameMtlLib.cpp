@@ -64,7 +64,9 @@ void SGameMtl::Load(CStream& fs)
 
 void CGameMtlLibrary::Load(LPCSTR name)
 {
-    CFileStream	fs(name);
+	destructor<CStream>	FS(Engine.FS.Open(name));
+    CStream& fs			= FS();
+    
 
     R_ASSERT(fs.FindChunk(GAMEMTLS_CHUNK_VERSION));
     u16 version			= fs.Rword();

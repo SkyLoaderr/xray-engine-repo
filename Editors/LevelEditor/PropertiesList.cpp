@@ -161,6 +161,17 @@ TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModif
 	return props;
 }
 
+TProperties* TProperties::CreateModalForm(const AnsiString& title, PropItemVec& items, bool bFullExpand, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
+{
+	TProperties* props 			= xr_new<TProperties>((TComponent*)0);
+    props->OnModifiedEvent 		= modif;
+    props->OnItemFocused    	= focused;
+    props->OnCloseEvent			= on_close;
+    props->AssignItems			(items,bFullExpand,title);
+	props->ShowPropertiesModal	();
+	return props;
+}
+
 void TProperties::DestroyForm(TProperties*& props)
 {
 	VERIFY(props);
@@ -1295,4 +1306,15 @@ void __fastcall TProperties::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TProperties::ExpandAll1Click(TObject *Sender)
+{
+	tvProperties->FullExpand();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::CollapseAll1Click(TObject *Sender)
+{
+	tvProperties->FullCollapse();
+}
+//---------------------------------------------------------------------------
 

@@ -233,7 +233,7 @@ public:
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
 
     // LOD
-	LPCSTR			GetLODTextureName		(AnsiString& name);
+	AnsiString		GetLODTextureName		();
     LPCSTR			GetLODShaderName		(){return LOD_SHADER_NAME;}
     void			GetLODFrame				(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent=0);
 
@@ -280,8 +280,8 @@ public:
     // statistics methods
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
-    int 			GetTexturesList			(AStringVec& lst);
     int 			GetSurfFaceCount		(LPCSTR surf_name);
+	bool 			GetSummaryInfo			(SSceneSummary* inf);
 
     // render methods
 	void 			Render					(const Fmatrix& parent, int priority, bool strictB2F);

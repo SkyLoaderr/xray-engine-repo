@@ -13,6 +13,7 @@ struct FSChunkDef;
 class CFrustum;
 class CStream;
 class CFS_Base;
+struct SSceneSummary;
 
 struct SExportStreamItem{
 	int					chunk;
@@ -72,7 +73,7 @@ public:
 
 	// editor integration
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
-	virtual bool 	GetSummaryInfo	(AStringVec& textures, int& face_cnt, int& vert_cnt){return false;}
+	virtual bool 	GetSummaryInfo	(SSceneSummary* inf){return false;}
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);

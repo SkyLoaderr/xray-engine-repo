@@ -78,6 +78,7 @@ public:
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
 	virtual void	FillProp	(LPCSTR pref, PropItemVec& values);
+	virtual bool 	GetSummaryInfo(SSceneSummary* inf);
 
 	bool			AddMesh		(CSceneObject* O, CEditableMesh* M); // возвращает добавлен ли объект
 	bool	  		DelMesh		(CSceneObject* O, CEditableMesh* M); // возвращает false если объект удален

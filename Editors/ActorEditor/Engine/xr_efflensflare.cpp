@@ -320,7 +320,7 @@ void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 	bInit			= true;
 }
 
-void CLensFlare::DDUnload	()
+void CLensFlare::DDLoad	()
 {
 	// VS
 	hGeom				= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
@@ -331,7 +331,7 @@ void CLensFlare::DDUnload	()
     for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
 }
 
-void CLensFlare::DDLoad()
+void CLensFlare::DDUnload()
 {
 	// shaders
 	Device.Shader.Delete	(m_Gradient.hShader);

@@ -100,14 +100,6 @@ void CEditableObject::ClearGeometry ()
     m_ActiveSMotion = 0;
 }
 
-int CEditableObject::GetTexturesList(AStringVec& lst)
-{
-	int cnt=lst.size();
-	for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-    	lst.push_back((*s_it)->m_Texture);
-	return lst.size()-cnt;
-}
-
 int CEditableObject::GetFaceCount(){
 	int cnt=0;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)

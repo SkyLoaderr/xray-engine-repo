@@ -2,8 +2,8 @@
 // file: ELight.h
 //----------------------------------------------------
 
-#ifndef LightH
-#define LightH                                                      
+#ifndef ELightH
+#define ELightH                                                      
 
 #include "xr_efflensflare.h"
 
@@ -87,6 +87,7 @@ public:
 	void			FillSunProp	(LPCSTR pref, PropItemVec& items);
 	void			FillPointProp(LPCSTR pref, PropItemVec& items);
 	void			FillSpotProp(LPCSTR pref, PropItemVec& items);
+	virtual bool 	GetSummaryInfo(SSceneSummary* inf);
 
     // render utility function
 	void 			Set			(int d3dindex);

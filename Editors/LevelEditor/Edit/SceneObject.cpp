@@ -250,13 +250,9 @@ void CSceneObject::OnFrame()
         UpdateTransform(true);
 	}
 	if (psDeviceFlags.is(rsStatistic)){
-    	if (IsStatic()||IsMUStatic()){
-		    Device.Statistic.dwLevelFaceCount 	+= GetFaceCount();
-		    Device.Statistic.dwLevelVertexCount += GetVertexCount();
-            if (Selected()){
-                Device.Statistic.dwLevelSelFaceCount 	+= GetFaceCount();
-                Device.Statistic.dwLevelSelVertexCount 	+= GetVertexCount();
-            }
+    	if (IsStatic()||IsMUStatic()||Selected()){
+            Device.Statistic.dwLevelSelFaceCount 	+= GetFaceCount();
+            Device.Statistic.dwLevelSelVertexCount 	+= GetVertexCount();
         }
     }
 }
@@ -404,12 +400,10 @@ void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 //	PHelper.CreateFlag32		(items,PHelper.PrepareKey(pref,"Flags\\Dummy"),	&m_Flags,flDummy);
 }
 
-bool CSceneObject::GetSummaryInfo(AStringVec& textures, int& face_cnt, int& vert_cnt)
+bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 {
-	CEditableObject* E = GetReference();
-    E->GetTexturesList(textures);
-	face_cnt	= GetFaceCount	();
-    vert_cnt	= GetVertexCount();
+	CEditableObject* E 	= GetReference(); R_ASSERT(E);
+    E->GetSummaryInfo	(inf);
 	return true;
 }
 

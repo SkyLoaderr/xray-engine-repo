@@ -144,6 +144,12 @@ void __fastcall TfraLeftBar::ebBuildClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::miSceneSummaryClick(TObject *Sender)
+{
+	UI.Command( COMMAND_SCENE_SUMMARY );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebOptionsClick(TObject *Sender)
 {
 	UI.Command( COMMAND_OPTIONS );
@@ -580,4 +586,5 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 	UI.Command(COMMAND_CLEAR_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
+
 
