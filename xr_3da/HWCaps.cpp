@@ -86,8 +86,5 @@ void CHWCaps::Update()
 	    dwMaxStencilValue=(1<<8)-1;
     }
 
-	// FORCE (overwrite) flags
-	if (bForceVertexFog)		bTableFog			=	false;
-
 	// DEV INFO
 }
