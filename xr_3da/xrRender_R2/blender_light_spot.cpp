@@ -20,7 +20,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 			C.r2_End				();
 			break;
 		case 1:	// lighting/shadowing - front/back
-			C.r2_Pass				(r2v("r2_accum_spot"),	r2p("r2_accum_spot_unmask"),FALSE,FALSE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,4);
+			C.r2_Pass				(r2v("r2_accum_spot"),	r2p("r2_accum_spot_unmask"),FALSE,FALSE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,200);
 			C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 			C.r2_End				();
 			break;

@@ -138,6 +138,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_c				("light_direction",	-L_dir.x,-L_dir.y,-L_dir.z,0.f);
 		RCache.set_c				("m_texgen",		m_Texgen);
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x01,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		RCache.set_Geometry			(g_accum_spot);
+		RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
 		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATER	));
 	}
 
