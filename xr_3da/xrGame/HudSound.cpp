@@ -58,15 +58,14 @@ void  HUD_SOUND::LoadSound(LPCSTR section, LPCSTR line,
 void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 {
 	hud_snd.snd.destroy();
-	hud_snd.enable = false;
 }
 
-void HUD_SOUND::PlaySound(HUD_SOUND&		hud_snd,
-						  const Fvector&	position,
-						  const CObject*	parent,
-						  bool				hud_mode)
+void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
+							const Fvector&	position,
+							const CObject*	parent,
+							bool			hud_mode)
 {
-	if(!hud_snd.enable) return;
+	if(!hud_snd.enable)		return;
 
 	VERIFY2					(hud_snd.snd.handle,"Trying to play non-existant or destroyed sound");
 	hud_snd.snd.set_volume	(hud_snd.volume);
