@@ -27,7 +27,7 @@ CEffect_Rain::CEffect_Rain()
 	control_start		= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
 	control_stop		= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
-	Sound->Create		(snd_Ambient,FALSE,"amb_rain");
+	Sound->Create		(snd_Ambient,TRUE,"amb_rain");
 	snd_Ambient_volume	= 0;
 
 	Device.seqDevCreate.Add	(this);
@@ -226,7 +226,8 @@ void	CEffect_Rain::Render	()
 	case stIdle:		return;
 	case stStarting:	
 		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
-		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
+		snd_Ambient.feedback->SetVolume		(snd_Ambient_volume);
+		snd_Ambient.feedback->SetPosition	(Device.vCameraPosition);
 		if (snd_Ambient_volume > 1)	state=stWorking;
 		bBornNewItems	= TRUE;
 		break;
