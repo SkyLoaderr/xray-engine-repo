@@ -13,7 +13,7 @@ public:
 			for (DWORD x=0; x<s_Y; x++)
 				table[y][x]	= NULL;
 		bounds.invalidate	();
-		size.set			(0,0,0);
+		size.set			(0.f,0.f);
 	}
 	~hash2D()
 	{
