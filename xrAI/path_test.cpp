@@ -10,7 +10,7 @@
 #include "path_test.h"
 #include "ai_map.h"
 #include "a_star.h"
-#include "data_storage_base.h"
+#include "data_storage_heap.h"
 #include "path_manager.h"
 #include "path_test_old.h"
 
