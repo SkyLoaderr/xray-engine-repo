@@ -361,6 +361,10 @@ public:
 			const xr_vector<MemorySpace::CHitObject>			&memory_hit_objects		() const;
 			const xr_vector<MemorySpace::CNotYetVisibleObject>	&not_yet_visible_objects() const;
 			float				visibility_threshold	() const;
+			void				enable_vision			(bool value);
+			bool				vision_enabled			() const;
+			void				set_sound_threshold		(float value);
+			void				restore_sound_threshold	();
 			//////////////////////////////////////////////////////////////////////////
 			bool				limping					() const;
 			

@@ -218,6 +218,10 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("memory_hit_objects",			&CScriptGameObject::memory_hit_objects, return_stl_iterator)
 			.def("not_yet_visible_objects",		&CScriptGameObject::not_yet_visible_objects, return_stl_iterator)
 			.def("visibility_threshold",		&CScriptGameObject::visibility_threshold)
+			.def("enable_vision",				&CScriptGameObject::enable_vision)
+			.def("vision_enabled",				&CScriptGameObject::vision_enabled)
+			.def("set_sound_threshold",			&CScriptGameObject::set_sound_threshold)
+			.def("restore_sound_threshold",		&CScriptGameObject::restore_sound_threshold)
 
 			// sight manager
 			.def("set_sight",					(void (CScriptGameObject::*)(SightManager::ESightType sight_type, const Fvector *vector3d, u32 dwLookOverDelay))(CScriptGameObject::set_sight))

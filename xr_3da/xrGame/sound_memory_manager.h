@@ -56,6 +56,8 @@ public:
 	IC		const MemorySpace::CSoundObject					*sound			() const;
 	IC		void	set_squad_objects			(xr_vector<MemorySpace::CSoundObject> *squad_objects);
 	IC		void	enable						(const CObject *object, bool enable);
+	IC		void	set_threshold				(float threshold);
+	IC		void	restore_threshold			();
 };
 
 #include "sound_memory_manager_inline.h"

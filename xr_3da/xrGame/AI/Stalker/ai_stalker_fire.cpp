@@ -85,7 +85,8 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		float				power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
-	add_hit_object			(amount,vLocalDir,who,element);
+	if (g_Alive())
+		add_hit_object		(amount,vLocalDir,who,element);
 }
 
 void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)

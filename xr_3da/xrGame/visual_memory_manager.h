@@ -62,6 +62,7 @@ private:
 	float							m_decrease_value;
 	float							m_velocity_factor;
 	float							m_transparency_threshold;
+	bool							m_enabled;
 
 private:
 	// to minimize dynamic_casts
@@ -99,6 +100,8 @@ public:
 	IC		float	visibility_threshold			() const;
 	virtual	float	feel_vision_mtl_transp			(u32 element);	
 	IC		float	transparency_threshold			() const;
+	IC		bool	enabled							() const;
+	IC		void	enable							(bool value);
 };
 
 #include "visual_memory_manager_inline.h"

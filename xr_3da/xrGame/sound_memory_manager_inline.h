@@ -64,3 +64,13 @@ IC	void CSoundMemoryManager::enable		(const CObject *object, bool enable)
 		return;
 	(*J).m_enabled		= enable;
 }
+
+IC	void CSoundMemoryManager::set_threshold			(float threshold)
+{
+	m_sound_threshold	= threshold;
+}
+
+IC	void CSoundMemoryManager::restore_threshold		()
+{
+	m_sound_threshold	= m_min_sound_threshold;
+}

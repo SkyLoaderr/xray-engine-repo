@@ -37,6 +37,7 @@ CVisualMemoryManager::~CVisualMemoryManager		()
 void CVisualMemoryManager::init					()
 {
 	m_max_object_count			= 0;
+	m_enabled					= true;
 }
 
 void CVisualMemoryManager::Load					(LPCSTR section)
@@ -266,6 +267,9 @@ void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_obje
 	
 void CVisualMemoryManager::update				(float time_delta)
 {
+	if (!enabled())
+		return;
+
 	VERIFY								(m_objects);
 	m_visible_objects.clear				();
 	feel_vision_get						(m_visible_objects);

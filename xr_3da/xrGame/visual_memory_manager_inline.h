@@ -60,3 +60,13 @@ IC	float CVisualMemoryManager::transparency_threshold	() const
 {
 	return							(m_transparency_threshold);
 }
+
+IC	bool CVisualMemoryManager::enabled					() const
+{
+	return							(m_enabled);
+}
+
+IC	void CVisualMemoryManager::enable					(bool value)
+{
+	m_enabled						= value;
+}

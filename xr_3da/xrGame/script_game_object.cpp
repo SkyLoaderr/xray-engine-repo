@@ -1350,7 +1350,7 @@ bool CScriptGameObject::is_body_turning		() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member is_turning!");
 		return			(false);
 	}
-	return				(!!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
+	return				(!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
 }
 
 
@@ -1504,4 +1504,44 @@ bool CScriptGameObject::limping				() const
 		return								(false);
 	}
 	return									(entity_condition->IsLimping());
+}
+
+void CScriptGameObject::enable_vision			(bool value)
+{
+	CVisualMemoryManager					*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(m_tpGameObject);
+	if (!visual_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member enable_vision!");
+		return;
+	}
+	visual_memory_manager->enable			(value);
+}
+
+bool CScriptGameObject::vision_enabled			() const
+{
+	CVisualMemoryManager					*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(m_tpGameObject);
+	if (!visual_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member vision_enabled!");
+		return								(false);
+	}
+	return									(visual_memory_manager->enabled());
+}
+
+void CScriptGameObject::set_sound_threshold		(float value)
+{
+	CSoundMemoryManager						*sound_memory_manager = dynamic_cast<CSoundMemoryManager*>(m_tpGameObject);
+	if (!sound_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member set_sound_threshold!");
+		return;
+	}
+	sound_memory_manager->set_threshold		(value);
+}
+
+void CScriptGameObject::restore_sound_threshold	()
+{
+	CSoundMemoryManager						*sound_memory_manager = dynamic_cast<CSoundMemoryManager*>(m_tpGameObject);
+	if (!sound_memory_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member restore_sound_threshold!");
+		return;
+	}
+	sound_memory_manager->restore_threshold	();
 }
