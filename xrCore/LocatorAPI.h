@@ -164,9 +164,6 @@ public:
 	void						unlock_rescan	();
 };
 
-std::string						ChangeFileExt	(LPCSTR src, LPCSTR ext);
-std::string						ChangeFileExt	(const std::string& src, LPCSTR ext);
-
 extern XRCORE_API	CLocatorAPI*			xr_FS;
 #define FS (*xr_FS)
 

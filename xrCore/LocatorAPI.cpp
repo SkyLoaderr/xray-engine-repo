@@ -83,21 +83,6 @@ void FS_Path::rescan_path_cb	()
 	m_Flags.set(flNeedRescan,TRUE);
     FS.m_Flags.set(CLocatorAPI::flNeedRescan,TRUE);
 }
-std::string		ChangeFileExt	(LPCSTR src, LPCSTR ext)				{
-	std::string	tmp;
-	LPSTR src_ext	= strext(src);
-	if (src_ext){
-		size_t		ext_pos	= src_ext-src;
-		tmp.assign	(src,0,ext_pos);
-	}else{
-		tmp			= src;
-	}
-	tmp				+= ext;
-	return tmp;
-}
-std::string		ChangeFileExt	(const std::string& src, LPCSTR ext)	{
-	return		ChangeFileExt	(src.c_str(),ext);
-}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
