@@ -507,22 +507,6 @@ void CEntityCondition::UpdateHealth()
 	m_fDeltaHealth -= bleeding_speed;
 	VERIFY(_valid(m_fDeltaHealth));
 	ChangeBleeding(m_fV_WoundIncarnation * delta_time);
-
-	CActor *act = smart_cast<CActor *>(m_object);
-	if (!act) return;
-
-
-	CActor *pa = smart_cast<CActor *>(Level().CurrentEntity());
-	DBG().text(pa).clear();
-	string128 s;
-
-	sprintf(s,"REAL BLEEDING SPEED = [%f]",BleedingSpeed());
-	DBG().text(pa).add_item(s,400,50,D3DCOLOR_XRGB(0,0,255));
-
-	sprintf(s,"Time = [%u], bliding_speed[%f] delta_health[%f]",Device.dwTimeGlobal,bleeding_speed,m_fDeltaHealth);
-	DBG().text(pa).add_item(s,400,100,D3DCOLOR_XRGB(0,0,255));
-	sprintf(s,"V_Bleeding[%f] V_WoundIncarnation[%f]",m_fV_Bleeding, m_fV_WoundIncarnation);
-	DBG().text(pa).add_item(s,400,120,D3DCOLOR_XRGB(0,0,255));
 }
 void CEntityCondition::UpdatePower()
 {
