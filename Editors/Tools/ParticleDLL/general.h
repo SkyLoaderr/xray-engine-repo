@@ -120,7 +120,8 @@ enum PActionEnum
 	PATargetColorID,	// 
 	PATargetSizeID,		// 
 	PATargetVelocityID,	// 
-	PAVortexID			// 
+	PAVortexID,			// 
+	action_enum_force_dword = DWORD(-1)
 };
 
 // This method actually does the particle's action.
