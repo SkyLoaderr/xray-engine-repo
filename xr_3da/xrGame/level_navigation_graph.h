@@ -10,6 +10,10 @@
 
 #include "level_graph.h"
 
+#ifdef AI_COMPILER
+//#	define OPTIMAL_GRAPH
+#endif
+
 namespace LevelNavigationGraph {
 	struct CCellVertex;
 	class  CSector;
@@ -41,6 +45,9 @@ private:
 private:
 	MARK_TABLE					m_marks;
 	CROSS_TABLE					m_cross;
+#ifdef OPTIMAL_GRAPH
+	CROSS_TABLE					m_temp;
+#endif
 
 #ifdef DEBUG
 private:
@@ -73,9 +80,16 @@ protected:
 	IC		void				build_sectors			();
 	IC		void				build_edges				();
 
-#if 0
-	IC		bool				connected				(CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 link);
-	IC		void				compute_length			(u32 i, u32 j, CCellVertex &cell_vertex);
+#ifdef OPTIMAL_GRAPH
+protected:
+	IC		void				fill_cross				();
+	IC		void				fill_cell				(CCellVertex &v, u32 link);
+	IC		void				fill_cells				();
+	IC		void				update_cells			(u32 &vertex_id, u32 &right, u32 &down);
+	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down);
+	IC		bool				select_sector			(u32 &vertex_id, u32 &right, u32 &down);
+	IC		void				build_sector			(u32 vertex_id, u32 right, u32 down, u32 &group_id);
+	IC		void				generate_sectors		();
 #endif
 
 public:

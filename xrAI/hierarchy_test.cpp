@@ -367,8 +367,6 @@ void test_hierarchy		(LPCSTR name)
 	Sleep						(1);
 #endif
 
-	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
-
 	s							= CPU::GetCycleCount();
 	for (u32 i=0; i<TEST_COUNT; ++i) {
 		build_convex_hierarchy	(*level_graph,*sector_graph);
@@ -378,6 +376,8 @@ void test_hierarchy		(LPCSTR name)
 	f							= CPU::GetCycleCount();
 
 	Msg							("Total time %f (%d test(s) : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
+
+	CLevelNavigationGraph		*level_navigation_graph = xr_new<CLevelNavigationGraph>(name);
 
 	Msg							("Graphs are %s",equal(*sector_graph,((const CLevelNavigationGraph*)level_navigation_graph)->sectors()) ? "EQUAL" : "NOT EQUAL");
 

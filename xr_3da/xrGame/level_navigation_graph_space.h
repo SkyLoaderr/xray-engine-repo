@@ -13,9 +13,21 @@
 namespace LevelNavigationGraph {
 	struct CCellVertex {
 		u32				m_vertex_id;
-#if 0
-		u32				m_down;
-		u32				m_right;
+#ifdef OPTIMAL_GRAPH
+		union {
+			struct {
+				u32		m_right;
+				u32		m_down;
+			};
+			u32			m_dirs[2];
+		};
+		union {
+			struct {
+				u32		m_right_id;
+				u32		m_down_id;
+			};
+			u32			m_dirs_id[2];
+		};
 #endif
 		union {
 			typedef u8	_use_type;
@@ -35,6 +47,11 @@ namespace LevelNavigationGraph {
 			m_vertex_id	(vertex_id),
 			m_mark		(mark),
 			m_use		(use)
+#ifdef OPTIMAL_GRAPH
+			,
+			m_down		(0),
+			m_right		(0)
+#endif
 		{
 		}
 	};
