@@ -86,7 +86,7 @@ function save_dialog:InitControls()
 						     height = 0}
 	list_rect.width  = main_rect.width - indent*2
 	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height	
-	local message_rect   = {x = 0, y = 0, width = 550, height = 300}
+	local message_rect   = {x = 0, y = 0, width = 800, height = 300}
 	--message_rect.x = (main_rect.width - message_rect.width)/2
 	--message_rect.y = (main_rect.height - message_rect.height)/2
 	
