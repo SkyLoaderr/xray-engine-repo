@@ -57,28 +57,33 @@ void CBuild::Flex2OGF()
 			try {
 				for (vecFaceIt Fit=(*it)->begin(); Fit!=(*it)->end(); Fit++)
 				{
-					OGF_Vertex	V1,V2,V3;
+					OGF_Vertex	V[3];
 					
 					Face*	FF = *Fit;
 					R_ASSERT(FF);
 					
 					// Geometry
-					V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color.get();
-					V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color.get();
-					V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color.get();
+					for (u32 fv=0; fv<3; fv++)
+					{
+						V[fv].P.set(FF->v[fv]->P);
+						V[fv].N.set(FF->v[fv]->N); 
+						V[fv].T.set(FF->basis_tangent[fv]);
+						V[fv].B.set(FF->basis_binormal[fv]);
+						V[fv].Color= FF->v[fv]->Color.get();
+					}
 					
 					// Normal order
 					svector<_TCF,8>::iterator TC=FF->tc.begin(); 
 					for (;TC!=FF->tc.end(); TC++)
 					{
-						V1.UV.push_back(TC->uv[0]);
-						V2.UV.push_back(TC->uv[1]);
-						V3.UV.push_back(TC->uv[2]);
+						V[0].UV.push_back(TC->uv[0]);
+						V[1].UV.push_back(TC->uv[1]);
+						V[2].UV.push_back(TC->uv[2]);
 					}
 					
 					// build face
-					TRY				(pOGF->_BuildFace(V1,V2,V3));
-					V1.UV.clear();	V2.UV.clear();	V3.UV.clear();
+					TRY				(pOGF->_BuildFace(V[0],V[1],V[2]));
+					V[0].UV.clear();V[1].UV.clear();V[2].UV.clear();
 				}
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
 		} catch (...)
