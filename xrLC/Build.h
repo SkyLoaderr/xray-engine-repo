@@ -92,7 +92,6 @@ public:
 	void	xrPhase_ResolveMaterials();
 	void	xrPhase_UVmap			();
 	void	xrPhase_Subdivide		();
-	void	SoftenLights			();
 	void	ImplicitLighting		();
 	void	Light					();
 	void	LightVertex				();
@@ -100,6 +99,7 @@ public:
 	void	xrPhase_MergeGeometry	();
 
 	void	Flex2OGF				();
+	void	Flex2LOD				();
 	void	BuildSectors			();
 
 	void	SaveLights				(CFS_Base &fs);

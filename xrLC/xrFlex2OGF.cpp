@@ -97,7 +97,7 @@ void CBuild::Flex2OGF()
 			Msg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);
 		}
 		
-		g_tree.push_back(pOGF);
-		Progress(p_total+=p_cost);
+		g_tree.push_back	(pOGF);
+		Progress			(p_total+=p_cost);
 	}
 }

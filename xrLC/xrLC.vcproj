@@ -585,6 +585,9 @@
 				RelativePath=".\xrCalcNormals.cpp">
 			</File>
 			<File
+				RelativePath="xrFlex2LOD.cpp">
+			</File>
+			<File
 				RelativePath=".\xrFlex2OGF.cpp">
 			</File>
 			<File

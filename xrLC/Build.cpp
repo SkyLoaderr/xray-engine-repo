@@ -314,31 +314,26 @@ void CBuild::Run	(string& P)
 	xrPhase_Subdivide();
 	IsolateVertices	();
 	
-//	FPU::m64r		();
-//	Phase			("Soften lights...");
-//	mem_Compact		();
-//	SoftenLights				();
-
 	FPU::m64r		();
 	Phase			("Implicit lighting...");
 	mem_Compact		();
-	ImplicitLighting			();
+	ImplicitLighting();
 
 	// All lighting
 	FPU::m64r		();
 	Phase			("Lighting...");
 	mem_Compact		();
-	Light						();
+	Light			();
 	
 	FPU::m64r		();
 	Phase			("Calculating vertex lighting...");
 	mem_Compact		();
-	LightVertex					();
+	LightVertex		();
 	
 	FPU::m64r		();
 	Phase			("Merging lightmaps...");
 	mem_Compact		();
-	xrPhase_MergeLM				();
+	xrPhase_MergeLM	();
 
 	FPU::m64r		();
 	Phase			("Merging geometry...");
@@ -348,7 +343,12 @@ void CBuild::Run	(string& P)
 	FPU::m64r		();
 	Phase			("Converting to OpenGraphicsFormat...");
 	mem_Compact		();
-	Flex2OGF					();
+	Flex2OGF		();
+
+	FPU::m64r		();
+	Phase			("Building LOD-models...");
+	mem_Compact		();
+	Flex2LOD		();
 
 	FPU::m64r		();
 	Phase			("Building sectors...");
