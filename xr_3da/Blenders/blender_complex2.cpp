@@ -14,6 +14,7 @@
 CBlender_complex2::CBlender_complex2	()
 {
 	description.CLS		= B_DEFAULT;
+	
 }
 
 CBlender_complex2::~CBlender_complex2	()

@@ -11,7 +11,7 @@ CBlender_Screen_SET::CBlender_Screen_SET()
 {
 	description.CLS		= B_SCREEN_SET;
 	description.version	= 1;
-	oBlend.Count		= 3;
+	oBlend.Count		= 6;
 	oBlend.IDselected	= 0;
 	oAREF.value			= 32;
 	oAREF.min			= 0;
