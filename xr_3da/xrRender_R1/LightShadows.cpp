@@ -254,9 +254,9 @@ void CLightShadows::calculate	()
 			// Render object-parts
 			for (u32 n_it=0; n_it<C.nodes.size(); n_it++)
 			{
-				NODE& N			=	C.nodes[n_it];
-				IRender_Visual *V		=	N.val.pVisual;
-				RCache.set_xform_world	(N.val.Matrix);
+				NODE& N					=	C.nodes[n_it];
+				IRender_Visual *V		=	N.pVisual;
+				RCache.set_xform_world	(N.Matrix);
 				V->Render				(-1.0f);
 			}
 			
