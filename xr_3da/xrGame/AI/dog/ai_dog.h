@@ -15,7 +15,6 @@ public:
 					CAI_Dog				();
 	virtual			~CAI_Dog			();	
 
-	virtual	BOOL	net_Spawn			(LPVOID DC);
 	virtual void	Load				(LPCSTR section);
 	virtual void	UpdateCL			();
 
@@ -26,13 +25,6 @@ public:
 
 	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}
-	virtual bool	CanExecRotationJump	() {return false;}
+	virtual bool	CanExecRotationJump	() {return true;}
 
-private:
-	static	void __stdcall	BoneCallback			(CBoneInstance *B);
-			float	_velocity;
-			float	_cur_delta, _target_delta;
-			bool	look_at_enemy;
-	
-			void	BonesInMotion		();
 };

@@ -538,7 +538,9 @@ void CBitingAttack::UpdateFrameFlags()
 bool CBitingAttack::CheckRotationJump()
 {
 	//if (MotionMan.Seq_Active()) return false;
-
+	
+	if (flags.is(AF_HAS_JUMP_ABILITY) && pJumping->IsActive()) return false;
+	
 	// check angle
 	float yaw, pitch;
 	Fvector().sub(m_tEnemy.obj->Position(), pMonster->Position()).getHP(yaw,pitch);

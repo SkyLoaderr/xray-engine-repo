@@ -39,7 +39,7 @@ enum EMotionAnim {
 	eAnimRun,
 	eAnimRunTurnLeft,
 	eAnimRunTurnRight,
-	eAnimFastTurn,					
+	eAnimFastTurn,
 
 	eAnimAttack,
 	eAnimAttackRat,
@@ -114,6 +114,8 @@ enum EPState {
 #define ASP_THREATEN			(1 << 6)
 #define ASP_BACK_ATTACK			(1 << 7)
 #define ASP_ROTATION_JUMP		(1 << 8)
+#define ASP_ROTATION_RUN_LEFT	(1 << 9)
+#define ASP_ROTATION_RUN_RIGHT	(1 << 10)
 
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);

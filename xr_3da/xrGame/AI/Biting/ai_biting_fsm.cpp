@@ -116,6 +116,8 @@ void CAI_Biting::UpdateActionWithPath()
 // Установить линейную и угловую скорости в соответствии с построенным путем
 void CAI_Biting::UpdateVelocityWithPath()
 {
+	if (MotionMan.Seq_Active()) return;
+		
 	if (IsMovingOnPath()) {
 		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
 
