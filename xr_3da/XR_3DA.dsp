@@ -432,6 +432,10 @@ SOURCE=.\PrimitivesR.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\PrimitivesR_Runtime.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\SharedPrimitive.cpp
 # End Source File
 # Begin Source File

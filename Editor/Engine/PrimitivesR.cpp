@@ -42,87 +42,9 @@ void CDraw::Lines_End	()
 	if (C)			Draw(vsTL,C,C/2,dwLN_Offset,Device.Streams_QuadIB);
 }
 
-void CDraw::Draw(CPrimitive& P, DWORD dwNumVerts, DWORD dwNumPrimitives)
-{
-	setVertices	(P.vShader,P.vSize,P.pVertices);
-	setIndices	(P.dwBaseVertex,P.pIndices);
-	DWORD dwRequired	= Device.Shader.dwPassesRequired;
-	for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++)
-	{
-		Device.Shader.SetupPass(dwPass);
-		Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,0,dwNumPrimitives);
-	}
-	UPDATEC(dwNumVerts,dwNumPrimitives,dwRequired);
-}
-void CDraw::Draw(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB)
-{
-	setVertices	(S->mFVF,S->mStride,S->pVB);
-	CHK_DX(HW.pDevice->SetIndices(pCurIB=IB,dwBase));
-	DWORD dwRequired	= Device.Shader.dwPassesRequired;
-	for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++)
-	{
-		Device.Shader.SetupPass(dwPass);
-		Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,0,dwNumPrimitives);
-	}
-	UPDATEC(dwNumVerts,dwNumPrimitives,dwRequired);
-}
-void CDraw::Draw(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase)
-{
-	setVertices	(S->mFVF,S->mStride,S->pVB);
-	setIndices	(0,0);
-	DWORD dwRequired	= Device.Shader.dwPassesRequired;
-	for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++)
-	{
-		Device.Shader.SetupPass(dwPass);
-		Render		(D3DPT_TRIANGLELIST,dwBase,dwNumPrimitives);
-	}
-	UPDATEC(dwNumPrimitives*3,dwNumPrimitives,dwRequired);
-}
-void CDraw::Draw	(CVertexStream* VS,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase)
-{
-	setVertices		(VS->mFVF,VS->mStride,VS->pVB);
-	setIndicesUC	(vBase, IS->getBuffer());
-	DWORD dwRequired	= Device.Shader.dwPassesRequired;
-	for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++)
-	{
-		Device.Shader.SetupPass(dwPass);
-		Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,iBase,dwNumPrimitives);
-	}
-	UPDATEC(dwNumVerts,dwNumPrimitives,dwRequired);
-}
-
-void CDraw::DrawNI_SP(CPrimitive& P, DWORD dwStartVert, DWORD dwNumPrimitives)
-{
-	setVertices	(P.vShader,P.vSize,P.pVertices);
-	setIndices	(0,0);
-	Device.Shader.SetupPass(0);
-	Render		(D3DPT_TRIANGLELIST,dwStartVert,dwNumPrimitives);
-	UPDATEC(dwNumPrimitives,dwNumPrimitives,1);
-}
-void CDraw::DrawSubset(CPrimitive& P, DWORD dwStartVertex, DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives)
-{
-	setVertices	(P.vShader,P.vSize,P.pVertices);
-	setIndices	(P.dwBaseVertex,P.pIndices);
-	DWORD dwRequired	= Device.Shader.dwPassesRequired;
-	for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++)
-	{
-		Device.Shader.SetupPass(dwPass);
-		Render		(D3DPT_TRIANGLELIST,dwStartVertex,dwNumVerts,dwStartIndex,dwNumPrimitives);
-	}
-	UPDATEC(dwNumVerts,dwNumPrimitives,dwRequired);
-}
-void CDraw::Reset()
-{
-	vCurShader = 0;
-	CHK_DX(HW.pDevice->SetStreamSource(0,pCurVB=0,0));
-	CHK_DX(HW.pDevice->SetIndices(pCurIB=0,0));
-}
 void CDraw::dbg_Draw(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, WORD* pIdx, int pcnt)
 {
 	Reset					();
-	Device.Shader.SetNULL	();
-	Device.Shader.SetupPass	(0);
-
 	CHK_DX(HW.pDevice->SetVertexShader(vCurShader=FVF::F_L));
 	CHK_DX(HW.pDevice->DrawIndexedPrimitiveUP(T, 0, vcnt, pcnt, 
 		pIdx, D3DFMT_INDEX16,
@@ -132,9 +54,6 @@ void CDraw::dbg_Draw(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, WORD* pIdx, i
 void CDraw::dbg_Draw(D3DPRIMITIVETYPE T, FVF::L* pVerts, int pcnt)
 {
 	Reset					();
-	Device.Shader.SetNULL	();
-	Device.Shader.SetupPass	(0);
-
 	CHK_DX(HW.pDevice->SetVertexShader(vCurShader=FVF::F_L));
 	CHK_DX(HW.pDevice->DrawPrimitiveUP(T, pcnt, pVerts, sizeof(FVF::L)	));
 }

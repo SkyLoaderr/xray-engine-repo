@@ -237,7 +237,7 @@ void CApplication::LoadTitle(char *S, char *S2)
 	pv->set(float(Device.dwWidth), 0, 1, 1, C, 1, 0); pv++;
 	ll_pStream->Unlock(4);
 
-	Device.Shader.Set		(ll_hLogo);
+	Device.Shader.set_Shader(ll_hLogo);
 	Device.Primitive.Draw	(ll_pStream,4,2,Offset,Device.Streams_QuadIB);
 
 	// Draw title

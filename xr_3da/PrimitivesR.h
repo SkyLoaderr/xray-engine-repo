@@ -13,12 +13,12 @@
 class ENGINE_API CDraw
 {
 	friend class			CRender;
-
+	
 	CVertexStream*			vsTL;
 	FVF::TL*				pStart;
 	FVF::TL*				pCurrent;
 	DWORD					dwLN_Offset;
-
+	
 	IDirect3DVertexBuffer8*	pCurVB;
 	IDirect3DIndexBuffer8*	pCurIB;
 	DWORD					vCurShader;
@@ -26,7 +26,7 @@ public:
 	// Tight interface
 	IDirect3DIndexBuffer8*	&CurrentIB()	{ return pCurIB; }
 	IDirect3DVertexBuffer8*	&CurrentVB()	{ return pCurVB; }
-
+	
 	// Main interface
 	IC void setVertices		(DWORD FVF,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
 	{
@@ -45,15 +45,19 @@ public:
 	{	HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC);	}
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD PC)
 	{	HW.pDevice->DrawPrimitive(T,	SV, PC);			}
+	IC void Reset			()
+	{
+		vCurShader = 0;
+		HW.pDevice->SetStreamSource(0,pCurVB=0,0);
+		HW.pDevice->SetIndices(pCurIB=0,0);
+	}
 	
 	// The most used wrappers --- recomendation DON'T USE AT ALL :)
 	IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
+	IC void DrawSubset		(CPrimitive& P,		DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
-	IC void Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase);	// non indexed
-	IC void DrawNI_SP		(CPrimitive& P, DWORD dwStartVert,	DWORD dwNumPrimitives);
-	IC void DrawSubset		(CPrimitive& P, DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
-	void Draw				(CVertexStream* VS,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
-	void Reset				();
+	IC void Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase);
+	IC void Draw			(CVertexStream* S,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
 
 	void Lines_Begin		(int count);
 	void Lines_Draw			(Fvector& P1, Fvector& P2, float width, DWORD C);

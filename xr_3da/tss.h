@@ -13,7 +13,7 @@ public:
 		if (cache[S][N] != V) 
 		{
 			cache[S][N]		= V;
-			CSimulatorState	st;	st.set_TSS(S,N,V); container.push_back(st);
+			container.set_TSS(S,N,V);
 		}
 	}
 	IC void SetColor	(SimulatorStates& container, DWORD S, DWORD A1, DWORD OP, DWORD A2)
@@ -67,7 +67,7 @@ public:
 		if (cache[N] != V)
 		{
 			cache[N] = V;
-			CSimulatorState	st;	st.set_RS(N,V); container.push_back(st);
+			container.set_RS(N,V);
 		}
 	}
 };

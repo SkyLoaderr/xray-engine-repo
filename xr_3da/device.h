@@ -129,5 +129,6 @@ public:
 extern ENGINE_API CRenderDevice Device;
 
 #include "TextureManager_Runtime.h"
+#include "PrimitivesR_Runtime.h"
 
 #endif
