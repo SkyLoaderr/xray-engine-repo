@@ -59,7 +59,6 @@ IC	void CSelectorTemplate::set_evaluator	(_VertexEvaluator *evaluator)
 	m_evaluator				= evaluator;
 	if (!evaluator)
 		return;
-	m_last_query_time		= 0;
 	CSelectorManager		*selector_manager = dynamic_cast<CSelectorManager*>(this);
 	VERIFY					(selector_manager);
 	selector_manager->init_selector(*evaluator);
@@ -74,8 +73,9 @@ IC	void CSelectorTemplate::set_query_interval(const u32 query_interval)
 TEMPLATE_SPECIALIZATION
 IC	bool CSelectorTemplate::actual(const _vertex_id_type start_vertex_id, bool path_completed)
 {
-	if (!used() || (m_last_query_time + m_query_interval) > Level().timeServer())
+	if (!used() || (((m_last_query_time + m_query_interval) > Level().timeServer()) && !path_completed))
 		return				(true);
+
 	perform_search			(start_vertex_id);
 	return					(failed());
 }

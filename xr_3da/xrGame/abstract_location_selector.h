@@ -23,7 +23,7 @@ protected:
 	u32							m_query_interval;
 	xr_vector<_vertex_id_type>	*m_path;
 	
-	IC	virtual	void			perform_search				(const _vertex_id_type game_vertex_id);
+	IC			void			perform_search				(const _vertex_id_type game_vertex_id);
 public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
@@ -33,6 +33,7 @@ public:
 	IC			_vertex_id_type get_selected_vertex_id		() const;
 
 	IC			void			set_query_interval			(const u32 query_interval);
+
 	IC			void			set_evaluator				(_VertexEvaluator *evaluator);
 
 	IC			bool			failed						() const;
