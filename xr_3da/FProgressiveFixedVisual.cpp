@@ -34,6 +34,7 @@ void FProgressiveFixedVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	FIX_Current	= 0;
 
 	// PMAP_VSPLIT
+	R_ASSERT(dwVertCount>V_Minimal);
 	vsplit = new Vsplit[dwVertCount-V_Minimal];
 	R_ASSERT(fs->ReadChunk(0x2,vsplit));
 
