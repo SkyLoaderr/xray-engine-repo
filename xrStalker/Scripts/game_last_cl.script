@@ -2,6 +2,8 @@ module("game_types")
 module("game_last_ui")
 module("game_last_ps")
 module("game_last_tmp")
+module("game_last_dialog")
+
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -70,7 +72,7 @@ function game_cl_LastStanding:createGameUI ()
 
    self.m_testWnd = game_last_tmp.test_dialog()
    self.m_testWnd:SetClGame(self)
-
+   self.m_dlg_ = game_last_dialog.uiDialog()
    return self.m_game_ui
 end
 
@@ -186,7 +188,9 @@ function game_cl_LastStanding:OnKeyboardPress(key)
       end
 
    if key_bindings.kEXT_1 == key then
-      self:StartStopMenu(self.m_testWnd)
+--      self:StartStopMenu(self.m_testWnd)
+      self:StartStopMenu(self.m_dlg_)
+
       return true
    end
 

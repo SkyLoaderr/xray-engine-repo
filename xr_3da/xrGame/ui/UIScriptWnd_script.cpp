@@ -18,33 +18,53 @@
 
 using namespace luabind;
 
+template <typename T>
+struct CWrapperBase : public T, public luabind::wrap_base {
+	typedef T inherited;
+	typedef CWrapperBase<T>	self_type;
+
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action)
+	{ return call_member<bool>(this,"OnKeyboard", dik, keyboard_action);}
+	static bool OnKeyboard_static(inherited* ptr, int dik, EUIMessages keyboard_action)
+	{ return ptr->self_type::inherited::OnKeyboard(dik,keyboard_action );}
+
+};
+
+
+
 void UIScriptWnd::script_register(lua_State *L)
 {
+	typedef CWrapperBase<UIScriptWnd> WrapType;
+	typedef UIScriptWnd BaseType;
+
 	module(L)
 	[
-		class_<UIScriptWnd, CUIDialogWnd>("CUIScriptWnd")
+		class_<UIScriptWnd, WrapType, CUIDialogWnd>("CUIScriptWnd")
 		.def(					constructor<>())
 
-		.def("Load",			&UIScriptWnd::Load)
-		.def("AddCallback",		(void(UIScriptWnd::*)(LPCSTR, s16, const luabind::functor<void>&))UIScriptWnd::AddCallback)
-		.def("AddCallback",		(void(UIScriptWnd::*)(LPCSTR, s16, const luabind::object&, LPCSTR))UIScriptWnd::AddCallback)
+		.def("Load",			&BaseType::Load)
+		.def("AddCallback",		(void(BaseType::*)(LPCSTR, s16, const luabind::functor<void>&))BaseType::AddCallback)
+		.def("AddCallback",		(void(BaseType::*)(LPCSTR, s16, const luabind::object&, LPCSTR))BaseType::AddCallback)
 
-		.def("Register",		&UIScriptWnd::Register)
-		.def("test",			&UIScriptWnd::test)
+		.def("Register",		&BaseType::Register)
+		.def("test",			&BaseType::test)
 
-		.def("GetButton",		(CUIButton* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIButton>)
-		.def("GetMessageBox",	(CUIMessageBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIMessageBox>)
-		.def("GetPropertiesBox",(CUIPropertiesBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIPropertiesBox>)
-		.def("GetCheckButton",	(CUICheckButton* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUICheckButton>)
-		.def("GetRadioButton",	(CUIRadioButton* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIRadioButton>)
-		.def("GetRadioGroup",	(CUIRadioGroup* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIRadioGroup>)
-		.def("GetStatic",	(CUIStatic* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIStatic>)
-		.def("GetEditBox",	(CUIEditBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIEditBox>)
-		.def("GetDialogWnd",	(CUIDialogWnd* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIDialogWnd>)
-		.def("GetFrameWindow",	(CUIFrameWindow* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIFrameWindow>)
-		.def("GetFrameLineWnd",	(CUIFrameLineWnd* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIFrameLineWnd>)
-		.def("GetProgressBar",	(CUIProgressBar* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIProgressBar>)
-		.def("GetTabControl",	(CUITabControl* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUITabControl>)
+		.def("GetButton",		(CUIButton* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIButton>)
+		.def("GetMessageBox",	(CUIMessageBox* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIMessageBox>)
+		.def("GetPropertiesBox",(CUIPropertiesBox* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIPropertiesBox>)
+		.def("GetCheckButton",	(CUICheckButton* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUICheckButton>)
+		.def("GetRadioButton",	(CUIRadioButton* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIRadioButton>)
+		.def("GetRadioGroup",	(CUIRadioGroup* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIRadioGroup>)
+		.def("GetStatic",	(CUIStatic* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIStatic>)
+		.def("GetEditBox",	(CUIEditBox* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIEditBox>)
+		.def("GetDialogWnd",	(CUIDialogWnd* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIDialogWnd>)
+		.def("GetFrameWindow",	(CUIFrameWindow* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIFrameWindow>)
+		.def("GetFrameLineWnd",	(CUIFrameLineWnd* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIFrameLineWnd>)
+		.def("GetProgressBar",	(CUIProgressBar* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIProgressBar>)
+		.def("GetTabControl",	(CUITabControl* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUITabControl>)
+
+
+		.def("OnKeyboardPress",		&BaseType::OnKeyboard, &WrapType::OnKeyboard_static)
 
 //		.def("GetMessageBox",	(CUIMessageBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIMessageBox>)
 //		.def("GetMessageBox",	(CUIMessageBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIMessageBox>)

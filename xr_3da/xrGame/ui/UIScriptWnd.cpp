@@ -82,3 +82,9 @@ void UIScriptWnd::test()
 	for(;it!=m_callbacks.end();++it)
 		SCRIPT_CALLBACK_EXECUTE_0( (*it)->m_callback )
 }
+
+bool UIScriptWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	inherited::OnKeyboard(dik,keyboard_action);
+	return true;
+}

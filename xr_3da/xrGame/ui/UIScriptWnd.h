@@ -27,7 +27,7 @@ public:
 	virtual						~UIScriptWnd		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method);
-
+	virtual bool				OnKeyboard			(int dik, EUIMessages keyboard_action);
 			void				test();
 
 template<typename T>

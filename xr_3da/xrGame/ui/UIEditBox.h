@@ -18,6 +18,7 @@ public:
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 
 	virtual void Update();
+	virtual void Draw();
 
 protected:
 

@@ -26,57 +26,122 @@ function uiDialog:InitControls()
 ---------------------------------------
    local btn   = CUIButton()
    btn:SetAutoDelete(true) 
-   btn:SetWindowName("button_1")
+   btn:SetWindowName("button_ok")
    
-   btn:Init("ui\\ui_button_01",10,210,256,64)
+   btn:Init("ui\\ui_button_01",10,210,135,40)
 --   btn:Init(10,10,100,100) --or without texture
-   btn:SetText("my_button")
+   btn:SetText("OK")
    btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(32) --vertical align(pixel)
+   btn:SetTextY(20) --vertical align(pixel)
    self:Register(btn)
    txt_main:AttachChild(btn)
 --------------------------------------
    btn   = CUIButton()
    btn:SetAutoDelete(true)
-   btn:SetWindowName("button_2")
+   btn:SetWindowName("button_cancel")
    
-   btn:Init("ui\\ui_button_01",200,10,256,64) 
-   btn:SetText("my_second_button")
+   btn:Init("ui\\ui_button_01",130,210,135,40) 
+   btn:SetText("cancel")
    btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(32) --vertical align(pixel)
+   btn:SetTextY(20) --vertical align(pixel)
    self:Register(btn)
    txt_main:AttachChild(btn)
 
 --------------------------------------
-   local txt   = CUIStatic()
-   txt:SetAutoDelete(true)
-   txt:SetWindowName("static_1")
-   txt:Init("ui\\ui_inv_belt",10,150,100,100)
---   txt:Init(10,150,100,100)
-   txt:SetText("my_text")
-   txt:SetTextAlign(CGameFont.alLeft) --horizontal align
-   txt:SetTextY(80) --vertical align
-   txt:ClipperOn()
-   self:Register(txt) --requires for event-handler
-   txt_main:AttachChild(txt)
+   local rg   = CUIRadioGroup()
+   rg:SetAutoDelete(true)
+   rg:SetWindowName("static_1")
+   rg:Init(20,10,220,110)
+   txt_main:AttachChild(rg)
 --------------------------------------
+   btn   = CUIRadioButton()
+   btn:SetAutoDelete(true)
+   btn:SetWindowName("radio_button_1")
+   
+   btn:Init(10,20,190,21) 
+   btn:SetText("radio-1")
+   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
+   btn:SetTextY(10) --vertical align(pixel)
+   self:Register(btn)
+   rg:AttachChild(btn)
+--------------------------------------
+   btn   = CUIRadioButton()
+   btn:SetAutoDelete(true)
+   btn:SetWindowName("radio_button_2")
+   
+   btn:Init(10,50,190,21) 
+   btn:SetText("radio-2")
+   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
+   btn:SetTextY(10) --vertical align(pixel)
+   self:Register(btn)
+   rg:AttachChild(btn)
+--------------------------------------
+   btn   = CUIRadioButton()
+   btn:SetAutoDelete(true)
+   btn:SetWindowName("radio_button_3")
+   
+   btn:Init(10,80,190,21) 
+   btn:SetText("radio-3")
+   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
+   btn:SetTextY(10) --vertical align(pixel)
+   self:Register(btn)
+   rg:AttachChild(btn)
+--------------------------------------
+  local edt   = CUIEditBox()
+   edt:SetAutoDelete(true)
+   edt:SetWindowName("edit_1")
+   
+   edt:Init("ui\\ui_inv_info_over_b",20,140,220,31) 
+   edt:SetText("some text")
+   edt:ClipperOn()
+--   edt:SetTextAlign(CGameFont.alCenter) --horizontal align
+--   edt:SetTextY(15) --vertical align(pixel)
+   self:Register(edt)
+   txt_main:AttachChild(edt)
 
+   
 end
 
 function uiDialog:InitCallBacks()
---   self:AddCallback("button_1",ui_events.BUTTON_CLICKED,self,"OnButton_1_clicked")
---   self:AddCallback("button_2",ui_events.BUTTON_CLICKED,self,"OnButton_2_clicked")
+   self:AddCallback("button_ok",ui_events.BUTTON_CLICKED,self,"OnButton_ok_clicked")
+   self:AddCallback("button_cancel",ui_events.BUTTON_CLICKED,self,"OnButton_cancel_clicked")
+   self:AddCallback("radio_button_1",ui_events.BUTTON_CLICKED,self,"OnButton_radio1_clicked")
+   self:AddCallback("radio_button_2",ui_events.BUTTON_CLICKED,self,"OnButton_radio2_clicked")
+   self:AddCallback("radio_button_3",ui_events.BUTTON_CLICKED,self,"OnButton_radio3_clicked")
 end
 
-function uiDialog:OnButton_1_clicked()
---   printf("test_dialog:OnButton_1_clicked()")
---   local s0 = self:GetStatic("static_0")
---   s0:InitTexture("ui\\ui_map_military")
+function uiDialog:OnButton_ok_clicked()
+   printf("test_dialog:OnButton_ok_clicked()")
+   local s0 = self:GetEditBox("edit_1")
+   local text = s0:GetText()
+   printf(text)
+
 end
 
-function uiDialog:OnButton_2_clicked()
---   printf("test_dialog:OnButton_2_clicked()")
+function uiDialog:OnButton_cancel_clicked()
+   printf("test_dialog:OnButton_cancel_clicked()")
 --   local s0 = self:GetStatic("static_0")
 --   s0:InitTexture("ui\\ui_map_escape")
 end
 
+function uiDialog:OnButton_radio1_clicked()
+   printf("test_dialog:OnButton_radio1_clicked()")
+--   local s0 = self:GetStatic("static_0")
+--   s0:InitTexture("ui\\ui_map_escape")
+end
+
+function uiDialog:OnButton_radio2_clicked()
+   printf("test_dialog:OnButton_radio2_clicked()")
+--   local s0 = self:GetStatic("static_0")
+--   s0:InitTexture("ui\\ui_map_escape")
+end
+
+function uiDialog:OnButton_radio3_clicked()
+   printf("test_dialog:OnButton_radio3_clicked()")
+--   local s0 = self:GetStatic("static_0")
+--   s0:InitTexture("ui\\ui_map_escape")
+end
+
+function uiDialog:OnKeyboard(dik, keyboard_action)  --virtual function
+   CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+end

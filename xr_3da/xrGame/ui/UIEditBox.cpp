@@ -11,14 +11,20 @@ static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E,
 						   DIK_F, DIK_G, DIK_H, DIK_I, DIK_J, 
 						   DIK_K, DIK_L, DIK_M, DIK_N, DIK_O, 
 						   DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T, 
-						   DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z};
+						   DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z,
+						   DIK_0, DIK_1, DIK_2, DIK_3, DIK_4, DIK_5, DIK_6, DIK_7,
+						   DIK_8, DIK_9};
 
 static xr_map<u32, char> gs_DIK2CHR;
 
 
 CUIEditBox::CUIEditBox(void)
 {
-	for(char l_c = 'a'; l_c <= 'z'; ++l_c) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
+	char l_c;
+	for(l_c = 'a'; l_c <= 'z'; ++l_c) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
+	for(l_c = '0'; l_c <= '9'; ++l_c) {
+		gs_DIK2CHR[DILetters['z'-'a'+l_c+1-'0']] = l_c;
+	}
 
 	m_bShift = false;
 	m_bInputFocus = false;
@@ -27,12 +33,13 @@ CUIEditBox::CUIEditBox(void)
 	m_bHoldWaitMode = false;
 
 	m_iCursorPos = 0;
-
+/*
 	m_sEdit.push_back('y');
 	m_sEdit.push_back('u');
 	m_sEdit.push_back('r');
 	m_sEdit.push_back('i');
 	m_sEdit.push_back(0);
+*/
 }
 
 CUIEditBox::~CUIEditBox(void)
@@ -164,8 +171,9 @@ bool CUIEditBox::KeyPressed(int dik)
 		return true;
 	}
 
-	return false;
+	return true;
 }
+
 bool CUIEditBox::KeyReleased(int dik)
 {
 	switch(dik)
@@ -176,7 +184,7 @@ bool CUIEditBox::KeyReleased(int dik)
 		return true;
 	}
 
-	return false;
+	return true;
 }
 
 
@@ -250,8 +258,35 @@ void CUIEditBox::Update()
 			last_time = cur_time;
 
 
-	
+/*	
 
+		//нарисовать курсор
+		RECT rect = GetAbsoluteRect();
+		float outX, outY;
+
+		STRING buf_str;
+		buf_str.assign(&m_sEdit.front(), 
+					   &m_sEdit[m_iCursorPos]);
+		buf_str.push_back(0);
+
+		outX = GetFont()->SizeOf(&buf_str.front());
+		outY = 0;
+
+		GetFont()->SetColor(0xFFFFFF00);
+		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
+					   (float)rect.top+outY,  "|");
+*/
+	}
+		
+	m_str = &m_sEdit[0];
+	CUIStatic::Update();
+}
+
+void  CUIEditBox::Draw()
+{
+	CUIStatic::Draw();
+	if(m_bInputFocus)
+	{	
 		//нарисовать курсор
 		RECT rect = GetAbsoluteRect();
 		float outX, outY;
@@ -269,7 +304,4 @@ void CUIEditBox::Update()
 					   (float)rect.top+outY,  "|");
 
 	}
-		
-	m_str = &m_sEdit[0];
-	CUIStatic::Update();
 }
