@@ -8,7 +8,7 @@ void CRenderTarget::phase_accumulator_init()
 
 	// Render emissive geometry
 	// Stencil - write 0x0 at pixel pos
-	RCache.set_Stencil							( TRUE,D3DCMP_ALWAYS,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+	RCache.set_Stencil							( TRUE,D3DCMP_ALWAYS,0x00,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 	RImplementation.r_dsgraph_render_emissive	();
 
 	// Common
