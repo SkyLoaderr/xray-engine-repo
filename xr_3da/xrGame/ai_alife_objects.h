@@ -255,15 +255,15 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
-		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tNextGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tPrevGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_fMinSpeed				= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MinSpeed");
-		m_fMaxSpeed				= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MaxSpeed");
-		m_fCurSpeed				= 0.0f;
-		m_fDistanceFromPoint	= 0.0f;
-		m_fDistanceToPoint		= 0.0f;
-		m_iHealth				= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_tNextGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_tPrevGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_fMinSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MinSpeed");
+		m_fMaxSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MaxSpeed");
+		m_fCurSpeed			= 0.0f;
+		m_fDistanceFromPoint= 0.0f;
+		m_fDistanceToPoint	= 0.0f;
+		m_iHealth			= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
 	}
 };
 
