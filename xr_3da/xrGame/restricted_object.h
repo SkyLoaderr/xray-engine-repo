@@ -29,6 +29,7 @@ private:
 	CGameObject			*m_object;
 	mutable bool		m_applied;
 	mutable bool		m_removed;
+	bool				m_actual;
 
 protected:
 	template <typename P, bool value>
@@ -57,6 +58,8 @@ public:
 			shared_str	out_restrictions				() const;
 	IC		bool		applied							() const;
 	IC		CGameObject	&object							() const;
+	IC		bool		actual							() const;
+	IC		void		actual							(bool value);
 };
 
 #include "restricted_object_inline.h"

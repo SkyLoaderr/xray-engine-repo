@@ -35,6 +35,9 @@ namespace GameObject {
 		eHelicopterOnPoint,
 		eHelicopterOnHit,
 
+		eOnItemTake,
+		eOnItemDrop,
+
 		eScriptAnimation,
 	};
 };

@@ -24,3 +24,13 @@ IC	CGameObject &CRestrictedObject::object	() const
 	VERIFY				(m_object);
 	return				(*m_object);
 }
+
+IC	bool CRestrictedObject::actual			() const
+{
+	return				(m_actual);
+}
+
+IC	void CRestrictedObject::actual			(bool value)
+{
+	m_actual			= value;
+}

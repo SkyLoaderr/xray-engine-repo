@@ -51,6 +51,8 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("actor_sleep",			int(GameObject::eActorSleep)),
 				value("helicopter_on_point",	int(GameObject::eHelicopterOnPoint)),
 				value("helicopter_on_hit",		int(GameObject::eHelicopterOnHit)),
+				value("on_item_take",			int(GameObject::eOnItemTake)),
+				value("on_item_drop",			int(GameObject::eOnItemDrop)),
 				value("script_animation",		int(GameObject::eScriptAnimation))
 			]
 	];

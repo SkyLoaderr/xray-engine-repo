@@ -320,6 +320,10 @@ void CInventoryOwner::renderable_Render		()
 
 void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 {
+	CGameObject	*object = smart_cast<CGameObject*>(this);
+	VERIFY		(object);
+	object->callback(GameObject::eOnItemTake)(inventory_item->object().lua_game_object());
+
 	attach		(inventory_item);
 }
 
@@ -457,6 +461,10 @@ const CSpecificCharacter&	CInventoryOwner::SpecificCharacter	() const
 
 void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 {
+	CGameObject	*object = smart_cast<CGameObject*>(this);
+	VERIFY		(object);
+	object->callback(GameObject::eOnItemDrop)(inventory_item->object().lua_game_object());
+
 	detach		(inventory_item);
 }
 

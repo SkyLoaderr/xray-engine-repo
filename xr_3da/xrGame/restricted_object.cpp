@@ -97,6 +97,8 @@ BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 #endif
 
 	Level().space_restriction_manager().restrict	(monster->ID,temp0,temp1);
+
+	actual						(true);
 	
 	return						(TRUE);
 }
@@ -280,6 +282,8 @@ void CRestrictedObject::add_restrictions	(const xr_vector<ALife::_OBJECT_ID> &ou
 	construct_restriction_string<CRestrictionPredicate<true>,true>(temp_in_restrictions,in_restrictions,this->in_restrictions(),CRestrictionPredicate<true>(RestrictionSpace::eRestrictorTypeIn));
 
 	Level().space_restriction_manager().add_restrictions	(object().ID(),temp_out_restrictions,temp_in_restrictions);
+
+	actual						(false);
 	
 	STOP_PROFILE;
 }
@@ -299,6 +303,8 @@ void CRestrictedObject::remove_restrictions	(const xr_vector<ALife::_OBJECT_ID> 
 
 	Level().space_restriction_manager().remove_restrictions	(object().ID(),temp_out_restrictions,temp_in_restrictions);
 	
+	actual						(false);
+
 	STOP_PROFILE;
 }
 
@@ -316,6 +322,10 @@ void CRestrictedObject::remove_all_restrictions	()
 	
 	remove_all_restrictions	(RestrictionSpace::eRestrictorTypeOut);
 	remove_all_restrictions	(RestrictionSpace::eRestrictorTypeIn);
+
+	if (Level().space_restriction_manager().in_restrictions(object().ID()).size() || Level().space_restriction_manager().out_restrictions(object().ID()).size())
+		actual			(false);
+
 	Level().space_restriction_manager().restrict(object().ID(),"","");
 	
 	STOP_PROFILE;

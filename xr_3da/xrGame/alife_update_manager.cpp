@@ -329,41 +329,47 @@ void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 
 void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 {
-	const CGameGraph::SLevel		&level = ai().game_graph().header().level(level_name);
+	const CGameGraph::SLevel			&level = ai().game_graph().header().level(level_name);
 	GameGraph::_GRAPH_ID				dest = GameGraph::_GRAPH_ID(-1);
 	GraphEngineSpace::CGameLevelParams	evaluator(level.id());
-	bool							failed = !ai().graph_engine().search(ai().game_graph(),graph().actor()->m_tGraphID,GameGraph::_GRAPH_ID(-1),0,evaluator);
+	bool								failed = !ai().graph_engine().search(ai().game_graph(),graph().actor()->m_tGraphID,GameGraph::_GRAPH_ID(-1),0,evaluator);
 	if (failed) {
-		Msg							("! Cannot build path via game graph from the current level to the level %s!",level_name);
-		float						min_dist = flt_max;
-		Fvector						current = ai().game_graph().vertex(graph().actor()->m_tGraphID)->game_point();
+		Msg								("! Cannot build path via game graph from the current level to the level %s!",level_name);
+		float							min_dist = flt_max;
+		Fvector							current = ai().game_graph().vertex(graph().actor()->m_tGraphID)->game_point();
 		GameGraph::_GRAPH_ID			n = ai().game_graph().header().vertex_count();
 		for (GameGraph::_GRAPH_ID i=0; i<n; ++i)
 			if (ai().game_graph().vertex(i)->level_id() == level.id()) {
-				float				distance = ai().game_graph().vertex(i)->game_point().distance_to_sqr(current);
+				float					distance = ai().game_graph().vertex(i)->game_point().distance_to_sqr(current);
 				if (distance < min_dist) {
-					min_dist		= distance;
-					dest			= i;
+					min_dist			= distance;
+					dest				= i;
 				}
 			}
 		if (!ai().game_graph().vertex(dest)) {
-			Msg						("! There is no game vertices on the level %s, cannot jump to the specified level",level_name);
+			Msg							("! There is no game vertices on the level %s, cannot jump to the specified level",level_name);
 			return;
 		}
 	}
 	else
-		dest						= (GameGraph::_GRAPH_ID)evaluator.selected_vertex_id();
-	NET_Packet						net_packet;
-	net_packet.w_begin				(M_CHANGE_LEVEL);
-	net_packet.w					(&dest,sizeof(dest));
+		dest							= (GameGraph::_GRAPH_ID)evaluator.selected_vertex_id();
+	NET_Packet							net_packet;
+	net_packet.w_begin					(M_CHANGE_LEVEL);
+	net_packet.w						(&dest,sizeof(dest));
 	
-	u32								vertex_id = ai().game_graph().vertex(dest)->level_vertex_id();
-	net_packet.w					(&vertex_id,sizeof(vertex_id));
+	u32									vertex_id = ai().game_graph().vertex(dest)->level_vertex_id();
+	net_packet.w						(&vertex_id,sizeof(vertex_id));
 	
-	Fvector							level_point = ai().game_graph().vertex(dest)->level_point();
-	net_packet.w					(&level_point,sizeof(level_point));
-	net_packet.w_vec3				(Fvector().set(0.f,0.f,0.f));
-	Level().Send					(net_packet,net_flags(TRUE));
+	Fvector								level_point = ai().game_graph().vertex(dest)->level_point();
+	net_packet.w						(&level_point,sizeof(level_point));
+	net_packet.w_vec3					(Fvector().set(0.f,0.f,0.f));
+	Level().Send						(net_packet,net_flags(TRUE));
+
+	string256							temp, save_name;
+	LPSTR								temp0 = strstr(**m_server_command_line,"/");
+	VERIFY								(temp0);
+	_GetItem							(m_save_name,0,save_name,'.');
+	*m_server_command_line				= strconcat(temp,save_name,temp0);
 }
 
 void CALifeUpdateManager::teleport_object	(ALife::_OBJECT_ID id, GameGraph::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position)
