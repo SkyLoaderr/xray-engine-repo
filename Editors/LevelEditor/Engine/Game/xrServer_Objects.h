@@ -84,7 +84,7 @@
 // 63 - CSE_AlifeTraderAbstract			remove bug with money
 // 64 - CSE_ALifeObjectPhysic			flags, source_id, saved_bones moved to CSE_AlifePHSkeletonObject
 // 65 - CSE_ALifeObjectPhysic			startup_anim moved to CSE_AlifePHSkeletonObject
-// 66 - CSE_ALifeObjectPhysic			С Кости - пиво!!! где описание изменения версии
+// 66 - CSE_ALifeObjectPhysic			CSE_ALifeCar - heritage changed
 // 67 - CSE_ALifeCustomZone				new class appended, heritage changed
 //------------------------------------------------------------------------------
 
