@@ -2,7 +2,7 @@
 #define D3DX_WraperH
 #pragma once
 
-#ifdef CREATEDX_EXPORTS
+#ifdef ETOOLS_EXPORTS
 #define ETOOLS_API __declspec( dllexport )
 #else
 #define ETOOLS_API __declspec( dllimport )
@@ -162,7 +162,7 @@ extern "C" {
 		CONST D3DXMATRIX *pM);
 }
 
-#ifndef CREATEDX_EXPORTS
+#ifndef ETOOLS_EXPORTS
 	#undef D3DXCompileShaderFromFile
 	#undef DXGetErrorDescription9
 	#define D3DXGetDriverLevel						D3DX_GetDriverLevel
