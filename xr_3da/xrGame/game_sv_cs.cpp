@@ -282,7 +282,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if(ps_who->money_total < cost) return;
 	Lock();
-	ps_who->money_total -= cost;
+	ps_who->money_total		= ps_who->money_total - s16(cost);
 	Unlock();
 
 	// spawn it right in hands
