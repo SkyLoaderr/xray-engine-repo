@@ -26,13 +26,20 @@
 		*	солнце (lmaps) / дождь / туман (возможно scattering) / небо (тучи) / ветер+порывы (трава, деревья) / flare+sun effs
 		*	обьемный туман
 		
+***[AlexMX]*** In progress:
+------------------------
+		*	одна текстура на все детальные обьекты
+		*	Self-reference in _vector2<T>, _vector3<T>, _vector4<T>, _matrix<T>, etc.
+		*	.OGG vorbis + params
+			подумать насчет декомпрессии (кеш?непрерывная?при загрузке?)
+
+
 ***[???]*** TODO:		
 -------------------------
 		new:
 		*	O(1) AI node search
 		* 	SW - VIPM (прогр. меши)
 		* 	LUA threads - example
-		*	Self-reference in _vector2<T>, _vector3<T>, _vector4<T>, _matrix<T>, etc.
 
 		*	Animation compression 			- 32bit quats / 48bit pos (???)		- или T на ключ, или T на скелет/motion
 		*	Animation sharing				(? how ?)
@@ -49,11 +56,8 @@
 
 		*	пригибание травы + ветер
 		*	дальность для травы
-		*	одна текстура на все детальные обьекты
 
 		*	'fast' strings
-		*	.OGG vorbis + params
-			подумать насчет декомпрессии (кеш?непрерывная?при загрузке?)
 
 		*	progressive+hierrarchical volume shrink for ISpatial
 
