@@ -14,14 +14,23 @@
 
 #ifndef NO_XR_GAME
 #	include <boost/type_traits/is_base_and_derived.hpp>
+#	include "script_space.h"
 #endif
 
 #include "xrServer_Objects.h"
+
+#ifndef NO_XR_GAME
+	class CAttachableItem;
+	class CSE_ALifeObject;
+#endif
+
 
 class CObjectFactory {
 private:
 #ifndef NO_XR_GAME
 	typedef DLL_Pure				CLIENT_BASE_CLASS;
+	typedef CAttachableItem			CLIENT_SCRIPT_BASE_CLASS;
+	typedef CSE_ALifeObject			SERVER_SCRIPT_BASE_CLASS;
 #endif
 	typedef CSE_Abstract			SERVER_BASE_CLASS;
 
@@ -90,14 +99,6 @@ protected:
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
 
-    template<bool>
-    struct CompileTimeError;
-
-    template<>
-    struct CompileTimeError<true>
-    {
-    };
-
 //	template <typename a, typename b, typename c>
 //	struct CType {
 //		template <bool value>
@@ -113,6 +114,19 @@ protected:
 //		typedef typename CInternalType<boost::is_base_and_derived<c,a>::value>::type type;
 //	};
 //
+
+	class CObjectItemScript : public CObjectItemAbstract {
+	protected:
+		typedef CObjectItemAbstract	inherited;
+		luabind::functor<void>		m_client_creator;
+		luabind::functor<void>		m_server_creator;
+
+	public:
+		IC							CObjectItemScript	(luabind::functor<void> client_creator, luabind::functor<void> server_creator, const CLASS_ID &clsid, LPCSTR script_clsid);
+		virtual CLIENT_BASE_CLASS	*client_object		() const;
+		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
+	};
+
 #endif
 
 
@@ -143,8 +157,10 @@ public:
 	typedef OBJECT_ITEM_STORAGE::const_iterator	const_iterator;
 
 protected:
-	OBJECT_ITEM_STORAGE				m_clsids;
-	bool							m_initialized;
+	OBJECT_ITEM_STORAGE					m_clsids;
+	bool								m_initialized;
+	mutable CLIENT_SCRIPT_BASE_CLASS	*m_client_instance;
+	mutable SERVER_SCRIPT_BASE_CLASS	*m_server_instance;
 
 protected:
 			void						register_classes();
@@ -156,6 +172,8 @@ protected:
 	template <typename _client_type, typename _server_type>
 	IC		void						add				(const CLASS_ID &clsid, LPCSTR script_clsid);
 	IC		const CObjectItemAbstract	&item			(const CLASS_ID &clsid) const;
+			CLIENT_SCRIPT_BASE_CLASS	*client_instance() const;
+			SERVER_SCRIPT_BASE_CLASS	*server_instance() const;
 #else
 	IC		const CObjectItemAbstract	*item			(const CLASS_ID &clsid, bool no_assert) const;
 #endif
@@ -168,6 +186,9 @@ public:
 			void					register_script		() const;
 	IC		CLIENT_BASE_CLASS		*client_object		(const CLASS_ID &clsid) const;
 	IC		SERVER_BASE_CLASS		*server_object		(const CLASS_ID &clsid, LPCSTR section) const;
+			void					register_script_class(LPCSTR client_class, LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid);
+			void					set_instance		(CLIENT_SCRIPT_BASE_CLASS *instance) const;
+			void					set_instance		(SERVER_SCRIPT_BASE_CLASS *instance) const;
 #else
 	IC		SERVER_BASE_CLASS		*server_object		(const CLASS_ID &clsid, LPCSTR section) const;
 #endif

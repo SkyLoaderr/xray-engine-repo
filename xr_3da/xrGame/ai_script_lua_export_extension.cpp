@@ -20,6 +20,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "script_binder_object.h"
 #include "pdamsg.h"
+#include "object_factory.h"
 
 using namespace luabind;
 
@@ -366,8 +367,11 @@ void CScriptEngine::export_memory_objects()
 
 		class_<MemorySpace::CNotYetVisibleObject>("not_yet_visible_object")
 			.def_readonly("value",			&MemorySpace::CNotYetVisibleObject::m_value)
-			.def("object",					&not_yet_visible_object)
+			.def("object",					&not_yet_visible_object),
 
+		class_<CObjectFactory>("object_factory")
+			.def("register",				&CObjectFactory::register_script_class)
+			.def("set_instance",			(void (CObjectFactory::*)(CObjectFactory::CLIENT_SCRIPT_BASE_CLASS*) const)(CObjectFactory::set_instance), adopt(_2))
+			.def("set_instance",			(void (CObjectFactory::*)(CObjectFactory::SERVER_SCRIPT_BASE_CLASS*) const)(CObjectFactory::set_instance), adopt(_2))
 	];
 }
-

@@ -14,7 +14,9 @@ u32 CDbgScriptThreads::Fill()
 #ifdef XRGAME_EXPORTS
 	CScriptProcessor* sp = ai().script_engine().script_processor("game");
 
-	VERIFY(sp);
+	if (!sp)
+		return	res;
+
 	res += FillFrom(sp);
 	VERIFY(sp);
 	sp = ai().script_engine().script_processor("level");

@@ -117,6 +117,7 @@ void CScriptEngine::export()
 #endif
 
 #ifdef XRGAME_EXPORTS
+	load_class_registrators				();
 	object_factory().register_script	();
 #endif
 
@@ -164,17 +165,24 @@ void CScriptEngine::load_common_scripts()
 	FS.update_path	(S,"$game_data$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT		(l_tpIniFile);
-	LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
-
-	u32				caNamespaceName = _GetItemCount(caScriptString);
-	string256		I;
-	for (u32 i=0; i<caNamespaceName; ++i) {
-		add_file	(_GetItem(caScriptString,i,I));
-		process		();
-		if (object("_G",strcat(I,"_initialize"),LUA_TFUNCTION))
-			lua_dostring(lua(),strcat(I,"()"));
+	if (!l_tpIniFile->section_exist("common")) {
+		xr_delete			(l_tpIniFile);
+		return;
 	}
-	xr_delete		(l_tpIniFile);
+
+	if (l_tpIniFile->line_exist("common","script")) {
+		LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
+		u32				n = _GetItemCount(caScriptString);
+		string256		I;
+		for (u32 i=0; i<n; ++i) {
+			add_file	(_GetItem(caScriptString,i,I));
+			process		();
+			if (object("_G",strcat(I,"_initialize"),LUA_TFUNCTION))
+				lua_dostring(lua(),strcat(I,"()"));
+		}
+	}
+
+	xr_delete			(l_tpIniFile);
 }
 
 void CScriptEngine::process	()
@@ -191,4 +199,39 @@ void CScriptEngine::process	()
 		xr_free					(S2);
 	}
 	m_reload_modules			= false;
+}
+
+void CScriptEngine::register_script_classes	()
+{
+	u32							n = _GetItemCount(*m_class_registrators);
+	string256					I, script_namespace, script_function;
+	for (u32 i=0; i<n; ++i) {
+		_GetItem				(*m_class_registrators,i,I);
+		parse_script_namespace	(I,script_namespace,script_function);
+		add_file				(script_namespace);
+		process					();
+//		lua_dostring			(lua(),I);
+		luabind::functor<void>	result;
+		R_ASSERT				(functor(I,result));
+		result					(const_cast<CObjectFactory*>(&object_factory()));
+	}
+}
+
+void CScriptEngine::load_class_registrators		()
+{
+	string256		S;
+	FS.update_path	(S,"$game_data$","script.ltx");
+	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
+	R_ASSERT		(l_tpIniFile);
+	if (!l_tpIniFile->section_exist("common")) {
+		xr_delete			(l_tpIniFile);
+		return;
+	}
+
+	if (l_tpIniFile->line_exist("common","class_registrators"))
+		m_class_registrators = l_tpIniFile->r_string("common","class_registrators");
+	else
+		m_class_registrators = "";
+
+	xr_delete			(l_tpIniFile);
 }

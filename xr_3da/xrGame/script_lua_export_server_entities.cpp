@@ -36,6 +36,9 @@ void CScriptEngine::export_server_entities()
 //			.def("parent_id",				&abstract_parent_id),
 //
 //		class_<CSE_ALifeObject,CSE_Abstract>("alife_object")
+//		class_<CSE_Abstract>("base_server_class"),
+		class_<CSE_Visual>("visual_server_class"),
+		
 		class_<CSE_ALifeObject>("alife_object")
 			.def(							constructor<LPCSTR>())
 			.def("id",						&abstract_id)

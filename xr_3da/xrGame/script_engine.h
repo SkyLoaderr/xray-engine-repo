@@ -31,6 +31,7 @@ protected:
 	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
 	bool						m_reload_modules;
+	ref_str						m_class_registrators;
 
 protected:
 #ifdef XRGAME_EXPORTS
@@ -78,9 +79,15 @@ public:
 	IC		CScriptStackTracker	*current_thread				();
 	IC		CScriptStackTracker	&script_stack_tracker		();
 	IC		void				reload_modules				(bool flag);
+
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
-	
+			void				register_script_classes		();
+	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
+
+	template <typename _result_type>
+	IC		luabind::functor<_result_type>	create_object_creator	(LPCSTR class_name, LPCSTR arguments);
+			void				load_class_registrators		();
 	
 #ifdef XRGAME_EXPORTS
 	CScriptDebugger	*			m_scriptDebugger;

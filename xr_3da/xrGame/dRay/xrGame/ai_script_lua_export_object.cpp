@@ -269,6 +269,22 @@ void CScriptEngine::export_object()
 			.def("heli_goto_stay_point",        (void (CLuaGameObject::*)(Fvector&,float))(CLuaGameObject::heli_goto_stay_point))
 			.def("heli_go_patrol",				&CLuaGameObject::heli_go_patrol),
 
+//		class_<CObject>("base_client_class")
+//			.def(								constructor<>()),
+//
+//		class_<CGameObject,CObject>("game_object_class")
+//			.def(								constructor<>()),
+//
+//		class_<CPhysicItem,CGameObject>("inventory_item_class")
+//			.def(								constructor<>()),
+//
+//		class_<CInventoryItem,CPhysicItem>("inventory_item_class")
+//			.def(								constructor<>()),
+//
+//		class_<CGameObject>("game_object_class")
+//			.def(								constructor<>()),
+
+//		class_<CAttachableItem,CGameObject>("attachable_item")
 		class_<CAttachableItem>("attachable_item")
 			.def(								constructor<>())
 	];

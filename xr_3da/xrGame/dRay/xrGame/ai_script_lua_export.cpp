@@ -59,12 +59,22 @@ void verify_if_thread_is_running()
 	}
 }
 
+bool editor()
+{
+#ifdef XRGAME_EXPORTS
+	return		(false);
+#else
+	return		(true);
+#endif
+}
+
 void CScriptEngine::export_globals()
 {
 	function	(lua(),	"log",							LuaLog);
 	function	(lua(),	"flush",						FlushLogs);
 	function	(lua(),	"module",						LoadScriptModule);
 	function	(lua(),	"verify_if_thread_is_running",	verify_if_thread_is_running);
+	function	(lua(),	"editor",						editor);
 }
 
 void CScriptEngine::export_fvector()
