@@ -743,12 +743,20 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0x00, 1.0f, 0L);
 
 	// samplers and texture
-	m_pd3dDevice->SetTexture				(0, t_Normals);
+	m_pd3dDevice->SetTexture				(0, t_Base);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+
+	// normal-map
+	m_pd3dDevice->SetTexture				(1, t_Normals);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
 	// Setup stencil and culling
 	m_pd3dDevice->SetRenderState			( D3DRS_CULLMODE,			D3DCULL_CCW			);
@@ -779,6 +787,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
+	m_pd3dDevice->SetTexture				(1, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 	m_pd3dDevice->SetRenderTarget			(1, 0	);
 	m_pd3dDevice->SetRenderTarget			(2, 0	);
