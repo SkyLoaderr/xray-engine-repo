@@ -90,20 +90,26 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	mmgrInitialize	(0);
 
-	CreateLog	(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
+	BOOL bCaptureExceptions	= !(strstr(lpCmdLine,"-E") || strstr(lpCmdLine,"-e"));
+#ifndef DEBUG
+	bCaptureExceptions		= FALSE;
+#endif
+	
+	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 	Debug.Start	();
 
-#ifndef DEBUG
-	__try {
-#endif
+	if (bCaptureExceptions)	
+	{
+		__try {
+			Startup();
+			
+		} __except(Debug.LogStack(GetExceptionInformation())) {
+			MessageBox(0,"Unhandled exception. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
+		}
+	} else {
 		Startup();
-
-#ifndef DEBUG
-	} __except(Debug.LogStack(GetExceptionInformation())) {
-		MessageBox(0,"Unhandled exception. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
 	}
-#endif
-
+	
 	Debug.Stop();
 	CloseLog();
 	mmgrDone();
