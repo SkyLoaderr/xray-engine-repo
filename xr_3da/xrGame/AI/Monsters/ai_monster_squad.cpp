@@ -104,7 +104,7 @@ void CMonsterSquad::UpdateSquadCommands()
 	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); ++it_goal) {
 		SMemberGoal goal = it_goal->second;
 		if (!goal.entity || goal.entity->getDestroy()) {
-			it->second.type = MG_None;
+			it_goal->second.type = MG_None;
 		}
 	}
 
