@@ -718,89 +718,110 @@
 						RelativePath=".\memory_space_script.cpp">
 					</File>
 					<Filter
-						Name="EnemyManager"
+						Name="clsuterized_data_managers"
 						Filter="">
-						<File
-							RelativePath=".\enemy_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\enemy_manager.h">
-						</File>
-						<File
-							RelativePath=".\enemy_manager_inline.h">
-						</File>
+						<Filter
+							Name="ObjectManager"
+							Filter="">
+							<File
+								RelativePath=".\object_manager.h">
+							</File>
+							<File
+								RelativePath=".\object_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ItemManager"
+							Filter="">
+							<File
+								RelativePath=".\item_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\item_manager.h">
+							</File>
+							<File
+								RelativePath=".\item_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="EnemyManager"
+							Filter="">
+							<File
+								RelativePath=".\enemy_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\enemy_manager.h">
+							</File>
+							<File
+								RelativePath=".\enemy_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="GreetingManager"
+							Filter="">
+							<File
+								RelativePath=".\greeting_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\greeting_manager.h">
+							</File>
+							<File
+								RelativePath=".\greeting_manager_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
-						Name="EventMemoryManager"
+						Name="raw_data_managers"
 						Filter="">
-						<File
-							RelativePath=".\event_memory_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\event_memory_manager.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="HitMemoryManager"
-						Filter="">
-						<File
-							RelativePath=".\hit_memory_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\hit_memory_manager.h">
-						</File>
-						<File
-							RelativePath=".\hit_memory_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="ItemManager"
-						Filter="">
-						<File
-							RelativePath=".\item_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\item_manager.h">
-						</File>
-						<File
-							RelativePath=".\item_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="ObjectManager"
-						Filter="">
-						<File
-							RelativePath=".\object_manager.h">
-						</File>
-						<File
-							RelativePath=".\object_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="SoundMemoryManager"
-						Filter="">
-						<File
-							RelativePath=".\sound_memory_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\sound_memory_manager.h">
-						</File>
-						<File
-							RelativePath=".\sound_memory_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="VisualMemoryManager"
-						Filter="">
-						<File
-							RelativePath=".\visual_memory_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\visual_memory_manager.h">
-						</File>
-						<File
-							RelativePath=".\visual_memory_manager_inline.h">
-						</File>
+						<Filter
+							Name="HitMemoryManager"
+							Filter="">
+							<File
+								RelativePath=".\hit_memory_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\hit_memory_manager.h">
+							</File>
+							<File
+								RelativePath=".\hit_memory_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="SoundMemoryManager"
+							Filter="">
+							<File
+								RelativePath=".\sound_memory_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\sound_memory_manager.h">
+							</File>
+							<File
+								RelativePath=".\sound_memory_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="VisualMemoryManager"
+							Filter="">
+							<File
+								RelativePath=".\visual_memory_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\visual_memory_manager.h">
+							</File>
+							<File
+								RelativePath=".\visual_memory_manager_inline.h">
+							</File>
+							<Filter
+								Name="visual_memory_params"
+								Filter="">
+								<File
+									RelativePath=".\visual_memory_params.cpp">
+								</File>
+								<File
+									RelativePath=".\visual_memory_params.h">
+								</File>
+							</Filter>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -3409,6 +3430,26 @@
 										</File>
 									</Filter>
 									<Filter
+										Name="dialogs"
+										Filter="">
+										<File
+											RelativePath=".\stalker_alife_dialog_planner.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_alife_dialog_planner.h">
+										</File>
+										<Filter
+											Name="actions"
+											Filter="">
+											<File
+												RelativePath=".\stalker_alife_dialog_actions.cpp">
+											</File>
+											<File
+												RelativePath=".\stalker_alife_dialog_actions.h">
+											</File>
+										</Filter>
+									</Filter>
+									<Filter
 										Name="task_actions"
 										Filter="">
 										<File
@@ -3732,6 +3773,9 @@
 					</File>
 					<File
 						RelativePath=".\level_graph_inline.h">
+					</File>
+					<File
+						RelativePath=".\level_graph_space.h">
 					</File>
 					<File
 						RelativePath=".\level_graph_vertex.cpp">
@@ -4135,9 +4179,6 @@
 							</File>
 							<File
 								RelativePath=".\path_manager_params_game_vertex_type.h">
-							</File>
-							<File
-								RelativePath=".\path_manager_params_level_evaluator.cpp">
 							</File>
 							<File
 								RelativePath=".\path_manager_params_level_evaluator.h">
@@ -4590,9 +4631,6 @@
 						</File>
 						<File
 							RelativePath=".\script_ini_file.h">
-						</File>
-						<File
-							RelativePath=".\script_ini_file_inline.h">
 						</File>
 						<File
 							RelativePath=".\script_ini_file_script.cpp">
