@@ -120,6 +120,7 @@ protected:
 
         // Progressive
 		ArbitraryList<VIPM_SWR>	m_SWR;// The records of the collapses.
+	    BOOL			m_b2Link;
     public:
         SSplit			(CSurface* surf, const Fbox& bb);
 
@@ -132,7 +133,7 @@ protected:
 		void 			MakeProgressive	();
 		void 			CalculateTB		();
 
-        void 			Save			(IWriter& F, BOOL b2Link);
+        void 			Save			(IWriter& F);
 
         void			ComputeBounding	()
         {

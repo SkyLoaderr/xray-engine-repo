@@ -58,7 +58,7 @@ void TUI::OnReceiveMail(LPCSTR msg)
     if (cnt){
         AnsiString M=AnsiString(msg).LowerCase();
         AnsiString p[2];
-		_GetItem(msg,0,p[0],' ');
+		_GetItem(msg,0,p[0],' ',"",false);
         if (cnt>1) _GetItems(msg,1,cnt,p[1],' ');
         if (p[0]=="exit"){
         	ELog.DlgMsg(mtInformation,"'%s EDITOR': Critical update!",AnsiString(UI->EditorName()).UpperCase());

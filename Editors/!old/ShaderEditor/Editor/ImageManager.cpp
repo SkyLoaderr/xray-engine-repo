@@ -855,10 +855,10 @@ public:
 	                    for (float p=src_p-h_angle; p<src_p+h_angle; p+=d_angle){
                         	dir.setHP		(h,p);
                             sample_color.set(pixel_from_vector(dir,src_data,src_width,src_height));
-                            sum.r			+= sample_color.r;
-                            sum.g			+= sample_color.g;
-                            sum.b			+= sample_color.b;
-                            sum.a			+= sample_color.a;
+                            sum.r			+= sample_color.r*sample_color.r;
+                            sum.g			+= sample_color.g*sample_color.g;
+                            sum.b			+= sample_color.b*sample_color.b;
+                            sum.a			+= sample_color.a*sample_color.a;
                             ds++;
                         }
                     }

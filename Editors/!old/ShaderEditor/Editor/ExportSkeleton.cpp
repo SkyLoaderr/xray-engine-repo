@@ -95,12 +95,13 @@ CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &_bb, int apx_vert
 
 CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollectorPacked(bb)
 {
+	m_b2Link	= FALSE;
 	m_Texture 	= surf->_Texture();
 	m_Shader	= surf->_ShaderName();
 }
 //----------------------------------------------------
 
-void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
+void CExportSkeleton::SSplit::Save(IWriter& F)
 {
     // Header
     F.open_chunk		(OGF_HEADER);
@@ -122,9 +123,9 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
 
     // Vertices
     F.open_chunk		(OGF_VERTICES);
-    F.w_u32				(b2Link?OGF_VERTEXFORMAT_FVF_2L:OGF_VERTEXFORMAT_FVF_1L);
+    F.w_u32				(m_b2Link?OGF_VERTEXFORMAT_FVF_2L:OGF_VERTEXFORMAT_FVF_1L);
     F.w_u32				(m_Verts.size());
-    if (b2Link){
+    if (m_b2Link){
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
 			// write vertex
@@ -471,7 +472,6 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
     R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
-    BOOL b2Link = FALSE;
 
     SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
     pb->Inc		();
@@ -507,10 +507,10 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                     for (int k=0; k<3; k++){
                         st_FaceVert& 	fv 	= face.pv[k];
                         st_SVert& 		sv 	= MESH->m_SVertices[f_idx*3+k];
-                        if (sv.bone1==BI_NONE){
+                        if ((sv.bone1==BI_NONE)||(sv.bone0==sv.bone1)){
 	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
                         }else{                                   
-                        	b2Link = TRUE;     
+                        	split.m_b2Link = TRUE;     
 	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone1);
                         }
                     }
@@ -572,7 +572,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     int chield=0;
     for (split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 	    F.open_chunk(chield++);
-        split_it->Save(F,b2Link);
+        split_it->Save(F);
 	    F.close_chunk();
     }
     F.close_chunk();
