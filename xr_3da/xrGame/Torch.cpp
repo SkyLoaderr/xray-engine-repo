@@ -73,7 +73,7 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 
 	guid_bone				= torch->guid_bone; VERIFY(guid_bone!=BI_NONE);
 
-	VERIFY						(m_pPhysicsShell);
+	VERIFY					(m_pPhysicsShell);
 	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	/*
