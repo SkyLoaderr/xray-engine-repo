@@ -812,7 +812,7 @@ function add_novice3(obj)
     operators [ "stalker_novice" ]  = xr_actions_id.jon_stalker_novice3
     operators [ "stalker_attack" ]  = xr_actions_id.jon_stalker_attack
 
---	xr_meet.disable_meet(obj)       								--Отключаем встречу
+	xr_meet.disable_meet(obj)       								--Отключаем встречу
     local manager  = obj:motivation_action_manager ()
     manager:add_evaluator ( properties[ "work" ],   this.info_portion_evaluator("info_portion_evaluator", "escape_factory_bandits_dead" ) )
     manager:add_evaluator ( properties[ "attack" ], this.can_attack_enemy_evaluator("go to attack enemy", xr_motivator.storage[obj:id()].novice3, obj ) )
