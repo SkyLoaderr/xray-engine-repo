@@ -4,7 +4,7 @@
 
 #include "soundrender.h"
 
-class CSoundRender_Source	: public CSound_source
+class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
 	LPCSTR					fname;

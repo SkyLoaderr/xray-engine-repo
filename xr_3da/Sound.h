@@ -127,6 +127,7 @@ struct	sound
 	IC void					set_volume				( float vol );
 
 	IC const CSound_params*	get_params				( );
+    IC void					set_params				( CSound_params* p );
 };
 
 /// definition (Sound Source)
@@ -214,6 +215,15 @@ IC void	sound::set_range					( float min, float max )								{	if (feedback)	fee
 IC void	sound::set_volume					( float vol )											{	if (feedback)	feedback->set_volume(vol);							}
 IC void	sound::stop							( )														{	if (feedback)	feedback->stop();									}
 IC const CSound_params*	sound::get_params	( )														{	if (feedback)	return feedback->get_params(); else return NULL;	}
+IC void	sound::set_params					( CSound_params* p )									
+{	
+	if (feedback){
+    	feedback->set_position	(p->position);
+    	feedback->set_frequency	(p->freq);
+        feedback->set_range   	(p->min_distance,p->max_distance);
+        feedback->set_volume   	(p->volume);
+    }
+}
 IC void	sound::clone						( const sound& from, bool leave_type)		
 {
 	feedback	= 0;

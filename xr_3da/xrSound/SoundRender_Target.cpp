@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "soundrender.h"
 #include "soundrender_core.h"
 #include "soundrender_target.h"
