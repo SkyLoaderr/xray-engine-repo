@@ -204,8 +204,8 @@ void CObjectSpace::Load	()
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 	}
 	g_pGameLevel->Load_GameSpecific_CFORM	( tris, H.facecount );
-	Static.build						( verts, H.vertcount, tris, H.facecount );
-    Msg						("* Level CFORM memory usage: %dK",Static.memory()/1024);
+	Static.build							( verts, H.vertcount, tris, H.facecount );
+    Msg										("* Level CFORM memory usage: %dK",Static.memory()/1024);
 
 	// CForm
 	x_count					= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
