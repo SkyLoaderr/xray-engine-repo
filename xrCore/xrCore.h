@@ -15,6 +15,12 @@
 
 // windows.h
 #define _WIN32_WINNT 0x0500        
+
+#ifdef __BORLANDC__
+#include <vcl.h>
+#include <mmsystem.h>
+#endif
+
 #define NOGDICAPMASKS
 #define NOSYSMETRICS
 #define NOMENUS
@@ -31,10 +37,6 @@
 #define NOMINMAX
 #define DOSWIN32
 #define _WIN32_DCOM
-
-#ifdef __BORLANDC__
-	#include <vcl.h>
-#endif
 
 #include <windows.h>
 
