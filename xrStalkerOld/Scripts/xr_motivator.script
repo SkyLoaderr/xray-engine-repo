@@ -138,7 +138,7 @@ if false then
 	if lasttime == nil or
 	   game.get_game_time():diffSec(lasttime) > 1 
 	then
-		--printf("%f * %f", self.object.health, self.object.health - lasthealth)
+		printf("%f * %f", self.object.health, self.object.health - lasthealth)
 		lasthealth = self.object.health
 		lasttime = game.get_game_time()
 	end
