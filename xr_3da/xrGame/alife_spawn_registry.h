@@ -27,11 +27,18 @@ protected:
 	ARTEFACT_SPAWNS							m_artefact_spawn_positions;
 	ALife::ITEM_SET_MAP						m_artefact_anomaly_map;
 	shared_str								m_spawn_name;
+	xr_vector<ALife::_SPAWN_ID>				m_spawn_roots;
+	xr_vector<ALife::_SPAWN_ID>				m_temp0;
+	xr_vector<ALife::_SPAWN_ID>				m_temp1;
 
 protected:
 			void							save_updates				(IWriter &stream);
 			void							load_updates				(IReader &stream);
 			void							build_spawn_anomalies		();
+			void							build_root_spawns			();
+	IC		void							process_spawns				(xr_vector<ALife::_SPAWN_ID> &spawns);
+			void							fill_redundant_spawns		(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns);
+			void							fill_new_spawns				(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns);
 
 public:
 											CALifeSpawnRegistry			(LPCSTR section);

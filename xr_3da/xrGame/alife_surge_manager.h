@@ -28,7 +28,6 @@ public:
 
 private:
 	IC		bool			redundant					(CSE_ALifeDynamicObject *object);
-	IC		void			process_spawns				();
 
 protected:
 			void			surge						();
@@ -46,10 +45,8 @@ protected:
 			void			update_organizations		();
 			void			setup_next_surge_time		();
 			float			distance					(const DWORD_VECTOR &path) const;
-			void			fill_redundant_spawns		();
 			void			fill_redundant_objects		();
 			void			release_redundant_objects	();
-			void			fill_new_spawns				();
 			void			spawn_new_spawns			();
 
 public:

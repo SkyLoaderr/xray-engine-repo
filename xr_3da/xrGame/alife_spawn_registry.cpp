@@ -106,6 +106,8 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 	chunk->close				();
 
 	build_spawn_anomalies		();
+	
+	build_root_spawns			();
 
 	Msg							("%d spawn points are successfully loaded",m_spawns.vertex_count());
 }
@@ -138,12 +140,12 @@ void CALifeSpawnRegistry::load_updates			(IReader &stream)
 
 void CALifeSpawnRegistry::build_spawn_anomalies	()
 {
+	// building map of sets : get all the zone types which can generate given artefact
 	m_artefact_anomaly_map.clear	();
 
 	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
 	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		// building map of sets : get all the zone types which can generate given artefact
 		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>((*I)->data());
 		if (anomaly) {
 			ALife::EAnomalousZoneType		type = anomaly->m_tAnomalyType;
@@ -162,10 +164,94 @@ void CALifeSpawnRegistry::build_spawn_anomalies	()
 	}
 }
 
+IC	void CALifeSpawnRegistry::process_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns)
+{
+	std::sort								(spawns.begin(),spawns.end());
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = unique(spawns.begin(),spawns.end());
+	spawns.erase							(I,spawns.end());
+}
+
+void CALifeSpawnRegistry::build_root_spawns		()
+{
+	m_temp0.clear		();
+	m_temp1.clear		();
+
+	{
+		SPAWN_GRAPH::const_vertex_iterator	I = m_spawns.vertices().begin();
+		SPAWN_GRAPH::const_vertex_iterator	E = m_spawns.vertices().end();
+		for ( ; I != E; ++I)
+			m_temp0.push_back				((*I)->vertex_id());
+	}
+
+	{
+		SPAWN_GRAPH::const_vertex_iterator	I = m_spawns.vertices().begin();
+		SPAWN_GRAPH::const_vertex_iterator	E = m_spawns.vertices().end();
+		for ( ; I != E; ++I) {
+			SPAWN_GRAPH::const_iterator	i = (*I)->edges().begin();
+			SPAWN_GRAPH::const_iterator	e = (*I)->edges().end();
+			for ( ; i != e; ++i)
+				m_temp1.push_back			((*i).vertex_id());
+		}
+	}
+
+	process_spawns							(m_temp0);
+	process_spawns							(m_temp1);
+	
+	m_spawn_roots.resize					(m_temp0.size() + m_temp1.size());
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = set_difference(
+		m_temp0.begin(),
+		m_temp0.end(),
+		m_temp1.begin(),
+		m_temp1.end(),
+		m_spawn_roots.begin()
+	);
+
+	m_spawn_roots.erase						(I,m_spawn_roots.end());
+}
+
 void CALifeSpawnRegistry::fill_redundant_spawns	(xr_vector<ALife::_SPAWN_ID> &spawns)
 {
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = m_spawn_roots.begin();
+	xr_vector<ALife::_SPAWN_ID>::iterator	E = m_spawn_roots.end();
+	for ( ; I != E; ++I)
+		fill_redundant_spawns				(m_spawns.vertex(*I),spawns);
+	
+	process_spawns							(spawns);
 }
 
 void CALifeSpawnRegistry::fill_new_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns)
 {
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = m_spawn_roots.begin();
+	xr_vector<ALife::_SPAWN_ID>::iterator	E = m_spawn_roots.end();
+	for ( ; I != E; ++I)
+		fill_new_spawns						(m_spawns.vertex(*I),spawns);
+
+	process_spawns							(spawns);
+}
+
+void CALifeSpawnRegistry::fill_redundant_spawns	(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns)
+{
+	VERIFY									(vertex);
+	
+	if (vertex->edges().empty()) {
+		return;
+	}
+
+	SPAWN_GRAPH::const_iterator				I = vertex->edges().begin();
+	SPAWN_GRAPH::const_iterator				E = vertex->edges().end();
+	for ( ; I != E; ++I)
+		;
+}
+
+void CALifeSpawnRegistry::fill_new_spawns		(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns)
+{
+	VERIFY									(vertex);
+	if (vertex->edges().empty()) {
+		return;
+	}
+
+	SPAWN_GRAPH::const_iterator				I = vertex->edges().begin();
+	SPAWN_GRAPH::const_iterator				E = vertex->edges().end();
+	for ( ; I != E; ++I)
+		;
 }

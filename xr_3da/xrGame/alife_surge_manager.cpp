@@ -397,20 +397,6 @@ IC	bool CALifeSurgeManager::redundant				(CSE_ALifeDynamicObject *object)
 	return									(true);
 }
 
-IC	void CALifeSurgeManager::process_spawns			()
-{
-	std::sort								(m_temp_spawns.begin(),m_temp_spawns.end());
-	xr_vector<ALife::_SPAWN_ID>::iterator	I = unique(m_temp_spawns.begin(),m_temp_spawns.end());
-	m_temp_spawns.erase						(I,m_temp_spawns.end());
-}
-
-void CALifeSurgeManager::fill_redundant_spawns		()
-{
-	m_temp_spawns.clear				();
-	spawns().fill_redundant_spawns	(m_temp_spawns);
-	process_spawns					();
-}
-
 void CALifeSurgeManager::fill_redundant_objects		()
 {
 	m_temp_objects.clear			();
@@ -433,16 +419,9 @@ void CALifeSurgeManager::release_redundant_objects	()
 
 void CALifeSurgeManager::remove_redundant_objects	()
 {
-	fill_redundant_spawns			();
+	spawns().fill_redundant_spawns	(m_temp_spawns);
 	fill_redundant_objects			();
 	release_redundant_objects		();
-}
-
-void CALifeSurgeManager::fill_new_spawns			()
-{
-	m_temp_spawns.clear				();
-	spawns().fill_new_spawns		(m_temp_spawns);
-	process_spawns					();
 }
 
 void CALifeSurgeManager::spawn_new_spawns			()
@@ -458,7 +437,7 @@ void CALifeSurgeManager::spawn_new_spawns			()
 
 void CALifeSurgeManager::spawn_new_objects			()
 {
-	fill_new_spawns					();
+	spawns().fill_new_spawns		(m_temp_spawns);
 	spawn_new_spawns				();
 	VERIFY							(graph().actor());
 }
