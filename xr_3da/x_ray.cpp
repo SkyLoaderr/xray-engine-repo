@@ -155,10 +155,10 @@ void	test_rtc	()
 	tM.FrameEnd		();
 	tC.FrameEnd		();
 	tD.FrameEnd		();
-	Msg				("* memcpy:	       %f K/s",1000.f*(float(bytes)/tMc.result)/1024.f);
-	Msg				("* mm-memcpy:	   %f K/s",1000.f*(float(bytes)/tM.result)/1024.f);
-	Msg				("* compression:   %f K/s",1000.f*(float(bytes)/tC.result)/1024.f);
-	Msg				("* decompression: %f K/s",1000.f*(float(bytes)/tD.result)/1024.f);
+	Msg				("* memcpy:	       %5.2f M/s",1000.f*(float(bytes)/tMc.result)/(1024.f*1024.f));
+	Msg				("* mm-memcpy:	   %5.2f M/s",1000.f*(float(bytes)/tM.result)/(1024.f*1024.f));
+	Msg				("* compression:   %5.2f M/s",1000.f*(float(bytes)/tC.result)/(1024.f*1024.f));
+	Msg				("* decompression: %5.2f M/s",1000.f*(float(bytes)/tD.result)/(1024.f*1024.f));
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance,
