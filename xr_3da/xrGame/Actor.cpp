@@ -798,6 +798,13 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	HUD->pHUDFont->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
 	HUD->pHUDFont->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
 	HUD->pHUDFont->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
+	switch (Movement.Environment())
+	{
+	case CMovementControl::peOnGround:	strcpy(buf,"ground");			break;
+	case CMovementControl::peInAir:		strcpy(buf,"air");				break;
+	case CMovementControl::peAtWall:	strcpy(buf,"wall");				break;
+	}
+	HUD->pHUDFont->OutNext	(buf);
 
 /**
 	CHUDManager* HUD	= (CHUDManager*)hud;

@@ -107,7 +107,7 @@ float Integrate1D_to	(float v, float &s, float& a,  float f, float s_desired)
 	float	v0		= v;
 	float	QmulF	= Q*f;
 	float	Qdiv2	= Q*0.5f;
-	while (s<s_desired) 
+	while (_abs(s)<_abs(s_desired)) 
 	{
 		// velocity
 		v0 = v;
@@ -185,6 +185,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	Fvector motion,vAccel;
 	float	fOldFriction	= fFriction;
 	float	fVelocityBefore	= vVelocity.magnitude	();
+	float	fVelocityY		= vVelocity.y;
 
 	vExternalImpulse.div(dt);
 	vAccel.add			(vExternalImpulse,_Accel);
@@ -241,6 +242,14 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// Velocity stuff
 	float s_calc	= motion.magnitude();	// length of motion - dS - requested
 	motion.sub		(final_pos,vPosition);	// motion - resulting
+
+	if (peAtWall==eEnvironment)
+	{
+		float s_dummy	= 0;
+		float s_desired	= motion.y;
+		vVelocity.y		= Integrate1D_to	(fVelocityY,s_dummy,vAccel.y,fOldFriction,s_desired);
+		Msg				("o:%f / n:%f",fVelocityY,vVelocity.y);
+	}
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
 	Fvector vel_dir;
@@ -360,14 +369,14 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 			{
 				Fvector N; 
 				N.mknormal(T.p[0],T.p[1],T.p[2]);
-				if ((N.y>.7f))
+				if ((N.y>.0f))
 				{
 					eEnvironment=peOnGround;
 					return;
 				} else  {
-					if((N.y>=0)&&(N.y<=0.5f))
+					if((N.y>=0)&&(N.y<=0.7f))
 					{
-						eEnvironment=peAtWall;
+						eEnvironment=peInAir;//AtWall;
 					}
 				}
 			}
