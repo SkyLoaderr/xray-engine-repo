@@ -440,15 +440,15 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims->m_dead_stop);
 		}
 	}
-#ifdef DEBUG
-	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) 
-	{
-
-		HUD().Font().pFontSmall->SetColor	(0xffffffff);
-		HUD().Font().pFontSmall->OutSet	(170,450);
-		HUD().Font().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
-	};
-#endif
+//#ifdef DEBUG
+//	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) 
+//	{
+//
+//		HUD().Font().pFontSmall->SetColor	(0xffffffff);
+//		HUD().Font().pFontSmall->OutSet	(170,450);
+//		HUD().Font().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
+//	};
+//#endif
 
 #ifdef _DEBUG
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
