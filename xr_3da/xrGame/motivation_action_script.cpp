@@ -21,5 +21,9 @@ void CMotivationAction<CScriptGameObject>::script_register(lua_State *L)
 		class_<CScriptMotivationAction,CScriptMotivationActionWrapper,CScriptMotivation>("motivation_action")
 			.def(								constructor<const CScriptWorldState &>())
 			.def("goal",						&CScriptMotivationAction::goal)
+			.def("reinit",						&CScriptMotivationActionWrapper::reinit,	&CScriptMotivationActionWrapper::reinit_static)
+			.def("load",						&CScriptMotivationActionWrapper::Load,		&CScriptMotivationActionWrapper::Load_static)
+			.def("reload",						&CScriptMotivationActionWrapper::reload,	&CScriptMotivationActionWrapper::reload_static)
+			.def("evaluate",					&CScriptMotivationActionWrapper::evaluate,	&CScriptMotivationActionWrapper::evaluate_static)
 	];
 }

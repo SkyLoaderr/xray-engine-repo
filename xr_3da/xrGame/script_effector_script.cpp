@@ -48,6 +48,6 @@ void CScriptEffector::script_register(lua_State *L)
 			.def(								constructor<int,float>())
 			.def("start",						&CScriptEffector::Add)
 			.def("finish",						&CScriptEffector::Remove)
-			.def("process",						&CScriptEffector::Process,	&CScriptEffectorWrapper::Process_static)
+			.def("process",						&CScriptEffectorWrapper::Process,	&CScriptEffectorWrapper::Process_static)
 	];
 }
