@@ -497,7 +497,7 @@ end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s for %s", state_name, self.npc:name())
 	if state_lib.states[state_name] == nil then
-		printf("ERROR: ILLEGAL SET STATE CALLED!!!")
+		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!!")
 	end
 
 	if target then
