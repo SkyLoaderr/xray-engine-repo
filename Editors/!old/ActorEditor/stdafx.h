@@ -148,8 +148,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 
 #pragma comment(lib,"ECoreB_static.lib")
 
-#pragma comment(lib,"xrEPropsB.lib")
-
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"xrSoundB.lib")
 #pragma comment(lib,"xrCDBB.lib")
