@@ -19,6 +19,7 @@ game_TeamState::game_TeamState()
 game_GameState::game_GameState()
 {
 	type				=	-1;
+	phase				=	GAME_PHASE_PENDING;
 	round				=	-1;
 	fraglimit			=	-1;
 	timelimit			=	-1;
