@@ -16,7 +16,7 @@ function main_base_tab:__finalize()
 end
 
 function main_base_tab:InitControls(x, y)
-	self.main_rect = {)
+	self.main_rect = {}
 	self.mian_rect.x = 0
 	self.main_rect.y = 0 
 	self.main_rect.width = 257
