@@ -56,7 +56,7 @@ void					CRender::create					()
 	// emulate ATI-R4xx series
 	if (strstr(Core.Params,"-r4xx"))	{
 		o.mrtmixdepth	= FALSE;
-		//o.HW_smap		= FALSE;
+		o.HW_smap		= FALSE;
 		//o.fp16_filter	= FALSE;
 		o.fp16_blend	= FALSE;
 	}
