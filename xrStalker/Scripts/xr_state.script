@@ -39,6 +39,77 @@ function action_change_state:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()  
+
+	self.object:clear_animations()
+
+	if self.a.body_state == 0 then
+		if self.a.target_state == 0 then
+			--
+		elseif self.a.target_state == 1 then
+			self.object:add_animation("stalker_1_down", true)
+		elseif self.a.target_state == 2 then
+			self.object:add_animation("stalker_2_down", true)
+		elseif self.a.target_state == 3 then
+			self.object:add_animation("stalker_3_down", true)
+		elseif self.a.target_state == 4 then
+			self.object:add_animation("stalker_2_down", true)
+			self.object:add_animation("spit_0", true)			
+		end
+	elseif self.a.body_state == 1 then
+		if self.a.target_state == 0 then
+			self.object:add_animation("stalker_1_up", true)
+		elseif self.a.target_state == 1 then
+			--
+		elseif self.a.target_state == 2 then
+			--!!!!
+		elseif self.a.target_state == 3 then
+			--!!!!
+		elseif self.a.target_state == 4 then
+			--!!!!
+		end
+	elseif self.a.body_state == 2 then
+		if self.a.target_state == 0 then
+			self.object:add_animation("stalker_2_up", true)
+		elseif self.a.target_state == 1 then
+			--!!!!
+		elseif self.a.target_state == 2 then
+			--
+		elseif self.a.target_state == 3 then
+			self.object:add_animation("stalker_2v3", true)
+		elseif self.a.target_state == 4 then
+			self.object:add_animation("spit_0", true)
+		end
+	elseif self.a.body_state == 3 then
+		if self.a.target_state == 0 then
+			self.object:add_animation("stalker_3_up", true)
+		elseif self.a.target_state == 1 then
+			--!!!!
+		elseif self.a.target_state == 2 then
+			self.object:add_animation("stalker_3v2", true)
+		elseif self.a.target_state == 3 then
+			--
+		elseif self.a.target_state == 4 then
+			--!!!!
+		end
+	elseif self.a.body_state == 4 then
+		if self.a.target_state == 0 then
+			self.object:add_animation("spit_3", true)
+			self.object:add_animation("stalker_2_up", true)
+		elseif self.a.target_state == 1 then
+			--!!!!
+		elseif self.a.target_state == 2 then
+			self.object:add_animation("spit_3", true)
+		elseif self.a.target_state == 3 then
+			--!!!!
+		elseif self.a.target_state == 4 then
+			--
+		end
+	end
+	a = xr_state.getIdle(self.a.target_state)
+	if a ~= nil then
+		self.object:add_animation(a, true)
+	end
+
 end
 function action_change_state:execute ()
 	if self.a.target_state == 0 then
@@ -95,81 +166,12 @@ function change_state(object, new, emerg)
 	-- 3 - сидит в положении для еды
 	-- 4 - спит сидя
 	local st = xr_motivator.storage[object:id()].state
+
+	if new == st.target_state then
+		return false
+	end
 	   	            
 	if st.body_state ~= new then 
-		object:clear_animations()
-		printf("Body State: %d, target %d", st.body_state, new) 
-	            
-		if st.body_state == 0 then
-			if new == 0 then
-				--
-			elseif new == 1 then
-				object:add_animation("stalker_1_down", true)
-			elseif new == 2 then
-				object:add_animation("stalker_2_down", true)
-			elseif new == 3 then
-				object:add_animation("stalker_3_down", true)
-			elseif new == 4 then
-				object:add_animation("stalker_2_down", true)
-				object:add_animation("spit_0", true)			
-			end
-		elseif st.body_state == 1 then
-			if new == 0 then
-				object:add_animation("stalker_1_up", true)
-			elseif new == 1 then
-				--
-			elseif new == 2 then
-				--!!!!
-			elseif new == 3 then
-				--!!!!
-			elseif new == 4 then
-				--!!!!
-			end
-		elseif st.body_state == 2 then
-			if new == 0 then
-				object:add_animation("stalker_2_up", true)
-			elseif new == 1 then
-				--!!!!
-			elseif new == 2 then
-				--
-			elseif new == 3 then
-				object:add_animation("stalker_2v3", true)
-			elseif new == 4 then
-				object:add_animation("spit_0", true)
-			end
-		elseif st.body_state == 3 then
-			if new == 0 then
-				object:add_animation("stalker_3_up", true)
-			elseif new == 1 then
-				--!!!!
-			elseif new == 2 then
-				object:add_animation("stalker_3v2", true)
-			elseif new == 3 then
-				--
-			elseif new == 4 then
-				--!!!!
-			end
-
-		elseif st.body_state == 4 then
-			if new == 0 then
-				object:add_animation("spit_3", true)
-				object:add_animation("stalker_2_up", true)
-			elseif new == 1 then
-				--!!!!
-			elseif new == 2 then
-				object:add_animation("spit_3", true)
-			elseif new == 3 then
-				--!!!!
-			elseif new == 4 then
-				--
-			end
-		end
-
-		a = xr_state.getIdle(new)
-		if a ~= nil then
-			object:add_animation(a, true)
-		end
-
 	      	st.target_state = new
 		if emerg == true then
 			st.body_state = st.target_state
