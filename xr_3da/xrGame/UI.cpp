@@ -52,7 +52,7 @@ void CUI::Load()
 		pUIBuyMenu->Load				();
 		break;
 	case GAME_DEATHMATCH:
-		pUIDMFragList	= new CUIFragList		();
+		pUIDMFragList	= new CUIDMFragList		();
 		pUIDMPlayerList	= new CUIDMPlayerList	();
 		pUIDMFragList->Init						();
 		pUIDMPlayerList->Init					();

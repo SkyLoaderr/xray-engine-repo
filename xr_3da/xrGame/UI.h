@@ -7,7 +7,7 @@
 #include "UIWeapon.h"
 #include "UIHealth.h"
 #include "UIGroup.h"
-#include "UIFragList.h"
+#include "UIDMFragList.h"
 #include "UIDMPlayerList.h"
 #include "UIBuyMenu.h"
 
@@ -52,7 +52,7 @@ class CUI{
 	CUISquad			UISquad;
 
 	// deathmatch part
-	CUIFragList*		pUIDMFragList;
+	CUIDMFragList*		pUIDMFragList;
 	CUIDMPlayerList*	pUIDMPlayerList;
 	// cs part
 	CUIBuyMenu*			pUIBuyMenu;

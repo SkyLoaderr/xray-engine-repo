@@ -1,14 +1,14 @@
-#ifndef __XR_UIFRAGLIST_H__
-#define __XR_UIFRAGLIST_H__
+#ifndef __XR_UIDMFRAGLIST_H__
+#define __XR_UIDMFRAGLIST_H__
 #pragma once
 
 #include "uilistbox.h"
 
-class CUIFragList:public CUIListBox
+class CUIDMFragList:public CUIListBox
 {
 	typedef CUIListBox inherited;
 public:
-					CUIFragList		();
+					CUIDMFragList	();
 	void			Init			();
 	virtual void	OnFrame			();
 };

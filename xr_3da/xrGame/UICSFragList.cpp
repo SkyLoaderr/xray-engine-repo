@@ -1,16 +1,16 @@
 #include "stdafx.h"
-#include "UIDMFragList.h"
+#include "UICSFragList.h"
 #include "hudmanager.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CUIDMFragList::CUIDMFragList()
+CUICSFragList::CUICSFragList()
 {
 }
 //--------------------------------------------------------------------
 
-void CUIDMFragList::Init()
+void CUICSFragList::Init()
 {
 	inherited::Init		("ui\\ui_hud_frame",150,150,500,500,alLeft|alTop);
 }
@@ -19,7 +19,7 @@ IC bool	pred_player		(LPVOID v1, LPVOID v2)
 {
 	return ((game_cl_GameState::Player*)v1)->kills>((game_cl_GameState::Player*)v2)->kills;
 }
-void CUIDMFragList::OnFrame()
+void CUICSFragList::OnFrame()
 {
 	inherited::OnFrame();
 	map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();

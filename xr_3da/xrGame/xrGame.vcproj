@@ -1162,16 +1162,32 @@
 					Name="Deathmatch"
 					Filter="">
 					<File
+						RelativePath="UIDMFragList.cpp">
+					</File>
+					<File
+						RelativePath="UIDMFragList.h">
+					</File>
+					<File
 						RelativePath="UIDMPlayerList.cpp">
 					</File>
 					<File
 						RelativePath="UIDMPlayerList.h">
 					</File>
+				</Filter>
+				<Filter
+					Name="CS"
+					Filter="">
 					<File
-						RelativePath="UIFragList.cpp">
+						RelativePath="UICSFragList.cpp">
 					</File>
 					<File
-						RelativePath="UIFragList.h">
+						RelativePath="UICSFragList.h">
+					</File>
+					<File
+						RelativePath="UICSPlayerList.cpp">
+					</File>
+					<File
+						RelativePath="UICSPlayerList.h">
 					</File>
 				</Filter>
 			</Filter>
