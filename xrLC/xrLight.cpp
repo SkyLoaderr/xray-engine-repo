@@ -99,12 +99,16 @@ void	g_trans_register			(Vertex* V)
 	// Search
 	const float key		= V->P.x;
 	mapVertIt	it		= g_trans.lower_bound	(key);
+	mapVertIt	it2		= it;
 
-	// Decrement to the start
+	// Decrement to the start and inc to end
 	while (it!=g_trans.begin() && ((it->first+eps2)>key)) it--;
-
+	while (it2!=g_trans.end() && ((it2->first-eps2)<key)) it2++;
+	if (it2!=g_trans.end())	it2++;
+	// Msg		("K:%f, L:%f, U:%f",key,it->first,it2->first);
+	
 	// Search
-	for (; it!=g_trans.end() && ((it->first-eps2)>key); it++)
+	for (; it!=it2; it++)
 	{
 		vecVertex&	VL		= it->second;
 		if (VL.front()->P.similar(V->P,eps))
@@ -221,7 +225,7 @@ void CBuild::LightVertex()
 		for (v=0; v<VL.size(); v++)
 		{
 			// trans-level
-			float	level		= VL[v]->Color.a;
+			float	level		= 1.f; // VL[v]->Color.a;
 
 			// 
 			Fcolor				R;
