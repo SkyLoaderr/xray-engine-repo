@@ -64,7 +64,7 @@ void CSoundRender_Source::i_decompress_fr(char* _dest, u32 left)
                   	val=iFloor(src[j]*32768.f);
                     if(val>32767)val=32767;
                     else if(val<-32768)val=-32768;
-                    *dest=val;
+                    *dest=short(val);
                     dest+=channels;
                 }
             }
@@ -97,7 +97,7 @@ void CSoundRender_Source::i_decompress_hr(char* _dest, u32 left)
                 	val=iFloor((val0+val1)*0.5f*32768.f);
                     if(val>32767)val=32767;
                     else if(val<-32768)val=-32768;
-                    *dest=val;
+                    *dest=short(val);
                     dest+=channels;
                 }
             }
@@ -118,7 +118,7 @@ void CSoundRender_Source::decompress		(u32 line)
 	u32		left_file	= dwBytesTotal - buf_offs;
 	u32		left		= _min	(left_file,line_size);
     // seek
-	u32	cur_pos			= ov_pcm_tell(ovf);
+	u32	cur_pos			= u32	(ov_pcm_tell(ovf));
 	if (cur_pos!=buf_offs){
         ov_pcm_seek		(ovf,buf_offs);
     }

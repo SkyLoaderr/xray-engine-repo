@@ -114,6 +114,11 @@ IC s32		_abs	(s32 x)			{ return (x>=0)? x : s32(-x); }
 IC s32		_min	(s32 x, s32 y)	{ return y + ((x - y) & ((x - y) >> (sizeof(s32) * 8 - 1))); };
 IC s32		_max	(s32 x, s32 y)	{ return x - ((x - y) & ((x - y) >> (sizeof(s32) * 8 - 1))); };
 
+// int64
+IC s64		_abs	(s64 x)			{ return (x>=0)? x : s64(-x); }
+IC s64		_min	(s64 x, s64 y)	{ return y + ((x - y) & ((x - y) >> (sizeof(s64) * 8 - 1))); };
+IC s64		_max	(s64 x, s64 y)	{ return x - ((x - y) & ((x - y) >> (sizeof(s64) * 8 - 1))); };
+
 // string management
 IC char*						strconcat				( char* dest, const char* S1, const char* S2)
 {	return strcat(strcpy(dest,S1),S2); }

@@ -529,9 +529,9 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
                 PART.Name			= _strlwr(buf);
                 PART.bones.resize	(MP->r_u16());
                 MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
-                part_bone_cnt		+= (u16)PART.bones.size();
+                part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
             }
-		    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=i;
+		    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=u16(i);
         }else{
         	if (2==vers){
                 // partitions
@@ -554,7 +554,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
                         VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
     #endif
                     }
-                    part_bone_cnt		+= (u16)PART.bones.size();
+                    part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
                 }
 			    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=i;
             }else{
@@ -570,7 +570,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
     //				Log					("Part:",buf);
                     for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
                         MP->r_stringZ	(buf);
-                        u16 m_idx 		= MP->r_u32	();
+                        u16 m_idx 		= u16		(MP->r_u32());
                         *b_it			= LL_BoneID	(buf); 
     //					Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
     #ifdef _EDITOR
@@ -581,9 +581,9 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
     #else
                         VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
     #endif
-                        if (bRes)		rm_bones[m_idx] = *b_it;
+                        if (bRes)		rm_bones[m_idx] = u16(*b_it);
                     }
-                    part_bone_cnt		+= (u16)PART.bones.size();
+                    part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
                 }
     		}
         }

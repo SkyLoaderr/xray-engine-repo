@@ -163,11 +163,13 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 
 void	CSoundRender_Core::verify_refsound		( ref_sound& S)
 {
+#ifdef	DEBUG
 	int			local_value		= 0;
 	void*		ptr_refsound	= &S;
 	void*		ptr_local		= &local_value;
 	ptrdiff_t	difference		= _abs	( ptrdiff_t(ptr_local) - ptrdiff_t(ptr_refsound) );
 	VERIFY2		(difference > (64*1024), "local/stack-based ref_sound passed. memory corruption will accur.");
+#endif
 }
 
 void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, int type )

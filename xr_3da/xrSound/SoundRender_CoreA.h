@@ -7,8 +7,14 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <AL/alut.h>
-#define A_CHK(expr)		{ expr; ALCenum error=alGetError(); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alGetString(error)); }
-#define AC_CHK(expr)	{ expr; ALCenum error=alcGetError(pDevice); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alcGetString(pDevice,error)); }
+
+#ifdef DEBUG
+#	define A_CHK(expr)		{ expr; ALCenum error=alGetError(); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alGetString(error)); }
+#	define AC_CHK(expr)		{ expr; ALCenum error=alcGetError(pDevice); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alcGetString(pDevice,error)); }
+#else
+#	define A_CHK(expr)		{ expr; }
+#	define AC_CHK(expr)		{ expr; }
+#endif
 
 // temorary patch
 typedef ALenum    __cdecl EAXGet(const struct _GUID *propertySetID,ALuint property,ALuint source,ALvoid *value,ALuint size);
