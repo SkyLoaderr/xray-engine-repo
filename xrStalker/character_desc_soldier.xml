@@ -9,6 +9,10 @@
 		<bio>Рядовой представитель вооруженных сил.</bio>
 
 		<team>Soldier_novice</team>
+		
+		<class>Soldier_novice</class>
+		<community>military</community>
+		
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -23,6 +27,11 @@
 		<bio>Представитель армейского спецназа.</bio>
 
 		<team>Soldier_general</team>
+		
+		<class>Soldier_general</class>
+		<community>military</community>
+
+		
 		<rank>60</rank>
 		<reputation>50</reputation>
 
@@ -37,6 +46,10 @@
 		<bio>Представитель элитного армейского подразделения.</bio>
 
 		<team>Soldier_veteran</team>
+		
+		<class>Soldier_veteran</class>
+		<community>military</community>
+		
 		<rank>80</rank>
 		<reputation>50</reputation>
 
@@ -51,13 +64,15 @@
 		<bio>Представитель элитного армейского подразделения.</bio>
 
 		<team>Soldier_master</team>
+		
+		<class>Soldier_master</class>
+		<community>military</community>
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\militari\stalker_militari_1</visual>		
 	</specific_character>
-
-
 
 
 <!--
