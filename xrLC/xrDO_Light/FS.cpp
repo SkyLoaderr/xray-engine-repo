@@ -85,7 +85,8 @@ ENGINE_API void		FileCompress	(const char *fn, const char* sign, void* data, DWO
 	MARK M; mk_mark(M,sign);
 
 	int H	= open(fn,O_BINARY|O_CREAT|O_WRONLY|O_TRUNC,S_IREAD|S_IWRITE);
-
+	Log("* FS: Compress ",fn);
+	R_ASSERT(H>0);
 	_write	(H,&M,8);
 	_writeLZ(H,data,size);
 	_close	(H);
@@ -96,6 +97,8 @@ ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD* size)
 	MARK M,F; mk_mark(M,sign);
 
 	int	H = open	(fn,O_BINARY|O_RDONLY);
+	Log("* FS: Decompress ",fn);
+	R_ASSERT(H>0);
 	_read	(H,&F,8);
 	if (strncmp(M,F,8)!=0)		{
 		F[8]=0;		Msg("FATAL: signatures doesn't match, file(%s) / requested(%s)",F,sign);
