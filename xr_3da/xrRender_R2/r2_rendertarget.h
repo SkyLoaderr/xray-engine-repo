@@ -17,6 +17,7 @@ private:
 	CBlender*					b_accum_direct_mask;
 	CBlender*					b_accum_direct;
 	CBlender*					b_accum_point;
+	CBlender*					b_bloom;
 	CBlender*					b_combine;
 
 	//
@@ -42,7 +43,7 @@ private:
 	IDirect3DTexture9*			t_ds2fade_surf;
 	CTexture*					t_ds2fade;
 private:
-	// 
+	// Accum
 	Shader*						s_accum_direct_mask;
 	Shader*						s_accum_direct;
 	Shader*						s_accum_point;
@@ -51,11 +52,15 @@ private:
 	IDirect3DVertexBuffer9*		g_accum_point_vb;
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
 
-	//
+	// Bloom
+	SGeometry*					g_bloom;
+	Shader*						s_bloom_dbg_1;
+	Shader*						s_bloom_dbg_2;
+	Shader*						s_bloom;
+
+	// Combine
 	SGeometry*					g_combine;
-	Shader*						s_combine_dbg_Position;
 	Shader*						s_combine_dbg_Normal;
-	Shader*						s_combine_dbg_Color;
 	Shader*						s_combine_dbg_Accumulator;
 	Shader*						s_combine;
 private:
@@ -81,6 +86,7 @@ public:
 	void				accum_direct			();
 	void				accum_point_shadow		(light* L);
 	void				accum_point_unshadow	(light* L);
+	void				phase_bloom				();
 	void				phase_combine			();
 
 	virtual void		eff_load				(LPCSTR n)		{};
