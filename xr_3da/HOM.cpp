@@ -146,7 +146,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		
 		// Access to triangle vertices
 		CDB::TRI& t	= m_pModel->get_tris() [it->id];
-		src.clear		();
+		src.clear		();	dst.clear	();
 		src.push_back	(*t.verts[0]);
 		src.push_back	(*t.verts[1]);
 		src.push_back	(*t.verts[2]);
@@ -154,7 +154,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		if (0==P)		continue;
 		
 		// XForm and Rasterize
-		for (int v=1; v<P->size(); v++)
+		for (int v=1; v<P->size()-1; v++)
 		{
 			xform			(XF,T.raster[0],(*P)[0],	dim);
 			xform			(XF,T.raster[1],(*P)[v+0],	dim);
