@@ -23,6 +23,7 @@ public:
 	u16								m_wCount;
 	bool							m_bOnline;
 	u8								m_ucProbability;
+	u32								m_dwSpawnGroup;
 
 									CALifeObject()
 	{
@@ -33,6 +34,7 @@ public:
 		m_tObjectID					= _OBJECT_ID(-1);
 		m_tGraphID					= _GRAPH_ID(-1);
 		m_ucProbability				= 1;
+		m_dwSpawnGroup				= 0;
 	};
 
 	virtual void					STATE_Write	(NET_Packet &tNetPacket);

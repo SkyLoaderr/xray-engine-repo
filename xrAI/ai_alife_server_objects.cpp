@@ -16,23 +16,27 @@
 void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u8				(m_ucProbability);
+	tNetPacket.w_u32			(m_dwSpawnGroup);
+	tNetPacket.w_u16			(m_wCount);
+	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
+	tNetPacket.w_float			(m_fDistance);
 }
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	tNetPacket.r_u8				(m_ucProbability);
+	tNetPacket.r_u32			(m_dwSpawnGroup);
+	tNetPacket.r_u16			(m_wCount);
+	tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
+	tNetPacket.r_float			(m_fDistance);
 }
 
 void CALifeObject::UPDATE_Write(NET_Packet &tNetPacket)
 {
-	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
-	tNetPacket.w_float			(m_fDistance);
 }
 
 void CALifeObject::UPDATE_Read(NET_Packet &tNetPacket)
 {
-	tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
-	tNetPacket.r_float			(m_fDistance);
 };
 
 #ifdef _EDITOR
@@ -41,6 +45,8 @@ void CALifeObject::FillProp	(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
 	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "Probability"),	&m_ucProbability,	0,100);
+	PHelper.CreateU32			(items,	PHelper.PrepareKey(pref, "Spawn group ID"),	&m_dwSpawnGroup,	0,0xffffffff);
+	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "Creature count"),	&m_wCount,			0,0xff);
 }
 #endif
 // CALifeMonsterParams
