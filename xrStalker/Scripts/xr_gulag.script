@@ -115,7 +115,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 9,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			search_light = "blockpost_search_light",
 			path_main = "blockpost_guard_light",
 			path_hideout = "blockpost_guard_light" }
@@ -125,7 +125,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 10,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			search_light = nil,
 			path_main = "blockpost_guard_center",
 			path_hideout = "blockpost_guard_center" }
@@ -135,7 +135,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 600000,	-- раз в какое время запускается работа
 			prior = 8,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			patrol_path = "blockpost_patrol_0",
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
@@ -144,7 +144,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 600000,	-- раз в какое время запускается работа
 			prior = 7,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
@@ -153,7 +153,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 600000,	-- раз в какое время запускается работа
 			prior = 7,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
@@ -162,7 +162,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_1"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -170,7 +170,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_2"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -178,7 +178,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_3"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -186,7 +186,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_4"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -194,7 +194,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_5"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -202,17 +202,17 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
-			state = { 0, 1 }, -- в каких состояниях это задание существует
+			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			path_main = "blockpost_sleep_6"}
 		table.insert(self.Job, t)			
 
-		-- только для спокойного состояния
+		-- только для спокойного состояния и для поиска вора
 		t = { name = "guard",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0, 2 }, -- в каких состояниях это задание существует
 			search_light = nil,
 			path_main = "blockpost_guard_left",
 			path_hideout = "blockpost_guard_left" }
@@ -222,7 +222,7 @@ function fract:loadJob(name) -- загружает список заданий
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
-			state = { 0 }, -- в каких состояниях это задание существует
+			state = { 0, 2 }, -- в каких состояниях это задание существует
 			search_light = nil,
 			path_main = "blockpost_guard_right",
 			path_hideout = "blockpost_guard_right" }
@@ -269,6 +269,28 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "blockpost_alarm_center",
 			path_hideout = "blockpost_alarm_center" }
 		table.insert(self.Job, t)
+		
+		-- Только для поиска украденного ящика
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 6,
+			state = { 2 }, -- в каких состояниях это задание существует
+			search_light = nil,
+			path_main = "blockpost_search1",
+			path_hideout = "blockpost_search1" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 6,
+			state = { 2 }, -- в каких состояниях это задание существует
+			search_light = nil,
+			path_main = "blockpost_search2",
+			path_hideout = "blockpost_search2" }
+		table.insert(self.Job, t)			
 	end
 end
 function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное задание
@@ -379,7 +401,10 @@ end
 function fract:loadStates(name) -- загружает список заданий
 	if name == "blockpost" then
 		local t = { id = 1,  -- состояние тревоги
-			    timeout = 600000 }
+			    timeout = 300000 }
+		table.insert(self.States, t)			
+		t = { id = 2,  -- состояние тревоги (стырили ящик)
+			    timeout = 400000 }
 		table.insert(self.States, t)			
 	end
 end
