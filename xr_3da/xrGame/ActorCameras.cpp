@@ -85,10 +85,9 @@ void CActor::cam_Update(float dt, float fFOV)
 
 	if (Level().CurrentEntity() == this)
 	{
-		if(eacFirstEye == cam_active)
-			EffectorManager().Apply		(C);
-
 		Level().Cameras.Update	(C);
+		if(eacFirstEye == cam_active)
+			EffectorManager().ApplyDevice();
 	}
 
 		

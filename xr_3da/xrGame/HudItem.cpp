@@ -7,7 +7,9 @@
 
 #include "HudItem.h"
 #include "WeaponHUD.h"
-#include "Actor.h"
+
+#include "actor.h"
+#include "actoreffector.h"
 
 #include "Missile.h"
 
@@ -221,8 +223,13 @@ void CHudItem::UpdateHudPosition	()
 	if (m_pHUD && hud_mode)
 	{
 		Fmatrix							trans;
-		Level().Cameras.affected_Matrix	(trans);
-		m_pHUD->UpdatePosition			(trans);
+
+		CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+		if(pActor)
+		{
+			pActor->EffectorManager().affected_Matrix	(trans);
+			m_pHUD->UpdatePosition			(trans);
+		}
 	}
 }
 

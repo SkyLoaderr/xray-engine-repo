@@ -145,9 +145,24 @@ void CActorEffector::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	}
 }
 
-void CActorEffector::Apply (CCameraBase* C)
+void CActorEffector::ApplyDevice ()
 {
-	C->vPosition.set	( vPosition		);
-	C->vDirection.set	( vDirection	);
-	C->vNormal.set		( vNormal		);
+	//C->vPosition.set	( vPosition		);
+	//C->vDirection.set	( vDirection	);
+	//C->vNormal.set		( vNormal		);
+	
+	//*/
+	// Device params
+	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
+
+	Device.vCameraPosition.set	( vPosition		);
+	Device.vCameraDirection.set	( vDirection	);
+	Device.vCameraTop.set		( vNormal		);
+	Device.vCameraRight.set		( vRight		);
+
+	// projection
+	Device.fFOV					= fFov;
+	Device.fASPECT				= fAspect;
+	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
+	//*/
 }

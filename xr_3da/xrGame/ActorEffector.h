@@ -39,10 +39,16 @@ public:
 	CEffector*				AddEffector			(CEffector* ef);
 	CEffector*				GetEffector			(EEffectorType type);
 	void					RemoveEffector		(EEffectorType type);
+
+	IC void					affected_Matrix		(Fmatrix& M)
+	{			
+		M.set(affected_vRight,affected_vNormal,affected_vDirection,affected_vPosition);	
+	}
+
 	
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest, u32 flags=0);
 	void					Update				(const CCameraBase* C);
 
-	void					Apply				(CCameraBase* C);
+	void					ApplyDevice			();
 
 };

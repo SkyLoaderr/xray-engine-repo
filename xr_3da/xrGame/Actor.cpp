@@ -1612,18 +1612,9 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 {
 	fire_pos = EffectorManager().vPosition;
 	fire_dir = EffectorManager().vDirection;
-	return;
-	/*
-	if (Local()) {
-		if (HUDview()) 
-		{
-			fire_pos = Device.vCameraPosition;
-			fire_dir = Device.vCameraDirection;
-		} //else Weapons->GetFireParams(fire_pos, fire_dir);
-	} else {
-		//Weapons->GetFireParams(fire_pos, fire_dir);
-	}
-	*/
+
+
+/*
 	if(Level().game.type == GAME_SINGLE)
 	{
 		if (HUDview()) 
@@ -1643,6 +1634,7 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 			fire_dir = Device.vCameraDirection;
 		}
 	}
+*/
 }
 
 void CActor::g_fireStart	( )

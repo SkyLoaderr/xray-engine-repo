@@ -236,13 +236,6 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 		
 	m_fCurrentHitPower *= (shoot_factor*pierce);
 	m_fCurrentHitImpulse *= material_pierce;
-
-	//добавить эффектор хита, если попали по актеру
-	/*CActor *pActor = dynamic_cast<CActor *> (R.O);
-	if (pActor && pActor->g_Alive() && (pActor == dynamic_cast<CActor *>(Level().CurrentEntity()))) {
-		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_effector.ppi,		m_effector.time,		m_effector.time_attack,		m_effector.time_release));
-		Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_effector.ce_time,	m_effector.ce_amplitude,m_effector.ce_period_number,m_effector.ce_power));
-	}*/
 }
 
 void CShootingObject::StaticObjectHit(Collide::rq_result& R, u16 target_material)
