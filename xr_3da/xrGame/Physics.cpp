@@ -252,7 +252,7 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 }
 void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 {	
-	//if(!CPHCollideValidator::DoCollide(*obj1,*obj2)) return;
+	if(!CPHCollideValidator::DoCollide(*obj1,*obj2)) return;
 	CPHIsland* island1=obj1->DActiveIsland();
 	CPHIsland* island2=obj2->DActiveIsland();
 	obj2->near_callback(obj1);

@@ -16,7 +16,9 @@ CGID CPHCollideValidator::RegisterGroup()
 
 void CPHCollideValidator::InitObject(CPHObject& obj)
 {
+	obj.collide_class_bits().assign(0);
 	obj.collide_class_bits().set(cbNone,TRUE);
+	obj.collide_bits()=0;
 }
 void CPHCollideValidator::RegisterObjToGroup(CGID group,CPHObject& obj)
 {
