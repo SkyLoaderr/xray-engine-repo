@@ -130,7 +130,7 @@ void CAI_Flesh::Load(LPCSTR section)
 void CAI_Flesh::StateSelector()
 {
 	
-	HDebug->SetActive(true);
+	HDebug->SetActive(false);  
 	
 	VisionElem ve;
 
