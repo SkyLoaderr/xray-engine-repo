@@ -79,50 +79,56 @@ void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 
 void CStalkerAnimationManager::update						()
 {
-	if (m_call_script_callback) {
-		m_call_script_callback	= false;
-		object().callback(GameObject::eScriptAnimation)();
+	try {
+		if (m_call_script_callback) {
+			m_call_script_callback	= false;
+			object().callback(GameObject::eScriptAnimation)();
+		}
+
+		if (!object().g_Alive())
+			return;
+
+		if (!script_animations().empty()) {
+			global().reset		();
+			head().reset		();
+			torso().reset		();
+			legs().reset		();
+			script().animation	(assign_script_animation());
+			script().play		(m_skeleton_animated,script_play_callback,&object());
+			return;
+		}
+		
+		script().reset			();
+
+		const MotionID			&global_animation = assign_global_animation();
+		if (global_animation) {
+			head().reset		();
+			torso().reset		();
+			legs().reset		();
+			global().animation	(global_animation);
+			global().play		(m_skeleton_animated,global_play_callback,&object());
+			return;
+		}
+
+		global().reset			();
+
+		head().animation		(assign_head_animation());
+		head().play				(m_skeleton_animated,head_play_callback,&object());
+
+		torso().animation		(assign_torso_animation());
+		torso().play			(m_skeleton_animated,torso_play_callback,&object());
+
+		legs().animation		(assign_legs_animation());
+		legs().play				(m_skeleton_animated,legs_play_callback,&object());
+
+		VERIFY					(head().animation());
+		VERIFY					(torso().animation());
+		VERIFY					(legs().animation());
+
+		torso().synchronize		(m_skeleton_animated,m_legs);
 	}
-
-	if (!object().g_Alive())
-		return;
-
-	if (!script_animations().empty()) {
-		global().reset		();
-		head().reset		();
-		torso().reset		();
-		legs().reset		();
-		script().animation	(assign_script_animation());
-		script().play		(m_skeleton_animated,script_play_callback,&object());
-		return;
+	catch(...) {
+		Msg						("! error in stalker with visual %s",*object().cNameVisual());
+		throw;
 	}
-	
-	script().reset			();
-
-	const MotionID			&global_animation = assign_global_animation();
-	if (global_animation) {
-		head().reset		();
-		torso().reset		();
-		legs().reset		();
-		global().animation	(global_animation);
-		global().play		(m_skeleton_animated,global_play_callback,&object());
-		return;
-	}
-
-	global().reset			();
-
-	head().animation		(assign_head_animation());
-	head().play				(m_skeleton_animated,head_play_callback,&object());
-
-	torso().animation		(assign_torso_animation());
-	torso().play			(m_skeleton_animated,torso_play_callback,&object());
-
-	legs().animation		(assign_legs_animation());
-	legs().play				(m_skeleton_animated,legs_play_callback,&object());
-
-	VERIFY					(head().animation());
-	VERIFY					(torso().animation());
-	VERIFY					(legs().animation());
-
-	torso().synchronize		(m_skeleton_animated,m_legs);
 }
