@@ -1,0 +1,89 @@
+module("blood_sucker")
+
+class "SceneRostok"
+function SceneRostok:__init()
+	self.scenes		= {}
+	self.is_actor	= false
+end
+
+function SceneRostok:insert_scene(new_scene)
+	table.insert(self.scenes, new_scene)
+end
+
+function SceneRostok:initialize()
+	for i = 1, table.getn(self.scenes) do
+		self.scenes[i]:initialize()
+	end
+end
+
+function SceneRostok:execute()
+	if(table.getn(self.scenes) == 0) then return false end
+
+	for i = table.getn(self.scenes), 1, -1 do
+		if(self.scenes[i]:execute() == false) then
+			self.scenes[i]:finalize()
+			table.remove(self.scenes, i)
+		end
+	end
+
+	return true
+end
+
+function SceneRostok:finalize()
+end
+
+function main()
+	local scene_rostok	= this.SceneRostok()
+
+	local npc1	= blood_sucker.CBloodsuckerAmbush("bloodsucker01_1", false)
+	local npc2  = blood_sucker.CBloodsuckerAmbush("bloodsucker01_2", false)
+	npc1:add_friend(npc2)
+	npc2:add_friend(npc1)
+
+	scene_rostok:insert_scene(npc1)
+	scene_rostok:insert_scene(npc2)					//Засада 1
+
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerBox("bloodsucker02", true))
+	scene_rostok:insert_scene(blood_sucker.CBaseBloodsucker("bloodsucker03", true, blood_sucker.CStatePatrol))
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerCoward("bloodsucker04", true, nil, blood_sucker.CStateAttackCoward))
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerCoward("bloodsucker05", false, nil, blood_sucker.CStateAttackCoward))
+	scene_rostok:insert_scene(blood_sucker.CBaseBloodsucker("bloodsucker06", true, blood_sucker.CStatePatrolCorpse))
+
+	scene_rostok:insert_scene(blood_sucker.CObjectHit("stalker07"))
+
+	npc1  = blood_sucker.CBloodsuckerAmbush("bloodsucker07_1", false)
+	npc2  = blood_sucker.CBloodsuckerAmbush("bloodsucker07_2", true, blood_sucker.CStatePatrolCorpse)
+	npc1:add_friend(npc2)
+	npc2:add_friend(npc1)
+
+	scene_rostok:insert_scene(npc1)					//Засада 2
+	scene_rostok:insert_scene(npc2)
+
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerCoward("bloodsucker08", true, nil, blood_sucker.CStateAttackCoward))
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerCoward("bloodsucker09", true, nil, blood_sucker.CStateAttackCoward))
+	scene_rostok:insert_scene(blood_sucker.CBaseBloodsucker  ("bloodsucker10", true, blood_sucker.CStatePatrolCorpse))
+	scene_rostok:insert_scene(blood_sucker.CBaseBloodsucker  ("bloodsucker11", true, blood_sucker.CStatePatrolCorpse))
+
+	npc1  = blood_sucker.CBloodsuckerAmbush("bloodsucker12_1", false)
+	npc2  = blood_sucker.CBloodsuckerAmbush("bloodsucker12_2", true, blood_sucker.CStatePatrolCorpse)
+	npc1:add_friend(npc2)
+	npc2:add_friend(npc1)
+
+	scene_rostok:insert_scene(npc1)                 //Засада 3
+	scene_rostok:insert_scene(npc2)
+
+    /*    scene_rostok:insert_scene(blood_sucker.CBloodsuckerBox("blood_sucker1", true))
+	scene_rostok:insert_scene(blood_sucker.CBaseBloodsucker("blood_sucker2", true, blood_sucker.CStatePatrol))
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerAmbush("blood_sucker3", true, blood_sucker.CStatePatrolCorpse))
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerAmbush("bloodsucker04", false))
+	scene_rostok:insert_scene(blood_sucker.CBloodsuckerCoward("bloodsucker05", true, nil, blood_sucker.CStateAttackCoward))
+	scene_rostok:insert_scene(blood_sucker.CObjectHit("stalker"))
+*/
+	scene_rostok:initialize()
+
+	while(scene_rostok:execute()) do
+		wait()
+	end
+
+	scene_rostok:finalize()
+end
