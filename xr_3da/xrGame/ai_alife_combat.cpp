@@ -12,6 +12,8 @@
 
 void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, MONSTER_P_VECTOR &tpGroupVector)
 {
+	EHitType				l_tHitType;
+	float					l_fHitPower;
 	CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeMonsterAbstract);
 	if (l_tpALifeAbstractGroup) {
 		OBJECT_IT			I = l_tpALifeAbstractGroup->m_tpMembers.begin();
@@ -20,11 +22,13 @@ void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeMonsterAbstract *tpALifeMons
 			CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(*I));
 			R_ASSERT2		(l_tpALifeMonsterAbstract,"Invalid group member!");
 			tpGroupVector.push_back(l_tpALifeMonsterAbstract);
-			l_tpALifeMonsterAbstract->m_tpCurrentBestWeapon = 0;
+			l_tpALifeMonsterAbstract->m_tpCurrentBestWeapon = l_tpALifeMonsterAbstract->tpfGetBestWeapon(l_tHitType,l_fHitPower);
 		}
 	}
-	else
+	else {
 		tpGroupVector.push_back(tpALifeMonsterAbstract);
+		tpALifeMonsterAbstract->m_tpCurrentBestWeapon = tpALifeMonsterAbstract->tpfGetBestWeapon(l_tHitType,l_fHitPower);
+	}
 }
 
 ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
@@ -71,18 +75,18 @@ bool CSE_ALifeSimulator::bfCheckForCombat(CSE_ALifeMonsterAbstract *tpALifeMonst
 {
 #pragma todo("Dima to Dima: Monster can't notice another monster if it is asleep")
 	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team()) {
-		getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract1;
-		getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract2;
-		if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue()))) {
+		getAI().m_tpCurrentALifeMember	= tpALifeMonsterAbstract1;
+		getAI().m_tpCurrentALifeEnemy	= tpALifeMonsterAbstract2;
+		if (randF(100) < (int)getAI().m_pfNoticeProbability->ffGetValue()) {
 			iCombatGroupIndex	= 0;
-			return				(false);
+			return				(true);
 		}
 		else {
-			getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract2;
-			getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract1;
-			if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue()))) {
+			getAI().m_tpCurrentALifeMember	= tpALifeMonsterAbstract2;
+			getAI().m_tpCurrentALifeEnemy	= tpALifeMonsterAbstract1;
+			if (randF(100) < (int)getAI().m_pfNoticeProbability->ffGetValue()) {
 				iCombatGroupIndex	= 1;
-				return				(false);
+				return				(true);
 			}
 		}
 	}
@@ -93,7 +97,7 @@ bool CSE_ALifeSimulator::bfCheckIfRetreated(int iCombatGroupIndex)
 {
 	getAI().m_tpCurrentALifeMember	= m_tpaCombatGroups[iCombatGroupIndex][0];
 	getAI().m_tpCurrentALifeEnemy	= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
-	return(randI(iFloor(getAI().m_pfRetreatProbability->ffGetMaxResultValue())) < (int)getAI().m_pfRetreatProbability->dwfGetDiscreteValue());
+	return(randF(100) < (int)getAI().m_pfRetreatProbability->ffGetValue());
 }
 
 void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
@@ -109,10 +113,15 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 			if (!l_tpALifeItemWeapon && (l_fHitPower <= EPS_L))
 				break;
 		}
+		else {
+			l_tHitType		= (*I)->m_tpCurrentBestWeapon->m_tHitType;
+			l_fHitPower		= (*I)->m_tpCurrentBestWeapon->m_fHitPower;
+		}
 		
+		getAI().m_tpCurrentALifeObject = (*I)->m_tpCurrentBestWeapon;
 		getAI().m_tpCurrentALifeMember = *I;
-		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue()); i<n; i++) {
-			if (randI(iFloor(getAI().m_pfWeaponSuccessProbability->ffGetMaxResultValue())) < (int)getAI().m_pfWeaponSuccessProbability->dwfGetDiscreteValue()) {
+		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue() + .5f); i<n; i++) {
+			if (randF(100) < (int)getAI().m_pfWeaponSuccessProbability->ffGetValue()) {
 				// choose random enemy group member and perform hit with random power
 				// multiplied by immunity factor
 				int							l_iIndex = randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size());
@@ -122,11 +131,10 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 				// check if victim became dead
 				if (l_tpALifeMonsterAbstract->fHealth <= 0)
 					m_tpaCombatGroups[iCombatGroupIndex ^ 1].erase(m_tpaCombatGroups[iCombatGroupIndex ^ 1].begin() + l_iIndex);
-				
-				// perform attack (if we use a weapon we should delete ammo we used)
-				if (!(*I)->bfPerformAttack())
-					break;
 			}
+			// perform attack (if we use a weapon we should delete ammo we used)
+			if (!(*I)->bfPerformAttack())
+				break;
 		}
 	}
 }
@@ -194,12 +202,12 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	switch (tCombatResult) {
 		case eCombatResultBothKilled	:
 		case eCombatResultRetreat12		: break;
-		case eCombatResultRetreat1		:
+		case eCombatResultRetreat2		:
 		case eCombatResult1Kill2		: {
 			l_iGroupIndex				= 0;
 			break;
 		}
-		case eCombatResultRetreat2		:
+		case eCombatResultRetreat1		:
 		case eCombatResult2Kill1		: {
 			l_iGroupIndex				= 1;
 			break;

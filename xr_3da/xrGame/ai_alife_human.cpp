@@ -115,7 +115,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 {
 	fHitPower					= 0.f;
 	CSE_ALifeItemWeapon			*l_tpBestWeapon = 0;
-	u32							l_dwBestWeapon = u32(-1);
+	u32							l_dwBestWeapon = 0;
 	OBJECT_IT					I = children.begin();
 	OBJECT_IT					E = children.end();
 	for ( ; I != E; I++) {
@@ -125,7 +125,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 
 		l_tpALifeItemWeapon->m_dwAmmoAvailable = get_available_ammo_count(l_tpALifeItemWeapon,children);
 		if (l_tpALifeItemWeapon->m_dwAmmoAvailable || (l_tpALifeItemWeapon->m_dwSlot == 0) || (l_tpALifeItemWeapon->m_dwSlot == 3)) {
-			u32					l_dwCurrentBestWeapon = u32(-1); 
+			u32					l_dwCurrentBestWeapon = 0; 
 			switch (l_tpALifeItemWeapon->m_tClassID) {
 				case CLSID_OBJECT_W_RPG7:
 				case CLSID_OBJECT_W_M134: {
@@ -158,6 +158,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 					l_dwCurrentBestWeapon = 1;
 					break;
 				}
+				default : NODEFAULT;
 			}
 			if (l_dwCurrentBestWeapon > l_dwBestWeapon) {
 				l_dwBestWeapon = l_dwCurrentBestWeapon;

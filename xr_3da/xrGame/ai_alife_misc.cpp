@@ -38,21 +38,13 @@ void CSE_ALifeSimulator::vfCheckForTheInteraction(CSE_ALifeMonsterAbstract *tpAL
 				m_tpaCombatMonsters[0]	= tpALifeMonsterAbstract;
 				m_tpaCombatMonsters[1]	= l_tpALifeMonsterAbstract;
 				
-				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
-				if (l_tpALifeHumanAbstract)
-					l_tpALifeHumanAbstract->m_tpCurrentBestWeapon = 0;
-				
-				l_tpALifeHumanAbstract	= dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
-				if (l_tpALifeHumanAbstract)
-					l_tpALifeHumanAbstract->m_tpCurrentBestWeapon = 0;
-
 				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
 				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); i++) {
 					if (tfChooseCombatAction(l_iGroupIndex) == eCombatActionAttack)
 						vfPerformAttackAction(l_iGroupIndex);
 					else
 						if (bfCheckIfRetreated(l_iGroupIndex)) {
-							l_tCombatResult	= l_iGroupIndex ? eCombatResultRetreat2 : eCombatResultRetreat1;
+							l_tCombatResult	= l_iGroupIndex ? eCombatResultRetreat1 : eCombatResultRetreat2;
 							break;
 						}
 					

@@ -20,8 +20,13 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bForc
 	if (!dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject) || !dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject)->bfAttached()) {
 		if (!tpALifeDynamicObject->m_bOnline && !dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
 			vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
+		if (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID) {
+			R_ASSERT2				(m_tpCurrentLevel->find(tpALifeDynamicObject->ID) != m_tpCurrentLevel->end(),"Level map synchronization failed (not found)");
+			vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
+		}
 	}
+	else
+		R_ASSERT2					(m_tpCurrentLevel->find(tpALifeDynamicObject->ID) == m_tpCurrentLevel->end(),"Level map synchronization failed (found)");
 	
 	CSE_ALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpSE_Abstract);
 	if (tpALifeMonsterAbstract && !tpALifeMonsterAbstract->m_bOnline && (m_tpScheduledObjects.find(tpALifeMonsterAbstract->ID) != m_tpScheduledObjects.end()))

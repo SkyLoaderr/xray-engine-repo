@@ -200,6 +200,10 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 				}
 		}	
 	}
+	else {
+		getAI().m_tpCurrentALifeObject	= getAI().m_tpCurrentALifeMember->m_tpCurrentBestWeapon;
+		dwBestWeapon			= dwfGetWeaponType();
+	}
 	return(float(dwBestWeapon));
 }
 

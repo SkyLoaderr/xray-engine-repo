@@ -256,7 +256,7 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
-	D_OBJECT_P_PAIR_IT	I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
+	D_OBJECT_P_PAIR_IT		I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
 	R_ASSERT2				(I != m_tpCurrentLevel->end(),"Object not found in the level map!");
 	if (m_tNextFirstSwitchObjectID == tpALifeDynamicObject->ID) {
 		if (++J == m_tpCurrentLevel->end())
