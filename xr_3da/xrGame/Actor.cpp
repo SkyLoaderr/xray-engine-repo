@@ -105,8 +105,9 @@ CActor::CActor() : CEntityAlive()
 	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		0);
 	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",		0);
 	cam_active				= eacFirstEye;
-	fPrevCamPos				= 0;
-	
+	fPrevCamPos				= 0.0f;
+	vPrevCamDir.set			(0.f,0.f,1.f);
+	fCurAVelocity			= 0.0f;
 	// эффекторы
 	pCamBobbing				= 0;
 	m_pShootingEffector		= NULL;

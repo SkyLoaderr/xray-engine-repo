@@ -166,7 +166,6 @@ void CActor::cam_Update(float dt, float fFOV)
 	
 	// save previous position of camera
 	fPrevCamPos				= point.y;
-
 	// calc point
 	xform.transform_tiny	(point);
 
@@ -178,6 +177,9 @@ void CActor::cam_Update(float dt, float fFOV)
 		cameras[eacFirstEye]->f_fov		= fFOV;
 	}
 	EffectorManager().Update			(cameras[eacFirstEye]);
+	
+	fCurAVelocity			= vPrevCamDir.sub(cameras[eacFirstEye]->vDirection).magnitude()/Device.fTimeDelta;
+	vPrevCamDir				= cameras[eacFirstEye]->vDirection;
 
 //	if(eacLookAt == cam_active)
 //		EffectorManager().Update			(C);

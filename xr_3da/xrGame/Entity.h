@@ -66,6 +66,7 @@ public:
 		u32		bCrouch	:1;
 		u32		bFall	:1;
 		float	fVelocity;
+		float	fAVelocity;
 	};
 	
 	float					m_fFood;

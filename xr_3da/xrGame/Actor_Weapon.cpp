@@ -9,7 +9,8 @@
 
 
 
-#define VEL_MAX 10.f
+static const float VEL_MAX		= 10.f;
+static const float VEL_A_MAX	= 10.f;
 
 //возвращает текуший разброс стрельбы (в радианах)с учетом движения
 float CActor::GetWeaponAccuracy() const
@@ -22,7 +23,10 @@ float CActor::GetWeaponAccuracy() const
 	CEntity::SEntityState state;
 	if (g_State(state))
 	{
-	
+		// angular factor
+		dispersion *= (1.f + (state.fAVelocity/VEL_A_MAX)*m_fDispVelFactor);
+//		Msg("--- base=[%f] angular disp=[%f]",m_fDispBase, dispersion);
+		// linear movement factor
 		bool bAccelerated = isAccelerated(mstate_real);
 		if( bAccelerated )
 			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*
@@ -92,5 +96,6 @@ BOOL CActor::g_State (SEntityState& state) const
 	state.bCrouch		= !!(mstate_real&mcCrouch);
 	state.bFall			= !!(mstate_real&mcFall);
 	state.fVelocity		= m_PhysicMovementControl->GetVelocityActual();
+	state.fAVelocity	= fCurAVelocity;
 	return TRUE;
 }

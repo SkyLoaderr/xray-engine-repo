@@ -334,6 +334,8 @@ protected:
 	CCameraBase*			cameras[eacMaxCam];
 	EActorCameras			cam_active;
 	float					fPrevCamPos;
+	Fvector					vPrevCamDir;
+	float					fCurAVelocity;
 	CEffectorBobbing*		pCamBobbing;
 
 	void					LoadShootingEffector	(LPCSTR section);
