@@ -51,6 +51,10 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
 
+	CSE_ALifeTraderAbstract		*pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
+	m_dwMoney	= pTA->m_dwMoney;
+	m_tRank		= pTA->m_tRank;
+
 	return	TRUE;
 }
 
