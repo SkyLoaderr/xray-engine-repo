@@ -586,6 +586,10 @@ SOURCE=.\Shader_TSS.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\WaveForm.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrShaderTypes.h
 # End Source File
 # End Group

@@ -1,6 +1,7 @@
 #ifndef ParticleSystemH
 #define ParticleSystemH
 
+#include "WaveForm.h"
 #include "Particle.h"
 
 namespace PS{
@@ -43,7 +44,7 @@ struct ENGINE_API SEmitterDef{
     Fvector			m_BoxSize;
     // birth params
 	float		 	m_fBirthRate;
-    SH_Function		m_BirthFunc;
+    WaveForm		m_BirthFunc;
     float			m_ParticleLimit;
 
 	DWORD			m_dwFlag;
