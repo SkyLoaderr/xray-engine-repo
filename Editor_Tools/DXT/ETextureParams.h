@@ -59,9 +59,9 @@ struct STextureParams{
 	Flags			flag;
 	DWORD			border_color;
     DWORD			fade_color;
-    WORD			fade_amount;
-	WORD			mip_filter;		
-    DWORD			reserved[4];
+    DWORD			fade_amount;
+	DWORD			mip_filter;		
+    DWORD			reserved[2];
     STextureParams	()
 	{
 		ZeroMemory(this,sizeof(STextureParams)); 
