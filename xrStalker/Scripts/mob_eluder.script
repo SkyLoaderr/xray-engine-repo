@@ -20,18 +20,16 @@ end
 function mob_eluder:reset_scheme()
     printf("Eluder: reset_scheme: %s", self.object:name())
 	
-	xr_logic.mob_capture(self.object, true)
+	xr_logic.mob_capture		(self.object, true)
 
-	self.tip_sent				= false
-	
 	self.st.signals				= {}
-	self.action_end_signalled	= false
-	
 	
 	self.self_distances			= {}
 	self.actor_distances		= {}
 	
 	self.prev_point_id			= 0
+	
+	self.time_released			= 0
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -39,33 +37,21 @@ end
 ----------------------------------------------------------------------------------------------------
 
 function mob_eluder:update(delta)
-	 --printf("Eluder update: %d", device():time_global())
+	
+	-- Check for alife control 
+	if not self:check_script_control() then	return end
 	
 	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
 		return
 	end
 
-	
 	if not self.object:action() then
 		-- Select point here
 		self:update_distances	()
 		
-		--xr_logic.mob_capture(self.object, true)
-		action(self.object, move(move.run_fwd, patrol(self.st.path):point(self.best_point_id), 3), cond(cond.move_end))
+		action(self.object, move(move.run_fwd, patrol(self.st.path):point(self.best_point_id), 2), cond(cond.move_end))
 	end
 	
-	
---	if self.object:get_script() and not self.object:action() then
---		action(self.object, move("stand_idle_0"), cond(cond.time_end, 20000))
---	end
-
---	if self.object:get_script() and not self.object:action() then
---		if not self.action_end_signalled then
---			self.action_end_signalled		= true
---			self.st.signals["action_end"]	= true
---			printf("mob_eluder: signalling action_end")
---		end
---	end
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -109,7 +95,6 @@ function mob_eluder:update_distances()
 		self.self_distances[i]	= self.actor_distances[i]*k_actor + self.self_distances[i]*k_self
 		
 		-- show
-		-- printf("P[%u] = [%f]", i-1, self.self_distances[i])
 		
 		if max_value < self.self_distances[i] and self.prev_point_id ~= i-1 then
 			max_value			= self.self_distances[i]
@@ -119,8 +104,40 @@ function mob_eluder:update_distances()
 	end
 	
 	self.prev_point_id = self.best_point_id
+end
+
+
+
+function mob_eluder:check_script_control()
+
+	if xr_logic.mob_captured(self.object) then
+		-- check for release conditions	
+
+		if self.object:position():distance_to(db.actor:position()) < 20 then
+			xr_logic.mob_release(self.object)
+			self.time_released = device():time_global()
+		end
+
+	else 
+		-- check for capture conditions
+		if self.object:position():distance_to(db.actor:position()) > 30 then
+			-- check time
+			if self.time_released + 10000 < device():time_global() then
+				-- check if it can_capture
+				--if self.object:can_capture() then 
+					xr_logic.mob_capture(self.object, true)
+				--end
+			end
+		end
+	end
 	
-	-- printf("Best Point ID = [%u] Value = [%f]", self.best_point_id, max_value)
+	
+	if not xr_logic.mob_captured(self.object) then
+		return false
+	else
+		return true
+	end
+
 end
 
 
@@ -147,5 +164,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	storage.logic       = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
 	storage.path		= utils.cfg_get_string(ini, section, "path",	npc,	false, "")
-	storage.time        = utils.cfg_get_string(ini,	section, "time",	npc,	false, "")
 end
+
