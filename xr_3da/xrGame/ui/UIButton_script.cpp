@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIButton.h"
+#include "../script_space.h"
 
 using namespace luabind;
 
