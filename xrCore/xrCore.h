@@ -156,6 +156,7 @@
 #pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
 #pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
 #pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
+#pragma warning (disable : 4345 )
 
 // stl
 #include <algorithm>
