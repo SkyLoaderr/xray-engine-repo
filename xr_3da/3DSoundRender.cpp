@@ -32,7 +32,6 @@ C3DSoundRender::~C3DSoundRender()
 const DWORD dwSndKillTime = 3;
 void C3DSoundRender::OnMove()
 {
-//	Log("*****");
 	for (DWORD i=0; i<sounds.size(); i++) 
 	{
 		for (DWORD j=0; j<sounds[i].size(); j++) 
@@ -55,6 +54,7 @@ void C3DSoundRender::OnMove()
 		Device.Statistic.dwSND_Allocated+=sounds[i].size();
 	}
 
+	// Update listener
 	Listener.vVelocity.sub				(Device.vCameraPosition, Listener.vPosition );
 	Listener.vVelocity.div				(Device.fTimeDelta);
 	Listener.vPosition.set				(Device.vCameraPosition);
@@ -73,6 +73,7 @@ int C3DSoundRender::FindByName(LPCSTR name, BOOL bFreq) {
 	}
 	return -1;
 }
+
 int C3DSoundRender::FindEmptySlot()
 {
 	for (DWORD i=0; i<sounds.size(); i++) {
