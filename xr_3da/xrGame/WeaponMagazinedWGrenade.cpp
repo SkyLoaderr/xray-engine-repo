@@ -240,7 +240,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		m_pGrenade->m_pos.set(p1);
 		m_pGrenade->m_vel.set(d); 
 		m_pGrenade->m_vel.y += .0f; 
-		m_pGrenade->m_vel.mul(50.f);
+		m_pGrenade->m_vel.mul(m_fGrenadeVel);
 		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
 		
 		NET_Packet P;
