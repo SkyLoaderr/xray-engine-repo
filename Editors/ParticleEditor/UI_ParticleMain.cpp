@@ -98,20 +98,20 @@ void CParticleMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools
-	RegisterCommand(COMMAND_SELECT_PREVIEW_OBJ, SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSelectPreviewObj)));
-	RegisterCommand(COMMAND_EDIT_PREVIEW_PROPS, SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandEditPreviewProps)));
-	RegisterCommand(COMMAND_SAVE,              	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSave)));
-	RegisterCommand(COMMAND_SAVE_BACKUP,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSaveBackup)));
-	RegisterCommand(COMMAND_RELOAD,             SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandReload)));
-	RegisterCommand(COMMAND_CLEAR,             	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandClear)));
-	RegisterCommand(COMMAND_PLAY_CURRENT,       SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandPlayCurrent)));
-	RegisterCommand(COMMAND_STOP_CURRENT,       SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandStopCurrent)));
-	RegisterCommand(COMMAND_REFRESH_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
-	RegisterCommand(COMMAND_RESTORE_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
-	RegisterCommand(COMMAND_SAVE_UI_BAR,     	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSaveUIBar)));
-	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
-	RegisterCommand(COMMAND_UPDATE_CAPTION,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateCaption)));
-}
+	RegisterCommand(COMMAND_SELECT_PREVIEW_OBJ, xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSelectPreviewObj)));
+	RegisterCommand(COMMAND_EDIT_PREVIEW_PROPS, xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandEditPreviewProps)));
+	RegisterCommand(COMMAND_SAVE,              	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSave)));
+	RegisterCommand(COMMAND_SAVE_BACKUP,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSaveBackup)));
+	RegisterCommand(COMMAND_RELOAD,             xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandReload)));
+	RegisterCommand(COMMAND_CLEAR,             	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandClear)));
+	RegisterCommand(COMMAND_PLAY_CURRENT,       xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandPlayCurrent)));
+	RegisterCommand(COMMAND_STOP_CURRENT,       xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandStopCurrent)));
+	RegisterCommand(COMMAND_REFRESH_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
+	RegisterCommand(COMMAND_RESTORE_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
+	RegisterCommand(COMMAND_SAVE_UI_BAR,     	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSaveUIBar)));
+	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
+	RegisterCommand(COMMAND_UPDATE_CAPTION,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateCaption)));
+}                                                                    
 
 char* CParticleMain::GetCaption()
 {
