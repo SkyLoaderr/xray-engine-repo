@@ -229,7 +229,7 @@ HRESULT CPracticalPSM::SetRenderStates( bool shadowPass )
         m_pd3dDevice->SetRenderState(D3DRS_COLORWRITEENABLE, (m_bDisplayShadowMap)?0xf : 0);
 
         //depth bias
-        m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00FFFFFF, 1.0f, 0L);
+        m_pd3dDevice->Clear(0, NULL, (m_bDisplayShadowMap?D3DCLEAR_TARGET:0) | D3DCLEAR_ZBUFFER, 0x00FFFFFF, 1.0f, 0L);	//. OLES:
         m_pd3dDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
         m_pd3dDevice->SetRenderState(D3DRS_DEPTHBIAS, *(DWORD*)&depthBias);
         m_pd3dDevice->SetRenderState(D3DRS_SLOPESCALEDEPTHBIAS, *(DWORD*)&m_fBiasSlope);
@@ -258,6 +258,8 @@ HRESULT CPracticalPSM::SetRenderStates( bool shadowPass )
         m_pd3dDevice->SetRenderState(D3DRS_COLORWRITEENABLE, 0xf);
         m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 60, 60, 60), 1.0f, 0L);
         m_pd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+        m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);	//. OLES: models are oriented opposite
     }
     return S_OK;
 }
