@@ -53,7 +53,7 @@ public:
 	// Visibility related
 	virtual	float			ffGetFov				()	const			= 0;	
 	virtual	float			ffGetRange				()	const			= 0;	
-	virtual	ALife::ERelationType tfGetRelationType	(CEntityAlive *tpEntityAlive)
+	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
 	{
 		if (tpEntityAlive->g_Team() != g_Team())
 			return(ALife::eRelationTypeEnemy);

@@ -22,7 +22,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 		return				(false);
 
 	const CEntityAlive		*self = dynamic_cast<const CEntityAlive*>(this);
-	if (self && (entity_alive->g_Team() == self->g_Team()))
+	if (self && (self->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy))
 		return				(false);
 
 	return					(true);
