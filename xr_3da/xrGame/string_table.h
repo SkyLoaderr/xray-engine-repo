@@ -9,6 +9,7 @@ DEFINE_MAP(ref_str, ref_str, STRING_TABLE_MAP, STRING_TABLE_IT);
 
 struct STRING_TABLE_DATA
 {
+	LPCSTR				m_sLanguage;
 	STRING_TABLE_MAP	m_StringTable;
 };
 

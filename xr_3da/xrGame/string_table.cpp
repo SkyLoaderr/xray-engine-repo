@@ -7,6 +7,8 @@
 
 #include "ui/xrxmlparser.h"
 
+#define STRING_TABLE_SECT "string_table"
+
 STRING_TABLE_DATA* CStringTable::pData = NULL;
 
 
@@ -31,8 +33,11 @@ void CStringTable::Init		()
 	if(NULL != pData) return;
     
 	pData = xr_new<STRING_TABLE_DATA>();
+	
+	//имя языка, если не задано (NULL), то первый <text> в <string> в XML
+	pData->m_sLanguage = pSettings->r_string(STRING_TABLE_SECT, "language");
 
-	LPCSTR S = pSettings->r_string("string_table","files");
+	LPCSTR S = pSettings->r_string(STRING_TABLE_SECT,"files");
 	if (S && S[0]) 
 	{
 		string128	xml_file;
@@ -68,7 +73,27 @@ void CStringTable::Load	(LPCSTR xml_file)
 		R_ASSERT3(pData->m_StringTable.find(string_name) == pData->m_StringTable.end(),
 					"duplicate string table id", string_name);
 
-		LPCSTR string_text = uiXml.Read(uiXml.GetRoot(), "string:text", i,  NULL);
+		XML_NODE* string_node = uiXml.NavigateToNode(uiXml.GetRoot(), "string", i);
+		R_ASSERT(string_node);
+		uiXml.SetLocalRoot(string_node);
+
+		LPCSTR string_text = NULL;
+		XML_NODE* text_node = NULL;
+		if(pData->m_sLanguage)
+			text_node = uiXml.NavigateToNodeWithAttribute("text", "ln", pData->m_sLanguage);
+		
+		if(text_node)
+		{
+			string_text = uiXml.Read(text_node, NULL);
+		}
+		//если записи для соответствующего языка не найдено, то даем первое из того что есть
+		else
+		{
+			string_text = uiXml.Read(uiXml.GetRoot(), "string:text", i,  NULL);
+			if(pData->m_sLanguage && string_text)
+				Msg("[strign table] '%s' no translation in '%s'", string_name, pData->m_sLanguage);
+		}
+
 		R_ASSERT3(string_text, "string table entry does not has a text", string_name);
 
 		pData->m_StringTable.insert(mk_pair(ref_str(string_name), ref_str(string_text)));

@@ -83,8 +83,15 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
 	UpdateContact(pPda->GetOriginalOwnerID());
 
 
-
-
+/*	CStringTable string_table;
+	ref_str text1 = string_table("test1");
+	ref_str text2 = string_table("test2");
+	ref_str text3 = string_table("item test2");
+	ref_str text4 = string_table("item test1");
+	LPCSTR str = *text4;
+	text3 = string_table("item test2");
+	str = *text3;
+*/	
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 }
 
