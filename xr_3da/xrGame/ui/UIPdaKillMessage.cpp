@@ -42,7 +42,7 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 	R_ASSERT2(GetHeight(), "CUIPdaKillMessage::Init(msg) - need to call ::Init(x, y, width, height) before");
 #endif	
 
-	int		x = 50;
+	int		x = 0;
 	int width = 0;
 
 	width = InitText(m_killer_name, x, msg.m_killer);		x += width + INDENT;
