@@ -175,24 +175,33 @@
         <text>default text</text>
     </string>
     <string id="rad_test_1">
-        <text>text in default</text>
+        <text>ne ebet</text>
     </string>
     <string id="rad_test_10">
         <text>text in default</text>
     </string>
-    <string id="rad_test_100">
-        <text>text in default</text>
+    <string id="rad_test_2">
+        <text>nasrat</text>
     </string>
     <string id="rad_test_20">
         <text>text in default</text>
     </string>
-    <string id="rad_test_200">
-        <text>text in default</text>
+    <string id="rad_test_3">
+        <text>poshel nax</text>
     </string>
     <string id="rad_test_30">
         <text>text in default</text>
     </string>
     <string id="rad_test_300">
         <text>text in default</text>
+    </string>
+    <string id="rad_test_55">
+        <text>NO way</text>
+    </string>
+    <string id="rad_test_66">
+        <text>fu</text>
+    </string>
+    <string id="rad_test_77">
+        <text>idi v gop</text>
     </string>
 </string_table>
