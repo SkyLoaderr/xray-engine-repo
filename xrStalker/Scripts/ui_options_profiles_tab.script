@@ -36,7 +36,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	local btn_add_rect = {x = edit_rect.x,
 						  y = edit_rect.y + edit_rect.height + self.indent,
 						  width = edit_rect.width,
-						  height = btn_rect.height}
+						  height = self.btn_rect.height}
 	local lst_rect     = {x = info_rect.x,
 						  y = info_rect.y + info_rect.height + self.indent,
 						  width = 0,
