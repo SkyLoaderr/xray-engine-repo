@@ -122,7 +122,7 @@ function action_kill:execute ()
 	end
 
 	if self.enemy ~= nil then 
-		self.object:set_sight(look.direction, self.enemy:position():sub(self.object:position()), 0)	
+		self.object:set_sight(look.direction, self.enemy:position():sub(self.object:position()), true)	
 		printf("_bp: %d: see_enemy?", device():time_global())
 		if self.object:see(self.enemy) == true then
 			printf("_bp: YES")
