@@ -141,7 +141,9 @@ public:
 
     BOOL				Compile				(CPGDef* def);
 
-    void				Play				(){m_bPlaying=TRUE;}
+	CPGDef*				GetDefinition		(){return m_Def;}
+
+	void				Play				(){m_bPlaying=TRUE;}
     void				Pause				(){m_bPlaying=!m_bPlaying;}
     void				Stop				(){m_bPlaying=FALSE;}
 };

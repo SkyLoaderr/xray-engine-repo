@@ -15,6 +15,13 @@ CPGObject::CPGObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 	// create visual
 	m_pVisual		= Render->model_CreatePG(ps_name);
 	VERIFY			(m_pVisual);
+	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);
+	
+	if (bAutoRemove&&V->GetDefinition()->m_Flags.is(PS::CPGDef::flTimeLimit)){
+		m_iLifeTime	= V->GetDefinition()->m_TimeLimit;
+	}else{
+		R_ASSERT3	(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",ps_name);
+	}
 
 	// registry
 	m_pCurSector	= S;

@@ -251,23 +251,23 @@ BOOL CLevel::Load_GameSpecific_Before()
 BOOL CLevel::Load_GameSpecific_After()
 {
 	// loading static particles
-	if (0)
-	{
+	string256		fn_game;
+	if (FS.exist(fn_game, "$level$", "level.ps_static")) {
+		IReader *F = FS.r_open	(fn_game);
 		IRender_Sector* S;
-		CPGObject* pStaticPG;
-		Fvector p0				= {0,1,0};
-		S						= ::Render->detectSector	(p0);
-		pStaticPG				= xr_new<CPGObject>("test",S,false);
-		pStaticPG->play_at_pos	(p0);
-		m_StaticParticles.push_back(pStaticPG);
-
-		Fvector p1				= {2,1,2};
-		S						= ::Render->detectSector	(p1);
-		pStaticPG				= xr_new<CPGObject>("test",S,false);
-		pStaticPG->play_at_pos	(p1);
-		m_StaticParticles.push_back(pStaticPG);
+		CPGObject*		pStaticPG;
+		int				chunk = 0;
+		string256		ref_name;
+		Fmatrix			transform;
+		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
+			OBJ->r_stringZ				(ref_name);
+			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
+			S							= ::Render->detectSector	(transform.c);
+			pStaticPG					= xr_new<CPGObject>			(ref_name,S,false);
+			pStaticPG->UpdateParent		(transform);
+			pStaticPG->Play				();
+		}
 	}
-
 	return TRUE;
 }
 
