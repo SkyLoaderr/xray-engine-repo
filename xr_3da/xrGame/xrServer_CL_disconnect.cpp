@@ -12,7 +12,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	};
 
 	// Game config (all, info includes deleted player now, excludes at the next cl-update)
-	game->OnPlayerDisconnect(CL->ID);
+	if (SV_Client) game->OnPlayerDisconnect(CL->ID);
 	game->signal_Syncronize	();
 
 	//
