@@ -31,11 +31,14 @@ public:
 	xr_vector<bool>				q_mark_bit;		// temporal usage mark for queries
 	float						m_fSize2;
 	float						m_fYSize2;
+	typedef u8 Cover[4];
+	Cover						*m_tpCoverPalette;
 
 								CAI_Map()
 	{
 		m_nodes_ptr				= 0;
 		vfs						= 0;
+		m_tpCoverPalette		= 0;
 	}
 								CAI_Map(LPCSTR name)
 	{
@@ -50,6 +53,10 @@ public:
 
 		m_fSize2	= _sqr(m_header.size)/1;
 		m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/1;
+		m_tpCoverPalette = (Cover*)vfs->pointer();
+		u32			dwPaletteSize = vfs->r_u32();
+		vfs->advance(dwPaletteSize*sizeof(Cover));
+
 		// dispatch table
 		m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
 		
