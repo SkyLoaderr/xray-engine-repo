@@ -650,7 +650,11 @@ Fvector CPHSimpleCharacter::GetPosition(){
 }
 
 Fvector CPHSimpleCharacter::GetVelocity(){
-
+	if(!b_exist){
+	Fvector ret;
+	ret.set(0,0,0);
+	return ret;
+	}
 	const dReal* vel=dBodyGetLinearVel(m_body);
 	Fvector vvel;
 	memcpy(&vvel,vel,sizeof(Fvector));
