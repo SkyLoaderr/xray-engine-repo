@@ -64,5 +64,5 @@ public:
 
 	void					MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
 	u16						GetNearestBone			(CKinematics* K, u16 bone_id);
-	IC u16					GetRandomBone			(){return m_Bones.size()?Random.randI(m_Bones.size()):BI_NONE;}
+	IC u16					GetRandomBone			(){return m_Bones.size()?(u16)Random.randI(m_Bones.size()):BI_NONE;}
 };
