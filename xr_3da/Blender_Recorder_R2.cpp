@@ -50,8 +50,7 @@ void	CBlender_Compile::r2_Constant	(LPCSTR name, R_constant_setup* s)
 {
 	R_ASSERT				(s);
 	R_constant*	C			= ctable.get(name);
-	R_ASSERT				(C);
-	C->handler				= s;
+	if (C)					C->handler	= s;
 }
 
 void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
