@@ -464,9 +464,13 @@ function animation:update()
 
 	-- обрубить анимации и экстренно начать сразу
 	if self.mgr.emerg ~= nil and  
-	   self.mgr.emerg.animation == true then	   		
+	   self.mgr.emerg.animation == true then
+		
+		--если мы уже
 		self.npc:clear_animations()				   
 		self:set_state(nil)
+		self.states.current_state = nil
+			
 		self.mgr.emerg.animation = nil
 		return
 	end
