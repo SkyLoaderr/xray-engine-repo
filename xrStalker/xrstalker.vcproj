@@ -465,9 +465,6 @@
 				<File
 					RelativePath=".\Config\misc\trigger.ltx">
 				</File>
-				<File
-					RelativePath=".\Config\misc\zones.ltx">
-				</File>
 			</Filter>
 			<Filter
 				Name="mp"
@@ -1195,6 +1192,28 @@
 						RelativePath=".\Config\scripts\bar_entry_zone.ltx">
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Zones"
+				Filter="">
+				<File
+					RelativePath=".\Config\misc\zone_ameba.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_burningfuzz.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_mincer.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_mosquitobald.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_radioactive.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zones.ltx">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
