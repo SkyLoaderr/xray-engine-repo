@@ -14,7 +14,7 @@ int		psSH_Blur			= 1;
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 
-const	float	S_fade		= 2;
+const	float	S_fade		= 3;
 const	float	S_fade2		= S_fade*S_fade;
 
 const	float	S_level		= .1f;
