@@ -203,7 +203,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 				SlotPart&			sp	= S.G		[sp_id];
 				if (sp.id==DetailSlot::ID_Empty)	continue;
 				float				R		= objects	[sp.id]->bv_sphere.R;
-				float				Rq_drcp	= R*R*dist_sq_rcp;
+				float				Rq_drcp	= R*R*dist_sq_rcp;	// reordered expression for 'ssa' calc
 
 				SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
 				for (; siIT!=siEND; siIT++)
