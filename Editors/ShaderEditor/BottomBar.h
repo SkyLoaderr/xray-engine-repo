@@ -70,6 +70,7 @@ __published:	// IDE-managed Components
 	TPanel *paSel;
 	TMenuItem *miDrawBoneAxis;
 	TMenuItem *miDrawBoneNames;
+	TMenuItem *miDrawBoneShapes;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

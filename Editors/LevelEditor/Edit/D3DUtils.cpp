@@ -118,17 +118,16 @@ void CDrawUtilities::OnDeviceCreate()
 
 	for(int i=0;i<LINE_DIVISION;i++){
 		float angle = M_PI * 2.f * (i / (float)LINE_DIVISION);
-        float _sin, _cos;
-        _sincos(angle,_sin,_cos);
-		circledef1[i].x = _cos;
-		circledef1[i].y = _sin;
+        float _sa=_sin(angle), _ca=_cos(angle);
+		circledef1[i].x = _ca;
+		circledef1[i].y = _sa;
 		circledef1[i].z = 0;
 		circledef2[i].x = 0;
-		circledef2[i].y = _cos;
-		circledef2[i].z = _sin;
-		circledef3[i].x = _sin;
+		circledef2[i].y = _ca;
+		circledef2[i].z = _sa;
+		circledef3[i].x = _sa;
 		circledef3[i].y = 0;
-		circledef3[i].z = _cos;
+		circledef3[i].z = _ca;
 	}
     // initialize identity box
 	Fbox bb;
@@ -176,9 +175,9 @@ void CDrawUtilities::DrawSpotLight(const Fvector& p, const Fvector& d, float ran
     T.setHPB	(H,P,0);
     T.translate_over(p);
 	for (float angle=0; angle<PI_MUL_2; angle+=da){
-		float 	sa,ca; _sincos(angle,sa,ca);
-		p1.x	= r * ca;
-		p1.y	= r * sa;
+        float _sa=_sin(angle), _ca=_cos(angle);
+		p1.x	= r * _ca;
+		p1.y	= r * _sa;
         p1.z	= range;
         T.transform_tiny(p1);
     	DrawLine(p,p1,clr);

@@ -397,9 +397,13 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     F.open_chunk(OGF_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
-        F.w_stringZ((*bone_it)->game_mtl);
-        F.w(&(*bone_it)->shape,sizeof(SBoneShape));
-        F.w(&(*bone_it)->IK_data,sizeof(SJointIKData));
+    	CBone* B = (*bone_it);
+        F.w_stringZ(B->game_mtl);
+        F.w(&B->shape,sizeof(SBoneShape));
+        F.w(&B->IK_data,sizeof(SJointIKData));
+        Fvector hpb; hpb.mul(B->Rotate(),-1.f);
+        F.w_fvector3(hpb);
+        F.w_fvector3(B->Offset());
     }
     F.close_chunk();
     
@@ -471,10 +475,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                     mat.setHPB	(-R.x,-R.y,-R.z);
                 }
 
-                // aply global transform
+                // apply global transform
                 if (B->IsRoot()){
                 	mGT.transform_tiny(T);
-                    mat.mulB(mGT);
+                    mat.mulA(mGT);
                 }
 
                 q.set		(mat);

@@ -75,6 +75,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         void			SaveParams			(TFormStorage* s);
     };
 
+    Fmatrix				m_AVTransform;
 	CEditableObject*	m_pEditObject;
     class EngineModel{
     	CMemoryWriter	m_GeometryStream;
@@ -142,12 +143,12 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 protected:
 	// flags
     enum{
-    	flRefreshSubProps 	= (1<<0),
-    	flRefreshShaders 	= (1<<1),
-    	flUpdateGeometry 	= (1<<2),
-    	flUpdateMotionKeys 	= (1<<3),
-    	flUpdateMotionDefs	= (1<<4),
-    	flUpdateProperties 	= (1<<5),
+    	flRefreshProps 		= (1<<0),
+    	flRefreshSubProps 	= (1<<1),
+    	flRefreshShaders 	= (1<<2),
+    	flUpdateGeometry 	= (1<<3),
+    	flUpdateMotionKeys 	= (1<<4),
+    	flUpdateMotionDefs	= (1<<5),
     };
     Flags32				m_Flags;
     
@@ -179,6 +180,7 @@ public:
     bool				IfModified			();
     bool				IsModified			(){return m_bObjectModified;}
     bool				IsObjectModified	(){return m_bObjectModified;}
+    void __fastcall		OnBoneModified		(void);
     void __fastcall		OnObjectModified	(void);
     void __fastcall		OnMotionDefsModified(void); 
     void 				OnMotionKeysModified(void); 
@@ -241,7 +243,7 @@ public:
     void				SelectItemProperties(LPCSTR pref, LPCSTR name);
 
     void				ShowProperties		(){;}
-    void				UpdateProperties	(bool bForced=false){m_Flags.set(flUpdateProperties,TRUE); if (bForced) RealUpdateProperties();}
+    void				UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     void				RefreshProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);

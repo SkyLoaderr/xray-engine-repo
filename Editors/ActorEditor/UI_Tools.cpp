@@ -185,11 +185,10 @@ bool CActorTools::IfModified(){
 
 void CActorTools::OnObjectModified()
 {
-	if (m_pEditObject) 		m_pEditObject->Modified();
 	m_bObjectModified 		= true;
     m_Flags.set				(flUpdateGeometry,TRUE);
     OnGeometryModified		();
-	UI.Command(COMMAND_UPDATE_CAPTION);
+	UI.Command				(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -235,11 +234,6 @@ void CActorTools::Render()
 	if (!m_bReady) return;
     m_PreviewObject.Render();
 	if (m_pEditObject){
-    	// update matrix
-        Fmatrix	mTransform,mTranslate,mRotate;
-        mRotate.setHPB			(m_pEditObject->a_vRotate.y, m_pEditObject->a_vRotate.x, m_pEditObject->a_vRotate.z);
-        mTranslate.translate	(m_pEditObject->a_vPosition);
-        mTransform.mul			(mTranslate,mRotate);
         if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
 			for (int k=0; k<4; k++){ 
             	Device.Models.Render(m_RenderObject.m_pVisual,Fidentity,k,false,m_RenderObject.m_fLOD);
@@ -247,7 +241,7 @@ void CActorTools::Render()
             }
         }else{
 	        // update transform matrix
-    		m_pEditObject->RenderSkeletonSingle(mTransform);
+    		m_pEditObject->RenderSkeletonSingle(m_AVTransform);
         }
     }
 }
@@ -259,6 +253,12 @@ void CActorTools::OnFrame()
     if (m_KeyBar) m_KeyBar->UpdateBar();
     m_PreviewObject.Update();
 	if (m_pEditObject){
+    	// update matrix
+        Fmatrix	mTranslate,mRotate;
+        mRotate.setHPB			(m_pEditObject->a_vRotate.y, m_pEditObject->a_vRotate.x, m_pEditObject->a_vRotate.z);
+        mTranslate.translate	(m_pEditObject->a_vPosition);
+        m_AVTransform.mul		(mTranslate,mRotate);
+
     	if (m_RenderObject.IsRenderable()&&m_pEditObject->IsSkeleton())
         	PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
     	m_pEditObject->OnFrame();
@@ -271,7 +271,7 @@ void CActorTools::OnFrame()
     	m_Flags.set(flRefreshSubProps,FALSE);
 		OnObjectItemFocused(m_ObjectProps->tvProperties->Selected);
     }
-	if (m_Flags.is(flUpdateProperties))
+	if (m_Flags.is(flRefreshProps))
         RealUpdateProperties();
 }
 
@@ -419,10 +419,18 @@ void CActorTools::ChangeAction(EAction action)
     fraTopBar->ChangeAction(m_Action);
 }
 
+extern AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone);
 bool __fastcall CActorTools::MouseStart(TShiftState Shift)
 {
 	switch(m_Action){
-    case eaSelect: return false;
+    case eaSelect:
+    	switch (m_EditMode){
+        case emBone:{
+	        CBone* B 	= m_pEditObject->PickBone(UI.m_CurrentRStart,UI.m_CurrentRNorm,m_AVTransform);
+        	SelectItemProperties("Skin\\Bones",B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0);
+        }break;
+        }
+    return false;
     case eaAdd:
     break;
     case eaMove:{
@@ -453,15 +461,53 @@ bool __fastcall CActorTools::MouseStart(TShiftState Shift)
 
 bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 {
+	switch(m_Action){
+    case eaSelect: 	break;
+    case eaAdd: 	break;
+    case eaMove:{
+    	switch (m_EditMode){
+        case emObject:
+            m_ObjectProps->RefreshForm();
+        break;
+        case emBone:
+	        OnBoneModified();
+        break;
+        }
+    }break;
+    case eaRotate:{
+    	switch (m_EditMode){
+        case emObject:
+            m_ObjectProps->RefreshForm();
+        break;
+        case emBone:
+	        OnBoneModified();
+        break;
+        }
+    }break;
+    case eaScale:{
+    	switch (m_EditMode){
+        case emBone:
+	        OnBoneModified();
+        break;
+        }
+    }break;
+    }
 	return true;
+}
+
+void __fastcall CActorTools::OnBoneModified(void)
+{
+	RefreshSubProperties	();
+	m_bObjectModified 		= true;
+	UI.Command				(COMMAND_UPDATE_CAPTION);
 }
 
 void __fastcall CActorTools::MouseMove(TShiftState Shift)
 {
 	if (!m_pEditObject) return;
 	switch(m_Action){
-    case eaSelect: return;
-    case eaAdd: break;
+    case eaSelect: 	break;
+    case eaAdd: 	break;
     case eaMove:{
     	Fvector amount;
         amount.mul( m_MovingXVector, UI.m_MouseSM * UI.m_DeltaCpH.x );
@@ -476,16 +522,42 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-		m_pEditObject->a_vPosition.add(amount);
-        m_ObjectProps->RefreshForm();
-        OnObjectModified();
+    	switch (m_EditMode){
+        case emObject:
+            m_pEditObject->a_vPosition.add(amount);
+			OnMotionKeysModified();
+//            m_ObjectProps->RefreshForm();
+//            OnObjectModified();
+        break;
+        case emBone:{
+        	BoneVec lst;
+	        if (m_pEditObject->GetSelectedBones(lst))
+            	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                	(*b_it)->ShapeMove(amount);
+//	        OnBoneModified();
+        }break;
+        }
     }break;
     case eaRotate:{
         float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
-        m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
-        m_ObjectProps->RefreshForm();
-        OnObjectModified();
+    	switch (m_EditMode){
+        case emObject:
+            m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
+			OnMotionKeysModified();
+//            m_ObjectProps->RefreshForm();
+//            OnObjectModified();
+        break;
+        case emBone:{
+        	BoneVec lst;
+            Fvector rot;
+            rot.mul(m_RotateVector,amount);
+	        if (m_pEditObject->GetSelectedBones(lst))
+            	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                	(*b_it)->ShapeRotate(rot);
+//	        OnBoneModified();
+        }break;
+        }
     }break;
     case eaScale:{
         float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
@@ -505,6 +577,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 	        if (m_pEditObject->GetSelectedBones(lst))
             	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                 	(*b_it)->ShapeScale(amount);
+//	        OnBoneModified();
         }break;
         }
 //        m_EditObject->t_vScale.add(amount);
@@ -547,17 +620,8 @@ LPCSTR CActorTools::GetInfo()
 	return 0;
 }
 
-extern AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone);
-
 bool CActorTools::Pick(TShiftState Shift)
 {
-	if (m_pEditObject){
-		if (Shift.Contains(ssCtrl)){
-	        CBone* B 	= m_pEditObject->PickBone(UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity);
-        	SelectItemProperties("Skin\\Bones",B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0);
-	        return !!B;
-        }
-    } 
     return false;
 }
 

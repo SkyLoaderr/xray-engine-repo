@@ -27,27 +27,6 @@ CBone::~CBone()
 {
 }
 
-void CBone::ShapeScale(const Fvector& amount)
-{
-	switch (shape.type){
-    case SBoneShape::stBox:
-    break;
-    case SBoneShape::stSphere:
-    break;
-    case SBoneShape::stCylinder:
-    break;
-    }
-}
-
-void CBone::ShapeRotate(const Fvector& amount)
-{
-}
-
-void CBone::ShapeMove(const Fvector& amount)
-{
-}
-
-
 void CBone::Save(IWriter& F)
 {
 #ifdef _LW_EXPORT

@@ -332,7 +332,7 @@ public:
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 
     // bone
-	CBone* 			PickBone				(const Fvector& S, const Fvector& D, const Fmatrix& inv_parent);
+	CBone* 			PickBone				(const Fvector& S, const Fvector& D, const Fmatrix& parent);
 	void 			SelectBone				(CBone* b);
 #endif
     // change position/orientation methods

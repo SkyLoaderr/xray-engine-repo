@@ -256,7 +256,8 @@ object fraBottomBar: TfraBottomBar
       'miShowHint.Checked'
       'miDrawObjectsPivot.Checked'
       'miDrawBoneAxis.Checked'
-      'miDrawBoneNames.Checked')
+      'miDrawBoneNames.Checked'
+      'miDrawBoneShapes.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -408,6 +409,11 @@ object fraBottomBar: TfraBottomBar
       end
       object miDrawBoneNames: TMenuItem
         Caption = 'Draw Bone Names'
+        Checked = True
+        OnClick = ClickOptionsMenuItem
+      end
+      object miDrawBoneShapes: TMenuItem
+        Caption = 'Draw Bone Shapes'
         Checked = True
         OnClick = ClickOptionsMenuItem
       end
