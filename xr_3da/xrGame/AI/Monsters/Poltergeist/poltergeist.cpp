@@ -32,6 +32,7 @@ void CPoltergeist::Load(LPCSTR section)
 	inherited::Load	(section);
 
 	MotionMan.accel_load			(section);
+	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 
 	LoadFlame(section);
 
@@ -192,7 +193,7 @@ bool CPoltergeist::UpdateStateManager()
 
 void CPoltergeist::on_activate()
 {
-	Hide();
+	///Hide();
 	
 	m_height			= 0.3f;
 	time_height_updated = 0;
