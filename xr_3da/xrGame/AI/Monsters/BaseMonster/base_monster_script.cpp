@@ -24,7 +24,6 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	if (movement().detail().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
 		if ((l_tMovementAction.m_fDistToEnd > 0) && movement().IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
-			Msg("!!!!!!!!!!! By dist !!!!!!!!!!!!!!!");
 			return false;
 		}
 	}

@@ -139,8 +139,6 @@ bool CMotionManager::PrepareAnimation()
 	m_cur_anim.speed.current	= -1.f;
 	m_cur_anim.speed.target		= -1.f;
 
-	Msg("!!!!!!!!! Anim Set = [%s] Action = [%s]!!!!!!!!!", st,dbg_action_name_table[m_tAction]);
-
 	return true;
 }
 
