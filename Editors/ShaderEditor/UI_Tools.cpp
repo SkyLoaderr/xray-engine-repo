@@ -107,7 +107,7 @@ void CShaderTools::Render(){
 	if (m_EditObject) m_EditObject->RenderSingle(Fidentity);
 }
 
-void CShaderTools::Update(){
+void CShaderTools::OnFrame(){
 	switch (ActiveEditor()){
 	case aeEngine:
     	if (m_EditObject) m_EditObject->OnFrame();
@@ -117,10 +117,8 @@ void CShaderTools::Update(){
     	SCompiler.Update();
     break;
     case aeMaterial:
-    	SMaterial.Update();
-    break;
     case aeMaterialPair:
-    	SMaterial.Update();
+    	SMaterial.OnFrame();
     break;
     };
 }

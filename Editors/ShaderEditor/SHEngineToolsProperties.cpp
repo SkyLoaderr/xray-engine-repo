@@ -22,61 +22,39 @@ xr_token							mode_token					[ ]={
 	{ 0,							0							}           
 };
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::UpdateMatrixModeProps(TElTreeItem* item, CMatrix* m, DWORD mode)
-{
-	TProperties* P = Tools.m_Props;
-	P->BeginEditMode();
-    if (mode==CMatrix::modeTCM){
-        P->AddItem(item,"Scale enabled",	&m->tcm,	PHelper.CreateFlag(CMatrix::tcmScale));
-        P->AddItem(item,"Scale U",			&m->scaleU,	PHelper.CreateWave());
-        P->AddItem(item,"Scale V",			&m->scaleV,	PHelper.CreateWave());
-        P->AddItem(item,"Rotate enabled",	&m->tcm,	PHelper.CreateFlag(CMatrix::tcmRotate));
-        P->AddItem(item,"Rotate",			&m->rotate,	PHelper.CreateWave());
-        P->AddItem(item,"Scroll enabled",	&m->tcm,	PHelper.CreateFlag(CMatrix::tcmScroll));
-        P->AddItem(item,"Scroll U",			&m->scrollU,PHelper.CreateWave());
-        P->AddItem(item,"Scroll V",			&m->scrollV,PHelper.CreateWave());
-    }else{
-        for (TElTreeItem* itm=item->GetLastChild(); itm;){
-            TElTreeItem* node=item->GetPrevChild(itm);
-            itm->Delete();
-            itm=node;
-        }
-    }
-	P->EndEditMode();
-}
-//---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::ModeOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
-	TElTreeItem* parent=sender->item->Parent; R_ASSERT(parent);
+/*
+	TElTreeItem* parent=sender->Owner()->Item()->Parent; R_ASSERT(parent);
     ListValue* V = (ListValue*)parent->Tag;
-    R_ASSERT(V->type==PROP_LIST);
+    R_ASSERT(V->Owner()->Type()==PROP_LIST);
     string128 nm; strcpy(nm,V->GetValue());
     CMatrix* M = FindMatrix(nm,false); R_ASSERT(M);
     V->ApplyValue(nm);
-    DWORD mode=*(DWORD*)edit_val;
-    UpdateMatrixModeProps(sender->item,M,mode);
+//    DWORD mode=*(DWORD*)edit_val;
+//    UpdateMatrixModeProps(sender->item,M,mode);
+*/
 }
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::AddMatrixProps(TElTreeItem* item, LPSTR name)
+void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref, LPSTR name)
 {
     CMatrix* M = FindMatrix(name,true);
     R_ASSERT(M);
-	Tools.m_Props->BeginEditMode();
-    TElTreeItem* node = Tools.m_Props->AddItem(item,"Mode",&M->dwMode,PHelper.CreateToken(mode_token,sizeof(M->dwMode),0,&ModeOnAfterEdit));
-    UpdateMatrixModeProps(node,M,M->dwMode);
-	Tools.m_Props->EndEditMode(item);
-}
-//---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::RemoveMatrixProps(TElTreeItem* parent){
-    TProperties* P=Tools.m_Props;
-	P->BeginEditMode();
-	for (TElTreeItem* item=parent->GetLastChild(); item;){
-    	TElTreeItem* node=parent->GetPrevChild(item);
-        item->Delete();
-        item=node;
-	}
-	P->EndEditMode(0);
+	PropValue* P=0;
+    PHelper.CreateToken(items,PHelper.PrepareKey(pref,"Mode"),&M->dwMode,mode_token,sizeof(M->dwMode));
+//    P->SetEvents(ModeOnAfterEdit);
+
+    if (M->dwMode==CMatrix::modeTCM){
+	    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Scale enabled"),	&M->tcm_flags,CMatrix::tcmScale);
+		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scale U"),			&M->scaleU);
+		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scale V"),			&M->scaleV);
+	    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Rotate enabled"),	&M->tcm_flags,CMatrix::tcmRotate);
+		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Rotate"),			&M->rotate);
+	    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Scroll enabled"),	&M->tcm_flags,CMatrix::tcmScroll);
+		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scroll U"),		&M->scrollU);
+		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scroll V"),		&M->scrollV);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -84,7 +62,7 @@ void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, LPVOID draw_val)
 {
 	AnsiString& V=*(AnsiString*)draw_val;
     VERIFY(V[1]);
-	if (V[1]!='$') V="";
+	if (V[1]!='$') V="Custom";
 }
 //---------------------------------------------------------------------------
 
@@ -96,7 +74,7 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, LPVOID edit
 	if (*nm!='$'){
         if (*V->GetValue()=='$'){
             strcpy(nm,AppendMatrix());
-            AddMatrixProps(sender->item,nm);
+//S            AddMatrixProps(sender->item,nm);
         }else{
             strcpy(nm,V->GetValue());
         }
@@ -105,35 +83,20 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, LPVOID edit
         	string128 nmm; strcpy(nmm,V->GetValue());
             RemoveMatrix(nmm);
             V->ApplyValue(nmm);
-            RemoveMatrixProps(sender->item);
+//S            RemoveMatrixProps(sender->item);
         }
     }
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::AddConstProps(TElTreeItem* item, LPSTR name)
+void __fastcall CSHEngineTools::FillConstProps(PropItemVec& items, LPCSTR pref, LPSTR name)
 {
-	Tools.m_Props->BeginEditMode();
 	CConstant* C = Tools.SEngine.FindConstant(name,true);
     R_ASSERT(C);
-    TProperties* P=Tools.m_Props;
-    P->AddItem(item,"R",&C->_R,PHelper.CreateWave());
-    P->AddItem(item,"G",&C->_G,PHelper.CreateWave());
-    P->AddItem(item,"B",&C->_B,PHelper.CreateWave());
-    P->AddItem(item,"A",&C->_A,PHelper.CreateWave());
-	Tools.m_Props->EndEditMode(item);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall CSHEngineTools::RemoveConstProps(TElTreeItem* parent){
-    TProperties* P=Tools.m_Props;
-	P->BeginEditMode();
-	for (TElTreeItem* item=parent->GetLastChild(); item;){
-    	TElTreeItem* node=parent->GetPrevChild(item);
-        item->Delete();
-        item=node;
-	}
-	P->EndEditMode(0);
+    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"R"),&C->_R);
+    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"G"),&C->_G);
+    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"B"),&C->_B);
+    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"A"),&C->_A);
 }
 //---------------------------------------------------------------------------
 
@@ -145,7 +108,7 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(PropValue* sender, LPVOID edit_
 	if (*nm!='$'){
         if (*V->GetValue()=='$'){
             strcpy(nm,AppendConstant());
-            AddConstProps(sender->item,nm);
+//S            AddConstProps(sender->item,nm);
         }else{
             strcpy(nm,V->GetValue());
         }
@@ -154,7 +117,7 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(PropValue* sender, LPVOID edit_
         	string128 nmm; strcpy(nmm,V->GetValue());
             RemoveConstant(nmm);
             V->ApplyValue(nmm);
-            RemoveConstProps(sender->item);
+//S            RemoveConstProps(sender->item);
         }
     }
 }
@@ -171,20 +134,20 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_v
 void CSHEngineTools::UpdateProperties()
 {
 	if (m_bFreezeUpdate) return;
-	TProperties* P=Tools.m_Props;
-    P->BeginFillMode("Engine shader");
+
+	PropItemVec items;
 	if (m_CurrentBlender){ // fill Tree
+    	AnsiString marker_text="";
+    
     	CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
         CBlender_DESC* desc=(CBlender_DESC*)data.Pointer();
         data.Advance(sizeof(CBlender_DESC));
         DWORD type;
         char key[255];
-        TElTreeItem* marker_node=0;
-        TElTreeItem* node;
 
-        P->AddItem		(0,"Type",(void*)m_CurrentBlender->getComment(),PHelper.CreateMarker());
-        PropValue* V	= PHelper.CreateText(sizeof(desc->cName),0,NameOnAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw);
-        V->tag			= (int)P->AddItem(0,"Name",desc->cName,V); VERIFY(V->tag);
+        PHelper.CreateCaption(items,"Type",m_CurrentBlender->getComment());
+        PropValue* V	= PHelper.CreateText(items,"Name",desc->cName,sizeof(desc->cName));
+        V->SetEvents	(NameOnAfterEdit,FHelper.NameBeforeEdit); V->Owner()->SetEvents(FHelper.NameDraw);
 
         while (!data.Eof()){
             int sz=0;
@@ -192,43 +155,50 @@ void CSHEngineTools::UpdateProperties()
             data.RstringZ(key);
             switch(type){
             case xrPID_MARKER:
-            	marker_node = P->AddItem(0,key,0,PHelper.CreateMarker());
+	            marker_text = key;
             break;
             case xrPID_TOKEN:{
             	xrP_TOKEN* V=(xrP_TOKEN*)data.Pointer();
             	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*V->Count;
-                P->AddItem(marker_node,key,&V->IDselected,PHelper.CreateToken3(V->Count,(TokenValue3::Item*)(LPBYTE(data.Pointer()) + sizeof(xrP_TOKEN))));
+                PHelper.CreateToken3(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.Pointer()) + sizeof(xrP_TOKEN)));
             }break;
             case xrPID_MATRIX:{
-            	sz=sizeof(string64);
-                TElTreeItem* node=P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateListA(MCSTRING_COUNT,MCString,0,MatrixOnAfterEdit,0,MCOnDraw));
-                LPSTR V=(LPSTR)data.Pointer();
-				if (V&&V[0]&&(*V!='$')) AddMatrixProps(node,V);
+            	sz				= sizeof(string64);
+                LPSTR V			= (LPSTR)data.Pointer();
+                PropValue* P	= PHelper.CreateListA(items,PHelper.PrepareKey(marker_text.c_str(),key),V,MCSTRING_COUNT,MCString);
+                AnsiString pref = AnsiString(PHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
+				if (V&&V[0]&&(*V!='$')) FillMatrixProps(items,pref.c_str(),V);
+                P->SetEvents	(MatrixOnAfterEdit);
+                P->Owner()->SetEvents(MCOnDraw);
             }break;
             case xrPID_CONSTANT:{
             	sz=sizeof(string64);
-                TElTreeItem* node=P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateListA(MCSTRING_COUNT,MCString,0,ConstOnAfterEdit,0,MCOnDraw));
-                LPSTR V=(LPSTR)data.Pointer();
-				if (V&&V[0]&&(*V!='$')) AddConstProps(node,V);
+            	sz				= sizeof(string64);
+                LPSTR V			= (LPSTR)data.Pointer();
+                PropValue* P	= PHelper.CreateListA(items,PHelper.PrepareKey(marker_text.c_str(),key),V,MCSTRING_COUNT,MCString);
+                AnsiString pref = AnsiString(PHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
+				if (V&&V[0]&&(*V!='$')) FillConstProps(items,pref.c_str(),V);
+                P->SetEvents	(ConstOnAfterEdit);
+                P->Owner()->SetEvents(MCOnDraw);
             }break;
             case xrPID_TEXTURE:
             	sz=sizeof(string64);
-                P->AddItem(marker_node,key,(LPSTR)data.Pointer(),PHelper.CreateTexture2(sz));
+                PHelper.CreateTexture2(items,PHelper.PrepareKey(marker_text.c_str(),key),(LPSTR)data.Pointer(),sz);
             break;
             case xrPID_INTEGER:{
             	sz=sizeof(xrP_Integer);
                 xrP_Integer* V=(xrP_Integer*)data.Pointer();
-                P->AddItem	(marker_node,key,&V->value,PHelper.CreateS32(V->min,V->max,1));
+                PHelper.CreateS32(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,1);
             }break;
             case xrPID_FLOAT:{
             	sz=sizeof(xrP_Float);
                 xrP_Float* V=(xrP_Float*)data.Pointer();
-                P->AddItem	(marker_node,key,&V->value,PHelper.CreateFloat(V->min,V->max,0.01f,2));
+                PHelper.CreateFloat(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,0.01f,2);
             }break;
             case xrPID_BOOL:{
             	sz=sizeof(xrP_BOOL);
                 xrP_BOOL* V=(xrP_BOOL*)data.Pointer();
-                P->AddItem	(marker_node,key,&V->value,PHelper.CreateBOOL());
+                PHelper.CreateBOOL(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value);
             }break;
             default: THROW2("UNKNOWN xrPID_????");
             }
@@ -236,8 +206,8 @@ void CSHEngineTools::UpdateProperties()
         }
         ApplyChanges(true);
     }
-    P->EndFillMode();
-    P->SetModifiedEvent(Modified);
+    Tools.m_Props->AssignItems(items,true);
+    Tools.m_Props->SetModifiedEvent(Modified);
 }
 //------------------------------------------------------------------------------
 

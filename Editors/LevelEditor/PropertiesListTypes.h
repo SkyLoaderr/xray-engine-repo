@@ -77,6 +77,12 @@ public:
     virtual bool		Equal			(PropValue* prop)=0;
     virtual bool		ApplyValue		(LPVOID _val)=0;
     IC PropItem*		Owner			(){return m_Owner;}
+    void				SetEvents		(TAfterEdit	after=0, TBeforeEdit before=0, TOnChange change=0)
+    {
+    	OnAfterEditEvent	= after;
+        OnBeforeEditEvent	= before;
+        OnChangeEvent		= change;
+    }
 };
 //------------------------------------------------------------------------------
 
@@ -125,11 +131,11 @@ class PropItem{
     LPSTR				key;
     EPropType			type;
 	TElTreeItem*		item; 
-    int					subitem;		// multiple selection for each item (SelectTexture for example)
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
     PropValueVec		values;
 public:
     int 				tag;
+    int					subitem;		// multiple selection for each item (SelectTexture for example)
     TOnClick			OnExtBtnClick;
     TOnClick			OnClickEvent;
     TOnDrawEvent		OnDrawEvent;
@@ -151,6 +157,12 @@ public:
         	_DELETE		(*it);
     	_FREE			(key);
     };
+    void				SetEvents		(TOnDrawEvent draw=0, TOnClick on_ext_click=0, TOnClick on_click=0)
+    {
+    	OnDrawEvent		= draw;
+        OnExtBtnClick	= on_ext_click;
+        OnClickEvent	= on_click;
+    }
     void				SetName			(LPCSTR name){key=xr_strdup(name);}
     IC void				ResetValues		()
     { 

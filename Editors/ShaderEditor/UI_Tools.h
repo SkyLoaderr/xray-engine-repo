@@ -50,7 +50,7 @@ public:
     virtual 			~CShaderTools		();
 
     void				Render				();
-    void				Update				();
+    void				OnFrame				();
 
     bool				OnCreate			();
     void				OnDestroy			();

@@ -11,28 +11,30 @@
 //------------------------------------------------------------------------------
 // material routines
 //------------------------------------------------------------------------------
-void SGameMtl::FillProp		(PropValueVec& values)
+void SGameMtl::FillProp		(PropItemVec& items)
 {
 	PropValue* P=0;
-	FILL_PROP(values, 		"Name",						name,  		   			P=PHelper.CreateText(sizeof(name),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
-    P->tag					= (int)FHelper.FindObject(fraLeftBar->tvMaterial,name); VERIFY(P->tag);
+    P=PHelper.CreateText	(items,	"Name",					name,	sizeof(name));
+    P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,Tools.SMaterial.OnMaterialNameChange);
+    P->Owner()->OnDrawEvent	= FHelper.NameDraw;
+    P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMaterial,name); VERIFY(P->Owner()->tag);
 	// flags
-    FILL_PROP(values,		"Flags\\Breakable",			&Flags.flags,			PHelper.CreateFlag(flBreakable));
-    FILL_PROP(values,		"Flags\\Shootable",			&Flags.flags,			PHelper.CreateFlag(flShootable));
-    FILL_PROP(values,		"Flags\\Bounceable",		&Flags.flags,			PHelper.CreateFlag(flBounceable));
-    FILL_PROP(values,		"Flags\\Wheeltrace",		&Flags.flags,			PHelper.CreateFlag(flWheeltrace));
-    FILL_PROP(values,		"Flags\\Bloodmark",			&Flags.flags,			PHelper.CreateFlag(flBloodmark));
+    PHelper.CreateFlag32	(items,	"Flags\\Breakable",		&Flags,	flBreakable);
+    PHelper.CreateFlag32	(items,	"Flags\\Shootable",		&Flags,	flShootable);
+    PHelper.CreateFlag32	(items,	"Flags\\Bounceable",	&Flags,	flBounceable);
+    PHelper.CreateFlag32	(items,	"Flags\\Wheeltrace",	&Flags,	flWheeltrace);
+    PHelper.CreateFlag32	(items,	"Flags\\Bloodmark",		&Flags,	flBloodmark);
     // physics part
-    FILL_PROP(values,		"Physics\\Friction",		&fPHFriction,			PHelper.CreateFloat());
-    FILL_PROP(values,		"Physics\\Dumping",			&fPHDumping,			PHelper.CreateFloat());
-    FILL_PROP(values,		"Physics\\Spring",			&fPHSpring,				PHelper.CreateFloat());
-    FILL_PROP(values,		"Physics\\Bounce start vel",&fPHBounceStartVelocity,PHelper.CreateFloat());
-    FILL_PROP(values,		"Physics\\Bouncing",		&fPHBouncing,		   	PHelper.CreateFloat());
+    PHelper.CreateFloat		(items,	"Physics\\Friction",		&fPHFriction);
+    PHelper.CreateFloat		(items,	"Physics\\Dumping",			&fPHDumping);
+    PHelper.CreateFloat		(items,	"Physics\\Spring",			&fPHSpring);
+    PHelper.CreateFloat		(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity);
+    PHelper.CreateFloat		(items,	"Physics\\Bouncing",		&fPHBouncing);
     // factors
-    FILL_PROP(values,		"Factors\\Shoot",			&fShootFactor,		   	PHelper.CreateFloat());
-    FILL_PROP(values,		"Factors\\Damage",			&fBounceDamageFactor,  	PHelper.CreateFloat(0.f,100.f,0.1f,1));
-    FILL_PROP(values,		"Factors\\Transparency",	&fVisTransparencyFactor,PHelper.CreateFloat());
-    FILL_PROP(values,		"Factors\\Sound occlusion",	&fSndOcclusionFactor,	PHelper.CreateFloat());
+    PHelper.CreateFloat		(items,	"Factors\\Shoot",			&fShootFactor);
+    PHelper.CreateFloat		(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
+    PHelper.CreateFloat		(items,	"Factors\\Transparency",	&fVisTransparencyFactor);
+    PHelper.CreateFloat		(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
 }
 SGameMtl* CGameMtlLibrary::AppendMaterial(SGameMtl* parent)
 {
@@ -64,7 +66,7 @@ SGameMtl* CGameMtlLibrary::GetMaterialByID	(int id)
 //------------------------------------------------------------------------------
 void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
 {
-	bool bChecked = sender->flags.is(PropValue::flCBChecked);
+	bool bChecked = sender->Owner()->m_Flags.is(PropItem::flCBChecked);
     u32 mask=0;
     if (sender==propFlotation)			mask = flFlotation;
     else if (sender==propBreakingSounds)mask = flBreakingSounds;
@@ -76,12 +78,12 @@ void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
     else THROW;
 
     OwnProps.set		(mask,bChecked);
-    sender->flags.set	(PropValue::flDisabled,!bChecked);
+    sender->Owner()->m_Flags.set	(PropItem::flDisabled,!bChecked);
 }
 
 IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
 {
-    return mask?(mask|(flags.is(flag)?PropValue::flCBChecked:PropValue::flDisabled)):0;
+    return mask?(mask|(flags.is(flag)?PropItem::flCBChecked:PropItem::flDisabled)):0;
 }
 
 IC SGameMtlPair* GetParentValueObj(SGameMtlPair* obj, GameMtlPairVec& parents, u32 flag)
@@ -94,34 +96,50 @@ IC SGameMtlPair* GetParentValueObj(SGameMtlPair* obj, GameMtlPairVec& parents, u
     return obj;
 }
 
-void SGameMtlPair::FillProp(PropValueVec& values)
+void SGameMtlPair::FillProp(PropItemVec& items)
 {
 	TOnChange OnChange	= 0;
-    u32 mask			= 0;
+    u32 show_CB			= 0;
     GameMtlPairVec parents;
     if (ID_parent!=-1){ 
        	OnChange 		= OnFlagChange;
-        mask		    = PropValue::flShowCB;
+        show_CB		    = PropItem::flShowCB;
 		int cnt 		= m_Owner->GetParents(this,parents); R_ASSERT(cnt);
-	    FILL_PROP(values,"Parent", (void*)m_Owner->MtlPairToName((*parents.begin())->GetMtl0(),(*parents.begin())->GetMtl1()),	PHelper.CreateMarker());
+        PHelper.CreateCaption(items,"Parent", m_Owner->MtlPairToName((*parents.begin())->GetMtl0(),(*parents.begin())->GetMtl1()));
     }
     
-	propFlotation		= PHelper.CreateFloat		(0.f,1.f,0.01f,2,SetMask(mask,OwnProps,flFlotation), 	0,0,0,OnChange);
-	propBreakingSounds	= PHelper.CreateALibSound	(SetMask(mask,OwnProps,flBreakingSounds),				0,0,0,OnChange);
-	propStepSounds		= PHelper.CreateALibSound	(SetMask(mask,OwnProps,flStepSounds), 					0,0,0,OnChange);
-	propCollideSounds	= PHelper.CreateALibSound	(SetMask(mask,OwnProps,flCollideSounds), 				0,0,0,OnChange);
-	propHitSounds		= PHelper.CreateALibSound	(SetMask(mask,OwnProps,flHitSounds), 					0,0,0,OnChange);
-	propHitParticles	= PHelper.CreateALibPS		(SetMask(mask,OwnProps,flHitParticles), 				0,0,0,OnChange);
-	propHitMarks		= PHelper.CreateATexture	(SetMask(mask,OwnProps,flHitMarks), 					0,0,0,OnChange);
+	propFlotation		= PHelper.CreateFloat		(items,	"Flotation",		&fFlotation,	0.f,1.f,0.01f,2);
+	propBreakingSounds	= PHelper.CreateALibSound	(items,	"Braking Sounds",	&BreakingSounds);
+	propStepSounds		= PHelper.CreateALibSound	(items,	"Step Sounds",		&StepSounds);
+	propCollideSounds	= PHelper.CreateALibSound	(items,	"Collide Sounds",	&CollideSounds);
+	propHitSounds		= PHelper.CreateALibSound	(items,	"Hit Sounds",		&HitSounds);
+	propHitParticles	= PHelper.CreateALibPS		(items,	"Hit Particles",	&HitParticles);
+	propHitMarks		= PHelper.CreateATexture	(items,	"Hit Marks",		&HitMarks);
+
+    propFlotation->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flFlotation));
+    propBreakingSounds->Owner()->m_Flags.set(SetMask(show_CB,OwnProps,flBreakingSounds));
+    propStepSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flStepSounds));
+    propCollideSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flCollideSounds));
+    propHitSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flHitSounds));
+    propHitParticles->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flHitParticles));
+    propHitMarks->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flHitMarks));
+
+    propFlotation->OnChangeEvent 		= OnChange;
+    propBreakingSounds->OnChangeEvent 	= OnChange;
+    propStepSounds->OnChangeEvent 		= OnChange;
+    propCollideSounds->OnChangeEvent 	= OnChange;
+    propHitSounds->OnChangeEvent 		= OnChange;
+    propHitParticles->OnChangeEvent 	= OnChange;
+    propHitMarks->OnChangeEvent 		= OnChange;
+
+    propBreakingSounds->Owner()->subitem= GAMEMTL_SUBITEM_COUNT;
+    propStepSounds->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
+    propCollideSounds->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
+    propHitSounds->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
+    propHitParticles->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
+    propHitMarks->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
     
-    propBreakingSounds->subitem	= GAMEMTL_SUBITEM_COUNT;
-    propStepSounds->subitem		= GAMEMTL_SUBITEM_COUNT;
-    propCollideSounds->subitem	= GAMEMTL_SUBITEM_COUNT;
-    propHitSounds->subitem		= GAMEMTL_SUBITEM_COUNT;
-    propHitParticles->subitem	= GAMEMTL_SUBITEM_COUNT;
-    propHitMarks->subitem		= GAMEMTL_SUBITEM_COUNT;
-    
-    if (mask){
+    if (show_CB){
 		SGameMtlPair* O; 
     	if (O=GetParentValueObj(this,parents,flFlotation)) 		fFlotation		= O->fFlotation;
     	if (O=GetParentValueObj(this,parents,flBreakingSounds))	BreakingSounds	= O->BreakingSounds;
@@ -131,14 +149,6 @@ void SGameMtlPair::FillProp(PropValueVec& values)
     	if (O=GetParentValueObj(this,parents,flHitParticles)) 	HitParticles	= O->HitParticles;
     	if (O=GetParentValueObj(this,parents,flHitMarks)) 		HitMarks		= O->HitMarks;
     }
-    
-    FILL_PROP(values,	"Flotation",				&fFlotation,		   	propFlotation		);		
-    FILL_PROP(values,	"Braking Sounds",			&BreakingSounds,	   	propBreakingSounds	);	
-    FILL_PROP(values,	"Step Sounds",				&StepSounds,		   	propStepSounds		);	
-    FILL_PROP(values,	"Collide Sounds",			&CollideSounds,		   	propCollideSounds	);	
-    FILL_PROP(values,	"Hit Sounds",				&HitSounds,		   		propHitSounds		);	
-    FILL_PROP(values,	"Hit Particles",			&HitParticles,		   	propHitParticles	);		
-    FILL_PROP(values,	"Hit Marks",				&HitMarks,		   		propHitMarks		);		
 }
 
 void SGameMtlPair::TransferFromParent(SGameMtlPair* parent)

@@ -23,7 +23,10 @@ public:
 	};
 public:
 	char		Name		[128];
-	Flags		flags;
+	union{
+		Flags32	m_Flags;
+        Flags	flags;
+    };
 	float		vert_translucency;
 	float		vert_ambient;
 	float		lm_density;

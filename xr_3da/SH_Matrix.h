@@ -24,7 +24,10 @@ public:
 	u32			dwReference;
 	u32			dwFrame;
 	u32			dwMode;
-	u32			tcm;				// mask for tc-modifiers
+    union{
+		u32		tcm;				// mask for tc-modifiers
+        Flags32	tcm_flags;
+    };
 	WaveForm		scaleU, scaleV;
 	WaveForm		rotate;
 	WaveForm		scrollU,scrollV;
