@@ -14,25 +14,29 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+XRXMLPARSER_API void XML_DisableStringCaching()
+{
+	CkSettings::disableStringCaching();
+}
+
+XRXMLPARSER_API void XML_CleanUpMemory()
+{
+	CkSettings::cleanupMemory();
+}
+
+
 XRXMLPARSER_API CUIXml::CUIXml()
 {
 	// The Chilkat library can keep internal caches of string or other objects
 	// and these may seem like memory leaks.  Call this to disable string
 	// object caching, and call CkSettings::cleanupMemory to delete other
 	// internal caches before checking for memory leaks.
-	
-	//CkSettings::disableStringCaching();
-
 }
 
 XRXMLPARSER_API CUIXml::~CUIXml()
 {
 	//and call CkSettings::cleanupMemory to delete other
 	// internal caches before checking for memory leaks.
-
-	//CkSettings::cleanupMemory();
-
-
 }
 
 

@@ -9,6 +9,8 @@
 	#pragma comment(lib,"x:\\xrXMLParser.lib")
 #endif
 
+XRXMLPARSER_API void XML_DisableStringCaching();
+XRXMLPARSER_API void XML_CleanUpMemory();
 
 struct XRXMLPARSER_API StructSampleExport
 {
