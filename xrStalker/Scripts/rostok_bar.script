@@ -39,6 +39,8 @@ function main ()
 end
 -------------------------------------------------------------------------------------
 function on_enter (zone, obj)
+    printf ("ACTOR ENTERED")
+    flush ()
     local act = level.actor ()
     if act == nil or obj:id () ~= act:id () then return  end
     if game.time () - last_time > (12 * 60 * 60 * 1000) or table.getn (indices) == 0 then
@@ -51,6 +53,8 @@ function on_enter (zone, obj)
 end
  -------------------------------------------------------------------------------------
 function on_exit (zone, obj)
+    printf ("ACTOR EXITED")
+    flush ()
     local act = level.actor ()
     if act == nil or obj:id () ~= act:id () then return  end
     for a = 1, table.getn (indices), 1 do
@@ -60,6 +64,8 @@ function on_exit (zone, obj)
 end
 -------------------------------------------------------------------------------------
 function rechange ()
+    printf ("RECHANGE CALLED")
+    flush ()
     local num = table.getn (stalkers) / 2
     indices = {}
     local a = 0
@@ -81,11 +87,16 @@ function present (index)
 end
 -------------------------------------------------------------------------------------
 function switch_online (a)
+    printf ("SWITCH ONLINE CALLED")
+    flush ()
     local sim = alife ()
     if sim ~= nil then
+       printf ("PREPARE TO ONLINE") 
+       flush ()
        sim:set_switch_online  (stalkers[a].id, true) 
        sim:set_switch_offline (stalkers[a].id, false)
        printf ("Object %s move to online at %d time", stalkers[a].name, device ():time_global ())
+       flush ()
     else
        printf ("NO SIMULATION")    
     end       
