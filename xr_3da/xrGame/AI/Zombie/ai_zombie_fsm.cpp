@@ -200,12 +200,6 @@ void CAI_Zombie::FreeHuntingActive()
 		}
 	}
 
-	vfUpdateTime(m_fTimeUpdateDelta);
-
-	vfComputeNewPosition();
-
-	SetDirectionLook();
-
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
@@ -236,6 +230,12 @@ void CAI_Zombie::FreeHuntingActive()
 			m_fSafeSpeed = m_fSpeed;
 		}
 	
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	vfComputeNewPosition(false);
+
+	SetDirectionLook();
+
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
 		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {

@@ -36,7 +36,72 @@ void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
 	m_fSpeed = m_fCurSpeed = fSpeed;
 }
 
-void CAI_Zombie::vfComputeNewPosition()
+void CAI_Zombie::vfAdjustSpeed()
+{
+	Fvector tTemp1, tTemp2;
+	tTemp1.sub(m_tGoalDir,vPosition);
+	tTemp1.normalize_safe();
+	tTemp2 = mRotate.k;
+	tTemp2.normalize_safe();
+	float fAngle = tTemp1.dotproduct(tTemp2);
+	clamp(fAngle,0.f,.99999f);
+	fAngle = acosf(fAngle);
+	
+	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
+		if (fAngle >= 3*PI_DIV_2) {
+			m_fSpeed = 0;
+			m_fASpeed = PI;
+		}
+		else 
+		{
+			m_fSpeed = m_fMinSpeed;
+			m_fASpeed = .4f;
+		}
+	}
+	else
+		if (fabsf(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
+			if (fAngle >= 3*PI_DIV_2) {
+				m_fSpeed = 0;
+				m_fASpeed = PI;
+			}
+			else
+				if (fAngle >= PI_DIV_2) {
+					m_fSpeed = m_fMinSpeed;
+					m_fASpeed = .4f;
+				}
+				else {
+					m_fSpeed = m_fMaxSpeed;
+					m_fASpeed = .2f;
+				}
+		}
+		else
+			if (fabsf(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
+				if (fAngle >= 3*PI_DIV_2) {
+					m_fSpeed = 0;
+					m_fASpeed = PI;
+				}
+				else
+					if (fAngle >= PI_DIV_2) {
+						m_fSpeed = m_fMinSpeed;
+						m_fASpeed = .4f;
+					}
+					else
+						if (fAngle >= PI_DIV_4) {
+							m_fSpeed = m_fMaxSpeed;
+							m_fASpeed = .2f;
+						}
+						else {
+							m_fSpeed = m_fAttackSpeed;
+							m_fASpeed = .15f;
+						}
+			}
+			else {
+				m_fSpeed = 0;
+				m_fASpeed = PI;
+			}
+}
+
+void CAI_Zombie::vfComputeNewPosition(bool bCanAdjustSpeed)
 {
 	// saving current parameters
 	Fvector tSafeHPB = m_tHPB;
@@ -44,6 +109,11 @@ void CAI_Zombie::vfComputeNewPosition()
 	SRotation tSavedTorsoTarget = r_torso_target;
 	float fSavedDHeading = m_fDHeading;
 
+	if (bCanAdjustSpeed)
+		vfAdjustSpeed();
+
+	m_fCurSpeed = m_fSpeed;
+	
 	// Update position and orientation of the planes
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
@@ -130,8 +200,11 @@ void CAI_Zombie::vfComputeNewPosition()
 	}
 }
 
-void CAI_Zombie::vfComputeNextDirectionPosition()
+void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 {
+	if (bCanAdjustSpeed)
+		vfAdjustSpeed();
+	
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
 	Fvector& tDirection = mRotate.k;
