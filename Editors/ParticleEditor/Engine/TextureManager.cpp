@@ -144,11 +144,11 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
-		strconcat					(cname, "$game_shaders$", name, ".vs");
+		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".vs"));
 		LPCSTR						target		= NULL;
 
-		if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
-		else if (HW.Caps.vertex.dwVersion>=CAP_VERSION(2,0))	target="vs_2_0";
+		/*if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
+		else*/ if (HW.Caps.vertex.dwVersion>=CAP_VERSION(2,0))	target="vs_2_0";
 		else 													target="vs_1_1";
 
 
@@ -212,7 +212,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
-		strconcat					(cname, "$game_shaders$", name, ".ps");
+		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".ps"));
 		// pixel
 		IReader*					fs			= FS.r_open(cname);
 		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
