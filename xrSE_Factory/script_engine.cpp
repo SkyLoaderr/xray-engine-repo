@@ -25,6 +25,7 @@ CScriptEngine::CScriptEngine			()
 	m_stack_level			= 0;
 	m_reload_modules		= false;
 	m_global_script_loaded	= false;
+	m_processing			= false;
 
 #ifdef USE_DEBUGGER
 	m_scriptDebugger = NULL;
@@ -196,6 +197,10 @@ void CScriptEngine::load_common_scripts()
 
 void CScriptEngine::process	()
 {
+	if (m_processing)
+		return;
+
+	m_processing				= true;
 	string256					S,S1;
 	for (u32 i=0, n=m_load_queue.size(); !m_load_queue.empty(); ++i) {
 		LPSTR					S2 = m_load_queue.front();
@@ -211,7 +216,9 @@ void CScriptEngine::process	()
 		}
 		xr_free					(S2);
 	}
+	
 	m_reload_modules			= false;
+	m_processing				= false;
 }
 
 void CScriptEngine::register_script_classes	()

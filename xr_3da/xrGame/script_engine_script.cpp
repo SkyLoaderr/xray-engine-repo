@@ -36,6 +36,7 @@ void ErrorLog(LPCSTR caMessage)
 void LoadScriptModule(LPCSTR script_name)
 {
 	ai().script_engine().add_file(script_name);
+	ai().script_engine().process();
 }
 
 void FlushLogs()

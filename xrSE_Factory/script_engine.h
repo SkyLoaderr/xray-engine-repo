@@ -35,6 +35,7 @@ protected:
 	bool						m_reload_modules;
 	shared_str					m_class_registrators;
 	bool						m_global_script_loaded;
+	bool						m_processing;
 #ifdef USE_DEBUGGER
 	CScriptDebugger				*m_scriptDebugger;
 #endif
