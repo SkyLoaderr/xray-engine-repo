@@ -40,7 +40,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		// setup
 		float	intensity			= 0.3f*fuckingsun->color.r + 0.48f*fuckingsun->color.g + 0.22f*fuckingsun->color.b;
 		Fvector	dir					= L_dir;
-				dir.normalize().mul	(- _sqrt(intensity));
+				dir.normalize().mul	(- _sqrt(intensity+EPS));
 		RCache.set_Element			(s_accum_mask->E[SE_MASK_DIRECT]);		// masker
 		RCache.set_c				("Ldynamic_dir",		dir.x,dir.y,dir.z,0		);
 
@@ -56,7 +56,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	d_Z							= center_pt.z	;
 
 	// nv-stencil recompression
-	if (RImplementation.o.nvstencil && (SE_SUN_NEAR==sub_phase))	u_stencil_optimize();	//. driver bug?
+	if (RImplementation.o.nvstencil  && (SE_SUN_NEAR==sub_phase))	u_stencil_optimize();	//. driver bug?
 	RCache.set_ColorWriteEnable			();
 
 	// Perform lighting
