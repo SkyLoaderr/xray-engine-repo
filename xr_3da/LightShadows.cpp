@@ -12,7 +12,7 @@
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
-const	int		S_size		= 256;
+const	int		S_size		= 64;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 const	float	S_tess		= .5f;
