@@ -13,7 +13,7 @@
 CHUDManager::CHUDManager()
 { 
 	Level().pHUD	= this;
-	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_01",128,16,0);
+	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_03",256,16,0);
 	pGameFont		= new CGameFont("font","ui\\ui_font_hud_02",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);

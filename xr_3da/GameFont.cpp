@@ -16,11 +16,10 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, DWORD f
 	cTexture					= xr_strdup(texture);
 	iNumber						= iCPL;
 	pShader						= 0;
-	vInterval.set				(1.f,1.f);
+	vHalfPixel.set				(-0.5f/float(tsize),0.5f/float(tsize));
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	vUVSize.set					(1.f/float(iNumber),1.f/float(iNumber));
-	vHalfPixel.set				(0.5f/float(tsize),0.5f/float(tsize));
 	for (int i=0; i<256; i++){	CharMap[i] = i; WFMap[i] = 1.f;}
 	strings.reserve				(128);
 
@@ -38,6 +37,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, DWORD f
 		for (int i=0; i<256; i++)
 			WFMap[i]			= ini->ReadFLOAT("Char Widths",itoa(i,buf,10))/fCurrentSize;
 		CInifile::Destroy		(ini);
+		vInterval.set			(1.f,1.f);
 	}else{
 		if (dwFlags&fsDeviceIndependent)	vInterval.set	(0.65f,1.f);
 		else								vInterval.set	(0.75f,1.f);
@@ -126,15 +126,15 @@ void CGameFont::OnRender()
 				float	tu,tv;
 				for (int j=0; j<len; j++) {
 					int c		= CharMap	[PS.string[j]];
+					float cw	= WFMap		[PS.string[j]];
 					if (c>=0){
 						tu	= (c%iNumber)*vUVSize.x+vHalfPixel.x;
 						tv	= (c/iNumber)*vUVSize.y+vHalfPixel.y;
-						v->set(X,	Y2,	clr2,tu,tv+vUVSize.y);			v++;
-						v->set(X,	Y,	clr, tu,tv);					v++;
-						v->set(X+S,	Y2,	clr2,tu+vUVSize.x,tv+vUVSize.y);v++;
-						v->set(X+S,	Y,	clr, tu+vUVSize.x,tv);			v++;
+						v->set(X,		Y2,	clr2,tu,				tv+vUVSize.y);	v++;
+						v->set(X,		Y,	clr, tu,				tv);			v++;
+						v->set(X+S*cw,	Y2,	clr2,tu+vUVSize.x*cw,	tv+vUVSize.y);	v++;
+						v->set(X+S*cw,	Y,	clr, tu+vUVSize.x*cw,	tv);			v++;
 					}
-					float cw	= WFMap		[PS.string[j]];
 					X			+=S*cw*vInterval.x;
 				}
 			}
