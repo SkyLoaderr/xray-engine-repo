@@ -268,7 +268,7 @@ void CCC_Register()
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);
 	CMD1(CCC_E_Signal,	"e_signal"				);
- 		
+
 	// Render device states
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,rsNoVSync);
 	CMD3(CCC_Mask,		"rs_anisotropic",		&psDeviceFlags,rsAnisotropic);
