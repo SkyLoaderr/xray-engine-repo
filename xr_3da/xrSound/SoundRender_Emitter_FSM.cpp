@@ -109,7 +109,7 @@ void CSoundRender_Emitter::update	()
 BOOL	CSoundRender_Emitter::update_culling	()
 {
 	// Check range
-	float	dist		= Device.vCameraPosition.distance_to(p_source.position);
+	float	dist		= SoundRender.Listener.distance_to	(p_source.position);
 	if (dist>p_source.max_distance)	return FALSE;
 
 	// Calc attenuated volume
