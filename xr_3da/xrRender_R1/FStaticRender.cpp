@@ -93,11 +93,11 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void		CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
+void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
 {
 	Wallmarks->AddWallmark	(T,P,&*S,s);
 }
-void		CRender::set_Object			(IRenderable*		O )	
+void					CRender::set_Object				(IRenderable*		O )	
 {
 	val_pObject				= O;		// NULL is OK, trust me :)
 	L_Shadows->set_object	(O);
@@ -105,47 +105,25 @@ void		CRender::set_Object			(IRenderable*		O )
 	L_DB->Track				(O);
 	if (O)					VERIFY	(O->renderable.ROS);
 }
+void					CRender::ApplyObject			(IRenderable*		O )
+{
+	if (0==O)			return;
+	VERIFY				(O->renderable.ROS);
+	CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
+
+	// shadowing
+	if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
+		RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
+}
 
 // Misc
 _FpsController			QualityControl;
 static	float			g_fGLOD, g_fFarSq, g_fPOWER;
 float					g_fSCREEN;
 float					g_fLOD,g_fLOD_scale=1.f;
-static	Fmaterial		gm_Data;
-static	int				gm_Level	= 0;
-static	u32				gm_Ambient	= 0;
 static	BOOL			gm_Nearer	= 0;
-static	IRenderable*	gm_Object	= 0;
-static	int				gm_Lcount	= 0;
 
-IC		void		gm_SetLevel			(int iLevel)
-{
-	if (_abs(s32(gm_Level)-s32(iLevel))>2) {
-		gm_Level	= iLevel;
-		float c		= 0.1f+float(gm_Level)/255.f;
-		gm_Data.diffuse.set				(c,c,c,c);
-		CHK_DX(HW.pDevice->SetMaterial	((D3DMATERIAL9*)&gm_Data));
-	}
-}
-
-IC		void		gm_SetAmbient		(u32 C)
-{
-	if (C!=gm_Ambient)	{
-		gm_Ambient	= C;
-		CHK_DX(HW.pDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(C,C,C)));
-	}
-}
-
-IC		void		gm_SetAmbientLevel	(u32 C)
-{
-	return;
-
-	u32 Camb		= (C*3)/4;
-	gm_SetAmbient	(D3DCOLOR_XRGB(Camb,Camb,Camb));
-	u32 Clevel		= (C*4)/3;
-	gm_SetLevel		(Clevel);
-}
-IC		void		gm_SetNearer		(BOOL bNearer)
+IC		void			gm_SetNearer		(BOOL bNearer)
 {
 	if (bNearer	!= gm_Nearer)
 	{
@@ -154,47 +132,15 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 		else			RImplementation.rmNormal();
 	}
 }
-IC		void		gm_SetLighting		(IRenderable* O)
-{
-	if (O != gm_Object)
-	{
-		gm_Object			= O;
-		if (0==gm_Object)	return;
-		VERIFY				(O->renderable.ROS);
-		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
-
-		// shadowing
-		if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
-		{
-			gm_SetAmbient		(0);
-			RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
-		} else {
-			gm_SetAmbient		(iFloor(LT.ambient)/2);
-		}
-
-		// ambience
-		// gm_SetAmbient		(iFloor(LT.ambient)/2);
-
-		// set up to 8 lights to device
-		int			 max	= _min	(int(LT.lights.size()),8);
-		for (int L=0; L<max; L++)
-			CHK_DX(HW.pDevice->SetLight(L, (D3DLIGHT9*)&LT.lights[L].L) );
-
-		// enable them, disable others
-		for (L=gm_Lcount; L<max; L++)	{ CHK_DX(HW.pDevice->LightEnable(L,TRUE));	}
-		for (L=max;	L<gm_Lcount; L++)	{ CHK_DX(HW.pDevice->LightEnable(L,FALSE)); }
-		gm_Lcount			= max;
-	}
-}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CRender::CRender()
+CRender::CRender	()
 {
 }
 
-CRender::~CRender()
+CRender::~CRender	()
 {
 }
 
@@ -211,24 +157,9 @@ IC bool				pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 	return	d1<d2;
 }
 
-void CRender::Calculate()
+void CRender::Calculate				()
 {
 	Device.Statistic.RenderCALC.Begin();
-	/*
-	float	aX		= ::Random.randF(PI_MUL_2);
-	float	aY		= ::Random.randF(PI_MUL_2);
-	float	aZ		= ::Random.randF(PI_MUL_2);
-
-	Fmatrix	mX,mY,mZ,temp,res1,res2;
-	mX.rotateX		(aX);
-	mY.rotateY		(aY);
-	mZ.rotateZ		(aZ);
-
-	temp.mul		(mX,mZ);
-	res1.mul		(mY,temp);
-
-	res2.setXYZ		(-aX,-aY,-aZ);
-	*/
 
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
@@ -247,19 +178,7 @@ void CRender::Calculate()
 	View							= 0;
 	HOM.Enable						();
 	HOM.Render						(ViewBase);
-
-	// Build L_DB visibility & perform basic initialization
-	gm_Data.diffuse.set				(1,1,1,1);
-	gm_Data.ambient.set				(1,1,1,1);
-	gm_Data.emissive.set			(0,0,0,0);
-	gm_Data.specular.set			(1,1,1,1);
-	gm_Data.power					= 15.f;
-	gm_Level						= 255;
-	gm_Ambient						= 0xffffffff;
-	CHK_DX(HW.pDevice->SetMaterial	((D3DMATERIAL9*)&gm_Data));
-	gm_SetAmbient					(0);
 	gm_SetNearer					(FALSE);
-	gm_SetLighting					(0);
 
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
@@ -417,39 +336,39 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 }
 
 // MATRIX
-void __fastcall matrix_L2	(mapMatrixItem::TNode *N)
+void __fastcall matrix_L2		(mapMatrixItem::TNode *N)
 {
-	IRender_Visual *V		= N->val.pVisual;
-	RCache.set_xform_world	(N->val.Matrix);
-	gm_SetLighting			(N->val.pObject);
-	V->Render				(calcLOD(N->key,V->vis.sphere.R));
+	IRender_Visual *V			= N->val.pVisual;
+	RCache.set_xform_world		(N->val.Matrix);
+	RImplementation.ApplyObject	(N->val.pObject);
+	V->Render					(calcLOD(N->key,V->vis.sphere.R));
 }
 
-void __fastcall matrix_L1	(mapMatrix_Node *N)
+void __fastcall matrix_L1		(mapMatrix_Node *N)
 {
-	RCache.set_Element		(N->key);
-	N->val.traverseLR		(matrix_L2);
-	N->val.clear			();
+	RCache.set_Element			(N->key);
+	N->val.traverseLR			(matrix_L2);
+	N->val.clear				();
 }
 
 // ALPHA
-void __fastcall sorted_L1	(mapSorted_Node *N)
+void __fastcall sorted_L1		(mapSorted_Node *N)
 {
-	if (N->val.pObject)		VERIFY	(N->val.pObject->renderable.ROS);
-	IRender_Visual *V	=	N->val.pVisual;
-	RCache.set_Shader		(V->hShader);
-	RCache.set_xform_world	(N->val.Matrix);
-	gm_SetLighting			(N->val.pObject);
-	V->Render				(calcLOD(N->key,V->vis.sphere.R));
+	if (N->val.pObject)			VERIFY	(N->val.pObject->renderable.ROS);
+	IRender_Visual *V	=		N->val.pVisual;
+	RCache.set_Shader			(V->hShader);
+	RCache.set_xform_world		(N->val.Matrix);
+	RImplementation.ApplyObject	(N->val.pObject);
+	V->Render					(calcLOD(N->key,V->vis.sphere.R));
 }
 
-void CRender::flush_Models	()
+void CRender::flush_Models		()
 {
-	mapMatrix.traverseANY	(matrix_L1);
-	mapMatrix.clear			();
+	mapMatrix.traverseANY		(matrix_L1);
+	mapMatrix.clear				();
 }
 
-void CRender::flush_Patches	()
+void CRender::flush_Patches		()
 {
 	// *** Fill VB
 	u32							vOffset;
@@ -591,10 +510,10 @@ IC	bool	cmp_textures_ssa	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode
 
 void		sort_tlist			
 (
- xr_vector<mapNormalTextures::TNode*>& lst, 
- xr_vector<mapNormalTextures::TNode*>& temp, 
- mapNormalTextures& textures, 
- BOOL	bSSA
+	xr_vector<mapNormalTextures::TNode*>& lst, 
+	xr_vector<mapNormalTextures::TNode*>& temp, 
+	mapNormalTextures& textures, 
+	BOOL	bSSA
  )
 {
 	int amount			= textures.begin()->key->size();

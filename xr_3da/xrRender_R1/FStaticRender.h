@@ -102,7 +102,7 @@ public:
 	IRender_Portal*					getPortal				(int id);
 	IRender_Sector*					getSectorActive			();
 	IRender_Visual*					model_CreatePE			(LPCSTR name);
-
+	void							ApplyObject				(IRenderable* O);
 public:
 	// Loading / Unloading
 	virtual	void					create					();
