@@ -615,9 +615,10 @@ static void	ScriptPlayCallback(CBlend *B)
 	CAI_Stalker							*m_object = (CAI_Stalker*)B->CallbackParam;
 #ifdef DEBUG
 	VERIFY								(m_object);
-	VERIFY								(!m_object->m_current_script_animation || m_object->m_current_script_animation == m_object->m_script_animations.front().m_motion);
+//	VERIFY								(!m_object->m_current_script_animation || m_object->m_current_script_animation == m_object->m_script_animations.front().m_motion);
 #endif
-	m_object->m_script_animations.pop_front();
+	if (m_object->m_current_script_animation && m_object->m_current_script_animation == m_object->m_script_animations.front().m_motion)
+		m_object->m_script_animations.pop_front();
 	m_object->m_current_script_animation	= 0;
 }
 
