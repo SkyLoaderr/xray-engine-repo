@@ -135,6 +135,7 @@ end
 function action_patrol:callback (mode, number)
     if number == 0 then 
        self.object:clear_animations ()
+       self.object:set_movement_type (move.stand)
        self.object:add_animation ("raciya_0", true)
        self.object:add_animation ("raciya_1", true)
        self.object:add_animation ("raciya_2", true)
