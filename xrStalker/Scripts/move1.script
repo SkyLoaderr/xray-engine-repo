@@ -1,0 +1,7 @@
+function main ()
+
+    local actor = get_actor ()
+    local flesh = get_level_object ("flesh_eat")
+
+    flesh:script (true, move1.get_name ())         
+end
