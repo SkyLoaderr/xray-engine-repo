@@ -86,9 +86,6 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then
-			printf("if")
-			flush()
-
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
@@ -100,7 +97,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
@@ -111,7 +108,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_ya_bi_pomalkival:play_at_pos				(stalker2,stalker2:position(),0);
@@ -124,7 +121,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
@@ -139,7 +136,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
@@ -150,7 +147,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_teper_ne_uspokous:play_at_pos				(stalker1,stalker1:position(),0);
@@ -163,7 +160,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
@@ -174,7 +171,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_vrode_nikogo:play_at_pos				(stalker1,stalker1:position(),0);
@@ -189,7 +186,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
@@ -200,7 +197,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
@@ -214,7 +211,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			wait(2000)			
 			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
@@ -226,7 +223,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
@@ -237,7 +234,7 @@ function main()
 	end
 
 	while true do
-		if stalkers_already_saw_actor == false then
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		if stalkers_already_saw_actor == false then
 			printf("entered")
 			flush()
 			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
@@ -255,8 +252,6 @@ function main()
 			stalker1:script	(true,  this.script_name())
 			stalker2:script	(false, this.script_name())
 			stalker2:script	(true,  this.script_name())
-
-			stalkers_already_saw_actor = true
 
 			action(
 				stalker1,
