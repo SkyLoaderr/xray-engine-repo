@@ -128,10 +128,10 @@ public:
 
 	ICF  void						set_Format			(IDirect3DVertexDeclaration9* _decl);
 
-	ICF void						set_PS				(IDirect3DPixelShader9* _ps, LPCSTR _n);
+	ICF void						set_PS				(IDirect3DPixelShader9* _ps, LPCSTR _n=0);
 	ICF void						set_PS				(ref_ps& _ps)						{ set_PS(_ps->ps,_ps->cName.c_str());				}
 
-	ICF void						set_VS				(IDirect3DVertexShader9* _vs, LPCSTR _n);
+	ICF void						set_VS				(IDirect3DVertexShader9* _vs, LPCSTR _n=0);
 	ICF void						set_VS				(ref_vs& _vs)						{ set_VS(_vs->vs,_vs->cName.c_str());				}
 
 	ICF	void						set_Vertices		(IDirect3DVertexBuffer9* _vb, u32 _vb_stride);
