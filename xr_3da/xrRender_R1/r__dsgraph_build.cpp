@@ -42,7 +42,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
 	ShaderElement*		sh_d	= &*pVisual->hShader->E[4];
-	if (RImplementation.b_distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
+	if (RImplementation.o.distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= RI.val_pObject;
@@ -139,7 +139,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
 	ShaderElement*		sh_d	= &*pVisual->hShader->E[4];
-	if (RImplementation.b_distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
+	if (RImplementation.o.distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= NULL;

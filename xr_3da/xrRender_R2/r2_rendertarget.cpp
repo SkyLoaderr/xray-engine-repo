@@ -36,6 +36,26 @@ void	CRenderTarget::u_setrt			(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSur
 	RImplementation.rmNormal				();
 }
 
+void	CRenderTarget::u_stencil_optimize	()
+{
+	VERIFY	(RImplementation.o.nvstencil);
+	RCache.set_ColorWriteEnable				(FALSE);
+	u32		Offset;
+	float	_w					= float(Device.dwWidth);
+	float	_h					= float(Device.dwHeight);
+	u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+	pv->set						(EPS,			float(_h+EPS),	EPS_S,	1.f, C, 0, 0);	pv++;
+	pv->set						(EPS,			EPS,			EPS_S,	1.f, C, 0, 0);	pv++;
+	pv->set						(float(_w+EPS),	float(_h+EPS),	EPS_S,	1.f, C, 0, 0);	pv++;
+	pv->set						(float(_w+EPS),	EPS,			EPS_S,	1.f, C, 0, 0);	pv++;
+	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+	RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x1,0xff,0xff);	// keep/keep/keep
+	RCache.set_Element			(s_occq->E[1]	);
+	RCache.set_Geometry			(g_combine		);
+	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+}
+
 u8		fpack			(float v)				{
 	s32	_v	= iFloor	(((v+1)*.5f)*255.f + .5f);
 	clamp	(_v,0,255);

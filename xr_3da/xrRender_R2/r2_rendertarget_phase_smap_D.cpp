@@ -3,7 +3,7 @@
 void	CRenderTarget::phase_smap_direct(light* L)
 {
 	// Targets
-	if (RImplementation.b_HW_smap)		u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_depth->pRT);
+	if (RImplementation.o.HW_smap)		u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_depth->pRT);
 	else								u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_ZB);
 
 	// Clear
@@ -14,5 +14,5 @@ void	CRenderTarget::phase_smap_direct(light* L)
 
 	// Misc		- draw only back-faces
 	RCache.set_CullMode					( CULL_CCW );
-	if (RImplementation.b_HW_smap)		RCache.set_ColorWriteEnable	(FALSE);
+	if (RImplementation.o.HW_smap)		RCache.set_ColorWriteEnable	(FALSE);
 }

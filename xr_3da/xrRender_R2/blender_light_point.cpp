@@ -10,7 +10,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
 
-	BOOL	b_HW_smap		= RImplementation.b_HW_smap;
+	BOOL	b_HW_smap		= RImplementation.o.HW_smap;
 	switch (C.iElement)
 	{
 	case SE_L_FILL:			// masking

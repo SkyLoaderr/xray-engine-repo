@@ -28,7 +28,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 		uber_deffer		(C,"base","base",true);
 		break;
 	case 1:		// smap-direct
-		if (RImplementation.b_HW_smap)	C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
+		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
 		else							C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
@@ -39,7 +39,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 		C.r_End			();
 		break;
 	case 3:		// smap-spot
-		if (RImplementation.b_HW_smap)	C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
+		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE,TRUE,TRUE,FALSE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,220);
 		else							C.r_Pass	("shadow_direct_base_aref","shadow_direct_base_aref",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();

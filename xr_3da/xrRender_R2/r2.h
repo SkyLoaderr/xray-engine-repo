@@ -40,7 +40,7 @@ public:
 		u32		fp16_filter	: 1;
 		u32		fp16_blend	: 1;
 		u32		HW_smap		: 1;
-		u32		nvstecil	: 1;
+		u32		nvstencil	: 1;
 
 		u32		noshadows	: 1;
 		u32		Tshadows	: 1;						// transluent shadows

@@ -469,12 +469,6 @@
 				RelativePath="blender_combine.h">
 			</File>
 			<File
-				RelativePath="blender_decompress.cpp">
-			</File>
-			<File
-				RelativePath="blender_decompress.h">
-			</File>
-			<File
 				RelativePath="blender_deffer_aref.cpp">
 			</File>
 			<File

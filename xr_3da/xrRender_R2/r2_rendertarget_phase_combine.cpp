@@ -48,7 +48,7 @@ void	CRenderTarget::phase_combine	()
 
 	// Perform blooming filter and distortion if needed
 	phase_bloom			( );
-	BOOL	bDistort	= RImplementation.b_distortion;
+	BOOL	bDistort	= RImplementation.o.distortion;
 	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
 	if (bDistort)		phase_distortion		();
 

@@ -181,9 +181,6 @@ void CRender::Render		()
 	LP_normal.sort			();
 	LP_pending.sort			();
 
-	//******* Decompression on some HW :)
-	Target.phase_decompress				();
-
 	// Update incremental shadowmap-visibility solver
 	{
 		for (u32 it=0; it<Lights_LastFrame.size(); it++)
