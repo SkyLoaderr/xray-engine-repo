@@ -17,8 +17,8 @@ class destructor
 {
 	T* ptr;
 public:
-	destructor(T* p)	{ ptr=p; }
-	~destructor()		{ _DELETE(ptr);	}
+	destructor(T* p)	{ ptr=p;		}
+	~destructor()		{ delete ptr;	}
 	IC T& operator() ()
 	{	return *ptr; }
 };
