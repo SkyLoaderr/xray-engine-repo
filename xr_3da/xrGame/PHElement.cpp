@@ -302,7 +302,7 @@ void CPHElement::RunSimulation()
 	dBodyEnable(m_body);
 }
 
-void CPHElement::			destroy	(){
+void CPHElement::destroy	(){
 	m_attached_elements.clear();
 	dJointGroupDestroy(m_saved_contacts);
 	xr_vector<dGeomID>::iterator i;
