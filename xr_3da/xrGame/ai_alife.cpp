@@ -47,6 +47,7 @@ void CAI_ALife::vfNewGame()
 
 	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	u16							l_wGenID = 0x8000;
 	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
 		u32	wGroupID = (*I)->m_dwSpawnGroup;
 		float fSum = (*I)->m_ucProbability;
@@ -74,10 +75,10 @@ void CAI_ALife::vfNewGame()
 		u16						id;
 		tNetPacket.r_begin		(id);
 		i->UPDATE_Read			(tNetPacket);
-		i->ID					= 0xffff;
+		i->ID					= l_wGenID++;
 		CALifeAbstractGroup		*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(i);
 		if (tpALifeAbstractGroup) {
-			i->ID				= m_tpServer->PerformIDgen(0xffff);
+			i->ID				= m_tpServer->PerformIDgen(l_wGenID++);
 			i->m_tObjectID		= i->ID;
 			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 			
@@ -100,7 +101,7 @@ void CAI_ALife::vfNewGame()
 				tp2->UPDATE_Read	(tNetPacket);
 				Memory.mem_copy		(tp2->s_name,S,(strlen(S) + 1)*sizeof(char));
 				tp2->m_bDirectControl	= false;
-				tp2->ID				= 0xffff;
+				tp2->ID				= l_wGenID++;
 				vfCreateObject		(tp2);
 				*II					= tp2->m_tObjectID = tp2->ID;
 				m_tObjectRegistry.insert(make_pair(tp2->m_tObjectID,tp2));
@@ -170,7 +171,7 @@ void CAI_ALife::Load()
 		Save					();
 		R_ASSERT2				(false,"New game has been generated successfully.\nYou have to restart game");
 	}
-	tpStream					= FS.r_open(caFileName);
+	tpStream					= FS.r_open(SAVE_NAME);
 	R_ASSERT					(tpStream);
 	Log							("* Loading simulator...");
 	CALifeHeader::Load			(*tpStream);
