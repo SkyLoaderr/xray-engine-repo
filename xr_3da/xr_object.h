@@ -138,8 +138,8 @@ public:
 	virtual void						OnVisible			(void);								// returns lighting level
 	virtual void						Update				(DWORD dt);							// Called by sheduler
 	virtual void						UpdateCL			();									// Called each frame, so no need for dt
-	virtual BOOL						net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-	virtual void						net_Destroy			();
+	virtual BOOL						net_Spawn			(LPVOID data)	= 0;
+	virtual void						net_Destroy			()				= 0;
 	virtual void						net_Export			(NET_Packet& P) {};					// export to server
 	virtual void						net_Import			(NET_Packet& P) {};					// import from server
 	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
@@ -149,9 +149,6 @@ public:
 	// Position stack
 	IC DWORD							ps_Size				()				{ return PositionStack.size(); }
 	virtual	SavedPosition				ps_Element			(DWORD ID);
-
-	// Collision/Feedback/Interaction
-	virtual void						OnNear				(CObject* near)		{};
 
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud)	{};

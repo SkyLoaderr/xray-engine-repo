@@ -186,9 +186,10 @@ void CAI_Soldier::Load	(LPCSTR section)
 	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");
 }
 
-BOOL CAI_Soldier::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CAI_Soldier::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	if (!inherited::net_Spawn(DC))	return FALSE;
+
 	//tSavedEnemyPosition = vPosition;
 	tStateStack.push(eCurrentState = aiSoldierLookingOver);
 	vfAddStateToList(eCurrentState);

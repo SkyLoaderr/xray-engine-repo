@@ -208,38 +208,38 @@ void CActor::Load		(LPCSTR section )
 	}
 }
 
-BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CActor::net_Spawn		(LPVOID DC)
 {
-	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	r_model_yaw			= o_angle.y;
-	cameras[cam_active]->Set(o_angle.y,0,0);		// set's camera orientation
+	if (!inherited::net_Spawn(DC))	return FALSE;
+	xrSE_Actor*			E	= (xrSE_Actor*)DC;
 
-	Weapons->Reset		();
+	//
+	r_model_yaw				= E->o_Angle.y;
+	cameras[cam_active]->Set(E->o_Angle.y,0,0);		// set's camera orientation
+	Weapons->Reset			();
 	
 	// *** movement state - respawn
-	mstate_wishful		= 0;
-	mstate_real			= 0;
-	m_bJumpKeyPressed	= FALSE;
-	m_bJumpInProgress	= FALSE;
+	mstate_wishful			= 0;
+	mstate_real				= 0;
+	m_bJumpKeyPressed		= FALSE;
+	m_bJumpInProgress		= FALSE;
 
 	// *** weapons
-	if (Local()) 		Weapons->ActivateWeaponID	(0);
+	if (Local()) 			Weapons->ActivateWeaponID	(0);
 	
-	NET_SavedAccel.set	(0,0,0);
-	NET_WasInterpolating= TRUE;
+	NET_SavedAccel.set		(0,0,0);
+	NET_WasInterpolating	= TRUE;
 
-	setEnabled			(bLocal);
-	setActive			(TRUE);
+	setEnabled				(E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	setActive				(TRUE);
 
-	patch_frame			= 0;
-	patch_position.set	(vPosition);
+	patch_frame				= 0;
+	patch_position.set		(vPosition);
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
 
-	Log("~~~~~~~~~~~~~~~~~~~~~ SPAWN");
-
-	return				TRUE;
+	return					TRUE;
 }
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who)

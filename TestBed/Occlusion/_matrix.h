@@ -481,8 +481,11 @@ public:
         k.set(-_cp*_sh,    	_sp,		_cp*_ch		);	_34_=0;
         c.set(0,			0,			0			);  _44_=1;
     }
-	IC	void	setXYZ	(T x, T y, T z){setHPB(y,x,z);}
-	IC	void	getHPB	(T& h, T& p, T& b){
+	IC	void	setXYZ	(T x, T y, T z)	{setHPB(y,x,z);}
+	IC	void	setXYZ	(Tvector& xyz)	{setHPB(xyz.y,xyz.x,xyz.z);}
+	//
+	IC	void	getHPB	(T& h, T& p, T& b)
+	{
         T cy = _sqrt(j.y*j.y + i.y*i.y);
         if (cy > 16.0f*FLT_EPSILON) {
             h = (T) -atan2(k.x, k.z);

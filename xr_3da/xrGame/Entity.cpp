@@ -146,32 +146,29 @@ void CEntity::Load		(LPCSTR section)
 	id_Group= -1; if (pSettings->LineExists(section,"group"))	id_Group	= pSettings->ReadINT	(section,"group");
 }
 
-BOOL CEntity::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CEntity::net_Spawn		(LPVOID DC)
 {
-	inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	inherited::net_Spawn	(DC);
 
-	// Read team & squad & group
-	u8					s_team,s_squad,s_group;
-	P.r_u8				(s_team);
-	P.r_u8				(s_squad);
-	P.r_u8				(s_group);
-	
+	xrSE_Teamed*		E	= (xrSE_Teamed*)DC;
+
+	// 
+	id_Team					= E->g_team();
+	id_Squad				= E->g_squad();
+	id_Group				= E->g_group();
+
 	// Register
-	CSquad& S			= Level().get_squad	(s_team,s_squad);
-	CGroup& G			= Level().get_group	(s_team,s_squad,s_group);
-	if (S.Leader==0)	S.Leader			=this;
-	else				G.Members.push_back	(this);
+	CSquad& S				= Level().get_squad	(id_Team,id_Squad);
+	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
+	if (S.Leader==0)		S.Leader			=this;
+	else					G.Members.push_back	(this);
 	
 	// Initialize variables
-	id_Team				= s_team;
-	id_Squad			= s_squad;
-	id_Group			= s_group;
-	fHealth				= 100;
-	fArmor				= 0;
+	fHealth					= 100;
+	fArmor					= 0;
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
-	//Engine.Sheduler.RegisterRT	(this);
 
 	return				TRUE;
 }
@@ -260,14 +257,15 @@ void CEntityAlive::Load		(LPCSTR section)
 	Movement.ActivateBox	(0);
 }
 
-BOOL CEntityAlive::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
-	inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
-	Movement.SetPosition	(o_pos.x,o_pos.y,o_pos.z);
+	inherited::net_Spawn	(DC);
+
+	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);
 	return					TRUE;
 }
-void CEntityAlive::HitImpulse	( float amount, Fvector& vWorldDir, Fvector& vLocalDir )
+void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocalDir)
 {
 	float Q						=	2*float(amount)/Movement.GetMass();
 	Movement.vExternalImpulse.mad	(vWorldDir,Q);

@@ -184,7 +184,7 @@ public:
 	virtual				~CCustomMonster			( );
 
 	virtual void		Exec_Action				( float dt );
-	virtual BOOL		net_Spawn				( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+	virtual BOOL		net_Spawn				( LPVOID DC);
 	virtual void		Death					( );
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
 	virtual void		g_WeaponBones			( int& L,	int& R	);

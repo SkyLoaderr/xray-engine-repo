@@ -94,6 +94,97 @@ public:
 	}
 };
 
+// Some preprocessor help
+#ifdef _EDITOR
+#define xrSE_EDITOR_METHODS	virtual void FillProp(LPCSTR pref, PropValueVec& values);
+#else
+#define xrSE_EDITOR_METHODS	
+#endif
+
+//
+#define xrSE_DECLARE_BEGIN(__A,__B)	class __A : public __B	{ typedef __B inherited; public:
+
+//
+#define	xrSE_DECLARE_END \
+public:\
+virtual void UPDATE_Read	(NET_Packet& P); \
+virtual void UPDATE_Write	(NET_Packet& P); \
+virtual void STATE_Read		(NET_Packet& P, u16 size); \
+virtual void STATE_Write	(NET_Packet& P); \
+xrSE_EDITOR_METHODS\
+};
+
+//***** Weapon
+xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
+	u32						timestamp;
+	u8						flags;
+	u8						state;
+
+	u16						a_current;
+	u16						a_elapsed;
+
+	Fvector					f_pos;
+	Fvector					f_dir;
+xrSE_DECLARE_END
+
+//***** Teamed
+xrSE_DECLARE_BEGIN(xrSE_Teamed,xrServerEntity)
+	u8						s_team;
+	u8						s_squad;
+	u8						s_group;
+
+	virtual u8				g_team()			{ return s_team;	}
+	virtual u8				g_squad()			{ return s_squad;	}
+	virtual u8				g_group()			{ return s_group;	}
+xrSE_DECLARE_END
+
+//***** Dummy
+xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
+	enum SStyle{
+		esAnimated			=1<<0,	
+		esModel				=1<<1, 
+		esParticles			=1<<2, 
+		esSound				=1<<3,
+		esRelativePosition	=1<<4
+	};
+	u8						s_style;
+	char*					s_Animation;
+	char*					s_Model;
+	char*					s_Particles;
+	char*					s_Sound;
+xrSE_DECLARE_END
+
+//***** Car
+xrSE_DECLARE_BEGIN(xrSE_Car,xrSE_Teamed)
+xrSE_DECLARE_END
+
+//***** Actor
+xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
+	u32						timestamp;
+	u8						flags;
+	u8						mstate;
+	float					model_yaw;
+	SRotation				torso;
+	Fvector					accel;
+	Fvector					velocity;
+	float					fHealth;
+	float					fArmor;
+xrSE_DECLARE_END
+
+//***** Enemy
+xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
+	u32						timestamp;				// server(game) timestamp
+	u8						flags;
+	float					o_model;				// model yaw
+	SRotation				o_torso;				// torso in world coords
+xrSE_DECLARE_END
+
+// 
+#undef xrSE_EDITOR_METHODS
+#undef xrSE_DECLARE_BEGIN
+#undef xrSE_DECLARE_END
+
+//
 xrServerEntity*	F_entity_Create		(LPCSTR name);
 void			F_entity_Destroy	(xrServerEntity* P);
 

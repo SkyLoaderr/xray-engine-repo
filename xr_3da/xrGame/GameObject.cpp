@@ -22,13 +22,51 @@ CGameObject::~CGameObject()
 	
 }
 
-BOOL CGameObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+void CGameObject::net_Destroy	()
 {
-	BOOL bResult		= inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
-	
+	net_Ready									= FALSE;
+	pCreator->Objects.net_Unregister			(this);
+	pCreator->ObjectSpace.Object_Unregister		(this);
+	Sector_Move									(0);
+}
+
+BOOL CGameObject::net_Spawn		(LPVOID	DC)
+{
+	xrServerEntity*		E		= (xrServerEntity*)DC;
+	R_ASSERT					(E);
+
+	// Naming
+	cName_set					(E->s_name);
+	cNameSect_set				(E->s_name);
+	if (E->s_name_replace[0])	cName_set		(E->s_name_replace);
+
+	// XForm
+	vPosition.set				(E->o_Position);
+	mRotate.setXYZ				(E->o_Angle);
+	UpdateTransform				();
+
+	// Adapt to sphere
+	Fvector						svC;
+	float						svR		= Radius();
+	svCenter					(svC);
+	if ((svC.y-svR)<vPosition.y)
+	{
+		float diff			=	vPosition.y - (svC.y-svR);
+		vPosition.y			+=	diff;
+		UpdateTransform		();
+	}
+
+	// Net params
+	net_Local					= (E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	net_ID						= E->ID;
+	net_Ready					= TRUE;
+	pCreator->Objects.net_Register	(this);
+
+	// Sector detection
+	Sector_Detect				();
+
 	// AI-DB connectivity
-	Fvector				nPos = vPosition;
-	nPos.y				+= .1f;
+	Fvector				nPos	= vPosition;
 	int node			= Level().AI.q_LoadSearch(nPos);
 	if (node<0)			{
 		Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
@@ -40,7 +78,7 @@ BOOL CGameObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector
 		Level().AI.ref_add  (AI_NodeID);
 	}
 	
-	return	bResult;
+	return	TRUE;
 }
 
 void CGameObject::Sector_Detect	()

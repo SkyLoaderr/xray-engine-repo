@@ -731,7 +731,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  OnVisible(); 
 		virtual void  Exec_Movement(float dt);
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
-		virtual BOOL  net_Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual objQualifier* GetQualifier();
 		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
 		

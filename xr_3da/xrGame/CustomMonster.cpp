@@ -578,34 +578,35 @@ void CCustomMonster::Death	()
 {
 }
 
-BOOL CCustomMonster::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	if (!inherited::net_Spawn(DC))	return FALSE;
+	xrSE_Enemy* E			= (xrSE_Enemy*)DC;
+
 	fHealth					= float(m_iHealth);
 	AI_Path.DestNode		= AI_NodeID;
 
-	eye_matrix.identity	();
+	eye_matrix.identity		();
 
-	r_torso_current.yaw = r_torso_target.yaw = o_angle.y;
-	r_torso_current.pitch = r_torso_target.pitch = 0;
+	r_torso_current.yaw		= r_torso_target.yaw	= E->o_Position.y;
+	r_torso_current.pitch	= r_torso_target.pitch	= 0;
 
 	if (Local())	
 	{
-		net_update		N;
-		N.dwTimeStamp	= Level().timeServer()-NET_Latency;
-		N.o_model		= o_angle.y;
-		N.o_torso.yaw	= o_angle.y;
-		N.o_torso.pitch	= 0;
-		N.p_pos.set		(o_pos);
-		NET.push_back	(N);
+		net_update				N;
+		N.dwTimeStamp			= Level().timeServer()-NET_Latency;
+		N.o_model				= E->o_Angle.y;
+		N.o_torso.yaw			= E->o_Angle.y;
+		N.o_torso.pitch			= 0;
+		N.p_pos.set				(vPosition);
+		NET.push_back			(N);
 
-		N.dwTimeStamp	+= NET_Latency;
-		NET.push_back	(N);
+		N.dwTimeStamp			+= NET_Latency;
+		NET.push_back			(N);
 
 		setVisible				(TRUE);
 		setEnabled				(TRUE);
 	} else {
-
 	}
 
 	return TRUE;

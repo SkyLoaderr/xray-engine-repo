@@ -15,7 +15,9 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	E->s_RP				=	rp;
 	E->ID				=	0xffff;
 	E->ID_Parent		=	0xffff;
+	E->ID_Phantom		=	0xffff;
 	E->s_flags			=	flags;
+	E->RespawnTime		=	0;
 
 	// Send
 	NET_Packet			P;
@@ -29,58 +31,42 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 {
 	// Begin analysis
-	NET_Packet&	P = *Packet;
-	u16			type;
-	P.r_begin	(type);
-	R_ASSERT	(type==M_SPAWN);
+	NET_Packet&	P		= *Packet;
+	u16					dummy;
+	string64			s_name;
+	P.r_begin			(dummy);	R_ASSERT	(dummy==M_SPAWN);
+	P.r_string			(s_name);
 
-	// Read definition
-	char		s_name[128],s_replace[128];
-	u8			s_rp,s_game;
-	u16			s_server_id,s_server_parent_id,s_server_phantom_id,s_data_size,s_flags,s_respawn;
-	Fvector		o_pos,o_angle;
-	P.r_u16		(s_respawn);
-	P.r_string	(s_name);
-	P.r_string	(s_replace);
-	P.r_u8		(s_game);
-	P.r_u8		(s_rp);
-	P.r_vec3	(o_pos);
-	P.r_vec3	(o_angle);
-	P.r_u16		(s_server_id);
-	P.r_u16		(s_server_parent_id);
-	P.r_u16		(s_server_phantom_id);
-	P.r_u16		(s_flags);
-	P.r_u16		(s_data_size);
+	// Create DC (xrSE)
+	xrServerEntity*		E	= F_entity_Create(s_name);
+	R_ASSERT			(E);
+	E->Spawn_Read		(P);
 
-	// Real spawn
-	CObject*	O = Objects.LoadOne	(s_name);
-	if (O)	
+	// Client spawn
+	CObject*	O		= Objects.LoadOne	(s_name);
+	if (0==O || (!O->net_Spawn	(E))) 
 	{
-		O->cName_set		(s_name);
-		O->cNameSect_set	(s_name);
-		if (s_replace[0])	O->cName_set		(s_replace);
-	}
-	if (0==O || (!O->net_Spawn(s_flags&M_SPAWN_OBJECT_LOCAL, s_server_id, o_pos, o_angle, P, s_flags))) 
-	{
-		Objects.DestroyObject(O);
-		Msg("! Failed to spawn entity '%s'",s_name);
+		F_entity_Destroy		(E);
+		O->net_Destroy			( );
+		Objects.DestroyObject	(O);
+		Msg						("! Failed to spawn entity '%s'",s_name);
 	} else {
-		if ((s_flags&M_SPAWN_OBJECT_LOCAL) && (s_flags&M_SPAWN_OBJECT_ASPLAYER))	SetEntity		(O);
-		if (s_flags&M_SPAWN_OBJECT_ACTIVE)											O->OnActivate	( );
-		if (0xffff != s_server_parent_id)	
+		if ((E->s_flags&M_SPAWN_OBJECT_LOCAL) && (E->s_flags&M_SPAWN_OBJECT_ASPLAYER))	SetEntity		(O);
+		if (E->s_flags&M_SPAWN_OBJECT_ACTIVE)											O->OnActivate	( );
+		if (0xffff != E->ID_Parent)	
 		{
 			// Generate ownership-event
-			NET_Packet		GEN;
-			GEN.w_begin		(M_EVENT);
-			GEN.w_u32		(Level().timeServer()-NET_Latency);
-			GEN.w_u16		(GE_OWNERSHIP_TAKE);
-			GEN.w_u16		(s_server_parent_id);
-			GEN.w_u16		(u16(O->ID()));
+			NET_Packet			GEN;
+			GEN.w_begin			(M_EVENT);
+			GEN.w_u32			(Level().timeServer()-NET_Latency);
+			GEN.w_u16			(GE_OWNERSHIP_TAKE);
+			GEN.w_u16			(E->ID_Parent);
+			GEN.w_u16			(u16(O->ID()));
 
 			// Simulate event arrival
 			for (;;) 
 			{
-				CObject*	 uO	= Objects.net_Find	(s_server_parent_id);
+				CObject*	 uO	= Objects.net_Find	(E->ID_Parent);
 				R_ASSERT		(uO);
 				CGameObject* GO = dynamic_cast<CGameObject*>(uO);
 				if (0==GO)		break;

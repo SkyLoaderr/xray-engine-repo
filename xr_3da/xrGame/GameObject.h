@@ -22,7 +22,8 @@ public:
 	void					u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
 	
 	// Methods
-	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual BOOL			net_Spawn			(LPVOID DC);
+	virtual void			net_Destroy			();
 	virtual void			net_Event			(NET_Packet& P);
 	virtual BOOL			net_Relevant		()	{ return net_Local && getActive();	}	// send messages only if active and local
 

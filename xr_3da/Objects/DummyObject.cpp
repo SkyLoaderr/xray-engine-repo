@@ -51,10 +51,12 @@ void CDummyObject::Load		(LPCSTR section)
 	*/
 }
 
-BOOL CDummyObject::net_Spawn(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CDummyObject::net_Spawn(LPVOID DC)
 {
-	inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	inherited::net_Spawn	(DC);
+	xrSE_Dummy*				E = (xrSE_Dummy*)DC;
 
+	// 
 	setVisible				(TRUE);
 
 	UpdateTransform			();

@@ -169,6 +169,8 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 //----------------------------------------------------------------------
 BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, float range)
 {
+	R_ASSERT			(0);
+	/*
 	dwQueryID++;
 
 	object->Enable 		( false ); // self exclude from test
@@ -180,6 +182,8 @@ BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, fl
 	for ( ; _it!=_end; _it++ )
 		(*_it)->OnNear	(object->Owner());
 	return q_nearest.size();
+	*/
+	return FALSE;
 }
 //----------------------------------------------------------------------
 void CObjectSpace::Load	(CStream *F)

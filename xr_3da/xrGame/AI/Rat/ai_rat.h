@@ -230,6 +230,7 @@ class CAI_Rat : public CCustomMonster
 		virtual		  ~CAI_Rat();
 		virtual BOOL  ShadowReceive	()			{ return FALSE;	}
 		virtual void  Update(DWORD DT);
+		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual void  net_Export(NET_Packet& P);
 		virtual void  net_Import(NET_Packet& P);
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
@@ -243,7 +244,6 @@ class CAI_Rat : public CCustomMonster
 		virtual void  Exec_Movement(float dt);
 		virtual void  Exec_Action(float dt);
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
-		virtual BOOL  net_Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
 };
 		

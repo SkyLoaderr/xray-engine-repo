@@ -81,9 +81,9 @@ void CCustomEvent::Parse		(DEF_EVENT& D, LPCSTR DEF_Base)
 	}
 }
 
-BOOL CCustomEvent::net_Spawn	( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
+BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 {
-	inherited::net_Spawn		(bLocal,server_id,o_pos,o_angle,P,flags);
+	inherited::net_Spawn		( DC );
 
 	// Read CFORM
 	{

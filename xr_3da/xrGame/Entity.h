@@ -91,7 +91,7 @@ public:
 
 	// Core events
 	virtual void			Load				(LPCSTR section);
-	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			Update				(DWORD dt);	
 	virtual void			OnVisible			();
@@ -147,7 +147,7 @@ public:
 
 	// Core events
 	virtual void			Load					(LPCSTR section);
-	virtual BOOL			net_Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 
 	virtual void			g_WeaponBones			(int& L, int& R)										= 0;

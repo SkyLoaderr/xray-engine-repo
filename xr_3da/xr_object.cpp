@@ -137,44 +137,6 @@ void CObject::Load				(LPCSTR section )
 	bVisible					= true;
 }
 
-BOOL CObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
-{
-	// XForm
-	vPosition.set		(o_pos);
-	mRotate.setXYZ		(o_angle.x,o_angle.y,o_angle.z);
-	UpdateTransform		();
-
-	// Adapt to sphere
-	Fvector				svC;
-	float				svR		= Radius();
-	svCenter			(svC);
-	if ((svC.y-svR)<o_pos.y)
-	{
-		float diff			=	o_pos.y - (svC.y-svR);
-		o_pos.y				+=	diff;
-		vPosition.set		(o_pos);
-		UpdateTransform		();
-	}
-
-	// Net params
-	net_Local			= bLocal;
-	net_ID				= server_id;
-	net_Ready			= TRUE;
-	pCreator->Objects.net_Register	(this);
-
-	// Sector detection
-	Sector_Detect		();
-	return TRUE;
-}
-
-void CObject::net_Destroy	()
-{
-	net_Ready									= FALSE;
-	pCreator->Objects.net_Unregister			(this);
-	pCreator->ObjectSpace.Object_Unregister		(this);
-	Sector_Move									(0);
-}
-
 void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)								Render->model_Delete	(pVisual);

@@ -112,16 +112,12 @@ void	CCar::Load					( LPCSTR section )
 	pSounds->Create					(snd_engine,TRUE,"car\\car1",TRUE);
 }
 
-BOOL	CCar::net_Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
+BOOL	CCar::net_Spawn				(LPVOID DC)
 {
-	BOOL R = inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL R = inherited::net_Spawn	(DC);
 	setVisible						(TRUE);
-	//o_pos.y=1;
-	//o_pos.z=-10;
-	//o_pos.x=0;
-	ph_world->Jeep.SetPosition		(o_pos);
-	//ph_world->Jeep.Create			(Space,phWorld);
-	pSounds->PlayAtPos				(snd_engine,this,o_pos,true);
+	ph_world->Jeep.SetPosition		(vPosition);
+	pSounds->PlayAtPos				(snd_engine,this,vPosition,true);
 	return R;
 }
 
