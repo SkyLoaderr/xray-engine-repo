@@ -39,6 +39,11 @@ public:
 	}
 	virtual void		Execute	()
 	{
+		// Priority
+		SetThreadPriority		(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+		Sleep					(0);
+
+		// 
 		CDB::COLLIDER			DB;
 		DB.ray_options			(0);
 
