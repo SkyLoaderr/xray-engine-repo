@@ -135,20 +135,19 @@ void CAI_Rat::AttackRun()
 	
 	//GoToPointViaSubnodes(Enemy.Enemy->Position());
 	
-	m_tSpawnPosition.set(Enemy.Enemy->Position());
-	m_tVarGoal.set(1,1,1);
-	m_fGoalChangeDelta = 3.f;
-
-	vfChangeGoal();
-	m_fSpeed = m_fCurSpeed = m_fMaxSpeed;
-
-	vfUpdateTime(m_fTimeUpdateDelta);
+	m_tSpawnPosition.set	(Enemy.Enemy->Position());
+	m_tGoalDir.set			(Enemy.Enemy->Position());
+	m_tVarGoal.set			(0,0,0);
+	m_fGoalChangeDelta		= .5f;
+	m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
+	//vfChangeGoal();
 
 	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE)
 		vfAimAtEnemy();
 	else {
-		SetDirectionLook();
+		vfUpdateTime(m_fTimeUpdateDelta);
 		vfComputeNewPosition();
+		SetDirectionLook();
 	}
 	
 	vfSetFire(false,Group);
@@ -171,7 +170,9 @@ void CAI_Rat::FreeHunting()
 		SWITCH_TO_NEW_STATE(aiRatAttackFire)
 	}
 
-	m_tSpawnPosition.set(m_tSafeSpawnPosition);
+	//m_tSpawnPosition.set(m_tSafeSpawnPosition);
+	
+	//m_fGoalChangeDelta		= 10.f;
 	if (bfCheckIfGoalChanged())
 		vfChooseNewSpeed();
 
