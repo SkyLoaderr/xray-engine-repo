@@ -17,6 +17,8 @@
 #include "resource.h"
 #include "LightAnimLibrary.h"
 #include "ispatial.h"
+#include "CopyProtection.h"
+
 // 2446363
 // umbt@ukr.net
 //////////////////////////////////////////////////////////////////////////
