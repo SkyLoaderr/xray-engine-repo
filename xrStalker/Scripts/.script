@@ -436,3 +436,16 @@ function if_then_else(cond, if_true, if_false)
 	return if_false
 end
 
+function update_action (npc, script, ...)
+	if npc == nil then return end
+	local act = npc:action ()
+	if act == nil or arg.n == 0 then
+	   return
+	end
+	for a = 1, arg.n, 1 do
+		if arg[a] ~= nil then act:set_action (arg[a]) end
+	end		
+	reset_action (npc, script)
+    npc:command (act, false)
+
+end

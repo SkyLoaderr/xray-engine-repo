@@ -1,21 +1,3 @@
-function update_action (npc, script, ...)
-	
-	if npc == nil then return end
-
-	printf ("Number or arguments %d", arg.n)
-
-	local act = npc:action ()
-	if act == nil or arg.n == 0 then
-	   return
-	end
-
-	for a = 1, arg.n, 1 do
-		if arg[a] ~= nil then act:set_action (arg[a]) end
-	end		
-	reset_action (npc, script)
-    npc:command (act, false)
-
-end
 
 function main ()
 
@@ -29,7 +11,7 @@ function main ()
 	while true do 
 		  if game.time () - time > 5000 then
 			 time = game.time ()
-			 s_test2.update_action (mover, s_test2.script_name (), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
+			 update_action (mover, s_test2.script_name (), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
 		  end
 		  wait ()
 	end	
