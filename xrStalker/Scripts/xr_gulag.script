@@ -96,7 +96,6 @@ function fract:calculate() -- просчет лагеря
 	end
 
 	-- убирание мертвых сталкеров	
-	local tt = {}
 	for k,v in self.Object do
 		if v:alive() ~= true then
 			self:changeCasualities(1)
@@ -163,9 +162,9 @@ function fract:updateJob()
 						end			
 					end
 				end
-			end
-        		if npc ~= nil then 
-				self:setJob(npc, v) 
+	        		if npc ~= nil then 
+					self:setJob(npc, v) 
+				end
 			end
         	end
 	end
