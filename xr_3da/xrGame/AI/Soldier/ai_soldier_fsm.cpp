@@ -148,7 +148,7 @@ void CAI_Soldier::OnRetreatAlone()
 	
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || bfDoesEnemyExist());
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || !bfDoesEnemyExist());
 
 	if (bfFireEnemy(Enemy.Enemy))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAloneFire)
@@ -314,7 +314,7 @@ void CAI_Soldier::OnRetreatAloneFire()
 	
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || bfDoesEnemyExist());
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || !bfDoesEnemyExist());
 
 	INIT_SQUAD_AND_LEADER;
 
