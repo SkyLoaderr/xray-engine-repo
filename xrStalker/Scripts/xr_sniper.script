@@ -15,22 +15,21 @@ function point_with_bit(patrol_path, bit, old_point)      --old_point - старая т
       if( patrol_path:flag(i, bit)) then
             --Добавляем точку если old_point == nil или новая точка не совпадает с old_point
             if(old_point == nil) then
-             table.insert(points, patrol_path:point(i))
+             	table.insert(points, patrol_path:point(i))
             elseif(old_point ~= i) then
                 table.insert(points, patrol_path:point(i))
             end
         end
     end
 
-  local number_point = table.getn(points)
+  	local number_point = table.getn(points)
 
-  if(number_point == 0) then
----    printf("bit = %d", bit)
-      return nil
+  	if(number_point == 0) then
+      	return nil
     elseif(number_point == 1) then
-      return points[1]
+      	return points[1]
     else
-      return points[math.random(1, number_point)]
+      	return points[math.random(1, number_point)]
     end
 end
 
@@ -39,9 +38,8 @@ function point_with_bit_id(patrol_path, bit)
 
     for i = 0, patrol_path:count()-1 do
         --Добовляем в таблицу точки с нужным битом
-        if( patrol_path:flag(i, bit)) then
-      printf("BIT %d  POINT %d", bit, i)
-      return patrol_path:level_vertex_id(i)
+    	if( patrol_path:flag(i, bit)) then
+      		return patrol_path:level_vertex_id(i)
         end
     end
 
@@ -50,14 +48,14 @@ end
 
 --Возвращает индекс самой ближней точки пути с заданым битом, от текущей точки
 function near_point_with_bit(point, patrol_path, bit)
-  local new_point  = nil
-  local index    = 0
+  	local new_point  = nil
+  	local index    = 0
     local dist     = 1000.0
 
     for i = 0, patrol_path:count()-1 do
         if( patrol_path:flag(i, bit) ) then
-      if(new_point == nil or patrol_path:point(i):distance_to(point) < dist) then
-        --Если эта точка первая из нашедшихся, либо от нее путь ближе, то запоминаем ее
+      		if(new_point == nil or patrol_path:point(i):distance_to(point) < dist) then
+        		--Если эта точка первая из нашедшихся, либо от нее путь ближе, то запоминаем ее
                 new_point   = patrol_path:point(i)
                 index       = i
                 dist    = new_point:distance_to(point)
@@ -65,8 +63,7 @@ function near_point_with_bit(point, patrol_path, bit)
         end
     end
 
-    printf("___________camper point is %d", index)
-  return index
+  	return index
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -81,38 +78,9 @@ function enabled_evaluator_new:__init (name, storage) super ()
 end
 
 function enabled_evaluator_new:evaluate()
-  self:calculate_visible_enemy   ()
     return  self.a.enabled
 end
 
-function enabled_evaluator_new:calculate_visible_enemy()
-  --Определяем самого видимого врага и самого видемого монстра
-    local enemy_visibility  = 0
-    local monstr_visibility = 0
-
-    self.a.enemy      = nil
-    self.a.monster      = nil
-
-    for obj in self.object:not_yet_visible_objects() do
-
-        --Перебираем все объекты в памяти, выбираем среди них сталкеров и монстров
-        local t_obj = object_type(obj:object())
-
-        if(t_obj == "stalker") then
-            if(obj.value > enemy_visibility) then
-        --На данные момент из всех вредъидущих врагов самый видимый. Запоминаем его.
-                self.a.enemy     = obj:object()
-                enemy_visiblity   = obj.value
-      end
-        elseif(t_obj == "monstr") then
-          if(obj.value > monstr_visibility) then
-              self.a.monster     = obj:object()
-                monstr_visiblity   = obj.value
-            end
-        end
-
-    end
-end
 ---------------------------------------------------------------------------------------------------------------------
 
 --Видим ли монстра рядом
@@ -125,45 +93,12 @@ function monster_evaluator:__init (name, storage) super ()
 end
 
 function monster_evaluator:evaluate()
-  --Если лучший враг сталкер, то игрнорируем монстров
-  if(object_type(self.object:best_enemy()) == "stalker") then
-      return false
-    end
-
---  if(self.a.monster == nil) then              printf("enemy nil") return false end
---    if( self.object:see(self.a.monster) == false ) then  printf("not see")   return false end
-  if(self.a.monster == nil) then                       return false end
-    if( self.object:see(self.a.monster) == false ) then  return false end
-
-  --С некоторой вероятностью будем реагировать на монстра
-  if(self.monster == nil) then
-    self.monster   = self.a.monster
-        self.look_time  = device():time_global()
-
-        if(math.random() > 0.5) then
-      self.enabled  = true
-        else
-          self.enabled  = false
-        end
-    else
-    --Раньше видели некоторого монстра
-    if(self.monster:id() == self.a.monster:id()) then
-      --Етого монстра видели. Если видим его очень давно, то стреляем по нему
-      if(device():time_global() > (self.look_time + time_walk_near_mnstr)) then self.enabled = true  end
-          return self.enabled
-        end
-
-        self.monster    = self.a.monster
-        self.look_time  = device():time_global()
-
-        if(math.random() > 0.5) then
-            self.enabled    = true
-        else
-            self.enabled    = false
+	if(object_type(self.object:best_enemy()) == "monstr") then
+    	if(self.object:see(self.object:best_enemy())) then
+        	return true
         end
     end
-
-    return self.enabled
+    return false
 end
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -171,13 +106,14 @@ end
 class "see_enemy_evaluator" (property_evaluator)
 function see_enemy_evaluator:__init (name, storage) super ()
     self.a       = storage
-    self.enemy    = nil
 end
 
 function see_enemy_evaluator:evaluate()
-    if(self.a.enemy == nil) then                 return false  end
-    if( self.object:see(self.a.enemy) ) then   return true   end
-
+    if(object_type(self.object:best_enemy()) == "stalker") then
+        if(self.object:see(self.object:best_enemy())) then
+            return true
+        end
+    end
     return false
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -202,14 +138,15 @@ local walk      = 3
 
 class "action_sniper_idle" (action_base)
 function action_sniper_idle:__init (name, storage) super (nil, name)
-    self.a       = storage
-    self.state     = sit_idle
+    self.a       	= storage
+    self.state     	= sit_idle
     self.animation  = nil
-    self.time    = 0
-  self.time_sight = 0                --Используется при остановке
-  local path     = patrol(self.a.rest_path)
-    self.last_point = path:level_vertex_id(path:count() - 1)      --Последняя точка пути
+    self.time    	= 0
+  	self.time_sight = 0                --Используется при остановке
+  	local path     	= patrol(self.a.rest_path)
+    self.last_point = path:level_vertex_id	(path:count() - 1)      --Последняя точка пути
     self.rest_point = this.point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
+    self.prev_point = -1
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:initialize ()
@@ -218,26 +155,26 @@ function action_sniper_idle:initialize ()
     self.animation      = xr_state.anims(self.object)
 
     --Если до этого не сидели, то будем сидет, в противном случае будем ходить
-  if(self.state == sit_idle) then
-      self:init_state_sit_down()
+  	if(self.state == sit_idle) then
+      	self:init_state_sit_down()
     else
-      self:init_state_walk()
+      	self:init_state_walk()
     end
 
-   self.object:set_callback (self, "move_callback", game_object.movement)
+   	self.object:set_callback (self, "move_callback", game_object.movement)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_sit_down  ()
     printf("___SIT_DOWN")
 
-  if( self.object:level_vertex_id() ~= self.rest_point ) then
-    self.object:set_dest_level_vertex_id(self.rest_point)
-        self.object:set_movement_type    (move.walk)
-        self.object:set_path_type      (game_object.level_path)
-    self.object:set_detail_path_type  (move.line)
-      self.object:set_sight               (look.danger, nil, 0)
-        self.object:set_item              (object.activate, self.object:best_weapon())
-        self.object:set_desired_direction  ( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
+  	if( self.object:level_vertex_id() ~= self.rest_point ) then
+    	self.object:set_dest_level_vertex_id(self.rest_point)
+        self.object:set_movement_type    	(move.walk)
+        self.object:set_path_type      		(game_object.level_path)
+    	self.object:set_detail_path_type  	(move.line)
+      	self.object:set_sight               (look.danger, nil, 0)
+        self.object:set_item              	(object.activate, self.object:best_weapon())
+        self.object:set_desired_direction  	( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
     end
 
     self.object:set_mental_state            (anim.free)
@@ -254,16 +191,14 @@ function action_sniper_idle:init_state_walk()
     if(xr_state.change_state(self.object, 0)) then  return true  end    --Если будем менять положение тела, то больше ничего не делаем
 
     self.object:set_mental_state        (anim.free)
-  self.object:set_body_state      (move.standing)
-   -- self.object:set_detail_path_type  (move.line)
+  	self.object:set_body_state      	(move.standing)
+    self.object:set_detail_path_type  	(move.line)
     self.object:set_path_type           (game_object.patrol_path)
-    self.object:set_patrol_path      (self.a.rest_path, patrol.start, patrol.continue, true)
+    self.object:set_patrol_path      	(self.a.rest_path, patrol.start, patrol.continue, true)
     self.object:set_movement_type       (move.walk)
---    self.object:set_previous_point    (-1)
+  	self.object:set_sight        		(look.path_dir, nil, 0)
 
-  self.object:set_sight        (look.path_dir, nil, 0)
-
-    self.object:set_item        (object.activate, self.object:best_weapon())
+    self.object:set_item        		(object.activate, self.object:best_weapon())
 
 
 end
@@ -282,14 +217,14 @@ function action_sniper_idle:state_sit_down    ()
               self.time = device():time_global()
             end
 
-          if( self.time ~= 0 and device():time_global() > (self.time + time_to_rest) and self.object:animation_count() <= 1 )then
+          	if( self.time ~= 0 and device():time_global() > (self.time + time_to_rest) and self.object:animation_count() <= 1 )then
               --Когда насиделись, встаем и идем
               self.animation:update  (nil)
               self:init_state_walk  ()
-          end
-    else
-      --Когда садимся, убераем оружие
-        self.object:set_item            (object.deactivate, self.object:best_weapon())
+          	end
+    	else
+      		--Когда садимся, убераем оружие
+        	self.object:set_item            (object.deactivate, self.object:best_weapon())
         end
 
     end
@@ -297,49 +232,55 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:state_walk      ()
   --Идем до конца маршрута, если остановились, то стоим некоторое время, а потом идем
-  if(self.state == LOOK) then
-      if(device():time_global() > self.time_sight and self.object:is_body_turning() == true) then
-          self.object:set_mental_state      (anim.danger)   --Целимся
-      end
-      if(device():time_global() > self.time) then         --Начинаем идти
-          self.object:set_path_type           (game_object.patrol_path)
-          self.object:set_patrol_path         (self.a.rest_path, patrol.nearest, patrol.continue, true)
-          self.object:set_movement_type       (move.walk)
-          self.object:set_sight               (look.path_dir, nil, 0)
-          self.object:set_mental_state        (anim.free)
-          self.state  = walk
+  	if(self.state == LOOK) then
+      	if(device():time_global() > self.time_sight and self.object:is_body_turning() == true) then
+          	self.object:set_mental_state      (anim.danger)   --Целимся
+      	end
+      	if(device():time_global() > self.time) then         --Начинаем идти
+          	self.object:set_path_type           (game_object.patrol_path)
+          	self.object:set_patrol_path         (self.a.rest_path, patrol.nearest, patrol.continue, true)
+          	self.object:set_movement_type       (move.walk)
+          	self.object:set_sight               (look.path_dir, nil, 0)
+          	self.object:set_mental_state        (anim.free)
+          	self.state  = walk
         end
     end
 
 
-  if(self.object:level_vertex_id() == self.last_point) then
-      self:init_state_sit_down  ()
-    end
+--  if(self.object:level_vertex_id() == self.last_point) then
+--      self:init_state_sit_down  ()
+--    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:execute       ()
     action_base.execute             (self)
 
-  if(self.state == sit_idle) then
-      self:state_sit_down      ()
+  	if(self.state == sit_idle) then
+      	self:state_sit_down     ()
     else
-      self:state_walk        ()
+      	self:state_walk        	()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:move_callback(obj, action_type, index)
-  self.object:set_movement_type  (move.stand)
-    self.object:set_sight      (look.fire_point, this.point_with_bit(self.a.point_path, 2), 0)
---    self.object:set_previous_point   (index)
-    self.state     = LOOK
-    self.time    = device():time_global() + time_to_look
+    if(index == patrol(self.a.rest_path):count() - 1)then					--Дошли до последней точки пути
+    	self:init_state_sit_down  ()
+    	return
+    end
+
+    if(index == self.prev_point) then return end
+
+    self.object:set_movement_type  	(move.stand)
+    self.object:set_sight      		(look.fire_point, this.point_with_bit(self.a.point_path, 2), 0)
+    self.state     	= LOOK
+    self.time    	= device():time_global() + time_to_look
     self.time_sight = device():time_global() + 1000
+    self.prev_point = index
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:finalize ()
-    printf("idle finalize")
-    action_base.finalize     (self)
-    self.object:clear_callback   (game_object.movement)
+    action_base.finalize     	(self)
+    self.object:clear_callback  (game_object.movement)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -353,7 +294,7 @@ class "action_kill_monster" (action_base)
 function action_kill_monster:__init (name, storage) super (nil, name)
     self.a       = storage
     self.time     = 0            --Когда надо закончить стелять
-  self.state    = LOOK
+  	self.state    = LOOK
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_kill_monster:initialize ()
@@ -361,12 +302,12 @@ function action_kill_monster:initialize ()
 
     action_base.initialize (self)
 
-    self.object:set_movement_type    (move.stand)
-    self.object:set_sight        (look.point, self.a.monster:position(), 0)
+    self.object:set_movement_type    	(move.stand)
+    self.object:set_sight        		(look.point, self.object:best_enemy():position(), 0)
     self.object:set_item                (object.activate, self.object:best_weapon())
-    self.object:set_mental_state      (anim.free)
+    self.object:set_mental_state      	(anim.free)
 
-  self.state    = LOOK
+  	self.state    = LOOK
     self.time    = device():time_global() + 2000
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -378,17 +319,17 @@ function action_kill_monster:execute ()
         if(self.state == LOOK) then
             self.state  = sight
             self.time   = device():time_global() + 3000
-            self.object:set_sight           (look.fire_point, self.a.monster:position(), 0)
-      self.object:set_mental_state  (anim.danger)
+            self.object:set_sight           (look.fire_point, self.object:best_enemy():position(), 0)
+      		self.object:set_mental_state  	(anim.danger)
         elseif(self.state == sight) then
             self.state  = fire
             self.time   = device():time_global() + 1500
             self.object:set_item            (object.fire1, self.object:best_weapon())
-            self.object:set_sight           (look.fire_point, self.a.monster:position(), 0)
+            self.object:set_sight           (look.fire_point, self.object:best_enemy():position(), 0)
         elseif(self.state == fire) then
             self.state  = LOOK
             self.time   = device():time_global() + 3000
-            self.object:set_sight           (look.fire_point, self.a.monster:position(), 0)
+            self.object:set_sight           (look.fire_point, self.object:best_enemy():position(), 0)
             self.object:set_item            (object.idle, self.object:best_weapon())
             self.object:set_mental_state    (anim.free)
         end
@@ -416,9 +357,9 @@ function action_kill_enemy:initialize ()
     action_base.initialize   (self)
 
     self.object:set_movement_type       (move.stand)
-    self.object:set_sight               (look.fire_point, self.a.enemy:position(), 0)
+    self.object:set_sight               (look.fire_point, self.object:best_enemy():position(), 0)
     self.object:set_item                (object.activate, self.object:best_weapon())
-    self.object:set_mental_state      (anim.danger)
+    self.object:set_mental_state      	(anim.danger)
 
     self.state      = sight
     self.time       = device():time_global() + 2000
@@ -434,17 +375,17 @@ function action_kill_enemy:execute ()
         if(self.state == LOOK) then
             self.state  = sight
             self.time   = device():time_global() + 3000
-            self.object:set_sight           (look.fire_point, self.a.enemy:position(), 0)
+            self.object:set_sight           (look.fire_point, self.object:best_enemy():position(), 0)
             self.object:set_mental_state    (anim.danger)
         elseif(self.state == sight) then
             self.state  = fire
             self.time   = device():time_global() + 1500
             self.object:set_item            (object.fire1, self.object:best_weapon())
-            self.object:set_sight           (look.fire_point, self.a.enemy:position(), 0)
+            self.object:set_sight           (look.fire_point, self.object:best_enemy():position(), 0)
         elseif(self.state == fire) then
             self.state  = sight
             self.time   = device():time_global() + 3000
-            self.object:set_sight           (look.fire_point, self.a.enemy:position(), 0)
+            self.object:set_sight           (look.fire_point, self.object:best_enemy():position(), 0)
             self.object:set_item            (object.idle, self.object:best_weapon())
             self.object:set_mental_state    (anim.danger)
         end
@@ -472,9 +413,9 @@ function action_camper:__init (name, storage) super (nil, name)
     self.a         = storage
     self.camper_point   = nil
     self.end_of_path    = patrol(self.a.camper_path):level_vertex_id(patrol(self.a.camper_path):count() - 1)
-    self.state      = 0
-    self.time      = 0
-    self.look_point    = nil          --точка в которую будем смотреть, когда сидим и кемперим
+    self.state      	= 0
+    self.time      		= 0
+    self.look_point    	= nil          --точка в которую будем смотреть, когда сидим и кемперим
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:initialize ()
@@ -482,78 +423,76 @@ function action_camper:initialize ()
     action_base.initialize (self)
     self.camper_point   = this.near_point_with_bit(self.object:position(), self.a.point_path, 1)
 
-    self.state      = hide
---  printf("camper_point = %d", self.camper_point)
+    self.state      	= hide
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:execute ()
     action_base.execute (self)
 
-  if(self.state == hide) then
+  	if(self.state == hide) then
         if( self.object:level_vertex_id() ~= self.a.point_path:level_vertex_id(self.camper_point) ) then
         --Если находимся не в точке, в которой будем прятатся, тогда бежим туда
-          self.object:set_dest_level_vertex_id(self.a.point_path:level_vertex_id(self.camper_point))
-            self.object:set_movement_type    (move.run)
-      self.object:set_body_state      (move.standing)
-      self.object:set_sight        (look.path_dir, nil, 0)
-            self.object:set_path_type      (game_object.level_path)
-            self.object:set_mental_state     (anim.danger)
+          	self.object:set_dest_level_vertex_id(self.a.point_path:level_vertex_id(self.camper_point))
+            self.object:set_movement_type   (move.run)
+      		self.object:set_body_state      (move.standing)
+      		self.object:set_sight        	(look.path_dir, nil, 0)
+            self.object:set_path_type      	(game_object.level_path)
+            self.object:set_mental_state    (anim.danger)
         else
-          self.state   = camper
-            self.object:set_movement_type    (move.stand)
-            self.object:set_mental_state        (anim.free)
+          	self.state   = camper
+            self.object:set_movement_type   (move.stand)
+            self.object:set_mental_state    (anim.free)
             self.time   = device():time_global() + math.random(time_to_camper/2, time_to_camper)
 
-            printf("Call select_look_point")
             self:select_look_point()
         end
     elseif(self.state == camper) then
-      if(device():time_global() < self.time) then
-      --Еще не прошло время выходить с нычки, продолжаем кемперить
+      	if(device():time_global() < self.time) then
+      		--Еще не прошло время выходить с нычки, продолжаем кемперить
             self.object:set_body_state      (move.crouch)
             self.object:set_mental_state    (anim.danger)
-            self.object:set_movement_type    (move.stand)
-            self.object:set_sight        (look.point, self.look_point, 0)
+            self.object:set_movement_type   (move.stand)
+            self.object:set_sight        	(look.point, self.look_point, 0)
     else
-          self.state  = walk
-            self.object:set_patrol_path      (self.a.camper_path, patrol.start, patrol.continue, true)
-      self.object:set_sight        (look.path_dir, nil, 0)
-            self.object:set_movement_type    (move.walk)
+          	self.state  = walk
+            self.object:set_patrol_path     (self.a.camper_path, patrol.start, patrol.continue, true)
+      		self.object:set_sight        	(look.path_dir, nil, 0)
+            self.object:set_movement_type   (move.walk)
             self.object:set_body_state      (move.crouch)
-            self.object:set_path_type      (game_object.patrol_path)
-        self.object:set_callback       (self, "move_callback", game_object.movement)
+            self.object:set_path_type      	(game_object.patrol_path)
+        	self.object:set_callback       	(self, "move_callback", game_object.movement)
         end
   else
         --Переползаем по маршруту и иногда смотри в точки
         if(self.object:level_vertex_id() ~= self.end_of_path) then
-      if(self.state == LOOK and device():time_global() > self.time) then
-              self.object:set_movement_type  (move.walk)
-                self.object:set_sight      (look.path_dir, nil, 0)
+      		if(self.state == LOOK and device():time_global() > self.time) then
+              	self.object:set_movement_type  	(move.walk)
+                self.object:set_sight      		(look.path_dir, nil, 0)
                 self.state   = walk
             end
 
             self.object:set_mental_state    (anim.danger)
         else
-          self:forget_enemy()                --Доползли до конца маршрута, забываем о враге
+          	self:forget_enemy()                --Доползли до конца маршрута, забываем о враге
         end
     end
 
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:move_callback(obj, action_type, index)
-  self.object:set_movement_type    (move.stand)
-    self.object:set_sight        (look.point, this.point_with_bit(self.a.point_path, 2), 0)
+  	self.object:set_movement_type   (move.stand)
+    self.object:set_sight        	(look.point, this.point_with_bit(self.a.point_path, 2), 0)
 
     self.time    = device():time_global() + time_camper_look
-  self.state    = LOOK
+  	self.state    = LOOK
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:select_look_point()
-  --Просматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
-  for i = 3, 20 do
---        printf("point %d  bit %d", self.camper_point, i)
+  	--Просматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
+  	for i = 3, 20 do
+
         if(self.a.point_path:flag(self.camper_point, i)) then
-          self.look_point  = this.point_with_bit(self.a.point_path, i, self.camper_point)
+          	self.look_point  = this.point_with_bit(self.a.point_path, i, self.camper_point)
             return
         end
     end
@@ -566,9 +505,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:finalize ()
-    printf("camper finalize")
-    action_base.finalize     (self)
-    self.object:clear_callback   (game_object.movement)
+    action_base.finalize     	(self)
+    self.object:clear_callback  (game_object.movement)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -594,11 +532,11 @@ function add_to_binder(obj, char_ini)
 
     --Loading information from custom data
     if char_ini:line_exist ("sniper", "rest_path") == true then
-    xr_motivator.storage[obj:id()].sniper.rest_path = char_ini:r_string("sniper", "rest_path")
+    	xr_motivator.storage[obj:id()].sniper.rest_path = char_ini:r_string("sniper", "rest_path")
     end
     if char_ini:line_exist ("sniper", "point_path") == true then
-      xr_motivator.storage[obj:id()].sniper.point_path = patrol( char_ini:r_string("sniper", "point_path") )
-  end
+      	xr_motivator.storage[obj:id()].sniper.point_path = patrol( char_ini:r_string("sniper", "point_path") )
+  	end
     if char_ini:line_exist ("sniper", "camper_path") == true then
         xr_motivator.storage[obj:id()].sniper.camper_path = char_ini:r_string("sniper", "camper_path")
     end
@@ -607,22 +545,22 @@ function add_to_binder(obj, char_ini)
     local manager  = obj:motivation_action_manager ()
 
     manager:add_evaluator (properties["enabled"],     this.enabled_evaluator_new ("alife_sniper", xr_motivator.storage[obj:id()].sniper))
-  manager:add_evaluator (properties["see_monster"], this.monster_evaluator     ("see_monster",  xr_motivator.storage[obj:id()].sniper))
-  manager:add_evaluator (properties["see_enemy"],   this.see_enemy_evaluator   ("see_enemy",    xr_motivator.storage[obj:id()].sniper))
-  manager:add_evaluator (properties["enemy_near"],  this.enemy_near_evaluator  ("enemy_near",   xr_motivator.storage[obj:id()].sniper))
+  	manager:add_evaluator (properties["see_monster"], this.monster_evaluator     ("see_monster",  xr_motivator.storage[obj:id()].sniper))
+  	manager:add_evaluator (properties["see_enemy"],   this.see_enemy_evaluator   ("see_enemy",    xr_motivator.storage[obj:id()].sniper))
+  	manager:add_evaluator (properties["enemy_near"],  this.enemy_near_evaluator  ("enemy_near",   xr_motivator.storage[obj:id()].sniper))
 
     local action = this.action_sniper_idle ("sniper_idle", xr_motivator.storage[obj:id()].sniper)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition         (world_property (properties["see_monster"],     false))
-    action:add_precondition         (world_property (properties["state_end"],       true))
-    action:add_precondition         (world_property (properties["event"],          false))
+--    action:add_precondition         (world_property (properties["see_monster"],     false))
+--    action:add_precondition         (world_property (properties["state_end"],       true))
+--    action:add_precondition         (world_property (properties["event"],          	false))
     action:add_precondition         (world_property (properties["enabled"],         true))
     action:add_effect               (world_property (properties["enabled"],         false))
     manager:add_action              (operators["idle"], action)
 
-  action = this.action_kill_monster("kill_monster", xr_motivator.storage[obj:id()].sniper)
+  	action = this.action_kill_monster("kill_monster", xr_motivator.storage[obj:id()].sniper)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (properties["enabled"],         true))
@@ -649,14 +587,26 @@ function add_to_binder(obj, char_ini)
     action:add_precondition         (world_property (stalker_ids.property_enemy,    true))
     action:add_precondition         (world_property (properties["enemy_near"],      false))
     action:add_precondition         (world_property (properties["state_end"],       true))
-    action:add_precondition         (world_property (properties["see_enemy"],       false))
     action:add_precondition         (world_property (properties["see_monster"],     false))
-    action:add_effect               (world_property (properties["see_enemy"],    true))
+    action:add_precondition         (world_property (properties["see_enemy"],       false))
+    action:add_effect               (world_property (properties["see_enemy"],    	true))
     manager:add_action              (operators["camper"], action)
+
+    action = this.action_camper("proba", xr_motivator.storage[obj:id()].sniper)
+
+    action:add_precondition         (world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (stalker_ids.property_enemy,    true))
+    action:add_precondition         (world_property (properties["enemy_near"],      false))
+    action:add_precondition         (world_property (properties["state_end"],       true))
+    action:add_effect               (world_property (properties["enemy_near"],       true))
+    manager:add_action              (operators["camper"]+1, action)
 
     action = manager:action         (stalker_ids.action_combat_planner)
     action:add_precondition         (world_property (properties["enemy_near"],      true))
 
     action = manager:action         (stalker_ids.action_puzzle_solver)
     action:add_precondition         (world_property (properties["enabled"],  false))
+
+    xr_reactions.add_rule			(obj,"no_visual")
 end
