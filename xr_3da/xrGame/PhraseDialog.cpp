@@ -261,7 +261,7 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	//текстовое представление фразы
 	phrase->SetText(uiXml.Read(phrase_node, "text", 0, ""));
 	//уровень благосклонности
-	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, 0);
+	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, -10000);
 	
 	//прочитать действия и предикаты
 	phrase->m_PhraseScript.Load(uiXml, phrase_node);
