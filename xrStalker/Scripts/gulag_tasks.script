@@ -156,8 +156,8 @@ function loadJob(sj, gname, type)
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
 			running = false, search_light = nil,
-			path_main = gname.."_guard_center",
-			path_hideout = gname.."_guard_center" }
+			path_main = gname.."_guard_house",
+			path_hideout = gname.."_guard_house" }
 		table.insert(sj, t)			
 		t = { name = "guard",
 			object = nil, begin = nil, idle = 0,
