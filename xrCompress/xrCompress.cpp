@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "lzo\lzo1x.h"
 #pragma comment			(lib,"x:\\xrCore.lib")
 
 IWriter*				fs=0;
@@ -11,6 +12,7 @@ u32						bytesSRC=0,bytesDST=0;
 u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
 CTimer					t_compress;
 u64						t_compress_total;
+u8*						c_heap	= NULL;
 
 struct	ALIAS
 {
@@ -132,7 +134,11 @@ void	Compress			(LPCSTR path, LPCSTR base)
 			u32 c_size_max		=	rtc_csize		(src->length());
 			u8*	c_data			=	xr_alloc<u8>	(c_size_max);
 			t_compress.Start	();
-			c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
+			{
+				// c_size_compressed	=	rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
+				c_size_compressed	= c_size_max;
+				R_ASSERT			(LZO_E_OK == lzo1x_999_compress	((u8*)src->pointer(),c_size_real,c_data,&c_size_compressed,c_heap));
+			}
 			t_compress_total	+=	t_compress.GetElapsed_clk();
 
 			if ((c_size_compressed+16) >= c_size_real)
@@ -143,7 +149,14 @@ void	Compress			(LPCSTR path, LPCSTR base)
 				fs->w				(src->pointer(),c_size_real);
 				printf				("VFS (R)");
 			} else {
-				// Compressed OK
+				// Compressed OK - optimize
+				{
+					u8*		c_out	= xr_alloc<u8>	(c_size_real);
+					u32		c_orig	= c_size_real;
+					R_ASSERT		(LZO_E_OK	== lzo1x_optimize	(c_data,c_size_compressed,c_out,&c_orig, NULL));
+					R_ASSERT		(c_orig		== c_size_real		);
+					xr_free			(c_out);
+				}
 				fs->w				(c_data,c_size_compressed);
 				printf				("%3.1f%%",	100.f*float(c_size_compressed)/float(src->length()));
 			}
@@ -198,9 +211,10 @@ int __cdecl main	(int argc, char* argv[])
 		fs				= FS.w_open	(fname);
 		fs->open_chunk	(0);
 		//***main process***: BEGIN
-
+		c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
 		for (u32 it=0; it<list->size(); it++)
 			Compress((*list)[it],argv[1]);
+		xr_free			(c_heap);
 
 		//***main process***: END
 		fs->close_chunk	();
