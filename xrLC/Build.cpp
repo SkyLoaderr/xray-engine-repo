@@ -229,8 +229,8 @@ void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
 	// process textures
 	Status			("Processing textures...");
 	{
-		Surface_Init	();
-		F = FS.OpenChunk(EB_Textures);
+		Surface_Init		();
+		F = FS.OpenChunk	(EB_Textures);
 		u32 tex_count	= F->Length()/sizeof(b_texture);
 		for (u32 t=0; t<tex_count; t++)
 		{
