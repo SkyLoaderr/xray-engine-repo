@@ -64,8 +64,9 @@ public:
 //	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE,
 //				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
-	virtual void			OnMouse				(int x, int y, EUIMessages mouse_action);
-	virtual void			OnMouseWheel		(int direction);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouseWheel(int direction);
+	virtual void OnDbClick();
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
