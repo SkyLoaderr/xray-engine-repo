@@ -4,8 +4,8 @@
 <!---------------------------DOLG NOVICE----------------------->
 	<specific_character id="dolg_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="27" y="4"></icon>
+		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_novice</team>
@@ -27,8 +27,8 @@
 <!---------------------------DOLG GENERAL---------------------->
 	<specific_character id="dolg_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_general</team>
@@ -50,8 +50,8 @@
 <!---------------------------DOLG VETERAN---------------------->
 	<specific_character id="dolg_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="29" y="4"></icon>
+		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_veteran</team>
@@ -72,8 +72,8 @@
 <!---------------------------DOLG MASTER----------------------->
 	<specific_character id="dolg_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="0" y="4"></icon>
+		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
 		<team>Dolg_master</team>
