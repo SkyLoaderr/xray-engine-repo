@@ -151,6 +151,15 @@ void CSightManager::vfValidateAngleDependency(float x1, float &x2, float x3)
 		x2  = x3;
 }
 
+bool CSightManager::need_correction	(float x1, float x2, float x3)
+{
+	float	_x2	= angle_normalize_signed(x2 - x1);
+	float	_x3	= angle_normalize_signed(x3 - x1);
+	if ((_x2*_x3 <= 0) && (_abs(_x2) + _abs(_x3) > PI - EPS_L))
+		return			(true);
+	return				(false);
+}
+
 void CSightManager::Exec_Look		(float dt)
 {
 	// normalizing torso angles
@@ -175,15 +184,25 @@ void CSightManager::Exec_Look		(float dt)
 	VERIFY							(_valid(m_object->m_body.target.yaw));
 	VERIFY							(_valid(m_object->m_body.target.pitch));
 
-	vfValidateAngleDependency		(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
-	vfValidateAngleDependency		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
-
 	// updating torso angles
 	float							fSpeedFactor = 1.f;
+
+//	bool							head_correction = need_correction(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
+//	bool							body_correction = need_correction(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
+
+//	Msg								("STALKER[%6d] : BODY [%f]->[%f], HEAD [%f]->[%f]",Level().timeServer(),m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw,m_object->m_head.target.yaw);
+//	if (head_correction)
+//		if (body_correction) 
+//			vfValidateAngleDependency(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
+//		else
+			vfValidateAngleDependency(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
+//	else
+//		if (body_correction)
+			vfValidateAngleDependency(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
+
 	m_object->angle_lerp_bounds		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,fSpeedFactor*m_object->m_body.speed,dt);
 	m_object->angle_lerp_bounds		(m_object->m_body.current.pitch,m_object->m_body.target.pitch,m_object->m_body.speed,dt);
 
-	// updating head angles
 	m_object->angle_lerp_bounds		(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_head.speed,dt);
 	m_object->angle_lerp_bounds		(m_object->m_head.current.pitch,m_object->m_head.target.pitch,m_object->m_head.speed,dt);
 

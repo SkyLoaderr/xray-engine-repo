@@ -32,6 +32,7 @@ public:
 			void	SetLessCoverLook					(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook);
 			void	SetLessCoverLook					(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void	vfValidateAngleDependency			(float x1, float &x2, float x3);
+			bool	need_correction						(float x1, float x2, float x3);
 	IC		void	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);
 	IC		void	GetDirectionAngles					(float &yaw, float &pitch);
 	IC		bool	use_torso_look						() const;
