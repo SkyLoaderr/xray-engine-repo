@@ -12,6 +12,7 @@
 //#include "array.h"
 #include <ode/src/geom_internal.h>
 #include "dCylinder.h"
+#include "../dBoxGeomA.h"
 // given a pointer `p' to a dContactGeom, return the dContactGeom at
 // p + skip bytes.
 
@@ -1248,6 +1249,7 @@ if(dFabs(Q2)>M_SQRT1_2){
 static  dColliderFn * FUNCCALL dCylinderColliderFn (int num)
 {
   if (num == dBoxClass) return (dColliderFn *) &dCollideCylB;
+  if (num == dBoxAClass) return (dColliderFn *) &dCollideCylB;
   if (num == dSphereClass) return (dColliderFn *) &dCollideCylS;
   if (num == dCylinderClass) return (dColliderFn *) &dCollideCylCyl;
   if (num == dPlaneClass) return (dColliderFn *) &dCollideCylPlane;

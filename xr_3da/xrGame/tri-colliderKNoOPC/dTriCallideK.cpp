@@ -8,6 +8,7 @@
 #include <ode/src/geom_internal.h>
 
 #include "dTriCollideK.h"
+#include "../dBoxGeomA.h"
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
 extern int dCylinderClass;
 
@@ -25,7 +26,7 @@ extern "C" int dSortedTriBox (
 {
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (o1->_class->num == dBoxClass);
+  dIASSERT ((o1->_class->num == dBoxClass)||(o1->_class->num == dBoxAClass));
   
   dxBox *box = (dxBox*) CLASSDATA(o1);
   
@@ -442,7 +443,7 @@ extern "C" int dTriBox (
 {
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (o1->_class->num == dBoxClass);
+  dIASSERT ((o1->_class->num == dBoxClass)||(o1->_class->num == dBoxAClass));
   
   dxBox *box = (dxBox*) CLASSDATA(o1);
   

@@ -16,7 +16,7 @@
 #include "../ExtendedGeom.h"
 #include "__aabb_tri.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
-
+#include "../dBoxGeomA.h"
 
 
 int dTriListClass = -1;
@@ -112,6 +112,9 @@ dColliderFn* FUNCCALL dTriListColliderFn(int num)
 {
 //	Log("in dTriListColliderFn ");
 //	Msg("num=%d",num);
+	if (num ==dBoxAClass){ 
+		return 	(dColliderFn*)&dCollideBTL;
+	}
 	if (num ==dBoxClass){ 
 		return 	(dColliderFn*)&dCollideBTL;
 	}
