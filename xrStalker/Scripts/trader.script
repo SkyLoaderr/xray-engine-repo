@@ -1,5 +1,5 @@
 function bind(obj)
-  obj:bind_object(CTrader(obj))
+  //obj:bind_object(CTrader(obj))
 end
 
 local snd =   {
