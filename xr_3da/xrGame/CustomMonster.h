@@ -67,6 +67,8 @@ protected:
 		CEntity			*tpEntity;
 	} SDynamicSound;
 
+	float				m_fBananPadlaCorrection;
+
 public:
 
 	enum EBodyStates {

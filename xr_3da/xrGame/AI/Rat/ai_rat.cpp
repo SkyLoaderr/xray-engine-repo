@@ -46,6 +46,9 @@ CAI_Rat::CAI_Rat()
 	m_dwLastVoiceTalk = 0;
 	m_tpSoundBeingPlayed = 0;
 	m_dwLastSoundRefresh = 0;
+	// start of Banan - padla!!!
+	m_fBananPadlaCorrection = PI_DIV_2;
+	// end of Banan - padla!!!
 }
 
 CAI_Rat::~CAI_Rat()
