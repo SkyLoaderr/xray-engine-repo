@@ -377,6 +377,7 @@ end
 ------------
 function action_stand:finalize ()
     self.object:set_item (object.use, self.object:object ("medikit"))
+    self.object:set_start_dialog ("hello_dialog")
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
 end    
