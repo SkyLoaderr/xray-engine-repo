@@ -736,6 +736,12 @@ corp_mass		     = 500			;
 ;terrain		             = 1,255,255,255,30,60, 2,255,255,255,30,60, 3,255,255,255,30,60, 4,255,255,255,30,60
 terrain		             = 255,255,255,255,30,40
 
+; TEST_ON
+Ani_StandIdle		= attack_0,attack_1
+Ani_StandWalk		= lie_eat_0, lie_eat_1, lie_eat_2, lie_eat_3
+; TEST_OFF
+
+
 [m_zombie_e]
 $spawn                   = monsters\Zombie		; option for Level Editor
 $npc			     = on			; option for Level Editor
@@ -3587,6 +3593,15 @@ AttackAngle			 = 45;
 AttackSuccessProbability = 0.5f;
 
 terrain				 = 255,255,255,255,30,40
+
+; sound
+sound_test			 = monsters\flesh\test
+
+;animation
+Ani_StandIdle		 = attack_0,attack_1
+Ani_StandWalk		 = lie_eat_0, lie_eat_1, lie_eat_2, lie_eat_3
+
+
 ;-----------------------------------------------------------------
 
 [alife]
