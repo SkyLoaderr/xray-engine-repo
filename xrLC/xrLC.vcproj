@@ -38,6 +38,7 @@
 				AdditionalIncludeDirectories="..\xrQSlim\src"
 				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,_WINDOWS"
 				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
