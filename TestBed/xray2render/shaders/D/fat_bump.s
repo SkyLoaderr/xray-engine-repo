@@ -82,7 +82,7 @@ p2f 	p_main	( v2p_in IN )
 
   // Sample normal and rotate it by matrix
   half3 Nu	= tex2D		(s_nmap,	IN.tc0);				// Unsigned normal
-  half3 Ns	= Nu*2 - half3(1,1,1);
+  half3 Ns	= Nu*2 - half3(1,1,1);							// Signed normal
   half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), Ns);
   half3 NeN	= normalize	(Ne);
   OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
