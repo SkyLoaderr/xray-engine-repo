@@ -41,9 +41,9 @@ void	game_sv_CS::OnRoundStart	()
 	}
 }
 
-void	game_sv_CS::OnRoundEnd		()
-{
-}
+//void	game_sv_CS::OnRoundEnd		()
+//{
+//}
 
 void	game_sv_CS::OnTeamScore		(u32 team)
 {
@@ -96,24 +96,22 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 void	game_sv_CS::OnTimelimitExceed	()
 {
 	Lock	();
-	// Artifacts count
-	// if ()
 	// Если у команд поровну артефактов, то ничья.
 	R_ASSERT(teams.size() == 2);
 	if(teams[0].num_targets == teams[1].num_targets) OnTeamsInDraw();
 	else OnTeamScore((teams[0].num_targets > teams[1].num_targets) ? 0 : 1);
 	Unlock	();
+	OnRoundEnd	("TIME_limit");
 }
 
 BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 {
-	return FALSE;
+	return TRUE;
 }
 
 void	game_sv_CS::Update			()
 {
-	if (timelimit && (Device.TimerAsync()-start_time)>u32(timelimit))
-		OnTimelimitExceed	();
+	if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
 }
 
 void	game_sv_CS::OnPlayerReady			(u32 id)

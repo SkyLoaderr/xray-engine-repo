@@ -1022,6 +1022,12 @@
 						<File
 							RelativePath="TargetAssault.h">
 						</File>
+						<File
+							RelativePath="TargetCSBase.cpp">
+						</File>
+						<File
+							RelativePath="TargetCSBase.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Artifacts"

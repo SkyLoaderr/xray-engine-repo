@@ -184,6 +184,10 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN(xrSE_Target_Assault,xrSE_Target)
 xrSE_DECLARE_END
 
+//***** Target CS Base
+xrSE_DECLARE_BEGIN(xrSE_Target_CSBase,xrSE_Target)
+xrSE_DECLARE_END
+
 //***** Actor
 xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	u32						timestamp;
