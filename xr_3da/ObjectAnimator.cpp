@@ -33,7 +33,6 @@ CObjectAnimator::~CObjectAnimator()
 {	
 	for(MotionPairIt m_it=m_Motions.begin(); m_it!=m_Motions.end(); m_it++)
 	{
-		LPSTR	lp	= m_it->first;
 		xr_free		((char*)m_it->first);
 		xr_delete	(m_it->second);
 	}

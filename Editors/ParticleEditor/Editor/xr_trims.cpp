@@ -112,7 +112,7 @@ u32 _ParseItem ( LPSTR src, xr_token* token_list )
 	for( int i=0; token_list[i].name; i++ )
 		if( !stricmp(src,token_list[i].name) )
 			return token_list[i].id;
-	return -1;
+	return u32(-1);
 }
 
 u32 _ParseItem ( LPSTR src, int ind, xr_token* token_list )

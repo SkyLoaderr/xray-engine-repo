@@ -94,11 +94,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray");
 	FPU::m24r				();
 
-	BOOL bCaptureExceptions	= !(strstr(lpCmdLine,"-E") || strstr(lpCmdLine,"-e"));
-#ifdef DEBUG
-	bCaptureExceptions		= FALSE;
-#endif
-
 	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 
 	Startup			();

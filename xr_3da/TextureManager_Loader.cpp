@@ -29,8 +29,8 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		Shader& S = *(v_shaders[it]);
 		if (0!=S.dwReference)	{
-			STextureList*		T	= S.lod0->Passes.front()->T;
 			/*
+			STextureList*		T	= S.lod0->Passes.front()->T;
 			if (T)	Debug.fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
 			else	Debug.fatal	("Shader still referenced (%d).",S.dwReference);
 			*/
@@ -42,7 +42,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Elements
 	for (it=0; it!=v_elements.size(); it++)
 	{
-		ShaderElement& S = *(v_elements[it]);
+		// ShaderElement& S = *(v_elements[it]);
 		// if (0!=S.dwReference)	Debug.fatal("Element still referenced.");
 		xr_delete(v_elements[it]);
 	}
