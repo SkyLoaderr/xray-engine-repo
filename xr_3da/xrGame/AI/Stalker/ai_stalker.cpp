@@ -18,7 +18,7 @@ CAI_Stalker::CAI_Stalker			()
 {
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	Init							();
-	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
+	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
 	m_dwParticularState				= u32(-1);
