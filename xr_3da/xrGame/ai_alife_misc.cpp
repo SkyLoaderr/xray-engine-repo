@@ -53,7 +53,6 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 					if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes))
 						iBranches++;
 		bool				bOk = false;
-		Msg("Branches :%d",iBranches);
 		if (!iBranches) {
 			for (int i=0; i<wNeighbourCount; i++) {
 				for (int j=0; j<iPointCount; j++)
@@ -93,7 +92,6 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			tpALifeMonsterAbstract->m_fDistanceToPoint	= 0.0f;
 		}
 		else {
-			Msg("%d %d %d",tpALifeMonsterAbstract->m_tPrevGraphID,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			tpALifeMonsterAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fGoingSpeed;
 		}
 	}
