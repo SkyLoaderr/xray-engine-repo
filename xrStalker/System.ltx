@@ -4728,21 +4728,18 @@ hit_power			 = 30.0
 ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
-; motion factors
-StandTurnRSpeed		= 0.79						
-WalkSpeed			= 3.0
-WalkTurningSpeed	= 2.0
-WalkRSpeed			= 1.0						
-WalkTurnRSpeed		= 1.57						
-WalkMinAngle		= 0.52						
-RunAttackSpeed		= 7.0
-RunAttackTurnSpeed	= 3.5
-RunAttackTurnRSpeed = 2.61						
-RunRSpeed			= 1.57						
-RunAttackMinAngle	= 0.52	
-AttackFastRSpeed	= 2.36						
-AttackFastRSpeed2	= 3.14						
-ScaredRSpeed		= 2.36						
+; speed factors
+TurnNormalAngular		= 0.79
+WalkFwdNormal			= 3.0
+WalkBkwdNormal			= 1.0
+WalkAngular				= 0.79
+WalkTurn				= 1.0
+WalkTurnAngular			= 1.57
+RunFwdNormal			= 7.0
+RunAngular				= 1.57
+RunTurn					= 3.5
+RunTurnAngular			= 2.6
+Drag					= 1.5 
 
 ; state times
 LieIdleTimeMin		= 5000
@@ -4869,21 +4866,19 @@ hit_power			 = 70.0;
 ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
-; motion factors
-StandTurnRSpeed		= 1.05						; PI_DIV_3
-WalkSpeed			= 3.0
-WalkTurningSpeed	= 1.0
-WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
-WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
-WalkMinAngle		= 0.52						; PI_DIV_6
-RunAttackSpeed		= 8.5
-RunAttackTurnSpeed	= 3.5
-RunAttackTurnRSpeed = 4.0						; 5 * PI_DIV_6
-RunRSpeed			= 1.57						; PI_DIV_2
-RunAttackMinAngle	= 0.1						; PI_DIV_6
-AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
-ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
-AttackFastRSpeed2	= 3.14						; PI	- not needed for chimera, remove it later
+
+; speed factors
+TurnNormalAngular		= 1.05
+WalkFwdNormal			= 3.0
+WalkBkwdNormal			= 1.0
+WalkAngular				= 0.79
+WalkTurn				= 1.0
+WalkTurnAngular			= 1.57
+RunFwdNormal			= 8.5
+RunAngular				= 1.57
+RunTurn					= 3.5
+RunTurnAngular			= 2.6
+Drag					= 1.5 
 
 ; state times
 LieIdleTimeMin		= 3000
@@ -5014,21 +5009,18 @@ hit_power			 = 70.0;
 ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
-; motion factors
-StandTurnRSpeed		= 3.0	;1.05						; PI_DIV_3
-WalkSpeed			= 1.5
-WalkTurningSpeed	= 2.0	;1.0
-WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
-WalkTurnRSpeed		= 2.57	;1.57						; PI_DIV_2	when turn needed
-WalkMinAngle		= 0.52						; PI_DIV_6
-RunAttackSpeed		= 5.5
-RunAttackTurnSpeed	= 3.5
-RunAttackTurnRSpeed = 4.0						; 5 * PI_DIV_6
-RunRSpeed			= 1.57						; PI_DIV_2
-RunAttackMinAngle	= 0.52						; PI_DIV_6
-AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
-ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
-AttackFastRSpeed2	= 3.14						; PI	- not needed for chimera, remove it later
+; speed factors
+TurnNormalAngular		= 3.05
+WalkFwdNormal			= 1.5
+WalkBkwdNormal			= 1.0
+WalkAngular				= 0.79
+WalkTurn				= 1.0
+WalkTurnAngular			= 1.57
+RunFwdNormal			= 5.5
+RunAngular				= 1.57
+RunTurn					= 3.5
+RunTurnAngular			= 2.6
+Drag					= 1.5 
 
 ; state times
 LieIdleTimeMin		= 2000						; sit idle в том числе
@@ -5169,21 +5161,18 @@ hit_power			 = 70.0;
 ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
-; motion factors
-StandTurnRSpeed		= 1.05						; PI_DIV_3
-WalkSpeed			= 3.0
-WalkTurningSpeed	= 1.0
-WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
-WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
-WalkMinAngle		= 0.52						; PI_DIV_6
-RunAttackSpeed		= 8.5
-RunAttackTurnSpeed	= 3.5
-RunAttackTurnRSpeed = 2.61						; 5 * PI_DIV_6
-RunRSpeed			= 1.57						; PI_DIV_2
-RunAttackMinAngle	= 0.52						; PI_DIV_6
-AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
-ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
-AttackFastRSpeed2	= 3.14						; PI	- not needed for dog, remove it later
+; speed factors
+TurnNormalAngular		= 1.05
+WalkFwdNormal			= 3.0
+WalkBkwdNormal			= 1.0
+WalkAngular				= 0.79
+WalkTurn				= 1.0
+WalkTurnAngular			= 1.57
+RunFwdNormal			= 6.0
+RunAngular				= 1.57
+RunTurn					= 8.5
+RunTurnAngular			= 2.6
+Drag					= 1.5 
 
 ; state times
 LieIdleTimeMin		= 5000
@@ -5312,22 +5301,19 @@ hit_power			 = 70.0;
 ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
-; motion factors
-StandTurnRSpeed		= 1.05						; PI_DIV_3
-WalkSpeed			= 3.0
-WalkTurningSpeed	= 1.0
-WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
-WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
-WalkMinAngle		= 0.52						; PI_DIV_6
-RunAttackSpeed		= 8.5
-RunAttackTurnSpeed	= 3.5
-RunAttackTurnRSpeed = 2.61						; 5 * PI_DIV_6
-RunRSpeed			= 1.57						; PI_DIV_2
-RunAttackMinAngle	= 0.52						; PI_DIV_6
-AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
-ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
-AttackFastRSpeed2	= 3.14						; PI	- not needed for dog, remove it later
-
+; speed factors
+TurnNormalAngular		= 1.05
+WalkFwdNormal			= 2.0
+WalkBkwdNormal			= 1.0
+WalkAngular				= 0.79
+WalkTurn				= 1.0
+WalkTurnAngular			= 1.57
+RunFwdNormal			= 6.0
+RunAngular				= 1.57
+RunTurn					= 2.5
+RunTurnAngular			= 2.6
+Drag					= 1.5 
+  
 ; state times
 LieIdleTimeMin		= 5000
 LieIdleTimeMax		= 7000
