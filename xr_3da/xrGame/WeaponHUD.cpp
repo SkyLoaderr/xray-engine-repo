@@ -84,7 +84,8 @@ static void __stdcall animCallback	(CBlend* B)
 
 void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CWeapon* W)
 {
-	if (W)	PKinematics(pVisual)->PlayCycle(M,bMixIn,animCallback,W);
-	else	PKinematics(pVisual)->PlayCycle(M,bMixIn);
-	PKinematics(pVisual)->Invalidate();
+	PKinematics(pVisual)->Update			();
+	if (W)	PKinematics(pVisual)->PlayCycle	(M,bMixIn,animCallback,W);
+	else	PKinematics(pVisual)->PlayCycle	(M,bMixIn);
+	PKinematics(pVisual)->Invalidate		();
 }
