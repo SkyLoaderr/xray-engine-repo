@@ -60,6 +60,7 @@ public:
     	strcpy			(visual_name,name?name:"");
 #ifdef _EDITOR
 		visual			= 0;
+        OnChangeVisual	(0);
 #endif
     }
 	void							visual_read			(NET_Packet& P);

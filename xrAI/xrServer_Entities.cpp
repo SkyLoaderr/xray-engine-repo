@@ -622,12 +622,14 @@ void					xrSE_Visualed::visual_write(NET_Packet& P)
 void __fastcall			xrSE_Visualed::OnChangeVisual(PropValue* sender)
 {
 	Device.Models.Delete(visual);
-    visual				= Device.Models.Create(visual_name);
-    // play idle motion if skeleton
-    if (PKinematics(visual)){ 
-    	CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe("idle");
-    	if (M) PKinematics(visual)->PlayCycle(M); 
-        PKinematics(visual)->Calculate();
+    if (visual_name[0]){
+        visual				= Device.Models.Create(visual_name);
+        // play idle motion if skeleton
+        if (PKinematics(visual)){ 
+            CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe("idle");
+            if (M) PKinematics(visual)->PlayCycle(M); 
+            PKinematics(visual)->Calculate();
+        }
     }
 }
 void 					xrSE_Visualed::FillProp(LPCSTR pref, PropItemVec& values)
@@ -1435,7 +1437,7 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,			sizeof(spot_bone));
 	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
+	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
     PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
 }
 #endif
