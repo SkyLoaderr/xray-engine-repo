@@ -78,7 +78,15 @@ void CRenderDevice::overdrawEnd		()
 	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,	0,1,0));
 
 	// Draw a rectangle wherever the count equal I
+	Primitive.Reset	();
 	Shader.SetNULL	();
+	Shader.SetupPass(0);
+
+    // Set render states for drawing a rectangle that covers the viewport.
+    // The color of the rectangle will be passed in D3DRS_TEXTUREFACTOR
+    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_DIFFUSE );
+    HW.pDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1 );
+
 	for (int I=1; I<16; I++ ) {
 		DWORD	c = I*256/17;
 		
