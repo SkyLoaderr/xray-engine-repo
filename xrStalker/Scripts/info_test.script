@@ -2,10 +2,13 @@ function main()
 	wait(25000)
 
 	local 	actor = get_actor()
-	local 	stalker = get_level_object("m_stalker_demo0001") 
+	local 	stalker1 = get_level_object("m_stalker_demo0001") 
+	local 	stalker2 = get_level_object("m_stalker_demo0002") 
 
 	--GiveInfo(actor, 1)
-	GiveInfoViaPda(actor, stalker, 1)
+	GiveInfoViaPda(actor, stalker1, 1)
+	wait(5000)
+	GiveInfoViaPda(actor, stalker2, 1)
 
 	while true do
 		wait()
