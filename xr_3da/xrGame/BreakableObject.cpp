@@ -17,7 +17,7 @@
 u32		CBreakableObject		::	m_remove_time		=0		;
 float	CBreakableObject		::	m_damage_threshold	=5.f	;
 float	CBreakableObject		::	m_health_threshhold	=0.f	;
-
+float	CBreakableObject		::  m_immunity_factor	=0.1	;
 CBreakableObject::CBreakableObject	()
 {
 	Init();
@@ -33,6 +33,7 @@ void CBreakableObject::Load		(LPCSTR section)
 	m_remove_time=pSettings	->r_u32(section,"remove_time")*1000;
 	m_health_threshhold=pSettings	->r_float(section,"hit_break_threthhold");
 	m_damage_threshold=pSettings	->r_float(section,"collision_break_threthhold");
+	m_immunity_factor  =pSettings	->r_float(section,"immunity_factor");
 }
 
 BOOL CBreakableObject::net_Spawn(LPVOID DC)
@@ -283,14 +284,15 @@ void CBreakableObject::CheckHitBreak(float power,ALife::EHitType hit_type)
 {
 	if( hit_type!=ALife::eHitTypeStrike)
 	{
-		fHealth-=power/10.f;
+		float res_power=power*m_immunity_factor;
+		if(power>m_health_threshhold) fHealth-=res_power;
 	}
 	if(fHealth<=0.f)	
 	{
 		Break();return;
 	}
 
-	if(hit_type==ALife::eHitTypeStrike)if(power>m_health_threshhold) Break();
+	if(hit_type==ALife::eHitTypeStrike)Break();
 }
 
 void CBreakableObject::ApplyExplosion(const Fvector &dir,float impulse)

@@ -20,6 +20,7 @@ private:
 		float				m_max_frame_damage;
 static	float				m_damage_threshold;
 static	float				m_health_threshhold;
+static	float				m_immunity_factor;
 		Fvector				m_contact_damage_pos;
 		Fvector				m_contact_damage_dir;
 
