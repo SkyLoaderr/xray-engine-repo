@@ -487,13 +487,14 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pDDItemMP->Show(false);
 		}
 	}
-	//else if (WINDOW_LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
-	//{
-	//	if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
-	//	{
-	//		UITopList[OUTFIT_SLOT].GetChildWndList().back()->Show(true);
-	//	}
-	//}
+	
+	if (WINDOW_LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
+	{
+		if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
+		{
+			UITopList[OUTFIT_SLOT].GetChildWndList().back()->Show(true);
+		}
+	}
 	//else if (WINDOW_RBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
 	//{
 	//	if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
