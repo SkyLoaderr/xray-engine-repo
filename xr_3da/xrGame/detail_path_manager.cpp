@@ -151,11 +151,6 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	m_current_travel_point	= 0;
 }
 
-float CDetailPathManager::speed	()
-{
-	return					(0.f);
-}
-
 bool CDetailPathManager::actual() const
 {
 	return					(true);

@@ -62,7 +62,6 @@ public:
 	virtual void	Init					();
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			const	Fvector &direction		();
-			float	speed					();
 			bool	actual					() const;
 	IC		bool	failed					() const;
 			bool	completed				() const;
