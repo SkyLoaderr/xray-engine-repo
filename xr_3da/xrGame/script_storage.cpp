@@ -11,9 +11,10 @@
 #include <stdarg.h>
 
 #ifndef ENGINE_BUILD
-#	define NO_XRGAME_SCRIPT_ENGINE
 #	include "script_engine.h"
 #	include "ai_space.h"
+#else
+#	define NO_XRGAME_SCRIPT_ENGINE
 #endif
 
 #ifndef XRGAME_EXPORTS
