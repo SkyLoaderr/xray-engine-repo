@@ -44,14 +44,14 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
 	fname					= pName;
 	// Load file into memory and parse WAV-format
+	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
+	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
+/*
 	wave					= FS.r_open(pName); VERIFY(wave);
-//	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
-//	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
-
 	ov_callbacks ovc		= {ov_read_func1,ov_seek_func1,ov_close_func1,ov_tell_func1};
 	FILE* F = fopen(pName,"rb");
 	ov_open_callbacks		(F,&ovf,NULL,0,ovc);
-
+*/
 	vorbis_info* ovi		= ov_info(&ovf,-1);
 	// verify
 	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
