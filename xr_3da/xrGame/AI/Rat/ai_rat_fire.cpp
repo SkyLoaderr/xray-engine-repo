@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_rat_misc.cpp
 //	Created 	: 23.07.2002
-//  Modified 	: 23.07.2002
+//  Modified 	: 06.11.2002
 //	Author		: Dmitriy Iassenev
 //	Description : Fire and enemy parameters for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
@@ -13,9 +13,7 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\ai_funcs.h"
 
-#define SPECIAL_SQUAD					6
-#define MIN_PROBABILITY					0.5f
-#define ACTION_REFRESH_RATE				1000
+using namespace NAI_Rat_Constants;
 
 void CAI_Rat::Exec_Action(float dt)
 {
@@ -84,9 +82,11 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->PlayAtPos		(S,this,vPosition);
-	//if (g_Health() + amount < 0) {
-	//	PKinematics(pVisual)->PlayCycle(m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
-	//}
+	if (g_Health() + amount < 0) {
+		Fvector	dir;
+		dir.setHP(r_torso_current.yaw,r_torso_current.pitch);
+		SelectAnimation(clTransform.k,dir,m_fCurSpeed);
+	}
 }
 
 void CAI_Rat::SelectEnemy(SEnemySelected& S)

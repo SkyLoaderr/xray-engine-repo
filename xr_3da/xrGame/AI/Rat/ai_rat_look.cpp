@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_rat_misc.cpp
 //	Created 	: 23.07.2002
-//  Modified 	: 23.07.2002
+//  Modified 	: 06.11.2002
 //	Author		: Dmitriy Iassenev
 //	Description : Visibility and look for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
@@ -10,9 +10,6 @@
 #include "ai_rat.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\ai_sounds.h"
-
-#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
-#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 
 void CAI_Rat::SetDirectionLook()
 {
@@ -25,7 +22,8 @@ void CAI_Rat::SetDirectionLook()
 			mk_rotation(tWatchDirection,r_torso_target);
 		}
 	}
-	r_torso_target.pitch = 0;
+	else
+		r_torso_target.pitch = 0;
 }
 
 void CAI_Rat::vfAimAtEnemy()

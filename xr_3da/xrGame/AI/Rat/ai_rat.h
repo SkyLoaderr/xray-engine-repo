@@ -16,6 +16,20 @@
 
 class CBaseFunction;
 
+namespace NAI_Rat_Constants
+{
+	const float TORSO_ANGLE_DELTA		= EPS_L;
+	const float ATTACK_DISTANCE			= .5f;
+	const float ATTACK_ANGLE			= PI_DIV_6;
+	const DWORD LOST_MEMORY_TIME		= 30000;
+	const DWORD UNDER_FIRE_TIME			= 10000;
+	const float UNDER_FIRE_DISTANCE		= 20.f;
+	const DWORD RETREAT_TIME			= 10000;
+	const float RETREAT_DISTANCE		= 20.f;
+	const float MIN_PROBABILITY			= 0.5f;
+	const DWORD ACTION_REFRESH_RATE		= 1000;
+};
+
 class CAI_Rat : public CCustomMonster  
 {
 	protected:
@@ -37,7 +51,8 @@ class CAI_Rat : public CCustomMonster
 			aiRatUnderFire,
 			aiRatRetreat,
 		};
-		
+
+	
 		typedef	CCustomMonster inherited;
 
 		typedef struct tagSNormalGlobalAnimations{

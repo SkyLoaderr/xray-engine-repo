@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_rat_animations.cpp
 //	Created 	: 21.06.2002
-//  Modified 	: 21.06.2002
+//  Modified 	: 06.11.2002
 //	Author		: Dmitriy Iassenev
 //	Description : Animations, Bone transformations and Sounds for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 
-#define TORSO_ANGLE_DELTA				(PI/30.f)
+using namespace NAI_Rat_Constants;
 
 // sounds
 void CAI_Rat::vfLoadSounds()
@@ -76,44 +76,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		}
 		else
-			/**
-			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
-					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
-					else
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
-				else
-					if (speed < 0.2f) {
-						if ((this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader) && (ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 5000))
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
-						else
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
-					}
-					else
-						//if (_abs(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
-						//else
-						//	tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
-			else
-				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
-					if (r_torso_target.yaw > r_torso_current.yaw)
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
-					else
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
-				else
-					if (speed < 0.2f) {
-						if ((this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader) && (ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 5000))
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
-						else
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
-					}
-					else
-						//if (_abs(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
-						//else
-						//	tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
-			/**/
 			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
@@ -150,7 +112,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						else
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
-			/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

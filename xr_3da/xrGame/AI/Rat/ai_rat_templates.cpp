@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_rat_templates.cpp
 //	Created 	: 23.07.2002
-//  Modified 	: 23.07.2002
+//  Modified 	: 06.11.2002
 //	Author		: Dmitriy Iassenev
 //	Description : Templates for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
@@ -10,17 +10,6 @@
 #include "ai_rat.h"
 #include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\xr_weapon_list.h"
-
-#define MIN_RANGE_SEARCH_TIME_INTERVAL	5000.f
-#define MAX_TIME_RANGE_SEARCH			10000.f
-#define	FIRE_ANGLE						PI/10
-#define	FIRE_SAFETY_ANGLE				PI/10
-#define	AMMO_NEED_RELOAD				6
-#define EYE_WEAPON_DELTA				(0*PI/30.f)
-#define MAX_PATROL_DISTANCE				6.f
-#define MIN_PATROL_DISTANCE				1.f
-#define MIN_COVER_MOVE					120
-#define MAX_NEIGHBOUR_COUNT				9
 
 void CAI_Rat::vfSaveEnemy()
 {

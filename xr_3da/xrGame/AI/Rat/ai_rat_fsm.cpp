@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_rat.cpp
 //	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//  Modified 	: 06.11.2002
 //	Author		: Dmitriy Iassenev
 //	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
@@ -13,15 +13,7 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\..\\xr_trims.h"
 
-#define TORSO_ANGLE_DELTA				(PI/30.f)
-//#define PRE_THINK_COUNT					4
-#define ATTACK_DISTANCE						.5f
-#define ATTACK_ANGLE					PI_DIV_6
-#define LOST_MEMORY_TIME				30000
-#define UNDER_FIRE_TIME					10000
-#define UNDER_FIRE_DISTANCE				20.f
-#define RETREAT_TIME					10000
-#define RETREAT_DISTANCE				20.f
+using namespace NAI_Rat_Constants;
 
 void CAI_Rat::Die()
 {
@@ -35,7 +27,7 @@ void CAI_Rat::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	setEnabled	(false);
+	//setEnabled	(false);
 	
 	if (m_bFiring) {
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
