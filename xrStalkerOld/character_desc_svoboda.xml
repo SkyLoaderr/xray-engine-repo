@@ -350,11 +350,14 @@
 		<actor_dialog>mil_max_dialog_second</actor_dialog>
 		<actor_dialog>mil_max_dialog_third</actor_dialog>
 		<actor_dialog>mil_max_dialog_flash</actor_dialog>
+		<actor_dialog>mil_max_dialog_common1</actor_dialog>
+		<actor_dialog>mil_max_dialog_common2</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
 	<specific_character id="svoboda_master_ugrumiy" team_default = "1">
 		<name>"Угрюмый"</name>
+		
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
