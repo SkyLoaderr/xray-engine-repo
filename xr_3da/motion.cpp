@@ -474,7 +474,7 @@ void SAnimParams::Update(float dt, float speed, bool loop)
 //------------------------------------------------------------------------------
 // Clip
 //------------------------------------------------------------------------------
-#define EOBJ_CLIP_VERSION		1
+#define EOBJ_CLIP_VERSION		2
 #define EOBJ_CLIP_VERSION_CHUNK	0x9000
 #define EOBJ_CLIP_DATA_CHUNK	0x9001
 
@@ -486,8 +486,12 @@ void CClip::Save(IWriter& F)
 
 	F.open_chunk	(EOBJ_CLIP_DATA_CHUNK);
     F.w_stringZ		(name);
-    for (int k=0; k<4; k++) F.w_stringZ(cycles[k]);
-    F.w_stringZ		(fx);
+    for (int k=0; k<4; k++){ 
+    	F.w_stringZ	(cycles[k].name);
+    	F.w_u16		(cycles[k].slot);
+    }
+    F.w_stringZ		(fx.name);
+    F.w_u16			(fx.slot);
     F.w_float		(fx_power);
     F.w_float		(length);
 	F.close_chunk	();
@@ -501,8 +505,12 @@ bool CClip::Load(IReader& F)
     if (ver!=EOBJ_CLIP_VERSION) return false;
 	R_ASSERT(F.find_chunk(EOBJ_CLIP_DATA_CHUNK));
     F.r_stringZ		(name);
-    for (int k=0; k<4; k++){ F.r_stringZ(cycles[k]); }
-    F.r_stringZ		(fx);
+    for (int k=0; k<4; k++){ 
+    	F.r_stringZ		(cycles[k].name); 
+    	cycles[k].slot 	= F.r_u16(); 
+    }
+    F.r_stringZ		(fx.name);
+    fx.slot			= F.r_u16();
     fx_power		= F.r_float();
     length			= F.r_float();
     return true;

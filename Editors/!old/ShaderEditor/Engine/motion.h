@@ -186,6 +186,7 @@ public:
         void		set			(shared_str nm, u16 s){name=nm;slot=s;}
         void		clear		(){set("",-1);}
         bool		valid		(){return !!(name.size()&&(slot!=u16(-1)));}
+        bool		equal		(const AnimItem& d) const {return name.equal(d.name)&&(slot==d.slot);}
     };
 	shared_str		name;
     AnimItem		cycles[4];
