@@ -35,7 +35,6 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	passConstants.clear		();
 	dwStage					= 0;
 
-
 	// Setup FF-units (Z-buffer, blender)
 	PassSET_ZB				(bZtest,bZwrite);
 	PassSET_Blend			(bABlend,abSRC,abDST,aTest,aRef);
