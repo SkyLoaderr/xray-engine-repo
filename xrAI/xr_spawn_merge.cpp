@@ -313,7 +313,6 @@ public:
 		m_tpLevelPoints.clear	();
 		xr_vector<u32>			l_tpaStack;
 		l_tpaStack.reserve		(1024);
-		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->header().vertex_count(),false);
 		ALIFE_OBJECT_P_IT		B = m_tpSpawnPoints.begin(), I = B;
 		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {
@@ -323,14 +322,12 @@ public:
 
 			search_engine.search(*m_tpAI_Map,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_tNodeID,&l_tpaStack,SFlooder<float,u32,u32>((float)l_tpALifeAnomalousZone->m_fRadius,u32(-1),u32(-1)));
 
-//			m_tpAI_Map->vfShallowGraphSearch(l_tpALifeAnomalousZone->o_Position,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
-
 			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
 				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<CGameGraph::CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<CGameGraph::CLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
@@ -339,11 +336,11 @@ public:
 				}
 			}
 			else {
-				//random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
+				random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<CGameGraph::CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<CGameGraph::CLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
@@ -351,6 +348,7 @@ public:
 					(*I).fDistance	= m_tpCrossTable->vertex(*i).distance();
 				}
 			}
+			l_tpaStack.clear		();
 		}
 	}
 
