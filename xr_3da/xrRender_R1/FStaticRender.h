@@ -4,7 +4,6 @@
 
 #include "PSLibrary.h"
 
-#include "portal.h"
 #include "hom.h"
 #include "detailmanager.h"
 #include "glowmanager.h"
