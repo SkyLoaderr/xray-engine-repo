@@ -293,7 +293,7 @@ bool RayCollider::Collide(const Ray& world_ray, OPCODE_Model* model, const Matri
 BOOL RayCollider::InitQuery(const Ray& world_ray, const Matrix4x4* world, udword* faceid)
 {
 	// Reset stats & contact status
-	Collider::InitQuery();
+	Collider::InitQueryEx();
 	mNbRayBVTests		= 0;
 	mNbRayPrimTests		= 0;
 	mNbIntersections	= 0;

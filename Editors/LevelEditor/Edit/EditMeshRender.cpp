@@ -44,7 +44,7 @@ void CEditableMesh::CreateRenderBuffers()
 
             int buf_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
 			u8*	bytes			= 0;
-			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &rb.pVB, 0));
+			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &rb.pVB, 0));
 			rb.pGeom	 		= Device.Shader.CreateGeom(_S->_FVF(),rb.pVB,0);
 
 			R_CHK				(rb.pVB->Lock(0,0,(LPVOID*)&bytes,0));

@@ -136,12 +136,12 @@
 		 *	Initializes a query
 		 */
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		override(Collider) inline_	void	InitQuery()
+		override(Collider) inline_	void	InitQueryEx()
 							{
 								// Reset stats & contact status
 								mNbVolumeBVTests	= 0;
 								mNbVolumePrimTests	= 0;
-								Collider::InitQuery();
+								Collider::InitQueryEx();
 							}
 	};
 

@@ -3,11 +3,11 @@
 //	stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
+#pragma hdrstop
 
 #ifdef __BORLANDC__
 	#pragma comment(lib,"xrCoreB.lib")
 	#pragma comment(lib,"winmm.lib")
-    #pragma warning(W8022,false)
 #else
 	#pragma comment(lib,"x:\\xrCore")
 	#pragma comment(lib,"winmm")

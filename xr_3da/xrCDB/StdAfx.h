@@ -3,8 +3,8 @@
 //      are changed infrequently
 //
 
-#if !defined(AFX_STDAFX_H__86745B7E_CEE1_41D8_B9D7_AB9774DF59CB__INCLUDED_)
-#define AFX_STDAFX_H__86745B7E_CEE1_41D8_B9D7_AB9774DF59CB__INCLUDED_
+#ifndef stdafxH
+#define stdafxH
 #pragma once
 
 #include <xrCore.h>
@@ -17,4 +17,4 @@
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_STDAFX_H__86745B7E_CEE1_41D8_B9D7_AB9774DF59CB__INCLUDED_)
+#endif // stdafxH

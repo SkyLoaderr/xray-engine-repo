@@ -139,7 +139,7 @@ bool PlanesCollider::Collide(PlanesCache& cache, const Plane* planes, udword nb_
 BOOL PlanesCollider::InitQuery(PlanesCache& cache, const Plane* planes, udword nb_planes, const Matrix4x4* worldm)
 {
 	// 1) Call the base method
-	VolumeCollider::InitQuery();
+	VolumeCollider::InitQueryEx();
 
 	// 2) Compute planes in model space
 	if(nb_planes>mNbPlanes)

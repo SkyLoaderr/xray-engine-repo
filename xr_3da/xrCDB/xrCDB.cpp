@@ -79,6 +79,7 @@ struct	BTHREAD_params
 
 void	MODEL::build_thread		(void *params)
 {
+	FPU::m64r					();
 	BTHREAD_params	P			= *( (BTHREAD_params*)params );
 	P.M->cs.Enter				();
 	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt);
@@ -89,6 +90,8 @@ void	MODEL::build_thread		(void *params)
 void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 {
 	R_ASSERT					(S_INIT == status);
+    R_ASSERT					((Vcnt>=4)&&(Tcnt>=2));
+
 	BTHREAD_params				P = { this, V, Vcnt, T, Tcnt };
 	R_ASSERT					(_beginthread(build_thread,0,&P) >= 0);
 	while						(S_INIT	== status)	Sleep	(5);

@@ -84,7 +84,7 @@ AABBTreeNode::~AABBTreeNode()
 udword AABBTreeNode::Split(udword axis, AABBTreeBuilder* builder)
 {
 	// Get node split value
-	float SplitValue = builder->GetSplittingValue(mNodePrimitives, mNbPrimitives, mBV, axis);
+	float SplitValue = builder->GetSplittingValueEx(mNodePrimitives, mNbPrimitives, mBV, axis);
 
 	udword NbPos = 0;
 	// Loop through all node-related primitives. Their indices range from mNodePrimitives[0] to mNodePrimitives[mNbPrimitives-1].

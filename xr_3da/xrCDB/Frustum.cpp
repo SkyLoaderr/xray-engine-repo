@@ -1,7 +1,3 @@
-// Frustum.cpp: implementation of the CFrustum class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #pragma hdrstop
 

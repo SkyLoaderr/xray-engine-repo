@@ -133,7 +133,7 @@ bool AABBCollider::Collide(AABBCache& cache, const CollisionAABB& box, OPCODE_Mo
  *	Initializes a collision query :
  *	- reset stats & contact status
  *	- check temporal coherence
- *
+ *           
  *	\param		cache		[in/out] a box cache
  *	\param		box			[in] AABB in world space
  *	\return		contact status
@@ -142,7 +142,7 @@ bool AABBCollider::Collide(AABBCache& cache, const CollisionAABB& box, OPCODE_Mo
 BOOL AABBCollider::InitQuery(AABBCache& cache, const CollisionAABB& box)
 {
 	// 1) Call the base method
-	VolumeCollider::InitQuery();
+	VolumeCollider::InitQueryEx();
 
 	// 2) Keep track of the query box
 	mBox = box;

@@ -170,5 +170,5 @@ float AABBTreeOfTrianglesBuilder::GetSplittingValue(const udword* primitives, ud
 		}
 		return SplitValue / float(nb_prims*3);
 	}
-	else return AABBTreeBuilder::GetSplittingValue(primitives, nb_prims, global_box, axis);
+	else return AABBTreeBuilder::GetSplittingValueEx(primitives, nb_prims, global_box, axis);
 }

@@ -155,7 +155,7 @@ bool EParticlesObject::Load(IReader& F)
     }
 
     if (F.find_chunk(CPSOBJECT_CHUNK_PARAMS)){
-    	m_bPlaying	= F.r_u32();
+    	m_Flags.set(F.r_u32());
     }
 
     return true;
@@ -176,7 +176,7 @@ void EParticlesObject::Save(IWriter& F)
 	F.close_chunk	();
 
 	F.open_chunk	(CPSOBJECT_CHUNK_PARAMS);
-	F.w_u32			(m_bPlaying);
+	F.w_u32			(m_Flags.get());
 	F.close_chunk	();
 }
 //----------------------------------------------------

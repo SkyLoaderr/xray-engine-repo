@@ -249,7 +249,7 @@ bool AABBTreeCollider::Collide(BVTCache& cache, const Matrix4x4* world0, const M
 void AABBTreeCollider::InitQuery(const Matrix4x4* world0, const Matrix4x4* world1)
 {
 	// Reset stats & contact status
-	Collider::InitQuery();
+	Collider::InitQueryEx();
 	mNbBVBVTests		= 0;
 	mNbPrimPrimTests	= 0;
 	mNbBVPrimTests		= 0;

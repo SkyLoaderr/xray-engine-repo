@@ -150,7 +150,7 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, OPCODE_Mo
 BOOL SphereCollider::InitQuery(SphereCache& cache, const Sphere& sphere, const Matrix4x4* worlds, const Matrix4x4* worldm)
 {
 	// 1) Call the base method
-	VolumeCollider::InitQuery();
+	VolumeCollider::InitQueryEx();
 
 	// 2) Compute sphere in model space:
 	// - Precompute R^2

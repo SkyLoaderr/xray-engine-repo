@@ -152,7 +152,7 @@ bool OBBCollider::Collide(OBBCache& cache, const OBB& box, OPCODE_Model* model, 
 BOOL OBBCollider::InitQuery(OBBCache& cache, const OBB& box, const Matrix4x4* worldb, const Matrix4x4* worldm)
 {
 	// 1) Call the base method
-	VolumeCollider::InitQuery();
+	VolumeCollider::InitQueryEx();
 
 	// 2) Compute obb in world space
 	mBoxExtents = box.mExtents;
