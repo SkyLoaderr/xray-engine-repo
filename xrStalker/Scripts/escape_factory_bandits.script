@@ -8,7 +8,7 @@
 local one_dead    = false -- флажок смерти одного бандита
 local repl        = false -- сказал ли что-то один бандит на finalize 
 local team        = "factory_bandits"
-local novice_name = "trivial_novice3_0_1"
+local novice_name = "escape_robbed_novice"
 local the_actor
 
 local snd_novice_again =  { themes = { "escape_factory_bandits_novice_again" } }
