@@ -15,7 +15,7 @@ public:
 	virtual	void						net_Destroy													()																																			;
 	virtual void						Hit															(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound)	;
 	virtual	void						InitServerObject			(CSE_Abstract*				D)																																				;
-
+	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver	()								{return static_cast<CPHCollisionDamageReceiver*>(this);}
 protected:
 private:
 };
