@@ -44,10 +44,6 @@ function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
 end
 
-function test_global_registrator(object_factory)
-	printf("test_global_registrator called!")
-end
-
 function wait_game(time_to_wait)
     verify_if_thread_is_running()
     if (time_to_wait == nil) then
