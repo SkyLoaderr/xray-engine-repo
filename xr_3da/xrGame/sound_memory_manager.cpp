@@ -110,8 +110,6 @@ void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, cons
 	if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<CEntityAlive*>(object))
 		return;
 
-
-
 	// we do not want to save sounds from the teammates items
 	CEntityAlive	*me				= dynamic_cast<CEntityAlive*>(this);
 	if (object && object->H_Parent() && (dynamic_cast<CEntityAlive*>(object->H_Parent())->g_Team() == me->g_Team()))
