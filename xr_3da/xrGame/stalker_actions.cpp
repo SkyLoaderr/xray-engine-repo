@@ -837,12 +837,14 @@ void CStalkerActionAimEnemy::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
-//	if (m_object->enemy()) {
-//		CMemoryInfo				mem_object = m_object->memory(m_object->enemy());
-//		if (mem_object.m_object && m_object->visible(m_object->enemy())) {
-//			m_object->play		(eStalkerSoundAlarm);
-//		}
-//	}
+	if (m_object->enemy() && !m_storage->property(eWorldPropertyFireEnough)) {
+		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
+		if (mem_object.m_object && 
+			m_object->visible(m_object->enemy()) && 
+			(Level().timeServer() >= mem_object.m_last_level_time + 3000)) {// && !m_object->see(m_object->enemy(),m_object)) {
+			m_object->play	(eStalkerSoundAttack);
+		}
+	}
 	if (distance >= 50.f) {
 		set_inertia_time	(1500);
 		m_run				= true;
@@ -1217,7 +1219,7 @@ void CStalkerActionGetReadyToKillModerate::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
-	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
+//	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 	m_storage->set_property	(eWorldPropertySafeToKill,true);
 	m_storage->set_property	(eWorldPropertyFireEnough,false);
 }
@@ -1318,7 +1320,7 @@ void CStalkerActionKillEnemyModerate::finalize	()
 //	if ((Level().timeServer() >= m_start_level_time + 500) && !::Random.randI(0,3))
 	if (!::Random.randI(0,2)) {
 		m_storage->set_property	(eWorldPropertyFireEnough,true);
-		m_storage->set_property	(eWorldPropertyEnemyAimed,true);
+//		m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 	}
 }
 
@@ -1393,19 +1395,22 @@ void CStalkerActionGetEnemySeenModerate::initialize	()
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 	m_storage->set_property	(eWorldPropertyFireEnough,false);
 	m_storage->set_property	(eWorldPropertySafeToKill,true);
-	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
+//	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 }
 
 void CStalkerActionGetEnemySeenModerate::finalize	()
 {
 	inherited::finalize		();
+	m_object->set_sound_mask(eStalkerSoundMaskSurrender);
 	m_object->set_sound_mask(0);
 	m_start_standing_time	= m_start_level_time;
 }
 
 void CStalkerActionGetEnemySeenModerate::execute	()
 {
-	inherited::execute		();
+	inherited::execute			();
+
+	m_object->play				(eStalkerSoundSurrender,20000,10000);
 
 	VERIFY						(m_object->enemy());
 	if (!m_object->enemy())
@@ -1584,7 +1589,7 @@ void CStalkerActionTakeCover::initialize()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
-	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
+//	m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 }
 
 void CStalkerActionTakeCover::finalize	()
