@@ -67,19 +67,19 @@ protected:
 	int 				ID; 	// auto number
 public:
 	enum{
-    	flBreakable		= 1<<0,
-//		flShootable 	= 1<<1,
-        flBounceable	= 1<<2,
-        flSkidmark		= 1<<3,
-        flBloodmark		= 1<<4,
-        flClimbable		= 1<<5,
-//		flWalkOn		= 1<<6, // obsolette
-        flPassable		= 1<<7,
-        flDynamic		= 1<<8,
+    	flBreakable		= (1ul<<0ul),
+//		flShootable 	= (1ul<<1ul),
+        flBounceable	= (1ul<<2ul),
+        flSkidmark		= (1ul<<3ul),
+        flBloodmark		= (1ul<<4ul),
+        flClimbable		= (1ul<<5ul),
+//		flWalkOn		= (1ul<<6ul), // obsolette
+        flPassable		= (1ul<<7ul),
+        flDynamic		= (1ul<<8ul),
 
-		flShootable 	= 1<<29,
-        flTransparent	= 1<<30,
-        flSlowDown		= 1<<31 // flSlowDown = (fFlotationFactor<1.f)
+		flShootable 	= (1ul<<29ul),
+        flTransparent	= (1ul<<30ul),
+        flSlowDown		= (1ul<<31ul) // flSlowDown = (fFlotationFactor<1.f)
     };
 public:
 	ref_str				m_Name;
