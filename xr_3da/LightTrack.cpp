@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "LightTrack.h"
 #include "FLightsController.h"
+#include "xr_creator.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
