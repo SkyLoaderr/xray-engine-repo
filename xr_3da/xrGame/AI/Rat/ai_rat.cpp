@@ -193,8 +193,17 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
 	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
+
 	m_tCurGP						= tpSE_Rat->m_tGraphID;
 	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
+
+	int								iPointCount	= (int)vertex_types().size();
+	for (int j=0; j<iPointCount; ++j)
+		if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex(game_vertex_id())->vertex_type())) {
+			m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
+			break;
+		}
+
 	//////////////////////////////////////////////////////////////////////////
 
 	m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
