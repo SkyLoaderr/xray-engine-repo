@@ -181,6 +181,12 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 
 	// loading spawn registry
 	R_ASSERT3					(FS.exist(caFileName, "$game_spawn$", caSaveName,".spawn"),"Can't find file spawn file:",caSaveName);
+	int							spawn_age = FS.get_file_age(caFileName);
+	string256					file_name;
+	FS.update_path				(file_name,"$game_data$",GRAPH_NAME);
+	int							graph_age = FS.get_file_age(file_name);
+	VERIFY3						(spawn_age >= graph_age,"Rebuild spawn file ",caFileName);
+
 	tpStream					= FS.r_open(caFileName);
 	Log							("* Loading spawn registry");
 	CSE_ALifeSpawnRegistry::Load(*tpStream);
