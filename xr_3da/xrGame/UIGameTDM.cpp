@@ -4,6 +4,8 @@
 #include "UITDMPlayerList.h"
 #include "UITDMFragList.h"
 
+#include "hudmanager.h"
+
 #define MSGS_OFFS 510
 
 //--------------------------------------------------------------------
@@ -51,6 +53,22 @@ void CUIGameTDM::OnFrame()
 			pFragListT1->OnFrame	();
 			pFragListT2->OnFrame	();
 		}break;
+		/*
+	case GAME_PHASE_TEAM1_SCORES: 
+		{
+			m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
+			m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
+			m_Parent->m_Parent->pFontDI->SetSize(0.05f);
+			m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 1 SCORES");
+		} break;
+	case GAME_PHASE_TEAM2_SCORES: 
+		{
+			m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
+			m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
+			m_Parent->m_Parent->pFontDI->SetSize(0.05f);
+			m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 2 SCORES");
+		} break;
+		*/
 	}
 }
 //--------------------------------------------------------------------

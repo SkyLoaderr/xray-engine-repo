@@ -101,18 +101,17 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
 	if (!ps_killed || !ps_killer) return;
 
-	inherited::OnPlayerKillPlayer		(id_killer, id_killed);
-
-	if (ps_killed->team != ps_killer->team)
+	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+	ps_killed->deaths				+=	1;
+	if (ps_killer == ps_killed)	
 	{
+		// By himself
+		ps_killer->kills			-=	1;
+	} else {
+		// Opponent killed - frag 
+		ps_killer->kills			+=	1;
 	}
-	else
-	{
-		if (ps_killed != ps_killer)
-			ps_killer->kills -= 2;
-	};
-
-	game_TeamState* pTeam = &(teams[ps_killer->team-1]);
+	
 	teams[ps_killer->team-1].score = 0;
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -123,5 +122,7 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 
 		teams[ps_killer->team-1].score += ps->kills;
 	};
-	pTeam = &(teams[ps_killer->team-1]);
+	
+
+	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
 }
