@@ -8,6 +8,7 @@ class ENGINE_API IRender_Sector;
 
 class ENGINE_API CPGObject: public CTempObject
 {
+	typedef CTempObject inherited;
 	IRender_Sector*		m_pCurSector;
 public:
 						CPGObject		(LPCSTR pg_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
@@ -21,6 +22,8 @@ public:
 	void				play_at_pos		(const Fvector& pos);
 	void				Play			();
 	void				Stop			();
+
+	LPCSTR				dbg_ref_name	();
 };
 #endif /*PGObjectH*/
 

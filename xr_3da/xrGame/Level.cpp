@@ -16,6 +16,8 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 
+#include "..\PGObject.h"
+
 CPHWorld*	ph_world = 0;
 
 //////////////////////////////////////////////////////////////////////
@@ -51,6 +53,11 @@ CLevel::~CLevel()
 
 //	xr_delete			(m_tpAI_DDD);
 	xr_delete			(ph_world);
+
+	// destroy PSs
+	for (PGOIt p_it=m_StaticParticles.begin(); p_it!=m_StaticParticles.end(); p_it++)
+		xr_delete		(*p_it);
+	m_StaticParticles.clear();
 }
 
 // Game interface ////////////////////////////////////////////////////

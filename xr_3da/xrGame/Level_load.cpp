@@ -263,9 +263,10 @@ BOOL CLevel::Load_GameSpecific_After()
 			OBJ->r_stringZ				(ref_name);
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
 			S							= ::Render->detectSector	(transform.c);
-			pStaticPG					= xr_new<CPGObject>			(ref_name,S,true);
+			pStaticPG					= xr_new<CPGObject>			(ref_name,S,false);
 			pStaticPG->UpdateParent		(transform);
 			pStaticPG->Play				();
+			m_StaticParticles.push_back	(pStaticPG);
 		}
 	}
 	return TRUE;

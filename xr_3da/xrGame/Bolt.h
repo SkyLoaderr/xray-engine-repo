@@ -18,4 +18,5 @@ public:
 	virtual void Throw();
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful();
+	virtual void Destroy();
 };

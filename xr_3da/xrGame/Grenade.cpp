@@ -177,8 +177,9 @@ void CGrenade::Explode() {
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG = xr_new<CPGObject>("expl_02_smoke",Sector());
-	pStaticPG->play_at_pos(vPosition);
+	CPGObject* pStaticPG;
+	pStaticPG = xr_new<CPGObject>("explosions\\expl_02_smoke",Sector());	pStaticPG->play_at_pos(vPosition);
+	pStaticPG = xr_new<CPGObject>("explosions\\expl_01_sparks",Sector());	pStaticPG->play_at_pos(vPosition);
 	setEnabled(true);
 }
 

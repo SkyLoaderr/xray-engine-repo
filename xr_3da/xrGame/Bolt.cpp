@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "bolt.h"
+#include "..\PGObject.h"
 
 CBolt::CBolt(void) {
 	//m_belt = true;
@@ -127,4 +128,9 @@ bool CBolt::Action(s32 cmd, u32 flags) {
 		} return true;
 	}
 	return false;
+}
+
+void CBolt::Destroy()
+{
+	inherited::Destroy();
 }

@@ -26,13 +26,24 @@ CPGObject::CPGObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 	// registry
 	m_pCurSector	= S;
 	if (S) m_pCurSector->tempAdd(this);
+
+	// sheduled
+	shedule_Min			= 20;
+	shedule_Max			= 100;
 }
 
 //----------------------------------------------------
 CPGObject::~CPGObject()
 {
+	if (m_pCurSector) m_pCurSector->tempRemove	(this);
 }
 
+LPCSTR CPGObject::dbg_ref_name()
+{
+	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);
+	return V->GetDefinition()->m_Name;
+	
+}
 //----------------------------------------------------
 void CPGObject::Play()
 {
@@ -65,6 +76,7 @@ void CPGObject::UpdateSector(IRender_Sector* sect)
 
 void CPGObject::Update(u32 dt)
 {
+	inherited::Update(dt);
 	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);
 	V->OnFrame			(dt);
 }
