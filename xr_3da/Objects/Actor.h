@@ -243,8 +243,8 @@ public:
 	virtual void						net_Destroy			();
 
 	virtual void						Die					( );
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element);
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse);
 	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
 
