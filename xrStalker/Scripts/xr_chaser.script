@@ -68,7 +68,8 @@ function action_chase:initialize ()
     self.object:set_item                  (object.idle, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
-    self.object:set_movement_type         (move.walk)
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
     self.object:set_path_type             (game_object.level_path)
     self.object:set_dest_level_vertex_id  (self.a.npc:level_vertex_id ())
     self.object:set_mental_state          (anim.free)
@@ -79,8 +80,10 @@ function action_chase:execute ()
     action_base.execute (self)
     self.object:set_path_type             (game_object.level_path)
     self.object:set_dest_level_vertex_id  (self.a.npc:level_vertex_id ())
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
     self:set_soldier_positions ()
-    self:set_command ()
+    self:set_command (leader_move)
 end
 ------------------
 function action_chase:finalize ()
@@ -131,7 +134,8 @@ function action_return:initialize ()
     self.object:set_item                  (object.idle, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
-    self.object:set_movement_type         (move.walk)
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
     self.object:set_path_type             (game_object.level_path)
     if self.a.ret_vertex == -1 then
        self.a.ret_vertex = self.object:level_vertex_id ()
@@ -146,12 +150,43 @@ function action_return:execute ()
     action_base.execute (self)
     self.object:set_path_type             (game_object.level_path)
     self.object:set_dest_level_vertex_id  (self.a.ret_vertex)
+    self.object:set_movement_type         (move.run)
+    self.object:set_mental_state          (anim.danger)
+    self:set_soldier_positions ()
+    self:set_command ()
 end
 ------------------
 function action_return:finalize ()
     action_base.finalize (self)
 end            
 -------------------------------------------------------------------------
+function action_return:set_soldier_positions ()
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    local dir = self.object:direction ()
+    dir.y = 0.0
+    dir:normalize ()
+    local step = 180.0 / size
+    local angle = 90.0
+    for a = 1, size, 1 do
+        local vec
+        if a == 1 then 
+           vec = xr_patrol.vector_rotate_y (dir, 90.0)
+        else 
+           vec = xr_patrol.vector_rotate_y (dir, -90.0) 
+        end   
+        xr_motivator.storage[self.object:id()].followers[a].direction = vec
+        xr_motivator.storage[self.object:id()].followers[a].distance = 3.0
+    end
+end
+-------------------------------------------------------------------------
+function action_return:set_command (command)
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    for a = 1, size, 1 do
+        xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+    end
+end
 
 
 -------------------------------------------------------------------------
