@@ -92,8 +92,8 @@ public:
 	IC CSector*							Sector			()					{ return pSector;		}
 	IC CLightTrack*						Lights			()					{ return pLights;		}
 	virtual float						Ambient			()					{ return 0.f;		 	}
-	virtual BOOL						ShadowGenerate	()					{ return FALSE;			}
-	virtual BOOL						ShadowReceive	()					{ return FALSE;			}
+	virtual BOOL						ShadowGenerate	()					{ return TRUE;			}
+	virtual BOOL						ShadowReceive	()					{ return TRUE;			}
 	
 	virtual float						Radius			() const;
 	virtual Fvector&					Position		() 					{ return vPosition;		}
@@ -137,7 +137,7 @@ public:
 	IC DWORD							ps_Size			()				{ return PositionStack.size(); }
 	virtual	SavedPosition				ps_Element		(DWORD ID);
 
-	// Collision
+	// Collision/Feedback/Interaction
 	virtual void						OnNear			(CObject* near)		{};
 
 	// HUD

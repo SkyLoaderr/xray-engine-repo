@@ -74,6 +74,8 @@ class CAI_Crow : public CCustomMonster
 	public:
 					   CAI_Crow();
 		virtual		  ~CAI_Crow();
+		virtual BOOL  ShadowGenerate()			{ return FALSE;	}
+		virtual BOOL  ShadowReceive	()			{ return FALSE;	}
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);

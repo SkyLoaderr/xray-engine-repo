@@ -13,14 +13,21 @@
 
 CDummyObject::CDummyObject	()
 {
-	animator = 0;
-	style = 0;
+	animator				= NULL;
+	style					= 0;
 }
 
 CDummyObject::~CDummyObject	()
 {
-	_DELETE(animator);
-	pSounds->Delete(sndDummy);
+	_DELETE					(animator);
+	pSounds->Delete			(sndDummy);
+}
+
+void CGameObject::OnVisible	()
+{
+	CObject::OnVisible		();
+	::Render->set_Transform		(&clTransform);
+	::Render->add_Visual		(Visual());
 }
 
 void CDummyObject::Update(DWORD dt)
@@ -39,7 +46,7 @@ void CDummyObject::Update(DWORD dt)
 
 void CDummyObject::Load	(CInifile* ini, const char* section)
 {
-	inherited::Load(ini,section);
+	inherited::Load		(ini,section);
 
 	if (ini->LineExists(section,"motions")){
 		style			|= esAnimated;

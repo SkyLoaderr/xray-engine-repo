@@ -20,15 +20,18 @@ private:
 		esParticles	=1<<2, 
 		esSound		=1<<3
 	};
-	DWORD				style;
+	DWORD								style;
 private:
-	CObjectAnimator*	animator;
-	Fvector				start_position;
-	sound				snd;
+	CObjectAnimator*					animator;
+	Fvector								start_position;
+	sound								sndDummy;
 
 public:
-	virtual void		Load			( CInifile* ini, LPCSTR section);
-	virtual void		Update			( DWORD dt );
+	virtual void						Load			( CInifile* ini, LPCSTR section);
+	virtual BOOL						Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual void						OnVisible		(void);								// returns lighting level
+	virtual void						Update			(DWORD dt);							// Called by sheduler
+	virtual void						UpdateCL		();									// Called each frame, so no need for dt
 
 	void				PlayDemo		( LPCSTR N );
 

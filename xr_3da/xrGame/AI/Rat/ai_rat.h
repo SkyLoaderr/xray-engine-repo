@@ -221,6 +221,7 @@ class CAI_Rat : public CCustomMonster
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();
+		virtual BOOL  ShadowReceive	()			{ return FALSE;	}
 		virtual void  Update(DWORD DT);
 		virtual void  net_Export(NET_Packet* P);
 		virtual void  net_Import(NET_Packet* P);
