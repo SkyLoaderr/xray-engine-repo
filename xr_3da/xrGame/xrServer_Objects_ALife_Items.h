@@ -60,6 +60,24 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
+
+	//возможность подключения аддонов
+	enum EAddonStatus{
+		eAddonDisabled				= 0,	//нельзя присоеденить
+		eAddonPermanent				= 1,	//постоянно подключено по умолчанию
+		eAddondAttachable			= 2		//можно присоединять
+	};
+
+	//текущее состояние аддонов
+	enum EWeaponAddonState 
+	{
+		eWeaponAddonScope = 0x01,
+		eWeaponAddonGrenadeLauncher = 0x02,
+		eWeaponAddonSilencer = 0x04
+	};
+
+
+
 	u32								timestamp;
 	u8								flags;
 	u8								state;

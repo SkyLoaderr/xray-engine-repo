@@ -317,10 +317,18 @@ void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: total"),		&a_current,0,1000,1);
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
 
-	if (1){
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, 0x01);
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, 0x02);
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,0x04);
+	
+	m_eSilencerStatus		 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"silencer_status");
+	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
+
+	if ((EAddonStatus)pSettings->r_s32(s_name,"scope_status") == eAddondAttachable)
+	       PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
+
+	if ((EAddonStatus)pSettings->r_s32(s_name,"silencer_status") == eAddondAttachable)
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
+
+	if ((EAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status") == eAddondAttachable)
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
     }
 }
 #endif
