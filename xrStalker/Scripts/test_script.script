@@ -17,6 +17,7 @@ function main()
 	dump_time(dt2)
 	dump_time(dt)
 	local s  = dt2:diffSec(dt)
+	printf("difference = %f",s)
 	
 	if dt>dt2 then
 		printf("dt>dt2")
