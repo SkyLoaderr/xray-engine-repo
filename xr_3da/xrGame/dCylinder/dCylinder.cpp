@@ -1253,11 +1253,11 @@ const dReal* R= dGeomGetRotation(geom);
 const dReal* pos= dGeomGetPosition(geom);
 
 	
-  dReal xrange = REAL(0.5) * dFabs (R[1] * lz) + (dSqrt(R[0]*R[0]+R[2]*R[2]) * radius);
+  dReal xrange = REAL(0.5) * dFabs (R[1] * lz) + (_sqrt(R[0]*R[0]+R[2]*R[2]) * radius);
 
-  dReal yrange = REAL(0.5) * dFabs (R[5] * lz) + (dSqrt(R[4]*R[4]+R[6]*R[6]) * radius);
+  dReal yrange = REAL(0.5) * dFabs (R[5] * lz) + (_sqrt(R[4]*R[4]+R[6]*R[6]) * radius);
 
-  dReal zrange = REAL(0.5) * dFabs (R[9] * lz) + (dSqrt(R[8]*R[8]+R[10]*R[10]) * radius);
+  dReal zrange = REAL(0.5) * dFabs (R[9] * lz) + (_sqrt(R[8]*R[8]+R[10]*R[10]) * radius);
 
   aabb[0] = pos[0] - xrange;
   aabb[1] = pos[0] + xrange;
