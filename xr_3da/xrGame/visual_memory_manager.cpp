@@ -66,6 +66,7 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	m_time_quant						= pSettings->r_float(section,"time_quant");
 	m_decrease_value					= pSettings->r_float(section,"decrease_value");
 	m_velocity_factor					= pSettings->r_float(section,"velocity_factor");
+	m_transparency_threshold			= pSettings->r_float(section,"transparency_threshold");
 }
 
 void CVisualMemoryManager::reinit					()
@@ -364,4 +365,10 @@ bool CVisualMemoryManager::see		(const CEntityAlive *object0, const CEntityAlive
 	if ((angle_difference(yaw1,yaw2) <= fYawFov) && (angle_difference(pitch1,pitch2) <= fPitchFov))
 		return		(true);
 	return			(false);
+}
+
+float CVisualMemoryManager::feel_vision_mtl_transp(u32 element)
+{
+	CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+element;
+	return GMLib.GetMaterialByIdx(T->material)->fVisTransparencyFactor;
 }

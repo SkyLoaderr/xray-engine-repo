@@ -46,3 +46,8 @@ IC	float CVisualMemoryManager::visibility_threshold	() const
 {
 	return							(m_visibility_threshold);
 }
+
+IC	float CVisualMemoryManager::transparency_threshold	() const
+{
+	return							(m_transparency_threshold);
+}

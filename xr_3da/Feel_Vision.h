@@ -22,7 +22,7 @@ namespace Feel
 
 		void						o_new	(CObject* E);
 		void						o_delete(CObject* E);
-		void						o_trace	(Fvector& P, float dt);
+		void						o_trace	(Fvector& P, float dt, float vis_threshold);
 	public:
 		struct feel_visible_Item 
 		{
@@ -36,8 +36,9 @@ namespace Feel
 		xr_vector<feel_visible_Item>	feel_visible;
 	public:
 		void						feel_vision_query		(Fmatrix& mFull,	Fvector& P);
-		void						feel_vision_update		(CObject* parent,	Fvector& P, float dt);
+		void						feel_vision_update		(CObject* parent,	Fvector& P, float dt, float vis_threshold);
 		void						feel_vision_get			(xr_vector<CObject*>& R);
 		virtual		BOOL			feel_vision_isRelevant	(CObject* O)					= 0;
+		virtual		float			feel_vision_mtl_transp	(u32 element)					= 0;	
 	};
 };

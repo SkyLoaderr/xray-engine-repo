@@ -149,6 +149,7 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 			xrc.ray_query	(&Static,s_rd.start,s_rd.dir,s_rd.range);
 			if (xrc.r_count()){	
 				if (s_res.set_if_less(xrc.r_begin())){
+					// set new static start & range
 					s_rd.range	-=	(s_res.range+EPS_L);
 					s_rd.start.mad	(s_rd.dir,s_res.range+EPS_L);
 					s_res.range	= R.range-s_rd.range-EPS_L;
@@ -170,6 +171,7 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 					cform->_RayQuery(d_rd,r_temp);
 			}
 			if (r_temp.r_count()){
+				// set new dynamic start & range
 				rq_result& d_res = *r_temp.r_begin();
 				d_rd.range	-= (d_res.range+EPS_L);
 				d_rd.start.mad(d_rd.dir,d_res.range+EPS_L);
@@ -179,24 +181,30 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 			}
 		}
 		if (s_res.valid()&&r_temp.r_count()){
+			// all test return result
 			if	(s_res.range<r_temp.r_begin()->range){
+				// static nearer
 				BOOL need_calc	= CB?CB(s_res,user_data):TRUE;
-				next_test		= need_calc?s_mask:rqtNone;
+				next_test		= need_calc?s_mask:rqtNone; 
 				r_results.append_result	(s_res);
 			}else{
+				// dynamic nearer
 				BOOL need_calc	= CB?CB(*r_temp.r_begin(),user_data):TRUE;
 				next_test		= need_calc?d_mask:rqtNone;	
 				r_results.append_result	(*r_temp.r_begin());
 			}
 		}else if (s_res.valid()){
+			// only static return result
 			BOOL need_calc		= CB?CB(s_res,user_data):TRUE;
 			next_test			= need_calc?s_mask:rqtNone;
 			r_results.append_result		(s_res);
 		}else if (r_temp.r_count()){
+			// only dynamic return result
 			BOOL need_calc		= CB?CB(*r_temp.r_begin(),user_data):TRUE;
 			next_test			= need_calc?d_mask:rqtNone;
 			r_results.append_result		(*r_temp.r_begin());
 		}else{
+			// nothing selected
 			next_test			= rqtNone;
 		}
 		if ((R.flags&CDB::OPT_ONLYFIRST)||(R.flags&CDB::OPT_ONLYNEAREST)) break;

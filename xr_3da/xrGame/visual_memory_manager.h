@@ -63,6 +63,7 @@ private:
 	float							m_time_quant;
 	float							m_decrease_value;
 	float							m_velocity_factor;
+	float							m_transparency_threshold;
 
 protected:
 	IC		void	fill_object						(CVisibleObject &visible_object, const CGameObject *game_object);
@@ -93,6 +94,8 @@ public:
 			bool	see								(const CEntityAlive *object0, const CEntityAlive *object1) const;
 	IC		void	enable							(const CObject *object, bool enable);
 	IC		float	visibility_threshold			() const;
+	virtual	float	feel_vision_mtl_transp			(u32 element);	
+	IC		float	transparency_threshold			() const;
 };
 
 #include "visual_memory_manager_inline.h"

@@ -4,8 +4,31 @@
 #include "xr_object.h"
 #include "xr_collide_form.h"
 #include "igame_level.h"
+#include "cl_intersect.h"
 
 namespace Feel {
+	struct SFeelParam{
+		Vision*						parent;
+		Vision::feel_visible_Item*	item;
+		float						vis;
+		float						vis_threshold;
+		SFeelParam(Vision* _parent, Vision::feel_visible_Item* _item, float _vis_threshold):parent(_parent),item(_item),vis(1.f),vis_threshold(_vis_threshold){}
+	};
+	IC BOOL __stdcall feel_vision_callback(Collide::rq_result& result, LPVOID params)
+	{
+		VERIFY(!result.O);
+		SFeelParam* fp	= (SFeelParam*)params;
+		float vis		= fp->parent->feel_vision_mtl_transp(result.element);
+		fp->vis			*= vis;
+		if (fis_zero(vis)){
+			CDB::TRI* T	= g_pGameLevel->ObjectSpace.GetStaticTris()+result.element;
+			Fvector* V	= g_pGameLevel->ObjectSpace.GetStaticVerts();
+			fp->item->Cache.verts[0].set	(V[T->verts[0]]);
+			fp->item->Cache.verts[1].set	(V[T->verts[1]]);
+			fp->item->Cache.verts[2].set	(V[T->verts[2]]);
+		}
+		return (fp->vis>fp->vis_threshold); 
+	}
 	void	Vision::o_new		(CObject* O)
 	{
 		feel_visible.push_back	(feel_visible_Item());
@@ -64,7 +87,7 @@ namespace Feel {
 		}
 	}
 
-	void	Vision::feel_vision_update	(CObject* parent, Fvector& P, float dt)
+	void	Vision::feel_vision_update	(CObject* parent, Fvector& P, float dt, float vis_threshold)
 	{
 		// B-A = objects, that become visible
 		if (!seen.empty()) 
@@ -99,13 +122,11 @@ namespace Feel {
 
 		// Copy results and perform traces
 		query				= seen;
-		o_trace				(P,dt);
+		o_trace				(P,dt,vis_threshold);
 	}
-	void Vision::o_trace(Fvector& P, float dt)
-	{
+	void Vision::o_trace(Fvector& P, float dt, float vis_threshold){
 		xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-		for (; I!=E; I++)
-		{
+		for (; I!=E; I++){
 			if (0==I->O->CFORM())	{ I->fuzzy = -1; continue; }
 
 			// verify relation
@@ -136,9 +157,44 @@ namespace Feel {
 			Fvector				D;	
 			D.sub				(OP,P);
 			float				f = D.magnitude();
-			if (f>fuzzy_guaranteed) 
-			{
-				D.div		(f);
+			if (f>fuzzy_guaranteed){
+				D.div						(f);
+				// setup ray defs & feel params
+				Collide::ray_defs RD		(P,D,f,0,Collide::rqtStatic);
+				SFeelParam	feel_params		(this,&*I,vis_threshold);
+				// check cache
+				if (I->Cache.result&&I->Cache.similar(P,D,f)){
+					// similar with previous query
+					feel_params.vis			= 0.f;
+//					Log("cache 0");
+				}else{
+					float _u,_v,_range;
+					if (CDB::TestRayTri(P,D,I->Cache.verts,_u,_v,_range,false)&&(_range>0 && _range<f)){
+						feel_params.vis		= 0.f;
+//						Log("cache 1");
+					}else{
+						// cache outdated. real query.
+						if (g_pGameLevel->ObjectSpace.RayQuery(RD,feel_vision_callback,&feel_params)){
+							I->Cache.set		(P,D,f,TRUE);
+						}else{
+							I->Cache.set		(P,D,f,FALSE);
+						}
+//						Log("query");
+					}
+				}
+//				Log("Vis",feel_params.vis);
+				if (feel_params.vis<feel_params.vis_threshold){
+					// INVISIBLE, choose next point
+					I->fuzzy				-=	fuzzy_update_novis*dt;
+					clamp					(I->fuzzy,-.5f,1.f);
+					I->cp_LP.random_dir		();
+					I->cp_LP.mul			(.7f);
+				}else{
+					// VISIBLE
+					I->fuzzy				+=	fuzzy_update_vis*dt;
+					clamp					(I->fuzzy,-.5f,1.f);
+				}
+/*
 				if (g_pGameLevel->ObjectSpace.RayTest(P,D,f,Collide::rqtStatic,&I->Cache)) 
 				{
 					// callback and multiple ray-tests
@@ -155,6 +211,7 @@ namespace Feel {
 					I->fuzzy				+=	fuzzy_update_vis*dt;
 					clamp					(I->fuzzy,-.5f,1.f);
 				}
+*/
 			}
 			else {
 				// VISIBLE, 'cause near
