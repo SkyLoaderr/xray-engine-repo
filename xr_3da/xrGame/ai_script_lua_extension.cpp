@@ -16,21 +16,6 @@ int Script::ifSuspendThread(CLuaVirtualMachine *tpLuaVirtualMachine)
 	return lua_yield(tpLuaVirtualMachine, lua_gettop(tpLuaVirtualMachine));
 }
 
-int Script::vfPrintF(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-//	int				l_iSize = string.format(tpLuaVirtualMachine);
-//	int				arg = 1;
-//	size_t			sfl;
-//	const char		*l_caStringToPrint = luaL_checklstring(tpLuaVirtualMachine, arg, &sfl);
-//	Msg				("%s",l_caStringToPrint);
-	return			(0);
-}
-
-//class _vector {
-//public:
-//
-//};
-//
 //class CItemObject {
 //public:
 //	Active();

@@ -9,6 +9,7 @@ game_sv_Single::~game_sv_Single			()
 
 void	game_sv_Single::Create			(LPSTR &options)
 {
+	inherited::Create					(options);
 	if (strstr(options,"/alife")) {
 		m_tpALife						= xr_new<CSE_ALifeSimulator>(m_tpServer);
 		m_tpALife->m_cppServerOptions	= &options;

@@ -7,6 +7,8 @@
 // id_*		- means player-id
 // eid_*	- means entity-id
 
+class	CScriptProcessor;
+
 class	game_sv_GameState	: public game_GameState
 {
 protected:
@@ -18,8 +20,11 @@ protected:
 public:
 	BOOL							sv_force_sync;
 	xr_vector<RPoint>				rpoints	[4];
+	// scripts
+	CScriptProcessor				*m_tpScriptProcessor;
 public:
-	virtual							~game_sv_GameState		()		{};
+									game_sv_GameState		();
+	virtual							~game_sv_GameState		();
 	// Main accessors
 	virtual		game_PlayerState*	get_it					(u32 it);
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID

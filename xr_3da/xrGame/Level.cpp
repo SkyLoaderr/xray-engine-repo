@@ -248,8 +248,6 @@ void CLevel::OnFrame	()
 	
 	if (m_tpScriptProcessor)
 		m_tpScriptProcessor->Update();
-	if (game.m_tpScriptProcessor)
-		game.m_tpScriptProcessor->Update();
 }
 
 void CLevel::OnRender()
