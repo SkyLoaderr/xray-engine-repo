@@ -53,9 +53,9 @@ LPCSTR caWeaponActionNames	[] = {
 	"holster_",
 	"reload_",
 	"pick_",
+	"aim_",
 	"walk_",
 	"run_",
-	"aim_",
 	0
 };
 
@@ -202,6 +202,26 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
 	if (!g_Alive())
 		return;
+	if ((m_tStateType == eStateTypeNormal) && (m_tBodyState == eBodyStateStand) && (m_tMovementType != eMovementTypeStand)) {
+		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+		if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle)) {
+			switch (m_inventory.m_activeSlot) {
+				case 0 : {
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7 + m_tMovementType].A[m_tStateType];
+					break;
+				}
+				case 1 : {
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[7 + m_tMovementType].A[m_tStateType];
+					break;
+				}
+				case 2 : {
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[7 + m_tMovementType].A[m_tStateType];
+					break;
+				}
+			}
+			return;
+		}
+	}
 	if (m_inventory.ActiveItem()) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (tpWeapon) {
@@ -209,15 +229,15 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				case CWeapon::eIdle : {
 					switch (m_inventory.m_activeSlot) {
 						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6+m_tMovementType].A[m_tStateType];
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6].A[m_tStateType];
 							break;
 						}
 						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6+m_tMovementType].A[m_tStateType];
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6].A[m_tStateType];
 							break;
 						}
 						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6+m_tMovementType].A[m_tStateType];
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6].A[m_tStateType];
 							break;
 						}
 					}
@@ -308,12 +328,13 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					}
 					break;
 				}
-				default : tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[8].A[0];
+				default :
+					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[6].A[0];
 			}
 		}
 	}
-	else 
-		tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[8].A[0];
+	else
+		tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[6].A[0];
 }
 
 void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)

@@ -32,7 +32,7 @@ void CAI_Stalker::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 }
 
-void CAI_Stalker::BackDodge()
+void CAI_Stalker::BackDodge(bool bFire)
 {
 	WRITE_TO_LOG				("Back dodging");
 	
@@ -46,7 +46,7 @@ void CAI_Stalker::BackDodge()
 		&m_tSelectorFreeHunting,
 		0,
 		true,
-		eWeaponStatePrimaryFire,
+		bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,
 		ePathTypeDodge,
 		eBodyStateStand,
 		eMovementTypeWalk,
@@ -55,7 +55,7 @@ void CAI_Stalker::BackDodge()
 		tPoint);
 }
 
-void CAI_Stalker::BackCover()
+void CAI_Stalker::BackCover(bool bFire)
 {
 	WRITE_TO_LOG				("Back cover");
 	
@@ -67,7 +67,7 @@ void CAI_Stalker::BackCover()
 		&m_tSelectorCover,
 		0,
 		true,
-		eWeaponStatePrimaryFire,
+		bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,
 		ePathTypeCriteria,
 		eBodyStateStand,
 		eMovementTypeRun,
@@ -479,9 +479,8 @@ void CAI_Stalker::Think()
 	
 	if (K) {
 		if (m_tEnemy.Enemy) {
-			if (_K != K) {
+			if (_K != K)
 				AI_Path.TravelPath.clear();
-			}
 //			if (C) {
 //				m_bStateChanged = C != _C;
 //				Msg("Back dodge");
@@ -510,10 +509,10 @@ void CAI_Stalker::Think()
 //			ForwardStraight();
 //			ForwardDodge();
 //			ForwardCover();
-//			BackCover();
-//			BackDodge();
+//			BackCover(false);
+			BackDodge(false);
 //			Panic();
-			Detour();
+//			Detour();
 		} else {
 			C = _C;
 			E = _E;
@@ -521,18 +520,20 @@ void CAI_Stalker::Think()
 			F = _F;
 			G = _G;
 			Msg("Camping");
-			Detour();//Hide();
-//			Camp();
+//			Detour();//Hide();
+			Camp();
 		}
 
 	} else
 	if (A | B) {
+		// hearing something
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 	} else
 	if (M) {
+		// taking items
 		Fvector					tPoint;
 		m_tpItemToTake->svCenter(tPoint);
 		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
@@ -540,6 +541,7 @@ void CAI_Stalker::Think()
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 	} else
 	{
+		// going via graph nodes
 		vfUpdateSearchPosition	();
 		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);

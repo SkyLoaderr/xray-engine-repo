@@ -220,8 +220,8 @@ private:
 //			void			DropItem						();
 
 			void			BackStraight					();
-			void			BackDodge						();
-			void			BackCover						();
+			void			BackDodge						(bool bFire = true);
+			void			BackCover						(bool bFire = true);
 			void			ForwardCover					();
 			void			ForwardDodge					();
 			void			ForwardStraight					();
