@@ -803,6 +803,7 @@ void CSE_ALifeZoneVisual::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
 	visual_read					(tNetPacket);
+	tNetPacket.r_stringZ(startup_animation);
 	tNetPacket.r_stringZ(attack_animation);
 	
 }
@@ -811,6 +812,7 @@ void CSE_ALifeZoneVisual::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	visual_write				(tNetPacket);
+	tNetPacket.w_stringZ(startup_animation);
 	tNetPacket.w_stringZ(attack_animation);
 }
 
