@@ -391,7 +391,6 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 			return			(false);
 		}
 	}
-	TIMER_STOP(CheckVertexInDirection)
 }
 
 IC  Fvector v3d(const Fvector2 &vector2d)

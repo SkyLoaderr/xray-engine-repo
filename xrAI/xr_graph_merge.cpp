@@ -46,7 +46,7 @@ u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
 		if (!xr_strcmp(Ini->r_string_wb(N,"caption"),caLevelName))
 			return(Ini->r_u32(N,"id"));
-	return(-1);
+	return(u32(-1));
 }
 
 DEFINE_MAP		(u32,	::CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
@@ -77,7 +77,6 @@ public:
 		CGameLevelCrossTable	*l_tpCrossTable = xr_new<CGameLevelCrossTable>(caFileName);
 
 		CLevelGraph				*l_tpAI_Map = xr_new<CLevelGraph>(S);
-		u32						l_dwPointOffset = 0;
 
 		VERIFY					(l_tpAI_Map->header().vertex_count() == l_tpCrossTable->header().level_vertex_count());
 		VERIFY					(m_tpGraph->header().vertex_count() == l_tpCrossTable->header().game_vertex_count());
@@ -127,7 +126,7 @@ public:
 			for (int i=0; i<(int)tpCrossTable->header().level_vertex_count(); i++) {
 				tCrossTableUpdate[i] = tpCrossTable->vertex(i);
 				VERIFY				(u32(tCrossTableUpdate[i].tGraphIndex) < tpCrossTable->header().game_vertex_count());
-				tCrossTableUpdate[i].tGraphIndex += dwOffset;
+				tCrossTableUpdate[i].tGraphIndex += (ALife::_GRAPH_ID)dwOffset;
 			}
 
 			CMemoryWriter					tMemoryStream;
@@ -196,7 +195,7 @@ public:
 						S								= (char *)xr_malloc((xr_strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));
 						T.caConnectName					= (char *)xr_malloc((xr_strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
 						T.dwLevelID						= dwfGetIDByLevelName(Ini,*tpGraphPoint->m_caConnectionLevelName);
-						T.tGraphID						= i;
+						T.tGraphID						= (ALife::_GRAPH_ID)i;
 						T.tOldGraphID					= tGraphID;
 						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,(u32)xr_strlen(tpGraphPoint->s_name_replace) + 1);
 						Memory.mem_copy					(T.caConnectName,*tpGraphPoint->m_caConnectionPointName,(u32)xr_strlen(tpGraphPoint->m_caConnectionPointName) + 1);

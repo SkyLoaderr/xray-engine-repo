@@ -34,7 +34,7 @@ IC	CCellVertex get_vertex_by_group_id(xr_vector<CCellVertex> vertices, u32 group
 			return				(*I);
 
 	NODEFAULT;
-	return						(CCellVertex(-1,0));
+	return						(CCellVertex(u32(-1),0));
 }
 
 IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, xr_vector<CCellVertex> &vertices, u32 group_id, u32 link)

@@ -147,7 +147,6 @@ void xrLoad(LPCSTR name)
 	{
 		strconcat			(N,name,"build.aimap");
 		IReader				*F = FS.r_open(N);
-		IReader				*O = 0;
 
 		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_VERSION));
 		R_ASSERT			(F->r_u16() == E_AIMAP_VERSION);

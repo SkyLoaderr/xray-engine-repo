@@ -166,11 +166,11 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 				}
 			
 			for (int j=0; j<iVertexCount; j++)
-				if ((tGraph.vertex(j)->level_vertex_id() == i) && (tCrossTableCell.tGraphIndex != j)) {
+				if ((tGraph.vertex(j)->level_vertex_id() == (u32)i) && (tCrossTableCell.tGraphIndex != j)) {
 					Msg("! Warning : graph points are too close, therefore cross table is automatically validated");
 					Msg("%d : [%f][%f][%f] %d[%f] -> %d[%f]",i,VPUSH(tGraph.vertex(j)->level_point()),tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,tDistances[j][i]);
 					tCrossTableCell.fDistance	= float(tDistances[j][i])*tMap.header().cell_size();
-					tCrossTableCell.tGraphIndex = j;
+					tCrossTableCell.tGraphIndex = (ALife::_GRAPH_ID)j;
 				}
 			tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
 		}
