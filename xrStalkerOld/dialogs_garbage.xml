@@ -20,6 +20,7 @@
         </phrase_list>
     </dialog>
     <dialog id="gar_dram_novice_level">
+		<precondition>dialogs.level_garbage</precondition>
         <phrase_list>
             <phrase id="2">
                 <text>gar_dram_novice_level_2</text>
