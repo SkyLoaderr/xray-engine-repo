@@ -124,9 +124,10 @@ public:
 	virtual void	UpdateCondition();
 
 	//сон
-	virtual void	GoSleep(u32	sleep_time);
-	virtual void	Awoke();
-			void	UpdateSleep();
+	virtual EActorSleep	GoSleep(u32	sleep_time);
+	virtual EActorSleep	CanSleepHere();
+	virtual void		Awoke();
+			void		UpdateSleep();
 
 protected:
 	//Sleep params

@@ -13,10 +13,66 @@
 #include "game_cl_base.h"
 
 
-#define ONLINE_RADIUS 2.f
+#define ONLINE_RADIUS				2.f
+#define MIN_SPRING_TO_SLEEP			0.8f	
+#define ENEMIES_RADIUS				30.f
 
-void CActor::GoSleep(u32 sleep_time)
+
+//проверка можем ли мы спать на этом месте
+EActorSleep CActor::CanSleepHere()
 {
+	if(0 != mstate_real) return easNotSolidGround;
+
+	Collide::rq_result RQ;
+
+	Fvector pos, dir;
+	pos.set(Position());
+	pos.y += 0.1f;
+	dir.set(0, -1.f, 0);
+	setEnabled(FALSE);
+	BOOL result = Level().ObjectSpace.RayPick(pos, dir, 0.3f, 
+				  Collide::rqtBoth, RQ);
+	setEnabled(TRUE);
+	
+	//актер стоит на динамическом объекте или вообще падает - 
+	//спать нельзя
+	if(!result || RQ.O)	
+		return easNotSolidGround;
+	else
+	{
+		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
+		u16 hit_material_idx	= pTri->material;
+		SGameMtl* mtl	= GMLib.GetMaterialByIdx(hit_material_idx);
+		if(mtl->fPHSpring < MIN_SPRING_TO_SLEEP) 
+			return easNotSolidGround;
+	}
+
+
+	//проверить нет ли в радиусе врагов
+	setEnabled(false);
+	Level().ObjectSpace.GetNearest	(pos, ENEMIES_RADIUS); 
+	xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
+	setEnabled(true);
+
+	for(xr_vector<CObject*>::iterator it = NearestList.begin();
+									NearestList.end() != it;
+									it++)
+	{
+		CEntityAlive* entity = dynamic_cast<CEntityAlive*>(*it);
+		if(entity && entity->g_Alive() &&
+			entity->tfGetRelationType(this) == ALife::eRelationTypeEnemy)
+			return easEnemies;
+	}
+
+	return easCanSleep;
+}
+
+EActorSleep CActor::GoSleep(u32 sleep_time)
+{
+	EActorSleep result = CanSleepHere();
+	if(easCanSleep != result) 
+		return result;
+
 	CActorCondition::GoSleep();
 
 	//остановить актера, если он двигался
@@ -35,6 +91,8 @@ void CActor::GoSleep(u32 sleep_time)
 													m_pSleepEffector->time_release);
 
 	Level().Cameras.AddEffector(m_pSleepEffectorPP);
+
+	return easCanSleep;
 }
 void CActor::Awoke()
 {

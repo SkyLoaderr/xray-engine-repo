@@ -31,7 +31,7 @@ void CGameTask::Load		(CUIXml& uiXml, XML_NODE* task_node)
 	{
 		LPCSTR tag_text = uiXml.Read(task_node, "objective:text", i, NULL);
 		objective.description = tag_text;
-		tag_text = uiXml.Read(task_node, "objective:script_state", i, NULL);
+		tag_text = uiXml.Read(task_node, "objective:script_condition", i, NULL);
 		objective.script_state = tag_text;
 		m_Objectives.push_back(objective);
 	}
@@ -42,6 +42,7 @@ ETaskState CGameTask::CalcObjectiveState  (u32 index, CGameObject* task_accompli
 	SGameTaskObjective& objective = m_Objectives[index];
 
 	luabind::functor<ETaskState>	lua_function;
+	R_ASSERT(*objective.script_state);
 	bool functor_exists = ai().script_engine().functor(*objective.script_state ,lua_function);
 	R_ASSERT3(functor_exists, "Cannot find task script state", *objective.script_state);
 	objective.state = lua_function	(task_accomplisher->lua_game_object());

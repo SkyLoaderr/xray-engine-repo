@@ -21,6 +21,9 @@
 //#include "luabind/discard_result_policy.hpp"
 //#include "luabind/iterator_policy.hpp"
 #include "script_engine.h"
+#include "gametask.h"
+
+#include "WeaponAK74.h"
 
 #include "WeaponAK74.h"
 
@@ -208,6 +211,24 @@ void CScriptEngine::export_game()
 //		def("get_object_by_name",				Game::get_object_by_name),
 	];
 }
+
+struct SLuaTask {};
+
+void CScriptEngine::export_task()
+{
+	module(lua())
+	[
+        class_<SLuaTask>("task")
+			.enum_("state")
+			[
+				value("in_progress",			int(eTaskStateInProgress)),
+				value("completed",				int(eTaskStateCompleted)),
+				value("fail",					int(eTaskStateFail)),
+				value("dummy",					int(eTaskStateMax))
+			]
+	];
+}
+
 
 void CScriptEngine::export_device()
 {

@@ -49,6 +49,14 @@ enum EActorAction
 	eaaSearchCorpse,
 };
 
+//результат функции GoSleep у актера
+enum EActorSleep
+{
+	easCanSleep			= 0,
+	easNotSolidGround,
+	easEnemies		
+};
+
 struct					SActorMotions
 {
 	struct				SActorState

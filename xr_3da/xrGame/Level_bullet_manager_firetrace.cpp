@@ -46,11 +46,11 @@ BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LP
 			hit_material_idx = B.game_mtl_idx;
 			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
 		}
-		else
+		/*else
 		{
-			hit_material_idx = 0*GAMEMTL_NONE_IDX;
+			hit_material_idx = GAMEMTL_NONE_IDX;
 			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
-		}
+		}*/
 	}
 	//статический объект
 	else
