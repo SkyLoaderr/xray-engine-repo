@@ -603,12 +603,12 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_Node);
 
 	if (tMyRotation.yaw >= tRotation.yaw) {
-		if (tMyRotation.yaw - tRotation.yaw > PI)
+		while (tMyRotation.yaw - tRotation.yaw > PI)
 			tRotation.yaw += PI_MUL_2;
 	}
 	else
 		if (tRotation.yaw >= tMyRotation.yaw) {
-			if (tRotation.yaw - tMyRotation.yaw > PI)
+			while (tRotation.yaw - tMyRotation.yaw > PI)
 				tMyRotation.yaw += PI_MUL_2;
 		}
 	if (bRotation) {
@@ -629,21 +629,46 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 
 bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID)
 {
-	Fvector tPosition = Level().AI.tfGetNodeCenter(dwNodeID), tDirection;
-	NodeCompressed *tpNode = Level().AI.Node(dwNodeID);
 	SRotation tRotation;
+	float fResult0 = 1.f, fResult1 = 1.f, fEyeFov = ffGetFov()*PI/180.f;
+	Fvector tPosition = Level().AI.tfGetNodeCenter(dwNodeID), tDirection;
 	
 	tDirection.sub(vPosition,tPosition);
-	if (tDirection.magnitude() >= 15.f)
+	if ((tDirection.magnitude() >= 5.f) || (fabsf(tDirection.y) > 1.5f))
 		return(false);
 
 	tDirection.normalize_safe();
 	mk_rotation(tDirection,tRotation);
-	float fResult0 = ffGetCoverInDirection(tRotation.yaw,tpNode);
+	
+	if (r_current.yaw >= tRotation.yaw) {
+		while (r_current.yaw - tRotation.yaw > PI)
+			tRotation.yaw += PI_MUL_2;
+	}
+	else
+		if (tRotation.yaw >= r_current.yaw) {
+			while (tRotation.yaw - r_current.yaw > PI)
+				r_current.yaw += PI_MUL_2;
+		}
+	
+	if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw - fEyeFov))
+		fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
+	
 	tDirection.sub(tPosition,vPosition);
 	tDirection.normalize_safe();
 	mk_rotation(tDirection,tRotation);
-	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
+	
+	if (r_current.yaw >= tRotation.yaw) {
+		while (r_current.yaw - tRotation.yaw > PI)
+			tRotation.yaw += PI_MUL_2;
+	}
+	else
+		if (tRotation.yaw >= r_current.yaw) {
+			while (tRotation.yaw - r_current.yaw > PI)
+				r_current.yaw += PI_MUL_2;
+		}
+	
+	if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw - fEyeFov))
+		float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
 
-	return(min(fResult0,fResult1) > .9f);
+	return(min(fResult0,fResult1) > .6f);
 }

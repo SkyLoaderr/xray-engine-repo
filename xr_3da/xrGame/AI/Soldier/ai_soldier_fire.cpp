@@ -901,6 +901,8 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	float fAngleOfView = eye_fov*PI/180.f;
 	float fMaxSquare = .20f, fBestAngle = -1.f;
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/40.f) {
+		if (ffGetCoverInDirection(fIncrement,tpCurrentNode) > .5f)
+			continue;
 		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,tpCurrentNode);
 		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,tpNextNode);
 		if (fSquare1 - fSquare0 > fMaxSquare) {

@@ -23,6 +23,8 @@
 #define RECHARGE_EPSILON				(0.f/6.f)
 #define SPECIAL_SQUAD					6
 
+#define TIME_TO_SEARCH					60000
+
 #define ATTACK_NON_FIRE_FIRE_DISTANCE	5.f
 #define ATTACK_FIRE_FIRE_DISTANCE		15.f
 //#define AMMO_NEED_RELOAD				6
@@ -303,13 +305,21 @@ void CAI_Soldier::OnFindAloneFire()
 			if ((AI_Path.fSpeed < EPS_L) || (!m_bActionStarted)) {
 				if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID == AI_NodeID))
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
-				if ((m_iCurrentSuspiciousNodeIndex == -1) || (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID == AI_NodeID))
+				if ((m_iCurrentSuspiciousNodeIndex == -1) || (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
 					m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
 				if (m_iCurrentSuspiciousNodeIndex != -1) {
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
 					Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwGroup] = 1;
-					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-					vfBuildPathToDestinationPoint(0);
+//					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+//					vfBuildPathToDestinationPoint(0);
+					vfInitSelector(SelectorPatrol,Squad,Leader);
+					SelectorPatrol.m_tpEnemyNode = Level().AI.Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
+					SelectorPatrol.m_tEnemyPosition = Level().AI.tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
+
+					if (AI_Path.bNeedRebuild)
+						vfBuildPathToDestinationPoint(0);
+					else
+						vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 				}
 				else {
 					if (AI_Path.bNeedRebuild) {
@@ -329,13 +339,31 @@ void CAI_Soldier::OnFindAloneFire()
 						vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 					}
 				}
+				m_bActionStarted = true;
 			}
 			else {
-				for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-					if ((Group.m_tpaSuspiciousNodes[i].dwSearched != 2) && (bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
-						Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+				for (int i=0, iCount = 0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+					if (Group.m_tpaSuspiciousNodes[i].dwSearched != 2) {
+						if (bfCheckForNodeVisibility(Group.m_tpaSuspiciousNodes[i].dwNodeID))
+							Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+						iCount++;
+					}
 				if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
 					AI_Path.TravelPath.clear();
+				if (!iCount && (Level().timeServer() - tpaDynamicObjects[iIndex].dwTime > TIME_TO_SEARCH)) {
+					tSavedEnemy = 0;
+					GO_TO_PREV_STATE;
+				}
+				if (m_iCurrentSuspiciousNodeIndex != -1) {
+					vfInitSelector(SelectorPatrol,Squad,Leader);
+					SelectorPatrol.m_tpEnemyNode = Level().AI.Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
+					SelectorPatrol.m_tEnemyPosition = Level().AI.tfGetNodeCenter(SelectorPatrol.m_tpEnemyNode);
+
+					if (AI_Path.bNeedRebuild)
+						vfBuildPathToDestinationPoint(0);
+					else
+						vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+				}
 			}
 		}
 		else {
