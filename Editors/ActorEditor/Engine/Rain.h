@@ -6,7 +6,6 @@
 #define RainH
 #pragma once
 
-#include "xr_collide_defs.h"
 //refs
 class ENGINE_API IRender_DetailModel;
 
@@ -75,7 +74,7 @@ private:
 	void							Born			(Item& dest, float radius, float height);
 //	BOOL							RayTest			(Item& dest, float height, Collide::rq_target tgt);
 	void							Hit				(Fvector& pos);
-	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range, Collide::rq_target tgt);
+	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range);
 	void							UpdateItem		(Item& dest, float height, BOOL bHit);
 public:
 	void							Render			();

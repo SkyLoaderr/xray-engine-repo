@@ -80,10 +80,10 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
 
 	height				*= 2.f;
-	UpdateItem			(dest,height,RayPick(dest.P,dest.D,height,Collide::rqtBoth));
+	UpdateItem			(dest,height,RayPick(dest.P,dest.D,height));
 }
 
-BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range, Collide::rq_target tgt)
+BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
 {
 	BOOL bRes 	= TRUE;
 #ifdef _EDITOR
@@ -97,7 +97,7 @@ BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range, Col
 	Collide::rq_result	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();
 	if (E)				E->setEnabled		(FALSE);
-	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,range,tgt,RQ);	
+	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,range,Collide::rqtBoth,RQ);	
 	if (E)				E->setEnabled		(TRUE);
     if (bRes) range 	= RQ.range;
 #endif
@@ -207,7 +207,7 @@ void	CEffect_Rain::Render	()
                 src_plane.intersectRayPoint(one.P,inv_dir,src_p);
                 float dist	= one.P.distance_to(src_p);
 				float height= 2.f*b_height;
-				if (RayPick(src_p,one.D,height,Collide::rqtBoth)){	
+				if (RayPick(src_p,one.D,height)){	
 					if (height<=dist)	one.invalidate();					// need born
 					else				UpdateItem(one,height-dist,TRUE);	// fly to point
 				}else{
