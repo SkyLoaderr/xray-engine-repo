@@ -1,36 +1,10 @@
----------------------------------------------------------------------------------------------------------------------
---Evaluators
-----------------------------------------------------------------------------------------------------------------------
--- Константа
-class "evaluator_allow_death" (property_evaluator)
-function evaluator_allow_death:__init(name, storage) super (nil, name)
-  self.a = storage
-end
-function evaluator_allow_death:evaluate ()
-    --return self.a.logic == nil
-    return true
-end
-
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
 -- Обычное поведение
-class "action_process_death" (action_base)
-function action_process_death:__init (npc_name,action_name,storage) super (nil, action_name)
+class "action_process_death"
+function action_process_death:__init(storage)
     self.a = storage
-end
-function action_process_death:initialize()
-    action_base.initialize(self)
-    self.object:set_node_evaluator()
-    self.object:set_path_evaluator()
-    self.object:set_desired_position()
-    self.object:set_desired_direction()        
-end
-function action_process_death:execute()
-	action_base.execute(self)
-end
-function action_process_death:finalize()
-   	action_base.finalize(self)
 end
 function action_process_death:death_callback(victim, who)
     if who ~= nil then
@@ -40,34 +14,14 @@ function action_process_death:death_callback(victim, who)
         printf("[%s] killed by [Unknown]", victim:name())
     end
 	xr_logic.try_switch_to_another_section(victim, self.a)
-	self.a.logic = nil    
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc, ini, scheme, section, storage)
-  	local operators    = {}
-  	local properties  = {}
-  	
-  	local manager = npc:motivation_action_manager()
-
-  	properties["allow_death"]   	= xr_evaluators_id.death + 1
-
-  	operators["death"]   	= xr_actions_id.death + 1
-
-  	manager:add_evaluator (properties["allow_death"],   this.evaluator_allow_death("evaluator_allow_death",storage))
-
-  	local action = this.action_process_death(npc, "action_process_death", storage)
-  	action:add_precondition(world_property(properties["allow_death"], false))
- 	action:add_effect(world_property(properties["allow_death"], true))
-  	manager:add_action(operators["death"], action)
+function add_to_binder(npc, ini, scheme, section, storage) 	
+ 	local action = this.action_process_death(storage)
 	npc:set_death_callback(action, "death_callback")
-	
-  	action = manager:action(stalker_ids.action_death_planner)
-  	action:add_precondition(world_property(properties["allow_death"], true))
-  	
-	
 end
 
 function set_death_checker(npc, ini, scheme, section)
