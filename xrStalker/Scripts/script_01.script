@@ -9,6 +9,11 @@ function main()
 
 	wait		(1000)
 
+	ps2:play_at_pos		("af_mercury_ball0000":position());
+	ps2:play_at_pos		("af_mercury_ball0001":position());
+	ps2:play_at_pos		("af_mercury_ball0002":position());
+	ps2:play_at_pos		("af_mercury_ball0003":position());
+
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 
