@@ -77,9 +77,9 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 		// this is fake!
 		sound_power			= 1.f;
 		CHitMemoryManager	*hit_memory_manager = dynamic_cast<CHitMemoryManager*>(this);
-		CEntityAlive		*entity_alive = dynamic_cast<CEntityAlive*>(object);
-		if (entity_alive && hit_memory_manager && (self->ID() != entity_alive->ID()))
-			hit_memory_manager->add_hit_object(entity_alive);
+		CEntityAlive		*_entity_alive = dynamic_cast<CEntityAlive*>(object);
+		if (_entity_alive && hit_memory_manager && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
+			hit_memory_manager->add_hit_object(_entity_alive);
 	}
 	
 	if (sound_power >= m_sound_threshold)
