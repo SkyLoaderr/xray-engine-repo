@@ -31,7 +31,7 @@ void CHangingLamp::Load		(LPCSTR section)
 
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
-	CSE_Abstract	*e	= (CSE_Abstract*)(DC);
+	CSE_Abstract	*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(e);
 	R_ASSERT				(lamp);
 	cNameVisual_set			(lamp->get_visual());
@@ -39,8 +39,10 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	Fcolor					clr;
 
 	// set bone id
+	R_ASSERT				(Visual()&&PKinematics(Visual()));
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(Visual())->LL_BoneID(lamp->spot_bone):-1;
-	clr.set					(lamp->color); clr.a = 1.f;
+	R_ASSERT2				(BONE_NONE != light_bone_idx, lamp->spot_bone);
+	clr.set					(lamp->color);			clr.a = 1.f;
 	clr.mul_rgb				(lamp->spot_brightness);
 	fBrightness				= lamp->spot_brightness;
 	light_render->set_range	(lamp->spot_range);
@@ -48,8 +50,6 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	light_render->set_cone	(lamp->spot_cone_angle);
 	light_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
 	light_render->set_active(true);
-
-	R_ASSERT				(Visual()&&PKinematics(Visual()));
 
 	lanim					= LALib.FindItem(lamp->color_animator);
 
