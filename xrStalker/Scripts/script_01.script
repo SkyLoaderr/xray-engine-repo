@@ -28,7 +28,7 @@ function main()
 	local actor   	= get_actor()
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()
-	local sound_01 = sound_object("scripts\\alarm\\Debris5-m")
+	local sound_01 = sound_object("scripts\\alarm\\f_side_rustle")
 	local sound_cough = sound_object("scripts\\idle\\cough1")
 	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
 	local sound_baran = sound_object("scripts\\idle\\say_baran")
