@@ -216,7 +216,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			BT.bHasAlpha= BT.THM.HasAlphaChannel();
 			if (!bLOD) 
 			{
-				if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
+				if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
 				{
 					Msg			("- loading: %s",N);
 					u32			w=0, h=0;

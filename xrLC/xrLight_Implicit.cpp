@@ -17,7 +17,7 @@ class ImplicitLumel
 {
 public:
 	Fvector	color;
-	DWORD	marker;
+	u32	marker;
 };
 
 class ImplicitDeflector
@@ -34,7 +34,7 @@ public:
 	
 	void			Allocate()
 	{
-		DWORD size	= Width()*Height()*sizeof(ImplicitLumel);
+		u32 size	= Width()*Height()*sizeof(ImplicitLumel);
 		lmap		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(lmap);
 		temp		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(temp);
 		ZeroMemory	(lmap,size);
@@ -46,19 +46,19 @@ public:
 		_FREE		(lmap);
 	}
 	
-	DWORD	Width()	{ return texture->dwWidth; }
-	DWORD	Height(){ return texture->dwHeight; }
+	u32		Width()	{ return texture->dwWidth; }
+	u32		Height(){ return texture->dwHeight; }
 	
-	DWORD&	Texel	(DWORD x, DWORD y)	
+	u32&	Texel	(u32 x, u32 y)	
 	{ 
 		return texture->pSurface[y*Width()+x];
 	}
 	
-	ImplicitLumel& Lumel(DWORD x, DWORD y)	
+	ImplicitLumel& Lumel(u32 x, u32 y)	
 	{ 
 		return lmap[y*Width()+x];
 	}
-	IC void GET(int x, int y, DWORD ref,ImplicitLumel& mix)
+	IC void GET(int x, int y, u32 ref,ImplicitLumel& mix)
 	{
 		// wrap pixels
 		if (x<0) x+=(int)Width();
@@ -74,7 +74,7 @@ public:
 		mix.marker		+= 1;
 	}
 	
-	BOOL ApplyBorders(DWORD ref) 
+	BOOL ApplyBorders(u32 ref) 
 	{
 		BOOL bNeedContinue = FALSE;
 		
@@ -113,7 +113,7 @@ public:
 		return bNeedContinue;
 	}
 	
-	void	Bounds	(DWORD ID, Fbox2& dest)
+	void	Bounds	(u32 ID, Fbox2& dest)
 	{
 		Face* F		= faces[ID];
 		_TCF& TC	= F->tc[0];
@@ -125,7 +125,7 @@ public:
 	void	Bounds_Summary (Fbox2& bounds)
 	{
 		bounds.invalidate();
-		for (DWORD I=0; I<faces.size(); I++)
+		for (u32 I=0; I<faces.size(); I++)
 		{
 			Fbox2	B;
 			Bounds	(I,B);
@@ -135,7 +135,7 @@ public:
 };
 
 
-DEF_MAP(Implicit,DWORD,ImplicitDeflector);
+DEF_MAP(Implicit,u32,ImplicitDeflector);
 
 static hash2D <Face*,384,384>	ImplicitHash;
 
@@ -143,9 +143,9 @@ class ImplicitThread : public CThread
 {
 public:
 	ImplicitDeflector*	DATA;			// Data for this thread
-	DWORD				y_start,y_end;
+	u32				y_start,y_end;
 
-	ImplicitThread		(DWORD ID, ImplicitDeflector* _DATA, DWORD _y_start, DWORD _y_end) : CThread (ID)
+	ImplicitThread		(u32 ID, ImplicitDeflector* _DATA, u32 _y_start, u32 _y_end) : CThread (ID)
 	{
 		DATA			= _DATA;
 		y_start			= _y_start;
@@ -166,19 +166,19 @@ public:
 		// Jitter data
 		UVpoint		JS;
 		JS.set		(g_params.m_lm_jitter/dim.u, g_params.m_lm_jitter/dim.v);
-		DWORD		Jcount;
+		u32		Jcount;
 		UVpoint*	Jitter;
 		Jitter_Select(Jitter, Jcount);
 		
 		// Lighting itself
 		DB.ray_options	(0);
 		Fcolor			C[9];
-		for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
-		for (DWORD V=y_start; V<y_end; V++)
+		for (u32 J=0; J<9; J++)	C[J].set(0,0,0,0);
+		for (u32 V=y_start; V<y_end; V++)
 		{
-			for (DWORD U=0; U<defl.Width(); U++)
+			for (u32 U=0; U<defl.Width(); U++)
 			{
-				DWORD		Fcount	= 0;
+				u32		Fcount	= 0;
 				
 				try {
 					for (J=0; J<Jcount; J++) 
@@ -279,7 +279,7 @@ void CBuild::ImplicitLighting()
 		
 		Progress (float(I-g_faces.begin())/float(g_faces.size()));
 		b_material&		M	= materials		[F->dwMaterial];
-		DWORD			Tid = M.surfidx;
+		u32			Tid = M.surfidx;
 		b_BuildTexture*	T	= &(textures[Tid]);
 		
 		Implicit_it		it	= calculator.find(Tid);
@@ -308,7 +308,7 @@ void CBuild::ImplicitLighting()
 		Fbox2 bounds;
 		defl.Bounds_Summary			(bounds);
 		ImplicitHash.initialize		(bounds,defl.faces.size());
-		for (DWORD fid=0; fid<defl.faces.size(); fid++)
+		for (u32 fid=0; fid<defl.faces.size(); fid++)
 		{
 			Face* F				= defl.faces[fid];
 			defl.Bounds			(fid,bounds);
@@ -317,24 +317,24 @@ void CBuild::ImplicitLighting()
 
 		// Start threads
 		CThreadManager			tmanager;
-		DWORD	stride			= defl.Height()/NUM_THREADS;
-		for (DWORD thID=0; thID<NUM_THREADS; thID++)
+		u32	stride			= defl.Height()/NUM_THREADS;
+		for (u32 thID=0; thID<NUM_THREADS; thID++)
 			tmanager.start		(new ImplicitThread(thID,&defl,thID*stride,thID*stride+stride));
 		tmanager.wait			();
 
 		// Expand
 		Status	("Processing lightmap...");
-		for (DWORD ref=254; ref>0; ref--)	if (!defl.ApplyBorders(ref)) break;
+		for (u32 ref=254; ref>0; ref--)	if (!defl.ApplyBorders(ref)) break;
 
 		Status	("Mixing lighting with texture...");
-		DWORD*	markup = LPDWORD(xr_malloc(defl.Height()*defl.Width()*4));
+		u32*	markup = (u32*)(xr_malloc(defl.Height()*defl.Width()*4));
 		{
-			for (DWORD V=0; V<defl.Height(); V++)
+			for (u32 V=0; V<defl.Height(); V++)
 			{
-				for (DWORD U=0; U<defl.Width(); U++)
+				for (u32 U=0; U<defl.Width(); U++)
 				{
 					// Retreive Texel
-					DWORD &OLD	= defl.Texel(U,V);
+					u32 &OLD	= defl.Texel(U,V);
 					Fcolor		cccT;
 					cccT.set	(OLD);
 
@@ -363,9 +363,9 @@ void CBuild::ImplicitLighting()
 			Msg		("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE*	raw_data		= LPBYTE(TEX.pSurface);
-			DWORD	w				= TEX.dwWidth;
-			DWORD	h				= TEX.dwHeight;
-			DWORD	pitch			= w*4;
+			u32	w				= TEX.dwWidth;
+			u32	h				= TEX.dwHeight;
+			u32	pitch			= w*4;
 			STextureParams* fmt		= &(TEX.THM);
 			DXTCompress				(out_name,raw_data,w,h,pitch,fmt,4);
 		}

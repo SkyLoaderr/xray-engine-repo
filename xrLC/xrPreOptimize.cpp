@@ -19,7 +19,7 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 	return false;
 }
 
-extern DWORD dwInvalidFaces;
+extern u32 dwInvalidFaces;
 
 void CBuild::PreOptimize()
 {
@@ -38,8 +38,8 @@ void CBuild::PreOptimize()
 	scale.set			(float(HDIM_X),float(HDIM_Y),float(HDIM_Z));
 	scale.div			(VMscale);
 	
-	DWORD	Vcount		= g_vertices.size(),	Vremoved=0;
-	DWORD	Fcount		= g_faces.size(),		Fremoved=0;
+	u32	Vcount		= g_vertices.size(),	Vremoved=0;
+	u32	Fcount		= g_faces.size(),		Fremoved=0;
 	
 	// Pre-alloc memory
 	int		_size	= (HDIM_X+1)*(HDIM_Y+1)*(HDIM_Z+1);
@@ -70,7 +70,7 @@ void CBuild::PreOptimize()
 		Fvector	&V		= pTest->P;
 
 		// Hash
-		DWORD ix,iy,iz;
+		u32 ix,iy,iz;
 		ix = iFloor		((V.x-VMmin.x)*scale.x);
 		iy = iFloor		((V.y-VMmin.y)*scale.y);
 		iz = iFloor		((V.z-VMmin.z)*scale.z);
@@ -96,7 +96,7 @@ void CBuild::PreOptimize()
 		{
 			H.push_back	(pTest);
 
-			DWORD ixE,iyE,izE;
+			u32 ixE,iyE,izE;
 			ixE = iFloor((V.x+VMeps.x-VMmin.x)*scale.x);
 			iyE = iFloor((V.y+VMeps.y-VMmin.y)*scale.y);
 			izE = iFloor((V.z+VMeps.z-VMmin.z)*scale.z);
@@ -145,7 +145,7 @@ void CBuild::PreOptimize()
 	}
 	
 	Status	("Cleanup...");
-	DWORD M1			= mem_Usage();
+	u32 M1			= mem_Usage();
 	g_vertices.erase	(remove(g_vertices.begin(),g_vertices.end(),(Vertex*)0),g_vertices.end());
 	g_faces.erase		(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
 	{
@@ -157,7 +157,7 @@ void CBuild::PreOptimize()
 				}
 	}
 	mem_Compact			();
-	DWORD M2 = mem_Usage();
+	u32 M2 = mem_Usage();
 	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
 	Msg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
 	Msg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
@@ -168,9 +168,9 @@ void CBuild::IsolateVertices()
 	Phase				("Isolating vertices...");
 	Status				("Processing...");
 	{
-		DWORD M1			= mem_Usage();
+		u32 M1			= mem_Usage();
 		g_bUnregister		= false;
-		DWORD verts_old		= g_vertices.size();
+		u32 verts_old		= g_vertices.size();
 		for (int it=0; it<int(g_vertices.size()); it++)
 		{
 			Progress(float(it)/float(g_vertices.size()));
@@ -180,7 +180,7 @@ void CBuild::IsolateVertices()
 		g_vertices.erase	(_end,g_vertices.end());
 		g_bUnregister		= true;
 		mem_Compact			();
-		DWORD M2			= mem_Usage();
+		u32 M2			= mem_Usage();
 		Msg("Compact: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
 	}
 }

@@ -11,7 +11,7 @@
 
 vector<CLightmap*>		g_lightmaps;
 
-extern BOOL ApplyBorders(b_texture &lm, DWORD ref);
+extern BOOL ApplyBorders(b_texture &lm, u32 ref);
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -57,24 +57,24 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	R_ASSERT			(L);
 	if (!bRotated) 
 	{
-		DWORD real_H	= (L->lm.dwHeight	+ 2*BORDER);
-		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
+		u32 real_H	= (L->lm.dwHeight	+ 2*BORDER);
+		u32 real_W	= (L->lm.dwWidth	+ 2*BORDER);
 		blit	(lm.pSurface,lmap_size,lmap_size,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	} else {
-		DWORD real_H	= (L->lm.dwHeight	+ 2*BORDER);
-		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
+		u32 real_H	= (L->lm.dwHeight	+ 2*BORDER);
+		u32 real_W	= (L->lm.dwWidth	+ 2*BORDER);
 		blit_r	(lm.pSurface,lmap_size,lmap_size,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }
 
 //////////////////////////////////////////////////////////////////////
-IC DWORD convert(float a)
+IC u32 convert(float a)
 {
 	if (a<=0)		return 0;
 	else if (a>=1)	return 255;
 	else			return iFloor(a*255.f);
 }
-IC void pixel	(int x, int y,  b_texture* T, DWORD C=RGBA_MAKE(0,255,0,0))
+IC void pixel	(int x, int y,  b_texture* T, u32 C=RGBA_MAKE(0,255,0,0))
 {
 	if (x<0) return; else if (x>=(int)T->dwWidth)	return;
 	if (y<0) return; else if (y>=(int)T->dwHeight)	return;
@@ -125,16 +125,16 @@ void CLightmap::Save()
 
 	// Borders correction
 	Status			("Borders...");
-	for (DWORD _y=0; _y<lmap_size; _y++)
+	for (u32 _y=0; _y<lmap_size; _y++)
 	{
-		for (DWORD _x=0; _x<lmap_size; _x++)
+		for (u32 _x=0; _x<lmap_size; _x++)
 		{
-			DWORD pixel = lm.pSurface[_y*lmap_size+_x];
+			u32 pixel = lm.pSurface[_y*lmap_size+_x];
 			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&RGBA_MAKE(255,255,255,0))|RGBA_MAKE(0,0,0,255);
 			else									pixel = (pixel&RGBA_MAKE(255,255,255,0));
 		}
 	}
-	for (DWORD ref=254; ref>0; ref--) {
+	for (u32 ref=254; ref>0; ref--) {
 		ApplyBorders	(lm,ref);
 		Progress		(1.f - float(ref)/254.f);
 	}
@@ -147,9 +147,9 @@ void CLightmap::Save()
 		sprintf	(lm.name,"lmap#%d",lmapNameID					); 
 		sprintf	(FN,"%s%s.dds",	pBuild->path.c_str(),lm.name	);
 		BYTE*	raw_data		= LPBYTE(lm.pSurface);
-		DWORD	w				= lm.dwWidth;
-		DWORD	h				= lm.dwHeight;
-		DWORD	pitch			= w*4;
+		u32	w				= lm.dwWidth;
+		u32	h				= lm.dwHeight;
+		u32	pitch			= w*4;
 
 		STextureParams fmt;
 		fmt.fmt					=		STextureParams::tfRGBA;
