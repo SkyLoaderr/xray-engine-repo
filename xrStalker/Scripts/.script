@@ -36,6 +36,7 @@ module ("xr_scout")
 module ("xr_trivial")
 module ("xr_report")
 module ("xr_rest")
+module ("xr_chaser")
 
 module ("bar_stalker")
 module ("barman")

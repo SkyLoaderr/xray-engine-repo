@@ -265,6 +265,13 @@ xr_patrol.add_to_binder(self.object, char_ini)
     		npc_id = -1
     	}
 xr_follower.add_to_binder(self.object, char_ini)
+    --chaser
+    xr_motivator.storage[self.object:id ()].chaser = {
+            enabled = false,        --enabled or disabled 
+            npc = nil,              --sacrifice game_object
+            ret_vertex = -1         --level vertex id for return
+            }
+xr_chaser.add_to_binder (self.object, char_ini)            
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
