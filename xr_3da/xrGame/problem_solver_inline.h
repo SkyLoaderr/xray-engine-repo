@@ -108,6 +108,12 @@ IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstrac
 	return					(m_operators);
 }
 
+TEMPLATE_SPECIALIZATION
+IC	typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstract::operators	()
+{
+	return					(m_operators);
+}
+
 // states
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::set_target_state		(const CState &state)
@@ -155,6 +161,12 @@ IC	const typename CProblemSolverAbstract::CConditionEvaluator *CProblemSolverAbs
 
 TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators() const
+{
+	return						(m_evaluators);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators()
 {
 	return						(m_evaluators);
 }
@@ -237,6 +249,20 @@ IC	void CProblemSolverAbstract::solve			()
 	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CBaseParameters());
 	m_actuality					= successful;
 #endif
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const xr_vector<typename CProblemSolverAbstract::_edge_type> &CProblemSolverAbstract::solution	() const
+{
+	return						(m_solution);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	typename CProblemSolverAbstract::COperator *CProblemSolverAbstract::get_operator (const _edge_type &operator_id)
+{
+	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
+	VERIFY						(m_operators.end() != I);
+	return						((*I).second);
 }
 
 #undef TEMPLATE_SPECIALIZATION

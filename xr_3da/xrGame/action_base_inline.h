@@ -135,31 +135,31 @@ IC	void CBaseAction::debug_log			(const EStateActions state_state) const
 {
 	switch (state_state) {
 		case eActionStateConstructed : {
-			Msg			("[%6d] state %s is constructed",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is constructed",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateLoaded : {
-			Msg			("[%6d] state %s is loaded",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is loaded",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateReinitialized : {
-			Msg			("[%6d] state %s is reinitialized",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is reinitialized",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateReloaded : {
-			Msg			("[%6d] state %s is reloaded",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is reloaded",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateInitialized : {
-			Msg			("[%6d] state %s is initialized",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is initialized",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateExecuted : {
-			Msg			("[%6d] state %s is executed",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is executed",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateFinalized : {
-			Msg			("[%6d] state %s is finalized",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is finalized",Level().timeServer(),m_action_name);
 			break;
 		}
 		default : NODEFAULT;

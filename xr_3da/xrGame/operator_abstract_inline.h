@@ -34,6 +34,21 @@ CAbstractOperator::~COperatorAbstract	()
 }
 
 TEMPLATE_SPECIALIZATION
+void CAbstractOperator::Load						(LPCSTR section)
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CAbstractOperator::reinit						(bool clear_all)
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CAbstractOperator::reload						(LPCSTR section)
+{
+}
+
+TEMPLATE_SPECIALIZATION
 IC	const xr_vector<typename CAbstractOperator::COperatorCondition>	&CAbstractOperator::effects	() const
 {
 	return				(m_effects);

@@ -50,6 +50,11 @@ public:
 		{
 			return			(m_operator_id < operator_id);
 		}
+
+		COperator			*get_operator()
+		{
+			return			(m_operator);
+		}
 	};
 	typedef xr_vector<SOperator>									OPERATOR_VECTOR;
 	typedef typename OPERATOR_VECTOR::const_iterator				const_iterator;
@@ -66,6 +71,10 @@ protected:
 	mutable CState				m_temp;
 	mutable bool				m_applied;
 	bool						m_actuality;
+
+protected:
+	IC		OPERATOR_VECTOR				&operators				();
+	IC		EVALUATOR_MAP				&evaluators				();
 	
 public:
 	// common interface
@@ -88,7 +97,7 @@ public:
 	IC		void						add_operator			(COperator			*_operator,		const _edge_type	&operator_id);
 	IC		void						remove_operator			(const _edge_type	&operator_id);
 	IC		const _edge_type			&current_operator		() const;
-	IC		const COperator				*get_operator			() const;
+	IC		COperator					*get_operator			(const _operator_id_type &operator_id);
 	IC		const OPERATOR_VECTOR		&operators				() const;
 
 	// state interface
@@ -105,6 +114,7 @@ public:
 
 	// solver interface
 	IC		void						solve					();
+	IC		const xr_vector<_edge_type>	&solution				() const;
 };
 
 #include "problem_solver_inline.h"

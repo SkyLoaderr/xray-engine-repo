@@ -7,3 +7,99 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
+#define TEMPLATE_SPECIALIZATION template <typename _object_type>
+#define CPlanner				CActionBase<_object_type>
+
+TEMPLATE_SPECIALIZATION
+IC	CPlanner::CActionPlanner			()
+{
+	init					();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	CPlanner::~CActionPlanner			()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::init				()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::Load				(LPCSTR section)
+{
+	{
+		OPERATOR_VECTOR::iterator	I = operators().begin();
+		OPERATOR_VECTOR::iterator	E = operators().end();
+		for ( ; I != E; ++I)
+			(*I).get_operator()->Load(section);
+	}
+	{
+		EVALUATOR_MAP::iterator		I = evaluators().begin();
+		EVALUATOR_MAP::iterator		E = evaluators().end();
+		for ( ; I != E; ++I)
+			(*I).second->Load		(section);
+	}
+}
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::reinit				(_object_type *object, bool clear_all)
+{
+	inherited::reinit		(clear_all);
+	{
+		OPERATOR_VECTOR::iterator	I = operators().begin();
+		OPERATOR_VECTOR::iterator	E = operators().end();
+		for ( ; I != E; ++I)
+			(*I).get_operator->reinit(object);
+	}
+	{
+		EVALUATOR_MAP::iterator		I = evaluators().begin();
+		EVALUATOR_MAP::iterator		E = evaluators().end();
+		for ( ; I != E; ++I)
+			(*I).second->reinit		(object);
+	}
+	m_actuality				= true;
+}
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::reload				(LPCSTR section)
+{
+	{
+		OPERATOR_VECTOR::iterator	I = operators().begin();
+		OPERATOR_VECTOR::iterator	E = operators().end();
+		for ( ; I != E; ++I)
+			(*I).get_operator->reload(section);
+	}
+	{
+		EVALUATOR_MAP::iterator		I = evaluators().begin();
+		EVALUATOR_MAP::iterator		E = evaluators().end();
+		for ( ; I != E; ++I)
+			(*I).second->reload		(section);
+	}
+}
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::update				(u32 time_delta)
+{
+	solve					();
+}
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::follow_solution	()
+{
+	VERIFY					(!solution().empty());
+	m_path.erase			(m_solution.begin());
+	if (!m_solution.empty())
+		m_current_operator	= m_solution.front();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	CPlanner::COperator &CPlanner::action	(u32 action_id)
+{
+	return				(*get_operator(action_id));
+}
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CPlanner

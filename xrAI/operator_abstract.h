@@ -28,6 +28,9 @@ public:
 	IC											COperatorAbstract	();
 	IC											COperatorAbstract	(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects);
 	virtual										~COperatorAbstract	();
+	virtual	void								Load				(LPCSTR section);
+	virtual void								reinit				(bool clear_all);
+	virtual void								reload				(LPCSTR section);
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
 	IC		void								add_effect			(const COperatorCondition &effect);
 	virtual bool								applicable			(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const;

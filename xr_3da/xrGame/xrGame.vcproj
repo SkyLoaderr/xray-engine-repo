@@ -297,9 +297,6 @@
 						Name="ActionPlanner"
 						Filter="">
 						<File
-							RelativePath=".\action_planner.cpp">
-						</File>
-						<File
 							RelativePath=".\action_planner.h">
 						</File>
 						<File
@@ -307,29 +304,13 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ActionManager"
+						Name="ActionPlannerAction"
 						Filter="">
 						<File
-							RelativePath=".\action_manager.cpp">
+							RelativePath=".\action_planner_action.h">
 						</File>
 						<File
-							RelativePath=".\action_manager.h">
-						</File>
-						<File
-							RelativePath=".\action_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="ActionManagerAction"
-						Filter="">
-						<File
-							RelativePath=".\action_manager_action.cpp">
-						</File>
-						<File
-							RelativePath=".\action_manager_action.h">
-						</File>
-						<File
-							RelativePath=".\action_manager_action_inline.h">
+							RelativePath=".\action_planner_action_inline.h">
 						</File>
 					</Filter>
 				</Filter>
