@@ -41,7 +41,7 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (!!(l_tInput & CMovementAction::eInputKeyEngineOff)) StopEngine();
 
 	if (_abs(tpEntityAction->m_tMovementAction.m_fSpeed) > EPS_L)
-		m_max_rpm = tpEntityAction->m_tMovementAction.m_fSpeed*m_current_gear_ratio;
+		m_max_rpm = _abs(tpEntityAction->m_tMovementAction.m_fSpeed*m_current_gear_ratio);
 
 	return	(false);
 }
