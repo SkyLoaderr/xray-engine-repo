@@ -28,11 +28,11 @@ protected:
 	
 	BOOL					bGradient;
 protected:
-	IC virtual	float		GetRealX(float x)		{return Device._x2real(x);}
-	IC virtual	float		GetRealY(float y)		{return Device._y2real(y);}
-	IC virtual	float		GetRealWidth(float sz)	{return sz*Device.dwWidth;}
-	IC virtual	float		GetRealHeight(float sz)	{return sz*Device.dwWidth;}
-	IC virtual	float		GetCurrentSize()		{return 2*fCurrentSize;}
+	virtual	float			GetRealX(float x)		{return Device._x2real(x);}
+	virtual	float			GetRealY(float y)		{return Device._y2real(y);}
+	virtual	float			GetRealWidth(float sz)	{return sz*Device.dwWidth;}
+	virtual	float			GetRealHeight(float sz)	{return sz*Device.dwWidth;}
+	virtual	float			GetCurrentSize()		{return 2*fCurrentSize;}
 
 public:
 	CFontBase				();
