@@ -97,6 +97,17 @@ protected:
 	xr_map<u32,STravelParams>					m_movement_params;
 
 private:
+	enum EDirectionType {
+		eDirectionTypeFP = u32(0),
+		eDirectionTypeFN = u32(1),
+		eDirectionTypeSP = u32(0),
+		eDirectionTypeSN = u32(2),
+		eDirectionTypePP = eDirectionTypeFP | eDirectionTypeSP, // both linear velocities are positive
+		eDirectionTypeNN = eDirectionTypeFN | eDirectionTypeSN, // both linear velocities are negative
+		eDirectionTypePN = eDirectionTypeFP | eDirectionTypeSN, // the first linear velocity is positive, the second one - negative
+		eDirectionTypeNP = eDirectionTypeFN | eDirectionTypeSP, // the first linear velocity is negative, the second one - positive
+	};
+
 	u32											m_current_travel_point;
 	bool										m_actuality;
 	bool										m_failed;
@@ -131,16 +142,16 @@ private:
 
 	IC		bool	check_mask				(u32					mask,			  u32							test) const;
 	IC		void	adjust_point			(const Fvector2			&source,		  float							yaw,				  float							magnitude,				  Fvector2						&dest) const;
-	IC		void	assign_angle			(float					&angle,		const float							start_yaw,		const float							dest_yaw,			const bool							positive,			const bool							start = true) const;
+	IC		void	assign_angle			(float					&angle,		const float							start_yaw,		const float							dest_yaw,			const bool							positive,			const EDirectionType				direction_type,				const bool				start = true) const;
 	IC		void	compute_circles			(STrajectoryPoint		&point,			  SCirclePoint					*circles);
-			bool	compute_tangent			(const STrajectoryPoint	&start,		const SCirclePoint					&start_circle,	const STrajectoryPoint				&dest,				const SCirclePoint					&dest_circle,		      SCirclePoint					*tangents);
+			bool	compute_tangent			(const STrajectoryPoint	&start,		const SCirclePoint					&start_circle,	const STrajectoryPoint				&dest,				const SCirclePoint					&dest_circle,		      SCirclePoint					*tangents,					const EDirectionType	direction_type);
 			bool	build_circle_trajectory	(const STrajectoryPoint &position,		  xr_vector<STravelPathPoint>	*path,				  u32							*vertex_id,			const u32							velocity);
 			bool	build_line_trajectory	(const STrajectoryPoint &start,		const STrajectoryPoint				&dest,				  u32							vertex_id,				  xr_vector<STravelPathPoint>	*path,				const u32							velocity);
-			bool	build_trajectory		(const STrajectoryPoint &start,		const STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,				const u32							velocity1,			const u32							velocity2,					const u32	velocity3);
-			bool	build_trajectory		(	   STrajectoryPoint &start,			  STrajectoryPoint				&dest,			const SCirclePoint					tangents[4][2],		const u32							tangent_count,		      xr_vector<STravelPathPoint>	*path,							  float	&time,							const u32 velocity1, const u32 velocity2, const u32 velocity3);
-			bool	compute_trajectory		(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,					  float							&time,				const u32							velocity1,					const u32	velocity2,						const u32 velocity3);
-			bool	compute_path			(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*m_tpTravelLine, 	const xr_vector<STravelParamsIndex> &m_start_params,	const xr_vector<STravelParamsIndex> &m_dest_params,				const u32	straight_line_index,			const u32 straight_line_index_negative);
-			bool	init_build				(const xr_vector<u32>	&level_path,	  u32							intermediate_index,	  STrajectoryPoint				&start,					  STrajectoryPoint				&dest,					  u32							&straight_line_index,			  u32	&straight_line_index_negative);
+			bool	build_trajectory		(const STrajectoryPoint &start,		const STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,				const u32							velocity1,			const u32							velocity2,					const u32				velocity3);
+			bool	build_trajectory		(	   STrajectoryPoint &start,			  STrajectoryPoint				&dest,			const SCirclePoint					tangents[4][2],		const u32							tangent_count,		      xr_vector<STravelPathPoint>	*path,							  float				&time,							const u32 velocity1, const u32				velocity2,		const u32 velocity3);
+			bool	compute_trajectory		(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,					  float							&time,				const u32							velocity1,					const u32				velocity2,						const u32 velocity3, const EDirectionType	direction_type);
+			bool	compute_path			(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*m_tpTravelLine, 	const xr_vector<STravelParamsIndex> &m_start_params,	const xr_vector<STravelParamsIndex> &m_dest_params,				const u32				straight_line_index,			const u32 straight_line_index_negative);
+			bool	init_build				(const xr_vector<u32>	&level_path,	  u32							intermediate_index,	  STrajectoryPoint				&start,					  STrajectoryPoint				&dest,					  u32							&straight_line_index,			  u32				&straight_line_index_negative);
 			bool	fill_key_points			(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
 			void	add_patrol_point		();
 			void	build_path_via_key_points(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
@@ -161,6 +172,7 @@ protected:
 	IC		void	set_try_min_time		(const bool try_min_time);
 	IC		void	set_use_dest_orientation(const bool use_dest_orientation);
 	IC		void	set_state_patrol_path	(const bool state_patrol_path);
+	IC		bool	state_patrol_path		() const;
 
 	friend class CScriptMonster;
 	friend class CMovementManager;
@@ -171,7 +183,8 @@ protected:
 public:
 					CDetailPathManager		();
 	virtual			~CDetailPathManager		();
-	virtual void	Init					();
+			void	Init					();
+	virtual	void	reinit					();
 			bool	valid					() const;
 			const	Fvector direction		();
 			bool	actual					() const;

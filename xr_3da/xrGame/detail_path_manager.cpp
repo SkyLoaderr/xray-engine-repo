@@ -21,7 +21,11 @@ CDetailPathManager::~CDetailPathManager	()
 
 void CDetailPathManager::Init			()
 {
-	CAI_ObjectLocation::Init();
+}
+
+void CDetailPathManager::reinit			()
+{
+	CAI_ObjectLocation::reinit();
 	m_actuality				= false;
 	m_failed				= false;
 	m_start_position		= Fvector().set(0,0,0);
@@ -29,7 +33,6 @@ void CDetailPathManager::Init			()
 	m_current_travel_point	= u32(-1);
 	m_path_type				= eDetailPathTypeSmooth;
 	m_path.clear			();
-	m_movement_params.clear	();
 	m_desirable_mask		= u32(-1);
 	m_velocity_mask			= 0;
 	m_try_min_time			= false;

@@ -6,41 +6,44 @@
 #define AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_
 #pragma once
 
-#include "../feel_vision.h"
-#include "../feel_sound.h"
 #include "../feel_touch.h"
-#include "entity.h"
+#include "entity_alive.h"
 
 #include "ai_space.h"
 #include "AI/ai_monster_state.h"
 #include "AI/script/ai_script_monster.h"
 #include "ai_monster_space.h"
-#include "movement_manager.h"
-#include "enemy_selector.h"
+
+#include "damage_manager.h"
+#include "event_memory_manager.h"
+#include "location_manager.h"
+#include "material_manager.h"
 #include "memory_manager.h"
+#include "movement_manager.h"
+#include "selector_manager.h"
+#include "sound_player.h"
 
 //#define IGNORE_ACTOR
 
 using namespace MonsterSpace;
 
 class CCustomMonster : 
-	public CEntityAlive, 
-	public Feel::Vision, 
-	public Feel::Sound, 
-	public Feel::Touch,
-	public CScriptMonster,
-	public CMovementManager,
-	public CEnemySelector,
-	public CMemoryManager
+			public CEntityAlive, 
+			public CScriptMonster,
+			public Feel::Touch,
+			public CDamageManager,
+			public CEventMemoryManager,
+			public CLocationManager,
+			public CMaterialManager,
+			public CMemoryManager,
+	virtual	public CMovementManager,
+			public CSelectorManager,
+			public CSoundPlayer
+
 {
 	typedef	CEntityAlive	inherited;
 protected:
 	
-	u32				_FB_hit_RelevantTime;
-	u32				_FB_sense_RelevantTime;
-	float			_FB_look_speed;
-	float			_FB_invisible_hscale;
-
 	struct				SAnimState
 	{
 		CMotionDef		*fwd;
@@ -51,46 +54,14 @@ protected:
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 	};
 
-	typedef struct tagSDynamicObject {
-		u32				dwTime;
-		u32				dwUpdateCount;
-		u32				dwNodeID;
-		Fvector			tSavedPosition;
-		SRotation		tOrientation;
-		u32				dwMyNodeID;
-		Fvector			tMySavedPosition;
-		SRotation		tMyOrientation;
-		CEntity			*tpEntity;
-	} SDynamicObject;
-
-	typedef struct tagSDynamicSound {
-		ESoundTypes		eSoundType;
-		u32				dwTime;
-		float			fPower;
-		u32				dwUpdateCount;
-		Fvector			tSavedPosition;
-		u32				dwNodeID;
-		SRotation		tOrientation;
-		Fvector			tMySavedPosition;
-		u32				dwMyNodeID;
-		SRotation		tMyOrientation;
-		CEntity			*tpEntity;
-	} SDynamicSound;
-
-	typedef struct tagSSimpleSound {
-		ESoundTypes		eSoundType;
-		u32				dwTime;
-		float			fPower;
-		Fvector			tSavedPosition;
-		CEntity			*tpEntity;
-	} SSimpleSound;
-
 public:
 	// Eyes
 	Fmatrix				eye_matrix;
 	int					eye_bone;
 	float				eye_fov;
 	float				eye_range;
+
+	float				m_fCurSpeed;
 
 	u32					eye_pp_stage;
 	u32					eye_pp_timestamp;
@@ -99,29 +70,12 @@ public:
 	BOOL				NET_WasExtrapolating;
 
 	Fvector				tWatchDirection;
-	float				m_fMinSpeed;
-	float				m_fMaxSpeed;
-	float				m_fCurSpeed;
-
-	u32					m_dwSoundUpdate;
-	float				m_fSoundPower;
-	float				m_fStartPower;
-	CLevel::SPath		*m_tpPath;
-	//CWeaponList			*Weapons;
-
 
 	virtual void		Think() = 0;
 
-	// Rotation
-	CMovementManager::SBoneRotation	m_head;
-
 	float				m_fTimeUpdateDelta;
-	u32					m_dwLoopCount;
-	int					m_iCurrentPatrolIndex;
-	bool				m_bPatrolPathInverted;
 	u32					m_dwLastUpdateTime;
 	u32					m_current_update;
-	xr_vector<CObject*>	m_tpaVisibleObjects;
 //	Fmatrix				m_tServerTransform;
 	
 	u32					m_dwCurrentTime;		// time updated in UpdateCL 
@@ -174,18 +128,14 @@ public:
 
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
 	virtual void		g_WeaponBones			(int &/**L/**/, int &/**R1/**/, int &/**R2/**/) {};
-	virtual void		Load					( LPCSTR	section );				
 	virtual void		shedule_Update					( u32		DT		);
 	virtual void		UpdateCL				( );
-
-	// Team visibility
-	virtual void		GetVisible				(objVisible& R);
 
 	// Network
 	virtual void		net_Export				(NET_Packet& P);				// export to server
 	virtual void		net_Import				(NET_Packet& P);				// import from server
 
-	virtual void		SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
+	virtual void		SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed ) = 0;
 
 	// debug
 #ifdef DEBUG
@@ -196,62 +146,20 @@ public:
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
 
-	// miscellaneous
-	IC		int			ifGetMemberIndex() 
-	{
-		xr_vector<CEntity*> &tpaMembers = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members;
-		int iCount = (int)tpaMembers.size();
-		for (int i=0; i<iCount; ++i)
-			if (this == tpaMembers[i])
-				return(i);
-		return(-1);
-	};
+	IC	int						ifGetMemberIndex		();
+	IC	bool					angle_lerp_bounds		(float &a, float b, float c, float d);
+	IC	CGroup					*getGroup				();
+	IC	void					vfNormalizeSafe			(Fvector& Vector);
 
-	IC		void		vfResetPatrolData()
-	{
-		m_dwLoopCount = 0;
-		m_iCurrentPatrolIndex = -1;
-		m_bPatrolPathInverted = false;
-	};
-
-	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d)
-	{
-		if (c*d >= angle_difference(a,b)) {
-			a = b;
-			return(true);
-		}
-		
-		angle_lerp(a,b,c,d);
-
-		return(false);
-	};
-	
-	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
-
-	IC void vfNormalizeSafe(Fvector& Vector)
-	{
-		float fMagnitude = Vector.magnitude(); 
-		if (fMagnitude > EPS_L) {
-			Vector.x /= fMagnitude;
-			Vector.y /= fMagnitude;
-			Vector.z /= fMagnitude;
-		}
-		else {
-			Vector.x = 1.f;
-			Vector.y = 0.f;
-			Vector.z = 0.f;
-		}
-	}
 public:
-	virtual	float				ffGetFov				()										{return eye_fov;}	
-	virtual	float				ffGetRange				()										{return eye_range;}
+	virtual	float				ffGetFov				()	const								{return eye_fov;}	
+	virtual	float				ffGetRange				()	const								{return eye_range;}
 //	virtual	void				feel_touch_new			(CObject	*O);
 	virtual BOOL				feel_visible_isRelevant	(CObject		*O);
 	virtual void				renderable_Render		();
 	virtual	void				Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual void				OnEvent					( NET_Packet& P, u16 type		);
 	virtual void				net_Destroy				();
-	virtual	void				Init					();
 	virtual BOOL				UsedAI_Locations		();
 	///////////////////////////////////////////////////////////////////////
 	virtual u16					PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}
@@ -259,5 +167,12 @@ public:
 	virtual void				PHUnFreeze				()			{return inherited ::PHUnFreeze();}
 	virtual void				PHFreeze				()			{return inherited ::PHFreeze();}
 	///////////////////////////////////////////////////////////////////////
+			void				Init					();
+	virtual void				Load					(LPCSTR	section);				
+	virtual	void				reinit					();
+	virtual void				reload					(LPCSTR	section);				
 };
+
+#include "custommonster_inline.h"
+
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

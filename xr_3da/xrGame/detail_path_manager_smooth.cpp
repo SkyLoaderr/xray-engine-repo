@@ -28,17 +28,23 @@ IC	T cos_apb(T sina, T cosa, T sinb, T cosb)
 	return				(cosa*cosb - sina*sinb);
 }
 
+bool is_negative(float a)
+{
+	return				(!fis_zero(a) && (a < 0.f));
+}
+
 bool CDetailPathManager::compute_tangent(
 	const STrajectoryPoint	&start, 
 	const SCirclePoint		&start_circle, 
 	const STrajectoryPoint	&dest, 
 	const SCirclePoint		&dest_circle, 
-	SCirclePoint			*tangents
+	SCirclePoint			*tangents,
+	const EDirectionType	direction_type
 )
 {
 	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, yaw1, yaw2;
 	Fvector2			direction, temp;
-	
+
 	// computing 2D cross product for start point
 	direction.sub		(start.position,start_circle.center);
 	if (fis_zero(direction.square_magnitude()))
@@ -52,6 +58,7 @@ bool CDetailPathManager::compute_tangent(
 	direction.sub		(dest.position,dest_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
+
 	dest_yaw			= direction.getH();
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
 	dest_cp				= dest.direction.cross_product(direction);
@@ -69,11 +76,11 @@ bool CDetailPathManager::compute_tangent(
 				tangents[0]			= tangents[1] = start_circle;
 				if (start_cp >= 0.f) {
 					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true);
+					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true,direction_type);
 				}
 				else {
 					adjust_point	(start_circle.center,yaw1 - PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false);
+					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false,direction_type);
 				}
 
 				tangents[1].point	= tangents[0].point;
@@ -122,16 +129,16 @@ bool CDetailPathManager::compute_tangent(
 	temp.sub			(tangents[0].point,start_circle.center);
 	float				tangent_cp = direction.cross_product(temp);
 	if (start_cp*tangent_cp >= 0) {
-		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0);
-		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,false);
+		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0,direction_type);
+		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,direction_type,false);
 		return			(true);
 	}
 
 	// compute external tangent points
 	adjust_point		(start_circle.center,yaw1 - alpha,	start_circle.radius,tangents[0].point);
 	adjust_point		(dest_circle.center, yaw2 - alpha,	dest_circle.radius, tangents[1].point);
-	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0);
-	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,false);
+	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0,direction_type);
+	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,direction_type,false);
 
 	return				(true);
 }
@@ -276,7 +283,7 @@ bool CDetailPathManager::build_trajectory(
 	SDist			dist[4];
 	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(velocity2);
 	VERIFY			(m_movement_params.end() != I);
-	float			straight_velocity = (*I).second.linear_velocity;
+	float			straight_velocity = _abs((*I).second.linear_velocity);
 	{
 		for (u32 i=0; i<tangent_count; ++i) {
 			dist[i].index = i;
@@ -314,7 +321,8 @@ bool CDetailPathManager::compute_trajectory(
 	float						&time,
 	const u32					velocity1,
 	const u32					velocity2,
-	const u32					velocity3
+	const u32					velocity3,
+	const EDirectionType		direction_type
 )
 {
 	SCirclePoint				start_circles[2], dest_circles[2];
@@ -330,7 +338,8 @@ bool CDetailPathManager::compute_trajectory(
 					start_circles[i],
 					dest,
 					dest_circles[j],
-					tangent_points[tangent_count]
+					tangent_points[tangent_count],
+					direction_type
 				)
 			)
 				++tangent_count;
@@ -339,8 +348,8 @@ bool CDetailPathManager::compute_trajectory(
 }
 
 bool CDetailPathManager::compute_path(
-	STrajectoryPoint			&start,
-	STrajectoryPoint			&dest,
+	STrajectoryPoint			&_start,
+	STrajectoryPoint			&_dest,
 	xr_vector<STravelPathPoint>	*m_tpTravelLine,
 	const xr_vector<STravelParamsIndex> &start_params,
 	const xr_vector<STravelParamsIndex> &dest_params,
@@ -348,57 +357,52 @@ bool CDetailPathManager::compute_path(
 	const u32					straight_line_index_negative
 )
 {
-#pragma todo("Dima to Dima : Implement different signs velocities support")
-	STrajectoryPoint		start_save = start;
-	STrajectoryPoint		dest_save = dest;
-	float					min_time = flt_max, time;
-	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
-	u32						real_straight_line_index;
+	STrajectoryPoint			start = _start;
+	STrajectoryPoint			dest = _dest;
+	float						min_time = flt_max, time;
+	u32							size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
+	u32							real_straight_line_index;
 	xr_vector<STravelParamsIndex>::const_iterator I = start_params.begin(), B = I;
 	xr_vector<STravelParamsIndex>::const_iterator E = start_params.end();
 	for ( ; I != E; ++I) {
-		start					= start_save;
-		(STravelParams&)start	= (*I);
-		real_straight_line_index= straight_line_index;
-		if (!fis_zero(start.linear_velocity) && (start.linear_velocity < 0.f)) {
-			start.direction.mul			(-1.f);
-			start.linear_velocity		*= -1;
-			real_straight_line_index	= straight_line_index_negative;
+		EDirectionType				direction_type = eDirectionTypePP;
+		start						= _start;
+		(STravelParams&)start		= (*I);
+		real_straight_line_index	= straight_line_index;
+		if (is_negative(start.linear_velocity)) {
+			real_straight_line_index= straight_line_index_negative;
+			direction_type			= EDirectionType(direction_type | eDirectionTypeFN);
+			start.direction.mul		(-1.f);
 		}
 		xr_vector<STravelParamsIndex>::const_iterator i = dest_params.begin(), b = i;
 		xr_vector<STravelParamsIndex>::const_iterator e = dest_params.end();
 		for ( ; i != e; ++i) {
-			dest					= dest_save;
+			dest					= _dest;
 			(STravelParams&)dest	= (*i);
-			if (!fis_zero(dest.linear_velocity) && (dest.linear_velocity < 0.f)) {
-				dest.direction.mul		(-1.f);
-				dest.linear_velocity	*= -1;
-			}
+
+			if (is_negative(dest.linear_velocity))
+				direction_type		= EDirectionType(direction_type | eDirectionTypeSN);
+
+			if (direction_type & eDirectionTypeFN)
+				dest.direction.mul	(-1.f);
+
 			m_temp_path.clear		();
-			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,real_straight_line_index,(*i).index)) {
+			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,real_straight_line_index,(*i).index,direction_type)) {
 				if (!m_try_min_time || (time < min_time)) {
 					min_time		= time;
 					if (m_tpTravelLine) {
 						m_tpTravelLine->resize(size);
 						m_tpTravelLine->insert(m_tpTravelLine->end(),m_temp_path.begin(),m_temp_path.end());
-						if (!m_try_min_time) {
-							start	= start_save;
-							dest	= dest_save;
+						if (!m_try_min_time)
 							return	(true);
-						}
 					}
-					else {
-						start		= start_save;
-						dest		= dest_save;
+					else
 						return		(true);
-					}
 				}
 			}
 		}
 	}
 	
-	start					= start_save;
-	dest					= dest_save;
 	if (fsimilar(min_time,flt_max))
 		return				(false);
 	
@@ -566,7 +570,7 @@ void CDetailPathManager::build_path_via_key_points(
 			if (!m_path.empty()) {
 				xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(m_path.back().velocity);
 				VERIFY				(m_movement_params.end() != I);
-				if (!fis_zero((*I).second.linear_velocity) && ((*I).second.linear_velocity < 0.f))
+				if (is_negative((*I).second.linear_velocity))
 					s.direction.mul		(-1.f);
 			}
 

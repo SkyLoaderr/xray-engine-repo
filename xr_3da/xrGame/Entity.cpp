@@ -188,7 +188,8 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	// Register
 	CSquad& S				= Level().get_squad	(id_Team,id_Squad);
 	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
-	G.Members.push_back		(this);
+
+	G.Member_Add			(this);
 	if (S.Leader==0)		S.Leader			=this;
 	++G.m_dwAliveCount;
 	
@@ -219,27 +220,6 @@ void CEntity::net_Destroy	()
 		if (!G.Members.empty())	S.Leader	= G.Members.back();
 	}
 
-	for (u32 T=0; T<Level().Teams.size(); ++T)
-	{
-		CTeam&	TD		= Level().Teams[T];
-		for (u32 S=0; S<TD.Squads.size(); ++S)
-		{
-			CSquad&	SD	= TD.Squads[S];
-			objVisible& VIS	= SD.KnownEnemys;
-
-			VIS.clear		();
-			for (u32 G=0; G<SD.Groups.size(); ++G)
-			{
-				CGroup& GD = SD.Groups[G];
-				for (u32 M=0; M<GD.Members.size(); ++M)
-				{
-					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
-					if (E && E->g_Alive())	E->GetVisible(VIS);
-				}
-			}
-		}
-	}
-	
 	CActor	*pA = dynamic_cast<CActor*>(this);
 	if (!pA) {
 		Level().SquadMan.RemoveMember((u8)g_Squad(), this);
@@ -269,160 +249,3 @@ void CEntity::KillEntity(CObject* who)
 
 	m_dwDeathTime = Level().GetGameTime();
 }
-
-
-
-/////////////////////////////////////////////
-// CEntityAlive
-/////////////////////////////////////////////
-void CEntityAlive::shedule_Update(u32 dt)
-{
-	inherited::shedule_Update	(dt);
-
-	//condition update with the game time pass
-	UpdateCondition();
-
-	//убить сущность
-	if(Local() && !g_Alive() && !AlreadyDie())
-	{
-		if(GetWhoHitLastTime())
-			KillEntity(GetWhoHitLastTime());
-		else
-			KillEntity(this);
-	}
-}
-
-void CEntityAlive::Load		(LPCSTR section)
-{
-	inherited::Load			(section);
-	CEntityCondition::Load	(section);
-
-	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
-
-	/*
-	// m_PhysicMovementControl: General
-	m_PhysicMovementControl.SetParent		(this);
-	Fbox	bb;
-
-	// m_PhysicMovementControl: BOX
-	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
-	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	m_PhysicMovementControl.SetBox		(0,bb);
-
-	// m_PhysicMovementControl: BOX
-	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
-	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
-	m_PhysicMovementControl.SetBox		(1,bb);
-
-	// m_PhysicMovementControl: Foots
-	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
-	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	m_PhysicMovementControl.SetFoots	(vFOOT_center,vFOOT_size);
-
-	// m_PhysicMovementControl: Crash speed and mass
-	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
-	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
-	float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	m_PhysicMovementControl.SetCrashSpeeds	(cs_min,cs_max);
-	m_PhysicMovementControl.SetMass		(mass);
-	*/
-
-	// m_PhysicMovementControl: Frictions
-	/*
-	float af, gf, wf;
-	af					= pSettings->r_float	(section,"ph_friction_air"	);
-	gf					= pSettings->r_float	(section,"ph_friction_ground");
-	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	m_PhysicMovementControl.SetFriction	(af,wf,gf);
-
-	// BOX activate
-	m_PhysicMovementControl.ActivateBox	(0);
-	*/
-}
-
-BOOL CEntityAlive::net_Spawn	(LPVOID DC)
-{
-	inherited::net_Spawn	(DC);
-
-	//m_PhysicMovementControl.SetPosition	(Position());
-	//m_PhysicMovementControl.SetVelocity	(0,0,0);
-	return					TRUE;
-}
-
-void CEntityAlive::net_Destroy	()
-{
-	CInventoryOwner	*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(this);
-	if (l_tpInventoryOwner) {
-		l_tpInventoryOwner->m_inventory.ClearAll();
-		l_tpInventoryOwner->m_trade_storage.ClearAll();
-	}
-
-	inherited::net_Destroy		();
-}
-
-void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
-{
-//	float Q					= 2*float(amount)/m_PhysicMovementControl.GetMass();
-//	m_PhysicMovementControl.vExternalImpulse.mad	(vWorldDir,Q);
-}
-
-void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
-{
-	//изменить состояние, перед тем как родительский класс обработае хит
-	ConditionHit(who, P, hit_type, element);
-
-
-	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
-}
-
-CEntityAlive::CEntityAlive()
-{
-	m_dwDeathTime	= 0;
-	m_fAccuracy		= 25.f;
-	m_fIntelligence	= 25.f;
-}
-
-CEntityAlive::~CEntityAlive()
-{
-}
-
-void CEntityAlive::BuyItem(LPCSTR buf)
-{
-	NET_Packet P;
-	u_EventGen	(P,GE_BUY,ID());
-	P.w_string	(buf);
-	u_EventSend	(P);
-}
-
-//вывзывает при подсчете хита
-float CEntityAlive::CalcCondition(float /**hit/**/)
-{	
-	UpdateCondition();
-
-	//dont call inherited::CalcCondition it will be meaning less
-	return GetHealthLost()*100.f;
-}
-
-///////////////////////////////////////////////////////////////////////
-u16	CEntityAlive::PHGetSyncItemsNumber()
-{
-	if(m_PhysicMovementControl.CharacterExist()) return 1;
-	else										  return 0;
-}
-CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16/*item*/)
-{
-	if(m_PhysicMovementControl.CharacterExist()) return m_PhysicMovementControl.GetSyncItem();
-	else										 return 0;
-}
-void CEntityAlive::PHUnFreeze()
-{
-	if(m_PhysicMovementControl.CharacterExist()) m_PhysicMovementControl.UnFreeze();
-}
-void CEntityAlive::PHFreeze()
-{
-	if(m_PhysicMovementControl.CharacterExist()) m_PhysicMovementControl.Freeze();
-}
-//////////////////////////////////////////////////////////////////////

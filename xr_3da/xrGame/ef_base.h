@@ -15,13 +15,13 @@ class CSE_ALifeObject;
 
 class CBaseFunction {
 protected:
-	u32				m_dwLastUpdate;
-	float			m_fLastValue;
-	CEntityAlive	*m_tpLastMonster;
-	CSE_ALifeObject	*m_tpLastALifeObject;
-	float			m_fMinResultValue;
-	float			m_fMaxResultValue;
-	char			m_caName[260];
+	u32						m_dwLastUpdate;
+	float					m_fLastValue;
+	const CEntityAlive		*m_tpLastMonster;
+	const CSE_ALifeObject	*m_tpLastALifeObject;
+	float					m_fMinResultValue;
+	float					m_fMaxResultValue;
+	char					m_caName[260];
 
 public:
 

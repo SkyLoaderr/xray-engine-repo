@@ -18,7 +18,8 @@ public:
 
 					CEnemyLocationPredictor			();
 	virtual			~CEnemyLocationPredictor		();
-	virtual void	Init							();
+			void	Init							();
+	virtual void	reinit							();
 			void	predict_enemy_locations			();
 			bool	enemy_prediction_actual			() const;
 			void	select_enemy_location			();

@@ -11,6 +11,7 @@
 
 CEnemyLocationPredictor::CEnemyLocationPredictor		()
 {
+	Init				();
 }
 
 CEnemyLocationPredictor::~CEnemyLocationPredictor		()
@@ -18,6 +19,10 @@ CEnemyLocationPredictor::~CEnemyLocationPredictor		()
 }
 
 void CEnemyLocationPredictor::Init						()
+{
+}
+
+void CEnemyLocationPredictor::reinit					()
 {
 }
 
