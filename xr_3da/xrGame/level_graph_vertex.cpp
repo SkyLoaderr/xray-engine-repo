@@ -449,7 +449,6 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 				if (dist > cur_sqr)
 					continue;
-				cur_sqr			= dist;
 
 				Fvector2		next1, next2;
 #ifdef DEBUG
@@ -484,6 +483,8 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 				VERIFY			(_valid(next2));
 				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
 				VERIFY			(dwIntersect);
+//				if (!dwIntersect)
+//					continue;
 				tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 
 				tpaOutputPoints.push_back(tIntersectPoint);
@@ -493,6 +494,8 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 					TIMER_STOP(CreateStraightPath)
 					return		(true);
 				}
+				
+				cur_sqr			= dist;
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
 				cur_vertex_id	= next_vertex_id;

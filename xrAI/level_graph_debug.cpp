@@ -490,6 +490,8 @@ void CLevelGraph::set_start_point	()
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
 	obj						= Level().Objects.FindObjectByName("localhost/dima");
 	CActor					*actor = dynamic_cast<CActor*>(obj);
+	if (!stalker || !actor)
+		return;
 
 	start.position			= v2d(stalker->Position());
 	start.direction.x		= -_sin(-stalker->m_body.current.yaw);

@@ -115,7 +115,7 @@ IC CLevelGraph::ELineIntersections  CLevelGraph::intersect(
 	* same side of line 1, the line segments do not intersect.
 	*/
 
-	if ( r3*r4 > 0 )      return (eLineIntersectionNone);
+	if ((r3*r4 > EPS) && !fis_zero(r3,EPS_L) && !fis_zero(r4,EPS_L))     return (eLineIntersectionNone);
 
 	/* Compute a2, b2, c2 */
 
@@ -133,16 +133,16 @@ IC CLevelGraph::ELineIntersections  CLevelGraph::intersect(
 	* not intersect.
 	*/
 
-	if ( r1*r2 > 0 )		return (eLineIntersectionNone);
+	if ((r1*r2 > EPS) && !fis_zero(r1,EPS_L) && !fis_zero(r2,EPS_L))     return (eLineIntersectionNone);
 
 	// Check for equality
-	if ( _abs(r1*r2)<EPS_S && _abs(r3*r4)<EPS_S ) return eLineIntersectionEqual;
+	if (fis_zero(r1*r2) && fis_zero(r3*r4)) return eLineIntersectionEqual;
 
 	/* Line segments intersect: compute intersection point. 
 	*/
 
 	denom = a1 * b2 - a2 * b1;
-	if ( _abs(denom) < EPS ) return (eLineIntersectionCollinear);
+	if (fis_zero(denom)) return (eLineIntersectionCollinear);
 
 	num = b1 * c2 - b2 * c1;
 	*x = num / denom;
