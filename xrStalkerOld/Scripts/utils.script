@@ -363,6 +363,10 @@ end
 
 function get_scheme_by_section(section)
 	local scheme = string.gsub(section, "%d", "")
+	local at, to = string.find(scheme, "@", 1, true)
+	if at and to then
+		scheme = string.sub(scheme, 1, at - 1)
+	end
 	return scheme
 end
 
