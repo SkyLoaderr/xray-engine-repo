@@ -191,7 +191,8 @@ void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_i
 		if (!vis.empty())
 		{
 			// Setup matrices + colors (and flush it as nesessary)
-			RCache.set_Element			(Object.shader->E[lod_id]);
+			RCache.set_Element				(Object.shader->E[lod_id]);
+			RImplementation.apply_lmaterial	();
 			u32			c_base			= x_array->vs.index;
 			Fvector4*	c_storage		= RCache.get_ConstantCache_Vertex().get_array_f().access(c_base);
 
