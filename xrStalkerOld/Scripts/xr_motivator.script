@@ -73,27 +73,15 @@ function motivator_binder:reinit()
 	xr_meet.add_to_binder(self.object, char_ini)
 	--' Компаньон
 	xr_assistance.add_to_binder(self.object)		
-	--' помощник, мля !!!
-	xr_motivator.storage[self.object:id ()].sos = {
-		enabled = false,
-		npc = nil,
-		initialized = false,
-		code = 0,
-		need_follow = false
-    }
-	xr_sos.add_to_binder(self.object, char_ini)
-	--' раненый.
-	--xr_motivator.storage[self.object:id ()].wounded = {
-		--enabled = true,
-		--threshold = 0.2,
-		--sit = false,
-		--cover = false,
-		--npc = nil,
-		--ignore_time = 0,
-		--final = true,
-		--immediate = false
-    --}
---	xr_wounded.add_to_binder (self.object, char_ini)
+//	--' помощник, мля !!!
+//	xr_motivator.storage[self.object:id ()].sos = {
+//		enabled = false,
+//		npc = nil,
+//		initialized = false,
+//		code = 0,
+//		need_follow = false
+//    }
+//	xr_sos.add_to_binder(self.object, char_ini)
 
 	--xr_combat.set_combat_checker(self.object, char_ini, "combat", "combat")
 ----------------------------------------------------------------------------------------------------------------------
