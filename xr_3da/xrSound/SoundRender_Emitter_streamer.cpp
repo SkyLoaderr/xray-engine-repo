@@ -18,7 +18,7 @@ void	CSoundRender_Emitter::fill_data		(u8* dest, u32 offset, u32 size)
 		// cache acess
 		if (SoundRender.cache.request(source->CAT,line))		{
 			// fake decompression
-			void*	ptr			= SoundRender.cache.get_dataptr	(line);
+			void*	ptr			= SoundRender.cache.get_dataptr	(source->CAT,line);
 			Memory.mem_copy		(ptr,LPBYTE(source->wave)+offset,_min(size,line_size));
 		}
 
