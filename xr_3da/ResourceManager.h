@@ -63,6 +63,7 @@ private:
 
 	// misc
 public:
+	CInifile*											m_description;
 	xr_vector<std::pair<ref_str,R_constant_setup*> >	v_constant_setup;
 	lua_State*											LSVM;
 	BOOL												bDeferredLoad;

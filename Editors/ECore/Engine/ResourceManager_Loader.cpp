@@ -19,11 +19,11 @@ public:
 
 void	CResourceManager::OnDeviceDestroy(BOOL bKeepTextures)
 {
-	if (Device.bReady) return;
+	if (Device.bReady)	return;
+	xr_delete			(m_description);
 
 	// Matrices
-	for (map_Matrix::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)
-	{
+	for (map_Matrix::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)	{
 		R_ASSERT		(1==m->second->dwReference);
 		xr_delete		(m->second);
 	}
@@ -127,19 +127,20 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 	}
 
 	// Load detail textures association
-	string256 fname;		
+	string256		fname;		
 	FS.update_path	(fname,"$game_textures$","textures.ltx");
 	LPCSTR	Iname	= fname;
 	if (FS.exist(Iname))
 	{
-		CInifile	ini		(Iname);
+		xr_delete		(m_description);
+		m_description	= xr_new<CInifile>	(Iname);
+		CInifile&	ini	= *m_description;
 		if (ini.section_exist("association")){
 			CInifile::Sect& 	data = ini.r_section("association");
-			for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)
-			{
-				texture_detail		D;
-				string256			T;
-				float				s;
+			for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)	{
+				texture_detail			D;
+				string256				T;
+				float					s;
 
 				CInifile::Item& item	= *I;
 				sscanf					(*item.second,"%[^,],%f",T,&s);

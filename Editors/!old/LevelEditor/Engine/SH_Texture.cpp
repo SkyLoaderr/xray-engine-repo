@@ -22,6 +22,7 @@ CTexture::CTexture		()
 	flags.bLoaded		= false;
 	flags.bUser			= false;
 	flags.seqCycles		= FALSE;
+	m_material			= 0;
 }
 
 CTexture::~CTexture()
@@ -90,7 +91,14 @@ void CTexture::Load()
 		return;
 	}
 
-	// Log							("- loding texture: ",*cName);
+	// Material
+	{
+		LPCSTR		descr					=	Device->Resources->m_description->r_string("specification",*cName);
+		string256	bmode,bparam;	float mid;
+		sscanf		(descr,"bump_mode[%s:%f], material[%f]",bmode,bparam,&mid);
+		m_material							=	mid;
+		Msg			("%20s : bm[%s:%s] mid:%f",*cName,bmode,bparam,mid);
+	}
 	// Check for AVI
 	string256 fn;
 	if (FS.exist(fn,"$game_textures$",*cName,".avi")){
