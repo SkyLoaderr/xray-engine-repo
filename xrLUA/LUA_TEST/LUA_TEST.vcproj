@@ -25,7 +25,7 @@
 				Optimization="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG;_WINDOWS;_USRDLL;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DEBUG;_WINDOWS;_USRDLL;LUA_TEST;"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
@@ -503,6 +503,36 @@
 			Filter="">
 			<File
 				RelativePath=".\abstract_registry.cpp">
+			</File>
+			<File
+				RelativePath=".\alife_interfaces.h">
+			</File>
+			<File
+				RelativePath=".\broker_test.cpp">
+			</File>
+			<File
+				RelativePath=".\NET_utils.h">
+			</File>
+			<File
+				RelativePath=".\object_broker.h">
+			</File>
+			<File
+				RelativePath=".\object_destroyer.h">
+			</File>
+			<File
+				RelativePath=".\object_destroyer_inline.h">
+			</File>
+			<File
+				RelativePath=".\object_loader.h">
+			</File>
+			<File
+				RelativePath=".\object_loader_inline.h">
+			</File>
+			<File
+				RelativePath=".\object_saver.h">
+			</File>
+			<File
+				RelativePath=".\object_saver_inline.h">
 			</File>
 		</Filter>
 		<File

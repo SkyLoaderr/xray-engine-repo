@@ -1058,6 +1058,8 @@ extern void script_test();
 extern void delegate_test();
 extern void registry_test();
 extern void abstract_registry_test();
+extern void broker_test();
+
 
 //struct MI0 {
 //	virtual ~MI0(){}
@@ -1082,7 +1084,8 @@ struct AW : public T, public wrap_base {};
 void test1()
 {
 //	registry_test();
-	abstract_registry_test();
+	broker_test();
+//	abstract_registry_test();
 //	delegate_test();
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
