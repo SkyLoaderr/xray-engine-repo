@@ -14,8 +14,6 @@
 #include <ExtCtrls.hpp>
 #include <Menus.hpp>
 #include "CGAUGES.h"
-#include "ElTree.hpp"
-#include "ElXPThemedControl.hpp"
 //---------------------------------------------------------------------------
 class TfraBottomBar : public TFrame
 {
