@@ -1,30 +1,14 @@
-
-
-local timeout = 1000
-local dist_for_report = 20
+local timeout = 10000
+local dist_for_report = 5
 local min_dist_to_report = 1
 
-local operators		= {}
-local properties	= {}
-	
+local operators     = {}
+local properties    = {}
+    
 properties["leader_report"]             = xr_evaluators_id.sidor_report_leader      + 0
 properties["timeout_soldier"]           = xr_evaluators_id.sidor_report_soldier     + 0
 operators["report_leader"]              = xr_actions_id.sidor_act_report_leader     + 0
 operators["report_soldier"]             = xr_actions_id.sidor_act_report_soldier    + 0  
-
-
-----------------------------------------------------------------------------------------------------------------------
-class "evaluator_const" (property_evaluator)
-----------------------
-function evaluator_const:__init (name) super ()
-    self.value = false
-end
-----------------------
-function evaluator_const:evaluate ()
-    return self.value
-end
-----------------------------------------------------------------------------------------------------------------------
-
 
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_timeout" (property_evaluator)
@@ -87,7 +71,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "action_report_soldier" (action_base) 
 ----------------------
-function action_report_soldier:__init (name, leader_name, theme) super (nil, name)
+function action_report_soldier:__init (name, leader_name, theme, a) super (nil, name)
     self.leader_name = leader_name
     self.leader = nil
     self.stage = 0
@@ -96,6 +80,7 @@ function action_report_soldier:__init (name, leader_name, theme) super (nil, nam
     self.current_phrase = 1
     self.time = 0
     self.theme = theme
+    self.a = a
 end
 ----------------------
 function action_report_soldier:initialize ()
@@ -116,7 +101,8 @@ function action_report_soldier:initialize ()
     self.object:set_sight                 (look.path_dir, nil, 0)
     
     self.stage = 0
-    
+
+    self.a.active = true
 end
 ----------------------
 function action_report_soldier:execute ()
@@ -138,6 +124,7 @@ function action_report_soldier:finalize ()
     self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
     self.stage = 0
     self.sub_stage = 0
+    self.a.active = false
 end
 ----------------------
 function action_report_soldier:stage1 ()
@@ -252,9 +239,10 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "action_report_leader" (action_base)
 ----------------------
-function action_report_leader:__init (name) super (nil, name)
+function action_report_leader:__init (name, a) super (nil, name)
     self.npc = nil
     self.stage = 0
+    self.a = a
 end
 ----------------------
 function action_report_leader:initialize ()
@@ -274,6 +262,8 @@ function action_report_leader:initialize ()
     self.object:set_sight                 (look.path_dir, nil, 0)
     
     self.stage = 0
+
+    self.a.active = true
 end
 ----------------------
 function action_report_leader:execute ()
@@ -330,49 +320,51 @@ function action_report_leader:finalize ()
     action_base.finalize (self)
     self.object:clear_animations ()
     self.object:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
+    self.a.active = false
 end
 ----------------------------------------------------------------------------------------------------------------------
 
 function AddScheme (obj, property_id)
 
-	local manager  = obj:motivation_action_manager ()
+    local manager  = obj:motivation_action_manager ()
 
-   	local ini = obj:spawn_ini ()
-   	if ini == nil or ini:section_exist ("report") == false then return end
-   	
-   	if ini:line_exist ("report", "leader_name") == true then
-   	   local leader_name = ini:r_string ("report", "leader_name")
+    local ini = obj:spawn_ini ()
+    if ini == nil or ini:section_exist ("report") == false then return end
+
+    xr_motivator.storage[obj:id ()].report = {}
+    local a = xr_motivator.storage[obj:id ()].report
+    
+    if ini:line_exist ("report", "leader_name") == true then
+       local leader_name = ini:r_string ("report", "leader_name")
        if ini:line_exist ("report", "theme") == false then return end
        local theme = ini:r_string ("report", "theme")
        manager:add_evaluator (properties["timeout_soldier"], this.evaluator_timeout ("evaluator_timeout_soldier", leader_name))
-   	   local action = this.action_report_soldier ("action_report_soldier", leader_name, theme)
-       action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
-   	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
-   	   action:add_precondition      (world_property (properties["timeout_soldier"], true))
-   	   action:add_effect            (world_property (properties["timeout_soldier"], false))
---   	   action:set_weight            (2)
-   	   manager:add_action           (operators["report_soldier"], action)
-   	   
-   	   action = manager:action (property_id)
-   	   action:add_precondition (world_property (properties["timeout_soldier"],  false)) 	   
+       local action = this.action_report_soldier ("action_report_soldier", leader_name, theme, a)
+       action:add_precondition      (world_property (stalker_ids.property_alive,    true))
+       action:add_precondition      (world_property (stalker_ids.property_enemy,    false))
+       action:add_precondition      (world_property (properties["timeout_soldier"], true))
+       action:add_effect            (world_property (properties["timeout_soldier"], false))
+--         action:set_weight            (2)
+       manager:add_action           (operators["report_soldier"], action)
+       
+       action = manager:action (property_id)
+       action:add_precondition (world_property (properties["timeout_soldier"],  false))        
     else
        if ini:line_exist ("report", "is_leader") == false or ini:r_bool ("report", "is_leader") == false then
           return
        end     
        manager:add_evaluator (properties["leader_report"], this.evaluator_report ("evaluator_leader_report"))
-       local action = this.action_report_leader ("action_report_leader")
-       action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
-   	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
-   	   action:add_precondition      (world_property (properties["leader_report"],   true))
-   	   action:add_effect            (world_property (properties["leader_report"],   false))
---   	   action:set_weight            (2)
-   	   manager:add_action           (operators["report_leader"], action)
-   	   
+       local action = this.action_report_leader ("action_report_leader", a)
+       action:add_precondition      (world_property (stalker_ids.property_alive,    true))
+       action:add_precondition      (world_property (stalker_ids.property_enemy,    false))
+       action:add_precondition      (world_property (properties["leader_report"],   true))
+       action:add_effect            (world_property (properties["leader_report"],   false))
+--         action:set_weight            (2)
+       manager:add_action           (operators["report_leader"], action)
+       
        action = manager:action (property_id)
-   	   action:add_precondition (world_property (properties["leader_report"],  false))
-   	   
+       action:add_precondition (world_property (properties["leader_report"],  false))
+       
     end       
     
 end
-
-
