@@ -116,6 +116,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 9,
 			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			running = false,
 			search_light = "blockpost_search_light",
 			path_main = "blockpost_guard_light",
 			path_hideout = "blockpost_guard_light" }
@@ -126,6 +127,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 10,
 			state = { 0, 1, 2}, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_center",
 			path_hideout = "blockpost_guard_center" }
@@ -213,6 +215,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 0, 2 }, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_left",
 			path_hideout = "blockpost_guard_left" }
@@ -223,6 +226,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 0, 2 }, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_right",
 			path_hideout = "blockpost_guard_right" }
@@ -235,6 +239,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 1 }, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_left",
 			path_hideout = "blockpost_alarm_left" }
@@ -245,6 +250,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 1 }, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_right",
 			path_hideout = "blockpost_alarm_right" }
@@ -255,6 +261,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 1 }, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_house",
 			path_hideout = "blockpost_alarm_house" }
@@ -265,6 +272,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 5,
 			state = { 1 }, -- в каких состояниях это задание существует
+			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_center",
 			path_hideout = "blockpost_alarm_center" }
@@ -277,6 +285,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 2 }, -- в каких состояниях это задание существует
+			running = true,
 			search_light = nil,
 			path_main = "blockpost_search1",
 			path_hideout = "blockpost_search1" }
@@ -287,6 +296,7 @@ function fract:loadJob(name) -- загружает список заданий
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 6,
 			state = { 2 }, -- в каких состояниях это задание существует
+			running = true,
 			search_light = nil,
 			path_main = "blockpost_search2",
 			path_hideout = "blockpost_search2" }
@@ -345,7 +355,7 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		if t.name == "guard" then
 			t.object = npc:id()
 			t.begin = device():time_global()
-		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout, t.search_light)
+		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout, t.running, t.search_light)
 		end
 		if t.name == "sleeper" then
 			t.object = npc:id()
