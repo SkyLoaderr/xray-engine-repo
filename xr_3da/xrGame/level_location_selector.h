@@ -27,8 +27,14 @@ class
 		_vertex_id_type
 	>
 {
+	typedef CGameGraph _Graph;
+	typedef CAbstractLocationSelector <
+		_Graph,
+		_VertexEvaluator,
+		_vertex_id_type
+	> inherited;
 public:
-
+	IC	virtual void			Init						(_Graph *graph = 0);
 };
 
 #include "level_location_selector_inline.h"
