@@ -132,6 +132,7 @@ void xrServer::Update	()
 		}
 		else
 		{
+			/*
 			u32 NumPackets = NET_SV_Client_Stream.size();
 
 			for (u32 id=0; id<NumPackets; id++)
@@ -145,6 +146,7 @@ void xrServer::Update	()
 				if (Packet.B.count + (pPacket->B.count - pPacket->r_pos) > NET_PacketSizeLimit) continue;
 				Packet.w(pPacket->B.data + pPacket->r_pos, pPacket->B.count - pPacket->r_pos);
 			};
+			*/
 		};
 		if (Client->flags.bLocal) NET_SV_Client_Stream.clear();
 
@@ -169,7 +171,7 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	{
 	case M_UPDATE:	Process_update		(P,sender);	break;		// No broadcast
 	case M_SPAWN:	Process_spawn		(P,sender);	break;
-	case M_EVENT:	Process_event		(P,sender); break;
+	case M_EVENT:	Process_event		(P,sender); break;	
 	}
 	csPlayers.Leave				();
 
@@ -191,21 +193,36 @@ void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 }
 
 //--------------------------------------------------------------------
-void			xrServer::Find_Server_Client	( )
+void			xrServer::Server_Client_Check	( IClient* CL )
 {
 	clients_Lock();
-
-	SV_Client = NULL;
-	for (u32 client=0; client<net_Players.size(); ++client)
+	
+	if (SV_Client && SV_Client->ID != CL->ID)
 	{
-		// Initialize process and check for available bandwidth
-		xrClientData*	Client		= (xrClientData*) net_Players	[client];
-		if (!Client) continue;
+		clients_Unlock();
+		return;
+	};
 
-		IDirectPlay8Address* pAddr = NULL;
-		CHK_DX(NET->GetClientAddress(Client->ID, &pAddr, 0));
+	if (SV_Client && SV_Client->ID == CL->ID)
+	{
+		if (!CL->flags.bConnected)
+		{
+			SV_Client = NULL;
+		};
+		clients_Unlock();
+		return;
+	};
 
-		if (!pAddr) continue;
+	if (!CL->flags.bConnected) 
+	{
+		clients_Unlock();
+		return;
+	};
+
+	IDirectPlay8Address* pAddr = NULL;
+	CHK_DX(NET->GetClientAddress(CL->ID, &pAddr, 0));
+
+	if (pAddr) {
 
 		string256	aaaa;
 		DWORD		aaaa_s			= sizeof(aaaa);
@@ -218,45 +235,45 @@ void			xrServer::Find_Server_Client	( )
 			ClientIP = strstr(aaaa, "hostname=")+ xr_strlen("hostname=");
 			if (strstr(ClientIP, ";")) strstr(ClientIP, ";")[0] = 0;
 		};
-		if (!ClientIP || !ClientIP[0]) return;
+		if (ClientIP && ClientIP[0]) {
 
-		DWORD	NumAdresses = 0;
-		NET->GetLocalHostAddresses(NULL, &NumAdresses, 0);
+			DWORD	NumAdresses = 0;
+			NET->GetLocalHostAddresses(NULL, &NumAdresses, 0);
 
-		IDirectPlay8Address* p_pAddr[256];
-		Memory.mem_fill(p_pAddr, 0, sizeof(p_pAddr));
+			IDirectPlay8Address* p_pAddr[256];
+			Memory.mem_fill(p_pAddr, 0, sizeof(p_pAddr));
 
-		NumAdresses = 256;
-		R_CHK(NET->GetLocalHostAddresses(p_pAddr, &NumAdresses, 0));
+			NumAdresses = 256;
+			R_CHK(NET->GetLocalHostAddresses(p_pAddr, &NumAdresses, 0));
 
-		for (DWORD i=0; i<NumAdresses; i++)
-		{
-			if (!p_pAddr[i]) continue;
-
-			string256	bbbb;
-			DWORD		bbbb_s			= sizeof(bbbb);
-			R_CHK		(p_pAddr[i]->GetURLA(bbbb,&bbbb_s));
-			bbbb_s		= xr_strlen(bbbb);
-
-			LPSTR ServerIP = NULL;
-			if (strstr(aaaa, "hostname="))
+			for (DWORD i=0; i<NumAdresses; i++)
 			{
-				ServerIP = strstr(bbbb, "hostname=")+ xr_strlen("hostname=");
-				if (strstr(ServerIP, ";")) strstr(ServerIP, ";")[0] = 0;
-			};
-			if (!ServerIP || !ServerIP[0]) continue;
-			if (!stricmp(ServerIP, ClientIP))
-			{
-				Client->flags.bLocal = 1;
-				SV_Client = Client;
-				break;
-			}
-			else
-			{
-				Client->flags.bLocal = 0;
-			};
+				if (!p_pAddr[i]) continue;
+
+				string256	bbbb;
+				DWORD		bbbb_s			= sizeof(bbbb);
+				R_CHK		(p_pAddr[i]->GetURLA(bbbb,&bbbb_s));
+				bbbb_s		= xr_strlen(bbbb);
+
+				LPSTR ServerIP = NULL;
+				if (strstr(aaaa, "hostname="))
+				{
+					ServerIP = strstr(bbbb, "hostname=")+ xr_strlen("hostname=");
+					if (strstr(ServerIP, ";")) strstr(ServerIP, ";")[0] = 0;
+				};
+				if (!ServerIP || !ServerIP[0]) continue;
+				if (!stricmp(ServerIP, ClientIP))
+				{
+					CL->flags.bLocal = 1;
+					SV_Client = (xrClientData*)(CL);
+					break;
+				}
+				else
+				{
+					CL->flags.bLocal = 0;
+				};
+			};	
 		};
-		if (SV_Client) break;
 	};
 
 	clients_Unlock();
