@@ -96,5 +96,6 @@
 	<info_portion id="mil_courier_start"></info_portion>
 	<info_portion id="mil_courier_death"></info_portion>
 	<info_portion id="mil_courier_meet"></info_portion>
+	<info_portion id="mil_courier_visited"></info_portion>
 	
 </game_information_portions>
