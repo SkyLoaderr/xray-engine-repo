@@ -17,7 +17,8 @@
 	</dialog>
 	
     <dialog id="trader_talk_about">
-    <precondition>trader_job.is_trader</precondition>
+    
+    <!--<precondition>trader_job.is_trader</precondition>-->
         <has_info>actor_start</has_info>
         <phrase_list>
             <phrase id="0">
