@@ -197,6 +197,7 @@ function action_zoneguard_activity:execute()
 				self.st.path_look, self.st.path_look_info, self.st.walker_team)
 		self:reset_trigger()
 		self.talked = false
+		self.sound_activated = false
 		self.state = state_walking
 		return
 	end
