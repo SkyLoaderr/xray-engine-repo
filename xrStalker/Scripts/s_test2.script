@@ -1,29 +1,90 @@
+-- attack_zone
+-- boar_attack
+-- stalker_defend
+-- attack_way
+-- defend_way
+-------------------------------------------------------------------------------------------------------------------------------------
+-- Класс монстра
+-------------------------------------------------------------------------------------------------------------------------------------
+class "Monster"
+
+function Monster:__init (npc, attack_way, script_name)
+	self.npc = npc
+	self.way = attack_way
+	self.script = script_name
+	self.first_start = true
+	self.freemove = false
+	self.callback = nil
+end
+
+function Monster:set_callback (callback)
+	self.callback = callback
+end	
+
+
+
+function Monster:initialize ()
+	self.npc:script (true, self.script)
+	action (self.npc, move (move.act_stand_idle, move.default, self.npc:position()), cond (cond.time_end, time_infinite))
+end
+
+
+
+function Monster:process ()
+
+	--если монстр отущен из под скрипта, то вываливаемся
+	if self.freemove == true or self.npc == nil or self.npc:alive () == false then return end
+
+	if self.first_start == true then	
+	   reset_action (self.npc, self.script)
+	   action (self.npc, move (move.act_run, move.force_type, self.way), cond (cond.move_end))
+	   self.first_start = false
+	   return 
+	end   
+	
+	
+	if self.npc:action () then return end
+	
+	if self.callback ~= nil then 
+	   self.callback (self) 
+	   self.callback = nil
+    end
+    
+	self.freemove = true
+	self.npc:script (false, self.script)
+	
+end	
+
+
+
+local entered = false
+
+function zone_callback (zone, obj)
+	entered = true
+	zone:clear_callback (true)
+end
 
 function main ()
-
-	local mover = get_level_object ("mover")
-	mover:script (true, s_test2.script_name ())
-	action (mover, move (move.standing, move.walk, move.line, patrol ("way0000")),
-			look (look.search), anim (anim.free), cond (cond.time_end, time_infinite))
-
-	local time = game.time ()
-
-	local act = false
-
-	while true do 
-		  if game.time () - time > 5000 then
-			 time = game.time ()
-			 if act == false then
-  			    update_action (mover, s_test2.script_name (), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), look (look.path_dir))
-				act = true
-			 else 
-			    update_action (mover, s_test2.script_name (), look (look.fire_point, get_actor ()))
-				act = false
-			 end
-		  end
+	local monster = s_test2.Monster (get_level_object ("boar_attack"), patrol ("attack_way"), s_test2.script_name ())
+	local stalker = get_level_object ("stalker_defend")
+	monster:initialize ()
+	stalker:script (true, s_test2.script_name ())
+	action (stalker, anim (anim.free), cond (cond.time_end, time_infinite))
+	local azone = get_level_object ("attack_zone")
+	azone:set_callback (s_test.zone_callback, true)
+	
+	while entered == false do
+		  monster:process ()
 		  wait ()
-	end	
-
-	mover:script (false, s_test2.script_name ())
-
+	end
+	
+	reset_action (stalker, s_test2.script_name ())
+	action (stalker, move (move.standing, move.run, move.line, patrol ("defend_way")), anim (anim.danger), cond (cond.move_end))
+	
+	while stalker:action () do wait () end
+	
+	stalker:script (false, s_test.script_name())
+			  
 end
+
+
