@@ -18,3 +18,42 @@ end
 function enemy_to_actor(actor, npc)
 	return npc:relation(actor) == game_object.enemy
 end
+
+function gar_dm_nearest_bandit(actor, npc)
+	local nearest = nil
+	local nearest_dist = nil
+	
+	local bandit1 = level.object("gar_dramscene_bandit1")
+	if bandit1 and bandit1:alive() then
+		local dist = distance_between(actor, bandit1)
+		if not nearest_dist or dist < nearest_dist then
+			nearest = bandit1
+			nearest_dist = dist
+		end
+	end
+
+	local bandit2 = level.object("gar_dramscene_bandit2")
+	if bandit2 and bandit2:alive() then
+		local dist = distance_between(actor, bandit2)
+		if not nearest_dist or dist < nearest_dist then
+			nearest = bandit2
+			nearest_dist = dist
+		end
+	end
+
+	local bandit3 = level.object("gar_dramscene_bandit3")
+	if bandit3 and bandit3:alive() then
+		local dist = distance_between(actor, bandit3)
+		if not nearest_dist or dist < nearest_dist then
+			nearest = bandit3
+			nearest_dist = dist
+		end
+	end
+
+	if nearest and npc:id() == nearest:id() then
+		return true
+	end
+
+	return false
+end
+
