@@ -54,6 +54,7 @@ namespace ETOOLS{
 	struct QSVert{
 		Fvector3 pt;
 		Fvector2 uv;
+		u32		old_index;
 		void	set				(const Fvector3& p, const Fvector2& t){pt.set(p);uv.set(t);}
 	};
 
@@ -61,55 +62,20 @@ namespace ETOOLS{
 		u32		v[3];
 		u32		tag;
 		void	set				(u32 v0, u32 v1, u32 v2){v[0]=v0;v[1]=v1;v[2]=v2;tag=0;}
-		int		remap_vertex	(u32 from, u32 to)
-		{
-			int nmapped = 0;
-			for(int i=0; i<3; i++){
-				if( v[i]==from ){
-					v[i]=to;
-					nmapped++;
-				}
-			}
-			return nmapped;
-		}
 	};
 
 	struct QSMesh{
-		qs_vector<QSVert>	verts;
-		qs_vector<QSFace>	faces;
+		ArbitraryList<QSVert>				verts;
+		ArbitraryList<QSFace>				faces;
+		ArbitraryList<SlidingWindowRecord>	swrRecords;			// The records of the collapses.
 		QSMesh				(u32 v_cnt, u32 f_cnt):verts(v_cnt),faces(f_cnt) {}
 		~QSMesh				() {}
-	};
-
-	struct QSContractionItem{
-		u32					v_dead;
-		u32					v_kept;
-		float				error;
-		int					iSlidingWindowLevel;
-		qs_vector<u32>		f_dead;
-		qs_vector<u32>		f_delta;
-		QSContractionItem	(u32 dead_cnt, u32 delta_cnt):f_dead(dead_cnt),f_delta(delta_cnt)	{}
-		~QSContractionItem	(){}
-	};
-
-	struct QSContraction{
-		qs_vector<QSContractionItem*> items;
-		QSContraction		(u32 init_reserved){items.reserve(init_reserved);}
-		~QSContraction		()
-		{
-			for (qs_vector<QSContractionItem*>::iterator it=items.begin(); it!=items.end(); it++)
-				xr_delete	(*it);
-		}
-		void	AppendItem	(QSContractionItem* item)
-		{
-			items.push_back	(item);
-		}
 	};
 };
 
 extern "C" {
 	namespace ETOOLS{
-		ETOOLS_API BOOL ContractionGenerate	(QSMesh* src_mesh, QSContraction*& dst_conx, u32 min_faces, float max_error);
+		ETOOLS_API BOOL ContractionGenerate	(QSMesh* src_mesh, QSMesh*& new_mesh, float error_tolerance);
 		ETOOLS_API void ContractionClear	(QSContraction*& dst_conx);
 	};
 };
