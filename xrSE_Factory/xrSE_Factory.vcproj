@@ -957,6 +957,9 @@
 						<File
 							RelativePath=".\object_saver.h">
 						</File>
+						<File
+							RelativePath=".\object_type_traits.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
