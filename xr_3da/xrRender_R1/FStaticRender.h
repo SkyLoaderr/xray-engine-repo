@@ -17,7 +17,7 @@
 #include "light_DB.h"
 
 // definition
-class CRender												:	public R_dsgraph_structure
+class CRender													:	public R_dsgraph_structure
 {
 public:
 	enum	{
@@ -27,32 +27,32 @@ public:
 	};
 public:
 	// Sector detection and visibility
-	CSector*												pLastSector;
-	Fvector													vLastCameraPos;
-	xr_vector<IRender_Portal*>								Portals;
-	xr_vector<IRender_Sector*>								Sectors;
-	CDB::MODEL*												rmPortals;
-	CHOM													HOM;
+	CSector*													pLastSector;
+	Fvector														vLastCameraPos;
+	xr_vector<IRender_Portal*>									Portals;
+	xr_vector<IRender_Sector*>									Sectors;
+	CDB::MODEL*													rmPortals;
+	CHOM														HOM;
 	
 	// Global containers
-	xr_vector<ref_shader>									Shaders;
-	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>	VertexDeclarator;
-	xr_vector<VertexDeclarator>								DCL;
-	xr_vector<IDirect3DVertexBuffer9*>						VB;
-	xr_vector<IDirect3DIndexBuffer9*>						IB;
-	xr_vector<IRender_Visual*>								Visuals;
-	CPSLibrary												PSLibrary;
+	xr_vector<ref_shader>										Shaders;
+	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>		VertexDeclarator;
+	xr_vector<VertexDeclarator>									DCL;
+	xr_vector<IDirect3DVertexBuffer9*>							VB;
+	xr_vector<IDirect3DIndexBuffer9*>							IB;
+	xr_vector<IRender_Visual*>									Visuals;
+	CPSLibrary													PSLibrary;
 
-	CLight_DB*												L_DB;
-	CLightR_Manager*										L_Dynamic;
-	CLightShadows*											L_Shadows;
-	CLightProjector*										L_Projector;
-	CGlowManager*											L_Glows;
-	CWallmarksEngine*										Wallmarks;
-	CDetailManager*											Details;
-	CModelPool*												Models;
+	CLight_DB*													L_DB;
+	CLightR_Manager*											L_Dynamic;
+	CLightShadows*												L_Shadows;
+	CLightProjector*											L_Projector;
+	CGlowManager*												L_Glows;
+	CWallmarksEngine*											Wallmarks;
+	CDetailManager*												Details;
+	CModelPool*													Models;
 
-	CRenderTarget*											Target;			// Render-target
+	CRenderTarget*												Target;			// Render-target
 
 	// R1-specific global constants
 	Fmatrix														r1_dlight_tcgen;

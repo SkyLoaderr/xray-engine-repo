@@ -23,10 +23,10 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 	float r_pt	= float(point2.x) * size_x / (float) halfwidth;
 	float u_pt	= float(point2.y) * size_y / (float) halfheight;
 
-	direction.mul( m_CamMat.k, VIEWPORT_NEAR );
-	direction.mad( direction, m_CamMat.j, u_pt );
-	direction.mad( direction, m_CamMat.i, r_pt );
-	direction.normalize();
+	direction.mul		( m_CamMat.k, VIEWPORT_NEAR );
+	direction.mad		( direction, m_CamMat.j, u_pt );
+	direction.mad		( direction, m_CamMat.i, r_pt );
+	direction.normalize	();
 }
 
 void CRender::Screenshot		(LPCSTR postfix, BOOL bSquare)

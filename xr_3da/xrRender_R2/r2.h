@@ -18,7 +18,7 @@
 #include "common_binders.h"
 
 // definition
-class CRender	:	public IRender_interface, public R_dsgraph_structure
+class CRender													:	public R_dsgraph_structure
 {
 public:
 	enum
@@ -30,6 +30,7 @@ public:
 	};
 	BOOL														b_nv3x;
 
+public:
 	// Sector detection and visibility
 	CSector*													pLastSector;
 	Fvector														vLastCameraPos;
