@@ -412,13 +412,16 @@ path_look = guard_look1
 zone_warn = val_monolith_base_guard1_warn_zone
 zone_kill = val_monolith_base_guard1_kill_zone
 team = guards
-combat_ignore_cond = {=val_enemy_captive}, {=actor_enemy +val_monolith_actor_detected} never, {=actor_enemy =actor_wears_bandit_outfit} always, {=actor_enemy} never %+val_monolith_actor_detected%
+meet_dialog = val_monolith_guard_password
+meet_talk_enabled = true
+meet_state = threat
+combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 on_info = {+val_monolith_password_ok} walker1@val_monolith_base_guard_normal1
 
 [walker1@val_monolith_base_guard_normal1]
 path_walk = guard_walk1
 path_look = guard_look1
-combat_ignore_cond = {=val_enemy_captive}, {=actor_enemy +val_monolith_actor_detected} never, {=actor_enemy =actor_wears_bandit_outfit} always, {=actor_enemy} never %+val_monolith_actor_detected%
+combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
@@ -432,13 +435,16 @@ path_look = guard_look2
 zone_warn = val_monolith_base_guard2_warn_zone
 zone_kill = val_monolith_base_guard2_kill_zone
 team = guards
-combat_ignore_cond = {=val_enemy_captive}, {=actor_enemy +val_monolith_actor_detected} never, {=actor_enemy =actor_wears_bandit_outfit} always, {=actor_enemy} never %+val_monolith_actor_detected%
+meet_dialog = val_monolith_guard_password
+meet_talk_enabled = true
+meet_state = threat
+combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 on_info = {+val_monolith_password_ok} walker1@val_monolith_base_guard_normal2
 
 [walker1@val_monolith_base_guard_normal2]
 path_walk = guard_walk2
 path_look = guard_look2
-combat_ignore_cond = {=val_enemy_captive}, {=actor_enemy +val_monolith_actor_detected} never, {=actor_enemy =actor_wears_bandit_outfit} always, {=actor_enemy} never %+val_monolith_actor_detected%
+combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 
@@ -452,13 +458,16 @@ path_look = guard_look3
 zone_warn = val_monolith_base_guard3_warn_zone
 zone_kill = val_monolith_base_guard3_kill_zone
 team = guards
-combat_ignore_cond = {=val_enemy_captive}, {=actor_enemy +val_monolith_actor_detected} never, {=actor_enemy =actor_wears_bandit_outfit} always, {=actor_enemy} never %+val_monolith_actor_detected%
+meet_dialog = val_monolith_guard_password
+meet_talk_enabled = true
+meet_state = threat
+combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 on_info = {+val_monolith_password_ok} walker1@val_monolith_base_guard_normal3
 
 [walker1@val_monolith_base_guard_normal3]
 path_walk = guard_walk3
 path_look = guard_look3
-combat_ignore_cond = {=val_enemy_captive}, {=actor_enemy +val_monolith_actor_detected} never, {=actor_enemy =actor_wears_bandit_outfit} always, {=actor_enemy} never %+val_monolith_actor_detected%
+combat_ignore_cond = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%
 
 ;---
 

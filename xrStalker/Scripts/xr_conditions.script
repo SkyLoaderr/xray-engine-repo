@@ -100,9 +100,13 @@ function val_fighting_prisoner(actor, npc)
 end    
 
 function actor_wears_bandit_outfit(actor, npc)
-	local wears = xr_conditions_impl.actor_has_object(actor, "bandit_outfit")
+	--[[
+	local cur_eq = actor:get_current_equipment()
+	local wears = cur_eq and cur_eq:name() == "bandit_outfit"
 	printf("_bp: actor_wears_bandits_outfit: %s", utils.to_str(wears))
 	return wears
+	--]]
+	return xr_conditions_impl.actor_has_object(actor, "bandit_outfit")
 end
 
 
