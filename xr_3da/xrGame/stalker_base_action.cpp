@@ -29,6 +29,7 @@ void CStalkerActionBase::initialize			()
 
 void CStalkerActionBase::execute			()
 {
+	inherited::execute								();
 	m_first_time									= false;
 }
 
