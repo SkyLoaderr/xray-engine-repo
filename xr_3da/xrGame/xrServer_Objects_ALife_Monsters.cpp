@@ -39,6 +39,10 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstrac
 	m_tRank						= ALife::EStalkerRank(pSettings->r_u32(caSection, "rank"));
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
+
+	string4096					S;
+	sprintf						(S,"%s\n[game_info]\n\tname_id\t= default\n",!*m_ini_string ? "" : *m_ini_string);
+	m_ini_string				= S;
 }
 
 CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()

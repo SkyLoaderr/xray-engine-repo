@@ -78,65 +78,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
 	VERIFY					(dynamic_object);
 
-	//спавним каждому inventory owner-у в инвентарь болты
-	if (use_bolts()) {
-		CSE_Abstract						*D	= F_entity_Create("bolt");
-		R_ASSERT							(D);
-		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= dynamic_object->m_tNodeID;
-
-		// Fill
-		strcpy								(D->s_name,"bolt");
-		strcpy								(D->s_name_replace,"");
-		D->s_gameid							=	u8(GameID());
-		D->s_RP								=	0xff;
-		D->ID								=	0xffff;
-		D->ID_Parent						=	E->ID;
-		D->ID_Phantom						=	0xffff;
-		D->o_Position						=	pThis->Position();
-		D->s_flags.set						(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime						=	0;
-
-		// Send
-		NET_Packet							P;
-		D->Spawn_Write						(P,TRUE);
-		Level().Send						(P,net_flags(TRUE));
-
-		// Destroy
-		F_entity_Destroy					(D);
-	}
-	
-	//////////////////////////////////////////////
-	//проспавнить PDA каждому inventory owner
-	//////////////////////////////////////////////
-	if (!ai().get_alife()) {
-		// Create
-		CSE_Abstract			*D = F_entity_Create("device_pda");
-		//CSE_Abstract			*D = F_entity_Create("detector_simple");
-		R_ASSERT				(D);
-		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT				(l_tpALifeDynamicObject);
-
-		// Fill
-		strcpy					(D->s_name,"device_pda");
-		strcpy					(D->s_name_replace,"");
-		D->s_gameid				=	u8(GameID());
-		D->s_RP					=	0xff;
-		D->ID					=	0xffff;
-		D->ID_Parent			=	E->ID;
-		D->ID_Phantom			=	0xffff;
-		D->o_Position			=	pThis->Position();
-		D->s_flags.set			(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime			=	0;
-		// Send
-		NET_Packet				P;
-		D->Spawn_Write			(P,TRUE);
-		Level().Send			(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy		(D);
-	}
-
 	return TRUE;
 }
 
@@ -368,9 +309,20 @@ void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 	detach		(inventory_item);
 }
 
-
 //возвращает текуший разброс стрельбы с учетом движения (в радианах)
-float CInventoryOwner::GetWeaponAccuracy() const
+float CInventoryOwner::GetWeaponAccuracy	() const
 {
 	return 0.f;
+}
+
+void CInventoryOwner::spawn_supplies		()
+{
+	CGameObject								*game_object = dynamic_cast<CGameObject*>(this);
+	VERIFY									(game_object);
+
+	if (use_bolts())
+		Level().spawn_item					("bolt",game_object->Position(),game_object->level_vertex_id(),game_object->ID());
+
+	if (!ai().get_alife())
+		Level().spawn_item					("device_pda",game_object->Position(),game_object->level_vertex_id(),game_object->ID());
 }

@@ -126,7 +126,6 @@ public:
 	u32								m_tNodeID;
 	ref_str							m_caGroupControl;
 	flags32							m_flags;							
-	ref_str							m_ini_string;
 
 #ifdef _EDITOR
 	void __fastcall					OnChooseGroupControl(ChooseItemVec& lst);
@@ -137,6 +136,11 @@ public:
 	virtual bool					can_switch_online	() const;
 	virtual bool					can_switch_offline	() const;
 	virtual bool					can_save			() const;
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	virtual void					spawn_supplies		();
+#endif
+#endif
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeGroupAbstract : virtual public CSE_Abstract {

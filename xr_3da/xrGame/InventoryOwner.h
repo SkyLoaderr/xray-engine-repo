@@ -100,6 +100,7 @@ public:
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		() {}
 	virtual bool			use_bolts				() const {return(true);}
+	virtual	void			spawn_supplies			();
 
 	//////////////////////////////////////////////////////////////////////////
 	// связь со скриптами

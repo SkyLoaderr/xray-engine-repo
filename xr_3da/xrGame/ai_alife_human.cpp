@@ -19,6 +19,17 @@ using namespace ALife;
 #define MAX_ITEM_MEDIKIT_COUNT	3
 #define MAX_AMMO_ATTACH_COUNT	10
 
+void CSE_ALifeHumanAbstract::spawn_supplies	()
+{
+	inherited1::spawn_supplies	();
+	inherited2::spawn_supplies	();
+}
+
+void CSE_ALifeCreatureActor::spawn_supplies	()
+{
+	ai().alife().spawn_item		("device_pda",o_Position,m_tNodeID,m_tGraphID,ID);
+}
+
 bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 {
 	if (int(m_dwCurTaskID) < 0)

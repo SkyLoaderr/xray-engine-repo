@@ -8,13 +8,50 @@
 
 #include "stdafx.h"
 #include "ai_alife_registries.h"
+#include "ai_alife.h"
 #include "xrserver_objects_alife_monsters.h"
 using namespace ALife;
 
+void CSE_ALifeObject::spawn_supplies		()
+{
+	if (!xr_strlen(m_ini_string))
+		return;
+
+#pragma warning(push)
+#pragma warning(disable:4238)
+	CInifile					ini(
+		&IReader				(
+		(void*)(*(m_ini_string)),
+		m_ini_string.size()
+		)
+		);
+#pragma warning(pop)
+
+	LPCSTR					N,V;
+	for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
+		VERIFY				(xr_strlen(N));
+		j					= 1;
+		if (V && xr_strlen(V)) {
+			j				= atoi(V);
+			if (!j)
+				j			= 1;
+		}
+		for (u32 i=0; i<j; ++i)
+			ai().alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
+	}
+}
+
+void CSE_ALifeTraderAbstract::spawn_supplies	()
+{
+	CSE_ALifeDynamicObject		*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(this);
+	VERIFY						(dynamic_object);
+	ai().alife().spawn_item		("device_pda",o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,ID);
+}
+
 void CSE_ALifeTraderAbstract::vfInitInventory()
 {
-	m_fCumulativeItemMass	= 0.f;
-	m_iCumulativeItemVolume = 0;
+	m_fCumulativeItemMass		= 0.f;
+	m_iCumulativeItemVolume		= 0;
 }
 
 void CSE_ALifeTraderAbstract::vfAttachItem(CSE_ALifeInventoryItem *tpALifeInventoryItem, bool bALifeRequest, bool bAddChildren)
@@ -124,4 +161,10 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 		Debug.fatal				("Data synchronization mismatch");
 	}
 	return						(tpALifeInventoryItem->m_dwCost);
+}
+
+void CSE_ALifeTrader::spawn_supplies	()
+{
+	inherited1::spawn_supplies	();
+	inherited2::spawn_supplies	();
 }

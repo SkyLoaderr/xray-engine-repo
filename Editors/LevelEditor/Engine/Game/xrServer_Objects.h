@@ -115,6 +115,7 @@ public:
 
 	// for ALife control
 	bool							m_bALifeControl;
+	ref_str							m_ini_string;
 
 									CSE_Abstract	(LPCSTR caSection);
 	virtual							~CSE_Abstract	();

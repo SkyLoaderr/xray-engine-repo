@@ -15,6 +15,41 @@
 #include "xrserver_objects_alife_monsters.h"
 using namespace ALife;
 
+void CSE_ALifeSimulator::spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, _GRAPH_ID game_vertex_id, u16 parent_id)
+{
+	CSE_Abstract				*abstract = F_entity_Create(section);
+	R_ASSERT					(abstract);
+
+	strcpy						(abstract->s_name,section);
+	abstract->s_gameid			= u8(GameID());
+	abstract->s_RP				= 0xff;
+	abstract->ID				= m_tpServer->PerformIDgen(0xffff);
+	abstract->ID_Parent			= parent_id;
+	abstract->ID_Phantom		= 0xffff;
+	abstract->o_Position		= position;
+	
+	strcpy						(abstract->s_name_replace,abstract->s_name);
+	if (abstract->ID < 1000)
+		strcat					(abstract->s_name_replace,"0");
+	if (abstract->ID < 100)
+		strcat					(abstract->s_name_replace,"0");
+	if (abstract->ID < 10)
+		strcat					(abstract->s_name_replace,"0");
+	string16					S1;
+	strcat						(abstract->s_name_replace,itoa(abstract->ID,S1,10));
+
+	CSE_ALifeDynamicObject		*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(abstract);
+	VERIFY						(dynamic_object);
+
+	dynamic_object->m_tNodeID	= level_vertex_id;
+	dynamic_object->m_tGraphID	= game_vertex_id;
+	dynamic_object->m_tSpawnID	= u16(-1);
+
+	CSE_ALifeObjectRegistry::Add(dynamic_object);
+
+	vfUpdateDynamicData			(dynamic_object);
+}
+
 CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *tpALifeGroupAbstract, CSE_ALifeDynamicObject *j)
 {
 	NET_Packet					tNetPacket;
@@ -47,6 +82,7 @@ CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *t
 	string16					S1;
 	strcat						(k->s_name_replace,itoa(k->ID,S1,10));
 	vfUpdateDynamicData			(k);
+	k->spawn_supplies			();
 	return						(k);
 }
 
@@ -65,11 +101,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	u16							id;
 	tNetPacket.r_begin			(id);
 	i->UPDATE_Read				(tNetPacket);
-	VERIFY						(i->m_tNodeID == j->m_tNodeID);
-	VERIFY						(i->m_tGraphID == j->m_tGraphID);
-	VERIFY						(i->m_fDistance == j->m_fDistance);
-	
-//	R_ASSERT3					(ai().level_graph().valid_vertex_id(i->m_tNodeID),"Invalid vertex for object ",i->s_name_replace);
+
 	R_ASSERT3					(!(i->used_ai_locations()) || (i->m_tNodeID != u32(-1)),"Invalid vertex for object ",i->s_name_replace);
 
 	i->m_tSpawnID				= tSpawnID;
@@ -95,39 +127,8 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			*I					= l_tpAbstract->ID;
 		}
 	}
-	else {
-		CSE_ALifeTraderAbstract	*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(i);
-		if (l_tpALifeTraderAbstract) {
-			CSE_Abstract		*l_tpAbstract = F_entity_Create("device_pda");
-			R_ASSERT			(l_tpAbstract);
-			CSE_ALifeDynamicObject *l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
-			R_ASSERT			(l_tpALifeDynamicObject);
-
-			// Fill
-			strcpy						(l_tpAbstract->s_name,"device_pda");
-			l_tpAbstract->s_gameid		=	u8(GameID());
-			l_tpAbstract->s_RP			=	0xff;
-			l_tpAbstract->ID			=	m_tpServer->PerformIDgen(0xffff);
-			l_tpAbstract->ID_Parent		=	l_tpALifeTraderAbstract->ID;
-			l_tpAbstract->ID_Phantom	=	0xffff;
-			l_tpAbstract->o_Position	=	l_tpALifeTraderAbstract->o_Position;
-			
-			strcpy						(l_tpAbstract->s_name_replace,l_tpAbstract->s_name);
-			if (l_tpAbstract->ID < 1000)
-				strcat					(l_tpAbstract->s_name_replace,"0");
-			if (l_tpAbstract->ID < 100)
-				strcat					(l_tpAbstract->s_name_replace,"0");
-			if (l_tpAbstract->ID < 10)
-				strcat					(l_tpAbstract->s_name_replace,"0");
-			string16					S1;
-			strcat						(l_tpAbstract->s_name_replace,itoa(l_tpAbstract->ID,S1,10));
-
-			l_tpALifeDynamicObject->m_tGraphID	= i->m_tGraphID;
-			l_tpALifeDynamicObject->m_tNodeID	= i->m_tNodeID;
-			CSE_ALifeObjectRegistry::Add(l_tpALifeDynamicObject);
-			vfUpdateDynamicData			(l_tpALifeDynamicObject);
-		}
-	}
+	else
+		i->spawn_supplies		();
 }
 
 void CSE_ALifeSimulator::vfGenerateAnomalousZones()

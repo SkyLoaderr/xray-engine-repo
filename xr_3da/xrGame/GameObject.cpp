@@ -243,27 +243,20 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 void CGameObject::spawn_supplies()
 {
-	if (!spawn_ini())
+	if (!spawn_ini() || ai().get_alife())
 		return;
 
-	LPCSTR					items = spawn_ini()->r_string("spawn","items");
-	string64				item_section,item_count;
-	u32						n = _GetItemCount(items);
-	for (u32 i=0; i<n; ++i) {
-		_GetItem			(items,i,item_section);
-		VERIFY				(xr_strlen(item_section));
-		u32					count = 1;
-		if (i + 1 < n) {
-			_GetItem		(items,i+1,item_count);
-			VERIFY			(xr_strlen(item_count));
-			int				value = atoi(item_count);
-			if (value) {
-				count		= value;
-				++i;
-			}
+	LPCSTR					N,V;
+	for (u32 k = 0, j; spawn_ini()->r_line("spawn",k,&N,&V); k++) {
+		VERIFY				(xr_strlen(N));
+		j					= 1;
+		if (V && xr_strlen(V)) {
+			j				= atoi(V);
+			if (!j)
+				j			= 1;
 		}
-		for (u32 j=0; j<count; ++j)
-			Level().spawn_item	(item_section,Position(),level_vertex_id(),ID());
+		for (u32 i=0; i<j; ++i)
+			Level().spawn_item	(N,Position(),level_vertex_id(),ID());
 	}
 }
 

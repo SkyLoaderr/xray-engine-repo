@@ -169,7 +169,7 @@ protected:
 	{
 		return				(m_ini_file);
 	}
-			void			spawn_supplies		();
+	virtual	void			spawn_supplies		();
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

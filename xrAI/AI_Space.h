@@ -42,7 +42,7 @@ public:
 	IC		const CGameLevelCrossTable	*get_cross_table() const;
 	IC		CEF_Storage					&ef_storage		() const;
 	IC		CGraphEngine				&graph_engine	() const;
-	IC		const CSE_ALifeSimulator	&alife			() const;
+	IC		CSE_ALifeSimulator			&alife			() const;
 	IC		const CSE_ALifeSimulator	*get_alife		() const;
 	IC		const CCoverManager			&cover_manager	() const;
 	IC		CScriptEngine				&script_engine	() const;

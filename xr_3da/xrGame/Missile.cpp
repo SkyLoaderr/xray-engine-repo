@@ -114,30 +114,31 @@ void CMissile::OnH_B_Chield()
 
 void CMissile::spawn_fake_missile()
 {
-#ifdef _DEBUG
-	//Msg					("%6d : Spawning fake missile for object %s",Level().timeServer(),*cName());
-#endif
-	CSE_Abstract		*D	= F_entity_Create(*cNameSect());
-	R_ASSERT			(D);
-	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-	R_ASSERT							(l_tpALifeDynamicObject);
-	l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
-	// Fill
-	strcpy				(D->s_name,*cNameSect());
-	strcpy				(D->s_name_replace,"");
-	D->s_gameid			=	u8(GameID());
-	D->s_RP				=	0xff;
-	D->ID				=	0xffff;
-	D->ID_Parent		=	(u16)ID();
-	D->ID_Phantom		=	0xffff;
-	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-	D->RespawnTime		=	0;
-	// Send
-	NET_Packet			P;
-	D->Spawn_Write		(P,TRUE);
-	Level().Send		(P,net_flags(TRUE));
-	// Destroy
-	F_entity_Destroy	(D);
+//#ifdef _DEBUG
+//	//Msg					("%6d : Spawning fake missile for object %s",Level().timeServer(),*cName());
+//#endif
+//	CSE_Abstract		*D	= F_entity_Create(*cNameSect());
+//	R_ASSERT			(D);
+//	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+//	R_ASSERT							(l_tpALifeDynamicObject);
+//	l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
+//	// Fill
+//	strcpy				(D->s_name,*cNameSect());
+//	strcpy				(D->s_name_replace,"");
+//	D->s_gameid			=	u8(GameID());
+//	D->s_RP				=	0xff;
+//	D->ID				=	0xffff;
+//	D->ID_Parent		=	(u16)ID();
+//	D->ID_Phantom		=	0xffff;
+//	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+//	D->RespawnTime		=	0;
+//	// Send
+//	NET_Packet			P;
+//	D->Spawn_Write		(P,TRUE);
+//	Level().Send		(P,net_flags(TRUE));
+//	// Destroy
+//	F_entity_Destroy	(D);
+	Level().spawn_item	(*cNameSect(),Position(),level_vertex_id(),ID());
 }
 
 void CMissile::OnH_A_Chield() 

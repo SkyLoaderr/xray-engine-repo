@@ -34,6 +34,7 @@ public:
 			void					vfAttachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
 			void					vfDetachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
 			void					vfInitInventory			();
+	virtual void					spawn_supplies			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -53,6 +54,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 			u32						dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem, CSE_ALifeObjectRegistry *tpALifeObjectRegistry);
+	virtual void					spawn_supplies		();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -181,6 +183,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	///////////////////////////////////////////
 									CSE_ALifeCreatureActor	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureActor	();
+
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	virtual void					spawn_supplies		();
+#endif
+#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
@@ -316,6 +324,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			int						ifChooseValuables		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
 			bool					bfChooseFast			();
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
+	virtual void					spawn_supplies			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
