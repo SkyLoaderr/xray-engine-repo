@@ -60,7 +60,20 @@ float CPHShell::getMass()
 
 	return m;
 }
+float CPHShell::getVolume()
+{
+	float v=0.f;
 
+	ELEMENT_I i;
+
+	for(i=elements.begin();i!=elements.end();i++)	v+=(*i)->getVolume();
+
+	return v;
+}
+float	CPHShell::getDensity()
+{
+	return getMass()/getVolume();
+}
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)
 		return;
@@ -777,6 +790,37 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		}
 	}
 
+}
+
+void CPHShell::ResetCallbacks(u16 id,Flags64 &mask)
+{
+	ResetCallbacksRecursive(id,u16(-1),mask);
+}
+
+void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
+{
+
+	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
+	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
+	SJointIKData& joint_data=bone_data.IK_data;
+	if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
+	{
+		B.set_callback(0,(CPHElement*)elements[element]);
+	}
+	else
+	{
+		element++;
+		R_ASSERT2(element<elements.size(),"Out of elements!!");
+		CPHElement* E=(CPHElement*)(elements[element]);
+		B.set_callback(BonesCallback1,E);
+		//Fmatrix form;
+		//form.set(mXFORM);
+		//form.mulB(B.mTransform);
+		//E->SetTransform(form);
+	}
+
+	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
+		ResetCallbacksRecursive((*it)->SelfID,element,mask);
 }
 
   

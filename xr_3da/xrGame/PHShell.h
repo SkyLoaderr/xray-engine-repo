@@ -90,7 +90,8 @@ virtual ~CPHShell				()
 	virtual void			setMass1				(float M)								;
 	virtual float			getMass					()											;
 	virtual void			setDensity				(float M)									;
-
+	virtual float			getDensity				()											;
+	virtual float			getVolume				()											;
 	virtual void			applyForce				(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( dir, val);
@@ -144,6 +145,7 @@ virtual ~CPHShell				()
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
 	virtual void                ZeroCallbacks				();
+	virtual void				ResetCallbacks				(u16 id,Flags64 &mask);
 	virtual void				set_DisableParams			(float dis_l=default_disl,float dis_w=default_disw);
 	virtual void				UpdateRoot					();
 	virtual void				SmoothElementsInertia		(float k);
@@ -178,6 +180,7 @@ private:
 	/////////////////////////////////////////
 	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
 	void ZeroCallbacksRecursive(u16 id);
+	void ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask);
 
 };
 #endif

@@ -67,7 +67,8 @@ public:
 
 	virtual void			setDensity				(float M)												= 0;
 	virtual float			getMass					()														= 0;
-
+	virtual float			getDensity				()														= 0;
+	virtual float			getVolume				()														= 0;
 	
 	virtual void			applyForce				(const Fvector& dir, float val)							= 0;
 	virtual void			applyForce				(float x,float y,float z)								= 0;
@@ -95,7 +96,7 @@ class	CPhysicsElement		: public CPhysicsBase
 {
 
 public:
-	int						m_SelfID;
+	u16						m_SelfID;
 	virtual CPhysicsShell*	PhysicsShell			()												= 0;		
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
 	virtual CPhysicsRefObject*	PhysicsRefObject	()												= 0;
@@ -232,6 +233,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;
+	virtual void				ResetCallbacks			(u16 id,Flags64 &mask)											= 0;
 	virtual						~CPhysicsShell		     (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};

@@ -37,7 +37,7 @@ private:
 u16 				CheckFractured	();										//returns first breaked fracture
 
 element_fracture	SplitFromEnd	(CPHElement* element,u16 geom_num);
-void				InitNewElement	(CPHElement* element);
+void				InitNewElement	(CPHElement* element,const Fmatrix &shift_pivot,float density);
 void				PassEndFractures(u16 from,CPHElement* dest);
 public:
 void				SplitProcess	(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements);

@@ -1280,17 +1280,22 @@ void CPHElement::CreateSimulBase()
 	}
 }
 
-void CPHElement::ReInitDynamics()
+void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 {
-	get_mc_data();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++)
+	{
+		(*i)->move_local_basis(shift_pivot);
+	}
+
+	setDensity(density);
 	dBodySetMass(m_body,&m_mass);
 	m_inverse_local_transform.identity();
 	m_inverse_local_transform.c.set(m_mass_center);
 	m_inverse_local_transform.invert();
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-
+	i=m_geoms.begin();
 	for(;i!=e;i++)
 	{
 		(*i)->set_position(m_mass_center);

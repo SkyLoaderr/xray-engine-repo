@@ -239,7 +239,7 @@ void CPhysicObject::SpawnCopy()
 		l_tpALifePhysicObject->flags.set(CSE_ALifeObjectPhysic::flSpawnCopy,1);
 		//l_tpALifePhysicObject->flags.set(mask);
 		// Fill
-		D->m_wVersion		=40;
+
 		strcpy				(D->s_name,cNameSect());
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
@@ -283,7 +283,14 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 {
 	R_ASSERT2(m_unsplited_shels.size(),"NO_SHELLS !!");
 	R_ASSERT2(!O->m_pPhysicsShell,"this has shell already!!!");
-	O->m_pPhysicsShell=m_unsplited_shels.back().first;
+	CPhysicsShell* pPhysicsShell=m_unsplited_shels.back().first;
+	O->m_pPhysicsShell=pPhysicsShell;
+	CKinematics *pKinematics=PKinematics(O->Visual());
+	pKinematics->Calculate();
+	pPhysicsShell->set_Kinematics(pKinematics);
+	Flags64 mask;
+	mask.zero();
+	pPhysicsShell->ResetCallbacks(m_unsplited_shels.back().second,mask);
 	//////////////////////////////////////////////////////////////////////////
 
 

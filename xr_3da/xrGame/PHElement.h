@@ -35,7 +35,7 @@ class CPHElement	:  public CPhysicsElement
 	CPHElement				*m_parent_element;			//bool !
 	CPHShell				*m_shell;					//e
 	CPHInterpolation		m_body_interpolation;		//e
-	CPHFracturesHolder		*m_fratures_holder;
+	CPHFracturesHolder		*m_fratures_holder;			//e
 	/////disable///////////////////////
 	//dVector3 mean_w;
 	//dVector3 mean_v;
@@ -158,9 +158,11 @@ public:
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false);
 
 	virtual void			Deactivate				();
+	virtual float			getVolume				(){return m_volume;}
 	virtual void			setMass					(float M);
 	virtual float			getMass					(){return m_mass.mass;}
 	virtual void			setDensity				(float M);
+	virtual float			getDensity				(){return m_mass.mass/m_volume;}
 	virtual void			setMassMC				(float M,const Fvector& mass_center);
 	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
@@ -170,7 +172,7 @@ public:
 			void			PassEndGeoms			(u16 from,u16 to,CPHElement* dest);
 
 			void			CreateSimulBase			();//create body & cpace
-			void			ReInitDynamics			();//set body & geom positions
+			void			ReInitDynamics			(const Fmatrix &shift_pivot,float density);//set body & geom positions
 			void			SplitProcess			(ELEMENT_PAIR_VECTOR &new_elements);
 			void			PresetActive			();
 	dMass*					GetMass					()

@@ -2,6 +2,7 @@
 #include "PHFracture.h"
 #include "Physics.h"
 #include "PHElement.h"
+#include "PHShell.h"
 CPHFracturesHolder::CPHFracturesHolder()
 {
 	m_has_breaks=false;
@@ -20,8 +21,21 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	u16 end_geom_num		=fract_i->m_end_geom_num;
 
 	CPHElement* new_element	=dynamic_cast<CPHElement*>(P_create_Element());
-	InitNewElement(new_element);
+	new_element->m_SelfID=fract_i->m_bone_id;
+	new_element->mXFORM.set(element->mXFORM);
 	element->PassEndGeoms(geom_num,end_geom_num,new_element);
+	/////////////////////////////////////////////
+	CKinematics* pKinematics= element->m_shell->PKinematics();
+	const CBoneInstance& new_bi=pKinematics->LL_GetBoneInstance(new_element->m_SelfID);
+	const CBoneInstance& old_bi=pKinematics->LL_GetBoneInstance(element->m_SelfID);
+	Fmatrix shift_pivot;
+	shift_pivot.set(new_bi.mTransform);
+	shift_pivot.invert();
+	shift_pivot.mulB(old_bi.mTransform);
+	/////////////////////////////////////////////
+	InitNewElement(new_element,shift_pivot,element->getDensity());
+	
+
 	element_fracture ret	=mk_pair(new_element,(CShellSplitInfo)(*fract_i));
 
 	if(m_fractures.size()-fracture>0) 
@@ -95,10 +109,10 @@ void CPHFracturesHolder::SplitProcess(CPHElement* element,ELEMENT_PAIR_VECTOR &n
 	}
 }
 
-void CPHFracturesHolder::InitNewElement(CPHElement* element)
+void CPHFracturesHolder::InitNewElement(CPHElement* element,const Fmatrix &shift_pivot,float density)
 {
 element->CreateSimulBase();
-element->ReInitDynamics();
+element->ReInitDynamics(shift_pivot,density);
 }
 
 void CPHFracturesHolder::PhTune(dBodyID body)

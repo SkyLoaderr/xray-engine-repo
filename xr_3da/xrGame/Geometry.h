@@ -55,6 +55,7 @@ public:
 							}
 virtual const	Fvector&	local_center		()																	=0;
 virtual			void		get_local_form		(Fmatrix& form)														=0;
+virtual			void		set_local_form		(const Fmatrix& form)												=0;
 	//set
 	//element part
 				void		set_body			(dBodyID body)														;
@@ -67,12 +68,12 @@ virtual			void		get_local_form		(Fmatrix& form)														=0;
 				void		set_ph_object		(CPHObject* o)														;
 	//build/destroy
 protected:
+	void		init				()																	;
+	virtual		dGeomID		create				()																	=0;
 public:
 				void		build				(const Fvector& ref_point)											;
-				void		init				()																	;
-	virtual		dGeomID		create				()																	=0;
-	virtual		void		set_position		(const Fvector& ref_point)											=0;
-		
+	virtual		void		set_position		(const Fvector& ref_point)											=0;//for build geom
+				void		move_local_basis	(const Fmatrix& inv_new_mul_old)									;
 				void		destroy				()																	;
 							CODEGeom			()																	;
 	virtual					~ CODEGeom			()																	;
@@ -90,6 +91,7 @@ public:
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_local_form		(Fmatrix& form)														;
+virtual			void		set_local_form		(const Fmatrix& form)												;
 	virtual		dGeomID		create				()																	;
 	virtual		void		set_position		(const Fvector& ref_point)											;
 };
@@ -106,6 +108,7 @@ public:
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_local_form		(Fmatrix& form)														;
+	virtual		void		set_local_form		(const Fmatrix& form)												;
 	virtual		dGeomID		create				()																	;
 	virtual		void		set_position		(const Fvector& ref_point)											;
 };
@@ -121,6 +124,7 @@ public:
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 	virtual		void		get_local_form		(Fmatrix& form)														;
+	virtual		void		set_local_form		(const Fmatrix& form)												;
 	virtual		dGeomID		create				()																	;
 	virtual		void		set_position		(const Fvector& ref_point)											;
 };

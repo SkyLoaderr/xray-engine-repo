@@ -207,7 +207,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 				m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
 				//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
 
-	m_pShell->add_Element(split_elem.first);
+	new_shell_last_desc->add_Element(split_elem.first);
 	new_shell_last_desc->PresetActive();
 	m_pShell->PassEndElements(split_elem.second.m_start_el_num,split_elem.second.m_end_el_num,new_shell_last_desc);
 

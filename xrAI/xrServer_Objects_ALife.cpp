@@ -759,8 +759,8 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 28)
 		tNetPacket.r_string		(startup_animation);
 
-	if	(m_wVersion>39)	//>39 		
-		 tNetPacket.r_u8		(flags.flags);
+	if	(m_wVersion > 39)		// > 39 		
+		tNetPacket.r_u8			(flags.flags);
 #ifdef _EDITOR    
 	PlayAnimation				(startup_animation[0]?startup_animation:"$editor");
 #endif
