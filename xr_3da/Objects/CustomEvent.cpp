@@ -150,7 +150,9 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 
 BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
-	return inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
+	inherited::Spawn			(bLocal,server_id,o_pos,o_angle,P,flags);
+
+
 }
 
 void CCustomEvent::Update (DWORD dt)
