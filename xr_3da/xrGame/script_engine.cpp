@@ -82,8 +82,7 @@ void CScriptEngine::export()
 	export_memory_objects		();
 	export_action_management	();
 	export_motivation_management();
-	export_sound_info			();
-	export_monster_hit_info		();
+	export_monster_info			();
 	script_register				(lua());
 
 #ifdef DEBUG

@@ -14,10 +14,15 @@
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"
 #include "../../ai_script_callback.h"
+#include "../../sound_player.h"
 
 class CInventoryItem;
 
-class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster {
+class CAI_Trader :	public CEntityAlive, 
+					public CInventoryOwner, 
+					public CScriptMonster,
+					public CSoundPlayer
+{
 	CScriptCallback		m_OnStartCallback;
 	CScriptCallback		m_OnStopCallback;
 	CScriptCallback		m_OnTradeCallback;

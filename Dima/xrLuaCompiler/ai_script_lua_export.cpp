@@ -335,27 +335,28 @@ void CScriptEngine::export_hit()
 	];
 }
 
-void CScriptEngine::export_sound_info()
-{
-	module(lua())
-	[
-		class_<CLuaSoundInfo>("SoundInfo")
-			.def_readwrite("who",				&CLuaSoundInfo::who)
-			.def_readwrite("danger",			&CLuaSoundInfo::dangerous)
-			.def_readwrite("position",			&CLuaSoundInfo::position)
-			.def_readwrite("power",				&CLuaSoundInfo::power)
-			.def_readwrite("time",				&CLuaSoundInfo::time)
-	];
-}
+struct CMonsterSpace {};
 
-void CScriptEngine::export_monster_hit_info()
+void CScriptEngine::export_monster_info()
 {
 	module(lua())
 		[
 			class_<CLuaMonsterHitInfo>("MonsterHitInfo")
-			.def_readwrite("who",				&CLuaMonsterHitInfo::who)
-			.def_readwrite("direction",			&CLuaMonsterHitInfo::direction)
-			.def_readwrite("time",				&CLuaMonsterHitInfo::time)
+				.def_readwrite("who",				&CLuaMonsterHitInfo::who)
+				.def_readwrite("direction",			&CLuaMonsterHitInfo::direction)
+				.def_readwrite("time",				&CLuaMonsterHitInfo::time),
+
+			class_<CLuaSoundInfo>("SoundInfo")
+				.def_readwrite("who",				&CLuaSoundInfo::who)
+				.def_readwrite("danger",			&CLuaSoundInfo::dangerous)
+				.def_readwrite("position",			&CLuaSoundInfo::position)
+				.def_readwrite("power",				&CLuaSoundInfo::power)
+				.def_readwrite("time",				&CLuaSoundInfo::time),
+
+			class_<CMonsterSpace>("MonsterSpace")
+				.enum_("sounds")
+				[
+					value("sound_script",			MonsterSpace::eMonsterSoundScript)
+				]
 		];
 }
-

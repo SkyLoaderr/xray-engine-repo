@@ -273,7 +273,6 @@ void CAI_Trader::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 
 void CAI_Trader::Think()
 {
-	SelectAnimation(XFORM().k,XFORM().k,0);
 }
 
 void CAI_Trader::Die ( )
