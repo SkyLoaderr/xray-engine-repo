@@ -17,11 +17,11 @@ function boar_callback (obj, action_type, index)
 	        sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
 	        cond (cond.anim_end))
 	action (obj, move (move.act_run, move.force_type, patrol ("way0001_cont")), cond (cond.move_end))
-	--[[
-	action_first (obj, move (move.act_stand_idle, move.force_type, patrol ("way0001")), anim ("stand_attack_1"), 
-	        sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
-	        cond (cond.anim_end))
-	--]]
+	
+--	action_first (obj, move (move.act_stand_idle, move.force_type, patrol ("way0001")), anim ("stand_attack_1"), 
+--	        sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+--	        cond (cond.anim_end))
+
 end
 
 function main ()
@@ -39,7 +39,6 @@ function main ()
 		get_level_object ("m_pseudodog_e0003"),
 		get_level_object ("m_flesh_e0000"),
 		get_level_object ("m_flesh_e0001"),
-		
 		get_level_object ("m_flesh_e0002"),
 		get_level_object ("m_boar_e0003"),
 		get_level_object ("m_flesh_e0003"),
@@ -62,7 +61,6 @@ function main ()
 		patrol ("way0010"),            --m_flesh_e0000
 		patrol ("way0011"),            --m_flesh_e0001
 		patrol ("way0003"),            --m_flesh_e0002
-		
 		patrol ("way0003"),            --m_boar_e0003
 		patrol ("way0009"),            --m_flesh_e0003
 		patrol ("way0012"),            --m_flesh_e0004
@@ -86,7 +84,6 @@ function main ()
 	           "monsters\\flesh\\idle_0",       --m_flesh_e0000
 	           "monsters\\flesh\\idle_1",       --m_flesh_e0001
 	           "monsters\\flesh\\idle_0",       --m_flesh_e0002
-	           
 	           "monsters\\boar\\idle_0",        --m_boar_e0003
 	           "monsters\\flesh\\idle_1",       --m_flesh_e0003
 	           "monsters\\flesh\\idle_0",       --m_flesh_e0004
@@ -123,7 +120,7 @@ function main ()
 
 	t[2]:set_callback (m_attack_wave.boar_callback, game_object.movement)
 
-	wait (60000)
+	wait (10000)
 
 
 	for a = 1, 13, 1 do
@@ -155,7 +152,7 @@ function main ()
 		   local pass = 0
 		   while nz == 0 and pass < 20 do
 		         nz = math.random (1, max)
-		         if flags[nz] == true then nz = 0
+		         if flags[nz] == true then nz = 0 end
 		         pass = pass + 1
 		   end      
 		   if nz == 0 then
@@ -173,7 +170,6 @@ function main ()
 		wait () 
 	end
 
---    t[a]:script (false, m_attack_wave.script_name ())
 
 end
 
