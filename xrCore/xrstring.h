@@ -84,6 +84,8 @@ IC bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get() >  
 // externally visible standart functionality
 IC void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);		}
 IC u32	xr_strlen		(ref_str & a)								{ return a.size();		}
+IC int	xr_strcmp		(const ref_str & a, const char* b)			{ return xr_strcmp(*a,b);	}
+IC int	xr_strcmp		(const char* a, const ref_str & b)			{ return xr_strcmp(a,*b);	}
 IC int	xr_strcmp		(const ref_str & a, const ref_str & b)		{ 
 	if (a.equal(b))		return 0;
 	else				return xr_strcmp(*a,*b);
