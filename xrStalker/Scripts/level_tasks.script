@@ -341,6 +341,9 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_bar_hunter_quest_start" then
 		add_location (502, "bar_hunter_toz_location")
 
+	elseif info_id == "bar_bar_hunter_quest_find_rifle"
+		remove_location (502, "bar_hunter_toz_location")	
+		add_location (504, "bar_hunter_location")
 
 	-- military	
 	elseif info_id == "mil_max_job" then
