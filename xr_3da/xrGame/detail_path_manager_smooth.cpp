@@ -450,6 +450,7 @@ bool CDetailPathManager::fill_key_points(
 	STravelPoint						start_point;
 	start_point.vertex_id				= level_path.front();
 	start_point.position				= start.position;
+	m_key_points.clear					();
 
 	for (int _i=0, i=0, n=(int)level_path.size() - 1, j = n, m=j; _i < n; ) {
 		if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,level_path[j])) {
