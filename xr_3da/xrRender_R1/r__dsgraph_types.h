@@ -33,10 +33,9 @@ namespace	R_dsgraph
 	typedef	IDirect3DPixelShader9*		ps_type;
 #endif
 	// NORMAL
-	typedef xr_vector<_NormalItem>	mapNormalDirect;
+	typedef xr_vector<_NormalItem>			mapNormalDirect;
 	struct	mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};
-	struct	mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
-	struct	mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVB>					{	float	ssa;	};
+	struct	mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalItems>				{	float	ssa;	};
 	struct	mapNormalStates		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{	float	ssa;	};
 	struct	mapNormalCS			: public	FixedMAP<R_constant_table*,mapNormalStates>			{	float	ssa;	};
 	struct	mapNormalPS			: public	FixedMAP<ps_type, mapNormalCS>						{	float	ssa;	};
@@ -46,8 +45,7 @@ namespace	R_dsgraph
 	// MATRIX
 	typedef xr_vector<_MatrixItem>	mapMatrixDirect;
 	struct	mapMatrixItems		: public	mapMatrixDirect										{	float	ssa;	};
-	struct	mapMatrixVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapMatrixItems>	{	float	ssa;	};
-	struct	mapMatrixTextures	: public	FixedMAP<STextureList*,mapMatrixVB>					{	float	ssa;	};
+	struct	mapMatrixTextures	: public	FixedMAP<STextureList*,mapMatrixItems>				{	float	ssa;	};
 	struct	mapMatrixStates		: public	FixedMAP<IDirect3DStateBlock9*,mapMatrixTextures>	{	float	ssa;	};
 	struct	mapMatrixCS			: public	FixedMAP<R_constant_table*,mapMatrixStates>			{	float	ssa;	};
 	struct	mapMatrixPS			: public	FixedMAP<ps_type, mapMatrixCS>						{	float	ssa;	};

@@ -51,7 +51,6 @@ public:
 	xr_vector<R_dsgraph::mapNormalStates::TNode*>				nrmStates;
 	xr_vector<R_dsgraph::mapNormalTextures::TNode*>				nrmTextures;
 	xr_vector<R_dsgraph::mapNormalTextures::TNode*>				nrmTexturesTemp;
-	xr_vector<R_dsgraph::mapNormalVB::TNode*>					nrmVB;
 
 	xr_vector<R_dsgraph::mapMatrixVS::TNode*>					matVS;
 	xr_vector<R_dsgraph::mapMatrixPS::TNode*>					matPS;
@@ -59,7 +58,6 @@ public:
 	xr_vector<R_dsgraph::mapMatrixStates::TNode*>				matStates;
 	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTextures;
 	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTexturesTemp;
-	xr_vector<R_dsgraph::mapMatrixVB::TNode*>					matVB;
 
 	xr_vector<R_dsgraph::_LodItem>								lstLODs;
 	xr_vector<int>												lstLODgroups;

@@ -123,18 +123,16 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
 	mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
 	mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-	mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->geom->vb);
-	mapMatrixItems&				items	= Nvb->val;
+	mapMatrixItems&				items	= Ntex->val;
 	items.push_back						(item);
 
 	// Need to sort for HZB efficient use
-	if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
 	if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
 	if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
 	if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
 	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
 	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
-	} } } } } }
+	} } } } }
 
 #if RENDER==R_R2
 	if (val_recorder)			{
@@ -221,19 +219,17 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
 	mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
 	mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-	mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->geom->vb);
-	mapNormalItems&				items	= Nvb->val;
+	mapNormalItems&				items	= Ntex->val;
 	_NormalItem					item	= {SSA,pVisual};
 	items.push_back						(item);
 
 	// Need to sort for HZB efficient use
-	if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
 	if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
 	if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
 	if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
 	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
 	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
-	} } } } } }
+	} } } } }
 
 #if RENDER==R_R2
 	if (val_recorder)			{

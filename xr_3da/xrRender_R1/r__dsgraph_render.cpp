@@ -76,9 +76,6 @@ IC	bool	cmp_cs_mat			(mapMatrixCS::TNode* N1, mapMatrixCS::TNode* N2)			{	return
 IC	bool	cmp_states_nrm		(mapNormalStates::TNode* N1, mapNormalStates::TNode* N2)	{	return (N1->val.ssa > N2->val.ssa);		}
 IC	bool	cmp_states_mat		(mapMatrixStates::TNode* N1, mapMatrixStates::TNode* N2)	{	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_vb_nrm			(mapNormalVB::TNode* N1, mapNormalVB::TNode* N2)			{	return (N1->val.ssa > N2->val.ssa);		}
-IC	bool	cmp_vb_mat			(mapMatrixVB::TNode* N1, mapMatrixVB::TNode* N2)			{	return (N1->val.ssa > N2->val.ssa);		}
-
 IC	bool	cmp_textures_lex2_nrm	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2){	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
@@ -269,24 +266,13 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 						sort_tlist_nrm						(nrmTextures,nrmTexturesTemp,tex,true);
 						for (u32 tex_id=0; tex_id<nrmTextures.size(); tex_id++)
 						{
-							mapNormalTextures::TNode*	Ntex		= nrmTextures[tex_id];
-							RCache.set_Textures						(Ntex->key);
-							RImplementation.apply_lmaterial			();
+							mapNormalTextures::TNode*	Ntex	= nrmTextures[tex_id];
+							RCache.set_Textures					(Ntex->key);
+							RImplementation.apply_lmaterial		();
 
-							mapNormalVB&				vb			= Ntex->val;	vb.ssa	=	0;
-							vb.getANY_P								(nrmVB);
-							std::sort								(nrmVB.begin(), nrmVB.end(), cmp_vb_nrm);
-							for (u32 vb_id=0; vb_id<nrmVB.size(); vb_id++)
-							{
-								mapNormalVB::TNode*			Nvb		= nrmVB[vb_id];
-								// no need to setup that shit - visual defined
-
-								mapNormalItems&				items	= Nvb->val;		items.ssa	= 0;
-								mapNormal_Render					(items);
-								if (_clear)				items.clear	();
-							}
-							nrmVB.clear				();
-							if(_clear) vb.clear		();
+							mapNormalItems&				items	= Ntex->val;		items.ssa	= 0;
+							mapNormal_Render					(items);
+							if (_clear)				items.clear	();
 						}
 						nrmTextures.clear		();
 						nrmTexturesTemp.clear	();
@@ -344,23 +330,12 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 						sort_tlist_mat						(matTextures,matTexturesTemp,tex,true);
 						for (u32 tex_id=0; tex_id<matTextures.size(); tex_id++)
 						{
-							mapMatrixTextures::TNode*	Ntex		= matTextures[tex_id];
-							RCache.set_Textures						(Ntex->key);
-							RImplementation.apply_lmaterial			();
+							mapMatrixTextures::TNode*	Ntex	= matTextures[tex_id];
+							RCache.set_Textures					(Ntex->key);
+							RImplementation.apply_lmaterial		();
 
-							mapMatrixVB&				vb			= Ntex->val;	vb.ssa	=	0;
-							vb.getANY_P								(matVB);
-							std::sort								(matVB.begin(), matVB.end(), cmp_vb_mat);
-							for (u32 vb_id=0; vb_id<matVB.size(); vb_id++)
-							{
-								mapMatrixVB::TNode*			Nvb		= matVB[vb_id];
-								// no need to setup that shit - visual defined
-
-								mapMatrixItems&				items	= Nvb->val;		items.ssa	= 0;
-								mapMatrix_Render					(items);
-							}
-							matVB.clear				();
-							if(_clear) vb.clear		();
+							mapMatrixItems&				items	= Ntex->val;		items.ssa	= 0;
+							mapMatrix_Render					(items);
 						}
 						matTextures.clear		();
 						matTexturesTemp.clear	();
