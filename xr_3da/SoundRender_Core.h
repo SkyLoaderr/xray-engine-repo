@@ -3,6 +3,7 @@
 #pragma once
 
 #include "SoundRender.h"
+#include "SoundRender_Environment.h"
 
 class CSoundRender_Core					: public CSound_manager_interface
 {
