@@ -30,7 +30,7 @@ public:
 	IC void			SetColor		(const Fcolor& C)				{ color.set(C);		}
 	IC void			SetColor		(float r, float g, float b)		{ color.set(r,g,b,1); }
 
-	void			Render			(CVertexStream* VS);
+	void			Render			(CVS* VS);
 };
 
 class ENGINE_API	CLightPPA_Manager	: public pureDeviceCreate, pureDeviceDestroy

@@ -34,7 +34,7 @@ IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, flo
 	D.v1	=.5f;
 }
 
-void CLightPPA::Render	(CVertexStream* VS)
+void CLightPPA::Render	(CVS* VS)
 {
 	VERIFY	(pCreator);
 
