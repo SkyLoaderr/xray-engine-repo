@@ -64,7 +64,9 @@ CBaseDisableData::CBaseDisableData()
 
 void	CBaseDisableData::Reinit()
 {
-	m_count		=m_frames+ph_world->disable_count					;
+	m_count		=m_frames											;
+	if(ph_world)
+			m_count=m_count+ph_world->disable_count					;
 	m_stateL1	.Reset()											;
 	m_stateL2	.Reset()											;	
 }

@@ -318,7 +318,7 @@ bool CPHFracture::Update(CPHElement* element)
 		bool applied_to_second=false;
 		dJointID joint=dBodyGetJoint(body,i);
 		dJointFeedback* feedback=dJointGetFeedback(joint);
-		R_ASSERT2(feedback,"Feedback was not set!!!");
+		VERIFY2(feedback,"Feedback was not set!!!");
 		dxJoint* b_joint=(dxJoint*) joint;
 		bool b_body_second=(b_joint->node[1].body==body);
 		Fvector joint_position;

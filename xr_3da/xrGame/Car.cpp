@@ -304,6 +304,8 @@ void	CCar::UpdateCL				( )
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 	}
 	#endif
+	if (GetScriptControl())
+		ProcessScripts();
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	VisualUpdate();
@@ -1489,8 +1491,7 @@ void CCar::PhDataUpdate(dReal /**step/**/)
 			D->Update();
 		}
 	}
-	if (GetScriptControl())
-		ProcessScripts();
+
 }
 
 BOOL CCar::UsedAI_Locations()
