@@ -8,6 +8,7 @@
 #include "render.h"
 #include "flightscontroller.h"
 #include "xr_creator.h"
+#include "fbasicvisual.h"
 
 int		psSH_Blur			= 1;
 
