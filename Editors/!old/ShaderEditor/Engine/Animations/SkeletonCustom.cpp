@@ -48,13 +48,26 @@ void	CBoneData::DebugQuery		(BoneDebug& L)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-u16	CKinematics::LL_BoneID		(LPCSTR B)
-{
-	accel::iterator I = bone_map->find(LPSTR(B));
-	if (I==bone_map->end())		return BI_NONE;
-	else						return I->second;
+bool	pred_N(const ref_str&	N, LPCSTR B)			{
+	return xr_strcmp(*N,B)<0;
+}
+u16		CKinematics::LL_BoneID		(LPCSTR B)			{
+	accel::iterator I	= std::lower_bound	(bone_map_N->begin(),bone_map_N->end(),B,pred_N);
+	if (I == bone_map_N->end())			return BI_NONE;
+	if (0 != xr_strcmp(*(I->first),B))	return BI_NONE;
+	return				u16(I->second);
+}
+bool	pred_P(const ref_str&	N, const ref_str& B)	{
+	return N._get() < B._get();
+}
+u16		CKinematics::LL_BoneID		(const ref_str& B)	{
+	accel::iterator I	= std::lower_bound	(bone_map_P->begin(),bone_map_P->end(),B,pred_P);
+	if (I == bone_map_P->end())			return BI_NONE;
+	if (I->first._get() != B._get() )	return BI_NONE;
+	return				u16(I->second);
 }
 
+//
 LPCSTR CKinematics::LL_BoneName_dbg	(u16 ID)
 {
 	CKinematics::accel::iterator _I, _E=bone_map->end();

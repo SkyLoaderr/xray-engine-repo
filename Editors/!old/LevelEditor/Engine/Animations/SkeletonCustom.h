@@ -75,12 +75,8 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	typedef FHierrarhyVisual	inherited;
 	friend class				CBoneData;
 	friend class				CSkeletonX;
-protected:
-	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
-		IC bool operator()(const ref_str& x, const ref_str& y) const	{	return xr_strcmp(x,y)<0;	}
-	};
 public:
-	typedef xr_map<ref_str,u16,str_pred>		accel;
+	typedef xr_vector<std::pair<ref_str,u32> >	accel;
 protected:
 	// Globals
     CInifile*					pUserData;
@@ -89,7 +85,8 @@ protected:
 	u16							iRoot;			// Root bone index
 
 	// Fast search
-	accel*						bone_map;		// bones  assotiations	(shared)
+	accel*						bone_map_N;		// bones  assotiations	(shared)	- sorted by name
+	accel*						bone_map_P;		// bones  assotiations	(shared)	- sorted by name-pointer
 
 	s32							Update_ID;
 	u32							Update_LastTime;
@@ -108,7 +105,8 @@ public:
 	virtual						~CKinematics		();
 
 	// Low level interface
-	u16							LL_BoneID		(LPCSTR B);
+	u16							LL_BoneID		(LPCSTR  B);
+	u16							LL_BoneID		(const ref_str& B);
 	LPCSTR						LL_BoneName_dbg	(u16 ID);
 
     CInifile*					LL_UserData		(){return pUserData;}
