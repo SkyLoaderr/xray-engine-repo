@@ -95,13 +95,13 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	if (iHealth <= 0) {
 		switch (m_cBodyState) {
 			case BODY_STATE_STAND : {
-				for (int i=0 ;i<2; i++)
+				for (int i=0 ;i<3; i++)
 					if (tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 						break;
 					}
 				if (!tpGlobalAnimation)
-					tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+					tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
 				break;
 			}
 			case BODY_STATE_CROUCH : {
