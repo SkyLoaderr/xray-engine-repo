@@ -141,6 +141,8 @@ namespace Feel {
 				D.div		(f);
 				if (g_pGameLevel->ObjectSpace.RayTest(P,D,f,Collide::rqtStatic,&I->Cache)) 
 				{
+					// callback and multiple ray-tests
+
 					// INVISIBLE, choose next point
 					I->fuzzy				-=	fuzzy_update_novis*dt;
 					clamp					(I->fuzzy,-.5f,1.f);
