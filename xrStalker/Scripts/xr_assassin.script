@@ -8,6 +8,7 @@ end
 function evaluator_need_assassin:evaluate()
 	--printf("assassin [%s] best_target = ", self.object:name()--[[,
 	--	if_then_else(self.object:best_target(), self.object:best_target():name(), "none")]])
+	--[[
 	if not self.st.target_obj then
 		if self.st.target == "actor" then
 			self.st.target_obj = level.actor()
@@ -17,6 +18,8 @@ function evaluator_need_assassin:evaluate()
 	end
 
   	return self.st.enabled == true and self.st.target_obj ~= nil and self.st.target_obj:alive()
+	--]]
+	return false
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -39,16 +42,33 @@ end
 
 
 function action_assassin_activity:reset_scheme()
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+        self.object:set_movement_type(move.stand)
+	self.object:set_sight(look.danger, nil, 0)
+	self.object:set_mental_state(anim.danger)
+
+	if self.st.target_obj then
+		self.object:set_path_type(game_object.level_path)
+		self.object:set_desired_direction(self.st.target_obj:direction())
+		self.object:set_dest_level_vertex_id(whom:level_vertex_id())
+		self.object:set_movement_type(move.run)
+	else
+	end
+
+	xr_reactions.add_rule(self.object, "ignore")
+
+	self.object:clear_animations()
 end	
 
 function action_assassin_activity:execute()
 	action_base.execute(self)
 	
+
 	printf("Plr, you will die")
 end
 
 function action_assassin_activity:finalize()
-	self.move_mgr:finalize()
 	action_base.finalize(self)
 end
 
