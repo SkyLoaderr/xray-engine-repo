@@ -54,6 +54,7 @@ private:
 
 	//буферный вектор проверенных персонажей
 	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
+	xr_vector<SPECIFIC_CHARACTER_INDEX> m_DefaultCharacters;
 
 #ifdef XRGAME_EXPORTS
 	//реестр  отношений с другими персонажами

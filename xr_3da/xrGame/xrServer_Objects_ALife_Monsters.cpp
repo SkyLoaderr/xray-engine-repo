@@ -156,8 +156,8 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 
 	{	
 		m_CheckedCharacters.clear();
+		m_DefaultCharacters.clear();
 
-		SPECIFIC_CHARACTER_INDEX team_default_index = NO_SPECIFIC_CHARACTER;
 		for(SPECIFIC_CHARACTER_INDEX i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
 		{
 			CSpecificCharacter spec_char;
@@ -177,9 +177,9 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 			
 			if(char_info.data()->m_Class == NO_CHARACTER_CLASS || class_found)
 			{
-				//запомнить первый (если группировка явно не задана) подходящий персонаж с флажком m_bDefaultForCommunity
-				if(team_default_index == NO_SPECIFIC_CHARACTER && spec_char.data()->m_bDefaultForCommunity)
-					team_default_index = i;
+				//запомнить пподходящий персонаж с флажком m_bDefaultForCommunity
+				if(spec_char.data()->m_bDefaultForCommunity)
+					m_DefaultCharacters.push_back(i);
 
 				if(char_info.data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank)<RANK_DELTA)
 				{
@@ -197,16 +197,16 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 				}
 			}
 		}
-		R_ASSERT3(NO_SPECIFIC_CHARACTER != team_default_index, 
+		R_ASSERT3(!m_DefaultCharacters.empty(), 
 			"no default specific character set for class", *char_info.data()->m_Class);
 
 #ifdef XRGAME_EXPORTS
 		if(m_CheckedCharacters.empty())
-#endif
-			char_info.m_iSpecificCharacterIndex = team_default_index;
-#ifdef XRGAME_EXPORTS
+			char_info.m_iSpecificCharacterIndex = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
 		else
 			char_info.m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
+#else
+			char_info.m_iSpecificCharacterIndex = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
 #endif
 
 		set_specific_character(char_info.m_iSpecificCharacterIndex);
