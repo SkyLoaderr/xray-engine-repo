@@ -19,6 +19,8 @@ function action_camera_activity:__init(obj, storage)
 	self.move_direction = 1 -- направление движения по вейпоинтам: 1 - вперед, (-1) - назад
     self.track_enemy = nil -- вражеский сталкер
 	self.ocular_joint = nil -- джоинт окуляра камеры
+	self.pause = false
+	self.pause_start = 0
 	
 	printf("_hr: action_camera_activity:__init")
 end
@@ -48,6 +50,26 @@ function action_camera_activity:reset_scheme()
     end
 end
 
+function angle_diff(a1, a2)
+	local b1 = a1:normalize()
+	local b2 = a2:normalize()
+	local dotp = b1:dotproduct(b2)
+
+	return math.acos(dotp) * 180.0 / math.pi
+end
+
+function angle_diff_hp(a1, a2)
+	local res = {}
+	local b1 = vector():set(a1.x, 0, a1.z)
+	local b2 = vector():set(a2.x, 0, a2.z)
+	res.h = angle_diff(b1, b2)
+	b1 = vector():set(0, a1.y, a1.z)
+	b2 = vector():set(0, a2.y, a2.z)
+	res.p = angle_diff(b1, b2)
+	
+	return res
+end
+
 function action_camera_activity:update(delta)
 	--printf("_hr: action_camera_activity:update()")
 
@@ -69,32 +91,63 @@ function action_camera_activity:update(delta)
 		self:reset_scheme()
 		return
 	end
---[[
-	if not self.ocular_joint then
-		local ps = self.object:get_physics_shell()
-		printf("_ttt: %s", if_then_else(ps ~= nil, "ps not nil", "ps nil"))
-		self.ocular_joint = ps:get_joint_by_bone_name("bone_light")
-	end
---]]
+
     -- Следим за сталкером
-    local dist = self.object:bone_position("bone_light"):distance_to(actor:position())
-    --local diff_angle_h = 
-    --local diff_angle_v = 
+    local ocular_pos = self.object:bone_position("bone_light")
+    local dist = ocular_pos:distance_to(actor:bone_position("bip01_head"))
+    
+    local a1 = self.object:direction() --:getHP()
+    local a2 = actor:bone_position("bip01_head"):sub(ocular_pos)
+    
+    local diff_angle = nil
+    local in_focus = false
+    
+    if self.st.focus_type == "rect" then
+		diff_angle = angle_diff_hp(a1, a2)
+		--printf("_hr: cam_dir(%f,%f,%f) diff_angle(%f)", a1.x, a1.y, a1.z, diff_angle)
+		if diff_angle.h < self.st.view_range_h / 2 and
+		   diff_angle.p < self.st.view_range_p / 2 then
+			in_focus = true
+		end
+    else -- cone - default
+		diff_angle = angle_diff(a1, a2)
+		--printf("_hr: cam_dir(%f,%f,%f) diff_angle(%f)", a1.x, a1.y, a1.z, diff_angle)
+		if diff_angle < self.st.focus_angle / 2 then
+			in_focus = true
+		end
+    end
 
 	if dist <= self.st.warn_distance
-	   --and diff_angle_h < self.st.view_range_h / 2
-	   --and diff_angle_v < self.st.view_range_v / 2
+	   --and actor:see(self.object)
+	   and in_focus
 	then
 		self.track_enemy = actor
 		xr_logic.mob_capture(self.object, true)
 		action(self.object, look(actor:position(), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
+		self.focus = false
 	elseif self.track_enemy then
 		self.track_enemy = nil
 		if self.object:action() then
 			xr_logic.mob_capture(self.object, true)
 		end
+		
+		-- Проверяем нужно ли делать паузу, если мы уже не в ней
+		if self.st.pause_after_lost_target > 0 then
+			self.pause = true
+			self.pause_start = device():time_global()
+			return
+		end
 	end
 
+    -- Проверяем не в паузе ли мы
+    if self.pause then
+		if self.pause_start + self.st.pause_after_lost_target > device():time_global()
+		then
+			return
+		end
+		self.pause = false
+    end
+    
     if not self.track_enemy and not self.object:action() then
         -- Двигаем камеру по пути
         if self.st.state == "path_tracking" then
@@ -156,9 +209,18 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.speed_h = utils.cfg_get_number(ini, section, "speed_h", npc, false, 1)
 	st.speed_v = utils.cfg_get_number(ini, section, "speed_v", npc, false, 1)
 
-    // view_range_h, view_range_v - угол видимости камеры по горизонтали и вертикали
-	st.view_range_h = utils.cfg_get_number(ini, section, "view_range_h", npc, false, 90)
-	st.view_range_v = utils.cfg_get_number(ini, section, "view_range_v", npc, false, 90)
+	// focus_type - тип фокуса: cone - конический, rect - квадратный
+	st.focus_type = utils.cfg_get_string(ini, section, "focus_type", npc, false, "", "cone")
+
+    if st.focus_type == "rect" then
+		// focus_angle_h, focus_angle_p - угол видимости камеры по горизонтали и вертикали
+		st.focus_angle_h = utils.cfg_get_number(ini, section, "focus_angle_h", npc, false, 90)
+		st.focus_angle_p = utils.cfg_get_number(ini, section, "focus_angle_p", npc, false, 90)
+	else
+		// focus_angle - конический угол видимости
+		st.focus_angle = utils.cfg_get_number(ini, section, "focus_angle", npc, false, 135)
+		st.focus_type = "cone"
+	end
 
     // enemy_stalker - имя вражеского сталкера, за которым камера будет следить
     // с самого начала
@@ -166,4 +228,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	// расстояние, на котором "замечаются" враги
     st.warn_distance = utils.cfg_get_number(ini, section, "warn_distance", npc, false, 10)
+    
+    // pause_after_lost_target - пауза после того, как цель вышла из поля зрения
+    st.pause_after_lost_target = utils.cfg_get_number(ini, section, "pause_after_lost_target", npc, false, 5000)
 end
