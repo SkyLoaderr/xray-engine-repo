@@ -313,7 +313,7 @@ void CBitingEat::Run()
 
 			if (pMonster->m_tPathState != ePathStateBuilt) {
 				pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-`				pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+				pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 			}
 			
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
