@@ -74,11 +74,11 @@ const dReal def_spring_rate=0.5f;
 const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
 void CPHAICharacter::InitContact(dContact* c){
-	SGameMtl* material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
-	bool bClimable=!!material->Flags.is(SGameMtl::flClimbable);
+	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
+	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
 	b_climb=b_climb || bClimable;
 	b_pure_climb=b_pure_climb && bClimable;
-	if(material->Flags.is(SGameMtl::flPassable))return;
+	if(tri_material->Flags.is(SGameMtl::flPassable))return;
 
 	dReal spring_rate=def_spring_rate;
 	dReal dumping_rate=def_dumping_rate;
@@ -102,15 +102,21 @@ void CPHAICharacter::InitContact(dContact* c){
 
 
 	if(object){
+
+
 		spring_rate*=10.f;
 		const dReal* vel=dBodyGetLinearVel(m_body);
 		dReal c_vel;
 		dBodyID b;
 
 		if(bo1)
+		{
 			b=dGeomGetBody(c->geom.g2);
+		}
 		else
+		{
 			b=dGeomGetBody(c->geom.g1);
+		}
 
 		dMass m;
 		dBodyGetMass(b,&m);

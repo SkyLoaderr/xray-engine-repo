@@ -88,19 +88,8 @@ void __stdcall CarHitCallback(bool& /**do_colide/**/,dContact& /**c/**/)
 	/*
 	dxGeomUserData* usr_data_1=NULL;
 	dxGeomUserData* usr_data_2=NULL;
-	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass){
-	const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
-	usr_data_1 = dGeomGetUserData(geom);
-	}
-	else
-	usr_data_1 = dGeomGetUserData(c.geom.g1);
-
-	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass){
-	const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
-	usr_data_2 = dGeomGetUserData(geom);
-	}
-	else
-	usr_data_2 = dGeomGetUserData(c.geom.g2);
+	l_pUD1 = retriveGeomUserData(c.geom.g1);
+	l_pUD2 = retriveGeomUserData(c.geom.g2);
 
 	if(!(usr_data_1&&usr_data_2)) return;
 

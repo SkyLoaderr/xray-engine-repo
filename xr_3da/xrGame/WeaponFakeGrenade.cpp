@@ -47,16 +47,8 @@ void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContac
 	do_colide = false;
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
-		l_pUD1 = dGeomGetUserData(geom);
-	} else l_pUD1 = dGeomGetUserData(c.geom.g1);
-	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
-		l_pUD2 = dGeomGetUserData(geom);
-	} else l_pUD2 = dGeomGetUserData(c.geom.g2);
+	l_pUD1 = retriveGeomUserData(c.geom.g1);
+	l_pUD2 = retriveGeomUserData(c.geom.g2);
 
 	CWeaponFakeGrenade *l_this = l_pUD1 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CWeaponFakeGrenade*>(l_pUD2->ph_ref_object) : NULL;

@@ -35,21 +35,8 @@ void __stdcall CBastArtifact::ObjectContactCallback(bool& /**do_colide/**/,dCont
 {
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
-		l_pUD1 = dGeomGetUserData(geom);
-	}
-	else 
-		l_pUD1 = dGeomGetUserData(c.geom.g1);
-
-	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
-		l_pUD2 = dGeomGetUserData(geom);
-	} 
-	else 
-		l_pUD2 = dGeomGetUserData(c.geom.g2);
+	l_pUD1 = retriveGeomUserData(c.geom.g1);
+	l_pUD2 = retriveGeomUserData(c.geom.g2);
 
 	if(!l_pUD1 || !l_pUD2) return;
 

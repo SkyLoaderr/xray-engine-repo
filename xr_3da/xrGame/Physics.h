@@ -33,7 +33,6 @@ IC BOOL dM_valid			(const dReal* m)
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
 
 
-
 class CPHMesh {
 	dGeomID Geom;
 public:
