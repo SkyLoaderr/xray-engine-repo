@@ -32,7 +32,7 @@ IC void vfNormalizeSafe(Fvector& Vector)
 void CAISelectorBase::Load	(LPCSTR section)
 {
 	sscanf(pSettings->ReadSTRING(section,Name),
-		"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
+		"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
 		&fSearchRange,
 		&fEnemySurround,
 		&fTotalCover,
@@ -40,16 +40,6 @@ void CAISelectorBase::Load	(LPCSTR section)
 		&fLightWeight,
 		&fLaziness,
 		&fTotalViewVectorWeight,
-		&fCoverFromLeaderWeight,
-		&fOptLeaderDistance,
-		&fOptLeaderDistanceWeight,
-		&fMinLeaderDistance,
-		&fMinLeaderDistanceWeight,
-		&fMaxLeaderDistance,
-		&fMaxLeaderDistanceWeight,
-		&fLeaderViewDeviationWeight,
-		&fMaxLeaderHeightDistance,
-		&fMaxLeaderHeightDistanceWeight,
 		&fCoverFromMemberWeight,
 		&fOptMemberDistance,
 		&fOptMemberDistanceWeight,
@@ -100,18 +90,6 @@ void CAISelectorBase::vfAddDistanceToEnemyCost()
 			m_fResult += fOptEnemyDistanceWeight*_abs(fDistanceToEnemy - fOptEnemyDistance + 1.f)/(fOptEnemyDistance + 1.f);
 }
 
-void CAISelectorBase::vfAddDistanceToLeaderCost()
-{
-	float fDistanceToLeader = m_tCurrentPosition.distance_to(m_tLeaderPosition);
-	if (fDistanceToLeader < fMinLeaderDistance)
-		m_fResult += fMinLeaderDistanceWeight*(fMinLeaderDistance + 0.1f)/(fDistanceToLeader + 0.1f);
-	else
-		if (fDistanceToLeader > fMaxLeaderDistance)
-			m_fResult += fMaxLeaderDistanceWeight*(fDistanceToLeader + 0.1f)/(fMaxLeaderDistance + 0.1f);
-		else
-			m_fResult += fOptLeaderDistanceWeight*_abs(fDistanceToLeader - fOptLeaderDistance + 1.f)/(fOptLeaderDistance + 1.f);
-}
-
 void CAISelectorBase::vfAddDistanceToMemberCost()
 {
 #ifdef DEST_POSITIONS
@@ -160,92 +138,31 @@ void CAISelectorBase::vfAddCoverFromEnemyCost()
 		if (m_tEnemyDirection.x < 0.f)
 			if (m_tEnemyDirection.z >= 0.f) {
 				fAlpha = acosf(m_tEnemyDirection.dotproduct(tLeft));
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
 				fAlpha = PI/2 - fAlpha;
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[3])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[3])/255.f));
 			}
 			else {
 				fAlpha = acosf(m_tEnemyDirection.dotproduct(tLeft));
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
 				fAlpha = PI/2 - fAlpha;
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[1])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[1])/255.f));
 			}
 		else
 			if (m_tEnemyDirection.z >= 0.f) {
 				fAlpha = acosf(m_tEnemyDirection.dotproduct(tRight));
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
 				fAlpha = PI/2 - fAlpha;
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[3])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[3])/255.f));
 			}
 			else {
 				fAlpha = acosf(m_tEnemyDirection.dotproduct(tRight));
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
 				fAlpha = PI/2 - fAlpha;
-				m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[1])/255.f));
+				m_fResult += fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(m_tpEnemyNode->cover[1])/255.f));
 			}
 #endif
 	}
-}
-
-void CAISelectorBase::vfAddCoverFromLeaderCost()
-{
-#ifdef OLD_COVER_COST
-	m_tLeaderDirection.x = m_tLeaderPosition.x - m_tCurrentPosition.x;
-	m_tLeaderDirection.y = m_tLeaderPosition.y - m_tCurrentPosition.y;
-	m_tLeaderDirection.z = m_tLeaderPosition.z - m_tCurrentPosition.z;
-	if (m_tLeaderDirection.x < 0.f) {
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpCurrentNode->cover[0])/255.f);
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpLeaderNode->cover[2])/255.f);
-	}
-	else {
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpCurrentNode->cover[2])/255.f);
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpLeaderNode->cover[0])/255.f);
-	}
-	if (m_tLeaderDirection.z < 0.f) {
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpCurrentNode->cover[3])/255.f);
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpLeaderNode->cover[1])/255.f);
-	}
-	else {
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpCurrentNode->cover[1])/255.f);
-		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpLeaderNode->cover[3])/255.f);
-	}
-	if (fabs(m_tLeaderDirection.y) > 2.f)
-		m_fResult += _abs(m_tLeaderDirection.y)*fMaxLeaderHeightDistanceWeight;
-#else
-	m_tLeaderDirection.x = m_tLeaderPosition.x - m_tCurrentPosition.x;
-	m_tLeaderDirection.y = m_tLeaderPosition.y - m_tCurrentPosition.y;
-	m_tLeaderDirection.z = m_tLeaderPosition.z - m_tCurrentPosition.z;
-	if (fabs(m_tLeaderDirection.y) > 2.f)
-		m_fResult += _abs(m_tLeaderDirection.y)*fMaxLeaderHeightDistanceWeight;
-	vfNormalizeSafe(m_tLeaderDirection);
-	float fAlpha;
-	if (m_tLeaderDirection.x < 0.f)
-		if (m_tLeaderDirection.z >= 0.f) {
-			fAlpha = acosf(m_tLeaderDirection.dotproduct(tLeft));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
-			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[3])/255.f));
-		}
-		else {
-			fAlpha = acosf(m_tLeaderDirection.dotproduct(tLeft));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
-			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[1])/255.f));
-		}
-	else
-		if (m_tLeaderDirection.z >= 0.f) {
-			fAlpha = acosf(m_tLeaderDirection.dotproduct(tRight));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
-			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[3])/255.f));
-		}
-		else {
-			fAlpha = acosf(m_tLeaderDirection.dotproduct(tRight));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
-			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpLeaderNode->cover[1])/255.f));
-		}
-#endif
 }
 
 void CAISelectorBase::vfAddCoverFromMemberCost()
@@ -271,36 +188,36 @@ void CAISelectorBase::vfAddCoverFromMemberCost()
 		m_fResult += fCoverFromLeaderWeight*(1.f - float(m_tpCurrentMemberNode->cover[3])/255.f);
 	}
 #else
-	m_tCurrentMemberDirection.x = m_tLeaderPosition.x - m_tCurrentPosition.x;
-	m_tCurrentMemberDirection.y = m_tLeaderPosition.y - m_tCurrentPosition.y;
-	m_tCurrentMemberDirection.z = m_tLeaderPosition.z - m_tCurrentPosition.z;
+	m_tCurrentMemberDirection.x = m_tCurrentMemberPosition.x - m_tCurrentPosition.x;
+	m_tCurrentMemberDirection.y = m_tCurrentMemberPosition.y - m_tCurrentPosition.y;
+	m_tCurrentMemberDirection.z = m_tCurrentMemberPosition.z - m_tCurrentPosition.z;
 	vfNormalizeSafe(m_tCurrentMemberDirection);
 	float fAlpha;
 	if (m_tCurrentMemberDirection.x < 0.f)
 		if (m_tCurrentMemberDirection.z >= 0.f) {
 			fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tLeft));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
 			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[3])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[3])/255.f));
 		}
 		else {
 			fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tLeft));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
 			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[1])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[1])/255.f));
 		}
 	else
 		if (m_tCurrentMemberDirection.z >= 0.f) {
 			fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tRight));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[1])/255.f));
 			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[3])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[3])/255.f));
 		}
 		else {
 			fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tRight));
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentNode->cover[3])/255.f));
 			fAlpha = PI/2 - fAlpha;
-			m_fResult += fCoverFromLeaderWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[1])/255.f));
+			m_fResult += fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(m_tpCurrentMemberNode->cover[1])/255.f));
 		}
 #endif
 }

@@ -48,16 +48,6 @@ class CAISelectorBase : public AI::NodeEstimator
 						fLightWeight,
 						fLaziness,
 						fTotalViewVectorWeight,
-						fCoverFromLeaderWeight,
-						fOptLeaderDistance,
-						fOptLeaderDistanceWeight,
-						fMinLeaderDistance,
-						fMinLeaderDistanceWeight,
-						fMaxLeaderDistance,
-						fMaxLeaderDistanceWeight,
-						fLeaderViewDeviationWeight,
-						fMaxLeaderHeightDistance,
-						fMaxLeaderHeightDistanceWeight,
 						fCoverFromMemberWeight,
 						fOptMemberDistance,
 						fOptMemberDistanceWeight,
@@ -88,13 +78,6 @@ class CAISelectorBase : public AI::NodeEstimator
 		Fvector			m_tMyPosition;
 		Fvector			m_tDirection;
 		
-		// leader
-		CEntity*        m_tLeader;
-		NodeCompressed* m_tpLeaderNode;
-		Fvector			m_tLeaderPosition;
-		Fvector			m_tLeaderDirection;
-		u32				m_tLeaderNode;
-
 		// enemy
 		CEntity*        m_tEnemy;
 		NodeCompressed* m_tpEnemyNode;
@@ -123,13 +106,11 @@ class CAISelectorBase : public AI::NodeEstimator
 
 		virtual	void Load	(LPCSTR section);
 		void vfAddCoverFromEnemyCost();
-		void vfAddCoverFromLeaderCost();
 		void vfAddCoverFromMemberCost();
 		void vfAddDeviationFromMemberViewCost();
 		void vfAddDeviationFromPreviousDirectionCost();
 		void vfAddDistanceToEnemyCost();
 		void vfAddDistanceToLastPositionCost();
-		void vfAddDistanceToLeaderCost();
 		void vfAddDistanceToMemberCost();
 		void vfAddEnemyLookCost();
 		void vfAddEnemyLookCost(float fAngle);

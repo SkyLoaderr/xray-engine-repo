@@ -51,11 +51,6 @@ void CAI_Stalker::Defend()
 	WRITE_TO_LOG("Defending");
 }
 
-void CAI_Stalker::RetreatKnown()
-{
-	WRITE_TO_LOG("Retreating known");
-}
-
 void CAI_Stalker::RetreatUnknown()
 {
 	WRITE_TO_LOG("Retreating unknown");
@@ -100,6 +95,39 @@ void CAI_Stalker::vfUpdateSearchPosition()
 		else
 			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	}
+}
+
+void CAI_Stalker::SearchCorp()
+{
+	WRITE_TO_LOG("Searching corp");
+	
+	vfStopFire();
+
+	SelectEnemy(m_tEnemy);
+
+	// I see enemy
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+
+	vfCheckForItems();
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
+
+	if (AI_Path.DestNode != m_dwSavedEnemyNodeID) {
+		AI_Path.DestNode = m_dwSavedEnemyNodeID;
+		vfBuildPathToDestinationPoint(0,false,&m_tSavedEnemy->Position());
+	}
+
+	if (vPosition.distance_to(m_tSavedEnemy->Position()) < EPS_L) {
+		m_tSavedEnemy = 0;
+		GO_TO_PREV_STATE_THIS_UPDATE;
+	}
+	
+	Fvector						tTemp;
+	m_tSavedEnemy->svCenter		(tTemp);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tTemp);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
 }
 
 void CAI_Stalker::HolsterItem()
@@ -189,15 +217,13 @@ void CAI_Stalker::Attack()
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
 	vfChoosePointAndBuildPath	(m_tSelectorReload);
-//	AI_Path.TravelPath.clear();
-//	AI_Path.DestNode = u32(-1);
 
 	vfSetFire					(true,*getGroup());
 
 	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeFirePoint,m_tEnemy.Enemy->Position());
 	
-//	if (m_fCurSpeed < EPS_L)
-//		r_torso_target.yaw		= r_target.yaw;
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
 }
 
 void CAI_Stalker::AccomplishTask()
@@ -219,7 +245,7 @@ void CAI_Stalker::AccomplishTask()
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
 
 	// I have to search the corp
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE((m_tSavedEnemy && (!m_tSavedEnemy->g_Alive())),eStalkerStateSearchCorp);
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE((m_tSavedEnemy && (!m_tSavedEnemy->g_Alive())),eStalkerStateSearchCorp);
 
 	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
 		vfBuildPathToDestinationPoint		(0,true);
@@ -230,34 +256,30 @@ void CAI_Stalker::AccomplishTask()
 		r_torso_target.yaw		= r_target.yaw;
 }
 
-void CAI_Stalker::SearchCorp()
+void CAI_Stalker::RetreatKnown()
 {
-	WRITE_TO_LOG("Searching corp");
-	
+	WRITE_TO_LOG("Retreating known");
+
 	vfStopFire();
 
 	SelectEnemy(m_tEnemy);
 
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
+
 	// I see enemy
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+	EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(eState != m_eCurrentState,eState);
 
-	vfCheckForItems();
+	// I have to recharge active weapon
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
+	//vfCheckForItems();
 
-	if (AI_Path.DestNode != m_dwSavedEnemyNodeID) {
-		AI_Path.DestNode = m_dwSavedEnemyNodeID;
-		vfBuildPathToDestinationPoint(0,false,&m_tSavedEnemyPosition);
-	}
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
 
-	if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart)) {
-		m_tSavedEnemy = 0;
-		GO_TO_PREV_STATE_THIS_UPDATE;
-	}
-	
-	Fvector						tTemp;
-	m_tSavedEnemy->svCenter		(tTemp);
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tTemp);
+	vfChoosePointAndBuildPath	(m_tSelectorRetreat,true);
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePoint,m_tEnemy.Enemy->Position());
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;

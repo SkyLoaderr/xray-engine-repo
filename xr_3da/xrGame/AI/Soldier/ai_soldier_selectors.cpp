@@ -141,19 +141,13 @@ float CSoldierSelectorFollowLeader::Estimate(NodeCompressed* tNode, float fDista
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfComputeMemberDirection();
+				vfAddDistanceToMemberCost();
+				vfAddCoverFromMemberCost();
 			}
 		}
 	}
@@ -181,19 +175,13 @@ float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistan
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfComputeMemberDirection();
+				vfAddDistanceToMemberCost();
+				vfAddCoverFromMemberCost();
 			}
 		}
 	}

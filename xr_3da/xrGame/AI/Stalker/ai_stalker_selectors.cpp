@@ -36,3 +36,23 @@ float CStalkerSelectorReload::Estimate(NodeCompressed* tNode, float fDistance, B
 	return(m_fResult);
 }
 
+CStalkerSelectorRetreat::CStalkerSelectorRetreat()
+{ 
+	Name = "selector_retreat"; 
+}
+
+float CStalkerSelectorRetreat::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	return(m_fResult);
+}

@@ -65,25 +65,9 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 
 void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
-	// checking if leader is dead then make myself a leader
-	if (Leader->g_Health() <= 0)
-		Leader = this;
 	// setting watch mode to false
 //	bool bWatch = false;
 	// if i am not a leader then assign leader
-	if (Leader != this) {
-		S.m_tLeader = Leader;
-		S.m_tLeaderPosition = Leader->Position();
-		S.m_tpLeaderNode = Leader->AI_Node;
-		S.m_tLeaderNode = Leader->AI_NodeID;
-	}
-	// otherwise assign leader to null
-	else {
-		S.m_tLeader = 0;
-		S.m_tLeaderPosition.set(0,0,0);
-		S.m_tpLeaderNode = NULL;
-		S.m_tLeaderNode = u32(-1);
-	}
 	S.m_tHitDir			= tHitDir;
 	S.m_dwHitTime		= dwHitTime;
 	

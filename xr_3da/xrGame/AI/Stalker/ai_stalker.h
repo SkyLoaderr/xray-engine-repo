@@ -139,6 +139,7 @@ private:
 	bool					m_bStateChanged;
 	CStalkerSelectorFreeHunting	m_tSelectorFreeHunting;
 	CStalkerSelectorReload	m_tSelectorReload;
+	CStalkerSelectorRetreat	m_tSelectorRetreat;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
 	

@@ -37,11 +37,13 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwLostEnemyTime				= 0;
 	m_tpSavedEnemyNode				= 0;
 	m_dwSavedEnemyNodeID			= u32(-1);
+	m_tpWeaponToTake				= 0;
+	
+	m_fAccuracy						= 0.f;
+	m_fIntelligence					= 0.f;
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
-
-	m_tpWeaponToTake				= 0;
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -71,6 +73,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	inherited::Load					(section);
 	m_tSelectorFreeHunting.Load		(section);
 	m_tSelectorReload.Load			(section);
+	m_tSelectorRetreat.Load			(section);
 	// visibility
 	m_dwMovementIdleTime			= pSettings->ReadINT(section,"MovementIdleTime");
 	m_fMaxInvisibleSpeed			= pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
