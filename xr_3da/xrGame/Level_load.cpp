@@ -84,8 +84,8 @@ BOOL CLevel::Load_GameSpecific_After()
 
 	// loading random (around player) sounds
 	if (pSettings->section_exist("sounds_random"))	
-	{
-		CInifile::Sect& S		= pLevel->r_section("sounds_random");
+	{ 
+		CInifile::Sect& S		= pSettings->r_section("sounds_random");
 		Sounds_Random.reserve	(S.size());
 		for (CInifile::SectIt I=S.begin(); S.end()!=I; ++I) {
 			Sounds_Random.push_back	(ref_sound());
