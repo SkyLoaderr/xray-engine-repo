@@ -82,7 +82,6 @@ void CScriptMonster::reinit()
 {
 	inherited::reinit					();
 	FreeAll								();
-	ResetScriptData						();
 }
 
 void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
@@ -573,6 +572,8 @@ BOOL CScriptMonster::net_Spawn		(LPVOID DC)
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
+
+	ResetScriptData					();
 
 	return							(TRUE);
 }

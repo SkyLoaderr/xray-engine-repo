@@ -91,10 +91,13 @@ void	CCar::Load					( LPCSTR section )
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
 {
+#ifdef DEBUG
+	Log("car spawn");
+#endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
 	CSE_ALifeItemCar				*po = dynamic_cast<CSE_ALifeItemCar*>(e);
 	R_ASSERT						(po);
-	BOOL							R = CScriptMonster::net_Spawn(DC) && inherited::net_Spawn(DC);
+	BOOL							R = inherited::net_Spawn(DC);
 
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
@@ -109,7 +112,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 	m_fSaveMaxRPM					= m_max_rpm;
 
-	return R;
+	return							(CScriptMonster::net_Spawn(DC) && R);
 }
 
 void	CCar::net_Destroy()
@@ -437,9 +440,13 @@ void CCar::CreateSkeleton()
 
 void CCar::Init()
 {
+#ifdef DEBUG
+	Log("car spawn");
+#endif
 	//get reference wheel radius
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
+	R_ASSERT2(ini,"Car has no description !!! See ActorEditor Object - UserData");
 	///SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
 	if(ini->line_exist("car_definition","steer"))
 	{
@@ -1202,7 +1209,6 @@ void CCar::ResetScriptData(void	*P)
 	l_tpEntityAction->m_tMovementAction.SetInputKeys(CMovementAction::eInputKeyEngineOff);
 	bfAssignMovement(l_tpEntityAction);
 	m_max_rpm		= m_fSaveMaxRPM;
-
 }
 
 void CCar::PhDataUpdate(dReal /**step/**/)
