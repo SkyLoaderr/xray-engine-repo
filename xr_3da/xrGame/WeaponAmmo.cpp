@@ -5,6 +5,7 @@
 #include "Actor_Flags.h"
 #include "inventory.h"
 #include "weapon.h"
+#include "level_bullet_manager.h"
 
 CCartridge::CCartridge() 
 {
@@ -14,6 +15,8 @@ CCartridge::CCartridge()
 	m_ricochet = true;
 	m_buckShot = 1;
 	m_impair = 1.f;
+
+	bullet_material_idx = Level().BulletManager().bullet_material_idx;
 }
 
 void CCartridge::Load(LPCSTR section) 
@@ -29,6 +32,7 @@ void CCartridge::Load(LPCSTR section)
 	m_impair = pSettings->r_float(section, "impair");
 	fWallmarkSize = pSettings->r_float(section, "wm_size");
 	m_ricochet = true;
+	bullet_material_idx = Level().BulletManager().bullet_material_idx;
 
 	R_ASSERT(fWallmarkSize>0);
 }

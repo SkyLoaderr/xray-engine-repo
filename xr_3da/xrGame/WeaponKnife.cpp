@@ -5,6 +5,9 @@
 #include "Entity.h"
 #include "Actor.h"
 
+
+#define KNIFE_MATERIAL_NAME "objects\\bullet"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -13,6 +16,8 @@ CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE")
 	m_attackStart = false;
 	m_bShotLight = false;
 	STATE = NEXT_STATE = eHidden;
+
+	knife_material_idx = (u16)-1;
 }
 
 CWeaponKnife::~CWeaponKnife()
@@ -35,6 +40,9 @@ void CWeaponKnife::Load	(LPCSTR section)
 	animGet				(mhud_attack2,	pSettings->r_string(*hud_sect,"anim_shoot2_start"));
 	animGet				(mhud_attack_e,	pSettings->r_string(*hud_sect,"anim_shoot1_end"));
 	animGet				(mhud_attack2_e,pSettings->r_string(*hud_sect,"anim_shoot2_end"));
+
+	
+	knife_material_idx =  GMLib.GetMaterialIdx(KNIFE_MATERIAL_NAME);
 }
 
 void CWeaponKnife::renderable_Render()
@@ -127,6 +135,7 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	cartridge.m_tracer = false;
 	cartridge.m_ricochet = false;
 	cartridge.fWallmarkSize = fWallmarkSize;
+	cartridge.bullet_material_idx = knife_material_idx;
 
 	while(m_magazine.size() < 2) m_magazine.push(cartridge);
 	iAmmoElapsed = m_magazine.size();

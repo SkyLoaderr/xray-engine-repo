@@ -1,6 +1,8 @@
 #pragma once
 #include "WeaponCustomPistol.h"
 
+
+
 class CWeaponKnife: public CWeapon
 {
 private:
@@ -42,6 +44,7 @@ protected:
 	virtual void	KnifeStrike		(const Fvector& pos, const Fvector& dir);
 
 	float			fWallmarkSize;
+	u16				knife_material_idx;
 public:
 	CWeaponKnife(); 
 	virtual			~CWeaponKnife();

@@ -14,6 +14,8 @@ public:
 	int		m_buckShot;
 	float	m_impair;
 	float	fWallmarkSize;
+	
+	u16		bullet_material_idx;
 };
 
 class CWeaponAmmo :	public CInventoryItem
