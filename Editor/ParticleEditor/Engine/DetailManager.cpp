@@ -244,7 +244,7 @@ CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 	int rx	= sx-c_x + dhm_line;
 	if (rx<0 || rx>=dhm_matrix)		return empty;
 	int rz  = sz-c_z + dhm_line;
-	if (rx<0 || rz>=dhm_matrix)		return empty;
+	if (rz<0 || rz>=dhm_matrix)		return empty;
 
 	// Check for unpacked state
 	Slot& D	= *s_data[rz][rx];
