@@ -33,6 +33,7 @@ struct hdrLEVEL
 {
 	u32		XRLC_version;
 };
+
 struct hdrCFORM
 {
 	u32		version;
@@ -40,6 +41,7 @@ struct hdrCFORM
 	u32		facecount;
 	Fbox	aabb;
 };
+
 struct	hdrNODES
 {
 	u32		version;
@@ -56,6 +58,7 @@ struct NodePosition
 	u16				y;
 	s16				z:12;
 };
+
 struct NodeCompressed
 {
 	u16				plane;			// 2
