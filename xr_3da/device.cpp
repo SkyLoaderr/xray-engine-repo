@@ -87,10 +87,10 @@ void CRenderDevice::overdrawEnd		()
 		DWORD	c = I*256/17;
 		
 		FVF::TL	pv[4];
-		pv[0].set(0,dwHeight,c,0,0);			
-		pv[1].set(0,0,c,0,0);					
-		pv[2].set(dwWidth,dwHeight,c,0,0);	
-		pv[3].set(dwWidth,0,c,0,0);
+		pv[0].set(float(0),float(dwHeight),c,0,0);			
+		pv[1].set(float(0),float(0),c,0,0);					
+		pv[2].set(float(dwWidth),float(dwHeight),c,0,0);	
+		pv[3].set(float(dwWidth),float(0),c,0,0);
 		
 		HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I	);
 		HW.pDevice->SetVertexShader	( FVF::F_TL );
