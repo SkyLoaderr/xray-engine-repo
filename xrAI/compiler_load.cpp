@@ -25,7 +25,7 @@ void xrLoad(LPCSTR name)
 		Level.build			( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM: %dK",Level.memory()/1024);
 		fs->close			();
-		
+
 		LevelBB.set			(H.aabb);
 	}
 
@@ -35,12 +35,15 @@ void xrLoad(LPCSTR name)
 		IReader				*F = FS.r_open(N);
 		
 		hdrCFORM			H;
-		F->r				(&H,sizeof(hdrCFORM));
+		IReader				*fs	= F->open_chunk(0);
+		fs->r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
+		fs					= F->open_chunk(1);
 		Fvector*	verts	= (Fvector*)F->pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
+		fs->close			();
 		Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
 	}
 	
