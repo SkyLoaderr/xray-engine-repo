@@ -20,25 +20,27 @@ class	CScriptEngine;
 class CAI_Space {
 private:
 	friend class CALifeSimulator;
+	friend class CALifeGraphRegistry;
+	friend class CLevel;
 
 private:
-	CGameGraph				*m_game_graph;
-	CGameLevelCrossTable	*m_cross_table;
-	CLevelGraph				*m_level_graph;
-	CGraphEngine			*m_graph_engine;
-	CEF_Storage				*m_ef_storage;
-	CALifeSimulator			*m_alife_simulator;
-	CCoverManager			*m_cover_manager;
-	CScriptEngine			*m_script_engine;
+	CGameGraph							*m_game_graph;
+	CGameLevelCrossTable				*m_cross_table;
+	CLevelGraph							*m_level_graph;
+	CGraphEngine						*m_graph_engine;
+	CEF_Storage							*m_ef_storage;
+	CALifeSimulator						*m_alife_simulator;
+	CCoverManager						*m_cover_manager;
+	CScriptEngine						*m_script_engine;
 
 private:
+			void						load			(LPCSTR				level_name);
 			void						unload			();
 	IC		void						set_alife		(CALifeSimulator *alife_simulator);
 
 public:
 										CAI_Space		();
 	virtual								~CAI_Space		();
-			void						load			(LPCSTR				level_name);
 	IC		CGameGraph					&game_graph		() const;
 	IC		CGameGraph					*get_game_graph	() const;
 	IC		CLevelGraph					&level_graph	() const;
@@ -54,7 +56,6 @@ public:
 
 #ifdef DEBUG
 			void						validate		(const u32			level_id) const;
-//	xr_vector<u32>						m_visited_nodes;
 #endif
 };
 
