@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "xrShaderDef.h"
 
 static CLASS_ID signature = MK_CLSID('R','E','D','A','H','S','r','x');

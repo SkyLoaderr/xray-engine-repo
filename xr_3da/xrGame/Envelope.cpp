@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "envelope.h"
 
 #ifdef LWO_EXPORTS

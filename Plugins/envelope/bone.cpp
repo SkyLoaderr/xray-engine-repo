@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "bone.h"
 #include "envelope.h"
 #include "fs.h"

@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #define MODULE
 
 //typedef unsigned char BYTE;
