@@ -21,6 +21,7 @@ public:
 	CLASS_ID	CLS;
 	char		cName		[128];
 	WORD		version;
+	DWORD		IDcform;
 
 	CSpawn_DESC	()	
 	{
