@@ -24,8 +24,6 @@ namespace Opcode {
 #pragma pack(push,4)
 namespace CDB
 {
-	typedef		void __stdcall	build_callback	(Fvector* V, int Vcnt, TRI* T, int Tcnt, void* params);
-
 	// Triangle
 	class XRCDB_API TRI
 	{
@@ -44,6 +42,9 @@ namespace CDB
 		void			convert_I2P	(Fvector* pBaseV, TRI* pBaseTri);
 		void			convert_P2I	(Fvector* pBaseV, TRI* pBaseTri);
 	};
+
+	// Build callback
+	typedef		void __stdcall	build_callback	(Fvector* V, int Vcnt, TRI* T, int Tcnt, void* params);
 
 	// Model definition
 	class XRCDB_API MODEL

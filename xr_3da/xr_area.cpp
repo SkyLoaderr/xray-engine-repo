@@ -181,31 +181,23 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	rect.y2				= TransZ(bb.max.z);
 }
 //----------------------------------------------------------------------
+static void __stdcall	build_callback	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt, void* params)
+{
+	g_pGameLevel->Load_GameSpecific_CFORM( T, Tcnt );
+}
 void CObjectSpace::Load	()
 {
-	int					x_count, z_count;
+	int						x_count, z_count;
 
-	IReader *F			= FS.r_open	("$level$", "level.cform");
-	R_ASSERT			(F);
+	IReader *F				= FS.r_open	("$level$", "level.cform");
+	R_ASSERT				(F);
 
-	hdrCFORM			H;
-	F->r				(&H,sizeof(hdrCFORM));
-	Fvector*	verts	= (Fvector*)F->pointer();
-	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
-	if (2 == H.version)
-	{
-		// fill materials-guids (.dummy) with u32(-1)
-		for (u32 it=0; it<H.facecount; it++)
-		{
-			CDB::TRI*	T	= tris+it;
-			T->dummy		= u32(-1);
-		}
-	} else {
-		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
-	}
-	g_pGameLevel->Load_GameSpecific_CFORM	( tris, H.facecount );
-	Static.build							( verts, H.vertcount, tris, H.facecount );
-    Msg										("* Level CFORM memory usage: %dK",Static.memory()/1024);
+	hdrCFORM				H;
+	F->r					(&H,sizeof(hdrCFORM));
+	Fvector*	verts		= (Fvector*)F->pointer();
+	CDB::TRI*	tris		= (CDB::TRI*)(verts+H.vertcount);
+	R_ASSERT				(CFORM_CURRENT_VERSION==H.version);
+	Static.build			( verts, H.vertcount, tris, H.facecount, build_callback );
 
 	// CForm
 	x_count					= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
