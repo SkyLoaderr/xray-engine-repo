@@ -1036,24 +1036,29 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+#ifdef _EDITOR
+	static TokenValue4::ItemVec terrain_ids;
+	static TokenValue4::ItemVec terrain_sub_ids;
+#endif
+
 xrGraphPoint::xrGraphPoint() {
 	m_caConnectionPointName[0]	= 0;
-	m_tTerrainID				= u8(-1);
-	m_tTerrainSubID				= u8(-1);
+	m_tTerrainID				= 0;
+	m_tTerrainSubID				= 0;
 }
 
 void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 {
 	P.r_string	(m_caConnectionPointName);
-	P.r_u8		(m_tTerrainID);
-	P.r_u8		(m_tTerrainSubID);
+	P.r_u32		(m_tTerrainID);
+	P.r_u32		(m_tTerrainSubID);
 };
 
 void xrGraphPoint::STATE_Write		(NET_Packet& P)
 {
 	P.w_string	(m_caConnectionPointName);
-	P.w_u8		(m_tTerrainID);
-	P.w_u8		(m_tTerrainSubID);
+	P.w_u32		(m_tTerrainID);
+	P.w_u32		(m_tTerrainSubID);
 };
 void xrGraphPoint::UPDATE_Read		(NET_Packet& P)
 {
@@ -1062,40 +1067,36 @@ void xrGraphPoint::UPDATE_Write		(NET_Packet& P)
 {
 }
 
-xr_token *terrain_ids = 0;
-xr_token *terrain_sub_ids = 0;
-
-#ifdef _EDITOR
+#ifdef _EDITOR              
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
     PHelper.CreateText	(items,	PHelper.PrepareKey(pref,s_name,"ConnectionPoint"),	m_caConnectionPointName,	sizeof(m_caConnectionPointName));
-	string256			S1;
 	
-	R_ASSERT			(pSettings->SectionExists("terrain_ids"));
-	for (u32 dwTerrainID = 0; pSettings->LineExists("game_levels",itoa(dwTerrainID,S1,10)); dwTerrainID++) {
-		sscanf			(pSettings->ReadSTRING("terrain_ids",itoa(dwLevelID,S1,10)),"%s",S1);
-		terrain_ids		= (xr_token *)xr_realloc((dwTerrainID + 1)*sizeof(xr_token));
-		terrain_ids		[dwTerrainID].name	= (char *)xr_malloc((strlen(S1) + 1)*sizeof(char));
-		PGSP.mem_copy	(terrain_ids[dwTerrainID].name,S1,(strlen(S1) + 1)*sizeof(char));
-		terrain_ids		[dwTerrainID].id	= dwTerrainID;
-	}
-	terrain_ids			= (xr_token *)xr_realloc(terrain_ids,(dwTerrainID + 1)*sizeof(xr_token));
-	terrain_ids			[dwTerrainID].name	= 0;
-	PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"TerrainIDs"),				&m_tTerrainID,				terrain_ids,		1);
-	
-	R_ASSERT			(pSettings->SectionExists("terrain_sub_ids"));
-	for (u32 dwTerrainID = 0; pSettings->LineExists("game_levels",itoa(dwTerrainID,S1,10)); dwTerrainID++) {
-		sscanf			(pSettings->ReadSTRING("terrain_sub_ids",itoa(dwLevelID,S1,10)),"%s",S1);
-		terrain_sub_ids	= (xr_token *)xr_realloc((dwTerrainID + 1)*sizeof(xr_token));
-		terrain_sub_ids	[dwTerrainID].name	= (char *)xr_malloc((strlen(S1) + 1)*sizeof(char));
-		PGSP.mem_copy	(terrain_sub_ids[dwTerrainID].name,S1,(strlen(S1) + 1)*sizeof(char));
-		terrain_sub_ids	[dwTerrainID].id	= dwTerrainID;
-	}
-	terrain_sub_ids		= (xr_token *)xr_realloc(terrain_sub_ids,(dwTerrainID + 1)*sizeof(xr_token));
-	terrain_sub_ids		[dwTerrainID].name	= 0;
-	PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"TerrainIDs"),				&m_tTerrainID,				terrain_sub_ids,		1);
+    if(terrain_ids.empty()){
+        R_ASSERT					(pSettings->SectionExists("terrain_ids"));
+        LPCSTR N,V;
+        for (u32 k = 0; pSettings->ReadLINE("terrain_ids",k,&N,&V); k++) {
+   			terrain_ids.push_back	(TokenValue4::Item());
+            TokenValue4::Item& val	= terrain_ids.back();
+            val.str			= V;
+            val.ID			= atoi(N);
+        }
+    }
+    if(terrain_sub_ids.empty()){
+        R_ASSERT					(pSettings->SectionExists("terrain_sub_ids"));
+        LPCSTR N,V;
+        for (u32 k = 0; pSettings->ReadLINE("terrain_sub_ids",k,&N,&V); k++) {
+   			terrain_sub_ids.push_back	(TokenValue4::Item());
+            TokenValue4::Item& val	= terrain_sub_ids.back();
+            val.str			= V;
+            val.ID			= atoi(N);
+        }
+    }
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainIDs"),	&m_tTerrainID,		&terrain_ids);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainSubID"),&m_tTerrainSubID,	&terrain_sub_ids);
 }
 #endif
+
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
@@ -1147,3 +1148,7 @@ void			F_entity_Destroy	(xrServerEntity* P)
 {
 	xr_delete	(P);
 }
+
+
+
+

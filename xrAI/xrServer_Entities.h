@@ -358,8 +358,8 @@ xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)
 public:
 	xrGraphPoint();
 	string32				m_caConnectionPointName;
-	u8						m_tTerrainID;
-	u8						m_tTerrainSubID;
+	u32						m_tTerrainID;
+	u32						m_tTerrainSubID;
 xrSE_DECLARE_END
 
 // 
