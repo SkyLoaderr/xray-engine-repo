@@ -1259,6 +1259,9 @@
 					RelativePath=".\bone.h">
 				</File>
 				<File
+					RelativePath=".\character_info_defs.h">
+				</File>
+				<File
 					RelativePath=".\ChooseTypes.h">
 				</File>
 				<File
