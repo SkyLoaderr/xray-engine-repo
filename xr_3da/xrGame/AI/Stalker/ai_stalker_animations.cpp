@@ -194,12 +194,8 @@ void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 	if (!g_Alive())
 		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[0];
 	else
-		switch (m_tMovementType) {
-			case eMovementTypeRunPanic : {
-				tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
-				break;
-			}
-		}
+		if (m_tStateType == eStateTypePanic)
+			tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
@@ -213,24 +209,15 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				case CWeapon::eIdle : {
 					switch (m_inventory.m_activeSlot) {
 						case 0 : {
-							if (m_tMovementType == eMovementTypeWalkFree)
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6].A[1];
-							else
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6+m_tMovementType].A[0];
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6+m_tMovementType].A[m_tStateType];
 							break;
 						}
 						case 1 : {
-							if (m_tMovementType == eMovementTypeWalkFree)
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6].A[1];
-							else
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6+m_tMovementType].A[0];
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6+m_tMovementType].A[m_tStateType];
 							break;
 						}
 						case 2 : {
-							if (m_tMovementType == eMovementTypeWalkFree)
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6].A[1];
-							else
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6+m_tMovementType].A[0];
+							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6+m_tMovementType].A[m_tStateType];
 							break;
 						}
 					}
@@ -333,7 +320,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	if (!g_Alive())
 		return;
-	if ((AI_Path.fSpeed < EPS_L) || (m_tMovementType == eMovementTypeStandDanger)) {
+	if ((AI_Path.fSpeed < EPS_L) || (m_tMovementType == eMovementTypeStand)) {
 		// standing
 		if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
 			tpLegsAnimation		= m_tAnims.A[m_tBodyState].m_tInPlace.A[0];
@@ -343,15 +330,9 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 		return;
 	}
-	switch (m_tMovementType) {
-		case eMovementTypeWalkFree : {
-			tpLegsAnimation = m_tAnims.A[eBodyStateStand].m_tMoves.A[eMovementTypeWalkDanger].A[eMovementDirectionForward].A[1];
-			return;
-		}
-		case eMovementTypeRunFree : {
-			tpLegsAnimation = m_tAnims.A[eBodyStateStand].m_tMoves.A[eMovementTypeRunDanger].A[eMovementDirectionForward].A[1];
-			return;
-		}
+	if (m_tStateType != eStateTypeDanger) {
+		tpLegsAnimation = m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tStateType];
+		return;
 	}
 	// moving
 	float					yaw, pitch;

@@ -186,7 +186,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		
 		u32	dwMinQueueSize = 0, dwMaxQueueSize = 0;
 		switch (m_tMovementType) {
-			case eMovementTypeRunDanger : {
+			case eMovementTypeRun : {
 				switch (dwFuzzyDistance) {
 					case 0 : {
 						dwMinQueueSize	= 1;
@@ -213,7 +213,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				}
 				break;
 			}
-			case eMovementTypeWalkDanger : {
+			case eMovementTypeWalk : {
 				switch (dwFuzzyDistance) {
 					case 0 : {
 						dwMinQueueSize	= 1;
@@ -240,7 +240,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				}
 				break;
 			}
-			case eMovementTypeStandDanger : {
+			case eMovementTypeStand : {
 				switch (dwFuzzyDistance) {
 					case 0 : {
 						dwMinQueueSize	= 1;

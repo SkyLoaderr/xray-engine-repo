@@ -11,21 +11,22 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\actor.h"
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType)
 {
 	VERIFY(tLookType != eLookTypePoint);
 	Fvector tDummy;
-	vfSetParameters(tpNodeEvaluator,tpDesiredPosition,tWeaponState,tPathType,tBodyState,tMovementType,tLookType,tDummy);
+	vfSetParameters(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tStateType, tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
+	m_tStateType	= tStateType;
 	m_tLookType		= tLookType;
 
-	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition);
+	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
 
 	m_fCurSpeed		= 1.f;
 
@@ -43,31 +44,47 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			default : NODEFAULT;
 		}
 		switch (m_tMovementType) {
-			case eMovementTypeWalkDanger : {
-				m_fCurSpeed *= m_fWalkFactor;
+			case eMovementTypeWalk : {
+				switch (m_tStateType) {
+					case eStateTypeDanger : {
+						m_fCurSpeed *= m_fWalkFactor;
+						break;
+					}
+					case eStateTypeNormal : {
+						m_fCurSpeed *= m_fWalkFreeFactor;
+						break;
+					}
+					case eStateTypePanic : {
+						m_fCurSpeed *= m_fPanicFactor;
+						break;
+					}
+				}
 				break;
 			}
-			case eMovementTypeRunDanger : {
-				m_fCurSpeed *= m_fRunFactor;
-				break;
-			}
-			case eMovementTypeWalkFree : {
-				m_fCurSpeed *= m_fWalkFreeFactor;
-				break;
-			}
-			case eMovementTypeRunFree : {
-				m_fCurSpeed *= m_fRunFreeFactor;
-				break;
-			}
-			case eMovementTypeRunPanic : {
-				m_fCurSpeed *= m_fPanicFactor;
+			case eMovementTypeRun : {
+				switch (m_tStateType) {
+					case eStateTypeDanger : {
+						m_fCurSpeed *= m_fRunFactor;
+						break;
+					}
+					case eStateTypeNormal : {
+						m_fCurSpeed *= m_fRunFreeFactor;
+						break;
+					}
+					case eStateTypePanic : {
+						m_fCurSpeed *= m_fPanicFactor;
+						break;
+					}
+				}
 				break;
 			}
 			default : m_fCurSpeed = 0.f;
 		}
 	}
-	else
+	else {
+		m_tMovementType = eMovementTypeStand;
 		m_fCurSpeed = 0.f;
+	}
 	
 	switch (m_tLookType) {
 		case eLookTypeDirection : {

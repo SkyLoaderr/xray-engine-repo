@@ -45,6 +45,7 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;
+	m_tStateType					= eStateTypeNormal;
 
 	m_dwActionStartTime				= 0;
 	m_dwActionEndTime				= 0;
