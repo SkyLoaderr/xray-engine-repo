@@ -172,30 +172,31 @@ void CAI_Zombie::net_Import(NET_Packet* P)
 
 void CAI_Zombie::Exec_Movement	( float dt )
 {
-	if (eCurrentState != aiZombieJumping)
-		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-	else {
-		UpdateTransform();
-		if (m_bActionStarted) {
-			m_bActionStarted = false;
-			Fvector tAcceleration, tVelocity;
-			tVelocity.set(0,1,0);
-			Movement.SetPosition(vPosition);
-			Movement.SetVelocity(tVelocity);
-			tAcceleration.set(0,0,0);
-			Movement.SetPosition(vPosition);
-			Movement.Calculate	(tAcceleration,0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,dt > .1f ? .1f : dt,false);
-			Movement.GetPosition(vPosition);
-		}
-		else {
-			Fvector tAcceleration;
-			tAcceleration.set(0,-m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
-			Movement.SetPosition(vPosition);
-			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
-			Movement.GetPosition(vPosition);
-		}
-		UpdateTransform	();
-	}
+	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+//	if (eCurrentState != aiZombieJumping)
+//		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+//	else {
+//		UpdateTransform();
+//		if (m_bActionStarted) {
+//			m_bActionStarted = false;
+//			Fvector tAcceleration, tVelocity;
+//			tVelocity.set(0,1,0);
+//			Movement.SetPosition(vPosition);
+//			Movement.SetVelocity(tVelocity);
+//			tAcceleration.set(0,0,0);
+//			Movement.SetPosition(vPosition);
+//			Movement.Calculate	(tAcceleration,0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,dt > .1f ? .1f : dt,false);
+//			Movement.GetPosition(vPosition);
+//		}
+//		else {
+//			Fvector tAcceleration;
+//			tAcceleration.set(0,-m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
+//			Movement.SetPosition(vPosition);
+//			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
+//			Movement.GetPosition(vPosition);
+//		}
+//		UpdateTransform	();
+//	}
 }
 
 void CAI_Zombie::OnEvent(EVENT E, DWORD P1, DWORD P2)

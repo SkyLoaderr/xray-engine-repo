@@ -82,7 +82,7 @@ void CAI_Zombie::SetDirectionLook()
 		}
 	}
 	//r_target.pitch = 0;
-	//r_torso_target.pitch = 0;
+	r_torso_target.pitch = 0;
 }
 
 void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
@@ -115,7 +115,7 @@ void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 		}
 	}
 	//r_target.pitch = 0;
-	//r_torso_target.pitch = 0;
+	r_torso_target.pitch = 0;
 }
 
 void CAI_Zombie::vfAimAtEnemy()
@@ -126,8 +126,8 @@ void CAI_Zombie::vfAimAtEnemy()
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
-	//r_target.yaw += PI_DIV_6;
 	ASSIGN_SPINE_BONE;
+	r_torso_target.pitch = 0;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
 	//q_look.o_look_speed=_FB_look_speed;
 }
@@ -165,41 +165,22 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 		return;
 	}
 	
-	if (Level().timeServer() < 15000)
-		return;
+	//if (Level().timeServer() < 17000)
+	//	return;
 
 	power *= ffGetStartVolume(ESoundTypes(eType));
-	power = expf(.1f*log(power));
-
-	/**
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_RECHARGING		,0.15f);
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_SHOOTING		,1.00f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_TAKING			,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_HIDING			,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_CHANGING		,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_EMPTY_CLICKING	,0.10f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_BULLET_RICOCHET	,0.50f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_DYING			,0.50f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_INJURING		,0.50f);
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_NORMAL ,0.15f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_CROUCH	,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_LIE	,0.10f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_NORMAL	,1.00f);//.25f 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_CROUCH	,1.00f);//.20f 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_LIE	,0.20f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_NORMAL	,0.20f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_CROUCH	,0.15f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_FALLING		,0.20f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_TALKING		,0.25f); 
-	/**/
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+		power = 1.f;//expf(.1f*log(power));
 
 	DWORD dwTime = Level().timeServer();
 	
-	if ((power >= m_fSensetivity*m_fSoundPower) && ((eType & SOUND_TYPE_MONSTER) != SOUND_TYPE_MONSTER)) {
+	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= .10f)) {
 		if (this != who) {
+			//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			if (!tpEntity || !bfCheckForVisibility(tpEntity)) {
+			if (tpEntity && (tpEntity->g_Team() != g_Team())) 
+			{
 				for ( j=0; j<tpaDynamicSounds.size(); j++)
 					if (who == tpaDynamicSounds[j].tpEntity) {
 						tpaDynamicSounds[j].eSoundType = ESoundTypes(eType);
