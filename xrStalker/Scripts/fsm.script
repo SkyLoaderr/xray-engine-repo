@@ -102,7 +102,7 @@ function main()
 
 	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 	fsm_stalker:add_transition(0, 2, if_see_actor1)
-	fsm_stalker:run()
+--	fsm_stalker:run()
 
 	wait()
 end
