@@ -102,7 +102,10 @@
     </info_portion>
     
     
-    
+	<!-- ECOLOG FLASH QUEST -->
+	<info_portion id="bar_get_research_start"></info_portion>    
+	<info_portion id="bar_get_research_gain"></info_portion>    
+	<info_portion id="bar_get_research_done"></info_portion>    
     
     
     
