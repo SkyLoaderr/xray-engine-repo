@@ -2,14 +2,14 @@
 #define __XR_WEAPON_FORT_H__
 #pragma once
 
-#include "WeaponCustomPistol.h"
+#include "WeaponPistol.h"
 
 #define SND_RIC_COUNT 5
  
-class CWeaponFORT: public CWeaponCustomPistol
+class CWeaponFORT: public CWeaponPistol
 {
 private:
-	typedef CWeaponCustomPistol inherited;
+	typedef CWeaponPistol inherited;
 protected:
 public:
 					CWeaponFORT			();

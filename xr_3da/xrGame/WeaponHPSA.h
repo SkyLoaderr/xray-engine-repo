@@ -2,12 +2,12 @@
 #define __XR_WEAPON_HPSA_H__
 #pragma once
 
-#include "WeaponCustomPistol.h"
+#include "WeaponPistol.h"
  
-class CWeaponHPSA: public CWeaponCustomPistol
+class CWeaponHPSA: public CWeaponPistol
 {
 private:
-	typedef CWeaponCustomPistol inherited;
+	typedef CWeaponPistol inherited;
 protected:
 public:
 					CWeaponHPSA			();

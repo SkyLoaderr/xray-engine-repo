@@ -953,6 +953,12 @@
 							<File
 								RelativePath=".\WeaponMagazined.h">
 							</File>
+							<File
+								RelativePath="WeaponPistol.cpp">
+							</File>
+							<File
+								RelativePath="WeaponPistol.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Weapon M134"
