@@ -25,17 +25,6 @@ function see_enemy_evaluator:evaluate()
 end
 ---------------------------------------------------------------------------------------------------------------------
 
---Получили ли хит
-class "receive_hit_evaluator" (property_evaluator)
-function receive_hit_evaluator:__init (name, storage) super ()
-    self.a = storage
-end
-
-function receive_hit_evaluator:evaluate()
-    return false
-end
----------------------------------------------------------------------------------------------------------------------
-
 --Находится ли враг ближе некоторого расстояния
 class "enemy_near_evaluator" (property_evaluator)
 function enemy_near_evaluator:__init (name, storage) super ()
@@ -143,13 +132,11 @@ function add_to_binder(obj)
     properties["enabled"]            = xr_evaluators_id.jon_sniper_enabled
     properties["see_monster"]        = xr_evaluators_id.jon_sniper_see_monster
     properties["see_enemy"]          = xr_evaluators_id.jon_sniper_see_enemy
-    properties["receive_hit"]        = xr_evaluators_id.jon_sniper_receive_hit
     properties["enemy_near"]         = xr_evaluators_id.jon_sniper_enemy_near
 
     operators["idle"]                = xr_actions_id.jon_sniper_enabled
     operators["kill_monster"]        = xr_actions_id.jon_sniper_see_monster
     operators["kill_enemy"]          = xr_actions_id.jon_sniper_see_enemy
-    operators["recieve_hit"]         = xr_actions_id.jon_sniper_receive_hit
     operators["camper"]              = xr_actions_id.jon_sniper_camper
 
     local manager  = obj:motivation_action_manager ()
@@ -157,7 +144,6 @@ function add_to_binder(obj)
     manager:add_evaluator (properties["enabled"],     enabled_evaluator          ("alife_sniper", xr_motivator.storage[obj:id()].sniper))
 	manager:add_evaluator (properties["see_monster"], this.monster_evaluator     ("see_monster",  xr_motivator.storage[obj:id()].sniper))
 	manager:add_evaluator (properties["see_enemy"],   this.see_enemy_evaluator   ("see_enemy",    xr_motivator.storage[obj:id()].sniper))
-	manager:add_evaluator (properties["receive_hit"], this.receive_hit_evaluator ("recieve_hit",  xr_motivator.storage[obj:id()].sniper))
 	manager:add_evaluator (properties["enemy_near"],  this.enemy_near_evaluator  ("enemy_near",   xr_motivator.storage[obj:id()].sniper))
 
     local action = this.action_sniper_idle ("sniper_idle", xr_motivator.storage[obj:id()].sniper)
@@ -166,7 +152,6 @@ function add_to_binder(obj)
     action:add_precondition         (world_property(stalker_ids.property_enemy,     false))
     action:add_precondition         (world_property (properties["see_monster"],     false))
     action:add_precondition         (world_property (properties["see_enemy"],       false))
-    action:add_precondition         (world_property (properties["receive_hit"],     false))
     action:add_precondition         (world_property (properties["enabled"],         true))
     action:add_effect               (world_property (properties["enabled"],         false))
     manager:add_action              (operators["idle"], action)
@@ -190,17 +175,6 @@ function add_to_binder(obj)
     action:add_effect               (world_property (properties["see_enemy"],       false))
     manager:add_action              (operators["kill_enemy"], action)
 
-    action = this.action_camper("receive_hit", xr_motivator.storage[obj:id()].sniper)
-
-    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition         (world_property (properties["enabled"],         true))
-    action:add_precondition         (world_property (properties["enemy_near"],      false))
-    action:add_precondition         (world_property (properties["see_enemy"],       false))
-    action:add_precondition         (world_property (properties["see_monster"],     true))
-    action:add_precondition         (world_property (properties["receive_hit"],     true))
-    action:add_effect               (world_property (properties["receive_hit"],     false))
-    manager:add_action              (operators["recieve_hit"], action)
-
     action = this.action_camper("camper", xr_motivator.storage[obj:id()].sniper)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
@@ -208,13 +182,12 @@ function add_to_binder(obj)
     action:add_precondition         (world_property (properties["enemy_near"],      false))
     action:add_precondition         (world_property (properties["see_enemy"],       false))
     action:add_precondition         (world_property (properties["see_monster"],     false))
-    action:add_precondition         (world_property (properties["receive_hit"],     false))
     action:add_precondition         (world_property(stalker_ids.property_enemy,     true))
     action:add_effect               (world_property (stalker_ids.property_enemy,    false))
     manager:add_action              (operators["camper"], action)
 
---    action = manager:action         (stalker_ids.action_combat_planner)
---    action:add_precondition         (world_property (properties["enemy_near"],      true))
+    action = manager:action         (stalker_ids.action_combat_planner)
+    action:add_precondition         (world_property (properties["enemy_near"],      true))
 
     action = manager:action         (stalker_ids.action_puzzle_solver)
     action:add_precondition         (world_property (properties["enabled"],  false))
