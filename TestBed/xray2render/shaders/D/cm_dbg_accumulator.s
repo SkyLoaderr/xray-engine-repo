@@ -24,8 +24,7 @@ struct 	p2f
 uniform sampler2D 	s_position;
 uniform sampler2D 	s_normal;
 uniform sampler2D 	s_diffuse;
-uniform float4 		light_direction;
-uniform float4 		light_color;
+uniform sampler2D 	s_accumulator;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
@@ -43,25 +42,7 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f		OUT;
 
-  // Sample the fat framebuffer:
-  float4 P	= tex2D 	(s_position, float2(IN.Tex0.x, IN.Tex0.y)); 
-  float4 N 	= tex2D 	(s_normal,   float2(IN.Tex0.x, IN.Tex0.y)); 
-
-  // Vector to the eye:
-  float4 V 	= normalize(-P);
-
-  // Vector to the light:
-  float4 L 	= -light_direction;
-
-  // Diffuse = (L • N)
-  float D 	= max(0,dot(L, N));
-
-  // Half-angle vector:
-  float4 H 	= normalize(L + V);
-
-  // Specular = (H • N)^m
-  float S 	= pow(max(0,dot(H, N)), 16);
-
-  OUT.C 	= float4(light_color.x*D,light_color.y*D,light_color.z*D,light_color.w*S);
+  float4 C 	= tex2D		(s_accumulator, float2(IN.Tex0.x, IN.Tex0.y)); 
+  OUT.C 	= float4	(C.x+C.w,C.y+C.w,C.z+C.w,0);
   return OUT;
 }
