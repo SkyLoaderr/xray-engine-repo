@@ -20,7 +20,7 @@ function init    (obj)
     if name == "patrol" then
        xr_motivator.AddToMotivator(obj)
        return
-    elseif name == "tradeseller" or name == "kamp" or name == "commander" or name == "scout" then
+    elseif name == "tradeseller" or name == "kamp" or name == "commander" or name == "scout" or name == "blockpost" then
        xr_motivator.AddToMotivator(obj)
        return
     elseif name == "ambush" then
