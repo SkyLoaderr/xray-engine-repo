@@ -7,9 +7,7 @@
 #include "render.h"
 
 #ifdef _EDITOR
-	#ifdef _LEVEL_EDITOR
-		#include "scene.h"
-    #endif
+    #include "ui_toolscustom.h"
 #else
 	#include "igame_level.h"
 	#include "xr_area.h"
@@ -85,14 +83,9 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 
 BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
 {
-	BOOL bRes 	= TRUE;
+	BOOL bRes 			= TRUE;
 #ifdef _EDITOR
-	#ifdef _LEVEL_EDITOR
-        SRayPickInfo pinf;
-        pinf.inf.range	= range;
-        bRes	 		= !!Scene.RayPickObject(pinf.inf.range, s,d,OBJCLASS_SCENEOBJECT,&pinf,0);
-        if (bRes) range	= pinf.inf.range;
-    #endif
+    Tools->RayPick		(s,d,range);
 #else
 	Collide::rq_result	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();

@@ -71,9 +71,9 @@ void __fastcall TfrmSoundLib::UpdateLib()
     if (modif_map.size()){
         AStringVec modif;
         LockForm();
-        SndLib.SynchronizeSounds(true,true,true,&modif_map,0);
+        SndLib->SynchronizeSounds(true,true,true,&modif_map,0);
         UnlockForm();
-        SndLib.RefreshSounds(false);
+        SndLib->RefreshSounds(false);
     }
 }
 
@@ -101,14 +101,14 @@ BOOL __fastcall TfrmSoundLib::RemoveSound(LPCSTR fname, EItemType type)
     FS_QueryPairIt it=modif_map.find(fname); 
     if (it!=modif_map.end()) modif_map.erase(it);
 	// remove sound source
-	return SndLib.RemoveSound(fname,type);
+	return SndLib->RemoveSound(fname,type);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmSoundLib::RenameSound(LPCSTR p0, LPCSTR p1, EItemType type)
 {
     // rename sound source
-	SndLib.RenameSound(p0,p1,type);
+	SndLib->RenameSound(p0,p1,type);
 	// delete old from map
     FS_QueryPairIt old_it=modif_map.find(p0); 
     if (old_it!=modif_map.end()){
@@ -137,7 +137,7 @@ void __fastcall TfrmSoundLib::FormClose(TObject *Sender, TCloseAction &Action)
 void TfrmSoundLib::InitItemsList()
 {
     FS_QueryMap		sound_map;
-    SndLib.GetSounds(sound_map,TRUE);
+    SndLib->GetSounds(sound_map,TRUE);
 
 	ListItemsVec items;
 
@@ -259,7 +259,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
             FS.file_copy		(it->c_str(),dest_full_name.c_str());
             FS_QueryMap 		QM; 
             FS.file_list		(QM,_sounds_,FS_ListFiles|FS_ClampExt,dest_name.c_str());
-            SndLib.SynchronizeSounds(true, true, true, &QM, 0);
+            SndLib->SynchronizeSounds(true, true, true, &QM, 0);
             EFS.MarkFile		(*it,true);
             EFS.BackupFile		(_sounds_,dest_name);
             EFS.WriteAccessLog	(dest_full_name.c_str(),"Import");
@@ -267,7 +267,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
             m_LastSelection 	= ChangeFileExt(dest_name,"");
         }
         if (bNeedUpdate){
-        	SndLib.RefreshSounds(false);
+        	SndLib->RefreshSounds(false);
 			InitItemsList		();
 			m_ItemList->SelectItem	(m_LastSelection,true,false,true);
         }

@@ -111,7 +111,7 @@ namespace PS
 	    float 				m_fCollideOneMinusFriction;
         float 				m_fCollideResilience;
         float 				m_fCollideSqrCutoff; 
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
 // change Copy&Equal if variables changed
 	public:
         ref_str				m_OwnerName;
@@ -156,7 +156,7 @@ namespace PS
 		void 				Save				(IWriter& F);
 		BOOL 				Load				(IReader& F);
 
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
 		void 				Render				();
 		void 				Compile				();
 		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);

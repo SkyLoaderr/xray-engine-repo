@@ -144,13 +144,8 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	#include "EditorPreferences.h"
 #endif
 
-#ifdef _LEVEL_EDITOR
+#ifdef _LEVEL_EDITOR                
 	#include "net_utils.h"
-	#define _HAVE_RECENT_FILES
-#else
-    #ifdef _ACTOR_EDITOR
-        #define _HAVE_RECENT_FILES
-    #endif
 #endif
 
 #define INI_NAME(buf) 		{buf=AnsiString(UI->EditorName())+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}

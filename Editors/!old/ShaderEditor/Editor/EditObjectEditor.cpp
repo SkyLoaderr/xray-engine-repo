@@ -113,12 +113,9 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
 	Fvector v; float r;
     Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
 
-#ifdef _LEVEL_EDITOR    
-    if ((fraBottomBar->miDrawObjectLOD->Checked)&&(m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim))){
+    if (EPrefs.object_flags.is(epoDrawLOD)&&(m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim))){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
-    }else
-#endif
-    {
+    }else{
 /*		//?
 
 		Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);

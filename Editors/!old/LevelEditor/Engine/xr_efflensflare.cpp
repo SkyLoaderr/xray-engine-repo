@@ -7,10 +7,7 @@
 #include "Environment.h"
 
 #ifdef _EDITOR
-	#ifdef _LEVEL_EDITOR
-		#include "scene.h"
-		#include "ui_main.h"
-    #endif
+    #include "ui_toolscustom.h"
 #else
 	#include "xr_object.h"
 	#include "igame_level.h"
@@ -227,11 +224,8 @@ void CLensFlare::OnFrame(int id)
 	vecY.crossproduct(vecX, vecDir);
 
 #ifdef _EDITOR
-	#ifdef _LEVEL_EDITOR
-    if (Scene.RayPickObject(flt_max,Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0,0))
-    #else
-    if (0)
-    #endif
+	float dist = flt_max;
+    if (Tools->RayPick(Device.m_Camera.GetPosition(),vSunDir,dist))
 #else
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
 	BOOL		o_enable	= FALSE;

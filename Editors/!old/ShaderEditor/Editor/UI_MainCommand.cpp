@@ -35,7 +35,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			g_pGamePersistent= xr_new<IGame_Persistent>();
             Lib.OnCreate	();
             LALib.OnCreate	();
-            SndLib.OnCreate	();
+            Command			(COMMAND_CREATE_SOUND_LIB);	R_ASSERT(SndLib);
+            SndLib->OnCreate();
 			if (!Tools->OnCreate()){
                 bRes=false;
             	break;
@@ -58,8 +59,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
         xr_delete			(g_pGamePersistent);
         LALib.OnDestroy		();
-		Tools->OnDestroy		();
-		SndLib.OnDestroy	();
+		Tools->OnDestroy	();
+		SndLib->OnDestroy	();
+        xr_delete			(SndLib);
 		Lib.OnDestroy		();
         UI->OnDestroy		();
 		Engine.Destroy		();
@@ -85,7 +87,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         break;
 	case COMMAND_SYNC_SOUNDS:
     	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to synchronize sounds?")==mrYes)
-			SndLib.RefreshSounds(true);
+			SndLib->RefreshSounds(true);
         break;
     case COMMAND_IMAGE_EDITOR:
     	TfrmImageLib::EditLib(AnsiString("Image Editor"));
@@ -191,6 +193,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
         Command(COMMAND_UPDATE_GRID);
     	}break;
+    case COMMAND_CREATE_SOUND_LIB:
+    	SndLib		= xr_new<CSoundManager>();
+    	break;
  	default:
     	bRes = CommandExt(_Command,p1,p2);
 	}

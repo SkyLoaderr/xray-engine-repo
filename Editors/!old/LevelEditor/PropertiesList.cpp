@@ -22,9 +22,6 @@
 #include "ui_main.h"
 #include "EThumbnail.h"
 
-#ifdef _LEVEL_EDITOR
-	#include "Scene.h"
-#endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -1055,17 +1052,6 @@ void __fastcall TProperties::ChooseTextClick(TElTreeItem* item)
     AStringVec items;
     if (CV->choose_mode==smCustom)
     	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
-/*    
-#ifdef _LEVEL_EDITOR
-    case PROP_SCENE_ITEM:{ 
-		SceneItemValue* SI	= dynamic_cast<SceneItemValue*>(V); R_ASSERT(SI);
-        ObjectList& lst 	= Scene.ListObj(SI->clsID);
-        for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	if ((*_F)->OnChooseQuery(SI->specific.c_str())) items.push_back((*_F)->Name);
-     	mode = TfrmChoseItem::smCustom;
-    }break;
-#endif
-*/
     if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
         edit_val			= new_val;
         prop->OnAfterEdit	(&edit_val);

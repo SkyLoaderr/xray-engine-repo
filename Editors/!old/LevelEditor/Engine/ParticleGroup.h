@@ -30,13 +30,13 @@ namespace PS
 			float			m_Time0;
 			float			m_Time1;
 							SEffect				(){m_Flags.set(flEnabled);m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
             BOOL			Equal				(const SEffect&);
 #endif
 		};
 		DEFINE_VECTOR(SEffect,EffectVec,EffectIt);
 		EffectVec			m_Effects;
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
         ref_str				m_OwnerName;
         ref_str				m_ModifName;
         time_t				m_CreateTime;

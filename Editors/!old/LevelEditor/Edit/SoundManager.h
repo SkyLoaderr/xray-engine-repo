@@ -8,11 +8,9 @@
 class ESoundThumbnail;
 
 class CSoundManager{
-	bool		bNeedRefreshEnvGeom;
-    void		RealRefreshEnvGeometry();
 	void 		MakeGameSound		(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR game_name);
 public:
-				CSoundManager		(){bNeedRefreshEnvGeom = false;}
+				CSoundManager		(){}
 				~CSoundManager		(){;}
 
     BOOL __fastcall	RemoveSound		(LPCSTR fname, EItemType type);
@@ -30,14 +28,9 @@ public:
     bool		OnCreate			();
     void		OnDestroy			();
 
-    void 		OnFrame				();
+    virtual void OnFrame			();
 
-    void		RefreshEnvLibrary	();
-    void		RefreshEnvGeometry	(){bNeedRefreshEnvGeom = true;}
-
-    bool 		MakeEnvGeometry		(CMemoryWriter& F, bool bErrMsg=false);
-
-    bool		Validate			();
+    virtual bool Validate			(){return true;}
 
     void		MuteSounds			(BOOL bVal);
 
@@ -46,6 +39,6 @@ public:
     AnsiString	UpdateFileName		(AnsiString& fn);
 };
 
-extern CSoundManager SndLib;
+extern CSoundManager* SndLib;
 //---------------------------------------------------------------------------
 #endif

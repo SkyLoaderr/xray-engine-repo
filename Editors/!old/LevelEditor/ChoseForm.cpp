@@ -22,10 +22,6 @@
 #include "render.h"
 #include "ResourceManager.h"
 #include "PropertiesList.h"               
-
-#ifdef _LEVEL_EDITOR
- #include "Scene.h"
-#endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElXPThemedControl"
@@ -137,7 +133,7 @@ void __fastcall TfrmChoseItem::FillSoundSource()
 {
     form->Caption					= "Select Sound Source";
     FS_QueryMap lst;
-    if (SndLib.GetSounds(lst)){
+    if (SndLib->GetSounds(lst)){
 	    FS_QueryPairIt  it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
@@ -148,7 +144,7 @@ void __fastcall TfrmChoseItem::FillSoundEnv()
 {
     form->Caption					= "Select Sound Environment";
     AStringVec lst;
-    if (SndLib.GetSoundEnvs(lst)){
+    if (SndLib->GetSoundEnvs(lst)){
 	    AStringIt  it				= lst.begin();
     	AStringIt	_E				= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->c_str());

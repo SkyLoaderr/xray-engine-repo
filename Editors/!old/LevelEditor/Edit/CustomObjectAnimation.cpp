@@ -68,7 +68,7 @@ void CCustomObject::AnimationDrawPath()
 {
     // motion path
 	VERIFY (m_Motion);
-#ifdef _LEVEL_EDITOR
+#ifdef _EDITOR
 	if (EPrefs.object_flags.is(epoDrawAnimPath)){
         float fps 				= m_Motion->FPS();
         float min_t				= (float)m_Motion->FrameStart()/fps;

@@ -1,0 +1,20 @@
+//---------------------------------------------------------------------------
+
+#include "stdafx.h"
+#pragma hdrstop
+USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
+USEFORM("Editor\ImageEditor.cpp", frmImageLib);
+USEFORM("Editor\ItemList.cpp", ItemList);
+USEFORM("Editor\LogForm.cpp", frmLog);
+USEFORM("Editor\NumericVector.cpp", frmNumericVector);
+USEFORM("Editor\PropertiesList.cpp", Properties);
+USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
+USEFORM("Editor\SoundEditor.cpp", frmSoundLib);
+USEFORM("Editor\TextForm.cpp", frmText);
+USEFORM("Editor\ItemDialog.cpp", frmItemDialog);
+//---------------------------------------------------------------------------
+#define Library
+
+// To add a file to the library use the Project menu 'Add to Project'.
+
+ 

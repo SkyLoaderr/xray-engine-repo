@@ -8,7 +8,7 @@
 #ifdef _EDITOR
 	#include "UI_ToolsCustom.h"
 #endif
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
 	#include "ParticleEffectActions.h"
 #endif
 
@@ -237,7 +237,7 @@ BOOL CPEDef::Load(IReader& F)
     
 //    m_Flags.and(dfAllFlags);
     
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
     if (F.find_chunk(PED_CHUNK_OWNER)){
     	AnsiString tmp;
 	    F.r_stringZ	(m_OwnerName);
@@ -320,7 +320,7 @@ void CPEDef::Save(IWriter& F)
         F.w_fvector3	(m_APDefaultRotation);
         F.close_chunk	();
     }
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
 	F.open_chunk	(PED_CHUNK_OWNER);
     F.w_stringZ		(m_OwnerName);
     F.w_stringZ		(m_ModifName);

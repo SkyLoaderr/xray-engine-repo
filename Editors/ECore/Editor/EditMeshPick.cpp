@@ -217,7 +217,7 @@ void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& par
             fl.push_back(i);
     }
 }
-#endif //_LEVEL_EDITOR
+#endif //
 
 
 

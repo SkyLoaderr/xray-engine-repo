@@ -55,7 +55,7 @@ BOOL CPGDef::Load(IReader& F)
    		m_fTimeLimit= F.r_float();
     }
 
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
     if (F.find_chunk(PGD_CHUNK_OWNER)){
 	    F.r_stringZ	(m_OwnerName);
 	    F.r_stringZ	(m_ModifName);
@@ -93,7 +93,7 @@ void CPGDef::Save(IWriter& F)
    	F.w_float		(m_fTimeLimit);
     F.close_chunk	();
 
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
 	F.open_chunk	(PGD_CHUNK_OWNER);
     F.w_stringZ		(m_OwnerName);
     F.w_stringZ		(m_ModifName);

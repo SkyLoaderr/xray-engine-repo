@@ -5,9 +5,6 @@
 
 #include "xr_input.h"
 #include "UI_ToolsCustom.h"
-#ifdef _LEVEL_EDITOR
- 	#include "cursor3d.h"
-#endif
 
 #include "UI_Main.h"
 #include "d3dutils.h"
@@ -29,9 +26,6 @@ TUI::TUI()
 	m_CurrentRStart.set(0,0,0);
 	m_CurrentRNorm.set(0,0,0);
 
-#ifdef _LEVEL_EDITOR
-    m_Cursor        = 0;
-#endif
 	m_Flags.set(flResize);
 
 	m_Pivot.set( 0, 0, 0 );
@@ -51,9 +45,6 @@ TUI::TUI()
 TUI::~TUI()
 {
     VERIFY(m_EditorState.size()==0);
-#ifdef _LEVEL_EDITOR
-    xr_delete(m_Cursor);
-#endif
 }
 
 void TUI::OnDeviceCreate()
@@ -197,9 +188,6 @@ void TUI::IR_OnMouseMove(int x, int y){
 		IR_GetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
         Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
     }
-#ifdef _LEVEL_EDITOR
-    if (m_Cursor->GetVisible()) RedrawScene();
-#endif
     // Out cursor pos
     OutUICursorPos();
 }
@@ -402,7 +390,7 @@ void TUI::Idle()
     Sleep(1);
     if (ELog.in_use) return;
 	Device.FrameMove();
-    SndLib.OnFrame();
+    SndLib->OnFrame();
     // tools on frame
     if (m_Flags.is(flUpdateScene)){
         Tools->UpdateProperties	(false);
@@ -488,9 +476,6 @@ bool TUI::OnCreate(TD3DWindow* w, TPanel* p)
     VERIFY(m_D3DWindow);
     Device.Initialize();
     
-#ifdef _LEVEL_EDITOR
-    m_Cursor        = xr_new<C3DCursor>();
-#endif
 	// Creation
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
@@ -528,14 +513,5 @@ void TUI::OnDestroy()
 
     Device.ShutDown	();
     
-}
-
-bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0)
-{
-	return false;
-}
-bool TUI::SelectionFrustum(CFrustum& frustum)
-{
-	return false;
 }
 

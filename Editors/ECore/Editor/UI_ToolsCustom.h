@@ -123,7 +123,7 @@ public:
     virtual bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     virtual bool		Pick				(TShiftState Shift)=0;
-	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)=0;
+	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0)=0;
 
     virtual void		ShowProperties		()=0;
     virtual void		UpdateProperties	(bool bForced=false)=0;
