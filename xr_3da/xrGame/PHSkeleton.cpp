@@ -18,8 +18,8 @@ bool IC CheckObjectSize(CKinematics* K)
 		{
 			Fobb obb=K->LL_GetBox(i);
 			if(!fis_zero(obb.m_halfsize.x) ||
-				!fis_zero(obb.m_halfsize.x)||
-				!fis_zero(obb.m_halfsize.x))return true;
+				!fis_zero(obb.m_halfsize.y)||
+				!fis_zero(obb.m_halfsize.z))return true;
 		}
 	}
 	return false;
