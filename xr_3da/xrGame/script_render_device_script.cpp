@@ -30,5 +30,7 @@ void CScriptRenderDevice::script_register(lua_State *L)
 			.def_readonly("fov",					&CRenderDevice::fFOV)
 			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
 			.def("time_global",						&CRenderDevice::TimerAsync)
+			.def("precache_frame",					&CRenderDevice::dwPrecacheFrame)
+			
 	];
 }
