@@ -360,6 +360,7 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 				VERIFY2	("Please do not return any values from main!!!",caScriptFileName);
 #ifdef USE_DEBUGGER
 				CScriptDebugger::GetDebugger()->Write(S);
+				CScriptDebugger::GetDebugger()->ErrorBreak();
 #endif
 				return	(true);
 			}
@@ -369,6 +370,7 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 				script_log	(iErorCode ? ScriptStorage::eLuaMessageTypeError : ScriptStorage::eLuaMessageTypeMessage,"%s",S);
 #ifdef USE_DEBUGGER
 				CScriptDebugger::GetDebugger()->Write(S);
+				CScriptDebugger::GetDebugger()->ErrorBreak();
 #endif
 			}
 		}

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#pragma warning(push)
+
 #pragma warning(disable:4244)
 #pragma warning(disable:4995)
 #pragma warning(disable:4530)
@@ -21,8 +23,6 @@
 
 extern	string4096	g_ca_stdout;
 
-#pragma warning(default:4244)
-#pragma warning(default:4995)
-#pragma warning(default:4267)
+#pragma warning(pop)
 
 typedef lua_State CLuaVirtualMachine;
