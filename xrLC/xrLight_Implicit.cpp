@@ -246,6 +246,18 @@ public:
 
 //#pragma optimize( "g", off )
 
+void VerifyPath	(LPCSTR path)
+{
+	char tmp[MAX_PATH];
+	for(int i=0;path[i];i++){
+		if( path[i]!='\\' || i==0 )
+			continue;
+		memcpy( tmp, path, i );
+		tmp[i] = 0;
+		CreateDirectory( tmp, 0 );
+	}
+}
+
 #define	NUM_THREADS	8
 void CBuild::ImplicitLighting()
 {
@@ -362,6 +374,7 @@ void CBuild::ImplicitLighting()
 			b_BuildTexture& TEX		= *defl.texture;
 			char	out_name[256];	strconcat(out_name,"x:\\game\\data\\levels\\",name,"\\",TEX.name,".dds");
 			Msg		("Saving texture '%s'...",out_name);
+			VerifyPath				(out_name);
 			BYTE*	raw_data		= LPBYTE(TEX.pSurface);
 			DWORD	w				= TEX.dwWidth;
 			DWORD	h				= TEX.dwHeight;
