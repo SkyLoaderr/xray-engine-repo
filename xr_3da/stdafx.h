@@ -99,6 +99,7 @@
 #pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
 #pragma warning (disable : 4100 )		// unreferenced formal parameter
 #pragma warning (disable : 4127 )		// conditional expression is constant
+#pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
 
 // stl
 #include <algorithm>
