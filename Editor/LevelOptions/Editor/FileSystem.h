@@ -67,8 +67,8 @@ public:
 	virtual 	~CFileSystem	();
     void 		OnCreate		(HWND handle);
 
-	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, bool bMulti=false, LPCSTR offset=0 );
-	bool 		GetSaveName		(FSPath& initial, char *buffer, LPCSTR offset=0 );
+	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0 );
+	bool 		GetSaveName		(FSPath& initial, char *buffer, int sz_buf, LPCSTR offset=0 );
 #ifdef M_BORLAND
 	bool 		GetOpenName		(FSPath& initial, AnsiString& buf, bool bMulti=false, LPCSTR offset=0 );
 	bool 		GetSaveName		(FSPath& initial, AnsiString& buf, LPCSTR offset=0 );

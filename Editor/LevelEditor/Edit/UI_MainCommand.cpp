@@ -25,7 +25,7 @@
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
-    char filebuffer[MAX_PATH]="";
+	string256 filebuffer;
 
     bool bRes = true;
 
@@ -133,7 +133,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		if( !Scene.locked() ){
         	if (p1)	strcpy( filebuffer, (char*)p1 );
             else	strcpy( filebuffer, m_LastFileName );
-			if( p1 || FS.GetOpenName( FS.m_Maps, filebuffer ) ){
+			if( p1 || FS.GetOpenName( FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
                 if (!Scene.IfModified()){
                 	bRes=false;
                     break;
@@ -197,7 +197,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_SAVEAS:
 		if( !Scene.locked() ){
 			filebuffer[0] = 0;
-			if( FS.GetSaveName( FS.m_Maps, filebuffer ) ){
+			if( FS.GetSaveName( FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
 	            BeginEState(esSceneLocked);
                 SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );

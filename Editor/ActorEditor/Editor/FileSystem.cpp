@@ -7,6 +7,7 @@
 
 #include "xr_trims.h"
 #include "xr_ini.h"
+#include "cderr.h"
 
 CFileSystem FS;
 //----------------------------------------------------
@@ -111,21 +112,26 @@ bool FileExists(LPCSTR fn){
     return handle>-1;
 }
 #endif
-bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, bool bMulti, LPCSTR offset ){
-	VERIFY(buffer);
+
+#include <malloc.h>
+
+bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset ){
+	VERIFY(buffer&&(sz_buf>0));
 	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
 	strcpy(flt,initial.m_FilterString);
 	strcpy(flt+strlen(flt)+1,initial.m_DefExt);
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
-	ofn.hwndOwner = m_Handle;
-	ofn.lpstrDefExt = initial.m_DefExt;
-	ofn.lpstrFile = buffer;
-	ofn.lpstrFilter = flt;
-	ofn.lStructSize = sizeof(ofn);
-	ofn.nMaxFile = MAX_PATH;
-	ofn.nFilterIndex = 1;
+    ofn.lStructSize		= sizeof(OPENFILENAME);
+	ofn.hwndOwner 		= m_Handle;
+	ofn.lpstrDefExt 	= initial.m_DefExt;
+	ofn.lpstrFile 		= buffer;
+	ofn.nMaxFile 		= sz_buf;
+	ofn.lpstrFilter 	= flt;
+	ofn.nFilterIndex 	= 1;
+    ofn.lpstrTitle      = "Open a File";
+
     string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags =
@@ -135,14 +141,20 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, bool bMulti, LPCST
 		OFN_FILEMUSTEXIST|
 		OFN_NOCHANGEDIR|(bMulti?OFN_ALLOWMULTISELECT|OFN_EXPLORER:0);
 	bool bRes = !!GetOpenFileName( &ofn );
+    if (!bRes){
+	    DWORD err = CommDlgExtendedError();
+	    switch(err){
+        case FNERR_BUFFERTOOSMALL: 	ELog.DlgMsg(mtError,"Too many file selected."); break;
+        }
+	}
     if (bRes&&bMulti){
-    	string64  	buf;
-    	string64  	dir;
-    	string4096 	fns;
-        strcpy(dir, buffer);
-
-        int cnt		= _GetItemCount(buffer,0x0);
+		int cnt		= _GetItemCount(buffer,0x0);
         if (cnt>1){
+            string64  	buf;
+            string64  	dir;
+            string4096 	fns;
+            strcpy(dir, buffer);
+
             strcpy		(fns,dir);
             strcat		(fns,"\\");
             strcat		(fns,_GetItem(buffer,1,buf,0x0));
@@ -158,27 +170,25 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, bool bMulti, LPCST
     return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, LPCSTR offset ){
-	VERIFY(buffer );
+bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR offset ){
+	VERIFY(buffer&&(sz_buf>0));
 	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
 	strcpy(flt,initial.m_FilterString);
 	strcpy(flt+strlen(flt)+1,initial.m_DefExt);
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
-	ofn.hwndOwner = m_Handle;
-	ofn.lpstrDefExt = initial.m_DefExt;
-	ofn.lpstrFile = buffer;
-	ofn.lpstrFilter = flt;
-	ofn.lStructSize = sizeof(ofn);
-	ofn.nMaxFile = MAX_PATH;
-	ofn.nFilterIndex = 1;
+	ofn.hwndOwner 		= m_Handle;
+	ofn.lpstrDefExt 	= initial.m_DefExt;
+	ofn.lpstrFile 		= buffer;
+	ofn.lpstrFilter 	= flt;
+	ofn.lStructSize 	= sizeof(ofn);
+	ofn.nMaxFile 		= sz_buf;
+	ofn.nFilterIndex 	= 1;
+    ofn.lpstrTitle      = "Save a File";
     string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
 	ofn.lpstrInitialDir = path;
-	ofn.Flags =
-		OFN_HIDEREADONLY|
-		OFN_OVERWRITEPROMPT|
-		OFN_NOCHANGEDIR;
+	ofn.Flags 			= OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR;
 	return !!GetSaveFileName( &ofn );
 }
 //----------------------------------------------------
@@ -186,7 +196,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, LPCSTR offset ){
 bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
-	bool bRes = GetOpenName(initial,buf,bMulti,offset);
+	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset);
     if (bRes) buffer=buf;
 	return bRes;
 }
@@ -194,7 +204,7 @@ bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, 
 bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offset ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
-	bool bRes = GetSaveName(initial,buf,offset);
+	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset);
     if (bRes) buffer=buf;
 	return bRes;
 }

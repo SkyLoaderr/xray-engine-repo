@@ -101,8 +101,8 @@ void __fastcall TfrmPropertiesSound::FormKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesSound::ebLinkClick(TObject *Sender)
 {
     if (!bMultipleSelection){
-    	char _FileName[MAX_PATH]="";
-        if(FS.GetOpenName(FS.m_GameSounds,_FileName)){
+    	string256 _FileName="";
+        if(FS.GetOpenName(FS.m_GameSounds,_FileName,sizeof(_FileName))){
             VERIFY( _FileName );
             strlwr(_FileName);
             char* s=strstr(_FileName,FS.m_GameSounds.m_Path);
