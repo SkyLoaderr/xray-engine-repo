@@ -178,6 +178,9 @@
 				RelativePath="r2_rendertarget.h">
 			</File>
 			<File
+				RelativePath="r2_scenegraph.cpp">
+			</File>
+			<File
 				RelativePath="r2_scenegraph.h">
 			</File>
 			<File
