@@ -33,5 +33,24 @@
 		</objective>
 	</game_task>
 	
+	<game_task id="mil_lukash_job">
+		<title>mil_kill_dolg</title>
+		<objective>
+			<text>mil_kill_dolg</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_go_max</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_kill_dolg</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_return_lukash</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
 
 </game_tasks_data>

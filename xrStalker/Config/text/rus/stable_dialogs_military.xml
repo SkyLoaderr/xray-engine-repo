@@ -111,52 +111,55 @@
     <string id="mil_dolg_dialog_7001">
         <text>Могло быть и хуже.</text>
     </string>
-    <string id="mil_kukash_dialog_third_0">
+    <string id="mil_lukash_dialog_after_0">
         <text>Как видишь. Итак, продолжим разговор об РГ6 ?</text>
     </string>
-    <string id="mil_kukash_dialog_third_1">
+    <string id="mil_lukash_dialog_after_4">
         <text>А зачем нам его продолжать ? Мне он и самому нравится. Хочешь его испытать ?</text>
     </string>
-    <string id="mil_kukash_dialog_third_11">
+    <string id="mil_lukash_dialog_after_41">
         <text>На чем ?</text>
     </string>
-    <string id="mil_kukash_dialog_third_12">
+    <string id="mil_lukash_dialog_after_411">
         <text>На себе. Иди, гуляй сталкер, пока жив. А еще раз припрешься - действительно испытаешь на себе прелести РГ6.</text>
     </string>
-    <string id="mil_lukash_dialog_first_0">
-        <text>Я знаю, что у тебя есть редкий ствол под названием РГ6. Мне он нужен. Что ты за него хочешь ?</text>
+    <string id="mil_lukash_dialog_final_0">
+        <text>Да ты оборзел, Лукаш !</text>
     </string>
-    <string id="mil_lukash_dialog_first_1">
-        <text>Хм. Деньги мне ни к чему. Но ты можешь помочь в нашей операции против "Долга". Они перебили наш кордон и засели на хуторе возле базы. Если поможешь с ними разобраться, то поговорим об РГ6. Ну как ?</text>
-    </string>
-    <string id="mil_lukash_dialog_first_11">
+    <string id="mil_lukash_dialog_first_311">
         <text>Ладно.</text>
     </string>
-    <string id="mil_lukash_dialog_first_12">
+    <string id="mil_lukash_dialog_first_3111">
         <text>Тогда шуруй к Максу, он соберет народ и сходите туда. Потом поговорим. Вперед.</text>
     </string>
-    <string id="mil_lukash_dialog_first_21">
+    <string id="mil_lukash_dialog_first_321">
         <text>Нет, с "Долгом" ссориться мне не зачем.</text>
     </string>
-    <string id="mil_lukash_dialog_first_22">
+    <string id="mil_lukash_dialog_first_3211">
         <text>Тогда вали по хорошему. А еще раз заявишься - будешь кормить червей в могилке.</text>
     </string>
-    <string id="mil_lukash_dialog_second_0">
-        <text>Я знаю, что у тебя есть редкий ствол под названием РГ6. Мне он нужен. Что ты за него хочешь ? 2</text>
+    <string id="mil_lukash_dialog_first_5">
+        <text>Проба пера.</text>
     </string>
-    <string id="mil_lukash_dialog_second_1">
+    <string id="mil_lukash_dialog_kill_0">
+        <text>default text</text>
+    </string>
+    <string id="mil_lukash_dialog_rg6_0">
+        <text>Я знаю, что у тебя есть редкий ствол под названием РГ6. Мне он нужен. Что ты за него хочешь ?</text>
+    </string>
+    <string id="mil_lukash_dialog_rg6_1">
         <text>Хм. Деньги мне ни к чему. Но ты можешь помочь в нашей операции против "Долга". Они перебили наш кордон и засели на хуторе возле базы. Если поможешь с ними разобраться, то поговорим об РГ6. Ну как ?</text>
     </string>
-    <string id="mil_lukash_dialog_second_11">
+    <string id="mil_lukash_dialog_rg6_11">
         <text>Ладно.</text>
     </string>
-    <string id="mil_lukash_dialog_second_12">
+    <string id="mil_lukash_dialog_rg6_111">
         <text>Тогда шуруй к Максу, он соберет народ и сходите туда. Потом поговорим. Вперед.</text>
     </string>
-    <string id="mil_lukash_dialog_second_21">
+    <string id="mil_lukash_dialog_rg6_21">
         <text>Нет, с "Долгом" ссориться мне не зачем.</text>
     </string>
-    <string id="mil_lukash_dialog_second_22">
+    <string id="mil_lukash_dialog_rg6_211">
         <text>Тогда вали по хорошему. А еще раз заявишься - будешь кормить червей в могилке.</text>
     </string>
     <string id="mil_lukash_dialog_start_10">
@@ -172,19 +175,16 @@
         <text>Надо же. Ты еще жив ?</text>
     </string>
     <string id="mil_lukash_dialog_start_51">
-        <text>Я же тебя предупреждал...</text>
+        <text>Вали отсюда.</text>
     </string>
     <string id="mil_max_dialog_first_0">
-        <text>Дело есть.</text>
+        <text>Несколько человек. Основательно экипированы.</text>
     </string>
     <string id="mil_max_dialog_first_1">
-        <text>Тогда шагай к Лукашу, он главный и все проблемы к нему.</text>
+        <text>Ладно, разберемся. Идем с нами.</text>
     </string>
     <string id="mil_max_dialog_first_11">
-        <text>Где его найти ?</text>
-    </string>
-    <string id="mil_max_dialog_first_12">
-        <text>В главном здании.</text>
+        <text>Ок.</text>
     </string>
     <string id="mil_max_dialog_first_21">
         <text>А крем-брюле нет.</text>
@@ -192,11 +192,98 @@
     <string id="mil_max_dialog_first_22">
         <text>В сад.</text>
     </string>
+    <string id="mil_max_dialog_flash_0">
+        <text>Вот твоя флешка.</text>
+    </string>
+    <string id="mil_max_dialog_flash_1">
+        <text>Спасибо, генацвале. Итак, Угрюмого завалил Лукаш... Ладно, вернется моя команда - разберемся. А по поводу РГ6 - мы тут пошерстили здесь военных и поимели с них пару этих пушечек. Одну взял Лукаш, а одну взял Угрюмый и оставил ее в деревне, в подвале одного из домов. Я тебе дам маркер на PDA, найдешь.</text>
+    </string>
+    <string id="mil_max_dialog_second_0">
+        <text>Как прошло ?</text>
+    </string>
+    <string id="mil_max_dialog_second_1">
+        <text>Неплохая работа. Я слышал, что вы с Лукашем о чем-то договаривались. Иди к нему за поощрениями, но смотри - он может и кинуть.</text>
+    </string>
+    <string id="mil_max_dialog_second_11">
+        <text>Кинуть ?</text>
+    </string>
+    <string id="mil_max_dialog_second_12">
+        <text>Именно так. После смерти нашего Старшого лидером должен был стать Угрюмый - мой друг. Но он погиб и я подозреваю, что это работа Лукаша.</text>
+    </string>
     <string id="mil_max_dialog_start_11">
         <text>Ну, привет, сталкер. Как тебя сюда занесло ?</text>
     </string>
+    <string id="mil_max_dialog_start_111">
+        <text>Дело есть.</text>
+    </string>
+    <string id="mil_max_dialog_start_1112">
+        <text>Тогда шагай к Лукашу, он главный и все проблемы к нему. Он в главном здании.</text>
+    </string>
     <string id="mil_max_dialog_start_21">
         <text>Ты еще не у Лукаша ?</text>
+    </string>
+    <string id="mil_max_dialog_start_31">
+        <text>Лукаш сообщил, что ты подойдешь. Много их там ?</text>
+    </string>
+    <string id="mil_max_dialog_start_41">
+        <text>Намаялся ?</text>
+    </string>
+    <string id="mil_max_dialog_start_51">
+        <text>Убедился ?</text>
+    </string>
+    <string id="mil_max_dialog_start_511">
+        <text>Мы кажется договаривались ?</text>
+    </string>
+    <string id="mil_max_dialog_start_61">
+        <text>Могу помочь.</text>
+    </string>
+    <string id="mil_max_dialog_start_62">
+        <text>Иди к Лукашу.</text>
+    </string>
+    <string id="mil_max_dialog_start_71">
+        <text>Что, не договорился ?</text>
+    </string>
+    <string id="mil_max_dialog_start_81">
+        <text>Ну, как ?</text>
+    </string>
+    <string id="mil_max_dialog_start_91">
+        <text>Что еще, сталкер ?</text>
+    </string>
+    <string id="mil_max_dialog_third_0">
+        <text>Козел ваш Лукаш.</text>
+    </string>
+    <string id="mil_max_dialog_third_1">
+        <text>А о чем договаривались ?</text>
+    </string>
+    <string id="mil_max_dialog_third_2">
+        <text>Об РГ6.</text>
+    </string>
+    <string id="mil_max_dialog_third_3">
+        <text>Ну-ну. Эту пушку он не отдаст, пока жив. Но я могу тебе помочь, если ты для меня кое-что сделаешь.</text>
+    </string>
+    <string id="mil_max_dialog_third_4">
+        <text>И что я должен сделать ?</text>
+    </string>
+    <string id="mil_max_dialog_third_5">
+        <text>Тут на болоте засел один безумец. Это единственный выживший из похода в деревню. В поход ходили Угрюмый, Лукаш и еще несколько человек. Там что-то произошло и Угрюмый и несколько парней погибли.\nЯ подозреваю, что Лукаш со свими корешами их замочили, но точно не знаю. А тот тип на болоте может знать.</text>
+    </string>
+    <string id="mil_max_dialog_third_51">
+        <text>А чего сам не сходишь ?</text>
+    </string>
+    <string id="mil_max_dialog_third_52">
+        <text>Не, ну его все лесом.</text>
+    </string>
+    <string id="mil_max_dialog_third_53">
+        <text>Как знаешь.</text>
+    </string>
+    <string id="mil_max_dialog_third_54">
+        <text>Лукаш запретил туда соваться и в деревню, иначе пристрелит. А моя бригада сейчас отсутствует.</text>
+    </string>
+    <string id="mil_max_dialog_third_55">
+        <text>Ок. Договорились.</text>
+    </string>
+    <string id="mil_max_dialog_third_56">
+        <text>Удачи.</text>
     </string>
     <string id="mil_zoneguard_dialog_0">
         <text>Чего тебе надобно, старче ?</text>
