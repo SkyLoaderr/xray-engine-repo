@@ -16,8 +16,7 @@ CBitingAttack::CBitingAttack(CAI_Biting *p,  bool bVisibility)
 	pMonster = p;
 	m_bInvisibility	= bVisibility;
 
-	Reset();
-	SetHighPriority();
+	SetPriority(PRIORITY_HIGH);
 }
 
 
@@ -142,6 +141,7 @@ void CBitingAttack::Run()
 
 			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
 			pMonster->set_dest_position(m_tEnemy.obj->Position());
+			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 			break;
@@ -183,6 +183,7 @@ void CBitingAttack::Run()
 
 			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
 			pMonster->set_dest_position(m_tEnemy.obj->Position());
+			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;

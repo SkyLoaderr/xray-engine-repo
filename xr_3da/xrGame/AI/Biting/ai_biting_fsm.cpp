@@ -9,8 +9,6 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
-#include "..\\..\\actor.h"
-
 void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
@@ -19,14 +17,6 @@ void CAI_Biting::Think()
 	m_current_update		= Level().timeServer();
 
 	vfUpdateParameters		();
-
-	
-//	if (m_tEnemy.obj) {
-//		CGameObject				*pG = dynamic_cast<CGameObject *>(m_tEnemy.obj);;
-//		VERIFY					(PG);
-//		set_level_dest_vertex	(pG->level_vertex_id());
-//		set_dest_position		(pG->Position());
-//	}
 
 	// Pre Update path parameters
 	enable_movement(true);
@@ -37,12 +27,12 @@ void CAI_Biting::Think()
 	}
 
 	StateSelector			();
-//	CurrentState->Execute	(m_current_update);
+	CurrentState->Execute	(m_current_update);
 
 	MotionMan.ProcessAction();
 
 	// Update path
-	set_path_type			(ePathTypeLevelPath);	// temp here
+
 	update_path				();
 
 	// process sound

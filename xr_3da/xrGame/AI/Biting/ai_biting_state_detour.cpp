@@ -10,8 +10,7 @@
 CBitingDetour::CBitingDetour(CAI_Biting *p)
 {
 	pMonster = p;
-	Reset();
-	SetNormalPriority();
+	SetPriority(PRIORITY_NORMAL);
 }
 
 void CBitingDetour::Reset()

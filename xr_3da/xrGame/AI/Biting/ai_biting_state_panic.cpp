@@ -12,9 +12,7 @@ CBitingPanic::CBitingPanic(CAI_Biting *p, bool invisibility)
 {
 	pMonster = p;
 	m_bInvisibility = invisibility;
-
-	Reset();
-	SetHighPriority();
+	SetPriority(PRIORITY_HIGH);
 }
 
 void CBitingPanic::Reset()

@@ -13,9 +13,8 @@ CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p, bool bVisibility)
 {
 	pMonster = p;
 	m_bInvisibility	= bVisibility;
-
-	Reset();
-	SetNormalPriority();
+	
+	SetPriority(PRIORITY_NORMAL);
 }
 
 

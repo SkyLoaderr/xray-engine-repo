@@ -10,9 +10,7 @@
 CBitingRest::CBitingRest(CAI_Biting *p)  
 {
 	pMonster = p;
-	Reset();
-
-	SetLowPriority();			
+	SetPriority(PRIORITY_LOW);
 }
 
 
@@ -34,9 +32,9 @@ void CBitingRest::Init()
 	IState::Init();
 
 	// если есть путь - дойти до конца (последствия преследования врага)
-//	if (!pMonster->path_completed()) {
-//		m_bFollowPath = true;
-//	} else m_bFollowPath = false;
+	if (!pMonster->path_completed()) {
+		m_bFollowPath = true;
+	} else m_bFollowPath = false;
 }
 
 
@@ -62,7 +60,7 @@ void CBitingRest::Replanning()
 			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
 			pMonster->set_level_dest_vertex(vertex_id);
 			pMonster->set_dest_position(ai().level_graph().vertex_position(vertex_id));
-
+			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 //			if (!pMonster->CDetailPathManager::valid()) {
 //			}
@@ -89,6 +87,7 @@ void CBitingRest::Replanning()
 			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
 			pMonster->set_level_dest_vertex(vertex_id);
 			pMonster->set_dest_position(ai().level_graph().vertex_position(vertex_id));
+			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -100,31 +99,30 @@ void CBitingRest::Replanning()
 
 void CBitingRest::Run()
 {
-//	if (m_bFollowPath) {
-//		if ((pMonster->CDetailPathManager::path().size() - 1) <= pMonster->CDetailPathManager::curr_travel_point_index()) m_bFollowPath = false;
-//	}
+	if (m_bFollowPath) 
+		if (pMonster->CDetailPathManager::completed(pMonster->Position())) m_bFollowPath = false;
+	
 
-//	if (m_bFollowPath) {
-//		m_tAction = ACTION_WALK_PATH_END;
-//	} else {
-//		// проверить нужно ли провести перепланировку
+	if (m_bFollowPath) {
+		m_tAction = ACTION_WALK_PATH_END;
+	} else {
+		// проверить нужно ли провести перепланировку
 		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPlanTime, m_dwReplanTime);
 			Replanning();
 		DO_IN_TIME_INTERVAL_END();
-//	}
+	}
 
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:		// обход точек графа
-
-
-			//pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			break;
 		case ACTION_SATIETY_GOOD:     // стоять, ничего не делать
+			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_REST;
 			break;
 		case ACTION_SLEEP:		// лежать
+			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_SLEEP;
 			break;
 		case ACTION_WALK_CIRCUMSPECTION:		// повернуться на 90 град.

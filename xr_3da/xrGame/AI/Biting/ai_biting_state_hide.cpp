@@ -9,8 +9,7 @@
 CBitingHide::CBitingHide(CAI_Biting *p)
 {
 	pMonster = p;
-	Reset();
-	SetNormalPriority();
+	SetPriority(PRIORITY_NORMAL);
 }
 
 void CBitingHide::Init()

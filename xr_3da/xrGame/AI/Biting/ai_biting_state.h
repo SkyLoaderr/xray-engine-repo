@@ -8,7 +8,8 @@
 
 #pragma once 
 
-#include "../\ai_monster_state.h"
+#include "..\\ai_monster_mem.h"
+#include "..\\ai_monster_state.h"
 
 class CAI_Biting;
 
@@ -311,6 +312,7 @@ private:
 class CBitingNull : public IState {
 public:
 	CBitingNull(CAI_Biting * /**p/**/) {}
+	void Run() {}
 };
 
 //////////////////////////////////////////////////////////////////////////

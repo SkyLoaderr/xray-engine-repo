@@ -18,8 +18,7 @@ CBitingEat::CBitingEat(CAI_Biting *p, bool pmt_can_drag)
 	pMonster	= p;
 	bCanDrag	= pmt_can_drag;
 
-	Reset		();
-	SetLowPriority();
+	SetPriority(PRIORITY_LOW);
 }
 
 void CBitingEat::Reset()

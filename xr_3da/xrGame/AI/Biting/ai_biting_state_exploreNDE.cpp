@@ -9,8 +9,7 @@
 CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 {
 	pMonster = p;
-	Reset();
-	SetLowPriority();
+	SetPriority(PRIORITY_NORMAL);
 }
 
 

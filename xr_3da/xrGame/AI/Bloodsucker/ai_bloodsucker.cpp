@@ -142,64 +142,64 @@ void CAI_Bloodsucker::StateSelector()
 {
 	VisionElem ve;
 
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
-	GTask &pTask = pSquad->GetTask(this);
+	if (C && H && I)			SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
+	else if (D && !H && I)		SetState(statePanic);
+	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
+	else if (D && H && !I)		SetState(stateAttack); 
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);  
+	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
+	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateAttack); 
+	else if (F && !H && !I) 	SetState(stateAttack);		
+	else if (A && !K)			SetState(stateExploreNDE); 
+	else if (B && !K)			SetState(stateExploreNDE); 
+	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
+		SetState(stateEat);	
+	else						SetState(stateRest);
 
-	if (this == pSquad->GetLeader()) SetState(stateRest);
-	else {
-		if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
-			pTask.state.type	= TS_PROGRESS;
-			pTask.state.ttl		= m_dwCurrentTime + 3000;
-		} else {
-			if ((pTask.state.type == TS_PROGRESS) && (pTask.state.ttl > m_dwCurrentTime)) {
-				
-			}
-			SetState(stateSquadTask);
-		}
-	}
-	
-	SetState(stateSquadTask);
-	
-//	if (CanExecuteTask()){
-//		if (task != changed) {
-//			if (new_target) rebuild_path();
-//			ChooseAction(AccordingToTask);
-//		}
-//	} else RefuseExecute(pTask);
-
-//	if (ReadyToExecuteTask(pTask)) {
-//		Execute(pTask); 
-//		return;
-//	} else {
-//		RefuseExecute(pTask);
-//	}
-
-
-	
-//	if (C && H && I)			SetState(statePanic);
-//	else if (C && H && !I)		SetState(statePanic);
-//	else if (C && !H && I)		SetState(statePanic);
-//	else if (C && !H && !I) 	SetState(statePanic);
-//	else if (D && H && I)		SetState(stateAttack);
-//	else if (D && !H && I)		SetState(statePanic);
-//	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
-//	else if (D && H && !I)		SetState(stateAttack); 
-//	else if (E && H && I)		SetState(stateAttack); 
-//	else if (E && H && !I)  	SetState(stateAttack);  
-//	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
-//	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
-//	else if (F && H && I) 		SetState(stateAttack); 		
-//	else if (F && H && !I)  	SetState(stateAttack); 
-//	else if (F && !H && I)  	SetState(stateAttack); 
-//	else if (F && !H && !I) 	SetState(stateAttack);		
-//	else if (A && !K)			SetState(stateExploreNDE); 
-//	else if (B && !K)			SetState(stateExploreNDE); 
-//	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
-//		SetState(stateEat);	
-//	else						SetState(stateRest);
-
+//	ProcessSquadGI();
 }
+
+//bool i_can_start_squad_job()
+//{
+//	// если приоритет запроса больше приоритета текущего состояния
+//	GetMyCurrentStatePriority();
+//	// или наступило время возможного следующего задания
+//}
+//
+//bool i_can_continue_squad_job() 
+//{
+//	// если сейчас выполняется squad job
+//	// если приоритет локального состояния меньше приоритета squad job
+//}
+
+//void CAI_Bloodsucker::ProcessSquadGI() 
+//{
+//	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+//	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
+//	GTask &pTask = pSquad->GetTask(this);
+//
+//	bool gi_master_priority = (TRANSFORM_PRIORITY(pTask.state.command) >= CurrentState->GetPriority());
+//
+//	if ((pTask.state.type == TS_REQUEST) && (pTask.state.ttl > m_dwCurrentTime)) {
+//		pTask.state.type	= TS_PROGRESS;
+//		pTask.state.ttl		= m_dwCurrentTime + 3000;
+//		if (i_can_start_squad_job()) Start_Doing_Squad_Job();
+//	} else {
+//		if ((pTask.state.type == TS_PROGRESS) && (pTask.state.ttl > m_dwCurrentTime)) {
+//			if (i_can_continue_squad_job()) Continue_Doing_Squad_Job();
+//		} 
+//		Do_My_Own_Local_Job();
+//	}
+//}
+
 
 void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
 {

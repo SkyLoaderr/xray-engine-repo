@@ -5,7 +5,6 @@
 CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)
 {
 	pMonster = p;
-	SetLowPriority();
 }
 
 void CBitingSquadTask::Init()
