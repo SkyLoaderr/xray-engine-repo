@@ -74,7 +74,6 @@ void CTexture::Load(LPCSTR cName)
 {
 	desc_cache						= 0;
 	if (pSurface)					return;
-	Device.Shader.Evict				();
 
 	bUser							= FALSE;
 	dwMemoryUsage					= 0;

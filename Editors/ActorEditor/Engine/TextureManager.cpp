@@ -937,7 +937,8 @@ void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32
 
 void	CShaderManager::Evict()
 {
-	CHK_DX(HW.pDevice->EvictManagedResources());
+	Msg		("********************* Resource EVICT");
+	CHK_DX	(HW.pDevice->EvictManagedResources());
 }
 
 BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)

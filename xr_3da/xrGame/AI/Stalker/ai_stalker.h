@@ -406,7 +406,6 @@ public:
 							CAI_Stalker						();
 	virtual					~CAI_Stalker					();
 	virtual objQualifier*	GetQualifier					();
-	virtual BOOL			net_Spawn						(LPVOID DC);
 	virtual void			Death							();
 	virtual void			Load							(LPCSTR	section );				
 	virtual void			HitSignal						(float P,	Fvector& vLocalDir, CObject* who, s16 element);
@@ -415,8 +414,10 @@ public:
 	virtual void			Think							();
 	virtual void			Die								();
 	virtual void			g_fireParams					(Fvector& P, Fvector& D);
+	virtual BOOL			net_Spawn						(LPVOID DC);
 	virtual void			net_Export						(NET_Packet& P);
 	virtual void			net_Import						(NET_Packet& P);
+	virtual void			net_Destroy						();
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
 	virtual void			OnEvent							(NET_Packet& P, u16 type);
 	virtual void			feel_touch_new					(CObject* O);

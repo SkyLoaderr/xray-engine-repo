@@ -123,7 +123,6 @@ CAI_Stalker::~CAI_Stalker			()
 //		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
 //	Msg								("Total updates : %d",m_dwUpdateCount);
 //	fclose							(ST_VF);
-	xr_delete						(m_pPhysicsShell);
 }
 
 // when soldier is dead
@@ -280,6 +279,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	xrSE_Human						*tpHuman = (xrSE_Human*)(DC);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->caModel);
+	Msg								("net_SPAWN : %s",tpHuman->caModel);
 	
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= -tpHuman->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
@@ -331,6 +331,12 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	}
 	
 	return							(TRUE);
+}
+
+void CAI_Stalker::net_Destroy()
+{
+	inherited::net_Destroy	();
+	xr_delete				(m_pPhysicsShell);
 }
 
 void CAI_Stalker::net_Export		(NET_Packet& P)
