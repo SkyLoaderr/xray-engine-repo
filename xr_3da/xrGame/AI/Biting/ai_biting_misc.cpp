@@ -417,7 +417,7 @@ void CAI_Biting::vfUpdateParameters()
 // Temp!!!
 void CAI_Biting::SetText()
 {
-
+#ifdef DEBUG
 	float yaw, pitch;
 	float yaw2, pitch2;
 
@@ -433,7 +433,7 @@ void CAI_Biting::SetText()
 
 	if (Res > 165.f && Res < 195) HUD().pFontSmall->OutNext("CanTrade ?      YESSS");
 	else HUD().pFontSmall->OutNext("CanTrade ?      NOOO");
-
+#endif
 }
 
 
