@@ -1,0 +1,5 @@
+function main ()
+
+    stalker = get_level_object ("stalker_test")
+    stalker:script (true,          
+end
