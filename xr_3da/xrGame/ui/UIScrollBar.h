@@ -58,7 +58,7 @@ protected:
 	void			ClampByViewRect		();
 	void			SetPosScrollFromView(int view_pos, int view_width, int view_offs);
 	int				PosViewFromScroll	(int view_size, int view_offs);
-	void			SetScrollPosClamped	(int iPos) { m_iScrollPos = iPos; clamp(m_iScrollPos,m_iMinPos,m_iMaxPos-m_iPageSize); }
+	void			SetScrollPosClamped	(int iPos) { m_iScrollPos = iPos;}// clamp(m_iScrollPos,m_iMinPos,m_iMaxPos-m_iPageSize); }
 public:
 					CUIScrollBar	(void);
 	virtual			~CUIScrollBar	(void);
