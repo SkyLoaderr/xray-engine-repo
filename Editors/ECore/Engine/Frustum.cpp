@@ -38,28 +38,39 @@ void			CFrustum::_add			(Fvector& P1, Fvector& P2, Fvector&P3)
 	p_count					++;
 }
 
+#define			mx			0
+#define			my			1
+#define			mz			2
+#define			Mx			3
+#define			My			4
+#define			Mz			5
+static			u32			remap [8][6]	=
+{
+	{ Mx,My,Mz,mx,my,mz}, 
+	{ Mx,My,mz,mx,my,Mz}, 
+	{ Mx,my,Mz,mx,My,mz}, 
+	{ Mx,my,mz,mx,My,Mz}, 
+	{ mx,My,Mz,Mx,my,mz}, 
+	{ mx,My,mz,Mx,my,Mz}, 
+	{ mx,my,Mz,Mx,My,mz}, 
+	{ mx,my,mz,Mx,My,Mz}
+};
+
 //////////////////////////////////////////////////////////////////////
-EFC_Visible		CFrustum::AABB_OverlapPlane(const fplane& P, const Fvector &m, const Fvector &M) const
+EFC_Visible		CFrustum::AABB_OverlapPlane(const fplane& P, const float* mM) const
 {
 	// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
-	Fvector			Neg, Pos;
-	switch			(P.aabb_overlap_id)
-	{
-	case	0:		Pos.set(M.x,M.y,M.z); Neg.set(m.x,m.y,m.z); break;
-	case	1:		Pos.set(M.x,M.y,m.z); Neg.set(m.x,m.y,M.z); break;
-	case	2:		Pos.set(M.x,m.y,M.z); Neg.set(m.x,M.y,m.z); break;
-	case	3:		Pos.set(M.x,m.y,m.z); Neg.set(m.x,M.y,M.z); break;
-	case	4:		Pos.set(m.x,M.y,M.z); Neg.set(M.x,m.y,m.z); break;
-	case	5:		Pos.set(m.x,M.y,m.z); Neg.set(M.x,m.y,M.z); break;
-	case	6:		Pos.set(m.x,m.y,M.z); Neg.set(M.x,M.y,m.z); break;
-	case	7:		Pos.set(m.x,m.y,m.z); Neg.set(M.x,M.y,M.z); break;
-	default:		NODEFAULT;
-	}
+	u32		id[]	= remap[P.aabb_overlap_id];
 
-	// check distance to plane from extremal points to determine overlap
-	if		(P.classify(Neg) > 0)	return	fcvNone;
-	else if (P.classify(Pos) <= 0)	return	fcvFully;
-	else return fcvPartial;
+	Fvector			Neg;
+	Neg.set			(mM[id[3]],mM[id[4]],mM[id[5]]);
+	if				(P.classify(Neg) > 0)	return	fcvNone;
+
+	Fvector			Pos;
+	Pos.set			(mM[id[0]],mM[id[1]],mM[id[2]]);
+	if				(P.classify(Pos) <= 0)	return	fcvFully;
+
+	return			fcvPartial;
 }
 
 EFC_Visible	CFrustum::testSphere			(Fvector& c, float r, u32& test_mask) const

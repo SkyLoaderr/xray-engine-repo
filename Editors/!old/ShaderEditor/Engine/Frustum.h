@@ -42,7 +42,7 @@ public:
 	fplane			planes	[FRUSTUM_MAXPLANES];
 	int				p_count;
 
-	EFC_Visible		AABB_OverlapPlane	(const fplane& P, const Fvector &m, const Fvector &M) const;
+	EFC_Visible		AABB_OverlapPlane	(const fplane& P, const float* mM) const;
 public:
 	IC void			_clear				()				{ p_count=0; }
 	void			_add				(Fplane &P);
@@ -50,12 +50,12 @@ public:
 
 	void			SimplifyPoly_AABB	(sPoly* P, Fplane& plane);
 
-	void			CreateOccluder		(Fvector* p, int count, Fvector& vBase, CFrustum& clip);
-	BOOL			CreateFromClipPoly	(Fvector* p, int count, Fvector& vBase, CFrustum& clip);	// returns 'false' if creation failed
-	void			CreateFromPoints	(Fvector* p, int count, Fvector& vBase );
-	void			CreateFromMatrix	(Fmatrix &M, u32 mask);
-	void			CreateFromPortal	(sPoly* P, Fvector& vBase, Fmatrix& mFullXFORM);
-	void			CreateFromPlanes	(Fplane* p, int count);
+	void			CreateOccluder		(Fvector* p,	int count,		Fvector& vBase, CFrustum& clip);
+	BOOL			CreateFromClipPoly	(Fvector* p,	int count,		Fvector& vBase, CFrustum& clip);	// returns 'false' if creation failed
+	void			CreateFromPoints	(Fvector* p,	int count,		Fvector& vBase );
+	void			CreateFromMatrix	(Fmatrix &M,	u32 mask);
+	void			CreateFromPortal	(sPoly* P,		Fvector& vBase, Fmatrix& mFullXFORM);
+	void			CreateFromPlanes	(Fplane* p,		int count);
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest) const;
 
@@ -63,8 +63,8 @@ public:
 
 	EFC_Visible		testSphere			(Fvector& c, float r, u32& test_mask) const;
 	BOOL			testSphere_dirty	(Fvector& c, float r) const;
-	EFC_Visible		testAABB			(Fvector &m, Fvector &M, u32& test_mask) const;
-	EFC_Visible		testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, u32& test_mask) const;
+	EFC_Visible		testAABB			(float* mM, u32& test_mask) const;
+	EFC_Visible		testSAABB			(Fvector& c, float r, float* mM, u32& test_mask) const;
 	BOOL			testPolyInside_dirty(Fvector* p, int count) const;
 
 	IC BOOL			testPolyInside		(sPoly& src)const
