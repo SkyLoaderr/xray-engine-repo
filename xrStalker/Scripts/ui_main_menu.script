@@ -9,6 +9,9 @@
 function main()
 	local dlg = ui_main_menu.main_menu()
 	level.start_stop_menu(dlg,true)
+		while true do
+		wait(3000)
+	end
 end
 
 
