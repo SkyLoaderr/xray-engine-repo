@@ -235,8 +235,8 @@ void CGlowManager::Render()
 				float	scale	= 1.f, dist_sq;
 				Fvector	dir;
 				dir.sub			(Device.vCameraPosition,G.position);
-				dist_sq			= dir.sqr_magnitude();
-				if (G.direction.sqr_magnitude()>EPS)	{
+				dist_sq			= dir.square_magnitude();
+				if (G.direction.square_magnitude()>EPS)	{
 					dir.div			(_sqrt(dist_sq));
 					scale			= dir.dotproduct(G.direction);
 				}
