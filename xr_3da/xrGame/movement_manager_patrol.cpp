@@ -16,13 +16,13 @@
 
 void CMovementManager::process_patrol_path()
 {
-	if (!detail().actual())
+	if (!detail().actual() && (m_path_state > ePathStateBuildLevelPath))
 		m_path_state		= ePathStateBuildLevelPath;
 
-	if (!level_path().actual())
+	if (!level_path().actual() && (m_path_state > ePathStateBuildLevelPath))
 		m_path_state		= ePathStateBuildLevelPath;
 
-	if (!patrol().actual())
+	if (!patrol().actual() && (m_path_state > ePathStateSelectPatrolPoint))
 		m_path_state		= ePathStateSelectPatrolPoint;
 
 	EPathState	prev_state	= m_path_state;

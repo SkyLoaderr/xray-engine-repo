@@ -19,10 +19,10 @@ void CMovementManager::process_level_path()
 {
 	START_PROFILE("AI/Build Path/Process Level Path");
 
-	if (!detail().actual())
+	if (!detail().actual() && (m_path_state > ePathStateBuildLevelPath))
 		m_path_state		= ePathStateBuildLevelPath;
 
-	if (!level_path().actual())
+	if (!level_path().actual() && (m_path_state > ePathStateBuildLevelPath))
 		m_path_state		= ePathStateBuildLevelPath;
 
 	switch (m_path_state) {
