@@ -42,9 +42,9 @@ LPCSTR get_name(const CSE_Abstract *abstract)
 	return	(abstract->name_replace());
 }
 
-CScriptInifile *get_spawn_ini(CSE_Abstract *abstract)
+CScriptIniFile *get_spawn_ini(CSE_Abstract *abstract)
 {
-	return	((CScriptInifile*)&abstract->spawn_ini());
+	return	((CScriptIniFile*)&abstract->spawn_ini());
 }
 
 void CSE_Abstract::script_register(lua_State *L)
