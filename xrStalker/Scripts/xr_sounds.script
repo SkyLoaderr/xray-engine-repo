@@ -163,18 +163,18 @@ function load_common (obj, sounds_base)
             },
             {
               --Звуки для сталкера новичка, который лазит по свалке и ищет артефакты.   1 - задолбался ходить, пойду отдохну, 2 - где эти гребанные артефакты
-              sounds_base,
+              sounds_base + 1,
               obj:add_sound ("script_replics\\stalker_1\\newbie\\newbie_replic_1_1", 30, snd_type.talk, 2, 1, sounds_base + 1),
               obj:add_sound ("script_replics\\stalker_1\\newbie\\newbie_replic_2_", 30, snd_type.talk, 2, 1, sounds_base + 2)
             },
             {
               --Звуки для сталкера новичка, который ходит вокруг артефакта в аномалии, и пытается его достать
-              sounds_base,
+              sounds_base + 3,
               obj:add_sound ("script_replics\\stalker_1\\newbie\\newbie_phrase_artifact_", 30, snd_type.talk, 2, 1, sounds_base + 3)
             },
             {
               --Звуки для сталкера новичка, которого ограбили. 1 - Почему так все плохо, 2 - зовет актера, 3 - пойди и убью этих козлов
-              sounds_base,
+              sounds_base + 4,
               obj:add_sound ("script_replics\\stalker_1\\newbie\\robbered_replic_1_", 30, snd_type.talk, 2, 1, sounds_base + 4),
               obj:add_sound ("script_replics\\stalker_1\\newbie\\robbered_replic_2_", 30, snd_type.talk, 2, 1, sounds_base + 5),
               obj:add_sound ("script_replics\\stalker_1\\newbie\\robbered_replic_3_", 30, snd_type.talk, 2, 1, sounds_base + 6)
