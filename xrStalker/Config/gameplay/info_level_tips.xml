@@ -28,5 +28,10 @@
 
  	<info_portion id="tips_esc_trader_about_anomalies">
 	</info_portion>
+	
+	<info_portion id="tips_mil_info_max_village"></info_portion>
+	<info_portion id="tips_mil_info_max_mines"></info_portion>
+	<info_portion id="tips_mil_info_freedom_radio"></info_portion>
+	<info_portion id="tips_mil_info_to_all"></info_portion>
 
 </game_information_portions>
