@@ -37,8 +37,8 @@ public:
 		lmap.destroy();
 	}
 	
-	u32		Width()	{ return texture->dwWidth; }
-	u32		Height(){ return texture->dwHeight; }
+	u32			Width	()						{ return texture->dwWidth; }
+	u32			Height	()						{ return texture->dwHeight; }
 	
 	u32&		Texel	(u32 x, u32 y)			{ return texture->pSurface[y*Width()+x]; }
 	base_color& Lumel	(u32 x, u32 y)			{ return lmap.surface[y*Width()+x];	}
@@ -149,6 +149,7 @@ public:
 				if (Fcount) {
 					// Calculate lighting amount
 					C.scale				(Fcount);
+					C.mul				(.5f);
 					defl.Lumel(U,V)		= C;
 					defl.Marker(U,V)	= 255;
 				} else {
