@@ -1,6 +1,10 @@
 #pragma once
 #include "entity.h"
 
+// refs
+class ENGINE_API			CBoneInstance;
+
+// defs
 class CCar :				public CEntity
 {
 private:
@@ -9,6 +13,11 @@ private:
 	void					cam_Update			(float dt);
 
 	bool					HUDview				( ) { return IsFocused(); }
+
+	static void __stdcall	cb_WheelFL			(CBoneInstance* B);
+	static void __stdcall	cb_WheelFR			(CBoneInstance* B);
+	static void __stdcall	cb_WheelBL			(CBoneInstance* B);
+	static void __stdcall	cb_WheelBR			(CBoneInstance* B);
 public:
 	// Core events
 	virtual void			Load				( CInifile* ini, const char *section );
