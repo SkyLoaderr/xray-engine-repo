@@ -91,12 +91,12 @@ void	CRenderTarget::phase_combine	()
 		// draw light-spheres
 		for (u32 it=0; it<dbg_spheres.size(); it++)
 		{
-			Fsphere				S	= dbg_spheres[it];
+			Fsphere				S	= dbg_spheres[it].first;
 			Fmatrix				M;	S.R	*= .5f;
 			M.scale					(S.R,S.R,S.R);
 			M.translate_over		(S.P);
 			RCache.dbg_DrawEllipse	(M,C);
-			RCache.dbg_DrawAABB		(S.P,.05f,.05f,.05f,C);
+			RCache.dbg_DrawAABB		(S.P,.05f,.05f,.05f,dbg_spheres[it].second.get());
 		}
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
