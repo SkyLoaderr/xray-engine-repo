@@ -148,6 +148,7 @@ class CPHElement: public CPhysicsElement {
 	vector <Fobb>    m_boxes_data;
 	float m_volume;
 	Fvector m_mass_center;
+	
 	dMass m_mass;
 	dSpaceID m_space;
 	dBodyID m_body;
@@ -157,6 +158,7 @@ class CPHElement: public CPhysicsElement {
 	void			create_Box					(Fobb&		V);
 	void			calculate_it_data			(const Fvector& mc,float mass);
 public:
+	Fmatrix m_inverse_local_transform;
 	///
 	virtual	void			add_Sphere				(const Fsphere&	V);
 
@@ -190,7 +192,7 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	Fmatrix m_m2;
 	Fmatrix m_m0;
 	dBodyID m_body;
-
+	Fmatrix m_inverse_local_transform;
 //dVector3 mean_w;
 //dVector3 mean_v;
 dVector3 previous_p;

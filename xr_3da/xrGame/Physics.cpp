@@ -781,18 +781,18 @@ void CPHElement::			create_Box		(Fobb&		V){
 																		V.m_halfsize.z*2.f);
 														m_geoms.push_back(geom);
 														dGeomSetPosition(geom,
-																		 V.m_translate.x,
-																		 V.m_translate.y,
-																		 V.m_translate.z);
+															V.m_translate.x-m_mass_center.x,
+															V.m_translate.y-m_mass_center.y,
+															V.m_translate.z-m_mass_center.z);
 														dMatrix3 R;
 														PHDynamicData::FMX33toDMX(V.m_rotate,R);
 														dGeomSetRotation(geom,R);
 														trans=dCreateGeomTransform(0);
-														dGeomTransformSetGeom(trans,m_geoms.back());
+														dGeomTransformSetGeom(trans,geom);
 														dGeomSetBody(trans,m_body);
 														m_trans.push_back(trans);
-														dGeomGroupAdd(m_group,m_trans.back());
-														dGeomTransformSetInfo(m_trans.back(),1);
+														dGeomGroupAdd(m_group,trans);
+														dGeomTransformSetInfo(trans,1);
 														}
 
 void CPHElement::			add_Sphere	(const Fsphere&	V){
@@ -818,6 +818,10 @@ dBodySetMass(m_body,&m_mass);
 m_group=dCreateGeomGroup(space);
 Fvector mc=get_mc_data();
 //m_start=mc;
+
+m_inverse_local_transform.identity();
+m_inverse_local_transform.c.set(mc);
+m_inverse_local_transform.invert();
 dBodySetPosition(m_body,mc.x,mc.y,mc.z);
 vector<Fobb>::iterator i_box;
 	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
@@ -974,7 +978,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 			}
 	i=elements.begin();
 	m_body=(*i)->get_body();
-	
+	m_inverse_local_transform.set((*i)->m_inverse_local_transform);
 	Fmatrix33 m33;
 	Fmatrix m,m1;
 	m1.set(m0);
@@ -1085,7 +1089,7 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					///if(mag_v<0.004* dis_frames && deviation<0.0001*dis_frames)
+					//if(mag_v<0.004* dis_frames && deviation<0.0001*dis_frames)
 					//	dBodyDisable(m_body);
 					if((previous_dev>deviation&&previous_v>mag_v)
 					  ) 
@@ -1162,6 +1166,6 @@ if( !dBodyIsEnabled(m_body)) return;
 							  dBodyGetPosition(m_body),
 							  mXFORM);
 	
-
+				mXFORM.mulB(m_inverse_local_transform);
 
 }

@@ -6,19 +6,19 @@
 
 dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
 {
-
 	this->Geometry = Geometry;
-
 	GeomData = (dxTriList*)dGeomGetClassData(Geometry);
 
+#ifdef DEBUG
+	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
+#endif
 }
 
-
-
-dcTriListCollider::~dcTriListCollider(){
-
-	//
-
+dcTriListCollider::~dcTriListCollider()
+{
+#ifdef DEBUG
+	Device.seqRender.Remove	(this);
+#endif
 }
 
 
@@ -211,7 +211,7 @@ extern "C" int dSortTriBoxCollide (
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
-			pushing_neg=true;
+			pushing_neg=(bool)ret;
 		}
 
 	}
@@ -225,12 +225,12 @@ extern "C" int dSortTriBoxCollide (
 		CONTACT(contact, ret * skip),   skip);
 
 
-	if(b_neg_depth<dInfinity&&(b_count>1||pushing_b_neg)&&ret==0){
+	if(b_neg_depth<dInfinity&&((b_count>1)||pushing_b_neg)&&ret==0){
 		bool include = true;
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if((dDOT(b_neg_tri.norm,i->v0)-b_neg_tri.pos)<0.f||
-				(dDOT(b_neg_tri.norm,i->v1)-b_neg_tri.pos)<0.f||
-				(dDOT(b_neg_tri.norm,i->v2)-b_neg_tri.pos)<0.f
+			if(!(((dDOT(b_neg_tri.norm,i->v0)-b_neg_tri.pos)>0.f)&&
+				((dDOT(b_neg_tri.norm,i->v1)-b_neg_tri.pos)>0.f)&&
+				((dDOT(b_neg_tri.norm,i->v2)-b_neg_tri.pos)>0.f))
 				){
 					include=false;
 					break;
@@ -242,7 +242,7 @@ extern "C" int dSortTriBoxCollide (
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
-			pushing_b_neg=true;
+			pushing_b_neg=(bool)ret;
 		}
 
 	}
@@ -260,10 +260,13 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 
 	/* Get box */
+#ifndef DEBUG
 	Fvector AABB;
+	Fvector* BoxCenter;
+#endif
 	Fvector BoxExtents;
 
-	Fvector* BoxCenter=(Fvector*)const_cast<dReal*>(dGeomGetPosition(Box));
+	BoxCenter=(Fvector*)const_cast<dReal*>(dGeomGetPosition(Box));
 	dVector3 BoxSides;///=(dReal*)BoxExtents;
 
 
@@ -280,6 +283,9 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	AABB.x+=dFabs(velocity[0])*0.01f;
 	AABB.y+=dFabs(velocity[1])*0.01f;
 	AABB.z+=dFabs(velocity[2])*0.01f;
+	
+	Device.Primitive.dbg_DrawAABB	(AABB,BoxCenter->x,BoxCenter->y,BoxCenter->z,0xffffffff);
+	
 	//
 	XRC.box_options                (0);
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),*BoxCenter,AABB);
@@ -503,7 +509,11 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 
 }
-
-
-
-
+#ifdef DEBUG
+void dcTriListCollider::OnRender()
+{
+	Fvector C;
+	C.set(0,0,0);
+	Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+}
+#endif
