@@ -130,11 +130,12 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 	rq_result	s_res;
 	ray_defs	s_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
 	ray_defs	d_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
-	ray_defs	p_rd(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
+	rq_target	s_mask	= rqtStatic;
+	rq_target	d_mask	= rq_target(((R.tgt&rqtObject)?rqtObject:rqtNone)|((R.tgt&rqtShape)?rqtShape:rqtNone));
 
 	s_res.set				(0,s_rd.range,-1);
 	do{
-		if ((R.tgt&rqtStatic)&&sd_test.is(rqtStatic)&&(next_test&rqtStatic)){ 
+		if ((R.tgt&s_mask)&&sd_test.is(s_mask)&&(next_test&s_mask)){ 
 			s_res.set		(0,s_rd.range,-1);
 			// Test static model
 			xrc.ray_options	(s_rd.flags);
@@ -146,9 +147,9 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 					s_res.range	= R.range-s_rd.range-EPS_L;
 				}
 			}
-			if (!s_res.valid())	sd_test.set(rqtStatic,FALSE);
+			if (!s_res.valid())	sd_test.set(s_mask,FALSE);
 		}
-		if ((R.tgt&rqtDyn)&&sd_test.is(rqtDyn)&&(next_test&rqtDyn)){ 
+		if ((R.tgt&d_mask)&&sd_test.is_any(d_mask)&&(next_test&d_mask)){ 
 			r_temp.r_clear	();
 			// Traverse object database
 			g_SpatialSpace->q_ray	(r_spatial,0,STYPE_COLLIDEABLE,d_rd.start,d_rd.dir,d_rd.range);
@@ -158,9 +159,8 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 				if			(0==collidable)	continue;
 				ICollisionForm*	cform		= collidable->collidable.model;
 				ECollisionFormType tp		= collidable->collidable.model->Type();
-				if (((R.tgt&rqtObject)&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
+				if (((R.tgt&rqtObject)&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape)))
 					cform->_RayQuery(d_rd,r_temp);
-				}
 			}
 			if (r_temp.r_count()){
 				rq_result& d_res = *r_temp.r_begin();
@@ -168,26 +168,26 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 				d_rd.start.mad(d_rd.dir,d_res.range+EPS_L);
 				d_res.range	= R.range-d_rd.range-EPS_L;
 			}else{
-				sd_test.set(rqtObject,FALSE);
+				sd_test.set(d_mask,FALSE);
 			}
 		}
 		if (s_res.valid()&&r_temp.r_count()){
 			if	(s_res.range<r_temp.r_begin()->range){
 				BOOL need_calc	= CB?CB(s_res,user_data):TRUE;
-				next_test		= need_calc?rqtStatic:rqtNone;
+				next_test		= need_calc?s_mask:rqtNone;
 				r_results.append_result	(s_res);
 			}else{
 				BOOL need_calc	= CB?CB(*r_temp.r_begin(),user_data):TRUE;
-				next_test		= need_calc?rqtObject:rqtNone;	
+				next_test		= need_calc?d_mask:rqtNone;	
 				r_results.append_result	(*r_temp.r_begin());
 			}
 		}else if (s_res.valid()){
 			BOOL need_calc		= CB?CB(s_res,user_data):TRUE;
-			next_test			= need_calc?rqtStatic:rqtNone;
+			next_test			= need_calc?s_mask:rqtNone;
 			r_results.append_result		(s_res);
 		}else if (r_temp.r_count()){
 			BOOL need_calc		= CB?CB(*r_temp.r_begin(),user_data):TRUE;
-			next_test			= need_calc?rqtObject:rqtNone;
+			next_test			= need_calc?d_mask:rqtNone;
 			r_results.append_result		(*r_temp.r_begin());
 		}else{
 			next_test			= rqtNone;
