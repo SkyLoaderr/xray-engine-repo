@@ -24,6 +24,7 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r_Sampler_rtf		("s_diffuse",		r2_RT_D_G);
 		C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum);
+		C.r_Sampler_rtf		("s_generic",		r2_RT_generic);
 		C.r_Sampler_clf		("s_bloom",			r2_RT_bloom1);
 		C.r_Sampler_clf		("s_sky",			r2_RT_bloom2);
 		C.r_End				();

@@ -56,10 +56,10 @@ void	CRenderTarget::phase_decompress		()
 
 		// Fill vertex buffer
 		v_dc* pv					= (v_dc*) RCache.Vertex.Lock	(4,g_decompress->vb_stride,Offset);
-		pv->set						(EPS,			float(_h+EPS),	p0.x, p1.y, -1,  1);	pv++;
-		pv->set						(EPS,			EPS,			p0.x, p0.y, -1, -1);	pv++;
-		pv->set						(float(_w+EPS),	float(_h+EPS),	p1.x, p1.y,  1,  1);	pv++;
-		pv->set						(float(_w+EPS),	EPS,			p1.x, p0.y,  1, -1);	pv++;
+		pv->set						(EPS,			float(_h+EPS),	p0.x, p1.y, -1, -1);	pv++;
+		pv->set						(EPS,			EPS,			p0.x, p0.y, -1, +1);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	p1.x, p1.y, +1, -1);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			p1.x, p0.y, +1, +1);	pv++;
 		RCache.Vertex.Unlock		(4,g_decompress->vb_stride);
 		RCache.set_Geometry			(g_decompress);
 
