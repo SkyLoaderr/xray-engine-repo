@@ -57,7 +57,7 @@ public:
 	void					Perform_transfer		(xrServerEntity* what, xrServerEntity* from, xrServerEntity* to);
 	void					Perform_reject			(xrServerEntity* what, xrServerEntity* from);
 
-	void					Process_spawn			(NET_Packet& P, DPNID sender);
+	void					Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE);
 	void					Process_update			(NET_Packet& P, DPNID sender);
 	void					Process_event			(NET_Packet& P, DPNID sender);
 	void					Process_event_ownership	(NET_Packet& P, DPNID sender, u32 time, u16 ID);

@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "xrServer.h"
-
 #include "hudmanager.h"
 
-void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
+void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent)
 {
 	// read spawn information
 	string64			s_name;
@@ -54,6 +53,13 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 			entities.insert			(make_pair(E->ID,E));
 		} else {
 			// Simple spawn
+			if (bSpawnWithClientsMainEntityAsParent)
+			{
+				R_ASSERT				(CL && (CL!=0xffffffff));
+				xrServerEntity* P		= CL->owner;
+				R_ASSERT				(P);
+				E->ID_Parent			= P->ID;
+			}
 			E->ID					=	PerformIDgen(E->ID);
 			E->owner				=	CL;
 			entities.insert			(make_pair(E->ID,E));
