@@ -68,6 +68,7 @@ end
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 function if_see_actor(npc)
+	log("if_see_actor")
 	if npc:see(actor) == true then
 		log("saw a fucking actor")
 	end
