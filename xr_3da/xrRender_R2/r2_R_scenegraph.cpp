@@ -132,12 +132,12 @@ IC	bool	cmp_textures_lex3_mat	(mapMatrixTextures::TNode* N1, mapMatrixTextures::
 IC	bool	cmp_textures_lexN_nrm	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2){	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
-	return lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
+	return std::lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
 }
 IC	bool	cmp_textures_lexN_mat	(mapMatrixTextures::TNode* N1, mapMatrixTextures::TNode* N2){	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
-	return lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
+	return std::lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
 }
 IC	bool	cmp_textures_ssa_nrm	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2){	
 	return (N1->val.ssa > N2->val.ssa);		

@@ -247,17 +247,17 @@ bool CInventory::Slot(PIItem pIItem) {
 		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);
 		if(!m_slots[pIItem->m_slot].m_pIItem) {
 			m_slots[pIItem->m_slot].m_pIItem = pIItem;
-			PPIItem l_it = find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+			PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
 			return true;
 		} else {
 			if(m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem)) {
-				PPIItem l_it = find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+				PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
 				return true;
 			}
 		}
 	} else {
 		for(u32 i = 0; i < m_slots.size(); i++) if(m_slots[i].m_pIItem && m_slots[i].m_pIItem->Attach(pIItem)) {
-			PPIItem l_it = find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+			PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
 			return true;
 		}
 	}
@@ -279,12 +279,12 @@ bool CInventory::Belt(PIItem pIItem) {
 
 bool CInventory::Ruck(PIItem pIItem) {
 	if(!pIItem || !pIItem->m_ruck) return false;
-	if(find(m_ruck.begin(), m_ruck.end(), pIItem) != m_ruck.end()) return true;
+	if(std::find(m_ruck.begin(), m_ruck.end(), pIItem) != m_ruck.end()) return true;
 	if((pIItem->m_slot < m_slots.size()) && (m_slots[pIItem->m_slot].m_pIItem == pIItem)) {
 		if(m_activeSlot == pIItem->m_slot) Activate(0xffffffff);
 		m_slots[pIItem->m_slot].m_pIItem = NULL;
 	}
-	PPIItem l_it = find(m_belt.begin(), m_belt.end(), pIItem); if(l_it != m_belt.end()) m_belt.erase(l_it);
+	PPIItem l_it = std::find(m_belt.begin(), m_belt.end(), pIItem); if(l_it != m_belt.end()) m_belt.erase(l_it);
 	m_ruck.insert(m_ruck.end(), pIItem); SortRuckAndBelt(this);
 	return true;
 }

@@ -250,7 +250,7 @@ void CSector::Render			(CFrustum &F)
 			Fvector		C;
 			Objects[s+0]->clCenter(C);	float	D1 = Device.vCameraPosition.distance_to_sqr(C);
 			Objects[s+1]->clCenter(C);	float	D2 = Device.vCameraPosition.distance_to_sqr(C);
-			if (D2<D1)	swap(Objects[s+0],Objects[s+1]);
+			if (D2<D1)	std::swap(Objects[s+0],Objects[s+1]);
 		}
 
 		// Persistant models
