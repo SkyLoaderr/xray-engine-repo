@@ -1,229 +1,27 @@
--- Управление вертолётом
--- Чугай Саша
+--[[------------------------------------------------------------------------------------------------------------------
+Управление вертолётом для Escape
+Чугай Саша
+--------------------------------------------------------------------------------------------------------------------]]
 
-local active = false
-local enemy
-local v
+local heli_mgr
 
-local pass_dist    = 100  -- расстояние, на которое вертолёт отлетит перед следующим заходом для атаки
-local patrol_speed, attack_speed = 30, 40
+function main()
+	heli_mgr = xr_heli.HeliManager()
+	heli_mgr:initialize( "heli", "way_raid_heli" )
+--	heli_mgr:initialize( "heli", "w" )
 
---------------------------------------------------------------------------------------------------------------------
--- функции для рейда
---------------------------------------------------------------------------------------------------------------------
-
-function activate()
-	active = true
-end
-
-function deactivate()
-	active = false
-end
-
-function set_enemy( obj )
-	enemy = obj
-end
-
---------------------------------------------------------------------------------------------------------------------
--- класс управления
---------------------------------------------------------------------------------------------------------------------
-
-class "HeliManager"
-
-function HeliManager:__init()
-end
-
-function HeliManager:__finalize()
-end
-
-function HeliManager:Init()
-	self.m_heli       = get_level_object( "heli" )
-	self.m_heliObject = self.m_heli:get_helicopter()
-
-	self.m_heli:AddEventCallback( CHelicopter.on_point, self, "HeliOnPoint" )
-	self.m_heli:AddEventCallback( CHelicopter.on_hit, self,   "HeliOnHit" )
-end
-
-function HeliManager:HeliOnHit( p )
-	printf( "HeliOnHit" )
-
-	-- количество оставшихся заходов для атаки
-	self.attack_passes = 3
-
-	if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
-		return --already on attack trajectory
-	end
-
---	format:
-	local power      = p:r_float()
-	local impulse    = p:r_float()
-	local hit_type   = p:r_u32()
-	local enemy_name = p:r_stringZ()
-
-	enemy = level.object( enemy_name )
-	if enemy then
-		printf( "[heli] attack %s", enemy_name )
-		self.m_heliObject:SetEnemy( enemy )
-		self.m_heliObject:SetDestPosition( enemy:position() )
-		self.m_heliObject:SetState( CHelicopter.eMovingByAttackTraj )
---		self.m_heliObject:SetCurrVelocity( attack_speed ) -- m/sec (max)
-
-		self.attack_pass_state = 0
-		
---		self.m_heliObject.m_on_point_range_dist = 30
-	end
-end
-
-function HeliManager:HeliOnPoint(p)
---	format:
---	local dist_to_point =	p:r_float()
---	local point  = p:r_vec3()
---	local path_idx = p:r_s16() ; -- ==-1 if no path moving
-
-	if self.m_heliObject:GetState() == CHelicopter.eMovingToPoint then
-		--select next point
-	end
-
---	printf( "m_on_point_range_dist = %d", self.m_heliObject.m_on_point_range_dist )
-
-	-- если пролетел над позицией врага
-	if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
-		if self.attack_passes > 0 then
-			if self.attack_pass_state == 0 then
-				-- отлетаем чуть-чуть
-				v        = self.m_heli:direction()
-				self.p1  = self.m_heli:position():add( vector():set( v ):mul( pass_dist ) )
-
-				self.m_heliObject:SetDestPosition( self.p1 )
-
-				v.x, v.z = v.z, -v.x
-				self.p2  = self.p1:add( v:mul( pass_dist * 1.5 ) )
-
-				self.attack_pass_state = 1
-				printf( "0" )
---[[			elseif self.attack_pass_state == 1 then
-				-- заходим вправо
-				self.m_heliObject:SetDestPosition( self.p2 )
-				--self.m_heliObject:SetCurrVelocity( patrol_speed )
-
-				self.attack_pass_state = 2
-
-				printf( "1" ) ]]
-			else
-				-- опять заходим на врага
-				self.m_heliObject:SetDestPosition( enemy:position() )
-				--self.m_heliObject:SetCurrVelocity( attack_speed )
-				self.m_heliObject.m_on_point_range_dist = 10
-
-				self.attack_pass_state = 0
-				self.attack_passes     = self.attack_passes - 1
-
-				printf( "2" )
-			end
-		else
-			-- закончить атаку
-			self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 )  --0==from_idx
-			self.attack_pass_state = 0
-			self.m_heliObject.m_on_point_range_dist = 10
-			printf( "[heli] attack finished" )
-		end
---		self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
-	end
-end
-
-function HeliManager:Run()
-	self.m_b_exploded        = false
-	self.m_b_prepered_to_die = false
---	self.m_run               = true
-
-	local state, health, altitude, last_alt, alt_check_time
-
---	while self.m_run do
-	while not self.m_b_exploded do
-		state = self.m_heliObject:GetState()
-
-		if state == CHelicopter.eIdleState then
-			self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 ) --0==from_idx
-			self.m_heliObject:SetCurrVelocity( patrol_speed ) -- m/sec (max)
+--	local t = device():time_global() + 10000
+	while true do
+		if not heli_mgr:update() then
+			break
 		end
 
-		health = self.m_heliObject:GetfHealth()
-
-		if self.m_b_prepered_to_die == false and state ~= CHelicopter.eDead and health < 30.0 then
-			self.m_b_prepered_to_die = true
-			self.m_heliObject:PrepareDie()
-		end
-
-		if state ~= CHelicopter.eDead and health <= 0.0 then
-			printf( "[heli] DIE" )
-			self.m_heliObject:Die()
-
-			last_alt       = self.m_heliObject:GetRealAltitude()
-			alt_check_time = device():time_global() + 1000
-		end
-
-		if state == CHelicopter.eDead then
-			-- вертолёт должен взорваться, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
-			altitude = self.m_heliObject:GetRealAltitude()
-
-			if altitude < 3.0 then
-				self.m_b_exploded = true
-				printf("[heli] EXPLODE")
-				self.m_heliObject:Explode()
---				self.m_heliObject:TurnLighting( true )
---				self.m_end_lighting = device():time_global() + 15000
-			end
-
-			if alt_check_time < device():time_global() then
-				alt_check_time = device():time_global() + 500
-
-				if last_alt - altitude < 1 then
-					self.m_b_exploded = true
-					printf("[heli] EXPLODE (hanged)")
-					self.m_heliObject:Explode()
---					self.m_heliObject:TurnLighting( true )
---					self.m_end_lighting = device():time_global() + 15000
-				end
-
-				last_alt = altitude
-			end
-		end
-
---[[		if self.m_b_exploded == false and state == CHelicopter.eDead then
-			altitude = self.m_heliObject:GetRealAltitude()
-
-			if altitude < 3.0 then
-				self.m_b_exploded = true
-				printf("[heli] EXPLODE")
-				self.m_heliObject:Explode()
---				self.m_heliObject:TurnLighting( true )
---				self.m_end_lighting = device():time_global() + 15000
-			end
-		end]]
-
---[[		if self.m_b_exploded and self.m_end_lighting < device():time_global() then
-			self.m_heliObject:TurnLighting( false )
-			self.m_run = false
-		end]]
+--		if t and t < device():time_global() then
+--			t = nil
+--			heli_mgr:send_to_stay_point()
+--			printf( "TO STAY POINT" )
+--		end
 
 		wait()
 	end
-end
-
---[[function parse_names( s )
-    local t = {}
-
-    for name in string.gfind( s, "([%w_\\%=%-%,]+)|*" ) do
-        table.insert( t, name )
-    end
-
-    return t
-end]]
-
-function main()
---	printf( table.concat( parse_names( "wp00|ret=0|rel=a1,b1,c1" ), "         " ) )
-
-	local heli_mngr = HeliManager()
-	heli_mngr:Init()
-	heli_mngr:Run()
 end

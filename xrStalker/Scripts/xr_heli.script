@@ -3,7 +3,7 @@
 Чугай Саша
 
 Сделать:
-	- умолчания из ltx
+	- настройки в ltx
 	- улёт в безопасное место
 --------------------------------------------------------------------------------------------------------------------]]
 
@@ -11,7 +11,8 @@ local state, health, altitude, v, power, impulse, hit_type, enemy_type
 
 local pass_dist    = 100  -- расстояние, на которое вертолёт отлетит перед следующим заходом для атаки
 local def_patrol_speed, def_attack_speed = 30, 40
-local max_attack_passes = 1
+local max_attack_passes = 3
+local zone_attack_probability = 33  -- вероятность того, что вертолёт начнёт атаковать сталкера, вошедшего в какую-то зону
 
 class "HeliManager"
 
@@ -53,7 +54,7 @@ function HeliManager:HeliOnHit( p )
 	impulse    = p:r_float()
 	hit_type   = p:r_u32()
 	enemy_name = p:r_stringZ()
-
+printf( "ENEMY NAME=%s", enemy_name )
 	self:set_enemy( level.object( enemy_name ) )
 end
 
@@ -81,8 +82,8 @@ function HeliManager:HeliOnPoint( p )
 
 				self.heliObject:SetDestPosition( self.p1 )
 
-				v.x, v.z = v.z, -v.x
-				self.p2  = self.p1:add( v:mul( pass_dist * 1.5 ) )
+--				v.x, v.z = v.z, -v.x
+--				self.p2  = self.p1:add( v:mul( pass_dist * 1.5 ) )
 
 				self.attack_pass_state = 1
 				printf( "0" )
@@ -109,6 +110,7 @@ function HeliManager:HeliOnPoint( p )
 			-- закончить атаку
 			if self.path then
 				self.heliObject:GoPatrolByPatrolPath( self.path, 0 )  --0==from_idx
+				self.heliObject:SetCurrVelocity( self.patrol_speed )
 			else
 				self:send_to_stay_point()
 			end
@@ -151,7 +153,7 @@ function HeliManager:update()
 		printf( "[heli] prepare to die" )
 	end
 
-	if state ~= CHelicopter.eDead and health <= 0.0 then
+	if state ~= CHelicopter.eDead and health <= 0.5 and not self.not_die then
 		printf( "[heli] DIE" )
 		self.heliObject:Die()
 
@@ -193,12 +195,14 @@ function HeliManager:set_enemy( enemy )
 		self.heliObject:SetEnemy( enemy )
 		self.heliObject:SetCurrAltitude( self.altitude )
 		self.heliObject:SetCurrVelocity( self.attack_speed ) -- m/sec (max)
-		self.heliObject:SetDestPosition( enemy:position() )
 		self.heliObject:SetState( CHelicopter.eMovingByAttackTraj )
 
 		self.attack_pass_state = 0
 		self.attack_passes     = max_attack_passes
 --		self.heliObject.on_point_range_dist = 30
+
+--		self.heliObject:SetDestPosition( enemy:position() )
+		self:HeliOnPoint()
 	end
 end
 
@@ -217,4 +221,16 @@ function HeliManager:set_path( path_name )
 	self.enemy = nil
 	self.heliObject:SetEnemy( nil )
 	self.heliObject:SetState( CHelicopter.eIdleState )
+end
+
+function HeliManager:set_zones( ... )
+	for i = 1, arg.n do
+		get_level_object( arg[i] ):set_callback( self, "on_enter", true )
+	end
+end
+
+function HeliManager:on_enter( zone, obj )
+	if object_type( obj ) == "stalker" and math.random( 100 ) <= zone_attack_probability then
+		self:set_enemy( obj )
+	end
 end
