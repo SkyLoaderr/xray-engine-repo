@@ -44,8 +44,8 @@ public:
 	virtual void						OnDeviceCreate	( );
 	virtual void						OnDeviceDestroy	( );
 
-	virtual BOOL						ShadowGenerate	( ) { return FALSE;	}
-	virtual BOOL						ShadowReceive	( ) { return FALSE;	}
+	virtual BOOL						ShadowGenerate	( ) { return TRUE;	}
+	virtual BOOL						ShadowReceive	( ) { return TRUE;	}
 
 	void				PlayDemo		( LPCSTR N );
 
