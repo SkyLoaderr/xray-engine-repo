@@ -296,6 +296,7 @@ public:
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			CSE_Abstract		*E = m_tpSpawnPoints[i];
 			CSE_ALifeObject		*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
+			R_ASSERT3			(l_tpALifeObject->m_tNodeID && (l_tpALifeObject->m_tNodeID < m_tpAI_Map->m_header.count),"Invalid node for object ",l_tpALifeObject->s_name_replace);
 			R_ASSERT2			(l_tpALifeObject,"Non-ALife object!");
 			strcpy				(l_tpALifeObject->m_caGroupControl,"");
 			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
