@@ -16,6 +16,7 @@ float ssaLIMIT_SS		= 16.f;
 float ssaDONTSORT_SS	= 25.f*25.f;
 float ssaLIMIT;
 float ssaDONTSORT;
+const float ssaLOD		= (64*64)/(800*600);
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {
@@ -231,6 +232,14 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 			InsertSG_Cached((FCached*)pVisual);
 		}
 		return;
+	case MT_LOD:
+		{
+			FLOD		* pV	= (FLOD*) pVisual;
+			float		D;
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_leafs_Static	(pV->chields.back());
+			else										add_leafs_Static	(pV->chields.front());
+		}
+		break;
 	default:
 		{
 			// General type of visual
@@ -323,7 +332,7 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 	case MT_SKELETON:
 		{
 			// Add all chields, doesn't perform any tests
-			CKinematics * pV = (CKinematics*)pVisual;
+			CKinematics * pV	= (CKinematics*)pVisual;
 			pV->Calculate			();
 			I = pV->chields.begin	();
 			E = pV->chields.end		();
@@ -332,6 +341,14 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 			} else {
 				for (; I!=E; I++)	add_leafs_Static	(*I);
 			}
+		}
+		break;
+	case MT_LOD:
+		{
+			FLOD		* pV	= (FLOD*) pVisual;
+			float		D;
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_Static	(pV->chields.back());
+			else										add_Static	(pV->chields.front());
 		}
 		break;
 	case MT_CACHED:
