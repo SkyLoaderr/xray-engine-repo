@@ -50,6 +50,11 @@ void 	CDetailManager::cache_Task		(int sx, int sz, Slot* D)
 	}
 }
 
+int		cvx	(int mx)
+{
+	return mx-
+}
+
 void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 {
 	// *****	Cache shift
@@ -65,7 +70,7 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 				Slot*	S	= cache[z][0];
 				for			(int x=1; x<dm_cache_line; x++)		cache[z][x-1] = cache[z][x];
 				cache		[z][dm_cache_line-1] = S;
-				cache_Task	(c_x-dm_size+dm_cache_line-1, c_z-dm_size+z, S);
+				cache_Task	(c_x+dm_size-1, c_z+dm_cache_line-1+z, S);
 			}
 		} else {
 			// shift matrix to right
