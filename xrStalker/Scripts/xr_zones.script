@@ -1,5 +1,5 @@
 module("script_zone")
-module ("escape_factory")
+module ("zone_spawner")
 module ("escape_raid")
 
 --[[------------------------------------------------------------------------------------------------------------------
@@ -166,10 +166,10 @@ function zone_binder:reload( section )
 		//end
   end
 
-   if zone_ini:section_exist( "factory" ) then
-   	 z.factory = escape_factory.factory_combat (self.object, zone_ini)
- 	 if z.factory.ini_ok == false then
-		z.factory = nil
+   if zone_ini:section_exist( "zone_spawner" ) then
+   	 z.z_spawner = zone_spawner.zone_spawner (self.object, zone_ini)
+ 	 if z.z_spawner.ini_ok == false then
+		z.z_spawner = nil
      end
   end
 
