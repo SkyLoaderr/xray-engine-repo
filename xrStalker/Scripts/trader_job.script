@@ -63,14 +63,14 @@ function is_box02_present(first_speaker, second_speaker)
 end
 
 function give_box_to_trader(first_speaker, second_speaker)
-	local box = second_speaker:object("case")
-	second_speaker:transfer_item ("case", first_speaker)
+	local box01 = second_speaker:object("quest_case_01")
+	second_speaker:transfer_item (box01, first_speaker)
 	second_speaker:disable_info_portion ("trader_start2")
 end
 
 function give_box02_to_trader(first_speaker, second_speaker)
-	local box = second_speaker:object("case")
-	second_speaker:transfer_item ("case", first_speaker)
+	local box02 = second_speaker:object("quest_case_02")
+	second_speaker:transfer_item (box02, first_speaker)
 	second_speaker:disable_info_portion ("trader_start4")
 end
 
