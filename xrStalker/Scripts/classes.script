@@ -79,7 +79,7 @@ end
 function SinglePatrol:process ()
 	if self.started == false then
 	   self.npc:script (true, self.script_name)
-	   action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
 			   look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
 	   self.started = true
 	   return 
