@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
-//void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
-//{
+void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
+{
 //	if (Weapons->ActiveWeapon()) {
 //		fire_pos.set(Weapons->ActiveWeapon()->Position());
 //		/**
@@ -25,5 +25,5 @@
 //		/**/
 //		fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
 //	}
-//}
-//
+}
+

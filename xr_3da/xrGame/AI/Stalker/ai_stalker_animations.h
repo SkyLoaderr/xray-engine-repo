@@ -9,7 +9,6 @@
 #pragma once
 
 const u32 dwStateCount			= 2;
-const u32 dwBodyPartCount		= 2;
 const u32 dwWeaponCount			= 4;
 const u32 dwWeaponActionCount	= 7;
 const u32 dwMovementCount		= 2;
@@ -18,7 +17,6 @@ const u32 dwInPlaceCount		= 6;
 const u32 dwGlobalCount			= 2;
 
 extern LPCSTR caStateNames			[dwStateCount];
-extern LPCSTR caBodyPartNames		[dwBodyPartCount];
 extern LPCSTR caWeaponNames			[dwWeaponCount];
 extern LPCSTR caWeaponActionNames	[dwWeaponActionCount];
 extern LPCSTR caMovementNames		[dwMovementCount];
@@ -30,20 +28,15 @@ DEFINE_VECTOR	(CMotionDef*,ANIM_VECTOR, ANIM_IT);
 
 class CAniVector {
 public:
-	ANIM_VECTOR		m_tpaAnims;
+	ANIM_VECTOR		A;
 
-	virtual			~CAniVector()
-	{
-		free_vector(m_tpaAnims);
-	}
-	
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
-		string256 S;
+		string256 S1, S2;
 		for (int i=0; ; i++) {
-			CMotionDef *tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S,caBaseName,itoa(i,S,10)));
+			CMotionDef *tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)));
 			if (tpMotionDef)
-				m_tpaAnims.push_back(tpMotionDef);
+				A.push_back(tpMotionDef);
 			else
 				break;
 		}
@@ -52,19 +45,14 @@ public:
 
 template <u32 COUNT, LPCSTR caBaseNames[]> class CAniFVector {
 public:
-	ANIM_VECTOR		m_tpaAnims;
+	ANIM_VECTOR		A;
 	
-	virtual			~CAniFVector()
-	{
-		free_vector(m_tpaAnims);
-	}
-
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
-		m_tpaAnims.resize(COUNT);
-		ANIM_IT		I = m_tpaAnims.begin(), B = I;
-		ANIM_IT		E = m_tpaAnims.end();
+		A.resize(COUNT);
+		ANIM_IT		I = A.begin(), B = I;
+		ANIM_IT		E = A.end();
 		for ( ; I != E; I++)
 			*I = tpKinematics->ID_Cycle(strconcat(S,caBaseName,caBaseNames[I - B]));
 	}
@@ -72,19 +60,19 @@ public:
 
 template <typename TYPE_NAME, u32 COUNT, LPCSTR caBaseNames[]> class CAniCollection {
 public:
-	vector<TYPE_NAME*>	m_tpaCollection;
+	vector<TYPE_NAME*>	A;
 	
 	virtual			~CAniCollection()
 	{
-		free_vector(m_tpaCollection);
+		free_vector(A);
 	}
 
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
-		m_tpaCollection.resize(COUNT);
-		vector<TYPE_NAME*>::iterator	I = m_tpaCollection.begin(), B = I;
-		vector<TYPE_NAME*>::iterator	E = m_tpaCollection.end();
+		A.resize(COUNT);
+		vector<TYPE_NAME*>::iterator	I = A.begin(), B = I;
+		vector<TYPE_NAME*>::iterator	E = A.end();
 		for ( ; I != E; I++) {
 			*I = xr_new<TYPE_NAME>();
 			(*I)->Load(tpKinematics,strconcat(S,caBaseName,caBaseNames[I - B]));
@@ -111,8 +99,9 @@ public:
 
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
+		string256		S;
 		m_tGlobal.Load	(tpKinematics,caBaseName);
-		m_tTorso.Load	(tpKinematics,caBaseName);
+		m_tTorso.Load	(tpKinematics,strconcat(S,caBaseName,"torso_"));
 		m_tMoves.Load	(tpKinematics,caBaseName);
 		m_tInPlace.Load	(tpKinematics,caBaseName);
 	};
