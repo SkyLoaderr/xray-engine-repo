@@ -123,7 +123,7 @@ GameGraph::_GRAPH_ID CMovementManager::game_dest_vertex_id() const
 
 void CMovementManager::set_level_dest_vertex(const u32 level_vertex_id)
 {
-	VERIFY					(restrictions().accessible(level_vertex_id));
+	VERIFY2					(restrictions().accessible(level_vertex_id),*object().cName());
 	level_path().set_dest_vertex(level_vertex_id);
 	m_path_actuality		= m_path_actuality && level_path().actual();
 }
