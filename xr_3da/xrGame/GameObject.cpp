@@ -25,6 +25,7 @@ CGameObject::~CGameObject()
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);
 #endif
+	if (this == Level().CurrentEntity())	Level().SetEntity(0);
 }
 
 void CGameObject::net_Destroy	()
