@@ -67,6 +67,9 @@ void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 			CSE_ALifeDynamicObjectVisual
 		)
 		.def("health",&CSE_ALifeCreatureAbstract::g_Health)
+		.def("team",&CSE_ALifeCreatureAbstract::s_team)
+		.def("squad",&CSE_ALifeCreatureAbstract::s_squad)
+		.def("group",&CSE_ALifeCreatureAbstract::s_group)
 	];
 }
 
