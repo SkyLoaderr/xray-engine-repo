@@ -10,7 +10,9 @@
 #define AI_ALIFE_PREDICATESH
 #pragma once
 #ifndef _EDITOR
+#ifndef AI_COMPILER
 #include "ai_alife_registries.h"
+#endif
 #endif
 
 class CArtefactOrderPredicate {
@@ -86,23 +88,6 @@ public:
 	};
 };
 
-#ifndef _EDITOR
-class CRemoveNonAttachedItemsPredicate {
-	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
-public:
-
-									CRemoveNonAttachedItemsPredicate	(CSE_ALifeObjectRegistry *tpALifeObjectRegistry)
-	{
-		m_tpALifeObjectRegistry		= tpALifeObjectRegistry;
-	}
-
-	IC bool							operator()							(const _OBJECT_ID tObjectID)
-	{
-		return						(m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent == 0xffff);
-	};
-};
-#endif
-
 class CSortItemVolumePredicate {
 public:
 	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2)  const
@@ -137,6 +122,22 @@ public:
 };
 
 #ifndef _EDITOR
+#ifndef AI_COMPILER
+class CRemoveNonAttachedItemsPredicate {
+	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
+public:
+
+	CRemoveNonAttachedItemsPredicate	(CSE_ALifeObjectRegistry *tpALifeObjectRegistry)
+	{
+		m_tpALifeObjectRegistry		= tpALifeObjectRegistry;
+	}
+
+	IC bool							operator()							(const _OBJECT_ID tObjectID)
+	{
+		return						(m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent == 0xffff);
+	};
+};
+
 class CSortByOwnerPredicate {
 	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
 public:
@@ -165,6 +166,7 @@ public:
 			return						(tpALifeInventoryItem1->m_dwCost > tpALifeInventoryItem2->m_dwCost);
 	}
 };
+#endif
 #endif
 
 #endif
