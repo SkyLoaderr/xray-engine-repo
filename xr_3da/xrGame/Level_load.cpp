@@ -117,14 +117,15 @@ BOOL CLevel::Load_GameSpecific_After()
 		int				chunk = 0;
 		string256		ref_name;
 		Fmatrix			transform;
+		Fvector			zero_vel={0.f,0.f,0.f};
 		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
 			OBJ->r_stringZ				(ref_name);
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
 			S							= ::Render->detectSector	(transform.c);
-			pStaticParticles			= xr_new<CParticlesObject>			(ref_name,S,false);
-			pStaticParticles->SetTransform	(transform);
+			pStaticParticles			= xr_new<CParticlesObject>	(ref_name,S,false);
+			pStaticParticles->UpdateParent	(transform,zero_vel);
 			pStaticParticles->Play			();
-			m_StaticParticles.push_back	(pStaticParticles);
+			m_StaticParticles.push_back		(pStaticParticles);
 			OBJ->close	();
 		}
 		FS.r_close		(F);
