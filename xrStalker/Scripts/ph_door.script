@@ -8,8 +8,13 @@
 class "action_door"
 
 function action_door:__init(obj, storage)
+	printf	("action_door::action_door() called")
 	self.object = obj
 	self.st = storage
+end
+
+function action_door:__finalize()
+	printf	("action_door::~action_door() called")
 end
 
 function action_door:reset_scheme()
