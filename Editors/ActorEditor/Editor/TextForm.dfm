@@ -1,6 +1,6 @@
 object frmText: TfrmText
-  Left = 401
-  Top = 329
+  Left = 297
+  Top = 317
   Width = 443
   Height = 283
   Caption = 'Text'
@@ -107,31 +107,6 @@ object frmText: TfrmText
       OnClick = ebClearClick
     end
   end
-  object mmText: TElAdvancedMemo
-    Left = 0
-    Top = 20
-    Width = 435
-    Height = 217
-    Align = alClient
-    Color = 10526880
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Courier New'
-    Font.Style = []
-    MaxLength = -1
-    ParentFont = False
-    ScrollBars = ssBoth
-    TabOrder = 1
-    WantTabs = True
-    OnChange = mmTextChange
-    OnKeyUp = mmTextKeyUp
-    Flat = True
-    FlatFocusedScrollBars = True
-    BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
-    LineBorderActiveColor = clBlack
-    LineBorderInactiveColor = clBlack
-  end
   object sbStatusPanel: TElStatusBar
     Left = 0
     Top = 237
@@ -160,6 +135,18 @@ object frmText: TfrmText
     ShowHint = True
     DockOrientation = doNoOrient
     DoubleBuffered = False
+  end
+  object mmText: TMemo
+    Left = 0
+    Top = 20
+    Width = 435
+    Height = 217
+    Align = alClient
+    Color = 10526880
+    ScrollBars = ssBoth
+    TabOrder = 2
+    OnChange = mmTextChange
+    OnKeyUp = mmTextKeyUp
   end
   object fsStorage: TFormStorage
     IniSection = 'Text Form'

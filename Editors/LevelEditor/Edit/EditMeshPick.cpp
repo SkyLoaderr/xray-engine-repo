@@ -41,7 +41,7 @@ void CEditableMesh::GenerateCFModel()
     UI.ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
 	UnloadCForm();
 
-	m_CFModel = (CDB::MODEL*)cdb_model_create();    VERIFY(m_CFModel);
+	m_CFModel = xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
 	// Collect faces
 
 	CDB::Collector CL;
@@ -66,7 +66,7 @@ void CEditableMesh::GenerateCFModel()
 			0,0,0 );
 	}
 */
-    cdb_model_build(m_CFModel,CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+    m_CFModel->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState.set(LS_CF_MODEL,TRUE);
     UI.ProgressEnd();
 }

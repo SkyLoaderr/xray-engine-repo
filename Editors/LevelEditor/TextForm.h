@@ -32,7 +32,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
 	TFormStorage *fsStorage;
-	TElAdvancedMemo *mmText;
 	TExtBtn *ebApply;
 	TExtBtn *ebLoad;
 	TExtBtn *ebSave;
@@ -40,6 +39,7 @@ __published:	// IDE-managed Components
 	TMxPopupMenu *pmTextMenu;
 	TExtBtn *ebClear;
 	TTimer *tmIdle;
+	TMemo *mmText;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

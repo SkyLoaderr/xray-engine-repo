@@ -174,10 +174,9 @@ void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
     ext.Insert("~",2);
 	AnsiString backup_fn = ChangeFileExt(fn,ext);
 	if (bDeleteSource){
-    	FS.file_delete(backup_fn.c_str());
-		FS.file_rename(fn.c_str(),backup_fn.c_str());
+		FS.file_rename(fn.c_str(),backup_fn.c_str(),true);
     }else{
-		FS.file_rename(fn.c_str(),backup_fn.c_str());
+		FS.file_copy(fn.c_str(),backup_fn.c_str());
     }
 }
 

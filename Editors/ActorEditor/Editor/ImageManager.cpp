@@ -170,7 +170,7 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 		src_name 	= p_import	+ AnsiString(fn);
 		EFS.UpdateTextureNameWithFolder(fn);
 		dest_name 	= p_textures+ AnsiString(fn);
-		FS.file_rename(src_name.c_str(),dest_name.c_str());
+		FS.file_rename(src_name.c_str(),dest_name.c_str(),true);
     	// copy sources
 		fn 			= it->first;
 		src_name 	= p_import	+ AnsiString(fn);
