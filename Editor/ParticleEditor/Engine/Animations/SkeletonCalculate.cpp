@@ -133,7 +133,7 @@ repeat:
 		};
 	}
 #endif    
-	(*bones)[iRoot]->Calculate		(this,&precalc_identity);
+	(*bones)[iRoot]->Calculate		(this,&Fidentity);
 	Device.Statistic.Animation.End	();
 
 	// Calculate BOXes/Spheres if needed
