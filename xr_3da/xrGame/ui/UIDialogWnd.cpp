@@ -121,6 +121,8 @@ bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		CObject* O = Level().CurrentEntity();
 		if( O ){
 			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+			if (!IR)
+				return			(false);
 
 			if(keyboard_action==WINDOW_KEY_PRESSED)
 					IR->IR_OnKeyboardPress(key_binding[dik]);

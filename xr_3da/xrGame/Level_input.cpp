@@ -116,29 +116,28 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		return;
 	}
 #ifdef DEBUG
-				 /*
+				 /**/
 	case DIK_F4: {
 		if (GameID() != GAME_SINGLE) return;
-		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
-		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
+		u32 i=0, j, n=Objects.o_count();
 		if (pCurrentEntity)
-			for ( ; I != E; ++I)
-				if ((*I) == pCurrentEntity)
+			for ( ; i<n; ++i)
+				if (Objects.o_get_by_iterator(i) == pCurrentEntity)
 					break;
-		if (I != E) {
-			J = I;
+		if (i < n) {
+			j = i;
 			bOk = false;
-			for (++I; I != E; ++I) {
-				CEntityAlive* tpEntityAlive = smart_cast<CEntityAlive*>(*I);
+			for (++i; i <n; ++i) {
+				CEntityAlive* tpEntityAlive = smart_cast<CEntityAlive*>(Objects.o_get_by_iterator(i));
 				if (tpEntityAlive) {
 					bOk = true;
 					break;
 				}
 			}
 			if (!bOk)
-				for (I = B; I != J; ++I) {
-					CEntityAlive* tpEntityAlive = smart_cast<CEntityAlive*>(*I);
+				for (i = 0; i <j; ++i) {
+					CEntityAlive* tpEntityAlive = smart_cast<CEntityAlive*>(Objects.o_get_by_iterator(i));
 					if (tpEntityAlive) {
 						bOk = true;
 						break;
@@ -146,6 +145,8 @@ void CLevel::IR_OnKeyboardPress	(int key)
 				}
 			if (bOk) {
 				CObject *tpObject = CurrentEntity();
+				CObject *__I = Objects.o_get_by_iterator(i);
+				CObject **I = &__I;
 				SetEntity(*I);
 				if (tpObject != *I)
 				{
@@ -176,7 +177,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}
 		return;
 	}
-	*/
+	/**/
 #endif
 
 
