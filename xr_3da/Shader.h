@@ -55,6 +55,7 @@ public:
 		Flags.bPixelShader	= FALSE;
 	}
 public:
+	DWORD				dwReference;
 	SFlags				Flags;
 	svector<CPass,8>	Passes;
 };

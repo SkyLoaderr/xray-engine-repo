@@ -36,6 +36,9 @@ private:
 	vector<STextureList*>			lst_textures;
 	vector<SMatrixList*>			lst_matrices;
 	vector<SConstantList*>			lst_constants;
+	
+	// main shader-array
+	vector<Shader*>					shaders;
 
 	// cache
 	struct XXX
@@ -88,8 +91,8 @@ public:
 	void	OnFrameEnd		();
 
 	// Creation/Destroying
-	Shader	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
-	void	Delete			(Shader	&S);
+	Shader*	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
+	void	Delete			(Shader*	&S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 	void	DeferredUpload	();
 
