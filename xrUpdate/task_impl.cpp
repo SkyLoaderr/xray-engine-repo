@@ -24,9 +24,6 @@ void CTask::exec()
 	CTaskArray::iterator sub_task_it =	m_sub_tasks.begin();
 	for(;sub_task_it !=m_sub_tasks.end();++sub_task_it)
 		(*sub_task_it)->run();
-//	CTaskArray::reverse_iterator sub_task_it =	m_sub_tasks.rbegin();
-//	for(;sub_task_it !=m_sub_tasks.rend();++sub_task_it)
-//		(*sub_task_it)->run();
 
 }
 
@@ -51,7 +48,12 @@ void CTaskCopyFiles::run()
 		string_path dst_file_name;
 		strconcat(dst_file_name, target_folder(), "\\", file_name, ext );
 		BOOL res = copy_file( (*it).c_str(), target_folder(), dst_file_name );
-
+		if(res==FALSE){
+			Msg("-------------------WARNING---------------------------------" );
+			Msg("unable to copy file %s to %s",(*it).c_str(), target_folder() );
+			Msg("the error is %s",fo.m_sError.GetBuffer());
+			Msg("-----------------------------------------------------------" );
+		};
 		++it;
 		}
 }
