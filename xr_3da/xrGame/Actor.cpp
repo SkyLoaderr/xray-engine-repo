@@ -203,11 +203,11 @@ void CActor::Load	(LPCSTR section )
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	m_PhysicMovementControl->SetBox		(1,bb);
 
-	// m_PhysicMovementControl: Foots
-	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
-	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	//m_PhysicMovementControl->SetFoots	(vFOOT_center,vFOOT_size);
+	//// m_PhysicMovementControl: Foots
+	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
+	//Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
+	//bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
+	////m_PhysicMovementControl->SetFoots	(vFOOT_center,vFOOT_size);
 
 	// m_PhysicMovementControl: Crash speed and mass
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
