@@ -51,32 +51,36 @@ void main(int argc, char* argv[])
 	int			magic[16][16];
 	bwdithermap	(2,magic);
 
-	DWORD		p0=255;
-	DWORD		p1=255;
-	DWORD		p2=0;
-	DWORD		p3=0;
+	float		p0=16;
+	float		p1=0;
+	float		p2=0;
+	float		p3=64;
 
-	float		f = float(tex.dwWidth)*sqrtf(2);
+	float		f = float(tex.dwWidth);
 	for (DWORD y=0; y<tex.dwHeight; y++)
 	{
 		for (DWORD x=0; x<tex.dwWidth; x++)
 		{
-			DWORD c		= tex.GetPixel(x,y);
+//			DWORD c		= tex.GetPixel(x,y);
 			DWORD new_c;
 
-			float		f0	= dist2d(x,y,0,0);
-			float		f1	= dist2d(x,y,tex.dwWidth,0);
-			float		f2	= dist2d(x,y,0,tex.dwHeight);
-			float		f3	= dist2d(x,y,tex.dwWidth,tex.dwHeight);
-			float		cl	= float(p0)*(1-f0/f) + float(p1)*(1-f1/f) + float(p2)*(1-f2/f) + float(p3)*(1-f3/f);
-			new_c			= DWORD(cl/4);
+			float	fx	= float(x)/f; float ifx = 1.f-fx;
+			float	fy	= float(y)/f; float ify = 1.f-fy;
 
-			/*
-		    int row		= y % 16; 
+			float	c01	= p0*ifx+p1*fx;
+			float	c23	= p2*ifx+p3*fx;
+			float	c02	= p0*ify+p2*fy;
+			float	c13	= p1*ify+p3*fy;
+
+			float	cx	= ify*c01 + fy*c23;
+			float	cy	= ifx*c02 + fx*c13;
+
+			new_c		= DWORD((cx+cy)/2);
+
+			int row		= y % 16; 
 			int col		= x % 16;
  			new_c		= new_c > magic[col][row] ? 255 : 0;
-			*/
-			
+
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
 		}
 	}
