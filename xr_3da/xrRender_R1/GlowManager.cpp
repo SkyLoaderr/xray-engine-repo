@@ -246,10 +246,11 @@ void CGlowManager::Render()
 
 				// Now fade glows directly in front of us
 				TL.transform	(G.spatial.center,Device.mFullTransform);
+				if (TL.p.z<0 || TL.p.w<0)	continue;
 				float size		=	fov_scale * G.spatial.radius / TL.p.w;
 				float snear		=	TL.p.z;	clamp	(snear,0.f,.5f);
 				scale			*=	snear*2.f;
-				if (G.fade*scale<=1.f)	continue;
+				if (G.fade*scale<=1.f)		continue;
 				
 				// Convert to screen coords
 				float cx        = (1+TL.p.x)*_width_2;
