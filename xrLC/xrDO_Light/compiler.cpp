@@ -334,7 +334,7 @@ public:
 						
 						// select part of slot
 						int pid = 0;
-						if (z>0)
+						if (z<0)
 						{
 							if (x>0)	pid = 0;
 							else		pid = 1;
