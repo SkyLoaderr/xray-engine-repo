@@ -21,6 +21,11 @@ class CPhantom : public CEntity {
 	float			fASpeed;
 	Fvector			vHPB;
 	
+	Fvector			vCurrentDir;
+	Fvector			vGoalDir;
+	Fvector			vVarGoal;
+	float			fGoalChangeTime;
+	float			fGoalChangeDelta;
 public:
 					CPhantom					();
 	virtual			~CPhantom					();

@@ -6,9 +6,14 @@
 CPhantom::CPhantom()
 {
 	fDHeading			= 0;
-	fSpeed				= 3.f;
-	fASpeed				= 0.3f;
+	fSpeed				= 7.f;
+	fASpeed				= 1.3f;
 	vHPB.set			(0,0,0);
+	fGoalChangeTime		= 0.f;
+	fGoalChangeDelta	= 4.f;
+	vGoalDir.set		(10.0f*Random.randF(),10.0f*Random.randF(),10.0f*Random.randF());
+	vVarGoal.set		(0,0,0);
+	vCurrentDir.set		(0,0,1);
 }
 
 CPhantom::~CPhantom()
@@ -71,7 +76,18 @@ void CPhantom::UpdateCL()
 		skeleton_animated->PlayCycle			(m_motion);
 	}
 
-	UpdatePosition		();
+	Fvector vP;
+	m_enemy->Center		(vP);
+	if (vP.distance_to_sqr(Position())<1.f){
+		// hit enemy
+
+		// destroy
+		NET_Packet		P;
+		u_EventGen		(P,GE_DESTROY,ID());
+		u_EventSend		(P);
+	}else{
+		UpdatePosition	();
+	}
 }
 //---------------------------------------------------------------------
 // Core events
@@ -172,11 +188,20 @@ void CPhantom::PlayParticles()
 //---------------------------------------------------------------------
 void CPhantom::UpdatePosition() 
 {
-	Fvector				vGoalDir;
-	m_enemy->Center		(vGoalDir);
+	if(fGoalChangeTime<=0)	{
+		fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
+		Fvector vP;
+//		vP.set(Device.vCameraPosition.x,Device.vCameraPosition.y,Device.vCameraPosition.z);
+		m_enemy->Center	(vP);
+		
+		vGoalDir.x		= vP.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
+		vGoalDir.y		= vP.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
+		vGoalDir.z		= vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
+	}
+	fGoalChangeTime		-= Device.fTimeDelta;
 	
 	// Update position and orientation of the planes
-	float fAT = fASpeed * Device.fTimeDelta;
+	float fAT			= fASpeed * Device.fTimeDelta;
 
 	Fvector& vDirection = XFORM().k;
 
