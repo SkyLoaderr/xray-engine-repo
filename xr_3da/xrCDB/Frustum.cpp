@@ -14,7 +14,7 @@ EFC_Visible testSI(CFrustum& F, Fvector& C, float r, BYTE& tmp)
 	return F.testSphere(C,r,tmp);
 }
 
-void CFrustum::CreateFromPoints(Fvector& COP, Fvector* p, int count)
+void CFrustum::CreateFromPoints(Fvector* p, int count, Fvector& COP)
 {
 	VERIFY(count<FRUSTUM_MAXPLANES);
 	VERIFY(count>=3);
@@ -41,7 +41,7 @@ void CFrustum::CreateFromPlanes(Fplane* p, int count){
 	p_count = count;
 }
 
-void CFrustum::CreateFromPortal(sPoly* poly)
+void CFrustum::CreateFromPortal(sPoly* poly, Fvector& vBase, Fmatrix& mFullXFORM)
 {
 	Fplane	P;
 	P.build	((*poly)[0],(*poly)[1],(*poly)[2]);
@@ -53,30 +53,30 @@ void CFrustum::CreateFromPortal(sPoly* poly)
 
 	// Check plane orientation relative to viewer
 	// and reverse if needed
-	if (P.classify(Device.vCameraPosition)<0)
+	if (P.classify(vBase)<0)
 	{
-		reverse(poly->begin(),poly->end());
-		P.build	((*poly)[0],(*poly)[1],(*poly)[2]);
+		std::reverse(poly->begin(),poly->end());
+		P.build		((*poly)[0],(*poly)[1],(*poly)[2]);
 	}
 
 	// Base creation
-	CreateFromPoints(Device.vCameraPosition,poly->begin(),poly->size());
+	CreateFromPoints(poly->begin(),poly->size(),vBase);
 
 	// Near clipping plane
-	_add(P);
+	_add		(P);
 
 	// Far clipping plane
-	Fmatrix &M	= Device.mFullTransform;
-	P.n.x	= -(M._14 - M._13);
-	P.n.y	= -(M._24 - M._23);
-	P.n.z	= -(M._34 - M._33);
-	P.d		= -(M._44 - M._43);
+	Fmatrix &M	= mFullXFORM;
+	P.n.x		= -(M._14 - M._13);
+	P.n.y		= -(M._24 - M._23);
+	P.n.z		= -(M._34 - M._33);
+	P.d			= -(M._44 - M._43);
 	float denom = 1.0f / P.n.magnitude();
-	P.n.x	*= denom;
-	P.n.y	*= denom;
-	P.n.z	*= denom;
-	P.d		*= denom;
-	_add	(P);
+	P.n.x		*= denom;
+	P.n.y		*= denom;
+	P.n.z		*= denom;
+	P.d			*= denom;
+	_add		(P);
 }
 
 void CFrustum::SimplifyPoly_AABB(sPoly* poly, Fplane& plane)
@@ -115,7 +115,7 @@ void CFrustum::SimplifyPoly_AABB(sPoly* poly, Fplane& plane)
 	mInv.transform_tiny23(poly->last(),p2);		poly->inc();
 }
 
-void CFrustum::CreateOccluder(Fvector* p, int count, CFrustum& clip)
+void CFrustum::CreateOccluder(Fvector* p, int count, Fvector& vBase, CFrustum& clip)
 {
 	VERIFY(count<FRUSTUM_SAFE);
 	VERIFY(count>=3);
@@ -149,7 +149,7 @@ void CFrustum::CreateOccluder(Fvector* p, int count, CFrustum& clip)
 	{
 		if (!edge[i]) {
 			int next = i+1; if (next>=count) next=0;
-			_add(Device.vCameraPosition,p[i],p[next]);
+			_add(vBase,p[i],p[next]);
 		}
 	}
 }
@@ -162,7 +162,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D)
 	{
 		// cache plane and swap lists
 		Fplane &P = planes[i];
-		swap		(src,dest);
+		std::swap	(src,dest);
 		dest->clear	();
 
 		// classify all points relative to plane #i
@@ -214,7 +214,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D)
 	return dest;
 }
 
-BOOL CFrustum::CreateFromClipPoly(Fvector* p, int count, CFrustum& clip)
+BOOL CFrustum::CreateFromClipPoly(Fvector* p, int count, Fvector& vBase, CFrustum& clip)
 {
 	VERIFY(count<FRUSTUM_MAXPLANES);
 	VERIFY(count>=3);
@@ -224,10 +224,10 @@ BOOL CFrustum::CreateFromClipPoly(Fvector* p, int count, CFrustum& clip)
 	sPoly*	dest	= clip.ClipPoly(poly1,poly2);
 
 	// here we end up with complete frustum-polygon in 'dest'
-	if (dest) {
-		CreateFromPoints(Device.vCameraPosition,dest->begin(),dest->size());
-		return true;
-	} else return false;
+	if (0==dest)	return false;
+
+	CreateFromPoints(dest->begin(),dest->size(),vBase);
+	return	true;
 }
 
 void CFrustum::CreateFromViewMatrix(Fmatrix &M)

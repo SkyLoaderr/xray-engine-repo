@@ -19,6 +19,7 @@
 #pragma warning(disable:4530)
 #include "limits"
 #include "list"
+#include "algorithm"
 
 #undef min
 #undef max

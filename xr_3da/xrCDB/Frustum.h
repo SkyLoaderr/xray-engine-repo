@@ -66,13 +66,13 @@ public:
 
 	void			SimplifyPoly_AABB	(sPoly* P, Fplane& plane);
 
-	void			CreateFromPoints	(Fvector& COP, Fvector* p, int count);
-	void			CreateOccluder		(Fvector* p, int count, CFrustum& clip);
+	void			CreateOccluder		(Fvector* p, int count, Fvector& vBase, CFrustum& clip);
+	BOOL			CreateFromClipPoly	(Fvector* p, int count, Fvector& vBase, CFrustum& clip);	// returns 'false' if creation failed
+	void			CreateFromPoints	(Fvector* p, int count, Fvector& vBase );
 	void			CreateFromViewMatrix(Fmatrix &M);
 	void			CreateFromMatrix	(Fmatrix &M);
-	void			CreateFromPortal	(sPoly* P);
+	void			CreateFromPortal	(sPoly* P, Fvector& vBase, Fmatrix& mFullXFORM);
 	void			CreateFromPlanes	(Fplane* p, int count);
-	BOOL			CreateFromClipPoly	(Fvector* p, int count, CFrustum& clip);	// returns 'false' if creation failed
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest);
 

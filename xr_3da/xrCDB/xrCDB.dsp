@@ -449,5 +449,13 @@ SOURCE=.\IceTypes.h
 # End Source File
 # End Group
 # End Group
+# Begin Source File
+
+SOURCE=.\Frustum.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Frustum.h
+# End Source File
 # End Target
 # End Project
