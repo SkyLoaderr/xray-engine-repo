@@ -37,7 +37,9 @@ PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)
 PS::CPEDef* CPSLibrary::AppendPED(PS::CPEDef* src)
 {
 	m_PEDs.push_back(xr_new<PS::CPEDef>());
+#ifdef _PARTICLE_EDITOR
     if (src) m_PEDs.back()->Copy(*src);
+#endif
     return m_PEDs.back();
 }
 //------------------------------------------------------------------------------

@@ -6,9 +6,10 @@
 //----------------------------------------------------
 
 //----------------------------------------------------
-class EImageThumbnail{
+class EImageThumbnail{   
 public:
 	enum THMType{
+    	EITUndef	= -1,
     	EITObject	= 0,
         EITTexture	= 1,
         force_dword = (-1)

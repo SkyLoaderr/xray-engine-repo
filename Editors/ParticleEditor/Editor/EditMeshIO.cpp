@@ -112,7 +112,10 @@ bool CEditableMesh::LoadMesh(IReader& F){
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VERTS));
 	u32 cnt			= F.r_u32();
-    if (cnt<=3) return false;
+    if (cnt<3){
+        ELog.Msg	(mtError, "CEditableMesh: Vertices<3.");
+     	return false;
+    }
     m_Points.resize		(cnt);
     m_Adjs.resize		(cnt);
 	F.r					(&*m_Points.begin(), cnt*sizeof(Fvector));
@@ -124,7 +127,10 @@ bool CEditableMesh::LoadMesh(IReader& F){
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_FACES));
 	m_Faces.resize		(F.r_u32());
-    if (m_Faces.size()==0) return false;
+    if (m_Faces.size()==0){
+        ELog.Msg		(mtError, "CEditableMesh: Faces==0.");
+     	return false;
+    }
 	F.r					(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 
 	m_SGs.resize		(m_Faces.size(),-1);

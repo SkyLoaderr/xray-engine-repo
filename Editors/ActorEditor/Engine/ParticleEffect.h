@@ -87,7 +87,7 @@ public:
 #endif
 public:
     // api function
-	// state api
+	// state api                                      
     void				pSprite				(string64& sh_name, string64& tex_name);
     void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
     // action api

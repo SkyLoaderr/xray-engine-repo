@@ -32,6 +32,8 @@ __published:	// IDE-managed Components
 	TLabel *APHeadLabel2;
 	TExtBtn *sbToolsMin;
 	TD3DWindow *D3DWindow;
+	TExtBtn *ebAllMin;
+	TExtBtn *ebAllMax;
         void __fastcall FormCreate(TObject *Sender);
     void __fastcall D3DWindowResize(TObject *Sender);
     void __fastcall D3DWindowKeyDown(TObject *Sender, WORD &Key,
@@ -60,6 +62,9 @@ __published:	// IDE-managed Components
 	void __fastcall D3DWindowMouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall ebAllMinClick(TObject *Sender);
+	void __fastcall ebAllMaxClick(TObject *Sender);
+	void __fastcall FormResize(TObject *Sender);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 

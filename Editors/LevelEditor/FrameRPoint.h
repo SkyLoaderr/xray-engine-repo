@@ -24,7 +24,6 @@ class TfraSpawnPoint : public TFrame
 __published:	// IDE-managed Components
 	TPanel *paCurrent;
 	TLabel *APHeadLabel1;
-	TExtBtn *ExtBtn2;
 	TFormStorage *fsStorage;
 	TPanel *paCommands;
 	TLabel *Label1;

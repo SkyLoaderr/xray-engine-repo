@@ -2,7 +2,7 @@ object fraObject: TfraObject
   Left = 0
   Top = 0
   Width = 198
-  Height = 261
+  Height = 255
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 198
@@ -22,7 +22,7 @@ object fraObject: TfraObject
     Width = 198
     Height = 47
     Align = alTop
-    ParentColor = True
+    Color = 10528425
     TabOrder = 0
     object Label5: TLabel
       Left = 5
@@ -182,7 +182,7 @@ object fraObject: TfraObject
     Width = 198
     Height = 33
     Align = alTop
-    ParentColor = True
+    Color = 10528425
     TabOrder = 1
     object ebMultiAppend: TExtBtn
       Left = 2
@@ -240,14 +240,16 @@ object fraObject: TfraObject
       OnClick = PaneMinClick
     end
   end
-  object paAddObject: TPanel
+  object paCurrentObject: TPanel
     Left = 0
     Top = 80
     Width = 198
     Height = 175
-    Align = alTop
-    ParentColor = True
+    Align = alClient
+    Color = 10528425
+    Constraints.MinHeight = 175
     TabOrder = 2
+    OnResize = paCurrentObjectResize
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
@@ -260,61 +262,64 @@ object fraObject: TfraObject
       ParentColor = False
       OnClick = ExpandClick
     end
-    object ExtBtn1: TExtBtn
-      Left = 185
-      Top = 2
-      Width = 11
-      Height = 11
-      Align = alNone
-      CloseButton = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Glyph.Data = {
-        DE000000424DDE00000000000000360000002800000007000000070000000100
-        180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-        0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-        000000000000000000000000FFFFFF0000000000000000000000000000000000
-        00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-        0000}
-      ParentFont = False
-      OnClick = PaneMinClick
-    end
     object Bevel2: TBevel
       Left = 1
-      Top = 14
+      Top = 37
       Width = 196
       Height = 1
       Align = alTop
-      Shape = bsSpacer
+      Shape = bsBottomLine
     end
     object paItems: TPanel
       Left = 1
-      Top = 15
+      Top = 38
       Width = 196
-      Height = 159
+      Height = 136
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
     end
+    object Panel1: TPanel
+      Left = 1
+      Top = 14
+      Width = 196
+      Height = 23
+      Align = alTop
+      BevelOuter = bvNone
+      ParentColor = True
+      TabOrder = 1
+      object ExtBtn4: TExtBtn
+        Left = 1
+        Top = 5
+        Width = 195
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        Caption = 'Select ...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        OnClick = ExtBtn4Click
+      end
+    end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameObject'
     Options = []
-    Version = 4
+    Version = 1
     StoredProps.Strings = (
-      'paCommands.Tag'
-      'paCommands.Height'
       'seSelPercent.Value'
-      'paSelectObject.Tag'
+      'paCommands.Height'
+      'paCommands.Tag'
       'paSelectObject.Height'
-      'paAddObject.Height'
-      'paAddObject.Tag')
+      'paSelectObject.Tag')
     StoredValues = <>
   end
 end

@@ -18,13 +18,13 @@ __fastcall TfraWayPoint::TfraWayPoint(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfraWayPoint::PanelMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraWayPoint::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

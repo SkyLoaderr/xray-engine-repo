@@ -256,5 +256,21 @@ void __fastcall TfrmMain::D3DWindowMouseMove(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::ebAllMinClick(TObject *Sender)
+{
+    fraLeftBar->MinimizeAllFrames();
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::ebAllMaxClick(TObject *Sender)
+{
+    fraLeftBar->MaximizeAllFrames();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::FormResize(TObject *Sender)
+{
+    if (fraLeftBar) fraLeftBar->UpdateBar();
+}
+//---------------------------------------------------------------------------
 

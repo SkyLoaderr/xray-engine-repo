@@ -13,6 +13,7 @@
 #include "NumericVector.h"
 #include "TextForm.h"
 #include "ui_main.h"
+#include "ImageThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -191,6 +192,9 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
         	prop->item->Height 		= 64;
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
         }
+        // set style
+        prop->item->MainStyle->OwnerProps 	= true;
+        prop->item->MainStyle->Style 		= ElhsOwnerDraw;
     }
 
     // end fill mode
@@ -219,7 +223,8 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 	for (ElItemsIt el_it=el_list.begin(); el_it!=el_list.end(); el_it++)
 	    FHelper.RestoreSelection(tvItems,*el_it,true);
 
-    Caption = title;
+    if (Parent)	tvItems->HeaderSections->Item[0]->Text = title;
+    else		Caption = title;
 }
 //---------------------------------------------------------------------------
 
@@ -362,7 +367,20 @@ void __fastcall TItemList::RefreshForm()
 void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
-//	
+    ListItem* prop 			= (ListItem*)Item->Tag;
+    if (prop){
+        DrawText			(Surface->Handle, prop->key.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
+        if (miDrawThumbnails->Checked){ 
+            R.top			+= tvItems->ItemIndent;
+            if (prop->OnDrawThumbnail){ 
+            	AnsiString 	fn;
+                u32 		thm_type	= EImageThumbnail::EITUndef;
+            	if (prop->OnDrawThumbnail(prop,fn,thm_type)){
+		            FHelper.DrawThumbnail(Surface,R,fn.c_str(),thm_type);
+                }
+            }
+        }
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -466,6 +484,14 @@ void TItemList::SaveSelection(TFormStorage* storage)
     }
 //    for (AStringIt s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
 //    	storage->WriteString(AnsiString().sprintf("sel%d",s_it-last_selected_items.begin()),*s_it);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::tvItemsResize(TObject *Sender)
+{
+    tvItems->HeaderSections->Item[0]->Width = tvItems->Width;
+    if (tvItems->VertScrollBarVisible)
+    	tvItems->HeaderSections->Item[0]->Width -= tvItems->VertScrollBarStyles->Width;
 }
 //---------------------------------------------------------------------------
 

@@ -27,20 +27,19 @@ bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, in
 	return true;
 }
 //----------------------------------------------------
-
 LPCSTR EImageThumbnail::FormatString()
 {
 	LPCSTR c_fmt = 0;
     switch (m_Type){
-    case EITObject:
-    break;
-    case EITTexture:
+    case EITObject:    break;
+    case EITTexture:{
 		for(int i=0; tfmt_token[i].name; i++)
         	if (tfmt_token[i].id==m_TexParams.fmt){
             	c_fmt=tfmt_token[i].name;
                 break;
             }
-    break;
+    }break;
+	default: THROW;
     }
     return c_fmt;
 }
@@ -79,6 +78,7 @@ int EImageThumbnail::MemoryUsage()
 	        mem_usage *= cnt?cnt:1;
         }
     }
+    default: THROW;
     break;
     }
     return mem_usage;
@@ -142,6 +142,7 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
 	    switch (m_Type){
     	case EITObject: FS.update_path(_objects_,fn); 	break;
 	    case EITTexture:FS.update_path(_textures_,fn); 	break;
+        default: THROW;
     	}
     }
     if (!FS.exist(fn.c_str())) return false;
@@ -208,6 +209,7 @@ void EImageThumbnail::Save(int age, LPCSTR path)
         switch (m_Type){
         case EITObject: FS.update_path(_objects_,fn); 	break;
         case EITTexture:FS.update_path(_textures_,fn); 	break;
+	    default: THROW;
         }
     }
     F.save_to		(fn.c_str());

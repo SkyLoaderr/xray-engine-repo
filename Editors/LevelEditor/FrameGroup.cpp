@@ -17,13 +17,13 @@ __fastcall TfraGroup::TfraGroup(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfraGroup::PaneMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraGroup::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

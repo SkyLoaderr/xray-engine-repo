@@ -214,26 +214,50 @@ void __fastcall	TUI_Tools::SetNumScale(CCustomObject* O){
 
 
 #define MIN_PANEL_HEIGHT 15
-void __fastcall PanelMinimizeClick(TObject *Sender)
+void __fastcall PanelMinMax(TPanel *pa)
 {
-    TPanel* pa = ((TPanel*)((TControl*)Sender)->Parent);
-    if (pa->Tag > 0){
-        pa->Height = pa->Tag;
-        pa->Tag    = 0;
-    }else{
-        pa->Tag    = pa->Height;
-        pa->Height = MIN_PANEL_HEIGHT;
+	if (pa){
+        if (pa->Tag > 0){
+            pa->Height = pa->Tag;
+            pa->Tag    = 0;
+        }else{
+            pa->Tag    = pa->Height;
+            pa->Height = MIN_PANEL_HEIGHT;
+        }
+        UI.Command(COMMAND_UPDATE_TOOLBAR);
     }
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
 }
-void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
+void __fastcall PanelMinimize(TPanel *pa)
 {
-    TPanel* pa = ((TPanel*)((TControl*)Sender)->Parent);
-    if (pa->Tag > 0){
-        pa->Height = pa->Tag;
-        pa->Tag    = 0;
+	if (pa){
+        if (pa->Tag <= 0){
+            pa->Tag    = pa->Height;
+            pa->Height = MIN_PANEL_HEIGHT;
+        }
+        UI.Command(COMMAND_UPDATE_TOOLBAR);
     }
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
+}
+void __fastcall PanelMaximize(TPanel *pa)
+{
+	if (pa){
+        if (pa->Tag > 0){
+            pa->Height = pa->Tag;
+            pa->Tag    = 0;
+        }
+        UI.Command(COMMAND_UPDATE_TOOLBAR);
+    }
+}
+void __fastcall PanelMinMaxClick(TObject* Sender)
+{
+    PanelMinMax(((TPanel*)((TControl*)Sender)->Parent));
+}
+void __fastcall PanelMinimizeClick(TObject* Sender)
+{
+    PanelMinimize(((TPanel*)((TControl*)Sender)->Parent));
+}
+void __fastcall PanelMaximizeClick(TObject* Sender)
+{
+    PanelMaximize(((TPanel*)((TControl*)Sender)->Parent));
 }
 //---------------------------------------------------------------------------
 

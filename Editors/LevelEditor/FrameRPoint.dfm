@@ -20,8 +20,8 @@ object fraSpawnPoint: TfraSpawnPoint
     Left = 0
     Top = 51
     Width = 443
-    Height = 175
-    Align = alTop
+    Height = 226
+    Align = alClient
     ParentColor = True
     TabOrder = 0
     object APHeadLabel1: TLabel
@@ -36,30 +36,6 @@ object fraSpawnPoint: TfraSpawnPoint
       ParentColor = False
       OnClick = ExpandClick
     end
-    object ExtBtn2: TExtBtn
-      Left = 185
-      Top = 2
-      Width = 11
-      Height = 11
-      Align = alNone
-      CloseButton = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Glyph.Data = {
-        DE000000424DDE00000000000000360000002800000007000000070000000100
-        180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-        0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-        000000000000000000000000FFFFFF0000000000000000000000000000000000
-        00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-        0000}
-      ParentFont = False
-      OnClick = PaneMinClick
-    end
     object Bevel1: TBevel
       Left = 1
       Top = 14
@@ -72,7 +48,7 @@ object fraSpawnPoint: TfraSpawnPoint
       Left = 1
       Top = 15
       Width = 441
-      Height = 159
+      Height = 210
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True

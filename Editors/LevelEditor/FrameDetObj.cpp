@@ -28,13 +28,13 @@ __fastcall TfraDetailObject::TfraDetailObject(TComponent* Owner, EDetailManager*
 //---------------------------------------------------------------------------
 void __fastcall TfraDetailObject::PaneMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

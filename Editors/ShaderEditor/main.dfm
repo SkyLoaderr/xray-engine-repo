@@ -20,31 +20,32 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object paLeftBar: TPanel
-    Left = 547
+    Left = 544
     Top = 0
-    Width = 215
+    Width = 218
     Height = 402
     Align = alRight
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 215
-    Constraints.MinWidth = 215
+    Constraints.MaxWidth = 218
+    Constraints.MinWidth = 218
     TabOrder = 0
     object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 213
+      Width = 216
       Height = 16
       Align = alTop
       TabOrder = 0
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 211
+        Width = 214
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -54,7 +55,7 @@ object frmMain: TfrmMain
         OnClick = TopClick
       end
       object sbToolsMin: TExtBtn
-        Left = 200
+        Left = 203
         Top = 2
         Width = 11
         Height = 11
@@ -71,6 +72,38 @@ object frmMain: TfrmMain
           0000}
         OnClick = sbToolsMinClick
       end
+      object ebAllMin: TExtBtn
+        Left = 172
+        Top = 2
+        Width = 11
+        Height = 11
+        Align = alNone
+        CloseButton = False
+        Glyph.Data = {
+          AE000000424DAE00000000000000360000002800000006000000060000000100
+          18000000000078000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          00000B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B00000B0B0B0B0B0B0B0B0B0B
+          0B0B0B0B0B0B0B0B0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000}
+        OnClick = ebAllMinClick
+      end
+      object ebAllMax: TExtBtn
+        Left = 184
+        Top = 2
+        Width = 11
+        Height = 11
+        Align = alNone
+        CloseButton = False
+        Glyph.Data = {
+          AE000000424DAE00000000000000360000002800000006000000060000000100
+          18000000000078000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          1C1C1C1C1C1CFFFFFFFFFFFF0000FFFFFFFFFFFF191919191919FFFFFFFFFFFF
+          00001B1B1B1717170303030303031717171B1B1B00001B1B1B17171703030303
+          03031717171B1B1B0000FFFFFFFFFFFF191919191919FFFFFFFFFFFF0000FFFF
+          FFFFFFFF1C1C1C1C1C1CFFFFFFFFFFFF0000}
+        OnClick = ebAllMaxClick
+      end
     end
   end
   object paBottomBar: TPanel
@@ -86,7 +119,7 @@ object frmMain: TfrmMain
   object paMain: TPanel
     Left = 0
     Top = 0
-    Width = 547
+    Width = 544
     Height = 402
     Align = alClient
     BevelOuter = bvNone
@@ -94,7 +127,7 @@ object frmMain: TfrmMain
     object paTopBar: TPanel
       Left = 0
       Top = 0
-      Width = 547
+      Width = 544
       Height = 18
       Align = alTop
       BevelOuter = bvNone
@@ -103,7 +136,7 @@ object frmMain: TfrmMain
     object paWindow: TPanel
       Left = 0
       Top = 18
-      Width = 547
+      Width = 544
       Height = 384
       Align = alClient
       BevelOuter = bvNone

@@ -7,8 +7,6 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 
-// refs
-
 const u32 TYPE_INVALID= -1;
 const u32 TYPE_FOLDER	= 0;
 const u32 TYPE_OBJECT	= 1;
@@ -71,6 +69,8 @@ public:
     TElTreeItem*		RestoreSelection	(TElTree* tv, AnsiString full_name, bool bLeaveSel);
     TElTreeItem*		ExpandItem			(TElTree* tv, TElTreeItem* node);
     TElTreeItem*		ExpandItem			(TElTree* tv, AnsiString full_name);
+
+	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type);
 //------------------------------------------------------------------------------
 };
 extern CFolderHelper FHelper;

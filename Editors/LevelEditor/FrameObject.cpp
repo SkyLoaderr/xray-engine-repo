@@ -10,6 +10,7 @@
 #include "library.h"
 #include "ChoseForm.h"
 #include "xr_trims.h"
+#include "ImageThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -24,27 +25,38 @@ __fastcall TfraObject::TfraObject(TComponent* Owner)
     m_Current = 0;
 }
 //---------------------------------------------------------------------------
+bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, AnsiString& thm_fn, u32& thm_type)
+{
+	thm_fn 	= sender->Key();
+    thm_type= EImageThumbnail::EITObject;
+    return true;
+}
+//---------------------------------------------------------------------------
 void __fastcall TfraObject::OnEnter()
 {
     m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
     m_Items->OnItemsFocused	= OnItemFocused;
     m_Items->LoadSelection	(fsStorage);
+    m_Items->LoadParams		(fsStorage);
     ListItemsVec items;
     
     FS_QueryMap lst;
     if (Lib.GetObjects(lst)){
 	    FS_QueryPairIt	it	  = lst.begin();
     	FS_QueryPairIt	_E	  = lst.end();
-	    for (; it!=_E; it++)
-	    	LHelper.CreateItem(items,it->first.c_str(),0,0,0);
+	    for (; it!=_E; it++){
+	    	ListItem* I=LHelper.CreateItem(items,it->first.c_str(),0,ListItem::flDrawThumbnail,0);
+            I->OnDrawThumbnail= OnDrawObjectThumbnail;
+        }
     }
-    m_Items->AssignItems	(items,false,"",true);
+    m_Items->AssignItems	(items,false,"Objects",true);
 	fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OnExit()
 {
     m_Items->SaveSelection	(fsStorage);
+    m_Items->SaveParams		(fsStorage);
 	fsStorage->SaveFormPlacement();
     TItemList::DestroyForm	(m_Items);
 }
@@ -59,13 +71,13 @@ void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)
 //------------------------------------------------------------------------------
 void __fastcall TfraObject::PaneMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraObject::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -124,17 +136,19 @@ void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
 void TfraObject::SelByRefObject( bool flag )
 {
     ObjectList objlist;
-    LPCSTR sel_name=0;
-    if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
-        sel_name = ((CSceneObject*)objlist.front())->GetRefName();
+//    LPCSTR sel_name=0;
+//    if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
+//        sel_name = ((CSceneObject*)objlist.front())->GetRefName();
 	LPCSTR N=Current();
 //    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,sel_name)) return;
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
-    for(;_F!=_E;_F++){
-        if((*_F)->Visible() ){
-            CSceneObject *_O = (CSceneObject *)(*_F);
-            if(_O->RefCompare(N)) _O->Select( flag );
+	if (N){
+        ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
+        ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
+        for(;_F!=_E;_F++){
+            if((*_F)->Visible() ){
+                CSceneObject *_O = (CSceneObject *)(*_F);
+                if(_O->RefCompare(N)) _O->Select( flag );
+            }
         }
     }
 }
@@ -188,4 +202,19 @@ void __fastcall TfraObject::seSelPercentKeyPress(TObject *Sender,
 	if (Key==VK_RETURN) UI.Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraObject::ExtBtn4Click(TObject *Sender)
+{
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,m_Current,1,m_Current))
+    	m_Items->SelectItem(m_Current,true,false,true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::paCurrentObjectResize(TObject *Sender)
+{
+    if (m_Current) m_Items->SelectItem(m_Current,true,false,true);
+}
+//---------------------------------------------------------------------------
+
+
 

@@ -21,12 +21,12 @@ __fastcall TfraPortal::TfraPortal(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfraPortal::PanelMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraPortal::TopClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

@@ -65,6 +65,7 @@ __published:	// IDE-managed Components
           bool &DefaultConversion);
 	void __fastcall tvItemsKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
+	void __fastcall tvItemsResize(TObject *Sender);
 public:
 	DEFINE_VECTOR(TElTreeItem*,ElItemsVec,ElItemsIt);
     typedef void 	__fastcall (__closure *TOnItemsFocused)		(ListItemsVec& items);
@@ -81,11 +82,14 @@ private:	// User declarations
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g=0, bool bArrow=false);
 public:
 	enum{
+    	// set
     	ilEditMenu		= (1<<0),              
         ilMultiSelect	= (1<<1),
-        ilFullExpand	= (1<<2),
-        ilDragAllowed	= (1<<3),
-        ilLocked		= (1<<4),
+        ilDragAllowed	= (1<<2),
+
+        // internal
+        ilFullExpand	= (1<<30),
+        ilUpdateLocked	= (1<<31),
     };
     Flags32				m_Flags;
 	// events
@@ -112,14 +116,26 @@ public:		// User declarations
     int __fastcall		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
     TElTreeItem*		GetSelected				(){return (tvItems->MultiSelect)?0:tvItems->Selected;}
 
-    void 				LockUpdating			(){ tvItems->IsUpdating = true; m_Flags.set(ilLocked,TRUE); }
-    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;m_Flags.set(ilLocked,FALSE); }
-    bool				IsLocked				(){ return m_Flags.is(ilLocked); }
+    void 				LockUpdating			(){ tvItems->IsUpdating = true; m_Flags.set(ilUpdateLocked,TRUE); }
+    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;m_Flags.set(ilUpdateLocked,FALSE); }
+    bool				IsLocked				(){ return m_Flags.is(ilUpdateLocked); }
 
     void				SetImages				(TImageList* image_list){tvItems->Images=image_list;}
 
     void				LoadSelection			(TFormStorage* storage);
     void				SaveSelection			(TFormStorage* storage);
+
+    void __fastcall 	SaveParams				(TFormStorage* fs)
+    {
+//		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),miDrawThumbnails->Checked);
+    }
+    void __fastcall 	LoadParams				(TFormStorage* fs)
+    {                                      	
+//		tvItems->HeaderSections->Item[0]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
+        miDrawThumbnails->Checked				= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
+        RefreshForm			();
+    }
 };
 //---------------------------------------------------------------------------
 #endif

@@ -28,11 +28,10 @@ __published:	// IDE-managed Components
     TLabel *Label5;
 	TExtBtn *ebSelectByRefs;
 	TExtBtn *ebDeselectByRefs;
-    TPanel *paAddObject;
+	TPanel *paCurrentObject;
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TLabel *APHeadLabel2;
-	TExtBtn *ExtBtn1;
 	TLabel *APHeadLabel3;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ebMultiSelectByRefMove;
@@ -43,6 +42,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebMultiSelectByRefAppend;
 	TBevel *Bevel2;
 	TPanel *paItems;
+	TPanel *Panel1;
+	TExtBtn *ExtBtn4;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
@@ -51,12 +52,15 @@ __published:	// IDE-managed Components
 	void __fastcall ebMultiSelectByRefMoveClick(TObject *Sender);
 	void __fastcall ebMultiSelectByRefAppendClick(TObject *Sender);
 	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
+	void __fastcall ExtBtn4Click(TObject *Sender);
+	void __fastcall paCurrentObjectResize(TObject *Sender);
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
     TItemList* m_Items;
-    void __fastcall OnItemFocused	(ListItemsVec& items);
+    void __fastcall OnItemFocused		(ListItemsVec& items);
     LPCSTR m_Current;
+	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, AnsiString& thm_fn, u32& thm_type);
 public:		// User declarations
         __fastcall TfraObject(TComponent* Owner);
     void __fastcall OnEnter	();

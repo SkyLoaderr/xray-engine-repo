@@ -27,7 +27,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn3;
 	TPanel *Panel1;
 	TLabel *APHeadLabel2;
-	TExtBtn *ExtBtn2;
 	TExtBtn *ebCurrentPSPlay;
 	TExtBtn *ebCurrentPSStop;
 	TLabel *Label1;

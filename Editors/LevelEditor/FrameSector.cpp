@@ -19,12 +19,12 @@ __fastcall TfraSector::TfraSector(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfraSector::PanelMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraSector::TopClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

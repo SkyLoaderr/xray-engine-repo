@@ -35,7 +35,7 @@ void __fastcall TfraPS::OnEnter()
     	ListItem* I=LHelper.CreateItem(items,(*G)->m_Name,0,0,*G);
         I->SetIcon(2);
     }
-    m_Items->AssignItems	(items,false,"",true);
+    m_Items->AssignItems	(items,false,"Particles",true);
 	fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
@@ -56,13 +56,13 @@ void __fastcall TfraPS::OnItemFocused(ListItemsVec& items)
 //------------------------------------------------------------------------------
 void __fastcall TfraPS::PaneMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraPS::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

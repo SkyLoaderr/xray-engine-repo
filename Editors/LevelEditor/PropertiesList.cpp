@@ -19,6 +19,7 @@
 #include "NumericVector.h"
 #include "TextForm.h"
 #include "ui_main.h"
+#include "ImageThumbnail.h"
 
 #ifdef _LEVEL_EDITOR
 	#include "Scene.h"
@@ -477,7 +478,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->ItemIndent;
-                    PHelper.DrawThumbnail	(Surface,R,prop->GetText());
+                    FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::EITTexture);
                 }
             break;
             case PROP_WAVE:

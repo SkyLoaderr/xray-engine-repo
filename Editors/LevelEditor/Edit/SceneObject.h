@@ -43,7 +43,7 @@ public:
     IC bool			CheckVersion			()  {return m_pReference?(m_Version==m_pReference->m_Version):false;}
     // get object properties methods
 	IC bool 		RefCompare				(CEditableObject *to){return m_pReference?!!(m_pReference==to):false; }
-	IC bool 		RefCompare				(LPCSTR ref){return m_pReference?(strcmp(ref,m_pReference->GetName())==0):false; }
+	IC bool 		RefCompare				(LPCSTR ref){return ref&&m_pReference?(strcmp(ref,m_pReference->GetName())==0):false; }
 	IC CEditableObject*	GetReference		()	{return m_pReference; }
 	CEditableObject*SetReference			(LPCSTR ref_name);
 	CEditableObject*UpdateReference			();

@@ -14,9 +14,11 @@ class ListItem{
 public:
     typedef void 	__fastcall (__closure *TOnListItemFocused)	(ListItem* sender);
     typedef void 	__fastcall (__closure *TOnClick)			(ListItem* sender);
+    typedef bool 	__fastcall (__closure *TOnDrawThumbnail)	(ListItem* sender, AnsiString& thm_fn, u32& thm_type);
 
     TOnClick			OnClickEvent;
     TOnListItemFocused	OnItemFocused;
+    TOnDrawThumbnail	OnDrawThumbnail;
 public:
     int 				tag;
     LPVOID				m_Object;
@@ -31,7 +33,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						ListItem		(int _type):type(_type),item(0),key(0),tag(0),icon_index(-1),OnItemFocused(0),m_Object(0){m_Flags.zero();}
+						ListItem		(int _type):type(_type),item(0),key(0),tag(0),icon_index(-1),OnDrawThumbnail(0),OnItemFocused(0),m_Object(0){m_Flags.zero();}
 	virtual 			~ListItem		(){};
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
     void				SetName			(LPCSTR _key){key=_key;}

@@ -32,7 +32,7 @@ void __fastcall TfraSpawnPoint::OnEnter()
     	if (it->line_exist	("$spawn",&val))
 	    	LHelper.CreateItem(items,val,0,0,it->Name);
     }
-    m_Items->AssignItems	(items,false,"",true);
+    m_Items->AssignItems	(items,false,"Spawns",true);
 	fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
@@ -48,18 +48,18 @@ void __fastcall TfraSpawnPoint::OnItemFocused(ListItemsVec& items)
 	VERIFY(items.size()<=1);
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
-        m_Current 		= (*it)->Key();
+        m_Current 		= (LPCSTR)(*it)->m_Object;
 }
 //------------------------------------------------------------------------------
 void __fastcall TfraSpawnPoint::PaneMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraSpawnPoint::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

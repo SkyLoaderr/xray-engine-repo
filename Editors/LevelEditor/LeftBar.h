@@ -272,12 +272,15 @@ __published:	// IDE-managed Components
 	void __fastcall SelectObjectFromList1Click(TObject *Sender);
 	void __fastcall RemoveSelectedFromList1Click(TObject *Sender);
 	void __fastcall ebSnapListModeClick(TObject *Sender);
+	void __fastcall splEmptyMoved(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
 	void ChangeTarget(int tgt);
     void UpdateBar();
     void UpdateSnapList();
+    void MinimizeAllFrames();
+    void MaximizeAllFrames();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

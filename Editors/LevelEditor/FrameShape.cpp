@@ -19,13 +19,13 @@ __fastcall TfraShape::TfraShape(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfraShape::PaneMinClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraShape::ExpandClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    PanelMaximizeClick(Sender);
 }
 //---------------------------------------------------------------------------
 

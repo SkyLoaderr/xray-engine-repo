@@ -53,7 +53,8 @@ void UpdatePanel(TPanel* p){
 }
 //---------------------------------------------------------------------------
 
-void GetHeight(int& h, TFrame* f){
+void GetHeight(int& h, TFrame* f)
+{
     if (f){
         TPanel* pa;
         for (int j=0; j<f->ControlCount; j++){
@@ -66,7 +67,8 @@ void GetHeight(int& h, TFrame* f){
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::UpdateBar(){
+void TfraLeftBar::UpdateBar()
+{
     int i, j, h=0;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
         TComponent* temp = fraLeftBar->Components[i];
@@ -75,7 +77,11 @@ void TfraLeftBar::UpdateBar(){
     }
     for (i=0; i<paFrames->ControlCount; i++)
         GetHeight(h,dynamic_cast<TFrame*>(paFrames->Controls[i]));
-    paFrames->Height = h+2;
+    
+    int hh = fraLeftBar->Height-(paLeftBar->Height+h);
+    if (hh<=0) hh = 0; 
+    paFrames->Height = h+hh;
+
     h=0;
     for (j=0; j<paLeftBar->ControlCount; j++){
         TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
@@ -83,6 +89,56 @@ void TfraLeftBar::UpdateBar(){
     }
     paLeftBar->Height = h+2;
     paFrames->Top = paLeftBar->Top+paLeftBar->Height;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::splEmptyMoved(TObject *Sender)
+{
+	UpdateBar();
+//
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::MinimizeAllFrames()
+{
+    for (int i=0; i<paFrames->ControlCount; i++){
+		TFrame* f = dynamic_cast<TFrame*>(paFrames->Controls[i]);
+        if (f){
+	        for (int j=0; j<f->ControlCount; j++){
+                TPanel* pa = dynamic_cast<TPanel*>(f->Controls[j]);
+                if (pa) PanelMinimize(pa);
+            }
+        }
+    }
+    for (int j=0; j<paLeftBar->ControlCount; j++){
+        TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
+	    if (pa) PanelMinimize(pa);
+    }
+	UpdateBar();
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::MaximizeAllFrames()
+{
+    for (int j=0; j<paLeftBar->ControlCount; j++){
+        TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
+	    if (pa)	PanelMaximize(pa);
+    }
+    for (int i=0; i<paFrames->ControlCount; i++){
+		TFrame* f = dynamic_cast<TFrame*>(paFrames->Controls[i]);
+        if (f){
+	        for (int j=0; j<f->ControlCount; j++){
+                TPanel* pa = dynamic_cast<TPanel*>(f->Controls[j]);
+                if (pa){
+                	if (pa->Align==alClient){
+                        paFrames->Height-=(pa->Height-pa->Constraints->MinHeight);
+                    }else
+	                 	PanelMaximize(pa);
+                }
+            }
+        }
+    }
+	UpdateBar();
 }
 //---------------------------------------------------------------------------
 
@@ -268,14 +324,14 @@ void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::PanelMimimizeClickClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    PanelMinMaxClick(Sender);
     UpdateBar();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    ::PanelMaximizeClick(Sender);
     UpdateBar();
 }
 //---------------------------------------------------------------------------
@@ -611,4 +667,7 @@ void __fastcall TfraLeftBar::ebSnapListModeClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
+
+
 

@@ -2,7 +2,7 @@ object fraDetailObject: TfraDetailObject
   Left = 0
   Top = 0
   Width = 198
-  Height = 289
+  Height = 277
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 198

@@ -1,6 +1,6 @@
 object ItemList: TItemList
-  Left = 1536
-  Top = 430
+  Left = 664
+  Top = 283
   Width = 259
   Height = 329
   BiDiMode = bdRightToLeft
@@ -114,7 +114,13 @@ object ItemList: TItemList
     HeaderColor = 7368816
     HeaderHeight = 17
     HeaderHotTrack = False
-    HeaderSections.Data = {F4FFFFFF00000000}
+    HeaderSections.Data = {
+      F4FFFFFF01000000F0B8FC1400000000FFFFFFFF0000010100000000C3000000
+      0000000010270000000101004014FF040000000001000000FFFFFFFF00000100
+      0000000000000000000100000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000090000000060000004974656D73000100
+      0000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
@@ -163,6 +169,7 @@ object ItemList: TItemList
       8080808080808080808080808080808080808080808080808080}
     QuickEditMode = True
     ScrollbarOpposite = False
+    ShowColumns = True
     ShowCheckboxes = True
     ShowHint = False
     ShowLeafButton = False
@@ -189,6 +196,7 @@ object ItemList: TItemList
     OnAfterSelectionChange = tvItemsAfterSelectionChange
     OnItemChange = tvItemsItemChange
     OnItemDraw = tvItemsItemDraw
+    OnResize = tvItemsResize
     OnClick = tvItemsClick
     OnDragDrop = tvItemsDragDrop
     OnMouseDown = tvItemsMouseDown
@@ -230,7 +238,6 @@ object ItemList: TItemList
     object miDrawThumbnails: TMenuItem
       AutoCheck = True
       Caption = 'Draw Thumbnails'
-      Visible = False
       OnClick = miDrawThumbnailsClick
     end
   end

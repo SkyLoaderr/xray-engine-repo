@@ -2,7 +2,9 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 502
+  Height = 956
+  HorzScrollBar.ButtonSize = 1
+  HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +24,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 200
-    Height = 713
+    Height = 657
     BevelInner = bvLowered
     BevelOuter = bvNone
     Color = 10528425
@@ -1533,7 +1535,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = 'Use Snap List'
+        Caption = 'Enable Snap List'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1659,7 +1661,7 @@ object fraLeftBar: TfraLeftBar
         Width = 190
         Height = 52
         BorderStyle = bsNone
-        Color = clBtnShadow
+        Color = clGray
         ExtendedSelect = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1675,9 +1677,9 @@ object fraLeftBar: TfraLeftBar
   end
   object paFrames: TPanel
     Left = 0
-    Top = 739
+    Top = 672
     Width = 200
-    Height = 31
+    Height = 177
     BevelOuter = bvLowered
     Color = 10528425
     Constraints.MaxWidth = 200

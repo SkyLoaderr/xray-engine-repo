@@ -7,7 +7,7 @@
 #include "ParticleEffect.h"
 #include "PropertiesListHelper.h"
 #include "ui_tools.h"
-
+             
 void PS::CPEDef::Copy(const CPEDef& src)
 {
     strcpy				(m_Name,src.m_Name); VERIFY(strlen(m_Name)<sizeof(m_Name));

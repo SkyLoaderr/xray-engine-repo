@@ -13,7 +13,7 @@ using namespace PS;
 // class CParticleEffectDef
 //------------------------------------------------------------------------------
 CPEDef::CPEDef()
-{
+{                                         
     strcpy				(m_Name,"unknown");
     m_ShaderName		= 0;
     m_TextureName		= 0;

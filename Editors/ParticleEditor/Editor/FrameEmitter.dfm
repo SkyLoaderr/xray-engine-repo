@@ -1,8 +1,9 @@
 object fraEmitter: TfraEmitter
   Left = 0
   Top = 0
-  Width = 530
+  Width = 443
   Height = 390
+  Align = alClient
   Color = 10528425
   ParentColor = False
   TabOrder = 0

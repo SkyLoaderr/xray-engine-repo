@@ -558,12 +558,13 @@ bool ESceneAIMapTools::GenerateMap()
         if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Continue generate nodes?"))
         	return false;
 
-        UI.SetStatus("Prepare collision model...");
+        UI.ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
         // prepare collision model
         CDB::CollectorPacked* CL = xr_new<CDB::CollectorPacked>(m_AIBBox);
         Fvector verts[3];
         for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
         	CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
+        	UI.ProgressInc		(S->Name);
             CEditableObject*    E = S->GetReference(); VERIFY(E);
             EditMeshVec& 		_meshes = E->Meshes();
             for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
@@ -581,7 +582,9 @@ bool ESceneAIMapTools::GenerateMap()
                 }
             }
         }
+        UI.ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
 
+        UI.SetStatus		("Building collision model...");
         // create CFModel
 		m_CFModel 			= xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
 	    m_CFModel->build	(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
