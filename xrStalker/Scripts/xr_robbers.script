@@ -36,7 +36,7 @@ local role_puncher = 3
 class "evaluator_need_robber" (property_evaluator)
 
 function evaluator_need_robber:__init(storage) super ()
-	self.stor = storage
+	self.st = storage
 end
 
 function evaluator_need_robber:evaluate ()
@@ -46,7 +46,7 @@ function evaluator_need_robber:evaluate ()
 			return false
 		end
 		-- Если у одного бандита испортилось отношение к игроку, испортить с остальными:
-		local team = this.teams[self.stor.team]
+		local team = this.teams[self.st.team]
 		if team then
 			--utils.trace(script_name(), "_bp: xr_robbers: bad_relation_set = %s",
 			--	utils.to_str(team.bad_relation_set))
@@ -76,14 +76,14 @@ function evaluator_need_robber:evaluate ()
 		end
 	end
 
-	return self.stor.enabled == true
+	return self.st.enabled == true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_robber_activity" (action_base)
 
 function action_robber_activity:__init(npc_name, action_name, storage) super(nil, action_name)
-	self.stor = storage
+	self.st = storage
 end
 
 function action_robber_activity:initialize()
@@ -142,26 +142,23 @@ function action_robber_activity:reset_scheme()
 	self.object:set_sight(look.search, nil, 0)
 	self.object:set_mental_state(anim.danger)
 
-	--xr_reactions.add_rule(self.object, "ignore")
+	xr_reactions.add_rule(self.object, "no_walk")
 
-	this.register_robber(self.object, self.stor.team)
+	this.register_robber(self.object, self.st.team)
 
-	if self.stor.path_rob then
-		self.patrol_rob = patrol(self.stor.path_rob)
-		if not self.patrol_rob then
-			utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.stor.path_rob .. "'")
-		end
-	else
-		self.patrol_rob = nil
+	self.patrol_rob = patrol(self.st.path_rob)
+	if not self.patrol_rob then
+		utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.st.path_rob .. "'")
 	end
 
-	if not self.stor.bait_path then
-		self.bait_patrol = nil
-	else
-		self.bait_patrol = patrol(self.stor.bait_path)
-		if not self.bait_patrol then
-			utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.stor.path_bait .. "'")
+	if self.st.zone_rob then
+		self.zone_rob_obj = level.object(self.st.zone_rob)
+		if not self.zone_rob_obj then
+			utils.abort("object '%s': unable to find zone_rob '%s' on the map",
+					self.object:name(), self.st.zone_rob)
 		end
+	else
+		self.zone_rob_obj = nil
 	end
 	
 	self.wpn_activated = true
@@ -174,34 +171,8 @@ function action_robber_activity:say(what)
 	self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0, what)
 end
 
-function action_robber_activity:get_bait_object()
-	if self.stor.bait_object then
-		return level.object(self.stor.bait_object)
-	end
-
-	if self.stor.bait_self then
-		return self.object
-	end
-	return nil
-end
-
-function action_robber_activity:distance_to_bait(actor)
-	if self.bait_patrol then
-		local dist = self.bait_patrol:point(0):distance_to(actor:position())
-		--utils.trace(script_name(), "_bp: xr_robbers: distance_to_bait() = %d", dist)
-		return dist
-	else
-		local bait_obj = self:get_bait_object()
-		if bait_obj then
-			return distance_between(actor, bait_obj)
-		end
-	end
-	--utils.abort("xr_robbers: logic error: unable to determine bait type")
-	return nil -- если нет приманки, просто не триггериться на нее, триггериться только на приближение к себе
-end
-
 function action_robber_activity:pick_role()
-	local robbers = this.teams[self.stor.team].robbers
+	local robbers = this.teams[self.st.team].robbers
 	local nearest_without_role = nil -- ближайший к приманке без роли
 	local min_dist = nil
 	
@@ -260,7 +231,7 @@ end
 
 -- Возвращает true, если никому не присвоена заданная роль
 function action_robber_activity:no_role(which_role)
-	local robbers = this.teams[self.stor.team].robbers
+	local robbers = this.teams[self.st.team].robbers
         for key, val in pairs(robbers) do
 		if val.role == which_role then
 			return false
@@ -274,7 +245,7 @@ function action_robber_activity:fsm_step()
 	--	self.object:name(), utils.to_str(self.state))
 
 	----------------------------------------------------------------------------------------------------
-	local team = this.teams[self.stor.team]
+	local team = this.teams[self.st.team]
 
 	local actor = level.actor()
 	if not actor then
@@ -368,45 +339,23 @@ function action_robber_activity:fsm_step()
 			end
 		end
 
-		--[[ НЕ РАБОТАЕТ
-		if not self.object:is_body_turning() then 
-			xr_state.anim_update("prisluh", self.object)
-		else
-			if self.object:animation_count() > 0 then
-				xr_state.anim_update(nil, self.object)
-			end
-		end
-		]]
-		if self.stor.bait_self then
-			while self.object:animation_count() <= 1 do
-				local animate = math.random(1, 1)
-				if animate == 1 then
-					self.object:add_animation("item_3_aim_0", true)
-				end
-			end
-		else
-			while self.object:animation_count() <= 1 do
-				local animate = math.random(1, 4)
-				if animate == 1 then
-					self.object:add_animation("spetsnaz_0", true)
-				elseif animate == 2 then
-					self.object:add_animation("spetsnaz_1", true)
-				elseif animate == 3 then
-					self.object:add_animation("spetsnaz_2", true)
-				elseif animate == 4 then
-					self.object:add_animation("spetsnaz_3", true)
-				end
-			end
-		end
+		--if self.st.bait_self then
+			xr_state.anim_update("hide", self.object)
+		--else
+		--	xr_state.anim_update("hide", self.object)
+		--end
 
-		local dist_to_bait = self:distance_to_bait(actor)
 		local dist_to_actor = distance_between(self.object, actor)
 		if team.rob_state == true or
-		   (dist_to_bait and dist_to_bait <= 3) or
-		   (see_actor and not self.stor.bait_self and dist_to_actor <= 10) then
+		   (see_actor and
+		    (
+		     (self.zone_rob_obj and xr_zones.is_in_zone(actor, self.zone_rob_obj:id()))
+		     or dist_to_actor <= self.st.dist
+		    )
+		   ) then
 		   	if dist_to_actor <= 50 then
 				if self.object:animation_count() > 0 then
-					self.object:clear_animations()
+					xr_state.anim_update(nil, self.object)
 				end
 				team.rob_state = true
 				self.state = state_rob_victim
@@ -545,7 +494,7 @@ function action_robber_activity:fsm_step()
 				--local h = hit()
 				--h.power = 1000
 				--h.direction:set(1, 0, 0)
-				--h.bone = "bip01_head"
+				--h:bone("bip01_head")
 				--h.draftsman = self.object
 				--h.impulse = 10
 				--h.type = hit.wound
@@ -565,7 +514,7 @@ function action_robber_activity:fsm_step()
 		return
 	end
 	if self.state == state_no_more_actions then
-		printf("state_no_more_actions")
+		--printf("state_no_more_actions")
 		utils.stalker_look_at_stalker(self.object, actor)
 		-- больше ничего не делать
 		return
@@ -590,7 +539,7 @@ end
 function action_robber_activity:finalize()
 	self.object:clear_animations()
 
-	local team = this.teams[self.stor.team]
+	local team = this.teams[self.st.team]
 	team.interrupted_and_blocked_until = device():time_global() + 15000
 
 	action_base.finalize(self)
@@ -598,9 +547,7 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-	if not (char_ini == nil or char_ini:section_exist("robber") == true) then
-		return
-	end
+	if char_ini == nil or char_ini:section_exist("robber") == true then
 	printf("xr_robbers: add_to_binder")
 
 	local operators    = {}
@@ -635,31 +582,46 @@ function add_to_binder(npc, char_ini)
 		--printf("_bp: calling set_robber")
 		xr_robbers.set_robber(npc)
 	end
+	end
 end
 
 -- Включение грабителя
-function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bait_self, bait_radius)
+--
+function set_robber(object, activated_by_script, enabled, team, path_rob, dist, zone_rob)
 	printf("set_robber called: object:name()='%s', team='%s', path_rob='%s'",
 		utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
 
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].robber
 
+	if not activated_by_script then
+		local script_controlled = utils.conf_get_bool(char_ini, "robber", "script_controlled", nil, object, false)
+		if script_controlled then
+			st.enabled = false
+			return
+		end
+	end
+
 	st.enabled = utils.conf_get_bool(char_ini, "robber", "enabled", enabled, object, true)
 	st.team = utils.conf_get_string(char_ini, "robber", "team", team, object, true)
 
-	st.path_rob = utils.conf_get_string(char_ini, "robber", "path_rob", path_rob, object, false)
+	st.path_rob = utils.conf_get_string(char_ini, "robber", "path_rob", path_rob, object, true)
 
 	-- Настройка приманки:
-	st.bait_path = utils.conf_get_string(char_ini, "robber", "bait_path", bait_path, object, false)
-	st.bait_object = utils.conf_get_string(char_ini, "robber", "bait_object", bait_object, object, false)
-	st.bait_self = utils.conf_get_bool(char_ini, "robber", "bait_self", bait_self, object, false)
-	--st.bait_radius = utils.conf_get_ TODO
+	st.dist = utils.conf_get_number(char_ini, "robber", "dist", dist, object, false)
+	st.zone_rob = utils.conf_get_string(char_ini, "robber", "zone_rob", zone_rob, object, false)
 
-	--if not st.bait_path and not st.bait_object and not st.bait_self then
-	--	utils.abort("set_robber: object:name()='%s': please specify one of the following fields in customdata: " ..
-	--		"bait_path, bait_object, bait_self", utils.to_str(object:name()))
-	--end
+	-- Кидать ошибку на попытку использовать старые настройки:
+	if utils.conf_get_string(char_ini, "robber", "bait_path", bait_path, object, false) or
+	   utils.conf_get_string(char_ini, "robber", "bait_object", bait_object, object, false) or
+	   utils.conf_get_bool(char_ini, "robber", "bait_self", bait_self, object, false) then
+	   	utils.abort("object '%s': attempt to use a deprecated robbers script, please reconfigure robbers",
+			object:name())
+	end
+	
+	if st.dist == nil then
+		st.dist = 10
+	end
 	
 	if st.action ~= nil then
 		printf("set_robber calling reset_scheme")

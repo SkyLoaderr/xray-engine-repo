@@ -96,7 +96,7 @@ function action_punch_activity:execute()
 				local h = hit()
 				h.power = 1000
 				h.direction:set(1, 0, 0)
-				h.bone = "bip01_head"
+				h:bone("bip01_head")
 				h.draftsman = self.object
 				h.impulse = 10
 				h.type = hit.wound

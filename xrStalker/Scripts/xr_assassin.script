@@ -1,3 +1,5 @@
+-- Created by: Andrey Fidrya (af@svitonline.com) aka Zmey
+
 local state_moving = 1
 local state_standing = 2
 
@@ -144,7 +146,9 @@ end
 --assassin binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-	if char_ini == nil  or char_ini:section_exist ("assassin") == true then
+	printf("xr_assassin: add_to_binder: _bp1: %s", npc:name())
+	if char_ini == nil or char_ini:section_exist ("assassin") == true then
+		printf("xr_assassin: add_to_binder: _bp2")
   		local operators	= {}
 	  	local properties  = {}
 
@@ -169,6 +173,9 @@ function add_to_binder(npc, char_ini)
 	   	new_action:add_effect(world_property(properties["need_assassin"], false))
 		manager:add_action(operators["action_assassin"], new_action)
 
+		local st = xr_motivator.storage[npc:id()].assassin
+		st.action = new_action
+
 	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	  	new_action:add_precondition(world_property(properties["need_assassin"], false))
 
@@ -179,14 +186,26 @@ function add_to_binder(npc, char_ini)
 end
 
 -- ¬ключение схемы
-function set_assassin(object, enabled, target)
+--
+function set_assassin(object, activated_by_script, enabled, target)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].assassin
 
+	if not activated_by_script then
+		local script_controlled = utils.conf_get_bool(char_ini, "assassin", "script_controlled", nil, object, false)
+		if script_controlled then
+			printf("assassin %s is script_controlled", object:name())
+			st.enabled = false
+			return
+		end
+	end
+	
 	st.enabled = utils.conf_get_bool(char_ini, "assassin", "enabled", enabled, object, true)
 	st.target = utils.conf_get_string(char_ini, "assassin", "target", target, object, true)
 
+	printf("set_assassin: _bp1: %s", object:name())
 	if st.action ~= nil then
+		printf("set_assassin: _bp2: reset")
 		st.action.reset_scheme(st.action)
 	end
 	xr_motivator.checkStorage(object)

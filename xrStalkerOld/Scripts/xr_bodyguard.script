@@ -86,6 +86,14 @@ function action_bodyguard_activity:reset_scheme()
 			self.object:name(), self.st.zone_grd)
 	end
 	
+	if self.st.zone_grd2 then
+		self.zone_grd2_obj = level.object(self.st.zone_grd2)
+		if not self.zone_grd2_obj then
+			utils.abort("object '%s': unable to find zone_grd2 '%s' on the map",
+				self.object:name(), self.st.zone_grd2)
+		end
+	end
+	
 	self.path_active = self.st.path_main
 
 	self.object:set_item(object.idle, self.object:best_weapon())
@@ -159,7 +167,15 @@ function action_bodyguard_activity:execute()
 					this.bg_wpn_info[self.st.path_center] = nil
 				end
 
-				if has_weapon and xr_zones.is_in_zone(actor, self.zone_grd_obj:id()) then
+				--printf("_bp: has_weapon=%s, in_zone=%s", utils.to_str(has_weapon),
+				--	utils.to_str(xr_zones.is_in_zone(actor, self.zone_grd_obj:id())))
+				if has_weapon and
+				   (
+				        xr_zones.is_in_zone(actor, self.zone_grd_obj:id()) or
+					(
+				              self.zone_grd2_obj and xr_zones.is_in_zone(actor, self.zone_grd2_obj:id())
+					)
+				   ) then
 					if self.object:relation(actor) ~= game_object.enemy then
 						self.object:set_relation(game_object.enemy, actor)
 					end
@@ -247,7 +263,7 @@ end
 -- path_side - куда телохранитель отходит
 -- path_center - центральная точка (от нее вычисляются все расстояния)
 -- zone_grd - зона, в пределах которой при обнаружении игрока с оружием, по нему откроют огонь
-function set_bodyguard(object, enable, path_main, path_side, path_center, zone_grd, never_allow, block_unarmed)
+function set_bodyguard(object, enable, path_main, path_side, path_center, zone_grd, zone_grd2, block_unarmed)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].bodyguard
 
@@ -256,6 +272,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_center, zone_g
 	st.path_side = utils.conf_get_string(char_ini, "bodyguard", "path_side", path_side, object, true)
 	st.path_center = utils.conf_get_string(char_ini, "bodyguard", "path_center", path_center, object, true)
 	st.zone_grd = utils.conf_get_string(char_ini, "bodyguard", "zone_grd", zone_grd, object, true)
+	st.zone_grd2 = utils.conf_get_string(char_ini, "bodyguard", "zone_grd2", zone_grd2, object, false)
 	st.block_unarmed = utils.conf_get_bool(char_ini, "bodyguard", "block_unarmed", block_unarmed, object, true)
 
 	if st.action ~= nil then

@@ -1,3 +1,4 @@
+-- Created by: Andrey Fidrya (af@svitonline.com) aka Zmey
 
 local hit_distance = 1 -- 2 recommended
 
@@ -94,6 +95,7 @@ function process_bloodsucker(bs, st)
 
 	--printf("process_bloodsucker: going_to_roof=%s", utils.to_str(st.going_to_roof))
 	if not bs:alive() then
+		printf("_bp: bs: bs:alive() is false")
 		return true
 	end
 	if not bs:get_script() then
@@ -106,6 +108,7 @@ function process_bloodsucker(bs, st)
 	--printf("bp6")
 
 	if not st.stalker:alive() then
+		printf("_bp: bs: st.stalker:alive() is false")
 		return true
 	end
 	
@@ -145,7 +148,7 @@ function process_bloodsucker(bs, st)
 		local h = hit()
 		h.power = 1000
 		h.direction = bs:direction()
-		h.bone = "bip01_legs"
+		h:bone("bip01_legs")
 		h.draftsman = bs
 		h.impulse = 1000
 		h.type = hit.wound
@@ -155,17 +158,16 @@ function process_bloodsucker(bs, st)
 		reset_action(bs, "xr_scared_monster")
 		--action(bs, anim(anim.attack, 0), sound(sound.attack),
 		--	cond(cond.time_end, 3000))
-		action(bs, act(act.attack, st.stalker),
-			cond(cond.time_end, time_infinite))
-
-		--printf("ATTACK_STALKER_UNDER_SCRIPT")
-		while bs:action() do
-			if not st.stalker:alive() then
-				reset_action(bs, "xr_scared_monster")
-				break
+		while st.stalker:alive() do
+			if not bs:action() then
+				action(bs, act(act.attack, st.stalker),
+					cond(cond.time_end, time_infinite))
 			end
 			wait()
 		end
+
+		reset_action(bs, "xr_scared_monster")
+		printf("_bp: bs: logical end of script")
 		return true
 	end
 

@@ -92,8 +92,6 @@ end
 --walker binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-	if char_ini == nil  or char_ini:section_exist ("walker") == true then
-		printf("xr_walker: add_to_binder")
   		local operators	= {}
 	  	local properties  = {}
 		
@@ -138,10 +136,9 @@ function add_to_binder(npc, char_ini)
 		--new_action = manager:action(stalker_ids.action_combat_planner)
 		--new_action:add_precondition(world_property(properties["override_fight"], false))
 
-		if char_ini ~= nil then
+		if  char_ini ~= nil and char_ini:section_exist ("walker") == true then
 			xr_walker.set_walker(npc)
 		end
-	end
 end
 
 -- ¬ключение схемы

@@ -1,4 +1,4 @@
---
+-- Created by: Andrey Fidrya (af@svitonline.com) aka Zmey
 
 local state_init = 1
 local state_hunt = 2
@@ -14,6 +14,11 @@ function main()
 	local avict = get_level_object("avict")
 	printf("xr_dram_scene: got all targets")
 	
+	xr_reactions.add_rule(assassin1, "ignore")
+	xr_reactions.add_rule(assassin2, "ignore")
+	xr_reactions.add_rule(assassin3, "ignore")
+	xr_reactions.add_rule(avict, "ignore")
+
 	xr_walker.set_walker(assassin1, true, "assassin1_walk", "assassin1_look", nil)
 	xr_walker.set_walker(assassin2, true, "assassin2_walk", "assassin2_look", nil)
 	xr_walker.set_walker(assassin3, true, "assassin3_walk", "assassin3_look", nil)
@@ -27,24 +32,39 @@ function main()
 			xr_motivator.storage[assassin2:id()].walker.enabled = false
 			xr_motivator.storage[assassin3:id()].walker.enabled = false
 			xr_motivator.storage[avict:id()].walker.enabled = false
-			xr_assassin.set_assassin(assassin1, true, "avict")
-			xr_assassin.set_assassin(assassin2, true, "avict")
-			xr_assassin.set_assassin(assassin3, true, "avict")
+			xr_assassin.set_assassin(assassin1, true, true, "avict")
+			xr_assassin.set_assassin(assassin2, true, true, "avict")
+			xr_assassin.set_assassin(assassin3, true, true, "avict")
 			xr_walker.set_walker(avict, true, "runaway_walk", "runaway_look", nil)
 			printf("actor in zone")
 			state = state_hunt
 		end
 
 		if state == state_hunt then
+			printf("_bp: state hunt")
 			if not avict:alive() then
 				xr_motivator.storage[assassin1:id()].assassin.enabled = false
 				xr_motivator.storage[assassin2:id()].assassin.enabled = false
 				xr_motivator.storage[assassin3:id()].assassin.enabled = false
 				xr_motivator.storage[avict:id()].walker.enabled = false
-				xr_robbers.set_robber(assassin1, true, "assr", "assassin1_rob", nil, nil, true, nil)
-				xr_robbers.set_robber(assassin2, true, "assr", "assassin2_rob", nil, nil, true, nil)
-				xr_robbers.set_robber(assassin3, true, "assr", "assassin3_rob", nil, nil, true, nil)
+				xr_robbers.set_robber(assassin1, true, true, "assr", "assassin1_rob", nil,
+					"assassin_rob_zone")
+				xr_robbers.set_robber(assassin2, true, true, "assr", "assassin2_rob", nil,
+					"assassin_rob_zone")
+				xr_robbers.set_robber(assassin3, true, true, "assr", "assassin3_rob", nil,
+					"assassin_rob_zone")
 				printf("_bp: robbers set")
+				if distance_between(assassin1, actor) < 20 or
+				   distance_between(assassin2, actor) < 20 or
+				   distance_between(assassin3, actor) < 20 then
+					if assassin1:see(actor) or
+					   assassin2:see(actor) or
+					   assassin3:see(actor) then
+						assassin1:set_relation(game_object.enemy, actor)
+						assassin2:set_relation(game_object.enemy, actor)
+						assassin3:set_relation(game_object.enemy, actor)
+					end
+				end
 				state = state_end
 			end
 			if not assassin1:alive() and not assassin2:alive() and not assassin3:alive() then
@@ -52,6 +72,7 @@ function main()
 				xr_motivator.storage[assassin2:id()].assassin.enabled = false
 				xr_motivator.storage[assassin3:id()].assassin.enabled = false
 				xr_motivator.storage[avict:id()].walker.enabled = false
+				printf("_bp: assassins dead")
 				state = state_end
 			end
 		end
@@ -59,5 +80,9 @@ function main()
 		wait()
 	end
 	
+	xr_reactions.remove_rule(assassin1, "ignore")
+	xr_reactions.remove_rule(assassin2, "ignore")
+	xr_reactions.remove_rule(assassin3, "ignore")
+	xr_reactions.remove_rule(avict, "ignore")
 end
 

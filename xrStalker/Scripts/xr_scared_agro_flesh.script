@@ -1,3 +1,5 @@
+-- Created by: Andrey Fidrya (af@svitonline.com) aka Zmey
+
 local state_none = 0
 local state_running = 1
 local state_looking = 2
@@ -54,7 +56,7 @@ function main()
 					local h = hit()
 					h.power = 1000
 					h.direction = flesh:direction()
-					h.bone = "bip01_legs"
+					h:bone("bip01_legs")
 					h.draftsman = flesh
 					h.impulse = 1000
 					h.type = hit.wound
