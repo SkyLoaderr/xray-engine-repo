@@ -678,6 +678,12 @@
 								Name="VCCLCompilerTool"
 								AssemblerOutput="4"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="R_Backend_xform.h">
