@@ -1338,6 +1338,8 @@ bool CAI_Space::bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, 
 	u32						dwCurNode = dwStartNode;
 
 	while ((dwCurNode != dwFinishNode) && (fCurDistance < (fDistance + EPS_L))) {
+		if (bfInsideNode(Node(dwCurNode),tFinishPoint))
+			break;
 		tpNode				= Node(dwCurNode);
 		taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 		iCount				= tpNode->links;
