@@ -223,6 +223,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_save				() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
+	using inherited::load;
 
 	private:
 			void					data_load				(NET_Packet &tNetPacket);
