@@ -417,9 +417,11 @@ void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool 
 			double dEval = dfEvaluation(uiaTestParameters[i]);
 			vfDualPrintF("%8.2f  -> %6.2f (%6.2f)\n",daTestResults[i],dEval,dEval - daTestResults[i]);
 		}
-		if (bShowValidSimpleStats && uiTestCount) {
+		if (bShowValidSimpleStats) {
 			vfDualPrintF("\nAll the valid examples evaluation:\n");
-			vfGenerateAllValidConfigurations(0,uiVariableCount,uiaTestParameters[0],uiaAtomicFeatureRange);
+			uint *uipPatternValues = (uint *)malloc(uiVariableCount*sizeof(uint));
+			vfGenerateAllValidConfigurations(0,uiVariableCount,uipPatternValues,uiaAtomicFeatureRange);
+			free(uipPatternValues);
 		}
 	}
 	
