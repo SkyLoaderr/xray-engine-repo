@@ -33,7 +33,7 @@ end
 -- скоростью.
 function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team,
 		run_to_starting_pt, move_cb)
-	xr_reactions.add_rule(self.object, "ignore") -- DELME
+	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
 		utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
@@ -242,7 +242,11 @@ function move_mgr:update()
 	end
 
 	if not self.is_shooting then 
-		self.object:set_item(object.idle, self.object:best_weapon())
+		local best_weap = self.object:best_weapon()
+		if best_weap and get_clsid(best_weap) == clsid.obj_bolt then
+			best_weap = nil
+		end
+		self.object:set_item(object.idle, best_weap)
 	else
 		local best_weap = self.object:best_weapon()
 		if best_weap then
