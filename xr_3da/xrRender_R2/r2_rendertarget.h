@@ -23,6 +23,7 @@ public:
 	IBlender*					b_bloom;
 	IBlender*					b_combine;
 	IBlender*					b_decompress;
+	IDirect3DQuery9*			Q;
 
 	// MRT-path (or decompressed MET)
 	ref_rt						rt_Depth;		// Z-buffer like - initial depth

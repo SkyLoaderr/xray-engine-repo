@@ -177,7 +177,7 @@ void CRender::Render		()
 	*/
 
 	// $$$
-	Target.phase_accumulator			();
+	// Target.phase_accumulator			();
 	HOM.Disable							();
 	// Target.accum_direct				();
 
@@ -193,6 +193,14 @@ void CRender::Render		()
 	//	}
 	//	if (left_some_lights_that_doesn't cast shadows)
 	//		accumulate them
+
+	/*
+	Msg		(
+		"total(%d), ps(%d), ss(%d), p(%d), s(%d)",
+		Lights.v_point_s.size()+Lights.v_spot_s.size()+Lights.v_point.size()+Lights.v_spot.size(),
+		Lights.v_point_s.size(),Lights.v_spot_s.size(),Lights.v_point.size(),Lights.v_spot.size()
+	);
+	*/
 
 	while	(Lights.v_point_s.size() || Lights.v_spot_s.size() )
 	{

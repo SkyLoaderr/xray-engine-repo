@@ -118,6 +118,9 @@ void	CRenderTarget::OnDeviceCreate	()
 	dwAccumulatorClearMark			= 0;
 	Device.Resources->Evict			();
 
+	// Query
+	CHK_DX							(HW.pDevice->CreateQuery(D3DQUERYTYPE_OCCLUSION,&Q));
+
 	// Blenders
 	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
@@ -389,6 +392,8 @@ void	CRenderTarget::OnDeviceCreate	()
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
+	_RELEASE					(Q);
+
 	// Textures
 	t_ncm->surface_set			(NULL);
 	_RELEASE					(t_ncm_surf);

@@ -12,6 +12,8 @@ done, works OK			:	2*DXT5	bumpmaps + heightmaps	- lower quality, 8 bit, faster(?
 						:	L8		encoding of encodeB + mov instead add
 						:	A8L8	encoding of material
 ----------------------------
+smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
+----------------------------
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	
 		- should speed up physics considerably						~1 week for me, ??? for Slipch

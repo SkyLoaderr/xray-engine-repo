@@ -141,6 +141,7 @@ void CRenderTarget::accum_spot	(light* L)
 	*/
 
 	// Draw volume with projective texgen
+	CHK_DX	(Q->Issue(D3DISSUE_BEGIN));
 	{
 		// Lighting
 		RCache.set_Element			(shader->E[ L->flags.bShadow ? 1:2 ]);
@@ -155,8 +156,7 @@ void CRenderTarget::accum_spot	(light* L)
 		float circle				= ps_r2_ls_ssm_kernel / RImplementation.LR.S_size;
 		Fvector4 J; float scale		= circle/11.f;
 		R_constant* _C				= RCache.get_c			("J_spot");
-		if (_C)
-		{
+		if (_C)		{
 			// Radial jitter (12 samples)
 			J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
 			J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
@@ -170,6 +170,10 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_Geometry			(g_accum_spot);
 		RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
 	}
+	CHK_DX	(Q->Issue	(D3DISSUE_END));
+	DWORD	pixels	= 0;
+	CHK_DX	(Q->GetData	(&pixels,sizeof(pixels),D3DGETDATA_FLUSH));
+	//Msg		("%8X : fragments(%d), size(%d)",u32(L),pixels,RImplementation.LR.S_size);
 
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 }
