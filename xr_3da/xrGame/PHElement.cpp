@@ -206,8 +206,14 @@ void		CPHElement::Deactivate()
 			unset_Pushout();
 	}
 	destroy();
+
 	bActive=false;
 	bActivating=false;
+	CKinematics* K=m_shell->PKinematics();
+	if(K)
+	{
+		K->LL_GetBoneInstance(m_SelfID).set_callback(0,0);
+	}
 }
 
 void CPHElement::SetTransform(const Fmatrix &m0){
@@ -304,6 +310,11 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	if(disable) dBodyDisable(m_body);
 	bActive=true;
 	bActivating=true;
+	CKinematics* K=m_shell->PKinematics();
+	if(K)
+	{
+		K->LL_GetBoneInstance(m_SelfID).set_callback(m_shell->GetBonesCallback(),static_cast<CPhysicsElement*>(this));
+	}
 }
 void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 
@@ -311,6 +322,7 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	lvel.set(m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 	avel.set(0.f,0.f,0.f);
 	Activate(m0,lvel,avel,disable);
+
 }
 
 
@@ -667,7 +679,7 @@ void CPHElement::RunSimulation(const Fmatrix& start_from)
 void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 {
 	Fmatrix parent;
-	if(! bActive)return;
+	VERIFY2( bActive,"the element is not active");
 	VERIFY(_valid(m_shell->mXFORM));
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback resive 0 matrix");
 
