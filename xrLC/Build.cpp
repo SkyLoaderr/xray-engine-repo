@@ -123,6 +123,7 @@ void CBuild::Run	(LPCSTR P)
 	FPU::m64r					();
 	Phase						("Adaptive HT...");
 	mem_Compact					();
+	Light_prepare				();
 	xrPhase_AdaptiveHT			();
 
 	//****************************************** Building normals
