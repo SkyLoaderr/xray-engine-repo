@@ -17,7 +17,7 @@ public:
     // get object properties methods
     IC PSIt				FirstPS			()	{return m_PSs.begin();}
     IC PSIt				LastPS			()	{return m_PSs.end();}
-    IC int				PSCount			()	{return m_PSs.size();}
+    IC size_t			PSCount			()	{return m_PSs.size();}
     
     void				xrStartUp		();
     void				xrShutDown		();

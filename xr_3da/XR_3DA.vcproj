@@ -1768,16 +1768,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="RTarget"
-				Filter="">
-				<File
-					RelativePath=".\FStaticRender_RenderTarget.cpp">
-				</File>
-				<File
-					RelativePath=".\FStaticRender_RenderTarget.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Model Pool"
 				Filter="">
 				<File

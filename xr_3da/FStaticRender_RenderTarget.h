@@ -1,6 +1,5 @@
 #pragma once
 
-#include "render.h"
 
 class CRenderTarget		: public CRender_target
 {
