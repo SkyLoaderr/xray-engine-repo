@@ -42,7 +42,7 @@ public:
 	double						m_frame_sum													;
 	dReal						m_frame_time												;
 	float						m_update_time												;
-	unsigned int				disable_count												;
+	u16							disable_count												;
 	
 								CPHWorld						()							;
 	virtual						~CPHWorld						()				{}			;

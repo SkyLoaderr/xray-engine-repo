@@ -9,7 +9,7 @@ SAllDDWParams	worldDisablingParams	=
 		{
 			{0.001f	,	0.1f	}		,	//translational		vel	,	accel
 			{0.005f	,	0.05f	}		,	//rotational		vel	,	accel
-			50								//level2 frames
+			64								//level2 frames
 		}								,								
 		1.5f								//reanable factor
 	};

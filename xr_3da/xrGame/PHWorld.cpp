@@ -158,8 +158,9 @@ void CPHWorld::Step()
 
 	PH_OBJECT_I			i_object;
 	PH_UPDATE_OBJECT_I	i_update_object;
-	++disable_count;		
-	if(disable_count==dis_frames+1) disable_count=0;
+
+	if(disable_count==0) disable_count=worldDisablingParams.objects_params.L2frames;
+	--disable_count;
 
 	++m_steps_num;
 

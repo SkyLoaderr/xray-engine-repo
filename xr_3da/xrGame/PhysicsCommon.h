@@ -12,7 +12,6 @@ extern const dReal	default_l_scale;
 extern const dReal	default_w_scale;
 
 extern const dReal	fixed_step;
-extern const u32	dis_frames;
 extern const dReal	world_gravity;
 extern const dReal  world_cfm;
 extern const dReal  world_erp;

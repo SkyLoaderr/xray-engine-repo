@@ -2,6 +2,7 @@
 #include "PHDisabling.h"
 #include "PhysicsCommon.h"
 #include "Physics.h"
+extern CPHWorld* ph_world;
 SDisableVector::SDisableVector()
 {
 	Init();
@@ -63,33 +64,40 @@ CBaseDisableData::CBaseDisableData()
 
 void	CBaseDisableData::Reinit()
 {
-	m_count		=0													;
-	m_stateL1.Reset()												;
-	m_stateL2.Reset()												;	
+	m_count		=m_frames+ph_world->disable_count					;
+	m_stateL1	.Reset()											;
+	m_stateL2	.Reset()											;	
 }
 void	CBaseDisableData::Disabling()
 {
 	
 	dBodyID	body	=		get_body();		
-	m_count++;
+	m_count--;
 
 	UpdateL1();
 
 	CheckState(m_stateL1);
 
-	if(m_count==m_frames)//ph_world->disable_count==dis_frames//m_count==m_frames
+	if(m_count==0)//ph_world->disable_count==dis_frames//m_count==m_frames
 	{
 		UpdateL2();
 		CheckState(m_stateL2);
-		m_count=0;
+		m_count=m_frames;
 	}
 	const	dReal* force=dBodyGetForce(body);
 	const	dReal* torqu=dBodyGetTorque(body);
 	if(dDOT(force,force)>0.f || dDOT(torqu,torqu)>0.f) m_disabled=false;
-	if(dBodyIsEnabled(body)) 
-					ReEnable();
+	if(dBodyIsEnabled(body))
+	{
+		ReEnable();
+		if(!m_disabled&& (ph_world->disable_count%m_frames!=m_count))
+		{
+			m_count=m_frames+ph_world->disable_count;
+		}
+	}
 	if(m_disabled)	
 					Disable();//dBodyDisable(body);
+
 }
 
 void	CPHDisablingBase::Reinit()

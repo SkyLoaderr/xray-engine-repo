@@ -24,6 +24,6 @@ struct SAllDDWParams
 
 
 
-extern SAllDDWParams	worldDisablingParams									;
+extern SAllDDWParams	worldDisablingParams			;
 
 #endif
