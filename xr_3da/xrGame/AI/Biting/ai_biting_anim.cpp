@@ -42,4 +42,5 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 		m_tpCurrentGlobalAnimation = m_tAnims.A[0].A[0].A[::Random.randI(m_tAnims.A[0].A[0].A.size())];
 		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 	}
+
 }

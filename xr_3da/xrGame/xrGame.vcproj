@@ -458,11 +458,6 @@
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_anim.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_anim.h">

@@ -21,7 +21,6 @@ public:
 	virtual					~CAI_Biting		();
 	virtual	BOOL			ShadowReceive	()			{ return FALSE;	}
 	virtual void			Die				();
-	virtual void			Think			(){};
 	virtual void			HitSignal		(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 	virtual void			SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed );
 
@@ -32,6 +31,9 @@ public:
 	virtual void			net_Destroy		();
 	virtual void			net_Export		(NET_Packet& P);
 	virtual void			net_Import		(NET_Packet& P);
+
+	virtual void			Think			();
+
 
 //	virtual float EnemyHeuristics(CEntity* E);
 //	virtual void  SelectEnemy(SEnemySelected& S);
@@ -48,7 +50,24 @@ public:
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
+
+	// LifeSimulation
 	_GRAPH_ID				m_tCurGP;
 	_GRAPH_ID				m_tNextGP;
 	float					m_fGoingSpeed;			
+
+	// Fields
+	bool					bPeaceful;
+	
+	// properties
+	u32						m_dwHealth;
+	u32						m_dwMoraleValue;
+	
+	// BEHAVIOUR
+	Fvector					m_tHPB;
+	float yaw;
 };
+
+
+
+
