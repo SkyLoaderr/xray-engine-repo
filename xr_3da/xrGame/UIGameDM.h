@@ -39,6 +39,8 @@ protected:
 
 	CUISkinSelectorWnd*		pSkinMenuTeam0;
 	CUISkinSelectorWnd*		pCurSkinMenu;
+	
+	BOOL				m_bSkinSelected;
 
 	virtual	void		ClearLists ();
 	

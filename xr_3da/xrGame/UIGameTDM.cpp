@@ -20,6 +20,8 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 
 	pSkinMenuTeam1 = NULL;
 	pSkinMenuTeam2 = NULL;
+
+	m_bTeamSelected	= FALSE;
 }
 //--------------------------------------------------------------------
 void		CUIGameTDM::Init				()
@@ -113,21 +115,23 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 //--------------------------------------------------------------------
 void CUIGameTDM::OnTeamSelect(int Team)
 {
-	if (Team+1 == Game().local_player->team) return;
+	if (Team+1 != Game().local_player->team) 
+	{
+		CObject *l_pObj = Level().CurrentEntity();
 
-	CObject *l_pObj = Level().CurrentEntity();
+		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+		if(!l_pPlayer) return;
 
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
-	if(!l_pPlayer) return;
-
-	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
-	P.w_s16			(s16(Team+1));
-	//P.w_u32			(0);
-	l_pPlayer->u_EventSend		(P);
+		NET_Packet		P;
+		l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+		P.w_s16			(s16(Team+1));
+		//P.w_u32			(0);
+		l_pPlayer->u_EventSend		(P);
+		//-----------------------------------------------------------------
+		m_bSkinSelected = FALSE;
+	};
 	//-----------------------------------------------------------------
-	if (Team == 0) pCurBuyMenu = pBuyMenuTeam1;
-	else pCurBuyMenu = pBuyMenuTeam2;
+	m_bTeamSelected = TRUE;	
 };
 //-----------------------------------------------------------------
 void CUIGameTDM::SetCurrentBuyMenu	()
@@ -139,11 +143,22 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 	};
 };
 
-void CUIGameTDM::SetCurrentSkinMenu	()
+void		CUIGameTDM::SetCurrentSkinMenu	()
 {
 	if (!pCurSkinMenu || !pCurSkinMenu->IsShown())
 	{
 		if (Game().local_player->team == 1) pCurSkinMenu = pSkinMenuTeam1;
 		else pCurSkinMenu = pSkinMenuTeam2;
 	};
+};
+
+bool		CUIGameTDM::CanBeReady				()
+{
+	if (!m_bTeamSelected)
+	{
+		StartStopMenu(pUITeamSelectWnd);
+		return false;
+	}
+
+	return inherited::CanBeReady();
 };

@@ -23,6 +23,8 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	pCurSkinMenu	= NULL;
 
 	m_bBuyEnabled	= TRUE;
+
+	m_bSkinSelected	= FALSE;
 }
 //--------------------------------------------------------------------
 void	CUIGameDM::Init				()
@@ -280,6 +282,13 @@ bool		CUIGameDM::CanBeReady				()
 	u8 res = 0xff;
 
 	SetCurrentBuyMenu();
+	SetCurrentSkinMenu();
+
+	if (!m_bSkinSelected)
+	{
+		StartStopMenu(pCurSkinMenu);
+		return false;
+	};
 
 	res &=	pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT);
@@ -287,14 +296,14 @@ bool		CUIGameDM::CanBeReady				()
 	res &=	pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT);
 	res &=	~(pCurBuyMenu->GetBeltSize());
 
-	if (res != 0xff) 
+	if (res == 0xff) 
 	{
-		OnBuyMenu_Ok();
-		return true;
+		StartStopMenu(pCurBuyMenu);
+		return false;
 	};
 
-	StartStopMenu(pCurBuyMenu);
-	return false;
+	OnBuyMenu_Ok();
+	return true;
 };
 
 //--------------------------------------------------------------------
@@ -366,6 +375,7 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 	P.w_u8			(pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
+	m_bSkinSelected = TRUE;
 };
 BOOL		CUIGameDM::CanCallBuyMenu			()
 {

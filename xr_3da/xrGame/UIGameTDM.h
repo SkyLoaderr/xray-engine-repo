@@ -32,6 +32,8 @@ protected:
 	CUISkinSelectorWnd*	pSkinMenuTeam1;
 	CUISkinSelectorWnd*	pSkinMenuTeam2;
 
+	BOOL				m_bTeamSelected;
+
 	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
 public:
 	CUIGameTDM			(CUI* parent);
@@ -44,6 +46,8 @@ public:
 	virtual bool		IR_OnKeyboardPress		(int dik);
 
 	virtual void		OnTeamSelect			(int Result);
+
+	virtual bool		CanBeReady				();
 protected:
 	/////////
 	CUIInventoryWnd		InventoryMenu;
