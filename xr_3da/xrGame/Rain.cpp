@@ -316,19 +316,17 @@ void	CEffect_Rain::Render	()
 			// Render
 			if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
 			{
-				/*
 				int		count_estimated		= P->visual->ParticleCount();
 				if ((pcount+count_estimated) >= particles_cache) {
 					// flush
 					VSP->Unlock	(pcount*4);
-					Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
+//					Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
 					verts	= (FVF::TL*) VSP->Lock	(particles_cache*4,offset);
 					pcount	= 0;
 				}
 				int		count_real_verts	= P->visual->RenderTO(verts);
 				verts	+= count_real_verts;
 				pcount	+= count_real_verts/4;
-				*/
 			}
 			
 			// Stop if needed
@@ -344,7 +342,7 @@ void	CEffect_Rain::Render	()
 			P = next;
 		}
 		VSP->Unlock	(pcount*4);
-		if (pcount) Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
+//		if (pcount) Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
 	}
 	Device.Statistic.TEST.End		();
 }

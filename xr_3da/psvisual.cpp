@@ -117,6 +117,7 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	float sz		= scale * Device.dwWidth * radius / PT.p.w;
 	// 'Cause D3D clipping have to clip Four points
 	// We can help him :)
+
 	if (sz<1.5f)	return;
 	if (PT.p.x< -1)	return;
 	if (PT.p.x>  1)	return;
@@ -130,8 +131,8 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	c.y			= Device._y2real(PT.p.y);
 	// Rotation
 	float	_sin1,_cos1,_sin2,_cos2,da;
-	da = angle;		_sincos	(da,_sin1,_cos1);
-	da += PI_DIV_2;	_sincos	(da,_sin2,_cos2);
+	da = angle;		 _sincos	(da,_sin1,_cos1);
+	da += PI_DIV_2;  _sincos	(da,_sin2,_cos2);
 	
 	pv->set	(c.x+sz*_sin1,	c.y+sz*_cos1,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
 	pv->set	(c.x-sz*_sin2,	c.y-sz*_cos2,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;
