@@ -10,9 +10,6 @@ function main()
 	stalker	= get_level_object("stalker_waiting")
 	ecolog	= get_level_object("ecolog_waiting")
 
-	guard01	= get_level_object("guard01")
-	guard02	= get_level_object("guard02")
-
 			wait(1000)			
 
 			siviy:script	(true,  angry_stalkers.script_name())
