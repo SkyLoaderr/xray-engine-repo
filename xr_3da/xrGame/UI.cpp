@@ -148,7 +148,7 @@ bool CUI::OnKeyboardPress(int dik)
 	// global
 	switch (dik){
 	case DIK_B:			ShowBuyMenu	(!bShowBuyMenu);return true;
-	case DIK_ESCAPE:	ShowBuyMenu	(FALSE);		return true;
+//	case DIK_ESCAPE:	ShowBuyMenu	(FALSE);		return true;
 	}
 	return false;
 }
