@@ -215,14 +215,14 @@ void CWeapon::StartSmokeParticles	()
 	Fvector vel; 
 	PHGetLinearVell(vel);
 
-	StartParticles(pSmokeParticles, m_sSmokeParticlesCurrent, vLastFP, vel, true);
+	// StartParticles(pSmokeParticles, m_sSmokeParticlesCurrent, vLastFP, vel, true);
 }
 
 //партиклы гильз
 void CWeapon::OnShellDrop	()
 {
 	if(!m_sShellParticles) return;
-
+/*
 	CParticlesObject* pShellParticles = xr_new<CParticlesObject>(m_sShellParticles,Sector());
 
 	Fmatrix particles_pos; 
@@ -234,6 +234,7 @@ void CWeapon::OnShellDrop	()
 
 	pShellParticles->UpdateParent(particles_pos, vel); 
 	pShellParticles->Play();
+*/
 }
 
 
