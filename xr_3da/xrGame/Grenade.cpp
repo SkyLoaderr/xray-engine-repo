@@ -48,6 +48,13 @@ CGrenade::CGrenade(void) {
 CGrenade::~CGrenade(void) {
 	if(hWallmark) Device.Shader.Delete(hWallmark);
 	::Render->light_destroy(m_pLight);
+	SoundDestroy(sndExplode);
+	SoundDestroy(sndCheckout);
+	SoundDestroy(sndRicochet[0]);
+	SoundDestroy(sndRicochet[1]);
+	SoundDestroy(sndRicochet[2]);
+	SoundDestroy(sndRicochet[3]);
+	SoundDestroy(sndRicochet[4]);
 }
 
 void CGrenade::Load(LPCSTR section) {
@@ -95,13 +102,6 @@ BOOL CGrenade::net_Spawn(LPVOID DC) {
 
 void CGrenade::net_Destroy() {
 	if(hWallmark) Device.Shader.Delete(hWallmark);
-	SoundDestroy(sndExplode);
-	SoundDestroy(sndCheckout);
-	SoundDestroy(sndRicochet[0]);
-	SoundDestroy(sndRicochet[1]);
-	SoundDestroy(sndRicochet[2]);
-	SoundDestroy(sndRicochet[3]);
-	SoundDestroy(sndRicochet[4]);
 	inherited::net_Destroy();
 }
 
