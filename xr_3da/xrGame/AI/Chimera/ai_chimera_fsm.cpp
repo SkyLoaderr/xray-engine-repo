@@ -17,6 +17,7 @@ void CAI_Chimera::Think()
 {
 	if (!g_Alive()) return;
 
+	//return;
 
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();

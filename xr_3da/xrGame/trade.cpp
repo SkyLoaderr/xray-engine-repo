@@ -331,38 +331,36 @@ void CTrade::SellItem(int id)
 					break;
 				}
 				
-				if (pThis.type != TT_TRADER) {
-					if (l_pIItem == l_pIItem->m_pInventory->ActiveItem()) {
-						Msg("Cannot sell active weapon!");
-						break;
-					}
-				}
+//				if (pThis.type != TT_TRADER) {
+//					if (l_pIItem == l_pIItem->m_pInventory->ActiveItem()) {
+//						Msg("Cannot sell active weapon!");
+//						break;
+//					}
+//				}
+//
+//				// удалить у себя
+//				CInventory *inv = &pThis.inv_owner->m_inventory;
+//				inv->Drop(l_pIItem);
 
-				// удалить у себя
-				CInventory *inv = &pThis.inv_owner->m_inventory;
-				inv->Drop(l_pIItem);
-
-
-//				NET_Packet				P;
-//				CGameObject *O = dynamic_cast<CGameObject *>(pThis.inv_owner);
-//				O->u_EventGen				(P,GE_OWNERSHIP_REJECT,O->ID());
-//				P.w_u16					(u16(l_pIItem->ID()));
-//				O->u_EventSend				(P);
-
+				NET_Packet				P;
+				CGameObject				*O = dynamic_cast<CGameObject *>(pThis.inv_owner);
+				O->u_EventGen			(P,GE_OWNERSHIP_REJECT,O->ID());
+				P.w_u16					(u16(l_pIItem->ID()));
+				O->u_EventSend			(P);
 
 				// добавить себе денег
 				pThis.inv_owner->m_dwMoney += (u32)(((float) (*it)->Cost()) * factor );
 				
-				// добавить партнеру
-				inv = &pPartner.inv_owner->m_inventory;
-				if (!inv->Take(l_pIItem)) Msg("Item cannot be taken!");
+//				// добавить партнеру
+//				inv = &pPartner.inv_owner->m_inventory;
+//				if (!inv->Take(l_pIItem)) Msg("Item cannot be taken!");
 
-//				l_pIItem->H_SetParent(dynamic_cast<CObject *>(pPartner.inv_owner));
+/////			l_pIItem->H_SetParent(dynamic_cast<CObject *>(pPartner.inv_owner));
 
-//				O = dynamic_cast<CGameObject *>(pPartner.inv_owner);
-//				O->u_EventGen		(P,GE_OWNERSHIP_TAKE,O->ID());
-//				P.w_u16			(u16(l_pIItem->ID()));
-//				O->u_EventSend		(P);
+				O					= dynamic_cast<CGameObject *>(pPartner.inv_owner);
+				O->u_EventGen		(P,GE_OWNERSHIP_TAKE,O->ID());
+				P.w_u16				(u16(l_pIItem->ID()));
+				O->u_EventSend		(P);
 
 				// уменьшить денег у партнера
 				pPartner.inv_owner->m_dwMoney -= (u32)(((float) (*it)->Cost()) * factor );

@@ -81,6 +81,8 @@ void CAI_Chimera::Init()
 	AI_Path.Nodes.clear				();
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
+	
+	bShowDeath						= false;
 }
 
 void CAI_Chimera::Die()
@@ -153,13 +155,15 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 		return(FALSE);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterChimera	*l_tpSE_Chimera	= dynamic_cast<CSE_ALifeMonsterChimera*>(e);
+	CSE_ALifeMonsterChimera			*l_tpSE_Chimera	= dynamic_cast<CSE_ALifeMonsterChimera*>(e);
 	
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-l_tpSE_Chimera->o_Angle.y);
 
 	cNameVisual_set					(l_tpSE_Chimera->get_visual());
 	
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+
+	fHealth							= l_tpSE_Chimera->fHealth;
 	
 	// loading animations
 	CChimeraAnimations::Load			(PKinematics(Visual()));

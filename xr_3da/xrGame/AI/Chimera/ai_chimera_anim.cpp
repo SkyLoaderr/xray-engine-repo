@@ -70,7 +70,7 @@ void CAI_Chimera::OnAnimationEnd()
 void CAI_Chimera::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
 	if (bShowDeath)	{
-		m_tpCurrentGlobalAnimation = m_tAnimations.A[0].A[9].A[2];
+		m_tpCurrentGlobalAnimation = m_tAnimations.A[0].A[0].A[0];
 		PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 		bShowDeath  = false;
 		return;
@@ -98,29 +98,57 @@ void CAI_Chimera::SelectAnimation(const Fvector &_view, const Fvector &_move, fl
 
 void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
 {
-	switch(motion) {
-		case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
-		case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
-		case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 index3 = -1;	break;
-		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
-		case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
-		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  index3 = -1;	break;
-		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  index3 = -1;	break;
-		case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
-		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  index3 = -1;	break;
-		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  index3 = -1;	break;
-		case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
-		case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
-		case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  index3 = -1;	break;
-		case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
-		case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
-		case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
-		case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
-		case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
-		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
-		case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
-		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
-		case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
-		//default:					NODEFAULT;
-	} 
+	if (this->SUB_CLS_ID == CLSID_AI_CHIMERA) {
+		switch(motion) {
+			case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
+			case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
+			case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 index3 = -1;	break;
+			case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
+			case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  index3 = -1;	break;
+			case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  index3 = -1;	break;
+			case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  index3 = -1;	break;
+			case eMotionRunTurnRight:	index1 = 0; index2 = 8;  index3 = -1;	break;
+			case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
+			case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
+			case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  index3 = -1;	break;
+			case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
+			case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
+			case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
+			case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
+			case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
+			case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
+			default:					NODEFAULT;
+		} 
+	} else if (this->SUB_CLS_ID == CLSID_AI_DOG_RED) {
+		switch(motion) {
+			case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
+			case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
+			case eMotionStandTurnLeft:	index1 = 0; index2 = 0;	 index3 = -1;	break;
+			case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
+			case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionWalkTurnLeft:	index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionWalkTurnRight:	index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionRunTurnLeft:	index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionRunTurnRight:	index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
+			case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
+			case eMotionFastTurnLeft:	index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
+			case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
+			case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
+			case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 0;	break;
+			case eMotionLieDownEat:		index1 = 0; index2 = 16; index3 = -1;	break;
+			case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
+			default:					NODEFAULT;
+		} 
+	}
 }
