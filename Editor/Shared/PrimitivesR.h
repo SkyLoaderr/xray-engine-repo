@@ -50,9 +50,9 @@ public:
 	IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase);	// non indexed
-	IC void Draw			(CVertexStream* VS,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
 	IC void DrawNI_SP		(CPrimitive& P, DWORD dwStartVert,	DWORD dwNumPrimitives);
 	IC void DrawSubset		(CPrimitive& P, DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
+	void Draw				(CVertexStream* VS,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
 	void Reset				();
 
 	void Lines_Begin		(int count);
