@@ -96,14 +96,10 @@ void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 	
-	//if (Known.size()==0)
-	//	return;
+	if (Known.size()==0)
+		return;
 	// Get visible list
 	feel_vision_get	(m_tpaVisibleObjects);
-	if ((m_tpaVisibleObjects.size()) && (!Known.size())) {
-		Msg("I see enemy(ies) (%s), but no known enemies",m_tpaVisibleObjects[0]->cName());
-		return;
-	}
 	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];

@@ -509,7 +509,7 @@ void CAI_Rat::Retreat()
 
 	SelectEnemy(m_Enemy);
 
-	if (m_Enemy.Enemy) {
+	if (m_Enemy.Enemy && m_Enemy.Enemy->g_Alive()) {
 		vfSaveEnemy();
 		ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
 		if (eState != eCurrentState)
@@ -525,7 +525,7 @@ void CAI_Rat::Retreat()
 		m_tSpawnPosition.add(vPosition,tTemp);
 	}
 	else
-		if ((Level().timeServer() - m_dwLostEnemyTime > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful()))) {
+		if ((!m_Enemy.Enemy->g_Alive()) || ((Level().timeServer() - m_dwLostEnemyTime > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful())))) {
 			GO_TO_PREV_STATE;
 		}
 
@@ -689,7 +689,7 @@ void CAI_Rat::ReturnHome()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
  
-	CHECK_IF_GO_TO_PREV_STATE(vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
+	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy || !m_Enemy.Enemy->g_Alive() || vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
 
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
