@@ -15,5 +15,8 @@ local a = 8
 end
 
 function ui_game_LastStanding:SetClGame(cl_game)
+   UIGame_custom_script.SetClGame(self, cl_game)
    self.m_cl_game = cl_game
 end
+
+
