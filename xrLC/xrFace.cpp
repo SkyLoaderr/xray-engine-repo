@@ -48,7 +48,7 @@ Face::~Face()
 SH_ShaderDef&	Face::Shader()
 {
 	DWORD shader_id = pBuild->materials[dwMaterial].reserved;
-	return pBuild->shader_defs[shader_id];
+	return *(pBuild->shaders.Get(shader_id));
 }
 float Face::CalcArea()
 {

@@ -42,8 +42,8 @@ public:
 	void					Load	(LPCSTR name)
 	{
 		CCompressedStream	fs(name,SHADER_XRLC_HEADER);
-		DWORD count			= fs.Length()/sizeof(Shader_xrLC);
-		R_ASSERT			(fs.Length() == (count*sizeof(Shader_xrLC)));
+		int count			= fs.Length()/sizeof(Shader_xrLC);
+		R_ASSERT			(int(fs.Length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
 		fs.Read				(library.begin(),fs.Length());
 	}
@@ -62,5 +62,9 @@ public:
 		for (DWORD it=0; it<library.size(); it++)
 			if (0==stricmp(name,library[it].Name))	return &library[it];
 		return NULL;
+	}
+	Shader_xrLC*			Get		(int id)
+	{
+		return &library[id];
 	}
 };
