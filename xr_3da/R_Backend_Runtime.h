@@ -109,9 +109,8 @@ IC void CBackend::set_Constants			(R_constant_table* C)
 	// caching
 	if (ctable==C)	return;
 	ctable			= C;
-	if (0==C)		return;
-
 	xforms.unmap	();
+	if (0==C)		return;
 
 	// process constant-loaders
 	R_constant**	it	= C->table.begin();

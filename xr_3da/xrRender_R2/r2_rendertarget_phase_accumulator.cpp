@@ -31,6 +31,7 @@ void	CRenderTarget::phase_accumulator()
 	dwLightMarkerID						= 5;	// start from 3, increment in 2 units
 	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
 
+	/*
 	// Stencil	- draw only where stencil >= 0x1
 	// Stencil	- increment value if both (stencil,aref) pass
 	// Stencil	- result -> 0x2 where pixel can be potentialy lighted/shadowed
@@ -84,4 +85,5 @@ void	CRenderTarget::phase_accumulator()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+	*/
 }
