@@ -894,7 +894,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		body->facc[1]*=stepsize;
 		body->facc[2]*=stepsize;
 		for (i = 0; i < 3; i++)	body->lvel[i]		+=	body->invMass * body->facc[i];
-
+ 
 		//move It!
 		moveAndRotateBody							(body, stepsize);
 
