@@ -3,9 +3,9 @@
 #define AFX_XR_CUSTOMFONT_H__6CFEF2C0_D4F5_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
-class ENGINE_API CFontBase
+class ENGINE_API CFontBase: public pureDeviceDestroy, pureDeviceCreate
 #ifndef M_BORLAND
-	:public pureRender, pureDeviceDestroy, pureDeviceCreate
+	,pureRender
 #endif
 {
 	struct String {
