@@ -58,7 +58,7 @@ extern "C" {
 // FIRST:
 //			Call following function and...
 //			...then create all of your vertices preserving their order
-PM_API void	__cdecl PM_Options(
+PM_API void	__cdecl PM_Init	(
 	DWORD	dwRelevantUV, DWORD dwRelevantUVMASK,
 	DWORD	dwMinVertCount, 
 	float	w_UV=0.5f, 

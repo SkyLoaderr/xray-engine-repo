@@ -21,8 +21,8 @@ struct P_params {
 	float	fQualityH;
 } PARA;
 
-List<P_Vertex *>	vertices;
-List<P_Triangle *>	triangles;
+static List<P_Vertex *>		vertices;
+static List<P_Triangle *>	triangles;
 
 void P_Triangle::_Construct(void)
 {
@@ -395,8 +395,11 @@ PM_API void __cdecl PM_CreateVertex(float x, float y, float z,int _id, P_UV *uv)
 	P_Vertex	*v	= new P_Vertex(Vector(x,y,z),_id,uv);
 }
 
-
-PM_API void __cdecl PM_Options(
+static vector<WORD>		pmPERMUTE;
+static vector<Vsplit>	pmSPLIT;
+static vector<WORD>		pmFACE_FIX;
+	
+PM_API void __cdecl PM_Init	(
 							   DWORD	dwRelevantUV, DWORD dwRelevantUVMASK,
 							   DWORD	dwMinVertCount, 
 							   float	w_UV,
@@ -416,6 +419,13 @@ PM_API void __cdecl PM_Options(
 	PARA.fBorderH	= cosf(p_BorderHeuristic*(3.1415926535897932384626433832795f)/180.f);
 	PARA.fBorderDistanceLimit = p_BorderHeuristicD;
 	PARA.fQualityH	= p_QualityHeuristic;
+
+	vertices.clear		();
+	triangles.clear		();
+
+	pmPERMUTE.clear		();
+	pmSPLIT.clear		();
+	pmFACE_FIX.clear	();
 }
 
 void DumpIDX(WORD* P, DWORD C)
@@ -433,20 +443,12 @@ Msg("%3d %3d %3d",P[I*3+0],P[I*3+1],P[I*3+2]);
 __declspec(dllimport) void __cdecl Msg(const char* format,...);
 */
 
-PM_API int		__cdecl PM_Convert(
+PM_API int		__cdecl PM_Convert	(
 								   WORD*			pIndices,	
 								   DWORD			idxCount,
 								   PM_Result*		RESULT
 								   )
 {
-	static vector<WORD>		pmPERMUTE;
-	static vector<Vsplit>	pmSPLIT;
-	static vector<WORD>		pmFACE_FIX;
-	
-	pmPERMUTE.clear		();
-	pmSPLIT.clear		();
-	pmFACE_FIX.clear	();
-	
 	ZeroMemory			(RESULT,sizeof(*RESULT));
 	if (idxCount<32*3)	return -1;
 
@@ -600,10 +602,6 @@ PM_API int		__cdecl PM_Convert(
 	// reverse affect list
 	reverse(pmFACE_FIX.begin(), pmFACE_FIX.end());
 	
-	// Cleanup
-	vertices.clear();
-	triangles.clear();
-	
 	// Record results
 	RESULT->permutePTR		= pmPERMUTE.begin	();
 	RESULT->permuteSIZE		= pmPERMUTE.size	();
@@ -615,5 +613,10 @@ PM_API int		__cdecl PM_Convert(
 	RESULT->facefixSIZE		= pmFACE_FIX.size	();
 	
 	RESULT->minVertices		= dwRealMin;
+	
+	// Cleanup
+	vertices.clear();
+	triangles.clear();
+	
 	return I_Current;
 }
