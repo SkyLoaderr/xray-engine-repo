@@ -310,6 +310,7 @@ void CActorTools::PrepareLighting()
     Flight L;
     ZeroMemory(&L,sizeof(Flight));
     L.type = D3DLIGHT_DIRECTIONAL;
+
     L.diffuse.set(1,1,1,1);
     L.direction.set(1,-1,1); L.direction.normalize();
 	Device.SetLight(0,L);
@@ -397,13 +398,6 @@ bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 
 bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 {
-	Device.LightEnable(0,true);
-	Device.LightEnable(1,true);
-	Device.LightEnable(2,true);
-	Device.LightEnable(3,true);
-	Device.LightEnable(4,true);
-
-
     std::string 	full_name;
     if (initial)	FS.update_path	(full_name,initial,obj_name);
     else			full_name		= obj_name;
