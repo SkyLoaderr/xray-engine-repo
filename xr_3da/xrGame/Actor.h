@@ -18,7 +18,7 @@ class ENGINE_API CKinematics;
 class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
-class CMercuryBall;
+class CTargetCS;
 
 class CActor: 
 	public CEntityAlive, 
@@ -57,7 +57,7 @@ public:
 protected:
 	// Weapons and Items
 	CWeaponList*			Weapons;
-	CMercuryBall*			m_pArtifact;
+	CTargetCS*			m_pArtifact;
 
 	// Respawning after DIE
 	BOOL					die_bWantRespawn;

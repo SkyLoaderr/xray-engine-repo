@@ -93,6 +93,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "hudmanager.h"
 #include "targetassault.h"
 #include "targetcsbase.h"
+#include "targetcs.h"
 
 #include "weaponM134.h"
 #include "weaponAK74.h"
@@ -127,6 +128,7 @@ extern "C" {
 		// Targets
 		case CLSID_TARGET_ASSAULT:		P = new CTargetAssault();		break;
 		case CLSID_TARGET_CS_BASE:		P = new CTargetCSBase();		break;
+		case CLSID_TARGET_CS:			P = new CTargetCS();			break;
 
 		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
 

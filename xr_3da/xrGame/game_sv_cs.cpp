@@ -42,8 +42,8 @@ void	game_sv_CS::OnRoundStart	()
 	Lock	();
 	// Spawn "artifacts"
 	for(s32 i = 0; i < 3; i++) {
-		xrServerEntity*		E	=	spawn_begin	("m_mball");									// create SE
-		xrSE_MercuryBall*	A			=	(xrSE_MercuryBall*) E;					
+		xrServerEntity*		E	=	spawn_begin	("m_target_cs");									// create SE
+		xrSE_Target_CS*	A			=	(xrSE_Target_CS*) E;					
 		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
 		vector<RPoint>&		rp	= rpoints[2];
 		RPoint&				r	= rp[::Random.randI(rp.size())];
@@ -152,7 +152,7 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 		Unlock();
 		return false;
 	}
-	xrSE_MercuryBall *l_pMBall =  dynamic_cast<xrSE_MercuryBall*>(e_entity);
+	xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
 	if(l_pMBall) {
 		if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) return false;
 		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) return false;
@@ -178,7 +178,7 @@ BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
 		Unlock();
 		return false;
 	}
-	xrSE_MercuryBall *l_pMBall =  dynamic_cast<xrSE_MercuryBall*>(e_entity);
+	xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
 	if(l_pMBall) {
 		Lock();
 		s16 l_team = -1;

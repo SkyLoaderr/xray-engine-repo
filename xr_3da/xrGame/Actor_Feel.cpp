@@ -5,6 +5,7 @@
 #include "targetassault.h"
 #include "mercuryball.h"
 #include "targetcsbase.h"
+#include "targetcs.h"
 
 void CActor::feel_touch_new				(CObject* O)
 {
@@ -13,7 +14,7 @@ void CActor::feel_touch_new				(CObject* O)
 	NET_Packet	P;
 
 	// Test for Artifact
-	CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
+	CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 	if (A)
 	{
 		u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());

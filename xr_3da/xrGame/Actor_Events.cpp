@@ -2,7 +2,7 @@
 #include "actor.h"
 #include "weapon.h"
 #include "xr_weapon_list.h"
-#include "mercuryball.h"
+#include "targetcs.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -24,7 +24,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 
 			// Test for Artifact
-			CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
+			CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 			if (A) 
 			{
 				R_ASSERT							(BE(Local(),A->Local()));	// remote can't take local
@@ -66,7 +66,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			}
 
 			// Test for Artifact
-			CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
+			CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 			if (A)
 			{
 				R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local

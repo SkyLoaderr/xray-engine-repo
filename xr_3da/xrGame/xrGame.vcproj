@@ -1017,6 +1017,12 @@
 							RelativePath="TargetAssault.h">
 						</File>
 						<File
+							RelativePath="TargetCS.cpp">
+						</File>
+						<File
+							RelativePath="TargetCS.h">
+						</File>
+						<File
 							RelativePath="TargetCSBase.cpp">
 						</File>
 						<File

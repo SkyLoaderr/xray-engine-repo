@@ -308,6 +308,24 @@ void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+//***** Target CS
+xrSE_Target_CS::xrSE_Target_CS()
+{
+	s_Model[0]	=	0;
+}
+void	xrSE_Target_CS::UPDATE_Read	(NET_Packet& P)				{}
+void	xrSE_Target_CS::UPDATE_Write	(NET_Packet& P)				{}
+void	xrSE_Target_CS::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
+void	xrSE_Target_CS::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
+
+#ifdef _EDITOR
+void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropValueVec& values)
+{
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
+}
+#endif
+//
+
 //***** Health
 void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{	P.r_u8(amount); };
 void xrSE_Health::STATE_Write		(NET_Packet& P)				{	P.w_u8(amount);	};
@@ -815,6 +833,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_OBJECT_HEALTH:		return new	xrSE_Health;
 	case CLSID_TARGET_ASSAULT:		return new	xrSE_Target_Assault;
 	case CLSID_TARGET_CS_BASE:		return new	xrSE_Target_CSBase;
+	case CLSID_TARGET_CS:			return new	xrSE_Target_CS;
 	}
 	return 0;
 }
