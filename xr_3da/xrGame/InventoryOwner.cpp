@@ -476,3 +476,8 @@ void CInventoryOwner::OnItemRuck	(CInventoryItem *inventory_item, EItemPlace pre
 void CInventoryOwner::OnItemSlot	(CInventoryItem *inventory_item, EItemPlace previous_place)
 {
 }
+
+CInventoryItem* CInventoryOwner::GetCurrentOutfit() const
+{
+    return inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+}

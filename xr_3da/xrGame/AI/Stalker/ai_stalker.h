@@ -201,7 +201,7 @@ public:
 	virtual void						UseObject				(const CObject			*tpObject);
 	virtual CWeapon						*GetCurrentWeapon		() const;
 	virtual u32							GetWeaponAmmo			() const;
-	virtual CInventoryItem				*GetCurrentEquipment	() const;
+//	virtual CInventoryItem				*GetCurrentEquipment	() const; <- moved to InventoryOwner::GetCurrentOutfit
 	virtual CInventoryItem				*GetMedikit				() const;
 	virtual CInventoryItem				*GetFood				() const;
 	virtual	bool						bfAssignMovement		(CScriptEntityAction			*tpEntityAction);

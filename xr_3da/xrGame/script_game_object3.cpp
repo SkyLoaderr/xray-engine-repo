@@ -156,14 +156,14 @@ CScriptGameObject *CScriptGameObject::GetCurrentWeapon() const
 	return			(current_weapon ? current_weapon->lua_game_object() : 0);
 }
 
-CScriptGameObject *CScriptGameObject::GetCurrentEquipment() const
+CScriptGameObject *CScriptGameObject::GetCurrentOutfit() const
 {
-	CAI_Stalker		*l_tpStalker = smart_cast<CAI_Stalker*>(&object());
-	if (!l_tpStalker) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
+	CInventoryOwner		*inventoryOwner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	CGameObject		*current_equipment = l_tpStalker->GetCurrentEquipment() ? &l_tpStalker->GetCurrentEquipment()->object() : 0;
+	CGameObject		*current_equipment = inventoryOwner->GetCurrentOutfit() ? &inventoryOwner->GetCurrentOutfit()->object() : 0;
 	return			(current_equipment ? current_equipment->lua_game_object() : 0);
 }
 

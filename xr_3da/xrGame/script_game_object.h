@@ -167,7 +167,6 @@ public:
 	// CAI_Stalker
 			void				UseObject			(const CScriptGameObject *tpLuaGameObject);
 			CScriptGameObject	*GetCurrentWeapon	() const;
-			CScriptGameObject	*GetCurrentEquipment() const;
 			CScriptGameObject	*GetFood			() const;
 			CScriptGameObject	*GetMedikit			() const;
 
@@ -315,6 +314,7 @@ public:
 			CScriptSoundInfo		GetSoundInfo	();
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
+			CScriptGameObject		*GetCurrentOutfit() const;
 			
 
 	//////////////////////////////////////////////////////////////////////////

@@ -164,8 +164,8 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 
 		.def("can_script_capture",			&CScriptGameObject::can_script_capture)
 
-		// AI_Stalker
-		.def("get_current_equipment",		&CScriptGameObject::GetCurrentEquipment)
+		// inventory owner
+		.def("get_current_outfit",			&CScriptGameObject::GetCurrentOutfit)
 
 		// searchlight
 		.def("get_current_direction",		&CScriptGameObject::GetCurrentDirection)
