@@ -326,23 +326,23 @@ void	CRenderTarget::OnDeviceCreate	()
 					{
 						u16*	p	=	(u16*)		(LPBYTE (R.pBits) + slice*R.SlicePitch + y*R.RowPitch + x*2);
 						float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
-						float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
+						float	ls	=	float(y)	/ float	(TEX_material_LdotH-1) + EPS_S;
 						ls			*=	powf(ld,1/32.f);
 						float	fd,fs;
 
 						switch	(slice)
 						{
 						case 0:	{ // looks like OrenNayar
-							fd	= _sqrt(ld);
+							fd	= powf(ld,1.f/2.f);		// 0.5
 							fs	= powf(ls,16.f)*.5f;
 								}	break;
 						case 1:	{// looks like Blinn
-							fd	= ld;
+							fd	= powf(ld,3.f/4.f);		// 0.75
 							fs	= powf(ls,24.f);
 								}	break;
 						case 2:	{ // looks like Phong
-							fd	= ld;
-							fs	= powf(ls,128.f);
+							fd	= ld;					// 1.0
+							fs	= powf(ls*1.5f,128.f);
 								}	break;
 						case 3:	{ // looks like Metal
 							float	s0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));

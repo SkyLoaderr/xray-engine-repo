@@ -93,7 +93,7 @@ public:
 	virtual void	Execute	(LPCSTR args)
 	{
 		if (0==xr_strcmp(args,"on"))	{
-`			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,TRUE);
+			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,TRUE);
 		} else if (0==xr_strcmp(args,"off"))	{
 			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,FALSE);
 		} else {
