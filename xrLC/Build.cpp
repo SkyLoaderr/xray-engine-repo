@@ -125,12 +125,10 @@ void CBuild::Run	(LPCSTR P)
 	CorrectTJunctions			();
 
 	//****************************************** HEMI-Tesselate
-	/*
 	FPU::m64r					();
 	Phase						("Adaptive HT...");
 	mem_Compact					();
 	xrPhase_AdaptiveHT			();
-	*/
 
 	//****************************************** Building normals
 	FPU::m64r					();

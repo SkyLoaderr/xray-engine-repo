@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 
-const	float	aht_min_edge	= 0.15f;		// 15cm
+const	float	aht_min_edge	= 16.0f;		// 50 cm
 const	float	aht_min_err		= 64.f/255.f;	// ~10% error
 
 void CBuild::xrPhase_AdaptiveHT	()
@@ -9,8 +9,8 @@ void CBuild::xrPhase_AdaptiveHT	()
 	CDB::COLLIDER	DB;
 	DB.ray_options	(0);
 
-	for (u32 pass=0; pass<16; pass++)
-	{
+	//for (u32 pass=0; pass<16; pass++)
+	//{
 		// Build model
 		FPU::m64r					();
 		Phase						("Building hemisphere-RayCast model...");
@@ -36,51 +36,56 @@ void CBuild::xrPhase_AdaptiveHT	()
 			g_faces[fit]->CalcNormal			();
 		}
 
-		// calc approximate normals for vertices
-		for (u32 vit=0; vit<cnt_verts; vit++)
-			g_vertices[vit]->normalFromAdj	();
+		// calc approximate normals for vertices + base lighting
+		base_color_c							vC;
+		for (u32 vit=0; vit<cnt_verts; vit++)	
+		{
+			Vertex*		V	= g_vertices[vit];
+			V->normalFromAdj	();
+			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
+			V->C._set			(vC);
+		}
 
 		// main process
 		g_bUnregister		= FALSE;
 		xr_vector<Face*>	adjacent;	adjacent.reserve(6*2*3);
-		for (u32 I=0; I<cnt_faces; I++)
+		for (u32 I=0; I<g_faces.size(); I++)
 		{
 			Face* F					= g_faces[I];
 			if (0==F)				continue;
-			if (F->flags.bSplitted)	continue;
+			if (F->flags.bSplitted)	{
+				if (!F->flags.bLocked)	FacePool.destroy	(g_faces[I]);
+				continue;
+			}
 			if (F->CalcArea()<EPS_L)continue;
 
-			Progress				(float(I)/float(cnt_faces));
-
-			// Calculate hemisphere, if need it
-			for (u32 vh=0; vh<3; vh++)
-			{
-				Vertex* V				= F->v	[vh];
-				base_color_c	vC;		V->C._get	(vC);
-				if (vC._tmp_ > EPS)		continue;
-				LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun+LP_UseFaceDisable, F);
-				vC._tmp_				= 1;	// use as marker
-				V->C._set				(vC);
-			}
+			Progress				(float(I)/float(g_faces.size()));
 
 			// Iterate on edges - select longest
-			float	max_err		= -1;
-			int		max_id		= -1;
+			float	max_err			= -1;
+			int		max_id			= -1;
 			for (u32 e=0; e<3; e++)
 			{
 				Vertex					*V1,*V2;
 				F->EdgeVerts			(e,&V1,&V2);
 				float len				= V1->P.distance_to	(V2->P);	// len
-				base_color_c			v1c; V1->C._get(v1c);
-				base_color_c			v2c; V2->C._get(v2c);
+				base_color_c			v1c; V1->C._get(v1c);			// C1
+				base_color_c			v2c; V2->C._get(v2c);			// C2
 				float err				= _abs(v1c.hemi - v2c.hemi);	// error in hemi-space
 				if (len<aht_min_edge)	continue;
+				if (len>max_err)
+				{
+					max_err = len;
+					max_id	= e;
+				}
+				/*
 				if (err<aht_min_err)	continue;
 				if (err>max_err)
 				{
 					max_err = err;
 					max_id	= e;
 				}
+				*/
 			}
 			if (max_id<0)		continue;	// nothing selected
 
@@ -92,6 +97,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 			for (u32 adj=0; adj<V1->adjacent.size(); adj++)
 			{
 				Face* A					= V1->adjacent[adj];
+				if (A->flags.bSplitted)	continue;
 				if (A->VContains(V2))	adjacent.push_back	(A);
 			}
 			std::sort		(adjacent.begin(),adjacent.end());
@@ -100,6 +106,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 			// create new vertex (lerp)
 			counter_create		++;
 			if (0==(counter_create%10000))	{
+				for (u32 I=0; I<g_vertices.size(); I++)	if (0==g_vertices[I]->adjacent.size())	VertexPool.destroy	(g_vertices[I]);
 				Status				("%d verts created, %d(now) / %d(was)",counter_create,g_vertices.size(),cnt_verts);
 				FlushLog			();
 			}
@@ -109,10 +116,11 @@ void CBuild::xrPhase_AdaptiveHT	()
 			Fvector2			UV;
 			UV.averageA			(F->tc.front().uv[F->VIndex(V1)],F->tc.front().uv[F->VIndex(V2)]);
 
-			// iterate on faces which shares this 'problematic' edge
+			// iterate on faces which share this 'problematic' edge
 			for (u32 af_it=0; af_it<adjacent.size(); af_it++)
 			{
 				Face*	AF			= adjacent[af_it];
+				VERIFY				(false==AF->flags.bSplitted);
 				AF->flags.bSplitted	= true;
 
 				// indices
@@ -123,6 +131,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 				// F1
 				Face* F1			= FacePool.create();
 				F1->flags.bSplitted	= false;
+				F1->flags.bLocked	= false;
 				F1->dwMaterial		= AF->dwMaterial;
 				F1->dwMaterialGame	= AF->dwMaterialGame;
 				F1->SetVertices		(AF->v[idB],AF->v[id1],V);
@@ -132,6 +141,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 				// F2
 				Face* F2			= FacePool.create();
 				F2->flags.bSplitted	= false;
+				F2->flags.bLocked	= false;
 				F2->dwMaterial		= AF->dwMaterial;
 				F2->dwMaterialGame	= AF->dwMaterialGame;
 				F2->SetVertices		(AF->v[idB],V,AF->v[id2]);
@@ -139,9 +149,13 @@ void CBuild::xrPhase_AdaptiveHT	()
 				F2->CalcNormal		();
 
 				// don't destroy old face	(it can be used as occluder during ray-trace)
+				// if (AF->bLocked)	continue;
+				// FacePool.destroy	(g_faces[I]);
 			}
 
 			V->normalFromAdj		();
+			LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
+			V->C._set				(vC);
 		}
 
 		// Cleanup
@@ -156,6 +170,6 @@ void CBuild::xrPhase_AdaptiveHT	()
 		u32				cnt_faces2	= g_faces.size		();
 		clMsg			("* faces:    was(%d), become(%d)",cnt_faces,cnt_faces2);
 		clMsg			("* vertices: was(%d), become(%d)",cnt_verts,cnt_verts2);
-		if (cnt_faces2 == cnt_faces)	break;			// nothing was tesselated - exit
-	}
+	//	if (cnt_faces2 == cnt_faces)	break;			// nothing was tesselated - exit
+	//}
 }
