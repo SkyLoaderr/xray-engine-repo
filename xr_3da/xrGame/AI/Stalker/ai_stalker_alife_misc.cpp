@@ -14,7 +14,7 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 #include "../../inventory.h"
-#include "../../xrserver_objects_alife.h"
+#include "../../alife_task.h"
 
 bool CAI_Stalker::bfHealthIsGood			()
 {
@@ -73,7 +73,7 @@ bool CAI_Stalker::bfCheckIfTaskCompleted()
 	if (int(m_tTaskID) < 0)
 		return		(false);
 
-	CSE_ALifeTask	&tTask = *ai().alife().tasks().task(m_tTaskID);
+	CALifeTask	&tTask = *ai().alife().tasks().task(m_tTaskID);
 	switch (tTask.m_tTaskType) {
 		case ALife::eTaskTypeSearchForItemCL :
 		case ALife::eTaskTypeSearchForItemCG : {
@@ -104,7 +104,7 @@ void CAI_Stalker::vfChooseHumanTask()
 		ALife::TASK_SET::const_iterator		i = (*J).second.begin();
 		ALife::TASK_SET::const_iterator		e = (*J).second.end();
 		for ( ; i != e; ++i) {
-			CSE_ALifeTask		*l_tpTask = ai().alife().tasks().task(*i);
+			CALifeTask		*l_tpTask = ai().alife().tasks().task(*i);
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
 				break;

@@ -10,13 +10,14 @@
 
 #include "xrServer_Objects_ALife_All.h"
 #include "alife_level_registry.h"
+#include "alife_event.h"
 
 class CSE_ALifeCreatureActor;
 
 class CALifeGraphRegistry {
 public:
 	typedef xr_map<ALife::_OBJECT_ID,CSE_ALifeDynamicObject*>	OBJECT_REGISTRY;
-	typedef xr_map<ALife::_EVENT_ID,CSE_ALifeEvent*>			EVENT_REGISTRY;
+	typedef xr_map<ALife::_EVENT_ID,CALifeEvent*>				EVENT_REGISTRY;
 
 public:
 	class CGraphPointInfo {
@@ -63,12 +64,12 @@ public:
 	IC		void					attach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			ALife::_GRAPH_ID	game_vertex_id,				bool alife_query = true);
 	IC		void					detach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			ALife::_GRAPH_ID	game_vertex_id,				bool alife_query = true);
 	IC		void					assign					(CSE_ALifeMonsterAbstract	*object);
-	IC		void					add						(CSE_ALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id);
+	IC		void					add						(CALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id);
 	IC		void					add						(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
 	IC		void					remove					(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
-	IC		void					remove					(CSE_ALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id);
+	IC		void					remove					(CALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id);
 	IC		void					change					(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	ALife::_GRAPH_ID	next_game_vertex_id);
-	IC		void					change					(CSE_ALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id,	ALife::_GRAPH_ID	next_game_vertex_id);
+	IC		void					change					(CALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id,	ALife::_GRAPH_ID	next_game_vertex_id);
 	IC		CALifeLevelRegistry		&level					() const;
 	IC		void					set_process_time		(const u64 &process_time);
 	IC		CSE_ALifeCreatureActor	*actor					() const;

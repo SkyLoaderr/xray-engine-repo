@@ -40,7 +40,7 @@ public:
 		m_manager->register_object	(object);
 	}
 	
-	IC		void					operator()				(CSE_ALifeEvent *event) const
+	IC		void					operator()				(CALifeEvent *event) const
 	{
 		m_manager->graph().add		(event,event->m_tGraphID);
 	}

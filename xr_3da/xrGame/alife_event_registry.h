@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "xrServer_Objects_ALife.h"
+#include "alife_event.h"
 
 class CALifeEventRegistry {
 protected:
@@ -21,7 +21,7 @@ protected:
 		{
 		}
 
-		IC const ALife::_EVENT_ID	operator()			(CSE_ALifeEvent *T) const
+		IC const ALife::_EVENT_ID	operator()			(CALifeEvent *T) const
 		{
 			m_predicate				(T);
 			return					(T->m_tEventID);
@@ -44,9 +44,9 @@ public:
 	virtual	void					save					(IWriter &memory_stream);
 	template <typename _predicate>
 	IC		void					load					(IReader &file_stream, const _predicate &predicate);
-	IC		void					add						(CSE_ALifeEvent	*event);
+	IC		void					add						(CALifeEvent	*event);
 	IC		void					remove					(const ALife::_EVENT_ID	&event_id, bool no_assert = false);
-	IC		CSE_ALifeEvent			*event					(const ALife::_EVENT_ID	&event_id, bool no_assert = false) const;
+	IC		CALifeEvent				*event					(const ALife::_EVENT_ID	&event_id, bool no_assert = false) const;
 	IC		const ALife::EVENT_MAP	&events					() const;
 };
 

@@ -13,7 +13,7 @@ IC	CALifeTaskRegistry::CALifeTaskRegistry	(LPCSTR section)
 	m_id						= 0;
 }
 
-IC	void CALifeTaskRegistry::update			(CSE_ALifeTask	*task)
+IC	void CALifeTaskRegistry::update			(CALifeTask *task)
 {
 	R_ASSERT2					(this->task(task->m_tTaskID) == task,"Cannot find a specified task in the Task registry!");
 	ALife::OBJECT_TASK_PAIR_IT	J = m_cross.find(task->m_tCustomerID);
@@ -24,7 +24,7 @@ IC	void CALifeTaskRegistry::update			(CSE_ALifeTask	*task)
 	(*J).second.insert			(task->m_tTaskID);
 }
 
-IC	void CALifeTaskRegistry::add			(CSE_ALifeTask *task)
+IC	void CALifeTaskRegistry::add			(CALifeTask *task)
 {
 	m_tasks.insert				(mk_pair(task->m_tTaskID = m_id++,task));
 	update						(task);
@@ -49,7 +49,7 @@ IC	const ALife::TASK_MAP &CALifeTaskRegistry::tasks() const
 	return						(m_tasks);
 }
 
-IC	CSE_ALifeTask *CALifeTaskRegistry::task	(const ALife::_TASK_ID &id, bool no_assert) const
+IC	CALifeTask *CALifeTaskRegistry::task	(const ALife::_TASK_ID &id, bool no_assert) const
 {
 	ALife::TASK_MAP::const_iterator	I = tasks().find(id);
 	if (I == tasks().end()) {

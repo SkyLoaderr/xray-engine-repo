@@ -33,13 +33,13 @@
 #define MAX_ITEM_VOLUME				100
 #define INVALID_STORY_ID			ALife::_STORY_ID(-1)
 
-class CSE_ALifeEventGroup;
+class CALifeEventGroup;
 class CSE_ALifeDynamicObject;
 class CSE_ALifeMonsterAbstract;
 class CSE_ALifeTrader;
-class CSE_ALifeEvent;
-class CSE_ALifeTask;
-class CSE_ALifePersonalEvent;
+class CALifeEvent;
+class CALifeTask;
+class CALifeEventPersonal;
 class CALifeKnownAnomaly;
 class CALifeDiscovery;
 class CALifeOrganization;
@@ -328,7 +328,7 @@ namespace ALife {
 	DEFINE_MAP		(_NEWS_ID,					CALifeNews*,					NEWS_REGISTRY,				NEWS_REGISTRY_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
-	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
+	DEFINE_MAP		(_EVENT_ID,					CALifeEvent*,					EVENT_MAP,					EVENT_PAIR_IT);
 
 	typedef struct tagSGraphPoint {
 		D_OBJECT_MAP			tpObjects;
@@ -345,7 +345,7 @@ namespace ALife {
 
 	DEFINE_VECTOR	(int,						INT_VECTOR,						INT_IT);
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
-	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
+	DEFINE_VECTOR	(CALifeEvent*,				EVENT_P_VECTOR,					EVENT_P_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);
@@ -354,7 +354,7 @@ namespace ALife {
 	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeMonsterAbstract*,	MONSTER_P_VECTOR,				MONSTER_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
-	DEFINE_VECTOR	(CSE_ALifePersonalEvent*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
+	DEFINE_VECTOR	(CALifeEventPersonal*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
 	DEFINE_VECTOR	(MONSTER_P_VECTOR,			MONSTER_P_VECTOR_VECTOR,		MONSTER_P_VECTOR_IT);
 	DEFINE_VECTOR	(CALifeKnownAnomaly*,		ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
@@ -375,7 +375,7 @@ namespace ALife {
 	DEFINE_SET		(CSE_ALifeDynamicObject*,	D_OBJECT_SET,					D_OBJECT_SET_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
-	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
+	DEFINE_MAP		(_TASK_ID,					CALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
 	DEFINE_MAP		(_STORY_ID,					CSE_ALifeDynamicObject*,		STORY_P_MAP,				STORY_P_PAIR_IT);

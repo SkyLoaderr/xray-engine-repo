@@ -18,7 +18,7 @@ IC	const ALife::EVENT_MAP &CALifeEventRegistry::events	() const
 	return							(m_events);
 }
 
-IC	CSE_ALifeEvent *CALifeEventRegistry::event			(const ALife::_EVENT_ID &event_id, bool no_assert) const
+IC	CALifeEvent *CALifeEventRegistry::event				(const ALife::_EVENT_ID &event_id, bool no_assert) const
 {
 	ALife::EVENT_MAP::const_iterator	I = events().find(event_id);
 	if (events().end() == I) {
@@ -28,7 +28,7 @@ IC	CSE_ALifeEvent *CALifeEventRegistry::event			(const ALife::_EVENT_ID &event_i
 	return							((*I).second);
 }
 
-IC	void CALifeEventRegistry::add						(CSE_ALifeEvent	*event)
+IC	void CALifeEventRegistry::add						(CALifeEvent *event)
 {
 	if (m_events.find(event->m_tEventID) != m_events.end()) {
 		R_ASSERT2					((*(m_events.find(event->m_tEventID))).second == event,"The specified event is already presented in the Event Registry!");

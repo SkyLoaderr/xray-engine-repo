@@ -10,7 +10,7 @@
 #include "alife_task_registry.h"
 #include "object_broker.h"
 
-IC const ALife::_TASK_ID tfChooseTaskKeyPredicate	(const CSE_ALifeTask *T)
+IC const ALife::_TASK_ID tfChooseTaskKeyPredicate	(const CALifeTask *T)
 {
 	return						(T->m_tTaskID);
 };

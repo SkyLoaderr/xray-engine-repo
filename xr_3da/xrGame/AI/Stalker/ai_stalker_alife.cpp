@@ -45,7 +45,7 @@ void CAI_Stalker::vfChooseTask()
 		else {
 			m_tDestGraphPointIndex	= ALife::_GRAPH_ID(-1);
 			vfChooseHumanTask		();
-			CSE_ALifeTask			*l_tpTask = ai().alife().tasks().task(m_tTaskID);
+			CALifeTask			*l_tpTask = ai().alife().tasks().task(m_tTaskID);
 			switch (l_tpTask->m_tTaskType) {
 				case ALife::eTaskTypeSearchForItemCG :
 				case ALife::eTaskTypeSearchForItemOG : {
@@ -78,7 +78,7 @@ void CAI_Stalker::vfGoToCustomer()
 //		m_tpGraphPath.clear();
 //		m_dwCurGraphPathNode = 0;
 //		if (int(m_tTaskID) > 0) {
-////			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_tTaskID);
+////			CALifeTask			*l_tpTask = m_tpALife->task(m_tTaskID);
 ////			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->object(l_tpTask->m_tCustomerID));
 ////			if (l_tpTrader)
 ////				m_tpALife->communicate_with_customer(this,l_tpTrader);
@@ -107,7 +107,7 @@ void CAI_Stalker::vfFinishTask()
 	if (bfCheckIfTaskCompleted())
 		m_tTaskState		= ALife::eTaskStateGoToCustomer;
 	else {
-		CSE_ALifeTask		*l_tpALifeTask = ai().alife().tasks().task(m_tTaskID);
+		CALifeTask		*l_tpALifeTask = ai().alife().tasks().task(m_tTaskID);
 		switch (l_tpALifeTask->m_tTaskType) {
 			case ALife::eTaskTypeSearchForItemCG :
 			case ALife::eTaskTypeSearchForItemOG : {

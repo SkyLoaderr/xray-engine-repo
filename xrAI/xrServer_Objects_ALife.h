@@ -48,50 +48,6 @@ public:
 #endif
 };
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
-	ALife::_EVENT_ID				m_tEventID;
-	ALife::_TIME_ID					m_tTimeID;
-	ALife::_GRAPH_ID				m_tGraphID;
-	ALife::ECombatResult			m_tCombatResult;
-	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
-	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
-
-									CSE_ALifeEvent	();
-	virtual							~CSE_ALifeEvent	();
-SERVER_ENTITY_DECLARE_END
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)
-	ALife::_EVENT_ID				m_tEventID;
-	ALife::_TIME_ID					m_tTimeID;
-	ALife::_TASK_ID					m_tTaskID;
-	int								m_iHealth;
-	ALife::EEventRelationType		m_tEventRelationType;
-	ALife::OBJECT_VECTOR			m_tpItemIDs;
-
-									CSE_ALifePersonalEvent();
-	virtual							~CSE_ALifePersonalEvent();
-SERVER_ENTITY_DECLARE_END
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
-	ALife::_TASK_ID					m_tTaskID;
-	ALife::_TIME_ID					m_tTimeID;
-	ALife::_OBJECT_ID				m_tCustomerID;
-	float							m_fCost;
-	ALife::ETaskType				m_tTaskType;
-	u32								m_dwTryCount;
-	union {
-		string32					m_caSection;
-		ALife::_OBJECT_ID			m_tObjectID;
-	};
-	union {
-		ALife::_LOCATION_ID			m_tLocationID[LOCATION_TYPE_COUNT];
-		ALife::_GRAPH_ID			m_tGraphID;
-	};
-
-									CSE_ALifeTask	();
-	virtual							~CSE_ALifeTask	();
-SERVER_ENTITY_DECLARE_END
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)
 									CSE_LevelPoint(LPCSTR caSection);
 	virtual							~CSE_LevelPoint();
@@ -211,14 +167,6 @@ public:
 	};	
 	#endif
 };
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEventGroup,CSE_ALifeObject)
-	u16								m_wCountBefore;
-	u16								m_wCountAfter;
-	
-									CSE_ALifeEventGroup(LPCSTR caSection);
-	virtual							~CSE_ALifeEventGroup();
-SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	ALife::_TIME_ID					m_tTimeID;

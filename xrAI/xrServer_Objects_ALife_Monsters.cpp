@@ -16,6 +16,7 @@
 
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "object_broker.h"
+#include "alife_event_personal.h"
 
 #ifndef _EDITOR
 #ifndef AI_COMPILER

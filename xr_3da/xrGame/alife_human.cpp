@@ -17,6 +17,7 @@
 #include "alife_time_manager.h"
 #include "ef_storage.h"
 #include "alife_communication_space.h"
+#include "alife_event_personal.h"
 
 using namespace ALife;
 using namespace ALifeCommunication;
@@ -26,7 +27,7 @@ using namespace ALifeCommunication;
 #define MAX_AMMO_ATTACH_COUNT	10
 
 struct CRemovePersonalEventPredicate {
-	IC bool							operator()							(const CSE_ALifePersonalEvent *tPersonalEvent)  const
+	IC bool							operator()							(const CALifeEventPersonal *tPersonalEvent)  const
 	{
 		return						(!ai().alife().events().event(tPersonalEvent->m_tEventID,true));
 	};
@@ -88,7 +89,7 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 		return		(false);
 	I				= children.begin();
 	OBJECT_IT E = children.end();
-	const CSE_ALifeTask	&tTask = *ai().alife().tasks().task(m_dwCurTaskID);
+	const CALifeTask	&tTask = *ai().alife().tasks().task(m_dwCurTaskID);
 	for ( ; I != E; ++I) {
 		switch (tTask.m_tTaskType) {
 			case eTaskTypeSearchForItemCL :
@@ -165,7 +166,7 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 		TASK_SET::const_iterator	i = (*J).second.begin();
 		TASK_SET::const_iterator	e = (*J).second.end();
 		for ( ; i != e; ++i) {
-			CSE_ALifeTask		*l_tpTask = ai().alife().tasks().task(*i);
+			CALifeTask		*l_tpTask = ai().alife().tasks().task(*i);
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
 				break;

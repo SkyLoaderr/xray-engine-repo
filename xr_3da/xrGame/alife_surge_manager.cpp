@@ -523,7 +523,7 @@ void CALifeSurgeManager::update_tasks()
 				R_ASSERT2		(jj != ee,"There is no way from trader to artefact");
 
 				// creating _new task
-				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
+				CALifeTask				*l_tpALifeTask = xr_new<CALifeTask>();
 				l_tpALifeTask->m_tTaskType	= eTaskTypeSearchForItemCG;
 				strcpy						(l_tpALifeTask->m_caSection,(*I).first);
 				l_tpALifeTask->m_tGraphID	= (*II)->game_vertex_id();

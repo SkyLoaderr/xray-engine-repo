@@ -58,7 +58,7 @@ IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, ALife::_GRA
 	object->m_tNodeID			= ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
 }
 
-IC	void CALifeGraphRegistry::remove	(CSE_ALifeEvent *event, ALife::_GRAPH_ID game_vertex_id)
+IC	void CALifeGraphRegistry::remove	(CALifeEvent *event, ALife::_GRAPH_ID game_vertex_id)
 {
 	ALife::EVENT_PAIR_IT		I = m_objects[game_vertex_id].events().find(event->m_tEventID);
 	R_ASSERT2					(m_objects[game_vertex_id].events().end() != I,"Specified object not found on the given graph point!");
@@ -70,7 +70,7 @@ IC	void CALifeGraphRegistry::remove	(CSE_ALifeEvent *event, ALife::_GRAPH_ID gam
 #endif
 }
 
-IC	void CALifeGraphRegistry::add	(CSE_ALifeEvent *event, ALife::_GRAPH_ID game_vertex_id)
+IC	void CALifeGraphRegistry::add	(CALifeEvent *event, ALife::_GRAPH_ID game_vertex_id)
 {
 	ALife::EVENT_PAIR_IT		I = m_objects[game_vertex_id].events().find(event->m_tEventID);
 	R_ASSERT2					(m_objects[game_vertex_id].events().end() == I,"Specified object has been already found on the given graph point!");
@@ -82,7 +82,7 @@ IC	void CALifeGraphRegistry::add	(CSE_ALifeEvent *event, ALife::_GRAPH_ID game_v
 #endif
 }
 
-IC	void CALifeGraphRegistry::change	(CSE_ALifeEvent *event, ALife::_GRAPH_ID game_vertex_id, ALife::_GRAPH_ID next_game_vertex_id)
+IC	void CALifeGraphRegistry::change	(CALifeEvent *event, ALife::_GRAPH_ID game_vertex_id, ALife::_GRAPH_ID next_game_vertex_id)
 {
 	remove						(event,game_vertex_id);
 	add							(event,next_game_vertex_id);

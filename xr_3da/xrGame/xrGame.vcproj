@@ -1247,6 +1247,45 @@
 							</File>
 						</Filter>
 						<Filter
+							Name="event"
+							Filter="">
+							<File
+								RelativePath=".\alife_event.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_event.h">
+							</File>
+							<File
+								RelativePath=".\alife_event_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="event_group"
+							Filter="">
+							<File
+								RelativePath=".\alife_event_group.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_event_group.h">
+							</File>
+							<File
+								RelativePath=".\alife_event_group_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="event_personal"
+							Filter="">
+							<File
+								RelativePath=".\alife_event_personal.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_event_personal.h">
+							</File>
+							<File
+								RelativePath=".\alife_event_personal_inline.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="known_anomaly"
 							Filter="">
 							<File
@@ -1283,6 +1322,19 @@
 							</File>
 							<File
 								RelativePath=".\alife_organization_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="task"
+							Filter="">
+							<File
+								RelativePath=".\alife_task.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_task.h">
+							</File>
+							<File
+								RelativePath=".\alife_task_inline.h">
 							</File>
 						</Filter>
 					</Filter>
