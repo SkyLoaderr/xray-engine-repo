@@ -363,6 +363,11 @@ function action_help:initialize ()
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
     
+    if self.a.replace_theme == true then
+       printf ("WOUNDED : clear default theme. Object %s", self.object:name ()) 
+       self.sounds.themes = {}
+    end
+        
     local found = false
     if self.a.theme ~= nil then
        for a = 1, table.getn (self.sounds.themes), 1 do
@@ -721,8 +726,13 @@ function set_wounded (object, ini, scheme, section)
     st.hp_min = utils.cfg_get_number (ini, section, "hp_min", object, false, 10)
     st.hp_max = utils.cfg_get_number (ini, section, "hp_max", object, false, 20)
     st.theme = utils.cfg_get_string (ini, section, "help_theme", object, false, "")
+    st.replace_theme = utils.cfg_get_bool (ini, section, "replace_default_theme", object, false, false)
     if st.theme == "" then st.theme = nil end
-    
+   
+    if st.replace_theme == true and st.theme == nil then
+       abort ("WOUNDED SCHEME IS NOT WORKING WITHOUT EMPTY THEMES LIST !!! Object %s", npc:name ()) 
+    end
+           
     if st.hp_min >= st.hp_max then
        abort ("WOUNDED SCHEME IS NOT WORKING WHILE hp_min MORE OR EQUAL THAN hp_max !!! Object %s", npc:name ())
     end
