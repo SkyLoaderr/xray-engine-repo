@@ -3,17 +3,13 @@
 
 #include "stdafx.h"
 
-struct pred		: public std::binary_function<char*, char*, bool> 
-{	
-	IC bool operator()(const char* x, const char* y) const
-	{	return strcmp(x,y)<0;	}
-};
-	
 typedef set<char*,pred_str>	set_cstr;
 typedef set_cstr::iterator	set_cstr_it;
 	
 set_cstr			files;
-	
+
+extern void Recurse	(const char* path);
+
 void ProcessOne(_finddata_t& F, const char* path)
 {
 	string256		N;
@@ -40,7 +36,7 @@ void Recurse(const char* path)
 	strcpy			(N,path);
 	strcat			(N,"*.*");
 	
-    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
+    hFile=_findfirst(N, &sFile);
 	ProcessOne		(sFile,path);
 	
     while			( _findnext( hFile, &sFile ) == 0 )

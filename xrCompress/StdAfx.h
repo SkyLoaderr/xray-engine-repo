@@ -24,6 +24,9 @@
 #include "limits"
 #include "list"
 #include "set"
+#include "map"
+#include "algorithm"
+using namespace std;
 
 #undef min
 #undef max
