@@ -17,7 +17,6 @@
 #define DLL_API					__declspec(dllexport)
 #define TIXML_USE_STL
 
-#include "DrawUtils.h"
 #include "clsid_game.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
