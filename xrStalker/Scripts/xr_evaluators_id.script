@@ -32,6 +32,7 @@ sidor_follower_base                 =   sidor_evaluator + 50
 sidor_report_leader                 =   sidor_evaluator + 60
 sidor_report_soldier                =   sidor_evaluator + 70
 sidor_rest                          =   sidor_evaluator + 80
+sidor_bar                           =   sidor_evaluator + 90
 
 
 -- эвалуаторы Чугай
