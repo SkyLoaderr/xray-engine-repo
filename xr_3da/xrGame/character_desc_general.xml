@@ -34,11 +34,12 @@
 	</specific_character>
 
 	<specific_character id="actor">
-		<name>Actor Character</name>
-		<team>none</team>
-		<reputation>30</reputation>
-		<rank>50</rank>
-		
+		<name>Gunner</name>
+		<icon x="0" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<rank>0</rank>
+		<team>Lonewolf</team>
+
 		<start_dialog></start_dialog>
 		<actor_dialog></actor_dialog>
 
