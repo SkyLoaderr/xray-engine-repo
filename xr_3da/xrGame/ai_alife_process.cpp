@@ -48,7 +48,7 @@ void CAI_ALife::Update(u32 dt)
 			for (I = M ; I != E; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
-					m_dwObjectsBeingSwitched = I - B + 1;
+					m_dwObjectsBeingSwitched = (u32)(I - B + 1);
 //.					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
 					return;
 				}
@@ -56,7 +56,7 @@ void CAI_ALife::Update(u32 dt)
 			for (I = B; I != M; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
-					m_dwObjectsBeingSwitched = I - B + 1;
+					m_dwObjectsBeingSwitched = (u32)(I - B + 1);
 //.					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
 					return;
 				}
@@ -82,7 +82,7 @@ void CAI_ALife::Update(u32 dt)
 						continue;
 					vfProcessNPC			(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
-						m_dwObjectsBeingProcessed = I - B + 1;
+						m_dwObjectsBeingProcessed = (u32)(I - B + 1);
 						return;
 					}
 				}
@@ -91,7 +91,7 @@ void CAI_ALife::Update(u32 dt)
 						continue;
 					vfProcessNPC			(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
-						m_dwObjectsBeingProcessed = I - B + 1;
+						m_dwObjectsBeingProcessed = (u32)(I - B + 1);
 						return;
 					}
 				}

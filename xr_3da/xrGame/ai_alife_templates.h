@@ -33,7 +33,7 @@ void free_map(xr_map<T1,T2 *> &tpMap)
 // server objects
 IC void save_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
 {
-	tNetPacket.w_u32			(baVector.size());
+	tNetPacket.w_u32			((u32)baVector.size());
 	xr_vector<bool>::iterator 	I = baVector.begin();
 	xr_vector<bool>::iterator 	E = baVector.end();
 	u32							dwMask = 0;
@@ -71,7 +71,7 @@ IC void load_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
 template <class T>
 void save_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
 {
-	tNetPacket.w_u32			(tpVector.size());
+	tNetPacket.w_u32			((u32)tpVector.size());
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
@@ -104,7 +104,7 @@ void init_vector(xr_vector<T *> &tpVector, LPCSTR caSection)
 template <class T>
 void save_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
 {
-	tNetPacket.w_u32			(tpVector.size());
+	tNetPacket.w_u32			((u32)tpVector.size());
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)

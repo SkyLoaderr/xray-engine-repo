@@ -85,7 +85,7 @@ void CBolt::Throw() {
 		}
 
 		// Спавним болты, чтоб у актера всегда было 5 болтов
-		u32 l_c = 2 - m_subs.size();
+		u32 l_c = 2 - (u32)m_subs.size();
 		while(l_c--) {
 			xrServerEntity*		D	= F_entity_Create(cNameSect());
 			R_ASSERT			(D);

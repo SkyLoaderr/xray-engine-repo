@@ -286,9 +286,9 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 	u32 dwBestWeapon = 0;
 	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
 	if (tpInventoryOwner) {
-		xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin(), B = I;
+		xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
 		xr_vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
-		u32 best_slot = -1;
+//		u32 best_slot = (u32)(-1);
 		for ( ; I != E; I++)
 			if ((*I).m_pIItem) {
 				CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);

@@ -879,7 +879,7 @@ void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwS
 					bStop = true;
 					break;
 				}
-				iStartI = tpaPath.size() - 1;
+				iStartI = (int)tpaPath.size() - 1;
 				dwPrevPrevNode = dwPrevNode;
 				dwPrevNode = dwCurNode;
 				tPrevPrevPoint = tpaPath[tpaPath.size() - 1];
@@ -1007,7 +1007,7 @@ void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwS
 				}
 				
 				// finding the node
-				iCurrentPatrolPoint = iCurrentPatrolPoint > 0 ? iCurrentPatrolPoint - 1 : tpaPoints.size() - 1;
+				iCurrentPatrolPoint = iCurrentPatrolPoint > 0 ? iCurrentPatrolPoint - 1 : (int)tpaPoints.size() - 1;
 				tStartPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 				iCurrentPatrolPoint = iCurrentPatrolPoint < (int)tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0;
 				tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
@@ -1380,13 +1380,13 @@ u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPositi
 			dwCurNode		= iSavedIndex;
 		}
 		else
-			return(-1);
+			return((u32)(-1));
 	}
 	
-	if (bfInsideNode(Node(dwCurNode),tFinishPosition) && (abs(ffGetY(*Node(dwCurNode),tFinishPosition.x,tFinishPosition.z) - tFinishPosition.y) < .5f))
+	if (bfInsideNode(Node(dwCurNode),tFinishPosition) && (_abs(ffGetY(*Node(dwCurNode),tFinishPosition.x,tFinishPosition.z) - tFinishPosition.y) < .5f))
 		return(dwCurNode);
 	else
-		return(-1);
+		return((u32)(-1));
 }
 
 float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks)

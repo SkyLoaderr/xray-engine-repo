@@ -31,7 +31,7 @@ public:
 	virtual	void					Save(IWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
-		tMemoryStream.w_u32			(m_tObjectRegistry.size());
+		tMemoryStream.w_u32			((u32)m_tObjectRegistry.size());
 		OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 		for ( ; I != E; I++) {

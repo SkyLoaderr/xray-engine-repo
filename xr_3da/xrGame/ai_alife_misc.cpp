@@ -150,7 +150,7 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 			else {
 				std::sort(tServerEntity.children.begin(),tServerEntity.children.end(),CSortItemPredicate(m_tObjectRegistry));
 				float		fItemMass = tpALifeTraderParams->m_fCumulativeItemMass;
-				u32			dwCount = tServerEntity.children.size();
+				u32			dwCount = (u32)tServerEntity.children.size();
 				int			i;
 				for ( i=(int)dwCount - 1; i>=0; i--) {
 					OBJECT_PAIR_IT II = m_tObjectRegistry.find(tServerEntity.children[i]);

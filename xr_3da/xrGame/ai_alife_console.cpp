@@ -32,7 +32,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int i, const int j,
 {
 	string128	S2;
 	if (strlen(S))
-		for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+		for (int k=0, l=(int)strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
 			Memory.mem_copy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
 				S2[l - k*u]=0;
@@ -57,7 +57,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 {
 	string128	S2;
 	if (strlen(S))
-		for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+		for (int k=0, l=(int)strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
 			Memory.mem_copy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
 				S2[l - k*u]=0;

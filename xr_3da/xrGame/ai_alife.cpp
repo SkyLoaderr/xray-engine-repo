@@ -107,7 +107,7 @@ void CAI_ALife::vfNewGame()
 				u16					id;
 				tNetPacket.r_begin	(id);
 				tp2->UPDATE_Read	(tNetPacket);
-				Memory.mem_copy		(tp2->s_name,S,(strlen(S) + 1)*sizeof(char));
+				Memory.mem_copy		(tp2->s_name,S,((int)strlen(S) + 1)*sizeof(char));
 				tp2->m_bDirectControl	= false;
 				tp2->ID				= l_wGenID++;
 				vfCreateObject		(tp2);
@@ -285,7 +285,7 @@ void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
 		ALIFE_ENTITY_P_IT		E = m_tpCurrentLevel->end();
 		for ( ; I != E; I++)
 			if (*I == tpALifeDynamicObject) {
-				if (I - B >= m_dwObjectsBeingSwitched) {
+				if (I - B >= (int)m_dwObjectsBeingSwitched) {
 					if (m_dwObjectsBeingSwitched)
 						m_dwObjectsBeingSwitched--;
 				}

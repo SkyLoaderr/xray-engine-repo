@@ -5,8 +5,8 @@
 xr_set<CArtifact*> CArtifact::m_all;
 
 CArtifact::CArtifact(void) {
-	shedule_Min = .02f;
-	shedule_Max = .03f;
+	shedule_Min = 20;
+	shedule_Max = 30;
 	m_jumpHeight = 0;
 }
 
@@ -160,7 +160,7 @@ void CArtifact::UpdateCL() {
 void CArtifact::Update(u32 dt) {
 	inherited::Update(dt);
 	if(getVisible() && m_pPhysicsShell) {
-		float l_force = 100.f;
+		//float l_force = 100.f;
 		//Fvector l_dir; l_dir.set(0, 1.f, 0);
 		//if(vPosition.y < 1.f) {
 		//	m_pPhysicsShell->applyImpulse(l_dir, .05f * dt * m_pPhysicsShell->getMass());
