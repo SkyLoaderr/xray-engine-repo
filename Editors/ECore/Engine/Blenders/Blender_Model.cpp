@@ -56,7 +56,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 	{
 		C.PassBegin		();
 		{
-			C.PassSET_ZB		(TRUE,TRUE);
+			C.PassSET_ZB		(TRUE,oBlend.value&&(oAREF.value<200)?FALSE:TRUE);
 			if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE,oAREF.value);
 			else				C.PassSET_Blend_SET		();
 			C.PassSET_LightFog	(TRUE,TRUE);
