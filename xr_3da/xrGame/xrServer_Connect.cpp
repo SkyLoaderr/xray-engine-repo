@@ -20,6 +20,8 @@ BOOL xrServer::Connect(LPCSTR session_name)
 	BOOL bResult = IPureServer::Connect(session_name);
 	if (bResult)
 	{
+		Msg						("! sv_Connect: %s",session_name);
+
 		// Parse options and create game
 		if (0==strchr(session_name,'|'))	return FALSE;
 		string256				options;
