@@ -1116,6 +1116,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			();
 	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				();
 	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			();
+	case CLSID_AI_STALKER:			return xr_new<xrSE_Enemy>			();
 	case CLSID_EVENT:				return xr_new<xrSE_Event>			();
 	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				();
 	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		();
