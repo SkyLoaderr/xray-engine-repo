@@ -17,9 +17,9 @@ struct	CLightPPA_Vertex
 class	CLightPPA	:	public IRender_Light
 {
 public:
-	bool			bActive;
-	Fsphere			sphere;
-	Fcolor			color;
+	bool				bActive;
+	Fsphere				sphere;
+	Fcolor				color;
 public:
 	CLightPPA			();
 	virtual ~CLightPPA	();
