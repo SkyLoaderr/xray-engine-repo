@@ -3587,6 +3587,9 @@
 								RelativePath=".\inventory_owner_inline.h">
 							</File>
 							<File
+								RelativePath=".\inventory_owner_scripts.cpp">
+							</File>
+							<File
 								RelativePath=".\InventoryOwner.cpp">
 							</File>
 							<File

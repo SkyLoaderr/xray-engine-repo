@@ -7,6 +7,7 @@
 #include "InfoPortion.h"
 #include "PdaMsg.h"
 #include "attachment_owner.h"
+#include "script_space.h"
 
 class CInventory;
 class CInventoryItem;
@@ -93,6 +94,23 @@ public:
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		() {}
 	virtual bool			use_bolts				() const {return(true);}
+
+	//////////////////////////////////////////////////////////////////////////
+	// связь со скриптами
+	//////////////////////////////////////////////////////////////////////////
+public:
+	void	set_pda_callback	(const luabind::object &lua_object, LPCSTR method);
+	void	set_pda_callback	(const luabind::functor<void> &lua_function);
+	void	set_info_callback	(const luabind::object &lua_object, LPCSTR method);
+	void	set_info_callback	(const luabind::functor<void> &lua_function);
+	void	clear_pda_callback	();
+	void	clear_info_callback	();
+
+	void	zero_callbacks		();
+	void	reset_callbacks		();
+protected:
+	SMemberCallback m_pPdaCallback;
+	SMemberCallback m_pInfoCallback;
 };
 
 #include "inventory_owner_inline.h"

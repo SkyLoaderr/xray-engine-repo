@@ -486,6 +486,45 @@ public:
 			l_tpScriptMonster->clear_hit_callback(member_callback);
 	}
 
+//////////////////////////////////////////////////////////////////////////
+// Inventory Owner
+//////////////////////////////////////////////////////////////////////////
+	void SetPdaCallback(const luabind::functor<void> &lua_function)
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_pda_callback!");
+		else
+			pInvOwner->set_pda_callback(lua_function);
+	}
+	void ClearPdaCallback()
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member clear_pda_callback!");
+		else
+			pInvOwner->clear_pda_callback();
+	}
+
+	void SetInfoCallback(const luabind::functor<void> &lua_function)
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_info_callback!");
+		else
+			pInvOwner->set_info_callback(lua_function);
+	}
+	void ClearInfoCallback()
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member clear_info_callback!");
+		else
+			pInvOwner->clear_info_callback();
+	}
+
+	
+
 	MemorySpace::CMemoryInfo *memory(const CLuaGameObject &lua_game_object)
 	{
 		CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);

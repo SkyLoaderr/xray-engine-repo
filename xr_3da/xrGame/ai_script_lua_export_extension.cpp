@@ -21,6 +21,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai_alife_space.h"
 #include "script_binder_object.h"
+#include "pdamsg.h"
 
 using namespace luabind;
 
@@ -95,16 +96,19 @@ void CScriptEngine::export_artifact_merger()
 	];
 }
 
+
+
+
 void CScriptEngine::export_effector()
 {
 	module(lua())
-	[
-		class_<SPPInfo::SDuality>("duality")
+		[
+			class_<SPPInfo::SDuality>("duality")
 			.def_readwrite("h",					&SPPInfo::SDuality::h)
 			.def_readwrite("v",					&SPPInfo::SDuality::v)
 			.def(								constructor<>()),
 
-		class_<SPPInfo::SColor>	("color")
+			class_<SPPInfo::SColor>	("color")
 			.def_readwrite("r",					&SPPInfo::SColor::r)
 			.def_readwrite("g",					&SPPInfo::SColor::g)
 			.def_readwrite("b",					&SPPInfo::SColor::b)
@@ -422,7 +426,7 @@ void CScriptEngine::export_object()
 			.def("get_enemy_strength",			&CLuaGameObject::GetEnemyStrength)
 			.def("bind_object",					&CLuaGameObject::bind_object)
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
-			
+
 			// movement manager
 			.def("set_body_state",				&CLuaGameObject::set_body_state			)
 			.def("set_movement_type",			&CLuaGameObject::set_movement_type		)
@@ -459,5 +463,30 @@ void CScriptEngine::export_object()
 			// object handler
 			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction ))(CLuaGameObject::set_item))
 			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction, CLuaGameObject *))(CLuaGameObject::set_item))
+
+
+			//////////////////////////////////////////////////////////////////////////
+			//inventory owner
+			//////////////////////////////////////////////////////////////////////////
+
+			.enum_("EPdaMsg")
+			[
+				value("trade_pda_msg",			int(ePdaMsgTrade)),
+				value("help_pda_msg",			int(ePdaMsgNeedHelp)),
+				value("go_away_pda_msg",		int(ePdaMsgGoAway)),
+				value("info_pda_msg",			int(ePdaMsgInfo)),
+				value("no_pda_msg",				int(ePdaMessageMax))
+			]
+
+			.def("set_pda_callback",			(void (CLuaGameObject::*)(const luabind::functor<void>&))(CLuaGameObject::SetPdaCallback))
+			.def("set_pda_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetPdaCallback))
+			.def("set_info_callback",			(void (CLuaGameObject::*)(const luabind::functor<void>&))(CLuaGameObject::SetInfoCallback))
+			.def("set_info_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetInfoCallback))
+			.def("clear_pda_callback",			&CLuaGameObject::ClearPdaCallback)
+			.def("clear_info_callback",			&CLuaGameObject::ClearInfoCallback)
+
+			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
+			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
+
 	];
 }
