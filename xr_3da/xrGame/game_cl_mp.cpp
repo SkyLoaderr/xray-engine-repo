@@ -545,11 +545,11 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						Color_Main,
 						Color_Weapon);
 
-					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-					KMS.m_ext_info.m_rect.x1 = 3*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+					KMS.m_initiator.m_shader = GetKillEventIconsShader();
+					KMS.m_initiator.m_rect.x1 = 3*KILLEVENT_GRID_WIDTH;
+					KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
 					
 				}break;
 			}
@@ -598,8 +598,11 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				}
 			};
 
-			KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
-			KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
+			if (pKiller)
+			{
+				KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
+				KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
+			};
 		}break;
 		//-----------------------------------------------------------
 	case 2:			//from radiation
