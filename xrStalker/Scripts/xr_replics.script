@@ -1,0 +1,497 @@
+--[[---------------------------------------------------------------------------------------------------------------
+схема "Рассказывание актёру сюжетных реплик"
+Чугай Саша
+
+Сделать:
+	- "ну долго мне так стоять?" во время втыкания
+	- RELOAD
+	- turn actor во время wait
+	- xr_state
+	- протестировать все прерывания
+	- продолжение действия командира после look_at_actor
+	- включение нового сценария из схемы персонажа
+	- "так о чём это я?"
+	- при перебивании "на расстояние" добавить таймаут
+	- блокирование USE
+	- рандомные реплики при прерывании. темы для каждого персонажа.
+	- возможно зона, а не replic_max_dist
+-----------------------------------------------------------------------------------------------------------------]]
+
+local the_actor
+
+local wp, actor = 0, 1
+
+local look_dist       = 3
+local replic_dist     = 10
+local replic_max_dist = 30
+
+-- на самом деле я буду использовать квадраты этих констант
+look_dist       = look_dist * look_dist
+replic_dist     = replic_dist * replic_dist
+replic_max_dist = replic_max_dist * replic_max_dist
+
+local dist_sqr
+
+-------------------------------------------------------------------------------------------------------------------
+-- Элементарные действия. Возвращают true, если действие завершилось
+-------------------------------------------------------------------------------------------------------------------
+
+-- отметить точку сценария, с которой начнётся проигровка после перебивания
+function mark()
+end
+
+-- идти в одну из точек пути
+function walk( a )
+	if a.act_start then
+		a.act_start = false
+
+		local i = a.act_params[math.random( 1, table.getn( a.act_params ) )]
+		a.last_wp = i
+		printf( "WALK to %d", i )
+		a.act_params.v_id = a.path:level_vertex_id( i )
+		a.act_params.pos  = a.path:point( i )
+
+		a.npc:set_sight               ( look.path_dir, nil, 0 )
+		a.npc:set_path_type           ( game_object.level_path )
+		a.npc:set_dest_level_vertex_id( a.act_params.v_id )
+		a.npc:set_movement_type       ( move.walk )
+		--a.npc:set_desired_position    ( a.act_params.pos )
+		a.npc:set_mental_state        ( anim.free )
+	end
+
+	local b = a.npc:level_vertex_id() == a.act_params.v_id --and a.npc:position():distance_to_sqr( a.act_params.pos ) < 0.25
+	if b then
+		a.npc:set_movement_type       ( move.stand )
+		printf( "walk finished" )
+	end
+	return b
+end
+
+-- повернуться на актёра или в точку, с номером на 1 больше, чем у той, в которую персонаж последнюю пришёл
+function turn( a )
+	if a.act_start then
+		a.act_start = false
+
+		if a.act_params[1] == actor then
+			a.npc:set_sight( look.direction, vector():set( the_actor:position() ):sub( a.npc:position() ), 0 )
+			printf( "TURNing to the actor" )
+		elseif a.last_wp then
+			a.npc:set_sight( look.direction, vector():set( a.path:point( a.last_wp + 1 ) ):sub( a.npc:position() ), 0 )
+			printf( "TURNing to %d", a.last_wp )
+		end
+
+		a.act_params.time_end = device():time_global() + 1000
+	end
+
+	return a.act_params.time_end < device():time_global() and not a.npc:is_body_turning()
+end
+
+-- отыграть звук
+function snd( a )
+	xr_sounds.play_sound( a.npc, 0, a.snd_theme, a.snd_subtheme, a.act_params[1] )
+end
+
+-- отыграть анимации
+function anims( a )
+	if a.act_start then
+		a.act_start = false
+
+		for i, v in a.act_params do
+			a.npc:add_animation( v, true )
+		end
+	end
+
+	return a.npc:animation_count() == 0
+end
+
+-- отыграть анимированный разговор
+function talk( a )
+	if a.act_start then
+		a.act_start = false
+		a.snd_start = false
+		a.snd_end   = false
+
+		a.npc:add_animation( a.act_params[2], true )  -- анимация входа
+		a.npc:add_animation( a.act_params[3], true )  -- анимация разговора во время проигрывания звука
+	end
+
+	if not a.snd_start then
+		if a.npc:animation_count() == 1 then
+			a.snd_start = true
+			snd( a )
+		end
+	else
+		if a.npc:active_sound_count() > 0 then
+			if a.npc:animation_count() == 1 then
+				a.npc:add_animation( a.act_params[3], true )
+			end
+		else
+			if not a.snd_end then
+				a.snd_end = true
+
+				a.npc:clear_animations()
+				a.npc:add_animation( a.act_params[4], true )  -- анимация выхода
+			end
+		end
+	end
+
+	return a.npc:animation_count() == 0
+end
+
+-- вспомогательные для wait()
+function wait_time( a )
+	return a.act_params.time_end <= game.time()
+end
+
+function wait_snd( a )
+	return a.npc:active_sound_count() == 0
+end
+
+-- ждать время, окончание звука или анимаций
+function wait( a )
+	if a.act_start then
+		a.act_start = false
+
+		local p = a.act_params[1]
+
+		if type( p ) == "number" then
+			a.act_params.wait_func = wait_time
+			a.act_params.time_end  = game.time() + p
+		elseif p == snd then
+			a.act_params.wait_func = wait_snd
+		end
+	end
+
+	return a.act_params.wait_func( a )
+end
+
+-- втыкать на актёра, когда нет активного сценария или когда актёр отошёл далеко при проигрывании сценария
+function look_at_actor( a )
+	if a.act_start then
+		a.act_start = false
+
+		a.npc:set_movement_type( move.stand )
+	end
+
+	a.npc:set_sight( look.direction, the_actor:position():sub( a.npc:position() ), 0 )
+end
+
+-------------------------------------------------------------------------------------------------------------------
+-- Сценарии
+-------------------------------------------------------------------------------------------------------------------
+
+local scenarios = {
+	trader_test = {
+		"way_trader_replic",
+		"trader_replics", 1,
+		mark,
+		turn,	actor,
+		snd,	1,
+		anims,	"idle_0_idle_0",
+		walk,	1,
+		turn,	wp,
+		wait,	10000,
+		turn,	actor,
+		wait,	snd
+	},
+
+	test0 = {
+		"way_test0",
+		"commander_agroprom", 2,
+		mark,
+		walk,	2, 4,
+		turn,	actor,
+		wait,	20000,
+		anims,	"komandir_4",
+		snd,	1,
+		walk,	0,
+		wait,	snd
+	},
+
+	bobik = {
+		"way_about_bobik",
+		"commander_agroprom", 3,
+		snd,	1,
+		anims,	"komandir_3",
+		wait,	snd,
+		mark,
+		snd,	2,
+		turn,	actor,
+		wait,	snd,
+		mark,
+		walk,	0,
+		anims,	"komandir_2",
+		mark,
+		snd,	3,
+		turn,	actor,
+		wait,	snd
+	},
+
+	barman_test = {
+		"way_about_bobik",
+		"escape_blockpost_commander", 1,
+		talk,	9, "idle_0_idle_7_0", "idle_0_idle_7_talk", "idle_0_idle_7_2",
+		wait,	snd
+	},
+
+	test1 = {
+		"way_name",
+		mark,
+		walk,	0, 2, 4,
+		turn,	wp,
+		snd,	"",
+		anims,	"komandir_4", "komandir_2",
+		wait,	w_anims,
+		mark,
+	}
+}
+
+-------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "втираю актёру или втыкаю на него" :)
+-------------------------------------------------------------------------------------------------------------------
+class "evaluator_play" ( property_evaluator )
+
+function evaluator_play:__init( name, a ) super()
+	self.a = a
+end
+
+function evaluator_play:evaluate()
+	if not the_actor then
+		the_actor = level.actor()
+		return false
+	else
+		if self.a.restriction then
+			return false
+		end
+
+		if self.a.playing then
+			dist_sqr = replic_max_dist
+		else
+			dist_sqr = look_dist
+		end
+
+		printf("%f", self.object:position():distance_to_sqr( the_actor:position() ) )
+		return self.object:position():distance_to_sqr( the_actor:position() ) < dist_sqr
+	end
+end
+
+-------------------------------------------------------------------------------------------------------------------
+-- Действие "играть по сценарию или втыкать на актёра"
+-------------------------------------------------------------------------------------------------------------------
+class "action_play" ( action_base )
+
+function action_play:__init( name, a ) super( nil, name )
+	self.a = a
+end
+
+function action_play:initialize()
+	action_base.initialize( self )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+	self.object:set_item                ( object.idle, nil )
+
+	self.object:clear_animations()
+
+	self.a.act_start = true
+
+	if self.a.interrupted then
+		self.a.cur_cmd = self.a.mark
+		self.a.interrupted = false
+		self:next_action()
+	end
+end
+
+function action_play:execute()
+	action_base.execute( self )
+
+	if self.object:see( the_actor ) then
+		local item = the_actor:active_item()
+
+		if item and isWeapon( item ) then
+			self.object:set_relation( game_object.enemy, the_actor )
+			return
+		end
+	end
+
+	if self.a.new_scenario then
+		printf( "NEW SCENARIO = %s", self.a.scenario )
+
+		self.a.new_scenario = false
+		self.a.mark         = nil
+		self.a.cur_cmd      = 4
+		self.a.path         = patrol( scenarios[self.a.scenario][1] )
+		self.a.snd_theme    = scenarios[self.a.scenario][2]
+		self.a.snd_subtheme = scenarios[self.a.scenario][3]
+
+		self:next_action()
+	end
+
+	if self.a.playing then
+		if not self.a.interrupted then
+			if self.object:position():distance_to_sqr( the_actor:position() ) >= replic_dist then
+				printf( "INTERRUPT (DIST)" )
+				self.a.act_start   = true
+				self.a.interrupted = true
+				self.a.cur_func    = look_at_actor
+
+				xr_sounds.play_sound( self.object, 0, self.a.snd_theme, self.a.snd_subtheme, 2, 1 )
+			end
+		else
+			if self.a.cur_func == look_at_actor and
+			   self.object:position():distance_to_sqr( the_actor:position() ) < replic_dist
+			then
+				printf( "CONTINUE FROM MARK" )
+				self.a.cur_cmd     = self.a.mark
+				self.a.interrupted = false
+				self:next_action()
+			end
+		end
+
+		if not self.a.use_callback then
+			self.object:set_use_callback( self, "use_callback" )
+			self.a.use_callback = true
+
+			self.object:disable_talk()
+		end
+	else
+		if self.a.use_callback then
+			self.object:clear_use_callback()
+			self.a.use_callback = false
+		end
+
+		self.a.cur_func = look_at_actor
+		self.object:enable_talk()
+	end
+
+	if self.a.cur_func( self.a ) then
+		self:next_action()
+	end
+end
+
+function action_play:finalize()
+	action_base.finalize( self )
+
+	if self.a.use_callback then
+		self.object:clear_use_callback()
+		self.a.use_callback = false
+	end
+
+	local be = self.object:best_enemy()
+
+	if be and be:id() ~= the_actor:id() then
+		self.a.interrupted = true
+		xr_sounds.play_sound( self.object, 0, self.a.snd_theme, self.a.snd_subtheme, 3, 1 )
+	end
+
+	self.a.continue_act = true -- для xr_commander
+end
+
+function action_play:next_action()
+	printf( "next_action CALLED" )
+	local scen      = scenarios[self.a.scenario]
+	local size      = table.getn( scen )
+	local not_again
+
+	function next_cmd()
+--		printf( "cur_cmd=%d", self.a.cur_cmd )
+		if self.a.cur_cmd > size then
+			return nil, true
+		end
+
+		local cmd = scen[self.a.cur_cmd]
+		self.a.cur_cmd = self.a.cur_cmd + 1
+
+		return cmd, false
+	end
+
+	function get_params( typ )
+		local cmd, finflag = next_cmd()
+		while type( cmd ) ~= "function" do
+			table.insert( self.a.act_params, cmd )
+			cmd, finflag = next_cmd()
+		end
+
+		if not finflag then
+			self.a.cur_cmd = self.a.cur_cmd - 1
+		end
+	end
+
+	repeat
+		not_again = true
+
+		self.a.act_params = {}
+
+		local cmd, finflag = next_cmd()
+
+		if finflag then
+			printf( "SCENARIO IS FINISHED" )
+			self.a.playing = false
+			break
+		end
+
+		self.a.cur_func  = cmd
+		self.a.act_start = true
+
+		if cmd == mark then
+			printf( "MARK" )
+			self.a.mark = self.a.cur_cmd
+			not_again   = false
+
+		elseif cmd == walk then
+			printf( "WALK" )
+			get_params()
+
+		elseif cmd == turn then
+			printf( "TURN" )
+			self.a.act_params[1] = next_cmd()
+
+		elseif cmd == snd  then
+			printf( "SND" )
+			self.a.act_params[1] = next_cmd()
+			snd( self.a )
+			not_again = false
+
+		elseif cmd == anims then
+			printf( "ANIMS" )
+			get_params()
+
+		elseif cmd == wait then
+			printf( "WAIT" )
+			self.a.act_params[1] = next_cmd()
+
+		elseif cmd == talk then
+			printf( "TALK" )
+			get_params()
+		end
+	until not_again
+end
+
+function action_play:use_callback()
+	printf( "1" )
+	stop_play_sound( self.object )
+	xr_sounds.play_sound( self.object, 0, self.a.snd_theme, self.a.snd_subtheme, 4, 1 )
+	printf( "2" )
+
+	self.a.act_params = { snd }
+	self.a.act_start  = true
+	self.a.cur_func   = wait
+	self.a.cur_cmd    = self.a.mark
+end
+-------------------------------------------------------------------------------------------------------------------
+
+function set_scenario( npc, scenario )
+	local a = xr_motivator.storage[npc:id()].replics
+
+	if not the_actor then
+		the_actor = level.actor()
+	end
+
+	if a.scenario ~= scenario then
+		a.playing      = true
+		a.scenario     = scenario
+		a.new_scenario = true
+	end
+end
+-------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,209 @@
+----------------------------------------------------------------------------------------------------------------------
+--	Схема кемпер. Чудак с бальшой пушкой ходит и отстреливает живность.
+--	автор: Диденко Руслан (Stohe)
+--	TODO: 
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+-- EVALUATORS
+----------------------------------------------------------------------------------------------------------------------
+--' Условие завершения скрипта
+class "evaluator_end" (property_evaluator)
+function evaluator_end:__init(storage) super()
+	self.a = storage
+end
+function evaluator_end:evaluate()
+	return self.a.enabled == false
+end
+--' Обычный комбат или кемперский
+class "evaluator_close_combat" (property_evaluator)
+function evaluator_close_combat:__init(storage) super()
+	self.a = storage
+end
+function evaluator_close_combat:evaluate()
+	if self.a.enabled == false then return true end
+	return (self.object:best_enemy() ~= nil and distance_between(self.object, self.object:best_enemy()) < self.a.radius )
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- ACTIONS
+----------------------------------------------------------------------------------------------------------------------
+--' Патрулировать территорию по патрульному пути
+class "action_patrol" (action_base)
+function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
+	self.a = storage
+	self.move_mgr = move_mgr.move_mgr()
+end
+function action_patrol:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	self.init = false
+	
+	xr_state.change_state(self.object, 0)
+	if xr_state.finish_state(self.object) == true then
+		self.init = true
+		self:reset()
+	end	
+end
+function action_patrol:reset()
+	self.move_mgr:initialize(self.object)
+	self.move_mgr:reset(self.a.path_walk, 
+					utils.path_parse_waypoints(self.a.path_walk),
+					self.a.path_look,
+					utils.path_parse_waypoints(self.a.path_look),
+					nil,nil,{obj=self,func=self.process_point})
+end
+function action_patrol:execute()
+	action_base.execute (self)
+	if xr_state.finish_state(self.object) == true then
+		self.move_mgr:update()
+	end
+end
+function action_patrol:process_point(mode, number)
+	return false
+end
+function action_patrol:finalize()
+	if self.init == true then
+		self.move_mgr:finalize()
+	end
+	action_base.finalize (self)
+end
+
+--' Убивать врага на большом расстоянии
+class "action_kill" (action_base)
+function action_kill:__init (npc_name,action_name,storage) super (nil,action_name)
+    self.a = storage
+    self.idle = 10*60*1000
+    self.timer = 0
+    self.enemy = nil
+end
+function action_kill:initialize ()
+    action_base.initialize(self)
+    self.object:clear_animations()
+    self.object:set_movement_type       (move.stand)
+    self.object:set_mental_state		(anim.danger)
+    self.object:set_body_state			(move.crouch)
+end
+function action_kill:execute ()
+	action_base.execute(self)
+	function id(npc)
+		return npc:id()
+	end
+	
+	if self.enemy == nil or
+	  self.enemy:id() ~= id(self.object:best_enemy()) then
+		self.enemy = self.object:best_enemy()
+		self.timer = game.time()
+	end
+
+	if game.time() - self.timer > self.idle then
+		self.object:enable_memory_object(self.enemy, false)
+		self.enemy = nil
+	end
+
+	if self.enemy ~= nil then 
+		self.object:set_sight(look.direction, self.enemy:position():sub(self.object:position()), 0)	
+		if self.object:see(self.enemy) == true then
+			xr_state.anim_update(nil, self.object)
+			self.object:set_item(object.fire1, self.object:best_weapon())
+		else
+			xr_state.anim_update("hide", self.object)
+			self.object:set_item(object.idle, self.object:best_weapon())
+		end
+	end
+end
+function action_kill:finalize ()
+    action_base.finalize(self)
+end
+----------------------------------------------------------------------------------------------------------------------
+-- BINDER
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(object, char_ini)
+    if char_ini == nil or char_ini:section_exist ("camper") == true then
+  		
+  		local operators	= {}
+	  	local properties  = {}
+		
+	   	local manager = object:motivation_action_manager()
+
+		operators["patrol"]			= xr_actions_id.stohe_camper_base + 1
+		operators["kill"]			= xr_actions_id.stohe_camper_base + 2
+	
+		properties["end"]			= xr_evaluators_id.stohe_camper_base + 1
+		properties["close_combat"]	= xr_evaluators_id.stohe_camper_base + 2
+		
+		manager:add_evaluator (properties["end"],			this.evaluator_end(xr_motivator.storage[object:id()].camper))
+		manager:add_evaluator (properties["close_combat"], 	this.evaluator_close_combat(xr_motivator.storage[object:id()].camper))
+
+		local action = this.action_patrol (object:name(),"action_patrol", xr_motivator.storage[object:id()].camper)
+		action:add_precondition		(world_property(stalker_ids.property_alive, true))
+		action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+		action:add_effect 			(world_property(properties["end"],			true))
+		manager:add_action			(operators["patrol"], action)
+
+		action = this.action_kill (object:name(),"action_kill", xr_motivator.storage[object:id()].camper)
+		action:add_precondition		(world_property(stalker_ids.property_alive, true))
+		action:add_precondition     (world_property(properties["close_combat"],	false))
+		action:add_effect 			(world_property(stalker_ids.property_enemy,	false))		
+		manager:add_action			(operators["kill"], action)
+
+		action = manager:action		(stalker_ids.action_puzzle_solver)	
+		action:add_precondition		(world_property(properties["end"],			true))
+
+		action = manager:action     (stalker_ids.action_combat_planner)
+		action:add_precondition     (world_property(properties["close_combat"],	true))
+    		
+		if char_ini ~= nil then 
+			xr_camper.set_camper(object) 			
+		end
+	end
+end
+
+function set_camper(object, enabled, path_walk, path_look, radius)
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].camper
+
+	if enabled == nil then
+       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "enabled") == true then
+				st.enabled = char_ini:r_bool("camper", "enabled")
+			else
+				st.enabled = false
+	        end
+	else
+		st.enabled = enabled
+	end		
+
+	if path_walk == nil then
+       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "path_walk") == true then
+				st.path_walk = char_ini:r_string("camper", "path_walk")
+			else
+				st.enabled = false
+	        end
+	else
+		st.path_walk = path_walk
+	end		
+
+	if path_look == nil then
+       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "path_look") == true then
+				st.path_look = char_ini:r_string("camper", "path_look")
+			else
+				st.enabled = false
+	        end
+	else
+		st.path_look = path_look
+	end		
+
+	if radius == nil then
+       		if char_ini:section_exist("camper") == true and char_ini:line_exist("camper", "radius") == true then
+				st.radius = char_ini:r_string("camper", "radius")
+	        end
+	else
+		st.radius = radius
+	end		
+	
+	xr_motivator.checkStorage(object)	
+end
+
