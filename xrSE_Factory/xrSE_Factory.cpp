@@ -50,11 +50,12 @@ BOOL APIENTRY DllMain	(HANDLE module_handle, DWORD call_reason, LPVOID reserved)
 {
 	switch (call_reason) {
 		case DLL_PROCESS_ATTACH: {
- 			Core._initialize	("xrSE_Factory",NULL);
+ 			Core._initialize			("xrSE_Factory",NULL);
 			ai().script_engine().export	();
 			break;
 		}
 		case DLL_PROCESS_DETACH: {
+			Core._destroy				();
 			break;
 		}
 	}
