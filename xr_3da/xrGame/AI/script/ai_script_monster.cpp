@@ -171,9 +171,6 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 #ifdef _DEBUG
 	if (!xr_strcmp("m_stalker_wounded",cName())) {
 		Msg				("%6d Adding action : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
-		if (!xr_strcmp("idle_raneniy",*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
-			tpEntityAction = tpEntityAction;
-		}
 	}
 #endif
 	if (!bHighPriority || m_tpActionQueue.empty())
