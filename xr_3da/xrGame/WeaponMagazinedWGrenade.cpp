@@ -437,11 +437,12 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 		pIItem->Drop();
 		if (OnServer()) 
 		{
-			NET_Packet P;
-			u_EventGen(P,GE_DESTROY,pIItem->object().ID());
-			//		Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-			P.w_u16(u16(pIItem->object().ID()));
-			u_EventSend(P);
+			pIItem->object().DestroyObject	();
+//			NET_Packet P;
+//			u_EventGen(P,GE_DESTROY,pIItem->object().ID());
+//			//		Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
+//			P.w_u16(u16(pIItem->object().ID()));
+//			u_EventSend(P);
 		};
 
 		InitAddons();

@@ -607,13 +607,16 @@ bool CGameObject::NeedToDestroyObject()	const
 
 void CGameObject::DestroyObject()			
 {
-	if(m_bObjectRemoved) return;
-	m_bObjectRemoved = true;
+	if(m_bObjectRemoved)return;
+	m_bObjectRemoved	= true;
+	if (getDestroy())	return;
 
-	NET_Packet			P;
-	u_EventGen			(P,GE_DESTROY,ID());
 	//Msg					("DestroyObject: ge_destroy: [%d] - %s",ID(),*cName());
-	if (Local())		u_EventSend		(P);
+	if (Local()){	
+		NET_Packet		P;
+		u_EventGen		(P,GE_DESTROY,ID());
+		u_EventSend		(P);
+	}
 }
 
 void CGameObject::shedule_Update	(u32 dt)

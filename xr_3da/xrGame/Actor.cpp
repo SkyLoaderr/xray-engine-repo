@@ -635,19 +635,12 @@ void CActor::Die	(CObject* who)
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
 //			if ((*l_it)->CLS_ID == CLSID_DEVICE_PDA)
 			{
-				NET_Packet P;
-				u_EventGen(P,GE_DESTROY,(*l_it)->object().ID());
-				u_EventSend(P, TRUE);
+				(*l_it)->object().DestroyObject();
+//				NET_Packet P;
+//				u_EventGen(P,GE_DESTROY,(*l_it)->object().ID());
+//				u_EventSend(P, TRUE);
 			}
 		};
-/*
-		for (xr_vector<u16>::iterator itr = ItemsToRemove.begin(); ItemsToRemove.end() != itr; itr++ )
-		{
-			NET_Packet P;
-			u_EventGen(P,GE_DESTROY,(*itr));
-			u_EventSend(P, TRUE);
-		};
-*/
 	};
 	//-------------------------------------
 	// Play ref_sound
@@ -1413,9 +1406,10 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 
 	if (!CanRemove) return;
 	*/
-	NET_Packet			P;
-	u_EventGen			(P,GE_DESTROY,pAmmo->ID());
-	u_EventSend			(P);
+	pAmmo->DestroyObject();
+//	NET_Packet			P;
+//	u_EventGen			(P,GE_DESTROY,pAmmo->ID());
+//	u_EventSend			(P);
 };
 
 void	CActor::SetZoomRndSeed		(s32 Seed)

@@ -431,10 +431,11 @@ void CExplosive::UpdateCL()
 void CExplosive::OnAfterExplosion()
 {
 	//ликвидировать сам объект 
-	NET_Packet			P;
-	cast_game_object()->u_EventGen			(P,GE_DESTROY,cast_game_object()->ID());
-	//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-	if (cast_game_object()->Local()) cast_game_object()->u_EventSend			(P);
+	if (cast_game_object()->Local()) cast_game_object()->DestroyObject();
+//	NET_Packet			P;
+//	cast_game_object()->u_EventGen			(P,GE_DESTROY,cast_game_object()->ID());
+//	//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+//	if (cast_game_object()->Local()) cast_game_object()->u_EventSend			(P);
 }
 void CExplosive::OnBeforeExplosion()
 {

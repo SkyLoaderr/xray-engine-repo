@@ -70,9 +70,10 @@ void CGrenade::OnH_B_Independent()
 				///////////////////////////////
 
 				m_dwDestroyTime = 0xffffffff;
-				NET_Packet			P;
-				u_EventGen			(P,GE_DESTROY,ID());
-				u_EventSend			(P);
+				DestroyObject		();
+//				NET_Packet			P;
+//				u_EventGen			(P,GE_DESTROY,ID());
+//				u_EventSend			(P);
 			};
 		};
 	};
@@ -118,10 +119,10 @@ u32 CGrenade::State(u32 state)
 
 				if (Local())
 				{
-					NET_Packet			P;
-					u_EventGen			(P,GE_DESTROY,ID());
-//					Msg					("* ge_destroy: [%d] - %s",ID(),*cName());
-					u_EventSend			(P);
+					DestroyObject		();
+//					NET_Packet			P;
+//					u_EventGen			(P,GE_DESTROY,ID());
+//					u_EventSend			(P);
 				};
 			};
 		}break;
@@ -214,31 +215,8 @@ void CGrenade::PutNextToSlot	()
 
 void CGrenade::OnAnimationEnd() 
 {
-	switch(inherited::State()) 
-	{
-	case MS_END:
-		{
-			/*
-			Msg("MS_END grenade");
-			if (m_pPhysicsShell)
-				m_pPhysicsShell->Deactivate();
-			xr_delete(m_pPhysicsShell);
-			
-			m_dwDestroyTime = 0;
-
-			
-			if (Local())
-			{
-				NET_Packet			P;
-				u_EventGen			(P,GE_DESTROY,ID());
-				Msg					("* ge_destroy: [%d] - %s",ID(),*cName());
-				u_EventSend			(P);
-			};
-			PutNextToSlot();
-			*/
-			SwitchState(MS_HIDDEN);
-		}
-		break;
+	switch(inherited::State()){
+	case MS_END: SwitchState(MS_HIDDEN);	break;
 		default : inherited::OnAnimationEnd();
 	}
 }

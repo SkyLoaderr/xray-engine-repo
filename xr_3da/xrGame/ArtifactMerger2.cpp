@@ -38,16 +38,16 @@ template<typename A> void CArtefactMerger::DestroyArtefacts(int num_to_destroy)
 		if(smart_cast<A*>(*it)) 
 		{
 			++artifact_count;
+			CGameObject* pObject = static_cast<CGameObject*>(pIItem->object().H_Parent());
+			R_ASSERT(pObject);
 			//удалить объект артефакта
 			PIItem pIItem = *it;
 			pIItem->Drop();
-			NET_Packet P;
-			CGameObject* pObject = static_cast<CGameObject*>(pIItem->object().H_Parent());
-			R_ASSERT(pObject);
-			pObject->u_EventGen(P,GE_DESTROY,pIItem->object().ID());
-//				Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-			P.w_u16(u16(pIItem->object().ID()));
-			pObject->u_EventSend(P);
+			pIItem->object().DestroyObject	();
+//			NET_Packet P;
+//			pObject->u_EventGen(P,GE_DESTROY,pIItem->object().ID());
+//			P.w_u16(u16(pIItem->object().ID()));
+//			pObject->u_EventSend(P);
 		
 			//удалить артефакт
 			m_ArtefactDeletedList.push_back(*it);

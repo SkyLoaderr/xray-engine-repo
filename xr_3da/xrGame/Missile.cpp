@@ -209,11 +209,12 @@ void CMissile::OnH_B_Independent()
 
 	if(!m_dwDestroyTime && Local()) 
 	{
-		NET_Packet			P;
-		u_EventGen			(P,GE_DESTROY,ID());
-		MSG1("ge destroy i OnH_B_Independent");
-//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-		u_EventSend			(P);
+		DestroyObject		();
+//		NET_Packet			P;
+//		u_EventGen			(P,GE_DESTROY,ID());
+//		MSG1("ge destroy i OnH_B_Independent");
+////		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+//		u_EventSend			(P);
 		return;
 	}
 }
@@ -543,12 +544,15 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 
 void CMissile::Destroy() 
 {
+	if (Local())		DestroyObject();
+/*
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
 //	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 	MSG1("ge_destroy Destroy");
 	//Msg("time [%f]", Device.fTimeGlobal);
 	if (Local()) u_EventSend			(P);
+*/
 }
 
 bool CMissile::Action(s32 cmd, u32 flags) 

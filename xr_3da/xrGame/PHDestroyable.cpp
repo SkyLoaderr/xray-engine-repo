@@ -163,10 +163,11 @@ void CPHDestroyable::SheduleUpdate(u32 dt)
 	//else
 	if( CanRemoveObject() )
 	{
-		NET_Packet			P;
-		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
-		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-		if (obj->Local()) obj->u_EventSend			(P);
+		if (obj->Local())	obj->DestroyObject();
+//		NET_Packet			P;
+//		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
+//		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+//		if (obj->Local()) obj->u_EventSend			(P);
 	}
 
 }

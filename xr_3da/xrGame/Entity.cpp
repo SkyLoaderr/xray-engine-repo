@@ -286,14 +286,15 @@ void CEntity::KillEntity(CObject* who)
 		m_killer_id	= who->ID();
 	}
 
-	NET_Packet		P;
-	u_EventGen		(P,GE_DIE,ID());
-	P.w_u16			(u16(who->ID()));
-	P.w_u32			(0);
-	if (OnServer())
-		u_EventSend		(P);
-
-	set_death_time		();
+	if (!getDestroy()){
+		NET_Packet		P;
+		u_EventGen		(P,GE_DIE,ID());
+		P.w_u16			(u16(who->ID()));
+		P.w_u32			(0);
+		if (OnServer())
+			u_EventSend	(P);
+		set_death_time	();
+	}
 }
 
 void CEntity::reinit			()
