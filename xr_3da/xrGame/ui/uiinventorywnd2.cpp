@@ -15,6 +15,8 @@
 #include "../grenadelauncher.h"
 #include "../game_cl_base.h"
 #include "../string_table.h"
+#include "../actorcondition.h"
+#include "../actor_defs.h"
 
 using namespace InventoryUtilities;
 
@@ -323,7 +325,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(GameID() != GAME_SINGLE)
 			return;
 
-		EActorSleep result = pActor->GoSleep(*reinterpret_cast<u32*>(pData));
+		EActorSleep result = pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
 		LPCSTR sleep_msg = NULL;
 		switch(result)
 		{

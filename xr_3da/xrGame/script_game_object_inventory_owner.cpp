@@ -25,7 +25,7 @@
 #include "relation_registry.h"
 #include "custommonster.h"
 #include "movement_manager.h"
-#include "entitycondition.h"
+#include "actorcondition.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -462,7 +462,7 @@ void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)
 void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	if(!pActor) return;
-	pActor->GoSleep(generate_time(1,1,1,hours, minutes, 0, 0), true);
+	pActor->conditions().GoSleep(generate_time(1,1,1,hours, minutes, 0, 0), true);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "actorcondition.h"
 #include "actor.h"
+#include "inventory.h"
+#include "level.h"
+#include "sleepeffector.h"
+#include "game_base_space.h"
+#include "autosave_manager.h"
+#include "xrserver.h"
+#include "ai_space.h"
+
+#define ENEMIES_RADIUS				30.f
 
 CActorCondition::CActorCondition(CActor *object) :
 	inherited	(object)
@@ -61,11 +70,23 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 //вычисление параметров с ходом времени
 void CActorCondition::UpdateCondition()
 {
+	if (psActorFlags.test(AF_GODMODE)) return;
+	
+	if (object().Remote()) return;
+
+	if ((object().mstate_real&mcAnyMove)) {
+		ConditionWalk(object().inventory().TotalWeight()/object().inventory().GetMaxWeight(), object().isAccelerated(object().mstate_real), (object().mstate_real&mcSprint) != 0);
+	}
+	else {
+		ConditionStand(object().inventory().TotalWeight()/object().inventory().GetMaxWeight());
+	};
+	
 	inherited::UpdateCondition();
 }
 
 CWound* CActorCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 {
+	if (psActorFlags.test(AF_GODMODE)) return NULL;
 	return inherited::ConditionHit(who, hit_power, hit_type, element);
 }
 
@@ -111,4 +132,118 @@ bool CActorCondition::IsLimping() const
 	else if(m_fPower > m_fLimpingPowerEnd && m_fHealth > m_fLimpingHealthEnd)
 		m_bLimping = false;
 	return m_bLimping;
+}
+
+EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
+{
+	if (IsSleeping()) return easCanSleep;
+
+	EActorSleep result = without_check?easCanSleep:CanSleepHere();
+	if(easCanSleep != result) 
+		return result;
+
+	inherited::GoSleep		();
+
+	//остановить актера, если он двигался
+	object().mstate_wishful	&=		~mcAnyMove;
+	object().mstate_real	&=		~mcAnyMove;
+
+	//поставить будильник
+	object().m_dwWakeUpTime = Level().GetGameTime() + sleep_time;
+
+	VERIFY	(m_object == smart_cast<CActor*>(Level().CurrentEntity()));
+
+	Level().Cameras.RemoveEffector(EEffectorPPType(SLEEP_EFFECTOR_TYPE_ID));
+	object().m_pSleepEffectorPP = xr_new<CSleepEffectorPP>(object().m_pSleepEffector->ppi,
+													object().m_pSleepEffector->time,
+													object().m_pSleepEffector->time_attack,
+													object().m_pSleepEffector->time_release);
+
+	Level().Cameras.AddEffector(object().m_pSleepEffectorPP);
+
+	return easCanSleep;
+}
+
+void CActorCondition::Awoke()
+{
+	if(!IsSleeping()) return;
+
+	Awoke();
+
+	Level().Server->game->SetGameTimeFactor(object().m_fOldTimeFactor);
+
+	if ((GameID() == GAME_SINGLE)  &&ai().get_alife()) {
+		NET_Packet		P;
+		P.w_begin		(M_SWITCH_DISTANCE);
+		P.w_float		(object().m_fOldOnlineRadius);
+		Level().Send	(P,net_flags(TRUE,TRUE));
+
+//		ai().alife().set_switch_distance	(m_fOldOnlineRadius);
+	}
+
+
+	VERIFY(m_object == smart_cast<CActor*>(Level().CurrentEntity()));
+	VERIFY(object().m_pSleepEffectorPP);
+
+	if(object().m_pSleepEffectorPP)
+	{
+		object().m_pSleepEffectorPP->m_eSleepState = CSleepEffectorPP::AWAKING;
+		object().m_pSleepEffectorPP = NULL;
+	}
+
+	
+}
+
+//проверка можем ли мы спать на этом месте
+EActorSleep CActorCondition::CanSleepHere()
+{
+	if(0 != object().mstate_real) return easNotSolidGround;
+
+	collide::rq_result RQ;
+
+	Fvector pos, dir;
+	pos.set(object().Position());
+	pos.y += 0.1f;
+	dir.set(0, -1.f, 0);
+	object().setEnabled(FALSE);
+	BOOL result = Level().ObjectSpace.RayPick(pos, dir, 0.3f, 
+				  collide::rqtBoth, RQ);
+	object().setEnabled(TRUE);
+	
+	//актер стоит на динамическом объекте или вообще падает - 
+	//спать нельзя
+	if(!result || RQ.O)	
+		return easNotSolidGround;
+/*	
+	//проверка на твердость материала на котором мы стоим 
+	else
+	{
+		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
+		u16 hit_material_idx	= pTri->material;
+		SGameMtl* mtl	= GMLib.GetMaterialByIdx(hit_material_idx);
+		if(mtl->fPHSpring < MIN_SPRING_TO_SLEEP) 
+			return easNotSolidGround;
+	}*/
+
+	//проверить нет ли в радиусе врагов
+	if (!Level().autosave_manager().ready_for_autosave())
+		return easEnemies;
+
+	object().setEnabled(false);
+	Level().ObjectSpace.GetNearest	(pos, ENEMIES_RADIUS); 
+	xr_vector<CObject*> &NearestList = Level().ObjectSpace.q_nearest; 
+	object().setEnabled(true);
+
+	for(xr_vector<CObject*>::iterator it = NearestList.begin();
+									NearestList.end() != it;
+									it++)
+	{
+		CEntityAlive* entity = smart_cast<CEntityAlive*>(*it);
+		if(entity && entity->g_Alive() &&
+			((entity->tfGetRelationType(m_object) == ALife::eRelationTypeEnemy) ||  
+			(entity->tfGetRelationType(m_object) == ALife::eRelationTypeWorstEnemy)) )
+			return easEnemies;
+	}
+
+	return easCanSleep;
 }

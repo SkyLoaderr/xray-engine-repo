@@ -303,9 +303,7 @@ void CActor::Load	(LPCSTR section )
 	m_fSleepTimeFactor	= pSettings->r_float(section,"sleep_time_factor");
 
 	m_pPhysics_support->in_Load		(section);
-	//actor condition variables
-//	CActorCondition::LoadCondition(section);
-
+	
 	//загрузить параметры эффектора
 	LoadShootingEffector	("shooting_effector");
 	LoadSleepEffector		("sleep_effector");
@@ -860,10 +858,10 @@ void CActor::shedule_Update	(u32 DT)
 		pCamBobbing = xr_new<CEffectorBobbing>	();
 		EffectorManager().AddEffector			(pCamBobbing);
 	}
-	pCamBobbing->SetState						(mstate_real, IsLimping());
+	pCamBobbing->SetState						(mstate_real, conditions().IsLimping());
 
 	//звук тяжелого дыхания при уталости и хромании
-	if(IsLimping() && g_Alive())
+	if(conditions().IsLimping() && g_Alive())
 	{
 		if(!m_bHeavyBreathSndPlaying)
 		{
@@ -1111,37 +1109,11 @@ float CActor::Radius()const
 	return R;
 }
 
-CWound* CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
-{
-	if (psActorFlags.test(AF_GODMODE)) return NULL;
-
-	return conditions().ConditionHit(who, hit_power, hit_type, element);
-}
-
-void CActor::UpdateCondition()
-{
-	if (psActorFlags.test(AF_GODMODE)) return;
-	if (Remote()) return;
-
-	if((mstate_real&mcAnyMove))
-	{
-		conditions().ConditionWalk(inventory().TotalWeight()/inventory().GetMaxWeight(), isAccelerated(mstate_real), (mstate_real&mcSprint) != 0);
-	}
-	else
-	{
-		conditions().ConditionStand(inventory().TotalWeight()/inventory().GetMaxWeight());
-	};
-	
-	conditions().UpdateCondition();
-}
-
-
 bool		CActor::use_bolts				() const
 {
 	if (GameID() != GAME_SINGLE) return false;
 	return CInventoryOwner::use_bolts();
 };
-
 
 bool  CActor::NeedToDestroyObject() const
 {
@@ -1458,16 +1430,6 @@ CPHDestroyable*	CActor::ph_destroyable	()
 CEntityCondition *CActor::create_entity_condition	()
 {
 	return		(m_entity_condition = xr_new<CActorCondition>(this));
-}
-
-void CActor::LoadCondition(LPCSTR section)
-{
-	conditions().LoadCondition(section);
-}
-
-bool CActor::IsLimping() const
-{
-	return		(conditions().IsLimping());
 }
 
 DLL_Pure *CActor::_construct		()

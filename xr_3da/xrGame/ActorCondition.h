@@ -8,28 +8,50 @@
 
 #include "EntityCondition.h"
 
-class CActor;
+namespace ACTOR_DEFS {
+	enum EActorSleep;
+};
 
+class CActor;
 
 class CActorCondition: public CEntityCondition {
 private:
 	typedef CEntityCondition inherited;
 
+public:
+	typedef ACTOR_DEFS::EActorSleep EActorSleep;
+
 private:
-	CActor		*m_object;
+	CActor				*m_object;
 
 public:
-	CActorCondition(CActor *object);
-	virtual ~CActorCondition(void);
+						CActorCondition		(CActor *object);
+	virtual				~CActorCondition	(void);
 
-	virtual void LoadCondition(LPCSTR section);
+	virtual void		LoadCondition		(LPCSTR section);
 
-	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
-	virtual void UpdateCondition();
+	virtual CWound*		ConditionHit		(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual void		UpdateCondition		();
 
-	void ConditionJump(float weight);
-	void ConditionWalk(float weight, bool accel, bool sprint);
-	void ConditionStand(float weight);
+	// sleeping
+	virtual EActorSleep	CanSleepHere		();
+	virtual EActorSleep	GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
+	virtual void		Awoke				();
+
+	// хромание при потере сил и здоровья
+	virtual	bool		IsLimping			() const;
+	virtual bool		IsCantWalk			() const;
+
+			void		ConditionJump		(float weight);
+			void		ConditionWalk		(float weight, bool accel, bool sprint);
+			void		ConditionStand		(float weight);
+
+public:
+	IC		CActor		&object				() const
+	{
+		VERIFY			(m_object);
+		return			(*m_object);
+	}
 
 protected:
 	float m_fAlcohol;
@@ -45,11 +67,6 @@ protected:
 	float m_fOverweightJumpK;
 	float m_fAccelK;
 	float m_fSprintK;
-
-public:
-	//хромание при потере сил и здоровья
-	virtual bool IsLimping() const;
-	virtual bool IsCantWalk() const;
 
 protected:
 	mutable bool m_bLimping;

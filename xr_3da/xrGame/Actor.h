@@ -64,6 +64,7 @@ class	CActor:
 	,public pureRender
 #endif
 {
+	friend class CActorCondition;
 private:
 	typedef CEntityAlive	inherited;
 	//////////////////////////////////////////////////////////////////////////
@@ -167,23 +168,13 @@ public:
 	//Actor condition
 	////////////////////////////////////////////////////////////////////
 public:
-	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
-	virtual void	UpdateCondition();
-
 	//сон
-	virtual EActorSleep	GoSleep(ALife::_TIME_ID	sleep_time, bool without_check = false);
-	virtual EActorSleep	CanSleepHere();
-	virtual void		Awoke();
-			void		UpdateSleep();
+			void		UpdateSleep			();
 
-	virtual void		LoadCondition(LPCSTR section);
-	
 	//свойства артефактов
 	virtual void		UpdateArtefactsOnBelt	();
 	virtual float		HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type);
 protected:
-	//хромание
-	virtual bool		IsLimping() const;
 	//звук тяжелого дыхания
 	ref_sound			m_HeavyBreathSnd;
 	bool				m_bHeavyBreathSndPlaying;

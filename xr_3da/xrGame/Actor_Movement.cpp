@@ -492,7 +492,7 @@ bool	CActor::isAccelerated			(u32 mstate)
 
 bool CActor::CanAccelerate			()
 {
-	bool can_accel = !IsLimping() &&
+	bool can_accel = !conditions().IsLimping() &&
 		!m_PhysicMovementControl->PHCapture() &&
 		/*(!(mstate_real&mcBack) || psActorFlags.test(AF_RUN_BACKWARD)) &&*/
 		!m_bZoomAimingMode;
