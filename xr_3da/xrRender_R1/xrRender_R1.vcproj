@@ -621,6 +621,25 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Resources"
+			Filter="">
+			<File
+				RelativePath=".\ResourceManager.cpp">
+			</File>
+			<File
+				RelativePath=".\ResourceManager.h">
+			</File>
+			<File
+				RelativePath=".\ResourceManager_Loader.cpp">
+			</File>
+			<File
+				RelativePath=".\ResourceManager_Resources.cpp">
+			</File>
+			<File
+				RelativePath=".\ResourceManager_Scripting.cpp">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\Pipeline.txt">
 		</File>

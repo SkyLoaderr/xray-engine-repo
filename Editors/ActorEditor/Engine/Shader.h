@@ -77,14 +77,14 @@ typedef	resptr_core<SPass,resptr_base<SPass> >												ref_pass;
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		ShaderElement	: public xr_resource									{
 public:
-	struct SFlags
+	struct Sflags
 	{
 		u32	iPriority	:	2;
 		u32	bStrictB2F	:	1;
 		u32	bLighting	:	1;
 	};
 public:
-	SFlags								Flags;
+	Sflags								Flags;
 	svector<ref_pass,SHADER_PASSES_MAX>	Passes;
 
 						ShaderElement	();
