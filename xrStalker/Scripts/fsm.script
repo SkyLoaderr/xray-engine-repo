@@ -16,14 +16,29 @@ function FSM:__init(script_name, npc_obj)
 	-- номер текущего состояния
 	self.current_state = 0
 
+	-- флаг того, что машина включена
+	self.machine_running = true
+
 	printf("inialization FSM for NPC %s", self.npc:name())
+end
+
+function FSM:is_running()
+	return self.machine_running
+end
+
+function FSM:start()
+	self.machine_running = true
+end
+
+function FSM:stop()
+	self.machine_running = false
 end
 
 
 -- 	добавление указателя на булеву
 -- 	функцию условия перехода
-function FSM:add_transition(from_state_num, to_state_num, cond_func)
-	printf("in add transition %d, %d ", from_state_num, to_state_num)
+function FSM:set_transition(from_state_num, to_state_num, cond_func)
+	printf("in setting transition %d, %d ", from_state_num, to_state_num)
 
 	if self.transition_matrix[from_state_num] == nil then
 	   self.transition_matrix[from_state_num] = {[to_state_num] = cond_func}
@@ -60,7 +75,7 @@ end
 function FSM:run_loop()
 	printf("running FSM loop for NPC %s", self.npc:name())
 
-	while true do
+	while self.is_running() do
 		local transition_vector = self.transition_matrix[self.current_state]
 		table.foreach(transition_vector, 
 					  function(to_state_num, cond_func) 
@@ -126,8 +141,8 @@ function main()
 
 	local fsm_stalker = fsm.FSM(this.script_name(), stalker00)
 
-	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
-	fsm_stalker:add_transition(1, 0, fsm.dont_see_actor)
+	fsm_stalker:set_transition(0, 1, fsm.if_see_actor)
+	fsm_stalker:set_transition(1, 0, fsm.dont_see_actor)
 	while true do
 		fsm_stalker:run()
 	end
