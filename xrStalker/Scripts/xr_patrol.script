@@ -165,6 +165,7 @@ function patrol_binder:reload		(section)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_spawn	(server_object)
+    printf ("Patrol_binder:net_spawn called")
 	if (object_binder.net_spawn(self,server_object) == false) then
 		return		false
 	end
@@ -172,14 +173,17 @@ function patrol_binder:net_spawn	(server_object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_destroy	()
+    printf ("Patrol_binder:net_destroy called")
 	object_binder.net_destroy	(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_export	(packet)
+    printf ("Patrol_binder:net_export called")
 	object_binder.net_export	(self,packet)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_import	(packet)
+    printf ("Patrol_binder:net_import called")
 	object_binder.net_import	(self,packet)
 end
 ----------------------------------------------------------------------------------------------------------------------
