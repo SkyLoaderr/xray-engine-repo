@@ -962,7 +962,7 @@ void CHelicopter::TurnLighting(bool bOn)
 void  CHelicopter::TurnEngineSound(bool bOn)
 {
 	if(bOn)
-		m_engineSound.set_volume(1.0f)
+		m_engineSound.set_volume(1.0f);
 	else
 		m_engineSound.set_volume(0.0f);
 
