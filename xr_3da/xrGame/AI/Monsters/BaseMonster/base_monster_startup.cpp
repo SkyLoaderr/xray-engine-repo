@@ -9,6 +9,8 @@
 #include "../../../detail_path_manager.h"
 #include "../../../level_graph.h"
 #include "../ai_monster_movement.h"
+#include "../corpse_cover.h"
+#include "../../../cover_evaluators.h"
 
 void CBaseMonster::reload	(LPCSTR section)
 {
