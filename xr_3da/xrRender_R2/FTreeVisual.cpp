@@ -84,8 +84,6 @@ struct	FTreeVisual_setup
 	float		scale;
 	Fvector4	wave;
 	Fvector4	wind;
-	Fvector4	fog_plane;
-	Fvector4	fog_params;
 	Fvector4	l_dir;
 	Fvector4	l_color;
 
@@ -103,26 +101,11 @@ struct	FTreeVisual_setup
 		wind.set				(_sin(tm_rot),0,_cos(tm_rot),0);	wind.normalize	();	wind.mul(ps_r__Tree_w_amp);	// dir1*amplitude
 		scale					= 1.f/float(FTreeVisual_quant);
 
-		// Fog
-		float	f_near			= g_pGameLevel->Environment->c_FogNear;
-		float	f_far			= 1/(g_pGameLevel->Environment->c_FogFar - f_near);
-		Fvector4 plane;
-
-		// Near plane for fog
-		Fmatrix& M				= Device.mFullTransform;
-		plane.x					= -(M._14 + M._13);
-		plane.y					= -(M._24 + M._23);
-		plane.z					= -(M._34 + M._33);
-		plane.w					= -(M._44 + M._43);
-		float denom				= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-
 		// D-Light
 		CSun&	sun				= *(g_pGameLevel->Environment->Suns.front());
 
 		// setup constants
 		wave.set				(ps_r__Tree_Wave.x,	ps_r__Tree_Wave.y,	ps_r__Tree_Wave.z,	Device.fTimeGlobal*ps_r__Tree_w_speed);			// wave
-		fog_plane.set			(plane.x*denom,	plane.y*denom,	plane.z*denom,	plane.w*denom);								// view-plane
-		fog_params.set			(f_near,	f_far,	0,		0);																// fog-params
 		l_dir.set				(-sun.Direction().x,	-sun.Direction().y,	-sun.Direction().z,	0);							// L-dir
 		l_color.set				(sun.Color().r,		sun.Color().g,		sun.Color().b,			0);							// L-color
 	}
@@ -139,8 +122,6 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_wind,	tvs.wind);					// wind
 	RCache.set_c			(c_c_scale,	c_scale);					// scale
 	RCache.set_c			(c_c_bias,	c_bias);					// bias
-	RCache.set_c			(c_eye,		tvs.fog_plane);				// view-pos
-	RCache.set_c			(c_fog,		tvs.fog_params);			// fog-params
 	RCache.set_c			(c_l_dir,	tvs.l_dir);					// L-dir
 	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 

@@ -5,28 +5,6 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
-#define	BIND_DECLARE(xf)	\
-	class cl_xform_##xf	: public R_constant_setup {	virtual void setup (R_constant* C) { RCache.xforms.set_c_##xf (C); } }; \
-	static cl_xform_##xf	binder_##xf
-
-BIND_DECLARE(w);
-BIND_DECLARE(v);
-BIND_DECLARE(p);
-BIND_DECLARE(wv);
-BIND_DECLARE(vp);
-BIND_DECLARE(wvp);
-
-void	CBlender_Compile::SetMapping	()
-{
-	// Standart constant-binding
-	r_Constant				("m_W",		&binder_w);
-	r_Constant				("m_V",		&binder_v);
-	r_Constant				("m_P",		&binder_p);
-	r_Constant				("m_WV",	&binder_wv);
-	r_Constant				("m_VP",	&binder_vp);
-	r_Constant				("m_WVP",	&binder_wvp);
-}
-
 void	CBlender_Compile::r_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bFog, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
 {
 	RS.Invalidate			();

@@ -1114,6 +1114,9 @@
 							RelativePath="Blender_Recorder_R2.cpp">
 						</File>
 						<File
+							RelativePath=".\Blender_Recorder_StandartBinding.cpp">
+						</File>
+						<File
 							RelativePath=".\tss.h">
 						</File>
 						<File

@@ -17,8 +17,6 @@ protected:
 	R_constant*					c_wind;
 	R_constant*					c_c_bias;
 	R_constant*					c_c_scale;
-	R_constant*					c_eye;
-	R_constant*					c_fog;
 	R_constant*					c_l_dir;
 	R_constant*					c_l_color;
 
