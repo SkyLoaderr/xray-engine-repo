@@ -169,7 +169,12 @@ IC	CPHMovementControl* PMovement()
 	{
 		return &m_PhysicMovementControl;
 	}
-
+///////////////////////////////////////////////////////////////////////
+	virtual u16				PHGetSyncItemsNumber();
+	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
+	virtual void			PHUnFreeze			();
+	virtual void			PHFreeze			();
+///////////////////////////////////////////////////////////////////////
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)

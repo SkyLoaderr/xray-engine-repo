@@ -11,6 +11,7 @@ class CPhysicsShell;
 class CPHFracture;
 class CPHJointDestroyInfo;
 class CODEGeom;
+class CPHSynchronize;
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -66,6 +67,7 @@ public:
 	virtual void			get_AngularVel			(Fvector& velocity)										= 0;
 	virtual void			set_LinearVel			(const Fvector& velocity)								= 0;
 	virtual void			set_AngularVel			(const Fvector& velocity)								= 0;
+
 	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
 	virtual void			SetMaterial				(u16 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
@@ -95,6 +97,7 @@ public:
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
+	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual u16				setGeomFracturable		(CPHFracture &fracture)							= 0;
 	virtual CPHFracture&	Fracture				(u16 num)										= 0;
@@ -206,15 +209,20 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual bool				isFractured				()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
+	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
 	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;
 	virtual void				Update					()													= 0;
-	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 element) = 0;
+
 	virtual void				setMass1				(float M)											= 0;
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
 	virtual CPhysicsElement*	get_ElementByStoreOrder (u16 num)											= 0;
+	virtual u16					get_ElementsNumber		()													= 0;
+	virtual CPHSynchronize*		get_ElementSync			(u16 element)										= 0;
+	virtual void				Freeze					()													= 0;
+	virtual void				UnFreeze				()													= 0;
 	virtual CPhysicsElement*	NearestToPoint			(const Fvector& point)								= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual void				preBuild_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;

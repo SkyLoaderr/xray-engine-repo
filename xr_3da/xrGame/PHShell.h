@@ -47,7 +47,7 @@ virtual ~CPHShell				()
 						if(m_spliter_holder)xr_delete(m_spliter_holder);
 	}
 
-	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 element);
+	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	static void __stdcall	BonesCallback1				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
@@ -138,6 +138,8 @@ virtual ~CPHShell				()
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
 	virtual CPhysicsElement*	get_ElementByStoreOrder	  (u16 num);
+	virtual u16					get_ElementsNumber		  (){return (u16)elements.size();}
+	virtual CPHSynchronize*		get_ElementSync			  (u16 element);
 	virtual CPhysicsElement*	get_Element				  (LPCSTR bone_name);
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
 	virtual void				Enable						();

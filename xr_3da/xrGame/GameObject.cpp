@@ -344,6 +344,25 @@ f32 CGameObject::GetMass()
 	return m_pPhysicsShell ? m_pPhysicsShell->getMass() : 0;
 }
 
+u16	CGameObject::PHGetSyncItemsNumber()
+{
+	if(m_pPhysicsShell)	return m_pPhysicsShell->get_ElementsNumber();
+	else				return 0;
+}
+CPHSynchronize*	CGameObject::PHGetSyncItem	(u16 item)
+{
+	if(m_pPhysicsShell) return m_pPhysicsShell->get_ElementSync(item);
+	else				return 0;
+}
+void	CGameObject::PHUnFreeze	()
+{
+	if(m_pPhysicsShell) m_pPhysicsShell->UnFreeze();
+}
+void	CGameObject::PHFreeze()
+{
+	if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
+}
+
 #ifdef DEBUG
 void CGameObject::OnRender()
 {

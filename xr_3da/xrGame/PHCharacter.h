@@ -1,7 +1,7 @@
 #pragma once
 #include "PHObject.h"
 #include "PHInterpolation.h"
-
+#include "PHSynchronize.h"
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
 class CPhysicsRefObject;
  static enum EEnvironment
@@ -12,7 +12,9 @@ class CPhysicsRefObject;
 			};
 
 
-class CPHCharacter : public CPHObject
+class CPHCharacter : 
+	public CPHObject,
+	public CPHSynchronize
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -52,10 +54,10 @@ dVector3 m_safe_position;
 
 
 void				Disabling										()															;
-virtual void		Freeze											();
-virtual void		UnFreeze										();
-public:
 
+public:
+	virtual void		Freeze								();
+	virtual void		UnFreeze							();
 	void	Enable											()															{if(m_body)dBodyEnable(m_body);}											//!!
 	bool	IsEnabled										()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
 	dBodyID GetBody											()															{return m_body;}
@@ -96,7 +98,10 @@ virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)										{}
 virtual		void		SetDesiredPosition					(const Fvector& /**pos/**/)									{}
 virtual		void		BringToDesired						(float /**time/**/,float /**velocity/**/,float force=1.f)	{}
 virtual		bool		TryPosition							(Fvector /**pos/**/)										{return false;}
-
+virtual		void		getForce							(Fvector& force);
+virtual		void		setForce							(const	Fvector& force);
+virtual		void		get_State							(		SPHNetState&	state)								;
+virtual		void		set_State							(const	SPHNetState&	state)								;
 			CPHCharacter									(void)														;
 virtual		~CPHCharacter									(void)														;
 };

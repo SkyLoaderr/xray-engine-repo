@@ -1,8 +1,10 @@
 #pragma once
 #include "PHCharacter.h"
+
 extern float object_demage_factor;
 
-class CPHSimpleCharacter : public CPHCharacter {
+class CPHSimpleCharacter : public CPHCharacter
+{
 protected:
 	////////////////////////////damage////////////////////////////////////////
 	dContact				m_damege_contact;

@@ -33,6 +33,33 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
+CPHElement::CPHElement()																															//aux
+{
+	m_w_limit = default_w_limit;
+	m_l_limit = default_l_limit;
+	m_l_scale=default_l_scale;
+	m_w_scale=default_w_scale;
+	m_disw_param=default_disw;
+	m_disl_param=default_disl;
+	push_untill=0;
+	contact_callback=ContactShotMark;
+	object_contact_callback=NULL;
+	temp_for_push_out=NULL;
+	m_body=NULL;
+	bActive=false;
+	bActivating=false;
+	dis_count_f=0;
+	dis_count_f1=0;
+	m_parent_element=NULL;
+	m_shell=NULL;
+	m_group=NULL;
+	m_phys_ref_object=NULL;
+	ul_material=GMLib.GetMaterialIdx("objects\\small_box");
+	k_w=default_k_w;
+	k_l=default_k_l;//1.8f;
+	m_fratures_holder=NULL;
+}
+
 void CPHElement::			add_Box		(const Fobb&		V)
 {
 	Fobb box;
@@ -1108,7 +1135,10 @@ void CPHElement::SetMaterial(u16 m)
 	for(;i!=e;++i) (*i)->set_material(m);
 }
 
-
+dMass*	CPHElement::getMassTensor()																						//aux
+{
+	return &m_mass;
+}
 
 void CPHElement::get_LinearVel(Fvector& velocity)
 {
@@ -1138,6 +1168,42 @@ void CPHElement::set_AngularVel			  (const Fvector& velocity)
 {
 	if(!bActive) return;
 	dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
+}
+
+void	CPHElement::getForce(Fvector& force)
+{
+	if(!bActive) return;
+	force.set(*(Fvector*)dBodyGetForce(m_body));
+}
+void	CPHElement::getTorque(Fvector& torque)
+{
+	if(!bActive) return;
+	torque.set(*(Fvector*)dBodyGetTorque(m_body));
+}
+void	CPHElement::setForce(const Fvector& force)
+{
+	if(!bActive) return;
+	dBodySetForce(m_body,force.x,force.y,force.z);
+}
+void	CPHElement::setTorque(const Fvector& torque)
+{
+	if(!bActive) return;
+	dBodySetTorque(m_body,torque.x,torque.y,torque.z);
+}
+
+void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
+{
+	applyForce				(dir.x*val,dir.y*val,dir.z*val);
+}
+void	CPHElement::applyForce(float x,float y,float z)																//called anywhere ph state influent
+{
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	dBodyAddForce(m_body,x,y,z);
+}
+
+void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux
+{														
+	applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
 }
 
 void CPHElement::set_PushOut(u32 time,PushOutCallbackFun* push_out)
@@ -1522,4 +1588,20 @@ CPHFracture& CPHElement::Fracture(u16 num)
 u16	CPHElement::numberOfGeoms()
 {
 	return (u16)m_geoms.size();
+}
+void CPHElement::get_State(SPHNetState& state)
+{
+	GetGlobalTransformDynamic(&state.XFORM);
+	get_LinearVel(state.linear_vel);
+	get_AngularVel(state.linear_vel);
+	getForce(state.force);
+	getTorque(state.torque);
+}
+void CPHElement::set_State(const SPHNetState& state)
+{
+	SetTransform(state.XFORM);
+	set_LinearVel(state.linear_vel);
+	set_AngularVel(state.angular_vel);
+	setForce(state.force);
+	setTorque(state.torque);
 }

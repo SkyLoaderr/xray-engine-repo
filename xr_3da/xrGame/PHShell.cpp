@@ -283,12 +283,12 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);
 }
 
-void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 element){
+void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id){
 	if(!bActive) return;
 	VERIFY(m_pKinematics);
-	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(element);
+	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(id);
 	if(!instance.Callback_Param) return;
-	((CPHElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val, element);
+	((CPhysicsElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val, id);
 
 }
 
@@ -306,6 +306,11 @@ CPhysicsElement* CPHShell::get_ElementByStoreOrder(u16 num)
 {
 	R_ASSERT2(num<elements.size(),"argument is out of range");
 	return dynamic_cast<CPhysicsElement*>(elements[num]);
+}
+
+CPHSynchronize*	CPHShell::get_ElementSync			  (u16 element)
+{
+	return dynamic_cast<CPHSynchronize*>(elements[element]);
 }
 
 CPhysicsElement* CPHShell::get_Element(s16 bone_id)

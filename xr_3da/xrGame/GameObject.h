@@ -8,6 +8,8 @@
 
 class CPhysicsShell;
 class CSE_Abstract;
+class CPHSynchronize;
+
 #include "PhysicsRefObject.h"
 #include "level_graph.h"
 #include "ai_object_location.h"
@@ -55,8 +57,12 @@ public:
 	virtual void			PHSetMaterial		(LPCSTR m);
 	virtual void			PHSetMaterial		(u16 m);
 	virtual void			PHSetPushOut		(u32 time = 5000);
-
-
+///////////////////////////////////////////////////////////////////////
+	virtual u16				PHGetSyncItemsNumber();
+	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
+	virtual void			PHUnFreeze			();
+	virtual void			PHFreeze			();
+///////////////////////////////////////////////////////////////////////
 	virtual bool			IsVisibleForZones() { return true; }
 
 	// Position stack

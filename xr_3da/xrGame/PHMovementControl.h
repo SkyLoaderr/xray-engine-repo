@@ -11,7 +11,7 @@
 class CPHAICharacter;
 class CPHSimpleCharacter;
 class CPHCapture;
-
+class CPHSynchronize;
 class CPHMovementControl 
 {
 static const path_few_point=10;
@@ -130,11 +130,14 @@ public:
 	void SetPLastMaterial(u16* p){m_character->SetPLastMaterial(p);}
 	float				GetCurrentFriction()		{ return fFriction; }
 
-	const Fvector&		GetVelocity		( )			{ return vVelocity;	}
+	const Fvector&		GetVelocity			( )		{ return vVelocity;	}
 	void				GetCharacterVelocity(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual	()		{ return fActualVelocity;	}
-	float				GetContactSpeed	()			{ return fContactSpeed; }
+	float				GetContactSpeed		()		{ return fContactSpeed; }
+	CPHSynchronize*		GetSyncItem			()								;
+	void				Freeze				()								;
+	void				UnFreeze			()								;
 	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character->SetVelocity(vVelocity);}
 	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character->SetVelocity(vVelocity);}
 	void				SetPhysicsRefObject(CPhysicsRefObject* ref_object){m_character->SetPhysicsRefObject(ref_object);};

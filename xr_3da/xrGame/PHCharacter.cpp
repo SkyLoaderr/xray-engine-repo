@@ -41,11 +41,35 @@ void	CPHCharacter::Freeze()
 	was_enabled_before_freeze=!!dBodyIsEnabled(m_body);
 	dBodyDisable(m_body);
 }
+
+void	CPHCharacter::getForce(Fvector& force)
+{
+	if(!b_exist)return;
+	force.set(*(Fvector*)dBodyGetForce(m_body));
+}
+void	CPHCharacter::setForce(const Fvector &force)
+{
+	if(!b_exist)return;
+	dBodySetForce(m_body,force.x,force.y,force.z);
+}
 void	CPHCharacter::UnFreeze()
 {
 	if(was_enabled_before_freeze)dBodyEnable(m_body);
 }
 
+void CPHCharacter::get_State(SPHNetState& state)
+{
+	state.XFORM.identity();
+	GetPosition(state.XFORM.c);
+	GetVelocity(state.linear_vel);
+	getForce(state.force);
+}
+void CPHCharacter::set_State(const SPHNetState& state)
+{
+	SetPosition(state.XFORM.c);
+	SetVelocity(state.linear_vel);
+	setForce(state.force);
+}
 //////////////////////////////////////////////////////////////////////////
 /////////////////////CPHWheeledCharacter//////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

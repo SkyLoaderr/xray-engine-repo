@@ -860,3 +860,17 @@ void CPHMovementControl::GetJumpParam(Fvector &velocity, JumpType &type,const Fv
 	}
 
 }
+
+CPHSynchronize*	CPHMovementControl::GetSyncItem()
+{
+	if(m_character)	return dynamic_cast<CPHSynchronize*>(m_character);
+	else			return 0;
+}
+void CPHMovementControl::Freeze()
+{
+	if(m_character)m_character->Freeze();
+}
+void CPHMovementControl::UnFreeze()
+{
+	if(m_character) m_character->UnFreeze();
+}

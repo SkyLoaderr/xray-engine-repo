@@ -1716,16 +1716,6 @@
 									<File
 										RelativePath=".\Explosive.cpp">
 										<FileConfiguration
-											Name="Debug|Win32">
-											<Tool
-												Name="VCCLCompilerTool"/>
-										</FileConfiguration>
-										<FileConfiguration
-											Name="Mixed|Win32">
-											<Tool
-												Name="VCCLCompilerTool"/>
-										</FileConfiguration>
-										<FileConfiguration
 											Name="Release|Win32"
 											ExcludedFromBuild="TRUE">
 											<Tool
@@ -3133,6 +3123,16 @@
 				</File>
 				<File
 					RelativePath=".\PHContactBodyEffector.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="PHNet"
+				Filter="">
+				<File
+					RelativePath=".\PHSynchronize.cpp">
+				</File>
+				<File
+					RelativePath=".\PHSynchronize.h">
 				</File>
 			</Filter>
 		</Filter>

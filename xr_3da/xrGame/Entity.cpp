@@ -383,3 +383,24 @@ float CEntityAlive::CalcCondition(float /**hit/**/)
 	//dont call inherited::CalcCondition it will be meaning less
 	return GetHealthLost()*100.f;
 }
+
+///////////////////////////////////////////////////////////////////////
+u16	CEntityAlive::PHGetSyncItemsNumber()
+{
+	if(m_PhysicMovementControl.CharacterExist()) return 1;
+	else										  return 0;
+}
+CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16/*item*/)
+{
+	if(m_PhysicMovementControl.CharacterExist()) return m_PhysicMovementControl.GetSyncItem();
+	else										 return 0;
+}
+void CEntityAlive::PHUnFreeze()
+{
+	if(m_PhysicMovementControl.CharacterExist()) m_PhysicMovementControl.UnFreeze();
+}
+void CEntityAlive::PHFreeze()
+{
+	if(m_PhysicMovementControl.CharacterExist()) m_PhysicMovementControl.Freeze();
+}
+//////////////////////////////////////////////////////////////////////

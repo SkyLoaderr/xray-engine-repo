@@ -8,12 +8,15 @@
 #ifndef PH_ELEMENT
 #define PH_ELEMENT
 #include "PhysicsCommon.h"
+#include "PHSynchronize.h"
 class CPHElement;
 class CPHShell;
 class CPHFracture;
 DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
 class CPHFracturesHolder;
-class CPHElement	:  public CPhysicsElement 
+class CPHElement	:  
+	public CPhysicsElement ,
+	public CPHSynchronize
 {
 	friend class CPHFracturesHolder;
 	GEOM_STORAGE			m_geoms;					//e					//bl
@@ -111,7 +114,7 @@ public:
 	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}							//aux
 	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);							//aux (may not be)
-	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,u16 id)	;					//called anywhere ph state influent
+	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,const u16 id)	;					//called anywhere ph state influent
 
 
 	///
@@ -129,11 +132,18 @@ public:
 	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);												//aux
 	virtual CPhysicsRefObject*	PhysicsRefObject			(){return m_phys_ref_object;}													//aux
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere
+
+	virtual void			getForce						(Fvector& force);
+	virtual void			getTorque						(Fvector& torque);
 	virtual void			get_LinearVel					(Fvector& velocity);															//aux
 	virtual void			get_AngularVel					(Fvector& velocity);															//aux
 	virtual void			set_LinearVel					(const Fvector& velocity);														//called anywhere ph state influent
 	virtual void			set_AngularVel					(const Fvector& velocity);														//called anywhere ph state influent
+	virtual void			setForce						(const Fvector& force);
+	virtual void			setTorque						(const Fvector& torque);
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);													//aux
+	virtual void			get_State						(		SPHNetState&	state);
+	virtual void			set_State						(const	SPHNetState&	state);
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);//aux
 	virtual float			getRadius						();																				//aux
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
@@ -192,53 +202,16 @@ public:
 			void			ReAdjustMassPositions	(const Fmatrix &shift_pivot,float density);												//aux
 			void			ResetMass				(float density);																		//aux
 			void			SplitProcess			(ELEMENT_PAIR_VECTOR &new_elements);													//aux
-			void			PresetActive			();																						//aux
-virtual		dMass*			getMassTensor			()																						//aux
-	{
-		return &m_mass;
-	}
+			void			PresetActive			();			
 
-	virtual void			applyForce				(const Fvector& dir, float val)															//aux
-	{
-		applyForce				(dir.x*val,dir.y*val,dir.z*val);
-	};
-	virtual void			applyForce				(float x,float y,float z)																//called anywhere ph state influent
-	{
-		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-		dBodyAddForce(m_body,x,y,z);
-	}
-	virtual void			applyImpulse			(const Fvector& dir, float val){														//aux
-		
-		applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
-	};
+	virtual	dMass*			getMassTensor			();	//aux
+	//aux
+
+	virtual void			applyForce				(const Fvector& dir, float val);															//aux
+	virtual void			applyForce				(float x,float y,float z);																//called anywhere ph state influent
+	virtual void			applyImpulse			(const Fvector& dir, float val);														//aux
 	virtual void			Update					();																						//called update CL visual influence
-
-	CPHElement()																															//aux
-	{ 
-		m_w_limit = default_w_limit;
-		m_l_limit = default_l_limit;
-		m_l_scale=default_l_scale;
-		m_w_scale=default_w_scale;
-		m_disw_param=default_disw;
-		m_disl_param=default_disl;
-		push_untill=0;
-		contact_callback=ContactShotMark;
-		object_contact_callback=NULL;
-		temp_for_push_out=NULL;
-		m_body=NULL;
-		bActive=false;
-		bActivating=false;
-		dis_count_f=0;
-		dis_count_f1=0;
-		m_parent_element=NULL;
-		m_shell=NULL;
-		m_group=NULL;
-		m_phys_ref_object=NULL;
-		ul_material=GMLib.GetMaterialIdx("objects\\small_box");
-		k_w=default_k_w;
-		k_l=default_k_l;//1.8f;
-		m_fratures_holder=NULL;
-	};
+	CPHElement										();																															//aux
 	//CPHElement(){ m_space=ph_world->GetSpace();};
 	virtual ~CPHElement	();																															//aux
 };
