@@ -101,5 +101,5 @@ void CBuild::BuildUVmap()
 			}
 		}
 	}
-	Msg("%d subdivisions...",g_XSplit.size());
+	clMsg("%d subdivisions...",g_XSplit.size());
 }

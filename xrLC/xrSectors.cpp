@@ -16,7 +16,7 @@ void CBuild::BuildSectors()
 	DWORD SectorCount = SectorMax+1; 
 	g_sectors.resize(SectorCount);
 	ZeroMemory(g_sectors.begin(),g_sectors.size()*sizeof(void*));
-	Msg("%d sectors accepted.",SectorCount);
+	clMsg("%d sectors accepted.",SectorCount);
 
 	Status("Spatializing geometry...");
 	for (I=0; I<g_tree.size(); I++)
@@ -70,7 +70,7 @@ void CBuild::BuildSectors()
 					g_sectors	[L.sectors[j]]->add_light(WORD(I));
 				}
 			} else {
-				Msg("Fuck!!! Light at position %f,%f,%f non associated!!!",
+				clMsg("Fuck!!! Light at position %f,%f,%f non associated!!!",
 					L.data.position.x,L.data.position.y,L.data.position.z
 					);
 			}

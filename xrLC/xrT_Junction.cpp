@@ -56,8 +56,8 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		vecJunctions->push_back	(rec);
 		
 		// display
-		if (bWeld)	Msg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
-		else		Msg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		if (bWeld)	clMsg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		else		clMsg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
 		pBuild->err_tjunction.Wvector	(vTEST->P);
 	}
 }
@@ -82,7 +82,7 @@ void edge(Vertex* vE1, Vertex* vE2)
 	rec.T	= 0;
 	vecEdges->push_back	(rec);
 	
-	Msg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
+	clMsg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
 }
 
 void CBuild::CorrectTJunctions()
@@ -134,7 +134,7 @@ void CBuild::CorrectTJunctions()
 		}
 		Progress(float(I)/float(g_faces.size()));
 	}
-	Msg("*** %d junctions and %d long edges found.",vecJunctions->size(),vecEdges->size());
+	clMsg("*** %d junctions and %d long edges found.",vecJunctions->size(),vecEdges->size());
 
 	xr_delete(vecJunctions);
 	xr_delete(vecEdges);

@@ -61,7 +61,7 @@ void CBuild::Tesselate	()
 		FacePool.destroy	(g_faces[I]);
 	}
 	
-	Msg ("%d splits performed.",cnt_splits);
+	clMsg ("%d splits performed.",cnt_splits);
 	
 	// Remove ZEROed faces
 	g_faces.erase(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());

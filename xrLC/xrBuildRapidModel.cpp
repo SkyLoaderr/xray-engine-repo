@@ -70,7 +70,7 @@ void CBuild::BuildRapid()
 		}
 	}
 
-	Msg						("Faces: original(%d), model(%d), ratio(%f)",
+	clMsg					("Faces: original(%d), model(%d), ratio(%f)",
 		g_faces.size(),CL.getTS(),float(CL.getTS())/float(g_faces.size()));
 
 	// Export references
@@ -83,12 +83,12 @@ void CBuild::BuildRapid()
 	switch					(RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS(),TRUE))
 	{
 	case 0:						break;
-	case CDB::err_memory_0:		Msg		("ERR: mem_0");	break;
-	case CDB::err_memory_1:		Msg		("ERR: mem_1");	break;
-	case CDB::err_memory_2:		Msg		("ERR: mem_2");	break;
-	case CDB::err_build:		Msg		("ERR: build");	break;
+	case CDB::err_memory_0:		clMsg		("ERR: mem_0");	break;
+	case CDB::err_memory_1:		clMsg		("ERR: mem_1");	break;
+	case CDB::err_memory_2:		clMsg		("ERR: mem_2");	break;
+	case CDB::err_build:		clMsg		("ERR: build");	break;
 	}
-	Msg						("%d K memory usage",RCAST_Model->memory()/1024);
+	clMsg					("%d K memory usage",RCAST_Model->memory()/1024);
 	
 	// Saving for AI/DO usage
 	Status					("Saving...");

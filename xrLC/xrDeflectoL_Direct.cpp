@@ -107,14 +107,14 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 								LightPoint	(DB, C[J], wP, wN, LightsSelected->begin(), LightsSelected->end(), F);
 								Fcount		+= 1;
 							} catch (...) {
-								Msg("* ERROR (CDB). Recovered. ");
+								clMsg("* ERROR (CDB). Recovered. ");
 							}
 							break;
 						}
 					}
 				} 
 			} catch (...) {
-				Msg("* ERROR (Light). Recovered. ");
+				clMsg("* ERROR (Light). Recovered. ");
 			}
 			
 			if (Fcount) {
@@ -146,7 +146,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 			L_Direct_Edge	(DB,LightsSelected, T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size,F);
 		} catch (...)
 		{
-			Msg("* ERROR (Edge). Recovered. ");
+			clMsg("* ERROR (Edge). Recovered. ");
 		}
 	}
 }

@@ -99,7 +99,7 @@ BOOL ApplyBorders(b_texture &lm, u32 ref)
 		CopyMemory(lm.pSurface,result,lm.dwHeight*lm.dwWidth*4);
 	} catch (...)
 	{
-		Msg("* ERROR: ApplyBorders");
+		clMsg("* ERROR: ApplyBorders");
 	}
 	return bNeedContinue;
 }
@@ -159,7 +159,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 	} 
 	X_CATCH
 	{
-		Msg("* ERROR: getLastRP_Scale");
+		clMsg("* ERROR: getLastRP_Scale");
 	}
 	
 	return scale;
@@ -247,7 +247,7 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter				);
 	} catch (...)
 	{
-		Msg		("* ERROR: imf_Process");
+		clMsg	("* ERROR: imf_Process");
 		xr_free	(pScaled);
 		xr_free	(pRestored);
 		return	FALSE;
@@ -328,7 +328,7 @@ BOOL	compress_Zero			(b_texture& lm, u32 rms)
 	_count	= rms_average(lm,_r,_g,_b);
 	
 	if (0==_count)	{
-		Msg("* ERROR: Lightmap not calculated (T:%d)");
+		clMsg("* ERROR: Lightmap not calculated (T:%d)");
 		return FALSE;
 	} else {
 		_r	/= _count;	_g	/= _count;	_b	/= _count;
@@ -383,7 +383,7 @@ BOOL	compress_RMS			(b_texture& lm, u32 rms, u32& w, u32& h)
 	if (w || h)	{
 		if (0==w)	w = lm.dwWidth;
 		if (0==h)	h = lm.dwHeight;
-//		Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
+//		clMsg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
 		return TRUE;
 	}
 	return FALSE;
@@ -417,7 +417,7 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH
 		L_Direct		(DB,LightsSelected,H);
 	} catch (...)
 	{
-		Msg("* ERROR: CDeflector::L_Calculate");
+		clMsg("* ERROR: CDeflector::L_Calculate");
 	}
 }
 
@@ -434,7 +434,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 		bb.getsphere(Sphere.P,Sphere.R);
 	} catch (...)
 	{
-		Msg("* ERROR: CDeflector::Light - sphere calc");
+		clMsg("* ERROR: CDeflector::Light - sphere calc");
 	}
 
 	// Iterate on layers
@@ -455,7 +455,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			if ((layer!=pBuild->L_layers.begin()) && LightsSelected->empty())	continue;	// empty, non-base layer
 		} catch (...)
 		{
-			Msg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-pBuild->L_layers.begin());
+			clMsg("* ERROR: CDeflector::Light - LocalSelect (L:%d)",layer-pBuild->L_layers.begin());
 		}
 
 		// Register _new layer
@@ -484,7 +484,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			}
 		} catch (...)
 		{
-			Msg("* ERROR: CDeflector::Light - Compression (L:%d)", layer-pBuild->L_layers.begin());
+			clMsg("* ERROR: CDeflector::Light - Compression (L:%d)", layer-pBuild->L_layers.begin());
 		}
 
 		// Expand with borders
@@ -561,7 +561,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			}
 		} catch (...)
 		{
-			Msg("* ERROR: CDeflector::Light - BorderExpansion (L:%d)", layer-pBuild->L_layers.begin());
+			clMsg("* ERROR: CDeflector::Light - BorderExpansion (L:%d)", layer-pBuild->L_layers.begin());
 		}
 
 		// Test if layer really needed 

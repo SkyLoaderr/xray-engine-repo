@@ -11,7 +11,7 @@ void OGF::Save(CFS_Base &fs)
 {
 	OGF_Base::Save		(fs);
 
-	Msg					("%3d: %d faces",treeID,faces.size());
+	clMsg				("%3d: %d faces",treeID,faces.size());
 
 	// Create header
 	ogf_header H;
@@ -283,7 +283,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 			}
 
 			// ***** Close chunk
-			Msg("     saved chunk #%d, %d faces, %d verts", 
+			clMsg("     saved chunk #%d, %d faces, %d verts", 
 				dwSample,strip_indices.size()/3, strip_verts.size());
 		}
 	}

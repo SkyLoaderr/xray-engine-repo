@@ -50,9 +50,9 @@ void CBuild::BuildHierrarhy()
 			Progress(float(I)/float(iSize));
 		}
 		
-		Msg("#%2d [%3.1f]: %d nodes",iLevel,SizeLimit,g_tree.size()-iSize);
+		clMsg("#%2d [%3.1f]: %d nodes",iLevel,SizeLimit,g_tree.size()-iSize);
 		if (iSize != g_tree.size()) iLevel++;
 	}
 	g_TREE_ROOT = g_tree.back();
-	Msg("* TREE levels %d, TREE size %d",iLevel,g_tree.size());
+	clMsg("* TREE levels %d, TREE size %d",iLevel,g_tree.size());
 }

@@ -213,7 +213,7 @@ public:
 					} 
 				} catch (...)
 				{
-					Msg("* THREAD #%d: Access violation. Possibly recovered.",thID);
+					clMsg("* THREAD #%d: Access violation. Possibly recovered.",thID);
 				}
 				/*
 				C[0].set(1,1,1,1);
@@ -362,7 +362,7 @@ void CBuild::ImplicitLighting()
 			sscanf(strstr(GetCommandLine(),"-f")+2,"%s",name);
 			b_BuildTexture& TEX		= *defl.texture;
 			char	out_name[256];	strconcat(out_name,"gamedata\\levels\\",name,"\\",TEX.name,".dds");
-			Msg		("Saving texture '%s'...",out_name);
+			clMsg		("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE*	raw_data		= LPBYTE(TEX.pSurface);
 			u32	w					= TEX.dwWidth;
@@ -378,7 +378,7 @@ void CBuild::ImplicitLighting()
 			sscanf(strstr(GetCommandLine(),"-f")+2,"%s",name);
 			b_BuildTexture& TEX		= *defl.texture;
 			char	out_name[256];	strconcat(out_name,"\\",TEX.name,"_m");
-			Msg		("Saving markup '%s'...",out_name);
+			clMsg		("Saving markup '%s'...",out_name);
 
 			TGAdesc			p;
 			p.format		= IMG_24B;

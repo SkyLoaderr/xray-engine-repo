@@ -83,7 +83,7 @@ void CalculateRelSet(Fvector &pos, vecW &rel_set)
 	maxZ = iROUND(ceilf(Volume.max.z));		clamp(maxZ, 0, int(g_pvs_Z)-1);
 
 	/*
-	Msg("- Selected BB: [%d,%d,%d]-[%d,%d,%d]",
+	clMsg("- Selected BB: [%d,%d,%d]-[%d,%d,%d]",
 		minX,minY,minZ,
 		maxX,maxY,maxZ
 		);

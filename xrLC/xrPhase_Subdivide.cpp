@@ -111,5 +111,5 @@ void CBuild::xrPhase_Subdivide()
 		s1.clear	();
 		s2.clear	();
 	}
-	Msg("%d subdivisions.",g_XSplit.size());
+	clMsg("%d subdivisions.",g_XSplit.size());
 }

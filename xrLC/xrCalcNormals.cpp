@@ -68,6 +68,8 @@ void CBuild::CalcNormals()
 	for (I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
 	g_bUnregister = true;
 
+	clMsg	("%d vertices was duplicated 'cause of SM groups",g_vertices.size()-Vcount);
+
 	// Clear temporary flag
 	for (it = g_faces.begin(); it!=g_faces.end(); it++)
 		(*it)->bSplitted = FALSE;
@@ -77,5 +79,4 @@ void CBuild::CalcNormals()
 	for		(u32 m=0; m<mu_models.size(); m++)
 		mu_models[m]->calc_normals();
 
-	Msg("%d vertices was duplicated 'cause of SM groups",g_vertices.size()-Vcount);
 }

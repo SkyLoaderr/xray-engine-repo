@@ -63,7 +63,7 @@ void Startup(LPSTR     lpCmdLine)
 	DWORD	dwMax			= 1900*(1024*1024);
 	if (0==SetProcessWorkingSetSize(GetCurrentProcess(),dwMin,dwMax))
 	{
-		Msg("*** Failed to expand working set");
+		clMsg("*** Failed to expand working set");
 	};
 	*/
 	
@@ -122,7 +122,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	DWORD	dwEndTime		= timeGetTime();
 	sprintf					(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
-	Msg						("Build succesful!\n%s",stats);
+	clMsg					("Build succesful!\n%s",stats);
 	MessageBox				(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 
 	// Close log

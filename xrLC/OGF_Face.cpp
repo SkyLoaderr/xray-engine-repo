@@ -38,7 +38,7 @@ WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 		{
 			if (it->similar(this,V1)) return WORD(it-vertices.begin());
 		}
-	} catch (...) { Msg("* ERROR: OGF::_BuildVertex");	}
+	} catch (...) { clMsg("* ERROR: OGF::_BuildVertex");	}
 
 	vertices.push_back	(V1);
 	return vertices.size()-1;

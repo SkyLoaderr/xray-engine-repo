@@ -158,9 +158,9 @@ void CBuild::PreOptimize()
 	}
 	mem_Compact			();
 	u32 M2				= Memory.mem_usage	();
-	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
-	Msg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
-	Msg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
+	clMsg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
+	clMsg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
+	clMsg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
 }
 
 void CBuild::IsolateVertices()
@@ -179,5 +179,5 @@ void CBuild::IsolateVertices()
 	g_bUnregister		= true;
 	mem_Compact			();
 	u32 M2				= Memory.mem_usage	();
-	Status				("::compact:: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
+	clMsg				("::compact:: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
 }

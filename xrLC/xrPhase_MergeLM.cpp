@@ -110,12 +110,12 @@ void CBuild::xrPhase_MergeLM()
 			
 			// Sort layer by similarity (state changes)
 			Status		("Selection 1...");
-			Msg			("LS: %d",	Layer.size());
+			clMsg		("LS: %d",	Layer.size());
 			std::sort	(Layer.begin(),Layer.end(),compare1_defl);
 
 			// Sort layer (by material and distance from "base" deflector)
 			Status		("Selection 2...");
-			Msg			("LS: %d",	Layer.size());
+			clMsg		("LS: %d",	Layer.size());
 			Deflector	= Layer[0];
 			R_ASSERT	(Deflector);
 			if (Layer.size()>2)	{
@@ -185,7 +185,7 @@ void CBuild::xrPhase_MergeLM()
 			lmap->Save	();
 		}
 	}
-	Msg	("%d lightmaps builded",g_lightmaps.size());
+	clMsg	("%d lightmaps builded",g_lightmaps.size());
 
 	// Cleanup deflectors
 	Progress	(1.f);

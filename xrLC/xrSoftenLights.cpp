@@ -163,5 +163,5 @@ void CBuild::SoftenLights()
 			}
 		}
 	}
-	Msg("* Total light-layers: %d",lights.size());
+	clMsg("* Total light-layers: %d",lights.size());
 }

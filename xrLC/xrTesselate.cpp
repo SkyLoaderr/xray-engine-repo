@@ -128,6 +128,6 @@ void CBuild::Tesselate()
 		}
 		Progress(float(fi)/float(Fcount));
 	}
-	Msg("Faces tesselated: %d",Tcount);
-	Msg("Was %d, now %d",Fcount,g_faces.size());
+	clMsg("Faces tesselated: %d",Tcount);
+	clMsg("Was %d, now %d",Fcount,g_faces.size());
 }

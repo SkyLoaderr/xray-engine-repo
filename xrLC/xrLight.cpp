@@ -43,7 +43,7 @@ public:
 				D->Light	(&DB,&LightsSelected,H);
 			} catch (...)
 			{
-				Msg("* ERROR: CLMThread::Execute - light");
+				clMsg("* ERROR: CLMThread::Execute - light");
 			}
 		}
 	}
@@ -56,13 +56,13 @@ void CBuild::Light()
 	for (u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 
 	// Main process (4 threads)
-	Status("Lighting...");
+	Status	("Lighting...");
 	CThreadManager	threads;
 	const	DWORD	thNUM	= 3;
 	DWORD	dwTimeStart		= timeGetTime();
 	for (int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 	threads.wait	(500);
-	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
+	clMsg	("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 }
 
 //-----------------------------------------------------------------------
@@ -89,7 +89,7 @@ void	g_trans_register_internal	(Vertex* V)
 	while (it!=g_trans->begin() && ((it->first+eps2)>key)) it--;
 	while (it2!=g_trans->end() && ((it2->first-eps2)<key)) it2++;
 	if (it2!=g_trans->end())	it2++;
-	// Msg		("K:%f, L:%f, U:%f",key,it->first,it2->first);
+	// clMsg		("K:%f, L:%f, U:%f",key,it->first,it2->first);
 	
 	// Search
 	for (; it!=it2; it++)
@@ -184,7 +184,7 @@ void CBuild::LightVertex()
 
 		VL_faces->push_back					(F);
 	}
-	Msg("%d/%d selected.",VL_faces->size(),g_faces.size());
+	clMsg("%d/%d selected.",VL_faces->size(),g_faces.size());
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
@@ -195,7 +195,7 @@ void CBuild::LightVertex()
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
-	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	clMsg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
 	// Process all groups
 	Status					("Transluenting...");

@@ -69,7 +69,7 @@ void CBuild::BuildPVS()
 	g_pvs_X = iROUND(ceilf(size.x/g_params.m_sample_step))+1;
 	g_pvs_Y = iROUND(ceilf(size.y/g_params.m_sample_step))+1;
 	g_pvs_Z = iROUND(ceilf(size.z/g_params.m_sample_step))+1;
-	Msg("Ceiling dimensions: [%3d,%3d,%3d]",g_pvs_X, g_pvs_Y, g_pvs_Z);
+	clMsg("Ceiling dimensions: [%3d,%3d,%3d]",g_pvs_X, g_pvs_Y, g_pvs_Z);
 
 	// ground pick setup
 	XRC.RayMode			(RAY_ONLYFIRST|RAY_CULL);
@@ -80,7 +80,7 @@ void CBuild::BuildPVS()
 	DWORD				dwSlot		= 0;
 	DWORD				dwSlotsTotal= g_pvs_X*g_pvs_Y*g_pvs_Z;
 	DWORD	pvs_reserve	= dwSlotsTotal/1024 + 512;
-	Msg("PVS: %d M",	(pvs_reserve*sizeof(vecW))/(1024*1024));
+	clMsg("PVS: %d M",	(pvs_reserve*sizeof(vecW))/(1024*1024));
 	g_pvs.reserve		(pvs_reserve);
 
 	// begin!
@@ -143,6 +143,6 @@ void CBuild::BuildPVS()
 		}
 	}
 	ORM_Destroy();
-	Msg("* PVS entrys:  %d",	g_pvs.size());
-	Msg("* Aver. Speed: %3.1f",	1000.f*float(dwSlot)/float(timeGetTime()-dwStartTime));
+	clMsg("* PVS entrys:  %d",	g_pvs.size());
+	clMsg("* Aver. Speed: %3.1f",	1000.f*float(dwSlot)/float(timeGetTime()-dwStartTime));
 }

@@ -14,7 +14,7 @@ void xrMU_Reference::Load(CStream& F)
 void xrMU_Model::Load(CStream& F)
 {
 	F.RstringZ			(m_name);
-	Msg					("* Loading model: '%s'...",m_name);
+	clMsg				("* Loading model: '%s'...",m_name);
 
 	// READ: vertices
 	vector<b_vertex>	b_vertices;
@@ -36,7 +36,7 @@ void xrMU_Model::Load(CStream& F)
 	}
 
 	// 
-	Msg	("%5s v(%d/%d), f(%d/%d)","-",m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
+	clMsg	("%5s v(%d/%d), f(%d/%d)","-",m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
 }
 
 xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)

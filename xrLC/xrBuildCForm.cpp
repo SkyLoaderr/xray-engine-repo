@@ -105,7 +105,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 		Progress(p_total+=p_cost);		// progress
 	}
 	if (bCriticalErrCnt)
-		Msg("MultipleEdges: %d faces",bCriticalErrCnt);
+		clMsg("MultipleEdges: %d faces",bCriticalErrCnt);
 	xr_delete		(cfFaces);
 	xr_delete		(cfVertices);
 

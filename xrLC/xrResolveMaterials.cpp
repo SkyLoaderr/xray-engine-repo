@@ -66,9 +66,9 @@ void CBuild::ResolveMaterials()
 		g_XSplit.push_back	(L_Adj_Space);
 		L_Adj_Space.clear	();
 	}
-	Msg("%d subdivisions.",g_XSplit.size());
+	clMsg	("%d subdivisions.",g_XSplit.size());
 
-	Status("Partial adjacement reduction...");
+	Status	("Partial adjacement reduction...");
 	Fbox	bb;	bb.invalidate();
 	Fvector size;
 
@@ -161,7 +161,7 @@ void CBuild::ResolveMaterials()
 			X--;
 			continue;
 		}
-//		Msg("curent: %d, total: %d",X,g_XSplit.size());
+//		clMsg("curent: %d, total: %d",X,g_XSplit.size());
 
 		// skip if subdivision is too small already
 		if (int(g_XSplit[X].size())<(g_params.m_SS_Low*2))	continue;
@@ -230,7 +230,7 @@ void CBuild::ResolveMaterials()
 
 		Progress			(.33f+.33f*float(X)/float(g_XSplit.size()));
 	}
-	Msg("%d subdivisions.",g_XSplit.size());
+	clMsg("%d subdivisions.",g_XSplit.size());
 
 	Status("Breaking down connectivity...");
 	for (splitIt S=g_XSplit.begin(); S!=g_XSplit.end(); S++)

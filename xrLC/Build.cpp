@@ -18,7 +18,7 @@ void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
 {
 	CStream*	O		= F.OpenChunk(chunk);
 	u32		count	= O?(O->Length()/sizeof(T)):0;
-	Msg			("* %16s: %d",name,count);
+	clMsg			("* %16s: %d",name,count);
 	if (count)  
 	{
 		dest.reserve(count);
@@ -34,7 +34,7 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 {
 	CStream&	FS	= const_cast<CStream&>(_in_FS);
 	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);
-	// Msg			("* <LargeHeap> handle: %X",hLargeHeap);
+	// clMsg		("* <LargeHeap> handle: %X",hLargeHeap);
 
 	u32			i			= 0;
 
@@ -62,7 +62,7 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 			scene_bb.modify		(pV->P);
 		}
 		Progress			(p_total+=p_cost);
-		Msg					("* %16s: %d","vertices",g_vertices.size());
+		clMsg				("* %16s: %d","vertices",g_vertices.size());
 		F->Close			();
 	}
 
@@ -105,7 +105,7 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 			}
 		}
 		Progress			(p_total+=p_cost);
-		Msg					("* %16s: %d","faces",g_faces.size());
+		clMsg				("* %16s: %d","faces",g_faces.size());
 		F->Close			();
 
 		if (dwInvalidFaces)	
@@ -249,7 +249,7 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 			{
 				if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
 				{
-					Msg			("- loading: %s",N);
+					clMsg		("- loading: %s",N);
 					u32			w=0, h=0;
 					BT.pSurface = Surface_Load(N,w,h);
 					BT.Vflip	();
@@ -272,12 +272,12 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
 			M.reserved	= WORD(-1);
-			Msg		("*** %20s",shader_render[M.shader].name);
+			clMsg	(" *  %20s",shader_render[M.shader].name);
 		} else {
-			Msg		("*** %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
+			clMsg	(" *  %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {
-				Msg		("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
+				clMsg	("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
 				R_ASSERT(id>=0);
 			}
 			M.reserved = WORD(id);
@@ -291,7 +291,7 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 	g_params.m_bConvertProgressive	= FALSE;
 
 	// 
-	Msg	("* sizes: V(%d),F(%d)",sizeof(Vertex),sizeof(Face));
+	clMsg	("* sizes: V(%d),F(%d)",sizeof(Vertex),sizeof(Face));
 }
 
 CBuild::~CBuild()

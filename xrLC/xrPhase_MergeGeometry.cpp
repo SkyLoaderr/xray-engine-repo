@@ -126,5 +126,5 @@ void CBuild::xrPhase_MergeGeometry	()
 		}
 		Progress(_sqrt(_sqrt(float(split)/float(g_XSplit.size()))));
 	}
-	Msg("%d subdivisions.",g_XSplit.size());
+	clMsg("%d subdivisions.",g_XSplit.size());
 }

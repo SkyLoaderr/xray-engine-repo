@@ -5,7 +5,7 @@
 #include "std_classes.h"
 #include "lightmap.h"
 
-#define	TRY(a) try { a; } catch (...) { Msg("* E: %s", #a); }
+#define	TRY(a) try { a; } catch (...) { clMsg("* E: %s", #a); }
 
 void CBuild::Flex2OGF()
 {
@@ -51,7 +51,7 @@ void CBuild::Flex2OGF()
 					R_ASSERT		(pOGF);
 					pOGF->textures.push_back(T);
 				}
-			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
+			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
 			
 			// Collect faces & vertices
 			try {
@@ -80,10 +80,10 @@ void CBuild::Flex2OGF()
 					TRY				(pOGF->_BuildFace(V1,V2,V3));
 					V1.UV.clear();	V2.UV.clear();	V3.UV.clear();
 				}
-			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
+			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
 		} catch (...)
 		{
-			Msg("* ERROR: Flex2OGF, 1st part, model# %d",MODEL_ID);
+			clMsg("* ERROR: Flex2OGF, 1st part, model# %d",MODEL_ID);
 		}
 		
 		try {
@@ -95,7 +95,7 @@ void CBuild::Flex2OGF()
 			if (g_params.m_bStripify)				pOGF->Stripify			();
 		} catch (...)
 		{
-			Msg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);
+			clMsg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);
 		}
 		
 		g_tree.push_back	(pOGF);

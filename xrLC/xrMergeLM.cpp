@@ -256,7 +256,7 @@ void CBuild::MergeLM()
 				R_ASSERT	(brect.a.x==0 && brect.a.y==0);
 				
 				//  Analyze resuls
-				Msg("%3d / %3d - [%d,%d]",best.size(),selected.size(),brect.SizeX(),brect.SizeY());
+				clMsg("%3d / %3d - [%d,%d]",best.size(),selected.size(),brect.SizeX(),brect.SizeY());
 				CDeflector*	pDEFL = xr_new<CDeflector>();
 				pDEFL->lm.bHasAlpha = FALSE;
 				pDEFL->lm.dwWidth   = lmap_size;
@@ -306,5 +306,5 @@ void CBuild::MergeLM()
 	
 	R_ASSERT(g_deflectors.empty());
 	g_deflectors = deflNew;
-	Msg	("%d lightmaps builded",g_deflectors.size());
+	clMsg	("%d lightmaps builded",g_deflectors.size());
 }

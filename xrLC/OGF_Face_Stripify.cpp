@@ -80,7 +80,7 @@ void OGF::Stripify()
 		for(DWORD i=0; i<temp_list.size(); i++)
 			vertices[i]=temp_list[permute[i]];
 	} catch (...) {
-		Log("ERROR: Stripifying failed. Dump below.");
+		clMsg("ERROR: Stripifying failed. Dump below.");
 		DumpFaces();
 	}
 }
@@ -88,5 +88,5 @@ void OGF::Stripify()
 void OGF::DumpFaces()
 {
 	for (DWORD i=0; i<faces.size(); i++)
-		Msg("Face #%4d: %4d %4d %4d",i,int(faces[i].v[0]),int(faces[i].v[1]),int(faces[i].v[2]));
+		clMsg("Face #%4d: %4d %4d %4d",i,int(faces[i].v[0]),int(faces[i].v[1]),int(faces[i].v[2]));
 }

@@ -120,7 +120,7 @@ void	CBuild::xrPhase_UVmap()
 			}
 		}
 	}
-	Msg("%d subdivisions...",g_XSplit.size());
+	clMsg("%d subdivisions...",g_XSplit.size());
 }
 
 void CBuild::mem_CompactSubdivs()
@@ -137,7 +137,7 @@ void CBuild::mem_CompactSubdivs()
 		g_XSplit[SP]		= xr_new<vecFace> ();
 		g_XSplit[SP]->assign(temp.begin(),temp.end());
 	}
-	Msg		("%d ms for memory compacting...",timeGetTime()-dwT);
+	clMsg		("%d ms for memory compacting...",timeGetTime()-dwT);
 }
 void CBuild::mem_Compact()
 {
@@ -147,6 +147,6 @@ void CBuild::mem_Compact()
 	LPCSTR h_status		= 0;
 	if (HeapValidate	(GetProcessHeap(),0,0))	h_status = "OK";
 	else										h_status = "DAMAGED";
-	Status				("::MEMORY(%s):: %d MB, %d Bused, %d Bfree",
+	clMsg				("::MEMORY(%s):: %d MB, %d Bused, %d Bfree",
 		h_status,bytes/(1024*1024),blocks_used,blocks_free);
 }
