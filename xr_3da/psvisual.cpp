@@ -39,21 +39,17 @@ void CPSVisual::Copy(FBasicVisual* pFrom)
 // 
 void CPSVisual::Update(DWORD dt)
 {
-	Log("a");
 	float fTime		= Device.fTimeGlobal;
 	float dT		= float(dt)/1000.f;
 	
-	Log("b");
 	// calculate number of particles to destroy
 	int iCount_Destroy	= 0;
 	for (int i=0; i<int(m_Particles.size()); i++)
 		if (fTime>m_Particles[i].m_Time.end)	iCount_Destroy++;
 		
-	Log("c");
 	// calculate how many particles we should create from ParticlesPerSec and time elapsed
 	int iCount_Create	= m_Emitter->CalculateBirth(m_Particles.size() - iCount_Destroy, fTime, dT);
 		
-	Log("d");
 	// create/destroy/simulate particles that we own
 	float TM	 		= fTime-dT;
 	float dT_delta 		= dT/(iCount_Create?iCount_Create:1);
@@ -62,6 +58,7 @@ void CPSVisual::Update(DWORD dt)
 	bv_BBox.invalidate	();
 	for (i=0; i<int(m_Particles.size()); i++)
 	{
+//		Log("a");
 		if (fTime>m_Particles[i].m_Time.end) {
 			// Need to delete particle
 			if (iCount_Create)	{
@@ -73,9 +70,11 @@ void CPSVisual::Update(DWORD dt)
 				// Erase
 				m_Particles.erase	(m_Particles.begin()+i);
 				i--;
+				continue;
 			}
 		}
 		
+//		Log("b");
 		// Simulate this particle
 		SParticle& P	= m_Particles[i];
 		float T 		= fTime-P.m_Time.start;
@@ -85,7 +84,6 @@ void CPSVisual::Update(DWORD dt)
 		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
 	
-	Log("e");
 	// if we need to create somewhat more particles...
 	while (iCount_Create) {
 		// Create
@@ -102,7 +100,6 @@ void CPSVisual::Update(DWORD dt)
 		PS::SimulateSize			(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
 	
-	Log("f");
 	if (m_Particles.empty())	{
 		bv_BBox.set			(m_Emitter->m_Position, m_Emitter->m_Position);
 		bv_BBox.grow		(0.1f);
