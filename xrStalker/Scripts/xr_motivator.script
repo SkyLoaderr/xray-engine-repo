@@ -352,6 +352,7 @@ xr_motivator.storage[self.object:id()].novice2 = {
 --Настройка схемы реакции новичка3 - новичок которого ограбили
 xr_motivator.storage[self.object:id()].novice3 = {
                             path     = nil,         --Путь, по которому ходить
+                            enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
                             enemy    = nil,
                             enabled  = false
                             }
@@ -360,8 +361,12 @@ xr_motivator.storage[self.object:id()].novice3 = {
         if( char_ini:line_exist("novice3", "path") == true ) then
             xr_motivator.storage[self.object:id()].novice3.path   = char_ini:r_string("novice3", "path")
         end
+        if( char_ini:line_exist("novice3", "enemy_path") == true ) then
+            xr_motivator.storage[self.object:id()].novice3.enemy_path  = char_ini:r_string("novice3", "enemy_path")
+        end
         if( char_ini:line_exist("novice3", "enemy") == true ) then
-            xr_motivator.storage[self.object:id()].novice3.enemy  = char_ini:r_string("novice3", "enemy")
+            xr_motivator.storage[self.object:id()].novice3.enemy = char_ini:r_string("novice3", "enemy")
+
         end
     end
 -- Хранение схемы командира
@@ -457,7 +462,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     -- SCRIPT ACTION PLANNER
 --[[
     properties["scripts"] = xr_evaluators_id.script_evaluator
-    manager:add_evaluator (properties["scripts"],       this.evaluator_script       ())     
+    manager:add_evaluator (properties["scripts"],       this.evaluator_script       ())
 
     local action_pl = planner_action(self.object, "script_action")
     action_pl:add_precondition      (world_property(stalker_ids.property_alive,     true))
@@ -471,14 +476,14 @@ xr_motivator.storage[self.object:id()].reactions = {
         manager:add_action (xr_actions_id.action_script, act_pl)
     end
 
---  action = manager:action (stalker_ids.action_puzzle_solver)  
+--  action = manager:action (stalker_ids.action_puzzle_solver)
 --  action:add_precondition         (world_property(properties["scripts"],      false))
 ]]--
 
     --загрузка озвучки
     xr_sounds.load_sounds (self.object)
 
-    
+
     -- общие скрипты
     xr_state.add_to_binder(self.object)
     xr_reactions.add_to_binder(self.object)
@@ -547,7 +552,7 @@ function checkStorage(npc)
            k == "talker" or
            k == "commander"
         then
-            if v.enabled == true then 
+            if v.enabled == true then
                 count = count + 1
             end
         end
@@ -564,11 +569,11 @@ function checkStorage(npc)
                k == "talker" or
                k == "commander"
             then
-                if v.enabled == true then 
+                if v.enabled == true then
                     printf("ERROR: %s", k)
                 end
             end
-        end     
+        end
     end
 end
 ----------------------------------------------------------------------------------------------------------------------
