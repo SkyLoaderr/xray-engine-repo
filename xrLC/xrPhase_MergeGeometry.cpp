@@ -68,7 +68,7 @@ void CBuild::xrPhase_MergeGeometry	()
 	for (DWORD split=0; split<g_XSplit.size(); split++)
 	{
 		vecFace&	subdiv	= g_XSplit[split];
-		Fbox&		bb_base;
+		Fbox		bb_base;
 		while (NeedMerge(subdiv,bb_base))	
 		{
 			// **OK**. Let's find the best candidate for merge
@@ -82,7 +82,7 @@ void CBuild::xrPhase_MergeGeometry	()
 
 				if (!FaceEqual(subdiv.front(),TEST.front()))						continue;
 				if (!NeedMerge(TEST,bb))											continue;
-				if (!ValidateMerge(subdiv.size(),bb_base,TEST.size()),bb,volume))	continue;
+				if (!ValidateMerge(subdiv.size(),bb_base,TEST.size(),bb,volume))	continue;
 
 				if (volume<selected_volume)	{
 					selected		= test;

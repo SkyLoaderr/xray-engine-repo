@@ -638,6 +638,11 @@ SOURCE=.\OGF_Face_Stripify.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\xrDetailPatch.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrHierrarhy.cpp
 # PROP Exclude_From_Build 1
 # End Source File
@@ -704,10 +709,6 @@ SOURCE=.\xrBuildRapidModel.cpp
 # Begin Source File
 
 SOURCE=.\xrCalcNormals.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrDetailPatch.cpp
 # End Source File
 # Begin Source File
 
