@@ -23,13 +23,135 @@ function load_dialog:SetClGame (game_cl)
 end
 
 function load_dialog:InitControls()
-	-- DATA --
+		----- DATA ----
 	local indent          = 50
 	local screen          = {width = 1024,height = 768}	
 	local main_rect       = {x = 0,      y = 0,      width = 800, height = 600}	
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
 	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
+	local captiontxt_rect = {x = caption_rect.width/2,
+							 y = caption_rect.height/2,
+							 width = 0,
+							 height = 0}
+	local edit_rect       = {x = indent, 
+						     y = caption_rect.y + caption_rect.height + indent,
+						     width = caption_rect.width - indent*2, 
+						     height = 28}
+	local btn_ok_rect     = {x = indent,
+							 y = 0,
+							 height = 40,
+							 width  = 135}
+	btn_ok_rect.y = main_rect.height - (btn_ok_rect.height + indent)
+	local btn_cancel_rect = {x = btn_ok_rect.x + btn_ok_rect.width + indent,
+							 y = btn_ok_rect.y,
+							 height = btn_ok_rect.height,
+							 width  = btn_ok_rect.width}
+	local list_rect       = {x = indent,
+						     y = edit_rect.y + edit_rect.height + indent,
+						     width = 0,
+						     height = 0}
+	list_rect.width  = main_rect.width - indent*2
+	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height	
+	local message_rect   = {x = 0, y = 0, width = 550, height = 300}
+	--message_rect.x = (main_rect.width - message_rect.width)/2
+	--message_rect.y = (main_rect.height - message_rect.height)/2
+	
+	----- CODE -------
+	
+	-- init self position and size
+	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
+	
+	-- MAIN FRAME WINDOW		
+	local main_frame = CUIFrameWindow()
+	main_frame:SetAutoDelete(true)              --parent will delete this item in destructor
+	main_frame:SetWindowName("main_frame")
+	--init texture and position relatively parent
+	main_frame:Init("ui\\ui_frame",0,0,main_rect.width, main_rect.height)
+    --textures name, root is Gamedata\Textures folder
+--	main_static:ClipperOn() --clip texture by window region
+	self:AttachChild(main_frame)
+	
+	-- CAPTION frame --
+	local wnd_caption = CUIFrameWindow()
+	wnd_caption:SetAutoDelete(true)
+	wnd_caption:SetWindowName("wnd_caption")
+	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
+	main_frame:AttachChild(wnd_caption)
+	
+	local txt_caption = CUIStatic()
+	txt_caption:SetAutoDelete(true)
+	txt_caption:SetWindowName("txt_caption")
+	txt_caption:SetText("SAVE_DIALOG_HERE")
+	txt_caption:SetTextAlign(CGameFont.alCenter)
+	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
+	main_frame:AttachChild(txt_caption)
+	
+	-- EDIT box --
+	local frame_edit = CUIFrameWindow()  --background for ListView
+    frame_edit:SetAutoDelete(true)
+    frame_edit:Init("ui\\ui_frame_very_small", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
+    main_frame:AttachChild(frame_edit)
+	
+	local edit_filename = CUIEditBox()
+	edit_filename:SetAutoDelete(true)
+	edit_filename:SetFont(GetFontLetterica25())
+	edit_filename:SetWindowName("edit_filename")
+	edit_filename:SetText("edit_me")
+	edit_filename:Init(edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
+	main_frame:AttachChild(edit_filename)
+
+
+	------------LIST-----------------
+    local txt_list   = CUIFrameWindow()  --background for ListView
+    txt_list:SetAutoDelete(true)
+    txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
+    -- txt_list:ClipperOn()
+    main_frame:AttachChild(txt_list) 
+
+    local list_wnd = CUIListWnd()
+    list_wnd:SetAutoDelete(true)
+    list_wnd:SetWindowName("list_window")
+    list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
+    list_wnd:SetItemHeight(25)
+    list_wnd:EnableScrollBar(true)
+    main_frame:AttachChild(list_wnd)
+
+--------------------------------------- 
+    local btn   = CUIButton()
+	btn:SetAutoDelete(true) 
+	btn:SetWindowName("button_ok") --set window name for callback processing
+	
+	btn:Init("ui\\ui_button_01",btn_ok_rect.x, btn_ok_rect.y, btn_ok_rect.width, btn_ok_rect.height)
+--  btn:Init(10,10,100,100) --or without texture
+    btn:SetText("OK")
+	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
+	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
+	self:Register(btn) --for event-handling
+	main_frame:AttachChild(btn)
+--------------------------------------
+    btn   = CUIButton()
+    btn:SetAutoDelete(true)
+    btn:SetWindowName("button_cancel")	
+	btn:Init("ui\\ui_button_01",btn_cancel_rect.x, btn_cancel_rect.y, btn_cancel_rect.width, btn_cancel_rect.height) 	
+	btn:SetText("cancel")
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(20)
+	self:Register(btn)
+	main_frame:AttachChild(btn)
+	
+	
+	-- Message Box --
+	message_box = CUIMessageBox()
+	message_box:SetAutoDelete(true)
+	message_box:SetWindowName("message_box")
+	message_box:SetFont(GetFontLetterica25())
+	message_box:Init("ui\\ui_frame",message_rect.x, message_rect.y, message_rect.width, message_rect.height)
+	message_box:SetStyle(0)	
+	message_box:Hide()
+	self:Register(message_box)
+	main_frame:AttachChild(message_box)
+	message_box:AutoCenter()
 end
 
 function load_dialog:InitCallBacks()

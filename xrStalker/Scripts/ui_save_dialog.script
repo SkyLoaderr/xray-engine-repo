@@ -167,6 +167,8 @@ function save_dialog:OnMsgOk()
 end
 
 function save_dialog:OnMsgCancel()
+	local msg_box = self:GetMessageBox("message_box")
+	msg_box:Hide()
 end
 
 function save_dialog:OnMsgYes()
@@ -175,6 +177,8 @@ function save_dialog:OnMsgYes()
 end
 
 function save_dialog:OnMsgNo()
+	local msg_box = self:GetMessageBox("message_box")
+	msg_box:Hide()
 end
 
 function save_dialog:OnButton_ok_clicked()	
@@ -212,22 +216,13 @@ function save_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
 	local shift = 50
 	local color = GetARGB(255,0,255,255)
-	local parse = false
+	local parse = false	
 	
 	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
 	
 end
 
-
--- We need to customize behavior of ListBox
-
-class "CUISatanListBox" (CUIListWnd)
-
-function CUISatanListBox:__init() super()
-	self:SetFont(GetFontLetterica25())
-end
-
-function CUISatanListBox:__finalize()
-
+function save_dialog:ItemIsInList(item)
+	return false
 end
 
