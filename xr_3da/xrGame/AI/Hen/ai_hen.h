@@ -12,7 +12,6 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 #include "ai_hen_selectors.h"
-#include "..\\ai_monsters.h"
 
 class CAI_Hen : public CCustomMonster  
 {
