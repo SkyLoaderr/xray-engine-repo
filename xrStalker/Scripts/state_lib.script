@@ -101,12 +101,26 @@ states = {
 				animstate = "stand",
 				animation = "idle"
 			},
+	wait_na = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	guard = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "idle"
+			},
+	guard_na = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
 			},
 	guard_fire = {	weapon = "fire",
 				movement = move.stand,
