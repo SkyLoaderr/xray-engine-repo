@@ -130,9 +130,6 @@ void	xrSE_Weapon::OnEvent		(NET_Packet& P, u16 type, u32 time, u32 sender )
 	case GE_WPN_STATE_CHANGE:
 		P.r_u8	(state);
 		break;
-	case :
-		break;
-	default:
 	}
 }
 
