@@ -20,6 +20,7 @@ IC	shared_str	CSpaceRestrictionHolder::normalize_string	(shared_str space_restri
 	if (n < 2)
 		return				(space_restrictors);
 
+	string1024				m_temp_string;
 	m_temp.resize			(n);
 	for (u32 i=0; i<n ;++i)
 		m_temp[i]			= shared_str(_GetItem(*space_restrictors,i,m_temp_string));

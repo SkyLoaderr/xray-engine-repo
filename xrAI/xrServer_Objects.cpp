@@ -283,7 +283,7 @@ void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS_Base::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProps			(pref,items);
+	inherited::FillProps		(pref,items);
     PHelper().CreateFloat		(items,PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
     PHelper().CreateU8			(items,PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
 }

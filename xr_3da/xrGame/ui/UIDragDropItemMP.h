@@ -57,7 +57,7 @@ public:
 	void SetSectionGroupID(u32 section)			{ sectionNum = section; }
 	u32	 GetSectionGroupID()					{ return sectionNum; }
 	// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
-	void SetSectionName(const char *pData)		{ std::strcpy(strName, pData); }
+	void SetSectionName(const char *pData)		{ strName = pData; }
 	const char * GetSectionName() const			{ return strName; }
 	// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
 	// вещь
