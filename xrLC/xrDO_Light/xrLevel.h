@@ -24,7 +24,6 @@ enum fsESectorChunks {
 enum fsSLS_Chunks {
 	fsSLS_Description	= 1,	// Name of level
 	fsSLS_ServerState,
-	fsSLS_UnitsSpecific,
 	fsSLS_forcedword = u32(-1)
 };
 
