@@ -63,7 +63,7 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     case smShader: 		form->FillShader();		break;
     case smShaderXRLC: 	form->FillShaderXRLC();	break;
     case smPS: 			form->FillPS();			break;
-    case smPG: 			form->FillPG();			break;
+    case smPE: 			form->FillPE();			break;
     case smTexture: 	form->FillTexture();	break;
     case smEntity: 		form->FillEntity();		break;
     case smLAnim: 		form->FillLAnim();		break;
@@ -206,10 +206,10 @@ void __fastcall TfrmChoseItem::FillPS()
     for (PS::PSIt S=::Render->PSystems.FirstPS(); S!=::Render->PSystems.LastPS(); S++)AppendItem(S->m_Name);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillPG()
+void __fastcall TfrmChoseItem::FillPE()
 {
     form->Caption					= "Select Particle System";
-    for (PS::PGIt S=::Render->PSystems.FirstPG(); S!=::Render->PSystems.LastPG(); S++)AppendItem((*S)->m_Name);
+    for (PS::PEIt S=::Render->PSystems.FirstPE(); S!=::Render->PSystems.LastPE(); S++)AppendItem((*S)->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillTexture()

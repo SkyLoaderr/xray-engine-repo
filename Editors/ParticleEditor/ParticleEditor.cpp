@@ -28,7 +28,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->Show();
         frmSplash->Repaint();
 
-        frmSplash->SetStatus("Initializing");
+        frmSplash->SetStatus("Core Initialize...");
 
 		Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
         TfrmLog::CreateLog();
@@ -40,7 +40,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Particle Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);
 
         xr_delete(frmSplash);

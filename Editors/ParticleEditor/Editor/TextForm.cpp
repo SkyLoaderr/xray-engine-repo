@@ -25,8 +25,7 @@ __fastcall TfrmText::TfrmText(TComponent* Owner)
     OnCodeInsight	= 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmText::FormKeyDown(TObject *Sender,
-      WORD &Key, TShiftState Shift)
+void __fastcall TfrmText::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
     else if (Shift.Contains(ssCtrl)&&(Key==VK_RETURN)) ebOk->Click();

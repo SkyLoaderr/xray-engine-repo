@@ -175,9 +175,9 @@ public:
     IC ATextValue*	 	CreateALibPS	(PropItemVec& items, LPCSTR key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
     IC TextValue*	 	CreateLibPG		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPG);		}
+    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPE);		}
     IC ATextValue*	 	CreateALibPG	(PropItemVec& items, LPCSTR key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPG);       }
+    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPE);       }
 	IC TextValue* 		CreateEntity	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ENTITY);     }
 	IC WaveValue* 		CreateWave		(PropItemVec& items, LPCSTR key, WaveForm* val)

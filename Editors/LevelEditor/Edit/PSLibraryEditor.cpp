@@ -3,15 +3,15 @@
 
 #include "PSLibrary.h"
 #include "ChoseForm.h"
-#include "ParticleGroup.h"
+#include "ParticleEffect.h"
 //------------------------------------------------------------------------------
 
-LPCSTR CPSLibrary::ChoosePG()
+LPCSTR CPSLibrary::ChoosePE()
 {
 	LPCSTR T=0;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPG,T,1,m_CurrentPG)){
-    	strcpy(m_CurrentPG,T);
-        return m_CurrentPG;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPE,T,1,m_CurrentPE)){
+    	strcpy(m_CurrentPE,T);
+        return m_CurrentPE;
     }else return 0;
 }
 //------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
         for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
 		sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++);
     }else        sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
-    while (FindPS(buffer)||FindPG(buffer)){
+    while (FindPS(buffer)||FindPE(buffer)){
         if (pref&&pref[0])	sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++ );
         else   	  			sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
 	}
@@ -44,10 +44,10 @@ PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)
     return &m_PSs.back();
 }
 
-PS::CPGDef* CPSLibrary::AppendPG(PS::CPGDef* src)
+PS::CPEDef* CPSLibrary::AppendPE(PS::CPEDef* src)
 {
-	m_PGs.push_back(src?xr_new<PS::CPGDef>(*src):xr_new<PS::CPGDef>());
-    return m_PGs.back();
+	m_PEs.push_back(src?xr_new<PS::CPEDef>(*src):xr_new<PS::CPEDef>());
+    return m_PEs.back();
 }
 //------------------------------------------------------------------------------
 
@@ -73,8 +73,8 @@ void CPSLibrary::Save(const char* nm)
 	F.close_chunk	();
 
 	F.open_chunk	(PS_CHUNK_SECONDGEN);
-    for (PS::PGIt it=m_PGs.begin(); it!=m_PGs.end(); it++){
-		F.open_chunk(it-m_PGs.begin());
+    for (PS::PEIt it=m_PEs.begin(); it!=m_PEs.end(); it++){
+		F.open_chunk(it-m_PEs.begin());
         (*it)->Save	(F);
 		F.close_chunk();
     }

@@ -23,7 +23,7 @@ class ENGINE_API CRenderDevice{
 
     float 					m_fNearer;
 
-	u32					Timer_MM_Delta;
+	u32						Timer_MM_Delta;
 	CTimer					Timer;
 	CTimer					TimerGlobal;
 
@@ -61,14 +61,17 @@ public:
 	// Engine flow-control
 	float					fTimeDelta;
 	float					fTimeGlobal;
-	u32					dwTimeDelta;
-	u32					dwTimeGlobal;
+	u32						dwTimeDelta;
+	u32						dwTimeGlobal;
 
     // camera
 	CUI_Camera 				m_Camera;
 	Fmatrix					mView;
 	Fmatrix 				mProjection;
 	Fmatrix					mFullTransform;
+
+    float					fFOV;
+	float					fASPECT;
 
 	CStats					Statistic;
 

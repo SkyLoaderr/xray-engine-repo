@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(_IINPUTRECEIVER_H_)
-#define _IINPUTRECEIVER_H_
+#ifndef IINPUTRECEIVERH
+#define IINPUTRECEIVERH
 #pragma once
 
 class ENGINE_API	IInputReceiver

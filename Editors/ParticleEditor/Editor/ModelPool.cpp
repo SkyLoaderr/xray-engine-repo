@@ -13,9 +13,9 @@
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
 
-IVisual*	CModelPool::Instance_Create(u32 type)
+IRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
-	IVisual *V = NULL;
+	IRender_Visual *V = NULL;
 
 	// Check types
 	switch (type) {
@@ -48,17 +48,17 @@ IVisual*	CModelPool::Instance_Create(u32 type)
 	V->Type = type;
 	return V;
 }
-IVisual*	CModelPool::Instance_Duplicate	(IVisual* V)
+IRender_Visual*	CModelPool::Instance_Duplicate	(IRender_Visual* V)
 {
 	R_ASSERT(V);
-	IVisual* N = Instance_Create(V->Type);
+	IRender_Visual* N = Instance_Create(V->Type);
 	N->Copy	(V);
 	return N;
 }
 
-IVisual*	CModelPool::Instance_Load		(const char* N)
+IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 {
-	IVisual*			V;
+	IRender_Visual*		V;
 	string256			fn;
 	string256			name;
 
@@ -92,9 +92,9 @@ IVisual*	CModelPool::Instance_Load		(const char* N)
 	return V;
 }
 
-IVisual*	CModelPool::Instance_Load(IReader* data)
+IRender_Visual*	CModelPool::Instance_Load(IReader* data)
 {
-	IVisual	*V;
+	IRender_Visual	*V;
 
 	// Actual loading
 	ogf_header			H;
@@ -135,13 +135,13 @@ CModelPool::~CModelPool()
 {
 }
 
-IVisual* CModelPool::Create(const char* name)
+IRender_Visual* CModelPool::Create(const char* name)
 {
 	// 1. Search for already loaded model
 	char low_name[64]; R_ASSERT(strlen(name)<64);
 	strcpy(low_name,name); strlwr(low_name);
 
-	IVisual*				Model=0;
+	IRender_Visual*				Model=0;
 	xr_vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
@@ -158,12 +158,12 @@ IVisual* CModelPool::Create(const char* name)
 	return Instance_Duplicate(Instance_Load(low_name));
 }
 
-IVisual* CModelPool::Create(IReader* data)
+IRender_Visual* CModelPool::Create(IReader* data)
 {
 	return Instance_Duplicate(Instance_Load(data));
 }
 
-void	CModelPool::Delete(IVisual* &V)
+void	CModelPool::Delete(IRender_Visual* &V)
 {
 	if (V) {
 		if (V->Type==MT_PARTICLE_SYSTEM) V->Release();
@@ -171,7 +171,7 @@ void	CModelPool::Delete(IVisual* &V)
 	}
 }
 
-IC bool	_IsRender(IVisual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
+IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
 {
 	if ((priority==(visual->hShader?visual->hShader->E[0]->Flags.iPriority:1))&&(strictB2F==!!(visual->hShader?visual->hShader->E[0]->Flags.bStrictB2F:false))){
         Fbox bb; bb.xform(visual->vis.box,transform);
@@ -180,18 +180,18 @@ IC bool	_IsRender(IVisual* visual, const Fmatrix& transform, u32 priority, bool 
     return false;
 }
 
-void 	CModelPool::Render(IVisual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD)
+void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD)
 {
     // render visual
     RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type){
     case MT_SKELETON:{
         CKinematics* pV					= (CKinematics*)m_pVisual;
-        xr_vector<IVisual*>::iterator I,E;
+        xr_vector<IRender_Visual*>::iterator I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){
-            IVisual* V					= *I;
+            IRender_Visual* V					= *I;
             // frustum test
 			if (_IsRender(V,mTransform,priority,strictB2F)){
 		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
@@ -201,11 +201,11 @@ void 	CModelPool::Render(IVisual* m_pVisual, const Fmatrix& mTransform, int prio
     }break;
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
-        xr_vector<IVisual*>::iterator 		I,E;
+        xr_vector<IRender_Visual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){
-            IVisual* V					= *I;
+            IRender_Visual* V					= *I;
 			if (_IsRender(V,mTransform,priority,strictB2F)){
 		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
 	            V->Render		 		(m_fLOD);
@@ -218,6 +218,14 @@ void 	CModelPool::Render(IVisual* m_pVisual, const Fmatrix& mTransform, int prio
             m_pVisual->Render		 	(m_fLOD);
         }
         break;
+    }
+}
+
+void 	CModelPool::RenderSingle(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD)
+{
+	for (int p=0; p<4; p++){
+    	Render(m_pVisual,mTransform,p,false,m_fLOD);
+    	Render(m_pVisual,mTransform,p,true,m_fLOD);
     }
 }
 

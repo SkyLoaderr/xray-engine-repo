@@ -49,7 +49,6 @@ public:
 
   	virtual bool 		Load		(IReader&);
 	virtual void 		Save		(IWriter&);
-    virtual bool		ExportGame	(SExportStreams& data);
 	virtual bool    	GetBox      (Fbox& box);
 	virtual void 		OnFrame		();
     IC bool				RefCompare	(PS::SParams* to){VERIFY(to); return stricmp(to->m_Name,m_Definition->m_Name);}

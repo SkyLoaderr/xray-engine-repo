@@ -5,15 +5,15 @@
 #define PSLibraryH
 
 #include "ParticleSystem.h"
-#include "ParticleGroup.h"
+#include "ParticleEffect.h"
 
 class ENGINE_API CPSLibrary{
     PS::PSVec			m_PSs;
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
-    string256			m_CurrentPG;
 
-    PS::PGVec			m_PGs;
+    string256			m_CurrentPE;
+    PS::PEVec			m_PEs;
 public:
 						CPSLibrary		(){;}
     		 			~CPSLibrary		(){m_PSs.clear();}
@@ -22,26 +22,26 @@ public:
     void				OnDestroy		();
 
     PS::SDef*			FindPS			(LPCSTR name);
-    PS::CPGDef*			FindPG			(LPCSTR name);
-    PS::PGIt			FindPGIt		(LPCSTR name);
+    PS::CPEDef*			FindPE			(LPCSTR name);
+    PS::PEIt			FindPEIt		(LPCSTR name);
 	// editor part
     char*				GenerateName	(char* buffer, LPCSTR folder, LPCSTR pref);
 
     // get object properties methods
     IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}
     IC PS::PSIt			LastPS			()	{return m_PSs.end();}
-    IC PS::PGIt			FirstPG			()	{return m_PGs.begin();}
-    IC PS::PGIt			LastPG			()	{return m_PGs.end();}
+    IC PS::PEIt			FirstPE			()	{return m_PEs.begin();}
+    IC PS::PEIt			LastPE			()	{return m_PEs.end();}
 
     PS::SDef*			AppendPS		(PS::SDef* src=0);
-    PS::CPGDef*			AppendPG		(PS::CPGDef* src=0);
+    PS::CPEDef*			AppendPE		(PS::CPEDef* src=0);
     void				Remove			(LPCSTR name);
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
-    void				RenamePG		(PS::CPGDef* src, LPCSTR new_name);
+    void				RenamePE		(PS::CPEDef* src, LPCSTR new_name);
 
 #ifdef _EDITOR
-	LPCSTR				GetCurrentPG	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPG[0])?ChoosePG():(m_CurrentPG[0]?m_CurrentPG:0);}
-    LPCSTR				ChoosePG		();
+	LPCSTR				GetCurrentPE	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPE[0])?ChoosePE():(m_CurrentPE[0]?m_CurrentPE:0);}
+    LPCSTR				ChoosePE		();
 #endif
     void				Reload			();
     void				Save			();

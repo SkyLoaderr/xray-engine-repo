@@ -7,8 +7,6 @@
 CUI_Camera::CUI_Camera(){
 	m_Style = csPlaneMove;
 
-	m_Aspect = 1.f;
-	m_FOV = deg2rad( 60.f );
 	m_Znear = 0.2f;
 	m_Zfar = 1500.f;
     m_HPB.set(0,0,0);
@@ -88,19 +86,21 @@ void CUI_Camera::SetDepth(float _far, bool bForcedUpdate)
 void CUI_Camera::SetViewport(float _near, float _far, float _fov)
 {
     float fov=deg2rad(_fov);
-    if (m_Znear!=_near)	{m_Znear=_near; UI.Resize();}
-    if (m_Zfar!=_far)	{m_Zfar=_far; UI.Resize();}
-    if (m_FOV!=fov)		{m_FOV=fov; UI.Resize();}
+    if (m_Znear!=_near)		{m_Znear=_near; UI.Resize();}
+    if (m_Zfar!=_far)		{m_Zfar=_far; UI.Resize();}
+    if (Device.fFOV!=fov)	{Device.fFOV=fov; UI.Resize();}
 }
 
-void CUI_Camera::SetSensitivity(float sm, float sr){
+void CUI_Camera::SetSensitivity(float sm, float sr)
+{
     m_SM = 0.2f*(sm*sm);
     m_SR = 0.02f*(sr*sr);
 }
 
 static const Fvector dir={0.f,-1.f,0.f};
 
-void CUI_Camera::Update(float dt){
+void CUI_Camera::Update(float dt)
+{
 	if (m_bMoving){
     	BOOL bLeftDn = m_Shift.Contains(ssLeft);
     	BOOL bRightDn = m_Shift.Contains(ssRight);
@@ -149,9 +149,10 @@ void CUI_Camera::Scale(float dy){
     BuildCamera();
 }
 
-void CUI_Camera::Rotate(float dx, float dy){
+void CUI_Camera::Rotate(float dx, float dy)
+{
 	m_HPB.x-=m_SR*dx;
-	m_HPB.y-=m_SR*dy*m_Aspect;
+	m_HPB.y-=m_SR*dy*Device.fASPECT;
 
     BuildCamera();
 }
@@ -160,7 +161,7 @@ bool CUI_Camera::MoveStart(TShiftState Shift){
 	if (Shift.Contains(ssShift)){
     	if (!m_bMoving){
 		    ShowCursor	(FALSE);
-    	    UI.iGetMousePosScreen(m_StartPos);
+    	    UI.IR_GetMousePosScreen(m_StartPos);
 			m_bMoving	= true;
         }
 		m_Shift 	= Shift;
@@ -243,8 +244,8 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Iv
 
 	start.set( m_Position );
 
-	float size_y = m_Znear * tan( m_FOV * 0.5f );
-	float size_x = size_y / m_Aspect;
+	float size_y = m_Znear * tan( Device.fFOV * 0.5f );
+	float size_x = size_y / Device.fASPECT;
 
 	float r_pt = float(point2.x) * size_x / (float) halfwidth;
 	float u_pt = float(point2.y) * size_y / (float) halfheight;
@@ -260,8 +261,8 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
     float R,H1,H2;
     bb.getsphere(C,R);
 	D.mul(m_CamMat.k,-1);
-    H1 = R/sinf(m_FOV*0.5f);
-    H2 = R/sinf(m_FOV*0.5f/m_Aspect);
+    H1 = R/sinf(Device.fFOV*0.5f);
+    H2 = R/sinf(Device.fFOV*0.5f/Device.fASPECT);
     m_Position.mad(C,D,_max(H1,H2));
 	m_Target.set(C);
 
@@ -303,7 +304,7 @@ void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
         	dist -= dx*m_SM;
 	    }else if (Shift.Contains(ssLeft)){
     	    m_HPB.x-=m_SR*dx;
-        	m_HPB.y-=m_SR*dy*m_Aspect;
+        	m_HPB.y-=m_SR*dy*Device.fASPECT;
 	    }
     }
 

@@ -210,11 +210,11 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
 //        if (UI.IsMouseInUse())
 //            UI.OnMouseRelease(0);
-        UI.iCapture();
+        UI.IR_Capture();
 		UI.OnAppActivate();
     }else{
 		UI.OnAppDeactivate();
-        UI.iRelease();
+        UI.IR_Release();
         paWindow->Color=paWindow->Color; // чтобы не было  internal code gen error
 //    	paWindow->Color=(TColor)0x00202020;
     }

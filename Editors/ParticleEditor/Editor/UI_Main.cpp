@@ -98,7 +98,7 @@ bool TUI::OnCreate()
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
     pInput			= xr_new<CInput>(FALSE,mouse_device_key);
-    UI.iCapture		();
+    UI.IR_Capture	();
 
     m_bReady		= true;
 
@@ -125,8 +125,8 @@ void TUI::OnDestroy()
 
 	VERIFY(m_bReady);
 	m_bReady		= false;
-	UI.iRelease		();
-    xr_delete			(pInput);
+	UI.IR_Release	();
+    xr_delete		(pInput);
     EndEState		();
 
     Device.ShutDown	();
@@ -193,10 +193,10 @@ void TUI::MousePress(TShiftState Shift, int X, int Y)
     	if (Tools.Pick(Shift)) return;
         if( !m_MouseCaptured ){
             if( Tools.HiddenMode() ){
-				iGetMousePosScreen(m_StartCpH);
+				IR_GetMousePosScreen(m_StartCpH);
                 m_DeltaCpH.set(0,0);
             }else{
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+                IR_GetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 m_StartCp = m_CurrentCp;
 
                 Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
@@ -224,7 +224,7 @@ void TUI::MouseRelease(TShiftState Shift, int X, int Y)
 	    bMouseInUse = false;
         if( m_MouseCaptured ){
             if( !Tools.HiddenMode() ){
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+                IR_GetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
             }
             if( Tools.MouseEnd(m_ShiftState) ){
@@ -247,7 +247,7 @@ void TUI::MouseMove(TShiftState Shift, int X, int Y)
     m_ShiftState = Shift;
 }
 //----------------------------------------------------
-void TUI::OnMouseMove(int x, int y){
+void TUI::IR_OnMouseMove(int x, int y){
 	if (!m_bReady) return;
     bool bRayUpdated = false;
 
@@ -259,7 +259,7 @@ void TUI::OnMouseMove(int x, int y){
                 	Tools.MouseMove(m_ShiftState);
                 }
             }else{
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+                IR_GetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
                 Tools.MouseMove(m_ShiftState);
             }
@@ -268,7 +268,7 @@ void TUI::OnMouseMove(int x, int y){
         }
     }
     if (!bRayUpdated){
-		iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+		IR_GetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
         Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
     }
 #ifdef _LEVEL_EDITOR

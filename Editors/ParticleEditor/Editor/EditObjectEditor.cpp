@@ -349,7 +349,7 @@ bool CEditableObject::CheckShaderCompatible()
 	bool bRes 			= true;
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
     {
-    	CBlender* 		B = Device.Shader._FindBlender((*s_it)->m_ShaderName.c_str()); 
+    	IBlender* 		B = Device.Shader._FindBlender((*s_it)->m_ShaderName.c_str()); 
         Shader_xrLC* 	C = Device.ShaderXRLC.Get((*s_it)->m_ShaderXRLCName.c_str());
         R_ASSERT(B&&C);
     	if (!BE(B->canBeLMAPped(),!C->flags.bLIGHT_Vertex)){ 

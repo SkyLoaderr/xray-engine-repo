@@ -179,7 +179,7 @@ class CEditableObject{
 	friend class MeshExpUtility;
 
 #ifdef _EDITOR
-    IVisual* 		m_Visual;
+    IRender_Visual*	m_Visual;
 	SGeometry* 		vs_SkeletonGeom;
 #endif
 // general

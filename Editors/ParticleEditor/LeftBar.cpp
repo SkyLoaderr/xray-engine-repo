@@ -319,8 +319,8 @@ void __fastcall TfraLeftBar::ebPGCreateClick(TObject *Sender)
 {
     AnsiString folder;
 	FHelper.MakeName(tvParticles->Selected,0,folder,true);
-    PS::CPGDef* S = Tools.AppendPG(folder.IsEmpty()?0:folder.c_str(),0);
-	Tools.SetCurrentPG(S);
+    PS::CPEDef* S = Tools.AppendPE(folder.IsEmpty()?0:folder.c_str(),0);
+	Tools.SetCurrentPE(S);
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------

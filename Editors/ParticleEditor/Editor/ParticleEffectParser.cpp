@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ParticleGroup.h"
+#include "ParticleEffect.h"
 
 using namespace PAPI;
 using namespace PS;
@@ -149,7 +149,7 @@ void ErrMsg(int c, int l, int v, LPCSTR line)
 namespace PS{
 class PFunction{
 public:
-	CPGDef*				parent;
+	CPEDef*				parent;
 	// command
 	AnsiString 			command;
     // type
@@ -344,7 +344,7 @@ DEFINE_VECTOR(PFunction,PFuncVec,PFuncIt);
 static PFuncMap CommandTemplates;
 
 static LPCSTR PStateCommands[]={
-	"pResetState();",
+//	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha = 1.0f);",
 	"pColorD(float alpha, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pParentMotion(float scale);",
@@ -431,7 +431,7 @@ bool InitCommandTemplates()
 const AnsiString GetFunctionTemplate(const AnsiString& command)
 {
 	LPCSTR dest=0;
-	PFunction* F 	= CPGDef::FindCommandPrototype(command.c_str(),dest);
+	PFunction* F 	= CPEDef::FindCommandPrototype(command.c_str(),dest);
 	AnsiString text	= "";
     if (F){
         text.sprintf("%-16s(",F->command);
@@ -476,7 +476,7 @@ void FillActionMenu(TMenuItem* root, TNotifyEvent on_click)
     }
 }
 
-PFunction* CPGDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
+PFunction* CPEDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
 {
 	// load templates
 	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
@@ -494,7 +494,7 @@ PFunction* CPGDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
     }
 }
 
-void CPGDef::Compile()
+void CPEDef::Compile()
 {
 	// load templates
 	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
@@ -547,9 +547,12 @@ void CPGDef::Compile()
     Device.Shader.Delete(m_CachedShader);
     
     // create temporary handles
-	int group_handle 		= pGenParticleGroups(1, 1);
+	int effect_handle 		= pGenParticleEffects(1, 1);
     int action_list_handle	= pGenActionLists();
-	pCurrentGroup			(group_handle);
+	pCurrentEffect			(effect_handle);
+
+    // reset state (одинаковые начальные условия)
+    pResetState				();
     
     // execute commands
     PFuncIt pf_it;
@@ -562,9 +565,9 @@ void CPGDef::Compile()
     	if (PFunction::ftAction==pf_it->type) pf_it->Execute();             
 	pEndActionList			();
 
-    // save group data
-	ParticleGroup *pg 		= _GetGroupPtr(group_handle); R_ASSERT(pg);
-    m_MaxParticles			= pg->max_particles;
+    // save effect data
+	ParticleEffect *pe 		= _GetEffectPtr(effect_handle); R_ASSERT(pe);
+    m_MaxParticles			= pe->max_particles;
     
     // save action list
 	PAPI::PAHeader *pa		= _GetListPtr(action_list_handle);	R_ASSERT(pa);
@@ -575,7 +578,7 @@ void CPGDef::Compile()
     Memory.mem_copy			(m_ActionList,action,m_ActionCount*sizeof(PAPI::PAHeader));
 
     // destroy temporary handls
-	pDeleteParticleGroups	(group_handle);
+	pDeleteParticleEffects	(effect_handle);
 	pDeleteActionLists		(action_list_handle);
 
     if (m_ShaderName&&m_ShaderName[0]&&m_TextureName&&m_TextureName[0]){

@@ -4,7 +4,7 @@
 
 #include "RenderWindow.hpp"
 #include "UI_MainCommand.h"
-#include "FController.h"
+#include "IInputReceiver.h"
 
 // refs
 class CCustomObject;
@@ -24,7 +24,7 @@ enum EEditorState{
 typedef xr_vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
-class TUI: public CController{
+class TUI: public IInputReceiver{
     friend class TfrmEditPrefs;
     friend class CRenderDevice;
 	char m_LastFileName[MAX_PATH];
@@ -184,7 +184,7 @@ public:
     void 			SetStatus			(LPSTR s);
 
 	// direct input
-	virtual void 	OnMouseMove			(int x, int y);
+	virtual void 	IR_OnMouseMove		(int x, int y);
 
     void 			OnAppActivate		();
     void 			OnAppDeactivate     ();

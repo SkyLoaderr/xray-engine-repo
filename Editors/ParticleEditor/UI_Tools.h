@@ -3,7 +3,7 @@
 #define UI_ToolsH
 
 #include "ParticleSystem.h"
-#include "ParticleGroup.h"
+#include "ParticleEffect.h"
 #include "pure.h"
 
 // refs
@@ -52,9 +52,9 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
     
-    TfrmText*			m_TextPG;
-    PS::CPGDef*			m_LibPGD;
-    PS::CParticleGroup*	m_EditPG;
+    TfrmText*			m_TextPE;
+    PS::CPEDef*			m_LibPED;
+    PS::CParticleEffect*m_EditPE;
 
     void __fastcall		OnApplyClick		();
     void __fastcall		OnCloseClick		(bool& can_close);
@@ -101,9 +101,9 @@ public:
     void				UpdateEmitter		();
 
     // PG routine
-    PS::CPGDef*			FindPG				(LPCSTR name);
-    PS::CPGDef*			AppendPG			(LPCSTR folder_name, PS::CPGDef* src);
-    void 				SetCurrentPG		(PS::CPGDef* P);
+    PS::CPEDef*			FindPE				(LPCSTR name);
+    PS::CPEDef*			AppendPE			(LPCSTR folder_name, PS::CPEDef* src);
+    void 				SetCurrentPE		(PS::CPEDef* P);
 
     void				Load				();
     void				Save				();

@@ -361,36 +361,4 @@ void CPSObject::OnDeviceDestroy(){
     Device.Shader.Delete(m_Shader);
 }
 
-bool CPSObject::ExportGame(SExportStreams& F)
-{
-    NET_Packet Packet;
-    Packet.w_begin		(M_SPAWN);
-    Packet.w_string		("M_DUMMY");
-    Packet.w_string		(Name);
-    Packet.w_u8 		(0xFE);
-    Packet.w_vec3		(PPosition);
-    Fvector a; a.set	(0,0,0);
-    Packet.w_vec3		(a);
-    Packet.w_u16		(0xffff);
-    Packet.w_u16		(0xffff);
-    WORD fl 			= M_SPAWN_OBJECT_ACTIVE;//(m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
-    Packet.w_u16		(fl);
-
-    u32	position		= Packet.w_tell	();
-    Packet.w_u16		(0);
-    // spawn info
-    {
-    	Packet.w_u8		(1<<2);
-        Packet.w_string	(m_Definition->m_Name);
-    }
-    // data size
-    u16 size			= u16(Packet.w_tell()-position);
-    Packet.w_seek		(position,&size,sizeof(u16));
-
-    F.spawn.stream.open_chunk	(F.spawn.chunk++);
-    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-    F.spawn.stream.close_chunk	();
-    return true;
-}
-//----------------------------------------------------
 

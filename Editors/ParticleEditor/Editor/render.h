@@ -10,7 +10,15 @@
 #include "PSLibrary.h"
 
 // definition (Renderer)
+class IRender_Target{
+public:	
+	virtual u32			get_width			()				{ return Device.dwWidth;	}
+	virtual u32			get_height			()				{ return Device.dwHeight;	}
+};
+
+
 class	CRender{
+    IRender_Target		Target;
 public:
 	// Data
 	CFrustum			ViewBase;
@@ -27,6 +35,8 @@ public:
 
     void				Calculate		();
     void				Render			();
+
+	IRender_Target*		getTarget		(){return &Target;}
 };
 
 IC  float   CalcSSA(Fvector& C, float R)
