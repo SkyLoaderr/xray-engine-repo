@@ -13,15 +13,16 @@
 class CAI_Idol : public CCustomMonster
 {
 public:
+	typedef CCustomMonster inherited;
 	vector<CMotionDef*>	m_tpaAnims;
 	CBlend				*m_tpCurrentBlend;
 	
-						CAI_Idol();
-	virtual				~CAI_Idol();
+						CAI_Idol		();
+	virtual				~CAI_Idol		();
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
-	virtual void		net_Export		(NET_Packet& P);
-	virtual void		net_Import		(NET_Packet& P);
+	virtual void		net_Export		(NET_Packet& P){};
+	virtual void		net_Import		(NET_Packet& P){};
 	virtual void		Die				(){};
 	virtual void		Think			(){};
 	virtual void		HitSignal		(float P, Fvector &local_dir,	CObject* who, s16 element){};

@@ -11,6 +11,7 @@
 
 CAI_Idol::CAI_Idol					()
 {
+	m_tpCurrentBlend				= 0;
 }
 
 CAI_Idol::~CAI_Idol					()
@@ -19,32 +20,24 @@ CAI_Idol::~CAI_Idol					()
 
 void CAI_Idol::Load					(LPCSTR section)
 {
+	setEnabled						(false);
 	inherited::Load					(section);
 	m_tpaAnims.clear				();
-
 
 	LPCSTR							S = pSettings->r_string(section,"animations");
 	u32								N = _GetItemCount(S);
 	string16						I;
-	for (u32 i=0; i<N;)
+	for (u32 i=0; i<N; i++)
 		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(S,i,I)));
 }
 
 BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 {
-	BOOL							R = inherited::net_Spawn(DC);
+	if (!inherited::net_Spawn(DC))	return FALSE;
 	xrSE_Idol						*tpIdol = (xrSE_Idol*)(DC);
 	R_ASSERT						(tpIdol);
 	cNameVisual_set					(tpIdol->caModel);
-	return							R;
-}
-
-void CAI_Idol::net_Export			(NET_Packet& P)
-{
-}
-
-void CAI_Idol::net_Import			(NET_Packet& P)
-{
+	return							TRUE;
 }
 
 void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, float speed)

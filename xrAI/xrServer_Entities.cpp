@@ -1315,12 +1315,10 @@ void xrSE_Idol::STATE_Write(NET_Packet& P)
 
 void xrSE_Idol::UPDATE_Read(NET_Packet& P)
 {
-	inherited::UPDATE_Read(P);
 }
 
 void xrSE_Idol::UPDATE_Write(NET_Packet& P)
 {
-	inherited::UPDATE_Write(P);
 }
 
 #ifdef _EDITOR
