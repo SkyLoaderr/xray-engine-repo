@@ -7,6 +7,8 @@ object fraAITPoint: TfraAITPoint
   Align = alClient
   Constraints.MaxWidth = 154
   Constraints.MinWidth = 123
+  Color = 10528425
+  ParentColor = False
   TabOrder = 0
   object paCommands: TPanel
     Left = 0
@@ -57,6 +59,7 @@ object fraAITPoint: TfraAITPoint
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Down = True
@@ -67,7 +70,6 @@ object fraAITPoint: TfraAITPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
     end
     object ebAddLinks: TExtBtn
       Left = 2
@@ -77,6 +79,7 @@ object fraAITPoint: TfraAITPoint
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Make Link'
       Font.Charset = DEFAULT_CHARSET
@@ -85,7 +88,6 @@ object fraAITPoint: TfraAITPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebAddLinksClick
     end
     object Bevel1: TBevel
@@ -102,6 +104,7 @@ object fraAITPoint: TfraAITPoint
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Remove Link'
       Font.Charset = DEFAULT_CHARSET
@@ -110,7 +113,6 @@ object fraAITPoint: TfraAITPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebRemoveLinksClick
     end
   end

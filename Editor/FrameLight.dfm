@@ -7,11 +7,13 @@ object fraLight: TfraLight
   Align = alClient
   Constraints.MaxWidth = 154
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paCommands: TPanel
@@ -33,6 +35,7 @@ object fraLight: TfraLight
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Enable Sel'
       Font.Charset = DEFAULT_CHARSET
@@ -41,7 +44,6 @@ object fraLight: TfraLight
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebUseSelInD3DClick
     end
     object APHeadLabel1: TLabel
@@ -89,6 +91,7 @@ object fraLight: TfraLight
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Disable Sel'
       Font.Charset = DEFAULT_CHARSET
@@ -97,7 +100,6 @@ object fraLight: TfraLight
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebUnuseSelInD3DClick
     end
     object ebUseAllInD3D: TExtBtn
@@ -109,6 +111,7 @@ object fraLight: TfraLight
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Enable All'
       Font.Charset = DEFAULT_CHARSET
@@ -117,7 +120,6 @@ object fraLight: TfraLight
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebUseAllInD3DClick
     end
     object ebUnuseAllInD3D: TExtBtn
@@ -129,6 +131,7 @@ object fraLight: TfraLight
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Disable All'
       Font.Charset = DEFAULT_CHARSET
@@ -137,7 +140,6 @@ object fraLight: TfraLight
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebUnuseAllInD3DClick
     end
   end

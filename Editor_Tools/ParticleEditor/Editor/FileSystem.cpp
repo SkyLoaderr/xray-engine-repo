@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "CustomObject.h"
 #include "xr_trims.h"
 #include <io.h>
 #include <utime.h>

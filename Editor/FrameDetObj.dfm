@@ -7,6 +7,8 @@ object fraDetailObject: TfraDetailObject
   Align = alClient
   Constraints.MaxWidth = 154
   Constraints.MinWidth = 123
+  Color = 10528425
+  ParentColor = False
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
@@ -57,6 +59,7 @@ object fraDetailObject: TfraDetailObject
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Reinitialize Objects'
       Font.Charset = DEFAULT_CHARSET
@@ -66,7 +69,6 @@ object fraDetailObject: TfraDetailObject
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebReinitializeSlotObjectsClick
     end
   end
@@ -119,6 +121,7 @@ object fraDetailObject: TfraDetailObject
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Initialize'
       Font.Charset = DEFAULT_CHARSET
@@ -128,7 +131,6 @@ object fraDetailObject: TfraDetailObject
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ExtBtn1Click
     end
     object ExtBtn5: TExtBtn
@@ -140,6 +142,7 @@ object fraDetailObject: TfraDetailObject
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Object List'
       Font.Charset = DEFAULT_CHARSET
@@ -149,7 +152,6 @@ object fraDetailObject: TfraDetailObject
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ExtBtn5Click
     end
     object ExtBtn6: TExtBtn
@@ -161,6 +163,7 @@ object fraDetailObject: TfraDetailObject
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Reinitialize'
       Font.Charset = DEFAULT_CHARSET
@@ -170,7 +173,6 @@ object fraDetailObject: TfraDetailObject
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ExtBtn6Click
     end
     object ExtBtn4: TExtBtn
@@ -182,6 +184,7 @@ object fraDetailObject: TfraDetailObject
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Update Objects'
       Font.Charset = DEFAULT_CHARSET
@@ -191,7 +194,6 @@ object fraDetailObject: TfraDetailObject
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebUpdateObjectsClick
     end
   end

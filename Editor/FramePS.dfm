@@ -1,23 +1,25 @@
 object fraPS: TfraPS
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 123
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 32
     Align = alTop
     ParentColor = True
@@ -68,7 +70,7 @@ object fraPS: TfraPS
     object Label: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -105,7 +107,7 @@ object fraPS: TfraPS
   object Panel1: TPanel
     Left = 0
     Top = 32
-    Width = 123
+    Width = 443
     Height = 32
     Align = alTop
     ParentColor = True
@@ -118,6 +120,7 @@ object fraPS: TfraPS
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = '...'
       Font.Charset = DEFAULT_CHARSET
@@ -126,13 +129,12 @@ object fraPS: TfraPS
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsUnderline]
       ParentFont = False
-      Transparent = False
       OnClick = ebCurObjClick
     end
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter

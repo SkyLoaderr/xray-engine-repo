@@ -34,24 +34,24 @@ object frmPropertiesPortal: TfrmPropertiesPortal
       Height = 78
       Caption = ' Orientation '
       TabOrder = 0
-      object RxLabel5: TMxLabel
+      object RxLabel5: TLabel
         Left = 8
         Top = 16
-        Width = 61
+        Width = 59
         Height = 13
         Caption = 'Front sector:'
       end
-      object RxLabel1: TMxLabel
+      object RxLabel1: TLabel
         Left = 8
         Top = 38
-        Width = 62
+        Width = 60
         Height = 13
         Caption = 'Back sector:'
       end
-      object lbBackSector: TMxLabel
+      object lbBackSector: TLabel
         Left = 72
         Top = 38
-        Width = 27
+        Width = 25
         Height = 13
         Caption = 'Back'
         Font.Charset = DEFAULT_CHARSET
@@ -61,10 +61,10 @@ object frmPropertiesPortal: TfrmPropertiesPortal
         Font.Style = []
         ParentFont = False
       end
-      object lbFrontSector: TMxLabel
+      object lbFrontSector: TLabel
         Left = 72
         Top = 16
-        Width = 26
+        Width = 24
         Height = 13
         Caption = 'Front'
         Font.Charset = DEFAULT_CHARSET

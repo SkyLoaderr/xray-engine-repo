@@ -12,11 +12,13 @@ object fraSector: TfraSector
   AutoScroll = False
   Constraints.MaxWidth = 123
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paSectorActions: TPanel
@@ -25,7 +27,7 @@ object fraSector: TfraSector
     Width = 443
     Height = 98
     Align = alTop
-    ParentColor = True
+    Color = 10528425
     TabOrder = 1
     object ebAddMesh: TExtBtn
       Left = 59
@@ -36,6 +38,7 @@ object fraSector: TfraSector
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Caption = '+M'
@@ -85,7 +88,6 @@ object fraSector: TfraSector
       NumGlyphs = 4
       ParentFont = False
       Spacing = 0
-      Transparent = False
     end
     object ebDelMesh: TExtBtn
       Left = 92
@@ -96,6 +98,7 @@ object fraSector: TfraSector
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Caption = '-M'
@@ -145,7 +148,6 @@ object fraSector: TfraSector
       NumGlyphs = 4
       ParentFont = False
       Spacing = 0
-      Transparent = False
     end
     object ebFaceBoxPick: TExtBtn
       Left = 2
@@ -156,6 +158,7 @@ object fraSector: TfraSector
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 2
       Caption = 'Box Pick'
@@ -204,15 +207,13 @@ object fraSector: TfraSector
       Margin = 13
       NumGlyphs = 4
       ParentFont = False
-      Transparent = False
     end
-    object RxLabel1: TMxLabel
+    object RxLabel1: TLabel
       Left = 16
       Top = 68
-      Width = 42
+      Width = 40
       Height = 13
       Caption = 'Meshes:'
-      ShadowColor = 15263976
     end
     object APHeadLabel2: TLabel
       Left = 1
@@ -258,6 +259,7 @@ object fraSector: TfraSector
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'New'
       Font.Charset = DEFAULT_CHARSET
@@ -267,7 +269,6 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebCreateNewClick
     end
     object ebCreateDefault: TExtBtn
@@ -278,6 +279,7 @@ object fraSector: TfraSector
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Create Default'
       Font.Charset = DEFAULT_CHARSET
@@ -287,7 +289,6 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebCreateDefaultClick
     end
     object ebRemoveDefault: TExtBtn
@@ -298,6 +299,7 @@ object fraSector: TfraSector
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Remove Default'
       Font.Charset = DEFAULT_CHARSET
@@ -307,7 +309,6 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebRemoveDefaultClick
     end
     object Bevel1: TBevel
@@ -323,20 +324,19 @@ object fraSector: TfraSector
     Width = 443
     Height = 125
     Align = alTop
-    ParentColor = True
+    Color = 10528425
     TabOrder = 0
-    object RxLabel4: TMxLabel
+    object RxLabel4: TLabel
       Left = 3
       Top = 76
-      Width = 39
+      Width = 37
       Height = 13
       Caption = 'Current:'
-      ShadowColor = 15263976
     end
-    object RxLabel6: TMxLabel
+    object RxLabel6: TLabel
       Left = 4
       Top = 110
-      Width = 46
+      Width = 44
       Height = 13
       Caption = 'Contains:'
       Font.Charset = DEFAULT_CHARSET
@@ -345,9 +345,8 @@ object fraSector: TfraSector
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      ShadowColor = 15263976
     end
-    object lbFacesCount: TMxLabel
+    object lbFacesCount: TLabel
       Left = 51
       Top = 110
       Width = 70
@@ -360,7 +359,6 @@ object fraSector: TfraSector
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      ShadowColor = 15263976
     end
     object ebValidate: TExtBtn
       Left = 2
@@ -370,6 +368,7 @@ object fraSector: TfraSector
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Validate Sectors'
       Font.Charset = DEFAULT_CHARSET
@@ -379,7 +378,6 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebValidateClick
     end
     object APHeadLabel1: TLabel
@@ -426,6 +424,7 @@ object fraSector: TfraSector
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Update Sel Convex'
       Font.Charset = DEFAULT_CHARSET
@@ -435,7 +434,6 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ExtBtn3Click
     end
     object ebAutoUpdateConvex: TExtBtn
@@ -447,6 +445,7 @@ object fraSector: TfraSector
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 3
       Caption = 'Auto upd. Convex'
@@ -495,7 +494,6 @@ object fraSector: TfraSector
       Margin = 13
       NumGlyphs = 4
       ParentFont = False
-      Transparent = False
     end
     object ebCaptureInside: TExtBtn
       Left = 2
@@ -505,6 +503,7 @@ object fraSector: TfraSector
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Capture Volume'
       Font.Charset = DEFAULT_CHARSET
@@ -514,7 +513,6 @@ object fraSector: TfraSector
       Font.Style = []
       Margin = 13
       ParentFont = False
-      Transparent = False
       OnClick = ebCaptureInsideVolumeClick
     end
     object cbItems: TComboBox
@@ -523,7 +521,7 @@ object fraSector: TfraSector
       Width = 103
       Height = 18
       Style = csOwnerDrawVariable
-      Color = 14869218
+      Color = 13158600
       DropDownCount = 12
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack

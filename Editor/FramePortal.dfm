@@ -12,11 +12,13 @@ object fraPortal: TfraPortal
   AutoScroll = False
   Constraints.MaxWidth = 123
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paCompute: TPanel
@@ -36,6 +38,7 @@ object fraPortal: TfraPortal
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Compute Sel. Portals'
       Enabled = False
@@ -45,24 +48,21 @@ object fraPortal: TfraPortal
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebComputeClick
     end
-    object RxLabel1: TMxLabel
+    object RxLabel1: TLabel
       Left = 3
       Top = 62
-      Width = 63
+      Width = 61
       Height = 13
       Caption = 'Sector Front:'
-      ShadowColor = 15263976
     end
-    object RxLabel2: TMxLabel
+    object RxLabel2: TLabel
       Left = 3
       Top = 96
-      Width = 64
+      Width = 62
       Height = 13
       Caption = 'Sector Back:'
-      ShadowColor = 15263976
     end
     object ebPickSectors: TExtBtn
       Left = 2
@@ -73,6 +73,7 @@ object fraPortal: TfraPortal
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Caption = 'Pick F/B sectors'
@@ -122,7 +123,6 @@ object fraPortal: TfraPortal
       NumGlyphs = 4
       ParentFont = False
       Spacing = 10
-      Transparent = False
       OnClick = ebPickSectorsClick
     end
     object ebComputeAllPortals: TExtBtn
@@ -133,6 +133,7 @@ object fraPortal: TfraPortal
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Compute All Portals'
       Font.Charset = DEFAULT_CHARSET
@@ -141,7 +142,6 @@ object fraPortal: TfraPortal
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebComputeAllPortalsClick
     end
     object APHeadLabel2: TLabel
@@ -186,7 +186,7 @@ object fraPortal: TfraPortal
       Width = 118
       Height = 18
       Style = csOwnerDrawVariable
-      Color = 14869218
+      Color = 13158600
       DropDownCount = 12
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -205,7 +205,7 @@ object fraPortal: TfraPortal
       Width = 118
       Height = 18
       Style = csOwnerDrawVariable
-      Color = 14869218
+      Color = 13158600
       DropDownCount = 12
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -227,13 +227,12 @@ object fraPortal: TfraPortal
     Align = alTop
     ParentColor = True
     TabOrder = 0
-    object RxLabel4: TMxLabel
+    object RxLabel4: TLabel
       Left = 3
       Top = 15
-      Width = 39
+      Width = 37
       Height = 13
       Caption = 'Current:'
-      ShadowColor = 15263976
     end
     object APHeadLabel1: TLabel
       Left = 1
@@ -271,24 +270,24 @@ object fraPortal: TfraPortal
       ParentFont = False
       OnClick = PanelMinClick
     end
-    object RxLabel5: TMxLabel
+    object RxLabel5: TLabel
       Left = 4
       Top = 48
-      Width = 18
+      Width = 16
       Height = 13
       Caption = 'FS:'
     end
-    object RxLabel3: TMxLabel
+    object RxLabel3: TLabel
       Left = 4
       Top = 60
-      Width = 19
+      Width = 17
       Height = 13
       Caption = 'BS:'
     end
-    object lbFrontSector: TMxLabel
+    object lbFrontSector: TLabel
       Left = 24
       Top = 48
-      Width = 11
+      Width = 9
       Height = 13
       Caption = '...'
       Font.Charset = DEFAULT_CHARSET
@@ -298,10 +297,10 @@ object fraPortal: TfraPortal
       Font.Style = []
       ParentFont = False
     end
-    object lbBackSector: TMxLabel
+    object lbBackSector: TLabel
       Left = 24
       Top = 60
-      Width = 11
+      Width = 9
       Height = 13
       Caption = '...'
       Font.Charset = DEFAULT_CHARSET
@@ -319,6 +318,7 @@ object fraPortal: TfraPortal
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Invert Orientation'
       Font.Charset = DEFAULT_CHARSET
@@ -327,7 +327,6 @@ object fraPortal: TfraPortal
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ExtBtn3Click
     end
     object cbItems: TComboBox
@@ -336,7 +335,7 @@ object fraPortal: TfraPortal
       Width = 118
       Height = 18
       Style = csOwnerDrawVariable
-      Color = 14869218
+      Color = 13158600
       DropDownCount = 12
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack

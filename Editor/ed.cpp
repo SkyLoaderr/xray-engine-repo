@@ -194,9 +194,9 @@ USEUNIT("edit\FolderLib.cpp");
 USEUNIT("edit\EStats.cpp");
 USEUNIT("edit\UI_MainExtern.cpp");
 USEUNIT("PropertiesListExtern.cpp");
-USEFORM("edit\PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 USEUNIT("Engine\xr_efflensflare.cpp");
 USELIB("lib\ETools.lib");
+USEFORM("PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -45,17 +45,17 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 61
           Caption = ' Sensitivity '
           TabOrder = 0
-          object RxLabel19: TMxLabel
+          object RxLabel19: TLabel
             Left = 10
             Top = 18
-            Width = 48
+            Width = 46
             Height = 13
             Caption = 'Rotate, %'
           end
-          object RxLabel20: TMxLabel
+          object RxLabel20: TLabel
             Left = 10
             Top = 37
-            Width = 43
+            Width = 41
             Height = 13
             Caption = 'Move, %'
           end
@@ -98,24 +98,24 @@ object frmEditorPreferences: TfrmEditorPreferences
           Align = alTop
           Caption = ' Viewport '
           TabOrder = 1
-          object RxLabel11: TMxLabel
+          object RxLabel11: TLabel
             Left = 6
             Top = 16
-            Width = 68
+            Width = 66
             Height = 13
             Caption = 'Near plane, m'
           end
-          object RxLabel1: TMxLabel
+          object RxLabel1: TLabel
             Left = 206
             Top = 16
-            Width = 60
+            Width = 58
             Height = 13
             Caption = 'Far plane, m'
           end
-          object RxLabel22: TMxLabel
+          object RxLabel22: TLabel
             Left = 6
             Top = 34
-            Width = 106
+            Width = 104
             Height = 13
             Caption = 'Perspective FOV, deg'
           end
@@ -172,17 +172,17 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 61
           Caption = ' Fly Style '
           TabOrder = 2
-          object RxLabel21: TMxLabel
+          object RxLabel21: TLabel
             Left = 10
             Top = 18
-            Width = 72
+            Width = 70
             Height = 13
             Caption = 'Fly speed, m/c'
           end
-          object RxLabel15: TMxLabel
+          object RxLabel15: TLabel
             Left = 10
             Top = 37
-            Width = 66
+            Width = 64
             Height = 13
             Caption = 'Fly altitude, m'
           end
@@ -227,24 +227,24 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 77
           Caption = ' Sensitivity '
           TabOrder = 0
-          object RxLabel8: TMxLabel
+          object RxLabel8: TLabel
             Left = 10
             Top = 56
-            Width = 43
+            Width = 41
             Height = 13
             Caption = 'Scale, %'
           end
-          object RxLabel2: TMxLabel
+          object RxLabel2: TLabel
             Left = 10
             Top = 17
-            Width = 48
+            Width = 46
             Height = 13
             Caption = 'Rotate, %'
           end
-          object RxLabel4: TMxLabel
+          object RxLabel4: TLabel
             Left = 10
             Top = 36
-            Width = 43
+            Width = 41
             Height = 13
             Caption = 'Move, %'
           end
@@ -301,7 +301,7 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 117
           Caption = ' 3D Cursor '
           TabOrder = 1
-          object RxLabel6: TMxLabel
+          object RxLabel6: TLabel
             Left = 10
             Top = 22
             Width = 71
@@ -309,31 +309,31 @@ object frmEditorPreferences: TfrmEditorPreferences
             AutoSize = False
             Caption = 'Segment'
           end
-          object RxLabel7: TMxLabel
+          object RxLabel7: TLabel
             Left = 10
             Top = 41
-            Width = 22
+            Width = 20
             Height = 13
             Caption = 'Size'
           end
-          object RxLabel9: TMxLabel
+          object RxLabel9: TLabel
             Left = 10
             Top = 60
-            Width = 48
+            Width = 46
             Height = 13
             Caption = 'Up Depth'
           end
-          object RxLabel10: TMxLabel
+          object RxLabel10: TLabel
             Left = 10
             Top = 79
-            Width = 48
+            Width = 46
             Height = 13
             Caption = 'Dn Depth'
           end
-          object RxLabel16: TMxLabel
+          object RxLabel16: TLabel
             Left = 10
             Top = 98
-            Width = 26
+            Width = 24
             Height = 13
             Caption = 'Color'
           end
@@ -413,10 +413,10 @@ object frmEditorPreferences: TfrmEditorPreferences
       object tsScene: TTabSheet
         Caption = 'Scene'
         ImageIndex = 2
-        object RxLabel17: TMxLabel
+        object RxLabel17: TLabel
           Left = 189
           Top = 3
-          Width = 62
+          Width = 60
           Height = 13
           Caption = 'Undo Levels'
         end
@@ -440,10 +440,10 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 77
           Caption = ' Box Pick '
           TabOrder = 1
-          object RxLabel18: TMxLabel
+          object RxLabel18: TLabel
             Left = 5
             Top = 33
-            Width = 99
+            Width = 97
             Height = 13
             Caption = 'Depth Tolerance (m)'
           end
@@ -491,17 +491,17 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 53
           Caption = ' Snap '
           TabOrder = 2
-          object RxLabel28: TMxLabel
+          object RxLabel28: TLabel
             Left = 4
             Top = 15
-            Width = 62
+            Width = 60
             Height = 13
             Caption = 'Angle (grad):'
           end
-          object RxLabel29: TMxLabel
+          object RxLabel29: TLabel
             Left = 4
             Top = 33
-            Width = 49
+            Width = 47
             Height = 13
             Caption = 'Move (m):'
           end
@@ -543,17 +543,17 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 57
           Caption = ' Detail Objects '
           TabOrder = 3
-          object RxLabel12: TMxLabel
+          object RxLabel12: TLabel
             Left = 5
             Top = 17
-            Width = 69
+            Width = 67
             Height = 13
             Caption = 'Hide Distance'
           end
-          object RxLabel13: TMxLabel
+          object RxLabel13: TLabel
             Left = 5
             Top = 36
-            Width = 96
+            Width = 94
             Height = 13
             Caption = 'Ray Pick Height (m)'
           end
@@ -595,17 +595,17 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 53
           Caption = ' Grid '
           TabOrder = 4
-          object MxLabel1: TMxLabel
+          object MxLabel1: TLabel
             Left = 4
             Top = 15
-            Width = 79
+            Width = 77
             Height = 13
             Caption = 'Square Size (m):'
           end
-          object MxLabel2: TMxLabel
+          object MxLabel2: TLabel
             Left = 4
             Top = 33
-            Width = 79
+            Width = 77
             Height = 13
             Caption = 'Number of Cells:'
           end
@@ -658,17 +658,17 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 66
             Caption = 'Random Scale'
             TabOrder = 0
-            object RxLabel3: TMxLabel
+            object RxLabel3: TLabel
               Left = 8
               Top = 29
-              Width = 52
+              Width = 50
               Height = 13
               Caption = 'Min (XYZ):'
             end
-            object RxLabel5: TMxLabel
+            object RxLabel5: TLabel
               Left = 8
               Top = 47
-              Width = 55
+              Width = 53
               Height = 13
               Caption = 'Max (XYZ):'
             end
@@ -781,17 +781,17 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 66
             Caption = 'Random Rotation'
             TabOrder = 1
-            object RxLabel23: TMxLabel
+            object RxLabel23: TLabel
               Left = 8
               Top = 29
-              Width = 52
+              Width = 50
               Height = 13
               Caption = 'Min (XYZ):'
             end
-            object RxLabel24: TMxLabel
+            object RxLabel24: TLabel
               Left = 8
               Top = 47
-              Width = 55
+              Width = 53
               Height = 13
               Caption = 'Max (XYZ):'
             end
@@ -886,17 +886,17 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 66
             Caption = 'Random Size'
             TabOrder = 2
-            object RxLabel25: TMxLabel
+            object RxLabel25: TLabel
               Left = 8
               Top = 29
-              Width = 22
+              Width = 20
               Height = 13
               Caption = 'Min:'
             end
-            object RxLabel26: TMxLabel
+            object RxLabel26: TLabel
               Left = 8
               Top = 47
-              Width = 25
+              Width = 23
               Height = 13
               Caption = 'Max:'
             end

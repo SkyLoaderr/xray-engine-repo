@@ -31,10 +31,10 @@ object frmSceneProperties: TfrmSceneProperties
     object tsBuildOptions: TTabSheet
       Caption = 'Build Options'
       ImageIndex = 8
-      object RxLabel25: TMxLabel
+      object RxLabel25: TLabel
         Left = 107
         Top = 106
-        Width = 128
+        Width = 126
         Height = 16
         Caption = 'Editor Build Options...'
         Font.Charset = RUSSIAN_CHARSET
@@ -56,17 +56,17 @@ object frmSceneProperties: TfrmSceneProperties
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        object RxLabel1: TMxLabel
+        object RxLabel1: TLabel
           Left = 3
           Top = 10
-          Width = 57
+          Width = 55
           Height = 13
           Caption = 'Level name'
         end
-        object RxLabel2: TMxLabel
+        object RxLabel2: TLabel
           Left = 4
           Top = 32
-          Width = 52
+          Width = 50
           Height = 13
           Caption = 'Level path'
         end
@@ -100,10 +100,10 @@ object frmSceneProperties: TfrmSceneProperties
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        object RxLabel3: TMxLabel
+        object RxLabel3: TLabel
           Left = 2
           Top = 12
-          Width = 78
+          Width = 76
           Height = 13
           Caption = 'Skydome object'
         end
@@ -133,17 +133,17 @@ object frmSceneProperties: TfrmSceneProperties
           FlatAlwaysEdge = True
           OnClick = ebClearSkydomeClick
         end
-        object RxLabel10: TMxLabel
+        object RxLabel10: TLabel
           Left = 2
           Top = 34
-          Width = 91
+          Width = 89
           Height = 13
           Caption = 'Environment count'
         end
-        object RxLabel29: TMxLabel
+        object RxLabel29: TLabel
           Left = 181
           Top = 34
-          Width = 97
+          Width = 95
           Height = 13
           Caption = 'Current environment'
         end
@@ -216,17 +216,17 @@ object frmSceneProperties: TfrmSceneProperties
     object tsOptimizing: TTabSheet
       Caption = 'Optimizing'
       ImageIndex = 1
-      object RxLabel11: TMxLabel
+      object RxLabel11: TLabel
         Left = 2
         Top = 10
-        Width = 101
+        Width = 99
         Height = 13
         Caption = 'Normal smooth angle'
       end
-      object RxLabel20: TMxLabel
+      object RxLabel20: TLabel
         Left = 3
         Top = 30
-        Width = 87
+        Width = 85
         Height = 13
         Caption = 'Weld distance (m)'
       end
@@ -264,10 +264,10 @@ object frmSceneProperties: TfrmSceneProperties
     object tsTesselation: TTabSheet
       Caption = 'Tesselation'
       ImageIndex = 2
-      object RxLabel4: TMxLabel
+      object RxLabel4: TLabel
         Left = 2
         Top = 28
-        Width = 66
+        Width = 64
         Height = 13
         Caption = 'Max edge (m)'
       end
@@ -299,31 +299,31 @@ object frmSceneProperties: TfrmSceneProperties
     object tsLightmaps: TTabSheet
       Caption = 'Lightmaps'
       ImageIndex = 4
-      object RxLabel5: TMxLabel
+      object RxLabel5: TLabel
         Left = 2
         Top = 27
-        Width = 76
+        Width = 74
         Height = 13
         Caption = 'Pixels per meter'
       end
-      object RxLabel12: TMxLabel
+      object RxLabel12: TLabel
         Left = 2
         Top = 47
-        Width = 100
+        Width = 98
         Height = 13
         Caption = 'Deflectors split angle'
       end
-      object RxLabel32: TMxLabel
+      object RxLabel32: TLabel
         Left = 2
         Top = 66
-        Width = 113
+        Width = 111
         Height = 13
         Caption = 'Error (for LM collapsing)'
       end
-      object MxLabel1: TMxLabel
+      object MxLabel1: TLabel
         Left = 2
         Top = 86
-        Width = 86
+        Width = 84
         Height = 13
         Caption = 'Error (for LM zero)'
         WordWrap = True
@@ -388,17 +388,17 @@ object frmSceneProperties: TfrmSceneProperties
         Height = 106
         Caption = ' Hemisphere lighting '
         TabOrder = 4
-        object RxLabel34: TMxLabel
+        object RxLabel34: TLabel
           Left = 5
           Top = 16
-          Width = 78
+          Width = 76
           Height = 13
           Caption = 'Dispersion (deg)'
         end
-        object RxLabel36: TMxLabel
+        object RxLabel36: TLabel
           Left = 5
           Top = 36
-          Width = 97
+          Width = 95
           Height = 13
           Caption = 'Summary energy (%)'
         end
@@ -416,17 +416,17 @@ object frmSceneProperties: TfrmSceneProperties
           Pen.Style = psClear
           OnMouseDown = mcLMAmbientMouseDown
         end
-        object RxLabel24: TMxLabel
+        object RxLabel24: TLabel
           Left = 5
           Top = 55
-          Width = 26
+          Width = 24
           Height = 13
           Caption = 'Color'
         end
-        object RxLabel39: TMxLabel
+        object RxLabel39: TLabel
           Left = 5
           Top = 83
-          Width = 34
+          Width = 32
           Height = 13
           Caption = 'Quality'
         end
@@ -480,24 +480,24 @@ object frmSceneProperties: TfrmSceneProperties
         Height = 86
         Caption = ' Jittering '
         TabOrder = 5
-        object RxLabel9: TMxLabel
+        object RxLabel9: TLabel
           Left = 5
           Top = 62
-          Width = 45
+          Width = 43
           Height = 13
           Caption = 'Samples '
         end
-        object RxLabel13: TMxLabel
+        object RxLabel13: TLabel
           Left = 5
           Top = 17
-          Width = 30
+          Width = 28
           Height = 13
           Caption = 'Dither'
         end
-        object RxLabel14: TMxLabel
+        object RxLabel14: TLabel
           Left = 5
           Top = 36
-          Width = 46
+          Width = 44
           Height = 13
           Caption = 'Distortion'
         end
@@ -564,17 +564,17 @@ object frmSceneProperties: TfrmSceneProperties
           Pen.Style = psClear
           OnMouseDown = mcLMAmbientMouseDown
         end
-        object RxLabel22: TMxLabel
+        object RxLabel22: TLabel
           Left = 5
           Top = 15
-          Width = 26
+          Width = 24
           Height = 13
           Caption = 'Color'
         end
-        object RxLabel23: TMxLabel
+        object RxLabel23: TLabel
           Left = 5
           Top = 35
-          Width = 59
+          Width = 57
           Height = 13
           Caption = 'Fogness (%)'
         end
@@ -601,24 +601,24 @@ object frmSceneProperties: TfrmSceneProperties
         Height = 139
         Caption = ' Fuzzy point light '
         TabOrder = 7
-        object RxLabel35: TMxLabel
+        object RxLabel35: TLabel
           Left = 5
           Top = 33
-          Width = 42
+          Width = 40
           Height = 13
           Caption = 'Samples'
         end
-        object RxLabel40: TMxLabel
+        object RxLabel40: TLabel
           Left = 5
           Top = 52
-          Width = 36
+          Width = 34
           Height = 13
           Caption = 'Min (m)'
         end
-        object RxLabel41: TMxLabel
+        object RxLabel41: TLabel
           Left = 5
           Top = 72
-          Width = 39
+          Width = 37
           Height = 13
           Caption = 'Max (m)'
         end
@@ -696,42 +696,42 @@ object frmSceneProperties: TfrmSceneProperties
     object tsProgressive: TTabSheet
       Caption = 'Progressive'
       ImageIndex = 5
-      object RxLabel15: TMxLabel
+      object RxLabel15: TLabel
         Left = 2
         Top = 28
-        Width = 51
+        Width = 49
         Height = 13
         Caption = 'UV weight'
       end
-      object RxLabel16: TMxLabel
+      object RxLabel16: TLabel
         Left = 2
         Top = 47
-        Width = 73
+        Width = 71
         Height = 13
         Caption = 'Position weight'
       end
-      object RxLabel17: TMxLabel
+      object RxLabel17: TLabel
         Left = 2
         Top = 67
-        Width = 82
+        Width = 80
         Height = 13
         Caption = 'Curvature weight'
       end
-      object RxLabel26: TMxLabel
+      object RxLabel26: TLabel
         Left = 2
         Top = 88
-        Width = 95
+        Width = 93
         Height = 13
         Caption = 'Higher border angle'
       end
-      object RxLabel27: TMxLabel
+      object RxLabel27: TLabel
         Left = 2
         Top = 107
-        Width = 109
+        Width = 107
         Height = 13
         Caption = 'Higher border distance'
       end
-      object RxLabel28: TMxLabel
+      object RxLabel28: TLabel
         Left = 2
         Top = 127
         Width = 175
@@ -841,17 +841,17 @@ object frmSceneProperties: TfrmSceneProperties
     object tsStrippifier: TTabSheet
       Caption = 'Strippifier'
       ImageIndex = 8
-      object RxLabel18: TMxLabel
+      object RxLabel18: TLabel
         Left = 2
         Top = 27
-        Width = 54
+        Width = 52
         Height = 13
         Caption = 'Cache size'
       end
-      object RxLabel37: TMxLabel
+      object RxLabel37: TLabel
         Left = 130
         Top = 43
-        Width = 219
+        Width = 217
         Height = 26
         Caption = 
           '15-17 ge1, ge2, ge2MX, radeon1, radeon7xxx'#13#10'23-25 geforce3, rade' +
@@ -862,7 +862,6 @@ object frmSceneProperties: TfrmSceneProperties
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        ShadowPos = spRightTop
       end
       object cbStrippify: TCheckBox
         Left = 0
@@ -891,17 +890,17 @@ object frmSceneProperties: TfrmSceneProperties
     object tsVertexBuffers: TTabSheet
       Caption = 'Vertex buffers'
       ImageIndex = 6
-      object RxLabel6: TMxLabel
+      object RxLabel6: TLabel
         Left = 2
         Top = 10
-        Width = 81
+        Width = 79
         Height = 13
         Caption = 'VB max size (kB)'
       end
-      object RxLabel7: TMxLabel
+      object RxLabel7: TLabel
         Left = 2
         Top = 30
-        Width = 78
+        Width = 76
         Height = 13
         Caption = 'VB max vertices'
       end
@@ -933,35 +932,35 @@ object frmSceneProperties: TfrmSceneProperties
     object tsSubdivision: TTabSheet
       Caption = 'Subdivision'
       ImageIndex = 7
-      object RxLabel8: TMxLabel
+      object RxLabel8: TLabel
         Left = 2
         Top = 10
-        Width = 92
+        Width = 90
         Height = 13
         Caption = 'Max object size (m)'
       end
-      object RxLabel19: TMxLabel
+      object RxLabel19: TLabel
         Left = 2
         Top = 30
-        Width = 123
+        Width = 121
         Height = 13
         Caption = 'Perform addititional merge'
       end
-      object RxLabel21: TMxLabel
+      object RxLabel21: TLabel
         Left = 2
         Top = 50
-        Width = 161
+        Width = 159
         Height = 13
         Caption = 'Spatial subdivisions low limit (poly)'
       end
-      object RxLabel30: TMxLabel
+      object RxLabel30: TLabel
         Left = 2
         Top = 70
-        Width = 168
+        Width = 166
         Height = 13
         Caption = 'Spatial subdivisions hight limit (poly)'
       end
-      object RxLabel31: TMxLabel
+      object RxLabel31: TLabel
         Left = 2
         Top = 84
         Width = 175
@@ -1074,41 +1073,41 @@ object frmSceneProperties: TfrmSceneProperties
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F5FFFFFF07000000D090980600000000FFFFFFFF000001010100000078000000
-      00000000102700000001000020E1C60500000000000000000000000000000100
-      0000000000000000000100000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000090000000010000000001000000000000
-      000000000000D090980600000000FFFFFFFF0000010101000000780000000000
-      00001027000000010000E8E5C605010000000000000000000000000001000000
-      0000000000000001000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000900000000100000000010000000000000000
-      00000000D090980600000000FFFFFFFF00000101010000007800000000000000
-      1027000000010000ACE6C6050200000000000000000000000000010000000000
-      0000000000010000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000009000000001000000000100000000000000000000
-      0000D090980600000000FFFFFFFF000001010100000078000000000000001027
-      00000001000070E7C60503000000000000000000000000000100000000000000
-      0000000100000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000090000000010000000001000000000000000000000000
-      D090980600000000FFFFFFFF0000010101000000780000000000000010270000
-      0001000034E8C605040000000000000000000000000001000000000000000000
-      0001000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000090000000010000000001000000000000000000000000D090
-      980600000000FFFFFFFF00000101010000007800000000000000102700000001
-      0000F8E8C6050500000000000000000000000000010000000000000000000001
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000090000000010000000001000000000000000000000000D0909806
-      00000000FFFFFFFF000001010100000078000000000000001027000000010000
-      BCE9C60506000000000000000000000000000100000000000000000000010000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000090000000010000000001000000000000000000000000}
+      F4FFFFFF07000000305E0B0500180000FFFFFFFF000001010100696F78000000
+      00000000102700000001000520E1C6050000000000000B05000000000000012D
+      000000000000000000010000000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D
+      2D2D2D2D2D2D2D2D0D0A0D0A766F6964205F5F6661737463616C6C205466726D
+      5363656E6550726F706572746965733A3A466F72010000000001000000000000
+      000000000000305E0B0500180000FFFFFFFF000001010100696F780000000000
+      00001027000000010005E8E5C6050100000000000B05000000000000012D0000
+      00000000000000010000000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D
+      2D2D2D2D2D2D0D0A0D0A766F6964205F5F6661737463616C6C205466726D5363
+      656E6550726F706572746965733A3A466F720100000000010000000000000000
+      00000000305E0B0500180000FFFFFFFF000001010100696F7800000000000000
+      1027000000010005ACE6C6050200000000000B05000000000000012D00000000
+      0000000000010000000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D
+      2D2D2D2D0D0A0D0A766F6964205F5F6661737463616C6C205466726D5363656E
+      6550726F706572746965733A3A466F7201000000000100000000000000000000
+      0000305E0B0500180000FFFFFFFF000001010100696F78000000000000001027
+      00000001000570E7C6050300000000000B05000000000000012D000000000000
+      000000010000000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D
+      2D2D0D0A0D0A766F6964205F5F6661737463616C6C205466726D5363656E6550
+      726F706572746965733A3A466F72010000000001000000000000000000000000
+      305E0B0500180000FFFFFFFF000001010100696F780000000000000010270000
+      0001000534E8C6050400000000000B05000000000000012D0000000000000000
+      00010000000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D
+      0D0A0D0A766F6964205F5F6661737463616C6C205466726D5363656E6550726F
+      706572746965733A3A466F72010000000001000000000000000000000000305E
+      0B0500180000FFFFFFFF000001010100696F7800000000000000102700000001
+      0005F8E8C6050500000000000B05000000000000012D00000000000000000001
+      0000000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D0D0A
+      0D0A766F6964205F5F6661737463616C6C205466726D5363656E6550726F7065
+      72746965733A3A466F72010000000001000000000000000000000000305E0B05
+      00180000FFFFFFFF000001010100696F78000000000000001027000000010005
+      BCE9C6050600000000000B05000000000000012D000000000000000000010000
+      000000002D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D2D0D0A0D0A
+      766F6964205F5F6661737463616C6C205466726D5363656E6550726F70657274
+      6965733A3A466F72010000000001000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
     HeaderFont.Height = -11

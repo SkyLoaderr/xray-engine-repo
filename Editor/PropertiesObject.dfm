@@ -60,53 +60,47 @@ object frmPropertiesObject: TfrmPropertiesObject
         Caption = 'Transformation'
         ImageIndex = 1
         OnShow = tsInfoShow
-        object RxLabel4: TMxLabel
+        object RxLabel4: TLabel
           Left = 0
           Top = 10
-          Width = 52
+          Width = 50
           Height = 13
           Caption = 'Transform:'
-          ShadowColor = 15263976
         end
-        object RxLabel5: TMxLabel
+        object RxLabel5: TLabel
           Left = 1
           Top = 110
-          Width = 71
+          Width = 69
           Height = 13
           Caption = 'Bounding Box:'
-          ShadowColor = 15263976
         end
-        object RxLabel11: TMxLabel
+        object RxLabel11: TLabel
           Left = 48
           Top = 154
-          Width = 144
+          Width = 142
           Height = 13
           Caption = 'Noa available in multiselection'
-          ShadowColor = 15263976
         end
-        object RxLabel10: TMxLabel
+        object RxLabel10: TLabel
           Left = 10
           Top = 29
-          Width = 42
+          Width = 40
           Height = 13
           Caption = 'Position:'
-          ShadowColor = 15263976
         end
-        object RxLabel13: TMxLabel
+        object RxLabel13: TLabel
           Left = 10
           Top = 48
-          Width = 45
+          Width = 43
           Height = 13
           Caption = 'Rotation:'
-          ShadowColor = 15263976
         end
-        object RxLabel25: TMxLabel
+        object RxLabel25: TLabel
           Left = 10
           Top = 67
-          Width = 32
+          Width = 30
           Height = 13
           Caption = 'Scale:'
-          ShadowColor = 15263976
         end
         object paBB: TPanel
           Left = 3
@@ -162,31 +156,31 @@ object frmPropertiesObject: TfrmPropertiesObject
             RightAlignedText = False
             RightAlignedOrder = False
             Sections.Data = {
-              F5FFFFFF05000000D4F2380600000000FFFFFFFF000001000000000014000000
-              000000001027000000000000EC43B90504000000000000000000000000000100
-              0000000000000000000100000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000090000000010000000001000000000000
-              000000000000D4F2380600000000FFFFFFFF00000100000000003C0000000000
-              000010270000000001008048B905000000000000000000000000000001000000
-              0000000000000001000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              000000000000000000000000000090000000080000004D696E696D756D000100
-              0000000000000000000000D4F2380600000000FFFFFFFF00000100000000003C
-              0000000000000010270000000001004449B90501000000000000000000000000
-              0001000000000000000000000100000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000090000000080000004D6178696D
-              756D0001000000000000000000000000D4F2380600000000FFFFFFFF00000100
-              000000003C000000000000001027000000000100084AB9050200000000000000
-              0000000000000100000000000000000000010000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000009000000005000000
-              53697A650001000000000000000000000000D4F2380600000000FFFFFFFF0000
-              0100000000003C000000000000001027000000000100CC4AB905030000000000
-              0000000000000000010000000000000000000001000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000900000000700
+              F4FFFFFF05000000D8C6400400300000FFFFFFFF000001000000004114000000
+              000000001027000000000079EC43B90504000000000040040000000000000100
+              000000000000000000010000000000000400000073674242001F00007C013E04
+              9CA7E50078000000544C6162140000001700000000000000060000005450616E
+              656C00001CE33C04C8C53B04500000005450616E010000000001000000000000
+              000000000000D8C6400400300000FFFFFFFF00000100000000413C0000000000
+              000010270000000001798048B905000000000000400400000000000001000000
+              00000000000000010000000000000400000073674242001F00007C013E049CA7
+              E50078000000544C6162140000001700000000000000060000005450616E656C
+              00001CE33C04C8C53B04500000005450616E080000004D696E696D756D000100
+              0000000000000000000000D8C6400400300000FFFFFFFF00000100000000413C
+              0000000000000010270000000001794449B90501000000000040040000000000
+              000100000000000000000000010000000000000400000073674242001F00007C
+              013E049CA7E50078000000544C61621400000017000000000000000600000054
+              50616E656C00001CE33C04C8C53B04500000005450616E080000004D6178696D
+              756D0001000000000000000000000000D8C6400400300000FFFFFFFF00000100
+              000000413C000000000000001027000000000179084AB9050200000000004004
+              0000000000000100000000000000000000010000000000000400000073674242
+              001F00007C013E049CA7E50078000000544C6162140000001700000000000000
+              060000005450616E656C00001CE33C04C8C53B04500000005450616E05000000
+              53697A650001000000000000000000000000D8C6400400300000FFFFFFFF0000
+              0100000000413C000000000000001027000000000179CC4AB905030000000000
+              4004000000000000010000000000000000000001000000000000040000007367
+              4242001F00007C013E049CA7E50078000000544C616214000000170000000000
+              0000060000005450616E656C00001CE33C04C8C53B04500000005450616E0700
               000043656E7465720001000000000000000000000000}
             StickySections = False
             Tracking = True
@@ -340,26 +334,24 @@ object frmPropertiesObject: TfrmPropertiesObject
             Align = alTop
             Caption = ' Summary Info '
             TabOrder = 0
-            object RxLabel1: TMxLabel
+            object RxLabel1: TLabel
               Left = 5
               Top = 18
-              Width = 43
+              Width = 41
               Height = 13
               Caption = 'Vertices:'
-              ShadowColor = 15263976
             end
-            object RxLabel3: TMxLabel
+            object RxLabel3: TLabel
               Left = 5
               Top = 32
-              Width = 34
+              Width = 32
               Height = 13
               Caption = 'Faces:'
-              ShadowColor = 15263976
             end
-            object lbVertices: TMxLabel
+            object lbVertices: TLabel
               Left = 67
               Top = 18
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -368,12 +360,11 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
-            object lbFaces: TMxLabel
+            object lbFaces: TLabel
               Left = 67
               Top = 32
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -382,7 +373,6 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
           end
         end
@@ -413,7 +403,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderSections.Data = {F4FFFFFF00000000}
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = clWindowText
           HeaderFont.Height = -11
@@ -506,34 +496,31 @@ object frmPropertiesObject: TfrmPropertiesObject
               Align = alClient
               Caption = ' Texture Properties '
               TabOrder = 0
-              object RxLabel7: TMxLabel
+              object RxLabel7: TLabel
                 Left = 4
                 Top = 18
-                Width = 33
+                Width = 31
                 Height = 13
                 Caption = 'Width:'
-                ShadowColor = 15263976
               end
-              object RxLabel8: TMxLabel
+              object RxLabel8: TLabel
                 Left = 4
                 Top = 33
-                Width = 36
+                Width = 34
                 Height = 13
                 Caption = 'Height:'
-                ShadowColor = 15263976
               end
-              object RxLabel9: TMxLabel
+              object RxLabel9: TLabel
                 Left = 4
                 Top = 48
-                Width = 32
+                Width = 30
                 Height = 13
                 Caption = 'Alpha:'
-                ShadowColor = 15263976
               end
-              object lbWidth: TMxLabel
+              object lbWidth: TLabel
                 Left = 45
                 Top = 18
-                Width = 15
+                Width = 13
                 Height = 13
                 Caption = '...'
                 Font.Charset = DEFAULT_CHARSET
@@ -542,12 +529,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Name = 'MS Sans Serif'
                 Font.Style = [fsBold]
                 ParentFont = False
-                ShadowColor = 15263976
               end
-              object lbHeight: TMxLabel
+              object lbHeight: TLabel
                 Left = 45
                 Top = 33
-                Width = 15
+                Width = 13
                 Height = 13
                 Caption = '...'
                 Font.Charset = DEFAULT_CHARSET
@@ -556,12 +542,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Name = 'MS Sans Serif'
                 Font.Style = [fsBold]
                 ParentFont = False
-                ShadowColor = 15263976
               end
-              object lbAlpha: TMxLabel
+              object lbAlpha: TLabel
                 Left = 45
                 Top = 48
-                Width = 15
+                Width = 13
                 Height = 13
                 Caption = '...'
                 Font.Charset = DEFAULT_CHARSET
@@ -570,7 +555,6 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Name = 'MS Sans Serif'
                 Font.Style = [fsBold]
                 ParentFont = False
-                ShadowColor = 15263976
               end
               object paImage: TPanel
                 Left = 3
@@ -607,18 +591,17 @@ object frmPropertiesObject: TfrmPropertiesObject
               Align = alClient
               Caption = ' Surface Properties '
               TabOrder = 0
-              object RxLabel18: TMxLabel
+              object RxLabel18: TLabel
                 Left = 4
                 Top = 29
-                Width = 66
+                Width = 64
                 Height = 13
                 Caption = 'Double Sided'
-                ShadowColor = 15263976
               end
-              object lbSurfSideFlag: TMxLabel
+              object lbSurfSideFlag: TLabel
                 Left = 95
                 Top = 29
-                Width = 11
+                Width = 9
                 Height = 13
                 Caption = '...'
                 Font.Charset = DEFAULT_CHARSET
@@ -627,20 +610,18 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Name = 'MS Sans Serif'
                 Font.Style = []
                 ParentFont = False
-                ShadowColor = 15263976
               end
-              object RxLabel35: TMxLabel
+              object RxLabel35: TLabel
                 Left = 5
                 Top = 15
-                Width = 34
+                Width = 32
                 Height = 13
                 Caption = 'Faces:'
-                ShadowColor = 15263976
               end
-              object lbSurfFaces: TMxLabel
+              object lbSurfFaces: TLabel
                 Left = 95
                 Top = 15
-                Width = 11
+                Width = 9
                 Height = 13
                 Caption = '...'
                 Font.Charset = DEFAULT_CHARSET
@@ -649,7 +630,6 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Name = 'MS Sans Serif'
                 Font.Style = []
                 ParentFont = False
-                ShadowColor = 15263976
               end
               object ebSelectShader: TExtBtn
                 Left = 4
@@ -670,7 +650,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 FlatAlwaysEdge = True
                 OnClick = ebSelectShaderClick
               end
-              object lbShader: TMxLabel
+              object lbShader: TLabel
                 Left = 44
                 Top = 46
                 Width = 107
@@ -686,7 +666,6 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Style = []
                 ParentColor = False
                 ParentFont = False
-                ShadowColor = 15263976
               end
               object ebSelectTexture: TExtBtn
                 Left = 4
@@ -707,7 +686,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 FlatAlwaysEdge = True
                 OnClick = ebSelectTextureClick
               end
-              object lbTexture: TMxLabel
+              object lbTexture: TLabel
                 Left = 44
                 Top = 78
                 Width = 107
@@ -723,7 +702,6 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Style = []
                 ParentColor = False
                 ParentFont = False
-                ShadowColor = 15263976
               end
               object ebSelectShaderXRLC: TExtBtn
                 Left = 4
@@ -744,7 +722,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 FlatAlwaysEdge = True
                 OnClick = ebSelectShaderXRLCClick
               end
-              object lbShaderXRLC: TMxLabel
+              object lbShaderXRLC: TLabel
                 Left = 44
                 Top = 62
                 Width = 107
@@ -760,7 +738,6 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Style = []
                 ParentColor = False
                 ParentFont = False
-                ShadowColor = 15263976
               end
               object gbFVF: TGroupBox
                 Left = 2
@@ -770,18 +747,17 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Align = alBottom
                 Caption = ' Surface FVF '
                 TabOrder = 0
-                object RxLabel14: TMxLabel
+                object RxLabel14: TLabel
                   Left = 4
                   Top = 82
-                  Width = 68
+                  Width = 66
                   Height = 13
                   Caption = 'UV'#39's channel:'
-                  ShadowColor = 15263976
                 end
-                object lbSurfFVF_TCCount: TMxLabel
+                object lbSurfFVF_TCCount: TLabel
                   Left = 90
                   Top = 82
-                  Width = 11
+                  Width = 9
                   Height = 13
                   Caption = '...'
                   Font.Charset = DEFAULT_CHARSET
@@ -790,52 +766,46 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  ShadowColor = 15263976
                 end
-                object RxLabel6: TMxLabel
+                object RxLabel6: TLabel
                   Left = 4
                   Top = 15
-                  Width = 26
+                  Width = 24
                   Height = 13
                   Caption = 'XYZ:'
-                  ShadowColor = 15263976
                 end
-                object RxLabel12: TMxLabel
+                object RxLabel12: TLabel
                   Left = 4
                   Top = 28
-                  Width = 38
+                  Width = 36
                   Height = 13
                   Caption = 'Normal:'
-                  ShadowColor = 15263976
                 end
-                object RxLabel15: TMxLabel
+                object RxLabel15: TLabel
                   Left = 4
                   Top = 41
-                  Width = 38
+                  Width = 36
                   Height = 13
                   Caption = 'Diffuse:'
-                  ShadowColor = 15263976
                 end
-                object RxLabel16: TMxLabel
+                object RxLabel16: TLabel
                   Left = 4
                   Top = 54
-                  Width = 47
+                  Width = 45
                   Height = 13
                   Caption = 'Specular:'
-                  ShadowColor = 15263976
                 end
-                object RxLabel17: TMxLabel
+                object RxLabel17: TLabel
                   Left = 4
                   Top = 69
-                  Width = 53
+                  Width = 51
                   Height = 13
                   Caption = 'XYZRHW:'
-                  ShadowColor = 15263976
                 end
-                object lbSurfFVF_XYZ: TMxLabel
+                object lbSurfFVF_XYZ: TLabel
                   Left = 90
                   Top = 15
-                  Width = 11
+                  Width = 9
                   Height = 13
                   Caption = '...'
                   Font.Charset = DEFAULT_CHARSET
@@ -844,12 +814,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  ShadowColor = 15263976
                 end
-                object lbSurfFVF_Normal: TMxLabel
+                object lbSurfFVF_Normal: TLabel
                   Left = 90
                   Top = 28
-                  Width = 11
+                  Width = 9
                   Height = 13
                   Caption = '...'
                   Font.Charset = DEFAULT_CHARSET
@@ -858,12 +827,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  ShadowColor = 15263976
                 end
-                object lbSurfFVF_Diffuse: TMxLabel
+                object lbSurfFVF_Diffuse: TLabel
                   Left = 90
                   Top = 41
-                  Width = 11
+                  Width = 9
                   Height = 13
                   Caption = '...'
                   Font.Charset = DEFAULT_CHARSET
@@ -872,12 +840,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  ShadowColor = 15263976
                 end
-                object lbSurfFVF_Specular: TMxLabel
+                object lbSurfFVF_Specular: TLabel
                   Left = 90
                   Top = 54
-                  Width = 11
+                  Width = 9
                   Height = 13
                   Caption = '...'
                   Font.Charset = DEFAULT_CHARSET
@@ -886,12 +853,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  ShadowColor = 15263976
                 end
-                object lbSurfFVF_XYZRHW: TMxLabel
+                object lbSurfFVF_XYZRHW: TLabel
                   Left = 90
                   Top = 69
-                  Width = 11
+                  Width = 9
                   Height = 13
                   Caption = '...'
                   Font.Charset = DEFAULT_CHARSET
@@ -900,7 +866,6 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Font.Name = 'MS Sans Serif'
                   Font.Style = []
                   ParentFont = False
-                  ShadowColor = 15263976
                 end
               end
             end
@@ -980,7 +945,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderSections.Data = {F4FFFFFF00000000}
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = clWindowText
           HeaderFont.Height = -11
@@ -1058,18 +1023,17 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = ' Current Motion '
           TabOrder = 0
           Visible = False
-          object RxLabel20: TMxLabel
+          object RxLabel20: TLabel
             Left = 5
             Top = 13
-            Width = 33
+            Width = 31
             Height = 13
             Caption = 'Name:'
-            ShadowColor = 15263976
           end
-          object lbOMotionName: TMxLabel
+          object lbOMotionName: TLabel
             Left = 51
             Top = 13
-            Width = 11
+            Width = 9
             Height = 13
             Caption = '...'
             Font.Charset = DEFAULT_CHARSET
@@ -1078,20 +1042,18 @@ object frmPropertiesObject: TfrmPropertiesObject
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            ShadowColor = 15263976
           end
-          object RxLabel23: TMxLabel
+          object RxLabel23: TLabel
             Left = 5
             Top = 27
-            Width = 39
+            Width = 37
             Height = 13
             Caption = 'Frames:'
-            ShadowColor = 15263976
           end
-          object lbOMotionFrames: TMxLabel
+          object lbOMotionFrames: TLabel
             Left = 51
             Top = 27
-            Width = 11
+            Width = 9
             Height = 13
             Caption = '...'
             Font.Charset = DEFAULT_CHARSET
@@ -1100,12 +1062,11 @@ object frmPropertiesObject: TfrmPropertiesObject
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            ShadowColor = 15263976
           end
-          object lbOMotionFPS: TMxLabel
+          object lbOMotionFPS: TLabel
             Left = 51
             Top = 41
-            Width = 11
+            Width = 9
             Height = 13
             Caption = '...'
             Font.Charset = DEFAULT_CHARSET
@@ -1114,15 +1075,13 @@ object frmPropertiesObject: TfrmPropertiesObject
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            ShadowColor = 15263976
           end
-          object RxLabel28: TMxLabel
+          object RxLabel28: TLabel
             Left = 5
             Top = 41
-            Width = 25
+            Width = 23
             Height = 13
             Caption = 'FPS:'
-            ShadowColor = 15263976
           end
         end
         object tvOMotions: TElTree
@@ -1150,7 +1109,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderSections.Data = {F4FFFFFF00000000}
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = clWindowText
           HeaderFont.Height = -11
@@ -1203,18 +1162,17 @@ object frmPropertiesObject: TfrmPropertiesObject
             Align = alClient
             Caption = ' Summary Info '
             TabOrder = 0
-            object RxLabel19: TMxLabel
+            object RxLabel19: TLabel
               Left = 5
               Top = 13
-              Width = 67
+              Width = 65
               Height = 13
               Caption = 'Motion count:'
-              ShadowColor = 15263976
             end
-            object lbOMotionCount: TMxLabel
+            object lbOMotionCount: TLabel
               Left = 75
               Top = 13
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -1223,20 +1181,18 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
-            object RxLabel21: TMxLabel
+            object RxLabel21: TLabel
               Left = 5
               Top = 27
-              Width = 70
+              Width = 68
               Height = 13
               Caption = 'Active Motion:'
-              ShadowColor = 15263976
             end
-            object lbActiveOMotion: TMxLabel
+            object lbActiveOMotion: TLabel
               Left = 75
               Top = 27
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -1245,7 +1201,6 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
           end
           object gbOMotionCommand: TGroupBox
@@ -1402,7 +1357,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderSections.Data = {F4FFFFFF00000000}
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = clWindowText
           HeaderFont.Height = -11
@@ -1448,18 +1403,17 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = ' Current Motion '
           TabOrder = 1
           Visible = False
-          object RxLabel29: TMxLabel
+          object RxLabel29: TLabel
             Left = 5
             Top = 13
-            Width = 33
+            Width = 31
             Height = 13
             Caption = 'Name:'
-            ShadowColor = 15263976
           end
-          object lbSMotionName: TMxLabel
+          object lbSMotionName: TLabel
             Left = 51
             Top = 13
-            Width = 11
+            Width = 9
             Height = 13
             Caption = '...'
             Font.Charset = DEFAULT_CHARSET
@@ -1468,20 +1422,18 @@ object frmPropertiesObject: TfrmPropertiesObject
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            ShadowColor = 15263976
           end
-          object RxLabel24: TMxLabel
+          object RxLabel24: TLabel
             Left = 5
             Top = 25
-            Width = 39
+            Width = 37
             Height = 13
             Caption = 'Frames:'
-            ShadowColor = 15263976
           end
-          object lbSMotionFrames: TMxLabel
+          object lbSMotionFrames: TLabel
             Left = 51
             Top = 25
-            Width = 11
+            Width = 9
             Height = 13
             Caption = '...'
             Font.Charset = DEFAULT_CHARSET
@@ -1490,20 +1442,18 @@ object frmPropertiesObject: TfrmPropertiesObject
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            ShadowColor = 15263976
           end
-          object RxLabel27: TMxLabel
+          object RxLabel27: TLabel
             Left = 5
             Top = 37
-            Width = 25
+            Width = 23
             Height = 13
             Caption = 'FPS:'
-            ShadowColor = 15263976
           end
-          object lbSMotionFPS: TMxLabel
+          object lbSMotionFPS: TLabel
             Left = 51
             Top = 37
-            Width = 11
+            Width = 9
             Height = 13
             Caption = '...'
             Font.Charset = DEFAULT_CHARSET
@@ -1512,7 +1462,6 @@ object frmPropertiesObject: TfrmPropertiesObject
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            ShadowColor = 15263976
           end
           object Bevel1: TBevel
             Left = 2
@@ -1520,29 +1469,26 @@ object frmPropertiesObject: TfrmPropertiesObject
             Width = 135
             Height = 2
           end
-          object RxLabel30: TMxLabel
+          object RxLabel30: TLabel
             Left = 5
             Top = 139
-            Width = 36
+            Width = 34
             Height = 13
             Caption = 'Speed:'
-            ShadowColor = 15263976
           end
-          object RxLabel31: TMxLabel
+          object RxLabel31: TLabel
             Left = 5
             Top = 156
-            Width = 39
+            Width = 37
             Height = 13
             Caption = 'Accrue:'
-            ShadowColor = 15263976
           end
-          object RxLabel32: TMxLabel
+          object RxLabel32: TLabel
             Left = 5
             Top = 174
-            Width = 33
+            Width = 31
             Height = 13
             Caption = 'Falloff:'
-            ShadowColor = 15263976
           end
           object seSMotionSpeed: TMultiObjSpinEdit
             Left = 44
@@ -1607,13 +1553,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             OnChange = seSMotionChange
             object tsCycle: TTabSheet
               Caption = 'Cycle'
-              object RxLabel39: TMxLabel
+              object RxLabel39: TLabel
                 Left = 0
                 Top = -2
-                Width = 51
+                Width = 49
                 Height = 13
                 Caption = 'Bone part:'
-                ShadowColor = 15263976
               end
               object cbSBonePart: TComboBox
                 Left = 12
@@ -1639,10 +1584,10 @@ object frmPropertiesObject: TfrmPropertiesObject
             object tsFX: TTabSheet
               Caption = 'FX'
               ImageIndex = 1
-              object RxLabel40: TMxLabel
+              object RxLabel40: TLabel
                 Left = 0
                 Top = -2
-                Width = 54
+                Width = 52
                 Height = 13
                 Caption = 'Start bone:'
                 Font.Charset = DEFAULT_CHARSET
@@ -1651,15 +1596,13 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Font.Name = 'MS Sans Serif'
                 Font.Style = []
                 ParentFont = False
-                ShadowColor = 15263976
               end
-              object RxLabel34: TMxLabel
+              object RxLabel34: TLabel
                 Left = 0
                 Top = 35
-                Width = 35
+                Width = 33
                 Height = 13
                 Caption = 'Power:'
-                ShadowColor = 15263976
               end
               object cbSStartMotionBone: TComboBox
                 Left = 12
@@ -1707,18 +1650,17 @@ object frmPropertiesObject: TfrmPropertiesObject
             Align = alClient
             Caption = ' Summary Info '
             TabOrder = 0
-            object RxLabel22: TMxLabel
+            object RxLabel22: TLabel
               Left = 5
               Top = 27
-              Width = 67
+              Width = 65
               Height = 13
               Caption = 'Motion count:'
-              ShadowColor = 15263976
             end
-            object lbSMotionCount: TMxLabel
+            object lbSMotionCount: TLabel
               Left = 75
               Top = 27
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -1727,20 +1669,18 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
-            object RxLabel26: TMxLabel
+            object RxLabel26: TLabel
               Left = 5
               Top = 41
-              Width = 70
+              Width = 68
               Height = 13
               Caption = 'Active Motion:'
-              ShadowColor = 15263976
             end
-            object lbActiveSMotion: TMxLabel
+            object lbActiveSMotion: TLabel
               Left = 75
               Top = 41
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -1749,20 +1689,18 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
-            object RxLabel37: TMxLabel
+            object RxLabel37: TLabel
               Left = 5
               Top = 13
-              Width = 60
+              Width = 58
               Height = 13
               Caption = 'Bone count:'
-              ShadowColor = 15263976
             end
-            object lbSBoneCount: TMxLabel
+            object lbSBoneCount: TLabel
               Left = 75
               Top = 13
-              Width = 11
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -1771,7 +1709,6 @@ object frmPropertiesObject: TfrmPropertiesObject
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ShadowColor = 15263976
             end
           end
           object gbSMotionCommand: TGroupBox

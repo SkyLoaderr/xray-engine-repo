@@ -21,8 +21,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCancel;
 	TGroupBox *gbOrientation;
 	TMultiObjSpinEdit *sePointCount;
-	TMxLabel *RxLabel4;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel4;
+	TLabel *RxLabel1;
 	TMultiObjSpinEdit *MultiObjSpinEdit1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

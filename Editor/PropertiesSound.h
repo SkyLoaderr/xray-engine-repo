@@ -24,10 +24,10 @@ __published:	// IDE-managed Components
     TButton *btOk;
     TButton *btCancel;
     TMultiObjSpinEdit *seRange;
-    TMxLabel *RxLabel2;
+	TLabel *RxLabel2;
     TBevel *Bevel2;
     TEdit *edName;
-    TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
     TExtBtn *ebLink;
     TExtBtn *ebUnLink;
     void __fastcall btApplyClick(TObject *Sender);

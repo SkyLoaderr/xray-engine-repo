@@ -43,10 +43,10 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TElTree *tvItems;
 	TPanel *Panel4;
-	TMxLabel *lbItemName;
-	TMxLabel *RxLabel1;
-	TMxLabel *RxLabel3;
-	TMxLabel *lbInfo;
+	TLabel *lbItemName;
+	TLabel *RxLabel1;
+	TLabel *RxLabel3;
+	TLabel *lbInfo;
 	TPanel *paImage;
 	TPaintBox *pbImage;
 	TExtBtn *ExtBtn2;

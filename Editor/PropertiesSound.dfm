@@ -26,13 +26,12 @@ object frmPropertiesSound: TfrmPropertiesSound
     Align = alTop
     Caption = 'Sound:'
     TabOrder = 0
-    object RxLabel2: TMxLabel
+    object RxLabel2: TLabel
       Left = 11
       Top = 16
-      Width = 37
+      Width = 35
       Height = 13
       Caption = 'Range:'
-      ShadowColor = 15263976
     end
     object Bevel2: TBevel
       Left = 79
@@ -40,13 +39,12 @@ object frmPropertiesSound: TfrmPropertiesSound
       Width = 176
       Height = 17
     end
-    object RxLabel1: TMxLabel
+    object RxLabel1: TLabel
       Left = 11
       Top = 40
-      Width = 61
+      Width = 59
       Height = 13
       Caption = 'WAV Name:'
-      ShadowColor = 15263976
     end
     object ebLink: TExtBtn
       Left = 256

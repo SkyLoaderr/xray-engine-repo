@@ -25,15 +25,15 @@ class TfrmOneEnvironment : public TForm
 {
 __published:	// IDE-managed Components
 	TGroupBox *gbEnv;
-	TMxLabel *RxLabel29;
-	TMxLabel *RxLabel30;
-	TMxLabel *RxLabel31;
+	TLabel *RxLabel29;
+	TLabel *RxLabel30;
+	TLabel *RxLabel31;
 	TMultiObjColor *mcAmbColor;
-	TMxLabel *RxLabel32;
+	TLabel *RxLabel32;
 	TMultiObjColor *mcFogColor;
 	TMultiObjSpinEdit *seViewDistance;
 	TMultiObjSpinEdit *seFogness;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
 	TMultiObjColor *mcSkyColor;
 	TMultiObjSpinEdit *seSkyFogness;
 	void __fastcall UpdateClick(TObject *Sender);

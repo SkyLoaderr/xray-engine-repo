@@ -25,11 +25,11 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *gbSector;
-	TMxLabel *RxLabel5;
+	TLabel *RxLabel5;
 	TMultiObjColor *mcSectorColor;
 	TBevel *Bevel2;
 	TEdit *edName;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

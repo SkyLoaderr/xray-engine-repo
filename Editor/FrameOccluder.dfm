@@ -7,11 +7,13 @@ object fraOccluder: TfraOccluder
   Align = alTop
   Constraints.MaxWidth = 123
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paCommands: TPanel
@@ -33,6 +35,7 @@ object fraOccluder: TfraOccluder
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Down = True
@@ -43,7 +46,6 @@ object fraOccluder: TfraOccluder
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
     end
     object Label1: TLabel
       Left = 1
@@ -88,6 +90,7 @@ object fraOccluder: TfraOccluder
       AllowAllUp = True
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Caption = 'Point'
@@ -97,7 +100,6 @@ object fraOccluder: TfraOccluder
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
     end
     object ebOptimize: TExtBtn
       Left = 2
@@ -107,6 +109,7 @@ object fraOccluder: TfraOccluder
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Optimize'
       Font.Charset = DEFAULT_CHARSET
@@ -115,7 +118,6 @@ object fraOccluder: TfraOccluder
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
       OnClick = ebOptimizeClick
     end
     object Bevel1: TBevel

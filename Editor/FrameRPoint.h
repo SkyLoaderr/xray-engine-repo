@@ -24,7 +24,7 @@ __published:	// IDE-managed Components
     TPanel *paCommands;
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
-	TMxLabel *RxLabel2;
+	TLabel *RxLabel2;
 	TMultiObjSpinEdit *seTeamID;
 	TFormStorage *fsStorage;
     void __fastcall PaneMinClick(TObject *Sender);

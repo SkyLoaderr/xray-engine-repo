@@ -26,13 +26,13 @@ __published:	// IDE-managed Components
     TPanel *paBottom;
 	TGroupBox *gbEventParams;
 	TRadioGroup *rgType;
-	TMxLabel *RxLabel5;
+	TLabel *RxLabel5;
 	TComboBox *cbTargetClass;
-	TMxLabel *RxLabel1;
-	TMxLabel *RxLabel2;
+	TLabel *RxLabel1;
+	TLabel *RxLabel2;
 	TEdit *edOnExit;
 	TEdit *edOnEnter;
-	TMxLabel *RxLabel3;
+	TLabel *RxLabel3;
 	TMultiObjCheck *cbExecuteOnce;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

@@ -29,7 +29,7 @@ class TfrmShaderFunction : public TForm
 __published:	// IDE-managed Components
     TPanel *Panel1;
 	TStaticText *stFunction;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
 	TLabel *Label4;
 	TMultiObjSpinEdit *seArg1;
 	TLabel *Label1;

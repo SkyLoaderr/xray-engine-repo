@@ -22,11 +22,11 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *GroupBox1;
-	TMxLabel *RxLabel2;
+	TLabel *RxLabel2;
 	TMultiObjSpinEdit *seTeamID;
 	TEdit *edName;
-	TMxLabel *RxLabel1;
-	TMxLabel *RxLabel3;
+	TLabel *RxLabel1;
+	TLabel *RxLabel3;
 	TMultiObjSpinEdit *seHeading;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

@@ -22,11 +22,11 @@ __published:	// IDE-managed Components
 	TExtBtn *ebAddMesh;
 	TExtBtn *ebDelMesh;
     TExtBtn *ebFaceBoxPick;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
 	TPanel *paCommands;
-	TMxLabel *RxLabel4;
-	TMxLabel *RxLabel6;
-	TMxLabel *lbFacesCount;
+	TLabel *RxLabel4;
+	TLabel *RxLabel6;
+	TLabel *lbFacesCount;
 	TComboBox *cbItems;
 	TExtBtn *ebValidate;
 	TLabel *APHeadLabel1;

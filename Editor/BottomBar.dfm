@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 757
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 757
+    Width = 443
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -18,7 +18,7 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 624
+      Width = 310
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
@@ -68,7 +68,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 400
+        Left = 86
         Top = 0
         Width = 130
         Height = 15
@@ -159,7 +159,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paSel: TPanel
-        Left = 342
+        Left = 28
         Top = 0
         Width = 58
         Height = 15
@@ -177,7 +177,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 4
       end
       object paUICursor: TPanel
-        Left = 530
+        Left = 216
         Top = 0
         Width = 94
         Height = 15
@@ -224,7 +224,7 @@ object fraBottomBar: TfraBottomBar
       end
     end
     object paGridSquareSize: TPanel
-      Left = 698
+      Left = 384
       Top = 1
       Width = 58
       Height = 15

@@ -7,11 +7,13 @@ object fraObject: TfraObject
   Align = alClient
   Constraints.MaxWidth = 123
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paSelectObject: TPanel
@@ -119,6 +121,7 @@ object fraObject: TfraObject
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'Resolve reference'
       Font.Charset = DEFAULT_CHARSET
@@ -127,7 +130,6 @@ object fraObject: TfraObject
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      Transparent = False
     end
     object APHeadLabel1: TLabel
       Left = 1
@@ -182,6 +184,7 @@ object fraObject: TfraObject
       Align = alNone
       BevelShow = False
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = '...'
       Font.Charset = DEFAULT_CHARSET
@@ -190,7 +193,6 @@ object fraObject: TfraObject
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsUnderline]
       ParentFont = False
-      Transparent = False
       OnClick = ebCurObjClick
     end
     object APHeadLabel2: TLabel

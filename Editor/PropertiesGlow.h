@@ -29,12 +29,12 @@ __published:	// IDE-managed Components
     TPanel *paBottom;
     TMultiObjSpinEdit *seRange;
     TExtBtn *ebApply;
-    TMxLabel *RxLabel4;
+	TLabel *RxLabel4;
     TPanel *paImage;
     TPaintBox *pbImage;
 	TExtBtn *ebSelectShader;
-	TMxLabel *lbShader;
-	TMxLabel *lbTexture;
+	TLabel *lbShader;
+	TLabel *lbTexture;
 	TExtBtn *ebSelectTexture;
 	TFormStorage *fsStorage;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

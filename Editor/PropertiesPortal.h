@@ -30,10 +30,10 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *gbOrientation;
-	TMxLabel *RxLabel5;
-	TMxLabel *RxLabel1;
-	TMxLabel *lbBackSector;
-	TMxLabel *lbFrontSector;
+	TLabel *RxLabel5;
+	TLabel *RxLabel1;
+	TLabel *lbBackSector;
+	TLabel *lbFrontSector;
 	TExtBtn *ebInvertOrientation;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

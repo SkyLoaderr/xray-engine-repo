@@ -53,17 +53,17 @@ object frmPropertiesOccluder: TfrmPropertiesOccluder
     Align = alTop
     Caption = ' Points '
     TabOrder = 0
-    object RxLabel4: TMxLabel
+    object RxLabel4: TLabel
       Left = 9
       Top = 17
-      Width = 59
+      Width = 57
       Height = 13
       Caption = 'Point count:'
     end
-    object RxLabel1: TMxLabel
+    object RxLabel1: TLabel
       Left = 9
       Top = 37
-      Width = 40
+      Width = 38
       Height = 13
       Caption = 'Density:'
       Enabled = False

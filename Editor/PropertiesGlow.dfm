@@ -26,10 +26,10 @@ object frmPropertiesGlow: TfrmPropertiesGlow
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    object RxLabel4: TMxLabel
+    object RxLabel4: TLabel
       Left = 1
       Top = 9
-      Width = 57
+      Width = 55
       Height = 13
       Caption = 'Glow radius'
     end
@@ -52,7 +52,7 @@ object frmPropertiesGlow: TfrmPropertiesGlow
       FlatAlwaysEdge = True
       OnClick = ebSelectShaderClick
     end
-    object lbShader: TMxLabel
+    object lbShader: TLabel
       Left = 59
       Top = 26
       Width = 142
@@ -66,7 +66,7 @@ object frmPropertiesGlow: TfrmPropertiesGlow
       Font.Style = []
       ParentFont = False
     end
-    object lbTexture: TMxLabel
+    object lbTexture: TLabel
       Left = 59
       Top = 45
       Width = 142

@@ -2847,7 +2847,7 @@ object frmSplash: TfrmSplash
       5762AEC55D8ABB15762AEC55D8ABB15762AEC55D8ABB15762AEC55D8ABB15762
       AEC55D8ABB15762AEC55D8ABFFD9}
   end
-  object lbStatus: TMxLabel
+  object lbStatus: TLabel
     Left = 0
     Top = 270
     Width = 499
@@ -2861,8 +2861,6 @@ object frmSplash: TfrmSplash
     Font.Name = 'Lucida Console'
     Font.Style = []
     ParentFont = False
-    ShadowColor = clBlack
-    ShadowPos = spRightBottom
     Transparent = True
   end
 end

@@ -16,7 +16,7 @@ class TfrmSplash : public TForm
 {
 __published:	// IDE-managed Components
     TImage *Image1;
-    TMxLabel *lbStatus;
+	TLabel *lbStatus;
 private:	// User declarations
 public:		// User declarations
     __fastcall TfrmSplash(TComponent* Owner);

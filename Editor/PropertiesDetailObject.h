@@ -30,11 +30,11 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *GroupBox2;
-	TMxLabel *RxLabel5;
-	TMxLabel *RxLabel6;
+	TLabel *RxLabel5;
+	TLabel *RxLabel6;
 	TMultiObjSpinEdit *seScaleMinY;
 	TMultiObjSpinEdit *seScaleMaxY;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
 	TMultiObjSpinEdit *seDensityFactor;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

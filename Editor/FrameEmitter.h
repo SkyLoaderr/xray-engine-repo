@@ -22,14 +22,14 @@
 class TfraEmitter : public TFrame
 {
 __published:	// IDE-managed Components
-	TMxLabel *RxLabel20;
-	TMxLabel *RxLabel22;
+	TLabel *RxLabel20;
+	TLabel *RxLabel22;
 	TExtBtn *ebBirthFunc;
 	TMultiObjSpinEdit *seBirthRate;
 	TMultiObjSpinEdit *seParticleLimit;
-	TMxLabel *RxLabel1;
+	TLabel *RxLabel1;
 	TMultiObjCheck *cbBurst;
-	TMxLabel *RxLabel6;
+	TLabel *RxLabel6;
 	TMultiObjCheck *cbPlayOnce;
 	TElPageControl *pcEmitterType;
 	TElTabSheet *tsPoint1;
@@ -40,20 +40,20 @@ __published:	// IDE-managed Components
 	TPanel *Panel5;
 	TElTabSheet *tsBox;
 	TPanel *Panel4;
-	TMxLabel *RxLabel42;
-	TMxLabel *RxLabel4;
-	TMxLabel *RxLabel35;
-	TMxLabel *RxLabel36;
-	TMxLabel *RxLabel37;
+	TLabel *RxLabel42;
+	TLabel *RxLabel4;
+	TLabel *RxLabel35;
+	TLabel *RxLabel36;
+	TLabel *RxLabel37;
 	TMultiObjSpinEdit *seConeAngle;
 	TMultiObjSpinEdit *seConeDirH;
 	TMultiObjSpinEdit *seConeDirP;
 	TMultiObjSpinEdit *seConeDirB;
-	TMxLabel *RxLabel38;
+	TLabel *RxLabel38;
 	TMultiObjSpinEdit *seSphereRadius;
-	TMxLabel *RxLabel39;
-	TMxLabel *RxLabel40;
-	TMxLabel *RxLabel41;
+	TLabel *RxLabel39;
+	TLabel *RxLabel40;
+	TLabel *RxLabel41;
 	TMultiObjSpinEdit *seBoxSizeX;
 	TMultiObjSpinEdit *seBoxSizeY;
 	TMultiObjSpinEdit *seBoxSizeZ;

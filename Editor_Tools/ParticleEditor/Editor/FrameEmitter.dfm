@@ -6,10 +6,10 @@ object fraEmitter: TfraEmitter
   Color = 10528425
   ParentColor = False
   TabOrder = 0
-  object RxLabel20: TMxLabel
+  object RxLabel20: TLabel
     Left = 4
     Top = 102
-    Width = 47
+    Width = 45
     Height = 13
     Caption = 'Birth rate:'
     Font.Charset = DEFAULT_CHARSET
@@ -18,12 +18,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    ShadowColor = 10528425
   end
-  object RxLabel22: TMxLabel
+  object RxLabel22: TLabel
     Left = 4
     Top = 120
-    Width = 60
+    Width = 58
     Height = 13
     Caption = 'Particle limit:'
     Font.Charset = DEFAULT_CHARSET
@@ -32,7 +31,6 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    ShadowColor = 10528425
   end
   object ebBirthFunc: TExtBtn
     Left = 171
@@ -53,10 +51,10 @@ object fraEmitter: TfraEmitter
     ParentFont = False
     FlatAlwaysEdge = True
   end
-  object RxLabel1: TMxLabel
+  object RxLabel1: TLabel
     Left = 4
     Top = 137
-    Width = 29
+    Width = 27
     Height = 13
     Caption = 'Burst:'
     Font.Charset = DEFAULT_CHARSET
@@ -65,12 +63,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    ShadowColor = 10528425
   end
-  object RxLabel6: TMxLabel
+  object RxLabel6: TLabel
     Left = 4
     Top = 152
-    Width = 52
+    Width = 50
     Height = 13
     Caption = 'Play once:'
     Font.Charset = DEFAULT_CHARSET
@@ -79,7 +76,6 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    ShadowColor = 10528425
   end
   object seBirthRate: TMultiObjSpinEdit
     Left = 84
@@ -163,7 +159,7 @@ object fraEmitter: TfraEmitter
     RaggedRight = False
     ScrollOpposite = False
     Style = etsButtons
-    TabIndex = 0
+    TabIndex = 3
     TabPosition = etpTop
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = 15790320
@@ -171,7 +167,7 @@ object fraEmitter: TfraEmitter
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsPoint1
+    ActivePage = tsBox
     FlatTabBorderColor = clBtnShadow
     ParentColor = False
     TabOrder = 4
@@ -180,6 +176,7 @@ object fraEmitter: TfraEmitter
       ImageIndex = -1
       TabVisible = True
       Caption = 'Point'
+      Visible = False
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -189,10 +186,10 @@ object fraEmitter: TfraEmitter
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 0
-        object RxLabel42: TMxLabel
+        object RxLabel42: TLabel
           Left = 60
           Top = 29
-          Width = 65
+          Width = 63
           Height = 13
           Caption = '<No params>'
           Font.Charset = DEFAULT_CHARSET
@@ -201,7 +198,6 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
       end
     end
@@ -222,10 +218,10 @@ object fraEmitter: TfraEmitter
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 0
-        object RxLabel4: TMxLabel
+        object RxLabel4: TLabel
           Left = 2
           Top = 4
-          Width = 45
+          Width = 43
           Height = 13
           Caption = 'Angle (°):'
           Font.Charset = DEFAULT_CHARSET
@@ -234,12 +230,11 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
-        object RxLabel35: TMxLabel
+        object RxLabel35: TLabel
           Left = 2
           Top = 22
-          Width = 62
+          Width = 60
           Height = 13
           Caption = 'Heading (Y°)'
           Font.Charset = DEFAULT_CHARSET
@@ -248,12 +243,11 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
-        object RxLabel36: TMxLabel
+        object RxLabel36: TLabel
           Left = 3
           Top = 40
-          Width = 46
+          Width = 44
           Height = 13
           Caption = 'Pitch (X°)'
           Font.Charset = DEFAULT_CHARSET
@@ -262,12 +256,11 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
-        object RxLabel37: TMxLabel
+        object RxLabel37: TLabel
           Left = 2
           Top = 59
-          Width = 47
+          Width = 45
           Height = 13
           Caption = 'Bank (Z°)'
           Font.Charset = DEFAULT_CHARSET
@@ -276,7 +269,6 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
         object seConeAngle: TMultiObjSpinEdit
           Left = 82
@@ -383,10 +375,10 @@ object fraEmitter: TfraEmitter
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 0
-        object RxLabel38: TMxLabel
+        object RxLabel38: TLabel
           Left = 2
           Top = 4
-          Width = 55
+          Width = 53
           Height = 13
           Caption = 'Radius (m):'
           Font.Charset = DEFAULT_CHARSET
@@ -395,7 +387,6 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
         object seSphereRadius: TMultiObjSpinEdit
           Left = 82
@@ -426,7 +417,6 @@ object fraEmitter: TfraEmitter
       ImageIndex = -1
       TabVisible = True
       Caption = 'Box'
-      Visible = False
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -436,10 +426,10 @@ object fraEmitter: TfraEmitter
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 0
-        object RxLabel39: TMxLabel
+        object RxLabel39: TLabel
           Left = 0
           Top = 4
-          Width = 52
+          Width = 50
           Height = 13
           Caption = 'Size X (m):'
           Font.Charset = DEFAULT_CHARSET
@@ -448,12 +438,11 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
-        object RxLabel40: TMxLabel
+        object RxLabel40: TLabel
           Left = 1
           Top = 22
-          Width = 52
+          Width = 50
           Height = 13
           Caption = 'Size Y (m):'
           Font.Charset = DEFAULT_CHARSET
@@ -462,12 +451,11 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
-        object RxLabel41: TMxLabel
+        object RxLabel41: TLabel
           Left = 0
           Top = 41
-          Width = 52
+          Width = 50
           Height = 13
           Caption = 'Size Z (m):'
           Font.Charset = DEFAULT_CHARSET
@@ -476,7 +464,6 @@ object fraEmitter: TfraEmitter
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ShadowColor = 10528425
         end
         object seBoxSizeX: TMultiObjSpinEdit
           Left = 82

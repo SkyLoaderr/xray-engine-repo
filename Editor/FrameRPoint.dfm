@@ -7,11 +7,13 @@ object fraRPoint: TfraRPoint
   Align = alClient
   Constraints.MaxWidth = 154
   Constraints.MinWidth = 123
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paCommands: TPanel
@@ -60,10 +62,10 @@ object fraRPoint: TfraRPoint
       ParentFont = False
       OnClick = PaneMinClick
     end
-    object RxLabel2: TMxLabel
+    object RxLabel2: TLabel
       Left = 2
       Top = 18
-      Width = 46
+      Width = 44
       Height = 13
       Caption = 'Team ID:'
       Font.Charset = DEFAULT_CHARSET
@@ -84,7 +86,7 @@ object fraRPoint: TfraRPoint
       MaxValue = 7
       ValueType = vtFloat
       AutoSize = False
-      Color = 14671839
+      Color = 13158600
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

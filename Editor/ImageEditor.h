@@ -39,10 +39,10 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TPanel *Panel3;
 	TPanel *paProperties;
-	TMxLabel *lbFileName;
-	TMxLabel *RxLabel2;
-	TMxLabel *RxLabel3;
-	TMxLabel *lbInfo;
+	TLabel *lbFileName;
+	TLabel *RxLabel2;
+	TLabel *RxLabel3;
+	TLabel *lbInfo;
     void __fastcall ebCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);

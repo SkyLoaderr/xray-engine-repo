@@ -37,17 +37,17 @@ object frmPropertiesLight: TfrmPropertiesLight
       Shape = stRoundRect
       OnMouseDown = mcColorMouseDown
     end
-    object RxLabel6: TMxLabel
+    object RxLabel6: TLabel
       Left = 8
       Top = 14
-      Width = 38
+      Width = 36
       Height = 13
       Caption = 'Diffuse:'
     end
-    object RxLabel18: TMxLabel
+    object RxLabel18: TLabel
       Left = 96
       Top = 14
-      Width = 54
+      Width = 52
       Height = 13
       Caption = 'Brightness:'
     end
@@ -96,10 +96,10 @@ object frmPropertiesLight: TfrmPropertiesLight
     Align = alTop
     Caption = ' Addition: '
     TabOrder = 2
-    object MxLabel1: TMxLabel
+    object MxLabel1: TLabel
       Left = 6
       Top = 16
-      Width = 33
+      Width = 31
       Height = 13
       Caption = 'Name:'
       Font.Charset = DEFAULT_CHARSET
@@ -182,10 +182,10 @@ object frmPropertiesLight: TfrmPropertiesLight
     Color = clBtnFace
     ParentColor = False
     TabOrder = 0
-    object RxLabel1: TMxLabel
+    object RxLabel1: TLabel
       Left = 104
       Top = 64
-      Width = 97
+      Width = 95
       Height = 13
       Caption = '<Multiple Selection>'
     end
@@ -211,17 +211,17 @@ object frmPropertiesLight: TfrmPropertiesLight
           Width = 289
           Height = 82
         end
-        object RxLabel13: TMxLabel
+        object RxLabel13: TLabel
           Left = 1
           Top = 199
-          Width = 37
+          Width = 35
           Height = 13
           Caption = 'Range:'
         end
-        object RxLabel14: TMxLabel
+        object RxLabel14: TLabel
           Left = 0
           Top = 86
-          Width = 47
+          Width = 45
           Height = 13
           Caption = 'Constant:'
         end
@@ -231,24 +231,24 @@ object frmPropertiesLight: TfrmPropertiesLight
           Width = 287
           Height = 80
         end
-        object RxLabel15: TMxLabel
+        object RxLabel15: TLabel
           Left = 278
           Top = 201
-          Width = 10
+          Width = 8
           Height = 13
           Caption = 'm'
         end
-        object RxLabel16: TMxLabel
+        object RxLabel16: TLabel
           Left = 1
           Top = 114
-          Width = 34
+          Width = 32
           Height = 13
           Caption = 'Linear:'
         end
-        object RxLabel17: TMxLabel
+        object RxLabel17: TLabel
           Left = 1
           Top = 142
-          Width = 51
+          Width = 49
           Height = 13
           Caption = 'Quadratic:'
         end
@@ -309,18 +309,18 @@ object frmPropertiesLight: TfrmPropertiesLight
           FlatAlwaysEdge = True
           OnClick = ebQLautoClick
         end
-        object RxLabel3: TMxLabel
+        object RxLabel3: TLabel
           Left = 1
           Top = 178
-          Width = 163
+          Width = 161
           Height = 13
           Caption = 'Auto brightness at maximum range'
           WordWrap = True
         end
-        object RxLabel4: TMxLabel
+        object RxLabel4: TLabel
           Left = 278
           Top = 180
-          Width = 10
+          Width = 8
           Height = 13
           Caption = '%'
         end
