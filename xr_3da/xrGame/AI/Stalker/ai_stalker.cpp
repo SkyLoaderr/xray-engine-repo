@@ -476,6 +476,7 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
 	// Queue shrink
+	VERIFY				(_valid(Position()));
 	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
@@ -485,6 +486,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (dt > 3)
 		return;
 
+	VERIFY				(_valid(Position()));
 	if (!Remote()) {
 		if ((fHealth>0) || bfExecMovement())
 			// функция должна выполняться до inherited::shedule_Update, для smooth movement
@@ -492,22 +494,27 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			Exec_Movement	(dt);  
 	}
 
+	VERIFY				(_valid(Position()));
 	// *** general stuff
 	inherited::inherited::shedule_Update	(DT);
 	
 	if (Remote())		{
 	} else {
 		// here is monster AI call
+		VERIFY				(_valid(Position()));
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
 		Think							();
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 		Engine.Sheduler.Slice			();
+		VERIFY				(_valid(Position()));
 
 		// Look and action streams
 		if (fHealth>0) {
+			VERIFY				(_valid(Position()));
 			Exec_Look				(dt);
+			VERIFY				(_valid(Position()));
 			Exec_Visibility			();
 
 			//////////////////////////////////////
@@ -531,28 +538,16 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		}
 		else 
 		{
-			Exec_Physics			(dt);
-			if (bfExecMovement()) 
-			{
-				net_update			uNext;
-				uNext.dwTimeStamp	= Level().timeServer();
-				uNext.o_model		= r_torso_current.yaw;
-				uNext.o_torso		= r_current;
-				uNext.p_pos			= Position();
-				uNext.fHealth		= fHealth;
-				NET.push_back		(uNext);
-			}
-			else {
-				net_update			uNext;
-				uNext.dwTimeStamp	= Level().timeServer();
-				uNext.o_model		= r_torso_current.yaw;
-				uNext.o_torso		= r_current;
-				uNext.p_pos			= Position();
-				uNext.fHealth		= fHealth;
-				NET.push_back		(uNext);
-			}
+			net_update			uNext;
+			uNext.dwTimeStamp	= Level().timeServer();
+			uNext.o_model		= r_torso_current.yaw;
+			uNext.o_torso		= r_current;
+			uNext.p_pos			= Position();
+			uNext.fHealth		= fHealth;
+			NET.push_back		(uNext);
 		}
 	}
+	VERIFY				(_valid(Position()));
 
 	// inventory update
 	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
@@ -579,6 +574,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 				(**l_it).Drop();
 		}
 	}
+	VERIFY				(_valid(Position()));
 
 	if (g_Alive()) {
 		R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
@@ -607,7 +603,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			m_tpSoundStep[1].set_volume	(s_vol);
 		}
 	}
+	VERIFY				(_valid(Position()));
 	m_inventory.Update(DT);
+	VERIFY				(_valid(Position()));
 
 ////physics/////////////////////////////////////////////////////////////////////////////////////
 	if(m_pPhysicsShell)
@@ -660,7 +658,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		PHSetPushOut();
 #endif
 	}
-
+	VERIFY				(_valid(Position()));
 }
 
 float CAI_Stalker::Radius()const

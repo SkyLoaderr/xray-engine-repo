@@ -245,6 +245,7 @@ void CCustomMonster::Exec_Physics( float dt )
 void CCustomMonster::shedule_Update	( u32 DT )
 {
 	// Queue shrink
+	VERIFY				(_valid(Position()));
 	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
@@ -260,9 +261,11 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Exec_Movement	(float(DT)/1000.f);  
 	}
 
+	VERIFY				(_valid(Position()));
 	// *** general stuff
 	inherited::shedule_Update	(DT);
 
+	VERIFY				(_valid(Position()));
 	if (Remote())		{
 	} else {
 		// here is monster AI call
@@ -277,8 +280,11 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		// Look and action streams
 		if (fHealth>0) {
 			Exec_Action				(dt);
+			VERIFY				(_valid(Position()));
 			Exec_Look				(dt);
+			VERIFY				(_valid(Position()));
 			Exec_Visibility			();
+			VERIFY				(_valid(Position()));
 			//////////////////////////////////////
 			Fvector C; float R;
 			//////////////////////////////////////
@@ -300,27 +306,13 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		}
 		else 
 		{
-			//Exec_Physics			(dt);
-			if (bfExecMovement()) 
-			{
-				//Exec_Movement		(dt);
-				net_update			uNext;
-				uNext.dwTimeStamp	= Level().timeServer();
-				uNext.o_model		= r_torso_current.yaw;
-				uNext.o_torso		= r_torso_current;
-				uNext.p_pos			= Position();
-				uNext.fHealth		= fHealth;
-				NET.push_back		(uNext);
-			}
-			else {
-				net_update			uNext;
-				uNext.dwTimeStamp	= Level().timeServer();
-				uNext.o_model		= r_torso_current.yaw;
-				uNext.o_torso		= r_torso_current;
-				uNext.p_pos			= Position();
-				uNext.fHealth		= fHealth;
-				NET.push_back		(uNext);
-			}
+			net_update			uNext;
+			uNext.dwTimeStamp	= Level().timeServer();
+			uNext.o_model		= r_torso_current.yaw;
+			uNext.o_torso		= r_torso_current;
+			uNext.p_pos			= Position();
+			uNext.fHealth		= fHealth;
+			NET.push_back		(uNext);
 		}
 	}
 }

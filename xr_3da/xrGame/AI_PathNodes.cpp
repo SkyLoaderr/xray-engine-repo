@@ -398,30 +398,18 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
-//	if (dt + m_fAccumulatedDT < TIME_DELTA_THRESHOLD) {
-//		m_fAccumulatedDT += dt;
-//		return;
-//	}
-//	else {
-//		dt += m_fAccumulatedDT;
-//		m_fAccumulatedDT = 0.f;
-//	}
-
 	Fvector				motion;
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	if(Me->Movement.IsCharacterEnabled())
-		{
-		motion.set(0,0,0);
-		Me->Movement.GetDesiredPos(p_dest);
-		Me->Movement.Calculate(p_dest,0.f,dt);
-		Me->Movement.GetPosition(p_dest);
+		if(Me->Movement.IsCharacterEnabled()) {
+			motion.set(0,0,0);
+			Me->Movement.GetDesiredPos(p_dest);
+			Me->Movement.Calculate(p_dest,0.f,dt);
+			Me->Movement.GetPosition(p_dest);
 		}
 
-
-		if (Me->Movement.gcontact_HealthLost)	
-		{
+		if (Me->Movement.gcontact_HealthLost) {
 			Fvector d;
 			d.set(0,1,0);
 			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,0,p_dest,0);
@@ -429,7 +417,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 #endif
 		return;
 	}
-	//Msg("TP %d",TravelPath.size());
+
 //	if (dt<EPS)			return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
@@ -443,16 +431,18 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	target.set		(TravelPath[TravelStart+1].P);
 	mdir.sub		(target, p_dest);
 	float	mdist	=	mdir.magnitude();
+	
+	if (mdist < EPS_L) {
+		fSpeed = 0;
+		return;
+	}
 
-	while (dist>mdist) 
-	{
+
+	while (dist>mdist) {
 		p_dest.set	(target);
 
-		if ((TravelStart+2) >= TravelPath.size()) {
-			p_dest.set(target);
-			fSpeed	= 0;
-			return;
-		}
+		if ((TravelStart+2) >= TravelPath.size())
+			break;
 		else {
 			dist			-= mdist;
 			TravelStart		++;
@@ -462,20 +452,9 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		}
 	}
 
-	// move last quantity
-
-
-
 	// resolve stucking
 	Device.Statistic.Physics.Begin	();
 
-//	if (m_bCollision) {
-//		Fvector final;
-//		Me->Movement.Move	(final,motion,FALSE);
-//		motion.sub			(final,p_dest);
-//		p_dest.set			(final);
-//	}
-//	else
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Me->setEnabled(false);
 	Level().ObjectSpace.GetNearest		(p_dest,3.f); 
@@ -485,8 +464,6 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 
 	motion.mul			(mdir,dist/mdist);
 	p_dest.add			(motion);
-	//Msg("Before : [%f][%f][%f]",VPUSH(p_dest));
-
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	if ((tpNearestList.empty())) 
@@ -517,11 +494,9 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		}
 	}
 #endif
-	//Msg("After  : [%f][%f][%f]",VPUSH(p_dest));
 	float	real_motion	= motion.magnitude() + dist_save-dist;
 	float	real_speed	= real_motion/dt;
 	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;
-	//Msg					("Movement : %f * %f = %f ",fSpeed,dt,p_dest.distance_to(p_src));
 	Device.Statistic.Physics.End	();
 
 }
