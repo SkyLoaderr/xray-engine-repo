@@ -222,7 +222,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		//HELICOPTER
 		.def("get_helicopter",              &CScriptGameObject::get_helicopter)
-		.def("get_helicopter",              &CScriptGameObject::get_hanging_lamp)
+		.def("get_hanging_lamp",            &CScriptGameObject::get_hanging_lamp)
 		.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
 
 		//usable object
