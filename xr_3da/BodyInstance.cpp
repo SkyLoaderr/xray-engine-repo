@@ -511,7 +511,8 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 	R_ASSERT(data->FindChunk(OGF_BONE_NAMES));
 	DWORD dwCount = data->Rdword();
 
-	for (; dwCount; dwCount--){
+	for (; dwCount; dwCount--)
+	{
 		char buf[256];
 
 		// Bone
