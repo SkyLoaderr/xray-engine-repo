@@ -1316,37 +1316,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Client - Server"
-				Filter="">
-				<File
-					RelativePath=".\NET_Client.cpp">
-				</File>
-				<File
-					RelativePath=".\NET_Client.h">
-				</File>
-				<File
-					RelativePath=".\NET_Compressor.cpp">
-				</File>
-				<File
-					RelativePath=".\NET_Compressor.h">
-				</File>
-				<File
-					RelativePath=".\net_messages.h">
-				</File>
-				<File
-					RelativePath=".\NET_Server.cpp">
-				</File>
-				<File
-					RelativePath=".\NET_Server.h">
-				</File>
-				<File
-					RelativePath=".\NET_Shared.h">
-				</File>
-				<File
-					RelativePath=".\NET_utils.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Imaging"
 				Filter="">
 				<File
