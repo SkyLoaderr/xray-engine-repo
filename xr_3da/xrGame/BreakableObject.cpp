@@ -104,30 +104,11 @@ BOOL CBreakableObject::UsedAI_Locations()
 	return					(FALSE);
 }
 
-void cb(CBoneInstance* B)
-{
 
-}
 
 void CBreakableObject::CreateUnbroken()
 {
-	m_pUnbrokenObject=xr_new<CPHStaticGeomShell>();
-	Fobb			b;
-	smart_cast<CKinematics*>(Visual())->CalculateBones	();		//. bForce - was TRUE
-	m_saved_box.set				(Visual()->vis.box);
-	Visual()->vis.box.getradius	(b.m_halfsize);
-	b.xform_set					(Fidentity);
-	m_pUnbrokenObject->add_Box	(b);
-	m_pUnbrokenObject->Activate	(XFORM());
-	m_pUnbrokenObject->set_PhysicsRefObject(this);
-	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
-	m_pUnbrokenObject->set_ObjectContactCallback(ObjectContactCallback);
-	CKinematics* K=smart_cast<CKinematics*>(Visual()); VERIFY(K);
-	K->CalculateBones();
-	for (u16 k=0; k<K->LL_BoneCount(); k++){
-		K->LL_GetBoneInstance(k).Callback_overwrite = TRUE;
-		K->LL_GetBoneInstance(k).Callback = cb;
-	}
+	m_pUnbrokenObject=P_BuildStaticGeomShell(smart_cast<CGameObject*>(this),ObjectContactCallback);
 }
 void CBreakableObject::DestroyUnbroken()
 {

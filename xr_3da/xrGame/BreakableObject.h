@@ -25,7 +25,7 @@ static	float				m_health_threshhold;
 static	u32					m_remove_time;
 		u32					m_break_time;
 		bool				bRemoved;
-		Fbox				m_saved_box;
+//		Fbox				m_saved_box;
 public:
 					CBreakableObject	();
 	virtual			~CBreakableObject	();

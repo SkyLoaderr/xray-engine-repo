@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "climableobject.h "
-
+#include "PHStaticGeomShell.h"
 	CClimableObject::CClimableObject		()
 {
-
+	m_pStaticShell=NULL;
 }
 	CClimableObject::~CClimableObject	()
 {
@@ -15,7 +15,9 @@ void CClimableObject::	Load				( LPCSTR section)
 }
 BOOL CClimableObject::	net_Spawn			( LPVOID DC)
 {
-	return inherited::net_Spawn(DC);
+	BOOL ret	= inherited::net_Spawn(DC);
+	m_pStaticShell=P_BuildStaticGeomShell(smart_cast<CGameObject*>(this),0);
+	return ret;
 }
 void CClimableObject::	net_Destroy			()
 {

@@ -1268,42 +1268,53 @@ bool CSE_ALifeObjectBreakable::can_switch_offline	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectClimable
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectClimable::CSE_ALifeObjectClimable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
+CSE_ALifeObjectClimable::CSE_ALifeObjectClimable	(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
 {
-	m_health					= 100.f;
-	m_flags.set					(flUseSwitches,FALSE);
-	m_flags.set					(flSwitchOffline,FALSE);
+	//m_health					= 100.f;
+	//m_flags.set					(flUseSwitches,FALSE);
+	//m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeObjectClimable::~CSE_ALifeObjectClimable	()
 {
 }
 
+ISE_Shape* CSE_ALifeObjectClimable::shape					()
+{
+	return						(this);
+}
+
 void CSE_ALifeObjectClimable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited::STATE_Read		(tNetPacket,size);
-	tNetPacket.r_float			(m_health);
+	//inherited1::STATE_Read		(tNetPacket,size);
+	//inherited2::STATE_Read		(tNetPacket,size);
+	
 }
 
 void CSE_ALifeObjectClimable::STATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_float			(m_health);
+	//inherited1::STATE_Write		(tNetPacket);
+	//inherited2::STATE_Write		(tNetPacket);
+
 }
 
 void CSE_ALifeObjectClimable::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	//inherited1::UPDATE_Read		(tNetPacket);
+	//inherited2::UPDATE_Read		(tNetPacket);
+	
 }
 
 void CSE_ALifeObjectClimable::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	//inherited1::UPDATE_Write		(tNetPacket);
+	//inherited2::UPDATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeObjectClimable::FillProps		(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProps			(pref,values);
+	//inherited1::FillProps			(pref,values);
+	inherited2::FillProps			(pref,values);
 	//PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
 }
 

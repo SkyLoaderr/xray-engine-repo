@@ -1,8 +1,10 @@
 #pragma once
 #include "physicsshellholder.h"
+class CPHStaticGeomShell;
 class CClimableObject: public CPhysicsShellHolder 
 {
 	typedef	CPhysicsShellHolder		inherited;
+	CPHStaticGeomShell* m_pStaticShell;
 public:
 					CClimableObject		();
 					~CClimableObject	();

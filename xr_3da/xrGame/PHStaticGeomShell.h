@@ -19,4 +19,6 @@ public:
 			void			Deactivate			();
 							CPHStaticGeomShell	();
 };
+
+CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback);
 #endif

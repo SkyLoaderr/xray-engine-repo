@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PHStaticGeomShell.h"
 #include "SpaceUtils.h"
+#include "GameObject.h"
+#include "PhysicsShellHolder.h"
 void CPHStaticGeomShell::get_spatial_params()
 {
 Fvector AABB;
@@ -24,4 +26,32 @@ void CPHStaticGeomShell::Deactivate()
 CPHStaticGeomShell::CPHStaticGeomShell()
 {
 		spatial.type|=STYPE_PHYSIC;
+}
+
+void cb(CBoneInstance* B)
+{
+
+}
+CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback)
+{
+	CPHStaticGeomShell* pUnbrokenObject=xr_new<CPHStaticGeomShell>();
+	Fobb			b;
+	IRender_Visual* V=obj->Visual();
+	smart_cast<CKinematics*>(V)->CalculateBones	();		//. bForce - was TRUE
+	//m_saved_box.set				(V->vis.box);
+	V->vis.box.getradius	(b.m_halfsize);
+	b.xform_set					(Fidentity);
+	pUnbrokenObject->add_Box	(b);
+	pUnbrokenObject->Activate	(obj->XFORM());
+
+	pUnbrokenObject->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
+	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
+	pUnbrokenObject->set_ObjectContactCallback(object_contact_callback);
+	CKinematics* K=smart_cast<CKinematics*>(V); VERIFY(K);
+	K->CalculateBones();
+	for (u16 k=0; k<K->LL_BoneCount(); k++){
+		K->LL_GetBoneInstance(k).Callback_overwrite = TRUE;
+		K->LL_GetBoneInstance(k).Callback = cb;
+	}
+	return pUnbrokenObject;
 }
