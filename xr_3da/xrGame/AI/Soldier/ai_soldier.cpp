@@ -180,6 +180,28 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	vfLoadAnimations();
 	vfLoadSelectors(ini,section);
 	vfAssignBones(ini,section);
+
+	// visibility
+	m_dwMovementIdleTime = ini->ReadINT(section,"MovementIdleTime");
+	m_fMaxInvisibleSpeed = ini->ReadFLOAT(section,"MaxInvisibleSpeed");
+	m_fMaxViewableSpeed = ini->ReadFLOAT(section,"MaxViewableSpeed");
+	m_fMovementSpeedWeight = ini->ReadFLOAT(section,"MovementSpeedWeight");
+	m_fDistanceWeight = ini->ReadFLOAT(section,"DistanceWeight");
+	m_fSpeedWeight = ini->ReadFLOAT(section,"SpeedWeight");
+	m_fCrouchVisibilityMultiplier = ini->ReadFLOAT(section,"CrouchVisibilityMultiplier");
+	m_fLieVisibilityMultiplier = ini->ReadFLOAT(section,"LieVisibilityMultiplier");
+	m_fVisibilityThreshold = ini->ReadFLOAT(section,"VisibilityThreshold");
+
+	//fire
+	m_dwFireRandomMin = ini->ReadINT(section,"FireRandomMin");
+	m_dwFireRandomMax = ini->ReadINT(section,"FireRandomMax");
+	m_dwNoFireTimeMin = ini->ReadINT(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax = ini->ReadINT(section,"NoFireTimeMax");
+	
+	// patrol under fire
+	m_dwPatrolShock = ini->ReadINT(section,"PatrolShock");
+	m_dwUnderFireShock = ini->ReadINT(section,"UnderFireShock");
+	m_dwUnderFireReturn = ini->ReadINT(section,"UnderFireReturn");
 }
 
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -291,14 +313,13 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 	return  f1*f2*f3;
 }
 
-#define MOVEMENT_IDLE_TIME			1000
-#define MAX_INVISIBLE_SPEED			 2.f
-#define MAX_VIEWABLE_SPEED			10.f
+#define MOVEMENT_IDLE_TIME			m_dwMovementIdleTime //1000
+#define MAX_INVISIBLE_SPEED			m_fMaxInvisibleSpeed // 2.f
+#define MAX_VIEWABLE_SPEED			m_fMaxViewableSpeed  // 10.f
 
-#define MOVEMENT_SPEED_WEIGHT		20.f
-#define DISTANCE_WEIGHT				20.f
-#define SPEED_WEIGHT				-2.f
-//#define LIGHTNESS_WEIGHT			40.f
+#define MOVEMENT_SPEED_WEIGHT		m_fMovementSpeedWeight // 20.f
+#define DISTANCE_WEIGHT				m_fDistanceWeight //20.f
+#define SPEED_WEIGHT				m_fSpeedWeight // -2.f
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
@@ -339,20 +360,20 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 			break;
 		}
 		case BODY_STATE_CROUCH : {
-			fResult *= .85f;
+			fResult *= m_fCrouchVisibilityMultiplier;
 			break;
 		}
 		case BODY_STATE_LIE : {
-			fResult *= .66f;
+			fResult *= m_fLieVisibilityMultiplier;
 			break;
 		}
 	}
 
 	// computing my ability to view the enemy
 	//if ()
-	//fResult += m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : SPEED_WEIGHT;
+	fResult += m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : SPEED_WEIGHT;
 
-	return(fResult >= 6.f);
+	return(fResult >= m_fVisibilityThreshold);
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
@@ -503,8 +524,8 @@ void CAI_Soldier::SetDirectionLook()
 			r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
 		}
 	}
-	r_target.pitch = 0;
-	r_torso_target.pitch = 0;
+	//r_target.pitch = 0;
+	//r_torso_target.pitch = 0;
 }
 
 void CAI_Soldier::vfAimAtEnemy()
@@ -546,8 +567,8 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 			r_target.yaw += 0*PI_DIV_6;
 		}
 	}
-	r_target.pitch = 0;
-	r_torso_target.pitch = 0;
+	//r_target.pitch = 0;
+	//r_torso_target.pitch = 0;
 }
 
 void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
@@ -757,27 +778,53 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 {
 	bool bSafeFire = m_bFiring;
 
-	if (bFire) {
-		if (bfCheckIfCanKillEnemy())
-			if (!bfCheckIfCanKillMember()) {
-				q_action.setup(AI::AIC_Action::FireBegin);
-				m_bFiring = true;
+	if (bFire)
+		if (m_bFiring)
+			if (m_dwStartFireAmmo - Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
+				q_action.setup(AI::AIC_Action::FireEnd);
+				m_bFiring = false;
+				m_dwNoFireTime = Level().timeServer();
 			}
 			else {
-				q_action.setup(AI::AIC_Action::FireEnd);
-				//Weapons->ActiveWeapon()->Reload();
-				m_bFiring = false;
+				if (bfCheckIfCanKillEnemy())
+					if (!bfCheckIfCanKillMember()) {
+						q_action.setup(AI::AIC_Action::FireBegin);
+						m_bFiring = true;
+					}
+					else {
+						q_action.setup(AI::AIC_Action::FireEnd);
+						m_bFiring = false;
+						m_dwNoFireTime = Level().timeServer();
+					}
+				else {
+					q_action.setup(AI::AIC_Action::FireEnd);
+					m_bFiring = false;
+					m_dwNoFireTime = Level().timeServer();
+				}
 			}
 		else {
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_bFiring = false;
-			//Weapons->ActiveWeapon()->Reload();
+			if (Level().timeServer() - m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
+				if (bfCheckIfCanKillEnemy())
+					if (!bfCheckIfCanKillMember()) {
+						m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
+						q_action.setup(AI::AIC_Action::FireBegin);
+						m_bFiring = true;
+					}
+					else {
+						q_action.setup(AI::AIC_Action::FireEnd);
+						m_bFiring = false;
+					}
+				else {
+					q_action.setup(AI::AIC_Action::FireEnd);
+					m_bFiring = false;
+				}
+			else {
+				q_action.setup(AI::AIC_Action::FireEnd);
+				m_bFiring = false;
+			}
 		}
-	}
 	else {
 		q_action.setup(AI::AIC_Action::FireEnd);
-		//if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < 10))
-		//	Weapons->ActiveWeapon()->Reload();
 		m_bFiring = false;
 	}
 	
@@ -786,8 +833,6 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 	else
 		if ((!bSafeFire) && (m_bFiring))
 			Group.m_dwFiring++;
-		
-	//Msg("firing : %d",Group.m_dwFiring);
 }
 
 void CAI_Soldier::vfSetMovementType(char cBodyState, float fSpeed)
@@ -832,12 +877,11 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 
 void CAI_Soldier::AttackFire()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Shooting enemy...");
-#endif
+	WRITE_TO_LOG("Shooting enemy...");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -849,7 +893,7 @@ void CAI_Soldier::AttackFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -866,7 +910,7 @@ void CAI_Soldier::AttackFire()
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -874,7 +918,7 @@ void CAI_Soldier::AttackFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierFindEnemy;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 		
@@ -887,7 +931,7 @@ void CAI_Soldier::AttackFire()
 	if ((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring)))) {
 		eCurrentState = aiSoldierAttackRun;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -896,7 +940,7 @@ void CAI_Soldier::AttackFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierReload;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -904,23 +948,23 @@ void CAI_Soldier::AttackFire()
 
 	AI_Path.TravelPath.clear();
 	
-	vfAimAtEnemy();
+	if (!m_bFiring)
+		vfAimAtEnemy();
 	
 	vfSetFire(true,Group);
 	
 	vfSetMovementType(m_cBodyState,0);
 	
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::AttackRun()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Attack enemy");
-#endif
+	WRITE_TO_LOG("Attack enemy");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -932,7 +976,7 @@ void CAI_Soldier::AttackRun()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -949,7 +993,7 @@ void CAI_Soldier::AttackRun()
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -957,7 +1001,7 @@ void CAI_Soldier::AttackRun()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierFindEnemy;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 		
@@ -970,7 +1014,7 @@ void CAI_Soldier::AttackRun()
 	//if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)){
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -992,21 +1036,18 @@ void CAI_Soldier::AttackRun()
 	
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::Defend()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Defend from enemy");
-#endif
+	WRITE_TO_LOG("Defend from enemy");
 }
 
 void CAI_Soldier::Die()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Dying...");
-#endif
+	WRITE_TO_LOG("Dying...");
+
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
 	AI_Path.TravelPath.clear();
@@ -1018,17 +1059,16 @@ void CAI_Soldier::Die()
 	//bActive = false;
 	bEnabled = false;
 	
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::FindEnemy()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Looking for enemy");
-#endif
+	WRITE_TO_LOG("Looking for enemy");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1047,7 +1087,7 @@ void CAI_Soldier::FindEnemy()
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1055,7 +1095,7 @@ void CAI_Soldier::FindEnemy()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 		
@@ -1063,7 +1103,7 @@ void CAI_Soldier::FindEnemy()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierReload;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1084,18 +1124,16 @@ void CAI_Soldier::FindEnemy()
 	
 	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::FollowLeader()
 {
-	// if no more health then soldier is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Following leader");
-#endif
+	WRITE_TO_LOG("Following leader");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 		
@@ -1105,7 +1143,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1115,7 +1153,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1123,7 +1161,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierSenseSomething;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1132,12 +1170,12 @@ void CAI_Soldier::FollowLeader()
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		tHitDir = Group.m_tLastHitDirection;
-		dwHitTime = Group.m_dwLastHitTime;
+		//tHitDir = Group.m_tLastHitDirection;
+		//dwHitTime = Group.m_dwLastHitTime;
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1146,13 +1184,13 @@ void CAI_Soldier::FollowLeader()
 			eCurrentState = aiSoldierPatrolRoute;
 		else
 			eCurrentState = aiSoldierFreeHunting;
-		bStopThinking = true;
+		
 		return;
 	}
 	else
 		if (m_tpaPatrolPoints.size()) {
 			eCurrentState = aiSoldierFollowLeaderPatrol;
-			bStopThinking = true;
+			
 			return;
 		}
 
@@ -1169,17 +1207,16 @@ void CAI_Soldier::FollowLeader()
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::FreeHunting()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Free hunting");
-#endif
+	WRITE_TO_LOG("Free hunting");
+	
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 		
@@ -1189,7 +1226,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1199,7 +1236,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1207,7 +1244,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierSenseSomething;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1216,18 +1253,18 @@ void CAI_Soldier::FreeHunting()
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		tHitDir = Group.m_tLastHitDirection;
-		dwHitTime = Group.m_dwLastHitTime;
+		//tHitDir = Group.m_tLastHitDirection;
+		//dwHitTime = Group.m_dwLastHitTime;
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
 	if (m_tpaPatrolPoints.size()) {
 		eCurrentState = aiSoldierPatrolRoute;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1244,21 +1281,19 @@ void CAI_Soldier::FreeHunting()
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::Injuring()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Feeling pain...");
-#endif
+	WRITE_TO_LOG("Feeling pain...");
+	
 }
 
 void CAI_Soldier::Jumping()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Jumping...");
-#endif
+	WRITE_TO_LOG("Jumping...");
+	
 }
 
 void CAI_Soldier::LyingDown()
@@ -1267,38 +1302,37 @@ void CAI_Soldier::LyingDown()
 	
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
 	vfSetMovementType(BODY_STATE_LIE,0);
 	
 	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (m_tpCurrentGlobalBlend) && (!(m_tpCurrentGlobalBlend->playing))) {
+	AI_Path.TravelPath.clear();
+	
 	if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
-		bStopThinking = true;
+		
 		return;
 	}
 
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::MoreDeadThanAlive()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"More dead than alive");
-#endif
+	WRITE_TO_LOG("More dead than alive");
 }
 
 void CAI_Soldier::NoWeapon()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Searching for weapon");
-#endif
+	WRITE_TO_LOG("Searching for weapon");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 		
@@ -1328,18 +1362,16 @@ void CAI_Soldier::NoWeapon()
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::Pursuit()
 {
-	// if no more health then soldier is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Pursuiting");
-#endif
+	WRITE_TO_LOG("Pursuiting");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1348,7 +1380,7 @@ void CAI_Soldier::Pursuit()
 	if (Enemy.Enemy) {
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1359,7 +1391,7 @@ void CAI_Soldier::Pursuit()
 		tStateStack.pop();
 		q_action.setup(AI::AIC_Action::FireEnd);
 		m_fCurSpeed = m_fMaxSpeed;
-		bStopThinking = true;
+		
 		return;
 	}
 				
@@ -1367,7 +1399,7 @@ void CAI_Soldier::Pursuit()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierPatrolHurt;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1375,7 +1407,7 @@ void CAI_Soldier::Pursuit()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierSenseSomething;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1384,21 +1416,20 @@ void CAI_Soldier::Pursuit()
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		tHitDir = Group.m_tLastHitDirection;
-		dwHitTime = Group.m_dwLastHitTime;
-		tHitPosition = Group.m_tHitPosition;
-		tHitPosition = Group.m_tHitPosition;
+		//tHitDir = Group.m_tLastHitDirection;
+		//dwHitTime = Group.m_dwLastHitTime;
+		//tHitPosition = Group.m_tHitPosition;
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
 	if (!tSavedEnemy) {
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1420,17 +1451,16 @@ void CAI_Soldier::Pursuit()
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::Reload()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Recharging...");
-#endif
+	WRITE_TO_LOG("Recharging...");
+	
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1438,14 +1468,14 @@ void CAI_Soldier::Reload()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
 	if ((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent()))) {
 		eCurrentState = aiSoldierNoWeapon;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1457,7 +1487,7 @@ void CAI_Soldier::Reload()
 		tStateStack.pop();
 		q_action.setup(AI::AIC_Action::FireEnd);
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -1495,19 +1525,18 @@ void CAI_Soldier::Reload()
 	//else
 	//	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::Retreat()
 {
+	WRITE_TO_LOG("Retreating...");
 }
 
 void CAI_Soldier::SenseSomething()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Sense something...");
-#endif
-	//bStopThinking = true;
+	WRITE_TO_LOG("Sense something...");
+	//
 	//dwSenseTime = 0;
 	// setting up a look to watch at the least safe direction
 	q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tSenseDir,1000);
@@ -1516,17 +1545,16 @@ void CAI_Soldier::SenseSomething()
 
 	eCurrentState = tStateStack.top();
 	tStateStack.pop();
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::UnderFire()
 {
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Under fire...");
-#endif
+	WRITE_TO_LOG("Under fire...");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1536,7 +1564,7 @@ void CAI_Soldier::UnderFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1547,7 +1575,7 @@ void CAI_Soldier::UnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -1564,7 +1592,7 @@ void CAI_Soldier::UnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -1590,7 +1618,7 @@ void CAI_Soldier::UnderFire()
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::Think()
