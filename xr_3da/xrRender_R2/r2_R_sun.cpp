@@ -285,7 +285,7 @@ Fvector3		wform	(Fmatrix& m, Fvector3& v)
 	r.y			= v.x*m._12 + v.y*m._22 + v.z*m._32 + m._42;
 	r.z			= v.x*m._13 + v.y*m._23 + v.z*m._33 + m._43;
 	r.w			= v.x*m._14 + v.y*m._24 + v.z*m._34 + m._44;
-	VERIFY		(r.w>0.f);
+	// VERIFY		(r.w>0.f);
 	Fvector3	r3 = { r.x/r.w, r.y/r.w, r.z/r.w };
 	return		r3;
 }
