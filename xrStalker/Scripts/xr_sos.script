@@ -237,7 +237,7 @@ function add_to_binder (obj, char_ini)
    	manager:add_action              (operators["init"], action)
   	
   	action = this.action_kill
-	
+	end	
 end
 -----------------------------------------------------------------------
 function set_sos (npc, enabled)
