@@ -272,7 +272,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator &tNodeEvaluato
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			vfBuildPathToDestinationPoint(0);
+			vfBuildPathToDestinationPoint(&tNodeEvaluator);
 			break;
 		}
 		case ePathStateBuildTravelLine : {

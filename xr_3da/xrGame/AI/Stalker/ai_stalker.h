@@ -53,6 +53,7 @@ private:
 	EPathState				m_tPathState;	
 	EPathType				m_tPathType;
 	EPathType				m_tPrevPathType;
+	EWeaponState			m_tWeaponState;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -241,14 +242,13 @@ private:
 			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
-			void			vfSetMovementType				(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
-			void			vfSetMovementType				(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
 			bool			bfCheckIfCanKillMember			();
-			void			vfSetFire						(bool bFire, CGroup &Group);
-			void			vfStopFire						();
+			void			vfSetWeaponState				(EWeaponState tWeaponState);
 			void			vfCheckForItems					();
 			
 			// miscellanious

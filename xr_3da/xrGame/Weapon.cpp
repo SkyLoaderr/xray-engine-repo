@@ -355,6 +355,9 @@ void CWeapon::Load		(LPCSTR section)
 	iSlotBinding = m_slot = pSettings->r_s32		(section,"slot");
 
 	setVisible			(FALSE);
+	
+	m_fMinRadius		= pSettings->r_float		(section,"min_radius");
+	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
 }
 
 BOOL CWeapon::net_Spawn		(LPVOID DC)

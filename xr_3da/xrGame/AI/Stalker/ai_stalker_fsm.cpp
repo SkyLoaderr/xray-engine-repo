@@ -67,10 +67,7 @@ void CAI_Stalker::BackDodge()
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(m_tSelectorRetreat,0,false,ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
-	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
+	vfSetParameters				(m_tSelectorRetreat,0,eWeaponStateIdle,ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
 }
 
 void CAI_Stalker::BackCover()
@@ -83,7 +80,7 @@ void CAI_Stalker::BackCover()
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(m_tSelectorCover,0,false,ePathTypeCriteria,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
+	vfSetParameters				(m_tSelectorCover,0,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::ForwardCover()
@@ -103,10 +100,15 @@ void CAI_Stalker::ForwardCover()
 	
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(m_tSelectorCover,0,AI_Path.fSpeed < EPS_L,ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
-	
-	if (AI_Path.fSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
+	vfSetParameters				(
+		m_tSelectorCover,
+		0,
+		AI_Path.fSpeed > EPS_L ? eWeaponStatePrimaryFire : eWeaponStateIdle,
+		ePathTypeCriteria,
+		eBodyStateStand,
+		eMovementTypeRun,
+		eLookTypeFirePoint,
+		tPoint);
 }
 
 void CAI_Stalker::Think()

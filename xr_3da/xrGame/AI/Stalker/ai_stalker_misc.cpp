@@ -9,14 +9,14 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
-void CAI_Stalker::vfSetMovementType(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
 {
 	VERIFY(tLookType != eLookTypePoint);
 	Fvector tDummy;
-	vfSetMovementType(tNodeEvaluator,tpDesiredPosition,bFire,tPathType,tBodyState,tMovementType,tLookType,tDummy);
+	vfSetParameters(tNodeEvaluator,tpDesiredPosition,tWeaponState,tPathType,tBodyState,tMovementType,tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetMovementType(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
@@ -25,7 +25,7 @@ void CAI_Stalker::vfSetMovementType(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvect
 
 	vfChoosePointAndBuildPath(tNodeEvaluator,tpDesiredPosition);
 
-	vfSetFire(bFire,*getGroup());
+	vfSetWeaponState(tWeaponState);
 	
 	m_fCurSpeed		= 1.f;
 

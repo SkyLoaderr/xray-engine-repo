@@ -149,6 +149,8 @@ public:
 	};
 	// Events/States
 	u32						STATE, NEXT_STATE;
+	float					m_fMinRadius;
+	float					m_fMaxRadius;
 
 	virtual void			SwitchState			(u32 S);
 

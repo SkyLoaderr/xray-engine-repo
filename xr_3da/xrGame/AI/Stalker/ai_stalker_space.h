@@ -67,3 +67,9 @@ enum EPathType {
 	ePathTypeDodge,
 	ePathTypeCriteria,
 };
+
+enum EWeaponState {
+	eWeaponStateIdle = 0,
+	eWeaponStatePrimaryFire,
+	eWeaponStateSecondaryFire,
+};

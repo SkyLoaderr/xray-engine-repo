@@ -145,39 +145,44 @@ bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 		return(false);
 }
 
-void CAI_Stalker::vfSetFire(bool bFire, CGroup &Group)
+void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 {
-	bool bSafeFire = m_bFiring;
-	
 	CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	
 	if (!m_inventory.ActiveItem() || !tpWeapon)
 		return;
 
-	if (bFire)
-		if (m_bFiring)
-			if ((int)m_dwStartFireAmmo - (int)tpWeapon->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
-				m_inventory.Action(kWPN_FIRE, CMD_STOP);
-				m_bFiring = false;
-				m_dwNoFireTime = m_dwCurrentUpdate;
-			}
-			else {
-				if (bfCheckIfCanKillEnemy())
-					if (!bfCheckIfCanKillMember()) {
-						m_inventory.Action(kWPN_FIRE, CMD_START);
-						m_bFiring = true;
-					}
-					else {
-						m_inventory.Action(kWPN_FIRE, CMD_STOP);
-						m_bFiring = false;
-						m_dwNoFireTime = m_dwCurrentUpdate;
-					}
-					else {
-						m_inventory.Action(kWPN_FIRE, CMD_STOP);
-						m_bFiring = false;
-						m_dwNoFireTime = m_dwCurrentUpdate;
-					}
-			}
+	bool bSafeFire = m_bFiring;
+
+	if (tWeaponState == eWeaponStateIdle) {
+		m_inventory.Action(kWPN_FIRE, CMD_STOP);
+		m_inventory.Action(kWPN_ZOOM, CMD_STOP);
+	}
+	else
+		if (tWeaponState == eWeaponStatePrimaryFire) {
+			if (tpWeapon->STATE == CWeapon::eFire)
+				if ((int)m_dwStartFireAmmo - (int)tpWeapon->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
+					m_inventory.Action(kWPN_FIRE, CMD_STOP);
+					m_bFiring = false;
+					m_dwNoFireTime = m_dwCurrentUpdate;
+				}
+				else {
+					if (bfCheckIfCanKillEnemy())
+						if (!bfCheckIfCanKillMember()) {
+							m_inventory.Action(kWPN_FIRE, CMD_START);
+							m_bFiring = true;
+						}
+						else {
+							m_inventory.Action(kWPN_FIRE, CMD_STOP);
+							m_bFiring = false;
+							m_dwNoFireTime = m_dwCurrentUpdate;
+						}
+						else {
+							m_inventory.Action(kWPN_FIRE, CMD_STOP);
+							m_bFiring = false;
+							m_dwNoFireTime = m_dwCurrentUpdate;
+						}
+				}
 			else {
 				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
 					if (bfCheckIfCanKillEnemy())
@@ -199,24 +204,18 @@ void CAI_Stalker::vfSetFire(bool bFire, CGroup &Group)
 					m_bFiring = false;
 				}
 			}
-			else {
-				m_inventory.Action(kWPN_FIRE, CMD_STOP);
-				m_bFiring = false;
-			}
+		}
+		else {
+			m_inventory.Action(kWPN_FIRE, CMD_STOP);
+			m_bFiring = false;
+		}
 			
-			if ((bSafeFire) && (!m_bFiring))
-				Group.m_dwFiring--;
-			else
-				if ((!bSafeFire) && (m_bFiring))
-					Group.m_dwFiring++;
-}
+	m_bFiring = (tpWeapon->STATE == CWeapon::eFire) || (tpWeapon->STATE == CWeapon::eFire2);
 
-void CAI_Stalker::vfStopFire()
-{
-	if (m_bFiring) {
-		q_action.setup(AI::AIC_Action::FireEnd);
-		m_bFiring = false;
-		m_dwNoFireTime = m_dwCurrentUpdate;
-	}
-	m_bFiring = false;
+	CGroup &Group = *getGroup();
+	if ((bSafeFire) && (!m_bFiring))
+		Group.m_dwFiring--;
+	else
+		if ((!bSafeFire) && (m_bFiring))
+			Group.m_dwFiring++;
 }
