@@ -80,7 +80,7 @@ end
 // Кабаны не escape. Буцают труп, при подходе игрока бегут в аномалию
 // Часть скрипта скопирована из футбола. Так что немного тут есть лишнего
 
-local boar_distance         = 55      // Расстояние, ближе которого кабаны бегут в аномалию
+local boar_distance         = 50      // Расстояние, ближе которого кабаны бегут в аномалию
 local max_distance       	= 10      // На каком расстояние от точки обитания, буду буцать трупп
 
 class "CBoarPlayWithCorpse" (object_binder)
@@ -126,7 +126,7 @@ function CBoarPlayWithCorpse:update(delta)
 		end
 	end
 
-	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) < boar_distance) then
 		self:set_action()
 	else
 		// Актер рядом, бежит в аномалию
