@@ -169,12 +169,12 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
     // hemisphere
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),		&m_HemiQuality,		1,2);
     // sun
-    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Visible"),		&m_Flags,			flShowSun);
+    PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Visible"),&m_Flags,			flShowSun);
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Quality"),		&m_SunShadowQuality,1,2);
     PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Altitude"),	&m_SunShadowDir.x,	-PI_DIV_2,0);
     PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Longitude"),	&m_SunShadowDir.y,	0,PI_MUL_2);
     // light controls
-    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),		&m_Flags,			flShowControlName);
+    PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),&m_Flags,			flShowControlName);
     PHelper.CreateCaption(items,FHelper.PrepareKey(pref,"Common\\Controls\\Count"),			lcontrols.size());
     ButtonValue*	B 	= 0;
 //	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);

@@ -463,16 +463,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 Surface->Brush->Color = (TColor)rgb2bgr(C);
                 Surface->FillRect(R);
             }break;
-            case PROP_FLAG8:{
-                Flag8Value* V		= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
-            }break;
-            case PROP_FLAG16:{
-                Flag16Value* V		= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
-            }break;
-            case PROP_FLAG32:{
-                Flag32Value* V		= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
+            case PROP_FLAG:{
+                FlagValueCustom*  V	= dynamic_cast<FlagValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
                 OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_BOOLEAN:{
@@ -517,7 +509,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_TOKEN:
             case PROP_TOKEN2:
             case PROP_TOKEN3:
-            case PROP_TOKEN4:
             case PROP_LIST:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
@@ -602,7 +593,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     }
                     item->RedrawItem			(true);
                 }break;
-                case PROP_FLAG8:{
+/*                case PROP_FLAG8:{
                     Flag8Value* V				= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
                     Flags8 new_val 				= V->GetValue(); new_val.invert(V->mask);
                     prop->OnAfterEdit			(&new_val);
@@ -629,7 +620,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                         RefreshForm				();
                     }
                 }break;
-                case PROP_BOOLEAN:{
+*/                case PROP_BOOLEAN:{
                     BOOLValue* V				= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
                     BOOL new_val 				= !V->GetValue();
                     prop->OnAfterEdit			(&new_val);
@@ -640,7 +631,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 }break;
                 case PROP_TOKEN:{
                     pmEnum->Items->Clear();
-                    TokenValue* T				= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+                    TokenValueCustom* T			= dynamic_cast<TokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
                     xr_token* token_list 		= T->token;
                     TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 				= "-";
@@ -655,7 +646,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 }break;
                 case PROP_A_TOKEN:{
                     pmEnum->Items->Clear();
-                    ATokenValue* T				= dynamic_cast<ATokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+                    ATokenValueCustom* T		= dynamic_cast<ATokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
                     ATokenVec* token_list 		= T->token;
                     TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 				= "-";
@@ -670,7 +661,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 }break;
                 case PROP_TOKEN2:{
                     pmEnum->Items->Clear();
-                    TokenValue2* T	= dynamic_cast<TokenValue2*>(prop->GetFrontValue()); R_ASSERT(T);
+                    TokenValue2Custom* T	= dynamic_cast<TokenValue2Custom*>(prop->GetFrontValue()); R_ASSERT(T);
                     AStringVec& lst = T->items;
                     TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 	= "-";
@@ -685,25 +676,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 }break;
                 case PROP_TOKEN3:{
                     pmEnum->Items->Clear();
-                    TokenValue3* T	= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
+                    TokenValue3Custom* T	= dynamic_cast<TokenValue3Custom*>(prop->GetFrontValue()); R_ASSERT(T);
                     TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                    for (u32 i=0; i<T->cnt; i++){
-                        mi 			= xr_new<TMenuItem>((TComponent*)0);
-                        mi->Tag		= i;
-                        mi->Caption = T->items[i].str;
-                        mi->OnClick = PMItemClick;
-                        pmEnum->Items->Add(mi);
-                    }
-                }break;
-                case PROP_TOKEN4:{
-                    pmEnum->Items->Clear();
-                    TokenValue4* T	= dynamic_cast<TokenValue4*>(prop->GetFrontValue()); R_ASSERT(T);
-                    TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Caption 	= "-";
-                    pmEnum->Items->Add(mi);
-                    for (TokenValue4::ItemVec::const_iterator it=T->items->begin(); it!=T->items->end(); it++){
+                    for (TokenValue3Custom::ItemVec::const_iterator it=T->items->begin(); it!=T->items->end(); it++){
                         mi 			= xr_new<TMenuItem>((TComponent*)0);
                         mi->Tag		= it-T->items->begin();
                         mi->Caption = it->str;
@@ -793,7 +770,6 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_A_TOKEN:
                 case PROP_TOKEN2:
                 case PROP_TOKEN3:
-                case PROP_TOKEN4:
                 case PROP_LIST:
                 case PROP_TEXTURE2:
                     TPoint P; P.x = X; P.y = Y;
@@ -878,7 +854,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 		PropItem* prop = (PropItem*)item->Tag;
         switch(prop->Type()){
 		case PROP_TOKEN:{
-			TokenValue* T			= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+			TokenValueCustom* T		= dynamic_cast<TokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
             xr_token* token_list   	= T->token;
             u32 new_val				= token_list[mi->Tag].id;
 			prop->OnAfterEdit(&new_val);
@@ -888,7 +864,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 			item->ColumnText->Strings[0]= prop->GetText();
         }break;
 		case PROP_A_TOKEN:{
-			ATokenValue* T			= dynamic_cast<ATokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+			ATokenValueCustom* T	= dynamic_cast<ATokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
             ATokenVec* token_list   = T->token;
             u32 new_val				= (*token_list)[mi->Tag].id;
 			prop->OnAfterEdit(&new_val);
@@ -906,16 +882,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 			item->ColumnText->Strings[0]= prop->GetText();
         }break;
 		case PROP_TOKEN3:{
-			TokenValue3* T			= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
-            u32 new_val				= T->items[mi->Tag].ID;
-			prop->OnAfterEdit		(&new_val);
-            if (prop->ApplyValue(&new_val)){
-            	Modified			();
-            }
-			item->ColumnText->Strings[0]= prop->GetText();
-        }break;
-		case PROP_TOKEN4:{
-			TokenValue4* T			= dynamic_cast<TokenValue4*>(prop->GetFrontValue()); R_ASSERT(T);
+			TokenValue3Custom* T	= dynamic_cast<TokenValue3Custom*>(prop->GetFrontValue()); R_ASSERT(T);
             u32 new_val				= (*T->items)[mi->Tag].ID;
 			prop->OnAfterEdit		(&new_val);
             if (prop->ApplyValue(&new_val)){

@@ -1,18 +1,13 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
 #include "FrameDetObj.h"
-#include "Scene.h"
-#include "ChoseForm.h"
-#include "Library.h"
-#include "DetailObjects.h"
-#include "EditObject.h"
-#include "LeftBar.h"
-#include "Texture.h"
-#include "DOShuffle.h"
-#include "BottomBar.h"
 #include "ui_main.h"
+#include "ChoseForm.h"
+#include "DetailObjects.h"
+#include "Scene.h"
+#include "DOShuffle.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_color"

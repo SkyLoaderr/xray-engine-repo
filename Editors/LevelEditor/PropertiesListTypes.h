@@ -15,15 +15,12 @@ enum EPropType{
 	PROP_U32,
 	PROP_FLOAT,
 	PROP_BOOLEAN,
-	PROP_FLAG8,
-	PROP_FLAG16,
-	PROP_FLAG32,
+	PROP_FLAG,
     PROP_VECTOR,
 	PROP_TOKEN,
 	PROP_A_TOKEN,
 	PROP_TOKEN2,
     PROP_TOKEN3,
-    PROP_TOKEN4,
 	PROP_LIST,
 	PROP_COLOR,
 	PROP_FCOLOR,
@@ -77,6 +74,8 @@ typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
 typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef bool 	__fastcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
+//------------------------------------------------------------------------------
+extern AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
 
 class PropValue{
@@ -463,8 +462,14 @@ public:
 };
 //------------------------------------------------------------------------------
 
+class FlagValueCustom: public PropValue
+{
+	public:
+    virtual bool		GetValueEx		()=0;
+};
+
 template <class T>
-class FlagValue: public PropValue
+class FlagValue: public FlagValueCustom
 {
 public:
 	typedef T			TYPE;
@@ -473,7 +478,7 @@ public:
 	TYPE*				value;
     T::TYPE				mask;
 public:
-						FlagValue		(T* val, T::TYPE _mask):PropValue(),mask(_mask)
+						FlagValue		(T* val, T::TYPE _mask):FlagValueCustom(),mask(_mask)
 	{
     	value			= val;
     	init_value		= *val;
@@ -504,92 +509,79 @@ typedef FlagValue<Flags16>	Flag16Value;
 typedef FlagValue<Flags32>	Flag32Value;
 //------------------------------------------------------------------------------
 
-class TokenValue: public CustomValue<u32>{
-    int 				p_size;
+class TokenValueCustom{
 public:
 	xr_token* 			token;
-						TokenValue		(u32* val, xr_token* _token, int p_sz):CustomValue<u32>(val),token(_token),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* val)
+    					TokenValueCustom(xr_token* _token):token(_token){;}
+};
+template <class T>
+class TokenValue: public CustomValue<T>, public TokenValueCustom
+{
+public:
+						TokenValue		(T* val, xr_token* _token):TokenValueCustom(_token),CustomValue<T>(val){};
+    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (0==memcmp(value,((TokenValue*)val)->value,p_size));
+        T draw_val 		= GetValue();
+        if (OnDrawText)	OnDrawText(this, &draw_val);
+        for(int i=0; token[i].name; i++) if (token[i].id==draw_val) return token[i].name;
+        return 0;
     }
-    virtual bool		ApplyValue		(LPVOID val)
-    {
-        if (0!=memcmp(val,value,p_size)){
-            CopyMemory(value,val,p_size);
-            return		true;
-        }
-        return 			false;
-    }
-    virtual void		ResetValue		(){CopyMemory(value,&init_value,p_size);}
 };
 //------------------------------------------------------------------------------
+typedef TokenValue<u8>	Token8Value;
+typedef TokenValue<u16>	Token16Value;
+typedef TokenValue<u32>	Token32Value;
+//------------------------------------------------------------------------------
 
-class ATokenValue: public CustomValue<u32>{
-    int 				p_size;
+class ATokenValueCustom{
 public:
 	ATokenVec*			token;
-						ATokenValue		(u32* val, ATokenVec* _token, int p_sz):CustomValue<u32>(val),token(_token),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* val)
+    					ATokenValueCustom(ATokenVec* _token):token(_token){;}
+};
+template <class T>
+class ATokenValue: public CustomValue<T>, public ATokenValueCustom
+{
+public:
+						ATokenValue		(T* val, ATokenVec* _token):CustomValue<T>(val),ATokenValueCustom(_token){};
+    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (0==memcmp(value,((ATokenValue*)val)->value,p_size));
+        u32 draw_val 	= GetValue();
+        if (OnDrawText)OnDrawText(this, &draw_val);
+        for(ATokenIt it=token->begin(); it!=token->end(); it++) if (it->id==draw_val) return it->name.c_str();
+        return 0;
     }
-    virtual bool		ApplyValue		(LPVOID val)
-    {
-        if (0!=memcmp(val,value,p_size)){
-            CopyMemory(value,val,p_size);
-            return		true;
-        }
-        return 			false;
-    }
-    virtual void		ResetValue		(){CopyMemory(value,&init_value,p_size);}
 };
 //------------------------------------------------------------------------------
+typedef ATokenValue<u8>	AToken8Value;
+typedef ATokenValue<u16>AToken16Value;
+typedef ATokenValue<u32>AToken32Value;
+//------------------------------------------------------------------------------
 
-class TokenValue2: public CustomValue<u32>{
-    int 				p_size;
+class TokenValue2Custom{
 public:
 	AStringVec 			items;
+    					TokenValue2Custom(AStringVec* _items):items(*_items){;}
+};
+template <class T>
+class TokenValue2: public CustomValue<T>, public TokenValue2Custom
+{
 public:
-						TokenValue2		(u32* val, AStringVec* _items, int p_sz):CustomValue<u32>(val),items(*_items),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* val)
+						TokenValue2		(T* val, AStringVec* _items):CustomValue<T>(val),TokenValue2Custom(_items){};
+    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (0==memcmp(value,((TokenValue2*)val)->value,p_size));
+        T draw_val 		= GetValue();
+        if (OnDrawText)OnDrawText(this, &draw_val);
+        if (draw_val>=items.size()) return 0;
+        return items[draw_val].c_str();
     }
-    virtual bool		ApplyValue		(LPVOID val)
-    {
-        if (0!=memcmp(val,value,p_size)){
-            CopyMemory(value,val,p_size);
-            return		true;
-        }
-        return 			false;
-    }
-    virtual void		ResetValue		(){CopyMemory(value,&init_value,p_size);}
 };
 //------------------------------------------------------------------------------
-
-class TokenValue3: public CustomValue<u32>{
-public:
-	struct Item {
-		u32				ID;
-		string64		str;
-	};
-	u32					cnt;
-    const Item*			items;
-public:
-						TokenValue3		(u32* val, u32 _cnt, const Item* _items):CustomValue<u32>(val),cnt(_cnt),items(_items){};
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-};
+typedef TokenValue2<u8>		Token8Value2;
+typedef TokenValue2<u16> 	Token16Value2;
+typedef TokenValue2<u32> 	Token32Value2;
 //------------------------------------------------------------------------------
 
-class TokenValue4: public CustomValue<u32>{
-    int 				p_size;
+class TokenValue3Custom{
 public:
 	struct Item {
 		u32				ID;
@@ -598,24 +590,26 @@ public:
 	};
     DEFINE_VECTOR		(Item,ItemVec,ItemIt);
     const ItemVec*		items;
-public:
-						TokenValue4		(u32* val, const ItemVec* _items, int p_sz):CustomValue<u32>(val),items(_items),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* val)
-    {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (0==memcmp(value,((TokenValue4*)val)->value,p_size));
-    }
-    virtual bool		ApplyValue		(LPVOID val)
-    {
-        if (0!=memcmp(val,value,p_size)){
-            CopyMemory(value,val,p_size);
-            return		true;
-        }
-        return 			false;
-    }
-    virtual void		ResetValue		(){CopyMemory(value,&init_value,p_size);}
+    					TokenValue3Custom(const ItemVec* _items):items(_items){;}
 };
+template <class T>
+class TokenValue3: public CustomValue<T>, public TokenValue3Custom 
+{
+public:
+						TokenValue3		(T* val, const ItemVec* _items):CustomValue<T>(val),TokenValue3Custom(_items){};
+    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
+    {
+        T draw_val 		= GetValue();
+        if (OnDrawText)OnDrawText(this, &draw_val);
+        for (ItemVec::const_iterator it=items->begin(); it!=items->end(); it++)
+            if (it->ID==draw_val) return it->str.c_str();
+        return 0;
+    }
+};
+//------------------------------------------------------------------------------
+typedef TokenValue3<u8>		Token8Value3;
+typedef TokenValue3<u16> 	Token16Value3;
+typedef TokenValue3<u32> 	Token32Value3;
 //------------------------------------------------------------------------------
 
 class ListValue: public TextValue{

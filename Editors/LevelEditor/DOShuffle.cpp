@@ -183,11 +183,11 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 		AnsiString nm 		= Item->Text;
         EImageThumbnail* T 	= ImageLib.CreateThumbnail(nm.c_str(),EImageThumbnail::ETObject);
         EDetail* dd			= (EDetail*)Item->Data;
-		PHelper.CreateCaption	(items,"Ref Name",	dd->GetName());
-		PHelper.CreateFloat		(items,"Density",	&dd->m_fDensityFactor, 	0.1f, 1.0f);
-		PHelper.CreateFloat		(items,"Min Scale",	&dd->m_fMinScale, 		0.1f, 100.0f);
-		PHelper.CreateFloat		(items,"Max Scale",	&dd->m_fMaxScale,		0.1f, 100.f);
-		PHelper.CreateFlag32	(items,"No Waving",	&dd->m_Flags, DO_NO_WAVING);
+		PHelper.CreateCaption		(items,"Ref Name",	dd->GetName());
+		PHelper.CreateFloat			(items,"Density",	&dd->m_fDensityFactor, 	0.1f, 1.0f);
+		PHelper.CreateFloat			(items,"Min Scale",	&dd->m_fMinScale, 		0.1f, 100.0f);
+		PHelper.CreateFloat			(items,"Max Scale",	&dd->m_fMaxScale,		0.1f, 100.f);
+		PHelper.CreateFlag<Flags32>	(items,"No Waving",	&dd->m_Flags, DO_NO_WAVING);
     }
     m_ObjectProps->AssignItems	(items,true);
     paImage->Repaint			();

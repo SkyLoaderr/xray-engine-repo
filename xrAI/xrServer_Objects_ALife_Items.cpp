@@ -219,7 +219,7 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
         AStringVec				vec;
         for (_I	= ll_bones->begin(); _I!=ll_bones->end(); ++_I)	vec.push_back(*_I->first);
         if (guid_bone>(u16)ll_bones->size()) guid_bone = BI_NONE;
-		PHelper.CreateToken2	(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		(u32*)&guid_bone,	&vec, sizeof(guid_bone));
+		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
     }
 }
 #endif
@@ -346,13 +346,13 @@ void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"scope_status") == eAddonAttachable)
-	       PHelper.CreateFlag8	(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
+	       PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"silencer_status") == eAddonAttachable)
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
+        PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status") == eAddonAttachable)
-        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
+        PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
 #endif
 

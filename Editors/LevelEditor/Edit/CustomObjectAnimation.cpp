@@ -247,7 +247,7 @@ void __fastcall	CCustomObject::OnTransformChange(PropValue* value)
 
 void CCustomObject::AnimationFillProp(LPCSTR pref, PropItemVec& items)
 {
-    PropValue* V		= PHelper.CreateFlag32		(items,FHelper.PrepareKey(pref,"Flags\\Motionable"),&m_CO_Flags, flMotion);
+    PropValue* V		= PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Flags\\Motionable"),&m_CO_Flags, flMotion);
     V->OnChangeEvent	= OnMotionableChange;
 	if (Motionable()){
 	    ButtonValue* B	= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Files"),	"Import,Export", 0);
@@ -256,8 +256,8 @@ void CCustomObject::AnimationFillProp(LPCSTR pref, PropItemVec& items)
         B->OnBtnClickEvent= OnMotionCommandsClick;
 	    B				= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Controls"),	" |<<, +<<, <<, >, ||, >>, >>+, >>|", 0); 
         B->OnBtnClickEvent= OnMotionControlClick;
-        				  PHelper.CreateFlag32		(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Auto Key"), 		&m_CO_Flags, flAutoKey);
-        V				= PHelper.CreateFlag32		(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Camera View"), 	&m_CO_Flags, flCameraView);
+        				  PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Auto Key"), 		&m_CO_Flags, flAutoKey);
+        V				= PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Camera View"), 	&m_CO_Flags, flCameraView);
         V->OnChangeEvent= OnMotionCameraViewChange;
 	    V				= PHelper.CreateVector		(items,FHelper.PrepareKey(pref,"Motion\\Position"),				&PPosition, -10000.f, 10000.f, 	0.01f, 3);
         V->OnChangeEvent= OnTransformChange;

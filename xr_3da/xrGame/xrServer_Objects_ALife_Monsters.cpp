@@ -351,7 +351,7 @@ xr_token TokenAnomalyType[]={
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	PHelper.CreateToken			(items,FHelper.PrepareKey(pref,s_name,"Type"),								&m_tAnomalyType,	TokenAnomalyType, 1);
+	PHelper.CreateToken<u8>		(items,FHelper.PrepareKey(pref,s_name,"Type"),								(u8*)&m_tAnomalyType,	TokenAnomalyType);
 	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
 	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
 	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);

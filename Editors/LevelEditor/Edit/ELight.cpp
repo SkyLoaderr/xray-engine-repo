@@ -471,7 +471,7 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 	FillAttProp			(pref,items);
     PropValue* 			P=0;
     ButtonValue* 		B=0;
-    P=PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref, "Fuzzy"),					&m_Flags,	CLight::flPointFuzzy);
+    P=PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref, "Fuzzy"),					&m_Flags,	CLight::flPointFuzzy);
     P->OnChangeEvent		= OnFuzzyFlagChange;
 	if (m_Flags.is(CLight::flPointFuzzy)){
         VERIFY				(m_FuzzyData);
@@ -479,7 +479,7 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
         P->OnChangeEvent		= OnFuzzyDataChange;
 	    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Fuzzy\\Generate"),"Random",0);
     	B->OnBtnClickEvent		= OnFuzzyGenerateClick;
-        P=PHelper.CreateToken	(items,	FHelper.PrepareKey(pref, "Fuzzy\\Shape"),			&m_FuzzyData->m_ShapeType,	fuzzy_shape_types, 1);
+        P=PHelper.CreateToken<u8>(items,	FHelper.PrepareKey(pref, "Fuzzy\\Shape"),		(u8*)&m_FuzzyData->m_ShapeType,	fuzzy_shape_types);
         P->OnChangeEvent		= OnFuzzyTypeChange;
         switch (m_FuzzyData->m_ShapeType){
         case CLight::SFuzzyData::fstSphere: 
@@ -516,7 +516,7 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 
     PropValue* V=0;
 
-    V=PHelper.CreateToken	(items,	FHelper.PrepareKey(pref,"Type"),			&m_D3D.type,token_light_type,4);
+    V=PHelper.CreateToken<u32>(items,	FHelper.PrepareKey(pref,"Type"),		&m_D3D.type,token_light_type);
     V->OnChangeEvent		= OnTypeChange;
     V=PHelper.CreateFColor	(items,	FHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
 	V->OnChangeEvent		= OnNeedUpdate;
@@ -524,11 +524,11 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
     V->OnChangeEvent 		= OnPointDataChange;
 
     ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
-	PHelper.CreateAToken	(items,	FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols,	4);
+	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
 
-    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
-    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
-    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
 //    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
     switch(m_D3D.type){

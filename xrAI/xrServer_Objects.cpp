@@ -159,7 +159,7 @@ xr_token game_types[]={
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateToken			(items,	FHelper.PrepareKey(pref,"Game Type"),			&s_gameid,		game_types, 1);
+	PHelper.CreateToken<u8>		(items,	FHelper.PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper.CreateU16			(items,	FHelper.PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
 }
 #endif

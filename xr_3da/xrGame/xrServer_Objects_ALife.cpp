@@ -20,7 +20,7 @@
 
 #ifdef _EDITOR
 	#include "SkeletonAnimated.h"
-	static TokenValue4::ItemVec locations[4];
+	static TokenValue3Custom::ItemVec locations[4];
 	static AStringVec	level_ids;
 #endif
 
@@ -286,7 +286,7 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 			R_ASSERT			(Ini->section_exist(caSection));
 			LPCSTR				N,V;
 			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); ++k)
-				locations[i].push_back	(TokenValue4::Item(atoi(N),V));
+				locations[i].push_back	(TokenValue3Custom::Item(atoi(N),V));
 		}
 
 	if(level_ids.empty()) {
@@ -297,10 +297,10 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 	if (Ini)
 		xr_delete				(Ini);
 
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+	PHelper.CreateToken3<u8>	(items,	FHelper.PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&locations[0]);
+	PHelper.CreateToken3<u8>	(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&locations[1]);
+	PHelper.CreateToken3<u8>	(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&locations[2]);
+	PHelper.CreateToken3<u8>	(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&locations[3]);
 
 	PHelper.CreateList			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		&level_ids);
 	PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
@@ -773,10 +773,10 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 
 void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp			(pref,	 values);
-	PHelper.CreateToken			(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
+	PHelper.CreateToken<u32>	(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
 	PHelper.CreateText			(values, FHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
-    PHelper.CreateFlag8			(values, FHelper.PrepareKey(pref,s_name,"Active"), &flags, flActive);
+    PHelper.CreateFlag<Flags8>	(values, FHelper.PrepareKey(pref,s_name,"Active"), &flags, flActive);
 	if (visual && PSkeletonAnimated(visual))
 	{
 		CSkeletonAnimated::accel	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
@@ -890,7 +890,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateFlag16		(values, FHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
 	PHelper.CreateLightAnim		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	color_animator,		sizeof(color_animator));
 	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);

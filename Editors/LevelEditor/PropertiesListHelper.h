@@ -116,24 +116,23 @@ public:
     {   return			(FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);}
     IC BOOLValue* 	  	CreateBOOL		(PropItemVec& items, AnsiString key, BOOL* val)
     {   return			(BOOLValue*)	AppendValue		(items,key,xr_new<BOOLValue>(val),PROP_BOOLEAN);        }
-    IC Flag8Value* 		CreateFlag8		(PropItemVec& items, AnsiString key, Flags8* val, u8 mask)
-    {   return			(Flag8Value*)	AppendValue		(items,key,xr_new<Flag8Value>(val,mask),PROP_FLAG8);    }
-    IC Flag16Value* 	CreateFlag16	(PropItemVec& items, AnsiString key, Flags16* val, u16 mask)
-    {   return			(Flag16Value*)	AppendValue		(items,key,xr_new<Flag16Value>(val,mask),PROP_FLAG16);  }
-    IC Flag32Value*    	CreateFlag32	(PropItemVec& items, AnsiString key, Flags32* val, u32 mask)
-    {   return			(Flag32Value*)	AppendValue		(items,key,xr_new<Flag32Value>(val,mask),PROP_FLAG32);	}
     IC VectorValue*   	CreateVector	(PropItemVec& items, AnsiString key, Fvector* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
     {   return			(VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);}
-	IC TokenValue* 		CreateToken		(PropItemVec& items, AnsiString key, LPVOID val, xr_token* token, int p_size)
-    {   return			(TokenValue*)	AppendValue		(items,key,xr_new<TokenValue>((u32*)val,token,p_size),PROP_TOKEN);}
-	IC ATokenValue* 	CreateAToken	(PropItemVec& items, AnsiString key, LPVOID val, ATokenVec* token, int p_size)
-    {   return			(ATokenValue*)	AppendValue		(items,key,xr_new<ATokenValue>((u32*)val,token,p_size),PROP_A_TOKEN);}
-	IC TokenValue2*   	CreateToken2	(PropItemVec& items, AnsiString key, u32* val, AStringVec* lst, int p_size)
-    {   return			(TokenValue2*)	AppendValue		(items,key,xr_new<TokenValue2>(val,lst,p_size),PROP_TOKEN2);	}
-	IC TokenValue3*   	CreateToken3	(PropItemVec& items, AnsiString key, u32* val, u32 cnt, const TokenValue3::Item* lst)
-    {   return			(TokenValue3*)	AppendValue		(items,key,xr_new<TokenValue3>(val,cnt,lst),PROP_TOKEN3);}
-	IC TokenValue4*   	CreateToken4	(PropItemVec& items, AnsiString key, u32* val, const TokenValue4::ItemVec* lst, int p_size)
-    {   return			(TokenValue4*)	AppendValue		(items,key,xr_new<TokenValue4>(val,lst,p_size),PROP_TOKEN4);}
+    template <class T>
+    IC FlagValue<T>*	CreateFlag		(PropItemVec& items, AnsiString key, T* val, T::TYPE mask)
+    {   return			(FlagValue<T>*)	AppendValue		(items,key,xr_new<FlagValue<T> >(val,mask),PROP_FLAG);    }
+    template <class T>
+	IC TokenValue<T>*	CreateToken		(PropItemVec& items, AnsiString key, T* val, xr_token* token)
+    {   return			(TokenValue<T>*)AppendValue		(items,key,xr_new<TokenValue<T> >(val,token),PROP_TOKEN);}
+    template <class T>
+	IC ATokenValue<T>* 	CreateAToken	(PropItemVec& items, AnsiString key, T* val, ATokenVec* token)
+    {   return			(ATokenValue<T>*)AppendValue	(items,key,xr_new<ATokenValue<T> >(val,token),PROP_A_TOKEN);}
+    template <class T>
+	IC TokenValue2<T>* 	CreateToken2	(PropItemVec& items, AnsiString key, T* val, AStringVec* lst)
+    {   return			(TokenValue2<T>*)AppendValue	(items,key,xr_new<TokenValue2<T> >(val,lst),PROP_TOKEN2);	}
+    template <class T>
+	IC TokenValue3<T>* 	CreateToken3	(PropItemVec& items, AnsiString key, T* val, const TokenValue3<T>::ItemVec* lst)
+    {   return			(TokenValue3<T>*)AppendValue	(items,key,xr_new<TokenValue3<T> >(val,lst),PROP_TOKEN3);}
 	IC ListValue* 	 	CreateList		(PropItemVec& items, AnsiString key, LPSTR val, int lim, AStringVec* lst)
     {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lim,lst),PROP_LIST);       }
 	IC ListValue* 	 	CreateListA		(PropItemVec& items, AnsiString key, LPSTR val, int lim, u32 cnt, LPCSTR* lst)

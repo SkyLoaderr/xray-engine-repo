@@ -91,10 +91,10 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
 
 void ESoundThumbnail::FillProp(PropItemVec& items)
 {
-    PHelper.CreateFloat	(items, "Quality", 	&m_fQuality);
-    PHelper.CreateFloat	(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
-    PHelper.CreateFloat	(items, "Max Dist",	&m_fMaxDist, 0.f,10000.f);
-    PHelper.CreateToken	(items, "Game Type",&m_uGameType, anomaly_type_token, sizeof(m_uGameType));
+    PHelper.CreateFloat			(items, "Quality", 	&m_fQuality);
+    PHelper.CreateFloat			(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
+    PHelper.CreateFloat			(items, "Max Dist",	&m_fMaxDist, 0.f,10000.f);
+    PHelper.CreateToken<u32>	(items, "Game Type",&m_uGameType, anomaly_type_token);
 }
 //------------------------------------------------------------------------------
 

@@ -594,7 +594,7 @@ void CWayObject::FillProp(LPCSTR pref, PropItemVec& items)
                 for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++)
                     PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Way Point\\Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
                 for (int k=0; k<32; k++)
-                    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
+                    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
             }
     	}
     }

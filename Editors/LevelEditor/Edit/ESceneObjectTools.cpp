@@ -124,20 +124,20 @@ void ESceneObjectTools::FillAppendRandomProperties()
     PropValue* V;           
 
     PropItemVec items;
-    PHelper.CreateFlag32	(items,"Scale",	&m_Flags, flAppendRandomScale);
-    PHelper.CreateVector	(items,"Scale\\Minimum",&m_AppendRandomMinScale,0.001f,1000.f,0.001f,3);
-    PHelper.CreateVector	(items,"Scale\\Maximum",&m_AppendRandomMaxScale,0.001f,1000.f,0.001f,3);
-    PHelper.CreateFlag32	(items,"Rotate",&m_Flags, flAppendRandomRotation);
-    PHelper.CreateAngle3	(items,"Rotate\\Minimum",&m_AppendRandomMinRotation);
-    PHelper.CreateAngle3	(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
-    V=PHelper.CreateALibObject(items,"Objects",&temp); V->Owner()->subitem = 32;
+    PHelper.CreateFlag<Flags32>	(items,"Scale",	&m_Flags, flAppendRandomScale);
+    PHelper.CreateVector		(items,"Scale\\Minimum",&m_AppendRandomMinScale,0.001f,1000.f,0.001f,3);
+    PHelper.CreateVector		(items,"Scale\\Maximum",&m_AppendRandomMaxScale,0.001f,1000.f,0.001f,3);
+    PHelper.CreateFlag<Flags32>	(items,"Rotate",&m_Flags, flAppendRandomRotation);
+    PHelper.CreateAngle3		(items,"Rotate\\Minimum",&m_AppendRandomMinRotation);
+    PHelper.CreateAngle3		(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
+    V=PHelper.CreateALibObject	(items,"Objects",&temp); V->Owner()->subitem = 32;
 
-    m_Props->AssignItems	(items,true);
+    m_Props->AssignItems		(items,true);
     
     if (mrOk==m_Props->ShowPropertiesModal())
-    	_SequenceToList		(m_AppendRandomObjects,temp.c_str());
+    	_SequenceToList			(m_AppendRandomObjects,temp.c_str());
         
-    TProperties::DestroyForm(m_Props);
+    TProperties::DestroyForm	(m_Props);
 }
 //----------------------------------------------------
 
