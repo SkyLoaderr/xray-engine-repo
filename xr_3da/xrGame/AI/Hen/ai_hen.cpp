@@ -15,8 +15,6 @@
 
 //#define WRITE_LOG
 
-#define SQR(x) ((x)*(x))
-
 CAI_Hen::CAI_Hen()
 {
 	dwHitTime = 0;

@@ -15,8 +15,6 @@
 
 //#define WRITE_LOG
 
-#define SQR(x) ((x)*(x))
-
 CAI_Rat::CAI_Rat()
 {
 	dwHitTime = 0;

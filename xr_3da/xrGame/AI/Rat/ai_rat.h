@@ -11,7 +11,6 @@
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
-
 #include "ai_rat_selectors.h"
 #include "..\\ai_monsters.h"
 
