@@ -26,7 +26,7 @@ CAI_Space::CAI_Space	()
 	vfs							= NULL;
 	m_tpAStar					= 0;
 	
-	FILE_NAME					caFileName;
+	string256					caFileName;
 	strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
 	if (Engine.FS.Exist(caFileName))
 		CALifeGraph::Load		(caFileName);
@@ -65,7 +65,7 @@ void CAI_Space::Load(LPCSTR name)
 	CALifeCrossTable::Unload();
 	Unload		();
 
-	FILE_NAME	fName;
+	string256	fName;
 	strconcat	(fName,name,"level.ai");
 	if (!Engine.FS.Exist(fName))	return;
 

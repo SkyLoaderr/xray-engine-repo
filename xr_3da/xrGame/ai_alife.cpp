@@ -115,7 +115,7 @@ void CAI_ALife::Load()
 	m_fOnlineDistance			= pSettings->ReadFLOAT	("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->ReadINT	("alife","switch_delay");
 
-	FILE_NAME					caFileName;
+	string256					caFileName;
 	CStream						*tpStream;
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
 		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
