@@ -140,19 +140,19 @@ void CGlowManager::Render()
 		FVF::TL		*pv;
 		FVF::TL		TL;
 		
-		u32		pos = 0, count;
-		Shader*		T;
+		u32				pos = 0, count;
+		ref_shader		T;
 
 		float		dlim2	= MAX_GlowsDist2;
 		for (;pos<Selected_Count;) 
 		{
 			T		= Selected[pos]->hShader;
 			count	= 0;
-			while	((pos+count<Selected_Count) && (Selected[pos+count]->hShader()==T)) count++;
+			while	((pos+count<Selected_Count) && (Selected[pos+count]->hShader==T)) count++;
 			
 			u32		vOffset;
 			u32		end		= pos+count;
-			FVF::TL	*	pvs		= pv = (FVF::TL*) RCache.Vertex.Lock(count*4,hGeom()->vb_stride,vOffset);
+			FVF::TL	*	pvs		= pv = (FVF::TL*) RCache.Vertex.Lock(count*4,hGeom->vb_stride,vOffset);
 			for (; pos<end; pos++)
 			{
 				CGlow&	G			= *Selected[pos];
@@ -174,7 +174,7 @@ void CGlowManager::Render()
 				pv->set(cx + size, cy - size, TL.p.z, TL.p.w, clr, 1, 0); pv++;
 			}
 			int vCount				= pv-pvs;
-			RCache.Vertex.Unlock		(vCount,hGeom()->vb_stride);
+			RCache.Vertex.Unlock		(vCount,hGeom->vb_stride);
 			if (vCount) {
 				RCache.set_Shader		(T);
 				RCache.set_Geometry		(hGeom);

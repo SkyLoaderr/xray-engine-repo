@@ -20,8 +20,8 @@ void CRender::flush_LODs()
 	if (lstLODs.empty())		return;
 
 	// *** Fill VB and generate groups
-	IRender_Visual*					firstV		= lstLODs[0].pVisual;
-	Shader*						cur_S		= firstV->hShader;
+	IRender_Visual*				firstV		= lstLODs[0].pVisual;
+	Shader*						cur_S		= &*firstV->hShader;
 	int							cur_count	= 0;
 	u32							vOffset;
 	FVF::LIT*					V	= (FVF::LIT*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
@@ -33,7 +33,7 @@ void CRender::flush_LODs()
 		if (P.pVisual->hShader==cur_S)	cur_count++;
 		else {
 			vecGroups.push_back	(cur_count);
-			cur_S				= P.pVisual->hShader;
+			cur_S				= &*(P.pVisual->hShader);
 			cur_count			= 1;
 		}
 

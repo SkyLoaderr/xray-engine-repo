@@ -69,7 +69,7 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 			
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
+void					CRender::add_Patch				(ref_shader& S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
 	SceneGraph::_PatchItem& P = vecPatches.back();
@@ -79,9 +79,9 @@ void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, 
 	P.angle = a;
 	P.nearer= bNearer;
 }
-void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
+void		CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
 {
-	Wallmarks->AddWallmark	(T,P,S,s);
+	Wallmarks->AddWallmark	(T,P,&*S,s);
 }
 void		CRender::set_Object			(IRenderable*		O )	
 {
