@@ -261,16 +261,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 		// Dynamic
 		transfer("d-lights",	L_dynamic,			fs,		EB_Light_dynamic);
-
-		// Saving
-		{
-			string256			fn;
-			IWriter*		fs	= FS.w_open	(strconcat(fn,pBuild->path,"build.lights"));
-			fs->w_chunk			(0,&*L_static.rgb.begin(),L_static.rgb.size()*sizeof(R_Light));
-			fs->w_chunk			(1,&*L_static.hemi.begin(),L_static.hemi.size()*sizeof(R_Light));
-			fs->w_chunk			(2,&*L_static.sun.begin(),L_static.sun.size()*sizeof(R_Light));
-			FS.w_close			(fs);
-		}
 	}
 	
 	// process textures
