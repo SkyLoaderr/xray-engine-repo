@@ -1,5 +1,8 @@
 function init(obj)
 	local ini  = obj:spawn_ini()
+	
+	if(ini == nil) then return end
+	
 	if(ini:section_exist("door")) then
 		obj:bind_object(door_binder(obj))
 	end
