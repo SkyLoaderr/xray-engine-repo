@@ -9,19 +9,19 @@ local leader_free                   = 6
 ----------------------------------------------------------------------------------------
 class "evaluator_enabled" (property_evaluator)
 -------------
-function evaluator_enabled:__init (name, storage) super ()
+function evaluator_enabled:__init (name, storage) super (nil, name)
     self.a = storage
 end    
 -------------
 function evaluator_enabled:evaluate ()
-    return self.a.enabled
+    return xr_logic.is_active (self.object, self.a)
 end
 ----------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------
 class "evaluator_escape" (property_evaluator)
 -------------
-function evaluator_escape:__init (name, storage) super ()
+function evaluator_escape:__init (name, storage) super (nil, name)
     self.a = storage
 end
 -------------
@@ -42,7 +42,7 @@ end
 ----------------------------------------------------------------------------------------
 class "evaluator_raid" (property_evaluator)
 -------------
-function evaluator_raid:__init (name, storage) super ()
+function evaluator_raid:__init (name, storage) super (nil, name)
     self.a = storage
 end    
 -------------
@@ -56,9 +56,7 @@ class "action_patrol" (action_base)
 -------------
 function action_patrol:__init (name, storage) super (nil, name)
     self.a = storage
-	self.move_mgr = move_mgr.move_mgr ()
-	self.path_walk_info = nil
-    self.path_look_info = nil
+	self.move_mgr = move_mgr.move_mgr (storage.npc)
 	self.stage = 0
 	self.sub_stage = 0
     self.current_phrase = 0
@@ -66,21 +64,14 @@ end
 -------------
 function action_patrol:initialize ()
     action_base.initialize (self)
+    
+	self.move_mgr:initialize ()
+	
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
-	self.move_mgr:initialize(self.object)
-
-	if self.path_walk_info == nil then
-		self.path_walk_info = utils.path_parse_waypoints(self.a.patrol_path)
-	end
-
-	if self.path_look_info == nil then
-		self.path_look_info = utils.path_parse_waypoints(self.a.look_path)
-	end
-	
 	self:reset_scheme()
 	
 	self.stage = 0
@@ -128,7 +119,13 @@ function action_patrol:finalize ()
 end
 -------------
 function action_patrol:reset_scheme ()
-	self.move_mgr:reset(self.a.patrol_path, self.path_walk_info, self.a.look_path, self.path_look_info, nil, nil, {obj = self, func = self.callback})
+	if self.a.path_walk_info == nil then
+	   self.a.path_walk_info = utils.path_parse_waypoints(self.a.patrol_path)
+	end
+	if self.a.path_look_info == nil then
+	   self.a.path_look_info = utils.path_parse_waypoints(self.a.patrol_look)
+	end   
+	self.move_mgr:reset(self.a.patrol_path, self.a.path_walk_info, self.a.patrol_look, self.a.path_look_info, nil, nil, {obj = self, func = self.callback})
 end	
 -------------
 function action_patrol:callback (mode, number)
@@ -145,10 +142,11 @@ function action_patrol:callback (mode, number)
        self.stage = 1
        return true
     elseif number == 1 then
-           local st = xr_gulag.isUnderFraction (self.object)
-           if st ~= nil then
-              xr_gulag.resetJob (st, self.object)
-           end
+           xr_logic.try_switch_to_another_section(self.object, self.a) 
+           --local st = xr_gulag.isUnderFraction (self.object)
+           --if st ~= nil then
+              --xr_gulag.resetJob (st, self.object)
+           --end
     elseif number == 2 then
            self.a.raid_process = true
     end
@@ -328,40 +326,26 @@ class "action_raid" (action_base)
 -------------
 function action_raid:__init (name, storage) super (nil, name)
     self.a = storage
-	self.move_mgr = move_mgr.move_mgr ()
-	self.path_walk_info = nil
-    self.path_look_info = nil
+	self.move_mgr = move_mgr.move_mgr (storage.npc)
 end
 -------------
 function action_raid:initialize ()
     action_base.initialize (self)
     
-    if self.a.raid_path == nil or self.a.raid_look == nil then
-       utils.abort ("Raid path not defined for patrol soldier %s", self.object:name ())
-    end
-    
+	self.move_mgr:initialize ()
+        
     self.object:clear_animations          ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
     self.object:set_desired_direction     ()
 
-	self.move_mgr:initialize(self.object)
-
-	if self.path_walk_info == nil then
-		self.path_walk_info = utils.path_parse_waypoints(self.a.raid_path)
-	end
-
-	if self.path_look_info == nil then
-		self.path_look_info = utils.path_parse_waypoints(self.a.raid_look)
-	end
-	
 	self:reset_scheme ()
 end
 -------------
 function action_raid:execute ()
     action_base.execute (self)
-    
+     
     self.move_mgr:update ()
     
 end    
@@ -372,18 +356,29 @@ function action_raid:finalize ()
 end
 -------------
 function action_raid:reset_scheme ()
-	self.move_mgr:reset(self.a.raid_path, self.path_walk_info, self.a.raid_look, self.path_look_info, self.a.team, nil, {obj = self, func = self.callback})
-    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+	if self.a.raid_walk_info == nil then
+	   self.a.raid_walk_info = utils.path_parse_waypoints(self.a.raid_path)
+	end
+	if self.a.raid_look_info == nil then
+	   self.a.raid_look_info = utils.path_parse_waypoints(self.a.raid_look)
+	end   
+	self.move_mgr:reset(self.a.raid_path, self.a.raid_walk_info, self.a.raid_look, self.a.raid_look_info, self.a.team, nil, {obj = self, func = self.callback})
+	local id = self.object:id()
+    local size = table.getn (xr_motivator.storage[id].followers)
+    printf ("test 1")
     if size == 0 then return end
+    printf ("test 2")
     for a = 1, size, 1 do
-        local npc = xr_motivator.storage[self.object:id()].followers[a].npc
-        xr_motivator.storage[npc:id ()].patrol.raid_process = true
+        xr_motivator.storage[id].followers[a].raid_process = true
+        --local npc = xr_motivator.storage[self.object:id()].followers[a].npc
+        --xr_motivator.storage[npc:id ()].patrol.raid_process = true
     end
 end	
 -------------
 function action_raid:callback (mode, number)
     if number == 0 then 
        self.a.raid_process = false 
+       self.a.raid_enabled = false
        return true
     end   
     return false
@@ -392,7 +387,7 @@ end
 
 
 ----------------------------------------------------------------------------------------
-function add_to_binder (npc, char_ini)
+function add_to_binder (npc, ini, scheme, section, storage)
 
     local operators	= {}
     local properties  = {}
@@ -407,11 +402,11 @@ function add_to_binder (npc, char_ini)
     
     local manager = npc:motivation_action_manager()
 
-    manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("patrol_enabled", xr_motivator.storage[npc:id()].patrol))
-    manager:add_evaluator (properties["escape"], this.evaluator_escape ("escape_enabled", xr_motivator.storage[npc:id()].patrol))
-    manager:add_evaluator (properties["raid"], this.evaluator_raid ("raid_enabled", xr_motivator.storage[npc:id()].patrol))
+    manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("patrol_enabled", storage))
+    manager:add_evaluator (properties["escape"], this.evaluator_escape ("escape_enabled", storage))
+    manager:add_evaluator (properties["raid"], this.evaluator_raid ("raid_enabled", storage))
     
-    local action = this.action_patrol ("patrol", xr_motivator.storage[npc:id()].patrol)
+    local action = this.action_patrol ("patrol", storage)
     action:add_precondition (world_property(stalker_ids.property_alive, true))
     action:add_precondition (world_property(stalker_ids.property_enemy, false))
     action:add_precondition (world_property(properties["escape"], false))
@@ -419,8 +414,10 @@ function add_to_binder (npc, char_ini)
     action:add_precondition (world_property(properties["enabled"], true))
     action:add_effect (world_property(properties["enabled"], false))
     manager:add_action (operators["patrol"], action)
+
+    xr_logic.subscribe_action_for_events (storage, action)
     
-    action = this.action_escape ("escape", xr_motivator.storage[npc:id()].patrol)
+    action = this.action_escape ("escape", storage)
     action:add_precondition (world_property(stalker_ids.property_alive, true))
     action:add_precondition (world_property(stalker_ids.property_enemy, false))
     action:add_precondition (world_property(properties["escape"], true))
@@ -429,119 +426,42 @@ function add_to_binder (npc, char_ini)
     action:add_effect (world_property(properties["enabled"], false))
     manager:add_action (operators["escape"], action)
 
-    action = this.action_raid ("raid", xr_motivator.storage[npc:id()].patrol)
-    action:add_precondition (world_property(stalker_ids.property_alive, true))
-    action:add_precondition (world_property(stalker_ids.property_enemy, false))
-    action:add_precondition (world_property(properties["raid"], true))
-    action:add_precondition (world_property(properties["enabled"], true))
-    action:add_effect (world_property(properties["raid"], false))
-    manager:add_action (operators["raid"], action)
+    local action_new = this.action_raid ("raid", storage)
+    action_new:add_precondition (world_property(stalker_ids.property_alive, true))
+    action_new:add_precondition (world_property(stalker_ids.property_enemy, false))
+    action_new:add_precondition (world_property(properties["raid"], true))
+    action_new:add_precondition (world_property(properties["enabled"], true))
+    action_new:add_effect (world_property(properties["raid"], false))
+    manager:add_action (operators["raid"], action_new)
+    
+    xr_logic.subscribe_action_for_events (storage, action_new)
     
     action = manager:action (stalker_ids.action_puzzle_solver)
     action:add_precondition (world_property(properties["enabled"], false))
     
-    this.set_patrol (npc)
+    --this.set_patrol (npc)
 
 end
 ----------------------------------------------------------------------------------------
-function set_patrol (npc, enabled, patrol_path, look_path, escape_path, raid_enabled, raid_path, raid_look, raid_process, team)
-  local char_ini = npc:spawn_ini()
-  local st = xr_motivator.storage[npc:id()].patrol
+function set_scheme (npc, ini, scheme, section, gulag_name)
 
-  st.npc_id = npc:id ()
-  st.first_init = true
+	local st = xr_logic.assign_storage_and_bind (npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
+	st.patrol_path  = utils.cfg_get_string (ini, section, "patrol_path", npc, true,  gulag_name)
+	st.patrol_look  = utils.cfg_get_string (ini, section, "patrol_look", npc, false, gulag_name)
+	st.escape_path  = utils.cfg_get_string (ini, section, "escape_path", npc, false, gulag_name)
+	st.raid_enabled = utils.cfg_get_bool   (ini, section, "raid_enabled",npc, false, gulag_name)
+	st.raid_path    = utils.cfg_get_string (ini, section, "raid_path",   npc, false, gulag_name)
+	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
+	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
 
-    if enabled == nil then
-       if char_ini:section_exist ("patrol") == true and char_ini:line_exist("patrol", "enabled") == true then
-          st.enabled = char_ini:r_bool("patrol", "enabled")
-       else
-          st.enabled = false
-       end
-    else
-       st.enabled = enabled
-    end
+	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут еще
+	st.path_look_info = nil -- быть не загружены.
+	st.raid_walk_info = nil
+	st.raid_look_info = nil
+	st.raid_process = false
 
-    if patrol_path == nil then
-       if char_ini:section_exist ("patrol") == true and char_ini:line_exist("patrol", "patrol_path") == true then
-          st.patrol_path = char_ini:r_string("patrol", "patrol_path")
-       else
-          st.enabled = false
-       end
-    else
-       st.patrol_path = patrol_path
-    end
-
-    if look_path == nil then
-       if char_ini:section_exist ("patrol") == true and char_ini:line_exist("patrol", "look_path") == true then
-          st.look_path = char_ini:r_string("patrol", "look_path")
-       else
-          st.look_path = nil
-       end
-    else
-       st.look_path = look_path
-    end
-    
-    if escape_path == nil then
-       if char_ini:section_exist ("patrol") == true and char_ini:line_exist("patrol", "escape_path") == true then
-          st.escape_path = char_ini:r_string("patrol", "escape_path")
-       else
-          st.escape_path = nil
-       end
-    else
-       st.escape_path = escape_path
-    end
-
-    if raid_enabled == nil then
-       if char_ini:section_exist ("patrol") == true and char_ini:line_exist ("patrol", "raid_enabled") == true then
-          st.raid_enabled = char_ini:r_bool ("patrol", "raid_enabled")
-       else
-          st.raid_enabled = false
-       end
-    else
-       st.raid_enabled = raid_enabled
-    end
-
-    if raid_path == nil then
-      if char_ini:section_exist ("patrol") == true and char_ini:line_exist ("patrol", "raid_path") == true then
-          st.raid_path = char_ini:r_string ("patrol", "raid_path")
-      else
-          st.raid_path = st.patrol_path
-      end
-    else
-       st.raid_path = raid_path
-    end
-
-    if raid_look == nil then
-      if char_ini:section_exist ("patrol") == true and char_ini:line_exist ("patrol", "raid_look") == true then
-          st.raid_look = char_ini:r_string ("patrol", "raid_look")
-      else
-          st.raid_look = nil
-      end
-    else
-       st.raid_path = raid_look
-    end
-    
-    if raid_process == nil then
-       st.raid_process = false
-    else
-       st.raid_process = raid_process
-    end
-    
-    if team == nil then
-      if char_ini:section_exist ("patrol") == true and char_ini:line_exist ("patrol", "team") == true then
-          st.team = char_ini:r_string ("patrol", "team")
-      else
-          st.team = nil
-      end
-    else
-       st.team = team
-    end
-    
-  xr_motivator.checkStorage (npc)
-
-  st.first_init = true
-
-  xr_state.change_state(npc, xr_state.stand, false)
+	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
+	xr_logic.reset_actions (st)
 end
-
 
