@@ -15,8 +15,13 @@ Destroy();
 void CCar::SCarSound::Init()
 {
 	CInifile* ini=PKinematics(pcar->Visual())->LL_UserData();
-	volume  				= ini->r_float("car_sound","snd_volume");
-	snd_engine.create		(TRUE,ini->r_string("car_sound","snd_name"));//
+	if (ini->section_exist("car_sound") && ini->line_exist("car_sound","snd_volume"))
+	{
+		volume  			= ini->r_float("car_sound","snd_volume");
+		snd_engine.create	(TRUE,ini->r_string("car_sound","snd_name"));//
+	} else {
+		Msg					("! Car doesn't contain sound params");
+	}
 	eCarSound=sndOff;
 }
 
