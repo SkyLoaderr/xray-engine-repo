@@ -13,6 +13,7 @@
 #include "MgcAppr3DPlaneFit.h"
 #include "d3dutils.h"
 #include "ui_main.h"
+#include "ui_leveltools.h"
 #include "SceneObject.h"
 
 #define PORTAL_VERSION   					0x0010
@@ -165,7 +166,7 @@ bool CPortal::Update(bool bLoadMode){
     }
     float m=m_Normal.magnitude();
     if (fabsf(m)<=EPS_S){
-    	Scene->m_CompilerErrors.AppendFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
+    	Tools->m_Errors.AppendFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
     	ELog.Msg(mtError,"Portal: Degenerate portal found.");
         SetValid(false);
 		return false;

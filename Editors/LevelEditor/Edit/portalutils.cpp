@@ -13,6 +13,7 @@
 #include "SceneObject.h"
 #include "Library.h"
 #include "ui_main.h"
+#include "ui_leveltools.h"
 
 CPortalUtils PortalUtils;
 #define EPS_P 0.001f
@@ -465,7 +466,7 @@ public:
     }
     void export_portals()
     {
-	    Scene->ClearCompilerErrors();
+    	Tools->ClearErrors();
     	for (sPortalIt p_it=portals.begin(); p_it!=portals.end(); p_it++){
 		    if (p_it->e.size()>1)
             {
@@ -503,7 +504,7 @@ public:
                 	Fvector& v0=verts[edges[p_it->e[0]].v[0]];
                 	Fvector& v1=verts[edges[p_it->e[0]].v[1]];
 				    ELog.Msg(mtError,"Can't create Portal from one edge :(\nPlease check geometry.\n'%s'<->'%s'", p_it->s[0]->Name, p_it->s[1]->Name);
-                    Scene->m_CompilerErrors.AppendEdge(v0,v1);
+                    Tools->m_Errors.AppendLine(v0,v1);
                 }
 
         }

@@ -132,9 +132,6 @@ void EScene::Render( const Fmatrix& camera )
     // render snap
     RenderSnapList			();
 
-    // draw compiler errors
-    RenderCompilerErrors	();
-
     // clear
     mapRenderObjects.clear			();
 
@@ -145,37 +142,4 @@ void EScene::Render( const Fmatrix& camera )
 }
 //------------------------------------------------------------------------------
 
-void EScene::RenderCompilerErrors()
-{
-    Device.SetShader		(Device.m_SelectionShader);
-    RCache.set_xform_world	(Fidentity);
-    Device.RenderNearer		(0.0003f);
-    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
-    AnsiString temp;
-    int cnt=0;
-    for (ERR::VertIt vit=m_CompilerErrors.m_TJVerts.begin(); vit!=m_CompilerErrors.m_TJVerts.end(); vit++){
-        temp.sprintf		("TJ: %d",cnt++);
-        DU.dbgDrawVert(vit->p[0],						0xff0000ff,	temp.c_str());
-    }
-    cnt=0;
-    for (ERR::EdgeIt eit=m_CompilerErrors.m_MultiEdges.begin(); eit!=m_CompilerErrors.m_MultiEdges.end(); eit++){
-        temp.sprintf		("ME: %d",cnt++);
-        DU.dbgDrawEdge(eit->p[0],eit->p[1],				0xff00ff00,	temp.c_str());
-    }
-    cnt=0;
-    for (ERR::FaceIt fit=m_CompilerErrors.m_InvalidFaces.begin(); fit!=m_CompilerErrors.m_InvalidFaces.end(); fit++){
-        temp.sprintf		("IF: %d",cnt++);
-        DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
-    }
-    cnt=0;
-    for (ERR::OBBVecIt oit=m_CompilerErrors.m_OBB.begin(); oit!=m_CompilerErrors.m_OBB.end(); oit++)
-    {
-        temp.sprintf		("OBB: %d",cnt++);
-        DU.DrawOBB			(Fidentity,*oit,0x2F00FF00,0xFF00FF00);
-        DU.DrawTextA		(oit->m_translate,temp.c_str(),0xffff0000,0x0000000);
-    }
-    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
-    Device.ResetNearer		();
-}
-//------------------------------------------------------------------------------
  

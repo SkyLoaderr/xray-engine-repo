@@ -7,6 +7,7 @@
 
 #include "scene.h"
 #include "ui_main.h"
+#include "ui_leveltools.h"
 
 // file: SceneChunks.h
 #define CURRENT_FILE_VERSION    	0x00000005
@@ -504,18 +505,18 @@ void EScene::LoadCompilerError(LPCSTR fn)
 {
 	IReader* F	= FS.r_open(fn);
 
-    m_CompilerErrors.Clear();
+    Tools->m_Errors.Clear();
     if (F->find_chunk(0)){ // lc error (TJ)
-        m_CompilerErrors.m_TJVerts.resize(F->r_u32());
-        F->r(m_CompilerErrors.m_TJVerts.begin(),sizeof(ERR::Vert)*m_CompilerErrors.m_TJVerts.size());
+        Tools->m_Errors.m_Points.resize(F->r_u32());
+        F->r(Tools->m_Errors.m_Points.begin(),sizeof(CLevelTools::ERR::Point)*Tools->m_Errors.m_Points.size());
     }
     if (F->find_chunk(1)){ // lc error (multiple edges)
-        m_CompilerErrors.m_MultiEdges.resize(F->r_u32());
-        F->r(m_CompilerErrors.m_MultiEdges.begin(),sizeof(ERR::Edge)*m_CompilerErrors.m_MultiEdges.size());
+        Tools->m_Errors.m_Lines.resize(F->r_u32());
+        F->r(Tools->m_Errors.m_Lines.begin(),sizeof(CLevelTools::ERR::Line)*Tools->m_Errors.m_Lines.size());
     }
     if (F->find_chunk(2)){ // lc error (invalid faces)
-        m_CompilerErrors.m_InvalidFaces.resize(F->r_u32());
-        F->r(m_CompilerErrors.m_InvalidFaces.begin(),sizeof(ERR::Face)*m_CompilerErrors.m_InvalidFaces.size());
+        Tools->m_Errors.m_Faces.resize(F->r_u32());
+        F->r(Tools->m_Errors.m_Faces.begin(),sizeof(CLevelTools::ERR::Face)*Tools->m_Errors.m_Faces.size());
     }
     FS.r_close(F);
 }
@@ -527,20 +528,20 @@ void EScene::SaveCompilerError(LPCSTR fn)
 
 	// t-junction
 	err.open_chunk	(0);
-	err.w_u32		(m_CompilerErrors.m_TJVerts.size());
-	err.w			(m_CompilerErrors.m_TJVerts.begin(), m_CompilerErrors.m_TJVerts.size()*sizeof(ERR::Vert));
+	err.w_u32		(Tools->m_Errors.m_Points.size());
+	err.w			(Tools->m_Errors.m_Points.begin(), Tools->m_Errors.m_Points.size()*sizeof(CLevelTools::ERR::Point));
 	err.close_chunk	();
 
 	// m-edje
 	err.open_chunk	(1);
-	err.w_u32		(m_CompilerErrors.m_MultiEdges.size());
-	err.w			(m_CompilerErrors.m_MultiEdges.begin(), m_CompilerErrors.m_MultiEdges.size()*sizeof(ERR::Edge));
+	err.w_u32		(Tools->m_Errors.m_Lines.size());
+	err.w			(Tools->m_Errors.m_Lines.begin(), Tools->m_Errors.m_Lines.size()*sizeof(CLevelTools::ERR::Line));
 	err.close_chunk	();
 
 	// invalid
 	err.open_chunk	(2);
-	err.w_u32		(m_CompilerErrors.m_InvalidFaces.size());
-	err.w			(m_CompilerErrors.m_InvalidFaces.begin(), m_CompilerErrors.m_InvalidFaces.size()*sizeof(ERR::Face));
+	err.w_u32		(Tools->m_Errors.m_Faces.size());
+	err.w			(Tools->m_Errors.m_Faces.begin(), Tools->m_Errors.m_Faces.size()*sizeof(CLevelTools::ERR::Face));
 	err.close_chunk	();
 
     FS.w_close		(fs);

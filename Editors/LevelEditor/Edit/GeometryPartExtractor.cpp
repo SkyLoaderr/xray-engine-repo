@@ -4,6 +4,7 @@
 #include "GeometryPartExtractor.h"
 #include "EditObject.h"
 #include "UI_Main.h"
+#include "UI_LevelTools.h"
 
 //------------------------------------------------------------------------------
 // Parts
@@ -80,7 +81,7 @@ bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
         SBFace* F					= (*f_it);
         if (F->adjs.empty()){	
             ELog.Msg(mtError,"Error face found at pos: [%3.2f,%3.2f,%3.2f]",VPUSH(F->o[0])); 
-            Scene->m_CompilerErrors.AppendFace(F->o[0],F->o[1],F->o[2]);
+            Tools->m_Errors.AppendFace(F->o[0],F->o[1],F->o[2]);
             m_bValid				= false;
         }
         for (int k=0; k<3; k++){ 

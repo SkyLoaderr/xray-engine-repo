@@ -70,57 +70,8 @@ protected:
 
 	TProperties* m_SummaryInfo;
 
-    ObjectList			m_ESO_SnapObjects; // временно здесь а вообще нужно перенести в ESceneTools
+    ObjectList		m_ESO_SnapObjects; // временно здесь а вообще нужно перенести в ESceneTools
 public:
-    struct ERR{
-	    struct Face{
-    		Fvector		p[3];
-	    };
-	    struct Edge{
-    		Fvector		p[2];
-	    };
-	    struct Vert{
-    		Fvector		p[1];
-	    };
-	    DEFINE_VECTOR(Face,FaceVec,FaceIt);
-	    DEFINE_VECTOR(Edge,EdgeVec,EdgeIt);
-	    DEFINE_VECTOR(Vert,VertVec,VertIt);
-		DEFINE_VECTOR(Fobb,OBBVec,OBBVecIt);
-    	FaceVec			m_InvalidFaces;
-	    EdgeVec			m_MultiEdges;
-	    VertVec			m_TJVerts;
-		OBBVec 			m_OBB;
-        void			Clear()
-        {
-        	m_InvalidFaces.clear();
-	    	m_MultiEdges.clear	();
-	    	m_TJVerts.clear		();
-            m_OBB.clear			();
-        }
-        void AppendPoint(const Fvector& p0)
-        {
-        	m_TJVerts.push_back(Vert());
-            m_TJVerts.back().p[0].set(p0);
-        }
-        void AppendEdge	(const Fvector& p0, const Fvector& p1)
-        {
-        	m_MultiEdges.push_back(Edge());
-        	m_MultiEdges.back().p[0].set(p0);
-        	m_MultiEdges.back().p[1].set(p1);
-        }
-        void AppendFace	(const Fvector& p0, const Fvector& p1, const Fvector& p2)
-        {
-        	m_InvalidFaces.push_back(Face());
-        	m_InvalidFaces.back().p[0].set(p0);
-        	m_InvalidFaces.back().p[1].set(p1);
-        	m_InvalidFaces.back().p[2].set(p2);
-        }
-        void AppendOBB	(const Fobb& obb)
-        {
-        	m_OBB.push_back(obb);
-        }
-    };
-    ERR				m_CompilerErrors;
 protected:
     bool 			OnLoadAppendObject			(CCustomObject* O);
     bool 			OnLoadSelectionAppendObject(CCustomObject* O);
@@ -154,7 +105,6 @@ public:
 	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);
     void			SaveCompilerError	(LPCSTR fn);
-    void 			ClearCompilerErrors	(){m_CompilerErrors.Clear();}
 
 	IC bool 		valid				()           	{ return m_Valid; }
 
@@ -190,7 +140,6 @@ public:
     int 			DelSelFromSnapList	();
     int 			SetSnapList			();
     void 			RenderSnapList		();
-    void 			RenderCompilerErrors();
     void 			ClearSnapList		(bool bCurrentOnly);
     void 			SelectSnapList		();
     void 			UpdateSnapList 	   	();

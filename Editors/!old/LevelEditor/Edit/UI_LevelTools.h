@@ -85,7 +85,7 @@ public:
     virtual void		OnDeviceCreate		(){;}
     virtual void		OnDeviceDestroy		(){;}
 
-    virtual void		Clear				(){;}
+    virtual void		Clear				(){inherited::Clear();}
 
     virtual void		OnShowHint			(AStringVec& SS);
 

@@ -370,6 +370,8 @@ void __fastcall CLevelTools::Render()
     }
     // draw cursor
     LUI->m_Cursor->Render();
+
+    inherited::Render		();
 }
 //---------------------------------------------------------------------------
 

@@ -156,7 +156,7 @@ void EScene::Clear()
     for (; t_it!=t_end; t_it++)
         if (t_it->second)		t_it->second->Clear();
         
-    m_CompilerErrors.Clear	();
+    Tools->m_Errors.Clear	();
 
     m_RTFlags.set			(flRT_Unsaved|flRT_Modified,FALSE);
 }

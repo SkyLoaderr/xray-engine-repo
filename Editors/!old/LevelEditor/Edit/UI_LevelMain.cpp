@@ -221,7 +221,7 @@ void CommandLoadFirstRecent(u32 p1, u32 p2, u32& res)
 
 void CommandClearCompilerError(u32 p1, u32 p2, u32& res)
 {
-    Scene->ClearCompilerErrors();
+    Tools->ClearErrors();
 }
 
 void CommandImportCompilerError(u32 p1, u32 p2, u32& res)

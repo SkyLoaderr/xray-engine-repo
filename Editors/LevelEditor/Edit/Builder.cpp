@@ -10,6 +10,7 @@
 #include "PortalUtils.h"
 #include "ESceneDOTools.h"
 #include "ui_main.h"
+#include "ui_toolscustom.h"
 //----------------------------------------------------
 
 SceneBuilder Builder;
@@ -103,7 +104,7 @@ BOOL SceneBuilder::MakeGame( )
     try{
         do{
 	        // clear error
-		    Scene->m_CompilerErrors.Clear();
+            Tools->ClearErrors();
 	        // validate scene
     	    VERIFY_COMPILE(Scene->Validate(false,false,false,false,false),	"Validation failed.","Invalid scene.");
         	// build
