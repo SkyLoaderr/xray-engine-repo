@@ -143,8 +143,8 @@ struct b_params
         m_maxedge               = 32;
 
         // Normals & optimization
-        m_sm_angle              = 89.f;
-        m_weld_distance         = 0.001f;
+        m_sm_angle              = 120.f;
+        m_weld_distance         = 0.005f;
 
         // Vertex buffers
         m_VB_maxSize            = 8192*1024;
@@ -155,25 +155,25 @@ struct b_params
 		m_SS_merge_coeff		= 0.5f;
 		m_SS_Low				= 32;
 		m_SS_High				= 2048;
-		m_SS_DedicateCached		= 16;
+		m_SS_DedicateCached		= 4;
 
         // Light maps
         m_bLightMaps            = TRUE;
         m_lm_split_angle		= 87.f;
-        m_lm_pixels_per_meter   = 4;
+        m_lm_pixels_per_meter   = 14;
         m_lm_dither             = 0.02f;
-        m_lm_jitter             = 0.45f;
+        m_lm_jitter             = 0.49f;
 		m_lm_jitter_samples		= 4;
         m_lm_amb_color.set      (1,1,1,0);
-        m_lm_amb_fogness        = 0.01f;
-		m_lm_rms_zero			= 8;
-		m_lm_rms				= 8;		// 5%
+        m_lm_amb_fogness        = 0.05f;
+		m_lm_rms_zero			= 12;
+		m_lm_rms				= 12;
 
 		// Area(hemi-sphere) lighting
 		area_color.set			(1,1,1,1);
-		area_dispersion			= 7.5f;
-		area_energy_summary		= 0.5f;
-		area_quality			= 1;
+		area_dispersion			= 7.f;
+		area_energy_summary		= 1.f;
+		area_quality			= 2;
 
 		// Light smoothing
 		fuzzy_min				= 0.3f;
@@ -197,6 +197,18 @@ struct b_params
         L_name[0] = 0;
         L_path[0] = 0;
     }
+	void		setDebug()
+	{
+		m_lm_pixels_per_meter	= 4;
+		m_lm_jitter_samples		= 4;
+		area_quality			= 1;
+	}
+	void		setRelease()
+	{
+		m_lm_pixels_per_meter	= 14;
+		m_lm_jitter_samples		= 9;
+		area_quality			= 2;
+	}
 };
 
 struct b_transfer
