@@ -221,7 +221,11 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 
 	//проверить файл диалога на корректность
 	if(!m_bCheckUniqueness)	
-		uiXml.CheckUniqueAttrib(uiXml.GetRoot(), "dialog", "id");
+	{
+		LPCSTR wrong_id = uiXml.CheckUniqueAttrib(uiXml.GetRoot(), "dialog", "id");
+		R_ASSERT3(wrong_id == NULL, "dublicate dialog id", wrong_id);
+		m_bCheckUniqueness = true;
+	}
 
 	//loading from XML
 
