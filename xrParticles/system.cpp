@@ -702,8 +702,6 @@ PARTICLEDLL_API int pGenParticleGroups(int p_group_count, int max_particles)
 
 PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
 {
-	_ParticleState &_ps = _GetPState();
-
 	if(p_group_num < 0)
 		return; // ERROR
 

@@ -531,6 +531,7 @@ namespace PAPI{
 		enum{
 			flVertexB_tracks	= (1<<31),// True to get positionB from position.
 			flSilent			= (1<<30),
+			fl_FORCEDWORD		= u32(-1)
 		};
 		pDomain positionL;	// Choose a position in this domain. (local_space)
 		pDomain velocityL;	// Choose a velocity in this domain. (local_space)

@@ -274,7 +274,6 @@ _DDS_2D:
 			return					pTexture2D;
 		}
 	}
-	return pTexture2D;
 _BUMP:
 	{
 		// Load   SYS-MEM-surface, bound to device restrictions
