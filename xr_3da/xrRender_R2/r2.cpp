@@ -31,11 +31,16 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 }
 IVisual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
-	PS::SDef_RT*	source	= PSystems.FindPS	(name);
+	PS::SDef*	source		= PSystems.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
-
+IVisual*				CRender::model_CreatePG			(LPCSTR name)	
+{ 
+	PS::CPGDef*	source		= PSystems.FindPG	(name);
+	VERIFY					(source);
+	return Models.CreatePG	(source);
+}
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}

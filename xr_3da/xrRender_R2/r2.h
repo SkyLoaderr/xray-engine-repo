@@ -112,6 +112,7 @@ public:
 
 	// Models
 	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
+	virtual IVisual*				model_CreatePG			(LPCSTR name);
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F);
 	virtual IVisual*				model_Create			(LPCSTR name);
 	virtual IVisual*				model_Create			(LPCSTR name, IReader* data);
