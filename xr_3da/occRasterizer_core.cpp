@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
-static occTri*	currentTri=0;
+static occTri*	currentTri	= 0;
+static DWORD	dwPixels	= 0;
 static float	currentA[3],currentB[3],currentC[3];
 
 const int BOTTOM = 0, TOP = 1;
@@ -117,7 +118,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 		if (shared(currentTri,pFrame[i-1])) 
 		{
 			float ZR = (Z+2*pDepth[i-1])*one_div_3;
-			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
+			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; dwPixels++; }
 		}
 	}
 
@@ -125,7 +126,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	limit				= i_base+maxX;
 	for (; i<limit; i++, Z+=dZ) 
 	{
-		if (Z<pDepth[i])		{ pFrame[i]	= currentTri; pDepth[i] = Z; }
+		if (Z<pDepth[i])		{ pFrame[i]	= currentTri; pDepth[i] = Z;  dwPixels++; }
 	}
 	
 	// right connector
@@ -136,7 +137,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	{
 		if (shared(currentTri,pFrame[i+1])) {
 			float ZR = (Z+2*pDepth[i+1])*one_div_3;
-			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
+			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; dwPixels++; }
 		}
 	}
 }
@@ -301,10 +302,11 @@ void __stdcall i_section_t0	()
 void __stdcall i_section_t1	()
 {	i_section	(TOP,1);	}
 
-void occRasterizer::rasterize	(occTri* T)
+DWORD occRasterizer::rasterize	(occTri* T)
 {
 	// Order the vertices by Y
 	currentTri			= T;
+	dwPixels			= 0;
 	i_order				(T->raster[0].asDATA(), T->raster[1].asDATA(),T->raster[2].asDATA());
 
 	// Rasterize sections
@@ -316,17 +318,5 @@ void occRasterizer::rasterize	(occTri* T)
 		i_section_b0	();	// Rasterise First Section
 		i_section_t1	();	// Rasterise Second Section
 	}
-
-	/*
-	// Rasterize (and Y-connect) edges
-	int ax			= iFloor(currentA[0]);
-	int ay			= iFloor(currentA[1]);
-	int bx			= iFloor(currentB[0]);
-	int by			= iFloor(currentB[1]);
-	int cx			= iFloor(currentC[0]);
-	int cy			= iFloor(currentC[1]);
-	i_edge			(ax,ay,bx,by);
-	i_edge			(ax,ay,cx,cy);
-	i_edge			(bx,by,cx,cy);
-	*/
+	return				dwPixels;
 }

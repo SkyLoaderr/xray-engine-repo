@@ -20,6 +20,7 @@ public:
 	Fplane			plane;
 	float			area;
 	DWORD			flags;
+	DWORD			dwFrameToRender;
 };
 
 class ENGINE_API	occRasterizer  
@@ -39,7 +40,7 @@ public:
 
 	void			clear		();
 	void			propagade	();
-	void			rasterize	(occTri* T);
+	DWORD			rasterize	(occTri* T);
 	BOOL			test		(float x0, float y0, float x1, float y1, float z);
 	
 	occTri**		get_frame	()			{ return &(bufFrame[0][0]);	}
