@@ -324,83 +324,6 @@ SOURCE=.\xrThread.cpp
 SOURCE=.\xrThread.h
 # End Source File
 # End Group
-# Begin Group "Internal"
-
-# PROP Default_Filter ""
-# Begin Group "FS"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\FS.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\FS.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\LzHuf.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\lzhuf.h
-# End Source File
-# End Group
-# Begin Group "Targa"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\tga.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\tga.h
-# End Source File
-# End Group
-# Begin Group "ILoader"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Image.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=.\Image.h
-# End Source File
-# End Group
-# Begin Source File
-
-SOURCE=.\FixedVector.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\vbm.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrFace.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrFace.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrIsect.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrLoadSurface.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrUVpoint.h
-# End Source File
-# End Group
 # Begin Group "CDB"
 
 # PROP Default_Filter ""
@@ -482,6 +405,10 @@ SOURCE=.\progmesh.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Shader_xrLC.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\std_classes.h
 # End Source File
 # Begin Source File
@@ -503,90 +430,6 @@ SOURCE=.\xrOcclusion.h
 # Begin Source File
 
 SOURCE=.\xrSpherical.h
-# End Source File
-# End Group
-# Begin Group "Deflector"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\hash2D.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Lightmap.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Lightmap.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrDeflectoL_Direct.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrDeflector.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrDeflector.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrDeflectorLight.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrImage_Filter.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrImage_Filter.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrImage_Resampler.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrImage_Resampler.h
-# End Source File
-# End Group
-# Begin Group "Shaders"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Shader_xrLC.h
-# End Source File
-# End Group
-# Begin Group "XRAY"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\fmesh.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Fmesh.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OGF_Face.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OGF_Face.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OGF_Face_Save.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\OGF_Face_Stripify.cpp
 # End Source File
 # End Group
 # Begin Group "- OLD -"
@@ -636,6 +479,159 @@ SOURCE=.\xrVis.cpp
 # Begin Group "*** COMPILER ***"
 
 # PROP Default_Filter ""
+# Begin Group "Deflector"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\hash2D.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Lightmap.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Lightmap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrDeflectoL_Direct.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrDeflector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrDeflector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrDeflectorLight.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Filter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Filter.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Resampler.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Resampler.h
+# End Source File
+# End Group
+# Begin Group "XRAY"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\fmesh.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Fmesh.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OGF_Face.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OGF_Face.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OGF_Face_Save.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OGF_Face_Stripify.cpp
+# End Source File
+# End Group
+# Begin Group "Internal"
+
+# PROP Default_Filter ""
+# Begin Group "FS"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FS.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LzHuf.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lzhuf.h
+# End Source File
+# End Group
+# Begin Group "Targa"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\tga.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tga.h
+# End Source File
+# End Group
+# Begin Group "ILoader"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\Image.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\Image.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\FixedVector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\vbm.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrFace.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrFace.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrIsect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrLoadSurface.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrUVpoint.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\Build.cpp
