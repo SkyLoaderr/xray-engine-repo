@@ -46,6 +46,7 @@ void CSoundRender_Emitter::rewind()
 
 void CSoundRender_Emitter::cancel()
 {
+	Msg		("%10s : %3d[%1.4f] : %s","cancel",dbg_ID,priority(),source->fname);
 	switch	(state) 
 	{
 	case stPlaying:

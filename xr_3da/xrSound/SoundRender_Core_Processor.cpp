@@ -23,6 +23,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	s_emitters_u	++;
 
 	// Firstly update emitters, which are now being rendered
+	Msg	("! update: r-emitters");
 	for (it=0; it<s_targets.size(); it++)
 	{
 		CSoundRender_Target*	T	= s_targets	[it];
@@ -37,6 +38,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 
 	// Update emmitters
+	Msg	("! update: emitters");
 	for (it=0; it<s_emitters.size(); it++)
 	{
 		CSoundRender_Emitter*	pEmitter = s_emitters[it];
@@ -55,6 +57,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 
 	// Get currently rendering emitters
+	Msg	("! update: targets");
 	s_targets_defer.clear	();
 	s_targets_pu			++;
 	u32 PU					= s_targets_pu%s_targets.size();
@@ -92,6 +95,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	// Start rendering of pending targets
 	if (!s_targets_defer.empty())
 	{
+		Msg	("! update: start render");
 		s_targets_defer.erase	(unique(s_targets_defer.begin(),s_targets_defer.end()),s_targets_defer.end());
 		for (it=0; it<s_targets_defer.size(); it++)
 			s_targets_defer[it]->render	();
@@ -109,7 +113,7 @@ u32		CSoundRender_Core::stat_render	()
 		{
 			counter++;
 
-			Msg	("* %2d -- %2d[%1.4f] : %s",it,T->get_emitter()->dbg_ID,T->priority,T->get_emitter()->source->fname);
+			Msg	("* %2d -- %3d[%1.4f] : %s",it,T->get_emitter()->dbg_ID,T->priority,T->get_emitter()->source->fname);
 		}
 		else 
 		{
