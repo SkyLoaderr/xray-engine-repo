@@ -6,9 +6,9 @@
 #define AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_
 #pragma once
 
-#include "..\\render.h"
+#include "..\render.h"
 
-class CEffect_Rain		: public IEventReceiver
+class CEffect_Rain
 {
 private:
 	struct	Item
@@ -30,15 +30,9 @@ private:
 	enum	States
 	{
 		stIdle		= 0,
-		stStarting,
-		stWorking,
-		stStopping
+		stWorking
 	};
 private:
-	// Control
-	EVENT							control_start;
-	EVENT							control_stop;
-
 	// Visualization	(rain)
 	ref_shader						SH_Rain;
 	ref_geom						hGeom_Rain;
@@ -57,8 +51,7 @@ private:
 	Particle*						particle_idle;
 
 	// Sounds
-	ref_sound							snd_Ambient;
-	float							snd_Ambient_volume;
+	ref_sound						snd_Ambient;
 
 	// Utilities
 	void							p_create		();
@@ -75,8 +68,6 @@ private:
 	void							RayTest			(Item& dest, float height);
 	void							Hit				(Fvector& pos);
 public:
-	virtual void					OnEvent			(EVENT E, u64 P1, u64 P2);
-
 	void							Render			();
 
 	CEffect_Rain					();

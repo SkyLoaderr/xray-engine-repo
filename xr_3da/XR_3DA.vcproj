@@ -511,6 +511,12 @@
 					Name="Effects"
 					Filter="">
 					<File
+						RelativePath=".\Rain.cpp">
+					</File>
+					<File
+						RelativePath=".\Rain.h">
+					</File>
+					<File
 						RelativePath=".\xr_efflensflare.cpp">
 					</File>
 					<File

@@ -3,19 +3,23 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "xr_area.h"
+#include "igame_level.h"
+#include "igame_persistent.h"
+#include "environment.h"
+#include "xr_object.h"
 #include "Rain.h"
 
-const float snd_fade		= 0.2f;
-const int	desired_items	= 2500;
-const float	drop_length		= 1.5f;
-const float drop_width		= 0.04f;
-const float drop_angle		= 3.01f;
-const float drop_speed_min	= 40.f;
-const float drop_speed_max	= 80.f;
+const int	max_desired_items	= 2500;
+const float	drop_length			= 1.5f;
+const float drop_width			= 0.04f;
+const float drop_angle			= 3.01f;
+const float drop_speed_min		= 40.f;
+const float drop_speed_max		= 80.f;
 
-const int	max_particles	= 1000;
-const int	particles_cache	= 400;
-const float particles_time	= .3f;
+const int	max_particles		= 1000;
+const int	particles_cache		= 400;
+const float particles_time		= .3f;
  
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -24,11 +28,8 @@ const float particles_time	= .3f;
 CEffect_Rain::CEffect_Rain()
 {
 	state							= stIdle;
-	control_start					= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
-	control_stop					= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
 	Sound->create					(snd_Ambient,TRUE,"amb_rain");
-	snd_Ambient_volume				= 0;
 
 	IReader*	 fs					= FS.r_open("$game_meshes$","dm\\rain.dm");
 	DM_Drop							= ::Render->model_CreateDM		(fs);
@@ -43,25 +44,11 @@ CEffect_Rain::CEffect_Rain()
 
 CEffect_Rain::~CEffect_Rain()
 {
-	Engine.Event.Handler_Detach		(control_stop,this);
-	Engine.Event.Handler_Detach		(control_start,this);
-
 	Sound->destroy					(snd_Ambient);
 
 	// Cleanup
 	p_destroy						();
 	::Render->model_Delete			(DM_Drop);
-}
-
-void	CEffect_Rain::OnEvent	(EVENT E, u64 P1, u64 P2)
-{
-	if ((E==control_start) && (state!=stWorking))	{
-		state					= stStarting;
-		Sound->play				(snd_Ambient,0,TRUE);
-		snd_Ambient.set_volume	(snd_Ambient_volume);
-	} else if ((E==control_stop) && (state!=stIdle))	{
-		state					= stStopping;
-	}
 }
 
 // Born
@@ -84,9 +71,9 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 void	CEffect_Rain::RayTest	(Item& dest, float height)
 {
 	Collide::ray_query	RQ;
-	CObject* E = Level().CurrentViewEntity();
-	E->setEnabled(FALSE);
-	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
+	CObject* E = g_pGameLevel->CurrentViewEntity();
+	E->setEnabled	(FALSE);
+	if (g_pGameLevel->ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
 	{
 		dest.fTime_Life	= RQ.range/dest.fSpeed;
 		dest.fTime_Hit	= RQ.range/dest.fSpeed;
@@ -96,7 +83,7 @@ void	CEffect_Rain::RayTest	(Item& dest, float height)
 		dest.fTime_Hit	= (height*3)/dest.fSpeed;
 		dest.Phit.set	(dest.P);
 	}
-	E->setEnabled(TRUE);
+	E->setEnabled	(TRUE);
 }
 
 // initialize particles pool
@@ -194,30 +181,26 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 void	CEffect_Rain::Render	()
 {
 	// Parse states
-	BOOL	bBornNewItems	= FALSE;
+	float	factor			= g_pGamePersistent->Environment.Current.rain_density;
 
 	switch (state)
 	{
-	case stIdle:		return;
-	case stStarting:	
-		snd_Ambient_volume			+= snd_fade*Device.fTimeDelta;
-		snd_Ambient.set_volume		(snd_Ambient_volume);
-		if (snd_Ambient_volume > 1)	state=stWorking;
-		bBornNewItems	= TRUE;
+	case stIdle:		
+		if (factor<EPS_L)		return;
+		state					= stWorking;
+		snd_Ambient.play		(0,TRUE);
 		break;
-	case stWorking:		
-		bBornNewItems	= TRUE;
-		break;
-	case stStopping:
-		snd_Ambient_volume	-= snd_fade*Device.fTimeDelta;
-		snd_Ambient.set_volume		(snd_Ambient_volume);
-		if (snd_Ambient_volume < 0)	{
-			snd_Ambient.stop	();
-			state=stIdle;
+	case stWorking:
+		if (factor<EPS_L)
+		{
+			state					= stIdle;
+			snd_Ambient.stop		();
+			return;
 		}
-		bBornNewItems	= FALSE;
 		break;
 	}
+	snd_Ambient.set_volume		(factor);
+	u32 desired_items			= iFloor	(factor*float(max_desired_items));
 
 	// Sound pos
 	Fvector						sndP;
@@ -228,7 +211,7 @@ void	CEffect_Rain::Render	()
 	float	b_radius		= 10.f;
 	float	b_radius_wrap	= b_radius+.5f;
 	float	b_height		= 40.f;
-	if (bBornNewItems && (items.size()<desired_items))	{
+	if (items.size()<desired_items)	{
 		items.reserve	(desired_items);
 		while (items.size()<desired_items)	{
 			Item			one;
@@ -238,7 +221,7 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Perform update
-	u32		vOffset;
+	u32			vOffset;
 	FVF::LIT	*verts		= (FVF::LIT	*) RCache.Vertex.Lock(desired_items*4,hGeom_Rain->vb_stride,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;

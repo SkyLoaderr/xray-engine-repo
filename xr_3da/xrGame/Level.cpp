@@ -249,7 +249,6 @@ void CLevel::OnRender()
 {
 	inherited::OnRender	();
 	Tracers.Render		();
-	eff_Rain.Render		();
 //	ph_world->Render	();
 	if (bDebug || psAI_Flags.test(aiMotion))
 		getAI().Render		();

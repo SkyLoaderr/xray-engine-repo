@@ -10,10 +10,8 @@
 #include "game_cl_base.h"
 #include "group.h"
 #include "tracer.h"
-#include "rain.h"
 #include "ai_sounds.h"
 #include "net_queue.h"
-
 
 class CHUDManager;
 class CParticlesObject;
@@ -73,7 +71,6 @@ public:
 	svector<CTeam,maxTeams>		Teams;
 
 	CTracer						Tracers;
-	CEffect_Rain				eff_Rain;
 
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;

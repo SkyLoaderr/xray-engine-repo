@@ -2,14 +2,10 @@
 #define IGame_PersistentH
 #pragma once
 
-#ifdef _EDITOR
-	#include "Environment.h"
-#else
+#include "Environment.h"
+#ifndef _EDITOR
 	#include "IGame_ObjectPool.h"
 #endif
-
-// refs
-class ENGINE_API CEnvironment;
 
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API IGame_Persistent	: 

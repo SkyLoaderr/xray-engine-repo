@@ -109,6 +109,7 @@ void CEnvDescriptor::load	(LPCSTR S)
 	far_plane				= pSettings->r_float	(S,"far_plane");
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
+	rain_density			= pSettings->r_float	(S,"rain_density");
 	ambient					= pSettings->r_fvector3	(S,"ambient");
 	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
 	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
@@ -128,6 +129,7 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	fog_density				= fi*A.fog_density + f*B.fog_density;
 	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
 	fog_far					= 0.95f * far_plane;
+	rain_density			= fi*A.rain_density + f*B.rain_density;
 	ambient.lerp			(A.ambient,B.ambient,f);
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
@@ -209,8 +211,10 @@ void CEnvironment::RenderFirst	()
 	*/
 }
 
-void CEnvironment::RenderLast	()
+void CEnvironment::RenderLast		()
 {
 //	if (psEnvFlags.test(effSunGlare))
 //		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
+
+	eff_Rain.Render					();
 }

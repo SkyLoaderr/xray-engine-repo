@@ -1,9 +1,11 @@
 #ifndef EnvironmentH
 #define EnvironmentH
 
-class ENGINE_API CLensFlare;
-class ENGINE_API IRender_Visual;
-class ENGINE_API CInifile;
+#include "xr_efflensflare.h"
+#include "rain.h"
+
+class ENGINE_API	IRender_Visual;
+class ENGINE_API	CInifile;
 
 class ENGINE_API	CEnvDescriptor
 {
@@ -21,13 +23,13 @@ public:
 	float				fog_near;		// C
 	float				fog_far;		// C
 
+	float				rain_density;
+
 	Fvector3			ambient;
 	Fvector3			lmap_color;
 	Fvector3			hemi_color;
 	Fvector3			sun_color;
 	Fvector3			sun_dir;
-
-	CLensFlare*			lens_flare;
 
 	void				load		(LPCSTR sect);
 	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f);
@@ -41,6 +43,8 @@ public:
 	xr_vector<CEnvDescriptor>	Palette;
 	ref_shader					sh_2sky;
 	ref_geom					sh_2geom;
+	CEffect_Rain				eff_Rain;
+	CLensFlare					eff_LensFlare;
 public:
 					CEnvironment		();
 					~CEnvironment		();
@@ -55,8 +59,5 @@ public:
 
 ENGINE_API extern Flags32	psEnvFlags;
 ENGINE_API extern float		psGravity;
-
-#endif //EnvironmentH
-y;
 
 #endif //EnvironmentH
