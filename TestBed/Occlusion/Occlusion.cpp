@@ -70,8 +70,17 @@ void line	( int x1, int y1, int x2, int y2 )
 }
 
 float rad(float a) { return a*3.14159265358f / 180.f; }
-const float p_c = 32.7f;
-const float p_r = 30.4f;
+const float p_c		= 32.7f;
+const float p_r		= 25.4f;
+const float p_r2	= 30.4f;
+
+void edges(occTri& T)
+{
+	// draw edges
+	line			(int(T.raster[0].x*scale),int(T.raster[0].y*scale),int(T.raster[1].x*scale),int(T.raster[1].y*scale));
+	line			(int(T.raster[1].x*scale),int(T.raster[1].y*scale),int(T.raster[2].x*scale),int(T.raster[2].y*scale));
+	line			(int(T.raster[2].x*scale),int(T.raster[2].y*scale),int(T.raster[0].x*scale),int(T.raster[0].y*scale));
+}
 int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
@@ -81,24 +90,32 @@ int __cdecl main	(int argc, char* argv[])
 		float		a0	= rad(test*5.f);
 		float		a1	= rad(test*5.f + 60.f);
 		float		a2	= rad(test*5.f + 100.f);
+		float		a3	= rad(test*5.f + 30.f);
 		
 		// setup tri
-		occTri	T;
-		T.raster[0].x	= p_c + p_r*cosf(a0);
-		T.raster[0].y	= p_c + p_r*sinf(a0);
-		T.raster[0].z	= 0.01f;
+		occTri	T1,T2;
+		T1.raster[0].x	= p_c + p_r*cosf(a0);
+		T1.raster[0].y	= p_c + p_r*sinf(a0);
+		T1.raster[0].z	= 0.01f;
 		
-		T.raster[1].x	= p_c + p_r*cosf(a1);
-		T.raster[1].y	= p_c + p_r*sinf(a1);
-		T.raster[1].z	= 0.1f;
+		T1.raster[1].x	= p_c + p_r*cosf(a1);
+		T1.raster[1].y	= p_c + p_r*sinf(a1);
+		T1.raster[1].z	= 0.1f;
 		
-		T.raster[2].x	= p_c + p_r*cosf(a2);
-		T.raster[2].y	= p_c + p_r*sinf(a2);
-		T.raster[2].z	= 0.99f;
+		T1.raster[2].x	= p_c + p_r*cosf(a2);
+		T1.raster[2].y	= p_c + p_r*sinf(a2);
+		T1.raster[2].z	= 0.99f;
+
+		T2 = T1;
+		T2.raster[2].x	= p_c + p_r2*cosf(a3);
+		T2.raster[2].y	= p_c + p_r2*sinf(a3);
+		T2.raster[2].z	= 0.99f;
+		
 		
 		// draw tri
 		occ.clear		();
-		occ.rasterize	(&T);
+		occ.rasterize	(&T1);
+		occ.rasterize	(&T2);
 		occ.propagade	();
 		
 		// copy into surface
@@ -120,11 +137,8 @@ int __cdecl main	(int argc, char* argv[])
 					}
 			}
 		}
-		
-		// draw edges
-		line			(int(T.raster[0].x*scale),int(T.raster[0].y*scale),int(T.raster[1].x*scale),int(T.raster[1].y*scale));
-		line			(int(T.raster[1].x*scale),int(T.raster[1].y*scale),int(T.raster[2].x*scale),int(T.raster[2].y*scale));
-		line			(int(T.raster[2].x*scale),int(T.raster[2].y*scale),int(T.raster[0].x*scale),int(T.raster[0].y*scale));
+		edges(T1);
+		edges(T2);
 		
 		// save
 		char name[256];
