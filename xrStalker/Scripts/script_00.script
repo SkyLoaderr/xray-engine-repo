@@ -85,6 +85,10 @@ function main()
 	wait(1000)			
 
 		if stalkers_already_saw_actor == false then
+
+			printf("if")
+			flush()
+
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
