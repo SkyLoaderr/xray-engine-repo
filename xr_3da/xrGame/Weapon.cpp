@@ -432,7 +432,7 @@ void CWeapon::Update		(DWORD dT)
 		vPosition.set		(svTransform.c);
 	}
 	*/
-
+  
 	// Inherited
 	inherited::Update		(dT);
 }
