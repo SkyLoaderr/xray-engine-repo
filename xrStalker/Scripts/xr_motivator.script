@@ -108,16 +108,19 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
 	printf("motivator_binder:net_spawn(): self.object:name()='%s'", self.object:name())
+
+	if not object_binder.net_spawn(self, sobject) then
+		return false
+	end
+
 	local sim = alife()
 	if sim ~= nil then 
 		xr_spawner.spawn(sobject)
 	end
 
-	local r = object_binder.net_spawn(self, sobject)
-
 	db.add_obj(self.object)
 
-	return r
+	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
