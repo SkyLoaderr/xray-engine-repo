@@ -4,22 +4,28 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "../UI.h"
+#include "../string_table.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 const char * const STATS_XML = "stats.xml";
 
-//-----------------------------------------------------------------------------/
-//  Ctor and Dtor
-//-----------------------------------------------------------------------------/
+//////////////////////////////////////////////////////////////////////////
+
 CUIStatsWnd::CUIStatsWnd()
 	: m_uHighlightedItem(0xffffffff)
 {
 	Init();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUIStatsWnd::~CUIStatsWnd()
 {
 
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatsWnd::Init()
 {
@@ -41,33 +47,17 @@ void CUIStatsWnd::Init()
 	xml_init.InitListWnd(uiXml, "list", 0, &UIStatsList);
 	UIStatsList.SetMessageTarget(this);
 	UIStatsList.EnableScrollBar(true);
-//	UIStatsList.EnableActiveBackground(true);
 
-//	UIFrameWnd.AttachChild(&UIBtn);
-//	xml_init.InitButton(uiXml, "button", 0, &UIBtn);
+	xml_init.InitMultiTextStatic(uiXml, "headers_mt_static", 0, &UIHeader);
+	UIFrameWnd.AttachChild(&UIHeader);
 
-	// TEST!!! Пробуем добавлять элементы
-/*	CUIStatsListItem *pSLItem;
-
-	pSLItem = AddItem();
-	pSLItem->FieldsVector[0]->SetText("NAME: ");
-	pSLItem->FieldsVector[1]->SetText("DreamCatcher");
-	pSLItem->FieldsVector[2]->SetText("Frags: 0");
-
-	pSLItem = AddItem();
-	pSLItem->FieldsVector[0]->SetText("NAME: ");
-	pSLItem->FieldsVector[1]->SetText("Piggy");
-	pSLItem->FieldsVector[2]->SetText("Frags: 5");
-
-	pSLItem = AddItem();
-	pSLItem->FieldsVector[0]->SetText("NAME: ");
-	pSLItem->FieldsVector[1]->SetText("Hubba-Bubba");
-	pSLItem->FieldsVector[2]->SetText("Frags: 6");
-
-	SelectItem(0);
-	pSLItem->SetSubItemColor(0, 0xff0000ff);
-*/
+	SetHeaderColumnText(0, "Name");
+	SetHeaderColumnText(1, "Frags");
+	SetHeaderColumnText(2, "Deaths");
+	SetHeaderColumnText(3, "ping");
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 CUIStatsListItem * CUIStatsWnd::AddItem()
 {
@@ -82,6 +72,8 @@ CUIStatsListItem * CUIStatsWnd::AddItem()
 //	pNewItem->SetMessageTarget(this);
 	return pNewItem;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 CUIStatsListItem * CUIStatsWnd::FindFrom(const u32 beg_pos, const char *strCaption)
 {
@@ -100,6 +92,8 @@ CUIStatsListItem * CUIStatsWnd::FindFrom(const u32 beg_pos, const char *strCapti
 	return NULL;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatsWnd::RemoveItemFrom(const u32 beg_pos, const char *strCaption)
 {
 	if (CUIStatsListItem *pSLItem = FindFrom(beg_pos, strCaption))
@@ -108,23 +102,7 @@ void CUIStatsWnd::RemoveItemFrom(const u32 beg_pos, const char *strCaption)
 	}
 }
 
-//void CUIStatsWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
-//{
-//	if (CUIListItem::LBUTTON_DOWN == msg)
-//	{
-//		if (dynamic_cast<CUIStatsListItem*>(pWnd))
-//			HighlightItem(dynamic_cast<CUIStatsListItem*>(pWnd)->GetIndex());
-//		
-//			RemoveItemFrom(1, "Piggy");
-//			CUIStatsListItem *pSLItem2 = ReFrom(0, "DreamCatcher");
-//			CUIStatsListItem *pSLItem = AddItem();
-//
-//			pSLItem->FieldsVector[0]->SetText(pSLItem2->FieldsVector[0]->GetText());
-//			pSLItem->FieldsVector[1]->SetText(pSLItem2->FieldsVector[1]->GetText());
-//			pSLItem->FieldsVector[2]->SetText(pSLItem2->FieldsVector[2]->GetText());
-//	}
-//	inherited::SendMessage(pWnd, msg, pData);
-//}
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatsWnd::HighlightItem(const u32 uItem)
 {
@@ -139,15 +117,25 @@ void CUIStatsWnd::HighlightItem(const u32 uItem)
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatsWnd::SelectItem(const u32 uItem)
 {
 	R_ASSERT(static_cast<int>(uItem) < UIStatsList.GetSize());
 	UIStatsList.SetFocusedItem(static_cast<signed int>(uItem));
 }
 
-//-----------------------------------------------------------------------------/
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatsWnd::SetHeaderColumnText(const u32 headerItem, const ref_str &text)
+{
+	UIHeader.GetPhraseByIndex(headerItem)->str = CStringTable()(text);
+}
+
+//////////////////////////////////////////////////////////////////////////
 //  CUIStatsListItem - класс элемента списка в листе
-//-----------------------------------------------------------------------------/
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatsListItem::XmlInit(const char *path, CUIXml &uiXml)
 {
 	CUIXmlInit	xml_init;
@@ -166,10 +154,13 @@ void CUIStatsListItem::XmlInit(const char *path, CUIXml &uiXml)
 	{
 		pButton = xr_new<CUIButton>();
 		xml_init.InitStatic(uiXml, "static", i, pButton);
+		pButton->SetNewRenderMethod(true);
 		AttachChild(pButton);
 		FieldsVector.push_back(pButton);
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatsListItem::Highlight(bool bHighlight)
 {
@@ -178,6 +169,8 @@ void CUIStatsListItem::Highlight(bool bHighlight)
 		(*it)->HighlightItem(bHighlight);
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatsListItem::SetSubItemColor(u32 uItemIndex, u32 uColor)
 {

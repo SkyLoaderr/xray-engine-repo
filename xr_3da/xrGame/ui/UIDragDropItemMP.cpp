@@ -190,6 +190,6 @@ CUIDragDropItemMP::AddonIDs CUIDragDropItemMP::IsOurAddon(CUIDragDropItemMP * pP
 
 void CUIDragDropItemMP::SetSlot(int slot)
 {
-	R_ASSERT(slot < MP_SLOTS_NUM || slot == static_cast<u32>(-1));
+	R_ASSERT(slot < MP_SLOTS_NUM || slot == static_cast<u32>(-1) || slot == WEAPON_BOXES_SLOT);
 	slotNum = slot; 
 }

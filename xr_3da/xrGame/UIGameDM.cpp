@@ -501,6 +501,7 @@ void		CUIGameDM::ClearBuyMenu			()
 	if (!pCurBuyMenu) return;
 	pCurBuyMenu->ClearSlots();
 	pCurBuyMenu->ClearRealRepresentationFlags();
+	pCurBuyMenu->InitInventory();
 };
 
 void		CUIGameDM::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)

@@ -7,27 +7,22 @@
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "UISkinSelector.h"
-
-#include "../uigamesp.h"
 #include "../hudmanager.h"
-
-#include "../WeaponAmmo.h"
-#include "../CustomOutfit.h"
-#include "../ArtifactMerger.h"
+#include "UISkinSelector.h"
+#include "../uigamesp.h"
 #include "../level.h"
-
-#include "../script_space.h"
-#include "../script_process.h"
-
 #include "UIInventoryUtilities.h"
-using namespace InventoryUtilities;
-
 #include "../InfoPortion.h"
 #include "../game_cl_base.h"
+#include "../string_table.h"
 
-//const int	BELT_SLOT		= 5;
-//const int	MP_SLOTS_NUM	= 8;
+#include <boost/array.hpp>
+
+//////////////////////////////////////////////////////////////////////////
+
+using namespace InventoryUtilities;
+
+//////////////////////////////////////////////////////////////////////////
 
 #define MAX_ITEMS	70
 
@@ -41,6 +36,8 @@ const u8			uIndicatorHeight		= 27;
 const float			SECTION_ICON_SCALE		= 4.0f/5.0f;
 const char * const	BUY_WND_XML_NAME		= "inventoryMP_new2.xml";
 const float			fRealItemSellMultiplier	= 0.5f;
+const char * const	weaponFilterName		= "weapon_class";
+const char * const	BUY_MP_ITEM_XML			= "buy_mp_item.xml";
 
 int			g_iOkAccelerator, g_iCancelAccelerator;
 
@@ -59,6 +56,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	m_pCurrentDragDropItem = NULL;
 //	m_pItemToUpgrade = NULL;
+	m_iMoneyAmount = 10000;
 
 	m_iUsedItems	= 0;
 	m_iIconTextureY	= 0;
@@ -167,6 +165,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	UIBtnCancel.SetTextAlign(CGameFont::alCenter);
 	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
 
+	// Последний лист является списком ящиков оружия (тяжелое, снайперское, штурмовое, и т.д.)
 	for (int i = 0; i < 20; ++i)
 	{
 		CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
@@ -182,15 +181,10 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
 	}
-	// 1 дополнительный лист для аддонов к оружию
-//	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
-//	R_ASSERT(pNewDDList);
-//	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
-//	m_WeaponSubBags.push_back(pNewDDList);
-//	pNewDDList->SetCheckProc(BagProc);
-//	pNewDDList->SetMessageTarget(this);
 	// Заполняем массив со списком оружия
 	ReInitItems(strSectionName);
+	// Инициализируем ящички с оружием
+	InitWeaponBoxes();
 
 	//Списки Drag&Drop
 	AttachChild(&UITopList[BELT_SLOT]);
@@ -252,6 +246,93 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
 	UIOutfitIcon.SetTextureScale(0.65f);
 	UIOutfitIcon.ClipperOn();
+
+	UIDescWnd.AttachChild(&UIItemInfo);
+	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
+	UIItemInfo.DetachChild(&UIItemInfo.UI3dStatic);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+struct BoxInfo
+{
+	ref_str		texName;
+	ref_str		filterString;
+	int			gridWidth, gridHeight;
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::InitWeaponBoxes()
+{
+	typedef boost::array<BoxInfo, 5> Boxes;
+	Boxes boxesDefs;
+
+	// Заполняем массив информации о ящиках
+	boxesDefs[0].texName		= "ui\\ui_inv_box_assault_rifles";
+	boxesDefs[0].filterString	= "assault_rifle";
+	boxesDefs[0].gridHeight		= 2;
+	boxesDefs[0].gridWidth		= 5;
+
+	boxesDefs[1].texName		= "ui\\ui_inv_box_heavy_weapons";
+	boxesDefs[1].filterString	= "heavy_weapon";
+	boxesDefs[1].gridHeight		= 2;
+	boxesDefs[1].gridWidth		= 6;
+
+	boxesDefs[2].texName		= "ui\\ui_inv_box_misc_weapons";
+	boxesDefs[2].filterString	= "misc";
+	boxesDefs[2].gridHeight		= 2;
+	boxesDefs[2].gridWidth		= 5;
+
+	boxesDefs[3].texName		= "ui\\ui_inv_box_sniper_rifles";
+	boxesDefs[3].filterString	= "sniper_rifle";
+	boxesDefs[3].gridHeight		= 2;
+	boxesDefs[3].gridWidth		= 5;
+
+	boxesDefs[4].texName		= "ui\\ui_inv_box_sub_machine_guns";
+	boxesDefs[4].filterString	= "submachine_gun";
+	boxesDefs[4].gridHeight		= 2;
+	boxesDefs[4].gridWidth		= 4;
+
+	// Последнему листу ассоциируем ящики с оружием
+	CUIDragDropList *pBoxesList = m_WeaponSubBags.back();
+
+	// Пробегаемся по всем ящичкам и создаем соответсвующие им айтемы
+	for (u32 i = 0; i < boxesDefs.size(); ++i)
+	{
+		CUIDragDropItemMP &UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
+//		UIDragDropItem.SetShader(GetMPCharIconsShader());
+		UIDragDropItem.CUIStatic::Init(*boxesDefs[i].texName, 0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
+		UIDragDropItem.SetTextureScale(SECTION_ICON_SCALE);
+		UIDragDropItem.SetColor(0xffffffff);
+		UIDragDropItem.EnableDragDrop(false);
+
+		UIDragDropItem.SetSlot(WEAPON_BOXES_SLOT);
+		UIDragDropItem.SetSectionGroupID(WEAPON_BOXES_SLOT);
+		UIDragDropItem.SetPosInSectionsGroup(i);
+
+		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+
+		UIDragDropItem.SetGridHeight(boxesDefs[i].gridHeight);
+		UIDragDropItem.SetGridWidth(boxesDefs[i].gridWidth);
+		UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+			0, 0,
+			boxesDefs[i].gridWidth * INV_GRID_WIDTH - INV_GRID_WIDTH,
+			boxesDefs[i].gridHeight * INV_GRID_HEIGHT - INV_GRID_HEIGHT / 2);
+
+		// Устанавливаем в качестве имени секции для ящика имя типа оружия, по которому будет
+		// выполняться сортировка
+		UIDragDropItem.SetSectionName(*boxesDefs[i].filterString);
+
+		pBoxesList->AttachChild(&UIDragDropItem);
+		UIDragDropItem.SetAutoDelete(false);
+
+		// Сохраняем указатель на лист "хозяин" вещи
+		UIDragDropItem.SetOwner(pBoxesList);
+		// Задаем специальную дополнительную функцию отрисовки, для
+		// отображения номера оружия в углу его иконки
+		UIDragDropItem.SetCustomUpdate(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -294,7 +375,7 @@ void CUIBuyWeaponWnd::InitBackgroundStatics()
 		pSP->outY = r.top - UIMTStatic.GetAbsoluteRect().top + captionShiftY;
 		pSP->effect.SetFont(pCaptionF);
 		pSP->effect.SetTextColor(captionC);
-		pSP->str = captionsArr[i - 1];
+		pSP->str = CStringTable()(captionsArr[i - 1]);
 
 		++i;
 	}
@@ -335,6 +416,10 @@ void CUIBuyWeaponWnd::ReInitItems	(LPCSTR strSectionName)
 void CUIBuyWeaponWnd::InitInventory() 
 {
 	m_pMouseCapturer = NULL;
+	MenuLevelDown();
+	MenuLevelDown();
+	ClearWpnSubBag(RIFLE_SLOT);
+	FillWpnSubBag(RIFLE_SLOT);
 }  
 
 //проверка на помещение инвентаря в слоты
@@ -635,6 +720,12 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			m_pCurrentDragDropItem->Rescale(1.0f);
 		}
+
+		// Disable highliht in all DD lists
+		for (int i = 0; i < PDA_SLOT; ++i)
+		{
+			UITopList[i].HighlightAllCells(false);
+		}
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
@@ -643,36 +734,35 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_pCurrentDragDropItem = dynamic_cast<CUIDragDropItemMP*>(pWnd);
 		R_ASSERT(m_pCurrentDragDropItem);
 
+		// Проверяем, а не находимся ли мы на уровне ящиков?
+		if (m_pCurrentDragDropItem->GetParent() == m_WeaponSubBags.back())
+		{
+			ApplyFilter(RIFLE_SLOT, weaponFilterName, m_pCurrentDragDropItem->GetSectionName());
+			if (mlRoot == m_mlCurrLevel) MenuLevelUp();
+			OnKeyboard(m_pCurrentDragDropItem->GetPosInSectionsGroup() + 2, KEY_PRESSED);
+		}
+
 		// Проверяем на возможность покупки этой вещи
 		if (m_pCurrentDragDropItem->IsDragDropEnabled())
 		{
 			CUIDragDropItemMP::AddonIDs addonID;	
 			pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
 
-			// проверяем, а не является ли эта вещь чьим-то аддоном?
-//			if (pAddonOwner)
-//			{
-//				pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
-//			}
-			// Если мы нашли уже аддон, то ничего дальше  деалать не надо
-//			else
-			{
-				// "Поднять" вещь для освобождения занимаемого места
-				SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
+			// "Поднять" вещь для освобождения занимаемого места
+			SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
 	
-				//попытаться закинуть элемент в слот, рюкзак или на пояс
-				if(!ToSlot())
-					if(!ToBelt())
-						if(!ToBag())
-						//если нельзя, то просто упорядочить элемент в своем списке
-						{
-							((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-								DetachChild(m_pCurrentDragDropItem);
-							((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-								AttachChild(m_pCurrentDragDropItem);
-							m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScale());
-						}
-			}
+			//попытаться закинуть элемент в слот, рюкзак или на пояс
+			if(!ToSlot())
+				if(!ToBelt())
+					if(!ToBag())
+					//если нельзя, то просто упорядочить элемент в своем списке
+					{
+						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
+							DetachChild(m_pCurrentDragDropItem);
+						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
+							AttachChild(m_pCurrentDragDropItem);
+						m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScale());
+					}
 		}
 	}
 	//по нажатию правой кнопки
@@ -720,23 +810,38 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if (&UIWeaponsTabControl == pWnd && CUITabControl::TAB_CHANGED == msg)
 	{
-		if (mlAddons == m_mlCurrLevel)
+//		if (mlAddons == m_mlCurrLevel)
+//		{
+//			MenuLevelDown();
+//		}
+		if (RIFLE_SLOT == *static_cast<int*>(pData) + 1)
 		{
-			MenuLevelDown();
+			m_WeaponSubBags.back()->Show(false);
+			UIBagWnd.DetachAll();
 		}
-		else 
+		else
 		{
 			m_WeaponSubBags[*static_cast<int*>(pData) + 1]->Show(false);
-			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
 			UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData) + 1]);
-			UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
-			SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
-
-			if (mlRoot == m_mlCurrLevel)
-			{
-				MenuLevelUp();
-			}
 		}
+
+		if (RIFLE_SLOT == UIWeaponsTabControl.GetActiveIndex() + 1)
+		{
+			UIBagWnd.AttachChild(m_WeaponSubBags.back());
+			m_WeaponSubBags.back()->Show(true);
+		}
+		else
+		{
+			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
+			UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
+		}
+			
+		SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
+
+//			if (mlRoot == m_mlCurrLevel)
+//			{
+//				MenuLevelUp();
+//			}
 	}
 	// Кнопки ОК и Отмена
 	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg && CanBuyAllItems())
@@ -844,6 +949,7 @@ void CUIBuyWeaponWnd::Update()
 				cost = static_cast<int>(cost * fRealItemSellMultiplier);
 			sprintf(str, "%i", cost);
 			UIItemCost.SetText(str);
+			FillItemInfo(m_pCurrentDragDropItem);
 		}
 		else
 			UIItemCost.SetText("");
@@ -889,7 +995,7 @@ void CUIBuyWeaponWnd::DropItem()
 
 void CUIBuyWeaponWnd::Show() 
 { 
-	InitInventory();
+	m_pMouseCapturer = NULL;
 	inherited::Show();
 
 	if (Game().type != GAME_SINGLE)
@@ -1559,7 +1665,7 @@ const u8 CUIBuyWeaponWnd::GetBeltSize()
 
 bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 {
-	if (lvl < mlRoot || lvl > mlAddons) return false;
+	if (lvl < mlRoot || lvl > mlWpnSubType) return false;
 	// Если уровень назначения не тот на котором мы сейчас
 	if (m_mlCurrLevel != lvl)
 	{
@@ -1568,27 +1674,28 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 		case mlRoot:
 			SwitchIndicator(false, 0);
 			break;
+		// Второй уровень - уровень коробок. Если у данного типа вооружения нет подразделения на
+		// на коробки, то перескакиваем автоматически на уровень выбора оружия
+		case mlBoxes:
+			if (RIFLE_SLOT == UIWeaponsTabControl.GetActiveIndex() + 1)
+			{
+				UIBagWnd.DetachAll();
+				UIBagWnd.AttachChild(m_WeaponSubBags.back());
+				m_WeaponSubBags.back()->HighlightAllCells(false);
+				// Зажигаем нашу зеленую лампочку
+				SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
+				break;
+			}
+			lvl = static_cast<MENU_LEVELS>(mlWpnSubType - m_mlCurrLevel);
+			MenuLevelJump(lvl);
+			break;
 		case mlWpnSubType:
 			// Зажигаем нашу зеленую лампочку
 			SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
-			// если пришли с mlAddons
-			if (m_mlCurrLevel == mlAddons)
-			{
-//				ClearWpnSubBag(m_WeaponSubBags.size() -1);
-				// Спрятали
-				m_WeaponSubBags.back()->DropAll();
-				m_WeaponSubBags.back()->Show(false);
-				m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
-				UIBagWnd.DetachChild(m_WeaponSubBags.back());
-				UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
-			}
-			break;
-		case mlAddons:
-			// Отображаем лист с аддонами
-			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(false);
-			m_WeaponSubBags.back()->Show(true);
-			UIBagWnd.DetachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
-			UIBagWnd.AttachChild(m_WeaponSubBags.back());
+			// Спрятали
+			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
+			UIBagWnd.DetachChild(m_WeaponSubBags.back());
+			UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 			break;
 		}
 
@@ -1614,11 +1721,29 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 				MenuLevelUp();
 		}
 		break;
-	// Второй уровень - выбор конкретного оружия в данной группе
+
+	case mlBoxes:
+
+		if (dik < DIK_0 && dik > DIK_ESCAPE)
+		{
+			for (DRAG_DROP_LIST_it it = m_WeaponSubBags.back()->GetDragDropItemsList().begin(); it != m_WeaponSubBags.back()->GetDragDropItemsList().end(); ++it)
+			{
+				CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it);
+				R_ASSERT(pDDItemMP);
+				if (static_cast<u32>(dik - 2) == pDDItemMP->GetPosInSectionsGroup())
+				{
+					ApplyFilter(RIFLE_SLOT, weaponFilterName, pDDItemMP->GetSectionName());
+					MenuLevelUp();
+					break;
+				}
+			}
+		}
+		break;
+	// Третий уровень - выбор конкретного оружия в данной группе
 	case mlWpnSubType:
 
 		// Быстрая проверка на возможность дальнейшего плодотворного сотрудничетва
-		if (dik < DIK_0)
+		if (dik < DIK_0 && dik > DIK_ESCAPE)
 		{
 			// Глубокий (более медленный и точный) поиск
 			if (m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->GetDragDropItemsList().size() >= static_cast<u32>(dik - 2))
@@ -1633,33 +1758,16 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 					{
 						// Муваем ее в слот
 						SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+						MenuLevelDown();
+						MenuLevelDown();
 						return true;
-						break;
 					}
 				}
 			}
 		}
 		break;
-	// Третий уровень - выбор аддона к оружию, если таковые есть
-//	case mlAddons:
-//		if (dik > DIK_ESCAPE && dik < DIK_4)
-//		{
-//			// Определяем указатель на аддон по нажатой кнопке
-//
-//			// Лист с аддонами у нас всегда последний
-//			DRAG_DROP_LIST_it it = m_WeaponSubBags.back()->GetDragDropItemsList().begin();
-//			// Сдвигаем итератор на нужный элемент
-//			std::advance(it, dik - 2);
-//			// Теперь ищем оружие - хозяина аддона
-//			CUIDragDropItemMP::AddonIDs ID;
-//			CUIDragDropItemMP *pDDItemMP = IsItemAnAddon(static_cast<CUIDragDropItemMP*>(*it), ID);
-//
-//			// R_ASSERT(pDDItemMP);
-//			if (!pDDItemMP) return false;
-//
-//			pDDItemMP->AttachDetachAddon(ID, 0 == pDDItemMP->m_AddonInfo[ID].iAttachStatus);
-//		}
-//		break;
+	default:
+		NODEFAULT;
 	}
 
 	if (DIK_ESCAPE == dik)
@@ -1701,22 +1809,13 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
 
-//	RECT rect = pDDItemMP->GetAbsoluteRect();
 	int left	= pDDItemMP->GetUIStaticItem().GetPosX();
 	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
-
-//	HUD().OutText(static_cast<const void*>(pDDItem), pDDItem->GetFont(), float(rect.left), 
-//		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
-//		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
 
 	pDDItemMP->GetFont()->SetColor(0xffffffff);
 	HUD().OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(left), 
 		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
 		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
-
-//	HUD().OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(rect.left), 
-//		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
-//		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
 
 	pDDItemMP->GetFont()->OnRender();
 }
@@ -1793,7 +1892,7 @@ const u8 CUIBuyWeaponWnd::GetCurrentSuit()
 void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 {
 	// Пробегаемся по всем вещам и проверяем иx на возможность покупки
-	for (WEAPON_TYPES_it it = m_WeaponSubBags.begin(); it != m_WeaponSubBags.end(); ++it)	
+	for (WEAPON_TYPES_it it = m_WeaponSubBags.begin(); it != m_WeaponSubBags.end() - 1; ++it)	
 	{
 		for (DRAG_DROP_LIST_it it2 = (*it)->GetDragDropItemsList().begin(); it2 != (*it)->GetDragDropItemsList().end(); ++it2)
 		{
@@ -2158,4 +2257,87 @@ bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) con
 
 	std::string str = pPossibleAddon->GetSectionName();
 	return str.find("addon") != std::string::npos;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::ApplyFilter(int slotNum, const ref_str &name, const ref_str &value)
+{
+	CUIDragDropList *shop = m_WeaponSubBags[slotNum];
+
+	// Сначала восстанавливаем полный список оружия
+	ClearWpnSubBag(slotNum);
+	FillWpnSubBag(slotNum);
+
+	// Если параметры name и value пусты, то ничего не делаем. Это эквивалентно отмене фильтра
+	if (!name || !value) return;
+
+	int idx = 0;
+	// Пробегаемся по всему списку и перекидываем в последний список оружие затребованного типа
+	for (DRAG_DROP_LIST_it it = shop->GetDragDropItemsList().begin(); it != shop->GetDragDropItemsList().end();)
+	{
+		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it++);
+		R_ASSERT(pDDItemMP);
+
+		if (0 != xr_strcmp(value, pSettings->r_string(pDDItemMP->GetSectionName(), *name)))
+		{
+			// Нашли оружие не соответствующее фильтру
+			RemoveWeapon(shop, pDDItemMP);
+		}
+		else
+		{
+			if (!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty() &&
+				0 == xr_strcmp(pDDItemMP->GetSectionName(),	dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front())->GetSectionName()))
+			{
+				RemoveWeapon(shop, pDDItemMP);
+				++idx;
+			}
+			else
+			{
+				pDDItemMP->SetPosInSectionsGroup(idx++);
+			}
+		}
+	}
+
+	shop->RearrangeItems();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::RemoveWeapon(CUIDragDropList *shop, CUIDragDropItem *item)
+{
+	shop->DetachChild(item);
+
+	for (int i = 0; i < m_iUsedItems; ++i)
+	{
+		if (&m_vDragDropItems[i] == item)
+		{
+			m_iEmptyIndexes.insert(i);
+			break;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
+{
+	R_ASSERT(pDDItemMP);
+	CStringTable stbl;
+	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_name"))
+	{
+		UIItemInfo.UIName.SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
+	}
+	else
+		UIItemInfo.UIName.SetText("");
+
+
+	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_weight"))
+	{
+		string64 buf;
+		strconcat(buf, *stbl("Weight"), ": ", pSettings->r_string(pDDItemMP->GetSectionName(), "inv_weight"));
+		UIItemInfo.UIWeight.SetText(buf);
+	}
+	else
+		UIItemInfo.UIWeight.SetText("");
 }

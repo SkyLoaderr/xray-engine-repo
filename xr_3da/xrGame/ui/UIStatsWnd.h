@@ -14,6 +14,7 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIButton.h"
+#include "UIMultiTextStatic.h"
 
 DEF_VECTOR (FIELDS_VECTOR, CUIButton*)
 
@@ -47,16 +48,18 @@ public:
 	CUIStatsListItem * AddItem();
 	// Получить элемент, при п		омощи поиска в полях по строке. Можно искать
 	// элемент начиная с заданного номера
-	CUIStatsListItem * FindFrom(const u32 beg_pos, const char *strCaption);
+	CUIStatsListItem * FindFrom(u32 beg_pos, const char *strCaption);
 	// Удалить элемент в котором есть статик с текстом strCaption. В каждом Item'е поиск 
 	// начать с позиции beg_pos
-	void RemoveItemFrom(const u32 beg_pos, const char *strCaption);
+	void RemoveItemFrom(u32 beg_pos, const char *strCaption);
 	// Подсветить нужный элемент
-	void HighlightItem(const u32 uItem);
+	void HighlightItem(u32 uItem);
 	// Получить номер подсвеченого эл-та
 	u32	GetHighlightedItem() { return m_uHighlightedItem; }
 	// Выделить нужный элемент
-	void SelectItem(const u32 uItem);
+	void SelectItem(u32 uItem);
+	// Установить текст заголовка нужной колонки
+	void SetHeaderColumnText(u32 headerItem, const ref_str &text);
 	
 	RECT GetFrameRect () { return UIFrameWnd.GetWndRect();};
 	void RemoveItem (const u32 Index) {UIStatsList.RemoveItem(Index);};
@@ -68,6 +71,8 @@ protected:
 	CUIListWnd			UIStatsList;
 	// Подсвеченый элемент
 	u32					m_uHighlightedItem;
+	// Заголовок
+	CUIMultiTextStatic	UIHeader;
 };
 
 #endif

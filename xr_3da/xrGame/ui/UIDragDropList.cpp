@@ -87,6 +87,7 @@ void CUIDragDropList::DetachChild(CUIWindow* pChild)
 			RemoveItemFromGrid(pDragDropItem);
 			m_DragDropItemsList.remove(pDragDropItem);
 			ScrollBarRecalculate(false);
+			HighlightAllCells(false);
 		}
 	}
 
@@ -729,4 +730,18 @@ void CUIDragDropList::HighlightAllCells(bool on)
 			HighlightCell(i, j, on);
 		}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropList::RearrangeItems()
+{
+	for (u32 i = 0; i < m_vGridState.size(); ++i)
+		m_vGridState[i] = CELL_EMPTY;
+
+	for (DRAG_DROP_LIST_it it = m_DragDropItemsList.begin(); it != m_DragDropItemsList.end(); ++it)
+	{
+		PlaceItemInGrid(*it);
+	}
+	ScrollBarRecalculate(true);
 }

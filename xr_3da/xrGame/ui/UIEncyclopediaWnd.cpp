@@ -74,10 +74,11 @@ void CUIEncyclopediaWnd::Init()
 
 	AttachChild(&UIEncyclopediaInfoBkg);
 	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, &UIEncyclopediaInfoBkg);
-
 	UIEncyclopediaInfoBkg.AttachChild(&UIEncyclopediaInfoHeader);
+
 	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, &UIEncyclopediaInfoHeader);
 	UIEncyclopediaIdxBkg.AttachChild(&UIIdxList);
+	UIIdxList.EnableScrollBar(true);
 
 	UIEncyclopediaInfoBkg.AttachChild(&UIArticleHeader);
 	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleHeader);

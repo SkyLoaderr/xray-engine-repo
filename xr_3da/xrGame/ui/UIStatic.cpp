@@ -104,10 +104,30 @@ void CUIStatic::Update()
 void CUIStatic::WordOut(const RECT &rect)
 {
 	//вывести слово
+
+	CGameFont *pFont = GetFont();
+	R_ASSERT(pFont);
+
 	if(new_word)
 	{
 		buf_str[word_length] = 0;
 		word_width = (int)GetFont()->SizeOf(&buf_str.front());
+
+		// If word splitting enable then cut text trail if it's length more then rect length
+		if (word_width > rect.right - rect.left)
+		{
+			int length = 0;
+			for (STRING_IT it = buf_str.begin(); it != buf_str.end(); ++it)
+			{
+				length = length + static_cast<int>(pFont->SizeOf(*it));
+				if (length > rect.right - rect.left)
+				{
+					*it = 0;
+					word_width = (int)GetFont()->SizeOf(&buf_str.front());
+					break;
+				}
+			}
+		}
 
 		if(curretX+word_width<GetWidth())
 		{
@@ -119,13 +139,13 @@ void CUIStatic::WordOut(const RECT &rect)
 		{
 			//перейти на новую строку
 			curretX =  word_width;
-   			curretY += (int)GetFont()->CurrentHeight();
+   			curretY += (int)pFont->CurrentHeight();
 
 			outX = 0;
 			outY = curretY;
 		}
 		
-		HUD().OutText(GetFont(), GetClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
+		HUD().OutText(pFont, GetClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
 					  static_cast<float>(rect.top + outY + m_iTextOffsetY),  &buf_str.front());
 		word_length = 0;
 		new_word = false;

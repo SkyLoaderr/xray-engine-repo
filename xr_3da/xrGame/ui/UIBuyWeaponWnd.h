@@ -5,19 +5,11 @@
 #pragma once
 
 #include "UIDialogWnd.h"
-#include "UIStatic.h"
-#include "UIButton.h"
-
-#include "UIDragDropItem.h"
-//#include "UIWpnDragDropItem.h"
-
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
-#include "UIArtifactMergerWnd.h"
-#include "UISleepWnd.h"
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
@@ -26,8 +18,9 @@
 #include "UIMultiTextStatic.h"
 #include "UIDragDropItemMP.h"
 
-#define 	BELT_SLOT		5
-#define 	MP_SLOTS_NUM	8
+#define 	BELT_SLOT			5
+#define 	MP_SLOTS_NUM		8
+#define		WEAPON_BOXES_SLOT	MP_SLOTS_NUM + 1
 
 extern const u32	cDetached;
 extern const u32	cAttached;
@@ -106,7 +99,7 @@ protected:
 	CUIPropertiesBox	UIPropertiesBox;
 
 	// разбивка всего оружия на отдельные DragDrop листы по категориям: пистолеты, автоматы, etc.
-	DEF_VECTOR (WEAPON_TYPES, CUIDragDropList*)
+	DEF_VECTOR			(WEAPON_TYPES, CUIDragDropList*)
 	WEAPON_TYPES		m_WeaponSubBags;
 
 	static const int MAX_ITEMS = 70;
@@ -116,6 +109,9 @@ protected:
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
 	CUIDragDropItemMP* m_pCurrentDragDropItem;
+
+	// Информация о вещи
+	CUIItemInfo UIItemInfo;
 
 	//функции, выполняющие согласование отображаемых окошек
 	//с реальным инвентарем
@@ -234,7 +230,7 @@ protected:
 	// 0) root			- меню уровня табконтрола
 	// 1) wpnsubtype	- меню уровня выбора оружия
 	// 2) addons		- меню уровня выбора аддонов, если оружие позволяет
-	enum MENU_LEVELS	{ mlRoot = 0, mlWpnSubType, mlAddons };
+	enum MENU_LEVELS	{ mlRoot = 0, mlBoxes, mlWpnSubType };
 	// Текущий уровень
 	MENU_LEVELS			m_mlCurrLevel;
 
@@ -279,6 +275,14 @@ protected:
 	// Params:	idx		- индекс в массиве оружия, который требуется проверить
 	// Return:	true если оружие находится в магазине.
 	bool		IsItemInShop(int idx);
+	
+	// Применить фильтр к секции с определенным оружием по заданной записи в ltx файле
+	void		ApplyFilter(int slotNum, const ref_str &name, const ref_str &value);
+	// Заполняем лист с ящиками
+	void		InitWeaponBoxes();
+	void		RemoveWeapon(CUIDragDropList *shop, CUIDragDropItem *item);
+	void		FillItemInfo(CUIDragDropItemMP *pDDItemMP);
+
 public:
 	// Проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
 	// возможности купить предыдущее оружие установленное в слотах, если нет денег.

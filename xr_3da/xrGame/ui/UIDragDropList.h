@@ -96,6 +96,10 @@ public:
 	// подсветку активной вещи
 	enum EMessage { REFRESH_ACTIVE_ITEM = 4999 };
 
+	// ќтсортировать элементы в листе, чтобы они компактно разместились в клиентской области
+	// листа
+	void RearrangeItems();
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
