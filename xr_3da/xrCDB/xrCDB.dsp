@@ -38,10 +38,10 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "Release"
+# PROP Output_Dir "x:\game\"
 # PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 0
-# PROP Target_Dir ""
+# PROP Target_Dir "x:\game\"
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /c
 # ADD CPP /nologo /G6 /Gz /MD /W3 /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -64,9 +64,9 @@ LINK32=link.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "Debug"
+# PROP Output_Dir "x:\game\"
 # PROP Intermediate_Dir "Debug"
-# PROP Target_Dir ""
+# PROP Target_Dir "x:\game\"
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD CPP /nologo /G6 /Gz /MDd /W3 /Gm /Gi /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRCDB_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
