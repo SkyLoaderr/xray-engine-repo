@@ -4,7 +4,7 @@
 // Name: 
 // Desc: Simple wrapper for critical section
 //-----------------------------------------------------------------------------
-class ENGINE_API CCriticalSection
+class CCriticalSection
 {
 public:
     CCriticalSection( DWORD spincount = 2000 )

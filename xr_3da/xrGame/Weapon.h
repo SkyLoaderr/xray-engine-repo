@@ -38,7 +38,6 @@ protected:
 public:
 	float			GetPrecision();
 protected:
-	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
 	CWeaponHUD*		m_pHUD;
 

@@ -68,6 +68,8 @@ CObject::CObject		( )
 	pSector						= 0;
 	SectorMode					= EPM_AUTO;
 
+	Parent						= 0;
+
 	NameObject					= 0;
 	NameSection					= 0;
 	dwMinUpdate					= 20;

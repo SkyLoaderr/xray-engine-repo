@@ -9,7 +9,7 @@
 #include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
-const	int		P_o_size	= 32;
+const	int		P_o_size	= 512;
 const	int		P_o_line	= P_rt_size/P_o_size;
 const	int		P_o_count	= P_o_line*P_o_line;
 const	float	P_distance	= 48;
@@ -248,7 +248,7 @@ void CLightProjector::render	()
 		
 		// Fill vertex buffer
 		DWORD C			=	0xffffffff, Offset;
-		DWORD _w	=	P_rt_size, _h = P_rt_size;
+		DWORD _w	=	P_rt_size/2, _h = P_rt_size/2;
 		FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
 		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;

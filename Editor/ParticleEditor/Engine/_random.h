@@ -1,7 +1,7 @@
 #ifndef _LOCAL_RAND
 #define _LOCAL_RAND
 
-class ENGINE_API CRandom
+class CRandom
 {
 private:
 	s32			holdrand;

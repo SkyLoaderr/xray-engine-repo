@@ -68,13 +68,20 @@ protected:
 	// Geometry xform
 	Fmatrix								svTransform;
 	Fmatrix								clTransform;
+
+	// Parentness
+	CObject*							Parent;
 public:
 	// Network
-	IC BOOL								Local()			{ return net_Local;		}
-	IC BOOL								Remote()		{ return !net_Local;	}
-	IC DWORD							ID()			{ return net_ID;		}
-	virtual BOOL						Ready()			{ return net_Ready; }		
-	
+	IC BOOL								Local			()					{ return net_Local;		}
+	IC BOOL								Remote			()					{ return !net_Local;	}
+	IC DWORD							ID				()					{ return net_ID;		}
+	virtual BOOL						Ready			()					{ return net_Ready;		}		
+
+	// Parentness
+	IC CObject*							H_Parent		()					{ return Parent;		}
+	IC CObject*							H_Root			()					{ return Parent?Parent->H_Root():this;	}
+
 	// Geometry xform
 	void								UpdateTransform	(void);
 	void								svCenter		(Fvector& C) const;
