@@ -67,7 +67,7 @@ public:
 			Msg("! there is no graph!");
 		else
 			if ((id1 != -1) && (id2 != -1))
-				if (max(id1,id2) > Level().AI.GraphHeader().dwVertexCount - 1)
+				if (max(id1,id2) > (int)Level().AI.GraphHeader().dwVertexCount - 1)
 					Msg("! there are only %d vertexes!",Level().AI.GraphHeader().dwVertexCount);
 				else
 					if (min(id1,id2) < 0)
