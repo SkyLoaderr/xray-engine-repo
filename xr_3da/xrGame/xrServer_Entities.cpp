@@ -235,6 +235,7 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	case CLSID_AI_RAT:			return new	xrSE_Enemy;
 	case CLSID_AI_SOLDIER:		return new	xrSE_Enemy;
 	case CLSID_AI_ZOMBY:		return new	xrSE_Enemy;
+	case CLSID_AI_CROW:			return new	xrSE_Enemy;
 	case CLSID_EVENT:			return new  xrSE_Event;
 	}
 	return 0;

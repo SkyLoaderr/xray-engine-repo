@@ -114,7 +114,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	// weapons
 	if (ini->ReadINT(section,"weapon_usage")) {
 		Weapons					= new CWeaponList(this);
-		LPCSTR S1 = ini->ReadSTRING(section,"bone_torso"),S2 = ini->ReadSTRING(section,"bone_head");
+		LPCSTR S1 = ini->ReadSTRING(section,"bone_torso_weapon"),S2 = ini->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 		Weapons->TakeItem		(CLSID_OBJECT_W_M134_en,0);
 	}
@@ -511,6 +511,7 @@ BOOL CCustomMonster::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	AI_Path.DestNode		= AI_NodeID;
 
+	eye_matrix.identity	();
 	if (Local())	
 	{
 		net_update		N;

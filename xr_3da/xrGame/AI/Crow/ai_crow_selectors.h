@@ -1,34 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zomby_selectors.h
-//	Created 	: 07.05.2002
-//  Modified 	: 07.05.2002
+//	Module 		: ai_crow_selectors.h
+//	Created 	: 13.05.2002
+//  Modified 	: 13.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Zomby"
+//	Description : AI Behaviour for monster "Crow"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_ZOMBY_SELECTORS__
-#define __XRAY_AI_ZOMBY_SELECTORS__
+#ifndef __XRAY_AI_CROW_SELECTORS__
+#define __XRAY_AI_CROW_SELECTORS__
 
 #include "..\\ai_monsters.h"
 
-class CZombySelectorAttack : public CAISelectorBase
+class CCrowSelectorFreeHunting : public CAISelectorBase
 {
 	public:
-		CZombySelectorAttack();
-		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
-};
-
-class CZombySelectorFreeHunting : public CAISelectorBase
-{
-	public:
-		CZombySelectorFreeHunting();
-		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
-};
-
-class CZombySelectorUnderFire : public CAISelectorBase
-{
-	public:
-		CZombySelectorUnderFire();
+		CCrowSelectorFreeHunting();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

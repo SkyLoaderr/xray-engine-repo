@@ -3,7 +3,7 @@
 //	Created 	: 07.05.2002
 //  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "ßùüèí"
+//	Description : AI Behaviour for monster "Zomby"
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef __XRAY_AI_ZOMBY__
@@ -69,7 +69,8 @@ class CAI_Zomby : public CCustomMonster
 		DWORD			m_dwHitInterval;
 		DWORD			m_dwAttackStartTime;
 		
-		float			m_fBlindness;
+		vector<SSubNode> tpFreeNeighbourNodes;
+		vector<SSubNode> tpSubNodes;
 
 		// finite state machine
 		stack<EZombyStates>	tStateStack;
@@ -96,6 +97,7 @@ class CAI_Zomby : public CCustomMonster
 		CZombySelectorUnderFire	SelectorUnderFire;
 
 		void SetDirectionLook(NodeCompressed *tNode);
+		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
 					   CAI_Zomby();
 		virtual		  ~CAI_Zomby();
@@ -112,8 +114,6 @@ class CAI_Zomby : public CCustomMonster
 		virtual void  net_Import				(NET_Packet* P);				// import from server
 		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action				( float dt );
-		virtual BOOL  Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-
 };
 		
 #endif

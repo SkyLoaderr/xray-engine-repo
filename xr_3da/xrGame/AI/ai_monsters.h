@@ -86,6 +86,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		CEntity*        m_tMe;
 		NodeCompressed* m_tpMyNode;
 		Fvector			m_tMyPosition;
+		Fvector			m_tDirection;
 		
 		// leader
 		CEntity*        m_tLeader;
@@ -122,6 +123,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		void vfAddCoverFromLeaderCost();
 		void vfAddCoverFromMemberCost();
 		void vfAddDeviationFromMemberViewCost();
+		void vfAddDeviationFromPreviousDirectionCost();
 		void vfAddDistanceToEnemyCost();
 		void vfAddDistanceToLeaderCost();
 		void vfAddDistanceToMemberCost();

@@ -2,6 +2,7 @@
 
 #include "entity.h"
 #include "custommonster_vistrack.h"
+#include "hudmanager.h"
 
 namespace AI {
 	void	VisiTrack::o_new(CObject* E)
@@ -25,6 +26,7 @@ namespace AI {
 	}
 	void	VisiTrack::o_update(objSET& seen, CEntity* parent, Fvector& P, float dt)
 	{
+		//Level().HUD()->outMessage(0xffffffff,"track","%d",track.size());	
 		if (seen.size()>1) 
 		{
 			std::sort		(seen.begin(),seen.end());
@@ -47,16 +49,17 @@ namespace AI {
 				for (DWORD i=0; i<diff.size(); i++)
 					o_new(diff[i]);
 			}
-			// A-B = objects, that are invisible
-			{
-				objSET::iterator	E = set_difference(
-					query.begin(),query.end(),
-					seen.begin(), seen.end(),
-					diff.begin() );
-				diff.resize(E-diff.begin());
-				for (DWORD i=0; i<diff.size(); i++)
-					o_delete(diff[i]);
-			}
+		}
+		if (!query.empty()) 
+		// A-B = objects, that are invisible
+		{
+			objSET::iterator	E = set_difference(
+				query.begin(),query.end(),
+				seen.begin(), seen.end(),
+				diff.begin() );
+			diff.resize(E-diff.begin());
+			for (DWORD i=0; i<diff.size(); i++)
+				o_delete(diff[i]);
 		}
 		query = seen;
 		vector<Item>::iterator I=track.begin(),E=track.end();
@@ -98,6 +101,7 @@ namespace AI {
 			}
 			clamp(I->fuzzy,-1.f,1.f);
 		}
+		//o_dump();
 	}
 	void VisiTrack::o_dump()
 	{

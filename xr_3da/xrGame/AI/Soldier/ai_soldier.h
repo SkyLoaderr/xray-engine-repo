@@ -101,7 +101,9 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
-		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
+		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
+		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
+		virtual float OnVisible(); 
 };
 		
 #endif

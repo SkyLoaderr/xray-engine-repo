@@ -611,7 +611,7 @@ void CAI_Soldier::FollowMe()
 						// setting up an action
 						q_action.setup(AI::AIC_Action::FireEnd);
 						// checking flag to stop processing more states
-						m_fCurSpeed = m_fMaxSpeed;
+						m_fCurSpeed = m_fMinSpeed;
 						bStopThinking = true;
 						return;
 					}
@@ -734,7 +734,7 @@ void CAI_Soldier::FreeHunting()
 					
 					q_action.setup(AI::AIC_Action::FireEnd);
 					// checking flag to stop processing more states
-					m_fCurSpeed = m_fMaxSpeed;
+					m_fCurSpeed = m_fMinSpeed;
 					bStopThinking = true;
 					return;
 				}
@@ -1201,3 +1201,18 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	}
 }
 
+void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
+{
+	//Weapons->GetFireParams(fire_pos, fire_dir);
+	fire_pos.set	(Weapons->ActiveWeapon()->Position());
+	fire_dir.set	(eye_matrix.k);
+}
+
+float CAI_Soldier::OnVisible()
+{
+	float ret = inherited::OnVisible();
+
+	Weapons->OnRender(FALSE);
+
+	return ret;
+}

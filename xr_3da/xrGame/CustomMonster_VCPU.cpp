@@ -60,7 +60,8 @@ void CCustomMonster::Exec_Look		( float dt )
 				// look 2 point
 				// we cannot verify if point is valid - assume all ok
 				Fvector dir;
-				dir.sub(L->Tobject.Point,Position());
+				//dir.sub(L->Tobject.Point,Position());
+				dir.sub(L->Tobject.Point,eye_matrix.c);
 				mk_rotation(dir,r_target);
 			}
 			break;

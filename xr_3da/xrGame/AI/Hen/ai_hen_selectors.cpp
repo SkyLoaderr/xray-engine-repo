@@ -61,6 +61,9 @@ CHenSelectorFreeHunting::CHenSelectorFreeHunting()
 
 float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
+	bStop = true;
+	return(0);
+	
 	// initialization
 	m_tpCurrentNode = tNode;
 	m_fDistance = fDistance;

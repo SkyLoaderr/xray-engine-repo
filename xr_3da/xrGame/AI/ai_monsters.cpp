@@ -385,3 +385,13 @@ void CAISelectorBase::vfAddDeviationFromMemberViewCost()
 	if (fAlpha < m_fFireDispersionAngle)
 		m_fResult += fMemberViewDeviationWeight;
 }
+
+void CAISelectorBase::vfAddDeviationFromPreviousDirectionCost()
+{
+	Fvector tTempDirection;
+	tTempDirection.sub(m_tCurrentPosition,m_tMyPosition);
+	vfNormalizeSafe(tTempDirection);
+	float fAlpha = acosf(tTempDirection.dotproduct(m_tDirection));
+	m_fResult += fAlpha * fMemberViewDeviationWeight;
+}
+

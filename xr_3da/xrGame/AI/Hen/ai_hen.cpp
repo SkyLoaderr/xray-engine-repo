@@ -607,7 +607,7 @@ void CAI_Hen::FollowMe()
 						// setting up an action
 						q_action.setup(AI::AIC_Action::FireEnd);
 						// checking flag to stop processing more states
-						m_fCurSpeed = m_fMaxSpeed;
+						m_fCurSpeed = m_fMinSpeed;
 						bStopThinking = true;
 						return;
 					}
@@ -730,7 +730,7 @@ void CAI_Hen::FreeHunting()
 					
 					q_action.setup(AI::AIC_Action::FireEnd);
 					// checking flag to stop processing more states
-					m_fCurSpeed = m_fMaxSpeed;
+					m_fCurSpeed = m_fMinSpeed;
 					bStopThinking = true;
 					return;
 				}

@@ -582,6 +582,26 @@ SOURCE=.\AI\Zomby\ai_zomby_selectors.cpp
 SOURCE=.\AI\Zomby\ai_zomby_selectors.h
 # End Source File
 # End Group
+# Begin Group "ai_crow"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\AI\Crow\ai_crow.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Crow\ai_crow.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Crow\ai_crow_selectors.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Crow\ai_crow_selectors.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\AI\ai_monsters.cpp

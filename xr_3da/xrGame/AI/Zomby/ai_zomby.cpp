@@ -11,6 +11,7 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_zomby.h"
 #include "ai_zomby_selectors.h"
+#include "..\\..\\hudmanager.h"
 
 //#define WRITE_LOG
 
@@ -29,15 +30,6 @@ CAI_Zomby::CAI_Zomby()
 	m_tpCurrentBlend = 0;
 	eCurrentState = aiZombyFreeHunting;
 	m_bMobility = false;
-	/**
-	Fvector tWatchDirection;
-	tWatchDirection.set(-1,0,0);
-	q_look.setup(
-		AI::AIC_Look::Look, 
-		AI::t_Direction, 
-		&tWatchDirection,
-		1000);
-	/**/
 }
 
 CAI_Zomby::~CAI_Zomby()
@@ -73,12 +65,11 @@ void CAI_Zomby::Load(CInifile* ini, const char* section)
 
 	SelectorAttack.Load(ini,section);
 	SelectorFreeHunting.Load(ini,section);
+	SelectorFreeHunting.fSearchRange += ::Random.randF(-1.f,1.f);
 	SelectorUnderFire.Load(ini,section);
 
 	m_fHitPower = ini->ReadFLOAT(section,"hit_power");
 	m_dwHitInterval = ini->ReadINT(section,"hit_interval");
-
-	m_fBlindness = ini->ReadFLOAT(section,"blindness");
 
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_1");
@@ -152,9 +143,6 @@ float CAI_Zomby::EnemyHeuristics(CEntity* E)
 	
 	float	f1	= Position().distance_to_sqr(E->Position());
 	
-	if (sqrt(f1) >  m_fBlindness)
-		return flt_max;		// don't attack far enemies
-
 	float	f2	= float(g_strench);
 	return  f1*f2;
 }
@@ -169,19 +157,23 @@ void CAI_Zomby::SelectEnemy(SEnemySelected& S)
 	if (Known.size()==0)	return;
 
 	// Get visible list
-	objSET		Visible;
-	ai_Track.o_get	(Visible);
+	objSET				Visible;
+	ai_Track.o_get		(Visible);
 	std::sort			(Visible.begin(),Visible.end());
 
 	// Iterate on known
+	//string l_String;
+	//string256 buf;
 	for (DWORD i=0; i<Known.size(); i++)
 	{
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
+		//CLSID2TEXT(E->SUB_CLS_ID,buf);
+		//l_String	+= buf;
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			// Calculate local visibility
 			CObject**	ins	 = lower_bound(Visible.begin(),Visible.end(),(CObject*)E);
-			bool	bVisible = (ins==Visible.end())?FALSE:((E==*ins)?TRUE:FALSE);
+				bool	bVisible = (ins==Visible.end())?FALSE:((E==*ins)?TRUE:FALSE);
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
 			if (cost<S.fCost)	{
 				S.Enemy		= E;
@@ -189,7 +181,8 @@ void CAI_Zomby::SelectEnemy(SEnemySelected& S)
 				S.fCost		= cost;
 			}
 		}
-	}	
+	}
+	//Level().HUD()->outMessage(0xffffffff,"visible","%s",l_String.c_str());
 }
 
 IC bool CAI_Zomby::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
@@ -209,7 +202,7 @@ bool CAI_Zomby::bfCheckPath(AI::Path &Path) {
 	return(true);
 }
 
-/**
+/**/
 #define LEFT_NODE(Index)  ((Index + 3) & 3)
 #define RIGHT_NODE(Index) ((Index + 5) & 3)
 
@@ -260,11 +253,15 @@ IC void CAI_Zomby::SetDirectionLook(NodeCompressed *tNode)
 	int i = ps_Size();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		Fvector tWatchDirection;
-		tWatchDirection.sub(tPreviousPosition.vPosition,tCurrentPosition.vPosition);
-		q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
-		q_look.o_look_speed=_FB_look_speed;
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		if (tWatchDirection.square_magnitude() > 0.000001) {
+			tWatchDirection.normalize();
+			q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+			q_look.o_look_speed=_FB_look_speed;
+		}
 	}
+	//else
+	//	SetLessCoverLook(tNode);
 }
 
 IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
@@ -432,7 +429,6 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
 	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
-		vector<SSubNode> tpSubNodes;
 		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
 		//Level().AI.UnpackPosition(tCurrentPosition,AI_Node->p0);
 		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
@@ -494,7 +490,6 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 			}
 		/**/
 		// checking the nearest nodes
-		vector<SSubNode> tpFreeNeighbourNodes;
 		tpFreeNeighbourNodes.clear();
 		for ( i=0; i<tpSubNodes.size(); i++)
 			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
@@ -511,7 +506,7 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 					iBestI = i;
 					fBestCost = fCurCost;
 				}
-			}
+			}		
 			if (iBestI >= 0) {
 				m_bMobility = true;
 				Fvector tFinishPosition;
@@ -533,8 +528,6 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 		}
 	}
 	else {
-		vector<SSubNode> tpSubNodes;
-
 		//Msg("Outside the node");
 
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
@@ -742,15 +735,6 @@ void CAI_Zomby::Attack()
 				
 				FollowLeader(Level().Teams[g_Team()].Squads[g_Squad()],Enemy.Enemy);
 				// setting up a look
-				/**
-				Fvector tWatchDirection;
-				tWatchDirection.sub(Enemy.Enemy->Position(),Position());
-				q_look.setup(
-					AI::AIC_Look::Look, 
-					AI::t_Direction, 
-					&tWatchDirection,
-					1000);
-				/**/
 				q_look.setup(
 					AI::AIC_Look::Look, 
 					AI::t_Object, 
@@ -942,6 +926,7 @@ void CAI_Zomby::FreeHunting()
 					S.m_tMe				= this;
 					S.m_tpMyNode		= AI_Node;
 					S.m_tMyPosition		= Position();
+					S.m_tDirection		= tWatchDirection;
 					
 					S.m_tEnemy			= 0;
 					S.m_tEnemyPosition.set(0,0,0);
@@ -961,30 +946,32 @@ void CAI_Zomby::FreeHunting()
 						// if path is too short then clear it (patch for ExecMove)
 							AI_Path.TravelPath.clear();
 							m_bMobility = false;
+							AI_Path.bNeedRebuild = FALSE;
 						}
 					} 
-					else {
-						// fill arrays of members and exclude myself
-						Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-						// SelectFollow evaluation function in the radius 35 meteres
-						float fOldCost;
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-							AI_Path.DestNode		= S.BestNode;
-							AI_Path.bNeedRebuild	= TRUE;
-						} 
-						else 
-							// search hasn't found a better node we have to look around
-							bWatch = true;
-						if (AI_Path.TravelPath.size() < 2)
-							AI_Path.bNeedRebuild	= TRUE;
-					}
+					else
+						if ((AI_Path.TravelPath.size() - AI_Path.TravelStart < 3) || (AI_Path.TravelPath.size() < 3) || (AI_Path.DestNode == AI_NodeID)) {
+							// fill arrays of members and exclude myself
+							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+							// SelectFollow evaluation function in the radius 35 meteres
+							float fOldCost;
+							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+							// if search has found new best node then 
+							//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path)))){
+								AI_Path.DestNode		= S.BestNode;
+								AI_Path.bNeedRebuild	= TRUE;
+							//} 
+							//else 
+								// search hasn't found a better node we have to look around
+							//	bWatch = true;
+							if (AI_Path.TravelPath.size() < 2)
+								AI_Path.bNeedRebuild	= TRUE;
+						}
+						//else
+						//	bWatch = true;
 					// setting up a look
-					// getting my current node
-					NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
 					
-					SetDirectionLook(tNode);
+					SetDirectionLook(AI_Node);
 					
 					q_action.setup(AI::AIC_Action::AttackEnd);
 					// checking flag to stop processing more states
@@ -1135,7 +1122,7 @@ void CAI_Zomby::UnderFire()
 					}
 					// setting up a look
 					// getting my current node
-					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
+					NodeCompressed* tNode = AI_Node;
 					// if we are going somewhere
 					if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 						q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
@@ -1228,8 +1215,8 @@ void CAI_Zomby::net_Import(NET_Packet* P)
 
 void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	R_ASSERT(fsimilar(_view.magnitude(),1));
-	R_ASSERT(fsimilar(_move.magnitude(),1));
+	//R_ASSERT(fsimilar(_view.magnitude(),1));
+	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
 	CMotionDef*	S=0;
 	if (iHealth<=0) {
@@ -1341,26 +1328,3 @@ void CAI_Zomby::Exec_Action	( float dt )
 	if (Device.dwTimeGlobal>=L->o_timeout)	
 		L->setTimeout();
 }
-
-BOOL CAI_Zomby::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
-{
-	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	if (Local()) {
-		/**
-		Fvector tWatchDirection;
-		tWatchDirection.set(cosf(o_angle.y),0,sinf(o_angle.y));
-		tWatchDirection.set(o_angle);
-		q_look.setup(
-			AI::AIC_Look::Look, 
-			AI::t_Direction, 
-			&tWatchDirection,
-			1000);
-		/**/
-	} 
-	else {
-
-	}
-
-	return TRUE;
-}
-
