@@ -313,7 +313,7 @@ void CHelicopterMovManager::createRocking(const Fvector& fromPos, const Fvector&
 	Fvector r_dir;
 	keys.push_back(fromPos);
 	for(float i=0.3f; i<1.0f; i+=0.3f){
-		r_dir.random_dir(dir,PI_DIV_6/2.0f);
+		r_dir.random_dir(dir,(PI_DIV_6/2.0f));
 		p.mad(fromPos, r_dir, i );
 		keys.push_back(p);
 	}
