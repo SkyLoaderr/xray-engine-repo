@@ -146,9 +146,6 @@ public:
 
 	CResourceManager						() : bDeferredLoad(TRUE)			{	}
 
-	void			xrStartUp				();
-	void			xrShutDown				();
-
 	void			OnDeviceCreate			(IReader* F);
 	void			OnDeviceCreate			(LPCSTR name);
 	void			OnDeviceDestroy			(BOOL   bKeepTextures);
