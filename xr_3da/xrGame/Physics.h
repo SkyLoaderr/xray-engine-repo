@@ -18,6 +18,7 @@ const dReal world_damping=400000.f;
 class CPHMesh {
 	dGeomID Geom;
 public:
+	dGeomID GetGeom(){return Geom;}
 	void Create(dSpaceID space, dWorldID world);
 	void Destroy();
 };
@@ -163,6 +164,8 @@ public:
 	//elements.push_back(phelement);
 	//return phelement;
 	//}
+	dGeomID GetMeshGeom() {return Mesh.GetGeom();}
+
 	void Destroy();
 
 	void Step(dReal step=0.025f);
@@ -375,8 +378,9 @@ void CreateFullControl();
 	virtual void SetAxisVsFirstElement		(const float x,const float y,const float z,const int axis_num);
 	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num);
 
-	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
+	
 public:
+	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
 						if(bActive) Deactivate();
@@ -460,8 +464,14 @@ public:
 																								};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{
 																								if(!bActive) return;
-																								(*elements.begin())->applyImpulse			( dir, val);
+																							(*elements.begin())->applyImpulse			( dir, val);
 																								};
+	virtual void			set_JointResistance		(float force)
+														{
+														vector<CPHJoint*>::iterator i;
+														for(i=joints.begin();i!=joints.end();i++) 
+															(*i)->SetForceAndVelocity(force);
+														}
 	virtual	void PhDataUpdate(dReal step);
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};

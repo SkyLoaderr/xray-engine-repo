@@ -86,6 +86,7 @@ void CPHMesh ::Create(dSpaceID space, dWorldID world){
 Geom = dCreateTriList(space, 0, 0);
 
 }
+/////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -737,9 +738,9 @@ void CPHWorld::Step(dReal step)
 }
 
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
+const ULONG N = 100;
+dContact contacts[N];
 
-		const ULONG N = 100;
-		dContact contacts[N];
 		// get the contacts up to a maximum of N contacts
 		ULONG n;
 	
@@ -1302,7 +1303,7 @@ void CPHElement::PhDataUpdate(dReal step){
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
 				}
-	ReEnable();
+
    ////////////////////////////////////////////////////////////////////
   //limit velocity of the main body///////////////////////////////////
  ////////////////////////////////////////////////////////////////////
@@ -1357,7 +1358,7 @@ void CPHElement::PhDataUpdate(dReal step){
 				//const dReal k_w=0.1f;
 				//dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 				Disabling();
-
+				ReEnable();
 	
 				//const dReal k_w=0.05f;
 				//const dReal k_l=0.0002f;//1.8f;
@@ -1499,29 +1500,33 @@ void	CPHElement::Disabling(){
 }
 
 void CPHElement::Disable(){
-
+	
+	if(!b_contacts_saved){
 		int num=dBodyGetNumJoints(m_body);
 		for(int i=0;i<num;i++){
-		dJointID joint=	dBodyGetJoint (m_body, i);
-		if(dJointGetType (joint)==dJointTypeContact){
-			dxJointContact* contact=(dxJointContact*) joint;
-			dBodyID b1=dGeomGetBody(contact->contact.geom.g1);
-			dBodyID b2=dGeomGetBody(contact->contact.geom.g2);
-			if(b1==0 || b2==0){
-				dJointID c = dJointCreateContact(phWorld, m_saved_contacts, &(contact->contact));
-				dJointAttach(c, b1, b2);
-				b_contacts_saved=true;
+			dJointID joint=	dBodyGetJoint (m_body, i);
+			if(dJointGetType (joint)==dJointTypeContact){
+				dxJointContact* contact=(dxJointContact*) joint;
+				dBodyID b1=dGeomGetBody(contact->contact.geom.g1);
+				dBodyID b2=dGeomGetBody(contact->contact.geom.g2);
+				if(b1==0 || b2==0){
+					dJointID c = dJointCreateContact(phWorld, m_saved_contacts, &(contact->contact));
+					dJointAttach(c, b1, b2);
+					b_contacts_saved=true;
+				}
+
 			}
 
 		}
-
 	}
-		dBodyDisable(m_body);
+	
+
+	dBodyDisable(m_body);
 }
 
 
 void CPHElement::ReEnable(){
-	if(b_contacts_saved)
+	if(b_contacts_saved && dBodyIsEnabled(m_body))
 	{
 		dJointGroupEmpty(m_saved_contacts);
 		b_contacts_saved=false;
@@ -2024,7 +2029,7 @@ dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
 dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
 
-if(axes[0].force>0.f){
+if(!(axes[0].force<0.f)){
 dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
 dJointSetAMotorParam(m_joint1,dParamVel ,axes[0].velocity);
 }
@@ -2076,7 +2081,7 @@ if(hi<0.f) {
 
 dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
 dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);
-if(axes[1].force>0.f){
+if(!(axes[1].force<0.f)){
 dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
 dJointSetAMotorParam(m_joint1,dParamVel2 ,axes[1].velocity);
 }
@@ -2126,7 +2131,7 @@ dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
 
 dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
 dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
-if(axes[2].force>0.f){
+if(!(axes[2].force<0.f)){
 dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
 dJointSetAMotorParam(m_joint1,dParamVel3 ,axes[2].velocity);
 }
@@ -2384,17 +2389,17 @@ bActive=false;
 }
 
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num){
-int ax;
-ax=axis_num;
-if(ax<-1) ax=-1;
+	int ax;
+	ax=axis_num;
+	if(ax<-1) ax=-1;
 
 	if(ax==-1) 
-	switch(eType){
+		switch(eType){
 					case welding:				; 
 					case ball:					break;
 					case hinge:					axes[0].force=force;
 												axes[0].velocity=velocity;
-												break;
+						break;
 					case hinge2:				;
 					case universal_hinge:		;
 					case shoulder1:				;
@@ -2403,16 +2408,16 @@ if(ax<-1) ax=-1;
 												axes[0].velocity=velocity;
 												axes[1].force=force;
 												axes[1].velocity=velocity;
-												break;
-	
+						break;
+
 					case full_control:			axes[0].force=force;
 												axes[0].velocity=velocity;
 												axes[1].force=force;
 												axes[1].velocity=velocity;
 												axes[2].force=force;
 												axes[2].velocity=velocity;
-												break;
-					}
+						break;
+		}
 
 	else{
 		switch(eType){
@@ -2420,21 +2425,50 @@ if(ax<-1) ax=-1;
 						case welding:				; 
 						case ball:					break;
 						case hinge:					ax=0;
-													break;
+							break;
 						case hinge2:				;
 						case universal_hinge:		;
 						case shoulder1:				;
 						case shoulder2:				;
 						case car_wheel:				ax= axis_num>1 ? 1 : axis_num; 
-													break;
-	
+							break;
+
 						case full_control:			ax= axis_num>2 ? 2 : axis_num; 
-													break;
-						}
+							break;
+		}
 		axes[ax].force=force;
 		axes[ax].velocity=velocity;
-		}
+	}
 
+	if(bActive)
+	{
+		switch(eType){
+
+						case hinge2:				;
+						case universal_hinge:		;
+						case shoulder1:				;
+						case shoulder2:				;
+						case car_wheel:				;
+						case welding:				; 
+						case ball:					break;
+						case hinge:					dJointSetHingeParam(m_joint,dParamFMax ,axes[0].force);
+							break;
+
+
+
+						case full_control:
+							switch(ax){
+								case -1:
+										dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
+										dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
+										dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
+								case 0:dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);break;
+								case 1:dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);break;
+								case 2:dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);break;
+							}
+							break;
+		}
+	}
 }
 
 

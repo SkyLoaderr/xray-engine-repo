@@ -102,6 +102,7 @@ public:
 	BOOL					bActive;
 public:
 	void					set_Kinematics			(CKinematics* p)	{p_kinematics=p;}
+	virtual void			set_JointResistance		(float force)										= 0;
 	virtual	void			add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void			add_Joint				(CPhysicsJoint* E)									= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
