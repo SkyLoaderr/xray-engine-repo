@@ -931,6 +931,9 @@
 					RelativePath=".\scripts\!Doc\!for_scripters.doc">
 				</File>
 				<File
+					RelativePath=".\Scripts\!Doc\building blocks.doc">
+				</File>
+				<File
 					RelativePath=".\scripts\!Doc\movement_scheme.doc">
 				</File>
 				<File
@@ -947,7 +950,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Base"
+				Name="Unknown"
 				Filter="">
 				<File
 					RelativePath=".\scripts\_test.script">
@@ -962,21 +965,6 @@
 					RelativePath=".\scripts\a3.script">
 				</File>
 				<File
-					RelativePath=".\scripts\agroprom1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\agroprom2.script">
-				</File>
-				<File
-					RelativePath=".\scripts\agroprom_dialog.script">
-				</File>
-				<File
-					RelativePath=".\scripts\agroprom_factory_combat.script">
-				</File>
-				<File
-					RelativePath=".\scripts\agroprom_heli.script">
-				</File>
-				<File
 					RelativePath=".\scripts\alife_test.script">
 				</File>
 				<File
@@ -987,33 +975,6 @@
 				</File>
 				<File
 					RelativePath=".\scripts\arbug.script">
-				</File>
-				<File
-					RelativePath=".\scripts\avi_start.script">
-				</File>
-				<File
-					RelativePath=".\scripts\bar_stalker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\barman.script">
-				</File>
-				<File
-					RelativePath=".\scripts\bind_escape.script">
-				</File>
-				<File
-					RelativePath=".\scripts\bind_garbage.script">
-				</File>
-				<File
-					RelativePath=".\scripts\blood_sucker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\blood_sucker1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\blood_sucker_jim_bug.script">
-				</File>
-				<File
-					RelativePath=".\scripts\bloodsucker.script">
 				</File>
 				<File
 					RelativePath=".\scripts\bug7.script">
@@ -1037,25 +998,13 @@
 					RelativePath=".\scripts\class_registrator.script">
 				</File>
 				<File
-					RelativePath=".\scripts\classes.script">
-				</File>
-				<File
 					RelativePath=".\scripts\Copy of _test.script">
 				</File>
 				<File
 					RelativePath=".\scripts\Copy of a1.script">
 				</File>
 				<File
-					RelativePath=".\scripts\dark_lab_bloodsucker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\dark_lab_burrers.script">
-				</File>
-				<File
 					RelativePath=".\scripts\dbg_test.script">
-				</File>
-				<File
-					RelativePath=".\scripts\debug_info.script">
 				</File>
 				<File
 					RelativePath=".\scripts\debug_test.script">
@@ -1076,73 +1025,10 @@
 					RelativePath=".\scripts\del_trader.script">
 				</File>
 				<File
-					RelativePath=".\scripts\delete.script">
-				</File>
-				<File
-					RelativePath=".\scripts\dialogs.script">
-				</File>
-				<File
 					RelativePath=".\scripts\dog_look1.script">
 				</File>
 				<File
-					RelativePath=".\scripts\door.script">
-				</File>
-				<File
-					RelativePath=".\scripts\door_control.script">
-				</File>
-				<File
-					RelativePath=".\scripts\door_test.script">
-				</File>
-				<File
 					RelativePath=".\scripts\enable.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_bobik.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_bobik1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_del.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_dialog.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_dogs.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_dogs1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_factory.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_factory_bandits.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_heli.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_patrol2.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_raid.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_raid_heli.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_raids.script">
-				</File>
-				<File
-					RelativePath=".\scripts\escape_sound_events.script">
 				</File>
 				<File
 					RelativePath=".\scripts\explode_zone.script">
@@ -1184,40 +1070,7 @@
 					RelativePath=".\scripts\game_types.script">
 				</File>
 				<File
-					RelativePath=".\scripts\garbage1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\garbage2.script">
-				</File>
-				<File
-					RelativePath=".\scripts\garbage3.script">
-				</File>
-				<File
-					RelativePath=".\scripts\garbage_dialogs.script">
-				</File>
-				<File
-					RelativePath=".\scripts\garbage_monster_attack.script">
-				</File>
-				<File
-					RelativePath=".\scripts\globals.script">
-				</File>
-				<File
-					RelativePath=".\scripts\gramofon.script">
-				</File>
-				<File
-					RelativePath=".\scripts\gulag_tasks.script">
-				</File>
-				<File
 					RelativePath=".\scripts\h.script">
-				</File>
-				<File
-					RelativePath=".\scripts\heli_agroprom.script">
-				</File>
-				<File
-					RelativePath=".\scripts\heli_stop.script">
-				</File>
-				<File
-					RelativePath=".\scripts\helicopter.script">
 				</File>
 				<File
 					RelativePath=".\scripts\info_pda.script">
@@ -1235,130 +1088,7 @@
 					RelativePath=".\scripts\kill.script">
 				</File>
 				<File
-					RelativePath=".\scripts\l_agroprom.script">
-				</File>
-				<File
-					RelativePath=".\scripts\l_escape.script">
-				</File>
-				<File
-					RelativePath=".\scripts\l_garbage.script">
-				</File>
-				<File
-					RelativePath=".\scripts\l_rostok.script">
-				</File>
-				<File
-					RelativePath=".\scripts\level_news.script">
-				</File>
-				<File
-					RelativePath=".\scripts\level_tasks.script">
-				</File>
-				<File
-					RelativePath=".\scripts\level_tips.script">
-				</File>
-				<File
-					RelativePath=".\scripts\lua_help.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Attack.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_DangerSound.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Eat.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_garbage.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Hit.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_manager.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Monster_Ai.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_NotDangerSound.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_proba.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Rest.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Sound.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_waiter.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_Walk.script">
-				</File>
-				<File
-					RelativePath=".\scripts\m_WalkPoint.script">
-				</File>
-				<File
-					RelativePath=".\scripts\manager.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mil_base_attack.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\military_radio.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mizlom.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mizlom_part2.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\mob_death.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mob_remark.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mob_sound.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\mob_trade.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mob_walker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\modules.script">
-				</File>
-				<File
-					RelativePath=".\scripts\monster.script">
-				</File>
-				<File
-					RelativePath=".\scripts\monster_bind.script">
-				</File>
-				<File
-					RelativePath=".\scripts\monster_gameplay.script">
-				</File>
-				<File
 					RelativePath=".\scripts\monster_script.script">
-				</File>
-				<File
-					RelativePath=".\scripts\MonsterAi.script">
-				</File>
-				<File
-					RelativePath=".\scripts\monsters.script">
-				</File>
-				<File
-					RelativePath=".\scripts\move_mgr.script">
-				</File>
-				<File
-					RelativePath=".\scripts\mtest.script">
-				</File>
-				<File
-					RelativePath=".\scripts\news_manager.script">
 				</File>
 				<File
 					RelativePath=".\scripts\particle_flame.script">
@@ -1373,46 +1103,10 @@
 					RelativePath=".\scripts\path_old.script">
 				</File>
 				<File
-					RelativePath=".\scripts\ph_door.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ph_test.script">
-				</File>
-				<File
-					RelativePath=".\scripts\physic_object.script">
-				</File>
-				<File
-					RelativePath=".\scripts\physic_object_old.script">
-				</File>
-				<File
-					RelativePath=".\scripts\pripyat_football.script">
-				</File>
-				<File
 					RelativePath=".\scripts\ptr.script">
 				</File>
 				<File
-					RelativePath=".\scripts\rostok.script">
-				</File>
-				<File
-					RelativePath=".\scripts\rostok_bar.script">
-				</File>
-				<File
-					RelativePath=".\scripts\s_black_devil_walk.script">
-				</File>
-				<File
-					RelativePath=".\scripts\s_zombie_walk.script">
-				</File>
-				<File
-					RelativePath=".\scripts\scr_trader.script">
-				</File>
-				<File
 					RelativePath=".\scripts\script_object_registry.script">
-				</File>
-				<File
-					RelativePath=".\scripts\script_zone.script">
-				</File>
-				<File
-					RelativePath=".\scripts\script_zone_scene.script">
 				</File>
 				<File
 					RelativePath=".\scripts\se_new_attachable_item.script">
@@ -1424,52 +1118,10 @@
 					RelativePath=".\scripts\se_switcher.script">
 				</File>
 				<File
-					RelativePath=".\scripts\secret_lab_killer.script">
-				</File>
-				<File
-					RelativePath=".\scripts\secret_lab_killers.script">
-				</File>
-				<File
-					RelativePath=".\scripts\secret_laboratory_gigant.script">
-				</File>
-				<File
-					RelativePath=".\scripts\small_script.script">
-				</File>
-				<File
-					RelativePath=".\scripts\smart_terrain.script">
-				</File>
-				<File
 					RelativePath=".\scripts\sound_megafon.script">
 				</File>
 				<File
-					RelativePath=".\scripts\stalker.script">
-				</File>
-				<File
 					RelativePath=".\scripts\stalker_test.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateAttack.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateDangerSound.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateEat.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateHit.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateNotDangerSound.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateRest.script">
-				</File>
-				<File
-					RelativePath=".\scripts\StateWalk.script">
-				</File>
-				<File
-					RelativePath=".\scripts\storage.script">
 				</File>
 				<File
 					RelativePath=".\scripts\test.script">
@@ -1523,18 +1175,6 @@
 					RelativePath=".\scripts\test_zombie.script">
 				</File>
 				<File
-					RelativePath=".\scripts\trader.script">
-				</File>
-				<File
-					RelativePath=".\scripts\trader_job.script">
-				</File>
-				<File
-					RelativePath=".\scripts\tutorial_flesh_scream.script">
-				</File>
-				<File
-					RelativePath=".\scripts\utils.script">
-				</File>
-				<File
 					RelativePath=".\scripts\vovan_script.script">
 				</File>
 				<File
@@ -1543,213 +1183,286 @@
 				<File
 					RelativePath=".\scripts\x2.script">
 				</File>
-				<File
-					RelativePath=".\scripts\xr_actions_id.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_ambush.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_assassin.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_assistance.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_bandit.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_bodyguard.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_camper.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_chaser.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_combat.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_comm_ptr.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_commander.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_conditions.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_death.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_dialogs.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_dram_scene.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_effects.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_evaluators.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_evaluators_id.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_events.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_follower.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_formation.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_guard.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_guide.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_gulag.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_heli.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_heli_hunter.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_kamp.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_light.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_logic.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_meet.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_motivator.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_outcast.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_position.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_punch.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_radar.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_reactions.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_remark.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_replics.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_report.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_rest.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_robber_guard.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_robbers.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_scared.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_scared_agro_flesh.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_scared_monster.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_scienist2.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_scientist.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_scout.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_sleeper.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_sniper.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_sos.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_sound.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_sounds.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_sounds_id.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_spawner.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_state.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_storyline.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_talker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_test.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_trivial.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_waiter.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_walker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_wounded.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_zoneguard.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_zones.script">
-				</File>
-				<File
-					RelativePath=".\scripts\yantar_attack.script">
-				</File>
-				<File
-					RelativePath=".\scripts\yantar_hit_1.script">
-				</File>
-				<File
-					RelativePath=".\scripts\yantar_monster.script">
-				</File>
-				<File
-					RelativePath=".\scripts\zone_spawner.script">
-				</File>
+			</Filter>
+			<Filter
+				Name="GP"
+				Filter="">
+				<Filter
+					Name="Binders"
+					Filter="">
+					<File
+						RelativePath=".\scripts\modules.script">
+					</File>
+					<File
+						RelativePath=".\scripts\monster.script">
+					</File>
+					<File
+						RelativePath=".\scripts\physic_object.script">
+					</File>
+					<File
+						RelativePath=".\scripts\stalker.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_motivator.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_zones.script">
+					</File>
+					<Filter
+						Name="IDs"
+						Filter="">
+						<File
+							RelativePath=".\scripts\xr_actions_id.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_evaluators_id.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_sounds_id.script">
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="BuildingBlocks"
+					Filter="">
+					<Filter
+						Name="Stalker"
+						Filter="">
+						<File
+							RelativePath=".\scripts\xr_camper.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_comm_ptr.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_follower.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_heli_hunter.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_kamp.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_remark.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_rest.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_sleeper.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_test.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_walker.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_zoneguard.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="Monster"
+						Filter="">
+						<File
+							RelativePath=".\scripts\mob_remark.script">
+						</File>
+						<File
+							RelativePath=".\scripts\mob_walker.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="Physics"
+						Filter="">
+						<File
+							RelativePath=".\scripts\ph_door.script">
+						</File>
+						<File
+							RelativePath=".\scripts\ph_test.script">
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="GenericSchemes"
+					Filter="">
+					<File
+						RelativePath=".\scripts\gulag_tasks.script">
+					</File>
+					<File
+						RelativePath=".\scripts\smart_terrain.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_gulag.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_logic.script">
+					</File>
+					<Filter
+						Name="Stalker"
+						Filter="">
+						<File
+							RelativePath=".\scripts\xr_combat.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_death.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_light.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_meet.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_reactions.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_sos.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_wounded.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="Monster"
+						Filter="">
+						<File
+							RelativePath=".\Scripts\mob_death.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\mob_trade.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="Physics"
+						Filter="">
+					</Filter>
+				</Filter>
+				<Filter
+					Name="Libraries"
+					Filter="">
+					<File
+						RelativePath=".\scripts\mob_sound.script">
+					</File>
+					<File
+						RelativePath=".\scripts\move_mgr.script">
+					</File>
+					<File
+						RelativePath=".\scripts\news_manager.script">
+					</File>
+					<File
+						RelativePath=".\scripts\utils.script">
+					</File>
+					<Filter
+						Name="LevelTasks"
+						Filter="">
+						<File
+							RelativePath=".\scripts\level_tasks.script">
+						</File>
+						<File
+							RelativePath=".\scripts\level_tips.script">
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="Deprecated"
+					Filter="">
+					<File
+						RelativePath=".\scripts\avi_start.script">
+					</File>
+					<File
+						RelativePath=".\scripts\dialogs.script">
+					</File>
+					<File
+						RelativePath=".\scripts\escape_heli.script">
+					</File>
+					<File
+						RelativePath=".\scripts\escape_patrol2.script">
+					</File>
+					<File
+						RelativePath=".\scripts\escape_raid.script">
+					</File>
+					<File
+						RelativePath=".\scripts\escape_raid_heli.script">
+					</File>
+					<File
+						RelativePath=".\scripts\escape_raids.script">
+					</File>
+					<File
+						RelativePath=".\scripts\escape_sound_events.script">
+					</File>
+					<File
+						RelativePath=".\scripts\gramofon.script">
+					</File>
+					<File
+						RelativePath=".\scripts\level_news.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\military_radio.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_assistance.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_bodyguard.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_dialogs.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_guide.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_heli.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_punch.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_radar.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_robbers.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_sound.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_sounds.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_spawner.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_state.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_talker.script">
+					</File>
+					<File
+						RelativePath=".\scripts\zone_spawner.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="Storyline"
+					Filter="">
+					<File
+						RelativePath=".\scripts\xr_conditions.script">
+					</File>
+					<File
+						RelativePath=".\scripts\xr_effects.script">
+					</File>
+					<Filter
+						Name="DialogSupport"
+						Filter="">
+						<File
+							RelativePath=".\scripts\escape_dialog.script">
+						</File>
+						<File
+							RelativePath=".\scripts\garbage_dialogs.script">
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>
