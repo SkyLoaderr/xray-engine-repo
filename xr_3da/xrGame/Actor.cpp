@@ -518,6 +518,13 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 {
 	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
+
+	if (m_bJumpInProgress && (Movement.Environment()==CMovementControl::peInAir)) 
+	{
+		mstate_real			|=	mcJump;
+		m_bJumpInProgress	=	FALSE;
+	}
+
 	if (Movement.Environment()==CMovementControl::peOnGround)
 	{
 		// jump
@@ -526,10 +533,6 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 			m_bJumpKeyPressed	=	TRUE;
 			m_bJumpInProgress	=	TRUE;
 			Jump = (mstate_wf&mcCrouch)?m_fJumpSpeed*.8f:m_fJumpSpeed;
-		} else if (m_bJumpInProgress && (Movement.Environment()==CMovementControl::peInAir)) 
-		{
-			mstate_real			|=	mcJump;
-			m_bJumpInProgress	=	FALSE;
 		}
 
 		// crouch
