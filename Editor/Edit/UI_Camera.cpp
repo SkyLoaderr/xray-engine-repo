@@ -47,7 +47,7 @@ void CUI_Camera::SetStyle(ECameraStyle new_style){
 
 void CUI_Camera::Reset(){
 	m_HPB.set(0,0,0);
-    m_Position.set(0,5,-20);
+    m_Position.set(0,3,-10);
 	SetStyle(m_Style);
     BuildCamera();
 }
@@ -174,6 +174,7 @@ bool CUI_Camera::Process(TShiftState Shift, int dx, int dy){
         m_Shift = Shift;
 // camera move
         if( dx || dy ){
+        	SetCursorPos(m_StartPos.x,m_StartPos.y);
             switch (m_Style){
             case csPlaneMove:
                 if (Shift.Contains(ssLeft) && Shift.Contains(ssRight)) Rotate (dx,dy);
@@ -249,7 +250,7 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
     float R,H;
     bb.getsphere(C,R);
 	D.mul(m_CamMat.k,-1);
-    H = 2*R*tanf(m_FOV/m_Aspect*0.5f);
+    H = 2.5f*R*tanf(m_FOV/m_Aspect*0.5f);
     m_Position.direct(C,D,H);
 	m_Target.set(C);
 
@@ -289,7 +290,7 @@ void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
     }else{
     	if (Shift.Contains(ssRight)){
         	dist -= dx*m_SM;
-	    }else{
+	    }else if (Shift.Contains(ssLeft)){
     	    m_HPB.x-=m_SR*dx;
         	m_HPB.y-=m_SR*dy*m_Aspect;
 	    }

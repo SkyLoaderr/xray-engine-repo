@@ -70,28 +70,29 @@ static CVertexStream* LITStream=0;
 static FLvertexVec 	m_GridPoints;
 
 DWORD m_ColorAxis	= 0xff000000;
-DWORD m_ColorGrid	= 0xff969696;
+DWORD m_ColorGrid	= 0xff909090;
 DWORD m_ColorGridTh = 0xffb4b4b4;
 DWORD m_SelectionRect=D3DCOLOR_RGBA(127,255,127,64);
 
 
-void UpdateGrid(){
+void UpdateGrid(float size, float step, int subdiv){
+	m_GridPoints.clear();
 // grid
 	int m_GridSubDiv[2];
 	int m_GridCounts[2];
     Fvector2 m_GridStep;
 
-    m_GridStep.set(4.f,4.f);
-	m_GridSubDiv[0] = 5;
-	m_GridSubDiv[1] = 5;
-	m_GridCounts[0] = 250;
-	m_GridCounts[1] = 250;
+    m_GridStep.set(step/subdiv,step/subdiv);
+	m_GridSubDiv[0] = subdiv;
+	m_GridSubDiv[1] = subdiv;
+	m_GridCounts[0] = iFloor(size/step)*subdiv;
+	m_GridCounts[1] = iFloor(size/step)*subdiv;
 
 	FVF::L left,right;
 	left.p.y = right.p.y = 0;
 
 	for(int thin=0; thin<2; thin++){
-		for(int i=-m_GridCounts[0]; i<m_GridCounts[0]; i++){
+		for(int i=-m_GridCounts[0]; i<=m_GridCounts[0]; i++){
 			if( (!!thin) != !!(i%m_GridSubDiv[0]) ){
 				left.p.z = -m_GridCounts[1]*m_GridStep.y;
 				right.p.z = m_GridCounts[1]*m_GridStep.y;
@@ -103,7 +104,7 @@ void UpdateGrid(){
 				m_GridPoints.push_back( right );
 			}
 		}
-		for(i=-m_GridCounts[1]; i<m_GridCounts[1]; i++){
+		for(i=-m_GridCounts[1]; i<=m_GridCounts[1]; i++){
 			if( (!!thin) != !!(i%m_GridSubDiv[1]) ){
 				left.p.x = -m_GridCounts[0]*m_GridStep.x;
 				right.p.x = m_GridCounts[0]*m_GridStep.x;
@@ -151,7 +152,7 @@ void InitUtilLibrary(){
     TLStream   	= Device.Streams.Create(FVF::F_TL,65535);
     LITStream	= Device.Streams.Create(FVF::F_LIT,65535);
 	// grid
-    UpdateGrid	();
+    UpdateGrid	(1000,5,5);
 }
 
 void UninitUtilLibrary(){

@@ -10,6 +10,8 @@ namespace DU{
     void InitUtilLibrary();
     void UninitUtilLibrary();
 
+	void UpdateGrid(float size, float step, int subdiv);
+
     DWORD subst_a(DWORD val, BYTE a);
     DWORD bgr2rgb(DWORD val);
     DWORD rgb2bgr(DWORD val);
