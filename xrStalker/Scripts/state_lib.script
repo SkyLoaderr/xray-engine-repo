@@ -171,6 +171,13 @@ states = {
 				animstate = "stand",
 				animation = "choosing"
 			},
+	press	 = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "press"
+			},
 	ward	 = {weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,

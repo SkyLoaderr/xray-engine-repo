@@ -364,6 +364,13 @@ function animation:__init(npc, mgr)
 						rnd		= { [0]	= {	"komandir_0",
 											"komandir_1",
 											"komandir_2" } }},
+		press		= {	prop	= { maxidle = 8,
+									sumidle = 10,
+									rnd = 80 },
+						into	= { [0]	= {"knopka_0"} },
+						out	= { [0]	= "knopka_1" },
+						idle	= { [0]	= "knopka_0" },
+						rnd		= nil },
 
 		warding		= {	prop	= { maxidle = 10,
 									sumidle = 10,

@@ -1039,6 +1039,9 @@
 					RelativePath=".\Config\scripts\val_prisoner_door.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\val_prisoner_guard.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\val_rob_guard1.ltx">
 				</File>
 				<File

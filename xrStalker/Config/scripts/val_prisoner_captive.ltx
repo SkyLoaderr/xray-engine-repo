@@ -10,8 +10,16 @@ combat_ignore_keep_when_attacked = true
 on_actor_in_zone = val_prisoner_window_zone | walker@near_window
 on_actor_in_zone2 = val_prisoner_near_door_zone | walker@near_door
 on_info = {+val_sacrifice_start -val_sacrifice_finish} walker@watch_sacrifice
-on_info2 = {+val_prisoner_sit} walker@sit
+on_info2 = {+val_prisoner_sit} walker@sit, {+val_prisoner_plr_captured} walker@plr_captured
 on_info3 = {+val_prisoner_door_unlocked} walker@outside
+on_actor_dist_ge = 30 | walker@actor_far
+
+[walker@actor_far]
+path_walk = val_prisoner_captive_sit_walk
+path_look = val_prisoner_captive_sit_look
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+on_actor_dist_le = 30 | walker@wander
 
 [walker@near_window]
 path_walk = val_prisoner_captive_window_walk
@@ -23,7 +31,7 @@ meet_talk_enabled = true
 on_actor_not_in_zone = val_prisoner_window_zone | walker@wander
 on_actor_in_zone = val_prisoner_near_door_zone | walker@near_door
 on_info = {+val_sacrifice_start -val_sacrifice_finish} walker@watch_sacrifice
-on_info2 = {+val_prisoner_sit} walker@sit
+on_info2 = {+val_prisoner_sit} walker@sit, {+val_prisoner_plr_captured} walker@plr_captured
 on_info3 = {+val_prisoner_door_unlocked} walker@outside
 
 [walker@watch_sacrifice]
@@ -42,6 +50,16 @@ combat_ignore_cond = always
 combat_ignore_keep_when_attacked = true
 on_actor_in_zone = val_prisoner_near_door_zone | walker@near_door
 on_info = {+val_prisoner_door_unlocked} walker@outside
+
+[walker@plr_captured]
+path_walk = val_prisoner_captive_sit_walk
+path_look = val_prisoner_captive_sit_look
+meet_dialog = val_prisoner_hello
+meet_talk_enabled = true
+combat_ignore_cond = always
+combat_ignore_keep_when_attacked = true
+on_info = {+val_prisoner_door_unlocked} walker@outside
+on_info2 = {+val_sacrifice_start -val_sacrifice_finish} walker@watch_sacrifice
 
 [walker@near_door]
 path_walk = val_prisoner_captive_near_door_walk

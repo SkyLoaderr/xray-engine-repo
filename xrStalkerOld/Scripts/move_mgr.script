@@ -390,6 +390,10 @@ end
 
 function move_mgr:time_callback()
 	printf("_bp [%s]: time_callback", self.object:name())
+	local sigtm = self.path_look_info[self.last_look_index]["sigtm"]
+	if sigtm then
+		self:scheme_set_signal(sigtm)
+	end
 	--if self.syn_signal then
 	--	return
 	--end
@@ -397,7 +401,7 @@ function move_mgr:time_callback()
 		if utils.stalker_at_waypoint(self.object, self.patrol_walk, self.last_index) then
 			-- ≈сли стоим на конечной точке пути и с нее никуда не сдвинулись,
 			-- сразу иммитируем callback на прибытие, чтобы включить look.
-			self:waypoint_callback(self.object, nil, self.last_index)
+			--self:waypoint_callback(self.object, nil, self.last_index)
 			return
 		end
 		-- —тоим на конечной точке пути, но неточно. „тобы вернутьс€ на ближайшую
@@ -612,7 +616,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				self.pt_wait_time = nil -- -1
 			else
 				local tm = tonumber(suggested_wait_time)
-				if tm < 1000 or tm > 30000 then
+				if tm ~= 0 and (tm < 1000 or tm > 30000) then
 					utils.abort("object '%s': path_look '%s': flag 't': incorrect time specified (* or number expected)",
 						self.object:name(), self.path_look)
 				end
@@ -655,9 +659,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		-- ≈сли из этой вершины никуда нельз€ идти, и ей соответствует только
 		-- одна точка path_look, то сто€ть бесконечно:
-		if self.patrol_walk:terminal(index) and num_equal_pts == 1 then
-			self.pt_wait_time = nil
-		end
+		--if self.patrol_walk:terminal(index) and num_equal_pts == 1 then
+		--	self.pt_wait_time = nil
+		--end
 		local look_pos = self.patrol_look:point(pt_chosen_idx)
 		self.last_look_index = pt_chosen_idx
 		self:update_standing_state(look_pos)

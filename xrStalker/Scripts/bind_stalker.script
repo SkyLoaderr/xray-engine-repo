@@ -63,6 +63,14 @@ function actor_binder:delayed_sleep_callback()
 	if self.st.punch and self.st.punch.enabled then
 		self.object:set_actor_position(self.st.punch.dest_walk)
 		self.object:set_actor_direction(self.st.punch.dest_look.y)
+
+		if self.st.punch.info then
+			for k, v in self.st.punch.info do
+				if self.object:dont_has_info(v) then
+					self.object:give_info_portion(v)
+				end
+			end
+		end
 	
 		self.st.punch.enabled = false
 	end
