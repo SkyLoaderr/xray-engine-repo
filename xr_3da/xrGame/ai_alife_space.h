@@ -93,7 +93,7 @@ namespace ALife {
 		float		fDistance;	
 	} SLevelPoint;
 
-	DEFINE_VECTOR	(SLevelPoint				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
+	DEFINE_VECTOR	(SLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
 
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
