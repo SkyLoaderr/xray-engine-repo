@@ -296,3 +296,13 @@ void game_sv_GameState::u_EventSend(NET_Packet& P)
 {
 	Level().Server->SendBroadcast(0xffffffff,P,net_flags(TRUE,TRUE));
 }
+
+void game_sv_GameState::Update		()
+{
+	xrServer*		S	= Level().Server;
+	for (u32 it=0; it<S->client_Count(); it++)
+	{
+		xrClientData*	C		= (xrClientData*)	S->client_Get(it);
+		C->ps.ping				= C->stats.getPing	();
+	}
+}

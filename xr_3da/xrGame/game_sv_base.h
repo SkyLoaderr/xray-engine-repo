@@ -60,7 +60,7 @@ public:
 
 	// Main
 	virtual		void				Create					(LPCSTR options);
-	virtual		void				Update					()								= 0;
+	virtual		void				Update					();
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
 	virtual		void				net_Export_Update		(NET_Packet& P, u32 id_to, u32 id);		// just incremental update for specific client
 };

@@ -40,6 +40,8 @@ struct	game_PlayerState
 	s16			money_for_round;
 	u16			flags;
 
+	u16			ping;
+
 	game_PlayerState();
 };
 

@@ -61,6 +61,7 @@ void	game_sv_Deathmatch::OnFraglimitExceed		()
 }
 void	game_sv_Deathmatch::Update					()
 {
+	__super::Update	();
 	switch (phase)
 	{
 	case GAME_PHASE_INPROGRESS:

@@ -291,6 +291,7 @@ BOOL	game_sv_CS::OnDetouch		(u16 eid_who, u16 eid_what)
 
 void	game_sv_CS::Update			()
 {
+	__super::Update	();
 	switch(phase) 	{
 		case GAME_PHASE_INPROGRESS : {
 				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();

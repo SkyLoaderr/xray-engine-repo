@@ -7,9 +7,9 @@
 class ENGINE_API IClientStatistic
 {
 	DPN_CONNECTION_INFO	ci_last;
-	u32				mps_recive, mps_receive_base;
-	u32				mps_send,	mps_send_base;
-	u32				dwBaseTime;
+	u32					mps_recive, mps_receive_base;
+	u32					mps_send,	mps_send_base;
+	u32					dwBaseTime;
 public:
 	IClientStatistic()	{	ZeroMemory(this,sizeof(*this));	dwBaseTime=Device.dwTimeGlobal; }
 
