@@ -1,4 +1,32 @@
+local chief = nil
+
+function boar_callback (obj, action_type, index)
+
+  	local ptr = patrol (obj:patrol ())
+
+	printf ("Path : %s, index : %d", obj:patrol (), index) 
+
+	if index < 0 then return end
+
+--	if ptr:flag (index, 1) then
+--	   action_first (obj, anim ("stand_attack_2"), cond (cond.anim_end))
+--  	   local h = hit()
+--       h.power = 10
+--       h.direction:set  (-1, 0, 0)
+--       h.bone = "bip01_head"
+--       h.draftsman = obj
+--       h.impulse = 10
+--       h.type  = hit.strike
+--       chief:hit (h)
+--       obj:clear_callback (game_object.movement)
+--	   end	
+		
+end
+
+
 function main ()
+	
+	chief = get_level_object ("stalker_chief")
 
     local t = {
                get_level_object ("m_boar_e0000"),
@@ -43,29 +71,32 @@ function main ()
                   patrol ("way0012"),            --m_flesh_e0004
                   }
 
+
     for a = 1, table.getn (t), 1 do
-        t[a]:script (true, m_attack_wave.script_name ())
+        t[a]:script (true, m_attack_wave2.script_name ())
         action (t[a], move (move.act_stand_idle, tways[a]), cond (cond.time_end, 1000000000))
         end
 
     wait (20000)
 
     for a = 1, table.getn (t), 1 do
-        reset_action (t[a], m_attack_wave.script_name ())
+        reset_action (t[a], m_attack_wave2.script_name ())
         action (t[a], move (move.act_walk_fwd, tways[a]), cond (cond.time_end, 1000))
         end
+
+	t[1]:set_callback (m_attack_wave2.boar_callback, game_object.movement)
 
 	wait (1000)
 
     for a = 1, table.getn (t), 1 do
-        reset_action (t[a], m_attack_wave.script_name ())
+        reset_action (t[a], m_attack_wave2.script_name ())
         action (t[a], move (move.act_run, tways[a]), cond (cond.move_end))
         end
 
     wait (120000)
 
     for a = 1, table.getn (t), 1 do
-        t[a]:script (false, m_attack_wave.script_name ())
+        t[a]:script (false, m_attack_wave2.script_name ())
         end
 
 end
