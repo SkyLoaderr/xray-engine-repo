@@ -290,6 +290,15 @@
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\luabind\wrapper_base.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="Lua-test"
@@ -317,6 +326,12 @@
 			</File>
 			<File
 				RelativePath=".\test0.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<File

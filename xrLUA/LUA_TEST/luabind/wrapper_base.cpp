@@ -20,53 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
+#include <luabind/config.hpp>
 #include <luabind/lua_include.hpp>
+#include <luabind/detail/object_rep.hpp>
+#include <luabind/detail/class_rep.hpp>
+#include <luabind/detail/stack_utils.hpp>
 
-#include <luabind/luabind.hpp>
-#include <luabind/class_info.hpp>
-
-namespace luabind
+namespace luabind { namespace detail
 {
-	class_info get_class_info(const object& o)
+	void do_call_member_selection(lua_State* L, char const* name)
 	{
-		lua_State* L = o.lua_state();
-	
-		class_info result(L);
-	
-		o.pushvalue();
-		detail::object_rep* obj = static_cast<detail::object_rep*>(lua_touserdata(L, -1));
-		lua_pop(L, 1);
+		object_rep* obj = static_cast<object_rep*>(lua_touserdata(L, -1));
+		lua_pop(L, 1); // pop self
 
-		result.name = obj->crep()->name();
-		obj->crep()->get_table(L);
-		result.methods.set();
+		obj->crep()->get_table(L); // push the crep table
+		lua_pushstring(L, name);
+		lua_gettable(L, -2);
+		lua_remove(L, -2); // remove the crep table
 
-		result.attributes = newtable(L);
-
-		typedef detail::class_rep::property_map map_type;
-		
-		std::size_t index = 1;
-		
-		for (map_type::const_iterator i = obj->crep()->properties().begin();
-				i != obj->crep()->properties().end(); ++i)
 		{
-			result.attributes[index] = i->first;
+			if (!lua_iscfunction(L, -1)) return;
+			if (lua_getupvalue(L, -1, 3) == 0) return;
+			detail::stack_pop p(L, 1);
+			if (lua_touserdata(L, -1) != reinterpret_cast<void*>(0x1337)) return;
 		}
 
-		return result;
+		// this (usually) means the function has not been
+		// overridden by lua, call the default implementation
+		lua_pop(L, 1);
+		obj->crep()->get_default_table(L); // push the crep table
+		lua_pushstring(L, name);
+		lua_gettable(L, -2);
+		assert(!lua_isnil(L, -1));
+		lua_remove(L, -2); // remove the crep table
 	}
-
-	void bind_class_info(lua_State* L)
-	{
-		module(L)
-		[
-			class_<class_info>("class_info_data")
-				.def_readonly("name", &class_info::name)
-				.def_readonly("methods", &class_info::methods)
-				.def_readonly("attributes", &class_info::attributes),
-		
-			def("class_info", &get_class_info)
-		];
-	}
-}
-
+}}

@@ -44,8 +44,10 @@ using namespace std;
 extern lua_State	*L;
 
 struct A {
+	int m_aaa;
 					A			()
 	{
+		m_aaa		= -1;
 		printf		("A constructor is called!\n");
 	}
 
@@ -57,6 +59,17 @@ struct A {
 	virtual	void	a_virtual	()
 	{
 		printf		("A virtual function a() is called!\n");
+	}
+
+	A&				set			(int aaa)
+	{
+		m_aaa		= aaa;
+		return		(*this);
+	}
+
+	int				get			()
+	{
+		return		(m_aaa);
 	}
 };
 
@@ -73,13 +86,9 @@ namespace luabind {
 	}
 }
 
-struct A_wrapper : public A {
+struct A_wrapper : public A, public wrap_base {
 public:
-	weak_ref		self;
-
-public:
-					A_wrapper	(weak_ref self_) :
-						self(self_)
+					A_wrapper	()
 	{
 	}
 
@@ -90,7 +99,7 @@ public:
 
 	virtual	void	a_virtual	()
 	{
-		call_member<void>(self,"a");
+		call_member<void>("a");
 	}
 
 	static	void	a_static	(A *a)
@@ -100,6 +109,11 @@ public:
 };
 
 struct B : public A {
+					B			()
+	{
+		printf		("B constructor is called!\n");
+	}
+
 	virtual			~B			()
 	{
 		printf		("B virtual destructor is called!\n");
@@ -117,16 +131,8 @@ struct B : public A {
 	}
 };
 
-struct B_wrapper : public B {
+struct B_wrapper : public B, public wrap_base {
 public:
-	weak_ref		self;
-
-public:
-					B_wrapper	(weak_ref self_) :
-						self(self_)
-	{
-	}
-
 	virtual			~B_wrapper	()
 	{
 		printf		("B_wrapper virtual destructor is called!\n");
@@ -134,7 +140,7 @@ public:
 
 	virtual	void	a_virtual	()
 	{
-		call_member<void>(self,"a");
+		call_member<void>("a");
 	}
 
 	static	void	a_static	(B *b)
@@ -144,7 +150,7 @@ public:
 
 	virtual	void	b_virtual	()
 	{
-		call_member<void>(self,"b");
+		call_member<void>("b");
 	}
 
 	static	void	b_static	(B *b)
@@ -155,6 +161,11 @@ public:
 
 struct C : public B
 {
+					C			()
+	{
+		printf		("C constructor is called!\n");
+	}
+
 	virtual			~C			()
 	{
 		printf		("C virtual destructor is called!\n");
@@ -163,7 +174,6 @@ struct C : public B
 	virtual	void	a_virtual	()
 	{
 		printf		("C virtual function a() is called!\n");
-//		A::a_virtual();
 		B::a_virtual();
 	}
 
@@ -179,16 +189,8 @@ struct C : public B
 	}
 };
 
-struct C_wrapper : public C {
+struct C_wrapper : public C, public wrap_base {
 public:
-	weak_ref		self;
-
-public:
-					C_wrapper	(weak_ref self_) :
-						self(self_)
-	{
-	}
-
 	virtual			~C_wrapper	()
 	{
 		printf		("C_wrapper virtual destructor is called!\n");
@@ -196,7 +198,7 @@ public:
 
 	virtual	void	a_virtual	()
 	{
-		call_member<void>(self,"a");
+		call_member<void>("a");
 	}
 
 	static	void	a_static	(C *c)
@@ -206,7 +208,7 @@ public:
 
 	virtual	void	b_virtual	()
 	{
-		call_member<void>(self,"b");
+		call_member<void>("b");
 	}
 
 	static	void	b_static	(C *c)
@@ -216,7 +218,7 @@ public:
 
 	virtual	void	c_virtual	()
 	{
-		call_member<void>(self,"c");
+		call_member<void>("c");
 	}
 
 	static	void	c_static	(C *c)
@@ -225,14 +227,15 @@ public:
 	}
 };
 
+
 //#define USE_BOOST_SHARED_PTR
 
 struct M {
 protected:
 #ifndef USE_BOOST_SHARED_PTR
-	typedef A*						pointer;
+	typedef C*						pointer;
 #else
-	typedef boost::shared_ptr<A>	pointer;
+	typedef boost::shared_ptr<C>	pointer;
 #endif
 	vector<pointer>					m_objects;
 
@@ -254,8 +257,8 @@ public:
 		vector<pointer>::iterator	E = m_objects.end();
 		for ( ; I != E; ++I) {
 			(*I)->a_virtual		();
-//			(*I)->b_virtual		();
-//			(*I)->c_virtual		();
+			(*I)->b_virtual		();
+			(*I)->c_virtual		();
 		}
 	}
 
@@ -269,8 +272,7 @@ M *m;
 
 M &getM()
 {
-	if (!m)
-		m = new M();
+	if (!m)m = new M();
 	return		(*m);
 }
 
@@ -512,14 +514,45 @@ int resume_thread(lua_State *L)
 
 A* g_a = 0;
 
-void set_a(A &a)
+void set_a(A *a)
 {
-	g_a = &a;
+	g_a = a;
 }
 
 A *get_a()
 {
 	return(g_a);
+}
+
+struct AA {
+	u32		aa;
+	virtual ~AA(){}
+};
+
+struct BB {
+	u32		bb;
+	virtual ~BB(){}
+};
+
+struct CC {
+	AA		a;
+	BB		b;
+
+	void setup(AA aa)
+	{
+		a	= aa;
+	}
+
+	void setup(BB bb)
+	{
+		b	= bb;
+	}
+};
+
+CC *getCC()
+{
+	static	CC cc;
+	return	(&cc);
 }
 
 void test0()
@@ -543,7 +576,7 @@ void test0()
 
 	open			(L);
 
-	luabind::set_error_callback(lua_bind_error);
+//	luabind::set_error_callback(lua_bind_error);
 
 	std::map<LPCSTR,int>	temp;
 
@@ -569,40 +602,44 @@ void test0()
 	[
 		instance,
 
-#ifndef USE_BOOST_SHARED_PTR
-		class_<A>("A")
-#else
-		class_<A, boost::shared_ptr<A> >("A")
-#endif
-			.def(constructor<>())
-			.def("a",	&A::a_virtual),
+		class_<A,A_wrapper>("A")
+			.def(				constructor<>())
+			.def("set",			&A::set,	return_reference_to(return_value))
+			.def("get",			&A::get)
+			.def("a",			&A::a_virtual, &A_wrapper::a_static),
 
-//		class_<A,A_wrapper>("A")
-//			.def(constructor<>())
-//			.def("a",	&A_wrapper::a_static),
-//
-//		class_<B,B_wrapper,A>("B")
-//			.def(constructor<>())
-//			.def("a",	&B_wrapper::a_static)
-//			.def("b",	&B_wrapper::b_static),
-//
-//		class_<C,C_wrapper,bases<B> >("C")
-//			.def(constructor<>())
-//			.def("a",	&C_wrapper::a_static)
-//			.def("b",	&C_wrapper::b_static)
-//			.def("c",	&C_wrapper::c_static),
+		class_<B,B_wrapper,A>("B")
+			.def(				constructor<>())
+			.def("a",			&B::a_virtual, &B_wrapper::a_static)
+			.def("b",			&B::b_virtual, &B_wrapper::b_static),
+
+		class_<C,C_wrapper,bases<B> >("C")
+			.def(				constructor<>())
+			.def("a",			&C::a_virtual, &C_wrapper::a_static)
+			.def("b",			&C::b_virtual, &C_wrapper::b_static)
+			.def("c",			&C::c_virtual, &C_wrapper::c_static),
 
 		class_<M>("M")
-#ifndef USE_BOOST_SHARED_PTR
-			.def("add",	&M::add, adopt(_1)),
-#else
-			.def("add",	&M::add),
-#endif
+			.def("add",	&M::add, adopt(_2)),
 
-		def("c_bug", &c_bug),
+		class_<AA>("AA")
+			.def(				constructor<>())
+			.def_readwrite("aa",&AA::aa),
+
+		class_<BB>("BB")
+			.def(				constructor<>())
+			.def_readwrite("bb",&BB::bb),
+
+		class_<CC>("CC")
+			.def("setup",		(void (CC::*)(AA))(&CC::setup))
+			.def("setup",		(void (CC::*)(BB))(&CC::setup)),
+
+		def("getCC",			 &getCC),
+		def("getM",				 &getM),
+		def("c_bug",			 &c_bug),
 		def("print_error_stack", &print_error_stack),
-		def("set_a",			 &set_a),
-		def("get_a",			 &get_a)
+		def("set_a",			 &set_a, adopt(_1)),
+		def("get_a",			 &get_a, adopt(return_value))
 //		def("lua_resume", &lua_resume),
 //		def("lua_debug", &lua_debug)
 	];
@@ -616,7 +653,8 @@ void test0()
 //	lua_dostring			(L,"thread_test.bug()");
 
 	printf			("top : %d\n",lua_gettop(L));
-	for (int i=0; i<10000; ++i) {
+	for (int i=0; i<0+0*10000; ++i)
+	{
 		printf			("Starting thread %d\n",i);
 		lua_State		*t = lua_newthread(L);
 		lua_sethook		(t,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
@@ -656,21 +694,23 @@ void test0()
 		printf			("top : %d\n",lua_gettop(L));
 	}
 
-//	lua_dofile		(L,"x:\\adopt_test.script");
-//
-//	if (xr_strlen(SSS)) {
-//		printf		("\n%s\n",SSS);
-//		strcpy		(SSS,"");
-//		lua_close	(L);
-//		return;
-//	}
-//
-//	for (int i=0; i<20; Sleep(100), ++i) {
-//		getM().update		();
-////		lua_setgcthreshold	(L,0);
-//	}
+	lua_dofile		(L,"x:\\adopt_test.script");
+
+	if (xr_strlen(SSS)) {
+		printf		("\n%s\n",SSS);
+		strcpy		(SSS,"");
+		lua_close	(L);
+		return;
+	}
+
+	for (int i=0; i<20; Sleep(100), ++i) {
+		getM().update		();
+		lua_setgcthreshold	(L,0);
+	}
 
 	delete			m;
+	lua_setgcthreshold	(L,0);
+	lua_setgcthreshold	(L,0);
 
 	lua_close		(L);
 }
