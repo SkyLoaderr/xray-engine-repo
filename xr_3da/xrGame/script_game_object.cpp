@@ -30,6 +30,7 @@
 #include "custommonster.h"
 #include "entitycondition.h"
 #include "space_restrictor.h"
+#include "script_callback_ex.h"
 
 class CScriptBinderObject;
 
@@ -519,4 +520,28 @@ bool CScriptGameObject::inside					(const Fvector &position, float epsilon) cons
 bool CScriptGameObject::inside					(const Fvector &position) const
 {
 	return				(inside(position,EPS_L));
+}
+
+void CScriptGameObject::set_patrol_extrapolate_callback(const luabind::functor<bool> &functor)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_patrol_extrapolate_callback!");
+		return;
+	}
+	CScriptCallbackEx<bool>	callback;
+	callback.set			(functor);
+	monster->movement().patrol().set_extrapolate_callback(callback);
+}
+
+void CScriptGameObject::set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_patrol_extrapolate_callback!");
+		return;
+	}
+	CScriptCallbackEx<bool>	callback;
+	callback.set			(functor,object);
+	monster->movement().patrol().set_extrapolate_callback(callback);
 }

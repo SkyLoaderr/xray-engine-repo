@@ -48,18 +48,18 @@ protected:
 	functor_type				*m_functor;
 	object_type					*m_object;
 
+private:
+	IC			functor_type	*functor			() const;
+	IC			object_type		*object				() const;
+	IC			void			init				();
+
 public:
 	IC							CScriptCallbackEx_	();
 	IC							CScriptCallbackEx_	(const CScriptCallbackEx_ &callback);
 	IC	virtual					~CScriptCallbackEx_	();
 	IC			void			set					(const functor_type &functor);
 	IC			void			set					(const functor_type &functor, const object_type &object);
-	IC			void			init				();
 	IC			void			clear				();
-	IC			functor_type	*functor			() const;
-	IC			object_type		*object				() const;
-	IC			bool			assigned			() const;
-	IC			bool			operator!			() const {return (!m_functor);}
 	IC			operator unspecified_bool_type		() const {return (!m_functor ? 0 : &CScriptCallbackEx_::functor);}
 };
 

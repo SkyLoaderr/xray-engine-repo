@@ -394,6 +394,8 @@ public:
 			u32					get_current_patrol_point_index();
 			bool				path_completed			() const;
 			void				patrol_path_make_inactual();
+			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor);
+			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object);
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			int					active_sound_count		(bool only_playing);
