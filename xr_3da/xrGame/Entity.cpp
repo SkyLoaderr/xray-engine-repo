@@ -100,9 +100,12 @@ void CEntity::Load(CInifile* ini, const char* section)
 	id_Team = -1; if (ini->LineExists(section,"team"))	id_Team		= ini->ReadINT	(section,"team");
 	id_Squad= -1; if (ini->LineExists(section,"squad"))	id_Squad	= ini->ReadINT	(section,"squad");
 	id_Group= -1; if (ini->LineExists(section,"group"))	id_Group	= ini->ReadINT	(section,"group");
+
+	// Movement: General
+	Movement.SetParent		(this);
+	Fbox	bb;
 	
 	// Movement: BOX
-	Fbox	bb;	
 	Fvector	vBOX_center	= ini->ReadVECTOR	(section,"ph_box_center"	);
 	Fvector	vBOX_size	= ini->ReadVECTOR	(section,"ph_box_size"		);
 	bb.set	(vBOX_center,vBOX_center); bb.grow	(vBOX_size);
@@ -115,12 +118,18 @@ void CEntity::Load(CInifile* ini, const char* section)
 	Movement.SetFoots	(bb);
 
 	// Movement: Crash speed and mass
-	float	cs_min		= ini->ReadFLOAT	(section,"ph_crash_min"		);
-	float	cs_max		= ini->ReadFLOAT	(section,"ph_crash_max"		);
-	float	mass		= ini->ReadFLOAT	(section,"ph_mass"			);
-	Movement.SetParent		(this);
+	float	cs_min		= ini->ReadFLOAT	(section,"ph_crash_speed_min"	);
+	float	cs_max		= ini->ReadFLOAT	(section,"ph_crash_speed_max"	);
+	float	mass		= ini->ReadFLOAT	(section,"ph_mass"				);
 	Movement.SetCrashSpeeds	(cs_min,cs_max);
 	Movement.SetMass		(mass);
+	
+	// Movement: Frictions
+	float af, gf, wf;
+	af					= ini->ReadFLOAT	(section,"ph_friction_air"	);
+	gf					= ini->ReadFLOAT	(section,"ph_friction_ground");
+	wf					= ini->ReadFLOAT	(section,"ph_friction_wall"	);
+	Movement.SetFriction	(af,wf,gf);
 }
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos)

@@ -170,12 +170,6 @@ void CActor::Load(CInifile* ini, const char* section )
 	m_fJumpSpeed		= ini->ReadFLOAT(section,"jump_speed");
 	m_fRunCoef			= ini->ReadFLOAT(section,"run_coef");
 
-	float af, gf, wf;
-	af					= ini->ReadFLOAT(section,"air_friction");
-	gf					= ini->ReadFLOAT(section,"ground_friction");
-	wf					= ini->ReadFLOAT(section,"wall_friction");
-	Movement.SetFriction(af,wf,gf);
-
 	R_ASSERT			(pVisual->Type==MT_SKELETON);
 
 	Weapons				= new CWeaponList(this);
