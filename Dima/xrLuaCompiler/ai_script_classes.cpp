@@ -13,6 +13,7 @@
 #include "weapon.h"
 #include "ParticlesObject.h"
 #include "PDA.h"
+#include "inventory.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {

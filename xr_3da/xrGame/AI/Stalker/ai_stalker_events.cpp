@@ -13,6 +13,7 @@
 #include "../../customdetector.h"
 #include "../../bolt.h"
 #include "../../pda.h"
+#include "../../inventory.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {

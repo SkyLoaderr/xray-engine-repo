@@ -25,6 +25,7 @@
 #include "weaponmagazined.h"
 #include "ef_storage.h"
 #include "ai/stalker/ai_stalker.h"
+#include "inventory.h"
 
 CObjectHandler::CObjectHandler		() : inherited("")
 {

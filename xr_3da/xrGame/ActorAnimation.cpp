@@ -4,6 +4,7 @@
 #include "hudmanager.h"
 #include "UI.h"
 #include "weapon.h"
+#include "inventory.h"
 
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "Inventory.h"
+#include "inventory_item.h"
 
 
 class CWeaponHUD;

@@ -14,6 +14,7 @@
 #include "ai_alife.h"
 #include "ef_storage.h"
 #include "game_graph.h"
+#include "inventory.h"
 
 float CDistanceFunction::ffGetValue()
 {

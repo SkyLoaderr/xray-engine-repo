@@ -4,15 +4,12 @@
 #include "customdetector.h"
 #include "uigamesp.h"
 #include "hudmanager.h"
-
 #include "weapon.h"
 #include "artifact.h"
 #include "scope.h"
 #include "silencer.h"
 #include "grenadelauncher.h"
-
-
-
+#include "inventory.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {

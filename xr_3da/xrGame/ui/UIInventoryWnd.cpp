@@ -30,6 +30,7 @@
 #include "../ai_script_processor.h"
 
 #include "../eatable_item.h"
+#include "../inventory.h"
 
 
 

@@ -13,6 +13,7 @@
 #include "../../weapon.h"
 #include "../../missile.h"
 #include "../../ai_script_actions.h"
+#include "../../inventory.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;

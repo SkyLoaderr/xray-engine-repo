@@ -4,9 +4,9 @@
 #include "trade.h"
 #include "../CameraBase.h"
 #include "Car.h"
-
 #include "HudManager.h"
 #include "UIGameSP.h"
+#include "inventory.h"
 
 void CActor::IR_OnKeyboardPress(int cmd)
 {

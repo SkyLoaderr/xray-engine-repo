@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_idol.h"
 #include "../../bolt.h"
+#include "../../inventory.h"
 
 CAI_Idol::CAI_Idol					()
 {

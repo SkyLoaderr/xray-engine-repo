@@ -35,6 +35,8 @@
 #include "trade.h"
 #include "LevelFogOfWar.h"
 
+#include "inventory.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;

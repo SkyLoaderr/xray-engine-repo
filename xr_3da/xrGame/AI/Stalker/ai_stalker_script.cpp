@@ -12,6 +12,7 @@
 #include "../../weapon.h"
 #include "../../WeaponMagazined.h"
 #include "../../torch.h"
+#include "../../inventory.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {

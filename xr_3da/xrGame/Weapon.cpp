@@ -13,6 +13,7 @@
 #include "WeaponHUD.h"
 #include "entity_alive.h"
 #include "actor.h"
+#include "inventory.h"
 
 
 //////////////////////////////////////////////////////////////////////

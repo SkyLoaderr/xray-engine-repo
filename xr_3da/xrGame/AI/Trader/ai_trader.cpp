@@ -9,10 +9,10 @@
 #include "stdafx.h"
 #include "ai_trader.h"
 #include "../../bolt.h"
-
 #include "../../trade.h"
 #include "../../ai_script_actions.h"
 #include "../../ai_script_classes.h"
+#include "../../inventory.h"
 
 CAI_Trader::CAI_Trader()
 {

@@ -13,6 +13,7 @@
 #include "../../bolt.h"
 #include "../../ai_script_actions.h"
 #include "../../ef_storage.h"
+#include "../../inventory.h"
 
 void CAI_Stalker::vfSetParameters(
 	PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator, 

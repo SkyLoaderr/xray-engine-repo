@@ -22,6 +22,7 @@
 #include "../gameobject.h"
 
 #include "../eatable_item.h"
+#include "../inventory.h"
 
 
 

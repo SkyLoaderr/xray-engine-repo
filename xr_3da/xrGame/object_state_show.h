@@ -10,6 +10,7 @@
 
 #include "object_state_base.h"
 #include "ai/stalker/ai_stalker.h"
+#include "inventory.h"
 
 class CObjectStateShow : public CObjectStateBase {
 public:

@@ -2,9 +2,6 @@
 #include "gameobject.h"
 #include "inventory_item.h"
 
-#define CMD_START	(1<<0)
-#define CMD_STOP	(1<<1)
-
 class CInventory;
 class CInventoryItem;
 

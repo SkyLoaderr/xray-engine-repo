@@ -6,6 +6,7 @@
 #include "PSObject.h"
 #include "ParticlesObject.h"
 #include "actor.h"
+#include "inventory.h"
 
 CGrenade::CGrenade(void) 
 {

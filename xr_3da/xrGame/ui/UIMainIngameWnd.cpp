@@ -16,6 +16,9 @@
 #include "../UIStaticItem.h"
 
 #include "UIInventoryUtilities.h"
+
+#include "../inventory.h"
+
 using namespace InventoryUtilities;
 
 

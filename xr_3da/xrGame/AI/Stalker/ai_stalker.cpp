@@ -14,6 +14,7 @@
 #include "../../ai_script_actions.h"
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
+#include "../../inventory.h"
 
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
 {

@@ -13,6 +13,7 @@
 #include "scope.h"
 #include "silencer.h"
 
+#include "inventory.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

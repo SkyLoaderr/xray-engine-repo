@@ -9,6 +9,7 @@
 #define   _USE_MATH_DEFINES
 #include "math.h"
 #include "ai_script_actions.h"
+#include "inventory.h"
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
