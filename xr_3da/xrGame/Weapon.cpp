@@ -328,7 +328,7 @@ void CWeapon::Load		(LPCSTR section)
 		m_dwWeaponRemoveTime = WEAPON_REMOVE_TIME;
 	//////////////////////////////////////
 	if(pSettings->line_exist(section,"auto_spawn_ammo"))
-		m_bAutoSpawnAmmo = (BOOL) pSettings->r_u32(section,"auto_spawn_ammo");
+		m_bAutoSpawnAmmo = pSettings->r_bool(section,"auto_spawn_ammo");
 	else
 		m_bAutoSpawnAmmo = TRUE;
 	//////////////////////////////////////

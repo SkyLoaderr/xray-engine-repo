@@ -54,7 +54,7 @@ public:
 	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
 	string64	m_tmpName;
 
-	u8		m_bCanBeUnlimited;
+	bool		m_bCanBeUnlimited;
 
 protected:
 	////////////// network //////////////////	
