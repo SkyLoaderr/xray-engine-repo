@@ -343,7 +343,8 @@ function action_contact:execute ()
 
 		-- если актер ближе какого-то радиуса - открывать огонь
 		if self.object:position():distance_to(self.a.actor:position()) < self.a.shoot_distance then
-      			self.object:set_item(object.fire1, self.object:best_weapon())
+			self.object:set_relation(game_object.enemy, self.a.actor)
+
 			if self.object:active_sound_count() == 0 then
 				globals.set_sound(self.object, self.sound_f, false)
 			end
