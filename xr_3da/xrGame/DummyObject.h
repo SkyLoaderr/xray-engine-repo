@@ -32,7 +32,7 @@ private:
 	CVisual*							s_particles;
 	sound								s_sound;
 	PS::SEmitter						s_emitter;
-	CPhysicsShell*						m_pPhysicsShell;
+	//CPhysicsShell*						m_pPhysicsShell;
 
 	Fmatrix								relation;
 public:

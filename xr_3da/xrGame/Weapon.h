@@ -50,7 +50,7 @@ protected:
 
 	void					animGet					(MotionSVec& lst, LPCSTR prefix);
 protected:
-	CPhysicsShell*			m_pPhysicsShell;
+	//CPhysicsShell*			m_pPhysicsShell;
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
 	int						iSlotBinding;

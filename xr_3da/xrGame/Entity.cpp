@@ -64,7 +64,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	vLocalDir.invert		();
 
 	// hit impulse
-	HitImpulse				(impulse,dir,vLocalDir); // @@@: WT
+	if(impulse) HitImpulse				(impulse,dir,vLocalDir); // @@@: WT
 	
 	// Calc amount (correct only on local player)
 	float	lost_health,		lost_armor;
