@@ -5,7 +5,6 @@
 -- Mail:        narrator@gsc-game.com
 --
 
-module("ui_multiplayer_base")
 
 function main()
 	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
