@@ -142,7 +142,7 @@ void occRasterizer::i_section	(float *A, float *B, float *C, occTri* T, int Sect
 
 		// check 'startY' for out-of-tiangle 
 		float test = minPixel(A[1]);
-		if (int(startY)<=int(test)) startY ++;
+		if (int(startY)<int(test)) startY ++;
 	}
 	if (startY > endY) return;
 	

@@ -70,13 +70,13 @@ void line	( int x1, int y1, int x2, int y2 )
 }
 
 float rad(float a) { return a*3.14159265358f / 180.f; }
-const float p_c = 32.f;
-const float p_r = 30.f;
+const float p_c = 32.7f;
+const float p_r = 30.4f;
 int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
 
-	for (int test=1; test<2; test++)
+	for (int test=0; test<36; test++)
 	{
 		float		a0	= rad(test*10.f);
 		float		a1	= rad(test*10.f + 60.f);
