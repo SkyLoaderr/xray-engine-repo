@@ -97,6 +97,7 @@ function action_reaction_wait:initialize()
 	xr_state.change_state(self.object, 0)
 end
 function action_reaction_wait:execute()
+	action_base.execute(self)
 	self.object:set_item(object.idle, self.object:best_weapon())
 	self.a.evn:get_event(self.a.obj)
 	
@@ -251,11 +252,10 @@ function action_reaction_wait:execute()
 			return
 		end
 	end
-	action_base.execute(self)
 end
 function action_reaction_wait:finalize()	
-	self:set_prisluh(false)
 	action_base.finalize (self)
+	self:set_prisluh(false)
 end
 function action_reaction_wait:set_prisluh(prisluh)
 	if prisluh == true then
