@@ -31,3 +31,11 @@ function mil_dolg_sniper_complete (stalker, player)
     db.actor:set_task_state (task.completed, "mil_kill_sniper", 0)
     db.actor:set_task_state (task.completed, "mil_kill_sniper", 2)
 end
+
+function transfer_flash (player, stalker)
+    player:transfer_item (player:object("crazy_flash"), stalker)
+    if db.actor:has_info ("mil_max_job") then
+       db.actor:set_task_state (task.completed, "mil_mad_job", 0)
+       db.actor:set_task_state (task.completed, "mil_mad_job", 2)
+    end        
+end

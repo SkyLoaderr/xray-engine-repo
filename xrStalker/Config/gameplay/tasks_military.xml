@@ -16,5 +16,22 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+	
+	<game_task id="mil_mad_job">
+		<title>mil_take_flash</title>
+		<objective>
+			<text>mil_take_flash</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_take_flash</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_put_flash_to_max</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+	
 
 </game_tasks_data>
