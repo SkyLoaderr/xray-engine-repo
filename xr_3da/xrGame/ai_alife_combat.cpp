@@ -328,9 +328,12 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 					l_tpALifeMonsterAbstract->m_bDirectControl	= true;
 					l_tpALifeAbstractGroup->m_tpMembers.erase	(l_tpALifeAbstractGroup->m_tpMembers.begin() + I);
 					vfAssignDeathPosition						(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
-					l_tpALifeMonsterAbstract->vfDetachAll		(l_tpALifeMonsterAbstract->m_tGraphID);
+					l_tpALifeMonsterAbstract->vfDetachAll		();
 					R_ASSERT									(l_tpALifeMonsterAbstract->children.empty());
 					vfUpdateDynamicData							(l_tpALifeMonsterAbstract);
+					CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeMonsterAbstract);
+					if (l_tpALifeInventoryItem)
+						m_tpItemVector.push_back				(l_tpALifeInventoryItem);
 					l_tpALifeAbstractGroup->m_wCount--;
 					I--;
 					N--;
@@ -346,13 +349,16 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 				vfAppendItemVector								(l_tpALifeMonsterAbstract->children,m_tpItemVector);
 				_GRAPH_ID										l_tGraphID1 = l_tpALifeMonsterAbstract->m_tGraphID;
 				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
-				l_tpALifeMonsterAbstract->vfDetachAll			(l_tpALifeMonsterAbstract->m_tGraphID);
+				l_tpALifeMonsterAbstract->vfDetachAll			();
 				R_ASSERT										(l_tpALifeMonsterAbstract->children.empty());
 				vfRemoveObjectFromScheduled						(l_tpALifeMonsterAbstract);
 				if (l_tpALifeMonsterAbstract->m_tGraphID != l_tGraphID1) {
 					vfRemoveObjectFromGraphPoint				(l_tpALifeMonsterAbstract,l_tGraphID1);
 					vfAddObjectToGraphPoint						(l_tpALifeMonsterAbstract,l_tpALifeMonsterAbstract->m_tGraphID);
 				}
+				CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeMonsterAbstract);
+				if (l_tpALifeInventoryItem)
+					m_tpItemVector.push_back					(l_tpALifeInventoryItem);
 			}
 		}
 	}
@@ -385,7 +391,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 #ifdef ALIFE_LOG
 		Msg								("[LSS] : Starting taking items [%s][%f]",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[l_iGroupIndex])->fHealth);
 #endif
-		m_tpaCombatObjects[l_iGroupIndex]->vfAttachItems(l_tGraphID);
+		m_tpaCombatObjects[l_iGroupIndex]->vfAttachItems();
 	}
 	m_tpItemVector.clear();
 }

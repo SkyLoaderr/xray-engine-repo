@@ -46,8 +46,12 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem	= dynamic_cast<CSE_ALifeInventoryItem*>	(e_what);
 		CSE_ALifeDynamicObject	*l_tpDynamicObject		= dynamic_cast<CSE_ALifeDynamicObject*>	(e_who);
 		
-		if (l_tpTraderParams && l_tpALifeInventoryItem && l_tpDynamicObject && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(l_tpDynamicObject->ID) != m_tpALife->m_tObjectRegistry.end()))
+		if (l_tpTraderParams && l_tpALifeInventoryItem && l_tpDynamicObject && (m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) != m_tpALife->m_tpCurrentLevel->end()) && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(e_what->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfAttachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
+#ifdef ALIFE_LOG
+		else
+			Msg					("Cannot attach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+#endif
 	}
 	return TRUE;
 }
@@ -66,18 +70,18 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 		if (!l_tpDynamicObject)
 			return TRUE;
 		
-		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(l_tpDynamicObject->ID) != m_tpALife->m_tObjectRegistry.end()))
+		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) == m_tpALife->m_tpCurrentLevel->end()) && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(e_what->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfDetachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
+#ifdef ALIFE_LOG
+		else
+			Msg					("Cannot detach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+#endif
 	}
 	return					(TRUE);
 }
 
 void	game_sv_Single::OnRoundStart	()
 {
-//	if (m_bALife) {
-//		m_tpALife				= xr_new<CSE_ALifeSimulator>(m_tpServer);
-//		m_tpALife->Load			();
-//	}
 }
 
 void	game_sv_Single::Update			()
@@ -94,18 +98,6 @@ void	game_sv_Single::Update			()
 
 void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 {
-	//xrServer*	S					=	Level().Server;
-	//// Drop everything
-	//xr_vector<u16>*	C				=	get_children(id_killed);
-	//if (0==C)						return;
-	//while(C->size())
-	//{
-	//	u16		eid						= (*C)[0];
-
-	//	CSE_Abstract*		from		= S->get_entity_from_eid(get_id_2_eid(id_killed));
-	//	CSE_Abstract*		what		= S->get_entity_from_eid(eid);
-	//	S->Perform_reject				(what,from);
-	//}
 }
 
 _TIME_ID game_sv_Single::GetGameTime		()

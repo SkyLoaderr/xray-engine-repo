@@ -60,6 +60,7 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 	u64							l_qwMaxProcessTime = m_qwMaxProcessTime - m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
 	if (m_tpScheduledObjects.size()) {
 		SCHEDULE_P_PAIR_IT		I = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
+		R_ASSERT2				(I != m_tpScheduledObjects.end(),"Cannot find specified object on the current level map");
 		for (int i=1; ; i++) {
 			m_bUpdateChanged				= false;
 			if ((*I).second->m_qwUpdateCounter == m_qwCycleCounter) {

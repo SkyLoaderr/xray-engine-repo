@@ -464,7 +464,7 @@ void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_ALifeSchedulable(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_ALifeSchedulable(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_Abstract(caSection)
 {
 	m_tNextGraphID				= m_tGraphID;
 	m_tPrevGraphID				= m_tGraphID;
@@ -663,7 +663,7 @@ void CSE_ALifeCreatureCrow::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterRat
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_Abstract(caSection)
 {
 	set_visual					("monsters\\rat\\rat_1");
 	// personal charactersitics
@@ -694,9 +694,7 @@ CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAb
 
 void CSE_ALifeMonsterRat::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	// inherited properties
-	inherited::STATE_Read		(tNetPacket,size);
-	// personal characteristics
+	inherited1::STATE_Read		(tNetPacket,size);
 	tNetPacket.r_float			(fEyeFov);
 	tNetPacket.r_float			(fEyeRange);
 	if (m_wVersion <= 5)
@@ -721,13 +719,12 @@ void CSE_ALifeMonsterRat::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(fAttackDistance);
 	tNetPacket.r_float			(fAttackAngle);
 	tNetPacket.r_float			(fAttackSuccessProbability);
+	inherited2::STATE_Read		(tNetPacket,size);
 }
 
 void CSE_ALifeMonsterRat::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	// inherited properties
-	inherited::STATE_Write		(tNetPacket);
-	// personal characteristics
+	inherited1::STATE_Write		(tNetPacket);
 	tNetPacket.w_float			(fEyeFov);
 	tNetPacket.w_float			(fEyeRange);
 	tNetPacket.w_float			(fMinSpeed);
@@ -750,22 +747,26 @@ void CSE_ALifeMonsterRat::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(fAttackDistance);
 	tNetPacket.w_float			(fAttackAngle);
 	tNetPacket.w_float			(fAttackSuccessProbability);
+	inherited2::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeMonsterRat::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeMonsterRat::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write	(tNetPacket);
+	inherited2::UPDATE_Write	(tNetPacket);
 }
 
 #ifdef _EDITOR
 void CSE_ALifeMonsterRat::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-   	inherited::FillProp			(pref, items);
+	inherited1::FillProp		(pref, items);
+	inherited2::FillProp		(pref, items);
 	// personal characteristics
    	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);

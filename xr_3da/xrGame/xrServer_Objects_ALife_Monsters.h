@@ -121,7 +121,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-	virtual	void					vfDetachAll				(_GRAPH_ID				tGraphID)	{};
+	virtual	void					vfDetachAll				()	{};
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -139,7 +139,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
 									CSE_ALifeCreatureCrow		(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
 	// Personal characteristics:
 	float							fEyeFov;
 	float							fEyeRange;
@@ -246,17 +246,17 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
 			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
 			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,	ITEM_P_VECTOR &tpItemVector);
-			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector, _GRAPH_ID tGraphID);
+			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
-	virtual	void					vfAttachItems			(_GRAPH_ID				tGraphID,			ETakeType tTakeType = eTakeTypeAll);
+	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
 			bool					bfCanGetItem			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
 	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int iGroupIndex, bool bMutualDetection);
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-	virtual	void					vfDetachAll				(_GRAPH_ID				tGraphID);
+	virtual	void					vfDetachAll				();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

@@ -338,7 +338,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	return						(u16(l_dwResult));
 }
 
-void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector, _GRAPH_ID tGraphID)
+void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector)
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return;
@@ -348,7 +348,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && bfCanGetItem(l_tpALifeItemAmmo)) {
-			m_tpALife->vfAttachItem(*this,l_tpALifeItemAmmo,tGraphID);
+			m_tpALife->vfAttachItem(*this,l_tpALifeItemAmmo,l_tpALifeItemAmmo->m_tGraphID);
 			l_dwCount++;
 			if (l_dwCount > MAX_AMMO_ATTACH_COUNT)
 				break;
@@ -367,22 +367,26 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 			m_tpALife->m_tpItemVector.push_back(l_tpALifeInventoryItem);
 	}
 	if (!m_tpALife->m_tpItemVector.empty())
-		vfAttachItems(m_tGraphID);
+		vfAttachItems();
 }
 
-void CSE_ALifeHumanAbstract::vfDetachAll(_GRAPH_ID tGraphID)
+void CSE_ALifeHumanAbstract::vfDetachAll()
 {
 	for (int i=0, n=children.size(); i<n; n--) {
-		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(children[i]));
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(children[i]);
+		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 		R_ASSERT2					(l_tpALifeInventoryItem,"Invalid inventory object");
-		m_tpALife->vfDetachItem		(*this,l_tpALifeInventoryItem,tGraphID);
+		m_tpALife->vfDetachItem		(*this,l_tpALifeInventoryItem,m_tGraphID);
+		l_tpALifeInventoryItem->o_Position = o_Position;
+		l_tpALifeDynamicObject->m_tGraphID = m_tGraphID;
+		l_tpALifeDynamicObject->m_fDistance = m_fDistance;
 	}
 	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
 	m_fCumulativeItemMass			= 0.f;
 	m_iCumulativeItemVolume			= 0;
 }
 
-void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeType)
+void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 {
 	R_ASSERT2						(fHealth >= EPS_L,"Cannot attach items to dead human");
 	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
@@ -393,7 +397,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 			for ( ; I != E; I++) {
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
 				R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
-				l_tpALifeHumanAbstract->vfAttachItems(tGraphID,eTakeTypeMin);
+				l_tpALifeHumanAbstract->vfAttachItems(eTakeTypeMin);
 			}
 		}
 		{
@@ -402,7 +406,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 			for ( ; I != E; I++) {
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
 				R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
-				l_tpALifeHumanAbstract->vfAttachItems(tGraphID,eTakeTypeRest);
+				l_tpALifeHumanAbstract->vfAttachItems(eTakeTypeRest);
 			}
 		}
 		return;
@@ -410,7 +414,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 	
 	if (tTakeType == eTakeTypeAll) {
 		m_tpALife->vfAppendItemVector	(children,m_tpALife->m_tpItemVector);
-		vfDetachAll						(tGraphID);
+		vfDetachAll						();
 	}
 	
 	CSE_ALifeInventoryItem				*l_tpALifeItemBest;
@@ -439,7 +443,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 				}
 			}
 			if (l_tpALifeItemBest) {
-				m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,tGraphID);
+				m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
 				m_tpALife->m_tpItemVector.erase(X);
 			}
 		}
@@ -489,8 +493,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 					}
 				}
 				if (l_tpALifeItemBest) {
-					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,tGraphID);
-					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector,tGraphID);
+					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
+					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector);
 					ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 					m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 				}
@@ -509,7 +513,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 				if ((*I)->m_iFoodValue <= 0)
 					continue;
 				if (bfCanGetItem(*I)) {
-					m_tpALife->vfAttachItem	(*this,*I,tGraphID);
+					m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 					l_dwCount++;
 					if (l_dwCount > MAX_ITEM_FOOD_COUNT)
 						break;
@@ -530,7 +534,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 				if ((*I)->m_iHealthValue <= 0)
 					continue;
 				if (bfCanGetItem(*I)) {
-					m_tpALife->vfAttachItem	(*this,*I,tGraphID);
+					m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 					l_dwCount++;
 					if (l_dwCount > MAX_ITEM_MEDIKIT_COUNT)
 						break;
@@ -563,7 +567,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 				}
 			}
 			if (l_tpALifeItemBest) {
-				m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,tGraphID);
+				m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
 				m_tpALife->m_tpItemVector.erase(X);
 			}
 		}
@@ -577,7 +581,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 		ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 		for ( ; I != E; I++) {
 			if (bfCanGetItem(*I))
-				m_tpALife->vfAttachItem	(*this,*I,tGraphID);
+				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 		}
 		I							= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
