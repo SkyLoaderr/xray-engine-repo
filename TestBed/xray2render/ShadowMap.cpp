@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "nvMeshMender.h"
+
 #include "r_shader.h"
 #include "r_constants_cache.h"
 

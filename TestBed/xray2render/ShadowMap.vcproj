@@ -353,6 +353,16 @@
 				RelativePath="shaders\D\smap_direct.s">
 			</File>
 		</Filter>
+		<Filter
+			Name="nvMeshMender"
+			Filter="">
+			<File
+				RelativePath="NVMeshMender.cpp">
+			</File>
+			<File
+				RelativePath="NVMeshMender.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ShadowMap.cpp">
 		</File>
