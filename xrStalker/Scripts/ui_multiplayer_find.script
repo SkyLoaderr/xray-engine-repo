@@ -29,11 +29,17 @@ function multiplayer_find_dialog:InitControls()
 							 height = self.btn_rect.height}	
 	btn_back_rect.x = self.main_rect.width - btn_back_rect.width - self.indent
 	
+	
+	local tab = CUITabControl()
+	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
+	self.main_frame:AttachChild(tab)
+	
+	
 	--------->> BACK
-	btn = CUIButton()
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_back")
-	btn:Init("ui\\ui_button_01", btn_back_rect.x, btn_back_rect.y, btn_back_rect.width, btn_back_rect.height)
+	btn:Init("ui\\ui_btn_main_menu", btn_back_rect.x, btn_back_rect.y, btn_back_rect.width, btn_back_rect.height)
 	btn:SetText("Back")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)

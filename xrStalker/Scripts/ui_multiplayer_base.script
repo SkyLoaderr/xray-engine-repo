@@ -1,0 +1,23 @@
+-- File:        UI_MULTIPALYER_BASE.SCRIPT
+-- Description: Common for for <Find Server> and <Create Server> menues
+--              Has - [edit field "Player"]
+--                    [check box "don't catch input"] (temp control - DON'T forget to remove from release :)
+--                    [button "CD Key"]
+-- Created:     21.12.2004
+-- Author:      Serhiy 0. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright 2004 GSC Game World
+--
+
+class "multiplayer_base" (CUIScriptWnd)
+
+function multiplayer_base:__init()
+end
+
+function multiplayer_base:_finalize()
+end
+
+function multiplayer_base:InitControls(x, y)
+
+end

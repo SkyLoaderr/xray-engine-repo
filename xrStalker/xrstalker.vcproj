@@ -812,6 +812,9 @@
 					Name="multiplayer"
 					Filter="">
 					<File
+						RelativePath=".\Scripts\ui_multiplayer_base.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\ui_multiplayer_base_tab.script">
 					</File>
 					<File
