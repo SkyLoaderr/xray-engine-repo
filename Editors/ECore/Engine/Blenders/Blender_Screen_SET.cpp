@@ -5,6 +5,7 @@
 
 #define		VER_2_oBlendCount	7
 #define		VER_4_oBlendCount	9
+#define		VER_5_oBlendCount	10
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -47,6 +48,7 @@ void	CBlender_Screen_SET::Save	( IWriter& fs	)
 	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");	fs.w		(&I,sizeof(I));
 	I.ID = 7; strcpy(I.str,"SET (2r)");		fs.w		(&I,sizeof(I));
 	I.ID = 8; strcpy(I.str,"BLEND (2r)");	fs.w		(&I,sizeof(I));
+	I.ID = 9; strcpy(I.str,"BLEND (4r)");	fs.w		(&I,sizeof(I));
 	
 	// Params
 	xrPWRITE_PROP		(fs,"Texture clamp",xrPID_BOOL,		oClamp);
@@ -63,7 +65,7 @@ void	CBlender_Screen_SET::Load	( IReader& fs, u16 version)
 
 	switch (version)	{
 	case 2:
-		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_5_oBlendCount;
 		xrPREAD_PROP		(fs,xrPID_INTEGER,		oAREF);
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oZTest);
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oZWrite);
@@ -71,7 +73,7 @@ void	CBlender_Screen_SET::Load	( IReader& fs, u16 version)
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oFog);
 		break;
 	case 3:
-		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_5_oBlendCount;
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oClamp);
 		xrPREAD_PROP		(fs,xrPID_INTEGER,		oAREF);
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oZTest);
@@ -80,7 +82,7 @@ void	CBlender_Screen_SET::Load	( IReader& fs, u16 version)
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oFog);
 		break;
 	default:
-		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_5_oBlendCount;
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oClamp);
 		xrPREAD_PROP		(fs,xrPID_INTEGER,		oAREF);
 		xrPREAD_PROP		(fs,xrPID_BOOL,			oZTest);
@@ -126,6 +128,9 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 		case 8: // BLEND (2r)
 			C.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			break;
+		case 9: // BLEND (2r)
+			C.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			break;
 		}
 		C.PassSET_LightFog	(oLighting.value,oFog.value);
 		// C.PassSET_LightFog	(FALSE,FALSE);
@@ -153,15 +158,22 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 		} else {
 			C.StageBegin		();
 			C.StageSET_Address	(oClamp.value?D3DTADDRESS_CLAMP:D3DTADDRESS_WRAP);
-			if ((7==oBlend.IDselected) || (8==oBlend.IDselected))
+			if (9==oBlend.IDselected)
 			{
-				// 2x R
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
+				// 4x R
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE4X,	D3DTA_DIFFUSE);
 				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			} else {
-				// 1x R
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				if ((7==oBlend.IDselected) || (8==oBlend.IDselected))
+				{
+					// 2x R
+					C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
+					C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				} else {
+					// 1x R
+					C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+					C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				}
 			}
 			C.Stage_Texture		(oT_Name);
 			C.Stage_Matrix		(oT_xform,	0);
