@@ -83,9 +83,9 @@ public:
 			void						detach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			ALife::_GRAPH_ID	game_vertex_id,				bool alife_query = true);
 	IC		void						assign					(CSE_ALifeMonsterAbstract	*object);
 	IC		void						add						(CALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id);
-	IC		void						add						(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
-	IC		void						remove					(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
 	IC		void						remove					(CALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id);
+			void						add						(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
+			void						remove					(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	bool				bUpdateSwitchObjects = true);
 	IC		void						change					(CSE_ALifeDynamicObject		*object,	ALife::_GRAPH_ID		game_vertex_id,	ALife::_GRAPH_ID	next_game_vertex_id);
 	IC		void						change					(CALifeEvent				*event,		ALife::_GRAPH_ID		game_vertex_id,	ALife::_GRAPH_ID	next_game_vertex_id);
 	IC		CALifeLevelRegistry			&level					() const;

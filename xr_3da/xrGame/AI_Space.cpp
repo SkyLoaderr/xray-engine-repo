@@ -66,6 +66,7 @@ void CAI_Space::load				(LPCSTR level_name)
 #endif
 
 	level_graph().set_level_id(current_level.id());
+	game_graph().set_current_level(current_level.id());
 
 	m_cover_manager->compute_static_cover	();
 

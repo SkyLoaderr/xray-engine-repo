@@ -14,41 +14,6 @@ IC	CALifeLevelRegistry &CALifeGraphRegistry::level	() const
 	return						(*m_level);
 }
 
-IC	void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID game_vertex_id, bool update)
-{
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] adding object [%s][%d] to graph point %d",object->name_replace(),object->ID,game_vertex_id);
-	}
-#endif
-	if (!object->m_bOnline && object->used_ai_locations() && object->interactive()) {
-		m_objects[game_vertex_id].objects().add(object->ID,object);
-		object->m_tGraphID		= game_vertex_id;
-	}
-	else
-		if (!m_level && update) {
-			m_temp.push_back	(object);
-			object->m_tGraphID	= game_vertex_id;
-		}
-	
-	if (update && m_level)
-		level().add				(object);
-}
-
-IC	void CALifeGraphRegistry::remove	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID game_vertex_id, bool update)
-{
-	if (object->used_ai_locations() && object->interactive()) {
-	#ifdef DEBUG
-		if (psAI_Flags.test(aiALife)) {
-			Msg					("[LSS] removing object [%s][%d] from graph point %d",object->name_replace(),object->ID,game_vertex_id);
-		}
-	#endif
-		m_objects[game_vertex_id].objects().remove(object->ID);
-	}	
-	if (update && m_level)
-		level().remove			(object,ai().game_graph().vertex(game_vertex_id)->level_id() != level().level_id());
-}
-
 IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID tGraphPointID, ALife::_GRAPH_ID tNextGraphPointID)
 {
 	VERIFY3						(object->used_ai_locations()/** && (object->interactive() || object->m_bOnline)/**/,*object->s_name,object->name_replace());

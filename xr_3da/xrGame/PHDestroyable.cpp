@@ -5,10 +5,11 @@
 #include "object_factory.h"
 #include "xrServer_Objects_ALife.h"
 #include "Level.h"
-	CPHDestroyable::CPHDestroyable()
-	{
-		m_flags.flags=0;
-	}
+
+CPHDestroyable::CPHDestroyable()
+{
+	m_flags.flags=0;
+}
 
 void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 {
@@ -47,7 +48,8 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 		D->ID_Parent		=	parent_id;
 		D->ID_Phantom		=	0xffff;
 		D->o_Position		=	obj->Position();
-		obj->XFORM()			.getHPB(D->o_Angle);
+		l_tpALifeDynamicObject->m_tGraphID = ai().game_graph().current_level_vertex();
+		obj->XFORM().getHPB	(D->o_Angle);
 		D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send

@@ -23,10 +23,10 @@ class CGameGraph {
 public:
 
 	class SLevel {
-		shared_str					caLevelName;
+		shared_str				caLevelName;
 		Fvector					tOffset;
 		ALife::_LEVEL_ID		tLevelID;
-		shared_str					m_section;
+		shared_str				m_section;
 
 	public:
 		IC LPCSTR name() const {
@@ -165,27 +165,31 @@ protected:
 	CHeader							m_header;	// graph header
 	IReader							*m_reader;	// virtual file
 	CVertex							*m_nodes;
+	ALife::_GRAPH_ID				m_current_level_some_vertex_id;
 
 public:
 #ifndef AI_COMPILER
-	IC 								CGameGraph		();
+	IC 								CGameGraph			();
 #else
-	IC 								CGameGraph		(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
+	IC 								CGameGraph			(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
 #endif
-	IC virtual						~CGameGraph		();
-	IC const CHeader				&header			() const;
-	IC		bool					mask			(const svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
-	IC		bool					mask			(const ALife::_LOCATION_ID M[LOCATION_TYPE_COUNT], const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
-	IC		float					distance		(const ALife::_GRAPH_ID tGraphID0, const ALife::_GRAPH_ID tGraphID1) const;
-	IC		bool					accessible		(const u32 vertex_id) const;
-	IC		bool					valid_vertex_id	(const u32 vertex_id) const;
-	IC		void					begin			(const u32 vertex_id, const_iterator &start, const_iterator &end) const;
-	IC		void					begin_spawn		(const u32 vertex_id, const_spawn_iterator &start, const_spawn_iterator &end) const;
-	IC		u32						value			(const u32 vertex_id, const_iterator &i) const;
-	IC		float					edge_weight		(const_iterator i) const;
-	IC		const CVertex			*vertex			(u32 vertex_id) const;
-	IC		void					set_invalid_vertex(ALife::_GRAPH_ID &vertex_id) const;
-	IC		const ALife::_GRAPH_ID	vertex_id		(const CVertex *vertex) const;
+	IC virtual						~CGameGraph			();
+	IC const CHeader				&header				() const;
+	IC		bool					mask				(const svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
+	IC		bool					mask				(const ALife::_LOCATION_ID M[LOCATION_TYPE_COUNT], const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
+	IC		float					distance			(const ALife::_GRAPH_ID tGraphID0, const ALife::_GRAPH_ID tGraphID1) const;
+	IC		bool					accessible			(const u32 vertex_id) const;
+	IC		bool					valid_vertex_id		(const u32 vertex_id) const;
+	IC		void					begin				(const u32 vertex_id, const_iterator &start, const_iterator &end) const;
+	IC		void					begin_spawn			(const u32 vertex_id, const_spawn_iterator &start, const_spawn_iterator &end) const;
+	IC		u32						value				(const u32 vertex_id, const_iterator &i) const;
+	IC		float					edge_weight			(const_iterator i) const;
+	IC		const CVertex			*vertex				(u32 vertex_id) const;
+	IC		void					set_invalid_vertex	(ALife::_GRAPH_ID &vertex_id) const;
+	IC		const ALife::_GRAPH_ID	vertex_id			(const CVertex *vertex) const;
+//	IC		const ALife::_GRAPH_ID	nearest				(const Fvector &position, u32 level_id) const;
+	IC		void					set_current_level	(u32 level_id);
+	IC		const ALife::_GRAPH_ID	current_level_vertex() const;
 };
 
 #include "game_graph_inline.h"

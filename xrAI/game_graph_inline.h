@@ -41,6 +41,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name, u32 current_version)
 			return;
 #endif
 	m_nodes						= (CVertex*)m_reader->pointer();
+	m_current_level_some_vertex_id = ALife::_GRAPH_ID(-1);
 }
 
 IC CGameGraph::~CGameGraph			()
@@ -232,4 +233,42 @@ IC	const ALife::_GRAPH_ID CGameGraph::vertex_id(const CGameGraph::CVertex *verte
 {
 	VERIFY		(valid_vertex_id(ALife::_GRAPH_ID(vertex - m_nodes)));
 	return		(ALife::_GRAPH_ID(vertex - m_nodes));
+}
+//
+//IC	const ALife::_GRAPH_ID CGameGraph::nearest(const Fvector &position, u32 level_id) const
+//{
+//	float				min_dist_sqr = flt_max;
+//	ALife::_GRAPH_ID	game_vertex_id = ALife::_GRAPH_ID(-1);
+//	for (ALife::_GRAPH_ID i=0, n = header().vertex_count(); i<n; ++i) {
+//		if (level_id != vertex(i)->level_id())
+//			continue;
+//
+//		float			distance_sqr = vertex(i)->level_point().distance_to_sqr(position);
+//		if (distance_sqr >= min_dist_sqr)
+//			continue;
+//
+//		min_dist_sqr	= distance_sqr;
+//		game_vertex_id	= i;
+//	}
+//	VERIFY				(valid_vertex_id(game_vertex_id));
+//	return				(game_vertex_id);
+//}
+
+IC	void CGameGraph::set_current_level	(u32 level_id)
+{
+	m_current_level_some_vertex_id = ALife::_GRAPH_ID(-1);
+	for (ALife::_GRAPH_ID i=0, n = header().vertex_count(); i<n; ++i) {
+		if (level_id != vertex(i)->level_id())
+			continue;
+
+		m_current_level_some_vertex_id	= i;
+		break;
+	}
+	VERIFY				(valid_vertex_id(m_current_level_some_vertex_id));
+}
+
+IC	const ALife::_GRAPH_ID	CGameGraph::current_level_vertex() const
+{
+	VERIFY				(valid_vertex_id(m_current_level_some_vertex_id));
+	return				(m_current_level_some_vertex_id);
 }

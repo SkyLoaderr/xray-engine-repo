@@ -380,7 +380,8 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 	D->ID_Parent		=	0xffff;//u16(ID());//
 	D->ID_Phantom		=	0xffff;
 	D->o_Position		=	obj->Position();
-	obj->XFORM()				.getHPB(D->o_Angle);
+	l_tpALifeDynamicObject->m_tGraphID = ai().game_graph().current_level_vertex();
+	obj->XFORM().getHPB	(D->o_Angle);
 	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
 }

@@ -246,7 +246,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			if (l_tpALifeObject && ai().level_graph().valid_vertex_id(l_tpALifeObject->m_tNodeID))
 				set_level_vertex	(l_tpALifeObject->m_tNodeID);
 			else
-				if (l_tpTemporary  && ai().level_graph().valid_vertex_id(l_tpTemporary->m_tNodeID))
+				if (l_tpTemporary && ai().level_graph().valid_vertex_id(l_tpTemporary->m_tNodeID))
 					set_level_vertex(l_tpTemporary->m_tNodeID);
 
 			if (l_tpALifeObject && ai().game_graph().valid_vertex_id(l_tpALifeObject->m_tGraphID))
