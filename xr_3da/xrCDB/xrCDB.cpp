@@ -51,6 +51,7 @@ void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)
 // Model building
 MODEL::MODEL()
 {
+	hHeap		= GetProcessHeap();
 	tree		= 0;
 	tris		= 0;
 	tris_count	= 0;
@@ -60,32 +61,37 @@ MODEL::MODEL()
 MODEL::~MODEL()
 {
 	delete		tree;	tree = 0;
-	if (tris)	{ cl_free(tris);	tris=0;		tris_count=0;	}
-	if (verts)	{ cl_free(verts);	verts=0;	verts_count=0;	}
+	if (tris)	{ cl_free(tris,hHeap);	tris=0;		tris_count=0;	}
+	if (verts)	{ cl_free(verts,hHeap);	verts=0;	verts_count=0;	}
+}
+
+void	MODEL::setheap(HANDLE H)
+{
+	hHeap		= H;
 }
 
 DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 {
 	// verts
 	verts_count	= Vcnt;
-	verts		= cl_alloc<Fvector>	(verts_count);
+	verts		= cl_alloc<Fvector>	(verts_count,hHeap);
 	if (0==verts)	return err_memory_0;
 	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
 	
 	// tris
 	tris_count	= Tcnt;
-	tris		= cl_alloc<TRI>		(tris_count);
+	tris		= cl_alloc<TRI>		(tris_count,hHeap);
 	if (0==tris)	{
-		cl_free		(verts);
+		cl_free		(verts,hHeap);
 		return		err_memory_1;
 	}
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
-	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3);
+	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3,hHeap);
 	if (0==temp_tris)	{
-		cl_free		(verts);
-		cl_free		(tris);
+		cl_free		(verts,hHeap);
+		cl_free		(tris,hHeap);
 		return		err_memory_2;
 	}
 	DWORD*		temp_ptr	= temp_tris;
@@ -109,15 +115,15 @@ DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	tree			= new OPCODE_Model;
 	if (!tree->Build(OPCC)) 
 	{
-		cl_free		(verts);
-		cl_free		(tris);
-		cl_free		(temp_tris);
+		cl_free		(verts,hHeap);
+		cl_free		(tris,hHeap);
+		cl_free		(temp_tris,hHeap);
 		return		err_build;
 	};
 
 
 	// Free temporary tris
-	cl_free			(temp_tris);
+	cl_free			(temp_tris,hHeap);
 	return err_ok;
 }
 
@@ -127,7 +133,6 @@ DWORD MODEL::memory()
 	DWORD T = tris_count *sizeof(TRI);
 	return tree->GetUsedBytes()+V+T+sizeof(*this)+sizeof(*tree);
 }
-
 
 // This is the constructor of a class that has been exported.
 // see xrCDB.h for the class definition
