@@ -128,12 +128,12 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 			if (!AI_NodeID || (AI_NodeID == u32(-1))) {
 				Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-				R_ASSERT			(dynamic_cast<CCustomMonster*>(this));
+				R_ASSERT			(!dynamic_cast<CCustomMonster*>(this));
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
 			}
 			else {
-				AI_Node				= AI.Node(AI_NodeID);
+				AI_Node				= AI.Node(AI_NodeID);s
 				//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
 				Position().y		= getAI().ffGetY(*AI_Node,Position().x,Position().z);
