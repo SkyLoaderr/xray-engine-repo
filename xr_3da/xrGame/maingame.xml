@@ -15,9 +15,7 @@
 		<text x="0" y="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
 	</static>
 	<!-- weapon icon -->
-	<static x="12" y="10" width="50" height="50"></static>
-	<!-- power bar static -->
-	<power_bar_static x="70" y="685" width="20" height="60" align="lb"></power_bar_static>
+	<static x="12" y="10" width="50" height="50"></static>	
 	<!-- pda online icon -->
 	<static x="1" y="187" width="200" height="32">
 		<texture>ui\ui_mg_back_pager</texture>
@@ -119,10 +117,6 @@
 	<car_panel x="860" y="545" width="150" height="200" align="rb"></car_panel>
 	<!-- MOTION_ICON -->
 	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
-	<!-- POWER BAR -->
-	<power_bar x="0" y="0" length="60" broad="20" horz="0" min="0" max="100" pos="0">
-		<texture tile="0" length="60" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
-	</power_bar>
 	<!-- artefact panel -->
 	<artefact_panel x="70" y="710" width="400" height="50" scale="0.75"></artefact_panel>
 </window>
