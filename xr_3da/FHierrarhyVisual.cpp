@@ -24,7 +24,11 @@ FHierrarhyVisual::~FHierrarhyVisual()
 {
 	if (!bDontDelete) {
 		for (DWORD i=0; i<children.size(); i++)	
+#ifdef _EDITOR
+			::Device.Models.Delete(children[i]);
+#else
 			::Render->model_Delete(children[i]);
+#endif
 	}
 	children.clear();
 }
