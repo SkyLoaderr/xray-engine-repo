@@ -68,8 +68,7 @@ namespace PS
             VisualVec		children;
             VisualVec		children_stopped;
         public:
-				            SItem			():effect(0){}
-        	void			Set				(IRender_Visual* e){effect=e;}
+        	void			Set				(IRender_Visual* e);
             void			Clear			();
 
             void			OnDeviceCreate	();

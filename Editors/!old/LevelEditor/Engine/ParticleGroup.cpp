@@ -117,9 +117,13 @@ void CPGDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 // Particle Group item
 //------------------------------------------------------------------------------
+void CParticleGroup::SItem::Set(IRender_Visual* e)
+{
+	effect=e;
+}
 void CParticleGroup::SItem::Clear()
 {
-    ::Render->model_Delete((IRender_Visual*)effect);
+    ::Render->model_Delete(effect);
     VisualVecIt it;
     for (it=children.begin(); it!=children.end(); it++)
 	    ::Render->model_Delete(*it);
@@ -161,6 +165,14 @@ void CParticleGroup::SItem::UpdateParent(const Fmatrix& m, const Fvector& veloci
 }
 void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
 {
+    CParticleEffect* E		= static_cast<CParticleEffect*>(effect);
+    if (E){
+        E->OnFrame			(u_dt);
+        if (E->IsPlaying()){ 
+            bPlaying		= true;
+            if (E->vis.box.is_valid())     box.merge	(E->vis.box);
+        }
+    }
     VisualVecIt it;
     for (it=children.begin(); it!=children.end(); it++){
         CParticleEffect* E	= static_cast<CParticleEffect*>(*it);
@@ -292,8 +304,10 @@ BOOL CParticleGroup::Compile(CPGDef* def)
     // create new
     if (m_Def){
         items.resize			(m_Def->m_Effects.size());
-        for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++)
-			items[e_it-def->m_Effects.begin()].Set((CParticleEffect*)RImplementation.model_CreatePE(*e_it->m_EffectName));
+        for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){
+        	CParticleEffect* eff = (CParticleEffect*)RImplementation.model_CreatePE(*e_it->m_EffectName);
+			items[e_it-def->m_Effects.begin()].Set(eff);
+        }
     }
     return TRUE;
 }
@@ -328,7 +342,7 @@ void CParticleGroup::OnDeviceDestroy()
 u32 CParticleGroup::ParticlesCount()
 {
 	int p_count=0;
-    for (SItemVecIt i_it=items.begin(); i_it!=items.end(); i_it++) i_it->OnDeviceDestroy();
+    for (SItemVecIt i_it=items.begin(); i_it!=items.end(); i_it++)
         p_count 	+= i_it->ParticlesCount();
 	return p_count;
 }
