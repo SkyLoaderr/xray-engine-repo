@@ -23,6 +23,10 @@ public:
 
 	xrSE_Actor() {};
 
+	virtual u8				g_team()			{ return s_team;	}
+	virtual u8				g_squad()			{ return s_squad;	}
+	virtual u8				g_group()			{ return s_group;	}
+	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(timestamp	);
@@ -90,31 +94,34 @@ public:
 	u8						s_squad;
 	u8						s_group;
 public:
-	u32				dwTimeStamp;			// server(game) timestamp
-	u8				flags;
-	float			o_model;				// model yaw
-	SRotation		o_torso;				// torso in world coords
-	Fvector			p_pos;					// in world coords
+	u32						dwTimeStamp;			// server(game) timestamp
+	u8						flags;
+	float					o_model;				// model yaw
+	SRotation				o_torso;				// torso in world coords
 
-	xrSE_Enemy()	{};
+	xrSE_Enemy()			{};
 
+	virtual u8				g_team()			{ return s_team;	}
+	virtual u8				g_squad()			{ return s_squad;	}
+	virtual u8				g_group()			{ return s_group;	}
+	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(dwTimeStamp	);
 		P.r_u8				(flags			);
-		P.r_vec3			(p_pos			);
+		P.r_vec3			(o_Position		);
 		P.r_angle8			(o_model		);
 		P.r_angle8			(o_torso.yaw	);
 		P.r_angle8			(o_torso.pitch	);
 	};
 	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
-		P.w_u32				(dwTimeStamp);
+		P.w_u32				(dwTimeStamp	);
 		P.w_u8				(flags);
-		P.w_vec3			(p_pos);
-		P.w_angle8			(o_model);
-		P.w_angle8			(o_torso.yaw);
-		P.w_angle8			(o_torso.pitch);
+		P.w_vec3			(o_Position		);
+		P.w_angle8			(o_model		);
+		P.w_angle8			(o_torso.yaw	);
+		P.w_angle8			(o_torso.pitch	);
 	}
 	virtual void			STATE_Read			(NET_Packet& P, u16 size)
 	{

@@ -47,7 +47,11 @@ public:
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
 	virtual void			STATE_Read		(NET_Packet& P, u16 size)	= 0;
 	virtual void			STATE_Write		(NET_Packet& P)				= 0;
-
+	
+	virtual u8				g_team()		{ return 0;	}
+	virtual u8				g_squad()		{ return 0;	}
+	virtual u8				g_group()		{ return 0;	}
+	
 	virtual BOOL			RelevantTo		(xrServerEntity* E)	= 0;
 
 	// utils
