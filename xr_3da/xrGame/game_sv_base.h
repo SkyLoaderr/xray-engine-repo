@@ -22,7 +22,7 @@ public:
 
 	// Events
 	virtual		void				OnRoundStart			()								= 0;	// старт раунда
-	virtual		void				OnRoundEnd				(LPCSTR reason);						// конец раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason)					= 0;	// конец раунда
 
 	virtual		void				OnTeamScore				(u32 team)						= 0;	// команда выиграла
 	virtual		void				OnTeamsInDraw			()								= 0;	// ничья
