@@ -9,17 +9,24 @@ volatile int	dummy		= 0;
 
 VOID	CALLBACK		t_process	(PVOID P)
 {
-	for (;;)
-	{
-		int	rnd = ::Random.randI		();
-		int lcp = _max(rnd,10);
-		for (int it=0; it<lcp; it++)	dummy += rnd;
+	for (;;) {
+		printf			("Process\n");
+		SwitchToFiber	(fiber_sheduler);
 	}
+
+//	for (;;)
+//	{
+//		int	rnd = ::Random.randI		();
+//		int lcp = _max(rnd,10);
+//		for (int it=0; it<lcp; it++)	dummy += rnd;
+//	}
 }
 
 void	t_sheduler		()
 {
+	printf				("Sheduler0\n");
 	SwitchToFiber		(fiber_processor);
+	printf				("Sheduler1\n");
 }
 
 volatile u64 test		= 0;
@@ -32,6 +39,8 @@ void __cdecl t_thread	(void * P)
 
 void	t_test			()
 {
+
+/*
 	CTimer				T;
 	SetPriorityClass	(GetCurrentProcess(),HIGH_PRIORITY_CLASS);
 
@@ -53,6 +62,7 @@ void	t_test			()
 	float mcs			=  float(u64(C)/u64(TESTS))*CPU::cycles2milisec;
 	iter				/= u64(TESTS);
 	printf				("%f, it: %d\n",mcs,int(iter));
+*/
 
 	// Create fibers
 	fiber_sheduler		= ConvertThreadToFiber	(0);
