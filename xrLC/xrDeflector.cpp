@@ -116,7 +116,7 @@ VOID CDeflector::OA_Export()
 	iArea		= lm.dwWidth*lm.dwHeight;
 
 	// Setup variables
-	UVpoint		dim, guard, half, scale;
+	UVpoint		dim, guard, scale;
 	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
 	guard.set	(BORDER/dim.u,BORDER/dim.v);
 	scale.set	(1.f-2.f*guard.u, 1.f-2.f*guard.v); 
