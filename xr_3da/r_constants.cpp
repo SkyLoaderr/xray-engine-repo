@@ -86,6 +86,7 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 				switch (T->Type)
 				{
 				case D3DXPT_SAMPLER:
+				case D3DXPT_SAMPLER1D:
 				case D3DXPT_SAMPLER2D:
 				case D3DXPT_SAMPLER3D:
 				case D3DXPT_SAMPLERCUBE:
