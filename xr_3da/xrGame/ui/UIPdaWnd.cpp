@@ -13,9 +13,8 @@
 #include "../HUDManager.h"
 #include "../level.h"
 
-#define PDA_XML "pda.xml"
-
-const char * const ALL_PDA_HEADER_PREFIX = "#root 15/FD-665#68";
+const char * const PDA_XML					= "pda.xml";
+const char * const ALL_PDA_HEADER_PREFIX	= "#root 15/FD-665#68";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -48,7 +47,7 @@ void CUIPdaWnd::Init()
 
 	CUIXmlInit xml_init;
 
-	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
+	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 //	AttachChild(&UIStaticTop);
 //	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);

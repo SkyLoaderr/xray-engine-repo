@@ -37,10 +37,10 @@ const				HSCROLLBAR_STEP		= 20; // В пикселях
 
 // Global map stuff
 const char * const	GLOBAL_MAP_TEX		= "ui\\ui_global_map";
-const float			GLOBAL_MAP_X1		= -500.0f;
-const float			GLOBAL_MAP_Z1		= -1024.0f;
-const float			GLOBAL_MAP_X2		= 500.0f;
-const float			GLOBAL_MAP_Z2		= 1024.0f;
+const float			GLOBAL_MAP_X1		= -1500.0f;
+const float			GLOBAL_MAP_Z1		= -2024.0f;
+const float			GLOBAL_MAP_X2		= 1500.0f;
+const float			GLOBAL_MAP_Z2		= 2024.0f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -401,6 +401,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		{
 			m_pCurrentMap->MoveMap(0, -VSCROLLBAR_STEP * (UIMapBgndV.GetScrollPos() - prevScrollPosV));
 			prevScrollPosV = UIMapBgndV.GetScrollPos();
+			m_pCurrentMap->Update();
 		}
 	}
 
@@ -410,6 +411,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		{
 			m_pCurrentMap->MoveMap(-HSCROLLBAR_STEP * (UIMapBgndH.GetScrollPos() - prevScrollPosH), 0);
 			prevScrollPosH = UIMapBgndH.GetScrollPos();
+			m_pCurrentMap->Update();
 		}
 	}
 

@@ -47,6 +47,7 @@ using namespace InventoryUtilities;
 #define MAX_ITEMS	70
 
 const char * const INVENTORY_ITEM_XML	= "inventory_item.xml";
+const char * const INVENTORY_XML		= "inventory.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -75,8 +76,8 @@ CUIInventoryWnd::~CUIInventoryWnd()
 void CUIInventoryWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$","inventory.xml");
-	R_ASSERT2(xml_result, "xml file not found");
+	bool xml_result = uiXml.Init("$game_data$", INVENTORY_XML);
+	R_ASSERT3(xml_result, "xml file not found", INVENTORY_XML);
 
 	CUIXmlInit xml_init;
 

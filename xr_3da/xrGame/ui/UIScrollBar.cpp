@@ -246,7 +246,6 @@ void CUIScrollBar::SetRange(s16 iMin, s16 iMax)
 	m_iMaxPos = iMax;
 
 	R_ASSERT(iMax>=iMin);
- 	if (m_iMaxPos - m_iMinPos > 30) m_iMaxPos = m_iMinPos + 30;
 	
 	UpdateScrollBar();
 }

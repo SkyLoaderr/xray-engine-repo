@@ -40,7 +40,7 @@ public:
 	CUICarBodyWnd		UICarBodyMenu;
 	
 	//!!! temporary
-//	CUIBuyWeaponWnd*	pUIBuyWeaponWnd;
+	CUIBuyWeaponWnd*	pUIBuyWeaponWnd;
 //	CUISpawnWnd			UISpawnWnd;
 //	CUIStatsWnd			UIStatsWnd;
 };

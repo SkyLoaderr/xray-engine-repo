@@ -223,8 +223,8 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		HUD().OutText(GetFont(), GetClipRect(), static_cast<float>(HUD().GetScale() * (rect.left+outX + m_iTextOffsetX)), 
-						 static_cast<float>(HUD().GetScale() * (rect.top+outY + m_iTextOffsetY)),  &buf_str.front());
+		HUD().OutText(GetFont(), GetClipRect(), rect.left+outX + m_iTextOffsetX, 
+					  rect.top + outY + m_iTextOffsetY,  &buf_str.front());
 		word_length = 0;
 		new_word = false;
 	}

@@ -79,14 +79,6 @@ public:
 	typedef		StaticsVec::iterator	StaticsVec_it;
 
 	StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
-
-protected:
-	
-	// Вводим пересчет координат для соответствия нужному разрешению
-	// Params:	originalCoordinate - оригинальная базовая координата для разрешения 1024x768
-	// Return:	Пересчитанная координата для текущего разоешения	
-	int RecalcXForResolution(int origninalCoordinate);
-	int RecalcYForResolution(int origninalCoordinate);
 };
 
 #endif // _UI_XML_INIT_H_

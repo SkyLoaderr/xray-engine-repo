@@ -82,7 +82,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //			pos.set					(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+y*fh));
 			if (bReverseRemX)
 			{
-				pos.x -= iVisRect.x2 - iRemX;
+				pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * HUD().GetScale() + 0.5f);
 				inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iVisRect.y2);	
 			}
 			else
@@ -96,7 +96,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //			pos.set					(static_cast<int>(bp.x+x*fw),static_cast<int>(bp.y+iTileY*fh));
 			if (bReverseRemY)
 			{
-				pos.y -= iVisRect.y2 - iRemY;
+				pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * HUD().GetScale() + 0.5f);
 				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY,iVisRect.x2,iVisRect.y2);	
 			}
 			else
@@ -109,18 +109,18 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //		pos.set						(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+iTileY*fh));
 		if (bReverseRemY && bReverseRemX)
 		{
-			pos.x -= iVisRect.x2 - iRemX;
-			pos.y -= iVisRect.y2 - iRemY;
+			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * HUD().GetScale() + 0.5f);
+			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * HUD().GetScale() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX, iVisRect.y2 - iRemY, iVisRect.x2, iVisRect.y2);	
 		}
 		else if (bReverseRemY)
 		{
-			pos.y -= iVisRect.y2 - iRemY;
+			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * HUD().GetScale() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY, iRemX, iVisRect.y2);
 		}
 		else if (bReverseRemX)
 		{
-			pos.x -= iVisRect.x2 - iRemX;
+			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * HUD().GetScale() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iRemY);	
 		}
 		else

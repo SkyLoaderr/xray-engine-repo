@@ -276,6 +276,13 @@ void CHUDManager::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fm
 			str += buf;
 		va_end(lst);
 
+		// Rescale position in lower resolution
+		if (x >= 1.0f && y >= 1.0f)
+		{
+			x *= GetScale();
+			y *= GetScale();
+		}
+
 		pFont->Out(x, y, str.c_str());
 	}
 }
