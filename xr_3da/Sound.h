@@ -87,7 +87,7 @@ public:
 };
 
 // definition (Sound Manager Interface)
-class ENGINE_API	CSound_manager_interface				: public pureFrame
+class ENGINE_API	CSound_manager_interface
 {
 public:
 	// General
@@ -104,13 +104,7 @@ public:
 	virtual void					play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 	virtual void					set_geometry			( CDB::MODEL* M )																		= 0;
 
-	// Stream interface
-	/*
-	virtual CSound_stream_interface*CreateStream			( LPCSTR fName )																		= 0;
-	virtual void					DeleteStream			( CSound_stream_interface* pSnd )														= 0;
-	*/
-
-	virtual void					OnFrame					( )																						= 0;
+	virtual void					update					( )																						= 0;
 };
 extern ENGINE_API CSound_manager_interface*		Sound;
 

@@ -12,7 +12,7 @@ CSoundRender_Emitter*	CSoundRender_Core::i_play(sound* S, BOOL _loop )
 	return E;
 }
 
-void CSoundRender_Core::OnFrame	()
+void CSoundRender_Core::update	()
 {
 	u32 it;
 

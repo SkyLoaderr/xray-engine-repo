@@ -55,8 +55,7 @@ public:
 	virtual void						play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
 	virtual void						set_geometry			( CDB::MODEL* M );
 
-	virtual void						OnFrame					( );
-
+	virtual void						update					( );
 public:
 	CSoundRender_Source*				i_create_source			(LPCSTR name, BOOL _3D	);
 	void								i_destroy_source		(CSoundRender_Source*  S);
