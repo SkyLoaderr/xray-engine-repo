@@ -334,10 +334,11 @@ void CAI_Stalker::UpdateCL(){
 
 	if (g_Alive()) {
 		CObjectHandler::update		(Level().timeServer() - m_dwLastUpdateTime);
-		float							s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
-		float							s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
-		float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
-		CMaterialManager::update		(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
+		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
+		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
+		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
+		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
+		CSightManager::update		(Device.dwTimeDelta);
 	}
 
 	if (this->ID() == Level().CurrentViewEntity()->ID())
