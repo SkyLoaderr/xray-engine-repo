@@ -54,7 +54,7 @@ public:
 
 	// spawn data
 	shared_str						s_name;
-	string64						s_name_replace;
+	LPSTR							s_name_replace;
 	u8								s_gameid;
 	u8								s_RP;
 	Flags16							s_flags;		// state flags
@@ -97,6 +97,8 @@ public:
 	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
 	virtual LPCSTR		__stdcall	name			();
 	virtual LPCSTR		__stdcall	name_replace	();
+	virtual void		__stdcall	set_name		(LPCSTR s) {s_name = s;};
+	virtual void		__stdcall	set_name_replace(LPCSTR s) {xr_free(s_name_replace); s_name_replace = xr_strdup(s);};
 	virtual Fvector&	__stdcall	position		();
 	virtual Fvector&	__stdcall	angle			();
 	virtual Flags16&	__stdcall	flags			();
