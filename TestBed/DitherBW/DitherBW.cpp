@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "tga.h"
 
 void	make_square( double, int [256], int [256], int [16][16] );
 
@@ -228,7 +229,7 @@ int ditherbw( int x, int y, int val, int divN[256], int modN[256], int magic[16]
     return DMAP(val, col, row);
 }
 
-int main(int argc, char* argv[])
+void main(int argc, char* argv[])
 {
 	CImage tex;
 	tex.LoadTGA("x:\\dbg\\in.tga");
@@ -240,6 +241,7 @@ int main(int argc, char* argv[])
 	bwdithermap	(2,1,bwmap,divN,modN,magic);
 
 	for (DWORD y=0; y<tex.dwHeight; y++)
+	{
 		for (DWORD x=0; x<tex.dwWidth; x++)
 		{
 			DWORD c		= tex.GetPixel(x,y);
@@ -251,8 +253,17 @@ int main(int argc, char* argv[])
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
 			// ditherbw(x,y,c&255,divN,modN,magic);
 		}
+	}
 	
-	printf("Hello World!\n");
-	return 0;
+	// Save
+	TGAdesc		tga;
+	tga.data	= tex.pData;
+	tga.format	= IMG_24B;
+	tga.height	= tex.dwHeight;
+	tga.width	= tex.dwWidth;
+	tga.scanlenght=tex.dwWidth*4;
+
+	CFS_File	fs	("x:\\dbg\\out.tga");
+	tga.maketga	(fs);
 }
 
