@@ -133,7 +133,7 @@ xr_motivator.storage[self.object:id()].kamp =
         timer = { act1 = {begin = nil, time = 120},
                           act4 = {begin = nil, time = 60}}
     }
-        if char_ini:section_exist ("kamp") == true then
+    if char_ini:section_exist ("kamp") == true then
         if char_ini:line_exist("kamp", "enabled") == true then
                 xr_motivator.storage[self.object:id()].kamp.enabled = char_ini:r_bool("kamp", "enabled")
         end
@@ -364,8 +364,21 @@ xr_motivator.storage[self.object:id()].reactions = {
     -- время раздражителя
     time = nil,
     -- визуальный или звуковой
-    isVisual = nil
+    isVisual = nil,
+    -- правила для обнаружений (какие типы объектов мы игнорим)
+    rules = {}
     }
+    if char_ini:section_exist ("reactions") == true then
+        if char_ini:line_exist("reactions", "enabled") == true then
+                xr_motivator.storage[self.object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
+        end
+	local i = 1
+        while char_ini:line_exist("reactions", "rule_"..i) == true do
+	    table.insert(xr_motivator.storage[self.object:id()].reactions.rules, i, char_ini:r_string("reactions", "rule_"..i))
+            i = i + 1
+        end
+    end
+
 
     --Evaluators
     manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))

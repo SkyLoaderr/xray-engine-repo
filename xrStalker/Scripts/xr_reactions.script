@@ -288,6 +288,11 @@ function events:__init(npc)
 	self.time_reaction = 1500 	-- 1.5 секунд
 	self.time_memory = 600000 	-- 5 минут
 	self.visio	= 0.25 		-- если объект виден
+	--Константы для настройки реакций
+--[[
+	"item"
+  	"item_visual"
+]]
 end
 function events:calculate()  -- Производить перерасчет и обновление раздражителей для текущего элемента
 	self.arhive = {}	
@@ -342,6 +347,11 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		end
 
 		if continue and self.npc:position():distance_to(so:position()) > 50 then
+			continue = false
+		end
+
+		-- отсеивание по настройке
+		if continue and self:isRuled(so) then
 			continue = false
 		end
 
@@ -430,7 +440,8 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			end
 		end
 
-		if continue and self:type(vo) == "item" then
+		-- отсеивание по настройке
+		if continue and self:isRuled(vo) then
 			continue = false
 		end
 
@@ -480,6 +491,18 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			end
 		end
 	end
+end
+function events:isRuled(obj)
+	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
+
+	for k,v in tt do
+		if v == "item" then
+			if self:type(obj) == "item" then
+				return true
+			end
+		end
+	end
+	return false
 end
 function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 	local prior = nil
