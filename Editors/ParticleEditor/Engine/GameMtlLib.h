@@ -57,12 +57,13 @@ protected:
 	int 				ID; 	// auto number
 public:
 	enum{
-    	flBreakable	= 1<<0,
-        flShootable = 1<<1,
-        flBounceable= 1<<2,
-        flSkidmark	= 1<<3,
-        flBloodmark	= 1<<4,
-        flClimbable	= 1<<5
+    	flBreakable		= 1<<0,
+        flShootable 	= 1<<1,
+        flBounceable	= 1<<2,
+        flSkidmark		= 1<<3,
+        flBloodmark		= 1<<4,
+        flClimbable		= 1<<5,
+        flWalkOn		= 1<<6,
     };
 public:
 	string64			name;
