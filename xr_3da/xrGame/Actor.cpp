@@ -301,7 +301,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 {
 	if (g_Alive()<=0) return;
 
-	ph_Movement.ApplyImpulse(dir,iLost*1.f);
+	ph_Movement.ApplyImpulse(dir,iLost/100.f);
 
 	switch (GameID())
 	{
