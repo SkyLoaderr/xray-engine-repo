@@ -47,6 +47,7 @@ bool CLuaGameObject::GiveInfoPortion(int info_index)
 	P.w_u16			(u16(pInventoryOwner->GetPDA()->ID()));		//отправитель
 	P.w_s32			(info_index);								//сообщение
 	m_tpGameObject->u_EventSend(P);
+	return			true;
 }
 
 CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const

@@ -37,7 +37,7 @@ using namespace luabind::detail;
 void luabind::detail::add_operator_to_metatable(lua_State* L, int op_index)
 {
 	lua_pushstring(L, get_operator_name(op_index));
-	lua_pushnumber(L, op_index);
+	lua_pushnumber(L, static_cast<lua_Number>(op_index));
 	lua_pushcclosure(L, &class_rep::operator_dispatcher, 1);
 	lua_settable(L, -3);
 }
