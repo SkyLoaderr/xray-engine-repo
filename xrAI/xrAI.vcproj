@@ -1028,6 +1028,26 @@
 							<File
 								RelativePath=".\graph_abstract_inline.h">
 							</File>
+							<Filter
+								Name="graph_edge"
+								Filter="">
+								<File
+									RelativePath=".\graph_edge.h">
+								</File>
+								<File
+									RelativePath=".\graph_edge_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="graph_vertex"
+								Filter="">
+								<File
+									RelativePath=".\graph_vertex.h">
+								</File>
+								<File
+									RelativePath=".\graph_vertex_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
