@@ -1,6 +1,4 @@
 --simply user-defined dialog example
----
-
 class "uiDialog" (CUIScriptWnd)
 
 function uiDialog:__init() super()

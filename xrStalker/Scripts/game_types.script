@@ -1,4 +1,3 @@
-
 game_types={
 		--s.t.a.l.k.e.r internal types, do not change
 		GAME_ANY 						= 0,
