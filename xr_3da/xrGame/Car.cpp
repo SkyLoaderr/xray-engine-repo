@@ -88,10 +88,7 @@ void	CCar::cam_Update			(float dt)
 	float yaw_dest	= 0,p;
 	clXFORM().k.getHP				(yaw_dest,p);
 
-	// Process ambient lighting
-	float   l_f                     = dt*10.f;
-	float   l_i                     = 1.f-l_f;
-	camera->yaw						= l_i*camera->yaw + l_f*(-yaw);
+	CEntity::u_lerp_angle			(camera->yaw,yaw_dest,PI_DIV_4,dt);
 	camera->Update					(P,Da);
 	Level().Cameras.Update			(camera);
 }
