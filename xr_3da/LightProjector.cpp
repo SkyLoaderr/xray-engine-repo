@@ -169,7 +169,6 @@ void CLightProjector::calculate	()
 		CHK_DX					(HW.pDevice->SetViewport(&VP));
 
 		// calculate uv-gen matrix
-		Msg	("*** %s: [%d][%d]",C.O->cName(),s_x,s_y);
 		C.UVgen.mul_43			(mView,mInvView);
 		C.UVgen.mulA_43			(mXform2UV);
 		mTemp.translate			(float(s_x*P_o_size)/float(P_rt_size), float(s_y*P_o_size)/float(P_rt_size), 0);
