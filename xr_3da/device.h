@@ -81,7 +81,7 @@ public:
 	float									fFOV;
 	float									fASPECT;
 	
-	CRenderDevice() :TimerGlobal(true), Timer(true)
+	CRenderDevice			() 
 	{
 	    m_hWnd              = NULL;
 		bActive				= FALSE;
