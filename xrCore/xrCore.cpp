@@ -30,10 +30,11 @@ namespace CPU
 {
 	extern	void			Detect	();
 };
-static BOOL					bInitialized	= FALSE;
+static u32	init_counter	= 0;
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 {
-	if (bInitialized)		return;
+	init_counter++;
+	if (init_counter>1)		return;
 
 	// Init COM so we can use CoCreateInstance
 	CoInitializeEx			(NULL, COINIT_MULTITHREADED);
@@ -70,18 +71,16 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 		EFS._initialize		();
 	}
 	SetLogCB				(cb);
-    
-	bInitialized			= TRUE;
 }
 
 void xrCore::_destroy		()
 {
-	if (bInitialized){
+	--init_counter;
+	if (0==init_counter){
 		FS._destroy			();
 		EFS._destroy		();
 		xr_delete			(xr_FS);
 		xr_delete			(xr_EFS);
 		Memory._destroy		();
 	}
-	bInitialized			= FALSE;
 }
