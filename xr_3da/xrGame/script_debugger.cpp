@@ -7,8 +7,8 @@ CScriptDebugger* CScriptDebugger::m_pDebugger = NULL;
 
 LRESULT CScriptDebugger::_SendMessage(u32 message, WPARAM wParam, LPARAM lParam)
 {
-	if ( message >= _DMSG_FIRST_MSG && message <= _DMSG_LAST_MSG )
-		return DebugMessage(message, wParam, lParam);
+	if ( (m_pDebugger)&&(message >= _DMSG_FIRST_MSG && message <= _DMSG_LAST_MSG) )
+		return m_pDebugger->DebugMessage(message, wParam, lParam);
 
 	return 0;
 //	return CMDIFrameWnd::WindowProc(message, wParam, lParam);
@@ -20,9 +20,11 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case DMSG_WRITE_DEBUG:
 //		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
+		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_WRITE_DEBUG, wParam, lParam) == 1);
 		break;
 	case DMSG_HAS_BREAKPOINT:
 //		return GetProject()->HasBreakPoint((const char*)wParam, (int)lParam);
+		return m_ide_wrapper.OnMessageToIDE(DMSG_HAS_BREAKPOINT, wParam, lParam);
 		break;
 	case DMSG_GOTO_FILELINE:
 //		GotoFileLine((const char*)wParam, (int)lParam);
@@ -31,6 +33,7 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 //		SetMode(modeDebug);
 		break;
 	case DMSG_DEBUG_BREAK:
+		m_ide_wrapper.OnMessageToIDE(DMSG_SHOW_IDE, wParam, lParam);
 //		SetMode(modeDebugBreak);
 		break;
 	case DMSG_DEBUG_END:
@@ -52,8 +55,11 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case DMSG_CLEAR_LOCALVARIABLES:
 //		m_wndLocals.RemoveAll();
+		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_CLEAR_LOCALVARIABLES, wParam, lParam) == 1);
 		break;
 	case DMSG_ADD_LOCALVARIABLE:
+		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_ADD_LOCALVARIABLE, wParam, lParam) == 1);
+
 /*		m_wndLocals.AddVariable(((Variable*)wParam)->szName, 
 			((Variable*)wParam)->szType, 
 			((Variable*)wParam)->szValue);*/
@@ -61,7 +67,12 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_REDRAW_WATCHES:
 //		m_wndWatches.Redraw();
 		break;
-	}
+
+	case DMSG_DEBUG_STEP_OUT:{
+		StepOut ();
+	}break;
+
+	}//case
 
 	return 0;
 }
@@ -115,6 +126,9 @@ BOOL CScriptDebugger::Start()
 	if( !xr_waitableThread::join(5))
 		xr_waitableThread::kill();
 	
+	VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_CREATE_IDE,0,0) == 1);
+	m_ide_wrapper.SetDebuggerMsgFunc(_SendMessage);
+
 	xr_waitableThread::start();
 /*
 	if(m_pThread!=NULL)
@@ -209,12 +223,14 @@ void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 	_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, 0, 0);
 
 //	m_event.ResetEvent();
-	m_mutex.lock();
+	m_mutex.reset();
 
 //	::SendMessage(m_hWndMainFrame, DMSG_DEBUG_BREAK, 0, 0);
 	_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
 //	CSingleLock lock(&m_event, TRUE);
-	xr_sync sync(m_mutex);
+	m_mutex.wait();
+
+//	xr_sync sync(m_mutex);
 
 	if ( m_nMode == DMOD_STOP )
 		EndThread();
@@ -224,7 +240,8 @@ void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 void CScriptDebugger::Go()
 {
 //	m_event.SetEvent();
-	m_mutex.unlock();
+//	m_mutex.unlock();
+	m_mutex.signal();
 //	::SendMessage(m_hWndMainFrame, DMSG_DEBUG_START, 0, 0);
 	_SendMessage(DMSG_DEBUG_START, 0, 0);
 }
@@ -278,6 +295,9 @@ void CScriptDebugger::Stop()
 
 	if( !xr_waitableThread::join(5000) )
 		xr_waitableThread::kill();
+
+	VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_DESTROY_IDE,0,0) == 1);
+
 /*
 	MSG msg;
 	while ( WaitForSingleObject (m_pThread->m_hThread, 1)==WAIT_TIMEOUT )

@@ -2,8 +2,11 @@
 
 
 #include "script_lua_helper.h"
+#include "script_CallStack.h"
 #include "script_debugger_messages.h"
 #include "script_debugger_utils.h"
+
+#include "../../luaDbg/dbgIde/dbgIde/script_debug_ide.h"
 
 struct lua_State;
 
@@ -16,19 +19,7 @@ struct lua_State;
 #define DMOD_BREAK					10
 #define DMOD_STOP					11
 
-typedef struct
-{
-	const char* szDesc;
-	const char* szFile;
-	int nLine;
-} StackTrace;
 
-typedef struct
-{
-	const char* szName;
-	const char* szType;
-	const char* szValue;
-} Variable;
 
 
 class CScriptDebugger :public xr_waitableThread 
@@ -70,17 +61,19 @@ public:
 	lua_State*		GetLuaState			();
 //	HWND GetMainWnd() { return m_hWndMainFrame; };
 protected:
-	LRESULT			_SendMessage		(UINT message, WPARAM wParam, LPARAM lParam);
+	static LRESULT	_SendMessage		(UINT message, WPARAM wParam, LPARAM lParam);
 	LRESULT			DebugMessage		(UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 
 //	static UINT		StartDebugger		(LPVOID pParam );	
 	UINT			StartDebugger		();	
 
+	CScriptDeduggerIDE					m_ide_wrapper;
 	CDbgLuaHelper						m_lua;
+	CScriptCallStack
 //	HWND m_hWndMainFrame;
 //	CEvent m_event;
-	xr_mutex							m_mutex;
+	xr_event							m_mutex;
 
 	int									m_nMode;
 //	CString m_strPathName;
