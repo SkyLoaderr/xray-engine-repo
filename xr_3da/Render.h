@@ -116,6 +116,7 @@ public:
 	CObject*						val_pObject;
 	Fmatrix*						val_pTransform;
 	BOOL							val_bHUD;
+	BOOL							val_bInvisible;
 	CFrustum						ViewBase;
 	CFrustum*						View;
 	u32								marker;
@@ -141,6 +142,8 @@ public:
 	IC		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	IC		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
 	IC		BOOL					get_HUD					()								{ return val_bHUD;					}
+	IC		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
+	IC		BOOL					get_Invisible			()								{ return val_bInvisible;			}
 	virtual void					flush					()								= 0;	
 	virtual void					set_Object				(CObject*	O	)				= 0;
 	virtual void					add_Visual				(IVisual*	V	)				= 0;	// add visual leaf	(no culling performed at all)

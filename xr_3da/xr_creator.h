@@ -72,8 +72,8 @@ public:
 	virtual void				OnRender				( void );
 
 	// Main interface
-	CObject*					CurrentEntity			( void )		{ return pCurrentEntity; }
-	CObject*					CurrentViewEntity		( void )		{ return pCurrentViewEntity; }
+	CObject*					CurrentEntity			( void )const	{ return pCurrentEntity; }
+	CObject*					CurrentViewEntity		( void )const	{ return pCurrentViewEntity; }
 	void						ChangeEntity			( CLASS_ID id )	{ pCurrentEntity=pCurrentViewEntity=(CObject*)Objects.FindObjectByCLS_ID(id); }
 	void						ChangeViewEntity		( CLASS_ID id )	{ pCurrentViewEntity=(CObject*)Objects.FindObjectByCLS_ID(id); }
 	void						SetEntity				( CObject* O  ) { pCurrentEntity=pCurrentViewEntity=O; }

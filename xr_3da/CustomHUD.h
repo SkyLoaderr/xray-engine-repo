@@ -24,8 +24,9 @@ public:
 
 	virtual		void		Load					(){;}
 	
-	virtual		void		Render_Calculate		() {;}
-	virtual		void		Render_Direct			() {;}
+	virtual		void		Render_First			(){;}
+	virtual		void		Render_Last				(){;}
+	virtual		void		Render_Direct			(){;}
 	
 	virtual		void		OnFrame					(){;}
 	virtual		void		OnEvent					(EVENT E, u32 P1, u32 P2){;}
