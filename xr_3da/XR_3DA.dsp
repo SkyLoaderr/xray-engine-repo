@@ -71,7 +71,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /Gz /MDd /W3 /Gm /Gi /GR /GX /ZI /Od /I "scripting\\" /I ".." /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /Zm200 /GZ /c
+# ADD CPP /nologo /Gz /MTd /W3 /Gm /Gi /GR /GX /ZI /Od /I "scripting\\" /I ".." /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /Zm200 /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -2206,15 +2206,6 @@ SOURCE=.\BodyInstance.h
 # Begin Source File
 
 SOURCE=.\SkeletonCalculate.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
