@@ -43,8 +43,6 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 			m_tTradeFactors.StalkerFriendSellPriceFactor	= pSettings->r_float("trade","stalker_friend_sell_price_factor");
 			m_tTradeFactors.Loaded = true;
 		}
-	
-	
 }
 
 CTrade::~CTrade()
@@ -179,16 +177,22 @@ void CTrade::ShowItems()
 	Msg("--TRADE:: [%s]: Here are my items: ",pThis.base->cName());
 
 	int i=1;
-	float factor = 1.0f;
 
-	if (pPartner.type == TT_TRADER) {
-		factor = m_tTradeFactors.TraderBuyPriceFactor;
-	} else if (pPartner.type == TT_STALKER) {
-		CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
-		CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-		if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) {
-			factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
-		} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
+	// определение коэффициента
+	float factor = 1.0f;
+	
+	if (pThis.type == TT_TRADER) {
+		factor = m_tTradeFactors.TraderSellPriceFactor;
+	} else {
+		if (pPartner.type == TT_TRADER) {
+			factor = m_tTradeFactors.TraderBuyPriceFactor;
+		} else if (pPartner.type == TT_STALKER) {
+			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
+			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
+			if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) {
+				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
+			} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
+		}
 	}
 
 	for (PSPIItem it = pThis.inv_owner->m_inventory.m_all.begin(); it != pThis.inv_owner->m_inventory.m_all.end(); it ++, i++) {
@@ -222,46 +226,66 @@ void CTrade::SellItem(int id)
 	PIItem	l_pIItem;
 	int i=1;
 
+	// определение коэффициента
 	float factor = 1.0f;
-
-	if (pPartner.type == TT_TRADER) {
-		factor = m_tTradeFactors.TraderBuyPriceFactor;
-	} else if (pPartner.type == TT_STALKER) {
-		CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
-		CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-		if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) {
-			factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
-		} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
+	
+	if (pThis.type == TT_TRADER) {
+		factor = m_tTradeFactors.TraderSellPriceFactor;
+	} else {
+		if (pPartner.type == TT_TRADER) {
+			factor = m_tTradeFactors.TraderBuyPriceFactor;
+		} else if (pPartner.type == TT_STALKER) {
+			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
+			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
+			if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) {
+				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
+			} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
+		}
 	}
-
+	
 
 	for (PSPIItem it = pThis.inv_owner->m_inventory.m_all.begin(); it != pThis.inv_owner->m_inventory.m_all.end(); it++, i++) {
 		if (i == id) {
 			l_pIItem = (*it);
 			if((l_pIItem->m_weight + pPartner.inv_owner->m_inventory.TotalWeight() < pPartner.inv_owner->m_inventory.m_maxWeight) && (pPartner.inv_owner->m_inventory.m_all.find(l_pIItem) == pPartner.inv_owner->m_inventory.m_all.end()) && (pPartner.inv_owner->m_dwMoney >= (u32)(((float) (*it)->Cost()) * factor ) )) {
+				
+				if (strcmp(l_pIItem->Name(),"Bolt") == 0) {
+					Msg("Cannot sell bolt!");
+					break;
+				}
+				
+
 				// удалить у себя
 				CInventory *inv = &pThis.inv_owner->m_inventory;
-				inv->m_ruck.erase(std::find(inv->m_ruck.begin(), inv->m_ruck.end(), l_pIItem)); 
-				inv->m_belt.erase(std::find(inv->m_ruck.begin(), inv->m_ruck.end(), l_pIItem)); 
-				//inv->m_slots.erase(std::find(inv->m_ruck.begin(), inv->m_ruck.end(), l_pIItem)); 
-				inv->m_all.erase(l_pIItem);
-				
-				//l_pIItem->m_pInventory = NULL;
+				inv->Drop(l_pIItem);
+
+
+//				NET_Packet				P;
+//				CGameObject *O = dynamic_cast<CGameObject *>(pThis.inv_owner);
+//				O->u_EventGen				(P,GE_OWNERSHIP_REJECT,O->ID());
+//				P.w_u16					(u16(l_pIItem->ID()));
+//				O->u_EventSend				(P);
+
 
 				// добавить себе денег
 				pThis.inv_owner->m_dwMoney += (u32)(((float) (*it)->Cost()) * factor );
 				
 				// добавить партнеру
 				inv = &pPartner.inv_owner->m_inventory;
-				inv->m_all.insert(l_pIItem);
-				if(l_pIItem->m_ruck) inv->m_ruck.insert(inv->m_ruck.end(), l_pIItem); 
-				l_pIItem->m_pInventory = inv;
+				if (!inv->Take(l_pIItem)) Msg("Item cannot be taken!");
+
+//				l_pIItem->H_SetParent(dynamic_cast<CObject *>(pPartner.inv_owner));
+
+//				O = dynamic_cast<CGameObject *>(pPartner.inv_owner);
+//				O->u_EventGen		(P,GE_OWNERSHIP_TAKE,O->ID());
+//				P.w_u16			(u16(l_pIItem->ID()));
+//				O->u_EventSend		(P);
 
 				// уменьшить денег у партнера
-
 				pPartner.inv_owner->m_dwMoney -= (u32)(((float) (*it)->Cost()) * factor );
 				
 				Msg("--TRADE:: [%s]: Ok, item sold!",pThis.base->cName());
+
 			}
 			break;
 		}

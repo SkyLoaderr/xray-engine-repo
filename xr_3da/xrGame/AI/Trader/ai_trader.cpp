@@ -172,6 +172,7 @@ void CAI_Trader::Update		(u32 dt)
 	m_inventory.Update		(dt);
 
 	Think();
+
 }
 
 void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
