@@ -332,8 +332,8 @@ function fract:loadJob(name)
 			group = 0,
 			running = false,
 			search_light = nil,
-			path_main = "blockpost_guard_center",
-			path_hideout = "blockpost_guard_center" }
+			path_main = "blockpost_guard_house",
+			path_hideout = "blockpost_guard_house" }
 		table.insert(self.Job, t)
 		t = { name = "patrol",
 			object = nil,
@@ -444,6 +444,31 @@ function fract:loadJob(name)
 			path_main = "blockpost_guard_right",
 			path_hideout = "blockpost_guard_right" }
 		table.insert(self.Job, t)
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 5,
+			state = { 0, 2 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "blockpost_gb_left",
+			path_hideout = "blockpost_gb_left" }
+		table.insert(self.Job, t)
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 5,
+			state = { 0, 2 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "blockpost_gb_right",
+			path_hideout = "blockpost_gb_right" }
+		table.insert(self.Job, t)
+
 
 		t = { name = "guard",
 			object = nil,
