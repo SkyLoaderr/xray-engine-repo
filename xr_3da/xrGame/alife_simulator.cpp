@@ -13,7 +13,23 @@
 
 LPCSTR alife_section = "alife";
 
-CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str* command_line) :
+union params {
+	struct {
+		string256	m_game_or_spawn;
+		string256	m_game_type;
+		string256	m_alife;
+		string256	m_new_or_load;
+	};
+	string256		m_params[4];
+
+	IC				params()
+	{
+		for (int i=0; i<4; ++i)
+			strcpy				(m_params[i],"");
+	}
+};
+
+CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	CALifeUpdateManager			(server,alife_section),
 	CALifeInteractionManager	(server,alife_section),
 	CALifeSimulatorBase			(server,alife_section)
@@ -22,14 +38,29 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str* command_line) :
 	ai().set_alife				(this);
 	setup_command_line			(*command_line);
 
-	string64					saved_game;
-	strcpy						(saved_game,**command_line);
-	LPSTR						_new = strstr(saved_game,"/new");
-	LPSTR						_load = strstr(saved_game,"/load");
-	LPSTR						temp = strchr(saved_game,'/');
-	R_ASSERT2					(temp,"Invalid server options!");
-	*temp						= 0;
-	load						(saved_game,_load ? false : true, !!_new);
+	params						p;
+	int							n = _GetItemCount(**command_line,'/');
+	for (int i=0; i<n; ++i) {
+		_GetItem				(**command_line,i,p.m_params[i],'/');
+		strlwr					(p.m_params[i]);
+	}
+	
+	R_ASSERT2					(
+		xr_strlen(p.m_game_or_spawn) && 
+		!xr_strcmp(p.m_alife,"alife") && 
+		!xr_strcmp(p.m_game_type,"single"),
+		"Invalid server options!"
+	);
+	
+	string256					temp;
+	strcpy						(temp,p.m_game_or_spawn);
+	strcat						(temp,"/");
+	strcat						(temp,p.m_game_type);
+	strcat						(temp,"/");
+	strcat						(temp,p.m_alife);
+	*command_line				= temp;
+	
+	load						(p.m_game_or_spawn,!xr_strcmp(p.m_new_or_load,"load") ? false : true, !xr_strcmp(p.m_new_or_load,"new"));
 }
 
 CALifeSimulator::~CALifeSimulator		()
