@@ -54,11 +54,11 @@ void __stdcall CActor::CarHeadCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 	Fmatrix				spin;
-	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw/* - A->r_model_yaw - A->r_model_yaw_delta*/);//*0.5f;
-	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch);
+	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw)*0.75f;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*0.75f;
 	
 	Fvector c			= B->mTransform.c;
-	spin.setXYZi		(bone_pitch,-bone_yaw,0);
+	spin.setXYZi		(-bone_pitch,-bone_yaw,0);
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
 }
