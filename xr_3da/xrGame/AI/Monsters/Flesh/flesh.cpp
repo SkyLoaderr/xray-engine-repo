@@ -73,35 +73,35 @@ void CAI_Flesh::Load(LPCSTR section)
 
 
 		// define animation set
-		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND);
+		MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND);
 
-		MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, &velocity_none,		PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, &velocity_none,		PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, &velocity_none,		PS_LIE);
+		MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, &velocity_none,		PS_LIE);
 
-		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &velocity_walk_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND);
+		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &velocity_walk_dmg,	PS_STAND);
 
-		MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&velocity_run_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&velocity_run,		PS_STAND);
+		MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&velocity_run_dmg,	PS_STAND);
 
-		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimAttackRat,		"stand_attack_rat_",	-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimAttackFromBack,	"stand_attack_back_",	-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	&velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
+		MotionMan.AddAnim(eAnimAttackRat,		"stand_attack_rat_",	-1, &velocity_turn,		PS_STAND);
+		MotionMan.AddAnim(eAnimAttackFromBack,	"stand_attack_back_",	-1, &velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	&velocity_none,		PS_STAND);
 
-		MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &velocity_none,		PS_STAND);
 
-		MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, &velocity_none,		PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, &velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, &velocity_none,		PS_LIE);
 
-		MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, &velocity_steal,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &velocity_drag,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, &velocity_steal,	PS_STAND);
+		MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &velocity_drag,		PS_STAND);
 
-		MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1,	&velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-		MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1,	&velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+		MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1,	&velocity_none,		PS_STAND);
+		MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1,	&velocity_none,		PS_STAND);
 
 		// define transitions
 		MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
