@@ -14,9 +14,22 @@ struct	SRotation
 	SRotation() { yaw=pitch=0; }
 };
 
+// 
+#pragma pack(push,1)
+class xrServerEntity_DESC
+{
+public:
+	WORD	version;
+
+	xrServerEntity_DESC() : version(0) {};
+};
+#pragma pack(pop)
+
 //
 class xrServerEntity
 {
+public:
+	xrServerEntity_DESC		desc;
 public:
 	BOOL					net_Ready;
 
@@ -44,46 +57,12 @@ public:
 	virtual u8				g_group()		{ return 0;	}
 
 	// utils
-	void					Spawn_Write		(NET_Packet& P, BOOL bLocal)
-	{
-		// generic
-		P.w_begin			(M_SPAWN		);
-		P.w_string			(s_name			);
-		P.w_string			(s_name_replace	);
-		P.w_u8				(0xFE			);	// No need for RP, use supplied (POS,ANGLEs)
-		P.w_vec3			(o_Position		);
-		P.w_vec3			(o_Angle		);
-		P.w_u16				(ID				);
-		P.w_u16				(ID_Parent		);
-		if (bLocal)			P.w_u16(s_flags	| M_SPAWN_OBJECT_LOCAL );
-		else				P.w_u16(s_flags );
+	void					Spawn_Write		(NET_Packet& P, BOOL bLocal);
+	void					Spawn_Read		(NET_Packet& P);
 
-		// write specific data
-		u32	position		= P.w_tell		();
-		P.w_u16				(0				);
-		STATE_Write			(P				);
-		u16 size			= u16			(P.w_tell()-position);
-		P.w_seek			(position,&size,sizeof(u16));
-	}
-	void					Spawn_Read		(NET_Packet& P)
-	{
-		u16					dummy16;
-		// generic
-		P.r_begin			(dummy16		);
-		P.r_string			(s_name			);
-		P.r_string			(s_name_replace	);
-		P.r_u8				(s_RP			);
-		P.r_vec3			(o_Position		);
-		P.r_vec3			(o_Angle		);
-		P.r_u16				(ID				);
-		P.r_u16				(ID_Parent		);
-		P.r_u16				(s_flags		); s_flags&=~M_SPAWN_OBJECT_LOCAL;
-
-		// read specific data
-		u16					size;
-		P.r_u16				(size			);	// size
-		STATE_Read			(P,size			);
-	}
+	// editor integration
+	virtual void			P_Write			(CFS_Base& FS);
+	virtual void			P_Read			(CStream& FS);
 
 	xrServerEntity			()
 	{
