@@ -59,12 +59,12 @@ public:
 };
 
 template <>
-class CScriptValueWrapperImpl<ref_str> : public CScriptValue {
+class CScriptValueWrapperImpl<shared_str> : public CScriptValue {
 private:
 	typedef CScriptValue inherited;
 
 protected:
-	ref_str			m_value;
+	shared_str			m_value;
 
 public:
 	IC				CScriptValueWrapperImpl	(luabind::object object, LPCSTR name) : inherited(object,name)
@@ -75,11 +75,11 @@ public:
 	virtual	void	assign					()
 	{
 		if (!*m_value)
-			m_value			= ref_str("");
+			m_value			= shared_str("");
 		m_object[*m_name]	= *m_value;
 	}
 
-	virtual	ref_str	*value					()
+	virtual	shared_str	*value					()
 	{
 		return		(&m_value);
 	}

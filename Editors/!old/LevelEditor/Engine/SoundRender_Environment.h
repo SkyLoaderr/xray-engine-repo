@@ -7,7 +7,7 @@ class XRSOUND_EDITOR_API		CSoundRender_Environment		: public CSound_environment
 {
 public:
 	u32				version;
-	ref_str			name;
+	shared_str			name;
 
     u32				Environment;				// sorce environment
     float           Room;                       // room effect level at low frequencies

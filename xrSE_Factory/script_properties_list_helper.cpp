@@ -56,7 +56,7 @@ typename CWrapHelper<T>::result_type	*wrap_value		(luabind::object object, LPCST
 {
 	return						(CWrapHelper<T>::wrap_value<
 		is_class<T>::result &&
-		!object_type_traits::is_same<ref_str,T>::value
+		!object_type_traits::is_same<shared_str,T>::value
 	>(object,name));
 }
 
@@ -72,7 +72,7 @@ void CScriptPropertiesListHelper::FvectorRDOnBeforeEdit	(PropValue* sender, Fvec
 
 void CScriptPropertiesListHelper::FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val)
 {
-	ref_str		temp;
+	shared_str		temp;
 	PHelper().FvectorRDOnDraw(sender,temp);
 	draw_val	= *temp;
 }
@@ -89,28 +89,28 @@ void CScriptPropertiesListHelper::floatRDOnBeforeEdit	(PropValue* sender,  float
 
 void CScriptPropertiesListHelper::floatRDOnDraw			(PropValue* sender,  LPCSTR& draw_val)
 {
-	ref_str		temp;
+	shared_str		temp;
 	PHelper().floatRDOnDraw(sender,temp);
 	draw_val	= *temp;
 }
 
 void CScriptPropertiesListHelper::NameAfterEdit			(PropValue* sender,  LPCSTR& edit_val, bool& accepted)
 {
-	ref_str		temp;
+	shared_str		temp;
 	PHelper().NameAfterEdit(sender,temp,accepted);
 	edit_val	= *temp;
 }
 
 void CScriptPropertiesListHelper::NameBeforeEdit		(PropValue* sender,  LPCSTR& edit_val)
 {
-	ref_str		temp;
+	shared_str		temp;
 	PHelper().NameBeforeEdit(sender,temp);
 	edit_val	= *temp;
 }
 
 void CScriptPropertiesListHelper::NameDraw				(PropValue* sender,  LPCSTR& draw_val)
 {
-	ref_str		temp;
+	shared_str		temp;
 	PHelper().NameDraw(sender,temp);
 	draw_val	= *temp;
 }
@@ -132,22 +132,22 @@ ButtonValue*	CScriptPropertiesListHelper::CreateButton	(PropItemVec* items, LPCS
 
 ChooseValue*	CScriptPropertiesListHelper::CreateChoose	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path, LPCSTR fill_param, u32 sub_item_cnt)
 {
-	return		(PHelper().CreateChoose(*items,key,wrap_value<ref_str>(object,name),mode,path,(void*)fill_param,sub_item_cnt));
+	return		(PHelper().CreateChoose(*items,key,wrap_value<shared_str>(object,name),mode,path,(void*)fill_param,sub_item_cnt));
 }
 
 ChooseValue*	CScriptPropertiesListHelper::CreateChoose	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path, LPCSTR fill_param)
 {
-	return		(PHelper().CreateChoose(*items,key,wrap_value<ref_str>(object,name),mode,path,(void*)fill_param));
+	return		(PHelper().CreateChoose(*items,key,wrap_value<shared_str>(object,name),mode,path,(void*)fill_param));
 }
 
 ChooseValue*	CScriptPropertiesListHelper::CreateChoose	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path)
 {
-	return		(PHelper().CreateChoose(*items,key,wrap_value<ref_str>(object,name),mode,path));
+	return		(PHelper().CreateChoose(*items,key,wrap_value<shared_str>(object,name),mode,path));
 }
 
 ChooseValue*	CScriptPropertiesListHelper::CreateChoose	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode)
 {
-	return		(PHelper().CreateChoose(*items,key,wrap_value<ref_str>(object,name),mode,0));
+	return		(PHelper().CreateChoose(*items,key,wrap_value<shared_str>(object,name),mode,0));
 }
 
 //S8Value* CScriptPropertiesListHelper::CreateS8		(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name,  s8 mn,  s8 mx,  s8 inc)
@@ -403,23 +403,23 @@ Token32Value*	CScriptPropertiesListHelper::CreateToken32	(PropItemVec* items, LP
 /*
 RToken8Value*	CScriptPropertiesListHelper::CreateRToken8	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, xr_rtoken* token, u32 t_cnt)
 {
-	return		(PHelper().CreateRToken8(*items,key,wrap_value<ref_str>(object,name),token));
+	return		(PHelper().CreateRToken8(*items,key,wrap_value<shared_str>(object,name),token));
 }
 
 RToken16Value*	CScriptPropertiesListHelper::CreateRToken16	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, RTokenVec* token)
 {
-	return		(PHelper().CreateRToken16(*items,key,wrap_value<ref_str>(object,name),token));
+	return		(PHelper().CreateRToken16(*items,key,wrap_value<shared_str>(object,name),token));
 }
 
 RToken32Value*	CScriptPropertiesListHelper::CreateRToken32	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, RTokenVec* token)
 {
-	return		(PHelper().CreateRToken32(*items,key,wrap_value<ref_str>(object,name),token));
+	return		(PHelper().CreateRToken32(*items,key,wrap_value<shared_str>(object,name),token));
 }
 */
 
 RListValue* CScriptPropertiesListHelper::CreateRList	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, CScriptRTokenList *tokens)
 {
-	return		(PHelper().CreateRList(*items,key,wrap_value<ref_str>(object,name),&*tokens->tokens().begin(),tokens->size()));
+	return		(PHelper().CreateRList(*items,key,wrap_value<shared_str>(object,name),&*tokens->tokens().begin(),tokens->size()));
 }
 
 U32Value*  CScriptPropertiesListHelper::CreateColor	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name)
@@ -439,7 +439,7 @@ VectorValue* CScriptPropertiesListHelper::CreateVColor(PropItemVec* items, LPCST
 
 RTextValue*	CScriptPropertiesListHelper::CreateRText	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name)
 {
-	return		(PHelper().CreateRText(*items,key,wrap_value<ref_str>(object,name)));
+	return		(PHelper().CreateRText(*items,key,wrap_value<shared_str>(object,name)));
 }
 
 FloatValue* CScriptPropertiesListHelper::CreateTime		(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, float mn, float mx)

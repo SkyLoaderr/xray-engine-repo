@@ -212,9 +212,9 @@ LPCSTR CUIXml::ReadAttrib(XML_NODE* node, LPCSTR attrib, LPCSTR   default_str_va
 		return default_str_val;
 	else
 	{
-		//обязательно делаем ref_str, а то 
+		//обязательно делаем shared_str, а то 
 		//не сможем запомнить строку и return вернет левый указатель
-		ref_str result_str;
+		shared_str result_str;
 
 		// Кастаем ниже по иерархии
 
@@ -370,8 +370,8 @@ LPCSTR CUIXml::CheckUniqueAttrib (XML_NODE* start_node,
 	{
 		LPCSTR attrib = ReadAttrib(start_node, tag_name, i, attrib_name, NULL);
 		
-		std::vector<ref_str>::iterator it = std::find(m_AttribValues.begin(), 
-												 m_AttribValues.end(), ref_str(attrib));
+		std::vector<shared_str>::iterator it = std::find(m_AttribValues.begin(), 
+												 m_AttribValues.end(), shared_str(attrib));
 
 		 if(m_AttribValues.end() != it) 
 			 return attrib;
