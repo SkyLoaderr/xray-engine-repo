@@ -108,7 +108,7 @@ bool  CScriptGameObject::HasInfo				(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if(!pInventoryOwner) return false;
-	if(!pInventoryOwner->GetPDA()) return false;
+//	if(!pInventoryOwner->GetPDA()) return false;
 	return pInventoryOwner->HasInfo(info_id);
 
 }
@@ -116,7 +116,7 @@ bool  CScriptGameObject::DontHasInfo			(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if(!pInventoryOwner) return true;
-	if(!pInventoryOwner->GetPDA()) return true;
+//	if(!pInventoryOwner->GetPDA()) return true;
 	return !pInventoryOwner->HasInfo(info_id);
 }
 
