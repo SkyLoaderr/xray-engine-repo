@@ -630,4 +630,13 @@ void TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
+char* TUI::GetCaption()
+{
+	return GetEditFileName()[0]?GetEditFileName():"noname";
+}
+char* TUI::GetTitle()
+{
+	return "Level Editor";
+}
+
 
