@@ -562,11 +562,14 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("activate",				int(MonsterSpace::eObjectActionActivate)),
 				value("deactivate",				int(MonsterSpace::eObjectActionDeactivate)),
 				value("use",					int(MonsterSpace::eObjectActionUse)),
+				value("turn_on",				int(MonsterSpace::eObjectActionTurnOn)),
+				value("turn_off",				int(MonsterSpace::eObjectActionTurnOff)),
 				value("dummy",					int(MonsterSpace::eObjectActionDummy))
 			]
 			.def(								constructor<>())
 			.def(								constructor<CLuaGameObject*,MonsterSpace::EObjectAction>())
 			.def(								constructor<CLuaGameObject*,MonsterSpace::EObjectAction,u32>())
+			.def(								constructor<MonsterSpace::EObjectAction>())
 			.def(								constructor<LPCSTR,MonsterSpace::EObjectAction>())
 			.def("action",						&CObjectAction::SetObjectAction)
 			.def("object",						(void (CObjectAction::*)(LPCSTR))(CObjectAction::SetObject))

@@ -17,6 +17,7 @@ class CSearchlight: public CScriptMonster {
 
 	u16				rot_bone;
 	u16				guid_bone;
+	u16				cone_bone;
 
 	struct SRot {
 		float yaw;
@@ -36,9 +37,13 @@ public:
 	virtual BOOL	UsedAI_Locations();
 
 	virtual	bool	bfAssignWatch(CEntityAction	*tpEntityAction);
-
-
+	virtual	bool	bfAssignObject(CEntityAction *tpEntityAction);
+	
 private:
+			void	TurnOn			();
+			void	TurnOff			();
+	
+	// Rotation routines
 	static void __stdcall  BoneCallback(CBoneInstance *B);
 	void			UpdateBones		();
 	void			SetTarget		(const Fvector &target_pos);

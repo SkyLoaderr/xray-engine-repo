@@ -180,7 +180,7 @@ void CBitingAttack::Run()
 				}
 			}
 			
-			if (!b_silent_run) pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
+			if (!b_silent_run) pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
 			break;
 
@@ -217,7 +217,7 @@ void CBitingAttack::Run()
 
 			if (flags.is(AF_ATTACK_RAT)) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 
-			pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
 			break;
 
@@ -248,7 +248,7 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 
-			pMonster->SetSound(SND_TYPE_THREATEN, 10);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten);
 			
 			break;
 
@@ -261,7 +261,7 @@ void CBitingAttack::Run()
 			pMonster->SetSelectorPathParams();
 			pMonster->set_use_dest_orientation	(false);
 			
-			pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
 			break;
 	}

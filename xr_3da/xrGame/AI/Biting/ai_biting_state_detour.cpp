@@ -39,7 +39,6 @@ void CBitingDetour::Run()
 
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }
 
 

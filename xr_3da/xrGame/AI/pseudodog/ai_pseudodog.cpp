@@ -121,9 +121,6 @@ void CAI_PseudoDog::StateSelector()
 {	
 	VisionElem ve;
 
-	if (C || D || E || F) SetBkgndSound();
-	else SetBkgndSound(false);
-
 	if (C)						SetState(statePanic);
 	else if (D || E || F)		SetState(stateAttack);
 	else if (A && !K)			SetState(stateExploreNDE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		

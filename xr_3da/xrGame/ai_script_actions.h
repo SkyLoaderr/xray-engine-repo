@@ -316,9 +316,9 @@ public:
 	ref_str							m_bone_to_watch;
 
 	// Searchlight 
-	Fvector							m_tTargetPoint;
-	float							vel_bone_x;
-	float							vel_bone_y;
+	Fvector								m_tTargetPoint;
+	float								vel_bone_x;
+	float								vel_bone_y;
 
 
 							CWatchAction		()
@@ -365,6 +365,7 @@ public:
 		vel_bone_y			= vel2;
 		m_bCompleted		= false;
 	}
+	
 	///////////////////////////////////////////////////////////////////
 	
 	
@@ -705,6 +706,13 @@ public:
 		SetObject			(caBoneName);
 		SetObjectAction		(tObjectActionType);
 	}
+
+							CObjectAction		(MonsterSpace::EObjectAction tObjectActionType)
+	{
+		SetObjectAction		(tObjectActionType);
+	}
+
+
 
 			void			SetObject			(CLuaGameObject *tpLuaGameObject);
 

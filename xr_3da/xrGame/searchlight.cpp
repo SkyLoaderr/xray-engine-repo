@@ -59,21 +59,22 @@ BOOL CSearchlight::net_Spawn(LPVOID DC)
 	light_render->set_color	(clr);
 	light_render->set_cone	(slight->spot_cone_angle);
 	light_render->set_texture(slight->spot_texture[0]?slight->spot_texture:0);
-	light_render->set_active(true);
 
 	glow_render->set_texture(slight->glow_texture[0]?slight->glow_texture:0);
 	glow_render->set_color	(clr);
 	glow_render->set_radius	(slight->glow_radius);
-	glow_render->set_active (true);
 
 	lanim					= LALib.FindItem(slight->animator);
 
 	guid_bone				= slight->guid_bone;		VERIFY(guid_bone!=BI_NONE);
 	rot_bone				= slight->rotation_bone;	VERIFY(rot_bone!=BI_NONE);
+	cone_bone				= PKinematics(Visual())->LL_BoneID("bone_cone");
 
-	setVisible(true);
-	setEnabled(true);
+	setVisible	(true);
+	setEnabled	(true);
 
+	TurnOn		();
+	
 	//////////////////////////////////////////////////////////////////////////
 	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(rot_bone);	
 	BI.set_callback(BoneCallback,this);
@@ -91,6 +92,24 @@ void CSearchlight::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
+}
+
+void CSearchlight::TurnOn()
+{
+	if (light_render->get_active()) return;
+
+	light_render->set_active(true);
+	glow_render->set_active (true);
+	PKinematics(Visual())->LL_SetBoneVisible(cone_bone, TRUE, TRUE);
+}
+
+void CSearchlight::TurnOff()
+{
+	if (!light_render->get_active()) return;
+
+	light_render->set_active(false);
+	glow_render->set_active (false);
+	PKinematics(Visual())->LL_SetBoneVisible(cone_bone, FALSE, TRUE);
 }
 
 void CSearchlight::UpdateCL	()
@@ -117,17 +136,10 @@ void CSearchlight::UpdateCL	()
 
 		M.mul(XFORM(),BI.mTransform);
 
-		if (light_render->get_active()){
-			light_render->set_direction	(M.k);
-			light_render->set_position	(M.c);
-			glow_render->set_position	(M.c);
-			glow_render->set_direction	(M.k);
-//			time2hide			-= Device.fTimeDelta;
-//			if (time2hide<0){
-//				light_render->set_active(false);
-//				glow_render->set_active(false);
-//			}
-		}
+		light_render->set_direction	(M.k);
+		light_render->set_position	(M.c);
+		glow_render->set_position	(M.c);
+		glow_render->set_direction	(M.k);
 
 	}
 
@@ -164,8 +176,9 @@ bool CSearchlight::bfAssignWatch(CEntityAction *tpEntityAction)
 											SetTarget(l_tWatchAction.m_tpObjectToWatch->Position());
 
 	bone_vel_x	= l_tWatchAction.vel_bone_x;
-	bone_vel_y	= l_tWatchAction.vel_bone_y;
-
+	
+	float time = angle_difference(_target.yaw, _cur.yaw) / bone_vel_x;
+	bone_vel_y	= (fis_zero(time)? l_tWatchAction.vel_bone_y : angle_difference(_target.pitch, _cur.pitch) / time);
 	
 	if ((angle_difference(_cur.yaw,_target.yaw) < EPS_L) && (angle_difference(_cur.pitch,_target.pitch) < EPS_L)) {
 		l_tWatchAction.m_bCompleted = true;
@@ -176,6 +189,18 @@ bool CSearchlight::bfAssignWatch(CEntityAction *tpEntityAction)
 	return !l_tWatchAction.m_bCompleted;
 }
 
+bool CSearchlight::bfAssignObject(CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignObject(tpEntityAction))
+		return	(false);
+
+	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+
+	if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOn)			TurnOn	();
+	else if (l_tObjectAction.m_tGoalType == MonsterSpace::eObjectActionTurnOff)	TurnOff	();
+
+	return	(true);
+}
 
 void CSearchlight::UpdateBones()
 {

@@ -100,5 +100,6 @@ void CBitingExploreDNE::Run()
 	}
 	
 	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
+	
+	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 }

@@ -44,15 +44,12 @@ void CAI_Biting::Think()
 		pSquad->UpdateDecentralized();
 	} 
 
-
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
 	
 // Test /////
-
 //	MotionMan.m_tAction						= ACT_RUN;
 //	CMonsterMovement::MoveToTarget(Level().CurrentEntity()->Position());
-
 /////////////
 
 	CMonsterMovement::Frame_Update			();
@@ -62,9 +59,6 @@ void CAI_Biting::Think()
 
 	SetVelocity								();
 	CMonsterMovement::Frame_Finalize		();
-
-	// process sound
-	ControlSound							(m_current_update);
 
 	// Debuging
 #ifdef DEBUG

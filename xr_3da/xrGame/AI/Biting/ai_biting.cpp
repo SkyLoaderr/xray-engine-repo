@@ -49,7 +49,6 @@ void CAI_Biting::Init()
 
 	flagEatNow						= false;
 
-	CMonsterSound::Init				(this);
 	// Attack-stops init
 	AS_Init							();
 
@@ -76,7 +75,7 @@ void CAI_Biting::Die()
 	inherited::Die( );
 	DeinitMemory();
 
-	SetSoundOnce(SND_TYPE_DIE, m_dwCurrentTime);
+	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
 
 	MotionMan.ForceAnimSelect();
 	
@@ -96,8 +95,6 @@ void CAI_Biting::Load(LPCSTR section)
 	m_tSelectorApproach->Load		(section,"selector_approach");
 	m_tSelectorGetAway->Load		(section,"selector_getaway");
 
-	LoadSounds						(section);
-
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
 
@@ -108,6 +105,16 @@ void CAI_Biting::Load(LPCSTR section)
 	SHARE_ON_LOAD(_sd_biting);
 
 	m_fCurMinAttackDist				= _sd->m_fMinAttackDist;
+
+	CSoundPlayer::add(pSettings->r_string(section,"sound_idle"),		16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_eat"),			16,		SOUND_TYPE_MONSTER_TALKING,		5,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_attack"),		16,		SOUND_TYPE_MONSTER_ATTACKING,	4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack,		"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_attack_hit"),	16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit,	"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_take_damage"),	16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage,	"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_die"),			16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie,			"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_bkgnd"),		16,		SOUND_TYPE_MONSTER_STEP,		1,	u32(1 << 15) | 0,	MonsterSpace::eMonsterSoundBkgnd,		"bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_threaten"),	16,		SOUND_TYPE_MONSTER_ATTACKING,	3,	u32(1 << 31) | 0,	MonsterSpace::eMonsterSoundThreaten,	"bip01_head");
+
 }
 
 void CAI_Biting::LoadShared(LPCSTR section)

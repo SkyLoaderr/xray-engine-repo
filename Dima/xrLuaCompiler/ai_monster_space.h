@@ -85,6 +85,8 @@ namespace MonsterSpace {
 		eObjectActionMisfire1,
 		eObjectActionEmpty1,
 		eObjectActionUse,
+		eObjectActionTurnOn,
+		eObjectActionTurnOff,
 		eObjectActionNoItems = eObjectActionIdle | u16(-1),
 		eObjectActionDummy = u32(-1)
 	};
@@ -121,4 +123,17 @@ namespace MonsterSpace {
 		eAT_ForceMovementType,	
 		eAT_None				= u32(-1),
 	};
+
+	enum EMonsterSounds {
+		eMonsterSoundIdle		= u32(0),
+		eMonsterSoundEat,
+		eMonsterSoundAttack,
+		eMonsterSoundAttackHit,
+		eMonsterSoundTakeDamage,
+		eMonsterSoundDie,
+		eMonsterSoundThreaten,
+		eMonsterSoundBkgnd,
+		eMonsterSoundDummy		= u32(-1),
+	};
+
 };

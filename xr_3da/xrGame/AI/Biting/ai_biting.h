@@ -48,7 +48,6 @@ typedef VisionElem SEnemy;
 
 class CAI_Biting : public CCustomMonster, 
 				   public CMonsterMemory,
-				   public CMonsterSound,
 				   virtual public CMonsterMovement,
 				   public CSharedClass<_biting_shared> {
 

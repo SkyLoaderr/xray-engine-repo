@@ -177,7 +177,7 @@ bool CAI_Flesh::AA_CheckHit()
 	bool was_hit = false;	
 
 	if (MotionMan.AA_CheckTime(m_dwCurrentTime,apt_anim)) {
-		SetSoundOnce(SND_TYPE_ATTACK_HIT, m_dwCurrentTime);
+		CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
 
 		VisionElem ve;
 		if (!GetEnemy(ve)) return false;
