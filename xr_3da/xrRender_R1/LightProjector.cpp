@@ -164,7 +164,7 @@ void CLightProjector::calculate	()
 		// Clear color to ambience
 		float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
 		int		c_i			=	iFloor(c_a)/2;
-		CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
+		//CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
 		Fvector	min,max;
