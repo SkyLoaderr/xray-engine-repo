@@ -58,7 +58,7 @@ CPHCharacter::~CPHCharacter(void)
 
 void		CPHCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
 if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-dBodyAddForce(m_body,dir.x*P/fixed_step,dir.x*P/fixed_step,dir.x*P/fixed_step);
+dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
 }
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
