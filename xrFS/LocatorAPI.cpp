@@ -750,6 +750,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 			IWriter* W = w_open	(cpy_name);
 			W->w				(R->pointer(),R->length());
 			w_close				(W);
+			set_file_age(cpy_name,get_file_age(source_name));
 			if (m_Flags.is(flEBuildCopy)){
 				LPCSTR ext		= strext(cpy_name);
 				if (ext){
