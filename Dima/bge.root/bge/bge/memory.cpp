@@ -103,7 +103,7 @@ void test()
 {
 	/**/
 	const u32 test_count = 100000;
-	const u32 size = 0x8000;
+	const u32 size = 0x100;
 	char s[size], d[size];
 	typedef memory_processor<true,true,false,false,true> mp;
 	Memory::mem_fill(s,1,size);
