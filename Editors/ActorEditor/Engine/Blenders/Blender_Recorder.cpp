@@ -8,6 +8,20 @@
 #include "Blender_Recorder.h"
 #include "Blender.h"
 
+int ParseName(LPCSTR N)
+{
+	if (0==strcmp(N,"$null"))	return -1;
+	if (0==strcmp(N,"$base0"))	return	0;
+	if (0==strcmp(N,"$base1"))	return	1;
+	if (0==strcmp(N,"$base2"))	return	2;
+	if (0==strcmp(N,"$base3"))	return	3;
+	if (0==strcmp(N,"$base4"))	return	4;
+	if (0==strcmp(N,"$base5"))	return	5;
+	if (0==strcmp(N,"$base6"))	return	6;
+	if (0==strcmp(N,"$base7"))	return	7;
+	return -1;
+}
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -59,8 +73,18 @@ void	CBlender_Compile::PassEnd			()
 
 void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 {
+	// Parse texture
+	sh_list& lst=	L_textures;
+	int id		=	ParseName(Base);
+	LPCSTR N	=	Base;
+	if (id>=0)	{
+		if (id>=int(lst.size()))	Device.Fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
+		N = lst [id];
+	}
+
+	// 
 	LPCSTR		T,M;
-	if (!Device.Shader._GetDetailTexture(Base,T,M))	return;
+	if (!Device.Shader._GetDetailTexture(N,T,M))	return;
 
 	// Detail
 	PassBegin		();
@@ -157,19 +181,6 @@ void	CBlender_Compile::StageTemplate_LMAP0	()
 	StageSET_TMC		("$base1","$null","$null",1);
 }
 
-int ParseName(LPCSTR N)
-{
-	if (0==strcmp(N,"$null"))	return -1;
-	if (0==strcmp(N,"$base0"))	return	0;
-	if (0==strcmp(N,"$base1"))	return	1;
-	if (0==strcmp(N,"$base2"))	return	2;
-	if (0==strcmp(N,"$base3"))	return	3;
-	if (0==strcmp(N,"$base4"))	return	4;
-	if (0==strcmp(N,"$base5"))	return	5;
-	if (0==strcmp(N,"$base6"))	return	6;
-	if (0==strcmp(N,"$base7"))	return	7;
-	return -1;
-}
 void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 {
 	sh_list& lst=	L_textures;
