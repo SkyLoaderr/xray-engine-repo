@@ -75,7 +75,7 @@ public:
 	void			CreateFromPortal	(sPoly* P, Fvector& vBase, Fmatrix& mFullXFORM);
 	void			CreateFromPlanes	(Fplane* p, int count);
 
-	sPoly*			ClipPoly			(sPoly& src, sPoly& dest);
+	sPoly*			ClipPoly			(sPoly& src, sPoly& dest) const;
 
 	BYTE			getMask				() const { return (1<<p_count)-1; }
 
@@ -150,7 +150,7 @@ public:
 		Fvector* e = p+count;
 		for (int i=0; i<p_count; i++)
 		{
-			Fplane &P = planes[i];
+			const Fplane &P = planes[i];
 			for (Fvector* I=p; I!=e; I++)
 				if (P.classify(*I)>0) return false;
 		}

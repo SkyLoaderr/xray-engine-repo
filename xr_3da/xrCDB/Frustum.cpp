@@ -154,7 +154,7 @@ void CFrustum::CreateOccluder(Fvector* p, int count, Fvector& vBase, CFrustum& c
 	}
 }
 
-sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D)
+sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 {
 	sPoly*	src		= &D;
 	sPoly*	dest	= &S;

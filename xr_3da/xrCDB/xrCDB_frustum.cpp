@@ -12,7 +12,7 @@ public:
 	COLLIDER*		dest;
 	TRI*			tris;
 	
-	CFrustum*		F;
+	const CFrustum*	F;
 	
 	IC void			_init		(COLLIDER* CL, TRI* T, const CFrustum* _F)
 	{
@@ -30,12 +30,12 @@ public:
 	void			_prim		(DWORD prim)
 	{
 		if (bClass3)	{
-			sPoly		src,dest;
+			sPoly		src,dst;
 			src.resize	(3);
 			src[0]		= *tris[prim].verts[0];
 			src[1]		= *tris[prim].verts[1];
 			src[2]		= *tris[prim].verts[2];
-			if (F->ClipPoly(src,dest))
+			if (F->ClipPoly(src,dst))
 			{
 				RESULT& R	= dest->r_add();
 				R.id		= prim;
@@ -48,8 +48,6 @@ public:
 	
 	void			_stab		(const AABBNoLeafNode* node, BYTE mask)
 	{
-		Fvector	P;
-		
 		// Actual frustum/aabb test
 		EFC_Visible	result		= _box((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents,mask);
 		if (fcvNone == result)	return;
