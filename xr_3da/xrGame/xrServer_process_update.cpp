@@ -13,7 +13,8 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 		u16		ID;
 		P.r_u16	(ID);
 		xrServerEntity* E	= ID_to_entity(ID);
-		if (E)				{
+		if (E)				
+		{
 			E->net_Ready	= TRUE;
 			E->UPDATE_Read	(P);
 		}
