@@ -120,8 +120,9 @@ void	CSoundRender_Target::render			()
 	if (DSERR_BUFFERLOST==_hr)	{
 		R_CHK(pBuffer->Restore());
 		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	}else{
+		R_CHK		(_hr);
 	}
-	R_CHK			(_hr);
 	rendering		= TRUE;
 }
 
