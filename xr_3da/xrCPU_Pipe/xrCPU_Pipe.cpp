@@ -11,18 +11,20 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     return TRUE;
 }
 
-extern xrSkin1W		xrSkin1W_x86;
-extern xrSkin1W		xrSkin1W_3DNow;
-extern xrSkin1W		xrSkin1W_SSE;
-extern xrSkin2W		xrSkin2W_x86;
-extern xrBoneLerp	xrBoneLerp_x86;
-extern xrBoneLerp	xrBoneLerp_3DNow;
-extern xrM44_Mul	xrM44_Mul_x86;
-extern xrM44_Mul	xrM44_Mul_3DNow;
-extern xrM44_Mul	xrM44_Mul_SSE;
-extern xrTransfer	xrTransfer_x86;
-extern xrMemCopy_8b	xrMemCopy_MMXSSE3DNow;
-extern xrMemCopy_8b	xrMemCopy_x86;
+extern xrSkin1W			xrSkin1W_x86;
+extern xrSkin1W			xrSkin1W_3DNow;
+extern xrSkin1W			xrSkin1W_SSE;
+extern xrSkin2W			xrSkin2W_x86;
+extern xrBoneLerp		xrBoneLerp_x86;
+extern xrBoneLerp		xrBoneLerp_3DNow;
+extern xrM44_Mul		xrM44_Mul_x86;
+extern xrM44_Mul		xrM44_Mul_3DNow;
+extern xrM44_Mul		xrM44_Mul_SSE;
+extern xrTransfer		xrTransfer_x86;
+extern xrMemCopy_8b		xrMemCopy_MMXSSE3DNow;
+extern xrMemCopy_8b		xrMemCopy_x86;
+extern xrMemFill_32b	xrMemFill32_MMX;
+
 
 extern "C" {
 	__declspec(dllexport) void	__cdecl	xrBind_PSGP	(xrDispatchTable* T)
