@@ -103,18 +103,9 @@ IC float snapto( float value, float snap ){
 struct _matrix33;	// matrix
 struct _quaternion;	// quaternion
 
-struct _fpoint;		// fpoint
-struct _lpoint;		// lpoint
-
-struct _lrect;		// lrect
-struct _frect;		// frect
 struct _fbox;		// fbox
 struct _fbox2;		// fbox
 struct Fobb;		// oriented bbox
-
-struct _3dbuffer;	// Dsound 3d buffer
-struct _3dlistener;	// Dsound listener
-
 
 struct _color;		// floating point based color definition
 
@@ -123,9 +114,7 @@ struct _color;		// floating point based color definition
 
 #include "_random.h"
 
-#ifndef NO_XR_COLOR
 #include "_color.h"
-#endif
 #include "_vector3d.h"
 #include "_vector2.h"
 #include "_vector4.h"

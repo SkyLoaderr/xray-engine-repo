@@ -15,7 +15,7 @@ public:
 	float r,g,b,a;
 
     IC 	float*	asDATA(void) { return (float*)this; };
-	IC	void	set(u32 dw)
+	IC	void	set		(u32 dw)
 	{
 		const float f = 1.0f / 255.0f;
 		a = f * float((dw >> 24)& 0xff);
@@ -23,11 +23,11 @@ public:
 		g = f * float((dw >>  8)& 0xff);
 		b = f * float((dw >>  0)& 0xff);
 	};
-	IC	void	set(float _r, float _g, float _b, float _a)
+	IC	void	set		(float _r, float _g, float _b, float _a)
 	{	r = _r; g = _g; b = _b; a = _a;		};
-	IC	void	set(_color dw)
+	IC	void	set		(_color dw)
 	{	r=dw.r; g=dw.g; b=dw.b; a = dw.a;	};
-	IC	u32	get( ) const
+	IC	u32		get( )	const
 	{
 		int	 _r = iFloor(r*255.f); clamp(_r,0,255);
 		int	 _g = iFloor(g*255.f); clamp(_g,0,255);
