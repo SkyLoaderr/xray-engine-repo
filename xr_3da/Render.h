@@ -72,7 +72,7 @@ public:
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)						= 0;
 	virtual IRender_Sector*			detectSector			(Fvector& P)					= 0;
-	virtual CRender_target*			getTarget				()								= 0;
+	virtual IRender_target*			getTarget				()								= 0;
 
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)				{ VERIFY(O);	View = O;			}
@@ -116,10 +116,9 @@ public:
 	virtual void					rmNormal				()										= 0;
 
 	// Constructor/destructor
-	CRender_interface();
-	virtual ~CRender_interface();
+	virtual ~IRender_interface();
 };
 
-extern ENGINE_API	CRender_interface*	Render;
+extern ENGINE_API	IRender_interface*	Render;
 
 #endif

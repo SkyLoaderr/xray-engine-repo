@@ -7,7 +7,6 @@
 #include "PSObject.h"
 #include "PSVisual.h"
 #include "render.h"
-#include "portal.h"
 
 CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
 {
@@ -21,10 +20,12 @@ CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
 	m_pCurSector	= S;
 	if (S) m_pCurSector->tempobjAdd(this);
 }
+
 //----------------------------------------------------
 CPSObject::~CPSObject()
 {
 }
+
 //----------------------------------------------------
 void CPSObject::UpdateSector(CSector* sect)
 {
