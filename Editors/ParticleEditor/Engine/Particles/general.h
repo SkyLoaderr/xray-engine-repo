@@ -42,13 +42,13 @@ struct ParticleGroup
 		list[i] = list[--p_count];
 	}
 	
-	inline bool Add(const pVector &pos, const pVector &posB,
+	inline BOOL Add(const pVector &pos, const pVector &posB,
 		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
 		const float alpha = 1.0f,
 		const float age = 0.0f)
 	{
 		if(p_count >= max_particles)
-			return false;
+			return FALSE;
 		else
 		{
 			list[p_count].pos = pos;
@@ -61,7 +61,7 @@ struct ParticleGroup
 			list[p_count].alpha = alpha;
 			list[p_count].age = age;
 			p_count++;
-			return true;
+			return TRUE;
 		}
 	}
 };
@@ -76,7 +76,7 @@ struct pDomain
 	float radius1Sqr;	// Used for fast Within test of spheres,
 	float radius2Sqr;	// and for mag. of u and v vectors for plane.
 	
-	bool Within(const pVector &) const;
+	BOOL Within(const pVector &) const;
 	void Generate(pVector &) const;
 	
 	// This constructor is used when default constructing a
@@ -147,7 +147,7 @@ struct PAHeader : public ParticleAction
 {
 	int actions_allocated;
 	int count;			// Total actions in the list.
-	float padding[96];	// This must be the largest action.
+	float padding[114];	// This must be the largest action.
 	
 	ExecMethod
 };
@@ -181,8 +181,8 @@ struct PACallActionList : public ParticleAction
 
 struct PACopyVertexB : public ParticleAction
 {
-	bool copy_pos;		// True to copy pos to posB.
-	bool copy_vel;		// True to copy vel to velB.
+	BOOL copy_pos;		// True to copy pos to posB.
+	BOOL copy_vel;		// True to copy vel to velB.
 	
 	ExecMethod
 };
@@ -247,7 +247,7 @@ struct PAJet : public ParticleAction
 struct PAKillOld : public ParticleAction
 {
 	float age_limit;		// Exact age at which to kill particles.
-	bool kill_less_than;	// True to kill particles less than limit.
+	BOOL kill_less_than;	// True to kill particles less than limit.
 	
 	ExecMethod
 };
@@ -317,7 +317,7 @@ struct PARestore : public ParticleAction
 
 struct PASink : public ParticleAction
 {
-	bool kill_inside;	// True to dispose of particles *inside* domain
+	BOOL kill_inside;	// True to dispose of particles *inside* domain
 	pDomain position;	// Disposal region
 	
 	ExecMethod
@@ -325,7 +325,7 @@ struct PASink : public ParticleAction
 
 struct PASinkVelocity : public ParticleAction
 {
-	bool kill_inside;	// True to dispose of particles with vel *inside* domain
+	BOOL kill_inside;	// True to dispose of particles with vel *inside* domain
 	pDomain velocity;	// Disposal region
 	
 	ExecMethod
@@ -344,14 +344,14 @@ struct PASource : public ParticleAction
 	pDomain position;	// Choose a position in this domain.
 	pDomain positionB;	// Choose a positionB in this domain.
 	pDomain size;		// Choose a size in this domain.
-	pDomain rot;		// Choose a rotation in this domain.
 	pDomain velocity;	// Choose a velocity in this domain.
 	pDomain color;		// Choose a color in this domain.
+	pDomain rot;		// Choose a rotation in this domain.
 	float alpha;		// Alpha of all generated particles
 	float particle_rate;	// Particles to generate per unit time
 	float age;			// Initial age of the particles
 	float age_sigma;	// St. dev. of initial age of the particles
-	bool vertexB_tracks;	// True to get positionB from position.
+	BOOL vertexB_tracks;	// True to get positionB from position.
 	
 	ExecMethod
 };
@@ -404,9 +404,9 @@ struct PAVortex : public ParticleAction
 struct _ParticleState
 {
 	float dt;
-	bool in_call_list;
-	bool in_new_list;
-	bool vertexB_tracks;
+	BOOL in_call_list;
+	BOOL in_new_list;
+	BOOL vertexB_tracks;
 	
 	int group_id;
 	int list_id;

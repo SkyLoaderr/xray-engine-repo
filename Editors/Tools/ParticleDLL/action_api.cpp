@@ -64,7 +64,7 @@ PARTICLEDLL_API void __stdcall pBounce(float friction, float resilience, float c
 	_pSendAction(&S, PABounceID, sizeof(PABounce));
 }
 
-PARTICLEDLL_API void __stdcall pCopyVertexB(bool copy_pos, bool copy_vel)
+PARTICLEDLL_API void __stdcall pCopyVertexB(BOOL copy_pos, BOOL copy_vel)
 {
 	PACopyVertexB S;
 
@@ -151,7 +151,7 @@ PARTICLEDLL_API void __stdcall pJet(float center_x, float center_y, float center
 	_pSendAction(&S, PAJetID, sizeof(PAJet));
 }
 
-PARTICLEDLL_API void __stdcall pKillOld(float age_limit, bool kill_less_than)
+PARTICLEDLL_API void __stdcall pKillOld(float age_limit, BOOL kill_less_than)
 {
 	PAKillOld S;
 	
@@ -253,7 +253,7 @@ PARTICLEDLL_API void __stdcall pRestore(float time_left)
 	_pSendAction(&S, PARestoreID, sizeof(PARestore));
 }
 
-PARTICLEDLL_API void __stdcall pSink(bool kill_inside, PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pSink(BOOL kill_inside, PDomainEnum dtype,
 		  float a0, float a1, float a2,
 		  float a3, float a4, float a5,
 		  float a6, float a7, float a8)
@@ -266,7 +266,7 @@ PARTICLEDLL_API void __stdcall pSink(bool kill_inside, PDomainEnum dtype,
 	_pSendAction(&S, PASinkID, sizeof(PASink));
 }
 
-PARTICLEDLL_API void __stdcall pSinkVelocity(bool kill_inside, PDomainEnum dtype,
+PARTICLEDLL_API void __stdcall pSinkVelocity(BOOL kill_inside, PDomainEnum dtype,
 				  float a0, float a1, float a2,
 				  float a3, float a4, float a5,
 				  float a6, float a7, float a8)
@@ -350,7 +350,7 @@ PARTICLEDLL_API void __stdcall pTargetRotateD(float scale, PDomainEnum dtype,
 											  float a0, float a1, float a2,
 											  float a3, float a4, float a5,
 											  float a6, float a7, float a8)
-{
+{ 
 	// generate random target value
 	pDomain Domain = pDomain(dtype,a0,a1,a2,a3,a4,a5,a6,a7,a8);
 	pVector r;

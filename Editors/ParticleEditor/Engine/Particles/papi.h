@@ -97,7 +97,7 @@ extern "C"{
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
-	PARTICLEDLL_API void __stdcall pVertexBTracks(bool track_vertex = true);
+	PARTICLEDLL_API void __stdcall pVertexBTracks(BOOL track_vertex = TRUE);
 
 
 	// Action List Calls
@@ -121,11 +121,11 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pDeleteParticleGroups(int p_group_num, int p_group_count = 1);
 
-	PARTICLEDLL_API void __stdcall pDrawGroupl(int dlist, bool const_size = false,
-		bool const_color = false, bool const_rotation = false);
+	PARTICLEDLL_API void __stdcall pDrawGroupl(int dlist, BOOL const_size = FALSE,
+		BOOL const_color = FALSE, BOOL const_rotation = FALSE);
 
-	PARTICLEDLL_API void __stdcall pDrawGroupp(int primitive, bool const_size = false,
-		bool const_color = false);
+	PARTICLEDLL_API void __stdcall pDrawGroupp(int primitive, BOOL const_size = FALSE,
+		BOOL const_color = FALSE);
 
 	PARTICLEDLL_API int __stdcall pGenParticleGroups(int p_group_count = 1, int max_particles = 0);
 
@@ -151,7 +151,7 @@ extern "C"{
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
-	PARTICLEDLL_API void __stdcall pCopyVertexB(bool copy_pos = true, bool copy_vel = false);
+	PARTICLEDLL_API void __stdcall pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);
 
 	PARTICLEDLL_API void __stdcall pDamping(float damping_x, float damping_y, float damping_z,
 		float vlow = 0.0f, float vhigh = P_MAXFLOAT);
@@ -168,7 +168,7 @@ extern "C"{
 	PARTICLEDLL_API void __stdcall pJet(float center_x, float center_y, float center_z, float magnitude = 1.0f,
 		float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
-	PARTICLEDLL_API void __stdcall pKillOld(float age_limit, bool kill_less_than = false);
+	PARTICLEDLL_API void __stdcall pKillOld(float age_limit, BOOL kill_less_than = FALSE);
 
 	PARTICLEDLL_API void __stdcall pMatchVelocity(float magnitude = 1.0f, float epsilon = P_EPS,
 		float max_radius = P_MAXFLOAT);
@@ -203,12 +203,12 @@ extern "C"{
 	PARTICLEDLL_API void __stdcall pShade(float color_x, float color_y, float color_z,
 		float alpha, float scale);
 
-	PARTICLEDLL_API void __stdcall pSink(bool kill_inside, PDomainEnum dtype,
+	PARTICLEDLL_API void __stdcall pSink(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
-	PARTICLEDLL_API void __stdcall pSinkVelocity(bool kill_inside, PDomainEnum dtype,
+	PARTICLEDLL_API void __stdcall pSinkVelocity(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);

@@ -174,9 +174,9 @@ inline void _PUnLock()
 
 _ParticleState::_ParticleState()
 {
-	in_call_list = false;
-	in_new_list = false;
-	vertexB_tracks = true;
+	in_call_list = FALSE;
+	in_new_list = FALSE;
+	vertexB_tracks = TRUE;
 	
 	dt = 1.0f;
 	
@@ -386,7 +386,13 @@ void _pCallActionList(ParticleAction *apa, int num_actions,
 		case PATargetRotateID:
 			((PATargetRotate *)pa)->Execute(pg);
 			break;
+		case PATargetRotateDID:
+			((PATargetRotate *)pa)->Execute(pg);
+			break;
 		case PATargetVelocityID:
+			((PATargetVelocity *)pa)->Execute(pg);
+			break;
+		case PATargetVelocityDID:
 			((PATargetVelocity *)pa)->Execute(pg);
 			break;
 		case PAVortexID:
@@ -487,7 +493,7 @@ PARTICLEDLL_API void __stdcall pVertexBD(PDomainEnum dtype,
 }
 
 
-PARTICLEDLL_API void __stdcall pVertexBTracks(bool trackVertex)
+PARTICLEDLL_API void __stdcall pVertexBTracks(BOOL trackVertex)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -583,7 +589,7 @@ PARTICLEDLL_API void __stdcall pNewActionList(int action_list_num)
 		return; // ERROR
 	
 	_ps.list_id = action_list_num;
-	_ps.in_new_list = true;
+	_ps.in_new_list = TRUE;
 
 	// Remove whatever used to be in the list.
 	_ps.pact->count = 1;
@@ -596,7 +602,7 @@ PARTICLEDLL_API void __stdcall pEndActionList()
 	if(!_ps.in_new_list)
 		return; // ERROR
 	
-	_ps.in_new_list = false;
+	_ps.in_new_list = FALSE;
 	
 	_ps.pact = NULL;
 	_ps.list_id = -1;
@@ -659,11 +665,11 @@ PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num)
 		// XXX A temporary hack.
 		pa->dt = _ps.dt;
 		
-		_ps.in_call_list = true;
+		_ps.in_call_list = TRUE;
 		
 		_pCallActionList(pa+1, pa->count-1, _ps.pgrp);
 		
-		_ps.in_call_list = false;
+		_ps.in_call_list = FALSE;
 	}
 }
 

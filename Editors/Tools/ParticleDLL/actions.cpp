@@ -655,7 +655,7 @@ void PABounce::Execute(ParticleGroup *group)
 				if(position.Within(pnext))
 				{
 					// See if we were inside on previous timestep.
-					bool pinside = position.Within(m.pos);
+					BOOL pinside = position.Within(m.pos);
 					
 					// Normal to surface. This works for a sphere. Isn't
 					// computed quite right, should extrapolate particle
@@ -1388,10 +1388,15 @@ void PATargetRotate::Execute(ParticleGroup *group)
 {
 	float scaleFac = scale * dt;
 
+	pVector r = pVector(fabsf(rot.x),fabsf(rot.y),fabsf(rot.z));
+
 	for(int i = 0; i < group->p_count; i++)
 	{
 		Particle &m = group->list[i];
-		m.rot = (rot - m.rot) * scaleFac;
+//		m.rot += (r - m.rot) * scaleFac;
+		pVector sign(m.rot.x>=0.f?scaleFac:-scaleFac,m.rot.y>=0.f?scaleFac:-scaleFac,m.rot.z>=0.f?scaleFac:-scaleFac);
+		pVector dif((r.x-fabsf(m.rot.x))*sign.x,(r.y-fabsf(m.rot.y))*sign.x,(r.z-fabsf(m.rot.z))*sign.x);
+		m.rot	+= dif;
 	}
 }
 
@@ -1696,7 +1701,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 }
 
 // Determines if pos is inside the domain
-bool pDomain::Within(const pVector &pos) const
+BOOL pDomain::Within(const pVector &pos) const
 {
 	switch (type)
 	{
@@ -1734,7 +1739,7 @@ bool pDomain::Within(const pVector &pos) const
 			// radius2Sqr stores 1 / (p2.p2)
 			float dist = (p2 * x) * radius2Sqr;
 			if(dist < 0.0f || dist > 1.0f)
-				return false;
+				return FALSE;
 			
 			// Check radial distance; scale radius along axis for cones
 			pVector xrad = x - p2 * dist; // Radial component of x
@@ -1759,7 +1764,7 @@ bool pDomain::Within(const pVector &pos) const
 	case PDTriangle:
 	case PDDisc:
 	default:
-		return false; // XXX Is there something better?
+		return FALSE; // XXX Is there something better?
 	}
 }
 
