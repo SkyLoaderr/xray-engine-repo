@@ -177,7 +177,7 @@ public:
 		else					_stab	(node->GetPos());
 		
 		// Early exit for "only first"
-		if (bFirst && dest->r_count())										return;
+		if (bFirst && dest->r_count())												return;
 		
 		// 2nd chield
 		if (node->HasLeaf2())	_prim	(node->GetPrimitive2());
