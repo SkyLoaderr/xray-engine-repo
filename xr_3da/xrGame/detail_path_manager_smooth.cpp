@@ -161,11 +161,9 @@ bool CDetailPathManager::build_circle_trajectory(
 		}
 		if (vertex_id) {
 			*vertex_id		= position.vertex_id;
-			if (path) {
-				t.position			= ai().level_graph().v3d(position.position);
-				t.vertex_id			= position.vertex_id;
-				path->push_back		(t);
-			}
+			t.position		= ai().level_graph().v3d(position.position);
+			t.vertex_id		= position.vertex_id;
+			path->push_back	(t);
 		}
 		return			(true);
 	}
@@ -599,8 +597,16 @@ void CDetailPathManager::add_patrol_point()
 	m_last_patrol_point					= m_path.size() - 1;
 	if ((m_path.size() > 1) && m_state_patrol_path) {
 		STravelPathPoint				t;
+		bool							ok = false;
 		Fvector							v;
-		v.sub							(m_path.back().position,m_path[m_path.size() - 2].position);
+		for (u32 i=m_path.size()-1; i>0; --i)
+			if (!m_path.back().position.similar(m_path[i-1].position,.01f)) {
+				v.sub					(m_path.back().position,m_path[i-1].position);
+				ok						= true;
+				break;
+			}
+		if (ok)
+			return;
 		v.y								= 0.f;
 		if (v.square_magnitude() > EPS_L)
 			v.normalize					();
