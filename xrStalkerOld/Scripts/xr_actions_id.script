@@ -10,7 +10,7 @@ script_combat_planner = stalker_ids.action_script + 3
 state_mgr             = stalker_ids.action_script + 100 
 
 -- Стохе
-stohe_actions = stalker_ids.action_script + 100
+stohe_actions = stalker_ids.action_script + 120
 
 stohe_tradeseller_init      = stohe_actions + 1
 
