@@ -172,11 +172,13 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	if mode == nil then
 		self.crouch = false
 		self.running = false
+		self.search = false
 		self.danger = false
 		self.sprint = false
 	else
 		self.crouch = if_then_else(mode.crouch, true, false)
 		self.running = if_then_else(mode.running, true, false)
+		self.search = if_then_else(mode.search, true, false)
 		self.danger = if_then_else(mode.danger, true, false)
 		self.sprint = if_then_else(mode.sprint, true, false)
 	end
@@ -414,16 +416,19 @@ function move_mgr:update(no_dialog_mgr_update)
 			if dist <= dist_walk or t < self.walk_until then
 				self.crouch = false
 				self.running = false
+				self.search = false
 				self.danger = false
 				self.sprint = false
 			elseif dist <= dist_run or t < self.run_until then
 				self.crouch = false
 				self.running = true
+				self.search = false
 				self.danger = false
 				self.sprint = false
 			else
 				self.crouch = false
 				self.running = false
+				self.search = false
 				self.danger = false
 				self.sprint = true
 			end
@@ -554,6 +559,7 @@ function move_mgr:update(no_dialog_mgr_update)
 					self.path_look, self.path_look_info,
 					self.team,
 					{ crouch = self.crouch, running = self.running,
+				          search = self.search,
 					  danger = self.danger, sprint = self.sprint },
 					{ obj = self.move_cb_obj, func = self.move_cb_func } )
 			end
@@ -605,15 +611,20 @@ end
 
 function move_mgr:update_movement_state()
 	self.object:set_body_state(if_then_else(self.crouch and not self.sprint, move.crouch, move.standing))
-	if self.sprint then
-		self.object:set_mental_state(2--[[anim.panic]]) -- FIXME: убрать заплатку
+	if self.search then
+		self.object:set_mental_state(anim.free)
 	else
-		self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
+		if self.sprint then
+			self.object:set_mental_state(2--[[anim.panic]]) -- FIXME: убрать заплатку
+		else
+			self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
+		end
 	end
 	self.object:set_movement_type(if_then_else(self.running or self.sprint, move.run, move.walk))
 	self.moving = true
 
-	self.object:set_sight(look.danger, nil, 0)
+	self.object:set_sight(if_then_else(self.search, look.search, look.danger), nil, 0)
+	--self.object:set_sight(look.danger, nil, 0)
 end
 
 function move_mgr:update_standing_state()
@@ -724,6 +735,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self.sprint = true
 	else
 		self.sprint = false
+	end
+
+	local suggested_search = self.path_walk_info[index]["search"]
+	if suggested_search == "true" then
+		self.search = true
+	else
+		self.search = false
 	end
 
 	self.no_wpn = (self.path_walk_info[index]["nowpn"] == "true")

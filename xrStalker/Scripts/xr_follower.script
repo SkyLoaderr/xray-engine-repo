@@ -191,11 +191,8 @@ function action_follow:free ()
     if st ~= nil then
        xr_gulag.resetJob (st, self.object)
     else
-       local actor = level.actor()
-       if actor then
-          if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
-              return
-          end
+       if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+           return
        end
     end
 end
@@ -266,11 +263,8 @@ function action_follow:move_callback (obj, action_type, index)
        if st ~= nil then
           xr_gulag.resetJob (st, self.object)
        else   
-          local actor = level.actor()
-          if actor then
-             if xr_logic.try_switch_to_another_section (self.object, self.a, actor) then
-                 return
-             end
+          if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+              return
           end
        end
     end   
@@ -546,7 +540,7 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.raid_path    = utils.cfg_get_string (ini, section, "raid_path",   npc, false, gulag_name)
 	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
 	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
-    st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, false, "")
+    st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, true, "")
     
     st.leader_id = -1
     
