@@ -23,6 +23,6 @@ public:
 	virtual void		reload				(LPCSTR section);
 	virtual bool		net_Spawn			(SpawnType DC);
 	virtual void		net_Destroy			();
-	virtual void		net_Import			(NetPacket *net_packet);
-	virtual void		net_Export			(NetPacket *net_packet);
+	virtual void		net_Import			(NetPacket &net_packet);
+	virtual void		net_Export			(NetPacket &net_packet);
 };

@@ -59,22 +59,22 @@ void CScriptBinderObjectWrapper::net_Destroy_static		(CScriptBinderObject *scrip
 	script_binder_object->CScriptBinderObject::net_Destroy();
 }
 
-void CScriptBinderObjectWrapper::net_Import				(NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Import				(NetPacket &net_packet)
 {
 	luabind::call_member<void>		(m_lua_instance,"net_import",net_packet);
 }
 
-void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script_binder_object, NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script_binder_object, NetPacket &net_packet)
 {
 	script_binder_object->CScriptBinderObject::net_Import	(net_packet);
 }
 
-void CScriptBinderObjectWrapper::net_Export				(NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Export				(NetPacket &net_packet)
 {
 	luabind::call_member<void>		(m_lua_instance,"net_export",net_packet);
 }
 
-void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script_binder_object, NetPacket *net_packet)
+void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script_binder_object, NetPacket &net_packet)
 {
 	script_binder_object->CScriptBinderObject::net_Export	(net_packet);
 }

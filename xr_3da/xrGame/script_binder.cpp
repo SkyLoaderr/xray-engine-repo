@@ -43,7 +43,7 @@ void CScriptBinder::reload			(LPCSTR section)
 {
 	inherited::reload		(section);
 	VERIFY					(!m_object);
-	if (!pSettings->line_exist(section,"script_binding"))
+	if (!pSettings->line_exist(section,"script_binding") || true)
 		return;
 	
 	LPCSTR					string_to_run = pSettings->r_string(section,"script_binding");
@@ -102,13 +102,13 @@ void CScriptBinder::net_Destroy		()
 void CScriptBinder::net_Import		(NET_Packet &net_packet)
 {
 	if (m_object)
-		m_object->net_Import((int*)((void*)&net_packet));
+		m_object->net_Import(*(int*)((void*)&net_packet));
 }
 
 void CScriptBinder::net_Export		(NET_Packet &net_packet)
 {
 	if (m_object)
-		m_object->net_Export((int*)((void*)&net_packet));
+		m_object->net_Export(*(int*)((void*)&net_packet));
 }
 
 void CScriptBinder::set_object		(CScriptBinderObject *object)
