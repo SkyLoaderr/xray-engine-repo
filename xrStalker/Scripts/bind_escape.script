@@ -118,8 +118,8 @@ function CBoarPlayWithCorpse:update(delta)
 
 	if(self.actor_near == false) then 
 		self.hear_sound	= self.object:get_sound_info()
-		if( (self.object:get_monster_hit_info().time ~= 0) or
-			(level.actor() and self.object:see(level.actor()))			
+		if( (self.object:get_monster_hit_info().time ~= 0 and self.object:get_monster_hit_info().who:id() == get_actor_id())
+			//or (level.actor() and self.object:see(level.actor()))			
 		) then
 			reset_action(self.object, script_name())
 			self.actor_near	= true
