@@ -376,18 +376,21 @@ public:
 		m_tParticlePosition	= tPosition;
 		m_tGoalType			= eGoalTypeParticlePosition;
 		m_bStartedToPlay	= false;
+		m_bCompleted		= false;
 	}
 
 			void			SetBone				(LPCSTR caBoneName)
 	{
 		strcpy				(m_caBoneName,caBoneName);
 		m_bStartedToPlay	= false;
+		m_bCompleted		= false;
 	}
 
 			void			SetAngles			(const Fvector &tAngleOffset)
 	{
 		m_tParticleAngles	= tAngleOffset;
 		m_bStartedToPlay	= false;
+		m_bCompleted		= false;
 	}
 };
 

@@ -230,7 +230,7 @@ void Script::vfExportParticles(CLuaVirtualMachine *tpLuaVirtualMachine)
 	module(tpLuaVirtualMachine)
 	[
 		class_<CParticlesObject>("particles")
-			.def(								constructor<LPCSTR>())
+			.def(								constructor<LPCSTR,bool>())
 			.def("position",					&CParticlesObject::Position)
 			.def("play_at_pos",					&CParticlesObject::play_at_pos)
 			.def("stop",						&CParticlesObject::Stop)

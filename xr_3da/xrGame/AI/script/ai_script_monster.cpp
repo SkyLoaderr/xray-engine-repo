@@ -90,15 +90,15 @@ void CScriptMonster::ProcessScripts()
 
 	bfAssignWatch	(l_tpEntityAction);
 	bfAssignAnimation(l_tpEntityAction);
-//	bfAssignSound	(l_tpEntityAction);
-//	bfAssignParticles(l_tpEntityAction);
+	bfAssignSound	(l_tpEntityAction);
+	bfAssignParticles(l_tpEntityAction);
 	bfAssignObject	(l_tpEntityAction);
 	bfAssignMovement(l_tpEntityAction);
 }
 
 bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
 {
-	return			(GetCurrentAction() && !GetCurrentAction()->m_tWatchAction.m_bCompleted);
+	return			(true);//GetCurrentAction() && !GetCurrentAction()->m_tWatchAction.m_bCompleted);
 }
 
 bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
@@ -158,20 +158,10 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	if (l_tSoundAction.m_bCompleted)
 		return		(false);
 	if (l_tSoundAction.m_tpSound) {
-		switch (l_tSoundAction.m_tGoalType) {
-			case CSoundAction::eGoalTypeSoundAttached : {
-				l_tSoundAction.m_tSoundPosition.set(Position());
-				break;
-			}
-			case CSoundAction::eGoalTypeSoundPosition : {
-				break;
-			}
-			default : NODEFAULT;
-		}
 		if (!l_tSoundAction.m_tpSound->feedback)
 			if (!l_tSoundAction.m_bStartedToPlay) {
 				CEntityAlive	*l_tpEntityAlive = dynamic_cast<CEntityAlive*>(this);
-				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles,(!l_tpEntityAlive || !l_tpEntityAlive->g_Alive()) ? SoundCallback : 0);
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles,(!l_tpEntityAlive || l_tpEntityAlive->g_Alive()) ? SoundCallback : 0);
 				l_tSoundAction.m_tpSound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped);
 				l_tSoundAction.m_bStartedToPlay = true;
 			}
@@ -187,21 +177,12 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 	if (l_tParticleAction.m_bCompleted)
 		return		(false);
 	if (l_tParticleAction.m_tpParticleSystem) {
-		switch (l_tParticleAction.m_tGoalType) {
-			case CParticleAction::eGoalTypeParticleAttached : {
-				l_tParticleAction.m_tParticlePosition.set(Position());
-				break;
-			}
-			case CParticleAction::eGoalTypeParticlePosition : {
-				break;
-			}
-			default : NODEFAULT;
-		}
 		if (true/** !l_tParticleAction.m_tpParticleSystem/**/)
 			if (!l_tParticleAction.m_bStartedToPlay) {
 				CEntityAlive	*l_tpEntityAlive = dynamic_cast<CEntityAlive*>(this);
-				l_tParticleAction.m_tpParticleSystem->SetTransform(GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles,(!l_tpEntityAlive || !l_tpEntityAlive->g_Alive()) ? ParticleCallback : 0));
-				l_tParticleAction.m_tpParticleSystem->Play();
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles,(!l_tpEntityAlive || l_tpEntityAlive->g_Alive()) ? ParticleCallback : 0);
+				l_tParticleAction.m_tpParticleSystem->SetTransform(l_tMatrix);
+				l_tParticleAction.m_tpParticleSystem->play_at_pos(l_tMatrix.c);
 				l_tParticleAction.m_bStartedToPlay = true;
 			}
 			else {

@@ -27,10 +27,11 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	VERIFY					(renderable.visual);
 	IParticleCustom* V		= dynamic_cast<IParticleCustom*>(renderable.visual);  VERIFY(V);
 	float time_limit		= V->GetTimeLimit();
-	if (bAutoRemove&&(time_limit>=0.f)){
+	if (bAutoRemove && (time_limit >= 0.f)) {
 		m_iLifeTime			= iFloor(time_limit*1000.f);
-	}else{
-		R_ASSERT3	(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",p_name);
+	}
+	else {
+		R_ASSERT3			(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",p_name);
 	}
 	
 	// spatial

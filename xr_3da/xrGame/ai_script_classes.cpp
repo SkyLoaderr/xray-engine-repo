@@ -97,6 +97,7 @@ void CParticleAction::SetParticle(LPCSTR caParticleToRun, bool bAutoRemove)
 	m_tGoalType			= eGoalTypeParticleAttached;
 	m_tpParticleSystem	= xr_new<CParticlesObject>(m_caParticleToRun,bAutoRemove);
 	m_bStartedToPlay	= false;
+	m_bCompleted		= false;
 }
 
 void CObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
