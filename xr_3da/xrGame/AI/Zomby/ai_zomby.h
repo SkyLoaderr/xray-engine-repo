@@ -90,7 +90,7 @@ class CAI_Zomby : public CCustomMonster
 		IC float ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour);
 		IC	bool bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode);
 		IC float ffGetY(NodeCompressed &tNode, float X, float Z);
-			void FollowLeader(CSquad &Squad, CEntity* Leader);
+			void FollowLeader(Fvector &tLeaderPosition);
 	
 		CZombySelectorAttack		SelectorAttack;
 		CZombySelectorFreeHunting SelectorFreeHunting;

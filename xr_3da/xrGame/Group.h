@@ -23,7 +23,7 @@ enum	EGroupTriggers
 
 DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 
-#define MAX_GROUP_SIZE 64
+#define MAX_GROUP_SIZE 256
 
 typedef svector<Fvector,MAX_GROUP_SIZE>		MemberPlacement;
 typedef svector<DWORD,MAX_GROUP_SIZE>		MemberNodes;

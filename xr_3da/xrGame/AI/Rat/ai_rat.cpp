@@ -412,9 +412,7 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 				break;
 		}
 	}
-	if (iResult == -1) {
-		iResult = iResult;
-	}
+	VERIFY(iResult >= 0);
 	return(iResult);
 }
 
@@ -496,6 +494,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		}
 		/**/
 
+		/**/
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
@@ -504,21 +503,18 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 				float fRadius = tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
 				
-				
 				//bool bFront=0,bBack=0,bLeft=0,bRight=0;
 				for (int j=0; j<tpSubNodes.size(); j++)
 					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
 						tpSubNodes[j].bEmpty = false;
-						/**
-						if (&(tpSubNodes[j]) == tpFrontSubNode)
-							bFront = true;
-						if (&(tpSubNodes[j]) == tpLeftSubNode)
-							bLeft = true;
-						if (&(tpSubNodes[j]) == tpRightSubNode)
-							bRight = true;
-						if (&(tpSubNodes[j]) == tpBackSubNode)
-							bBack = true;
-						/**/
+						//if (&(tpSubNodes[j]) == tpFrontSubNode)
+						//	bFront = true;
+						//if (&(tpSubNodes[j]) == tpLeftSubNode)
+						//	bLeft = true;
+						//if (&(tpSubNodes[j]) == tpRightSubNode)
+						//	bRight = true;
+						//if (&(tpSubNodes[j]) == tpBackSubNode)
+						//	bBack = true;
 					}
 
 				CAI_Rat *tMember = dynamic_cast<CAI_Rat*>(tpCurrentObject);
@@ -529,27 +525,24 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 						for (int j=0; j<tpSubNodes.size(); j++)
 							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
 								tpSubNodes[j].bEmpty = false;
-								/**
-								if (&(tpSubNodes[j]) == tpFrontSubNode)
-									bFront = true;
-								if (&(tpSubNodes[j]) == tpLeftSubNode)
-									bLeft = true;
-								if (&(tpSubNodes[j]) == tpRightSubNode)
-									bRight = true;
-								if (&(tpSubNodes[j]) == tpBackSubNode)
-									bBack = true;
-								/**/
+								//if (&(tpSubNodes[j]) == tpFrontSubNode)
+								//	bFront = true;
+								//if (&(tpSubNodes[j]) == tpLeftSubNode)
+								//	bLeft = true;
+								//if (&(tpSubNodes[j]) == tpRightSubNode)
+								//	bRight = true;
+								//if (&(tpSubNodes[j]) == tpBackSubNode)
+								//	bBack = true;
 							}
-						/**
-						if ((bFront && bLeft) || (bFront && bRight) || (bBack && bLeft) || (bBack && bRight)) {						
-							for (int j=0; j<tpSubNodes.size(); j++)
-								tpSubNodes[j].bEmpty = false;
-							break;
-						}
-						/**/
+						//if ((bFront && bLeft) || (bFront && bRight) || (bBack && bLeft) || (bBack && bRight)) {						
+						//	for (int j=0; j<tpSubNodes.size(); j++)
+						//		tpSubNodes[j].bEmpty = false;
+						//	break;
+						//}
 					}
 			}
 		}
+		/**/
 		// checking the nearest nodes
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;

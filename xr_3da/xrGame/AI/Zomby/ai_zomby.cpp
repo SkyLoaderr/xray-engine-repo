@@ -323,6 +323,7 @@ IC float CAI_Zomby::ffGetY(NodeCompressed &tNode, float X, float Z)
 	return(v1.y);
 }
 
+/**/
 IC bool CAI_Zomby::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
 {
 	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON) &&
@@ -408,11 +409,15 @@ int CAI_Zomby::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPositio
 			tNode.tRightUp.z = j + fSubNodeSize;
 			if (
 				(iResult < 0) &&
-				(tNode.tLeftDown.x == tMySubNode.tLeftDown.x) &&
-				(tNode.tLeftDown.z == tMySubNode.tLeftDown.z) &&
-				(tNode.tRightUp.x == tMySubNode.tRightUp.x) &&
-				(tNode.tRightUp.z == tMySubNode.tRightUp.z)
+				(fabs(tNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPSILON) &&
+				(fabs(tNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPSILON) &&
+				(fabs(tNode.tRightUp.x - tMySubNode.tRightUp.x) < EPSILON) &&
+				(fabs(tNode.tRightUp.z - tMySubNode.tRightUp.z) < EPSILON)
 				) {
+				tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+				tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+				tNode.bEmpty = true;
+				tpSubNodes.push_back(tNode);
 				iResult = iCount;
 				iCount++;
 			}
@@ -460,6 +465,7 @@ int CAI_Zomby::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPositio
 				break;
 		}
 	}
+	VERIFY(iResult >= 0);
 	return(iResult);
 }
 
@@ -476,38 +482,72 @@ int CAI_Zomby::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrent
 	AI.UnpackPosition(tLeftDown,tpStartNode->p0);
 	AI.UnpackPosition(tRightUp,tpStartNode->p1);
 	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+		tNode.tLeftDown.x = i;
+		tNode.tRightUp.x = i + fSubNodeSize;
 		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
-			tNode.tLeftDown.x = i;
-			tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
 			tNode.tLeftDown.z = j;
-			tNode.tRightUp.x = i + fSubNodeSize;
-			tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
 			tNode.tRightUp.z = j + fSubNodeSize;
-			tNode.bEmpty = true;
-			tpSubNodes.push_back(tNode);
 			float fCurrentCost = ffComputeCost(tCurrentPosition,tNode);
 			if (fCurrentCost < fBestCost) {
+				tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+				tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+				tNode.bEmpty = true;
+				tpSubNodes.push_back(tNode);
 				fBestCost = fCurrentCost;
 				iMySubNode = iCount;
+				iCount++;
 			}
-			iCount++;
 		}
 	}
+	VERIFY(iMySubNode >= 0);
 	return(iMySubNode);
 }
 
-void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader) 
+void CAI_Zomby::FollowLeader(Fvector &tLeaderPosition) 
 {
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
 	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
 		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
 		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		VERIFY(iMySubNode >= 0);
 		// filling the subnodes with the moving objects
-		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
 		Fvector tCenter;
+
+		int i;
+		/**
+		SSubNode *tpFrontSubNode=0;
+		SSubNode *tpBackSubNode=0;
+		SSubNode *tpLeftSubNode=0;
+		SSubNode *tpRightSubNode=0;
+		SSubNode &tMySubNode = tpSubNodes[iMySubNode];
+
+		
+		for ( i=0; i<tpSubNodes.size(); i++) {
+			if (i == iMySubNode)
+				continue;
+			// check if it is left node
+			if ((fabs(tpSubNodes[i].tRightUp.z - tMySubNode.tRightUp.z) < EPSILON) &&
+				(fabs(tpSubNodes[i].tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON))
+				tpLeftSubNode = &(tpSubNodes[i]);
+			// check if it is front node
+			if ((fabs(tpSubNodes[i].tLeftDown.z - tMySubNode.tRightUp.z)  < EPSILON) &&
+				(fabs(tpSubNodes[i].tLeftDown.x - tMySubNode.tLeftDown.x) < EPSILON))
+				tpFrontSubNode = &(tpSubNodes[i]);
+			// check if it is right node
+			if ((fabs(tpSubNodes[i].tLeftDown.z - tMySubNode.tLeftDown.z) < EPSILON) &&
+				(fabs(tpSubNodes[i].tLeftDown.x - tMySubNode.tRightUp.x) < EPSILON))
+				tpRightSubNode = &(tpSubNodes[i]);
+			// check if it is back node
+			if ((fabs(tpSubNodes[i].tRightUp.z - tMySubNode.tLeftDown.z) < EPSILON) &&
+				(fabs(tpSubNodes[i].tRightUp.x - tMySubNode.tRightUp.x) < EPSILON))
+				tpBackSubNode = &(tpSubNodes[i]);
+		}
+		/**/
+
+		/**/
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
@@ -515,9 +555,20 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 					continue;
 				float fRadius = tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
+				
+				//bool bFront=0,bBack=0,bLeft=0,bRight=0;
 				for (int j=0; j<tpSubNodes.size(); j++)
-					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
+					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
 						tpSubNodes[j].bEmpty = false;
+						//if (&(tpSubNodes[j]) == tpFrontSubNode)
+						//	bFront = true;
+						//if (&(tpSubNodes[j]) == tpLeftSubNode)
+						//	bLeft = true;
+						//if (&(tpSubNodes[j]) == tpRightSubNode)
+						//	bRight = true;
+						//if (&(tpSubNodes[j]) == tpBackSubNode)
+						//	bBack = true;
+					}
 
 				CAI_Zomby *tMember = dynamic_cast<CAI_Zomby*>(tpCurrentObject);
 				if (tMember)
@@ -525,21 +576,36 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 						CAI_Space &AI = Level().AI;
 						tCenter = tMember->AI_Path.TravelPath[tMember->AI_Path.TravelStart + 1].P;
 						for (int j=0; j<tpSubNodes.size(); j++)
-							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
+							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
 								tpSubNodes[j].bEmpty = false;
+								//if (&(tpSubNodes[j]) == tpFrontSubNode)
+								//	bFront = true;
+								//if (&(tpSubNodes[j]) == tpLeftSubNode)
+								//	bLeft = true;
+								//if (&(tpSubNodes[j]) == tpRightSubNode)
+								//	bRight = true;
+								//if (&(tpSubNodes[j]) == tpBackSubNode)
+								//	bBack = true;
+							}
+						//if ((bFront && bLeft) || (bFront && bRight) || (bBack && bLeft) || (bBack && bRight)) {						
+						//	for (int j=0; j<tpSubNodes.size(); j++)
+						//		tpSubNodes[j].bEmpty = false;
+						//	break;
+						//}
 					}
 			}
 		}
+		/**/
 		// checking the nearest nodes
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
 
-		Fvector tLeaderPosition = Leader->Position();
+		//Fvector tLeaderPosition = Leader->Position();
 		DWORD dwTime = Level().timeServer();
 		int iBestI = -1;
 		float fBestCost = SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z);
 		bool bMobility = false;
-		for (int i=0; i<tpSubNodes.size(); i++)
+		for ( i=0; i<tpSubNodes.size(); i++)
 			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
 				bMobility = true;
 				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
@@ -551,6 +617,7 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 
 		if (bMobility) {
 			m_bMobility = true;
+			/**
 			if (iBestI < 0)
 				if (dwTime - m_dwLastUpdate > 3000) {
 					m_dwLastUpdate = dwTime;
@@ -558,12 +625,14 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 				}
 				//else
 				//	m_bMobility
+			/**/
 			if (iBestI >= 0) {
 				m_dwLastUpdate = dwTime;
 				Fvector tFinishPosition;
 				tFinishPosition.x = (tpSubNodes[iBestI].tLeftDown.x + tpSubNodes[iBestI].tRightUp.x)/2.f;
 				tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
 				tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
+				VERIFY(tFinishPosition.x < 1000000.f);
 				CTravelNode	tCurrentPoint,tFinishPoint;
 				tCurrentPoint.P.set(tCurrentPosition);
 				tCurrentPoint.floating = FALSE;
@@ -579,6 +648,7 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 	}
 	else {
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		VERIFY(iMySubNode >= 0);
 		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
 		if (!tpNearestList.empty()) {
@@ -602,6 +672,7 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 			tFinishPosition.x = (tpSubNodes[iMySubNode].tLeftDown.x + tpSubNodes[iMySubNode].tRightUp.x)/2.f;
 			tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
 			tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
+			VERIFY(tFinishPosition.x < 1000000.f);
 			CTravelNode	tCurrentPoint,tFinishPoint;
 			tCurrentPoint.P.set(tCurrentPosition);
 			tCurrentPoint.floating = FALSE;
@@ -615,6 +686,7 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 			m_bMobility = false;
 	}
 }
+
 /**/
 
 
@@ -746,7 +818,7 @@ void CAI_Zomby::Attack()
 				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
 				dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 				
-				FollowLeader(Level().Teams[g_Team()].Squads[g_Squad()],Enemy.Enemy);
+				FollowLeader(Enemy.Enemy->Position());
 				// setting up a look
 				q_look.setup(
 					AI::AIC_Look::Look, 
@@ -1271,10 +1343,10 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 				
 				SAnimState* AState = &m_walk;
 				
-				if (dot>0.7f)
+				if (dot>0.f)
 					S = AState->fwd;
 				else
-					/**/
+					/**
 					if ((dot<=0.7f)&&(dot>=-0.7f)) {
 						Fvector cross; 
 						cross.crossproduct(view,move);
@@ -1285,8 +1357,8 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 					}
 					else 
 						//if (dot<-0.7f)
-							S = AState->back;
 					/**/
+							S = AState->back;
 			}
 		}
 	}
