@@ -339,5 +339,8 @@ end
 ------------------------------------------------------------------------------------
 -- Transfer money as payment for sniper kill
 function mil_dolg_payment (stalker, player)
-   player:transfer_money (stalker:money () / 2, player)
+    printf ("Stalker_Name %s", stalker:name ())
+    printf ("Money before %d", player:money ())
+    stalker:transfer_money (stalker:money () / 2, player)
+    printf ("Money after %d", player:money ())
 end

@@ -166,14 +166,6 @@
             <phrase id="20040">
                 <text>mil_dolg_dialog_20040</text>
             </phrase>
-            <phrase id="3002">
-                <text>mil_dolg_dialog_3002</text>
-                <give_info>mil_dolg_attack</give_info>
-                <next>30020</next>
-            </phrase>
-            <phrase id="30020">
-                <text>mil_dolg_dialog_30020</text>
-            </phrase>
             <phrase id="4002">
                 <text>mil_dolg_dialog_4002</text>
                 <next>40020</next>
@@ -210,6 +202,15 @@
                 <has_info>mil_sniper_i_think</has_info>
                 <has_info>mil_dolg_first</has_info>
                 <next>2001</next>
+            </phrase>
+            <phrase id="30020">
+                <text>mil_dolg_dialog_30020</text>
+            </phrase>
+            <phrase id="3002">
+                <text>mil_dolg_dialog_3002</text>
+                <give_info>mil_dolg_attack</give_info>
+                <give_info>mil_dolg_mission_complete</give_info>
+                <next>30020</next>
             </phrase>
             <phrase id="3001">
                 <text>mil_dolg_dialog_3001</text>
