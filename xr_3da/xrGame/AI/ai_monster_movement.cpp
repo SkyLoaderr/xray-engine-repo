@@ -29,7 +29,7 @@ void CMonsterMovement::Init()
 	MotionStats		= xr_new<CMotionStats> (pMonster);
 }
 
-void CMonsterMovement::Reinit()
+void CMonsterMovement::reinit()
 {
 	b_try_min_time	= false;
 }
@@ -206,3 +206,7 @@ void CMonsterMovement::WalkNextGraphPoint()
 	pMonster->SetupVelocityMasks(false);
 }
 
+void CMonsterMovement::Load	(LPCSTR section)
+{
+	inherited::Load		(section);
+}

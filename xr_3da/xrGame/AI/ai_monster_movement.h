@@ -9,7 +9,7 @@ class PathManagers::CAbstractVertexEvaluator;
 class CAI_Biting;
 
 class CMonsterMovement : virtual public CMovementManager {
-
+	typedef CMovementManager inherited;
 public:
 
 	CAI_Biting			*pMonster;
@@ -39,9 +39,9 @@ public:
 			CMonsterMovement		();
 			~CMonsterMovement		();
 
-	void	Load					();
-	void	Init					();
-	void	Reinit					();
+			void	Init			();
+	virtual void	Load			(LPCSTR section);
+	virtual void	reinit			();
 			
 	void	Frame_Init				();
 	void	Frame_Update			();

@@ -35,7 +35,6 @@ void CBitingDetour::Run()
 	VisionElem tempEnemy;
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
 
-	pMonster->set_level_dest_vertex	(ai().game_graph().vertex(pMonster->m_tNextGP)->level_vertex_id());
 	//pMonster->Path_CoverFromPoint	(m_tEnemy.obj,m_tEnemy.obj->Position());
 
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

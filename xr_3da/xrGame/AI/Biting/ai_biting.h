@@ -42,9 +42,6 @@
 //#define TEST_EAT_STATE
 
 
-#pragma warning( disable : 4250 )
-
-
 class CCharacterPhysicsSupport;
 
 typedef VisionElem SEnemy;
@@ -195,14 +192,7 @@ public:
 public:
 
 	CCharacterPhysicsSupport *m_pPhysics_support;
-	// graph params
-	TERRAIN_VECTOR			m_tpaTerrain;
-	u32						m_dwTimeToChange;			//!< время смены точки графа
-	_GRAPH_ID				m_tCurGP;
-	_GRAPH_ID				m_tNextGP;
-	Fvector					m_tNextGraphPoint;
 	
-
 	float					m_fGoingSpeed;			// speed over the path
 	u32						m_dwHealth;				
 
@@ -280,6 +270,17 @@ public:
 
 	xr_vector<STravelParams> velocities;
 
+public:
+	virtual void				OnHUDDraw				(CCustomHUD* hud)			{return inherited::OnHUDDraw(hud);}
+	virtual void				OnEvent					(NET_Packet& P, u16 type)	{return inherited::OnEvent(P,type);}
+	virtual u16					PHGetSyncItemsNumber	()							{return inherited::PHGetSyncItemsNumber();}
+	virtual CPHSynchronize*		PHGetSyncItem			(u16 item)					{return inherited::PHGetSyncItem(item);}
+	virtual void				PHUnFreeze				()							{return inherited::PHUnFreeze();}
+	virtual void				PHFreeze				()							{return inherited::PHFreeze();}
+	virtual BOOL				UsedAI_Locations		()							{return inherited::UsedAI_Locations();}
+	virtual void				reload					(LPCSTR section);
+	virtual const SRotation		Orientation				() const					{return inherited::Orientation();}
+	virtual void				renderable_Render		()							{return inherited::renderable_Render();} 
 };
 
 //#pragma warning( default : 4250 )

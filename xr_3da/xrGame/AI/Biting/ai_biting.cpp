@@ -32,13 +32,8 @@ CAI_Biting::~CAI_Biting()
 
 void CAI_Biting::Init()
 {
-	inherited::Init					();
-
 	// initializing class members
-	m_tCurGP						= _GRAPH_ID(-1);
-	m_tNextGP						= _GRAPH_ID(-1);
 	m_fGoingSpeed					= 0.f;
-	m_dwTimeToChange				= 0;
 	
 
 	m_fAttackSuccessProbability[0]	= .8f;
@@ -72,6 +67,7 @@ void CAI_Biting::Init()
 void CAI_Biting::reinit()
 {
 	inherited::reinit();
+	CMonsterMovement::reinit			();
 }
 
 void CAI_Biting::Die()
@@ -89,25 +85,9 @@ void CAI_Biting::Die()
 void CAI_Biting::Load(LPCSTR section)
 {
 	// load parameters from ".ltx" file
-	inherited::Load		(section);
+	inherited::Load					(section);
+	CMonsterMovement::Load			(section);
 	
-	// группы маск точек графа с параметрами
-	m_tpaTerrain.clear				();
-	LPCSTR							S = pSettings->r_string(section,"terrain");
-	u32								N = _GetItemCount(S);
-	R_ASSERT						(!(N % (LOCATION_TYPE_COUNT + 2)) && N);
-	STerrainPlace					tTerrainPlace;
-	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
-	m_tpaTerrain.reserve			(32);
-	string16						I;
-	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; ++j, ++i)
-			tTerrainPlace.tMask[j]	= _LOCATION_ID(atoi(_GetItem(S,i,I)));
-		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
-		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
-		m_tpaTerrain.push_back		(tTerrainPlace);
-	}
-
 	AS_Load							(section);
 
 	m_pPhysics_support				->in_Load(section);
@@ -209,7 +189,6 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
 	
 	R_ASSERT2						(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
-	m_tNextGP						= m_tCurGP = ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
 	
 	// Установить новый Visual, перезагрузить анимации
 	MotionMan.UpdateVisual();
@@ -293,8 +272,9 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
 
-	P.r						(&m_tNextGP,				sizeof(m_tNextGP));
-	P.r						(&m_tCurGP,					sizeof(m_tCurGP));
+	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -451,4 +431,8 @@ bool CAI_Biting::useful(const CGameObject *object) const
 	return false;
 }
 
-
+void CAI_Biting::reload	(LPCSTR section)
+{
+	CCustomMonster::reload		(section);
+	CMonsterMovement::reload	(section);
+}

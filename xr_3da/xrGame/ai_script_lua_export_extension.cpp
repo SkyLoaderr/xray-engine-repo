@@ -61,6 +61,16 @@ void set_weather	(LPCSTR weather_name)
 	return			(g_pGamePersistent->Environment.SetWeather(weather_name));
 }
 
+void set_time_factor(float time_factor)
+{
+	Level().SetGameTimeFactor(time_factor);
+}
+
+float get_time_factor()
+{
+	return			(Level().GetGameTimeFactor());
+}
+
 void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
@@ -133,7 +143,9 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 		def("actor",							tpfGetActor, adopt(return_value)),
 		def("set_artifact_merge",				&CArtifactMerger::SetArtifactMergeFunctor),
 		def("get_weather",						get_weather),
-		def("set_weather",						set_weather)
+		def("set_weather",						set_weather),
+		def("set_time_factor",					set_time_factor),
+		def("get_time_factor",					get_time_factor)
 	];
 
 	module(tpLuaVirtualMachine)
