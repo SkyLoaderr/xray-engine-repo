@@ -22,8 +22,8 @@ public:
 	char		cName		[128];
 	WORD		version;
 	DWORD		IDcform;
-	Fvector		o_Position;		// position: x,y,z
-	Fvector		o_Orientation;	// rotation: angle_x, angle_y, angle_z
+	Fvector		o_Position;			// position: x,y,z
+	Fvector		o_Orientation;		// rotation: angle_x, angle_y, angle_z
 
 	CSpawn_DESC	()	
 	{
@@ -43,14 +43,14 @@ public:
 	static		CSpawn*		Create			(CLASS_ID cls);
 	static		void		CreatePalette	(vector<CSpawn*> & palette);
 
-	CSpawn_DESC&			getDescription	(){return description;}
-	virtual 	LPCSTR		getName			(){return description.cName;}
+	CSpawn_DESC&			getDescription	()	{return description;}
+	virtual 	LPCSTR		getName			()	{return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
 	
-	virtual		void		Execute			()				= 0;
+	virtual		void		Execute			(CStream&	FS_CFORM)		= 0;
 
 	CSpawn();
 	virtual ~CSpawn();

@@ -52,7 +52,7 @@ public:
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
 	
-	virtual		void		Execute			();
+	virtual		void		Execute			(CStream&	FS_CFORM);
 
 	CSpawn_Event();
 	virtual ~CSpawn_Event();
