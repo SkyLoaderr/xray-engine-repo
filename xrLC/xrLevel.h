@@ -83,7 +83,9 @@ public:
 };
 
 class NodeCompressed {
+public:
 	u8				data[11];
+private:
 	
 	void link(u8 link_index, u32 value)
 	{
