@@ -649,46 +649,57 @@ function  add_to_binder(obj, char_ini)
 	operators["follow"]                 = xr_actions_id.sidor_act_follower_base + 1
 	operators["raid"]                   = xr_actions_id.sidor_act_follower_base + 2
    
-    	manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", xr_motivator.storage[obj:id()].follower))
-    	manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", xr_motivator.storage[obj:id()].follower))
-    	manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].follower))
+    manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", xr_motivator.storage[obj:id()].follower))
+    manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", xr_motivator.storage[obj:id()].follower))
+    manager:add_evaluator (properties["raid"], xr_comm_ptr.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
         
-    	local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
-    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
 	action:add_precondition	    (world_property (properties["state_end"], 	    true))
-    	action:add_precondition     (world_property (properties["leader_present"],  false))
-    	action:add_effect           (world_property (properties["leader_present"],  true))
-    	manager:add_action (operators["leader_wait"], action)
+    action:add_precondition     (world_property (properties["leader_present"],  false))
+    action:add_effect           (world_property (properties["leader_present"],  true))
+    manager:add_action (operators["leader_wait"], action)
     
-    	action = this.action_follow ("action_follow",			xr_motivator.storage[obj:id()].follower)
-    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
-    	action:add_precondition     (world_property (properties["leader_present"],  true))
-    	action:add_precondition     (world_property (properties["raid"],            true))
+    action = this.action_follow ("action_follow",			xr_motivator.storage[obj:id()].follower)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition     (world_property (properties["leader_present"],  true))
+    action:add_precondition     (world_property (properties["raid"],            false))
 	action:add_precondition		(world_property (properties["state_end"], 	    true))
-    	action:add_precondition     (world_property (properties["follow"],          false))
-    	action:add_effect           (world_property (properties["follow"],          true))
-    	manager:add_action (operators["follow"], action)
+    action:add_precondition     (world_property (properties["follow"],          false))
+    action:add_effect           (world_property (properties["follow"],          true))
+    manager:add_action (operators["follow"], action)
     
-    	action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
-    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
-	action:add_precondition	    (world_property (properties["state_end"], 	    true))
-    	action:add_precondition     (world_property (properties["raid"],            false))
-    	action:add_effect           (world_property (properties["raid"],            true))
-    	manager:add_action          (operators["raid"], action)
+    action = xr_comm_ptr.action_raid ("raid", xr_motivator.storage[obj:id()].patrol)
+    action:add_precondition (world_property(stalker_ids.property_alive, true))
+    action:add_precondition (world_property(stalker_ids.property_enemy, false))
+    action:add_precondition (world_property(properties["follow"], false))
+    action:add_precondition (world_property(properties["raid"], true))
+    action:add_effect (world_property(properties["raid"], false))
+    manager:add_action (operators["raid"], action)
+    
+    --action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
+    --action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    --action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+	--action:add_precondition	    (world_property (properties["state_end"], 	    true))
+    --action:add_precondition     (world_property (properties["raid"],            false))
+    --action:add_effect           (world_property (properties["raid"],            true))
+    --manager:add_action          (operators["raid"], action)
       
-    	action = manager:action     (stalker_ids.action_puzzle_solver)
-    	action:add_precondition     (world_property (properties["follow"],  true))
+    action = manager:action     (stalker_ids.action_puzzle_solver)
+    action:add_precondition     (world_property (properties["follow"],  true))
 
 	if char_ini ~= nil then xr_follower.set_follower(obj) end
     end 
+    
 end
-function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, raid_path)
+----------------------------------------------------------------------------------------------------------------------
+function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, raid_path, raid_look, team)
     printf ("XR_FOLLOWER:SET_FOLLOWER called for %s", npc:name ())
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].follower
+	local ptr = xr_motivator.storage[npc:id()].patrol
 	
     if enabled == nil then
        if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "enabled") == true then
@@ -722,24 +733,44 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
     
     if raid_enabled == nil then
        if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_enabled") == true then
-          st.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
+          ptr.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
        else
-          st.raid_enabled = false
+          ptr.raid_enabled = false
        end
     else
-       st.raid_enabled = raid_enabled
+       ptr.raid_enabled = raid_enabled
     end   
     
     if raid_path == nil then
       if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_path") == true then
-          st.raid_path = char_ini:r_string ("follower", "raid_path")
+          ptr.raid_path = char_ini:r_string ("follower", "raid_path")
       else
-          st.raid_path = st.patrol_path
+          ptr.raid_path = st.patrol_path
       end
     else
-       st.raid_path = raid_path
+       ptr.raid_path = raid_path
+    end      
+
+    if raid_look == nil then
+      if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "raid_look") == true then
+          ptr.raid_look = char_ini:r_string ("follower", "raid_look")
+      else
+          ptr.raid_look = st.patrol_look
+      end
+    else
+       ptr.raid_path = raid_path
+    end      
+
+    if team == nil then
+      if char_ini:section_exist ("follower") == true and char_ini:line_exist ("follower", "team") == true then
+          ptr.team = char_ini:r_string ("follower", "team")
+      else
+          ptr.team = nil
+      end
+    else
+       ptr.team = team
     end      
 
 	xr_motivator.checkStorage (npc)
-	xr_state.change_state(npc, xr_state.stand, false)
+	xr_state.change_state (npc, xr_state.stand, false)
 end
