@@ -251,6 +251,7 @@ function Monster:process ()
     
 	self.freemove = true
 	self.npc:script (false, self.script)
+	printf ("Monster %s freed from our control", self.npc:name ())
 	
 end	
 
