@@ -32,8 +32,6 @@
 
 #ifdef AI_COMPILER
 #	include "smart_cast.h"
-#	define START_PROFILE(a) {
-#	define STOP_PROFILE		}
 #endif
 // TODO: reference additional headers your program requires here
 
