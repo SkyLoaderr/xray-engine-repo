@@ -354,6 +354,12 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 							tpGroupMember->m_bDirectControl	= true;
 							tpALifeGroupAbstract->m_tpMembers.erase(tpALifeGroupAbstract->m_tpMembers.begin() + i);
 							tpGroupMember->m_bOnline		= false;
+							CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(tpGroupMember);
+							if (item && item->attached()) {
+								 CSE_ALifeTraderAbstract	*trader = dynamic_cast<CSE_ALifeTraderAbstract*>(objects().object(tpGroupMember->ID_Parent,true));
+								 if (trader)
+									 trader->detach			(item);
+							}
 							// store the __new separate object into the registries
 							register_object					(tpGroupMember);
 							// and remove it from the graph point but do not remove it from the current level map
