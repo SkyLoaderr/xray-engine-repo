@@ -90,7 +90,7 @@ void CScriptGameObject::ResetActionQueue()
 	if (!l_tpScriptMonster)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member ResetActionQueue!");
 	else
-		l_tpScriptMonster->ResetActionQueue();
+		l_tpScriptMonster->ClearActionQueue();
 }
 
 CScriptEntityAction	*CScriptGameObject::GetCurrentAction	() const
