@@ -97,11 +97,7 @@ CParticleGroup::CParticleGroup()
 CParticleGroup::~CParticleGroup()
 {
 	for (u32 i=0; i<children.size(); i++)	
-#ifdef _EDITOR
-		::Device.Models.Delete(children[i]);
-#else
 		::Render->model_Delete(children[i]);
-#endif
 	children.clear();
 }
 

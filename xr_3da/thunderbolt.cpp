@@ -184,8 +184,8 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
         }
     }
 	if (state==stWorking){
-    	current_time	+= Device.fTimeDelta;
     	if (current_time>life_time) state = stIdle;
+    	current_time	+= Device.fTimeDelta;
 
         lightning_phase	= 1.5f*(current_time/life_time);
         clamp			(lightning_phase,0.f,1.f);

@@ -480,7 +480,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_TEXTURE:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
-                    R.top+=tvProperties->ItemIndent;
+                    R.top+=tvProperties->LineHeight-4;
                     FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::EITTexture);
                 }
             break;

@@ -8,7 +8,6 @@
 #include "ftimer.h"
 #include "estats.h"
 #include "shader_xrlc.h"
-#include "ModelPool.h"
 #include "shader.h"
 #include "R_Backend.h"
 //---------------------------------------------------------------------------
@@ -37,8 +36,6 @@ public:
     ref_shader				m_SelectionShader;
 
     Fmaterial				m_DefaultMat;
-
-    CModelPool				Models;
 public:
     u32 					dwWidth, dwHeight;
     u32 					m_RenderWidth_2, m_RenderHeight_2;

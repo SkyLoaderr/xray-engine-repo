@@ -127,6 +127,7 @@ void CSector::Render(int priority, bool strictB2F)
                 Fcolor color;
                 float k = Selected()?0.4f:0.2f;
                 color.set(sector_color.r,sector_color.g,sector_color.b,k);
+			    Device.SetShader(Device.m_SelectionShader);
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
                 for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                     it->object->GetFullTransformToWorld(matrix);
@@ -143,6 +144,7 @@ void CSector::Render(int priority, bool strictB2F)
             color.set(sector_color.r*k,sector_color.g*k,sector_color.b*k,1.f);
             color2.set(sector_color.r*k2,sector_color.g*k2,sector_color.b*k2,1.f);
             if (fraBottomBar->miDrawSectorSolid->Checked){
+                Device.SetShader(Device.m_WireShader);
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
                 for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                     it->object->GetFullTransformToWorld(matrix);

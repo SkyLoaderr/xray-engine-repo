@@ -398,12 +398,12 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
 {
     ListItem* prop 			= (ListItem*)Item->Tag;
     if (prop){
-        DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
         if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
-            R.top			+= tvItems->ItemIndent;
+            R.top			+= tvItems->LineHeight-4;
             if (prop->OnDrawThumbnail)
             	prop->OnDrawThumbnail(prop,Surface,R);
         }
+        DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
     }
 }
 //---------------------------------------------------------------------------
@@ -414,12 +414,28 @@ void __fastcall TItemList::InplaceEditValidateResult(
 	R_ASSERT(m_Flags.is(ilEditMenu));
 	TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
     AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text 				= new_text;
-	AnsiString old_name,new_name;
-	FHelper.MakeName				(IE->Item,0,old_name,false);
-    _ReplaceItem					(old_name.c_str(),IE->Item->Level,new_text.c_str(),new_name,'\\');
-    TElTreeItem* find_item			= FHelper.FindItem(tvItems,new_name);
-    InputValid 						= (find_item==IE->Item)||(!find_item);
+    InputValid						= false;
+    if (!new_text.IsEmpty()){
+	    IE->Editor->Text 			= new_text;
+		AnsiString old_name,new_name;
+		FHelper.MakeName			(IE->Item,0,old_name,false);
+	    _ReplaceItem				(old_name.c_str(),IE->Item->Level,new_text.c_str(),new_name,'\\');
+	    TElTreeItem* find_item		= FHelper.FindItem(tvItems,new_name);
+    	InputValid 					= (find_item==IE->Item)||(!find_item);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
+      bool &Accepted, bool &DefaultConversion)
+{
+	if (Accepted){
+        R_ASSERT(m_Flags.is(ilEditMenu));
+        TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
+        AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
+        FHelper.RenameItem				(tvItems,IE->Item,new_text,RenameItem); 
+        if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -431,17 +447,6 @@ void __fastcall	TItemList::RenameItem(LPCSTR fn0, LPCSTR fn1, EItemType type)
         ListItem* prop				= (ListItem*)item->Tag; 			VERIFY(prop);
 		prop->SetName				(fn1);
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
-      bool &Accepted, bool &DefaultConversion)
-{
-	R_ASSERT(m_Flags.is(ilEditMenu));
-	TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
-    AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
-    FHelper.RenameItem				(tvItems,IE->Item,new_text,RenameItem); 
-	if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
 }
 //---------------------------------------------------------------------------
 

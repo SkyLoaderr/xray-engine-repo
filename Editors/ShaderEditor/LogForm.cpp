@@ -37,7 +37,16 @@ void __fastcall TfrmLog::ebClearClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmLog::AddMessage(TMsgDlgType mt, const AnsiString& msg){
+void __fastcall TfrmLog::AddDlgMessage(TMsgDlgType mt, const AnsiString& msg)
+{
+    UI.Command(COMMAND_RENDER_FOCUS);
+    MessageDlg(msg, mt, TMsgDlgButtons() << mbOK, 0);
+	AddMessage(mt,msg);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmLog::AddMessage(TMsgDlgType mt, const AnsiString& msg)
+{
 	if (!form) return;
     AnsiString M;
     for (int i=1; i<=msg.Length(); i++){

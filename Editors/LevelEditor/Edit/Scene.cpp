@@ -92,8 +92,9 @@ void EScene::OnDestroy()
 	m_LastAvailObject 		= 0;
 	m_Valid 				= false;
 
-    for (int i=0; i<OBJCLASS_COUNT; i++)
-    	xr_delete			(m_SceneTools[(EObjClass)i]);
+    SceneToolsMapPairIt _I = m_SceneTools.begin();
+    SceneToolsMapPairIt _E = m_SceneTools.end();
+    for (; _I!=_E; _I++)	xr_delete(_I->second);
     m_SceneTools.clear		();
 }
 

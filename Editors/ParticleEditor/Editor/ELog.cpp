@@ -13,8 +13,15 @@
 	void __stdcall ELogCallback(LPCSTR txt)
 	{
 		if (0!=txt[0]){
-    		if (txt[0]=='!')TfrmLog::AddMessage(mtError,AnsiString(txt+1));
-			else			TfrmLog::AddMessage(mtInformation,AnsiString(txt));
+        	if (txt[0]=='#'){
+            	if (txt[1]){
+                    if (txt[1]=='!')TfrmLog::AddDlgMessage(mtError,AnsiString(txt+2));
+                    else			TfrmLog::AddDlgMessage(mtInformation,AnsiString(txt+1));
+                }
+            }else{
+                if (txt[0]=='!')TfrmLog::AddMessage(mtError,AnsiString(txt+1));
+                else			TfrmLog::AddMessage(mtInformation,AnsiString(txt));
+            }
 		}
 	}
 #endif

@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "render.h"
+#include "ResourceManager.h"
 //---------------------------------------------------------------------------
 float ssaDISCARD		= 4.f;
 float ssaDONTSORT		= 32.f;
@@ -19,6 +20,22 @@ CRender::CRender	()
 
 CRender::~CRender	()
 {
+}
+
+void					CRender::create					()
+{
+	::Device.Resources->SetHLSL_path("R1\\");
+	Models						= xr_new<CModelPool>			();
+
+	PSLibrary.OnCreate			();
+	PSLibrary.OnDeviceCreate	();
+}
+void					CRender::destroy				()
+{
+	xr_delete					(Models);
+
+	PSLibrary.OnDeviceDestroy	();
+	PSLibrary.OnDestroy			();
 }
 
 BOOL CRender::occ_visible(Fbox&	B)
@@ -62,16 +79,16 @@ IRender_DetailModel*	CRender::model_CreateDM(IReader* F)
 IRender_Visual*	CRender::model_CreatePE(LPCSTR name)	
 { 
 	PS::CPEDef*	source		= PSLibrary.FindPED	(name);
-	return Device.Models.CreatePE	(source);
+	return Models->CreatePE	(source);
 }
 
 IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
 { 
 	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);
-	if (SE) return		Device.Models.CreatePE	(SE);
+	if (SE) return		Models->CreatePE	(SE);
 	else{
 		PS::CPGDef*	SG	= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
-		return			Device.Models.CreatePG	(SG);
+		return			Models->CreatePG	(SG);
 	}
 }
 
@@ -99,8 +116,11 @@ void 	CRender::set_Transform	(Fmatrix* M)
 	current_matrix.set(*M);
 }
 
-void	CRender::add_Visual   	(IRender_Visual* visual)
-{
-    Device.Models.RenderSingle	(visual,current_matrix);
-}
+void			CRender::add_Visual   		(IRender_Visual* visual)			{ Models->RenderSingle	(visual,current_matrix,1.f);}
+IRender_Visual*	CRender::model_Create		(LPCSTR name)						{ return Models->Create(name);			}
+IRender_Visual*	CRender::model_Create		(LPCSTR name, IReader* data)		{ return Models->Create(name,data);		}
+void 			CRender::model_Delete		(IRender_Visual* &V, BOOL bDiscard)	{ Models->Delete(V,bDiscard);			}
+IRender_Visual*	CRender::model_Duplicate	(IRender_Visual* V)					{ return Models->Instance_Duplicate(V);	}
+void 			CRender::model_Render		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD){Models->Render(m_pVisual, mTransform, priority, strictB2F, m_fLOD);}
+void 			CRender::model_RenderSingle	(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD){Models->RenderSingle(m_pVisual, mTransform, m_fLOD);}
 

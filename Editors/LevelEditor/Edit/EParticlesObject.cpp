@@ -89,7 +89,7 @@ void EParticlesObject::Render(int priority, bool strictB2F)
                 }
             }
         }
-        if (m_Particles) Device.Models.Render(m_Particles,_Transform(),priority,strictB2F,1.f);
+        if (m_Particles) ::Render->model_Render(m_Particles,_Transform(),priority,strictB2F,1.f);
     }
 }
 //----------------------------------------------------

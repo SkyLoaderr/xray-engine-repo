@@ -10,6 +10,7 @@
 #include "PSLibrary.h"
 #include "IRenderDetailModel.H"
 #include "DetailModel.H"
+#include "ModelPool.h"
 
 // definition (Renderer)
 class IRender_Target{
@@ -25,6 +26,8 @@ public:
 	// Data
 	CFrustum				ViewBase;
 	CPSLibrary				PSLibrary;
+
+    CModelPool*				Models;
 public:
 	// Occlusion culling
 	virtual BOOL			occ_visible		(Fbox&	B);
@@ -35,6 +38,9 @@ public:
 							CRender			();
 	virtual 				~CRender		();
 
+	void					create			();
+	void					destroy			();
+    
     void					Calculate		();
     void					Render	 		();
 
@@ -43,11 +49,15 @@ public:
 
 	IRender_Target*			getTarget		(){return &Target;}
 
+	virtual IRender_Visual*	model_Create			(LPCSTR name);
+	virtual IRender_Visual*	model_Create			(LPCSTR name, IReader* data);
 	virtual IRender_Visual*	model_CreatePE			(LPCSTR name);
 	virtual IRender_Visual*	model_CreateParticles	(LPCSTR name);
     
     virtual IRender_DetailModel*	model_CreateDM	(IReader* R);
-    void					model_Delete	(IRender_DetailModel* & F)
+	virtual IRender_Visual*	model_Duplicate			(IRender_Visual* V);
+	virtual void			model_Delete			(IRender_Visual* &	V, BOOL bDiscard=TRUE);
+    virtual void			model_Delete			(IRender_DetailModel* & F)
     {
         if (F)
         {
@@ -57,6 +67,8 @@ public:
             F				= NULL;
         }
     }
+	void 					model_Render			(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD);
+	void 					model_RenderSingle		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD);
 
 	// Render mode
 	virtual void			rmNear					();

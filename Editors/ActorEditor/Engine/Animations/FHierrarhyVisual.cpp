@@ -24,11 +24,7 @@ FHierrarhyVisual::~FHierrarhyVisual()
 {
 	if (!bDontDelete) {
 		for (u32 i=0; i<children.size(); i++)	
-#ifdef _EDITOR
-			::Device.Models.Delete(children[i]);
-#else
 			::Render->model_Delete(children[i]);
-#endif
 	}
 	children.clear();
 }
@@ -60,13 +56,9 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
             if (OBJ){
                 IReader* O = OBJ->open_chunk(0);
                 for (int count=1; O; count++) {
-#ifdef _EDITOR
-                    children.push_back	(::Device.Models.Create(O));
-#else
 					string256			name_load;
 					sprintf				(name_load,"%s_%d",N,count);
 					children.push_back	(::Render->model_Create(name_load,O));
-#endif
                     O->close			();
                     O = OBJ->open_chunk	(count);
                 }
@@ -88,11 +80,7 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 				{
                     data->r_stringZ		(fn);
                     strconcat			(fn_full,c_drv,c_dir,fn);
-#ifdef _EDITOR
-                    children.push_back	(::Device.Models.Create(fn_full));
-#else
                     children.push_back	(::Render->model_Create(fn_full));
-#endif
                 }
                 bDontDelete = FALSE;
             } else {
@@ -111,11 +99,7 @@ void	FHierrarhyVisual::Copy(IRender_Visual *pSrc)
 	children.clear	();
 	children.reserve(pFrom->children.size());
 	for (u32 i=0; i<pFrom->children.size(); i++) {
-#ifdef _EDITOR
-		IRender_Visual *p = ::Device.Models.Instance_Duplicate(pFrom->children[i]);
-#else
 		IRender_Visual *p = ::Render->model_Duplicate	(pFrom->children[i]);
-#endif
 		children.push_back(p);
 	}
 	bDontDelete = FALSE;

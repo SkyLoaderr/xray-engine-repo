@@ -36,7 +36,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		//----------------
         if (UI.OnCreate()){
 			g_pGamePersistent= xr_new<IGame_Persistent>();
-            ::Render->PSLibrary.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
             SndLib.OnCreate	();
@@ -58,7 +57,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
         xr_delete			(g_pGamePersistent);
         LALib.OnDestroy		();
-    	::Render->PSLibrary.OnDestroy();
 		Tools.OnDestroy		();
 		SndLib.OnDestroy	();
 		Lib.OnDestroy		();

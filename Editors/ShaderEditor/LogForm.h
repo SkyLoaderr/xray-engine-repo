@@ -32,8 +32,10 @@ private:	// User declarations
 	static TfrmLog *form;
 public:		// User declarations
     __fastcall TfrmLog(TComponent* Owner);
-    static void __fastcall AddMessage(TMsgDlgType mt, const AnsiString& msg);
-    static void __fastcall AddMessage(const AnsiString& msg){AddMessage(mtCustom,msg);}
+    static void __fastcall AddMessage	(TMsgDlgType mt, const AnsiString& msg);
+    static void __fastcall AddMessage	(const AnsiString& msg){AddMessage(mtCustom,msg);}
+    static void __fastcall AddDlgMessage(TMsgDlgType mt, const AnsiString& msg);
+    static void __fastcall AddDlgMessage(const AnsiString& msg){AddDlgMessage(mtCustom,msg);}
     static void __fastcall ShowLog();
     static void __fastcall HideLog();
     static void __fastcall CreateLog();

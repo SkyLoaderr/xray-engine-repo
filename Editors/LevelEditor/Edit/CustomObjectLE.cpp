@@ -203,14 +203,22 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID ed
     else *new_name = new_name->LowerCase();
 }
 
+void __fastcall	CCustomObject::OnChangeTransform(PropValue* sender)
+{
+	UpdateTransform();
+}
+
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
     PropValue* V = PHelper.CreateText(items,FHelper.PrepareKey(pref, "Name"),FName,sizeof(FName));
     V->Owner()->OnAfterEditEvent = OnObjectNameAfterEdit;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
-    PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
-    PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
-    PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
+    V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
+    V->OnChangeEvent 			= OnChangeTransform;
+    V = PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
+    V->OnChangeEvent 			= OnChangeTransform;
+    V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
+    V->OnChangeEvent 			= OnChangeTransform;
 }
 //----------------------------------------------------
 

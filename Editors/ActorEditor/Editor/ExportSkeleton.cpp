@@ -99,7 +99,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     ogf_header			H;
     H.format_version	= xrOGF_FormatVersion;
     H.type				= (I_Current>=0)?MT_SKELETON_GEOMDEF_PM:MT_SKELETON_GEOMDEF_ST;
-    H.flags				= 0;
+    H.shader_id			= 0;
     F.w					(&H,sizeof(H));
     F.close_chunk		();
 
@@ -330,7 +330,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
     H.type			= MT_SKELETON;
-    H.flags			= 0;
+    H.shader_id		= 0;
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
     // OGF_CHILDREN

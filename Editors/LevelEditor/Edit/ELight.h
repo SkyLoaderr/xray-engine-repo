@@ -26,8 +26,6 @@ public:
     BOOL 			m_UseInD3D;
     float 			m_Brightness;
 
-    u8				m_SunQuality;
-
     // fuzzy
     struct SFuzzyData{
         enum EShapeType{
@@ -129,6 +127,7 @@ public:
 	void			FillSunProp		(LPCSTR pref, PropItemVec& items);
 	void			FillPointProp	(LPCSTR pref, PropItemVec& items);
 	void			FillSpotProp	(LPCSTR pref, PropItemVec& items);
+    void			FillAttProp		(LPCSTR pref, PropItemVec& items);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 
     // render utility function

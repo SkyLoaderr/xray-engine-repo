@@ -11,8 +11,6 @@ object fraPortal: TfraPortal
   Align = alClient
   BorderStyle = bsNone
   Color = 10528425
-  Constraints.MaxWidth = 206
-  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11

@@ -168,7 +168,6 @@ void CRenderDevice::Destroy(){
 void CRenderDevice::_Create(IReader* F)
 {
 	bReady				= TRUE;
-	Resources->SetHLSL_path("R1\\");
 
 	// General Render States
 	HW.Caps.Update();
@@ -195,6 +194,7 @@ void CRenderDevice::_Create(IReader* F)
 
     RCache.OnDeviceCreate		();
 	Resources->OnDeviceCreate	(F);
+    ::Render->create			();
 
     m_WireShader.create			("editor\\wire");
     m_SelectionShader.create	("editor\\selection");
@@ -219,11 +219,12 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 	m_SelectionShader.destroy	();
 
 	seqDevDestroy.Process		(rp_DeviceDestroy);
-	Models.OnDeviceDestroy		();
+	::Render->Models->OnDeviceDestroy	();
 
 	Resources->OnDeviceDestroy	(bKeepTextures);
 
 	RCache.OnDeviceDestroy		();
+    ::Render->destroy			();
 }
 
 //---------------------------------------------------------------------------

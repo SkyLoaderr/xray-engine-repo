@@ -108,6 +108,7 @@ public:
     EObjClass 			CurrentClassID();
 
     bool				Pick			(TShiftState Shift);
+	bool 				RayPick			(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
     void				ShowObjectList	();
 

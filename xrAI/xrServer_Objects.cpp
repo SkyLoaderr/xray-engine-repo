@@ -245,9 +245,9 @@ void CSE_Visual::PlayAnimation		(LPCSTR name)
 
 void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)
 {
-	Device.Models.Delete		(visual);
+	::Render->model_Delete		(visual,TRUE);
     if (visual_name[0]) {
-        visual					= Device.Models.Create(visual_name);
+        visual					= ::Render->model_Create(visual_name);
         PlayAnimation			(play_animation.c_str());
     }
 	UI.Command					(COMMAND_UPDATE_PROPERTIES);

@@ -220,6 +220,8 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
 
     m_Age = FS.get_file_age(fn.c_str());
 
+    FS.r_close	(F);
+
     return true;
 }
 

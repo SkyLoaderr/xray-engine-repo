@@ -400,4 +400,35 @@ bool TUI_Tools::IsModified()
 {
 	return Scene.IsUnsaved();
 }
+//---------------------------------------------------------------------------
+
+#include "EditMesh.h"
+bool TUI_Tools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
+{
+	BOOL bRes = false;
+    if (Scene.ObjCount()&&(UI.GetEState()==esEditScene)){
+        SRayPickInfo pinf;
+        pinf.inf.range	= dist;
+        if (Scene.RayPickObject(dist, start,dir,OBJCLASS_SCENEOBJECT,&pinf,0)){ 
+        	dist		= pinf.inf.range;
+        	if (pt) 	pt->set(pinf.pt); 
+            if (n){	
+                const Fvector* PT[3];
+                pinf.e_mesh->GetFacePT(pinf.inf.id, PT);
+            	n->mknormal(*PT[0],*PT[1],*PT[2]);
+            }
+            return true;
+        }
+    }
+    Fvector N={0.f,-1.f,0.f};
+    Fvector P={0.f,0.f,0.f};
+    Fplane PL; PL.build(P,N);
+    float d;
+    if (PL.intersectRayDist(start,dir,d)&&(d<=dist)){
+        dist = d;
+        if (pt) pt->mad(start,dir,dist); 
+        if (n)	n->set(N);
+        return true;
+    }else return false;
+}
 

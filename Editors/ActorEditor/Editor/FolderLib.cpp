@@ -427,6 +427,7 @@ void CFolderHelper::StartDragNoFolder(TObject *Sender, TDragObject *&DragObject)
 bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnItemRename OnRename)
 {
     R_ASSERT(OnRename);
+    if (new_text.IsEmpty()) return false;
     new_text = new_text.LowerCase();
 
     // find item with some name

@@ -2,7 +2,7 @@ object fraSector: TfraSector
   Left = 522
   Top = 383
   Width = 206
-  Height = 277
+  Height = 304
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -11,8 +11,6 @@ object fraSector: TfraSector
   Align = alClient
   BorderStyle = bsNone
   Color = 10528425
-  Constraints.MaxWidth = 206
-  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11

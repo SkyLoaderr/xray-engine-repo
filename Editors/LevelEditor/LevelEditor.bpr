@@ -79,7 +79,6 @@
       intermediate\ImageThumbnail.obj intermediate\ItemList.obj 
       intermediate\ItemListHelper.obj intermediate\ItemListTypes.obj 
       intermediate\Library.obj intermediate\LightAnimLibrary.obj 
-      intermediate\ModelPool.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
       intermediate\ParticleEffectEditor.obj intermediate\portal.obj 
       intermediate\portalutils.obj intermediate\PSLibrary.obj 
@@ -136,7 +135,7 @@
       intermediate\ESceneSoundSrcTools.obj intermediate\Scene_Tools.obj 
       intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj 
       intermediate\FrameSpawn.obj intermediate\UI_SectorTools.obj 
-      intermediate\thunderbolt.obj"/>
+      intermediate\thunderbolt.obj intermediate\ModelPool.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -341,7 +340,6 @@
       <FILE FILENAME="edit\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESceneAIMapTools_MotionSimulator.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_MotionSimulator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ParticleEffectEditor.cpp" FORMNAME="" UNITNAME="ParticleEffectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\portal.cpp" FORMNAME="" UNITNAME="portal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -451,6 +449,7 @@
       <FILE FILENAME="FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -462,7 +461,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=70
+Build=72
 Debug=1
 PreRelease=0
 Special=0
@@ -474,7 +473,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.70
+FileVersion=1.0.2.72
 InternalName=
 LegalCopyright=
 LegalTrademarks=

@@ -228,7 +228,7 @@ void __fastcall TfraBottomBar::miWeatherClick(TObject *Sender)
         	Engine.ReloadSettings();
     	    g_pGamePersistent->Environment.ED_Reload();
         }else if (mi->Tag>0){
-        	g_pGamePersistent->Environment.ED_SetSpeed(mi->Tag);
+        	g_pGamePersistent->Environment.SetTimeFactor(float(mi->Tag));
         	mi->Checked = !mi->Checked;
         }
     }

@@ -269,6 +269,10 @@ void CEnvironment::SelectEnv()
 
 void CEnvironment::OnFrame()
 {
+#ifdef _EDITOR
+	if (!psDeviceFlags.is(rsEnvironment)) return;
+#endif
+
 	ABcurrent			+= Device.fTimeDelta*fTimeFactor;
     if (ABcurrent>ABlength)	SelectEnv();
 
@@ -335,7 +339,6 @@ void CEnvironment::OnDeviceCreate()
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
-//    eff_LensFlare->OnDeviceCreate();
 }
 
 void CEnvironment::OnDeviceDestroy()

@@ -147,7 +147,7 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             ogf_header			H;
             H.format_version	= xrOGF_FormatVersion;
             H.type				= /*(I_Current>=0)?MT_PROGRESSIVE:*/MT_NORMAL;
-            H.flags				= 0;
+            H.shader_id			= 0;
             F.w					(&H,sizeof(H));
             F.close_chunk		();
 
@@ -361,7 +361,7 @@ bool CExportObjectOGF::Export(IWriter& F)
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
     H.type			= MT_HIERRARHY;
-    H.flags			= 0;
+    H.shader_id		= 0;
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
     // OGF_CHILDREN

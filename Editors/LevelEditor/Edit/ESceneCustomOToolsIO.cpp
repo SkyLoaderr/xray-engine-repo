@@ -11,6 +11,7 @@ static const u16 TOOLS_VERSION  		= 0x0000;
 static const u32 CHUNK_VERSION			= 0x0001;
 static const u32 CHUNK_OBJECT_COUNT		= 0x0002;
 static const u32 CHUNK_OBJECTS			= 0x0003;
+static const u32 CHUNK_FLAGS			= 0x0004;
 //----------------------------------------------------
 
 bool ESceneCustomOTools::OnLoadSelectionAppendObject(CCustomObject* obj)
@@ -81,6 +82,9 @@ bool ESceneCustomOTools::Load(IReader& F)
         return false;
     }
 
+    if (F.find_chunk(CHUNK_FLAGS))
+    	m_Flags.set	(F.r_u32());
+
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
@@ -95,6 +99,10 @@ bool ESceneCustomOTools::Load(IReader& F)
 void ESceneCustomOTools::Save(IWriter& F)
 {
 	F.w_chunk		(CHUNK_VERSION,(u16*)&TOOLS_VERSION,sizeof(TOOLS_VERSION));
+
+	F.open_chunk	(CHUNK_FLAGS);
+    F.w_u32			(m_Flags.get());
+	F.close_chunk	();
 
     int count		= m_Objects.size();
 	F.w_chunk		(CHUNK_OBJECT_COUNT,&count,sizeof(count));

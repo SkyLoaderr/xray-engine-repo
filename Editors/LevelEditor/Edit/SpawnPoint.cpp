@@ -134,7 +134,7 @@ void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 void CSpawnPoint::SSpawnData::Render(const Fmatrix& parent,int priority, bool strictB2F)
 {
     CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-	if (V&&V->visual)			Device.Models.Render(V->visual,parent,priority,strictB2F,1.f);
+	if (V&&V->visual)			::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
 }
 void CSpawnPoint::SSpawnData::OnFrame()
 {
@@ -153,7 +153,7 @@ void CSpawnPoint::SSpawnData::OnDeviceDestroy()
 {
     // if visualed
     CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-	if (V&&V->visual)			Device.Models.Delete(V->visual);
+	if (V&&V->visual)			::Render->model_Delete(V->visual);
 }
 //----------------------------------------------------
 //------------------------------------------------------------------------------
