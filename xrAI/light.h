@@ -2,7 +2,7 @@
 #define _XR_LIGHT_
 #pragma once
 
-#pragma pack(push,8)
+#pragma pack(push,4)
 struct xrLIGHT : public Flight
 {
 	DWORD		dwFrame;
