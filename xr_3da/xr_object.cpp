@@ -86,7 +86,7 @@ const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY2(renderable.visual,*cName(
 // Class	: CXR_Object
 // Purpose	:
 //----------------------------------------------------------------------
-CObject::CObject		( )
+CObject::CObject		( )		: ISpatial(g_SpatialSpace)
 {
 	// Transform
 	Props.storage				= 0;

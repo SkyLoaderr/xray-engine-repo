@@ -7,7 +7,7 @@
 #include "ps_instance.h"
 #include "IGame_Level.h"
 
-CPS_Instance::CPS_Instance			()
+CPS_Instance::CPS_Instance			()		: ISpatial(g_SpatialSpace)
 {
 	g_pGameLevel->ps_active.insert			(this);
 

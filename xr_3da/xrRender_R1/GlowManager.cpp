@@ -17,7 +17,8 @@
 
 
 //////////////////////////////////////////////////////////////////////
-CGlow::CGlow()				{
+CGlow::CGlow		()		: ISpatial(g_SpatialSpace)
+{
 	flags.bActive	= false;
 	position.set	(0,0,0);
 	direction.set	(0,0,0);

@@ -265,20 +265,20 @@ void	ISpatial_DB::q_ray	(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvect
 	if (CPU::ID.feature&_CPU_FEATURE_SSE)	{
 		if (_o & O_ONLYFIRST)
 		{
-			if (_o & O_ONLYNEAREST)		{ walker<true,true,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<true,true,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<true,true,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<true,true,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		} else {
-			if (_o & O_ONLYNEAREST)		{ walker<true,false,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<true,false,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<true,false,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<true,false,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		}
 	} else {
 		if (_o & O_ONLYFIRST)
 		{
-			if (_o & O_ONLYNEAREST)		{ walker<false,true,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<false,true,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<false,true,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<false,true,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		} else {
-			if (_o & O_ONLYNEAREST)		{ walker<false,false,true>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
-			else						{ walker<false,false,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			if (_o & O_ONLYNEAREST)		{ walker<false,false,true>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
+			else						{ walker<false,false,false>	W(this,_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 		}
 	}
 	cs.Leave		();

@@ -55,12 +55,12 @@ public:
 
 typedef DLL_PureWrapper<DLL_Pure,luabind::wrap_base> CDLL_PureWrapper;
 
+/*	
 template <typename base, typename luabind_base = Loki::EmptyType>
 class ISpatialWrapper : public heritage<base,luabind_base>::result {
 public:
 	IC						ISpatialWrapper				() {};
 	virtual					~ISpatialWrapper			() {};
-/*	
 	virtual	void			spatial_register			()
 	{
 		call_member<void>(this,"spatial_register");
@@ -130,10 +130,10 @@ public:
 	{
 		return	(self->base::dcast_Renderable());
 	}
-*/
 };
 
 typedef ISpatialWrapper<ISpatial,luabind::wrap_base> CISpatialWrapper;
+*/
 
 template <typename base, typename luabind_base = Loki::EmptyType>
 class ISheduledWrapper : public heritage<base,luabind_base>::result {
@@ -210,8 +210,8 @@ public:
 typedef IRenderableWrapper<IRenderable,luabind::wrap_base> CIRenderableWrapper;
 
 typedef DLL_PureWrapper<CObject,luabind::wrap_base> CObjectDLL_Pure;
-typedef ISpatialWrapper<CObjectDLL_Pure>			CObjectISpatial;
-typedef ISheduledWrapper<CObjectISpatial>			CObjectISheduled;
+//typedef ISpatialWrapper<CObjectDLL_Pure>			CObjectISpatial;
+typedef ISheduledWrapper<CObjectDLL_Pure>			CObjectISheduled;
 typedef IRenderableWrapper<CObjectISheduled>		CObjectIRenderable;
 
 class CObjectWrapper : public CObjectIRenderable {
@@ -247,8 +247,8 @@ public:
 
 
 typedef DLL_PureWrapper<CGameObject,luabind::wrap_base> CGameObjectDLL_Pure;
-typedef ISpatialWrapper<CGameObjectDLL_Pure>				CGameObjectISpatial;
-typedef ISheduledWrapper<CGameObjectISpatial>				CGameObjectISheduled;
+//typedef ISpatialWrapper<CGameObjectDLL_Pure>				CGameObjectISpatial;
+typedef ISheduledWrapper<CGameObjectDLL_Pure>				CGameObjectISheduled;
 typedef IRenderableWrapper<CGameObjectISheduled>			CGameObjectIRenderable;
 
 class CGameObjectWrapper : public CGameObjectIRenderable {

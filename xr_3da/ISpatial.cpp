@@ -20,7 +20,7 @@ Fvector	c_spatial_offset	[8]	=
 };
 
 //////////////////////////////////////////////////////////////////////////
-ISpatial::ISpatial			(void)
+ISpatial::ISpatial			(ISpatial_DB* space)
 {
 	spatial.center.set		(0,0,0);
 	spatial.radius			= 0;
@@ -28,6 +28,7 @@ ISpatial::ISpatial			(void)
 	spatial.node_radius		= 0;
 	spatial.node_ptr		= NULL;
 	spatial.sector			= NULL;
+	spatial.space			= space;
 }
 ISpatial::~ISpatial			(void)
 {
@@ -65,7 +66,7 @@ void	ISpatial::spatial_register	()
 		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	} else {
 		// register
-		space->insert			(this);
+		spatial.space->insert	(this);
 		spatial.sector			=	::Render->detectSector(spatial.center);
 		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	}
@@ -76,7 +77,7 @@ void	ISpatial::spatial_unregister()
 	if (spatial.node_ptr)
 	{
 		// remove
-		space->remove			(this);
+		spatial.space->remove	(this);
 		spatial.node_ptr		= NULL;
 		spatial.sector			= NULL;
 	} else {
@@ -92,9 +93,9 @@ void	ISpatial::spatial_move	()
 		spatial.type		|=				STYPEFLAG_INVALIDSECTOR;
 
 		//*** check if we are supposed to correct it's spatial location
-		if				(spatial_inside())	return;		// ???
-		space->remove	(this);
-		space->insert	(this);
+		if						(spatial_inside())	return;		// ???
+		spatial.space->remove	(this);
+		spatial.space->insert	(this);
 	} else {
 		//*** we are not registered yet, or already unregistered
 		//*** ignore request

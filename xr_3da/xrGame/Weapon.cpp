@@ -818,9 +818,10 @@ float CWeapon::GetConditionMisfireProbability() const
 	return mis;
 }
 
-BOOL CWeapon::CheckForMisfire()
+BOOL CWeapon::CheckForMisfire	()
 {
-	if (GameID()!=GAME_SINGLE) return FALSE;
+	#pragma fixme("following line invalid and should be removed (misfire in MP)")
+	if (GameID()!=GAME_SINGLE)	return	FALSE;		//.
 	float rnd = ::Random.randF(0.f,1.f);
 	if(rnd<GetConditionMisfireProbability())
 	{

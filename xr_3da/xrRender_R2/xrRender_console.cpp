@@ -35,6 +35,8 @@ float		ps_r1_tf_Mipbias			= -0.5f	;
 Flags32		ps_r1_flags					= { R1FLAG_DLIGHTS };		// r1-only
 float		ps_r1_lmodel_lerp			= 0.1f	;
 float		ps_r1_dlights_clip			= 30.f	;
+float		ps_r1_pps_u					= 0.f	;
+float		ps_r1_pps_v					= 0.f	;
 
 // R1-specific
 int			ps_r1_GlowsPerFrame			= 16	;					// r1-only
@@ -220,6 +222,9 @@ void		xrRender_initconsole	()
 	CMD2(CCC_tf_Aniso,	"r1_tf_aniso",			&ps_r1_tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r1_tf_mipbias",		&ps_r1_tf_Mipbias			);
 	CMD3(CCC_Mask,		"r1_dlights",			&ps_r1_flags,				R1FLAG_DLIGHTS	);
+	CMD4(CCC_Float,		"r1_dlights_clip",		&ps_r1_dlights_clip,		10.f,	100.f	);
+	CMD4(CCC_Float,		"r1_pps_u",				&ps_r1_pps_u,				-1.f,	+1.f	);
+	CMD4(CCC_Float,		"r1_pps_v",				&ps_r1_pps_v,				-1.f,	+1.f	);
 	CMD4(CCC_Float,		"r1_dlights_clip",		&ps_r1_dlights_clip,		10.f,	100.f	);
 
 	// R1-specific

@@ -27,10 +27,10 @@ add_to_type_list(DLL_PureScript)
 #undef script_type_list
 #define script_type_list save_type_list(DLL_PureScript)
 
-typedef class_exporter<ISpatial>	ISpatialScript;
-add_to_type_list(ISpatialScript)
-#undef script_type_list
-#define script_type_list save_type_list(ISpatialScript)
+//typedef class_exporter<ISpatial>	ISpatialScript;
+//add_to_type_list(ISpatialScript)
+//#undef script_type_list
+//#define script_type_list save_type_list(ISpatialScript)
 
 typedef class_exporter<ISheduled>	ISheduledScript;
 add_to_type_list(ISheduledScript)

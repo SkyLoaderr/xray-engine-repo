@@ -8,12 +8,12 @@
 
 extern CPHWorld* ph_world;
 
-CPHObject::CPHObject()
+CPHObject::CPHObject	()	: ISpatial(g_SpatialSpacePhysic)
 {
-	m_flags.flags=0;
-	spatial.type|=STYPE_PHYSIC;
-	m_island.Init();
-	CPHCollideValidator::InitObject(*this);
+	m_flags.flags	=	0;
+	spatial.type	|=	STYPE_PHYSIC;
+	m_island.Init	();
+	CPHCollideValidator::InitObject	(*this);
 }
 
 void CPHObject::activate()

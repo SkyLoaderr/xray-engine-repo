@@ -28,13 +28,14 @@ void DLL_PureScript::script_register	(lua_State *L)
 	];
 }
 
+/*
 void ISpatialScript::script_register	(lua_State *L)
 {
 	module(L)
 	[
 		class_<ISpatial,CISpatialWrapper>("ISpatial")
 			.def(constructor<>())
-/*			.def("spatial_register",	&ISpatial::spatial_register,	&CISpatialWrapper::spatial_register_static)
+			.def("spatial_register",	&ISpatial::spatial_register,	&CISpatialWrapper::spatial_register_static)
 			.def("spatial_unregister",	&ISpatial::spatial_unregister,	&CISpatialWrapper::spatial_unregister_static)
 			.def("spatial_move",		&ISpatial::spatial_move,		&CISpatialWrapper::spatial_move_static)
 			.def("spatial_sector_point",&ISpatial::spatial_sector_point,&CISpatialWrapper::spatial_sector_point_static)
@@ -42,15 +43,16 @@ void ISpatialScript::script_register	(lua_State *L)
 			.def("dcast_FeelSound",		&ISpatial::dcast_FeelSound,		&CISpatialWrapper::dcast_FeelSound_static)
 			.def("dcast_Renderable",	&ISpatial::dcast_Renderable,	&CISpatialWrapper::dcast_Renderable_static)
 			.def("dcast_Light",			&ISpatial::dcast_Light,			&CISpatialWrapper::dcast_Light_static)
-*/	];
+	];
 }
+*/
 
 void ISheduledScript::script_register	(lua_State *L)
 {
 	module(L)
 	[
 		class_<ISheduled,CISheduledWrapper>("ISheduled")
-			.def(constructor<>())
+//			.def(constructor<>())
 //			.def("shedule_Scale",		&ISheduled::shedule_Scale,		&CISheduledWrapper::shedule_Scale_static)
 //			.def("shedule_Update",		&ISheduled::shedule_Update,		&CISheduledWrapper::shedule_Update_static)
 	];
@@ -81,7 +83,7 @@ void CObjectScript::script_register		(lua_State *L)
 {
 	module(L)
 	[
-		class_<CObject,bases<DLL_Pure,ISpatial,ISheduled,ICollidable,IRenderable>,CObjectWrapper>("CObject")
+		class_<CObject,bases<DLL_Pure,ISheduled,ICollidable,IRenderable>,CObjectWrapper>("CObject")
 			.def(constructor<>())
 			.def("_construct",			&CObject::_construct,&CObjectWrapper::_construct_static)
 /*			

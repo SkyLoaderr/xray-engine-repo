@@ -192,9 +192,8 @@ void					CRender::set_Object				(IRenderable*		O )
 }
 void					CRender::apply_object			(IRenderable*		O )
 {
-	if (0==O)			return;
-	if (PHASE_NORMAL==phase)	{
-		VERIFY				(O->renderable.ROS);
+	if (0==O)			return	;
+	if (PHASE_NORMAL==phase	&& O->renderable.ROS)	{
 		CROS_impl& LT		= *((CROS_impl*)O->renderable.ROS);
 		float o_hemi		= 0.5f*LT.get_hemi						();
 		float o_sun			= 0.5f*LT.get_sun						();
@@ -379,9 +378,8 @@ void CRender::Calculate				()
 						if (!bVisible)					break;	// exit loop on frustums
 
 						// rendering
-						if (o_it==uID_LTRACK)	{
+						if (o_it==uID_LTRACK && renderable->renderable.ROS)	{
 							// track lighting environment
-							VERIFY				(renderable->renderable.ROS);
 							CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
 							T->update			(renderable);
 						}
