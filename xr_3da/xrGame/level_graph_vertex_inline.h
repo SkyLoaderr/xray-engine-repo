@@ -530,12 +530,12 @@ IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, u32 dwNod
 
 IC	float CLevelGraph::vertex_cover(const CLevelGraph::CVertex *vertex) const
 {
-	float			cover = 0.f;
-	cover			+= square(NORMALIZE_NODE_COVER(vertex,0),NORMALIZE_NODE_COVER(vertex,1));
-	cover			+= square(NORMALIZE_NODE_COVER(vertex,1),NORMALIZE_NODE_COVER(vertex,2));
-	cover			+= square(NORMALIZE_NODE_COVER(vertex,2),NORMALIZE_NODE_COVER(vertex,3));
-	cover			+= square(NORMALIZE_NODE_COVER(vertex,3),NORMALIZE_NODE_COVER(vertex,0));
-	return			(cover);
+	float			_cover = 0.f;
+	_cover			+= square(NORMALIZE_NODE_COVER(vertex,0),NORMALIZE_NODE_COVER(vertex,1));
+	_cover			+= square(NORMALIZE_NODE_COVER(vertex,1),NORMALIZE_NODE_COVER(vertex,2));
+	_cover			+= square(NORMALIZE_NODE_COVER(vertex,2),NORMALIZE_NODE_COVER(vertex,3));
+	_cover			+= square(NORMALIZE_NODE_COVER(vertex,3),NORMALIZE_NODE_COVER(vertex,0));
+	return			(_cover);
 }
 
 IC	float CLevelGraph::vertex_cover(const u32 vertex_id) const
