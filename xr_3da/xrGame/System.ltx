@@ -256,6 +256,24 @@ eat_power = -0.01
 eat_radiation = 0.3
 eat_portions_num = 10
 
+[document]
+GroupControlSection	= spawn_group
+;discovery_dependency = 
+$spawn 				= "documents\document 01"
+;$prefetch 			= 32
+class				= II_DOC
+cform				= skeleton
+visual				= items\geiger_01.ogf
+
+inv_name			= Document
+inv_name_short		= Document
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+cost				= 50
+
+
 [scientific_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
