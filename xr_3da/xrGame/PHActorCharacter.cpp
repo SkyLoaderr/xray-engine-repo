@@ -57,7 +57,12 @@ void CPHActorCharacter::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 	inherited::SetPhysicsRefObject(ref_object);
 	dGeomUserDataSetPhysicsRefObject(m_restrictor,ref_object);
 }
-
+void CPHActorCharacter::SetMaterial							(u16 material)
+{
+	inherited::SetMaterial(material);
+	if(!b_exist) return;
+	dGeomGetUserData(m_restrictor)->material=material;
+}
 void CPHActorCharacter::SetAcceleration(Fvector accel)
 {
 	inherited::SetAcceleration(accel);

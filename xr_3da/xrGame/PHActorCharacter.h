@@ -11,6 +11,7 @@ class CPHActorCharacter :
 static void __stdcall RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 public:
 	virtual	void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
+	virtual void		SetMaterial							(u16 material);
 	virtual void		Create								(dVector3 sizes);
 	virtual void		Destroy								(void);
 	virtual void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);

@@ -35,7 +35,13 @@ void CPHCommander::add_call(CPHCondition* condition,CPHAction* action)
 
 void CPHCommander::remove_call(PHCALL_I i)
 {
-	xr_delete(*i);
+	try{
+		xr_delete(*i);
+		}
+	catch(...)
+	{
+		(*i)=NULL;
+	}
 	m_calls.erase(i);
 }
 void CPHCommander::clear()
@@ -49,10 +55,19 @@ void CPHCommander::clear()
 }
 void CPHCommander::update()
 {
-	PHCALL_I	i=m_calls.begin(),e=m_calls.end();
-	for(;e!=i;)
+	PHCALL_I	i=m_calls.begin();
+	for(;m_calls.end()!=i;)
 	{
-		(*i)->check();
+		try
+		{
+			(*i)->check();
+		} 
+		catch(...)
+		{
+			remove_call(i);
+			continue;
+		}
+
 		if((*i)->obsolete())remove_call(i);
 		++i;
 	}
