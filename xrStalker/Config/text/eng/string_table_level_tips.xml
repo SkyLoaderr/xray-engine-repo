@@ -4,10 +4,10 @@
         <text>To talk to someone point sight at him and press ‘E’ button.</text>
     </string>
     <string id="tips_esc_trader_activate_pda">
-        <text>To activate PDA, press &amp;apos;P&amp;apos; button.</text>
+        <text>To activate PDA, press 'P' button.</text>
     </string>
     <string id="tips_esc_trader_activate_map">
-        <text>To activate map press &amp;apos;M&amp;apos;.</text>
+        <text>To activate map press 'M'.</text>
     </string>
     <string id="tips_esc_trader_quest_1">
         <text>Find artifact in the place pointed on the map and bring it to the trader.</text>
@@ -16,7 +16,7 @@
         <text>Search dead bodies, you may find some useful staff.</text>
     </string>
     <string id="tutorial_trader_give_medikit">
-        <text>Give this jerk a medkit.</text>
+        <text>Give this boy a medkit.</text>
     </string>
     <string id="tips_esc_trader_about_pda">
         <text>Press Contact (Ñ). In and on minimap on the screen other stalkers with activated PDA will appear. Their attitude to you will also be stated on the screen. Be careful if you see enemies on the screen. However bandits and monsters usually don`t use PDA, so you better watch out in the Zone.</text>
@@ -25,6 +25,17 @@
         <text>Watch out! Anomaly is near. Use screw-bolt to define their borders.</text>
     </string>
     <string id="escape_stalker_help">
-        <text>Hey, Labelled. There is a badly wounded stalker not far from you, he was coming back after a trip deep inside the Zone. Help him, he may know something about the Sniper.</text>
+        <text>Hey, Sighned. There is a badly wounded stalker not far from you, he was coming back after a trip deep inside the Zone. Help him, he may know something about the Sniper.</text>
     </string>
+
+	<string id="general_help">
+		<text>Help me!!! I need medikit.</text>
+	</string>
+	<string id="escape_wounded_start">
+		<text>Hey, Sighned, one stalker just returned from deep raid into Zone. He is wounded and can't move anymore. Help him, may be he know something about Gunslinger</text>
+	</string>	
+	<string id="tutorial_trader_look_vagon">
+		<text>Hey, there is some kind of action near you. I send coordinates to you. Check, what are going there.</text>
+	</string>
+	    
 </string_table>
