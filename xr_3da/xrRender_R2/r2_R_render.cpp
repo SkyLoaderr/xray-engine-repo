@@ -34,7 +34,7 @@ void CRender::Render	()
 		mapSorted.clear							();
 	}
 
-	if (1 || ps_r2_ls_flags.test(R2FLAG_SUN) )
+	if (0 && ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
 		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 		{
@@ -74,10 +74,8 @@ void CRender::Render	()
 	}
 
 	//$$$
-	/*
 	Target.phase_accumulator			();
 	Target.accum_direct					();
-	*/
 
 	// Point lighting (unshadowed)
 	if (0)
