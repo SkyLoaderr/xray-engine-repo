@@ -175,8 +175,6 @@ CBuild::~CBuild()
 	Phase("Cleanup");
 }
  
-extern int	RegisterTexture	(string &T);
-extern int	RegisterShader	(string &T);
 void CBuild::Run()
 {
 	CFS_File fs((string(g_params.L_path)+"level.").c_str());

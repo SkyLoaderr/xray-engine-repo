@@ -146,9 +146,6 @@ void OGF::MakeProgressive()
 	}
 }
 
-extern int	RegisterTexture	(string &T);
-extern int	RegisterShader	(string &T);
-
 #pragma pack(push,4)
 struct DPatch {
 	Fvector P;
@@ -157,6 +154,8 @@ struct DPatch {
 	DWORD	C;
 };
 #pragma pack(pop)
+
+extern int RegisterString(string &T);
 
 void OGF_Patch::Save(CFS_Base &fs)
 {
@@ -173,8 +172,8 @@ void OGF_Patch::Save(CFS_Base &fs)
 
 	// Texture & shader
 	fs.open_chunk(OGF_TEXTURE_L);
-	fs.Wdword(RegisterTexture(string(pBuild->textures[M.surfidx].name)));
-	fs.Wdword(RegisterShader(string("std_aop")));
+	fs.Wdword(RegisterString(string(pBuild->textures[M.surfidx].name)));
+	fs.Wdword(RegisterString(string("std_aop")));
 	fs.close_chunk();
 
 	// BBox (already computed)
