@@ -231,27 +231,27 @@
 		<text>Дробовой патрон.</text>
 	</string>
 
-    <!-------------------------------- ammo-12x70-zhekan ----------------------------->
+    <!-------------------------------- ammo-12x76-zhekan ----------------------------->
 
 
-	<string id="ammo-12x70-zhekan">
+	<string id="ammo-12x76-zhekan">
 		<text>12x76 Zhekan</text>
 	</string>
 
 
-	<string id="enc_weapons_ammo_ammo-12x70-zhekan">
+	<string id="enc_weapons_ammo_ammo-12x76-zhekan">
 		<text>Тяжелая пуля.</text>
 	</string>
 
-    <!-------------------------------- ammo-12x70-dart ----------------------------->
+    <!-------------------------------- ammo-12x76-dart ----------------------------->
 
 
-	<string id="ammo-12x70-dart">
+	<string id="ammo-12x76-dart">
 		<text>12x76 Dart</text>
 	</string>
 
 
-	<string id="enc_weapons_ammo_ammo-12x70-dart">
+	<string id="enc_weapons_ammo_ammo-12x76-dart">
 		<text>Оперенная пуля. Увеличенная дальность.</text>
 	</string>
 
