@@ -297,7 +297,7 @@
         </phrase_list>
     </dialog>  
            
-        <dialog id="stalker_wounded_friend">
+    <dialog id="stalker_wounded_friend">
         <phrase_list>
             <phrase id="0">
                 <text>Брат, поделись аптечкой, помираю!</text>
@@ -323,16 +323,17 @@
             </phrase>
             <phrase id="21">
                 <precondition>dialogs.have_money</precondition>
-                <text>Давай, на том свете мне деньги не понадобятся...</text>
-                <action>dialogs.wounded_trade</action
-                <action>dialogs.sell_medikit</action>>
+                <text>Давай, на том свете мне деньги не понадобятся.</text>
+                <action>dialogs.wounded_trade</action>
+                <action>dialogs.sell_medikit</action>
+            </phrase>
             <phrase id="22">
                 <precondition>dialogs.not_have_money</precondition>
-                <text>Нету, у меня денег.</text>
+                <text>Нет, у меня денег.</text>
             </phrase>
             <phrase id="3">
                 <precondition>dialogs.medikit_no</precondition>
-                <text>Увы, нет у меня аптечки...</text>
+                <text>Увы, нет у меня аптечки.</text>
             </phrase>
         </phrase_list>
     </dialog>
