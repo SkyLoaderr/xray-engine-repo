@@ -132,21 +132,21 @@ namespace CDB
 		COLLIDER		();
 		~COLLIDER		();
 
-		IC void			ray_options		(u32 f)	{	ray_mode = f;		}
+		ICF void		ray_options		(u32 f)	{	ray_mode = f;		}
 		void			ray_query		(const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
 
-		IC void			box_options		(u32 f)	{	box_mode = f;		}
+		ICF void		box_options		(u32 f)	{	box_mode = f;		}
 		void			box_query		(const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
 
-		IC void			frustum_options	(u32 f)	{	frustum_mode = f;	}
+		ICF void		frustum_options	(u32 f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 
-		IC RESULT*		r_begin			()	{	return &*rd.begin();		};
-		IC RESULT*		r_end			()	{	return &*rd.end();			};
-		RESULT&			r_add			();
-		void			r_free			();
-		IC int			r_count			()	{	return rd.size();			};
-		IC void			r_clear			()	{	rd.clear_not_free();		};
+		ICF RESULT*		r_begin			()	{	return &*rd.begin();		};
+		ICF RESULT*		r_end			()	{	return &*rd.end();			};
+		RESULT&			r_add			()	;
+		void			r_free			()	;
+		ICF int			r_count			()	{	return rd.size();			};
+		ICF void		r_clear			()	{	rd.clear_not_free();		};
 	};
 
 	//
