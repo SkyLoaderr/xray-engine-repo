@@ -580,7 +580,7 @@ void CActor::Update	(u32 DT)
 		sndStep[1].feedback->SetVolume	(s_vol);
 	}
 	// landing sounds
-	if ((mstate_real&(mcLanding|mcLanding2))&&fis_zero(m_fLandingTime-s_fLandingTime1))
+	if (!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2)))
 		::Sound->PlayAtPos	(sndLanding,this,Position());
 }
 
