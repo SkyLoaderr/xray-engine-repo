@@ -156,7 +156,7 @@ Sanya:
 				. TODO: Don't inter-merge, if strictly sorted
 			. TODO: относительный объем CHULLa от сферы - коеффициент
 			. TODO: collision database simplification
-			. TODO: detail objects
+			? TODO: detail objects
 -----------------------------------------------------------------------------------------------------------
 1. Передвижение
 	Данные:	
