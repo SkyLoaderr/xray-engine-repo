@@ -48,7 +48,7 @@ function main ()
 		get_level_object ("m_dog_e0007"),
 		get_level_object ("m_dog_e0008"),
 		get_level_object ("m_dog_e0009"),
-		get_level_object ("m_dog_e00010"),
+		get_level_object ("m_dog_e0010"),
 		get_level_object ("m_pseudodog_e0004"),
 		get_level_object ("m_boar_e0006"),
 		get_level_object ("m_pseudodog_e0005"),
