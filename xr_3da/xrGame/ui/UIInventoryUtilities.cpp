@@ -84,7 +84,7 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 			ruck_room[i*width + j] = false;
 
 
-	static std::vector<PIItem> ruck_list;
+	std::vector<PIItem> ruck_list;
 	ruck_list.clear();
 	ruck_list.insert(ruck_list.begin(),
 					 item_list.begin(),
