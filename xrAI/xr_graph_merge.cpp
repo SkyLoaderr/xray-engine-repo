@@ -220,7 +220,7 @@ public:
 				F_entity_Destroy					(E);
 			}
 			if (i != m_tpGraph->header().vertex_count())
-				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor! (%d : %d)",m_tLevel.name(),i,m_tpGraph->header().vertex_count());
+				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor! (%d : %d)",*m_tLevel.name(),i,m_tpGraph->header().vertex_count());
 			
 			VERTEX_MAP::const_iterator				I = m_tVertexMap.begin();
 			VERTEX_MAP::const_iterator				E = m_tVertexMap.end();
