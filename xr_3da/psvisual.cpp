@@ -76,19 +76,25 @@ void CPSVisual::Update(DWORD dt)
 		SParticle& P	= m_Particles[i];
 		float T 		= fTime-P.m_Time.start;
 		float k 		= T/(P.m_Time.end-P.m_Time.start);
-
+		
 		PS::SimulatePosition(Pos, &P,T,k);		bv_BBox.modify		(Pos);
 		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
-
+	
 	// if we need to create somewhat more particles...
 	while (iCount_Create) {
+		// Create
 		m_Particles.push_back		(SParticle());
-		m_Emitter->GenerateParticle	(m_Particles.back(), m_Definition, TM);
-		TM				+= dT_delta;
-		iCount_Create	-= 1;
-		PS::SimulatePosition(Pos, &P,T,k);		bv_BBox.modify		(Pos);
-		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
+		SParticle& P				=	m_Particles.back();
+		m_Emitter->GenerateParticle	(P, m_Definition, TM);
+		TM							+=	dT_delta;
+		iCount_Create				-=	1;
+
+		// Simulate
+		float T 					=	fTime-P.m_Time.start;
+		float k 					=	T/(P.m_Time.end-P.m_Time.start);
+		PS::SimulatePosition		(Pos, &P,T,k);		bv_BBox.modify		(Pos);
+		PS::SimulateSize			(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
 	bv_BBox.grow		(p_size);
 	bv_BBox.getsphere	(bv_Position,bv_Radius);
