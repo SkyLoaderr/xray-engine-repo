@@ -108,7 +108,7 @@
     </dialog>
 
 <!-- FINAL DIALOGS -->
-    <dialog id="actor_break_dialog">
+    <dialog id="actor_break_dialog" priority="-1">
 	<phrase_list>
 	    <phrase id="0">
 			<text>До встречи.</text>
