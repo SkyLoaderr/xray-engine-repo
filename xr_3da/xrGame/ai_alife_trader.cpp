@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_alife_registries.h"
 
 void CSE_ALifeTraderAbstract::vfInitInventory()
 {
@@ -72,4 +73,33 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 #endif
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume		-= tpALifeInventoryItem->m_iVolume;
+}
+
+u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem, CSE_ALifeObjectRegistry *tpALifeObjectRegistry)
+{
+#pragma todo("Dima to Dima : correct price for non-artefact objects")
+	CSE_ALifeItemArtefact		*l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(tpALifeInventoryItem);
+	if (!l_tpALifeItemArtefact)
+		return					(tpALifeInventoryItem->m_dwCost);
+
+	u32						l_dwPurchasedCount = 0;
+#pragma todo("Dima to Dima : optimize this cycle by keeping additional data structure with bought items")
+	{
+		OBJECT_IT				i = children.begin();
+		OBJECT_IT				e = children.end();
+		for ( ; i != e; i++)
+			if (!strcmp(tpALifeObjectRegistry->tpfGetObjectByID(*i)->s_name,l_tpALifeItemArtefact->s_name))
+				l_dwPurchasedCount++;
+	}
+
+	{
+		ARTEFACT_TRADER_ORDER_IT	I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_IT	E = m_tpOrderedArtefacts.end();
+		for ( ; I != E; I++)
+			if (!strcmp((*I).m_caSection,l_tpALifeItemArtefact->s_name)) {
+				R_ASSERT		(l_dwPurchasedCount <= (*I).m_dwTotalCount);
+				return			((*I).m_tpOrders[l_dwPurchasedCount].m_dwPrice);
+			}
+	}
+	return						(tpALifeInventoryItem->m_dwCost);
 }

@@ -694,32 +694,33 @@ void CSE_ALifeSimulator::vfPerformCommunication()
 	}
 }
 
-void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpALifeTraderAbstract)
+void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTrader *tpALifeTrader)
 {
-	// update items
+	// process group of stalkers
 	CSE_ALifeGroupAbstract	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeHumanAbstract);
 	if (l_tpALifeAbstractGroup) {
 		OBJECT_IT		I = l_tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT		E = l_tpALifeAbstractGroup->m_tpMembers.end();
 		for ( ; I != E; I++)
-			vfCommunicateWithCustomer(dynamic_cast<CSE_ALifeHumanAbstract*>(tpfGetObjectByID(*I)),tpALifeTraderAbstract);
+			vfCommunicateWithCustomer(dynamic_cast<CSE_ALifeHumanAbstract*>(tpfGetObjectByID(*I)),tpALifeTrader);
 		return;
 	}
 	
-#pragma todo("Dima to Dima : assign correct trader prices")
+	// trade items
 	tpALifeHumanAbstract->m_dwTotalMoney = tpALifeHumanAbstract->m_dwMoney;
 	while (!tpALifeHumanAbstract->children.empty()) {
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*tpALifeHumanAbstract->children.begin()));
 		OBJECT_IT				I = tpALifeHumanAbstract->children.begin();
 		tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,&I);
-		tpALifeTraderAbstract->vfAttachItem(l_tpALifeInventoryItem,true);
-		tpALifeHumanAbstract->m_dwTotalMoney += l_tpALifeInventoryItem->m_dwCost;
-		tpALifeTraderAbstract->m_dwMoney	-= l_tpALifeInventoryItem->m_dwCost;
+		tpALifeTrader->vfAttachItem(l_tpALifeInventoryItem,true);
+		u32						l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);
+		tpALifeHumanAbstract->m_dwTotalMoney += l_dwItemCost;
+		tpALifeTrader->m_dwMoney-= l_dwItemCost;
 	}
 	
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
 	
-	vfAppendItemVector						(tpALifeTraderAbstract->children,m_tpItemVector);
+	vfAppendItemVector						(tpALifeTrader->children,m_tpItemVector);
 
 	m_tpBlockedItems1.clear					();
 	for (int i=0; i<8; i++) {
@@ -727,20 +728,15 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 		vfRunFunctionByIndex				(tpALifeHumanAbstract,m_tpBlockedItems1,m_tpItemVector,i,l_iItemCount);
 		vfAssignItemParents					(tpALifeHumanAbstract,l_iItemCount);
 	}
-	tpALifeTraderAbstract->m_dwMoney		+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;
+	tpALifeTrader->m_dwMoney				+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
 	tpALifeHumanAbstract->m_dwTotalMoney	= u32(-1);
 
-	if (int(tpALifeTraderAbstract->m_dwMoney) < 0) {
 #pragma todo("Dima to Dima : Process situation if trader has not enough money")
-//		if (bfCheckIfCanNullTradersBalance		(tpALifeHumanAbstract,tpALifeTraderAbstract,0,m_tpItemVector.size(),-int(tpALifeTraderAbstract->m_dwMoney))) {
-//		}
-//		else {
-//		}
-	}
+	R_ASSERT2								(int(tpALifeTrader->m_dwMoney) >= 0,"Trader must have enough money to pay for the artefacts!");
 
-	vfAttachGatheredItems(tpALifeHumanAbstract,tpALifeTraderAbstract,m_tpBlockedItems1);
-	vfAttachGatheredItems(tpALifeTraderAbstract,tpALifeHumanAbstract,m_tpBlockedItems2);
+	vfAttachGatheredItems					(tpALifeHumanAbstract,tpALifeTrader,m_tpBlockedItems1);
+	vfAttachGatheredItems					(tpALifeTrader,tpALifeHumanAbstract,m_tpBlockedItems2);
 
 	// update events
 #pragma todo("Dima to Dima: Update events")

@@ -162,12 +162,13 @@ public:
 			void					vfNewGame					(LPCSTR						caSaveName);
 			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool					bALifeRequest = true);
 	// miscellanious
-			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract	*tpALifeTraderAbstract);
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
 			void					vfAppendItemVector			(OBJECT_VECTOR				&tObjectVector,				ITEM_P_VECTOR			&tItemList);
 			ECombatAction			tfChooseCombatAction		(int						iCombatGroupIndex);
 			ERelationType			tfGetRelationType			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract*tpALifeMonsterAbstract2);
 			CSE_Abstract			*tpfCreateGroupMember		(CSE_ALifeGroupAbstract		*tpALifeGroupAbstract,		CSE_ALifeDynamicObject	*j);
+	// trading routines
+			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTrader			*tpALifeTrader);
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

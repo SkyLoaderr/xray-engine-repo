@@ -13,6 +13,12 @@
 #include "xrServer_Objects_ALife_Items.h"
 #endif
 
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+class CSE_ALifeObjectRegistry;
+#endif
+#endif
+
 #include "xrServer_Objects_ALife.h"
 
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
@@ -26,24 +32,32 @@ public:
 	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
+#ifndef _EDITOR
+#ifndef AI_COMPILER
 			void					vfAttachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
 			void					vfDetachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	OBJECT_IT	*I = 0,			bool bALifeRequest = true,	bool bRemoveChildren = true);
 			void					vfInitInventory			();
+#endif
+#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
 	_ORGANIZATION_ID				m_tOrgID;
+	ARTEFACT_TRADER_ORDER_VECTOR	m_tpOrderedArtefacts;
+	TRADER_SUPPLY_VECTOR			m_tpSupplies;
+
 
 									CSE_ALifeTrader	(LPCSTR caSection);
 	virtual							~CSE_ALifeTrader();
-
 #ifdef _EDITOR
 	int 							supplies_count;
     void __fastcall   				OnSuppliesCountChange	(PropValue* sender);
 #endif    
-    
-	ARTEFACT_TRADER_ORDER_VECTOR	m_tpOrderedArtefacts;
-	TRADER_SUPPLY_VECTOR			m_tpSupplies;
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+			u32						dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem, CSE_ALifeObjectRegistry *tpALifeObjectRegistry);
+#endif
+#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_ALifeSchedulable,CSE_Shape)

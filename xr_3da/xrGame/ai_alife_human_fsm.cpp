@@ -161,9 +161,9 @@ void CSE_ALifeHumanAbstract::vfBringToCustomer()
 		m_dwCurNode = 0;
 		if (int(m_dwCurTaskID) > 0) {
 			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
-			CSE_ALifeTraderAbstract	*l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
-			if (l_tpTraderAbstract)
-				m_tpALife->vfCommunicateWithCustomer(this,l_tpTraderAbstract);
+			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
+			if (l_tpTrader)
+				m_tpALife->vfCommunicateWithCustomer(this,l_tpTrader);
 		}
 		m_tTaskState = eTaskStateChooseTask;
 	}
