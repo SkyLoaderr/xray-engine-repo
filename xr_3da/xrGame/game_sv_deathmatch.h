@@ -63,7 +63,8 @@ protected:
 //	void							KillPlayer				(ClientID id_who);
 
 
-	virtual	void					CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
+	virtual		void				CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
+	virtual		bool				HasChampion				();
 public:
 									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
 	virtual		void				Create					(shared_str &options);
@@ -78,6 +79,7 @@ public:
 
 	// Events
 	virtual		void				OnRoundStart			();												// старт раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда
 	virtual		void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit

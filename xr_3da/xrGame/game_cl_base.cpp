@@ -261,58 +261,7 @@ void game_cl_GameState::shedule_Update		(u32 dt)
 void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
 	HUD().GetUI()->StartStopMenu(pDialog, bDoHideIndicators);
-
-/*	if( pDialog->IsShown() )
-		StopMenu(pDialog, bDoHideIndicators);
-	else
-		StartMenu(pDialog, bDoHideIndicators);
-
-	xr_vector<CUIWindow*>::iterator it = std::find(m_game_ui_custom->m_dialogsToErase.begin(), m_game_ui_custom->m_dialogsToErase.end(), pDialog);
-	if (m_game_ui_custom->m_dialogsToErase.end() != it)
-		m_game_ui_custom->m_dialogsToErase.erase(it);
-*/
-
 }
-
-/*
-void game_cl_GameState::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
-{
-	HUD().GetUI()->
-	if (m_game_ui_custom->MainInputReceiver() != NULL) return;
-
-	R_ASSERT( !pDialog->IsShown() );
-	R_ASSERT( m_game_ui_custom->MainInputReceiver() == NULL );
-
-	m_game_ui_custom->AddDialogToRender(pDialog);
-	m_game_ui_custom->SetMainInputReceiver(pDialog);
-	pDialog->Show();
-
-	if(bDoHideIndicators){
-		HUD().GetUI()->HideIndicators();
-		HUD().GetUI()->ShowCursor();
-		m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
-		if(m_bCrosshair) 
-			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
-	}
-
-}
-
-void game_cl_GameState::StopMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
-{
-	R_ASSERT( pDialog->IsShown() );
-	R_ASSERT( m_game_ui_custom->MainInputReceiver()==pDialog );
-
-	m_game_ui_custom->RemoveDialogToRender(pDialog);
-	m_game_ui_custom->SetMainInputReceiver(NULL);
-	pDialog->Hide();
-
-	if(bDoHideIndicators){
-	HUD().GetUI()->ShowIndicators();
-	HUD().GetUI()->HideCursor();
-	if(m_bCrosshair) 
-		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
-	};
-}*/
 
 void game_cl_GameState::sv_GameEventGen(NET_Packet& P)
 {

@@ -95,6 +95,26 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	///////////////////////////////////////////
 }
 
+void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
+{
+	switch (Phase())
+	{
+	case GAME_PHASE_INPROGRESS:
+		{
+			u32		cnt = get_players_count();
+			for		(u32 it=0; it<cnt; ++it)	
+			{
+				xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+				game_PlayerState* ps	= l_pC->ps;
+				if (!ps) continue;
+				if (ps->Skip) continue;
+				SpawnPlayer(get_it_2_id(it), "spectator");
+			};
+		}break;
+	}
+	inherited::OnRoundEnd(reason);
+};
+
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed)
 {
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
@@ -245,6 +265,7 @@ bool game_sv_Deathmatch::checkForTimeLimit()
 {
 	if (timelimit && ((Level().timeServer()-start_time)) > u32(timelimit) )
 	{
+		if (!HasChampion()) return false;
 		OnTimelimitExceed();
 		return true;
 	};
@@ -1489,4 +1510,36 @@ void	game_sv_Deathmatch::check_ForceRespawn		()
 			SpawnWeaponsForActor(l_pC->owner, ps);
 		}
 	};
+};
+
+bool	game_sv_Deathmatch::HasChampion()
+{
+	game_PlayerState* res = NULL;
+	s16 MaxFrags	= -1;
+
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!ps) continue;
+		if (ps->kills > MaxFrags)
+		{
+			MaxFrags = ps->kills;
+			res = ps;
+		}
+	};
+
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!ps) continue;
+		if (ps->kills == MaxFrags && ps != res)
+		{
+			return false;
+		}
+	};
+
+	return (MaxFrags>0);
 };

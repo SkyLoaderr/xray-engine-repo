@@ -375,3 +375,24 @@ void game_cl_mp::LoadTeamData			(char* TeamName)
 	};
 	TeamList.push_back(Team);
 }
+
+void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
+{
+	switch (new_phase)
+	{
+	case GAME_PHASE_INPROGRESS:
+		{
+			if (HUD().GetUI())
+			{
+				HUD().GetUI()->ShowIndicators();
+			};
+		}break;
+	default:
+		{
+			if (HUD().GetUI())
+			{
+				HUD().GetUI()->HideIndicators();
+			};
+		}break;
+	}
+}

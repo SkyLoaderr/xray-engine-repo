@@ -52,9 +52,6 @@ protected:
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 				void				CommonMessageOut		(LPCSTR msg);
 
-//				void				StartMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-//				void				StopMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-
 	virtual		float				shedule_Scale			();
 
 				void				sv_GameEventGen			(NET_Packet& P);

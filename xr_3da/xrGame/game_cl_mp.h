@@ -59,6 +59,8 @@ public :
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);
 
+	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_cl_mp)

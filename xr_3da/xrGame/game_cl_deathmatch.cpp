@@ -301,7 +301,7 @@ string16 places[] = {
 
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
-	//fake
+	//fake	
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
 	if(m_game_ui)
 	{
@@ -437,8 +437,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		}break;
 	case GAME_PHASE_PLAYER_SCORES:
 		{
-			HUD().GetUI()->HideIndicators();
-			GetUICursor()->Hide();
+//			HUD().GetUI()->HideIndicators();
+//			GetUICursor()->Hide();
 			string128 resstring;
 			sprintf(resstring, "Player %s wins the match!", WinnerName);
 			m_game_ui->SetRoundResultCaption(resstring);
