@@ -341,7 +341,13 @@ void CRender::Calculate()
 
 				// renderable
 				IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-				VERIFY							(renderable);
+				if (0==renderable)	
+				{
+					// It may be an glow
+					CGlow*		glow			= dynamic_cast<CGlow*>(spatial);
+					VERIFY						(glow);
+					L_Glows->add				(glow);
+				}
 
 				// Occlusion
 				vis_data&		v_orig			= renderable->renderable.visual->vis;
@@ -356,8 +362,8 @@ void CRender::Calculate()
 				// Rendering
 				set_Object						(renderable);
 				renderable->renderable_Render	();
-				set_Object						(0);
-#pragma todo("Oles to Oles: verify if it is needed at all")
+				set_Object						(0);	//? is it needed at all
+				break;	// exit loop on frustums
 			}
 		}
 		g_pGameLevel->pHUD->Render_Last						();	

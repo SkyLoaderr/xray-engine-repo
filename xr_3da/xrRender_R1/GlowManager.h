@@ -6,13 +6,12 @@
 #define AFX_GLOWMANAGER_H__EC35911F_479B_469A_845C_1A64D81D0326__INCLUDED_
 #pragma once
 
+#include "..\ispatial.h"
 #include "..\xr_collide_defs.h"
 
-class CGlow  
+class CGlow				: public ISpatial
 {
 public:
-	Fvector				C;
-	float				R;
 	float				fade;
 	ref_shader			hShader;
 	u32					dwFrame;
@@ -26,16 +25,15 @@ public:
 
 class CGlowManager 
 {
-	xr_vector<CGlow>		Glows;
-	CGlow*					Selected[MAX_GlowsPerFrame];
-	u32						Selected_Count;
+	xr_vector<CGlow*>		Glows;
+	xr_vector<CGlow*>		Selected;
 	ref_geom				hGeom;
 
 	u32						dwTestID;
 public:
-	void	add				(xr_vector<WORD> &V);
+	void	add				(CGlow		*G);
 
-	void	Load			(IReader *fs);
+	void	Load			(IReader	*fs);
 	void	Unload			();
 
 	void	Render			();
