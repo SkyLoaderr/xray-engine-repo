@@ -57,7 +57,10 @@
       Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
       Intermediate\SkeletonX.obj Intermediate\xrBoneLerp.obj 
       Intermediate\BodyInstance.obj Intermediate\ExportSkeleton.obj 
-      Intermediate\xrXRC.obj"/>
+      Intermediate\xrXRC.obj Intermediate\Blender_Blur.obj 
+      Intermediate\SH_RT.obj Intermediate\SH_VS.obj 
+      Intermediate\Blender_Shadow_World.obj 
+      Intermediate\Blender_Shadow_Texture.obj Intermediate\CustomObjectMisc.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

@@ -100,19 +100,19 @@ void CParticleTools::Render(){
 	if (m_TestObject)
     	m_TestObject->RenderSingle();
 	if (m_EditObject)
-    	m_EditObject->RenderSingle(precalc_identity);
+    	m_EditObject->RenderSingle(Fidentity);
 }
 
 void CParticleTools::Update(){
 	if (!m_bReady) return;
 	if (m_TestObject){
-    	m_TestObject->RTL_Update(Device.fTimeDelta);
+    	m_TestObject->OnFrame();
         if (m_TestObject->IsPlaying())	fraLeftBar->lbCurState->Caption = "generate&&playing";
         else 							fraLeftBar->lbCurState->Caption = m_TestObject->ParticleCount()?"playing":"stopped";
         fraLeftBar->lbParticleCount->Caption 	= m_TestObject->ParticleCount();
     }
 	if (m_EditObject)
-    	m_EditObject->RTL_Update(Device.fTimeDelta);
+    	m_EditObject->OnFrame();
 }
 
 void CParticleTools::ZoomObject(BOOL bObjectOnly){
@@ -363,7 +363,7 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
             Fvector p;
             float dist=UI.ZFar();
             SRayPickInfo pinf;
-            if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,precalc_identity,&pinf)){
+            if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
                 R_ASSERT(pinf.e_mesh);
                 m_EditPS.m_DefaultEmitter.m_Position.set(pinf.pt);
             }
@@ -384,7 +384,7 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
         m_MovingReminder.set(0,0,0);
     }break;
     case eaRotate:{
-        m_RotateCenter.set( UI.pivot() );
+        m_RotateCenter.set(0,0,0);
         m_RotateVector.set(0,0,0);
         if (fraTopBar->ebAxisX->Down) m_RotateVector.set(0,1,0);
         else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(1,0,0);
@@ -392,7 +392,7 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
         m_fRotateSnapAngle = 0;
     }break;
     case eaScale:{
-		m_ScaleCenter.set( UI.pivot() );
+		m_ScaleCenter.set(0,0,0);
     }break;
     }
     UpdateEmitter();
@@ -414,7 +414,7 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
     case eaMove:{
     	Fvector amount;
         amount.mul( m_MovingXVector, UI.m_MouseSM * UI.m_DeltaCpH.x );
-        amount.direct( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
+        amount.mad( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
 
         if( fraTopBar->ebMSnap->Down ){
         	CHECK_SNAP(m_MovingReminder.x,amount.x,UI.movesnap());
@@ -435,7 +435,7 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
         case PS::SEmitterDef::emBox:
         case PS::SEmitterDef::emSphere: 	break;
         case PS::SEmitterDef::emCone:
-        	m_EditPS.m_DefaultEmitter.m_ConeHPB.direct(m_TestObject->m_Emitter.m_ConeHPB,m_RotateVector,amount);
+        	m_EditPS.m_DefaultEmitter.m_ConeHPB.mad(m_TestObject->m_Emitter.m_ConeHPB,m_RotateVector,amount);
             m_EditPS.m_DefaultEmitter.UpdateConeOrientation();
         break;
         }

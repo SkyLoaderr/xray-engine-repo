@@ -127,6 +127,12 @@ USEUNIT("Editor\ExportSkeleton.cpp");
 USELIB("Lib\xrCDB.lib");
 USEUNIT("Engine\xrXRC.cpp");
 USELIB("Lib\FreeImage.lib");
+USEUNIT("Engine\Blenders\Blender_Blur.cpp");
+USEUNIT("Engine\SH_RT.cpp");
+USEUNIT("Engine\SH_VS.cpp");
+USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
+USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
+USEUNIT("Editor\CustomObjectMisc.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
