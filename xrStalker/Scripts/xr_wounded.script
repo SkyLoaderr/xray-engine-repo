@@ -30,7 +30,11 @@ function evaluator_wound:evaluate ()
            return false
        end
     end       
-    return self.object.health < self.a.threshold
+    if self.object.health < self.a.threshold == true then
+       self.a.final = false
+       return true
+    end
+    return false    
 end
 ------------------------------------------------------------------------------------------
 
@@ -45,6 +49,21 @@ end
 ------------
 function evaluator_sit:evaluate ()
     return self.a.sit
+end
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+class "evaluator_final" (property_evaluator) 
+------------
+function evaluator_final:__init (name, storage) super ()
+    self.a = storage
+end
+------------
+function evaluator_final:evaluate ()
+    if self.object.health < self.a.threshold == true and self.a.ignore_time == 0 then 
+       self.a.final = false 
+    end
+    return self.a.final
 end
 ------------------------------------------------------------------------------------------
 
@@ -176,6 +195,7 @@ end
 function action_clear:execute ()
     action_base.execute (self)
     self.a.ignore_time = device ():time_global ()
+    self.a.final = true
 end    
 ------------
 function action_clear:finalize ()
@@ -276,6 +296,40 @@ function action_help:finalize ()
 end    
 ------------------------------------------------------------------------------------------
 
+
+------------------------------------------------------------------------------------------
+class "action_stand" (action_base)
+------------
+function action_stand:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.first = false
+end
+------------
+function action_stand:initialize ()
+    action_base.initialize (self)
+    self.first = false
+end
+------------
+function action_stand:execute ()
+    action_base.execute (self)
+    
+    if self.first == false then
+       self.first = true
+       self.object:clear_animations ()
+       self.object:add_animation ("waunded_stand_uo_0", true)
+    end
+    
+    if self.object:animations_count () == 0 then
+       self.a.final = true
+    end    
+    
+end    
+------------
+function action_stand:finalize ()
+    action_base.finalize (self)
+end    
+------------------------------------------------------------------------------------------
+
 ------------------------------------------------------------------------------------------
 class "action_enemy" (action_base)
 ------------
@@ -324,11 +378,14 @@ function add_to_binder (object, char_ini)
     local operators     = {}
     local properties    = {}
     
+    printf ("BASE = %d", xr_evaluators_id.sidor_wounded_base + 0)
+    
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
     properties["sit"]           =   xr_evaluators_id.sidor_wounded_base + 2
     properties["friend"]        =   xr_evaluators_id.sidor_wounded_base + 3
     properties["cover"]         =   xr_evaluators_id.sidor_wounded_base + 4
+    properties["final"]         =   xr_evaluators_id.sidor_wounded_base + 5
     
     operators["cover"]          =   xr_actions_id.sidor_act_wounded_base + 0
     operators["sit"]            =   xr_actions_id.sidor_act_wounded_base + 1
@@ -337,6 +394,7 @@ function add_to_binder (object, char_ini)
     operators["friend"]         =   xr_actions_id.sidor_act_wounded_base + 4
     operators["enemy"]          =   xr_actions_id.sidor_act_wounded_base + 5
     operators["clear"]          =   xr_actions_id.sidor_act_wounded_base + 6
+    operators["stand"]          =   xr_actions_id.sidor_act_wounded_base + 7
     
     this.set_wounded (object)
     
@@ -346,12 +404,14 @@ function add_to_binder (object, char_ini)
     manager:add_evaluator (properties["sit"],       this.evaluator_sit          ("sit_down", xr_motivator.storage[object:id()].wounded))
     manager:add_evaluator (properties["friend"],    this.evaluator_friend       ("see_friend", xr_motivator.storage[object:id()].wounded))
     manager:add_evaluator (properties["cover"],     this.evaluator_cover        ("in_cover", xr_motivator.storage[object:id()].wounded))
+    manager:add_evaluator (properties["final"],     this.evaluator_final        ("final", xr_motivator.storage[object:id()].wounded))
 
     local action = this.action_cover ("action_cover", xr_motivator.storage[object:id()].wounded)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
+    action:add_precondition (world_property (properties["final"],           false))
     action:add_precondition (world_property (properties["cover"],           false))
     action:add_effect       (world_property (properties["cover"],           true))
    	manager:add_action      (operators["cover"], action)
@@ -361,8 +421,10 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (stalker_ids.property_enemy,    true))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
+    action:add_precondition (world_property (properties["final"],           false))
     action:add_precondition (world_property (properties["cover"],           false))
-    action:add_effect       (world_property (properties["wound"],           false))
+    --action:add_effect       (world_property (properties["wound"],           false))
+    action:add_effect       (world_property (properties["final"],           true))
    	manager:add_action      (operators["clear"], action)
 
     action = this.action_sit ("action_sit", xr_motivator.storage[object:id()].wounded)
@@ -372,6 +434,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["sit"],             false))
+    action:add_precondition (world_property (properties["final"],           false))
     action:add_effect       (world_property (properties["sit"],             true))
    	manager:add_action      (operators["sit"], action)
     
@@ -382,6 +445,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["friend"],          false))
+    action:add_precondition (world_property (properties["final"],           false))
     action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["idle"], action)
@@ -393,9 +457,22 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["friend"],          true))
+    action:add_precondition (world_property (properties["final"],           false))
     action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["help"], action)
+
+    action = this.action_stand ("action_stand", xr_motivator.storage[object:id()].wounded)
+    action:add_precondition (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition (world_property (properties["enable"],          true))
+    action:add_precondition (world_property (properties["wound"],           false))
+    action:add_precondition (world_property (properties["cover"],           true))
+    --action:add_precondition (world_property (properties["friend"],          true))
+    action:add_precondition (world_property (properties["sit"],             true))
+    action:add_precondition (world_property (properties["final"],           false))
+    action:add_effect       (world_property (properties["final"],           true))
+   	manager:add_action      (operators["stand"], action)
 
     action = this.action_enemy ("action_enemy", xr_motivator.storage[object:id()].wounded)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
@@ -404,14 +481,17 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["sit"],             true))
-    action:add_effect       (world_property (properties["wound"],           false))
+    action:add_effect       (world_property (properties["final"],           true))
+    --action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["enemy"], action)
     
     action = manager:action (stalker_ids.action_puzzle_solver)
-    action:add_precondition (world_property (properties["wound"],  false))
+--    action:add_precondition (world_property (properties["wound"],  false))
+    action:add_precondition (world_property (properties["final"],  true))
     
     action = manager:action (stalker_ids.action_combat_planner)
-    action:add_precondition (world_property (properties["wound"],  false))
+--    action:add_precondition (world_property (properties["wound"],  false))
+    action:add_precondition (world_property (properties["final"],  true))
 
 end
 ------------

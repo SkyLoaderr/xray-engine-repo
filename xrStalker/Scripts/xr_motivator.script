@@ -273,7 +273,8 @@ xr_motivator.storage[self.object:id ()].wounded =
     sit = false,
     cover = false,
     npc = nil,
-    ignore_time = 0
+    ignore_time = 0,
+    final = true
     }
 xr_wounded.add_to_binder (self.object, char_ini)
 
