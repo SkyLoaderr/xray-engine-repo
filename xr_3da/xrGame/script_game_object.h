@@ -59,14 +59,6 @@ class CScriptTask;
 class CScriptSoundInfo;
 class CScriptMonsterHitInfo;
 class CScriptBinderObject;
-template <typename T> class CMotivation;
-template <typename T> class CMotivationAction;
-template <
-	typename _object_type,
-	template <typename _object_type> class _motivation_type,
-	template <typename _object_type> class _motivation_action_type
->
-class CMotivationActionManager;
 class CAbstractVertexEvaluator;
 class CCoverPoint;
 class CScriptIniFile;
@@ -252,7 +244,8 @@ public:
 			CScriptSoundInfo		GetSoundInfo	();
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
-			CMotivationActionManager<CScriptGameObject,CMotivation,CMotivationAction>	*motivation_action_manager();
+			template <typename T>
+			T	*motivation_action_manager();
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////

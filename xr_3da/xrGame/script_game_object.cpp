@@ -526,14 +526,6 @@ void CScriptGameObject::bind_object			(CScriptBinderObject *object)
 		binder->set_object	(object);
 }
 
-CMotivationActionManager<CScriptGameObject>	*CScriptGameObject::motivation_action_manager()
-{
-	CMotivationActionManager<CScriptGameObject>	*manager = dynamic_cast<CMotivationActionManager<CScriptGameObject>*>(m_tpGameObject);
-	if (!manager)
-		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
-	return					(manager);
-}
-
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

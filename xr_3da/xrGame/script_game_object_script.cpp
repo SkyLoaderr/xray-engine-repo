@@ -28,6 +28,20 @@
 
 using namespace luabind;
 
+template <typename T>
+T	*CScriptGameObject::motivation_action_manager()
+{
+	T	*manager = dynamic_cast<T*>(m_tpGameObject);
+	if (!manager)
+		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
+	return					(manager);
+}
+
+CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj)
+{
+	return		(obj->motivation_action_manager<CScriptMotivationActionManager>());
+}
+
 void CScriptGameObject::script_register(lua_State *L)
 {
 	module(L)
@@ -150,7 +164,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("get_sound_info",				&CScriptGameObject::GetSoundInfo)
 			.def("get_monster_hit_info",		&CScriptGameObject::GetMonsterHitInfo)
 			.def("bind_object",					&CScriptGameObject::bind_object,adopt(_2))
-			.def("motivation_action_manager",	&CScriptGameObject::motivation_action_manager)
+			.def("motivation_action_manager",	&script_motivation_action_manager)
 			.def("set_visible",					&CScriptGameObject::set_visible)
 
 			// movement manager
