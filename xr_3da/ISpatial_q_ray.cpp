@@ -200,6 +200,7 @@ public:
 	ICF BOOL		_box_sse	(const Fvector& n_C, const float n_R, float&  dist )
 	{
 		aabb_t		box;
+		float		n_vR	=		2*n_R;
 		box.min.set	(n_C.x-n_vR, n_C.y-n_vR, n_C.z-n_vR);	box.min.pad = 0;
 		box.max.set	(n_C.x+n_vR, n_C.y+n_vR, n_C.z+n_vR);	box.max.pad = 0;
 		return 		isect_sse		(box,ray,dist);
@@ -230,9 +231,9 @@ public:
 			Fvector&		sC	= S->spatial.center;
 			float			sR	= S->spatial.radius;
 
-			Fvector Q;			Q.sub(sC,start);
+			Fvector Q;			Q.sub				(sC,ray.pos);
 			float	c_sqr		= Q.square_magnitude();
-			float	v			= Q.dotproduct		(dir);
+			float	v			= Q.dotproduct		(ray.fwd_dir);
 			float	d			= sR*sR - (c_sqr - v*v);
 			if (d > 0)			{
 				// sphere intersected (assume object intersects too)
