@@ -54,7 +54,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	lanim					= LALib.FindItem(lamp->color_animator);
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
-	PSkeletonAnimated(Visual())->PlayCycle("idle");
+	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated(Visual())->PlayCycle("idle");
 	//PKinematics(Visual())->Calculate();
 	setVisible(true);
 	setEnabled(true);
