@@ -19,6 +19,8 @@ public:
 	void				UpdateSector	(IRender_Sector* sect);
 	void				UpdateParent	(const Fmatrix& m, const Fvector* vel=0);
 	void				play_at_pos		(const Fvector& pos);
+	void				Play			();
+	void				Stop			();
 };
 #endif /*PGObjectH*/
 

@@ -27,6 +27,18 @@ CPGObject::~CPGObject()
 }
 
 //----------------------------------------------------
+void CPGObject::Play()
+{
+	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);
+	V->Play			();
+}
+
+void CPGObject::Stop()
+{
+	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);
+	V->Stop			();
+}
+
 void CPGObject::play_at_pos(const Fvector& pos)
 {
 	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);

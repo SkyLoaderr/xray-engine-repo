@@ -39,9 +39,10 @@ public:
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
     void				RenamePG		(PS::CPGDef* src, LPCSTR new_name);
 
+#ifdef _EDITOR
 	LPCSTR				GetCurrentPG	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPG[0])?ChoosePG():(m_CurrentPG[0]?m_CurrentPG:0);}
     LPCSTR				ChoosePG		();
-
+#endif
     void				Reload			();
     void				Save			();
 
