@@ -41,7 +41,7 @@ void CGameMtlLibrary::Load()
 {
 	string256			name;
 	if (!FS.exist(name,	_game_data_,GAMEMTL_FILENAME)){
-    	Log				("! Can't find game material file '%s'",name);
+    	Log				("! Can't find game material file: ",name);
     	return;
     }
 
