@@ -133,6 +133,7 @@ void CActor::steer_Vehicle(float angle)
 	else if(angle>0.f)	PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
 	else				PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
 }
+
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (g_Alive())

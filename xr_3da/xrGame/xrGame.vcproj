@@ -3340,7 +3340,13 @@
 							RelativePath=".\Actor_Flags.h">
 						</File>
 						<File
+							RelativePath=".\Actor_Movement.cpp">
+						</File>
+						<File
 							RelativePath=".\Actor_Network.cpp">
+						</File>
+						<File
+							RelativePath=".\Actor_Weapon.cpp">
 						</File>
 						<File
 							RelativePath=".\ActorAnimation.cpp">

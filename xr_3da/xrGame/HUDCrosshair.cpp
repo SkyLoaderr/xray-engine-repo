@@ -93,19 +93,28 @@ void CHUDCrosshair::OnRender ()
 
 	u32 color = cross_color.get();
 
-	// base rect
+	int x_min = min_radius + radius;
+	int x_max = x_min + cross_length;
+
+	int y_min = x_min;
+	int y_max = x_max;
+
+
+	//int y_min = iFloor(0.5f + float(x_min)*Device.fASPECT);
+	//int y_max = iFloor(0.5f + float(x_max)*Device.fASPECT);
+
 	// 0
-	pv->set					(center.x,center.y + min_radius + radius, color); pv++;
-	pv->set					(center.x,center.y + min_radius +radius + cross_length, color); pv++;
+	pv->set					(center.x,center.y + y_min, color); pv++;
+	pv->set					(center.x,center.y + y_max, color); pv++;
 	// 1
-	pv->set					(center.x,center.y - min_radius - radius , color); pv++;
-	pv->set					(center.x,center.y - min_radius - radius - cross_length, color); pv++;
+	pv->set					(center.x,center.y - y_min , color); pv++;
+	pv->set					(center.x,center.y - y_max, color); pv++;
 	// 2
-	pv->set					(center.x + min_radius + radius, center.y, color); pv++;
-	pv->set					(center.x + min_radius + radius + cross_length, center.y, color); pv++;
+	pv->set					(center.x + x_min, center.y, color); pv++;
+	pv->set					(center.x + x_max, center.y, color); pv++;
 	// 3
-	pv->set					(center.x - min_radius - radius, center.y, color); pv++;
-	pv->set					(center.x - min_radius - radius - cross_length, center.y, color); pv++;
+	pv->set					(center.x - x_min, center.y, color); pv++;
+	pv->set					(center.x - x_max, center.y, color); pv++;
 
 	// render	
 	dwCount 				= u32(pv-pv_start);

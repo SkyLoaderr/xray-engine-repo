@@ -222,7 +222,7 @@ public:
 	virtual const SRotation	Orientation()		const	 { return r_torso; };
 	SRotation				&Orientation()				 { return r_torso; };
 
-
+	void					g_SetAnimation				(u32 mstate_rl);
 	//////////////////////////////////////////////////////////////////////////
 	// HUD
 	//////////////////////////////////////////////////////////////////////////
@@ -301,13 +301,9 @@ public:
 	void					g_cl_Orientate			(u32 mstate_rl, float dt);
 	void					g_sv_Orientate			(u32 mstate_rl, float dt);
 	void					g_Orientate				(u32 mstate_rl, float dt);
-	void					g_Physics				(Fvector& accel, float jump, float dt);
-	void					g_SetAnimation			(u32 mstate_rl);
-	IC static BOOL			isAccelerated			(u32 mstate)	
-	{
-		if (mstate&mcAccel)	return psActorFlags.test(AF_ALWAYSRUN)?FALSE:TRUE ;
-		else				return psActorFlags.test(AF_ALWAYSRUN)?TRUE :FALSE;
-	}
+
+	static bool				isAccelerated			(u32 mstate);
+	bool					CanAccelerate			();
 
 protected:
 	u32						mstate_wishful;	
@@ -424,6 +420,7 @@ protected:
 	// Actor physics
 	//////////////////////////////////////////////////////////////////////////
 public:
+			void			g_Physics		(Fvector& accel, float jump, float dt);
 	virtual void			ForceTransform	(const Fmatrix &m);
 			void			SetPhPosition	(const Fmatrix& pos);
 
@@ -452,5 +449,5 @@ protected:
 };
 
 extern float	g_fNumUpdates;
-
+extern const float	s_fFallTime;
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
