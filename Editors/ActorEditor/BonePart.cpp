@@ -172,7 +172,7 @@ void __fastcall TfrmBonePart::ExtBtn1Click(TObject *Sender)
     for (k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
     E[0]->Text = "default";
     for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
-        FHelper.AppendObject(T[0],(*it)->Name(),false,true);
+        FHelper.AppendObject(T[0],(*it)->Name().c_str(),false,true);
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
     UpdateCount();
 }

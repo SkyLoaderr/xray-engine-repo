@@ -33,7 +33,7 @@ CMotion*	CActorTools::EngineModel::FindMotionKeys(LPCSTR name)
         CMotionDef* MD	= FindMotionDef(name);	
         if (MD){
             CBoneDataAnimated* BD	= (CBoneDataAnimated*)(&VA->LL_GetData(VA->LL_GetBoneRoot()));
-            return 		&(BD->Motions[MD->motion]);
+            return 		&(BD->Motions->at(MD->motion));
         }
     }
     return 0;
@@ -46,14 +46,14 @@ void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, 
     	CSkeletonAnimated* V	= dynamic_cast<CSkeletonAnimated*>(m_pVisual);
 		if (V){
             // cycles
-            CSkeletonAnimated::mdef::const_iterator I,E;
-            I = V->m_cycle->begin(); 
-            E = V->m_cycle->end();                  
+            mdef::const_iterator I,E;
+            I = V->motions.cycle()->begin(); 
+            E = V->motions.cycle()->end();                  
             for ( ; I != E; ++I) 
                 LHelper().CreateItem(items, PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
             // fxs
-            I = V->m_fx->begin(); 
-            E = V->m_fx->end(); 
+            I = V->motions.fx()->begin(); 
+            E = V->motions.fx()->end(); 
             for ( ; I != E; ++I)
                 LHelper().CreateItem(items, PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
         }

@@ -238,7 +238,7 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
         m_BoneParts.clear		();
         if (SM->m_Flags.is(esmFX)){
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++)
-				m_BoneParts.push_back	(xr_rtoken((*it)->Name(),(*it)->index));
+				m_BoneParts.push_back	(xr_rtoken((*it)->Name().c_str(),(*it)->index));
 			PHelper().CreateRToken16 	(items,PrepareKey(pref,"Motion\\FX\\Start bone"),	(u16*)&SM->m_BoneOrPart,	&*m_BoneParts.begin(), m_BoneParts.size());
 
             PHelper().CreateFloat		(items,PrepareKey(pref,"Motion\\FX\\Power"),	 	&SM->fPower,   	0.f,10.f,0.01f,2);

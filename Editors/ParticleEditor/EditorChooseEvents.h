@@ -200,8 +200,8 @@ void __stdcall  FillSkeletonAnims(ChooseItemVec& items, void* param)
 {
 	IRender_Visual* V 				= ::Render->model_Create((LPCSTR)param);
     if (PSkeletonAnimated(V)){
-        CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(V)->LL_Motions();
-        CSkeletonAnimated::accel_map::iterator _I, _E;
+        accel_map *ll_motions		= PSkeletonAnimated(V)->LL_Motions();
+        accel_map::iterator 		_I, _E;
         _I							= ll_motions->begin();
         _E							= ll_motions->end();
         for (; _I!=_E; ++_I) 		items.push_back(SChooseItem(*_I->first,""));
