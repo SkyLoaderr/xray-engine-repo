@@ -10,7 +10,11 @@
 CBlender_Model::CBlender_Model()
 {
 	description.CLS		= B_MODEL;
-	description.version	= 0;
+	description.version	= 1;
+	oAREF.value			= 32;
+	oAREF.min			= 0;
+	oAREF.max			= 255;
+	oBlend.value		= FALSE;
 }
 
 CBlender_Model::~CBlender_Model()
@@ -20,12 +24,29 @@ CBlender_Model::~CBlender_Model()
 
 void	CBlender_Model::Save	( IWriter& fs	)
 {
-	IBlender::Save	(fs);
+	IBlender::Save		(fs);
+	xrPWRITE_PROP		(fs,"Use alpha-channel",	xrPID_BOOL,		oBlend);
+	xrPWRITE_PROP		(fs,"Alpha ref",			xrPID_INTEGER,	oAREF);
 }
 
 void	CBlender_Model::Load	( IReader& fs, u16 version)
 {
 	IBlender::Load		(fs,version);
+
+	switch (version)	
+	{
+	case 0: 
+		oAREF.value			= 32;
+		oAREF.min			= 0;
+		oAREF.max			= 255;
+		oBlend.value		= FALSE;
+		break;
+	case 1:
+	default:
+		xrPREAD_PROP	(fs,xrPID_BOOL,		oBlend);
+		xrPREAD_PROP	(fs,xrPID_INTEGER,	oAREF);
+		break;
+	}
 }
 
 void	CBlender_Model::Compile	(CBlender_Compile& C)
@@ -46,16 +67,21 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
+		LPCSTR	sname		= 0;
 		switch (C.iElement)	
 		{
 		case 0:	// Highest LOD
-			C.r_Pass			("r1_model_def_hq","r1_model_def_hq",TRUE);
+			sname				= "r1_model_def_hq"; 
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler			("s_lmap",	"$user$projector", D3DTADDRESS_CLAMP, D3DTEXF_LINEAR, D3DTEXF_NONE,D3DTEXF_LINEAR);
 			C.r_End				();
 			break;
 		case 1:	// Lowest LOD
-			C.r_Pass			("r1_model_def_lq","r1_model_def_lq",TRUE);
+			sname				= "r1_model_def_lq"; 
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_End				();
 			break;
