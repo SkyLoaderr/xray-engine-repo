@@ -3,6 +3,9 @@
 // given a pointer `p' to a dContactGeom, return the dContactGeom at
 // p + skip bytes.
 
+#define M_SIN_PI_3		REAL(0.8660254037844386467637231707529362)
+#define M_COS_PI_3		REAL(0.5000000000000000000000000000000000)
+
 struct dxCylinder {	// cylinder
   dReal radius,lz;	// radius, length along y axis //
 };
@@ -529,19 +532,64 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1]
   else {
    
     dReal sign,cos1,cos3,factor;
-    for (i=0; i<3; ++i) vertex[i] = p1[i];
-    cos1 = dDOT14(normal,R1+0) ;
+	dVector3 center;
+     cos1 = dDOT14(normal,R1+0) ;
 	cos3 = dDOT14(normal,R1+2);
 	factor=dSqrt(cos1*cos1+cos3*cos3);
 	factor= factor ? factor : 1.f;
 	cos1/=factor;
 	cos3/=factor;
-    for (i=0; i<3; ++i) vertex[i] += cos1 * radius * R1[i*4];
+	sign = (dDOT14(normal,R1+1) > 0) ? REAL(1.0) : REAL(-1.0);
 
-    sign = (dDOT14(normal,R1+1) > 0) ? REAL(1.0) : REAL(-1.0);
-    for (i=0; i<3; ++i) vertex[i] += sign * hlz * R1[i*4+1];
-   
-    for (i=0; i<3; ++i) vertex[i] += cos3 * radius * R1[i*4+2];
+	for (i=0; i<3; ++i) center[i] = p1[i]+sign * hlz * R1[i*4+1];
+	for (i=0; i<3; ++i) vertex[i] = center[i]+cos1 * radius * R1[i*4];
+	for (i=0; i<3; ++i) vertex[i] += cos3 * radius * R1[i*4+2];
+	if(*code<4)
+	{
+			
+			dReal A1,A3,centerDepth,Q1,Q3;
+			centerDepth=*depth-radius*sQ21;
+			Q1=Q11;Q3=Q31;
+			int ret=1;
+			switch(*code) {
+			//case 1:
+			//	centerDepth=*depth-radius*sQ21;
+			//	Q1=Q11;Q3=Q31;
+			//	break;
+			case 2:
+				centerDepth=*depth-radius*sQ22;
+				Q1=Q12;Q3=Q32;
+				break;
+			case 3:
+				centerDepth=*depth-radius*sQ23;
+				Q1=Q13;Q3=Q33;
+				break;
+			
+			}
+			
+			A1=(-cos1*M_COS_PI_3-cos3*M_SIN_PI_3)*radius;
+			A3=(-cos3*M_COS_PI_3+cos1*M_SIN_PI_3)*radius;
+			CONTACT(contact,ret*skip)->pos[0]=center[0]+A1*R1[0]+A3*R1[2];
+			CONTACT(contact,ret*skip)->pos[1]=center[1]+A1*R1[4]+A3*R1[6];
+			CONTACT(contact,ret*skip)->pos[2]=center[2]+A1*R1[8]+A3*R1[10];
+			CONTACT(contact,ret*skip)->depth=centerDepth+Q1*A1+Q3*A3;
+
+			if(CONTACT(contact,ret*skip)->depth>0.f)++ret;
+
+			A1=(-cos1*M_COS_PI_3+cos3*M_SIN_PI_3)*radius;
+			A3=(-cos3*M_COS_PI_3-cos1*M_SIN_PI_3)*radius;
+			CONTACT(contact,ret*skip)->pos[0]=center[0]+A1*R1[0]+A3*R1[2];
+			CONTACT(contact,ret*skip)->pos[1]=center[1]+A1*R1[4]+A3*R1[6];
+			CONTACT(contact,ret*skip)->pos[2]=center[2]+A1*R1[8]+A3*R1[10];
+			CONTACT(contact,ret*skip)->depth=centerDepth+Q1*A1+Q3*A3;
+
+			if(CONTACT(contact,ret*skip)->depth>0.f)++ret;
+
+			for (i=0; i<3; ++i) contact[0].pos[i] = vertex[i];
+			contact[0].depth = *depth;
+		return ret;
+	}
+
   }
   for (i=0; i<3; ++i) contact[0].pos[i] = vertex[i];
   contact[0].depth = *depth;
