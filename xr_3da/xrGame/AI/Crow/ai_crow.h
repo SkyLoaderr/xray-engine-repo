@@ -41,13 +41,13 @@ class CAI_Crow : public CEntity
 	{
 		typedef			svector<ref_sound,MAX_SND_COUNT>		SoundSVec;
 		SoundSVec		m_Sounds;
-		ref_sound&		GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
-		void			Load		(LPCSTR prefix);
-		void			SetPosition	(const Fvector& pos);
-		void			Unload		();
+		ref_sound&		GetRandom		()	{return m_Sounds[Random.randI(0,m_Sounds.size())];}
+		void			Load			(LPCSTR prefix);
+		void			SetPosition		(const Fvector& pos);
+		void			Unload			();
 	};
 public:
-	void				OnHitEndPlaying(CBlend* B);
+	void				OnHitEndPlaying	(CBlend* B);
 protected:
 	
 	struct SCrowAnimations
@@ -98,34 +98,40 @@ protected:
 public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
-	virtual void	Load			( LPCSTR section );
-			void	init			();
-	virtual BOOL	net_Spawn		( CSE_Abstract* DC );
-	virtual void	net_Destroy		();
+	virtual void	Load						( LPCSTR section );
+			void	init						();
+	virtual BOOL	net_Spawn					( CSE_Abstract* DC );
+	virtual void	net_Destroy					();
 	virtual BOOL	renderable_ShadowGenerate	()			{ return FALSE;	}
 	virtual BOOL	renderable_ShadowReceive	()			{ return FALSE;	}
-	virtual void	shedule_Update	(u32 DT);
-	virtual void	UpdateCL		();
+	virtual void	renderable_Render			();
+	virtual void	shedule_Update				(u32 DT);
+	virtual void	UpdateCL					();
+			void	UpdateWorkload				(u32 DT);
 
-	virtual CEntity*cast_entity		()						{return this;}
+	virtual CEntity*cast_entity					()			{return this;}
 
-	virtual void	net_Export		(NET_Packet& P);
-	virtual void	net_Import		(NET_Packet& P);
+	virtual void	net_Export					(NET_Packet& P);
+	virtual void	net_Import					(NET_Packet& P);
 
-	virtual void	g_fireParams	(const CHudItem* /**pHudItem/**/, Fvector& /**P/**/, Fvector& /**D/**/)	{};
-	virtual void	g_WeaponBones	(int &/**L/**/, int &/**R1/**/, int &/**R2/**/)	{};
+	virtual void	g_fireParams				(const CHudItem* /**pHudItem/**/, Fvector& /**P/**/, Fvector& /**D/**/)	{};
+	virtual void	g_WeaponBones				(int &/**L/**/, int &/**R1/**/, int &/**R2/**/)	{};
 
-	virtual void	HitSignal		(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
-	virtual void	HitImpulse		(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);
-	virtual void	Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
-	virtual void	Die				(CObject* who){inherited::Die(who);CreateSkeleton();};
-	virtual	float	ffGetFov		()const {return 150.f;}
-	virtual	float	ffGetRange		()const {return 30.f;}
+	virtual void	HitSignal					(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
+	virtual void	HitImpulse					(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);
+	virtual void	Hit							(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
+	virtual void	Die							(CObject* who);
+	virtual	float	ffGetFov					() const {return 150.f;	}
+	virtual	float	ffGetRange					() const {return 30.f;	}
 
-	virtual BOOL	IsVisibleForHUD	()	{ return FALSE;		}
-	virtual bool	IsVisibleForZones() { return false;		}
-	virtual BOOL	UsedAI_Locations();
-	virtual void	create_physic_shell	();
+	virtual BOOL	IsVisibleForHUD	()			{ return FALSE;		}
+	virtual bool	IsVisibleForZones()			{ return false;		}
+	virtual BOOL	UsedAI_Locations()			;
+	virtual void	create_physic_shell	()		;
+
+	// optimization FAST/SLOW mode
+public:						
+	u32				o_workload_frame	;
 };
 
 #endif

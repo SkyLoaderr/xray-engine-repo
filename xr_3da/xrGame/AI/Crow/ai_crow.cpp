@@ -138,6 +138,9 @@ BOOL CAI_Crow::net_Spawn		(CSE_Abstract* DC)
 	m_Anims.m_fly.Load			(M,"norm_fly_fwd");
 	m_Anims.m_idle.Load			(M,"norm_idle");
 
+	// disable UpdateCL, enable only on HIT
+	processing_deactivate		();
+
 	return		R;
 }
 
@@ -175,63 +178,6 @@ void CAI_Crow::switch2_DeathFall()
 	V.mul(XFORM().k,fSpeed);
 //	m_PhysicMovementControl->SetVelocity(V);
 	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
-}
-
-void CAI_Crow::shedule_Update(u32 DT)
-{
-	spatial.type &=~STYPE_VISIBLEFORAI;
-
-	inherited::shedule_Update(DT);
-
-	if (st_target!=st_current) {
-		switch(st_target){
-		case eFlyUp: 
-			switch2_FlyUp();
-			break;
-		case eFlyIdle:
-			switch2_FlyIdle();
-			break;
-		case eDeathFall:
-			switch2_DeathFall();
-			break;
-		case eDeathDead:
-			switch2_DeathDead();
-			break;
-		}
-		st_current = st_target;
-	}
-
-	switch (st_current){
-	case eFlyIdle:
-		if (Position().y>vOldPosition.y) st_target = eFlyUp;
-		break;
-	case eFlyUp:
-		if (Position().y<=vOldPosition.y) st_target = eFlyIdle;
-		break;
-	case eDeathFall:
-		state_DeathFall();
-		break;
-	}
-	if ((eDeathFall!=st_current)&&(eDeathDead!=st_current)){
-		// At random times, change the direction (goal) of the plane
-		if(fGoalChangeTime<=0){
-			fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
-			Fvector vP;
-			vP.set(Device.vCameraPosition.x,Device.vCameraPosition.y+fMinHeight,Device.vCameraPosition.z);
-			vGoalDir.x = vP.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
-			vGoalDir.y = vP.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
-			vGoalDir.z = vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
-		}
-		fGoalChangeTime-=float(DT)/1000.f;
-		// sounds
-		if (fIdleSoundTime<=0){
-			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
-			//if (st_current==eFlyIdle)
-			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),Position());
-		}
-		fIdleSoundTime-=float(DT)/1000.f;
-	}
-	m_Sounds.m_idle.SetPosition(Position());
 }
 
 void CAI_Crow::state_Flying()
@@ -283,12 +229,8 @@ void CAI_Crow::state_Flying()
 static Fvector vV={0,0,0};
 void CAI_Crow::state_DeathFall()
 {
-	Fvector tAcceleration;
-	tAcceleration.set(0,-10.f,0);
-	//m_PhysicMovementControl->SetPosition(Position());
-	//m_PhysicMovementControl->Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
-	//m_PhysicMovementControl->GetPosition(Position());
-
+	Fvector tAcceleration	;
+	tAcceleration.set		(0,-10.f,0);
 	if (m_pPhysicsShell)
 	{
 		Fvector velocity;
@@ -297,24 +239,83 @@ void CAI_Crow::state_DeathFall()
 	}
 }
 
-void CAI_Crow::UpdateCL()
+void CAI_Crow::Die	()
 {
-	inherited::UpdateCL();
-
-	if (m_pPhysicsShell) {
-		m_pPhysicsShell->Update	();
-		XFORM().set				(m_pPhysicsShell->mXFORM);
-	}
-
-	switch (st_current){
-	case eFlyIdle:
-	case eFlyUp:
+	inherited::Die	(who)	;
+	CreateSkeleton	()		;
+	processing_activate	()	;	// enable UpdateCL for dead crows - especially for physics support
+};
+void CAI_Crow::UpdateWorkload	()
+{
+	if (o_workload_frame	==	Device.dwFrame)	return;
+	o_workload_frame		=	Device.dwFrame	;
+	switch (st_current)		{
+	case eFlyIdle	:
+	case eFlyUp		:
 		state_Flying();
 		break;
-	case eDeathFall:
+	case eDeathFall	:
 		state_DeathFall();
 		break;
 	}
+}
+void CAI_Crow::UpdateCL		()
+{
+	inherited::UpdateCL		();
+	if (m_pPhysicsShell)	{
+		m_pPhysicsShell->Update		();
+		XFORM().set					(m_pPhysicsShell->mXFORM);
+	}
+}
+void CAI_Crow::renderable_Render	()
+{
+	UpdateWorkload					(Device.dwTimeDelta);
+	inherited::renderable_Render	();
+}
+void CAI_Crow::shedule_Update		(u32 DT)
+{
+	spatial.type &=~STYPE_VISIBLEFORAI;
+
+	inherited::shedule_Update(DT);
+
+	if (st_target!=st_current) {
+		switch(st_target)	{
+		case eFlyUp: 		switch2_FlyUp();	break;
+		case eFlyIdle:		switch2_FlyIdle();	break;
+		case eDeathFall:	switch2_DeathFall();break;
+		case eDeathDead:	switch2_DeathDead();break;
+		}
+		st_current = st_target;
+	}
+
+	switch (st_current)		{
+	case eFlyIdle:			if	(Position().y>vOldPosition.y)	st_target = eFlyUp;		break;
+	case eFlyUp:			if	(Position().y<=vOldPosition.y)	st_target = eFlyIdle;	break;
+	case eDeathFall:		state_DeathFall();											break;
+	}
+	if ((eDeathFall!=st_current)&&(eDeathDead!=st_current)){
+		// At random times, change the direction (goal) of the plane
+		if(fGoalChangeTime<=0)	{
+			fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
+			Fvector vP;
+			vP.set(Device.vCameraPosition.x,Device.vCameraPosition.y+fMinHeight,Device.vCameraPosition.z);
+			vGoalDir.x = vP.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
+			vGoalDir.y = vP.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
+			vGoalDir.z = vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
+		}
+		fGoalChangeTime-=float(DT)/1000.f;
+		// sounds
+		if (fIdleSoundTime<=0){
+			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
+			//if (st_current==eFlyIdle)
+			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),Position());
+		}
+		fIdleSoundTime-=float(DT)/1000.f;
+	}
+	m_Sounds.m_idle.SetPosition		(Position());
+
+	// work
+	UpdateWorkload					(DT);
 }
 
 // Core events
@@ -382,12 +383,11 @@ void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, COb
 {
 	bool				first_time = !!g_Alive();
 	
-	fEntityHealth		= 0;
-	set_death_time		();
+	fEntityHealth		= 0	;
+	set_death_time		()	;
 	if (eDeathDead!=st_current) 
 	{	
-		if (first_time)
-			Die			(who);
+		if (first_time)	Die			(who);
 		st_target		= eDeathFall;
 	}
 	else smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
@@ -395,33 +395,17 @@ void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, COb
 //---------------------------------------------------------------------
 void CAI_Crow::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
 {
-	/*
-	switch (st_current){
-	case eDeathDead:{
-		float Q	= float(amount)/m_PhysicMovementControl->GetMass();
-		m_PhysicMovementControl->vExternalImpulse.mad(vWorldDir,Q);
-	}break;
-	}
-*/
-//	if(m_pPhysicsShell) inherited::Hit(amount,vWorldDir,0,0,)
 }
 //---------------------------------------------------------------------
 void CAI_Crow::CreateSkeleton()
 {
-	//m_pPhysicsShell=P_create_Shell();
-	//Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
-	//CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
-	//m_pPhysicsShell->add_Element(E);
-	//m_pPhysicsShell->setMass(0.3f);
-	//m_pPhysicsShell->SetMaterial(smart_cast<CKinematics*>(Visual())->LL_GetData(smart_cast<CKinematics*>(Visual())->LL_GetBoneRoot()).game_mtl_idx);
-	//m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	m_pPhysicsShell=P_build_SimpleShell(this,0.3f,false);
 	m_pPhysicsShell->SetMaterial(smart_cast<CKinematics*>(Visual())->LL_GetData(smart_cast<CKinematics*>(Visual())->LL_GetBoneRoot()).game_mtl_idx);
 }
 
-void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void CAI_Crow::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+	inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
 }
 
 BOOL CAI_Crow::UsedAI_Locations()
