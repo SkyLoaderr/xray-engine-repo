@@ -108,12 +108,18 @@ void CZoneEffector::Update(float dist)
 	float min_r = radius * r_min_perc;
 	float max_r = radius * r_max_perc;
 
-	if (p_effector) {
-		if (dist > max_r) {
+	bool CreateEffector = (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR);
+	
+	if (p_effector) 
+	{
+		if (dist > max_r || !CreateEffector)
+		{
 			p_effector->Destroy();
 			p_effector = 0;
 		}
-	} else if (dist < max_r) Activate();
+	} 
+	else 
+		if (dist < max_r && CreateEffector) Activate();
 	
 	if (p_effector) {
 		float f = (max_r - dist) / (max_r - min_r);
