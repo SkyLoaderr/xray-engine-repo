@@ -58,7 +58,7 @@ float	CAI_Space::u_SqrDistance2Node(const Fvector& P, const NodeCompressed* Node
 	return	best;
 }
 
-Fvector	CAI_Space::tfGetNodeCenter(DWORD dwNodeID)
+Fvector	CAI_Space::tfGetNodeCenter(u32 dwNodeID)
 {
 	return(tfGetNodeCenter(Node(dwNodeID)));
 }
@@ -73,17 +73,17 @@ Fvector	CAI_Space::tfGetNodeCenter(NodeCompressed *tpNode)
 	return(tP0);
 }
 
-float CAI_Space::ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, DWORD dwNodeID1)
+float CAI_Space::ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1)
 {
 	return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),Node(dwNodeID1)));
 }
 
-float CAI_Space::ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, DWORD dwNodeID1)
+float CAI_Space::ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1)
 {
 	return(ffGetDistanceBetweenNodeCenters(tpNode0,Node(dwNodeID1)));
 }
 
-float CAI_Space::ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, NodeCompressed *tpNode1)
+float CAI_Space::ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1)
 {
 	return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),tpNode1));
 }

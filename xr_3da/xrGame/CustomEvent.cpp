@@ -134,13 +134,13 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 	return TRUE;
 }
 
-void CCustomEvent::Update (DWORD dt)
+void CCustomEvent::Update (u32 dt)
 {
 	if (Remote())	return;
 	
 	if (!Contacted.empty()) {
 		CCF_Shape* M = dynamic_cast<CCF_Shape*> (CFORM()); R_ASSERT	(M);
-		for (DWORD i=0; i<Contacted.size(); i++) 
+		for (u32 i=0; i<Contacted.size(); i++) 
 		{
 			// Check if it is still contact us
 			CObject* O = Contacted[i];
@@ -151,7 +151,7 @@ void CCustomEvent::Update (DWORD dt)
 				for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) {
 					if ((it->type==1) && (it->CLS == cls) && (it->count))	{
 						if (it->count != 0xffff)	it->count -= 1;
-						Engine.Event.Signal(it->E,DWORD(it->P1),DWORD(O));
+						Engine.Event.Signal(it->E,u32(it->P1),u32(O));
 					}
 				}
 
@@ -180,7 +180,7 @@ void CCustomEvent::OnNear( CObject* O )
 		for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) {
 			if ((it->type==0) && (it->CLS == cls) && (it->count))	{
 				if (it->count != 0xffff)	it->count -= 1;
-				Engine.Event.Signal(it->E,DWORD(it->P1),DWORD(O));
+				Engine.Event.Signal(it->E,u32(it->P1),u32(O));
 			}
 		}
 	}

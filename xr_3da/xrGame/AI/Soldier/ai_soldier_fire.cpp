@@ -187,7 +187,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	// Iterate on known
-	for (DWORD i=0; i<Known.size(); i++)
+	for (u32 i=0; i<Known.size(); i++)
 	{
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
@@ -246,7 +246,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 
 bool CAI_Soldier::bfCheckForDanger()
 {
-//	DWORD dwCurTime = m_dwCurrentUpdate;
+//	u32 dwCurTime = m_dwCurrentUpdate;
 
 	if (bfAmIHurt())
 		return(true);
@@ -266,7 +266,7 @@ bool CAI_Soldier::bfCheckForDanger()
 	return(m_iSoundIndex > -1);
 }
 
-DWORD CAI_Soldier::tfGetActionType()
+u32 CAI_Soldier::tfGetActionType()
 {
 	if (bfAmIDead())
 		return(ACTION_TYPE_DIE);
@@ -280,7 +280,7 @@ DWORD CAI_Soldier::tfGetActionType()
 
 	CGroup &Group = Squad.Groups[g_Group()];
 
-	DWORD dwMemberCount = this == Leader ? 0 : 1;
+	u32 dwMemberCount = this == Leader ? 0 : 1;
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i]->g_Health() > 0)
 			dwMemberCount++;
@@ -333,7 +333,7 @@ DWORD CAI_Soldier::tfGetActionType()
 #define PM_FRIEND_ACTIVE		-4.f
 #define FORT_FRIEND_ACTIVE		-5.f
 
-DWORD CAI_Soldier::tfGetAloneFightType()
+u32 CAI_Soldier::tfGetAloneFightType()
 {
 	SelectEnemy(Enemy);
 	
@@ -598,7 +598,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 //			return(FIGHT_TYPE_ATTACK);
 }
 
-DWORD CAI_Soldier::tfGetGroupFightType()
+u32 CAI_Soldier::tfGetGroupFightType()
 {
 	objVisible &KnownEnemies = Level().Teams[g_Team()].KnownEnemys;
 	float fFightCoefficient = 0.f, fTempCoefficient;
@@ -934,7 +934,7 @@ float CAI_Soldier::ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCom
 	return(ffCalcSquare(tRotation.yaw,fEyeFov,tNode));
 }
 
-void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
+void CAI_Soldier::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
 {
 	Device.Statistic.AI_Range.Begin	();
 
@@ -985,21 +985,21 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 		vfMarkVisibleNodes(getGroup()->Members[i]);
 
 	Msg("Nodes being checked for suspicious :");
-	for (DWORD it=0; it<AI.q_stack.size(); it++) {
-		DWORD ID = AI.q_stack[it];
+	for (u32 it=0; it<AI.q_stack.size(); it++) {
+		u32 ID = AI.q_stack[it];
 
  		//if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
 		//	continue;
 
 		NodeCompressed*	N = AI.Node(ID);
-		DWORD L_count	= DWORD(N->links);
+		u32 L_count	= u32(N->links);
 		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 		NodeLink* L_end	= L_it+L_count;
 		for( ; L_it!=L_end; L_it++) {
 			if (bStop)			
 				break;
 			// test node
-			DWORD Test = AI.UnpackLink(*L_it);
+			u32 Test = AI.UnpackLink(*L_it);
 			if (AI.q_mark_bit[Test])
 				continue;
 
@@ -1076,8 +1076,8 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	}
 
 	{
-		vector<DWORD>::iterator it	= AI.q_stack.begin();
-		vector<DWORD>::iterator end	= AI.q_stack.end();
+		vector<u32>::iterator it	= AI.q_stack.begin();
+		vector<u32>::iterator end	= AI.q_stack.end();
 		for ( ; it!=end; it++)	
 			AI.q_mark_bit[*it] = false;
 		
@@ -1099,7 +1099,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 
 void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 {
-//	DWORD N = Group.m_tpaSuspiciousNodes.size();
+//	u32 N = Group.m_tpaSuspiciousNodes.size();
 //	m_tpaSuspiciousPoints.resize(N);
 //	m_tpaSuspiciousForces.resize(N);
 //	for (int i=0; i<N; i++) {
@@ -1136,7 +1136,7 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 //	for ( i=0; i<iGroupCounter; i++)
 //		Group.m_tpaSuspiciousGroups[i] = 0;
 
- 	DWORD N = Group.m_tpaSuspiciousNodes.size();
+ 	u32 N = Group.m_tpaSuspiciousNodes.size();
 	for (int i=0, iGroupCounter = 1; i<(int)N; i++, iGroupCounter++) {
 		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
 			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
@@ -1155,7 +1155,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 {
 	int Index = -1;
 	float fMin = 1000, fCost;
-	DWORD dwNodeID = AI_NodeID;
+	u32 dwNodeID = AI_NodeID;
 	if (iLastIndex >= 0) {
 		dwNodeID = Group.m_tpaSuspiciousNodes[iLastIndex].dwNodeID;
 		int iLastGroup = Group.m_tpaSuspiciousNodes[iLastIndex].dwGroup;

@@ -42,7 +42,7 @@ private:
 	
 	// State machine
 	EFlyerState			eState;
-	DWORD				new_mstate, cur_mstate;
+	u32				new_mstate, cur_mstate;
 
 	float				mYaw;
 	float				mYawVelocity;
@@ -75,7 +75,7 @@ public:
 	virtual void		Die					( ){;}
 	virtual void		HitSignal			( int iHitAmount, Fvector& vLocalDir, CEntity* E ){;}
 
-	virtual void		Update				( DWORD DT );
+	virtual void		Update				( u32 DT );
 
 	virtual void		OnMouseMove			(int x, int y);
 	virtual void		OnKeyboardPress		(int dik);

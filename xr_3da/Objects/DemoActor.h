@@ -34,7 +34,7 @@ public:
 	void				StopDemo		();
 
 	// Update
-	virtual void		Update			( DWORD DT );
+	virtual void		Update			( u32 DT );
 
 	// virtual
 	virtual void		HitSignal		(int HitAmount,Fvector& vLocalDir,CEntity* E) {};

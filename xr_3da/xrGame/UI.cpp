@@ -63,16 +63,16 @@ void CUI::ShowBuyMenu(BOOL bShow)
 	else		pUIBuyMenu->OnDeactivate();
 }
 
-DWORD ScaleAlpha(DWORD val, float factor)
+u32 ScaleAlpha(u32 val, float factor)
 {
-	DWORD	r, g, b, a;
+	u32	r, g, b, a;
 
 	float	_a		= float((val >> 24)&0xff)*factor;
 	a				= iFloor(_a);
 	r				= (val >> 16)&0xff;
 	g				= (val >>  8)&0xff;
 	b				= (val >>  0)&0xff;
-    return ((DWORD)(a<<24) | (r<<16) | (g<<8) | (b));
+    return ((u32)(a<<24) | (r<<16) | (g<<8) | (b));
 }
 
 void CUI::OnFrame()
@@ -127,7 +127,7 @@ void CUI::OnFrame()
 				i--;
 				continue;
 			}
-			DWORD color = messages[i]->color;
+			u32 color = messages[i]->color;
 			if (M->life_time<=(HIDE_TIME*1000))
 				color = ScaleAlpha(color, float(M->life_time)/float(HIDE_TIME*1000));
 			m_Parent->pHUDFont->Color(color);
@@ -217,11 +217,11 @@ bool CUI::OnMouseMove	(int dx, int dy)
 }
 //--------------------------------------------------------------------
 
-void CUI::AddMessage(LPCSTR S, LPCSTR M, DWORD C, float life_time)
+void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 {
 	if (messages.size()==MAX_UIMESSAGES){ 
 		_DELETE(messages.front());
-		messages.erase(DWORD(0));
+		messages.erase(u32(0));
 	}
 	messages.push_back(new SUIMessage(S,M,C,life_time));
 }

@@ -69,8 +69,8 @@ public:
 	// waypoints
 	typedef struct tagSWayPoint{
 		Fvector	tWayPoint;
-		DWORD	dwFlags;
-		DWORD	dwNodeID;
+		u32	dwFlags;
+		u32	dwNodeID;
 	} SWayPoint;
 	
 	typedef struct tagSWayLink{
@@ -81,16 +81,16 @@ public:
 	typedef vector<Fvector>			SPointVector;
 
 	typedef struct tagSPath {
-		DWORD						dwType;
+		u32						dwType;
 		vector<SWayPoint>			tpaWayPoints;
 		vector<SWayLink>			tpaWayLinks;
-		vector<DWORD>				tpaWayPointIndexes;
+		vector<u32>				tpaWayPointIndexes;
 		SPointVector				tpaVectors[3];
 	} SPath;
 
 	enum EPathTypes {
-		PATH_LOOPED			= DWORD(1),
-		PATH_BIDIRECTIONAL	= DWORD(2),
+		PATH_LOOPED			= u32(1),
+		PATH_BIDIRECTIONAL	= u32(2),
 	};
 	
 	DEFINE_MAP					(LPSTR,SPath,SPathMap,SPathPairIt);
@@ -108,7 +108,7 @@ public:
 	virtual BOOL				Load_GameSpecific_After ( );
 
 	// Events
-	virtual void				OnEvent					( EVENT E, DWORD P1, DWORD P2 );
+	virtual void				OnEvent					( EVENT E, u32 P1, u32 P2 );
 	virtual void				OnFrame					( void );
 	virtual void				OnRender				( );
 
@@ -174,7 +174,7 @@ public:
 
 IC CLevel&				Level()		{ return *((CLevel*) pCreator); }
 IC game_cl_GameState&	Game()		{ return Level().game;			}
-IC DWORD				GameID()	{ return Game().type;			}
+IC u32				GameID()	{ return Game().type;			}
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;

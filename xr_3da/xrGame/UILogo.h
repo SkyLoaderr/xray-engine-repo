@@ -12,7 +12,7 @@ public:
 					CUILogo			();
 					~CUILogo		();
 	void			Render			();
-	void			Init			(int left, int top, LPCSTR tex_name, DWORD align);
+	void			Init			(int left, int top, LPCSTR tex_name, u32 align);
 };
 
 #endif //__XR_UILOGO_H__

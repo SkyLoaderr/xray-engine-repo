@@ -27,7 +27,7 @@ void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh, int tx_width, int tx_height)
 	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex,FALSE);
 }
 
-void CUIDynamicItem::Out(int left, int top, DWORD color, DWORD align)
+void CUIDynamicItem::Out(int left, int top, u32 color, u32 align)
 {
 	SDynamicItemData* D = 0;
 	if (data.size()<=item_cnt){ 
@@ -47,11 +47,11 @@ void CUIDynamicItem::Render	()
 	if (!item_cnt)	return;
 
 	// actual rendering
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*		pv	= (FVF::TL*) Device.Streams.Vertex.Lock(item_cnt*4,hVS->dwStride,vOffset);
 	
 	DIDIt it		= data.begin();
-	for (DWORD i=0; i<item_cnt; i++,it++)
+	for (u32 i=0; i<item_cnt; i++,it++)
 		inherited::Render(pv,it->pos,it->color);
 
 	// unlock VB and Render it as triangle list
@@ -68,11 +68,11 @@ void CUIDynamicItem::Render(float angle)
 	if (!item_cnt) return;
 
 	// actual rendering
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*		pv	= (FVF::TL*) Device.Streams.Vertex.Lock(item_cnt*4,hVS->dwStride,vOffset);
 	
 	DIDIt it		= data.begin();
-	for (DWORD i=0; i<item_cnt; i++,it++)
+	for (u32 i=0; i<item_cnt; i++,it++)
 		inherited::Render(pv,it->pos,it->color,angle);	
 
 	// unlock VB and Render it as triangle list

@@ -37,12 +37,12 @@ protected:
 	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
 	
 	typedef struct tagSDynamicObject {
-		DWORD			dwTime;
-		DWORD			dwUpdateCount;
-		DWORD			dwNodeID;
+		u32			dwTime;
+		u32			dwUpdateCount;
+		u32			dwNodeID;
 		Fvector			tSavedPosition;
 		SRotation		tOrientation;
-		DWORD			dwMyNodeID;
+		u32			dwMyNodeID;
 		Fvector			tMySavedPosition;
 		SRotation		tMyOrientation;
 		CEntity			*tpEntity;
@@ -50,9 +50,9 @@ protected:
 
 	typedef struct tagSDynamicSound {
 		ESoundTypes		eSoundType;
-		DWORD			dwTime;
+		u32			dwTime;
 		float			fPower;
-		DWORD			dwUpdateCount;
+		u32			dwUpdateCount;
 		Fvector			tSavedPosition;
 		SRotation		tOrientation;
 		Fvector			tMySavedPosition;
@@ -62,7 +62,7 @@ protected:
 
 	typedef struct tagSSimpleSound {
 		ESoundTypes		eSoundType;
-		DWORD			dwTime;
+		u32			dwTime;
 		float			fPower;
 		Fvector			tSavedPosition;
 		CEntity			*tpEntity;
@@ -97,7 +97,7 @@ public:
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
 
-	DWORD				m_dwSoundUpdate;
+	u32				m_dwSoundUpdate;
 	float				m_fSoundPower;
 	float				m_fStartPower;
 	CLevel::SPath		*m_tpPath;
@@ -111,7 +111,7 @@ public:
 	float				r_spine_speed, r_torso_speed;
 
 	// Motions
-	DWORD				dwMoveState;
+	u32				dwMoveState;
 
 	CMotionDef*			m_current;
 	
@@ -130,10 +130,10 @@ public:
 	char				m_cBodyState;
 	
 	float				m_fTimeUpdateDelta;
-	DWORD				m_dwLoopCount;
+	u32				m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
-	DWORD				m_dwLastUpdateTime;
+	u32				m_dwLastUpdateTime;
 
 	// movement
 	float				m_fJumpSpeed;
@@ -160,7 +160,7 @@ public:
 	deque<net_update>	NET;
 	net_update			NET_Last;
 	BOOL				NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
-	DWORD				NET_Time;				// server time of last update
+	u32				NET_Time;				// server time of last update
 //------------------------------
 
 	// utils
@@ -187,7 +187,7 @@ public:
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
 	virtual void		g_WeaponBones			( int& L,	int& R	);
 	virtual void		Load					( LPCSTR	section );				
-	virtual void		Update					( DWORD		DT		);
+	virtual void		Update					( u32		DT		);
 	virtual void		UpdateCL				( );
 
 	// Team visibility

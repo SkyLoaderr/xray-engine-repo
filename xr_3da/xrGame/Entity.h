@@ -39,8 +39,8 @@ public:
 
 	struct SEntityState
 	{
-		DWORD	bJump	:1;
-		DWORD	bCrouch	:1;
+		u32	bJump	:1;
+		u32	bCrouch	:1;
 		float	fVelocity;
 	};
 public:
@@ -52,7 +52,7 @@ public:
 	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
-	virtual void			Update				(DWORD dt);	
+	virtual void			Update				(u32 dt);	
 	virtual void			OnVisible			();
 
 	bool					IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}

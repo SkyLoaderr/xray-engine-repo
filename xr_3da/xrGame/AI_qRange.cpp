@@ -3,7 +3,7 @@
 
 #define COEFFICIENT	0.001
 
-void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost)
+void CAI_Space::q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost)
 {
 	if (0==vfs)	return;
 
@@ -23,17 +23,17 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	float range_sqr		= Range*Range;
 
 	// Cycle
-	for (DWORD it=0; it<q_stack.size(); it++) {
-		DWORD ID = q_stack[it];
+	for (u32 it=0; it<q_stack.size(); it++) {
+		u32 ID = q_stack[it];
 		NodeCompressed*	N = m_nodes_ptr	[ID];
-		DWORD L_count	= DWORD(N->links);
+		u32 L_count	= u32(N->links);
 		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 		NodeLink* L_end	= L_it+L_count;
 		for( ; L_it!=L_end; L_it++) {
 			if (bStop)			
 				break;
 			// test node
-			DWORD Test = UnpackLink(*L_it);
+			u32 Test = UnpackLink(*L_it);
 			if (q_mark[Test])
 				continue;
 
@@ -61,8 +61,8 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 	// Clear q_marks
 	{
-		vector<DWORD>::iterator it	= q_stack.begin();
-		vector<DWORD>::iterator end	= q_stack.end();
+		vector<u32>::iterator it	= q_stack.begin();
+		vector<u32>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark[*it] -= 1;
 	}
@@ -70,7 +70,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	Device.Statistic.AI_Range.End();
 }
 
-void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost)
+void CAI_Space::q_Range_Bit(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost)
 {
 	if (0==vfs)	return;
 
@@ -90,17 +90,17 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 	float range_sqr		= Range*Range;
 
 	// Cycle
-	for (DWORD it=0; it<q_stack.size(); it++) {
-		DWORD ID = q_stack[it];
+	for (u32 it=0; it<q_stack.size(); it++) {
+		u32 ID = q_stack[it];
 		NodeCompressed*	N = m_nodes_ptr	[ID];
-		DWORD L_count	= DWORD(N->links);
+		u32 L_count	= u32(N->links);
 		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 		NodeLink* L_end	= L_it+L_count;
 		for( ; L_it!=L_end; L_it++) {
 			if (bStop)			
 				break;
 			// test node
-			DWORD Test = UnpackLink(*L_it);
+			u32 Test = UnpackLink(*L_it);
 			if (q_mark_bit[Test])
 				continue;
 
@@ -128,8 +128,8 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 
 	// Clear q_marks
 	{
-		vector<DWORD>::iterator it	= q_stack.begin();
-		vector<DWORD>::iterator end	= q_stack.end();
+		vector<u32>::iterator it	= q_stack.begin();
+		vector<u32>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark_bit[*it] = false;
 	}
@@ -137,7 +137,7 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 	Device.Statistic.AI_Range.End();
 }
 
-void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, DWORD dwTimeDifference)
+void CAI_Space::q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference)
 {
 	if (0==vfs)	return;
 
@@ -159,17 +159,17 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	float range_sqr		= Range*Range;
 
 	// Cycle
-	for (DWORD it=0; it<q_stack.size(); it++) {
-		DWORD ID = q_stack[it];
+	for (u32 it=0; it<q_stack.size(); it++) {
+		u32 ID = q_stack[it];
 		NodeCompressed*	N = m_nodes_ptr	[ID];
-		DWORD L_count = DWORD(N->links);
+		u32 L_count = u32(N->links);
 		NodeLink* L_it = (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 		NodeLink* L_end	= L_it+L_count;
 		for( ; L_it!=L_end; L_it++) {
 			if (bStop)			
 				break;
 			// test node
-			DWORD Test = UnpackLink(*L_it);
+			u32 Test = UnpackLink(*L_it);
 			if (q_mark[Test])
 				continue;
 
@@ -198,8 +198,8 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 	// Clear q_marks
 	{
-		vector<DWORD>::iterator it	= q_stack.begin();
-		vector<DWORD>::iterator end	= q_stack.end();
+		vector<u32>::iterator it	= q_stack.begin();
+		vector<u32>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark[*it] -= 1;
 	}

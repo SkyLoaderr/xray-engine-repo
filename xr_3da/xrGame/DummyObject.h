@@ -38,7 +38,7 @@ private:
 public:
 	virtual void						Load			( LPCSTR section);
 	virtual BOOL						net_Spawn		( LPVOID DC);
-	virtual void						Update			( DWORD dt);							// Called by sheduler
+	virtual void						Update			( u32 dt);							// Called by sheduler
 	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
 	virtual void						OnVisible		( );
 	virtual void						OnDeviceCreate	( );

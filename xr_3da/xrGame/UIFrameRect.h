@@ -23,7 +23,7 @@ public:
 	Irect			rect;
 public:
 					CUIFrameRect	();
-	void			Init			(LPCSTR base_name, int x, int y, int sx, int sy, int tex_x, int tex_y, DWORD align);
+	void			Init			(LPCSTR base_name, int x, int y, int sx, int sy, int tex_x, int tex_y, u32 align);
 	void			Render			();
 };
 

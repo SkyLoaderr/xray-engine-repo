@@ -85,7 +85,7 @@ extern int			psNET_Port;
 static const GUID NET_GUID = 
 { 0x218fa8b, 0x515b, 0x4bf2, { 0x9a, 0x5f, 0x2f, 0x7, 0x9d, 0x17, 0x59, 0xf3 } };
 
-static HRESULT WINAPI Handler (PVOID pvUserContext, u32 dwMessageType, PVOID pMessage)
+static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID pMessage)
 {
 	IPureClient* C = (IPureClient*)pvUserContext;
 	return C->net_Handler(dwMessageType,pMessage);
@@ -175,7 +175,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 		char					desc[256];
 		ZeroMemory				(desc,sizeof(desc));
 		DPN_APPLICATION_DESC*	dpServerDesc=(DPN_APPLICATION_DESC*)desc;
-		u32					dpServerDescSize=sizeof(desc);
+		DWORD					dpServerDescSize=sizeof(desc);
 		dpServerDesc->dwSize	= sizeof(DPN_APPLICATION_DESC);
 		R_CHK					(NET->GetApplicationDesc(dpServerDesc,&dpServerDescSize,0));
 		if( dpServerDesc->pwszSessionName)

@@ -132,7 +132,7 @@ void CFlyer::SetAnimation( )
 }
 
 #define BANK_FACTOR 1.25f
-void CFlyer::Update(DWORD DT)
+void CFlyer::Update(u32 DT)
 {
 	if (!bEnabled) return;
 

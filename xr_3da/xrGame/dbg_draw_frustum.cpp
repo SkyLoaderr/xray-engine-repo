@@ -96,8 +96,8 @@ void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 	_F[2].mad(COP, ProjDirs[2], _FAR); 
 	_F[3].mad(COP, ProjDirs[3], _FAR); 
 
-//	DWORD CT	= D3DCOLOR_RGBA(255,255,255,64);
-	DWORD CL	= D3DCOLOR_RGBA(255,0,0,255);
+//	u32 CT	= D3DCOLOR_RGBA(255,255,255,64);
+	u32 CL	= D3DCOLOR_RGBA(255,0,0,255);
 	Fmatrix& M	= Fidentity;
 	Device.Shader.set_Shader		(Level().ObjectSpace.dbgGetShader());
 //	Device.Primitive.dbg_DrawTRI	(M,COP,_F[0],_F[1],CT);

@@ -23,9 +23,9 @@ namespace AI
 		};
 	public:
 		BOOL				bNeedRebuild;
-		DWORD				DestNode;
+		u32				DestNode;
 
-		DWORD				TravelStart;
+		u32				TravelStart;
 		vector<CTravelNode>	TravelPath;
 		vector<PSegment>	Segments;
 

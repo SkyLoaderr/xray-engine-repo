@@ -66,7 +66,7 @@ public:
 	virtual ~xrServer		();
 
 	// extended functionality
-	virtual DWORD			OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
+	virtual u32			OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
 	virtual void			OnCL_Connected		(IClient* CL);
 	virtual void			OnCL_Disconnected	(IClient* CL);
 

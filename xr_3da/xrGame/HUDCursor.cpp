@@ -68,7 +68,7 @@ void CHUDCursor::Render()
 	float		dist=Device.fFOV;
 	
 	pCreator->CurrentEntity()->setEnabled(false);
-	DWORD C			= C_DEFAULT;
+	u32 C			= C_DEFAULT;
 	Collide::ray_query	RQ;
 
 	if (pCreator->ObjectSpace.RayPick( p1, dir, dist, RQ )){
@@ -102,7 +102,7 @@ void CHUDCursor::Render()
 	}
 
 	// actual rendering
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*	pv	= (FVF::TL*)Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
 	float			size= float(::Render->getTarget()->get_width()) * di_size;
 	

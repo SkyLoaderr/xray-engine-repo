@@ -14,7 +14,7 @@
 
 using namespace AI;
 
-extern void	UnpackContour		(CPathNodes::PContour& C, DWORD ID);
+extern void	UnpackContour		(CPathNodes::PContour& C, u32 ID);
 extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
 
 #define COMPUTE_DISTANCE_2D(t,p) (sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
@@ -221,7 +221,7 @@ SRotation tfGetOrientation(CEntity *tpEntity)
 	}
 }
 
-void vfGoToPointViaNodes(vector<CPathNodes::CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
+void vfGoToPointViaNodes(vector<CPathNodes::CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
 {
 	NodeCompressed *tpNode;
 	CPathNodes::PContour tCurContour,tNextContour;
@@ -243,7 +243,7 @@ void vfGoToPointViaNodes(vector<CPathNodes::CTravelNode> &tpaPath, DWORD dwCurNo
 		iNodeIndex = AI.UnpackLink(taLinks[i]);
 		UnpackContour(tNextContour,iNodeIndex);
 		vfIntersectContours(tSegment,tCurContour,tNextContour);
-		DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
+		u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
 		if (dwIntersect == LI_INTERSECT) {
 			if (
 				(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS)
@@ -426,7 +426,7 @@ float ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode)
 	return(ffCalcSquare(fAngle, fAngleOfView,NORMALIZE_NODE_COVER(tpNode,0),NORMALIZE_NODE_COVER(tpNode,1),NORMALIZE_NODE_COVER(tpNode,2),NORMALIZE_NODE_COVER(tpNode,3)));
 }
 
-float ffCalcSquare(float fAngle, float fAngleOfView, DWORD dwNodeID)
+float ffCalcSquare(float fAngle, float fAngleOfView, u32 dwNodeID)
 {
 	return(ffCalcSquare(fAngle, fAngleOfView,Level().AI.Node(dwNodeID)));
 }
@@ -481,7 +481,7 @@ float ffGetCoverInDirection(float fAngle, NodeCompressed *tpNode)
 	return(ffGetCoverInDirection(fAngle, NORMALIZE_NODE_COVER(tpNode,0),NORMALIZE_NODE_COVER(tpNode,1),NORMALIZE_NODE_COVER(tpNode,2),NORMALIZE_NODE_COVER(tpNode,3)));
 }
 
-float ffGetCoverInDirection(float fAngle, DWORD dwNodeID)
+float ffGetCoverInDirection(float fAngle, u32 dwNodeID)
 {
 	return(ffGetCoverInDirection(fAngle, Level().AI.Node(dwNodeID)));
 }
@@ -550,7 +550,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 	return(j >= J);
 }
 
-DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dwTeam, DWORD dwSquad, DWORD dwGroup, DWORD a1, DWORD a2, DWORD a3)
+u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a1, u32 a2, u32 a3)
 {
 	//return(a1);
 	CGroup &Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];

@@ -27,7 +27,7 @@ void CUICursor::Render	()
 {
 	_VertexStream*	Stream	= &Device.Streams.Vertex; 
 	// actual rendering
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,hVS->dwStride,vOffset);
 	float			size= 2 * Device.dwWidth * 0.015f;
 	
@@ -35,7 +35,7 @@ void CUICursor::Render	()
 	float cx        = Device._x2real(vPos.x);
 	float cy        = Device._y2real(vPos.y);
 	
-	DWORD C			= C_DEFAULT;
+	u32 C			= C_DEFAULT;
 
 	pv->set(cx, cy+size,		.0001f,.9999f, C, 0, 1); pv++;
 	pv->set(cx, cy,				.0001f,.9999f, C, 0, 0); pv++;

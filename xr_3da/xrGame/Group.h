@@ -10,14 +10,14 @@ DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 #define MAX_GROUP_SIZE 256
 
 typedef struct tagSSearchPlace {
-	DWORD	dwNodeID:24;
-	DWORD	dwSearched:2;
-	DWORD	dwGroup:6;
+	u32	dwNodeID:24;
+	u32	dwSearched:2;
+	u32	dwGroup:6;
 	float	fCost;
 } SSearchPlace;
 
 typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;
-typedef svector<DWORD,MAX_GROUP_SIZE>						MemberNodes;
+typedef svector<u32,MAX_GROUP_SIZE>						MemberNodes;
 typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousNodes;
 typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
 typedef FixedSET<CObject*>									objVisible;
@@ -25,7 +25,7 @@ typedef FixedSET<CObject*>									objVisible;
 class CGroup
 {
 public:
-	DWORD						Flags;
+	u32						Flags;
 
 	Fvector						vTargetDirection;
 	Fvector						vTargetPosition;
@@ -37,25 +37,25 @@ public:
 	
 	bool						m_bLeaderViewsEnemy;
 	bool						m_bEnemyNoticed;
-	DWORD						m_dwLeaderChangeCount;
+	u32						m_dwLeaderChangeCount;
 	Fvector						m_tLastHitDirection;
 	Fvector						m_tHitPosition;
-	DWORD						m_dwLastHitTime;
-	DWORD						m_dwFiring;
+	u32						m_dwLastHitTime;
+	u32						m_dwFiring;
 	bool						m_bLessCoverLook;
-	DWORD						m_dwLastViewChange;
+	u32						m_dwLastViewChange;
 	SuspiciousNodes				m_tpaSuspiciousNodes;
 	SuspiciousGroups			m_tpaSuspiciousGroups;
-	vector<DWORD>				m_tpaPatrolPath;
+	vector<u32>				m_tpaPatrolPath;
 
 	// for DDD
-	DWORD						m_dwLastActionTime;
-	DWORD						m_dwLastAction;
+	u32						m_dwLastActionTime;
+	u32						m_dwLastAction;
 
 	// active
-	DWORD						m_dwActiveCount;
-	DWORD						m_dwAliveCount;
-	DWORD						m_dwStandingCount;
+	u32						m_dwActiveCount;
+	u32						m_dwAliveCount;
+	u32						m_dwStandingCount;
 
 	// Constructor
 								CGroup				();

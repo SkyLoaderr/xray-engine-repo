@@ -92,7 +92,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
-void CDummyObject::Update		(DWORD dt)
+void CDummyObject::Update		(u32 dt)
 {
 	inherited::Update	(dt);
 

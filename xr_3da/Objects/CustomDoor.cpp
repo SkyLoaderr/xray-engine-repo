@@ -64,7 +64,7 @@ void CCustomDoor::OnNear( CObject* O )
 	// check if it is actually contacted
 	CCF_EventBox* M = (CCF_EventBox*)CFORM(); R_ASSERT	(M);
 	if (M->Contact(O)) {
-		OnEnter.Signal((DWORD)O);
+		OnEnter.Signal((u32)O);
 		Contacted.push_back(O);
 		return;
 	}

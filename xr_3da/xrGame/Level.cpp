@@ -91,13 +91,13 @@ void CLevel::OnFrame	()
 	Device.Statistic.Physics.End		();
 
 	// Merge visibility data from all units in the team
-	for (DWORD T=0; T<Teams.size(); T++)
+	for (u32 T=0; T<Teams.size(); T++)
 	{
 		CTeam&	TD		= Teams[T];
 		objVisible& VIS	= TD.KnownEnemys;
 
 		VIS.clear		();
-		for (DWORD S=0; S<TD.Squads.size(); S++)
+		for (u32 S=0; S<TD.Squads.size(); S++)
 		{
 			CSquad&	SD	= TD.Squads[S];
 			if (SD.Leader)	{
@@ -105,10 +105,10 @@ void CLevel::OnFrame	()
 				if (E && E->g_Alive())		E->GetVisible(VIS);
 			}
 
-			for (DWORD G=0; G<SD.Groups.size(); G++)
+			for (u32 G=0; G<SD.Groups.size(); G++)
 			{
 				CGroup& GD = SD.Groups[G];
-				for (DWORD M=0; M<GD.Members.size(); M++)
+				for (u32 M=0; M<GD.Members.size(); M++)
 				{
 					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
 					if (E && E->g_Alive())	E->GetVisible(VIS);
@@ -139,7 +139,7 @@ void CLevel::OnFrame	()
 			pApp->pFont->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
 			
 			pApp->pFont->Color	(D3DCOLOR_XRGB(255,255,255));
-			for (DWORD I=0; I<Server->client_Count(); I++)
+			for (u32 I=0; I<Server->client_Count(); I++)
 			{
 				IClient*	C = Server->client_Get(I);
 				pApp->pFont->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d)",
@@ -174,7 +174,7 @@ void CLevel::OnRender()
 	}
 }
 
-void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
+void CLevel::OnEvent(EVENT E, u32 P1, u32 P2)
 {
 	if (E==eEntitySpawn)	{
 		char	Name[128];	Name[0]=0;

@@ -32,7 +32,7 @@ IC void projectPoint(const Fplane& PL, Fvector& P)
 
 
 //******* PContour unpacking
-void	UnpackContour(CPathNodes::PContour& C, DWORD ID)
+void	UnpackContour(CPathNodes::PContour& C, u32 ID)
 {
 	CAI_Space&	AI			= Level().AI;
 	NodeCompressed* Node	= AI.Node(ID);
@@ -339,7 +339,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 	PContour				Ccur,Cnext;
 	UnpackContour			(Ccur,Nodes[0]);
 	Segments.clear			();
-	for (DWORD I=1; I<Nodes.size(); I++)
+	for (u32 I=1; I<Nodes.size(); I++)
 	{
 		PSegment				S;
 		UnpackContour		(Cnext,Nodes[I]);

@@ -10,7 +10,7 @@ CUIFrameRect::CUIFrameRect()
 }
 //--------------------------------------------------------------------
 
-void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int sx, int sy, int tex_x, int tex_y, DWORD align)
+void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int sx, int sy, int tex_x, int tex_y, u32 align)
 {
 	rect.set		(x,y,x+sx,y+sy);
 	// tile

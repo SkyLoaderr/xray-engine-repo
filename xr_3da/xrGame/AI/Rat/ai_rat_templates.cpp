@@ -107,7 +107,7 @@ void CAI_Rat::vfComputeNewPosition()
 //	else
 		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
 	
-	DWORD dwNewNode = AI_NodeID;
+	u32 dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
 	NodePosition	QueryPos;
 	Level().AI.PackPosition	(QueryPos,vPosition);
@@ -204,7 +204,7 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 	tTemp.set(vPosition);
 	vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
 	
-	DWORD dwNewNode = AI_NodeID;
+	u32 dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
 	NodePosition	QueryPos;
 	Level().AI.PackPosition	(QueryPos,vPosition);

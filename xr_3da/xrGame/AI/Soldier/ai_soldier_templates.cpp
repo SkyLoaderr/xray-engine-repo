@@ -58,7 +58,7 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 		tSavedEnemy = 0;
 		tSavedEnemyPosition.set(0,0,0);
 		tpSavedEnemyNode = 0;
-		dwSavedEnemyNodeID = DWORD(-1);
+		dwSavedEnemyNodeID = u32(-1);
 	}
 }
 
@@ -81,7 +81,7 @@ void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 		S.m_tLeader = 0;
 		S.m_tLeaderPosition.set(0,0,0);
 		S.m_tpLeaderNode = NULL;
-		S.m_tLeaderNode = DWORD(-1);
+		S.m_tLeaderNode = u32(-1);
 	}
 	S.m_tHitDir			= tHitDir;
 	S.m_dwHitTime		= dwHitTime;
@@ -129,7 +129,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 	if ((!m_dwLastRangeSearch) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
 //		bool bLastSearch = m_dwLastRangeSearch != 0;
-//		DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+//		u32 dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 		m_dwLastRangeSearch = S.m_dwCurTime;
 		Device.Statistic.AI_Node.Begin();
 		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -161,7 +161,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 
 void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
-//	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+//	u32 dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
 	Device.Statistic.AI_Node.Begin();
 	Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);

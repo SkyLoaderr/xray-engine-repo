@@ -68,7 +68,7 @@ void CAI_Zombie::vfCheckForSavedEnemy()
 		tSavedEnemy = 0;
 		tSavedEnemyPosition.set(0,0,0);
 		tpSavedEnemyNode = 0;
-		dwSavedEnemyNodeID = DWORD(-1);
+		dwSavedEnemyNodeID = u32(-1);
 	}
 }
 
@@ -91,7 +91,7 @@ void CAI_Zombie::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Lea
 		S.m_tLeader = 0;
 		S.m_tLeaderPosition.set(0,0,0);
 		S.m_tpLeaderNode = NULL;
-		S.m_tLeaderNode = DWORD(-1);
+		S.m_tLeaderNode = u32(-1);
 	}
 	S.m_tHitDir			= tHitDir;
 	S.m_dwHitTime		= dwHitTime;
@@ -139,7 +139,7 @@ void CAI_Zombie::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CE
 	if ((!m_dwLastRangeSearch) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
 		bool bLastSearch = m_dwLastRangeSearch != 0;
-		DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+		u32 dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 		m_dwLastRangeSearch = S.m_dwCurTime;
 		Device.Statistic.AI_Node.Begin();
 		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -167,7 +167,7 @@ void CAI_Zombie::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CE
 
 void CAI_Zombie::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
-//	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+//	u32 dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
 	Device.Statistic.AI_Node.Begin();
 	Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -579,7 +579,7 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 			AI_Path.TravelStart = 0;
 
 			//Fvector tLeaderPosition = Leader->Position();
-			DWORD dwTime = Level().timeServer();
+			u32 dwTime = Level().timeServer();
 			int iBestI = -1;
 			float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
 			bool bMobility = false;

@@ -31,10 +31,10 @@
 		__forceinline	float		Magnitude()							const		{ return sqrtf(x*x + y*y + z*z);										}
 
 		//! Return largest axis
-		__forceinline	DWORD		LargestAxis()						const
+		__forceinline	u32		LargestAxis()						const
 						{
 							const float* Vals = &x;
-							DWORD m = 0;
+							u32 m = 0;
 							if(Vals[1] > Vals[m]) m = 1;
 							if(Vals[2] > Vals[m]) m = 2;
 							return m;
@@ -117,7 +117,7 @@ using namespace Opcode;
 IC bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
 {
 	Point vmin, vmax;
-	for(DWORD q=0;q<=2;q++)
+	for(u32 q=0;q<=2;q++)
 	{
 		if(normal[q]>0.0f)	{ vmin[q]=-maxbox[q]; vmax[q]=maxbox[q]; }
 		else				{ vmin[q]=maxbox[q]; vmax[q]=-maxbox[q]; }

@@ -93,7 +93,7 @@ public:
 	virtual BOOL	net_Spawn		( LPVOID DC );
 	virtual BOOL	ShadowGenerate	()			{ return FALSE;	}
 	virtual BOOL	ShadowReceive	()			{ return FALSE;	}
-	virtual void	Update			(DWORD DT);
+	virtual void	Update			(u32 DT);
 	virtual void	UpdateCL		();
 	virtual void	net_Export		(NET_Packet& P);
 	virtual void	net_Import		(NET_Packet& P);

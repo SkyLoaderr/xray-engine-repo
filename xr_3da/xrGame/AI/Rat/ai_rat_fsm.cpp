@@ -244,7 +244,7 @@ void CAI_Rat::FreeHuntingActive()
 		}
 	
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-		DWORD dwCurTime = Level().timeServer();
+		u32 dwCurTime = Level().timeServer();
 		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
 			m_tpSoundBeingPlayed = 0;
 			m_dwLastVoiceTalk = dwCurTime;

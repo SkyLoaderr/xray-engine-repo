@@ -16,7 +16,7 @@ CAI_Rat::CAI_Rat()
 	m_dwHitTime				= 0;
 	m_tSavedEnemy			= 0;
 	m_tpSavedEnemyNode		= 0;
-	m_dwSavedEnemyNodeID	= DWORD(-1);
+	m_dwSavedEnemyNodeID	= u32(-1);
 	m_dwLostEnemyTime		= 0;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend	= 0;

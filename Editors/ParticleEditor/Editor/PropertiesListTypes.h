@@ -449,11 +449,11 @@ class FlagValue: public PropValue{
 	LPDWORDVec			values;
     void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
-	DWORD				mask;
-						FlagValue		(DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):mask(_mask),PropValue(after,before,draw,change){};
+	u32				mask;
+						FlagValue		(u32 _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):mask(_mask),PropValue(after,before,draw,change){};
     virtual LPCSTR		GetText			(){return 0;}
-    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
-    virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(DWORD*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((DWORD*)value);}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
+    virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(u32*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((u32*)value);}
     virtual bool		ApplyValue		(bool value)
     {
     	bool bChanged	= false;
@@ -480,14 +480,14 @@ public:
 	xr_token* 			token;
 						TokenValue		(xr_token* _token, int p_sz, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):token(_token),p_size(p_sz),PropValue(after,before,draw,change){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			();
-    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
     virtual void		InitNext		(LPVOID value)
     {
        	if (0!=memcmp(values.front(),value,p_size))
         	bDiff=true; 
-        AppendValue((DWORD*)value);
+        AppendValue((u32*)value);
     }
-    bool				ApplyValue		(DWORD value)
+    bool				ApplyValue		(u32 value)
     {
     	bool bChanged	= false;
         for (LPDWORDIt it=values.begin();it!=values.end();it++){
@@ -499,7 +499,7 @@ public:
         if (bChanged) 	bDiff = false;
         return bChanged;
     }
-    DWORD 				GetValue		(){return *values.front();}
+    u32 				GetValue		(){return *values.front();}
     virtual void		ResetValue		()
     {
     	DWORDIt src=init_values.begin(); 
@@ -517,9 +517,9 @@ public:
 	AStringVec 			items;
 						TokenValue2		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(after,before,draw,change){};
 	virtual LPCSTR 		GetText			();
-    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
-    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    bool				ApplyValue		(DWORD value)
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
+    virtual void		InitNext		(LPVOID value)	{if (*(u32*)value!=*values.front()) bDiff=true; AppendValue((u32*)value);}
+    bool				ApplyValue		(u32 value)
     {
     	bool bChanged	= false;
         for (LPDWORDIt it=values.begin();it!=values.end();it++){
@@ -531,7 +531,7 @@ public:
         if (bChanged) 	bDiff = false;
         return bChanged;
     }
-    DWORD 				GetValue		(){return *values.front();}
+    u32 				GetValue		(){return *values.front();}
     virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
@@ -542,16 +542,16 @@ class TokenValue3: public PropValue{
     void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	struct Item {
-		DWORD		ID;
+		u32		ID;
 		string64	str;
 	};
-	DWORD				cnt;
+	u32				cnt;
     const Item*			items;
-						TokenValue3		(DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):cnt(_cnt),items(_items),PropValue(after,before,draw,change){};
+						TokenValue3		(u32 _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):cnt(_cnt),items(_items),PropValue(after,before,draw,change){};
 	virtual LPCSTR 		GetText			();
-    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
-    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    bool				ApplyValue		(DWORD value)
+    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
+    virtual void		InitNext		(LPVOID value)	{if (*(u32*)value!=*values.front()) bDiff=true; AppendValue((u32*)value);}
+    bool				ApplyValue		(u32 value)
     {
     	bool bChanged	= false;
         for (LPDWORDIt it=values.begin();it!=values.end();it++){
@@ -563,7 +563,7 @@ public:
         if (bChanged) 	bDiff = false;
         return bChanged;
     }
-    DWORD 				GetValue		(){return *values.front();}
+    u32 				GetValue		(){return *values.front();}
     virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
@@ -575,7 +575,7 @@ class ListValue: public PropValue{
 public:
 	AStringVec 			items;
 						ListValue		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(after,before,draw,change){};
-						ListValue		(DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(u32 cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):PropValue(after,before,draw,change){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((LPSTR)value);}
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
@@ -654,7 +654,7 @@ public:
         V->type			= PROP_BOOLEAN;
         return V;
     }
-    FlagValue* 			CreateFlag		(DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    FlagValue* 			CreateFlag		(u32 mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         FlagValue* V	= new FlagValue(mask,after,before,draw,change);
         V->type			= PROP_FLAG;
@@ -678,7 +678,7 @@ public:
         V->type			= PROP_TOKEN2;
         return V;
     }
-	TokenValue3* 		CreateToken3	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue3* 		CreateToken3	(u32 cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TokenValue3* V	= new TokenValue3(cnt,lst,after,before,draw,change);
         V->type			= PROP_TOKEN3;
@@ -690,7 +690,7 @@ public:
         V->type			= PROP_LIST;
         return V;
     }
-	ListValue* 			CreateListA	(DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ListValue* 			CreateListA	(u32 cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ListValue* V	= new ListValue(cnt,lst,after,before,draw,change);
         V->type			= PROP_LIST;

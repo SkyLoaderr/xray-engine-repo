@@ -14,8 +14,8 @@
 	if (m_fResult > BestCost)\
 		return(m_fResult);
 
-const DWORD		_FB_hit_RelevantTime	= 10;
-const DWORD		_FB_sense_RelevantTime	= 10;
+const u32		_FB_hit_RelevantTime	= 10;
+const u32		_FB_sense_RelevantTime	= 10;
 const float		_FB_look_speed			= PI;
 const float		_FB_invisible_hscale	= 2.f;
 const Fvector	tLeft					= {-1,0,0};
@@ -75,10 +75,10 @@ class CAISelectorBase : public AI::NodeEstimator
 		
 		// hit information
 		Fvector			m_tHitDir;
-		DWORD			m_dwHitTime;
+		u32			m_dwHitTime;
 		
 		// current time information
-		DWORD			m_dwCurTime;
+		u32			m_dwCurTime;
 
 		// myself
 		CEntity*        m_tMe;
@@ -91,12 +91,12 @@ class CAISelectorBase : public AI::NodeEstimator
 		NodeCompressed* m_tpLeaderNode;
 		Fvector			m_tLeaderPosition;
 		Fvector			m_tLeaderDirection;
-		DWORD			m_tLeaderNode;
+		u32			m_tLeaderNode;
 
 		// enemy
 		CEntity*        m_tEnemy;
 		NodeCompressed* m_tpEnemyNode;
-		DWORD			m_dwEnemyNode;
+		u32			m_dwEnemyNode;
 		Fvector			m_tEnemyPosition;
 		Fvector			m_tEnemyDirection;
 		Fvector			m_tEnemySurroundDirection;

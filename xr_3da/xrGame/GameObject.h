@@ -16,10 +16,10 @@ class CGameObject : public CObject
 	typedef CObject inherited;
 public:
 	// AI connection
-	DWORD										AI_NodeID;
+	u32										AI_NodeID;
 	NodeCompressed*								AI_Node;
 	NET_Queue_Event								net_Events;
-	DWORD										respawnPhantom;
+	u32										respawnPhantom;
 
 	// Utilities
 	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
@@ -40,7 +40,7 @@ public:
 	virtual void			UpdateCL			();
 
 	// Position stack
-	virtual	SavedPosition	ps_Element			(DWORD ID);
+	virtual	SavedPosition	ps_Element			(u32 ID);
 
 	// Game-specific events
 	CGameObject();

@@ -36,7 +36,7 @@ public:
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
-	virtual void			Update				( DWORD T ); 
+	virtual void			Update				( u32 T ); 
 	virtual void			UpdateCL			( ); 
 	virtual void			OnVisible			( ); 
 	virtual void			OnDeviceCreate		( );

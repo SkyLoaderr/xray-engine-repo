@@ -21,7 +21,7 @@
 
 class CBaseFunction {
 protected:
-	DWORD			m_dwLastUpdate;
+	u32			m_dwLastUpdate;
 	float			m_fLastValue;
 	CEntity			*m_tpLastMonster;
 	float			m_fMinResultValue;
@@ -33,7 +33,7 @@ public:
 					CBaseFunction() {m_caName[0] = 0;};
 	virtual	void	vfLoadEF(const char *caFileName) {};
 	virtual float	ffGetValue() = 0;
-	virtual DWORD	dwfGetDiscreteValue(DWORD dwDiscretizationValue)
+	virtual u32	dwfGetDiscreteValue(u32 dwDiscretizationValue)
 	{
 		float fTemp = ffGetValue();
 		if (fTemp <= m_fMinResultValue)
@@ -52,31 +52,31 @@ public:
 class CPatternFunction : public CBaseFunction {
 	
 private:
-	static const DWORD	EFC_VERSION	= 1;
+	static const u32	EFC_VERSION	= 1;
 	typedef struct tagSEFHeader {
-		DWORD	dwBuilderVersion;
-		DWORD	dwDataFormat;
+		u32	dwBuilderVersion;
+		u32	dwDataFormat;
 	} SEFHeader;
 
 	typedef struct tagSPattern {
-		DWORD		dwCardinality;
-		DWORD		*dwaVariableIndexes;
+		u32		dwCardinality;
+		u32		*dwaVariableIndexes;
 	} SPattern;
 
-	DWORD		*m_dwaAtomicFeatureRange;
-	DWORD		*m_dwaPatternIndexes;
+	u32		*m_dwaAtomicFeatureRange;
+	u32		*m_dwaPatternIndexes;
 	SPattern	*m_tpPatterns;
 	float		*m_faParameters;
 
-	DWORD		m_dwPatternCount;
-	DWORD		m_dwParameterCount;
+	u32		m_dwPatternCount;
+	u32		m_dwParameterCount;
 
 	SEFHeader	m_tEFHeader;
 
-	IC DWORD dwfGetPatternIndex(DWORD *dwpTest, int iPatternIndex)
+	IC u32 dwfGetPatternIndex(u32 *dwpTest, int iPatternIndex)
 	{
 		SPattern &tPattern = m_tpPatterns[iPatternIndex];
-		for (DWORD i=1, dwIndex = dwpTest[tPattern.dwaVariableIndexes[0]]; i<(int)tPattern.dwCardinality; i++)
+		for (u32 i=1, dwIndex = dwpTest[tPattern.dwaVariableIndexes[0]]; i<(int)tPattern.dwCardinality; i++)
 			dwIndex = dwIndex*m_dwaAtomicFeatureRange[tPattern.dwaVariableIndexes[i]] + dwpTest[tPattern.dwaVariableIndexes[i]];
 		return(dwIndex + m_dwaPatternIndexes[iPatternIndex]);
 	}
@@ -85,10 +85,10 @@ private:
 
 public:
 	
-	DWORD		m_dwVariableCount;
-	DWORD		m_dwFunctionType;
-	DWORD		*m_dwaVariableTypes;
-	DWORD		*m_dwaVariableValues;
+	u32		m_dwVariableCount;
+	u32		m_dwFunctionType;
+	u32		*m_dwaVariableTypes;
+	u32		*m_dwaVariableValues;
 
 				CPatternFunction(const char *caEFFileName);
 				CPatternFunction();
@@ -109,7 +109,7 @@ public:
 	}
 	virtual float ffGetValue();
 	
-	virtual DWORD	dwfGetDiscreteValue(DWORD dwDiscretizationValue)
+	virtual u32	dwfGetDiscreteValue(u32 dwDiscretizationValue)
 	{
 		float fTemp = ffGetValue();
 		if (fTemp <= m_fMinResultValue)

@@ -136,7 +136,7 @@ void CAI_Crow::switch2_DeathFall()
 	Movement.SetVelocity(V);
 	PKinematics(pVisual)->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
-void CAI_Crow::Update(DWORD DT)
+void CAI_Crow::Update(u32 DT)
 {
 	inherited::Update(DT);
 	

@@ -42,10 +42,10 @@ class CAI_Zombie : public CCustomMonster
 	protected:
 		
 		vector<SDynamicSound>	tpaDynamicSounds;
-		DWORD					m_dwMaxDynamicSoundsCount;
+		u32					m_dwMaxDynamicSoundsCount;
 		float					m_fSensetivity;
 		int						m_iSoundIndex;
-		DWORD					m_dwLastUpdate;
+		u32					m_dwLastUpdate;
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
@@ -93,11 +93,11 @@ class CAI_Zombie : public CCustomMonster
 		sound			sndSteps[SND_STEP_COUNT];
 		sound			sndVoices[SND_VOICE_COUNT];
 		sound*			m_tpSoundBeingPlayed;
-		DWORD			m_dwLastSoundRefresh;
+		u32			m_dwLastSoundRefresh;
 		float			m_fMinVoiceIinterval;
 		float			m_fMaxVoiceIinterval;
 		float			m_fVoiceRefreshRate;
-		DWORD			m_dwLastVoiceTalk;
+		u32			m_dwLastVoiceTalk;
 		float			m_fDistanceWent;
 		char			m_cStep;
 		
@@ -115,12 +115,12 @@ class CAI_Zombie : public CCustomMonster
 		bool			m_bJumping;
 		
 		// hit data
-		DWORD			dwHitTime;
+		u32			dwHitTime;
 		Fvector			tHitDir;
 		Fvector			tHitPosition;
 		
 		// sense data
-		DWORD			dwSenseTime;
+		u32			dwSenseTime;
 		Fvector			tSenseDir;
 
 		// visual data
@@ -133,17 +133,17 @@ class CAI_Zombie : public CCustomMonster
 		SEnemySelected	Enemy;
 		CEntity*		tSavedEnemy;
 		Fvector			tSavedEnemyPosition;
-		DWORD			dwLostEnemyTime;
+		u32			dwLostEnemyTime;
 		NodeCompressed* tpSavedEnemyNode;
-		DWORD			dwSavedEnemyNodeID;
+		u32			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
 		
 		// performance data
-		DWORD			m_dwLastRangeSearch;
-		DWORD			m_dwLastSuccessfullSearch;
+		u32			m_dwLastRangeSearch;
+		u32			m_dwLastSuccessfullSearch;
 		
 		// visibility constants
-		DWORD			m_dwMovementIdleTime;
+		u32			m_dwMovementIdleTime;
 		float			m_fMaxInvisibleSpeed;
 		float			m_fMaxViewableSpeed;
 		float			m_fMovementSpeedWeight;
@@ -156,9 +156,9 @@ class CAI_Zombie : public CCustomMonster
 		float			m_fShadowWeight;
 		
 		float			m_fHitPower;
-		DWORD			m_dwHitInterval;
+		u32			m_dwHitInterval;
 
-		DWORD			m_dwStartAttackTime;
+		u32			m_dwStartAttackTime;
 		
 		// patrol structures
 		CLevel::SPath			*m_tpPath;
@@ -217,7 +217,7 @@ class CAI_Zombie : public CCustomMonster
 	public:
 					   CAI_Zombie();
 		virtual		  ~CAI_Zombie();
-		virtual void  Update(DWORD DT);
+		virtual void  Update(u32 DT);
 		virtual void  net_Export(NET_Packet& P);
 		virtual void  net_Import(NET_Packet& P);
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
@@ -230,7 +230,7 @@ class CAI_Zombie : public CCustomMonster
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Movement(float dt);
 		virtual void  Exec_Action(float dt);
-		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
+		virtual void  OnEvent(EVENT E, u32 P1, u32 P2);
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);

@@ -30,7 +30,7 @@ void CDemoActor::Load	(LPCSTR section)
 	inherited::Load		(section);
 }
 
-void CDemoActor::Update(DWORD DT)
+void CDemoActor::Update(u32 DT)
 {
 	inherited::Update(DT);
 	if (time2start>0)

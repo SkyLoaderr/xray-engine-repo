@@ -23,7 +23,7 @@ CAI_Zombie::CAI_Zombie()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	tpSavedEnemyNode = 0;
-	dwSavedEnemyNodeID = DWORD(-1);
+	dwSavedEnemyNodeID = u32(-1);
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
 	m_dwLastRangeSearch = 0;
@@ -130,7 +130,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 }
 
 // zombie update
-void CAI_Zombie::Update(DWORD DT)
+void CAI_Zombie::Update(u32 DT)
 {
 	inherited::Update(DT);
 }
@@ -205,11 +205,11 @@ void CAI_Zombie::Exec_Movement	( float dt )
 //	}
 }
 
-void CAI_Zombie::OnEvent(EVENT E, DWORD P1, DWORD P2)
+void CAI_Zombie::OnEvent(EVENT E, u32 P1, u32 P2)
 {
 
 	if (E == m_tpEventSay) {
-		if (0==P2 || DWORD(this)==P2) {
+		if (0==P2 || u32(this)==P2) {
 			char* caTextToShow;
 			caTextToShow = (char *)P1;
 			Level().HUD()->outMessage(0xffffffff,cName(),"%s",caTextToShow);
@@ -217,12 +217,12 @@ void CAI_Zombie::OnEvent(EVENT E, DWORD P1, DWORD P2)
 	}
 	else
 		if (E == m_tpEventAssignPath) {
-			if (0==P2 || DWORD(this)==P2) {
+			if (0==P2 || u32(this)==P2) {
 				char *buf2, *buf, monster_name[100];
 				buf2 = buf = (char *)P1;
 				int iArgCount = _GetItemCount(buf2);
 				if (iArgCount >= 4) {
-					DWORD team,squad,group;
+					u32 team,squad,group;
 					for ( ; ; buf2++)
 						if (*buf2 == ',') {
 							memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));

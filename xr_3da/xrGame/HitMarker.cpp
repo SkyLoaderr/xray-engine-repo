@@ -4,7 +4,7 @@
 
 static Fvector2			as_PC[5];
 static Fvector2			as_TC[5];
-const static DWORD		as_id[4*3] = {0,1,4,  1,2,4,  2,3,4,  3,0,4};
+const static u32		as_id[4*3] = {0,1,4,  1,2,4,  2,3,4,  3,0,4};
 
 //--------------------------------------------------------------------
 CHitMarker::CHitMarker()
@@ -55,14 +55,14 @@ void CHitMarker::Render()
 {
 	if (fHitMarks[0]>0 || fHitMarks[1]>0 || fHitMarks[2]>0 || fHitMarks[3]>0)	
 	{
-		DWORD			dwOffset;
+		u32			dwOffset;
 		FVF::TL* D		= (FVF::TL*)Device.Streams.Vertex.Lock(12,hVS->dwStride,dwOffset);
 		FVF::TL* Start	= D;
 		for (int i=0; i<4; i++){
 			if (fHitMarks[i]>0){
-				DWORD Alpha = iFloor((fHitMarks[i]/float(fShowTime))*255.f);
-				DWORD Color = D3DCOLOR_RGBA(255,255,255,Alpha);
-				const DWORD* idx = as_id+i*3;
+				u32 Alpha = iFloor((fHitMarks[i]/float(fShowTime))*255.f);
+				u32 Color = D3DCOLOR_RGBA(255,255,255,Alpha);
+				const u32* idx = as_id+i*3;
 				
 				const Fvector2& P1 = as_PC[idx[0]]; const Fvector2& T1 = as_TC[idx[0]]; D->set(Device._x2real(P1.x),Device._y2real(P1.y),.0001f,.9999f, Color, T1.x, T1.y); D++;
 				const Fvector2& P2 = as_PC[idx[1]]; const Fvector2& T2 = as_TC[idx[1]]; D->set(Device._x2real(P2.x),Device._y2real(P2.y),.0001f,.9999f, Color, T2.x, T2.y); D++;
@@ -70,7 +70,7 @@ void CHitMarker::Render()
 				fHitMarks[i] -= Device.fTimeDelta;
 			}
 		}
-		DWORD Count						= D-Start;
+		u32 Count						= D-Start;
 		Device.Streams.Vertex.Unlock	(Count,hVS->dwStride);
 		if (Count)
 		{

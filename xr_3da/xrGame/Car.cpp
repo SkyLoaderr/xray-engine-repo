@@ -157,7 +157,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	return R;
 }
 
-void	CCar::Update				( DWORD T )
+void	CCar::Update				( u32 T )
 {
 	inherited::Update				(T);
 

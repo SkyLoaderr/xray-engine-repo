@@ -153,7 +153,7 @@ void CAI_Soldier::OnHurtAlone()
 
 	m_dwLastRangeSearch = dwHitTime;
 
-	DWORD dwCurTime = m_dwCurrentUpdate;
+	u32 dwCurTime = m_dwCurrentUpdate;
 
 	vfStopFire();
 
@@ -184,7 +184,7 @@ void CAI_Soldier::OnHurtAlone()
 		vfSetMovementType(WALK_NO);
 	}
 
-	dwHitTime = DWORD(-1);
+	dwHitTime = u32(-1);
 	GO_TO_PREV_STATE
 }
 
@@ -1236,8 +1236,8 @@ void CAI_Soldier::OnPatrolReturn()
 	if ((Level().AI.bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) && (m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < EPS_L))
 		GO_TO_PREV_STATE_THIS_UPDATE
 	else {
-		DWORD dwTemp = Level().AI.dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]);
-		if (dwTemp != DWORD(-1)) {
+		u32 dwTemp = Level().AI.dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]);
+		if (dwTemp != u32(-1)) {
 			Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode = dwTemp,AI_Path,0,0);
 			if (!AI_Path.Nodes.empty()) {
 				AI_Path.BuildTravelLine(Position());
@@ -1321,7 +1321,7 @@ void CAI_Soldier::OnPatrol()
 
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
-		AI_Path.DestNode = DWORD(-1);
+		AI_Path.DestNode = u32(-1);
 		AI_Path.bNeedRebuild = FALSE;
 
 		vector<Fvector> &tpaVector = m_tpPath->tpaVectors[0];
@@ -1344,7 +1344,7 @@ void CAI_Soldier::OnPatrol()
 			if (m_tpPath->dwType & CLevel::PATH_LOOPED) {
 				m_dwLoopCount++;
 				if (::Random.randI(0,2)) {
-					DWORD dwCount = AI_Path.TravelPath.size();
+					u32 dwCount = AI_Path.TravelPath.size();
 					for ( i=0; i<(int)(dwCount / 2); i++) {
 						Fvector tTemp = AI_Path.TravelPath[i].P;
 						AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
@@ -1366,7 +1366,7 @@ void CAI_Soldier::OnPatrol()
 				
 				if (fDistance0 < fDistance1) {
 					if ((fDistance0 < 3.f) || (::Random.randI(0,2))) {
-						DWORD dwCount = AI_Path.TravelPath.size();
+						u32 dwCount = AI_Path.TravelPath.size();
 						for ( i=0; i<(int)(dwCount / 2); i++) {
 							Fvector tTemp = AI_Path.TravelPath[i].P;
 							AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
@@ -1378,7 +1378,7 @@ void CAI_Soldier::OnPatrol()
 				}
 				else
 					if ((fDistance1 >= 3.f) && (::Random.randI(0,2))) {
-						DWORD dwCount = AI_Path.TravelPath.size();
+						u32 dwCount = AI_Path.TravelPath.size();
 						for ( i=0; i<(int)(dwCount / 2); i++) {
 							Fvector tTemp = AI_Path.TravelPath[i].P;
 							AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
@@ -1426,7 +1426,7 @@ void CAI_Soldier::OnPatrol()
 			VERIFY(m_iCurrentPatrolIndex < (int)m_tpPath->tpaVectors[iPatrolPathIndex].size());
 
 			AI_Path.TravelPath.clear();
-			AI_Path.DestNode = DWORD(-1);
+			AI_Path.DestNode = u32(-1);
 			AI_Path.bNeedRebuild = FALSE;
 
 			CHECK_IF_SWITCH_TO_NEW_STATE((m_iCurrentPatrolIndex >= 0) && (vPosition.distance_to(m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]) > EPS_L),aiSoldierPatrolReturn)
@@ -1459,7 +1459,7 @@ void CAI_Soldier::OnPatrol()
 				}
 			}
 			if (tpSoldierLeader->m_bPatrolPathInverted) {
-				DWORD dwCount = AI_Path.TravelPath.size();
+				u32 dwCount = AI_Path.TravelPath.size();
 				for ( i=0; i<(int)(dwCount / 2); i++) {
 					Fvector tTemp = AI_Path.TravelPath[i].P;
 					AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
@@ -1540,7 +1540,7 @@ void CAI_Soldier::OnPatrolRoute()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE((AI_Path.fSpeed < EPS_L) && (m_fCurSpeed > EPS_L));
 
 	INIT_SQUAD_AND_LEADER;
-	DWORD dwCurTime = m_dwCurrentUpdate;
+	u32 dwCurTime = m_dwCurrentUpdate;
 	CGroup &Group = Squad.Groups[g_Group()];
 
 	if (this == Leader) {

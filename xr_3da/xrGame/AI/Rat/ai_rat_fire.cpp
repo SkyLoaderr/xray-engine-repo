@@ -19,7 +19,7 @@ void CAI_Rat::Exec_Action(float dt)
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
 			pSounds->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
-			DWORD dwTime = Level().timeServer();
+			u32 dwTime = Level().timeServer();
 			if ((m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
@@ -110,7 +110,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	for (DWORD i=0; i<Known.size(); i++) {
+	for (u32 i=0; i<Known.size(); i++) {
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
@@ -133,7 +133,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 
 void CAI_Rat::vfUpdateMorale()
 {
-	DWORD dwCurTime = Level().timeServer();
+	u32 dwCurTime = Level().timeServer();
 	if (m_fMorale < m_fMoraleMinValue)
 		m_fMorale = m_fMoraleMinValue;
 	if (m_fMorale > m_fMoraleMaxValue)

@@ -163,21 +163,21 @@ class CAI_Soldier : public CCustomMonster
 	#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 	typedef struct tagSSoldierStates {
 		ESoldierStates	eState;
-		DWORD			dwTime;
+		u32			dwTime;
 	}SSoldierStates;
 
 	typedef struct tagSHurt {
 		CEntity *tpEntity;
-		DWORD	dwTime;
+		u32	dwTime;
 	}SHurt;
 
 	typedef struct tagSSearch {
-		DWORD	dwTime;
-		DWORD	dwNodeID;
+		u32	dwTime;
+		u32	dwNodeID;
 	}SSearch;
 
-	DWORD m_tActionType;
-	DWORD m_tFightType;
+	u32 m_tActionType;
+	u32 m_tFightType;
 
 //	typedef struct tagSSearchPoint {
 //		BYTE		cIndex;
@@ -193,8 +193,8 @@ class CAI_Soldier : public CCustomMonster
 		svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>		tpaDynamicSounds;
 		svector<SHurt,			MAX_HURT_COUNT>			tpaHurts;
 		svector<SSearch,		MAX_SEARCH_COUNT>		tpaSearchPositions;
-		DWORD					m_dwMaxDynamicObjectsCount;
-		DWORD					m_dwMaxDynamicSoundsCount;
+		u32					m_dwMaxDynamicObjectsCount;
+		u32					m_dwMaxDynamicSoundsCount;
 		float					m_fSensetivity;
 		int						m_iSoundIndex;
 
@@ -331,15 +331,15 @@ class CAI_Soldier : public CCustomMonster
 		CBlend*				m_tpCurrentLegsBlend;
 		char				m_cGestureState;
 		//float				m_fAddAngle;
-		DWORD				m_dwTimeBeingWaited;
+		u32				m_dwTimeBeingWaited;
 		EMovementTypes		m_cMovementType;
 		CMotionDef*			m_tpaMovementAnimations[3][WALK_NO];
 		sound*				m_tpSoundBeingPlayed;
-		DWORD				m_dwLastSoundRefresh;
+		u32				m_dwLastSoundRefresh;
 		float				m_fMinRadioIinterval;
 		float				m_fMaxRadioIinterval;
 		float				m_fRadioRefreshRate;
-		DWORD				m_dwLastRadioTalk;
+		u32				m_dwLastRadioTalk;
 		float				m_fDistanceWent;
 		char				m_cStep;
 
@@ -361,16 +361,16 @@ class CAI_Soldier : public CCustomMonster
 		ESoldierStates	eCurrentState;
 		ESoldierStates	m_ePreviousState;
 		bool			bStopThinking;
-		DWORD			m_dwLastUpdate;
-		DWORD			m_dwCurrentUpdate;
-		DWORD			m_dwUpdateCount;
+		u32			m_dwLastUpdate;
+		u32			m_dwCurrentUpdate;
+		u32			m_dwUpdateCount;
 //		float			m_fAddAngle;
 		
 		// action data
 		bool			m_bJumping;
 		
 		// hit data
-		DWORD			dwHitTime;
+		u32			dwHitTime;
 		Fvector			tHitDir;
 		Fvector			tHitPosition;
 		
@@ -381,26 +381,26 @@ class CAI_Soldier : public CCustomMonster
 		SEnemySelected		Enemy;
 		CEntity*			tSavedEnemy;
 		Fvector				tSavedEnemyPosition;
-		DWORD				dwLostEnemyTime;
+		u32				dwLostEnemyTime;
 		NodeCompressed*		tpSavedEnemyNode;
-		DWORD				dwSavedEnemyNodeID;
+		u32				dwSavedEnemyNodeID;
 		bool				bBuildPathToLostEnemy;
 		int					m_iCurrentSuspiciousNodeIndex;
 		SuspiciousPoints	m_tpaSuspiciousPoints;
 		SuspiciousForces	m_tpaSuspiciousForces;
-		vector<DWORD>		m_tpaNodeStack;
+		vector<u32>		m_tpaNodeStack;
 
 		
 		// performance data
-		DWORD			m_dwLastRangeSearch;
-		DWORD			m_dwLastSuccessfullSearch;
+		u32			m_dwLastRangeSearch;
+		u32			m_dwLastSuccessfullSearch;
 		
 		// characteristics
 		float			m_fAggressiveness;
 		float			m_fTimorousness;
 		
 		// visibility constants
-		DWORD			m_dwMovementIdleTime;
+		u32			m_dwMovementIdleTime;
 		float			m_fMaxInvisibleSpeed;
 		float			m_fMaxViewableSpeed;
 		float			m_fMovementSpeedWeight;
@@ -414,15 +414,15 @@ class CAI_Soldier : public CCustomMonster
 		
 		// firing
 		bool			m_bFiring;
-		DWORD			m_dwStartFireAmmo;
-		DWORD			m_dwNoFireTime;
+		u32			m_dwStartFireAmmo;
+		u32			m_dwNoFireTime;
 		float			m_fAddWeaponAngle;
 		
 		// fire  constants
-		DWORD			m_dwFireRandomMin;
-		DWORD			m_dwFireRandomMax;
-		DWORD			m_dwNoFireTimeMin;
-		DWORD			m_dwNoFireTimeMax;
+		u32			m_dwFireRandomMin;
+		u32			m_dwFireRandomMax;
+		u32			m_dwNoFireTimeMin;
+		u32			m_dwNoFireTimeMax;
 		float			m_fMinMissDistance;
 		float			m_fMinMissFactor;
 		float			m_fMaxMissDistance;
@@ -538,22 +538,22 @@ class CAI_Soldier : public CCustomMonster
 		// miscellanious funtions	
 		bool bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier);
 		float ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCompressed *tpNode, float fEyeFov);
-		bool bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRyPick = false);
+		bool bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRyPick = false);
 		int  ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group);
 		void vfClasterizeSuspiciousNodes(CGroup &Group);
-		void vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
+		void vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
 		
 		int	 ifFindDynamicObject(CEntity *tpEntity);
 		bool bfSaveFromEnemy(CEntity *tpEntity);
 		bool bfSetLookToDangerPlace();
 		bool bfCheckForDangerPlace();
-		DWORD tfGetAloneFightType();
-		DWORD tfGetGroupFightType();
-		DWORD tfGetActionType();
+		u32 tfGetAloneFightType();
+		u32 tfGetGroupFightType();
+		u32 tfGetActionType();
 		bool bfCheckForDanger();
 		void vfStopFire();
 		void SelectSound(int &iIndex);
-		void vfUpdateSounds(DWORD dwTimeDelta);
+		void vfUpdateSounds(u32 dwTimeDelta);
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 		bool bfCheckForEntityVisibility(CEntity *tpEntity);
 		bool bfCheckForVisibility(CEntity* tpEntity);
@@ -585,7 +585,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfUpdateDynamicObjects();
 		void SetLook(Fvector tPosition);
 		void vfSetMovementType(EMovementTypes cMovementType, float fMultiplier = 1.0f);
-	IC	void vfSetLookAndFireMovement(bool a, EMovementTypes c, float d, CGroup &Group, DWORD dwCurTime)
+	IC	void vfSetLookAndFireMovement(bool a, EMovementTypes c, float d, CGroup &Group, u32 dwCurTime)
 		{
 			if (!(Group.m_bLessCoverLook)) {
 				Group.m_bLessCoverLook = m_bLessCoverLook = true;
@@ -642,15 +642,15 @@ class CAI_Soldier : public CCustomMonster
 		{
 			return(Weapons && (Weapons->getAmmoCurrent() == 0));
 		}
-	IC	DWORD tfUpdateActionType()
+	IC	u32 tfUpdateActionType()
 		{
 			return(m_tActionType = tfGetActionType());
 		}
-	IC	DWORD tfUpdateFightTypeAlone()
+	IC	u32 tfUpdateFightTypeAlone()
 		{
 			return(m_tFightType = tfGetAloneFightType());
 		}
-	IC	DWORD tfUpdateFightTypeGroup()
+	IC	u32 tfUpdateFightTypeGroup()
 		{
 			return(m_tFightType = tfGetGroupFightType());
 		}
@@ -673,7 +673,7 @@ class CAI_Soldier : public CCustomMonster
 				return;
 			}
 			if (tStateList.size() >= MAX_STATE_LIST_SIZE)
-				tStateList.erase(DWORD(0));
+				tStateList.erase(u32(0));
 			SSoldierStates tSoldierStates;
 			tSoldierStates.dwTime = m_dwCurrentUpdate;
 			tSoldierStates.eState = eState;
@@ -686,13 +686,13 @@ class CAI_Soldier : public CCustomMonster
 				return;
 			}
 			if (tpaHurts.size() >= MAX_STATE_LIST_SIZE)
-				tpaHurts.erase(DWORD(0));
+				tpaHurts.erase(u32(0));
 			SHurt tHurt;
 			tHurt.dwTime = m_dwCurrentUpdate;
 			tHurt.tpEntity = tpEntity;
 			tpaHurts.push_back(tHurt);
 		}
-	IC	bool bfCheckHistoryForState(ESoldierStates eState, DWORD dwTimeInterval)
+	IC	bool bfCheckHistoryForState(ESoldierStates eState, u32 dwTimeInterval)
 		{
 			for (int i=tStateList.size() - 2; i>=0; i--)
 				if (tStateList[i].eState == eState)
@@ -705,7 +705,7 @@ class CAI_Soldier : public CCustomMonster
 	IC	void vfAddToSearchList()
 		{
 			if (tpaSearchPositions.size() >= MAX_SEARCH_COUNT)
-				tpaSearchPositions.erase(DWORD(0));
+				tpaSearchPositions.erase(u32(0));
 			SSearch tSearch;
 			tSearch.dwTime = m_dwCurrentUpdate;
 			tSearch.dwNodeID = AI_Path.DestNode;
@@ -716,7 +716,7 @@ class CAI_Soldier : public CCustomMonster
 		bool		  m_bActionStarted;
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
-		virtual void  Update(DWORD DT);
+		virtual void  Update(u32 DT);
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
 		virtual void  Death();
 		virtual void  Load( LPCSTR section );
@@ -727,7 +727,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
 		virtual void  OnVisible(); 
 		virtual void  Exec_Movement(float dt);
-		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
+		virtual void  OnEvent(EVENT E, u32 P1, u32 P2);
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);

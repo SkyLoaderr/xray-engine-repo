@@ -25,14 +25,14 @@ CUIStaticItem::~CUIStaticItem()
 }
 //--------------------------------------------------------------------
 
-void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, int tx_width, int tx_height, DWORD align)
+void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, int tx_width, int tx_height, u32 align)
 {
 	Init			(left,top,tx_width,tx_height,align);
 	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex);
 	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
-void CUIStaticItem::Init(int left, int top, int tx_width, int tx_height, DWORD align)
+void CUIStaticItem::Init(int left, int top, int tx_width, int tx_height, u32 align)
 {
 	inherited::Init	(tx_width,tx_height);
 	Level().HUD()->ClientToScreenScaled	(iPos,left,top,align);
@@ -42,7 +42,7 @@ void CUIStaticItem::Init(int left, int top, int tx_width, int tx_height, DWORD a
 void CUIStaticItem::Render(Shader* sh)
 {
 	// actual rendering
-	DWORD			vOffset;
+	u32			vOffset;
 	int				v_cnt			= 0;
 	FVF::TL*		pv				= (FVF::TL*)Device.Streams.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hVS->dwStride,vOffset);
 
@@ -89,7 +89,7 @@ void CUIStaticItem::Render(Shader* sh)
 void CUIStaticItem::Render(float angle, Shader* sh)
 {
 	// actual rendering
-	DWORD			vOffset;
+	u32			vOffset;
 	FVF::TL*		pv				= (FVF::TL*)Device.Streams.Vertex.Lock	(4,hVS->dwStride,vOffset);
 	
 	inherited::Render(pv,iPos,dwColor,angle);	

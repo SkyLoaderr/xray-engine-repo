@@ -17,7 +17,7 @@ public:
 		P.r_u16			(type		);
 		P.r_u16			(destination);
 
-		DWORD size		= P.r_elapsed();
+		u32 size		= P.r_elapsed();
 		if (size)	
 		{
 			data.resize		(size);
@@ -53,7 +53,7 @@ public:
 		E.import		(P);
 		queue.insert	(E);
 	}
-	IC BOOL				available	(DWORD T)
+	IC BOOL				available	(u32 T)
 	{
 		if (queue.empty() || (T<queue.begin()->timestamp))	return FALSE;
 		else												return TRUE;

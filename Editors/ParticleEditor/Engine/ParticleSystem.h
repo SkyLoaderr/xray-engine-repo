@@ -194,7 +194,7 @@ struct ENGINE_API SDef: public SParams
 			// Computer
 			const u32 comp = MAX_COMPUTERNAME_LENGTH + 1;
 			char	buf	[comp];
-			u32	sz = comp;
+			DWORD	sz = comp;
 			GetComputerName(buf,&sz);
 			if (sz > 63) sz=63;
 			buf[sz] = 0;

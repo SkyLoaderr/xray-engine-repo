@@ -11,7 +11,7 @@
 
 using namespace AI;
 
-DWORD psAI_Flags	= 0;
+u32 psAI_Flags	= 0;
 ENGINE_API extern float psGravity;
 
 void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
@@ -244,10 +244,10 @@ void CCustomMonster::Exec_Physics( float dt )
 	Engine.Sheduler.Slice	();
 }
 
-void CCustomMonster::Update	( DWORD DT )
+void CCustomMonster::Update	( u32 DT )
 {
 	// Queue shrink
-	DWORD	dwTimeCL	= Level().timeServer()-NET_Latency;
+	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 	
@@ -324,7 +324,7 @@ void CCustomMonster::UpdateCL	()
 	if	(NET.empty())	return;
 
 	// distinguish interpolation/extrapolation
-	DWORD	dwTime		= Level().timeServer()-NET_Latency;
+	u32	dwTime		= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();
 	if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 	{
@@ -335,7 +335,7 @@ void CCustomMonster::UpdateCL	()
 		
 		// Search 2 keyframes for interpolation
 		int select		= -1;
-		for (DWORD id=0; id<NET.size()-1; id++)
+		for (u32 id=0; id<NET.size()-1; id++)
 		{
 			if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
 		}
@@ -344,8 +344,8 @@ void CCustomMonster::UpdateCL	()
 			// Interpolate state
 			net_update&	A		= NET[select+0];
 			net_update&	B		= NET[select+1];
-			DWORD	d1			= dwTime-A.dwTimeStamp;
-			DWORD	d2			= B.dwTimeStamp - A.dwTimeStamp;
+			u32	d1			= dwTime-A.dwTimeStamp;
+			u32	d2			= B.dwTimeStamp - A.dwTimeStamp;
 			float	factor		= (float(d1)/float(d2));
 			NET_Last.lerp		(A,B,factor);
 			
@@ -466,7 +466,7 @@ void CCustomMonster::OnRender()
 	
 	Device.Shader.OnFrameEnd	();
 	{
-	for (DWORD I=1; I<AI_Path.TravelPath.size(); I++)
+	for (u32 I=1; I<AI_Path.TravelPath.size(); I++)
 	{
 		CPathNodes::CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CPathNodes::CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
@@ -488,7 +488,7 @@ void CCustomMonster::OnRender()
 	}
 	/*
 	{
-	for (DWORD I=1; I<AI_Path.TravelPath_dbg.size(); I++)
+	for (u32 I=1; I<AI_Path.TravelPath_dbg.size(); I++)
 	{
 		CTrevelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CTrevelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
@@ -499,7 +499,7 @@ void CCustomMonster::OnRender()
 	*/
 	{
 	
-	for (DWORD I=0; I<AI_Path.Segments.size(); I++)
+	for (u32 I=0; I<AI_Path.Segments.size(); I++)
 	{
 		CPathNodes::PSegment& S = AI_Path.Segments[I];
 		Fvector P1;	P1.set(S.v1); P1.y+=0.1f;

@@ -36,7 +36,7 @@ typedef struct tagTNode {
 
 typedef struct tagTIndexNode {
 	TNode	*tpNode;
-	DWORD	dwTime;
+	u32	dwTime;
 } TIndexNode;
 #pragma pack()
 

@@ -177,7 +177,7 @@ void CEntity::OnVisible()
 	inherited::OnVisible		();
 }
 
-void CEntity::Update	(DWORD dt)
+void CEntity::Update	(u32 dt)
 {
 	inherited::Update	(dt);
 }

@@ -26,9 +26,9 @@ public:
 //	IC void			SetRect			(const Irect& r, float part_x, float part_y){iRect.lt.set(r.lt);iRect.rb.set(iFloor(float(r.rb.x)*part_x),iFloor(float(r.rb.y)*part_y));}
 	IC void			SetRect			(const Irect& r){iRect.set(r);}
 	const Irect&	GetRect			(){return iRect;}
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, int x1, int y1, int x2, int y2);
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, DWORD color);
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, float angle);
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, int x1, int y1, int x2, int y2);
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color);
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle);
 };
 
 #endif //__XR_UICUSTOMITEM_H__

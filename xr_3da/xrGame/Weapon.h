@@ -89,7 +89,7 @@ protected:
 	float					tracerTrailCoeff;
 	float					tracerStartLength;
 	float					tracerWidth;
-	DWORD					tracerFrame;
+	u32					tracerFrame;
 							
 	CLightPPA				light_base;
 	CLightPPA				light_build;
@@ -97,11 +97,11 @@ protected:
 	float					light_var_color;
 	float					light_var_range;
 	float					light_lifetime;
-	DWORD					light_frame;
+	u32					light_frame;
 	float					light_time;
 
-	DWORD					dwFP_Frame;
-	DWORD					dwXF_Frame;
+	u32					dwFP_Frame;
+	u32					dwXF_Frame;
 protected:
 	struct	net_update 		
 	{
@@ -143,16 +143,16 @@ public:
 		eHidden
 	};
 	// Events/States
-	DWORD					STATE;
+	u32					STATE;
 
-	virtual void			SwitchState			(DWORD S);
+	virtual void			SwitchState			(u32 S);
 
 	virtual void			OnMagazineEmpty		()			{};
 	virtual void			OnAnimationEnd		()			{};
 	virtual void			OnZoomIn			()			{};
 	virtual void			OnZoomOut			()			{};
 	virtual void			OnDrawFlame			();
-	virtual void			OnStateSwitch		(DWORD S)	{};
+	virtual void			OnStateSwitch		(u32 S)	{};
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
@@ -163,7 +163,7 @@ public:
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server
-	virtual void			Update				(DWORD dt);
+	virtual void			Update				(u32 dt);
 	virtual void			UpdateCL			();
 	virtual void			OnVisible			();
 	virtual void			OnH_B_Chield		();

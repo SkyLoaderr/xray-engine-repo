@@ -56,7 +56,7 @@ public:
 	IC CCustomMenuItem*	Parent				()			{return m_Parent;}
 	IC MIIt				FirstItem			()			{return items.begin();}
 	IC MIIt				LastItem			()			{return items.end();}
-	IC DWORD			ItemCount			()			{return items.size();}
+	IC u32			ItemCount			()			{return items.size();}
 	IC CCustomMenuItem*	GetItem				(int id)	
 	{
 		id--;

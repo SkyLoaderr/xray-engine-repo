@@ -16,7 +16,7 @@ CEffectorBobbing::~CEffectorBobbing	()
 {
 }
 
-void CEffectorBobbing::SetState(DWORD mstate){
+void CEffectorBobbing::SetState(u32 mstate){
 	dwMState		= mstate;
 }
 

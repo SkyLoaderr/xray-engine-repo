@@ -386,10 +386,10 @@ void CWeapon::net_Import	(NET_Packet& P)
 	}
 }
 
-void CWeapon::Update		(DWORD dT)
+void CWeapon::Update		(u32 dT)
 {
 	// Queue shrink
-	DWORD	dwTimeCL		= Level().timeServer()-NET_Latency;
+	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
 	// Inherited
@@ -461,7 +461,7 @@ void CWeapon::UpdateCL		()
 	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
-		DWORD	dwTime		= Level().timeServer()-NET_Latency;
+		u32	dwTime		= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
@@ -472,7 +472,7 @@ void CWeapon::UpdateCL		()
 
 			// Search 2 keyframes for interpolation
 			int select		= -1;
-			for (DWORD id=0; id<NET.size()-1; id++)
+			for (u32 id=0; id<NET.size()-1; id++)
 			{
 				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
 			}
@@ -481,8 +481,8 @@ void CWeapon::UpdateCL		()
 				// Interpolate state
 				net_update&	A		= NET[select+0];
 				net_update&	B		= NET[select+1];
-				DWORD	d1			= dwTime-A.dwTimeStamp;
-				DWORD	d2			= B.dwTimeStamp - A.dwTimeStamp;
+				u32	d1			= dwTime-A.dwTimeStamp;
+				u32	d2			= B.dwTimeStamp - A.dwTimeStamp;
 				float	factor		= (float(d1)/float(d2));
 				NET_Last.lerp		(A,B,factor);
 
@@ -495,7 +495,7 @@ void CWeapon::UpdateCL		()
 				} else {
 					if (IsWorking())	{ FireEnd(); }
 				}
-				if (DWORD(NET_Last.state)!=STATE)	OnStateSwitch(NET_Last.state);
+				if (u32(NET_Last.state)!=STATE)	OnStateSwitch(NET_Last.state);
 			}
 		}
 	}
@@ -509,7 +509,7 @@ void CWeapon::UpdateCL		()
 	}
 }
 
-void CWeapon::SwitchState(DWORD S)
+void CWeapon::SwitchState(u32 S)
 {
 	if (Local() && (S!=STATE))	
 	{

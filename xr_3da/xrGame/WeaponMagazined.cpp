@@ -148,7 +148,7 @@ void CWeaponMagazined::ReloadMagazine	()
 	}
 }
 
-void CWeaponMagazined::OnStateSwitch	(DWORD S)
+void CWeaponMagazined::OnStateSwitch	(u32 S)
 {
 	switch (S)
 	{
@@ -294,9 +294,9 @@ void CWeaponMagazined::MediaLOAD		()
 
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cNameSect(),"flame");
-	DWORD scnt		= _GetItemCount(S);
+	u32 scnt		= _GetItemCount(S);
 	string256		name;
-	for (DWORD i=0; i<scnt; i++)
+	for (u32 i=0; i<scnt; i++)
 	{
 		Shader* SH			= 0;
 		ShaderCreate		(SH,"effects\\flame",_GetItem(S,i,name));
@@ -306,7 +306,7 @@ void CWeaponMagazined::MediaLOAD		()
 
 void CWeaponMagazined::MediaUNLOAD	()
 {
-	for (DWORD i=0; i<hFlames.size(); i++)
+	for (u32 i=0; i<hFlames.size(); i++)
 		ShaderDestroy(hFlames[i]);
 	hFlames.clear();
 }

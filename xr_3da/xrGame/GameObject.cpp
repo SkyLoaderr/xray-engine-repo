@@ -88,10 +88,10 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	int node			= Level().AI.q_LoadSearch(nPos);
 	if (node<0)			{
 		Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-		AI_NodeID			= DWORD(-1);
+		AI_NodeID			= u32(-1);
 		AI_Node				= NULL;
 	} else {
-		AI_NodeID			= DWORD(node);
+		AI_NodeID			= u32(node);
 		AI_Node				= Level().AI.Node(AI_NodeID);
 		Level().AI.ref_add  (AI_NodeID);
 	}
@@ -146,7 +146,7 @@ float CGameObject::Ambient	()
 	return AI_Node?float(AI_Node->light):255;
 }
 
-CObject::SavedPosition CGameObject::ps_Element(DWORD ID)
+CObject::SavedPosition CGameObject::ps_Element(u32 ID)
 {
 	VERIFY(ID<ps_Size());
 	inherited::SavedPosition	SP	=	PositionStack[ID];
@@ -164,7 +164,7 @@ void CGameObject::UpdateCL	()
 	inherited::UpdateCL	();
 
 	NET_Packet			P;
-	DWORD svT			= Level().timeServer()-NET_Latency;
+	u32 svT			= Level().timeServer()-NET_Latency;
 	while	(net_Events.available(svT))
 	{
 		u16	type		= net_Events.get(P);

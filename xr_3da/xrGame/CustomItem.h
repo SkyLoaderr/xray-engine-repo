@@ -11,7 +11,7 @@ enum EItemState {
 	esHidding,
 	esShow,
 	esHide,
-	es_forcedword = DWORD(-1)
+	es_forcedword = u32(-1)
 };
 
 class CCustomItem : public CObject  

@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Tracer.h"
 
-const DWORD	MAX_TRACERS	= (1024*5);
+const u32	MAX_TRACERS	= (1024*5);
 const float TRACER_SIZE = 0.2f;
 
 //////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ void	CTracer::Render	()
 {
 	if (bullets.empty())	return;
 	
-	DWORD	vOffset;
+	u32	vOffset;
 	FVF::V	*verts		=	(FVF::V	*) Device.Streams.Vertex.Lock(bullets.size()*4,VS->dwStride,vOffset);
 	FVF::V	*start		=	verts;
 	float	dt			=	Device.fTimeDelta;
@@ -106,7 +106,7 @@ void	CTracer::Render	()
 		P.mad(B.pos_head, lineTop,w);	verts->set(P,1,0);	verts++;
 	}
 
-	DWORD vCount					= verts-start;
+	u32 vCount					= verts-start;
 	Device.Streams.Vertex.Unlock	(vCount,VS->dwStride);
 	
 	if (vCount)	{

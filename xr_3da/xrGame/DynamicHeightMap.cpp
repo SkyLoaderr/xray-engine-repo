@@ -18,8 +18,8 @@ CHM_Static::CHM_Static()
 {
 	// Initialize slots
 	Slot*	slt = pool;
-	for (DWORD i=0; i<dhm_matrix; i++)
-		for (DWORD j=0; j<dhm_matrix; j++, slt++)
+	for (u32 i=0; i<dhm_matrix; i++)
+		for (u32 j=0; j<dhm_matrix; j++, slt++)
 			data	[i][j]	= slt;
 
 	// Center
@@ -100,7 +100,7 @@ void CHM_Static::Update	()
 		// Select polygons
 		XRC.BBoxMode		(0); // BBOX_TRITEST
 		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,bb);
-		DWORD	triCount	= XRC.GetBBoxContactCount();
+		u32	triCount	= XRC.GetBBoxContactCount();
 		if (0==triCount)	{
 			S->clear	();
 			continue;
@@ -109,7 +109,7 @@ void CHM_Static::Update	()
 		// Cull polys
 		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 		Fvector		vecUP;	vecUP.set(0,1,0);
-		for (DWORD tid=0; tid<triCount; tid++)
+		for (u32 tid=0; tid<triCount; tid++)
 		{
 			RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
 			Poly		P;
@@ -132,7 +132,7 @@ void CHM_Static::Update	()
 				Fvector	dir; dir.set(0,-1,0);
 				
 				float	r_u,r_v,r_range;
-				for (DWORD tid=0; tid<polys.size(); tid++)
+				for (u32 tid=0; tid<polys.size(); tid++)
 				{
 					if (RAPID::TestRayTri(pos,dir,polys[tid].v,r_u,r_v,r_range,TRUE))
 					{

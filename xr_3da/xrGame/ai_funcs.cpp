@@ -44,7 +44,7 @@ CPatternFunction::~CPatternFunction()
 	_FREE(m_dwaVariableTypes);
 	_FREE(m_dwaAtomicFeatureRange);
 	_FREE(m_dwaPatternIndexes);
-	for (DWORD i=0; i<m_dwPatternCount; i++)
+	for (u32 i=0; i<m_dwPatternCount; i++)
 		_FREE(m_tpPatterns[i].dwaVariableIndexes);
 	_FREE(m_tpPatterns);
 	_FREE(m_faParameters);
@@ -74,37 +74,37 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	}
 
 	fread(&m_dwVariableCount,1,sizeof(m_dwVariableCount),fTestParameters);
-	m_dwaAtomicFeatureRange = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
-	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(DWORD));
-	DWORD *m_dwaAtomicIndexes = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
-	ZeroMemory(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(DWORD));
+	m_dwaAtomicFeatureRange = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(u32));
+	u32 *m_dwaAtomicIndexes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	ZeroMemory(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(u32));
 
-	for (DWORD i=0; i<m_dwVariableCount; i++) {
-		fread(m_dwaAtomicFeatureRange + i,1,sizeof(DWORD),fTestParameters);
+	for (u32 i=0; i<m_dwVariableCount; i++) {
+		fread(m_dwaAtomicFeatureRange + i,1,sizeof(u32),fTestParameters);
 		if (i)
 			m_dwaAtomicIndexes[i] = m_dwaAtomicIndexes[i-1] + m_dwaAtomicFeatureRange[i-1];
 	}
 
-	m_dwaVariableTypes = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
-	fread(m_dwaVariableTypes,m_dwVariableCount,sizeof(DWORD),fTestParameters);
+	m_dwaVariableTypes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	fread(m_dwaVariableTypes,m_dwVariableCount,sizeof(u32),fTestParameters);
 
-	fread(&m_dwFunctionType,1,sizeof(DWORD),fTestParameters);
+	fread(&m_dwFunctionType,1,sizeof(u32),fTestParameters);
 
 	fread(&m_fMinResultValue,1,sizeof(float),fTestParameters);
 	fread(&m_fMaxResultValue,1,sizeof(float),fTestParameters);
 
 	fread(&m_dwPatternCount,1,sizeof(m_dwPatternCount),fTestParameters);
 	m_tpPatterns = (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
-	m_dwaPatternIndexes = (DWORD *)xr_malloc(m_dwPatternCount*sizeof(DWORD));
-	ZeroMemory(m_dwaPatternIndexes,m_dwPatternCount*sizeof(DWORD));
+	m_dwaPatternIndexes = (u32 *)xr_malloc(m_dwPatternCount*sizeof(u32));
+	ZeroMemory(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
 	m_dwParameterCount = 0;
 	for ( i=0; i<m_dwPatternCount; i++) {
 		if (i)
 			m_dwaPatternIndexes[i] = m_dwParameterCount;
 		fread(&(m_tpPatterns[i].dwCardinality),1,sizeof(m_tpPatterns[i].dwCardinality),fTestParameters);
-		m_tpPatterns[i].dwaVariableIndexes = (DWORD *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(DWORD));
-		fread(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality,sizeof(DWORD),fTestParameters);
-		DWORD m_dwComplexity = 1;
+		m_tpPatterns[i].dwaVariableIndexes = (u32 *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(u32));
+		fread(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality,sizeof(u32),fTestParameters);
+		u32 m_dwComplexity = 1;
 		for (int j=0; j<(int)m_tpPatterns[i].dwCardinality; j++)
 			m_dwComplexity *= m_dwaAtomicFeatureRange[m_tpPatterns[i].dwaVariableIndexes[j]];
 		m_dwParameterCount += m_dwComplexity;
@@ -114,7 +114,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	fread(m_faParameters,m_dwParameterCount,sizeof(float),fTestParameters);
 	fclose(fTestParameters);
 
-	m_dwaVariableValues = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
+	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	
 	_FREE(m_dwaAtomicIndexes);
     
@@ -128,7 +128,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 float CPatternFunction::ffEvaluate()
 {
 	float fResult = 0.0;
-	for (DWORD i=0; i<m_dwPatternCount; i++)
+	for (u32 i=0; i<m_dwPatternCount; i++)
 		fResult += m_faParameters[dwfGetPatternIndex(m_dwaVariableValues,i)];
 	return(fResult);
 }
@@ -139,7 +139,7 @@ float CPatternFunction::ffGetValue()
 	//	return(m_fLastValue);
 	m_dwLastUpdate = Level().timeServer();
 	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	for (DWORD i=0; i<m_dwVariableCount; i++)
+	for (u32 i=0; i<m_dwVariableCount; i++)
 		m_dwaVariableValues[i] = Level().m_tpAI_DDD->fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 #ifndef WRITE_TO_LOG
 	return(m_fLastValue = ffEvaluate());
@@ -283,11 +283,11 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
-	DWORD dwBestWeapon = 2;
+	u32 dwBestWeapon = 2;
 	for (int i=0; i<(int)Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
 		CWeapon *tpCustomWeapon = Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
 		if (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10) {
-			DWORD dwCurrentBestWeapon = 0;
+			u32 dwCurrentBestWeapon = 0;
 			switch (tpCustomWeapon->SUB_CLS_ID) {
 				case CLSID_OBJECT_W_M134	: {
 					dwCurrentBestWeapon = 9;

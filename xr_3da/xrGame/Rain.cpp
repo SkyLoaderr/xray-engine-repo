@@ -79,7 +79,7 @@ void	CEffect_Rain::OnDeviceDestroy	()
 	DM_Drop.Unload			();
 }
 
-void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
+void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
 {
 	if ((E==control_start) && (state!=stWorking))	{
 		state				= stStarting;
@@ -132,7 +132,7 @@ void CEffect_Rain::p_create		()
 {
 	// pool
 	particle_pool.resize	(max_particles);
-	for (DWORD it=0; it<particle_pool.size(); it++)
+	for (u32 it=0; it<particle_pool.size(); it++)
 	{
 		Particle&	P	= particle_pool[it];
 		P.prev			= it?(&particle_pool[it-1]):0;
@@ -260,12 +260,12 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Perform update
-	DWORD		vOffset;
+	u32		vOffset;
 	FVF::LIT	*verts		= (FVF::LIT	*) Device.Streams.Vertex.Lock(desired_items*4,VS_Rain->dwStride,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
 	Fvector		vCenter		= Device.vCameraPosition;
-	for (DWORD I=0; I<items.size(); I++)
+	for (u32 I=0; I<items.size(); I++)
 	{
 		// Physics and time control
 		Item&	one		=	items[I];
@@ -309,7 +309,7 @@ void	CEffect_Rain::Render	()
 		P.mad(pos_head, lineTop,-w);	verts->set(P,0xffffffff,1,1);	verts++;
 		P.mad(pos_head, lineTop,w);		verts->set(P,0xffffffff,1,0);	verts++;
 	}
-	DWORD vCount					= verts-start;
+	u32 vCount					= verts-start;
 	Device.Streams.Vertex.Unlock	(vCount,VS_Rain->dwStride);
 	
 	// Render if needed
@@ -336,9 +336,9 @@ void	CEffect_Rain::Render	()
 		
 		Fmatrix					mXform,mScale;
 		int						pcount  = 0;
-		DWORD					v_offset,i_offset;
-		DWORD					vCount_Lock		= particles_cache*DM_Drop.number_vertices;
-		DWORD					iCount_Lock		= particles_cache*DM_Drop.number_indices;
+		u32					v_offset,i_offset;
+		u32					vCount_Lock		= particles_cache*DM_Drop.number_vertices;
+		u32					iCount_Lock		= particles_cache*DM_Drop.number_indices;
 		CDetail::fvfVertexOut*	v_ptr	= (CDetail::fvfVertexOut*) Device.Streams.Vertex.Lock	(vCount_Lock, VS_Drops->dwStride, v_offset);
 		WORD*					i_ptr	= _IS.Lock												(iCount_Lock, i_offset);
 		while (P)	{
@@ -368,7 +368,7 @@ void	CEffect_Rain::Render	()
 
 				if (pcount >= particles_cache) {
 					// flush
-					DWORD	dwNumPrimitives			= iCount_Lock/3;
+					u32	dwNumPrimitives			= iCount_Lock/3;
 					Device.Streams.Vertex.Unlock	(vCount_Lock,VS_Drops->dwStride);
 					_IS.Unlock						(iCount_Lock);
 					Device.Primitive.setIndices		(v_offset, _IS.Buffer());
@@ -387,7 +387,7 @@ void	CEffect_Rain::Render	()
 		// Flush if needed
 		vCount_Lock						= pcount*DM_Drop.number_vertices;
 		iCount_Lock						= pcount*DM_Drop.number_indices;
-		DWORD	dwNumPrimitives			= iCount_Lock/3;
+		u32	dwNumPrimitives			= iCount_Lock/3;
 		Device.Streams.Vertex.Unlock	(vCount_Lock,VS_Drops->dwStride);
 		_IS.Unlock						(iCount_Lock);
 		if (pcount)	{

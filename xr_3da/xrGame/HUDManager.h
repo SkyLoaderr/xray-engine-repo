@@ -34,7 +34,7 @@ public:
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();
-	virtual		void		OnEvent				(EVENT E, DWORD P1, DWORD P2);
+	virtual		void		OnEvent				(EVENT E, u32 P1, u32 P2);
 
 	virtual		void		Load				();
 	
@@ -53,16 +53,16 @@ public:
 	float					GetScale			(){return fScale;}
 	void					SetScale			(float s);
 
-	void					ClientToScreenScaled(Irect& r, DWORD align);
-	void					ClientToScreenScaled(Ivector2& dest, int left, int top, DWORD align);
-	int						ClientToScreenScaledX(int left, DWORD align);
-	int						ClientToScreenScaledY(int top, DWORD align);
-	void					ClientToScreen		(Irect& r, DWORD align);
-	void					ClientToScreen		(Ivector2& dest, int left, int top, DWORD align);
-	int						ClientToScreenX		(int left, DWORD align);
-	int						ClientToScreenY		(int top, DWORD align);
+	void					ClientToScreenScaled(Irect& r, u32 align);
+	void					ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align);
+	int						ClientToScreenScaledX(int left, u32 align);
+	int						ClientToScreenScaledY(int top, u32 align);
+	void					ClientToScreen		(Irect& r, u32 align);
+	void					ClientToScreen		(Ivector2& dest, int left, int top, u32 align);
+	int						ClientToScreenX		(int left, u32 align);
+	int						ClientToScreenY		(int top, u32 align);
 	
-	void __cdecl 			outMessage			(DWORD C, LPCSTR from, LPCSTR msg, ...);
+	void __cdecl 			outMessage			(u32 C, LPCSTR from, LPCSTR msg, ...);
 };
 
 #endif // __XR_HUDMANAGER_H__

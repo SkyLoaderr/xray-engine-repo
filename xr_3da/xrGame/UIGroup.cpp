@@ -26,7 +26,7 @@ CUIGroup::CUIGroup()
 }
 //--------------------------------------------------------------------
 
-const DWORD DET_COLOR[3]={ITEM_COLOR_BAD,ITEM_COLOR_MED,ITEM_COLOR_GOOD};
+const u32 DET_COLOR[3]={ITEM_COLOR_BAD,ITEM_COLOR_MED,ITEM_COLOR_GOOD};
 
 void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 {

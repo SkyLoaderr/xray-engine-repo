@@ -33,7 +33,7 @@ CHUDManager::~CHUDManager()
 	_DELETE			(pGameFont);
 }
 //--------------------------------------------------------------------
-void CHUDManager::ClientToScreenScaled(Irect& r, DWORD align)
+void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
 {
 	r.x1 = ClientToScreenScaledX(r.x1,align); 
 	r.y1 = ClientToScreenScaledY(r.y1,align); 
@@ -41,29 +41,29 @@ void CHUDManager::ClientToScreenScaled(Irect& r, DWORD align)
 	r.y2 = ClientToScreenScaledY(r.y2,align); 
 }
 
-void CHUDManager::ClientToScreenScaled(Ivector2& dest, int left, int top, DWORD align)
+void CHUDManager::ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align)
 {
 	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
 }
 
-int CHUDManager::ClientToScreenScaledX(int left, DWORD align)
+int CHUDManager::ClientToScreenScaledX(int left, u32 align)
 {
 	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*fScale + left*fScale);
 	else				return iFloor(left*fScale);
 }
 
-int CHUDManager::ClientToScreenScaledY(int top, DWORD align)
+int CHUDManager::ClientToScreenScaledY(int top, u32 align)
 {
 	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top*fScale);
 	else				return iFloor(top*fScale);
 }
 
-void CHUDManager::ClientToScreen(Ivector2& dest, int left, int top, DWORD align)
+void CHUDManager::ClientToScreen(Ivector2& dest, int left, int top, u32 align)
 {
 	dest.set(ClientToScreenX(left,align),	ClientToScreenY(top,align));
 }
 
-void CHUDManager::ClientToScreen(Irect& r, DWORD align)
+void CHUDManager::ClientToScreen(Irect& r, u32 align)
 {
 	r.x1 = ClientToScreenX(r.x1,align); 
 	r.y1 = ClientToScreenY(r.y1,align); 
@@ -71,13 +71,13 @@ void CHUDManager::ClientToScreen(Irect& r, DWORD align)
 	r.y2 = ClientToScreenY(r.y2,align); 
 }
 
-int CHUDManager::ClientToScreenX(int left, DWORD align)
+int CHUDManager::ClientToScreenX(int left, u32 align)
 {
 	if (align&alRight)	return iFloor(Device.dwWidth-UI_BASE_WIDTH*fScale + left);
 	else				return left;
 }
 
-int CHUDManager::ClientToScreenY(int top, DWORD align)
+int CHUDManager::ClientToScreenY(int top, u32 align)
 {
 	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top);
 	else				return top;
@@ -137,7 +137,7 @@ void CHUDManager::Render_Direct	()
 }
 
 //--------------------------------------------------------------------
-void CHUDManager::OnEvent(EVENT E, DWORD P1, DWORD P2)
+void CHUDManager::OnEvent(EVENT E, u32 P1, u32 P2)
 {
 }
 //--------------------------------------------------------------------
@@ -163,7 +163,7 @@ void CHUDManager::OnDeviceDestroy()
 	_DELETE		(pUI);
 }
 //--------------------------------------------------------------------
-void __cdecl CHUDManager::outMessage(DWORD C, LPCSTR from, LPCSTR msg, ...)
+void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 {
 	char		buffer[128];
 

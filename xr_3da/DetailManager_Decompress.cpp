@@ -30,8 +30,8 @@ IC float	Interpolate			(float* base,		u32 x, u32 y, u32 size)
 
 IC bool		InterpolateAndDither(float* alpha255,	u32 x, u32 y, u32 sx, u32 sy, u32 size, int dither[16][16] )
 {
-	clamp 	(x,0ul,size-1);
-	clamp 	(y,0ul,size-1);
+	clamp 	(x,0u,size-1);
+	clamp 	(y,0u,size-1);
 	int		c	= iFloor(Interpolate(alpha255,x,y,size)+.5f);
 	clamp   (c,0,255);
 

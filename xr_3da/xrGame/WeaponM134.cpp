@@ -129,14 +129,14 @@ void CWeaponM134::FlameLOAD()
 {
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
-	DWORD scnt		= _GetItemCount(S);
+	u32 scnt		= _GetItemCount(S);
 	char name[255];
-	for (DWORD i=0; i<scnt; i++)
+	for (u32 i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("effects\\flame",_GetItem(S,i,name),false));
 }
 void CWeaponM134::FlameUNLOAD()
 {
-	for (DWORD i=0; i<hFlames.size(); i++)
+	for (u32 i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 	hFlames.clear();
 }
@@ -227,7 +227,7 @@ void CWeaponM134::UpdateFP	()
 	}
 }
 
-void CWeaponM134::Update	(DWORD T)
+void CWeaponM134::Update	(u32 T)
 {
 	BOOL bShot			= false;
 
@@ -285,7 +285,7 @@ void CWeaponM134::Update	(DWORD T)
 		if (sndServo.feedback){
 			sndServo.feedback->SetPosition(vLastFP);
 			float k = sqrtf(fRotateSpeed/fRotateMaxSpeed);
-			DWORD freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
+			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
 			sndServo.feedback->SetFrequency(freq);
 		}
 		if (fRotateSpeed>=fRotateMaxSpeed){
@@ -298,7 +298,7 @@ void CWeaponM134::Update	(DWORD T)
 		if (sndServo.feedback){
 			sndServo.feedback->SetPosition(vLastFP);
 			float k = sqrtf(fRotateSpeed/fRotateMaxSpeed);
-			DWORD freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
+			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
 			sndServo.feedback->SetFrequency(freq);
 		}
 		if (fRotateSpeed<=0){

@@ -13,7 +13,7 @@ public:
 	Selector(NodePosition*	_P) : P(_P) {};
 };
 
-void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost)
+void CAI_Space::q_Range_Bit(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost)
 {
 	if (0==vfs)	return;
 
@@ -31,15 +31,15 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 		float range_sqr		= Range*Range;
 
 		// Cycle
-		for (DWORD it=0; it<q_stack.size(); it++) {
-			DWORD ID = q_stack[it];
+		for (u32 it=0; it<q_stack.size(); it++) {
+			u32 ID = q_stack[it];
 			NodeCompressed*	N = m_nodes_ptr	[ID];
-			DWORD L_count = DWORD(N->links);
+			u32 L_count = u32(N->links);
 			NodeLink* L_it = (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 			NodeLink* L_end	= L_it+L_count;
 			for( ; L_it!=L_end; L_it++) {
 				// test node
-				DWORD Test = UnpackLink(*L_it);
+				u32 Test = UnpackLink(*L_it);
 				if (q_mark_bit[Test])
 					continue;
 
@@ -74,8 +74,8 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 	}
 	// Clear q_marks
 	{
-		vector<DWORD>::iterator it	= q_stack.begin();
-		vector<DWORD>::iterator end	= q_stack.end();
+		vector<u32>::iterator it	= q_stack.begin();
+		vector<u32>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark_bit[*it] = false;
 	}
@@ -83,7 +83,7 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 	Device.Statistic.AI_Range.End();
 }
 
-void CAI_Space::q_Range_Bit_X(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost)
+void CAI_Space::q_Range_Bit_X(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost)
 {
 	if (0==vfs)	return;
 
@@ -101,15 +101,15 @@ void CAI_Space::q_Range_Bit_X(DWORD StartNode, const Fvector& BasePos, float Ran
 		float range_sqr		= Range*Range;
 
 		// Cycle
-		for (DWORD it=0; it<q_stack.size(); it++) {
-			DWORD ID = q_stack[it];
+		for (u32 it=0; it<q_stack.size(); it++) {
+			u32 ID = q_stack[it];
 			NodeCompressed*	N = m_nodes_ptr	[ID];
-			DWORD L_count = DWORD(N->links);
+			u32 L_count = u32(N->links);
 			NodeLink* L_it = (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 			NodeLink* L_end	= L_it+L_count;
 			for( ; L_it!=L_end; L_it++) {
 				// test node
-				DWORD Test = UnpackLink(*L_it);
+				u32 Test = UnpackLink(*L_it);
 				if (q_mark_bit_x[Test])
 					continue;
 
@@ -144,8 +144,8 @@ void CAI_Space::q_Range_Bit_X(DWORD StartNode, const Fvector& BasePos, float Ran
 	}
 	// Clear q_marks
 	{
-		vector<DWORD>::iterator it	= q_stack.begin();
-		vector<DWORD>::iterator end	= q_stack.end();
+		vector<u32>::iterator it	= q_stack.begin();
+		vector<u32>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark_bit_x[*it] = false;
 	}
@@ -153,7 +153,7 @@ void CAI_Space::q_Range_Bit_X(DWORD StartNode, const Fvector& BasePos, float Ran
 	Device.Statistic.AI_Range.End();
 }
 
-DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos, bool bShortSearch)
+u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 {
 	if (0==vfs)	return	0;
 	
@@ -170,7 +170,7 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos, bool bShortSearc
 	}
 	
 	// Perform neibourhood search
-	DWORD BestNode;
+	u32 BestNode;
 	float BestCost;
 	q_Range_Bit(PrevNode,BasePos,m_header.size*7,&QueryPos,BestNode,BestCost);
 	//q_Range_Bit(PrevNode,BasePos,m_header.size*3,BestNode,BestCost);
@@ -186,7 +186,7 @@ DWORD CAI_Space::q_Node(DWORD PrevNode, const Fvector& BasePos, bool bShortSearc
 	}
 	// degrade to linear search
 	int id = q_LoadSearch(BasePos);
-	if (id>=0) return DWORD(id);
+	if (id>=0) return u32(id);
 	
 	// everything failed :(
 	// maintain old node

@@ -25,9 +25,9 @@ struct SUIMessage
 {
 	LPSTR sender;
 	LPSTR msg;
-	DWORD color;
+	u32 color;
 	int life_time;
-	SUIMessage(LPCSTR S, LPCSTR M, DWORD clr, float lt)
+	SUIMessage(LPCSTR S, LPCSTR M, u32 clr, float lt)
 	{
 		sender		= xr_strdup(S);
 		msg			= xr_strdup(M);
@@ -82,7 +82,7 @@ public:
 	// time		(g_timelimit)
 	// frag-list.....
 
-	void				AddMessage			(LPCSTR S, LPCSTR M, DWORD C=0xffffffff, float life_time=LIFE_TIME);
+	void				AddMessage			(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
 
 	// misc
 	void				ShowFragList		(BOOL bShow){bShowFragList=bShow;}

@@ -18,7 +18,7 @@
 #include "dummyobject.h"
 #include "customtarget.h"
     
-ENGINE_API extern DWORD		psAlwaysRun;
+ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
@@ -42,7 +42,7 @@ public:
 };
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
+                       u32  ul_reason_for_call, 
                        LPVOID lpReserved
 					 )
 {

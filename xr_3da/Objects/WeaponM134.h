@@ -31,8 +31,8 @@ private:
 	float			fRotateSpinupAccel;
 	float			fRotateBreakAccel;
 
-	DWORD			dwServoMaxFreq;
-	DWORD			dwServoMinFreq;
+	u32			dwServoMaxFreq;
+	u32			dwServoMinFreq;
 
 	sound			sndFireStart;
 	sound			sndFireEnd;
@@ -46,8 +46,8 @@ private:
 	int				iHUDRotBone;
 	int				iFireBone;
 
-	DWORD			dwFP_Frame;
-	DWORD			dwXF_Frame;
+	u32			dwFP_Frame;
+	u32			dwXF_Frame;
 
 	int				iFlameDiv;
 	float			fFlameLength;
@@ -84,7 +84,7 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 
-	virtual	void	Update			(DWORD	dT		);
+	virtual	void	Update			(u32	dT		);
 	virtual	void	OnVisible		();
 	
 	virtual void	OnDeviceCreate	();

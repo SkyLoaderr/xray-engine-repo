@@ -4,5 +4,5 @@
 #define AF_INVISIBLE	0x0002
 #define AF_ALWAYSRUN	0x0004
 
-extern DWORD psActorFlags;
+extern u32 psActorFlags;
 

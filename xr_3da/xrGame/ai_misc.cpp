@@ -55,7 +55,7 @@ fBASE*		array_of_functions[1000];
 
 */
 
-extern void	UnpackContour		(CPathNodes::PContour& C, DWORD ID);
+extern void	UnpackContour		(CPathNodes::PContour& C, u32 ID);
 extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
 
 #define	LI_NONE				0
@@ -274,7 +274,7 @@ void vfComputeCircle(Fvector tPosition, Fvector tPoint0, Fvector tPoint1, float 
 	tCircleCentre.add(tPoint0);
 }
 
-void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
+void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
 {
 	Fvector tTravelNode;
 	Fvector tPrevPrevPoint,tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
@@ -282,7 +282,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 	NodeLink *taLinks;
 	CPathNodes::PContour tCurContour, tNextContour;
 	CPathNodes::PSegment tSegment;
-	DWORD dwCurNode, dwPrevNode, dwPrevPrevNode;
+	u32 dwCurNode, dwPrevNode, dwPrevPrevNode;
 	int i, j, iCurrentPatrolPoint, iCount, iNodeIndex, iSavedIndex = -1, iStartI;
 	float fSuitAngleCosinus = cosf(fSuitableAngle), fHalfSubNodeSize = (GetHeader().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
 	bool bStop = false, bOk = false;
@@ -315,7 +315,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 	//	dwaNodes.push_back(dwStartNode);
 	//}
 
-	dwPrevNode = DWORD(-1);
+	dwPrevNode = u32(-1);
 	dwaNodes.push_back(dwStartNode);
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
@@ -447,7 +447,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 							iNodeIndex = UnpackLink(taLinks[i]);
 							UnpackContour(tNextContour,iNodeIndex);
 							vfIntersectContours(tSegment,tCurContour,tNextContour);
-							DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+							u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 							if ((dwIntersect) && (tPrevPoint.distance_to_xz(tTravelNode) >= 2*EPS_L)) {
 								dwCurNode = iNodeIndex;
 								dwaNodes.push_back(iNodeIndex);
@@ -458,7 +458,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						}
 						//VERIFY(i<iCount);
 						if (i >= iCount) {
-							DWORD dwBestNode;
+							u32 dwBestNode;
 							float fBestCost;
 							NodePosition tNodePosition;
 							PackPosition(tNodePosition,tpaPath[j]);
@@ -499,7 +499,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						iNodeIndex = UnpackLink(taLinks[i]);
 						UnpackContour(tNextContour,iNodeIndex);
 						vfIntersectContours(tSegment,tCurContour,tNextContour);
-						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+						u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 						if (dwIntersect == LI_INTERSECT) {
 							if (
 								(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
@@ -571,7 +571,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 					else
 						fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
 
-				dwPrevNode = DWORD(-1);
+				dwPrevNode = u32(-1);
 				
 				break;
 			}
@@ -586,7 +586,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 					iNodeIndex = UnpackLink(taLinks[i]);
 					UnpackContour(tNextContour,iNodeIndex);
 					vfIntersectContours(tSegment,tCurContour,tNextContour);
-					DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+					u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 					if (dwIntersect == LI_INTERSECT) {
 						if (
 							(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
@@ -683,7 +683,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 										tSegment.v2 = tNextContour.v1;
 									};
 								}
-								DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+								u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 								if (dwIntersect == LI_INTERSECT) {
 									if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
 										if (bOk)
@@ -815,7 +815,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 	/**/
 }
 
-float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<DWORD> &tpaStack)
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -824,7 +824,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f;
-	DWORD dwCurNode, dwPrevNode = DWORD(-1);
+	u32 dwCurNode, dwPrevNode = u32(-1);
 
 	tStartPoint = tStartPosition;
 
@@ -849,7 +849,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 				iNodeIndex = UnpackLink(taLinks[i]);
 				UnpackContour(tNextContour,iNodeIndex);
 				vfIntersectContours(tSegment,tCurContour,tNextContour);
-				DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+				u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 				if (dwIntersect == LI_INTERSECT) {
 					if (
 						(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
@@ -929,7 +929,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 //									break;
 //								}
 //							}
-//							DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+//							u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 //							if (dwIntersect == LI_INTERSECT) {
 //								if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
 //									if (bOk)
@@ -987,7 +987,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 	return(fCurDistance);
 }
 
-bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition, DWORD dwFinishNode)
+bool CAI_Space::bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -996,7 +996,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f, fDistance = ffGetDistanceBetweenNodeCenters(dwStartNode,dwFinishNode);
-	DWORD dwCurNode, dwPrevNode = DWORD(-1);
+	u32 dwCurNode, dwPrevNode = u32(-1);
 
 	tStartPoint = tStartPosition;
 
@@ -1015,7 +1015,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 			iNodeIndex = UnpackLink(taLinks[i]);
 			UnpackContour(tNextContour,iNodeIndex);
 			vfIntersectContours(tSegment,tCurContour,tNextContour);
-			DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+			u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 			if (dwIntersect == LI_INTERSECT) {
 				if (
 					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
@@ -1093,7 +1093,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 //								break;
 //							}
 //						}
-//						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+//						u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 //						if (dwIntersect == LI_INTERSECT) {
 //							if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
 //								if (bOk)
@@ -1147,7 +1147,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 	return(dwCurNode == dwFinishNode);
 }
 
-DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tFinishPosition)
+u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -1156,7 +1156,7 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f, fDistance = tStartPosition.distance_to(tFinishPosition);
-	DWORD dwCurNode, dwPrevNode = DWORD(-1);
+	u32 dwCurNode, dwPrevNode = u32(-1);
 
 	tStartPoint = tStartPosition;
 	tFinishPoint = tFinishPosition;
@@ -1174,7 +1174,7 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 			iNodeIndex = UnpackLink(taLinks[i]);
 			UnpackContour(tNextContour,iNodeIndex);
 			vfIntersectContours(tSegment,tCurContour,tNextContour);
-			DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+			u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 			if (dwIntersect == LI_INTERSECT) {
 				if (
 					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
@@ -1218,10 +1218,10 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 				break;
 			}
 			else
-				return(DWORD(-1));
+				return(u32(-1));
 	}
 	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition))
 		return(dwCurNode);
 	else
-		return(DWORD(-1));
+		return(u32(-1));
 }

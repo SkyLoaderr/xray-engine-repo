@@ -88,7 +88,7 @@ void CActor::SActorState::Create(CKinematics* K, LPCSTR base)
 	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
 }
 
-void CActor::g_SetAnimation( DWORD mstate_rl )
+void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (g_Alive())
 	{

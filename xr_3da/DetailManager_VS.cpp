@@ -8,12 +8,12 @@ const int			c_hdr	= 14;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
-static u32 dwDecl	[] =
+static DWORD dwDecl	[] =
 {
 	D3DVSD_STREAM	(0),
-		D3DVSD_REG		(0,	D3DVSDT_FLOAT3),	// pos
-		D3DVSD_REG		(1,	D3DVSDT_SHORT4),	// uv
-		D3DVSD_END		()
+	D3DVSD_REG		(0,	D3DVSDT_FLOAT3),	// pos
+	D3DVSD_REG		(1,	D3DVSDT_SHORT4),	// uv
+	D3DVSD_END		()
 };
 #pragma pack(push,1)
 struct	vertHW
@@ -37,7 +37,7 @@ void CDetailManager::hw_Load()
 
 	// Analyze batch-size
 	hw_BatchSize	= (u32(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
-	clamp			(hw_BatchSize,0ul,46ul);
+	clamp			(hw_BatchSize,0u,46u);
 	Msg("* [DETAILS] VertexConsts(%d), Batch(%d)",u32(HW.Caps.vertex.dwRegisters),hw_BatchSize);
 
 	// Pre-process objects

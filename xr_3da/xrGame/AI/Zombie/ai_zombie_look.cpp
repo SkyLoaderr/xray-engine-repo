@@ -35,7 +35,7 @@ bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing movement speed weight
 	if (tpEntity->ps_Size() > 1) {
-		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
+		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
 		if (dwTime < m_dwMovementIdleTime) {
 			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
 			float fSpeed = tTemp.magnitude()/dwTime;
@@ -171,7 +171,7 @@ void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, floa
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
 
-	DWORD dwTime = Level().timeServer();
+	u32 dwTime = Level().timeServer();
 	
 	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= .10f)) {
 		if (this != who) {
@@ -194,7 +194,7 @@ void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, floa
 					}
 				if (j >= (int)tpaDynamicSounds.size()) {
 					if (tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
-						DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+						u32 dwBest = dwTime + 1, dwIndex = u32(-1);
 						for (int j=0; j<(int)tpaDynamicSounds.size(); j++)
 							if (tpaDynamicSounds[j].dwTime < dwBest) {
 								dwIndex = j;

@@ -7,13 +7,13 @@ BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 	svector<Fvector4,maxRP>&	RP					= Level().Teams[EEE->g_team()].RespawnPoints;
 	if (RP.empty())									return FALSE;
 
-	DWORD	selected	= 0;
+	u32	selected	= 0;
 	switch (EEE->s_RP)	{
 	case 0xFE:	// Use supplied coords
 		return TRUE;
 	default:	// Use specified RP
-		if (EEE->s_RP>=RP.size())	Msg("! ERROR: Can't spawn entity at RespawnPoint #%d.", DWORD(EEE->s_RP));
-		selected = DWORD(EEE->s_RP);
+		if (EEE->s_RP>=RP.size())	Msg("! ERROR: Can't spawn entity at RespawnPoint #%d.", u32(EEE->s_RP));
+		selected = u32(EEE->s_RP);
 		break;
 	case 0xFF:	// Search for best RP for this entity
 	case 0xFD:	// Search for best RP for this entity

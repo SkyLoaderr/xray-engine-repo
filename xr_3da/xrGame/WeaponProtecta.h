@@ -29,8 +29,8 @@ private:
 	Fvector			vFirePoint;
 
 	Fvector			vLastFP, vLastFD;
-	DWORD			dwFP_Frame;
-	DWORD			dwXF_Frame;
+	u32			dwFP_Frame;
+	u32			dwXF_Frame;
 
 	int				iShotCount;
 	

@@ -91,7 +91,7 @@ void CWeaponBinoculars::OnVisible	()
 	}
 }
 
-void CWeaponBinoculars::OnStateSwitch	(DWORD S)
+void CWeaponBinoculars::OnStateSwitch	(u32 S)
 {
 	switch (S)
 	{

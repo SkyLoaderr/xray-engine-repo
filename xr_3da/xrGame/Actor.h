@@ -126,7 +126,7 @@ protected:
 	float					m_fJumpTime;
 	float					m_fFallTime;
 
-	DWORD					patch_frame;
+	u32					patch_frame;
 	Fvector					patch_position;
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
@@ -134,8 +134,8 @@ protected:
 	static void	__stdcall HeadCallback(CBoneInstance*);
 private:
 	// Motions
-	DWORD					mstate_wishful;	
-	DWORD					mstate_real;	
+	u32					mstate_wishful;	
+	u32					mstate_real;	
 
 	BOOL					m_bJumpKeyPressed;//, m_bJumpInProgress;
 
@@ -170,7 +170,7 @@ private:
 		Fvector				p_pos;					// in world coords
 		Fvector				p_accel;				// in world coords
 		Fvector				p_velocity;				// in world coords
-		DWORD				mstate;
+		u32				mstate;
 		int					weapon;
 		float				fHealth;
 		float				fArmor;
@@ -187,16 +187,16 @@ private:
 	Fvector					NET_SavedAccel;
 	net_update				NET_Last;
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
-	DWORD					NET_Time;				// server time of last update
+	u32					NET_Time;				// server time of last update
 
 	//------------------------------
-	void					g_cl_CheckControls		(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
-	void					g_cl_ValidateMState		(float dt, DWORD mstate_wf);
-	void					g_cl_Orientate			(DWORD mstate_rl, float dt);
-	void					g_sv_Orientate			(DWORD mstate_rl, float dt);
-	void					g_Orientate				(DWORD mstate_rl, float dt);
+	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
+	void					g_cl_ValidateMState		(float dt, u32 mstate_wf);
+	void					g_cl_Orientate			(u32 mstate_rl, float dt);
+	void					g_sv_Orientate			(u32 mstate_rl, float dt);
+	void					g_Orientate				(u32 mstate_rl, float dt);
 	void					g_Physics				(Fvector& accel, float jump, float dt);
-	void					g_SetAnimation			(DWORD mstate_rl);
+	void					g_SetAnimation			(u32 mstate_rl);
 
 	virtual void			feel_touch_new			(CObject* O);
 	virtual void			feel_touch_delete		(CObject* O);
@@ -209,7 +209,7 @@ public:
 	virtual					~CActor					( );
 
 
-	IC static BOOL			isAccelerated		(DWORD mstate)	
+	IC static BOOL			isAccelerated		(u32 mstate)	
 	{
 		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
 		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
@@ -258,7 +258,7 @@ public:
 	virtual void			OnKeyboardRelease	(int dik);
 	virtual void			OnKeyboardHold		(int dik);
 
-	virtual void			Update				( DWORD T ); 
+	virtual void			Update				( u32 T ); 
 	virtual void			UpdateCL			( );
 	virtual void			OnVisible			( );
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);

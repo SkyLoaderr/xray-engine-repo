@@ -13,7 +13,7 @@ namespace AI {
 	class	NodeEstimator
 	{
 	public:
-		DWORD	BestNode;
+		u32	BestNode;
 		float	BestCost;
 	public:
 		MemberPlacement taMemberPositions;
@@ -33,7 +33,7 @@ namespace AI {
 	class	Path
 	{
 	public:
-		vector<DWORD>	Nodes;
+		vector<u32>	Nodes;
 	};
 };
 
@@ -53,7 +53,7 @@ public:
 	vector<bool>					q_mark_bit;		// temporal usage mark for queries
 	vector<bool>					q_mark_bit_x;		// temporal usage mark for queries
 	vector<BYTE>					q_mark;			// temporal usage mark for queries
-	vector<DWORD>					q_stack;
+	vector<u32>					q_stack;
 	
 	CAI_Space		();
 	~CAI_Space		();
@@ -62,35 +62,35 @@ public:
 	void			Render			();
 
 	const hdrNODES	GetHeader		(){return m_header;};
-	void			q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, DWORD dwTimeDifference);
-	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
-	void			q_Range_Bit		(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
-	void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
-	void			q_Range_Bit_X	(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
-	//void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, DWORD &BestNode, float &BestCost);
-	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos, bool bShortSearch = false);
+	void			q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
+	void			q_Range			(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
+	void			q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
+	void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
+	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
+	//void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, u32 &BestNode, float &BestCost);
+	u32			q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
 
 	// yet another A* search
 	#define DEFAULT_LIGHT_WEIGHT		  5.f 
 	#define DEFAULT_COVER_WEIGHT		 10.f 
 	#define DEFAULT_DISTANCE_WEIGHT		 40.f
 	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
-	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
-	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
-	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
+	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
+	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
+	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
 	void			vfLoadSearch();
 	void			vfUnloadSearch();
 	// 
 
 	// yet another best node search
-	//void			vfFindTheBestNode(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
+	//void			vfFindTheBestNode(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
 	// 
 
 	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	// Helper functions
 	IC	const hdrNODES&		Header()		{ return m_header; }
-	IC	NodeCompressed*		Node(DWORD ID)	{ return vfs?m_nodes_ptr[ID]:NULL; }
+	IC	NodeCompressed*		Node(u32 ID)	{ return vfs?m_nodes_ptr[ID]:NULL; }
 
 	IC	void		UnpackPosition	(Fvector& Pdest, const NodePosition& Psrc)
 	{
@@ -98,7 +98,7 @@ public:
 		Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
 		Pdest.z = float(Psrc.z)*m_header.size;
 	}
-	IC	DWORD		UnpackLink		(NodeLink& L)
+	IC	u32		UnpackLink		(NodeLink& L)
 	{	return (*LPDWORD(&L))&0x00ffffff;	}
 
 	IC	void		PackPosition	(NodePosition& Pdest, const Fvector& Psrc)
@@ -114,14 +114,14 @@ public:
 	}
 
 	// REF-counting
-	IC  BYTE		ref_add			(DWORD ID)	
+	IC  BYTE		ref_add			(u32 ID)	
 	{
-		if (vfs && ID!=DWORD(-1))	return q_mark[ID] += BYTE(1);	
+		if (vfs && ID!=u32(-1))	return q_mark[ID] += BYTE(1);	
 		else						return BYTE(0);
 	}
-	IC	BYTE		ref_dec			(DWORD ID)
+	IC	BYTE		ref_dec			(u32 ID)
 	{
-		if (vfs && ID!=DWORD(-1))	return q_mark[ID] -= BYTE(1);	
+		if (vfs && ID!=u32(-1))	return q_mark[ID] -= BYTE(1);	
 		else						return BYTE(0);
 	}
 
@@ -165,17 +165,17 @@ public:
 		return(_abs(fAngle0 - fAngle1) < fDelta) || ((_abs(_abs(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
 	}
 
-	Fvector	tfGetNodeCenter(DWORD dwNodeID);
+	Fvector	tfGetNodeCenter(u32 dwNodeID);
 	Fvector	tfGetNodeCenter(NodeCompressed *tpNode);
 	
-	float ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, DWORD dwNodeID1);
-	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, DWORD dwNodeID1);
-	float ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, NodeCompressed *tpNode1);
+	float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1);
+	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1);
+	float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1);
 	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
-	void  vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
-	float ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<DWORD> &tpaStack);
-	bool  bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition, DWORD dwFinishNode);
-	DWORD dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
+	void  vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
+	float ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack);
+	bool  bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
+	u32 dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
 	void  vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2);
 
 	// Device dependance

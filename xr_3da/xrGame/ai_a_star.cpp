@@ -21,7 +21,7 @@
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
-static DWORD dwAStarStaticCounter = 0;
+static u32 dwAStarStaticCounter = 0;
 TNode		*taHeap;
 TIndexNode	*tpaIndexes;
 
@@ -124,14 +124,14 @@ void CAI_Space::vfLoadSearch()
 	fSize2		= _sqr(fSize = this->m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(this->m_header.size_y/32767.0))/4;
 
-//	DWORD M1	= Engine.mem_Usage();
-	DWORD S1	= (MAX_NODES + 1)*sizeof(TNode);
+//	u32 M1	= Engine.mem_Usage();
+	u32 S1	= (MAX_NODES + 1)*sizeof(TNode);
 	taHeap		= (TNode *)xr_malloc(S1);
 	ZeroMemory(taHeap,S1);
-	DWORD S2	= (this->m_header.count)*sizeof(TIndexNode);
+	u32 S2	= (this->m_header.count)*sizeof(TIndexNode);
 	tpaIndexes	= (TIndexNode *)xr_malloc(S2);
 	ZeroMemory(tpaIndexes,S2);
-//	DWORD M2	= Engine.mem_Usage();
+//	u32 M2	= Engine.mem_Usage();
 	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 }
 
@@ -141,7 +141,7 @@ void CAI_Space::vfUnloadSearch()
 	_FREE(tpaIndexes);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight)
+float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
@@ -273,7 +273,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 				else {
 					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
 					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
-					//*(DWORD *)(tpTemp2) = 0;
+					//*(u32 *)(tpTemp2) = 0;
 					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
@@ -322,7 +322,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 	return(MAX_VALUE);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
+float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
@@ -455,7 +455,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 				else {
 					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
 					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
-					*(DWORD *)(tpTemp2) = 0;
+					*(u32 *)(tpTemp2) = 0;
 					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
@@ -503,7 +503,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 	return(MAX_VALUE);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
+float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
@@ -636,7 +636,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 				else {
 					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
 					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
-					*(DWORD *)(tpTemp2) = 0;
+					*(u32 *)(tpTemp2) = 0;
 					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;

@@ -19,7 +19,7 @@ void CImage::Create(u32 w, u32 h)
 	_FREE		(pData);
 	dwWidth		= w;
 	dwHeight	= h;
-	pData		= LPDWORD(xr_malloc(w*h*sizeof(u32)));
+	pData		= (u32*)(xr_malloc(w*h*sizeof(u32)));
 }
 
 void CImage::SaveTGA(LPCSTR name, BOOL b24)

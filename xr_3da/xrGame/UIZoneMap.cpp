@@ -31,7 +31,7 @@ CUIZoneMap::~CUIZoneMap()
 
 void CUIZoneMap::Init()
 {
-	DWORD align = alLeft|alTop;
+	u32 align = alLeft|alTop;
 	back.Init	("ui\\hud_map_back",	"hud\\default",BASE_LEFT,BASE_TOP,256,256,align);
 	back.SetRect(0,0,153,148);
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,32,32,align);
@@ -74,7 +74,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	// render enemy
 	/*
-	for (DWORD i=0; i<Team.KnownEnemys.size(); i++){
+	for (u32 i=0; i<Team.KnownEnemys.size(); i++){
 		CEntity* E = dynamic_cast<CEntity*>(Team.KnownEnemys[i].key);
 		if (E->IsVisibleForHUD()){
 			ConvertToLocal(LM,E->Position(),P);
@@ -96,9 +96,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	{
 		for (u32 i=0; i<Team.Squads.size(); i++){
 			CSquad& S = Team.Squads[i];
-			for (DWORD j=0; j<S.Groups.size(); j++){
+			for (u32 j=0; j<S.Groups.size(); j++){
 				CGroup& G = S.Groups[j];
-				for (DWORD k=0; k<G.Members.size(); k++)
+				for (u32 k=0; k<G.Members.size(); k++)
 				{
 
 					if (G.Members[k]->IsVisibleForHUD()){

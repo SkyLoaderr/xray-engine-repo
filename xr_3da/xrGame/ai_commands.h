@@ -33,12 +33,12 @@ namespace AI {
 	};
 	class	C_Command	{
 	public:
-		DWORD			Command;
+		u32			Command;
 		WORD			Result;
 		WORD			Mode;
 		C_Target		Tmode;
 		C_TargetObject	Tobject;
-		DWORD			o_timeout;
+		u32			o_timeout;
 
 	public:
 		C_Command()		{ ZeroMemory(this,sizeof(*this)); setLogicError(); };
@@ -55,7 +55,7 @@ namespace AI {
 		{	setError(); setUnachievable();							}
 
 		// Add message 2 queue
-		IC void			setup(DWORD Cmd, C_Target T=t_None, void* Tobj=0, DWORD timeout=500, DWORD mode=cDestroyAll)
+		IC void			setup(u32 Cmd, C_Target T=t_None, void* Tobj=0, u32 timeout=500, u32 mode=cDestroyAll)
 		{
 			Command		= Cmd;
 			Result		= 0;

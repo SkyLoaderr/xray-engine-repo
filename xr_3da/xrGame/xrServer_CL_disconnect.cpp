@@ -7,7 +7,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
 
 	NET_Packet			P;
-	DWORD				mode			= net_flags(TRUE,TRUE);
+	u32				mode			= net_flags(TRUE,TRUE);
 
 	// Collect entities
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();

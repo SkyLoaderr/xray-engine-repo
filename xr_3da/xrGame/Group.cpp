@@ -13,7 +13,7 @@ CGroup::CGroup()
 	m_dwLeaderChangeCount = 0;
 	m_tLastHitDirection.set(1,0,0);
 	m_tHitPosition.set(1,0,0);
-	m_dwLastHitTime = DWORD(-1);
+	m_dwLastHitTime = u32(-1);
 	m_dwFiring = 0;
 	m_bEnemyNoticed = false;
 	m_bLessCoverLook = false;
@@ -28,7 +28,7 @@ CGroup::CGroup()
 const Fvector& CGroup::GetCentroid()
 {
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		vCentroid.add	(Members[I]->Position());
 	vCentroid.div	(float(Members.size()));
 	return vCentroid;
@@ -48,7 +48,7 @@ void CGroup::GetMemberPlacement(MemberPlacement& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 	{
 		CEntity*		E = Members[I];
 		const Fvector&	P = E->Position();
@@ -62,7 +62,7 @@ void CGroup::GetMemberPlacementN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 	{
 		CEntity*	E = Members[I];
 		if (E!=Me)	MP.push_back(E->AI_NodeID);
@@ -74,7 +74,7 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) {
+	for (u32 I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 			CEntity*		E = Members[I];
 			const Fvector&	P = E->Position();
@@ -87,7 +87,7 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 			if (E!=Me)	{
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				if (M)
-					if (M->AI_Path.DestNode != DWORD(-1))
+					if (M->AI_Path.DestNode != u32(-1))
 						MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 					else {
 						Fvector tTemp;
@@ -104,7 +104,7 @@ void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) {
+	for (u32 I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 			MP.push_back(Members[I]->AI_NodeID);
 		else {
@@ -125,7 +125,7 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 	P1.clear();
 	P2.clear();
 	P3.clear();
-	for (DWORD I=0; I<Members.size(); I++) {
+	for (u32 I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 			CEntity*E = Members[I];
 			const Fvector&	P = E->Position();
@@ -141,7 +141,7 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 				if (M) {
 					P0.push_back(E->Position());
 					P1.push_back(M->AI_NodeID);
-					if (M->AI_Path.DestNode != DWORD(-1)) {
+					if (M->AI_Path.DestNode != u32(-1)) {
 						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 						P3.push_back(M->AI_Path.DestNode);
 					}
@@ -162,7 +162,7 @@ void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			CEntity*		E = Members[I];
 			const Fvector&	P = E->Position();
@@ -176,7 +176,7 @@ void CGroup::GetAliveMemberPlacementN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			CEntity*	E = Members[I];
 			if (E!=Me)	MP.push_back(E->AI_NodeID);
@@ -188,7 +188,7 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 				CEntity*		E = Members[I];
@@ -202,7 +202,7 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 				if (E!=Me)	{
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					if (M)
-						if (M->AI_Path.DestNode != DWORD(-1))
+						if (M->AI_Path.DestNode != u32(-1))
 							MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 						else {
 							Fvector tTemp;
@@ -219,7 +219,7 @@ void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 				MP.push_back(Members[I]->AI_NodeID);
@@ -241,7 +241,7 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 	P1.clear();
 	P2.clear();
 	P3.clear();
-	for (DWORD I=0; I<Members.size(); I++)
+	for (u32 I=0; I<Members.size(); I++)
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 				CEntity*E = Members[I];
@@ -258,7 +258,7 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 					if (M) {
 						P0.push_back(E->Position());
 						P1.push_back(M->AI_NodeID);
-						if (M->AI_Path.DestNode != DWORD(-1)) {
+						if (M->AI_Path.DestNode != u32(-1)) {
 							P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 							P3.push_back(M->AI_Path.DestNode);
 						}
@@ -279,7 +279,7 @@ void CGroup::GetAliveMemberPlacementWithLeader(MemberPlacement& MP, CEntity* Me,
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			CEntity*		E = Members[I];
 			const Fvector&	P = E->Position();
@@ -299,7 +299,7 @@ void CGroup::GetAliveMemberPlacementNWithLeader(MemberNodes& MP, CEntity* Me, CE
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0)
 			if (Members[I]!=Me)	
 				MP.push_back(Members[I]->AI_NodeID);
@@ -314,7 +314,7 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 				CEntity*		E = Members[I];
@@ -356,7 +356,7 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 				MP.push_back(Members[I]->AI_NodeID);
@@ -390,7 +390,7 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 	P1.clear();
 	P2.clear();
 	P3.clear();
-	for (DWORD I=0; I<Members.size(); I++)
+	for (u32 I=0; I<Members.size(); I++)
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 				CEntity*E = Members[I];
@@ -407,7 +407,7 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 					if (M) {
 						P0.push_back(E->Position());
 						P1.push_back(M->AI_NodeID);
-						if (M->AI_Path.DestNode != DWORD(-1)) {
+						if (M->AI_Path.DestNode != u32(-1)) {
 							P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 							P3.push_back(M->AI_Path.DestNode);
 						}
@@ -438,7 +438,7 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 				if (M) {
 					P0.push_back(E->Position());
 					P1.push_back(M->AI_NodeID);
-					if (M->AI_Path.DestNode != DWORD(-1)) {
+					if (M->AI_Path.DestNode != u32(-1)) {
 						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 						P3.push_back(M->AI_Path.DestNode);
 					}

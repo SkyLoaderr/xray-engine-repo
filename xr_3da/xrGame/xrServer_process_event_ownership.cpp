@@ -2,7 +2,7 @@
 
 void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u16 ID)
 {
-	DWORD				MODE		= net_flags		(TRUE,TRUE);
+	u32				MODE		= net_flags		(TRUE,TRUE);
 
 	// Parse message
 	u16					id_parent=ID,id_entity;

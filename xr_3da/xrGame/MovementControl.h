@@ -75,11 +75,11 @@ public:
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction);
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction);
 
-	void				ActivateBox		(DWORD id)	{ aabb.set(boxes[id]);	}
+	void				ActivateBox		(u32 id)	{ aabb.set(boxes[id]);	}
 
 	const EEnvironment	Environment		( )			{ return eEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
-	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
+	void				SetBox			(u32 id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
 	void				SetParent		(CObject* P){ pObject = P; }
 

@@ -26,7 +26,7 @@ void CUICustomItem::Init(int tx_width, int tx_height)
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, int x1, int y1, int x2, int y2)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, int x1, int y1, int x2, int y2)
 {
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
@@ -44,13 +44,13 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, 
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 {
 	Render(Pointer,pos,color,iRect.x1,iRect.y1,iRect.x2,iRect.y2);
 }
 //--------------------------------------------------------------------
 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, float angle)
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle)
 {
 	float			_sin1,_cos1,_sin2,_cos2;
 	angle			-=PI_DIV_4;

@@ -54,7 +54,7 @@ void CAI_Space::OnDeviceDestroy()
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//extern void	UnpackContour(PContour& C, DWORD ID);
+//extern void	UnpackContour(PContour& C, u32 ID);
 //extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
 //
 //IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
@@ -188,14 +188,14 @@ void CAI_Space::Load(LPCSTR name)
 
 	// dispatch table
 	m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
-	for (DWORD I=0; I<m_header.count; I++)
+	for (u32 I=0; I<m_header.count; I++)
 	{
 		m_nodes_ptr[I]	= (NodeCompressed*)vfs->Pointer();
 
 		NodeCompressed	C;
 		vfs->Read		(&C,sizeof(C));
 
-		DWORD			L = C.links;
+		u32			L = C.links;
 		vfs->Advance	(L*sizeof(NodeLink));
 	}
 
@@ -209,7 +209,7 @@ void CAI_Space::Load(LPCSTR name)
 //	PSegment tSegment;
 //	NodeCompressed *tpNode;
 //	NodeLink *taLinks,*taLinks1;
-//	DWORD		dwErrorsCount = 0;
+//	u32		dwErrorsCount = 0;
 //	
 //	for ( I=0; I<m_header.count; I++)
 //	{
@@ -303,16 +303,16 @@ void CAI_Space::Render()
 	NodePosition		Local;
 	PackPosition		(Local,P);
 
-	DWORD ID			= O->AI_NodeID;
+	u32 ID			= O->AI_NodeID;
 
 	pApp->pFont->Size	(.02f);
 	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
-	pApp->pFont->Out	(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),DWORD(ID));
+	pApp->pFont->Out	(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),u32(ID));
 
-	svector<DWORD,128>	linked;
+	svector<u32,128>	linked;
 	{
 		NodeCompressed*	N	=	m_nodes_ptr[ID];
-		DWORD	count		=	DWORD(N->links);
+		u32	count		=	u32(N->links);
 		BYTE* pData			=	(BYTE*)N;
 		pData				+=	sizeof(NodeCompressed);
 		NodeLink* it		=	(NodeLink*)pData;
@@ -331,7 +331,7 @@ void CAI_Space::Render()
 	Device.Shader.set_Shader(sh_debug);
 	pApp->pFont->Color		(D3DCOLOR_RGBA(255,255,255,255));
 
-	for (DWORD Nid=0; Nid<m_header.count; Nid++)
+	for (u32 Nid=0; Nid<m_header.count; Nid++)
 	{
 		NodeCompressed&	N	= *m_nodes_ptr[Nid];
 		Fvector			P0,P1,PC;
@@ -344,15 +344,15 @@ void CAI_Space::Render()
 
 		float			sr	= P0.distance_to(P1)/2+m_header.size;
 		if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
-			DWORD	LL		= DWORD(N.light);
-			DWORD	CC		= D3DCOLOR_XRGB(0,0,255);
-			DWORD	CT		= D3DCOLOR_XRGB(LL,LL,LL);
-			DWORD	CH		= D3DCOLOR_XRGB(0,128,0);
+			u32	LL		= u32(N.light);
+			u32	CC		= D3DCOLOR_XRGB(0,0,255);
+			u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
+			u32	CH		= D3DCOLOR_XRGB(0,128,0);
 
 			BOOL	bHL		= FALSE;
-			if (Nid==DWORD(ID))	{ bHL = TRUE; CT = D3DCOLOR_XRGB(0,255,0); }
+			if (Nid==u32(ID))	{ bHL = TRUE; CT = D3DCOLOR_XRGB(0,255,0); }
 			else {
-				for (DWORD t=0; t<linked.size(); t++) {
+				for (u32 t=0; t<linked.size(); t++) {
 					if (linked[t]==Nid) { bHL = TRUE; CT = CH; break; }
 				}
 			}
@@ -400,7 +400,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 	PackPosition	(P,pos);
 	short min_dist	= 32767;
 	int selected	= -1;
-	for (DWORD I=0; I<m_header.count; I++)
+	for (u32 I=0; I<m_header.count; I++)
 	{
 		NodeCompressed& N = *m_nodes_ptr[I];
 

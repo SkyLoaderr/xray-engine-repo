@@ -25,8 +25,8 @@ class CHM_Static
 		IC			void		set		(int _x, int _z)	{ x=_x; z=_z; }
 		IC			void		clear	()
 		{
-			for (DWORD i=0; i<dhm_precision; i++)
-				for (DWORD j=0; j<dhm_precision; j++)
+			for (u32 i=0; i<dhm_precision; i++)
+				for (u32 j=0; j<dhm_precision; j++)
 					data	[i][j]	= flt_min;
 		}
 		Slot()
@@ -66,7 +66,7 @@ class CHeightMap
 {
 	CHM_Static					hm_static;
 	CHM_Dynamic					hm_dynamic;
-	DWORD						dwFrame;
+	u32						dwFrame;
 public:
 	float						Query		(float x, float z);				// 2D query
 	Fvector						Query		(Fvector& pos, Fvector& dir);	// 3D ray-query

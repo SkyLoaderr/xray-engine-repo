@@ -9,13 +9,13 @@ enum EPointType{
     ptRPoint=0,
     ptAIPoint,
     ptMaxType,
-    pt_force_dword=DWORD(-1)
+    pt_force_dword=u32(-1)
 };
 
 enum EWayType{
     wtPatrolPath=0,
     wtMaxType,
-    wt_force_dword=DWORD(-1)
+    wt_force_dword=u32(-1)
 };
 
 // BASE offset

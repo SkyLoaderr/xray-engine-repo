@@ -25,19 +25,19 @@ void CContextMenu::Load(CInifile* INI, LPCSTR SECT){
 		Items.push_back(Item);
 	}
 }
-void CContextMenu::Render(CGameFont* F, DWORD cT, DWORD cI, float s)
+void CContextMenu::Render(CGameFont* F, u32 cT, u32 cI, float s)
 {
 	F->Size		(0.05f);
 	F->Color	(cT);
 	F->OutNext	("%s",Name);
 	F->Color	(cI);
 	F->Size		(0.03f);
-	for (DWORD i=0; i<Items.size(); i++)
+	for (u32 i=0; i<Items.size(); i++)
 		F->OutNext("%d. %s", i, (char*)Items[i].Name);
 }
 void CContextMenu::Select(int I){
 	if (I>=0 && I<(int)(Items.size())){
 		MenuItem& M = Items[I];
-		Engine.Event.Signal(M.Event, DWORD(M.Param));
+		Engine.Event.Signal(M.Event, u32(M.Param));
 	}
 }

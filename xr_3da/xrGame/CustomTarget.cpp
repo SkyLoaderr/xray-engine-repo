@@ -30,7 +30,7 @@ void CCustomTarget::net_Import			(NET_Packet& P)		// import from server
 {
 	inherited::net_Import(P);
 }
-void CCustomTarget::Update				(DWORD dt)
+void CCustomTarget::Update				(u32 dt)
 {
 	inherited::Update(dt);
 }

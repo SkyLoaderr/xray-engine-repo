@@ -17,7 +17,7 @@ void CAI_Zombie::Exec_Action(float dt)
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
 			
-			DWORD dwTime = Level().timeServer();
+			u32 dwTime = Level().timeServer();
 			
 			if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
 				
@@ -128,7 +128,7 @@ void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	// Iterate on known
-	for (DWORD i=0; i<Known.size(); i++)
+	for (u32 i=0; i<Known.size(); i++)
 	{
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);

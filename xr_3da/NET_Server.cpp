@@ -28,7 +28,7 @@ void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 static const GUID NET_GUID = 
 { 0x218fa8b, 0x515b, 0x4bf2, { 0x9a, 0x5f, 0x2f, 0x7, 0x9d, 0x17, 0x59, 0xf3 } };
 
-static HRESULT WINAPI Handler (PVOID pvUserContext, u32 dwMessageType, PVOID pMessage)
+static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID pMessage)
 {
 	IPureServer* C = (IPureServer*)pvUserContext;
 	return C->net_Handler	(dwMessageType,pMessage);
@@ -200,7 +200,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			PDPNMSG_CREATE_PLAYER	msg = PDPNMSG_CREATE_PLAYER(pMessage);
 			const	u32				max_size = 1024;
 			char	bufferData		[max_size];
-            u32	bufferSize		= max_size;
+            DWORD	bufferSize		= max_size;
 			ZeroMemory				(bufferData,bufferSize);
 
 			// retreive info
@@ -376,7 +376,7 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 	if ((dwTime-C->dwTime_LastUpdate)>dwInterval)	
 	{
 		// check queue for "empty" state
-		u32				dwPending;
+		DWORD				dwPending;
 		hr					= NET->GetSendQueueInfo(C->ID,&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
