@@ -674,3 +674,12 @@ function random_choice_weighted( a )
         end
     end
 end
+
+
+function is_object_online (object_id)
+    local sim = alife ()
+    if sim == nil then return true end
+    local obj = sim:object (object_id)
+    if obj == nil then return false end
+	return obj.online
+end
