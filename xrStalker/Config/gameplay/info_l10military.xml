@@ -28,5 +28,7 @@
 	<info_portion id="mil_sniper_get_job"><task>mil_kill_sniper</task></info_portion>
 	<info_portion id="mil_sniper_job_failed"></info_portion>
 	
+	<info_poriton id="mil_zoneguard_first"></info_poriton>
+	<info_portion id="mil_max_talk"></info_portion>
 	
 </game_information_portions>

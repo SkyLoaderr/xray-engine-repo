@@ -105,55 +105,37 @@
     <string id="mil_dolg_dialog_600100">
         <text>Не премину :)</text>
     </string>
-    <string id="mil_dolg_job_0">
-        <text>Сталкер, ты именно тот, кто нам нужен.</text>
+    <string id="mil_zoneguard_dialog_0">
+        <text>Чего тебе надобно, старче ?</text>
     </string>
-    <string id="mil_dolg_job_01">
-        <text>О чем это ты?</text>
+    <string id="mil_zoneguard_dialog_1">
+        <text>Здорово, брат.</text>
     </string>
-    <string id="mil_dolg_job_011">
-        <text>У тебя есть замечательная возможность послужить делу Долга, а Долг хорошо платит за услуги оказанные ему. Ты заинтересован?</text>
+    <string id="mil_zoneguard_dialog_10">
+        <text>Тамбовский волк тебе брат. Это территория "Свободы" и чужих здесь не  любят. Что надо ?\n</text>
     </string>
-    <string id="mil_dolg_job_012">
-        <text>Да, сколько?</text>
+    <string id="mil_zoneguard_dialog_100">
+        <text>Кто у вас тут старший ? Дело к нему есть.</text>
     </string>
-    <string id="mil_dolg_job_0121">
-        <text>Люблю деловой подход. Твоя задача состоит в том чтобы убрать двух снайперов с вышек. Как только ты закончишь - мы атакуем. Платим 3000.</text>
+    <string id="mil_zoneguard_dialog_1000">
+        <text>Старший у нас Лукаш, но сперва придется тебе идти к Максу и, если он  решит, что дело стоящее, то сообщит Лукашу.\n</text>
     </string>
-    <string id="mil_dolg_job_0122">
-        <text>Почему вы сами не решите эту проблему?</text>
+    <string id="mil_zoneguard_dialog_10000">
+        <text>А кто такой Макс ? </text>
     </string>
-    <string id="mil_dolg_job_0123">
-        <text>Хорошо.</text>
+    <string id="mil_zoneguard_dialog_100000">
+        <text>Типа бригадира нашего. Тертый мужик. </text>
     </string>
-    <string id="mil_dolg_job_0124">
-        <text>У нас нет подходящего снайперского оружия, а мы не идиоты лезть на открытую местность. А ты сможешь подойти намного ближе.Так что?</text>
+    <string id="mil_zoneguard_dialog_1000000">
+        <text>А где его найти ?</text>
     </string>
-    <string id="mil_dolg_job_0125">
-        <text>Я подумаю.</text>
+    <string id="mil_zoneguard_dialog_10000000">
+        <text>Дуй к костру у барака. Он чаще всего там сидит.</text>
     </string>
-    <string id="mil_dolg_job_013">
-        <text>Нет</text>
+    <string id="mil_zoneguard_dialog_2">
+        <text>Как служба движется ?</text>
     </string>
-    <string id="rozgovor1_0">
-        <text>default text</text>
-    </string>
-    <string id="rozgovor1_1">
-        <text>Как дела?</text>
-    </string>
-    <string id="rozgovor1_11">
-        <text>Отлично....</text>
-    </string>
-    <string id="rozgovor1_2">
-        <text>Че делаешь?</text>
-    </string>
-    <string id="rozgovor1_22">
-        <text>Втыкаю....</text>
-    </string>
-    <string id="rozgovor1_3">
-        <text>Да?</text>
-    </string>
-    <string id="rozgovor1_33">
-        <text>Нет...</text>
+    <string id="mil_zoneguard_dialog_20">
+        <text>Как всегда - хреново. Иди, куда шел…</text>
     </string>
 </string_table>

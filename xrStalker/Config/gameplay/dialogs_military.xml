@@ -1,82 +1,52 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="rozgovor1">
+    <dialog id="mil_zoneguard_dialog">
         <phrase_list>
-            <phrase id="1">
-                <text>rozgovor1_1</text>
-                <next>11</next>
+            <phrase id="10">
+                <text>mil_zoneguard_dialog_10</text>
+                <next>100</next>
             </phrase>
-            <phrase id="11">
-                <text>rozgovor1_11</text>
-                <action>dialogs.break_dialog</action>
+            <phrase id="100">
+                <text>mil_zoneguard_dialog_100</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text>mil_zoneguard_dialog_1000</text>
+                <next>10000</next>
+            </phrase>
+            <phrase id="10000">
+                <text>mil_zoneguard_dialog_10000</text>
+                <next>100000</next>
+            </phrase>
+            <phrase id="100000">
+                <text>mil_zoneguard_dialog_100000</text>
+                <next>1000000</next>
+            </phrase>
+            <phrase id="1000000">
+                <text>mil_zoneguard_dialog_1000000</text>
+                <next>10000000</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_zoneguard_dialog_1</text>
+                <dont_has_info>mil_max_talk</dont_has_info>
+                <give_info>mil_max_talk</give_info>
+                <next>10</next>
+            </phrase>
+            <phrase id="10000000">
+                <text>mil_zoneguard_dialog_10000000</text>
             </phrase>
             <phrase id="2">
-                <text>rozgovor1_2</text>
-                <next>22</next>
+                <text>mil_zoneguard_dialog_2</text>
+                <has_info>mil_max_talk</has_info>
+                <next>20</next>
             </phrase>
-            <phrase id="22">
-                <text>rozgovor1_22</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="3">
-                <text>rozgovor1_3</text>
-                <next>33</next>
-            </phrase>
-            <phrase id="33">
-                <text>rozgovor1_33</text>
-                <action>dialogs.break_dialog</action>
+            <phrase id="20">
+                <text>mil_zoneguard_dialog_20</text>
             </phrase>
             <phrase id="0">
-                <text>rozgovor1_0</text>
+                <text>mil_zoneguard_dialog_0</text>
                 <next>1</next>
                 <next>2</next>
-                <next>3</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_dolg_job">
-        <phrase_list>
-            <phrase id="011">
-                <text>mil_dolg_job_011</text>
-                <next>012</next>
-                <next>013</next>
-            </phrase>
-            <phrase id="012">
-                <text>mil_dolg_job_012</text>
-                <next>0121</next>
-            </phrase>
-            <phrase id="0122">
-                <text>mil_dolg_job_0122</text>
-                <next>0124</next>
-            </phrase>
-            <phrase id="0124">
-                <text>mil_dolg_job_0124</text>
-                <next>0125</next>
-            </phrase>
-            <phrase id="0123">
-                <text>mil_dolg_job_0123</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="0121">
-                <text>mil_dolg_job_0121</text>
-                <next>0122</next>
-                <next>0123</next>
-            </phrase>
-            <phrase id="013">
-                <text>mil_dolg_job_013</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="01">
-                <text>mil_dolg_job_01</text>
-                <next>011</next>
-            </phrase>
-            <phrase id="0125">
-                <text>mil_dolg_job_0125</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="0">
-                <text>mil_dolg_job_0</text>
-                <next>01</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -266,6 +236,10 @@
                 <text>mil_dolg_dialog_10050</text>
                 <action>dialogs_military.mil_dolg_payment</action>
             </phrase>
+            <phrase id="10040">
+                <text>mil_dolg_dialog_10040</text>
+                <next>5000</next>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1000</next>
@@ -274,10 +248,6 @@
                 <next>4000</next>
                 <next>5000</next>
                 <next>6000</next>
-            </phrase>
-            <phrase id="10040">
-                <text>mil_dolg_dialog_10040</text>
-                <next>5000</next>
             </phrase>
         </phrase_list>
     </dialog>
