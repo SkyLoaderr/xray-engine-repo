@@ -199,6 +199,8 @@ CAI_DDD::CAI_DDD()
 	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.efd",				this);
 	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.efd",		this);
 	m_pfRetreatProbability				= xr_new<CPatternFunction>	("alife\\RetreatProbability.efd",		this);
+	m_pfWeaponAttackTimes				= xr_new<CPatternFunction>	("alife\\WeaponAttackTimes.efd",		this);
+	m_pfWeaponSuccessProbability		= xr_new<CPatternFunction>	("alife\\WeaponSuccessProbability.efd",	this);
 }
 
 CAI_DDD::~CAI_DDD()

@@ -130,6 +130,8 @@ public:
 	CPatternFunction						*m_pfNoticability;
 	CPatternFunction						*m_pfNoticeProbability;
 	CPatternFunction						*m_pfRetreatProbability;
+	CPatternFunction						*m_pfWeaponAttackTimes;
+	CPatternFunction						*m_pfWeaponSuccessProbability;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

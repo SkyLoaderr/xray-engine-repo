@@ -86,16 +86,31 @@ bool CSE_ALifeSimulator::bfCheckForCombat(CSE_ALifeMonsterAbstract *tpALifeMonst
 	return(false);
 }
 
-void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
-{
-#pragma todo("Dima to Dima: Append attack actions")
-	
-}
-
 bool CSE_ALifeSimulator::bfCheckIfRetreated(int iCombatGroupIndex)
 {
-#pragma todo("Dima to Dima: Append retreat check")
-	return(randF(1) < randF(1));
+	getAI().m_tpCurrentALifeMember	= m_tpaCombatGroups[iCombatGroupIndex][0];
+	getAI().m_tpCurrentALifeEnemy	= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
+	return(randI(100) < (int)getAI().m_pfRetreatProbability->dwfGetDiscreteValue(100));
+}
+
+void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
+{
+	MONSTER_P_VECTOR	&l_tCombatGroup = m_tpaCombatGroups[iCombatGroupIndex];
+	MONSTER_P_IT		I = l_tCombatGroup.begin();
+	MONSTER_P_IT		E = l_tCombatGroup.end();
+	for ( ; I != E; I++) {
+		vfChooseBestWeapon(*I);
+		vfUseWeapon		(*I,m_tpaCombatGroups[iCombatGroupIndex ^ 1]);
+	}
+}
+
+void CSE_ALifeSimulator::vfChooseBestWeapon(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
+{
+
+}
+
+void CSE_ALifeSimulator::vfUseWeapon(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, MONSTER_P_VECTOR	&l_tCombatGroup)
+{
 }
 
 void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
