@@ -59,34 +59,37 @@ function main()
 		sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
+	wait(2000)
 	action(                                                                                                       
 	    stalker2,
 		sound	("scripts\\idle\\say_holodno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
-	wait()
+	wait(2000)
 	action(                                                                                                       
 	    stalker1,
 		sound	("scripts\\idle\\say_chto_s_toboy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
+	wait(2000)
 	action(                                                                                                       
 	    stalker2,
 		sound	("scripts\\idle\\say_dai_vipit","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
-	wait()
+	wait(2000)
 	action(                                                                                                       
 	    stalker1,
 		sound	("scripts\\idle\\say_ti_pyuaniy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
+	wait(2000)
 	action(                                                                                                       
 	    stalker2,
 		sound	("scripts\\idle\\say_skuchno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
-	wait()
+	wait(2000)
 
 	event:clear_callback(true)
 	event:clear_callback(false)
