@@ -65,10 +65,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit)"
-				OutputFile="$(OutDir)/vbgp.exe"
+				OutputFile="$(OutDir)/bge.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/vbgp.pdb"
+				ProgramDatabaseFile="$(OutDir)/bge.pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -149,7 +149,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit)"
-				OutputFile="$(OutDir)/vbgp.exe"
+				OutputFile="$(OutDir)/bge.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
