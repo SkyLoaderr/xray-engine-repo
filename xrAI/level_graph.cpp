@@ -65,15 +65,19 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 				selected	= i;
 			}
 		}
-		else
-			if (!inside_vertex) {
-				float		dist =  distance(i,_node_position);
-				if (dist < min_dist) {
-					min_dist	= dist;
-					selected	= i;
-				}
-			}
 	}
+	
+	if (!valid_vertex_id(selected)) {
+		for (u32 i=0, selected = u32(-1); i<header().vertex_count(); ++i) {
+			float		dist =  distance(i,_node_position);
+			if (dist < min_dist) {
+				min_dist	= dist;
+				selected	= i;
+			}
+		}
+	}
+
+	VERIFY					(valid_vertex_id(selected));
 	return					(selected);
 }
 
@@ -82,10 +86,16 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
 
-	if (valid_vertex_id(current_node_id) && 
-		inside				(vertex(current_node_id),position)) {
-		Device.Statistic.AI_Node.End();
-		return				(current_node_id);
+	if (valid_vertex_id(current_node_id)) {
+		if (inside(vertex(current_node_id),position)) {
+			Device.Statistic.AI_Node.End();
+			return				(current_node_id);
+		}
+		u32						id = check_position_in_direction(current_node_id,vertex_position(current_node_id),position);
+		if (valid_vertex_id(id) && inside(vertex(id),position) && (position.distance_to(vertex_position(id)) < 1.5f)) {
+			Device.Statistic.AI_Node.End();
+			return				(id);
+		}
 	}
 
 	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 0;
@@ -97,7 +107,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 		return				(position_params.m_vertex_id);
 	}
 
-	if (position_params.m_distance < 1.f) {
+	if (position_params.m_distance < 1.5f) {
 		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
 		Device.Statistic.AI_Node.End		();
 		return				(position_params.m_vertex_id);
