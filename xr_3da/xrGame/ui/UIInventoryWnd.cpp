@@ -679,8 +679,9 @@ bool CUIInventoryWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 	if(keyboard_action==WINDOW_KEY_PRESSED || keyboard_action==WINDOW_KEY_RELEASED){
 
-		if(key_binding[dik]==kINVENTORY&&keyboard_action==WINDOW_KEY_PRESSED){
+		if( (key_binding[dik]==kINVENTORY||key_binding[dik]==kQUIT)&&keyboard_action==WINDOW_KEY_PRESSED){
 			GetHolder()->StartStopMenu(this,true);
+			return true;
 		}
 
 		CObject* O = Level().CurrentEntity();
