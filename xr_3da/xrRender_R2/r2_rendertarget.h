@@ -57,7 +57,7 @@ public:
 	ref_texture					t_encodeRG;
 	IDirect3DTexture9*			t_encodeB_surf;
 	ref_texture					t_encodeB;
-	IDirect3DTexture9*			t_material_surf;
+	IDirect3DVolumeTexture9*	t_material_surf;
 	ref_texture					t_material;
 	IDirect3DTexture9*			t_ds2fade_surf;
 	ref_texture					t_ds2fade;

@@ -263,54 +263,56 @@ void	CRenderTarget::OnDeviceCreate	()
 		// Build material(s)
 		{
 			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,1,0,D3DFMT_A8L8,D3DPOOL_MANAGED,&t_material_surf));
+			R_CHK						(D3DXCreateVolumeTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,4,1,0,D3DFMT_A8L8,D3DPOOL_MANAGED,&t_material_surf));
 			t_material					= Device.Resources->_CreateTexture(r2_material);
 			t_material->surface_set		(t_material_surf);
 
 			// Fill it (addr: x=dot(L,N),y=dot(L,H))
-			D3DLOCKED_RECT				R;
-			R_CHK						(t_material_surf->LockRect	(0,&R,0,0));
-			for (u32 y=0; y<TEX_material_LdotH; y++)
+			D3DLOCKED_BOX				R;
+			R_CHK						(t_material_surf->LockBox	(0,&R,0,0));
+			for (u32 slice=0; slice<4; slice++)
 			{
-				for (u32 x=0; x<TEX_material_LdotN; x++)
+				for (u32 y=0; y<TEX_material_LdotH; y++)
 				{
-					u16*	p	=	(u16*)		(LPBYTE (R.pBits) + y*R.Pitch + x*2);
-					float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
-					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
+					for (u32 x=0; x<TEX_material_LdotN; x++)
+					{
+						u16*	p	=	(u16*)		(LPBYTE (R.pBits) + slice*R.SlicePitch + y*R.RowPitch + x*2);
+						float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
+						float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
+						float	fd,fs;
 
-					/*
-					--------- 1/2
-							ls	*=	powf		(ld,1/32.f);						// minimize specular where diffuse near zero
-					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
-					s32		_s	=	clampr		(iFloor	(powf(ls,ps_r2_ls_spower)*255.5f),	0,255);
-					*/
-					// float	sim	=	_abs		(1-_abs	(ld-ls));
-					// float	sim	=	clampr		(_sin	(PI_MUL_4*(ld*ld+ls*ls)), 0.f, 1.f);
-					// float	sim	=	_abs		(1-_abs	(_sin(ld*PI_MUL_4)-_cosls));
-					//float	sim0	=	_abs	(1-_abs	(ld-ls));
-					//float	sim1	=	_abs	(1-_abs	(ld*.5f-ls)+.5f);
-					//float	sim		=	_max	(sim0,sim1);
+						switch	(slice)
+						{
+						case 0:	{ // looks like OrenNayar
+							fd	= sqrt(ld);
+							fs	= powf(ls,16.f);
+								}	break;
+						case 1:	{// looks like Blinn
+							fd	= ld;
+							fs	= powf(ls,24.f);
+								}	break;
+						case 2:	{ // looks like Phong
+							fd	= ld;
+							fs	= powf(ls,128.f);
+								}	break;
+						case 3:	{ // looks like Metal
+							float	s0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
+							float	s1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
+							float	s2	=	_abs	(1-_abs	(ld-ls));
+							fd		= ld;
+							fs		= _max	(_max(s0,s1),s2);
+								}	break;
+						}
 
-					/*
-					//------- 3
-					float	sim0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
-					float	sim1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
-					float	sim2	=	_abs	(1-_abs	(ld-ls));
-					float	sim		=	_max	(_max(sim0,sim1),sim2) * powf	(ld,1/32.f);
-					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
-					s32		_s	=	clampr		(iFloor	(powf(sim,ps_r2_ls_spower)*255.5f),	0,255);
-					*/
-
-					//------- 0 (OrenNayar)
-					s32		_d	=	clampr		(iFloor	(sqrt(ld)*255.5f),					0,255);
-					s32		_s	=	0;
-
-					*p			=	u16			(_s*256 + _d);						// color_rgba	(_d,_d,_d,_s);
+						s32		_d	=	clampr	(iFloor	(fd*255.5f),					0,255);
+						s32		_s	=	clampr	(iFloor	(fs*powf(fd,1/64.f)*255.5f),	0,255);
+						*p			=	u16		(_s*256 + _d);
+					}
 				}
 			}
-			R_CHK					(t_material_surf->UnlockRect	(0));
+			R_CHK		(t_material_surf->UnlockBox	(0));
 #ifdef DEBUG
-			R_CHK					(D3DXSaveTextureToFile	("x:\\r2_material.dds",D3DXIFF_DDS,t_material_surf,0));
+			R_CHK		(D3DXSaveTextureToFile	("x:\\r2_material.dds",D3DXIFF_DDS,t_material_surf,0));
 #endif
 		}
 
