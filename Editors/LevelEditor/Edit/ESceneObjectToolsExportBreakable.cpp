@@ -25,27 +25,29 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
 		IntVec& face_lst 	= sp_it->second;
         CSurface* surf 		= sp_it->first;
 		int gm_id			= surf->_GameMtl(); 
-        if (gm_id<0){ 
-        	ELog.DlgMsg		(mtError,"Surface: '%s' contains bad game material.",surf->_Name());
+        if (gm_id==GAMEMTL_NONE_ID){ 
+        	ELog.DlgMsg		(mtError,"Object '%s', surface '%s' contain invalid game material.",mesh->Parent()->m_LibName.c_str(),surf->_Name());
         	bResult 		= FALSE; 
             break; 
         }
-        {
-            IBlender* 		B = Device.Resources->_FindBlender(surf->_ShaderName()); 
-            if (TRUE==B->canBeLMAPped()){ 
-                ELog.Msg	(mtError,"Surface: '%s' non dynamic engine shader found '%s'",surf->_Name(),surf->_ShaderName());
-                bResult 		= FALSE; 
-                break; 
-            }
-        }
         SGameMtl* M 		= GMLib.GetMaterialByID(gm_id);
         if (0==M){
-        	ELog.DlgMsg		(mtError,"Surface: '%s' contains undefined game material.",surf->_Name());
+        	ELog.DlgMsg		(mtError,"Object '%s', surface '%s' contain undefined game material.",mesh->Parent()->m_LibName.c_str(),surf->_Name());
         	bResult 		= FALSE; 
             break; 
         }
         if (!M->Flags.is(game_mtl_mask)) continue;
-        
+
+        // check engine shader compatibility
+        {
+            IBlender* 		B = Device.Resources->_FindBlender(surf->_ShaderName()); 
+            if (TRUE==B->canBeLMAPped()){ 
+                ELog.Msg	(mtError,"Object '%s', surface '%s' contain static engine shader - '%s'. Export interrupted.",mesh->Parent()->m_LibName.c_str(),surf->_Name(),surf->_ShaderName());
+                bResult 	= FALSE; 
+                break; 
+            }
+        }
+
         FaceVec&	faces 	= mesh->GetFaces();
         FvectorVec&	pn	 	= mesh->GetPNormals();
         FvectorVec&	pts 	= mesh->GetPoints();
