@@ -159,7 +159,7 @@ end
 function zone_binder:on_enter( zone, obj )
 	printf( "[zone %s] on_enter obj=%s", zone:name(), obj:name() )
 
-	zones_inside[zone:id()][obj:id()] == true
+	zones_inside[zone:id()][obj:id()] = true
 
 	-- вызвать callback-и всех подключённых классов управления
 	table.foreach( zones[zone:id()], function( k, v ) v:on_enter( obj ) end )
@@ -169,7 +169,7 @@ end
 function zone_binder:on_leave( zone, obj )
 	printf( "[zone %s] on_leave obj=%s", zone:name(), obj:name() )
 
-	zones_inside[zone:id()][obj:id()] == nil
+	zones_inside[zone:id()][obj:id()] = nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
