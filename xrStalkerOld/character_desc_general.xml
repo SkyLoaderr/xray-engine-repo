@@ -24,7 +24,9 @@
 		<actor_dialog>escape_trader_talk_about</actor_dialog>
 		<actor_dialog>escape_trader_talk_flame</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
+		<actor_dialog>trader_strelok</actor_dialog>
 		<visual>actors\trader\trader</visual>
+		
 	</specific_character>
 
 	<specific_character id="rostok_barman" no_random = "1">
