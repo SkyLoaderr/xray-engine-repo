@@ -122,12 +122,12 @@ using namespace std;
 #include "defines.h"
 #include "pure.h"
 #include "vector.h"
-#include "properties.h"
 #ifndef NO_XRLOG
 #include "log.h"
 #endif
 #include "device.h"
 #include "fs.h"
+#include "properties.h"
 
 // TODO: reference additional headers your program requires here
 
