@@ -247,6 +247,7 @@ void CCustomObject::AnimationFillProp(LPCSTR pref, PropItemVec& items)
     PropValue* V		= PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Flags\\Motionable"),&m_CO_Flags, flMotion);
     V->OnChangeEvent	= OnMotionableChange;
 	if (Motionable()){
+       				      PHelper.CreateCaption		(items,FHelper.PrepareKey(pref,"Motion\\Hint"),		"Make KEY only on Parent CS");
 	    ButtonValue* B	= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Files"),	"Import,Export", 0);
         B->OnBtnClickEvent= OnMotionFilesClick;
 	    B				= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Commands"),	"+ Key,- Key,Scale,Normalize", 0);
@@ -256,10 +257,6 @@ void CCustomObject::AnimationFillProp(LPCSTR pref, PropItemVec& items)
         				  PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Auto Key"), 		&m_CO_Flags, flAutoKey);
         V				= PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Camera View"), 	&m_CO_Flags, flCameraView);
         V->OnChangeEvent= OnMotionCameraViewChange;
-	    V				= PHelper.CreateVector		(items,FHelper.PrepareKey(pref,"Motion\\Position"),				&PPosition, -10000.f, 10000.f, 	0.01f, 3);
-        V->OnChangeEvent= OnTransformChange;
-	    V				= PHelper.CreateAngle3		(items,FHelper.PrepareKey(pref,"Motion\\Rotation"),				&PRotation);
-        V->OnChangeEvent= OnTransformChange;
 	    V				= PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Start Frame (sec)"),	&m_MotionParams->min_t, -10000.f, m_MotionParams->max_t, 	1.f/30.f, 3);
     	V->OnChangeEvent= OnMotionFrameChange;
 		V				= PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\End Frame (sec)"),		&m_MotionParams->max_t, m_MotionParams->min_t, 10000.f, 	1.f/30.f, 3);

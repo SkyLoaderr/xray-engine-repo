@@ -154,8 +154,8 @@ void TUI::MouseRelease(TShiftState Shift, int X, int Y)
         }
     }
     // update tools (change action)
-    Tools->OnFrame();
-    RedrawScene();
+    Tools->OnFrame	();
+    RedrawScene		();
 }
 //----------------------------------------------------
 void TUI::MouseMove(TShiftState Shift, int X, int Y)
@@ -189,7 +189,7 @@ void TUI::IR_OnMouseMove(int x, int y){
         Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
     }
     // Out cursor pos
-    OutUICursorPos();
+    OutUICursorPos	();
 }
 //---------------------------------------------------------------------------
 

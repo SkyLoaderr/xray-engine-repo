@@ -370,6 +370,7 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M)
 {
 	VERIFY(M);
     BoneMotionVec& lst = M->BoneMotions();
+/*
 	if (m_Bones.size()!=lst.size()){
 		ELog.Msg(mtError,"Different bone count.\nObject has '%d' bones. Motion has '%d' bones.",m_Bones.size(),lst.size());
     	return false;
@@ -379,6 +380,7 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M)
         	ELog.Msg(mtError,"Can't find bone '%s' in object.",bm_it->name);
         	return false;
         }
+*/
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
     	if (!M->FindBoneMotion((*b_it)->Name())){
         	ELog.Msg(mtError,"Can't find bone '%s' in motion.",(*b_it)->Name());
