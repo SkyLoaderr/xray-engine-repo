@@ -63,10 +63,11 @@ protected:
 	enum{
         flRT_Valid			= (1<<0),
         flRT_UpdateTransform= (1<<1),
+        flRT_NeedSelfDelete	= (1<<2),
     };
     Flags32			m_RT_Flags;
 public:
-	shared_str			FName;
+	shared_str		FName;
 
     // orientation
     Fvector 		FPosition;
@@ -105,6 +106,8 @@ protected:
     void __stdcall 	OnNumChangePosition	(PropValue* sender);
     void __stdcall 	OnNumChangeRotation	(PropValue* sender);
     void __stdcall 	OnNumChangeScale	(PropValue* sender);
+
+    virtual void	DeleteThis		(){m_RT_Flags.set(flRT_NeedSelfDelete,TRUE);}
 public:
 					CCustomObject	(LPVOID data, LPCSTR name);
 					CCustomObject	(CCustomObject* source);
@@ -115,6 +118,7 @@ public:
 	IC BOOL 		Locked			(){return m_CO_Flags.is(flLocked); 	}
 	IC BOOL 		Selected		(){return m_CO_Flags.is(flSelected);}
     IC BOOL			Valid			(){return m_RT_Flags.is(flRT_Valid);}
+    IC BOOL			IsDeleted		(){return m_RT_Flags.is(flRT_NeedSelfDelete);}
 
 	// editor integration
     virtual bool	Validate		(){return true;}
