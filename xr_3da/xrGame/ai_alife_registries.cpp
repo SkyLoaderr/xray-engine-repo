@@ -532,7 +532,11 @@ void CSE_ALifeScheduleRegistry::update					()
 	for (u32 i=0; (I != m_tpScheduledObjects.end()) && ((*I).second->m_schedule_counter != m_cycle_count); ++i) {
 		update_next				();
 		(*I).second->m_schedule_counter = m_cycle_count;
-		(*I).second->Update		();
+		//. hack for ALife
+		CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>((*I).second);
+		VERIFY					(dynamic_object);
+		if (!dynamic_object->m_bOnline)
+			(*I).second->Update	();
 		I						= next();
 		if (time_over())
 			break;
