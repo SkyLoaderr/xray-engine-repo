@@ -21,6 +21,10 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 	
 <!---------------------------KILLER REGULAR----------------------->
@@ -46,6 +50,10 @@
 			wpn_mp5 \n
 			ammo_9x19_fmj = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_regular_default2" team_default = "1">
@@ -70,6 +78,10 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_regular_default3" team_default = "1">
@@ -94,6 +106,10 @@
 			wpn_bm16 \n
 			ammo_12x76_zhekan = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 		
 <!---------------------------KILLER SNIPER---------------------->
@@ -119,6 +135,10 @@
 			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_sniper_default2" team_default = "1">
@@ -143,6 +163,10 @@
 			wpn_svd \n
 			ammo_7.62x54_7h1 = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="killer_specnaz_default1" team_default = "1">
@@ -167,6 +191,10 @@
 			wpn_spas12 \n
 			ammo_12x76_dart = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_specnaz_default2" team_default = "1">
@@ -192,6 +220,10 @@
 			ammo_5.56x45_ap = 1 \n
 			ammo_m209 = 2 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_specnaz_default3" team_default = "1">
@@ -216,6 +248,10 @@
 			wpn_ak74 = 1, 1, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_specnaz_default4" team_default = "1">
@@ -240,6 +276,10 @@
 			wpn_ak74 = 1, 1, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 			
 <!---------------------------KILLER MASTER----------------------->
@@ -267,6 +307,10 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="killer_master_default2" team_default = "1">
@@ -293,6 +337,10 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 		
 </xml>
