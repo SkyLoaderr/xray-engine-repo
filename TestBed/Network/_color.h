@@ -1,11 +1,15 @@
 #ifndef __C__
 #define __C__
 
+// maps unsigned 8 bits/channel to D3DCOLOR
+IC u32	color_argb	(u32 a, u32 r, u32 g, u32 b)	{	return ((a&0xff)<<24)|((r&0xff)<<16)|((g&0xff)<<8)|(b&0xff);	}
+IC u32	color_rgba	(u32 a, u32 r, u32 g, u32 b)	{	return color_argb(a,r,g,b);		}
+IC u32	color_xrgb	(u32 r, u32 g, u32 b)			{	return color_argb(0xff,r,g,b);	}
+
 typedef struct _color {
 public:
 	float r,g,b,a;
 
-	IC	D3DCOLOR	*d3d(void) { return (D3DCOLOR *)this;	};
     IC 	float*	asDATA(void) { return (float*)this; };
 	IC	void	set(u32 dw)
 	{
@@ -25,7 +29,7 @@ public:
 		int	 _g = iFloor(g*255.f); clamp(_g,0,255);
 		int	 _b = iFloor(b*255.f); clamp(_b,0,255);
 		int	 _a = iFloor(a*255.f); clamp(_a,0,255);
-		return D3DCOLOR_RGBA(_r,_g,_b,_a);
+		return color_rgba(_r,_g,_b,_a);
 	};
 	IC	u32	get_windows( ) const
 	{
