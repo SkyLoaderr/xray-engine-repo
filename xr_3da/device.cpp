@@ -237,7 +237,7 @@ void CRenderDevice::Create	() {
 
 	// Create TL-primitive
 	{
-		const DWORD dwTriCount = 1024;
+		const DWORD dwTriCount = 4*1024;
 		const DWORD dwIdxCount = dwTriCount*2*3;
 		WORD	*Indices = 0;
 		DWORD	dwUsage=D3DUSAGE_WRITEONLY;
