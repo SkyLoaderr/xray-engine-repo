@@ -1,11 +1,9 @@
 module("monsters")
-local last_update = 0
+
 function main()
 	local trader = Trader ( "escape_trader", "trader_zone", script_name())
 
 	while(true) do
-		printf("time from last update %d", device():time_global() - last_update)
-		last_update	= device():time_global()
 		trader:process()
 		wait()
 	end
