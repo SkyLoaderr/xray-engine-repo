@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define USE_DL_PREFIX
+#include "xr_LuaAllocator.h"
 
 /* This file uses only the official API of Lua.
 ** Any function declared here could be written as an application function.
@@ -633,11 +635,11 @@ LUALIB_API int luaL_loadbuffer (lua_State *L, const char *buff, size_t size,
 static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
   (void)ud;
   if (nsize == 0) {
-    free(ptr);
-    return NULL;
+    dlfree	(ptr);
+    return	NULL;
   }
   else 
-    return realloc(ptr, nsize);
+    return dlrealloc(ptr, nsize);
 }
 
 
