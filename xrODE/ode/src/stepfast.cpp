@@ -111,7 +111,19 @@ MultiplyAdd2_sym_p8p (dReal * A, dReal * B, dReal * C, int p, int Askip)
 		//aa is going accross the matrix, ad down
 		aa = ad = A;
 		cc = C;
-		for (j = i; j < p; j++)
+
+		sum = bb[0] * cc[0];
+		sum += bb[1] * cc[1];
+		sum += bb[2] * cc[2];
+		sum += bb[4] * cc[4];
+		sum += bb[5] * cc[5];
+		sum += bb[6] * cc[6];
+		*(aa++) += sum;
+		//*ad += sum;
+		ad += Askip;
+		cc += 8;
+		
+		for (j = i+1; j < p; j++)
 		{
 			sum = bb[0] * cc[0];
 			sum += bb[1] * cc[1];
