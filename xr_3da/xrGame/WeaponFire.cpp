@@ -90,11 +90,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	// Ammo
 	if(Local()) 
 	{
-		if (!psActorFlags.test(AF_UNLIMITEDAMMO))	
-		{
-			m_magazine.pop	();
-			--iAmmoElapsed;
-		}
+		m_magazine.pop	();
+		--iAmmoElapsed;
+
 		if(iAmmoElapsed==0) 
 			OnMagazineEmpty();
 

@@ -2,6 +2,7 @@
 #include "weaponammo.h"
 #include "PhysicsShell.h"
 #include "xrserver_objects_alife_items.h"
+#include "Actor_Flags.h"
 
 CCartridge::CCartridge() 
 {
@@ -152,7 +153,8 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
-	--m_boxCurr;
+	if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+		--m_boxCurr;
 	return true;
 }
 

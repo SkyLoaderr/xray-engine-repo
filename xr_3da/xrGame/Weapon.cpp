@@ -544,15 +544,23 @@ void CWeapon::net_Import	(NET_Packet& P)
 
 	u16 ammo_elapsed = 0;
 	P.r_u16					(ammo_elapsed);
-	iAmmoElapsed = int(ammo_elapsed);
-
 	P.r_u8					(m_flagsAddOnState);
 
 	u8 ammoType, wstate;
 	P.r_u8					(ammoType);
 	P.r_u8					(wstate);
 
-//	m_ammoType = ammoType;
+	iAmmoElapsed =			int(ammo_elapsed);
+	m_ammoType = ammoType;
+
+	if (iAmmoElapsed && m_magazine.empty())
+	{
+		CCartridge l_cartridge; 
+		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+		for(int i = 0; i < iAmmoElapsed; ++i) 
+			m_magazine.push(l_cartridge);
+	};
+
 //	STATE = wstate;
 	
 }
@@ -594,7 +602,7 @@ void CWeapon::OnH_A_Independent	()
 void CWeapon::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
-}
+};
 
 void CWeapon::OnH_B_Chield		()
 {
@@ -756,7 +764,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect)
 {
 	if(!m_ammoTypes.size()) return;
 	
-	static l_type = 0; 
+	int l_type = 0; 
 	l_type %= m_ammoTypes.size();
 
 	if(!ammoSect) 
