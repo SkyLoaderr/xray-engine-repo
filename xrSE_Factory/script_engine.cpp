@@ -96,9 +96,7 @@ void CScriptEngine::export()
 	export_classes						(lua());
 
 	load_class_registrators				();
-#ifndef NO_XR_GAME
 	object_factory().register_script	();
-#endif
 
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
