@@ -34,7 +34,7 @@ void CUIFragList::OnFrame()
 	CFontHUD* H			= Level().HUD()->pHUDFont;
 	H->OutSet			(list_rect.lt.x,list_rect.lt.y);
 	H->Color			(0xb0a0a0a0);
-	int k=0;
+	int k=1;
 	for (;I!=E;I++,k++)
 		H->OutNext		("%3d: %-20s %-5d",k,I->second.name,I->second.score);
 }
