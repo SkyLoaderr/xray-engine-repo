@@ -21,7 +21,6 @@ void CHW::CreateD3D()
 {
     HW.pD3D = Direct3DCreate9( D3D_SDK_VERSION );
     R_ASSERT(HW.pD3D);
-
 }
 void CHW::DestroyD3D()
 {
