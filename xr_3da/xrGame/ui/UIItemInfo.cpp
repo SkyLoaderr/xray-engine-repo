@@ -113,9 +113,37 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		UIItemImage.ClipperOn();
 
 		// –азместить текстуру по центру статика
-		RECT r = UIItemImage.GetAbsoluteRect();
-		UIItemImage.SetTextureOffset((r.right - r.left - m_iGridWidth * INV_GRID_WIDTH) / 2,
-									 (r.bottom - r.top - m_iGridHeight* INV_GRID_HEIGHT) / 2);
+		Irect &r	= UIItemImage.GetUIStaticItem().GetOriginalRect();
+		RECT &r2	= UIItemImage.GetWndRect();
+
+		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
+		{
+			UIItemImage.SetTextureOffset((r2.right - r2.left - r.width()) / 2, (r2.bottom - r2.top - r.height()) / 2);
+			UIItemImage.SetTextureScale(1.0f);
+		}
+		else
+		{
+			float xFactor = (r2.right - r2.left) / static_cast<float>(r.width()) ;
+			float yFactor = (r2.bottom - r2.top) / static_cast<float>(r.height());
+			float scale = std::min(xFactor, yFactor);
+
+			int xOffset = 0, yOffset = 0;
+
+			if (xFactor > yFactor)
+			{
+				xOffset = (r2.right - r2.left - r.width()) / 2;
+			}
+			else
+			{
+				yOffset = (r2.bottom - r2.top - r.height()) / 2;
+			}
+
+			UIItemImage.SetTextureOffset(xOffset, yOffset);
+			UIItemImage.SetTextureScale(scale);
+		}
+
+//		UIItemImage.SetTextureOffset((r.right - r.left - m_iGridWidth * INV_GRID_WIDTH) / 2,
+//									 (r.bottom - r.top - m_iGridHeight* INV_GRID_HEIGHT) / 2);
 	}
 	else
 	{
