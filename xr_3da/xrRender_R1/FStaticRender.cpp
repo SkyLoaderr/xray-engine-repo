@@ -194,6 +194,7 @@ CRender::CRender	()
 	if ( v_dev >= v_need )						b_distortion = TRUE;
 	else										b_distortion = FALSE;
 	if (strstr(Core.Params,"-nodistort"))		b_distortion = FALSE;
+	Msg				("* distortion: %s, dev(%d),need(%d)",b_distortion?"used":"unavailable",v_dev,v_need);
 }
 
 CRender::~CRender	()
