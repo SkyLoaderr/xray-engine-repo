@@ -2,7 +2,7 @@
 #include "build.h"
 #include "OGF_Face.h"
 
-SWIContainer			g_SWI;
+SWIContainer			g_SWI,x_SWI;
 VBContainer				g_VB,x_VB;
 IBContainer				g_IB,x_VB;
 xr_vector<LPCSTR>		g_Shaders;
