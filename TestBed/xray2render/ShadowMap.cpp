@@ -150,6 +150,7 @@ class CMyD3DApplication : public CD3DApplication
 	R_shader						s_CombineDBG_Normals;
 	R_shader						s_CombineDBG_Accumulator;
 	R_shader						s_CombineDBG_Base;
+	R_shader						s_Filter_Bloom;
 	R_shader						s_Light_Direct;
 	R_shader						s_Light_Direct_smap;
 
@@ -744,6 +745,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_CombineDBG_Base.compile		(m_pd3dDevice,"shaders\\D\\cm_dbg_base.s");
 	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
 	s_Light_Direct_smap.compile		(m_pd3dDevice,"shaders\\D\\light_direct_smap.s");
+	s_Filter_Bloom.compile			(m_pd3dDevice,"shaders\\D\\filter_bloom.s");
 
 	// Create special textures
 	LPDIRECT3DTEXTURE9				height	= 0;
