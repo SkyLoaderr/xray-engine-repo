@@ -10,16 +10,12 @@
 #include "xrMessages.h"
 #include "character_info.h"
 #include "ai_phrasedialogmanager.h"
-
 #include "gametask.h"
 #include "actor.h"
 #include "level.h"
-
 #include "date_time.h"
-
 #include "uigamesp.h"
 #include "hudmanager.h"
-
 #include "restricted_object.h"
 #include "script_engine.h"
 #include "visual_memory_manager.h"
@@ -461,6 +457,18 @@ void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 
 //////////////////////////////////////////////////////////////////////////
 
+void construct_restriction_vector(shared_str restrictions, xr_vector<ALife::_OBJECT_ID> &result)
+{
+	result.clear();
+	string64	temp;
+	u32			n = _GetItemCount(*restrictions);
+	for (u32 i=0; i<n; ++i) {
+		CObject	*object = Level().Objects.FindObjectByName(_GetItem(*restrictions,i,temp));
+		if (!object)
+			continue;
+		result.push_back(object->ID());
+	}
+}
 
 void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
 {
@@ -469,7 +477,14 @@ void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member add_restrictions!");
 		return;
 	}
-	restricted_object->add_restrictions		(in,out);
+	
+	xr_vector<ALife::_OBJECT_ID>			temp0;
+	xr_vector<ALife::_OBJECT_ID>			temp1;
+
+	construct_restriction_vector			(out,temp0);
+	construct_restriction_vector			(in,temp1);
+	
+	restricted_object->add_restrictions		(temp0,temp1);
 }
 
 void CScriptGameObject::remove_restrictions		(LPCSTR in, LPCSTR out)
@@ -479,7 +494,14 @@ void CScriptGameObject::remove_restrictions		(LPCSTR in, LPCSTR out)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member remove_restrictions!");
 		return;
 	}
-	restricted_object->remove_restrictions	(in,out);
+
+	xr_vector<ALife::_OBJECT_ID>			temp0;
+	xr_vector<ALife::_OBJECT_ID>			temp1;
+
+	construct_restriction_vector			(out,temp0);
+	construct_restriction_vector			(in,temp1);
+
+	restricted_object->remove_restrictions	(temp0,temp1);
 }
 
 void CScriptGameObject::remove_all_restrictions	()

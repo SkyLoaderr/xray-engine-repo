@@ -18,6 +18,10 @@ private:
 	mutable bool		m_applied;
 	mutable bool		m_removed;
 
+protected:
+	template <bool value>
+	IC		void		construct_restriction_string	(LPSTR temp_restrictions, const xr_vector<ALife::_OBJECT_ID> &restrictions, shared_str current_restrictions);
+
 public:
 	IC					CRestrictedObject		();
 	virtual				~CRestrictedObject		();
@@ -31,8 +35,8 @@ public:
 			bool		accessible				(const Fvector &position, float radius) const;
 			bool		accessible				(u32 level_vertex_id) const;
 			bool		accessible				(u32 level_vertex_id, float radius) const;
-			void		add_restrictions		(shared_str out_restrictions, shared_str in_restrictions);
-			void		remove_restrictions		(shared_str out_restrictions, shared_str in_restrictions);
+			void		add_restrictions		(const xr_vector<ALife::_OBJECT_ID> &out_restrictions, const xr_vector<ALife::_OBJECT_ID> &in_restrictions);
+			void		remove_restrictions		(const xr_vector<ALife::_OBJECT_ID> &out_restrictions, const xr_vector<ALife::_OBJECT_ID> &in_restrictions);
 			void		remove_all_restrictions	();
 			shared_str	in_restrictions			() const;
 			shared_str	out_restrictions		() const;
