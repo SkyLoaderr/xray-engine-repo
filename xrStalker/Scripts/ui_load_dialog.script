@@ -233,11 +233,9 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function load_dialog:AddItemToList(item)
-	local new_item = CUIListItem()
-	new_item:SetText("text")
-	new_item:SetAutoDelete(true)
-	new_item:Show(true)
-	--new_item:SetTextDateTime("date-time")
+	local new_item = CUIListItemPair()
+	new_item:SetTextDateTime("date-time")
+	new_item:SetTextFileName("file-name")
 	local list_box = self:GetListWnd("list_window")
 	local shift = 0
 	local color = GetARGB(255,0,255,255)
