@@ -57,9 +57,6 @@ public:
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
 	virtual		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
 public:
-	ShaderElement*						rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
-	ShaderElement*						rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
-public:
 	R_dsgraph_structure	()
 	{
 		val_pObject		= NULL;
