@@ -4,6 +4,9 @@ Smart Terrain (места, где сталкеры могут оседать на некоторое врем€ и заниматьс€
 !без симул€ции не работает!
 
 —делать:
+	- разные умолчани€ дл€ разных типов гулагов
+	- критерии checkNpc в custom_data
+	- роспуск гулага по infoprtions
 	+ npc community в offline
 	+ флажок в custom data "offline=true/false"
 	- сталкеры должны ходить в офлайн/онлайн под гулагом
@@ -645,12 +648,16 @@ end
 -- обработка входа сталкера в smart terrain
 function on_touch( self, obj )
 	if obj:clsid() == clsid.stalker then
-		if self.gulag then
-			add_stalker( self, obj )
-		else
-			if not self.idle_end or self.idle_end < game.get_game_time() then
-				if create_gulag( self ) then
-					add_stalker( self, obj )
+		ini = obj:spawn_ini()
+
+		if ini and not ini:section_exist( "no_smart" ) then
+			if self.gulag then
+				add_stalker( self, obj )
+			else
+				if not self.idle_end or self.idle_end < game.get_game_time() then
+					if create_gulag( self ) then
+						add_stalker( self, obj )
+					end
 				end
 			end
 		end
