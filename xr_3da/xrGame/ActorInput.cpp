@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
+#include "Torch.h"
 #include "xr_weapon_list.h"
 #include "..\xr_level_controller.h"
 #include "..\xr_input.h"
@@ -47,6 +48,13 @@ void CActor::OnKeyboardPress(int cmd)
 
 	case kWPN_FIRE:	g_fireStart		(); 						break;
 	case kWPN_ZOOM:	g_fire2Start	();							break;
+	case kTORCH:{ 
+		PIItem I = m_inventory.Get("device_torch",true); 
+		if (I){
+			CTorch* torch = dynamic_cast<CTorch*>(I);
+			if (torch) torch->Switch();
+		}
+		}break;
 //	case kWPN_ZOOM:	Weapons->Zoom	(TRUE);						break;
 	case kWPN_1:	
 	case kWPN_2:	

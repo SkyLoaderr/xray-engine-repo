@@ -76,10 +76,9 @@ void CHangingLamp::UpdateCL	()
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		UpdateTransform();
 	}
-	if (Alive()){
+	if (Alive()&&light_render->get_active()){
 		Fmatrix xf;
-		if (light_bone_idx>=0)
-		{
+		if (light_bone_idx>=0){
 			Fmatrix& M = PKinematics(pVisual)->LL_GetTransform(light_bone_idx);
 			xf.mul		(clXFORM(),M);
 		} else {
@@ -88,8 +87,7 @@ void CHangingLamp::UpdateCL	()
 
 		light_render->set_direction	(xf.k);
 		light_render->set_position	(xf.c);
-		if (lanim)
-		{
+		if (lanim){
 			int frame;
 			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
 			Fcolor			fclr;

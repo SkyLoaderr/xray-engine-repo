@@ -1,34 +1,60 @@
 #include "stdafx.h"
 #include "torch.h"
 #include "entity.h"
+#include "..\LightAnimLibrary.h"
 
-CTorch::CTorch(void) {
-	m_weight = .5f;
-	m_belt = true;
+const float TIME_2_HIDE		= 5.f;
+
+CTorch::CTorch(void) 
+{
+	m_weight				= .5f;
+	m_belt					= true;
 	light_render			= ::Render->light_create();
 	light_render->set_type	(IRender_Light::SPOT);
 	light_render->set_shadow(true);
+	lanim					= 0;
+	time2hide				= 0;
 }
 
-CTorch::~CTorch(void) {
+CTorch::~CTorch(void) 
+{
 	::Render->light_destroy	(light_render);
 }
 
-void CTorch::Load(LPCSTR section) {
+void CTorch::Load(LPCSTR section) 
+{
 	inherited::Load(section);
 	m_pos = pSettings->r_fvector3(section,"position");
 }
 
-BOOL CTorch::net_Spawn(LPVOID DC) {
-	BOOL res = inherited::net_Spawn(DC);
+void CTorch::Switch()
+{
+	light_render->set_active(!light_render->get_active());
+}
 
-	CKinematics* V = PKinematics(Visual());
-	if(V) V->PlayCycle("idle");
+BOOL CTorch::net_Spawn(LPVOID DC) 
+{
+	xrSE_DeviceTorch* torch	= (xrSE_DeviceTorch*)(DC);
+	R_ASSERT				(torch);
+	cNameVisual_set			(torch->visual_name);
+	inherited::net_Spawn	(DC);
 
-	light_render->set_range	(300.f);
-	light_render->set_color	(1.f,.8f,1.f);
-	light_render->set_cone	(PI_DIV_3);
-	light_render->set_texture(0);
+	R_ASSERT(!cfModel);
+	if (PKinematics(pVisual))	cfModel	= xr_new<CCF_Skeleton>	(this);
+	else						cfModel	= xr_new<CCF_Rigid>		(this);
+
+	// set bone id
+	Fcolor					clr;
+	clr.set					(torch->color);
+	clr.mul_rgb				(torch->spot_brightness);
+	fBrightness				= torch->spot_brightness;
+	light_render->set_range	(torch->spot_range);
+	light_render->set_color	(clr);
+	light_render->set_cone	(torch->spot_cone_angle);
+	light_render->set_texture(torch->spot_texture[0]?torch->spot_texture:0);
+
+	R_ASSERT				(pVisual);
+	lanim					= LALib.FindItem(torch->animator);
 
 	if (0==m_pPhysicsShell) {
 		// Physics (Box)
@@ -47,25 +73,28 @@ BOOL CTorch::net_Spawn(LPVOID DC) {
 	setVisible(true);
 	setEnabled(true);
 
-	return res;
+	return TRUE;
 }
 
-void CTorch::net_Destroy() {
+void CTorch::net_Destroy() 
+{
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 }
 
-void CTorch::OnH_A_Chield() {
-	inherited::OnH_A_Chield		();
-	setVisible(false);
-	setEnabled(false);
-	svTransform.c.set(m_pos);
-	vPosition.set(svTransform.c);
-	light_render->set_active(true);
+void CTorch::OnH_A_Chield() 
+{
+	inherited::OnH_A_Chield	();
+	setVisible				(false);
+	setEnabled				(false);
+	svTransform.c.set		(m_pos);
+	vPosition.set			(svTransform.c);
+	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
 }
 
-void CTorch::OnH_B_Independent() {
+void CTorch::OnH_B_Independent() 
+{
 	inherited::OnH_B_Independent();
 	setVisible(true);
 	setEnabled(true);
@@ -84,15 +113,22 @@ void CTorch::OnH_B_Independent() {
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);
 	}
-	light_render->set_active(false);
+	time2hide				= TIME_2_HIDE;
 }
 
-void CTorch::UpdateCL() {
+void CTorch::UpdateCL() 
+{
 	inherited::UpdateCL();
 	if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
 		svTransform.set			(m_pPhysicsShell->mXFORM);
 		vPosition.set			(svTransform.c);
+		if (light_render->get_active()){
+			light_render->set_direction	(svTransform.k);
+			light_render->set_position	(svTransform.c);
+			time2hide			-= Device.fTimeDelta;
+			if (time2hide<0)	light_render->set_active(false);
+		}
 	} else if(H_Parent()) {
 		Collide::ray_query RQ;
 		H_Parent()->setEnabled(false);
@@ -104,11 +140,26 @@ void CTorch::UpdateCL() {
 			svTransform.i.crossproduct(l_up, svTransform.k); svTransform.i.normalize();
 			svTransform.j.crossproduct(svTransform.k, svTransform.i);
 		}
-		H_Parent()->setEnabled(true);
+		H_Parent()->setEnabled		(true);
+		light_render->set_direction	(l_d);//clXFORM().k);
+		light_render->set_position	(l_p);//clXFORM().c);
+	}
+	// update light source
+	if (light_render->get_active()){
+		// calc color animator
+		if (lanim){
+			int frame;
+			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			Fcolor			fclr;
+			fclr.set		(color_get_B(clr),color_get_G(clr),color_get_R(clr),1);
+			fclr.mul_rgb	(fBrightness/255.f);
+			light_render->set_color(fclr);
+		}
 	}
 }
 
-void CTorch::OnVisible() {
+void CTorch::OnVisible() 
+{
 	if(getVisible() && !H_Parent()) {
 		::Render->set_Transform		(&clTransform);
 		::Render->add_Visual		(Visual());

@@ -23,6 +23,7 @@ enum	EKeyBinding
 	kCAM_ZOOM_OUT	,
 
 	kBINOCULARS		,
+	kTORCH			,
 
 	kWPN_1			,
 	kWPN_2			,
