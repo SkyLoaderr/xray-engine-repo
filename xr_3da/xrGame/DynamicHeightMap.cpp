@@ -9,12 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDynamicHeightMap::CDynamicHeightMap()
+void CHM_Static::Update	()
 {
-
-}
-
-CDynamicHeightMap::~CDynamicHeightMap()
-{
-
+	Fvector&	view	= Device.vCameraPosition;
 }
