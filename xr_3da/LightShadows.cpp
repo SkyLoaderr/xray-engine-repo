@@ -340,6 +340,7 @@ void CLightShadows::render	()
 				T.v[0]			= (*clip)[0];
 				T.v[1]			= (*clip)[v-1];
 				T.v[2]			= (*clip)[v];
+				T.N				= P.n;
 			}
 		}
 
