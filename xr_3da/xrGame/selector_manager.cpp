@@ -31,7 +31,7 @@ void CSelectorManager::reinit			()
 
 void CSelectorManager::remove			(LPCSTR selector_name)
 {
-	xr_map<LPCSTR,PathManagers::CAbstractVertexEvaluator*,pred_str>::iterator	I = m_selectors.find(selector_name);
+	xr_map<LPCSTR,CAbstractVertexEvaluator*,pred_str>::iterator	I = m_selectors.find(selector_name);
 	VERIFY						(m_selectors.end() != I);
 	xr_delete					((*I).second);
 	m_selectors.erase			(I);
@@ -43,7 +43,7 @@ void CSelectorManager::remove_all		()
 		remove					(m_selectors.begin()->first);
 }
 
-void CSelectorManager::init_selector	(PathManagers::CAbstractVertexEvaluator &S)
+void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 {
 	const CMemoryManager	*memory_manager = dynamic_cast<const CMemoryManager*>(this);
 	VERIFY					(memory_manager);

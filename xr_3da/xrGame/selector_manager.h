@@ -8,22 +8,22 @@
 
 #pragma once
 
-#include "path_manager_level_selector.h"
+#include "path_manager_params_level_evaluator.h"
 
 class CSelectorManager {
 protected:
-	xr_map<LPCSTR,PathManagers::CAbstractVertexEvaluator*,pred_str>	m_selectors;
+	xr_map<LPCSTR,CAbstractVertexEvaluator*,pred_str>	m_selectors;
 public:
 					CSelectorManager		();
 	virtual			~CSelectorManager		();
 			void	Init					();
 	virtual	void	reinit					();
-			void	init_selector			(PathManagers::CAbstractVertexEvaluator &S);
+			void	init_selector			(CAbstractVertexEvaluator &S);
 	template <typename T> 
 	IC		void	add						(LPCSTR section, LPCSTR selector_name);
 			void	remove					(LPCSTR selector_name);
 			void	remove_all				();
-	IC		PathManagers::CAbstractVertexEvaluator	*selector(LPCSTR selector_name);
+	IC		CAbstractVertexEvaluator	*selector(LPCSTR selector_name);
 };
 
 #include "selector_manager_inline.h"

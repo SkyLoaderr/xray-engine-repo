@@ -5,7 +5,7 @@
 #include "ai_monster_motion_stats.h"
 
 class CMotionStats;
-class PathManagers::CAbstractVertexEvaluator;
+class CAbstractVertexEvaluator;
 class CAI_Biting;
 
 class CMonsterMovement : virtual public CMovementManager {
@@ -19,7 +19,7 @@ class CMonsterMovement : virtual public CMovementManager {
 
 public:
 
-		PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
+		CAbstractVertexEvaluator	*m_tSelectorApproach;
 
 		CMotionStats		*MotionStats;
 
@@ -65,7 +65,7 @@ private:
 		bool		IsPathEnd				(u32 n_points);
 		bool		IsPathEnd				(float dist_to_end);
 
-		void		InitSelector			(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
+		void		InitSelector			(CAbstractVertexEvaluator &S, Fvector target_pos);
 		void		SetPathParams			(u32 dest_vertex_id, const Fvector &dest_pos);
 		void		SetSelectorPathParams	();
 

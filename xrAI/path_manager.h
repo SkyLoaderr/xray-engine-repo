@@ -56,4 +56,6 @@ template <
 	#include "path_manager_level_straight_line.h"
 #endif
 #include "path_manager_solver.h"
-#include "path_manager_table.h"
+#ifdef AI_COMPILER
+	#include "path_manager_table.h"
+#endif

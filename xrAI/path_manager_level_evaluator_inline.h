@@ -31,12 +31,12 @@ CLevelEvaluatorPathManager::~CPathManager			()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelEvaluatorPathManager::::setup		(
+IC	void CLevelEvaluatorPathManager::setup		(
 		const _Graph			*_graph,
 		_DataStorage			*_data_storage,
 		xr_vector<_index_type>	*_path,
-		const _index_type		_start_node_index,
-		const _index_type		_goal_node_index,
+		const _index_type		&_start_node_index,
+		const _index_type		&_goal_node_index,
 		_Parameters				&parameters
 	)
 {
@@ -83,7 +83,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CLevelEvaluatorPathManager::finalize		()
 {
 	if (path && graph->valid_vertex_id(m_evaluator->m_dwBestNode))
-		data_storage->get_node_path(*path,m_evaluator->m_dwBestNode);
+		data_storage->get_node_path(*path,&data_storage->get_node(m_evaluator->m_dwBestNode));
 }
 
 #undef TEMPLATE_SPECIALIZATION

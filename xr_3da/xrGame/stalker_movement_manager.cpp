@@ -102,8 +102,8 @@ void CStalkerMovementManager::reload				(LPCSTR section)
 }
 
 void CStalkerMovementManager::update(
-	PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator,
-	PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator,
+	CAbstractVertexEvaluator	*tpNodeEvaluator,
+	CAbstractVertexEvaluator	*tpPathEvaluator,
 	const Fvector							*tpDesiredPosition,
 	const Fvector							*tpDesiredDirection,
 	EPathType								tGlobalPathType,

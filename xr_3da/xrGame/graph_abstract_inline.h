@@ -57,9 +57,6 @@ TEMPLATE_SPECIALIZATION
 IC	void CAbstractGraph::add_vertex			(const _Data &data, const _vertex_id_type vertex_id)
 {
 	VERIFY				(vertex_count() < (u64(1) << (8*sizeof(_vertex_index_type))));
-#ifndef AI_COMPILER
-	VERIFY				(vertex_count() < ai().graph_engine().max_vertex_count());
-#endif
 
 	xr_map<_vertex_id_type,_vertex_index_type>::const_iterator I = m_index_by_id.find(vertex_id);
 	VERIFY				(m_index_by_id.end() == I);

@@ -17,7 +17,7 @@
 #define DODGE_AMPLITUDE					.5f
 #define MAX_DODGE_DISTANCE				1.5f
 
-//void CAI_Stalker::vfSearchForBetterPosition(PathManagers::CAbstractVertexEvaluator & /**tNodeEvaluator/**/, CSquad & /**Squad/**/, CEntity* & /**Leader/**/)
+//void CAI_Stalker::vfSearchForBetterPosition(CAbstractVertexEvaluator & /**tNodeEvaluator/**/, CSquad & /**Squad/**/, CEntity* & /**Leader/**/)
 //{
 //	Device.Statistic.AI_Range.Begin();	// определение времени вып. функции
 //	
@@ -61,7 +61,7 @@
 //	Device.Statistic.AI_Range.End();
 //}
 
-//void CAI_Stalker::vfBuildPathToDestinationPoint(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/)
+//void CAI_Stalker::vfBuildPathToDestinationPoint(CAbstractVertexEvaluator * /**tpNodeEvaluator/**/)
 //{
 //	Device.Statistic.AI_Path.Begin();
 //	
@@ -286,7 +286,7 @@
 //	//Device.Statistic.TEST0.End();
 //}
 
-//void CAI_Stalker::vfChoosePointAndBuildPath(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/, Fvector * /**tpDestinationPosition/**/, bool /**bSearchForNode/**/)
+//void CAI_Stalker::vfChoosePointAndBuildPath(CAbstractVertexEvaluator * /**tpNodeEvaluator/**/, Fvector * /**tpDestinationPosition/**/, bool /**bSearchForNode/**/)
 //{
 //	INIT_SQUAD_AND_LEADER;
 //
@@ -550,7 +550,7 @@
 //		Group.m_tpaSuspiciousGroups[i] = 0;
 //}
 
-//void CAI_Stalker::vfChooseSuspiciousNode(PathManagers::CAbstractVertexEvaluator &/**tSelector/**/)
+//void CAI_Stalker::vfChooseSuspiciousNode(CAbstractVertexEvaluator &/**tSelector/**/)
 //{
 //	CGroup &Group = *getGroup();
 //	INIT_SQUAD_AND_LEADER;

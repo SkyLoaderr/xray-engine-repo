@@ -101,22 +101,22 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CSStateInternal::Load			(section);
 
 	CSelectorManager::add<
-		PathManagers::CVertexEvaluator<
+		CVertexEvaluator<
 			aiSearchRange | aiEnemyDistance
 		>
 	>								(section,"selector_free_hunting");
 	CSelectorManager::add<
-		PathManagers::CVertexEvaluator<
+		CVertexEvaluator<
 			aiSearchRange | aiCoverFromEnemyWeight
 		>
 	>								(section,"selector_reload");
 	CSelectorManager::add<
-		PathManagers::CVertexEvaluator<
+		CVertexEvaluator<
 			aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance
 		>
 	>								(section,"selector_retreat");
 	CSelectorManager::add<
-		PathManagers::CVertexEvaluator<
+		CVertexEvaluator<
 			aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight
 		>
 	>								(section,"selector_cover");

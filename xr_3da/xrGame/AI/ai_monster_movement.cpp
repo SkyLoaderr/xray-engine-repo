@@ -8,7 +8,7 @@
 
 CMonsterMovement::CMonsterMovement()
 {
-	m_tSelectorApproach	= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	m_tSelectorApproach	= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	MotionStats			= 0;		
 }
 
@@ -62,7 +62,7 @@ void CMonsterMovement::Frame_Finalize()
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Функция InitSelector
-void CMonsterMovement::InitSelector(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos)
+void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_pos)
 {
 	S.m_dwCurTime		= pMonster->m_dwCurrentTime;
 	S.m_tMe				= pMonster;

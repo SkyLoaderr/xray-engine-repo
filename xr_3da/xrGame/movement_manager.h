@@ -22,20 +22,20 @@
 class CPHMovementControl;
 
 class CMovementManager : 
-	public CBaseLocationSelector<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>,
-	public CBasePathManager		<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
-	public CBaseLocationSelector<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>,
-	public CBasePathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
+	public CBaseLocationSelector<CGameGraph,SVertexType<float,u32,u32>,u32>,
+	public CBasePathManager		<CGameGraph,SBaseParameters<float,u32,u32>,u32,u32>,
+	public CBaseLocationSelector<CLevelGraph,CAbstractVertexEvaluator,u32>,
+	public CBasePathManager		<CLevelGraph,SBaseParameters<float,u32,u32>,u32,u32>,
 	public CDetailPathManager,
 	public CEnemyLocationPredictor,
 	public CPatrolPathManager,
 	virtual public CGameObject
 {
 protected:
-	typedef CBaseLocationSelector	<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>			CGameLocationSelector;
-	typedef CBasePathManager		<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CGamePathManager;
-	typedef CBaseLocationSelector	<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>			CLevelLocationSelector;
-	typedef CBasePathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CLevelPathManager;
+	typedef CBaseLocationSelector	<CGameGraph,SVertexType<float,u32,u32>,u32>			CGameLocationSelector;
+	typedef CBasePathManager		<CGameGraph,SBaseParameters<float,u32,u32>,u32,u32>	CGamePathManager;
+	typedef CBaseLocationSelector	<CLevelGraph,CAbstractVertexEvaluator,u32>			CLevelLocationSelector;
+	typedef CBasePathManager		<CLevelGraph,SBaseParameters<float,u32,u32>,u32,u32>	CLevelPathManager;
 
 private:
 	enum EPathState {

@@ -136,9 +136,9 @@ public:
 //protected:
 	// movement and look setup functions
 			void				vfSetParameters					(
-				PathManagers::CAbstractVertexEvaluator *tpPathEvaluator, 
+				CAbstractVertexEvaluator *tpPathEvaluator, 
 				Fvector *tpDesiredPosition, 
-				PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, 
+				CAbstractVertexEvaluator *tpNodeEvaluator, 
 				EObjectAction tWeaponState, 
 				EPathType		tGlobalPathType,
 				EDetailPathType	tPathType, 
@@ -148,9 +148,9 @@ public:
 				ELookType tLookType
 			);
 			void				vfSetParameters					(
-				PathManagers::CAbstractVertexEvaluator *tpPathEvaluator, 
+				CAbstractVertexEvaluator *tpPathEvaluator, 
 				Fvector *tpDesiredPosition, 
-				PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, 
+				CAbstractVertexEvaluator *tpNodeEvaluator, 
 				EObjectAction tWeaponState, 
 				EPathType		tGlobalPathType,
 				EDetailPathType	tPathType, 
@@ -194,7 +194,7 @@ public:
 			void				vfGoToSOS						();
 			void				vfSendSOS						();
 			void				vfAccomplishTask				();
-			void				vfContinueWithALifeGoals		(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator = 0);
+			void				vfContinueWithALifeGoals		(CAbstractVertexEvaluator *tpNodeEvaluator = 0);
 			void				vfSearchObject					();
 			bool				bfHealthIsGood					();
 			bool				bfItemCanTreat					(CInventoryItem *tpInventoryItem);

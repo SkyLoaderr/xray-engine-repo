@@ -11,7 +11,7 @@
 #include "../../game_graph.h"
 #include "../../game_level_cross_table.h"
 
-void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator)
+void CAI_Stalker::vfContinueWithALifeGoals(CAbstractVertexEvaluator *tpNodeEvaluator)
 {
 	set_sound_mask		(u32(eStalkerSoundMaskAnySound));
 

@@ -16,9 +16,9 @@
 #include "../../inventory.h"
 
 void CAI_Stalker::vfSetParameters(
-	PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator, 
+	CAbstractVertexEvaluator	*tpPathEvaluator, 
 	Fvector									*tpDesiredPosition, 
-	PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator, 
+	CAbstractVertexEvaluator	*tpNodeEvaluator, 
 	EObjectAction							tWeaponState, 
 	EPathType								tGlobalPathType, 
 	EDetailPathType							tPathType, 
@@ -33,9 +33,9 @@ void CAI_Stalker::vfSetParameters(
 }
 
 void CAI_Stalker::vfSetParameters(
-	PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator, 
+	CAbstractVertexEvaluator	*tpPathEvaluator, 
 	Fvector									*tpDesiredPosition, 
-	PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator, 
+	CAbstractVertexEvaluator	*tpNodeEvaluator, 
 	EObjectAction							tWeaponState, 
 	EPathType								tGlobalPathType,
 	EDetailPathType							tPathType, 

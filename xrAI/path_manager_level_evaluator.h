@@ -9,6 +9,7 @@
 #pragma once
 
 #include "path_manager_level.h"
+#include "path_manager_params_level_evaluator.h"
 
 template <
 	typename _DataStorage,
@@ -56,7 +57,7 @@ protected:
 
 public:
 	virtual				~CPathManager	();
-	IC		void		setup			(const _Graph *graph, _DataStorage *_data_storage, xr_vector<_index_type> *_path, const _index_type	_start_node_index, const _index_type _goal_node_index, const _Parameters &params);
+	IC		void		setup			(const _Graph *graph, _DataStorage *_data_storage, xr_vector<_index_type> *_path, const _index_type	&_start_node_index, const _index_type &_goal_node_index, _Parameters &params);
 	IC		_dist_type	estimate		(const _index_type &node_index) const;
 	IC		bool		is_goal_reached	(const _index_type &node_index);
 	IC		void		finalize		();

@@ -137,8 +137,8 @@ public:
 	virtual	void	reload					(LPCSTR section);
 
 			void	update					(
-						PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator,
-						PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator,
+						CAbstractVertexEvaluator	*tpNodeEvaluator,
+						CAbstractVertexEvaluator	*tpPathEvaluator,
 						const Fvector							*tpDesiredPosition,
 						const Fvector							*tpDesiredDirection,
 						EPathType								tGlobalPathType,

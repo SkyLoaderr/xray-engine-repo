@@ -18,6 +18,7 @@
 #include "ArtifactMerger.h"
 #include "actor.h"
 #include "ai_script_classes.h"
+#include "ai_script_hit.h"
 
 using namespace luabind;
 using namespace Script;
@@ -294,3 +295,116 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 	];
 }
+
+
+void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	module(tpLuaVirtualMachine)
+	[
+		class_<CLuaGameObject>("game_object")
+			.enum_("relation")
+			[
+				value("friend",					int(ALife::eRelationTypeFriend)),
+				value("neutral",				int(ALife::eRelationTypeNeutral)),
+				value("enemy",					int(ALife::eRelationTypeEnemy)),
+				value("dummy",					int(ALife::eRelationTypeDummy))
+			]
+			.enum_("rank")
+			[
+				value("novice",					int(ALife::eStalkerRankNovice)),
+				value("experienced",			int(ALife::eStalkerRankExperienced)),
+				value("veteran",				int(ALife::eStalkerRankVeteran)),
+				value("master",					int(ALife::eStalkerRankMaster)),
+				value("dummy",					int(ALife::eStalkerRankDummy))
+			]
+			.enum_("action_types")
+			[
+				value("movement",				int(CScriptMonster::eActionTypeMovement)),
+				value("watch",					int(CScriptMonster::eActionTypeWatch)),
+				value("animation",				int(CScriptMonster::eActionTypeAnimation)),
+				value("sound",					int(CScriptMonster::eActionTypeSound)),
+				value("particle",				int(CScriptMonster::eActionTypeParticle)),
+				value("object",					int(CScriptMonster::eActionTypeObject)),
+				value("action_type_count",		int(CScriptMonster::eActionTypeCount))
+			]
+
+			.property("visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
+			.property("enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
+			.property("health",					&CLuaGameObject::GetHealth,			&CLuaGameObject::SetHealth)
+			.property("power",					&CLuaGameObject::GetPower,			&CLuaGameObject::SetPower)
+			.property("satiety",				&CLuaGameObject::GetSatiety,		&CLuaGameObject::SetSatiety)
+			.property("radiation",				&CLuaGameObject::GetRadiation,		&CLuaGameObject::SetRadiation)
+			.property("circumspection",			&CLuaGameObject::GetCircumspection,	&CLuaGameObject::SetCircumspection)
+			.property("morale",					&CLuaGameObject::GetMorale,			&CLuaGameObject::SetMorale)
+
+			.def(								constructor<LPCSTR>())
+			.def(								constructor<const CLuaGameObject *>())
+			.def("position",					&CLuaGameObject::Position)
+			.def("class_id",					&CLuaGameObject::ClassID)
+			.def("id",							&CLuaGameObject::ID)
+			.def("section",						&CLuaGameObject::Section)
+			.def("name",						&CLuaGameObject::Name)
+			.def("parent",						&CLuaGameObject::Parent)
+			.def("mass",						&CLuaGameObject::Mass)
+			.def("cost",						&CLuaGameObject::Cost)
+			.def("death_time",					&CLuaGameObject::DeathTime)
+			.def("armor",						&CLuaGameObject::Armor)
+			.def("max_health",					&CLuaGameObject::DeathTime)
+			.def("accuracy",					&CLuaGameObject::Accuracy)
+			.def("alive",						&CLuaGameObject::Alive)
+			.def("team",						&CLuaGameObject::Team)
+			.def("squad",						&CLuaGameObject::Squad)
+			.def("group",						&CLuaGameObject::Group)
+			.def("kill",						&CLuaGameObject::Kill)
+			.def("hit",							&CLuaGameObject::Hit)
+			.def("fov",							&CLuaGameObject::GetFOV)
+			.def("range",						&CLuaGameObject::GetRange)
+			.def("relation",					&CLuaGameObject::GetRelationType)
+			.def("script",						&CLuaGameObject::SetScriptControl)
+			.def("get_script",					&CLuaGameObject::GetScriptControl)
+			.def("get_script_name",				&CLuaGameObject::GetScriptControlName)
+			.def("see",							&CLuaGameObject::CheckObjectVisibility)
+			.def("see",							&CLuaGameObject::CheckTypeVisibility)
+
+			.def("who_hit_name",				&CLuaGameObject::WhoHitName)
+			.def("who_hit_section_name",		&CLuaGameObject::WhoHitSectionName)
+			
+			.def("use",							&CLuaGameObject::UseObject)
+			.def("rank",						&CLuaGameObject::GetRank)
+			.def("command",						CLuaGameObject::AddAction)
+			.def("action",						&CLuaGameObject::GetCurrentAction, adopt(return_value))
+			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
+			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))
+			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
+			.def("active_item",					&CLuaGameObject::GetActiveItem)
+			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, bool))(CLuaGameObject::SetCallback))
+			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::object &, LPCSTR, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
+			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
+			.def("clear_callback",				(void (CLuaGameObject::*)(bool))(CLuaGameObject::ClearCallback))
+			.def("clear_callback",				(void (CLuaGameObject::*)(const CScriptMonster::EActionType))(CLuaGameObject::ClearCallback))
+			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
+			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
+			.def("patrol",						&CLuaGameObject::GetPatrolPathName)
+			.def("set_trade_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetTradeCallback))
+			.def("clear_trade_callback",		(void (CLuaGameObject::*)())(CLuaGameObject::ClearTradeCallback))
+			.def("get_ammo_in_magazine",		&CLuaGameObject::GetAmmoElapsed)
+			.def("get_ammo_total",				&CLuaGameObject::GetAmmoCurrent)
+			.def("set_queue_size",				&CLuaGameObject::SetQueueSize)
+			.def("best_hit",					&CLuaGameObject::GetBestHit)
+			.def("best_sound",					&CLuaGameObject::GetBestSound)
+			.def("best_enemy",					&CLuaGameObject::GetBestEnemy)
+			.def("best_item",					&CLuaGameObject::GetBestItem)
+			.def("action_count",				&CLuaGameObject::GetActionCount)
+			.def("action_by_index",				&CLuaGameObject::GetActionByIndex)
+			.def("set_hit_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetHitCallback))
+			.def("set_hit_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetHitCallback))
+			.def("clear_hit_callback",			&CLuaGameObject::ClearHitCallback)
+			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetSoundCallback))
+			.def("set_hear_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetSoundCallback))
+			.def("clear_hear_callback",			&CLuaGameObject::ClearSoundCallback)
+			.def("memory",						&CLuaGameObject::memory, adopt(return_value))
+			.def("best_weapon",					&CLuaGameObject::best_weapon)
+			.def("explode",						&CLuaGameObject::explode)
+	];
+}
+
