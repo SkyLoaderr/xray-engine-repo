@@ -129,6 +129,7 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 	VERIFY(tpALifeTraderParams);
 	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
+	bool bOk = false;
 	for ( ; I != E; I++) {
 		OBJECT_PAIR_IT	i = m_tObjectRegistry.find((*I)->m_tObjectID);
 		VERIFY(i != m_tObjectRegistry.end());
@@ -140,7 +141,9 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 			if (tpALifeTraderParams->m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 				if (randF(1.0f) < fProbability) {
 					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
-					return(true);
+					//return(true);
+					bOk = true;
+					continue;
 				}
 			}
 			else {
@@ -163,14 +166,16 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 					for (int j=i + 1 ; j < (int)dwCount; j++)
 						vfDetachItem(tServerEntity,tpALifeItem,tGraphID);
 					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
-					return(true);
+					//return(true);
+					bOk = true;
+					continue;
 				}
 				else
 					tpALifeTraderParams->m_fCumulativeItemMass	= fItemMass;
 			}
 		}
 	}
-	return(false);
+	return(bOk);
 }
 
 void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader)

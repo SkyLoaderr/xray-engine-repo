@@ -330,8 +330,13 @@ public:
 
 	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
 	{
-		if (bAddChild)
+		if (bAddChild) {
+			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
 			tServerEntity.children.push_back(tpALifeItem->ID);
+			tpALifeItem->ID_Parent = tServerEntity.ID;
+		}
+		else
+			Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
 
 		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 		
@@ -347,6 +352,7 @@ public:
 			vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
 			VERIFY					(I != tChildren.end());
 			tChildren.erase			(I);
+			tpALifeItem->ID_Parent	= 0xffff;
 		}
 
 		vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
