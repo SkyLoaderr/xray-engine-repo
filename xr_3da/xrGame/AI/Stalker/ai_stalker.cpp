@@ -329,10 +329,10 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	setEnabled						(TRUE);
 }
 
-void CAI_Stalker::UpdateCL(){
-
-	inherited::UpdateCL();
-	m_pPhysics_support->in_UpdateCL();
+void CAI_Stalker::UpdateCL()
+{
+	inherited::UpdateCL				();
+	m_pPhysics_support->in_UpdateCL	();
 
 	if (g_Alive()) {
 		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
