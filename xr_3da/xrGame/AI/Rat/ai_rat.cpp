@@ -43,6 +43,7 @@ CAI_Rat::CAI_Rat()
 	m_dwMoraleLastUpdateTime = 0;
 	m_bStanding				= false;
 	m_bActive				= false;
+	m_dwStartAttackTime		= 0;
 	q_look.o_look_speed		= PI;
 }
 
