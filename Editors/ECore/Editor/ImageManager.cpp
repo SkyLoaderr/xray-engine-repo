@@ -710,4 +710,214 @@ void CImageManager::RefreshTextures(AStringVec* modif)
     }
 }
 
+class CCubeMapHelper
+{
+public:
+    enum ECubeSide{
+        CUBE_POSITIVE_X	= 0,
+        CUBE_NEGATIVE_X	= 1,
+        CUBE_POSITIVE_Y	= 2,
+        CUBE_NEGATIVE_Y	= 3,
+        CUBE_POSITIVE_Z	= 4,
+        CUBE_NEGATIVE_Z	= 5,
+        CUBE_SIDE_COUNT	= 6,
+        CUBE_forced_u32	= u32(-1)
+    };
+protected:
+	Fplane		planes[CUBE_SIDE_COUNT];
+public:
+				CCubeMapHelper		()
+    {
+        planes[CUBE_POSITIVE_X].build	(Fvector().set(+0.5f,0,0),Fvector().set(-1,0,0));
+        planes[CUBE_NEGATIVE_X].build   (Fvector().set(-0.5f,0,0),Fvector().set(+1,0,0));
+        planes[CUBE_POSITIVE_Y].build   (Fvector().set(0,+0.5f,0),Fvector().set(0,-1,0));
+        planes[CUBE_NEGATIVE_Y].build   (Fvector().set(0,-0.5f,0),Fvector().set(0,+1,0));
+        planes[CUBE_POSITIVE_Z].build   (Fvector().set(0,0,+0.5f),Fvector().set(0,0,-1));
+        planes[CUBE_NEGATIVE_Z].build   (Fvector().set(0,0,-0.5f),Fvector().set(0,0,+1));
+    }
+/*    
+	#define drand48() (((float) rand())/((float) RAND_MAX))
+    void		random_dir			(Fvector3& dir)
+    {
+        // For a cone, p2 is the apex of the cone.
+        float dist 	= drand48(); 						// Distance between base and tip
+        float theta = drand48() * 2.0f * float(M_PI); 	// Angle around axis
+        // Distance from axis
+        float r = radius2 + drand48() * (radius1 - radius2);
+			
+        float x = r * _cos(theta); // Weighting of each frame vector3
+        float y = r * _sin(theta);
+			
+        // Scale radius along axis for cones
+        if(type == PDCone)
+        {
+            x *= dist;
+            y *= dist;
+        }
+			
+        pos = p1 + p2 * dist + u * x + v * y;
+    }
+*/    
+    void 		vector_from_point	(Fvector3& normal, ECubeSide side, u32 x, u32 y, u32 width, u32 height)
+    {
+        float w,h;
+        w = (float)x / ((float)(width - 1));
+        w *= 2.0f;    w -= 1.0f;
+        h = (float)y / ((float)(height - 1));
+        h *= 2.0f;    h -= 1.0f;
+        switch(side)
+        {
+        case CUBE_POSITIVE_X: normal.set(	+1.0f,	-h,     -w      );	break;
+        case CUBE_NEGATIVE_X: normal.set(   -1.0f,	-h,     +w		);	break;
+        case CUBE_POSITIVE_Y: normal.set(   +w,   	+1.0f, 	+h		);	break;
+        case CUBE_NEGATIVE_Y: normal.set(   +w,		-1.0f, 	-h		);	break;
+        case CUBE_POSITIVE_Z: normal.set(   +w,		-h,     +1.0f	);  break;
+        case CUBE_NEGATIVE_Z: normal.set(   -w,		-h, 	-1.0f	);	break;
+        default:                                                        break;
+        }
+        // Normalize and store
+        normal.normalize	();
+    }
+    u32& 		pixel_from_side		(U32Vec& pixels, u32 width, u32 height, u32 side, u32 x, u32 y)
+    {
+        u32	offset			= width*side;
+        offset 				+= (y*width*6+x); VERIFY(offset<width*6*height);
+        return pixels[offset];
+    }
+    u32& 		pixel_from_vector	(const Fvector& n, U32Vec& pixels, u32 width, u32 height)
+    {
+        float t_dist		= flt_max;
+        ECubeSide t_side;
+        for (ECubeSide side=CUBE_POSITIVE_X; side<=CUBE_NEGATIVE_Z; side++){
+            float cur_dist				= flt_max;
+            if (planes[side].intersectRayDist(Fvector().set(0,0,0),n,cur_dist)){
+                if (cur_dist<t_dist){	t_dist=cur_dist; t_side=side; }
+            }
+        }    
+        Fvector coord;		
+        coord.mad			(Fvector().set(0,0,0),n,t_dist);
+
+        float x,y;
+        switch(t_side){
+        case CUBE_POSITIVE_X: 
+            x				= -coord.z;
+            y				= -coord.y; 
+            break;
+        case CUBE_NEGATIVE_X: 
+            x				= coord.z;
+            y				= -coord.y;
+            break;
+        case CUBE_POSITIVE_Y: 
+            x				= coord.x;
+            y				= coord.z;
+        break;
+        case CUBE_NEGATIVE_Y: 
+            x				= coord.x;
+            y				= coord.z;
+        break;
+        case CUBE_POSITIVE_Z: 
+            x				= coord.x;
+            y				= -coord.y;
+        break;
+        case CUBE_NEGATIVE_Z: 
+            x				= -coord.x;
+            y				= -coord.y;
+        break;
+        }
+        clamp				(x,-0.5f,0.5f);
+        clamp				(y,-0.5f,0.5f);
+        u32 ux 				= iFloor((x+0.5f)*(width-1)+0.5f);	
+        u32 uy 				= iFloor((y+0.5f)*(height-1)+0.5f);	
+        return pixel_from_side(pixels,width,height,t_side,ux,uy);
+    }
+    void	scale_map		(U32Vec& src_data, u32 src_width, u32 src_height, U32Vec& dst_data, u32 dst_width, u32 dst_height, float sample_factor=1.f)
+    {
+    	VERIFY				((src_width==src_height)&&(dst_width==dst_height));
+        Fvector3 normal;
+        Fvector3 dir;
+        float d_size		= sample_factor*float(src_width)/dst_width;
+        float t_angle		= sample_factor*PI_DIV_2/float(dst_width);
+        float d_angle		= t_angle/d_size;
+        float h_angle		= t_angle/2;
+        for (ECubeSide side=CUBE_POSITIVE_X; side<CUBE_SIDE_COUNT; side++){
+        	for (u32 y_dst=0; y_dst<dst_height; y_dst++){
+	        	for (u32 x_dst=0; x_dst<dst_width; x_dst++){
+		        	vector_from_point		(normal,side,x_dst,y_dst,dst_width,dst_height);
+                    u32& out				= pixel_from_side(dst_data,dst_width,dst_height,side,x_dst,y_dst);
+                    Fcolor sum, sample_color;
+                    sum.set					(0,0,0,0);
+                    float 	src_h,src_p;
+                    normal.getHP			(src_h,src_p);
+                    u32 ds					= 0;
+                    for (float h=src_h-h_angle; h<src_h+h_angle; h+=d_angle){
+	                    for (float p=src_p-h_angle; p<src_p+h_angle; p+=d_angle){
+                        	dir.setHP		(h,p);
+                            sample_color.set(pixel_from_vector(dir,src_data,src_width,src_height));
+                            sum.r			+= sample_color.r;
+                            sum.g			+= sample_color.g;
+                            sum.b			+= sample_color.b;
+                            sum.a			+= sample_color.a;
+                            ds++;
+                        }
+                    }
+/*                            
+                    for (u32 samples=0; samples<ds; samples++){
+                    	Fcolor sample_color;
+	                    dir.random_dir		(normal,da);
+	                    sample_color.set	(pixel_from_vector(dir,src_p,src_width,src_height));
+                        sum.r				+= sample_color.r;
+                        sum.g				+= sample_color.g;
+                        sum.b				+= sample_color.b;
+                        sum.a				+= sample_color.a;
+                    }
+*/
+                    sum.mul_rgba			(1.f/ds);
+                    out						= sum.get();
+                }
+            }
+        }
+    }
+};           
+
+CCubeMapHelper cm;
+BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
+{
+    U32Vec data;
+    u32 w, wf, h, a;
+    std::string full_name;
+    FS.update_path	(full_name,_textures_,src_name);
+    full_name 			+= ".tga";
+    if (Surface_Load(full_name.c_str(),data,wf,h,a)){
+    	w				= wf/6;
+	    u32 sm_w=32, sm_wf=6*sm_w, sm_h=32;
+        if (!btwIsPow2(h)||(h*6!=wf)||(wf<sm_wf)||(h<sm_h)){	
+        	ELog.Msg(mtError,"Texture '%s' - invalid size: [%d, %d]",src_name,wf,h);
+            return 		FALSE;
+        }
+        // generate smaller
+	    U32Vec sm_data	(sm_wf*sm_h,0);
+        cm.scale_map	(data,w,h,sm_data,sm_w,sm_h,3.f);
+        // write texture
+        std::string out_name;
+        FS.update_path	(out_name,_textures_,dst_name);
+        out_name		+= ".tga";
+        CImage* I 		= xr_new<CImage>();
+        I->Create		(sm_wf,sm_h,sm_data.begin());
+//        I->Vflip		();
+        I->SaveTGA		(out_name.c_str());
+        xr_delete		(I);
+//		if (!MakeGameTexture	(dst_name,data,w,h,STextureParams::ttCubeMap,false))
+//        	return FALSE;
+        return TRUE;
+    }else{
+        ELog.Msg(mtError,"Can't load texture '%s'.",src_name);
+    }
+    return FALSE;
+}
+
+
+
+
+
+
 

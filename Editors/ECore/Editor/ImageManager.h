@@ -43,6 +43,8 @@ public:
     std::string	UpdateFileName		(std::string& fn);
 
     void		WriteAssociation	(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt);
+
+    BOOL		CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name);
 };
 
 extern ECORE_API CImageManager ImageLib;
