@@ -12,9 +12,11 @@
 
 CAI_Idol::CAI_Idol					()
 {
+	
 	m_tpCurrentBlend				= 0;
 	m_bPlaying						= false;
 	m_dwCurrentAnimationIndex		= 0;
+	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 }
 
 CAI_Idol::~CAI_Idol					()

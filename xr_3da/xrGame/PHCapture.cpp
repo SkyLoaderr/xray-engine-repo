@@ -8,67 +8,9 @@
 #include "PHCapture.h"
 #include "Entity.h"
 
-void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
+///////////////////////////////////////////////////////////////////////////////////
+CPHCapture::CPHCapture									(CPHCharacter   *a_character, CGameObject	*a_taget_object) 
 {
-
-	dxGeomUserData *l_pUD1 = NULL;
-	dxGeomUserData *l_pUD2 = NULL;
-	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
-		l_pUD1 = dGeomGetUserData(geom);
-	}
-	else 
-		l_pUD1 = dGeomGetUserData(c.geom.g1);
-
-	if(! l_pUD1) return;
-
-	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
-		l_pUD2 = dGeomGetUserData(geom);
-	} 
-	else 
-		l_pUD2 = dGeomGetUserData(c.geom.g2);
-
-	if(!l_pUD2) return;
-
-	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
-	if(capturer)
-	{
-		CPHCapture* capture=capturer->Movement.PHCapture();
-		if(capture)
-		{
-		if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object) 
-			do_colide = false;
-		if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
-		}
-
-
-	}
-	
-	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
-	if(capturer)
-	{
-		CPHCapture* capture=capturer->Movement.PHCapture();
-		if(capture)
-		{
-			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object) 
-				do_colide = false;
-			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
-		}
-
-
-	}
-
-	
-}
-
-CPHCapture::CPHCapture									(CPHCharacter   *a_character,
-														 CGameObject	*a_taget_object
-														 ) 
-{
-
 	CPHObject::Activate();
 
 	m_joint					=NULL;	
@@ -83,7 +25,7 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 		b_failed=true;
 		return;
 	}
-	
+
 	if(!a_character||!a_character->b_exist)
 	{
 		m_taget_object=NULL;
@@ -120,25 +62,28 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 		return;
 	}
 
+	if(!ini->section_exist("capture"))
+	{
+		m_taget_object=NULL;
+		b_failed=true;
+		return;
+	}
+
 	m_capture_bone=&p_kinematics->LL_GetInstance(
 		p_kinematics->LL_BoneID(ini->r_string("capture","bone"))
 		);
 
 
 	m_taget_element					=m_taget_object->m_pPhysicsShell->NearestToPoint(m_capture_bone->mTransform.c);
-	
+
 	Init(ini);
-	
+
 }
 
-CPHCapture::CPHCapture									(CPHCharacter   *a_character,
-														 CGameObject	*a_taget_object,
-														 int			a_taget_element
-														 ) 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,int a_taget_element) 
 {
-
 	CPHObject::Activate();
-
 	m_joint					=NULL;	
 	m_ajoint				=NULL;
 	m_body					=NULL;
@@ -195,14 +140,45 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 		return;
 	}
 
+	if(!ini->section_exist("capture"))
+	{
+		m_taget_object=NULL;
+		b_failed=true;
+		return;
+	}
+
 	m_capture_bone=&p_kinematics->LL_GetInstance(
 		p_kinematics->LL_BoneID(ini->r_string("capture","bone"))
 		);
 
 
+	IRender_Visual* V=m_taget_object->Visual();
 
-	CBoneInstance& tag_bone=PKinematics(m_taget_object->Visual())->LL_GetInstance(a_taget_element);
-	
+	if(!V)
+	{
+		m_taget_object=NULL;
+		b_failed=true;
+		return;
+	}
+
+	CKinematics* K=	PKinematics(V);
+
+	if(!K)
+	{
+		m_taget_object=NULL;
+		b_failed=true;
+		return;
+	}
+
+	CBoneInstance& tag_bone=K->LL_GetInstance(a_taget_element);
+
+	if(!tag_bone.Callback_Param)
+	{
+		m_taget_object=NULL;
+		b_failed=true;
+		return;
+	}
+
 	m_taget_element					=(CPhysicsElement*)tag_bone.Callback_Param;
 
 	if(!m_taget_element)
@@ -215,6 +191,9 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 	Init(ini);
 
 }
+
+
+
 void CPHCapture::Init(CInifile* ini)
 {
 	Fvector dir;
@@ -263,8 +242,8 @@ void CPHCapture::CreateBody()
 
 CPHCapture::~CPHCapture()
 {
-CPHObject::Deactivate();
-Deactivate();
+	CPHObject::Deactivate();
+	Deactivate();
 }
 void CPHCapture::PhDataUpdate(dReal step)
 {
@@ -405,7 +384,7 @@ void CPHCapture::CapturedUpdate()
 		Release();
 		return;
 	}
-	
+
 	float mag=dSqrt(dDOT(m_joint_feedback.f1,m_joint_feedback.f1));
 
 	//m_back_force=m_back_force*0.999f+ ((mag<m_capture_force/5.f) ? mag : (m_capture_force/5.f))*0.001f;
@@ -431,7 +410,7 @@ void CPHCapture::ReleasedUpdate()
 
 void CPHCapture::ReleaseInCallBack()
 {
-//	if(!b_failed) return;
+	//	if(!b_failed) return;
 	b_collide=true;
 }
 void CPHCapture::Release()
@@ -460,4 +439,62 @@ void CPHCapture::Deactivate()
 		//m_taget_element->set_ObjectContactCallback(0);
 		m_character->SetObjectContactCallback(0);
 	}
+}
+
+
+
+void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
+{
+
+	dxGeomUserData *l_pUD1 = NULL;
+	dxGeomUserData *l_pUD2 = NULL;
+	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
+	{
+		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
+		l_pUD1 = dGeomGetUserData(geom);
+	}
+	else 
+		l_pUD1 = dGeomGetUserData(c.geom.g1);
+
+	if(! l_pUD1) return;
+
+	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) 
+	{
+		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
+		l_pUD2 = dGeomGetUserData(geom);
+	} 
+	else 
+		l_pUD2 = dGeomGetUserData(c.geom.g2);
+
+	if(!l_pUD2) return;
+
+	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
+	if(capturer)
+	{
+		CPHCapture* capture=capturer->Movement.PHCapture();
+		if(capture)
+		{
+			if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object) 
+				do_colide = false;
+			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
+		}
+
+
+	}
+
+	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
+	if(capturer)
+	{
+		CPHCapture* capture=capturer->Movement.PHCapture();
+		if(capture)
+		{
+			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object) 
+				do_colide = false;
+			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
+		}
+
+
+	}
+
+
 }

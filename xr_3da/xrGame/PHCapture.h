@@ -68,15 +68,4 @@ static void object_contactCallbackFun(bool& do_colide,dContact& c);
 	virtual void InitContact(dContact* c){};
 	virtual void StepFrameUpdate(dReal step){};	
 };
-
-
-
-
-
-
 #endif
-
-
-
-
-
