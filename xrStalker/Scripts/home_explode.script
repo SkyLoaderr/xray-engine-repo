@@ -30,7 +30,7 @@ function main ()
     h.type = hit.strike
     barrel:hit (h)
 
-    ps:play_at_pos  (part)
+    ps:play_at_pos  (part, 0)
 
 	wait (5000)
 end
