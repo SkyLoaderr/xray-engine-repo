@@ -89,6 +89,9 @@ end
 function CTrader:set_zone_callback()
 	// callback на зону
 	self.zone  = level.object("trader_zone")
+	
+	if(self.zone == nil) then return end
+	
 	self.zone:set_callback(self, "on_enter", true)
 	self.zone:set_callback(self, "on_exit", false)
 
