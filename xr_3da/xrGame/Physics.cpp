@@ -2458,11 +2458,4 @@ element_transform.mulA(add);
 
  }
 
-orm(&element_transform);
-element_transform.mulA(add);
-(*i)->SetTransform(element_transform);
-}
-
-
- }
 
