@@ -87,15 +87,7 @@ namespace RAPID {
 
 		DWORD			VPack(Fvector& V);
 	public:
-		CollectorPacked(const Fbox &bb)
-		{
-			VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
-			VMmin.set	(bb.min);
-			VMeps.set	(VMscale.x/clpMX/2,VMscale.y/clpMY/2,VMscale.z/clpMZ/2);
-			VMeps.x		= (VMeps.x<EPS_L)?VMeps.x:EPS_L;
-			VMeps.y		= (VMeps.y<EPS_L)?VMeps.y:EPS_L;
-			VMeps.z		= (VMeps.z<EPS_L)?VMeps.z:EPS_L;
-		}
+		CollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
 		
 		void			add_face(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices

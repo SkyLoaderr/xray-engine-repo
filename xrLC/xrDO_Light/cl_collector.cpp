@@ -11,6 +11,28 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 namespace RAPID {
+	CollectorPacked::CollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
+	{
+		// Params
+		VMscale.set		(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
+		VMmin.set		(bb.min);
+		VMeps.set		(VMscale.x/clpMX/2,VMscale.y/clpMY/2,VMscale.z/clpMZ/2);
+		VMeps.x			= (VMeps.x<EPS_L)?VMeps.x:EPS_L;
+		VMeps.y			= (VMeps.y<EPS_L)?VMeps.y:EPS_L;
+		VMeps.z			= (VMeps.z<EPS_L)?VMeps.z:EPS_L;
+
+		// Preallocate memory
+		verts.reserve	(apx_vertices);
+		faces.reserve	(apx_faces);
+
+		int		_size	= (clpMX+1)*(clpMY+1)*(clpMZ+1);
+		int		_average= (apx_vertices/_size)/2;
+		for (int ix=0; ix<clpMX+1; ix++)
+			for (int iy=0; iy<clpMY+1; iy++)
+				for (int iz=0; iz<clpMZ+1; iz++)
+					VM[ix][iy][iz].reserve	(_average);
+	}
+	
 	DWORD	CollectorPacked::VPack(Fvector& V)
 	{
 		DWORD P = 0xffffffff;
