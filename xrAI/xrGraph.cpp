@@ -291,19 +291,35 @@ void vfNormalizeGraph()
 
 void vfSaveGraph(LPCSTR name)
 {
-	string256	fName;
-	strconcat	(fName,name,"level.graph");
+	string256					fName;
+	strconcat					(fName,name,"level.graph");
 	
-	CFS_Memory	tGraph;
-	tGraphHeader.dwVersion		= m_header.version;
+	CFS_Memory					tGraph;
+	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
 	tGraphHeader.dwVertexCount	= tpaGraph.size();
-	tGraphHeader.dwLevelCount	= XRAI_CURRENT_VERSION;
-	tGraph.write(&tGraphHeader,sizeof(SGraphHeader));	
+	tGraphHeader.dwLevelCount	= 1;
+	SLevel						tLevel;
+	tLevel.tOffset.set			(0,0,0);
+	Memory.mem_copy				(tLevel.caLevelName,name,strlen(name) + 1);
+	tGraphHeader.tpLevels.push_back(tLevel);
+	tGraph.Wdword				(tGraphHeader.dwVersion);
+	tGraph.Wdword				(tGraphHeader.dwVertexCount);
+	tGraph.Wdword				(tGraphHeader.dwLevelCount);
+	vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+	vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+	for ( ; I != E; I++) {
+        tGraph.write((*I).caLevelName,strlen((*I).caLevelName) + 1);	
+		tGraph.Wvector((*I).tOffset);
+	}
+
+	u32		dwPosition = tGraph.size();
+	
 	Progress(0.0f);
 	SCompressedGraphVertex tCompressedGraphVertex;
 	Memory.mem_fill(&tCompressedGraphVertex,0,sizeof(SCompressedGraphVertex));
 	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
 		tGraph.write(&tCompressedGraphVertex,sizeof(SCompressedGraphVertex));
+	
 	Progress(0.25f);
 	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
 		SGraphVertex &tGraphVertex = tpaGraph[i];
@@ -315,8 +331,9 @@ void vfSaveGraph(LPCSTR name)
 			}
 		tGraphVertex.tNeighbourCount = k;
 	}
+	
 	Progress(.75f);
-	tGraph.seek(sizeof(SGraphHeader));
+	tGraph.seek(dwPosition);
 	for (int i=0, j=0, k=tpaGraph.size()*sizeof(SCompressedGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
 		SGraphVertex &tGraphVertex				= tpaGraph[i];
 		tCompressedGraphVertex.tLocalPoint		= tGraphVertex.tLocalPoint;

@@ -12,17 +12,9 @@
 
 #include "xrGraph.h"
 
-typedef struct tagSLevel {
-	string64	caLevelName;
-	u32			tLevelID;
-	Fvector		tOffset;
-} SLevel;
-
 class CLevelGraph;
 
 DEFINE_VECTOR(CLevelGraph *,GRAPH_P_VECTOR,			GRAPH_P_IT);
-DEFINE_VECTOR(SGraphVertex,	GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
-DEFINE_VECTOR(SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
 class CLevelGraph {
 public:
@@ -31,7 +23,7 @@ public:
 	SLevel						m_tLevel;
 	SCompressedGraphVertex		*m_tpaGraph;
 
-								CLevelGraph(SLevel &tLevel, u32 dwOffset)
+								CLevelGraph(SLevel &tLevel, u32 dwOffset, u32 dwLevelID)
 	{
 		m_tLevel				= tLevel;
 		CVirtualFileStream		F(m_tLevel.caLevelName);
@@ -46,7 +38,7 @@ public:
 			(*I).tGlobalPoint.add	(m_tpaGraph[I - B].tGlobalPoint,m_tLevel.tOffset);
 			(*I).tNodeID			= m_tpaGraph[I - B].tNodeID;
 			(*I).tVertexType		= m_tpaGraph[I - B].tVertexType;
-			(*I).tLevelID			= m_tLevel.tLevelID;
+			(*I).tLevelID			= dwLevelID;
 			(*I).tNeighbourCount	= m_tpaGraph[I - B].tNeighbourCount;
 			(*I).tpaEdges			= (SGraphEdge *)xr_malloc((*I).tNeighbourCount*sizeof(SGraphEdge));
 			SGraphEdge				*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[I - B].dwEdgeOffset);
@@ -105,15 +97,19 @@ void xrMergeGraphs()
 	if (!pSettings->SectionExists("game_levels"))
 		THROW;
 	GRAPH_P_VECTOR					tpGraphs;
+	SGraphHeader					tGraphHeader;
 	string256						S1, S2;
 	SLevel							tLevel;
 	u32								dwOffset = 0;
-	for (tLevel.tLevelID =0; pSettings->LineExists("game_levels",itoa(tLevel.tLevelID,S1,10)); tLevel.tLevelID++) {
-		sscanf(pSettings->ReadSTRING("game_levels",itoa(tLevel.tLevelID,S1,10)),"%f,%f,%f,%s",&(tLevel.tOffset.x),&(tLevel.tOffset.y),&(tLevel.tOffset.z),S1);
+	u32								dwLevelID;
+	for (dwLevelID = 0; pSettings->LineExists("game_levels",itoa(dwLevelID,S1,10)); dwLevelID++) {
+		sscanf(pSettings->ReadSTRING("game_levels",itoa(dwLevelID,S1,10)),"%f,%f,%f,%s",&(tLevel.tOffset.x),&(tLevel.tOffset.y),&(tLevel.tOffset.z),S1);
 		strconcat(S2,"gamedata\\levels\\",S1);
 		strconcat(tLevel.caLevelName,S2,"\\level.graph");
-		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel,dwOffset));
+		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel,dwOffset,dwLevelID));
 		dwOffset += tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
+		Memory.mem_copy				(tLevel.caLevelName,S1,strlen(S1) + 1);
+		tGraphHeader.tpLevels.push_back(tLevel);
 	}
 	R_ASSERT(tpGraphs.size());
 	
@@ -124,11 +120,21 @@ void xrMergeGraphs()
 	
 	// save all the graphs
 	CFS_Memory						F;
-	SGraphHeader					tGraphHeader;
 	tGraphHeader.dwLevelCount		= tpGraphs.size();
 	tGraphHeader.dwVersion			= XRAI_CURRENT_VERSION;
 	tGraphHeader.dwVertexCount		= dwOffset;
-	F.write							(&tGraphHeader,sizeof(tGraphHeader));
+	F.Wdword						(tGraphHeader.dwVersion);
+	F.Wdword						(tGraphHeader.dwVertexCount);
+	F.Wdword						(tGraphHeader.dwLevelCount);
+	{
+		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		for ( ; I != E; I++) {
+			F.write((*I).caLevelName,strlen((*I).caLevelName) + 1);	
+			F.Wvector((*I).tOffset);
+		}
+	}
+
 	dwOffset						*= sizeof(SCompressedGraphVertex);
 	{
 		GRAPH_P_IT					I = tpGraphs.begin();

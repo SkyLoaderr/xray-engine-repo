@@ -35,12 +35,21 @@ typedef struct tagSCompressedGraphVertex {
 	u32					dwEdgeOffset;
 } SCompressedGraphVertex;
 
+typedef struct tagSLevel {
+	string64			caLevelName;
+	Fvector				tOffset;
+} SLevel;
+
 typedef struct tagSGraphHeader {
 	u32					dwVersion;
 	u32					dwVertexCount;
 	u32					dwLevelCount;
+	vector<SLevel>		tpLevels;
 } SGraphHeader;
 #pragma pack(pop)
+
+DEFINE_VECTOR(SGraphVertex,	GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
+DEFINE_VECTOR(SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
 extern vector<SGraphVertex>	tpaGraph;		// graph
 
