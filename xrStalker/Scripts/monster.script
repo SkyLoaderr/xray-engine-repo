@@ -1,34 +1,27 @@
 function main()
 	wait(15000)                                                                                                    
 	                                                                                                              
-	obj1     = get_level_object("m_boar_e0000")                                                                     
-	obj1:script(true,monster.script_name())                                                                                
+	dog   	= 	get_level_object("m_dog_e0000")                                                                     
+	bloody 	=	get_level_object("m_blood")
+	actor   = 	get_actor()
+
+	dog:script(true,monster.script_name())                                                                                
 
 	action(                                                                                                       
-	    obj1,                                                                                                      
-		move(move.act_walk_fwd, level.object("m_blood")),
-	    cond(cond.time_end + cond.move_end,10000)                                                                                 
+    	dog,                                                                                                      
+		move(move.act_walk_fwd, bloody),
+    	cond(cond.time_end + cond.move_end,10000) 
 	)                                                                                                             
 
-	action(                                                                                                       
-	    obj1,    
-		object(level.object("m_blood"),object.take),
-	    cond(cond.time_end,3000)                                                                                 
-	)                                                                                                             
 	action(
-		obj1,
-		move(move.act_drag, level.object("localhost/jim")),
-	    cond(cond.time_end + cond.move_end,10000)                                                                                 
-	)	                                               	
-	action(
-		obj1,
-		object(level.object("m_blood"),object.drop),
-	    cond(cond.time_end,3000)                                                                                 
+		dog,
+		move(move.act_jump, actor),
+	    cond(cond.time_end + cond.move_end,3000)                                                                                 
 	)	                                               	
 
-	while obj1:action() do                                                        
+	while dog:action() do                                                        
 	    wait			()                                                                                                    
 	end                                                                                                           
 	                                                                                                              
-	obj1:script(false,monster.script_name())                                                                               
+	dog:script(false,monster.script_name()) 
 end
