@@ -52,11 +52,11 @@ function main_menu:InitControls()
 	------------------------------------------------------------------
 	
 	-- button template
-	self.btn_rect  = {x = 0, 
-					  y = 0, 
+	self.btn_rect  = {x = 657, 
+					  y = 92, 
 					  width = 256, 
 					  height = 33 }
-	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2
+	
 	--------------------------------------------------
 	-- special button aling
 	
@@ -137,17 +137,17 @@ function main_menu:InitControls()
 							 height = self.btn_rect.height}
 							 
 	local btn_load_rect   = {x = self.btn_rect.x,
-							 y = btn_new_rect.y + btn_new_rect.height + self.indent,
+							 y = btn_new_rect.y + btn_new_rect.height ,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 							 
 	local btn_multi_rect  = {x = self.btn_rect.x,
-							 y = btn_load_rect.y + btn_load_rect.height + self.indent,
+							 y = btn_load_rect.y + btn_load_rect.height ,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	
 	local btn_opt_rect    = {x = self.btn_rect.x,
-							 y = btn_multi_rect.y + btn_multi_rect.height + self.indent,
+							 y = btn_multi_rect.y + btn_multi_rect.height ,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	-- Bottom align
