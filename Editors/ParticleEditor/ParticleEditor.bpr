@@ -20,12 +20,12 @@
       Intermediate\LzHuf.obj Intermediate\UI_Camera.obj 
       Intermediate\UI_MainCommand.obj Intermediate\FS.obj Intermediate\HW.obj 
       Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
-      Intermediate\Primitive.obj Intermediate\SharedPrimitive.obj 
-      Intermediate\EditObject.obj Intermediate\Xr_input.obj 
-      Intermediate\fcontroller.obj Intermediate\XR_CustomFont.obj 
-      Intermediate\XR_HUDFont.obj Intermediate\c_dinput.obj 
-      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
-      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\SharedPrimitive.obj Intermediate\EditObject.obj 
+      Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
+      Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
+      Intermediate\c_dinput.obj Intermediate\pure.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\Library.obj 
       Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
       Intermediate\SH_Texture.obj Intermediate\Shader.obj 
@@ -52,18 +52,19 @@
       Intermediate\Blender_BmmD.obj Intermediate\Engine.obj 
       Intermediate\ModelPool.obj Intermediate\xrSkin1W.obj 
       Intermediate\FBasicVisual.obj Intermediate\FHierrarhyVisual.obj 
-      Intermediate\FProgressive.obj Intermediate\FProgressiveFixedVisual.obj 
-      Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
-      Intermediate\SkeletonX.obj Intermediate\BodyInstance.obj 
-      Intermediate\ExportSkeleton.obj Intermediate\xrXRC.obj 
-      Intermediate\Blender_Blur.obj Intermediate\SH_RT.obj 
-      Intermediate\SH_VS.obj Intermediate\Blender_Shadow_World.obj 
+      Intermediate\FProgressiveFixedVisual.obj Intermediate\FVisual.obj 
+      Intermediate\SkeletonCalculate.obj Intermediate\SkeletonX.obj 
+      Intermediate\BodyInstance.obj Intermediate\ExportSkeleton.obj 
+      Intermediate\xrXRC.obj Intermediate\Blender_Blur.obj 
+      Intermediate\SH_RT.obj Intermediate\SH_VS.obj 
+      Intermediate\Blender_Shadow_World.obj 
       Intermediate\Blender_Shadow_Texture.obj Intermediate\CustomObjectMisc.obj 
       Intermediate\Blender_Model.obj Intermediate\cpuid.obj 
       Intermediate\_math.obj Intermediate\TextForm.obj 
       Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
       Intermediate\ExportObjectOGF.obj Intermediate\PropertiesList.obj 
-      Intermediate\NumericVector.obj"/>
+      Intermediate\NumericVector.obj Intermediate\PropertiesListTypes.obj 
+      Intermediate\LightAnimLibrary.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -78,7 +79,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Editor;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Editor;Engine;Engine\Blenders;Engine;Engine;Engine\Blenders;Engine\Blenders;Editor;Engine\Blenders;Engine;Engine;Editor;Editor;Editor;Editor;Editor;Editor"/>
+    <PATHCPP value=".;editor;engine;lib;Engine\BLENDERS;Engine\Animations"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -162,7 +163,6 @@
       <FILE FILENAME="editor\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\PrimitivesR.cpp" FORMNAME="" UNITNAME="PrimitivesR" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\Primitive.cpp" FORMNAME="" UNITNAME="Primitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\SharedPrimitive.cpp" FORMNAME="" UNITNAME="SharedPrimitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\d3d8.lib" FORMNAME="" UNITNAME="d3d8" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\d3dx8d.lib" FORMNAME="" UNITNAME="d3dx8d" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -230,7 +230,6 @@
       <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FProgressive.cpp" FORMNAME="" UNITNAME="FProgressive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -255,6 +254,8 @@
       <FILE FILENAME="Editor\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesList.cpp" FORMNAME="frmProperties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

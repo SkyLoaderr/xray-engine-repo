@@ -272,7 +272,7 @@ void CParticleTools::SetCurrentPS(PS::SDef* P)
         m_PSProps->SetCurrent(m_LibPS?&m_EditPS:0);
         // update visual
         _DELETE(m_TestObject);
-		m_TestObject = new CPSObject("Test");
+		m_TestObject = new CPSObject(0,"Test");
 		m_TestObject->Compile(&m_EditPS);
     }
 }
@@ -286,7 +286,7 @@ void CParticleTools::UpdateCurrent(){
 	VERIFY(m_bReady);
     VERIFY(m_LibPS);
 	_DELETE(m_TestObject);
-    m_TestObject = new CPSObject("Test");
+    m_TestObject = new CPSObject(0,"Test");
     m_TestObject->Compile(&m_EditPS);
 }
 //---------------------------------------------------------------------------
