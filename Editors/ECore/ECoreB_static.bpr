@@ -33,9 +33,9 @@
       intermediate\Blender_detail_still.obj intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_LaEmB.obj 
       intermediate\blender_light.obj intermediate\Blender_Lm(EbB).obj 
-      intermediate\Blender_LmBmmD.obj intermediate\Blender_Model.obj 
-      intermediate\Blender_Model_EbB.obj intermediate\Blender_Palette.obj 
-      intermediate\Blender_Recorder.obj intermediate\Blender_Recorder_R2.obj 
+      intermediate\Blender_Model.obj intermediate\Blender_Model_EbB.obj 
+      intermediate\Blender_Palette.obj intermediate\Blender_Recorder.obj 
+      intermediate\Blender_Recorder_R2.obj 
       intermediate\Blender_Recorder_StandartBinding.obj 
       intermediate\Blender_Screen_GRAY.obj intermediate\Blender_Screen_SET.obj 
       intermediate\Blender_Shadow_Texture.obj 
@@ -185,7 +185,6 @@
       <FILE FILENAME="Engine\Blenders\Blender_LaEmB.cpp" FORMNAME="" UNITNAME="Blender_LaEmB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\blender_light.cpp" FORMNAME="" UNITNAME="blender_light.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Lm(EbB).cpp" FORMNAME="" UNITNAME="Blender_Lm(EbB).cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_LmBmmD.cpp" FORMNAME="" UNITNAME="Blender_LmBmmD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

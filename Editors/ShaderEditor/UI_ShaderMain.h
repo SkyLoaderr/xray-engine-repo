@@ -14,9 +14,6 @@ class CShaderMain: public TUI{
 	typedef TUI inherited;
     
     virtual void 	RealUpdateScene			();
-    virtual bool	CommandExt				(int _Command, int p = 0, int p2 = 0);
-    virtual bool 	ApplyShortCutExt		(WORD Key, TShiftState Shift);
-    virtual bool 	ApplyGlobalShortCutExt	(WORD Key, TShiftState Shift);
     virtual void 	RealQuit				();
 public:
     				CShaderMain 			();
@@ -38,6 +35,10 @@ public:
 
     virtual LPCSTR	EditorName				(){return "shader";}
     virtual LPCSTR	EditorDesc				(){return "Shader Editor";}
+
+    virtual bool	Command					(int _Command, int p = 0, int p2 = 0);
+    virtual bool 	ApplyShortCut			(WORD Key, TShiftState Shift);
+    virtual bool 	ApplyGlobalShortCut		(WORD Key, TShiftState Shift);
 };    
 extern CShaderMain*&	PUI;
 

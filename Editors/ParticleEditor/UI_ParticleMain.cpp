@@ -27,7 +27,7 @@ CParticleMain::~CParticleMain()
 }
 //---------------------------------------------------------------------------
 
-bool CParticleMain::CommandExt(int _Command, int p1, int p2)
+bool CParticleMain::Command(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	string256 filebuffer;
@@ -84,8 +84,7 @@ bool CParticleMain::CommandExt(int _Command, int p1, int p2)
     	break;
 //------
     default:
-		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
-        bRes = false;
+    	return inherited::Command(_Command,p1,p2);
     }
     return 	bRes;
 }
@@ -98,15 +97,17 @@ char* CParticleMain::GetCaption()
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 
-bool __fastcall CParticleMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CParticleMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyShortCut(Key,Shift)) return true;
 	bool bExec = false;
     return bExec;
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall CParticleMain::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CParticleMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
 	bool bExec = false;
     if (Shift.Empty()){
         if (Key==VK_F5)    	COMMAND0(COMMAND_PLAY_CURRENT)

@@ -26,7 +26,7 @@ CShaderMain::~CShaderMain()
 }
 //---------------------------------------------------------------------------
 
-bool CShaderMain::CommandExt(int _Command, int p1, int p2)
+bool CShaderMain::Command(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	string256 filebuffer;
@@ -72,8 +72,7 @@ bool CShaderMain::CommandExt(int _Command, int p1, int p2)
     	break;
 //------
     default:
-		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
-        bRes = false;
+    	return inherited::Command(_Command,p1,p2);
     }
     return 	bRes;
 }
@@ -83,15 +82,17 @@ char* CShaderMain::GetCaption()
 	return (LPSTR)STools->CurrentToolsName();// "shaders&materials";
 }           
 
-bool __fastcall CShaderMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CShaderMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyShortCut(Key,Shift)) return true;
 	bool bExec = false;
     return bExec;
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall CShaderMain::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CShaderMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
 	bool bExec = false;
     return bExec;
 }

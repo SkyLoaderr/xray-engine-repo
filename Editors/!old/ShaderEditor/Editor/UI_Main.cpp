@@ -314,7 +314,7 @@ void TUI::Redraw(){
 	Device.SetRS( D3DRS_FOGSTART,	*(DWORD *)(&fog_start)	);
 	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
     // filter
-    for (u32 k=0; k<HW.Caps.pixel.dwStages; k++){
+    for (u32 k=0; k<HW.Caps.raster.dwStages; k++){
         if( psDeviceFlags.is(rsFilterLinear)){
             Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
@@ -341,7 +341,7 @@ void TUI::Redraw(){
 
         Tools->RenderEnvironment	();
         //. temporary reset filter (уберется после того как Олесь сделает шейдеры)
-        for (u32 k=0; k<HW.Caps.pixel.dwStages; k++){
+        for (u32 k=0; k<HW.Caps.raster.dwStages; k++){
             if( psDeviceFlags.is(rsFilterLinear)){
                 Device.SetSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
                 Device.SetSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);

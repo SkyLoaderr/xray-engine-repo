@@ -26,7 +26,7 @@ CActorMain::~CActorMain()
 }
 //---------------------------------------------------------------------------
 
-bool CActorMain::CommandExt(int _Command, int p1, int p2)
+bool CActorMain::Command(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	string256 filebuffer;
@@ -219,8 +219,7 @@ bool CActorMain::CommandExt(int _Command, int p1, int p2)
     	frmMain->UpdateCaption();
     	break;
     default:
-		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
-        bRes = false;
+    	return inherited::Command(_Command,p1,p2);
     }
     return 	bRes;
 }
@@ -230,8 +229,9 @@ char* CActorMain::GetCaption()
 	return GetEditFileName().IsEmpty()?"noname":GetEditFileName().c_str();
 }
 
-bool __fastcall CActorMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CActorMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyShortCut(Key,Shift)) return true;
 	bool bExec = false;
     if (Shift.Empty()){
     	if (Key=='B') 					{ ATools->SelectListItem(BONES_PREFIX,0,true,false,true); bExec=true;}
@@ -245,8 +245,9 @@ bool __fastcall CActorMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall CActorMain::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CActorMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+    if (inherited::ApplyGlobalShortCut(Key,Shift)) return true;
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
 		if (Key=='R')					COMMAND0(COMMAND_LOAD_FIRSTRECENT)

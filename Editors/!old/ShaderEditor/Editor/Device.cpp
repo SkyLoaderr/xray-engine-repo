@@ -167,7 +167,7 @@ void CRenderDevice::_Create(IReader* F)
 
 	// General Render States
 	HW.Caps.Update();
-	for (u32 i=0; i<HW.Caps.pixel.dwStages; i++){
+	for (u32 i=0; i<HW.Caps.raster.dwStages; i++){
 		float fBias = -1.f;
 		CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
