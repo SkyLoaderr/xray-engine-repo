@@ -175,8 +175,12 @@ TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD
     break;
     case BPID_TEXTURE:	CS->CellType = sftUndef;    TI->ColumnText->Add (AnsiString((LPSTR)value));					break;
     case BPID_INTEGER:	CS->CellType = sftUndef;	TI->ColumnText->Add	(AnsiString(((BP_Integer*)value)->value));	CS->Style = ElhsOwnerDraw; break;
-    case BPID_FLOAT:	CS->CellType = sftUndef; 	TI->ColumnText->Add	(AnsiString(((BP_Float*)value)->value)); 	CS->Style = ElhsOwnerDraw; break;
-    case BPID_FLOAT2:	CS->CellType = sftUndef; 	TI->ColumnText->Add	(AnsiString(*(float*)value));  				CS->Style = ElhsOwnerDraw; break;
+    case BPID_FLOAT:{  	CS->CellType = sftUndef;	BP_Float* F=(BP_Float*)value;
+    					AnsiString s,fmt; fmt.sprintf("%%.%df",2); s.sprintf(fmt.c_str(),F->value);
+                        TI->ColumnText->Add(s); CS->Style = ElhsOwnerDraw; }break;
+    case BPID_FLOAT2:{  CS->CellType = sftUndef;	float F=*(float*)value;
+    					AnsiString s,fmt; fmt.sprintf("%%.%df",2); s.sprintf(fmt.c_str(),F);
+                        TI->ColumnText->Add(s); CS->Style = ElhsOwnerDraw; }break;
     case BPID_BOOL: 	CS->CellType = sftUndef;    TI->ColumnText->Add	(BOOLString[((BP_BOOL*)value)->value]); 	CS->Style = ElhsOwnerDraw; break;
     case BPID_TOKEN:	CS->CellType = sftUndef; 	TI->ColumnText->Add	(GetToken((BP_TOKEN*)value,((BP_TOKEN*)value)->IDselected));	break;
 	default: THROW2("BPID_????");
@@ -261,8 +265,8 @@ void TfrmShaderProperties::PrepareLWNumber(TElTreeItem* item)
         float* V 			= (float*)item->Data; VERIFY(V);
         seNumber->MinValue 	= 0.;
         seNumber->MaxValue	= 1.;
-        seNumber->Increment	= 0.01;
-        seNumber->LWSensitivity=seNumber->Increment/100;
+        seNumber->Increment	= 0.01f;
+        seNumber->LWSensitivity=0.01f;
 	    seNumber->Decimal  	= 2;
     	seNumber->ValueType	= vtFloat;
 	    seNumber->Value 	= *V;
@@ -272,7 +276,7 @@ void TfrmShaderProperties::PrepareLWNumber(TElTreeItem* item)
         seNumber->MinValue 	= V->min;
         seNumber->MaxValue 	= V->max;
         seNumber->Increment	= (V->max-V->min)/100.;
-        seNumber->LWSensitivity=seNumber->Increment/100;
+        seNumber->LWSensitivity=0.01f;
 	    seNumber->Decimal  	= 2;
     	seNumber->ValueType	= vtFloat;
 	    seNumber->Value 	= V->value;
@@ -308,25 +312,27 @@ void TfrmShaderProperties::ApplyLWNumber()
 		DWORD type = item->Tag;
 	    switch (type){
 		case BPID_FLOAT2:{
+            item->ColumnText->Strings[0] = seNumber->Text;
 	    	if (!fsimilar(*(float*)item->Data,seNumber->Value)){
 		    	*(float*)item->Data = seNumber->Value;
 	            Modified();
 		    }
-            item->ColumnText->Strings[0] = seNumber->Text;
         }break;
 		case BPID_FLOAT:{
-		    if (!fsimilar(((BP_Float*)item->Data)->value,seNumber->Value)){
-			    ((BP_Float*)item->Data)->value = seNumber->Value;
+        	BP_Float* V = (BP_Float*)item->Data;
+            item->ColumnText->Strings[0] = seNumber->Text;
+		    if (!fsimilar(V->value,seNumber->Value)){
+			    V->value = seNumber->Value;
 	            Modified();
 		    }
-            item->ColumnText->Strings[0] = seNumber->Text;
     	}break;
 		case BPID_INTEGER:{
-    		if (*(int*)item->Data != seNumber->Value){
-	    		*(int*)item->Data = seNumber->Value;
+        	BP_Integer* V = (BP_Integer*)item->Data;
+            item->ColumnText->Strings[0] = seNumber->Text;
+    		if (V->value != seNumber->Value){
+	    		V->value = seNumber->Value;
 	            Modified();
 	    	}
-            item->ColumnText->Strings[0] = seNumber->Text;
         }break;
         }
     }
