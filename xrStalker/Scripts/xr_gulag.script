@@ -10,7 +10,7 @@ function fract:__init(name)
 	self.checkTime = 10000 	-- время между проверками постов
 	self.checkBegin = nil
 
-	self.casualites = 0  	-- потери на блокпосте
+	self.casualities = 0  	-- потери на блокпосте
 
 	self.Object = {}        -- список ресурсов
 	self.Job = {}           -- список заданий
@@ -50,7 +50,7 @@ function fract:calculate() -- просчет лагеря
 	local tt = {}
 	for k,v in self.Object do
 		if v:alive() ~= true then
-			self:changeCasualites(1)
+			self:changeCasualities(1)
 			self.Object[k] = nil
 		end
 	end
@@ -452,11 +452,11 @@ function fract:stalkerExsist(npc)
 	end
 	return false
 end
-function fract:getCasualites()
-	return self.casualites
+function fract:getCasualities()
+	return self.casualities
 end
-function fract:changeCasualites(delta)
-	self.casualites = self.casualites + delta
+function fract:changeCasualities(delta)
+	self.casualities = self.casualities + delta
 end
 ----------------------------------------------------------------------------------------------------------------------
 -- Evaluators
@@ -583,19 +583,19 @@ function getJob(fraction, npc)
 end
 function needRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
-		local cc = xr_gulag.fraction[fraction]:getCasualites()
+		local cc = xr_gulag.fraction[fraction]:getCasualities()
 		if cc >= 3 then return true end
 	end
 	return false			
 end
-function changeCasualites(fraction, delta)
+function changeCasualities(fraction, delta)
 	if xr_gulag.fraction[fraction] ~= nil then
-		xr_gulag.fraction[fraction]:changeCasualites(delta)
+		xr_gulag.fraction[fraction]:changeCasualities(delta)
 	end
 end
 function startRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
-		local cc = xr_gulag.fraction[fraction]:getCasualites()
-		xr_gulag.fraction[fraction]:changeCasualites(-cc)
+		local cc = xr_gulag.fraction[fraction]:getCasualities()
+		xr_gulag.fraction[fraction]:changeCasualities(-cc)
 	end
 end
