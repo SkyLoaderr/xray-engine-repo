@@ -479,7 +479,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 }
 void	CShaderManager::_DeleteTexture		(CTexture* &T)
 {
-	R_ASSERT(T);
+	if (0==T)		return;
 	T->dwReference	--;
 	T=0;
 }
