@@ -59,7 +59,7 @@ function save_dialog:InitControls()
 	wnd_caption:SetAutoDelete(true)
 	wnd_caption:SetWindowName("wnd_caption")
 	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
-	main_frame:AttachChild(main_frame)
+	main_frame:AttachChild(wnd_caption)
 
 
 	------------LIST-----------------
