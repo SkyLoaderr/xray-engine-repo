@@ -28,6 +28,7 @@ public:
 
 #if RENDER==R_R2
 	xr_vector<light_indirect>	indirect;
+	u32							indirect_photons;
 
 	ref_shader		s_spot;
 	ref_shader		s_point;

@@ -229,7 +229,9 @@ void	light::xform_calc			()
 
 void	light::gi_generate	()
 {
-	indirect.clear	();
+	indirect.clear		();
+	indirect_photons	= ps_r2_GI_photons;
+
 	CRandom			random;
 	random.seed		(0x12071980);
 
