@@ -214,7 +214,8 @@ float CBaseMonster::get_custom_pitch_speed(float def_speed)
 void CBaseMonster::ChangeTeam(int team, int squad, int group)
 {
 	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
-		
+	VERIFY2(g_Alive(), "Try to change team of a dead object");
+
 	// remove from current team
 	monster_squad().remove_member	((u8)g_Team(),(u8)g_Squad(), this);
 	inherited::ChangeTeam			(team,squad,group);
