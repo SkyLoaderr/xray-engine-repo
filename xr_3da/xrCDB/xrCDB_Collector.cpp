@@ -5,7 +5,7 @@
 
 namespace CDB
 {
-	u32		Collector::VPack	(Fvector& V, float eps)
+	u32		Collector::VPack	(const Fvector& V, float eps)
 	{
 		xr_vector<Fvector>::iterator I,E;
 		I=verts.begin();	E=verts.end();
@@ -15,7 +15,7 @@ namespace CDB
 	}
 
 	void	Collector::add_face_D	(
-		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
+		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
 		u32 dummy								// misc
 		)
 	{
@@ -31,7 +31,7 @@ namespace CDB
 		faces.push_back(T);
 	}
 
-	void	Collector::add_face		(	Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector )
+	void	Collector::add_face		(	const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector )
 	{
 		TRI			T;
 		T.IDverts()	[0] = verts.size();
@@ -47,8 +47,8 @@ namespace CDB
 	}
 
 	void	Collector::add_face_packed	(
-		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u16		material, u16 sector,			// misc
+		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
+		u16		material, u16 sector,								// misc
 		float	eps
 		)
 	{
@@ -62,7 +62,7 @@ namespace CDB
 	}
 
 	void	Collector::add_face_packed_D	(
-		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
+		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
 		u32		dummy,	float eps
 		)
 	{
@@ -131,8 +131,8 @@ namespace CDB
 	}
 
 	void	CollectorPacked::add_face(
-		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u16 material, u16 sector				// misc
+		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
+		u16 material, u16 sector									// misc
 		)
 	{
 		TRI T;
@@ -145,8 +145,8 @@ namespace CDB
 	}
 
 	void	CollectorPacked::add_face_D(
-		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u32 dummy								// misc
+		const Fvector& v0, const Fvector& v1, const Fvector& v2,	// vertices
+		u32 dummy													// misc
 		)
 	{
 		TRI T;
@@ -157,7 +157,7 @@ namespace CDB
 		faces.push_back(T);
 	}
 
-	u32		CollectorPacked::VPack(Fvector& V)
+	u32		CollectorPacked::VPack(const Fvector& V)
 	{
 		u32 P = 0xffffffff;
 

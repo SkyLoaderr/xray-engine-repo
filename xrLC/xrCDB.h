@@ -179,12 +179,12 @@ namespace CDB
 		DWORDList			VM		[clpMX+1][clpMY+1][clpMZ+1];
 		Fvector				VMeps;
 
-		u32					VPack		(Fvector& V);
+		u32					VPack		( const Fvector& V);
 	public:
 		CollectorPacked		(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
 
-		void				add_face	( Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector );
-		void				add_face_D	( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy );
+		void				add_face	( const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector );
+		void				add_face_D	( const Fvector& v0, const Fvector& v1, const Fvector& v2, u32 dummy );
 		xr_vector<Fvector>& getV_Vec()	{ return verts;				}
 		Fvector*			getV()		{ return &*verts.begin();	}
 		size_t				getVS()		{ return verts.size();		}
