@@ -133,7 +133,8 @@ void xrServer::Update	()
 		ClientID g_id 				= net_Players[g_it]->ID;
 		game->net_Export_Update		(Packet,Client->ID,g_id);
 
-		if (!Client->flags.bLocal)	game->net_Export_GameTime(Packet);
+//		if (!Client->flags.bLocal)	
+			game->net_Export_GameTime(Packet);
 
 		if (!Client->flags.bLocal || client_Count() == 1)
 		{
