@@ -96,9 +96,7 @@ void SetListsOnly(const bool bListsOnly);
 //
 // Be sure to call xr_free on the returned primGroups to avoid leaking mem
 //
-void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numIndices,
-					PrimitiveGroup** primGroups, unsigned short* numGroups);
-
+void GenerateStrips(const u16* in_indices, const s32 in_numIndices, vector<PrimitiveGroup> &primGroups);
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // RemapIndices()
@@ -116,7 +114,6 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 //
 // Credit goes to the MS Xbox crew for the idea for this interface.
 //
-void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numGroups, 
-				  const unsigned short numVerts, PrimitiveGroup** remappedGroups);
+void RemapIndices(const vector<PrimitiveGroup> &in_primGroups, const u16 numVerts, vector<PrimitiveGroup> &remappedGroups);
 
 #endif

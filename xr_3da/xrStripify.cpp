@@ -26,24 +26,23 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	SetListsOnly	(true);
 
 	// Generate strips
-	PrimitiveGroup*	PGROUP=0;
-	WORD			PGROUP_Count=0;
-	GenerateStrips	(&*indices.begin(),indices.size(),&PGROUP,&PGROUP_Count);
-	R_ASSERT		(PGROUP);
-	R_ASSERT		(PGROUP_Count==1);
-	R_ASSERT		(PGROUP->type==PT_LIST);
-	R_ASSERT		(indices.size()==PGROUP->numIndices);
+	vector<PrimitiveGroup>	PGROUP;
+	GenerateStrips	(&*indices.begin(),indices.size(),PGROUP);
+	R_ASSERT		(PGROUP.size()==1);
+	R_ASSERT		(PGROUP[0].type==PT_LIST);
+	R_ASSERT		(indices.size()==PGROUP[0].numIndices);
 
 	// Remap indices
-	PrimitiveGroup*	xPGROUP=0;
-	RemapIndices	(PGROUP,PGROUP_Count,u16(perturb.size()),&xPGROUP);
-	R_ASSERT		(xPGROUP);
+	vector<PrimitiveGroup>	xPGROUP=0;
+	RemapIndices	(PGROUP,u16(perturb.size()),xPGROUP);
+	R_ASSERT		(xPGROUP.size()==1);
+	R_ASSERT		(xPGROUP[0].type==PT_LIST);
 
 	// Build perturberation table
-	for(u32 index = 0; index < PGROUP->numIndices; index++)
+	for(u32 index = 0; index < PGROUP[0].numIndices; index++)
 	{
-		u16 oldIndex = PGROUP->indices	[index];
-		int newIndex = xPGROUP->indices	[index];
+		u16 oldIndex = PGROUP[0].indices	[index];
+		int newIndex = xPGROUP[0].indices	[index];
 		R_ASSERT(oldIndex<(int)perturb.size());
 		R_ASSERT(newIndex<(int)perturb.size());
 		perturb[newIndex] = oldIndex;
@@ -53,6 +52,6 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	PSGP.memCopy	(&*indices.begin(),xPGROUP->indices,indices.size()*sizeof(WORD));
 
 	// Release memory
-	delete[]	xPGROUP;
+	x	xPGROUP;
 	delete[]	PGROUP;
 }
