@@ -461,18 +461,13 @@ PM_API int		__cdecl PM_Convert(
 	// Calculate minimal vertices and FAIL if needed
 	DWORD dwRealMin	= 0, dwBorderMin = 0, dwVertCount=vertices.num(); 
 	for (I=0; I<dwVertCount; I++) {
-		if (vertices[I]->bBorder)	{
-			dwBorderMin++;
-			dwRealMin++;
-			vertices[I]->bCriticalBorder = TRUE;
-		}
-		//if (vertices[I]->bCriticalBorder)	dwRealMin++;
+		if (vertices[I]->bCriticalBorder)	dwRealMin++;
+		if (vertices[I]->bBorder)			dwBorderMin++;
 	}
 	
 	dwRealMin = _MAX(PARA.dwMinVerts,dwRealMin);
-//	float fQuality = float(dwRealMin)/vertices.num();
-	if ((vertices.num()-dwRealMin) < 8) 
-	{
+	float fQuality = float(dwRealMin)/vertices.num();
+	if (fQuality > PARA.fQualityH) {
 		vertices.clear	();
 		triangles.clear	();
 		return -1;
