@@ -15,24 +15,15 @@ function evaluator_new:__init(name, storage) super()
 	self.a = storage
 end
 function evaluator_new:evaluate()
-	self.a.evn:calculate()
---	self.a.evn:print()
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
 	if self.a.evn:ruleExist("ignore") == true then
 		return false
 	end
 
-	if self.a.id == nil and self.a.evn:isEvents() then
-		self.a.evn:get_event(self.a)
-	end
+	self.a.evn:calculate()
+	self.a.evn:print()
 	
-	local tt = self.a.id ~= nil 
---	if tt then
---		printf("[EVA] Reactions: New TRUE")
---	else
---		printf("[EVA] Reactions: New FALSE")
---	end
-	return tt
+	return self.a.evn:isEvents()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -49,13 +40,6 @@ function action_wait:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
-
-	--временно время устанавливаем здесь
-	self.a.time = device():time_global()
-
-	self.t = nil
-	self.time = nil
-	self.prisluh = nil
 
 	self.sound_relax = {idle = 0,
 		     begin = nil,
@@ -102,129 +86,81 @@ function action_wait:initialize()
 				  "prisluh_2_idle_6" }}
 
 	xr_state.change_state(self.object, 0)
-	self.finish = false
-	self.check = nil
-end
-function action_wait:execute ()
---	printf("[ACT] Reactions: Wait")
 
-	-- если мы обрабатываем новый раздражитель, то нужно сресетить значения времени ожидания
-	if self.a.evn:isEvents() then
-		self.a.evn:get_event(self.a)
-		self.a.time = device():time_global()
-		self.a.evn:markAsWatch(self.a.id)		
-	end
-	
-	if self.finish == true then
-		if self.prisluh == true then
+end
+function action_wait:execute()
+	self.a.evn:get_event(self.a.obj)
+
+	printf("!!!")
+	self.a.evn:printid(self.a.obj.id)
+
+	if self.a.obj.type == "watch" then
+		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
-			self.prisluh = false
-		end
-		if self.object:animation_count() == 0 then
-			self.a.evn:removeFromWatch(self.a.id)
-			self.a.id = nil			
-		end
-	else
-		--идем проверять или стоим смотрим
-		if ((self.a.isVisual ~= nil and self.a.isVisual > 0.75) or (self.a.isVisual == nil and self.a.watched == true)) then
-			if self.a.evn:ruleExist("no_check") == true then
-				self.check = false
-			else
-				self.check = true
-			end
-		else            	
-			self.check = false
+			self.a.evn:markAsUsed(self.a.obj.id)
+			return
 		end
 
-		-- собственно сами действия
-		if xr_state.finish_state(self.object) == true then
-		if self.check == true then
-			-- идем проверять
-			if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
-				-- если мы уже стоим в радиусе 3 метров от раздражителя - просто стоим и оглядываемся
-				if (self.time == nil) or (device():time_global()/1000 - self.time > self.t) then
-					self.object:set_body_state(move.standing)
-					self.object:set_movement_type(move.stand)
-
-					self.t = math.random(3)+4
-					self.time = device():time_global()/1000
-
-					local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
-					self.object:set_sight(look.direction, dir, 0)
-					-- озвучка на проверку
-					if self.a.evn:ruleExist("silence") ~= true then
-						globals.set_sound(self.object, self.sound_wait, false)
-					end
-				end     	
-			else
-				self.object:set_mental_state(anim.danger)
-				self.object:set_movement_type(move.walk)
-				self.object:set_path_type(game_object.level_path)
-				self.object:clear_animations()
-				-- медленно подходим к раздражителю
-				self.prisluh = nil
-				self.object:set_dest_level_vertex_id(self.a.position)
-				local pos = level.vertex_position(self.a.position)
-				pos.y = pos.y + 0.8
-				self.object:set_sight(look.point, pos, 0)
-	      			self.object:set_item(object.idle, self.object:best_weapon())
-		       	end
-			-- озвучка на проверку
-			if self.a.evn:ruleExist("silence") ~= true then
-				globals.set_sound(self.object, self.sound_wait, false)
-			end
+		self.a.evn:markAsWatch(self.a.obj.id)
+		-- определяем позицию чувака и втыкаем в нее
+		self.object:set_movement_type(move.stand)
+		self.object:set_sight(look.point, level.vertex_position(self.a.obj.position), 0)
+		self:set_prisluh(true)
+		-- озвучка на поиск
+		if self.a.evn:ruleExist("silence") ~= true then
+			globals.set_sound(self.object, self.sound_search, false)
 		end
-		if self.check == false then
-			-- просто стоим смотрим
-			self.object:set_movement_type(move.stand)
-			if self.prisluh ~= true then
-				self.prisluh = true
-				self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
-			end		
-			self:set_prisluh(true)
-
-			-- озвучка на поиск
-			if self.a.evn:ruleExist("silence") ~= true then
-				globals.set_sound(self.object, self.sound_search, false)
-			end
-		end
-		end
-
-		-- надо проверять время на обработку раздражителя, если время закончилось - прекращать обработку
-		if device():time_global() - self.a.time > self.a.time_wait then
-			self.finish = true
-			-- реплики что мы не нашли ничего
-			globals.set_sound(self.object, self.sound_relax, true)
-		else
-			self.finish = false
-		end
-		-- если мы можем классифицировать объект, то нужно пометить его как обработанный и выйти
-		if self.a.isVisual and self.a.isVisual >= 1 then
-			self.finish = true
-			self.a.evn:markAsUsed(self.a.id)
-
-			-- Если мы обнаружили труп, то нужно сказать фразу и отметить его как труп
-			if self.a.evn:isCorpse(self.a.id) == true then
-				-- фразы
-				self.a.evn:markCorpse(self.a.id)
-			end
-		else
-			if self.finish ~= true then
-				self.finish = false
-			end
-		end
-
 	end
 
-	action_base.execute (self)
+	if self.a.obj.type == "explore" then
+		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			self.a.evn:markAsUsed(self.a.obj.id)
+			return
+		end
+	end
+
+	if self.a.obj.type == "corpse_monstr" then
+		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			self.a.evn:markCorpse(self.a.obj.id)
+			return
+		end
+	end
+
+	if self.a.obj.type == "corpse_friend" then
+		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			self.a.evn:markCorpse(self.a.obj.id)
+			return
+		end
+	end
+
+	if self.a.obj.type == "corpse_neutral" then
+		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			self.a.evn:markCorpse(self.a.obj.id)
+			return
+		end
+	end
+
+	if self.a.obj.type == "corpse_enemy" then
+		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			self.a.evn:markCorpse(self.a.obj.id)
+			return
+		end
+	end
+
+	action_base.execute(self)
 end
-function action_wait:finalize ()
-	-- если у нас id = nil тогда мы не нашли чего ждали, иначе нашли врага
-	if self.a.id ~= nil then
-		-- реплики что мы что-то враждебное
-		self.a.id = nil
-	end
-	self.object:clear_animations()
+function action_wait:finalize()
 	action_base.finalize (self)
 end
 function action_wait:set_prisluh(prisluh)
@@ -275,7 +211,6 @@ end
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(object, char_ini)
-
 	local operators		= {}
 	local properties	= {}
 
@@ -313,13 +248,12 @@ function add_to_binder(object, char_ini)
         if char_ini:line_exist("reactions", "enabled") == true then
                 xr_motivator.storage[object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
         end
-    local i = 1
+    	local i = 1
         while char_ini:line_exist("reactions", "rule_"..i) == true do
         table.insert(xr_motivator.storage[object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
             i = i + 1
         end
     end
-
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -345,7 +279,8 @@ function events:__init(npc)
 			monstr	= { power = nil },
 			item 	= { power = nil },
 			corpse 	= { type = nil,
-				    relation = nil }
+				    relation = nil,
+				    monstr_power = nil }
 			}
 	self.stype3 = { snd_type.weapon,
 			snd_type.shoot,
@@ -380,12 +315,6 @@ function events:__init(npc)
 	self.visio	= 0.25 		-- если объект виден
 	self.hear_distance = 100 	-- на каком расстоянии мы слышим
 	--Константы для настройки реакций
---[[
-	"no_item" 	- игнорирует итемя
-	"no_check" 	- не ходит проверять
-	"ignore" 	- игнорирует все раздражители
-	"silence"	- не издают звука
-]]
 end
 function events:calculate()  -- Производить перерасчет и обновление раздражителей для текущего элемента
 	self.arhive = {}	
@@ -412,112 +341,11 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		table.remove(self.hear, v)
 	end
 
-	-- определяем что нам известно о звуке объекта
-	local stable = self.npc:memory_sound_objects()
-	if stable == nil then return false end
-	for s in stable do
-		local so = s:object()
-		local so_id
-		local continue = true
-		local stime = s.level_time
-
-		if self.hear[so:id()] ~= nil then
-			if stime - self.hear[so:id()] < self.time_reaction then
-				continue = false
-			end
-		end
-
-		if self.used[so:id()] ~= nil then
-			continue = false
-		end
-
-		if self.corpse[so:id()] ~= nil then
-			continue = false
-		end
-
-		if continue then
-                        if is_object_online(so:id()) then
-				so_id = get_clsid(so)
-			else
-				continue = false
-			end
-		end
-
-		if continue and self.npc:position():distance_to(so:position()) > self.hear_distance then
-			continue = false
-		end
-
-		-- отсеивание по настройке
-		if continue and self:isRuled(so) then
-			continue = false
-		end
-
-		if continue and (so_id == clsid.stalker or so_id == clsid.actor) then
-			if (so:squad() == self.npc:squad()) or
-                           (device():time_global() - stime > self.time_reaction)
-			then
-				continue = false
-			end
-		end
-
-		if continue then
-			if self.hear[so:id()] == nil then
-				table.insert(self.hear, so:id(), stime)
-			else
-				self.hear[so:id()] = stime
-			end
-		end
-
-		if continue then
-		        local ll = "none"
-			for j,i in self.stype1 do
-				if bit_and (s:type(), i) == i then 
-					ll = "type1"
-					break
-				end
-			end
-			for j,i in self.stype2 do
-				if bit_and (s:type(), i) == i then 
-					ll = "type2" 
-					break
-				end
-			end
-			for j,i in self.stype3 do
-				if bit_and (s:type(), i) == i then 
-					ll = "type3"
-					break
-				end
-			end
-			                                
-			-- заносим раздражитель в память
-			if self.arhive[so:id()] == nil then
-				self.arhive[so:id()] = {visibility = self.descr.visibility,
-							sound_kat = self.descr.sound_kat,
-							sound_power = self.descr.sound_power,
-							object_type = self.descr.object_type,
-							point = self.descr.point,
-							time = self.descr.time,
-							stalker = { relation = self.descr.stalker.relation},
-							monstr	= { power = self.descr.monstr.power},
-							item 	= { power = self.descr.item.power},
-							corpse	= { type = self.descr.corpse.type,
-								    relation = self.descr.corpse.relation}}
-
-			end
-			-- указываем, что нам о нем известно
-			self.arhive[so:id()].sound_kat 		= ll
-			self.arhive[so:id()].sound_power 	= s.power
-			self.arhive[so:id()].point 		= so:level_vertex_id()
-			self.arhive[so:id()].time		= stime
-		end
-	end
-
 	-- определяем что нам известно о видимости объекта
 	local vtable = self.npc:not_yet_visible_objects()
 	if vtable == nil then return false end
 	for v in vtable do
 		local vo = v:object()
-		local vo_id
 		local continue = true
 
 		if self.used[vo:id()] ~= nil then
@@ -528,38 +356,31 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		local pers_visio = v.value / self.npc:visibility_threshold()
-
-		if pers_visio < self.visio then
-			continue = false
-		end
-
-		if continue then
-                        if is_object_online(vo:id()) then
-				vo_id = get_clsid(vo)
-			else
-				continue = false
-			end
-		end
-
-		-- отсеивание по настройке
-		if continue and self:isRuled(vo) then
-			continue = false
-		end
-
-		if continue and (vo_id == clsid.stalker or vo_id == clsid.actor) then
-			if vo:squad() == self.npc:squad()
-			then
-				continue = false
-			end
-		end
-		if continue and self:ruleExist("no_visual") then
+		if v.value < self.visio * self.npc:visibility_threshold() then
 			continue = false
 		end
 
 		-- проверить что объект не находится в списке левых предметов, которые нужно игнорировать
 		if continue and self:isTrash(vo) then
 			continue = false
+		end
+
+
+		-- отсеивание по настройке
+		if continue and self:isRuled(vo) then
+			continue = false
+		end
+
+		if continue and self:ruleExist("no_visual") then
+			continue = false
+		end
+		
+		if continue and (get_clsid(vo) == clsid.stalker or get_clsid(vo) == clsid.actor) then
+			if vo:squad() == self.npc:squad() and
+			   self:type(vo) ~= "corpse"
+			then
+				continue = false
+			end
 		end
 
 		if continue then
@@ -575,11 +396,12 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 							monstr	= { power = self.descr.monstr.power},
 							item 	= { power = self.descr.item.power},
 							corpse	= { type = self.descr.corpse.type,
-								    relation = self.descr.corpse.relation}}
+								    relation = self.descr.corpse.relation,
+								    monstr_power = self.descr.corpse.monstr_power }}
 			end
 			-- указываем, что нам о нем известно
 			self.arhive[vo:id()].point 		= vo:level_vertex_id()
-			self.arhive[vo:id()].visibility		= pers_visio
+			self.arhive[vo:id()].visibility		= v.value
 			self.arhive[vo:id()].time		= device():time_global()
 			if v.value >= self.npc:visibility_threshold() then
 				self.arhive[vo:id()].object_type = self:type(vo)
@@ -590,10 +412,13 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 					self.arhive[vo:id()].monstr.power = self:monstr_power(vo)
 				elseif self.arhive[vo:id()].object_type == "item" then
 					self.arhive[vo:id()].item.power = self:item_power(vo)
-				elseif self.arhive[vo:id()].object_type == "item" then
+				elseif self.arhive[vo:id()].object_type == "corpse" then
 					self.arhive[vo:id()].corpse.type = self:corpseType(vo)
 					if self.arhive[vo:id()].corpse.type == "stalker" then
 						self.arhive[vo:id()].corpse.relation = self.npc:relation(vo)
+					end
+					if self.arhive[vo:id()].corpse.type == "monstr" then
+						self.arhive[vo:id()].corpse.monstr_power = self:monstr_power(vo)
 					end
 				end
 			end
@@ -631,21 +456,6 @@ function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 
 	for key,value in self.arhive do
 		local cc = false
-
-		-- Если он в уже отработанных - игнорировать
-		for k,v in self.used do
-			if key == k then
-				cc = true
-				break
-			end
-		end
-
-		for k,v in self.corpse do
-			if key == k then
-				cc = true
-				break
-			end
-		end
 
 		-- Проверяем есть ли у нас лучший
 		if not cc and prior == nil then 
@@ -711,25 +521,56 @@ function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 			end
 		end
 	end
-	-- должна выдавать:
 	if prior == nil then return end
 
 	-- позицию раздражителя
 	tt.position = self.arhive[prior].point
 	-- id раздражителя
 	tt.id = prior
-	-- указатель, что мы получили раздражитель от объекта, за которым мы следим
-	if self.watch[prior] ~= nil then
-		tt.watched = true
+	-- время раздражителя
+	tt.time = self.arhive[prior].time
+	-- видимость раздражителя
+	tt.visibility = self.arhive[prior].visibility
+
+	if self.arhive[prior].type == "corpse" then
+		-- реакция на труп. Труп монстра, труп друга, труп нейтрала, труп врага
+		if self.arhive[prior].corpse.type == "monstr" and
+                   self.arhive[prior].corpse.monstr_power == true 
+		then
+			tt.type = "corpse_monstr"
+		end
+		if self.arhive[prior].corpse.type == "stalker" and
+                   self.arhive[prior].corpse.relation == game_object.friend
+		then
+			tt.type = "corpse_friend"
+		end
+		if self.arhive[prior].corpse.type == "stalker" and
+                   self.arhive[prior].corpse.relation == game_object.neutral
+		then
+			tt.type = "corpse_neutral"
+		end
+		if self.arhive[prior].corpse.type == "stalker" and
+                   self.arhive[prior].corpse.relation == game_object.enemy
+		then
+			tt.type = "corpse_enemy"
+		end		
+	else
+		-- Если мы получаем звуковой раздражитель от объекта за которым следим - тогда идем проверять (при условии что объект не виден)
+		if self.arhive[prior].sound_power ~= nil and
+		   self.arhive[prior].visibility == nil and
+		   self.watch[prior] ~= nil 
+		then
+			tt.type = "explore"
+		else
+			tt.type = "watch"
+		end
 	end
-	-- визуальный или звуковой (в случае визуального передается процент его визуальности)
-	tt.isVisual = self.arhive[prior].visibility
 end
 function events:markAsUsed(npc)
 	if npc ~= nil then
 		if self.used[npc] ~= nil then 
 			self.used[npc] = device():time_global()
-		else
+		else                                                                      
 			table.insert(self.used, npc, device():time_global())
 		end
 	end
@@ -765,16 +606,7 @@ function events:removeCorpse(npc)
 		table.remove(self.corpse, npc)	
 	end
 end
-function events:isCorpse(id)
-	if self.arhive[id] ~= nil and
-	   self.arhive[id].object_type == "corpse" then
-		return true
-	else
-		return false
-	end
-end
 function events:isEvents()
-	local tt = false
 	for key,value in self.arhive do 
 		local exst = false
 		for k,v in self.used do
@@ -783,48 +615,79 @@ function events:isEvents()
 				break
 			end
 		end		
+		for k,v in self.corpse do
+			if key == k then
+				exst = true
+				break
+			end
+		end		
 		if not exst then
-			tt = true
+			return true
+		end
+	end
+	return false
+end
+function events:printid(key)
+	value = self.arhive[key]
+	if value ~= nil then
+	printf("------------------------ Object: %d ------------------------", key)
+	if value.visibility then 	printf("Visibility: %.3f", value.visibility)
+				else 	printf("Visibility: nil") end
+	if value.sound_power then 	printf("Sound power: %.3f", value.sound_power)
+				else 	printf("Sound power: nil") end
+	if value.sound_kat then 	printf("Sound kat: %s", value.sound_kat)
+				else 	printf("Sound kat: nil") end
+	if value.time then 		printf("Time: %d", value.time)
+				else 	printf("Time: nil") end
+	if value.point then 		printf("Point: %d", value.point)
+				else 	printf("Point: nil") end
+	if value.object_type then 	printf("Object type: %s", value.object_type)
+				else 	printf("Object type: nil") end
+	-- stalker print
+	if value.object_type == "stalker" then
+	if value.stalker.relation == game_object.friend then		printf("Relation: Friend") 
+	elseif value.stalker.relation == game_object.neutral then	printf("Relation: Neutral") 
+	elseif value.stalker.relation == game_object.enemy then		printf("Relation: Enemy") end
+	end
+        
+	-- monstr print
+	if value.object_type == "monstr" then
+	if value.monstr.power == true then 	printf("Monstr: POWERFULL") end
+	end
+
+	-- item print
+	if value.object_type == "item" then
+	if value.item.power == true then 	printf("Item: POWERFULL") end
+	end
+
+	-- corpse print
+	if value.object_type == "corpse" then
+		printf("Corpse type: %s", value.corpse.type)
+		if value.corpse.type == "stalker" then
+			if value.corpse.relation == game_object.friend then		printf("Corpse relation: Friend") 
+			elseif value.corpse.relation == game_object.neutral then	printf("Corpse relation: Neutral") 
+			elseif value.corpse.relation == game_object.enemy then		printf("Corpse relation: Enemy") end						
+		end
+		if value.corpse.type == "monstr" then
+			if value.corpse.monstr_power == true then 	printf("Monstr corpse: POWERFULL") end
+		end
+	end
+
+       	-- watched print
+	for k,v in self.watch do
+		if key == v then
+			printf("watch")
 			break
 		end
 	end
-	return tt
+	end
 end
 function events:print()
+	printf("--------------------------------------------------------------")
+	printf("Print Start")
+	printf("--------------------------------------------------------------")
 	for key,value in self.arhive do 
-		printf("------------------------ Object: %d ------------------------", key)
-		if value.visibility then 	printf("Visibility: %.3f", value.visibility)
-					else 	printf("Visibility: nil") end
-		if value.sound_power then 	printf("Sound power: %.3f", value.sound_power)
-					else 	printf("Sound power: nil") end
-		if value.sound_kat then 	printf("Sound kat: %s", value.sound_kat)
-					else 	printf("Sound kat: nil") end
-		if value.time then 		printf("Time: %d", value.time)
-					else 	printf("Time: nil") end
-		if value.point then 		printf("Point: %d", value.point)
-					else 	printf("Point: nil") end
-		if value.object_type then 	printf("Object type: %s", value.object_type)
-					else 	printf("Object type: nil") end
-		-- stalker print
-		if value.stalker.relation == game_object.friend then		printf("Relation: Friend") 
-		elseif value.stalker.relation == game_object.neutral then	printf("Relation: Neutral") 
-		elseif value.stalker.relation == game_object.enemy then		printf("Relation: Enemy") end
-
-		-- monstr print
-		if value.monstr.power == true then	printf("Powerfull") end
-
-		-- item print
-		if value.item.power == true then	printf("Powerfull") end
-
-		-- corpse print
-
-        	-- watched print
-		for k,v in self.watch do
-			if key == v then
-				printf("watch")
-				break
-			end
-		end
+		self:printid(key)
 	end
 end
 function events:type(obj)
@@ -1035,13 +898,11 @@ function events:isTrash(obj)
 		return false
 	end
 end
-
 function add_rule(obj, rule)
 	if xr_motivator.storage[obj:id()].reactions.evn:ruleExist(rule) == false then
 		table.insert(xr_motivator.storage[obj:id()].reactions.rules, rule)
 	end
 end
-
 function remove_rule(obj, rule)
 	local tt = {}
 	for k,v in xr_motivator.storage[obj:id()].reactions.rules do

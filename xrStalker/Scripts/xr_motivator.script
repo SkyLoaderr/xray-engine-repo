@@ -122,17 +122,19 @@ function motivator_binder:reload (section)
         	enabled = true,
     		time_wait = 60000, -- 15 секунд ждем повтора
        		evn = xr_reactions.events(self.object),
-    		-- позицию раздражителя
-    		position = nil,
-    		-- id раздражителя
-    		id = nil,
-    		-- указатель, что мы получили раздражитель от объекта, за которым мы следим
-    		watched = nil,
-    		-- время раздражителя
-    		time = nil,
-    		-- визуальный или звуковой
-    		isVisual = nil,
-    		-- правила для обнаружений (какие типы объектов мы игнорим)
+		-- объект раздражения
+		obj = { -- позицию раздражителя
+    			position = nil,
+    			-- id раздражителя
+	    		id = nil,
+    			-- как реагировать
+    			type = nil,
+	    		-- время раздражителя
+    			time = nil,
+			-- видимость
+			visibility = nil
+		},
+   		-- правила для обнаружений (какие типы объектов мы игнорим)
     		rules = {}
     	}
     xr_reactions.add_to_binder(self.object, char_ini)    
