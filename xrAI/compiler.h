@@ -14,7 +14,7 @@ struct Params
 	{
 		fPatchSize		= 0.7f;
 		fTestHeight		= 1.0f;
-		fCanUP			= 1.0f;
+		fCanUP			= 1.5f;
 		fCanDOWN		= 4.0f;
 	}
 };
