@@ -198,8 +198,8 @@
 				OutputFile="x:\game/XR_3DA.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				GenerateMapFile="TRUE"
+				GenerateDebugInformation="FALSE"
+				GenerateMapFile="FALSE"
 				MapFileName="x:\game\XR_3DA.map"
 				SubSystem="2"/>
 			<Tool

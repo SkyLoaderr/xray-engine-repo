@@ -120,8 +120,6 @@ void	CCar::Update				( DWORD T )
 	inherited::Update				(T);
 
 	float dt						= float(T)/1000.f;
-	//ph_world->Jeep.DynamicData.BoneTransform.rotateY(PI/2.f);
-
 	vPosition.set	(ph_world->Jeep.DynamicData.BoneTransform.c);
 	
 	Fmatrix mY;
@@ -131,16 +129,17 @@ void	CCar::Update				( DWORD T )
 	svTransform.mul	(ph_world->Jeep.DynamicData.BoneTransform,mY);
 	
 	UpdateTransform					();
-	if (IsMyCamera())				cam_Update(dt);
 }
 
 void	CCar::UpdateCL				( )
 {
 	Fmatrix mY,Tr;
-	Tr.translate(0,-1.f,0);
+	Tr.translate		(0,-1.f,0);
 	mY.rotateY			(deg2rad(90.f));
 	clTransform.mul		(ph_world->Jeep.DynamicData.BoneTransform,mY);
-	clTransform.mulB(Tr);
+	clTransform.mulB	(Tr);
+
+	if (IsMyCamera())				cam_Update(Device.fTimeDelta);
 }
 
 void	CCar::OnVisible				( )
