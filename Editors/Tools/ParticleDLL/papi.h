@@ -200,9 +200,6 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pRestore(float time);
 
-	PARTICLEDLL_API void __stdcall pShade(float color_x, float color_y, float color_z,
-		float alpha, float scale);
-
 	PARTICLEDLL_API void __stdcall pSink(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
@@ -245,10 +242,8 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z);
 
-	PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float center_z,
-		float axis_x, float axis_y, float axis_z,
-		float magnitude = 1.0f, float epsilon = P_EPS,
-		float max_radius = P_MAXFLOAT);
+	PARTICLEDLL_API void __stdcall pFrame(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE,
+		WORD frame_count=16, float speed=24.f);
 
 };
 #endif

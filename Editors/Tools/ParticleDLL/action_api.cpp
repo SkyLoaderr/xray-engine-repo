@@ -431,8 +431,8 @@ PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z)
 }
 
 PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float center_z,
-			 float axis_x, float axis_y, float axis_z,
-			 float magnitude, float epsilon, float max_radius)
+			float axis_x, float axis_y, float axis_z,
+			float magnitude, float epsilon, float max_radius)
 {
 	PAVortex S;
 	
@@ -444,4 +444,19 @@ PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float cen
 	S.max_radius = max_radius;
 	
 	_pSendAction(&S, PAVortexID, sizeof(PAVortex));
+}
+
+PARTICLEDLL_API void __stdcall pFrame(BOOL animated, BOOL random_frame, BOOL random_playback,
+			WORD frame_width, WORD frame_height, WORD frame_count,
+			WORD texture_width, WORD texture_height, float speed)
+{
+	PAFrame S;
+	
+	S.animated			= animated;
+	S.random_frame		= random_frame;
+	S.random_playback	= random_playback;
+	S.frame_count		= frame_count;
+	S.speed				= speed;
+	
+	_pSendAction(&S, PAFrameID, sizeof(PAFrame));
 }

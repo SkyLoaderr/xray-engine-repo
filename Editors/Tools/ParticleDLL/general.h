@@ -16,8 +16,12 @@
 
 #pragma pack (push,4)
 // A single particle
+
 struct Particle
 {
+	enum{
+		FRAME_CCW = (1<<0),
+	};
 	pVector pos;
 	pVector posB;
 	pVector size;
@@ -27,6 +31,8 @@ struct Particle
 	pVector color;	// Color must be next to alpha so glColor4fv works.
 	float alpha;	// This is both cunning and scary.
 	float age;
+	WORD frame;
+	WORD flags;
 };
 
 // A group of particles - Info and an array of Particles
@@ -45,21 +51,24 @@ struct ParticleGroup
 	inline BOOL Add(const pVector &pos, const pVector &posB,
 		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
 		const float alpha = 1.0f,
-		const float age = 0.0f)
+		const float age = 0.0f, WORD frame=0, WORD flags=0)
 	{
 		if(p_count >= max_particles)
 			return FALSE;
 		else
 		{
-			list[p_count].pos = pos;
-			list[p_count].posB = posB;
-			list[p_count].size = size;
-			list[p_count].rot = rot;
-			list[p_count].vel = vel;
-			list[p_count].velB = vel;	// XXX This should be fixed.
-			list[p_count].color = color;
-			list[p_count].alpha = alpha;
-			list[p_count].age = age;
+			Particle& P = list[p_count];
+			P.pos = pos;
+			P.posB = posB;
+			P.size = size;
+			P.rot = rot;
+			P.vel = vel;
+			P.velB = vel;	// XXX This should be fixed.
+			P.color = color;
+			P.alpha = alpha;
+			P.age = age;
+			P.frame = frame;
+			P.flags = flags;
 			p_count++;
 			return TRUE;
 		}
@@ -127,6 +136,7 @@ enum PActionEnum
 	PATargetVelocityID,	// 
 	PATargetVelocityDID,// 
 	PAVortexID,			// 
+	PAFrameID,			// 
 	action_enum_force_dword = DWORD(-1)
 };
 
@@ -343,15 +353,15 @@ struct PASource : public ParticleAction
 {
 	pDomain position;	// Choose a position in this domain.
 	pDomain positionB;	// Choose a positionB in this domain.
+	pDomain rot;		// Choose a rotation in this domain.
 	pDomain size;		// Choose a size in this domain.
 	pDomain velocity;	// Choose a velocity in this domain.
 	pDomain color;		// Choose a color in this domain.
-	pDomain rot;		// Choose a rotation in this domain.
 	float alpha;		// Alpha of all generated particles
-	float particle_rate;	// Particles to generate per unit time
+	float particle_rate;// Particles to generate per unit time
 	float age;			// Initial age of the particles
 	float age_sigma;	// St. dev. of initial age of the particles
-	BOOL vertexB_tracks;	// True to get positionB from position.
+	BOOL vertexB_tracks;// True to get positionB from position.
 	
 	ExecMethod
 };
@@ -397,6 +407,17 @@ struct PAVortex : public ParticleAction
 	float epsilon;		// Softening parameter
 	float max_radius;	// Only influence particles within max_radius
 	
+	ExecMethod
+};
+
+struct PAFrame : public ParticleAction
+{
+	BOOL animated;
+	BOOL random_frame;
+	BOOL random_playback;
+	WORD frame_count;
+	float speed;
+
 	ExecMethod
 };
 
