@@ -605,7 +605,7 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 //	open			(L);
 
 	lua_pop			(L,4);
-	load_file_into_namespace(L,"x:\\extension.lua","core.core.core.core.core.core.core.core");
+	load_file_into_namespace(L,"x:\\extension.lua","core");
 	load_file_into_namespace(L,"x:\\extension1.lua","core");
 	lua_State		*T = lua_newthread(L);
 	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
