@@ -106,8 +106,9 @@
 // 87 - CSE_AlifeTraderAbstract			appended with m_rank, m_reputation
 // 88 - CSE_ALifeCreatureAbstract		appended with m_dynamic_restrictions property
 // 89 - CSE_AlifeCreatureActor			appended with m_holderID
+// 90 - CSE_ALifeItemPDA				appended with m_specific_character, m_info_portion
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(89)
+#define SPAWN_VERSION	u16(90)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

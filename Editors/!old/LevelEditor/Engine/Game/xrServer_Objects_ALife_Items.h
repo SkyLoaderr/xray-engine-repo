@@ -13,6 +13,9 @@
 #include "PHSynchronize.h"
 #include "inventory_space.h"
 
+#include "character_info_defs.h"
+#include "infoportiondefs.h"
+
 #pragma warning(push)
 #pragma warning(disable:4005)
 
@@ -151,7 +154,7 @@ add_to_type_list(CSE_ALifeItemArtefact)
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 	u16								m_original_owner;
 	SPECIFIC_CHARACTER_INDEX		m_specific_character;
-	INFO_INDEX						info_portion;
+	INFO_INDEX						m_info_portion;
 
 									CSE_ALifeItemPDA(LPCSTR caSection);
 	virtual							~CSE_ALifeItemPDA();

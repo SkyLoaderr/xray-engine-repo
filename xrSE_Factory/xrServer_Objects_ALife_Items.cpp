@@ -573,7 +573,7 @@ CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection
 {
 	m_original_owner = 0xffff;
 	m_specific_character = NO_SPECIFIC_CHARACTER;
-	info_portion = NO_INFO_INDEX;
+	m_info_portion = NO_INFO_INDEX;
 }
 
 
@@ -586,12 +586,25 @@ void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	inherited::STATE_Read		(tNetPacket,size);
 	if (m_wVersion > 58)
 		tNetPacket.r			(&m_original_owner,sizeof(m_original_owner));
+	if (m_wVersion > 89)
+	{
+		tNetPacket.r			(&m_specific_character,	sizeof(SPECIFIC_CHARACTER_INDEX));
+		tNetPacket.r			(&m_info_portion,		sizeof(INFO_INDEX));
+	}
 }
 
 void CSE_ALifeItemPDA::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w				(&m_original_owner,sizeof(m_original_owner));
+#ifdef XRGAME_EXPORTS
+	tNetPacket.w				(&m_specific_character,	sizeof(SPECIFIC_CHARACTER_INDEX));
+	tNetPacket.w				(&m_info_portion,		sizeof(INFO_INDEX));
+#else
+	tNetPacket.w				(NO_SPECIFIC_CHARACTER,	sizeof(SPECIFIC_CHARACTER_INDEX));
+	tNetPacket.w				(NO_INFO_INDEX,			sizeof(INFO_INDEX));
+#endif
+
 }
 
 void CSE_ALifeItemPDA::UPDATE_Read		(NET_Packet	&tNetPacket)
