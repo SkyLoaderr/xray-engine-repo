@@ -39,7 +39,9 @@ void	CRenderTarget::phase_combine	()
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 		// Draw COLOR
+		float dr					= ps_r2_ls_dynamic_range;
 		RCache.set_Shader			(s_combine);
+		RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
 		RCache.set_Geometry			(g_combine);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
