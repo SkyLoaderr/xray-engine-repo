@@ -8,9 +8,6 @@
 
 #pragma warning(disable:4505)
 
-#include "net_utils.h"
-#include "../xrLevel.h"
-
 // this include MUST be here, since smart_cast is used >1800 times in the project
 #include "smart_cast.h"
 
