@@ -137,7 +137,7 @@ public:
 	void				Calculate		(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
-	void				GetDeathPosition(Fvector pos){pos.set( m_character.DeathPosition());}
+	void				GetDeathPosition(Fvector& pos){pos.set( m_character.DeathPosition());}
 	void SetEnvironment( int enviroment,int old_enviroment);
 	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character.ApplyImpulse(dir,P);};
 	void		SetJumpUpVelocity(float velocity){m_character.SetJupmUpVelocity(velocity);}

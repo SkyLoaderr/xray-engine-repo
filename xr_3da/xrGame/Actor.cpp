@@ -362,6 +362,7 @@ void CActor::Die	( )
 	mstate_real		&=		~mcAnyMove;
 	ph_Movement.GetDeathPosition(vPosition);
 	ph_Movement.DestroyCharacter();
+	create_Skeleton();
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -1108,11 +1109,20 @@ float CActor::HitScale	(int element)
 
 void CActor::create_Skeleton(){
 	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
-
+	m_phSkeleton		= P_create_Shell();
 	//M->LL_GetData(M->LL_BoneID("pelvis"));
-	int id=M->LL_BoneID("pelvis");
+	int id=M->LL_BoneID("bip01_pelvis");//bip01_spine1
 	CBoneInstance& instance=M->LL_GetInstance				(id);
-	
+
+	CPhysicsElement* pelvis=P_create_Element				();
+	instance.set_callback(m_phSkeleton->GetBonesCallback(),pelvis);
+	pelvis->add_Box(M->LL_GetBox(id));
+	m_phSkeleton->add_Element(pelvis);
+	Fmatrix m;
+	m.identity();
+	ph_Movement.GetDeathPosition(m.c);
+	m_phSkeleton->mXFORM.set(m);
+	//m_phSkeleton->Activate();
 //	instance.set_callback	(cb_WheelFL,this);
 	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
 	//M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);

@@ -10,6 +10,7 @@
 #include "actor_flags.h"
 #include "..\feel_touch.h"
 #include "PHMovementControl.h"
+#include "PhysicsShell.h"
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
@@ -67,6 +68,8 @@ protected:
 
 	u32						self_gmtl_id;
 	u32						last_gmtl_id;
+	//Death physics			
+	CPhysicsShell*			m_phSkeleton;
 
 	// media
 	BOOL					bStep;
