@@ -98,20 +98,20 @@ IC void add_contact_body_effector(dBodyID body,dContact& c,float flotation)
 
 IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 {
-	const ULONG RS= 800;
-	const ULONG N = RS;
-	const ULONG M = RS;
+	const int RS= 800;
+	const int N = RS;
+	
 	static dContact contacts[RS];
 	bool	collided=false;
 	// get the contacts up to a maximum of N contacts
-	ULONG n;
+	int n;
 	
 	VERIFY	(o1 && o2 && (&contacts[0].geom) );
-	n		= dCollide(o1, o2, M, &contacts[0].geom, sizeof(dContact));	
+	n		= dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 
 	if(n>N-1)
 		n=N-1;
-	ULONG i;
+	int i;
 	
 
 	for(i = 0; i < n; ++i)

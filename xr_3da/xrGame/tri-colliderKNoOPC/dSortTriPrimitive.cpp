@@ -69,7 +69,7 @@ int dSortTriPrimitiveCollide (
 
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
-		//if(ret>flags) return flags;
+		if(ret>10) return 10;
 		CDB::TRI* T = T_array + Res->id;
 
 		tri.side0[0]=Res->verts[1].x-Res->verts[0].x;
