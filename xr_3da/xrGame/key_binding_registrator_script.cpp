@@ -5,10 +5,16 @@
 
 using namespace luabind;
 
+int dik_to_bind(int dik){
+	return key_binding[dik];
+}
+
 void key_binding_registrator::script_register(lua_State *L)
 {
 	module(L)
 	[
+		def("dik_to_bind",		&dik_to_bind),
+
 		class_<enum_exporter<EKeyBinding> >("key_bindings")
 			.enum_("commands")
 			[

@@ -17,6 +17,18 @@ static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E,
 
 static xr_map<u32, char> gs_DIK2CHR;
 
+void draw_buff(STRING& s)
+{
+	for(int i=0; i<s.size(); ++i)
+		printf("%c",s[i]);
+
+	printf("\n");
+}
+void draw_buff(LPSTR s)
+{
+	printf(s);
+	printf("\n");
+}
 
 CUIEditBox::CUIEditBox(void)
 {
@@ -152,7 +164,6 @@ bool CUIEditBox::KeyPressed(int dik)
 		AddChar(' ');
 		str_updated = true; 
 		break;
-
 	default:
 		it = gs_DIK2CHR.find(dik);
 			
@@ -201,7 +212,8 @@ void CUIEditBox::AddChar(char c)
 					GetFont()->SizeOf(buf));
 	
 	//строка длинее полосы ввода
-	if(text_length>GetWidth()) return;
+	if(text_length>GetWidth()) 
+		return;
 	
 	m_sEdit.insert(&m_sEdit[m_iCursorPos], c);
 	++m_iCursorPos;
@@ -279,6 +291,9 @@ void CUIEditBox::Update()
 	}
 		
 	m_str = &m_sEdit[0];
+	str_len = m_sEdit.size();
+	buf_str.resize(str_len+1);
+
 	CUIStatic::Update();
 }
 
@@ -300,6 +315,7 @@ void  CUIEditBox::Draw()
 		outY = 0;
 
 		GetFont()->SetColor(0xAAFFFF00);
+	Irect r = GetClipRect();
 		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 

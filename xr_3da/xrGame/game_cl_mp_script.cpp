@@ -97,6 +97,8 @@ void game_cl_mp_script::script_register(lua_State *L)
 			.def("GameEventGen",		&BaseType::GameEventGen)
 			.def("EventSend",			&BaseType::EventSend)
 			.def("StartStopMenu",		&BaseType::StartStopMenu)
+			.def("StartMenu",			&BaseType::StartMenu)
+			.def("StopMenu",			&BaseType::StopMenu)
 
 			.def("CanBeReady",			&BaseType::CanBeReady, &WrapType::CanBeReady_static)
 			.def("Init",				&BaseType::Init, &WrapType::Init_static)

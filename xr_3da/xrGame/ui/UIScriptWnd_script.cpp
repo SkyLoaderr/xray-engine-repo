@@ -64,7 +64,7 @@ void UIScriptWnd::script_register(lua_State *L)
 		.def("GetTabControl",	(CUITabControl* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUITabControl>)
 
 
-		.def("OnKeyboardPress",		&BaseType::OnKeyboard, &WrapType::OnKeyboard_static)
+		.def("OnKeyboard",		&BaseType::OnKeyboard, &WrapType::OnKeyboard_static)
 
 //		.def("GetMessageBox",	(CUIMessageBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIMessageBox>)
 //		.def("GetMessageBox",	(CUIMessageBox* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIMessageBox>)
