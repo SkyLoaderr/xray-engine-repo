@@ -39,7 +39,7 @@ function multiplayer_create_dialog:InitControls()
 								y = btn_gametype_rect.x + btn_gametype_rect.height + self.indent,
 								width = self.main_rect.width - self.indent*2,
 								height = 0}
-	tab_rect.height = self.main_rect.height - tab_rect.x - (self.main_rect.height - btn_back_rect.y) - self.btn_rect.height*2
+	tab_rect.height = self.main_rect.height - tab_rect.x - (self.main_rect.height - btn_back_rect.y)
 	
 	--------->> GAME TYPE
 	btn = CUIButton()
