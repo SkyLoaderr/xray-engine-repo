@@ -16,7 +16,7 @@ class ENGINE_API	CLightProjector  : public pureDeviceCreate, public pureDeviceDe
 private:
 	//
 	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
-	struct	caster
+	struct	recv
 	{
 		CObject*			O;
 		Fvector				C;
@@ -25,7 +25,7 @@ private:
 	};
 private:
 	CObject*				current;
-	vector<caster>			casters;
+	vector<recv>			receivers;
 	vector<int>				id;
 
 	CRT*					RT;

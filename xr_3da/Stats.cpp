@@ -50,6 +50,7 @@ void CStats::Show()
 		RenderDUMP_DT_VIS.FrameEnd	();	
 		RenderDUMP_DT_Render.FrameEnd();	
 		RenderDUMP_DT_Cache.FrameEnd();
+		RenderDUMP_Pcalc.FrameEnd	();	
 		RenderDUMP_Scalc.FrameEnd	();	
 		RenderDUMP_Srender.FrameEnd	();	
 		
@@ -123,6 +124,7 @@ void CStats::Show()
 		F.OutNext	("  Lights:    %2.2fms, %d",RenderDUMP_Lights.result,RenderDUMP_Lights.count);
 		F.OutNext	("  RT:        %2.2fms, %d",RenderDUMP_RT.result,RenderDUMP_RT.count);
 		F.OutNext	("  HUD:       %2.2fms",RenderDUMP_HUD.result);	
+		F.OutNext	("  P_calc:    %2.2fms",RenderDUMP_Pcalc.result);
 		F.OutNext	("  S_calc:    %2.2fms",RenderDUMP_Scalc.result);
 		F.OutNext	("  S_render:  %2.2fms",RenderDUMP_Srender.result);
 		F.OutSkip	();
@@ -167,6 +169,7 @@ void CStats::Show()
 		RenderDUMP_DT_VIS.FrameStart();	
 		RenderDUMP_DT_Render.FrameStart();	
 		RenderDUMP_DT_Cache.FrameStart();	
+		RenderDUMP_Pcalc.FrameStart	();	
 		RenderDUMP_Scalc.FrameStart	();	
 		RenderDUMP_Srender.FrameStart();	
 		

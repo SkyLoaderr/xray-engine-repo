@@ -12,6 +12,10 @@
 #include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
+const	int		P_size		= 32;
+const	float	P_distance	= 48;
+const	float	P_distance2	= P_distance*P_distance;
+
 /*
 int		psSH_Blur			= 1;
 
@@ -83,16 +87,16 @@ void CLightProjector::set_object	(CObject* O)
 		Fvector		C;
 		O->clCenter	(C);
 		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
-		if (D < S_distance)		current	= O;
+		if (D < P_distance)		current	= O;
 		else					current = 0;
 		
 		if (current)
 		{
-			id.push_back		(casters.size());
-			casters.push_back	(caster());
-			casters.back().O	= current;
-			casters.back().C	= C;
-			casters.back().D	= D;
+			id.push_back		(receivers.size());
+			receivers.push_back	(recv());
+			receivers.back().O	= current;
+			receivers.back().C	= C;
+			receivers.back().D	= D;
 		}
 	}
 }
@@ -100,63 +104,15 @@ void CLightProjector::set_object	(CObject* O)
 void CLightProjector::add_element	(NODE* N)
 {
 	if (0==current)	return;
-	casters.back().nodes.push_back	(*N);
-}
-
-IC float PLC_energy	(Fvector& P, Fvector& N, Flight* L, float E)
-{
-	Fvector Ldir;
-	if (L->type==D3DLIGHT_DIRECTIONAL)
-	{
-		// Cos
-		Ldir.invert	(L->direction);
-		float D		= Ldir.dotproduct( N );
-		if( D <=0 )						return 0;
-		
-		// Trace Light
-		float A		= D*E;
-		return A;
-	} else {
-		// Distance
-		float sqD	= P.distance_to_sqr(L->position);
-		if (sqD > (L->range*L->range))	return 0;
-		
-		// Dir
-		Ldir.sub	(L->position,P);
-		Ldir.normalize_safe();
-		float D		= Ldir.dotproduct( N );
-		if( D <=0 )						return 0;
-		
-		// Trace Light
-		float R		= sqrtf(sqD);
-		float A		= D*E / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
-		return A;
-	}
-}
-
-IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
-{
-	float	E		= PLC_energy(P,N,L,energy);
-	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
-	float	C2		= O.distance_to_sqr(P)/S_fade2;
-	float	A		= 1.f-.7f*E*(1.f-C1)*(1.f-C2);
-	return			iCeil(255.f*A);
+	receivers.back().nodes.push_back(*N);
 }
 
 //
-class	pred_casters
-{
-	CLightProjector*		S;
-public:
-	pred_casters(CLightProjector* _S) : S(_S) {};
-	IC bool operator () (int c1, int c2)
-	{ return S->casters[c1].D<S->casters[c2].D; }
-};
 void CLightProjector::calculate	()
 {
 	if (id.empty())	return;
 
-	Device.Statistic.RenderDUMP_Scalc.Begin	();
+	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	Device.Shader.set_RT		(RT_temp->pRT,0);
 	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 	
