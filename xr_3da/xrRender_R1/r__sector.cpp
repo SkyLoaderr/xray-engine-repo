@@ -122,7 +122,7 @@ void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 				if (t.z < depth)	depth	 = t.z;
 			}
 
-			// perform intersection
+			// perform intersection (this is just to be shure, it is probably clipped in 3D already)
 			if (bb.min.x > R_scissor.min.x)	scissor.min.x = bb.min.x; else scissor.min.x = R_scissor.min.x;
 			if (bb.min.y > R_scissor.min.y)	scissor.min.y = bb.min.y; else scissor.min.y = R_scissor.min.y;
 			if (bb.max.x < R_scissor.max.x) scissor.max.x = bb.max.x; else scissor.max.x = R_scissor.max.x;
