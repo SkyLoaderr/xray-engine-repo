@@ -108,8 +108,11 @@ VOID CDeflector::OA_Export()
 	iArea		= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 
 	// Setup variables
-	UVpoint		dim;
+	UVpoint		dim,half,scale;
 	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
+	half.set	(.5f/512.f,.5f/512.f);
+	scale.set	(dim.u-1,dim.v-1);
+	scale.dist	(dim);
 
 	// *** Addressing 
 	// also calculate center & radius in 3D space
@@ -122,9 +125,9 @@ VOID CDeflector::OA_Export()
 
 		for (int i=0; i<3; i++) 
 		{
-			R.uv[i].u = (T->uv[i].u-min.u)/size.u; 
-			R.uv[i].v = (T->uv[i].v-min.v)/size.v; 
-			bb.modify(F->v[i]->P);
+			R.uv[i].u = ((T->uv[i].u-min.u)/size.u)*scale.u+half.u; 
+			R.uv[i].v = ((T->uv[i].v-min.v)/size.v)*scale.v+half.v; 
+			bb.modify	(F->v[i]->P);
 		}
 		*T = R;
 		T->owner = F;
