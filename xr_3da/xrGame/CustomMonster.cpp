@@ -116,6 +116,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	// Pathfinding
 	fuzzyFollow.Load		(ini,section);
 	fuzzyAttack.Load		(ini,section);
+	fuzzyPursuit.Load		(ini,section);
 
 	// Sheduler
 	dwMinUpdate	= 25;

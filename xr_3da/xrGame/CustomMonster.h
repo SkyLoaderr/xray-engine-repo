@@ -64,6 +64,7 @@ public:
 	// State machine
 	SelectorFollow		fuzzyFollow;
 	SelectorAttack		fuzzyAttack;
+	SelectorPursuit		fuzzyPursuit;
 
 	stack<AI::State*>	STATE;
 	EGroupState			Goal()					{ return Level().get_group(id_Team,id_Squad,id_Group).State; }

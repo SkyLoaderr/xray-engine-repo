@@ -310,6 +310,7 @@ namespace AI {
 		savedPosition		= E->Position();
 		savedTime			= Level().timeServer();
 		savedNode			= E->AI_NodeID;
+		bDirectPathBuilded	= FALSE;
 	}
 	_Pursuit::_Pursuit() : State(aiPursuit)
 	{
@@ -317,6 +318,7 @@ namespace AI {
 		savedPosition.set	(0,0,0);
 		savedTime			= 0;
 		savedNode			= 0;
+		bDirectPathBuilded	= FALSE;
 	}
 	BOOL _Pursuit::Parse	(CCustomMonster* Me)
 	{
@@ -333,11 +335,8 @@ namespace AI {
 			return			TRUE;
 		} else {
 			DWORD dwTimeElapsed = Level().timeServer()-savedTime;
-			if (dwTimeElapsed == 0) {
-				Level().AI.q_Path			(Me->AI_NodeID,savedNode,Me->AI_Path);
-				Me->AI_Path.BuildTravelLine	(Me->Position());
-			} else
-			if (dwTimeElapsed > 15*1000) {
+			if (dwTimeElapsed > 30*1000) 
+			{
 				Me->State_Pop	();
 				return			TRUE;
 			} else {
@@ -352,11 +351,53 @@ namespace AI {
 					1000);
 				q_look.o_look_speed=PI/2;
 				
-				// move 2 last seen position
-				// travel path automatically builded before (in constructor)
-
 				// action
 				q_action.setup(AI::AIC_Action::FireBegin);
+
+				// movement
+				if (bDirectPathBuilded || (Me->Position().distance_to(savedPosition)<30)) 
+				{
+					// Direct path
+					if (!bDirectPathBuilded)	{
+						Level().AI.q_Path			(Me->AI_NodeID,savedNode,Me->AI_Path);
+						Me->AI_Path.BuildTravelLine	(Me->Position());
+						bDirectPathBuilded			= TRUE;
+					}
+				} else {
+					// Fuzzy(selectored) path
+					if (Me->AI_Path.bNeedRebuild) 
+					{
+						Level().AI.q_Path			(Me->AI_NodeID,Me->AI_Path.DestNode,Me->AI_Path);
+						Me->AI_Path.BuildTravelLine	(Me->Position());
+					} else {
+						// fill it with data
+						CSquad&	Squad		= Level().Teams[Me->g_Team()].Squads[Me->g_Squad()];
+						SelectorAttack&	S	= Me->fuzzyAttack;
+						S.posMy				= Me->Position();
+						S.posTarget			= Enemy.E->Position();
+						Squad.Groups[Me->g_Group()].GetMemberDedication(S.Members,Me);
+						
+						// *** query and move if needed
+						Level().AI.q_Range	(Me->AI_NodeID,Me->Position(),30.f,S);
+						
+						if (Me->AI_Path.DestNode != S.BestNode) 
+						{
+							NodeCompressed* OLD		= Level().AI.Node(Me->AI_Path.DestNode);
+							BOOL			dummy	= FALSE;
+							float			old_cost= S.Estimate(
+								OLD,
+								Level().AI.u_SqrDistance2Node(Me->Position(),OLD),
+								dummy);
+							
+							if (S.BestCost < (old_cost-S.laziness)) {
+								Me->AI_Path.DestNode		= S.BestNode;
+								Me->AI_Path.bNeedRebuild	= TRUE;
+							}
+						} else {
+							// we doesn't need to move anywhere
+						}
+					}
+				}
 			}
 		}
 		return FALSE;

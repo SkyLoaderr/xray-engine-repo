@@ -145,6 +145,7 @@ namespace AI {
 		Fvector					savedPosition;
 		DWORD					savedTime;
 		DWORD					savedNode;
+		BOOL					bDirectPathBuilded;
 
 		_Pursuit(CEntity* E);
 		_Pursuit();

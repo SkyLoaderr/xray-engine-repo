@@ -168,3 +168,63 @@ public:
 	}
 };
 
+//*****************************************************************************************************************
+//*****************************************************************************************************************
+//*****************************************************************************************************************
+class	SelectorPursuit	: public SelectorBase
+{
+public:
+	SelectorAttack	() { Name="sel_pursuit"; };
+
+	virtual void	Load	(CInifile* ini, const char* section)
+	{
+		SelectorBase::Load	(ini,section);
+	};
+
+	virtual	float	Estimate(NodeCompressed* Node, float dist, BOOL& bStop)	// min - best, max - worse
+	{
+		float	cost				= 0;
+		
+		// travel cost
+		float	cDist	= dist*costTravel;
+		if (cost>BestCost)			return cost;
+
+		// lighting cost
+		float	cLight	= float(Node->light)/255.f;
+		cost	+=	cLight*costLight;
+		if (cost>BestCost)			return cost;
+		
+		// cost of leader  relation
+		Fvector		P,P1,P2;
+		Level().AI.UnpackPosition	(P1,Node->p0);
+		Level().AI.UnpackPosition	(P2,Node->p1);
+		P.lerp						(P1,P2,.5f);
+		float						cL	= P.distance_to(posTarget);
+		if (cL<distTargetMin)		cL	= (distTargetMin-cL)*15;
+		else if (cL>distTargetMax)	cL	= (cL-distTargetMax);
+		else cL = 0;
+		cost	+=	cL*costTarget;
+		if (cost>BestCost)			return cost;
+
+		// tactical cost
+		cost	+=	costCover * h_slerp(posTarget,P,Node->cover);
+		if (cost>BestCost)			return cost;
+
+		// cost of members relationship
+		if (Members.size()) {
+			for (DWORD it=0; it<Members.size(); it++)
+			{
+				float c					= P.distance_to	(Members[it]);
+				if (c<distMemberMin)	{
+					cost += (distMemberMin-c)*costMembers;
+					if (cost>BestCost)	return cost;
+				}
+			}
+		}
+
+		// exit
+		if (cost<EPS)	bStop = TRUE;
+		return	cost;
+	}
+};
+
