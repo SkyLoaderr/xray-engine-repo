@@ -90,23 +90,27 @@ Oles:
 		+ TODO: Interpolation
 		+ TODO: Dither
 		+ TODO: Fastest rendering :)
-		. TODO: Lighting
-		. TODO: File reader
+		+ TODO: Lighting
+		+ TODO: File reader
 	+ TODO: Semi-Static, vertex-cache optimized LOD (only on static)
 		..........UNRELIABLE..........
 	+ TODO: SoundMangager - 3D control on/off
 	+ TODO: timeGetTime() - kill this fuckin' function out of the code
 	. TODO: Per sector wallmarks
-	. TODO: Lighting on models / ground lighting
+
+	. TODO: Lighting model
+		. TODO: Semi static lights
+		. TODO: Environment on models (ground lighting)
+		. TODO: Dynamic lights (per-pixel attenuation)
+			. TODO: Geometric occlusion - shadowing
+		. TODO: BumpMapping on models
+		. TODO: Shadows from static_light+dynamic_models
 	. TODO: AI
 		. TODO: не стрелять в своего если он находится на линии огня (отойти в сторону, и т.п.)
 		. TODO: модели поведения
 		. TODO: слух
 	. TODO: Console Aliases
-	. TODO: Rewrite whole lighting pipeline (light selection, clipping, etc)
-	. TODO: BumpMapping on models
 	. TODO: Ground Fog
-	. TODO: Shadows from static_light+dynamic_models
 	. TODO:	Shaders
 			. TODO: N-Patches + tesselation level
 			. TODO: PixelShaders
@@ -151,9 +155,11 @@ Sanya:
 	. TODO: PS доделать box update
 -----------------------------------------------------------------------------------------------------------
 	. TODO: LevelCompiler
+			+ TODO: Pixel(texel) level lightmap packer
 			+ TODO: Read textures (any format) from editor's folder
 				+ 25 formats supported, including Photoshop's PSD
 			+ TODO: "unique" textures (lighting on landscape, etc)
+			. TODO: Actual (calculated) per-pixel(texel) lightmap packer
 			. TODO: partial lightmap calculation
 			. TODO: partial lightmap shrinking
 			. TODO: partial lightmap merging (don't scale uv's)
