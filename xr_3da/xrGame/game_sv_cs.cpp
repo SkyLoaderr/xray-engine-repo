@@ -11,7 +11,7 @@
 
 void	game_sv_CS::Create			(LPCSTR options)
 {
-	__super::Create					(options);
+	//__super::Create					(options);
 	teams.resize					(2); // @@@ WT
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 	switch_Phase(GAME_PHASE_PENDING);
@@ -117,7 +117,7 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 		
 		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
 
-		if(l_pCSBase->g_team() == ps_who->team) {				// Если игрок пришел на свою базу
+		if(l_pCSBase->s_team == ps_who->team) {				// Если игрок пришел на свою базу
 			ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
 		} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
 		Unlock();
@@ -144,7 +144,7 @@ BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
 	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
 	if(l_pCSBase) {
 		Lock();
-		if(l_pCSBase->g_team() == ps_who->team) ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_BASE;
+		if(l_pCSBase->s_team == ps_who->team) ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_BASE;
 		else ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
 		Unlock();
 		return false;
