@@ -28,8 +28,8 @@ void CSE_ALifeSimulator::vfCheckForTheInteraction(CSE_ALifeMonsterAbstract *tpAL
 	D_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	int							l_iGroupIndex;
 	for ( ; I != E; I++) {
-		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(*I);
-		if (l_tpALifeMonsterAbstract) {
+		CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(*I);
+		if (l_tpALifeMonsterAbstract && (l_tpALifeMonsterAbstract->ID != tpALifeMonsterAbstract->ID)) {
 			if (bfCheckForCombat(tpALifeMonsterAbstract,l_tpALifeMonsterAbstract,l_iGroupIndex)) {
 				vfFillCombatGroup		(tpALifeMonsterAbstract,m_tpaCombatGroups[0]);
 				vfFillCombatGroup		(l_tpALifeMonsterAbstract,m_tpaCombatGroups[1]);

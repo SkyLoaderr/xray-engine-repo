@@ -45,7 +45,7 @@ CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(ca
 	m_fDeteriorationValue		= 0;
 	m_qwGridBitMask				= 0;
 	for (int i=0; i<m_iGridHeight; i++)
-		m_qwGridBitMask			|= (u64(1) << (m_iGridWidth + i*RUCK_WIDTH)) - 1;
+		m_qwGridBitMask			|= ((u64(1) << m_iGridWidth) - 1) << (i*RUCK_WIDTH);
 }
 
 void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)

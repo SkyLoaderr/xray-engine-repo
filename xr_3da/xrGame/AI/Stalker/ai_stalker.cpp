@@ -243,8 +243,10 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_dwBornTime					= Level().timeServer();
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (m_dwParticularState == u32(-1))
+	if (m_dwParticularState == u32(-1)) {
+		R_ASSERT2					(getAI().bfCheckIfGraphLoaded(),"There is no graph!");
 		m_tNextGP					= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	CStalkerAnimations::Load		(PKinematics(Visual()));

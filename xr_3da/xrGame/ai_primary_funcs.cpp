@@ -149,61 +149,57 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 	return(m_fLastValue);
 }
 
+u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
+{
+	CLASS_ID	l_tClassID = getAI().m_tpGameObject ? getAI().m_tpGameObject->SUB_CLS_ID : getAI().m_tpCurrentALifeObject->m_tClassID;
+	switch (l_tClassID) {
+		case CLSID_OBJECT_W_RPG7:
+		case CLSID_OBJECT_W_M134:
+			return(9);
+		case CLSID_OBJECT_W_FN2000:
+		case CLSID_OBJECT_W_SVD:
+		case CLSID_OBJECT_W_SVU:
+		case CLSID_OBJECT_W_VINTOREZ:
+			return(8);
+		case CLSID_GRENADE_F1:
+		case CLSID_GRENADE_RGD5:
+			return(7);
+		case CLSID_OBJECT_W_SHOTGUN:
+		case CLSID_OBJECT_W_AK74:
+		case CLSID_OBJECT_W_VAL:
+		case CLSID_OBJECT_W_LR300:
+			return(6);
+		case CLSID_OBJECT_W_HPSA:		
+		case CLSID_OBJECT_W_PM:			
+		case CLSID_OBJECT_W_FORT:		
+		case CLSID_OBJECT_W_WALTHER:	
+		case CLSID_OBJECT_W_USP45:
+			return(5);
+		default	:
+			return(0);
+	}
+}
+
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
 	u32 dwBestWeapon = 0;
-	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
-	if (tpInventoryOwner) {
-		xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
-		xr_vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
-		for ( ; I != E; I++)
-			if ((*I).m_pIItem) {
-				CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
-				if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
-					u32 dwCurrentBestWeapon = 0;
-					switch (tpCustomWeapon->SUB_CLS_ID) {
-						case CLSID_OBJECT_W_RPG7:
-						case CLSID_OBJECT_W_M134: {
-							dwCurrentBestWeapon = 9;
-							break;
-						}
-						case CLSID_OBJECT_W_FN2000:
-						case CLSID_OBJECT_W_SVD:
-						case CLSID_OBJECT_W_SVU:
-						case CLSID_OBJECT_W_VINTOREZ: {
-							dwCurrentBestWeapon = 8;
-							break;
-						}
-						case CLSID_GRENADE_F1:
-						case CLSID_GRENADE_RGD5: {
-							dwCurrentBestWeapon = 7;
-							break;
-						}
-						case CLSID_OBJECT_W_SHOTGUN:
-						case CLSID_OBJECT_W_AK74:
-						case CLSID_OBJECT_W_VAL:
-						case CLSID_OBJECT_W_LR300:		{
-							dwCurrentBestWeapon = 6;
-							break;
-						}
-						case CLSID_OBJECT_W_HPSA:		
-						case CLSID_OBJECT_W_PM:			
-						case CLSID_OBJECT_W_FORT:		
-						case CLSID_OBJECT_W_WALTHER:	
-						case CLSID_OBJECT_W_USP45:		{
-							dwCurrentBestWeapon = 5;
-							break;
-						}
-						default						: {
-							dwCurrentBestWeapon = 0;
-							break;
-						}
+	if (getAI().m_tpCurrentMember) {
+		CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
+		if (tpInventoryOwner) {
+			xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
+			xr_vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
+			for ( ; I != E; I++)
+				if ((*I).m_pIItem) {
+					CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
+					if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
+						getAI().m_tpGameObject	= tpCustomWeapon;
+						u32 dwCurrentBestWeapon = dwfGetWeaponType();
+						if (dwCurrentBestWeapon > dwBestWeapon)
+							dwBestWeapon = dwCurrentBestWeapon;
 					}
-					if (dwCurrentBestWeapon > dwBestWeapon)
-						dwBestWeapon = dwCurrentBestWeapon;
 				}
-			}
-	}	
+		}	
+	}
 	return(float(dwBestWeapon));
 }
 

@@ -325,7 +325,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_bOnline					= false;
 	m_fDistance					= 0.0f;
-	Memory.mem_copy				(&m_tClassID,pSettings->r_string(caSection,"class"),sizeof(m_tClassID));
+	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));	
 	ID							= _OBJECT_ID(-1);
 	m_tGraphID					= _GRAPH_ID(-1);
 	m_tGraphID					= _SPAWN_ID(-1);

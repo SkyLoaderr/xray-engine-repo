@@ -86,10 +86,6 @@ class CPersonalWeaponTypeFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	float ffGetTheBestWeapon();
-
-public:
-
 	CPersonalWeaponTypeFunction()
 	{
 		m_fMinResultValue = 0.0;
@@ -98,7 +94,9 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
-	virtual float ffGetValue();
+			u32	  dwfGetWeaponType	();
+			float ffGetTheBestWeapon();
+	virtual float ffGetValue		();
 };
 
 class CPersonalAccuracyFunction : public CBaseFunction {

@@ -425,8 +425,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 					if (!l_tpALifeItem)
 						continue;
 					// checking if it is a hand weapon
-					int j = iFloor(getAI().m_pfPersonalWeaponType->ffGetTheBestWeapon() + .5f);
 					getAI().m_tpCurrentALifeObject = l_tpALifeItem;
+					int						j = getAI().m_pfPersonalWeaponType->dwfGetWeaponType();
 					float					l_fCurrentValue = -1.f;
 					switch (i) {
 						case 0 : {
@@ -462,8 +462,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				}
 				if (l_tpALifeItemBest) {
 					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,m_tGraphID);
-					attach_available_ammo(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemList);
-					remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemList);
+					remove_if				(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
 				}
 			}
 		}
@@ -560,7 +560,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 	if ((m_fCumulativeItemMass + tpALifeItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeItem->m_iVolume > MAX_ITEM_VOLUME))
 		return		(false);
 	
-	m_tpTempItemBuffer.resize(children.size());
+	m_tpTempItemBuffer.resize(children.size() + 1);
 	
 	{
 		OBJECT_IT	i = children.begin();
@@ -581,7 +581,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 				m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] = l_tpALifeItemWeapon;
 		}
 	}
-	remove_if(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
+	remove_if		(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
 
 	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
 
