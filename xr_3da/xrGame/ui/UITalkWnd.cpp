@@ -119,7 +119,7 @@ void CUITalkWnd::InitOthersStartDialog()
 		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
 
 		//если диалог завершился, перейти в режим выбора темы
-		if(m_pCurrentDialog->IsFinished()) ToTopicMode();
+		if(!m_pCurrentDialog || m_pCurrentDialog->IsFinished()) ToTopicMode();
 	}
 }
 

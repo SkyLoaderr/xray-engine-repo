@@ -150,7 +150,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 		phrase_dialog->FirstSpeaker()->ReceivePhrase(phrase_dialog);
 
 
-	return !phrase_dialog->m_bFinished;
+	return phrase_dialog?!phrase_dialog->m_bFinished:true;
 }
 
 LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
