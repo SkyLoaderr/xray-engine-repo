@@ -722,6 +722,11 @@ function novice3_attack:execute ()
 
 --    if( device():time_global() > self.walk_time ) then return  end
     --В начале идем
+    if(self.object:best_weapon() == nil) then
+       printf( "Nilllllll" )
+    else
+        printf(" not nit")
+    end
 
   if(self.object:active_sound_count() ~= 0)then
       return
