@@ -53,7 +53,8 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		I				= players.insert(mk_pair(ID,IP));
 		if (IP.flags&GAME_PLAYER_FLAG_LOCAL) local_player = &I.first->second;
 	}
-	R_ASSERT(local_player);
+	
+//	R_ASSERT(local_player);
 
 	switch (type)
 	{

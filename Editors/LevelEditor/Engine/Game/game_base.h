@@ -50,6 +50,9 @@ struct	game_PlayerState
 	u16			ping;
 
 	u16			GameID;
+
+	//------Dedicated-------------------
+	bool		Skip;
 	//---------------------------
 	u16			m_lasthitter;
 	u16			m_lasthitweapon;

@@ -151,10 +151,10 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 
 	// Players
 	xrServer*		S	= Level().Server;
-	u32	p_count			= get_count();
+	u32	p_count			= get_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);
 	P.w_u16				(u16(p_count));
 	game_PlayerState*	Base	= get_id(to);
-	for (u32 p_it=0; p_it<p_count; ++p_it)
+	for (u32 p_it=0; p_it<get_count(); ++p_it)
 	{
 		string64	p_name;
 		xrClientData*	C		=	(xrClientData*)	S->client_Get	(p_it);
@@ -175,6 +175,8 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		{
 			copy.flags	|=		GAME_PLAYER_FLAG_LOCAL;
 		}
+
+		if (A->Skip) continue;
 
 		P.w_u32					(get_it_2_id	(p_it));
 		P.w_string				(p_name);

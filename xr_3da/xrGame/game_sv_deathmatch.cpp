@@ -35,6 +35,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 		ClearPlayerState(ps);
 
+		if (ps->Skip) continue;
 		SpawnActor(get_it_2_id(it), "spectator");
 	}
 }
@@ -102,6 +103,8 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 	{
 		game_PlayerState* ps		=	get_it	(it);
 		if (ps->flags & GAME_PLAYER_FLAG_READY)	++ready;
+		else
+			if (ps->Skip) ++ready;
 	}
 
 	if (ready == cnt) return TRUE;
@@ -194,6 +197,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 		{
 //			LPCSTR	options			=	get_name_id	(id);
 			game_PlayerState*	ps	=	get_id	(id);
+			if (ps->Skip) break;
 			
 			//------------------------------------------------------------
 			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
@@ -246,7 +250,13 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 
 	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
-
+	
+	if (g_pGamePersistent->bDedicatedServer && (xrCData == Level().Server->GetServer_client()) )
+	{
+		ps_who->Skip = true;
+		return;
+	}
+	ps_who->Skip = false;
 	SpawnActor(id_who, "spectator");
 
 	// Send Message About Client Connected
@@ -298,7 +308,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	{	
 
 		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
-		S->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
+		if (from) S->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
 	};
 };
 
@@ -498,7 +508,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
-	if (!ps) return;
+	if (!ps || ps->Skip) return;
 
 	P.r_u8		(ps->Slots[KNIFE_SLOT]	);
 	P.r_u8		(ps->Slots[PISTOL_SLOT]	);

@@ -30,6 +30,7 @@ u8 game_sv_TeamDeathmatch::AutoTeam()
 	u32	cnt = get_count(), l_teams[2] = {0,0};
 	for(u32 it=0; it<cnt; it++)	{
 		game_PlayerState* ps = get_it(it);
+		if (ps->Skip) continue;
 		if(ps->team>=1) ++(l_teams[ps->team-1]);
 	}
 	return (l_teams[0]>l_teams[1])?2:1;
@@ -41,6 +42,8 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	LPCSTR	options			=	get_name_id	(id_who);
+
+	if (ps_who->Skip) return;
 
 	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
 

@@ -71,11 +71,13 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	P.w_begin						(M_SV_CONFIG_FINISHED);
 	SendTo							(CL->ID,P,mode);
 */
-	// 
+	//
+	Server_Client_Check(CL); 
+	
 	game->OnPlayerConnect			(CL->ID);
 	csPlayers.Leave					();
 
-	Server_Client_Check(CL);
+	
 
 ///	if (!CL->flags.bLocal)
 ///	{			
