@@ -5,11 +5,13 @@ void	CRenderTarget::phase_smap_spot	()
 	// Targets
 	dwWidth								= DSM_size;
 	dwHeight							= DSM_size;
-	u_setrt								(rt_smap_d_surf, NULL, NULL, rt_smap_d_ZB);
+	if (RImplementation.b_nv3x)			u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_depth->pRT);
+	else								u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_ZB);
 	RImplementation.rmNormal			();
 
 	// Clear
-	CHK_DX(HW.pDevice->Clear			( 0L, NULL, /*D3DCLEAR_TARGET|*/ D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0xFFFFFFFF, 1.0f, 0L));
+	if (RImplementation.b_nv3x)			{ CHK_DX(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER,					0xFFFFFFFF, 1.0f, 0L));
+	else								{ CHK_DX(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,	0xFFFFFFFF, 1.0f, 0L));
 
 	// Stencil	- disable
 	RCache.set_Stencil					( FALSE );
