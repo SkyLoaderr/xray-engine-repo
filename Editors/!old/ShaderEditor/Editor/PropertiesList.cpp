@@ -248,7 +248,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
                 AnsiString k	= key;		
                 LPCSTR k0		= k.c_str();
                 LPCSTR k1		= startup_pref;
-                while (k0[0]&&k1[0]&&(k0[0]==k1[0]))	{k0++;k1++; if(k1[0]=='\\')key=k0+1;}
+                while (k0[0]&&k1[0]&&(k0[0]==k1[0]))	{k0++;k1++; if(k0[0]=='\\')key=k0+1;}
                 if (!((k0[0]==0)&&(k1[0]==0)))			if ((k0[0]!='\\')||(k1[0]!=0))	continue;
             }else{
             	if (1!=_GetItemCount(key.c_str(),'\\')) continue;
