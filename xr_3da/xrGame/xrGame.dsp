@@ -136,7 +136,7 @@ SOURCE=.\StdAfx.cpp
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj" /Yc"stdafx.h"
+# ADD CPP /Yc"stdafx.h"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
@@ -158,8 +158,6 @@ SOURCE=.\xrGame.cpp
 # ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
@@ -184,8 +182,6 @@ SOURCE=.\Entity.cpp
 # ADD CPP /D "_CONFIGCP_Win32_20Release" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-# ADD CPP /D "_CONFIGCP_Win32_20Debug" /D "_PRJCP_xrGame_2Evprj"
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
@@ -1057,6 +1053,18 @@ SOURCE=.\AI\Hen\ai_hen_selectors.cpp
 SOURCE=.\AI\Hen\ai_hen_selectors.h
 # End Source File
 # End Group
+# End Group
+# Begin Group "Test"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\TestPhysics.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TestPhysics.h
+# End Source File
 # End Group
 # Begin Source File
 
