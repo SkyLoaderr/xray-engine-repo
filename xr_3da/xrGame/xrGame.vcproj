@@ -5965,6 +5965,9 @@
 					<File
 						RelativePath="game_base.h">
 					</File>
+					<File
+						RelativePath=".\game_base_space.h">
+					</File>
 					<Filter
 						Name="client"
 						Filter="">
