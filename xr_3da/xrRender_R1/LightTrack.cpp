@@ -101,7 +101,7 @@ void	CROS_impl::update	(IRenderable* O)
 	dwFrame				= Device.dwFrame;
 	if					(0==O)								return;
 	if					(0==O->renderable.visual)			return;
-	VERIFY				(dynamic_cast<CROS_impl*>	(O->renderable.ROS));
+	VERIFY				(dynamic_cast<CROS_impl*>			(O->renderable.ROS));
 	float	dt			=	Device.fTimeDelta;
 
 	CObject*	_object	= dynamic_cast<CObject*>	(O);

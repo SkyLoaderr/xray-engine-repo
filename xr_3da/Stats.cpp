@@ -78,8 +78,10 @@ void CStats::Show()
 		TEST2.FrameEnd				();
 		TEST3.FrameEnd				();
 
-		g_SpatialSpace->stat_insert.FrameEnd();
-		g_SpatialSpace->stat_remove.FrameEnd();
+		g_SpatialSpace->stat_insert.FrameEnd		();
+		g_SpatialSpace->stat_remove.FrameEnd		();
+		g_SpatialSpacePhysic->stat_insert.FrameEnd	();
+		g_SpatialSpacePhysic->stat_remove.FrameEnd	();
 	}
 
 	// calc FPS & TPS
@@ -155,8 +157,8 @@ void CStats::Show()
 		F.OutNext	("uClients:    %2.2fms, %2.1f%%, %d/%d",UpdateClient.result,PPP(UpdateClient.result),UpdateClient_active,UpdateClient_total);
 		F.OutNext	("uSheduler:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
 		F.OutNext	("uSheduler_L: %2.2fms",fShedulerLoad);
-		F.OutNext	("spInsert:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_insert.result, PPP(g_SpatialSpace->stat_insert.result));
-		F.OutNext	("spRemove:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_remove.result, PPP(g_SpatialSpace->stat_remove.result));
+		F.OutNext	("spInsert:    o[%.2fms, %2.1f%%], p[%.2fms, %2.1f%%]",	g_SpatialSpace->stat_insert.result, PPP(g_SpatialSpace->stat_insert.result),	g_SpatialSpacePhysic->stat_insert.result, PPP(g_SpatialSpacePhysic->stat_insert.result));
+		F.OutNext	("spRemove:    o[%.2fms, %2.1f%%], p[%.2fms, %2.1f%%]",	g_SpatialSpace->stat_remove.result, PPP(g_SpatialSpace->stat_remove.result),	g_SpatialSpacePhysic->stat_remove.result, PPP(g_SpatialSpacePhysic->stat_remove.result));
 		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
 		F.OutNext	("  collider:  %2.2fms", ph_collision.result);	
 		F.OutNext	("  solver:    %2.2fms, %d",ph_core.result,ph_core.count);	
@@ -321,8 +323,11 @@ void CStats::Show()
 		TEST2.FrameStart			();
 		TEST3.FrameStart			();
 
-		g_SpatialSpace->stat_insert.FrameStart();
-		g_SpatialSpace->stat_remove.FrameStart();
+		g_SpatialSpace->stat_insert.FrameStart		();
+		g_SpatialSpace->stat_remove.FrameStart		();
+
+		g_SpatialSpacePhysic->stat_insert.FrameStart();
+		g_SpatialSpacePhysic->stat_remove.FrameStart();
 	}
 	dwSND_Played = dwSND_Allocated = 0;
 }

@@ -63,7 +63,7 @@ void CPHObject::Collide()
 				float	magnitude=dir.magnitude();
 				if(magnitude<EPS) continue;
 				dir.mul(1.f/magnitude);
-				g_SpatialSpace->q_ray(ph_world->r_spatial,0,STYPE_PHYSIC,*from,dir,magnitude);//|ISpatial_DB::O_ONLYFIRST
+				g_SpatialSpacePhysic->q_ray(ph_world->r_spatial,0,STYPE_PHYSIC,*from,dir,magnitude);//|ISpatial_DB::O_ONLYFIRST
 				qResultVec& result=ph_world->r_spatial;
 				qResultIt i=result.begin(),e=result.end();
 				for(;i!=e;++i)	{
@@ -76,8 +76,8 @@ void CPHObject::Collide()
 				}
 		}
 	}
-	g_SpatialSpace->q_box(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.center,AABB);
-	qResultVec& result=ph_world->r_spatial;
+	g_SpatialSpacePhysic->q_box				(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.center,AABB);
+	qResultVec& result=ph_world->r_spatial	;
 	qResultIt i=result.begin(),e=result.end();
 	for(;i!=e;++i)	{
 		CPHObject* obj2=static_cast<CPHObject*>(*i);

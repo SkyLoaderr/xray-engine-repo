@@ -7,13 +7,15 @@ extern Fvector	c_spatial_offset[8];
 class	walker
 {
 public:
-	u32			mask;
-	CFrustum*	F;
+	u32				mask;
+	CFrustum*		F;
+	ISpatial_DB*	space;
 public:
-	walker					(u32 _mask, const CFrustum* _F)
+	walker					(ISpatial_DB*	_space, u32 _mask, const CFrustum* _F)
 	{
 		mask	= _mask;
 		F		= (CFrustum*)_F;
+		space	= _space;
 	}
 	void		walk		(ISpatial_NODE* N, Fvector& n_C, float n_R, u32 fmask)
 	{
@@ -35,7 +37,7 @@ public:
 			u32				tmask	= fmask;
 			if (fcvNone==F->testSphere(sC,sR,tmask))	continue;
 
-			g_SpatialSpace->q_result->push_back	(S);
+			space->q_result->push_back	(S);
 		}
 
 		// recurse

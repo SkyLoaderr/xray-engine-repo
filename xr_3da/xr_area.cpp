@@ -133,10 +133,11 @@ void CObjectSpace::Load	()
 	R_ASSERT					(CFORM_CURRENT_VERSION==H.version);
 	Static.build				( verts, H.vertcount, tris, H.facecount, build_callback );
 
-	m_BoundingVolume.set		(H.aabb);
-	g_SpatialSpace->initialize	(H.aabb);
-	Sound->set_geometry_occ		( &Static );
-	Sound->set_handler			( _sound_event );
+	m_BoundingVolume.set				(H.aabb);
+	g_SpatialSpace->initialize			(H.aabb);
+	g_SpatialSpacePhysic->initialize	(H.aabb);
+	Sound->set_geometry_occ				( &Static );
+	Sound->set_handler					( _sound_event );
 
 	FS.r_close					(F);
 }

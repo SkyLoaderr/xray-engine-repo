@@ -70,24 +70,25 @@ public:
 		float					node_radius;	// Cached node bounds for TBV optimization
 		ISpatial_NODE*			node_ptr;		// Cached parent node for "empty-members" optimization
 		IRender_Sector*			sector;
+		ISpatial_DB*			space;			// allow different spaces
 
 		_spatial() : type(0)	{}				// safe way to enhure type is zero before any contstructors takes place
 	}							spatial;
 public:
-	BOOL						spatial_inside		();
+	BOOL						spatial_inside		()	;
 public:
-	virtual		void			spatial_register	();
-	virtual		void			spatial_unregister	();
-	virtual		void			spatial_move		();
+	virtual		void			spatial_register	()	;
+	virtual		void			spatial_unregister	()	;
+	virtual		void			spatial_move		()	;
 	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
-				void			spatial_updatesector();
+				void			spatial_updatesector()	;
 
 	virtual		CObject*		dcast_CObject		()	{ return 0;	}
 	virtual		Feel::Sound*	dcast_FeelSound		()	{ return 0;	}
 	virtual		IRenderable*	dcast_Renderable	()	{ return 0;	}
 	virtual		IRender_Light*	dcast_Light			()	{ return 0; }
 
-				ISpatial		();
+				ISpatial		(ISpatial_DB* space	);
 	virtual		~ISpatial		();
 };
 
@@ -177,6 +178,7 @@ public:
 	void							q_frustum		(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const CFrustum&	_frustum);
 };
 
-ENGINE_API extern ISpatial_DB*		g_SpatialSpace;
+ENGINE_API extern ISpatial_DB*		g_SpatialSpace			;
+ENGINE_API extern ISpatial_DB*		g_SpatialSpacePhysic	;
 
 #pragma pack(pop)

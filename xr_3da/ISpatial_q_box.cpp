@@ -7,17 +7,19 @@ template <bool b_first>
 class	walker
 {
 public:
-	u32			mask;
-	Fvector		center;
-	Fvector		size;
-	Fbox		box;
+	u32				mask;
+	Fvector			center;
+	Fvector			size;
+	Fbox			box;
+	ISpatial_DB*	space;
 public:
-	walker					(u32 _mask, const Fvector& _center, const Fvector&	_size)
+	walker					(ISpatial_DB*	_space, u32 _mask, const Fvector& _center, const Fvector&	_size)
 	{
 		mask	= _mask;
 		center	= _center;
 		size	= _size;
 		box.setb(center,size);
+		space	= _space;
 	}
 	void		walk		(ISpatial_NODE* N, Fvector& n_C, float n_R)
 	{
@@ -39,7 +41,7 @@ public:
 			Fbox			sB;		sB.set	(sC.x-sR, sC.y-sR, sC.z-sR, sC.x+sR, sC.y+sR, sC.z+sR);
 			if (!sB.intersect(box))	continue;
 
-			g_SpatialSpace->q_result->push_back	(S);
+			space->q_result->push_back	(S);
 			if (b_first)			return;
 		}
 
@@ -50,7 +52,7 @@ public:
 			if (0==N->children[octant])	continue;
 			Fvector		c_C;			c_C.mad	(n_C,c_spatial_offset[octant],c_R);
 			walk						(N->children[octant],c_C,c_R);
-			if (b_first && !g_SpatialSpace->q_result->empty())	return;
+			if (b_first && !space->q_result->empty())	return;
 		}
 	}
 };

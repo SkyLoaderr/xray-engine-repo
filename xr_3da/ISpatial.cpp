@@ -4,7 +4,8 @@
 #include "xr_object.h"
 #include "PS_Instance.h"
 
-ENGINE_API ISpatial_DB*		g_SpatialSpace	= NULL;
+ENGINE_API ISpatial_DB*		g_SpatialSpace			= NULL;
+ENGINE_API ISpatial_DB*		g_SpatialSpacePhysic	= NULL;
 
 Fvector	c_spatial_offset	[8]	= 
 {
@@ -64,7 +65,7 @@ void	ISpatial::spatial_register	()
 		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	} else {
 		// register
-		g_SpatialSpace->insert	(this);
+		space->insert			(this);
 		spatial.sector			=	::Render->detectSector(spatial.center);
 		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	}
@@ -75,7 +76,7 @@ void	ISpatial::spatial_unregister()
 	if (spatial.node_ptr)
 	{
 		// remove
-		g_SpatialSpace->remove	(this);
+		space->remove			(this);
 		spatial.node_ptr		= NULL;
 		spatial.sector			= NULL;
 	} else {
@@ -91,9 +92,9 @@ void	ISpatial::spatial_move	()
 		spatial.type		|=				STYPEFLAG_INVALIDSECTOR;
 
 		//*** check if we are supposed to correct it's spatial location
-		if			(spatial_inside())	return;		// ???
-		g_SpatialSpace->remove	(this);
-		g_SpatialSpace->insert	(this);
+		if				(spatial_inside())	return;		// ???
+		space->remove	(this);
+		space->insert	(this);
 	} else {
 		//*** we are not registered yet, or already unregistered
 		//*** ignore request
@@ -119,18 +120,18 @@ void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)
 
 void			ISpatial_NODE::_insert			(ISpatial* S)			
 {	
-	S->spatial.node_ptr			= this;
-	items.push_back				(S);
-	g_SpatialSpace->stat_objects++;
+	S->spatial.node_ptr			=	this;
+	items.push_back					(S);
+	S->spatial.space->stat_objects	++;
 }
 
 void			ISpatial_NODE::_remove			(ISpatial* S)			
 {	
-	S->spatial.node_ptr	= NULL;
+	S->spatial.node_ptr			=	NULL;
 	xr_vector<ISpatial*>::iterator	it = std::find(items.begin(),items.end(),S);
 	VERIFY				(it!=items.end());
 	items.erase			(it);
-	g_SpatialSpace->stat_objects--;
+	S->spatial.space->stat_objects	--;
 }
 
 //////////////////////////////////////////////////////////////////////////

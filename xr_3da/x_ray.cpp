@@ -177,6 +177,7 @@ void Startup					( )
 	pApp						= xr_new<CApplication>	();
 	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
 	g_SpatialSpace				= xr_new<ISpatial_DB>	();
+	g_SpatialSpacePhysic		= xr_new<ISpatial_DB>	();
 	
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
@@ -187,9 +188,10 @@ void Startup					( )
 	Device.Run					( );
 
 	// Destroy APP
-	xr_delete					( g_SpatialSpace	);
-	DEL_INSTANCE				( g_pGamePersistent );
-	xr_delete					( pApp				);
+	xr_delete					( g_SpatialSpacePhysic	);
+	xr_delete					( g_SpatialSpace		);
+	DEL_INSTANCE				( g_pGamePersistent		);
+	xr_delete					( pApp					);
 	Engine.Event.Dump			( );
 
 	// Destroying
@@ -512,9 +514,10 @@ void CApplication::OnFrame	( )
 	T.Start	();
 	while	(T.GetElapsed_ms()<10);
 	*/
-	Engine.Event.OnFrame	();
-	g_SpatialSpace->update	();
-	if (g_pGameLevel)		g_pGameLevel->SoundEvent_Dispatch	( );
+	Engine.Event.OnFrame			();
+	g_SpatialSpace->update			();
+	g_SpatialSpacePhysic->update	();
+	if (g_pGameLevel)				g_pGameLevel->SoundEvent_Dispatch	( );
 }
 
 void CApplication::Level_Scan()

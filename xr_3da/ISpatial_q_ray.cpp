@@ -168,12 +168,13 @@ template <bool b_use_sse, bool b_first, bool b_nearest>
 class	_MM_ALIGN16			walker
 {
 public:
-	ray_t		ray;
-	u32			mask;
-	float		range;
-	float		range2;
+	ray_t			ray;
+	u32				mask;
+	float			range;
+	float			range2;
+	ISpatial_DB*	space;
 public:
-	walker					(u32 _mask, const Fvector& _start, const Fvector&	_dir, float _range)
+	walker					(ISpatial_DB*	_space, u32 _mask, const Fvector& _start, const Fvector&	_dir, float _range)
 	{
 		mask			= _mask;
 		ray.pos.set		(_start);
@@ -187,6 +188,7 @@ public:
 		}
 		range	= _range;
 		range2	= _range*_range;
+		space	= _space;
 	}
 	// fpu
 	ICF BOOL		_box_fpu	(const Fvector& n_C, const float n_R, Fvector& coord)
@@ -238,7 +240,7 @@ public:
 			if (d > 0)			{
 				// sphere intersected (assume object intersects too)
 				if (b_nearest && d<range)			{ range=d; range2=d*d; }
-				g_SpatialSpace->q_result->push_back	(S);
+				space->q_result->push_back			(S);
 				if (b_first)						return;
 			}
 		}
@@ -250,7 +252,7 @@ public:
 			if (0==N->children[octant])	continue;
 			Fvector		c_C;			c_C.mad	(n_C,c_spatial_offset[octant],c_R);
 			walk						(N->children[octant],c_C,c_R);
-			if (b_first && !g_SpatialSpace->q_result->empty())	return;
+			if (b_first && !space->q_result->empty())	return;
 		}
 	}
 };
