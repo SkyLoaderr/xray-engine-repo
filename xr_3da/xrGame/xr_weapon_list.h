@@ -42,10 +42,10 @@ public:
 	void			Zoom				(BOOL bZoom);
 	void			Reload				();
 	IC BOOL			isZoomed			()	{ return m_bZoomed; }
-	int				getAmmoElapsed		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoElapsed(); }
-	int				getAmmoCurrent		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoCurrent(); }
-	int				getAmmoLimit		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoLimit();	  }
-	int				getAmmoMagazineSize	()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoMagSize(); }
+	int				getAmmoElapsed		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoElapsed(); else return 0; }
+	int				getAmmoCurrent		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoCurrent(); else return 0; }
+	int				getAmmoLimit		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoLimit();	  else return 0; }
+	int				getAmmoMagazineSize	()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoMagSize(); else return 0; }
 	
 	BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
 	void			LeaveWeapon			(CLASS_ID cls);
