@@ -36,13 +36,29 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
 	if (_sqrt(SqrDistance2Segment(vTEST->P,vE1->P,vE2->P))<0.005f)	
 	{
-	}
-}
-/*
+		// sort verts
+		if (vE1>vE2)	swap(vE1,vE2);
+
+		// check for duplicated errors
+		for (DWORD i=0; i<vecJunctions.size(); i++)
+		{
+			record&	rec = vecJunctions[i];
+			if ((rec.E1==vE1) && (rec.E2==vE2) && (rec.T==vTEST)) return;
+		}
+
+		// register
+		record	rec;
+		rec.E1	= vE1;
+		rec.E2	= vE2;
+		rec.T	= vTEST;
+		vecJunctions.push_back	(rec);
+
+		// display
 		Msg	("ERROR. edge [%3.1f,%3.1f,%3.1f]-[%3.1f,%3.1f,%3.1f], vertex [%3.1f,%3.1f,%3.1f]",
 			VPUSH(vE1->P),VPUSH(vE2->P),VPUSH(vTEST->P)
 			);
-*/
+	}
+}
 
 void CBuild::CorrectTJunctions()
 {
@@ -88,4 +104,5 @@ void CBuild::CorrectTJunctions()
 		}
 		Progress(float(I)/float(g_faces.size()));
 	}
+	Msg("*** %d errors found.",vecJunctions.size());
 }
