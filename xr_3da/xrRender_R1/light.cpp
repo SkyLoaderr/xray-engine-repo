@@ -94,7 +94,7 @@ void	light::set_cone			(float angle)		{
 void	light::set_rotation		(const Fvector& D, const Fvector& R)	{ 
 	Fvector	old_D		= direction;
 	direction.normalize	(D);
-	right.normalize		(R);
+	right.normalize_safe(R);
 	if (!fsimilar(1.f, old_D.dotproduct(D)))	spatial_move	();
 }
 
@@ -120,7 +120,7 @@ void	light::spatial_move			()
 	ISpatial::spatial_move		();
 
 #if RENDER==R_R2
-	gi_generate					();
+	if (flags.bActive) gi_generate	();
 #endif
 }
 
@@ -261,6 +261,7 @@ void	light::gi_generate	()
 		LI.D.reflect		(dir,TN);
 		LI.E				= (1-R->range/range);
 		if (LI.E*LE < ps_r2_GI_clip)	continue;
+		LI.S				= spatial.sector;	//BUG
 
 		indirect.push_back	(LI);
 	}

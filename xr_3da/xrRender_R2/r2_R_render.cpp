@@ -381,6 +381,7 @@ void	CRender::render_indirect			(light* L)
 		LIGEN.set_color					(T.x,T.y,T.z);
 
 		// geometric
+		LIGEN.spatial.sector			= LI.S;
 		LIGEN.set_position				(LI.P);
 		LIGEN.set_rotation				(LI.D,T.set(0,0,0));
 
