@@ -2616,6 +2616,18 @@ SOURCE=.\LightProjector.cpp
 SOURCE=.\LightProjector.h
 # End Source File
 # End Group
+# Begin Group "Shadows"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\LightShadows.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LightShadows.h
+# End Source File
+# End Group
 # End Group
 # Begin Group "Glows manager"
 
@@ -2710,30 +2722,6 @@ SOURCE=.\SceneGraph.h
 # Begin Source File
 
 SOURCE=.\screenshot.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ShadowController.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\ShadowController.h
 # End Source File
 # Begin Source File
 
