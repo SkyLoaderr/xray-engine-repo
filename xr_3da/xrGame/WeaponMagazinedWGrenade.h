@@ -57,8 +57,6 @@ public:
 	virtual void	PlayAnimShoot();
 	virtual void	PlayAnimModeSwitch();
 	
-	static void	__stdcall GrenadeCallback(CBoneInstance*);
-
 	HUD_SOUND			sndShotG;
 	HUD_SOUND			sndReloadG;
 	HUD_SOUND			sndSwitch;
@@ -92,10 +90,11 @@ public:
 	int iMagazineSize2;
 	xr_stack<CCartridge> m_magazine2;
 	
-	bool m_bHideGrenade;
 	bool m_bGrenadeMode;
 
 	Fvector* m_pGrenadePoint;
+
+	virtual void UpdateGrenadeVisibility(bool visibility);
 
 	//название косточки для гранаты подствольника в HUD
 	ref_str grenade_bone_name;

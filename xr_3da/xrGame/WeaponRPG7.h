@@ -22,11 +22,9 @@ public:
 	virtual void FireStart		();
 	virtual void SwitchState	(u32 S);
 
-	static void	__stdcall GrenadeCallback(CBoneInstance*);
+	virtual void UpdateGrenadeVisibility(bool visibility);
 protected:
 	Fvector *m_pGrenadePoint;
-
-	bool	m_hideGrenade;
 
 	ref_str	m_sGrenadeBoneName;
 	ref_str	m_sHudGrenadeBoneName;

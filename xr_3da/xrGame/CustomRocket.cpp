@@ -317,14 +317,26 @@ void CCustomRocket::UpdateLights()
 //////////////////////////////////////////////////////////////////////////
 void CCustomRocket::UpdateParticles()
 {
+	if(!m_pEngineParticles && !m_pFlyParticles) return;
+
 	Fvector vel;
 	PHGetLinearVell(vel);
 
+	Fmatrix particles_xform;
+	particles_xform.identity();
+	particles_xform.k.set(XFORM().k);
+	particles_xform.k.mul(-1.f);
+	Fvector::generate_orthonormal_basis(particles_xform.k, 
+										particles_xform.i, 
+										particles_xform.j);
+    particles_xform.c.set(XFORM().c);
+
+
 	if(m_pEngineParticles)
-		m_pEngineParticles->UpdateParent(XFORM(), vel);
+		m_pEngineParticles->UpdateParent(particles_xform, vel);
 	
 	if(m_pFlyParticles)
-		m_pFlyParticles->UpdateParent(XFORM(), vel);
+		m_pFlyParticles->UpdateParent(particles_xform, vel);
 }
 
 void CCustomRocket::StartEngineParticles()
@@ -333,9 +345,7 @@ void CCustomRocket::StartEngineParticles()
 	if(!m_sEngineParticles) return;
 	m_pEngineParticles = xr_new<CParticlesObject>(*m_sEngineParticles, Sector(),false);
 
-	Fvector vel;
-	PHGetLinearVell(vel);
-	m_pEngineParticles->UpdateParent(XFORM(), vel);
+	UpdateParticles();
 	m_pEngineParticles->Play();
 
 	VERIFY(m_pEngineParticles);
@@ -355,9 +365,7 @@ void CCustomRocket::StartFlyParticles()
 	if(!m_sFlyParticles) return;
 	m_pFlyParticles = xr_new<CParticlesObject>(*m_sFlyParticles, Sector(),false);
 	
-	Fvector vel;
-	PHGetLinearVell(vel);
-	m_pFlyParticles->UpdateParent(XFORM(), vel);
+	UpdateParticles();
 	m_pFlyParticles->Play();
 	
 	VERIFY(m_pFlyParticles);

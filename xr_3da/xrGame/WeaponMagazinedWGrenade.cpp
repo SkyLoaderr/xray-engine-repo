@@ -103,9 +103,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 	m_pGrenadePoint = &vLastFP2;
 	BOOL l_res = inherited::net_Spawn(DC);
 	 
-	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID(grenade_bone_name)).set_callback(GrenadeCallback, this);
-
+	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	m_bPending = false;
 
 	return l_res;
@@ -339,18 +337,11 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	}
 }
 
-void __stdcall CWeaponMagazinedWGrenade::GrenadeCallback(CBoneInstance* B) 
-{
-	CWeaponMagazinedWGrenade* l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(
-									 static_cast<CObject*>(B->Callback_Param)); 
-	R_ASSERT(l_pW);
-	if(l_pW->m_bHideGrenade) B->mTransform.scale(EPS, EPS, EPS);
-}
 
 void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S) 
 {
 	inherited::OnStateSwitch(S);
-	m_bHideGrenade = (!iAmmoElapsed && !(S == eReload));
+	UpdateGrenadeVisibility(!!iAmmoElapsed || S == eReload);
 }
 
 
@@ -566,4 +557,12 @@ void CWeaponMagazinedWGrenade::UpdateSounds	()
 		if (sndReloadG.snd.feedback)	sndReloadG.set_position		(vLastFP);
 		if (sndSwitch.snd.feedback)		sndSwitch.set_position		(vLastFP);
 	}
+}
+
+void CWeaponMagazinedWGrenade::UpdateGrenadeVisibility(bool visibility)
+{
+	if (H_Parent() != Level().CurrentEntity()) return;
+	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual());
+	VERIFY(pHudVisual);
+	pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*grenade_bone_name),visibility,TRUE);
 }

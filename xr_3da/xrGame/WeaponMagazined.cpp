@@ -122,12 +122,14 @@ void CWeaponMagazined::FireEnd()
 	inherited::FireEnd();
 
 	CActor	*actor = dynamic_cast<CActor*>(H_Parent());
-	if(!iAmmoElapsed && actor) Reload();
+	if(!iAmmoElapsed && actor) 
+		Reload();
 }
 
 void CWeaponMagazined::Reload() 
 {
 	inherited::Reload();
+
 	TryReload();
 }
 
@@ -182,9 +184,11 @@ bool CWeaponMagazined::IsAmmoAvailable()
 
 void CWeaponMagazined::OnMagazineEmpty() 
 {
-	//FireEnd();
+	if( NEXT_STATE != eMagEmpty && NEXT_STATE != eReload)
+	{
+		SwitchState(eMagEmpty);
+	}
 
-	SwitchState(eMagEmpty); 
 	inherited::OnMagazineEmpty();
 }
 
@@ -453,12 +457,8 @@ void CWeaponMagazined::state_Misfire	(float /**dt/**/)
 	UpdateSounds			();
 }
 
-void CWeaponMagazined::state_MagEmpty	(float /**dt/**/)
+void CWeaponMagazined::state_MagEmpty	(float dt)
 {
-/*	UpdateFP				();
-	OnEmptyClick			();
-	SwitchState				(eIdle);
-	UpdateSounds			();*/
 }
 
 void CWeaponMagazined::renderable_Render	()
@@ -537,17 +537,21 @@ void CWeaponMagazined::switch2_Fire	()
 	m_bStopedAfterQueueFired = false;
 	m_bFireSingleShot = true;
 	m_iShotNum = 0;
-	
+
 
     if(OnClient() && !IsWorking())
 		FireStart();
 
-	if(SingleShotMode())
+/*	if(SingleShotMode())
+	{
+		m_bFireSingleShot = true;
 		bWorking = false;
+	}*/
 }
 void CWeaponMagazined::switch2_Empty()
 {
 	OnZoomOut();
+	
 	if(!TryReload())
 	{
 		OnEmptyClick();
@@ -797,6 +801,7 @@ void CWeaponMagazined::PlayAnimHide()
 {
 	m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
+
 
 void CWeaponMagazined::PlayAnimReload()
 {

@@ -889,6 +889,11 @@ CUIStaticItem* CWeapon::ZoomTexture()
 		return NULL;
 }
 
+void CWeapon::SwitchState(u32 S)
+{
+	inherited::SwitchState(S);
+}
+
 void CWeapon::OnMagazineEmpty	()
 {
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());

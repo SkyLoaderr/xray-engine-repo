@@ -14,7 +14,6 @@ CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7")
 {
 	m_weight = 5.f;
 	m_slot = 2;
-	m_hideGrenade = false;
 	m_pGrenadePoint = &vLastFP;
 }
 
@@ -35,19 +34,27 @@ void CWeaponRPG7::Load	(LPCSTR section)
 	m_sRocketSection		= pSettings->r_string	(section,"rocket_class");
 }
 
+
+void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
+{
+	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual());
+	VERIFY(pHudVisual);
+	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
+	CKinematics* pWeaponVisual = PKinematics(Visual()); 
+	VERIFY(pWeaponVisual);
+
+	if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*m_sHudGrenadeBoneName),visibility,TRUE);
+	pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID(*m_sGrenadeBoneName),visibility,TRUE);
+}
+
+
 BOOL CWeaponRPG7::net_Spawn(LPVOID DC) 
 {
 	m_pGrenadePoint = &vLastFP;
 
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID(*m_sHudGrenadeBoneName)).set_callback(GrenadeCallback, this);
-	
-	V = PKinematics(Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID(*m_sGrenadeBoneName)).set_callback(GrenadeCallback, this);
-
-	m_hideGrenade = !iAmmoElapsed;
+	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	if(iAmmoElapsed && !m_pRocket)
 	{
 		CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(H_Parent()));
@@ -56,16 +63,10 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	return l_res;
 }
 
-void __stdcall CWeaponRPG7::GrenadeCallback(CBoneInstance* B) 
-{
-	CWeaponRPG7* l_pW = dynamic_cast<CWeaponRPG7*>(static_cast<CObject*>(B->Callback_Param)); R_ASSERT(l_pW);
-	if(l_pW->m_hideGrenade) B->mTransform.scale(EPS, EPS, EPS);
-}
-
 void CWeaponRPG7::OnStateSwitch(u32 S) 
 {
 	inherited::OnStateSwitch(S);
-	m_hideGrenade = (!iAmmoElapsed && !(S == eReload));
+	UpdateGrenadeVisibility(!!iAmmoElapsed || S == eReload);
 }
 
 void CWeaponRPG7::ReloadMagazine() 
@@ -122,6 +123,8 @@ void CWeaponRPG7::FireStart()
 
 void CWeaponRPG7::switch2_Fire	()
 {
+	m_bFireSingleShot = true;
+	bWorking = false;
 }
 
 void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) 

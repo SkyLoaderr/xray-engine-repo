@@ -83,14 +83,6 @@ void CWeaponShotgun::Fire2End ()
 {
 	inherited::Fire2End();
 	FireEnd();
-/*	if (IsWorking())
-	{
-		CWeapon::FireEnd	();
-	}
-	if (!iAmmoElapsed)	
-		TryReload	();
-	else 
-		SwitchState (eIdle);*/
 }
 
 
