@@ -119,12 +119,12 @@ private:
 		ePathStateBuildGamePath,
 		ePathStateContinueGamePath,
 		
+		ePathStateSelectPatrolPoint,
+
 		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
 		ePathStateContinueLevelPath,
 
-		ePathStateSelectPatrolPoint,
-		
 		ePathStateBuildDetailPath,
 		
 		ePathStatePathVerification,
