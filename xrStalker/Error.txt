@@ -22,3 +22,8 @@ To OLES :
 
 To WT:
 -D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
+
+To AlexMX:
+-O				ocasional invalid radius and/or center after update of particle system
+				(pure garbage: #INF, #QNAN, #DEN)
+-O				ocasional memory corruption inside particle system (on destructor, probably)
