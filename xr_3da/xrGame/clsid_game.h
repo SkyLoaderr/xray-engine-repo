@@ -21,14 +21,14 @@
 #define CLSID_OBJECT_W_M134_en	MK_CLSID('W','_','M','1','3','4','e','n')
 #define CLSID_OBJECT_W_GROZA	MK_CLSID('W','_','G','R','O','Z','A',' ')
 #define CLSID_OBJECT_W_AK74		MK_CLSID('W','_','A','K','7','4',' ',' ')
-#define CLSID_OBJECT_W_RAIL		MK_CLSID('W','_','R','A','I','L',' ',' ')
+#define CLSID_OBJECT_W_LR300	MK_CLSID('W','_','L','R','3','0','0',' ')
 #define CLSID_OBJECT_W_ROCKET	MK_CLSID('W','_','R','O','C','K','E','T')
 
 // Weapons Ammo
 #define CLSID_OBJECT_A_M134		MK_CLSID('A','_','M','1','3','4',' ',' ')
 #define CLSID_OBJECT_A_GROZA	MK_CLSID('A','_','G','R','O','Z','A',' ')
 #define CLSID_OBJECT_A_AK74		MK_CLSID('A','_','A','K','7','4',' ',' ')
-#define CLSID_OBJECT_A_RAIL		MK_CLSID('A','_','R','A','I','L',' ',' ')
+#define CLSID_OBJECT_A_LR300	MK_CLSID('A','_','L','R','3','0','0',' ')
 #define CLSID_OBJECT_A_ROCKET	MK_CLSID('A','_','R','O','C','K','E','T')
 
 // Modifiers
