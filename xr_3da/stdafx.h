@@ -102,7 +102,7 @@
 #pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
 
 // stl
-#define _STLP_NO_EXCEPTIONS 
+#define _STLP_NO_EXCEPTIONS
 #include <algorithm>
 #include <limits>
 #include <vector>
