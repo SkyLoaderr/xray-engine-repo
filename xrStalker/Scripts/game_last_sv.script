@@ -300,7 +300,7 @@ end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:loadGameOptions()
-   local ini_file_name        = "laststanding_game.ltx"
+   local ini_file_name        = "mp\\laststanding_game.ltx"
    local ini_section_name = "game_laststanding_options"
    local game_settings = ini_file(ini_file_name)
    if game_settings == nil then
