@@ -181,84 +181,45 @@ void CDetailManager::Render		(Fvector& vecEYE)
 		for (int _x=-dm_size; _x<=dm_size; _x++)
 		{
 			// Query for slot
-			Slot*	CS		= cache_Query(_x,_z);
-			Slot&	S		= *CS;
+			Slot*	CS			= cache_Query(_x,_z);
+			Slot&	S			= *CS;
 
 			// Transfer visibile and partially visible slot contents
-			u32 mask		= 0xff;
-			u32 res			= View.testSAABB(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.min,S.vis.box.max,mask);
-			if ((fcvPartial==res)&&UseVS())	res = fcvFully;
-			switch (res)
+			u32 mask			= 0xff;
+			u32 res				= View.testSAABB		(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.min,S.vis.box.max,mask);
+			if (fcvNone==res)							continue;	// invisible-view frustum
+			if (!RImplementation.occ_visible(S.vis))	continue;	// invisible-occlusion
+
+			// Calc fade factor	(for slot)
+			float	dist_sq		= EYE.distance_to_sqr(S.vis.sphere.P);
+			if		(dist_sq>fade_limit)	continue;
+			float	alpha		= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
+			float	alpha_i		= 1.f - alpha;
+			float	dist_sq_rcp	= 1.f / dist_sq;
+
+			// Add 
+			for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 			{
-			case fcvNone:		// nothing to do
-				break;
-			case fcvPartial:	// addition with TEST
+				SlotPart&			sp	= S.G		[sp_id];
+				if (sp.id==DetailSlot::ID_Empty)	continue;
+				float				R   = objects	[sp.id]->bv_sphere.R;
+
+				SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
+				for (; siIT!=siEND; siIT++)
 				{
-					if (!RImplementation.occ_visible(S.vis))		continue;
-					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
-					{
-						SlotPart&			sp	= S.G		[sp_id];
-						if (sp.id==DetailSlot::ID_Empty)	continue;
-						float				R   = objects	[sp.id]->bv_sphere.R;
+					SlotItem& Item			= *(*siIT);
 
-						SlotItem			**siIT=&*sp.items.begin(), **siEND=&*sp.items.end();
-						for (; siIT!=siEND; siIT++)
-						{
-							SlotItem& Item	= *(*siIT);
+					float	scale			= Item.scale*alpha_i;
+					float	radius			= R*scale;
+					float	ssa				= radius*radius*dist_sq_rcp;
 
-							float	dist_sq = EYE.distance_to_sqr(Item.P);
-							if (dist_sq>fade_limit)	continue;
+					if (ssa < r_ssaDISCARD) continue;
+					u32	vis_id				= Item.vis_ID;
+					if (ssa < r_ssaCHEAP)	vis_id=0;
 
-							if (RImplementation.ViewBase.testSphere_dirty(Item.P,R*Item.scale))
-							{
-								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
-								float	scale	= Item.scale*(1-alpha);
-								float	radius	= R*scale;
-
-								float	ssa		= radius*radius/dist_sq;
-								if (ssa < r_ssaDISCARD) continue;
-								u32	vis_id	= Item.vis_ID;
-								if (ssa < r_ssaCHEAP)	vis_id=0;
-
-								Item.scale_calculated = scale;			//alpha;
-								visible[vis_id][sp.id].push_back	(*siIT);
-							}
-						}
-					}
+					Item.scale_calculated	= scale;
+					visible[vis_id][sp.id].push_back	(*siIT);
 				}
-				break;
-			case fcvFully:		// addition
-				{
-					if (!RImplementation.occ_visible(S.vis))		continue;
-					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
-					{
-						SlotPart&			sp	= S.G		[sp_id];
-						if (sp.id==DetailSlot::ID_Empty)	continue;
-						float				R   = objects	[sp.id]->bv_sphere.R;
-
-						SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
-						for (; siIT!=siEND; siIT++)
-						{
-							SlotItem& Item	= *(*siIT);
-
-							float	dist_sq = EYE.distance_to_sqr(Item.P);
-							if (dist_sq>fade_limit)	continue;
-
-							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
-							float	scale	= Item.scale*(1-alpha);
-							float	radius	= R*scale;
-
-							float	ssa		= radius*radius/dist_sq;
-							if (ssa < r_ssaDISCARD) continue;
-							u32	vis_id		= Item.vis_ID;
-							if (ssa < r_ssaCHEAP)	vis_id=0;
-
-							Item.scale_calculated = scale;			//alpha;
-							visible[vis_id][sp.id].push_back	(*siIT);
-						}
-					}
-				}
-				break;
 			}
 		}
 	}
