@@ -221,4 +221,6 @@ void CRenderTarget::End		()
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 		}
 	}
+
+	if (param_noise>0.01f)	e_render_noise();
 }
