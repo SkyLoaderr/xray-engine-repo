@@ -32,8 +32,7 @@ struct SPhraseDialogData : CSharedResource
 
 	//список скриптовых предикатов, выполнение, которых необходимо
 	//для начала диалога
-	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
-	PRECONDITION_VECTOR m_Preconditions;
+	CPhraseScript m_PhraseScript;
 };
 
 DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
@@ -70,7 +69,7 @@ public:
 	virtual void Reset  ();
 
 	//список предикатов начала диалога
-	virtual const SPhraseDialogData::PRECONDITION_VECTOR& Preconditions() {return dialog_data()->m_Preconditions;}
+	virtual bool Precondition(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2);
 
 	//список доступных в данный момент фраз
 	virtual const PHRASE_VECTOR& PhraseList() const			{return m_PhraseVector;}

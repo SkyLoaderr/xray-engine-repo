@@ -58,17 +58,10 @@ bool CPhraseDialogManager::AddAvailableDialog(LPCSTR dialog_id, CPhraseDialogMan
 
 	//вызвать скриптовую присоединенную функцию 
 	//активируется после сказанной фразы
-	bool predicate_result = true;
-	for(u32 i = 0; i<phrase_dialog->Preconditions().size(); i++)
-	{
-		luabind::functor<bool>	lua_function;
-		bool functor_exists = ai().script_engine().functor(*phrase_dialog->Preconditions()[i] ,lua_function);
-		R_ASSERT3(functor_exists, "Cannot find phrase dialog precondition", *phrase_dialog->Preconditions()[i]);
-		const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(this);		VERIFY(pSpeakerGO1);
-		const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(partner);	VERIFY(pSpeakerGO2);
-		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
-		if(!predicate_result) break;
-	}
+	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(this);		VERIFY(pSpeakerGO1);
+	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(partner);	VERIFY(pSpeakerGO2);
+
+	bool predicate_result = phrase_dialog->Precondition(pSpeakerGO1, pSpeakerGO2);
 	if(predicate_result) m_AvailableDialogs.push_back(phrase_dialog);
 	return predicate_result;
 }

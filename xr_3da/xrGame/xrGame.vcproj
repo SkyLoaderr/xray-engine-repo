@@ -5670,6 +5670,12 @@
 						<File
 							RelativePath=".\PhraseDialogManager.h">
 						</File>
+						<File
+							RelativePath=".\PhraseScript.cpp">
+						</File>
+						<File
+							RelativePath=".\PhraseScript.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
