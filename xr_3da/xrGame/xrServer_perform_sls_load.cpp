@@ -1,13 +1,13 @@
 #include "stdafx.h"
 
-void xrServer::SLS_Load	(IReader& FS)
+void xrServer::SLS_Load	(IReader& fs)
 {
 	// Generate spawn+update
 	NET_Packet		P;
 	u16				u_id	= 0xffff;
 	for (u32 C=0; ; C++)
 	{
-		IReader* F			= FS.open_chunk(C);
+		IReader* F			= fs.open_chunk(C);
 		if (0==F)			break;
 
 		// Spawn

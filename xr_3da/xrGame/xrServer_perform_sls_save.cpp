@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void xrServer::SLS_Save	(IWriter& FS)
+void xrServer::SLS_Save	(IWriter& fs)
 {
 	// Generate spawn+update
 	NET_Packet		P;
@@ -10,12 +10,12 @@ void xrServer::SLS_Save	(IWriter& FS)
 	{
 		xrServerEntity*	E	= I->second;
 
-		FS.open_chunk		(C);
+		fs.open_chunk		(C);
 
 		// Spawn
 		E->Spawn_Write		(P,TRUE);
-		FS.w_u16			(u16(P.B.count));
-		FS.w				(P.B.data,P.B.count);
+		fs.w_u16			(u16(P.B.count));
+		fs.w				(P.B.data,P.B.count);
 
 		// Update
 		P.w_begin			(M_UPDATE);
@@ -24,9 +24,9 @@ void xrServer::SLS_Save	(IWriter& FS)
 		E->UPDATE_Write		(P);
 		P.w_chunk_close8	(position);
 
-		FS.w_u16			(u16(P.B.count));
-		FS.w				(P.B.data,P.B.count);
+		fs.w_u16			(u16(P.B.count));
+		fs.w				(P.B.data,P.B.count);
 
-		FS.close_chunk		();
+		fs.close_chunk		();
 	}
 }
