@@ -95,8 +95,11 @@ void CLightProjector::setup		(int id)
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
-	RCache.set_c	("m_plmap_xform",receivers[id].UVgen);
-	RCache.set_c	("m_plmap_clamp",receivers[id].UVclamp);
+	float			dist	= receivers[id].C.distance_to	(Device.vCameraPosition)+receivers[id].O->renderable.visual->vis.sphere.R;
+	float			factor	= _sqr(dist/P_distance);
+	RCache.set_c	("m_plmap_xform",	receivers[id].UVgen);
+	RCache.set_c	("m_plmap_clamp",	receivers[id].UVclamp);
+	RCache.set_c	("m_plmap_factor",	factor);
 }
 
 /*
