@@ -13,7 +13,7 @@ function send_sos (npc)
     end
     
     if act ~= nil then
-		news_manager.send_help (act)    
+--		news_manager.send_help (act)    
 	end
 end
 ------------------------------------------------------------------------------------------
@@ -265,7 +265,6 @@ end
 ------------
 function action_help:initialize ()
     action_base.initialize (self)
-    self.first = false
     
     self.object:enable_talk ()
     
@@ -297,13 +296,11 @@ end
 function action_help:execute ()
     action_base.execute (self)
        
-    if distance_between (self.object, self.a.npc) < 40 and self.first == false then
-       if self.object:active_sound_count () ~= 0 then
-          return 
-       end     
+    if distance_between (self.object, self.a.npc) < 5 then
        -- ÂÑÒÀÂÈÒÜ ÌÀÕÀÍÈÅ ÐÓÊÎÉ ÑÈÄÎÐÎÂÈ×À
        state_mgr.set_state(self.object, "help_me")
-       self.first = true    
+    else
+       state_mgr.set_state(self.object, "wounded")
     end
         
     if self.object:is_talking () == false then
