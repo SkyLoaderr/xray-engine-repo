@@ -250,7 +250,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 							float	ssa		= radius*radius/dist_sq;
 							if (ssa < r_ssaDISCARD) continue;
-							u32	vis_id	= Item.vis_ID;
+							u32	vis_id		= Item.vis_ID;
 							if (ssa < r_ssaCHEAP)	vis_id=0;
 
 							Item.scale_calculated = scale;			//alpha;
