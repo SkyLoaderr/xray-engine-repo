@@ -151,6 +151,7 @@ xr_motivator.storage[self.object:id()].kamp =
 -- Хранение часовых
 xr_motivator.storage[self.object:id()].guard = {
         enabled = false,
+	action = nil,
         path_main = nil,
         path_hideout = nil
     }
