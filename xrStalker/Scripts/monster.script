@@ -5,10 +5,10 @@
 -- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
-module("bloodsucker")
-module("monster_bind")
-module("pripyat_football")
-module("monster_gameplay")
+//module("bloodsucker")
+//module("monster_bind")
+//module("pripyat_football")
+//module("monster_gameplay")
 
 function bind(obj)
 	printf("_bp: monster bind: name='%s'", obj:name())
@@ -53,7 +53,7 @@ function bind(obj)
 	--if(char_ini:section_exist("play_football")) then
 	--	obj:bind_object(pripyat_football.CFootballPlayer(obj))
 	--	return
-	end
+	--end
 
 	// Контролер, тренер монстров игроков
 	--if(char_ini:section_exist("controler_trainer")) then
