@@ -441,6 +441,8 @@ void CWeapon::net_Destroy	()
 	//удалить объекты партиклов
 	StopFlameParticles	();
 	StopFlameParticles2	();
+
+	while (m_magazine.size()) m_magazine.pop();
 /*	if(m_sFlameParticles)
 	{
 		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
@@ -506,6 +508,28 @@ void CWeapon::net_Import	(NET_Packet& P)
 	iAmmoElapsed =			int(ammo_elapsed);
 	m_ammoType = ammoType;
 
+	u32 uAmmo = u32(iAmmoElapsed);
+
+	if (uAmmo != m_magazine.size())
+	{
+		if (uAmmo > m_magazine.size())
+		{
+			CCartridge l_cartridge; 
+			l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+			while (uAmmo > m_magazine.size())
+			{
+				m_magazine.push(l_cartridge);
+			};
+		}
+		else
+		{
+			while (uAmmo < m_magazine.size())
+			{
+				m_magazine.pop();
+			}
+		};
+	};
+	/*
 	if (iAmmoElapsed && m_magazine.empty())
 	{
 		CCartridge l_cartridge; 
@@ -514,6 +538,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 			m_magazine.push(l_cartridge);
 	};
 
+	*/
 //	STATE = wstate;
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	

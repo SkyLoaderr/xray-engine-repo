@@ -86,17 +86,14 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	if(m_bShotLight) Light_Start();
 	
 	// Ammo
-	if(Local()) 
-	{
-		m_magazine.pop	();
-		--iAmmoElapsed;
+	m_magazine.pop	();
+	--iAmmoElapsed;
 
-		if(iAmmoElapsed==0) 
-			OnMagazineEmpty();
+	if(iAmmoElapsed==0) 
+		OnMagazineEmpty();
 
-		//проверить не произошла ли осечка
-		CheckForMisfire();
-	}
+	//проверить не произошла ли осечка
+	CheckForMisfire();
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 

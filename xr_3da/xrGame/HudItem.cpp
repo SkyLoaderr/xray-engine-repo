@@ -163,10 +163,10 @@ void CHudItem::OnAnimationEnd()
 
 void CHudItem::SwitchState(u32 S)
 {
+	NEXT_STATE		= S;	// Very-very important line of code!!! :)
 	if (Local()/* && (S!=NEXT_STATE)*/)	
 	{
 		// !!! Just single entry for given state !!!
-		NEXT_STATE		= S;	// Very-very important line of code!!! :)
 		NET_Packet		P;
 		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
 		P.w_u8			(u8(S));

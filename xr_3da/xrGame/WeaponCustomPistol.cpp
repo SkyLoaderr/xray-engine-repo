@@ -15,7 +15,9 @@ CWeaponCustomPistol::~CWeaponCustomPistol()
 }
 void CWeaponCustomPistol::switch2_Fire	()
 {
-
+	m_bFireSingleShot = true;
+	bWorking = false;
+	/*
 	if (fTime<=0)
 	{
 		m_bPending = true;
@@ -37,8 +39,7 @@ void CWeaponCustomPistol::switch2_Fire	()
 		// Patch for "previous frame position" :)))
 		dwFP_Frame					= 0xffffffff;
 		dwXF_Frame					= 0xffffffff;
-	}
-	bWorking = false;
+	}*/
 }
 
 /*
@@ -54,19 +55,20 @@ void CWeaponCustomPistol::OnEmptyClick	()
 
 void	CWeaponCustomPistol::state_Fire	(float dt) 
 {
-	fTime -=dt;
-	//if(fTime<=0) inherited::FireEnd();
+	inherited::state_Fire(dt);
 }
-void	CWeaponCustomPistol::state_MagEmpty	(float /**dt/**/) 
+void	CWeaponCustomPistol::state_MagEmpty	(float dt) 
 {
+	inherited::state_MagEmpty(dt);
 }
 void CWeaponCustomPistol::OnAnimationEnd() {
 	switch(STATE) {
 		case eIdle:
 		case eMagEmpty:
-		case eFire: {
-			inherited::FireEnd();
-		} return;
+	//	case eFire: {
+	//		inherited::FireEnd();
+	//	} return;
+		return;
 	}
 	return inherited::OnAnimationEnd();
 }
