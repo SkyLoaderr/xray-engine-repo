@@ -122,7 +122,7 @@ static char *month[12] = {
 };
 static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-void CreateLog(LogCallback cb, BOOL nl)
+void CreateLog			(LogCallback cb, BOOL nl)
 {
 	LogCB				= cb;
     no_log				= nl;

@@ -18,7 +18,7 @@ void 						CreateLog	(LogCallback cb=0, BOOL no_log=FALSE);
 void 						CloseLog	();
 void XRCORE_API	__stdcall	FlushLog	();
 
-extern 		XRCORE_API	xr_vector<LPCSTR>			LogFile;
+extern 		XRCORE_API	xr_vector<ref_str>			LogFile;
 extern 		XRCORE_API	BOOL						LogExecCB;
 
 #endif
