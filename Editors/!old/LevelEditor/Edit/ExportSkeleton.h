@@ -14,56 +14,40 @@ class CSurface;
 class CInifile;
 
 struct ECORE_API SSkelVert{
-	Fvector		P;
-	Fvector		O0;
-	Fvector		O1;
-	Fvector		N0;
-	Fvector		N1;
+	Fvector		O;
+	Fvector		N;
     Fvector2	UV;
 	u16			B0;
 	u16			B1;
     float 		w;
 	SSkelVert(){
-		P.set	(0,0,0);
         UV.set	(0.f,0.f);
-        O0.set	(0,0,0);
-		N0.set	(0,1,0);
+        O.set	(0,0,0);
+		N.set	(0,1,0);
 		B0		= BI_NONE;
-        O1.set	(0,0,0);
-		N1.set	(0,1,0);
 		B1		= BI_NONE;
         w		= 0;
 	}
-    void set(Fvector& p, Fvector2& uv, float _w)
+    void set(const Fvector& o, const Fvector& n, Fvector2& uv, float _w, u16 b0, u16 b1=BI_NONE)
     {
-        P.set   (p);
+        O.set   (o);
+        N.set	(n);
         UV.set	(uv);
         w		= _w;
+        B0		= b0;
+        B1		= b1;
     }
-	void set0(Fvector& o, Fvector& n, u32 b)
+	BOOL	similar_pos(SSkelVert& V)
     {
-        O0.set	(o);
-		N0.set	(n);
-		B0		= b;
-	}
-	void set1(Fvector& o, Fvector& n, u32 b)
-    {
-        O1.set   (o);
-		N1.set	(n);
-		B1		= b;
-	}
-	BOOL	similar_pos(SSkelVert& V){
-        return P.similar(V.P,EPS_L);
+        return O.similar(V.O,EPS_L);
     }
-	BOOL	similar(SSkelVert& V){
+	BOOL	similar(SSkelVert& V)
+    {
 		if (B0!=V.B0)					return FALSE;
 		if (B1!=V.B1)					return FALSE;
-        if (!P.similar	(V.P,EPS_L))	return FALSE;
         if (!UV.similar	(V.UV,EPS_S))	return FALSE;
-		if (!O0.similar	(V.O0,EPS_L))	return FALSE;
-		if (!N0.similar	(V.N0,EPS_L))	return FALSE;
-		if (!O1.similar	(V.O1,EPS_L))	return FALSE;
-		if (!N1.similar	(V.N1,EPS_L))	return FALSE;
+		if (!O.similar	(V.O,EPS_L))	return FALSE;
+		if (!N.similar	(V.N,EPS_L))	return FALSE;
 		return TRUE;
 	}
 };
@@ -101,8 +85,9 @@ public:
         }
         return true;
     }
-	void add_face	(SSkelVert& v0, SSkelVert& v1, SSkelVert& v2){
-		if (v0.P.similar(v1.P,EPS) || v0.P.similar(v2.P,EPS) || v1.P.similar(v2.P,EPS)){
+	void add_face	(SSkelVert& v0, SSkelVert& v1, SSkelVert& v2)
+    {
+		if (v0.O.similar(v1.O,EPS) || v0.O.similar(v2.O,EPS) || v1.O.similar(v2.O,EPS)){
 			ELog.Msg(mtError,"Degenerate face found. Removed.");
             return;
         }

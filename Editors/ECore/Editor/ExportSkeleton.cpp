@@ -15,7 +15,8 @@
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
 
-u32 CSkeletonCollectorPacked::VPack(SSkelVert& V){
+u32 CSkeletonCollectorPacked::VPack(SSkelVert& V)
+{
     u32 P 	= 0xffffffff;
 
     u32 ix,iy,iz;
