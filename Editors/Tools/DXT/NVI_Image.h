@@ -135,7 +135,7 @@ void NVI_Image::GetPixel_ARGB8( DWORD * outPix, UINT i, UINT j )
 	_ASSERT( outPix != NULL );
 #endif
 	
-	*outPix = ((DWORD*)m_pArray)[ i * m_nSizeX + j ];
+	*outPix = ((DWORD*)m_pArray)[ j * m_nSizeX + i ];
 }
 
 
@@ -146,7 +146,7 @@ void NVI_Image::SetPixel_ARGB8( UINT i, UINT j, DWORD pix )
 	_ASSERT( GetFormat() == NVI_A8_R8_G8_B8 );
 #endif
 
-	((DWORD*)m_pArray)[ i * m_nSizeX + j ] = pix;
+	((DWORD*)m_pArray)[ j * m_nSizeX + i ] = pix;
 }
 
 ///////////////

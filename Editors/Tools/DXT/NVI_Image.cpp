@@ -199,31 +199,26 @@ void	NVI_Image::AverageRGBToAlpha()
 	assert( GetFormat() == NVI_A8_R8_G8_B8 );
 
 
-	int i,j;
+	int k,cnt=m_nSizeY*m_nSizeX;
 	DWORD pix;
 	float r,g,b;
 
 	////////////////////////////
 	// a8r8g8b8 implementation
 
-	for ( j = 0; j < m_nSizeY; j++  )
-	{
-		for ( i = 0; i < m_nSizeX; i++ )
-		{
-			GetPixel_ARGB8( & pix, i, j );
+	for ( k = 0; k < cnt; k++  ){
+		GetPixel_ARGB8( & pix, k );
 
-			r = (float) (( pix & 0x00FF0000 ) >> 16	);
-			g = (float) (( pix & 0x0000FF00 ) >> 8	);
-			b = (float) (( pix & 0x000000FF )		);
+		r = (float) (( pix & 0x00FF0000 ) >> 16	);
+		g = (float) (( pix & 0x0000FF00 ) >> 8	);
+		b = (float) (( pix & 0x000000FF )		);
 
-			r = ( r + g + b ) / 3.0f;
+		r = ( r + g + b ) / 3.0f;
 
-			pix &= 0x00FFFFFF;
-			pix |= ((DWORD)r) << 24;
+		pix &= 0x00FFFFFF;
+		pix |= ((DWORD)r) << 24;
 
-			SetPixel_ARGB8( i, j, pix );
-
-		}
+		SetPixel_ARGB8( k, pix );
 	}
 }
 
