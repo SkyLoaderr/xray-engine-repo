@@ -149,7 +149,7 @@ void CALifeSurgeManager::generate_anomalies()
 			}
 			if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
 				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
-				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
+				R_ASSERT3		(l_tpSE_Abstract,"Can't spawn artefact ",l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
 				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
 				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
 
