@@ -15,8 +15,15 @@ static dVector3 RayO;
 dWorldID phWorld;
 /////////////////////////////////////
 static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+/*
+Log("fgfgfgf","ffff");
 
-
+Log("fgfgfgf",12);
+Fvector f;
+Log("dfdf ",f);
+Msg("%s","rrr");
+*/
+//Level().HUD().pHUDFont->Out(x,y,"%s","sdfsdsd");
 
 void CPHWorld::Render()
 {
@@ -90,9 +97,9 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
 	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
-	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
+	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
 
-	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
+	static const dReal wheelRadius = 0.79f/2.f* scaleParam;
 	
 
 	static const dVector3 startPosition={6.0f,12.f,0.f};
@@ -115,7 +122,7 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 	//dGeomSetBody(Geoms[5], Bodies[5]);
 	Geoms[5]=dCreateGeomTransform(space);
 	//Geoms[7]=dCreateGeomTransform(0);
-	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.55, cabinBox[1]/2+jeepBox[1]/2, 0); // x,y,z
+	dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
 	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
 	//dGeomTransformSetGeom(Geoms[7],Geoms[0]);
@@ -160,8 +167,8 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 		dJointAttach(Joints[i], Bodies[0], Bodies[i+1]);
 		const dReal* const wPos = dBodyGetPosition(Bodies[i+1]);
 		dJointSetHinge2Anchor(Joints[i], wPos[0], wPos[1], wPos[2]);
-		dJointSetHinge2Axis1(Joints[i], 0, 1, 0);
-		dJointSetHinge2Axis2(Joints[i], 0, 0, ((i % 2) == 0) ? -1 : 1);
+		dJointSetHinge2Axis1(Joints[i], 0.f, 1.f, 0.f);
+		dJointSetHinge2Axis2(Joints[i], 0.f, 0.f, ((i % 2) == 0) ? -1.f : 1.f);
 
 		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
@@ -192,9 +199,9 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
 	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
-	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
+	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
 
-	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
+	static const dReal wheelRadius = 0.79f/2.f* scaleParam;
 
 	VelocityRate=3.f;
 	DriveForce=0;
@@ -208,7 +215,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 	// car body
 	//dMass m;
-	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1]/4., jeepBox[2]); // density,lx,ly,lz
+	dMassSetBox(&m, 1.f, jeepBox[0], jeepBox[1]/4.f, jeepBox[2]); // density,lx,ly,lz
 	dMassAdjust(&m, 800.f); // mass
 	//dMassTranslate(&m,0.f,-1.f,0.f);
 	Bodies[0] = dBodyCreate(world);
@@ -222,7 +229,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	Geoms[5]=dCreateGeomTransform(0);
 	Geoms[7]=dCreateGeomTransform(0);
 	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
-	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.55, cabinBox[1]/2+jeepBox[1]/2+MassShift, 0); // x,y,z
+	dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
 	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
 	dGeomTransformSetGeom(Geoms[7],Geoms[0]);
@@ -267,16 +274,16 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dJointAttach(Joints[i], Bodies[0], Bodies[i+1]);
 		const dReal* const wPos = dBodyGetPosition(Bodies[i+1]);
 		dJointSetHinge2Anchor(Joints[i], wPos[0], wPos[1], wPos[2]);
-		dJointSetHinge2Axis1(Joints[i], 0, 1, 0);
-		dJointSetHinge2Axis2(Joints[i], 0, 0, ((i % 2) == 0) ? -1 : 1);
+		dJointSetHinge2Axis1(Joints[i], 0.f, 1.f, 0.f);
+		dJointSetHinge2Axis2(Joints[i], 0.f, 0.f, ((i % 2) == 0) ? -1.f : 1.f);
 
-		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
-		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+		dJointSetHinge2Param(Joints[i], dParamLoStop, 0.f);
+		dJointSetHinge2Param(Joints[i], dParamHiStop, 0.f);
 		dJointSetHinge2Param(Joints[i], dParamFMax, 10000.f);
 		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.001f);
 
-		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
-		dJointSetHinge2Param(Joints[i], dParamFMax2, 500);
+		dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
+		dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
 		dReal k_p=20000.f;
 		dReal k_d=1000.f;
 		dReal h=0.02222f;
@@ -522,6 +529,7 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	Gun.Create(Space);
+//	dCreatePlane(Space,0,1,0,0);
 	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
 	dReal h=0.02222f;
@@ -557,7 +565,7 @@ void CPHWorld::Step(dReal step)
 	vector<CPHObject*>::iterator iter;
 	//step+=astep;
 	const dReal max_step=0.02f;//0.0034f;
-	const dReal min_step=0.005f;
+	//const dReal min_step=0.005f;
 	const dReal k_p=600000.f;//550000.f;///1000000.f;
 	const dReal k_d=40000.f;
 	//if(step>0.019){
@@ -604,7 +612,7 @@ void CPHWorld::Step(dReal step)
 	}
 	else{
 		UINT n=(UINT)(step/max_step)+1;
-		for(int i=0; i<n;i++)
+		for(UINT i=0; i<n;i++)
 		{
 	
 			dWorldSetERP(phWorld,  step*k_p/n / (step*k_p/n + k_d));
@@ -649,7 +657,7 @@ static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				dVector3 norm={RayD[0],RayD[1],RayD[2]};
 				dNormalize3(norm);
 			//	ulong n = dCollide(o1, o2, N, &bulletContact.geom, sizeof(dContact));
-				for(int i = 0; i < n; ++i)
+				for(UINT i = 0; i < n; ++i)
 				{
 			
 					if(dDOT(contacts[i].geom.pos,norm)<dDOT(bulletContact.geom.pos,norm))
@@ -854,6 +862,7 @@ Fvector CPHElement::			get_mc_data	(){
 }
 Fvector CPHElement::			get_mc_geoms	(){
 Fvector mc;
+mc.set(0.f,0.f,0.f);
 return mc;
 }
 
@@ -985,7 +994,7 @@ void CPHShell::Update(){
 		//////////////////////////////////////////////////////////////////////
 				static const dReal u = -0.1f;
 				static const dReal w_limit = M_PI/4.f/0.02f;
-				static const dReal l_limit = 3./0.02f;
+				static const dReal l_limit = 3.f/0.02f;
 				dReal mag;
 				const dReal* pos = dBodyGetLinearVel(m_body);
 				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);

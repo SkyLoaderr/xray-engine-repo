@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#define SHAREDLIBIMPORT __declspec (dllimport)
-#define SHAREDLIBEXPORT __declspec (dllexport)
+//#define SHAREDLIBIMPORT __declspec (dllimport)
+//#define SHAREDLIBEXPORT __declspec (dllexport)
 #include <include/ode/common.h>
 #include <include/ode/geom.h>
 #include <include/ode/rotation.h>
@@ -1168,8 +1168,10 @@ dReal pointDepth=0.f;
 }
 
 if(testV0) TEST(0,1,2,4)
-if(testV1 && sideTestV01) TEST(1,2,0,5)
-if(testV2 && sideTestV02 && sideTestV12) TEST(2,0,1,6)
+if(testV1 ) TEST(1,2,0,5)
+//&& sideTestV01
+if(testV2 ) TEST(2,0,1,6)
+//&& sideTestV02 && sideTestV12
 #undef TEST
 
 dVector3 tpos,pos;
