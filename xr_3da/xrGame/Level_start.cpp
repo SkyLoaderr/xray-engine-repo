@@ -6,16 +6,6 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 
 	pApp->LoadBegin				();
 
-	// Force server creation for single-player
-	switch (GAME)
-	{
-	case GAME_SINGLE:
-		server		= TRUE;
-		break;
-	default:
-		break;
-	}
-
 	// Start client and server if need it
 	if (server)
 	{
@@ -47,7 +37,7 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 	if (bResult) 
 	{
 		u16	spawn_flags					= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
-		switch (GAME)
+		switch (Game())
 		{
 		case GAME_SINGLE:
 			// Already spawned actor on server
@@ -75,8 +65,8 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 				// Fill
 				strcpy				(A->s_name,"actor");
 				strcpy				(A->s_name_replace,"");
-				A->s_gameid			=	u8(GAME);
-				A->s_team			=	u8(g_team);
+				A->s_gameid			=	u8(Game());
+				A->s_team			=	u8(0);
 				E->s_RP				=	0xff;
 
 				A->ID				=	0xffff;

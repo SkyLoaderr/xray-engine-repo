@@ -15,28 +15,28 @@ void				game_sv_GameState::Unlock					()
 game_PlayerState*	game_sv_GameState::get_it					(DWORD it)
 {
 	xrServer*		S	= Level().Server;
-	xrClientData*	C	= S->client_Get(it);
+	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
 	if (0==C)			return 0;
 	else				return &C->ps;
 }
 game_PlayerState*	game_sv_GameState::get_id					(DWORD id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
-	xrClientData*	C	= S->ID_to_client	(id);
+	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0;
 	else				return &C->ps;
 }
 string64*			game_sv_GameState::get_name_it				(DWORD it)
 {
 	xrServer*		S	= Level().Server;
-	xrClientData*	C	= S->client_Get(it);
+	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
 	if (0==C)			return 0;
 	else				return &C->Name;
 }
 string64*			game_sv_GameState::get_name_id				(DWORD id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
-	xrClientData*	C	= S->ID_to_client	(id);
+	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0;
 	else				return &C->Name;
 }
@@ -50,6 +50,7 @@ u32					game_sv_GameState::get_count				()
 // Utilities
 u32					game_sv_GameState::get_alive_count			(u32 team)
 {
+	Device.Fatal	("Not implemented");
 }
 
 // Network
@@ -63,8 +64,8 @@ void game_sv_GameState::net_Export_Update	(NET_Packet& P, DWORD id)
 	game_PlayerState* A		= get_id		(id);
 	if (A)
 	{
-		P->w_u32	(id);
-		P->w		(A,sizeof(*A));
+		P.w_u32	(id);
+		P.w		(A,sizeof(*A));
 	}
 	Unlock		();
 }

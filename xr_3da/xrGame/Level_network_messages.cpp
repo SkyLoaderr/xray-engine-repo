@@ -16,12 +16,6 @@ void CLevel::ClientReceive()
 		case M_UPDATE:
 			Objects.net_Import	(P);
 			break;
-		case M_PLIST_ADD:
-			Players.add			(*P);
-			break;
-		case M_PLIST_REMOVE:
-			Players.remove		(*P);
-			break;
 		case M_EVENT:
 			{
 				u32	time; u16 type;
