@@ -197,7 +197,9 @@ void CHelicopter::Load(LPCSTR section)
 	m_max_mgun_dist						= pSettings->r_float(section,"max_mgun_attack_dist");
 	m_time_between_rocket_attack		= pSettings->r_u32(section,"time_between_rocket_attack");
 	m_syncronize_rocket					= !!pSettings->r_bool(section,"syncronize_rocket");
-
+	
+	ref_str expl_snd					= pSettings->r_string	(section,"explode_sound");
+	m_explodeSound.create(TRUE,*expl_snd);
 }
 
 void CHelicopter::reload(LPCSTR section)
@@ -851,6 +853,8 @@ void CHelicopter::Explode ()
 	Fvector zero_vector;
 	zero_vector.set(0.f,0.f,0.f);
 	m_pParticle->UpdateParent(m_particleXFORM, zero_vector );
+
+	m_explodeSound.play_at_pos(0,XFORM().c);
 	m_pParticle->Play();
 }
 

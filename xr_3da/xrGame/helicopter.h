@@ -124,6 +124,7 @@ protected:
 	HitTypeSVec						m_HitTypeK;
 
 	ref_sound						m_engineSound;
+	ref_sound						m_explodeSound;
 
 	CHelicopterMovManager			m_movMngr;
 
