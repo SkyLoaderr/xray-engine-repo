@@ -18,7 +18,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "xrserver_objects_alife_monsters.h"
 
-Flags32		psAI_Flags	= {0};
+Flags32		psAI_Flags	= {aiLua};
  
 void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
