@@ -26,7 +26,7 @@ typedef void	__stdcall	xrSkin2W	(vertRender* D, vertBoned2W* S, DWORD vCount, CB
 typedef void	__stdcall	xrBoneLerp	(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
 
 // Matrix multiplication
-typedef void	__stdcall	xrM44_Mul	(_matrix<float>* D, _matrix<float>* M1, _matrix<float>* M2);
+typedef void	__stdcall	xrM44_Mul	(Fmatrix* D, Fmatrix* M1, Fmatrix* M2);
 
 // Transfer of geometry into DynamicVertexBuffer & DynamicIndexBuffer with optional xform and index offset
 // NOTE: vCount and iCount usually small numbers (for example 20/40)
