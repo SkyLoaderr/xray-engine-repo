@@ -397,7 +397,7 @@ function add_to_binder (npc, ini)
     local manager = npc:motivation_action_manager ()
     local property = {}
     local operators = {}
-    
+     
     property["complete"]    = xr_evaluators_id.sidor_bar
     property["meat"]        = xr_evaluators_id.sidor_bar + 1
     property["inter"]       = xr_evaluators_id.sidor_bar + 2
