@@ -53,12 +53,12 @@ void game_sv_mp::script_register(lua_State *L)
 {
 	module(L)
 	[
-		luabind::class_< game_sv_mp, game_sv_GameState >("game_sv_mp")
-		.def(	constructor<>())
-		.def("SpawnWeaponForActor",		&game_sv_mp::SpawnWeaponForActor)
-		.def("KillPlayer",				&game_sv_mp::KillPlayer)
-		.def("SendPlayerKilledMessage", &game_sv_mp::SendPlayerKilledMessage)
-		.def("signal_Syncronize",		&game_sv_GameState::signal_Syncronize)
+		class_< game_sv_mp, game_sv_GameState >("game_sv_mp")
+			.def(	constructor<>())
+			.def("SpawnWeaponForActor",		&game_sv_mp::SpawnWeaponForActor)
+			.def("KillPlayer",				&game_sv_mp::KillPlayer)
+			.def("SendPlayerKilledMessage", &game_sv_mp::SendPlayerKilledMessage)
+			.def("signal_Syncronize",		&game_sv_GameState::signal_Syncronize)
 	];
 }
 
@@ -174,6 +174,8 @@ void game_sv_mp_script::OnPlayerDisconnect (ClientID id_who, LPSTR Name, u16 Gam
 
 
 
+#pragma warning(push)
+#pragma warning(disable:4709)
 
 template <typename T>
 struct CWrapperBase : public T, public luabind::wrap_base {
@@ -208,6 +210,7 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 */
 };
 
+#pragma warning(pop)
 
 void game_sv_mp_script::script_register(lua_State *L)
 {
@@ -216,8 +219,8 @@ void game_sv_mp_script::script_register(lua_State *L)
 
 
 	module(L)
-		[
-			luabind::class_< game_sv_mp_script, WrapType, game_sv_mp >("game_sv_mp_script")
+	[
+		class_< game_sv_mp_script, WrapType, game_sv_mp >("game_sv_mp_script")
 			.def(	constructor<>())
 			.def("GetTeamData",			&GetTeamData)
 			.def("SpawnPlayer",			&SpawnPlayer)
@@ -232,15 +235,13 @@ void game_sv_mp_script::script_register(lua_State *L)
 			.def("Create",				(void (BaseType::*)(LPCSTR))(&BaseType::Create), &WrapType::Create_static)
 
 			.def("OnPlayerHitPlayer",	&BaseType::OnPlayerHitPlayer,	&WrapType::OnPlayerHitPlayer_static)
-//			.def("OnTouch",				&BaseType::OnTouch,				&WrapType::OnTouch_static)
-//			.def("OnDetach",			&BaseType::OnDetach,			&WrapType::OnDetach_static)
+//				.def("OnTouch",				&BaseType::OnTouch,				&WrapType::OnTouch_static)
+//			.	.def("OnDetach",			&BaseType::OnDetach,			&WrapType::OnDetach_static)
 
 			.def("OnRoundStart",		&BaseType::OnRoundStart, &WrapType::OnRoundStart_static)
 			.def("OnRoundEnd",			&BaseType::OnRoundEnd, &WrapType::OnRoundEnd_static)
 
 			.def("net_Export_State",	&BaseType::net_Export_State, &WrapType::net_Export_State_static)
 			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt(result) )
-
-		];
-
+	];
 }

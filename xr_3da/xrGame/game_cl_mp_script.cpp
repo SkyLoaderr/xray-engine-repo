@@ -17,13 +17,17 @@ using namespace luabind;
 void game_cl_mp::script_register(lua_State *L)
 {
 	module(L)
-		[
-			luabind::class_<game_cl_GameState,game_GameState>("game_cl_GameState")
+	[
+		class_<game_cl_GameState,game_GameState>("game_cl_GameState")
 			.def_readwrite("local_svdpnid",		&game_cl_GameState::local_svdpnid)
 			.def_readwrite("local_player",		&game_cl_GameState::local_player),
-			luabind::class_<game_cl_mp,game_cl_GameState>("game_cl_mp")
-		];
+
+		class_<game_cl_mp,game_cl_GameState>("game_cl_mp")
+	];
 }
+
+#pragma warning(push)
+#pragma warning(disable:4709)
 
 template <typename T>
 struct CWrapperBase : public T, public luabind::wrap_base {
@@ -44,10 +48,9 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 	{ return call_member<game_PlayerState*>(this,"createPlayerState")[adopt(result)];}
 	static game_PlayerState* createPlayerState_static(inherited* ptr)
 	{ return ptr->self_type::inherited::createPlayerState();}
-
-
-
 };
+
+#pragma warning(pop)
 
 void game_cl_mp_script::EventGen	( NET_Packet* P, u16 type, u16 dest)
 { u_EventGen(*P,type,dest); }
@@ -97,9 +100,10 @@ void game_cl_mp_script::script_register(lua_State *L)
 {
 	typedef CWrapperBase<game_cl_mp_script> WrapType;
 	typedef game_cl_mp_script BaseType;
+
 	module(L)
-		[
-			luabind::class_< game_cl_mp_script, WrapType, game_cl_mp >("game_cl_mp_script")
+	[
+		class_< game_cl_mp_script, WrapType, game_cl_mp >("game_cl_mp_script")
 			.def(	constructor<>())
 			.def("CommonMessageOut",	&BaseType::CommonMessageOut)
 			.def("GetPlayersCount",		&BaseType::GetPlayersCount)
@@ -126,8 +130,5 @@ void game_cl_mp_script::script_register(lua_State *L)
 
 			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt(result) )
 			.def("createGameUI",		&BaseType::createGameUI, &WrapType::createGameUI_static, adopt(result) )
-
-
-		];
-
+	];
 }
