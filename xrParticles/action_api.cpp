@@ -341,7 +341,6 @@ PARTICLEDLL_API void pSource(float particle_rate, PDomainEnum dtype,
 	S.flags			= _ps.flags;
 	S.parent_vel	= pVector(0,0,0);
 	S.parent_motion	= _ps.parent_motion;
-	S.flags.zero	();
 	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
 	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 
