@@ -1,0 +1,27 @@
+-- DELETE THIS FILE
+
+----------------------------------------------------------------------------------------------------------------------
+-- Класс CZoneIdle
+----------------------------------------------------------------------------------------------------------------------
+
+class "CZoneIdle"
+
+function CZoneIdle:__init( zone, binder, ini )
+	self.object = zone
+	self.st = {}
+	db.storage[zone:id()] = self.st
+	self.st.logic = xr_logic.cfg_get_switch_conditions(ini, "zone_idle", zone)
+end
+
+--function CZoneIdle:on_enter( actor )
+--end
+
+--function CZoneIdle:on_leave( actor )
+--end
+
+function CZoneIdle:update(actor)
+		--if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		--	return
+		--end
+		xr_logic.pick_section_from_condlist(actor, self.object, self.st.logic[1].condlist)
+end
