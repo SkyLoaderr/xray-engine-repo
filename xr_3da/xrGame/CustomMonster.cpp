@@ -27,6 +27,7 @@
 #include "level_graph.h"
 #include "game_graph.h"
 #include "movement_manager.h"
+#include "entitycondition.h"
 
 extern int g_AI_inactive_time;
 
@@ -242,12 +243,6 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	setEnabled				(TRUE);
 }
 
-void CCustomMonster::Exec_Physics( float /**dt/**/)
-{
-	// 
-	Engine.Sheduler.Slice	();
-}
-
 void CCustomMonster::shedule_Update	( u32 DT )
 {
 	// Queue shrink
@@ -287,7 +282,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		Engine.Sheduler.Slice			();
 
 		// Look and action streams
-		if (fEntityHealth>0) {
+		float							temp = conditions().health();
+		if (temp > 0) {
 			Exec_Action				(dt);
 			VERIFY				(_valid(Position()));
 			Exec_Visibility			();
@@ -483,7 +479,6 @@ void CCustomMonster::Exec_Visibility	( )
 	if (IsMyCamera())						
 		g_pGameLevel->Cameras.Update	(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
 
-	// Slice
 	Engine.Sheduler.Slice();
 }
 

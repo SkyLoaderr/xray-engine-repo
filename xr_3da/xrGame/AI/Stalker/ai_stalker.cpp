@@ -470,7 +470,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		VERIFY				(_valid(Position()));
 
 		// Look and action streams
-		if (fEntityHealth>0) {
+		float							temp = conditions().health();
+		if (temp > 0) {
 			VERIFY				(_valid(Position()));
 //			Exec_Look				(dt);
 			VERIFY				(_valid(Position()));
