@@ -45,6 +45,15 @@ function main()
 			)
 
 	while siviy:action() and chert:action() do
+		if siviy:see("m_stalker") then
+			printf("i see stalkers!!!")
+			flush()
+		break
+		end
+	    wait	()
+	end
+
+	while siviy:action() and chert:action() do
 		if siviy:see(chert) and distance_between(chert,siviy) <= 3 then
 			rainbow_privet:play_at_pos						(siviy,siviy:position(),0);
 			wait(2000)			
