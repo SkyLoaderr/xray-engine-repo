@@ -212,6 +212,7 @@ void CParticleEffect::Play()
 void CParticleEffect::Stop(bool bFinishPlaying)
 {
 	if (bFinishPlaying){
+		m_Flags.set		(flDefferedStop,TRUE);
     	pStopPlaying	(m_HandleActionList);
     }else{
     	m_Flags.set		(flPlaying,FALSE);
@@ -226,8 +227,10 @@ void CParticleEffect::RefreshShader()
 
 void CParticleEffect::ResetParticles()
 {
-	pSetMaxParticlesG	(m_HandleEffect,0);
-	pSetMaxParticlesG	(m_HandleEffect,m_Def->m_MaxParticles);
+	if (m_Def){
+        pSetMaxParticlesG	(m_HandleEffect,0);
+        pSetMaxParticlesG	(m_HandleEffect,m_Def->m_MaxParticles);
+    }
 }
 void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 {
@@ -279,7 +282,15 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 				vis.box.grow		(p_size);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 			}
+			vis.box.grow		(p_size);
+			vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
+            
+            if (m_Flags.is(flDefferedStop)&&(0==pg->p_count)){
+				m_Flags.set		(flPlaying|flDefferedStop,FALSE);
+                break;
+            }
 		}
+	    Log("Radius:",vis.sphere.R);
 	}
 }
 
@@ -419,13 +430,14 @@ void CParticleEffect::Render(float LOD)
 {
 	u32			vOffset;
 	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
-	FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4,hGeom->vb_stride,vOffset);
-	u32			dwCount		= RenderTO(pv);
-	VERIFY		(dwCount<=u32(pe->p_count*4));
-	RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
-	if (dwCount)    {
-		RCache.set_Geometry		(hGeom);
-		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCount,0,dwCount/2);
-	}
+    if (pe&&pe->p_count){
+        FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4,hGeom->vb_stride,vOffset);
+        u32			dwCount		= RenderTO(pv);
+        RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
+        if (dwCount)    {
+            RCache.set_Geometry		(hGeom);
+            RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCount,0,dwCount/2);
+        }
+    }
 }
 

@@ -80,6 +80,7 @@ public:
 public:
 	AnsiString			m_SourceText;
 	void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
+	void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified);
 	void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 #endif
 public:
@@ -157,6 +158,7 @@ public:
 
 	void				Play				();
     void				Stop				(bool bFinishPlaying=true);
+    BOOL				IsPlaying			(){return m_Flags.is(flPlaying);}
 };
 DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }
