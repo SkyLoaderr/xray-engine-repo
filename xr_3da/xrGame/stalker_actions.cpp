@@ -411,6 +411,9 @@ void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->CSightManager::clear();
+	m_object->CSightManager::add_action(xr_new<CSightAction>(SightManager::eSightTypePosition,m_object->m_best_found_item_to_kill->Position(),false,2000,1.f));
+	m_object->CSightManager::add_action(xr_new<CSightAction>(SightManager::eSightTypePosition,m_object->enemy()->Position(),false,2000,1.f));
 }
 
 void CStalkerActionGetItemToKill::finalize	()
@@ -436,7 +439,7 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->CSightManager::update	(SightManager::eSightTypePosition,&m_object->m_best_found_item_to_kill->Position());
+//	m_object->CSightManager::update	(SightManager::eSightTypePosition,&m_object->m_best_found_item_to_kill->Position());
 //	m_object->CSightManager::update	(SightManager::eSightTypeSearch);
 
 #ifdef OLD_OBJECT_HANDLER
