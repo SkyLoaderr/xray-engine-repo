@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "event_memory.h"
+#include "event_memory_manager.h"
 
 CEventMemoryManager::CEventMemoryManager		()
 {

@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "visual_memory.h"
+#include "visual_memory_manager.h"
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {

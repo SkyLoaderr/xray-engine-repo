@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "sound_memory.h"
+#include "sound_memory_manager.h"
 
 CSoundMemoryManager::CSoundMemoryManager		()
 {
