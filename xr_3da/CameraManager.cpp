@@ -12,7 +12,7 @@
 #include "xr_creator.h"
 
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "gamefont.h"
 
 float psCamInert		= 0.7f;
 float psCamSlideInert	= 0.25f;

@@ -29,9 +29,7 @@
 #include "..\xr_input.h"
 #include "..\x_ray.h"
 #include "..\std_classes.h"
-#include "..\xr_gamefont.h"
-#include "..\xr_smallfont.h"
-#include "..\xr_HUDFont.h"
+#include "..\GameFont.h"
 
 #include "..\NET_Server.h"
 #include "..\NET_Client.h"

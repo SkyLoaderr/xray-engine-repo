@@ -21,7 +21,7 @@
 
 // font
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "gamefont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -201,7 +201,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 		fs->Close();
 	}
 
-	// Load detail textures assotiation
+	// Load detail textures association
 	LPCSTR		Iname		= "gamedata\\textures\\textures.ltx";
 	if (Engine.FS.Exist(Iname))	
 	{

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "contextmenu.h"
 #include "..\xr_ini.h"
-#include "..\xr_gamefont.h"
   
 const float fade_speed = 8.0f;
 
@@ -26,7 +25,8 @@ void CContextMenu::Load(CInifile* INI, LPCSTR SECT){
 		Items.push_back(Item);
 	}
 }
-void CContextMenu::Render(CFontBase* F, DWORD cT, DWORD cI, float s){
+void CContextMenu::Render(CGameFont* F, DWORD cT, DWORD cI, float s)
+{
 	F->Size		(0.05f);
 	F->Color	(cT);
 	F->OutNext	("%s",Name);

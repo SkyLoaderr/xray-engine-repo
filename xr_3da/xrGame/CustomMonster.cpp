@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\xr_hudfont.h"
 #include "ai_console.h"
 #include "CustomMonster.h"
 #include "xr_weapon_list.h"

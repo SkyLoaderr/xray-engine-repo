@@ -12,7 +12,7 @@
 #include "render.h"
 
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "GameFont.h"
 
 const float W_TTL			= 30.f;
 const float W_DIST_FADE		= 15.f;

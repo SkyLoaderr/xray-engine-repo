@@ -20,7 +20,7 @@ public:
 public:
 				~CContextMenu	();
 	void		Load			(CInifile* INI, LPCSTR S);
-	void		Render			(CFontBase* F, DWORD cT, DWORD cI, float s);
+	void		Render			(CGameFont* F, DWORD cT, DWORD cI, float s);
 	void		Select			(int num);
 };
 #endif // __XR_CONTEXTMENU_H__

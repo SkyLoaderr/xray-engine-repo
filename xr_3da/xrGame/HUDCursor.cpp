@@ -94,7 +94,7 @@ void CHUDCursor::Render()
 		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
 		if (E && (E->g_Health()>0)) 
 		{
-			CFontSmall* F = Level().HUD()->pSmallFont;
+			CGameFont* F = Level().HUD()->pGameFont;
 			F->Color	(C);
 			F->Size		(0.02f);
 			F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());

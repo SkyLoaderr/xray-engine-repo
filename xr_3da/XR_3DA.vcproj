@@ -2123,28 +2123,10 @@
 				Name="Font output"
 				Filter="">
 				<File
-					RelativePath=".\XR_CustomFont.cpp">
+					RelativePath="GameFont.cpp">
 				</File>
 				<File
-					RelativePath=".\XR_CustomFont.h">
-				</File>
-				<File
-					RelativePath=".\XR_GameFont.cpp">
-				</File>
-				<File
-					RelativePath=".\XR_GameFont.h">
-				</File>
-				<File
-					RelativePath=".\XR_HUDFont.cpp">
-				</File>
-				<File
-					RelativePath=".\XR_HUDFont.h">
-				</File>
-				<File
-					RelativePath=".\XR_SmallFont.cpp">
-				</File>
-				<File
-					RelativePath=".\XR_SmallFont.h">
+					RelativePath="GameFont.h">
 				</File>
 			</Filter>
 			<Filter

@@ -2,7 +2,7 @@
 #define __X_RAY_H__
 
 // refs
-class ENGINE_API CFontSmall;
+class ENGINE_API CGameFont;
 
 // definition
 class ENGINE_API CApplication	:
@@ -27,7 +27,7 @@ private:
 	EVENT					eStartClient;
 	EVENT					eDisconnect;
 public:
-	CFontSmall*				pFont;
+	CGameFont*				pFont;
 
 	// Levels
 	vector<sLevelInfo>		Levels;

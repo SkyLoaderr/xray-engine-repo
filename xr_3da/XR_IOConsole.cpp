@@ -9,7 +9,7 @@
 #include "xr_input.h"
 #include "xr_ioc_cmd.h"
 #include "xr_sndman.h"
-#include "xr_smallfont.h"
+#include "GameFont.h"
 #include "xr_tokens.h"
 
 #define  LDIST .05f
@@ -38,7 +38,7 @@ void CConsole::Initialize()
 	bVisible		= false;
 	rep_time		= 0;
 
-	pFont			= new CFontSmall();
+	pFont			= new CGameFont	("font","fonts\\small",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	Device.seqDevDestroy.Add(this);
 
 	// Commands

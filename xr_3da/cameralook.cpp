@@ -3,7 +3,7 @@
 
 #include "x_ray.h"
 #include "xr_ini.h"
-#include "xr_smallfont.h"
+#include "GameFont.h"
 #include "CameraLook.h"
 #include "xr_object.h"
 #include "xr_creator.h"

@@ -7,7 +7,7 @@
 #include "xr_streamsnd.h"
 
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "GameFont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

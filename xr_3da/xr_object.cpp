@@ -11,7 +11,7 @@
 #include "lighttrack.h"
 
 #include "x_ray.h"
-#include "XR_SmallFont.h"
+#include "GameFont.h"
 
 void CObject::StatusBegin	()
 {

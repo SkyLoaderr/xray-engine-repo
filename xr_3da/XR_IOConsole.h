@@ -9,7 +9,7 @@
 #include "fcontroller.h"
 
 //refs
-class ENGINE_API CFontSmall;
+class ENGINE_API CGameFont;
 class ENGINE_API CConsoleCommand;
 
 class ENGINE_API CConsole  :
@@ -42,7 +42,7 @@ private:
 	BOOL			bRepeat;
 	BOOL			RecordCommands;
 
-	CFontSmall		*pFont;
+	CGameFont		*pFont;
 public:
 	string64		ConfigFile;
 	BOOL			bVisible;

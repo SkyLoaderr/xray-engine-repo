@@ -6,7 +6,7 @@
 #include "xr_ini.h"
 #include "render.h"
 #include "xr_sndman.h"
-#include "xr_smallfont.h"
+#include "gamefont.h"
 #include "xrLevel.h"
 
 CCreator::CCreator( ) 

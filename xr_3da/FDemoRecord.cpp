@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "gamefont.h"
 #include "fDemoRecord.h"
 #include "xr_ioconsole.h"
 #include "xr_creator.h"

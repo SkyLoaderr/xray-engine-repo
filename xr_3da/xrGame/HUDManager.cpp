@@ -13,9 +13,8 @@
 CHUDManager::CHUDManager()
 { 
 	Level().pHUD	= this;
-	pGameFont		= new CFontGame;
-	pSmallFont		= new CFontSmall;
-	pHUDFont		= new CFontHUD;
+	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_02",256,16,0);
+	pGameFont		= new CGameFont("font","ui\\ui_font_hud_02",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
@@ -28,9 +27,8 @@ CHUDManager::~CHUDManager()
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
 	_DELETE			(pUI);
-	_DELETE			(pGameFont);
-	_DELETE			(pSmallFont);
 	_DELETE			(pHUDFont);
+	_DELETE			(pGameFont);
 }
 //--------------------------------------------------------------------
 void CHUDManager::ClientToScreenScaled(Irect& r, DWORD align)
@@ -127,12 +125,9 @@ void CHUDManager::Render_Direct	()
 		// draw hit marker
 		HitMarker.Render();
 		
-		// font render
-		pSmallFont->OnRender	();
-		pGameFont->OnRender		();
-
 		// UI
 		bAlready = ! (pUI && !pUI->Render());
+		pGameFont->OnRender		();
 		pHUDFont->OnRender		();
 	}
 	if ((psHUD_Flags&HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
@@ -146,7 +141,7 @@ void CHUDManager::OnEvent(EVENT E, DWORD P1, DWORD P2)
 
 void CHUDManager::SetScale(float s){
 	fScale			= s;
-	pHUDFont->SetScale(fScale);
+	pHUDFont->Scale	(fScale);
 }
 
 void CHUDManager::OnDeviceCreate()

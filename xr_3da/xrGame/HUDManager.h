@@ -8,8 +8,6 @@
 #include "HUDCursor.h"
 
 // refs
-class CFontGame;
-class CFontSmall;
 class CContextMenu;
 class CHUDCursor;
 
@@ -30,9 +28,8 @@ private:
 	float					fScale;
 public:
 	// hud font
-	CFontGame*				pGameFont;
-	CFontSmall*				pSmallFont;
-	CFontHUD*				pHUDFont;
+	CGameFont*				pHUDFont;
+	CGameFont*				pGameFont;
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();

@@ -6,7 +6,7 @@
 
 #include "xr_creator.h"
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "GameFont.h"
 
 
 using namespace	Collide;

@@ -8,12 +8,12 @@
 
 #include "stats_timer.h"
 
-class ENGINE_API CFontHUD;
+class ENGINE_API CGameFont;
 
 class ENGINE_API CStats
 {
 public:
-	CFontHUD*	font;
+	CGameFont*	font;
 
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
 	DWORD		dwShader_Codes;		// Number of times the shader-code changes

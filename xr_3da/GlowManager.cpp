@@ -10,7 +10,7 @@
 
 // font
 #include "x_ray.h"
-#include "xr_smallfont.h"
+#include "GameFont.h"
 
 // breakpoints
 #include "xr_input.h"

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "xr_hudfont.h"
+#include "GameFont.h"
 #pragma hdrstop
 
 //////////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ void CStats::Show()
 		r_ps						= .99f*r_ps + .01f*(clRAY.count/clRAY.result);
 		b_ps						= .99f*b_ps + .01f*(clBOX.count/clBOX.result);
 		
-		CFontHUD&	F = *((CFontHUD*)font);
+		CGameFont&	F = *((CGameFont*)font);
 		F.Color		(0xFFFFFFFF	);
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
@@ -213,7 +213,7 @@ void CStats::Show()
 
 void CStats::OnDeviceCreate			()
 {
-	font	= new CFontHUD			();
+	font	= new CGameFont			("font","fonts\\font_hud",128,16,0);
 }
 void CStats::OnDeviceDestroy		()
 {
