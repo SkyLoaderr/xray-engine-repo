@@ -87,10 +87,10 @@ function main()
 			)
 			wait		(1500)			
                 	break		
-		end
-		wait()			
 			stalker1:script	(false, script_01.script_name())
 			stalker2:script	(false, script_01.script_name())
+		end
+		wait()			
 	end
 
 	while true do		
