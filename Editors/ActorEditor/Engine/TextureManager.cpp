@@ -259,7 +259,7 @@ R_constant_table*	CShaderManager::_CreateConstantTable(R_constant_table* ps, R_c
 }
 
 //--------------------------------------------------------------------------------------------------------------
-CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h)
+CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 {
 	R_ASSERT(Name && Name[0] && w && h);
 
@@ -277,8 +277,8 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h)
 		CRT *RT				=	xr_new<CRT>();
 		RT->dwReference		=	1;
 		m_rtargets.insert		(make_pair(xr_strdup(Name),RT));
-		if (Device.bReady)	RT->Create	(Name,w,h);
-		return		RT;
+		if (Device.bReady)	RT->Create	(Name,w,h,f);
+		return				RT;
 	}
 }
 void	CShaderManager::_DeleteRT		(CRT* &RT)
@@ -310,7 +310,7 @@ void	CShaderManager::DBG_VerifyGeoms	()
 	}
 }
 
-SGeometry*	CShaderManager::CreateGeom		(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
+SGeometry*	CShaderManager::CreateGeom	(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
 	DBG_VerifyGeoms						();
 	R_ASSERT							(decl && vb);

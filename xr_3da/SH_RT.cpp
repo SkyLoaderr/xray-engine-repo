@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-void CRT::Create	(LPCSTR Name, u32 w, u32 h)
+void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
 	HRESULT		_hr;
+
+	dwWidth		= w;
+	dwHeight	= h;
+	fmt			= f;
 
 	// Get caps
 	D3DCAPS9	caps;
@@ -27,13 +31,13 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h)
 		HW.Caps.fTarget,
 		D3DUSAGE_RENDERTARGET,
 		D3DRTYPE_TEXTURE,
-		HW.Caps.fTarget
+		f
 		);
 	if (FAILED(_hr))					return;
 
 	// Try to create texture/surface
-	Device.Shader.Evict				();
-	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, HW.Caps.fTarget, D3DPOOL_DEFAULT, &pSurface,NULL);
+	Device.Shader.Evict					();
+	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
@@ -44,8 +48,8 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h)
 
 void CRT::Destroy()
 {
-	pTexture->surface_set		(0);
-	Device.Shader._DeleteTexture(pTexture);
+	pTexture->surface_set				(0);
+	Device.Shader._DeleteTexture		(pTexture);
 	_RELEASE	(pRT		);
 	_RELEASE	(pSurface	);
 }

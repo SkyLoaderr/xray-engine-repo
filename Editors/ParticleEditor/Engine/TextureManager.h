@@ -97,7 +97,7 @@ public:
 
 	R_constant_table*				_CreateConstantTable(R_constant_table* ps, R_constant_table* vs);
 
-	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h);
+	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f);
 	void							_DeleteRT			(CRT* &RT	);
 
 	SPS*							_CreatePS			(LPCSTR Name);
