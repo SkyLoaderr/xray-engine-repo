@@ -353,10 +353,10 @@ VOID CDeflector::Light()
 	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
 		const DWORD rms		= 4;
-		DWORD _r, _g, _b, _count, x,y;
+		DWORD _r, _g, _b, _count;
 
 		// Averarge color
-		_count	= rms_average(lm_new,_r,_g,_b);
+		_count	= rms_average(lm,_r,_g,_b);
 
 		if (0==_count)	{
 			Msg("* ERROR: Lightmap not calculated (T:%d)",tris.size());
@@ -367,11 +367,10 @@ VOID CDeflector::Light()
 		}
 		
 		// Compress if needed
-		if (rms_test(lm_new,_r,_g,_b,rms))
+		if (rms_test(lm,_r,_g,_b,rms))
 		{
 			Msg		("*** ZERO compress");
 			_FREE	(lm.pSurface);		// release OLD
-			_FREE	(lm_new.pSurface);	// ... and new
 			DWORD	c_x			= BORDER*2;
 			DWORD	c_y			= BORDER*2;
 			DWORD   c_size		= c_x*c_y;
@@ -424,5 +423,5 @@ VOID CDeflector::Light()
 	ApplyBorders	(lm,253);
 	ApplyBorders	(lm,252);
 	ApplyBorders	(lm,251);
-	for	(DWORD ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+	for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 }
