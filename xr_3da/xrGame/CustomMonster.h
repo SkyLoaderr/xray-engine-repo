@@ -211,6 +211,7 @@ public:
 	virtual	void		soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
+	CWeaponList			*tpfGetWeapons			(){return Weapons;}
 };
 
 namespace AI{
