@@ -147,7 +147,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 			}
 		}
 	}
-	
+	 
 	// Sort lights by importance
 	std::sort(lights.begin(),lights.end(), pred_energy);
 }
