@@ -25,6 +25,15 @@
 #include "xrCDB.h"
 #include "_d3d_extensions.h"
 
+// for merging spawns
+#include <dplay8.h>
+#include "clsid_game.h"
+#include "..\\xr_ini.h"
+#include "..\\device.h"
+#include "..\\net_server.h"
+#include "..\\net_client.h"
+
+
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

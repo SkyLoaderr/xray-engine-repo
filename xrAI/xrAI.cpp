@@ -3,9 +3,11 @@
 
 #include "stdafx.h"
 #include "process.h"
+#include "xr_ini.h"
+
 #include "xrGraph.h"
 #include "xr_graph_merge.h"
-#include "xr_ini.h"
+#include "xr_spawn_merge.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 

@@ -429,7 +429,3 @@ void xrBuildGraph(LPCSTR name)
 	
 	Msg("\nBuilding level %s successfully completed",name);
 }
-
-void xrMergeSpawns()
-{
-}
