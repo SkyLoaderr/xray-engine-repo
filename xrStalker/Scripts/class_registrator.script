@@ -1,7 +1,7 @@
 if (editor() == false) then
 --module ("ce_switcher")
 --module ("main_menu")
-module ("ui_main_menu")
+--module ("ui_main_menu")
 
 //	module	("ce_new_attachable_item")
 end
