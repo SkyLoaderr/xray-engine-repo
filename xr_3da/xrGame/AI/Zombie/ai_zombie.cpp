@@ -30,7 +30,11 @@ CAI_Zombie::CAI_Zombie()
 	m_dwLastRangeSearch = 0;
 	m_dwLastSuccessfullSearch = 0;
 	m_bLessCoverLook = false;
-	r_spine_speed = r_torso_speed = q_look.o_look_speed = _FB_look_speed;
+	//////////////////////////////////////////////////////////////////////////
+	// r_spine_speed = r_torso_speed = q_look.o_look_speed = _FB_look_speed;
+	// Actually I don't understand why?? it is a feature of the vc.net
+	//////////////////////////////////////////////////////////////////////////
+	r_spine_speed = r_torso_speed = q_look.o_look_speed = PI;//_FB_look_speed;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;

@@ -45,7 +45,8 @@ CCustomMonster::CCustomMonster()
 	tWatchDirection = Direction();
 	m_cBodyState = BODY_STATE_STAND;
 	r_torso_speed = PI;
-	r_spine_speed = PI_DIV_2;
+	r_spine_speed = PI;
+	q_look.o_look_speed = PI;
 }
 
 CCustomMonster::~CCustomMonster()
