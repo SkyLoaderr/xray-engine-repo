@@ -1,3 +1,10 @@
+[stalker_step_section]
+; order: left, right
+;--------------------------------------------------------------------------
+;	anim			Cycles	| time1 | power1 | time2 | power2 | 
+;--------------------------------------------------------------------------
+;stand_drag_0		=	1,	  0.2,	    1,	   0.25,     0.7,   
+
 [m_stalker_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor
@@ -31,6 +38,8 @@ attachable_items		= device_torch,attachable_item,hand_radio
 ; 4 - паника
 ; 5 - прятаться от врага
 ; 6 - обходить врага
+
+step_section		 = stalker_step_section
 
 cform                        = skeleton			; collision class
 class                        = AI_STL			; AI class
