@@ -500,15 +500,7 @@ SOURCE=.\tss_def.h
 # Begin Source File
 
 SOURCE=.\Blenders\blender_complex2.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
 # PROP Exclude_From_Build 1
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
