@@ -20,17 +20,6 @@ void transfer(const char *name, xr_vector<T> &dest, IReader& F, u32 chunk)
 extern u32*		Surface_Load	(char* name, u32& w, u32& h);
 extern void		Surface_Init	();
 
-/*
-xr_vector<R_Layer>*	CBuild::LLayer_by_name	(LPCSTR N)
-{
-for (u32 L=0; L<L_layers.size(); L++)
-{
-if (0==stricmp(L_layers[L].control.name,N))	return &(L_layers[L].lights);
-}
-return 0;
-}
-*/
-
 struct R_Control
 {
 	string64				name;
@@ -264,7 +253,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			}
 		}
 		clMsg	("*lighting*: HEMI:   %d lights",L_static.hemi.size());
-		clMsg	("*lighting*: SUN:	  %d lights",L_static.sun.size());
+		clMsg	("*lighting*: SUN:    %d lights",L_static.sun.size());
 		clMsg	("*lighting*: STATIC: %d lights",L_static.rgb.size());
 		R_ASSERT(L_static.hemi.size());
 		R_ASSERT(L_static.sun.size());
@@ -272,6 +261,16 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 		// Dynamic
 		transfer("d-lights",	L_dynamic,			fs,		EB_Light_dynamic);
+
+		// Saving
+		{
+			string256			fn;
+			IWriter*		fs	= FS.w_open	(strconcat(fn,pBuild->path,"build.lights"));
+			fs->w_chunk			(0,&*L_static.rgb.begin(),L_static.rgb.size()*sizeof(R_Light));
+			fs->w_chunk			(1,&*L_static.hemi.begin(),L_static.hemi.size()*sizeof(R_Light));
+			fs->w_chunk			(2,&*L_static.sun.begin(),L_static.sun.size()*sizeof(R_Light));
+			FS.w_close			(fs);
+		}
 	}
 	
 	// process textures
