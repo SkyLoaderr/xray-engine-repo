@@ -10,7 +10,7 @@ function trader_alredy_give_job(trader, actor)
 	   actor:has_info("tutorial_wounded_start") or
 	   actor:has_info("escape_artefact_start") or actor:has_info("escape_artefact_gain") or
 	   actor:has_info("escape_stalker_meet") or actor:has_info("escape_stalker_give") or
-	   actor:has_info("escape_blockpost_case") or actor:has_info("escape_blockpost_have")
+	   actor:has_info("escape_blockpost_case") or actor:has_info("escape_blockpost_case_have")
 	then
 		return true
 	end
