@@ -15,11 +15,20 @@ public:
     {
 		_vector<T> Q;	Q.sub(P,S);
 	
-		T c = Q.magnitude	();
-		T v = Q.dotproduct	(D);
-		T d = R*R - (c*c - v*v);
-		if ((d>0) && (d<range)){ range = d; return TRUE;}else return FALSE;
-    }
+		T c2	= Q.square_magnitude	();
+		T v		= Q.dotproduct			(D);
+		T d		= R*R - (c2 - v*v);
+
+		if		(d > 0.f)
+		{
+			T _range	= v - _sqrt(d);
+			if (_range<range)	{
+				range = _range;
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 	IC BOOL		intersect(const _vector<T>& S, const _vector<T>& D)	
 	{
 		_vector<T> Q;	Q.sub(P,S);
