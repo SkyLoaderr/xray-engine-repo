@@ -37,7 +37,12 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	}
 	AI_NodeID			= DWORD(node);
 	AI_Node				= Level().AI.Node(AI_NodeID);
-	AI_Lighting			= (AI_Node?float(AI_Node->light):255);
+	if (AI_Node)	{
+		AI_Lighting			= float(AI_Node->light);
+	} else {
+		AI_Lighting			= 255.f;
+	}
+	
 	return	bResult;
 }
 

@@ -28,9 +28,6 @@ namespace AI {
 		// Return: min - best, max - worse
 		virtual	float	Estimate	(NodeCompressed* Node, float SqrDist, BOOL& bStop)=0;
 	};
-	class	NodeHeuristic
-	{
-	};
 
 	const int	hashSize	= 32;
 
@@ -51,7 +48,7 @@ private:
 	NodeCompressed**				m_nodes_ptr;	// pointers to node's data
 
 	// Query
-	vector<bool>					q_mark;			// temporal usage mark for queries
+	vector<BYTE>					q_mark;			// temporal usage mark for queries
 	CList<DWORD>					q_stack;
 	
 	// Debug
@@ -102,6 +99,16 @@ public:
 		clamp	(px,-32767,32767);	Pdest.x = s16	(px);
 		clamp	(py,0,     65535);	Pdest.y = u16	(py);
 		clamp	(pz,-32767,32767);	Pdest.z = s16	(pz);
+	}
+
+	// REF-counting
+	IC  void		ref_add			(DWORD ID)
+	{
+		if (vfs)	q_mark[ID] += 1;
+	}
+	IC	void		ref_dec			(DWORD ID)
+	{
+		if (vfs)	q_mark[ID] -= 1;
 	}
 
 	// Utilities
