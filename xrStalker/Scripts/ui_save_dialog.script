@@ -309,8 +309,9 @@ function save_dialog:AddItemToList(item)
 	--local color = GetARGB(255,0,255,255)
 	--local parse = true
 	
-	local new_item = CUIListItemEx();
+	local new_item = CUIListItemEx()
 	new_item:SetText(item)
+	new_item:SetFont(GetFontLetterica25())
 	new_item:SetPerformTextLimit(true)
 	
 	--list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
