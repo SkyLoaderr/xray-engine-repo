@@ -430,6 +430,9 @@
 					RelativePath=".\Config\misc\gulag_garbage.ltx">
 				</File>
 				<File
+					RelativePath=".\config\misc\gulag_military.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_radar.ltx">
 				</File>
 				<File
