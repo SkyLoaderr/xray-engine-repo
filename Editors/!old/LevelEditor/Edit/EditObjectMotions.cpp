@@ -210,7 +210,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
     if (0==stricmp(ext,".skl")){
         CSMotion* M = xr_new<CSMotion>();
         if (!M->LoadMotion(fname)){
-            ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
+            ELog.Msg(mtError,"Motion '%s' can't load. Append failed.",fname);
             xr_delete(M);
             bRes = false;
         }else{
@@ -226,7 +226,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
                 // optimize
                 M->Optimize			();
             }else{
-                ELog.DlgMsg(mtError,"Append failed.",fname);
+                ELog.Msg(mtError,"Append failed.",fname);
                 xr_delete(M);
 	            bRes = false;
             }
@@ -234,7 +234,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
     }else if (0==stricmp(ext,".skls")){
         IReader* F	= FS.r_open(fname);
         if (!F){ 
-        	ELog.DlgMsg(mtError,"Can't open file '%s'.",fname);
+        	ELog.Msg(mtError,"Can't open file '%s'.",fname);
             bRes = false;
     	}
         if (bRes){
@@ -243,7 +243,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
             for (int k=0; k<cnt; k++){
                 CSMotion* M	= xr_new<CSMotion>();
                 if (!M->Load(*F)){
-                    ELog.DlgMsg(mtError,"Motion '%s' has different version. Load failed.",M->Name());
+                    ELog.Msg(mtError,"Motion '%s' has different version. Load failed.",M->Name());
                     xr_delete(M);
                     bRes = false;
                     break;
