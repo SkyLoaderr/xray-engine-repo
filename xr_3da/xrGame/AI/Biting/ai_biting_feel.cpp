@@ -49,6 +49,8 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if (!g_Alive())
 		return;
 
+	Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+
 #ifdef IGNORE_ACTOR
 	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
 		return;

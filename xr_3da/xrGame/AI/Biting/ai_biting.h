@@ -12,7 +12,7 @@
 #include "..\\ai_monsters_misc.h"
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
-//#include "ai_biting_mem.h"
+#include "ai_biting_mem.h"
 
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
@@ -363,7 +363,7 @@ private:
 	
 	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 	
-	//CMonsterMemory			Mem;
+	CMonsterMemory			Mem;
 	
 	//	IState					*CurrentState;
 //

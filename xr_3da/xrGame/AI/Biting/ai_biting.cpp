@@ -125,14 +125,14 @@ void CAI_Biting::Init()
 	m_dwEnemyMemoryTime				= 5000;  
 	m_dwEnemyLastMemoryTime			= 0;
 
-	//Mem.Init();
+	Mem.Init(5000,5000,this);
 }
 
 void CAI_Biting::Die()
 {
 	inherited::Die( );
 
-	//Mem.Deinit();
+	Mem.Deinit();
 
 
 	Fvector	dir;

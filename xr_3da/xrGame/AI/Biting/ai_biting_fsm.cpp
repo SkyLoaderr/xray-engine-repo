@@ -606,7 +606,8 @@ void CAI_Biting::Think()
 //	}
 //	return;
 
-
+	Mem.UpdateMemory();
+	Mem.ShowDbgInfo();
 
 
 
