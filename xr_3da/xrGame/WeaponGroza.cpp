@@ -172,44 +172,21 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 		break;
 	case eFire:
 		{
-			fTime-=dt;
-			Fvector p1, d;
+			VERIFY		(m_pParent);
+			fTime		-=dt;
+			Fvector		p1, d;
 			m_pParent->g_fireParams(p1,d);
 			
 			while (fTime<0)
 			{
-				// bullet_trace
-				{
-					UpdateFP	(bHUDView);
-					Fvector		end;
-					end.direct	(vLastFP,vLastFD,100.f);
-					Fcolor		c; c.set(1,1,1,1);
-					Level().Tracers.Add(vLastFP,end,300,0.5f,1,c);
-				}
-				
-				bFlame	= TRUE;
-				VERIFY(m_pParent);
-				fTime+=fTimeToFire;
+				bFlame			= TRUE;
+				fTime			+=fTimeToFire;
 
-				// real fire
-				Collide::ray_query RQ;
-				if (FireTrace( p1, d, RQ )){
-					if (RQ.O)
-					{
-						if (RQ.O->CLS_ID == CLSID_ENTITY)
-						{
-							CEntity* E = (CEntity*)RQ.O;
-							E->Hit	(iHitPower,d,m_pParent);
-						}
-					} else {
-						Fvector end; end.direct(p1,d,RQ.range);
-						AddShotmark(d,end,RQ);
-					}
-					iAmmoElapsed--;
-				}
-				
+				UpdateFP		(bHUDView);
+				FireTrace		(p1,vLastFP,d);
+				iAmmoElapsed	--;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
-				m_pHUD->Shoot();
+				m_pHUD->Shoot	();
 			}
 
 			// sound fire loop

@@ -291,28 +291,14 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			fTime-=dt;
 			Fvector p1, d;
 			m_pParent->g_fireParams(p1,d);
+
 			while (fTime<0)
 			{
-				VERIFY(m_pParent);
-				fTime+=fTimeToFire;
-				
-				// real fire
-				Collide::ray_query RQ;
-				if (FireTrace( p1, d, RQ ))
-				{
-					if (RQ.O){
-						if (m_pParent->Local()&&(RQ.O->CLS_ID==CLSID_ENTITY))
-						{
-							CEntity* E = (CEntity*)RQ.O;
-							E->Hit	(iHitPower,d,m_pParent);
-						}
-					} else {
-						Fvector end; end.direct(p1,d,RQ.range);
-						AddShotmark	(d,end,RQ);
-					}
-					iAmmoElapsed--;
-				}
-				
+				fTime			+=fTimeToFire;
+
+				UpdateFP		(bHUDView);
+				FireTrace		(p1,vLastFP,d);
+				iAmmoElapsed	--;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 			}
 

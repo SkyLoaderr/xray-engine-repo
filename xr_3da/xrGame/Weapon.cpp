@@ -113,8 +113,10 @@ void CWeapon::AddShotmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray
 	);
 }
 
-BOOL CWeapon::FireTrace(Fvector& P, Fvector& D, Collide::ray_query& R)
+BOOL CWeapon::FireTrace(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
+	Collide::ray_query	RQ;
+
 	// direct it by dispersion factor
 	Fvector				dir;
 	dir.random_dir		(D,fireDispersion,Random);
@@ -123,7 +125,27 @@ BOOL CWeapon::FireTrace(Fvector& P, Fvector& D, Collide::ray_query& R)
 	m_pParent->bEnabled = false;
 	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, R );
 	m_pParent->bEnabled = true;
-
 	D					= dir;
+
+	// ...analyze
+	Fvector end_point; 
+	end_point.direct	(P,D,RQ.range);
+	if (bResult)
+	{
+		if (RQ.O) {
+			if (m_pParent->Local() && (RQ.O->CLS_ID==CLSID_ENTITY))
+			{
+				CEntity* E =	(CEntity*)RQ.O;
+				E->Hit			(iHitPower,D,m_pParent);
+			}
+		} else {
+			FireShotmark		(D,end_point,RQ);
+		}
+	}
+
+	// tracer
+	Fcolor		c; c.set(1,1,1,1);
+	Level().Tracers.Add(Peff,end_point,300,0.5f,1,c);
+
 	return				bResult;
 }

@@ -160,42 +160,27 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 			fTime-=dt;
 			Fvector p1_base, d_base;
 			m_pParent->g_fireParams(p1_base,d_base);
+			
 			while (fTime<0)
 			{
+				fTime			+=fTimeToFire;
+				UpdateFP		(bHUDView);
+
 				// play smoke
-				m_pShootPS->Stop();
+				m_pShootPS->Stop		();
 				m_pShootPS->m_Emitter.m_ConeDirection.set	(vLastFD);
-				m_pShootPS->PlayAtPos(vLastFP);
+				m_pShootPS->PlayAtPos	(vLastFP);
 
-				// real shoot
-				VERIFY(m_pParent);
-				fTime+=fTimeToFire;
-				
-				bool bHit = false;
-				Fvector vEnd; 
-				for (int i=0; i<iShotCount; i++){
-					// real fire
-					Collide::ray_query RQ;
+				BOOL			bHit = FALSE;
+				for (int i=0; i<iShotCount; i++)
+				{
 					Fvector p1=p1_base, d=d_base;
-					if (FireTrace( p1, d, RQ )){
-						if (RQ.O){
-							if (RQ.O->CLS_ID == CLSID_ENTITY)
-							{
-								CEntity* E = (CEntity*)RQ.O;
-								E->Hit	(iHitPower,d,m_pParent);
-							}
-						} else {
-							vEnd.direct(p1,d,RQ.range);
-							AddShotmark(d,vEnd,RQ);
-							bHit = true;
-						}
-					}
+					bHit |=		FireTrace(p1,vLastFP,d);
 				}
-				if (bHit) pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
-				iAmmoElapsed--;
-
+				if (bHit)		pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+				iAmmoElapsed	--;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
-				m_pHUD->Shoot();
+				m_pHUD->Shoot	();
 			}
 
 			// sound fire loop
