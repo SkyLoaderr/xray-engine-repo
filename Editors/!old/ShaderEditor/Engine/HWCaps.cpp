@@ -47,7 +47,7 @@ void CHWCaps::Update()
 	raster.op_reg_TEMP			= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
 
 	// ***************** Compatibility : vertex shader
-	if (0==raster.dwVersion)	geometry.dwVersion=0;				// Disable VS if no PS
+	if (0==raster.dwVersion_major)	geometry.dwVersion_major=0;		// Disable VS if no PS
 #ifdef _EDITOR
 	geometry.dwVersion	= 0;
 #endif
