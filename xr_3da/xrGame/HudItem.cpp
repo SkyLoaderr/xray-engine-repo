@@ -236,7 +236,6 @@ void CHudItem::UpdateCL()
 
 	if(m_pHUD) 
 		m_pHUD->UpdateHud();
-
 	UpdateHudPosition	();
 }
 
@@ -245,7 +244,7 @@ void CHudItem::OnH_A_Chield		()
 	hud_mode = FALSE;
 	
 	if (m_pHUD) {
-		if(Level().CurrentEntity() == H_Parent())
+		if(Level().CurrentEntity() == H_Parent() && dynamic_cast<CActor*>(H_Parent()))
 			m_pHUD->SetCurrentEntityHud(true);
 		else
 			m_pHUD->SetCurrentEntityHud(false);
