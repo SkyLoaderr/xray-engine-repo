@@ -86,7 +86,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	if(init_default_profile)
 	{
 		CharacterInfo().m_sGameName = pThis->cName();
-		CEntity* pEntity = dynamic_cast<CEntity*>(pThis);
+		CEntity*		 pEntity = dynamic_cast<CEntity*>(pThis);
 		VERIFY(pEntity);
 		CharacterInfo().m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_iIconY = pEntity->GetTradeIconY();
