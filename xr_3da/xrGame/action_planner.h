@@ -54,37 +54,38 @@ public:
 	typedef CGraphEngine::CWorldState				CWorldState;
 
 protected:
-	bool					m_initialized;
-	_action_id_type			m_current_action_id;
+	bool						m_initialized;
+	_action_id_type				m_current_action_id;
 
 #ifdef LOG_ACTION
 public:
-	bool					m_use_log;
-	string64				m_temp_string;
+	bool						m_use_log;
+	string64					m_temp_string;
 #endif
 
 public:
-	_object_type			*m_object;
-	CPropertyStorage		m_storage;
+	_object_type				*m_object;
+	CPropertyStorage			m_storage;
 
 public:
-							CActionPlanner			();
-	virtual					~CActionPlanner			();
-			void			init					();
-	virtual	void			Load					(LPCSTR section);
-	virtual	void			reinit					(_object_type *object, bool clear_all = false);
-	virtual	void			reload					(LPCSTR section);
-	virtual	void			update					();
-	IC		COperator		&action					(const _action_id_type &action_id);
-	IC		_action_id_type	current_action_id		() const;
-	IC		COperator		&current_action			();
-	IC		bool			initialized				() const;
-	IC		void			add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
-	IC		void			add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
+								CActionPlanner			();
+	virtual						~CActionPlanner			();
+			void				init					();
+	virtual	void				Load					(LPCSTR section);
+	virtual	void				reinit					(_object_type *object, bool clear_all = false);
+	virtual	void				reload					(LPCSTR section);
+	virtual	void				update					();
+	IC		COperator			&action					(const _action_id_type &action_id);
+	IC		CConditionEvaluator	&evaluator				(const _condition_type &evaluator_id);
+	IC		_action_id_type		current_action_id		() const;
+	IC		COperator			&current_action			();
+	IC		bool				initialized				() const;
+	IC		void				add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
+	IC		void				add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 #ifdef LOG_ACTION
-	virtual LPCSTR			action2string			(const _action_id_type &action_id);
-	virtual LPCSTR			property2string			(const _condition_type &action_id);
-	virtual LPCSTR			object_name				() const;
+	virtual LPCSTR				action2string			(const _action_id_type &action_id);
+	virtual LPCSTR				property2string			(const _condition_type &action_id);
+	virtual LPCSTR				object_name				() const;
 #endif
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
