@@ -55,4 +55,7 @@ typedef							_vector4<s32>		Ivector4;
 	typedef __declspec(align(16))	_vector4<s32>		Ivector4a;
 #endif
 
+template <class T>
+BOOL	_valid			(_vector4<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y) && _valid((T)v.z) && _valid((T)v.w);	}
+
 #endif

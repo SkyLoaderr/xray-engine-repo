@@ -32,7 +32,7 @@ public:
 	typedef _matrix<T>	Self;
 	typedef Self&		SelfRef;
 	typedef const Self&	SelfCRef;
-	typedef _vector<T>	Tvector;
+	typedef _vector3<T>	Tvector;
 public:
 	union {
 		struct {						// Direct definition

@@ -69,6 +69,9 @@ public:
 typedef _sphere<float>	Fsphere;
 typedef _sphere<double> Dsphere;
 
+template <class T>
+BOOL	_valid			(_sphere<T>& s)		{ return _valid(s.P) && _valid(s.R);	}
+
 void	XRCORE_API		Fsphere_compute		(Fsphere& dest, const Fvector *verts, int count);
 
 #endif

@@ -7,10 +7,10 @@
 #endif
 
 template <class T>
-struct _vector {
+struct _vector3 {
 public:
 	typedef T			TYPE;
-	typedef _vector<T>	Self;
+	typedef _vector3<T>	Self;
 	typedef Self&		SelfRef;
 	typedef const Self&	SelfCRef;
 public:
@@ -21,8 +21,8 @@ public:
 	IC	T&			operator[] (int i)	const			{ return *((T*)this + i); }
 
 	IC	void	set(T _x, T _y, T _z)					{ x = _x;		y = _y;		z = _z;		};
-	IC  void	set(const _vector<float> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	};
-	IC  void	set(const _vector<double> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	};
+	IC  void	set(const _vector3<float> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	};
+	IC  void	set(const _vector3<double> &v)			{ x = T(v.x);	y = T(v.y);	z = T(v.z);	};
 	IC	void	set(float* p)							{ x = p[0];	y = p[1];	z = p[2];	};
 	IC	void	set(double* p)							{ x = p[0];	y = p[1];	z = p[2];	};
 
@@ -257,7 +257,7 @@ public:
 
     IC void		mknormal_non_normalized	(const Self &p0, const Self & p1, const Self &p2 )
 	{
-    	_vector v01,v12;
+    	_vector3<T> v01,v12;
     	v01.sub( p1, p0 );
     	v12.sub( p2, p1 );
     	crossproduct( v01, v12 );
@@ -298,7 +298,7 @@ public:
 	IC	void	slide(const Self& dir, const Self& norm){	// non normalized
 		mad(dir,norm,-dir.dotproduct(norm));
 	}
-    IC static void generate_orthonormal_basis(const _vector& dir, _vector& up, _vector& right)
+    IC static void generate_orthonormal_basis(const _vector<T>& dir, _vector<T>& up, _vector<T>& right)
     {
         T fInvLength;
 
@@ -321,11 +321,14 @@ public:
         right.crossproduct(dir,up); //. <->
     }
 };
-typedef _vector<float>	Fvector;
-typedef _vector<float>	Fvector3;
-typedef _vector<double> Dvector;
-typedef _vector<double> Dvector3;
-typedef _vector<s32>	Ivector;
-typedef _vector<s32>	Ivector3;
+typedef _vector3<float>		Fvector;
+typedef _vector3<float>		Fvector3;
+typedef _vector3<double>	Dvector;
+typedef _vector3<double>	Dvector3;
+typedef _vector3<s32>		Ivector;
+typedef _vector3<s32>		Ivector3;
+
+template <class T>
+BOOL	_valid			(_vector3<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y) && _valid((T)v.z);	}
 
 #endif

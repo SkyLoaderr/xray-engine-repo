@@ -204,25 +204,6 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 
 BOOL			f_valid					(float f)		{	return _finite(f) && !_isnan(f);	}
 
-BOOL			f_valid2				(float f)
-{
-	int			cls			= _fpclass		(double(f));
-	if (cls&_FPCLASS_SNAN)	return FALSE;	// Signaling NaN
-	if (cls&_FPCLASS_QNAN)	return FALSE;	// Quiet NaN
-	if (cls&_FPCLASS_NINF)	return FALSE;	// Negative infinity ( –INF)
-	if (cls&_FPCLASS_ND)	return FALSE;	// Negative denormalized
-	if (cls&_FPCLASS_PD)	return FALSE;	// Positive denormalized
-	if (cls&_FPCLASS_PINF)	return FALSE;	// Positive infinity (+INF)
-
-	/*
-	_FPCLASS_NN Negative normalized non-zero 
-	_FPCLASS_NZ Negative zero ( – 0) 
-	_FPCLASS_PZ Positive 0 (+0) 
-	_FPCLASS_PN Positive normalized non-zero 
-	*/
-	return		TRUE;
-}
-
 void			ISpatial_DB::insert		(ISpatial* S)
 {
 	VERIFY		(!lock);

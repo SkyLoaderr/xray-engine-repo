@@ -1,63 +1,69 @@
 #ifndef _PLANE
 #define _PLANE
 
-class Fplane {
+template <class T>
+class _plane {
 public:
-	Fvector		n;
-	float		d;
+	typedef T			TYPE;
+	typedef _plane<T>	Self;
+	typedef Self&		SelfRef;
+	typedef const Self&	SelfCRef;
 public:
-	IC	void	set		(Fplane &P)
+	_vector3<T>	n;
+	T			d;
+public:
+	IC	void	set		(Self &P)
 	{
-		n.set(P.n);
-		d = P.d;
+		n.set	(P.n);
+		d		= P.d;
 	}
-    IC BOOL 	similar (Fplane &P, float eps_n=EPS, float eps_d=EPS){
+    IC	 BOOL 	similar (Self &P, T eps_n=EPS, T eps_d=EPS){
     	return (n.similar(P.n,eps_n)&&(_abs(d-P.d)<eps_d));
     }
-	IC	void	build	(const Fvector &v1, const Fvector &v2, const Fvector &v3) {
-		Fvector t1,t2;
+	IC	void	build	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) {
+		_vector3<T> t1,t2;
 		t1.sub(v1,v2);
 		t2.sub(v1,v3);
 		n.crossproduct(t1,t2);
 		n.normalize   ();
 		d = -n.dotproduct(v1);
 	}
-	IC	void	build(const Fvector &_p, const Fvector &_n)
+	IC	void	build(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
-		n.normalize(_n);
-		d = - n.dotproduct(_p);
+		n.normalize	(_n);
+		d			= - n.dotproduct(_p);
 	}
-	IC	void	build_unit_normal(const Fvector &_p, const Fvector &_n)
+	IC	void	build_unit_normal(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
-		VERIFY(fsimilar(_n.magnitude(),1,EPS));
-		n.set(_n);
-		d = - n.dotproduct(_p);
+		VERIFY		(fsimilar(_n.magnitude(),1,EPS));
+		n.set		(_n);
+		d			= - n.dotproduct(_p);
 	}
-	IC	void	project(Fvector &pdest, Fvector &psrc)
+	IC	void	project(_vector3<T> &pdest, _vector3<T> &psrc)
 	{
-		float dist = classify(psrc);
+		T dist		= classify(psrc);
 		pdest.mad	(psrc,n,-dist);
 	}
-	IC	float	classify(const Fvector &v) const	{
+	IC	T		classify(const _vector3<T> &v) const	{
 		return n.dotproduct(v)+d;
 	}
 	IC	void	normalize() {
-		float denom = 1.f / n.magnitude();
+		T denom = 1.f / n.magnitude();
 		n.mul(denom);
 		d*=denom;
 	}
-	IC	float	classify_inv(const Fvector &v) {
+	IC	T	classify_inv(const _vector3<T> &v) {
 		return -classify(v);
 	}
 
-	IC	float	distance(const Fvector &v)	{
+	IC	T	distance(const _vector3<T> &v)	{
 		return _abs(classify(v));
 	}
 
-	IC BOOL intersectRayDist(const Fvector& P, const Fvector& D, float& dist)
+	IC BOOL intersectRayDist(const _vector3<T>& P, const _vector3<T>& D, T& dist)
 	{
-		float numer = classify(P);
-		float denom = n.dotproduct(D);
+		T numer = classify(P);
+		T denom = n.dotproduct(D);
 	
 		if (_abs(denom)<EPS_S)  // normal is orthogonal to vector3, cant intersect
 			return false;
@@ -65,9 +71,9 @@ public:
 		dist = -(numer / denom);
 		return true;
 	}
-	IC BOOL intersectRayPoint(const Fvector& P, const Fvector& D, Fvector& dest) {
-		float numer = classify(P);
-		float denom = n.dotproduct(D);
+	IC BOOL intersectRayPoint(const _vector3<T>& P, const _vector3<T>& D, _vector3<T>& dest) {
+		T numer = classify(P);
+		T denom = n.dotproduct(D);
 	
 		if (_abs(denom)<EPS_S) return false; // normal is orthogonal to vector3, cant intersect
 		else {
@@ -77,11 +83,11 @@ public:
 	}
 
 	IC	BOOL	intersect (
-		const Fvector& u, const Fvector& v,	// segment
-	    Fvector&	isect)                  // intersection point
+		const _vector3<T>& u, const _vector3<T>& v,	// segment
+	    _vector3<T>&	isect)                  // intersection point
 	{
-		float		denom,dist;
-		Fvector		t;
+		T		denom,dist;
+		_vector3<T>		t;
 
 		t.sub(v,u);
 		denom = n.dotproduct(t);
@@ -94,11 +100,11 @@ public:
 	}
 
 	IC	BOOL	intersect_2 (
-		const Fvector& u, const Fvector& v,				// segment
-	    Fvector& isect)						// intersection point
+		const _vector3<T>& u, const _vector3<T>& v,				// segment
+	    _vector3<T>& isect)						// intersection point
 	{
-		float		dist1, dist2;
-		Fvector		t;
+		T		dist1, dist2;
+		_vector3<T>		t;
 
 		dist1		= n.dotproduct(u)+d;
 		dist2		= n.dotproduct(v)+d;
@@ -111,7 +117,7 @@ public:
 
 		return true;
 	}
-	IC	void	transform(Fmatrix& M)
+	IC	void	transform(_matrix<T>& M)
 	{
 		// rotate the normal
 		M.transform_dir(n);
@@ -119,5 +125,11 @@ public:
 		d -= M.c.dotproduct(n);
 	}
 };
+
+typedef _plane<float>	Fplane;
+typedef _plane<double>	Dplane;
+
+template <class T>
+BOOL	_valid			(_plane<T>& s)		{ return _valid(s.n) && _valid(s.d);	}
 
 #endif
