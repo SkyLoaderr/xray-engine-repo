@@ -145,6 +145,19 @@ struct			Query
 	Marks		q_Marks;
 	Fvector		q_Base;
 	
+	Query()
+	{
+		q_Marks.assign	(g_nodes.size()+2,false);
+	}
+
+	IC void		Init	(Fvector& P)
+	{
+		q_Base.set		(P);
+		for (int i=0; i<q_List.size(); i++)
+			q_Marks[i]	= false;
+		q_List.clear	();
+	}
+
 	IC void		Perform	(DWORD ID)
 	{
 		if (ID==InvalidNode)		return;
@@ -206,9 +219,7 @@ public:
 			DWORD	c_passed[8]	= {0,0,0,0,0,0,0,0};
 			
 			// perform volumetric query
-			Q.q_Marks.assign(g_nodes.size()+2,false);
-			Q.q_List.clear	();
-			Q.q_Base.set	(BasePos);
+			Q.Init			(BasePos);
 			Q.Perform		(N);
 			
 			// main cycle: trace rays and compute counts
