@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-#define WRITE_LOG
+//#define WRITE_LOG
 #define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
