@@ -2523,7 +2523,6 @@
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
