@@ -14,12 +14,6 @@ CHelicopter::~CHelicopter()
 {
 }
 
-CHelicopter::EHeliState			
-CHelicopter::state()
-{
-	return m_curState;
-}
-
 void							
 CHelicopter::setState(CHelicopter::EHeliState s)
 {
@@ -36,18 +30,12 @@ CHelicopter::setState(CHelicopter::EHeliState s)
 	case CHelicopter::eInitiateHunt:
 		str = "eInitiateHunt";
 		break;
-/*	case CHelicopter::eMovingToAttackTraj:
-		str = "eMovingToAttackTraj";
-		break;*/
 	case CHelicopter::eMovingByAttackTraj:
 		str = "eMovingByAttackTraj";
 		break;
 	case CHelicopter::eInitiatePatrolZone:
 		str = "eInitiatePatrolZone";
 		break;
-/*	case CHelicopter::eInitiateAttackTraj:
-		str = "eInitiateAttackTraj";
-		break;*/
 
 	case CHelicopter::eWaitForStart:
 		str = "eWaitForStart";
@@ -78,28 +66,27 @@ CHelicopter::setState(CHelicopter::EHeliState s)
 void				
 CHelicopter::init()
 {
-	m_destEnemy = 0;
-//	m_velocity = 5.0f;
+	m_time_delay_before_start	= 1000;//1 sec
+	m_time_patrol_period		= 60000;//1 min
+	m_time_delay_between_patrol	= 60000;//1 min
+	//	m_velocity = 5.0f;
 	m_velocity = 25.0f;
-	m_altitude = 40.0f;
+	//	m_altitude = 4.0f;
+	m_altitude = 30.0f;
+
+	m_destEnemy = 0;
 	m_cur_x_rot = 0.0f;
 	m_cur_y_rot = 0.0f;
 	m_tgt_x_rot = 0.0f;
 	m_tgt_y_rot = 0.0f;
 	m_bind_x_rot= 0.f;
 	m_bind_y_rot= 0.f;
-	m_maxFireDist = 100.0f;
 	m_allow_fire= FALSE;
 	m_movementMngr.init(this);
 	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
 
-	m_stayPos.set(-200.0f, 30.0f, -200.0f);
-
-
-	m_time_delay_before_start	= 1000;//1 sec
-	m_time_patrol_period		= 60000;//1 min
-	m_time_delay_between_patrol	= 20000;//20 sec
+	m_stayPos.set(0.0f, 0.0f, 0.0f);
 
 	m_time_last_patrol_start	= 0;
 	m_time_last_patrol_end		= 0;
@@ -109,7 +96,6 @@ CHelicopter::init()
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 		m_HitTypeK[i] = 1.0f;
 
-//	FireStart();
 }
 
 void		
@@ -141,6 +127,12 @@ CHelicopter::Load(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_immunity");
 	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
+
+	m_time_delay_before_start				= pSettings->r_u32(section,"time_delay_before_start")*1000;
+	m_time_patrol_period					= pSettings->r_u32(section,"time_patrol_period")*1000;
+	m_time_delay_between_patrol				= pSettings->r_u32(section,"time_delay_between_patrol")*1000;
+	m_velocity								= pSettings->r_float(section,"velocity");
+	m_altitude								= pSettings->r_float(section,"altitude");
 
 }
 
@@ -273,10 +265,8 @@ CHelicopter::UpdateCL()
 
 	UpdateFire();
 
-	if( state()==CHelicopter::eMovingByAttackTraj	|| 
-		state()==CHelicopter::eInitiateHunt			/*||
-		state()==CHelicopter::eInitiateAttackTraj	||
-		state()==CHelicopter::eMovingToAttackTraj		*/)
+	if( m_curState==CHelicopter::eMovingByAttackTraj	|| 
+		m_curState==CHelicopter::eInitiateHunt	)
 	{
 		updateMGunDir();
 
@@ -303,11 +293,9 @@ CHelicopter::shedule_Update(u32	time_delta)
 	};
 
 	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
-	{//die
-		PPhysicsShell()=P_build_Shell	(this,false);
-	}
+		Die();
 
-	if( state()==CHelicopter::eMovingByAttackTraj )
+	if( m_curState==CHelicopter::eMovingByAttackTraj )
 	{
 		m_destEnemy->Center(m_destEnemyPos);
 		updateMGunDir();
@@ -315,14 +303,20 @@ CHelicopter::shedule_Update(u32	time_delta)
 		if(m_allow_fire)
 		{
 			FireStart();
-			
+	
 			if(m_pRocket)
 			{
 				CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
 				VERIFY(pGrenade);
 				pGrenade->SetCurrentParentID(this->ID());
-				LaunchRocket(ParticlesXFORM(),  m_fire_dir, m_fire_dir);
+				LaunchRocket(ParticlesXFORM(),  m_fire_dir, zero_vel);
+
+				NET_Packet P;
+				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16(u16(m_pRocket->ID()));
+				u_EventSend(P);
 			}
+
 		}else
 			FireEnd();
 
@@ -342,29 +336,33 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-/*	if(hit_type != ALife::eHitTypeFireWound)
-		return;*/
-
-	//нормализуем силу удара -------
-	float hit_power		= P/100.f;
-//	hit_power			= HitOutfitEffect(hit_power, hit_type);
-	hit_power			*= m_HitTypeK[hit_type];
-//-----------
 
 	bonesIt It = m_hitBones.find(element);
-	if(It != m_hitBones.end())
+	if(It != m_hitBones.end() && hit_type==ALife::eHitTypeFireWound)
 	{
 		float curHealth = GetfHealth();
-				curHealth -= P*5.0f*It->second;
-
+		curHealth -= P*It->second*100.0f;
 		SetfHealth(curHealth);
+
+		Log("----Helicopter::PilotHit(). type=",hit_type);
+		Log("----Helicopter::PilotHit(). power=",P);
+		Log("----Helicopter::Hit(). health=",curHealth);
+		Log("----Helicopter::PilotHit(). k=",It->second);
+		Log("----------------------------------------");
+
 	}else
-//		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
 	{
+		float hit_power		= P/100.f;
+		hit_power			*= m_HitTypeK[hit_type];
+
 		SetfHealth(GetfHealth()-hit_power);
 //		SetfHealth(-0.5f);
 		float h= GetfHealth();
-		Log("----Helicopter::Hit(). health=%f",h);
+		Log("----Helicopter::Hit(). type=",hit_type);
+		Log("----Helicopter::Hit(). power=",hit_power);
+		Log("----Helicopter::Hit(). health=",h);
+		Log("----Helicopter::Hit(). k=",m_HitTypeK[hit_type]);
+		Log("----------------------------------------");
 	};
 
 	CGameObject* GO = dynamic_cast<CGameObject*>(who);
@@ -383,17 +381,17 @@ CHelicopter::Hit(	float P,
 void					
 CHelicopter::doHunt(CObject* dest)
 {
-	if( state()==CHelicopter::eInitiateHunt || 
-		/*state()==CHelicopter::eMovingToAttackTraj ||*/
-		state()==CHelicopter::eMovingByAttackTraj)
+	return;
+	if( m_curState==CHelicopter::eInitiateHunt				|| 
+		m_curState==CHelicopter::eMovingByAttackTraj		||
+		m_curState==CHelicopter::eInitiateWaitBetweenPatrol	||
+		m_curState==CHelicopter::eMovingToWaitPoint			)
 		return;
 
 	m_destEnemy = dest;
 	dest->Center	(m_destEnemyPos);
 
 	setState(CHelicopter::eInitiateHunt);
-//
-//		m_movementMngr.buildHuntPath(dest->XFORM().c);
 }
 
 void 
@@ -411,4 +409,13 @@ CHelicopter::OnEvent(NET_Packet& P, u16 type)
 			CRocketLauncher::DetachRocket(id);
 								   } break;
 	}
+}
+
+void		
+CHelicopter::Die()
+{
+//	PPhysicsShell()=P_build_Shell	(this,false);
+	setState(CHelicopter::eInitiateWaitBetweenPatrol);
+	SetfHealth(100.0f);
+//	StartParticles();
 }

@@ -25,8 +25,6 @@ public:
 		eInitiatePatrolZone,				// ->eMovingByPatrolZonePath
 		eMovingByPatrolZonePath,			//->eInitiatePatrolZone, eInitiateWaitBetweenPatrol
 		eInitiateHunt,						// ->eMovingByAttackTraj,eInitiatePatrolZone
-//		eMovingToAttackTraj,
-//		eInitiateAttackTraj,
 		eMovingByAttackTraj,				// ->eInitiatePatrolZone
 		eWaitForStart,						// ->eInitiatePatrolZone
 		eWaitBetweenPatrol,					// ->eInitiatePatrolZone
@@ -38,7 +36,6 @@ protected:
 	EHeliState						m_curState;
 	float							m_velocity;
 	float							m_altitude;
-	float							m_maxFireDist;
 
 	HitTypeSVec						m_HitTypeK;
 
@@ -84,9 +81,9 @@ public:
 	Fvector							m_stayPos;
 
 	CHelicopter();
-	virtual				~CHelicopter();
+	virtual							~CHelicopter();
 	
-	CHelicopter::EHeliState			state();
+	CHelicopter::EHeliState			state(){return m_curState;};
 	float							velocity(){return m_velocity;};
 	float							altitude(){return m_altitude;};
 
@@ -98,26 +95,26 @@ public:
 
 
 	//CGameObject
-	virtual	void		Load				(LPCSTR		section);
-	virtual	void		reload				(LPCSTR		section);
+	virtual	void			Load				(LPCSTR		section);
+	virtual	void			reload				(LPCSTR		section);
 
-	virtual BOOL		net_Spawn			(LPVOID		DC);
-	virtual void		net_Destroy			();
-	virtual void		net_Export			(NET_Packet &P);
-	virtual void		net_Import			(NET_Packet &P);
+	virtual BOOL			net_Spawn			(LPVOID		DC);
+	virtual void			net_Destroy			();
+	virtual void			net_Export			(NET_Packet &P);
+	virtual void			net_Import			(NET_Packet &P);
 
-	virtual void		renderable_Render	();
+	virtual void			renderable_Render	();
 
-	virtual void		OnEvent				(NET_Packet& P, u16 type);
-	virtual void		UpdateCL			();
-	virtual void		shedule_Update		(u32		time_delta);
+	virtual void			OnEvent				(NET_Packet& P, u16 type);
+	virtual void			UpdateCL			();
+	virtual void			shedule_Update		(u32		time_delta);
 
-	virtual	void		Hit					(float P, Fvector &dir, CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void			Hit					(float P, Fvector &dir, CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 
 	//CEntity
-	virtual void		HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
-	virtual void		HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
-	virtual void		Die					(){;}
+	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
+	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
+	virtual void			Die					();
 
 protected:
 	//CShootingObject
