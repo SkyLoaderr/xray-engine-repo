@@ -17,9 +17,6 @@ struct CFontManager{
 							CFontManager			();
 							~CFontManager			();
 	void					Render					();
-	// console font
-	CGameFont*				pFontConsole;
-	CGameFont*				pFontStartup;
 	// hud font
 	CGameFont*				pFontSmall;
 	CGameFont*				pFontMedium;
