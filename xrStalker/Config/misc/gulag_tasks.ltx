@@ -176,3 +176,87 @@ path_look = agr_mil_night_walk1_look
 [walker2@agr_mil_night]
 path_walk = agr_mil_night_walk2_walk
 path_look = agr_mil_night_walk2_look
+
+;-------------------------------------------------------------------------------------------------
+;-- ESCAPE LAGER
+;-------------------------------------------------------------------------------------------------
+; Волк
+[walker@esc_lager_wolf]
+path_walk = wolf_walk
+path_look = wolf_look
+
+;перекупщик хлама
+[walker@esc_lager_bariga]
+path_walk = hlam_walk
+path_look = hlam_look
+
+;охранники
+[zoneguard1@esc_lager]
+path_walk  = guard_walk1
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone
+team       = guards
+
+[zoneguard2@esc_lager]
+path_walk  = guard_walk2
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone
+team       = guards
+
+[zoneguard3@esc_lager]
+path_walk  = guard_walk3
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone
+team       = guards
+
+[zoneguard4@esc_lager]
+path_walk  = guard_walk4
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone
+team       = guards
+
+; сидящие днём у костра
+[kamp1@esc_lager]
+center_point  = camp_center
+patrol_path_1 = camp_walk1
+path_look_1   = camp_look1
+patrol_path_2 = camp_walk2
+path_look_2   = camp_look2
+patrol_path_3 = camp_walk3
+path_look_3   = camp_look3
+
+;спящие ночью
+[sleeper1@esc_lager]
+path_main = camp_sleep1
+
+[sleeper2@esc_lager]
+path_main = camp_sleep2
+
+[sleeper3@esc_lager]
+path_main = camp_sleep3
+
+;-------------------------------------------------------------------------------------------------
+;-- ESCAPE FACTORY BANDITS
+;-------------------------------------------------------------------------------------------------
+; снайпер, охраняющий лестницу на чердак
+[camper@esc_fabrika_bandit]
+path_walk = day_night_sniper_walk
+path_look = day_night_sniper_look
+radius    = 5
+
+; часовые днём
+[walker1@esc_fabrika_bandit_day]
+path_walk = day_walk1
+path_look = day_look1
+
+[walker2@esc_fabrika_bandit_day]
+path_walk = day_walk2
+path_look = day_look2
+
+[walker3@esc_fabrika_bandit_day]
+path_walk = day_walk3
+path_look = day_look3
+
+; сидящие у костра всегда и сидящие у костра ночью
+[kamp@esc_fabrika_bandit]
+center_point = camp_center

@@ -321,5 +321,13 @@ function checkNpc(npc_community, gulag_type)
 		return true
 	end
 
+	if gulag_type == "esc_lager" then
+		return npc_community == "stranger"
+	end
+
+	if gulag_type == "esc_fabrika_bandit" then
+		return npc_community == "bandit"
+	end
+
 	return false
 end

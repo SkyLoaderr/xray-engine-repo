@@ -290,6 +290,153 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
+	if type == "esc_lager" then
+		-- Волк
+		t = { section = "walker@esc_lager_wolf",
+			idle = 0,
+			prior = 10, state = {0, 1},
+			in_rest = "", out_rest = "",
+			predicate = function(obj) 
+			              return obj:profile_name() == "stalker_esc_wolf"
+			            end
+		}
+		table.insert(sj, t)
+		-- перекупщик хлама
+		t = { section = "walker@esc_lager_bariga",
+			idle = 0,
+			prior = 10, state = {0, 1},
+			in_rest = "", out_rest = "",
+			predicate = function(obj) 
+			              return obj:profile_name() == "stalker_esc_bariga"
+			            end
+		}
+		table.insert(sj, t)
+		-- охранники
+		t = { section = "zoneguard1@esc_lager",
+			idle = 0,
+			prior = 9, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "zoneguard2@esc_lager",
+			idle = 0,
+			prior = 9, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "zoneguard3@esc_lager",
+			idle = 0,
+			prior = 9, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "zoneguard4@esc_lager",
+			idle = 0,
+			prior = 9, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- у костра днём
+		t = { section = "kamp1@esc_lager",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "kamp1@esc_lager",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "kamp1@esc_lager",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- спящие ночью
+		t = { section = "sleeper1@esc_lager",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "sleeper2@esc_lager",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "sleeper3@esc_lager",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+
+	if type == "esc_fabrika_bandit" then
+		-- снайпер, охраняющий лестницу на чердак
+		t = { section = "camper@esc_fabrika_bandit",
+			idle = 0,
+			prior = 3, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- часовые днём
+		t = { section = "walker1@esc_fabrika_bandit_day",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "walker2@esc_fabrika_bandit_day",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "walker3@esc_fabrika_bandit_day",
+			idle = 0,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- сидящие у костра всегда
+		t = { section = "kamp@esc_fabrika_bandit",
+			idle = 0,
+			prior = 1, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "kamp@esc_fabrika_bandit",
+			idle = 0,
+			prior = 1, state = {0, 1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- сидящие у костра ночью
+		t = { section = "kamp@esc_fabrika_bandit",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "kamp@esc_fabrika_bandit",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "kamp@esc_fabrika_bandit",
+			idle = 0,
+			prior = 0, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 end
 
 function loadStates(gname, type)
@@ -322,7 +469,17 @@ function loadStates(gname, type)
 				return 0
 			end
 		end
-	end	
+	end
+
+	if type == "esc_lager" or type == "esc_fabrika_bandit" then
+		return function(gulag)
+			if level.get_time_hours() >= 8 and level.get_time_hours() <= 21 then
+				return 0  -- день
+			else
+				return 1  -- ночь
+			end
+		end
+	end
 end
 
 function get_megafone(type, name)
