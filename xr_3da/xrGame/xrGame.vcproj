@@ -1915,6 +1915,24 @@
 						</FileConfiguration>
 					</File>
 				</Filter>
+				<Filter
+					Name="Abilities"
+					Filter="">
+					<Filter
+						Name="Telekinesis"
+						Filter="">
+						<File
+							RelativePath=".\ai\telekinesis.h">
+						</File>
+						<File
+							RelativePath=".\ai\telekinesis_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Invisibility"
+						Filter="">
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="ANavigation"
