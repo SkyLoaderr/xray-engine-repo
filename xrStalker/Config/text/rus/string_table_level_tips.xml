@@ -1,15 +1,5 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
-	<string id="info_zone_danger">
-		<text>Default tips</text>
-		<text ln="rus">Не ходите, дети, в Африку гулять.</text>
-	</string>
-
-	<string id="info_stalker_danger">
-		<text>Default tips</text>
-		<text ln="rus">Бэрэгись мандавошек.</text>
-	</string>
-
 	<string id="esc_trader_how_to_talk">
 		<text>Default tips</text>
 		<text ln="rus">Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
