@@ -2,12 +2,10 @@
 Сюжетный скрипт "Имитация боя на заводе"
 Чугай Саша
 
-точки вертолёта добавлять последними
-
 Сделать:
-    -- улёт вертолёта
-    -- info_portion
-    -- pda message
+	- если умерло >= 3 военных, вызвать рейд
+	- вертолёт кружит по маршруту
+	- зоны, в которых вертолёт видит игрока
 --------------------------------------------------------------------------------------------------------------------]]
 
 local a_wait    = 0
@@ -27,7 +25,7 @@ local wpns = {}
 local combat_duration = 25000   -- продолжительность боя в мс
 
 function on_enter( zone, obj )
-	printf( "on_enter. zone=(%s, %d) obj=(%s, %d)", zone:name(), zone:id(), obj:name(), obj:id() )
+--	printf( "on_enter. zone=(%s, %d) obj=(%s, %d)", zone:name(), zone:id(), obj:name(), obj:id() )
 
     if obj:id() == the_actor:id() then
         idle = false
@@ -139,7 +137,7 @@ function main()
     end
 
 --    local heli = get_level_object( "helicopter_factory_combat" )
-    --local heli_target = get_level_object( "factory_corpse_3" )
+--    local heli_target = get_level_object( "factory_corpse_3" )
 --    local heli_prepos   = way:point( way:index( "helicopter_prepos" ) )
 --    local heli_pos      = way:point( way:index( "helicopter_pos" ) )
 
@@ -216,15 +214,4 @@ function main()
     for i = 1, table.getn( shoot_points ) do
         npcs[i]:script( false, script_name() )
     end
-
-    -- лидер должен быть military_2
-    -- ждать конца пути
-    local st = xr_motivator.storage[npcs[2]:id()].report
-    while not st.active do
-        wait()
-    end
-
-    xr_patrol.set_patrol( npcs[2], true, "raid_dungeon" )
-    xr_follower.set_follower( npcs[1], true )
-    xr_follower.set_follower( npcs[3], true )
 end
