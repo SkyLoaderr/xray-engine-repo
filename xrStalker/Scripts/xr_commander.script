@@ -6,8 +6,8 @@
     - подставить насто€щие звуки
     - звуки во сне
     - водка (ƒима)
-    - сон после водки и наоборот
     - при сне и водке смотреть не на точку, а в направлении
+    - переделать звуки под set_sound
 --------------------------------------------------------------------------------------------------------------------]]
 
 local prop_commander = xr_evaluators_id.commander_commander
@@ -25,17 +25,23 @@ local radio_talk   = 6
 local drink_vodka  = 7
 local sleep        = 8
 
-local snd_base          = xr_sounds_id.chugai_commander_base
-local snd_singing       = snd_base + 0
-local snd_look_outside  = snd_base + 1
-local snd_talk_outside  = snd_base + 2
-local snd_enemy_stalker = snd_base + 3
-local snd_enemy_monster = snd_base + 4
-local radio_noise       = snd_base + 5
-local radio_voice       = snd_base + 6
-local radio_on          = snd_base + 7
-local radio_off         = snd_base + 8
-local radio_commander   = snd_base + 9
+local snd_base           = xr_sounds_id.chugai_commander_base
+local snd_singing        = snd_base + 0
+local snd_look_outside   = snd_base + 1
+local snd_talk_outside   = snd_base + 2
+local snd_enemy_stalker  = snd_base + 3
+local snd_enemy_monster  = snd_base + 4
+local snd_walking        = snd_base + 5
+local snd_lost_box       = snd_base + 6
+local snd_lost_box_drunk = snd_base + 7
+local snd_drunk          = snd_base + 8
+local snd_sleep          = snd_base + 9
+
+local radio_noise        = snd_base + 10
+local radio_voice        = snd_base + 11
+local radio_on           = snd_base + 12
+local radio_off          = snd_base + 13
+local radio_commander    = snd_base + 14
 
 local h2ms = 60 * 60 * 1000
 
@@ -65,6 +71,15 @@ function action_commander:__init( name, storage )  super ( nil, name )
 --    self.drunk = true
     self.decision = true
     self.a = storage
+
+    self.sounds_sleeping = {
+        idle    = 0,
+        maxidle = 2,
+        sumidle = 3,
+        rnd     = 100,
+        sounds  = { { pack = snd_sleep, id = 0 },
+                    { pack = snd_sleep, id = 1 } }
+    }
 end
 
 function action_commander:initialize()
@@ -264,8 +279,20 @@ function action_commander:exec_walk_inside()
 
             self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 )
 
-            if math.random( 100 ) < 40 then
-                self.object:play_sound( snd_singing, 1, 0 )
+            local rnd = math.random( 100 )
+
+            if self.drunk then
+                if rnd < 60 then
+                    self.object:play_sound( snd_drunk, 1, 0 )
+                elseif rnd < 90 then
+                    self.object:play_sound( snd_singing, 1, 0 )
+                end
+            else
+                if rnd < 40 then
+                    self.object:play_sound( snd_walking, 1, 0 )
+                elseif rnd < 60 then
+                    self.object:play_sound( snd_singing, 1, 0 )
+                end
             end
 
             self.object:clear_animations()
@@ -285,6 +312,12 @@ function action_commander:exec_look_box()
             if self.time_end <= device():time_global() then
                 if not self.object:see( self.box ) then
                     printf( "ящик украли! “ревога!!!" )
+
+                    if self.drunk then
+                        self.object:play_sound( snd_lost_box_drunk, 1, 0 )
+                    else
+                        self.object:play_sound( snd_lost_box, 1, 0 )
+                    end
                 else
                     printf( "ящик на месте" )
                 end
@@ -583,7 +616,7 @@ function action_commander:exec_drink_vodka()
                     end
                 elseif dt < 20000 then
                     if not self.vodka_active then
-                        self.object:set_item( object.activate, self.object:object( "vodka" ) )
+                        self.object:set_item( object.use, self.object:object( "vodka" ) )
                         self.vodka_active = true
                         printf( "Ќј„»Ќјё ѕ»“№" )
                     end
@@ -652,6 +685,8 @@ function action_commander:exec_sleep()
                     self.time_end = game.time() + h2ms
                 end
             end
+
+            globals.set_sound( self.object, self.sounds_sleeping )
         else
             -- если сдвинулс€ с позиции, то уйти
             if self.time_end then
@@ -688,7 +723,7 @@ function action_commander:move_callback( obj, action_type, index )
         end
     end
 
-    if math.random( 100 ) <= 20 then
+    if math.random( 100 ) <= 60 then
         local pos = self.object:position()
 
         for i, name in ipairs( self.a.soldiers ) do
@@ -701,6 +736,8 @@ function action_commander:move_callback( obj, action_type, index )
                 break
             end
         end
+    else
+        self.object:play_sound( snd_walking, 1, 0 )
     end
 end
 
@@ -708,17 +745,22 @@ end
 
 function add_to_binder( npc )
     -- звуки
-    npc:add_sound( "scripts\\ambush\\ambush1_bad_weather",               13, snd_type.talk, 2, 1, snd_singing )
-    npc:add_sound( "scripts\\ambush\\ambush1_good_weather",              13, snd_type.talk, 2, 1, snd_look_outside )
-    npc:add_sound( "scripts\\ambush\\ambush1_idle",                      13, snd_type.talk, 2, 1, snd_talk_outside )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_stalker )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_monster )
+    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, snd_singing )
+    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_outside_",      13, snd_type.talk, 2, 1, snd_look_outside )
+    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_to_soldier_",  13, snd_type.talk, 2, 1, snd_talk_outside )
+    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_see_enemy_",    13, snd_type.talk, 2, 1, snd_enemy_stalker )
+    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_alarm_",       13, snd_type.talk, 2, 1, snd_enemy_monster )
+    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, snd_walking )
+    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_lostbox_",     13, snd_type.talk, 2, 1, snd_lost_box )
+    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_lostbox_",      13, snd_type.talk, 2, 1, snd_lost_box_drunk )
+    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_dronk_",        13, snd_type.talk, 2, 1, snd_drunk )
+    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_sleep_",        13, snd_type.talk, 2, 1, snd_sleep )
 
-    npc:add_sound( "script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, radio_commander )
-    npc:add_sound( "script_replics\\radio\\message\\radio_noise_",        5, snd_type.talk, 2, 1, radio_noise )
-    npc:add_sound( "script_replics\\radio\\message\\radio_voice_",        5, snd_type.talk, 2, 1, radio_voice )
-    npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",      5, snd_type.talk, 2, 1, radio_on )
-    npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",     5, snd_type.talk, 2, 1, radio_off )
+    npc:add_sound( "script_replics\\radio\\commander\\radio_commander_",        30, snd_type.talk, 2, 1, radio_commander )
+    npc:add_sound( "script_replics\\radio\\message\\radio_noise_",               5, snd_type.talk, 2, 1, radio_noise )
+    npc:add_sound( "script_replics\\radio\\message\\radio_voice_",               5, snd_type.talk, 2, 1, radio_voice )
+    npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",             5, snd_type.talk, 2, 1, radio_on )
+    npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",            5, snd_type.talk, 2, 1, radio_off )
 
     -- GOAP
     local a = xr_motivator.storage[npc:id()].commander
