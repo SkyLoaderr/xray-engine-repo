@@ -55,9 +55,6 @@ CInventoryItem *CAI_Stalker::GetFood() const
 void CAI_Stalker::ResetScriptData(void *P)
 {
 	inherited::ResetScriptData	(P);
-	
-	m_tpCurrentGlobalAnimation = 0;
-
 	if (P)
 		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,m_tLookType);
 }

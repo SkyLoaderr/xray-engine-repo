@@ -12,6 +12,7 @@
 #ifdef IGNORE_ACTOR
 	#include "actor.h"
 #endif
+#include "ai_script_actions.h"
 
 using namespace AI;
 
@@ -40,11 +41,9 @@ void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CCustomMonster::CCustomMonster()
+void CCustomMonster::Init()
 {
-//	Weapons				= 0;
 	tWatchDirection		= Direction();
-//	m_cBodyState		= BODY_STATE_STAND;
 	r_torso_speed		= PI;
 	r_spine_speed		= PI;
 	q_look.o_look_speed = PI;
@@ -58,14 +57,19 @@ CCustomMonster::CCustomMonster()
 	m_fEyeShiftYaw		= 0.f;
 	NET_WasExtrapolating = FALSE;
 
+	m_bScriptControl	= false;
+	strcpy				(m_caScriptName,"");
+	m_tpScriptAnimation	= 0;
+}
+
+CCustomMonster::CCustomMonster()
+{
+	Init				();
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)		{
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
 		self->spatial.type	|= STYPE_REACTTOSOUND;
 	}
-
-	m_bScriptControl	= false;
-	strcpy				(m_caScriptName,"");
 }
 
 CCustomMonster::~CCustomMonster	()
@@ -368,9 +372,11 @@ void CCustomMonster::UpdateCL	()
 			float	factor			= (float(d1)/float(d2));
 			NET_Last.lerp			(A,B,factor);
 			
-			Fvector					dir;
-			AI_Path.Direction		(dir);
-			SelectAnimation			(XFORM().k,dir,AI_Path.fSpeed);
+			if (!bfScriptAnimation()) {
+				Fvector					dir;
+				AI_Path.Direction		(dir);
+				SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
+			}
 			
 			// Signal, that last time we used interpolation
 			NET_WasInterpolating	= TRUE;
@@ -730,8 +736,32 @@ void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
 void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
+	Init					();
 }
 
 void CCustomMonster::ResetScriptData(void *P)
 {
+}
+
+void ScriptCallBack(CBlend* B)
+{
+	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(B->CallbackParam);
+	R_ASSERT		(l_tpScriptMonster);
+	if (l_tpScriptMonster->GetCurrentAction())
+		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
+}
+
+bool CCustomMonster::bfScriptAnimation()
+{
+	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+		CKinematics			&tVisualObject = *(PKinematics(Visual()));
+		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+		if (m_tpScriptAnimation != l_tpMotionDef)
+			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
+		return		(true);
+	}
+	else {
+		m_tpScriptAnimation	= 0;
+		return		(false);
+	}
 }

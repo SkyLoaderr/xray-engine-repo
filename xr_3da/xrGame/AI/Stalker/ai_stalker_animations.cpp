@@ -217,16 +217,6 @@ void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 	//	tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
 }
 
-#pragma todo("Dima to Dima : Recover code from fatal error : C1055")
-
-void ScriptCallBack(CBlend* B)
-{
-	CAI_Stalker		*l_tpStalker = static_cast<CAI_Stalker*>(B->CallbackParam);
-//	R_ASSERT		(l_tpStalker);
-	if (l_tpStalker->GetCurrentAction())
-		l_tpStalker->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
-}
-
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
 	if (!g_Alive())
@@ -457,13 +447,6 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics				&tVisualObject		=	*(PKinematics(Visual()));
-
-	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
-		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
-		if (m_tpCurrentGlobalAnimation != l_tpMotionDef)
-			tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
-		return;
-	}
 
 	if (m_tAnims.A.empty())
 		return;

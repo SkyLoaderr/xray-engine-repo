@@ -124,6 +124,8 @@ public:
 	u32					m_dwCurrentUpdate;
 	xr_vector<CObject*>	m_tpaVisibleObjects;
 
+	CMotionDef			*m_tpScriptAnimation;
+
 	struct net_update	{
 		u32				dwTimeStamp;			// server(game) timestamp
 		float			o_model;				// model yaw
@@ -184,6 +186,7 @@ public:
 	virtual void		net_Export				(NET_Packet& P);				// export to server
 	virtual void		net_Import				(NET_Packet& P);				// import from server
 
+	virtual	bool		bfScriptAnimation		();
 	virtual void		SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 
 	// debug
@@ -241,5 +244,6 @@ public:
 	virtual	void				Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual void				OnEvent					( NET_Packet& P, u16 type		);
 	virtual void				net_Destroy				();
+	virtual	void				Init					();
 };
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)
