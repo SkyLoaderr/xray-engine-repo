@@ -43,7 +43,8 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 			default			: NODEFAULT;
 		}
 		VERIFY				(temp < m_path->tpaWayPoints.size());
-		m_prev_point_index	= temp;
+		if (m_prev_point_index >= m_path->tpaWayPoints.size())
+			m_prev_point_index	= temp;
 		m_curr_point_index	= temp;
 		dest_vertex_id		= m_path->tpaWayPoints[m_curr_point_index].dwNodeID;
 		m_dest_position		= m_path->tpaWayPoints[m_curr_point_index].tWayPoint;
