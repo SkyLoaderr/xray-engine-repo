@@ -323,6 +323,36 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
+<!---------------------------SVOBODA MASTER MAX----------------------->
+	<specific_character id="svoboda_master_max" team_default = "1">
+		<name>"Макс"</name>
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
+		Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_master</team>
+		
+		<class>Svoboda_master</class>
+		<community>freedom</community>
+
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ap = 1 \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
 
 	
 </xml>
