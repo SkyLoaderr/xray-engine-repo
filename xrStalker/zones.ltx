@@ -561,6 +561,8 @@ hit_effect		= explosions\expl_02_sparks
 artefacts		= af_blood,0.7, af_mincer_meat, 0.25, af_soul, 0.05
 BirthProbability = 0.9
 
+tearing_particles	=anomaly2\body_tear_00
+torn_particles      =anomaly2\body_tear_01
 idle_particles		= anomaly2\gravity_idle
 blowout_particles	= anomaly2\group_items\gravi_zaxvat_myasorubka ;gravity_blast_03
 
@@ -578,6 +580,7 @@ idle_sound			= anomaly\gravi_rumble1;  gravi_idle01							;постоянный звук
 blowout_sound		= anomaly\anomaly_mincer_blowout; anomaly_gravy_blast01	;во время выброса(удара) в центре аномалии	
 hit_sound			= anomaly\anomaly_gravy_hit1						;на персонаже, когда тот получает хит
 entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
+body_tearing_sound	= anomaly\anomaly_body_tear_1
 
 hit_type		= wound
 hit_impulse_scale	= 0.1			;соотношение физического импульса и силы хита
@@ -740,7 +743,7 @@ $spawn 			= "zones\flame"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .00
-sound			= 
+sound			= zone_mosquito_bald
 postprocess		= postprocess_flame
 
 artefacts		= 
@@ -1054,6 +1057,11 @@ light_range		    = 15.0
 light_time 		    = 5
 light_height		= 1.5			;подъем источника света на высоту
 
+idle_light			= on
+idle_light_range	= 15.0
+idle_light_range_delta = 0.2
+idle_light_anim		= koster_01
+idle_light_height	= 1.5			;
 
 awaking_time		= 100
 blowout_time		= 300	
@@ -1085,6 +1093,8 @@ postprocess		= postprocess_flame
 
 artefacts		= 
 BirthProbability = 0.9
+
+idle_light		= off
 
 idle_particles		= anomaly2\heat_02
 blowout_particles	= anomaly2\heat_03
