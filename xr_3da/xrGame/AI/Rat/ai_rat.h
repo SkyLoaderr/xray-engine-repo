@@ -95,9 +95,8 @@ class CAI_Rat : public CCustomMonster
 			void Pursuit();
 			void Retreat();
 			void Cover();
-		IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool bfCheckPath(AI::Path &Path);
-			void SetLessCoverLook(NodeCompressed *tNode);
+		IC  void SetDirectionLook(NodeCompressed *tNode);
 			int	 ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 			int	 ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		IC	bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);

@@ -124,6 +124,9 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	int spine_bone			= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
+	//
+	iHealth = ini->ReadINT(section,"health");
+
 	// Sheduler
 	dwMinUpdate	= 25;
 	dwMaxUpdate	= 200;

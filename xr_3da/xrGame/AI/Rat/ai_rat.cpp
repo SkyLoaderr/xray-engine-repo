@@ -178,15 +178,6 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-IC bool CAI_Rat::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
-	Fvector tMemberDirection;
-	tMemberDirection.sub(tMyPoint,tMemberPoint);
-	vfNormalizeSafe(tMemberDirection);
-	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	return(fAlpha < PI/10);
-	//return(false);
-}
-
 bool CAI_Rat::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
@@ -195,47 +186,20 @@ bool CAI_Rat::bfCheckPath(AI::Path &Path) {
 	return(true);
 }
 
-#define LEFT_NODE(Index)  ((Index + 3) & 3)
-#define RIGHT_NODE(Index) ((Index + 5) & 3)
-
-void CAI_Rat::SetLessCoverLook(NodeCompressed *tNode)
+IC void CAI_Rat::SetDirectionLook(NodeCompressed *tNode)
 {
-	//Fvector tWatchDirection;
-	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
-		if (tNode->cover[i] > iMaxOpen) {
-			iMaxOpenIndex = i; 
-			iMaxOpen = tNode->cover[i];
-		}
-	
-	if (tNode->cover[iMaxOpenIndex]) {
-		float fAngleOfView = eye_fov/180.f*PI;
-		float fDirection = fAngleOfView/2 + (PI - fAngleOfView)*(float(tNode->cover[iMaxOpenIndex])/255.f + float(tNode->cover[RIGHT_NODE(iMaxOpenIndex)])/255.f)/(2*float(tNode->cover[iMaxOpenIndex])/255.f + float(tNode->cover[LEFT_NODE(iMaxOpenIndex)])/255.f + float(tNode->cover[RIGHT_NODE(iMaxOpenIndex)])/255.f);
-		float fSinus,fCosinus;
-		_sincos(fDirection,fSinus,fCosinus);
-		switch (iMaxOpenIndex) {
-			case 0 : {
-				tWatchDirection.set(-fSinus,0,fCosinus);
-				break;
-			}
-			case 1 : {
-				tWatchDirection.set(fCosinus,0,fSinus);
-				break;
-			}
-			case 2 : {
-				tWatchDirection.set(fSinus,0,-fCosinus);
-				break;
-			}
-			case 3 : {
-				tWatchDirection.set(-fCosinus,0,-fSinus);
-				break;
-			}
+	int i = ps_Size();
+	if (i > 1) {
+		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		if (tWatchDirection.square_magnitude() > 0.000001) {
+			tWatchDirection.normalize();
+			q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+			q_look.o_look_speed=_FB_look_speed;
 		}
 	}
-	else 
-		tWatchDirection.set(1,0,0);
-	
-	q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
-	q_look.o_look_speed=_FB_look_speed;
+	//else
+	//	SetLessCoverLook(tNode);
 }
 
 IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
@@ -721,20 +685,21 @@ void CAI_Rat::Attack()
 						if (AI_Path.Nodes.size() <= 2)
 							AI_Path.bNeedRebuild = TRUE;
 					}
-					// setting up a look
-					q_look.setup(
-						AI::AIC_Look::Look, 
-						AI::t_Object, 
-						&Enemy,
-						1000);
-					q_look.o_look_speed=_FB_look_speed;
-					
 					if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
 						q_action.setup(AI::AIC_Action::AttackBegin);
 						m_tpEnemyBeingAttacked = Enemy.Enemy;
+						// setting up a look
+						q_look.setup(
+							AI::AIC_Look::Look, 
+							AI::t_Object, 
+							&Enemy,
+							1000);
+						q_look.o_look_speed=_FB_look_speed;
 					}
-					else
+					else {
 						q_action.setup(AI::AIC_Action::AttackEnd);
+						SetDirectionLook(AI_Node);
+					}
 
 					m_fCurSpeed = m_fMaxSpeed;
 					bStopThinking = true;
@@ -809,13 +774,8 @@ void CAI_Rat::Attack()
 						if (AI_Path.Nodes.size() < 2)
 							m_bMobility = false;
 					}
-					q_look.setup(
-						AI::AIC_Look::Look, 
-						AI::t_Object, 
-						&Enemy,
-						1000);
-					q_look.o_look_speed=_FB_look_speed;
 					
+					SetDirectionLook(AI_Node);
 					q_action.setup(AI::AIC_Action::AttackEnd);
 
 					// checking flag to stop processing more states
@@ -829,21 +789,22 @@ void CAI_Rat::Attack()
 					FollowLeader(Squad,Enemy.Enemy);				
 				else
 					FollowLeader(Squad,Leader);				
-				q_look.setup(
-					AI::AIC_Look::Look, 
-					AI::t_Object, 
-					&Enemy,
-					1000);
-				q_look.o_look_speed=_FB_look_speed;
-				
 				q_action.setup(AI::AIC_Action::FireEnd);
 
 				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
 					q_action.setup(AI::AIC_Action::AttackBegin);
 					m_tpEnemyBeingAttacked = Enemy.Enemy;
+					q_look.setup(
+						AI::AIC_Look::Look, 
+						AI::t_Object, 
+						&Enemy,
+						1000);
+					q_look.o_look_speed=_FB_look_speed;
 				}
-				else
+				else {
 					q_action.setup(AI::AIC_Action::AttackEnd);
+					SetDirectionLook(AI_Node);
+				}
 				// checking flag to stop processing more states
 				m_fCurSpeed = m_fMaxSpeed;
 				bStopThinking = true;
@@ -935,19 +896,7 @@ void CAI_Rat::FollowMe()
 						// getting my current node
 						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
 						// if we are going somewhere
-						/**
-						Fvector tLook;
-						if (!AI_Path.TravelPath.empty()) {
-							tLook.sub(AI_Path.TravelPath[1].P,AI_Path.TravelPath[0].P);
-							q_look.setup(
-								AI::AIC_Look::Look, 
-								AI::t_Direction, 
-								&tLook,
-								1000);
-							q_look.o_look_speed=_FB_look_speed;
-						}
-						/**/
-						SetLessCoverLook(tNode);
+						SetDirectionLook(tNode);
 						// setting up an action
 						q_action.setup(AI::AIC_Action::FireEnd);
 						// checking flag to stop processing more states
@@ -1091,7 +1040,7 @@ void CAI_Rat::FreeHunting()
 					// getting my current node
 					NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
 					
-					SetLessCoverLook(tNode);
+					SetDirectionLook(tNode);
 					
 					q_action.setup(AI::AIC_Action::FireEnd);
 					// checking flag to stop processing more states
@@ -1241,7 +1190,7 @@ void CAI_Rat::Pursuit()
 						// setting up a look
 						// getting my current node
 						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
-						SetLessCoverLook(tNode);
+						SetDirectionLook(tNode);
 						// checking flag to stop processing more states
 						q_action.setup(AI::AIC_Action::FireEnd);
 						bStopThinking = true;
@@ -1286,18 +1235,6 @@ void CAI_Rat::UnderFire()
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Under fire");
 #endif
-	/**
-	//bStopThinking = true;
-	// dwHitTime = 0;
-	// setting up a look to watch at the least safe direction
-	q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
-	// setting up look speed
-	q_look.o_look_speed=_FB_look_speed;
-
-	eCurrentState = tStateStack.top();
-	tStateStack.pop();
-	bStopThinking = true;
-	/**/
 	if (g_Health() <= 0) {
 		eCurrentState = aiRatDie;
 		return;
@@ -1409,23 +1346,10 @@ void CAI_Rat::UnderFire()
 					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
 					// if we are going somewhere
 					if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
-						q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
-						
-						bool bCanKillMember = false;
-						for (int i=0; i<S.taMemberPositions.size(); i++)
-							if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,S.taMemberPositions[i]))) {
-								bCanKillMember = true;
-								break;
-							}
-							
-						if (!bCanKillMember)
-							q_action.setup(AI::AIC_Action::FireBegin);
-						else
-							q_action.setup(AI::AIC_Action::FireEnd);
 						m_fCurSpeed = m_fMinSpeed;
 					}
 					else {
-						SetLessCoverLook(tNode);
+						SetDirectionLook(tNode);
 						q_action.setup(AI::AIC_Action::FireEnd);
 						m_fCurSpeed = m_fMaxSpeed;
 					}
@@ -1554,8 +1478,8 @@ void CAI_Rat::net_Import(NET_Packet* P)
 
 void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	R_ASSERT(fsimilar(_view.magnitude(),1));
-	R_ASSERT(fsimilar(_move.magnitude(),1));
+	//R_ASSERT(fsimilar(_view.magnitude(),1));
+	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
 	CMotionDef*	S=0;
 	if (iHealth<=0)
@@ -1653,10 +1577,9 @@ void CAI_Rat::Exec_Action	( float dt )
 
 void CAI_Rat::Exec_Movement	( float dt )
 {
-	//if (!m_bAttackStart)
-	//	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-	//else 
-	{
+	if ((!m_bAttackStart) && (g_Health() > 0))
+		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	else {
 		if (m_tpEnemyBeingAttacked) {
 			UpdateTransform	();
 			if (m_bStartAttack) {

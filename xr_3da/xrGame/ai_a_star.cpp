@@ -179,7 +179,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		tpBestNode->ucOpenCloseMask = 0;
 
 		// check if that node is our goal
-		if (tpBestNode->iIndex == dwGoalNode) {
+		if (tpBestNode->iIndex == (int)dwGoalNode) {
 
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
@@ -350,7 +350,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		tpBestNode->ucOpenCloseMask = 0;
 
 		// check if that node is our goal
-		if (tpBestNode->iIndex == dwGoalNode) {
+		if (tpBestNode->iIndex == (int)dwGoalNode) {
 
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;

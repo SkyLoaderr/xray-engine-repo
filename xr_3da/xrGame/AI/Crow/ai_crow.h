@@ -66,7 +66,6 @@ class CAI_Crow : public CCustomMonster
 		void FreeHunting();
 		void SetDirectionLook();
 		bool bfChangeFlyTrajectory(Fvector &tActorPosition, DWORD dwTime);
-
 	public:
 					   CAI_Crow();
 		virtual		  ~CAI_Crow();
@@ -77,6 +76,8 @@ class CAI_Crow : public CCustomMonster
 		virtual void  Load( CInifile* ini, const char* section );
 		virtual void  Think();
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
+		virtual void  net_Export(NET_Packet* P);
+		virtual void  net_Import(NET_Packet* P);
 };
 		
 #endif
