@@ -8,6 +8,8 @@
 #include "PdaMsg.h"
 #include "attachment_owner.h"
 #include "script_space_forward.h"
+#include "alife_registry_container.h"
+#include "alife_registry_wrapper.h"
 
 class CScriptCallback;
 
@@ -94,16 +96,9 @@ public:
 	//есть ли информация у персонажа
 	virtual bool HasInfo		(INFO_ID info_index) const;
 
-	//возвращает существующий вектор из реестра, или добавляет новый
-	KNOWN_INFO_VECTOR&			KnownInfo		();
-	//возвращает NULL, если вектора с информацией не добавлено
-	const KNOWN_INFO_VECTOR*	KnownInfoPtr	() const;
-protected:
 
-#ifdef _DEBUG
-	//для отладки без alife simulator
-	KNOWN_INFO_VECTOR m_KnowInfoWithoutAlife;
-#endif	
+	typedef CALifeRegistryWrapper<CInfoPortionRegistry> KNOWN_INFO_REGISTRY;
+	KNOWN_INFO_REGISTRY known_info_registry;
 
 	//////////////////////////////////////////////////////////////////////////
 	// инвентарь 

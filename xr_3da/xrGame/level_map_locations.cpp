@@ -16,6 +16,10 @@ void CLevel::AddMapLocation(const SMapLocation& map_location)
 	m_MapLocationVector.push_back(pMapLocation);
 }
 
+void CLevel::RemoveMapLocations			()
+{
+	m_MapLocationVector.clear();
+}
 
 
 class RemoveLocationByObjectPred

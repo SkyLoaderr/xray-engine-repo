@@ -195,6 +195,8 @@ public:
 	CLevel();
 	virtual ~CLevel();
 
+	//названияе текущего уровня
+	LPCSTR				Name					();
 
 	//gets the time from the game simulation
 	
@@ -225,6 +227,7 @@ public:
 	void					AddMapLocation				(const SMapLocation& map_location);
 	bool					RemoveMapLocationByID		(u16 object_id);
 	bool					RemoveMapLocationByInfo		(INFO_ID info_portion_id);
+	void					RemoveMapLocations			();
 
 	//работа с пулями
 protected:	

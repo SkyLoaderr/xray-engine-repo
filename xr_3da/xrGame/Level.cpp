@@ -171,6 +171,15 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 	return -1;
 }
 
+LPCSTR CLevel::Name		()
+{
+	if(!CurrentEntity()) return NULL;
+//	return  ai().game_graph().header().level(ai().game_graph().vertex(dynamic_cast<CGameObject*>(CurrentEntity())->game_vertex_id())->level_id()).name();
+
+	return NULL;
+}
+
+
 void CLevel::OnFrame	()
 {
 	// Client receive

@@ -73,11 +73,6 @@ void CInventoryOwner::reinit				()
 
 	m_pPdaCallback->clear		();
 	m_pInfoCallback->clear		();
-
-#ifdef _DEBUG
-	m_KnowInfoWithoutAlife.clear();
-#endif	
-
 }
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
@@ -121,6 +116,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
 	VERIFY					(dynamic_object);
 #endif
+
+
+	//-------------------------------------
+	known_info_registry.init(pThis->ID());
 
 	return TRUE;
 }

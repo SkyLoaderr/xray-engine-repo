@@ -7,9 +7,7 @@
 #include "InfoPortion.h"
 #include "level.h"
 #include "gameobject.h"
-
-
-#define  INFO_PORTION_XML			"info_portions.xml"
+#include "encyclopedia_article.h"
 
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
@@ -45,7 +43,7 @@ void CInfoPortion::Load	(INFO_STR_ID info_str_id)
 void CInfoPortion::Load	(INFO_ID info_index)
 {
 	m_InfoIndex = info_index;
-	inherited_shared::load_shared(m_InfoIndex, INFO_PORTION_XML);
+	inherited_shared::load_shared(m_InfoIndex, NULL);
 }
 
 
@@ -98,15 +96,15 @@ void CInfoPortion::load_shared	(LPCSTR)
 		info_data()->m_pGameTask->Load(uiXml, pTaskNode);
 	}
 	//индексы статей
-	ARTICLE_ID article_id;
 	info_data()->m_Articles.clear();
 	int articles_num = uiXml.GetNodesNum(pNode, "article");
 	for(i=0; i<articles_num; ++i)
 	{
 		LPCSTR article_str_id = uiXml.Read(pNode, "article", i, NULL);
+		R_ASSERT(article_str_id);
+		info_data()->m_Articles.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
 	}
 	
-
 	//загрузить позиции на карте
 	SMapLocation map_location;
 	info_data()->m_MapLocations.clear();
@@ -156,7 +154,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	}
 }
 
-LPCSTR  CInfoPortion::GetText ()
+LPCSTR  CInfoPortion::GetText () const
 {
 	return *info_data()->m_text;
 }

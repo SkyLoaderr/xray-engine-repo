@@ -13,6 +13,7 @@
 #include "PhraseScript.h"
 #include "GameTask.h"
 #include "xml_str_id_loader.h"
+#include "encyclopedia_article_defs.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,17 +75,17 @@ public:
 	virtual void Load	(INFO_STR_ID info_str_id);
 	virtual void Load	(INFO_ID info_id);
 
-	const LOCATIONS_VECTOR&							MapLocations()	{return info_data()->m_MapLocations;}
-	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames()	{return info_data()->m_DialogNames;}
-	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	{return info_data()->m_DisableInfo;}
+	const LOCATIONS_VECTOR&							MapLocations()	const {return info_data()->m_MapLocations;}
+	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames	()	const {return info_data()->m_DialogNames;}
+	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	const {return info_data()->m_DisableInfo;}
 	
 	//запуск присоединенных скриптовых функций	
 	virtual void RunScriptActions   (const CGameObject* pOwner)	{info_data()->m_PhraseScript.Action(pOwner);}
 
 	//текстовое представление информации
-	virtual LPCSTR GetText ();
+	virtual LPCSTR GetText () const ;
 	//присоединенное задание, если есть
-	virtual CGameTask* GetTask () {return info_data()->m_pGameTask;}
+	virtual CGameTask* GetTask () const  {return info_data()->m_pGameTask;}
 
 
 protected:
@@ -92,6 +93,7 @@ protected:
 
 	void load_shared	(LPCSTR);
 	SInfoPortionData* info_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	const SInfoPortionData* info_data() const { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 	static void InitXmlIdToIndex();
 };

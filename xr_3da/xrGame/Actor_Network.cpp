@@ -583,29 +583,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 //	m_bHasUpdate = false;
 	m_bInInterpolation = false;
 	m_bInterpolate = false;
-//*
-	
-//	if (OnServer())// && E->s_flags.is(M_SPAWN_OBJECT_LOCAL))
-	/*
-	if (OnClient())
-	{
-		if (!pStatGraph)
-		{
-			static g_Y = 100;
-			pStatGraph = xr_new<CStatGraph>();
-			pStatGraph->SetRect(0, g_Y, 1024, 100, 0xff000000, 0xff000000);
-			g_Y += 110;
-			if (g_Y > 700) g_Y = 100;
-			pStatGraph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
-			pStatGraph->SetMinMax(-PI, PI, 300);
 
-			pStatGraph->SetStyle(CStatGraph::stBar);
-			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
-			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
-		};
-	};
-	//*/
-	//----------------------------------
 
 	if (m_DefaultVisualOutfit == NULL)
 		m_DefaultVisualOutfit = cNameVisual();
@@ -613,6 +591,27 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
 	PKinematics(Visual())->CalculateBones();
+
+
+	//--------------------------------------------------------------
+	//добавить отметки на карте, которые актер помнит в info_portions
+	if(known_info_registry.objects_ptr())
+	{
+		Level().RemoveMapLocations();
+		const KNOWN_INFO_VECTOR& know_info = *known_info_registry.objects_ptr();
+		for(KNOWN_INFO_VECTOR::const_iterator it = know_info.begin();
+					know_info.end() != it; it++)
+		{
+			CInfoPortion info_portion;
+			info_portion.Load((*it).id);
+			AddMapLocationsFromInfo(info_portion);
+		}
+	}
+
+	//-------------------------------------
+	contacts_registry.init(ID());
+
+
 	return					TRUE;
 }
 
