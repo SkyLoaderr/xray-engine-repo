@@ -25,7 +25,7 @@
 ** block size; some allocators may use that.)
 */
 #ifndef l_realloc
-#define l_realloc(b,os,s)	xr_realloc(b,s)
+#define l_realloc(b,os,s)	dlrealloc(b,s)
 #endif
 
 /*
@@ -33,7 +33,7 @@
 ** allocators may use that.)
 */
 #ifndef l_free
-#define l_free(b,os)	xr_free(b)
+#define l_free(b,os)	dlfree(b)
 #endif
 
 
