@@ -60,10 +60,17 @@ public:
 
 	struct STravelPathPoint {
 		Fvector				position;
+		u32					vertex_id;
 		u32					velocity;
-		void set_position(const Fvector &pos)
+
+		IC	void set_position	(const Fvector &pos)
 		{
 			position		= pos;
+		}
+
+		IC	void set_vertex_id	(const u32 _vertex_id)
+		{
+			vertex_id		= _vertex_id;
 		}
 	};
 

@@ -157,6 +157,7 @@ bool CDetailPathManager::build_circle_trajectory(
 			if (path) {
 				t.position			= ai().level_graph().v3d(position.position);
 				t.position.y		= ai().level_graph().vertex_plane_y(ai().level_graph().vertex(position.vertex_id),position.position.x,position.position.y);
+				t.vertex_id			= position.vertex_id;
 				path->push_back		(t);
 			}
 		}
@@ -202,6 +203,7 @@ bool CDetailPathManager::build_circle_trajectory(
 
 		if (path) {
 			t.position.y	= ai().level_graph().vertex_plane_y(curr_vertex_id,t.position.x,t.position.z);
+			t.vertex_id		= curr_vertex_id;
 			path->push_back	(t);
 		}
 
@@ -235,6 +237,7 @@ bool CDetailPathManager::build_line_trajectory(
 		if (path) {
 			t.position		= ai().level_graph().v3d(dest.point);
 			t.position.y	= ai().level_graph().vertex_plane_y(vertex_id,dest.point.x,dest.point.y);
+			t.vertex_id		= vertex_id;
 			path->push_back	(t);
 		}
 		return				(true);

@@ -415,6 +415,7 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 		pos3d				= v3d(start_point);
 		pos3d.y				= vertex_plane_y(start_vertex_id,start_point.x,start_point.y);
 		path_node.set_position(pos3d);
+		path_node.set_vertex_id(start_vertex_id);
 		tpaOutputPoints.push_back(path_node);
 	}
 
@@ -473,14 +474,15 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
 				VERIFY			(dwIntersect);
 				tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
-
 				path_node.set_position(tIntersectPoint);
+				path_node.set_vertex_id(next_vertex_id);
 				tpaOutputPoints.push_back(path_node);
 
 				if (box.contains(dest)) {
 					tIntersectPoint = v3d(dest);
 					tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 					path_node.set_position(tIntersectPoint);
+					path_node.set_vertex_id(next_vertex_id);
 					tpaOutputPoints.push_back(path_node);
 					return		(true);
 				}
