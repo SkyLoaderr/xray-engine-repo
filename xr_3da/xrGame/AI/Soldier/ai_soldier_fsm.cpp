@@ -32,7 +32,7 @@ void CAI_Soldier::OnFight()
 {
 	WRITE_TO_LOG("fight");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckIfGroupFightType(),aiSoldierFightGroup);
 	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFightAlone);
@@ -42,7 +42,7 @@ void CAI_Soldier::OnFightAlone()
 {
 	WRITE_TO_LOG("fight alone");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
 
@@ -63,7 +63,7 @@ void CAI_Soldier::OnFightGroup()
 {
 	WRITE_TO_LOG("fight group");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
 
@@ -84,9 +84,9 @@ void CAI_Soldier::OnAttackAlone()
 {
 	WRITE_TO_LOG("attack alone");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
 
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
 	
@@ -100,9 +100,9 @@ void CAI_Soldier::OnDefendAlone()
 {
 	WRITE_TO_LOG("defend alone");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
 
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
 	
@@ -116,9 +116,9 @@ void CAI_Soldier::OnPursuitAlone()
 {
 	WRITE_TO_LOG("pursuit alone");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || Enemy.bVisible);
 
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
 	
@@ -132,9 +132,9 @@ void CAI_Soldier::OnFindAlone()
 {
 	WRITE_TO_LOG("find alone");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || Enemy.bVisible);
 
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
 	
@@ -148,9 +148,9 @@ void CAI_Soldier::OnRetreatAlone()
 {
 	WRITE_TO_LOG("retreat alone");
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy);
 
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Enemy.Enemy);
 	
@@ -164,7 +164,7 @@ void CAI_Soldier::OnHurtAlone()
 {
 	WRITE_TO_LOG("hurt alone");
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
 
@@ -207,6 +207,16 @@ void CAI_Soldier::OnHurtAlone()
 void CAI_Soldier::OnAttackAloneNonFire()
 {
 	WRITE_TO_LOG("attack alone non-fire");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
+
+
 }
 
 void CAI_Soldier::OnAttackAloneFire()
