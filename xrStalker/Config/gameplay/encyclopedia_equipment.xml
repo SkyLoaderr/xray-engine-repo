@@ -11,7 +11,7 @@
     <!-------------------------------- Med ----------------------------->
 
     <article id="equipment_items_med" name="Med" group="Equipment/Items">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <ltx>medkit</ltx>
         <text>enc_equipment_items_med</text>
     </article>
 
