@@ -32,8 +32,8 @@ extern void		Surface_Init	();
 
 CBuild::CBuild	(b_params& Params, CStream& FS)
 {
-	HANDLE			hLargeHeap	= HeapCreate(0,64*1024*1024,0);
-	Msg				("* <LargeHeap> handle: %X",hLargeHeap);
+	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);
+	// Msg			("* <LargeHeap> handle: %X",hLargeHeap);
 
 	DWORD			i			= 0;
 
