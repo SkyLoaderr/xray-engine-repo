@@ -368,7 +368,7 @@ bool CSpawnPoint::GetBox( Fbox& box )
 			if (m_SpawnData.m_Visual&&m_SpawnData.m_Visual->visual)
             {
             	box.set		(m_SpawnData.m_Visual->visual->vis.box);
-                box.xform	(FTransform);
+                box.xform	(FTransformRP);
             }else{
 			    CEditShape* shape	= dynamic_cast<CEditShape*>(m_AttachedObject);
                 if (shape&&!shape->GetShapes().empty()){
@@ -409,6 +409,11 @@ bool CSpawnPoint::GetBox( Fbox& box )
     break;
     default: NODEFAULT;
     }
+    if (m_AttachedObject){ 		
+    	Fbox 					bb;
+    	m_AttachedObject->GetBox(bb);
+        box.merge				(bb);
+    }
 	return true;
 }
 
@@ -425,7 +430,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
     Scene->SelectLightsForObject(this);
     // render attached object
     if (m_AttachedObject) 		m_AttachedObject->Render(priority, strictB2F);
-	if (m_SpawnData.Valid())    m_SpawnData.Render(Selected(),_Transform(),priority, strictB2F);
+	if (m_SpawnData.Valid())    m_SpawnData.Render(Selected(),FTransformRP,priority, strictB2F);
     // render spawn point
     if (1==priority){
         if (strictB2F){
