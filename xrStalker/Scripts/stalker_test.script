@@ -72,7 +72,7 @@ function main ()
 	sound_blin:play_at_pos(
 		stalker,
 		stalker:position(),
-		0
+		true
 	)
 	
 --	while stalker:action() do
