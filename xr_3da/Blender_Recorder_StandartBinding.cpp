@@ -8,10 +8,7 @@
 #include "blenders\Blender.h"
 
 #include "igame_persistent.h"
-#ifdef _EDITOR
-#else
-	#include "environment.h"
-#endif
+#include "environment.h"
 
 // matrices
 #define	BIND_DECLARE(xf)	\

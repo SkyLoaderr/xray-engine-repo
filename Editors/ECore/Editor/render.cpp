@@ -74,6 +74,8 @@ void CRender::Calculate()
 
 void CRender::Render()
 {
+	RenderFirst
+
 }
 
 IRender_DetailModel*	CRender::model_CreateDM(IReader* F)

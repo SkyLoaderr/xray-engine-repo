@@ -285,6 +285,8 @@ void TUI::CheckWindowPos(TForm* form)
 	if (form->Top<0) 							form->Top 	= 0;
 }
 //---------------------------------------------------------------------------
+#include "igame_persistent.h"
+#include "environment.h"
 
 void TUI::Redraw(){
 	VERIFY(m_bReady);
@@ -299,6 +301,13 @@ void TUI::Redraw(){
     u32 fog_color;
 	float fog_start, fog_end;
     Tools->GetCurrentFog	(fog_color, fog_start, fog_end);
+
+    if (0==g_pGamePersistent->Environment.GetWeather().size()){
+        g_pGamePersistent->Environment.CurrentEnv.fog_color.set	(color_get_R(fog_color),color_get_G(fog_color),color_get_B(fog_color));
+        g_pGamePersistent->Environment.CurrentEnv.fog_far		= fog_end;
+        g_pGamePersistent->Environment.CurrentEnv.fog_near		= fog_start;
+    }
+    
 	Device.SetRS( D3DRS_FOGCOLOR,		fog_color			);         
 	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
 	if (HW.Caps.bTableFog)	{
