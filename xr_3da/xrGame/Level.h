@@ -49,6 +49,10 @@ class CScriptProcessor;
 
 class CLevel					: public IGame_Level, public IPureClient
 {
+private:
+#ifdef DEBUG
+	bool						m_bSynchronization;
+#endif
 protected:
 	typedef IGame_Level			inherited;
 

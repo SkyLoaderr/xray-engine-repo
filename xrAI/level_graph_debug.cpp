@@ -746,7 +746,7 @@ IC	bool build_circle_trajectory(
 	float				sina, cosa, sinb, cosb, sini, cosi, temp;
 	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +1.5f);
 	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
-	int					k = vertex_id ? 0 : 0;//-1;
+	int					k = vertex_id ? 0 : -1;
 	if (path)
 		path->reserve	(size + n + k);
 
@@ -995,9 +995,9 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= PI_MUL_2;
-	start.linear_velocity	= 0.f;//0.0001f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI_MUL_2;
+//	start.linear_velocity	= 0.f;//0.0001f;
+//	start_set.push_back		(start);
 
 	start.angular_velocity	= PI;
 	start.linear_velocity	= 2.15f;
@@ -1011,9 +1011,9 @@ void fill_params(
 	start.linear_velocity	= 6.f;
 	start_set.push_back		(start);
 
-	dest.angular_velocity	= PI_MUL_2;
-	dest.linear_velocity	= 0.f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI_MUL_2;
+//	dest.linear_velocity	= 0.f;
+//	dest_set.push_back		(dest);
 
 	dest.angular_velocity	= PI;
 	dest.linear_velocity	= 2.15f;

@@ -53,6 +53,10 @@ CLevel::CLevel()
 	m_pFogOfWar					= xr_new<CFogOfWar>();
 
 	m_tpScriptProcessor			= 0;
+
+#ifdef DEBUG
+	m_bSynchronization			= false;
+#endif
 }
 
 CLevel::~CLevel()

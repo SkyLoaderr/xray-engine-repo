@@ -79,14 +79,26 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #ifdef DEBUG
 	case DIK_F9:
-		ai().level_graph().set_start_point();
-		ai().level_graph().build_detail_path();
+		if (!m_bSynchronization) {
+			m_bSynchronization	= true;
+			ai().level_graph().set_start_point();
+			ai().level_graph().build_detail_path();
+			m_bSynchronization	= false;
+		}
 		return;
 	case DIK_F10:
-		ai().level_graph().set_start_point();
+		if (!m_bSynchronization) {
+			m_bSynchronization	= true;
+			ai().level_graph().set_start_point();
+			m_bSynchronization	= false;
+		}
 		return;
 	case DIK_F11:
-		ai().level_graph().build_detail_path();
+		if (!m_bSynchronization) {
+			m_bSynchronization	= true;
+			ai().level_graph().build_detail_path();
+			m_bSynchronization	= false;
+		}
 		return;
 #endif
 	}
