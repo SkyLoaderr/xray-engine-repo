@@ -200,7 +200,7 @@ void OGF_Node::Save	(IWriter &fs)
 
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
-	fs.Wdword			(chields.size());
+	fs.w_u32			(chields.size());
 	fs.write			(chields.begin(),chields.size()*sizeof(DWORD));
 	fs.close_chunk		();
 }
@@ -222,7 +222,7 @@ void OGF_LOD::Save	(IWriter &fs)
 
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
-	fs.Wdword			(chields.size());
+	fs.w_u32			(chields.size());
 	fs.write			(chields.begin(),chields.size()*sizeof(DWORD));
 	fs.close_chunk		();
 
@@ -235,7 +235,7 @@ void OGF_LOD::Save	(IWriter &fs)
 	fs.open_chunk		(OGF_TEXTURE_L);
 	string Tname		= pBuild->textures[pBuild->materials[lod_Material].surfidx].name;
 	string Sname		= pBuild->shader_render[pBuild->materials[lod_Material].shader].name;
-	fs.Wdword			(RegisterString(Tname));
-	fs.Wdword			(RegisterString(Sname));
+	fs.w_u32			(RegisterString(Tname));
+	fs.w_u32			(RegisterString(Sname));
 	fs.close_chunk		();
 }

@@ -125,7 +125,7 @@ void CBuild::BuildPVS()
 				}
 				
 				// Compress and record PVS sample
-				pvs_map.Wdword(CompressSelected());
+				pvs_map.w_u32(CompressSelected());
 				g_selected.clear();
 
 				// Statistic

@@ -9,7 +9,7 @@ void CBuild::SaveLights(IWriter &fs)
 	for (DWORD i=0; i<L_dynamic.size(); i++) 
 	{
 		b_light_dynamic& L	= L_dynamic[i];
-		fs.Wdword	(L.controller_ID);
+		fs.w_u32	(L.controller_ID);
 		fs.write	(&L.data,sizeof(L.data));
 	}
 	fs.close_chunk();

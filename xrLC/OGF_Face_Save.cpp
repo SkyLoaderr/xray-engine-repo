@@ -31,8 +31,8 @@ void OGF::Save			(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	fs.Wdword			(RegisterString(Tname));
-	fs.Wdword			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.w_u32			(RegisterString(Tname));
+	fs.w_u32			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
 	fs.close_chunk		();
 
 	// Vertices
@@ -86,22 +86,22 @@ void OGF_Reference::Save	(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	fs.Wdword			(RegisterString(Tname));
-	fs.Wdword			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.w_u32			(RegisterString(Tname));
+	fs.w_u32			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
 	fs.close_chunk		();
 
 	// Vertices
 	fs.open_chunk		(OGF_VCONTAINER);
-	fs.Wdword			(vb_id);
-	fs.Wdword			(vb_start);
-	fs.Wdword			(model->vertices.size());
+	fs.w_u32			(vb_id);
+	fs.w_u32			(vb_start);
+	fs.w_u32			(model->vertices.size());
 	fs.close_chunk		();
 	
 	// Faces
 	fs.open_chunk		(OGF_ICONTAINER);
-	fs.Wdword			(ib_id);
-	fs.Wdword			(ib_start);
-	fs.Wdword			(model->faces.size()*3);
+	fs.w_u32			(ib_id);
+	fs.w_u32			(ib_start);
+	fs.w_u32			(model->faces.size()*3);
 	fs.close_chunk		();
 
 	// Special
@@ -121,8 +121,8 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOO
 {
 //	clMsg			("- saving: cached");
 	fs.open_chunk	(OGF_VERTICES);
-	fs.Wdword		(FVF);
-	fs.Wdword		(vertices.size());
+	fs.w_u32		(FVF);
+	fs.w_u32		(vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
 		if (bNeedNormals)	fs.write(V,6*sizeof(float));	// Position & normal
@@ -135,7 +135,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOO
 	
 	// Faces
 	fs.open_chunk(OGF_INDICES);
-	fs.Wdword	(faces.size()*3);
+	fs.w_u32	(faces.size()*3);
 	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.write(F,3*sizeof(WORD));
 	fs.close_chunk();
 }
@@ -158,17 +158,17 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 	g_VB.End		(&ID,&Start);
 	
 	fs.open_chunk	(OGF_VCONTAINER);
-	fs.Wdword		(ID);
-	fs.Wdword		(Start);
-	fs.Wdword		(vertices.size());
+	fs.w_u32		(ID);
+	fs.w_u32		(Start);
+	fs.w_u32		(vertices.size());
 	fs.close_chunk	();
 	
 	// Faces
 	g_IB.Register	(LPWORD(faces.begin()),LPWORD(faces.end()),&ID,&Start);
 	fs.open_chunk	(OGF_ICONTAINER);
-	fs.Wdword		(ID);
-	fs.Wdword		(Start);
-	fs.Wdword		(faces.size()*3);
+	fs.w_u32		(ID);
+	fs.w_u32		(Start);
+	fs.w_u32		(faces.size()*3);
 	fs.close_chunk	();
 	
 	// PMap
@@ -177,8 +177,8 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 		fs.open_chunk(OGF_P_MAP);
 		{
 			fs.open_chunk	(0x1);
-			fs.Wdword		(dwMinVerts);
-			fs.Wdword		(I_Current);
+			fs.w_u32		(dwMinVerts);
+			fs.w_u32		(I_Current);
 			fs.close_chunk	();
 		}
 		{
@@ -188,7 +188,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 		}
 		{
 			fs.open_chunk	(0x3);
-			fs.Wdword		(pmap_faces.size());
+			fs.w_u32		(pmap_faces.size());
 			fs.write		(pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
 			fs.close_chunk	();
 		}
@@ -322,14 +322,14 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 				{
 					// Vertices
 					fs.open_chunk	(OGF_VCONTAINER);
-					fs.Wdword		(ID);
-					fs.Wdword		(Start);
-					fs.Wdword		(strip_verts.size());
+					fs.w_u32		(ID);
+					fs.w_u32		(Start);
+					fs.w_u32		(strip_verts.size());
 					fs.close_chunk	();
 					
 					// Faces
 					fs.open_chunk	(OGF_INDICES);
-					fs.Wdword		(strip_indices.size());
+					fs.w_u32		(strip_indices.size());
 					fs.write		(strip_indices.begin(),strip_indices.size()*sizeof(WORD));
 					fs.close_chunk	();
 				}

@@ -193,8 +193,8 @@ void CBuild::Run	(string& P)
 		fs.write(&G,4*sizeof(float));
 		string T = textures		[materials[G.dwMaterial].surfidx].name;
 		string S = shader_render[materials[G.dwMaterial].shader].name;
-		fs.Wdword(RegisterString(T));
-		fs.Wdword(RegisterString(S));
+		fs.w_u32(RegisterString(T));
+		fs.w_u32(RegisterString(S));
 	}
 	fs.close_chunk	();
 
@@ -221,19 +221,19 @@ void CBuild::err_save	()
 
 	// t-junction
 	err.open_chunk	(0);
-	err.Wdword		(err_tjunction.size()/(1*sizeof(Fvector)));
+	err.w_u32		(err_tjunction.size()/(1*sizeof(Fvector)));
 	err.write		(err_tjunction.pointer(), err_tjunction.size());
 	err.close_chunk	();
 
 	// m-edje
 	err.open_chunk	(1);
-	err.Wdword		(err_multiedge.size()/(2*sizeof(Fvector)));
+	err.w_u32		(err_multiedge.size()/(2*sizeof(Fvector)));
 	err.write		(err_multiedge.pointer(), err_multiedge.size());
 	err.close_chunk	();
 
 	// invalid
 	err.open_chunk	(2);
-	err.Wdword		(err_invalid.size()/(3*sizeof(Fvector)));
+	err.w_u32		(err_invalid.size()/(3*sizeof(Fvector)));
 	err.write		(err_invalid.pointer(), err_invalid.size());
 	err.close_chunk	();
 }
