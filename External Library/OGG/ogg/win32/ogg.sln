@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogg_dynamic", "ogg_dynamic.vcproj", "{C42D8A07-BE06-4915-97F5-EC699689000E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogg_static", "ogg_static.vcproj", "{2029BC8E-8339-4B21-A033-830B3C6468BF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProjectName0 = \u0022$/External\u0020Library/OGG/ogg\u0022,\u0020LYSAAAAA
+		SccLocalPath0 = ..
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection0 = win32\\
+		SolutionUniqueID = {1A476032-E600-4835-8C2D-F89FA683CD63}
+		SccProjectUniqueName1 = ogg_dynamic.vcproj
+		SccLocalPath1 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = win32\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C42D8A07-BE06-4915-97F5-EC699689000E}.Debug.ActiveCfg = Debug|Win32
+		{C42D8A07-BE06-4915-97F5-EC699689000E}.Debug.Build.0 = Debug|Win32
+		{C42D8A07-BE06-4915-97F5-EC699689000E}.Release.ActiveCfg = Release|Win32
+		{C42D8A07-BE06-4915-97F5-EC699689000E}.Release.Build.0 = Release|Win32
+		{2029BC8E-8339-4B21-A033-830B3C6468BF}.Debug.ActiveCfg = Debug|Win32
+		{2029BC8E-8339-4B21-A033-830B3C6468BF}.Debug.Build.0 = Debug|Win32
+		{2029BC8E-8339-4B21-A033-830B3C6468BF}.Release.ActiveCfg = Release|Win32
+		{2029BC8E-8339-4B21-A033-830B3C6468BF}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
