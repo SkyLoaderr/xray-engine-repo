@@ -210,6 +210,7 @@ void CBuild::Run()
 	fs.close_chunk();
 
 	FPU::m64r		();
+	Phase			("Tesselating...");
 	mem_Compact		();
 	Tesselate		();
 	

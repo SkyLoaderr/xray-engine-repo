@@ -1,82 +1,68 @@
 #include "stdafx.h"
 #include "build.h"
 
-const float		tess	= 4.0001f;
+const float		tess	= 1.0001f;
 
 void CBuild::Tesselate	()
 {
-	BOOL	bTesselate	= TRUE;
 	DWORD	cnt_splits	= 0;
-	DWORD	cnt_pass	= 0;
 	g_bUnregister		= FALSE;
 	
-	while (bTesselate)	
+	for (int I=0; I<int(g_faces.size()); I++)
 	{
-		bTesselate		= FALSE;
-		cnt_pass		++;
-		cnt_splits		= 0;
+		Face* F				= g_faces[I];
+		if (0==F)			continue;
 		
-		string256		phase_name;
-		sprintf			(phase_name,"Tesselating, pass %d...",cnt_pass);
-		Phase			(phase_name);
+		Progress			(float(I)/float(g_faces.size()));
 		
-		for (int I=0; I<int(g_faces.size()); I++)
+		// Iterate on edges - select longest
+		float	max_len		= -1;
+		int		max_id		= -1;
+		for (DWORD e=0; e<3; e++)
 		{
-			Face* F				= g_faces[I];
-			if (0==F)			continue;
-
-			Progress			(float(I)/float(g_faces.size()));
-			
-			// Iterate on edges - select longest
-			float	max_len		= -1;
-			int		max_id		= -1;
-			for (DWORD e=0; e<3; e++)
+			float len		= F->EdgeLen(e);
+			if (len>max_len)	
 			{
-				float len		= F->EdgeLen(e);
-				if (len>max_len)	
-				{
-					max_len = len;
-					max_id	= e;
-				}
+				max_len = len;
+				max_id	= e;
 			}
-			if (max_len<tess)	continue;
-
-			// Split edge
-			bTesselate			= TRUE;
-			cnt_splits	++;
-
-			// indices
-			int id1				= edge2idx[e][0];
-			int id2				= edge2idx[e][1];
-			int idB				= 3-(id1+id2);
-
-			// lerp
-			Vertex*		V		= new Vertex;
-			V->P.lerp			(F->v[id1]->P, F->v[id2]->P, .5f);
-			UVpoint		UV;
-			UV.averageA			(F->tc.front().uv[id1],F->tc.front().uv[id2]);
-
-			// F1
-			Face* F1			= new Face;
-			F1->dwMaterial		= F->dwMaterial;
-			F1->SetVertices		(F->v[idB],F->v[id1],V);
-			F1->AddChannel		(F->tc.front().uv[idB],F->tc.front().uv[id1],UV);
-			
-			// F2
-			Face* F2			= new Face;
-			F2->dwMaterial		= F->dwMaterial;
-			F2->SetVertices		(F->v[idB],V,F->v[id2]);
-			F2->AddChannel		(F->tc.front().uv[idB],UV,F->tc.front().uv[id2]);
-
-			// Destroy old face
-			_DELETE				(g_faces[I]);
 		}
-
-		Msg ("%d splits performed.",cnt_splits);
+		if (max_len<tess)	continue;
+		
+		// Split edge
+		cnt_splits	++;
+		
+		// indices
+		int id1				= edge2idx[max_id][0];
+		int id2				= edge2idx[max_id][1];
+		int idB				= 3-(id1+id2);
+		
+		// lerp
+		Vertex*		V		= new Vertex;
+		V->P.lerp			(F->v[id1]->P, F->v[id2]->P, .5f);
+		UVpoint		UV;
+		UV.averageA			(F->tc.front().uv[id1],F->tc.front().uv[id2]);
+		
+		// F1
+		Face* F1			= new Face;
+		F1->dwMaterial		= F->dwMaterial;
+		F1->SetVertices		(F->v[idB],F->v[id1],V);
+		F1->AddChannel		(F->tc.front().uv[idB],F->tc.front().uv[id1],UV);
+		
+		// F2
+		Face* F2			= new Face;
+		F2->dwMaterial		= F->dwMaterial;
+		F2->SetVertices		(F->v[idB],V,F->v[id2]);
+		F2->AddChannel		(F->tc.front().uv[idB],UV,F->tc.front().uv[id2]);
+		
+		// Destroy old face
+		_DELETE				(g_faces[I]);
 	}
-
+	
+	Msg ("%d splits performed.",cnt_splits);
+	
 	// Remove ZEROed faces
 	g_faces.erase(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
-
+	
 	g_bUnregister		= TRUE;
 }
