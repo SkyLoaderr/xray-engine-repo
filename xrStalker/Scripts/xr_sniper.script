@@ -213,6 +213,8 @@ function action_sniper_idle:initialize ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_sit_down	()
+    printf("___SIT_DOWN")
+
 	if( self.object:level_vertex_id() ~= self.rest_point ) then
 		self.object:set_dest_level_vertex_id(self.rest_point)
         self.object:set_movement_type		(move.walk)
@@ -232,6 +234,7 @@ end
 function action_sniper_idle:init_state_walk()
     self.state      = walk
     self.time       = 0
+    printf("___WALK")
 
     if(xr_state.change_state(self.object, 0)) then  return true  end		--Если будем менять положение тела, то больше ничего не делаем
 
