@@ -25,12 +25,6 @@ struct CEqualityChecker {
 		}
 	};
 
-	template <typename T>
-	IC	static bool equal(const T &_1, const T &_2)
-	{
-		return						(CHelper<T>::equal<object_type_traits::is_pointer<T>::value>(_1,_2));
-	}
-
 	IC	static bool equal(LPCSTR &_1, LPCSTR &_2)
 	{
 		return						(!xr_strcmp(_1,_2));
@@ -127,60 +121,83 @@ struct CEqualityChecker {
 		return					(equal(_1,_2,true));
 	}
 
-	template <template <typename _1> class T1, typename T2>
-	IC	static bool equal(const T1<T2> &_1, const T1<T2> &_2)
-	{
-		if (_1.size() != _2.size())
-			return					(false);
+	struct CHelper3 {
+		template <template <typename _1> class T1, typename T2>
+		IC	static bool equal(const T1<T2> &_1, const T1<T2> &_2)
+		{
+			if (_1.size() != _2.size())
+				return						(false);
 
-		T1<T2>::const_iterator			I = _1.begin(), J = _2.begin();
-		T1<T2>::const_iterator			E = _1.end();
-		for ( ; I != E; ++I, ++J)
-			if (!equal(*I,*J))
+			T1<T2>::const_iterator			I = _1.begin(), J = _2.begin();
+			T1<T2>::const_iterator			E = _1.end();
+			for ( ; I != E; ++I, ++J)
+				if (!CEqualityChecker::equal(*I,*J))
+					return					(false);
+			return							(true);
+		}
+
+		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
+		IC	static bool equal(const T1<T2,T3> &_1, const T1<T2,T3> &_2)
+		{
+			if (_1.size() != _2.size())
 				return					(false);
-		return							(true);
-	}
 
-	template <template <typename _1, typename _2> class T1, typename T2, typename T3>
-	IC	static bool equal(const T1<T2,T3> &_1, const T1<T2,T3> &_2)
-	{
-		if (_1.size() != _2.size())
-			return					(false);
+			T1<T2,T3>::const_iterator			I = _1.begin(), J = _2.begin();
+			T1<T2,T3>::const_iterator			E = _1.end();
+			for ( ; I != E; ++I, ++J)
+				if (!CEqualityChecker::equal(*I,*J))
+					return					(false);
+			return							(true);
+		}
 
-		T1<T2,T3>::const_iterator			I = _1.begin(), J = _2.begin();
-		T1<T2,T3>::const_iterator			E = _1.end();
-		for ( ; I != E; ++I, ++J)
-			if (!equal(*I,*J))
+		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
+		IC	static bool equal(const T1<T2,T3,T4> &_1, const T1<T2,T3,T4> &_2)
+		{
+			if (_1.size() != _2.size())
 				return					(false);
-		return							(true);
-	}
 
-	template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
-	IC	static bool equal(const T1<T2,T3,T4> &_1, const T1<T2,T3,T4> &_2)
-	{
-		if (_1.size() != _2.size())
-			return					(false);
+			T1<T2,T3,T4>::const_iterator		I = _1.begin(), J = _2.begin();
+			T1<T2,T3,T4>::const_iterator		E = _1.end();
+			for ( ; I != E; ++I, ++J)
+				if (!CEqualityChecker::equal(*I,*J))
+					return					(false);
+			return							(true);
+		}
 
-		T1<T2,T3,T4>::const_iterator		I = _1.begin(), J = _2.begin();
-		T1<T2,T3,T4>::const_iterator		E = _1.end();
-		for ( ; I != E; ++I, ++J)
-			if (!equal(*I,*J))
+		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
+		IC	static bool equal(const T1<T2,T3,T4,T5> &_1, const T1<T2,T3,T4,T5> &_2)
+		{
+			if (_1.size() != _2.size())
 				return					(false);
-		return							(true);
-	}
 
-	template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
-	IC	static bool equal(const T1<T2,T3,T4,T5> &_1, const T1<T2,T3,T4,T5> &_2)
+			T1<T2,T3,T4,T5>::const_iterator	I = _1.begin(), J = _2.begin();
+			T1<T2,T3,T4,T5>::const_iterator	E = _1.end();
+			for ( ; I != E; ++I, ++J)
+				if (!CEqualityChecker::equal(*I,*J))
+					return					(false);
+			return							(true);
+		}
+	};
+
+	template <typename T>
+	struct CHelper4 {
+		template <bool a>
+		IC	static bool equal(const T &_1, const T &_2)
+		{
+			return(CHelper<T>::equal<object_type_traits::is_pointer<T>::value>(_1,_2));
+		}
+
+		template <>
+		IC	static bool equal<true>(const T &_1, const T &_2)
+		{
+			return(CHelper3::equal(_1,_2));
+		}
+	};
+
+	template <typename T>
+	IC	static bool equal(const T &_1, const T &_2)
 	{
-		if (_1.size() != _2.size())
-			return					(false);
-
-		T1<T2,T3,T4,T5>::const_iterator	I = _1.begin(), J = _2.begin();
-		T1<T2,T3,T4,T5>::const_iterator	E = _1.end();
-		for ( ; I != E; ++I, ++J)
-			if (!equal(*I,*J))
-				return					(false);
-		return							(true);
+		return						(CHelper4<T>::equal<object_type_traits::has_const_iterator<T>::value>(_1,_2));
 	}
 };
 
