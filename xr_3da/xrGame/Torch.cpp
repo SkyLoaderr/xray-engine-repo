@@ -133,7 +133,7 @@ void CTorch::UpdateCL()
 			if (time2hide<0)	light_render->set_active(false);
 		}
 	} else if(H_Parent()) {
-		Collide::ray_query RQ;
+		Collide::rq_result RQ;
 		H_Parent()->setEnabled(false);
 		Fvector l_p, l_d; dynamic_cast<CEntity*>(H_Parent())->g_fireParams(l_p,l_d);
 		//Fmatrix l_cam; Level().Cameras.unaffected_Matrix(l_cam);

@@ -93,7 +93,7 @@ CGameObject* CActor::pick_Object(u16& element)
 {
 
 	setEnabled(false);
-	Collide::ray_query	l_rq;
+	Collide::rq_result	l_rq;
 	l_rq.O=NULL;
 	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
 	setEnabled(true);

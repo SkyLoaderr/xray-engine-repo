@@ -57,7 +57,7 @@ void CHUDCursor::Render()
 	
 	g_pGameLevel->CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
-	Collide::ray_query	RQ;
+	Collide::rq_result	RQ;
 
 	if (g_pGameLevel->ObjectSpace.RayPick( p1, dir, dist, RQ )){
 		// if (RQ.O && (RQ.O->CLS_ID == CLSID_ENTITY) && (((CEntity*)RQ.O)->id_Team!=cur_team)) C = C_ON_ENEMY;

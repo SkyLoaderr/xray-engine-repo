@@ -238,7 +238,7 @@ void CWeaponProtecta::Show		()
 	inherited::Show				();
 }
 
-void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponProtecta::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	inherited::FireShotmark	(vDir, vEnd, R);
 

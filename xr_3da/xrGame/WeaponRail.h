@@ -22,7 +22,7 @@ public:
 	CWeaponRail					();
 	virtual ~CWeaponRail		();
 
-	void			SetRail		(Fvector &p1, Fvector &d, Collide::ray_query& R, BOOL bWallmark);
+	void			SetRail		(Fvector &p1, Fvector &d, Collide::rq_result& R, BOOL bWallmark);
 	void			HitIfActor	(Fvector &D);
 
 	virtual void	SetDefaults	();

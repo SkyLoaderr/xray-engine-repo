@@ -69,7 +69,7 @@ protected:
 	void			FlameLOAD			();
 	void			FlameUNLOAD			();
 	
-	virtual void	FireShotmark		(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	FireShotmark		(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R);
 public:
 					CWeaponM134			();
 	virtual			~CWeaponM134		();

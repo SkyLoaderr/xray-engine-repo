@@ -43,7 +43,7 @@ void CCameraLook::Update(Fvector& point, Fvector& /**noise_dangle/**/)
 	}
 
 	Fvector				vDir;
-	Collide::ray_query	R;
+	Collide::rq_result	R;
 
 	float				covariance = VIEWPORT_NEAR*6.f;
 	vDir.invert			(vDirection);

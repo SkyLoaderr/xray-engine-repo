@@ -901,13 +901,13 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 		if(Enter(pos,dir,foot_pos)) return true;
 	}
 
-	ICollisionForm::RayPickResult result;
-	if (collidable.model->_RayPick	(result,pos, dir, 3.f, 0)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	Collide::RayQuery Q(pos, dir, 3.f, 0);
+	if (collidable.model->_RayPick	(Q)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	{
-		int y=result.r_count();
+		int y=Q.r_count();
 		for (int k=0; k<y; ++k)
 		{
-			ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
+			Collide::rq_result* R = Q.r_begin()+k;
 			if(is_Door(R->element,i)) 
 			{
 				i->second.Use();

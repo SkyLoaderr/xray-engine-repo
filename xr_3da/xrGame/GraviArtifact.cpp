@@ -58,7 +58,7 @@ void CGraviArtifact::UpdateCL()
 		{
 			Fvector dir; 
 			dir.set(0, -1.f, 0);
-			Collide::ray_query RQ;
+			Collide::rq_result RQ;
 			setEnabled(false);
 			
 			//проверить высоту артифакта

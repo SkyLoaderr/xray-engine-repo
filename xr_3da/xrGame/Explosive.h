@@ -27,7 +27,7 @@ public:
 	virtual void Explode();
 	virtual void FragWallmark(const Fvector& vDir, 
 							  const Fvector &vEnd, 
-							  Collide::ray_query& R);
+							  Collide::rq_result& R);
 
 protected:
 	//параметры взрыва

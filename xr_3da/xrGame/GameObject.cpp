@@ -257,7 +257,7 @@ void CGameObject::Hit(float /**P/**/, Fvector &dir, CObject* /**who/**/, s16 /**
 //проверка на попадание "осколком" по объекту
 f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {
-	Collide::ray_query RQ;
+	Collide::rq_result RQ;
 	Fvector l_pos; 
 	Center(l_pos);
 	Fvector l_dir; 

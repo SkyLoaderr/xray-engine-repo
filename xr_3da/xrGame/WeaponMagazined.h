@@ -45,7 +45,7 @@ protected:
 		eMagEmpty
 	};
 protected:
-	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R);
 	virtual void	OnMagazineEmpty	();
 
 	virtual void	MediaLOAD		();
@@ -61,7 +61,7 @@ protected:
 	virtual void	OnShot			();
 	virtual void	OnShellDrop		();
 	virtual void	OnEmptyClick	();
-	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R);
 	virtual void	OnAnimationEnd	();
 	virtual void	OnStateSwitch	(u32 S);
 

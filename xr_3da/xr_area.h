@@ -37,7 +37,7 @@ public:
 	BOOL								RayTest				( const Fvector &start, const Fvector &dir, float range, BOOL bDynamic=TRUE, Collide::ray_cache* cache=NULL);
 
 	// Game raypick (nearest) - returns object and addititional params
-	BOOL								RayPick				( const Fvector &start, const Fvector &dir, float range, Collide::ray_query& R);
+	BOOL								RayPick				( const Fvector &start, const Fvector &dir, float range, Collide::rq_result& R);
 
 	// General collision query
 	void								BoxQuery			( const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);

@@ -216,7 +216,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &/**normal/**
 		m_blasted.pop_front();
 	}
 	
-	Collide::ray_query RQ;
+	Collide::rq_result RQ;
 	setEnabled(false);
 	for(s32 i = 0; i < m_frags; ++i) 
 	{
@@ -341,7 +341,7 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 	return l_res;
 }
 
-void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	if (!hWallmark)	return;
 	

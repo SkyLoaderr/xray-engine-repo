@@ -468,7 +468,7 @@ void CWeaponMagazined::Show		()
 	SwitchState(eShowing);
 }
 
-void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
 	OnShotmark					(vDir, vEnd, R);
@@ -548,7 +548,7 @@ void CWeaponMagazined::OnShot		()
 	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
 
-void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
+void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)
 {
 	Sound->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
 	

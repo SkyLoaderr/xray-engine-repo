@@ -1063,7 +1063,7 @@ void CActor::shedule_Update	(u32 DT)
 
 	//  то-то или что-то, на что мы смотрим
 	setEnabled(false);
-	Collide::ray_query l_rq;
+	Collide::rq_result l_rq;
 	if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, 
 										 Device.vCameraDirection, 
 									 	 m_inventory.GetTakeDist(),  l_rq)) 

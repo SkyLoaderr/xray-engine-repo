@@ -988,20 +988,19 @@ void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* call
 u16 CPHSimpleCharacter::RetriveContactBone()
 
 {
-	ICollisionForm::RayPickResult result;
 	Fvector dir;
-	u16 contact_bone=0;
 	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
+	Collide::RayQuery Q(*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	u16 contact_bone=0;
 	CObject* object=dynamic_cast<CObject*>(m_phys_ref_object);
-	if (object->collidable.model->_RayPick	(result,*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
-	{
+	if (object->collidable.model->_RayPick	(Q)){
 
-		ICollisionForm::RayPickResult::Result* R = result.r_begin();
+		Collide::rq_result* R = Q.r_begin();
 		contact_bone=(u16)R->element;
 		//int y=result.r_count();
 		//for (int k=0; k<y; ++k)
 		//{
-		//	ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
+		//	ICollisionForm::RayQuery::Result* R = result.r_begin()+k;
 		//	if(is_Door(R->element,i)) 
 		//	{
 		//		i->second.Use();

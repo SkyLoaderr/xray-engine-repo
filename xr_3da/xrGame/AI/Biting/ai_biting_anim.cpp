@@ -43,7 +43,7 @@ bool CAI_Biting::AA_CheckHit()
 		trace_from.add(apt_anim.trace_offset);
 
 		this->setEnabled(false);
-		Collide::ray_query	l_rq;
+		Collide::rq_result	l_rq;
 
 		Fvector dir = Direction();
 

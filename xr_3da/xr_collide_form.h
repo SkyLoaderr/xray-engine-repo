@@ -1,6 +1,8 @@
 #ifndef __XR_COLLIDE_FORM_H__
 #define __XR_COLLIDE_FORM_H__
 
+#include "xr_collide_defs.h"
+
 // refs
 class ENGINE_API	CObject;
 class ENGINE_API	CInifile;
@@ -80,56 +82,14 @@ protected:
 	CObject*		owner;			// владелец
 	u32				dwQueryID;
 protected:
-	struct			RayQuery{
-		Fvector		start;
-		Fvector		dir;
-		float		range;
-		int			element;
-					RayQuery(const Fvector& _start, const Fvector& _dir, float _range)
-		{
-			start	=_start;
-			dir		= _dir;
-			range	= _range;
-		}
-	};
-
 	Fbox			bv_box;			// (Local) BBox объекта
 	Fsphere			bv_sphere;		// (Local) Sphere 
-public:
-	class			RayPickResult
-	{
-	public:
-		struct		Result{
-			float	range;
-			int		element;
-		};
-	protected:
-		DEFINE_VECTOR(Result,ResultVec,ResultIt);
-		ResultVec	results;
-	public:
-		IC void		AppendResult	(float _range, int _element, BOOL only_nearest)
-		{
-			if (only_nearest&&!results.empty()){
-				Result& R			= results.back();
-				if (_range<R.range){
-					R.range			=_range;
-					R.element		=_element;
-				}
-				return;
-			}
-			results.push_back		(Result());
-			results.back().range	=_range;
-			results.back().element	=_element;
-		}
-		IC int		r_count			()	{return results.size();}
-		IC Result*	r_begin			()	{return &*results.begin();}
-	};
 public:
 					ICollisionForm	( CObject* _owner );
 	virtual			~ICollisionForm	( );
 
-	virtual BOOL	_RayTest		( RayQuery& Q) = 0;
-	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags) = 0;
+	virtual BOOL	_RayTest		( Collide::RayQuery& Q) = 0;
+	virtual BOOL	_RayPick		( Collide::RayQuery& Q) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
 
 	IC CObject*		Owner			( )	const				{ return owner;			}
@@ -145,8 +105,8 @@ private:
 public:
 					CCF_Polygonal	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q);
-	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
+	virtual BOOL	_RayTest		( Collide::RayQuery& Q);
+	virtual BOOL	_RayPick		( Collide::RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
@@ -177,8 +137,8 @@ private:
 public:
 					CCF_Skeleton	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q);
-	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
+	virtual BOOL	_RayTest		( Collide::RayQuery& Q);
+	virtual BOOL	_RayPick		( Collide::RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
@@ -197,8 +157,8 @@ private:
 public:
 					CCF_Rigid		( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q);
-	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
+	virtual BOOL	_RayTest		( Collide::RayQuery& Q);
+	virtual BOOL	_RayPick		( Collide::RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
@@ -209,8 +169,8 @@ private:
 public:
 					CCF_EventBox	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q);
-	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
+	virtual BOOL	_RayTest		( Collide::RayQuery& Q);
+	virtual BOOL	_RayPick		( Collide::RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
@@ -233,8 +193,8 @@ public:
 public:
 					CCF_Shape		( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q);
-	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
+	virtual BOOL	_RayTest		( Collide::RayQuery& Q);
+	virtual BOOL	_RayPick		( Collide::RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);

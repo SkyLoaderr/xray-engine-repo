@@ -29,7 +29,7 @@ public:
 	virtual void Throw();
 	virtual void Destroy();
 	virtual void Explode();
-	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R);
 
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful();

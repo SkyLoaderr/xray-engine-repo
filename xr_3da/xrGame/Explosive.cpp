@@ -205,7 +205,7 @@ void CExplosive::Explode()
 		}
 		m_blasted.pop_front();
 	}
-	Collide::ray_query RQ;
+	Collide::rq_result RQ;
 	setEnabled(false);
 	
 	
@@ -254,7 +254,7 @@ void CExplosive::Explode()
 	setEnabled(true);
 }
 
-void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	if (!hWallmark)	return;
 	

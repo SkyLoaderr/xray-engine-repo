@@ -276,7 +276,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	//////////////////////////////
 	//поражение осколками
 
-	Collide::ray_query RQ;
+	Collide::rq_result RQ;
 	setEnabled(false);
 	for(s32 i = 0; i < m_frags; ++i) 
 	{
@@ -416,7 +416,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 	return l_res;
 }
 
-void CWeaponRPG7Grenade::FragWallmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponRPG7Grenade::FragWallmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	if (!hWallmark)	return;
 	

@@ -96,7 +96,7 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 #ifdef _EDITOR
     bRes 				= Tools.RayPick	(s,d,dist,0,0);
 #else
-	Collide::ray_query	RQ;
+	Collide::rq_result	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();
 	if (E)				E->setEnabled		(FALSE);
 	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,dist,RQ);	

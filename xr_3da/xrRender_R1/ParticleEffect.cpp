@@ -122,7 +122,7 @@ void CPEDef::pCollisionExecute(PAPI::ParticleEffect *effect, float dt, CParticle
 #ifdef _EDITOR                
                 if (Tools.RayPick(m.posB,dir,dist,&pt,&n)){
 #else
-                Collide::ray_query	RQ;
+                Collide::rq_result	RQ;
                 if (g_pGameLevel->ObjectSpace.RayPick(m.posB,dir,dist,RQ)){	
                     pt.mad	(m.posB,dir,RQ.range);
                     if (RQ.O){

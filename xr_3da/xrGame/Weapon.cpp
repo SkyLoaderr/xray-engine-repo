@@ -769,7 +769,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 	XFORM().mul	(trans,m_Offset);
 }
 
-void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	if (!hWallmark)	return;
 	
@@ -800,7 +800,7 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
-	Collide::ray_query RQ;
+	Collide::rq_result RQ;
 
 	R_ASSERT(m_magazine.size());
 

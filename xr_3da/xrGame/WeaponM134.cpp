@@ -376,7 +376,7 @@ void CWeaponM134::Show			()
 	inherited::Show				();
 }
 
-void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
 	pSounds->play_at_pos		(sndRicochet[Random.randI(SND_RIC_COUNT)], H_Root(), vEnd,false);

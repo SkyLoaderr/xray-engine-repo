@@ -156,7 +156,7 @@ void CAI_PseudoDog::UpdateCL()
 		Fvector trace_from;
 		Center(trace_from);
 		setEnabled(false);
-		Collide::ray_query	l_rq;
+		Collide::rq_result	l_rq;
 
 		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , l_rq)) {
 			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {

@@ -80,7 +80,7 @@ void CWeaponRail::OnMove()
 			pSounds->play_at_pos(sndFire,r_pos);
 
 			m_pParent->bEnabled = false;
-			Collide::ray_query RQ;
+			Collide::rq_result RQ;
 			if (g_pGameLevel->ObjectSpace.RayPick( p1, d, dist, RQ )) {
 				if ( RQ.range>0.3f) 
 				{
@@ -116,7 +116,7 @@ void CWeaponRail::SetDefaults()
 	iAmmoElapsed	= 1000;
 }
 
-void CWeaponRail::SetRail(Fvector &p1, Fvector &d, Collide::ray_query& R, BOOL bWallmark)
+void CWeaponRail::SetRail(Fvector &p1, Fvector &d, Collide::rq_result& R, BOOL bWallmark)
 {
 	float dist = R.range;
 	if (dist>50.f) dist=50.f;

@@ -161,7 +161,7 @@ protected:
 	void					Light_Render		(Fvector& P);
 
 	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
-	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);
+	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::rq_result& R);
 	virtual void			UpdatePosition		(const Fmatrix& transform);
 
 	virtual void			UpdateFP			();

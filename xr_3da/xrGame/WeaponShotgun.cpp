@@ -225,7 +225,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& /**Peff/**/, 
 	int grape_shot = 5;
 	while(grape_shot--) {
 		if(!Parent) break;
-		Collide::ray_query		RQ;
+		Collide::rq_result		RQ;
 
 		// direct it by dispersion factor
 		Fvector					dir;
