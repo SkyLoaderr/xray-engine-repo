@@ -124,6 +124,7 @@ namespace xrLauncher
 			// modListCombo
 			// 
 			this->modListCombo->BackColor = System::Drawing::Color::Silver;
+			this->modListCombo->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->modListCombo->Location = System::Drawing::Point(144, 224);
 			this->modListCombo->Name = S"modListCombo";
 			this->modListCombo->Size = System::Drawing::Size(256, 21);

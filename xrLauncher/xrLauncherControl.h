@@ -298,7 +298,7 @@ namespace xrLauncher
 			this->textureLodTrack->AutoSize = false;
 			this->textureLodTrack->BackColor = System::Drawing::Color::Silver;
 			this->textureLodTrack->LargeChange = 1;
-			this->textureLodTrack->Location = System::Drawing::Point(209, 75);
+			this->textureLodTrack->Location = System::Drawing::Point(212, 124);
 			this->textureLodTrack->Maximum = 3;
 			this->textureLodTrack->Name = S"textureLodTrack";
 			this->textureLodTrack->Size = System::Drawing::Size(136, 16);
@@ -308,7 +308,7 @@ namespace xrLauncher
 			// label4
 			// 
 			this->label4->BackColor = System::Drawing::Color::Transparent;
-			this->label4->Location = System::Drawing::Point(11, 67);
+			this->label4->Location = System::Drawing::Point(12, 124);
 			this->label4->Name = S"label4";
 			this->label4->Size = System::Drawing::Size(168, 16);
 			this->label4->TabIndex = 26;
@@ -348,7 +348,7 @@ namespace xrLauncher
 			// disableDistortionCheck
 			// 
 			this->disableDistortionCheck->BackColor = System::Drawing::Color::Transparent;
-			this->disableDistortionCheck->Location = System::Drawing::Point(9, 46);
+			this->disableDistortionCheck->Location = System::Drawing::Point(8, 96);
 			this->disableDistortionCheck->Name = S"disableDistortionCheck";
 			this->disableDistortionCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->disableDistortionCheck->Size = System::Drawing::Size(336, 16);
@@ -359,7 +359,7 @@ namespace xrLauncher
 			// label1
 			// 
 			this->label1->BackColor = System::Drawing::Color::Transparent;
-			this->label1->Location = System::Drawing::Point(9, 21);
+			this->label1->Location = System::Drawing::Point(12, 68);
 			this->label1->Name = S"label1";
 			this->label1->Size = System::Drawing::Size(168, 16);
 			this->label1->TabIndex = 21;
@@ -373,7 +373,7 @@ namespace xrLauncher
 			__mcTemp__1[0] = S"R1";
 			__mcTemp__1[1] = S"R2";
 			this->renderCombo->Items->AddRange(__mcTemp__1);
-			this->renderCombo->Location = System::Drawing::Point(201, 21);
+			this->renderCombo->Location = System::Drawing::Point(204, 64);
 			this->renderCombo->Name = S"renderCombo";
 			this->renderCombo->Size = System::Drawing::Size(144, 21);
 			this->renderCombo->TabIndex = 20;
@@ -381,7 +381,7 @@ namespace xrLauncher
 			// force60HzCheck
 			// 
 			this->force60HzCheck->BackColor = System::Drawing::Color::Transparent;
-			this->force60HzCheck->Location = System::Drawing::Point(9, 25);
+			this->force60HzCheck->Location = System::Drawing::Point(8, 28);
 			this->force60HzCheck->Name = S"force60HzCheck";
 			this->force60HzCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->force60HzCheck->Size = System::Drawing::Size(336, 16);
