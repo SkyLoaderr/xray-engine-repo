@@ -31,22 +31,25 @@ void CPSLibrary::OnDestroy()
 }
 
 //----------------------------------------------------
-void CPSLibrary::OnDeviceCreate	()
+void CPSLibrary::OnDeviceCreate			()
 {
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		s_it->m_CachedShader	= (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])?Device.Shader.Create(s_it->m_ShaderName,s_it->m_TextureName):0;
+		if (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])	
+			s_it->m_CachedShader.create(s_it->m_ShaderName,s_it->m_TextureName);
 	for (PS::PEDIt g_it = m_PEDs.begin(); g_it!=m_PEDs.end(); g_it++)
-		(*g_it)->m_CachedShader	= ((*g_it)->m_ShaderName&&(*g_it)->m_ShaderName[0]&&(*g_it)->m_TextureName&&(*g_it)->m_TextureName[0])?Device.Shader.Create((*g_it)->m_ShaderName,(*g_it)->m_TextureName):0;
-}
-void CPSLibrary::OnDeviceDestroy()
-{
-	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		s_it->m_CachedShader.destroy();
-	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
-		(*e_it)->m_CachedShader.destroy();
+		if (((*g_it)->m_ShaderName&&(*g_it)->m_ShaderName[0]&&(*g_it)->m_TextureName&&(*g_it)->m_TextureName[0]))	
+			(*g_it)->m_CachedShader.create((*g_it)->m_ShaderName,(*g_it)->m_TextureName);
 }
 
-PS::SDef* CPSLibrary::FindPS(LPCSTR Name)
+void CPSLibrary::OnDeviceDestroy		()
+{
+	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
+		s_it->m_CachedShader.destroy	();
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+		(*e_it)->m_CachedShader.destroy	();
+}
+
+PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
 	for (PS::PSIt it=m_PSs.begin(); it!=m_PSs.end(); it++)
     	if (0==strcmp(it->m_Name,Name)) return &*it;
@@ -137,7 +140,7 @@ bool CPSLibrary::Load(const char* nm)
         m_PSs.resize		(count);
         F->r				(&*m_PSs.begin(), count*sizeof(PS::SDef));
         for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-            s_it->m_CachedShader._object = 0;
+            s_it->m_CachedShader	= (Shader*)0;
     }
     // second generation
     IReader* OBJ;

@@ -43,7 +43,8 @@ protected:
 
 	u32						uFlags;
 public:
-	enum{
+	enum
+	{
 		fsGradient			= (1<<0),
 		fsDeviceIndependent	= (1<<1),
 		fsValid 			= (1<<2),
