@@ -55,6 +55,7 @@ typedef u32 TTime;
 #define ASP_ROTATION_RUN_LEFT	(1 << 9)
 #define ASP_ROTATION_RUN_RIGHT	(1 << 10)
 #define ASP_ATTACK_RUN			(1 << 11)
+#define ASP_PSI_ATTACK			(1 << 12)
 
 #define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
 #define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
@@ -213,7 +214,9 @@ enum EMotionAnim {
 
 	eAnimUpperWalkFwd,
 	eAnimUpperThreaten,
-	eAnimUpperAttack
+	eAnimUpperAttack,
+	
+	eAnimAttackPsi
 };
 
 // Generic actions

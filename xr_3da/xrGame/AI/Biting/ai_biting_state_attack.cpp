@@ -41,10 +41,9 @@
 // CBitingAttack implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingAttack::CBitingAttack(CAI_Biting *p,  bool bVisibility)  
+CBitingAttack::CBitingAttack(CAI_Biting *p)  
 {
 	pMonster = p;
-	m_bInvisibility	= bVisibility;
 
 	SetPriority(PRIORITY_HIGH);
 }
@@ -143,6 +142,8 @@ void CBitingAttack::Run()
 	if ((m_tAction == ACTION_RUN) && flags.is(AF_CAN_EXEC_ROTATION_JUMP) && (dist < MAX_DIST_ROTATION_JUMP))
 		m_tAction = ACTION_ROTATION_JUMP;
 	
+	if ((m_tAction == ACTION_RUN) && CheckPsiAttack()) m_tAction = ACTION_PSI_ATTACK; 
+
 	bool bNeedRebuild = false;
 
 	//if (flags.is(AF_CAN_ATTACK_RUN)) m_tAction = ACTION_ATTACK_RUN;
@@ -324,6 +325,22 @@ void CBitingAttack::Run()
 			
 			pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RUN);
 			
+			break;
+
+		// ********************		
+		case ACTION_PSI_ATTACK:
+		// ********************
+			LOG_EX("PSI_ATTACK");
+			
+			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
+			
+			// Смотреть на врага 
+			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
+				pMonster->FaceTarget(m_tEnemy.obj);
+			DO_IN_TIME_INTERVAL_END();
+
+			pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 			break;
 	}
 
@@ -517,7 +534,7 @@ void CBitingAttack::UpdateInitFlags()
 	// определить способности
 	pJumping = dynamic_cast<CJumping *>(pMonster);
 	if (pJumping)			init_flags.or(AF_HAS_JUMP_ABILITY);
-	if (m_bInvisibility)	init_flags.or(AF_HAS_INVISIBILITY_ABILITY);
+	if (pMonster->ability_invisibility())	init_flags.or(AF_HAS_INVISIBILITY_ABILITY);
 
 	init_flags.or(AF_NEW_ENEMY);
 }
@@ -604,3 +621,24 @@ bool CBitingAttack::CanAttackRun()
 	return true;
 }
 
+bool CBitingAttack::CheckPsiAttack()
+{
+	if (!pMonster->ability_psi_attack()) return false;
+	if (!flags.is(AF_SEE_ENEMY)) return false;
+
+	// проверить направленность на цель
+	float h,p;
+	Fvector().sub(m_tEnemy.position, pMonster->Position()).getHP(h,p);
+	float my_h,my_p;
+	pMonster->Direction().getHP(my_h,my_p);
+	
+	if (angle_difference(h,my_h) > deg(10) ) return false;
+	
+	CEntity *pE = const_cast<CEntity *>	(m_tEnemy.obj);
+	CActor *pA	= dynamic_cast<CActor *>(pE);
+	if (!pA) return false;
+	
+	if (pMonster != dynamic_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;
+
+	return true;
+}

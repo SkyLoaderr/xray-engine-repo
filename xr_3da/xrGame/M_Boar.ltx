@@ -1,3 +1,8 @@
+[m_boar_attacks]
+; 				time_min | time_max | yaw_from | yaw_to	|	pitch_from | pitch_to | max_dist | hit_power | impulse_power | Impulse Dir (vector)
+stand_attack_0 =   300,		  400,		-0.6,		0.6,	-0.6,			0.6,	 5.5,		  50,		   700.0,		 0.0,	1.0, 1.0
+
+
 [m_boar_e]
 GroupControlSection	= spawn_group
 $spawn               = "monsters\boar"				; option for Level Editor
@@ -46,7 +51,6 @@ EyeFov				 = 80;
 eye_range			 = 30;
 
 hit_power			 = 50.0;
-
 ImpulseMin			 = 500.0
 ImpulseMax			 = 550.0 
 
@@ -71,6 +75,9 @@ MaxAttackDist		= 2.5	;3.8
 
 as_min_dist				= 0.5
 as_step					= 0.1
+
+attacks_section			= m_boar_attacks	
+
 
 ; "Rest" state specific 
 ProbRestWalkFree	= 30    ; при выборе действия, в 50% случаях монстр будет ходить

@@ -5,42 +5,17 @@
 
 CChimera::CChimera() : CStateManagerChimera("State Manager Chimera")
 {
-	stateRest			= xr_new<CBitingRest>(this);
-	stateAttack			= xr_new<CBitingAttack>		(this, false);
-	stateEat			= xr_new<CBitingEat>		(this, true);
-	stateHide			= xr_new<CBitingHide>		(this);
-	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this, false);
-	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
-	stateNull			= xr_new<CBitingNull>		();
-
-
-	CurrentState		= stateRest;
-
 	Init();
 }
 
 CChimera::~CChimera()
 {
-
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(stateHide);
-	xr_delete(stateDetour);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateNull);
 }
 
 
 void CChimera::Init()
 {
 	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
 
 	b_upper_state					= false;
 }
@@ -129,42 +104,12 @@ void CChimera::Load(LPCSTR section)
 
 void CChimera::StateSelector()
 {	
-	IState *state;
-	VisionElem ve;
-
-	if (C && H && I)			state = statePanic;
-	else if (C && H && !I)		state = statePanic;
-	else if (C && !H && I)		state = statePanic;
-	else if (C && !H && !I) 	state = statePanic;
-	else if (D && H && I)		state = stateAttack;
-	else if (D && H && !I)		state = stateAttack;  //тихо подобраться и начать аттаку
-	else if (D && !H && I)		state = stateAttack;
-	else if (D && !H && !I)		state = statePanic;
-	else if (E && H && I)		state = stateAttack; 
-	else if (E && H && !I)  	state = stateAttack;  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		state = stateAttack;
-	else if (E && !H && !I)		state = stateAttack;
-	else if (F && H && I) 		state = stateAttack; 		
-	else if (F && H && !I)  	state = stateAttack; 
-	else if (A && !K && !H)		state = stateExploreNDE;  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		state = stateExploreNDE;  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-		state = stateEat;
-	else						state = stateRest; 
-
-	SetState(state);
-
 }
 
 void CChimera::ProcessTurn()
 {
 	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) {
-		//m_body.current.yaw = m_body.target.yaw;
-		return;
-	}
+	if (delta_yaw < deg(1)) return;
 	
 	EMotionAnim anim = MotionMan.GetCurAnim();
 	

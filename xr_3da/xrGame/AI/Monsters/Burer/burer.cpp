@@ -6,13 +6,13 @@
 CBurer::CBurer() : CStateManagerBurer("Burer State Manager")
 {
 	stateRest			= xr_new<CBitingRest>(this);
-	stateAttack			= xr_new<CBitingAttack>		(this, false);
-	stateEat			= xr_new<CBitingEat>		(this, true);
+	stateAttack			= xr_new<CBitingAttack>		(this);
+	stateEat			= xr_new<CBitingEat>		(this);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this, false);
+	statePanic			= xr_new<CBitingPanic>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateNull			= xr_new<CBitingNull>		();
 
 	CurrentState		= stateRest;
@@ -67,8 +67,8 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&inherited::_sd->m_fsVelocityRunFwdNormal,		PS_STAND);
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
 
-	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);

@@ -16,10 +16,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-CBitingEat::CBitingEat(CAI_Biting *p, bool pmt_can_drag)  
+CBitingEat::CBitingEat(CAI_Biting *p)  
 {
 	pMonster	= p;
-	bCanDrag	= pmt_can_drag;
 
 	SetPriority(PRIORITY_LOW);
 }
@@ -82,7 +81,6 @@ void CBitingEat::Run()
 	// Определить позицию ближайшей боны у трупа
 	Fvector nearest_bone_pos;
 	if (dynamic_cast<CGameObject *>(pCorpse)->m_pPhysicsShell == NULL) {
-		bCanDrag			= false;
 		nearest_bone_pos	= pCorpse->Position(); 
 	} else nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(const_cast<CEntity*>(pCorpse));
 	
@@ -134,7 +132,7 @@ void CBitingEat::Run()
 			pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
 			
 #ifndef		EAT_WITHOUT_DRAG
-			m_tAction = ( (bCanDrag) ?  ACTION_PREPARE_DRAG : ACTION_EAT );
+			m_tAction = ( (pMonster->ability_can_drag()) ?  ACTION_PREPARE_DRAG : ACTION_EAT );
 #else	
 			m_tAction = ACTION_EAT;
 #endif
@@ -226,7 +224,7 @@ void CBitingEat::Run()
 			bDragging = false;
 			m_tAction = ACTION_EAT;
 
-			if (!bEatRat && bCanDrag) {	// Если не труп крысы и может тащить
+			if (!bEatRat && pMonster->ability_can_drag()) {	// Если не труп крысы и может тащить
 				// пытаться взять труп
 				pMonster->m_PhysicMovementControl->PHCaptureObject(pCorpse);
 

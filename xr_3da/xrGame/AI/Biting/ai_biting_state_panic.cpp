@@ -8,10 +8,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingPanic class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-CBitingPanic::CBitingPanic(CAI_Biting *p, bool invisibility)
+CBitingPanic::CBitingPanic(CAI_Biting *p)
 {
 	pMonster = p;
-	m_bInvisibility = invisibility;
 	SetPriority(PRIORITY_HIGH);
 }
 
@@ -68,7 +67,7 @@ void CBitingPanic::Run()
 	
 	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
-	if (m_bInvisibility) {
+	if (pMonster->ability_invisibility()) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 

@@ -15,6 +15,7 @@ class CBitingAttack : public IState {
 		ACTION_ENEMY_WALK_AWAY,
 		ACTION_ROTATION_JUMP,
 		ACTION_ATTACK_RUN,
+		ACTION_PSI_ATTACK,
 	} m_tAction,m_tPrevAction;
 
 	VisionElem		m_tEnemy;
@@ -24,8 +25,6 @@ class CBitingAttack : public IState {
 	float			dist;							// текущая дистанция
 
 	TTime			m_dwFaceEnemyLastTime;			// время последней установки target.yaw при развороте лицом к противнику 
-
-	bool			m_bInvisibility;				// возможность нивидимости
 
 	bool			bCanThreaten;					// может пугать
 	TTime			ThreatenTimeStarted;			// время начала Threaten
@@ -49,7 +48,7 @@ class CBitingAttack : public IState {
 	TTime			time_next_attack_run;
 
 public:	
-					CBitingAttack		(CAI_Biting *p, bool bVisibility);
+					CBitingAttack		(CAI_Biting *p);
 
 	virtual	void	Init				();
 	virtual void	Run					();
@@ -72,4 +71,6 @@ public:
 			bool	CheckRotationJump	();
 
 			bool	CanAttackRun		();
+
+			bool	CheckPsiAttack		();
 };

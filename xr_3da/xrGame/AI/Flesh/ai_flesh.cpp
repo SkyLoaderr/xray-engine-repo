@@ -6,12 +6,12 @@
 CAI_Flesh::CAI_Flesh()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
-	stateAttack			= xr_new<CBitingAttack>		(this, false);
-	stateEat			= xr_new<CBitingEat>		(this, true);
+	stateAttack			= xr_new<CBitingAttack>		(this);
+	stateEat			= xr_new<CBitingEat>		(this);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this, false);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
+	statePanic			= xr_new<CBitingPanic>		(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;

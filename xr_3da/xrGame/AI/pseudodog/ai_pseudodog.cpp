@@ -1,17 +1,18 @@
 #include "stdafx.h"
 #include "ai_pseudodog.h"
 #include "../ai_monster_utils.h"
+#include "../ai_monster_effector.h"
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
-	stateAttack			= xr_new<CBitingAttack>		(this, false);
-	stateEat			= xr_new<CBitingEat>		(this, true);
+	stateAttack			= xr_new<CBitingAttack>		(this);
+	stateEat			= xr_new<CBitingEat>		(this);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this, false);
+	statePanic			= xr_new<CBitingPanic>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 
 	CurrentState		= stateRest;
 
@@ -82,6 +83,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_LIE);
 	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimAttackPsi,		"stand_howling_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -114,6 +116,32 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
+
+	// Load psi postprocess --------------------------------------------------------
+	LPCSTR ppi_section = pSettings->r_string(section, "psi_effector");
+	m_psi_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
+	m_psi_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
+	m_psi_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+	m_psi_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+	m_psi_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	m_psi_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	m_psi_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_psi_effector.ppi.color_base.r,	&m_psi_effector.ppi.color_base.g,	&m_psi_effector.ppi.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_psi_effector.ppi.color_gray.r,	&m_psi_effector.ppi.color_gray.g,	&m_psi_effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_psi_effector.ppi.color_add.r,	&m_psi_effector.ppi.color_add.g,	&m_psi_effector.ppi.color_add.b);
+
+	m_psi_effector.time			= pSettings->r_float(ppi_section,"time");
+	m_psi_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
+	m_psi_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
+
+	m_psi_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+	m_psi_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+	m_psi_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+	m_psi_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+
+	// --------------------------------------------------------------------------------
 
 }
 
@@ -163,17 +191,14 @@ void CAI_PseudoDog::UpdateCL()
 }
 void CAI_PseudoDog::OnJumpStop()
 {
-	//MotionMan.ProcessAction();
+	MotionMan.Update();
 }
 
 
 void CAI_PseudoDog::ProcessTurn()
 {
 	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) {
-		//m_body.current.yaw = m_body.target.yaw;
-		return;
-	}
+	if (delta_yaw < deg(1)) return;
 
 	EMotionAnim anim = MotionMan.GetCurAnim();
 
@@ -191,6 +216,16 @@ void CAI_PseudoDog::ProcessTurn()
 			return;
 	}
 
+}
+void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_PSI_ATTACK) == ASP_PSI_ATTACK) {
+		MotionMan.Seq_Add(eAnimAttackPsi);
+		MotionMan.Seq_Switch();
+
+		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_psi_effector.ppi, m_psi_effector.time, m_psi_effector.time_attack, m_psi_effector.time_release));
+		Level().Cameras.AddEffector(xr_new<CMonsterEffectorHit>(m_psi_effector.ce_time,m_psi_effector.ce_amplitude,m_psi_effector.ce_period_number,m_psi_effector.ce_power));
+	}
 }
 
 

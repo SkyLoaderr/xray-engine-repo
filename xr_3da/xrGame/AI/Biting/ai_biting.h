@@ -156,6 +156,13 @@ public:
 	virtual bool			CanExecRotationJump				() {return false;}
 
 	// ---------------------------------------------------------------------------------
+	// Abilities
+
+	virtual bool			ability_invisibility			() {return false;}
+	virtual bool			ability_can_drag				() {return false;}
+	virtual bool			ability_psi_attack				() {return false;}
+
+	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);
 	

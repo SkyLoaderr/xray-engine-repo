@@ -278,12 +278,16 @@ public:
 	virtual void			feel_touch_delete	(CObject* O);
 	virtual BOOL			feel_touch_contact	(CObject* O);
 
+	CGameObject*			ObjectWeLookingAt	() {return m_pObjectWeLookingAt;}
+
 protected:
 
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
 	// Vehicle or lorry we're looking at
 	CVehicleCustom*			m_pVehicleWeLookingAt;
+	CGameObject*			m_pObjectWeLookingAt;
+
 	//режим подбирания предметов
 	bool					m_bPickupMode;
 	//расстояние подсветки предметов

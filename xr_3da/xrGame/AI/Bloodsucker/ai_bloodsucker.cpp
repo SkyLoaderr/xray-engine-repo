@@ -14,10 +14,10 @@
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
-	stateEat			= xr_new<CBitingEat>			(this, false);
-	stateAttack			= xr_new<CBitingAttack>			(this, /*true*/ false);
-	statePanic			= xr_new<CBitingPanic>			(this, /*true*/ false);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this, /*true*/ false);
+	stateEat			= xr_new<CBitingEat>			(this);
+	stateAttack			= xr_new<CBitingAttack>			(this);
+	statePanic			= xr_new<CBitingPanic>			(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 	stateSquadTask		= xr_new<CBitingSquadTask>		(this);
 	

@@ -9,10 +9,9 @@
 // CBitingExploreDNE class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p, bool bVisibility)
+CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p)
 {
 	pMonster = p;
-	m_bInvisibility	= bVisibility;
 	
 	SetPriority(PRIORITY_NORMAL);
 }
@@ -47,7 +46,7 @@ void CBitingExploreDNE::Run()
 
 	// нивидимость
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-	if (m_bInvisibility) {
+	if (pMonster->ability_invisibility()) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);	
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 

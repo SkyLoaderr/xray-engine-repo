@@ -4,8 +4,6 @@ class CBitingPanic : public IState {
 	CAI_Biting		*pMonster;
 	VisionElem		m_tEnemy;
 
-	bool			m_bInvisibility;
-
 	typedef IState inherited;
 
 	enum {
@@ -14,7 +12,7 @@ class CBitingPanic : public IState {
 	} m_tAction;
 
 public:
-					CBitingPanic	(CAI_Biting *p, bool invisibility);
+					CBitingPanic	(CAI_Biting *p);
 	
 	virtual bool	CheckCompletion	();
 

@@ -134,6 +134,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_pPersonWeLookingAt	= NULL;
 	m_pVehicleWeLookingAt	= NULL;
+	m_pObjectWeLookingAt	= NULL;
 	m_bPickupMode			= false;
 
 	////////////////////////////////////
@@ -143,6 +144,7 @@ CActor::CActor() : CEntityAlive()
 	m_pActorEffector = NULL;
 
 	m_bZoomAimingMode = false;
+
 }
 
 
@@ -792,6 +794,8 @@ void CActor::shedule_Update	(u32 DT)
 	//что актер видит перед собой
 	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
+	m_pObjectWeLookingAt = dynamic_cast<CGameObject*>(RQ.O);
+
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
 		inventory().m_pTarget	= dynamic_cast<PIItem>(RQ.O);

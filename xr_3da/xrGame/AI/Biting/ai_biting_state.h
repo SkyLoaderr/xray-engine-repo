@@ -59,7 +59,6 @@ private:
 class CBitingEat : public IState {
 	typedef IState inherited;
 	CAI_Biting		*pMonster;
-	bool			bCanDrag;
 
 	enum {
 		ACTION_CORPSE_APPROACH_RUN,
@@ -99,7 +98,7 @@ class CBitingEat : public IState {
 	TTime			m_dwLastImpulse;
 
 public:
-					CBitingEat		(CAI_Biting *p, bool pmt_can_drag);
+					CBitingEat		(CAI_Biting *p);
 
 	virtual	void	Reset			();
 	virtual	bool	CheckCompletion	();
@@ -176,10 +175,8 @@ class CBitingExploreDNE : public IState {
 	TTime			m_dwLastPosSavedTime;
 	TTime			m_dwStayLastTimeCheck;
 
-	bool			m_bInvisibility;
-
 public:
-					CBitingExploreDNE	(CAI_Biting *p, bool bVisibility);
+					CBitingExploreDNE	(CAI_Biting *p);
 private:
 	virtual	void	Init				();
 	virtual	void	Run					();
