@@ -275,7 +275,8 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	
 		if( m_ChildWndList.end() != it)
 		{
-			CUIListItem* pListItem2, *pListItem = smart_cast<CUIListItem*>(*it);
+			CUIListItem* pListItem2;
+			CUIListItem* pListItem = smart_cast<CUIListItem*>(*it);
 			R_ASSERT(pListItem);
 
 			if(BUTTON_CLICKED == msg)
@@ -289,7 +290,8 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						continue;
 					if (pListItem2->GetGroupID() == -1) 
 						continue;
-					if (pListItem2->GetGroupID() == pListItem->GetGroupID())
+					if (pListItem2->GetGroupID() == 
+						pListItem->GetGroupID())
 					{
 						pListItem2->SetHighlightText(true);
 						pListItem2->SendMessage(this, LIST_ITEM_SELECT, pData);

@@ -42,6 +42,8 @@ CUITalkWnd::CUITalkWnd()
 	Init();
 	Hide();
 	SetFont(HUD().pFontHeaderRussian);
+
+	m_bNeedToUpdateQuestions = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -209,6 +211,11 @@ void CUITalkWnd::Update()
 		Game().StartStopMenu(this,true);
 	}
 
+	if(m_bNeedToUpdateQuestions)
+	{
+		m_bNeedToUpdateQuestions = false;
+		UpdateQuestions();
+	}
 	inherited::Update();
 }
 
@@ -278,7 +285,8 @@ void CUITalkWnd::AskQuestion()
 	}
 
 	SayPhrase(phrase_id);
-	UpdateQuestions();
+	m_bNeedToUpdateQuestions = true;
+	//UpdateQuestions();
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -73,6 +73,12 @@ protected:
 	CPhraseDialogManager* m_pOurDialogManager;
 	CPhraseDialogManager* m_pOthersDialogManager;
 
+	//спец. переменная, нужна для того чтобы RemoveAll
+	//могла быть корректно вызвана из SendMessage
+	//так как иначе возникает ситуация, что класс, который
+	//вызвал нам SendMessage обращается к удаленному объекту pListItem
+	bool m_bNeedToUpdateQuestions;
+
 	//текущий диалог, если NULL, то переходим в режим выбора темы
 	DIALOG_SHARED_PTR m_pCurrentDialog;
 	bool TopicMode	();
