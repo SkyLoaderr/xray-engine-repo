@@ -191,6 +191,13 @@
 				RelativePath="stdafx.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Parser"
+			Filter="">
+			<File
+				RelativePath=".\xrXMLParser.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
