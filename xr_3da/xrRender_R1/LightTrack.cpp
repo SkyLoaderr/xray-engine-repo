@@ -161,7 +161,7 @@ void	CROS_impl::update	(IRenderable* O)
 			float		amount	= 0;
 			light*		xrL		= I->source;
 			Fvector&	LP		= xrL->position;
-			P.mad				(pos,P.random_dir(),traceR);		// Random point inside range
+			P.mad				(position,P.random_dir(),traceR);		// Random point inside range
 
 			// point/spot
 			float	f			=	D.sub(P,LP).magnitude();

@@ -186,8 +186,8 @@ void					CRender::ApplyObject			(IRenderable*		O )
 		CROS_impl& LT		= *((CROS_impl*)O->renderable.ROS);
 
 		// shadowing
-		if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
-			RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
+		if ((LT.shadow_recv_frame==Device.dwFrame) && O->renderable_ShadowReceive())	
+			RImplementation.L_Projector->setup	(LT.shadow_recv_slot);
 	}
 }
 

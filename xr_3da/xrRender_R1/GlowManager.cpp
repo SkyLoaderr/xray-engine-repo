@@ -219,7 +219,7 @@ void CGlowManager::Render()
 			Fvector		dir;
 			dir.sub		(G.spatial.center,start); float range = dir.magnitude();
 			dir.div		(range);
-			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,Collide::rqtBoth,&G.RayCache);
+			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,collide::rqtBoth,&G.RayCache);
 		}
 		
 		// 1.5 restore main view
