@@ -22,6 +22,7 @@ public:
 
 	UINT					DevAdapter;
 	D3DDEVTYPE				DevT;
+	D3DPRESENT_PARAMETERS	DevPP;
 
 	CHW()
 	{
@@ -36,6 +37,8 @@ public:
 	void					DestroyD3D				();
 	u32						CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
 	void					DestroyDevice			();
+
+	void					Reset					();
 
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
 	u32						selectPresentInterval	();

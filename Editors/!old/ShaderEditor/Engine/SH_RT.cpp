@@ -13,15 +13,17 @@ CRT::CRT			()
 }
 CRT::~CRT			()
 {
-	Destroy			();
+	destroy			();
 
 	// release external reference
 	Device.Resources->_DeleteRT	(this);	
 }
 
-void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
+void CRT::create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
+	_order		= Device->GetTimerGlobal()->GetElapsed_clk();
+
 	HRESULT		_hr;
 
 	dwWidth		= w;
@@ -63,7 +65,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	if (FAILED(_hr))					return;
 
 	// Try to create texture/surface
-	Device.Resources->Evict					();
+	Device.Resources->Evict				();
 	_hr = HW.pDevice->CreateTexture		(w, h, 1, usage, f, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 
@@ -74,12 +76,20 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	pTexture->surface_set	(pSurface);
 }
 
-void CRT::Destroy	()
+void CRT::destroy		()
 {
 	pTexture->surface_set				(0);
 	pTexture	= NULL;
 	_RELEASE	(pRT		);
 	_RELEASE	(pSurface	);
+}
+void CRT::reset_begin	()
+{
+	destroy		();
+}
+void CRT::reset_end		()
+{
+	create		(*cName,dwWidth,dwHeight,fmt);
 }
 void resptrcode_crt::create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f)
 {
@@ -96,15 +106,17 @@ CRTC::CRTC			()
 }
 CRTC::~CRTC			()
 {
-	Destroy			();
+	destroy			();
 
 	// release external reference
 	Device.Resources->_DeleteRTC	(this);	
 }
 
-void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
+void CRTC::create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 {
 	R_ASSERT	(HW.pDevice && Name && Name[0] && size && btwIsPow2(size));
+	_order		= Device->GetTimerGlobal()->GetElapsed_clk();
+
 	HRESULT		_hr;
 
 	dwSize		= size;
@@ -142,7 +154,7 @@ void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 	pTexture->surface_set						(pSurface);
 }
 
-void CRTC::Destroy()
+void CRTC::destroy		()
 {
 	pTexture->surface_set	(0);
 	pTexture				= NULL;
@@ -150,8 +162,16 @@ void CRTC::Destroy()
 		_RELEASE	(pRT[face]	);
 	_RELEASE	(pSurface	);
 }
+void CRT::reset_begin	()
+{
+	destroy		();
+}
+void CRT::reset_end		()
+{
+	create		(*cName,dwSize,fmt);
+}
 
 void resptrcode_crtc::create(LPCSTR Name, u32 size, D3DFORMAT f)
 {
-	_set			(Device.Resources->_CreateRTC(Name,size,f));
+	_set		(Device.Resources->_CreateRTC(Name,size,f));
 }

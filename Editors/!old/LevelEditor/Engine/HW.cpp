@@ -1,5 +1,4 @@
 // HW.cpp: implementation of the CHW class.
-//
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -11,16 +10,37 @@
 
 #include "HW.h"
 
-ENGINE_API CHW HW;
+ENGINE_API CHW		HW;
 
 #ifdef DEBUG
 IDirect3DStateBlock9*	dwDebugSB = 0;
 #endif
 
-void CHW::CreateD3D()
+void CHW::Reset		()
+{
+#ifdef DEBUG
+	_RELEASE		(dwDebugSB);
+#endif
+	_RELEASE		(pBaseZB);
+	_RELEASE		(pBaseRT);
+
+	while	(TRUE)	{
+		HRESULT _hr							= HW.pDevice->Reset	(&DevPP);
+		if (SUCCEEDED(_hr))					break;
+		Sleep								(1000);
+	}
+
+	R_CHK			(pDevice->GetRenderTarget			(0,&pBaseRT));
+	R_CHK			(pDevice->GetDepthStencilSurface	(&pBaseZB));
+#ifdef DEBUG
+	R_CHK			(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
+#endif
+}
+
+void CHW::CreateD3D	()
 {
 	hD3D9            			= LoadLibrary("d3d9.dll");
-	R_ASSERT2	           	 	(hD3D9,"Can't find 'd3d9.dll'");
+	R_ASSERT2	           	 	(hD3D9,"Can't find 'd3d9.dll'\nPlease install latest version of DirectX before running this program");
     typedef IDirect3D9 * WINAPI _Direct3DCreate9(UINT SDKVersion);
     _Direct3DCreate9* createD3D	= (_Direct3DCreate9*)GetProcAddress(hD3D9,"Direct3DCreate9");	R_ASSERT(createD3D);
     HW.pD3D 					= createD3D( D3D_SDK_VERSION );
@@ -167,7 +187,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	R_ASSERT				(fDepth  != D3DFMT_UNKNOWN);
 
     // Set up the presentation parameters
-	D3DPRESENT_PARAMETERS	P;
+	D3DPRESENT_PARAMETERS&	P	= DevPP;
     ZeroMemory				( &P, sizeof(P) );
 
 	// Back buffer

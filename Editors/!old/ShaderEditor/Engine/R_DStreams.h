@@ -15,6 +15,8 @@ private :
 	u32							mSize;			// size in bytes
 	u32							mPosition;		// position in bytes
 	u32							mDiscardID;		// ID of discard - usually for caching
+public:
+	IDirect3DVertexBuffer9*		old_pVB;
 #ifdef DEBUG
 	u32							dbg_lock;
 #endif
@@ -32,6 +34,8 @@ private:
 public:
 	void						Create			();
 	void						Destroy			();
+	void						reset_begin		();
+	void						reset_end		();
 
 	IC IDirect3DVertexBuffer9*	Buffer()		{ return pVB;			}
 	IC u32						DiscardID()		{ return mDiscardID;	}
@@ -40,8 +44,8 @@ public:
 	void*						Lock			( u32 vl_Count, u32 Stride, u32& vOffset );
 	void						Unlock			( u32 Count, u32 Stride);
 
-	_VertexStream()			{ _clear();				};
-	~_VertexStream()		{ Destroy();			};
+	_VertexStream()				{ _clear();		};
+	~_VertexStream()			{ Destroy();	};
 };
 
 class ENGINE_API _IndexStream
@@ -51,6 +55,8 @@ private :
 	u32							mSize;		// real size (usually mCount, aligned on 512b boundary)
 	u32							mPosition;
 	u32							mDiscardID;
+public:
+	IDirect3DIndexBuffer9*		old_pIB;
 private:
 	void						_clear	()
 	{
@@ -60,48 +66,19 @@ private:
 		mDiscardID	= 0;
 	}
 public:
-	void						Create	();
-	void						Destroy	();
+	void						Create			();
+	void						Destroy			();
+	void						reset_begin		();
+	void						reset_end		();
 
 	IC IDirect3DIndexBuffer9*	Buffer()		{ return pIB;			}
 	IC u32						DiscardID()		{ return mDiscardID;	}
 	void						Flush()			{ mPosition=mSize;		}
 
-	IC u16*						Lock			( u32 Count, u32& vOffset )
-	{
-		PGO						(Msg("PGO:IB_LOCK:%d",Count));
-		vOffset					= 0;
-		BYTE* pLockedData		= 0;
+	u16*						Lock			( u32 Count, u32& vOffset );
+	void						Unlock			(u32 RealCount);
 
-		// Ensure there is enough space in the VB for this data
-		R_ASSERT				((2*Count<=mSize) && Count);
-
-		// If either user forced us to flush,
-		// or there is not enough space for the index data,
-		// then flush the buffer contents
-		u32 dwFlags = LOCKFLAGS_APPEND;
-		if ( 2*( Count + mPosition ) >= mSize )
-		{
-			mPosition	= 0;						// clear position
-			dwFlags		= LOCKFLAGS_FLUSH;			// discard it's contens
-			mDiscardID	++;
-		}
-		pIB->Lock				( mPosition * 2, Count * 2, (void**) &pLockedData, dwFlags);
-		VERIFY					(pLockedData);
-
-		vOffset					=	mPosition;
-
-		return					LPWORD(pLockedData);
-	}
-	IC void						Unlock(u32 RealCount)
-	{
-		PGO						(Msg("PGO:IB_UNLOCK:%d",RealCount));
-		mPosition				+=	RealCount;
-		VERIFY					(pIB);
-		pIB->Unlock				();
-	}
-
-	_IndexStream()				{ _clear();				};
-	~_IndexStream()				{ Destroy();			};
+	_IndexStream()				{ _clear();		};
+	~_IndexStream()				{ Destroy();	};
 };
 #endif

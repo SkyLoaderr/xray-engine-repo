@@ -81,7 +81,7 @@ CRenderTarget::~CRenderTarget	()
 	RT.destroy					();
 }
 
-void CRenderTarget::calc_tc_noise		(Fvector2& p0, Fvector2& p1)
+void	CRenderTarget::calc_tc_noise		(Fvector2& p0, Fvector2& p1)
 {
 	CTexture*	T					= RCache.get_ActiveTexture	(2);
 	VERIFY2		(T, "Texture #3 in noise shader should be setted up");

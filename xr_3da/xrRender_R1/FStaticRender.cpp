@@ -76,6 +76,14 @@ void					CRender::destroy				()
 	PSLibrary.OnDeviceDestroy	();
 	PSLibrary.OnDestroy			();
 }
+void					CRender::reset_begin			()
+{
+	xr_delete			(Target);
+}
+void					CRender::reset_end				()
+{
+	Target			=	xr_new<CRenderTarget>			();
+}
 
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)					{ return xr_new<CLightTrack>();			}

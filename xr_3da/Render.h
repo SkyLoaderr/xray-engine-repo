@@ -108,6 +108,8 @@ public:
 	// Loading / Unloading
 	virtual	void					create					()											= 0;
 	virtual	void					destroy					()											= 0;
+	virtual	void					reset_begin				()											= 0;
+	virtual	void					reset_end				()											= 0;
 
 	virtual	void					level_Load				()											= 0;
 	virtual void					level_Unload			()											= 0;

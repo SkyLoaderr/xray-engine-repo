@@ -62,8 +62,6 @@ extern CStatTimer				tscreate;
 
 BOOL IGame_Level::Load				(u32 dwNum) 
 {
-	// Device.Reset				();
-
 	// Initialize level data
 	pApp->Level_Set				( dwNum );
 	string256					temp;

@@ -26,6 +26,7 @@ public:
 	_VertexStream					Vertex;
 	_IndexStream					Index;
 	IDirect3DIndexBuffer9*			QuadIB;
+	IDirect3DIndexBuffer9*			old_QuadIB;
 	R_xforms						xforms;
 private:
 	// Render-targets
@@ -171,6 +172,7 @@ public:
 	IC	void						Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC);
 
 	// Device create / destroy / frame signaling
+	void							CreateQuadIB		();
 	void							OnFrameBegin		();
 	void							OnFrameEnd			();
 	void							OnDeviceCreate		();

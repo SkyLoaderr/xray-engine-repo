@@ -13,12 +13,16 @@ public:
 	u32					dwHeight;
 	D3DFORMAT			fmt;
 
+	u64					_order;
+
 	CRT					();
 	~CRT				();
 
-	void				Create			(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
-	void				Destroy			();
-	IC BOOL				Valid			()	{ return !!pTexture; }
+	void				create			(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
+	void				destroy			();
+	void				reset_begin		();
+	void				reset_end		();
+	IC BOOL				valid			()	{ return !!pTexture; }
 };
 struct ENGINE_API		resptrcode_crt	: public resptr_base<CRT>
 {
@@ -37,12 +41,16 @@ public:
 	u32						dwSize;
 	D3DFORMAT				fmt;
 
+	u64						_order;
+
 	CRTC					();
 	~CRTC					();
 
-	void				Create	(LPCSTR name, u32 size, D3DFORMAT f);
-	void				Destroy	();
-	IC BOOL				Valid	()	{ return !pTexture; }
+	void				create			(LPCSTR name, u32 size, D3DFORMAT f);
+	void				destroy			();
+	void				reset_begin		();
+	void				reset_end		();
+	IC BOOL				valid			()	{ return !pTexture; }
 };
 struct ENGINE_API		resptrcode_crtc	: public resptr_base<CRTC>
 {

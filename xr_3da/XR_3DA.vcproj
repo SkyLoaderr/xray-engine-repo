@@ -1118,6 +1118,9 @@
 							RelativePath=".\ResourceManager_Loader.cpp">
 						</File>
 						<File
+							RelativePath=".\ResourceManager_Reset.cpp">
+						</File>
+						<File
 							RelativePath=".\ResourceManager_Resources.cpp">
 						</File>
 						<File

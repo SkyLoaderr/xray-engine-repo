@@ -150,6 +150,9 @@ public:
 	void			OnDeviceCreate			(LPCSTR name);
 	void			OnDeviceDestroy			(BOOL   bKeepTextures);
 
+	void			reset_begin				();
+	void			reset_end				();
+
 	// Creation/Destroying
 	Shader*			Create					(LPCSTR s_shader=0, LPCSTR s_textures=0,	LPCSTR s_constants=0,	LPCSTR s_matrices=0);
 	Shader*			Create					(IBlender*	B,		LPCSTR s_shader=0,		LPCSTR s_textures=0,	LPCSTR s_constants=0, LPCSTR s_matrices=0);
