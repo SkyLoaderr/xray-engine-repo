@@ -36,19 +36,21 @@ void CPSVisual::Copy(FBasicVisual* pFrom){
 //////////////////////////////////////////////////
 // - доделать рождение/умирание без удаления и добавления в массив
 // 
-void CPSVisual::Update(DWORD dt){
+void CPSVisual::Update(DWORD dt)
+{
 	float fTime = Device.fTimeGlobal;
 	float dT = float(dt)/1000.f;
 	
 	// update visual params
-	bv_Position.set(m_Emitter->m_Position);
-	bv_BBox.set(m_Emitter->m_Position,m_Emitter->m_Position);
-	bv_BBox.grow(2.f);
+	bv_Position.set	(m_Emitter->m_Position);
+	bv_BBox.set		(m_Emitter->m_Position,m_Emitter->m_Position);
+	bv_BBox.grow	(2.f);
 	// update visual radius
 	bv_Radius = bv_BBox.getradius();
 
 	// update all particles that we own
-    for (int i=0; i<int(m_Particles.size()); i++){
+    for (int i=0; i<int(m_Particles.size()); i++)
+	{
     	SParticle& P = m_Particles[i];
  		if (fTime>P.m_Time.end){
         	m_Particles.erase(m_Particles.begin()+i);
@@ -59,11 +61,13 @@ void CPSVisual::Update(DWORD dt){
 	// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the
 	int iParticlesCreated = m_Emitter->CalculateBirth(m_Particles.size(),fTime,dT);
 
-    if (iParticlesCreated){
+    if (iParticlesCreated)
+	{
         float TM	 	= fTime-dT;
         float dT_delta 	= dT/iParticlesCreated;
         // see if actually have any to create
-        for (i=0; i<iParticlesCreated; i++, TM+=dT_delta){
+        for (i=0; i<iParticlesCreated; i++, TM+=dT_delta)
+		{
             m_Particles.push_back(SParticle());
             SParticle& P = m_Particles.back();
 
@@ -71,8 +75,10 @@ void CPSVisual::Update(DWORD dt){
         }
     }
 }
+
 //----------------------------------------------------
-IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle){
+IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, float angle)
+{
 	FVF::TL			PT;
 
 	PT.transform	(pos, M);
@@ -87,7 +93,7 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	if (PT.p.z<  0) return;
 	
 	// Convert to screen coords
-	Fvector2 c;
+	Fvector2	c;
 	c.x			= Device._x2real(PT.p.x);
 	c.y			= Device._y2real(PT.p.y);
 	// Rotation
@@ -101,7 +107,8 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	pv->set	(c.x-sz*_sin1,	c.y-sz*_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D){
+IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D)
+{
 	Fvector			P1,P2;
     P1.direct		(pos,D,-radius);
     P2.direct		(pos,D,radius);
@@ -126,7 +133,8 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	pv->set			(Device._x2real(s2.p.x-l2*R.x),	Device._y2real(s2.p.y-l2*R.y),	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-void CPSVisual::Render(float LOD){
+void CPSVisual::Render(float LOD)
+{
 	float fTime			= Device.fTimeGlobal;
 	
 	// build transform matrix
