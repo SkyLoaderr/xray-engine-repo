@@ -346,5 +346,30 @@ public:
 		CloseHandle		(hSrcFile);
 	}
 };
+class ENGINE_API CVirtualFileStreamRW : public CStream
+{
+private:
+   HANDLE	hSrcFile,hSrcMap;
+public:
+	CVirtualFileStream(const char *cFileName) {
+		// Open the file
+		hSrcFile = CreateFile(cFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
+		Size = (int)GetFileSize(hSrcFile, NULL);
+		R_ASSERT(Size);
+
+		hSrcMap = CreateFileMapping (hSrcFile, 0, PAGE_READWRITE, 0, 0, 0);
+		R_ASSERT(hSrcMap!=INVALID_HANDLE_VALUE);
+
+		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+		R_ASSERT(data);
+	}
+	virtual ~CVirtualFileStream() 
+	{
+        UnmapViewOfFile ((void*)data);
+		CloseHandle		(hSrcMap);
+		CloseHandle		(hSrcFile);
+	}
+};
 
 #endif // !defined(AFX_FS_H__F9718331_BA98_4DD3_96FC_C455405D54FB__INCLUDED_)
