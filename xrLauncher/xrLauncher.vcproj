@@ -39,7 +39,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/noentry"
 				AdditionalDependencies="xrCore.lib xr_3da.lib"
-				OutputFile="x:\xrLauncher.dll"
+				OutputFile="s:\xrLauncher.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				AssemblyDebug="1"
