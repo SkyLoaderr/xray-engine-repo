@@ -235,3 +235,9 @@ void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Preferneces1Click(TObject *Sender)
+{
+	UI->Command( COMMAND_EDIT_PREVIEW_PROPS );
+}
+//---------------------------------------------------------------------------
+

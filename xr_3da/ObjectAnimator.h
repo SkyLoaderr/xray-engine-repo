@@ -12,21 +12,25 @@ private:
 protected:
 	bool				bLoop;
 
+    ref_str				m_Name;
+    
 	Fmatrix				m_XFORM;
     SAnimParams			m_MParam;
 	MotionVec			m_Motions;
+    float				m_Speed;
 
     COMotion*			m_Current;
 	void				LoadMotions		(LPCSTR fname);
 	void				SetActiveMotion	(COMotion* mot);
 	COMotion*			FindMotionByName(LPCSTR name);
-
-	void				Clear			();
 public:
 						CObjectAnimator	();
 	virtual				~CObjectAnimator();
 
+	void				Clear			();
 	void				Load			(LPCSTR name);
+    IC LPCSTR			Name			(){return *m_Name;}
+    float&				Speed			(){return m_Speed;}
 
 	COMotion*			Play			(bool bLoop, LPCSTR name=0);
 	void				Stop			();

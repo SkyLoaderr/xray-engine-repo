@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 573
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 573
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 369
+      Top = 73
       Width = 298
       Height = 3
       Cursor = crVSplit
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 84
       Width = 298
-      Height = 285
+      Height = 403
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -225,7 +225,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 270
+        Height = 388
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -359,7 +359,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 234
+          Height = 352
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -369,7 +369,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 372
+      Top = 76
       Width = 298
       Height = 200
       Align = alBottom
@@ -507,6 +507,13 @@ object fraLeftBar: TfraLeftBar
       Tag = -1
       Caption = 'Custom...'
       OnClick = PreviewClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object Preferneces1: TMenuItem
+      Caption = 'Preferences...'
+      OnClick = Preferneces1Click
     end
   end
   object pmImages: TMxPopupMenu

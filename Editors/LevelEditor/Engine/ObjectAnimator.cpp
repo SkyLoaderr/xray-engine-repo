@@ -14,6 +14,7 @@ CObjectAnimator::CObjectAnimator()
 {
 	bLoop			= false;
     m_Current		= 0;
+    m_Speed			= 1.f;
 }
 
 CObjectAnimator::~CObjectAnimator()
@@ -26,6 +27,7 @@ void CObjectAnimator::Clear()
 	for(MotionIt m_it=m_Motions.begin(); m_it!=m_Motions.end(); m_it++)
 		xr_delete		(*m_it);
 	m_Motions.clear		();
+    SetActiveMotion		(0);
 }
 
 void CObjectAnimator::SetActiveMotion(COMotion* mot)
@@ -66,6 +68,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
 
 void CObjectAnimator::Load(const char * name)
 {
+	m_Name				= name;
 	LoadMotions			(name); 
 	SetActiveMotion		(0);
 }
@@ -75,7 +78,7 @@ void CObjectAnimator::OnFrame()
 	if (m_Current){
 		Fvector R,P;
 		m_Current->_Evaluate(m_MParam.Frame(),P,R);
-		m_MParam.Update	(Device.fTimeDelta,1.f,bLoop);
+		m_MParam.Update	(Device.fTimeDelta,m_Speed,bLoop);
 		m_XFORM.setXYZi	(R.x,R.y,R.z);
         m_XFORM.translate_over(P);
 	}
@@ -123,7 +126,7 @@ static FvectorVec path_points;
 void CObjectAnimator::DrawPath()
 {
     // motion path
-	if (m_Current&&EPrefs.object_flags.is(epoDrawAnimPath)){
+	if (m_Current){
         float fps 				= m_Current->FPS();
         float min_t				= (float)m_Current->FrameStart()/fps;
         float max_t				= (float)m_Current->FrameEnd()/fps;

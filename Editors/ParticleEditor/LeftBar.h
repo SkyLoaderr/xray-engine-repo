@@ -76,6 +76,8 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem4;
 	TMenuItem *MenuItem5;
 	TExtBtn *ebSoundCommands;
+	TMenuItem *N1;
+	TMenuItem *Preferneces1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -104,6 +106,7 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall MenuItem3Click(TObject *Sender);
 	void __fastcall MenuItem5Click(TObject *Sender);
+	void __fastcall Preferneces1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);

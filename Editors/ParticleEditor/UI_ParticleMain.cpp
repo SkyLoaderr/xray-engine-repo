@@ -35,6 +35,9 @@ bool CParticleMain::Command(int _Command, int p1, int p2)
     case COMMAND_SELECT_PREVIEW_OBJ:
 		PTools->SelectPreviewObject(p1);
     	break;
+    case COMMAND_EDIT_PREVIEW_PROPS:
+		PTools->EditPreviewPrefs();
+    	break;
 	case COMMAND_SAVE:
     	PTools->Save(0,0);
 		Command(COMMAND_UPDATE_CAPTION);

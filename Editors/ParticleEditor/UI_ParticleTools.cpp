@@ -19,12 +19,12 @@
 
 #include "TextForm.h"
 #include "d3dutils.h"
-#include "StatGraph.h"
+#include "ObjectAnimator.h"
 //------------------------------------------------------------------------------
 CParticleTools*&	PTools=(CParticleTools*)Tools;
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
-static Fvector zero_vec={0.f,0.f,0.f};
+//static Fvector zero_vec={0.f,0.f,0.f};
 
 CParticleTools::CParticleTools()
 {
@@ -34,6 +34,7 @@ CParticleTools::CParticleTools()
     m_bModified			= false;
     m_bReady			= false;
     m_Transform.identity();
+    m_Vel.set			(0,0,0);
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
     m_Flags.zero		();
@@ -79,14 +80,17 @@ bool CParticleTools::OnCreate()
 //	stat_graph->SetMinMax	(0,1,100);
 //	stat_graph->SetStyle	(CStatGraph::stBar);  
 //	stat_graph->SetGrid		(20,1,0xFF00a000);
+	m_ParentAnimator= xr_new<CObjectAnimator>();
 
     return true;
 }
 
 void CParticleTools::OnDestroy()
 {
-	VERIFY(m_bReady);                                
+	VERIFY				(m_bReady);                                
     m_bReady			= false;                      
+
+    xr_delete			(m_ParentAnimator);
 	// unlock                                       
     EFS.UnlockFile		(_game_data_,PSLIB_FILENAME);
 
@@ -167,6 +171,9 @@ void CParticleTools::Render()
 	// Draw the particles.
     ::Render->Models->RenderSingle(m_EditPG,Fidentity,1.f);	
     ::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	
+
+    if (m_Flags.is(flAnimatedPath))
+    	m_ParentAnimator->DrawPath();
 }
 
 void CParticleTools::OnFrame()
@@ -175,6 +182,18 @@ void CParticleTools::OnFrame()
 	if (m_EditObject)
     	m_EditObject->OnFrame();
 
+    if (m_Flags.is(flAnimatedParent)){
+    	m_ParentAnimator->OnFrame();
+        if (m_ParentAnimator->IsPlaying()){
+        	Fvector new_vel;
+            new_vel.sub (m_ParentAnimator->XFORM().c,m_Transform.c);
+            new_vel.div (Device.fTimeDelta);
+            m_Vel.lerp	(m_Vel,new_vel,0.9);
+            m_Transform	= m_ParentAnimator->XFORM();
+            m_Flags.set	(flApplyParent,TRUE);
+        }
+    }
+        
     if (m_Flags.is(flRemoveAction))
     	RealRemoveAction();
 	if (m_Flags.is(flApplyParent))
@@ -645,8 +664,8 @@ void CParticleTools::RealApplyParent()
 {
     switch(m_EditMode){
     case emNone: break;
-    case emEffect:	m_EditPE->UpdateParent(m_Transform,zero_vec,FALSE); break;    
-    case emGroup:	m_EditPG->UpdateParent(m_Transform,zero_vec,FALSE); break;
+    case emEffect:	m_EditPE->UpdateParent(m_Transform,m_Vel,FALSE); break;    
+    case emGroup:	m_EditPG->UpdateParent(m_Transform,m_Vel,FALSE); break;
     default: THROW;
     }
 	m_Flags.set		(flApplyParent,FALSE);
@@ -747,4 +766,33 @@ bool CParticleTools::RayPick(const Fvector& start, const Fvector& dir, float& di
         }else return false;
     }
 }
- 
+
+void __fastcall	CParticleTools::OnChangeMotion	(PropValue* sender)
+{
+	AChooseValue* V 			= dynamic_cast<AChooseValue*>(sender);
+    if (V){
+        m_ParentAnimator->Clear		();
+        if (!V->value->IsEmpty())
+            m_ParentAnimator->Load	(V->value->c_str());
+    }
+    if (m_Flags.is(flAnimatedParent))
+		m_ParentAnimator->Play	(true);
+}
+
+void CParticleTools::EditPreviewPrefs()
+{
+	PropItemVec		items;
+    AnsiString		motion_name	= m_ParentAnimator->Name();
+	PropValue *V;
+    V=PHelper.CreateFlag<Flags32>(items, "Parent\\Allow Animated",	&m_Flags, 		flAnimatedParent);
+	V->OnChangeEvent			= OnChangeMotion;
+    PHelper.CreateFlag<Flags32>	(items, "Parent\\Draw Path",		&m_Flags, 		flAnimatedPath);
+    V=PHelper.CreateChoose		(items, "Parent\\Motion",			&motion_name, 	smGameAnim);
+	V->OnChangeEvent			= OnChangeMotion;
+    PHelper.CreateFloat			(items, "Parent\\Motion Speed",		&m_ParentAnimator->Speed(), 0.f, 10000.f);
+    TProperties* P				= TProperties::CreateModalForm("Preview properties");
+    P->AssignItems				(items);
+    P->ShowPropertiesModal		();
+    TProperties::DestroyForm	(P);
+}
+

@@ -12,7 +12,7 @@
 
 // refs
 class CEditableObject;
-class TfrmText;
+class CObjectAnimator;
 
 enum EEditMode{
 	emNone,
@@ -37,6 +37,7 @@ class CParticleTools: public CToolsCustom
     PS::CParticleGroup*	m_EditPG;
 
     Fmatrix 			m_Transform;
+    Fvector				m_Vel;
 
     void __fastcall		OnItemModified		(void); 
 
@@ -67,8 +68,13 @@ public:
         flApplyParent		= (1<<1),
         flCompileEffect		= (1<<2),
         flRemoveAction		= (1<<3),
+        flAnimatedParent	= (1<<4),
+        flAnimatedPath		= (1<<5),
     };
     Flags32				m_Flags;
+protected:
+	void __fastcall		OnChangeMotion		(PropValue* sender);
+	CObjectAnimator*	m_ParentAnimator;
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();
@@ -137,6 +143,7 @@ public:
 
     void				SelectPreviewObject	(int p);
     void				ResetPreviewObject	();
+    void				EditPreviewPrefs	();
 };
 #define SYSTEM_PREFIX 	"Systems"
 #define EFFECT_PREFIX 	"Effects"
