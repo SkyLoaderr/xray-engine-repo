@@ -13,7 +13,7 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-//const DWORD    patch_frames = 50;
+const DWORD    patch_frames = 50;
 
 // breakpoints
 #include "..\xr_input.h"
@@ -233,8 +233,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	setEnabled				(E->s_flags&M_SPAWN_OBJECT_LOCAL);
 	setActive				(TRUE);
 
-//	patch_frame			= 0;
-//	patch_position.set	(vPosition);
+	patch_frame			= 0;
+	patch_position.set	(vPosition);
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
@@ -323,7 +323,7 @@ void CActor::feel_touch_delete	(CObject* O)
 
 void CActor::g_Physics			(Fvector& accel, float jump, float dt)
 {
-//	if (patch_frame<patch_frames)	return;
+	if (patch_frame<patch_frames)	return;
 
 	// Calculate physics
 	Movement.SetPosition		(vPosition);
@@ -403,10 +403,10 @@ void CActor::Update	(DWORD DT)
 	// Log("~~~~~~~~~~~~~~~~~~~~~ UPDATE");
 
 	// patch
-//	if (patch_frame<patch_frames)	{
-//		vPosition.set		(patch_position);
-//		patch_frame			+= 1;
-//	}
+	if (patch_frame<patch_frames)	{
+		vPosition.set		(patch_position);
+		patch_frame			+= 1;
+	}
 
 	// zone test
 	float z_amount		= 0;
