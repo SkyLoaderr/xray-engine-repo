@@ -44,11 +44,6 @@ void CRender::level_Load()
 	Wallmarks					= xr_new<CWallmarksEngine>	();
 	Details						= xr_new<CDetailManager>	();
 
-	// Static wallmarks
-	string_path fn_wm;
-	if (FS.exist(fn_wm, "$level$", "level.wallmarks"))
-		Wallmarks->load_LevelWallmarks(fn_wm);
-
 	if	(!g_pGamePersistent->bDedicatedServer)	{
 		//Sliding window
 		pApp->LoadTitle				("Loading SWIs...");
@@ -92,9 +87,6 @@ void CRender::level_Unload()
 
 	// HOM
 	HOM.Unload				();
-
-	// walmmarks
-	Wallmarks->unload_LevelWallmarks();
 
 	//*** Details
 	Details->Unload			();
