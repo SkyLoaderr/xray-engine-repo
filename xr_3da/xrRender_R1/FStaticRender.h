@@ -7,7 +7,6 @@
 #include "detailmanager.h"
 #include "glowmanager.h"
 #include "wallmarksengine.h"
-#include "fstaticrender_types.h"
 #include "fstaticrender_scenegraph.h"
 #include "fstaticrender_rendertarget.h"
 #include "modelpool.h"

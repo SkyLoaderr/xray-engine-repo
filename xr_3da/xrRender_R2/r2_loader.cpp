@@ -94,10 +94,10 @@ void CRender::LoadBuffers	(IReader *base_fs)
 	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
 
 	// Vertex buffers
-	if (base_fs->find_chunk(fsL_VBUFFERS_DX9))
+	if (base_fs->find_chunk(fsL_VB))
 	{
 		// Use DX9-style declarators
-		destructor<IReader>		fs	(base_fs->open_chunk(fsL_VBUFFERS_DX9));
+		destructor<IReader>		fs	(base_fs->open_chunk(fsL_VB));
 		u32 count				= fs().r_u32();
 		DCL.resize				(count);
 		VB.resize				(count);
@@ -128,9 +128,9 @@ void CRender::LoadBuffers	(IReader *base_fs)
 	}
 
 	// Index buffers
-	if (base_fs->find_chunk(fsL_IBUFFERS))
+	if (base_fs->find_chunk(fsL_IB))
 	{
-		destructor<IReader>		fs	(base_fs->open_chunk	(fsL_IBUFFERS));
+		destructor<IReader>		fs	(base_fs->open_chunk	(fsL_IB));
 		u32 count				= fs().r_u32();
 		IB.resize				(count);
 		for (u32 i=0; i<count; i++)
