@@ -16,7 +16,7 @@
 			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
 		    30 bullet
 		</text>
-		<text ln="rus">%credAK-74 %cblueописание на русском</text>
+		<text ln="rus">%credAK-74 %cblueописание на %cdefaultрусском</text>
 	</string>
 </string_table>
 
