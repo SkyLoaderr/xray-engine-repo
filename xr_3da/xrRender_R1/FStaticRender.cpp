@@ -521,7 +521,7 @@ void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
 
-	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
+	// Target.set_gray					(.5f+_sin(Device.fTimeGlobal)/2.f);
 	Target.Begin					();
 
 	// if (psDeviceFlags.test(rsWarmHZB))	HOM.Render_ZB	();

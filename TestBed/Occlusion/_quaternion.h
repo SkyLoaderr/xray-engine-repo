@@ -274,11 +274,11 @@ public:
 
 	// makes unit rotation
 	IC	void	rotationYawPitchRoll(float _x, float _y, float _z) {
-		float fSinYaw   = sinf(_x*.5f);
+		float fSinYaw   = _sin(_x*.5f);
 		float fCosYaw   = cosf(_x*.5f);
-		float fSinPitch = sinf(_y*.5f);
+		float fSinPitch = _sin(_y*.5f);
 		float fCosPitch = cosf(_y*.5f);
-		float fSinRoll  = sinf(_z*.5f);
+		float fSinRoll  = _sin(_z*.5f);
 		float fCosRoll  = cosf(_z*.5f);
 
 		x = fSinRoll * fCosPitch * fCosYaw - fCosRoll * fSinPitch * fSinYaw;
@@ -297,7 +297,7 @@ public:
 		float	sinTheta;
 
 		w		= cosf(angle*0.5f);
-		sinTheta= sinf(angle*0.5f);
+		sinTheta= _sin(angle*0.5f);
 		x = sinTheta * axis.x;
 		y = sinTheta * axis.y;
 		z = sinTheta * axis.z;
@@ -313,7 +313,7 @@ public:
 
 		float HalfTheta  = acosf( w );
 		if (HalfTheta>QZERO_TOLERANCE) 	{
-			OneOverSinTheta = 1.0f / sinf( HalfTheta );
+			OneOverSinTheta = 1.0f / _sin( HalfTheta );
 			axis.x	= OneOverSinTheta * x;
 			axis.y	= OneOverSinTheta * y;
 			axis.z	= OneOverSinTheta * z;
@@ -348,10 +348,10 @@ public:
 		
 		if ( (1.0f - cosom) > EPS ) {
 			float	omega	= _acos( cosom );
-			float	i_sinom = 1.f / sinf( omega );
+			float	i_sinom = 1.f / _sin( omega );
 			float	t_omega	= T*omega;
-			Scale0 = sinf( omega - 	t_omega ) * i_sinom;
-			Scale1 = sinf( t_omega			) * i_sinom;
+			Scale0 = _sin( omega - 	t_omega ) * i_sinom;
+			Scale1 = _sin( t_omega			) * i_sinom;
 		} else  {
 			// has numerical difficulties around cosom == 0
 			// in this case degenerate to linear interpolation
@@ -400,7 +400,7 @@ public:
 	{
 		float r  = sqrtf(Q.x*Q.x+Q.y*Q.y+Q.z*Q.z);
 		float et = expf(Q.w);
-		float s  = (r>=EPS_S)? et*sinf(r)/r: 0.f;
+		float s  = (r>=EPS_S)? et*_sin(r)/r: 0.f;
 		x = s*Q.x;
 		y = s*Q.y;
 		z = s*Q.z;

@@ -43,10 +43,10 @@ IC	void	Qslerp(_quaternion& D, _quaternion &Q0, _quaternion &Q1, float T)
 	
 	if ( (1.0f - cosom) > EPS ) {
 		float	omega	= myacos( cosom );
-		float	i_sinom = 1.f / sinf( omega );
+		float	i_sinom = 1.f / _sin( omega );
 		float	t_omega	= T*omega;
-		Scale0 = sinf( omega - 	t_omega ) * i_sinom;
-		Scale1 = sinf( t_omega			) * i_sinom;
+		Scale0 = _sin( omega - 	t_omega ) * i_sinom;
+		Scale1 = _sin( t_omega			) * i_sinom;
 	} else  {
 		// has numerical difficulties around cosom == 0
 		// in this case degenerate to linear interpolation

@@ -209,7 +209,7 @@ public:
 	IC	void	rotateX		(T Angle )				// rotation about X axis
 	{
 		T cosa	= cosf(Angle);
-		T sina	= sinf(Angle);
+		T sina	= _sin(Angle);
 		i.set		(1,		0,		0	);	_14 = 0;
 		j.set		(0,		cosa,	sina);	_24 = 0;
 		k.set		(0,    -sina,   cosa);	_34 = 0;
@@ -218,7 +218,7 @@ public:
 	IC	void	rotateY		(T Angle )				// rotation about Y axis
 	{
 		T cosa	= cosf(Angle);
-		T sina	= sinf(Angle);
+		T sina	= _sin(Angle);
 		i.set		(cosa,	0,	   -sina);	_14 = 0;
 		j.set		(0,		1,		0	);	_24 = 0;
 		k.set		(sina,  0,		cosa);	_34 = 0;
@@ -227,7 +227,7 @@ public:
 	IC	void	rotateZ		(T Angle )				// rotation about Z axis
 	{
 		T cosa	= cosf(Angle);
-		T sina	= sinf(Angle);
+		T sina	= _sin(Angle);
 		i.set		(cosa,	sina,	0	);	_14 = 0;
 		j.set		(-sina,	cosa,	0	);	_24 = 0;
 		k.set		(0,		0,		1	);	_34 = 0;
@@ -255,7 +255,7 @@ public:
 	IC	void	rotation	( const Tvector &axis, T Angle )
 	{
 		T Cosine	= cosf(Angle);
-		T Sine		= sinf(Angle);
+		T Sine		= _sin(Angle);
 		m [0][0] 	= axis.x * axis.x + ( 1 - axis.x * axis.x) * Cosine;
 		m [0][1] 	= axis.x * axis.y * ( 1 - Cosine ) + axis.z * Sine;
 		m [0][2] 	= axis.x * axis.z * ( 1 - Cosine ) - axis.y * Sine;

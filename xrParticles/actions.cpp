@@ -1533,7 +1533,7 @@ void PAVortex::Execute(ParticleGroup *group)
 			// Figure amount of rotation
 			// Resultant is (cos theta) u + (sin theta) v
 			float theta = magdt / (rSqr + epsilon);
-			float s = sinf(theta);
+			float s = _sin(theta);
 			float c = cosf(theta);
 			
 			offset = (u * c + v * s + w) * r;
@@ -1573,7 +1573,7 @@ void PAVortex::Execute(ParticleGroup *group)
 			// Figure amount of rotation
 			// Resultant is (cos theta) u + (sin theta) v
 			float theta = magdt / (rSqr + epsilon);
-			float s = sinf(theta);
+			float s = _sin(theta);
 			float c = cosf(theta);
 			
 			offset = (u * c + v * s + w) * r;
@@ -1907,7 +1907,7 @@ void pDomain::Generate(pVector &pos) const
 			float r = radius2 + drand48() * (radius1 - radius2);
 			
 			float x = r * cosf(theta); // Weighting of each frame vector
-			float y = r * sinf(theta);
+			float y = r * _sin(theta);
 			
 			// Scale radius along axis for cones
 			if(type == PDCone)
@@ -1932,7 +1932,7 @@ void pDomain::Generate(pVector &pos) const
 			float r = radius2 + drand48() * (radius1 - radius2);
 			
 			float x = r * cosf(theta); // Weighting of each frame vector
-			float y = r * sinf(theta);
+			float y = r * _sin(theta);
 			
 			pos = p1 + u * x + v * y;
 		}

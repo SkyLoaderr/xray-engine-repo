@@ -685,10 +685,10 @@ void CActor::ZoneEffect	(float z_amount)
 
 	// Calc shift func
 	float f_x			= Device.fTimeGlobal;
-	float f_sin4x		= sinf(4.f*f_x);
-	float f_sin4x_s		= sinf(PI/3.f + 4.f*f_x);
+	float f_sin4x		= _sin(4.f*f_x);
+	float f_sin4x_s		= _sin(PI/3.f + 4.f*f_x);
 	float f_sin4x_sa	= _abs(f_sin4x_s);
-	float F				= (f_sin4x+f_sin4x_sa)+(1+f_sin4x*f_sin4x_sa)+ 0.3f*sinf(tanf(PI/(2.1f)*sinf(f_x)));
+	float F				= (f_sin4x+f_sin4x_sa)+(1+f_sin4x*f_sin4x_sa)+ 0.3f*_sin(tanf(PI/(2.1f)*_sin(f_x)));
 
 	// Fov/Shift + Pulse
 	CCameraBase* C		= cameras	[cam_active];
@@ -775,7 +775,7 @@ void CActor::Update	(u32 DT)
 
 	//********************** just for vitya's pleasure
 	//CRender_target*		T	= ::Render->getTarget();
-	////T->set_duality_h		(.015f*sinf(1.f*Device.fTimeGlobal));
+	////T->set_duality_h		(.015f*_sin(1.f*Device.fTimeGlobal));
 	////T->set_duality_v		(.017f*cosf(1.1f*Device.fTimeGlobal));
 	//T->set_duality_h		(.0f);
 	//T->set_duality_v		(.0f);

@@ -69,9 +69,9 @@ void	CCustomItem::Load	(LPCSTR section)
 void	CCustomItem::OnMove()
 {
 	fTime+=Device.fTimeDelta*2.5f; //*.1f;
-	vPosition.y	= start_pos.y +	sinf(fTime)*.1f;
+	vPosition.y	= start_pos.y +	_sin(fTime)*.1f;
 	Fvector	D,N;
-	D.set(-sinf(fTime),0.f,-cosf(fTime));
+	D.set(-_sin(fTime),0.f,-cosf(fTime));
 	N.set(0,1,0);
 	mRotate.rotation(D,N);
 

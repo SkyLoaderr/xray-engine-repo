@@ -164,7 +164,7 @@ void CFlyer::Update(u32 DT)
 	mYawVelocity	-= dt*mYawVelocity*Movement.GetCurrentFriction();
 
 	Fvector D,N;
-	D.set(sinf(mYaw),0.f,cosf(mYaw));
+	D.set(_sin(mYaw),0.f,cosf(mYaw));
 	N.set(0,1,0);
 	mRotate.rotation(D,N);
 

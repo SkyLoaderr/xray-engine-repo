@@ -137,8 +137,8 @@ void CDetailManager::hw_Render()
 	Fvector4 dir1,dir2;
 	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot1;
 	float	tm_rot2			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot2;
-	dir1.set				(sinf(tm_rot1),0,cosf(tm_rot1),0);	dir1.normalize	();	dir1.mul(.1f);	// dir1*amplitude
-	dir2.set				(sinf(tm_rot2),0,cosf(tm_rot2),0);	dir2.normalize	(); dir2.mul(.05f);	// dir2*amplitude
+	dir1.set				(_sin(tm_rot1),0,cosf(tm_rot1),0);	dir1.normalize	();	dir1.mul(.1f);	// dir1*amplitude
+	dir2.set				(_sin(tm_rot2),0,cosf(tm_rot2),0);	dir2.normalize	(); dir2.mul(.05f);	// dir2*amplitude
 
 	// Setup geometry and DMA
 	RCache.set_Geometry		(hw_Geom);

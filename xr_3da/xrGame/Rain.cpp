@@ -94,7 +94,7 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	float		angle	= ::Random.randF	(0,PI_MUL_2);
 	float		dist	= ::Random.randF	(0,radius);
 	float		x		= dist*cosf			(angle);
-	float		z		= dist*sinf			(angle);
+	float		z		= dist*_sin			(angle);
 	dest.P.set			(x+view.x,height+view.y,z+view.z);
 	dest.D.random_dir	(axis,deg2rad(drop_angle));
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);

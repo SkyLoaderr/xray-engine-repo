@@ -65,7 +65,7 @@ void CLightPPA::Render	(SGeometry* hGeom)
 
 	// Lock
 	RCache.set_Geometry		(hGeom);
-	u32 triLock				= _min(256,triCount);
+	u32 triLock				= _min(256u,triCount);
 	u32	vOffset;
 	CLightPPA_Vertex* VB	= (CLightPPA_Vertex*)RCache.Vertex.Lock(triLock*3,hGeom->vb_stride,vOffset);
 
@@ -97,7 +97,7 @@ void CLightPPA::Render	(SGeometry* hGeom)
 			RCache.Vertex.Unlock		(actual*3,hGeom->vb_stride);
 			if (actual) RCache.Render	(D3DPT_TRIANGLELIST,vOffset,actual);
 			actual						= 0;
-			triLock						= _min(256,triCount-t);
+			triLock						= _min(256u,triCount-t);
 			VB							= (CLightPPA_Vertex*)RCache.Vertex.Lock(triLock*3,hGeom->vb_stride,vOffset);
 		}
 	}

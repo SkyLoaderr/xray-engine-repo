@@ -131,7 +131,7 @@ void CRenderDevice::Run			()
 				{
 					float factor					= float(dwPrecacheFrame)/float(dwPrecacheTotal);
 					float angle						= PI_MUL_2 * factor;
-					vCameraDirection.set			(sinf(angle),0,cosf(angle));	vCameraDirection.normalize	();
+					vCameraDirection.set			(_sin(angle),0,cosf(angle));	vCameraDirection.normalize	();
 					vCameraTop.set					(0,1,0);
 					vCameraRight.crossproduct		(vCameraTop,vCameraDirection);
 

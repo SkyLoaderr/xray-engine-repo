@@ -21,8 +21,8 @@ struct WaveForm
 		switch (F)
 		{
 			case fCONSTANT:		return 0;
-			case fSIN:			return sinf(t*PI_MUL_2);
-			case fTRIANGLE:		return asinf(sinf((t-0.25f)*PI_MUL_2))/PI_DIV_2;
+			case fSIN:			return _sin(t*PI_MUL_2);
+			case fTRIANGLE:		return asinf(_sin((t-0.25f)*PI_MUL_2))/PI_DIV_2;
 			case fSQUARE:		return signf(cosf(t*PI));
 			case fSAWTOOTH:		return atanf(tanf((t+0.5f)*PI))/PI_DIV_2;
 			case fINVSAWTOOTH:	return -(atanf(tanf((t+0.5f)*PI))/PI_DIV_2);
