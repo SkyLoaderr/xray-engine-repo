@@ -1,5 +1,5 @@
-#ifndef __XR_WEAPON_AK74_H__
-#define __XR_WEAPON_AK74_H__
+#ifndef __XR_WEAPON_AUTORIFLE_H__
+#define __XR_WEAPON_AUTORIFLE_H__
 #pragma once
 
 #include "WeaponMagazined.h"
@@ -50,4 +50,4 @@ public:
 
 };
 
-#endif //__XR_WEAPON_AK74_H__
+#endif //__XR_WEAPON_AUTORIFLE_H__
