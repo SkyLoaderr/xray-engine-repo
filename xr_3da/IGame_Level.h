@@ -9,6 +9,7 @@
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
 class ENGINE_API CPS_Instance;
+class ENGINE_API ISpatial;
 
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API	IGame_Level		: 

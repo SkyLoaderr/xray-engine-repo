@@ -6,8 +6,9 @@
 #include "xr_collide_defs.h"
 
 // refs
-class ENGINE_API				ICollisionForm;
-class ENGINE_API				CObject;
+class ENGINE_API	ISpatial;
+class ENGINE_API	ICollisionForm;
+class ENGINE_API	CObject;
 
 //-----------------------------------------------------------------------------------------------------------
 //Space Area
@@ -20,6 +21,7 @@ private:
 	Fvector								Static_Shift;
 	Fbox								m_BoundingVolume;
 	xrXRC								xrc;
+	xr_vector<ISpatial*>				r_spatial;
 	Collide::rq_results					r_temp;
 public:
 	xr_vector<CObject*>					q_nearest;

@@ -22,8 +22,8 @@ void	IGame_Level::SoundEvent	( ref_sound* S, float range )
 	g_SpatialSpace->q_box	(snd_ER,0,STYPE_REACTTOSOUND,p->position,bb_size);
 
 	// Iterate
-	xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace->q_result.begin	();
-	xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace->q_result.end	();
+	xr_vector<ISpatial*>::iterator	it	= snd_ER.begin	();
+	xr_vector<ISpatial*>::iterator	end	= snd_ER.end	();
 	for (; it!=end; it++)
 	{
 		Feel::Sound* L		= dynamic_cast<Feel::Sound*>(*it);
