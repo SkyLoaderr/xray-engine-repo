@@ -202,7 +202,7 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 		if (tpInventoryOwner) {
 			xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
 			xr_vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if ((*I).m_pIItem) {
 					CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
 					if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
@@ -527,7 +527,7 @@ float CGraphPointType0::ffGetValue()
 {
 	if (bfCheckForCachedResult())
 		return						(m_fLastValue);
-	return							(m_fLastValue = ai().game_graph().vertex(ai().ef_storage().m_tpCurrentALifeObject->m_tGraphID).vertex_type()[0]);
+	return							(m_fLastValue = ai().game_graph().vertex(ai().ef_storage().m_tpCurrentALifeObject->m_tGraphID)->vertex_type()[0]);
 }
 
 float CPersonalEyeRange::ffGetValue()

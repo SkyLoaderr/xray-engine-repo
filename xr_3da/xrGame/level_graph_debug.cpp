@@ -44,14 +44,14 @@ void CLevelGraph::render()
 			Fvector tCameraPosition = Level().CurrentEntity()->Position();
 			CGameFont* F		= HUD().pFontDI;
 			for (int i=0; i<(int)ai().game_graph().header().vertex_count(); ++i) {
-				Fvector t1 = ai().game_graph().vertex(i).game_point();
+				Fvector t1 = ai().game_graph().vertex(i)->game_point();
 				t1.y += .6f;
 				NORMALIZE_VECTOR(t1);
 				RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 				CGameGraph::const_iterator	I, E;
 				ai().game_graph().begin		(i,I,E);
 				for ( ; I != E; ++I) {
-					Fvector t2 = ai().game_graph().vertex((*I).vertex_id()).game_point();
+					Fvector t2 = ai().game_graph().vertex((*I).vertex_id())->game_point();
 					t2.y += .6f;
 					NORMALIZE_VECTOR(t2);
 					RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
@@ -91,11 +91,11 @@ void CLevelGraph::render()
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 				if ((tpGame) && (tpGame->m_tpALife)) {
 					{
-						_LEVEL_ID	J = ai().game_graph().vertex(tpGame->m_tpALife->m_tpActor->m_tGraphID).level_id();
+						_LEVEL_ID	J = ai().game_graph().vertex(tpGame->m_tpALife->m_tpActor->m_tGraphID)->level_id();
 						for (int i=0, n=(int)ai().game_graph().header().vertex_count(); i<n; ++i) {
-							if (ai().game_graph().vertex(i).level_id() != J)
+							if (ai().game_graph().vertex(i)->level_id() != J)
 								continue;
-							Fvector t1 = ai().game_graph().vertex(i).level_point(), t2 = ai().game_graph().vertex(i).game_point();
+							Fvector t1 = ai().game_graph().vertex(i)->level_point(), t2 = ai().game_graph().vertex(i)->game_point();
 							t1.y += .6f;
 							t2.y += .6f;
 							NORMALIZE_VECTOR(t2);
@@ -121,12 +121,12 @@ void CLevelGraph::render()
 							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
 								CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 								if (tpALifeHuman && tpALifeHuman->m_tpPath.size()) {
-									Fvector t1 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[0]).game_point();
+									Fvector t1 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[0])->game_point();
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 									for (int i=1; i<(int)tpALifeHuman->m_tpPath.size(); ++i) {
-										Fvector t2 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[i]).game_point();
+										Fvector t2 = ai().game_graph().vertex(tpALifeHuman->m_tpPath[i])->game_point();
 										t2.y += .6f;
 										NORMALIZE_VECTOR(t2);
 										RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
@@ -135,8 +135,8 @@ void CLevelGraph::render()
 									}
 								}
 								if (tpALifeMonsterAbstract->m_fDistanceToPoint > EPS_L) {
-									Fvector t1 = ai().game_graph().vertex(tpALifeMonsterAbstract->m_tGraphID).game_point();
-									Fvector t2 = ai().game_graph().vertex(tpALifeMonsterAbstract->m_tNextGraphID).game_point();
+									Fvector t1 = ai().game_graph().vertex(tpALifeMonsterAbstract->m_tGraphID)->game_point();
+									Fvector t2 = ai().game_graph().vertex(tpALifeMonsterAbstract->m_tNextGraphID)->game_point();
 									t2.sub(t1);
 									t2.mul(tpALifeMonsterAbstract->m_fDistanceFromPoint/tpALifeMonsterAbstract->m_fDistanceToPoint);
 									t1.add(t2);
@@ -145,7 +145,7 @@ void CLevelGraph::render()
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 								}
 								else {
-									Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID).game_point();
+									Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
@@ -154,7 +154,7 @@ void CLevelGraph::render()
 							else {
 								CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
 								if (l_tpALifeInventoryItem && !l_tpALifeInventoryItem->bfAttached()) {
-									Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID).game_point();
+									Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
@@ -162,7 +162,7 @@ void CLevelGraph::render()
 								else {
 									CSE_ALifeCreatureActor *tpALifeCreatureActor = dynamic_cast<CSE_ALifeCreatureActor*>((*I).second);
 									if (tpALifeCreatureActor) {
-										Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID).game_point();
+										Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 										t1.y += .6f;
 										NORMALIZE_VECTOR(t1);
 										RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,255));
@@ -170,7 +170,7 @@ void CLevelGraph::render()
 									else {
 										CSE_ALifeTrader *tpALifeTrader = dynamic_cast<CSE_ALifeTrader*>((*I).second);
 										if (tpALifeTrader) {
-											Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID).game_point();
+											Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
 											t1.y += .6f;
 											NORMALIZE_VECTOR(t1);
 											RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));

@@ -48,7 +48,7 @@ private:
 	ALife::TERRAIN_VECTOR	m_vertex_types;
 	u32						m_time_to_change;
 
-				void		select_random_location	() const;
+				void		select_random_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id) const;
 public:
 	IC						CBaseLocationSelector	();
 	IC	virtual				~CBaseLocationSelector	();

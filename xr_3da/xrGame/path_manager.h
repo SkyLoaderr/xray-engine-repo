@@ -1021,7 +1021,7 @@ public:
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
 		VERIFY					(m_evaluator);
-		if (graph->mask(m_evaluator->m_vertex_types,graph->vertex(data_storage->get_best().index()).vertex_type())) {
+		if (graph->mask(m_evaluator->m_vertex_types,graph->vertex(data_storage->get_best().index())->vertex_type())) {
 			m_evaluator->m_vertex_id	= data_storage->get_best().index();
 			return				(true);
 		}
