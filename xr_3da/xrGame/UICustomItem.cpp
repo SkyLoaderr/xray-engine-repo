@@ -49,6 +49,11 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 		uFlags |= flValidOriginalRect;
 	}
 			
+	if (!(uFlags&flValidTextureRect))
+	{
+		iTextureRect.set(0,0,ts.x,ts.y);
+		uFlags |= flValidTextureRect;
+	}
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
@@ -57,16 +62,26 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	float sc		= HUD().GetScale();
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
-//	LTp.set			(float(pos.x),float(pos.y));
-//	RBp.set			(pos.x + float(x2-x1)*sc,
-//					 pos.y + float(y2-y1)*sc);
+/*	LTp.set			(float(pos.x),float(pos.y));
+	RBp.set			(pos.x + fScale*float(x2-x1),
+					 pos.y + fScale*float(y2-y1));*/
 
 
 	//текстурные координаты
-	LTt.set			(fScale* float(x1)/float(ts.x)+hp.x,
+	/*LTt.set			(fScale* float(x1)/float(ts.x)+hp.x,
 					 fScale* float(y1)/float(ts.y)+hp.y);
 	RBt.set			(fScale*float(x2)/float(ts.x)+hp.x,
-					 fScale*float(y2)/float(ts.y)+hp.y);
+					 fScale*float(y2)/float(ts.y)+hp.y);*/
+	
+	LTt.set			( float(iOriginalRect.x1+x1)/float(iTextureRect.width())+hp.x,
+					  float(iOriginalRect.y1+y1)/float(iTextureRect.height())+hp.y);
+	RBt.set			((float(iOriginalRect.x1+x1)+
+					  fScale*float(x2-x1))/
+					  float(iTextureRect.width())+hp.x,
+					 (float(iOriginalRect.y1+y1)+
+					  fScale*float(y2-y1))/
+					  float(iTextureRect.height())+hp.y);
+
 
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;
 	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
@@ -78,6 +93,9 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 {
 	Render(Pointer,pos,color,iVisRect.x1,iVisRect.y1,iVisRect.x2,iVisRect.y2);
+	/*Render(Pointer,pos,color,iOriginalRect.x1,iOriginalRect.y1,
+							 iOriginalRect.x2,iOriginalRect.y2);
+							 */
 }
 //--------------------------------------------------------------------
 
@@ -169,4 +187,9 @@ Irect CUICustomItem::GetOriginalRect()
 	rect.y2 = int(rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1));
 
 	return rect;
+}
+void CUICustomItem::SetOriginalRect(int x, int y, int width, int height)
+{
+	iOriginalRect.set(x,y,x+width,y+height); 
+	uFlags|=flValidOriginalRect; 
 }

@@ -16,13 +16,17 @@ class CUICustomItem
 protected:
 	enum {
 		flValidRect=0x0001,
-		flValidOriginalRect=0x0002
+		flValidOriginalRect=0x0002,
+		flValidTextureRect=0x0004
 	};
 
-	//прямоугольние(в пикселях) который выводится в данный момент
+	//прямоугольник(в пикселях) 
+	//часть участка, который выводится в данный момент
 	Irect			iVisRect;
-	//оригинальный размер текстуры в пикселях
+	//положение участка текстуры, который выводится на экран
 	Irect			iOriginalRect;
+	//размеры текстуры
+	Irect			iTextureRect;
 
 
 	float			fScale;
@@ -35,7 +39,7 @@ public:
 	virtual			~CUICustomItem	();
 	IC void			SetRect			(int x1, int y1, int x2, int y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
 	IC void			SetRect			(const Irect& r){iVisRect.set(r); uFlags|=flValidRect; }
-	IC void			SetOriginalRect	(int x1, int y1, int x2, int y2){iOriginalRect.set(x1,y1,x2,y2); uFlags|=flValidOriginalRect; }
+	  void			SetOriginalRect	(int x, int y, int width, int height);
 
 	IC Irect		GetRect					() {return iVisRect;}
 	   Irect		GetOriginalRect			();

@@ -58,11 +58,13 @@ protected:
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 	
+
 	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
 
 	CUIStatic			UIStaticText;
-	//для изображения одежды
+	
+	//для изображения предмета крупным планом
 	CUI3dStatic			UI3dStatic;
 	//для изображения персонажа
 	CUI3dStatic			UI3dCharacter;

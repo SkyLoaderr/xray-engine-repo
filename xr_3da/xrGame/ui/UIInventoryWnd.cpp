@@ -358,7 +358,6 @@ void CUIInventoryWnd::InitInventory()
 										(*it)->m_iYPos*INV_GRID_HEIGHT,
 										(*it)->m_iGridWidth*INV_GRID_WIDTH,
 										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
-
 				
 				UIDragDropItem.SetData((*it));
 
