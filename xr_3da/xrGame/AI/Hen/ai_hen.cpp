@@ -174,7 +174,7 @@ IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 }
 
 bool CAI_Hen::bfCheckPath(AI::Path &Path) {
-	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
+	vector<BYTE>& q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
 			return(false);
