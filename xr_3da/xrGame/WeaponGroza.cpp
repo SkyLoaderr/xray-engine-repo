@@ -117,7 +117,7 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 			}
 		} else {
 			Fmatrix mRes;
-			PKinematics V	= PKinematics(m_pParent->Visual());
+			CKinematics* V	= PKinematics(m_pParent->Visual());
 			V->Calculate	();
 			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
@@ -144,7 +144,7 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 		if (bHUDView)	
 		{
 			// 1st person view - skeletoned
-			PKinematics V			= PKinematics(m_pHUD->Visual());
+			CKinematics* V			= PKinematics(m_pHUD->Visual());
 			V->Calculate			();
 			
 			// fire point&direction

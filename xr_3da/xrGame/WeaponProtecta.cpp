@@ -89,7 +89,7 @@ void CWeaponProtecta::UpdateXForm(BOOL bHUDView)
 			}
 		} else {
 			Fmatrix mRes;
-			PKinematics V	= PKinematics(m_pParent->Visual());
+			CKinematics* V	= PKinematics(m_pParent->Visual());
 			V->Calculate	();
 			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
@@ -112,7 +112,7 @@ void CWeaponProtecta::UpdateFP(BOOL bHUDView)
 		dwFP_Frame = Device.dwFrame;
 
 		// update animation
-		PKinematics V			= bHUDView?PKinematics(m_pHUD->Visual()):0;
+		CKinematics* V			= bHUDView?PKinematics(m_pHUD->Visual()):0;
 		if (V) V->Calculate		();
 
 		// fire point&direction

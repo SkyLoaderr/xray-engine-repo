@@ -102,7 +102,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	m_fCurSpeed				= m_fMaxSpeed;
 
 	// Motions
-	PKinematics	V			= PKinematics(pVisual);
+	CKinematics* V			= PKinematics(pVisual);
 	m_current				= 0;
 	m_idle					= V->ID_Cycle("norm_idle");
 	m_death					= V->ID_Cycle("norm_death");
@@ -400,7 +400,7 @@ void CCustomMonster::Exec_Visibility	( float dt )
 
 	// ************** first - detect visibility
 	// 1. VIEW: From, Dir and Up vector
-	PKinematics V		= PKinematics(Visual());
+	CKinematics* V		= PKinematics(Visual());
 	V->Calculate		();
 	Fmatrix&	mEye	= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;		X.mul_43(svTransform,mEye);

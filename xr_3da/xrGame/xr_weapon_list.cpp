@@ -49,7 +49,7 @@ void CWeaponList::Init(LPSTR act_bone_r, LPSTR act_bone_l)
 {
 	m_iHUDboneL		= -1;
 	m_iHUDboneR		= -1;
-	PKinematics V	= PKinematics(m_pParent->Visual());
+	CKinematics* V	= PKinematics(m_pParent->Visual());
 	m_iACTboneL		= V->LL_BoneID(act_bone_l);
 	m_iACTboneR		= V->LL_BoneID(act_bone_r);
 }

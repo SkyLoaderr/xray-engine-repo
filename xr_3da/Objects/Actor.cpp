@@ -210,8 +210,8 @@ void CActor::Load(CInifile* ini, const char* section )
 	cam_Set				(eacFirstEye);
 
 	// motions
-	PKinematics	V		= PKinematics(pVisual);
-	m_current_legs_blend= 0;	
+	CKinematics* V		= PKinematics(pVisual);
+	m_current_legs_blend= 0;
 	m_current_jump_blend= 0;
 	m_current_legs		= 0;
 	m_current_torso		= 0;
