@@ -51,18 +51,6 @@ void				OGF_Base::CalcBounds	()
 	S3.R						= _S3.Radius();
 	BOOL B3						= SphereValid(V,S3);
 
-	Log	("--- MiniBall");
-	Log	("pos",S1.P);
-	Log	("r  ",S1.R);
-
-	Log	("--- Basic");
-	Log	("pos",S2.P);
-	Log	("r  ",S2.R);
-
-	Log	("--- MagicFM");
-	Log	("pos",S3.P);
-	Log	("r  ",S3.R);
-
 	// select best one
 	if (B1 && (S1.R<S2.R))
 	{
