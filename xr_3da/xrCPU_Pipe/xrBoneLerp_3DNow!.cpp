@@ -4,16 +4,18 @@
 #define _COOL_
 #define _AMD_RULEZ_FOREVER_
 #define _MS_BUGS_OFF_
+
 // --  includes -----------------------------------------------------
 #include "stdafx.h"
 #include "..\bodyinstance.h"
+
 //;******************************************************************************
 // A "magic" type to allow initialization with any type
 template <class T>
 union __m64t
 {
     T       t;
-    __m64   m;
+    __m64   m64;
 
     operator __m64 ()       { return m64; }
     operator __m64 () const { return m64; }

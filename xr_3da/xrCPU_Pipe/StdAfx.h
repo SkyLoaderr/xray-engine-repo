@@ -12,6 +12,7 @@
 
 // Insert your headers here
 #include "..\\stdafx.h"
+#include <xmmintrin.h>
 
 // TODO: reference additional headers your program requires here
 
