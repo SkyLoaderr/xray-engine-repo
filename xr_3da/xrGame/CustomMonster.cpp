@@ -295,7 +295,7 @@ void CCustomMonster::Update	( DWORD DT )
 			Exec_Physics			(dt);
 			if (bfExecMovement()) 
 			{
-				Exec_Movement	(dt);
+				Exec_Movement		(dt);
 				net_update			uNext;
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;

@@ -92,7 +92,8 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	m_ZB.clear			();
 
-	m_VS				= Device.Shader._CreateVS(FVF::L);
+	m_VS				= Device.Shader._CreateVS	(FVF::L	);
+	m_Shader			= Device.Shader.Create		("zfill");
 	
 	// Debug
 /*
@@ -108,6 +109,7 @@ void CHOM::Load			()
 
 void CHOM::Unload		()
 {
+	Device.Shader.Delete	(m_Shader);
 	Device.Shader._DeleteVS	(m_VS);
 //	_RELEASE	(m_pDBG);
 	_DELETE		(m_pModel);
@@ -248,18 +250,20 @@ void CHOM::Render_ZB	()
 	vector<occTri*>::iterator	I	= m_ZB.begin	();
 	vector<occTri*>::iterator	E	= m_ZB.end		();
 
+	DWORD C							= D3DCOLOR_RGBA	(0xff,0,0,0xff);
 	for (; I!=E; I++)
 	{
-		CDB::TRI& t				= m_pModel->get_tris() [(*I)->id];
-		V->set	(*t.verts[0]);	V++;
-		V->set	(*t.verts[1]);	V++;
-		V->set	(*t.verts[2]);	V++;
+		CDB::TRI& t					= m_pModel->get_tris() [(*I)->id];
+		V->set	(*t.verts[0],C);	V++;
+		V->set	(*t.verts[1],C);	V++;
+		V->set	(*t.verts[2],C);	V++;
 	}
 
 	Device.Streams.Vertex.Unlock	(vCount,m_VS->dwStride);
 
 	// Render it
 	Device.set_xform_world			(Fidentity);
+	Device.Shader.set_Shader		(m_Shader);
 	Device.Primitive.setIndices		(0,0);
 	Device.Primitive.setVertices	(m_VS->dwHandle,m_VS->dwStride,Device.Streams.Vertex.Buffer());
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);

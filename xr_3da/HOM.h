@@ -15,6 +15,7 @@ private:
 	occTri*					m_pTris;
 	vector<occTri*>			m_ZB;
 
+	Shader*					m_Shader;
 	CVS*					m_VS;
 
 //	IDirect3DTexture8*		m_pDBG;
