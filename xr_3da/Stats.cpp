@@ -199,6 +199,8 @@ void CStats::Show()
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
 		F.OutNext	("netServer:   %2.2fms, %d",netServer.result,netServer.count);
 		F.OutSkip	();
+		F.OutNext	("CAMERA POS:  %3.2f,%3.2f,%3.2f",VPUSH(Device.vCameraPosition));
+		F.OutSkip	();
 		F.OutNext	("TEST 0:      %2.2fms, %d",TEST0.result,TEST0.count);
 		F.OutNext	("TEST 1:      %2.2fms, %d",TEST1.result,TEST1.count);
 		F.OutNext	("TEST 2:      %2.2fms, %d",TEST2.result,TEST2.count);
