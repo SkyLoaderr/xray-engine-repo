@@ -169,6 +169,12 @@ function action_follow:__init (name, storage) super (nil, name)
     self.mental_state = anim.free
     self.time = 0
     self.dist = self.a.distance
+    self.sound_s = { 
+                   rnd = 100,
+                   maxidle = math.random (5, 10),
+                   sumidle = math.random (2, 10),
+                   themes = { "weather", "state" } 
+                   }
 end
 --------------
 function action_follow:initialize ()
@@ -256,9 +262,15 @@ function action_follow:execute ()
        if self:check_path () == false then
           self:update_stage_0 ()
        end   
+       if self.object:active_sound_count() == 0 then
+          xr_sound.sound_update (self.object, self.sound_s)
+       end
     elseif self.stage == 1 then        
        self:check_path     ()
        self:update_stage_1 ()
+       if self.object:active_sound_count() == 0 then
+          xr_sound.sound_update(self.object, self.sound_s)
+       end
     elseif self.stage == 2 then
        self:update_stage_2 ()
     elseif self.stage == 3 then
