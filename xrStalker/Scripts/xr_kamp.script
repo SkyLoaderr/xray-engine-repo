@@ -360,11 +360,11 @@ function action_go_patrol:execute()
 					-- инициализируем остановку
 					self.relax_time.begin = device():time_global()
 					self.relax_time.idle = math.random(self.relax_time.max_idle) + self.relax_time.sum_idle
+					self.object:set_movement_type(move.stand)
+					local dir = vector():set(math.random(-1,1), 0, math.random(-1,1))
+					self.object:set_sight(look.direction, dir, 0)
 				end
 			else
-				-- Обработка остановки
-				self.object:set_movement_type(move.stand)				
-
 				-- Выход из остановки
 				if device():time_global() - self.relax_time.begin >= self.relax_time.idle*1000 then
 					self.object:set_movement_type(move.walk)				
