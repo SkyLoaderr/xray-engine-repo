@@ -31,7 +31,7 @@ protected:
 	vecC						LL_strings;
 	LPCSTR						getString	(int id)	{
 		if (id<0)	return 0;
-		R_ASSERT	(id<LL_strings.size());
+		R_ASSERT	(id<int(LL_strings.size()));
 		return LL_strings[id];
 	}
 
