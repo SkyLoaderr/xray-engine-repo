@@ -127,11 +127,15 @@ public:
 	Fvector&		get_rest_offset	(){return rest_offset;}
 	Fvector&		get_rest_rotate	(){return rest_rotate;}
 	float&			get_rest_length	(){return rest_length;}
-#endif
 
 	void			ShapeScale		(const Fvector& amount);
 	void			ShapeRotate		(const Fvector& amount);
 	void			ShapeMove		(const Fvector& amount);
+
+	bool 			Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);
+
+    void			Select			(BOOL flag){flags.set(flSelected,flag);}
+#endif
 };
 DEFINE_VECTOR		(CBone*,BoneVec,BoneIt);
 
