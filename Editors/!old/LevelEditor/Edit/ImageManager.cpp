@@ -297,9 +297,11 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 if (modif_map) modif_map->insert(*it);
                 // save to assoc ltx
                 STextureParams& FMT = THM->_Format();
-                if (FMT.flags.is(STextureParams::flHasDetailTexture)){
+		        if (FMT.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
                     AnsiString det;                          
-                    det.sprintf("%s, %f",FMT.detail_name,FMT.detail_scale);
+                    det.sprintf("%s, %f, %d, %d",	FMT.detail_name, FMT.detail_scale,
+                                                    FMT.flags.is(STextureParams::flDiffuseDetail),
+                                                    FMT.flags.is(STextureParams::flBumpDetail));
                     ltx_ini->w_string("association", base_name.c_str(), det.c_str());
                 }else{
                     ltx_ini->remove_line("association", base_name.c_str());

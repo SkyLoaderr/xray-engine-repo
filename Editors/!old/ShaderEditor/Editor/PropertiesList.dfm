@@ -1,7 +1,7 @@
 object Properties: TProperties
-  Left = 523
-  Top = 223
-  Width = 259
+  Left = 454
+  Top = 306
+  Width = 424
   Height = 329
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
@@ -26,15 +26,24 @@ object Properties: TProperties
   object Bevel1: TBevel
     Left = 0
     Top = 0
-    Width = 251
+    Width = 416
     Height = 1
     Align = alTop
     Shape = bsFrame
   end
-  object tvProperties: TElTree
-    Left = 0
+  object spFolders: TSplitter
+    Left = 129
     Top = 1
-    Width = 251
+    Width = 2
+    Height = 282
+    Cursor = crHSplit
+    Color = 7368816
+    ParentColor = False
+  end
+  object tvProperties: TElTree
+    Left = 131
+    Top = 1
+    Width = 285
     Height = 282
     Cursor = crDefault
     LeftPosition = 0
@@ -117,16 +126,16 @@ object Properties: TProperties
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF0200000020C2C707001F0000FFFFFFFF000001000100C7077D000000
-      32000000102700000000000014B295040000000000003B0D0000000000000163
-      0000000000000000000100000000000065617465466F726D0909090928636F6E
-      737420416E7369537472696E6726207469746C652C205457696E436F6E74726F
-      6C2A20706172656E743D302C2054416C69676E20040000004B65790001000000
-      00000000000000000020C2C707001F0000FFFFFFFF000001010100C707590000
-      00320000001027000000000000ECB695040100000000003B0D00000000000001
-      630000000000000000000100000000000065617465466F726D0909090928636F
-      6E737420416E7369537472696E6726207469746C652C205457696E436F6E7472
-      6F6C2A20706172656E743D302C2054416C69676E200600000056616C75650001
+      F4FFFFFF020000005077C90700000000FFFFFFFF00000100010000007D000000
+      32000000102700000000000014B2950400000000000000000000000000000100
+      000000000000000000010000000000009DE35B00ADE35B00C5E35B00D5E35B00
+      01000000000000000D0000000000000024EC5B0034EC5B004CEC5B005CEC5B00
+      6CEC5B0098EC5B00000000006702B20090000000040000004B65790001000000
+      0000000000000000005077C90700000000FFFFFFFF0000010101000000590000
+      00320000001027000000000000ECB69504010000000000000000000000000001
+      00000000000000000000010000000000009DE35B00ADE35B00C5E35B00D5E35B
+      0001000000000000000D0000000000000024EC5B0034EC5B004CEC5B005CEC5B
+      006CEC5B0098EC5B00000000006702B200900000000600000056616C75650001
       000000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -207,14 +216,15 @@ object Properties: TProperties
     OnItemDraw = tvPropertiesItemDraw
     OnItemFocused = tvPropertiesItemFocused
     OnShowLineHint = tvPropertiesShowLineHint
+    OnCompareItems = tvPropertiesCompareItems
     OnClick = tvPropertiesClick
     OnMouseDown = tvPropertiesMouseDown
     OnMouseMove = tvPropertiesMouseMove
     OnMouseUp = tvPropertiesMouseUp
   end
   object seNumber: TMultiObjSpinEdit
-    Left = 124
-    Top = 35
+    Left = 196
+    Top = 19
     Width = 74
     Height = 17
     LWSensitivity = 0.01
@@ -233,8 +243,8 @@ object Properties: TProperties
     OnKeyDown = seNumberKeyDown
   end
   object pbExtBtn: TElPopupButton
-    Left = 198
-    Top = 35
+    Left = 270
+    Top = 19
     Width = 16
     Height = 17
     DrawDefaultFrame = False
@@ -260,7 +270,7 @@ object Properties: TProperties
   object paButtons: TPanel
     Left = 0
     Top = 283
-    Width = 251
+    Width = 416
     Height = 19
     Align = alBottom
     BevelOuter = bvNone
@@ -270,7 +280,7 @@ object Properties: TProperties
     object Bevel2: TBevel
       Left = 0
       Top = 0
-      Width = 251
+      Width = 416
       Height = 1
       Align = alTop
     end
@@ -320,8 +330,8 @@ object Properties: TProperties
     end
   end
   object edText: TMaskEdit
-    Left = 125
-    Top = 58
+    Left = 197
+    Top = 42
     Width = 88
     Height = 15
     BorderStyle = bsNone
@@ -331,6 +341,16 @@ object Properties: TProperties
     OnDblClick = edTextDblClick
     OnExit = edTextExit
     OnKeyDown = edTextKeyDown
+  end
+  object paFolders: TPanel
+    Left = 0
+    Top = 1
+    Width = 129
+    Height = 282
+    Align = alLeft
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 5
   end
   object pmEnum: TMxPopupMenu
     Alignment = paCenter
@@ -349,6 +369,8 @@ object Properties: TProperties
   object fsStorage: TFormStorage
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
+    StoredProps.Strings = (
+      'paFolders.Width')
     StoredValues = <>
     Left = 65525
     Top = 65521

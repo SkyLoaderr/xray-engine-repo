@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 
 /* TODO 1 -oAlexMX -cTODO: ref_str גלוסעמ AnsiString ג ךאקוסעגו edit_val*/
+/* TODO 1 -oAlexMX -cTODO: Select for plItemFolders mode*/
 
 #include "stdafx.h"
 #pragma hdrstop
@@ -21,6 +22,7 @@
 #include "TextForm.h"
 #include "ui_main.h"
 #include "EThumbnail.h"
+#include "ItemList.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -44,49 +46,6 @@
 
 #define TSTRING_COUNT 	4
 const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
-//---------------------------------------------------------------------------
-TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
-{
-	LockUpdating		();
-	CancelEditControl	();
-    if (section) return FHelper.FindFolder(tvProperties,section);
-    return 0;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TProperties::EndEditMode(TElTreeItem* expand_node)
-{
-	if (expand_node) expand_node->Expand(true);
-	UnlockUpdating		();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
-{
-	LockUpdating		();
-	CancelEditControl();
-    if (section){
-    	TElTreeItem* node = FHelper.FindFolder(tvProperties,section);
-        if (node){
-			ClearParams(node);
-        	node->Delete();
-        }
-    }else{
-		FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
-        ClearParams();
-    }
-
-    Caption = title;
-}
-//---------------------------------------------------------------------------
-void __fastcall TProperties::EndFillMode(bool bFullExpand)
-{
-    bModified=false;
-    // end fill mode
-	if (bFullExpand) tvProperties->FullExpand();
-	UnlockUpdating		();
-    FHelper.RestoreSelection	(tvProperties,last_selected_item,false);
-};
 //---------------------------------------------------------------------------
 void TProperties::ClearParams(TElTreeItem* node)
 {
@@ -164,6 +123,7 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
     seNumber->Parent= tvProperties;
     seNumber->Hide	();
     m_Flags.zero	();
+    m_Folders		= 0;
 }
 //---------------------------------------------------------------------------
 
@@ -182,7 +142,16 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
     }
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
-    props->m_Flags.set				(flags);
+    props->m_Flags.set			(flags);
+    if (props->m_Flags.is(plItemFolders)){
+    	props->spFolders->Show	();
+    	props->paFolders->Show	();
+    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,0);
+        props->m_Folders->OnItemFocused = props->OnFolderFocused;
+    }else{
+    	props->spFolders->Hide	();
+    	props->paFolders->Hide	();
+    }
 	return props;
 }
 
@@ -196,6 +165,15 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
     props->m_Flags.set			(flags);
+    if (props->m_Flags.is(plItemFolders)){
+    	props->spFolders->Show	();
+    	props->paFolders->Show	();
+    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,0);
+        props->m_Folders->OnItemFocused = props->OnFolderFocused;
+    }else{
+    	props->spFolders->Hide	();
+    	props->paFolders->Hide	();
+    }
 	return props;
 }
 
@@ -242,42 +220,26 @@ void __fastcall TProperties::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, LPVOID value, PropValue* prop)
+void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
 {
-	THROW2("AddItem");
-/*
-	prop->InitFirst		(value);
-    prop->item			= tvProperties->Items->AddChild(parent,key);
-    prop->item->Tag	    = (int)prop;
-    prop->item->UseStyles=true;
-    TElCellStyle* CS    = prop->item->AddStyle();
-    CS->OwnerProps 		= true;
-    CS->CellType 		= sftUndef;
-    CS->Style 			= ElhsOwnerDraw;
-    prop->item->ColumnText->Add(prop->GetText());
-
-    return prop->item;
-*/
-	return 0;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand)
-{
-	// begin fill mode
-	LockUpdating		();
-   	HideExtBtn			();
-	CancelEditControl	();
-    // clear values
-//    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
-    ClearParams();
+	m_ViewItems		= items;
     tvProperties->Items->Clear();
-    // fill values
-	string128 fld;
-    m_Items					= items;
-	for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
+	for (PropItemIt it=m_ViewItems.begin(); it!=m_ViewItems.end(); it++){
     	PropItem* prop		= *it;
-        prop->item			= FHelper.AppendObject(tvProperties,prop->key); R_ASSERT3(prop->item,"Duplicate properties key found:",prop->key.c_str());
+        AnsiString 	key 	= prop->key;
+	    if (m_Flags.is(plItemFolders)){
+        	if (startup_pref&&startup_pref[0]){
+                AnsiString k	= key;		
+                LPCSTR k0		= k.c_str();
+                LPCSTR k1		= startup_pref;
+                while (k0&&k1&&(k0[0]==k1[0]))	{k0++;k1++;}
+                if ((k0[0]!='\\')&&(k1[0]!=0))	continue;
+                key				= k0+1;
+            }else{
+            	if (1!=_GetItemCount(key.c_str(),'\\')) continue;
+            }
+        }
+        prop->item			= FHelper.AppendObject(tvProperties,key); R_ASSERT3(prop->item,"Duplicate properties key found:",key.c_str());
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
         prop->item->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);
@@ -300,10 +262,57 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand)
         CS->Style 			= ElhsOwnerDraw;
         prop->item->ColumnText->Add(prop->GetText());
     }
+    if (m_Flags.is(plFullExpand)) tvProperties->FullExpand();
+    if (m_Flags.is(plFullSort)){
+        tvProperties->ShowColumns	= false;
+    	tvProperties->Sort			(true);
+        tvProperties->SortMode 		= smAdd;
+        tvProperties->ShowColumns	= true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, bool full_sort)
+{
+	// begin fill mode
+	LockUpdating		();
+   	HideExtBtn			();
+	CancelEditControl	();
+
+    // clear values
+//    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
+    ClearParams();
+
+    // copy values
+    m_Items				= items;
+
+    // folder
+    ListItemsVec		folder_items;
+
+    m_Flags.set			(plFullExpand,	full_expand);
+    m_Flags.set			(plFullSort,	full_sort);
+    
+    if (m_Flags.is(plItemFolders)){
+        for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
+            PropItem* prop		= *it;
+            int cnt 		= _GetItemCount(prop->key.c_str(),'\\');
+            if (cnt>1){	
+                AnsiString 	folder;
+                _ReplaceItem(prop->key.c_str(),cnt-1,"",folder,'\\');
+//                folder.Delete(folder.Length(),1);
+//                ListItem* I	= LHelper.FindItem(folder_items,folder.c_str());	
+//                if (!I) I	= 
+                	LHelper.CreateItem(folder_items,folder.c_str(),folder_items.size());
+            }
+        }
+    }
+
+    // create EL items
+    if (m_Flags.is(plItemFolders))	m_Folders->AssignItems	(folder_items,m_Flags.is(plFullExpand),m_Flags.is(plFullSort));
+    else							FillElItems				(m_Items);
 
     // end fill mode
-    bModified=false;
-    if (full_expand) tvProperties->FullExpand();
+    bModified			= false;
 
     // folder restore
     if (m_Flags.is(plFolderStore)&&!FolderStore.empty()){
@@ -324,6 +333,16 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand)
 	UnlockUpdating	();
 
     SelectItem		(last_selected_item);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::OnFolderFocused(TElTreeItem* item)
+{
+	AnsiString s;
+	FHelper.MakeFullName(item,0,s);
+    LockUpdating	();
+    FillElItems		(m_Items, s.c_str());
+    UnlockUpdating	();
 }
 //---------------------------------------------------------------------------
 
@@ -1688,6 +1707,20 @@ void __fastcall TProperties::tvPropertiesShowLineHint(TObject *Sender,
 //    	HintWindow->Brush->Color= clGray;
 		Text					= prop->GetText();
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::tvPropertiesCompareItems(TObject *Sender,
+      TElTreeItem *Item1, TElTreeItem *Item2, int &res)
+{
+	u32 type1 = (u32)Item1->Data;
+	u32 type2 = (u32)Item2->Data;
+    if (type1==type2){
+        if (Item1->Text<Item2->Text) 		res = -1;
+        else if (Item1->Text>Item2->Text) 	res =  1;
+        else if (Item1->Text==Item2->Text) 	res =  0;
+    }else if (type1==TYPE_FOLDER)	    	res = -1;
+    else if (type2==TYPE_FOLDER)	    	res =  1;
 }
 //---------------------------------------------------------------------------
 

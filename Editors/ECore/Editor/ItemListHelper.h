@@ -9,10 +9,10 @@
 class ECORE_API CListHelper{
 //------------------------------------------------------------------------------
 public:
-    IC ListItem* 		FindItem		(ListItemsVec& items,	LPCSTR key, int type)
+    IC ListItem* 		FindItem		(ListItemsVec& items,	LPCSTR key)
     {
     	for (ListItemsIt it=items.begin(); it!=items.end(); it++)
-        	if (((*it)->type==type)&&((*it)->key==key)) return *it;
+        	if ((*it)->key==key) return *it;
         return 0;
     }
  	bool 				NameAfterEdit	(ListItem* sender, AnsiString value, AnsiString& edit_val);

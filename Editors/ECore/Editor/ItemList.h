@@ -26,7 +26,6 @@ class ECORE_API TItemList: public TForm
 __published:	// IDE-managed Components
 	TElTree *tvItems;
 	TFormStorage 		*fsStorage;
-	TBevel 				*Bevel1;
 	TMxPopupMenu *pmSystem;
 	TMenuItem *ExpandAll1;
 	TMenuItem *N1;

@@ -223,14 +223,14 @@ void __fastcall TfrmChoseItem::FillPS()
 void __fastcall TfrmChoseItem::FillPE()
 {
     form->Caption					= "Select Particle System";
-    for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++)AppendItem((*E)->m_Name);
+    for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++)AppendItem(*(*E)->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillParticles()
 {
     form->Caption					= "Select Particle System";
-    for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++)AppendItem((*E)->m_Name);
-    for (PS::PGDIt G=::Render->PSLibrary.FirstPGD(); G!=::Render->PSLibrary.LastPGD(); G++)AppendItem((*G)->m_Name);
+    for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++)AppendItem(*(*E)->m_Name);
+    for (PS::PGDIt G=::Render->PSLibrary.FirstPGD(); G!=::Render->PSLibrary.LastPGD(); G++)AppendItem(*(*G)->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillTexture()

@@ -6,6 +6,12 @@
 
 #pragma pack(push,1)
 struct STextureParams{
+	enum ETType{
+    	ttImage	= 0,
+        ttCubeMap,
+        ttBumpMap,
+		ttForceU32	= u32(-1)
+	};
 	enum ETFormat{
     	tfDXT1 = 0,
         tfADXT1,
@@ -20,13 +26,18 @@ struct STextureParams{
 		tfNVHU,
 		tfForceU32	= u32(-1)
 	};
-	enum ETType{
-    	ttImage	= 0,
-        ttCubeMap,
-        ttNormalMap,
-        ttDuDvMap,
-		ttForceU32	= u32(-1)
-	};
+    enum ETBumpMode{
+    	tbmAutogen	= 0,
+        tbmFlat,
+        tbmUse,
+		tbmForceU32	= u32(-1)
+    };
+    enum ETMaterial{
+		tmBlinBumpLowSpec_BlinBumpHighSpec 	= 0,
+		tmBlinBumpHighSpec_AnisotropicLow, 
+		tmAnisotropicLow_AnisotropicHigh,
+		tmForceU32	= u32(-1)
+    };
 	enum{
         dMIPFilterBox				= 0,
         dMIPFilterCubic				= 1,
@@ -46,32 +57,34 @@ struct STextureParams{
 		flDitherEachMIPLevel= (1<<9),
 		flGreyScale			= (1<<10),
 
-		flHasDetailTexture	= (1<<23),
+		flDiffuseDetail		= (1<<23),
 		flImplicitLighted	= (1<<24),
 		flHasAlpha			= (1<<25),
+		flBumpDetail		= (1<<26),
+
 		flForceU32			= u32(-1)
 	};
 
     // texture part
-    struct{
-        ETFormat	fmt;
-        Flags32		flags;
-        u32			border_color;
-        u32			fade_color;
-        u32			fade_amount;
-        u32			mip_filter;
-        int			width;
-        int			height;
-        // detail ext
-        string128	detail_name;
-        float		detail_scale;
-        ETType		type;
-    };
-    // object part
-    struct{
-        int			face_count;
-        int			vertex_count;
-    };
+    ETFormat	        fmt;
+    Flags32		        flags;
+    u32			        border_color;
+    u32			        fade_color;
+    u32			        fade_amount;
+    u32			        mip_filter;
+    int			        width;
+    int			        height;
+    // detail ext
+    ref_str		        detail_name;
+    float		        detail_scale;
+    ETType		        type;
+    // material
+    ETMaterial			material;
+    float				material_weight;
+    // bump	
+	float 				bump_virtual_height;
+    ETBumpMode			bump_mode;
+    ref_str		        bump_name;
 
     STextureParams		()
 	{
@@ -81,8 +94,7 @@ struct STextureParams{
         width			= 0;
         height			= 0;
         detail_scale	= 1;
-        face_count		= 0;
-        vertex_count	= 0;
+        bump_virtual_height = 0.05f;
 	}
     IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
     	return flags.is(flHasAlpha);
@@ -104,6 +116,10 @@ struct STextureParams{
 	}
     void Load (IReader& F);
     void Save (IWriter& F);
+#ifdef _EDITOR
+	void __fastcall OnTypeChange	(PropValue* v);
+    void 			FillProp		(PropItemVec& items);
+#endif
 };
 #pragma pack( pop )
 
@@ -119,6 +135,8 @@ extern xr_token	ttype_token[];
 #define THM_CHUNK_TYPE					0x0813
 #define THM_CHUNK_TEXTURE_TYPE			0x0814
 #define THM_CHUNK_DETAIL_EXT			0x0815
+#define THM_CHUNK_MATERIAL				0x0816
+#define THM_CHUNK_BUMP					0x0817
 //----------------------------------------------------
 #define THUMB_WIDTH 	128
 #define THUMB_HEIGHT 	128

@@ -24,6 +24,9 @@
 
 #define TElFString ::TElFString
 
+// refs
+class TItemList;
+
 class ECORE_API TProperties : public TForm
 {
 __published:	// IDE-managed Components
@@ -48,6 +51,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebLightAnimationEditor;
 	TExtBtn *ExtBtn1;
 	TMaskEdit *edText;
+	TPanel *paFolders;
+	TSplitter *spFolders;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);
@@ -78,6 +83,8 @@ __published:	// IDE-managed Components
 	void __fastcall tvPropertiesShowLineHint(TObject *Sender,
           TElTreeItem *Item, TElHeaderSection *Section, TElFString &Text,
           THintWindow *HintWindow, TPoint &MousePos, bool &DoShowHint);
+	void __fastcall tvPropertiesCompareItems(TObject *Sender,
+          TElTreeItem *Item1, TElTreeItem *Item2, int &res);
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
@@ -113,6 +120,9 @@ private:	// User declarations
     void 				HideExtBtn		();
 
     PropItemVec 		m_Items;
+    PropItemVec 		m_ViewItems;
+	void 				FillElItems		(PropItemVec& items, LPCSTR startup_pref=0);
+    
     TOnModifiedEvent 	OnModifiedEvent;
     TOnItemFocused      OnItemFocused;
     TOnCloseEvent		OnCloseEvent;
@@ -125,7 +135,10 @@ private:	// User declarations
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
 public:
 	enum{
-        plFolderStore	= (1<<0)
+        plFolderStore	= (1<<0),
+        plItemFolders	= (1<<1),
+        plFullExpand	= (1<<2),
+        plFullSort		= (1<<3),
     };
 protected:
     Flags32				m_Flags;
@@ -136,6 +149,9 @@ protected:
     };
     DEFINE_MAP(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
     FolderStoreMap		FolderStore;
+
+    TItemList*			m_Folders;
+    void 	__fastcall 	OnFolderFocused			(TElTreeItem* item);
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
 	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore);
@@ -150,15 +166,10 @@ public:		// User declarations
     void __fastcall 	RefreshForm				();
 
     void __fastcall		SelectItem				(const AnsiString& full_name);
-    void __fastcall 	AssignItems				(PropItemVec& values, bool full_expand);
+    void __fastcall 	AssignItems				(PropItemVec& values, bool full_expand, bool full_sort=false);
     void __fastcall 	ResetItems				();
     bool __fastcall 	IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall 	SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
-    void __fastcall 	BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
-    TElTreeItem* __fastcall AddItem				(TElTreeItem* parent, LPCSTR key, LPVOID value, PropValue* prop);
-    void __fastcall 	EndFillMode				(bool bFullExpand=true);
-    TElTreeItem* __fastcall BeginEditMode		(LPCSTR section=0);
-    void __fastcall 	EndEditMode				(TElTreeItem* expand_node=0);
     void __fastcall 	GetColumnWidth			(int& c0, int& c1)
     {
     	c0=tvProperties->HeaderSections->Item[0]->Width;

@@ -1,8 +1,8 @@
 object ItemList: TItemList
   Left = 492
   Top = 236
-  Width = 287
-  Height = 391
+  Width = 320
+  Height = 422
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Item list'
@@ -21,19 +21,11 @@ object ItemList: TItemList
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel1: TBevel
-    Left = 0
-    Top = 0
-    Width = 279
-    Height = 1
-    Align = alTop
-    Shape = bsFrame
-  end
   object tvItems: TElTree
     Left = 0
-    Top = 1
-    Width = 279
-    Height = 346
+    Top = 0
+    Width = 312
+    Height = 378
     Cursor = crDefault
     LeftPosition = 0
     HeaderPopupMenu = pmSystem
@@ -115,11 +107,11 @@ object ItemList: TItemList
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF01000000C4A7BB1B002F0000FFFFFFFF000001010000BB1BC3000000
-      0000000010270000000101004014FF04000000000100656DFFFFFFFF0000014C
-      000000000000000000010000000000007469632020494C5665630909494C466F
-      726D733B0D0A0D0A09766F696420090909094F6E466F726D4672616D65090909
-      0928293B0D0A20202020766F6964205F5F666173060000004974656D73000100
+      F4FFFFFF01000000DCCD0D1000000000FFFFFFFF0000010100006C79C3000000
+      0000000010270000000101784014FF040000000001006C74FFFFFFFF00000169
+      000000000000000000010000000000006F6F6C205573655468656D6573466F72
+      546578742C20756E7369676E6564205468656D652C20696E74205468656D6550
+      6172742C20696E74205468656D65537490000000060000004974656D73000100
       0000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -209,8 +201,8 @@ object ItemList: TItemList
   end
   object paStatus: TPanel
     Left = 0
-    Top = 347
-    Width = 279
+    Top = 378
+    Width = 312
     Height = 17
     Align = alBottom
     Alignment = taLeftJustify
@@ -221,7 +213,7 @@ object ItemList: TItemList
     object Bevel2: TBevel
       Left = 0
       Top = 0
-      Width = 279
+      Width = 312
       Height = 2
       Align = alTop
       Shape = bsTopLine
