@@ -60,19 +60,21 @@ function dialog_mgr:reset( npc, team )
 end
 
 function dialog_mgr:finalize()
-	-- убрать сталкера из списка
-	for i, v in self.a.npcs do
-		if v:id() == self.object:id() then
-			table.remove( self.a.npcs, i )
-			break
+	if self.team then
+		-- убрать сталкера из списка
+		for i, v in self.a.npcs do
+			if v:id() == self.object:id() then
+				table.remove( self.a.npcs, i )
+				break
+			end
 		end
-	end
 
-	self.team = nil
+		self.team = nil
 
-	-- если никого не осталось, сбросить диалог
-	if table.getn( self.a.npcs ) == 0 then
-		self:reset_dialog()
+		-- если никого не осталось, сбросить диалог
+		if table.getn( self.a.npcs ) == 0 then
+			self:reset_dialog()
+		end
 	end
 end
 
