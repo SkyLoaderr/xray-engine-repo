@@ -30,6 +30,10 @@
 #include "PHElement.h"
 #include "PHShell.h"
 #include "PHCollideValidator.h"
+IC		bool	PhOutOfBoundaries			(const Fvector& v)
+{
+	return v.y < phBoundaries.y1;
+}
 CPHShell::~CPHShell				()							
 {
 	if(bActive) Deactivate();
@@ -177,6 +181,9 @@ void CPHShell::PhDataUpdate(dReal step){
 	}
 	if(disable) DisableObject();
 	else		ReanableObject();
+
+	if(PhOutOfBoundaries(mXFORM.c))
+								Disable();
 }
 
 

@@ -118,8 +118,14 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	CPHSkeleton::Spawn(e);
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
+	PKinematics(Visual())->CalculateBones_Invalidate();
+	PKinematics(Visual())->CalculateBones();
 	m_fSaveMaxRPM					= m_max_rpm;
 	fEntityHealth					=co->health;
+
+	if(!g_Alive())					b_exploded=true;
+	else							b_exploded=false;
+									
 	CDamagableItem::RestoreEffect();
 	return							(CScriptEntity::net_Spawn(DC) && R);
 }
@@ -1517,6 +1523,7 @@ void CCar::OnBeforeExplosion()
 void CCar::CarExplode()
 {
 
+	if(b_exploded) return;
 	b_exploded=true;
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
 	//m_damage_particles.PlayExplosion(this);

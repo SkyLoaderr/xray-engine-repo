@@ -81,6 +81,7 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 		source->UnsplitSingle(this);
 		m_flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
 		po->_flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
+		po->source_id				=BI_NONE;
 		return true;
 	}
 	else 

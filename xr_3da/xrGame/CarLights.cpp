@@ -52,6 +52,8 @@ void SCarLight::ParseDefinitions(LPCSTR section)
 	glow_render->set_radius	(ini->r_float(section,"glow_radius"));
 	
 	bone_id	= pKinematics->LL_BoneID(ini->r_string(section,"bone"));
+	glow_render ->set_active(false);
+	light_render->set_active(false);
 	pKinematics->LL_SetBoneVisible(bone_id,FALSE,TRUE);
 
 	//lanim					= LALib.FindItem(ini->r_string(section,"animator"));
@@ -112,6 +114,7 @@ CCarLights::CCarLights()
 void CCarLights::Init(CCar* pcar)
 {
 	m_pcar=pcar;
+	m_lights.clear();
 }
 
 void CCarLights::ParseDefinitions()
