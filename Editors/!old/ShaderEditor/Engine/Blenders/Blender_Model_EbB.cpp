@@ -135,18 +135,20 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
-	LPCSTR	vsname			= 0;
-	LPCSTR	psname			= 0;
-	switch (C.iElement)
+
+	// codepath is the same, only the shaders differ
+	switch(C.iElement) 
 	{
-	case SE_R1_NORMAL_HQ:	
-	case SE_R1_NORMAL_LQ:
-		vsname = psname =	"model_env_lq"; 
-		if (oBlend.value)	C.r_Pass	(vsname,psname,TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
-		else				C.r_Pass	(vsname,psname,TRUE);
-		C.r_Sampler			("s_base",	C.L_textures[0]);
-		C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
-		C.r_End				();
+	case 0: 	// deffer
+		uber_deffer		(C,"model","base",false);
+		break;
+	case CRender::PHASE_SMAP_D:	// smap-direct
+	case CRender::PHASE_SMAP_P:	// smap-point
+	case CRender::PHASE_SMAP_S:	// smap-spot							//. !!!! dumb
+		if (RImplementation.o.HW_smap)	C.r_Pass	("shadow_direct_model","dumb",					FALSE,TRUE,TRUE,FALSE);
+		else							C.r_Pass	("shadow_direct_model","shadow_direct_base",	FALSE);
+		C.r_Sampler		("s_base",		C.L_textures[0]);
+		C.r_End			();
 		break;
 	}
 }
