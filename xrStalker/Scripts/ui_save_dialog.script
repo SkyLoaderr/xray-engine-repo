@@ -61,10 +61,10 @@ function save_dialog:InitControls()
 	local screen          = {width = 1024,height = 768}	
 	local main_rect       = {x = 0,      
 							 y = 0,
-							 width = screen.width,
-							 height = screen.height}	
-	--main_rect.x = (screen.width - main_rect.width)/2
-	--main_rect.y = (screen.height - main_rect.height)/2
+							 width = 800,
+							 height = 600}	
+	main_rect.x = (screen.width - main_rect.width)/2
+	main_rect.y = (screen.height - main_rect.height)/2
 	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
 	local captiontxt_rect = {x = caption_rect.width/2,
 							 y = caption_rect.height/2,
@@ -96,7 +96,7 @@ function save_dialog:InitControls()
 	----- CODE -------
 	
 	-- init self position and size
-	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
+	self:Init(screen_rect.x, screen_rect.y, screen_rect.width, screen_rect.height)
 	
 	-- MAIN FRAME WINDOW		
 	local main_frame = CUIFrameWindow()
