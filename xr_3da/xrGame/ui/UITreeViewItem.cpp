@@ -19,7 +19,7 @@
 
 // Смещение относительно родителя
 const int				subShift					= 1;
-const char * const		= "ui\\ui_pda_over_list";
+const char * const		treeItemBackgroundTexture	= "ui\\ui_pda_over_list";
 // Цвет непрочитанного элемента
 static const u32		unreadColor					= 0xff00ff00;
 
