@@ -1,8 +1,8 @@
 //----------------------------------------------------
-// file: SceneObject.h
+// file: CustomObject.h
 //----------------------------------------------------
-#ifndef _INCDEF_SceneObject_H_
-#define _INCDEF_SceneObject_H_
+#ifndef _INCDEF_CustomObject_H_
+#define _INCDEF_CustomObject_H_
 
 #include "SceneClassList.h"
 
@@ -20,7 +20,7 @@ enum ERenderPriority{
     rpAlphaLast
 };
 
-class SceneObject {
+class CCustomObject {
 protected:
 	EObjClass 		m_ClassID;
 	char 			m_Name[MAX_OBJ_NAME];
@@ -87,7 +87,7 @@ public:
 
 	virtual bool 	Valid			(){return m_Valid;}
 
-					SceneObject		(){
+					CCustomObject	(){
                         m_ClassID 	= OBJCLASS_DUMMY;
                         m_Name[0] 	= 0;
                         m_Selected 	= false;
@@ -97,7 +97,7 @@ public:
                         m_GroupIndex= -1;
                     }
 
-					SceneObject		(SceneObject* source){
+					CCustomObject	(CCustomObject* source){
                         m_ClassID 	= source->m_ClassID;
                         strcpy		(m_Name,source->m_Name);
                         m_Selected 	= false;
@@ -107,13 +107,13 @@ public:
                         m_GroupIndex= -1;
 					}
 
-	virtual 		~SceneObject();
+	virtual 		~CCustomObject();
 };
 
-typedef list<SceneObject*> ObjectList;
+typedef list<CCustomObject*> ObjectList;
 typedef ObjectList::iterator ObjectIt;
 typedef map<EObjClass,ObjectList> ObjectMap;
 typedef ObjectMap::iterator ObjectPairIt;
 
 //----------------------------------------------------
-#endif /* _INCDEF_SceneObject_H_ */
+#endif /* _INCDEF_CustomObject_H_ */

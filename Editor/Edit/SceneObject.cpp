@@ -1,11 +1,11 @@
 //----------------------------------------------------
-// file: SceneObject.cpp
+// file: CustomObject.cpp
 //----------------------------------------------------
 
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "SceneObject.h"
+#include "CustomObject.h"
 #include "ui_main.h"
 #include "scene.h"
 
@@ -14,11 +14,11 @@
 #define SCENEOBJECT_CHUNK_LOCK	 		0xF902
 //----------------------------------------------------
 
-SceneObject::~SceneObject(){
+CCustomObject::~CCustomObject(){
 	OnDestroy();
 }
 
-void SceneObject::Select( BOOL flag ){
+void CCustomObject::Select( BOOL flag ){
     if (m_Visible&&(m_Selected!=flag)){
         m_Selected = flag;
         UI->RedrawScene();
@@ -26,23 +26,23 @@ void SceneObject::Select( BOOL flag ){
     }
 };
 
-void SceneObject::Show( BOOL flag ){
+void CCustomObject::Show( BOOL flag ){
     m_Visible = flag;
     if (!m_Visible) m_Selected = false;
     UI->RedrawScene();
 };
 
-void SceneObject::Lock( BOOL flag ){
+void CCustomObject::Lock( BOOL flag ){
 	m_Locked = flag;
 };
 
-void SceneObject::OnShowHint(AStringVec& dest){
+void CCustomObject::OnShowHint(AStringVec& dest){
     dest.push_back(AnsiString("Class: ")+AnsiString(GetNameByClassID(m_ClassID)));
     dest.push_back(AnsiString("Name:  ")+AnsiString(m_Name));
     dest.push_back(AnsiString("-------"));
 }
 
-bool SceneObject::Load(CStream& F){
+bool CCustomObject::Load(CStream& F){
     R_ASSERT(F.FindChunk(SCENEOBJECT_CHUNK_PARAMS));
 	m_Selected 		= F.Rword();
 	m_Visible  		= F.Rword();
@@ -56,7 +56,7 @@ bool SceneObject::Load(CStream& F){
 
 	return true;
 }
-void SceneObject::Save(CFS_Base& F){
+void CCustomObject::Save(CFS_Base& F){
 	F.open_chunk	(SCENEOBJECT_CHUNK_PARAMS);
 	F.Wword			(m_Selected);
 	F.Wword			(m_Visible);
