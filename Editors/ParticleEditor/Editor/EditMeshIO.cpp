@@ -53,9 +53,12 @@ void CEditableMesh::SaveMesh(IWriter& F){
     F.w				(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 	F.close_chunk  	();
 
-	F.open_chunk	(EMESH_CHUNK_SG);
-    F.w				(&*m_SGs.begin(), m_SGs.size()*sizeof(u32));
-	F.close_chunk  	();
+    if (!m_SGs.empty()){
+    	R_ASSERT		(m_SGs.size()==m_Faces.size());
+        F.open_chunk	(EMESH_CHUNK_SG);
+        F.w				(&*m_SGs.begin(), m_SGs.size()*sizeof(u32));
+        F.close_chunk  	();
+    }
 
 	F.open_chunk	(EMESH_CHUNK_VMREFS);
 	F.w_u32			(m_VMRefs.size());
