@@ -13,17 +13,33 @@
 #include "scene.h"
 #include "sceneobject.h"
 #include "D3DUtils.h"
+#include "GroupObject.h"
 
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
-#define SCENEOBJECT_CHUNK_GROUPINDEX	0xF901
 #define SCENEOBJECT_CHUNK_LOCK	 		0xF902
 #define SCENEOBJECT_CHUNK_TRANSFORM		0xF903
+#define SCENEOBJECT_CHUNK_GROUP			0xF904
 //----------------------------------------------------
 
-CCustomObject::~CCustomObject(){
+CCustomObject::~CCustomObject()
+{
 }
 
-void CCustomObject::OnUpdateTransform(){
+void CCustomObject::SetGroup(CGroupObject* group)
+{
+	if (m_pGroupObject) m_pGroupObject->RemoveObject(this);
+    m_pGroupObject = group;
+}
+
+void CCustomObject::OnDestroy()
+{
+	if (m_pGroupObject){
+		m_pGroupObject->RemoveObject(this);
+    }
+}
+
+void CCustomObject::OnUpdateTransform()
+{
 	m_bUpdateTransform		= FALSE;
     // update transform matrix
 	Fmatrix	mScale,mTranslate,mRotate;
@@ -35,37 +51,39 @@ void CCustomObject::OnUpdateTransform(){
 	FTransform.mulB			(mScale);
 }
 
-void CCustomObject::Select( BOOL flag ){
+void CCustomObject::Select( BOOL flag )
+{
     if (m_bVisible&&(m_bSelected!=flag)){
         m_bSelected = flag;
         UI.RedrawScene();
     }
 };
 
-void CCustomObject::Show( BOOL flag ){
+void CCustomObject::Show( BOOL flag )
+{
     m_bVisible = flag;
     if (!m_bVisible) m_bSelected = false;
     UI.RedrawScene();
 };
 
-void CCustomObject::Lock( BOOL flag ){
+void CCustomObject::Lock( BOOL flag )
+{
 	m_bLocked = flag;
 };
 
-void CCustomObject::OnShowHint(AStringVec& dest){
+void CCustomObject::OnShowHint(AStringVec& dest)
+{
     dest.push_back(AnsiString("Class: ")+AnsiString(GetNameByClassID(ClassID)));
     dest.push_back(AnsiString("Name:  ")+AnsiString(Name));
     dest.push_back(AnsiString("-------"));
 }
 
-bool CCustomObject::Load(CStream& F){
+bool CCustomObject::Load(CStream& F)
+{
     R_ASSERT(F.FindChunk(SCENEOBJECT_CHUNK_PARAMS));
 	m_bSelected 	= F.Rword();
 	m_bVisible   	= F.Rword();
 	F.RstringZ		(FName);
-
-    if(F.FindChunk(SCENEOBJECT_CHUNK_GROUPINDEX))
-		m_iGroupIndex= F.Rdword();
 
 	if(F.FindChunk(SCENEOBJECT_CHUNK_LOCK))
 		m_bLocked	= F.Rword();
@@ -80,15 +98,13 @@ bool CCustomObject::Load(CStream& F){
 
 	return true;
 }
-void CCustomObject::Save(CFS_Base& F){
+
+void CCustomObject::Save(CFS_Base& F)
+{
 	F.open_chunk	(SCENEOBJECT_CHUNK_PARAMS);
 	F.Wword			(m_bSelected);
 	F.Wword			(m_bVisible);
 	F.WstringZ		(FName);
-	F.close_chunk	();
-
-	F.open_chunk	(SCENEOBJECT_CHUNK_GROUPINDEX);
-	F.Wdword		(m_iGroupIndex);
 	F.close_chunk	();
 
 	F.open_chunk	(SCENEOBJECT_CHUNK_LOCK);
@@ -108,9 +124,8 @@ void CCustomObject::OnFrame()
 	if (m_bUpdateTransform) OnUpdateTransform();
 }
 
-static Fvector reminder={0,0,0};
-
-void CCustomObject::Move(Fvector& amount){
+void CCustomObject::Move(Fvector& amount)
+{
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector v=PPosition;
@@ -159,7 +174,8 @@ void CCustomObject::Move(Fvector& amount){
     PPosition = v;
 }
 
-void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up){
+void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
+{
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector v=PPosition;
@@ -179,7 +195,8 @@ void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up){
     PPosition = v;
 }
 
-void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle){
+void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle)
+{
 	R_ASSERT(!Locked());
     UI.UpdateScene();
 
@@ -198,7 +215,8 @@ void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle){
     PRotate		= r;
 }
 
-void CCustomObject::ParentRotate(Fvector& axis, float angle){
+void CCustomObject::ParentRotate(Fvector& axis, float angle)
+{
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector r	= PRotate;
@@ -206,7 +224,8 @@ void CCustomObject::ParentRotate(Fvector& axis, float angle){
     PRotate		= r;
 }
 
-void CCustomObject::LocalRotate(Fvector& axis, float angle){
+void CCustomObject::LocalRotate(Fvector& axis, float angle)
+{
     Fmatrix m;
     Fvector r;
     m.rotation(axis,angle);
@@ -215,7 +234,8 @@ void CCustomObject::LocalRotate(Fvector& axis, float angle){
     PRotate		= r;
 }
 
-void CCustomObject::Scale( Fvector& center, Fvector& amount ){
+void CCustomObject::Scale( Fvector& center, Fvector& amount )
+{
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector p	= PPosition;
@@ -237,7 +257,8 @@ void CCustomObject::Scale( Fvector& center, Fvector& amount ){
     PScale		= s;
 }
 
-void CCustomObject::ParentScale( Fvector& amount ){
+void CCustomObject::LocalScale( Fvector& amount )
+{
 	R_ASSERT(!Locked());
     UI.UpdateScene();
     Fvector s	= PScale;

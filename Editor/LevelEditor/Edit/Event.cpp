@@ -258,9 +258,9 @@ void CEvent::Scale( Fvector& center, Fvector& amount ){
     UI.UpdateScene();
 }
 
-void CEvent::ParentScale( Fvector& amount ){
+void CEvent::LocalScale( Fvector& amount ){
 	R_ASSERT(!Locked());
-	inherited::ParentScale(amount);
+	inherited::LocalScale(amount);
 //	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalScale(amount);
     UI.UpdateScene();
 }

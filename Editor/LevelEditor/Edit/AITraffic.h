@@ -21,6 +21,8 @@ class CAITPoint: public CCustomObject {
 
     void			AppendLink		(CAITPoint* P);
     bool			DeleteLink		(CAITPoint* P);
+
+    typedef CCustomObject inherited;
 public:
 	                CAITPoint		();
 	                CAITPoint   	(char *name);

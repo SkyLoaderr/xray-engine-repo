@@ -74,6 +74,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         hitpoint.z = snapto( hitpoint.z, movesnap() );
         hitpoint.y = 0.f;
     }
+	if (hitnormal) hitnormal->set(0,1,0);
 	return true;
 }
 //----------------------------------------------------

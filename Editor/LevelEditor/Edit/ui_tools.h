@@ -8,7 +8,8 @@ class TUI_Control;
 
 //---------------------------------------------------------------------------
 enum ETarget{
-    etObject=0,
+	etGroup=0,
+    etObject,
     etLight,
     etSound,
     etOccluder,

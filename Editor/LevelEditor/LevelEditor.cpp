@@ -208,6 +208,9 @@ USEOBJ("Intermediate\_math.obj");
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);
 USEUNIT("edit\LightAnimLibrary.cpp");
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
+USEUNIT("edit\GroupObject.cpp");
+USEUNIT("edit\UI_GroupTools.cpp");
+USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

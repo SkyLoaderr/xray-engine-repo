@@ -19,10 +19,12 @@
 #include "event.h"
 #include "PSObject.h"
 #include "DetailObjects.h"
+#include "GroupObject.h"
 //----------------------------------------------------
 
 CCustomObject *NewObjectFromClassID( int _ClassID ){
 	switch( _ClassID ){
+    	case OBJCLASS_GROUP:	return new CGroupObject();
 		case OBJCLASS_SCENEOBJECT: return new CSceneObject();
 		case OBJCLASS_LIGHT:    return new CLight();
 		case OBJCLASS_SOUND:    return new CSound();
@@ -40,6 +42,7 @@ CCustomObject *NewObjectFromClassID( int _ClassID ){
 //----------------------------------------------------
 LPSTR GetNameByClassID(EObjClass cls_id){
     switch(cls_id){
+	case OBJCLASS_GROUP:	return "Group";
     case OBJCLASS_SCENEOBJECT: return "Object";
     case OBJCLASS_LIGHT:    return "Light";
     case OBJCLASS_SOUND:    return "Sound";
@@ -57,6 +60,7 @@ LPSTR GetNameByClassID(EObjClass cls_id){
 }
 bool IsClassID(EObjClass cls_id){
     switch(cls_id){
+	case OBJCLASS_GROUP:	return true;
     case OBJCLASS_SCENEOBJECT: return true;
     case OBJCLASS_LIGHT:    return true;
     case OBJCLASS_SOUND:    return true;
@@ -74,6 +78,7 @@ bool IsClassID(EObjClass cls_id){
 }
 EObjClass ClassIDFromTargetID( int cls_id ){
 	switch( cls_id ){
+	case etGroup:	return OBJCLASS_GROUP;
 	case etObject:  return OBJCLASS_SCENEOBJECT;
 	case etSound:   return OBJCLASS_SOUND;
 	case etLight:   return OBJCLASS_LIGHT;
@@ -91,6 +96,7 @@ EObjClass ClassIDFromTargetID( int cls_id ){
 }
 bool IsObjectListClassID(EObjClass cls_id){
     switch(cls_id){
+	case OBJCLASS_GROUP:	return true;
     case OBJCLASS_SCENEOBJECT: return true;
     case OBJCLASS_LIGHT:    return true;
     case OBJCLASS_SOUND:    return true;

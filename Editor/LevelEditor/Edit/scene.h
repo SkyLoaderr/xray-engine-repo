@@ -106,9 +106,6 @@ protected:
 
 	deque<UndoItem> m_UndoStack;
 	deque<UndoItem> m_RedoStack;
-
-    GroupMap	m_Groups;
-
 protected:
 	CCustomObject* ReadObject		(CStream*);
 
@@ -169,19 +166,6 @@ public:
 	int PasteSelection              ();
 
     void ResetAnimation				();
-    void UpdateGroups				();
-	int  GroupGetEmptyIndex			();
-	int  GroupSelect				(int idx,bool bSelect,bool bClearPrevSel);
-	void GroupCreate				(bool bDisplayErrorMsg);
-	void GroupDestroy				();
-	void GroupSave					();
-	bool GroupAddItems				(int idx, ObjectList& lst);
-	bool GroupAddItem				(int idx, CCustomObject* O, bool bLoadMode=false);
-	void GroupRemove				(int idx);
-	void GroupUpdateBox				(int idx);
-    void UngroupAll					();
-    st_GroupItem& GetGroupItem		(int idx);
-
     void ZoomExtents				(BOOL bSelectedOnly);
 
 	int FrustumPick					(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);

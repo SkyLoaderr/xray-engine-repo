@@ -18,6 +18,7 @@
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 
 //refs
 struct SAnimLightItem;
@@ -72,6 +73,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
+	TFormStorage *fsStorage;
     void __fastcall mcColorMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btApplyClick(TObject *Sender);
@@ -94,6 +96,8 @@ __published:	// IDE-managed Components
 	void __fastcall btCancelClick(TObject *Sender);
 	void __fastcall cbTargetLMClick(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
     list<CCustomObject*>* m_Objects;
     void 			GetObjectsInfo();

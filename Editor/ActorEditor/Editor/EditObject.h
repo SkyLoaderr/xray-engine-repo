@@ -147,7 +147,7 @@ public:
 	Fvector 		t_vPosition;
     Fvector			t_vScale;
     Fvector			t_vRotate;
-
+ 
     bool			bOnModified;
     IC bool			IsModified				(){return bOnModified;}
     IC void 		Modified				(){bOnModified=true;}

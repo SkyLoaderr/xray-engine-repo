@@ -521,4 +521,11 @@ object frmPropertiesLight: TfrmPropertiesLight
     Interval = 10
     Left = 232
   end
+  object fsStorage: TFormStorage
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
+    StoredValues = <>
+    Left = 65528
+    Top = 65528
+  end
 end

@@ -39,7 +39,7 @@ __published:	// IDE-managed Components
 	TLabel *lbEditMode;
 	TExtBtn *sbEditMin;
 	TExtBtn *sbTargetMin;
-	TExtBtn *ebTargetOccluder;
+	TExtBtn *ebTargetGroup;
 	TExtBtn *ebSceneFile;
 	TExtBtn *ebSceneCompile;
 	TExtBtn *ebLibraryEditor;
@@ -48,12 +48,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ebPreferences;
 	TExtBtn *ExtBtn7;
 	TExtBtn *ExtBtn8;
-	TExtBtn *ExtBtn12;
-	TExtBtn *ebIgnoreTarget;
 	TExtBtn *ExtBtn9;
 	TExtBtn *ExtBtn10;
 	TExtBtn *ebRandomAdd;
-	TExtBtn *ebIgnoreGroup;
 	TMxPopupMenu *pmSceneFile;
 	TMenuItem *Clear1;
 	TMenuItem *miOpen;
@@ -71,7 +68,6 @@ __published:	// IDE-managed Components
 	TMxPopupMenu *pmToolsSelection;
 	TMxPopupMenu *pmToolsVisibility;
 	TMxPopupMenu *pmToolsLocking;
-	TMxPopupMenu *pmToolsGrouping;
 	TMenuItem *Cut1;
 	TMenuItem *Copy1;
 	TMenuItem *miPaste;
@@ -93,10 +89,6 @@ __published:	// IDE-managed Components
 	TMenuItem *UnlockAll1;
 	TMenuItem *UnlockSelected1;
 	TMenuItem *UnlockUnselected1;
-	TMenuItem *Create1;
-	TMenuItem *Save2;
-	TMenuItem *Destroy1;
-	TMenuItem *DestroyAll1;
 	TExtBtn *ebTargetPS;
 	TExtBtn *ebImageEditor;
 	TPanel *paSnapList;
@@ -146,6 +138,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Quit1;
 	TExtBtn *ebProperties;
 	TExtBtn *ebLightAnimationEditor;
+	TExtBtn *ebIgnoreMode;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -188,8 +181,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebGroupDestroyAllClick(TObject *Sender);
 	void __fastcall ebMakeLTXClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
-	void __fastcall ExtBtn12MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCompileMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);

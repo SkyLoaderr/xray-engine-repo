@@ -67,7 +67,7 @@ public:
 
     // change position/orientation methods
 	virtual void 	Scale					(Fvector& center, Fvector& amount);
-	virtual void 	ParentScale				(Fvector& amount);
+	virtual void 	LocalScale				(Fvector& amount);
 
     // get orintation/bounding volume methods
 	virtual bool 	GetBox					(Fbox& box);

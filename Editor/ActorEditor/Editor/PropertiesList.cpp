@@ -97,9 +97,13 @@ void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR se
 	tvProperties->IsUpdating = true;
     if (section){
     	TElTreeItem* node = FOLDER::FindFolder(tvProperties,section);
-        if (node) node->Delete();
+        if (node){
+			ClearParams(node);
+        	node->Delete();
+        }
     }else{
 		FOLDER::MakeFullName(tvProperties->Selected,0,last_selected_item);
+        ClearParams();
 	    tvProperties->Items->Clear();
     }
 
@@ -109,20 +113,39 @@ void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR se
 void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
 {
 	iFillMode--;
-    bModified=false;                                                      
+    bModified=false;
 	if (bFullExpand) tvProperties->FullExpand();
     tvProperties->IsUpdating = false;
     tvProperties->Selected = FOLDER::FindItem(tvProperties,last_selected_item.c_str());
 };
+//---------------------------------------------------------------------------
+void TfrmProperties::ClearParams(TElTreeItem* node)
+{
+	if (node){
+    	//S когда будут все итемы удалить у каждого
+    	for (TElTreeItem* item=node; item=item->GetNext(); item++){
+			PropValue* V = (PropValue*)GetItemData(item);
+            if (V){
+	            PropValIt it=find(m_Params.begin(),m_Params.end(),V); VERIFY(it!=m_Params.end());
+    	        if (it){
+					m_Params.erase(it);
+					_DELETE(V);
+                }
+            }
+		}
+    }else{
+	    for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
+    		_DELETE(*it);
+		m_Params.clear();
+    }
+}
 //---------------------------------------------------------------------------
 void __fastcall TfrmProperties::ClearProperties()
 {
 	tvProperties->IsUpdating = true;
     tvProperties->Items->Clear();
     tvProperties->IsUpdating = false;
-    for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
-    	_DELETE(*it);
-	m_Params.clear();
+    ClearParams();
 }
 //---------------------------------------------------------------------------
 
@@ -541,14 +564,21 @@ void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
 void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
-    VectorValue* V = (VectorValue*)item->Data;
     VERIFY(type==PROP_VECTOR);
-    Fvector mn={V->lim_mn,V->lim_mn,V->lim_mn},mx={V->lim_mx,V->lim_mx,V->lim_mx},rs=*V->val;
+
+    VectorValue* V = (VectorValue*)item->Data;
+    Fvector edit_val=*V->val;
+	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
+    Fvector mn={V->lim_mn,V->lim_mn,V->lim_mn},mx={V->lim_mx,V->lim_mx,V->lim_mx};
     POINT pt;
     GetCursorPos(&pt);
-	if (NumericVectorRun(AnsiString(item->Text).c_str(),V->val,V->dec,&rs,&mn,&mx,(int*)&pt.x,(int*)&pt.y)){
-    	item->RedrawItem(true);
-		Modified();
+	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&mn,&mx,(int*)&pt.x,(int*)&pt.y)){
+        if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
+        if (!edit_val.similar(*V->val)){
+	    	*V->val = edit_val;
+			item->RedrawItem(true);
+            Modified();
+        }
     }
 }
 //---------------------------------------------------------------------------

@@ -222,6 +222,7 @@ private:	// User declarations
     TOnModifiedEvent 	OnModifiedEvent;
     TOnItemFocused      OnItemFocused;
     void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
+    void ClearParams(TElTreeItem* node=0);
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
 	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0);

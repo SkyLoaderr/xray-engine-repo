@@ -85,6 +85,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         CloseWidth = 24
         Caption = 'File'
@@ -106,6 +107,7 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ebSceneFileMouseDown
       end
       object ebSceneCompile: TExtBtn
@@ -117,6 +119,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Compile'
         Font.Charset = DEFAULT_CHARSET
@@ -136,6 +139,7 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ebSceneCompileMouseDown
       end
       object ebLibraryEditor: TExtBtn
@@ -147,6 +151,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Library Editor'
         Font.Charset = DEFAULT_CHARSET
@@ -156,6 +161,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebEditLibClick
       end
       object ebObjectList: TExtBtn
@@ -167,6 +173,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Object List'
         Font.Charset = DEFAULT_CHARSET
@@ -176,6 +183,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebObjectListClick
       end
       object ebSceneCommands: TExtBtn
@@ -187,6 +195,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Commands'
         Font.Charset = DEFAULT_CHARSET
@@ -206,6 +215,7 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ebSceneCommandsMouseDown
       end
       object ebPreferences: TExtBtn
@@ -217,6 +227,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Preferences'
         Font.Charset = DEFAULT_CHARSET
@@ -226,6 +237,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebEditorPreferencesClick
       end
       object ebImageEditor: TExtBtn
@@ -237,6 +249,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Image Editor'
         Font.Charset = DEFAULT_CHARSET
@@ -246,6 +259,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebImageEditorClick
       end
       object ebLightAnimationEditor: TExtBtn
@@ -257,6 +271,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Light Anim Editor'
         Font.Charset = DEFAULT_CHARSET
@@ -266,6 +281,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebLightAnimationEditorClick
       end
     end
@@ -273,7 +289,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 147
       Width = 123
-      Height = 161
+      Height = 128
       Align = alTop
       Color = 10528425
       TabOrder = 1
@@ -322,6 +338,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         CloseWidth = 24
         Caption = 'Edit'
@@ -343,6 +360,7 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ExtBtn7MouseDown
       end
       object ExtBtn8: TExtBtn
@@ -354,6 +372,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Selection'
         Font.Charset = DEFAULT_CHARSET
@@ -373,58 +392,8 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ExtBtn8MouseDown
-      end
-      object ExtBtn12: TExtBtn
-        Left = 2
-        Top = 110
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        CloseButton = False
-        Caption = 'Grouping'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Glyph.Data = {
-          DE000000424DDE00000000000000360000002800000007000000070000000100
-          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-          000000000000000000000000FFFFFF0000000000000000000000000000000000
-          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-          0000}
-        Margin = 3
-        ParentFont = False
-        Spacing = 3
-        OnMouseDown = ExtBtn12MouseDown
-      end
-      object ebIgnoreTarget: TExtBtn
-        Left = 2
-        Top = 78
-        Width = 120
-        Height = 15
-        Align = alNone
-        AllowAllUp = True
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        CloseButton = False
-        GroupIndex = 1
-        Caption = 'Ignore Target'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
       end
       object ExtBtn9: TExtBtn
         Left = 2
@@ -435,6 +404,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Locking'
         Font.Charset = DEFAULT_CHARSET
@@ -454,6 +424,7 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ExtBtn9MouseDown
       end
       object ExtBtn10: TExtBtn
@@ -465,6 +436,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         CloseWidth = 24
         Caption = 'Visibility'
@@ -486,11 +458,12 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ExtBtn10MouseDown
       end
       object ebRandomAdd: TExtBtn
         Left = 2
-        Top = 93
+        Top = 78
         Width = 120
         Height = 15
         Align = alNone
@@ -498,6 +471,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 2
         Caption = 'Random Add'
@@ -508,38 +482,19 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebRandomAddClick
-      end
-      object ebIgnoreGroup: TExtBtn
-        Left = 2
-        Top = 127
-        Width = 120
-        Height = 15
-        Align = alNone
-        AllowAllUp = True
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        CloseButton = False
-        GroupIndex = 3
-        Caption = 'Ignore Group'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
       end
       object ebProperties: TExtBtn
         Left = 2
-        Top = 144
+        Top = 112
         Width = 120
         Height = 15
         Align = alNone
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Properties'
         Font.Charset = DEFAULT_CHARSET
@@ -549,12 +504,35 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
+        Transparent = False
         OnClick = ebPropertiesClick
+      end
+      object ebIgnoreMode: TExtBtn
+        Left = 2
+        Top = 95
+        Width = 120
+        Height = 15
+        Align = alNone
+        AllowAllUp = True
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        GroupIndex = 1
+        Caption = 'Ignore Mode'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Margin = 13
+        ParentFont = False
       end
     end
     object paTarget: TPanel
       Left = 1
-      Top = 308
+      Top = 275
       Width = 123
       Height = 199
       Align = alTop
@@ -569,6 +547,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Down = True
@@ -630,6 +609,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '2. Light'
@@ -690,6 +670,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '3. Sound'
@@ -750,6 +731,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '4. Event'
@@ -810,6 +792,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '5. Glow'
@@ -870,6 +853,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '7. Respawn Point'
@@ -930,6 +914,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '8. AI Traffic'
@@ -990,6 +975,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '9. Sector'
@@ -1050,6 +1036,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '0. Portal'
@@ -1137,7 +1124,7 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClickClick
       end
-      object ebTargetOccluder: TExtBtn
+      object ebTargetGroup: TExtBtn
         Left = 2
         Top = 166
         Width = 120
@@ -1146,10 +1133,10 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '^1. Occluder'
-        Enabled = False
+        Caption = '^1. Group'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1207,6 +1194,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '^2. Particle System'
@@ -1267,6 +1255,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Caption = '6. Detail Objects'
@@ -1321,7 +1310,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 507
+      Top = 474
       Width = 123
       Height = 106
       Align = alTop
@@ -1373,6 +1362,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
         Down = True
@@ -1395,6 +1385,7 @@ object fraLeftBar: TfraLeftBar
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
+        BtnColor = 10528425
         CloseButton = False
         Caption = 'Commands'
         Font.Charset = DEFAULT_CHARSET
@@ -1414,6 +1405,7 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
+        Transparent = False
         OnMouseDown = ExtBtn1MouseDown
       end
       object Bevel1: TBevel
@@ -1457,7 +1449,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 5
+    Version = 6
     OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'
@@ -1466,11 +1458,10 @@ object fraLeftBar: TfraLeftBar
       'paScene.Height'
       'paTarget.Tag'
       'paTarget.Height'
-      'ebIgnoreTarget.Down'
-      'ebIgnoreGroup.Down'
       'ebEnableSnapList.Down'
       'paSnapList.Tag'
-      'paSnapList.Height')
+      'paSnapList.Height'
+      'ebIgnoreMode.Down')
     StoredValues = <>
     Left = 65529
     Top = 65526
@@ -1608,7 +1599,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 178
+    Top = 161
     object Cut1: TMenuItem
       Caption = 'Cut'
       OnClick = ebCutClick
@@ -1649,7 +1640,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 194
+    Top = 177
     object Invert1: TMenuItem
       Caption = 'Invert'
       OnClick = ebInvertClick
@@ -1677,7 +1668,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 210
+    Top = 193
     object HideSelected1: TMenuItem
       Caption = 'Hide Selected'
       OnClick = ebHideSelectedClick
@@ -1712,7 +1703,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 226
+    Top = 209
     object LockSelection1: TMenuItem
       Caption = 'Lock Selected'
       OnClick = ebLockSelClick
@@ -1739,38 +1730,6 @@ object fraLeftBar: TfraLeftBar
     object UnlockAll1: TMenuItem
       Caption = 'Unlock All'
       OnClick = ebUnlockAllClick
-    end
-  end
-  object pmToolsGrouping: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    TrackButton = tbLeftButton
-    MarginStartColor = 10921638
-    MarginEndColor = 2763306
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 85
-    Top = 274
-    object Create1: TMenuItem
-      Caption = 'Create'
-      OnClick = ebGroupCreateClick
-    end
-    object Save2: TMenuItem
-      Caption = 'Save Selected'
-      OnClick = ebGroupSaveClick
-    end
-    object Destroy1: TMenuItem
-      Caption = 'Destroy Selected'
-      OnClick = ebGroupDestroyClick
-    end
-    object DestroyAll1: TMenuItem
-      Caption = 'Destroy All'
-      OnClick = ebGroupDestroyAllClick
     end
   end
   object pmSnapListCommand: TMxPopupMenu

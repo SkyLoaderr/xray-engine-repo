@@ -69,7 +69,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift)
 		char namebuffer[MAX_OBJ_NAME];
 		Scene.GenObjectName(parent_tool->objclass, namebuffer);
 		obj = NewObjectFromClassID(parent_tool->objclass);
-        strcpy(obj->Name,namebuffer);
+        obj->Name = namebuffer;
 		obj->MoveTo(p,n);
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);
@@ -107,16 +107,10 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
     if( bBoxSelection ){
         UI.EnableSelectionRect( true );
         UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
-        if(obj){
-	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene.GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
-        	else obj->Select((obj->Selected())?false:true);
-        }
+        if(obj) obj->Select((obj->Selected())?false:true);
         return true;
     } else {
-        if( obj ){
-	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene.GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
-            else obj->Select(obj->Selected()?false:true);
-        }
+        if(obj) obj->Select(obj->Selected()?false:true);
     }
     return false;
 }
@@ -130,7 +124,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
     if (bBoxSelection){
         UI.EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene.FrustumSelect(true,fraLeftBar->ebIgnoreTarget->Down?OBJCLASS_DUMMY:parent_tool->objclass);
+        Scene.FrustumSelect(true,fraLeftBar->ebIgnoreMode->Down?OBJCLASS_DUMMY:parent_tool->objclass);
     }
     return true;
 }
@@ -148,7 +142,6 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
 	    Fvector p,n;
     	if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
             EObjClass cls = Tools.CurrentClassID();
-            bool flt = cls!=OBJCLASS_DUMMY;
             for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
                 ObjectList& lst = (*it).second;
                 if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
@@ -203,7 +196,6 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
 	Fvector amount;
 	if (DefaultMovingProcess(_Shift,amount)){
 		EObjClass cls = Tools.CurrentClassID();
-		bool flt = cls!=OBJCLASS_DUMMY;
         for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
             ObjectList& lst = (*it).second;
             if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
@@ -212,7 +204,7 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
 				    	ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
                         continue;
                     }
-                    if((*_F)->Visible()&&(*_F)->Selected()) if ((flt&&!(*_F)->IsInGroup())||!flt) (*_F)->Move( amount );
+                    if((*_F)->Visible()&&(*_F)->Selected()) (*_F)->Move( amount );
                 }
         }
     }
@@ -250,8 +242,7 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
 
-		bool flt = !fraLeftBar->ebIgnoreTarget->Down;
-        bool grp = !fraLeftBar->ebIgnoreGroup->Down;
+		bool flt = !fraLeftBar->ebIgnoreMode->Down;
         for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
             ObjectList& lst = (*it).second;
             if (!flt||(parent_tool->objclass==(*it).first))
@@ -261,19 +252,10 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
                         continue;
                     }
                     if((*_F)->Visible()&&(*_F)->Selected()){
-						if (grp&&(*_F)->IsInGroup()){
-	                    	if (flt) continue;
-                        	int idx = (*_F)->GetGroupIndex();
-							Scene.GroupUpdateBox(idx);
-                            Fvector C;
-                            Scene.GetGroupItem(idx).box.getcenter(C);
-                            (*_F)->Rotate( C, m_RotateVector, amount );
-                        }else{
-                            if( fraTopBar->ebCSParent->Down ){
-                                (*_F)->ParentRotate( m_RotateVector, amount );
-                            } else {
-                                (*_F)->LocalRotate( m_RotateVector, amount );
-                            }
+                        if( fraTopBar->ebCSParent->Down ){
+                            (*_F)->ParentRotate( m_RotateVector, amount );
+                        } else {
+                            (*_F)->LocalRotate( m_RotateVector, amount );
                         }
                     }
                 }
@@ -312,8 +294,7 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
 	    if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
     }
 
-    bool flt = !fraLeftBar->ebIgnoreTarget->Down;
-	bool grp = !fraLeftBar->ebIgnoreGroup->Down;
+    bool flt = !fraLeftBar->ebIgnoreMode->Down;
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (!flt||(parent_tool->objclass==(*it).first))
@@ -322,21 +303,8 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
                     ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
                     continue;
                 }
-                if((*_F)->Visible()&&(*_F)->Selected()){
-                    if (grp&&(*_F)->IsInGroup()){
-                        int idx = (*_F)->GetGroupIndex();
-                        Scene.GroupUpdateBox(idx);
-                        Fvector C;
-                        Scene.GetGroupItem(idx).box.getcenter(C);
-                        (*_F)->Scale( C, amount );
-                    }else{
-                        if( fraTopBar->ebCSParent->Down ){
-                            (*_F)->ParentScale( amount );
-                        } else {
-                            (*_F)->Scale( UI.pivot(), amount );
-                        }
-                    }
-                }
+                if((*_F)->Visible()&&(*_F)->Selected())
+					(*_F)->LocalScale( amount );
             }
     }
 }

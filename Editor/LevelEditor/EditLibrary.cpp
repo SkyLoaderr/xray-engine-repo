@@ -180,7 +180,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
     TElTreeItem* node = tvObjects->Selected;
 
 	_DELETE(m_Thm);
-    ebMakeThm->Enabled = false;
+    bool mt=false;
     if (node&&FOLDER::IsObject(node)&&UI.ContainEState(esEditLibrary)){
         // change thm
         AnsiString nm,obj_fn,thm_fn;
@@ -204,33 +204,33 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         if (cbPreview->Checked||m_Props->Visible){
         	if (m_Props->IsModified()&&m_pEditObject->GetReference())
             	modif_map.insert(make_pair(m_pEditObject->GetRefName(),0));
-            m_pEditObject->SetReference(nm.c_str());
-            m_pEditObject->UpdateTransform();
-//            ZoomObject();
-		    ebMakeThm->Enabled = true;
+            ChangeReference(nm.c_str());
+		    if (cbPreview->Checked) mt = true;
         }
 
         m_LastSelection = nm;
+    }else{
+		ChangeReference(0);
     }
     if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
     else                        pbImage->Repaint();
     UpdateObjectProperties();
     UI.RedrawScene();
+    ebMakeThm->Enabled = mt;
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 {
     TElTreeItem *node = tvObjects->Selected;
-    ebMakeThm->Enabled = false;
+    bool mt=false;
     if (cbPreview->Checked&&node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-		m_pEditObject->SetReference(name.c_str());
-		m_pEditObject->UpdateTransform();
-	    ebMakeThm->Enabled = true;
-        ZoomObject();
+		ChangeReference(name.c_str());
+        mt = true;
     }
+	ebMakeThm->Enabled = mt;
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -261,8 +261,7 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
     if (node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-		m_pEditObject->SetReference(name.c_str());
-		m_pEditObject->UpdateTransform();
+        ChangeReference(name.c_str());
         UpdateObjectProperties();
         m_Props->ShowProperties();
     }
@@ -320,27 +319,45 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void TfrmEditLibrary::ChangeReference(LPCSTR new_name)
+{
+	// save new position
+	CEditableObject* E=m_pEditObject->GetReference();
+    if (E&&new_name&&(strcmp(E->GetName(),new_name))==0) return;
+    if (E){
+		E->t_vPosition.set	(m_pEditObject->PPosition);
+		E->t_vScale.set		(m_pEditObject->PScale);
+		E->t_vRotate.set	(m_pEditObject->PRotate);
+    }
+    m_pEditObject->SetReference(new_name);
+    // get old position
+	E=m_pEditObject->GetReference();
+    if (E){
+		m_pEditObject->PPosition 	= E->t_vPosition;
+		m_pEditObject->PScale 		= E->t_vScale;
+		m_pEditObject->PRotate 		= E->t_vRotate;
+    }
+    // update transformation
+    m_pEditObject->UpdateTransform();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmEditLibrary::ResetSelected()
 {
-//S
-/*
 	if (form){
-		Lib.RemoveEditObject(form->m_SelectedObject);
-	    TfrmPropertiesObject::HideProperties();
+    	form->m_pEditObject->SetReference(0);
+//	    TfrmPropertiesObject::HideProperties();
     }
-*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLibrary::RefreshSelected()
 {
-//S
-/*
 	if (form){
-		Lib.RemoveEditObject(form->m_SelectedObject);
+//    	form->m_pEditObject->SetReference(0);
+//		Lib.RemoveEditObject(form->m_SelectedObject);
 		form->tvObjectsItemFocused(0);
     }
-*/
 }
 //---------------------------------------------------------------------------
 extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);

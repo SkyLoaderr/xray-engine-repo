@@ -41,6 +41,7 @@ CAITPoint::~CAITPoint(){
 //----------------------------------------------------
 
 void CAITPoint::OnDestroy(){
+	inherited::OnDestroy();
 	// удалить у всех линков себя
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
     	((CAITPoint*)(*o_it))->DeleteLink(this);

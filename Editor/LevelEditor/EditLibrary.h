@@ -71,6 +71,7 @@ private:	// User declarations
     static bool 			bExitResult;
     TfrmPropertiesEObject*  m_Props;
     void					UpdateObjectProperties();
+    void					ChangeReference	(LPCSTR new_name);
 public:		// User declarations
     void __fastcall 		OnModified		();
     __fastcall 				TfrmEditLibrary	(TComponent* Owner);

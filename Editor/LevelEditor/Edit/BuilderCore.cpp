@@ -89,7 +89,7 @@ bool SceneBuilder::UngroupAndUnlockObjects(){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 			UI.ProgressInc();
             if (UI.NeedAbort()) break; // break building
-            (*_F)->Ungroup();
+//S            (*_F)->Ungroup();
             (*_F)->Lock(false);
         }
 	}

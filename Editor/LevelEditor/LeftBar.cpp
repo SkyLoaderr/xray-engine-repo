@@ -22,10 +22,11 @@ TfraLeftBar *fraLeftBar;
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
+	ebTargetGroup->Tag		= etGroup;
     ebTargetObject->Tag     = etObject;
     ebTargetLight->Tag      = etLight;
     ebTargetSound->Tag      = etSound;
-    ebTargetOccluder->Tag   = etOccluder;
+//    ebTargetOccluder->Tag   = etOccluder;
     ebTargetGlow->Tag       = etGlow;
     ebTargetRPoint->Tag     = etRPoint;
     ebTargetAITraffic->Tag  = etAITPoint;
@@ -91,10 +92,11 @@ void TfraLeftBar::ChangeTarget(int tgt){
     TExtBtn* btn=0;
 	//select button from action
     switch(tgt){
+    	case etGroup:		btn=ebTargetGroup;		break;
 	    case etObject:		btn=ebTargetObject; 	break;
 	    case etLight:		btn=ebTargetLight; 		break;
 	    case etSound:		btn=ebTargetSound; 		break;
-	    case etOccluder:	btn=ebTargetOccluder; 	break;
+//	    case etOccluder:	btn=ebTargetOccluder; 	break;
 	    case etGlow:		btn=ebTargetGlow; 		break;
 	    case etRPoint:		btn=ebTargetRPoint; 	break;
 	    case etAITPoint:	btn=ebTargetAITraffic; 	break;
@@ -403,13 +405,6 @@ void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	ShowPPMenu(pmSceneFile,Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ExtBtn12MouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	ShowPPMenu(pmToolsGrouping,Sender);
 }
 //---------------------------------------------------------------------------
 

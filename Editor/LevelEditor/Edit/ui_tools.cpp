@@ -22,6 +22,7 @@
 #include "UI_EventTools.h"
 #include "UI_PSTools.h"
 #include "UI_DOTools.h"
+#include "UI_GroupTools.h"
 
 #include "editlibrary.h"
 
@@ -58,6 +59,7 @@ void TUI_Tools::OnCreate(){
     bNeedChangeAction=false;
     bNeedChangeTarget=false;
 // create tools
+	AddTool			(etGroup,	new TUI_GroupTools	());
     AddTool			(etLight, 	new TUI_LightTools	());
     AddTool			(etObject,	new TUI_ObjectTools	());
     AddTool			(etSound, 	new TUI_SoundTools	());
@@ -254,7 +256,7 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 EObjClass TUI_Tools::CurrentClassID(){
-	return (fraLeftBar->ebIgnoreTarget->Down)?OBJCLASS_DUMMY:GetTargetClassID();
+	return (fraLeftBar->ebIgnoreMode->Down)?OBJCLASS_DUMMY:GetTargetClassID();
 }
 //---------------------------------------------------------------------------
 

@@ -88,36 +88,4 @@ bool __fastcall TUI_ControlObjectAdd::End(TShiftState _Shift)
     return true;
 }
 
-/*
-ax=P;
-ay=H;
-az=B;
-
-cx=cos(ax); // P angle
-cy=cos(ay); // H angle
-cz=cos(az); // B angle
-sx=sin(ax);
-sy=sin(ay);
-sz=sin(az);
-
-u[0]=tmat[0];
-v[0]=tmat[1];
-n[0]=tmat[2];
-u[1]=tmat[3];
-v[1]=tmat[4];
-n[1]=tmat[5];
-u[2]=tmat[6];
-v[2]=tmat[7];
-n[2]=tmat[8];
-
-u[0]=scale->x*(cy*cz+sy*sx*sz);
-v[0]=scale->y*(-cy*sz+sy*sx*cz);
-n[0]=scale->z*(sy*cx);
-u[1]=scale->x*(cx*sz);
-v[1]=scale->y*(cx*cz);
-n[1]=scale->z*(-sx);
-u[2]=scale->x*(-sy*cz+cy*sx*sz);
-v[2]=scale->y*(sy*sz+cy*sx*cz);
-n[2]=scale->z*(cy*cx);
-*/
 

@@ -307,7 +307,7 @@ void COccluder::Scale( Fvector& center, Fvector& amount ){
 	m_vCenter.add( center );
 }
 
-void COccluder::ParentScale( Fvector& amount ){
+void COccluder::LocalScale( Fvector& amount ){
 	R_ASSERT(!Locked());
 	m_vPlaneSize.x+=amount.x;
 	m_vPlaneSize.y+=amount.z;

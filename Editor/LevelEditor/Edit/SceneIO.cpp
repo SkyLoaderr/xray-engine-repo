@@ -304,7 +304,7 @@ bool EScene::Load(char *_FileName){
 	    UI.ProgressEnd();
 
         // update scene groups list
-        UpdateGroups();
+//S        UpdateGroups();
 
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
@@ -412,23 +412,7 @@ bool EScene::LoadSelection( const char *_FileName ){
             obj->Name=buf;
 			AddObject(obj, false);
 			obj->Select(false);
-            // group utils
-            if (obj->IsInGroup()){
-            	int idx = obj->GetGroupIndex();
-				obj->Ungroup();
-                int idx_subst;
-            	if (group_subst.find(idx)!=group_subst.end()){
-    	            idx_subst = group_subst[idx];
-                }else{
-                	idx_subst = GroupGetEmptyIndex();
-                    group_subst[idx] = idx_subst;
-                }
-                obj->Group(idx_subst);
-            }
         }
-        // update scene groups list
-        UpdateGroups();
-
         return true;
     }
 	return false;

@@ -153,7 +153,6 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
     }
     // remove from scene list
     lst.remove( object );
-    if (object->IsInGroup()) m_Groups[object->GetGroupIndex()].objects.remove(object);
     UI.UpdateScene();
 	if (bUndo) UndoSave();
 }
@@ -176,11 +175,12 @@ int EScene::ObjCount(){
 
 int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
 	CFrustum frustum;
+	int count = 0;
     if (!UI.SelectionFrustum(frustum)) return 0;
 
-	if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)) return m_DetailObjects->FrustumSelect(flag);
+	if (classfilter==OBJCLASS_DO) return m_DetailObjects->FrustumSelect(flag);
+	if (classfilter==OBJCLASS_DUMMY) count+=m_DetailObjects->FrustumSelect(flag);
 
-	int count = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
@@ -188,8 +188,6 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
                 if((*_F)->Visible()){
                     if( (*_F)->FrustumPick(frustum) ){
                         (*_F)->Select( flag );
-				        if((*_F)->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down)
-                        	GroupSelect((*_F)->GetGroupIndex(),flag,false);
                         count++;
                     }
                 }
@@ -227,9 +225,9 @@ int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilt
 }
 
 int EScene::SelectObjects( bool flag, EObjClass classfilter ){
-	if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)) return m_DetailObjects->SelectObjects(flag);
-
 	int count = 0;
+	if (classfilter==OBJCLASS_DO) return m_DetailObjects->SelectObjects(flag);
+    if (classfilter==OBJCLASS_DUMMY) count+=m_DetailObjects->SelectObjects(flag);
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -285,12 +283,9 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 }
 
 int EScene::InvertSelection( EObjClass classfilter ){
-    if (classfilter==OBJCLASS_DO)     	return m_DetailObjects->InvertSelection();
-
 	int count = 0;
-    if (classfilter==OBJCLASS_DUMMY){
-		count += m_DetailObjects->InvertSelection();
-    }
+    if (classfilter==OBJCLASS_DO)	return m_DetailObjects->InvertSelection();
+    if (classfilter==OBJCLASS_DUMMY)count+=m_DetailObjects->InvertSelection();
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -375,12 +370,9 @@ int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_lis
 }
 
 int EScene::SelectionCount(bool testflag, EObjClass classfilter){
-    if (classfilter==OBJCLASS_DO)     	return m_DetailObjects->SelectionCount(testflag);
-
 	int count = 0;
-    if (classfilter==OBJCLASS_DUMMY){
-		count += m_DetailObjects->SelectionCount(testflag);
-    }
+    if (classfilter==OBJCLASS_DO)	return m_DetailObjects->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_DUMMY)count+=m_DetailObjects->SelectionCount(testflag);
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -697,7 +689,7 @@ CCustomObject* EScene::GetQueryObject(EObjClass classfilter, int iSel, int iVis,
 
 
 void EScene::ZoomExtents( BOOL bSel ){
-	BOOL bAllCat = fraLeftBar->ebIgnoreTarget->Down;
+	BOOL bAllCat = fraLeftBar->ebIgnoreMode->Down;
 	Fbox BB;
 	Fbox bb;
     BB.set(-5,-5,-5,5,5,5);
@@ -721,177 +713,6 @@ void EScene::ZoomExtents( BOOL bSel ){
 //    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
 }
 //--------------------------------------------------------------------------------------------------
-void EScene::UpdateGroups(){
-	if (m_Groups.size()) m_Groups.clear();
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	if ((*_F)->IsInGroup()) GroupAddItem((*_F)->GetGroupIndex(),*_F,true);
-	}
-}
-//--------------------------------------------------------------------------------------------------
-int EScene::GroupGetEmptyIndex(){
-	int idx = 0;
-	if (m_Groups.size())
-    	while (m_Groups.find(idx)!=m_Groups.end()) idx++;
-    return idx;
-}
-//--------------------------------------------------------------------------------------------------
-bool EScene::GroupAddItem(int idx, CCustomObject* O, bool bLoadMode){
-	if (bLoadMode||O->Group(idx)){
-    	m_Groups[idx].objects.push_back(O);
-        return true;
-    }else{
-        ELog.DlgMsg(mtError,"Object '%s' already in %d group.",O->Name,O->GetGroupIndex());
-        return false;
-    }
-}
-//--------------------------------------------------------------------------------------------------
-bool EScene::GroupAddItems(int idx, ObjectList& lst){
-	bool res;
-	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-    	res = GroupAddItem(idx,*it);
-        if (!res) return false;
-    }
-    return true;
-}
-//--------------------------------------------------------------------------------------------------
-int EScene::GroupSelect(int idx, bool flag, bool bClearPrevSel){
-    int count=0;
-    if (idx<0) return count;
-    if (bClearPrevSel) SelectObjects(false);
-    if (m_Groups.find(idx)!=m_Groups.end()){
-        ObjectList& lst = m_Groups[idx].objects;
-		for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-			(*_F)->Select(flag);
-            count++;
-        }
-    }
-    return count;
-}
-//--------------------------------------------------------------------------------------------------
-void EScene::GroupCreate(bool bMsg){
-	if (fraLeftBar->ebIgnoreGroup->Down){
-		if (bMsg) ELog.DlgMsg(mtError,"Ignore groups checked. Group can't created.");
-    	return;
-	}
-    EObjClass cls = Tools.CurrentClassID();
-	// validate objects
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-        if ((cls==OBJCLASS_DUMMY)||(cls==it->first)){
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if ((*_F)->Visible()&&(*_F)->Selected()&&(*_F)->IsInGroup()){
-                    if (bMsg) ELog.DlgMsg(mtError,"Object '%s' already in group#%d",(*_F)->Name,(*_F)->GetGroupIndex());
-                    return;
-                }
-            }
-        }
-	}
-    // calc group index
-    int idx = GroupGetEmptyIndex();
-    int count=0;
-    // set group
-    for(it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-        if ((cls==OBJCLASS_DUMMY)||(cls==it->first)){
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if((*_F)->Visible()	&& (*_F)->Selected()){
-                    GroupAddItem(idx,*_F);
-                    count++;
-                }
-            }
-        }
-	}
-	if (bMsg) ELog.DlgMsg(mtInformation,"Group#%d successfully created.\nContain %d object(s)",idx,count);
-}
-//--------------------------------------------------------------------------------------------------
-void EScene::GroupDestroy(){
-	if (fraLeftBar->ebIgnoreGroup->Down){
-		ELog.DlgMsg(mtError,"'Ignore groups' checked. Group can't destroy.");
-    	return;
-    }
-    set<int> relevant;
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if ((*_F)->Selected()&&(*_F)->IsInGroup())
-	            relevant.insert((*_F)->GetGroupIndex());
-	}
-    if (!relevant.empty()){
-        for (set<int>::iterator i_it=relevant.begin(); i_it!=relevant.end(); i_it++){
-	    	for(ObjectIt _F = m_Groups[*i_it].objects.begin();_F!=m_Groups[*i_it].objects.end();_F++) (*_F)->Ungroup();
-            m_Groups.erase(*i_it);
-			ELog.DlgMsg(mtInformation,"Group#%d destroyed.",*i_it);
-        }
-    }
-}
-//--------------------------------------------------------------------------------------------------
-void EScene::GroupSave(){
-	if (fraLeftBar->ebIgnoreGroup->Down){
-		ELog.DlgMsg(mtError,"'Ignore groups' checked. Group can't be save.");
-    	return;
-    }
-    set<int> relevant;
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-        for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if ((*_F)->Selected()&&(*_F)->IsInGroup())
-                relevant.insert((*_F)->GetGroupIndex());
-    }
-    if (relevant.empty()){
-		ELog.DlgMsg(mtError,"Select group before save.");
-    	return;
-    }
-    if (relevant.size()>1){
-		ELog.DlgMsg(mtError,"Must selected 1 group only.");
-    	return;
-    }
-	AnsiString fn;
-	if (Engine.FS.GetSaveName(Engine.FS.m_Groups,fn))
-    	SaveSelection(OBJCLASS_DUMMY,fn.c_str());
-}
-//--------------------------------------------------------------------------------------------------
-
-void EScene::GroupUpdateBox(int idx){
-	VERIFY(m_Groups.find(idx)!=m_Groups.end());
-	st_GroupItem& gi = m_Groups[idx];
-    if (gi.dwUpdateFrame==Device.dwFrame) return;
-
-    ObjectList& lst = gi.objects;
-
-    ObjectIt i = lst.begin();
-    for(;i!=lst.end();i++) if( (*i)->GetBox(gi.box) ) break;
-
-    for(;i!=lst.end();i++){
-        Fbox bb;
-        if( (*i)->GetBox(bb) ){
-            gi.box.modify( bb.min );
-            gi.box.modify( bb.max );
-        }
-    }
-    gi.dwUpdateFrame=Device.dwFrame;
-}
-
-st_GroupItem& EScene::GetGroupItem(int idx){
-	VERIFY(m_Groups.find(idx)!=m_Groups.end());
-	return m_Groups[idx];
-}
-
-void EScene::UngroupAll(){
-	int grp_cnt=m_Groups.size();
-    if (grp_cnt){
-        if (m_Groups.size()) m_Groups.clear();
-        for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-            ObjectList& lst = it->second;
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if ((*_F)->IsInGroup()) (*_F)->Ungroup();
-        }
-		ELog.DlgMsg(mtInformation,"'%d' group(s) destroyed.",grp_cnt);
-    }else{
-		ELog.DlgMsg(mtInformation,"Can't find any group in scene.");
-    }
-}
 
 void EScene::ResetAnimation(){
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
@@ -900,6 +721,7 @@ void EScene::ResetAnimation(){
         	(*_F)->ResetAnimation();
 	}
 }
+//--------------------------------------------------------------------------------------------------
 
 int EScene::AddToSnapList(){
     ObjectList lst;
@@ -918,6 +740,7 @@ int EScene::AddToSnapList(){
     }
 	return count;
 }
+//--------------------------------------------------------------------------------------------------
 
 int EScene::SetSnapList(){
 	ClearSnapList();
@@ -932,15 +755,18 @@ int EScene::SetSnapList(){
     UpdateSnapList();
 	return count;
 }
+//--------------------------------------------------------------------------------------------------
 
 void EScene::ClearSnapList(){
     m_SnapObjects.clear();
     UpdateSnapList();
 }
+//--------------------------------------------------------------------------------------------------
 
 void EScene::UpdateSnapList(){
 	if (fraLeftBar) fraLeftBar->UpdateSnapList();
 }
+//--------------------------------------------------------------------------------------------------
 
 void EScene::SynchronizeObjects(){
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
@@ -949,13 +775,19 @@ void EScene::SynchronizeObjects(){
             (*_F)->OnSynchronize();
 	}
 }
+//--------------------------------------------------------------------------------------------------
 
-void EScene::OnShowHint(AStringVec& dest){
+void EScene::OnShowHint(AStringVec& dest)
+{
     CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,true,0);
     if (obj) obj->OnShowHint(dest);
 }
+//--------------------------------------------------------------------------------------------------
 
-ObjectList* EScene::GetSnapList(){
+ObjectList* EScene::GetSnapList()
+{
 	return (fraLeftBar->ebEnableSnapList->Down&&!Scene.m_SnapObjects.empty())?&Scene.m_SnapObjects:0;
 }
+//--------------------------------------------------------------------------------------------------
+
 

@@ -511,8 +511,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
     case COMMAND_GROUP_CREATE:
 		if( !Scene.locked() ){
-	    	Scene.GroupCreate(true);
-			Scene.UndoSave();
+//S	    	Scene.GroupCreate(true);
+//			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -520,8 +520,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    break;
     case COMMAND_GROUP_SAVE:
 		if( !Scene.locked() ){
-	    	Scene.GroupSave();
-			Scene.UndoSave();
+//S	    	Scene.GroupSave();
+//			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -529,8 +529,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
     case COMMAND_GROUP_DESTROY:
 		if( !Scene.locked() ){
-	    	Scene.GroupDestroy();
-			Scene.UndoSave();
+//S	    	Scene.GroupDestroy();
+//			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -538,8 +538,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
     case COMMAND_GROUP_DESTROYALL:
 		if( !Scene.locked() ){
-	    	Scene.UngroupAll();
-			Scene.UndoSave();
+//S	    	Scene.UngroupAll();
+//			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
