@@ -101,8 +101,8 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float dZ		= (Zend-Z)/(maxT-minT);						// incerement in Z / pixel wrt dX
 	
 	// gain access to buffers
-	occTri**	pFrame	= Raster.get_frame();
-	float*		pDepth	= Raster.get_depth();
+	occTri** pFrame	= Raster.get_frame();
+	float*	pDepth	= Raster.get_depth();
 	
 	// left connector
 	int	i_base		= curY*occ_dim0;
