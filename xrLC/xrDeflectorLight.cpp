@@ -292,6 +292,67 @@ DWORD	__stdcall rms_average	(b_texture& lm, DWORD& _r, DWORD& _g, DWORD& _b)
 	return	_count;
 }
 
+BOOL	compress_Zero			(b_texture& lm, DWORD rms)
+{
+	DWORD _r, _g, _b, _count;
+	
+	// Average color
+	_count	= rms_average(lm,_r,_g,_b);
+	
+	if (0==_count)	{
+		Msg("* ERROR: Lightmap not calculated (T:%d)");
+		return FALSE;
+	} else {
+		_r	/= _count;	_g	/= _count;	_b	/= _count;
+	}
+	
+	// Compress if needed
+	if (rms_test(lm,_r,_g,_b,rms))
+	{
+		_FREE	(lm.pSurface);		// release OLD
+		DWORD	c_x			= BORDER*2;
+		DWORD	c_y			= BORDER*2;
+		DWORD   c_size		= c_x*c_y;
+		LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
+		DWORD	c_fill		= RGBA_MAKE	(_r,_g,_b,255);
+		for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
+		
+		lm.pSurface			= compressed;
+		lm.dwHeight			= 0;
+		lm.dwWidth			= 0;
+		return TRUE;
+	}
+	return FALSE;
+}
+BOOL	compress_RMS			(b_texture& lm, DWORD rms)
+{
+	// *** Try to bilinearly filter lightmap down and up
+	DWORD	w=0, h=0;
+	if (lm.dwWidth>=2)	{
+		w = lm.dwWidth/2;
+		if (!rms_test(lm,w,lm.dwHeight,rms))	w=0;
+	}
+	if (lm.dwHeight>=2)	{
+		h = lm.dwHeight/2;
+		if (!rms_test(lm,lm.dwWidth,h,rms))		h=0;
+	}
+	if (w || h)	{
+		if (0==w)	w = lm.dwWidth;
+		if (0==h)	h = lm.dwHeight;
+		Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
+		
+		LPDWORD		pScaled	= LPDWORD(malloc(w*h*4));
+		imf_Process	(pScaled,w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3);
+		_FREE		(lm.pSurface);	
+
+		lm.pSurface	= pScaled;
+		lm.dwWidth	= w;
+		lm.dwHeight	= h;
+		return TRUE;
+	}
+	return FALSE;
+}
+
 VOID CDeflector::Light()
 {
 	HASH	hash;
@@ -311,7 +372,6 @@ VOID CDeflector::Light()
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
-//	Msg("--- %3d/%3d",lm.dwWidth,lm.dwHeight);
 
 	// Filling it with new triangles
 	Fbox bb; bb.invalidate	();
@@ -350,62 +410,10 @@ VOID CDeflector::Light()
 	// Expand LMap with borders
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 
-	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
-	{
-		const DWORD rms		= 4;
-		DWORD _r, _g, _b, _count;
-
-		// Average color
-		_count	= rms_average(lm,_r,_g,_b);
-
-		if (0==_count)	{
-			Msg("* ERROR: Lightmap not calculated (T:%d)",tris.size());
-			return;
-		} else {
-			_r	/= _count;	_g	/= _count;	_b	/= _count;
-		}
-		
-		// Compress if needed
-		if (rms_test(lm,_r,_g,_b,rms))
-		{
-			_FREE	(lm.pSurface);		// release OLD
-			DWORD	c_x			= BORDER*2;
-			DWORD	c_y			= BORDER*2;
-			DWORD   c_size		= c_x*c_y;
-			LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
-			DWORD	c_fill		= RGBA_MAKE	(_r,_g,_b,255);
-			for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
-
-			lm.pSurface			= compressed;
-			lm.dwHeight			= 0;
-			lm.dwWidth			= 0;
-//			Msg("*** %3d/%3d",	lm.dwWidth,lm.dwHeight);
-			return;
-		} else {
-			// *** Try to bilinearly filter lightmap down and up
-			DWORD	w=0, h=0;
-			if (lm.dwWidth>=2)	{
-				w = lm.dwWidth/2;
-				if (!rms_test(lm,w,lm.dwHeight,rms))	w=0;
-			}
-			if (lm.dwHeight>=2)	{
-				h = lm.dwHeight/2;
-				if (!rms_test(lm,lm.dwWidth,h,rms))		h=0;
-			}
-			if (w || h)	{
-				if (0==w)	w = lm.dwWidth;
-				if (0==h)	h = lm.dwHeight;
-				Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
-
-				LPDWORD		pScaled	= LPDWORD(malloc(w*h*4));
-				imf_Process	(pScaled,w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3);
-				_FREE		(lm.pSurface);	
-				lm.pSurface	= pScaled;
-				lm.dwWidth	= w;
-				lm.dwHeight	= h;
-			}
-		}
-	}
+	// Compression
+	const DWORD rms		= 4;
+	if (compress_Zero(lm,rms))	return;		// already with borders
+	else compress_RMS(lm,rms);
 
 	// Expand with borders
 	b_texture		lm_old	= lm;
@@ -423,5 +431,6 @@ VOID CDeflector::Light()
 	ApplyBorders	(lm,252);
 	ApplyBorders	(lm,251);
 	for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-//	Msg("*** %3d/%3d",lm.dwWidth,lm.dwHeight);
+	lm.dwWidth		= lm_old.dwWidth;
+	lm.dwHeight		= lm_old.dwHeight;
 }
