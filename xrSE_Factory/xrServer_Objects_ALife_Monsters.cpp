@@ -1352,49 +1352,49 @@ void CSE_ALifeMonsterZombie::FillProps		(LPCSTR pref, PropItemVec& items)
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CSE_ALifeMonsterBiting
+// CSE_ALifeMonsterBase
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection),CSE_PHSkeleton(caSection)
+CSE_ALifeMonsterBase::CSE_ALifeMonsterBase	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection),CSE_PHSkeleton(caSection)
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
 }
 
-CSE_ALifeMonsterBiting::~CSE_ALifeMonsterBiting()
+CSE_ALifeMonsterBase::~CSE_ALifeMonsterBase()
 {
 }
 
-void CSE_ALifeMonsterBiting::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeMonsterBase::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
 	if(m_wVersion>=68)
 		inherited2::STATE_Read		(tNetPacket,size);
 }
 
-void CSE_ALifeMonsterBiting::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterBase::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeMonsterBiting::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterBase::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeMonsterBiting::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeMonsterBase::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write		(tNetPacket);
 	inherited2::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeMonsterBiting::load(NET_Packet &tNetPacket)
+void CSE_ALifeMonsterBase::load(NET_Packet &tNetPacket)
 {
 	inherited1::load(tNetPacket);
 	inherited2::load(tNetPacket);
 }
 
-void CSE_ALifeMonsterBiting::FillProps	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeMonsterBase::FillProps	(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProps			(pref,values);
 	inherited2::FillProps			(pref,values);

@@ -187,7 +187,7 @@ void CObjectFactory::register_classes	()
 
 	// server entities
 	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat>	>			(CLSID_AI_RAT_GROUP			,"rat_group");
-	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBiting> >		(CLSID_AI_FLESH_GROUP		,"flesh_group");
+	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBase> >		(CLSID_AI_FLESH_GROUP		,"flesh_group");
 	add<CSE_SpawnGroup>											(CLSID_AI_SPAWN_GROUP		,"spawn_group");
 	add<CSE_Event>												(CLSID_EVENT				,"event");
 	add<CSE_ALifeGraphPoint>									(CLSID_AI_GRAPH				,"graph_point");
@@ -197,22 +197,22 @@ void CObjectFactory::register_classes	()
 	ADD(CSpectator				,CSE_Spectator					,CLSID_SPECTATOR			,"spectator");
 
 	ADD(CAI_Rat					,CSE_ALifeMonsterRat			,CLSID_AI_RAT				,"rat");
-	ADD(CAI_Flesh				,CSE_ALifeMonsterBiting			,CLSID_AI_FLESH				,"flesh");
-	ADD(CChimera				,CSE_ALifeMonsterBiting			,CLSID_AI_CHIMERA			,"chimera");
-	ADD(CAI_Dog					,CSE_ALifeMonsterBiting			,CLSID_AI_DOG_RED			,"dog_red");
+	ADD(CAI_Flesh				,CSE_ALifeMonsterBase			,CLSID_AI_FLESH				,"flesh");
+	ADD(CChimera				,CSE_ALifeMonsterBase			,CLSID_AI_CHIMERA			,"chimera");
+	ADD(CAI_Dog					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_RED			,"dog_red");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_SOLDIER			,"soldier");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER			,"stalker");
 	ADD(CAI_Idol				,CSE_ALifeObjectIdol			,CLSID_AI_IDOL				,"idol");
-	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBiting			,CLSID_AI_BLOODSUCKER		,"bloodsucker");
-	ADD(CAI_Boar				,CSE_ALifeMonsterBiting			,CLSID_AI_BOAR				,"boar");
-	ADD(CAI_PseudoDog			,CSE_ALifeMonsterBiting			,CLSID_AI_DOG_BLACK			,"dog_black");
-	ADD(CBurer					,CSE_ALifeMonsterBiting			,CLSID_AI_BURER				,"burer");
-	ADD(CPseudoGigant			,CSE_ALifeMonsterBiting			,CLSID_AI_GIANT				,"pseudo_gigant");
-	ADD(CController				,CSE_ALifeMonsterBiting			,CLSID_AI_CONTROLLER		,"controller");
-	ADD(CPoltergeist			,CSE_ALifeMonsterBiting			,CLSID_AI_PHANTOM			,"poltergeist");
-	ADD(CZombie					,CSE_ALifeMonsterBiting			,CLSID_AI_ZOMBIE			,"zombie");
-	ADD(CFracture				,CSE_ALifeMonsterBiting			,CLSID_AI_FRACTURE			,"fracture");
-	ADD(CSnork					,CSE_ALifeMonsterBiting			,CLSID_AI_SNORK				,"snork");
+	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBase			,CLSID_AI_BLOODSUCKER		,"bloodsucker");
+	ADD(CAI_Boar				,CSE_ALifeMonsterBase			,CLSID_AI_BOAR				,"boar");
+	ADD(CAI_PseudoDog			,CSE_ALifeMonsterBase			,CLSID_AI_DOG_BLACK			,"dog_black");
+	ADD(CBurer					,CSE_ALifeMonsterBase			,CLSID_AI_BURER				,"burer");
+	ADD(CPseudoGigant			,CSE_ALifeMonsterBase			,CLSID_AI_GIANT				,"pseudo_gigant");
+	ADD(CController				,CSE_ALifeMonsterBase			,CLSID_AI_CONTROLLER		,"controller");
+	ADD(CPoltergeist			,CSE_ALifeMonsterBase			,CLSID_AI_PHANTOM			,"poltergeist");
+	ADD(CZombie					,CSE_ALifeMonsterBase			,CLSID_AI_ZOMBIE			,"zombie");
+	ADD(CFracture				,CSE_ALifeMonsterBase			,CLSID_AI_FRACTURE			,"fracture");
+	ADD(CSnork					,CSE_ALifeMonsterBase			,CLSID_AI_SNORK				,"snork");
 
 	// Trader
 	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER			,"trader");

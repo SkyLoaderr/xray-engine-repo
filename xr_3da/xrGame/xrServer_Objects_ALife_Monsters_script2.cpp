@@ -37,12 +37,12 @@ void CSE_ALifeMonsterZombie::script_register(lua_State *L)
 	];
 }
 
-void CSE_ALifeMonsterBiting::script_register(lua_State *L)
+void CSE_ALifeMonsterBase::script_register(lua_State *L)
 {
 	module(L)[
 		luabind_class_monster2(
-			CSE_ALifeMonsterBiting,
-			"cse_alife_monster_biting",
+			CSE_ALifeMonsterBase,
+			"cse_alife_monster_base",
 			CSE_ALifeMonsterAbstract,
 			CSE_PHSkeleton
 		)

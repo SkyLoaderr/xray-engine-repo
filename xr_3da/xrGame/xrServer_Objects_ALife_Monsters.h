@@ -305,13 +305,13 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterZombie)
 #define script_type_list save_type_list(CSE_ALifeMonsterZombie)
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract,CSE_PHSkeleton)
-									CSE_ALifeMonsterBiting	(LPCSTR caSection);				// constructor for variable initialization
-	virtual							~CSE_ALifeMonsterBiting	();
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterBase,CSE_ALifeMonsterAbstract,CSE_PHSkeleton)
+									CSE_ALifeMonsterBase	(LPCSTR caSection);				// constructor for variable initialization
+	virtual							~CSE_ALifeMonsterBase	();
 	virtual	void					load					(NET_Packet &tNetPacket);
 SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_ALifeMonsterBiting)
-#define script_type_list save_type_list(CSE_ALifeMonsterBiting)
+add_to_type_list(CSE_ALifeMonsterBase)
+#define script_type_list save_type_list(CSE_ALifeMonsterBase)
 
 //-------------------------------
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
