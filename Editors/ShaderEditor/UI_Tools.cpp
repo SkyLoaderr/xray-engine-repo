@@ -9,6 +9,7 @@
 #include "leftbar.h"
 #include "PropertiesList.h"
 #include "Blender.h"
+#include "GameMtlLib.h"
 
 //------------------------------------------------------------------------------
 CShaderTools Tools;
@@ -61,8 +62,8 @@ void CShaderTools::Modified()
 bool CShaderTools::OnCreate()
 {
     // create props
-    m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paShaderProps,alClient);
-    m_PreviewProps  = TProperties::CreateForm("",fraLeftBar->paPreviewProps,alClient);
+    m_ItemProps 	= TProperties::CreateForm("Item Properties",	fraLeftBar->paShaderProps,	alClient);
+    m_PreviewProps  = TProperties::CreateForm("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 
 	// shader test locking
 	AnsiString sh_fn;
@@ -74,7 +75,7 @@ bool CShaderTools::OnCreate()
 	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)) return false;
 	// material test locking
 	AnsiString gm_fn;
-    FS.update_path		(gm_fn,_game_data_,"gamemtl.xr");
+    FS.update_path		(gm_fn,_game_data_,GAMEMTL_FILENAME);
 	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)) return false;
 	//
     Device.seqDevCreate.Add(this);
@@ -101,7 +102,7 @@ void CShaderTools::OnDestroy()
 	// unlock
     EFS.UnlockFile(_game_data_,"shaders.xr");
     EFS.UnlockFile(_game_data_,"shaders_xrlc.xr");
-    EFS.UnlockFile(_game_data_,"gamemtl.xr");
+    EFS.UnlockFile(_game_data_,GAMEMTL_FILENAME);
 	//
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);

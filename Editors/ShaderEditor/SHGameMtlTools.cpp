@@ -57,25 +57,18 @@ void CSHGameMtlTools::FillItemList()
     View()->IsUpdating = true;
 	ViewClearItemList();
     for (GameMtlIt m_it=GMLib.FirstMaterial(); m_it!=GMLib.LastMaterial(); m_it++)
-        ViewAddItem((*m_it)->name);
+        ViewAddItem(*(*m_it)->m_Name);
     View()->IsUpdating = false;
 }
 
 void CSHGameMtlTools::Load()
 {
-	AnsiString fn;
-    FS.update_path		(fn,_game_data_,"gamemtl.xr");
-
     m_bLockUpdate		= TRUE;
 
-    if (FS.exist(fn.c_str())){
-    	GMLib.Unload	();
-    	GMLib.Load		(fn.c_str());
-        FillItemList	();
-        ResetCurrentItem();
-    }else{
-    	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
-    }
+    GMLib.Unload	();
+    GMLib.Load		();
+    FillItemList	();
+    ResetCurrentItem();
 
 	m_bLockUpdate		= FALSE;
 }
@@ -88,14 +81,11 @@ void CSHGameMtlTools::Save()
     m_bLockUpdate		= TRUE;
 
     // save
-	AnsiString fn;
-    FS.update_path		(fn,_game_data_,"gamemtl.xr");
-    EFS.UnlockFile		(0,fn.c_str(),false);
-    // backup file
-    EFS.BackupFile		(_game_data_,"gamemtl.xr");
-    // save new file
-    GMLib.Save			(fn.c_str());
-    EFS.LockFile		(0,fn.c_str(),false);
+    EFS.UnlockFile		(_game_data_,GAMEMTL_FILENAME,false);
+    EFS.BackupFile		(_game_data_,GAMEMTL_FILENAME);
+    GMLib.Save			();
+    EFS.LockFile		(_game_data_,GAMEMTL_FILENAME,false);
+    
 	m_bLockUpdate		= FALSE;
 	SetCurrentItem		(name.c_str());
 
@@ -125,11 +115,11 @@ LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     string64 new_name;
     GenerateItemName	(new_name,folder_name,parent_name);
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
-    strcpy				(S->name,new_name);
-	ViewAddItem			(S->name);
-	SetCurrentItem		(S->name);
+    S->m_Name			= new_name;
+	ViewAddItem			(*S->m_Name);
+	SetCurrentItem		(*S->m_Name);
 	Modified			();
-    return S->name;
+    return *S->m_Name;
 }
 
 void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR ren_part, int level)
@@ -143,7 +133,7 @@ void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR ren_part, int leve
 void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 {
 	SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
-    strcpy(S->name,new_full_name);
+    S->m_Name		= new_full_name;
 	if (S==m_Mtl)	UpdateProperties();
 
     // нужно переинициализировать лист пар
@@ -186,16 +176,8 @@ void __fastcall CSHGameMtlTools::OnMaterialNameChange(PropValue* sender)
 void CSHGameMtlTools::UpdateProperties()
 {
 	PropItemVec items;
-    if (m_Mtl){ 
-    	m_Mtl->FillProp			(items);
-        PropItem* I 			= PHelper.FindItem(items,"Name",PROP_TEXT);			R_ASSERT(I);
-		PropValue* P			= I->GetFrontValue();                               R_ASSERT(P);
-        P->OnChangeEvent		= OnMaterialNameChange;
-    	I->OnAfterEditEvent 	= PHelper.NameAfterEdit_TI;
-        I->OnBeforeEditEvent	= PHelper.NameBeforeEdit;
-	    I->OnDrawTextEvent		= PHelper.NameDraw;
-    	I->tag					= (int)FHelper.FindObject(View(),m_Mtl->name); 		R_ASSERT(I->tag);
-    }
+    if (m_Mtl)
+    	m_Mtl->FillProp	(items,FHelper.FindObject(View(),*m_Mtl->m_Name));
     Ext.m_ItemProps->AssignItems		(items,true);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }

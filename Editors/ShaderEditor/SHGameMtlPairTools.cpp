@@ -67,19 +67,12 @@ void CSHGameMtlPairTools::FillItemList()
 
 void CSHGameMtlPairTools::Load()
 {
-	AnsiString fn;
-    FS.update_path		(fn,_game_data_,"gamemtl.xr");
-
     m_bLockUpdate		= TRUE;
 
-    if (FS.exist(fn.c_str())){
-    	GMLib.Unload	();
-    	GMLib.Load		(fn.c_str());
-        FillItemList	();
-        ResetCurrentItem();
-    }else{
-    	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
-    }
+    GMLib.Unload		();
+    GMLib.Load			();
+    FillItemList		();
+    ResetCurrentItem	();
 
     m_bLockUpdate		= FALSE;
 }
@@ -93,14 +86,11 @@ void CSHGameMtlPairTools::Save()
     m_bLockUpdate		= TRUE;
 
     // save
-	AnsiString fn;
-    FS.update_path		(fn,_game_data_,"gamemtl.xr");
-    EFS.UnlockFile		(0,fn.c_str(),false);
-    // backup file
-    EFS.BackupFile		(_game_data_,"gamemtl.xr");
-    // save new file    
-    GMLib.Save			(fn.c_str());
-    EFS.LockFile		(0,fn.c_str(),false);
+    EFS.UnlockFile		(_game_data_,GAMEMTL_FILENAME,false);
+    EFS.BackupFile		(_game_data_,GAMEMTL_FILENAME);
+    GMLib.Save			();
+    EFS.LockFile		(_game_data_,GAMEMTL_FILENAME,false);
+    
     m_bLockUpdate		= FALSE;
 	SetCurrentItem		(name.c_str());
 
@@ -130,10 +120,21 @@ void CSHGameMtlPairTools::ApplyChanges(bool bForced)
 
 LPCSTR CSHGameMtlPairTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
-    LPCSTR M=0;
-    int cnt	= TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M,2);
-    if (2==cnt){
-    	int mtl0,mtl1;
+    LPCSTR M0=0,M1=0;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M0,1)){
+	    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M1,1)){
+        	int mtl0			= GMLib.GetMaterialID	(M0);
+        	int mtl1			= GMLib.GetMaterialID	(M1);
+	        SGameMtlPair* parent= GMLib.GetMaterialPair(parent_name);
+			SGameMtlPair* S 	= GMLib.AppendMaterialPair(mtl0,mtl1,parent);
+	        AnsiString nm		= GMLib.MtlPairToName(S->GetMtl0(),S->GetMtl1());
+		    ViewAddItem			(nm.c_str());
+            SetCurrentItem		(nm.c_str());
+            Modified			();
+	        return nm.c_str();
+        }
+    }
+/*    
     	GMLib.MtlNameToMtlPair	(M,mtl0,mtl1);
         SGameMtlPair* parent	= GMLib.GetMaterialPair(parent_name);
 		SGameMtlPair* S 		= GMLib.AppendMaterialPair(mtl0,mtl1,parent);
@@ -145,6 +146,7 @@ LPCSTR CSHGameMtlPairTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     }else{
     	if (1==cnt) ELog.DlgMsg(mtError,"Select 2 material.");
     }
+*/
     return 0;              
 }
 //---------------------------------------------------------------------------

@@ -11,12 +11,15 @@
 //------------------------------------------------------------------------------
 // material routines
 //------------------------------------------------------------------------------
-void SGameMtl::FillProp		(PropItemVec& items)
+void SGameMtl::FillProp		(PropItemVec& items, TElTreeItem* owner)
 {
-    PHelper.CreateText		(items,	"Name",					name,	sizeof(name));
+    PHelper.CreateRName_TI	(items,	"Name",					&m_Name, owner);
+    PHelper.CreateRText		(items,	"Desc",					&m_Desc);
 	// flags
+	PHelper.CreateFlag32	(items,	"Flags\\Dynamic",		&Flags,	flDynamic);
+	PHelper.CreateFlag32	(items,	"Flags\\Passable",		&Flags,	flPassable);
     PHelper.CreateFlag32	(items,	"Flags\\Breakable",		&Flags,	flBreakable);
-    PHelper.CreateFlag32	(items,	"Flags\\Shootable",		&Flags,	flShootable);
+//.    PHelper.CreateFlag32	(items,	"Flags\\Shootable",		&Flags,	flShootable);
     PHelper.CreateFlag32	(items,	"Flags\\Bounceable",	&Flags,	flBounceable);
     PHelper.CreateFlag32	(items,	"Flags\\Skidmark",		&Flags,	flSkidmark);
     PHelper.CreateFlag32	(items,	"Flags\\Bloodmark",		&Flags,	flBloodmark);
@@ -33,6 +36,7 @@ void SGameMtl::FillProp		(PropItemVec& items)
     PHelper.CreateFloat		(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
     PHelper.CreateFloat		(items,	"Factors\\Transparency",	&fVisTransparencyFactor);
     PHelper.CreateFloat		(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
+    PHelper.CreateFloat		(items,	"Factors\\Flotation",		&fFlotationFactor);
 }
 SGameMtl* CGameMtlLibrary::AppendMaterial(SGameMtl* parent)
 {
@@ -66,13 +70,11 @@ void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
 {
 	bool bChecked = sender->Owner()->m_Flags.is(PropItem::flCBChecked);
     u32 mask=0;
-    if (sender==propFlotation)			mask = flFlotation;
-    else if (sender==propBreakingSounds)mask = flBreakingSounds;
-    else if (sender==propStepSounds)	mask = flStepSounds;
-    else if (sender==propCollideSounds)	mask = flCollideSounds;
-    else if (sender==propHitSounds)		mask = flHitSounds;
-    else if (sender==propHitParticles)	mask = flHitParticles;
-    else if (sender==propHitMarks)		mask = flHitMarks;
+    if (sender==propBreakingSounds)			mask = flBreakingSounds;
+    else if (sender==propStepSounds)		mask = flStepSounds;
+    else if (sender==propCollideSounds)		mask = flCollideSounds;
+    else if (sender==propCollideParticles)	mask = flCollideParticles;
+    else if (sender==propCollideMarks)		mask = flCollideMarks;
     else THROW;
 
     OwnProps.set		(mask,bChecked);
@@ -106,59 +108,48 @@ void SGameMtlPair::FillProp(PropItemVec& items)
         PHelper.CreateCaption(items,"Parent", m_Owner->MtlPairToName((*parents.begin())->GetMtl0(),(*parents.begin())->GetMtl1()));
     }
     
-	propFlotation		= PHelper.CreateFloat		(items,	"Flotation",		&fFlotation,	0.f,1.f,0.01f,2);
 	propBreakingSounds	= PHelper.CreateASoundSrc	(items,	"Braking Sounds",	&BreakingSounds);
 	propStepSounds		= PHelper.CreateASoundSrc	(items,	"Step Sounds",		&StepSounds);
 	propCollideSounds	= PHelper.CreateASoundSrc	(items,	"Collide Sounds",	&CollideSounds);
-	propHitSounds		= PHelper.CreateASoundSrc	(items,	"Hit Sounds",		&HitSounds);
-	propHitParticles	= PHelper.CreateALibPS		(items,	"Hit Particles",	&HitParticles);
-	propHitMarks		= PHelper.CreateATexture	(items,	"Hit Marks",		&HitMarks);
+	propCollideParticles= PHelper.CreateALibPS		(items,	"Collide Particles",&CollideParticles);
+	propCollideMarks	= PHelper.CreateATexture	(items,	"Collide Marks",	&CollideMarks);
 
-    propFlotation->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flFlotation));
-    propBreakingSounds->Owner()->m_Flags.set(SetMask(show_CB,OwnProps,flBreakingSounds));
-    propStepSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flStepSounds));
-    propCollideSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flCollideSounds));
-    propHitSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flHitSounds));
-    propHitParticles->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flHitParticles));
-    propHitMarks->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flHitMarks));
+    propBreakingSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flBreakingSounds));
+    propStepSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flStepSounds));
+    propCollideSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flCollideSounds));
+    propCollideParticles->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flCollideParticles));
+    propCollideMarks->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flCollideMarks));
 
-    propFlotation->OnChangeEvent			= OnChange;
-    propBreakingSounds->OnChangeEvent		= OnChange;
-    propStepSounds->OnChangeEvent			= OnChange;
-    propCollideSounds->OnChangeEvent		= OnChange;
-    propHitSounds->OnChangeEvent			= OnChange;
-    propHitParticles->OnChangeEvent			= OnChange;
-    propHitMarks->OnChangeEvent				= OnChange;
+    propBreakingSounds->OnChangeEvent			= OnChange;
+    propStepSounds->OnChangeEvent				= OnChange;
+    propCollideSounds->OnChangeEvent			= OnChange;
+    propCollideParticles->OnChangeEvent			= OnChange;
+    propCollideMarks->OnChangeEvent				= OnChange;
 
-    propBreakingSounds->Owner()->subitem= GAMEMTL_SUBITEM_COUNT;
-    propStepSounds->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
-    propCollideSounds->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
-    propHitSounds->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
-    propHitParticles->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
-    propHitMarks->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
+    propBreakingSounds->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
+    propStepSounds->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
+    propCollideSounds->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
+    propCollideParticles->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
+    propCollideMarks->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
     
     if (show_CB){
 		SGameMtlPair* O; 
-    	if (O=GetParentValueObj(this,parents,flFlotation)) 		fFlotation		= O->fFlotation;
-    	if (O=GetParentValueObj(this,parents,flBreakingSounds))	BreakingSounds	= O->BreakingSounds;
-    	if (O=GetParentValueObj(this,parents,flStepSounds)) 	StepSounds		= O->StepSounds;
-    	if (O=GetParentValueObj(this,parents,flCollideSounds)) 	CollideSounds	= O->CollideSounds;
-    	if (O=GetParentValueObj(this,parents,flHitSounds)) 		HitSounds		= O->HitSounds;
-    	if (O=GetParentValueObj(this,parents,flHitParticles)) 	HitParticles	= O->HitParticles;
-    	if (O=GetParentValueObj(this,parents,flHitMarks)) 		HitMarks		= O->HitMarks;
+    	if (0!=(O=GetParentValueObj(this,parents,flBreakingSounds)))	BreakingSounds	= O->BreakingSounds;
+    	if (0!=(O=GetParentValueObj(this,parents,flStepSounds))) 		StepSounds		= O->StepSounds;
+    	if (0!=(O=GetParentValueObj(this,parents,flCollideSounds))) 	CollideSounds	= O->CollideSounds;
+    	if (0!=(O=GetParentValueObj(this,parents,flCollideParticles))) 	CollideParticles= O->CollideParticles;
+    	if (0!=(O=GetParentValueObj(this,parents,flCollideMarks))) 		CollideMarks	= O->CollideMarks;
     }
 }
 
 void SGameMtlPair::TransferFromParent(SGameMtlPair* parent)
 {
     R_ASSERT(parent);
-    if (!OwnProps.is(flFlotation))		fFlotation 		= parent->fFlotation;
-    if (!OwnProps.is(flStepSounds))		BreakingSounds  = parent->BreakingSounds;
-    if (!OwnProps.is(flBreakingSounds))	StepSounds		= parent->StepSounds;
-    if (!OwnProps.is(flCollideSounds))	CollideSounds	= parent->CollideSounds;
-    if (!OwnProps.is(flHitSounds))		HitSounds		= parent->HitSounds;
-    if (!OwnProps.is(flHitParticles))	HitParticles	= parent->HitParticles;
-    if (!OwnProps.is(flHitMarks))		HitMarks		= parent->HitMarks;
+    if (!OwnProps.is(flStepSounds))			BreakingSounds  = parent->BreakingSounds;
+    if (!OwnProps.is(flBreakingSounds))		StepSounds		= parent->StepSounds;
+    if (!OwnProps.is(flCollideSounds))		CollideSounds	= parent->CollideSounds;
+    if (!OwnProps.is(flCollideParticles))	CollideParticles= parent->CollideParticles;
+    if (!OwnProps.is(flCollideMarks))		CollideMarks	= parent->CollideMarks;
 }
 
 //------------------------------------------------------------------------------
@@ -169,7 +160,7 @@ LPCSTR CGameMtlLibrary::MtlPairToName		(int mtl0, int mtl1)
     static string128 buf;
     SGameMtl* M0	= GetMaterialByID(mtl0);	R_ASSERT(M0);
     SGameMtl* M1	= GetMaterialByID(mtl1);	R_ASSERT(M1);
-    sprintf			(buf,"%s # %s",M0->name,M1->name);
+    sprintf			(buf,"%s # %s",*M0->m_Name,*M1->m_Name);
     _ChangeSymbol	(buf,'\\','/');
     return buf;
 }
@@ -290,11 +281,19 @@ SGameMtlPair* CGameMtlLibrary::GetMaterialPair(LPCSTR name)
 //------------------------------------------------------------------------------
 void SGameMtl::Save(IWriter& fs)
 {
+	Flags.set				(flSlowDown,	fis_zero(fFlotationFactor-1.f,EPS_L));
+	Flags.set				(flShootable,	fis_zero(fShootFactor,EPS_L));
+	Flags.set				(flTransparent,	fis_zero(fVisTransparencyFactor,EPS_L));
+
 	fs.open_chunk			(GAMEMTL_CHUNK_MAIN);
 	fs.w_u32				(ID);
-	fs.w_stringZ				(name);
+	fs.w_stringZ			(*m_Name);
     fs.close_chunk			();
 
+	fs.open_chunk			(GAMEMTL_CHUNK_DESC);
+    fs.w_stringZ			(*m_Desc?*m_Desc:"");
+    fs.close_chunk			();
+    
 	fs.open_chunk			(GAMEMTL_CHUNK_FLAGS);
     fs.w_u32				(Flags.get());
     fs.close_chunk			();
@@ -313,6 +312,10 @@ void SGameMtl::Save(IWriter& fs)
     fs.w_float				(fVisTransparencyFactor);
     fs.w_float				(fSndOcclusionFactor);
     fs.close_chunk			();
+
+	fs.open_chunk			(GAMEMTL_CHUNK_FLOTATION);
+    fs.w_float				(fFlotationFactor);
+    fs.close_chunk			();
 }
 
 void SGameMtlPair::Load(IReader& fs)
@@ -326,9 +329,6 @@ void SGameMtlPair::Load(IReader& fs)
     ID_parent			= fs.r_u32();
     OwnProps.set		(fs.r_u32());
 
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_FLOTATION));
-    fFlotation			= fs.r_float();
-
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
     fs.r_stringZ			(buf); 	BreakingSounds	= buf;
     
@@ -337,11 +337,8 @@ void SGameMtlPair::Load(IReader& fs)
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
     fs.r_stringZ			(buf);	CollideSounds	= buf;
-    
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_HIT));
-    fs.r_stringZ			(buf);	HitSounds		= buf;
-    fs.r_stringZ			(buf);	HitParticles	= buf;
-    fs.r_stringZ			(buf);	HitMarks		= buf;
+    fs.r_stringZ			(buf);	CollideParticles= buf;
+    fs.r_stringZ			(buf);	CollideMarks	= buf;
 }
 
 void SGameMtlPair::Save(IWriter& fs)
@@ -354,10 +351,6 @@ void SGameMtlPair::Save(IWriter& fs)
     fs.w_u32			(OwnProps.get());
 	fs.close_chunk		();
 
-    fs.open_chunk		(GAMEMTLPAIR_CHUNK_FLOTATION);
-    fs.w_float			(fFlotation);
-	fs.close_chunk		();
-
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_BREAKING);
     fs.w_stringZ		(BreakingSounds.c_str());
 	fs.close_chunk		();
@@ -368,16 +361,12 @@ void SGameMtlPair::Save(IWriter& fs)
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_COLLIDE);
     fs.w_stringZ		(CollideSounds.c_str());
-	fs.close_chunk		();
-
-    fs.open_chunk		(GAMEMTLPAIR_CHUNK_HIT);
-    fs.w_stringZ		(HitSounds.c_str());
-    fs.w_stringZ		(HitParticles.c_str());
-    fs.w_stringZ		(HitMarks.c_str());
+    fs.w_stringZ		(CollideParticles.c_str());
+    fs.w_stringZ		(CollideMarks.c_str());
 	fs.close_chunk		();
 }
 
-void CGameMtlLibrary::Save(LPCSTR name)
+void CGameMtlLibrary::Save()
 {
 	// save
 	CMemoryWriter fs;
@@ -408,6 +397,8 @@ void CGameMtlLibrary::Save(LPCSTR name)
     }
 	fs.close_chunk		();
 
-    fs.save_to			(name);
+	AnsiString fn;
+    FS.update_path		(fn,_game_data_,GAMEMTL_FILENAME);
+    fs.save_to			(fn.c_str());
 }
 

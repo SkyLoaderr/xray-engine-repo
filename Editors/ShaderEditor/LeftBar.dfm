@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 553
+  Height = 629
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 553
+    Height = 629
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 314
+      Top = 390
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 154
       Width = 258
-      Height = 160
+      Height = 236
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 145
+        Height = 221
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -219,7 +219,7 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 0
+        TabIndex = 2
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = 15790320
@@ -227,7 +227,7 @@ object fraLeftBar: TfraLeftBar
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
         TabBkColor = 10528425
-        ActivePage = tsEngine
+        ActivePage = tsMaterial
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -239,6 +239,7 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Engine'
           Color = 10528425
+          Visible = False
           object Bevel1: TBevel
             Left = 0
             Top = 50
@@ -355,7 +356,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 68
+            Height = 144
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -570,7 +571,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 68
+            Height = 144
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -668,7 +669,6 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Material'
           Color = 10528425
-          Visible = False
           object Bevel2: TBevel
             Left = 0
             Top = 50
@@ -778,13 +778,14 @@ object fraLeftBar: TfraLeftBar
               Margin = 13
               ParentFont = False
               Spacing = 3
+              OnClick = ebCreateItemClick
             end
           end
           object tvMtl: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 68
+            Height = 144
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -893,7 +894,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 68
+            Height = 144
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1213,7 +1214,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 68
+            Height = 144
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1308,7 +1309,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 316
+      Top = 392
       Width = 258
       Height = 236
       Align = alBottom
