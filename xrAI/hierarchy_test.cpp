@@ -337,8 +337,9 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			VERIFY						(current_cell);
 			u32							current_mark = current_cell->m_mark - 1;
 			CSectorGraph::CVertex		*sector_vertex = sector_graph.vertex(current_mark);
-			for (u32 usage = c.m_use; usage; ) {
-				u32						I = usage;
+			u32 usage					= c.m_use, I;
+			do {
+				I						= usage;
 				usage					&= usage - 1;
 				I						^= usage;
 				I						= (I >> 1) + 1;
@@ -357,6 +358,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 				sector_graph.add_edge	(current_mark,mark,1.f);
 			}
+			while (usage);
 		}
 	}
 	f								= CPU::GetCycleCount();
