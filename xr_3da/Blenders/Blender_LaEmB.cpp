@@ -217,30 +217,30 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
-		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
+		RS.PassSET_Blend_SET();
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 		
-		// Stage0 - Lightmap
+		// Stage0 - Environment map [*] const
 		RS.StageBegin		();
 		{
 			RS.StageSET_Address	(D3DTADDRESS_WRAP);
-			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			RS.Stage_Texture	("$base1",		L_textures	);
-			RS.Stage_Matrix		("$null",		L_matrices,	1);
-			RS.Stage_Constant	("$null",		L_constants	);
+			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+			RS.Stage_Texture	(oT2_Name,		L_textures	);
+			RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
+			RS.Stage_Constant	(oT2_const,		L_constants	);
 		}
 		RS.StageEnd			();
-		
-		// Stage1 - Environment map
+
+		// Stage1 - [+] Lightmap
 		RS.StageBegin		();
 		{
 			RS.StageSET_Address	(D3DTADDRESS_WRAP);
 			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
 			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-			RS.Stage_Texture	(oT2_Name,		L_textures	);
-			RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
+			RS.Stage_Texture	("$base1",		L_textures	);
+			RS.Stage_Matrix		("$null",		L_matrices,	1);
 			RS.Stage_Constant	("$null",		L_constants	);
 		}
 		RS.StageEnd			();
@@ -251,9 +251,9 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(TRUE,FALSE);
-		RS.PassSET_Blend	(TRUE, D3DBLEND_ZERO, D3DBLEND_SRCCOLOR,	FALSE,0);
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
-		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
+		RS.PassSET_Blend_MUL();
+		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE)	);
+		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE)	);
 		
 		// Stage0 - Detail
 		RS.StageBegin		();
