@@ -127,6 +127,10 @@ SOURCE=".\xrM44mul_3DNow!.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE=".\xrMemCopy8_3DNow!.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE=".\xrSkin1W_3DNow!.cpp"
 # End Source File
 # End Group
