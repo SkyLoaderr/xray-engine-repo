@@ -165,7 +165,10 @@ end
 
 function main_menu:OnButton_new_hard_game()
 	local console = get_console()
-	console:execute("start server(all/single/alife/new) client(localhost)")
+--	console:execute("start server(all/single/alife/new) client(localhost)")
+	console:execute("start server(andy_test/single) client(localhost)")
+	get_console():execute("main_menu off")
+
 end
 
 function main_menu:OnButton_load_spawn()
