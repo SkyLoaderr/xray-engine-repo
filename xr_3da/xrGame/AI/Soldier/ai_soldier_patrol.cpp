@@ -317,7 +317,7 @@ IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &t
 		Log("! AI_PathNodes: Can't find intersection segment");
 }
 
-#define COMPUTE_DISTANCE_2D(t,p) (sqrtf(SQR((t).x - (p).x) + SQR((t).z - (p).z)))
+#define COMPUTE_DISTANCE_2D(t,p) (sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
 IC bool bfInsideNode(CAI_Space &AI, NodeCompressed *tpNode, Fvector &tCurrentPosition, float fHalfSubNodeSize)
 {
