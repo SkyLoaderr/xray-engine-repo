@@ -608,7 +608,7 @@ public:
 	virtual void StepFrameUpdate(dReal step){};
 
 
-	virtual void			SmoothElementsEnertia(float k);
+	virtual void			SmoothElementsInertia(float k);
 
 	dSpaceID GetSpace()
 	{

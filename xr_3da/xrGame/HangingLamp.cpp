@@ -166,5 +166,6 @@ void CHangingLamp::CreateBody(float mass)
 	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
 	m_pPhysicsShell->mXFORM.set(svTransform);
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
-	m_pPhysicsShell->setMass1(mass);
+	m_pPhysicsShell->setMass(mass);
+	m_pPhysicsShell->SmoothElementsInertia(0.2f);
 }

@@ -3769,7 +3769,7 @@ void CPHElement::unset_Pushout()
 }
 
 
-void CPHShell::SmoothElementsEnertia(float k)
+void CPHShell::SmoothElementsInertia(float k)
 {
 dMass m_avrg;
 dReal krc=1.f-k;
@@ -3783,7 +3783,7 @@ dMassSetZero(&m_avrg);
 	}
 	int n=elements.size();
 	m_avrg.mass/=n*k;
-	for(int j=0;j<4*3;i++) m_avrg.I[j]/=n*k;
+	for(int j=0;j<4*3;j++) m_avrg.I[j]/=n*k;
 	
 	for(i=elements.begin();i!=elements.end();i++)
 	{

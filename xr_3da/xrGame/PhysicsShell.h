@@ -137,7 +137,8 @@ public:
 	virtual BoneCallbackFun* GetBonesCallback		()													= 0;
 	virtual void			Update					()													= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element) = 0;
-	virtual void			setMass1				(float M)										=0;
+	virtual void			setMass1				(float M)											=0;
+	virtual void			SmoothElementsInertia	(float k)											=0;
 	};
 
 
