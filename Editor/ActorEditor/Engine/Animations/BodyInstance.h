@@ -99,7 +99,7 @@ public:
 
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)
-__declspec(align(64)) class ENGINE_API CBoneInstance
+ALIGN(64) class ENGINE_API CBoneInstance
 {
 public:
 	// data

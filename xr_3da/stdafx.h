@@ -111,6 +111,7 @@ using namespace std;
 #define PropertyG(a)	__declspec( property( get=a ) )
 #define PropertyP(a)	__declspec( property( put=a ) )
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
+#define ALIGN(a) __declspec(align(a))
 
 // Our headers
 #define NO_XR_NETWORK
