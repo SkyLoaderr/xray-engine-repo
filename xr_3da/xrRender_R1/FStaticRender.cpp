@@ -421,8 +421,8 @@ void	CRender::Render		()
 	phase										= PHASE_NORMAL;
 	r_pmask										(true,true);	// enable priority "0" and "1"
 	L_Shadows->render							();				// ... and shadows
-	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	r_dsgraph_render_lods						();				// lods
+	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	r_dsgraph_render_sorted						();				// strict-sorted geoms
 	L_Glows->Render								();				// glows
 	g_pGamePersistent->Environment.RenderLast	();				// rain/lens-flares/thunder-bolts
