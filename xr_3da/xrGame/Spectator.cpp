@@ -91,7 +91,7 @@ void CSpectator::OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 	case kCAM_4:	cam_Set			(eacFreeFly);				break;
-	case kWPN_NEXT:	look_idx++;									break;
+	case kWPN_FIRE:	look_idx++;									break;
 	}
 }
 
