@@ -198,7 +198,7 @@ public:
 	void			SetTransform(const Fmatrix& m0);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2);
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
 	virtual void			applyForce				(const Fvector& dir, float val){;};
@@ -245,7 +245,7 @@ public:
 
 	virtual void			Update					()	;											
 
-	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2);
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;

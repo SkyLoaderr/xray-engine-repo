@@ -15,7 +15,7 @@ public:
 	Fmatrix					mDesired;				// In parent space
 	float					fDesiredStrength;		// Desire strength, [0..1]%
 public:
-	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2)		= 0;
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)		= 0;
 	virtual void			Deactivate				()											= 0;
 
 	virtual void			setMass					(float M)									= 0;

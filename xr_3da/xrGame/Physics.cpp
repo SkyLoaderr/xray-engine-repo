@@ -588,10 +588,10 @@ void CPHWorld::Step(dReal step)
 
 	list<CPHObject*>::iterator iter;
 	//step+=astep;
-	const dReal max_step=0.02f;//0.0034f;
+	const dReal max_step=0.01f;//0.0034f;
 	//const dReal min_step=0.005f;
-	const dReal k_p=600000.f;//550000.f;///1000000.f;
-	const dReal k_d=40000.f;
+	const  dReal k_p=12000000.f;//550000.f;///1000000.f;
+	const dReal k_d=400000.f;
 	//if(step>0.019){
 	//step=0.03f;
 
@@ -746,11 +746,11 @@ else
 	for(i = 0; i < n; ++i)
 	{
 
-        contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 5000.f;
+        contacts[i].surface.mode =dContactApprox1; //dContactBounce|dContactApprox1;
+		contacts[i].surface.mu =1.f;// 5000.f;
 		bool pushing_neg=false;
 		if(contacts[i].geom.g2->data){ 
-			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
+			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
 			if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
 				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
@@ -762,7 +762,7 @@ else
 
 		}
 		if(contacts[i].geom.g1->data){ 
-			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
+			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
 			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
 				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
@@ -1001,7 +1001,7 @@ void		CPHElement::	setMass		(float M){
 calculate_it_data_use_density(get_mc_data(),M);
 
 }
-void		CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
+void		CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	//mXFORM.set(m0);
 	//m_m0.set(m0);
 	//m_m2.set(m2);
@@ -1053,7 +1053,7 @@ void CPHShell::setMass(float M){
 }
 
 
-void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
+void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)
 		return;
 	m_ident=ph_world->AddObject(this);
@@ -1096,6 +1096,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	previous_r[0]=0.f;
 	dis_count_f=0;
 	//previous_f[0]=dInfinity;
+	if(disable) dBodyDisable(m_body);
 }
 
 void CPHShell::Deactivate(){
