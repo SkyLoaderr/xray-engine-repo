@@ -1,26 +1,35 @@
-function test_print (str)
-	printf ("This is test %d", str)
-end
-
 function main ()
 
 
-	s_test.test_print (566)
-
 	local stalker = get_level_object ("m_stalker_e0000")
 	stalker:script (true, s_test.script_name ())
-	local torch = get_level_object ("torch")
-	if (torch ~= nil) then printf ("Getting torch") flush () end
+--	local torch = get_level_object ("torch")
+--	if (torch ~= nil) then printf ("Getting torch") flush () end
 
-	action (stalker, move (move.standing, move.walk, move.line, patrol ("way0000")),
-			look (look.search), anim (anim.free), object (torch, object.activate), 
-			cond (cond.time_end, 1000000000000))
+--	action (stalker, move (move.standing, move.walk, move.line, patrol ("way0000")),
+--			look (look.search), anim (anim.free), object (torch, object.activate), 
+--			cond (cond.time_end, 1000000000000))
 
-	while stalker:action () do 
-		  if stalker:alive () == false then break end
-		  wait () 
-		  end
+--	while stalker:action () do 
+--		  if stalker:alive () == false then break end
+--		  wait () 
+--		  end
 
-	stalker:script (false, s_test.script_name ())
-	
+--	stalker:script (false, s_test.script_name ())
+
+	local door = get_level_object ("door")
+	local bones = {"bone01", "bone02", "bone03"}
+
+	while true do
+		  wait (500)
+		  local h = hit ()	
+          h.power = 1
+          h.direction:set (-1, 0, 0)
+          h:bone (bones[math.random (1, table.getn (bones)])
+          h.draftsman = get_actor ()
+          h.impulse = math.random (3000, 4000)
+          h.type  = hit.strike
+          door:hit (h)
+	end			
+
  end
