@@ -180,7 +180,7 @@ void	SoundEnvironment_LIB::Unload	()
 int		SoundEnvironment_LIB::GetID		(LPCSTR name)
 {
 	for (SE_IT it=library.begin(); it!=library.end(); it++)
-		if (0==stricmp(name,(*it)->name)) return it-library.begin();
+		if (0==stricmp(name,(*it)->name)) return int(it-library.begin());
 	return -1;
 }
 CSoundRender_Environment*	SoundEnvironment_LIB::Get		(LPCSTR name)

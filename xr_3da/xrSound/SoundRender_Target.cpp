@@ -170,11 +170,18 @@ void	CSoundRender_Target::fill_parameters()
 
 	// 1. Set 3D params (including mode)
 	{
+		Fvector&					p_pos	= pEmitter->p_source.position;
 		DS3DBUFFER					buf;
 		buf.dwSize					= sizeof(DS3DBUFFER);
-		buf.vPosition				= D3DXVECTOR3(pEmitter->p_source.position.x,pEmitter->p_source.position.y,pEmitter->p_source.position.z);
-		buf.vVelocity				= D3DXVECTOR3(0,0,0);
-		buf.vConeOrientation		= D3DXVECTOR3(0,0,1);
+		buf.vPosition.x				= p_pos.x;
+		buf.vPosition.y				= p_pos.y;
+		buf.vPosition.z				= p_pos.z;
+		buf.vVelocity.x				= 0;
+		buf.vVelocity.y				= 0;
+		buf.vVelocity.z				= 0;
+		buf.vConeOrientation.x		= 0;
+		buf.vConeOrientation.y		= 0;
+		buf.vConeOrientation.z		= 1;
 		buf.dwInsideConeAngle		= DS3D_DEFAULTCONEANGLE;
 		buf.dwOutsideConeAngle		= DS3D_DEFAULTCONEANGLE;
 		buf.lConeOutsideVolume		= DS3D_DEFAULTCONEOUTSIDEVOLUME;

@@ -143,9 +143,6 @@
 			<File
 				RelativePath="stdafx.h">
 			</File>
-			<File
-				RelativePath="xrCDB.h">
-			</File>
 		</Filter>
 		<Filter
 			Name="Core"
@@ -155,9 +152,6 @@
 			</File>
 			<File
 				RelativePath="SoundRender_Core.h">
-			</File>
-			<File
-				RelativePath="SoundRender_Core_Initialize.cpp">
 			</File>
 			<File
 				RelativePath="SoundRender_Core_Processor.cpp">
@@ -280,6 +274,22 @@
 			</File>
 			<File
 				RelativePath="xr_streamsnd.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Collider"
+			Filter="">
+			<File
+				RelativePath="cl_collector.cpp">
+			</File>
+			<File
+				RelativePath="cl_collector.h">
+			</File>
+			<File
+				RelativePath="cl_intersect.h">
+			</File>
+			<File
+				RelativePath="xrCDB.h">
 			</File>
 		</Filter>
 	</Files>
