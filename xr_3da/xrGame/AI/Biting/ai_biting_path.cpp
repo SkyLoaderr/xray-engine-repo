@@ -10,8 +10,8 @@
 #include "ai_biting.h"
 #include "../../graph_engine.h"
 #include "../ai_monsters_misc.h"
-#include "../game_graph.h"
-#include "../game_level_cross_table.h"
+#include "../../game_graph.h"
+#include "../../game_level_cross_table.h"
 
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	 4000		// 2 сек
 #define TIME_TO_SEARCH					60000

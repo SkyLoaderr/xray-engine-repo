@@ -10,7 +10,7 @@
 #include "ai_stalker.h"
 #include "../../graph_engine.h"
 #include "../ai_monsters_misc.h"
-#include "../path_manager_level_selector.h"
+#include "../../path_manager_level_selector.h"
 
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	 2000
 #define TIME_TO_SEARCH					60000
