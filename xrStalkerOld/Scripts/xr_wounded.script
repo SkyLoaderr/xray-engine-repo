@@ -143,15 +143,24 @@ class "action_cover" (action_base)
 ------------
 function action_cover:__init (name, storage) super (nil, name)
     self.a = storage
+    self.was_reset  = false
+end
+------------
+function action_cover:reset_scheme ()
     self.pos = vector ():set (0, 0, 0)
     self.vid = -1
     self.stage = 0
     self.dir = vector ():set (0, 0, 0)
+    self.was_reset = true
 end
+------------
+function action_cover:activate_scheme ()
+    self.was_reset = false
+end    
 ------------
 function action_cover:initialize ()
     action_base.initialize (self)
-    
+    self.reset_scheme () 
     local pt = self.object:safe_cover (self.object:position (), 20, 0)
     if pt == nil or self.object.health < self.a.hp_min then
        self.pos = self.object:position ()
@@ -180,6 +189,9 @@ end
 ------------
 function action_cover:execute ()
     action_base.execute (self)
+    if not self.was_reset then
+       self:reset_scheme()
+    end
     if self.object:level_vertex_id () == self.vid and self.pos:distance_to (self.object:position ()) < 1.0 then
 		self.a.cover = true
     end    
@@ -196,6 +208,10 @@ class "action_idle" (action_base)
 ------------
 function action_idle:__init (name, storage) super (nil, name)
     self.a = storage
+    self.was_reset = false
+end
+------------
+function action_idle:reset_scheme ()
    	self.sounds = 
    	            { rnd = 100,
 				  maxidle = 5, 
@@ -204,11 +220,18 @@ function action_idle:__init (name, storage) super (nil, name)
 				}
     self.send_time = 0;
     self.actor = nil	
+    self.was_reset = true
+end
+------------
+function action_idle:activate_scheme ()
+    self.was_reset = false
 end
 ------------
 function action_idle:initialize ()
     action_base.initialize (self)
-
+    
+    self:reset_scheme ()
+    
     state_mgr.set_state(self.object, "wounded")
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()    
@@ -216,6 +239,9 @@ end
 ------------
 function action_idle:execute ()
     action_base.execute (self)
+    if not self.was_reset then
+       self:reset_scheme()
+    end
     if self.object:is_talking () == false then
        xr_sound.sound_update(self.object, self.sounds)		
     end   
@@ -240,6 +266,10 @@ class "action_help" (action_base)
 ------------
 function action_help:__init (name, storage) super (nil, name)
     self.a = storage
+    self.was_reset = false
+end    
+------------
+function action_help:reset_scheme ()
     self.first = false
    	self.sounds = 
    	            { rnd = 100,
@@ -250,11 +280,16 @@ function action_help:__init (name, storage) super (nil, name)
     self.send_time = 0
     self.actor = nil
     self.first_sound = true
+    self.was_reset = true
+end
+------------
+function action_help:activate_scheme ()
+    self.was_reset = false
 end
 ------------
 function action_help:initialize ()
     action_base.initialize (self)
-    
+    self:reset_scheme ()    
     this.usable(self.object, true)
     
     xr_meet.override_meet (self.object, true)
@@ -284,6 +319,11 @@ end
 ------------
 function action_help:execute ()
     action_base.execute (self)
+
+    if not self.was_reset then
+       self:reset_scheme()
+    end
+    
     this.usable(self.object, true)
     
     if self.object:is_talking () == false then
@@ -317,6 +357,10 @@ class "action_stand" (action_base)
 ------------
 function action_stand:__init (name, storage) super (nil, name)
     self.a = storage
+    self.was_reset = false
+end
+------------
+function action_stand:reset_scheme ()
     self.first = false
    	self.sounds = 
    	            { rnd = 100,
@@ -324,10 +368,17 @@ function action_stand:__init (name, storage) super (nil, name)
 				  sumidle = 2,
 				  themes = { "help_stalker_thanx" } 
 				}
+    self.was_reset = true				
+end
+------------
+function action_stand:activate_scheme ()
+    self.was_reset = false
 end
 ------------
 function action_stand:initialize ()
     action_base.initialize (self)
+    self:reset_scheme ()
+    
     self.stage = 0
     xr_meet.override_meet (self.object, true)
     if self.a.on_medikit ~= nil and actor then
@@ -343,6 +394,10 @@ end
 ------------
 function action_stand:execute ()
     action_base.execute (self)
+    
+    if not self.was_reset then
+       self:reset_scheme()
+    end
     
     if self.stage == 0 then
        xr_sound.sound_update (self.object, self.sounds, true)
@@ -369,6 +424,10 @@ class "action_enemy" (action_base)
 ------------
 function action_enemy:__init (name, storage) super (nil, name)
     self.a = storage
+    self.was_reset = false
+end    
+------------
+function action_enemy:reset_scheme ()
     self.first = false
    	self.sounds = 
    	            { rnd = 100,
@@ -378,11 +437,16 @@ function action_enemy:__init (name, storage) super (nil, name)
 				}
     self.send_time = 0
     self.actor = nil
+    self.was_reset = true
+end
+------------
+function action_enemy:activate_scheme ()
+    self.was_reset = false
 end
 ------------
 function action_enemy:initialize ()
     action_base.initialize (self)
-    
+    self:reset_scheme ()    
     xr_meet.override_meet (self.object, true)    
     self.send_time = device ():time_global ()
     this.usable(self.object, true)
@@ -390,6 +454,11 @@ end
 ------------
 function action_enemy:execute ()
     action_base.execute (self)
+
+    if not self.was_reset then
+       self:reset_scheme()
+    end
+    
 	this.usable(self.object, true)
 	
     local enemy = self.object:best_enemy ()
@@ -425,14 +494,28 @@ end
 class "action_medkit" (action_base)
 ------------
 function action_medkit:__init (name, storage) super (nil, name)
+    self.was_reset = false
+end
+------------
+function action_medkit:reset_scheme ()
+    self.was_reset = true
+end
+------------
+function action_medkit:activate_scheme ()
+    self.was_reset = false
 end
 ------------
 function action_medkit:initialize ()
     action_base.initialize (self)
+    self:reset_scheme ()
 end
 ------------
 function action_medkit:execute ()
     action_base.execute (self)
+    if not self.was_reset then
+       self:reset_scheme()
+    end
+    
     if self.object:object ("medkit") ~= nil then
        self.object:eat (self.object:object ("medkit"))
     elseif self.object:object ("bandage") ~= nil then
@@ -515,6 +598,7 @@ function add_to_binder (object, ini, scheme, section, st)
 	action:add_precondition (world_property(properties["contact"],	        false))
     action:add_effect       (world_property (properties["cover"],           true))
    	manager:add_action      (operators["cover"], action)
+   	xr_logic.subscribe_action_for_events (object, st, action)
    
     action = this.action_idle ("wounded_action_idle", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
@@ -526,6 +610,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["friend"],          false))
     action:add_effect       (world_property (properties["medikit"],         true))
    	manager:add_action      (operators["idle"], action)
+   	xr_logic.subscribe_action_for_events (object, st, action)
 
     action = this.action_help ("wounded_action_help", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
@@ -537,6 +622,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["friend"],          true))
     action:add_effect       (world_property (properties["medikit"],         true))
    	manager:add_action      (operators["help"], action)
+   	xr_logic.subscribe_action_for_events (object, st, action)
 
     action = this.action_stand ("wounded_action_stand", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
@@ -547,6 +633,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["stand"], action)
+   	xr_logic.subscribe_action_for_events (object, st, action)
 
     action = this.action_enemy ("wounded_action_enemy", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
@@ -556,6 +643,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_effect       (world_property (stalker_ids.property_enemy,    false))
    	manager:add_action      (operators["enemy"], action)
+   	xr_logic.subscribe_action_for_events (object, st, action)
    	
    	action = this.action_medkit ("wounded_action_medkit", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
@@ -564,6 +652,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         true))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["medkit"], action)
+   	xr_logic.subscribe_action_for_events (object, st, action)
     
     action = manager:action (xr_actions_id.alife)
     action:add_precondition (world_property (properties["wound"],  false))
