@@ -110,7 +110,7 @@ bool CPSLibrary::Load(const char* nm)
         m_PSs.resize		(count);
         F->r				(&*m_PSs.begin(), count*sizeof(PS::SDef));
         for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-            s_it->m_CachedShader = 0;
+            s_it->m_CachedShader._object = 0;
     }
     // second generation
     IReader* OBJ 			= F->open_chunk(PS_CHUNK_SECONDGEN);
