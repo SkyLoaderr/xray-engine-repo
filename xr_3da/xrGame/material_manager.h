@@ -26,7 +26,7 @@ public:
 	virtual void	Load					(LPCSTR section);
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR section);
-	
+	virtual CPHMovementControl*	movement_control()=0;
 	virtual void	set_run_mode			(bool run_mode) {m_run_mode = run_mode;}
 
 	virtual void	update					(float time_delta, float volume, float step_time, bool standing);

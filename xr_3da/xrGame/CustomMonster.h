@@ -144,6 +144,7 @@ public:
 #endif
 
 	virtual bool		bfExecMovement			(){return(false);};
+	virtual CPHMovementControl*	movement_control(){return inherited::movement_control();}
 
 	IC	int						ifGetMemberIndex		();
 	IC	bool					angle_lerp_bounds		(float &a, float b, float c, float d);

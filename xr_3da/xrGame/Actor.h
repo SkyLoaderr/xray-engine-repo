@@ -450,7 +450,7 @@ public:
 			void			g_Physics		(Fvector& accel, float jump, float dt);
 	virtual void			ForceTransform	(const Fmatrix &m);
 			void			SetPhPosition	(const Fmatrix& pos);
-
+	virtual CPHMovementControl*	movement_control(){return inherited::movement_control();}
 	virtual void			PH_B_CrPr		(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps

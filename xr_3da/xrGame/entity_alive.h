@@ -34,6 +34,7 @@ public:
 
 	virtual void			shedule_Update			(u32 dt);
 
+	virtual CPHMovementControl*	movement_control()	{return m_PhysicMovementControl;}
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual	void			Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	

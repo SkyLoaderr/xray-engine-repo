@@ -192,6 +192,7 @@ public:
 												u32& travel_point,					 //in- travel start, out - current trev point
 												float& precesition					 //in- tolerance, out - precesition
 												);
+	void				AddControlVel			(const Fvector& vel);
 	void				PathNearestPoint		(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,		//in path
 												 const Fvector					&new_position,  //in position
 												 int							&index,			//out nearest
