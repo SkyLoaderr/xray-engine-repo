@@ -44,7 +44,7 @@ void CSE_ALifeSimulator::vfCheckForTheInteraction(CSE_ALifeMonsterAbstract *tpAL
 						vfPerformAttackAction(l_iGroupIndex);
 					else
 						if (bfCheckIfRetreated(l_iGroupIndex)) {
-							l_tCombatResult	= l_iGroupIndex ? eCombatResultRetreat1 : eCombatResultRetreat2;
+							l_tCombatResult	= l_iGroupIndex ? eCombatResultRetreat2 : eCombatResultRetreat1;
 							break;
 						}
 					

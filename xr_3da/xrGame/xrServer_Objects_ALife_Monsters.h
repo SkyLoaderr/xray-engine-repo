@@ -108,7 +108,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual bool					bfPerformAttack			()											{return(true);};
 	virtual	void					vfUpdateWeaponAmmo		()											{};
 	virtual	void					vfProcessItems			()											{};
-	virtual	void					vfAttachItems			()											{};
+	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll)		{};
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

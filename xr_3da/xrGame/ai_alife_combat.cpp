@@ -198,6 +198,9 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	for ( ; I != E; I++)
 		vfAddObjectToGraphPoint(*I,m_tpaCombatMonsters[0]->m_tGraphID);
 
+	if (m_tpItemList.empty())
+		return;
+
 	int			l_iGroupIndex = -1;
 	switch (tCombatResult) {
 		case eCombatResultBothKilled	:
