@@ -7,6 +7,7 @@
 #include "xr_object.h"
 #include "render.h"
 #include "flightscontroller.h"
+#include "xr_creator.h"
 
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;
@@ -188,26 +189,46 @@ void CLightShadows::calculate	()
 void CLightShadows::render	()
 {
 	// Gain access to collision-DB
-	CDB::MODEL*		DB	= pCreator->ObjectSpace.GetStaticModel();
+	CDB::MODEL*		DB		= pCreator->ObjectSpace.GetStaticModel();
+	CDB::TRI*		TRIS	= DB->get_tris();
 	
 	// Render shadows
+	Device.Shader.set_Shader(sh_World);
 	for (int s_it=0; s_it<shadows.size(); s_it++)
 	{
-		shadows&	S	= shadows[s_it];
+		shadow&		S			= shadows[s_it];
 		
 		// Frustum
 		CFrustum	F;
-		F.CreateFromMatrix	(S.M,FRUSTUM_P_ALL);
+		F.CreateFromMatrix		(S.M,FRUSTUM_P_ALL);
 
 		// Query
-		XRC.frustum_options	(0);
-		XRC.frustum_query	(DB,F);
+		XRC.frustum_options		(0);
+		XRC.frustum_query		(DB,F);
+		if (0==XRC.r_count())	continue;
+
+		// Clip polys by frustum
+		for (CDB::RESULT* p = XRC.r_begin(); p!=XRC.r_end(); p++)
+		{
+			CDB::TRI&	t		= TRIS[p->id];
+			sPoly		A,B;
+			A.push_back			(*t.verts[0]);
+			A.push_back			(*t.verts[1]);
+			A.push_back			(*t.verts[2]);
+			sPoly*		clip	= F.ClipPoly(A,B);
+			if (0==clip)		continue;
+
+
+		}
+
 		
 		// Rendering
-		FVF::L
+		DWORD Offset, C=0;
+		FVF::L* pv				= (FVF::L*) vs_World->Lock(XRC.r_count()*3,Offset);
+		
+		vs_World->Unlock		(XRC.r_count()*3);
 	}
 	shadows.clear	();
-	
 	
 	// UV
 	Fvector2		p0,p1;
