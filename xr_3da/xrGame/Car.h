@@ -56,7 +56,7 @@ public:
 	float m_fuel_consumption;
 	struct SWheel 
 	{
-		int bone_id;
+		u32 bone_id;
 		bool inited;
 		float radius;
 		dJointID joint;
@@ -64,7 +64,7 @@ public:
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
 		SWheel(CCar* acar)
 		{
-			bone_id=-1;
+			bone_id=BONE_NONE;
 			car=acar;
 			joint=NULL;
 			inited=false;
@@ -113,7 +113,7 @@ public:
 
 	struct SExhaust
 	{
-		int					bone_id;
+		u32					bone_id;
 		Fmatrix				transform;
 		CParticlesObject*	p_pgobject;
 		CPhysicsElement*	pelement;
@@ -125,7 +125,7 @@ public:
 		void Clear ();
 		SExhaust(CCar* acar)
 		{
-			bone_id=-1;
+			bone_id=BONE_NONE;
 			pcar=acar;
 			p_pgobject=NULL;
 			pelement=NULL;
@@ -136,7 +136,7 @@ public:
 	struct SDoor;
 	struct SDoor 
 	{
-		int bone_id;
+		u32 bone_id;
 		CCar* pcar;
 		bool  update;
 		CPhysicsJoint*  joint;
@@ -179,7 +179,7 @@ public:
 		eState state;
 		SDoor(CCar* acar)
 		{
-			bone_id=-1;
+			bone_id=BONE_NONE;
 			pcar=acar;
 			joint=NULL;
 			state=closed;
@@ -231,13 +231,13 @@ private:
 	friend struct SWheel;
 	friend struct SDoor;
 
-	xr_map   <int,SWheel>	m_wheels_map;
+	xr_map   <u32,SWheel>	m_wheels_map;
 	xr_vector <SWheelDrive> m_driving_wheels;
 	xr_vector <SWheelSteer> m_steering_wheels;
 	xr_vector <SWheelBreak> m_breaking_wheels;
 	xr_vector <SExhaust>	m_exhausts;
 	string64				m_exhaust_particles;
-	xr_map	  <int,SDoor>	m_doors;
+	xr_map	  <u32,SDoor>	m_doors;
 	xr_vector <SDoor*>		m_doors_update;
 	//xr_list   <SDoor*>		m_doors_opened;
 	xr_vector <Fvector>		m_gear_ratious;
@@ -358,10 +358,10 @@ public:
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
-	bool					is_Door				(int id,xr_map<int,SDoor>::iterator& i);
+	bool					is_Door				(u32 id,xr_map<u32,SDoor>::iterator& i);
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
-	bool					Use					(int id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
+	bool					Use					(u32 id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
@@ -408,7 +408,7 @@ private:
 		{
 			_GetItem					(S,i,S1);
 
-			int bone_id	=				pKinematics->LL_BoneID(S1);
+			u32 bone_id	=				pKinematics->LL_BoneID(S1);
 
 			type_wheels.push_back		(T());
 			T& twheel				= type_wheels.back();
@@ -439,7 +439,7 @@ private:
 		{
 			_GetItem					(S,i,S1);
 
-			int bone_id	=				pKinematics->LL_BoneID(S1);
+			u32 bone_id	=				pKinematics->LL_BoneID(S1);
 
 			exhausts.push_back		(SExhaust(this));
 			SExhaust& exhaust				= exhausts.back();
@@ -453,7 +453,7 @@ private:
 
 		}
 	}
-	IC void fill_doors_map(LPCSTR S,xr_map<int,SDoor>& doors)
+	IC void fill_doors_map(LPCSTR S,xr_map<u32,SDoor>& doors)
 	{
 		CKinematics* pKinematics	=PKinematics(Visual());
 		string64					S1;
@@ -462,7 +462,7 @@ private:
 		{
 			_GetItem					(S,i,S1);
 
-			int bone_id	=				pKinematics->LL_BoneID(S1);
+			u32 bone_id	=				pKinematics->LL_BoneID(S1);
 			SDoor						door(this);
 			door.bone_id=				bone_id;
 			doors.insert				(mk_pair(bone_id,door));

@@ -5,7 +5,7 @@
 void CCar::SWheel::Init()
 {
 	if(inited) return;
-	const  xr_map<int,physicsBone>::iterator bone=bone_map.find(bone_id);
+	const  xr_map<u32,physicsBone>::iterator bone=bone_map.find(bone_id);
 	R_ASSERT2(bone->second.element,"No Element was created for wheel-check collision is set");
 	bone->second.element->set_DynamicLimits(default_l_limit,default_w_limit*100.f);
 	radius=bone->second.element->getRadius();

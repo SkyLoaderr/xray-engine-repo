@@ -32,7 +32,7 @@ struct physicsBone
 	CPhysicsJoint* joint;
 	CPhysicsElement* element;
 };
-DEFINE_MAP	(int,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
+DEFINE_MAP	(u32,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
 
 // ABSTRACT:
 class	CPhysicsBase

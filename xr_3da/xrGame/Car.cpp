@@ -255,7 +255,7 @@ bool CCar::attach_Actor(CActor* actor)
 }
 
 
-bool CCar::is_Door(int id,xr_map<int,SDoor>::iterator& i)
+bool CCar::is_Door(u32 id,xr_map<u32,SDoor>::iterator& i)
 {
 	i	= m_doors.find(id);
 	if (i == m_doors.end()) 
@@ -273,7 +273,7 @@ bool CCar::is_Door(int id,xr_map<int,SDoor>::iterator& i)
 
 bool CCar::Enter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
-	xr_map<int,SDoor>::iterator i,e;
+	xr_map<u32,SDoor>::iterator i,e;
 
 	i=m_doors.begin();e=m_doors.end();
 	Fvector enter_pos;
@@ -288,7 +288,7 @@ bool CCar::Enter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 
 bool CCar::Exit(const Fvector& pos,const Fvector& dir)
 {
-	xr_map<int,SDoor>::iterator i,e;
+	xr_map<u32,SDoor>::iterator i,e;
 
 	i=m_doors.begin();e=m_doors.end();
 	for(;i!=e;i++)
@@ -419,7 +419,7 @@ void CCar::Init()
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 
 	{
-		xr_map<int,SWheel>::iterator i,e;
+		xr_map<u32,SWheel>::iterator i,e;
 		i=m_wheels_map.begin();
 		e=m_wheels_map.end();
 		for(;i!=e;i++)
@@ -459,7 +459,7 @@ void CCar::Init()
 	}
 
 {
-	xr_map<int,SDoor>::iterator i,e;
+	xr_map<u32,SDoor>::iterator i,e;
 	i=m_doors.begin();
 	e=m_doors.end();
 	for(;i!=e;i++)
@@ -887,9 +887,9 @@ void CCar::ClearExhausts()
 		i->Clear();
 }
 
-bool CCar::Use(int id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
+bool CCar::Use(u32 id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
-	xr_map<int,SDoor>::iterator i;
+	xr_map<u32,SDoor>::iterator i;
  //
 
 	if(!m_owner)
