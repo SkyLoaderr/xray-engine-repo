@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "..\\..\\WeaponMagazined.h"
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 
@@ -169,6 +170,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				else {
 					if (bfCheckIfCanKillEnemy())
 						if (!bfCheckIfCanKillMember()) {
+							m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
 							m_inventory.Action(kWPN_FIRE, CMD_START);
 							m_bFiring = true;
 						}
@@ -177,11 +179,11 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 							m_bFiring = false;
 							m_dwNoFireTime = m_dwCurrentUpdate;
 						}
-						else {
-							m_inventory.Action(kWPN_FIRE, CMD_STOP);
-							m_bFiring = false;
-							m_dwNoFireTime = m_dwCurrentUpdate;
-						}
+					else {
+						m_inventory.Action(kWPN_FIRE, CMD_STOP);
+						m_bFiring = false;
+						m_dwNoFireTime = m_dwCurrentUpdate;
+					}
 				}
 			else {
 				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
@@ -210,6 +212,36 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			m_bFiring = false;
 		}
 			
+	switch(tpWeapon->STATE) {
+		case CWeapon::eIdle		: Msg("%s : idle",tpWeapon->cNameSect());
+		case CWeapon::eFire		: Msg("%s : fire",tpWeapon->cNameSect());
+		case CWeapon::eFire2	: Msg("%s : fire 2",tpWeapon->cNameSect());
+		case CWeapon::eReload	: Msg("%s : recharge",tpWeapon->cNameSect());
+		case CWeapon::eShowing	: Msg("%s : show",tpWeapon->cNameSect());
+		case CWeapon::eHiding	: Msg("%s : hide",tpWeapon->cNameSect());
+		case CWeapon::eHidden	: Msg("%s : hidden",tpWeapon->cNameSect());
+	}
+	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
+	if (tpWeaponMagazined) {
+		m_dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
+		if ((!m_dwStartFireAmmo) && (tpWeapon->STATE != CWeapon::eReload))
+			if (tpWeaponMagazined->IsAmmoAvailable())
+				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+			else
+				if ((tpWeapon->STATE != CWeapon::eHidden) && (tpWeapon->STATE != CWeapon::eHiding)) {
+					m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+					vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+					vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+					u32 best_slot = -1;
+					for ( ; I != E; I++)
+						if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
+							best_slot = I - B;
+					if (best_slot != -1)
+						m_inventory.Activate(best_slot);
+				}
+	}
+
+
 	m_bFiring = (tpWeapon->STATE == CWeapon::eFire) || (tpWeapon->STATE == CWeapon::eFire2);
 
 	CGroup &Group = *getGroup();

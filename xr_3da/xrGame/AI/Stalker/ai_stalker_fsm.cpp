@@ -9,11 +9,11 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
+//	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) {\
-	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
 }
 
@@ -100,13 +100,14 @@ void CAI_Stalker::ForwardCover()
 	
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
+	tPoint.y					-= .5f;
 	vfSetParameters				(
 		m_tSelectorCover,
 		0,
-		AI_Path.fSpeed > EPS_L ? eWeaponStatePrimaryFire : eWeaponStateIdle,
+		eWeaponStatePrimaryFire,
 		ePathTypeCriteria,
 		eBodyStateStand,
-		eMovementTypeRun,
+		eMovementTypeStand,
 		eLookTypeFirePoint,
 		tPoint);
 }

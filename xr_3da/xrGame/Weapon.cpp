@@ -12,6 +12,7 @@
 #include "HUDManager.h"
 
 #include "entity.h"
+#include "actor.h"
 
 
 #define FLAME_TIME 0.05f
@@ -861,7 +862,7 @@ bool CWeapon::Action(s32 cmd, u32 flags) {
 				u32 l_newType = m_ammoType;
 				do {
 					l_newType = (l_newType+1)%m_ammoTypes.size();
-				} while(l_newType != m_ammoType && !m_pInventory->Get(m_ammoTypes[l_newType]));
+				} while(l_newType != m_ammoType && !m_pInventory->Get(m_ammoTypes[l_newType],!dynamic_cast<CActor*>(H_Parent())));
 				if(l_newType != m_ammoType) {
 					m_ammoType = l_newType;
 					m_pAmmo = NULL;

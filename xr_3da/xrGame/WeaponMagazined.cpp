@@ -7,6 +7,7 @@
 #include "WeaponMagazined.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
+#include "actor.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -107,11 +108,11 @@ void CWeaponMagazined::Reload() {
 
 void CWeaponMagazined::TryReload() {
 	if(m_pInventory) {
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType]));
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent())));
 		if(m_pAmmo) {
 			SwitchState(eReload); return;
 		} else for(u32 i = 0; i < m_ammoTypes.size(); i++) {
-			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i]));
+			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent())));
 			if(m_pAmmo) { m_ammoType = i; SwitchState(eReload); return; }
 		}
 	}
@@ -129,6 +130,17 @@ void CWeaponMagazined::TryReload() {
 	//else SwitchState(eIdle);
 }
 
+bool CWeaponMagazined::IsAmmoAvailable()
+{
+	if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent()))))
+		return(true);
+	else
+		for(u32 i = 0; i < m_ammoTypes.size(); i++)
+			if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent()))))
+				return(true);
+	return(false);
+}
+
 void CWeaponMagazined::OnMagazineEmpty() {
 	SwitchState(eMagEmpty);
 }
@@ -144,7 +156,7 @@ void CWeaponMagazined::UnloadMagazine() {
 	}
 	map<LPCSTR, u16>::iterator l_it;
 	for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) {
-		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first));
+		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,!dynamic_cast<CActor*>(H_Parent())));
 		if(l_pA) {
 			u16 l_free = l_pA->m_boxSize - l_pA->m_boxCurr;
 			l_pA->m_boxCurr = l_pA->m_boxCurr + (l_free < l_it->second ? l_free : l_it->second);
@@ -159,9 +171,9 @@ void CWeaponMagazined::ReloadMagazine() {
 	static l_lockType = false;
 	if(!l_lockType) m_ammoName = NULL;
 	if(m_pInventory) {
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType]));
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent())));
 		if(!m_pAmmo && !l_lockType) for(u32 i = 0; i < m_ammoTypes.size(); i++) {
-			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i]));
+			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent())));
 			if(m_pAmmo) { m_ammoType = i; break; }
 		}
 	}

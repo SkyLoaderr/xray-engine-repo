@@ -95,7 +95,7 @@ public:
 
 
 	virtual bool Action(s32 cmd, u32 flags);
-
+	bool			IsAmmoAvailable	();
 };
 
 #endif //__XR_WEAPON_MAG_H__

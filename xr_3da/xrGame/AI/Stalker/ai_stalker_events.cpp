@@ -29,10 +29,10 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_OWNERSHIP_TAKE:
 		{
-			// Log("CActor::OnEvent - TAKE - ", cName());
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
+			Log("CStalker::OnEvent - TAKE - ", O->cName());
 			if(m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
 				////if(m_inventory.m_activeSlot == 0xffffffff) {
@@ -154,9 +154,10 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 
 	// Now, test for game specific logical objects to minimize traffic
 	CWeapon*		W	= dynamic_cast<CWeapon*>		(O);
+	CWeaponAmmo*	A	= dynamic_cast<CWeaponAmmo*>	(O);
 
-	if (W) {
-		Msg("Taking weapon!");
+	if (W || A) {
+		Msg("Taking item!");
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
 		P.w_u16			(u16(O->ID()));

@@ -364,8 +364,9 @@ PIItem CInventory::Same(const PIItem pIItem) {
 	return NULL;
 }
 
-PIItem CInventory::Get(const char *name) {
-	for(PPIItem l_it = m_belt.begin(); l_it != m_belt.end(); l_it++) {
+PIItem CInventory::Get(const char *name, bool bSearchRuck) {
+	TIItemList &l_list = bSearchRuck ? m_ruck : m_belt;
+	for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
 		PIItem l_pIItem = *l_it;
 		if(!strcmp(l_pIItem->cNameSect(), name) && l_pIItem->Useful()) return l_pIItem;
 	}
