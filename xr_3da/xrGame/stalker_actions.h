@@ -327,6 +327,9 @@ class CStalkerActionAimEnemy : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+protected:
+	bool				m_run;
+
 public:
 						CStalkerActionAimEnemy		(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();

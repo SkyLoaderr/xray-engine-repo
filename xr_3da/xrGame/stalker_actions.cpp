@@ -693,6 +693,9 @@ CStalkerActionKillEnemyAggressive::CStalkerActionKillEnemyAggressive	(CAI_Stalke
 
 void CStalkerActionKillEnemyAggressive::initialize	()
 {
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+
 	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
 	if (distance >= 50.f) {
         set_inertia_time	(250);
@@ -707,9 +710,6 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 			set_inertia_time(iFloor(float(1500 - 250)*(distance - 10.f)/(50.f - 10.f)) + 250);
 			m_fire_crouch	= ::Random.randF(40.f) < (distance - 10.f);
 		}
-
-	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 }
 
 void CStalkerActionKillEnemyAggressive::finalize	()
@@ -735,7 +735,6 @@ void CStalkerActionKillEnemyAggressive::execute		()
 	if (!m_object->visible(m_object->enemy()))
 		return;
 
-//	if (Level().timeServer() - m_start_level_time >= 500 + m_inertia_time) {
 	if (completed()) {
 		VERIFY					(m_storage);
 		m_storage->set_property	(eWorldPropertyEnemyAimed,false);
@@ -745,19 +744,7 @@ void CStalkerActionKillEnemyAggressive::execute		()
 	Fvector							position;
 	m_object->enemy()->Center		(position);
 
-//	if (m_object->Position().distance_to(m_object->enemy()->Position()) >= 10.f) {
-//		m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-//		m_object->set_desired_position	(&mem_object.m_object_params.m_position);
-//		m_object->set_movement_type		(eMovementTypeWalk);
-//	}
-//	else
-//		m_object->set_movement_type		(eMovementTypeStand);
-
-//	if (completed())
-		m_object->set_movement_type	(eMovementTypeStand);
-//	else
-//		m_object->set_movement_type	(eMovementTypeWalk);
-
+	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(m_fire_crouch ? eBodyStateCrouch : eBodyStateStand);
@@ -783,14 +770,26 @@ _edge_value_type CStalkerActionKillEnemyAggressive::weight	(const CSConditionSta
 CStalkerActionAimEnemy::CStalkerActionAimEnemy	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(1);
 }
 
 void CStalkerActionAimEnemy::initialize	()
 {
-	set_inertia_time		(1000);
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
+	if (distance >= 50.f) {
+		set_inertia_time	(1500);
+		m_run				= true;
+	}
+	else
+		if (distance <= 10.f) {
+			set_inertia_time(250);
+			m_run			= false;
+		}
+		else {
+			set_inertia_time(iFloor(float(1500 - 250)*(50.f - distance)/(50.f - 10.f)) + 250);
+			m_run			= ::Random.randF(40.f) > (distance - 10.f);
+		}
 }
 
 void CStalkerActionAimEnemy::finalize	()
@@ -823,9 +822,14 @@ void CStalkerActionAimEnemy::execute		()
 	Fvector							position;
 	m_object->enemy()->Center		(position);
 
-	m_object->set_level_dest_vertex	(m_object->enemy()->level_vertex_id());
-	m_object->set_desired_position	(&m_object->enemy()->Position());
-	m_object->set_movement_type		(eMovementTypeRun);
+	if (m_object->Position().distance_to(m_object->enemy()->Position()) > 5.f) {
+		m_object->set_level_dest_vertex	(m_object->enemy()->level_vertex_id());
+		m_object->set_desired_position	(&m_object->enemy()->Position());
+		m_object->set_movement_type		(m_run ? eMovementTypeRun : eMovementTypeWalk);
+	}
+	else
+		m_object->set_movement_type		(eMovementTypeStand);
+
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
