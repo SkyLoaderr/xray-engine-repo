@@ -169,7 +169,7 @@ void CEnvironment::OnFrame()
 	Current.lerp		(_A,_B,t_fact);
 
 	// ******************** Environment params (setting)
-	u32	_fog		= Current.Fog.get		();
+	u32	_fog		= Current.fog_plane.get		();
 	CHK_DX			(HW.pDevice->SetRenderState	( D3DRS_FOGCOLOR, _fog )); 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&Current.fog_near)	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&Current.fog_far)	));

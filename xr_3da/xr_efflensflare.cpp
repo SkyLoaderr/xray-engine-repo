@@ -17,7 +17,7 @@
 #ifdef _LEVEL_EDITOR
 	#define FAR_DIST UI.ZFar()
 #else
-	#define FAR_DIST g_pGameLevel->Environment->Current.Far
+	#define FAR_DIST g_pGameLevel->Environment->Current.far_plane
 #endif
 
 #define MAX_Flares	12
