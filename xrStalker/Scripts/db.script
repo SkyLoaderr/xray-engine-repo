@@ -1,0 +1,19 @@
+--[[------------------------------------------------------------------------------------------------
+База данных "живых" объектов
+Чугай Саша
+--------------------------------------------------------------------------------------------------]]
+
+obj_by_id   = {}
+obj_by_name = {}
+storage     = {}
+
+function add_obj( obj )
+	obj_by_id   [obj:id()]   = obj
+	obj_by_name [obj:name()] = obj
+end
+
+function del_obj( obj )
+	obj_by_id   [obj:id()]   = nil
+	obj_by_name [obj:name()] = nil
+	storage     [obj:id()]   = nil
+end
