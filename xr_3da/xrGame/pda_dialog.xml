@@ -1,7 +1,7 @@
 	﻿<?xml version='1.0' encoding="UTF-8"?>
 <window>
 	<!-- CHARACTER INFO WINDOW -->
-	<character_info x="10" y="10" width="250" height="210"></character_info>
+	<character_info x="26" y="58" width="236" height="120"></character_info>
 
 	<!-- MESSAGE LOG LIST -->
 	<list x="20" y="40" width="470" height="320" item_height="16"></list>
