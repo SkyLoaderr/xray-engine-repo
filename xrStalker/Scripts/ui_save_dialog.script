@@ -36,11 +36,12 @@ function save_dialog:FillList()
 	local f_cnt = flist:Size()
 	
 	for	it=0, f_cnt-1 	do
-		local file		=	flist:GetAt(it)
-		
-		file = string.sub(file, - string.len(file) + 4)
+		local file		=	flist:GetAt(it)	
 		
 		printf("file[%d]=%s",it,file)
+		
+		file = string.sub(file, string.len(file) - 4)
+		
 		table.insert(self.FileTable,file)
 		self:AddItemToList(file)
 	end
