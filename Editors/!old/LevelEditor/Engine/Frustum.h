@@ -33,18 +33,20 @@ typedef svector<Fvector,FRUSTUM_SAFE>	sPoly;
 class ENGINE_API	CFrustum
 {
 public:
-	Fplane			planes	[FRUSTUM_MAXPLANES];
+	struct fplane	: public Fplane
+	{
+		u32			aabb_overlap_id;	// [0..7]
+		void		cache	();	
+	};
+
+	fplane			planes	[FRUSTUM_MAXPLANES];
 	int				p_count;
 
-	EFC_Visible		AABB_OverlapPlane	(const Fplane& P, const Fvector &m, const Fvector &M) const;
+	EFC_Visible		AABB_OverlapPlane	(const fplane& P, const Fvector &m, const Fvector &M) const;
 public:
-	IC void			_clear				()			{ p_count=0; }
-	IC void			_add				(Fplane &P) { VERIFY(p_count<FRUSTUM_MAXPLANES); planes[p_count++].set(P);	}
-	IC void			_add				(Fvector& P1, Fvector& P2, Fvector&P3)
-	{
-		VERIFY(p_count<FRUSTUM_MAXPLANES);
-		planes[p_count++].build(P1,P2,P3);
-	}
+	IC void			_clear				()				{ p_count=0; }
+	void			_add				(Fplane &P);
+	void			_add				(Fvector& P1, Fvector& P2, Fvector& P3);
 
 	void			SimplifyPoly_AABB	(sPoly* P, Fplane& plane);
 

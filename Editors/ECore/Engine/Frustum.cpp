@@ -4,34 +4,61 @@
 #include "Frustum.h"
 
 //////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-EFC_Visible		CFrustum::AABB_OverlapPlane(const Fplane& P, const Fvector &m, const Fvector &M) const
-{
-	// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
-	const Fvector &N	= P.n;
-	Fvector Neg, Pos;
+void			CFrustum::fplane::cache	()	{
 	if(positive(N.x)) {
 		if(positive(N.y)) {
-			if(positive(N.z))	{ Pos.set(M.x,M.y,M.z); Neg.set(m.x,m.y,m.z); }
-			else				{ Pos.set(M.x,M.y,m.z); Neg.set(m.x,m.y,M.z); }
+			if(positive(N.z))	aabb_overlap_id	= 0;
+			else				aabb_overlap_id	= 1;
 		} else {
-			if(positive(N.z))	{ Pos.set(M.x,m.y,M.z); Neg.set(m.x,M.y,m.z); }
-			else				{ Pos.set(M.x,m.y,m.z); Neg.set(m.x,M.y,M.z); }
+			if(positive(N.z))	aabb_overlap_id	= 2;
+			else				aabb_overlap_id = 3;
 		}
 	} else {
 		if(positive(N.y)) {
-			if(positive(N.z))	{ Pos.set(m.x,M.y,M.z); Neg.set(M.x,m.y,m.z); }
-			else				{ Pos.set(m.x,M.y,m.z); Neg.set(M.x,m.y,M.z); }
+			if(positive(N.z))	aabb_overlap_id = 4;
+			else				aabb_overlap_id = 5;
 		} else {
-			if(positive(N.z))	{ Pos.set(m.x,m.y,M.z); Neg.set(M.x,M.y,m.z); }
-			else				{ Pos.set(m.x,m.y,m.z); Neg.set(M.x,M.y,M.z); }
+			if(positive(N.z))	aabb_overlap_id = 6;
+			else				aabb_overlap_id = 7;
 		}
+	}
+}
+void			CFrustum::_add			(Fplane &P) 
+{ 
+	VERIFY(p_count<FRUSTUM_MAXPLANES); 
+	planes[p_count].set		(P);
+	planes[p_count].cache	();
+	p_count					++;
+}
+void			CFrustum::_add			(Fvector& P1, Fvector& P2, Fvector&P3)
+{
+	VERIFY(p_count<FRUSTUM_MAXPLANES);
+	planes[p_count].build(P1,P2,P3);
+	planes[p_count].cache	();
+	p_count					++;
+}
+
+//////////////////////////////////////////////////////////////////////
+EFC_Visible		CFrustum::AABB_OverlapPlane(const fplane& P, const Fvector &m, const Fvector &M) const
+{
+	// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
+	Fvector			Neg, Pos;
+	switch			(aabb_overlap_id)
+	{
+	case	0:		Pos.set(M.x,M.y,M.z); Neg.set(m.x,m.y,m.z); break;
+	case	1:		Pos.set(M.x,M.y,m.z); Neg.set(m.x,m.y,M.z); break;
+	case	2:		Pos.set(M.x,m.y,M.z); Neg.set(m.x,M.y,m.z); break;
+	case	3:		Pos.set(M.x,m.y,m.z); Neg.set(m.x,M.y,M.z); break;
+	case	4:		Pos.set(m.x,M.y,M.z); Neg.set(M.x,m.y,m.z); break;
+	case	5:		Pos.set(m.x,M.y,m.z); Neg.set(M.x,m.y,M.z); break;
+	case	6:		Pos.set(m.x,m.y,M.z); Neg.set(M.x,M.y,m.z); break;
+	case	7:		Pos.set(m.x,m.y,m.z); Neg.set(M.x,M.y,M.z); break;
+	default:		NODEFAULT;
 	}
 
 	// check distance to plane from extremal points to determine overlap
-	if (P.classify(Neg) > 0) return	fcvNone;
-	else if (P.classify(Pos) <= 0) return(fcvFully);
+	if		(P.classify(Neg) > 0)	return	fcvNone;
+	else if (P.classify(Pos) <= 0)	return	fcvFully;
 	else return fcvPartial;
 }
 
@@ -41,7 +68,7 @@ EFC_Visible	CFrustum::testSphere			(Fvector& c, float r, u32& test_mask) const
 	for (int i=0; i<p_count; i++, bit<<=1)
 	{
 		if (test_mask&bit) {
-			float cls = planes[i].classify(c);
+			float cls = planes[i].classify	(c);
 			if (cls>r) { test_mask=0; return fcvNone;}	// none  - return
 			if (_abs(cls)>=r) test_mask&=~bit;			// fully - no need to test this plane
 		}
@@ -110,7 +137,7 @@ BOOL		CFrustum::testPolyInside_dirty(Fvector* p, int count) const
 	Fvector* e = p+count;
 	for (int i=0; i<p_count; i++)
 	{
-		const Fplane &P = planes[i];
+		const fplane &P = planes[i];
 		for (Fvector* I=p; I!=e; I++)
 			if (P.classify(*I)>0) return false;
 	}
@@ -133,13 +160,13 @@ void CFrustum::CreateFromPlanes(Fplane* p, int count){
 	for (int k=0; k<count; k++)
 		planes[k].set(p[k]);
 
-	for (int i=0;i<count;i++)
-	{
-		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
-		planes[i].n.x	*= denom;
-		planes[i].n.y	*= denom;
-		planes[i].n.z	*= denom;
-		planes[i].d		*= denom;
+	for (int i=0;i<count;i++)	{
+		float denom		=	1.0f / planes[i].n.magnitude();// Get magnitude of Vector
+		planes[i].n.x	*=	denom;
+		planes[i].n.y	*=	denom;
+		planes[i].n.z	*=	denom;
+		planes[i].d		*=	denom;
+		planes[i].cache	();
 	}
 
 	p_count = count;
@@ -230,7 +257,7 @@ void CFrustum::CreateOccluder(Fvector* p, int count, Fvector& vBase, CFrustum& c
 	for (int i=0; i<clip.p_count; i++)
 	{
 		// classify all points relative to plane #i
-		Fplane &P = clip.planes[i];
+		fplane &P = clip.planes[i];
 		for (int j=0; j<count; j++) cls[j]=_abs(P.classify(p[j]));
 
 		// test edges to see which lies directly on plane
@@ -265,7 +292,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 	for (int i=0; i<p_count; i++)
 	{
 		// cache plane and swap lists
-		const Fplane &P = planes[i];
+		const fplane &P = planes[i];
 		std::swap		(src,dest);
 		dest->clear		();
 
@@ -342,19 +369,19 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 	// Left clipping plane
 	if (mask&FRUSTUM_P_LEFT)
 	{
-		planes[p_count].n.x	= -(M._14 + M._11);
-		planes[p_count].n.y	= -(M._24 + M._21);
-		planes[p_count].n.z	= -(M._34 + M._31);
-		planes[p_count].d	= -(M._44 + M._41);
+		planes[p_count].n.x		= -(M._14 + M._11);
+		planes[p_count].n.y		= -(M._24 + M._21);
+		planes[p_count].n.z		= -(M._34 + M._31);
+		planes[p_count].d		= -(M._44 + M._41);
 		p_count++;
 	}
 
 	// Right clipping plane
 	if (mask&FRUSTUM_P_RIGHT)
 	{
-		planes[p_count].n.x	= -(M._14 - M._11);
-		planes[p_count].n.y	= -(M._24 - M._21);
-		planes[p_count].n.z	= -(M._34 - M._31);
+		planes[p_count].n.x		= -(M._14 - M._11);
+		planes[p_count].n.y		= -(M._24 - M._21);
+		planes[p_count].n.z		= -(M._34 - M._31);
 		planes[p_count].d		= -(M._44 - M._41);
 		p_count++;
 	}
@@ -362,9 +389,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 	// Top clipping plane
 	if (mask&FRUSTUM_P_TOP)
 	{
-		planes[p_count].n.x	= -(M._14 - M._12);
-		planes[p_count].n.y	= -(M._24 - M._22);
-		planes[p_count].n.z	= -(M._34 - M._32);
+		planes[p_count].n.x		= -(M._14 - M._12);
+		planes[p_count].n.y		= -(M._24 - M._22);
+		planes[p_count].n.z		= -(M._34 - M._32);
 		planes[p_count].d		= -(M._44 - M._42);
 		p_count++;
 	}
@@ -372,9 +399,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 	// Bottom clipping plane
 	if (mask&FRUSTUM_P_BOTTOM)
 	{
-		planes[p_count].n.x	= -(M._14 + M._12);
-		planes[p_count].n.y	= -(M._24 + M._22);
-		planes[p_count].n.z	= -(M._34 + M._32);
+		planes[p_count].n.x		= -(M._14 + M._12);
+		planes[p_count].n.y		= -(M._24 + M._22);
+		planes[p_count].n.z		= -(M._34 + M._32);
 		planes[p_count].d		= -(M._44 + M._42);
 		p_count++;
 	}
@@ -382,9 +409,9 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 	// Far clipping plane
 	if (mask&FRUSTUM_P_FAR)
 	{
-		planes[p_count].n.x	= -(M._14 - M._13);
-		planes[p_count].n.y	= -(M._24 - M._23);
-		planes[p_count].n.z	= -(M._34 - M._33);
+		planes[p_count].n.x		= -(M._14 - M._13);
+		planes[p_count].n.y		= -(M._24 - M._23);
+		planes[p_count].n.z		= -(M._34 - M._33);
 		planes[p_count].d		= -(M._44 - M._43);
 		p_count++;
 	}
@@ -401,10 +428,11 @@ void CFrustum::CreateFromMatrix(Fmatrix &M, u32 mask)
 
 	for (int i=0;i<p_count;i++)
 	{
-		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
+		float denom		= 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
 		planes[i].n.x	*= denom;
 		planes[i].n.y	*= denom;
 		planes[i].n.z	*= denom;
 		planes[i].d		*= denom;
+		planes[i].cache	();
 	}
 }

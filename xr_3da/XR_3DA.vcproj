@@ -935,6 +935,12 @@
 					Filter="">
 					<File
 						RelativePath=".\Frustum.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\Frustum.h">
