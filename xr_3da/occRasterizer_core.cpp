@@ -130,8 +130,6 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		// check 'endY' for out-of-tiangle 
 		int test = maxPixel(C[1]);
 		if (endY>=test) endY --;
-		
-		// check
 		if (startY > endY) return;
 
 		// Find the edge differences
@@ -146,8 +144,6 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		// check 'startY' for out-of-tiangle 
 		int test = minPixel(A[1]);
 		if (startY<test) startY ++;
-
-		// check
 		if (startY > endY) return;
 
 		// Find the edge differences
