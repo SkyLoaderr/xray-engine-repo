@@ -755,8 +755,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		  if(dif==0.f) continue;
 		}
 
-        contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
-
+       
 		if(dGeomGetClass(contacts[i].geom.g1)!=dTriListClass &&
 			dGeomGetClass(contacts[i].geom.g2)!=dTriListClass){
 											contacts[i].surface.mu =1.f;// 5000.f;
@@ -813,6 +812,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				}
 
 		}
+
+		contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
 
 		contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
 										 world_damping*contacts[i].surface.soft_erp);

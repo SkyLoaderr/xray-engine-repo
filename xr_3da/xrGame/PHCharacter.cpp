@@ -268,6 +268,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 	b_any_contacts=false;
 	b_valide_ground_contact=false;
 	b_valide_wall_contact=false;
+	b_climb=false;
 	
 	m_contact_count=0;
 	//limit velocity
@@ -310,6 +311,12 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 }
 
 void CPHSimpleCharacter::PhTune(dReal step){
+	if(b_climb ) {
+																		
+																				  b_clamb_jump=true;
+																				  b_side_contact=false;
+																				  m_friction_factor=1.f;
+		}
 
 	b_depart=was_contact&&(!is_contact);
 	b_meet=(!was_contact)&&(is_contact);
@@ -405,7 +412,7 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 				dBodyAddForce(m_body,m_control_force[0],m_control_force[1],m_control_force[2]);//+2.f*9.8f*70.f
 				dBodyAddForce(m_body,
 					-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor,
-					-m.mass*50.f*(!b_lose_control&&!is_contact),
+					-m.mass*50.f*(!b_lose_control&&!is_contact&&!b_climb),
 					-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
 					);
 				//if(b_clamb_jump){
@@ -459,11 +466,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		if(is_control&& (dDOT(m_control_force,c->geom.normal))<-M_SQRT1_2)
 															b_side_contact=true;
 
-		if(c->surface.mode && (b_side_contact|| dFabs(c->geom.normal[1])>M_SQRT1_2)) {
-																				  b_climb=true;
-																				  b_clamb_jump=true;
-		}
-		else																	  b_climb=false;
+
 	//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;
 	//c->surface.soft_cfm=0.0001f;
 	//c->surface.soft_erp=0.2f;
@@ -472,8 +475,16 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	//c->surface.mode =dContactApprox0;
 	c->surface.mu = 0.00f;
 		}
+	
 
 
+
+		
+
+		b_climb=b_climb||(((DWORD)c->surface.mode)& SGameMtl::flClimbable);
+
+		if((c->surface.mode&SGameMtl::flWalkOn))
+									b_clamb_jump=true;
 
 
 	//bool bo1=(c->geom.g1==m_wheel_transform);
@@ -482,6 +493,11 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	bool bo1=(c->geom.g1==m_wheel);
 	if(!(bo1 || (c->geom.g2==m_wheel))) 
 		return;
+
+	
+	
+	m_friction_factor=c->surface.mu<1.f ? c->surface.mu : 1.f;
+		
 
 	b_any_contacts=true;
 	m_contact_count++;
@@ -497,7 +513,10 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 
 	if(bo1){
 ////////////////////////////
-		if(c->geom.normal[1]<0.f) c->geom.normal[1]=-c->geom.normal[1];
+		if(c->geom.normal[1]<0.f){
+			c->geom.normal[1]=-c->geom.normal[1];
+			c->geom.depth=0.f;
+		}
 
 
 ///////////////////////////////////
@@ -556,7 +575,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		}
 	}
 
-	m_friction_factor=c->surface.mu<1.f ? c->surface.mu : 1.f;
+
 
 	if(is_control&&!b_lose_control||b_jumping){
 					//c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;// dContactBounce;|dContactFDir1
@@ -673,9 +692,10 @@ m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_con
 m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
 }
 
+//M->m_Flags.is(GameMtl::flClimbable);
 if(b_climb){
 //m_control_force[0]*=4.f;
-	m_control_force[1]+=m.mass*60.f;
+	m_control_force[1]+=m.mass*120.f;
 //m_control_force[2]*=4.f;
 }
 
