@@ -344,9 +344,9 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	{
 		pSounds->PlayAtPos					(sndLanding,this,Position());
 
-		Fvector zeroV;
-		zeroV.set							(0,0,0);
-		Movement.SetVelocity				(zeroV);
+		Fvector correctV					= Movement.GetVelocity	();
+		correctV.mul						(.7f);
+		Movement.SetVelocity				(correctV);
 
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
