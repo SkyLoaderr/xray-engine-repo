@@ -126,4 +126,5 @@ bool CUISpawnWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 	}
 
 	inherited::OnKeyboard(dik, keyboard_action);
+	return false;
 }
