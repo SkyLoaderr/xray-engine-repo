@@ -193,6 +193,7 @@ extern "C"{
 
 
 };
+/*
 void test();
 int main ()
 {
@@ -200,9 +201,7 @@ int main ()
 	test();
 	deInitLibrary();
 }
-/*
 #include "MyADO.h"
-
 void test()
 {
 
