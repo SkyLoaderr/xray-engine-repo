@@ -155,22 +155,19 @@ void CDetailManager::hw_Render()
 	RCache.set_Geometry		(hw_Geom);
 
 	// Wave0
-	float scale				=	1.f/float(quant);
-	{
-		Fvector4	wave().set	(1.f/5.f,		1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*ps_r__Detail_w_speed);
-		RCache.set_c			(hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);				// consts
-		RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
-		RCache.set_c			(hwc_wind,		dir1);																					// wind-dir
-		hw_Render_dump			(hwc_array,		1, 0, c_hdr );
-	}
+	float		scale			=	1.f/float(quant);
+	Fvector4	wave;
+	wave.set				(1.f/5.f,		1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*ps_r__Detail_w_speed);
+	RCache.set_c			(hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);				// consts
+	RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
+	RCache.set_c			(hwc_wind,		dir1);																					// wind-dir
+	hw_Render_dump			(hwc_array,		1, 0, c_hdr );
 
 	// Wave1
-	{
-		Fvector4	wave().set	(1.f/3.f,	1.f/7.f,	1.f/5.f,		Device.fTimeGlobal*ps_r__Detail_w_speed);
-		RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
-		RCache.set_c			(hwc_wind,		dir2);																					// wind-dir
-		hw_Render_dump			(hwc_array,		2, 0, c_hdr );
-	}
+	wave.set				(1.f/3.f,	1.f/7.f,	1.f/5.f,		Device.fTimeGlobal*ps_r__Detail_w_speed);
+	RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
+	RCache.set_c			(hwc_wind,		dir2);																					// wind-dir
+	hw_Render_dump			(hwc_array,		2, 0, c_hdr );
 
 	// Still
 	RCache.set_c			(hwc_s_consts,	scale,		scale,		scale,				1.f);
