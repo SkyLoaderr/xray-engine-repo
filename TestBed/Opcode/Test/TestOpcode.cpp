@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 //	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_BESTAXIS;
 	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS;
 	OPCC.NoLeaf		= true;
-	OPCC.Quantized	= true;
+	OPCC.Quantized	= false;
 	Sample.Build(OPCC);
 
 	// 2) Create a tree collider and setup it:
