@@ -68,6 +68,7 @@ public:
 	CDetailManager					Details;
 	CModelPool						Models;
 
+	CRenderTarget					Target;			// Render-target
 	CFrustum						ViewBase;
 	COccluderSystem*				View;
 
