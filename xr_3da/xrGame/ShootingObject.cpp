@@ -268,7 +268,7 @@ void CShootingObject::StartFlameParticles	()
 	}
 
 	StopFlameParticles();
-	m_pFlameParticles = xr_new<CParticlesObject>(*m_sFlameParticlesCurrent,0,false);
+	m_pFlameParticles = xr_new<CParticlesObject>(*m_sFlameParticlesCurrent,(IRender_Sector *)0,false);
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
 
