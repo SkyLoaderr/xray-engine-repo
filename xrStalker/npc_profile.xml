@@ -60,16 +60,16 @@
 		<class>Soldier_private</class>
 	</character>
 	<character id="soldier_general">
-		<team>Soldier_general</team>
-		<class>Soldier_general</class>
+		<team>Soldier_sniper</team>
+		<class>Soldier_sniper</class>
 	</character>
 	<character id="soldier_veteran">
-		<team>Soldier_veteran</team>
-		<class>Soldier_veteran</class>
+		<team>Soldier_specnaz</team>
+		<class>Soldier_specnaz</class>
 	</character>
 	<character id="soldier_master">
-		<team>Soldier_master</team>
-		<class>Soldier_master</class>
+		<team>Soldier_military</team>
+		<class>Soldier_military</class>
 	</character>
 
 	<!-- Dolg  -->
