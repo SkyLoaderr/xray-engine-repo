@@ -128,14 +128,7 @@ void __stdcall CStalkerAnimations::HeadCallback(CBoneInstance *B)
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
 
-	if (A->body_state() == eBodyStateCrouch) {
-		float				y,p,b;
-		B->mTransform.getHPB(y,p,b);
-		spin.setXYZ			(pitch - p, yaw - y, 0);
-	}
-	else {
-		spin.setXYZ			(pitch, yaw, 0);
-	}
+	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
