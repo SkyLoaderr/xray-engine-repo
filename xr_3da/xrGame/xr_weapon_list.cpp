@@ -60,7 +60,7 @@ void CWeaponList::FireStart()
 { 
 	if (m_iActiveWeapon==-1) return;
 	CWeapon* W = m_Weapons[m_iActiveWeapon];
-	if (W->IsValid()) W->FireStart();
+	W->FireStart();
 }
 
 void CWeaponList::FireEnd()

@@ -166,9 +166,6 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	fTimeToFire			= ini->ReadFLOAT	(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
-	fTimeToEmptyClick	= ini->ReadFLOAT	(section,"rpm_empty_click");
-	fTimeToEmptyClick	= 60 / fTimeToEmptyClick;
-
 	ShaderCreate		(hUIIcon,"hud\\default","");
 	
 	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");

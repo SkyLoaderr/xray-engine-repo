@@ -31,13 +31,16 @@ CWeaponHPSA::~CWeaponHPSA()
 }
 void CWeaponHPSA::switch2_Fire	(BOOL bHUDView)
 {
-	// Fire
-	Fvector						p1, d;
-	CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-	if (E) E->g_fireParams		(p1,d);
-	bFlame						=	TRUE;
-	OnShot						(bHUDView);
-	FireTrace					(p1,vLastFP,d);
+	if (fTime<=0){
+		// Fire
+		Fvector						p1, d;
+		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+		if (E) E->g_fireParams		(p1,d);
+		bFlame						=	TRUE;
+		OnShot						(bHUDView);
+		FireTrace					(p1,vLastFP,d);
+		fTime						+= fTimeToFire;
+	}
 }
 void CWeaponHPSA::switch2_Empty	(BOOL bHUDView)
 {
@@ -49,6 +52,7 @@ void CWeaponHPSA::OnEmptyClick	(BOOL bHUDView)
 
 void	CWeaponHPSA::state_Fire		(BOOL bHUD, float dt)
 {
+	fTime					-=dt;
 }
 void	CWeaponHPSA::state_MagEmpty	(BOOL bHUD, float dt)
 {

@@ -197,7 +197,6 @@ void CWeaponMagazined::TryReload		()
 void CWeaponMagazined::OnMagazineEmpty	()
 {
 	st_target			=	eMagEmpty;
-	fTime				=	fTimeToEmptyClick;
 }
 
 void CWeaponMagazined::ReloadMagazine	()
@@ -296,12 +295,8 @@ void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
 void CWeaponMagazined::state_MagEmpty(BOOL bHUDView, float dt)
 {
 	UpdateFP	(bHUDView);
-	fTime		-=dt;
-	
-	if (fTime<0){
-		OnEmptyClick(bHUDView);
-		st_target	= eIdle;
-	}
+	OnEmptyClick(bHUDView);
+	st_target	= eIdle;
 }
 
 void CWeaponMagazined::Render		(BOOL bHUDView)

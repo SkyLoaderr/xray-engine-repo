@@ -52,7 +52,6 @@ protected:
 	int				iMagazineSize;		// size (in bullets) of magazine
 
 	float			fTimeToFire;
-	float			fTimeToEmptyClick;
 	int				iHitPower;
 
 	Fvector			vLastFP, vLastFD, vLastSP;
