@@ -437,8 +437,7 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fm
 	{
 		CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
 		IRender_Visual*	root	= sector->root();
-		for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
-		{
+		for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
 			set_Frustum			(&(sector->r_frustums[v_it]));
 			add_Geometry		(root);
 		}
