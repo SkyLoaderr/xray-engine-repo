@@ -1,0 +1,162 @@
+[game_relations]
+;реальное разделение на группы репутаций на шкалы
+rating			= novice, 30, experienced, 60, veteran, 90, master
+reputation		= terrible, -1000, very_bad, -500, bad, -200, neutral, 200, good, 500, very_good, 1000, excellent
+
+;шкалы для вывода названий вместо чисел 
+;рейтингов, репутаций и благосклонности в интерфейсе
+rating_names		= novice, 30, experienced, 60, veteran, 90, master
+reputation_names	= terrible, -1000, very_bad, -500, bad, -200, neutral, 200, good, 500, very_good, 1000, excellent
+goodwill_names      = enemy, -1000, hostile, -500, indifferent, 500, companionable, 1000, friendly
+
+
+;пороговые значения для отношения персонажей
+attitude_neutal_threshold = -1000		;когда attitude меньше значения, то выставляется ALife::eRelationEnemy
+attitude_friend_threshold =  1000		;когда attitude меньше значения, то выставляется ALife::eRelationNeutral, иначе ALife::eRelationFriend
+
+;константы, которые присвоят скриптовые функции set_relation для personal goodwill
+goodwill_enemy  = -100
+goodwill_neutal = 0 
+goodwill_friend = 100
+
+
+;названия группировок
+communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 5, dolg, 6, freedom, 7, bandit, 8, zombied, 23
+
+
+;	отношения персонажа к актеру (или другому NPC) вычисляется по формуле
+;	attitude = personal_goodwill +				//личное отношение персонажа к актеру (если раньше не встречались, то 0)
+;			   community_goodwill +				//отношение группировки персонажа лично к актеру (если раньше контактов не было, то 0)
+;			   community_to_community +			//отношение группировки персонажа к группировке актера из [communities_relations]
+;              reputation_goodwill +			//отношение репутации персонажа к репутации актера из [reputation_relations]
+;			   rank_goodwill					//отношение ранга персонажа к рангу актера из [rank_relations]
+
+[communities_relations]
+;				stalker monolith military killer  ecolog   dolg  svoboda  bandit zombied
+;============================================================================================
+stalker		=		  0,  -5000,   -500,  -5000,    500,	  0,	  0,   -200,  -5000
+monolith	=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000
+military	=		  0,  -5000,   5000,  -5000,    250,	100,  -5000,  -5000,  -5000
+killer		=	  -5000,  -5000,  -5000,   5000,	  0,  -5000,	  0,	  0,  -5000
+ecolog		=	      0,  -5000,   1000,	  0,   5000,   1000,	  0,   -500,  -5000
+dolg		=		  0,  -5000,   -500,  -5000,   5000,   5000,  -5000,  -5000,  -5000
+freedom		=		  0,  -5000,  -5000,	  0,  -1500,  -5000,   5000,	  0,  -5000
+bandit		=	      0,  -5000,   -500,	  0,	  0,	  0,	  0,	  0,  -5000
+zombied		=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000
+
+
+[rank_relations]
+;			  	novice, experienced, veteran, master
+;================================================================
+novice			=	0,		0,        0,		0
+experienced		=   0,		0,        0,		0
+veteran			=   0,      0,        0,        0
+master			=   0,      0,        0,        0
+
+
+
+[reputation_relations]
+;			   terrible, very_bad, bad, neutral, good, very_good, excellent
+;================================================================
+terrible		=  1000,   800,	  500,	 -200,	 -400,	 -700,	-1000
+very_bad		=   800,   600,	  400,	 -150,	 -250,	 -400,	 -500
+bad				=   600,   300,	  200,	 -100,	 -100,	 -200,	 -300
+neutral			=  -200,  -100,	  -50,		0,	  100,	  200,	  400
+good			=  -300,  -200,	 -100,	  100,	  200,	  300,	  600
+very_good		=  -600,  -300,	 -150,	  200,	  400,	  600,	  800
+excellent		= -1000,  -600,  -300,	  300,	  500,	  800,	 1000
+
+
+;
+; очки рейтинга и репутации начисляемые за определенные действия
+;
+
+;коэффициенты "сочувствия" группировок
+;после воздействия на одного из членов группировки
+;goodwill его распространится на остальных членов группировки
+;с определенным коэффициентом
+[communities_sympathy]
+stalker		=         0.1
+monolith	=         0.0
+military	=         0.1
+killer		=         0.1
+ecolog		=         0.1
+dolg		=         0.1
+freedom		=         0.1
+bandit		=         0.0
+zombied		=         0.0
+
+;
+;очки рейтинга, получаемые за убийство персонажа
+;с определенным статусом
+[rank_kill_points]
+novice			=        0
+experienced		=		 0	
+veteran			=        0
+master			=        0
+
+;очки рейтинга, репутации и доброжелательности начисляемые
+;в зависимости от совершенного действия
+[action_points]
+
+friend_attack_goodwill			= -1000
+neutral_attack_goodwill			= -500
+enemy_attack_goodwill			= -100
+
+; Имхо репутация не должна меняться при атаке, только при убийстве.
+; Иначе за пару боев мы себе устроим отрицательную репутацию :)
+friend_attack_reputation		= 0
+neutral_attack_reputation		= 0
+enemy_attack_reputation			= 0
+
+;(с) мин. время через которое снова будет зарегистрировано 
+;сообщение об атаке на персонажа, и соответственно вычтеся attack_goodwill и attack_reputation
+;(работает аналогично и при помощи другим персонажам в бою)
+min_attack_delta_time = 1		
+
+
+friend_kill_goodwill			= 0
+neutral_kill_goodwill			= 0
+enemy_kill_goodwill				= 0
+
+;убийство члена группировки отражается на отношении
+;группировки (умножается на communities_sympathy)
+community_member_kill_goodwill  = -10
+
+friend_kill_reputation			= -20
+neutral_kill_reputation			= -10
+enemy_kill_reputation			= 0
+
+
+;
+; помощь актера персонажу во время боя
+;
+
+;порог величины хита, который нанес актер атакующему,
+;после которого регистрируется помощь актера персонажу которого атаковали
+help_hit_threshold = 10
+
+
+fight_remember_time = 10		;(c) время которое про драку будет помнить реестр
+
+friend_fight_help_goodwill   = 1000
+neutral_fight_help_goodwill	 = 1000 
+enemy_fight_help_goodwill    = 1000
+
+friend_fight_help_reputation  = 10
+neutral_fight_help_reputation = 10
+enemy_fight_help_reputation	  = 10
+
+;свойства, которые изменяются у сталкеров в 
+;зависимости от их ранга 
+;коэффициенты линейно интерполируются для рангов от 0 (novice) до 100 (experienced)
+
+[ranks_properties]
+immunities_novice_k			= 1.0
+immunities_experienced_k	= 1.0
+
+visibility_novice_k			= 1
+visibility_experienced_k	= 1
+
+dispersion_novice_k			= 1
+dispersion_experienced_k	= 1

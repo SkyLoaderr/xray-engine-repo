@@ -1,0 +1,263 @@
+
+[m_poltergeist_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0	=	  	0.45,		15,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+;Left hand Strike2
+stand_attack_1	=	  	0.45,		15,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+
+[m_poltergeist_attack_effector]
+
+duality_h		= 0.01
+duality_v		= 0.01
+blur			= 0.01
+gray			= 0.5
+noise_intensity = 0.0
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.65,0.15,0.1
+color_gray		= 0.333,0.333,0.333
+color_add		= 0,0,0
+time			= 0.3
+time_attack		= 0.05		; fade in
+time_release	        = 0.25		; fade out
+
+; camera effects
+ce_time				= 0.45 ;time 
+ce_amplitude		= -15.0 
+ce_period_number	= 1.5 ;2.0 
+ce_power			= 1.5 ;0.7 ; power 
+
+[m_poltergeist_step_params]                left             right            right           left
+;------------------------------------------------------------------------------------------------------------------
+;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
+;-----------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
+stand_walk_fwd_dmg_0	=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
+stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
+stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
+
+[m_poltergeist_e]
+GroupControlSection	= spawn_group
+SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
+$spawn               = "monsters\poltergeist"		; option for Level Editor
+$npc			     = on						; option for Level Editor
+;$prefetch 			 = 16
+Scheduled		     = on						; option for ALife Simulator
+Human		     	 = off						; option for ALife Simulator
+Health			     = 250						; option for ALife Simulator
+MinSpeed		     = 1.0						; option for ALife Simulator
+MaxSpeed		     = 1.5						; option for ALife Simulator
+going_speed          = 1.0                      ; option for ALife Simulator
+search_speed         = .5                       ; option for ALife Simulator
+visual				 = monsters\poltergeist\poltergeist
+MaxHealthValue		 = 150			; range [0..200]
+DynamicObjectsCount	 = 32
+
+cform                = skeleton					; collision class
+class                = AI_PHANT					; AI class
+
+script_binding  	= monster.bind
+
+bone_torso			 = bip01_spine1 			; bone name
+bone_head			 = bip01_head				; bone name
+bone_fire			 = bip01_head				; bone name
+
+weapon_usage		 = 0						; boolean
+
+; movement
+
+ph_box0_center 		 = 0.0,  0.2,  0.0	;0.0,  0.9,  0.0
+ph_box0_size 		 = 0.50, 0.4,  0.50	
+ph_box1_center 		 = 0.0,  0.2,  0.0
+ph_box1_size 		 = 0.50, 0.4,  0.50
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
+ph_mass 		     = 80						; also it's the food
+
+destroyed_vis_name	 = physics\Dead_Body\trupik_crash
+
+ph_skeleton_airr_lin_factor = 1.0
+ph_skeleton_airr_ang_factor = 1.0
+ph_skeleton_hinger_factor1   =1
+ph_skeleton_ddelay	     	 =20
+ph_skel_fatal_impulse_factor =20.0
+ph_after_death_velocity_factor=1.25
+ph_skel_shot_up_factor         =.8f
+
+SoundThreshold		 = 0.06						; range [0..1]a
+
+EyeFov				 = 90
+eye_range			 = 60	;60
+max_hear_dist		 = 60
+
+; speed factors			linear | angular_real | angular_path | min |  max
+Velocity_Stand			= 0,		2.0,			2.0,		1,		1
+Velocity_WalkFwdNormal	= 1.7,		2.0,			2.0,		0.2,	2.0	
+Velocity_WalkFwdDamaged	= 1.5,		3.0,			3.0,		0.8,	2.0	
+Velocity_RunFwdNormal	= 6.5,		3.0,			3.0,		0.4,	1.0	
+Velocity_RunFwdDamaged	= 3.0,  	3.2,			3.2,		0.4,	1
+Velocity_Drag			= 0.6,		3.0,			3.0,		1,		1
+Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
+
+; acceleration
+Accel_Generic			= 1.5
+Accel_Calm				= 2.5
+Accel_Aggressive		= 10.0
+
+;attack parameters
+MinAttackDist		= 0.5	;2.1
+MaxAttackDist		= 2.0
+
+as_min_dist				= 0.1
+as_step					= 0.3
+
+transparency_threshold  = 0.25
+
+DayTime_Begin		= 0		
+DayTime_End			= 21	
+Min_Satiety			= 0.7	
+Max_Satiety			= 0.95	
+
+distance_to_corpse	= 1.8	
+
+;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;							  fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+
+selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_walk_around	=      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
+
+terrain				 = 255,255,255,255,30,40
+
+hit_type = strike
+
+;entity condition
+
+satiety_v 		= 0.0001				;0.01			;скорость уменьшения сытости со временем
+radiation_v 		= 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v 	= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical 	= -1.0		;0.25			;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v 	= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+morale_v		= 0.1					;скорость восстановления морали
+health_hit_part 	= 0.5		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part 		= 0.6		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity 		= 0.5				;коэффициенты иммунитета 
+strike_immunity 	= 0.7
+shock_immunity 		= 0.5
+wound_immunity 		= 0.30	;0.75	;1.0		
+radiation_immunity 	= 1.0
+telepatic_immunity 	= 1.0
+chemical_burn_immunity 	= 1.0
+explosion_immunity 	= 1.0
+fire_wound_immunity  	= 0.35	;0.45
+
+;открытые раны
+bleeding_v					= 0						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+min_wound_size				= 0.01
+
+sleep_health = 1.0		;1.5		
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+eat_freq			=	5.0		
+eat_slice			=	0.01	
+eat_slice_weight	=	10.0	
+
+; Morale
+MoraleSuccessAttackQuant	= 0.3;
+MoraleDeathQuant			= -0.3;
+MoraleFearQuant				= -0.002
+MoraleRestoreQuant			= 0.001
+MoraleBroadcastDistance		= 10.0
+
+; Sounds
+;sound_idle				= monsters\pseudodog\pdog_howl_            ;idle_
+;sound_eat				= monsters\pseudodog\pdog_chew_            ;eat_
+;sound_attack			= monsters\pseudodog\pdog_attack_          ;dog\attack_
+;sound_attack_hit		= monsters\pseudodog\attack_hit_
+;sound_take_damage		= monsters\pseudodog\pdog_hurt_            ;dog\hit_
+;sound_die				= monsters\pseudodog\pdog_death_           ;dog\die_
+;sound_bkgnd				= monsters\biting\def_
+;sound_threaten			= monsters\pseudodog\pdog_aggression_      ;dog\threaten_
+;sound_landing			= monsters\biting\def_
+;sound_steal				= monsters\biting\def_
+;sound_panic				= monsters\dog\hit_
+;sound_growling			= monsters\dog\growling_
+
+sound_idle				= monsters\biting\def_        
+sound_eat				= monsters\biting\def_        
+sound_attack			= monsters\biting\def_      
+sound_attack_hit		= monsters\biting\def_
+sound_take_damage		= monsters\biting\def_
+sound_die				= monsters\biting\def_
+sound_bkgnd				= monsters\biting\def_
+sound_threaten			= monsters\biting\def_
+sound_landing			= monsters\biting\def_
+sound_steal				= monsters\biting\def_
+sound_panic				= monsters\biting\def_
+sound_growling			= monsters\biting\def_
+
+idle_sound_delay		= 20000
+eat_sound_delay			= 3000
+attack_sound_delay		= 4500
+
+DamagedThreshold		= 0.4
+
+material				= creatures\large	;objects\bullet
+DynamicObjectsCount		= 32
+
+squad_attack_algorithm	= 1
+attack_effector			= m_poltergeist_attack_effector
+
+attack_params			= m_poltergeist_attack_params
+step_params				= m_poltergeist_step_params
+
+anger_hunger_threshold	= 0.1
+anger_loud_threshold	= 0.7
+
+Hidden_Particles		= monsters\polter_hidden
+Hide_Particles			= monsters\polter_hide
+
+LegsCount				= 2
+
+
+
+;-- FLAME -----------------
+
+flame_sound			= monsters\bloodsucker\idle_0		
+flame_particles		= monsters\polter_flame_fire 
+flame_fire_delay	= 2000
+flame_length		= 15.0 ;5.0
+flame_hit_value		= 250
+
+;---------------------------
+
+Invisible_Energy_Restore_Velocity				= 0.02 
+Invisible_Energy_Decline_Velocity				= 0.02 
+Invisible_Energy_Critical_Value					= 0.2
+Invisible_Energy_Activate_Value					= 0.8
+Invisible_Energy_Aggressive_Restore_Velocity	= 0.03
+
+[m_Poltergeist_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+
+default				= 1.00,	-1,	1.00
+
+bip01_pelvis 		= 0.01, -1, 0.5
+bip01_spine 		= 0.01, -1, 0.5
+bip01_spine1 		= 0.2, -1, 0.5
+bip01_neck 			= 0.5, -1, 0.5
+bip01_head 			= 10.0, -1, 10.00

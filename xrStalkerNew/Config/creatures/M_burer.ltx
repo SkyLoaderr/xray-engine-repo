@@ -1,0 +1,256 @@
+[m_burer_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0 =	  	0.4,		  20,	     150,        2.0, 1.0, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.5
+
+[m_burer_attack_effector]
+
+duality_h			= 0.1; 0.01 
+duality_v			= 0.01; 0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity		= 0.1;0.0
+noise_grain			= 1
+noise_fps			= 30
+color_base			= 0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0.0,0.0,0.0
+time				= 3.00
+time_attack			= 0.05		; fade in
+time_release		= 0.50		; fade out
+
+; camera effects
+ce_time				= 0.30 ;time 
+ce_amplitude		= 12.0 
+ce_period_number	= 2.0 
+ce_power		    = 1.0 ;0.7 ; power 
+
+[m_burer_step_params]
+;---------------------------------------------------------------------------
+;	anim			| Cycles | time1 | power1 | time2 | power2 |
+;---------------------------------------------------------------------------
+stand_walk_fwd_0 	=	   1,	  0.4,    1,      0.9,    0.7,    
+stand_walk_dmg_0 	=	   1,	  0.4,    1,      0.9,    0.7,    
+stand_run_fwd_0	 	=	   1,	  0.4,    1,      0.9,    0.6,    
+stand_run_dmg_0	    =	   1,	  0.4,    1,      0.9,    0.6,    
+
+
+[m_burer_e]
+GroupControlSection		= spawn_group
+SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
+$spawn					= "monsters\burer"			; option for Level Editor
+$npc					= on						; option for Level Editor
+$prefetch 				 = 16
+Scheduled				= on						; option for ALife Simulator
+Human		     		= off						; option for ALife Simulator
+Health					= 400						; option for ALife Simulator
+MinSpeed				= 1.0						; option for ALife Simulator
+MaxSpeed				= 5.0						; option for ALife Simulator
+going_speed				= 4.5                      ; option for ALife Simulator
+search_speed			= 1.5                       ; option for ALife Simulator
+visual					= monsters\burer\burer
+MaxHealthValue		    = 200			; range [0..200]
+DynamicObjectsCount		= 32
+
+cform					= skeleton					; collision class
+class					= AI_BURER					; AI class
+
+script_binding  		= monster.bind
+
+bone_torso				= bip01_spine1 			; bone name
+bone_head				= bip01_head				; bone name
+bone_fire				= bip01_head				; bone name
+weapon_usage			= 0						; boolean
+
+ph_box0_center 			= 0.0,  0.9,  0.0
+ph_box0_size 			= 0.35, 0.9,  0.35
+ph_box1_center 			= 0.0,  0.6,  0.0
+ph_box1_size 			= 0.40, 0.6,  0.40
+ph_crash_speed_min		= 16
+ph_crash_speed_max		= 30
+ph_mass 				= 70.
+
+destroyed_vis_name	 = physics\Dead_Body\trupik_crash
+
+ph_skeleton_airr_lin_factor			= 1.0
+ph_skeleton_airr_ang_factor			= 1.0
+ph_skeleton_hinger_factor1			=1.
+ph_skeleton_ddelay	     			=20
+ph_skel_fatal_impulse_factor		=10.0
+ph_after_death_velocity_factor		=1.35
+ph_skel_shot_up_factor				=.8f
+
+SoundThreshold						= 0.06             ; range [0..1]
+
+EyeFov								= 100;
+eye_range							= 90	;50;
+max_hear_dist						= 60
+
+; speed factors			linear | angular_real | angular_path | min |  max
+Velocity_Stand			= 0,		2.4,			2.4,		1,		1
+Velocity_RunFwdNormal	= 5.0,		2.5,			2.5,		0.3,	1	
+Velocity_RunFwdDamaged	= 3.5,  	3.0,			3.0,		0.2,	1
+Velocity_WalkFwdNormal	= 1.6,		3.0,			3.0,		0.02,	1.5
+Velocity_WalkFwdDamaged	= 1.0,		3.0,			3.0,		0.5,	2.0	
+Velocity_Drag			= 1.0,		3.0,			3.0,		1,		1
+Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
+
+; acceleration
+Accel_Generic			= 1.5
+Accel_Calm				= 1.5
+Accel_Aggressive		= 200 ;6.5
+
+;attack parameters
+MinAttackDist			= 1.0	;0.5
+MaxAttackDist			= 2.5	;3.8
+
+as_min_dist				= 0.1
+as_step					= 0.3
+
+transparency_threshold  = 0.25
+
+DayTime_Begin			= 0			; начала дня для монстра
+DayTime_End				= 21		; конец дня для монстра
+Min_Satiety				= 0.6		; мин. норма сытости (меньше - уже голодный)
+Max_Satiety				= 0.9		; макс. норма сытости (больше - очень сытый)
+
+distance_to_corpse		= 1.2		; дист. до трупа, при которой он переходит в состояние еды
+
+
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+
+selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_walk_around	=      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
+
+;terrain				= 014,014,014,014,30,40 ;255,255,255,255,30,40
+terrain					= 255,255,255,255,30,40
+
+hit_type = wound
+
+;entity condition
+
+satiety_v				= 0.0001				;0.01			;скорость уменьшения сытости со временем
+radiation_v				= 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v			= 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v		= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical		= -1.0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v		= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+morale_v				= 0.01					;скорость восстановления морали
+health_hit_part			= 0.4		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part			= 0.2		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity			= 0.8				;коэффициенты иммунитета 
+strike_immunity			= 0.7
+shock_immunity			= 1.0
+wound_immunity			= 0.15	;0.30	;1.0		
+radiation_immunity		= 0.2
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.9
+explosion_immunity		= 0.7
+fire_wound_immunity		= 0.2	;0.7
+
+;открытые раны
+bleeding_v					= 0						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+min_wound_size				= 0.01
+
+sleep_health			= 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power				= 1.0		;1.5
+sleep_satiety			= 1.0		;0.8
+sleep_radiation			= 1.0	;1.1
+
+eat_freq				=	5.0		; частота укусов в сек
+eat_slice				=	0.01	; увеличение сытости при 1 укусе
+eat_slice_weight		=	10.0	; уменьшение еды у трупа
+
+
+; Morale
+MoraleSuccessAttackQuant	= 0.3;
+MoraleDeathQuant			= -0.3;
+MoraleFearQuant				= -0.002
+MoraleRestoreQuant			= 0.001
+MoraleBroadcastDistance		= 10.0
+
+sound_idle				= monsters\burer\burer_idle_
+sound_eat				= monsters\burer\burer_idle_
+sound_attack			= monsters\biting\def_
+sound_attack_hit		= monsters\burer\burer_attack_
+sound_take_damage		= monsters\biting\def_
+sound_die				= monsters\biting\def_
+sound_bkgnd				= monsters\biting\def_
+sound_threaten			= monsters\biting\def_
+sound_landing			= monsters\biting\def_
+sound_steal				= monsters\biting\def_
+sound_panic				= monsters\biting\def_
+sound_growling			= monsters\biting\def_
+sound_gravi_attack		= monsters\burer\burer_gravi_attack_
+sound_tele_attack		= monsters\burer\burer_telekinetic_
+
+sound_gravi_wave		= monsters\burer\burer_gravi_wave_0
+
+
+idle_sound_delay		= 5000
+eat_sound_delay			= 3000
+attack_sound_delay		= 2000
+
+DamagedThreshold		= 0.5
+
+material				= creatures\medium
+DynamicObjectsCount		= 32
+
+squad_attack_algorithm	= 1
+attack_effector			= m_burer_attack_effector
+
+attack_params			= m_burer_attack_params
+step_params				= m_burer_step_params
+
+Particle_Gravi_Wave		= anomaly2\burer_wave
+Particle_Gravi_Prepare	= anomaly2\burer_prepare
+Particle_Tele_Object	= static\fire_distort
+Particle_Shield			= anomaly2\burer_shield_01
+
+; Gravi Strike
+Gravi_Speed					= 50 ;62	; meter/sec	
+Gravi_Step					= 2		; meter
+Gravi_Time_To_Hold			= 1300	; milisec
+Gravi_Radius				= 3.0
+Gravi_Impulse_To_Objects	= 8.0
+Gravi_Impulse_To_Enemy		= 800;400.0
+Gravi_Hit_Power				= 50.0
+
+; Tele Strike
+Tele_Max_Handled_Objects = 3	
+Tele_Time_To_Hold		 = 800 ;1200
+Tele_Object_Min_Mass	 = 40.0
+Tele_Object_Max_Mass	 = 5000.0
+Tele_Find_Radius		 = 10.0
+
+; Scanner
+scan_critical_value		= 30.0	; граничное значение 
+scan_radius				= 40.0  ; радиус сканирования
+scan_velocity_threshold	= 4.0	; граничная скорость, до которой движение актера игнорируется
+scan_decrease_value		= 0.5	; уменьшение текущей суммы в секунду
+scan_sound				= monsters\burer\burer_scan_affect_0
+
+LegsCount				= 2
+
+[m_Burer_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+
+default				= 1.00,	-1,	1.00
+
+bip01_pelvis 		= 0.1, -1, 0.5
+bip01_spine 		= 0.1, -1, 0.5
+bip01_spine1 		= 0.4, -1, 0.5
+bip01_neck 			= 0.5, -1, 0.5
+bip01_head 			= 10.0, -1, 10.00
