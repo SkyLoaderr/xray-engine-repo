@@ -20,11 +20,16 @@ public:
 	BOOL			bClampYaw, bClampPitch, bClampRoll;
 	float			yaw,pitch,roll;
 
-	BOOL			bRelativeLink;
+	enum{
+		flRelativeLink		= (1<<0),
+		flPositionRigid		= (1<<1),
+		flDirectionRigid	= (1<<2),
+	};
+	Flags32			m_Flags;
+
 	ECameraStyle	style;
 	Fvector2		lim_yaw,lim_pitch,lim_roll;
 	Fvector			rot_speed;
-	BOOL			bApplyInert;
 
 	Fvector			vPosition;
 	Fvector			vDirection;
@@ -34,7 +39,7 @@ public:
 
 	int				tag;
 public:
-					CCameraBase		( CObject* p, BOOL rlink );
+					CCameraBase		( CObject* p, u32 flags );
 	virtual			~CCameraBase	( );
 
 	void			SetParent		( CObject* p ){parent=p;}

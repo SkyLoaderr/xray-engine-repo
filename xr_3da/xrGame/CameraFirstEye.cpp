@@ -7,11 +7,10 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CCameraFirstEye::CCameraFirstEye(CObject* p, CInifile* ini, LPCSTR section, BOOL rlink ) : CCameraBase(p, rlink)
+CCameraFirstEye::CCameraFirstEye(CObject* p, CInifile* ini, LPCSTR section, u32 flags ) : CCameraBase(p, flags)
 {
 	style				= csFirstEye;
 
-	bApplyInert			= ini->r_bool		(section,"apply_inert");
 	lim_pitch			= ini->r_fvector2	(section,"lim_pitch");
 	lim_yaw				= ini->r_fvector2	(section,"lim_yaw");
 	rot_speed			= ini->r_fvector3	(section,"rot_speed");
@@ -46,7 +45,7 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 	vDirection.set	(mR.k);
 	vNormal.set		(mR.j);
 
-	if (bRelativeLink)	{
+	if (m_Flags.is(flRelativeLink))	{
 		parent->XFORM().transform_dir	(vDirection);
 		parent->XFORM().transform_dir	(vNormal);
 	}
@@ -68,6 +67,6 @@ void CCameraFirstEye::Move( int cmd, float val )
 
 void CCameraFirstEye::OnActivate( CCameraBase* old_cam )
 {
-	if (old_cam&&(bRelativeLink==old_cam->bRelativeLink))
+	if (old_cam&&(m_Flags.is(flRelativeLink)==old_cam->m_Flags.is(flRelativeLink)))
 		yaw = (old_cam)->yaw;
 }

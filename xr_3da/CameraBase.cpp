@@ -11,9 +11,9 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CCameraBase::CCameraBase(CObject* p, BOOL rlink)
+CCameraBase::CCameraBase(CObject* p, u32 flags)
 {
-	bRelativeLink	= rlink;
+	m_Flags.set		(flags);
 	vPosition.set	(0,0,0);
 	vDirection.set	(0,0,1);
 	vNormal.set		(0,1,0);

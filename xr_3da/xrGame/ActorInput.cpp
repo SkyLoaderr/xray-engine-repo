@@ -152,6 +152,12 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 {
 	if (Remote())	return;
 
+	if(m_vehicle) 
+	{
+		m_vehicle->IR_OnMouseMove(dx,dy);
+		return;
+	}
+
 	CCameraBase* C	= cameras	[cam_active];
 	float scale		= (C->f_fov/DEFAULT_FOV)*psMouseSens * psMouseSensScale/50.f;
 	if (dx){
