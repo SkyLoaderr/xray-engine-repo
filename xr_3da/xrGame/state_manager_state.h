@@ -11,24 +11,27 @@
 #include "state_manager_abstract.h"
 #include "state_base.h"
 
+template <
+	typename _Object
+>
 class CStateManagerState : 
 	public CStateManagerAbstract<
-		CStateBase
+		CStateBase<_Object>
 	>,
-	public CStateBase
+	public CStateBase<_Object>
 {
 protected:
-	typedef CStateManagerAbstract<CStateBase> CSStateManagerAbstract;
+	typedef CStateManagerAbstract<CStateBase<_Object> > CSStateManagerAbstract;
 
 	IC		xr_vector<u32> &sequence();
-	IC		CStateBase	&current_state			();
+	IC		CStateBase<_Object>	&current_state	();
 
 public:
 						CStateManagerState		();
 	virtual				~CStateManagerState		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(CAI_Stalker *object, u32 state_id);
+	virtual	void		reinit					(_Object *object, u32 state_id);
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		initialize				();
 	virtual	void		execute					();
@@ -36,7 +39,7 @@ public:
 	virtual	void		update					(u32 time_delta);
 			bool		completed				();
 	IC		const xr_vector<u32> &sequence		() const;
-	IC		const CStateBase &current_state		() const;
+	IC		const CStateBase<_Object> &current_state() const;
 };
 
 #include "state_manager_state_inline.h"

@@ -8,11 +8,12 @@
 
 #pragma once
 
-class CAI_Stalker;
-
+template <
+	typename _Object
+>
 class CStateBase {
 protected:
-	CAI_Stalker			*m_object;
+	_Object				*m_object;
 	u32					m_start_level_time;
 	ALife::_TIME_ID		m_start_game_time;
 	u32					m_inertia_time;
@@ -21,7 +22,7 @@ public:
 	virtual					~CStateBase			();
 			void			Init				();
 	virtual	void			Load				(LPCSTR section);
-	virtual	void			reinit				(CAI_Stalker *object);
+	virtual	void			reinit				(_Object *object);
 	virtual	void			reload				(LPCSTR section);
 	virtual	void			initialize			();
 	virtual	void			execute				();
@@ -33,4 +34,4 @@ public:
 	IC		void			set_inertia_time	(u32 inertia_time);
 };
 
-#include "state_free_no_alife_inline.h"
+#include "state_base_inline.h"

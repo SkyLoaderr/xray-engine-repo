@@ -3,13 +3,14 @@
 //	Created 	: 13.01.2004
 //  Modified 	: 13.01.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Internal stalker state
+//	Description : Internal state
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-class CAI_Stalker;
-
+template <
+	typename _Object
+>
 class CStateInternal {
 public:
 	enum ESoundInfo {
@@ -52,7 +53,7 @@ private:
 	EEnemyInfo			m_enemy_info;
 	EConditionInfo		m_condition_info;
 	EObjectInfo			m_object_info;
-	CAI_Stalker			*m_object;
+	_Object				*m_object;
 	float				m_attack_success_probability[4];
 	
 			void		update_sound_info		();
@@ -64,7 +65,9 @@ public:
 	virtual				~CStateInternal			();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(CAI_Stalker *object);
+	virtual	void		reinit					(_Object *object);
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		update					(u32 time_delta);
 };
+
+#include "state_internal_inline.h"

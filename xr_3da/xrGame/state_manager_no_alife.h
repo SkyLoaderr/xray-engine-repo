@@ -10,9 +10,11 @@
 
 #include "state_manager_state.h"
 
-class CStateManagerNoALife : public CStateManagerState {
+class CAI_Stalker;
+
+class CStateManagerNoALife : public CStateManagerState<CAI_Stalker> {
 protected:
-	typedef CStateManagerState inherited;
+	typedef CStateManagerState<CAI_Stalker> inherited;
 	enum ENoALifeStates {
 		eNoALifeStateFree = u32(0),
 		eNoALifeStateDummy = u32(-1),

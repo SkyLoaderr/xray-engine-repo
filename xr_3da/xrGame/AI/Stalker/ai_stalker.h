@@ -39,10 +39,11 @@ class CAI_Stalker :
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
 	public CStateManagerStalker,
-	public CStateInternal
+	public CStateInternal<CAI_Stalker>
 {
 private:
 	typedef CCustomMonster inherited;
+	typedef CStateInternal<CAI_Stalker> CSStateInternal;
 	
 	EActionState				m_tActionState;
 	u32							m_dwActionStartTime;

@@ -10,9 +10,11 @@
 
 #include "state_base.h"
 
-class CStateFreeNoAlife : public CStateBase {
+class CAI_Stalker;
+
+class CStateFreeNoAlife : public CStateBase<CAI_Stalker> {
 protected:
-	typedef CStateBase inherited;
+	typedef CStateBase<CAI_Stalker> inherited;
 
 private:
 	u32					m_priority;

@@ -1157,6 +1157,6 @@ void CAI_Stalker::Think()
 //	_K	= K;
 //	_L	= L;
 //	_M	= M;
-	CStateInternal::update			(Level().timeServer() - m_dwLastUpdateTime);
+	CSStateInternal::update			(Level().timeServer() - m_dwLastUpdateTime);
 	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
 }

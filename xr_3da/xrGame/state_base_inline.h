@@ -8,22 +8,93 @@
 
 #pragma once
 
-IC	u32	CStateBase::start_level_time			() const
+#define TEMPLATE_SPECIALIZATION template <\
+	typename _Object\
+>
+
+#define CStateBaseAbstract CStateBase<_Object>
+
+TEMPLATE_SPECIALIZATION
+CStateBaseAbstract::CStateBase			()
+{
+	Init				();
+}
+
+TEMPLATE_SPECIALIZATION
+CStateBaseAbstract::~CStateBase			()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::Init			()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::Load			(LPCSTR section)
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::reinit			(_Object *object)
+{
+	VERIFY				(object);
+	m_object			= object;
+	m_inertia_time		= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::reload			(LPCSTR section)
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::initialize		()
+{
+	m_start_level_time	= Level().timeServer();
+	m_start_game_time	= Level().GetGameTime();
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::execute		()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBaseAbstract::finalize		()
+{
+	m_inertia_time		= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+bool CStateBaseAbstract::completed		() const
+{
+	return				(true);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	u32	CStateBaseAbstract::start_level_time			() const
 {
 	return				(m_start_level_time);
 }
 
-IC	ALife::_TIME_ID	CStateBase::start_game_time	() const
+TEMPLATE_SPECIALIZATION
+IC	ALife::_TIME_ID	CStateBaseAbstract::start_game_time	() const
 {
 	return				(m_start_game_time);
 }
 
-IC	u32	CStateBase::inertia_time				() const
+TEMPLATE_SPECIALIZATION
+IC	u32	CStateBaseAbstract::inertia_time				() const
 {
 	return				(m_inertia_time);
 }
 
-IC	void CStateBase::set_inertia_time			(u32 inertia_time)
+TEMPLATE_SPECIALIZATION
+IC	void CStateBaseAbstract::set_inertia_time			(u32 inertia_time)
 {
 	m_inertia_time		= inertia_time;
 }
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateBaseAbstract
