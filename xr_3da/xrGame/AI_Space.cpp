@@ -311,7 +311,7 @@ void CAI_Space::Render()
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
 				F->SetSize	(0.05f/_sqrt(_abs(S.w)));
-				F->SetColor(0xffffffff);
+				F->SetColor	(0xffffffff);
 				F->Out		(S.x,-S.y,"~%d",Nid);
 			}
 		}
