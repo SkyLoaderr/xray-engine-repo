@@ -250,7 +250,7 @@ CHelicopter::UpdateCL()
 	inherited::UpdateCL	();
 	
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
-	
+
 	if(PPhysicsShell()&&GetfHealth() < 0.0f)
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
@@ -258,7 +258,8 @@ CHelicopter::UpdateCL()
 	}
 	else
 	{
-//		PPhysicsShell()->se
+		PPhysicsShell()->SetTransform(XFORM());
+		PPhysicsShell()->Disable();
 	}
 
 

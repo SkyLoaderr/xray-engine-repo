@@ -62,7 +62,16 @@ void CPHShell::DisableObject()
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
 }
-
+void CPHShell::Disable()
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	DisableObject();
+	for( ;i!=e;++i)
+	{
+		(*i)->Disable();
+	}
+}
 void CPHShell::ReanableObject()
 {
 	//if(b_contacts_saved) dJointGroupEmpty(m_saved_contacts);
@@ -259,6 +268,7 @@ void CPHShell::SetTransform	(const Fmatrix& m0){
 	{
 		(*i)->SetTransform(m0);
 	}
+	spatial_move();
 }
 
 

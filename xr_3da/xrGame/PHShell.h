@@ -134,6 +134,7 @@ public:
 	virtual CPhysicsElement*	get_Element				  (ref_str bone_name);
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
 	virtual void				Enable					  ();
+	virtual void				Disable					  ();
 	virtual bool				isEnabled				  (){return CPHObject::is_active();}
 
 
