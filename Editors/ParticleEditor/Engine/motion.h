@@ -7,6 +7,8 @@
 #include <lwhost.h>
 #endif
 
+#include "bone.h"
+
 // refs
 class CEnvelope;
 class CFS_Base;
@@ -27,10 +29,11 @@ enum EChannelType{
 #define WORLD_ORIENTATION (1<<0)
 
 struct st_BoneMotion{
-//	char		name[MAX_OBJ_NAME];
+	LPSTR		name;
 	CEnvelope*	envs[ctMaxChannel];
 	DWORD		flag;
-    st_BoneMotion()	{flag=0; ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
+    			st_BoneMotion(){name=0; flag=0; ZeroMemory(envs,sizeof(CEnvelope*)*ctMaxChannel);}
+    void        SetName(LPCSTR nm){_FREE(name); name=strdup(nm);}
 };
 // list по костям
 DEFINE_VECTOR(st_BoneMotion,BoneMotionVec,BoneMotionIt);
@@ -93,15 +96,15 @@ public:
 };
 
 //--------------------------------------------------------------------------
+enum ESMFlags{
+    esmFX		= 1<<0,
+    esmStopAtEnd= 1<<1,
+    esmNoMix	= 1<<2
+};
+
 class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
-	enum EFlags{
-		eFX			= 1<<0,
-		eStopAtEnd	= 1<<1,
-		eNoMix		= 1<<2
-	};
-
     int				iBoneOrPart;
     float			fSpeed;                      
     float			fAccrue;
@@ -119,6 +122,7 @@ public:
 
     void			CopyMotion		(CSMotion* src);
 
+    st_BoneMotion*	FindBoneMotion	(LPCSTR name);
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
 	void			SetBoneOrPart	(int idx)		{iBoneOrPart=idx;}
 	DWORD			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
@@ -129,8 +133,11 @@ public:
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);
 
-	IC void			SetFlag			(EFlags flag, BOOL value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag; }
-	IC BOOL			IsFlag			(EFlags flag){return m_dwFlags&flag;}
+	IC void			SetFlag			(ESMFlags flag, BOOL value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag; }
+	IC BOOL			IsFlag			(ESMFlags flag){return m_dwFlags&flag;}
+
+    void			SortBonesBySkeleton(BoneVec& bones);
+    void			WorldRotate		(int boneId, float h, float p, float b);
 #ifdef _LW_EXPORT
 	void			ParseBoneMotion	(LWItemID bone);
 #endif

@@ -139,10 +139,20 @@ CSMotion::~CSMotion(){
 	Clear();
 }
 
-void CSMotion::Clear(){
-	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
+void CSMotion::Clear()
+{
+	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+	    _FREE(bm_it->name);
 		for (int ch=0; ch<ctMaxChannel; ch++) _DELETE(bm_it->envs[ch]);
+    }
 	bone_mots.clear();
+}
+
+st_BoneMotion* CSMotion::FindBoneMotion(LPCSTR name)
+{
+	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
+    	if (0==stricmp(bm_it->name,name)) return bm_it;
+    return 0;
 }
 
 void CSMotion::CopyMotion(CSMotion* source){
@@ -174,6 +184,18 @@ void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R){
 	R.z = envs[ctRotationB]->Evaluate(t);
 }
 
+void CSMotion::WorldRotate(int boneId, float h, float p, float b)
+{
+	R_ASSERT((boneId>=0)&&(boneId<(int)bone_mots.size()));
+//    st_BoneMotion& BM = bone_mots[boneId];
+
+//	CEnvelope* eh = BM.envs[ctRotationH];
+//    for (eh->)
+//	,
+//	ctRotationP,
+//	ctRotationB,
+}
+
 void CSMotion::SaveMotion(const char* buf){
 	CFS_Memory		F;
 	F.open_chunk	(EOBJ_SMOTION);
@@ -199,7 +221,8 @@ void CSMotion::Save(CFS_Base& F){
     F.Wfloat	(fPower);
 	F.Wdword	(bone_mots.size()); 
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-		F.Wdword(bm_it->flag);
+    	F.WstringZ	(bm_it->name);
+		F.Wdword	(bm_it->flag);
 		for (int ch=0; ch<ctMaxChannel; ch++)
 			bm_it->envs[ch]->Save(F);
 	}
@@ -210,8 +233,8 @@ bool CSMotion::Load(CStream& F){
 	WORD vers	= F.Rword();
 	if (vers==0x0004){
 	    iBoneOrPart	= F.Rdword();
-		SetFlag		(eFX,F.Rbyte());
-		SetFlag		(eStopAtEnd,F.Rbyte());
+		SetFlag		(esmFX,F.Rbyte());
+		SetFlag		(esmStopAtEnd,F.Rbyte());
 		fSpeed		= F.Rfloat();
 	    fAccrue		= F.Rfloat();
 		fFalloff	= F.Rfloat();
@@ -233,8 +256,11 @@ bool CSMotion::Load(CStream& F){
 		fFalloff	= F.Rfloat();
 		fPower		= F.Rfloat();
 		bone_mots.resize(F.Rdword());
+       	string64 	buf;
 		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-			bm_it->flag = F.Rdword();
+        	F.RstringZ		(buf);
+        	bm_it->SetName	(buf);
+			bm_it->flag 	= F.Rdword();
 			for (int ch=0; ch<ctMaxChannel; ch++){
 				bm_it->envs[ch] = new CEnvelope();
 				bm_it->envs[ch]->Load(F);
@@ -242,5 +268,16 @@ bool CSMotion::Load(CStream& F){
 		}
 	}
 	return true;
+}
+
+void CSMotion::SortBonesBySkeleton(BoneVec& bones)
+{
+	BoneMotionVec new_bone_mots;
+	for (BoneIt b_it=bones.begin(); b_it!=bones.end(); b_it++){
+    	st_BoneMotion* BM = FindBoneMotion((*b_it)->Name()); R_ASSERT(BM);
+		new_bone_mots.push_back(*BM);
+    }
+    bone_mots.clear	();
+    bone_mots 		= new_bone_mots;
 }
 

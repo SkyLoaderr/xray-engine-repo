@@ -110,6 +110,9 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	NameOnAfterEdit			(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall 	NameOnBeforeEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall 	NameOnDraw				(PropValue* sender, LPVOID draw_val);
+	void __fastcall 	BPOnAfterEdit			(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	BPOnBeforeEdit			(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;

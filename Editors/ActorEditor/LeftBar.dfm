@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 565
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 277
+    Height = 565
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object spProps: TSplitter
       Left = 1
-      Top = -208
+      Top = 80
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSkeletonPart: TPanel
       Left = 1
-      Top = -206
+      Top = 82
       Width = 210
       Height = 482
       Align = alBottom
@@ -441,7 +441,9 @@ object fraLeftBar: TfraLeftBar
             ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
+            SortMode = smAdd
             StoragePath = '\Tree'
+            SortUseCase = False
             TabOrder = 0
             TabStop = True
             Tracking = False
@@ -573,6 +575,36 @@ object fraLeftBar: TfraLeftBar
           BevelOuter = bvNone
           Color = 10528425
           TabOrder = 1
+          object lbMotionCount: TMxLabel
+            Left = 63
+            Top = 1
+            Width = 59
+            Height = 13
+            AutoSize = False
+            Caption = '999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            ShadowColor = 10528425
+            ShadowPos = spRightBottom
+          end
+          object MxLabel2: TMxLabel
+            Left = 4
+            Top = 1
+            Width = 56
+            Height = 13
+            Caption = 'Items in list:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            ShadowColor = 10528425
+          end
         end
       end
     end
@@ -580,7 +612,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 358
+      Height = 79
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -808,7 +840,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 149
         Width = 210
-        Height = 209
+        Height = 52
         Align = alClient
         ParentShowHint = False
         ShowHint = False
@@ -861,7 +893,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 208
-          Height = 193
+          Height = 36
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -1053,7 +1085,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 181
+    Left = 205
     Top = 313
     object miLoadMotions: TMenuItem
       Caption = 'Load'

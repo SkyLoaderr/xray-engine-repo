@@ -43,6 +43,9 @@ extern void __stdcall xrBoneLerp_x86(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta)
 
 void CEngine::Initialize(void)
 {
+	strcpy					(Params,GetCommandLine());
+    strlwr					(Params);
+
 	// Other stuff
 	FS.OnCreate				();
 

@@ -125,7 +125,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot){
 	m_ActiveSMotion=mot;
-	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->IsFlag(CSMotion::eStopAtEnd));
+	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->IsFlag(esmStopAtEnd));
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
 	CalculateAnimation();
@@ -151,6 +151,7 @@ CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname){
 	CSMotion* M = LoadSMotion(fname);
     if (M){
 	  	if (CheckBoneCompliance(M)){
+        	M->SortBonesBySkeleton(m_Bones);
         	M->SetName(name);
 	     	m_SMotions.push_back(M);
         }else{
@@ -308,9 +309,10 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M){
 	VERIFY(M);
     BoneMotionVec& lst = M->BoneMotions();
 	if (m_Bones.size()!=lst.size()) return false;
-//    for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++){
-//    	if (!FindBoneByName(bm_it->name)) return false;
-//    }
+    for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++)
+    	if (!FindBoneByName(bm_it->name)) return false;
+    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+    	if (!M->FindBoneMotion(bm_it->name)) return false;
     return true;
 }
 

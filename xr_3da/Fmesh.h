@@ -62,27 +62,30 @@ enum MT {
 };
 
 enum OGF_Chuncks {
-	OGF_HEADER=1,
-	OGF_TEXTURE,
-	OGF_TEXTURE_L,	// Really - Texture link for static data
-	OGF_MATERIAL,	// Actors only
-	OGF_CHIELDS,
-	OGF_BBOX,
-	OGF_VERTICES,
-	OGF_INDICES,
-	OGF_P_MAP,
-	OGF_VCONTAINER,
-	OGF_BSPHERE,
-	OGF_CHIELDS_L,	// Link to chield visuals
-	OGF_BONE_NAMES,	// * For skeletons only
-	OGF_MOTIONS,	// * For skeletons only
-	OGF_DPATCH,		// --- DPatches only
-	OGF_P_LODS,
-    OGF_CHILDREN,	// * For skeletons only 
-	OGF_SMPARAMS,	// * For skeletons only
-	OGF_ICONTAINER,
+	OGF_HEADER		= 1,
+	OGF_TEXTURE		= 2,
+	OGF_TEXTURE_L	= 3,	// Really - Texture link for static data
+	OGF_MATERIAL	= 4,	// Actors only
+	OGF_CHIELDS		= 5,
+	OGF_BBOX		= 6,
+	OGF_VERTICES	= 7,
+	OGF_INDICES		= 8,
+	OGF_P_MAP		= 9,
+	OGF_VCONTAINER	= 10,
+	OGF_BSPHERE		= 11,
+	OGF_CHIELDS_L	= 12,	// Link to chield visuals
+	OGF_BONE_NAMES	= 13,	// * For skeletons only
+	OGF_MOTIONS		= 14,	// * For skeletons only
+	OGF_DPATCH		= 15,	// --- DPatches only
+	OGF_P_LODS		= 16,
+    OGF_CHILDREN	= 17,	// * For skeletons only
+	OGF_SMPARAMS	= 18,	// * For skeletons only
+	OGF_ICONTAINER	= 19,
+	OGF_SMPARAMS2	= 20,	// * For skeletons only
     OGF_forcedword	= 0xFFFFFFFF
 };
+
+const WORD	xrOGF_SMParamsVersion= 1;
 
 // OGF_HEADER
 const BYTE	xrOGF_FormatVersion	= 3;

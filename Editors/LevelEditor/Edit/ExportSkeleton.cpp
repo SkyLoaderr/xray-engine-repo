@@ -444,15 +444,18 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
     UI.ProgressInc();
 
     // save smparams
-    F.open_chunk(OGF_SMPARAMS);
+    F.open_chunk		(OGF_SMPARAMS2);
+    F.Wword				(xrOGF_SMParamsVersion);
     // bone parts
-    BPVec& bp_lst 			= m_Source->BoneParts();
+    BPVec& bp_lst 		= m_Source->BoneParts();
     if (bp_lst.size()){
 		F.Wword(bp_lst.size());
     	for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
     		F.WstringZ(bp_it->alias.c_str());
             F.Wword(bp_it->bones.size());
-	        F.write(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+//	        F.write(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+	        for (int i=0; i<bp_it->bones.size(); i++)
+            	F.Wdword(bp_it->bones[i]);
     	}
     }else{
 		F.Wword(1);
@@ -466,14 +469,13 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
     for (motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
         F.WstringZ	(motion->Name());
-        F.Wbyte		(!motion->bFX);
+        F.Wdword	(motion->m_dwFlags);
 		F.Wword		(motion->iBoneOrPart);
         F.Wword		(motion_it-sm_lst.begin());
         F.Wfloat	(motion->fSpeed);
         F.Wfloat	(motion->fPower);
         F.Wfloat	(motion->fAccrue);
         F.Wfloat	(motion->fFalloff);
-        F.Wbyte		(motion->bStopAtEnd);
     }
     F.close_chunk();
 	UI.ProgressInc();

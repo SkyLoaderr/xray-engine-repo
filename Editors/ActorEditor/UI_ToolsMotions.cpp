@@ -200,6 +200,25 @@ void __fastcall CActorTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
 }
 //------------------------------------------------------------------------------
                         
+//------------------------------------------------------------------------------
+void __fastcall CActorTools::BPOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
+    (*((DWORD*)edit_val))--;
+}
+//------------------------------------------------------------------------------
+void __fastcall CActorTools::BPOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
+    (*((DWORD*)edit_val))++;
+}
+//------------------------------------------------------------------------------
+void __fastcall CActorTools::BPOnDraw(PropValue* sender, LPVOID draw_val)
+{
+	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
+    (*((DWORD*)draw_val))++;
+}
+//------------------------------------------------------------------------------
 void CActorTools::FillMotionProperties()
 {
 	R_ASSERT(m_pEditObject);
@@ -210,15 +229,16 @@ void CActorTools::FillMotionProperties()
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Speed", 	m_MotionProps->MakeFloatValue(&SM->fSpeed,	0.f,20.f,0.01f,2));
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Accrue", 	m_MotionProps->MakeFloatValue(&SM->fAccrue,	0.f,20.f,0.01f,2));
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Falloff", 	m_MotionProps->MakeFloatValue(&SM->fFalloff,	0.f,20.f,0.01f,2));
-        TokenValue* TV = m_MotionProps->MakeTokenValue(&SM->bFX,tfx_token,MotionOnAfterEdit);
+        FlagValue* TV = m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmFX,MotionOnAfterEdit);
         m_MotionProps->AddItem(0,PROP_TOKEN, 		"Type", 	TV);
         m_pCycleNode = m_MotionProps->AddItem(0,PROP_MARKER, "Cycle");
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            m_MotionProps->AddItem(m_pCycleNode,PROP_TOKEN2, 	"Bone part",m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst));
-            m_MotionProps->AddItem(m_pCycleNode,PROP_FLAG,		"Stop at end",&SM->m_dwFlags,CSMotion::eStopAtEnd);
+            m_MotionProps->AddItem(m_pCycleNode,PROP_TOKEN2, 	"Bone part",	m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
+            m_MotionProps->AddItem(m_pCycleNode,PROP_FLAG,		"Stop at end",	m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmStopAtEnd));
+            m_MotionProps->AddItem(m_pCycleNode,PROP_FLAG,		"No mix",		m_MotionProps->MakeFlagValue(&SM->m_dwFlags,esmNoMix));
         }
         m_pFXNode = m_MotionProps->AddItem(0,PROP_MARKER, "FX");
         {
@@ -242,8 +262,8 @@ void CActorTools::PlayMotion()
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
             CSMotion* M=m_pEditObject->GetActiveSMotion();
             if (M&&m_RenderObject.IsRenderable())
-            	if (M->bFX) m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());
-                else		m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayCycle(M->Name(),fraLeftBar->ebMixMotion->Down);
+            	if (M->IsFlag(esmFX))	m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());
+                else					m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayCycle(M->Name(),fraLeftBar->ebMixMotion->Down);
         }
 }
 

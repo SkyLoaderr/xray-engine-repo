@@ -54,4 +54,5 @@ public:
 	void			ParseBone		(LWItemID bone);
 #endif
 };
+DEFINE_VECTOR(CBone*,BoneVec,BoneIt);
 #endif

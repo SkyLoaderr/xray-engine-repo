@@ -113,6 +113,8 @@ __published:	// IDE-managed Components
 	TMenuItem *N7;
 	TMenuItem *N8;
 	TMenuItem *N9;
+	TMxLabel *lbMotionCount;
+	TMxLabel *MxLabel2;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);

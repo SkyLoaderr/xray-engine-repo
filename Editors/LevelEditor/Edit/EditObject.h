@@ -5,6 +5,7 @@
 #define _INCDEF_Object_H_
                                       
 #include "SceneClassList.h"
+#include "Bone.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
 class 	CEditableMesh;
@@ -90,7 +91,6 @@ public:
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
 DEFINE_VECTOR	(CSurface,SurfInstVec,SurfInstIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
-DEFINE_VECTOR	(CBone*,BoneVec,BoneIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
 

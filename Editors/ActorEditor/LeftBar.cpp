@@ -396,6 +396,7 @@ void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
     if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fnames,true)){
 	    AStringVec lst;
     	SequenceToList(lst,fnames.c_str());
+        tvMotions->IsUpdating = true;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             TElTreeItem* node=0;
             if (tvMotions->Selected&&FOLDER::IsFolder(tvMotions->Selected))
@@ -408,6 +409,8 @@ void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
                 Tools.MotionModified();
             }
         }
+        tvMotions->IsUpdating = false;
+        tvMotions->EnsureVisibleBottom(tvMotions->Selected);
     }
 }
 //---------------------------------------------------------------------------
@@ -529,7 +532,8 @@ void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebBonePartClick(TObject *Sender)
 {
-	frmBonePart->Run(Tools.CurrentObject());
+	if (frmBonePart->Run(Tools.CurrentObject()))
+		UpdateMotionProperties();
 }
 //---------------------------------------------------------------------------
 

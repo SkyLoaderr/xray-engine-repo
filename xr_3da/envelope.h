@@ -72,6 +72,8 @@ public:
 	void		Load		(CStream& F);
 	void		SaveA		(CFS_Base& F);
 	void		LoadA		(CStream& F);
+
+    void		RotateKeys	(float h, float p, float b);
 };
 
 #endif //_ENVELOPE_H_
