@@ -222,8 +222,6 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 
 			if (hFile!=INVALID_HANDLE_VALUE)
 			{
-				Debug.backend	("*** Internal Error ***\n",0,0);
-
 				_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 
 				ExInfo.ThreadId				= ::GetCurrentThreadId();
@@ -263,12 +261,12 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 		szResult = "DBGHELP.DLL not found";
 	}
 
-	if (szResult)
-		::MessageBox( NULL, szResult, Core.ApplicationName, MB_OK );
+	string1024		reason;
+	sprintf			(reason,"*** Internal Error ***\n%s",szResult);
+	Debug.backend	(reason,0,0);
 
 	return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 typedef int		(__cdecl * _PNH)( size_t );
