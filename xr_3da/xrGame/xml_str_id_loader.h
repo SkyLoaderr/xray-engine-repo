@@ -88,12 +88,12 @@ const typename CSXML_IdToIndex::ITEM_DATA& CSXML_IdToIndex::GetById (const T_ID&
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
+#pragma todo("Oles to Yura: Really dumb and slow code. 'ref_str' designed for sharing only!!!")
 		if(ref_str((*it).id) == ref_str(str_id))
 			break;
 	}
 
 	R_ASSERT3(ItemDataVector().end() != it, "item not found, id", *ref_str(str_id));
-
 	return *it;
 }
 
