@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "ai_alife_static_objects.h"
-
 using namespace ALife;
 
 class CAI_ALife;

@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ai_alife_space.h"
-#include "ai_alife_static_objects.h"
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 
