@@ -568,6 +568,9 @@
 			Name="string library"
 			Filter="">
 			<File
+				RelativePath=".\xrstring.cpp">
+			</File>
+			<File
 				RelativePath=".\xrstring.h">
 			</File>
 		</Filter>

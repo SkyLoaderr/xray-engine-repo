@@ -1,50 +1,57 @@
 #pragma once
+#pragma pack(push,4)
 
 //////////////////////////////////////////////////////////////////////////
 typedef const char*		str_c;
 
 //////////////////////////////////////////////////////////////////////////
-struct	str_value
+struct		XRCORE_API	str_value
 {
-	u32					dwReference;
-	str_c				value;
+	u32					dwReference		;
+	char				value		[]	;
+};
+struct		XRCORE_API	str_value_cmp
+{
+	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return strcmp(A->value,B->value)<0;	};
 };
 
 //////////////////////////////////////////////////////////////////////////
-class	str_container
+class		XRCORE_API	str_container
 {
 private:
-	xr_set<str_value>	container;
+	typedef xr_set<str_value*,str_value_cmp>	cdb;
+	xrCriticalSection							cs;
+	cdb											container;
 public:
-	str_value*			dock		(str_c value)
-	{
-	}
+	str_value*			dock			(str_c value);
+	void				clean			();
+						~str_container	();
 };
-extern	str_container	scontainer;
+XRCORE_API	extern		str_container*	g_pStringContainer;
 
 //////////////////////////////////////////////////////////////////////////
-class	str_ref
+class		XRCORE_API	str_ref
 {
 private:
 	str_value*			p_;
 protected:
 	// ref-counting
-	void				_inc	()									{	if (0==p_) return;	p_->dwReference++;												}
-	void				_dec	()									{	if (0==p_) return;	p_->dwReference--; if (0==p_->dwReference) p_=0;				}
+	void				_inc		()								{	if (0==p_) return;	p_->dwReference++;														}
+	void				_dec		()								{	if (0==p_) return;	p_->dwReference--; 														}
 public:
-	void				_set	(str_c rhs) 						{	str_value* v = scontainer.dock(rhs); if (0!=v) v->dwReference++; _dec(); p_ = v;	}
-	void				_set	(str_ref const &rhs)				{	str_value* v = rhs->p_; if (0!=v) v->dwReference++; _dec(); p_ = v;					}
-	const str_value*	_get	()	const							{	return p_;																			}
+	void				_set		(str_c rhs) 					{	str_value* v = g_pStringContainer->dock(rhs); if (0!=v) v->dwReference++; _dec(); p_ = v;	}
+	void				_set		(str_ref const &rhs)			{	str_value* v = rhs.p_; if (0!=v) v->dwReference++; _dec(); p_ = v;							}
+	const str_value*	_get		()	const						{	return p_;																					}
 public:
 	// construction
-	str_ref				()											{	p_ = 0;											}
-	str_ref				(str_c rhs) 								{	_set(rhs);										}
-	str_ref				(str_ref const &rhs)						{	_set(rhs);										}
-	~str_ref			()											{	_dec();											}
+						str_ref		()								{	p_ = 0;											}
+						str_ref		(str_c rhs) 					{	_set(rhs);										}
+						str_ref		(str_ref const &rhs)			{	_set(rhs);										}
+						~str_ref	()								{	_dec();											}
 
 	// assignment & accessors
-	str_ref&			operator=	(str_c rhs)						{	_set(rhs);	return (self&)*this;				}
-	str_ref&			operator=	(str_ref rhs)					{	_set(rhs);	return (self&)*this;				}
+	str_ref&			operator=	(str_c rhs)						{	_set(rhs);	return (str_ref&)*this;				}
+	str_ref&			operator=	(str_ref rhs)					{	_set(rhs);	return (str_ref&)*this;				}
 	str_c				operator*	() const						{	return p_->value;								}
 	bool				operator!	() const						{	return p_ == 0;									}
 
@@ -60,17 +67,12 @@ public:
 // ptr != const res_ptr
 // res_ptr < res_ptr
 // res_ptr > res_ptr
-template<class T, class U, typename D>	inline bool operator	==	(str_ref const & a, str_ref const & b)		{ return a._get() == b._get();						}
-template<class T, class U, typename D>	inline bool operator	!=	(str_ref const & a, str_ref const & b)		{ return a._get() != b._get();						}
-template<class T, typename D>			inline bool operator	<	(str_ref const & a, str_ref const & b)		{ return std::less<T *>()(a._get(), b._get());		}
-template<class T, typename D>			inline bool operator	>	(str_ref const & a, str_ref const & b)		{ return std::greater<T *>()(a._get(), b._get());	}
+inline bool operator	==	(str_ref const & a, str_ref const & b)		{ return a._get() == b._get();					}
+inline bool operator	!=	(str_ref const & a, str_ref const & b)		{ return a._get() != b._get();					}
+inline bool operator	<	(str_ref const & a, str_ref const & b)		{ return a._get() <  b._get();					}
+inline bool operator	>	(str_ref const & a, str_ref const & b)		{ return a._get() >  b._get();					}
 
 // externally visible swap
-template<class T, typename D> void swap	(str_ref & lhs, str_ref & rhs)									{ lhs.swap(rhs);	}
+inline void swap			(str_ref & lhs, str_ref & rhs)				{ lhs.swap(rhs);	}
 
-// mem_fn support
-template<class T, typename D> T * get_pointer(str_ref const & p)													{ return p.get();	}
-
-// casting
-template<class T, class U, typename D> str_ref static_pointer_cast(str_ref const & p)						{ return static_cast<T *>(p.get());				}
-template<class T, class U, typename D> str_ref dynamic_pointer_cast(str_ref const & p)					{ return dynamic_cast<T *>(p.get());			}
+#pragma pack(pop)
