@@ -86,18 +86,18 @@ public:
 
 	xr_vector<base_color>	color;
 private:
-	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
-	_vertex*			load_create_vertex	(Fvector& P);
+	_face*					load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
+	_vertex*				load_create_vertex	(Fvector& P);
 public:
-	void				Load				(IReader& fs);
-	void				calc_normals		();
-	void				calc_materials		();
-	void				calc_faceopacity	();
-	void				calc_lighting		(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, base_lighting& lights, u32 flags);
-	void				calc_lighting		();
-	void				calc_ogf			();
-	void				export_geometry		();
-	void				export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform);
+	void					Load				(IReader& fs);
+	void					calc_normals		();
+	void					calc_materials		();
+	void					calc_faceopacity	();
+	void					calc_lighting		(xr_vector<base_color>& dest, Fmatrix& xform, CDB::MODEL* M, base_lighting& lights, u32 flags);
+	void					calc_lighting		();
+	void					calc_ogf			();
+	void					export_geometry		();
+	void					export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform);
 };
 
 class xrMU_Reference

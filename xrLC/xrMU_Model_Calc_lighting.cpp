@@ -35,7 +35,7 @@ var _x	= var(x);
 */
 
 //-----------------------------------------------------------------------
-void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* MDL, base_lighting& lights, u32 flags)
+void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB::MODEL* MDL, base_lighting& lights, u32 flags)
 {
 	// trans-map
 	typedef	xr_multimap<float,v_vertices>	mapVert;
@@ -156,9 +156,8 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 			base_color			R;
 			R.lerp				(VL[v]->C,C,level);
 			R.max				(VL[v]->C);
-			VL[v]->C.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-			VL[v]->C.mul_rgb	(.5f);
-			VL[v]->C.a			= 1.f;
+			VL[v]->C			= R;
+			VL[v]->C.mul		(.5f);
 		}
 	}
 
@@ -166,27 +165,26 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 	dest.resize				(m_vertices.size());
 	for (I = 0; I<m_vertices.size(); I++)
 	{
-		Fvector	ptPos	= m_vertices[I]->P;
-		Fcolor	ptColor	= m_vertices[I]->C;
+		Fvector		ptPos	= m_vertices[I]->P;
+		base_color	ptColor	= m_vertices[I]->C;
 
-		Fcolor	_C;		_C.set	(0,0,0,0);
-		float 	_N		= 0;
-
+		base_color	_C;		
+		float 	_N			= 0;
+		/*
 		for (u32 T=0; T<m_vertices.size(); T++)
 		{
-			Fcolor			vC; 
+			base_color		vC; 
 			float			oD	= ptPos.distance_to	(m_vertices[T]->P);
 			float			oA  = 1/(1+10*oD*oD);
-			vC.set			(m_vertices[T]->C); 
-			vC.mul_rgb		(oA);
-			_C.r			+=	vC.r;
-			_C.g			+=	vC.g;
-			_C.b			+=	vC.b;
+			vC				= m_vertices[T]->C; 
+			vC.mul			(oA);
+			_C.add			(vC);
 			_N				+=	oA;
 		}
 
-		_C.mul_rgb		(1/(_N+EPS));
+		_C.mul			(1/(_N+EPS));
 		_C.a			= 1.f;
+		*/
 		dest[I]			= ptColor;	//.lerp	(_C,ptColor,.9f);
 	}
 }
@@ -205,7 +203,7 @@ void xrMU_Model::calc_lighting		()
 	CDB::MODEL*				M	= xr_new<CDB::MODEL>	();
 	M->build				(CL.getV(),(u32)CL.getVS(),CL.getT(),(u32)CL.getTS());
 
-	calc_lighting			(color,Fidentity,M,pBuild->L_static.hemi,FALSE);
+	calc_lighting			(color,Fidentity,M,pBuild->L_static,LP_dont_rgb+LP_dont_sun);
 
 	xr_delete				(M);
 
@@ -215,7 +213,7 @@ void xrMU_Model::calc_lighting		()
 void xrMU_Reference::calc_lighting	()
 {
 	static BOOL					bFirst	= TRUE;
-	model->calc_lighting		(color,xform,RCAST_Model,pBuild->L_layers.front().lights,TRUE);
+	model->calc_lighting		(color,xform,RCAST_Model,pBuild->L_static,LP_DEFAULT);
 
 	R_ASSERT					(color.size()==model->color.size());
 
@@ -224,8 +222,8 @@ void xrMU_Reference::calc_lighting	()
 	{
 		xr_vector<xr_vector<REAL> >	A;	A.resize(color.size());
 		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
-		xr_vector<REAL>			C;
-		xr_vector<REAL>			D;
+		xr_vector<REAL>					C;
+		xr_vector<REAL>					D;
 		/*
 		if (bFirst)
 		{
@@ -240,28 +238,35 @@ void xrMU_Reference::calc_lighting	()
 		*/
 		for (u32 it=0; it<color.size(); it++)
 		{
-			Fcolor&		__A		= model->color	[it];
-			A[it].push_back		(__A.r);
-			A[it].push_back		(__A.g);
-			A[it].push_back		(__A.b);
+			base_color&		__A		= model->color	[it];
+			A[it].push_back		(__A.hemi);
+			A[it].push_back		(__A.hemi);
+			A[it].push_back		(__A.hemi);
+			A[it].push_back		(__A.hemi);
+			A[it].push_back		(__A.hemi);
 
-			Fcolor&		__B		= color			[it];
-			B[it].push_back		(__B.r);
-			B[it].push_back		(__B.g);
-			B[it].push_back		(__B.b);
+			base_color&		__B		= color			[it];
+			B[it].push_back		(__B.rgb.x);
+			B[it].push_back		(__B.rgb.y);
+			B[it].push_back		(__B.rgb.z);
+			B[it].push_back		(__B.hemi);
+			B[it].push_back		(__B.sun);
 		}
 		vfOptimizeParameters	(A,B,C,D,REAL(0.000001));
 
 		// 
-		c_scale.x			= C[0];
-		c_scale.y			= C[1];
-		c_scale.z			= C[2];
-		c_scale.w			= 0;
+		c_scale.rgb.x		= C[0];
+		c_scale.rgb.y		= C[1];
+		c_scale.rgb.z		= C[2];
+		c_scale.hemi		= C[3];
+		c_scale.sun			= C[4];
 
-		c_bias.x			= D[0];
-		c_bias.y			= D[1];
-		c_bias.z			= D[2];
-		c_bias.w			= 1;
+		c_bias.rgb.x		= D[0];
+		c_bias.rgb.y		= D[1];
+		c_bias.rgb.z		= D[2];
+		c_bias.hemi			= D[3];
+		c_bias.sun			= D[4];
+
 		/*
 		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
 		c_scale.x,c_scale.y,c_scale.z,
