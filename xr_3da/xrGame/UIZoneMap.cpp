@@ -90,6 +90,19 @@ void CUIZoneMap::Init()
 	
 	landscape.SetRect(0,0,2*map_radius,2*map_radius);
 
+#pragma todo("Correct ininializing params");
+	if (Level().pLevel->section_exist("level_map"))	
+	{
+		level_box.x1 = Level().pLevel->r_float("level_map","x1");
+		level_box.z1 = Level().pLevel->r_float("level_map","z1");
+		level_box.x2 = Level().pLevel->r_float("level_map","x2");
+		level_box.z2 = Level().pLevel->r_float("level_map","z2");
+	}
+	else
+	{
+		level_box.x1 = level_box.z1 = level_box.x2 = level_box.z2 = 0.f;
+	}
+
 }
 //--------------------------------------------------------------------
 
@@ -203,19 +216,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	// calc coord for the part of the landscape texture to show
 	float map_x = Actor->Position().x;
     float map_y = Actor->Position().z;
-
-	Fbox level_box;
-	if (Level().pLevel->section_exist("level_map"))	
-	{
-		level_box.x1 = Level().pLevel->r_float("level_map","x1");
-		level_box.z1 = Level().pLevel->r_float("level_map","z1");
-		level_box.x2 = Level().pLevel->r_float("level_map","x2");
-		level_box.z2 = Level().pLevel->r_float("level_map","z2");
-	}
-	else
-	{
-		level_box.x1 = level_box.z1 = level_box.x2 = level_box.z2 = 0.f;
-	}
 	
 	float width = level_box.x2 - level_box.x1;
 	float height = level_box.z2 - level_box.z1;

@@ -25,6 +25,8 @@ class CUIZoneMap
 	float landscape_x3, landscape_y3;
 	float landscape_x4, landscape_y4;
 
+	Fbox level_box;
+
 	void			EntityOut		(float diff, u32 color, const Ivector2& pt);
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest);
 public:
