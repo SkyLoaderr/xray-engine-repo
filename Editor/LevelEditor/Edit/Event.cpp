@@ -116,6 +116,7 @@ bool CEvent::SForm::FrustumPick( const CFrustum& frustum )
             if (frustum.testPoly(s)) return true;
         }
     }
+    return false;
 }
 
 void CEvent::SForm::Move( Fvector& amount )
@@ -170,7 +171,7 @@ void CEvent::AppendForm(EFormType type)
 
 void CEvent::RemoveSelectedForm()
 {
-	for (int i=0; i<m_Forms.size(); i++)
+	for (int i=0; i<(int)m_Forms.size(); i++)
     	if (m_Forms[i].m_Selected){
 			m_Forms.erase(m_Forms.begin()+i);
             i--;
@@ -284,7 +285,7 @@ bool CEvent::Load(CStream& F){
 	R_ASSERT(F.FindChunk(EVENT_CHUNK_ACTIONS));
 	m_Actions.resize(F.Rdword());
 	for (ActionIt it=m_Actions.begin(); it!=m_Actions.end(); it++){
-    	it->type	= F.Rdword();
+    	it->type	= (EEventType)F.Rdword();
     	it->count	= F.Rword();
     	F.Read		(&it->clsid,sizeof(it->clsid));
     	F.RstringZ	(buf); it->event=buf;

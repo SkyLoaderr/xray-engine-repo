@@ -65,7 +65,7 @@ TElTreeItem* TfrmObjectList::FindObjectByType(int type, void *obj)
 TElTreeItem* TfrmObjectList::AddFolder(int type)
 {
     AnsiString name;
-    name.sprintf("%ss",GetNameByClassID(type));
+    name.sprintf("%ss",GetNameByClassID((EObjClass)type));
     TElTreeItem* node = tvItems->Items->AddObject(0,name,(void*)type);
     node->ParentStyle = false;
     node->Bold = true;
@@ -139,7 +139,7 @@ void TfrmObjectList::UpdateState()
 
 void TfrmObjectList::UpdateSelection()
 {
-	Scene.SelectObjects( false, cur_cls );
+	Scene.SelectObjects( false, (EObjClass)cur_cls );
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
         if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
     UI.RedrawScene();

@@ -62,7 +62,6 @@ void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 	}
 
 	// Blend them together
-	CKey*	I		= R;
 	BI				= INST.Blend.begin();
 
 	CKey			Result;

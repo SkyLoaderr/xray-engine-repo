@@ -3,21 +3,19 @@
 #ifndef ScenePropertiesH
 #define ScenePropertiesH
 //---------------------------------------------------------------------------
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
-#include <Dialogs.hpp>
-#include <ExtCtrls.hpp>
-#include <ComCtrls.hpp>
-#include "CSPIN.h"
+
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
 #include "ExtBtn.hpp"
 #include "multi_color.hpp"
 #include "multi_edit.hpp"
-#include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
+#include <Classes.hpp>
+#include <ComCtrls.hpp>
+#include <Controls.hpp>
+#include <ExtCtrls.hpp>
+#include <Forms.hpp>
+#include <StdCtrls.hpp>
 
 //refs
 struct b_params;

@@ -12,6 +12,9 @@ public:
 	IDirect3D8* 			pD3D;		// direct 3d
 	IDirect3DDevice8*       pDevice;	// render device
 
+	IDirect3DSurface8*		pBaseRT;
+	IDirect3DSurface8*		pBaseZB;
+
 	CHWCaps					Caps;
 
 	CHW()

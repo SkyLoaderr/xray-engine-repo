@@ -53,7 +53,7 @@ void COccluder::Construct(){
 }
 
 bool COccluder::ResizePoints(int new_size){
-	if ((m_Points.size()==new_size)||(new_size>MAX_OCCLUDER_POINTS)||(new_size<MIN_OCCLUDER_POINTS)) return false;
+	if (((int)m_Points.size()==new_size)||(new_size>MAX_OCCLUDER_POINTS)||(new_size<MIN_OCCLUDER_POINTS)) return false;
     int old_size = m_Points.size();
 	m_Points.resize(new_size);
 	if (new_size>old_size){
@@ -119,10 +119,10 @@ void COccluder::Optimize(){
     vertices.pop_back();
 
     // edge-collapse
-    for (int k=0; k<vertices.size(); k++){
+    for (int k=0; k<(int)vertices.size(); k++){
         int k1=k-1, k2=k+1;
         if (k==0) k1=vertices.size()-1;
-        if (k==vertices.size()-1) k2=0;
+        if (k==(int)vertices.size()-1) k2=0;
         if (vertices[k].similar(vertices[k1])){ vertices.erase(vertices.begin()+k); k--; continue; }
         Fvector2 e1,e2;
         e1.sub(vertices[k1],vertices[k]); e1.norm();

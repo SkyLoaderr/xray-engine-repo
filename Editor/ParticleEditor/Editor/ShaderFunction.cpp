@@ -7,6 +7,10 @@
 #include "WaveForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ExtBtn"
+#pragma link "multi_edit"
+#pragma link "MxMenus"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmShaderFunction *TfrmShaderFunction::form=0;
 WaveForm* TfrmShaderFunction::m_CurFunc=0;
@@ -171,7 +175,7 @@ void TfrmShaderFunction::GetFuncData(){
 
 void TfrmShaderFunction::UpdateFuncData(){
 	if (bLoadMode) return;
-	m_CurFunc->F = GetTokenValFromName(stFunction->Caption, function_token);
+	m_CurFunc->F = (WaveForm::EFunction)GetTokenValFromName(stFunction->Caption, function_token);
     m_CurFunc->arg[0] = seArg1->Value;
     m_CurFunc->arg[1] = seArg2->Value;
     m_CurFunc->arg[2] = seArg3->Value;

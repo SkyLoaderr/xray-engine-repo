@@ -445,7 +445,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
         slot.y_min		= flt_max;
         slot.y_max		= flt_min;
 		for (SBoxPickInfoIt it=pinf.begin(); it!=pinf.end(); it++){
-        	for (int k=0; k<it->inf.size(); k++){
+        	for (int k=0; k<(int)it->inf.size(); k++){
                 float range;
                 Fvector verts[3];
                 it->s_obj->GetFaceWorld(it->e_mesh,it->inf[k].id,verts);

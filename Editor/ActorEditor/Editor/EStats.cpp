@@ -36,6 +36,8 @@ void CStats::Show(CFontBase* font)
 		clRAY.FrameEnd				();
 		clBOX.FrameEnd				();
         clFRUSTUM.FrameEnd			();
+
+        RenderDUMP_RT.FrameEnd		();
 	}
 
 	// calc FPS & TPS
@@ -84,6 +86,7 @@ void CStats::Show(CFontBase* font)
 		clFRUSTUM.FrameStart		();
 
 		RenderDUMP_SKIN.FrameStart	();
+		RenderDUMP_RT.FrameEnd		();
 	}
 	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
 	dwVert = dwPoly = dwCalls = 0;

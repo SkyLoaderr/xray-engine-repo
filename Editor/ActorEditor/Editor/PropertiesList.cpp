@@ -38,7 +38,7 @@
 const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
 
 LPCSTR 	TokenValue::GetText(){
-	DWORD draw_val 	= *val;
+	int draw_val 	= *val;
     if (OnDrawValue)OnDrawValue(this, &draw_val);
 	for(int i=0; token[i].name; i++) if (token[i].id==draw_val) return token[i].name;
     return 0;
@@ -255,13 +255,13 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         }break;
         case PROP_COLOR:{
 			Surface->Brush->Style = bsSolid;
-		    Surface->Brush->Color = 0x00000000;
+		    Surface->Brush->Color = TColor(0x00000000);
             Surface->FrameRect(R);
             R.Right	-=	1;
             R.Left 	+= 	1;
             R.Top	+=	1;
             R.Bottom-= 	1;
-		    Surface->Brush->Color = rgb2bgr(*(LPDWORD)Item->Data);
+		    Surface->Brush->Color = (TColor)rgb2bgr(*(LPDWORD)Item->Data);
             Surface->FillRect(R);
         }break;
         case PROP_FLAG:{
@@ -322,7 +322,7 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
 {
 	CancelLWNumber();
 	CancelLWText();
-	int HS;
+	TSTItemPart HS;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,0,HS);
   	if ((HS==1)&&(Button==mbLeft)){
     	DWORD type = (DWORD)item->Tag;
@@ -448,7 +448,6 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_TOKEN2:{
         	TokenValue2* V				= (TokenValue2*)item->Data;
-            AStringVec& lst				= V->items;
             DWORD new_val				= mi->MenuIndex;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (*V->val	!= new_val){

@@ -33,7 +33,7 @@ void CSceneObject::Construct(){
 
     m_Center.set(0,0,0);
     m_fRadius = 0;
-    m_dwBlinkTime = 0;
+    m_iBlinkTime = 0;
 }
 
 CSceneObject::~CSceneObject(){
@@ -44,7 +44,7 @@ CSceneObject::~CSceneObject(){
 void CSceneObject::Select(BOOL flag)
 {
 	inherited::Select(flag);
-    if (flag) m_dwBlinkTime=Device.dwTimeGlobal+BLINK_TIME+Device.dwTimeDelta;
+    if (flag) m_iBlinkTime=Device.dwTimeGlobal+BLINK_TIME+Device.dwTimeDelta;
 }
 
 //----------------------------------------------------
@@ -92,8 +92,8 @@ void CSceneObject::Render(int priority, bool strictB2F){
 	m_pRefs->Render(_Transform(), priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Selected()){
-            if (m_dwBlinkTime>Device.dwTimeGlobal){
-            	DWORD c=D3DCOLOR_ARGB(iFloor(sqrtf(float(m_dwBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255);
+            if (m_iBlinkTime>(int)Device.dwTimeGlobal){
+            	DWORD c=D3DCOLOR_ARGB(iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255);
                 RenderSelection(c);
                 UI.RedrawScene();
             }

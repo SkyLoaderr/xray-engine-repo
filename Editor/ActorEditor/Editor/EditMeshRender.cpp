@@ -89,8 +89,8 @@ void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_f
             }
             sz=sizeof(Fvector2);
             int offs = 0;
-            for (int t=0; t<dwTexCnt; t++){
-                VERIFY2(t<m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
+            for (int t=0; t<(int)dwTexCnt; t++){
+                VERIFY2(t<(int)m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
             	st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref][t+offs];
                 if (m_VMaps[vm_pt.vmap_index]->type!=vmtUV){
                 	offs++;
@@ -122,8 +122,8 @@ void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_f
                 }
                 sz=sizeof(Fvector2);
 				int offs = 0;
-                for (int t=0; t<dwTexCnt; t++){
-	                VERIFY2(t<m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
+                for (int t=0; t<(int)dwTexCnt; t++){
+	                VERIFY2(t<(int)m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
                     st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref][t];
                     if (m_VMaps[vm_pt.vmap_index]->type!=vmtUV){
                         offs++;

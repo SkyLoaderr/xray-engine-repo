@@ -79,9 +79,9 @@ void CVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 
 	// textures
 	if (data->FindChunk(OGF_TEXTURE_L)) {
+#ifndef _EDITOR
 		DWORD T = data->Rdword();
 		DWORD S = data->Rdword();
-#ifndef _EDITOR
 		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
 #endif
 	} else {

@@ -114,8 +114,7 @@ char* _GetItem ( const char* src, int index, char* dst, char separator, char* de
 char* _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separator ){
 	char* n = dst;
     int level = 0;
-    bool bCopy = true;
-	for (LPCSTR p=src; *p!=0; p++){
+ 	for (LPCSTR p=src; *p!=0; p++){
     	if ((level>=idx_start)&&(level<idx_end))
 			*n++ = *p;
     	if (*p==separator) level++;

@@ -34,10 +34,10 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 		DWORD cnt = data->Rdword();
 		chields.resize(cnt);
 		for (DWORD i=0; i<cnt; i++) {
-			DWORD ID	= data->Rdword();
 #ifdef _EDITOR
 			THROW;
 #else
+			DWORD ID	= data->Rdword();
 			chields[i]	= ::Render->getVisual(ID);
 #endif
 		}

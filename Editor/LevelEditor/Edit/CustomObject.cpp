@@ -143,33 +143,6 @@ void CCustomObject::Move(Fvector& amount){
 					vD.crossproduct	(vR,vN);
                     vD.normalize();
 
-    angle_y = D = -asin( mat[2]);
-    C           =  cos( angle_y );
-    angle_y    *= RADIANS;
-
-    if ( fabs( angle_y ) > 0.0005 )
-      {
-      trx      =  mat[10] / C;
-      try      = -mat[6]  / C;
-
-      angle_x  = atan2( try, trx ) * RADIANS;
-
-      trx      =  mat[0] / C;
-      try      = -mat[1] / C;
-
-      angle_z  = atan2( try, trx ) * RADIANS;
-      }
-    else
-      {
-      angle_x  = 0;
-
-      trx      = mat[5];
-      try      = mat[4];
-
-      angle_z  = atan2( try, trx ) * RADIANS;
-      }
-
-
 			   	   	r.x = asinf( vD.y );
                     if (vD.x<0)	r.y = acosf(vD.z);
                     else	 	r.y = 2*PI-acosf(vD.z);
@@ -177,7 +150,7 @@ void CCustomObject::Move(Fvector& amount){
                     if (vR.y<0)	r.z = -acosf( vN.y / cos( r.x ));
                     else		r.z = acosf( vN.y / cos( r.x ));
 
-                    PRotate = r1;
+                    PRotate = r;
 				}
             }
         else v.add(amount);

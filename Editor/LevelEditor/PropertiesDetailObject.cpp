@@ -34,14 +34,14 @@ void TfrmPropertiesDO::GetObjectsInfo(){
 	seScaleMinY->ObjFirstInit	( (*_I)->m_fMinScale );
 	seScaleMaxY->ObjFirstInit	( (*_I)->m_fMaxScale );
 	seDensityFactor->ObjFirstInit( (*_I)->m_fDensityFactor );
-    cbNoWaving->ObjFirstInit    ( (*_I)->m_dwFlags&DO_NO_WAVING );
+    cbNoWaving->ObjFirstInit    ( TCheckBoxState((*_I)->m_dwFlags&DO_NO_WAVING) );
 
 	_I++;
 	for(;_I!=m_Data->end();_I++){
 		seScaleMinY->ObjNextInit( (*_I)->m_fMinScale );
 		seScaleMaxY->ObjNextInit( (*_I)->m_fMaxScale );
 		seDensityFactor->ObjNextInit( (*_I)->m_fDensityFactor );
-	    cbNoWaving->ObjNextInit( (*_I)->m_dwFlags&DO_NO_WAVING );
+	    cbNoWaving->ObjNextInit( TCheckBoxState((*_I)->m_dwFlags&DO_NO_WAVING) );
 	}
 }
 

@@ -60,14 +60,6 @@ public:
     void			Optimize	();
 
     FvectorVec&		Get3DPoints	(){return m_3DPoints.m_Points;}
-
-    virtual bool 	GetPosition	(Fvector& pos){pos.set(m_vCenter); return true; }
-    virtual bool 	GetRotate	(Fvector& rot){rot.set(m_vRotate); return true;}
-    virtual bool 	GetScale	(Fvector& scale){scale.set(m_vPlaneSize.x,0,m_vPlaneSize.y); return true; }
-
-    virtual void 	SetPosition	(Fvector& pos){m_vCenter.set(pos);}
-    virtual void 	SetRotate	(Fvector& rot){m_vRotate.set(rot.x,rot.y,rot.z);}
-    virtual void 	SetScale	(Fvector& scale){m_vPlaneSize.set(scale.x,scale.z);}
 };
 
 #endif /*_INCDEF_Occluder_H_*/

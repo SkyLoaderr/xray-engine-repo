@@ -13,7 +13,7 @@ class CSceneObject : public CCustomObject {
     st_Version		m_ObjVer;
 protected:
 	typedef CCustomObject inherited;
-    int				m_dwBlinkTime;           
+    int				m_iBlinkTime;           
 
     // internal use
     float 			m_fRadius;

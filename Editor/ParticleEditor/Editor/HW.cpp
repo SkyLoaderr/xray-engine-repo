@@ -5,8 +5,6 @@
 
 ENGINE_API CHW HW;
 
-#define _SHOW_REF(msg, x)   { VERIFY(x); x->AddRef(); Log(msg,x->Release()); }
-
 void CHW::CreateD3D()
 {
     HW.pD3D = Direct3DCreate8( D3D_SDK_VERSION );
@@ -15,6 +13,9 @@ void CHW::CreateD3D()
 }
 void CHW::DestroyD3D()
 {
+	_RELEASE				(pBaseZB);
+	_RELEASE				(pBaseRT);
+	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	_RELEASE(HW.pD3D);
 }
 
@@ -131,6 +132,9 @@ void CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 		ELog.Msg(mtInformation,"* Geometry Processor: PURE HARDWARE");
 		break;
 	}
+
+	R_CHK	(pDevice->GetRenderTarget		(&pBaseRT));
+	R_CHK	(pDevice->GetDepthStencilSurface(&pBaseZB));
 }
 
 DWORD CHW::selectGPU ()

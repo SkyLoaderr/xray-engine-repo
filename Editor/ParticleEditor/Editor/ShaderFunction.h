@@ -3,22 +3,15 @@
 #ifndef ShaderFunctionH
 #define ShaderFunctionH
 //---------------------------------------------------------------------------
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
-#include <Dialogs.hpp>
-#include <ExtCtrls.hpp>
-#include <ComCtrls.hpp>
-#include "CSPIN.h"
-
-#include "CustomObject.h"
 #include "ExtBtn.hpp"
 #include "multi_edit.hpp"
-#include "MXCtrls.hpp"
 #include "MxMenus.hpp"
-#include <Menus.hpp>
 #include "mxPlacemnt.hpp"
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <ExtCtrls.hpp>
+#include <Menus.hpp>
+#include <StdCtrls.hpp>
 
 // refs
 struct xr_token;

@@ -121,7 +121,7 @@ bool CRPoint::Load(CStream& F){
     // new generation
     if (F.FindChunk(RPOINT_CHUNK_SQUADID))  	m_dwSquadID = F.Rdword();
     if (F.FindChunk(RPOINT_CHUNK_GROUPID))  	m_dwGroupID = F.Rdword();
-    if (F.FindChunk(RPOINT_CHUNK_TYPE))     	m_Type 		= F.Rdword();
+    if (F.FindChunk(RPOINT_CHUNK_TYPE))     	m_Type 		= (EType)F.Rdword();
     if (F.FindChunk(RPOINT_CHUNK_FLAGS))    	F.Read		(&m_Flags,sizeof(DWORD));
     if (F.FindChunk(RPOINT_CHUNK_ENTITYREFS))	F.RstringZ	(m_EntityRefs);
     return true;

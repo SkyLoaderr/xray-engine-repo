@@ -16,6 +16,12 @@
 #endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ElTree"
+#pragma link "ElXPThemedControl"
+#pragma link "ExtBtn"
+#pragma link "multi_color"
+#pragma link "multi_edit"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmSceneProperties *frmSceneProperties=0;
 //---------------------------------------------------------------------------

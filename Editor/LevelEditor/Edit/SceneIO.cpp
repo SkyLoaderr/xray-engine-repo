@@ -181,7 +181,7 @@ void EScene::Save(char *_FileName, bool bUndo){
             	F.close_chunk	();
             F.close_chunk();
         }
-        int sz1 = F.tell();
+//        int sz1 = F.tell();
 //    	Msg("TARGET: %s, size: %d",GetNameByClassID(it->first),sz1-sz0);
     }
 	F.close_chunk	();

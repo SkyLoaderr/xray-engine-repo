@@ -5,20 +5,13 @@
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
-#include <Buttons.hpp>
-#include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
-#include <ImgList.hpp>
-
-#include <Dialogs.hpp>
+#include <StdCtrls.hpp>
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
 #include "ExtBtn.hpp"
-#include "multi_color.hpp"
-#include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
+
 //---------------------------------------------------------------------------
 // refs
 class EImageThumbnail;

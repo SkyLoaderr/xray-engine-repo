@@ -248,7 +248,7 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 27
       Width = 95
-      Height = 19
+      Height = 21
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
@@ -274,7 +274,7 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 51
       Width = 95
-      Height = 19
+      Height = 21
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
@@ -300,7 +300,7 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 75
       Width = 95
-      Height = 19
+      Height = 21
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
@@ -326,7 +326,7 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 89
       Top = 99
       Width = 95
-      Height = 19
+      Height = 21
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave
@@ -352,7 +352,7 @@ object frmShaderFunction: TfrmShaderFunction
       Left = 289
       Top = 137
       Width = 58
-      Height = 17
+      Height = 21
       LWSensitivity = 0.1
       Alignment = taRightJustify
       ButtonKind = bkLightWave

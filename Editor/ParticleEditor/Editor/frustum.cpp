@@ -39,13 +39,13 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 
 		// classify all points relative to plane #i
 		float	cls	[FRUSTUM_SAFE];
-		for (int j=0; j<src->size(); j++) cls[j]=P.classify((*src)[j]);
+		for (int j=0; j<(int)src->size(); j++) cls[j]=P.classify((*src)[j]);
 
 		// clip everything to this plane
 		cls[src->size()] = cls[0];
 		src->push_back((*src)[0]);
 		Fvector D; float denum,t;
-		for (j=0; j<src->size()-1; j++)
+		for (j=0; j<(int)src->size()-1; j++)
 		{
 			if (cls[j]<0)
 			{

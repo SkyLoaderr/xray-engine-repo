@@ -173,7 +173,7 @@ CSurface*	CEditableMesh::GetSurfaceByFaceID(int fid){
 }
 
 CSurface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
-	R_ASSERT(fid<m_Faces.size());
+	R_ASSERT(fid<(int)m_Faces.size());
     CSurface* surf = GetSurfaceByFaceID(fid);
     VERIFY(surf);
 

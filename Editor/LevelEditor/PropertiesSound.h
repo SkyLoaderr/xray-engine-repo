@@ -3,17 +3,15 @@
 #ifndef PropertiesSoundH
 #define PropertiesSoundH
 //---------------------------------------------------------------------------
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
-#include <Dialogs.hpp>
-#include <ExtCtrls.hpp>
 #include "ExtBtn.hpp"
 #include "multi_edit.hpp"
-#include "MXCtrls.hpp"
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <ExtCtrls.hpp>
+#include <StdCtrls.hpp>
 
 #include "CustomObject.h"
+
 //---------------------------------------------------------------------------
 class TfrmPropertiesSound : public TForm
 {

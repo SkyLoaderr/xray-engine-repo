@@ -13,6 +13,10 @@
 #include "xr_tokens.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ElTree"
+#pragma link "ElXPThemedControl"
+#pragma link "ExtBtn"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
 FileMap TfrmImageLib::texture_map;

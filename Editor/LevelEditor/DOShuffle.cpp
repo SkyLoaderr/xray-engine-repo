@@ -68,7 +68,7 @@ void TfrmDOShuffle::GetInfo(){
 		color_indices.push_back(OneColor);
 		OneColor->Parent = form->sbDO;
 	    OneColor->ShowIndex(this);
-        OneColor->mcColor->Brush->Color = rgb2bgr(it->first);
+        OneColor->mcColor->Brush->Color = (TColor)rgb2bgr(it->first);
         for (d_it=it->second.begin(); d_it!=it->second.end(); d_it++)
 	        OneColor->AppendObject((*d_it)->GetName());
     }

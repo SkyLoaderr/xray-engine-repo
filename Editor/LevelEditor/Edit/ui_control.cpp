@@ -252,7 +252,6 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
                             if( fraTopBar->ebCSParent->Down ){
                                 (*_F)->ParentRotate( m_RotateVector, amount );
                             } else {
-//                                (*_F)->LocalRotate( m_RotateCenter, m_RotateVector, amount );
                                 (*_F)->LocalRotate( m_RotateVector, amount );
                             }
                         }

@@ -267,7 +267,6 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 			DWORD	vBase,iBase,iOffset=0;
 			CDetail::fvfVertexIn* vDest	= (CDetail::fvfVertexIn*)	VS->Lock(vCount_Lock,vBase);
 			WORD*	iDest			   	= (WORD*)					IS->Lock(iCount_Lock,iBase);
-			WORD*	dbgIndices		   	= iDest;
 
 			// Filling itself
 			for (DWORD item=item_start; item<item_end; item++)
@@ -489,7 +488,7 @@ void CDetailManager::UpdateCache	(int limit)
 				{
                     Fvector verts[3];
                     SBoxPickInfo& I=pinf[tid];
-		        	for (int k=0; k<I.inf.size(); k++){
+		        	for (int k=0; k<(int)I.inf.size(); k++){
                     	R_ASSERT(I.s_obj);
                         I.s_obj->GetFaceWorld(I.e_mesh,I.inf[k].id,verts);
                         if (CDB::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
@@ -537,7 +536,7 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 
     int db_x = sx + m_Header.offs_x;
     int db_z = sz + m_Header.offs_z;
-    if ((db_x>=0)&&(db_x<m_Header.size_x)&&(db_z>=0)&&(db_z<m_Header.size_z)){
+    if ((db_x>=0)&&(db_x<(int)m_Header.size_x)&&(db_z>=0)&&(db_z<(int)m_Header.size_z)){
 	    DS 					= GetSlot(db_x,db_z);
     }else{
     	DS.y_min			= 0;

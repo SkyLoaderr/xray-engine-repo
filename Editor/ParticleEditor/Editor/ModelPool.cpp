@@ -13,9 +13,9 @@
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
 
-FBasicVisual*	CModelPool::Instance_Create(DWORD type)
+CVisual*	CModelPool::Instance_Create(DWORD type)
 {
-	FBasicVisual *V = NULL;
+	CVisual *V = NULL;
 
 	// Check types
 	switch (type) {
@@ -48,17 +48,17 @@ FBasicVisual*	CModelPool::Instance_Create(DWORD type)
 	V->Type = type;
 	return V;
 }
-FBasicVisual*	CModelPool::Instance_Duplicate	(FBasicVisual* V)
+CVisual*	CModelPool::Instance_Duplicate	(CVisual* V)
 {
 	R_ASSERT(V);
-	FBasicVisual* N = Instance_Create(V->Type);
+	CVisual* N = Instance_Create(V->Type);
 	N->Copy	(V);
 	return N;
 }
 
-FBasicVisual*	CModelPool::Instance_Load		(const char* N)
+CVisual*	CModelPool::Instance_Load		(const char* N)
 {
-	FBasicVisual	*V;
+	CVisual	*V;
 	FILE_NAME		fn;
 	FILE_NAME		name;
 
@@ -91,9 +91,9 @@ FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 	return V;
 }
 
-FBasicVisual*	CModelPool::Instance_Load(CStream* data)
+CVisual*	CModelPool::Instance_Load(CStream* data)
 {
-	FBasicVisual	*V;
+	CVisual	*V;
 	
 	// Actual loading
 	ogf_header			H;
@@ -134,13 +134,13 @@ CModelPool::~CModelPool()
 {
 }
 
-FBasicVisual* CModelPool::Create(const char* name)
+CVisual* CModelPool::Create(const char* name)
 {
 	// 1. Search for already loaded model
 	char low_name[64]; R_ASSERT(strlen(name)<64);
 	strcpy(low_name,name); strlwr(low_name);
 
-	FBasicVisual*				Model=0;
+	CVisual*				Model=0;
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
@@ -157,12 +157,12 @@ FBasicVisual* CModelPool::Create(const char* name)
 	return Instance_Duplicate(Instance_Load(low_name));
 }
 
-FBasicVisual* CModelPool::Create(CStream* data)
+CVisual* CModelPool::Create(CStream* data)
 {
 	return Instance_Duplicate(Instance_Load(data));
 }
 
-void	CModelPool::Delete(FBasicVisual* &V)
+void	CModelPool::Delete(CVisual* &V)
 {
 	if (V) {
 		if (V->Type==MT_PARTICLE_SYSTEM) V->Release();

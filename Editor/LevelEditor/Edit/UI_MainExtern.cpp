@@ -231,7 +231,7 @@ void TUI::ShowContextMenu(int cls)
     POINT pt;
     GetCursorPos(&pt);
     fraLeftBar->miProperties->Enabled = false;
-    if (Scene.SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
+    if (Scene.SelectionCount( true, (EObjClass)cls )) fraLeftBar->miProperties->Enabled = true;
     RedrawScene(true);
     fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
     fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);

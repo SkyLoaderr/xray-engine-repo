@@ -39,10 +39,10 @@ void Fvisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	DWORD dwVertStart=0;
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
 		if (data->FindChunk(OGF_VCONTAINER)) {
+#ifndef _EDITOR
 			DWORD ID		= data->Rdword();
 			dwVertStart		= data->Rdword();
 			dwVertCount		= data->Rdword();
-#ifndef _EDITOR
 			P.VB_Attach		(::Render->getFVF(ID),::Render->getVB(ID));
 #endif
 		} else {

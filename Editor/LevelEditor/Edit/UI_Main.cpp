@@ -276,7 +276,7 @@ bool TUI::ShowHint(const AStringVec& SS){
         m_bHintShowing = true;
         if (!m_pHintWindow){
             m_pHintWindow = new THintWindow(frmMain);
-            m_pHintWindow->Brush->Color = 0x0d9F2FF;
+            m_pHintWindow->Brush->Color = (TColor)0x0d9F2FF;
         }
         TRect rect = m_pHintWindow->CalcHintRect(320,S,0);
         rect.Left+=m_HintPoint.x;    rect.Top+=m_HintPoint.y;

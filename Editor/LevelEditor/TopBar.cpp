@@ -111,7 +111,7 @@ void __fastcall TfraTopBar::ebZoomExtentsSelectedClick(TObject *Sender)
 
 void __fastcall TfraTopBar::ebCameraStyleClick(TObject *Sender)
 {
-	Device.m_Camera.SetStyle(((TExtBtn*)Sender)->Tag);
+	Device.m_Camera.SetStyle((ECameraStyle)((TExtBtn*)Sender)->Tag);
 }
 //---------------------------------------------------------------------------
 

@@ -54,6 +54,7 @@ public:
 	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
     DWORD		dwTotalLight,dwLightInScene;
 
+	CStatTimer	RenderDUMP_RT;
 	CStatTimer	RenderTOTAL;		//
 	CStatTimer	RenderTOTAL_Real;
 	CStatTimer	RenderCALC;			// portal traversal, frustum culling, entities "OnVisible"

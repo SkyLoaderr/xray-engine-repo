@@ -47,7 +47,7 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
         seSquadID->ObjFirstInit(_S->m_dwSquadID);
         seGroupID->ObjFirstInit(_S->m_dwGroupID);
         seHeading->ObjFirstInit(rad2deg(_S->PRotate.y));
-        cbActive->ObjFirstInit(_S->m_Flags.bActive);
+        cbActive->ObjFirstInit((TCheckBoxState)_S->m_Flags.bActive);
         SetType(_N->m_Type);
         T = _N->m_Type;
 		ebEntityRefs->Caption = _N->m_EntityRefs[0]?_N->m_EntityRefs:NONE_CAPTION;
@@ -61,7 +61,7 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 	    seSquadID->ObjNextInit(_N->m_dwSquadID);
     	seGroupID->ObjNextInit(_N->m_dwGroupID);
 	    seHeading->ObjNextInit(rad2deg(_N->PRotate.y));
-	    cbActive->ObjNextInit(_N->m_Flags.bActive);
+	    cbActive->ObjNextInit((TCheckBoxState)_N->m_Flags.bActive);
         if (T!=_N->m_Type) lbType->Font->Style = TFontStyles()<<fsItalic;
 		if (ebEntityRefs->Caption!=_N->m_EntityRefs) ebEntityRefs->Caption=MULTIPLESEL_CAPTION;
 	    bMultiSel = true;
@@ -179,7 +179,7 @@ void __fastcall TfrmPropertiesRPoint::ebEntityRefsClick(TObject *Sender)
 void __fastcall TfrmPropertiesRPoint::ebTypeClick(TObject *Sender)
 {
 	bTypeChanged = true;
-    SetType(((TExtBtn*)Sender)->Tag);
+    SetType((CRPoint::EType)((TExtBtn*)Sender)->Tag);
 	OnModified(Sender);
 
 }

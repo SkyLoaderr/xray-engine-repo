@@ -357,7 +357,7 @@ int CEditableObject::PartIDByName(LPCSTR name){
 }
 
 LPCSTR CEditableObject::BoneNameByID(int id){
-	VERIFY((id>=0)&&(id<m_Bones.size()));
+	VERIFY((id>=0)&&(id<(int)m_Bones.size()));
     return m_Bones[id]->Name();
 }
 

@@ -22,6 +22,8 @@ public:
 extern CLog ELog;
 extern bool g_ErrorMode;
 
+#define VPUSH(a)	a.x,a.y,a.z
+
 void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
 void ENGINE_API	Log	(LPCSTR msg);
 void ENGINE_API	Log	(LPCSTR msg);
