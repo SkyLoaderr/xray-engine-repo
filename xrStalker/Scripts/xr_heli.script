@@ -230,7 +230,10 @@ function HeliManager:set_zones( ... )
 end
 
 function HeliManager:on_enter( zone, obj )
-	if object_type( obj ) == "stalker" and math.random( 100 ) <= zone_attack_probability then
+	if object_type( obj ) == "stalker" and
+	   obj:npc_community() ~= "military" and
+	   math.random( 100 ) <= zone_attack_probability
+	then
 		self:set_enemy( obj )
 	end
 end
