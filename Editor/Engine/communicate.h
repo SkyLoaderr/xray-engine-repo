@@ -41,7 +41,7 @@ struct b_texture
 	BOOL				bHasAlpha;
 	DWORD*				pSurface;
 };
-struct b_light : public xrLIGHT
+struct b_light : public Flight
 {
 	struct {
 		DWORD			bAffectStatic	: 1;
