@@ -57,15 +57,29 @@ p2f 	p_main	( v2p_in IN )
 	half4		accum,D,L,C,S;
 	
 	// 1
-	half4 D		=	tex2D		(s_diffuse,		IN.tc0);
-	half4 L 	=	tex2D		(s_accumulator, IN.tc0);
+	D			=	tex2D		(s_diffuse,		IN.tc0);
+	L 			=	tex2D		(s_accumulator, IN.tc0);
 	C			=	D*L;							// rgb.gloss * light(rgb.specular)
 	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
 	accum		=	C+S;
 
 	// 2
-	half4 D		=	tex2D		(s_diffuse,		IN.tc1);
-	half4 L 	=	tex2D		(s_accumulator, IN.tc1);
+	D			=	tex2D		(s_diffuse,		IN.tc1);
+	L 			=	tex2D		(s_accumulator, IN.tc1);
+	C			=	D*L;							// rgb.gloss * light(rgb.specular)
+	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
+	accum		+=	C+S;
+
+	// 3
+	D			=	tex2D		(s_diffuse,		IN.tc1);
+	L 			=	tex2D		(s_accumulator, IN.tc1);
+	C			=	D*L;							// rgb.gloss * light(rgb.specular)
+	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
+	accum		+=	C+S;
+
+	// 4
+	D			=	tex2D		(s_diffuse,		IN.tc1);
+	L 			=	tex2D		(s_accumulator, IN.tc1);
 	C			=	D*L;							// rgb.gloss * light(rgb.specular)
 	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
 	accum		+=	C+S;
