@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
-	<!-- PERSON INFORMATION  -->
-
 	<character id="default">
 		<team>Stalker</team>
 	</character>
 	
+	<!-- Stalker  -->	
 	<character id="stalker">
 		<team>Stalker</team>
 	</character>
@@ -23,10 +22,24 @@
 		<team>Stalker_master</team>
 	</character>
 
-
+	<!-- Soldier  -->
 	<character id="soldier">
 		<team>Soldier</team>
 	</character>
+	<character id="soldier_novice">
+		<team>Soldier_novice</team>
+	</character>
+	<character id="soldier_general">
+		<team>Soldier_general</team>
+	</character>
+	<character id="soldier_veteran">
+		<team>Soldier_veteran</team>
+	</character>
+	<character id="soldier_master">
+		<team>Soldier_master</team>
+	</character>
+
+
 
 	<character id="dolg">
 		<team>Dolg</team>
