@@ -87,7 +87,13 @@ void CObjectList::SingleUpdate	(CObject* O)
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
 		O->dwFrame_UpdateCL		= Device.dwFrame;
 		O->UpdateCL				();
-		if (O->getDestroy() && !O->shedule_Locked)	destroy_queue.push_back(O);
+		if (O->getDestroy() && !O->shedule_Locked)								destroy_queue.push_back(O);
+		if (O->H_Parent() && O->H_Parent()->getDestroy() && !O->shedule_Locked)	
+		{
+			// Push to destroy-queue if it isn't here already
+			if (find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
+				destroy_queue.push_back	(O);
+		}
 	}
 }
 
