@@ -38,7 +38,7 @@ end
 	--' Выдача подсказок
 	level_tips.get_tips(self.object)
 
-	if self.object:object("tutorial_artefact") ~= nil then
+	if self.object:dont_has_info("tutorial_artefact_gain") and self.object:object("tutorial_artefact") ~= nil then
 		self.object:give_info_portion("tutorial_artefact_gain")
 		self.object:set_task_state(task.completed, "tutorial_find_artefact", 0)
 	end 
