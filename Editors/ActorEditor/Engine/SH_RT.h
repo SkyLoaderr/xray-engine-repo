@@ -49,6 +49,6 @@ struct ENGINE_API		resptrcode_crtc	: public resptr_base<CRTC>
 	void				create			(LPCSTR Name, u32 size, D3DFORMAT f);
 	void				destroy			()	{ _set(NULL);		}
 };
-typedef	resptr_core<CRTC,resptrcode_crtc>		ref_rt;
+typedef	resptr_core<CRTC,resptrcode_crtc>		ref_rtc;
 
 #endif // SH_RT_H
