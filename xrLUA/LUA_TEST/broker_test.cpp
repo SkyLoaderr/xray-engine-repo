@@ -211,6 +211,7 @@ struct CTemplate {};
 
 void broker_test()
 {
+#if 0
 	{
 		Core._initialize				("lua-test",NULL);
 		{
@@ -242,7 +243,7 @@ void broker_test()
 			VERIFY						(test == test1);
 		}
 	}
-	return;
+#endif
 	printf	("%s : %d\n",typeid(xr_vector<u16>).name(),object_type_traits::is_stl_container<xr_multimap<u16,u16> >::value);
 //	printf	("%s : %d\n",typeid(CTemplate<u16>).name(),object_type_traits::has_iterator<CTemplate<u16> >::value);
 	traits_test();
@@ -278,8 +279,8 @@ void broker_test()
 		save						(_lpstr);
 #ifndef USE_WRITER
 #ifdef  USE_REF_STR
-		// ref_str
-		ref_str						_ref_str = "ref_str", __ref_str, ___ref_str, ____ref_str;
+		// shared_str
+		shared_str						_ref_str = "shared_str", __ref_str, ___ref_str, ____ref_str;
 		save						(_ref_str);
 #endif
 #endif
@@ -433,7 +434,7 @@ void broker_test()
 		load						(_lpstr);
 #ifndef USE_WRITER
 #ifdef  USE_REF_STR
-		// ref_str
+		// shared_str
 		load						(_ref_str);
 #endif
 #endif
@@ -498,7 +499,7 @@ void broker_test()
 		_clone						(_lpstr);
 #ifndef USE_WRITER
 #ifdef  USE_REF_STR
-		// ref_str
+		// shared_str
 		_clone						(_ref_str);
 #endif
 #endif
@@ -553,7 +554,7 @@ void broker_test()
 		_delete						(_lpstr);
 #ifndef USE_WRITER
 #ifdef  USE_REF_STR
-		// ref_str
+		// shared_str
 		_delete						(_ref_str);
 #endif
 #endif
@@ -606,8 +607,37 @@ void broker_test()
 
 #define pointer_type(a)				typeid(a).name(),object_type_traits::is_pointer<a >::value
 
+struct test0 {
+};
+
+struct test1 {
+	s8		_s8;
+	u8		_u8;
+	s16		_s16;
+	u16		_u16;
+	s32		_s32;
+	u32		_u32;
+	s64		_s64;
+	u64		_u64;
+
+//	virtual ~test1(){}
+};
+
+#include <boost/type_traits.hpp>
+
 void traits_test()
 {
+	CMemoryWriter	w;
+	save_data		(test1(),w);
+	save_data		(u8(1),w);
+
+	printf("%d\n",boost::is_pod<test0>::value);
+	printf("%d\n",boost::is_pod<test1>::value);
+	printf("%d\n",boost::is_pod<u8>::value);
+	printf("%d\n",boost::is_pod<u64>::value);
+	printf("%d\n",boost::has_trivial_constructor<test0>::value);
+	printf("%d\n",boost::has_trivial_constructor<test1>::value);
+	
 //	printf	("%s : %d\n",pointer_type(char*));
 //	printf	("%s : %d\n",pointer_type(char));
 //	printf	("%s : %d\n",pointer_type(xr_set<CTestObject*>*));
