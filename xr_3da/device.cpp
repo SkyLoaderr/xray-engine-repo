@@ -35,8 +35,9 @@ BOOL CRenderDevice::Begin	()
 	}
 
 	CHK_DX					(HW.pDevice->BeginScene());
-	RCache.set_CullMode		(CULL_CCW);
 	RCache.OnFrameBegin		();
+	RCache.set_CullMode		(CULL_CW);
+	RCache.set_CullMode		(CULL_CCW);
 	if (HW.Caps.SceneMode)	overdrawBegin	();
 	FPU::m24r	();
 	g_bRendering = 	TRUE;
