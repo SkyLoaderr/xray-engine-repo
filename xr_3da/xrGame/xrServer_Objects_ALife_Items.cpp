@@ -20,7 +20,7 @@
 #endif
 
 #include "xrServer_Objects_ALife_Items.h"
-#include "../bone.h"
+#include "bone.h"
 
 
 ////////////////////////////////////////////////////////////////////////////

@@ -24,7 +24,7 @@
 	static AStringVec	level_ids;
 #endif
 
-#include "../bone.h"
+#include "bone.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeEvent
