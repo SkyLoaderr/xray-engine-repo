@@ -17,8 +17,15 @@ void CActionPlannerAction<CScriptGameObject>::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptActionBase> >("planner_action")
-			.def(			constructor<>())
-			.def("reinit",	&CScriptActionPlannerAction::reinit,	&CScriptActionPlannerActionWrapper::reinit_static)
+		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptActionPlannerAction> >("planner_action")
+			.def(								constructor<>())
+			.def(								constructor<CScriptGameObject*>())
+			.def(								constructor<CScriptGameObject*,LPCSTR>())
+			.def("reinit",						&CScriptActionPlannerAction::reinit,		&CScriptActionPlannerActionWrapper::reinit_static)
+			.def("update",						&CScriptActionPlannerAction::update,		&CScriptActionPlannerActionWrapper::update_static)
+			.def("initialize",					&CScriptActionPlannerAction::initialize,	&CScriptActionPlannerActionWrapper::initialize_static)
+			.def("execute",						&CScriptActionPlannerAction::execute,		&CScriptActionPlannerActionWrapper::execute_static)
+			.def("finalize",					&CScriptActionPlannerAction::finalize,		&CScriptActionPlannerActionWrapper::finalize_static)
+			.def("weight",						&CScriptActionPlannerAction::weight,		&CScriptActionPlannerActionWrapper::weight_static)
 	];
 }

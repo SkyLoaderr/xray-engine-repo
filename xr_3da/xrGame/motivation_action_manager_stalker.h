@@ -10,6 +10,7 @@
 
 #include "motivation_action_manager_script.h"
 #include "action_script_base.h"
+#include "action_planner_action_script.h"
 
 class CAI_Stalker;
 
@@ -19,6 +20,13 @@ protected:
 	typedef CActionScriptBase<CAI_Stalker>				CAction;
 	typedef CGraphEngine::_solver_value_type			_value_type;
 	typedef CGraphEngine::_solver_condition_type		_condition_type;
+	typedef CActionPlannerActionScript<CAI_Stalker>		CActionPlannerAction;
+
+
+protected:
+	CActionPlannerAction	*m_death_planner;
+	CActionPlannerAction	*m_alife_planner;
+	CActionPlannerAction	*m_combat_planner;
 
 protected:
 #ifdef DEBUG

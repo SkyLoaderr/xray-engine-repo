@@ -31,6 +31,9 @@ CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
 
 void CMotivationActionManagerStalker::init				()
 {
+	m_death_planner			= 0;
+	m_alife_planner			= 0;
+	m_combat_planner		= 0;
 #ifdef DEBUG
 	m_stalker_behaviour		= g_stalker_behaviour;
 #endif
@@ -83,6 +86,11 @@ void CMotivationActionManagerStalker::reload			(LPCSTR section)
 	inherited::reload		(section);
 
 	clear					();
+
+//	m_death_planner			= xr_new<CActionPlannerAction>(m_object,"death_planner");
+//	m_alife_planner			= xr_new<CActionPlannerAction>(m_object,"alife_planner");
+//	m_combat_planner		= xr_new<CActionPlannerAction>(m_object,"combat_planner");
+
 	add_motivations			();
 	add_evaluators			();
 	add_actions				();
@@ -150,20 +158,18 @@ void CMotivationActionManagerStalker::add_motivations	()
 void CMotivationActionManagerStalker::add_evaluators		()
 {
 	add_evaluator			(eWorldPropertyAlreadyDead		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
+	add_evaluator			(eWorldPropertyDead				,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyDead,true));
 	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
 	add_evaluator			(eWorldPropertySquadAction		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
-
-	add_evaluator			(eWorldPropertyDead				,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyDead,true));
-	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
-	add_evaluator			(eWorldPropertyFireEnough		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyFireEnough,true,true));
-	add_evaluator			(eWorldPropertySafeToKill		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertySafeToKill,true,true));
-	
 	add_evaluator			(eWorldPropertyALife			,xr_new<CStalkerPropertyEvaluatorALife>				());
 	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				());
 	add_evaluator			(eWorldPropertyItems			,xr_new<CStalkerPropertyEvaluatorItems>				());
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			());
-	add_evaluator			(eWorldPropertySeeEnemy			,xr_new<CStalkerPropertyEvaluatorSeeEnemy>			());
 
+	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
+	add_evaluator			(eWorldPropertyFireEnough		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyFireEnough,true,true));
+	add_evaluator			(eWorldPropertySafeToKill		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertySafeToKill,true,true));
+	add_evaluator			(eWorldPropertySeeEnemy			,xr_new<CStalkerPropertyEvaluatorSeeEnemy>			());
 	add_evaluator			(eWorldPropertyItemToKill		,xr_new<CStalkerPropertyEvaluatorItemToKill>		());
 	add_evaluator			(eWorldPropertyItemCanKill		,xr_new<CStalkerPropertyEvaluatorItemCanKill>		());
 	add_evaluator			(eWorldPropertyFoundItemToKill	,xr_new<CStalkerPropertyEvaluatorFoundItemToKill>	());
@@ -341,7 +347,6 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyEnemy,		true);
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
-//	add_condition			(action,eWorldPropertySafeToKill,	true);
 	add_condition			(action,eWorldPropertySeeEnemy,		false);
 	add_effect				(action,eWorldPropertySeeEnemy,		true);
 	add_operator			(eWorldOperatorGetEnemySeenModerate,action);

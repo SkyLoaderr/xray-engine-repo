@@ -22,6 +22,8 @@ class CActionPlannerAction :
 protected:
 	typedef	CActionPlanner<_object_type>	inherited_planner;
 	typedef	CActionBase<_object_type>		inherited_action;
+	typedef typename inherited_action::COperatorCondition	COperatorCondition;
+	typedef typename inherited_action::_edge_value_type		_edge_value_type;
 
 public:
 	IC					CActionPlannerAction	(_object_type *object = 0, LPCSTR action_name = "");
