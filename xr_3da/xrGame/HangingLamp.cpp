@@ -140,6 +140,22 @@ void	CHangingLamp::SpawnInitPhysics	(CSE_Abstract	*D)
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 }
 
+void	CHangingLamp::CopySpawnInit		()
+{
+	CPHSkeleton::CopySpawnInit();
+	CKinematics* K=PKinematics(Visual());
+	if(
+		guid_physic_bone&&
+		(
+		!K->LL_GetBoneVisible(guid_bone)||
+		!K->LL_GetBoneVisible(guid_physic_bone->m_SelfID)
+		)
+		)
+	{
+		TurnOff();
+		guid_physic_bone=NULL;
+	}
+}
 void	CHangingLamp::net_Save			(NET_Packet& P)	
 {
 	inherited::net_Save(P);
@@ -154,11 +170,7 @@ BOOL	CHangingLamp::net_SaveRelevant	()
 void CHangingLamp::shedule_Update	(u32 dt)
 {
 	CPHSkeleton::Update(dt);
-	CKinematics* K=PKinematics(Visual());
-	if(
-	!K->LL_GetBoneVisible(guid_bone)||
-	(guid_physic_bone&&!K->LL_GetBoneVisible(guid_physic_bone->m_SelfID))
-	)guid_physic_bone=NULL;
+
 
 	inherited::shedule_Update		(dt);
 }

@@ -22,7 +22,7 @@ private:
 
 	void	ClearUnsplited		()																				;
 	//Splitting
-	void	CopySpawnInit		()																				;
+
 	void	PHSplit				()																				;
 
 	void	SpawnCopy			()																				;
@@ -44,6 +44,7 @@ protected:
 	virtual	void	RestoreNetState		(CSE_PHSkeleton* po)											;
 
 	virtual	void	InitServerObject	(CSE_Abstract	*D)														;//
+	virtual	void	CopySpawnInit		()																		;
 			void	RespawnInit			()																		;//net_Destroy
 			bool	Spawn				(CSE_Abstract	*D)											;//net_spawn
 			void	Update				(u32 dt)																;//shedule update

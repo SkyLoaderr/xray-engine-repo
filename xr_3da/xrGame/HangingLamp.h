@@ -52,6 +52,7 @@ public:
 
 	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)																;
 	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}								;
+	virtual	void	CopySpawnInit		()																				;
 	virtual void	net_Save			(NET_Packet& P)																	;
 	virtual	BOOL	net_SaveRelevant	()																				;
 
