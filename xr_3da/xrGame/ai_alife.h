@@ -64,6 +64,7 @@ private:
 	vector<SALifeNPC>			m_tpNPC;
 	u32							m_dwNPCBeingProcessed;
 	u64							m_qwMaxProcessTime;
+	bool						m_bLoaded;
 	void						vfProcessNPC		(u32 dwNPCIndex);
 
 public:

@@ -11,6 +11,7 @@
 
 CAI_ALife::CAI_ALife()
 {
+	m_bLoaded					= false;
 }
 
 CAI_ALife::~CAI_ALife()
@@ -28,6 +29,7 @@ void CAI_ALife::Load()
 	
 	m_tNPCHeader.dwVersion		= ALIFE_VERSION;
 	m_tNPCHeader.dwCount		= 0;
+	m_bLoaded					= true;
 
 	FILE_NAME	caFileName;
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn"))
@@ -140,6 +142,8 @@ void CAI_ALife::Generate()
 void CAI_ALife::Update(u32 dt)
 {
 	inherited::Update(dt);
+	if (!m_bLoaded)
+		return;
 	//Msg("* %7.2fs",Level().timeServer()/1000.f);
 	u64	qwStartTime = CPU::GetCycleCount();
 	if (m_tNPCHeader.dwCount)
