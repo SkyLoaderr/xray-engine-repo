@@ -155,7 +155,7 @@ void CDemoRecord::OnMouseMove		(int dx, int dy)
 	float scale			= .5f;//psMouseSens;
 	if (dx||dy){
 		m_vR.y			+= float(dx)*scale; // heading
-		m_vR.x			+= ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale; // pitch
+		m_vR.x			+= ((psMouseInvert)?-1:1)*float(dy)*scale*(3.f/4.f); // pitch
 	}
 }
 

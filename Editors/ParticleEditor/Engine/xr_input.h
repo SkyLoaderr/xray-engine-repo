@@ -25,7 +25,7 @@ class ENGINE_API CInput
 	public pureAppDeactivate
 #endif
 {
-private:
+public:
 	enum {
 		COUNT_MOUSE_BUTTONS			= 3,
 		COUNT_MOUSE_AXIS			= 2,
