@@ -741,7 +741,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 void CPHElement::BonesCallBack(CBoneInstance* B)
 {
 	Fmatrix parent;
-	if(! bActive)return;
+	VERIFY (bActive);
 	VERIFY(_valid(m_shell->mXFORM));
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback receive 0 matrix");
 	if(bActivating)

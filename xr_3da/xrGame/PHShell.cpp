@@ -495,7 +495,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	bool vis_check = false;
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0,&vis_check);
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
-	SetCallbacks(BonesCallback);
+	//SetCallbacks(BonesCallback);
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
 
