@@ -25,7 +25,11 @@ void CHW::DestroyD3D()
 //////////////////////////////////////////////////////////////////////
 D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 {
+	// R2 hack
+#pragma todo("R2 need to specify depth format")
+	if (strstr(Core.Params,"-r2"))	return D3DFMT_D24S8;
 
+	// R1 usual
 	static	D3DFORMAT	fDS_Try1[6] =
 	{D3DFMT_D24S8,D3DFMT_D24X4S4,D3DFMT_D32,D3DFMT_D24X8,D3DFMT_D16,D3DFMT_D15S1};
 
@@ -129,8 +133,8 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 		}
 		fDepth  = selectDepthStencil(fTarget);
 	}
-	R_ASSERT(fTarget != D3DFMT_UNKNOWN);
-	R_ASSERT(fDepth  != D3DFMT_UNKNOWN);
+	R_ASSERT				(fTarget != D3DFMT_UNKNOWN);
+	R_ASSERT				(fDepth  != D3DFMT_UNKNOWN);
 
     // Set up the presentation parameters
 	D3DPRESENT_PARAMETERS	P;
@@ -140,8 +144,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	P.BackBufferWidth		= dwWidth;
     P.BackBufferHeight		= dwHeight;
 	P.BackBufferFormat		= fTarget;
-	if (bWindowed)			P.BackBufferCount	= 1;
-	else					P.BackBufferCount	= 1;
+	P.BackBufferCount		= 1;
 
 	// Multisample
 	if ((!bWindowed) && psDeviceFlags.is(rsAntialias))
@@ -193,6 +196,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 
 	// Capture misc data
+#pragma todo("R2 doesn't need pTempZB")
 	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
 	R_CHK	(pDevice->GetRenderTarget			(0,&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
