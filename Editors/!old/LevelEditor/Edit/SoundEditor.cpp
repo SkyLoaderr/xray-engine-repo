@@ -337,10 +337,10 @@ void __stdcall TfrmSoundLib::OnAttClick(PropValue* sender, bool& bModif, bool& b
     switch (V->btn_num){
     case 0:{
     	float dist			= thm->MinDist()/(0.01f*psSoundRolloff);
-    	thm->SetMaxDist		(dist+0.05f*dist);
+    	thm->SetMaxDist		(dist+0.1f*dist);
    	}break;
     case 1:{
-    	float dist			= psSoundRolloff*(thm->MaxDist()-0.04761f*thm->MaxDist())*0.01f;
+    	float dist			= psSoundRolloff*(thm->MaxDist()-(0.1f/1.1f)*thm->MaxDist())*0.01f;
     	thm->SetMinDist		(dist);
     }break;
 	}
