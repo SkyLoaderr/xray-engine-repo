@@ -37,13 +37,13 @@ void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, std::string& draw_val)
+void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, xr_string& draw_val)
 {
 	if (draw_val[0]!='$') draw_val="Custom";
 }
 //---------------------------------------------------------------------------
 
-void CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, std::string& nm, bool& res)
+void CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, xr_string& nm, bool& res)
 {
 	CListValue* V 	= dynamic_cast<CListValue*>(sender);  R_ASSERT(V);
 	VERIFY			(nm.size());
@@ -75,7 +75,7 @@ void __fastcall CSHEngineTools::FillConstProps(PropItemVec& items, LPCSTR pref, 
 }
 //---------------------------------------------------------------------------
 
-void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, std::string& nm, bool& res)
+void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, xr_string& nm, bool& res)
 {
 	CListValue* V 	= dynamic_cast<CListValue*>(sender);  R_ASSERT(V);
     VERIFY			(nm.size());
@@ -95,7 +95,7 @@ void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, std::string& nm, bool& 
     }
 }
 //------------------------------------------------------------------------------
-void CSHEngineTools::NameOnAfterEdit(PropValue* sender, std::string& new_name, bool& res)
+void CSHEngineTools::NameOnAfterEdit(PropValue* sender, xr_string& new_name, bool& res)
 {
 	CTextValue* V 			= dynamic_cast<CTextValue*>(sender); R_ASSERT(V);
     AnsiString nn			= new_name.c_str();

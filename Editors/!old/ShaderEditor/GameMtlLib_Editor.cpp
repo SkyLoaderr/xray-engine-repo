@@ -559,7 +559,7 @@ void CGameMtlLibrary::Save()
     }
 	fs.close_chunk		();
 
-	std::string fn;
+	xr_string fn;
     FS.update_path		(fn,_game_data_,GAMEMTL_FILENAME);
     fs.save_to			(fn.c_str());
 }

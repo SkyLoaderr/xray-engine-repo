@@ -72,15 +72,15 @@ bool CShaderTools::OnCreate()
     m_PreviewProps  = TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 
 	// shader test locking
-	std::string 		sh_fn;
+	xr_string 		sh_fn;
     FS.update_path		(sh_fn,_game_data_,"shaders.xr");
 	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true)) return false;
 	// shader test locking
-	std::string 		lc_fn;
+	xr_string 		lc_fn;
     FS.update_path		(lc_fn,_game_data_,"shaders_xrlc.xr");
 	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)) return false;
 	// material test locking
-	std::string 		gm_fn;
+	xr_string 		gm_fn;
     FS.update_path		(gm_fn,_game_data_,GAMEMTL_FILENAME);
 	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)) return false;
 

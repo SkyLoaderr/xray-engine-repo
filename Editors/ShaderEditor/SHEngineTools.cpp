@@ -269,7 +269,7 @@ void CSHEngineTools::Reload()
 
 void CSHEngineTools::Load()
 {
-	std::string fn;
+	xr_string fn;
     FS.update_path				(fn,_game_data_,"shaders.xr");
 
     m_bFreezeUpdate				= TRUE;
@@ -387,7 +387,7 @@ void CSHEngineTools::Save(CMemoryWriter& F)
 void CSHEngineTools::Save()
 {
     // set name
-	std::string fn;
+	xr_string fn;
     FS.update_path				(fn,_game_data_,"shaders.xr");
 
     // backup file

@@ -141,7 +141,7 @@ void CSHSoundEnvTools::FillItemList()
 
 void CSHSoundEnvTools::Load()
 {
-	std::string fn;
+	xr_string fn;
     FS.update_path		(fn,_game_data_,SNDENV_FILENAME);
 
     m_bLockUpdate		= TRUE;
@@ -162,7 +162,7 @@ void CSHSoundEnvTools::Save()
 	m_bLockUpdate				= TRUE;
 
     // save
-	std::string fn;
+	xr_string fn;
     FS.update_path				(fn,_game_data_,SNDENV_FILENAME);  
     // backup file
     EFS.BackupFile				(_game_data_,SNDENV_FILENAME);

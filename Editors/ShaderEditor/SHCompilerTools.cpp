@@ -65,7 +65,7 @@ void CSHCompilerTools::Reload()
 
 void CSHCompilerTools::Load()
 {
-	std::string fn;
+	xr_string fn;
     FS.update_path(fn,_game_data_,"shaders_xrlc.xr");
 
     if (FS.exist(fn.c_str())){
@@ -80,7 +80,7 @@ void CSHCompilerTools::Save()
     ApplyChanges			();
 
     // save
-	std::string fn;
+	xr_string fn;
     FS.update_path			(fn,_game_data_,"shaders_xrlc.xr");
 
     EFS.UnlockFile			(0,fn.c_str(),false);
