@@ -36,6 +36,7 @@ __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     fgTargetLM	= 0;
     fgTargetDyn	= 0;
     fgTargetAnm	= 0;
+    fgBreaking	= 0;
 }
 //----------------------------------------------------
 void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
@@ -69,10 +70,15 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 //---------------------------------------------------------------------------
 #define X_GRID 14
 #define Y_GRID 6
+
 void __fastcall TfrmPropertiesLight::DrawGraph()
 {
 	if (!flBrightness) return;
+	DrawGraph(sePointRange->Value, flBrightness->GetValue(), flBrightness->lim_mx, seA0->Value, seA1->Value, seA2->Value);
+}
 
+void __fastcall TfrmPropertiesLight::DrawGraph(float range, float br, float br_max, float a0, float a1, float a2)
+{
     int w = LG->Width;
     int h = LG->Height;
 
@@ -94,17 +100,17 @@ void __fastcall TfrmPropertiesLight::DrawGraph()
     LG->Canvas->MoveTo(0,h/2);
     LG->Canvas->LineTo(w,h/2);
 
-    float d_cost = sePointRange->Value/w;
+    float d_cost = range/w;
     AnsiString temp;
-    float v = sePointRange->Value;
+    float v = range;
     temp.sprintf("Range = %.2f",v); lbRange->Caption = temp;
     LG->Canvas->MoveTo(-1,h/2);
     LG->Canvas->Pen->Color = clLime;
-    if (!(fis_zero(seA0->Value)&&fis_zero(seA1->Value)&&fis_zero(seA2->Value))){
+    if (!(fis_zero(a0)&&fis_zero(a1)&&fis_zero(a2))){
         for (int d=1; d<w; d++){
             float R = d*d_cost;
-            float b = flBrightness->GetValue()/(seA0->Value+seA1->Value*R+seA2->Value*R*R);
-            float bb = h-((h/(flBrightness->lim_mx*2))*b + h/2);
+            float b = br/(a0+a1*R+a2*R*R);
+            float bb = h-((h/(br_max*2))*b + h/2);
             LG->Canvas->LineTo(d-2,bb);
         }
     }
@@ -121,7 +127,6 @@ void __fastcall TfrmPropertiesLight::mcColorMouseDown(TObject *Sender,
 
 void TfrmPropertiesLight::GetObjectsInfo(){
 	VERIFY( !m_Objects->empty() );
-	tmAnimation->Enabled = false;
 
 	CLight *_L = 0;
 	ObjectIt _F = m_Objects->begin();
@@ -144,13 +149,15 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     m_Props->BeginFillMode	();
     txName		= m_Props->AddTextItem	(0,"Name",		_L->FName, sizeof(_L->FName), Scene.OnObjectNameAfterEdit);
     clDiffuse	= m_Props->AddColorItem	(0,"Diffuse",	&_L->m_D3D.diffuse);
-    flBrightness= m_Props->AddFloatItem	(0,"Brightness",&_L->m_Brightness,-3.f,3.f,0.1f,2);
+    flBrightness= m_Props->AddFloatItem	(0,"Brightness",&_L->m_Brightness,-3.f,3.f,0.1f,2, OnBrightnessAfterEdit);
     blUseInD3D	= m_Props->AddBOOLItem	(0,"Use In D3D",&_L->m_UseInD3D);
 	M			= m_Props->AddMarkerItem(0,"Usage"		)->item;
     fgTargetLM	= m_Props->AddFlagItem	(M,"LightMap",	&_L->m_dwFlags,CLight::flAffectStatic);
     fgTargetDyn	= m_Props->AddFlagItem	(M,"Dynamic",	&_L->m_dwFlags,CLight::flAffectDynamic);
     fgTargetAnm	= m_Props->AddFlagItem	(M,"Animated",	&_L->m_dwFlags,CLight::flProcedural);
-
+	M			= m_Props->AddMarkerItem(0,"Flags"		)->item;
+    fgBreaking	= m_Props->AddFlagItem	(M,"Breaking",	&_L->m_dwFlags,CLight::flBreaking);
+                                                          
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
@@ -164,6 +171,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
         fgTargetLM->InitNext		(&_L->m_dwFlags);
         fgTargetDyn->InitNext		(&_L->m_dwFlags);
         fgTargetAnm->InitNext		(&_L->m_dwFlags);
+		fgBreaking->InitNext		(&_L->m_dwFlags);
 
         seA0->ObjNextInit		 	(_L->m_D3D.attenuation0);
         seA1->ObjNextInit		 	(_L->m_D3D.attenuation1);
@@ -209,7 +217,6 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	VERIFY( !m_Objects->empty() );
     bool bResult = true;
-	tmAnimation->Enabled = false;
 
 	CLight *_L = 0;
 	for(ObjectIt _F = m_Objects->begin();_F!=m_Objects->end();_F++){
@@ -257,20 +264,13 @@ void __fastcall TfrmPropertiesLight::btApplyClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesLight::btOkClick(TObject *Sender)
 {
-/*
-    if (ApplyObjectsInfo()){
-	    ModalResult = mrOk;
-    }else{
-	    ModalResult = mrNone;
-    }
-*/
+    ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::btCancelClick(TObject *Sender)
 {
 	ModalResult = mrCancel;
-    Close();
 }
 //---------------------------------------------------------------------------
 
@@ -304,7 +304,7 @@ void __fastcall TfrmPropertiesLight::FormPaint(TObject *Sender)
 
 void __fastcall TfrmPropertiesLight::OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-    DrawGraph();
+	DrawGraph(sePointRange->Value, *(float*)edit_val, flBrightness->lim_mx, seA0->Value, seA1->Value, seA2->Value);
 }
 //---------------------------------------------------------------------------
 

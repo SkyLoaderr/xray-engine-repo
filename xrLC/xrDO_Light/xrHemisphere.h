@@ -1,3 +1,6 @@
+#ifndef xrHemisphereH
+#define xrHemisphereH
+
 #pragma once
 
 #ifdef XRHEMISPHERE_EXPORTS
@@ -21,3 +24,5 @@ extern "C"
 			LPVOID					param
 		);
 };
+
+#endif //xrHemisphereH

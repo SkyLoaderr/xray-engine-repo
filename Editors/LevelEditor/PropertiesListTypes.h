@@ -63,7 +63,7 @@ public:
     virtual LPCSTR		GetText			()=0;
     virtual void		InitNext		(LPVOID value)=0;
     virtual void		ResetValue		()=0;
-    virtual bool		ApplyValue		(LPCVOID value)=0;
+    bool				IsDiffValues	(){return bDiff;}
 };
 //------------------------------------------------------------------------------
 
@@ -74,7 +74,6 @@ public:
     virtual LPCSTR		GetText			(){return value.c_str();}
     virtual void		InitNext		(LPVOID value){};
     virtual	void		ResetValue		(){;}
-    virtual bool		ApplyValue		(){return false;}
 };
 
 class TextValue: public PropValue{
@@ -86,20 +85,22 @@ public:
 						TextValue		(LPSTR value, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim(_lim),PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			();
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
-    virtual bool		ApplyValue		(LPCVOID value)
+    bool				ApplyValue		(LPCSTR value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
         for (LPSTRIt it=values.begin();it!=values.end();it++){
-        	if (0!=strcmp(*it,(LPCSTR)value)){
-	        	strcpy(*it,(LPCSTR)value);
+        	if (0!=strcmp(*it,value)){
+	        	strcpy(*it,value);
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     LPCSTR				GetValue		(){return values.front();}
-    void				ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
+    void				ResetValue		(){
+    	AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());
+    }
 };
 //------------------------------------------------------------------------------
 
@@ -111,16 +112,16 @@ public:
 						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			();
     virtual void		InitNext		(LPVOID value){if (*(AnsiString*)value!=*values.front()) bDiff=true; AppendValue((AnsiString*)value);}
-    virtual bool		ApplyValue		(LPCVOID value)
+    bool				ApplyValue		(const AnsiString& value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
         for (LPAStringIt it=values.begin();it!=values.end();it++){
-        	if (**it!=(const AnsiString&)value){
-	        	**it=(const AnsiString&)value;
+        	if (**it!=value){
+	        	**it=value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     const AnsiString&	 GetValue		(){return *values.front();}
@@ -136,16 +137,16 @@ public:
 						BOOLValue		(LPBOOL value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			();
     virtual void		InitNext		(LPVOID value){if (*(BOOL*)value!=*values.front()) bDiff=true; AppendValue((BOOL*)value);}
-    virtual bool		ApplyValue		(LPCVOID value)
+    virtual bool		ApplyValue		(BOOL value)
     {	
-    	bDiff			= false;
     	bool bChanged	= false;
 	    for (LPBOOLIt it=values.begin();it!=values.end();it++){
-        	if (**it!=(BOOL)value){
-	        	**it 	= (BOOL)value;
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     BOOL 				GetValue		(){return *values.front();}
@@ -164,16 +165,16 @@ public:
 						WaveValue		(WaveForm* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			(){return "[Wave]";}
     virtual void		InitNext		(LPVOID value){if (!((WaveForm*)value)->Similar(*values.front())) bDiff=true; AppendValue((WaveForm*)value);}
-    virtual bool		ApplyValue		(LPVOID value)
+    bool				ApplyValue		(const WaveForm& value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
         for (LPWaveFormIt it=values.begin();it!=values.end();it++){
-        	if (!(*it)->Similar((WaveForm)value)){
-	        	**it 	= (WaveForm)value;
+        	if (!(*it)->Similar(value)){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     const WaveForm& 	GetValue		(){return *values.front();}
@@ -198,16 +199,16 @@ public:
         return draw_text.c_str();
     }
     virtual void		InitNext		(LPVOID value){clamp(*(DWORD*)value,0ul,lim_mx); if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    virtual bool		ApplyValue		(LPCVOID value)
+    virtual bool		ApplyValue		(DWORD value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
         for (LPDWORDIt it=values.begin();it!=values.end();it++){
-        	if (**it!=(DWORD)value){
-	        	**it 	= (DWORD)value;
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
@@ -235,12 +236,14 @@ public:
     virtual void		InitNext		(LPVOID value){clamp(*(int*)value,lim_mn,lim_mx); if (*(int*)value!=*values.front()) bDiff=true; AppendValue((int*)value);}
     virtual bool		ApplyValue		(int value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPIntIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPIntIt it=values.begin();it!=values.end();it++){
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     int 				GetValue		(){return *values.front();}
@@ -270,12 +273,14 @@ public:
     virtual void		InitNext		(LPVOID value){clamp(*(float*)value,lim_mn,lim_mx); if (*(float*)value!=*values.front()) bDiff=true; AppendValue((float*)value);}
     virtual bool		ApplyValue		(float value)
     {	
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPFloatIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPFloatIt it=values.begin();it!=values.end();it++){
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     float 				GetValue		(){return *values.front();}
@@ -293,12 +298,14 @@ public:
     virtual void		InitNext		(LPVOID value){if (!((Fcolor*)value)->similar_rgba(*values.front())) bDiff=true; AppendValue((Fcolor*)value);}
     virtual bool		ApplyValue		(const Fcolor& value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPFcolorIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPFcolorIt it=values.begin();it!=values.end();it++){
+        	if (!(*it)->similar_rgba(value)){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     const Fcolor&		GetValue		(){return *values.front();}
@@ -329,12 +336,14 @@ public:
     virtual void		InitNext		(LPVOID value){if (!((Fvector*)value)->similar(*values.front())) bDiff=true; AppendValue((Fvector*)value);}
     virtual bool		ApplyValue		(const Fvector& value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPFvectorIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPFvectorIt it=values.begin();it!=values.end();it++){
+        	if (!(*it)->similar(value)){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     const Fvector&		GetValue		(){return *values.front();}
@@ -353,12 +362,14 @@ public:
     virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(DWORD*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((DWORD*)value);}
     virtual bool		ApplyValue		(bool value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-    	for (LPDWORDIt it=values.begin();it!=values.end();it++) if (value) **it|=mask; else **it&=~mask; 
+    	for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        	if (value!=(**it&mask)){
+	        	if (value) **it|=mask; else **it&=~mask; 
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     bool	 			GetValue		(){return (*values.front())&mask;}
@@ -375,14 +386,16 @@ public:
 						TokenValue		(LPDWORD value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):token(_token),PropValue(after,before,draw){AppendValue(value);}
 	virtual LPCSTR 		GetText			();
     virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    virtual bool		ApplyValue		(DWORD value)	
+    bool				ApplyValue		(DWORD value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
@@ -399,14 +412,16 @@ public:
 						TokenValue2		(LPDWORD value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){AppendValue(value);}
 	virtual LPCSTR 		GetText			();
     virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    virtual bool		ApplyValue		(DWORD value)	
+    bool				ApplyValue		(DWORD value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
@@ -428,14 +443,16 @@ public:
 						TokenValue3		(LPDWORD value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):cnt(_cnt),items(_items),PropValue(after,before,draw){AppendValue(value);};
 	virtual LPCSTR 		GetText			();
     virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    virtual bool		ApplyValue		(DWORD value)	
+    bool				ApplyValue		(DWORD value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        	if (**it!=value){
+	        	**it 	= value;
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
@@ -455,12 +472,14 @@ public:
     virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
     virtual bool		ApplyValue		(LPCSTR value)
     {
-    	bDiff			= false;
     	bool bChanged	= false;
-        for (LPSTRIt it=values.begin();it!=values.end();it++) strcpy(*it,value);
+        for (LPSTRIt it=values.begin();it!=values.end();it++){
+        	if (0!=strcmp(*it,value)){
+	        	strcpy(*it,value);
                 bChanged= true;
             }
         }
+        if (bChanged) 	bDiff = false;
         return bChanged;
     }
     LPCSTR				GetValue		(){return values.front();}

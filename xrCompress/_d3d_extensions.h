@@ -30,6 +30,11 @@ public:
 		direction.normalize();
 		range= sqrtf(flt_max);
 	}
+    IC	void		mul(float brightness){
+	    diffuse.mul_rgb		(brightness);
+    	ambient.mul_rgb		(brightness);
+	    specular.mul_rgb	(brightness);
+    }
 } Flight;
 #endif
 

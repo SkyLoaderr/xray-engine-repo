@@ -19,7 +19,7 @@
 #include "xrHemisphere.h"
 
 //------------------------------------------------------------------------------
-// !!! использовать prefix если нужно имя !!!
+// !!! использовать prefix если нужно имя !!! (Связано с группами)
 //------------------------------------------------------------------------------
 
 /*
@@ -274,87 +274,195 @@ int	SceneBuilder::BuildLightControl(CLight* e)
 	return l_light_control.size()-1;
 }
 
-BOOL SceneBuilder::BuildSun(CLight* e)
+struct SBuildLight{
+	Flight	light;
+    float	energy;
+};
+DEFINE_VECTOR(SBuildLight,BLVec,BLIt);
+
+struct SHemiData
 {
+    BLVec* 		dest;
+    SBuildLight	T;
+};
+void __stdcall 	hemi_callback(float x, float y, float z, float E, LPVOID P)
+{
+    SHemiData*	H		= (SHemiData*)P;
+    H->T.energy     	= E;
+    H->T.light.direction.set(x,y,z);
+    H->dest->push_back  (H->T);
+}
+void SceneBuilder::BuildHemiLights()
+{
+    BLVec 				dest;
+    Flight				RL;
+    b_params& P			= Scene.m_LevelOp.m_BuildParams;
+    // set def params
+    RL.type				= D3DLIGHT_DIRECTIONAL;
+    RL.diffuse			= P.area_color;
+    if (P.area_quality){
+        SHemiData		h_data;
+        h_data.dest 	= &dest;
+        h_data.T.light	= RL;
+        xrHemisphereBuild(P.area_quality,FALSE,0.5f,P.area_energy_summary,hemi_callback,&h_data);
+        for (BLIt it=dest.begin(); it!=dest.end(); it++){
+            l_light_static.push_back(b_light_static());
+            b_light_static& sl	= l_light_static.back();
+            sl.controller_ID 	= 0; //?
+            sl.data			    = it->light;
+        }
+    }
+}
+BOOL SceneBuilder::BuildSun(b_light* b, DWORD usage, svector<WORD,16>* sectors)
+{
+    if (usage&CLight::flAffectStatic){
+	    b_params& P			= Scene.m_LevelOp.m_BuildParams;
+    	if (!P.area_quality){
+        	// single light
+	        l_light_static.push_back(b_light_static());
+    	    b_light_static& sl	= l_light_static.back();
+	        sl.controller_ID 	= b->controller_ID;
+    	    sl.data			    = b->data;
+        }else{
+            // soft light
+            float base_h,base_p;
+            b->data.direction.getHP(base_h,base_p);
+
+            int samples;
+            switch(P.area_quality){
+            case 1: samples = 3; break;
+            case 2: samples = 4; break;
+            default:
+            	THROW2("Invalid case.");
+            }
+
+            Fcolor color		= b->data.diffuse;
+            color.normalize_rgb(b->data.diffuse);
+            float energy		= (b->data.diffuse.magnitude_rgb())/float(samples*samples);
+            color.mul_rgb		(energy);
+
+            float disp			= deg2rad(P.area_dispersion);
+            float da 			= disp/float(samples);
+            float mn_h  		= base_h-disp/2;
+            float mn_p  		= base_p-disp/2;
+            for (int x=0; x<samples; x++){
+            	float h = mn_h+x*da;
+	            for (int y=0; y<samples; y++){
+	            	float p = mn_p+y*da;
+                    l_light_static.push_back(b_light_static());
+                    b_light_static& sl	= l_light_static.back();
+                    sl.controller_ID 	= b->controller_ID;
+                    sl.data				= b->data;
+                    sl.data.diffuse.set	(color);
+                    sl.data.direction.setHP(h,p);
+                }
+            }
+        }
+    }
+    if (usage&CLight::flAffectDynamic){
+        R_ASSERT			(sectors);
+		l_light_dynamic.push_back(b_light_dynamic());
+        b_light_dynamic& dl	= l_light_dynamic.back();
+        dl.controller_ID 	= b->controller_ID;
+        dl.data			    = b->data;
+        dl.sectors			= *sectors;
+    }
+	
 	return TRUE;
 }
 
-BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
+BOOL SceneBuilder::BuildPointLight(b_light* b, DWORD usage, svector<WORD,16>* sectors, FvectorVec* soft_points)
+{
+    if (usage&CLight::flAffectStatic){
+    	if (soft_points){
+        // make soft light
+            Fcolor color		= b->data.diffuse;
+            color.normalize_rgb(b->data.diffuse);
+            float energy		= (b->data.diffuse.magnitude_rgb())/float(soft_points->size());
+            color.mul_rgb		(energy);
+
+            for (DWORD k=0; k<soft_points->size(); k++){
+                l_light_static.push_back(b_light_static());
+                b_light_static& sl	= l_light_static.back();
+                sl.controller_ID 	= b->controller_ID;
+                sl.data				= b->data;
+                sl.data.diffuse.set	(color);
+                sl.data.position.set((*soft_points)[k]);
+            }
+        }else{
+	        // make single light
+            l_light_static.push_back(b_light_static());
+            b_light_static& sl	= l_light_static.back();
+            sl.controller_ID 	= b->controller_ID;
+            sl.data			    = b->data;
+        }
+    }
+    if (usage&CLight::flAffectDynamic){
+        R_ASSERT			(sectors);
+		l_light_dynamic.push_back(b_light_dynamic());
+        b_light_dynamic& dl	= l_light_dynamic.back();
+        dl.controller_ID 	= b->controller_ID;
+        dl.data			    = b->data;
+        dl.sectors			= *sectors;
+    }
+	
+	return TRUE;
+}
+
+BOOL SceneBuilder::BuildLight(CLight* e)
 {
     if (!(e->m_dwFlags&CLight::flAffectStatic)&&!(e->m_dwFlags&CLight::flAffectDynamic))
     	return FALSE;
 
-    int controller_ID 	= BuildLightControl(e);
-    Flight L;
-    CopyMemory			(&L,&e->m_D3D,sizeof(Flight));
-    L.diffuse.mul_rgb	(e->m_Brightness);
-    L.ambient.mul_rgb	(e->m_Brightness);
-    L.specular.mul_rgb	(e->m_Brightness);
+    b_light	L;
+    L.data			= e->m_D3D; 
+    L.data.mul		(e->m_Brightness);
+    L.controller_ID	= BuildLightControl(e);
     
     if (e->m_dwFlags&CLight::flProcedural){
-//	    b.controller_ID= ?;
-    }
-    
-    if (e->m_dwFlags&CLight::flAffectStatic){
-        if (D3DLIGHT_DIRECTIONAL==L.type){
-//            if (bRoot){
-//                BuildSun(e);
-//            }else
-			{
-                l_light_static.push_back(b_light_static());
-                b_light_static& sl	= l_light_static.back();
-                sl.controller_ID 	= controller_ID;
-                sl.data			    = L;
-            }
-        }else{
-        	R_ASSERT(D3DLIGHT_POINT==L.type);
-            l_light_static.push_back(b_light_static());
-            b_light_static& sl		= l_light_static.back();
-            sl.controller_ID 		= controller_ID;
-            sl.data			    	= L;
-        }
+//	    controllerID= ?;
     }
 
+	svector<WORD,16>* lpSectors;
     if (e->m_dwFlags&CLight::flAffectDynamic){
-        b_light_dynamic dl;
-        dl.controller_ID 			= controller_ID;
-        dl.data			    		= L;
-
-        switch(dl.data.type){
-        case D3DLIGHT_POINT:
-            if (Scene.ObjCount(OBJCLASS_SECTOR)){
-                // test fully and partial inside
-                ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-                ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
-                for(;_F!=_E;_F++){
-                    if (dl.sectors.size()>=16) break;
-                    CSector* _S=(CSector*)(*_F);
-                    EVisible vis=_S->Intersect(dl.data.position,dl.data.range);
-                    if ((vis==fvPartialInside)||(vis==fvFully))
-                        dl.sectors.push_back(_S->sector_num);
-                }
-                // test partial outside
-                _F = Scene.FirstObj(OBJCLASS_SECTOR);
-                for(;_F!=_E;_F++){
-                    if (dl.sectors.size()>=16) break;
-                    CSector* _S=(CSector*)(*_F);
-                    EVisible vis=_S->Intersect(dl.data.position,dl.data.range);
-                    if (vis==fvPartialOutside)
-                        dl.sectors.push_back(_S->sector_num);
-                }
-                if (dl.sectors.empty()) return FALSE; 
-            }else{
-	            dl.sectors.push_back(m_iDefaultSectorNum);
+		svector<WORD,16> sectors;
+        lpSectors		= &sectors;
+        Fvector& pos 	= e->m_D3D.position;
+        float& range 	= e->m_D3D.range;
+        if (Scene.ObjCount(OBJCLASS_SECTOR)){
+            // test fully and partial inside
+            ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+            ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
+            for(;_F!=_E;_F++){
+                if (sectors.size()>=16) break;
+                CSector* _S=(CSector*)(*_F);
+                EVisible vis=_S->Intersect(pos,range);
+                if ((vis==fvPartialInside)||(vis==fvFully))
+                    sectors.push_back(_S->sector_num);
             }
-            l_light_dynamic.push_back(dl);
-        break;
-        case D3DLIGHT_DIRECTIONAL:
-            R_ASSERT(bRoot);
-            l_light_dynamic.push_back(dl);
-        break;
+            // test partial outside
+            _F = Scene.FirstObj(OBJCLASS_SECTOR);
+            for(;_F!=_E;_F++){
+                if (sectors.size()>=16) break;
+                CSector* _S=(CSector*)(*_F);
+                EVisible vis=_S->Intersect(pos,range);
+                if (vis==fvPartialOutside)
+                    sectors.push_back(_S->sector_num);
+            }
+            if (sectors.empty()) return FALSE; 
+        }else{
+            sectors.push_back(m_iDefaultSectorNum);
         }
     }
-    return TRUE;
+
+    
+    switch (e->m_D3D.type){
+    case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_dwFlags,lpSectors);
+    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_dwFlags,lpSectors,0);
+    default:
+    	THROW2("Invalid case.");
+	    return FALSE;
+    }
 }
 //------------------------------------------------------------------------------
 
@@ -565,7 +673,7 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
         if (UI.NeedAbort()) break;
         switch((*_F)->ClassID){
         case OBJCLASS_LIGHT:
-            bResult = BuildLight((CLight*)(*_F),TRUE);
+            bResult = BuildLight((CLight*)(*_F));
             break;
         case OBJCLASS_GLOW:
             BuildGlow((CGlow*)(*_F));
@@ -617,6 +725,8 @@ BOOL SceneBuilder::CompileStatic()
 	l_vertices	= new b_vertex[l_vertices_cnt];
 
     UI.ProgressStart(Scene.ObjCount(OBJCLASS_SCENEOBJECT),"Parse static objects...");
+// make hemisphere
+	BuildHemiLights();
 // parse scene
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++)
         if (!ParseStaticObjects((*it).second)){bResult = FALSE; break;}

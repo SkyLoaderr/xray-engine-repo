@@ -1,11 +1,11 @@
 object frmPropertiesLight: TfrmPropertiesLight
-  Left = 735
-  Top = 237
+  Left = 440
+  Top = 282
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'
-  ClientHeight = 456
-  ClientWidth = 301
+  ClientHeight = 285
+  ClientWidth = 541
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,11 +22,11 @@ object frmPropertiesLight: TfrmPropertiesLight
   PixelsPerInch = 96
   TextHeight = 13
   object gbType: TGroupBox
-    Left = 0
+    Left = 239
     Top = 0
-    Width = 301
-    Height = 265
-    Align = alTop
+    Width = 302
+    Height = 264
+    Align = alRight
     Caption = 'Type:'
     Color = clBtnFace
     ParentColor = False
@@ -41,8 +41,8 @@ object frmPropertiesLight: TfrmPropertiesLight
     object pcType: TPageControl
       Left = 2
       Top = 15
-      Width = 297
-      Height = 248
+      Width = 298
+      Height = 247
       ActivePage = tsPoint
       Align = alClient
       Style = tsFlatButtons
@@ -320,14 +320,14 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object Panel1: TPanel
     Left = 0
-    Top = 435
-    Width = 301
+    Top = 264
+    Width = 541
     Height = 21
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     object ExtBtn1: TExtBtn
-      Left = 101
+      Left = 1
       Top = 2
       Width = 66
       Height = 18
@@ -340,7 +340,7 @@ object frmPropertiesLight: TfrmPropertiesLight
       OnClick = btApplyClick
     end
     object ebOk: TExtBtn
-      Left = 168
+      Left = 68
       Top = 2
       Width = 66
       Height = 18
@@ -353,7 +353,7 @@ object frmPropertiesLight: TfrmPropertiesLight
       OnClick = btOkClick
     end
     object ebCancel: TExtBtn
-      Left = 235
+      Left = 135
       Top = 2
       Width = 66
       Height = 18
@@ -368,18 +368,13 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object paProps: TPanel
     Left = 0
-    Top = 265
-    Width = 301
-    Height = 170
+    Top = 0
+    Width = 239
+    Height = 264
     Align = alClient
     BevelInner = bvRaised
     BevelOuter = bvLowered
     TabOrder = 2
-  end
-  object tmAnimation: TTimer
-    Enabled = False
-    Interval = 10
-    Left = 232
   end
   object fsStorage: TFormStorage
     OnSavePlacement = fsStorageSavePlacement

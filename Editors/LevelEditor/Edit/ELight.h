@@ -31,7 +31,8 @@ public:
 	enum{
 		flAffectStatic	= (1<<0),
 		flAffectDynamic	= (1<<1),
-		flProcedural	= (1<<2)
+		flProcedural	= (1<<2),
+        flBreaking 		= (1<<3)
     };
     DWORD			m_dwFlags;
 	Flight			m_D3D;

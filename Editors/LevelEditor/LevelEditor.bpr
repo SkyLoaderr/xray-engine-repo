@@ -119,7 +119,8 @@
       FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
-      lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib"/>
+      lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib 
+      lib\xrHemisphere.lib"/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi bcbsmp.bpi"/>
@@ -380,6 +381,7 @@
       <FILE FILENAME="edit\SpawnPoint.cpp" FORMNAME="" UNITNAME="SpawnPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.h" FORMNAME="" UNITNAME="PropertiesListTypes.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\xrHemisphere.lib" FORMNAME="" UNITNAME="xrHemisphere.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -54,7 +54,6 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seA0;
 	TMultiObjSpinEdit *seA1;
 	TMultiObjSpinEdit *seA2;
-	TTimer *tmAnimation;
 	TPanel *Panel1;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebOk;
@@ -86,7 +85,8 @@ private:	// User declarations
     void 			GetObjectsInfo();
     bool 			ApplyObjectsInfo();
     void 			CancelObjectsInfo();
-    void __fastcall DrawGraph();
+    void __fastcall	DrawGraph();
+    void __fastcall DrawGraph(float r, float b, float b_max, float a0, float a1, float a2);
 
     TProperties*	m_SunProps;
     TProperties*	m_Props;
@@ -98,6 +98,7 @@ private:	// User declarations
     FlagValue* 		fgTargetLM;
     FlagValue* 		fgTargetDyn;
     FlagValue* 		fgTargetAnm;
+    FlagValue* 		fgBreaking;
 	void __fastcall OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 public:		// User declarations
     __fastcall TfrmPropertiesLight(TComponent* Owner);

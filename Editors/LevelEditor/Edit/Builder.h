@@ -58,8 +58,11 @@ class SceneBuilder{
     void    ResetStructures ();
 
     int		BuildLightControl(CLight* e);
-    BOOL 	BuildSun		(CLight* e);
-    BOOL    BuildLight		(CLight* e, BOOL bRoot);
+    void 	BuildHemiLights	();
+	void	AppendLight		();    
+    BOOL 	BuildSun		(b_light* b, DWORD usage, svector<WORD,16>* sectors);
+    BOOL 	BuildPointLight	(b_light* b, DWORD usage, svector<WORD,16>* sectors, FvectorVec* soft_points);
+    BOOL    BuildLight		(CLight* e);
 
     int     FindInLODs   	(b_lod* s);
     int		BuildObjectLOD  (const Fmatrix& parent, CEditableObject* e, int sector_num);
