@@ -3,16 +3,6 @@
 #include "LevelGameDef.h"
 
 // Main
-void				game_sv_GameState::Lock						()
-{
-	xrServer*		S	= Level().Server;
-	S->clients_Lock		();
-}
-void				game_sv_GameState::Unlock					()
-{
-	xrServer*		S	= Level().Server;
-	S->clients_Unlock	();
-}
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
 	xrServer*		S	= Level().Server;

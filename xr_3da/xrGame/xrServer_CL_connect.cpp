@@ -35,6 +35,7 @@ void xrServer::Perform_connect_spawn(xrServerEntity* E, xrClientData* CL, NET_Pa
 
 void xrServer::OnCL_Connected		(IClient* _CL)
 {
+	csPlayers.Enter					();
 	xrClientData*	CL				= (xrClientData*)_CL;
 
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
@@ -55,4 +56,5 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	// 
 	game->OnPlayerConnect			(CL->ID);
+	csPlayers.Leave					();
 }

@@ -68,6 +68,7 @@ void xrServer::Update	()
 {
 	NET_Packet		Packet;
 	u32				position;
+	csPlayers.Enter	();
 
 	// game update
 	game->Update	();
@@ -89,7 +90,6 @@ void xrServer::Update	()
 	}
 
 	// 
-	csPlayers.Enter		();
 	for (u32 client=0; client<net_Players.size(); client++)
 	{
 		// Initialize process and check for available bandwidth
@@ -132,9 +132,10 @@ void xrServer::Update	()
 			SendTo			(Client->ID,Packet,net_flags(FALSE,TRUE));
 		}
 	}
-	csPlayers.Leave		();
 
 	if (game->sv_force_sync)	Perform_game_export		();
+
+	csPlayers.Leave	();
 }
 
 u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
@@ -142,12 +143,14 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	u16			type;
 	P.r_begin	(type);
 
+	csPlayers.Enter				();
 	switch (type)
 	{
 	case M_UPDATE:				Process_update		(P,sender);	return 0;		// No broadcast
 	case M_SPAWN:				Process_spawn		(P,sender);	return 0;
 	case M_EVENT:				Process_event		(P,sender); return 0;
 	}
+	csPlayers.Leave				();
 
 	return 0;
 }

@@ -20,8 +20,6 @@ public:
 	vector<RPoint>					rpoints	[4];
 public:
 	// Main accessors
-	virtual		void				Lock					();
-	virtual		void				Unlock					();
 	virtual		game_PlayerState*	get_it					(u32 it);
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID
 	virtual		LPCSTR				get_name_it				(u32 it);

@@ -51,8 +51,10 @@ BOOL xrServer::Connect(LPCSTR session_name)
 
 		// Options
 		if (0==game)				return FALSE;
+		csPlayers.Enter				();
 		game->type					= type_id;
 		game->Create				(options);
+		csPlayers.Leave				();
 	}
 	return	bResult;
 }

@@ -2,13 +2,13 @@
 
 void xrServer::Perform_game_export	()
 {
-	if (net_Players.empty())	return;
+	if (net_Players.empty())		return;
 
 	// Broadcase game state to every body
 	// But it is slightly different view for each "player"
 
 	NET_Packet		P;
-	u32			mode			= net_flags(TRUE,TRUE);
+	u32				mode			= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
 	csPlayers.Enter		();
