@@ -99,6 +99,64 @@ void CLightProjector::setup		(int id)
 	RCache.set_c	("m_plmap_clamp",receivers[id].UVclamp);
 }
 
+/*
+static Fvector down_vec ={0.f,-1.f,0.f};
+static Fvector left_vec ={-1.f,0.f,0.f};
+static Fvector right_vec={1.f,0.f,0.f};
+static Fvector fwd_vec  ={0.f,0.f,1.f};
+static Fvector back_vec ={0.f,0.f,-1.f};
+
+void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot)
+{
+        Fbox bbox;
+    Frect rect;
+    GetSlotRect                 (rect,sx,sz);
+    bbox.min.set                (rect.x1, m_BBox.min.y, rect.y1);
+    bbox.max.set                (rect.x2, m_BBox.max.y, rect.y2);
+
+    SBoxPickInfoVec pinf;
+    XRC.box_options(0);
+    if (Scene.BoxPickObjects(bbox,pinf,&m_SnapObjects)){
+                bbox.grow               (EPS_L_VAR);
+        Fplane                  frustum_planes[4];
+                frustum_planes[0].build(bbox.min,left_vec);
+                frustum_planes[1].build(bbox.min,back_vec);
+                frustum_planes[2].build(bbox.max,right_vec);
+                frustum_planes[3].build(bbox.max,fwd_vec);
+
+        CFrustum frustum;
+        frustum.CreateFromPlanes(frustum_planes,4);
+
+        float y_min             = flt_max;
+        float y_max             = flt_min;
+                for (SBoxPickInfoIt it=pinf.begin(); it!=pinf.end(); it++){
+                for (int k=0; k<(int)it->inf.size(); k++){
+                float range;
+                Fvector verts[3];
+                it->s_obj->GetFaceWorld(it->e_mesh,it->inf[k].id,verts);
+                sPoly sSrc      (verts,3);
+                sPoly sDest;
+                sPoly* sRes = frustum.ClipPoly(sSrc, sDest);
+                if (sRes){
+                    for (u32 k=0; k<sRes->size(); k++){
+                        float H = (*sRes)[k].y;
+                        if (H>y_max) y_max = H+0.03f;
+                        if (H<y_min) y_min = H-0.03f;
+                    }
+                    slot.w_y    (y_min,y_max-y_min);
+                }
+            }
+            }
+    }else{
+        ZeroMemory(&slot,sizeof(DetailSlot));
+        slot.w_id(0,DetailSlot::ID_Empty);
+        slot.w_id(1,DetailSlot::ID_Empty);
+        slot.w_id(2,DetailSlot::ID_Empty);
+        slot.w_id(3,DetailSlot::ID_Empty);
+    }
+}
+*/
+
 //
 void CLightProjector::calculate	()
 {

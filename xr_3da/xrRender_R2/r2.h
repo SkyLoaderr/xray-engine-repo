@@ -138,7 +138,6 @@ public:
 	// Main
 	virtual void					Calculate					();
 	virtual void					Render						();
-	virtual void					RenderBox					(IRender_Sector* S, Fbox& BB, int sh);
 	virtual void					Screenshot					(LPCSTR postfix, BOOL bSquare=FALSE);
 
 	// Render mode

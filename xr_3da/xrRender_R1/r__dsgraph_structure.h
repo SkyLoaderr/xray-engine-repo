@@ -55,4 +55,5 @@ public:
 	void		r_dsgraph_render_hud							();
 	void		r_dsgraph_render_lods							();
 	void		r_dsgraph_render_sorted							();
+	void		r_dsgraph_render_subspace						(CSector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	);
 };

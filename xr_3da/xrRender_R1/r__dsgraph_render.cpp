@@ -408,9 +408,77 @@ void R_dsgraph_structure::r_dsgraph_render_hud	()
 
 //////////////////////////////////////////////////////////////////////////
 // strict-sorted render
-void R_dsgraph_structure::r_dsgraph_render_sorted	()
+void	R_dsgraph_structure::r_dsgraph_render_sorted	()
 {
 	// Sorted (back to front)
 	mapSorted.traverseRL	(sorted_L1);
 	mapSorted.clear			();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// sub-space rendering
+void	R_dsgraph_structure::r_dsgraph_render_subspace	(CSector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
+{
+	R_ASSERT						(_sector);
+
+	// Save and build new frustum, disable HOM
+	CFrustum	ViewSave			= ViewBase;
+	ViewBase.CreateFromMatrix		(mCombined,	FRUSTUM_P_ALL);
+	View							= &ViewBase;
+
+	// Traverse sector/portal structure
+	PortalTraverser.traverse		( _sector, ViewBase, _cop, mCombined, 0 );
+
+	// Determine visibility for static geometry hierrarhy
+	for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
+	{
+		CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
+		IRender_Visual*	root	= sector->root();
+		for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+		{
+			set_Frustum			(&(sector->r_frustums[v_it]));
+			add_Geometry		(root);
+		}
+	}
+
+	if (_dynamic)
+	{
+		set_Object						(0);
+
+		// Traverse object database
+		g_SpatialSpace->q_frustum
+			(
+			ISpatial_DB::O_ORDERED,
+			STYPE_RENDERABLE,
+			ViewBase
+			);
+
+		// Exact sorting order (front-to-back)
+		lstRenderables.swap					(g_SpatialSpace->q_result);
+		// std::sort						(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
+
+		// Determine visibility for dynamic part of scene
+		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
+		{
+			ISpatial*	spatial		= lstRenderables[o_it];
+			CSector*	sector		= (CSector*)spatial->spatial.sector;
+			if	(0==sector)										continue;	// disassociated from S/P structure
+			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
+			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
+			{
+				CFrustum&	view	= sector->r_frustums[v_it];
+				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
+
+				// renderable
+				IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+				if (0==renderable)				continue;		// unknown, but renderable object (r1_glow???)
+
+				renderable->renderable_Render	();
+			}
+		}
+	}
+
+	// Restore
+	ViewBase						= ViewSave;
+	View							= 0;
 }

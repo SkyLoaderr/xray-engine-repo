@@ -189,8 +189,8 @@ void CRender::Calculate				()
 	{
 		CSector* pSector		= (CSector*)detectSector(Device.vCameraPosition);
 		if (0==pSector) pSector = pLastSector;
-		pLastSector = pSector;
-		vLastCameraPos.set(Device.vCameraPosition);
+		pLastSector				= pSector;
+		vLastCameraPos.set		(Device.vCameraPosition);
 	}
 
 	// Check if camera is too near to some portal - if so force DualRender
