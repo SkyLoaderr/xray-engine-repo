@@ -79,6 +79,19 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyFireEnough,false);
 	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertySafeToKill,false);
 
+//	{
+//		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+//		OPERATOR_VECTOR::iterator	E = m_operators.end();
+//		for ( ; I != E; ++I)
+//			Msg				("Stalker operator %s : %x",(*I).get_operator()->m_action_name,dynamic_cast<void*>(&*(*I).get_operator()));
+//	}
+//	{
+//		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
+//		EVALUATOR_MAP::iterator		E = m_evaluators.end();
+//		for ( ; I != E; ++I)
+//			Msg				("Stalker evaluator %d : %x",(*I).first,dynamic_cast<void*>(&*(*I).second));
+//	}
+
 #ifdef LOG_ACTION
 	if (psAI_Flags.test(aiGOAP))
 		m_use_log			= true;
