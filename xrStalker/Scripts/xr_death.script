@@ -7,7 +7,8 @@ function evaluator_allow_death:__init(name, storage) super (nil, name)
   self.a = storage
 end
 function evaluator_allow_death:evaluate ()
-    return self.a.logic == nil
+    --return self.a.logic == nil
+    return true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -26,21 +27,20 @@ function action_process_death:initialize()
     self.object:set_desired_direction()        
 end
 function action_process_death:execute()
-	xr_logic.try_switch_to_another_section(self.object, self.a)
-	self.a.logic = nil
 	action_base.execute(self)
 end
 function action_process_death:finalize()
    	action_base.finalize(self)
 end
-
-function death_callback(victim, who)
-    if ( who ~= nil) then
+function action_process_death:death_callback(victim, who)
+    if who ~= nil then
         printf("[%s] killed by [%s]", victim:name(), who:name() )
-        xr_motivator.storage[victim:id()].death.killer = who:id()
+		xr_motivator.storage[victim:id()].death.killer = who:id()
     else
         printf("[%s] killed by [Unknown]", victim:name())
     end
+	xr_logic.try_switch_to_another_section(self.object, self.a)
+	self.a.logic = nil    
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -62,11 +62,12 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	action:add_precondition(world_property(properties["allow_death"], false))
  	action:add_effect(world_property(properties["allow_death"], true))
   	manager:add_action(operators["death"], action)
-
+	npc:set_death_callback(action, "death_callback")
+	
   	action = manager:action(stalker_ids.action_death_planner)
   	action:add_precondition(world_property(properties["allow_death"], true))
   	
-	npc:set_death_callback(this.death_callback)  	
+	
 end
 
 function set_death_checker(npc, ini, scheme, section)
