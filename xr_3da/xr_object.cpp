@@ -252,23 +252,25 @@ void CObject::renderable_Render	()
 {
 }
 
-CObject* CObject::H_SetParent	(CObject* O)
+CObject* CObject::H_SetParent	(CObject* new_parent)
 {
-	if (O==Parent)	return O;
+	if (new_parent==Parent)	return new_parent;
 
-	CObject* S	= Parent; 
+	CObject* old_parent	= Parent; 
 	
+	VERIFY2((new_parent==0)||(old_parent==0),"Before set parent - execute H_SetParent(0)");
+
 	// if (Parent) Parent->H_ChildRemove	(this);
-	if (0==S)	OnH_B_Chield			();
-	else		OnH_B_Independent		(); 
-	if (O)		spatial_unregister		();
-	else		spatial_register		();
-	Parent		= O;
-	if (0==S)	OnH_A_Chield			();
-	else		OnH_A_Independent		(); 
+	if (0==old_parent)	OnH_B_Chield		();	// before attach
+	else				OnH_B_Independent	(); // before detach
+	if (new_parent)		spatial_unregister	();
+	else				spatial_register	();
+	Parent				= new_parent;
+	if (0==old_parent)	OnH_A_Chield		();	// after attach
+	else				OnH_A_Independent	(); // after detach
 	// if (Parent)	Parent->H_ChildAdd		(this);
 
-	return		S;
+	return		old_parent;
 }
 
 void CObject::OnH_A_Chield		()
