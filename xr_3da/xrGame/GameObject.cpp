@@ -71,31 +71,18 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
-	xrServerEntity*		E		= (xrServerEntity*)DC;
-	R_ASSERT					(E);
+	xrServerEntity*		E			= (xrServerEntity*)DC;
+	R_ASSERT						(E);
 
 	// Naming
-	cName_set					(E->s_name);
-	cNameSect_set				(E->s_name);
-	if (E->s_name_replace[0])	cName_set		(E->s_name_replace);
+	cName_set						(E->s_name);
+	cNameSect_set					(E->s_name);
+	if (E->s_name_replace[0])		cName_set		(E->s_name_replace);
 
 	// XForm
-	vPosition.set				(E->o_Position);
-	mRotate.setXYZ				(E->o_Angle);
-	UpdateTransform				();
-
-	// Adapt to sphere
-	/*
-	Fvector						svC;
-	float						svR		= Radius();
-	svCenter					(svC);
-	if ((svC.y-svR)<vPosition.y)
-	{
-		float diff			=	vPosition.y - (svC.y-svR);
-		vPosition.y			+=	diff;
-		UpdateTransform		();
-	}
-	*/
+	vPosition.set					(E->o_Position);
+	mRotate.setXYZ					(E->o_Angle);
+	UpdateTransform					();
 
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
@@ -104,20 +91,31 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	pCreator->Objects.net_Register	(this);
 
 	// AI-DB connectivity
-	Fvector				nPos	= vPosition;
 	CTimer		T; T.Start		();
-	int node			= getAI().q_LoadSearch(nPos);
-	Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
-
-	if (node<0)			{
-		Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-		AI_NodeID			= u32(-1);
-		AI_Node				= NULL;
-	} else {
-		AI_NodeID			= u32(node);
-		AI_Node				= getAI().Node(AI_NodeID);
-		getAI().ref_add  (AI_NodeID);
+	CALifeObject*		a_obj	= dynamic_cast<CALifeObject*>(E);
+	if (a_obj)
+	{
+		R_ASSERT			(getAI().bfCheckIfGraphLoaded());
+		AI_NodeID			=	getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID;
+		AI_Node				=	getAI().Node(AI_NodeID);
+		getAI().ref_add		(AI_NodeID);
 	}
+	else 
+	{
+		Fvector				nPos	= vPosition;
+		int node					= getAI().q_LoadSearch(nPos);
+
+		if (node<0)			{
+			Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
+			AI_NodeID			= u32(-1);
+			AI_Node				= NULL;
+		} else {
+			AI_NodeID			= u32(node);
+			AI_Node				= getAI().Node(AI_NodeID);
+			getAI().ref_add  (AI_NodeID);
+		}
+	}
+	Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
 
 	// Phantom
 	respawnPhantom			= E->ID_Phantom;
