@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.00"
 	Name="xrDO_Light"
+	ProjectGUID="{B730F54D-1199-481A-AAD0-5DB684E067C0}"
 	SccProjectName="&quot;$/xrLC/xrDO_Light&quot;, CHEAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
@@ -77,23 +78,15 @@
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2"
-			WholeProgramOptimization="TRUE">
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
-				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
-				OptimizeForWindowsApplication="TRUE"
 				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
+				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrDO_Light.pch"
@@ -216,16 +209,10 @@
 					RelativePath=".\_fpoint.h">
 				</File>
 				<File
-					RelativePath=".\_frect.h">
-				</File>
-				<File
 					RelativePath=".\_intersection_quad.h">
 				</File>
 				<File
 					RelativePath=".\_ipoint.h">
-				</File>
-				<File
-					RelativePath=".\_irect.h">
 				</File>
 				<File
 					RelativePath=".\_math.cpp">
@@ -253,6 +240,9 @@
 				</File>
 				<File
 					RelativePath=".\_random.h">
+				</File>
+				<File
+					RelativePath="_rect.h">
 				</File>
 				<File
 					RelativePath=".\_sphere.cpp">

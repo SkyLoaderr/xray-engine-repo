@@ -8,11 +8,14 @@
 #include "ftimer.h"
 
 #define NUM_THREADS		3
-#define NUM_SUBDIVS		128
 
 //-----------------------------------------------------------------------------------------------------------------
 const int	LIGHT_Count				=	6;
-const int	LIGHT_Total				=	(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
+
+//-----------------------------------------------------------------
+__declspec(thread)		u64			t_start	= 0;
+__declspec(thread)		u64			t_time	= 0;
+__declspec(thread)		u64			t_count	= 0;
 
 //-----------------------------------------------------------------
 #define LT_DIRECT		0
@@ -22,7 +25,7 @@ const int	LIGHT_Total				=	(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 struct R_Light
 {
     DWORD           type;				// Type of light source		
-    float			amount;				// Diffuse color of light	
+    Fcolor          diffuse;			// Diffuse color of light	
     Fvector         position;			// Position in world space	
     Fvector         direction;			// Direction in world space	
     float		    range;				// Cutoff range
@@ -30,8 +33,15 @@ struct R_Light
     float	        attenuation0;		// Constant attenuation		
     float	        attenuation1;		// Linear attenuation		
     float	        attenuation2;		// Quadratic attenuation	
+	float			energy;				// For radiosity ONLY
 	
-	Fvector			tri[3];				// Cached triangle for ray-testing
+	Fvector			tri[3];
+
+	R_Light()		{
+		tri[0].set	(0,0,0);
+		tri[1].set	(0,0,EPS_S);
+		tri[2].set	(EPS_S,0,0);
+	}
 };
 typedef	svector<R_Light*,4*1024>	LSelection;
 
@@ -44,12 +54,7 @@ Fbox					LevelBB;
 CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
 DetailSlot*				dtS;
-b_transfer				Header;
-
-__declspec(thread)		u64			t_start	= 0;
-__declspec(thread)		u64			t_time	= 0;
-__declspec(thread)		u64			t_count	= 0;
-
+b_params				g_params;
 //-----------------------------------------------------------------
 // hemi
 struct		hemi_data
@@ -60,7 +65,7 @@ struct		hemi_data
 void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
 {
 	hemi_data*	H		= (hemi_data*)P;
-	H->T.amount			= E * Header.params.area_color.magnitude_rgb();
+	H->T.energy			= E * g_params.area_color.magnitude_rgb();
 	H->T.direction.set	(x,y,z);
 	H->dest->push_back	(H->T);
 }
@@ -101,118 +106,60 @@ void xrLoad(LPCSTR name)
 	{
 		strconcat			(N,name,"build.prj");
 
-		CVirtualFileStream	FS(N);
-		void*				data = FS.Pointer();
-		
-		Header				= *((b_transfer *) data);
-		R_ASSERT(XRCL_CURRENT_VERSION==Header._version);
-		Header.lights			= (b_light*)	(DWORD(data)+DWORD(Header.lights));
+		string32	ID			= BUILD_PROJECT_MARK;
+		string32	id;
+		CStream*	F			= new CFileStream(N);
+		F->Read		(&id,8);
+		if (0==strcmp(id,ID))	{
+			_DELETE		(F);
+			F					= new CCompressedStream(N,ID);
+		}
+		CStream&				FS	= *F;
 
-		vector<R_Light>*	dest = &g_lights;
-		for (DWORD l=0; l<Header.light_count; l++) 
+		// Version
+		DWORD version;
+		FS.ReadChunk			(EB_Version,&version);
+		R_ASSERT(XRCL_CURRENT_VERSION==version);
+
+		// Header
+		FS.ReadChunk			(EB_Parameters,&g_params);
+
+
+		// Load lights
+		Status	("Loading lights...");
 		{
-			b_light* L = &Header.lights[l];
-			if (L->flags.bAffectStatic) 
+			// Static
 			{
-				// generic properties
-				R_Light						RL;
-				RL.amount =					L->diffuse.magnitude_rgb();
-				RL.position.set				(L->position);
-				RL.direction.normalize_safe	(L->direction);
-				RL.range				=	L->range*1.1f;
-				RL.range2				=	RL.range*RL.range;
-				RL.attenuation0			=	L->attenuation0;
-				RL.attenuation1			=	L->attenuation1;
-				RL.attenuation2			=	L->attenuation2;
-				RL.tri[0].set			(0,0,0);
-				RL.tri[1].set			(0,0,0);
-				RL.tri[2].set			(0,0,0);
-				
-				if (L->type==D3DLIGHT_DIRECTIONAL) 
+				F = FS.OpenChunk(EB_Light_static);
+				b_light_static	temp;
+				DWORD cnt		= F->Length()/sizeof(temp);
+				for				(DWORD i=0; i<cnt; i++)
 				{
-					RL.type				= LT_DIRECT;
-					R_Light	T			= RL;
-					Fmatrix				rot_y;
-					
-					Fvector				v_top,v_right,v_dir;
-					v_top.set			(0,1,0);
-					v_dir.set			(RL.direction);
-					v_right.crossproduct(v_top,v_dir);
-					v_right.normalize	();
-					
-					// Build jittered light
-					T.amount			= L->diffuse.magnitude_rgb()/14.f;
-					float angle			= deg2rad(Header.params.area_dispersion);
-					{
-						//*** center
-						dest->push_back	(T);
-						
-						//*** left
-						rot_y.rotateY			(3*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotateY			(2*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotateY			(1*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						//*** right
-						rot_y.rotateY			(-1*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotateY			(-2*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotateY			(-3*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						//*** top 
-						rot_y.rotation			(v_right, 3*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotation			(v_right, 2*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotation			(v_right, 1*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						//*** bottom
-						rot_y.rotation			(v_right,-1*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotation			(v_right,-2*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-						
-						rot_y.rotation			(v_right,-3*angle/4);
-						rot_y.transform_dir		(T.direction,RL.direction);
-						dest->push_back	(T);
-					}
-					
-					// Build area-lights
-					if (Header.params.area_quality)	
-					{
-						hemi_data				h_data;
-						h_data.dest				= dest;
-						h_data.T				= RL;
-						h_data.T.amount			= 0;
-						xrHemisphereBuild		(Header.params.area_quality,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
-					}
-				} else {
-					RL.type			= LT_POINT;
-					dest->push_back (RL);
+					R_Light		RL;
+					F->Read		(&temp,sizeof(temp));
+					Flight&		L = temp.data;
+
+					// type
+					if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
+					else											RL.type = LT_POINT;
+
+					// generic properties
+					RL.diffuse.normalize_rgb	(L.diffuse);
+					RL.position.set				(L.position);
+					RL.direction.normalize_safe	(L.direction);
+					RL.range				=	L.range*1.1f;
+					RL.range2				=	RL.range*RL.range;
+					RL.attenuation0			=	L.attenuation0;
+					RL.attenuation1			=	L.attenuation1;
+					RL.attenuation2			=	L.attenuation2;
+					RL.energy				=	L.diffuse.magnitude_rgb	();
+
+					g_lights.push_back		(RL);
+					// place into layer
+//					R_ASSERT	(temp.controller_ID<L_layers.size());
+//					L_layers	[temp.controller_ID].lights.push_back	(RL);
 				}
+				F->Close		();
 			}
 		}
 	}
@@ -220,14 +167,12 @@ void xrLoad(LPCSTR name)
 
 IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
-	/*
 	// 1. Check cached polygon
 	float _u,_v,range;
 	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,true);
 	if (res) {
 		if (range>0 && range<r) return true;
 	}
-	*/
 
 	// 2. Polygon doesn't pick - real database query
 	t_start			= CPU::GetCycleCount();
@@ -268,7 +213,7 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			if( D <=0 ) continue;
 
 			// Raypick
-			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->amount;
+			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->energy;
 		} else {
 			// Distance
 			float sqD	= Pnew.distance_to_sqr(L->position);
@@ -283,25 +228,45 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			// Raypick
 			float R		= sqrtf(sqD);
 			if (!RayPick(DB,Pnew,Ldir,R,*L))
-				amount += (D*L->amount)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+				amount += (D*L->energy)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 		}
 	}
 	return amount;
 }
 
+DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
 class	LightThread : public CThread
 {
-	DWORD	Nstart, Nend;
+	DWORD		Nstart, Nend;
+	DWORDVec	box_result;
 public:
 	LightThread			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
 	{
 		Nstart	= _start;
 		Nend	= _end;
 	}
+	IC float			fromSlotX		(int x)		
+	{
+		return (x-dtH.offs_x)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;
+	}
+	IC float			fromSlotZ		(int z)		
+	{
+		return (z-dtH.offs_z)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;
+	}
+	void				GetSlotRect		(Frect& rect, int sx, int sz)
+	{
+		float x 		= fromSlotX(sx);
+		float z 		= fromSlotZ(sz);
+		rect.x1			= x-DETAIL_SLOT_SIZE_2+EPS_L;
+		rect.y1			= z-DETAIL_SLOT_SIZE_2+EPS_L;
+		rect.x2			= x+DETAIL_SLOT_SIZE_2-EPS_L;
+		rect.y2			= z+DETAIL_SLOT_SIZE_2-EPS_L;
+	}
 	virtual void		Execute()
 	{
 		CDB::COLLIDER	DB;
-		DB.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
+		DB.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL		);
+		DB.box_options	(0);//CDB::OPT_FULL_TEST							);
 
 		vector<R_Light>	Lights = g_lights;
 
@@ -323,17 +288,18 @@ public:
 				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.y_min,	slt_z*DETAIL_SLOT_SIZE);
 				BB.max.set	(BB.min.x+DETAIL_SLOT_SIZE,	DS.y_max,	BB.min.z+DETAIL_SLOT_SIZE);
 				BB.grow		(0.01f);
-				
+
 				Fsphere		S;
 				BB.getsphere(S.P,S.R);
 				
 				// Select polygons
 				Fvector				bbC,bbD;
 				BB.get_CD			(bbC,bbD);
-				DB.box_options		(0);
 				DB.box_query		(&Level,bbC,bbD);
-				DWORD	triCount	= DB.r_count	();
-				if (0==triCount)	continue;
+
+				box_result.clear	();
+				for (CDB::RESULT* I=DB.r_begin(); I!=DB.r_end(); I++) box_result.push_back(I->id);
+				if (box_result.empty())	continue;
 
 				CDB::TRI* tris		= Level.get_tris();
 				
@@ -352,7 +318,7 @@ public:
 				// lighting itself
 				float amount[4]	= {0,0,0,0};
 				DWORD count[4]	= {0,0,0,0};
-				float coeff		= 0.5f*DETAIL_SLOT_SIZE/float(LIGHT_Count);
+				float coeff		= DETAIL_SLOT_SIZE_2/float(LIGHT_Count);
 				FPU::m64r		();
 				for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
 				{
@@ -369,25 +335,25 @@ public:
 						Fvector start;	start.set	(P.x,BB.max.y+EPS,P.z);
 						
 						float		r_u,r_v,r_range;
-						for (DWORD tid=0; tid<triCount; tid++)
+						for (DWORDIt tit=box_result.begin(); tit!=box_result.end(); tit++)
 						{
-							CDB::TRI&	T	= tris	[DB.r_begin()[tid].id];
+							CDB::TRI&	T	= tris	[*tit];
 							if (CDB::TestRayTri(start,dir,T.verts,r_u,r_v,r_range,TRUE))
 							{
 								if (r_range>=0.f)	{
 									float y_test	= start.y - r_range;
 									if (y_test>P.y)	{
-										P.y = y_test;
+										P.y			= y_test+EPS;
 										t_n.mknormal(*T.verts[0],*T.verts[1],*T.verts[2]);
 									}
 								}
 							}
 						}
-						if (P.y<BB.min.y)	continue;
+						if (P.y<BB.min.y) continue;
 						
 						// select part of slot
 						int pid = 0;
-						if (z<0)
+						if (z>0)
 						{
 							if (x<0)	pid = 0;
 							else		pid = 1;
@@ -403,13 +369,14 @@ public:
 				}
 				
 				// 
-//				if ((0==count[0]) || (0==count[1]) || (0==count[2]) || (0==count[3]))
-//					Msg("* failed to calculate slot X%d:Z%d",_x,_z);
+				if ((0==count[0]) || (0==count[1]) || (0==count[2]) || (0==count[3]))
+					Msg("* failed to calculate slot X%d:Z%d",_x,_z);
+//				Msg("%dx%d [0:%f, 1:%f, 2:%f, 3:%f]",_x,_z,amount[0],amount[1],amount[2],amount[3]);
 
 				// calculation of luminocity
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
-				float amb		= Header.params.m_lm_amb_color.magnitude_rgb();
-				float f			= Header.params.m_lm_amb_fogness;
+				float amb		= g_params.m_lm_amb_color.magnitude_rgb();
+				float f			= g_params.m_lm_amb_fogness;
 				float f_inv		= 1.f - f; 
 				res				= (amount[0]/float(count[0]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a0	= LL;
 				res				= (amount[1]/float(count[1]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a1	= LL;
@@ -452,3 +419,14 @@ void xrCompiler(LPCSTR name)
 
 	if (dtFS)	_DELETE(dtFS);
 }
+						/*
+						Frect rect;
+						GetSlotRect	(rect,_x,_z);
+						BB.min.set	(rect.x1, DS.y_min, rect.y1);
+						BB.max.set	(rect.x2, DS.y_max, rect.y2);
+						BB.grow		(0.01f);
+						Msg			("BB1:[%3.2f,%3.2f,%3.2f]-[%3.2f,%3.2f,%3.2f]",
+						BB.min.x,BB.min.y,BB.min.z,
+						BB.max.x,BB.max.y,BB.max.z
+						);
+						*/
