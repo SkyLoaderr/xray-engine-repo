@@ -34,7 +34,7 @@
 	<pda_msg_list_sp x="15" y="465" width="525" height="220" item_height="70"></pda_msg_list_sp>
 	<pda_msg_list_sp2 x="100" y="650" width="824" height="100" item_height="70"></pda_msg_list_sp2>
 	<!--pda_msg_list_sp2 x="100" y="650" width="824" height="114" item_height="57"></pda_msg_list_sp2-->
-	<pda_msg_list_mp x="15" y="325" width="525" height="420" item_height="15" fade="3000"></pda_msg_list_mp>
+	<pda_msg_list_mp x="15" y="456" width="525" height="220" item_height="70" fade="3000"></pda_msg_list_mp>
 	<!--list x="15" y="325" width="525" height="420" item_height = "70"></list -->
 	
 	
