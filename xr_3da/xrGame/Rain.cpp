@@ -217,8 +217,8 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 	P->time						= particles_time;
 	P->mXForm.rotateY			(::Random.randF(PI_MUL_2));
 	P->mXForm.translate_over	(pos);
-	P->mXForm.transform_tiny	(P->bounds.P,DM_Drop.bounds.P);
-	P->bounds.R					= DM_Drop.bounds.R;
+	P->mXForm.transform_tiny	(P->bounds.P,DM_Drop.bv_sphere.P);
+	P->bounds.R					= DM_Drop.bv_sphere.R;
 }
 
 void	CEffect_Rain::Render	()
