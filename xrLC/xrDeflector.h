@@ -100,4 +100,4 @@ IC float Lrnd()
 extern void		Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 extern void		blit			(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF);
 
-#define BORDER 2
+#define BORDER 1
