@@ -51,7 +51,7 @@ void CAI_Stalker::vfUpdateSearchPosition()
 
 void CAI_Stalker::Think()
 {
-	vfUpdateSearchPosition();
+	//vfUpdateSearchPosition();
 	m_dwUpdateCount++;
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
@@ -202,30 +202,30 @@ void CAI_Stalker::Firing()
 
 void CAI_Stalker::Searching()
 {
-	WRITE_TO_LOG("Searching");
-
-//	SelectEnemy(m_Enemy);
-
-//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
-
-//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Level().timeServer() - m_dwLastHitTime > 3000,eStalkerStateUnderFire);
-
-	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
-		vfBuildPathToDestinationPoint		(0);
-
-	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw = r_target.yaw;
-//	WRITE_TO_LOG				("Searching");
+//	WRITE_TO_LOG("Searching");
 //
-//	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting);
+////	SelectEnemy(m_Enemy);
 //
-//	Fvector						tDummy;
-//	u32							dwTime = Level().timeServer();
-//	tDummy.setHP				(angle_normalize_signed(-2*PI*dwTime/20000),0);
-////	Msg							("[%f][%f][%f]",VPUSH(Device.vCameraPosition));
-//	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);//,tDummy);//Device.vCameraPosition);
+////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
 //
+////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Level().timeServer() - m_dwLastHitTime > 3000,eStalkerStateUnderFire);
+//
+//	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
+//		vfBuildPathToDestinationPoint		(0);
+//
+//	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
 //	if (m_fCurSpeed < EPS_L)
-//		r_torso_target.yaw		= r_target.yaw;
+//		r_torso_target.yaw = r_target.yaw;
+	WRITE_TO_LOG				("Searching");
+
+	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting);
+
+	Fvector						tDummy;
+	u32							dwTime = Level().timeServer();
+	tDummy.setHP				(angle_normalize_signed(-2*PI*dwTime/20000),0);
+//	Msg							("[%f][%f][%f]",VPUSH(Device.vCameraPosition));
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);//,tDummy);//Device.vCameraPosition);
+
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
 }

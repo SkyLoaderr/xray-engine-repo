@@ -8,10 +8,13 @@ void	game_sv_Single::Create			(LPCSTR options)
 }
 xrServerEntity*		game_sv_Single::get_entity_from_eid		(u16 id)
 {
-	VERIFY(m_tpALife);
-	OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
-	if (I != m_tpALife->m_tObjectRegistry.end())
-		return((*I).second);
+	if (m_tpALife) {
+		OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
+		if (I != m_tpALife->m_tObjectRegistry.end())
+			return((*I).second);
+		else
+			return(inherited::get_entity_from_eid(id));
+	}
 	else
 		return(inherited::get_entity_from_eid(id));
 }
