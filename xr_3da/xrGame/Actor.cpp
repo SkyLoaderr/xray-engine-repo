@@ -364,6 +364,28 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 	weapon			= (f<0.5f)?A.weapon:B.weapon;
 }
 
+void CActor::ZoneEffect	(float z_amount)
+{
+	clamp				(z_amount,0.f,1.f);
+
+	// Gray
+	::Render->getTarget()->set_gray	(z_amount*z_amount);
+
+	// Calc shift func
+	float f_x			= Device.fTimeGlobal;
+	float f_sin4x		= sinf(4.f*f_x);
+	float f_sin4x_s		= sinf(PI/3.f + 4.f*f_x);
+	float f_sin4x_sa	= abs(f_sin4x_s);
+	float F				= (f_sin4x+f_sin4x_sa)+(1+f_sin4x*f_sin4x_sa)+ 0.3f*sinf(tanf(PI/(2.1f)*sinf(f_x)));
+
+	// Fov/Shift + Pulse
+	CCameraBase* C		= cameras	[cam_active];
+	float	shift		= z_amount*F*.1f;
+	C->f_fov			= 90.f+z_amount*45.f + shift;
+	C->f_aspect			= 1.f+cam_shift;
+	cam_shift			= shift/3.f;
+}
+
 void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
@@ -373,15 +395,11 @@ void CActor::Update	(DWORD DT)
 	float	z_R			= 15.f;
 
 	float	z_amount	= 1-(Position().distance_to(z_P)/z_R);
-	clamp	(z_amount,0.f,1.f);
-
-	// Gray
-	::Render->getTarget()->set_gray	(z_amount);
-
-	// Fov
-	CCameraBase* C		= cameras	[cam_active];
-	C->f_fov			= 90.f+z_amount*45.f + z_amount*sinf(Device.fTimeGlobal*10.f)*15.f;
-	// C->f_aspect			= 1.f-z_amount*.5f;
+	if (z_amount>EPS)	ZoneEffect	(z_amount);
+	else				{
+		cam_shift		= 0.f;
+		cam_gray		= 0.f;
+	}
 
 	// 
 	clamp			(DT,0ul,100ul);

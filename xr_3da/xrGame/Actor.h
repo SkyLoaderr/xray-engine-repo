@@ -117,7 +117,8 @@ private:
 	// Cameras
 	CCameraBase*		cameras[eacMaxCam];
 	EActorCameras		cam_active;
-	float				cam_gray;
+	float				cam_gray;				// for zone-effects
+	float				cam_shift;				// for zone-effects
 	float				fPrevCamPos;
 	CEffectorBobbing*	pCamBobbing;
 
@@ -192,7 +193,7 @@ public:
 		return TRUE;
 	}
 	
-			SRotation		Orientation() {return r_torso;};
+	SRotation				Orientation()		{return r_torso;};
 
 	// Network
 	virtual void			net_Export			(NET_Packet* P);				// export to server
@@ -208,6 +209,8 @@ public:
 
 	virtual void			Update				( DWORD T ); 
 	virtual void			OnVisible			( ); 
+
+	void					ZoneEffect			(float z_amount);
 
 	void					Statistic			( );
 	virtual void			OnRender			( );
