@@ -1,7 +1,7 @@
 #ifndef PH_DEBUG_H
 #define PH_DEBUG_H
 #ifdef DEBUG
-#define DRAW_CONTACTS
+//#define DRAW_CONTACTS
 
 extern Flags32 ph_dbg_draw_mask;
 extern	bool		  draw_frame;
