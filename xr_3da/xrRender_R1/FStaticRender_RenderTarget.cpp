@@ -17,9 +17,11 @@ CRenderTarget::CRenderTarget()
 	param_blur			= 0.f;
 	param_gray			= 0.f;
 	param_noise			= 0.f;
+	param_noise_color	= color_rgba(255,255,255,0);
 	param_duality_h		= 0.f;
 	param_duality_v		= 0.f;
 	param_noise_fps		= 25.f;
+	param_blend_color	= color_rgba(127,127,127,0);
 
 	im_noise_time		= 1/100;
 	im_noise_shift_w	= 0;
@@ -220,6 +222,7 @@ void CRenderTarget::End		()
 	u32	Offset;
 	u32	Cgray			= color_rgba	(90,90,90,0);
 	int		A			= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
+	u32	Cblend			= subst_alpha	(param_blend_color,A);
 	u32	Calpha			= color_rgba	(255,255,255,A);
 	float	tw			= float(rtWidth);
 	float	th			= float(rtHeight);
@@ -247,15 +250,15 @@ void CRenderTarget::End		()
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, Cgray, p1.x, p0.y);	pv++;
 
+	pv->set(0,			float(_h),	.0001f,.9999f, Cblend,p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, Cblend,p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cblend,p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, Cblend,p1.x, p0.y);	pv++;
+
 	pv->set(0,			float(_h),	.0001f,.9999f, Calpha,p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Calpha,p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
-
-	pv->set(0,			float(xH),	.0001f,.9999f, Calpha,p0.x, p1.y);	pv++;
-	pv->set(0,			0,			.0001f,.9999f, Calpha,p0.x, p0.y);	pv++;
-	pv->set(float(xW),	float(xH),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
-	pv->set(float(xW),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
 
 	RCache.Vertex.Unlock	(12,pGeom->vb_stride);
 
@@ -282,7 +285,7 @@ void CRenderTarget::End		()
 			// Draw COLOR
 			RCache.set_Shader		(pShaderSet);
 			RCache.set_Geometry		(pGeom);
-			RCache.Render			(D3DPT_TRIANGLELIST,Offset+4,0,4,0,2);
+			RCache.Render			(D3DPT_TRIANGLELIST,Offset+8,0,4,0,2);
 		}
 	}
 
