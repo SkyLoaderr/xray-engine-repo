@@ -13,11 +13,12 @@ class ENGINE_API CEffector
 {
 protected:
 	EEffectorType		eType;
+	BOOL				bAffected;
 	
 	friend class		CCameraManager;
 	float				fLifeTime;
 public:
-						CEffector	(EEffectorType type, float tm) {eType = type; fLifeTime=tm;};
+						CEffector	(EEffectorType type, float tm, BOOL affected) {eType = type; fLifeTime=tm; bAffected=affected;};
 	virtual				~CEffector	() {};
 	IC EEffectorType	GetType		() {return eType;}
 
