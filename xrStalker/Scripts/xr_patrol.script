@@ -136,8 +136,12 @@ function action_single_patrol:initialize ()
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (self.move_type)
     self.object:set_path_type             (game_object.patrol_path)
-    if self.a.first_init == true then self.path_type = patrol.start
-    else  self.path_type = patrol.nearest end 
+    if self.a.first_init == true then 
+       self.path_type = patrol.start
+       self.a.patrol_end = false
+    else  
+       self.path_type = patrol.nearest 
+    end 
     self.object:set_patrol_path           (self.a.patrol_path, self.path_type, patrol.continue, true)
     self.object:set_mental_state          (self.mental_state)
     self.object:set_sight                 (look.path_dir, nil, 0)
@@ -383,6 +387,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
     
     if ptr:flag (index, 6) == true then
        self.a.enabled = false
+       self.a.patrol_end = true
        self.stage = 0
        self:set_command (leader_free)
        self:free ()
@@ -788,4 +793,8 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
 	st.first_init = true	
 
 	xr_state.change_state(npc, xr_state.stand, false)
+end
+----------------------------------------------------------------------------------------------------------------------
+function is_patrol_end (npc)
+    return xr_motivator.storage[npc:id()].patrol.patrol_end
 end

@@ -248,7 +248,8 @@ xr_commander.add_to_binder(self.object, char_ini)
     		raid_path = nil,
     		raid_process = false,
     		npc_id = -1,
-    		first_init = false
+    		first_init = false,
+    		patrol_end = false
   	}
 xr_patrol.add_to_binder(self.object, char_ini)
 	-- Настройка follower
