@@ -54,9 +54,9 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 	//вычислить ширину одной клеточки тумана в пикселях
 	Fvector cell_world_pos;
 	Ivector2 screen_pos, screen_pos1;
-	Level().m_pFogOfWar->GetFogCellWorldPos(0,0,cell_world_pos);
+	Level().FogOfWar().GetFogCellWorldPos(0,0,cell_world_pos);
 	ConvertToLocal(cell_world_pos, screen_pos);
-	Level().m_pFogOfWar->GetFogCellWorldPos(1,1,cell_world_pos);
+	Level().FogOfWar().GetFogCellWorldPos(1,1,cell_world_pos);
 	ConvertToLocal(cell_world_pos, screen_pos1);
 	
 	int fog_cell_size = _max(_abs(screen_pos1.x - screen_pos.x),
@@ -191,13 +191,13 @@ void CUIMapBackground::DrawFogOfWar()
 
 
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(pActor) Level().m_pFogOfWar->GetFogCell(pActor->Position(), cell_left_top_pos);
+	if(pActor) Level().FogOfWar().GetFogCell(pActor->Position(), cell_left_top_pos);
 
 	//получить индексы квадрата тумана
 	//в левой верхней видимой части карты
-	Level().m_pFogOfWar->GetFogCell(left_top_pos, cell_left_top_pos);
+	Level().FogOfWar().GetFogCell(left_top_pos, cell_left_top_pos);
 	//в правой нижней видимой части карты
-	Level().m_pFogOfWar->GetFogCell(right_bottom_pos, cell_right_bottom_pos);
+	Level().FogOfWar().GetFogCell(right_bottom_pos, cell_right_bottom_pos);
 
 	int i = 0, j = 0;
 
@@ -212,9 +212,9 @@ void CUIMapBackground::DrawFogOfWar()
 
 void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 {
-	if(Level().m_pFogOfWar->GetFogCell(x,y).IsOpened()) return;
+	if(Level().FogOfWar().GetFogCell(x,y).IsOpened()) return;
 
-	unsigned char fog_shape = Level().m_pFogOfWar->GetFogCell(x,y).shape;
+	unsigned char fog_shape = Level().FogOfWar().GetFogCell(x,y).shape;
 
 
 	if(fog_shape == 0)
@@ -305,7 +305,7 @@ void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 	Ivector2 screen_pos;
 
 	
-	Level().m_pFogOfWar->GetFogCellWorldPos(x,y,cell_world_pos);
+	Level().FogOfWar().GetFogCellWorldPos(x,y,cell_world_pos);
 	ConvertToLocal(cell_world_pos, screen_pos);
 	m_fogOfWarCell.MoveWindow(screen_pos.x, screen_pos.y);
 	m_fogOfWarCell.Update();

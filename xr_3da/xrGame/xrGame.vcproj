@@ -2877,6 +2877,12 @@
 						RelativePath=".\Level.h">
 					</File>
 					<File
+						RelativePath=".\Level_Bullet_Manager.cpp">
+					</File>
+					<File
+						RelativePath=".\Level_Bullet_Manager.h">
+					</File>
+					<File
 						RelativePath="Level_input.cpp">
 					</File>
 					<File
