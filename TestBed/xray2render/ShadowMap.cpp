@@ -550,6 +550,91 @@ HRESULT CreateRT(IDirect3DDevice9* D, DWORD w, DWORD h, D3DFORMAT f, LPDIRECT3DT
 	return S_OK;
 }
 
+HRESULT CreateNormalizationCubeMap(IDirect3DDevice9* pD3DDev, DWORD dwWidth, WORD dwMipmaps)
+{
+	HRESULT hr;
+
+	hr = D3DXCreateCubeTexture(pD3DDev, dwWidth, dwMipmaps, 0, D3DFMT_X8R8G8B8, D3DPOOL_MANAGED, &m_pCubeTexture);
+	if(FAILED(hr))
+	{
+		return hr;
+	}
+
+	m_dwWidth = dwWidth;
+	m_dwHeight = dwWidth;
+	m_d3dFormat = D3DFMT_X8R8G8B8;
+
+	for (int i = 0; i < 6; i++)
+	{
+		D3DLOCKED_RECT Locked;
+		D3DXVECTOR3 Normal;
+		float w,h;
+		D3DSURFACE_DESC ddsdDesc;
+
+		m_pCubeTexture->GetLevelDesc(0, &ddsdDesc);
+
+		m_pCubeTexture->LockRect((D3DCUBEMAP_FACES)i, 0, &Locked, NULL, 0);
+
+		for (int y = 0; y < ddsdDesc.Height; y++)
+		{
+			h = (float)y / ((float)(ddsdDesc.Height - 1));
+			h *= 2.0f;
+			h -= 1.0f;
+
+			for (int x = 0; x < ddsdDesc.Width; x++)
+			{
+				w = (float)x / ((float)(ddsdDesc.Width - 1));
+				w *= 2.0f;
+				w -= 1.0f;
+
+				DWORD* pBits = (DWORD*)((BYTE*)Locked.pBits + (y * Locked.Pitch));
+				pBits += x;
+
+				switch((D3DCUBEMAP_FACES)i)
+				{
+				case D3DCUBEMAP_FACE_POSITIVE_X:
+					Normal = D3DXVECTOR3(1.0f, -h, -w);
+					break;
+				case D3DCUBEMAP_FACE_NEGATIVE_X:
+					Normal = D3DXVECTOR3(-1.0f, -h, w);
+					break;
+				case D3DCUBEMAP_FACE_POSITIVE_Y:
+					Normal = D3DXVECTOR3(w, 1.0f, h);
+					break;
+				case D3DCUBEMAP_FACE_NEGATIVE_Y:
+					Normal = D3DXVECTOR3(w, -1.0f, -h);
+					break;
+				case D3DCUBEMAP_FACE_POSITIVE_Z:
+					Normal = D3DXVECTOR3(w, -h, 1.0f);
+					break;
+				case D3DCUBEMAP_FACE_NEGATIVE_Z:
+					Normal = D3DXVECTOR3(-w, -h, -1.0f);
+					break;
+				default:
+					assert(0);
+					break;
+				}
+
+				D3DXVec3Normalize(&Normal, &Normal);
+
+				// Scale to be a color from 0 to 255 (127 is 0)
+				Normal += D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+				Normal *= 127.0f;
+
+				// Store the color
+				*pBits = (DWORD)(((DWORD)Normal.x << 16) | ((DWORD)Normal.y << 8) | ((DWORD)Normal.z << 0));
+
+			}
+		}
+		m_pCubeTexture->UnlockRect((D3DCUBEMAP_FACES)i, 0);
+	}
+
+	if ((dwMipmaps == 0) || (dwMipmaps > 1))
+		D3DXFilterCubeTexture(m_pCubeTexture, NULL, 0, D3DX_FILTER_LINEAR);
+
+	return S_OK;
+}
+
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
 	m_pFont->RestoreDeviceObjects();
