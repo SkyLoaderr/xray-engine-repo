@@ -14,19 +14,6 @@
 	#include "xr_creator.h"
 #endif
 
-struct FlareVertex {
-	Fvector p;
-	DWORD	color;
-	float	tu,tv;
-
-	IC void	set(float x, float y, float z, DWORD c, float u, float v)
-	{
-		p.set(x,y,z);
-		color = c;
-		tu=u; tv=v;
-	};
-};
-
 
 #ifdef _LEVEL_EDITOR
 	#define FAR_DIST UI.ZFar()
@@ -277,7 +264,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	dwLight.set		( LightColor );
 	vector<SFlare*>	rlist;
 	
-	FlareVertex *pv = (FlareVertex*) P.VB_Lock(D3DLOCK_DISCARD);
+	FVF::LIT *pv = (FVF::LIT*) P.VB_Lock(D3DLOCK_DISCARD);
 	
 	float 	fDistance	= FAR_DIST*0.75f;
 	
