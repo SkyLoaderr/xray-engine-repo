@@ -9,7 +9,7 @@ void CUIPropertiesBox::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUIPropertiesBox,CUIFrameWindow>("UIPropertiesBox")
+		class_<CUIPropertiesBox,CUIFrameWindow>("CUIPropertiesBox")
 		.def(					constructor<>())
 //		.def("AddItem",					&CUIPropertiesBox::AddItem)
 		.def("RemoveItem",			&CUIPropertiesBox::RemoveItem)

@@ -8,7 +8,7 @@ void CUIMessageBox::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUIMessageBox,CUIFrameWindow>("UIMessageBox")
+		class_<CUIMessageBox,CUIFrameWindow>("CUIMessageBox")
 		.def(					constructor<>())
 		.enum_("style")
 		[

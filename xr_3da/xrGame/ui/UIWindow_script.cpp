@@ -21,7 +21,7 @@ void CUIWindow::script_register(lua_State *L)
 		.def_readwrite("top",					&RECT::top)
 		.def_readwrite("bottom",				&RECT::bottom),
 
-		class_<CUIWindow>("UIWindow")
+		class_<CUIWindow>("CUIWindow")
 		.def(							constructor<>())
 		.def("AttachChild",				&CUIWindow::AttachChild, adopt(_2))
 		.def("DetachChild",				&CUIWindow::DetachChild)
@@ -47,7 +47,7 @@ void CUIWindow::script_register(lua_State *L)
 		
 		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd"),
 
-		class_<CUIFrameWindow, CUIWindow>("UIFrameWindow")
+		class_<CUIFrameWindow, CUIWindow>("CUIFrameWindow")
 		.def(					constructor<>())
 		.def("SetWidth",				&CUIFrameWindow::SetWidth)
 		.def("SetHeight",				&CUIFrameWindow::SetHeight)
@@ -55,7 +55,7 @@ void CUIWindow::script_register(lua_State *L)
 		.def("GetTitleStatic",			&CUIFrameWindow::GetTitleStatic),
 //		.def("",						&CUIFrameWindow::)
 
-		class_<CUIFrameLineWnd, CUIWindow>("UIFrameLineWnd")
+		class_<CUIFrameLineWnd, CUIWindow>("CUIFrameLineWnd")
 		.def(					constructor<>())
 
 		.def("SetWidth",						&CUIFrameLineWnd::SetWidth)

@@ -8,7 +8,7 @@ void CUIStatic::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUIStatic, CUIWindow>("UIStatic")
+		class_<CUIStatic, CUIWindow>("CUIStatic")
 		.def(						constructor<>())
 
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )

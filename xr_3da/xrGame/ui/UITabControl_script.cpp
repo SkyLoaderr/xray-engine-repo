@@ -9,7 +9,7 @@ void CUITabControl::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUITabControl, CUIWindow>("UITabControl")
+		class_<CUITabControl, CUIWindow>("CUITabControl")
 		.def(					constructor<>())
 		.def("AddItem",			(bool (CUITabControl::*)(CUIButton*))	&CUITabControl::AddItem)
 		.def("AddItem",			(bool (CUITabControl::*)(const char*, const char*,int,int, int,int))	&CUITabControl::AddItem)

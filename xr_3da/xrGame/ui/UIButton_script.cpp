@@ -12,7 +12,7 @@ void CUIButton::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUIButton, CUIStatic>("UIButton")
+		class_<CUIButton, CUIStatic>("CUIButton")
 		.def(							constructor<>())
 		.def("SetHighlightColor",		&CUIButton::SetHighlightColor)
 		.def("EnableTextHighlighting",	&CUIButton::EnableTextHighlighting)

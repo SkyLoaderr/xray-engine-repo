@@ -9,7 +9,7 @@ void CUIProgressBar::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CUIProgressBar, CUIWindow>("UIProgressBar")
+		class_<CUIProgressBar, CUIWindow>("CUIProgressBar")
 		.def(						constructor<>())
 
 		.def("SetRange",				&CUIProgressBar::SetRange)
