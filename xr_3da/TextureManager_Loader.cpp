@@ -157,7 +157,7 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 			}
 #endif
             chunk->Seek		(0);
-            B->Load			(*chunk);
+            B->Load			(*chunk,desc.version);
 
 			pair<BlenderPairIt, bool> I =  blenders.insert	(make_pair(strdup(desc.cName),B));
             R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
