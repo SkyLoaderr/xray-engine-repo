@@ -871,7 +871,8 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomTransformSetInfo(trans,1);
 														//dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
-														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
+														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
+														dGeomGetUserData(geom)->material=ul_material;
 														//dGeomGetUserData(trans)->friction=friction_table[1];
 															}
 														else{
@@ -900,7 +901,8 @@ void CPHElement::			create_Box		(Fobb&		V){
 														m_trans.push_back(trans);
 
 														dGeomCreateUserData(geom);
-														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("materials\\box_default");
+														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("materials\\box_default");
+														dGeomGetUserData(geom)->material=ul_material;
 
 														
 														}
@@ -1745,6 +1747,19 @@ if(hi>M_PI)
 			hi=M_PI;
 if(hi<0.f) 
 			hi=0.f;
+
+rotate.mulB(axes[0].zero_transform);
+Fvector the_own_axes;
+float angle;
+/*
+own_axis_angle(rotate,the_own_axes,angle);
+the_own_axes.normalize();
+angle=the_own_axes.dotproduct(axis);
+axis_angleA(rotate,axis,angle);
+axis_angleB(rotate,axis,angle);
+
+rotate.transform_dir(the_own_axes);
+*/
 dJointSetHingeParam(m_joint,dParamLoStop ,lo);
 dJointSetHingeParam(m_joint,dParamHiStop ,hi);
 }
@@ -1897,10 +1912,14 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 			m1.set(pFirst_element->mXFORM);
 			m1.invert();
 			m2.mul(m1,pSecond_element->mXFORM);
+			
+			
 			float zer;
 			//axis_angleA(m2,axis,zer);
 			axis_angleA(m2,axes[ax].direction,zer);
 			axes[ax].zero=zer;
+			m2.invert();
+			axes[ax].zero_transform.set(m2);
 
 }
 

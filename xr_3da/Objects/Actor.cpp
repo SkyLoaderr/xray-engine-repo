@@ -1177,6 +1177,9 @@ float CActor::HitScale	(int element)
 
 void CActor::create_Skeleton(){
 	Fmatrix ident;
+	float density=400.f;
+	//u32 material=0;
+	LPCSTR material="actor";
 	ident.identity();
 
 	Fmatrix m1;
@@ -1227,9 +1230,9 @@ void CActor::create_Skeleton(){
 	//sphere.P.set(0,0,0);
 	//sphere.R=0.3f;
 	//pelvis->add_Sphere(sphere);
-	element->setMass(80.f);
+	element->setMass(density);
 	m_phSkeleton->add_Element(element);
-
+	element->SetMaterial(material);
 	CPhysicsElement* parent=element;
 	CPhysicsElement* root=parent;
 
@@ -1239,14 +1242,15 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m1);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*1.f/4.f,M_PI*2.f/3.f,0);
+	joint->SetLimits(-M_PI*1.f/4.f,M_PI*1.f/2.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 	//Fquaternion k;
 	//k.get_axis_angle
 	//Fmatrix m;
@@ -1258,7 +1262,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m1);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1266,6 +1270,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);//
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	CPhysicsElement* root1=parent;
@@ -1274,7 +1279,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m1);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1282,7 +1287,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
-	
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_head");
@@ -1290,7 +1295,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m1);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1298,7 +1303,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
-
+	element->SetMaterial(material);
 
 	parent=root1;
 	id=M->LL_BoneID("bip01_l_clavicle");
@@ -1307,7 +1312,7 @@ void CActor::create_Skeleton(){
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 //	const Fobb& box=M->LL_GetBox(id);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1315,6 +1320,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_l_upperarm");
@@ -1322,7 +1328,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m2);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1330,6 +1336,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/2.2f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_l_forearm");
@@ -1337,7 +1344,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m2);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1345,6 +1352,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*3.f/4.f,0,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_l_hand");
@@ -1352,7 +1360,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m3);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1360,6 +1368,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 
 	parent=root1;
@@ -1368,7 +1377,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m4);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1376,6 +1385,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetLimits(-M_PI/3.f,M_PI/4.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_upperarm");
@@ -1383,7 +1393,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m4);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1391,6 +1401,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(-M_PI/2.2f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_forearm");
@@ -1398,7 +1409,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m4);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1406,6 +1417,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*3.f/4.f,0,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_hand");
@@ -1413,7 +1425,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m5);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1421,6 +1433,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 
 	parent=root;
@@ -1429,7 +1442,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1437,6 +1450,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(-M_PI*1/3.5f,0,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 
 	parent=element;
@@ -1445,7 +1459,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1453,6 +1467,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*2/3.f,0,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_foot");
@@ -1460,7 +1475,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1468,6 +1483,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 	parent=root;
 	id=M->LL_BoneID("bip01_l_thigh");
@@ -1475,7 +1491,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1483,6 +1499,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,0,1,0);
 	joint->SetLimits(0,M_PI*1/3.5f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 
 
@@ -1494,7 +1511,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(80.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1502,6 +1519,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*2/3.f,0,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
  	parent=element;
 	id=M->LL_BoneID("bip01_l_foot");
@@ -1509,7 +1527,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(120.f);
+	element->setMass(density);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1517,6 +1535,7 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
 	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
 
 
 	//set shell start position

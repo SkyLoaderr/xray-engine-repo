@@ -162,7 +162,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			mstate_real			= 0;
 			m_current_legs		= 0;
 			m_current_torso		= 0;
-	//		PKinematics	(pVisual)->PlayCycle(ST->death);
+			PKinematics	(pVisual)->PlayCycle(ST->death,false);
+		
 //		PKinematics	(pVisual)->PlayCycle("death_init",false);
 		}
 	}

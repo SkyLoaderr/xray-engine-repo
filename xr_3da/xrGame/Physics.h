@@ -195,7 +195,7 @@ class CPHElement:  public CPhysicsElement {
 	float					m_start_time;
 	float m_volume;
 	Fvector m_mass_center;
-	
+	u32	  ul_material;
 	dMass m_mass;
 	dSpaceID m_space;
 	dBodyID m_body;
@@ -260,6 +260,8 @@ public:
 	void			SetTransform(const Fmatrix& m0);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void			SetMaterial				(u32 m){ul_material=m;}
+	virtual void			SetMaterial				(LPCSTR m){ul_material=GMLib.GetMaterialIdx(m);}
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Activate				();
 	virtual void			Deactivate				();
@@ -283,6 +285,7 @@ public:
 		m_parent_element=NULL;
 		m_shell=NULL;
 		m_group=NULL;
+		ul_material=GMLib.GetMaterialIdx("materials\\box_default");
 	};
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();
@@ -301,6 +304,7 @@ struct SPHAxis {
 float high;
 float low;
 float zero;
+Fmatrix zero_transform;
 float erp;
 float cfm;
 eVs   vs;
