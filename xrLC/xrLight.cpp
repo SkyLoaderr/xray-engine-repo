@@ -73,7 +73,7 @@ typedef	mapVert::iterator			mapVertIt;
 mapVert*							g_trans;
 xrCriticalSection					g_trans_CS;
 
-void	g_trans_register			(Vertex* V)
+void	g_trans_register_internal	(Vertex* V)
 {
 	R_ASSERT	(V);
 
@@ -99,19 +99,21 @@ void	g_trans_register			(Vertex* V)
 		R_ASSERT			(Front);
 		if (Front->P.similar(V->P,eps))
 		{
-			g_trans_CS.Enter	();
 			VL.push_back		(V);
-			g_trans_CS.Leave	();
 			return;
 		}
 	}
 
 	// Register
-	g_trans_CS.Enter		();
 	mapVertIt	ins			= g_trans->insert(make_pair(key,vecVertex()));
 	ins->second.reserve		(32);
 	ins->second.push_back	(V);
-	g_trans_CS.Leave		();
+}
+void	g_trans_register	(Vertex* V)
+{
+	g_trans_CS.Enter			();
+	g_trans_register_internal	(V);
+	g_trans_CS.Leave			();
 }
 
 vecFace*	VL_faces;
