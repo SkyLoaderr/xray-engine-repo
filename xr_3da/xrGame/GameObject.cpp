@@ -112,6 +112,10 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,vPosition);
 		else
 			AI_NodeID			=	AI.q_LoadSearch(vPosition);
+		
+		if (!AI_NodeID)
+			Msg("Corresponding node hasn't been found for monster %s",cName());
+
 		AI_Node				=	AI.Node		(AI_NodeID);
 		getAI().ref_add		(AI_NodeID);
 	}
@@ -160,6 +164,10 @@ void CGameObject::Sector_Detect	()
 
 			AI.ref_dec  (AI_NodeID);
 			AI_NodeID	= AI.q_Node	(AI_NodeID,vPosition);
+			
+			if (!AI_NodeID)
+				Msg("Corresponding node hasn't been found for monster %s",cName());
+
 			AI.ref_add  (AI_NodeID);
 			AI_Node		= AI.Node	(AI_NodeID);
 		}

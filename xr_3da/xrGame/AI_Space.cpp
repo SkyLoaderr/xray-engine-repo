@@ -396,5 +396,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 			}
 		}
 	}
+	if ()
+	Msg("");
 	return selected;
 }

@@ -317,7 +317,7 @@ bool CAI_Stalker::bfAddEnemyToDynamicObjects(CAI_Stalker *tpStalker)
 			u32 dwTime = m_dwCurrentUpdate;
 			CEntity *tpEntity = m_tSavedEnemy;
 			if (tpEntity && !tpEntity->AI_NodeID)
-				return;
+				return(false);
 			for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
 				if (m_tSavedEnemy == m_tpaDynamicObjects[j].tpEntity) {
 					m_tpaDynamicObjects[j].dwTime = tpStalker->m_tpaDynamicObjects[i].dwTime;
