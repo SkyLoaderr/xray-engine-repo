@@ -111,6 +111,7 @@ void		CRender::rmNormal			()
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
+	b_nv3x	= (strstr(Core.Params,"-nv3x"))?TRUE:FALSE;
 }
 
 CRender::~CRender()

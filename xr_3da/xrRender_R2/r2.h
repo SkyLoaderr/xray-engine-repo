@@ -28,6 +28,7 @@ public:
 		PHASE_SMAP_S	= 3		// E[3]
 	};
 	u32														phase;
+	BOOL													b_nv3x;
 
 	// Dynamic scene graph
 	SceneGraph::mapNormal_T									mapNormal;
