@@ -413,9 +413,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		if (!M_legs)
 		{
-			if((mstate_rl&mcCrouch)&&isAccelerated(mstate_rl))//!(mstate_rl&mcAccel))
+			if((mstate_rl&mcCrouch)&&!isAccelerated(mstate_rl))//!(mstate_rl&mcAccel))
 			{
-				M_legs=smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("cr_idle_0");
+				M_legs=smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("cr_idle_1");
 			}
 			else 
 				M_legs	= ST->legs_idle;
