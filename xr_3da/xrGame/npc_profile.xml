@@ -127,7 +127,7 @@
 	</character>
 	<character id="monolit_general">
 		<team>Monolit_general</team>
-		<class>Killer_master</class>
+		<class>Monolit_general</class>
 	</character>
 	<character id="monolit_veteran">
 		<team>Monolit_veteran</team>
