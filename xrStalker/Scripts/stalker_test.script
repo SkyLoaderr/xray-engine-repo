@@ -14,11 +14,11 @@ function main ()
 	zone0:script	(true,stalker_test:script_name())
 	zone1:script	(true,stalker_test:script_name())
 	
-	zone0:set_callback	(stalker_test:callback_enter,true);
-	zone0:set_callback	(stalker_test:callback_exit,false);
+	zone0:set_callback	(stalker_test.callback_enter,true);
+	zone0:set_callback	(stalker_test.callback_exit,false);
 	
-	zone1:set_callback	(stalker_test:callback_enter,true);
-	zone1:set_callback	(stalker_test:callback_exit,false);
+	zone1:set_callback	(stalker_test.callback_enter,true);
+	zone1:set_callback	(stalker_test.callback_exit,false);
 	
 	while true do
 		wait			()
