@@ -402,7 +402,6 @@ void	CRender::Render()
 	Device.Statistic.RenderDUMP.End();
 }
 
-
 // Device events
 void CRender::OnDeviceDestroy()
 {
