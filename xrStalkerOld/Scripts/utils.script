@@ -497,7 +497,7 @@ function angle_left_xz(dir1, dir2)
 end
 
 function get_nearest_waypoint(obj, pathname, ptr, cnt)
-	local pt_chosen = nl
+	local pt_chosen = nil
 	local min_dist = nil
 	local dist
 	for i = 0, cnt - 1 do
