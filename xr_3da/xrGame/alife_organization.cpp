@@ -59,15 +59,7 @@ void CALifeOrganization::save			(IWriter &memory_stream)
 			memory_stream.w_u32	((*I).m_price);
 		}
 	}
-	{
-		memory_stream.w_u32		(m_purchased_artefacts.size());
-		ITEM_COUNT_PAIR_IT		I = m_purchased_artefacts.begin();
-		ITEM_COUNT_PAIR_IT		E = m_purchased_artefacts.end();
-		for ( ; I != E; ++I) {
-			memory_stream.w_stringZ((*I).first);
-			memory_stream.w		(&((*I).second),sizeof((*I).second));
-		}
-	}
+	save_data					(m_purchased_artefacts,memory_stream);
 }
 
 void CALifeOrganization::load			(IReader &file_stream)
@@ -85,14 +77,5 @@ void CALifeOrganization::load			(IReader &file_stream)
 			(*I).m_price		= file_stream.r_u32();
 		}
 	}
-	{
-		u32						count = file_stream.r_u32();
-		for (u32 i=0; i<count; ++i) {
-			string32			S;
-			file_stream.r_stringZ(S);
-			LPSTR				section = (char*)xr_malloc(32*sizeof(char));
-			strcpy				(section,S);
-			m_purchased_artefacts.insert(mk_pair(section,file_stream.r_u32()));
-		}
-	}
+	load_data					(m_purchased_artefacts,file_stream);
 }
