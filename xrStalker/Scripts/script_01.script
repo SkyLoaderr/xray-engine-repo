@@ -173,7 +173,7 @@ function main()
 	event:clear_callback(false)
 
 	while true do
-		if stalker1.health <= 0 then
+		if actor.health <= 0 and stalker1.health > 0 then
 			sound_baran:play_at_pos		(stalker1,stalker1:position(),0);
 			break
 		end
