@@ -1,34 +1,32 @@
 #include "stdafx.h"
 #include "compiler.h"
-
-#include "cl_defs.h"
 #include "cl_intersect.h"
-#include "cl_rapid.h"
 
 #include "xrThread.h"
 
 // -------------------------------- Ray pick
 typedef Fvector	RayCache[3];
 
-IC bool RayPick(RAPID::XRCollide* DB, Fvector& P, Fvector& D, float r, RayCache& C)
+IC bool RayPick(CDB::COLLIDER* DB, Fvector& P, Fvector& D, float r, RayCache& C)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
-	if (RAPID::TestRayTri(P,D,&C[0],_u,_v,range,true)) 
+	if (CDB::TestRayTri(P,D,&C[0],_u,_v,range,true)) 
 	{
 		if (range>0 && range<r) return true;
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	try { DB->RayPick(0,&Level,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
-	if (0==DB->GetRayContactCount()) {
+	try { DB->ray_query	(&Level,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
+	if (0==DB->r_count()) {
 		return false;
 	} else {
 		// cache polygon
-		RAPID::raypick_info&	rpinf	= DB->RayContact[0];
-		C[0].set	(rpinf.p[0]);
-		C[1].set	(rpinf.p[1]);
-		C[2].set	(rpinf.p[2]);
+		CDB::RESULT&	rp	= *DB->r_begin();
+		CDB::TRI&		T	= Level.get_tris()[rp.id];
+		C[0].set	(*T.verts[0]);
+		C[1].set	(*T.verts[1]);
+		C[2].set	(*T.verts[2]);
 		return true;
 	}
 }
@@ -179,8 +177,8 @@ public:
 	}
 	virtual void		Execute()
 	{
-		RAPID::XRCollide DB;
-		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
+		CDB::COLLIDER DB;
+		DB.ray_options	(CDB::OPT_ONLYFIRST|CDB::OPT_CULL);
 		
 		vector<RC>		cache;
 		{

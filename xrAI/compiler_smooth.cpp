@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "compiler.h"
 #include "MgcAppr3DPlaneFit.h"
-#include "cl_defs.h"
 #include "cl_intersect.h"
 
 const float	RCAST_DepthValid = 0.2f;
 
 IC void BoxQuery(Fbox& BB, bool exact)
 {
-	if (exact) 	XRC.BBoxMode	(BBOX_TRITEST);
-	else		XRC.BBoxMode	(0);
-	XRC.BBoxCollide	(precalc_identity,&Level,precalc_identity,BB);
+	if (exact) 		XRC.box_options	(CDB::OPT_FULL_TEST);
+	else			XRC.box_options	(0);
+	Fvector			C,D;
+	BB.get_CD		(C,D);
+	XRC.box_query	(&Level,C,D);
 }
 
 struct tri {
@@ -27,7 +28,7 @@ BOOL	ValidNode(Node& N)
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(g_params.fPatchSize/2);	// box 2
 	BB.merge(B2			);
 	BoxQuery(BB,false	);
-	DWORD	dwCount = XRC.GetBBoxContactCount();
+	DWORD	dwCount = XRC.r_count();
 	if (dwCount==0)	{
 		Log("chasm1");
 		return FALSE;			// chasm?
@@ -39,7 +40,7 @@ BOOL	ValidNode(Node& N)
 	for (DWORD i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		RAPID::tri&	T = *(Level.GetTris()+XRC.BBoxContact[i].id);
+		CDB::TRI&	T = *(Level.get_tris()+XRC.r_begin()[i].id);
 
 		D.v[0].set	(*T.verts[0]);
 		D.v[1].set	(*T.verts[1]);
@@ -76,7 +77,7 @@ BOOL	ValidNode(Node& N)
 			float	range,u,v;
 			for (i=0; i<DWORD(tris.size()); i++) 
 			{
-				if (RAPID::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
+				if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
 				{
 					if (range<tri_min_range) {
 						tri_min_range	= range;

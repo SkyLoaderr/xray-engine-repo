@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-#include "cl_defs.h"
 #include "cl_intersect.h"
 
 #include "motion_simulator.h"
@@ -16,12 +15,14 @@ IC void SnapXZ	(Fvector&	V)
 
 IC void BoxQuery(Fbox& BB, bool exact)
 {
-	if (exact) 	XRC.BBoxMode	(BBOX_TRITEST);
-	else		XRC.BBoxMode	(0);
-	XRC.BBoxCollide	(precalc_identity,&Level,precalc_identity,BB);
+	if (exact) 		XRC.box_options	(CDB::OPT_FULL_TEST);
+	else			XRC.box_options	(0);
+	Fvector			C,D;
+	BB.get_CD		(C,D);
+	XRC.box_query	(&Level,C,D);
 }
 
-struct tri {
+struct tri	{
 	Fvector v[3];
 	DWORD	sector;
 	Fvector	N;
@@ -38,7 +39,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(g_params.fPatchSize/2);	// box 2
 	BB.merge(B2			);
 	BoxQuery(BB,false	);
-	DWORD	dwCount = XRC.GetBBoxContactCount();
+	DWORD	dwCount = XRC.r_count();
 	if (dwCount==0)	{
 //		Log("chasm1");
 		return FALSE;			// chasm?
@@ -50,7 +51,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	for (DWORD i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		RAPID::tri&	T = *(Level.GetTris()+XRC.BBoxContact[i].id);
+		CDB::TRI&	T = *(Level.get_tris()+XRC.r_begin()[i].id);
 
 		D.v[0].set	(*T.verts[0]);
 		D.v[1].set	(*T.verts[1]);
@@ -87,7 +88,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 			float	range,u,v;
 			for (i=0; i<DWORD(tris.size()); i++) 
 			{
-				if (RAPID::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
+				if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
 				{
 					if (range<tri_min_range) {
 						tri_min_range	= range;
@@ -191,7 +192,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 				float	range,u,v;
 				for (i=0; i<float(tris.size()); i++) 
 				{
-					if (RAPID::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
+					if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
 					{
 						if (range<tri_min_range) {
 							tri_min_range	= range;
@@ -333,8 +334,8 @@ DWORD BuildNode(Fvector& vFrom, Fvector& vAt)	// return node's index
 void xrBuildNodes()
 {
 	// begin
-	XRC.BBoxMode	(BBOX_TRITEST);
-	XRC.RayMode		(RAY_CULL|RAY_ONLYNEAREST);
+	XRC.box_options	(CDB::OPT_FULL_TEST);
+	XRC.ray_options	(CDB::OPT_CULL | CDB::OPT_ONLYNEAREST);
 	g_nodes.reserve	(1024*1024);
 
 	// Initialize hash
@@ -348,12 +349,12 @@ void xrBuildNodes()
 		Pos.y			+=1;
 		Fvector			Dir; Dir.set(0,-1,0);
 		
-		XRC.RayPick		(0,&Level,Pos,Dir,3);
-		if (XRC.RayContact.size()==0) {
-			Msg("Can't align emitter");
-			abort();
+		XRC.ray_query	(&Level,Pos,Dir,3);
+		if (XRC.r_count()==0) {
+			Msg		("Can't align emitter");
+			abort	();
 		} else {
-			RAPID::raypick_info& R = XRC.RayContact[0];
+			CDB::RESULT& R = *XRC.r_begin();
 			Pos.y = Pos.y - R.range;
 		}
 		

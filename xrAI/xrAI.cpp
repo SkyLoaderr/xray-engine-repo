@@ -12,6 +12,7 @@
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
 #pragma comment(lib,"magicfm.LIB")
+#pragma comment(lib,"x:\\xrcdb.LIB")
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);

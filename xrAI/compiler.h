@@ -121,7 +121,7 @@ void	xrDisplay		();
 void	xrSaveNodes		(LPCSTR name);
 
 // constants
-const int	RCAST_MaxTris	= 1024;
+const int	RCAST_MaxTris	= (2*1024);
 const int	RCAST_Count		= 6;
 const int	RCAST_Total		= (2*RCAST_Count+1)*(2*RCAST_Count+1);
 const float	RCAST_Depth		= 1.f;

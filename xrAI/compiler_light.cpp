@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-#include "cl_defs.h"
 #include "cl_intersect.h"
 
 #include "xrThread.h"
@@ -9,35 +8,36 @@
 const int	LIGHT_Count			=2;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
-typedef	svector<R_Light*,256>	LSelection;
+typedef	svector<R_Light*,1024>	LSelection;
 
-IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
+IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
-	bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,true);
+	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,true);
 	if (res) {
 		if (range>0 && range<r) return true;
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	try { DB.RayPick(0,&LevelLight,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
-	if (0==DB.GetRayContactCount()) {
+	try { DB.ray_query(&LevelLight,P,D,r); } catch (...) { Msg("* ERROR: Failed to trace ray"); }
+	if (0==DB.r_count()) {
 		return false;
 	} else {
 		// cache polygon
-		RAPID::raypick_info&	rpinf	= DB.RayContact[0];
-		L.tri[0].set	(rpinf.p[0]);
-		L.tri[1].set	(rpinf.p[1]);
-		L.tri[2].set	(rpinf.p[2]);
+		CDB::RESULT&	rpinf	= *DB.r_begin();
+		CDB::TRI&		T		= LevelLight.get_tris()[rpinf.id];
+		L.tri[0].set	(*T.verts[0]);
+		L.tri[1].set	(*T.verts[1]);
+		L.tri[2].set	(*T.verts[2]);
 		return true;
 	}
 }
 
-float LightPoint(RAPID::XRCollide& DB, Fvector &P, Fvector &N, LSelection& SEL)
+float LightPoint(CDB::COLLIDER& DB, Fvector &P, Fvector &N, LSelection& SEL)
 {
 	Fvector		Ldir,Pnew;
-	Pnew.direct(P,N,0.05f);
+	Pnew.mad	(P,N,0.05f);
 
 	R_Light	**IT = SEL.begin(), **E = SEL.end();
 
@@ -85,8 +85,8 @@ public:
 	}
 	virtual void		Execute()
 	{
-		RAPID::XRCollide DB;
-		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
+		CDB::COLLIDER DB;
+		DB.ray_options	(CDB::OPT_ONLYFIRST|CDB::OPT_CULL);
 
 		vector<R_Light>	Lights = g_lights;
 

@@ -486,14 +486,14 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 	cl_data.vLastSafePosition.set	(Lposition);
 
 	// Get the data for the triangles in question and scale to ellipsoid space
-	int tri_count	= XRC.GetBBoxContactCount();
+	int tri_count			= XRC.r_count();
 	clContactedT.resize		(tri_count);
 	if (tri_count) {
 		Fvector vel_dir;
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			CDB::TRI&	O		= *(Level.tris()+XRC.BBoxContact[i_t].id);
+			CDB::TRI&	O		= *(Level.get_tris()+XRC.r_begin()[i_t].id);
 
 			T.p[0].mul			(*O.verts[0],xf);
 			T.p[1].mul			(*O.verts[1],xf);
