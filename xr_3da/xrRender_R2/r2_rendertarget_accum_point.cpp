@@ -8,32 +8,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Fcolor		L_clr				= L->color;
 	Device.mView.transform_tiny		(L_pos,L->sphere.P);
 
-	// Draw full-screen quad textured with our scene image
-	u32		Offset;
-	u32		C						= D3DCOLOR_RGBA	(255,255,255,255);
-	float	_w						= float(Device.dwWidth);
-	float	_h						= float(Device.dwHeight);
-
-	Fvector2						p0,p1;
-	p0.set							(.5f/_w, .5f/_h);
-	p1.set							((_w+.5f)/_w, (_h+.5f)/_h );
-
-	// Fill vertex buffer
-	float	d_Z	= EPS_S, d_W = 1.f;
-	FVF::TL* pv						= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-	pv->set							(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
-	pv->set							(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
-	pv->set							(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
-	pv->set							(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-	RCache.Vertex.Unlock			(4,g_combine->vb_stride);
-
-	// Shader + constants
-	RCache.set_Element				(s_accum_point->E[1]);	// front
-	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
-	RCache.set_c					("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
-	RCache.set_Geometry				(g_combine);
-	RCache.Render					(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
 	/*
 	// Xforms
 	Fmatrix mW;
@@ -145,3 +119,31 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	//
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 }
+
+	/*
+	// Draw full-screen quad textured with our scene image
+	u32		Offset;
+	u32		C						= D3DCOLOR_RGBA	(255,255,255,255);
+	float	_w						= float(Device.dwWidth);
+	float	_h						= float(Device.dwHeight);
+
+	Fvector2						p0,p1;
+	p0.set							(.5f/_w, .5f/_h);
+	p1.set							((_w+.5f)/_w, (_h+.5f)/_h );
+
+	// Fill vertex buffer
+	float	d_Z	= EPS_S, d_W = 1.f;
+	FVF::TL* pv						= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+	pv->set							(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
+	pv->set							(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
+	pv->set							(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
+	pv->set							(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
+	RCache.Vertex.Unlock			(4,g_combine->vb_stride);
+
+	// Shader + constants
+	RCache.set_Element				(s_accum_point->E[1]);	// front
+	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
+	RCache.set_c					("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
+	RCache.set_Geometry				(g_combine);
+	RCache.Render					(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	*/
