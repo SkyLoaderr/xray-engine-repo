@@ -348,12 +348,12 @@ IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority
 void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD)
 {
     // render visual
+    xr_vector<IRender_Visual*>::iterator I,E;
     switch (m_pVisual->Type){
     case MT_SKELETON_ANIM:
     case MT_SKELETON_RIGID:
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
-        xr_vector<IRender_Visual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){
@@ -367,7 +367,6 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     }break;
     case MT_PARTICLE_GROUP:{
         PS::CParticleGroup* pV			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pV);
-        xr_vector<PS::CParticleEffect*>::iterator 	I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){
