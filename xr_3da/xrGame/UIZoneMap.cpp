@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "hudmanager.h"
 
+#include "targetcscask.h"
 
 #define VIEW_DISTANCE	50.f
 #define VIEW_DISTANCE2	VIEW_DISTANCE*VIEW_DISTANCE
@@ -109,7 +110,11 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 		}
 		for(u32 i=0; i<Game().targets.size(); i++) {
 			CObject* T = Game().targets[i];
-			if (T->H_Parent()) T = T->H_Parent();
+			if (T->H_Parent()) {
+				CTargetCSCask *l_TC = dynamic_cast<CTargetCSCask*>(T->H_Parent());
+				if(l_TC) T = T->H_Parent();
+				else continue;
+			}
 			ConvertToLocal(LM,T->Position(),P);
 			entity.Out	(P.x,P.y,COLOR_TARGET);
 		}

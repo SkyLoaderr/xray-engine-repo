@@ -44,7 +44,7 @@ void CUICSFragList::OnFrame()
 		if(P->team != 0) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
-		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
+		H->OutNext		("%3d. %-20s %-8s %-5d",k++,P->name,P->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD?"dead":"",P->kills);
 	}
 	H->OutSkip			(2.f);
 	H->SetColor(0xf0a0a0ff); H->OutNext("Team 2: %d", Game().teams[1].num_targets);
@@ -54,7 +54,8 @@ void CUICSFragList::OnFrame()
 		if(P->team != 1) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
-		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
+		H->OutNext		("%3d. %-20s %-8s %-5d",k++,P->name,P->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD?"dead":"",P->kills);
+//		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
 	}
 }
 //--------------------------------------------------------------------

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "targetcs.h"
+#include "targetcscask.h"
 
 CTargetCS::CTargetCS(void)
 {
@@ -93,10 +94,19 @@ void CTargetCS::OnDeviceDestroy() {
 void CTargetCS::UpdateCL		()
 {
 	inherited::UpdateCL();
-	if (m_pPhysicsShell)		
+	if (getEnabled() && m_pPhysicsShell)		
 	{
 		m_pPhysicsShell->Update	();
 		svTransform.set			(m_pPhysicsShell->mXFORM);
 		vPosition.set			(svTransform.c);
 	}
+	else if(dynamic_cast<CTargetCSCask*>(H_Parent())) {
+		setVisible				(true);
+		setEnabled				(true);
+	}
+}
+
+void CTargetCS::SetPos(const Fmatrix& pos) {
+	svTransform.set(pos);
+	vPosition.set(svTransform.c);
 }

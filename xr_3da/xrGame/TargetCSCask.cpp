@@ -28,6 +28,13 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			if(l_pBall) {
 				R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't take local
 				l_pBall->H_SetParent(this);
+				CKinematics* l_V = PKinematics(Visual());
+				m_targets.push_back(l_pBall);
+				char l_num[2] = { char(0x30+m_targets.size()), 0 };
+				int l_boneID = l_V->LL_BoneID(l_num);
+				VERIFY(l_V); l_V->Calculate();
+				Fmatrix& l_pos	= l_V->LL_GetTransform(l_boneID);
+				l_pBall->SetPos(l_pos);
 				return;
 			}
 		} break;
@@ -41,6 +48,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			if(l_pBall) {
 				// R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't eject local
 				l_pBall->H_SetParent(0);
+				m_targets.pop_back();
 				return;
 			}
 		} break;
@@ -51,4 +59,9 @@ void CTargetCSCask::OnDeviceCreate() {
 	inherited::OnDeviceCreate();
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("open");
+}
+
+void CTargetCSCask::OnVisible() {
+	inherited::OnVisible();
+	for(u32 i = 0; i < m_targets.size(); i++) m_targets[i]->OnVisible();
 }

@@ -40,6 +40,20 @@ public:
 		strcpy(I,"name,team,squad,group"); 
 	}
 };
+class CCC_EndRound : public CConsoleCommand {
+public:
+	CCC_EndRound(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if(Level().Server) {
+			Level().Server->game->OnRoundEnd("GAME_restarted");
+			// Level().Server->game->OnRoundStart();
+		}
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"end round"); 
+	}
+};
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
@@ -54,6 +68,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,		"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 		CMD3(CCC_Mask,		"g_god",				&psActorFlags,	AF_GODMODE	);
 		CMD1(CCC_Spawn,		"g_spawn"				);
+		CMD1(CCC_EndRound,	"g_end_round"				);
 
 		// hud
 		CMD3(CCC_Mask,		"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);

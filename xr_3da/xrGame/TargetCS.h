@@ -20,5 +20,7 @@ public:
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			();								// Called each frame, so no need for dt
 
+	void SetPos(const Fmatrix& pos);
+
 	CPhysicsShell*						m_pPhysicsShell;
 };

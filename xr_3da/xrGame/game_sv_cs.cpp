@@ -279,79 +279,7 @@ BOOL	game_sv_CS::OnDetouch		(u16 eid_who, u16 eid_what)
 	}
 	return TRUE;
 }
-/*
-BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_who, u32 eid_target)
-{
-	xrServer*		S				=	Level().Server;
 
-	xrServerEntity*		e_who		=	S->ID_to_entity	((u16)eid_who);
-	if (dynamic_cast<xrSE_Actor*>(e_who))
-	{
-		game_PlayerState*	ps_who		=	get_id			(id_who);
-		xrServerEntity*		e_entity	=	S->ID_to_entity	((u16)eid_target);
-		xrSE_Target_CSBase *l_pCSBase	=	dynamic_cast<xrSE_Target_CSBase*>(e_entity);
-		if(l_pCSBase) {
-			if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
-
-			if(l_pCSBase->s_team == ps_who->team) {				// Если игрок пришел на свою базу
-				ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
-			} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
-
-			return false;
-		}
-		xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
-		if(l_pMBall) {
-			if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)		{ return false; }
-			if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)			{ return false; }
-			if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)			teams[ps_who->team].num_targets--;
-			else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) teams[(ps_who->team+1)%2].num_targets--;
-			ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
-			signal_Syncronize();
-		}
-	} else {
-		if(dynamic_cast<xrSE_Actor*>(e_who)) {
-		}
-
-	}
-	return TRUE;
-}
-
-BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
-{
-	xrServer*		S	= Level().Server;
-	game_PlayerState*	ps_who	=	get_id	(id_who);
-	xrServerEntity*		e_entity	= S->ID_to_entity	((u16)eid_target);
-	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
-	if(l_pCSBase) {
-		if(l_pCSBase->s_team == ps_who->team) ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_BASE;
-		else ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
-		return false;
-	}
-	xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
-	if(l_pMBall) {
-		s16 l_team = -1;
-		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) {
-			l_team = ps_who->team;
-			teams[l_team].num_targets++;
-		} else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) {
-			l_team = (ps_who->team+1)%2;
-			teams[l_team].num_targets++;
-		}
-		ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
-		if(teams[l_team].num_targets == 3) {		// если у команды 3 артефакта - Победа!!!
-			OnTeamScore(l_team);
-			u32	cnt = get_count();						// Доп. бонус за выполнение задания
-			for(u32 it=0; it<cnt; it++)	{
-				game_PlayerState* ps = get_it(it);
-				if(ps->team == l_team) ps->money_for_round += 1000;
-			}											//
-			OnRoundEnd("MISSION_complete");
-		}
-		signal_Syncronize();
-	}
-	return TRUE;
-}
-*/
 void	game_sv_CS::Update			()
 {
 	switch(phase) 	{
