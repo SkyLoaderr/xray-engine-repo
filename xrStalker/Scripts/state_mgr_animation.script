@@ -298,6 +298,10 @@ function animation:__init(npc, mgr)
 end
 --' апдейт
 function animation:update()
+	self.is_called = false
+	if self.states.current_state == nil then
+		return
+	end
 	--' ожидаем окончания перехода.
 	if self.states.current_state == "wait" then
 		local nnum = 0
@@ -316,16 +320,20 @@ function animation:update()
 		if self.mgr.callback then
 			if self.mgr.callback.begin == nil then
 				self.mgr.callback.begin = device():time_global()
+--				printf("Callback initialized %s", device():time_global())
 			else
 				if device():time_global() - self.mgr.callback.begin >= self.mgr.timeout then
+--					printf("Callback called %s", device():time_global())
 					self.mgr.callback.func(self.mgr.callback.obj)
+					self.is_called = true
 					self.mgr.callback = nil
 				end
 			end
 		end
 	
 		--' Определяем нужно ли добавлять анимацию или ждать
-		if	self.animations[self.states.current_state] ~= nil and
+		if	self.is_called == false and
+			self.animations[self.states.current_state] ~= nil and
 			self.animations[self.states.current_state].rnd ~= nil and
 			(self.states.begin == nil or
 			device():time_global() - self.states.begin > self.states.idle) and
@@ -382,9 +390,7 @@ end
 --' установка нового состояния
 function animation:set_state(id)
 	printf("set new animation %s", utils.to_str(id))
-	printf("set callback")
 	self.npc:set_callback(callback.action_animation , self.anim_callback, self)
-	printf("set callback DONE")	
 	local nn = 0	
 	--' выход из старого состояния
 	self.npc:clear_animations()	

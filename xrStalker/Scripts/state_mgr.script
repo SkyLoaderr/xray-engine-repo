@@ -412,6 +412,24 @@ function state_manager:__init(npc)
 end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s", state_name)
+--	if target then
+--		if target.look_position then
+--			printf("look position: %s %s %s", target.look_position.x,
+--												target.look_position.y,
+--												target.look_position.z)
+--		else
+--			printf("look position: NIL")
+--		end
+--		if target.look_object then
+--			printf("look object: %s", target.look_object:name())
+--		else
+--			printf("look object: NIL")
+--		end
+--	else
+--		printf("look target NIL")
+--	end
+--	printf("Timeout %s", utils.to_str(timeout))
+	
 	self.target_state = state_name
 	if target ~= nil then
 		self.look_position = target.look_position
