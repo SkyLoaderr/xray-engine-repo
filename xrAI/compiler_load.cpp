@@ -47,7 +47,7 @@ void xrLoad(LPCSTR name)
 		strconcat			(N,name,"level.game");
 		CFileStream			F(N);
 		CStream *O = 0;
-		if (0!=(O = F.OpenChunk	(RPOINT_CHUNK)))
+		if (0!=(O = F.OpenChunk	(AIPOINT_CHUNK)))
 		{
 			for (int id=0; O->FindChunk(id); id++)
 			{
