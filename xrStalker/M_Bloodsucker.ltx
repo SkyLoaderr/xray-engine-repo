@@ -48,8 +48,8 @@ stand_steal_0		=	2,	  0.15,    0.2,    0.50,     0.2,
 
 
 [m_bloodsucker_e]
-SpaceRestrictionSection		= space_restrictor,zone_mosquito_bald
 GroupControlSection			 = spawn_group
+SpaceRestrictionSection		 = space_restrictor,zone_mosquito_bald
 $spawn               		 = "monsters\bloodsucker"		; option for Level Editor
 $npc			     		 = on							; option for Level Editor
 ;$prefetch 					 = 16
@@ -66,6 +66,8 @@ DynamicObjectsCount	 		 = 32
 
 cform               		 = skeleton						; collision class
 class                		 = AI_BLOOD						; AI class
+
+script_binding  = monster.bind
 
 bone_head					 = bip01_head					; bone name
 bone_fire					 = bip01_head
@@ -129,8 +131,8 @@ as_step							= 0.5
 ;Invisibility settings
 Invisibility_BlinkTime								= 300
 Invisibility_BlinkMicroInterval  					= 30
-Invisibility_Energy_Restore_Velocity				= 0.0001;0.05
-Invisibility_Energy_Decline_Velocity				= 1 ;0.02
+Invisibility_Energy_Restore_Velocity				= 0.01;0.05
+Invisibility_Energy_Decline_Velocity				= 0.02
 Invisibility_Energy_Critical_Value					= 0.2
 Invisibility_Energy_Activate_Value					= 0.8
 Invisibility_Energy_Aggressive_Restore_Velocity		= 0.03
@@ -248,8 +250,8 @@ LegsCount					= 2
 
 default				= 1.00,	-1,	1.00
 
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
-bip01_neck 			= 0.5, -1, 0.5
+bip01_pelvis 		= 0.4, -1, 0.5
+bip01_spine 		= 0.7, -1, 0.5
+bip01_spine1 		= 1.0, -1, 0.5
+bip01_neck 			= 3.0, -1, 0.5
 bip01_head 			= 10.0, -1, 10.00
