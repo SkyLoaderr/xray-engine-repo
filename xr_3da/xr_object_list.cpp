@@ -121,7 +121,9 @@ void CObjectList::net_Export	(NET_Packet* _Packet)
 			P->net_Export			(Packet);
 #ifdef DEBUG
 			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u8);
-			R_ASSERT3				(size<256,	"Object exceed network-data limit", *P->cName());
+			if				(size>=256)			{
+				Debug.fatal	("Object [%s] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
+					*P->cName(), size, Packet.w_tell(), position);
 #endif
 			Packet.w_chunk_close8	(position);
 		}
