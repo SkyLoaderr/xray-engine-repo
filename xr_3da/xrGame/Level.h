@@ -26,6 +26,8 @@ public:
 	CEntity*					Leader;
 	svector<CGroup,maxGroups>	Groups;
 
+	objVisible					KnownEnemys;
+
 	CSquad() : Leader(0)		{};
 
 	bool						Empty			(){return Groups.empty();}
@@ -39,8 +41,6 @@ class CTeam
 public:
 	svector<CSquad,maxTeams>	Squads;
 	svector<Fvector4,maxRP>		RespawnPoints;
-
-	objVisible					KnownEnemys;
 };
 
 class CLevel : public CCreator, public IPureClient

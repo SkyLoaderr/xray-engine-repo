@@ -152,7 +152,7 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who)
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
+	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	S.Enemy					= 0;
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
@@ -343,7 +343,7 @@ u32 CAI_Soldier::tfGetAloneFightType()
 	if (bfAmIHurt())
 		return(FIGHT_TYPE_HURT);
 
-	objVisible &KnownEnemies = Level().Teams[g_Team()].KnownEnemys;
+	objVisible &KnownEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	float fFightCoefficient = 0.f, fTempCoefficient;
 	CCustomMonster *tpCustomMonster = 0;
 
@@ -600,7 +600,7 @@ u32 CAI_Soldier::tfGetAloneFightType()
 
 u32 CAI_Soldier::tfGetGroupFightType()
 {
-	objVisible &KnownEnemies = Level().Teams[g_Team()].KnownEnemys;
+	objVisible &KnownEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	float fFightCoefficient = 0.f, fTempCoefficient;
 	CCustomMonster *tpCustomMonster = 0;
 

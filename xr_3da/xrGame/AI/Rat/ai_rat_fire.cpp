@@ -91,7 +91,7 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 void CAI_Rat::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
+	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	S.Enemy					= 0;
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;

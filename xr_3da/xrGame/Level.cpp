@@ -94,12 +94,12 @@ void CLevel::OnFrame	()
 	for (u32 T=0; T<Teams.size(); T++)
 	{
 		CTeam&	TD		= Teams[T];
-		objVisible& VIS	= TD.KnownEnemys;
-
-		VIS.clear		();
 		for (u32 S=0; S<TD.Squads.size(); S++)
 		{
 			CSquad&	SD	= TD.Squads[S];
+			objVisible& VIS	= SD.KnownEnemys;
+
+			VIS.clear		();
 			if (SD.Leader)	{
 				CEntityAlive* E	= dynamic_cast<CEntityAlive*>(SD.Leader);
 				if (E && E->g_Alive())		E->GetVisible(VIS);

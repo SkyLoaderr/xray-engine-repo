@@ -563,7 +563,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 		}
 	}
 
-	objVisible &VisibleEnemies = Level().Teams[dwTeam].KnownEnemys;
+	objVisible &VisibleEnemies = Level().Teams[dwTeam].Squads[dwSquad].KnownEnemys;
 	
 	if (!VisibleEnemies.size())
 		switch (Group.m_dwLastAction) {
