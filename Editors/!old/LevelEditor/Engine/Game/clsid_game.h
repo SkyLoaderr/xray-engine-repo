@@ -122,6 +122,7 @@
 // Standart level object
 #define CLSID_OBJECT_ITEM_STD		MK_CLSID('O','_','I','T','E','M',' ',' ')
 #define CLSID_OBJECT_PHYSIC			MK_CLSID('O','_','P','H','Y','S','I','C')
+#define CLSID_OBJECT_BREAKABLE		MK_CLSID('O','_','B','R','K','B','L',' ')
 
 // Zones
 #define CLSID_ZONE					MK_CLSID('Z','_','Z','O','N','E',' ',' ')
@@ -176,5 +177,4 @@
 #define CLSID_EQUIPMENT_MILITARY	MK_CLSID('E','Q','U','_','M','L','T','R')
 #define CLSID_EQUIPMENT_EXO			MK_CLSID('E','Q','U','_','E','X','O',' ')
 
-#define CLSID_BREAKABLE				MK_CLSID('O','_','B','R','K','B','L',' ')
 
