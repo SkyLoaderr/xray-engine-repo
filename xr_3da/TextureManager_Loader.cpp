@@ -142,20 +142,11 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 			CBlender_DESC	desc;
 			chunk->Read		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
-#ifdef _EDITOR
-			if (B->getDescription().version!=desc.version){
-                _DELETE		(B);
-                ELog.DlgMsg	(mtError,"Can't load blender '%s'. Unsupported version.",desc.cName);
-                chunk->Close	();
-                chunk_id++;
-                continue;
-            }
-#else
-			if	(B->getDescription().version != desc.version)	
+			if	(B->getDescription().version != desc.version)
 			{
 				Msg			("! Version conflict in shader '%s'",desc.cName);
 			}
-#endif
+
             chunk->Seek		(0);
             B->Load			(*chunk,desc.version);
 

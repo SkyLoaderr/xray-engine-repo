@@ -517,7 +517,8 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
         case BPID_CONSTANT:{
 			LPSTR nm = (LPSTR)item->Data;
         	if (mi->MenuIndex==0){
-            	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
+            	if (*nm=='$'){
+//            	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,Tools.Engine.AppendConstant());
 		            Modified();
                 }
@@ -533,7 +534,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
         case BPID_MATRIX:{
 			LPSTR nm = (LPSTR)item->Data;
         	if (mi->MenuIndex==0){
-            	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
+            	if (*nm=='$'){
 					strcpy(nm,Tools.Engine.AppendMatrix());
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
                     AddMatrix(item,nm);

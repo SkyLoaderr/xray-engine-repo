@@ -212,15 +212,12 @@ void CSHEngineTools::Load(){
                 CBlender_DESC	desc;
                 chunk->Read		(&desc,sizeof(desc));
                 CBlender*		B = CBlender::Create(desc.CLS);
-				if (B->getDescription().version!=desc.version){
-                	_DELETE		(B);
-                    ELog.DlgMsg	(mtError,"Can't load blender '%s'. Unsupported version.",desc.cName);
-                    chunk->Close	();
-                    chunk_id++;
-                	continue;
-                }
+				if	(B->getDescription().version != desc.version)
+				{
+					Msg			("! Version conflict in shader '%s'",desc.cName);
+				}
                 chunk->Seek		(0);
-                B->Load			(*chunk);
+                B->Load			(*chunk,desc.version);
 
                 LPSTR blender_name = strdup(desc.cName);
                 pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
@@ -426,7 +423,7 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
         data.Advance(sz);
     }
     data.Seek(0);
-    B->Load(data);
+    B->Load(data,B->getDescription().version);
 	// set name
     char name[128]; name[0]=0;
     if (folder_name) strcpy(name,folder_name);
@@ -553,7 +550,7 @@ void CSHEngineTools::UpdateStreamFromObject(){
 void CSHEngineTools::UpdateObjectFromStream(){
     if (m_CurrentBlender){
         CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
-        m_CurrentBlender->Load(data);
+        m_CurrentBlender->Load(data,m_CurrentBlender->getDescription().version);
     }
 }
 
@@ -657,7 +654,7 @@ void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
     }
 
     data.Seek(0);
-    B->Load(data);
+    B->Load(data,B->getDescription().version);
 }
 
 void CSHEngineTools::CollapseReferences(){
