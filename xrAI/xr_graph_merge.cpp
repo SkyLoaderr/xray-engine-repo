@@ -14,6 +14,7 @@
 #include "ai_alife_space.h"
 #include "game_base.h"
 #include "xrServer_Entities.h"
+#include "xrCrossTable.h"
 using namespace ALife;
 
 class CLevelGraph;
@@ -44,10 +45,46 @@ public:
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
 
-								CLevelGraph(const SLevel &tLevel, const char *S, u32 dwOffset, u32 dwLevelID)
+								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID)
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
+		
+		FILE_NAME				caFileName;
+		// updating cross-table
+		{
+			strconcat			(caFileName,S,CROSS_TABLE_NAME);
+			CALifeCrossTable	*tpCrossTable = xr_new<CALifeCrossTable>(caFileName);
+			vector<CALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
+			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
+			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
+				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
+				tCrossTableUpdate[i].tGraphIndex += dwOffset;
+			}
+
+			CFS_Memory			tMemoryStream;
+			CALifeCrossTable	tCrossTable;
+			
+			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
+			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
+			tCrossTable.m_tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
+			
+			xr_delete			(tpCrossTable);
+			
+			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
+			tMemoryStream.write(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+			tMemoryStream.close_chunk();
+			
+			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
+			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
+				tMemoryStream.write(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
+			tMemoryStream.close_chunk();
+			
+			tMemoryStream.SaveTo(caFileName,0);
+		}
+
+		// loading graph
+		strconcat			(caFileName,S,"level.graph");
 		CVirtualFileStream		F(S);
 		m_tGraphHeader.dwVersion		= F.Rdword();
 		m_tGraphHeader.dwVertexCount	= F.Rdword();
@@ -209,9 +246,9 @@ void xrMergeGraphs()
 		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
 		Memory.mem_copy				(S1,V,strlen(V) + 1);
 		strconcat					(S2,"gamedata\\levels\\",S1);
-		strconcat					(S1,S2,"\\level.graph");
+		//strconcat					(S1,S2,"\\level.graph");
 		u32							id = Ini->ReadINT(N,"id");
-		tpGraphs.insert				(make_pair(id,xr_new<CLevelGraph>(tLevel,S1,dwOffset,id)));
+		tpGraphs.insert				(make_pair(id,xr_new<CLevelGraph>(tLevel,S2,dwOffset,id)));
 		dwOffset					+= tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
 		tGraphHeader.tpLevels.push_back(tLevel);
     }
