@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 #ifndef PropertiesListHelperH
 #define PropertiesListHelperH
-
+                                                               
 // refs
 class ListItem;
 

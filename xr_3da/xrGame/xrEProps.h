@@ -109,7 +109,7 @@ public:
     virtual ColorValue*			__stdcall	CreateFColor	    (PropItemVec& items, shared_str key, Fcolor* val)=0;
     virtual VectorValue*		__stdcall	CreateVColor	    (PropItemVec& items, shared_str key, Fvector* val)=0;
 	virtual RTextValue* 		__stdcall	CreateRText		    (PropItemVec& items, shared_str key, shared_str* val)=0;
-	virtual STextValue* 		__stdcall	CreateSText		    (PropItemVec& items, shared_str key, std::string* val)=0;
+	virtual STextValue* 		__stdcall	CreateSText		    (PropItemVec& items, shared_str key, std::string* val)=0;      
 	virtual WaveValue* 			__stdcall	CreateWave		    (PropItemVec& items, shared_str key, WaveForm* val)=0;
     virtual FloatValue* 		__stdcall	CreateTime		    (PropItemVec& items, shared_str key, float* val, float mn=0.f, float mx=86400.f)=0;
 

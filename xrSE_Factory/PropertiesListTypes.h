@@ -247,17 +247,17 @@ public:
 // values
 //------------------------------------------------------------------------------
 class CaptionValue: public PropValue{
-	shared_str				value;
+	shared_str			value;
 public:
 						CaptionValue	(const shared_str& val){value=val;}
-    virtual std::string	GetDrawText		(TOnDrawTextEvent)	{return value.c_str();}
+    virtual std::string	GetDrawText		(TOnDrawTextEvent)	{return value.c_str()?value.c_str():"";}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)	{return (value==((CaptionValue*)val)->value);}
     bool				ApplyValue		(const shared_str& val){value=val; return false;}
 };
 
 class CanvasValue: public PropValue{
-	shared_str				value;
+	shared_str			value;
 public:
 	typedef fastdelegate::FastDelegate3<CanvasValue*,CanvasValue*,bool&>					TOnTestEqual;
 	typedef fastdelegate::FastDelegate3<CanvasValue*,void* /* TCanvas* */, const Irect&>	TOnDrawCanvasEvent;
@@ -267,7 +267,7 @@ public:
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
 public:
 						CanvasValue		(const shared_str& val, int h):OnDrawCanvasEvent(0),OnTestEqual(0),height(h){value=val;}
-    virtual std::string	GetDrawText		(TOnDrawTextEvent){return value.c_str();}
+    virtual std::string	GetDrawText		(TOnDrawTextEvent){return value.c_str()?value.c_str():"";}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)
     {
@@ -293,13 +293,14 @@ public:
     	OnBtnClickEvent	= 0;
     	btn_num			= -1;
     	std::string 	v;
-        int cnt=_GetItemCount(val.c_str()); 
+        int cnt			=_GetItemCount(val.c_str()); 
         for (int k=0; k<cnt; ++k)
         	value.push_back(_GetItem(val.c_str(),k,v));
     }
     virtual std::string	GetDrawText		(TOnDrawTextEvent)
     {
-        return 			_ListToSequence(value).c_str();
+    	shared_str t	= _ListToSequence(value);
+        return 			t.c_str()?t.c_str():"";
     }
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)							{return true;}
@@ -312,7 +313,7 @@ public:
 						RTextValue		(TYPE* val):CustomValue<shared_str>(val){};
     virtual std::string	GetDrawText		(TOnDrawTextEvent OnDrawText)
     {
-        std::string txt	= GetValue().c_str();
+        std::string txt	= GetValue().c_str()?GetValue().c_str():"";
         if (!OnDrawText.empty())OnDrawText(this, txt);
         return txt;
     }
