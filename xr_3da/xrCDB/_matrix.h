@@ -225,33 +225,30 @@ public:
 	{	m[0][0]*=v.x; m[1][1]*=v.y;	m[2][2]*=v.z; }
 	IC	void	rotateX (float Angle )
 	{
-		identity();
-		float Cosine= cosf(Angle);
-		float Sine	= sinf(Angle);
-		m [1][1] 	= Cosine;
-		m [2][1] 	= -Sine;
-		m [1][2] 	= Sine;
-		m [2][2] 	= Cosine;
+		float cosa	= cosf(Angle);
+		float sina	= sinf(Angle);
+		i.set		(1,		0,		0	);	_14 = 0;
+		j.set		(0,		cosa,	sina);	_24 = 0;
+		k.set		(0,    -sina,   cosa);	_34 = 0;
+		c.set		(0,		0,		0	);	_44 = 1;
 	}
 	IC	void	rotateY (float Angle )				// rotation about Y axis
 	{
-		identity();
-		float Cosine= cosf(Angle);
-		float Sine	= sinf(Angle);
-		m[0][0] 	= Cosine;
-		m[2][0] 	= -Sine;
-		m[0][2] 	= Sine;
-		m[2][2] 	= Cosine;
+		float cosa	= cosf(Angle);
+		float sina	= sinf(Angle);
+		i.set		(cosa,	0,	   -sina);	_14 = 0;
+		j.set		(0,		1,		0	);	_24 = 0;
+		k.set		(sina,  0,		cosa);	_34 = 0;
+		c.set		(0,		0,		0	);	_44 = 1;
 	}
 	IC	void	rotateZ (float Angle )
 	{
-		identity();
-		float Cosine= cosf(Angle);
-		float Sine	= sinf(Angle);
-		m [0][0] 	= Cosine;
-		m [1][0] 	= -Sine;
-		m [0][1] 	= Sine;
-		m [1][1] 	= Cosine;
+		float cosa	= cosf(Angle);
+		float sina	= sinf(Angle);
+		i.set		(cosa,	sina,	0	);	_14 = 0;
+		j.set		(-sina,	cosa,	0	);	_24 = 0;
+		k.set		(0,		0,		1	);	_34 = 0;
+		c.set		(0,		0,		0	);	_44 = 1;
 	}
 
 	IC	void	rotation( const Fvector &vdir, const Fvector &vnorm )
