@@ -22,7 +22,7 @@ sidor_actions = stohe_actions + 1024
 
 sidor_act_commander = sidor_actions + 0
 sidor_act_soldier   = sidor_actions + 5
-sidor_act_patrol_base   = sidor_actions + 0
+sidor_act_patrol        = sidor_actions + 0
 sidor_act_wounded_base  = sidor_actions + 10
 sidor_act_bandits_base  = sidor_actions + 20
 sidor_act_swat_base     = sidor_actions + 40
