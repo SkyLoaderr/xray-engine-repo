@@ -98,7 +98,7 @@ bool CMincer::BlowoutState	()
 void CMincer ::ThrowInCenter(Fvector& C)
 {
 	C.set(m_telekinetics.Center());
-	C.y=0.f;
+	C.y=Position().y;
 }
 
 
