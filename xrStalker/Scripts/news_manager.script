@@ -55,12 +55,12 @@ function send_tip(actor, news_id, timeout, sender)
 			y = 0
 		end	
 		if sender == "freedom" then
-			x = 150
-			y = 0
+			x = 0
+			y = 150
 		end	
 		if sender == "ecolog" then
-			x = 150
-			y = 0
+			x = 450
+			y = 100
 		end	
 	end
 	db.actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)	
