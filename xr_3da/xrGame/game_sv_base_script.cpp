@@ -29,16 +29,19 @@ public:
 	xrTime(const xrTime& other):m_time(other.m_time){}
 	xrTime(ALife::_TIME_ID t):m_time(t){}
 
-	bool	operator <	(const xrTime& other)	const			{ return m_time < other.m_time;			}
-	bool	operator ==	(const xrTime& other)	const			{ return m_time == other.m_time;		}
-	xrTime	operator +	(const xrTime& other)					{return xrTime(m_time+other.m_time);	}
+	bool	operator <		(const xrTime& other)	const			{ return m_time < other.m_time;			}
+	bool	operator ==		(const xrTime& other)	const			{ return m_time == other.m_time;		}
+	xrTime	operator +		(const xrTime& other)					{ return xrTime(m_time+other.m_time);	}
+	xrTime	operator -		(const xrTime& other)					{ return xrTime(m_time-other.m_time);	}
+	float	diffSec			(const xrTime& other)					{ return (m_time-other.m_time)/sec2ms;	}
+	void	add				(const xrTime& other)					{  m_time += other.m_time;				}
+	void	sub				(const xrTime& other)					{  m_time -= other.m_time;				}
 
-	void	setHMS		(int h, int m, int s)			{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms);}
-	void	setHMSms	(int h, int m, int s, int ms)	{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms+ms);}
-//	void	add			(xrTime* other)					{m_time+=other->m_time;}
-//	void	set			(xrTime* other)					{m_time=other->m_time;}
-	LPCSTR	dateToString	(int mode){ return *InventoryUtilities::GetDateAsString(m_time,(InventoryUtilities::EDatePrecision)mode);}
-	LPCSTR	timeToString	(int mode){ return *InventoryUtilities::GetTimeAsString(m_time,(InventoryUtilities::ETimePrecision)mode);}
+	void	setHMS			(int h, int m, int s)					{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms);}
+	void	setHMSms		(int h, int m, int s, int ms)			{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms+ms);}
+
+	LPCSTR	dateToString	(int mode)								{ return *InventoryUtilities::GetDateAsString(m_time,(InventoryUtilities::EDatePrecision)mode);}
+	LPCSTR	timeToString	(int mode)								{ return *InventoryUtilities::GetTimeAsString(m_time,(InventoryUtilities::ETimePrecision)mode);}
 };
 
 u32 get_time()
@@ -55,7 +58,7 @@ void game_sv_GameState::script_register(lua_State *L)
 
 	module(L,"game")
 	[
-	class_< xrTime >("time_struct")
+	class_< xrTime >("CTime")
 		.enum_("date_format")
 		[
 			value("DateToDay",		int(InventoryUtilities::edpDateToDay)),
@@ -74,6 +77,11 @@ void game_sv_GameState::script_register(lua_State *L)
 		.def(const_self <			xrTime()					)
 		.def(const_self ==			xrTime()					)
 		.def(self +					xrTime()					)
+		.def(self -					xrTime()					)
+
+		.def("diffSec"				,&xrTime::diffSec)
+		.def("add"					,&xrTime::add)
+		.def("sub"					,&xrTime::sub)
 
 		.def("setHMS"				,&xrTime::setHMS)
 		.def("setHMSms"				,&xrTime::setHMSms)
@@ -81,7 +89,7 @@ void game_sv_GameState::script_register(lua_State *L)
 		.def("timeToString"			,&xrTime::timeToString),
 		// declarations
 		def("time",					get_time),
-		def("time2",				get_time_struct),
+		def("get_time",				get_time_struct),
 //		def("get_surge_time",	Game::get_surge_time),
 //		def("get_object_by_name",Game::get_object_by_name),
 	
