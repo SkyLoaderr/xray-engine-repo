@@ -913,6 +913,29 @@ function object_type(obj)
     return type
 end
 
+
+// ▀ты хЄё  ыш юbj ьюэёЄЁюь
+function is_object_monster(obj)
+	local otype = get_clsid(obj)
+	if(otype == clsid.crow			or
+		otype == clsid.zombie		or
+		otype == clsid.flesh		or
+		otype == clsid.controller	or
+		otype == clsid.bloodsucker	or
+		otype == clsid.burer		or
+		otype == clsid.chimera		or	
+		otype == clsid.boar			or
+		otype == clsid.idol			or
+		otype == clsid.dog_red		or		
+		otype == clsid.dog_black	or
+		otype == clsid.pseudo_gigant  )
+	then
+		return true
+	end
+	
+	return false
+end
+
 --возвращает произвольную точку пути у которой установлен бит
 function point_with_bit(patrol_path, bit, old_point)      -- old_point - индекс точки, которую не надо выбирать,
   local points = {}                                       -- параметр не обязательный( например текущей точки )
@@ -1010,3 +1033,4 @@ function print_table(table, subs)
     end
   end
 end
+
