@@ -80,22 +80,17 @@ public:
 private:
 	void					fatal		(LPCSTR s);
 public:
+	~R_constant_table					();
+
 	void					clear		();
 	BOOL					parse		(void* desc, u16 destination);
 	void					merge		(R_constant_table* C);
 	R_constant*				get			(LPCSTR name);
 
-	BOOL					empty		()
-	{
-		return 0==table.size();
-	}
 	BOOL					equal		(R_constant_table& C);
-	BOOL					equal		(R_constant_table* C)
-	{
-		return equal(*C);
-	}
+	BOOL					equal		(R_constant_table* C)	{	return equal(*C);		}
+	BOOL					empty		()						{	return 0==table.size();	}
 };
-
 typedef	resptr_core<R_constant_table,resptr_base<R_constant_table> >				ref_ctable;
 
 #endif
