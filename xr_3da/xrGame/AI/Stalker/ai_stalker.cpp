@@ -471,9 +471,11 @@ void CAI_Stalker::UpdateCL()
 	if (g_Alive()) {
 		VERIFY						(!m_pPhysicsShell);
 		
+#if 0
 		if (g_mt_config.test(mtSightManager))
 			Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CAI_Stalker::update_sight_manager));
 		else
+#endif
 			update_sight_manager	();
 
 		CStepManager::update		();
