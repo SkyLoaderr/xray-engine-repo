@@ -32,6 +32,9 @@ OPT:	occlusion culling of light volumes
 OPT:	precompute invisible list (visuals) for static lights at load time
 +FEATURE:	stats:
 +FEATURE:	materials:
+particles/transparency
+self-ilum
+anisotropic
 
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	

@@ -20,7 +20,7 @@ const char *			ioc_prompt	=	">>> ";
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-void CConsole::AddCommand(CConsoleCommand* C)
+void CConsole::AddCommand(IConsole_Command* C)
 {
 	Commands[LPSTR(C->Name())] = C;
 }
@@ -147,7 +147,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 		{
 			vecCMD_IT I = Commands.lower_bound(editor);
 			if (I!=Commands.end()) {
-				CConsoleCommand &O = *(I->second);
+				IConsole_Command &O = *(I->second);
 				strcpy(editor,O.Name());
 				strcat(editor," ");
 			}
@@ -334,13 +334,13 @@ outloop:
 	// search
 	vecCMD_IT I = Commands.find(first_word);
 	if (I!=Commands.end()) {
-		CConsoleCommand &C = *(I->second);
+		IConsole_Command &C = *(I->second);
 		if (C.bEnabled) {
 			if (C.bLowerCaseArgs) strlwr(last_word);
 			if (last_word[0]==0) {
 				if (C.bEmptyArgsHandled) C.Execute(last_word);
 				else {
-					CConsoleCommand::TStatus S; C.Status(S);
+					IConsole_Command::TStatus S; C.Status(S);
 					Msg("- %s %s",C.Name(),S);
 				}
 			} else C.Execute(last_word);

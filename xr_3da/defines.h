@@ -20,7 +20,6 @@ enum {
 	rsClearBB			= (1ul<<2ul),
 	rsNoVSync			= (1ul<<3ul),
 	rsWireframe			= (1ul<<4ul),
-	rsAnisotropic		= (1ul<<5ul),
 	rsAntialias			= (1ul<<6ul),
 	rsWarmHZB			= (1ul<<7ul),
 	rsNormalize			= (1ul<<8ul),

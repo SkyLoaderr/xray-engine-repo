@@ -43,10 +43,10 @@ xr_token							vid_bpp_token							[ ]={
 };
 
 //-----------------------------------------------------------------------
-class CCC_Quit : public CConsoleCommand
+class CCC_Quit : public IConsole_Command
 {
 public:
-	CCC_Quit(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = TRUE; };
+	CCC_Quit(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Console->Hide();
 		Engine.Event.Defer("KERNEL:disconnect");
@@ -54,10 +54,10 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_MemStat : public CConsoleCommand
+class CCC_MemStat : public IConsole_Command
 {
 public:
-	CCC_MemStat(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = TRUE; };
+	CCC_MemStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Memory.mem_statistic();
 		Msg	("* ----- shared memory -----");
@@ -67,18 +67,18 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_E_Dump : public CConsoleCommand
+class CCC_E_Dump : public IConsole_Command
 {
 public:
-	CCC_E_Dump(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = TRUE; };
+	CCC_E_Dump(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Engine.Event.Dump();
 	}
 };
-class CCC_E_Signal : public CConsoleCommand
+class CCC_E_Signal : public IConsole_Command
 {
 public:
-	CCC_E_Signal(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_E_Signal(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
 		char	Event[128],Param[128];
 		Event[0]=0; Param[0]=0;
@@ -87,16 +87,16 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_Help : public CConsoleCommand
+class CCC_Help : public IConsole_Command
 {
 public:
-	CCC_Help(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	CCC_Help(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Log("- --- Command listing: start ---");
 		CConsole::vecCMD_IT it;
 		for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
 		{
-			CConsoleCommand &C = *(it->second);
+			IConsole_Command &C = *(it->second);
 			TStatus _S; C.Status(_S);
 			TInfo	_I;	C.Info	(_I);
 			
@@ -106,10 +106,10 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_SaveCFG : public CConsoleCommand
+class CCC_SaveCFG : public IConsole_Command
 {
 public:
-	CCC_SaveCFG(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	CCC_SaveCFG(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) 
 	{
 		LPCSTR	c_name		= Console->ConfigFile;
@@ -124,10 +124,10 @@ public:
 		FS.w_close			(F);
 	}
 };
-class CCC_LoadCFG : public CConsoleCommand
+class CCC_LoadCFG : public IConsole_Command
 {
 public:
-	CCC_LoadCFG(LPCSTR N) : CConsoleCommand(N) {};
+	CCC_LoadCFG(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		Msg("Executing config-script \"%s\"...",args);
 		char str[1024];
@@ -151,7 +151,7 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_Start : public CConsoleCommand
+class CCC_Start : public IConsole_Command
 {
 	void	parse		(LPSTR dest, LPCSTR args, LPCSTR name)
 	{
@@ -160,7 +160,7 @@ class CCC_Start : public CConsoleCommand
 			sscanf(strstr(args,name)+xr_strlen(name),"(%[^)])",dest);
 	}
 public:
-	CCC_Start(LPCSTR N) : CConsoleCommand(N) {};
+	CCC_Start(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		if (g_pGameLevel)	{
 			Log		("! Please disconnect/unload first");
@@ -180,10 +180,10 @@ public:
 	}
 };
 
-class CCC_ServerLoad : public CConsoleCommand
+class CCC_ServerLoad : public IConsole_Command
 {
 public:
-	CCC_ServerLoad(LPCSTR N) : CConsoleCommand(N) {};
+	CCC_ServerLoad(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		if (g_pGameLevel)	{
 			Log("! Please disconnect/unload first");
@@ -199,19 +199,19 @@ public:
 	}
 };
 
-class CCC_Disconnect : public CConsoleCommand
+class CCC_Disconnect : public IConsole_Command
 {
 public:
-	CCC_Disconnect(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	CCC_Disconnect(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Engine.Event.Defer("KERNEL:disconnect");
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_VID_Restart : public CConsoleCommand
+class CCC_VID_Restart : public IConsole_Command
 {
 public:
-	CCC_VID_Restart(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	CCC_VID_Restart(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		if (Device.bReady) {
 			Device.Destroy	();
@@ -219,10 +219,10 @@ public:
 		}
 	}
 };
-class CCC_VID_Reset : public CConsoleCommand
+class CCC_VID_Reset : public IConsole_Command
 {
 public:
-	CCC_VID_Reset(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	CCC_VID_Reset(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		if (Device.bReady) {
 			Device.Reset	();
@@ -230,10 +230,10 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_SND_Restart : public CConsoleCommand
+class CCC_SND_Restart : public IConsole_Command
 {
 public:
-	CCC_SND_Restart(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	CCC_SND_Restart(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Sound->_restart();
 	}
@@ -247,8 +247,8 @@ public:
 	CCC_Gamma(LPCSTR N) : CCC_Float(N, &gamma, 0, 2), gamma(1) {};
 	virtual void Execute(LPCSTR args)
 	{
-		CCC_Float::Execute(args);
-		Device.Gamma.Gamma		(gamma);
+		CCC_Float::Execute	(args);
+		Device.Gamma.Gamma	(gamma);
 		Device.Gamma.Update	();
 	}
 };
@@ -320,7 +320,6 @@ void CCC_Register()
 
 	// Render device states
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync);
-	CMD3(CCC_Mask,		"rs_anisotropic",		&psDeviceFlags,		rsAnisotropic);
 	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,		rsWireframe);
 	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,		rsNormalize);
 	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,		rsAntialias);

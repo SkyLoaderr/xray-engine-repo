@@ -130,10 +130,10 @@ _keybind keynames[] = {
 //-----------------------------------------------------------------------
 // Bind/Unbind/List
 //-----------------------------------------------------------------------
-class CCC_Bind : public CConsoleCommand
+class CCC_Bind : public IConsole_Command
 {
 public:
-	CCC_Bind(LPCSTR N) : CConsoleCommand(N) {};
+	CCC_Bind(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		BOOL	binded=false;
 		char	action[256],key[256];
@@ -175,10 +175,10 @@ public:
 	}
 };
 
-class CCC_UnBind : public CConsoleCommand
+class CCC_UnBind : public IConsole_Command
 {
 public:
-	CCC_UnBind(LPCSTR N) : CConsoleCommand(N) 
+	CCC_UnBind(LPCSTR N) : IConsole_Command(N) 
 	{ bEmptyArgsHandled=TRUE; };
 	virtual void Execute(LPCSTR args) {
 		for (int i=0; keybind[i].name; ++i) {
@@ -192,10 +192,10 @@ public:
 	}
 };
 
-class CCC_ListActions : public CConsoleCommand
+class CCC_ListActions : public IConsole_Command
 {
 public:
-	CCC_ListActions(LPCSTR N) : CConsoleCommand(N)
+	CCC_ListActions(LPCSTR N) : IConsole_Command(N)
 	{ bEmptyArgsHandled=TRUE; };
 
 	virtual void Execute(LPCSTR args) {
@@ -207,10 +207,10 @@ public:
 	}
 };
 
-class CCC_UnBindAll : public CConsoleCommand
+class CCC_UnBindAll : public IConsole_Command
 {
 public:
-	CCC_UnBindAll(LPCSTR N) : CConsoleCommand(N)
+	CCC_UnBindAll(LPCSTR N) : IConsole_Command(N)
 	{ bEmptyArgsHandled=TRUE; };
 
 	virtual void Execute(LPCSTR args) {

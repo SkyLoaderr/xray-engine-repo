@@ -4,6 +4,7 @@
 
 // Common
 extern int			ps_r__Supersample;
+extern int			ps_r__Anisotropic;
 
 extern float		ps_r__Detail_w_rot1;
 extern float		ps_r__Detail_w_rot2;

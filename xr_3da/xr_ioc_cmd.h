@@ -6,7 +6,7 @@
 #define CMD3(cls,p1,p2,p3)			{ static cls x##cls(p1,p2,p3);		Console->AddCommand(&x##cls);}
 #define CMD4(cls,p1,p2,p3,p4)		{ static cls x##cls(p1,p2,p3,p4);	Console->AddCommand(&x##cls);}
 
-class ENGINE_API CConsoleCommand
+class ENGINE_API	IConsole_Command
 {
 public:
 	friend class	CConsole;
@@ -20,13 +20,13 @@ protected:
 
 	IC	bool		EQ(LPCSTR S1, LPCSTR S2) { return xr_strcmp(S1,S2)==0; }
 public:
-	CConsoleCommand		(LPCSTR N) : 
+	IConsole_Command		(LPCSTR N) : 
 	  cName				(N),
 	  bEnabled			(TRUE),
 	  bLowerCaseArgs	(TRUE),
 	  bEmptyArgsHandled	(FALSE)
 	{};
-	virtual ~CConsoleCommand()
+	virtual ~IConsole_Command()
 	{};
 
 	LPCSTR			Name()			{ return cName;	}
@@ -44,13 +44,13 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Mask : public CConsoleCommand
+class ENGINE_API CCC_Mask : public IConsole_Command
 {
 	Flags32*	value;
 	u32			mask;
 public:
 	CCC_Mask(LPCSTR N, Flags32* V, u32 M) :
-	  CConsoleCommand(N),
+	  IConsole_Command(N),
 	  value(V),
 	  mask(M)
 	{};
@@ -69,13 +69,13 @@ public:
 	{	strcpy(I,"'on/off' or '1/0'"); }
 };
 
-class ENGINE_API CCC_Token : public CConsoleCommand
+class ENGINE_API CCC_Token : public IConsole_Command
 {
 	u32*			value;
 	xr_token*		tokens;
 public:
 	CCC_Token(LPCSTR N, u32* V, xr_token* T) :
-	  CConsoleCommand(N),
+	  IConsole_Command(N),
 	  value(V),
 	  tokens(T)
 	{};
@@ -117,13 +117,13 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Float : public CConsoleCommand
+class ENGINE_API CCC_Float : public IConsole_Command
 {
 	float*			value;
 	float			min,max;
 public:
 	CCC_Float(LPCSTR N, float* V, float _min=0, float _max=1) :
-	  CConsoleCommand(N),
+	  IConsole_Command(N),
 	  value(V),
 	  min(_min),
 	  max(_max)
@@ -146,13 +146,13 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Vector3 : public CConsoleCommand
+class ENGINE_API CCC_Vector3 : public IConsole_Command
 {
 	Fvector*		value;
 	Fvector			min,max;
 public:
 	CCC_Vector3(LPCSTR N, Fvector* V, const Fvector _min, const Fvector _max) :
-	  CConsoleCommand(N),
+	  IConsole_Command(N),
 	  value(V)
 	{
 		min.set(_min);
@@ -177,13 +177,13 @@ public:
 	}
 };
 
-class ENGINE_API CCC_Integer : public CConsoleCommand
+class ENGINE_API CCC_Integer : public IConsole_Command
 {
 	int*			value;
 	int				min,max;
 public:
 	CCC_Integer(LPCSTR N, int* V, int _min=0, int _max=999) :
-	  CConsoleCommand(N),
+	  IConsole_Command(N),
 	  value(V),
 	  min(_min),
 	  max(_max)
@@ -205,13 +205,13 @@ public:
 	}
 };
 
-class ENGINE_API CCC_String : public CConsoleCommand
+class ENGINE_API CCC_String : public IConsole_Command
 {
 	LPSTR			value;
 	int				size;
 public:
 	CCC_String(LPCSTR N, LPSTR V, int _size=2) :
-	  CConsoleCommand(N),
+	  IConsole_Command(N),
 	  value	(V),
 	  size	(_size)
 	{

@@ -10,7 +10,7 @@
 
 //refs
 class ENGINE_API CGameFont;
-class ENGINE_API CConsoleCommand;
+class ENGINE_API IConsole_Command;
 
 class ENGINE_API CConsole  :
 	public IInputReceiver,
@@ -23,7 +23,7 @@ public:
 		IC bool operator()(const char* x, const char* y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
-	typedef xr_map<LPSTR,CConsoleCommand*,str_pred>	vecCMD;
+	typedef xr_map<LPSTR,IConsole_Command*,str_pred>	vecCMD;
 	typedef vecCMD::iterator						vecCMD_IT;
 	enum			{ MAX_LEN = 512 };
 private:
@@ -46,7 +46,7 @@ public:
 	BOOL			bVisible;
 	vecCMD			Commands;
 
-	void			AddCommand			(CConsoleCommand*);
+	void			AddCommand			(IConsole_Command*);
 
 	void			Show				();
 	void			Hide				();

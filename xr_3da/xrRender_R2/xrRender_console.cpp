@@ -58,10 +58,25 @@ float		ps_r2_GI_refl			= .9f;				// .9f
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
 #include	"..\xr_ioc_cmd.h"
+
+//-----------------------------------------------------------------------
+class CCC_Aniso		: public CCC_Integer
+{
+public:
+	CCC_Contrast(LPCSTR N, int*	v) : CCC_Integer(N, v, 2, 16) { *v = 4; };
+	virtual void Execute(LPCSTR args)
+	{
+		CCC_Integer::Execute	(args);
+		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
+			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, *value	));
+	}
+};
+//-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {
 	// Common
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
+	CMD4(CCC_Aniso,		"r__aniso_tf",			&ps_r__Anisotropic);
 	CMD4(CCC_Float,		"r__detail_w_rot1",		&ps_r__Detail_w_rot1,		1.f,	180.f	);
 	CMD4(CCC_Float,		"r__detail_w_rot2",		&ps_r__Detail_w_rot2,		1.f,	180.f	);
 	CMD4(CCC_Float,		"r__detail_w_speed",	&ps_r__Detail_w_speed,		1.f,	4.f		);
