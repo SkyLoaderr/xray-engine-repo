@@ -44,7 +44,8 @@ function CStateDevilWalk:initialize()
 	self.data.npc:set_callback(self, "move_callback", game_object.movement)
 	self.index		= -1
 	self.state		= -1
-	if(this.is_day()) then 
+	printf("Call function is_day()")
+	if(is_day()) then 
 		self:init_day_lie()
 		self.state	= d_state
 	else
@@ -67,53 +68,59 @@ function CStateDevilWalk:day_walk()
 							  self.index)), sound(sound.idle), cond(cond.move_end))
 	end
 	
-	if(this.is_day() == false) then
-		self:init_night_state()
+	if(is_day() == false) then
+		self:init_night_walk()
 	end
 end
 
 function CStateDevilWalk:night_walk()
 	if(self.data.npc:action() == nil) then
-		if(is_day() == false) then
+		if(is_day() == true) then
 			//'Пора идти на дневной отдых
 			self:init_day_lie()
 		end
 		
 		action(self.data.npc, move(move.walk_fwd, patrol(self.night_path, patrol.next, patrol.continue, true,
-							  self.index)), soudn(sound.idle), cond(cond.move_end))
+							  self.index)), sound(sound.idle), cond(cond.move_end))
 	end	
 end
 
 function CStateDevilWalk:init_day_lie()
+	printf("init day walk")
 	if(self.data.npc:action()) then
 		reset_action(self.data.npc, self.data.scr_name)
 		printf("reset action")
 	end
 	//action(self.data.npc, anim(anim.look_around, 0), cond(cond.time_end, 3000))	
-	action(self.data.npc, move(move.walk_fwd, patrol(self.day_path):point(0), 1), sound(sound.idle), cond(cond.time_end, 15000))
-	action(self.data.npc, look(look.point, patrol(self.day_path):point(0)), anim(anim.turn, 0), 
+	action(self.data.npc, move(move.walk_fwd, patrol(self.day_path):point(0), 1), sound(sound.idle), cond(cond.move_end))
+	action(self.data.npc, look(look.point, patrol(self.day_path):point(1)), anim(anim.turn, 0), 
 						  sound(sound.idle), cond(cond.look_end))
-	action(self.data.npc, anim(anim.lie_idle, 0), cond(cond.time_end, time_sleep))	
 	
 	self.index		= 0
+	self.state		= d_state
 end
 
 function CStateDevilWalk:init_night_walk()
+	printf("init night walk")
 	if(self.data.npc:action()) then
 		reset_action(self.data.npc, self.data.scr_name)
 	end
 	
 	action(self.data.npc, move(move.walk_fwd, patrol(self.night_path, patrol.nearest, patrol.continue, true)),
-						  soudn(sound.idle), cond(cond.move_end))
+						  sound(sound.idle), cond(cond.move_end))
+	self.state		= n_state
+	self.index		= -1
 end
 
 function CStateDevilWalk:move_callback(obj, type, _index)
+	if(self.index == _index or _index == -1) then printf("returned self.index == %f   _index == %f", self.index, _index)  return end
+	
 	printf("callback. Index %d", _index)
 	self.index	= _index
 	if(self.state == d_state) then
 		if(_index == patrol(self.day_path):count() - 1) then
 			printf("go lie")
-			self.data.npc:clear_callback(game_object.movement)
+			//reset_action(self.data.npc, self.data.scr_name)
 			self:init_day_lie()
 			return
 		end
@@ -129,9 +136,11 @@ end
 
 function CStateDevilWalk:set_action_howling()
 	//'Накидуем кучу экшенов вытья на луну
-	for i = 1, math.random(5, 10) do
-		action(self.data.npc, anim("stand_howling_0"), soudn(howling[math.random(1, table.getn(howling))],
-							  "beep01_head"), cond(cond.soudn_end))
+	for i = 1, math.random(2, 5) do
+		action(self.data.npc, anim(anim.stand_idle, 0), cond(cond.time_end, math.random(2000, 4000)))
+		action(self.data.npc, anim("stand_howling_0"), sound(howling[math.random(1, table.getn(howling))],
+							  "bip01_head"), cond(cond.sound_end))
+
 	end
 end
 
@@ -140,4 +149,5 @@ function CStateDevilWalk:id()
 end
 
 function CStateDevilWalk:finalize()
+	self.data.npc:clear_callback(game_object.movement)
 end
