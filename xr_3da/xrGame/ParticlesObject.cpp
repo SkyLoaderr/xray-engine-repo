@@ -199,14 +199,15 @@ Fvector& CParticlesObject::Position		()
 
 void CParticlesObject::renderable_Render	()
 {
-	u32 dt							= Device.dwTimeGlobal - dwLastTime;
-	if (dt)							{
+	VERIFY					(renderable.visual);
+	u32 dt					= Device.dwTimeGlobal - dwLastTime;
+	if (dt){
 		IParticleCustom* V	= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 		V->OnFrame			(dt);
 		dwLastTime			= Device.dwTimeGlobal;
 	}
-	::Render->set_Transform			(&renderable.xform);
-	::Render->add_Visual			(renderable.visual);
+	::Render->set_Transform	(&renderable.xform);
+	::Render->add_Visual	(renderable.visual);
 }
 bool CParticlesObject::IsAutoRemove			()
 {
