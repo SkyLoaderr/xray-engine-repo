@@ -47,7 +47,8 @@ protected:
 	CPhysicsShell*			m_pPhysicsShell;
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
-							
+	int						iSlotBinding;
+
 	LPSTR					pstrWallmark;
 	Shader*					hWallmark;
 	Shader*					hUIIcon;
@@ -120,12 +121,12 @@ protected:
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
 protected:
-
 	// Utilities
 	void					SoundCreate			(sound&		dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void					SoundDestroy		(sound&		dest);
 	void					ShaderCreate		(Shader*	&dest, LPCSTR S, LPCSTR T);
 	void					ShaderDestroy		(Shader*	&dest);
+
 public:
 
 	// Events/States
@@ -181,6 +182,7 @@ public:
 	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
 	IC Shader*				GetUIIcon			()				{	return hUIIcon;								}
 	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
+	IC int					GetSlot				()				{	return iSlotBinding;						}
 
 	virtual void			OnDeviceCreate		();
 	virtual void			OnDeviceDestroy		();
