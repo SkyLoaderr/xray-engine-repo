@@ -20,9 +20,15 @@
 #include "ispatial.h"
 #include "CopyProtection.h"
 
+// AVI-support
+#include <MMSystem.h>
+#include <mciavi.h>
+
 //---------------------------------------------------------------------
-void Intro		( char *filename )
+static	BOOL	g_bIntroFinished	= FALSE;
+void __cdecl	Intro	( void* fn )
 {
+	char *filename		= (char*)fn;
 	MCIERROR			me;
 	MCI_OPEN_PARMS		openparams;
 	MCI_PLAY_PARMS		playparams;
@@ -55,7 +61,8 @@ void Intro		( char *filename )
 
 		if( me )		break;
 	}
-	while(0);
+	while	(0);
+	g_bIntroFinished	= TRUE;
 }
 //---------------------------------------------------------------------
 // 2446363
@@ -83,42 +90,42 @@ ENGINE_API	bool			g_bBenchmark	= false;
 
 // -------------------------------------------
 // startup point
-
-void InitEngine()
+void InitEngine		()
 {
 	Engine.Initialize			( );
+	while (!g_bIntroFinished)	Sleep	(100);
 	Device.Initialize			( );
 	CheckCopyProtection			( );
 }
 
-void InitSettings()
+void InitSettings	()
 {
 	string_path					fname; 
 	FS.update_path				(fname,"$game_config$","system.ltx");
 	pSettings					= xr_new<CInifile>	(fname,TRUE);
 }
-void InitConsole()
+void InitConsole	()
 {
 	Console						= xr_new<CConsole>	();
 	Console->Initialize			( );
 //	Engine.External.Initialize	( );
 }
 
-void InitInput()
+void InitInput		()
 {
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
 }
-void destroyInput()
+void destroyInput	()
 {
 	xr_delete					( pInput		);
 }
-void InitSound()
+void InitSound		()
 {
 	CSound_manager_interface::_create					(u64(Device.m_hWnd));
 }
-void destroySound()
+void destroySound	()
 {
 	CSound_manager_interface::_destroy				( );
 }
@@ -126,12 +133,12 @@ void destroySettings()
 {
 	xr_delete					( pSettings		);
 }
-void destroyConsole()
+void destroyConsole	()
 {
 	Console->Destroy			( );
 	xr_delete					(Console);
 }
-void destroyEngine()
+void destroyEngine	()
 {
 	Device.Destroy				( );
 	Engine.Destroy				( );
@@ -318,11 +325,15 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
 	// Title window
-	logoWindow = CreateDialog(
-		GetModuleHandle(NULL),
-		MAKEINTRESOURCE(IDD_STARTUP),
-		0, logDlgProc );
+	logoWindow = CreateDialog	(GetModuleHandle(NULL),	MAKEINTRESOURCE(IDD_STARTUP), 0, logDlgProc );
 
+	// AVI
+	{
+		_beginthread			(Intro,0,"GameData\\Stalker_Intro.avi");
+		Sleep					(100);
+	}
+
+	// Core
 	Core._initialize		("xray",NULL);
 	FPU::m24r				();
 
@@ -330,9 +341,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 //	testbed	();
 //#endif
 
-	InitEngine();
-	InitSettings();
-	InitConsole();
+	InitEngine				();
+	InitSettings			();
+	InitConsole				();
 	
 	if(strstr(lpCmdLine, "-batch_benchmark")){
 		doBenchmark();
