@@ -408,6 +408,10 @@ SOURCE=.\xrThread.h
 # End Group
 # Begin Source File
 
+SOURCE=.\compiler.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrDO_Light.cpp
 # End Source File
 # End Target
