@@ -115,7 +115,7 @@ bool CUI::Render()
 	{
 		//Draw main window and its children
 		if(m_bShowIndicators)
-			UIMainIngameWnd->Draw();
+			UIMainIngameWnd->D raw();
 		else
 			UIMainIngameWnd->DrawPdaMessages();
 		//render cursor only when it visible
