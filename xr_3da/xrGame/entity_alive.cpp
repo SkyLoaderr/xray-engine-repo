@@ -152,8 +152,10 @@ void CEntityAlive::LoadFireParticles(LPCSTR section)
 
 void CEntityAlive::UnloadFireParticles()
 {
-	m_pFireParticlesVector->clear();
-	xr_delete(m_pFireParticlesVector);
+	if (m_pFireParticlesVector)	{
+		m_pFireParticlesVector->clear();
+		xr_delete(m_pFireParticlesVector);
+	}
 }
 
 void CEntityAlive::reinit			()
