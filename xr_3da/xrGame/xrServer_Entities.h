@@ -120,8 +120,6 @@ public:
 
 	virtual void			UPDATE_Read		(NET_Packet& P);
 	virtual void			UPDATE_Write	(NET_Packet& P);
-	virtual void			STATE_Read		(NET_Packet& P, u16 size);
-	virtual void			STATE_Write		(NET_Packet& P);
 };
 
 // Some preprocessor help
@@ -145,7 +143,7 @@ xrSE_EDITOR_METHODS\
 };
 
 //***** Weapon
-xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
+xrSE_DECLARE_BEGIN(xrSE_Weapon,xrALifeEntity)
 	u32						timestamp;
 	u8						flags;
 	u8						state;
@@ -165,7 +163,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** Teamed
-xrSE_DECLARE_BEGIN(xrSE_Teamed,xrServerEntity)
+xrSE_DECLARE_BEGIN(xrSE_Teamed,xrALifeEntity)
 	u8						s_team;
 	u8						s_squad;
 	u8						s_group;
@@ -195,7 +193,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** MercuryBall
-xrSE_DECLARE_BEGIN(xrSE_MercuryBall,xrServerEntity)
+xrSE_DECLARE_BEGIN(xrSE_MercuryBall,xrALifeEntity)
 	string64				s_Model;
     xrSE_MercuryBall		();
 xrSE_DECLARE_END
@@ -205,11 +203,11 @@ xrSE_DECLARE_BEGIN(xrSE_Car,xrSE_Teamed)
 xrSE_DECLARE_END
 
 //***** Crow
-xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
+xrSE_DECLARE_BEGIN(xrSE_Crow,xrALifeEntity)
 xrSE_DECLARE_END
 
 //***** Health
-xrSE_DECLARE_BEGIN(xrSE_Health,xrServerEntity)
+xrSE_DECLARE_BEGIN(xrSE_Health,xrALifeEntity)
 	u8						amount;
 xrSE_DECLARE_END
 
@@ -353,15 +351,15 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 xrSE_DECLARE_END
 
 //***** Zone
-//xrSE_DECLARE_BEGIN(xrSE_Zone,xrServerEntity)
-class xrSE_Zone : public xrServerEntity, public xrSE_CFormed { typedef xrServerEntity inherited; public:
+//xrSE_DECLARE_BEGIN(xrSE_Zone,xrALifeEntity)
+class xrSE_Zone : public xrALifeEntity, public xrSE_CFormed { typedef xrALifeEntity inherited; public:
 	xrSE_Zone();
 	f32 m_maxPower, m_attn;
 	u32 m_period;
 xrSE_DECLARE_END
 
 //***** Detector
-xrSE_DECLARE_BEGIN(xrSE_Detector,xrServerEntity)
+xrSE_DECLARE_BEGIN(xrSE_Detector,xrALifeEntity)
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)

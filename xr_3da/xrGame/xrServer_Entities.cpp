@@ -87,6 +87,7 @@ xrSE_Weapon::xrSE_Weapon()
 }
 void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
 {
+	inherited::UPDATE_Read(P);
 	P.r_u32				(timestamp);
 	P.r_u8				(flags);
 
@@ -100,6 +101,7 @@ void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
 }
 void	xrSE_Weapon::UPDATE_Write	(NET_Packet& P)
 {
+	inherited::UPDATE_Write(P);
 	P.w_u32				(timestamp);
 	P.w_u8				(flags);
 
@@ -183,8 +185,8 @@ void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 	P.w_u8				(s_squad);
 	P.w_u8				(s_group);
 }
-void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)	{};
-void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)	{};
+void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)	{inherited::UPDATE_Read(P);};
+void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)	{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR
 void	xrSE_Teamed::FillProp			(LPCSTR pref, PropItemVec& items)
 {
@@ -261,8 +263,8 @@ xrSE_MercuryBall::xrSE_MercuryBall()
 {
 	s_Model[0]	=	0;
 }
-void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{}
-void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{}
+void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{inherited::UPDATE_Read(P);}
+void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);}
 void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
 void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 
@@ -278,8 +280,8 @@ void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropItemVec& items)
 //***** Car
 void xrSE_Car::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
 void xrSE_Car::STATE_Write			(NET_Packet& P)				{inherited::STATE_Write(P);		};
-void xrSE_Car::UPDATE_Read			(NET_Packet& P)	{};
-void xrSE_Car::UPDATE_Write			(NET_Packet& P)	{};
+void xrSE_Car::UPDATE_Read			(NET_Packet& P)				{inherited::UPDATE_Read(P);};
+void xrSE_Car::UPDATE_Write			(NET_Packet& P)				{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR
 void xrSE_Car::FillProp				(LPCSTR pref, PropItemVec& values)
 {
@@ -290,8 +292,8 @@ void xrSE_Car::FillProp				(LPCSTR pref, PropItemVec& values)
 //***** Crow
 void xrSE_Crow::STATE_Read			(NET_Packet& P, u16 size)	{};
 void xrSE_Crow::STATE_Write			(NET_Packet& P)				{};
-void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{};
-void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{};
+void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{inherited::UPDATE_Read(P);};
+void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR
 void xrSE_Crow::FillProp			(LPCSTR pref, PropItemVec& values)
 {
@@ -367,7 +369,7 @@ xrSE_Target_CS::xrSE_Target_CS()
 	s_Model[0]	=	0;
 }
 void	xrSE_Target_CS::UPDATE_Read	(NET_Packet& P)				{}
-void	xrSE_Target_CS::UPDATE_Write	(NET_Packet& P)				{}
+void	xrSE_Target_CS::UPDATE_Write	(NET_Packet& P)			{}
 void	xrSE_Target_CS::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
 void	xrSE_Target_CS::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 
@@ -382,8 +384,8 @@ void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropItemVec& items)
 //***** Health
 void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{	P.r_u8(amount); };
 void xrSE_Health::STATE_Write		(NET_Packet& P)				{	P.w_u8(amount);	};
-void xrSE_Health::UPDATE_Read		(NET_Packet& P)				{};
-void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{};
+void xrSE_Health::UPDATE_Read		(NET_Packet& P)				{inherited::UPDATE_Read(P);};
+void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR
 void xrSE_Health::FillProp			(LPCSTR pref, PropItemVec& items)
 {
@@ -409,6 +411,7 @@ void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P
 void xrSE_Actor::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
 void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 {
+	inherited::UPDATE_Read(P);
 	P.r_u32				(timestamp	);
 	P.r_u8				(flags		);
 	P.r_vec3			(o_Position	);
@@ -424,6 +427,7 @@ void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 };
 void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 {
+	inherited::UPDATE_Write(P);
 	P.w_u32				(timestamp	);
 	P.w_u8				(flags		);
 	P.w_vec3			(o_Position	);
@@ -449,6 +453,7 @@ void xrSE_Enemy::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P
 void xrSE_Enemy::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
 void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 {
+	inherited::UPDATE_Read(P);
 	P.r_u32				(timestamp		);
 	P.r_u8				(flags			);
 	P.r_vec3			(o_Position		);
@@ -458,6 +463,7 @@ void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 }
 void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 {
+	inherited::UPDATE_Write(P);
 	P.w_u32				(timestamp		);
 	P.w_u8				(flags			);
 	P.w_vec3			(o_Position		);
@@ -1020,12 +1026,8 @@ void xrSE_Zone::STATE_Write		(NET_Packet& P)				{
 	P.w_float(m_attn);
 	P.w_u32(m_period);
 };
-void xrSE_Zone::UPDATE_Read		(NET_Packet& P)
-{
-}
-void xrSE_Zone::UPDATE_Write		(NET_Packet& P)
-{
-}
+void xrSE_Zone::UPDATE_Read		(NET_Packet& P)				{inherited::UPDATE_Read(P);}
+void xrSE_Zone::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);}
 #ifdef _EDITOR
 void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 {
@@ -1039,8 +1041,8 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 //***** Detector
 void xrSE_Detector::STATE_Read		(NET_Packet& P, u16 size)	{};
 void xrSE_Detector::STATE_Write		(NET_Packet& P)				{};
-void xrSE_Detector::UPDATE_Read		(NET_Packet& P)				{};
-void xrSE_Detector::UPDATE_Write	(NET_Packet& P)				{};
+void xrSE_Detector::UPDATE_Read		(NET_Packet& P)				{inherited::UPDATE_Read(P);};
+void xrSE_Detector::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR
 void xrSE_Detector::FillProp		(LPCSTR pref, PropItemVec& items)
 {
@@ -1078,12 +1080,8 @@ void xrGraphPoint::STATE_Write		(NET_Packet& P)
 	P.w_u32		(m_tLocBaseID);
 	P.w_u32		(m_tLocAuxID);
 };
-void xrGraphPoint::UPDATE_Read		(NET_Packet& P)
-{
-}
-void xrGraphPoint::UPDATE_Write		(NET_Packet& P)
-{
-}
+void xrGraphPoint::UPDATE_Read		(NET_Packet& P)				{}
+void xrGraphPoint::UPDATE_Write		(NET_Packet& P)				{}
 
 #ifdef _EDITOR              
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
@@ -1137,14 +1135,6 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateText		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,sizeof(m_caConnectionPointName));
 }
 #endif
-
-void xrALifeEntity::STATE_Read(NET_Packet &P, u16 size)
-{
-}
-
-void xrALifeEntity::STATE_Write(NET_Packet &P)
-{
-}
 
 void xrALifeEntity::UPDATE_Read(NET_Packet &P)
 {
