@@ -49,9 +49,8 @@
 			device_torch \n
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
+		<start_dialog>escape_lager_hlam_hello</start_dialog>
+		<actor_dialog>escape_lager_hlam_flame</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER NOVICE----------------------->

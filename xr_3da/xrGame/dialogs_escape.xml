@@ -89,125 +89,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_talk_flame" priority="6">
-        <phrase_list>
-            <phrase id="21211">
-                <text>escape_trader_talk_flame_21211</text>
-                <next>212111</next>
-            </phrase>
-            <phrase id="212111">
-                <text>escape_trader_talk_flame_212111</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-            </phrase>
-            <phrase id="211">
-                <text>escape_trader_talk_flame_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>escape_trader_talk_flame_2111</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-            </phrase>
-            <phrase id="212">
-                <text>escape_trader_talk_flame_212</text>
-                <next>2121</next>
-            </phrase>
-            <phrase id="2121">
-                <text>escape_trader_talk_flame_2121</text>
-                <next>21211</next>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_talk_flame_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="6">
-                <text>escape_trader_talk_flame_6</text>
-                <next>61</next>
-            </phrase>
-            <phrase id="213">
-                <text>escape_trader_talk_flame_213</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="41">
-                <text>escape_trader_talk_flame_41</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="5">
-                <text>escape_trader_talk_flame_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>escape_trader_talk_flame_51</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="61">
-                <text>escape_trader_talk_flame_61</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="10">
-                <text>escape_trader_talk_flame_10</text>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_talk_flame_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_trader_talk_flame_31</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_talk_flame_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_talk_flame_21</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_talk_flame_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>escape_trader_talk_flame_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_jobs" priority="5">
         <phrase_list>
             <phrase id="3">
@@ -404,6 +285,29 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="tutorial_wounded">
+        <phrase_list>
+            <phrase id="0">
+                <text>Брат, поделись аптечкой, помираю!</text>
+                <next>1</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="1">
+                <precondition>dialogs.medikit_yes</precondition>
+                <text>Возьми, потом сочтемся</text>
+                <action>dialogs.transfer_medikit2</action>
+                <give_info>tutorial_wounded_help</give_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>Спасибо, браток. Волк с тобой расчитается.</text>
+            </phrase>
+            <phrase id="3">
+                <precondition>dialogs.medikit_no</precondition>
+                <text>Увы, нет у меня аптечки.</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="escape_lager_volk_flame">
         <phrase_list>
             <phrase id="111">
@@ -488,39 +392,195 @@
                 <next>3</next>
                 <next>10</next>
             </phrase>
-            <phrase id="0">
-                <text>escape_lager_volk_flame_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="12">
                 <text>escape_lager_volk_flame_12</text>
                 <next>121</next>
             </phrase>
+            <phrase id="0">
+                <text>escape_lager_volk_flame_0</text>
+                <next>1</next>
+            </phrase>
         </phrase_list>
     </dialog>
-    
-    
-	<dialog id="tutorial_wounded">
-		<phrase_list>
-			<phrase id="0">
-				<text>Брат, поделись аптечкой, помираю!</text>
-				<next>1</next>
-				<next>3</next>
-			</phrase>
-			<phrase id="1">
-				<precondition>dialogs.medikit_yes</precondition>
-				<text>Возьми, потом сочтемся</text>
-				<action>dialogs.transfer_medikit2</action>
-				<give_info>tutorial_wounded_help</give_info>
-				<next>11</next>
-			</phrase>
-			<phrase id="11">
-				<text>Спасибо, браток. Волк с тобой расчитается.</text>
-			</phrase>
-			<phrase id="3">
-				<precondition>dialogs.medikit_no</precondition>
-				<text>Увы, нет у меня аптечки.</text>
-			</phrase>
-		</phrase_list>
-	</dialog>         
+    <dialog id="escape_lager_hlam_flame">
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_lager_hlam_flame_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_lager_hlam_flame_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="12">
+                <text>escape_lager_hlam_flame_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="13">
+                <text>escape_lager_hlam_flame_13</text>
+                <next>131</next>
+            </phrase>
+            <phrase id="10">
+                <text>escape_lager_hlam_flame_10</text>
+            </phrase>
+            <phrase id="111">
+                <text>escape_lager_hlam_flame_111</text>
+                <next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+            </phrase>
+            <phrase id="121">
+                <text>escape_lager_hlam_flame_121</text>
+                <next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_lager_hlam_flame_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="131">
+                <text>escape_lager_hlam_flame_131</text>
+                <next>10</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_lager_hlam_hello">
+        <phrase_list>
+            <phrase id="0">
+                <text>escape_lager_hlam_hello_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_talk_flame" priority="6">
+        <phrase_list>
+            <phrase id="21211">
+                <text>escape_trader_talk_flame_21211</text>
+                <next>212111</next>
+            </phrase>
+            <phrase id="212111">
+                <text>escape_trader_talk_flame_212111</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="211">
+                <text>escape_trader_talk_flame_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>escape_trader_talk_flame_2111</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="212">
+                <text>escape_trader_talk_flame_212</text>
+                <next>2121</next>
+            </phrase>
+            <phrase id="2121">
+                <text>escape_trader_talk_flame_2121</text>
+                <next>21211</next>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_talk_flame_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="6">
+                <text>escape_trader_talk_flame_6</text>
+                <next>61</next>
+            </phrase>
+            <phrase id="41">
+                <text>escape_trader_talk_flame_41</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_talk_flame_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>escape_trader_talk_flame_51</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="61">
+                <text>escape_trader_talk_flame_61</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="10">
+                <text>escape_trader_talk_flame_10</text>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_talk_flame_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_trader_talk_flame_31</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_trader_talk_flame_21</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="1">
+                <text>escape_trader_talk_flame_1</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_talk_flame_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="213">
+                <text>escape_trader_talk_flame_213</text>
+                <next>2131</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_talk_flame_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="2131">
+                <text>escape_trader_talk_flame_2131</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>
