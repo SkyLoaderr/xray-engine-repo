@@ -121,7 +121,7 @@ void CMotionManager::SelectVelocities()
 	// установка угловой скорости
 	if (!b_forced_velocity) {
 		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-		VERIFY(get_sd()->m_tAnims.end() != item_it);aaaaa
+		VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 		pMonster->m_velocity_angular = item_it->second.velocity->velocity.angular_real;
 	}
