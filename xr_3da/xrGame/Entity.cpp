@@ -97,7 +97,7 @@ float CEntity::CalcCondition(float hit)
 
 void  CEntity::HitScale			(const int element, float hit_scale, float wound_scale)
 {
-	if(BI_NONE == element)
+	if(BI_NONE == u16(element))
 	{
 		//считаем что параметры для BI_NONE заданы как 1.f 
 		hit_scale = 1.f * m_default_hit_factor;
