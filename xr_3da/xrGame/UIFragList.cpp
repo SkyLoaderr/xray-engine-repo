@@ -40,7 +40,6 @@ void CUIFragList::OnFrame()
 	E					= temp.end();
 	CGameFont* H		= Level().HUD()->pHUDFont;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
-	H->Color			(0xb0a0a0a0);
 	int k=1;
 	for (;I!=E;I++){
 		if (I->second.flags&GAME_PLAYER_FLAG_LOCAL)	H->Color(0xf0a0ffa0);
