@@ -893,7 +893,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 // never start a new islands from a disabled body. thus islands of disabled
 // bodies will not be included in the simulation. disabled bodies are
 // re-enabled if they are found to be part of an active island.
-const int MAXJ_ALLOC= 2500;
+const int MAXJ_ALLOC= 2000;
 const int MAXB_ALLOC= 1000;
 static void
 processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
@@ -953,8 +953,9 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 		{
 			b = stack[--stacksize];	// pop body off stack
 			autoDepth = autostack[stacksize];
+			if(bcount==balloc) goto quit;
 			body[bcount++] = b;	// put body on body list
-			if(bcount>balloc) goto quit;
+
 quickstart:
 
 			// traverse and tag all body's joints, add untagged connected bodies
@@ -965,8 +966,8 @@ quickstart:
 				{
 					int thisDepth = autoEnableDepth;
 					n->joint->tag = 1;
+					if(jcount==jalloc) goto quit;
 					joint[jcount++] = n->joint;
-					if(jcount>jalloc) goto quit;
 					if (n->body && !n->body->tag)
 					{
 						if (n->body->flags & dxBodyDisabled)

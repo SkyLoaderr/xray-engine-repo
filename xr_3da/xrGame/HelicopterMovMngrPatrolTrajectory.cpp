@@ -47,7 +47,7 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 		//промежуточные точки
 		if( keyPoints.size() )
 		{
-			Fvector& prevPoint = keyPoints.back();
+			Fvector prevPoint = keyPoints.back();
 			float dist = prevPoint.distance_to(keyPoint);
 			float k = (dist / KEY_MAX_DIST) - 1.0f;
 			for( float i=1; i<k; ++i )
