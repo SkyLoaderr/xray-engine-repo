@@ -1,0 +1,2839 @@
+[console_font]
+shader 	= font
+texture	= ui\ui_font_console_02
+size	= 0.02
+interval= 1,1
+
+[startup_font]
+shader 	= font
+texture	= ui\ui_font_menu
+size	= 0.023
+interval= 1,1
+
+[stat_font]
+shader 	= font
+texture	= ui\ui_font_hud_01
+interval= 0.75,1
+
+[hud_font_small]
+shader 	= font
+texture	= ui\ui_font_hud_01
+interval= 0.75,1
+
+[hud_font_medium]
+shader 	= font
+texture	= ui\ui_font_hud_02
+
+[hud_font_di]
+shader 	= font
+texture	= ui\ui_font_console_02
+
+[hud_font_big_digit]
+shader 	= font
+texture	= ui\ui_font_big_digit
+
+[inventory]
+take_dist		= 2
+max_weight		= 40
+max_ruck		= 50
+max_belt		= 15
+slots			= 7
+slot_name_1		= Knife
+slot_name_2		= "Light gun"
+slot_name_3		= "Heavy gun"
+slot_name_4		= Grenades
+slot_name_5		= Apparatus
+slot_name_6		= Throw
+slot_name_7		= Outfit
+
+[bolt]
+class				= II_BOLT
+cform				= skeleton
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= Bolt
+inv_name_short		= 
+inv_weight			= .0
+slot				= 5
+hud					= bolt_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+[bolt_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = bolt_0
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\bolt\wpn_bolt_hud.ogf
+
+[grenade_f1]
+class				= G_F1
+cform				= skeleton
+visual				= weapon\grenade\wpn_f_1.ogf
+inv_name			= F1
+inv_name_short		= 
+inv_weight			= .1
+slot				= 3
+hud					= grenade_f1_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+[grenade_f1_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = grenade_0
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\grenade\wpn_f_1_hud.ogf
+
+[zone_mosquito_bald]
+$spawn 			= on
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 6
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+
+[zone_mincer]
+$spawn 			= on
+$prefetch 		= 16
+class			= Z_MINCER
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly1
+
+[zone_x]
+$spawn 			= on
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 5
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly2
+
+[detector_simple]
+$prefetch 		= 32
+class			= D_SIMDET
+radius			= 10
+buzzer_radius		= 1.5
+noise			= detectors\geiger_noise_loop.wav 
+buzzer			= detectors\DA-2_alarm_loop.wav
+zone_class_1		= zone_mosquito_bald
+zone_sound_1		= detectors\DA-2_beep1.wav
+zone_class_2		= zone_mincer
+zone_sound_2		= detectors\DA-2_beep1.wav 
+inv_name		= Detector
+inv_name_short		= Detector
+inv_weight		= 1.
+
+[spectator]
+$player 		= on
+class                   = SPECT
+
+[actor]
+$spawn 			= on
+$ed_icon		= ed\ed_actor
+$player 		= on
+cform                   = skeleton
+class                   = O_ACTOR
+;jump_speed             = 35
+;jump_speed             = 5.6
+jump_speed              = 6.
+crouch_coef 		= 0.2
+run_coef                 = 2.4
+visual			 = actors\Different_stalkers\stalker_no_hood_multiplayer_1.ogf
+;visual			 = actors\alpha\pidarka_urban.ogf
+walk_accel               = 17 ;40 ;17  ;54 ;40
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 8
+ph_crash_speed_max       = 15
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+ph_skeleton_mass_factor	 = 3.0
+ph_skeleton_airr_lin_factor = 0.7
+ph_skeleton_airr_ang_factor = 5.0
+ph_skeleton_hinger_factor    =15.
+ph_skeleton_hinger_factor1   =1.
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =0
+ph_skeleton_ddelay	     =20
+ph_skel_fatal_impulse_factor =4.
+damage			 = actor_damage
+
+[actor_damage]
+;bone_name		 = <hit_scale>,<fwd_damage_anim_index> 
+;-1 - ÌÂÚ ‡ÌËÏ‡ˆËÈ, ˜ÂÚÌ˚È ÌÓÏÂ - ÒÔÂÂ‰Ë, ÌÂ˜ÂÚÌ˚È ÌÓÏÂ - ÒÁ‡‰Ë, ” ¿«€¬¿≈“—ﬂ “ŒÀ‹ Œ œ≈–≈ƒÕ»…!!! «¿ƒÕ»… Õ¿ ¿¬“ŒÃ¿“≈
+default			 = 1.0, -1
+
+bip01_pelvis 		 = 1.0, 0
+bip01_spine 		 = 1.0, 0
+bip01_spine1 		 = 1.0, 0
+bip01_neck 		 = 3.0, 0
+bip01_head 		 = 4.0, 0
+eyelid_1 		 = 8.0, 0
+eye_left 		 = 8.0, 0
+eye_right 		 = 8.0, 0
+jaw_1 		 	 = 2.0, 0
+
+bip01_l_clavicle	 = 0.5, 4
+bip01_l_upperarm	 = 0.5, 4
+bip01_l_forearm	 	 = 0.5, 4
+bip01_l_hand	 	 = 0.5, 4
+bip01_l_finger0	 	 = 0.5, 4
+bip01_l_finger01	 = 0.5, 4
+bip01_l_finger02	 = 0.5, 4
+bip01_l_finger1	 	 = 0.5, 4
+bip01_l_finger11	 = 0.5, 4
+bip01_l_finger12	 = 0.5, 4
+bip01_l_finger2	 	 = 0.5, 4
+bip01_l_finger21	 = 0.5, 4
+bip01_l_finger22	 = 0.5, 4
+
+bip01_r_clavicle	 = 0.5, 2
+bip01_r_upperarm	 = 0.5, 2
+bip01_r_forearm	 	 = 0.5, 2
+bip01_r_hand	 	 = 0.5, 2
+bip01_r_finger0	 	 = 0.5, 2
+bip01_r_finger01	 = 0.5, 2
+bip01_r_finger02	 = 0.5, 2
+bip01_r_finger1	 	 = 0.5, 2
+bip01_r_finger11	 = 0.5, 2
+bip01_r_finger12	 = 0.5, 2
+bip01_r_finger2	 	 = 0.5, 2
+bip01_r_finger21	 = 0.5, 2
+bip01_r_finger22	 = 0.5, 2
+
+bip01_l_thigh	 	 = 0.6, 8
+bip01_l_calf	 	 = 0.6, 8
+bip01_l_foot	 	 = 0.6, 8
+bip01_l_toe0	 	 = 0.6, 8
+bip01_r_thigh	 	 = 0.6, 6
+bip01_r_calf	 	 = 0.6, 6
+bip01_r_foot	 	 = 0.6, 6
+bip01_r_toe0	 	 = 0.6, 6
+      
+[g_event]
+class 			 = EVENT
+
+[m_dummy]
+$spawn 			 = on
+class                    = O_DUMMY
+
+[m_mball]
+$spawn 			= on
+$npc			= on				; option for Level Editor
+$prefetch 		= 3
+cform                   = skeleton
+class   		= AF_MBALL
+
+[m_target_assault]
+$spawn 			 = on
+$prefetch 		= 2
+cform                    = skeleton
+class                    = T_ASS
+visual                   = monsters\crow\crow.ogf
+
+[m_target_cs_base]
+$spawn 			 = on
+$prefetch 		= 2
+class                    = T_CSBASE
+
+[m_target_cs_cask]
+$spawn 			 = on
+$prefetch 		= 2
+class                    = T_CSCASK
+cform                    = skeleton
+visual                   = cs\cs_container.ogf
+
+[m_target_cs]
+$prefetch 		= 2
+class                    = T_CS
+cform                    = skeleton
+visual                   = cs\artefact_ochko1.ogf 
+
+[m_car]
+$spawn 			= on
+$player 		= on
+cform                   = skeleton
+class                   = C_NIVA
+visual                  = vehicles\niva\veh_niva2_phy.ogf
+
+[m_health]
+$spawn                   = on
+cform                    = skeleton
+class                    = O_HEALTH
+visual                   = monsters\crow\crow.ogf
+
+[m_crow]
+$prefetch 		= 50
+$spawn 	                 = on
+cform                    = skeleton
+class                    = AI_CROW
+visual                   = monsters\crow\crow.ogf
+speed                    = 6.0	
+angular_speed            = 0.1	
+goal_change_delta        = 5.0
+min_height	             = 25
+goal_variability	 = 10.0, 15.0, 200.0
+idle_sound_delta	 = 60.f
+; movement params
+ph_box0_center 	         = 0.0,  0.025, 0.0
+ph_box0_size             = 0.1,  0.05,  0.1
+ph_box1_center 	         = 0.0,  0.025, 0.0
+ph_box1_size 	         = 0.1,  0.05,  0.1
+ph_foot_center           = 0.0,  0.0,   0.0
+ph_foot_size             = 0.1,  0.025, 0.1
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		         = 1
+ph_friction_air          = 0.01
+ph_friction_ground       = 7.0
+ph_friction_wall         = 4.0                              ; ???
+
+[m_stalker_e]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 		     = 32
+Scheduled		     = on			; option for ALife Simulator
+Human		     	     = on			; option for ALife Simulator
+Health			     = 100			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 5.0			; option for ALife Simulator
+going_speed                  = 1.5                      ; option for ALife Simulator
+eye_fov                      = 140
+eye_range                    = 150
+
+cform                        = skeleton			; collision class
+class                        = AI_STL			; AI class
+
+visual			 = actors\Different_stalkers\stalker_no_hood_singleplayer.ogf
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+
+weapon_usage		     = 1			; boolean
+bone_torso_weapon	     = bip01_r_hand
+bone_head_weapon	     = bip01_l_finger1
+
+bone_head		     = bip01_head
+bone_shoulder		     = bip01_spine2
+bone_spin		     = bip01_spine1
+bone_model		     = bip01
+DynamicObjectsCount	     = 32
+DynamicSoundsCount	     = 32 
+
+ph_skeleton_mass_factor	 = 3.0
+ph_skeleton_airr_lin_factor = 0.7
+ph_skeleton_airr_ang_factor = 5.0
+ph_skeleton_hinger_factor    =15.
+ph_skeleton_hinger_factor1   =1.
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =0
+ph_skeleton_ddelay	     =20
+ph_skel_fatal_impulse_factor =4.
+
+; selectors
+;                           fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,              0.1,                1000.0,                 0.0,                0.0,               1000.0,               0.0,      
+;                           fSearchRange,fCoverFromEnemyWeight
+selector_reload          =      20.0,              -2000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,              -2000.0,          30.0,                 0.0,                0.0,                        0.0,        100000.0,               1000.0,
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
+
+MovementIdleTime 	 =  1500
+MaxInvisibleSpeed 	 =     1.0
+MaxViewableSpeed 	 =    10.0
+MovementSpeedWeight 	 =    40.0
+DistanceWeight 		 =    20.0
+SpeedWeight 		 =    -0.0
+CrouchVisibilityMultiplier =    .85
+LieVisibilityMultiplier  =      .66
+VisibilityThreshold 	 =     0.0
+LateralMultiplier	 =     1.5
+ShadowWeight	 	 =     1.5
+
+CrouchFactor             =     0.2
+WalkFactor               =     2.15
+RunFactor                =     4.5
+
+FireRandomMin 		 =     1
+FireRandomMax 		 =     5
+NoFireTimeMin 		 =   200
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.0
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     0.0
+
+terrain		             = 255,255,255,255,0,1          ;1,255,255,255,0,1, 2,255,255,255,0,1, 3,255,255,255,0,1, 4,255,255,255,0,1
+
+
+[rat_group]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+Human		     	     = off			; option for ALife Simulator
+class                        = AI_RAT_G			; AI class
+monster_section              = m_rat_e
+
+[m_rat_e]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+$prefetch 		= 100
+Scheduled		     = on			; option for ALife Simulator
+Human		     	     = off			; option for ALife Simulator
+Health			     = 15			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 1.5			; option for ALife Simulator
+going_speed                  = 1.0                      ; option for ALife Simulator
+
+cform                        = skeleton			; collision class
+class                        = AI_RAT			; AI class
+
+ph_box0_center 		     =   0.0,   0.11, -0.22
+ph_box0_size 		     =   0.085, 0.11, 0.525
+ph_box1_center 		     =   0.0,   0.11, -0.22
+ph_box1_size 		     =   0.085, 0.11, 0.525
+ph_foot_center		     =   0.0,   0.0,  -0.22
+ph_foot_size 		     =   0.085, 0.11,  0.525
+ph_crash_speed_min           = 16
+ph_crash_speed_max           = 30
+ph_mass 		     = 2
+cost			     = 1
+ph_friction_air              = 0.01
+ph_friction_ground           = 7.0
+ph_friction_wall             = 4.0			; ???
+
+bone_torso		     = bip01_spine1 		; bone name
+bone_head		     = bip01_head		; bone name
+weapon_usage		     = 0			; boolean
+
+EyeYShift		     = .15			; meters
+
+MinVoiceInterval	     =  30000			; milliseconds
+MaxVoiceInterval	     = 120000			; milliseconds
+VoiceRefreshRate	     =   2500			; milliseconds
+
+ChangeActiveStateProbability = 1.0 			; range [0..1]
+ActiveCountPercent	     =   16			; percents
+StandingCountPercent	     =   16			; percents
+PassiveScheduleMin	     =  100			; microseconds
+PassiveScheduleMax           = 1000			; microseconds
+
+LostMemoryTime		     = 20000			; milliseconds
+LostRecoilTime		     =  2000			; milliseconds
+UnderFireDistance	     =   100			; meters
+RetreatTime		     = 10000			; milliseconds
+RetreatDistance		     =   100			; meters
+AttackStraightDistance	     =    10			; meters
+StableDistance		     =     5			; meters
+WallMinTurnValue	     =    90 			; degrees
+WallMaxTurnValue	     =   270			; degrees
+
+AngleSpeed		     = 0.2	                ; degrees per second
+GoalChangeDelta	 	     = 10.0			; seconds
+GoalVariation	  	     = 10.0, 0.0, 20.0		; each coordinate in meters
+
+MoraleDeathDistance	     = 50			; meters
+SoundThreshold		     = 0.06                     ; range [0..1]
+
+ActionRefreshRate	     = 500			; milliseconds
+MaxHealthValue		     = 15			; range [0..200]
+
+EatMemberCorpses	     = 1			; range {0,1}
+Cannibalism		     = 1			; range {0,1}
+EatCorpseInterval	     = 600000			; milliseconds
+
+corp_mass		     = 500			;
+
+;terrain		             = 3,255,255,255,30,60, 4,255,255,255,30,60, 11,255,255,255,30,60, 12,255,255,255,30,60, 13,255,255,255,30,60, 14,255,255,255,30,60, 15,255,255,255,30,60
+;terrain		             = 1,255,255,255,30,60, 2,255,255,255,30,60, 3,255,255,255,30,60, 4,255,255,255,30,60
+terrain		             = 255,255,255,255,30,40
+
+[m_zombie_e]
+$spawn 			     = on			; option for Level Editor
+$npc			     = on			; option for Level Editor
+Scheduled		     = on			; option for ALife Simulator
+Human		     	     = off			; option for ALife Simulator
+Health			     = 200			; option for ALife Simulator
+MinSpeed		     = 1.0			; option for ALife Simulator
+MaxSpeed		     = 1.5			; option for ALife Simulator
+
+cform                        = skeleton			; collision class
+class                        = AI_ZOM			; AI class
+
+ph_box0_center 		     =   0.0,   0.11, -0.22
+ph_box0_size 		     =   0.085, 0.11, 0.525
+ph_box1_center 		     =   0.0,   0.11, -0.22
+ph_box1_size 		     =   0.085, 0.11, 0.525
+ph_foot_center		     =   0.0,   0.0,  -0.22
+ph_foot_size 		     =   0.085, 0.11,  0.525
+ph_crash_speed_min           = 16
+ph_crash_speed_max           = 30
+ph_mass 		     = 45
+ph_friction_air              = 0.01
+ph_friction_ground           = 7.0
+ph_friction_wall             = 4.0			; ???
+
+bone_torso		     = bip01_spine1 		; bone name
+bone_head		     = bip01_head		; bone name
+weapon_usage		     = 0			; boolean
+
+EyeYShift		     = 0.0			; meters
+
+MinVoiceInterval	     =  30000			; milliseconds
+MaxVoiceInterval	     = 120000			; milliseconds
+VoiceRefreshRate	     =   2500			; milliseconds
+
+MinPursuitInterval	     =   3000			; milliseconds
+MaxPursuitInterval	     =  10000			; milliseconds
+PursuitRefreshRate	     =   1000			; milliseconds
+
+ChangeActiveStateProbability = 1.0 			; range [0..1]
+ActiveCountPercent	     =    0  			; percents
+PassiveScheduleMin	     =  100			; microseconds
+PassiveScheduleMax           = 1000			; microseconds
+
+LostMemoryTime		     = 20000			; milliseconds
+AttackStraightDistance	     =    20			; meters
+StableDistance		     =    50			; meters
+WallMinTurnValue	     =    90 			; degrees
+WallMaxTurnValue	     =   270			; degrees
+
+AngleSpeed		     = 0.2	                ; radians per second
+GoalChangeDelta	 	     = 10.0			; seconds
+GoalVariation	  	     = 50.0, 0.0, 50.0		; each coordinate in meters
+MaxHealthValue		     = 200			; range [0..200]
+SoundThreshold		     = 0.06                     ; range [0..1]
+
+[m_soldier_e]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+cform                    = skeleton
+class                    = AI_SOLD
+direction                = 0, 0, 1
+eye_fov                  = 140
+eye_range                = 70
+jump_speed               = 6
+normal                   = 0, 1, 0
+position                 = 0, 0, 0
+health			 = 100
+visual                   = monsters\soldier\jeffry.ogf
+;visual                   = monsters\soldier\soldier_bandana.ogf
+;visual                   = monsters\soldier\soldier_beret.ogf
+;visual                   = monsters\soldier\soldier_pidarka.ogf
+
+; dummy
+min_speed		 = 0.0
+max_speed		 = 0.0
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.45, 0.9,  0.45
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.45, 0.6,  0.45
+ph_foot_center		 = 0.0,  0.51, 0.0
+ph_foot_size 		 = 0.26, 0.21, 0.26
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.01
+ph_friction_ground       = 7.0
+ph_friction_wall         = 4.0                              ; ???
+
+; selectors
+;                           fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+selector_defend          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               1.0,                1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_find_enemy      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,               1.0,               1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_free_hunting    =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,                40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_follow_leader   =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,                40.0,                 40.0,                 100.0,                 10.0,                  450.0,             150.0,                100.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_mdta            =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                   2000.0
+selector_no_weapon   	 =      20.0,          0.0,        100.0,         0.0,         10.0,        0.0,               0.0,                 0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                     0.0,              200.0,                300.0,                 15.0,                 200.0,         1200.0,               100.0,                   100.0
+;selector_patrol          =      20.0,          0.0,          0.0,       100.0,          0.0,        0.0,               0.0,               100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_patrol          =      20.0,          0.0,          0.0,       0.0,          0.0,        0.0,               0.0,                   0.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   0.0,                0.1,                1000.0,                 0.0,                0.0,               1000.0,               0.0,                   0.0
+selector_pursuit         =      20.0,        200.0,        100.0,         0.0,         10.0,        1.0,             100.0,               100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_reload          =      20.0,          0.0,        300.0,        10.0,         10.0,        0.0,               0.0,                 0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                 -2000.0,               20.0,                 25.0,                15.0,                 200.0,           120.0,                50.0,                   100.0
+selector_sense_something =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  -1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                  2000.0
+;selector_under_fire      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  2000.0,                30.0,                300.0,                 0.0,                 100.0,           120.0,               100.0,                 2000.0
+selector_under_fire_cover =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,             100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                    2000.0,                0.0,                0.0,                 0.0,                 100.0,           120.0,                 1000.0,                    100.0
+selector_under_fire_line  =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,             100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                     100.0,                0.0,                1000.0,                 0.0,                 100.0,           120.0,               1000.0,                   2000.0
+
+selector_retreat         =        20.0,          0.0,          0.0,      0.0,          10.0,        0.0,             0.0,                  0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,            1000.0,                 1000.0,              0.0,                   0.0,         100000.0,                   0.0,                     0.0
+selector_useless         =         0.0,          0.0,          0.0,      0.0,            0.0,        0.0,             0.0,                  0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,                0.0,                  0.0,                 0.0,                   0.0,             0.0,                 0.0,                     0.0
+
+
+bone_head		 = bip01_head
+bone_torso		 = bip01_spine1
+bone_legs		 = bip01_spine2
+bone_torso_weapon	 = bip01_r_hand
+bone_head_weapon	 = bip01_l_finger1
+
+MovementIdleTime 	 =  1500
+MaxInvisibleSpeed 	 =     1.0
+MaxViewableSpeed 	 =    10.0
+MovementSpeedWeight 	 =    40.0
+DistanceWeight 		 =    20.0
+SpeedWeight 		 =    -0.0
+CrouchVisibilityMultiplier =    .85
+LieVisibilityMultiplier  =      .66
+VisibilityThreshold 	 =     0.0
+LateralMultiplier	 =     1.5
+ShadowWeight	 	 =     1.5
+
+weapon_usage		 =     1
+FireRandomMin 		 =     1
+FireRandomMax 		 =     5
+NoFireTimeMin 		 =   200
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.5
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     4.0
+
+DynamicObjectsCount	 =    32
+DynamicSoundsCount	 =    32 
+
+MinRadioIinterval	 =  20000
+MaxRadioIinterval	 = 120000
+RadioRefreshRate	 =   5000
+
+[m_soldier_bandana]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+cform                    = skeleton
+class                    = AI_SOLD
+direction                = 0, 0, 1
+eye_fov                  = 140
+eye_range                = 70
+jump_speed               = 6
+normal                   = 0, 1, 0
+position                 = 0, 0, 0
+health			 = 100
+;visual                   = monsters\soldier\jeffry.ogf
+visual                   = monsters\soldier\soldier_bandana.ogf
+;visual                   = monsters\soldier\soldier_beret.ogf
+;visual                   = monsters\soldier\soldier_pidarka.ogf
+
+; dummy
+min_speed		 = 0.0
+max_speed		 = 0.0
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.45, 0.9,  0.45
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.45, 0.6,  0.45
+ph_foot_center		 = 0.0,  0.41, 0.0
+ph_foot_size 		 = 0.26, 0.21, 0.26
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.01
+ph_friction_ground       = 7.0
+ph_friction_wall         = 4.0                              ; ???
+
+; selectors
+;			    fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromLeaderWeight,fOptLeaderDistance,fOptLeaderDistanceWeight,fMinLeaderDistance,fMinLeaderDistanceWeight,fMaxLeaderDistance,fMaxLeaderDistanceWeight,fLeaderViewDeviationWeight,fMaxLeaderHeightDistance,fMaxLeaderHeightDistanceWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,               100.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+selector_defend          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,               100.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               1.0,                1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_find_enemy      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,               1.0,               1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_free_hunting    =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,               500.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_follow_leader   =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,               300.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                 100.0,                 10.0,                  450.0,             150.0,                100.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_mdta		 =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                   2000.0
+selector_no_weapon   	 =      20.0,          0.0,        100.0,         0.0,         10.0,        0.0,               0.0,                 0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                     0.0,              200.0,                300.0,                 15.0,                 200.0,         1200.0,               100.0,                   100.0
+;selector_patrol          =      20.0,          0.0,          0.0,       100.0,          0.0,        0.0,               0.0,                 0.0,                   0.5,                  100.0,                 0.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_patrol          =      20.0,          0.0,          0.0,       0.0,          0.0,        0.0,               0.0,                 0.0,                   0.0,                     0.0,                 0.0,                   0.0,          0.0,                 0.0,                     0.0,                      2.0,                       1000.0,                            0.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   0.0,                0.1,                1000.0,                 0.0,                0.0,               1000.0,               0.0,                   0.0
+selector_pursuit         =      20.0,        200.0,        100.0,         0.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_reload   	 =      20.0,          0.0,        300.0,        10.0,         10.0,        0.0,               0.0,                 0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                 -2000.0,               20.0,                 25.0,                15.0,                 200.0,           120.0,                50.0,                   100.0
+selector_sense_something =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  -1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                  2000.0
+;selector_under_fire      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  2000.0,                30.0,                300.0,                 0.0,                 100.0,           120.0,               100.0,                 2000.0
+selector_under_fire_cover =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,               0.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                    2000.0,                0.0,                0.0,                 0.0,                 100.0,           120.0,                 1000.0,                    100.0
+selector_under_fire_line  =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,               0.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                     100.0,                0.0,                1000.0,                 0.0,                 100.0,           120.0,               1000.0,                   2000.0
+
+selector_retreat         =        20.0,          0.0,          0.0,      0.0,          10.0,        0.0,             0.0,                  0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,            1000.0,                 1000.0,              0.0,                   0.0,         100000.0,                   0.0,                     0.0
+selector_useless         =         0.0,          0.0,          0.0,      0.0,            0.0,        0.0,             0.0,                  0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,                0.0,                  0.0,                 0.0,                   0.0,             0.0,                 0.0,                     0.0
+
+bone_head		 = bip01_head
+bone_torso		 = bip01_spine1
+bone_torso_weapon	 = bip01_r_hand
+bone_head_weapon	 = bip01_l_finger1
+
+MovementIdleTime 	 =  1500
+MaxInvisibleSpeed 	 =     1.0
+MaxViewableSpeed 	 =    10.0
+MovementSpeedWeight 	 =    40.0
+DistanceWeight 		 =    20.0
+SpeedWeight 		 =    -0.0
+CrouchVisibilityMultiplier =    .85
+LieVisibilityMultiplier  =      .66
+VisibilityThreshold 	 =     6.0
+LateralMultiplier	 =     1.5
+ShadowWeight	 	 =     1.5
+
+weapon_usage		 =     1
+FireRandomMin 		 =     5
+FireRandomMax 		 =     8
+NoFireTimeMin 		 =   250
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.4
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     4.0
+
+DynamicObjectsCount	 =    32
+DynamicSoundsCount	 =    32
+
+MinRadioIinterval	 =  20000
+MaxRadioIinterval	 = 120000
+RadioRefreshRate	 =   5000
+
+[m_soldier_beret]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+cform                    = skeleton
+class                    = AI_SOLD
+direction                = 0, 0, 1
+eye_fov                  = 140
+eye_range                = 70
+jump_speed               = 6
+normal                   = 0, 1, 0
+position                 = 0, 0, 0
+health			 = 100
+;visual                   = monsters\soldier\jeffry.ogf
+;visual                   = monsters\soldier\soldier_bandana.ogf
+visual                   = monsters\soldier\soldier_beret.ogf
+;visual                   = monsters\soldier\soldier_pidarka.ogf
+
+; dummy
+min_speed		 = 0.0
+max_speed		 = 0.0
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.45, 0.9,  0.45
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.45, 0.6,  0.45
+ph_foot_center		 = 0.0,  0.41, 0.0
+ph_foot_size 		 = 0.26, 0.21, 0.26
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.01
+ph_friction_ground       = 7.0
+ph_friction_wall         = 4.0                              ; ???
+
+; selectors
+;			    fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromLeaderWeight,fOptLeaderDistance,fOptLeaderDistanceWeight,fMinLeaderDistance,fMinLeaderDistanceWeight,fMaxLeaderDistance,fMaxLeaderDistanceWeight,fLeaderViewDeviationWeight,fMaxLeaderHeightDistance,fMaxLeaderHeightDistanceWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,               100.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+selector_defend          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,               100.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               1.0,                1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_find_enemy      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,               1.0,               1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_free_hunting    =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,               500.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_follow_leader   =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,               300.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                 100.0,                 10.0,                  450.0,             150.0,                100.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_mdta		 =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                   2000.0
+selector_no_weapon   	 =      20.0,          0.0,        100.0,         0.0,         10.0,        0.0,               0.0,                 0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                     0.0,              200.0,                300.0,                 15.0,                 200.0,         1200.0,               100.0,                   100.0
+;selector_patrol          =      20.0,          0.0,          0.0,       100.0,          0.0,        0.0,               0.0,                 0.0,                   0.5,                  100.0,                 0.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_patrol          =      20.0,          0.0,          0.0,       0.0,          0.0,        0.0,               0.0,                 0.0,                   0.0,                     0.0,                 0.0,                   0.0,          0.0,                 0.0,                     0.0,                      2.0,                       1000.0,                            0.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   0.0,                0.1,                1000.0,                 0.0,                0.0,               1000.0,               0.0,                   0.0
+selector_pursuit         =      20.0,        200.0,        100.0,         0.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_reload   	 =      20.0,          0.0,        300.0,        10.0,         10.0,        0.0,               0.0,                 0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                 -2000.0,               20.0,                 25.0,                15.0,                 200.0,           120.0,                50.0,                   100.0
+selector_sense_something =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  -1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                  2000.0
+;selector_under_fire      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  2000.0,                30.0,                300.0,                 0.0,                 100.0,           120.0,               100.0,                 2000.0
+selector_under_fire_cover =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,               0.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                    2000.0,                0.0,                0.0,                 0.0,                 100.0,           120.0,                 1000.0,                    100.0
+selector_under_fire_line  =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,               0.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                     100.0,                0.0,                1000.0,                 0.0,                 100.0,           120.0,               1000.0,                   2000.0
+
+selector_retreat         =        20.0,          0.0,          0.0,      0.0,          10.0,        0.0,             0.0,                  0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,            1000.0,                 1000.0,              0.0,                   0.0,         100000.0,                   0.0,                     0.0
+selector_useless         =         0.0,          0.0,          0.0,      0.0,            0.0,        0.0,             0.0,                  0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,                0.0,                  0.0,                 0.0,                   0.0,             0.0,                 0.0,                     0.0
+
+bone_head		 = bip01_head
+bone_torso		 = bip01_spine1
+bone_torso_weapon	 = bip01_r_hand
+bone_head_weapon	 = bip01_l_finger1
+
+MovementIdleTime 	 =  1500
+MaxInvisibleSpeed 	 =     1.0
+MaxViewableSpeed 	 =    10.0
+MovementSpeedWeight 	 =    40.0
+DistanceWeight 		 =    20.0
+SpeedWeight 		 =    -0.0
+CrouchVisibilityMultiplier =    .85
+LieVisibilityMultiplier  =      .66
+VisibilityThreshold 	 =     6.0
+LateralMultiplier	 =     1.6
+ShadowWeight	 	 =     1.5
+
+weapon_usage		 =     1
+FireRandomMin 		 =     5
+FireRandomMax 		 =     8
+NoFireTimeMin 		 =   250
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.3
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     3.0
+
+DynamicObjectsCount	 =    32
+DynamicSoundsCount	 =     2
+
+MinRadioIinterval	 =  20000
+MaxRadioIinterval	 = 120000
+RadioRefreshRate	 =   5000
+
+[m_soldier_pidarka]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+cform                    = skeleton
+class                    = AI_SOLD
+direction                = 0, 0, 1
+eye_fov                  = 140
+eye_range                = 70
+jump_speed               = 6
+normal                   = 0, 1, 0
+position                 = 0, 0, 0
+health			 = 100
+;visual                   = monsters\soldier\jeffry.ogf
+;visual                   = monsters\soldier\soldier_bandana.ogf
+;visual                   = monsters\soldier\soldier_beret.ogf
+visual                   = monsters\soldier\soldier_pidarka.ogf
+
+; dummy
+min_speed		 = 0.0
+max_speed		 = 0.0
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.45, 0.9,  0.45
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.45, 0.6,  0.45
+ph_foot_center		 = 0.0,  0.41, 0.0
+ph_foot_size 		 = 0.26, 0.21, 0.26
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.01
+ph_friction_ground       = 7.0
+ph_friction_wall         = 4.0                              ; ???
+
+; selectors
+;			    fSearchRange,fEnemySurround,fTotalCover,fTravelWeight,fLightWeight,fLaziness,fTotalViewVectorWeight,fCoverFromLeaderWeight,fOptLeaderDistance,fOptLeaderDistanceWeight,fMinLeaderDistance,fMinLeaderDistanceWeight,fMaxLeaderDistance,fMaxLeaderDistanceWeight,fLeaderViewDeviationWeight,fMaxLeaderHeightDistance,fMaxLeaderHeightDistanceWeight,fCoverFromMemberWeight,fOptMemberDistance,fOptMemberDistanceWeight,fMinMemberDistance,fMinMemberDistanceWeight,fMaxMemberDistance,fMaxMemberDistanceWeight,fMemberViewDeviationWeight,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_attack          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,               100.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               10.0,                1000.0,                10.0,                 500.0,           120.0,               100.0,                   2000.0
+selector_defend          =      20.0,        300.0,         50.0,         0.0,         10.0,       200.0,            100.0,               100.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   300.0,               1.0,                1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_find_enemy      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,               1.0,               1000.0,                 0.1,                 100.0,           120.0,               100.0,                   2000.0
+selector_free_hunting    =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,               500.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                  10.0,                 10.0,                  450.0,              80.0,                150.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_follow_leader   =      20.0,          0.0,        100.0,         0.0,         10.0,       15.0,             100.0,               300.0,                  15.0,                  100.0,                 3.0,                   300.0,          100.0,                 300.0,                     100.0,                      2.0,                       1000.0,                  40.0,                 40.0,                 100.0,                 10.0,                  450.0,             150.0,                100.0,                     1000.0,                   100.0,               30.0,                100.0,                 0.0,                 100.0,           120.0,               100.0,                   2000.0
+selector_mdta		 =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                   2000.0
+selector_no_weapon   	 =      20.0,          0.0,        100.0,         0.0,         10.0,        0.0,               0.0,                 0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                     0.0,              200.0,                300.0,                 15.0,                 200.0,         1200.0,               100.0,                   100.0
+;selector_patrol          =      20.0,          0.0,          0.0,       100.0,          0.0,        0.0,               0.0,                 0.0,                   0.5,                  100.0,                 0.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_patrol          =      20.0,          0.0,          0.0,       0.0,          0.0,        0.0,               0.0,                 0.0,                   0.0,                     0.0,                 0.0,                   0.0,          0.0,                 0.0,                     0.0,                      2.0,                       1000.0,                            0.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   0.0,                0.1,                1000.0,                 0.0,                0.0,               1000.0,               0.0,                   0.0
+selector_pursuit         =      20.0,        200.0,        100.0,         0.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                   100.0,                0.1,                100.0,                 0.0,                1000.0,           150.0,               300.0,                   2000.0
+selector_reload   	 =      20.0,          0.0,        300.0,        10.0,         10.0,        0.0,               0.0,                 0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                  0.0,                        0.0,                 -2000.0,               20.0,                 25.0,                15.0,                 200.0,           120.0,                50.0,                   100.0
+selector_sense_something =      20.0,          0.0,       1000.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  -1000.0,               30.0,                100.0,                10.0,                 100.0,           120.0,                50.0,                  2000.0
+;selector_under_fire      =      20.0,          0.0,        100.0,      -100.0,         10.0,        1.0,             100.0,               200.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                  2000.0,                30.0,                300.0,                 0.0,                 100.0,           120.0,               100.0,                 2000.0
+selector_under_fire_cover =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,               0.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                    2000.0,                0.0,                0.0,                 0.0,                 100.0,           120.0,                 1000.0,                    100.0
+selector_under_fire_line  =       20.0,          0.0,        100.0,      1.0,             .1,        0.0,             0.0,               0.0,                  30.0,                  100.0,                 3.0,                   300.0,          100.0,                 100.0,                     100.0,                      2.0,                       1000.0,                 100.0,                 80.0,                 100.0,                 10.0,                  100.0,             120.0,                100.0,                     1000.0,                     100.0,                0.0,                1000.0,                 0.0,                 100.0,           120.0,               1000.0,                   2000.0
+
+selector_retreat         =        20.0,          0.0,          0.0,      0.0,          10.0,        0.0,             0.0,                  0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,            1000.0,                 1000.0,              0.0,                   0.0,         100000.0,                   0.0,                     0.0
+selector_useless         =         0.0,          0.0,          0.0,      0.0,            0.0,        0.0,             0.0,                  0.0,                   0.0,                    0.0,                 0.0,                     0.0,            0.0,                   0.0,                       0.0,                      0.0,                          0.0,                   0.0,                  0.0,                   0.0,                  0.0,                    0.0,               0.0,                 0.0,                        0.0,                     0.0,                0.0,                  0.0,                 0.0,                   0.0,             0.0,                 0.0,                     0.0
+
+bone_head		 = bip01_head
+bone_torso		 = bip01_spine1
+bone_torso_weapon	 = bip01_r_hand
+bone_head_weapon	 = bip01_l_finger1
+
+MovementIdleTime 	 =  1500
+MaxInvisibleSpeed 	 =     1.0
+MaxViewableSpeed 	 =    10.0
+MovementSpeedWeight 	 =    40.0
+DistanceWeight 		 =    20.0
+SpeedWeight 		 =    -0.0
+CrouchVisibilityMultiplier =    .85
+LieVisibilityMultiplier  =      .66
+VisibilityThreshold 	 =     6.0
+LateralMultiplier	 =     1.6
+ShadowWeight	 	 =     1.5
+
+weapon_usage		 =     1
+FireRandomMin 		 =     5
+FireRandomMax 		 =     8
+NoFireTimeMin 		 =   250
+NoFireTimeMax 		 =   750
+MinMissDistance		 =     6.0
+MinMissFactor		 =     0.3
+MaxMissDistance		 =    50.0
+MaxMissFactor		 =     3.0
+
+DynamicObjectsCount	 =    32
+DynamicSoundsCount	 =    32
+
+MinRadioIinterval	 =  20000
+MaxRadioIinterval	 = 120000
+RadioRefreshRate	 =   5000
+
+[actor_firsteye_cam]
+apply_inert              = on
+lim_pitch                = -1.57, 1.57
+lim_yaw                  = 0, 0
+rot_speed                = 3.14, 3.14, 0
+ 
+[actor_free_cam]
+;----------------
+apply_inert              = off
+lim_pitch                = -1.5, 1.5
+lim_yaw                  = 0, 0
+lim_zoom                 = 0.4, 10
+rot_speed                = 3.14, 1.0, 10
+ 
+[actor_look_cam]
+apply_inert              = on
+lim_pitch                = -0.7, 1
+lim_yaw                  = 0, 0
+lim_zoom                 = 1, 5
+rot_speed                = 3.14, 6.28, 10
+
+[car_firsteye_cam]
+apply_inert              = on
+lim_pitch                = 0, 0
+lim_yaw                  = -1.57, 1.57
+rot_speed                = 100, 100, 0
+ 
+[car_free_cam]
+apply_inert              = on
+lim_pitch                = 0, 1.56
+lim_yaw                  = 0, 0
+lim_zoom                 = 1, 7
+rot_speed                = 3.14, 1.0, 10
+
+[car_look_cam]
+apply_inert              = on
+lim_pitch                = 0, 1.56
+lim_yaw                  = 0	, 0
+lim_zoom                 = 1, 7
+rot_speed                = 25, 1.0, 10
+
+[heli_free_cam]
+apply_inert              = on
+lim_pitch                = -1.5, 1.5
+lim_yaw                  = 0, 0
+lim_zoom                 = 5, 25
+rot_speed                = 3.14, 1.0, 10
+ 
+[heli_front_cam]
+;lim_yaw		= -0.01,0.01
+apply_inert              = off
+lim_pitch                = -1.2, 1.2
+lim_yaw                  = -1.5, 1.5
+rot_speed                = 3.14, 1.5, 0
+ 
+[heli_look_cam]
+apply_inert              = on
+lim_pitch                = 0, 1.56
+lim_yaw                  = 0, 0
+lim_zoom                 = 5, 15
+rot_speed                = 3.14, 1.0, 10
+ 
+[interface]
+font_game                = font_game
+font_small               = font_small
+ 
+[textures]
+glow1                    = 32
+glow1_blue               = 32                               ; means 32 bits
+glow1_red                = 32
+hud_hitmarker            = 32
+red_sky_0                = 32
+red_sky_180              = 32
+red_sky_270              = 32
+red_sky_90               = 32
+red_sky_top              = 32
+skydome                  = 32
+sun                      = 32
+ui\logo                  = 32
+ 
+[wpn_fn2000]
+$spawn                   = on								; option for Level Editor
+$npc                     = off
+$prefetch 		         = 8
+scheduled                = off                              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_FN2000
+min_radius               = 50
+max_radius               = 150
+
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 30
+
+ammo_mag_size		     = 30
+
+hand_dependence		     = 2
+ammo_class		         = ammo_5.56x45_ss190, ammo_5.56x45_ap
+
+resource		         = 6000
+
+slot 			         = 2		; // secondary
+inv_name		         = FN2000
+inv_name_short		     = FN2000
+inv_weight		         = 2
+
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
+
+fire_dispersion          = 0.5
+fire_dispersion_add      = 5.3
+fire_dispersion_relax    = 0.6
+fire_dispersion_base	 = 0.5
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
+
+direction                = 0, 0, 1
+shell_point		         = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.4
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			         = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	     = 200
+
+; ttc
+hit_power                = 30 		;//WAS "60"!!!
+hit_impulse		         = 60
+fire_distance            = 600
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_fn2000_hud
+normal                   = 0, 1, 0
+position                 = -0.05, 0.03, 0.055
+orientation              = -3.5, -6.7, -5
+startup_ammo             = 1000
+visual                   = weapon\fn2000\wpn_fn2000.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			         = ui\hud_wpn_fn2000
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.17,0.13,0.12
+light_range		         = 3.0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
+max_zoom_factor		     = 20.f
+
+ph_mass			         = 4
+cost			         = 5000
+
+[wpn_fn_ammo]
+$spawn			= on
+class			= A_PM
+box_size		= 300
+mag_size		= 30
+inv_name		= "FN2000 Ammo"
+inv_name_short		= 
+inv_weight		= .3
+
+
+[wpn_fn2000_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = -0.04, -0.05, 0.14
+fire_bone                = rifle
+orientation              = 4.5, 0, 0
+position                 = 0.12, -0.16, 0.55
+visual                   = weapon\fn2000\wpn_fn2000_hud.ogf
+
+[wpn_lr300]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_LR300
+min_radius               = 0
+max_radius               = 50
+
+ammo_limit		 = 210
+ammo_current		 = 30
+ammo_elapsed		 = 30
+
+ammo_mag_size		 = 30
+ammo_class		 = ammo_5.56x45_ss190, ammo_5.56x45_ap
+
+resource		= 6000
+
+hand_dependence		 = 2
+
+inv_name		= LR300
+inv_name_short		= LR300
+inv_weight		= 3.
+slot 			 = 2		; // secondary
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+fire_dispersion          = 2.0
+fire_dispersion_add      = 0.8
+fire_dispersion_relax    = 0.7
+fire_dispersion_base	 = 0.8
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+
+;cam_relax                = 0.15
+;cam_dispersion           = 0.8
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.065, 0.65
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 45
+hit_impulse		 = 70
+fire_distance            = 300
+rpm                      = 500
+; end ttc
+hud                      = wpn_lr300_hud
+normal                   = 0, 1, 0
+position                 = -0.04, 0.03, 0.03
+orientation              = -4, -7, 1
+startup_ammo             = 1000
+visual                   = weapon\lr300\wpn_lr300.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_lr300
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.1
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 2500
+
+[wpn_lr300_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.07, -0.05, 0.11
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\lr300\wpn_lr300_hud_banan.ogf
+
+[wpn_ak74]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		= 8
+scheduled            = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_AK74
+min_radius               = 0
+max_radius               = 50
+
+ammo_limit		 = 210
+ammo_current		 = 180
+ammo_elapsed		 = 30
+
+resource		= 6000
+
+ammo_mag_size		 = 30
+ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
+
+hand_dependence		 = 2
+
+slot 			 = 2		; // secondary
+inv_name	         = AK74
+inv_name_short		 = AK74
+inv_weight		 = 2.5
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+
+fire_dispersion          = 2.5
+fire_dispersion_add      = 1.0
+fire_dispersion_relax    = 0.5
+fire_dispersion_base	 = 1.0
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.75
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 50
+hit_impulse		 = 70
+fire_distance            = 300
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_ak74_hud
+normal                   = 0, 1, 0
+
+;----------------------------------------------------------
+position                 = -0.05, 0.0, 0.06
+orientation              = -4.5, -8, 0
+
+startup_ammo             = 90
+visual                   = weapon\ak74\wpn_ak74.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_ak74
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 5
+cost			 = 2100
+ 
+[wpn_ak74_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.03, 0.27
+fire_bone                = rifle
+orientation              = 5.7, 0, -1
+position                 = 0.063, -0.015, 0.02
+visual                   = weapon\ak74\wpn_ak74_hud.ogf
+
+[wpn_hpsa]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		= 8
+scheduled            = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_HPSA
+min_radius               = 0
+max_radius               = 30
+
+ammo_limit		 = 120
+ammo_current		 = 0
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x19_fmj, ammo_9x19_pbp
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1		; // primary
+inv_name		= HPSA
+inv_name_short		= HPSA
+inv_weight		= .5
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+fire_dispersion          = 1.0
+fire_dispersion_add      = 1
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 40
+hit_impulse		 = 100
+fire_distance            = 150
+rpm                      = 120
+; end ttc
+hud                      = wpn_HPSA_hud
+normal                   = 0, 1, 0
+position                 = -0.04, 0.063,0.036
+orientation              = -4, 23, 0
+startup_ammo             = 90
+visual                   = weapon\hpsa\wpn_hpsa.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 450
+ 
+[wpn_hpsa_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.0, 0.1
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\hpsa\wpn_hpsa_hud_banan.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_pm]
+$spawn 			 = on
+$npc			 = on		; option for Level Editor
+$prefetch 		= 8
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_PM
+min_radius               = 0
+max_radius               = 30
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1
+inv_name		= PM
+inv_name_short		= PM
+inv_weight		= .5
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+
+fire_dispersion          = 1
+fire_dispersion_add      = 3
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 25
+hit_impulse		 = 80
+fire_distance            = 120
+rpm                      = 120
+; end ttc
+
+hud                      = wpn_PM_hud
+normal                   = 0, 1, 0
+position                 = -0.04, 0.063,0.036
+orientation              = -4, 23, 0
+;startup_ammo             = 90
+visual                   = weapon\pm\wpn_pm.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+ 
+[wpn_pm_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\pm\wpn_pm_hud_banan.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_rpg7]
+$spawn 			 = on
+$npc			 = on		; option for Level Editor
+;$prefetch 		= 0
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_RPG7
+min_radius               = 50
+max_radius               = 150
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 1
+ammo_class		 = ammo_og-7b
+
+resource		= 6000
+
+hand_dependence		 = 2
+
+slot 			 = 2
+inv_name		= RPG7
+inv_name_short		= RPG7
+inv_weight		= .5
+
+cam_relax_speed          = -4.5
+cam_dispersion           = -16
+cam_max_angle		 = 8
+
+fire_dispersion          = 0.7
+fire_dispersion_add      = 10
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 25
+hit_impulse		= .25
+fire_distance            = 400
+rpm                      = 60
+; end ttc
+
+hud                      = wpn_rpg7_hud
+normal                   = 0, 1, 0
+position                 = -0.04, 0.063,0.036
+orientation              = -4, 23, 0
+;startup_ammo             = 90
+visual                   = weapon\rpg_7\wpn_rpg_7.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+ 
+[wpn_rpg7_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body_1
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\rpg_7\rpg_7_hud.ogf
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_fort]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		= 8
+scheduled            = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_FORT
+min_radius               = 0
+max_radius               = 30
+
+ammo_limit		 = 120
+ammo_current		 = 90
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1		; // primary
+inv_name		= FORT
+inv_name_short		= FORT
+inv_weight		= .5
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+fire_dispersion          = 0.7
+fire_dispersion_add      = 2
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+;cam_relax               = 0.37
+;cam_dispersion          = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.00, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 35
+hit_impulse		 = 90
+fire_distance            = 150
+rpm                      = 120
+; end ttc
+hud                      = wpn_FORT_hud
+normal                   = 0, 1, 0
+position                 = -0.04, 0.063,0.036
+orientation              = -4, 23, 0
+startup_ammo             = 90
+visual                   = weapon\fort\wpn_fort.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+
+[wpn_fort_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.05, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\fort\wpn_fort_hud_banan.ogf
+
+[wpn_binoc]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_BINOC
+hud                      = wpn_BINOC_hud
+position                 = 0, 0, .2
+normal                   = 0, 1, 0
+direction                = 0, 0, 1
+orientation              = -12, 7, 0
+visual                   = weapon\binoculars\wpn_binoculars.ogf
+hand_dependence		 = 1
+slot 			 = 4		; // binocular
+inv_name		 = BINOCULAR
+inv_name_short		 = BINOCULAR
+inv_weight		 = .5
+resource		= 6000
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+max_zoom_factor		 = 40.f
+
+ph_mass			 = 1
+cost			 = 120
+
+[wpn_binoc_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.0, 0.1
+fire_bone                = binoculars
+orientation              = 10, 0, -2
+position                 = 0.15, -0.14, 0.25
+visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
+
+[wpn_m134]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+ammo_limit		 = 9999
+ammo_current		 = 0
+ammo_elapsed		 = 1000
+ammo_class		 = ammo_9x18_fmj
+class                    = W_M134
+hand_dependence		 = 2
+slot 			 = 2		; // secondary
+inv_name		= M134
+inv_name_short		= M134
+inv_weight		= 5.
+min_radius               = 0
+max_radius               = 50
+
+cam_relax_speed          = 15.0
+cam_dispersion           = 5.0
+cam_max_angle		 = 1.2
+fire_dispersion          = 3.5
+fire_dispersion_add      = 0.75
+fire_dispersion_relax    = 0.4
+fire_dispersion_base	 = 0.5
+disp_vel_factor		 = 0.3
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point	         = 0.0, 0.0, 0.7
+fire_bone                = barrels
+flame_div                = 10
+flame_length             = .5
+flame_size               = 0.14
+flame			 = weapons\generic\ShotFlame1, weapons\generic\ShotFlame2, weapons\generic\ShotFlame3
+; ttc
+hit_power                = 10
+fire_distance            = 400
+ammo_mag_size		 = 1000
+rpm                      = 2000
+; end ttc
+hud                      = wpn_m134_hud
+normal                   = 0, 1, 0
+position                 = .15, .02, 0.61
+orientation              = -19, 12, 0
+rot_axis_hud             = Z
+rot_axis_wpn             = Z
+rot_bone                 = barrels
+rot_break_accel          = 17
+rot_max_speed            = 73
+rot_spinup_accel         = 49
+rpm_empty_click 	 = 500
+servo_max_freq           = 22050
+servo_min_freq           = 1000
+startup_ammo             = 9999
+visual                   = weapon\m134\wpn_m134.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.03
+ui_icon			 = ui\hud_wpn_m134
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.07,0.03,0.02
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+[wpn_m134_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0, .45
+fire_bone                = barrels
+orientation              = 4, 5, 0
+position                 = .13, -.19, 0.75
+visual                   = weapon\m134\wpn_m134_hud.ogf
+
+[wpn_toz34]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SHOTGN
+min_radius               = 0
+max_radius               = 50
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 2
+ammo_class		 = ammo_12x70_buck, ammo_12x76_dart, ammo_12x76_zhekan
+
+resource		= 6000
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+fire_dispersion          = 2
+fire_dispersion_add      = 5
+fire_dispersion_relax    = 2
+fire_dispersion_base	 = 1.1
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+hand_dependence 	 = 2
+
+slot 			 = 2		; // secondary
+inv_name		= TOZ34
+inv_name_short		= TOZ34
+inv_weight		= .5
+
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.0
+fire_point2              = 0.0, 0.0, 0.0
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 50
+hit_impulse		 = 150
+fire_distance            = 50
+rpm                      = 350
+; end ttc
+hud                      = wpn_shotgun_hud
+normal                   = 0, 1, 0
+position                 = -0.05, 0.0, 0.06
+orientation              = -4.5, -8, 0
+startup_ammo             = 10
+visual                   = weapon\toz34\wpn_toz34_ext.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 900
+ 
+[wpn_shotgun_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.06
+fire_point2              = 0.0, 0.0, 0.01
+fire_bone                = wpn_barrel_0
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\toz34\wpn_toz34_hud_banan.ogf
+
+[postprocess_base]
+blur			= .5
+gray			= .2
+noise			= .1
+noise_scale		= 1
+noise_color		= 200,128,200,50
+;noise_color		= 200,150,40,0
+;noise_color		= 200,180,50,0
+
+[wpn_svd]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SVD
+min_radius               = 0
+max_radius               = 50
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 10
+ammo_class		 = ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
+
+resource		= 6000
+
+cam_relax_speed          = 3.5
+cam_dispersion           = 4
+cam_max_angle		 = 5
+fire_dispersion          = 0.5
+fire_dispersion_add      = 5
+fire_dispersion_relax    = 2
+fire_dispersion_base	 = 1.1
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+
+hand_dependence 	 = 2
+
+slot 			 = 2		; // secondary
+inv_name		= SVD
+inv_name_short		= SVD
+inv_weight		= 5.
+max_zoom_factor		 = 10.f
+
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.0
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 60
+hit_impulse		 = 120
+fire_distance            = 800
+rpm                      = 60
+; end ttc
+hud                      = wpn_svd_hud
+normal                   = 0, 1, 0
+position                 = -0.05, 0.0, 0.06
+orientation              = -4.5, -8, 0
+startup_ammo             = 10
+visual                   = weapon\svd\wpn_svd.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 900
+ 
+[wpn_svd_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.06
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\svd\wpn_svd_hud.ogf
+
+[wpn_svu]
+$spawn 			 = on
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SVU
+min_radius               = 0
+max_radius               = 50
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 10
+ammo_class		 = ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
+
+resource		= 6000
+
+cam_relax_speed          = 3.5
+cam_dispersion           = 4
+cam_max_angle		 = 5
+fire_dispersion          = 1
+fire_dispersion_add      = 5
+fire_dispersion_relax    = 4
+fire_dispersion_base	 = 1.1
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+hand_dependence 	 = 2
+slot 			 = 2		; // secondary
+inv_name		 = SVU
+inv_name_short		 = SVU
+inv_weight		 = 5.
+max_zoom_factor		 = 10.f
+
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.0
+fire_point2              = 0.0, 0.0, 0.0
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+; ttc
+hit_power                = 55
+hit_impulse		 = 110
+fire_distance            = 600
+rpm                      = 300
+; end ttc
+hud                      = wpn_svu_hud
+normal                   = 0, 1, 0
+position                 = -0.05, 0.0, 0.06
+orientation              = -4.5, -8, 0
+startup_ammo             = 10
+visual                   = weapon\svu\wpn_svu.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+cost			 = 900
+ 
+[wpn_svu_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.06
+fire_bone                = wpn_body
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\svu\wpn_svu_hud.ogf
+
+[postprocess_base]
+duality_h		= .015
+duality_v		= .015
+blur			= 1
+gray			= .0
+noise			= .0
+noise_scale		= 1
+noise_color		= 255,255,255,70
+;noise_color		= 200,150,40,0
+;noise_color		= 200,180,50,0
+
+[postprocess_anomaly]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .9
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+
+[postprocess_anomaly1]
+duality_h		= .0
+duality_v		= .1
+blur			= 1
+gray			= .6
+noise			= .0
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
+
+
+[postprocess_anomaly2]
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[actor_cs_1]
+;$spawn 			 = on
+;$ed_icon		 = ed\ed_actor
+$player 		 = on
+cform                    = skeleton
+class                    = O_ACTOR
+;jump_speed               = 15
+jump_speed               = 5.6
+crouch_coef 		 = 0.2
+run_coef                 = 2.4
+visual			 = actors\Different_stalkers\stalker_no_hood_multiplayer_black.ogf
+walk_accel               = 17 ;40 ;17  ;54 ;40
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+
+damage			 = actor_damage
+
+[actor_cs_2]
+;$spawn 			 = on
+;$ed_icon		 = ed\ed_actor
+$player 		 = on
+cform                    = skeleton
+class                    = O_ACTOR
+;jump_speed               = 15
+jump_speed               = 5.6
+crouch_coef 		 = 0.2
+run_coef                 = 2.4
+visual			 = actors\alpha\pidarka_urban.ogf
+walk_accel               = 17 ;40 ;17  ;54 ;40
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min       = 16
+ph_crash_speed_max       = 30
+ph_mass 		 = 120
+ph_friction_air          = 0.05 ;0.05
+ph_friction_ground       = 8 ;16 ;8.0 ;20.0   ;16
+ph_friction_wall         = 4.0                              ; ???
+
+damage			 = actor_damage
+
+; ALife Simulator objects - do not delete!!!
+;monsters
+[graph_point]
+    class                = AI_GRAPH
+    $spawn               = on
+
+[ent_rat]
+    scheduled            = on               ; option for ALife Simulator
+    human                = off              ; option for ALife Simulator
+    resurrect            = off              ; option for ALife Simulator
+    single               = off              ; option for ALife Simulator
+
+    class                = AI_RAT           ; option for ALife Simulator
+    health               = 5                ; option for ALife Simulator
+    going_speed          = 1.0              ; option for ALife Simulator
+
+[ent_zombie]
+    scheduled            = on               ; option for ALife Simulator
+    human                = off              ; option for ALife Simulator
+    resurrect            = on               ; option for ALife Simulator
+    single               = off              ; option for ALife Simulator
+
+    class                = AI_ZOM           ; option for ALife Simulator
+    health               = 200              ; option for ALife Simulator
+    going_speed          = 1.0              ; option for ALife Simulator
+
+[ent_dog]
+    scheduled            = on               ; option for ALife Simulator
+    human                = off              ; option for ALife Simulator
+    resurrect            = off              ; option for ALife Simulator
+    single               = off              ; option for ALife Simulator
+
+    class                = AI_DOG           ; option for ALife Simulator
+    health               = 5                ; option for ALife Simulator
+    going_speed          = 1.0              ; option for ALife Simulator
+
+[ent_controller]
+    scheduled            = on               ; option for ALife Simulator
+    human                = off              ; option for ALife Simulator
+    resurrect            = off              ; option for ALife Simulator
+    single               = on               ; option for ALife Simulator
+
+    class                = AI_CONTR         ; option for ALife Simulator
+    health               = 100              ; option for ALife Simulator
+    going_speed          = 1.0              ; option for ALife Simulator
+
+;human beings
+[ent_soldier]
+    scheduled            = on               ; option for ALife Simulator
+    human                = on               ; option for ALife Simulator
+    resurrect            = off              ; option for ALife Simulator
+    single               = on               ; option for ALife Simulator
+
+    class                = AI_SOLDR         ; option for ALife Simulator
+    health               = 100              ; option for ALife Simulator
+    going_speed          = 5.0              ; option for ALife Simulator
+    search_speed         = 1.0              ; option for ALife Simulator
+    max_item_mass        = 40.0             ; option for ALife Simulator
+
+[ent_stalker]
+    scheduled            = on               ; option for ALife Simulator
+    human                = on               ; option for ALife Simulator
+    resurrect            = off              ; option for ALife Simulator
+    single               = on               ; option for ALife Simulator
+
+    class                = AI_STL           ; option for ALife Simulator
+    health               = 100              ; option for ALife Simulator
+    going_speed          = 5.0              ; option for ALife Simulator
+    search_speed         = 1.0              ; option for ALife Simulator
+    max_item_mass        = 40.0             ; option for ALife Simulator
+    rank                 = 1                ; option for ALife Simulator
+
+[ent_trader]
+    scheduled            = on               ; option for ALife Simulator
+    human                = on               ; option for ALife Simulator
+    resurrect            = off              ; option for ALife Simulator
+    single               = on               ; option for ALife Simulator
+    trader               = on               ; option for ALife Simulator
+
+    class                = AI_TRADE         ; option for ALife Simulator
+    health               = 100              ; option for ALife Simulator
+    going_speed          = 0.0              ; option for ALife Simulator
+    search_speed         = 0.0              ; option for ALife Simulator
+    max_item_mass        = 1000.0           ; option for ALife Simulator
+    rank                 = 1                ; option for ALife Simulator
+    money                = 1000000          ; option for ALife Simulator
+
+;weapon
+[wpn_fn2000_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_FN_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+[wpn_lr300_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_LR_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+[wpn_ak74_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_AK_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+[wpn_hpsa_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_HP_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+[wpn_pm_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_PM_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+[wpn_fort_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_FR_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+[wpn_toz34_ch]
+    scheduled            = off              ; option for ALife Simulator
+    class                = W_TZ_CHR         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 10               ; option for ALife Simulator
+
+;equipment
+[eq_radio]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_RADIO         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 200              ; option for ALife Simulator
+
+[eq_life_saver]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_LIFES         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 100              ; option for ALife Simulator
+
+[eq_capsule]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_CPS           ; option for ALife Simulator 
+    ph_mass              = 3                ; option for ALife Simulator
+    cost                 = 150              ; option for ALife Simulator
+
+[eq_capsule_with_galantine]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_CPS_G         ; option for ALife Simulator 
+    ph_mass              = 7                ; option for ALife Simulator
+    cost                 = 1000             ; option for ALife Simulator
+
+[eq_container]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_CNT           ; option for ALife Simulator 
+    ph_mass              = 5                ; option for ALife Simulator
+    cost                 = 500              ; option for ALife Simulator
+
+[eq_container_with_artefact]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_CNT_A         ; option for ALife Simulator 
+    ph_mass              = 10               ; option for ALife Simulator
+    cost                 = 5000             ; option for ALife Simulator
+
+[eq_container_with_burningfluff]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_CNT_B         ; option for ALife Simulator 
+    ph_mass              = 7                ; option for ALife Simulator
+    cost                 = 5000             ; option for ALife Simulator
+
+[eq_detector]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_DTC           ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 150              ; option for ALife Simulator
+
+[eq_u_detector]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_DTC_U         ; option for ALife Simulator 
+    ph_mass              = 2                ; option for ALife Simulator
+    cost                 = 800              ; option for ALife Simulator
+
+[eq_s_detector ]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_DTC_S         ; option for ALife Simulator 
+    ph_mass              = 5                ; option for ALife Simulator
+    cost                 = 2500             ; option for ALife Simulator
+
+[eq_lf_detector]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_DTC_L         ; option for ALife Simulator 
+    ph_mass              = 3                ; option for ALife Simulator
+    cost                 = 1650             ; option for ALife Simulator
+
+[eq_psi_probe]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_PSI_P         ; option for ALife Simulator 
+    ph_mass              = 12               ; option for ALife Simulator
+    cost                 = 15000            ; option for ALife Simulator
+
+[eq_medikit]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_MKT           ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 250              ; option for ALife Simulator
+    health_value         = 25               ; option for ALife Simulator
+
+[eq_u_medikit]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_MKT_U         ; option for ALife Simulator 
+    ph_mass              = 4                ; option for ALife Simulator
+    cost                 = 1400             ; option for ALife Simulator
+    health_value         = 100              ; option for ALife Simulator
+
+[eq_p_suit]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_PSUIT         ; option for ALife Simulator 
+    ph_mass              = 4                ; option for ALife Simulator
+    cost                 = 600              ; option for ALife Simulator
+
+[eq_st_suit]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_TSUIT         ; option for ALife Simulator 
+    ph_mass              = 7                ; option for ALife Simulator
+    cost                 = 3200             ; option for ALife Simulator
+
+[eq_sc_suit]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_CSUIT         ; option for ALife Simulator 
+    ph_mass              = 15               ; option for ALife Simulator
+    cost                 = 7200             ; option for ALife Simulator
+
+[eq_ar_suit]
+    scheduled            = off              ; option for ALife Simulator
+    class                = EQ_ASUIT         ; option for ALife Simulator 
+    ph_mass              = 25               ; option for ALife Simulator
+    cost                 = 5000             ; option for ALife Simulator
+
+[art_gravi]
+    scheduled            = off              ; option for ALife Simulator
+    class                = AR_GRAVI         ; option for ALife Simulator 
+    ph_mass              = 3                ; option for ALife Simulator
+    cost                 = 1000             ; option for ALife Simulator
+
+[art_radio]
+    scheduled            = off              ; option for ALife Simulator
+    class                = AR_RADIO         ; option for ALife Simulator 
+    ph_mass              = 2                ; option for ALife Simulator
+    cost                 = 100              ; option for ALife Simulator
+
+[art_magnet]
+    scheduled            = off              ; option for ALife Simulator
+    class                = AR_MAGNT         ; option for ALife Simulator 
+    ph_mass              = 5                ; option for ALife Simulator
+    cost                 = 800              ; option for ALife Simulator
+
+[art_mball]
+    scheduled            = off              ; option for ALife Simulator
+    class                = AR_MBALL         ; option for ALife Simulator 
+    ph_mass              = 10               ; option for ALife Simulator
+    cost                 = 8000             ; option for ALife Simulator
+
+[art_black_droplets]
+    scheduled            = off              ; option for ALife Simulator
+    class                = AR_BDROP         ; option for ALife Simulator 
+    ph_mass              = 1                ; option for ALife Simulator
+    cost                 = 300              ; option for ALife Simulator
+
+[alife]
+    schedule_min         = 1                ; milliseconds
+    schedule_max         = 999              ; milliseconds
+    procees_time         = 300              ; microseconds
+    online_distance      = 150.0            ; metres
+    switch_delay         = 1000             ; milliseconds
+    time_factor          = 1.0              ; 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; MUNITION
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x18_fmj]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_18_fmj.ogf
+
+box_size		= 50
+
+inv_name		= "9x18 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .25
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x18_pbp]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_pbp.ogf
+
+box_size		= 50
+
+inv_name		= "9x18 PBP"
+inv_name_short		= "JSP-AP"
+inv_weight		= .25
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1.5
+k_impulse		= 2
+k_pierce		= 2.5
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x18_pmm]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_18_pmm.ogf
+
+box_size		= 50
+
+inv_name		= "9x18 PMM"
+inv_name_short		= "+P+"
+inv_weight		= .25
+
+k_dist			= 1.5
+k_disp			= 1
+k_hit			= 1.3
+k_impulse		= 1.3
+k_pierce		= 1.5
+impair			= 1.5
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x19_fmj]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_fmj.ogf
+
+box_size		= 50
+
+inv_name		= "9x19 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .3
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x19_pbp]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_19_pbp.ogf
+
+box_size		= 50
+
+inv_name		= "9x19 PBP"
+inv_name_short		= "JSP-AP"
+inv_weight		= .3
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1.5
+k_impulse		= 2
+k_pierce		= 2.5
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.45x39_fmj]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron545.ogf
+
+box_size		= 60
+
+inv_name		= "5.45x39 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.45x39_ap]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron545_ap.ogf
+
+box_size		= 60
+
+inv_name		= "5.45x39 AP"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.56x45_ss190]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron556.ogf
+
+box_size		= 60
+
+inv_name		= "5.56x45 SS190"
+inv_name_short		= "SS190"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.56x45_ap]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron556_ap.ogf
+
+box_size		= 60
+
+inv_name		= "5.56x45 AP"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.7x28_fmj]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron57.ogf
+
+box_size		= 60
+
+inv_name		= "5.7x28 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_5.7x28_ap]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron57_AP.ogf
+
+box_size		= 60
+
+inv_name		= "5.7x28 AP"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_7.62x54_7h1]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron762_7h1.ogf
+
+box_size		= 10
+
+inv_name		= "7.62x54R 7H1"
+inv_name_short		= "FMJ"
+inv_weight		= .2
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_7.62x54_ap]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron762_AP.ogf
+
+box_size		= 10
+
+inv_name		= "7.62x54R BTZ"
+inv_name_short		= "AP"
+inv_weight		= .2
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_7.62x54_7h14]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron762_7h14.ogf
+
+box_size		= 10
+
+inv_name		= "7.62x54R 7H14"
+inv_name_short		= "Sniper"
+inv_weight		= .2
+
+k_dist			= 1.25
+k_disp			= 0.75
+k_hit			= 1.1
+k_impulse		= 1.1
+k_pierce		= 1.2
+impair			= 1.25
+buck_shot		= 1
+tracer			= on
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x39_pab9]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_pab9.ogf
+
+box_size		= 60
+
+inv_name		= "9x39 PAB-9"
+inv_name_short		= "PAB-9"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x39_ap]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_AP.ogf
+
+box_size		= 60
+
+inv_name		= "9x39 SP-6"
+inv_name_short		= "AP"
+inv_weight		= .5
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 0.75
+k_impulse		= 0.5
+k_pierce		= 2
+impair			= 1.05
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_9x39_sp5]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron9_sp5.ogf
+
+box_size		= 60
+
+inv_name		= "9x39 SP-5"
+inv_name_short		= "Sniper"
+inv_weight		= .5
+
+k_dist			= 1.25
+k_disp			= 0.75
+k_hit			= 1.1
+k_impulse		= 1.1
+k_pierce		= 1.2
+impair			= 1.25
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_11.43x23_fmj]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron45.ogf
+
+box_size		= 50
+
+inv_name		= "11.43x23 FMJ"
+inv_name_short		= "FMJ"
+inv_weight		= .4
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_11.43x23_hydro]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\patron45_Hydro.ogf
+
+box_size		= 50
+
+inv_name		= "11.43x23 Hydro"
+inv_name_short		= "JHP-AP"
+inv_weight		= .4
+
+k_dist			= 0.85
+k_disp			= 1
+k_hit			= 1.5
+k_impulse		= 2
+k_pierce		= 2.5
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_12x70_buck]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\kartech.ogf
+
+box_size		= 10
+
+inv_name		= "12x70 BUCK"
+inv_name_short		= "BUCK"
+inv_weight		= .2
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 10
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_12x76_dart]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\dart.ogf
+
+box_size		= 10
+
+inv_name		= "12x70 DART"
+inv_name_short		= "DART"
+inv_weight		= .2
+
+k_dist			= 6
+k_disp			= .1
+k_hit			= 4
+k_impulse		= 3
+k_pierce		= 5
+impair			= 1.2
+buck_shot		= 1
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_12x76_zhekan]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\zhekan.ogf
+
+box_size		= 10
+
+inv_name		= "12x70 Zhekan "
+inv_name_short		= "JHP"
+inv_weight		= .2
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_og-7b]
+$spawn			= on
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\zhekan.ogf
+
+box_size		= 1
+
+inv_name		= "OG-7B"
+inv_name_short	= "OG-7B"
+inv_weight		= .2
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 1
+tracer			= off
