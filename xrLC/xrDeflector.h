@@ -67,12 +67,12 @@ public:
 	CDeflector					();
 	~CDeflector					();
 
-	VOID	OA_SetNormal		(Fvector &_N )	{ N.set(_N); N.normalize(); }
+	void	OA_SetNormal		(Fvector &_N )	{ N.set(_N); N.normalize(); }
 	BOOL	OA_Place			(Face *owner);
-	VOID	OA_Export			();
+	void	OA_Export			();
 
-	VOID	GetRect				(UVpoint &min, UVpoint &max);
-
+	void	GetRect				(UVpoint &min, UVpoint &max);
+	Layer*	GetLayer			(b_light* base);
 	DWORD	GetFaceCount()		{ return tris.size();	};
 
 	VOID	Light				(HASH& H);
@@ -100,6 +100,7 @@ public:
 			bounds.merge(B);
 		}
 	}
+	void	RemapUV				(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
 	void	RemapUV				(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
 };
 

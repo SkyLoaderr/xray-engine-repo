@@ -138,8 +138,11 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 	}
 }
 
-void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
+void CDeflector::RemapUV(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
 {
+	dest.clear	();
+	dest.reserve(tris.size());
+	
 	// UV rect (actual)
 	UVpoint		a_min,a_max,a_size;
 	GetRect		(a_min,a_max);
@@ -157,6 +160,7 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	
 	// Remapping
 	UVpoint		tc;
+	UVtri		tnew;
 	if (bRotate)	{
 		for (UVIt it = tris.begin(); it!=tris.end(); it++)
 		{
@@ -165,8 +169,9 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 			{
 				tc.u = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.u + d_min.u;
 				tc.v = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.v + d_min.v;
-				T.uv[i].set(tc);
+				tnew.uv[i].set(tc);
 			}
+			dest.push_back	(tnew);
 		}
 	} else {
 		for (UVIt it = tris.begin(); it!=tris.end(); it++)
@@ -176,8 +181,21 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 			{
 				tc.u = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.u + d_min.u;
 				tc.v = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.v + d_min.v;
-				T.uv[i].set(tc);
+				tnew.uv[i].set(tc);
 			}
+			dest.push_back	(tnew);
 		}
 	}
+}
+void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
+{
+	vector<UVtri>	tris_new;
+	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
+	tris			= tris_new;
+}
+Layer* CDeflector::GetLayer(b_light* base)
+{
+	for (DWORD I=0; I<layers.size(); I++)
+		if (layers[I].base == base)	return &layers[I];
+	return 0;
 }

@@ -10,6 +10,7 @@ class Vertex;
 class Face;
 class Material;
 class Edge;
+class CLightmap;
 
 // Typedefs
 typedef vector<Vertex*>			vecVertex;
@@ -101,18 +102,18 @@ struct _TCF {
 class Face
 {
 public:
-	Vertex*				v[3];			// vertices
-	Fvector				N;				// face normal
-	svector<_TCF,8>		tc;				// TC
+	Vertex*					v[3];			// vertices
+	Fvector					N;				// face normal
+	svector<_TCF,8>			tc;				// TC
 
-	WORD				dwMaterial;		// index of material
+	WORD					dwMaterial;		// index of material
 
-	void*				pDeflector;		// does the face has LM-UV map?
-	svector<CLightmap*>	lmap_layers;
+	void*					pDeflector;		// does the face has LM-UV map?
+	svector<CLightmap*,8>	lmap_layers;
 
 	union			{
-		bool		bSplitted;			//
-		bool		bOpaque;			// For ray-tracing speedup
+		bool				bSplitted;		//
+		bool				bOpaque;		// For ray-tracing speedup
 	};
 
 	Shader_xrLC&	Shader			();

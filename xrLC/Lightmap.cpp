@@ -35,27 +35,30 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	}
 	
 	// Addressing
-	D->RemapUV			(b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,512,512,bRotated);
+	vector<UVtri>		tris;
+	D->RemapUV			(tris,b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,512,512,bRotated);
 	
 	// Capture faces and setup their coords
-	for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
+	for (UVIt T=tris.begin(); T!=tris.end(); T++)
 	{
-		UVtri	P		= *T;
+		UVtri&	P		= *T;
 		Face	*F		= P.owner;
-		F->pDeflector	= this;
-		F->AddChannel	(P.uv[0], P.uv[1], P.uv[2]);
+		F->lmap_layers.push_back	(this);
+		F->AddChannel				(P.uv[0], P.uv[1], P.uv[2]);
 	}
 	
 	// Perform BLIT
+	CDeflector::Layer*	L = D->GetLayer(layer);
+	R_ASSERT			(L);
 	if (!bRotated) 
 	{
-		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
-		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
+		DWORD real_H	= (L->lm.dwHeight	+ 2*BORDER);
+		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
+		blit	(lm.pSurface,512,512,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	} else {
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
+		blit_r	(lm.pSurface,512,512,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }
 
