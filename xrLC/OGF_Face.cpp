@@ -100,8 +100,30 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 void OGF::Optimize()
 {
 	// Real optimization
-//	set_status("Optimizing UV",treeID,faces.size(),vertices.size());
+	//////////////////////////////////////////////////////////////////////////
+	// x-vertices
+	{
+		// Optimize texture coordinates
+		// 1. Calc bounds
+		Fvector2 Tdelta;
+		Fvector2 Tmin,Tmax;
+		Tmin.set(flt_max,flt_max);
+		Tmax.set(flt_min,flt_min);
+		for (u32 j=0; j<x_vertices.size(); j++)
+		{
+			x_vertex& V = x_vertices[j];
+			Tmin.min	(V.UV[i]);
+			Tmax.max	(V.UV[i]);
+		}
+		Tdelta.x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+		Tdelta.y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
 
+		// 2. Recalc UV mapping
+		for (u32 i=0; i<x_vertices.size(); i++)
+			x_vertices[i].UV.sub	(Tdelta[j]);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 	// Detect relevant number of UV pairs
 	R_ASSERT			(vertices.size());
 	dwRelevantUV		= vertices.front().UV.size();
@@ -252,16 +274,16 @@ void OGF::CalculateTB()
 }
 
 // Make Progressive
-xrCriticalSection	progressive_cs;
-void OGF::MakeProgressive()
+xrCriticalSection			progressive_cs;
+void OGF::MakeProgressive	()
 {
-	progressive_cs.Enter();
+	progressive_cs.Enter	();
 	// prepare progressive geom
 	VIPM_Init			();
 	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)
-		VIPM_AppendVertex(vertices[v_idx].P,vertices[v_idx].UV[0]);
+		VIPM_AppendVertex	(vertices[v_idx].P,vertices[v_idx].UV[0]);
 	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)
-		VIPM_AppendFace(faces[f_idx].v[0],faces[f_idx].v[1],faces[f_idx].v[2]);
+		VIPM_AppendFace		(faces[f_idx].v[0],faces[f_idx].v[1],faces[f_idx].v[2]);
 	// Convert
 	VIPM_Result* VR		= VIPM_Convert(u32(-1),1.f,1);
 	if (VR->swr_records.size()>0){
