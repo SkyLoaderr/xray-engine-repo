@@ -128,7 +128,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 			if (!AI_NodeID || (AI_NodeID == u32(-1))) {
 				Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-				R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
+				//R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
 			}
