@@ -5,7 +5,7 @@
 	<precondition>dialogs.level_garbage</precondition>
 	<phrase_list>
 	   	<phrase id="0">
-			<text>.Расскажи мне об этом месте.</text>
+			<text>Расскажи мне об этом месте.</text>
 			<next>1</next>
 		</phrase>                                                                                               
 	   	<phrase id="10">
