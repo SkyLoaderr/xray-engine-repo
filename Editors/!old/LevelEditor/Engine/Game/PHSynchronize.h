@@ -9,7 +9,13 @@ struct SPHNetState
 	Fvector		torque;
 	Fvector		position;
 	Fvector		previous_position;
-	Fquaternion quaternion;
+	union{
+		Fquaternion quaternion;
+		struct{
+			Fvector	accel;
+			float	max_velocity;
+		};
+	};
 	Fquaternion	previous_quaternion;
 	bool		enabled;
 };
