@@ -33,6 +33,7 @@ class CUIDragDropItemMP: public CUIDragDropItem
 	u32				sectionNum;
 	// xранение порядкового номера оружия в секции
 	u32				posInSection;
+	u32				posInSubSection;
 	// Имя секции оружия
 	shared_str		strName;
 	// Запоминаем адрес "хозяина"
@@ -72,11 +73,8 @@ public:
 	// Номер элемента в группе секций
 	void SetPosInSectionsGroup(const u32 pos)	{ posInSection = pos; }
 	u32 GetPosInSectionsGroup() const 			{ return posInSection; }
-
-	//-----------------------------------------------------------------------------/
-	//  Работа с аддонами. Средствами переопределения CWeapon нужную функциональность
-	//	получить не удалось
-	//-----------------------------------------------------------------------------/
+	void SetPosInSubSection(const u32 pos)		{ posInSubSection = pos; }
+	u32 GetPosInSubSection() const				{ return posInSubSection; }
 
 	// Структура информации о аддоне
 	typedef struct tAddonInfo

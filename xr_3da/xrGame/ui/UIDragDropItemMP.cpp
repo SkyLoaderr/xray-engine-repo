@@ -176,7 +176,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	pDDItemMP->GetFont()->SetColor(0xffffffff);
 	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), float(left), 
 		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
-		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
+		"%d", pDDItemMP->GetPosInSubSection() + 1);
 
 	pDDItemMP->GetFont()->OnRender();
 }

@@ -402,7 +402,7 @@ bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 				{
 					CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
 					
-					if (pDDItemMP->GetPosInSectionsGroup() == index)
+					if (pDDItemMP->GetPosInSubSection() == index)
 					{
 						GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
 						return true;
@@ -695,6 +695,7 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 void CUIBag::PutItemToGroup(CUIDragDropItemMP* pDDItem, int iGroup){
 	int iActiveSection = -1;
 	shared_str weapon_class;
+	static int subSection_group3[] = {-1, -1, -1, -1};
 
 	switch (iGroup)
 	{
@@ -729,6 +730,15 @@ void CUIBag::PutItemToGroup(CUIDragDropItemMP* pDDItem, int iGroup){
 
 	m_groups[iActiveSection].AttachChild(pDDItem);
 	pDDItem->SetOwner(&m_groups[iActiveSection]);
+
+	if ( 2 == iGroup)
+	{
+		++subSection_group3[iActiveSection - GROUP_31];
+		pDDItem->SetPosInSubSection(subSection_group3[iActiveSection - GROUP_31]);
+	}
+	else
+		pDDItem->SetPosInSubSection(pDDItem->GetPosInSectionsGroup());
+
 }
 
 void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName)
