@@ -229,9 +229,10 @@ function main_menu:InitControls()
 	local combo = CUIComboBox()
 	combo:SetAutoDelete(true)
 	combo:SetWindowName("combo_box")
-	combo:AddItem("super")
-	--combo:SetVertScroll(true);
+	combo:SetVertScroll(true);
 	combo:Init(btn_bonus_rect.x, btn_bonus_rect.y + btn_bonus_rect.height, btn_bonus_rect.width)
+	combo:AddItem("super")
+	combo:AddItem("bla-bla-bla", true)
 	self.main_frame:AttachChild(combo)
 end
 
