@@ -205,8 +205,8 @@ public:
     // get object properties methods
 	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
 	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
-    IC void			SetFlag					(DWORD flag){m_dwFlags|flag;}
-    IC void			ResetFlag				(DWORD flag){m_dwFlags&~flag;}
+    IC void			SetFlag					(DWORD flag){m_dwFlags|=flag;}
+    IC void			ResetFlag				(DWORD flag){m_dwFlags&=~flag;}
 
 	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}

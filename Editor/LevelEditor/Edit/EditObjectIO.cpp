@@ -9,10 +9,10 @@
 #include "EditMesh.h"
 #include "bone.h"
 #include "motion.h"
-#include "exportskeleton.h"
 #include "xr_ini.h"
 
 #ifdef _EDITOR
+#include "exportskeleton.h"
 #include "Shader.h"
 #include "xr_trims.h"
 
@@ -338,6 +338,7 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 }
 //------------------------------------------------------------------------------
 
+#ifdef _EDITOR
 bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
 	CFS_Memory F;
     CExportSkeleton E(this);
@@ -348,4 +349,4 @@ bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
     return false;
 }
 //------------------------------------------------------------------------------
-
+#endif

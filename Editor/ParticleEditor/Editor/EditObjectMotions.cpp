@@ -45,6 +45,7 @@ void st_AnimParam::Update(float dt){
 	}
 }
 
+#ifdef _EDITOR
 void CEditableObject::RTL_Update( float dT ){
     if (IsOMotionActive()){
 /*
@@ -74,6 +75,7 @@ void CEditableObject::RTL_Update( float dT ){
         CalculateAnimation();
     }
 }
+#endif
 
 void CEditableObject::ResetAnimation(bool upd_t){
 	SetActiveOMotion(0,false);

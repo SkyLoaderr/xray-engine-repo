@@ -115,7 +115,7 @@ bool COMotion::Load(CStream& F){
 //------------------------------------------------------------------------------------------
 CSMotion::CSMotion():CCustomMotion(){
 	mtype			=mtSkeleton;
-    iBoneOrPart		=-1;
+    iBoneOrPart		=0;
     bFX				=FALSE;
 	bStopAtEnd		=FALSE;
     fSpeed			=1.0f;
@@ -191,10 +191,6 @@ bool CSMotion::LoadMotion(const char* buf){
 
 void CSMotion::Save(CFS_Base& F){ 
 	CCustomMotion::Save(F);
-#ifdef _LWO_EXPORT
-	ReplaceSpace(cStartBone);	strlwr(cStartBone);
-	ReplaceSpace(cBonePart);	strlwr(cBonePart);
-#endif
 	F.Wword		(EOBJ_SMOTION_VERSION);
     F.Wdword	(iBoneOrPart);
     F.Wbyte		(bFX);
