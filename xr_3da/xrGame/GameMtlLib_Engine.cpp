@@ -6,8 +6,7 @@
 
 void DestroySounds(SoundSVec4& lst)
 {
-	for (SoundS4It it=lst.begin(); it!=lst.end(); it++)
-		::Sound->destroy(*it);
+	for (SoundS4It it=lst.begin(); it!=lst.end(); it++)	it->destroy();
 }
 
 void DestroyMarks(ShaderSVec4& lst)
@@ -27,8 +26,8 @@ void CreateSounds(SoundSVec4& lst, LPCSTR buf)
 	string128 tmp;
 	int cnt=_GetItemCount(buf);	R_ASSERT(cnt<GAMEMTL_SUBITEM_COUNT);
 	for (int k=0; k<cnt; k++){
-		lst.push_back	(sound());
-		::Sound->create	(lst.back(),	TRUE,	_GetItem(buf,k,tmp));
+		lst.push_back		(sound());
+		lst.back().create	(TRUE,	_GetItem(buf,k,tmp));
 	}
 }
 

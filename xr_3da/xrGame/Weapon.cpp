@@ -91,15 +91,15 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
-	if (FS.exist(temp,"$game_sounds$",name)) {
+	if (FS.exist(temp,"$game_sounds$",name)) 
 	{
-		Sound->create(dest,TRUE,name,iType);
+		dest.create		(TRUE,name,iType);
 		return;
 	}
 	strconcat	(name,"weapons\\","generic_",s_name,".wav");
 	if (FS.exist(temp,"$game_sounds$",name))	
 	{
-		Sound->create(dest,TRUE,name,iType);
+		dest.create		(TRUE,name,iType);
 		return;
 	}
 	Debug.fatal	("Can't find sound '%s' for weapon '%s'",name,GetName());
@@ -107,7 +107,7 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 
 void CWeapon::SoundDestroy	(	sound& dest)
 {
-	::Sound->destroy			(dest);
+	dest.destroy			();
 }
 
 void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
@@ -117,13 +117,13 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 
 	// test 'WEAPONS' folder 
 	strconcat	(name,"weapons\\",GetName(),"\\",T);
-	if (FS.exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name); 
 		return;
 	}
 	strconcat	(name,"weapons\\generic\\",T);
-	if (FS.exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;
@@ -131,13 +131,13 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 
 	// test 'UI' folder
 	strconcat	(name,"ui\\ui_hud_wpn_",GetName());
-	if (FS.exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;
 	}
 	strcpy		(name,"ui\\ui_hud_wpn_generic");
-	if (FS.exist(temp,Path.Textures,name,".dds"))	
+	if (FS.exist(temp,"$game_textures$",name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;
