@@ -76,7 +76,7 @@ public:
 	virtual void			Reparse				();									// Reparse configuration and freq data
 
 	// send
-	void					SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+	virtual void			SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 	void					SendTo				(DPNID ID, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 	void					SendBroadcast_LL	(DPNID exclude, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED);
 	void					SendBroadcast		(DPNID exclude, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED);

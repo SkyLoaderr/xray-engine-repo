@@ -190,6 +190,16 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 
 	return 0;
 }
+void			xrServer::SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
+{
+	if (SV_Client && SV_Client->ID==ID)
+	{
+		// optimize local traffic
+		Level().OnMessage		(data,size);
+	} else {
+		IPureServer::SendTo_LL(ID,data,size,dwFlags,dwTimeout);
+	}
+}
 
 //--------------------------------------------------------------------
 CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)

@@ -387,9 +387,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 				}
 			} else if (net_Connected)	{
 				// One of the messages - decompress it
-				NET_Packet* P	= net_Queue.Create();
-				P->B.count		= net_Compressor.Decompress(P->B.data,LPBYTE(m_data),m_size);
-				P->timeReceive	= time;
+				OnMessage				(m_data,m_size);
 			}
 		}
 		break;
@@ -430,6 +428,14 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 	}
 
 	return S_OK;
+}
+
+void	IPureClient::OnMessage(void* data, u32 size)
+{
+	// One of the messages - decompress it
+	NET_Packet* P	= net_Queue.Create			();
+	P->B.count		= net_Compressor.Decompress	(P->B.data,LPBYTE(data),size);
+	P->timeReceive	= TimerAsync				(device_timer);
 }
 
 void	IPureClient::timeServer_Correct(u32 sv_time, u32 cl_time)

@@ -249,12 +249,12 @@ public:
 		Server->game->SetGameTime(GameTime);
 	}
 
-	IC	float GetGameTimeSec()
+	IC	float	GetGameTimeSec()
 	{
 		return			(float(s64(GetGameTime()))/1000.f);
 	}
 
-	IC	float GetGameDayTimeSec()
+	IC	float	GetGameDayTimeSec()
 	{
 		return			(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);
 	}
