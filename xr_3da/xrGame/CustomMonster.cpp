@@ -98,7 +98,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	iArmor					= 0;
 	
 	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID("bip01_head");
+	eye_bone				= PKinematics(pVisual)->LL_BoneID("bone17");
 	eye_fov					= ini->ReadFLOAT(section,"eye_fov");
 	eye_range				= ini->ReadFLOAT(section,"eye_range");
 
@@ -110,12 +110,13 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	// Motions
 	PKinematics	V			= PKinematics(pVisual);
 	m_current				= 0;
-	m_idle					= V->ID_Cycle("idle");
-	m_crouch				= V->ID_Cycle("crouch_idle");
-	m_walk.Create			(V,"walk");
-	m_run.Create			(V,"run");
-	m_crouch_walk.Create	(V,"crouch_walk");
-	m_crouch_run.Create		(V,"crouch_run");
+	m_idle					= V->ID_Cycle("norm_idle");
+//	m_death					= V->ID_Cycle("norm_death");
+//	m_crouch				= V->ID_Cycle("crouch_idle");
+	m_walk.Create			(V,"norm_walk");
+	m_run.Create			(V,"norm_run");
+//	m_crouch_walk.Create	(V,"crouch_walk");
+//	m_crouch_run.Create		(V,"crouch_run");
 
 	// weapons
 	Weapons					= new CWeaponList(this);
@@ -201,7 +202,7 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 
 	if (iHealth<=0) {
 		// Die
-		S = m_crouch;
+		S = m_death;
 	} else {
 		if (speed<0.2f) {
 			// idle
@@ -212,12 +213,14 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 			float	dot  = view.dotproduct(move);
 			
 			SAnimState* AState = &m_walk;
-			if (bCrouched)	AState = &m_crouch_walk;
-			else			AState = &m_walk;
+//			if (bCrouched)	AState = &m_crouch_walk;
+//			else			
+			AState = &m_walk;
 			
 			if (speed>2.f){
-				if (bCrouched)	AState = &m_crouch_run;
-				else			AState = &m_run;
+//				if (bCrouched)	AState = &m_crouch_run;
+//				else			
+				AState = &m_run;
 			}
 			
 			if (dot>0.7f){
@@ -407,7 +410,7 @@ void CCustomMonster::Exec_Visibility	( float dt )
 	Fmatrix&	mEye	= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;		X.mul_43(svTransform,mEye);
 
-	eye_matrix.setHPB	(-r_current.yaw,-r_current.pitch,0);
+	eye_matrix.setHPB	(r_current.yaw,r_current.pitch,0);
 	eye_matrix.c.set	(X.c);
 	
 	Device.Statistic.AI_Vis.Begin();		//--------------

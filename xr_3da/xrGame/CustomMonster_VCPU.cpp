@@ -81,7 +81,7 @@ void CCustomMonster::Exec_Look		( float dt )
 
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 
-	mRotate.setXYZ(0,-r_current.yaw,0);
+	mRotate.setHPB(r_current.yaw,0,0);
 }
 
 void CCustomMonster::Exec_Action	( float dt )

@@ -74,12 +74,13 @@ public:
 	// Motions
 	DWORD				dwMoveState;
 	CMotionDef*			m_current;
+	CMotionDef*			m_death;
 	CMotionDef*			m_idle;
-	CMotionDef*			m_crouch;
+//	CMotionDef*			m_crouch;
 	SAnimState			m_walk;
 	SAnimState			m_run;
-	SAnimState			m_crouch_walk;
-	SAnimState			m_crouch_run;
+//	SAnimState			m_crouch_walk;
+//	SAnimState			m_crouch_run;
 
 	// movement
 	float				m_fWalkAccel;
