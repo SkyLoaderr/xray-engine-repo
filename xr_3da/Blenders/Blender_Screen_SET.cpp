@@ -108,8 +108,8 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 
 			RS.StageBegin		();
 			RS.StageSET_Address	(D3DTADDRESS_CLAMP);
-			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_DIFFUSE);
-			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
+			RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_BLENDCURRENTALPHA,	D3DTA_CURRENT);
+			RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_CURRENT);
 			RS.Stage_Texture	(oT_Name,	L_textures);
 			RS.Stage_Matrix		("$null",	L_matrices,	0);
 			RS.Stage_Constant	("$null",	L_constants);
