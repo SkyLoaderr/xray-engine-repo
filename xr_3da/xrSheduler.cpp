@@ -153,9 +153,10 @@ void CSheduler::ProcessStep			()
 		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
 		{
+			LPCSTR		_class			= typeid(T.Object).name	();
 			CObject*	O				= dynamic_cast<CObject*> (T.Object);
-			if (O)						Msg	("! xrSheduler: object exceed [3ms] timelimit (%s / %dms)",O->cName(),execTime);
-			else						Msg	("! xrSheduler: object exceed [3ms] timelimit (%x / %dms)",T.Object,execTime);
+			if (O)						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%s / %dms)",_class,O->cName(),execTime);
+			else						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%x / %dms)",_class,T.Object,execTime);
 		}	
 
 		Slice						();
