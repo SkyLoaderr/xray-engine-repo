@@ -114,16 +114,26 @@ void CSpaceRestrictionShape::build_border	()
 #ifdef DEBUG
 void CSpaceRestrictionShape::test_correctness	()
 {
-	//if (m_test_storage.empty()) return;
+	m_correct					= true;
+	
+	if (m_test_storage.empty()) return;
 
-	//ai().level_graph().set_mask		(border());
+	// leave only unique nodes in m_test_storage
+	std::sort					(m_test_storage.begin(),m_test_storage.end());
+	xr_vector<u32>::iterator	I = unique(m_test_storage.begin(),m_test_storage.end());
+	m_test_storage.erase		(I,m_test_storage.end());
+	
+	
+	// flood
+	ai().level_graph().set_mask		(border());
 
-	//xr_vector<u32>					nodes;
-	//ai().graph_engine().search		(ai().level_graph(), m_test_storage.back(), m_test_storage.back(), &nodes, GraphEngineSpace::CFlooder());
+	xr_vector<u32>					nodes;
+	ai().graph_engine().search		(ai().level_graph(), m_test_storage.back(), m_test_storage.back(), &nodes, GraphEngineSpace::CFlooder());
 
-	//ai().level_graph().clear_mask	(border());
-	//
-	//m_correct						= (m_test_storage.size() == nodes.size());
+	ai().level_graph().clear_mask	(border());
+	
+	// compare
+	m_correct						= (m_test_storage.size() == nodes.size());
 }
 #endif
 
