@@ -568,30 +568,44 @@
 				<Filter
 					Name="AI_Monsters"
 					Filter="">
-					<File
-						RelativePath="ai_funcs.cpp">
-					</File>
-					<File
-						RelativePath="ai_funcs.h">
-					</File>
-					<File
-						RelativePath=".\AI\ai_monsters.cpp">
-					</File>
-					<File
-						RelativePath=".\AI\ai_monsters.h">
-					</File>
-					<File
-						RelativePath=".\AI\ai_monsters_misc.cpp">
-					</File>
-					<File
-						RelativePath=".\AI\ai_monsters_misc.h">
-					</File>
-					<File
-						RelativePath="ai_sounds.cpp">
-					</File>
-					<File
-						RelativePath="ai_sounds.h">
-					</File>
+					<Filter
+						Name="ai"
+						Filter="">
+						<File
+							RelativePath="ai_funcs.cpp">
+						</File>
+						<File
+							RelativePath="ai_funcs.h">
+						</File>
+						<File
+							RelativePath=".\AI\ai_monsters.cpp">
+						</File>
+						<File
+							RelativePath=".\AI\ai_monsters.h">
+						</File>
+						<File
+							RelativePath=".\AI\ai_monsters_misc.cpp">
+						</File>
+						<File
+							RelativePath=".\AI\ai_monsters_misc.h">
+						</File>
+						<File
+							RelativePath="ai_sounds.cpp">
+						</File>
+						<File
+							RelativePath="ai_sounds.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_crow"
+						Filter="">
+						<File
+							RelativePath=".\AI\Crow\ai_crow.cpp">
+						</File>
+						<File
+							RelativePath=".\AI\Crow\ai_crow.h">
+						</File>
+					</Filter>
 					<Filter
 						Name="ai_rat"
 						Filter="">
@@ -646,16 +660,6 @@
 						</File>
 						<File
 							RelativePath=".\AI\Soldier\ai_soldier_templates.cpp">
-						</File>
-					</Filter>
-					<Filter
-						Name="ai_crow"
-						Filter="">
-						<File
-							RelativePath=".\AI\Crow\ai_crow.cpp">
-						</File>
-						<File
-							RelativePath=".\AI\Crow\ai_crow.h">
 						</File>
 					</Filter>
 					<Filter
