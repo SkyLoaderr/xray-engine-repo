@@ -100,7 +100,7 @@ VOID CDeflector::OA_Export()
 			bb.modify				(F->v[i]->P);
 		}
 	}
-	bb.getsphere(Center,Radius);
+	bb.getsphere(Sphere.P,Sphere.R);
 
 	// UV rect
 	UVpoint		min,max,size;
@@ -193,7 +193,7 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
 	tris			= tris_new;
 }
-Layer* CDeflector::GetLayer(b_light* base)
+CDeflector::Layer* CDeflector::GetLayer(b_light* base)
 {
 	for (DWORD I=0; I<layers.size(); I++)
 		if (layers[I].base == base)	return &layers[I];

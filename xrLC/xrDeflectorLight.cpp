@@ -407,7 +407,7 @@ VOID CDeflector::Light(HASH& H)
 		Face*	F		= tris[fid].owner;
 		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
 	}
-	bb.getsphere(Center,Radius);
+	bb.getsphere(Sphere.P,Sphere.R);
 	
 	// Iterate on layers
 	for (b_LightLayer* layer=pBuild->lights.begin(); layer!=pBuild->lights.end(); layer++)
@@ -419,8 +419,8 @@ VOID CDeflector::Light(HASH& H)
 			for (; L!=layer->lights.end(); L++)
 			{
 				if (L->type==LT_POINT) {
-					float dist = Center.distance_to(L->position);
-					if (dist>(Radius+L->range)) continue;
+					float dist = Sphere.P.distance_to(L->position);
+					if (dist>(Sphere.R+L->range)) continue;
 				}
 				LightsSelected.push_back(*L);
 			}
