@@ -64,6 +64,7 @@ class CPHElement	:
 
 	u32							push_untill;			//->to shell ??		//st
 	bool						bUpdate;				//->to shell ??		//st
+	bool						b_enabled_onstep;
 public:
 	IC	CODEGeom*				Geom(u16 num){R_ASSERT2 (num<m_geoms.size(),"out of range"); return m_geoms[num]; }
 	/////////////////////////////////////////////////////////////////////////////
@@ -126,7 +127,7 @@ public:
 	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);												//aux
 	virtual CPhysicsRefObject*	PhysicsRefObject			(){return m_phys_ref_object;}													//aux
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere
-
+	virtual bool			EnabledStateOnStep				(){return dBodyIsEnabled(m_body)||b_enabled_onstep;}
 	virtual void			getQuaternion					(Fquaternion& quaternion);
 	virtual void			setQuaternion					(const Fquaternion& quaternion);
 	virtual void			SetGlobalPositionDynamic		(const Fvector& position);

@@ -56,6 +56,7 @@ CPHElement::CPHElement()																															//aux
 	k_w=default_k_w;
 	k_l=default_k_l;//1.8f;
 	m_fratures_holder=NULL;
+	b_enabled_onstep=false;
 }
 
 void CPHElement::			add_Box		(const Fobb&		V)
@@ -446,10 +447,9 @@ void CPHElement::PhDataUpdate(dReal step){
 	if(! bActive)return;
 
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
-	if( !dBodyIsEnabled(m_body)) 
-	{
-		return;
-	}
+	b_enabled_onstep=!!dBodyIsEnabled(m_body);
+	if(!b_enabled_onstep) return;
+	
 
 
 	//////////////////////////////////base pointers/////////////////////////////////////////////////
@@ -605,6 +605,7 @@ void CPHElement::Enable(){
 
 void CPHElement::Disable(){
 
+//	return;
 	if(!dBodyIsEnabled(m_body)) return;
 	FillInterpolation();
 	if(!b_contacts_saved)
@@ -1157,6 +1158,7 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 			Fvector l;
 			l.sub(pos,mass_center);
 			dMassSetCylinder(&m,1.f,2,shape.cylinder.m_radius,shape.cylinder.m_height);
+			dMassAdjust(&m,mass);
 			dMatrix3 DMatx;
 			Fmatrix33 m33;
 			m33.j.set(shape.cylinder.m_direction);
