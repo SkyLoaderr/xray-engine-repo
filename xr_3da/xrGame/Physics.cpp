@@ -252,6 +252,7 @@ u32 CPHWorld::CalcNumSteps (u32 dTime)
 
 void CPHWorld::FrameStep(dReal step)
 {
+	VERIFY	(_valid(step));
 	// compute contact joints and forces
 
 	//step+=astep;
