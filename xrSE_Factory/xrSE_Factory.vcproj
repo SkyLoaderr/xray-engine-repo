@@ -731,12 +731,8 @@
 				<File
 					RelativePath=".\script_engine_inline.h">
 				</File>
-			</Filter>
-			<Filter
-				Name="ScriptExport"
-				Filter="">
 				<File
-					RelativePath=".\script_lua_export_globals.cpp">
+					RelativePath=".\script_engine_script.cpp">
 				</File>
 			</Filter>
 			<Filter
