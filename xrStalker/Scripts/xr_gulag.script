@@ -186,6 +186,75 @@ function fract:print()
 	end
 end
 function fract:loadJob(name) -- загружает список заданий
+	if name == "dolg" then
+		local t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_1",
+			path_hideout = "dolg_sleep_1" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_2",
+			path_hideout = "dolg_sleep_2" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_3",
+			path_hideout = "dolg_sleep_3" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_4",
+			path_hideout = "dolg_sleep_4" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_5",
+			path_hideout = "dolg_sleep_5" }
+		table.insert(self.Job, t)			
+		t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 9,
+			state = { 0 }, -- в каких состояниях это задание существует
+			running = false,
+			search_light = nil,
+			path_main = "dolg_sleep_6",
+			path_hideout = "dolg_sleep_6" }
+		table.insert(self.Job, t)			
+	end
+
 	if name == "blockpost" then
 		-- общие для всех состояний
 		local t = { name = "guard",
