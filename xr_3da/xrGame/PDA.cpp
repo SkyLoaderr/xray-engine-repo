@@ -113,7 +113,9 @@ void CPda::feel_touch_new(CObject* O)
 	if(pInvOwner && pInvOwner->IsActivePDA() && this != pInvOwner->GetPDA()) 
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
-		m_PDAList.push_back(pInvOwner->GetPDA());
+		if(std::find(m_PDAList.begin(), m_PDAList.end(), pInvOwner->GetPDA())==m_PDAList.end())
+			m_PDAList.push_back(pInvOwner->GetPDA());
+
 		m_NewPDAList.push_back(pInvOwner->GetPDA());
 		GetOriginalOwner()->NewPdaContact(pInvOwner);
 	}
