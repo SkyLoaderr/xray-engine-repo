@@ -91,5 +91,5 @@ void CAI_Stalker::ProcessScripts()
 //	R_ASSERT2		(l_tpGameObject);
 	AI_Path.DestNode= l_tpGameObject->AI_NodeID;
 
-	vfSetParameters	(0,&Fvector(l_tpGameObject->Position()),false,eWeaponStateIdle,l_tMovementAction.m_tPathType,l_tMovementAction.m_tBodyState,l_tMovementAction.m_tMovementType,eStateTypeNormal,eLookTypeDirection,Fvector().set(0,0,0),0);
+	vfSetParameters	(0,&Fvector(l_tpGameObject->Position()),false,eWeaponStateIdle,l_tMovementAction.m_tPathType,l_tMovementAction.m_tBodyState,l_tMovementAction.m_tMovementType,eStateTypeDanger,eLookTypeDirection,Fvector().set(0,0,0),0);
 }
