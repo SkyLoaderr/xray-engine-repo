@@ -11,13 +11,6 @@ local animations = {
 
                    }
                    
-local themes    = {
-                  {name = "theme_1", single = false},
-                  {name = "theme_2", single = false},
-                  {name = "theme_3", single = true},
-                  {name = "theme_4", single = true}
-                  }                    
-
 
 ----------------------------------------------------------------------------
 class "evaluator_complete" (property_evaluator)
@@ -36,10 +29,15 @@ end
 class "action_bar" (action_base)
 -------------------
 function action_bar:__init (name, storage) super (nil, name)
-    self.current_animation = 1
+    self.current_animation = math.random (1, table.getn (animations))
     self.interlocutor = nil
     self.talk_enabled = false
     self.a = storage
+    self.theme = nil
+    self.sub_theme = 0
+    self.phrase = 0
+    self.wait_time = 0
+    self.wait = 0
 end
 -------------------
 function action_bar:initialize ()
@@ -48,12 +46,18 @@ function action_bar:initialize ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
-    --self.object:set_item                  (object.hide, self.object:best_weapon ())
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (move.stand)
     self.object:set_mental_state          (anim.free)
     self.current_animation = math.random  (1, table.getn (animations))
     self.talk_enabled = false
+    
+    if self.a.interlocutor == nil then
+       self.theme = "bar_talk_single"
+    else
+       self.theme = "bar_talk_double"
+    end       
+    
 end    
 -------------------
 function action_bar:execute ()
@@ -61,6 +65,9 @@ function action_bar:execute ()
     
     if self.interlocutor == nil and self.a.interlocutor ~= nil then
        self.interlocutor = level.object (self.a.interlocutor)
+       if self.interlocutor ~= nil then
+          xr_motivator.storage[self.interlocutor:id ()].bar_stalker.passive = true
+       end   
        self.talk_enabled = true
     end   
     
@@ -68,7 +75,13 @@ function action_bar:execute ()
        self:set_animation ()
     end
     
-    
+    if self.a.interlocutor == nil then
+       self:single_talk ()
+    else
+       if self.talk_enabled == true then
+          self:double_talk ()
+       end   
+    end            
         
 end    
 -------------------
@@ -76,6 +89,72 @@ function action_bar:finalize ()
     action_base.finalize (self)
     self.object:clear_animations ()
 end    
+-------------------
+function action_bar:single_talk ()
+    if self.a.passive == true then return end
+    if self.sub_theme == 0 then
+       self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
+       self.phrase = 1
+       return
+    end
+    
+    printf ("SINGLE PLAY")
+    if self.object:active_sound_count () ~= 0 then 
+       return
+    else
+       if self.wait_time ~= 0 then 
+          if device ():time_global () - self.wait_time < 0 then 
+             return 
+          end    
+       self.wait_time = 0   
+       end
+    end   
+    
+    xr_sounds.play_sound (self.object, 0, self.theme, self.sub_theme, self.phrase)
+    self.wait_time = device ():time_global () + math.random (5000, 10000)
+    self.phrase = self.phrase + 1
+    if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
+       self.sub_theme = 0
+    end   
+           
+end
+-------------------
+function action_bar:double_talk ()
+    if self.interlocutor == nil then return end
+    
+    if self.sub_theme == 0 then
+       self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
+       self.phrase = 1
+       return
+    end
+    
+    printf ("DOUBLE PLAY")
+    local talker = nil
+    if bit_and (self.phrase, 1) == 1 then
+       talker = self.object 
+    else    
+       talker = self.interlocutor
+    end    
+    
+    if talker:active_sound_count () ~= 0 then 
+       return
+    else
+       if self.wait_time ~= 0 then 
+          if device ():time_global () - self.wait_time < 0 then 
+             return 
+          end    
+       self.wait_time = 0   
+       end
+    end   
+    
+    xr_sounds.play_sound (talker, 0, self.theme, self.sub_theme, self.phrase)
+    self.wait_time = device ():time_global () + math.random (5000, 10000)
+    self.phrase = self.phrase + 1
+    if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
+       self.sub_theme = 0
+    end   
+    
+end
 -------------------
 function action_bar:set_animation ()
 
@@ -93,7 +172,7 @@ end
 ----------------------------------------------------------------------------
 function add_to_binder (npc)
     local manager = npc:motivation_action_manager ()
-    
+    printf ("SET BINDER BAR FOR OBJECT %s", npc:name ())
     local property = {}
     local operators = {}
     
@@ -113,3 +192,4 @@ function add_to_binder (npc)
    	action:add_precondition (world_property (property["complete"],  true))
     
 end
+----------------------------------------------------------------------------
