@@ -1111,6 +1111,14 @@ SOURCE=.\cl_intersect.h
 
 SOURCE=.\xrCDB.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\xrXRC.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrXRC.h
+# End Source File
 # End Group
 # Begin Group "LTX"
 

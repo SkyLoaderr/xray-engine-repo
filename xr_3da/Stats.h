@@ -51,6 +51,7 @@ public:
 	CStatTimer	Input;				// total time taken by input subsystem (accurate only in single-threaded mode)
 	CStatTimer	clRAY;				// total: ray-testing
 	CStatTimer	clBOX;				// total: box query
+	CStatTimer	clFRUSTUM;			// total: frustum query
 	
 	CStatTimer	netClient;
 	CStatTimer	netServer;
