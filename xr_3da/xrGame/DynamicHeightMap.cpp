@@ -24,51 +24,51 @@ void CHM_Static::Update	()
 	if (v_x!=c_x)	{
 		if (v_x>c_x)	{
 			// scroll matrix to left
+			c_x ++;
 			for (int z=0; z<dhm_matrix; z++)
 			{
 				Slot*	S	= data[z][0];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
 				for (int x=1; x<dhm_matrix; x++)	data[z][x-1] = data[z][x];
 				data[z][dhm_matrix-1] = S;
-				S->x = dhm_matrix-1; S->z = z;
+				S->set	(c_x-dhm_line+dhm_matrix-1, c_z-dhm_line+z);
 			}
-			c_x ++;
 		} else {
 			// scroll matrix to right
+			c_x --;
 			for (int z=0; z<dhm_matrix; z++)
 			{
 				Slot*	S	= data[z][dhm_matrix-1];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
-				for (int x=dhm_matrix-1; x>0; x--)	data[z][x] = data[z][x-1];
+				for (int x=dhm_matrix-1; x>0; x--)	data[z][x] = data[z][x-1]; 
 				data[z][0]	= S;
-				S->x = 0; S->z = z;
+				S->set	(c_x-dhm_line+0,c_z-dhm_line+z);
 			}
-			c_x --;
 		}
 	}
 	if (v_z!=c_z)	{
 		if (v_z>c_z)	{
 			// scroll matrix down a bit
+			c_z ++;
 			for (int x=0; x<dhm_matrix; x++)
 			{
 				Slot*	S	= data[dhm_matrix-1][x];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
 				for (int z=dhm_matrix-1; z>0; z--)	data[z][x] = data[z-1][x];
 				data[0][x]	= S;
-				S->x = x; S->z = 0;
+				S->set	(c_x-dhm_line+x,c_z-dhm_line+0)
 			}
-			c_z ++;
 		} else {
 			// scroll matrix up
+			c_z --;
 			for (int x=0; x<dhm_matrix; x++)
 			{
 				Slot*	S = data[0][x];
 				if (S->bReady)	{	S->bReady = FALSE; task.push_back(S); }
 				for (int z=0; z<dhm_matrix; z++)	data[z-1][x] = data[z][x];
 				data[dhm_matrix-1][x]	= S;
-				S->x = x; S->z = dhm_matrix-1;
+				S->set	(c_x-dhm_line+x,c_z-dhm_line+dhm_matrix-1);
 			}
-			c_z --;
 		}
 	}
 	
@@ -118,4 +118,14 @@ void CHM_Static::Update	()
 			}
 		}
 	}
+}
+
+float CHM_Static::Query	(Fvector2& pos)
+{
+	int			v_x		= iFloor(pos.x/dhm_size);
+	int			v_z		= iFloor(pos.z/dhm_size);
+	int			dx		= v_x - c_x;
+	int			dz		= v_z - c_z;
+	int			gx		= dx  - dhm_line;
+	int			gz		= dz  - dhm_line;
 }
