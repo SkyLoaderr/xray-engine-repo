@@ -84,6 +84,8 @@ IC	void CSSetupManager::add_action					(const _action_id_type &action_id, _actio
 	VERIFY					(action);
 	VERIFY					(m_actions.find(action_id) == m_actions.end());
 	action->set_object		(m_object);
+	if (m_actions.empty())
+		m_current_action_id	= action_id;
 	m_actions.insert		(std::make_pair(action_id,action));
 }
 
