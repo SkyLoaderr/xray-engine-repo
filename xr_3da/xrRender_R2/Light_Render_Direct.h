@@ -7,12 +7,6 @@ const float							DSM_d_range		= 100.f;
 class CLight_Render_Direct
 {
 public:
-	CRT*							rt_smap;	// 32bit, (depth)	(eye-space)
-	IDirect3DSurface9*				rt_ZB;
-
-	SGeometry*						g_debug;
-	Shader*							s_debug;
-public:
 	Fmatrix							L_view;
 	Fmatrix							L_project;
 	Fmatrix							L_combine;

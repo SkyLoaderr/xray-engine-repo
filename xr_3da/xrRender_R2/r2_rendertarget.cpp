@@ -1,33 +1,59 @@
 #include "stdafx.h"
+#include "light_render_direct.h"
 
 void	CRenderTarget::OnDeviceCreate	()
 {
-	u32	w=Device.dwWidth, h=Device.dwHeight;
+	//	NORMAL
+	{
+		u32	w=Device.dwWidth, h=Device.dwHeight;
+		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
+		rt_Accumulator				= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
+		rt_Bloom_1					= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
+		rt_Bloom_2					= Device.Shader._CreateRT	(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
+	}
 
-	rt_Position		= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-	rt_Normal		= Device.Shader._CreateRT	(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
-	rt_Color		= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
-	rt_Accumulator	= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
-	rt_Bloom_1		= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
-	rt_Bloom_2		= Device.Shader._CreateRT	(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
+	// DIRECT
+	{
+		u32	w=DSM_size, h=DSM_size;
 
-	s_combine_dbg_Position		= Device.Shader.Create		("effects\\screen_set",		r2_RT_P);
-	s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N);
-	s_combine_dbg_Color			= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
-	s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_accum);
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
+		rt_smap_d					= Device.Shader._CreateRT	(r2_RT_smap_d,			w,h,D3DFMT_R32F);
+		s_smap_d_debug				= Device.Shader.Create		("effects\\screen_set",	r2_RT_smap_d);
+		g_smap_d_debug				= Device.Shader.CreateGeom	(FVF::F_TL,				RCache.Vertex.Buffer(), RCache.QuadIB);
+	}
 
-	g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	// COMBINE
+	{
+		s_combine_dbg_Position		= Device.Shader.Create		("effects\\screen_set",		r2_RT_P);
+		s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N);
+		s_combine_dbg_Color			= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
+		s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_accum);
+		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	}
+
+	// 
+	dwWidth		= Device.dwWidth;
+	dwHeight	= Device.dwHeight;
 }
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
+	// COMBINE
 	Device.Shader.DeleteGeom	(g_combine);
-
 	Device.Shader.Delete		(s_combine_dbg_Position);
 	Device.Shader.Delete		(s_combine_dbg_Normal);
 	Device.Shader.Delete		(s_combine_dbg_Color);
 	Device.Shader.Delete		(s_combine_dbg_Accumulator);
 
+	// DIRECT
+	Device.Shader.DeleteGeom	(g_smap_d_debug	);
+	Device.Shader.Delete		(s_smap_d_debug	);
+	Device.Shader._DeleteRT		(rt_smap_d		);
+	_RELEASE					(rt_smap_d_ZB	);
+
+	// NORMAL
 	Device.Shader._DeleteRT		(rt_Bloom_2		);
 	Device.Shader._DeleteRT		(rt_Bloom_1		);
 	Device.Shader._DeleteRT		(rt_Accumulator	);
@@ -38,19 +64,46 @@ void	CRenderTarget::OnDeviceDestroy	()
 
 void	CRenderTarget::phase_scene		()
 {
+	dwWidth						= Device.dwWidth;
+	dwHeight					= Device.dwHeight;
 	RCache.set_RT				(rt_Position->pRT,		0);
 	RCache.set_RT				(rt_Normal->pRT,		1);
 	RCache.set_RT				(rt_Color->pRT,			2);
 	RCache.set_ZB				(HW.pBaseZB);
+	RImplementation.rmNormal	();
 	Device.Clear				();
+}
+void	CRenderTarget::phase_smap_direct()
+{
+	dwWidth						= DSM_size;
+	dwHeight					= DSM_size;
+	RCache.set_RT				(rt_smap_d,				0);
+	RCache.set_RT				(NULL,					1);
+	RCache.set_RT				(NULL,					2);
+	RCache.set_ZB				(rt_smap_d_ZB);
+	RImplementation.rmNormal	();
+}
+void	CRenderTarget::phase_accumulator()
+{
+	dwWidth						= Device.dwWidth;
+	dwHeight					= Device.dwHeight;
+	RCache.set_RT				(rt_Accumulator,		0);
+	RCache.set_RT				(NULL,					1);
+	RCache.set_RT				(NULL,					2);
+	RCache.set_ZB				(HW.pBaseZB);
+	RImplementation.rmNormal	();
 }
 
 void	CRenderTarget::phase_combine	()
 {
+	// 
+	dwWidth						= Device.dwWidth;
+	dwHeight					= Device.dwHeight;
 	RCache.set_RT				(HW.pBaseRT,			0);
-	RCache.set_RT				(0,						1);
-	RCache.set_RT				(0,						2);
+	RCache.set_RT				(NULL,					1);
+	RCache.set_RT				(NULL,					2);
 	RCache.set_ZB				(HW.pBaseZB);
+	RImplementation.rmNormal	();
 
 	// Draw full-screen quad textured with our scene image
 	u32	Offset;

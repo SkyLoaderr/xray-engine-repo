@@ -18,6 +18,14 @@
 class CRender	:	public IRender_interface
 {
 public:
+	enum
+	{
+		PHASE_NORMAL	= 0,	// E[0]
+		PHASE_SMAP_D	= 1,	// E[1]
+		PHASE_SMAP_P	= 2		// E[2]
+	};
+	u32														phase;
+
 	// Dynamic scene graph
 	SceneGraph::mapNormal_T									mapNormal;
 	SceneGraph::mapMatrix_T									mapMatrix;
