@@ -174,10 +174,10 @@ void CBurerAttackTele::ExecuteTeleFire()
 	pMonster->MotionMan.TA_PointBreak();
 
 	Fvector enemy_pos = enemy->Position();
-	enemy_pos.y += 2 * enemy->Radius();
+	enemy_pos.y += 5 * enemy->Radius();
 
 	float dist = selected_object->Position().distance_to(enemy->Position());
-	pMonster->CTelekinesis::fire(selected_object, enemy_pos, dist/10);
+	pMonster->CTelekinesis::fire(selected_object, enemy_pos, dist/12);
 
 	pMonster->StopTeleObjectParticle(selected_object);
 	
