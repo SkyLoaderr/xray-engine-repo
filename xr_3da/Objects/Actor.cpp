@@ -73,7 +73,7 @@ void CActor::net_Export(NET_Packet* P)					// export to server
 	P->w_sdir			(NET_SavedAccel);
 	P->w_sdir			(Movement.GetVelocity());
 
-	int w_id = Weapons->ActiveWeaponID();
+	int w_id = Weapons->SelectedWeaponID	();
 	if (w_id<0)			P->w_u8(0xff);
 	else				P->w_u8(u8(w_id));
 
