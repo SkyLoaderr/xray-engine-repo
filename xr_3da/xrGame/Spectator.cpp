@@ -22,7 +22,7 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
 	cameras[eacFreeFly]		= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 
-	cam_active				= eacFreeFly; //eacFirstEye;//
+	cam_active				= eacFirstEye;//eacFreeFly; //eacFirstEye;//
 	look_idx				= 0;
 }
 
@@ -35,13 +35,11 @@ void CSpectator::UpdateCL()
 {
 	inherited::UpdateCL();
 	if (pCreator->CurrentViewEntity()==this){
-		if (eacFreeFly==cam_active){
-			cam_Update		(0);
-		}else{
+		if (eacFreeFly!=cam_active){
+			int idx			= 0;
 			game_cl_GameState::Player* P = Game().local_player;
-			if ((P->team>=0)&&(P->team<Level().Teams.size())){
+			if ((P->team>=0)&&(P->team<(int)Level().Teams.size())){
 				CTeam& T		= Level().Teams[P->team];
-				int idx			= 0;
 				for (u32 i=0; i<T.Squads.size(); i++){
 					CSquad& S = T.Squads[i];
 					for (u32 j=0; j<S.Groups.size(); j++){
@@ -59,9 +57,13 @@ void CSpectator::UpdateCL()
 					}
 				}
 			}
-			// не найден объект с таким индексом - сбросим в ноль
+			// не найден объект с таким индексом - сбросим на первый объект
 			look_idx = 0;
+			// никого нет за кем смотреть - переключимся на 
+			if (0==idx) cam_Set(eacFreeFly);
 		}
+		// по умолчанию eacFreeFly
+		cam_Update		(0);
 	}
 }
 
@@ -104,7 +106,7 @@ void CSpectator::OnKeyboardHold(int cmd)
 	{
 	case kWPN_NEXT:		look_idx++; break;
 	}
-	if (cam_active==eacFirstEye){
+	if (cam_active==eacFreeFly){
 		CCameraBase* C	= cameras	[cam_active];
 		Fvector vmove={0,0,0};
 		switch(cmd){
