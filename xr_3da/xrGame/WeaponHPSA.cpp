@@ -9,7 +9,7 @@
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
-#include "WeaponAutoRifle.h"
+#include "WeaponHPSA.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
 
@@ -26,7 +26,7 @@ CWeaponAutoRifle::CWeaponAutoRifle(LPCSTR name) : CWeaponMagazined(name)
 CWeaponAutoRifle::~CWeaponAutoRifle()
 {
 	// sounds
-	SoundDestroy		(sndFireLoop	);
+	SoundDestroy		(sndFireShoot	);
 	SoundDestroy		(sndEmptyClick	);
 	SoundDestroy		(sndReload		);
 	SoundDestroy		(sndRicochet[0]	);
@@ -45,7 +45,7 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
 
 	// Sounds
-	SoundCreate			(sndFireLoop,	"fire");
+	SoundCreate			(sndFireShoot,	"shoot");
 	SoundCreate			(sndEmptyClick,	"empty");
 	SoundCreate			(sndReload,		"reload");
 	SoundCreate			(sndRicochet[0],"ric1");
