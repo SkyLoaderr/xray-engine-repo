@@ -15,6 +15,7 @@ CUIStaticItem::CUIStaticItem()
 	iTileY		= 1;
 	iRemX		= 0;
 	iRemY		= 0;
+	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 }
 //--------------------------------------------------------------------
 
@@ -25,15 +26,14 @@ CUIStaticItem::~CUIStaticItem()
 }
 //--------------------------------------------------------------------
 
-void CUIStaticItem::SetShader(LPCSTR tex, LPCSTR sh)
+void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 {
 	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex);
-	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 {
-	SetShader		(tex,sh);
+	CreateShader	(tex,sh);
 	SetPos			(left,top);
 	SetAlign		(align);
 }

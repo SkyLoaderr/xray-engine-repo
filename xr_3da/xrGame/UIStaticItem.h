@@ -28,7 +28,7 @@ public:
 	void			SetPosY			(int top)					{iPos.y = top;}
 	void			SetColor		(u32 clr)					{dwColor= clr;}
 	void			SetColor		(Fcolor clr)				{dwColor= clr.get();}
-	void			SetShader		(LPCSTR tex, LPCSTR sh);
+	void			CreateShader	(LPCSTR tex, LPCSTR sh);
 	void			SetAlign		(u32 align)					{uAlign=align;};
 	void			Render			(Shader* sh=0);
 	void			Render			(float angle, Shader* sh=0);
