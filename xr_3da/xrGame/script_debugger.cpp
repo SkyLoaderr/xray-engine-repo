@@ -427,6 +427,7 @@ bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 			string512 varName; varName[0]=0;
 			msg->r_string(varName);
 			_SendMessage(DMSG_GET_VAR_TABLE, (WPARAM)varName, 0);
+			return false;
 		}break;
 
 		
@@ -436,6 +437,7 @@ bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 			msg->r_string(watch);
 			msg->r_int(iItem);
 			_SendMessage(DMSG_EVAL_WATCH, (WPARAM)watch, (LPARAM)iItem);
+			return false;
 		}break;
 
 

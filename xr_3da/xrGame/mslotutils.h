@@ -1,20 +1,30 @@
 #pragma once
 
+#ifdef XRGAME_EXPORTS
+#	define	_memcpy Memory.mem_copy
+#	define	_memset Memory.mem_fill
+#	define	_strlen xr_strlen
+#else
+#	define	_memcpy memcpy
+#	define	_memset memset
+#	define	_strlen strlen
+#endif
+
 class CMailSlotMsg {
 	char	m_buff [2048];
 	DWORD	m_len;
 	int     m_pos;
 	inline void Read(void* dst, int sz){
-				memcpy(dst,(void*)(&m_buff[0]+m_pos),sz); 
+				_memcpy(dst,(void*)(&m_buff[0]+m_pos),sz); 
 				m_pos +=sz;};
 	inline void Write(const void* src, int sz){
-				memcpy((void*)(&m_buff[0]+m_pos),src,sz); 
+				_memcpy((void*)(&m_buff[0]+m_pos),src,sz); 
 				m_pos +=sz; m_len=m_pos; };
 
 public:
 	CMailSlotMsg(){Reset();};
-	inline void  Reset(){ m_len=0; m_pos=0; memset(m_buff,0,2048);};
-	inline void  SetBuffer(const char* b, int sz){Reset(); memcpy(m_buff,b,sz); m_len=sz; m_pos=0;};
+	inline void  Reset(){ m_len=0; m_pos=0; _memset(m_buff,0,2048);};
+	inline void  SetBuffer(const char* b, int sz){Reset(); _memcpy(m_buff,b,sz); m_len=sz; m_pos=0;};
 	inline void* GetBuffer(){return m_buff;};
 	inline void	 SetLen(DWORD l){m_len=l;};
 	inline DWORD GetLen()const{return m_len;};
@@ -27,7 +37,7 @@ public:
 	};
 
 	inline BOOL	w_string(char* dst){
-		size_t sz = strlen(dst);
+		size_t sz = _strlen(dst);
 		w_int((int)sz);
 		Write(dst,(int)(sz+1)); return TRUE;
 	};

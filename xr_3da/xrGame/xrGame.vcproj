@@ -6146,9 +6146,6 @@
 						RelativePath=".\xrServer_process_event_destroy.cpp">
 					</File>
 					<File
-						RelativePath=".\xrServer_process_event_destroy.cpp">
-					</File>
-					<File
 						RelativePath="xrServer_process_event_ownership.cpp">
 					</File>
 					<File
