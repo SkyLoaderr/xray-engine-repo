@@ -33,6 +33,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 				// bump found
 				C.r_Pass		("deffer_base_bump","deffer_base_aref_bump",FALSE);
 				C.r_Sampler		("s_base",C.L_textures[0]);
+				C.r_Sampler		("s_encodeRG",r2_float2rg);
 				if (ps_r2_ls_flags.test(R2FLAG_BUMP_AF))	C.r_Sampler		("s_bump",fname,false,D3DTADDRESS_WRAP,D3DTEXF_ANISOTROPIC);
 				else										C.r_Sampler		("s_bump",fname);
 				C.r_End			();
