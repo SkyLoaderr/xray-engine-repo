@@ -234,12 +234,14 @@ struct DrawLevelPredicate {
 		} else if (s.ptype == CLevelDebug::SLevelItem::eBox) {
 			RCache.dbg_DrawAABB(s.position1,s.radius,s.radius,s.radius,s.color);
 		}
-	}
 #endif	
+	}
 };
 
 void CLevelDebug::CLevelInfo::draw_info()
 {
+#ifdef DEBUG
 	DrawLevelPredicate	pred;
 	process				(pred);	
+#endif
 }
