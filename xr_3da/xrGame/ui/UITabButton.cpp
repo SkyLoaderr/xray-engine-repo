@@ -104,6 +104,8 @@ void CUITabButton::Draw(){
 	{		
 		if (this->m_psiCurrentState->GetShader())
 		{
+			m_UIStaticItem.SetPos(rect.left, rect.top);
+
 			if(m_bStretchTexture)
 				m_psiCurrentState->Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
 			else

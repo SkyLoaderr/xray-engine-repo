@@ -113,3 +113,7 @@ void CUIListWndEx::SendMessage(CUIWindow *pWnd, s16 msg, void* pData){
 		}
 	}
 }
+
+CUIListItemEx* CUIListWndEx::GetExItem(int index){
+	return static_cast<CUIListItemEx*>(this->GetItem(index));
+}

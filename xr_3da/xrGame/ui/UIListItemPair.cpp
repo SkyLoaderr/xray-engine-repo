@@ -35,6 +35,7 @@ CUIListItemPair::CUIListItemPair(){
 	m_staticFileName.SetTextColor(color_argb(255, 255, 255, 255));
 	m_staticFileName.SetTextAlign(CGameFont::alLeft);
 	m_staticFileName.Init(0,0,0,0);
+	m_staticFileName.SetElipsis(CUIStatic::eepNone, 1);
 
 	// date/time field
 	m_staticDateTime.SetFont(HUD().pFontMedium);
@@ -69,7 +70,19 @@ void CUIListItemPair::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 //-------------------------------------------------
 
 void CUIListItemPair::Draw(){	
-	CUIListItemEx::Draw();
+	//CUIListItemEx::Draw();
+	RECT rect = GetAbsoluteRect();
+
+	if(m_bAvailableTexture && m_bTextureEnable)
+	{		
+		m_UIStaticItem.SetPos(rect.left, rect.top);		
+
+		if(m_bStretchTexture)
+			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+		else
+			m_UIStaticItem.Render();
+	}
 
 	int width  = this->GetWidth();
 	int height = this->GetHeight();
@@ -117,18 +130,19 @@ void CUIListItemPair::SetText(LPCSTR file_name, LPCSTR data_time){
 
 void CUIListItemPair::SetTextFileName(LPCSTR file_name){
 	m_staticFileName.SetText(file_name);	
+	CUIListItem::SetText(file_name);
 }
 
 //-------------------------------------------------
 
 void CUIListItemPair::SetTextDateTime(LPCSTR date_time){
-	m_staticDateTime.SetText(date_time);
+	m_staticDateTime.SetText(date_time);	
 }
 
 //-------------------------------------------------
 
 void CUIListItemPair::SetFontFileName(CGameFont* pFont){
-	m_staticFileName.SetFont(pFont);
+	m_staticFileName.SetFont(pFont);	
 }
 
 //-------------------------------------------------
@@ -148,4 +162,16 @@ int CUIListItemPair::GetBorder(){
 void CUIListItemPair::SetBorder(int iBorder){
 	// border = [1, 100]
 	m_iBorder = iBorder%100;
+}
+
+LPCSTR CUIListItemPair::GetTextFileName(){
+	return this->m_staticFileName.GetText();
+}
+
+LPCSTR CUIListItemPair::GetTextDateTime(){
+	return this->m_staticDateTime.GetText();
+}
+
+LPCSTR CUIListItemPair::GetText(){
+	return this->m_staticDateTime.GetText();	
 }

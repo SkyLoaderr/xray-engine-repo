@@ -23,12 +23,15 @@ public:
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
 	virtual void SetHighlightText(bool Highlight); 
 	virtual void SetText(LPCSTR file_name, LPCSTR data_time);
-	        void SetTextFileName(LPCSTR file_name);
+	       void SetTextFileName(LPCSTR file_name);
+	LPCSTR		 GetTextFileName();
 	        void SetTextDateTime(LPCSTR data_time);
+	LPCSTR		 GetTextDateTime();
 	        void SetFontFileName(CGameFont* pFont);
 	        void SetFontDateTime(CGameFont* pFont);
 			int  GetBorder();
 			void SetBorder(int iBorder);
+	virtual LPCSTR GetText();
 
 protected:
 	virtual void Draw();

@@ -16,7 +16,7 @@ CUIListItemEx::CUIListItemEx(void)
 	this->SetStretchTexture(true);
 	this->SetColor(color_argb(0, 0, 0, 0));
 	//this->m_bPerformTextLimit = false;
-	this->SetElipsis(CUIStatic::eepEnd, 3);
+	//this->SetElipsis(CUIStatic::eepEnd, 3);
 }
 
 CUIListItemEx::~CUIListItemEx(void)

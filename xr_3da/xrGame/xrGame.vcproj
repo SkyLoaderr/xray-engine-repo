@@ -9019,37 +9019,6 @@
 					<File
 						RelativePath=".\ui\UITextBanner.h">
 					</File>
-					<Filter
-						Name="Buttons"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIButton.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIButton.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIButton_script.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UICheckButton.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UICheckButton.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIRadioButton.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIRadioButton.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIRadioGroup.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIRadioGroup.h">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="EditBox"
@@ -9164,6 +9133,37 @@
 					</File>
 					<File
 						RelativePath=".\ui\uiscriptwnd_script2.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="Buttons"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIButton.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIButton_script.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICheckButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICheckButton.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioButton.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioGroup.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIRadioGroup.h">
 					</File>
 				</Filter>
 			</Filter>

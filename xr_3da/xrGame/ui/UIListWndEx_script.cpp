@@ -32,8 +32,9 @@ void CUIListWndEx::script_register(lua_State *L)
 	module(L)
 		[
 			class_<CUIListWndEx, CUIListWnd>("CUIListWndEx")
+			.def(							constructor<>())
 			.def("AddText",					&CUIListWndEx::AddText_script)
-			.def(							constructor<>()),
+			.def("GetExItem",				&CUIListWndEx::GetExItem),
 			
 			class_<CUIListItemEx, CUIListItem>("CUIListItemEx")
 			.def(							constructor<>()),
@@ -43,12 +44,14 @@ void CUIListWndEx::script_register(lua_State *L)
 			class_<CUIListItemPair, CUIListItemEx>("CUIListItemPair")
 			.def(							constructor<>())
 			.def("SetTextFileName",			&CUIListItemPair::SetTextFileName)
+			.def("GetTextFileName",			&CUIListItemPair::GetTextFileName)
 			.def("SetTextDateTime",			&CUIListItemPair::SetTextDateTime)
+			.def("GetTextDateTime",			&CUIListItemPair::GetTextDateTime)
 			.def("SetFontFileName",			&CUIListItemPair::SetFontFileName)
 			.def("SetFontDateTime",			&CUIListItemPair::SetFontDateTime)
 			.def("SetTextFileName",			&CUIListItemPair::SetTextFileName)
 			.def("GetBorder",				&CUIListItemPair::GetBorder)
-			.def("SetBorder",				&CUIListItemPair::SetBorder)
+			.def("SetBorder",				&CUIListItemPair::SetBorder)		
 
 		];
 }
