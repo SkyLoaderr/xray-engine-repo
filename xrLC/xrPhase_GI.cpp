@@ -106,7 +106,7 @@ public:
 					//factor	= _sqrt (factor);								// move towards 1.0 (one)
 			int		count		= iCeil( factor * float(gi_num_photons) );
 					//count		= gi_num_photons;
-			float	_clip		= (_sqrt(src.energy)/20.f + gi_clip)/2.f;
+			float	_clip		= (_sqrt(src.energy)/10.f + gi_clip)/2.f;
 			float	_scale		= 1.f / _sqrt(factor);
 			//clMsg	("src_LER[%d/%f/%f] -> factor(%f), count(%d), clip(%f)",
 			//	src.level, src.energy, src.range, factor, count, _clip
