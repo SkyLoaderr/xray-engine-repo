@@ -22,8 +22,8 @@
 	</frame_window>
 
 	<!-- PHRASES LIST -->
-	<list x="20" y="61" width="591" height="161" item_height="18" active_bg="1">
-		<font font="letterica18" r="216" g="186" b="140"></font>
+	<list x="40" y="451" width="591" height="161" item_height="18" active_bg="1">
+		<font font="letterica18" r="240" g="217" b="182"></font>
 	</list>
 
 	<!-- LOG LIST -->
