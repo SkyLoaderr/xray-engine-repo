@@ -646,7 +646,7 @@ CManager&	get_manager()
 class CPrintClass : public CInterfaceClass {
 public:
 	CPrintClass(){}
-	virtual test_type vf(LPCSTR S) {printf("Base class function call : %s\n",S); return 1;}
+	virtual test_type vf(LPCSTR S) {/**printf("Base class function call : %s\n",S); /**/return 1;}
 	void add() {get_manager().Add(this);}
 	CPrintClass &test(double &a)
 	{
@@ -673,52 +673,46 @@ void test(double &a)
 	a += 1.0;
 }
 
-// main
-int __cdecl _tmain(int argc, _TCHAR* argv[])
+typedef lua_State CLuaVirtualMachine;
+
+int LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-//	lua_State		*L = lua_open();
-//	if (!L)
-//		lua_error	(L);
-//
-//	luaopen_base	(L);
-//	luaopen_string	(L);
-//	luaopen_math	(L);
-//	luaopen_table	(L);
-//
-//	lua_pop			(L,4);
-//
-//	open			(L);
-//
-//	module(L)
-//	[
-//		class_<CPrintClass,CPrintClassWrapper>("pp_class")
-//			.def(constructor<>())
-//			.def("vf",		&CPrintClassWrapper::vf_static)
-//			.def("add",		&CPrintClass::add)
-//			.def("test",	&CPrintClass::test,	pure_out_value(_1, adopt(_2)))
-//			.def("test1",	&CPrintClass::test1,pure_out_value(_1))
-//	];
+	printf("PANIC!\n");
+	return(0);
+}
 
+void LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+{
+	lua_getinfo(tpLuaVirtualMachine,"nSlu",tpLuaDebug);
+	LPCSTR S = "";
+	switch (tpLuaDebug->event) {
+		case LUA_HOOKCALL		: {
+			S	= "[CALL]        ";
+			break;
+		}
+		case LUA_HOOKRET		: {
+			S	= "[RETURN]      ";
+			break;
+		}
+		case LUA_HOOKLINE		: {
+			S	= "[LINE]        ";
+			break;
+		}
+		case LUA_HOOKCOUNT		: {
+			S	= "[COUNT]       ";
+			break;
+		}
+		case LUA_HOOKTAILRET	: {
+			S	= "[TAIL_RETURN] ";
+			break;
+		}
+		default					: NODEFAULT;
+	}
+	printf		(tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)\n" : "%s%s : %s %s %s\n",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "\b",tpLuaDebug->currentline);
+}
 
-//	load_file_into_namespace(L,"x:\\extension.lua","core");
-//	load_file_into_namespace(L,"x:\\extension1.lua","core");
-//	lua_State		*T = lua_newthread(L);
-//	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
-
-	//	lua_resume		(T,0);
-	
-//	module(L)
-//	[
-//		def("test", test, pure_out_value(_1))
-//	];
-	
-//	lua_dofile(L,"x:\\extension.lua");
-//	lua_dofile(L,"x:\\extension1.lua");
-//	lua_State	*T = lua_newthread(L);
-//	luaL_loadfile(T,"x:\\test2.lua");
-//	lua_resume(T,0);
-//	tManager.Update();
-//	lua_resume(T,0);
+void TestLua0()
+{
 	lua_State		*L = lua_open();
 	if (!L)
 		lua_error	(L);
@@ -728,14 +722,71 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	luaopen_math	(L);
 	luaopen_table	(L);
 
+	lua_pop			(L,4);
+
 	open			(L);
+
+	lua_atpanic		(L,LuaPanic);
+	lua_sethook		(L, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 
 	module(L)
 	[
-		def("test1",&test, out_value(_1))
+		class_<CPrintClass,CPrintClassWrapper>("pp_class")
+			.def(constructor<>())
+			.def("vf",		&CPrintClassWrapper::vf_static)
+			.def("add",		&CPrintClass::add)
+			.def("test",	&CPrintClass::test,	pure_out_value(_1, adopt(_2)))
+			.def("test1",	&CPrintClass::test1,pure_out_value(_1))
 	];
+	
+//	load_file_into_namespace(L,"x:\\extension.lua","core");
+//	load_file_into_namespace(L,"x:\\extension1.lua","core");
+//	lua_State		*T = lua_newthread(L);
+//	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
+//	lua_resume		(T,0);
+	
+	lua_dofile(L,"x:\\extension.lua");
+	lua_dofile(L,"x:\\extension1.lua");
+	lua_State	*T = lua_newthread(L);
+	
+	lua_atpanic		(T,	LuaPanic);
+	lua_sethook		(T, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	10);
+
+	luaL_loadfile(T,"x:\\test1.lua");
+	lua_resume(T,0);
+	tManager.Update();
+	lua_resume(T,0);
+}
+
+void TestLua1()
+{
+	lua_State		*L = lua_open();
+	if (!L)
+		lua_error	(L);
+
+	luaopen_base	(L);
+	luaopen_string	(L);
+	luaopen_math	(L);
+	luaopen_table	(L);
+	
+//	open			(L);
+
+	lua_atpanic		(L,LuaPanic);
+	lua_sethook		(L, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+
+//	module(L)
+//	[
+//		def("test1",&test, out_value(_1))
+//	];
 
 	lua_dofile		(L,"x:\\test2.lua");
 
 	lua_close		(L);
+}
+
+// main
+int __cdecl _tmain(int argc, _TCHAR* argv[])
+{
+	TestLua0();
+//	TestLua1();
 }
