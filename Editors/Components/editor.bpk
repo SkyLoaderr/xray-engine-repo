@@ -11,16 +11,18 @@
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>
-    <LIBRARIES value="teeqr.lib elpproB6.lib elpackB6.lib elpkdbB6.lib bcb2kaxserver.lib 
-      indy.lib dbxcds.lib dclocx.lib soaprtl.lib bcbie.lib nmfast.lib 
-      dbexpress.lib inetdbxpress.lib inetdbbde.lib bcbsmp.lib dsnapcon.lib 
-      dsnapcrba.lib visualdbclx.lib dss.lib tee.lib teedb.lib teeui.lib qrpt.lib 
-      bdecds.lib cds.lib ibxpress.lib vcldbx.lib bdertl.lib adortl.lib vcldb.lib"/>
+    <LIBRARIES value="bcbshlctrls.lib teeqr.lib elpproB6.lib elpackB6.lib elpkdbB6.lib 
+      bcb2kaxserver.lib indy.lib dbxcds.lib dclocx.lib soaprtl.lib bcbie.lib 
+      nmfast.lib dbexpress.lib inetdbxpress.lib inetdbbde.lib bcbsmp.lib 
+      dsnapcon.lib dsnapcrba.lib visualdbclx.lib dss.lib tee.lib teedb.lib 
+      teeui.lib qrpt.lib bdecds.lib cds.lib ibxpress.lib vcldbx.lib bdertl.lib 
+      adortl.lib vcldb.lib"/>
     <SPARELIBS value="rtl.lib vcldb.lib adortl.lib bdertl.lib vcldbx.lib ibxpress.lib cds.lib 
       bdecds.lib qrpt.lib teeui.lib teedb.lib tee.lib dss.lib visualdbclx.lib 
       dsnapcrba.lib dsnapcon.lib bcbsmp.lib inetdbbde.lib inetdbxpress.lib 
       dbexpress.lib nmfast.lib bcbie.lib soaprtl.lib dclocx.lib dbxcds.lib 
-      indy.lib bcb2kaxserver.lib elpkdbB6.lib elpackB6.lib elpproB6.lib teeqr.lib"/>
+      indy.lib bcb2kaxserver.lib elpkdbB6.lib elpackB6.lib elpproB6.lib 
+      teeqr.lib bcbshlctrls.lib"/>
     <PACKAGES value="rtl.bpi designide.bpi vcl.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>
@@ -33,7 +35,7 @@
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="editor.cpp"/>
     <INCLUDEPATH value="..\..\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="..\..\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <LIBPATH value="$(BCB)\Projects\Lib;..\..\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>

@@ -12,6 +12,11 @@ private
 	FOnPaint: TNotifyEvent;
 	procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
 protected
+	FTBar: TPanel;
+	FBBar: TPanel;
+	FLBar: TPanel;
+	FRBar: TPanel;
+
 	procedure Paint; virtual;
 protected
 	FOnChangeFocus: TNotifyEvent;
@@ -29,6 +34,7 @@ protected
 	procedure SetUnfocusedColor(Value: TColor);
 public
 	constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
 	procedure DefaultHandler(var Message); override;
 published
     property FocusedColor: TColor read FFocusedColor write SetFocusedColor default clYellow;
@@ -63,16 +69,53 @@ implementation
 constructor TD3DWindow.Create(AOwner: TComponent);
 begin
   	inherited Create(AOwner);
+    FTBar			:= TPanel.Create(self);
+    FTBar.Parent	:= self;
+    FTBar.Align		:= alTop;
+    FTBar.BevelInner:= bvNone;
+    FTBar.BevelOuter:= bvNone;
+    FTBar.Height	:= 1;
+    
+    FBBar			:= TPanel.Create(self);
+    FBBar.Parent	:= self;
+    FBBar.Align		:= alBottom;
+    FBBar.BevelInner:= bvNone;
+    FBBar.BevelOuter:= bvNone;
+    FBBar.Height	:= 1;
+    
+    FLBar			:= TPanel.Create(self);
+    FLBar.Parent	:= self;
+    FLBar.Align		:= alLeft;
+    FLBar.BevelInner:= bvNone;
+    FLBar.BevelOuter:= bvNone;
+    FLBar.Width		:= 1;
+    
+    FRBar			:= TPanel.Create(self);
+    FRBar.Parent	:= self;
+    FRBar.Align		:= alRight;
+    FRBar.BevelInner:= bvNone;
+    FRBar.BevelOuter:= bvNone;
+    FRBar.Width		:= 1;
+    
 	ControlStyle 	:= RWStyle;
     color 			:= $00555555;
     width			:= 120;
     height			:= 120;
-    TabStop 		:= True;
+    TabStop 		:= True;              
     ParentColor 	:= False;
     FBorderStyle 	:= bsSingle;
     FDrawFocusRect 	:= true;
     FFocusedColor 	:= clYellow;
     FUnfocusedColor	:= clGray;
+end;
+
+destructor TD3DWindow.Destroy;
+begin
+  FTBar.Free;
+  FBBar.Free;
+  FLBar.Free;
+  FRBar.Free;
+  inherited Destroy;
 end;
 
 procedure TD3DWindow.ChangeFocus(p: boolean);
@@ -154,27 +197,35 @@ end;
 procedure TD3DWindow.Paint;
 begin
 	inherited;
+	if Assigned(FOnPaint) then FOnPaint(Self);
     if (FDrawFocusRect) then
     begin
-    	if (Focused) then 	Canvas.Pen.Color := FFocusedColor
-        else				Canvas.Pen.Color := FUnfocusedColor;
-        Canvas.Brush.Style := bsClear;
-        Canvas.Pen.Style := psSolid;
-        Canvas.Pen.Width := 1;
-        Canvas.MoveTo	(0, 0);
-        Canvas.LineTo	(Width-1,0);
-        Canvas.LineTo	(Width-1,Height-1);
-        Canvas.LineTo	(0,Height-1);
-        Canvas.LineTo	(0,0);
+    	if (Focused) then 	
+        begin
+        	FTBar.Color := FFocusedColor;
+        	FBBar.Color := FFocusedColor;
+        	FLBar.Color := FFocusedColor;
+        	FRBar.Color := FFocusedColor;
+        end 
+        else 
+        begin
+        	FTBar.Color := FUnfocusedColor;
+        	FBBar.Color := FUnfocusedColor;
+        	FLBar.Color := FUnfocusedColor;
+        	FRBar.Color := FUnfocusedColor;
+        end;
     end;
-	if Assigned(FOnPaint) then FOnPaint(Self);
 end;
 
 procedure TD3DWindow.SetDrawFocusRect(Value: Boolean);
 begin
   	if Value <> FDrawFocusRect then
   	begin
-    	FDrawFocusRect := Value;
+    	FDrawFocusRect 	:= Value;
+        FTBar.Visible 	:= Value;
+        FBBar.Visible 	:= Value;
+        FLBar.Visible 	:= Value;
+        FRBar.Visible 	:= Value;
         Repaint();
   	end;
 end;
