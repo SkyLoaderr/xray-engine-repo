@@ -13,7 +13,7 @@ operators["report_soldier"]             = xr_actions_id.sidor_act_report_soldier
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_timeout" (property_evaluator)
 ----------------------
-function evaluator_timeout:__init (name, leader_name) super ()
+function evaluator_timeout:__init (name, leader_name) super (nil, name)
 --    self.time = device ():time_global ()
 	self.time = game.time ()
     self.leader_name = leader_name
@@ -44,7 +44,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_report" (property_evaluator)
 ----------------------
-function evaluator_report:__init (name) super ()
+function evaluator_report:__init (name) super (nil, name)
     self.npc = nil
 end
 ----------------------
@@ -350,14 +350,14 @@ function AddScheme (obj, property_id)
        local leader_name = ini:r_string ("report", "leader_name")
        if ini:line_exist ("report", "theme") == false then return end
        local theme = ini:r_string ("report", "theme")
-       manager:add_evaluator (properties["timeout_soldier"], this.evaluator_timeout ("evaluator_timeout_soldier", leader_name))
+       manager:add_evaluator (properties["timeout_soldier"], this.evaluator_timeout ("reporttimeout_soldier", leader_name))
        local action = this.action_report_soldier ("action_report_soldier", leader_name, theme, a)
        action:add_precondition      (world_property (stalker_ids.property_alive,    true))
        action:add_precondition      (world_property (stalker_ids.property_enemy,    false))
---       action:add_precondition      (world_property (properties["timeout_soldier"], true))
+--     action:add_precondition      (world_property (properties["timeout_soldier"], true))
        xr_motivator.addCommonPrecondition(action)
        action:add_effect            (world_property (properties["timeout_soldier"], false))
---         action:set_weight            (2)
+--     action:set_weight            (2)
        manager:add_action           (operators["report_soldier"], action)
 
        action = manager:action (property_id)
@@ -366,7 +366,7 @@ function AddScheme (obj, property_id)
        if ini:line_exist ("report", "is_leader") == false or ini:r_bool ("report", "is_leader") == false then
           return
        end     
-       manager:add_evaluator (properties["leader_report"], this.evaluator_report ("evaluator_leader_report"))
+       manager:add_evaluator (properties["leader_report"], this.evaluator_report ("report_leader_report"))
        local action = this.action_report_leader ("action_report_leader", a)
        action:add_precondition      (world_property (stalker_ids.property_alive,    true))
        action:add_precondition      (world_property (stalker_ids.property_enemy,    false))
