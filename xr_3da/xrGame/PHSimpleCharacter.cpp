@@ -529,7 +529,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	//limit velocity
 	dReal l_limit;
 	if(is_control&&!b_lose_control) 
-		l_limit = m_max_velocity;
+		l_limit = m_max_velocity/phTimefactor;
 	else			
 		l_limit=10.f/fixed_step;
 
