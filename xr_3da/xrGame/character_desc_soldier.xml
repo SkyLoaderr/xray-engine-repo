@@ -23,6 +23,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
+			device_torch \n
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -51,6 +52,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -79,6 +81,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -107,6 +110,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -135,6 +139,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -164,6 +169,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -192,6 +198,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
+			device_torch \n
 			</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -220,6 +227,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_svd \n
 			ammo_7.62x54_ap = 1 \n
+			device_torch \n
 			</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -249,6 +257,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_vintorez \n
 			ammo_9x39_ap = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -277,6 +286,7 @@
 			ammo_9x18_pbp = 1 \n
 			wpn_val \n
 			ammo_9x39_ap = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -303,9 +313,9 @@
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
-			wpn_ak74 = 1,0,0,1 \n
+			wpn_ak74 = 1,0,0,0 \n
 			ammo_5.45x39_ap = 1 \n
-			ammo_vog-25 = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -336,6 +346,7 @@
 			ammo_9x19_pbp = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -365,6 +376,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
+			device_torch \n
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
