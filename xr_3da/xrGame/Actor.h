@@ -49,6 +49,10 @@ class  CActorEffector;
 
 class	CHudItem;
 
+struct SActorMotions;
+struct SActorVehicleAnims;
+
+
 class	CActor: 
 	public CEntityAlive, 
 	public IInputReceiver,
@@ -269,8 +273,8 @@ protected:
 
 	void					create_Skeleton			();
 public:
-	SActorMotions			m_anims;
-	SActorVehicleAnims		m_vehicle_anims;
+	SActorMotions*			m_anims;
+	SActorVehicleAnims*		m_vehicle_anims;
 
 	CBlend*					m_current_legs_blend;
 	CBlend*					m_current_torso_blend;

@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "Actor_Flags.h"
 
-//#include "customitem.h"
 #include "hudmanager.h"
 
 #include "Car.h"
@@ -18,8 +17,7 @@
 #include "../effectorfall.h"
 #include "EffectorBobbing.h"
 #include "clsid_game.h"
-//#include "EffectorPPHit.h"
-//#include "EffectorHit.h"
+
 #include "ShootingHitEffector.h"
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
@@ -37,6 +35,7 @@
 //
 #include "Actor.h"
 #include "ActorAnimation.h"
+#include "actor_anim_defs.h"
 
 #include "HudItem.h"
 #include "WeaponMagazined.h"
@@ -178,6 +177,10 @@ CActor::CActor() : CEntityAlive()
 	hIndicatorShader.create("friendly_indicator","ui\\ui_blueteam");
 //	hIndicatorShader.create("font","ui\\ui_font_header_europe");
 	m_pUsableObject=NULL;
+
+
+	m_anims = xr_new<SActorMotions>();
+	m_vehicle_anims = xr_new<SActorVehicleAnims>();
 }
 
 
@@ -206,6 +209,9 @@ CActor::~CActor()
 	//-----------------------------------------------------------
 	hFriendlyIndicator.destroy();
 	xr_delete						(m_pPhysics_support);
+
+	xr_delete(m_anims);
+	xr_delete(m_vehicle_anims);
 }
 
 void CActor::reinit	()
@@ -468,7 +474,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		CSkeletonAnimated *tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
 		VERIFY(tpKinematics);
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(r_model_yaw + r_model_yaw_delta,yaw) <= PI_DIV_2 ? 0 : 1))];
+		CMotionDef *tpMotionDef = m_anims->m_normal.m_damage[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(r_model_yaw + r_model_yaw_delta,yaw) <= PI_DIV_2 ? 0 : 1))];
 		float power_factor = perc/100.f; clamp(power_factor,0.f,1.f);
 		VERIFY(tpMotionDef);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);

@@ -9,6 +9,10 @@
 #include "Car.h"
 #include "../skeletonanimated.h"
 #include "PHShellSplitter.h"
+
+#include "actor_anim_defs.h"
+
+
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
 	if(!vehicle) return;
@@ -26,7 +30,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	// temp play animation
 	CCar*	car			= smart_cast<CCar*>(m_holder);
 	u16 anim_type       = car->DriverAnimationType();
-	SActorVehicleAnims::SOneTypeCollection& anims=m_vehicle_anims.m_vehicles_type_collections[anim_type];
+	SActorVehicleAnims::SOneTypeCollection& anims=m_vehicle_anims->m_vehicles_type_collections[anim_type];
 	V->PlayCycle(anims.idles[0],FALSE);
 
 	ResetCallbacks		();
@@ -63,8 +67,8 @@ void CActor::detach_Vehicle()
 	m_holder=NULL;
 	SetCallbacks		();
 	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual()); R_ASSERT(V);
-	V->PlayCycle		(m_anims.m_normal.legs_idle);
-	V->PlayCycle		(m_anims.m_normal.m_torso_idle);
+	V->PlayCycle		(m_anims->m_normal.legs_idle);
+	V->PlayCycle		(m_anims->m_normal.m_torso_idle);
 	//mstate_wishful &=~mcAnyMove;
 	m_holderID=u16(-1);
 }

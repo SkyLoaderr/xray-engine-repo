@@ -23,10 +23,10 @@
 #include "../skeletonanimated.h"
 #include "client_spawn_manager.h"
 #include "CharacterPhysicsSupport.h"
-//static u32	g_dwStartTime		= 0;
-//static u32	g_dwLastUpdateTime	;
-//static u32	g_dwNumUpdates		= 0;
-//float		g_fNumUpdates		= 0;
+
+#include "actor_anim_defs.h"
+
+
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
 int			g_dwInputUpdateDelta	= 20;
@@ -831,8 +831,8 @@ void	CActor::OnChangeVisual()
 	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
 	VERIFY				(V);
 	SetCallbacks		();
-	m_anims.			Create			(V);
-	m_vehicle_anims.	Create			(V);
+	m_anims->Create			(V);
+	m_vehicle_anims->Create			(V);
 	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
 	//-------------------------------------------------------------------------------
 	m_head				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head");

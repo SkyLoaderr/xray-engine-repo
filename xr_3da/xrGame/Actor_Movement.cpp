@@ -317,8 +317,17 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 */
 }
 
+#define ACTOR_ANIM_SECT "actor_animation"
+
 void CActor::g_Orientate	(u32 mstate_rl, float dt)
 {
+	static float fwd_l_strafe_yaw	= deg2rad(pSettings->r_float(ACTOR_ANIM_SECT,	"fwd_l_strafe_yaw"));
+	static float back_l_strafe_yaw	= deg2rad(pSettings->r_float(ACTOR_ANIM_SECT,	"back_l_strafe_yaw"));
+	static float fwd_r_strafe_yaw	= deg2rad(pSettings->r_float(ACTOR_ANIM_SECT,	"fwd_r_strafe_yaw"));
+	static float back_r_strafe_yaw	= deg2rad(pSettings->r_float(ACTOR_ANIM_SECT,	"back_r_strafe_yaw"));
+	static float l_strafe_yaw		= deg2rad(pSettings->r_float(ACTOR_ANIM_SECT,	"l_strafe_yaw"));
+	static float r_strafe_yaw		= deg2rad(pSettings->r_float(ACTOR_ANIM_SECT,	"r_strafe_yaw"));
+
 	if(!g_Alive())return;
 	// visual effect of "fwd+strafe" like motion
 	float calc_yaw = 0;
@@ -329,18 +338,22 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 	switch(mstate_rl&mcAnyMove)
 	{
 	case mcFwd+mcLStrafe:
+		calc_yaw = +fwd_l_strafe_yaw;//+PI_DIV_4; 
+		break;
 	case mcBack+mcRStrafe:
-		calc_yaw = +PI_DIV_4; 
+		calc_yaw = +back_r_strafe_yaw;//+PI_DIV_4; 
 		break;
 	case mcFwd+mcRStrafe:
+		calc_yaw = -fwd_r_strafe_yaw;//-PI_DIV_4; 
+		break;
 	case mcBack+mcLStrafe: 
-		calc_yaw = -PI_DIV_4; 
+		calc_yaw = -back_l_strafe_yaw;//-PI_DIV_4; 
 		break;
 	case mcLStrafe:
-		calc_yaw = +PI_DIV_3-EPS_L; 
+		calc_yaw = +l_strafe_yaw;//+PI_DIV_3-EPS_L; 
 		break;
 	case mcRStrafe:
-		calc_yaw = -PI_DIV_2+EPS_L; 
+		calc_yaw = -r_strafe_yaw;//-PI_DIV_4+EPS_L; 
 		break;
 	}
 

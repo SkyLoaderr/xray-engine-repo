@@ -3,10 +3,6 @@
 
 #pragma once
 
-//#include "../fbasicvisual.h"
-
-class CMotionDef;
-class CSkeletonAnimated;
 
 #define ACTOR_HEIGHT		1.75f
 #define ACTOR_LOOKOUT_ANGLE	PI_DIV_4
@@ -71,84 +67,6 @@ enum EActorSleep
 	easEnemies		
 };
 
-struct					SActorMotions
-{
-	struct				SActorState
-	{
-		struct			SAnimState
-		{
-			CMotionDef*	legs_fwd;
-			CMotionDef*	legs_back;
-			CMotionDef*	legs_ls;
-			CMotionDef*	legs_rs;
-			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
-			void		CreateSprint(CSkeletonAnimated* K);
-		};
-		struct			STorsoWpn{
-			CMotionDef*	aim;
-			CMotionDef*	aim_zoom;
-			CMotionDef*	holster;
-			CMotionDef*	draw;
-			CMotionDef*	drop;
-			CMotionDef*	reload;
-			CMotionDef*	attack;
-			CMotionDef*	attack_zoom;
-			CMotionDef*	fire_idle;
-			CMotionDef*	fire_end;
-			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
-		};
-
-		CMotionDef*		legs_idle;
-		CMotionDef*		jump_begin;
-		CMotionDef*		jump_idle;
-		CMotionDef*		landing[2];
-		CMotionDef*		legs_turn;
-		CMotionDef*		death;
-		SAnimState		m_walk;
-		SAnimState		m_run;
-		SAnimState		m_sprint;
-		STorsoWpn		m_torso[8];
-		CMotionDef*		m_torso_idle;
-		CMotionDef*		m_head_idle;
-
-		CMotionDef*		m_damage[DAMAGE_FX_COUNT];
-		void			Create(CSkeletonAnimated* K, LPCSTR base);
-		void			CreateClimb(CSkeletonAnimated* K);
-	
-	};
-	//CMotionDef*			m_steering_torso_left;
-	//CMotionDef*			m_steering_torso_right;
-	//CMotionDef*			m_steering_torso_idle;
-	//CMotionDef*			m_steering_legs_idle;
-	
-
-	CMotionDef*			m_dead_stop;
-
-	SActorState			m_normal;
-	SActorState			m_crouch;
-	SActorState			m_climb;
-	SActorState			m_sprint;
-	void				Create(CSkeletonAnimated* K);
-};
-
-//
-struct SActorVehicleAnims
-{
-			static const TYPES_NUMBER=2;
-			struct	SOneTypeCollection
-				{
-						static const u16		MAX_IDLES = 3				;
-									 u16		idles_num					;
-							CMotionDef*			idles[MAX_IDLES]	;
-							CMotionDef*			steer_left					;
-							CMotionDef*			steer_right					;
-							SOneTypeCollection	()							;
-					void	Create				(CSkeletonAnimated* K,u16 num);
-				};
-			SOneTypeCollection m_vehicles_type_collections[TYPES_NUMBER]	;
-			SActorVehicleAnims	()											;
-	void	Create				(CSkeletonAnimated* K)						;
-};
 
 //---------------------------------------------
 // ввод с клавиатуры и мыши

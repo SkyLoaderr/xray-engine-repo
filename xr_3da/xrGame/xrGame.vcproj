@@ -5139,6 +5139,9 @@
 							RelativePath="Actor.h">
 						</File>
 						<File
+							RelativePath=".\actor_anim_defs.h">
+						</File>
+						<File
 							RelativePath=".\actor_communication.cpp">
 						</File>
 						<File
