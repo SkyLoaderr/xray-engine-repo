@@ -296,9 +296,9 @@ void CScriptMonster::ProcessScripts()
 
 	bool			l_bCompleted;
 	
-	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
+	l_bCompleted	= l_tpEntityAction->m_tWatchAction.m_bCompleted;
 	bfAssignWatch	(l_tpEntityAction);
-	if (l_tpEntityAction->m_tMovementAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch].m_lua_object)
+	if (l_tpEntityAction->m_tWatchAction.m_bCompleted && !l_bCompleted && m_tpCallbacks[eActionTypeWatch].m_lua_object)
 		callback(eActionTypeWatch);
 
 	bfAssignAnimation(l_tpEntityAction);
@@ -330,7 +330,6 @@ void CScriptMonster::ProcessScripts()
 	if (!l_tpEntityAction->m_tAnimationAction.m_bCompleted)
 		bfScriptAnimation	();
 
-	l_bCompleted	= l_tpEntityAction->m_tMonsterAction.m_bCompleted;
 	bfAssignMonsterAction(l_tpEntityAction);
 }
 

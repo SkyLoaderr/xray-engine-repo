@@ -17,22 +17,22 @@ CStateManagerBurer::~CStateManagerBurer()
 
 void CStateManagerBurer::Load(LPCSTR section)
 {
-	// set hierarchy
-	add_state(
-		xr_new<CStateMonsterRest<CBurer> > ("State Rest",
-			xr_new<CStateMonsterRestSleep<CBurer> >("StateSleep"), 
-			xr_new<CStateMonsterRestSleep<CBurer> >("StateSleep")),
-		eStateRest, 1
-		);
-
-	add_state(
-		xr_new<CStateMonsterAttack<CBurer> > ("State Attack",
-			xr_new<CStateMonsterAttackRun<CBurer> >("State Attack Run"), 
-			xr_new<CStateMonsterAttackMelee<CBurer> >("State Attack Melee")),
-		eStateAttack, 1
-		);
-
-	add_transition			(eStateRest,	eStateAttack,	1, 1);
+//	// set hierarchy
+//	add_state(
+//		xr_new<CStateMonsterRest<CBurer> > ("State Rest",
+//			xr_new<CStateMonsterRestSleep<CBurer> >("StateSleep"), 
+//			xr_new<CStateMonsterRestSleep<CBurer> >("StateSleep")),
+//		eStateRest, 1
+//		);
+//
+//	add_state(
+//		xr_new<CStateMonsterAttack<CBurer> > ("State Attack",
+//			xr_new<CStateMonsterAttackRun<CBurer> >("State Attack Run"), 
+//			xr_new<CStateMonsterAttackMelee<CBurer> >("State Attack Melee")),
+//		eStateAttack, 1
+//		);
+//
+//	add_transition			(eStateRest,	eStateAttack,	1, 1);
 
 	inherited::Load			(section);
 }
@@ -41,8 +41,8 @@ void CStateManagerBurer::reinit			(CBurer *object)
 {
 	inherited::reinit		(object);
 
-	set_current_state		(eStateRest);
-	set_dest_state			(eStateRest);
+//	set_current_state		(eStateRest);
+//	set_dest_state			(eStateRest);
 }
 
 
@@ -53,7 +53,7 @@ void CStateManagerBurer::initialize		()
 
 void CStateManagerBurer::execute			()
 {
-	(m_object->m_tEnemy.obj) ? set_dest_state(eStateAttack) : set_dest_state(eStateRest);
+	//(m_object->m_tEnemy.obj) ? set_dest_state(eStateAttack) : set_dest_state(eStateRest);
 
 	inherited::execute		();
 }

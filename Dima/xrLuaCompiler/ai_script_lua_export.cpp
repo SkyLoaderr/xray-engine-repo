@@ -12,6 +12,7 @@
 #include "ai_script_actions.h"
 #include "ai_script_sound.h"
 #include "ai_script_hit.h"
+#include "ai_script_snd_info.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
@@ -19,6 +20,7 @@
 //#include "luabind/discard_result_policy.hpp"
 //#include "luabind/iterator_policy.hpp"
 #include "script_engine.h"
+
 
 using namespace luabind;
 
@@ -667,3 +669,17 @@ void CScriptEngine::export_actions()
 			.def(								constructor<MonsterSpace::EScriptMonsterGlobalAction, CLuaGameObject*>())
 	];
 }
+
+void CScriptEngine::export_sound_info()
+{
+	module(lua())
+	[
+		class_<CLuaSoundInfo>("SoundInfo")
+			.def_readwrite("who",				&CLuaSoundInfo::who)
+			.def_readwrite("danger",			&CLuaSoundInfo::dangerous)
+			.def_readwrite("position",			&CLuaSoundInfo::position)
+			.def_readwrite("power",				&CLuaSoundInfo::power)
+			.def_readwrite("time",				&CLuaSoundInfo::time)
+	];
+}
+

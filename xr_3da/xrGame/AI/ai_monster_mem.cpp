@@ -288,7 +288,9 @@ void CVisionMemory::SelectEnemy()
 		Selected.obj = 0;
 
 	// Необходимо выбрать другого врага?
-	if (!Selected.obj) Selected = GetNearestObject(ENEMY);
+	//if (!Selected.obj) Selected = GetNearestObject(ENEMY);
+
+	Selected = GetNearestObject(ENEMY);
 }
 
 void CVisionMemory::SelectCorpse()

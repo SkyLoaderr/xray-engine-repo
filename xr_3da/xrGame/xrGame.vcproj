@@ -3037,6 +3037,9 @@
 						RelativePath=".\ai_script_hit.h">
 					</File>
 					<File
+						RelativePath=".\ai_script_snd_info.h">
+					</File>
+					<File
 						RelativePath=".\ai_script_sound.cpp">
 					</File>
 					<File

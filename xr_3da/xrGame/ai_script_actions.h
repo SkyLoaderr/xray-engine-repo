@@ -163,6 +163,7 @@ public:
 		SetObjectToGo		(0);
 		SetPosition			(Fvector().set(0,0,0));
 		m_tGoalType			= eGoalTypeDummy;
+		m_bCompleted		= true;
 	}
 
 							CScriptMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
@@ -218,7 +219,7 @@ public:
 	{																																			
 		m_tMoveAction		= tAct;
 		SetPosition			(tPosition);																										
-		m_tSpeedParam		= speed_param;																											
+		m_tSpeedParam		= speed_param;
 	}																																			
 							CScriptMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{																																			
@@ -336,6 +337,7 @@ public:
 		m_tWatchType		= SightManager::eSightTypeCurrentDirection;
 		m_tWatchVector.set	(0,0,0);
 		m_tGoalType			= eGoalTypeCurrent;
+		m_bCompleted		= true;
 	}
 
 							CScriptWatchAction		(SightManager::ESightType tWatchType)
@@ -424,9 +426,9 @@ public:
 	{
 		m_tMentalState		= MonsterSpace::eMentalStateDanger;
 		m_tGoalType			= eGoalTypeMental;
-		m_bCompleted		= false;
 		m_bHandUsage		= true;
 		m_tAnimAction		= MonsterSpace::eAA_NoAction;
+		m_bCompleted		= true;
 	}
 
 							CScriptAnimationAction	(LPCSTR caAnimationToPlay, bool use_single_hand = false)
@@ -494,11 +496,11 @@ public:
 		m_caSoundToPlay		= "";
 		m_caBoneName		= "";
 		m_tGoalType			= eGoalTypeDummy;
-		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
 		m_bLooped			= false;
 		m_tSoundPosition.set(0,0,0);
 		m_tSoundAngles.set	(0,0,0);
+		m_bCompleted		= true;
 	}
 
 							CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -718,7 +720,7 @@ public:
 	{
 		m_tpObject			= 0;
 		m_tGoalType			= MonsterSpace::eObjectActionIdle;
-		m_bCompleted		= false;
+		m_bCompleted		= true;
 	}
 
 							CScriptObjectAction	(CLuaGameObject *tpLuaGameObject, MonsterSpace::EObjectAction tObjectActionType, u32 dwQueueSize = u32(-1))
@@ -812,6 +814,7 @@ public:
 
 	CMonsterAction() {
 		m_tAction		= MonsterSpace::eGA_None;
+		m_bCompleted	= true;
 	}
 
 	CMonsterAction(MonsterSpace::EScriptMonsterGlobalAction action) {

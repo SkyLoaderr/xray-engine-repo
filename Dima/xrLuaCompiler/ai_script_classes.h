@@ -28,6 +28,8 @@
 	#include "object_handler_goap.h"
 #endif
 
+#include "ai_script_snd_info.h"
+
 class CInventoryItem;
 class CLuaHit;
 class CAI_Stalker;
@@ -573,6 +575,7 @@ public:
 
 			CLuaGameObject		*GetEnemy			() const;
 			CLuaGameObject		*GetCorpse			() const;
+			CLuaSoundInfo		GetSoundInfo		();
 
 	IC		void				bind_object			(CScriptBinderObject *object)
 	{

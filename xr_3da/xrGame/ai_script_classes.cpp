@@ -16,6 +16,7 @@
 #include "PDA.h"
 #include "inventory.h"
 #include "ai/stalker/ai_stalker.h"
+#include "ai/biting/ai_biting.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -252,7 +253,7 @@ CLuaGameObject *CLuaGameObject::GetEnemy() const
 		if (l_tpCustomMonster->GetCurrentEnemy()) return (l_tpCustomMonster->GetCurrentEnemy()->lua_game_object());
 		else return (0);
 	} else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member GetEnemy!");
 		return			(0);
 	}
 }
@@ -264,10 +265,32 @@ CLuaGameObject *CLuaGameObject::GetCorpse() const
 		if (l_tpCustomMonster->GetCurrentCorpse()) return (l_tpCustomMonster->GetCurrentCorpse()->lua_game_object());
 		else return (0);
 	else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member GetCorpse!");
 		return			(0);
 	}
 }
+
+CLuaSoundInfo CLuaGameObject::GetSoundInfo()
+{
+	CLuaSoundInfo	ret_val;
+	
+	CAI_Biting *l_tpMonster = dynamic_cast<CAI_Biting *>(m_tpGameObject);
+	if (l_tpMonster) {
+		if (l_tpMonster->IsRememberSound()) {
+			SoundElem se; 
+			bool bDangerous;
+			l_tpMonster->GetSound(se, bDangerous);
+			
+			CGameObject *pO = const_cast<CGameObject*>(dynamic_cast<const CGameObject *>(se.who));
+			ret_val.set(pO->lua_game_object(), bDangerous, se.position, se.power, int(se.time));
+		}
+	} else {
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member GetSoundInfo!");
+	}
+	return			(ret_val);
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

@@ -11,6 +11,8 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 		return		(false);
 
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	if (l_tMovementAction.completed()) return false;
+
 	// translate script.action into MotionMan.action
 	switch (l_tMovementAction.m_tMoveAction) {
 	case eMA_WalkFwd:	MotionMan.m_tAction = ACT_WALK_FWD;		break;
@@ -21,6 +23,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
 	}
 
+	Msg("Action Movement executed!");
 	CMonsterMovement::set_path_targeted();
 		
 	return			(true);		
@@ -60,6 +63,7 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 		return		(false);
 	
 	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
+	if (l_tWatchAction.completed()) return false;
 
 	Fvector new_pos;
 	switch (l_tWatchAction.m_tWatchType) {
@@ -71,6 +75,8 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 			LookPosition(new_pos);
 			break;
 	}
+
+	Msg("Action Watch executed!");
 
 	if (angle_difference(m_body.target.yaw,m_body.current.yaw) < EPS_L)
 		l_tWatchAction.m_bCompleted = true;
@@ -86,6 +92,8 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 		return			(false);
 
 	CScriptAnimationAction	&l_tAnimAction	= tpEntityAction->m_tAnimationAction;
+	if (l_tAnimAction.completed()) return false;
+	
 	// translate animation.action into MotionMan.action
 	switch (l_tAnimAction.m_tAnimAction) {
 	case eAA_StandIdle:		MotionMan.m_tAction = ACT_STAND_IDLE;	break;
@@ -98,7 +106,8 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 	case eAA_LookAround:	MotionMan.m_tAction = ACT_LOOK_AROUND;	break;
 	case eAA_Turn:			MotionMan.m_tAction = ACT_TURN;			break;
 	}
-	
+	Msg("Action Animation executed!");
+
 	return				(true);
 }
 
@@ -107,6 +116,7 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMonsterAction(tpEntityAction)) return false;
 	
 	CMonsterAction	&l_tAction = tpEntityAction->m_tMonsterAction;	
+	if (l_tAction.completed()) return false;
 
 	switch(l_tAction.m_tAction) {
 		case eGA_Rest:		
@@ -126,6 +136,7 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 			break;
 	}
 
+	Msg("Action MonsterAction executed!");
 	b_script_state_must_execute = true;
 	return (!l_tAction.m_bCompleted);
 }
@@ -134,6 +145,9 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 
 void CAI_Biting::ProcessScripts()
 {
+	// Инициализировать action
+	MotionMan.m_tAction = ACT_STAND_IDLE;
+
 	CMonsterMovement::Frame_Init				();
 	
 	// Выполнить скриптовые actions
@@ -272,3 +286,5 @@ int	CAI_Biting::get_enemy_strength()
 	} 
 	return (0);
 }
+
+

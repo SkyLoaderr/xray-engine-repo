@@ -85,6 +85,12 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
+	Fvector hit_dir;
+	hit_dir.set			(0.f,1.f,1.f);
+	hit_dir.normalize	();
+
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 600,	700,	STANDART_ATTACK, inherited::_sd->m_fHitPower, hit_dir);
+
 	END_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.accel_load			(section);
@@ -149,8 +155,9 @@ void CBurer::ProcessTurn()
 
 bool CBurer::UpdateStateManager()
 {
-	CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
-	return true;
+	
+	//CStateManagerBurer::update(m_current_update - m_dwLastUpdateTime);
+	return false;
 }
 
 
