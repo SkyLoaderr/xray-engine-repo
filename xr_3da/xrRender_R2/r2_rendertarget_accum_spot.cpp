@@ -6,7 +6,6 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
 	u32				uRange				= 1; 
-	if (RImplementation.b_nv3x)	uRange	= (1<<24)-1; //(u32(0xFFFFFFFF) >> u32(32 - 24));
 	float			fRange				= float(uRange);
 	float			fBias				= -0.001f*fRange;
 	Fmatrix			m_TexelAdjust		= 
