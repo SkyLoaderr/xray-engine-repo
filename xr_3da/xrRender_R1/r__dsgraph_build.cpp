@@ -29,8 +29,10 @@ IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 
 void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center)
 {
-	if (pVisual->vis.frame	==	RImplementation.marker)	return;
-	pVisual->vis.frame		=	RImplementation.marker;
+	CRender&	RI			=	RImplementation;
+
+	if (pVisual->vis.frame	==	RI.marker)	return;
+	pVisual->vis.frame		=	RI.marker;
 
 	float distSQ;
 	float SSA				=	CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
@@ -38,21 +40,21 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 	// Select shader
 #if		RENDER==R_R1
-	ShaderElement*		sh	= (L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+	ShaderElement*		sh	= (RI.L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 #elif	RENDER==R_R2
 	ShaderElement*		sh	= pVisual->hShader->E[RImplementation.phase]._get();
 #endif
 
 	// Create common node
 	// NOTE: Invisible elements exist only in R1
-	_MatrixItem		item	= {SSA,val_pObject,pVisual,*val_pTransform};
+	_MatrixItem		item	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform};
 #if RENDER==R_R1
-	if (!val_bHUD)			L_Shadows->add_element	(item);
-	if (val_bInvisible)		return;
+	if (!RI.val_bHUD)		RI.L_Shadows->add_element	(item);
+	if (RI.val_bInvisible)	return;
 #endif
 
 	// HUD rendering
-	if (val_bHUD)		{
+	if (RI.val_bHUD)			{
 		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val					= item;
 	} else 
@@ -66,7 +68,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// the most common node
 	{
 		SPass&						pass	= *sh->Passes.front	();
-		mapMatrix_T&				map		= mapMatrix;
+		mapMatrix_T&				map		= mapMatrix			[sh->Flags.iPriority/2];
 		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
 		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
 		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
