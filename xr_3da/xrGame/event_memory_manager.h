@@ -12,7 +12,7 @@ class CEventMemoryManager {
 public:
 					CEventMemoryManager			();
 	virtual			~CEventMemoryManager		();
-			void	Init						();
+			void	init						();
 	virtual void	Load						(LPCSTR section);
 	virtual void	reinit						();
 	virtual void	reload						(LPCSTR section);

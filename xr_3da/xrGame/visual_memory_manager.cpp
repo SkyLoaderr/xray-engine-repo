@@ -27,14 +27,14 @@ struct CNotYetVisibleObjectPredicate{
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {
-	Init				();
+	init				();
 }
 
 CVisualMemoryManager::~CVisualMemoryManager		()
 {
 }
 
-void CVisualMemoryManager::Init					()
+void CVisualMemoryManager::init					()
 {
 	m_max_object_count			= 0;
 }

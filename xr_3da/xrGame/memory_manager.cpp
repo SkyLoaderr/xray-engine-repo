@@ -13,14 +13,14 @@
 
 CMemoryManager::CMemoryManager		()
 {
-	Init							();
+	init							();
 }
 
 CMemoryManager::~CMemoryManager		()
 {
 }
 
-void CMemoryManager::Init			()
+void CMemoryManager::init			()
 {
 }
 

@@ -11,14 +11,14 @@
 
 CEventMemoryManager::CEventMemoryManager	()
 {
-	Init					();
+	init					();
 }
 
 CEventMemoryManager::~CEventMemoryManager	()
 {
 }
 
-void CEventMemoryManager::Init				()
+void CEventMemoryManager::init				()
 {
 }
 

@@ -19,14 +19,14 @@
 
 CSoundMemoryManager::CSoundMemoryManager		()
 {
-	Init					();
+	init					();
 }
 
 CSoundMemoryManager::~CSoundMemoryManager		()
 {
 }
 
-void CSoundMemoryManager::Init					()
+void CSoundMemoryManager::init					()
 {
 	m_max_sound_count		= 0;
 }

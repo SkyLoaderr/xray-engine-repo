@@ -73,7 +73,7 @@ float CAbstractObjectManager::evaluate				(const T *object) const
 TEMPLATE_SPECIALIZATION
 bool CAbstractObjectManager::useful					(const T *object) const
 {
-	const ISpatial			*self = dynamic_cast<const ISpatial*>(object);
+	const ISpatial			*self = (const ISpatial*)(object);
 	if (!self)
 		return				(false);
 

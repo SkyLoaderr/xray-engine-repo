@@ -8,25 +8,56 @@
 
 #include "stdafx.h"
 #include "hit_memory_manager.h"
-#include "ai/script/ai_script_monster.h"
+#include "custommonster.h"
+
+struct CHitObjectPredicate {
+	const CObject *m_object;
+	CHitObjectPredicate			(const CObject *object) :
+	m_object(object)
+	{
+	}
+
+	bool		operator()					(const CHitObject &hit_object) const
+	{
+		if (!m_object)
+			return			(!hit_object.m_object);
+		if (!hit_object.m_object)
+			return			(false);
+		return				(m_object->ID() == hit_object.m_object->ID());
+	}
+};
 
 CHitMemoryManager::CHitMemoryManager		()
 {
-	Init						();
+	init						();
 }
 
 CHitMemoryManager::~CHitMemoryManager		()
 {
 }
 
-void CHitMemoryManager::Init				()
+void CHitMemoryManager::init				()
 {
 }
 
 void CHitMemoryManager::Load				(LPCSTR section)
 {
+	m_object				= dynamic_cast<CCustomMonster*>(this);
+	VERIFY					(m_object);
 	if (pSettings->line_exist(section,"HurtCount"))
 		m_max_hit_count	= pSettings->r_s32(section,"HurtCount");
+}
+
+bool CHitMemoryManager::hit				(const CEntityAlive *object) const
+{
+	VERIFY				(m_hits);
+	xr_vector<CHitObject>::const_iterator	I = std::find_if(m_hits->begin(),m_hits->end(),CHitObjectPredicate(object));
+	return				(m_hits->end() != I);
+}
+
+void CHitMemoryManager::add_hit_object	(const CEntityAlive *entity_alive)
+{
+	add_hit_object		(0,Fvector().set(0,0,1),entity_alive,0);
 }
 
 void CHitMemoryManager::reinit				()
@@ -43,8 +74,8 @@ void CHitMemoryManager::reload				(LPCSTR section)
 void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
 	VERIFY						(m_hits);
-	CEntityAlive				*self = dynamic_cast<CEntityAlive*>(this);
-	if (self && !self->g_Alive()) {
+	CEntityAlive				*self = m_object;
+	if (!self->g_Alive()) {
 		m_hits->clear			();
 		return;
 	}
@@ -52,12 +83,11 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 	if (who && (self->ID() == who->ID()))
 		return;
 
-	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
-	if (script_monster)
-		script_monster->hit_callback(amount,vLocalDir,who,element);
+	CScriptMonster			*script_monster = m_object;
+	script_monster->hit_callback(amount,vLocalDir,who,element);
 
-	CObject						*object = dynamic_cast<CObject*>(this);
-	VERIFY						(object);
+	//.
+	CObject						*object = m_object;
 	Fvector						direction;
 	object->XFORM().transform_dir(direction,vLocalDir);
 
@@ -88,8 +118,8 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 void CHitMemoryManager::add_hit_object(const CHitObject &hit_object)
 {
 	VERIFY						(m_hits);
-	CEntityAlive				*self = dynamic_cast<CEntityAlive*>(this);
-	if (self && !self->g_Alive()) {
+	CEntityAlive				*self = m_object;
+	if (!self->g_Alive()) {
 		m_hits->clear			();
 		return;
 	}

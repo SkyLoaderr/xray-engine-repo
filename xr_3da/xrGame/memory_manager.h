@@ -35,7 +35,7 @@ protected:
 public:
 							CMemoryManager			();
 	virtual					~CMemoryManager			();
-			void			Init					();
+			void			init					();
 	virtual	void			Load					(LPCSTR section);
 	virtual	void			reinit					();
 	virtual	void			reload					(LPCSTR section);

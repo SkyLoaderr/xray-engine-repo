@@ -50,8 +50,6 @@ public:
 private:
 	u32								m_max_object_count;
 	xr_vector<CVisibleObject>		*m_objects;
-	CCustomMonster					*m_monster;
-	CAI_Stalker						*m_stalker;
 	xr_vector<CNotYetVisibleObject>	m_not_yet_visible_objects;
 	float							m_min_view_distance_danger;
 	float							m_max_view_distance_danger;
@@ -64,6 +62,11 @@ private:
 	float							m_decrease_value;
 	float							m_velocity_factor;
 	float							m_transparency_threshold;
+
+private:
+	// to minimize dynamic_casts
+	CCustomMonster					*m_monster;
+	CAI_Stalker						*m_stalker;
 
 protected:
 	IC		void	fill_object						(CVisibleObject &visible_object, const CGameObject *game_object);
@@ -80,7 +83,7 @@ protected:
 public:
 					CVisualMemoryManager			();
 	virtual			~CVisualMemoryManager			();
-			void	Init							();
+			void	init							();
 	virtual	void	Load							(LPCSTR section);
 	virtual	void	reinit							();
 	virtual	void	reload							(LPCSTR section);
