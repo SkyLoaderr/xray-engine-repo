@@ -154,7 +154,7 @@ _keybind keynames[] = {
 	{ "mouse2",			MOUSE_2			},	{ "mouse3",			MOUSE_3			},
 	{ NULL, 			0				}
 };
-
+ConsoleBindCmds	bindConsoleCmds;
 //-----------------------------------------------------------------------
 // Bind/Unbind/List
 //-----------------------------------------------------------------------
@@ -243,9 +243,152 @@ public:
 
 	virtual void Execute(LPCSTR args) {
 		ZeroMemory(key_binding,sizeof(key_binding));
+		bindConsoleCmds.clear();
+
 		Console->Execute("cfg_load default_controls.ltx");
 	}
 };
+
+int NameIdx(int dik, bool b=true)
+{
+	int res = -1;
+	int i=0;
+	if(b){
+		for(i=0;i<2048; ++i){
+			if(	key_binding[i]==dik){
+				res = i;
+				break;
+			}
+		}
+	}else{
+		i=dik;
+		res = 0;
+	}
+
+	if(res!=-1){//found
+		res = -1;
+		for(int j=0;keynames[j].name;++j)
+			if(keynames[j].DIK == i){
+				res = j;
+				break;
+			}
+	}
+	return res;
+
+}
+class CCC_BindList : public IConsole_Command
+{
+public:
+	CCC_BindList(LPCSTR N) : IConsole_Command(N)
+	{ bEmptyArgsHandled=TRUE; };
+
+	virtual void Execute(LPCSTR args) {
+		Log("- --- Bind list start ---");
+		string512	buff;			
+		string64	key_name;		
+		
+		for (int i=0; keybind[i].name; ++i) {
+			ZeroMemory(buff,sizeof(buff));
+			ZeroMemory(key_name,sizeof(key_name));
+			strcat(buff,keybind[i].name);
+			int idx = NameIdx(keybind[i].DIK);
+			if(idx!=-1){
+				strcat(key_name,keynames[idx].name);
+				strconcat(buff,buff," binded to ",key_name);
+			}else
+				strconcat(buff,buff," binded to nil");
+
+			Log(buff);
+		}
+		Log("- --- Bind list end   ---");
+	}
+};
+
+class CCC_BindConsoleCmd : public IConsole_Command
+{
+public:
+	CCC_BindConsoleCmd(LPCSTR N) : IConsole_Command(N) {};
+	virtual void Execute(LPCSTR args) {
+		string512 console_command;
+		string256 key;
+		int cnt = _GetItemCount(args,' ');
+		_GetItems(args,0,cnt-1,console_command,' ');
+		_GetItem(args,cnt-1,key,' ');
+		for (int j=0; keynames[j].name; ++j) {
+			if (_stricmp(keynames[j].name,key)==0) {
+				// j = key
+				bindConsoleCmds.bind(keynames[j].DIK, console_command);
+				return;
+			}
+		}
+	}
+
+	virtual void Save(IWriter* F) 
+	{
+		bindConsoleCmds.save(F);
+	}
+
+};
+
+
+class CCC_UnBindConsoleCmd : public IConsole_Command
+{
+public:
+	CCC_UnBindConsoleCmd(LPCSTR N) : IConsole_Command(N)
+	{ bEmptyArgsHandled=FALSE; };
+
+	virtual void Execute(LPCSTR args) {
+	for (int i=0; keybind[i].name; ++i) {
+		if (_stricmp(keybind[i].name,args)==0) {
+				bindConsoleCmds.unbind(keybind[i].DIK);
+			}
+		}
+	}
+};
+
+void ConsoleBindCmds::bind(int dik, LPCSTR N)
+{
+	_conCmd& c = m_bindConsoleCmds[dik];
+	ZeroMemory(c.cmd,sizeof(c.cmd));
+	strcat(c.cmd, N);
+}
+void ConsoleBindCmds::unbind(int dik)
+{
+	xr_map<int,_conCmd>::iterator it = m_bindConsoleCmds.find(dik);
+	if(it==m_bindConsoleCmds.end())
+		return;
+
+	m_bindConsoleCmds.erase(it);
+}
+
+void ConsoleBindCmds::clear()
+{
+	m_bindConsoleCmds.clear();
+}
+
+bool ConsoleBindCmds::execute(int dik)
+{
+	xr_map<int,_conCmd>::iterator it = m_bindConsoleCmds.find(dik);
+	if(it==m_bindConsoleCmds.end())
+		return false;
+
+	Console->Execute(it->second.cmd);
+	return true;
+}
+void ConsoleBindCmds::save(IWriter* F)
+{
+	xr_map<int,_conCmd>::iterator it = m_bindConsoleCmds.begin();
+	for(;it!=m_bindConsoleCmds.end();++it){
+		string64 keyname;
+		int idx = NameIdx(it->first,false);
+		if(idx!=-1){
+			ZeroMemory(keyname,sizeof(keyname));
+			strcat(keyname,keynames[idx].name);
+			F->w_printf("bind_console %s %s\n", it->second.cmd, keyname);
+		}
+	}
+}
+
 
 void CCC_RegisterInput()
 {
@@ -253,4 +396,8 @@ void CCC_RegisterInput()
 	CMD1(CCC_UnBind,	"unbind"				);
 	CMD1(CCC_UnBindAll,	"unbindall"				);
 	CMD1(CCC_ListActions,"list_actions"			);
+
+	CMD1(CCC_BindList,	"bind_list"				);
+	CMD1(CCC_BindConsoleCmd, "bind_console"			);
+	CMD1(CCC_UnBindConsoleCmd, "unbind_console"		);
 };

@@ -15,6 +15,8 @@
 #include "xrServer.h"
 #include "client_spawn_manager.h"
 #include "../igame_persistent.h"
+#include "game_cl_base.h"
+#include "ui/UIDialogWnd.h"
 
 using namespace luabind;
 
@@ -128,6 +130,10 @@ CClientSpawnManager	&get_client_spawn_manager()
 	return		(Level().client_spawn_manager());
 }
 
+void start_stop_menu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
+{
+	Game().StartStopMenu(pDialog,bDoHideIndicators);
+}
 void CLevel::script_register(lua_State *L)
 {
 	module(L,"level")
@@ -151,6 +157,7 @@ void CLevel::script_register(lua_State *L)
 		def("client_spawn_manager",				get_client_spawn_manager),
 
 		def("map_add_object_icon",				map_add_object_icon),
-		def("map_remove_object_icon",			map_remove_object_icon)
+		def("map_remove_object_icon",			map_remove_object_icon),
+		def("start_stop_menu",					start_stop_menu)
 	];
 }

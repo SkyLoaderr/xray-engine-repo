@@ -191,12 +191,16 @@ void CLevel::IR_OnKeyboardPress(int key)
 		Console->Execute			("quit");
 		break;
 #endif
-	default:
+	default:{
+	
+		if(bindConsoleCmds.execute(key))
+			break;
+
 		if (CurrentEntity())		{
 			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(CurrentEntity());
 			if (IR)				IR->IR_OnKeyboardPress(key_binding[key]);
 		}
-		break;
+	}break;
 	}
 
 

@@ -89,6 +89,21 @@ extern _keybind	keynames		[];
 extern int		key_binding		[];
 extern void		CCC_RegisterInput();
 
+struct _conCmd{
+	string512	cmd;
+};
+
+class ConsoleBindCmds{
+public:
+	xr_map<int,_conCmd>	m_bindConsoleCmds;
+	void bind(int dik, LPCSTR N);
+	void unbind(int dik);
+	bool execute(int dik);
+	void clear();
+	void save(IWriter* F);
+};
+extern ConsoleBindCmds	bindConsoleCmds;
+
 #define MOUSE_1		0x100
 #define MOUSE_2		0x200
 #define MOUSE_3		0x400
