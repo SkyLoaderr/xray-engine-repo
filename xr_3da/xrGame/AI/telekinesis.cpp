@@ -111,6 +111,15 @@ void CTelekinesis::schedule_update()
 		switch (cur_obj->get_state()) {
 		case TS_Raise: 
 			if (cur_obj->check_height()) cur_obj->prepare_keep();// начать удержание предмета
+			else if (cur_obj->check_raise_time_out()) deactivate(cur_obj->get_object());
+			else {
+				
+
+				cur_obj->rotate();
+			}
+			
+			
+
 			break;
 		case TS_Keep:
 			if (cur_obj->time_keep_elapsed()) deactivate(cur_obj->get_object());

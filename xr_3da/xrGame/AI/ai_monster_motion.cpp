@@ -714,7 +714,7 @@ void CMotionManager::CheckAnimWithPath()
 	//	return;
 	//}
 
-	
+#ifdef DEBUG
 	if (pMonster->IsMovingOnPath()) {
 		pMonster->HDebug->L_Clear();
 		for (u32 i=0; i<pMonster->CDetailPathManager::path().size();i++) {
@@ -727,7 +727,7 @@ void CMotionManager::CheckAnimWithPath()
 				pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(0,255,100));
 		}
 	}
-
+#endif	
 
 	//if (pMonster->ps_Size() < 2) return;
 

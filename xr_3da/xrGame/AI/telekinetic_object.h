@@ -19,6 +19,7 @@ public:
 
 	u32					time_keep_started;
 	u32					time_keep_updated;
+	u32					time_raise_started;
 
 	u32					time_to_keep;
 	
@@ -45,9 +46,12 @@ public:
 	CGameObject			*get_object				() {return object;}
 
 	bool				check_height			();
-		
+	bool				check_raise_time_out	();
+
 	bool				time_keep_elapsed		();
 	bool				time_fire_elapsed		();
+
+	
 
 	void				enable					();
 
@@ -55,6 +59,6 @@ public:
 		return (object == obj);
 	}
 
-	
+	void				rotate					();
 
 };

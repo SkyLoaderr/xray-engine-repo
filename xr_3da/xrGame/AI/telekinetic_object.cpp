@@ -8,6 +8,7 @@
 
 #define KEEP_IMPULSE_UPDATE 200
 #define FIRE_TIME			3000
+#define RAISE_MAX_TIME		5000
 
 CTelekineticObject::CTelekineticObject()
 {
@@ -38,6 +39,7 @@ bool CTelekineticObject::init(CGameObject *obj, float s, float h, u32 ttk)
 	strength			= s;
 
 	time_fire_started	= 0;
+	time_raise_started	= Level().timeServer();
 
 	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 
@@ -172,8 +174,29 @@ bool CTelekineticObject::check_height()
 	
 	return (object->Position().y > target_height);
 }
+bool CTelekineticObject::check_raise_time_out()
+{
+	if (time_raise_started + RAISE_MAX_TIME < Level().timeServer())
+		return true;
+
+	return false;
+}
+
+
 
 void CTelekineticObject::enable()
 {
 	object->m_pPhysicsShell->Enable();
+}
+
+void CTelekineticObject::rotate()
+{
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	
+	// вычислить направление
+	Fvector dir;
+	dir.random_dir();
+	dir.normalize();
+
+	object->m_pPhysicsShell->applyImpulse(dir, 2.5f * object->m_pPhysicsShell->getMass());
 }

@@ -6,10 +6,12 @@
 #include "burer_attack_misc.h"
 #include "burer_attack.h"
 #include "burer.h"
+#include "../../ai_monster_debug.h"
 
-#define GRAVI_PERCENT		40
+
+#define GRAVI_PERCENT		80
 #define TELE_PERCENT		50
-#define RUN_AROUND_PERCENT	30
+#define RUN_AROUND_PERCENT	20
 
 CBurerAttack::CBurerAttack(CBurer *p)  
 {
@@ -87,6 +89,30 @@ void CBurerAttack::Run()
 		cur_state = 0;
 		b_need_reselect = true;
 	}
+
+	
+#ifdef DEBUG
+	string128 s;
+	strcpy(s, "No State!");
+
+	if (cur_state == stateTele) {
+		strcpy(s,"State: Tele");
+	} else if (cur_state == stateGravi){
+		strcpy(s,"State: Gravi");
+	} else if (cur_state == stateMelee){
+		strcpy(s,"State: Melee");
+	} else if (cur_state == stateRunAround){
+		strcpy(s,"State: Run Around");
+	} else if (cur_state == stateFaceEnemy){
+		strcpy(s,"State: Face Enemy");
+	} 
+
+	pMonster->HDebug->M_Clear();
+	pMonster->HDebug->M_Add(0,s, D3DCOLOR_XRGB(0,255,255));
+#endif
+
+
+
 }
 
 
@@ -95,6 +121,8 @@ void CBurerAttack::Done()
 	inherited::Done();
 	
 	pMonster->StopGraviPrepare();
+	pMonster->MotionMan.TA_Deactivate();
+	pMonster->CTelekinesis::Deactivate();
 	
 	if (cur_state) {
 		cur_state->Done();
