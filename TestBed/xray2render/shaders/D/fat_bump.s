@@ -10,7 +10,7 @@ struct 	a2v
 struct 	v2p_out
 {
   float4 HPos: 		POSITION;	// Clip-space position 	(for rasterization)
-  float4 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
+  float3 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
   float2 tc0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
   float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
   float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
@@ -19,7 +19,7 @@ struct 	v2p_out
 
 struct 	v2p_in
 {
-  float4 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
+  float3 Pe: 		TEXCOORD0;	// Eye-space position 	(for lighting)
   float2 tc0: 		TEXCOORD1;	// Texture coordinates 	(for sampling diffuse+normal map)
   float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
   float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
@@ -49,7 +49,7 @@ v2p_out v_main	( a2v  	IN )
 	OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
 	float3 Pe 		= mul	(m_model2view, 				IN.Position	);
 	OUT.Pe 			= float4(Pe.x,Pe.y,Pe.z,0);
-	OUT.Tex0 		= IN.TexCoords;
+	OUT.tc0 		= IN.TexCoords;
 
 	// Calculate the 3x3 transform from tangent space to eye-space
 	// TangentToEyeSpace = object2eye * tangent2object
@@ -61,9 +61,9 @@ v2p_out v_main	( a2v  	IN )
 							);
   
 	// Feed this transform to pixel shader
-	OUT.M1 			= xform[0]; //float4(xform[0].x,xform[0].y,xform[0].z,0);
-	OUT.M2 			= xform[1]; //float4(xform[1].x,xform[1].y,xform[1].z,0);
-	OUT.M3 			= xform[2]; //float4(xform[2].x,xform[2].y,xform[2].z,0);
+	OUT.M1 			= xform[0]; 
+	OUT.M2 			= xform[1]; 
+	OUT.M3 			= xform[2]; 
 
 	return OUT;
 }
@@ -76,10 +76,10 @@ p2f 	p_main	( v2p_in IN )
 
   // Transfer position and sample diffuse
   OUT.Pe	= IN.Pe;
-  OUT.C 	= tex2D		(s_texture, float2(IN.Tex0.x, IN.Tex0.y));  // float4    (.7,.5,.3,0);
+  OUT.C 	= tex2D		(s_texture, IN.tc0);
 
   // Sample normal and rotate it by matrix
-  float3 N	= tex2D		(s_nmap, float2(IN.Tex0.x,IN.Tex0.y));
+  float3 N	= tex2D		(s_nmap,	IN.tc0);
   float3 Ne	= mul		(float3x3(
 							IN.M1.x,IN.M1.y,IN.M1.z,
 							IN.M2.x,IN.M2.y,IN.M2.z,
