@@ -12,6 +12,8 @@
 #include "..\\ai_monsters_misc.h"
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
+#include "ai_biting_state.h"
+
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
@@ -349,4 +351,27 @@ private:
 	Fvector					m_AttackLastPosition;		// последняя позиция врага во время аттаки
 
 
+	//////////////////////////////////////////////////////////////////////////
+	
+	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
+	
+//	IState					*CurrentState;
+//
+//	CRest					*stateRest;
+//	CWalk					*stateWalk;
+//	CMicroAction			*microAction;
+//
+//	EMotionType				motion;
+//	
+//	friend	class IState;
+//	friend	class CRest;
+//	friend	class CWalk;
+//	friend  class CMicroAction;
+//
+//
+//	void SetStateParams(AI_Biting::EPostureAnim pa,AI_Biting::EActionAnim aa, float sp, float r_sp, float y);
+//	
+//
+//	void ChangeControl(IState *pS);
+//	void CheckForMicroAction();
 };

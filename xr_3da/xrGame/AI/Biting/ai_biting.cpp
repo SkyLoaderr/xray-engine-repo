@@ -16,10 +16,23 @@ CAI_Biting::CAI_Biting()
 {
 	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
+
+
+//	stateRest			= xr_new<CRest>(this);
+//	stateWalk			= xr_new<CWalk>(this);
+//	microAction			= xr_new<CMicroAction>(this);
+//	
+//	CurrentState		= stateRest;
+
 }
 
 CAI_Biting::~CAI_Biting()
 {
+//	xr_delete(stateRest);
+//	xr_delete(stateWalk);
+//	xr_delete(microAction);
+
+
 }
 
 void CAI_Biting::Init()

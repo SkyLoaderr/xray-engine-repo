@@ -528,11 +528,48 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	// Play sound
 }
 
-
 void CAI_Biting::Think()
 {
-
 	if (!g_Alive()) return;
+
+//	m_dwLastUpdateTime		= m_dwCurrentUpdate;
+//	m_dwCurrentUpdate		= Level().timeServer();
+//
+//	EPostureAnim old_p = m_tPostureAnim;
+//	EActionAnim old_a = m_tActionAnim;
+//
+//
+////	if (CurrentState->CheckCompletion()) {
+////		// выбор состояния по умолчанию
+////		CurrentState = stateRest;
+////	}
+////
+////	CurrentState->Execute(true);
+//
+//	
+//	if (microAction->Active()) {
+//		microAction->Execute(true);
+//	} else {
+//		CurrentState->Execute();
+//		CheckForMicroAction();
+//	}
+//	
+//
+//	if (old_p != m_tPostureAnim || old_a != m_tActionAnim) {
+//		FORCE_ANIMATION_SELECT();
+//	}
+//	return;
+
+
+
+
+
+
+
+
+
+
+
 
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();

@@ -289,6 +289,47 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+// ¬ыбор точки, построение пути, построение TravelLine
+void CAI_Biting::vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
+{
+	INIT_SQUAD_AND_LEADER;
+
+	if (m_tPrevPathType != m_tPathType) {	// если изменен тип пути, то необходимо перестроить путь
+		m_tPrevPathType		= m_tPathType;
+		m_tPathState		= ePathStateSearchNode;
+		AI_Path.Nodes.clear	();
+	}
+	if (tpNodeEvaluator)
+		vfInitSelector			(*tpNodeEvaluator,Squad);
+
+
+	EPathType tPathType = m_tPathType;		// сохран€ем текущий тип пути
+
+	if (m_tPathType == ePathTypeStraightCriteria) {
+		(::Random.randI(0,100) < (int)m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
+		m_tPathType = ePathTypeCriteria ;
+	}
+
+	if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
+		vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
+	
+	if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))  {
+		if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
+			vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
+	
+		if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
+				AI_Path.Nodes.clear();
+				AI_Path.Nodes.push_back(AI_NodeID);
+		} else if (bSearchForNode && tpNodeEvaluator) return;
+		 
+		vfBuildTravelLine(tpDestinationPosition);
+	}
+//		if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+			
+	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 // ¬ыбор следующей точки графа
 void CAI_Biting::vfChooseNextGraphPoint()
 {

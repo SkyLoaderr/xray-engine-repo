@@ -349,7 +349,7 @@ void CAI_Biting::vfUpdateParameters()
 //		H = true; I = false;
 
 	// temp
-	H = false;
+	H = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
