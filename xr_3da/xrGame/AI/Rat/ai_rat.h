@@ -18,6 +18,7 @@ namespace NAI_Rat_Constants
 	const float ATTACK_DISTANCE					= .5f;
 	const float ATTACK_ANGLE					= PI_DIV_6;
 	const DWORD LOST_MEMORY_TIME				= 20000;
+	const DWORD LOST_RECOIL_TIME				=  2000;
 	const DWORD UNDER_FIRE_TIME					= 20000;
 	const float UNDER_FIRE_DISTANCE				= 100.f;
 	const DWORD RETREAT_TIME					= 10000;
@@ -50,6 +51,7 @@ class CAI_Rat : public CCustomMonster
 			aiRatUnderFire,
 			aiRatRetreat,
 			aiRatPursuit,
+			aiRatRecoil,
 		};
 
 	
@@ -302,6 +304,7 @@ class CAI_Rat : public CCustomMonster
 		void	UnderFire();
 		void	Retreat();
 		void	Pursuit();
+		void	Recoil();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

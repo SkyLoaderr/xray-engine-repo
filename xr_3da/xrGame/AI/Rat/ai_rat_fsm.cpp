@@ -55,6 +55,10 @@ void CAI_Rat::Think()
 				Pursuit();
 				break;
 			}
+			case aiRatRecoil : {
+				Recoil();
+				break;
+			}
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
@@ -147,7 +151,7 @@ void CAI_Rat::FreeHuntingActive()
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
 		m_dwLostEnemyTime = Level().timeServer();
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatPursuit);
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatRecoil);
 	}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
@@ -249,7 +253,7 @@ void CAI_Rat::FreeHuntingPassive()
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
 		m_dwLostEnemyTime = Level().timeServer();
 		vfAddActiveMember(true);
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatPursuit);
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatRecoil);
 	}
 	
 	m_fSpeed = 0.f;
@@ -510,6 +514,14 @@ void CAI_Rat::Pursuit()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= LOST_MEMORY_TIME);
 	
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)) {
+		if (m_tLastSound.tpEntity)
+			m_tSavedEnemy = m_tLastSound.tpEntity;
+		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+		m_dwLostEnemyTime = Level().timeServer();
+		GO_TO_NEW_STATE_THIS_UPDATE(aiRatRecoil);
+	}
+
 	m_tGoalDir.set(m_tSavedEnemyPosition);
 	
 	if (bfCheckIfGoalChanged(false))
@@ -524,7 +536,7 @@ void CAI_Rat::Pursuit()
 
 	SetDirectionLook();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay)
 		m_fSpeed = EPS_S;
 	else 
 		if (m_fSafeSpeed != m_fSpeed) {
@@ -547,5 +559,57 @@ void CAI_Rat::Pursuit()
 			m_fSafeSpeed = m_fSpeed;
 		}
 	
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+}
+
+void CAI_Rat::Recoil()
+{
+	WRITE_TO_LOG("Recoil from something");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiRatDie)
+	
+	if (m_Enemy.Enemy)
+		m_dwLostEnemyTime = Level().timeServer();
+
+	SelectEnemy(m_Enemy);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatAttackRun);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiRatUnderFire);
+
+	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
+		if (m_tLastSound.tpEntity && (m_tLastSound.tpEntity->g_Team() != g_Team()) && (!bfCheckIfSoundFrightful())) {
+			m_tSavedEnemy = m_tLastSound.tpEntity;
+			m_dwLostEnemyTime = Level().timeServer();
+			SWITCH_TO_NEW_STATE(aiRatAttackRun);
+		}
+		m_dwLostEnemyTime = Level().timeServer();
+		Fvector tTemp;
+		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+		tTemp.normalize_safe();
+		tTemp.mul(UNDER_FIRE_DISTANCE);
+		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+		m_tSpawnPosition.add(vPosition,tTemp);
+	}
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= LOST_RECOIL_TIME,aiRatPursuit);
+	
+	m_tGoalDir.set(m_tSpawnPosition);
+	
+	m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+	
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	if (m_fSpeed > EPS_L)
+		vfComputeNewPosition();
+	else
+		UpdateTransform();
+
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay)
+		m_fSpeed = EPS_S;
+	else 
+		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+
+	SetDirectionLook();
+
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
