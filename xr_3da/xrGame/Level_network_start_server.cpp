@@ -14,6 +14,15 @@ BOOL CLevel::net_Server			( LPCSTR name, BOOL SLS_Load )
 		destructor<CStream>			FS(Engine.FS.Open(name));
 		R_ASSERT					(FS().FindChunk(fsSLS_Description));
 		FS().RstringZ				(name_of_level);
+	
+		// Activate level
+		int id						= pApp->Level_ID(name_of_level);
+		if (id<0)	
+		{
+			pApp->LoadEnd			();
+			return FALSE;
+		}
+		pApp->Level_Set				(id);
 
 		// Connect
 		Server						= new xrServer;
@@ -33,6 +42,15 @@ BOOL CLevel::net_Server			( LPCSTR name, BOOL SLS_Load )
 		F->Close					();
 	} else {
 		pApp->LoadTitle				("SERVER: Starting...");
+
+		// Activate level
+		int id						= pApp->Level_ID(name);
+		if (id<0)	
+		{
+			pApp->LoadEnd			();
+			return FALSE;
+		}
+		pApp->Level_Set				(id);
 
 		// Connect
 		Server						= new xrServer;

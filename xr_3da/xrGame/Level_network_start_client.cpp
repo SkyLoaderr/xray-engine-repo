@@ -25,6 +25,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			pApp->LoadEnd	();
 			return FALSE;
 		}
+		pApp->Level_Set		(level_id);
 
 		// Load level
 		R_ASSERT(Load				(level_id));
