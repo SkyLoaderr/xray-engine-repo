@@ -416,10 +416,12 @@ void CAI_Soldier::SelectSound(int &iIndex)
 bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 {
 	Fvector tMonsterDirection, tDirection;
+	float fEyeFov, fEyeRange;
 	
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
-	if (tpCustomMonster)
+	if (tpCustomMonster) {
 		tMonsterDirection.setHP(tpCustomMonster->r_torso_current.yaw,0);
+	}
 	else {
 		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
 		if (tpActor)
@@ -427,16 +429,21 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 		else
 			R_ASSERT(false);
 	}
+	CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(tpEntity);
+	if (tpEntityAlive) {
+		fEyeRange = tpEntityAlive->ffGetRange();
+		fEyeFov = tpEntityAlive->ffGetFov();
+	}
 	
 	tDirection.sub(vPosition,tpEntity->Position());
 	float fDistance = tDirection.magnitude();
-	if (fDistance > tpEntity->ffGetRange() + EPS_L)
+	if (fDistance > fEyeRange + EPS_L)
 		return(false);
 	tDirection.normalize_safe();
 	float fAlpha = tDirection.dotproduct(tMonsterDirection);
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
-	bool bVisible = fAlpha <= tpEntity->ffGetFov()/180.f/2.f*PI + EPS_L;
+	bool bVisible = fAlpha <= fEyeFov/180.f/2.f*PI + EPS_L;
 	return(bVisible);
 }
 /**/

@@ -82,6 +82,8 @@ public:
 	AI::VisiTrack		ai_Track;
 	Fmatrix				eye_matrix;
 	int					eye_bone;
+	float				eye_fov;
+	float				eye_range;
 
 	// AI
 	AI::AIC_Look		q_look;
@@ -208,6 +210,8 @@ public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);
 	virtual objQualifier* GetQualifier	();
 	virtual	void		soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
+	virtual	float			ffGetFov			(){return eye_fov;}	
+	virtual	float			ffGetRange			(){return eye_range;}
 };
 
 namespace AI{
