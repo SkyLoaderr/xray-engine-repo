@@ -45,8 +45,8 @@ void CPHObject::Collide()
 {
 	//spatial_move();
 
-	g_SpatialSpace->q_box(0,STYPE_PHYSIC,spatial.center,AABB);
-	qResultVec& result=g_SpatialSpace->q_result;
+	g_SpatialSpace->q_box(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.center,AABB);
+	qResultVec& result=ph_world->r_spatial;
 	qResultIt i=result.begin(),e=result.end();
 	for(;i!=e;++i)
 	{

@@ -18,13 +18,13 @@ void	CRender::render_smap_direct		(Fmatrix& mCombined)
 	// Traverse object database
 	g_SpatialSpace->q_frustum
 		(
+		lstRenderables,
 		ISpatial_DB::O_ORDERED,
 		STYPE_RENDERABLE,
 		ViewBase
 		);
 
 	// Determine visibility for dynamic part of scene
-	xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace->q_result;
 	for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 	{
 		ISpatial*		spatial			= lstRenderables[o_it];

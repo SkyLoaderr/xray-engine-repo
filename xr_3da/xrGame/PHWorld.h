@@ -14,7 +14,6 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld	: public pureFrame
 {
-
 	double						m_start_time												;
 	u32							m_delay														;
 	u32							m_previous_delay											;
@@ -28,6 +27,8 @@ class CPHWorld	: public pureFrame
 	PH_OBJECT_STORAGE			m_objects													;
 	PH_OBJECT_STORAGE			m_freezed_objects											;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
+public:
+	xr_vector<ISpatial*>		r_spatial;
 public:
 	u64							m_steps_num													;
 	double						m_frame_sum													;
