@@ -47,7 +47,7 @@
 	</character>
 	<character id="bandit_master">
 		<team>Bandit_master</team>
-		<class>Killer_master</class>
+		<class>Bandit_master</class>
 	</character>
 
 	<!-- Soldier  -->
