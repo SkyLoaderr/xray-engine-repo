@@ -320,8 +320,9 @@ bool CCar::SDoor::IsInArea(const Fvector& pos)
 	a=anchor_to_pos.dotproduct(closed_door_dir)*signum;
 	b=anchor_to_pos.dotproduct(door_dir)*signum;
 	c= anchor_to_pos.dotproduct(closed_door_norm)*anchor_to_pos.dotproduct(door_norm);
-	if(anchor_to_pos.dotproduct(closed_door_dir)*signum	>0.f&&
-		anchor_to_pos.dotproduct(door_dir)*signum		>0.f&&
+	if(
+		a	<	(signum>0.f ? hie : -loe)	&&	a	>	0.f	&&
+		b	<	(signum>0.f ? hie : -loe)	&&	b	>	0.f	&&
 		anchor_to_pos.dotproduct(closed_door_norm)*anchor_to_pos.dotproduct(door_norm)<0.f
 		)return true;
 	else return false;
