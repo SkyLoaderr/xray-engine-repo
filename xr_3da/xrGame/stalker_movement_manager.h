@@ -33,12 +33,12 @@ public:
 		eMovementParameterPositiveVelocity						= u32(1) << 31,
 		eMovementParameterNegativeVelocity						= u32(1) << 30,
 
-		eMovementParameterStandingFreeStand						= eMovementParameterStanding | eMovementParameterFree | eMovementParameterStand | eMovementParameterPositiveVelocity,
-		eMovementParameterStandingPanicStand					= eMovementParameterStanding | eMovementParameterPanic | eMovementParameterStand | eMovementParameterPositiveVelocity,
-		eMovementParameterStandingDangerStand					= eMovementParameterStanding | eMovementParameterDanger | eMovementParameterStand | eMovementParameterPositiveVelocity,
-		eMovementParameterStandingFreeStandDamaged				= eMovementParameterStandingFreeStand | eMovementParameterDamaged | eMovementParameterPositiveVelocity,
-		eMovementParameterStandingPanicStandDamaged				= eMovementParameterStandingPanicStand | eMovementParameterDamaged | eMovementParameterPositiveVelocity,
-		eMovementParameterStandingDangerStandDamaged			= eMovementParameterStandingDangerStand | eMovementParameterDamaged | eMovementParameterPositiveVelocity,
+		eMovementParameterStandingFreeStand						= eMovementParameterStanding | eMovementParameterFree | eMovementParameterStand,
+		eMovementParameterStandingPanicStand					= eMovementParameterStanding | eMovementParameterPanic | eMovementParameterStand,
+		eMovementParameterStandingDangerStand					= eMovementParameterStanding | eMovementParameterDanger | eMovementParameterStand,
+		eMovementParameterStandingFreeStandDamaged				= eMovementParameterStandingFreeStand | eMovementParameterDamaged,
+		eMovementParameterStandingPanicStandDamaged				= eMovementParameterStandingPanicStand | eMovementParameterDamaged,
+		eMovementParameterStandingDangerStandDamaged			= eMovementParameterStandingDangerStand | eMovementParameterDamaged,
 
 		eMovementParameterStandingFreeCrouch					= eMovementParameterStanding | eMovementParameterFree | eMovementParameterCrouch,
 		eMovementParameterStandingPanicCrouch					= eMovementParameterStanding | eMovementParameterPanic | eMovementParameterCrouch,

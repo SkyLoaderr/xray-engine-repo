@@ -916,14 +916,8 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
- 	if ((-1 != m_dwParticularState))
-		return;
-
-	CSStateManager::update	(Level().timeServer() - m_dwLastUpdateTime);
-
-	play					(eStalkerSoundHumming,60000,10000);
-	set_selection_type		(eSelectionTypeRandomBranching);
-	vfSetParameters			(0,0,0,MonsterSpace::eObjectActionIdle,ePathTypeGamePath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
+//	CSStateManager::set_dest_state	(eStateFreeNoAlife);
+//	CSStateManager::update			(Level().timeServer() - m_dwLastUpdateTime);
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
 //		if (Level().ObjectSpace.q_nearest.size()) {

@@ -55,4 +55,9 @@ namespace StalkerSpace {
 		eStalkerSoundSurrender,
 		eStalkerSoundDummy = u32(-1),
 	};
+
+	enum EStalkerStates {
+		eStateFreeNoAlife	= u32(0),
+		eStateDummy			= u32(-1),
+	};
 };

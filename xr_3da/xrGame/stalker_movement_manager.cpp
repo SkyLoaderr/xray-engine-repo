@@ -173,8 +173,10 @@ void CStalkerMovementManager::update(
 				velocity_mask	|= eMovementParameterRun;
 				break;
 			}
-			default : 
+			default : {
 				velocity_mask	|= eMovementParameterStanding;
+				velocity_mask	&= u32(-1) ^ (eMovementParameterNegativeVelocity | eMovementParameterPositiveVelocity);
+			}
 		}
 //	}
 //	else

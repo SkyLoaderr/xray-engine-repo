@@ -20,6 +20,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CGameLocationSelector::CBaseLocationSelector	()
 {
+	Init				();
 }
 
 TEMPLATE_SPECIALIZATION

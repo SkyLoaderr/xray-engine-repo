@@ -15,6 +15,9 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 
+// states
+#include "../../state_free_no_alife.h"
+
 CAI_Stalker::CAI_Stalker			()
 {
 	Init							();
@@ -33,6 +36,9 @@ void CAI_Stalker::Init()
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
 	m_dwParticularState				= u32(-1);
+//	CStalkerStateManager::Init		();
+//	CSStateManager::add				(xr_new<CStateFreeNoAlife>(this),eStateFreeNoAlife,10);
+
 }
 
 void CAI_Stalker::reinit			()
@@ -326,7 +332,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		if (GetScriptControl())
 			ProcessScripts				();
 		else
-			Think						();
+			if ((-1 == m_dwParticularState))
+				Think					();
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 		Engine.Sheduler.Slice			();
@@ -403,13 +410,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 					(**l_it).Drop();*/
 		}
 	}
-	VERIFY				(_valid(Position()));
-
-	VERIFY				(_valid(Position()));
-//	m_inventory.Update(DT);
 	UpdateInventoryOwner(DT);
+	
 	VERIFY				(_valid(Position()));
-
 	m_pPhysics_support->in_shedule_Update(DT);
 	VERIFY				(_valid(Position()));
 }

@@ -15,8 +15,8 @@
 #include "../../inventory.h"
 #include "../../weapon_manager.h"
 #include "../../sight_manager.h"
-#include "../../state_manager.h"
-#include "../../state_interface.h"
+#include "../../state_manager_abstract.h"
+#include "../../state_base.h"
 
 using namespace StalkerSpace;
 
@@ -38,11 +38,11 @@ class CAI_Stalker :
 	public CSightManager,
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
-	public CStateManager<IStateAbstract>
+	public CStateManagerAbstract<CStateBase>
 {
 private:
 	typedef CCustomMonster inherited;
-	typedef CStateManager<IStateAbstract> CSStateManager;
+	typedef CStateManagerAbstract<CStateBase> CSStateManager;
 	
 	EActionState				m_tActionState;
 	u32							m_dwActionStartTime;
@@ -129,7 +129,7 @@ public:
 	virtual void				PHUnFreeze				()			{return inherited ::PHUnFreeze();}
 	virtual void				PHFreeze				()			{return inherited ::PHFreeze();}
 
-protected:
+//protected:
 	// movement and look setup functions
 			void				vfSetParameters					(
 				PathManagers::CAbstractVertexEvaluator *tpPathEvaluator, 

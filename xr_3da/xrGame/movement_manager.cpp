@@ -25,12 +25,6 @@ CMovementManager::~CMovementManager	()
 
 void CMovementManager::Init			()
 {
-	CGameLocationSelector::Init		();
-	CGamePathManager::Init			();
-	CLevelLocationSelector::Init	();
-	CLevelPathManager::Init			();
-	CDetailPathManager::Init		();
-	CEnemyLocationPredictor::Init	();
 }
 
 void CMovementManager::Load			(LPCSTR section)
