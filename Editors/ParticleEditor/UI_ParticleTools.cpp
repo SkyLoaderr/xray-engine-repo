@@ -187,11 +187,19 @@ void CParticleTools::OnFrame()
 
 	if (m_Flags.is(flRefreshProps))
     	RealUpdateProperties();
-
+/*
+	static Fvector pos={0.f,0.f,0.f};
+    static Fvector vel={0.f,0.f,100.f};
+    pos.mad(vel,Device.fTimeDelta);
+    if (abs(pos.z)>100.f) pos.set(0,0,0);
+	Fmatrix M,R; M.translate(pos); R.rotateY(PI);
+	M.mulB(R);    
+    	m_EditPE->UpdateParent	(M,vel,FALSE);
+*/        
     AnsiString tmp;                              
     switch(m_EditMode){                 
     case emNone: break;            
-    case emEffect:	                       
+    case emEffect:	  
     	if (m_EditPE->IsPlaying())
         	UI->SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPE->ParticlesCount()).c_str(),false); 
         else 
