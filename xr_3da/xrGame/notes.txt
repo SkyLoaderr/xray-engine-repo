@@ -85,6 +85,40 @@ Legs&Torso:
 
 
 //------------------------------------------------------------------------------
+// Character Animations:
+//------------------------------------------------------------------------------
+- Переступание с ноги на ногу при поворотах
+- Walk
+	- forward
+	- back
+	- strafe left
+	- strafe right
+- Run
+	- forward
+	- back
+	- strafe left
+	- strafe right
+- Crouch walk
+	- forward
+	- back
+	- strafe left
+	- strafe right
+- Crouch run
+	- forward
+	- back
+	- strafe left
+	- strafe right
+- Jump
+	- start
+	- idle
+- Idle
+	- norm
+	- crouch
+- Death
+	- norm
+	- crouch
+
+//------------------------------------------------------------------------------
 // Управление отрядом
 //--------------------------------------+-----------------------+---------------+
 Команды:								|						|				|
