@@ -242,7 +242,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	if (dwNewNode && getAI().u_InsideNode(*tpNewNode,QueryPos)) {
 		Position().y = getAI().ffGetY(*tpNewNode,Position().x,Position().z);
 		m_tOldPosition.set(tSavedPosition);
-		m_bNoWay = false;
+		m_bNoWay		= false;
 	}
 	else {
 		m_fSafeSpeed	= m_fSpeed = EPS_S;
