@@ -46,6 +46,7 @@ void FoodUpdateProc(CUIDragDropItem* pItem);
 ref_shader& GetEquipmentIconsShader();
 //shader на иконки персонажей
 ref_shader& GetCharIconsShader();
-
+// shader на иконки персонажей в мультиплеере
+ref_shader&	GetMPCharIconsShader();
 
 };

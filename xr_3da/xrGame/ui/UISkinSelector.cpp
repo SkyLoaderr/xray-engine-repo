@@ -30,7 +30,8 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 
 CUISkinSelectorWnd::CUISkinSelectorWnd()
 {
-	Init("a");
+	// For tests
+	Init("deathmatch_team0");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +44,9 @@ CUISkinSelectorWnd::~CUISkinSelectorWnd()
 
 void CUISkinSelectorWnd::Init(const char *strSectionName)
 {
+	R_ASSERT(xr_strcmp(strSectionName, ""));
+	std::strcpy(m_strSection, strSectionName);
+
 	CUIXml xml_doc;
 	bool xml_result = xml_doc.Init("$game_data$", SKIN_SELECTOR_XML);
 	R_ASSERT2(xml_result, "xml file not found");
@@ -204,12 +208,19 @@ void CUISkinSelectorWnd::InitializeSkins()
 	// Бордюр - 30 пикселов
 	const int border = 30;
 
-	std::string skin_names[4];
+	xr_vector<ref_str>		skin_names;
+	ref_str					cfgRecord;
+	string256				singleSkinName;
 	
-	skin_names[0] = "without_outfit";
-	skin_names[1] = "exo_outfit";
-	skin_names[2] = "stalker_outfit";
-	skin_names[3] = "military_outfit";
+	// Читаем данные этого поля
+	cfgRecord = pSettings->r_string(m_strSection, "skins");
+	u32 count = _GetItemCount(*cfgRecord);
+	// теперь для каждое имя скина, разделенные запятыми, заносим в массив
+	for (u32 i = 0; i < count; ++i)
+	{
+		_GetItem(*cfgRecord, i, singleSkinName);
+		skin_names.push_back(singleSkinName);
+	}
 
 	for (int i = 0; i < SKINS_COUNT; ++i)
 	{
@@ -258,18 +269,20 @@ void CUISkinSelectorWnd::InitializeSkins()
 										   r.top,
 										   r.right - r.left,
 										   r.bottom - r.top);
-		m_vSkinWindows[i].UIHighlight.SetShader(GetCharIconsShader());
+
+		m_vSkinWindows[i].UIHighlight.SetShader(GetMPCharIconsShader());
 		m_vSkinWindows[i].UIHighlight.GetUIStaticItem().SetColor(clInactive);
 
-		int m_iSkinX = pSettings->r_u32(skin_names[i].c_str(), "full_scale_icon_x");
-		int m_iSkinY = pSettings->r_u32(skin_names[i].c_str(), "full_scale_icon_y");
-
+		int m_iSkinX = 0, m_iSkinY = 0;
+		sscanf(pSettings->r_string("multiplayer_skins", *skin_names[i]), "%i,%i", &m_iSkinX, &m_iSkinY);
+	
 		// Размеры иконки персонажа : 128х341
 		m_vSkinWindows[i].UIHighlight.GetUIStaticItem().SetOriginalRect(
-			m_iSkinX*ICON_GRID_WIDTH,
-			m_iSkinY*ICON_GRID_HEIGHT,
-			m_iSkinY+CHAR_ICON_FULL_WIDTH*ICON_GRID_HEIGHT,
-			m_iSkinX+static_cast<int>(5.328f*ICON_GRID_WIDTH));
+			m_iSkinX,
+			m_iSkinY,
+			CHAR_ICON_FULL_WIDTH*ICON_GRID_HEIGHT,
+			static_cast<int>(5.07f*ICON_GRID_WIDTH));
+
 		m_vSkinWindows[i].UIHighlight.ClipperOn();
 		m_vSkinWindows[i].UIHighlight.SetTextureScale(stretchKoeff);
 	}

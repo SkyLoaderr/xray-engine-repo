@@ -14,8 +14,9 @@
 
 //буферный список для сортировки
 static TIItemList ruck_list;
-static ref_shader g_EquipmentIconsShader = NULL;
-static ref_shader g_CharIconsShader = NULL;
+static ref_shader g_EquipmentIconsShader	= NULL;
+static ref_shader g_CharIconsShader			= NULL;
+static ref_shader g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic();
 
 
@@ -162,4 +163,18 @@ ref_shader& InventoryUtilities::GetCharIconsShader()
 
 	return g_CharIconsShader;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+// shader на иконки персонажей в мультиплеере
+ref_shader&	InventoryUtilities::GetMPCharIconsShader()
+{
+	if(!g_MPCharIconsShader)
+	{
+		g_MPCharIconsShader.create("hud\\default",  "ui\\ui_models_multiplayer");
+	}
+
+	return g_MPCharIconsShader;
+}
+
 
