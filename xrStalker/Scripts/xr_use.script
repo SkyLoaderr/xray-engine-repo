@@ -1,0 +1,50 @@
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Обычное поведение
+
+class "action_process_death"
+
+function action_process_death:__init(obj, storage)
+	self.object = obj
+	self.st = storage
+end
+
+function action_process_death:death_callback(victim, who)
+	if who ~= nil then
+		printf("[%s] killed by [%s]", victim:name(), who:name() )
+		db.storage[victim:id()].death.killer = who:id()
+	else
+		printf("[%s] killed by [Unknown]", victim:name())
+		db.storage[victim:id()].death.killer = -1
+	end
+
+	if db.storage[self.object:id()].active_scheme then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
+				return
+			end
+		end
+	end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage) 	
+	local action = this.action_process_death(npc, storage)
+	storage.action = action
+end
+
+function set_death_checker(npc, ini, scheme, section)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	st.enabled = true
+
+	npc:set_callback(callback.death, st.action.death_callback, st.action)
+end
+
+function disable_scheme(npc, scheme)
+	npc:set_callback(callback.death, nil)
+end
+
