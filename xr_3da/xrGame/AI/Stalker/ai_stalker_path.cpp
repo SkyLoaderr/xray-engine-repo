@@ -87,10 +87,10 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEva
 	Device.Statistic.AI_Path.Begin();
 	
 	if (AI_Path.DestNode == AI_NodeID) {
-		AI_Path.Nodes.clear();
+		AI_Path.Nodes.clear		();
 		AI_Path.TravelPath.clear();
-		AI_Path.TravelStart = 0;
-		m_fCurSpeed = 0;
+		AI_Path.TravelStart		= 0;
+		m_fCurSpeed				= 0;
 		m_tPathState			= ePathStateSearchNode;
 		Device.Statistic.AI_Path.End();
 		return;
@@ -147,6 +147,11 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 							m_tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
 						m_tpaPoints.push_back(tStartPosition = *tpDestinationPosition);
 					}
+					else {
+						if (dwCurNode != AI_Path.DestNode)
+							m_tpaPointNodes.push_back(AI_Path.DestNode);
+						m_tpaPoints.push_back(*tpDestinationPosition);
+					}
 		
 		if ((!tpDestinationPosition) && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size))
 			m_tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
@@ -159,24 +164,41 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			m_tpaTempPath.clear();
 		AI_Path.Nodes.clear		();
 		
-		for (i=1; i<N; i++) {
-			m_tpaLine.clear();
-			m_tpaLine.push_back(m_tpaPoints[i-1]);
-			m_tpaLine.push_back(m_tpaPoints[i]);
-			getAI().vfCreateFastRealisticPath(m_tpaLine,m_tpaPointNodes[i-1],m_tpaDeviations,m_tpaTravelPath,m_tpaNodes,false,false,0,0);
-			u32 n = m_tpaTravelPath.size();
+		if (getAI().bfInsideNode(AI_Node,m_tpaPoints[0]) && getAI().bfInsideNode(AI_Node,m_tpaPoints[1])) {
 			AI::CTravelNode	T;
-			for (u32 j= i<2?0:1; j<n; j++) {
-				T.P = m_tpaTravelPath[j];
-				if (m_tPathType == ePathTypeStraight)
-					AI_Path.TravelPath.push_back(T);
-				else
-					m_tpaTempPath.push_back(T.P);
-				AI_Path.Nodes.push_back(m_tpaNodes[j]);
+			if (m_tPathType == ePathTypeStraight) {
+				T.P = m_tpaPoints[0];
+				AI_Path.TravelPath.push_back(T);
+				T.P = m_tpaPoints[1];
+				AI_Path.TravelPath.push_back(T);
 			}
+			else {
+				T.P = m_tpaPoints[0];
+				m_tpaTempPath.push_back(T.P);
+				T.P = m_tpaPoints[1];
+				m_tpaTempPath.push_back(T.P);
+			}
+			AI_Path.Nodes.push_back(AI_Path.DestNode);
 		}
-		
-		AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
+		else {
+			for (i=1; i<N; i++) {
+				m_tpaLine.clear();
+				m_tpaLine.push_back(m_tpaPoints[i-1]);
+				m_tpaLine.push_back(m_tpaPoints[i]);
+				getAI().vfCreateFastRealisticPath(m_tpaLine,m_tpaPointNodes[i-1],m_tpaDeviations,m_tpaTravelPath,m_tpaNodes,false,false,0,0);
+				u32 n = m_tpaTravelPath.size();
+				AI::CTravelNode	T;
+				for (u32 j= i<2?0:1; j<n; j++) {
+					T.P = m_tpaTravelPath[j];
+					if (m_tPathType == ePathTypeStraight)
+						AI_Path.TravelPath.push_back(T);
+					else
+						m_tpaTempPath.push_back(T.P);
+					AI_Path.Nodes.push_back(m_tpaNodes[j]);
+				}
+			}
+			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
+		}
 		
 		if (m_tPathType == ePathTypeStraight) {
 			AI_Path.TravelStart = 0;
@@ -273,11 +295,18 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			if (tpNodeEvaluator)
 				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
 			else
-				m_tPathState = ePathStateBuildNodePath;
+				if (!tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+					m_tPathState = ePathStateBuildNodePath;
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			vfBuildPathToDestinationPoint(tpNodeEvaluator);
+			if ((AI_Path.DestNode != AI_NodeID) || (!tpDestinationPosition))
+				vfBuildPathToDestinationPoint(tpNodeEvaluator);
+			else {
+				AI_Path.Nodes.clear();
+				AI_Path.Nodes.push_back(AI_NodeID);
+				m_tPathState = ePathStateBuildTravelLine;
+			}
 			break;
 		}
 		case ePathStateBuildTravelLine : {
@@ -343,7 +372,7 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);
-		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,getAI().q_mark_bit,fRange,m_tpaNodeStack);
+		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,fRange,m_tpaNodeStack,&getAI().q_mark_bit);
 	}
 }
 

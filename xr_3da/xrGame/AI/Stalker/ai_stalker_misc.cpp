@@ -98,14 +98,14 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 
 void CAI_Stalker::vfCheckForItems()
 {
+	float fDistance = ffGetRange();
 	m_tpItemToTake = 0;
-	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	for (u32 i=0; i<Known.size(); i++) {
-		CInventoryItem *tpInventoryItem = dynamic_cast<CInventoryItem*>(Known[i].key);
+	for (u32 i=0, n=m_tpaVisibleObjects.size(); i<n; i++) {
+		CInventoryItem *tpInventoryItem = dynamic_cast<CInventoryItem*>(m_tpaVisibleObjects[i]);
 #pragma todo("Check if rukzak is not full!!")
-		if (tpInventoryItem) {
-			m_tpItemToTake = tpInventoryItem;
-			break;
+		if (tpInventoryItem && (tpInventoryItem->Position().distance_to(vPosition) < fDistance)) {
+			fDistance		= tpInventoryItem->Position().distance_to(vPosition);
+			m_tpItemToTake	= tpInventoryItem;
 		}
 	}
 }
@@ -139,18 +139,18 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	
 	C = D = E = F = G	= false;
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	if (m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime  < 20000)) {
-		bool	bOk = false;
-		u32		N = VisibleEnemies.size();
-		for (int i=0; i<N; i++) {
-			if (VisibleEnemies[i].key == m_tSavedEnemy) {
-				bOk = true;
-				break;
-			}
-		}
-		if (!bOk)
-			VisibleEnemies.insert(m_tSavedEnemy);
-	}
+//	if (m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime  < 20000)) {
+//		bool	bOk = false;
+//		u32		N = VisibleEnemies.size();
+//		for (int i=0; i<N; i++) {
+//			if (VisibleEnemies[i].key == m_tSavedEnemy) {
+//				bOk = true;
+//				break;
+//			}
+//		}
+//		if (!bOk)
+//			VisibleEnemies.insert(m_tSavedEnemy);
+//	}
 	if (VisibleEnemies.size()) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4)) {
 			case 0 : 

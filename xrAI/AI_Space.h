@@ -156,22 +156,27 @@ public:
 		return(_abs(fAngle0 - fAngle1) < fDelta) || ((_abs(_abs(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
 	}
 
-	Fvector	tfGetNodeCenter(u32 dwNodeID);
-	Fvector	tfGetNodeCenter(NodeCompressed *tpNode);
+	Fvector	tfGetNodeCenter					(u32 dwNodeID);
+	Fvector	tfGetNodeCenter					(NodeCompressed *tpNode);
 	
-	float	ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1);
-	float	ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1);
-	float	ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1);
-	float	ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
-	void	vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
-	float	ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack);
-	bool	bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
-	void	vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, AI::PContour	&tCurContour, int iNodeIndex, Fvector &tTempPoint, int &iSavedIndex);
-	u32		dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
+	float	ffGetDistanceBetweenNodeCenters	(u32 dwNodeID0, u32 dwNodeID1);
+	float	ffGetDistanceBetweenNodeCenters	(NodeCompressed *tpNode0, u32 dwNodeID1);
+	float	ffGetDistanceBetweenNodeCenters	(u32 dwNodeID0, NodeCompressed *tpNode1);
+	float	ffGetDistanceBetweenNodeCenters	(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
+
+	void	vfCreateFastRealisticPath		(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
+	
+	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, vector<u32> &tpaStack, vector<bool> *tpaMarks = 0);
+	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode, vector<u32> &tpaStack, vector<bool> *tpaMarks = 0);
+	float	ffMarkNodesInDirection			(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<u32> &tpaStack, vector<bool> *tpaMarks = 0);
+	
+	bool	bfCheckNodeInDirection			(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
+	void	vfChoosePoint					(Fvector &tStartPoint, Fvector &tFinishPoint, AI::PContour	&tCurContour, int iNodeIndex, Fvector &tTempPoint, int &iSavedIndex);
+	u32		dwfCheckPositionInDirection		(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
 
 	// Device dependance
-	virtual void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
+	virtual void	OnDeviceCreate			();
+	virtual void	OnDeviceDestroy			();
 };
 
 extern CAI_Space *tpAI_Space;

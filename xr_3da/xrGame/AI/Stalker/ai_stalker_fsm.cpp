@@ -134,7 +134,7 @@ void CAI_Stalker::Think()
 	if (K) {
 		switch (m_dwRandomState) {
 			case 0 : {
-///				Msg("Back dodge");
+//				Msg("Back dodge");
 				ForwardDodge();
 //				BackDodge();
 				break;
@@ -169,16 +169,14 @@ void CAI_Stalker::Think()
 
 	} else
 	if (M) {
-		m_tSelectorFreeHunting.m_fMaxEnemyDistance	= vPosition.distance_to(m_tpItemToTake->Position());
-		m_tSelectorFreeHunting.m_fMinEnemyDistance	= 0;
-		m_tSelectorFreeHunting.m_fOptEnemyDistance	= 0;
-		m_tSelectorFreeHunting.m_tEnemy				= 0;
-		m_tSelectorFreeHunting.m_tEnemyPosition		= m_tpItemToTake->Position();
-		vfSetParameters(&m_tSelectorFreeHunting,&(m_tpItemToTake->Position()),eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,m_tpItemToTake->Position());
+		Fvector					tPoint;
+		m_tpItemToTake->clCenter(tPoint);
+		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
+		vfSetParameters(0,&(m_tpItemToTake->Position()),eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tPoint);
 	} else
 	{
 		vfUpdateSearchPosition	();
-		AI_Path.DestNode = getAI().m_tpaGraph[m_tNextGP].tNodeID;
+		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 		vfSetParameters(0,0,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
 	}
 	

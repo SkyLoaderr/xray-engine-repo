@@ -32,9 +32,10 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			Log("CStalker::OnEvent - TAKE - ", O->cName());
+			Log("Trying to take - ", O->cName());
 			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
+				Log("TAKE - ", O->cName());
 				////if(m_inventory.m_activeSlot == 0xffffffff) {
 				////	if(PIItem(O)->m_slot < 0xffffffff) {
 				////		m_inventory.Slot(PIItem(O)); 
@@ -44,6 +45,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 				//if(PIItem(O)->m_slot < 0xffffffff && !m_inventory.m_slots[PIItem(O)->m_slot].m_pIItem)) { m_inventory.Slot(PIItem(O)); }
 				//if(m_inventory.Slot(PIItem(O)) && PIItem(O)->m_slot == 1) m_inventory.Activate(PIItem(O)->m_slot);
 			}
+
 
 			//// Test for Detector
 			//CCustomDetector* D	= dynamic_cast<CCustomDetector*>	(O);
@@ -157,7 +159,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	CWeaponAmmo*	A	= dynamic_cast<CWeaponAmmo*>	(O);
 
 	if (W || A) {
-		Msg("Taking item!");
+		Msg("Taking item %s!",W ? W->cName() : A->cName());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
 		P.w_u16			(u16(O->ID()));
@@ -170,6 +172,7 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 	if (!O || !O->H_Parent() || (O->H_Parent() != this))
 		return;
 
+	Msg("Dropping item!");
 	// We doesn't have similar weapon - pick up it
 	NET_Packet				P;
 	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());

@@ -1364,7 +1364,7 @@ u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPositi
 	float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to_xz(tFinishPosition);
 	u32						dwCurNode = dwStartNode;
 
-	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {
+	while (!bfInsideNode(Node(dwCurNode),tFinishPosition) && (fCurDistance < (fDistance + EPS_L))) {
 		tpNode				= Node(dwCurNode);
 		taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 		iCount				= tpNode->links;
@@ -1389,18 +1389,29 @@ u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPositi
 		return(-1);
 }
 
-float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack)
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, float fDistance, vector<u32> &tpaStack, vector<bool> *tpaMarks)
+{
+	Fvector					tFinishPoint;
+	tDirection.normalize	();
+	tFinishPoint.mul		(tDirection,fDistance);
+	tFinishPoint.add		(tStartPosition);
+	return					(ffMarkNodesInDirection(dwStartNode,tStartPosition,tFinishPoint,tpaStack,tpaMarks));
+}
+
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode, vector<u32> &tpaStack, vector<bool> *tpaMarks)
+{
+	return					(ffMarkNodesInDirection(dwStartNode,tStartPosition,tfGetNodeCenter(dwFinishNode),tpaStack,tpaMarks));
+}
+
+float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<u32> &tpaStack, vector<bool> *tpaMarks)
 {
 	PContour				tCurContour;
 	NodeCompressed			*tpNode;
 	NodeLink				*taLinks;
 	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
-	Fvector					tStartPoint = tStartPosition, tTempPoint = tStartPosition, tFinishPoint;
-	float					fCurDistance = 0.f;
+	Fvector					tTempPoint = tStartPoint;
+	float					fDistance = tStartPoint.distance_to(tFinishPoint), fCurDistance = 0.f;
 	u32						dwCurNode = dwStartNode;
-
-	tFinishPoint.mul		(tDirection,fDistance);
-	tFinishPoint.add		(tStartPoint);
 
 	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {
 		tpNode				= Node(dwCurNode);
@@ -1420,7 +1431,8 @@ float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition,
 		else
 			return(fCurDistance);
 		
-		tpaMarks[dwCurNode]	= true;
+		if (tpaMarks)
+			(*tpaMarks)[dwCurNode]	= true;
 		tpaStack.push_back	(dwCurNode);
 	}
 	

@@ -1221,6 +1221,6 @@ void CAI_Soldier::vfMarkVisibleNodes(CEntity *tpEntity)
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);
-		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,AI.q_mark_bit,fRange,m_tpaNodeStack);
+		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,fRange,m_tpaNodeStack,&AI.q_mark_bit);
 	}
 }
