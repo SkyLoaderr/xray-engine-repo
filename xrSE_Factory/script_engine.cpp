@@ -68,10 +68,19 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 }
 
-void lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
+int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 {
-//	print_output			(L,ai().script_engine().current_thread(),0);
-	ai().script_engine().print_error	(L,LUA_ERRRUN);
+	print_error				(L,LUA_ERRRUN);
+	
+	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
+
+	return					(-1);
+}
+
+void lua_cast_failed					(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
+{
+	CScriptEngine::print_error	(L,LUA_ERRRUN);
+
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
@@ -83,9 +92,12 @@ void CScriptEngine::setup_callbacks		()
 #endif
 
 #ifdef USE_DEBUGGER
-	if (!debugger() || !debugger()->Active() )
+	if (!debugger() || !debugger()->Active() ) 
 #endif
+	{
 		luabind::set_error_callback		(CScriptEngine::lua_error);
+		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
+	}
 
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);

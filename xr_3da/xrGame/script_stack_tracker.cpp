@@ -41,7 +41,7 @@ void CScriptStackTracker::script_hook	(lua_State *L, lua_Debug *dbg)
 				lua_getinfo	(L,"nSlu",m_stack[m_current_stack_level - 1]);
 			++m_current_stack_level;
 			break;
-							}
+		}
 		case LUA_HOOKRET : {
 			VERIFY		(m_current_stack_level > 0);
 			--m_current_stack_level;

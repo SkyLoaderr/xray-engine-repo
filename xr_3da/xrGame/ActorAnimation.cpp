@@ -440,10 +440,14 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims->m_dead_stop);
 		}
 	}
-#ifndef NDEBUG
 #ifdef DEBUG
-	if (Level().CurrentControlEntity() == this && g_ShowAnimationInfo)
-	{
+	HUD().pFontSmall->SetColor	(0xffffffff);
+	HUD().pFontSmall->OutSet	(170,450);
+	HUD().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
+#endif
+
+#ifdef _DEBUG
+	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
 		string128 buf;
 		strcpy(buf,"");
 		if (isAccelerated(mstate_rl))		strcat(buf,"Accel ");
@@ -459,8 +463,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (mstate_rl&mcLLookout)	strcat(buf,"LLookout ");
 		if (mstate_rl&mcRLookout)	strcat(buf,"RLookout ");
 		if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-		HUD().pFontSmall->SetColor	(0xffffffff);
-		HUD().pFontSmall->OutSet	(170,450);
 		HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
 		//	if (buf[0]) 
 		//		Msg("%s",buf);
@@ -482,7 +484,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (m_iCurWeaponHideState & (1<<3)) strcat(buf, "SPRINT ");
 		HUD().pFontSmall->OutNext	("WeaponHideState:     [%s]",buf);
 	};
-#endif
 #endif
 }
 
