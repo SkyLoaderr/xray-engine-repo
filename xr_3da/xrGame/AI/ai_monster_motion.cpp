@@ -196,7 +196,7 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 		else {
 			if (i == 0) {
 				string128	s;
-				sprintf(s, "Error! No animation: %s for monster %s", pmt_name, pMonster->cName());
+				sprintf(s, "Error! No animation: %s for monster %s", pmt_name, *pMonster->cName());
 				R_ASSERT2(i != 0, s);
 			}
 			break;
