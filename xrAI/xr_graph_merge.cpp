@@ -27,14 +27,14 @@ typedef struct tagSConnectionVertex {
 
 class CComparePredicate {
 public:
-	IC bool operator()(LPSTR S1, LPSTR S2) const
+	IC bool operator()(LPCSTR S1, LPCSTR S2) const
 	{
 		return(strcmp(S1,S2) < 0);
 	}
 };
 
 DEFINE_MAP		(u32,	CLevelGraph *,		GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
-DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CComparePredicate());
+DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CComparePredicate );
 
 class CLevelGraph : public CSE_ALifeGraph {
 public:
