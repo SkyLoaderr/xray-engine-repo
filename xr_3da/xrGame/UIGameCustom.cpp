@@ -30,7 +30,8 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 
 	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
-		(*it)->Update();
+		if((*it)->IsEnabled())
+			(*it)->Update();
 
 
 	for(it = m_dialogsToErase.begin(); it!=m_dialogsToErase.end(); ++it)
@@ -52,7 +53,8 @@ void CUIGameCustom::Render()
 {
 	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
-		(*it)->Draw();
+		if((*it)->IsShown())
+			(*it)->Draw();
 
 	m_gameCaptions.Draw();
 }
