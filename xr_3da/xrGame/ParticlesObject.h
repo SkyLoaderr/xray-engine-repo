@@ -38,7 +38,7 @@ public:
 	bool				IsPlaying			();
 	void				SetAutoRemove		(bool auto_remove);
 
-	const ref_str&		Name				();
+	const ref_str		Name				();
 public:
 	static CParticlesObject*	Create		(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE)
 	{

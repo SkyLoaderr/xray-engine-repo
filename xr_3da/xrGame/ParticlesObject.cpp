@@ -84,7 +84,7 @@ void CParticlesObject::UpdateSpatial()
 	}
 }
 
-const ref_str& CParticlesObject::Name()
+const ref_str CParticlesObject::Name()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	return V->Name();
