@@ -1,4 +1,5 @@
 guard_see_actor = 0
+hrom_prishli_rebyat = 0
 
 function main()
 
@@ -202,24 +203,40 @@ function main()
 	end
 
 	while true do
-		if guard01.health <= 0  then
+		if guard01.health <= 0 and guard02.health > 0 then
 			wait(2000)			
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
 			guard02:script						(false,  script_guards_pr00.script_name())
 			wait(2000)			
 			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
+			hrom_prishli_rebyat = 1
 		break
 		end
 		wait()			
 	end
 
 	while true do
-		if guard02.health <= 0 then
+		if guard02.health <= 0 and guard01.health > 0 then
 		wait(2000)			
 			rainbow_suka_ti_cherta_ubil:play_at_pos		(guard01,guard01:position(),0);
 			guard01:script						(false,  script_guards_pr00.script_name())
 			wait(2000)			
 			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
+			hrom_prishli_rebyat = 1
+		break
+		end
+		wait()			
+	end
+
+	while true do
+		if hrom_prishli_rebyat == 1 then
+		wait(2000)			
+			final_guard04:script	(false,script_guards_pr00.script_name())
+			final_guard05:script	(false,script_guards_pr00.script_name())
+			siren:play_at_pos		(final_guard04,final_guard04:position(),0);
+			wait(1000)			
+			nemedlenno:play_at_pos		(final_guard05,final_guard05:position(),0);
+			wait(2000)			
 		break
 		end
 		wait()			

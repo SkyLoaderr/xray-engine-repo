@@ -26,6 +26,8 @@ function main()
 				cond	(cond.move_end)
 			)
 
+		movie_footsteps:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),1);
+
 		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false then
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);

@@ -1,5 +1,11 @@
 function main()
 
+
+--  SOUND
+	siren = sound_object("scripts\\alarm\\a_siren")
+	movie_footsteps = sound_object("scripts\\idle\\movie_footsteps")
+	nemedlenno = sound_object("nemedlenno")
+
 --	SHORT SOUND --
 	prof_kgm = sound_object("scripts\\stalker_prof\\prof_kgm")
 	prof_kgm2 = sound_object("scripts\\stalker_prof\\prof_kgm2")
