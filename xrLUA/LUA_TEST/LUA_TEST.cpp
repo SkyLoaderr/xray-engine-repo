@@ -282,7 +282,7 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
 	
 //	luaL_newmetatable(luaVM, "core");
-//	lua_pushliteral	(luaVM, "__newindex");
+//	lua_pushliteral	(luaVM, "__index");
 //	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
 //	lua_rawset		(luaVM, -3);
 //	lua_pop			(luaVM,1);
@@ -299,20 +299,19 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 //	lua_rawset		(luaVM, -3);
 //	lua_pop			(luaVM,1);
 
-//	vfPrintTable	(luaVM,"_G",true);
-//	vfPrintTable	(luaVM,"os");
-//	vfPrintTable	(luaVM,"coroutine");
-//	vfPrintTable	(luaVM,"_LOADED");
-//	vfPrintTable	(luaVM,"table");
-//	vfPrintTable	(luaVM,"io");
-//	vfPrintTable	(luaVM,"string");
-//	vfPrintTable	(luaVM,"math");
-//	vfPrintTable	(luaVM,"debug");
-//	vfPrintTable	(luaVM,"core");
+	vfPrintTable	(luaVM,"_G");
+	vfPrintTable	(luaVM,"os");
+	vfPrintTable	(luaVM,"coroutine");
+	vfPrintTable	(luaVM,"_LOADED");
+	vfPrintTable	(luaVM,"table");
+	vfPrintTable	(luaVM,"io");
+	vfPrintTable	(luaVM,"string");
+	vfPrintTable	(luaVM,"math");
+	vfPrintTable	(luaVM,"debug");
+	vfPrintTable	(luaVM,"core");
 
 	lua_dofile		(luaVM, "x:\\test1.lua");
 
-	vfPrintTable	(luaVM,"_LOADED");
 	// close lua
 	lua_close		(luaVM);
 	return 0;
