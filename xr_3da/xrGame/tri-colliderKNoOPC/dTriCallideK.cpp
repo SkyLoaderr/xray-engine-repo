@@ -21,9 +21,7 @@ extern "C" int dSortedTriBox (
 						)
 {
 
-//const dReal* v0=(dReal*)T->verts[0];
-//const dReal* v1=(dReal*)T->verts[1];
-//const dReal* v2=(dReal*)T->verts[2];
+
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (dGeomGetClass(o1) == dBoxClass);
@@ -182,22 +180,17 @@ contact->depth = outDepth;
   if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
   return ret;
 
-
-
-
- 
 }
+
 extern "C" int dTriBox (
+						const dReal* v0,const dReal* v1,const dReal* v2,
 						CDB::TRI* T,
-						//const dReal* v0,const dReal* v1,const dReal* v2,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						)
 {
 
-const dReal* v0=(dReal*)T->verts[0];
-const dReal* v1=(dReal*)T->verts[1];
-const dReal* v2=(dReal*)T->verts[2];
+
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (dGeomGetClass(o1) == dBoxClass);
@@ -813,7 +806,7 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 /////////////////////////////////////////////////////////////////////////////////
 
 extern "C" int dTriCyl (
-						//const dReal* v0,const dReal* v1,const dReal* v2,
+						const dReal* v0,const dReal* v1,const dReal* v2,
 						CDB::TRI* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
@@ -821,9 +814,7 @@ extern "C" int dTriCyl (
 
 						)
 {
-const dReal* v0=(dReal*)T->verts[0];
-const dReal* v1=(dReal*)T->verts[1];
-const dReal* v2=(dReal*)T->verts[2];
+
  // dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (dGeomGetClass(o1)== dCylinderClassUser);
   

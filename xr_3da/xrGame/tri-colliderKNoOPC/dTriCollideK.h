@@ -8,7 +8,7 @@
 void dSetTriWallMark(dContactGeom* c,CDB::TRI* T);
 
 extern "C" int dTriBox (
-						//const dReal* v0,const dReal* v1,const dReal* v2,
+						const dReal* v0,const dReal* v1,const dReal* v2,
 						CDB::TRI* T,
 						dxGeom *o1,dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
@@ -26,7 +26,7 @@ extern "C" int dSortedTriBox (
 						);
 
 extern "C" int dTriCyl (
-						//const dReal* v0,const dReal* v1,const dReal* v2,
+						const dReal* v0,const dReal* v1,const dReal* v2,
 						CDB::TRI* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip

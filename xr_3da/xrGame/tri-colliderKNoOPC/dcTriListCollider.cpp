@@ -45,10 +45,11 @@ extern "C" int dSortTriBoxCollide (
 								   CDB::RESULT*		R_begin,
 								   CDB::RESULT*		R_end ,
 								   CDB::TRI*		T_array,
+								   const Fvector*	V_array,
 								   Fvector			AABB
 								   )
 {
-	const Fvector*	V_array			= Level().ObjectSpace.GetStaticVerts();
+
 
 	//	Log("in dSortTriBoxCollide");
 	//Msg("%f",dInfinity);
@@ -236,10 +237,12 @@ extern "C" int dSortTriBoxCollide (
 	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
 	//if(ret==0)
 	for(i=pos_tries.begin();pos_tries.end() != i;++i){
-
+		CDB::TRI* T=i->T;
 		ret+=dTriBox (
-			//i->v0,i->v1,i->v2,
-			i->T,
+			(const dReal*)&V_array[T->verts[0]],
+			(const dReal*)&V_array[T->verts[1]],
+			(const dReal*)&V_array[T->verts[2]],
+			T,
 			o1,
 			o2,
 			3,
@@ -326,13 +329,14 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	CDB::RESULT*    R_begin                         = XRC.r_begin();
 	CDB::RESULT*    R_end                           = XRC.r_end();
 	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
+	const Fvector*	V_array							= Level().ObjectSpace.GetStaticVerts();
 	int OutTriCount = 0;
 
 	return dSortTriBoxCollide (Box,
 		Geometry,
 		3,
 		CONTACT(Contacts, OutTriCount * Stride),   Stride,
-		R_begin,R_end,T_array,AABB
+		R_begin,R_end,T_array,V_array,AABB
 		);
 
 	/*
@@ -403,6 +407,8 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 	CDB::RESULT*    R_begin                         = XRC.r_begin();
 	CDB::RESULT*    R_end                           = XRC.r_end();
 	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
+	const Fvector*	V_array							= Level().ObjectSpace.GetStaticVerts();
+
 	int OutTriCount = 0;
 
 	///@slipch
@@ -411,7 +417,9 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 	{
 		CDB::TRI* T = T_array + Res->id;
 		OutTriCount+=dTriCyl (
-			//(dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],
+			(const dReal*)&V_array[T->verts[0]],
+			(const dReal*)&V_array[T->verts[1]],
+			(const dReal*)&V_array[T->verts[2]],
 			T,
 			Cylinder,
 			Geometry,
@@ -425,17 +433,17 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 }
 ///end @slipch
 
-int dTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
+int dTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
 			   CDB::TRI* T,
 			   dxGeom* Sphere,dxGeom* Geometry, int Flags, 
 			   dContactGeom* Contacts)
 {
-	const Fvector*	V_array			=	Level().ObjectSpace.GetStaticVerts();
+
 	const dReal*	SphereCenter	=	dGeomGetPosition	(Sphere);
 	const float		SphereRadius	=	dGeomSphereGetRadius(Sphere);
-	const dReal* v0	=(dReal*)&V_array[T->verts[0]];
-	const dReal* v1	=(dReal*)&V_array[T->verts[1]];
-	const dReal* v2	=(dReal*)&V_array[T->verts[2]];
+	//const dReal* v0	=(dReal*)&V_array[T->verts[0]];
+	//const dReal* v1	=(dReal*)&V_array[T->verts[1]];
+	//const dReal* v2	=(dReal*)&V_array[T->verts[2]];
 	//dVector3 triSideAx0={V[1][0]-V[0][0],V[1][1]-V[0][1],V[1][2]-V[0][2]};
 	//	dVector3 triSideAx1={V[2][0]-V[1][0],V[2][1]-V[1][1],V[2][2]-V[1][2]};
 	//		dVector3 triSideAx2={V[0][0]-V[2][0],V[0][1]-V[2][1],V[0][2]-V[2][2]};
@@ -580,12 +588,13 @@ int dTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
 
 
 ////////////////////////////////////////////////////////////////////////////
-int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
+int dSortedTriSphere(//const dReal* v1,const dReal* v2,
+					 const dReal* v0,
 					 CDB::TRI* T,
 					 const dReal* triAx,
 					 dxGeom* Sphere,dxGeom* Geometry, int Flags, dContactGeom* Contacts){
 
-						 const dReal* v0=(dReal*)T->verts[0];
+						 
 						 //const dReal* v1=(dReal*)T->verts[1];
 						 //const dReal* v2=(dReal*)T->verts[2];
 						 const dReal* SphereCenter=dGeomGetPosition(Sphere);
@@ -646,6 +655,7 @@ int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
 						 CDB::RESULT*    R_begin,
 						 CDB::RESULT*    R_end ,
 						 CDB::TRI*       T_array,
+						 const Fvector*	 V_array,
 						 Fvector AABB
 						 )
 					 {
@@ -782,7 +792,8 @@ int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
 							 */	
 							 if(include){
 								 ret+=dSortedTriSphere(
-									 //neg_tri->v0,neg_tri->v1,neg_tri->v2,
+									 (const dReal*)&V_array[neg_tri->T->verts[0]],
+									 //neg_tri->v1,neg_tri->v2,
 									 neg_tri->T,
 									 neg_tri->norm,
 									 o1,o2,flags,
@@ -797,22 +808,34 @@ int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
 						 //(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
 						 //if(ret==0)
 						 for(i=pos_tries.begin();pos_tries.end()!=i;++i)
-
+						 {
+							 CDB::TRI* T=i->T;
+							 const dReal* v0= (const dReal*)&V_array[T->verts[0]];
+							 const dReal* v1= (const dReal*)&V_array[T->verts[1]];
+							 const dReal* v2= (const dReal*)&V_array[T->verts[2]];
 							 ret+=dTriSphere (
-							 //i->v0,i->v1,i->v2,
-							 i->T,
+							 v0,
+							 v1,
+							 v2,
+							 T,
 							 o1,
 							 o2,
 							 3,
 							 CONTACT(contact, ret * skip));
+						 }
 
 						 //((b_count>1)||(*pushing_b_neg))&&
 						 if(b_neg_depth<dInfinity&&ret==0){
 							 bool include = true;
-							 for(i=pos_tries.begin();pos_tries.end()!=i;++i){
-								 if((((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[0])-b_neg_tri->pos)<0.f)||
-									 ((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[1])-b_neg_tri->pos)<0.f)||
-									 ((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[2])-b_neg_tri->pos)<0.f))
+							 for(i=pos_tries.begin();pos_tries.end()!=i;++i)
+							 {
+								CDB::TRI* T=i->T;
+								const dReal* v0= (const dReal*)&V_array[T->verts[0]];
+								const dReal* v1= (const dReal*)&V_array[T->verts[1]];
+								const dReal* v2= (const dReal*)&V_array[T->verts[2]];
+								 if((((dDOT(b_neg_tri->norm,v0)-b_neg_tri->pos)<0.f)||
+									 ((dDOT(b_neg_tri->norm,v1)-b_neg_tri->pos)<0.f)||
+									 ((dDOT(b_neg_tri->norm,v2)-b_neg_tri->pos)<0.f))
 									 ){
 										 include=false;
 										 break;
@@ -822,7 +845,7 @@ int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
 							 if(include)	{
 
 								 ret+=dSortedTriSphere(
-									 //b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,
+									 (const dReal*)&V_array[b_neg_tri->T->verts[0]],//,b_neg_tri->v1,b_neg_tri->v2,
 									 b_neg_tri->T,
 									 b_neg_tri->norm,
 									 o1,o2,flags,
@@ -878,7 +901,8 @@ int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
 						 CDB::RESULT*    R_begin                         = XRC.r_begin();
 						 CDB::RESULT*    R_end                           = XRC.r_end();
 						 CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
-						 return dSortTriSphereCollide(Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,AABB);
+						 const Fvector*	 V_array						 = Level().ObjectSpace.GetStaticVerts();
+						 return dSortTriSphereCollide(Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,V_array,AABB);
 						 /*
 						 for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 						 {
