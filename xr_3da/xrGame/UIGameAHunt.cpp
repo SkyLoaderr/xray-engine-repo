@@ -262,3 +262,16 @@ BOOL		CUIGameAHunt::CanCallBuyMenu			()
 
 	return TRUE;
 };
+
+bool		CUIGameAHunt::CanBeReady				()
+{
+	SetCurrentSkinMenu();
+	SetCurrentBuyMenu();
+
+	if (!m_bTeamSelected)
+	{
+		StartStopMenu(pUITeamSelectWnd);
+		return false;
+	};
+	return true;
+};

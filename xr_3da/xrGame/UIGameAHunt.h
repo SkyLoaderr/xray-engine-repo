@@ -57,9 +57,9 @@ public:
 
 	virtual void		OnTeamSelect			(int Result);
 	virtual void		OnBuyMenu_Ok			();
-
-	virtual bool		CanBeReady				();
 */
+	virtual bool		CanBeReady				();
+
 protected:
 	/////////
 	CUIInventoryWnd		InventoryMenu;

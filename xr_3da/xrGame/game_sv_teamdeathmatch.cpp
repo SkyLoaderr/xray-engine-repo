@@ -62,6 +62,7 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 	};
 
 	Money_SetStart(id_who);
+	SetPlayersDefItems(ps_who);
 }
 
 void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team) 

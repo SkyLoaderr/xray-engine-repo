@@ -446,7 +446,7 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 		pMenu->ReInitItems((char*)pTeamSect->c_str());
 	};
 	*/
-	FillDefItems(pTeamSect->c_str(), pMenu);
+//	FillDefItems(pTeamSect->c_str(), pMenu);
 	pMenu->SetSkin(0);
 	return pMenu;
 };

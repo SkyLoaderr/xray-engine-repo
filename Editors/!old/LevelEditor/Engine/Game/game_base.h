@@ -87,8 +87,14 @@ struct	game_PlayerState
 
 	BELT_ITEMS_LIST	BeltItems;
 	//---------------------------------------
-	DEF_VECTOR(PLAYER_ITEMS_LIST, s16);
 	
+	struct PlayersItem
+	{
+		u16			ItemID;
+		s16			ItemCost;
+	};
+	DEF_VECTOR(PLAYER_ITEMS_LIST, PlayersItem);
+
 	PLAYER_ITEMS_LIST	pItemList;
 };
 

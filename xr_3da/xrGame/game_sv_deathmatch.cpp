@@ -39,7 +39,10 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
 
-		ClearPlayerState(ps);
+		ClearPlayerState		(ps);
+		//---------------------------------------
+		SetPlayersDefItems		(ps);
+		//---------------------------------------
 
 		if (ps->Skip) continue;
 		SpawnActor(get_it_2_id(it), "spectator");
@@ -309,6 +312,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	};
 
 	Money_SetStart(id_who);
+	SetPlayersDefItems(ps_who);
 }
 
 
@@ -569,9 +573,11 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		ps->pItemList.clear();
 		for (u32 it = 0; it<ItemsDesired.size(); it++)
 		{
-			s16 ItemID = ItemsDesired[it];
-			if (PayForItem(id_who, ItemID))
-				ps->pItemList.push_back(ItemID);
+			game_PlayerState::PlayersItem	NewItem;
+			NewItem.ItemID		= ItemsDesired[it];
+			NewItem.ItemCost	= GetItemCost(id_who, NewItem.ItemID);
+			
+			ps->pItemList.push_back(NewItem);
 		};
 		return;
 	};
@@ -597,6 +603,27 @@ void	game_sv_Deathmatch::ClearPlayerItems		(game_PlayerState* ps)
 
 	ps->BeltItems.clear();
 	ps->pItemList.clear();
+};
+
+void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
+{
+	ps->BeltItems.clear();
+	ps->pItemList.clear();
+	//-------------------------------------------
+
+	//fill player with default items
+	if (ps->team < s16(TeamList.size()))
+	{
+		DEF_ITEMS_LIST	aDefItems = TeamList[ps->team].aDefaultItems;
+
+		for (u16 i=0; i<aDefItems.size(); i++)
+		{
+			game_PlayerState::PlayersItem NewItem;
+			NewItem.ItemID		= aDefItems[i];
+			NewItem.ItemCost	= 0;
+			ps->pItemList.push_back(NewItem);
+		}
+	};
 };
 
 const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
@@ -717,15 +744,17 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
 
+	game_PlayerState::PlayersItem *pItem = NULL;
 	for (u32 i = 0; i<ps->pItemList.size(); i++)
 	{
-		s16 cID = ps->pItemList[i];
-		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (cID & 0xFF1f));
+		pItem = &(ps->pItemList[i]);
+		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (pItem->ItemID & 0xFF1f));
 
 //		WeaponDataStruct* pWpn = &(*pWpnI);
-		if (pWpnI == WpnList.end() || (*pWpnI).SlotItem_ID != (cID & 0xFF1f)) continue;
+		if (pWpnI == WpnList.end() || !((*pWpnI) == (pItem->ItemID & 0xFF1f))) continue;
 
-		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(cID & 0x00FF)>>0x05);//GetItemAddonsForSlot(u8((cID & 0xFF00)>>8), u8(cID & 0x00FF),  ps));
+		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(pItem->ItemID & 0x00FF)>>0x05);//GetItemAddonsForSlot(u8((cID & 0xFF00)>>8), u8(cID & 0x00FF),  ps));
+		ps->money_for_round = ps->money_for_round - pItem->ItemCost;
 
 //		game_PlayerState::BeltItem	pBeltItem = ps->BeltItems[i]; 
 //		SpawnWeapon4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps), GetItemAddonsForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
@@ -842,8 +871,8 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* p
 	};
 };
 
-/*
-void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, WPN_SLOT_NAMES* pDefItems)
+
+void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems)
 {
 	string256			ItemName;
 	string4096			DefItems;
@@ -864,9 +893,13 @@ void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, WPN_SLOT_NAMES* p
 	{
 		_GetItem(DefItems, i, ItemName);
 //		pDefItems->push_back(ItemName);
+		TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
+		if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) continue;
+		
+		pDefItems->push_back((*pWpnI).SlotItem_ID);
 	};
 };
-*/
+
 
 void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 {
@@ -1005,6 +1038,7 @@ void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
 	ps_killed->m_lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	//---------------------------------------------------------
+	SetPlayersDefItems		(ps_killed);
 };
 
 void	game_sv_Deathmatch::LoadTeams			()
@@ -1027,7 +1061,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 
 	LoadWeaponsForTeam	(caSection, &NewTeam.aWeapons);
 	LoadSkinsForTeam	(caSection, &NewTeam.aSkins);
-//	LoadDefItemsForTeam	(caSection, &NewTeam.aDefaultItems);	
+	LoadDefItemsForTeam	(caSection, &NewTeam.aWeapons, &NewTeam.aDefaultItems);	
 	//-------------------------------------------------------------
 	if (pSettings->section_exist(caSection))
 	{
@@ -1097,34 +1131,51 @@ void game_sv_Deathmatch::Money_SetStart			(u32	id_who)
 	ps_who->money_for_round = pTeamData->m_iM_Start;
 }
 
-bool game_sv_Deathmatch::PayForItem				(u32 id_who, s16 ItemID)
+s16 game_sv_Deathmatch::GetItemCost			(u32 id_who, s16 ItemID)
 {
+	s16	res = 0;
 	game_PlayerState*	ps	=	get_id	(id_who);
-	if (!ps) return false;
+	if (!ps) return res;
 
-	if (!(ps->team < s16(TeamList.size()))) return false;
+	if (!(ps->team < s16(TeamList.size()))) return res;
 
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
 	
 	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (ItemID & 0xFF1f));
 	
-	if (pWpnI == WpnList.end() || (*pWpnI).SlotItem_ID != (ItemID & 0xFF1f)) return false;
+	if (pWpnI == WpnList.end() || (*pWpnI).SlotItem_ID != (ItemID & 0xFF1f)) return res;
 
 	WeaponDataStruct* pWpnS = &(*pWpnI);
-
-	ps->money_for_round = ps->money_for_round - pWpnS->Cost;
-
+	res = s16(pWpnS->Cost);
 	//--------- Addons -----------------------------
 	u8 Addons = (u8(ItemID & 0x00ff)) >> 0x05;
 	
+	string256 AddonName;
 	if (Addons & CSE_ALifeItemWeapon::eWeaponAddonScope)
 	{
+		if (pSettings->line_exist(pWpnS->WeaponName.c_str(), "scope_name"))
+		{
+			std::strcpy(AddonName, pSettings->r_string(pWpnS->WeaponName.c_str(), "scope_name"));
+			TEAM_WPN_LIST_it pWpnAddon	= std::find(WpnList.begin(), WpnList.end(), AddonName);
+			if (pWpnAddon != WpnList.end() && ((*pWpnAddon) == AddonName))
+			{
+				res = res + s16((*pWpnAddon).Cost);
+			}
+		}
 	}
 	if (Addons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
 	{
+		if (pSettings->line_exist(pWpnS->WeaponName.c_str(), "wpn_addon_grenade_launcher"))
+		{
+			std::strcpy(AddonName, pSettings->r_string(pWpnS->WeaponName.c_str(), "wpn_addon_grenade_launcher"));
+		}
 	}
 	if (Addons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
 	{
+		if (pSettings->line_exist(pWpnS->WeaponName.c_str(), "silencer_name"))
+		{
+			std::strcpy(AddonName, pSettings->r_string(pWpnS->WeaponName.c_str(), "silencer_name"));
+		}
 	}
-	return true;
+	return res;
 }

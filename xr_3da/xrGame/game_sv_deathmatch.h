@@ -42,6 +42,12 @@ protected:
 		{
 			return		(SlotItem_ID == ID);
 		}
+
+		bool			operator	==		(LPCSTR name)
+		{
+			int res = xr_strcmp(WeaponName.c_str(), name);
+			return	res	 == 0;
+		}
 	};
 
 	DEF_VECTOR(TEAM_WPN_LIST, WeaponDataStruct);
@@ -49,13 +55,16 @@ protected:
 	// Вектор имен скинов комманды
 	DEF_VECTOR(TEAM_SKINS_NAMES, std::string);	
 
+	// Вектор имен скинов комманды
+	DEF_VECTOR(DEF_ITEMS_LIST, u16);	
+
 	//структура данных по команде
 	struct		TeamStruct
 	{
 		string256			caSection;		// имя секции комманды
 		TEAM_SKINS_NAMES	aSkins;			// список скинов для команды
 		TEAM_WPN_LIST		aWeapons;		// список оружия для команды
-//		WPN_SLOT_NAMES		aDefaultItems;	// предметы по умолчанию
+		DEF_ITEMS_LIST		aDefaultItems;	// список предметов по умолчанию
 
 		//---- Money -------------------
 		s16					m_iM_Start			;
@@ -133,6 +142,7 @@ public:
 
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
 	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
+	virtual		void				SetPlayersDefItems		(game_PlayerState* ps);
 
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
 	virtual		const char *		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
@@ -142,10 +152,10 @@ public:
 	virtual		void				LoadTeamData			(char* caSection);
 	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
 	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
-//	virtual		void				LoadDefItemsForTeam		(char* caSection, WPN_SLOT_NAMES* pDefItems);
+	virtual		void				LoadDefItemsForTeam		(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
 
 	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(u32	id_who);
-	virtual		bool				PayForItem				(u32 id_who, s16 ItemID);
+	virtual		s16				GetItemCost				(u32 id_who, s16 ItemID);
 };
