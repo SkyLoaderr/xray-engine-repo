@@ -1507,6 +1507,7 @@ E->CallBack(B);
 }
 
 void CPHElement::CallBack(CBoneInstance* B){
+	
 	if(!bActive && !bActivating){
 		mXFORM.set(B->mTransform);
 		bActivating=true;
@@ -1535,7 +1536,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	//Fmatrix m,m1,m2;
 	//m1.set(mXFORM);
 	//m2.set(B->mTransform);
-
+	
 	//m1.invert();
 	//m.mul(m1,m2);
 	//float dt01=Device.fTimeGlobal-m_start_time;
@@ -1941,3 +1942,44 @@ element_transform.mulA(add);
 
 
 }
+
+void own_axis(const Fmatrix& m,Fvector& axis){
+	if(m._11==1.f) {axis.set(1.f,0.f,0.f); return;}
+	float k=m._13*m._21-m._11*m._23+m._23;
+
+	if(k==0.f){
+	if(m._13==0.f) {axis.set(0.f,0.f,1.f);return;}
+	float k1=m._13/(1.f-m._11);
+	axis.z=sqrtf(1.f/(1.f+k1*k1));
+	axis.x=axis.z*k1;
+	axis.y=0.f;
+	return;
+	}
+
+	float k_zy=-(m._12*m._21-m._11*m._22+m._11+m._22-1.f)/k;
+	float k_xy=(m._12+m._13*k_zy)/(1.f-m._11);
+	axis.y=sqrtf(1.f/(k_zy*k_zy+k_xy*k_xy+1.f));
+	axis.x=axis.y*k_xy;
+	axis.z=axis.y*k_zy;
+	return;
+}
+
+
+
+void own_axis_angle(const Fmatrix& m,Fvector& axis,float& angle){
+	own_axis(m,axis);
+	Fvector ort1,ort2;
+	ort1.set(0.f,-axis.z,axis.y);
+	ort2.crossproduct(axis,ort2);
+	
+	Fvector ort1_t;
+	m.transform_dir(ort1_t,ort1);
+
+	float cosinus=ort1.dotproduct(ort1_t);
+	float sinus=ort2.dotproduct(ort1_t);
+	angle=acosf(cosinus);
+	if(sinus<0.f) angle= -angle;
+
+}
+
+

@@ -1140,7 +1140,7 @@ void CActor::create_Skeleton(){
 	m_phSkeleton		= P_create_Shell();
 	CPhysicsJoint*		joint;
 	//get bone instance
-	int id=M->LL_BoneID("bip01_pelvis");//bip01_spine1
+	int id=M->LL_BoneID("bip01_pelvis");
 	CBoneInstance& instance=M->LL_GetInstance				(id);
 
 	//create root element
@@ -1170,6 +1170,9 @@ void CActor::create_Skeleton(){
 	joint->SetAxisVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI*1.f/4.f,M_PI*2.f/3.f,0);
 	m_phSkeleton->add_Joint(joint);
+	//Fquaternion k;
+	//k.get_axis_angle
+	//Fmatrix m;
 	
 	
 	parent=element;
