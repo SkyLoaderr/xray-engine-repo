@@ -381,12 +381,14 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 	}
 	
 	power *= 1;//ffGetStartVolume(ESoundTypes(eType));
-	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-		power = 1.f;//expf(.1f*log(power));
-	u32 dwTime = m_dwCurrentUpdate;
 	
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+		power = 1.f;
+	
+	u32 dwTime = m_dwCurrentUpdate;
+
 	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
-		if ((this != who) && (!who->H_Parent() || (who->H_Parent() != this))) {
+		if (!who || ((this != who) && (!who->H_Parent() || (who->H_Parent() != this)))) {
 			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			Msg("* %s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
@@ -403,6 +405,8 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 					m_tpaDynamicSounds[j].tpEntity			= tpEntity;
 					m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
 					m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
+					if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Fvector(Position)))
+						m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
 				}
 			if (j >= (int)m_tpaDynamicSounds.size()) {
 				if ((int)m_tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
@@ -424,6 +428,8 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
 						m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
 						m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
+						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
+							m_tpaDynamicSounds[dwIndex].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[dwIndex].dwNodeID);
 					}
 				}
 				else {
@@ -439,6 +445,8 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 					tDynamicSound.tpEntity			= tpEntity;
 					tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
 					tDynamicSound.dwMyNodeID		= AI_NodeID;
+					if (tpEntity && !getAI().bfInsideNode(getAI().Node(tDynamicSound.dwNodeID),Fvector(Position)))
+						tDynamicSound.tSavedPosition	= getAI().tfGetNodeCenter(tDynamicSound.dwNodeID);
 					m_tpaDynamicSounds.push_back	(tDynamicSound);
 				}
 			}
