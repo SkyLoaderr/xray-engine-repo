@@ -29,6 +29,20 @@ CHangingLamp::~CHangingLamp	()
 	::Render->glow_destroy	(glow_render);
 }
 
+void CHangingLamp::Center	(Fvector& C) const 
+{ 
+	if (renderable.visual){
+		renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	
+	}else{
+		C.set	(XFORM().c);
+	}
+}
+
+float CHangingLamp::Radius	() const 
+{ 
+	return (renderable.visual)?renderable.visual->vis.sphere.R:EPS;
+}
+
 void CHangingLamp::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
@@ -43,12 +57,15 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	Fcolor					clr;
 
 	// set bone id
-	R_ASSERT				(Visual()&&PKinematics(Visual()));
-	CKinematics* K			= PKinematics(Visual());
 //	CInifile* pUserData		= K->LL_UserData(); 
 //	R_ASSERT3				(pUserData,"Empty HangingLamp user data!",lamp->get_visual());
 
-	guid_bone				= K->LL_BoneID	(*lamp->guid_bone);	VERIFY(guid_bone!=BI_NONE);
+	if (Visual()){
+		CKinematics* K		= PKinematics(Visual());
+		R_ASSERT			(Visual()&&PKinematics(Visual()));
+		guid_bone			= K->LL_BoneID	(*lamp->guid_bone);	VERIFY(guid_bone!=BI_NONE);
+		collidable.model	= xr_new<CCF_Skeleton>				(this);
+	}
 	fBrightness				= lamp->brightness;
 	clr.set					(lamp->color);						clr.a = 1.f;
 	clr.mul_rgb				(fBrightness);
@@ -84,14 +101,13 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	lanim					= LALib.FindItem(*lamp->color_animator);
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
-	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated(Visual())->PlayCycle("idle");
-	
-	PKinematics(Visual())->Calculate();
+	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated	(Visual())->PlayCycle("idle");
+	if(PKinematics(Visual()))		PKinematics			(Visual())->Calculate();
 	
 	if (Alive())			TurnOn	();
 	else					TurnOff	();
 	
-	setVisible				(TRUE);
+	if (Visual())setVisible	(TRUE);
 	setEnabled				(TRUE);
 
 	return					(TRUE);
@@ -112,7 +128,7 @@ void CHangingLamp::UpdateCL	()
 	if (Alive()&&light_render->get_active())
 	{
 		Fmatrix xf;
-		if (guid_bone>=0)
+		if (guid_bone!=BI_NONE)
 		{
 			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
 			xf.mul		(XFORM(),M);
@@ -136,7 +152,7 @@ void CHangingLamp::UpdateCL	()
 			u32 clr					= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
 			Fcolor					fclr;
 			fclr.set				((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
-			fclr.mul_rgb			(fBrightness);
+			fclr.mul_rgb			(fBrightness/255.f);
 			light_render->set_color	(fclr);
 			if (glow_render)		glow_render->set_color	(fclr);
 			if (light_ambient){
@@ -157,7 +173,7 @@ void CHangingLamp::TurnOn()
 	light_render->set_active						(true);
 	if (glow_render)	glow_render->set_active		(true);
 	if (light_ambient)	light_ambient->set_active	(true);
-	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
 }
 
 void CHangingLamp::TurnOff()
@@ -165,7 +181,7 @@ void CHangingLamp::TurnOff()
 	light_render->set_active						(false);
 	if (glow_render)	glow_render->set_active		(false);
 	if (light_ambient)	light_ambient->set_active	(false);
-	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
+	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
 }
 
 void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
@@ -184,8 +200,8 @@ static BONE_P_MAP bone_map=BONE_P_MAP();
 void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 {
 
-	if (!Visual()) return;
-	if(m_pPhysicsShell) return;
+	if (!Visual())			return;
+	if (m_pPhysicsShell)	return;
 	CKinematics* pKinematics=PKinematics(Visual());
 
 	m_pPhysicsShell		= P_create_Shell();
