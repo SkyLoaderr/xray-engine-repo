@@ -21,13 +21,6 @@ BOOL CTorridZone::net_Spawn(CSE_Abstract* DC)
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
 	CSE_ALifeTorridZone	*zone	= smart_cast<CSE_ALifeTorridZone*>(abstract);
 	VERIFY				(zone);
-/*
-	R_ASSERT			(Visual()&&smart_cast<CKinematics*>(Visual()));
-	CSkeletonAnimated	*A= smart_cast<CSkeletonAnimated*>(Visual());
-	if (A) {
-		A->PlayCycle	(*zone->startup_animation);
-		A->Calculate	();
-	}*/
 
 	m_animator->Load	(zone->get_motion());
 	m_animator->Play	(true);

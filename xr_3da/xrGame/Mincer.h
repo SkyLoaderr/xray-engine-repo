@@ -23,9 +23,6 @@ private:
 public:
 	CMincer(void);
 	virtual ~CMincer(void);
-#ifdef DEBUG
-	virtual void OnRender					();
-#endif
 	virtual CTelekinesis& Telekinesis		(){return m_telekinetics;}
 //	virtual void SwitchZoneState			(EZoneState new_state);
 	virtual void OnStateSwitch				(EZoneState new_state);
@@ -35,7 +32,7 @@ public:
 	virtual bool BlowoutState				();
 	virtual void AffectPullDead				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist){}
 	virtual void AffectPullAlife			(CEntityAlive* EA,const Fvector& throw_in_dir,float dist);
-	virtual void AffectThrow				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
+	virtual void AffectThrow				(SZoneObjectInfo* O, CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
 	virtual bool CheckAffectField			(CPhysicsShellHolder* GO,float dist_to_radius);
 	virtual void ThrowInCenter				(Fvector& C);
 	virtual BOOL net_Spawn					(CSE_Abstract* DC);

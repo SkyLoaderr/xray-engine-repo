@@ -14,19 +14,21 @@ bool CHairsZone::BlowoutState()
 	return result;
 }
 
-void CHairsZone::Affect(CObject* O) 
+void CHairsZone::Affect(SZoneObjectInfo* O) 
 {
-	CPhysicsShellHolder *pGameObject = smart_cast<CPhysicsShellHolder*>(O);
+	CPhysicsShellHolder *pGameObject = smart_cast<CPhysicsShellHolder*>(O->object);
 	if(!pGameObject) return;
 
-	if(m_ObjectInfoMap[O].zone_ignore) return;
+	if(O->zone_ignore) return;
 
 	Fvector P; 
 	XFORM().transform_tiny(P,CFORM()->getSphere().P);
 
+#ifdef DEBUG
 	char l_pow[255]; 
 	sprintf(l_pow, "zone hit. %.1f", Power(pGameObject->Position().distance_to(P)));
 	if(bDebug) HUD().outMessage(0xffffffff,pGameObject->cName(), l_pow);
+#endif
 
 	Fvector hit_dir; 
 	hit_dir.set(::Random.randF(-.5f,.5f), 
@@ -42,8 +44,8 @@ void CHairsZone::Affect(CObject* O)
 	float impulse = m_fHitImpulseScale*power*pGameObject->GetMass();
 
 	//статистика по объекту
-	m_ObjectInfoMap[O].total_damage += power;
-	m_ObjectInfoMap[O].hit_num++;
+	O->total_damage += power;
+	O->hit_num++;
 
 	if(power > 0.01f) 
 	{

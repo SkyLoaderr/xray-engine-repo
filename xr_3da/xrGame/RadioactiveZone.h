@@ -10,7 +10,7 @@ public:
 	virtual ~CRadioactiveZone(void);
 
 	virtual void Load			(LPCSTR section);
-	virtual void Affect			(CObject* O);
+	virtual void Affect			(SZoneObjectInfo* O);
 	virtual bool EnableEffector	()	{return true;}
 protected:
 	virtual bool BlowoutState	();

@@ -14,7 +14,7 @@ public:
 	virtual bool EnableEffector() {return true;}
 
 
-	virtual void Affect(CObject* O);
+	virtual void Affect(SZoneObjectInfo* O);
 
 protected:
 	virtual bool BlowoutState();

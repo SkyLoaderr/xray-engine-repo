@@ -165,6 +165,7 @@ void CSpaceRestrictor::spatial_move		()
 #ifdef DEBUG
 
 #include "customzone.h"
+#include "hudmanager.h"
 
 extern	Flags32	dbg_net_Draw_Flags;
 
@@ -185,6 +186,7 @@ void CSpaceRestrictor::OnRender	()
 	else
 		Color = D3DCOLOR_XRGB(255,0,0);
 
+	
 	for(l_pShape = l_shapes.begin(); l_shapes.end() != l_pShape; ++l_pShape) 
 	{
 		switch(l_pShape->type)
@@ -209,5 +211,38 @@ void CSpaceRestrictor::OnRender	()
 			break;
 		}
 	}
+	if( Level().CurrentViewEntity()->Position().distance_to(XFORM().c)<100.0f ){
+	
+//DRAW name
+
+		Fmatrix		res;
+		res.mul		(Device.mFullTransform, XFORM());
+
+		Fvector4	v_res;
+
+		float		delta_height = 0.f;
+
+		// get up on 2 meters
+		Fvector shift;
+		static float gx = 0.0f;
+		static float gy = 2.0f;
+		static float gz = 0.0f;
+		shift.set(gx,gy,gz);
+		res.transform(v_res, shift);
+
+// check if the object in sight
+		if (v_res.z < 0 || v_res.w < 0)										return;
+		if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f) return;
+
+		// get real (x,y)
+		float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
+		float y = (1.f - v_res.y)/2.f * (Device.dwHeight) - delta_height;
+
+		HUD().Font().pFontMedium->SetColor	(0xffff0000);
+		HUD().Font().pFontMedium->OutSet	(x, y-=delta_height);
+		HUD().Font().pFontMedium->OutNext	( Name() );
+	}
+
+
 }
 #endif

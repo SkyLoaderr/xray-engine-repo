@@ -22,10 +22,10 @@ void CMincer::OnStateSwitch(EZoneState new_state)
 {
 	if(m_eZoneState!=eZoneStateBlowout && new_state==eZoneStateBlowout)
 	{
-		xr_set<CObject*>::iterator it=m_inZone.begin(),e=m_inZone.end();
-		for(;e!=it;++it)
+		OBJECT_INFO_VEC_IT it;
+		for(it = m_ObjectInfoMap.begin(); m_ObjectInfoMap.end() != it; ++it) 
 		{
-			CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
+			CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>((*it).object);
 			if (GO)					Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
 		}
 	}
@@ -68,20 +68,16 @@ void CMincer::net_Destroy()
 void CMincer::feel_touch_new				(CObject* O)
 {
 	inherited::feel_touch_new(O);
-	if(m_eZoneState==eZoneStateBlowout && 
-			(
-			m_dwBlowoutExplosionTime>(u32)m_iStateTime
-				)
-		)
+	if( m_eZoneState==eZoneStateBlowout && (m_dwBlowoutExplosionTime>(u32)m_iStateTime) )
 	{
 		CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(O);
 		Telekinesis().activate(GO, m_fThrowInImpulse, m_fTeleHeight, 100000);
 	}
 }
 
-void CMincer:: AffectThrow	(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
+void CMincer:: AffectThrow	(SZoneObjectInfo* O, CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
 {
-	inherited::AffectThrow(GO,throw_in_dir,dist);
+	inherited::AffectThrow(O,GO,throw_in_dir,dist);
 }
 
 bool CMincer::BlowoutState	()
@@ -187,53 +183,6 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 	inherited::AffectPullAlife(EA,throw_in_dir,dist);
 
 }
-#ifdef DEBUG
-extern	Flags32	dbg_net_Draw_Flags;
-
-void CMincer::OnRender()
-{
-	if(!bDebug) return;
-	if (!(dbg_net_Draw_Flags.is_any((1<<2)))) return;
-	RCache.OnFrameEnd();
-	Fvector l_half; l_half.set(.5f, .5f, .5f);
-	Fmatrix l_ball, l_box;
-	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)CFORM())->Shapes();
-	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
-	
-	u32 Color = 0;
-	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(this);
-	if (custom_zone && custom_zone->IsEnabled())
-		Color = D3DCOLOR_XRGB(0,255,255);
-	else
-		Color = D3DCOLOR_XRGB(255,0,0);
-
-	for(l_pShape = l_shapes.begin(); l_shapes.end() != l_pShape; ++l_pShape) 
-	{
-		switch(l_pShape->type)
-		{
-		case 0:
-			{
-                Fsphere &l_sphere = l_pShape->data.sphere;
-				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
-				//l_ball.scale(1.f, 1.f, 1.f);
-				Fvector l_p; XFORM().transform(l_p, l_sphere.P);
-				l_ball.translate_add(l_p);
-				//l_ball.mul(XFORM(), l_ball);
-				//l_ball.mul(l_ball, XFORM());
-				RCache.dbg_DrawEllipse(l_ball, Color);
-			}
-			break;
-		case 1:
-			{
-				l_box.mul(XFORM(), l_pShape->data.box);
-				RCache.dbg_DrawOBB(l_box, l_half, Color);
-			}
-			break;
-		}
-	}
-}
-
-#endif
 
 bool CMincer::CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius)
 {

@@ -6,7 +6,7 @@ class CHairsZone :
 {
 typedef				CVisualZone		inherited;		
 public:
-	virtual			void		Affect				(CObject* O)		;
+	virtual			void		Affect				(SZoneObjectInfo* O)		;
 
 protected:
 	virtual			bool		BlowoutState		()					;

@@ -17,14 +17,4 @@ public:
 
 
 	virtual bool		IsVisibleForZones() { return true;		}
-/*	virtual void Load(LPCSTR section);
-	virtual void Postprocess(f32 val);
-	virtual bool EnableEffector() {return true;}
-
-
-	virtual void Affect(CObject* O);
-
-protected:
-	virtual bool BlowoutState();
-*/
 };

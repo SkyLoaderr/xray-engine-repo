@@ -9,7 +9,7 @@ float m_fVelocityLimit;
 public:
 									CAmebaZone			()						;
 									~CAmebaZone			()						;
-	virtual				void		Affect				(CObject* O)			;
+	virtual				void		Affect				(SZoneObjectInfo* O)		;
 	
 protected:
 	virtual				void		PhTune				(dReal step)			;

@@ -6,12 +6,10 @@
 
 
 CRadioactiveZone::CRadioactiveZone(void) 
-{
-}
+{}
 
 CRadioactiveZone::~CRadioactiveZone(void) 
-{
-}
+{}
 
 void CRadioactiveZone::Load(LPCSTR section) 
 {
@@ -25,22 +23,25 @@ bool  CRadioactiveZone::BlowoutState	()
 	return result;
 }
 
-void CRadioactiveZone::Affect(CObject* O) 
+void CRadioactiveZone::Affect(SZoneObjectInfo* O) 
 {
 	// вермя срабатывания не чаще, чем заданный период
 	if(m_dwDeltaTime < m_dwPeriod) return;
 	m_dwDeltaTime = 0;
 	
-	CGameObject *GO = smart_cast<CGameObject*>(O);
+	CGameObject *GO = O->object;
 	
 	if(GO) 
 	{
 		Fvector pos; 
 		XFORM().transform_tiny(pos,CFORM()->getSphere().P);
+
+#ifdef DEBUG		
 		char pow[255]; 
 		sprintf(pow, "zone hit. %.1f", Power(GO->Position().distance_to(pos)));
 		if(bDebug) HUD().outMessage(0xffffffff, *GO->cName(), pow);
-		
+#endif
+
 		Fvector dir; 
 		dir.set(0,0,0);
 	

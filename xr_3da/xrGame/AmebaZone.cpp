@@ -20,27 +20,29 @@ CAmebaZone::~CAmebaZone()
 void CAmebaZone::Load(LPCSTR section)
 {
 	inherited::Load(section);
-	m_fVelocityLimit= pSettings->r_float(section,"max_velocity_in_zone");
+	m_fVelocityLimit= pSettings->r_float(section,		"max_velocity_in_zone");
 }
 bool CAmebaZone::BlowoutState()
 {
 	bool result = inherited::BlowoutState();
 	if(!result) UpdateBlowout();
-	xr_set<CObject*>::iterator it;
-	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) Affect(*it);
+
+	for(OBJECT_INFO_VEC_IT it = m_ObjectInfoMap.begin(); m_ObjectInfoMap.end() != it; ++it) 
+		Affect(&(*it));
+
 	return result;
 }
 
-void  CAmebaZone::Affect(CObject* O) 
+void  CAmebaZone::Affect(SZoneObjectInfo* O) 
 {
-	CPhysicsShellHolder *pGameObject = smart_cast<CPhysicsShellHolder*>(O);
+	CPhysicsShellHolder *pGameObject = smart_cast<CPhysicsShellHolder*>(O->object);
 	if(!pGameObject) return;
 
-	if(m_ObjectInfoMap[O].zone_ignore) return;
+	if(O->zone_ignore) return;
 
 #ifdef DEBUG
 	char l_pow[255]; 
-	sprintf(l_pow, "zone hit. %.1f", Power(distance_to_center(O)));
+	sprintf(l_pow, "zone hit. %.1f", Power(distance_to_center(O->object)));
 	if(bDebug) HUD().outMessage(0xffffffff,pGameObject->cName(), l_pow);
 #endif
 	Fvector hit_dir; 
@@ -52,12 +54,12 @@ void  CAmebaZone::Affect(CObject* O)
 
 	Fvector position_in_bone_space;
 
-	float power = Power(distance_to_center(O));
+	float power = Power(distance_to_center(O->object));
 	float impulse = m_fHitImpulseScale*power*pGameObject->GetMass();
 
 	//статистика по объекту
-	m_ObjectInfoMap[O].total_damage += power;
-	m_ObjectInfoMap[O].hit_num++;
+	O->total_damage += power;
+	O->hit_num++;
 
 	if(power > 0.01f) 
 	{
@@ -86,10 +88,10 @@ void  CAmebaZone::Affect(CObject* O)
 
 void CAmebaZone::PhTune(dReal step)
 {
-	xr_set<CObject*>::iterator it;
-	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
+	OBJECT_INFO_VEC_IT it;
+	for(it = m_ObjectInfoMap.begin(); m_ObjectInfoMap.end() != it; ++it) 
 	{
-		CEntityAlive	*EA=smart_cast<CEntityAlive*>(*it);
+		CEntityAlive	*EA=smart_cast<CEntityAlive*>((*it).object);
 		if(EA)
 		{
 			CPHMovementControl* mc=EA->movement_control();
@@ -99,7 +101,7 @@ void CAmebaZone::PhTune(dReal step)
 				//mc->GetCharacterVelocity(vel);
 				//vel.invert();
 				//vel.mul(mc->GetMass());
-				if(distance_to_center(*it)<effective_radius())
+				if(distance_to_center(EA)<effective_radius())
 								mc->SetVelocityLimit(m_fVelocityLimit);
 			}
 		}
