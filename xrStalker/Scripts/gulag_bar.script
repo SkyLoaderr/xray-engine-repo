@@ -322,7 +322,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 8, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj)
-				         	return obj:community() == "dolg"
+				         	return obj:character_community() == "dolg"
 			            end
 		}
 		table.insert(sj, t)
@@ -330,8 +330,9 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
+			leader = "logic@bar_arena_leader",
 			predicate = function(obj)
-				         	return obj:community() == "dolg"
+				         	return obj:character_community() == "dolg"
 			            end
 		}
 		table.insert(sj, t)
@@ -339,8 +340,9 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
+			leader = "logic@bar_arena_leader",
 			predicate = function(obj)
-				         	return obj:community() == "dolg"
+				         	return obj:character_community() == "dolg"
 			            end
 		}
 		table.insert(sj, t)
@@ -371,6 +373,55 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_walker_5", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@bar_arena_fun_1", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_2", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_3", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_4", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_5", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_6", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_7", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_arena_fun_8", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -479,7 +530,7 @@ function load_states(gname, type)
 	
 	if type == "bar_arena" then
 		return function (gulag)
-				return 0 -- rest
+				return 1 -- rest
 		end
 	end
 	
