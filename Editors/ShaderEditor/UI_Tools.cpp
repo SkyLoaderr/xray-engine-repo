@@ -18,6 +18,8 @@ CShaderTools::CShaderTools()
 {
     m_ItemProps			= 0;
     m_PreviewProps		= 0;
+    fFogness			= 0.9f;
+    dwFogColor			= 0xffffffff;
 }
 //---------------------------------------------------------------------------
 
@@ -190,9 +192,9 @@ void CShaderTools::ShowProperties()
 
 void CShaderTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
-	s_fog		= 0.99f*UI.ZFar();
-	e_fog		= UI.ZFar();
-	fog_color	= DEFAULT_CLEARCOLOR;
+    s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
+    e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
+    fog_color 			= dwFogColor;
 }
 
 LPCSTR CShaderTools::CurrentToolsName()

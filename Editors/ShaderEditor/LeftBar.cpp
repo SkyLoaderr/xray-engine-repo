@@ -180,7 +180,7 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0)
+BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0, EItemType type)
 {
 	Tools.Current()->RemoveItem(p0);
     return TRUE;
@@ -285,7 +285,7 @@ void __fastcall TfraLeftBar::ebCloneItemClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
+void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1, EItemType type)
 {
 	Tools.Current()->RenameItem(p0,p1);
 	Tools.Current()->Modified();

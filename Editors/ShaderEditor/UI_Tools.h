@@ -33,6 +33,9 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
     void				RegisterTools		();
     void				UnregisterTools		();
 public:
+    float 				fFogness;
+    u32					dwFogColor;
+public:
     TProperties*		m_ItemProps;
     TProperties*		m_PreviewProps;
 
@@ -60,6 +63,7 @@ public:
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
+    void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR				GetInfo				();
     LPCSTR				CurrentToolsName	();

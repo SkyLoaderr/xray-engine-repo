@@ -138,8 +138,8 @@ __published:	// IDE-managed Components
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 private:	// User declarations
-	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1);
-	BOOL __fastcall RemoveItem			(LPCSTR p0);
+	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1, EItemType type);
+	BOOL __fastcall RemoveItem			(LPCSTR p0, EItemType type);
 	void __fastcall AfterRemoveItem		();
     bool			bFocusedAffected;
 public:		// User declarations
