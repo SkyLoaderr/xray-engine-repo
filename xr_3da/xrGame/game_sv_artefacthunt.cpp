@@ -10,6 +10,7 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 
 	m_dwArtefactRespawnDelta = get_option_i		(options,"artefactrdelta",0);
 	m_dwArtefactsTotal	= get_option_i		(options,"numberartefacts",0);
+	fraglimit = 0;
 	
 	if (m_dwArtefactsTotal%2 == 0) m_dwArtefactsTotal++;
 	m_dwArtefactsHalf = m_dwArtefactsTotal/2;
@@ -94,7 +95,7 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
 	}
-	
+	/*
 	teams[ps_killer->team-1].score = 0;
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -104,9 +105,10 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		if (ps->team != ps_killer->team) continue;
 
 		teams[ps_killer->team-1].score += ps->kills;
-	};	
+	};
+	*/
 
-	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
+//	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
 
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
@@ -502,4 +504,14 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
+};
+
+void				game_sv_ArtefactHunt::OnTimelimitExceed		()
+{
+	if (teams[0].score == teams[1].score) return;
+	u8 winning_team = (teams[0].score < teams[1].score)? 1 : 0;
+	OnTeamScore(winning_team);
+	phase = u16((winning_team)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
+	switch_Phase		(phase);
+	OnDelayedRoundEnd("Team Final Score");
 };

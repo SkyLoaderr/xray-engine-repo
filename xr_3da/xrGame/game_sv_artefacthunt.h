@@ -27,6 +27,8 @@ public:
 	virtual		void				OnRoundStart			();							// старт раунда
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 
+	virtual		void				OnTimelimitExceed		();
+
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
 	virtual		void				LoadTeams				();
