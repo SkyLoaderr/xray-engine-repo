@@ -46,7 +46,7 @@ protected:
 	IC			void	select_intermediate_vertex	();
 	IC	const _VertexEvaluator	*evaluator			() const;
 	IC			void	make_inactual				();
-	IC	virtual	void	before_search				();
+	IC	virtual	void	before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	virtual	void	after_search				();
 
 public:

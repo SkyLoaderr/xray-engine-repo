@@ -55,7 +55,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CPathManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
 	VERIFY					(m_graph && m_evaluator && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id));
-	before_search			();
+	before_search			(start_vertex_id,dest_vertex_id);
 	m_failed				= !ai().graph_engine().search(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
 	after_search			();
 	if (failed()) {
@@ -149,7 +149,7 @@ IC	void CPathManagerTemplate::make_inactual				()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CPathManagerTemplate::before_search				()
+IC	void CPathManagerTemplate::before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
 }
 

@@ -1381,6 +1381,52 @@ void CScriptGameObject::set_manual_invisibility(bool val)
 	val ? monster->set_manual_switch(true) : monster->set_manual_switch(false);
 }
 
+void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member add_restrictions!");
+		return;
+	}
+	restricted_object->add_restrictions		(in,out);
+}
 
+void CScriptGameObject::remove_restrictions		(LPCSTR in, LPCSTR out)
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member remove_restrictions!");
+		return;
+	}
+	restricted_object->remove_restrictions	(in,out);
+}
 
+void CScriptGameObject::remove_all_restrictions	()
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member remove_all_restrictions!");
+		return;
+	}
+	restricted_object->remove_all_restrictions	();
+}
 
+LPCSTR CScriptGameObject::in_restrictions	()
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member in_restrictions!");
+		return								("");
+	}
+	return									(*restricted_object->in_restrictions());
+}
+
+LPCSTR CScriptGameObject::out_restrictions	()
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member out_restrictions!");
+		return								("");
+	}
+	return									(*restricted_object->out_restrictions());
+}

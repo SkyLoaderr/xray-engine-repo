@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "movement_manager.h"
 
+const float verify_distance = 15.f;
+
 CMovementManager::CMovementManager	()
 {
 	m_base_game_selector			= xr_new<CGraphEngine::CBaseParameters>();
@@ -172,14 +174,24 @@ void CMovementManager::update_path	()
 		}
 		default :				NODEFAULT;
 	}
+
+	verify_detail_path			();
 }
 
-void CMovementManager::add_border	() const
+void CMovementManager::verify_detail_path	()
 {
-	CRestrictedObject::add_border	();
+	if (CDetailPathManager::path().empty() || CDetailPathManager::completed(CDetailPathManager::dest_position()))
+		return;
+
+	float distance = 0.f;
+	for (u32 i=CDetailPathManager::curr_travel_point_index() + 1, n=CDetailPathManager::path().size(); i<n; ++i) {
+		if (!accessible(CDetailPathManager::path()[i].position)) {
+			m_path_actuality	= false;
+			return;
+		}
+		distance	+= CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i-1].position);
+		if (distance >= verify_distance)
+			break;
+	}
 }
 
-void CMovementManager::remove_border() const
-{
-	CRestrictedObject::remove_border();
-}

@@ -166,7 +166,8 @@ IC	u32	 CMovementManager::refresh_rate			() const
 	return				(m_refresh_rate);
 }
 
-IC	bool CMovementManager::accessible			(const Fvector &position) const
+template <typename T>
+IC	bool CMovementManager::accessible			(T position_or_vertex_id, float radius) const
 {
-	return				(CRestrictedObject::accessible(position));
+	return				(CRestrictedObject::accessible(position_or_vertex_id,radius));
 }

@@ -1,44 +1,79 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: space_restriction.h
 //	Created 	: 17.08.2004
-//  Modified 	: 17.08.2004
+//  Modified 	: 27.08.2004
 //	Author		: Dmitriy Iassenev
 //	Description : Space restriction
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-class CSpaceRestrictor;
+#include "restriction_space.h"
+#include "space_restriction_holder.h"
+#include "space_restriction_bridge.h"
 
-class CSpaceRestriction {
-public:
-	typedef xr_vector<CSpaceRestriction*> RESTRICTIONS;
+class CSpaceRestrictionManager;
+class CSpaceRestrictionBridge;
+
+class CSpaceRestriction : public RestrictionSpace::CTimeIntrusiveBase {
+	friend struct CRemoveMergedFreeInRestrictions;
+private:
+	typedef SpaceRestrictionHolder::CBaseRestrictionPtr CBaseRestrictionPtr;
+
+private:
+	struct CFreeInRestriction {
+		CBaseRestrictionPtr		m_restriction;
+		bool					m_enabled;
+
+		IC	CFreeInRestriction	(CBaseRestrictionPtr restriction, bool enabled)
+		{
+			m_restriction		= restriction;
+			m_enabled			= enabled;
+		}
+	};
+
+private:
+	typedef xr_vector<CBaseRestrictionPtr>	RESTRICTIONS;
+	typedef xr_vector<CFreeInRestriction>	FREE_IN_RESTRICTIONS;
 
 protected:
-	RESTRICTIONS					m_restrictions;
-	xr_vector<u32>					m_border;
-	ref_str							m_space_restrictors;
-	CSpaceRestrictor				*m_restrictor;
 	bool							m_initialized;
 	bool							m_applied;
+	ref_str							m_out_restrictions;
+	ref_str							m_in_restrictions;
+	xr_vector<u32>					m_border;
+	CSpaceRestrictionManager		*m_space_restriction_manager;
+	CBaseRestrictionPtr				m_out_space_restriction;
+	CBaseRestrictionPtr				m_in_space_restriction;
+	FREE_IN_RESTRICTIONS			m_free_in_restrictions;
+
+private:
+	IC		bool					intersects					(CBaseRestrictionPtr bridge);
+	IC		bool					intersects					(CBaseRestrictionPtr bridge0, CBaseRestrictionPtr bridge1);
+			CBaseRestrictionPtr		merge						(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const;
+			void					merge_in_out_restrictions	();
+			void					merge_free_in_retrictions	();
 
 protected:
-	IC		Fvector					position			(const CCF_Shape::shape_def &data) const;
-	IC		float					radius				(const CCF_Shape::shape_def &data) const;
-			void					build_border		();
-			void					process_borders		();
-			void					merge				(CSpaceRestriction *restriction);
+	IC		bool					initialized					() const;
+			bool					affect						(CBaseRestrictionPtr bridge, const Fvector &start_position, float radius) const;
+			bool					affect						(CBaseRestrictionPtr bridge, u32 start_vertex_id, float radius) const;
+			bool					affect						(CBaseRestrictionPtr bridge, const Fvector &start_position, const Fvector &dest_position) const;
+			bool					affect						(CBaseRestrictionPtr bridge, u32 start_vertex_id, u32 dest_vertex_id) const;
 
 public:
-									CSpaceRestriction	(ref_str space_restrictors);
-									CSpaceRestriction	(CSpaceRestrictor *space_restrictor);
-	virtual							~CSpaceRestriction	();
-			bool					inside				(const Fvector &position, float radius = EPS_L);
-			void					initialize			();
-			void					add_border			();
-			void					remove_border		();
-	IC		const xr_vector<u32>	&border				();
-	IC		ref_str					space_restrictors	() const;
+									CSpaceRestriction			(CSpaceRestrictionManager *space_restriction_manager, ref_str out_restrictions, ref_str in_restrictions);
+			void					initialize					();
+			void					remove_border				();
+	template <typename T1, typename T2>
+	IC		void					add_border					(T1 p1, T2 p2);
+	IC		const xr_vector<u32>	&border						();
+			u32						accessible_nearest			(const Fvector &position, Fvector &result);
+	template <typename T>
+	IC		bool					accessible					(T position_or_vertex_id, float radius = EPS_L);
+	IC		ref_str					out_restrictions			() const;
+	IC		ref_str					in_restrictions				() const;
+	IC		bool					applied						() const;
 };
 
 #include "space_restriction_inline.h"

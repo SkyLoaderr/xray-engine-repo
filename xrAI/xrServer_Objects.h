@@ -90,8 +90,9 @@
 // 71 -	CSE_Abstract					appended with m_client_data, ability to save/load client data
 // 72 -	CSE_AlifeInventoryItem			removed property m_eItemPlace, added flag
 // 73 -	CSE_AlifeMonsterAbstract		appended with property m_space_restrictors
+// 74 -	CSE_AlifeMonsterAbstract		appended with property m_in_space_restrictors
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(73)
+#define SPAWN_VERSION	u16(74)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

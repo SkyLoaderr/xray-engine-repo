@@ -113,7 +113,7 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 {
 	VERIFY						(m_evaluator && m_graph);
 
-	before_search				();
+	before_search				(vertex_id);
 
 	m_last_query_time			= Level().timeServer();
 	
@@ -142,12 +142,12 @@ IC	void CSelectorTemplate::set_dest_vertex		(_vertex_id_type &vertex_id)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::before_search			()
+IC	void CSelectorTemplate::before_search		(const _vertex_id_type vertex_id)
 {
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::after_search			()
+IC	void CSelectorTemplate::after_search		()
 {
 }
 

@@ -50,10 +50,10 @@ IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelManagerTemplate::before_search			()
+IC	void CLevelManagerTemplate::before_search			(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
 	if (m_restricted_object)
-		m_restricted_object->add_border();
+		m_restricted_object->add_border(start_vertex_id,dest_vertex_id);
 }
 
 TEMPLATE_SPECIALIZATION

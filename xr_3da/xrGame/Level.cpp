@@ -37,7 +37,7 @@
 #include "patrol_path_storage.h"
 #include "date_time.h"
 
-#include "space_restrictor_manager.h"
+#include "space_restriction_manager.h"
 
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
@@ -86,7 +86,7 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	m_patrol_path_storage		= xr_new<CPatrolPathStorage>();
 
-	m_space_restrictor_manager = xr_new<CSpaceRestrictorManager>();
+	m_space_restriction_manager = xr_new<CSpaceRestrictionManager>();
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -128,7 +128,7 @@ CLevel::~CLevel()
 
 	xr_delete					(m_patrol_path_storage);
 
-	xr_delete					(m_space_restrictor_manager);
+	xr_delete					(m_space_restriction_manager);
 	
 	ai().script_engine().remove_script_process("level");
 

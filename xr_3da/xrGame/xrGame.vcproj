@@ -983,22 +983,6 @@
 						<File
 							RelativePath=".\restricted_object_inline.h">
 						</File>
-						<File
-							RelativePath=".\restricted_object_space.h">
-						</File>
-						<Filter
-							Name="RestrictionContainer"
-							Filter="">
-							<File
-								RelativePath=".\restriction_container.cpp">
-							</File>
-							<File
-								RelativePath=".\restriction_container.h">
-							</File>
-							<File
-								RelativePath=".\restriction_container_inline.h">
-							</File>
-						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -1182,29 +1166,101 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="SpaceRestrictorManager"
+					Name="SpaceRestrictions"
 					Filter="">
 					<File
-						RelativePath=".\space_restrictor_manager.cpp">
-					</File>
-					<File
-						RelativePath=".\space_restrictor_manager.h">
-					</File>
-					<File
-						RelativePath=".\space_restrictor_manager_inline.h">
+						RelativePath=".\restriction_space.h">
 					</File>
 					<Filter
-						Name="space_restriction"
+						Name="SpaceRestrictionHolder"
 						Filter="">
 						<File
-							RelativePath=".\space_restriction.cpp">
+							RelativePath=".\space_restriction_holder.cpp">
 						</File>
 						<File
-							RelativePath=".\space_restriction.h">
+							RelativePath=".\space_restriction_holder.h">
 						</File>
 						<File
-							RelativePath=".\space_restriction_inline.h">
+							RelativePath=".\space_restriction_holder_inline.h">
 						</File>
+						<Filter
+							Name="SpaceRestrictionBase"
+							Filter="">
+							<File
+								RelativePath=".\space_restriction_base.cpp">
+							</File>
+							<File
+								RelativePath=".\space_restriction_base.h">
+							</File>
+							<File
+								RelativePath=".\space_restriction_base_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="SpaceRestrictionBridge"
+							Filter="">
+							<File
+								RelativePath=".\space_restriction_bridge.cpp">
+							</File>
+							<File
+								RelativePath=".\space_restriction_bridge.h">
+							</File>
+							<File
+								RelativePath=".\space_restriction_bridge_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="SpaceRestrictionComposition"
+							Filter="">
+							<File
+								RelativePath=".\space_restriction_composition.cpp">
+							</File>
+							<File
+								RelativePath=".\space_restriction_composition.h">
+							</File>
+							<File
+								RelativePath=".\space_restriction_composition_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="SpaceRestrictionShape"
+							Filter="">
+							<File
+								RelativePath=".\space_restriction_shape.cpp">
+							</File>
+							<File
+								RelativePath=".\space_restriction_shape.h">
+							</File>
+							<File
+								RelativePath=".\space_restriction_shape_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="SpaceRestrictionManager"
+						Filter="">
+						<File
+							RelativePath=".\space_restriction_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\space_restriction_manager.h">
+						</File>
+						<File
+							RelativePath=".\space_restriction_manager_inline.h">
+						</File>
+						<Filter
+							Name="SpaceRestriction"
+							Filter="">
+							<File
+								RelativePath=".\space_restriction.cpp">
+							</File>
+							<File
+								RelativePath=".\space_restriction.h">
+							</File>
+							<File
+								RelativePath=".\space_restriction_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 			</Filter>
@@ -6900,6 +6956,16 @@
 					</File>
 					<File
 						RelativePath=".\profiler_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="IntrusivePtr"
+					Filter="">
+					<File
+						RelativePath=".\intrusive_ptr.h">
+					</File>
+					<File
+						RelativePath=".\intrusive_ptr_inline.h">
 					</File>
 				</Filter>
 			</Filter>

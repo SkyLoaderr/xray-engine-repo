@@ -9,37 +9,27 @@
 #pragma once
 
 #include "gameobject.h"
-#include "restricted_object_space.h"
-#include "restriction_container.h"
 
 class CRestrictedObject : virtual public CGameObject {
 private:
 	typedef CGameObject inherited;
 
-protected:
-	CRestrictionContainer	*m_in_restrictions;
-	CRestrictionContainer	*m_out_restrictions;
-
 public:
 	IC					CRestrictedObject		();
 	virtual				~CRestrictedObject		();
 	virtual BOOL		net_Spawn				(LPVOID data);
-	virtual void		net_Destroy				();
-	virtual	void		add_border				() const;
-	virtual	void		remove_border			() const;
-			bool		accessible				(const Fvector &position) const;
-			bool		accessible				(u32 vertex_id) const;
+			void		add_border				(u32 start_vertex_id, float radius) const;
+			void		add_border				(const Fvector &start_position, const Fvector &dest_position) const;
+			void		add_border				(u32 start_vertex_id, u32 dest_vertex_id) const;
+			void		remove_border			() const;
 			u32			accessible_nearest		(const Fvector &position, Fvector &result) const;
-
-public:
-	IC		void		add_restriction			(RestrictedObject::ERestrictionType type, CSpaceRestrictor *restrictor);
-	IC		void		add_restriction			(RestrictedObject::ERestrictionType type, u32 restriction_id, const Fvector &position, float radius);
-	IC		u32			add_restriction			(RestrictedObject::ERestrictionType type, const Fvector &position, float radius);
-	IC		void		remove_restriction		(RestrictedObject::ERestrictionType type, u32 restriction_id);
-
-private:
-	IC		void		clear					();
-	IC		CRestrictionContainer &container	(RestrictedObject::ERestrictionType type) const;
+			bool		accessible				(const Fvector &position, float radius = EPS_L) const;
+			bool		accessible				(u32 level_vertex_id, float radius = EPS_L) const;
+			void		add_restrictions		(ref_str out_restrictions, ref_str in_restrictions);
+			void		remove_restrictions		(ref_str out_restrictions, ref_str in_restrictions);
+			void		remove_all_restrictions	();
+			ref_str		in_restrictions			() const;
+			ref_str		out_restrictions		() const;
 };
 
 #include "restricted_object_inline.h"

@@ -28,7 +28,7 @@
 #include "alife_graph_registry.h"
 #include "alife_object_registry.h"
 #include "game_cl_base.h"
-#include "space_restrictor_manager.h"
+#include "space_restriction_manager.h"
 #include "space_restriction.h"
 #include "space_restrictor.h"
 
@@ -211,8 +211,8 @@ void CLevelGraph::render()
 	}
 
 	{
-		CSpaceRestrictorManager::SPACE_REGISTRY::const_iterator	I = Level().space_restrictor_manager().restrictions().begin();
-		CSpaceRestrictorManager::SPACE_REGISTRY::const_iterator	E = Level().space_restrictor_manager().restrictions().end();
+		CSpaceRestrictionManager::SPACE_RESTRICTIONS::const_iterator	I = Level().space_restriction_manager().restrictions().begin();
+		CSpaceRestrictionManager::SPACE_RESTRICTIONS::const_iterator	E = Level().space_restriction_manager().restrictions().end();
 		for ( ; I != E; ++I) {
 //			if (_GetItemCount(*(*I).second->space_restrictors()) < 2)
 //				continue;

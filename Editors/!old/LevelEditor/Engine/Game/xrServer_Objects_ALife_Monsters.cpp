@@ -747,14 +747,18 @@ const CSE_Abstract *CSE_ALifeMonsterAbstract::base	() const
 void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
-	tNetPacket.w_stringZ		(m_space_restrictors);
+	tNetPacket.w_stringZ		(m_out_space_restrictors);
+	tNetPacket.w_stringZ		(m_in_space_restrictors);
 }
 
 void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
-	if (m_wVersion > 72)
-		tNetPacket.r_stringZ	(m_space_restrictors);
+	if (m_wVersion > 72) {
+		tNetPacket.r_stringZ	(m_out_space_restrictors);
+		if (m_wVersion > 73)
+			tNetPacket.r_stringZ(m_in_space_restrictors);
+	}
 }
 
 void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
@@ -784,7 +788,8 @@ void CSE_ALifeMonsterAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
   	inherited1::FillProps		(pref,items);
 	if (pSettings->line_exist(s_name,"SpaceRestrictionSection")) {
 		LPCSTR					gcs = pSettings->r_string(s_name,"SpaceRestrictionSection");
-		PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"space restrictions"),&m_space_restrictors, smSpawnItem, 0, (void*)gcs, 16);
+		PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"out space restrictions"),&m_out_space_restrictors, smSpawnItem, 0, (void*)gcs, 16);
+		PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"in space restrictions"),&m_in_space_restrictors,  smSpawnItem, 0, (void*)gcs, 16);
 	}
 }
 

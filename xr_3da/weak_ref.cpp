@@ -109,7 +109,7 @@ namespace luabind {
                 lua_rawgeti(s, -1, count_ref);
                 ref = (int)lua_tonumber(s, -1) + 1;
                 lua_pop(s, 1);
-                lua_pushnumber(s, ref);
+                lua_pushnumber(s, (lua_Number)ref);
                 lua_rawseti(s, -2, count_ref);
             }
             else
@@ -128,7 +128,7 @@ namespace luabind {
             get_weak_table(state);
             lua_rawgeti(state, -1, freelist_ref);
             lua_rawseti(state, -2, ref);
-            lua_pushnumber(state, ref);
+            lua_pushnumber(state, (lua_Number)ref);
             lua_rawseti(state, -2, freelist_ref);
             lua_pop(state, 1);
         }

@@ -43,7 +43,7 @@ private:
 protected:
 	IC			bool	actual						() const;
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path = false);
-	IC	virtual	void	before_search				();
+	IC	virtual	void	before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	virtual	void	after_search				();
 
 public:

@@ -326,6 +326,12 @@ public:
 			int					active_sound_count		();
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
 			CScriptIniFile		*spawn_ini				() const;
+			///
+			void				add_restrictions		(LPCSTR in, LPCSTR out);
+			void				remove_restrictions		(LPCSTR in, LPCSTR out);
+			void				remove_all_restrictions	();
+			LPCSTR				in_restrictions			();
+			LPCSTR				out_restrictions		();
 
 			const xr_vector<MemorySpace::CVisibleObject>		&memory_visible_objects	() const;
 			const xr_vector<MemorySpace::CSoundObject>			&memory_sound_objects	() const;

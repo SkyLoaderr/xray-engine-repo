@@ -98,13 +98,13 @@ namespace luabind { namespace detail
 		lua_rawget(L, t);
 		if (checkint(L, 1) >= 0) {  /* is there a numeric field `n'? */
 			lua_pushliteral(L, "n");  /* use it */
-			lua_pushnumber(L, n);
+			lua_pushnumber(L, (lua_Number)n);
 			lua_rawset(L, t);
 		}
 		else {  /* use `sizes' */
 			getsizes(L);
 			lua_pushvalue(L, t);
-			lua_pushnumber(L, n);
+			lua_pushnumber(L, (lua_Number)n);
 			lua_rawset(L, -3);  /* sizes[t] = n */
 			lua_pop(L, 1);  /* remove `sizes' */
 		}
@@ -168,7 +168,7 @@ namespace luabind { namespace detail
 		if (ref >= 0) {
 			lua_rawgeti(L, t, FREELIST_REF);
 			lua_rawseti(L, t, ref);  /* t[ref] = t[FREELIST_REF] */
-			lua_pushnumber(L, ref);
+			lua_pushnumber(L, (lua_Number)ref);
 			lua_rawseti(L, t, FREELIST_REF);  /* t[FREELIST_REF] = ref */
 		}
 	}

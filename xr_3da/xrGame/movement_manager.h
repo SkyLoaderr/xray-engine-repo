@@ -109,6 +109,7 @@ private:
 			void	process_level_path		();
 			void	process_enemy_search	();
 			void	process_patrol_path		();
+			void	verify_detail_path		();
 
 	friend class CScriptMonster;
 	friend class CGroup;
@@ -124,9 +125,6 @@ public:
 	virtual BOOL	net_Spawn				(LPVOID data);
 	virtual void	net_Destroy				();
 	virtual	void	Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual	void	add_border				() const;
-	virtual	void	remove_border			() const;
-	IC		bool	accessible				(const Fvector &position) const;
 	IC		bool	actual					() const;
 	IC		bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);
@@ -154,6 +152,9 @@ public:
 			float	speed					() const;
 
 	virtual void	on_travel_point_change	() {}
+
+	template <typename T>
+	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;
 };
 
 #include "movement_manager_inline.h"

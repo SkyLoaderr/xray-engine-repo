@@ -79,7 +79,7 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 {
 	if (valid(m_start_position) && valid(m_dest_position)) {
 		if (m_restricted_object)
-			m_restricted_object->add_border();
+			m_restricted_object->add_border(m_start_position,m_dest_position);
 		switch (m_path_type) {
 			case eDetailPathTypeSmooth : {
 				build_smooth_path(level_path,intermediate_index);

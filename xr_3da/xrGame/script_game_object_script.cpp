@@ -232,6 +232,15 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("is_body_turning",				&CScriptGameObject::is_body_turning)
 
 			//////////////////////////////////////////////////////////////////////////
+			// Space restrictions
+			//////////////////////////////////////////////////////////////////////////
+			.def("add_restrictions",			&CScriptGameObject::add_restrictions)
+			.def("remove_restrictions",			&CScriptGameObject::remove_restrictions)
+			.def("remove_all_restrictions",		&CScriptGameObject::remove_all_restrictions)
+			.def("in_restrictions",				&CScriptGameObject::in_restrictions)
+			.def("out_restrictions",			&CScriptGameObject::out_restrictions)
+
+			//////////////////////////////////////////////////////////////////////////
 			//inventory owner
 			//////////////////////////////////////////////////////////////////////////
 

@@ -30,7 +30,7 @@ IC	bool CGameManagerTemplate::actual() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameManagerTemplate::before_search				()
+IC	void CGameManagerTemplate::before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
 }
 
