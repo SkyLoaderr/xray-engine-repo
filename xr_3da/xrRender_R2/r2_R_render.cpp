@@ -76,6 +76,40 @@ void CRender::Render	()
 	Target.phase_accumulator				();
 	Target.accum_direct						();
 
+	// Point lighting (shadowed)
+	/*
+	{
+		HOM.Disable								();
+		vector&	Lvec	= Lights.v_selected_shadowed;
+		for	(u32 pid=0; pid<L.size(); pid++)
+		{
+			light*	L	= Lvec[pid];
+
+			// Render shadowmap
+			for (u32 pls_phase=0; pls_phase<6; pls_phase++)
+			{
+				marker									++;
+				phase									= PHASE_SMAP_P;
+
+				// calculate
+				LR_Direct.compute_xfp					(pls_phase);
+				render_smap_direct						(LR_Direct.L_combine);
+
+				// rendering
+				Target.phase_smap_point					(pls_phase);
+				RCache.set_xform_world					(Fidentity);			// ???
+				RCache.set_xform_view					(LR_Direct.L_view);
+				RCache.set_xform_project				(LR_Direct.L_project);
+				render_scenegraph						();
+			}
+
+			// Render light
+			Target.phase_accumulator		();
+			Target.accum_point				(L);
+		}
+	}
+	*/
+
 	// Postprocess
 	Target.phase_combine					();
 	

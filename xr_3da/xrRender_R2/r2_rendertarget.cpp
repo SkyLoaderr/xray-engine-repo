@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "blender_light_mask.h"
 #include "blender_light_direct.h"
+#include "blender_light_point.h"
 #include "blender_combine.h"
 
 void	CRenderTarget::OnDeviceCreate	()
