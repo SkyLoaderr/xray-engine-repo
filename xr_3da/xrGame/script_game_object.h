@@ -28,6 +28,7 @@
 #include "script_monster_hit_info.h"
 #include "physicsshellholder.h"
 #include "script_export_space.h"
+#include "script_task.h"
 
 class CInventoryItem;
 class CScriptHit;
@@ -311,63 +312,23 @@ public:
 	CScriptGameObject	*GetObjectByName	(LPCSTR caObjectName) const;
 	CScriptGameObject	*GetObjectByIndex	(int iIndex) const;
 
-	void SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
-	{
-		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
-		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+	//////////////////////////////////////////////////////////////////////////
+	// Trader functions
+	//////////////////////////////////////////////////////////////////////////
 
-		if (!l_tpScriptZone && !l_tpTrader)
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
-		else if (l_tpScriptZone) l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
-		else l_tpTrader->set_callback(tpZoneCallback,bOnEnter);
-	}
+	void SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter);
+	void SetCallback(const luabind::object &object, LPCSTR method, bool bOnEnter);
+	void ClearCallback(bool bOnEnter);
 
-	void SetCallback(const luabind::object &object, LPCSTR method, bool bOnEnter)
-	{
-		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
-		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
-
-		if (!l_tpScriptZone && !l_tpTrader)
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
-		else if (l_tpScriptZone) l_tpScriptZone->set_callback(object,method,bOnEnter);
-		else l_tpTrader->set_callback(object,method,bOnEnter);
-	}
-
-	void ClearCallback(bool bOnEnter)
-	{
-		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
-		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
-
-		if (!l_tpScriptZone && !l_tpTrader)
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
-		else if (l_tpScriptZone)l_tpScriptZone->clear_callback(bOnEnter);
-		else l_tpTrader->clear_callback(bOnEnter);
-	}
-
-	void SetTradeCallback(const luabind::functor<void> &tpTradeCallback) {
-		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
-
-		if (!l_tpTrader) 
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
-		else l_tpTrader->set_trade_callback(tpTradeCallback);
-	}
+	void SetTradeCallback(const luabind::functor<void> &tpTradeCallback);	
+	void SetTradeCallback(const luabind::object &object, LPCSTR method);
+	void ClearTradeCallback();
+	const ALIFE_TASK_VECTOR& TraderArtefactTask ();
 	
-	void SetTradeCallback(const luabind::object &object, LPCSTR method) {
-		CAI_Trader	*l_tpTrader	= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 
-		if (!l_tpTrader) 
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
-		else l_tpTrader->set_trade_callback(object, method);
-	}
-
-
-	void ClearTradeCallback() {
-		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
-
-		if (!l_tpTrader) 
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
-		else l_tpTrader->clear_trade_callback();
-	}
 
 	LPCSTR	GetPatrolPathName	();
 

@@ -116,9 +116,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
 			.def("clear_callback",				(void (CScriptGameObject::*)(const CScriptMonster::EActionType))(CScriptGameObject::ClearCallback))
 			.def("patrol",						&CScriptGameObject::GetPatrolPathName)
-			.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetTradeCallback))
-			.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetTradeCallback))			
-			.def("clear_trade_callback",		(void (CScriptGameObject::*)())(CScriptGameObject::ClearTradeCallback))
+
 			.def("get_ammo_in_magazine",		&CScriptGameObject::GetAmmoElapsed)
 			.def("get_ammo_total",				&CScriptGameObject::GetAmmoCurrent)
 			.def("set_queue_size",				&CScriptGameObject::SetQueueSize)
@@ -255,6 +253,14 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
 			.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)
 
+			//////////////////////////////////////////////////////////////////////////
+			// Trader
+			//////////////////////////////////////////////////////////////////////////
+			.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetTradeCallback))
+			.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetTradeCallback))			
+			.def("clear_trade_callback",		(void (CScriptGameObject::*)())(CScriptGameObject::ClearTradeCallback))
+
+			.def("artefact_tasks",				&CScriptGameObject::TraderArtefactTask, return_stl_iterator)
 
 			.enum_("CLSIDS")
 			[

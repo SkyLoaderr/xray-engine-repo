@@ -16,6 +16,7 @@
 #include "../../script_callback.h"
 #include "../../sound_player.h"
 #include "../../AI_PhraseDialogManager.h"
+#include "../../script_task.h"
 
 class CInventoryItem;
 
@@ -50,7 +51,8 @@ private:
 public:
 	
 	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
-
+	//буфферный массив для передачи списка заданий в скрипты
+	ALIFE_TASK_VECTOR					alife_tasks;
 
 public:
 						CAI_Trader		();

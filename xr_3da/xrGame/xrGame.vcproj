@@ -4303,7 +4303,13 @@
 							RelativePath=".\script_game_object.h">
 						</File>
 						<File
+							RelativePath=".\script_game_object_inventory_owner.cpp">
+						</File>
+						<File
 							RelativePath=".\script_game_object_script.cpp">
+						</File>
+						<File
+							RelativePath=".\script_game_object_trader.cpp">
 						</File>
 					</Filter>
 					<Filter
@@ -4418,6 +4424,19 @@
 						</File>
 						<File
 							RelativePath=".\script_sound_type_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptTask"
+						Filter="">
+						<File
+							RelativePath=".\script_task.cpp">
+						</File>
+						<File
+							RelativePath=".\script_task.h">
+						</File>
+						<File
+							RelativePath=".\script_task_script.cpp">
 						</File>
 					</Filter>
 				</Filter>

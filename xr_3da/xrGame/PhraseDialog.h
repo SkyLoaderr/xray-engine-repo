@@ -80,8 +80,8 @@ public:
 	//а не обычный указатель)
 	static bool			SayPhrase		(DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id);
 
-	virtual LPCSTR		GetPhraseText		(PHRASE_ID phrase_id);
-	virtual LPCSTR		GetLastPhraseText	() {return GetPhraseText(m_iSaidPhraseID);}
+	virtual LPCSTR		GetPhraseText		(PHRASE_ID phrase_id, bool current_speaking = true);
+	virtual LPCSTR		GetLastPhraseText	() {return GetPhraseText(m_iSaidPhraseID, false);}
 	virtual PHRASE_ID	GetLastPhraseID		() {return m_iSaidPhraseID;}
 
 	//заголовок, диалога, если не задан, то 0-я фраза
@@ -90,11 +90,14 @@ public:
 
 	virtual bool		IsFinished		()	const {return m_bFinished;}
 	
-	IC CPhraseDialogManager* FirstSpeaker	()	const {return m_pSpeakerFirst;}
-	IC CPhraseDialogManager* SecondSpeaker	()	const {return m_pSpeakerSecond;}
-	   CPhraseDialogManager* CurrentSpeaker	()	const;
-	   CPhraseDialogManager* OtherSpeaker	()	const;
-
+	IC	CPhraseDialogManager* FirstSpeaker	()	const {return m_pSpeakerFirst;}
+	IC	CPhraseDialogManager* SecondSpeaker	()	const {return m_pSpeakerSecond;}
+	   
+		//кто собирается говорить и кто слушать
+		CPhraseDialogManager* CurrentSpeaker	()	const;
+	    CPhraseDialogManager* OtherSpeaker	()	const;
+		//кто последний сказал фразу
+		CPhraseDialogManager* LastSpeaker	()	const {return m_bFirstIsSpeaking?SecondSpeaker():FirstSpeaker();}
 
 	IC bool				FirstIsSpeaking	()	const {return m_bFirstIsSpeaking;}
 	IC bool				SecondIsSpeaking()	const {return !m_bFirstIsSpeaking;}
@@ -125,7 +128,6 @@ protected:
 	CPhraseDialogManager* m_pSpeakerSecond;
 	//если фразу говорит 1й игрок - true, если 2й - false
 	bool				  m_bFirstIsSpeaking;
-
 
 	SPhraseDialogData* dialog_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 

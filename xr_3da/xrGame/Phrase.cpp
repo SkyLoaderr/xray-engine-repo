@@ -26,7 +26,7 @@ LPCSTR CPhrase::GetText		()	const
 
 LPCSTR  CPhrase::GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const
 {
-	return m_PhraseScript.Text(pSpeaker1, pSpeaker2);
+	return m_PhraseScript.Text(GetText(), pSpeaker1, pSpeaker2);
 }
 
 bool	CPhrase::IsDummy()		const

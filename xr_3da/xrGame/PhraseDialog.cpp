@@ -213,7 +213,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	return !phrase_dialog->m_bFinished;
 }
 
-LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id)
+LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 {
 	
 	CPhraseGraph::CVertex* phrase_vertex = dialog_data()->m_PhraseGraph.vertex(phrase_id);
@@ -222,6 +222,9 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id)
 	//если есть скриптовый текст, то он и будет задан
 	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(CurrentSpeaker());
 	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(OtherSpeaker());	
+
+	if(!current_speaking) 
+		std::swap(pSpeakerGO1, pSpeakerGO2);
 	
 	LPCSTR script_text = NULL;
 	//если собеседники еще не заданы, то текст фразы запрашивается только для 
