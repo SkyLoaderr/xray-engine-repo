@@ -17,6 +17,7 @@ class CUIWindow;
 class CUIFrameWindow;
 class CUIStatic;
 class CUIButton;
+class CUI3tButton;
 class CUIDragDropList;
 class CUIProgressBar;
 class CUIListWnd;
@@ -40,7 +41,9 @@ static bool InitWindow				(CUIXml& xml_doc, const char* path,	int index, CUIWind
 static bool InitFrameWindow			(CUIXml& xml_doc, const char* path,	int index, CUIFrameWindow* pWnd);
 static bool InitFrameLine			(CUIXml& xml_doc, const char* path, int index, CUIFrameLineWnd* pWnd);
 static bool InitStatic				(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
+static bool InitText				(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
 static bool InitButton				(CUIXml& xml_doc, const char* path, int index, CUIButton* pWnd);
+static bool Init3tButton			(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd);
 static bool InitDragDropList		(CUIXml& xml_doc, const char* path, int index, CUIDragDropList* pWnd);
 static bool InitListWnd				(CUIXml& xml_doc, const char* path, int index, CUIListWnd* pWnd);
 static bool InitProgressBar			(CUIXml& xml_doc, const char* path, int index, CUIProgressBar* pWnd);
@@ -50,6 +53,9 @@ static bool InitTabControl			(CUIXml &xml_doc, const char *path,	int index, CUIT
 static bool InitTextBanner			(CUIXml &xml_doc, const char *path,	int index, CUITextBanner *pBnr);
 static bool InitMultiTextStatic		(CUIXml &xml_doc, const char *path,	int index, CUIMultiTextStatic *pWnd);
 static bool InitAnimatedStatic		(CUIXml &xml_doc, const char *path,	int index, CUIAnimatedStatic *pWnd);
+static bool InitTextureOffset		(CUIXml &xml_doc, const char *path, int index, CUIStatic* pWnd);
+static bool InitMultiTexture		(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
+static bool InitMultiText			(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
 static bool InitTexture				(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);
 static bool InitArtefactPanel		(CUIXml &xml_doc, const char *path, int index, CUIArtefactPanel* pWnd);
 

@@ -14,6 +14,7 @@
 #include "UIFrameWindow.h"
 #include "UIStatic.h"
 #include "UIButton.h"
+#include "UI3tButton.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIListWnd.h"
@@ -137,8 +138,6 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	string256 buf;
-
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 	int width = xml_doc.ReadAttribInt(path, index, "width");
@@ -159,8 +158,14 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 
 	pWnd->Init(x, y, width, height);
 
-	InitTexture(xml_doc, path, index, pWnd);
+	InitTexture	(xml_doc, path, index, pWnd);
+	InitText	(xml_doc, path, index, pWnd);
 	
+	return true;
+}
+
+bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pWnd){
+	string256 buf;
 	shared_str text_path = strconcat(buf,path,":text");
 	u32 color;
 	CGameFont *pTmpFont = NULL;
@@ -194,6 +199,27 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
 	if( xr_strlen(str_flag) )
 		pWnd->SetLightAnim(str_flag);
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd){
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+
+	InitWindow			(xml_doc, path, index, pWnd);
+	InitMultiText		(xml_doc, path, index, pWnd);
+	InitMultiTexture	(xml_doc, path, index, pWnd);
+	InitTextureOffset	(xml_doc, path, index, pWnd);
+
+	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
+	pWnd->SetAccelerator(accel);
+
+	int shadowOffsetX	= xml_doc.ReadAttribInt(path, index, "shadow_offset_x", 0);
+	int shadowOffsetY	= xml_doc.ReadAttribInt(path, index, "shadow_offset_y", 0);
+
+	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
 
 	return true;
 }
@@ -487,7 +513,11 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
-		CUIButton *newButton = xr_new<CUIButton>();
+		CUITabButton *newButton = xr_new<CUITabButton>();
+		// CAI_Stalker
+//		.def("get_current_equipment",		&CScriptGameObject::GetCurrentEquipment)
+
+
 		status &= InitButton(xml_doc, "button", i, newButton);
 		pWnd->AddItem(newButton);
 	}
@@ -647,13 +677,9 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 {
 	string256 buf;
 	if (0 == xr_strcmp(path, ""))
-	{
 		strcpy(buf, "texture");
-	}
 	else
-	{
 		strconcat(buf, path, ":texture");
-	}
 
 	shared_str texture = xml_doc.Read(buf, index, NULL);
 	
@@ -685,6 +711,162 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 	{
 		pWnd->GetUIStaticItem().SetOriginalRect(x, y, width, height);
 		pWnd->ClipperOn();
+	}
+
+	return true;
+}
+
+bool CUIXmlInit::InitTextureOffset(CUIXml &xml_doc, LPCSTR path, int index, CUIStatic* pWnd){
+    string256 textureOffset;
+	if (0 == xr_strcmp(path, ""))
+		strcpy(textureOffset, "texture_offset");
+	else
+		strconcat(textureOffset, path, ":texture_offset");
+
+	int x = xml_doc.ReadAttribInt(textureOffset, index, "x");
+	int y = xml_doc.ReadAttribInt(textureOffset, index, "y");
+
+	pWnd->SetTextureOffset(x, y);
+
+	return true;
+}
+
+bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3tButton* pWnd){
+	// init texture offset
+	InitTextureOffset(xml_doc, path, index, pWnd);
+
+	string256 sTexture;
+	string256 sTexture_e;
+	string256 sTexture_d;
+	string256 sTexture_t;
+	string256 sTexture_h;
+	if (0 == xr_strcmp(path, ""))
+	{
+		strcpy(sTexture, "texture");
+		strcpy(sTexture_e, "texture_e");
+		strcpy(sTexture_d, "texture_d");
+		strcpy(sTexture_t, "texture_t");
+		strcpy(sTexture_h, "texture_h");
+	}
+	else
+	{
+		strconcat(sTexture,   path, ":texture");
+		strconcat(sTexture_e, path, ":texture_e");		
+		strconcat(sTexture_t, path, ":texture_t");
+		strconcat(sTexture_d, path, ":texture_d");
+		strconcat(sTexture_h, path, ":texture_h");
+	}
+
+	shared_str texture = xml_doc.Read(sTexture, index, NULL);
+	shared_str texture_e = xml_doc.Read(sTexture_e, index, NULL);
+	shared_str texture_d = xml_doc.Read(sTexture_d, index, NULL);
+	shared_str texture_t = xml_doc.Read(sTexture_t, index, NULL);
+	shared_str texture_h = xml_doc.Read(sTexture_h, index, NULL);
+
+	
+	if (texture.size() > 0)
+	{
+        pWnd->InitTexture(*texture);
+	}
+	else if (texture_e.size() > 0 || texture_d.size() > 0 || texture_t.size() > 0 || texture_h.size() > 0)
+	{
+		if (texture_e.size())
+			pWnd->InitTextureEnabled(*texture_e);
+		if (texture_d.size())
+			pWnd->InitTextureDisabled(*texture_d);
+		if (texture_t.size())
+			pWnd->InitTextureTouched(*texture_t);
+		if (texture_h.size())
+			pWnd->InitTextureHighlighted(*texture_h);
+	}
+	else
+        return false;
+
+	//
+
+	//int x			= xml_doc.ReadAttribInt(sTexture, index, "x", 0);
+	//int y			= xml_doc.ReadAttribInt(sTexture, index, "y", 0);
+	//int width		= xml_doc.ReadAttribInt(sTexture, index, "width", 0);
+	//int height		= xml_doc.ReadAttribInt(sTexture, index, "height", 0);
+	//int	a			= xml_doc.ReadAttribInt(sTexture, index, "a", 255);
+	//int	r			= xml_doc.ReadAttribInt(sTexture, index, "r", 255);
+	//int	g			= xml_doc.ReadAttribInt(sTexture, index, "g", 255);
+	//int	b			= xml_doc.ReadAttribInt(sTexture, index, "b", 255);
+	//shared_str mirrorM = xml_doc.ReadAttrib(sTexture, index, "mirror", "none");
+
+	//if (0 == xr_strcmp(mirrorM, "v"))
+	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorVertical);
+	//else if (0 == xr_strcmp(mirrorM, "h"))
+	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorHorisontal);
+	//else if (0 == xr_strcmp(mirrorM, "both"))
+	//	pWnd->GetUIStaticItem().SetMirrorMode(tmMirrorBoth);
+
+
+	//pWnd->SetColor(color_rgba(r, g, b, a));
+
+	//if (width != 0 && height != 0)
+	//{
+	//	pWnd->GetUIStaticItem().SetOriginalRect(x, y, width, height);
+	//	pWnd->ClipperOn();
+	//}
+
+	return true;
+}
+
+bool CUIXmlInit::InitMultiText(CUIXml& xml_doc, LPCSTR path, int index, CUI3tButton* pWnd){
+	InitText(xml_doc, path, index, pWnd);
+
+	string256 sText_d;
+	string256 sText_t;
+	string256 sText_h;
+	if (0 == xr_strcmp(path, ""))
+	{
+		strcpy(sText_d, "text_d");
+		strcpy(sText_t, "text_t");
+		strcpy(sText_h, "text_h");
+	}
+	else
+	{
+		strconcat(sText_t, path, ":text_t");
+		strconcat(sText_d, path, ":text_d");
+		strconcat(sText_h, path, ":text_h");
+	}
+
+	shared_str text_d = xml_doc.Read(sText_d, index, NULL);
+
+	u32 r;
+	u32 g;
+	u32 b;
+	u32 a;
+
+	if (xml_doc.NavigateToNode(sText_d, index))
+	{
+		a = xml_doc.ReadAttribInt(sText_d, index, "a", 255);
+		r = xml_doc.ReadAttribInt(sText_d, index, "r", 255);
+		g = xml_doc.ReadAttribInt(sText_d, index, "g", 255);
+		b = xml_doc.ReadAttribInt(sText_d, index, "b", 255);
+
+		pWnd->SetTextColorD(color_argb(a, r, g, b));
+	}
+
+	if (xml_doc.NavigateToNode(sText_t, index))
+	{
+		a = xml_doc.ReadAttribInt(sText_t, index, "a", 255);
+		r = xml_doc.ReadAttribInt(sText_t, index, "r", 255);
+		g = xml_doc.ReadAttribInt(sText_t, index, "g", 255);
+		b = xml_doc.ReadAttribInt(sText_t, index, "b", 255);
+
+		pWnd->SetTextColorT(color_argb(a, r, g, b));
+	}
+
+	if (xml_doc.NavigateToNode(sText_h, index))
+	{
+		a = xml_doc.ReadAttribInt(sText_h, index, "a", 255);
+		r = xml_doc.ReadAttribInt(sText_h, index, "r", 255);
+		g = xml_doc.ReadAttribInt(sText_h, index, "g", 255);
+		b = xml_doc.ReadAttribInt(sText_h, index, "b", 255);
+
+		pWnd->SetTextColorH(color_argb(a, r, g, b));
 	}
 
 	return true;
