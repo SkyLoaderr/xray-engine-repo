@@ -22,6 +22,8 @@ end
 function mob_walker:reset_scheme()
 	printf("_bp: mob_walker:reset_scheme: %s", self.object:name())
 
+	self.st.signals = {}
+
 	xr_logic.mob_capture(self.object, not self.st.no_reset)
 
 	self.patrol_walk = patrol(self.st.path_walk)
@@ -122,7 +124,7 @@ end
 function mob_walker:waypoint_callback(obj, action_type, index)
 	printf("mob_walker:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
 	if index == -1 or index == nil then
-		printf("ERROR: mob_walker: waypoint_callback: index is -1 or nil")
+		printf("ERROR: mob_walker: waypoint_callback: index is %s", if_then_else(index == -1, "-1", "nil"))
 		return
 	end
 
@@ -145,6 +147,16 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 		self.running = true
 	else
 		self.running = false
+	end
+
+	local sig = self.path_walk_info[index]["sig"]
+	if sig then
+		-- HACK, fixme:
+		local npc_id = self.object:id()
+		local scheme = xr_motivator.storage[npc_id]["active_scheme"]
+		local signals = xr_motivator.storage[npc_id][scheme].signals
+		signals[sig] = true
+		printf("_bp: mob_walker [%s]: SIGNALLING: %s", self.object:name(), sig)
 	end
 	
 	local search_for = self.path_walk_info[index].flags
@@ -194,6 +206,7 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 end
 
 function mob_walker:update_movement_state()
+	printf("_bp [%s]: update_movement_state", self.object:name())
 	xr_logic.mob_capture(self.object, true)
 	
 	local m
@@ -206,6 +219,7 @@ function mob_walker:update_movement_state()
 	end
 
 	if self.scheduled_snd then
+		printf("_bp [%s]: playing scheduled sound", self.object:name())
 		action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue)),
 			sound(sound[self.scheduled_snd]), cond(cond.move_end))
 		self.scheduled_snd = nil
@@ -217,6 +231,7 @@ end
 function mob_walker:update_standing_state()
 	printf("_bp [%s]: update_standing_state", self.object:name())
 	if self.scheduled_snd then
+		printf("_bp [%s]: playing scheduled sound", self.object:name())
 		action(self.object, anim(self.cur_anim_set, 0),
 			sound(sound[self.scheduled_snd]), cond(cond.time_end, self.pt_wait_time))
 		self.scheduled_snd = nil
