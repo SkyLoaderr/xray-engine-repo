@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.cpp
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_soldier.cpp
+//	Created 	: 25.04.2002
+//  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\..\\3dsound.h"
-#include "ai_hen.h"
-#include "ai_hen_selectors.h"
+#include "ai_soldier.h"
+#include "ai_soldier_selectors.h"
 
 //#define WRITE_LOG
 
-CAI_Hen::CAI_Hen()
+CAI_Soldier::CAI_Soldier()
 {
 	dwHitTime = 0;
 	tHitDir.set(0,0,1);
@@ -23,10 +23,10 @@ CAI_Hen::CAI_Hen()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	dwLostEnemyTime = 0;
-	eCurrentState = aiHenFollowMe;
+	eCurrentState = aiSoldierFollowMe;
 }
 
-CAI_Hen::~CAI_Hen()
+CAI_Soldier::~CAI_Soldier()
 {
 	// removing all data no more being neded 
 	int i;
@@ -34,7 +34,7 @@ CAI_Hen::~CAI_Hen()
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 }
 
-void CAI_Hen::Load(CInifile* ini, const char* section)
+void CAI_Soldier::Load(CInifile* ini, const char* section)
 { 
 	// load parameters from ".ini" file
 	inherited::Load	(ini,section);
@@ -64,8 +64,8 @@ void CAI_Hen::Load(CInifile* ini, const char* section)
 	SelectorUnderFire.Load(ini,section);
 }
 
-// when someone hit hen
-void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit soldier
+void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -81,8 +81,8 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	pSounds->Play3DAtPos(S,vPosition);
 }
 
-// when someone hit hen
-void CAI_Hen::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit soldier
+void CAI_Soldier::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -91,13 +91,13 @@ void CAI_Hen::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tSenseDir.set(D);
 }
 
-// when hen is dead
-void CAI_Hen::Death()
+// when soldier is dead
+void CAI_Soldier::Death()
 {
 	// perform death operations
 	inherited::Death( );
 	q_action.setup(AI::AIC_Action::FireEnd);
-	eCurrentState = aiHenDie;
+	eCurrentState = aiSoldierDie;
 
 	// removing from group
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
@@ -110,13 +110,13 @@ void CAI_Hen::Death()
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
 }
 
-// hen update
-void CAI_Hen::Update(DWORD DT)
+// soldier update
+void CAI_Soldier::Update(DWORD DT)
 {
 	inherited::Update(DT);
 }
 
-float CAI_Hen::EnemyHeuristics(CEntity* E)
+float CAI_Soldier::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
@@ -131,7 +131,7 @@ float CAI_Hen::EnemyHeuristics(CEntity* E)
 	return  f1*f2;
 }
 
-void CAI_Hen::SelectEnemy(SEnemySelected& S)
+void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
@@ -164,7 +164,7 @@ void CAI_Hen::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
+IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
 	Fvector tMemberDirection;
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
@@ -173,7 +173,7 @@ IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 	//return(false);
 }
 
-bool CAI_Hen::bfCheckPath(AI::Path &Path) {
+bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
@@ -184,7 +184,7 @@ bool CAI_Hen::bfCheckPath(AI::Path &Path) {
 #define LEFT_NODE(Index)  ((Index + 3) & 3)
 #define RIGHT_NODE(Index) ((Index + 5) & 3)
 
-void CAI_Hen::SetLessCoverLook(NodeCompressed *tNode)
+void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 {
 	//Fvector tWatchDirection;
 	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
@@ -224,14 +224,14 @@ void CAI_Hen::SetLessCoverLook(NodeCompressed *tNode)
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-void CAI_Hen::Attack()
+void CAI_Soldier::Attack()
 {
-	// if no more health then hen is dead
+	// if no more health then soldier is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Attack");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiSoldierDie;
 		return;
 	}
 	else {
@@ -248,7 +248,7 @@ void CAI_Hen::Attack()
 			//  no, we lost him
 			else {
 				dwLostEnemyTime = Level().timeServer();
-				eCurrentState = aiHenPursuit;
+				eCurrentState = aiSoldierPursuit;
 			}
 			return;
 		}
@@ -273,7 +273,7 @@ void CAI_Hen::Attack()
 				bool bWatch = false;
 				// get pointer to the class of node estimator 
 				// for finding the best node in the area
-				CHenSelectorAttack S = SelectorAttack;
+				CSoldierSelectorAttack S = SelectorAttack;
 				// if i am not a leader then assign leader
 				if (Leader != this) {
 					S.m_tLeader = Leader;
@@ -393,7 +393,7 @@ void CAI_Hen::Attack()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CHenSelectorAttack S = SelectorAttack;
+					CSoldierSelectorAttack S = SelectorAttack;
 					// if i am not a leader then assign leader
 					/**/
 					if (Leader != this) {
@@ -456,17 +456,17 @@ void CAI_Hen::Attack()
 	}
 }
 
-void CAI_Hen::Cover()
+void CAI_Soldier::Cover()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Defend()
+void CAI_Soldier::Defend()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Die()
+void CAI_Soldier::Die()
 {
 	q_look.setup(0,AI::t_None,0,0	);
 	q_action.setup(AI::AIC_Action::FireEnd);
@@ -479,14 +479,14 @@ void CAI_Hen::Die()
 	bStopThinking = true;
 }
 
-void CAI_Hen::FollowMe()
+void CAI_Soldier::FollowMe()
 {
-	// if no more health then hen is dead
+	// if no more health then soldier is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Follow me");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiSoldierDie;
 		return;
 	}
 	else {
@@ -496,7 +496,7 @@ void CAI_Hen::FollowMe()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiSoldierAttack;
 			return;
 		}
 		else {
@@ -504,13 +504,13 @@ void CAI_Hen::FollowMe()
 			DWORD dwCurTime = Level().timeServer();
 			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
-				eCurrentState = aiHenUnderFire;
+				eCurrentState = aiSoldierUnderFire;
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenSenseSomething;
+					eCurrentState = aiSoldierSenseSomething;
 					return;
 				}
 				else {
@@ -525,14 +525,14 @@ void CAI_Hen::FollowMe()
 						Leader = this;
 					// I am leader then go to state "Free Hunting"
 					if (Leader == this) {
-						eCurrentState = aiHenFreeHunting;
+						eCurrentState = aiSoldierFreeHunting;
 						return;
 					}
 					else {
 						bool bWatch = false;
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
-						CHenSelectorFollow S = SelectorFollow;
+						CSoldierSelectorFollow S = SelectorFollow;
 						if (Leader != this) {
 							S.m_tLeader = Leader;
 							S.m_tLeaderPosition = Leader->Position();
@@ -583,7 +583,7 @@ void CAI_Hen::FollowMe()
 							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
 							// if search has found new best node then 
 							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
-								// if old cost minus new cost is a little then hen is too lazy
+								// if old cost minus new cost is a little then soldier is too lazy
 								// to move there
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
@@ -614,14 +614,14 @@ void CAI_Hen::FollowMe()
 	}
 }
 
-void CAI_Hen::FreeHunting()
+void CAI_Soldier::FreeHunting()
 {
-	// if no more health then hen is dead
+	// if no more health then soldier is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Free hunting");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiSoldierDie;
 		return;
 	}
 	else {
@@ -631,20 +631,20 @@ void CAI_Hen::FreeHunting()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiSoldierAttack;
 			return;
 		}
 		else {
 			// checking if I am under fire
 			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
-				eCurrentState = aiHenUnderFire;
+				eCurrentState = aiSoldierUnderFire;
 				return;
 			}
 			else {
 				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenSenseSomething;
+					eCurrentState = aiSoldierSenseSomething;
 					return;
 				}
 				else {
@@ -661,7 +661,7 @@ void CAI_Hen::FreeHunting()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CHenSelectorFreeHunting S = SelectorFreeHunting;
+					CSoldierSelectorFreeHunting S = SelectorFreeHunting;
 					// if i am not a leader then assign leader
 					if (Leader != this) {
 						S.m_tLeader = Leader;
@@ -736,32 +736,32 @@ void CAI_Hen::FreeHunting()
 	}
 }
 
-void CAI_Hen::GoInThisDirection()
+void CAI_Soldier::GoInThisDirection()
 {
 }
 
-void CAI_Hen::GoToThisPosition()
+void CAI_Soldier::GoToThisPosition()
 {
 }
 
-void CAI_Hen::HoldPositionUnderFire()
+void CAI_Soldier::HoldPositionUnderFire()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::HoldThisPosition()
+void CAI_Soldier::HoldThisPosition()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Pursuit()
+void CAI_Soldier::Pursuit()
 {
-	// if no more health then hen is dead
+	// if no more health then soldier is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Pursuit");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiSoldierDie;
 		return;
 	}
 	else {
@@ -770,7 +770,7 @@ void CAI_Hen::Pursuit()
 		SelectEnemy(Enemy);
 		// do the enemies exist?
 		if (Enemy.Enemy) {
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiSoldierAttack;
 			return;
 		}
 		else {
@@ -779,13 +779,13 @@ void CAI_Hen::Pursuit()
 				// checking if I am under fire
 				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenUnderFire;
+					eCurrentState = aiSoldierUnderFire;
 					return;
 				}
 				else {
 					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
-						eCurrentState = aiHenSenseSomething;
+						eCurrentState = aiSoldierSenseSomething;
 						return;
 					}
 					else {
@@ -800,7 +800,7 @@ void CAI_Hen::Pursuit()
 							Leader = this;
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
-						CHenSelectorPursuit S = SelectorPursuit;
+						CSoldierSelectorPursuit S = SelectorPursuit;
 						// if i am not a leader then assign leader
 						if (Leader != this) {
 							S.m_tLeader = Leader;
@@ -886,12 +886,12 @@ void CAI_Hen::Pursuit()
 	}
 }
 
-void CAI_Hen::Retreat()
+void CAI_Soldier::Retreat()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::SenseSomething()
+void CAI_Soldier::SenseSomething()
 {
 	//bStopThinking = true;
 	//dwSenseTime = 0;
@@ -905,7 +905,7 @@ void CAI_Hen::SenseSomething()
 	bStopThinking = true;
 }
 
-void CAI_Hen::UnderFire()
+void CAI_Soldier::UnderFire()
 {
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Under fire");
@@ -923,7 +923,7 @@ void CAI_Hen::UnderFire()
 	bStopThinking = true;
 	/**/
 	if (g_Health() <= 0) {
-		eCurrentState = aiHenDie;
+		eCurrentState = aiSoldierDie;
 		return;
 	}
 	else {
@@ -933,7 +933,7 @@ void CAI_Hen::UnderFire()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiHenAttack;
+			eCurrentState = aiSoldierAttack;
 			return;
 		}
 		else {
@@ -947,7 +947,7 @@ void CAI_Hen::UnderFire()
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiHenSenseSomething;
+					eCurrentState = aiSoldierSenseSomething;
 					return;
 				}
 				else {
@@ -964,7 +964,7 @@ void CAI_Hen::UnderFire()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CHenSelectorUnderFire S = SelectorUnderFire;
+					CSoldierSelectorUnderFire S = SelectorUnderFire;
 					if (Leader != this) {
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
@@ -1061,73 +1061,73 @@ void CAI_Hen::UnderFire()
 	}
 }
 
-void CAI_Hen::WaitOnPosition()
+void CAI_Soldier::WaitOnPosition()
 {
 	bStopThinking = true;
 }
 
-void CAI_Hen::Think()
+void CAI_Soldier::Think()
 {
 	bStopThinking = false;
 	do {
 		switch(eCurrentState) {
-			case aiHenDie : {
+			case aiSoldierDie : {
 				Die();
 				break;
 			}
-			case aiHenUnderFire : {
+			case aiSoldierUnderFire : {
 				UnderFire();
 				break;
 			}
-			case aiHenSenseSomething : {
+			case aiSoldierSenseSomething : {
 				SenseSomething();
 				break;
 			}
-			case aiHenGoInThisDirection : {
+			case aiSoldierGoInThisDirection : {
 				GoInThisDirection();
 				break;
 			}
-			case aiHenGoToThisPosition : {
+			case aiSoldierGoToThisPosition : {
 				GoToThisPosition();
 				break;
 			}
-			case aiHenWaitOnPosition : {
+			case aiSoldierWaitOnPosition : {
 				WaitOnPosition();
 				break;
 			}
-			case aiHenHoldThisPosition : {
+			case aiSoldierHoldThisPosition : {
 				HoldThisPosition();
 				break;
 			}
-			case aiHenHoldPositionUnderFire : {
+			case aiSoldierHoldPositionUnderFire : {
 				HoldPositionUnderFire();
 				break;
 			}
-			case aiHenFreeHunting : {
+			case aiSoldierFreeHunting : {
 				FreeHunting();
 				break;
 			}
-			case aiHenFollowMe : {
+			case aiSoldierFollowMe : {
 				FollowMe();
 				break;
 			}
-			case aiHenAttack : {
+			case aiSoldierAttack : {
 				Attack();
 				break;
 			}
-			case aiHenDefend : {
+			case aiSoldierDefend : {
 				Defend();
 				break;
 			}
-			case aiHenPursuit : {
+			case aiSoldierPursuit : {
 				Pursuit();
 				break;
 			}
-			case aiHenRetreat : {
+			case aiSoldierRetreat : {
 				Retreat();
 				break;
 			}
-			case aiHenCover : {
+			case aiSoldierCover : {
 				Cover();
 				break;
 			}

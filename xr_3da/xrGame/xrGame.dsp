@@ -542,6 +542,26 @@ SOURCE=.\AI\Rat\ai_rat_selectors.cpp
 SOURCE=.\AI\Rat\ai_rat_selectors.h
 # End Source File
 # End Group
+# Begin Group "ai_soldier"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\AI\Soldier\ai_soldier.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Soldier\ai_soldier.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Soldier\ai_soldier_selectors.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Soldier\ai_soldier_selectors.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\AI\ai_monsters.cpp

@@ -1,41 +1,41 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.h
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_soldier.h
+//	Created 	: 25.04.2002
+//  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_HEN__
-#define __XRAY_AI_HEN__
+#ifndef __XRAY_AI_SOLDIER__
+#define __XRAY_AI_SOLDIER__
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
-#include "ai_hen_selectors.h"
+#include "ai_soldier_selectors.h"
 
-class CAI_Hen : public CCustomMonster  
+class CAI_Soldier : public CCustomMonster  
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
 		SND_DIE_COUNT=4
 	};
 
-	enum EHenStates 	{
-		aiHenDie = 0,
-		aiHenUnderFire,
-		aiHenSenseSomething,
-		aiHenGoInThisDirection,
-		aiHenGoToThisPosition,
-		aiHenWaitOnPosition,
-		aiHenHoldThisPosition,
-		aiHenHoldPositionUnderFire,
-		aiHenFreeHunting,
-		aiHenFollowMe,
-		aiHenAttack,
-		aiHenDefend,
-		aiHenPursuit,
-		aiHenRetreat,
-		aiHenCover,
+	enum ESoldierStates 	{
+		aiSoldierDie = 0,
+		aiSoldierUnderFire,
+		aiSoldierSenseSomething,
+		aiSoldierGoInThisDirection,
+		aiSoldierGoToThisPosition,
+		aiSoldierWaitOnPosition,
+		aiSoldierHoldThisPosition,
+		aiSoldierHoldPositionUnderFire,
+		aiSoldierFreeHunting,
+		aiSoldierFollowMe,
+		aiSoldierAttack,
+		aiSoldierDefend,
+		aiSoldierPursuit,
+		aiSoldierRetreat,
+		aiSoldierCover,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -45,7 +45,7 @@ class CAI_Hen : public CCustomMonster
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
 		// ai
-		EHenStates		eCurrentState;
+		ESoldierStates		eCurrentState;
 		bool			bStopThinking;
 		// hit data
 		DWORD			dwHitTime;
@@ -61,7 +61,7 @@ class CAI_Hen : public CCustomMonster
 		DWORD			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
 		// finite state machine
-		stack<EHenStates>	tStateStack;
+		stack<ESoldierStates>	tStateStack;
 		void Die();
 		void UnderFire();
 		void SenseSomething();
@@ -80,16 +80,16 @@ class CAI_Hen : public CCustomMonster
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 	
-		CHenSelectorAttack		SelectorAttack;
-		CHenSelectorFreeHunting SelectorFreeHunting;
-		CHenSelectorFollow		SelectorFollow;
-		CHenSelectorPursuit		SelectorPursuit;
-		CHenSelectorUnderFire	SelectorUnderFire;
+		CSoldierSelectorAttack		SelectorAttack;
+		CSoldierSelectorFreeHunting SelectorFreeHunting;
+		CSoldierSelectorFollow		SelectorFollow;
+		CSoldierSelectorPursuit		SelectorPursuit;
+		CSoldierSelectorUnderFire	SelectorUnderFire;
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
-					   CAI_Hen();
-		virtual		  ~CAI_Hen();
+					   CAI_Soldier();
+		virtual		  ~CAI_Soldier();
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);

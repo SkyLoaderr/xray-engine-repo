@@ -1,49 +1,49 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.h
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_soldier_selectors.h
+//	Created 	: 25.04.2002
+//  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_HEN_SELECTORS__
-#define __XRAY_AI_HEN_SELECTORS__
+#ifndef __XRAY_AI_SOLDIER_SELECTORS__
+#define __XRAY_AI_SOLDIER_SELECTORS__
 
 #include "..\\ai_monsters.h"
 
-class CHenSelectorAttack : public CAISelectorBase
+class CSoldierSelectorAttack : public CAISelectorBase
 {
 	public:
-		CHenSelectorAttack();
+		CSoldierSelectorAttack();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CHenSelectorFreeHunting : public CAISelectorBase
+class CSoldierSelectorFreeHunting : public CAISelectorBase
 {
 	public:
-		CHenSelectorFreeHunting();
+		CSoldierSelectorFreeHunting();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CHenSelectorFollow : public CAISelectorBase
+class CSoldierSelectorFollow : public CAISelectorBase
 {
 	public:
-		CHenSelectorFollow	();
+		CSoldierSelectorFollow	();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 
 };
 
-class CHenSelectorPursuit : public CAISelectorBase
+class CSoldierSelectorPursuit : public CAISelectorBase
 {
 	public:
-		CHenSelectorPursuit();
+		CSoldierSelectorPursuit();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CHenSelectorUnderFire : public CAISelectorBase
+class CSoldierSelectorUnderFire : public CAISelectorBase
 {
 	public:
-		CHenSelectorUnderFire();
+		CSoldierSelectorUnderFire();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

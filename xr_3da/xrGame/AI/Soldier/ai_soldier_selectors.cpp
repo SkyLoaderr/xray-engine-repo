@@ -1,22 +1,22 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_hen.cpp
-//	Created 	: 05.04.2002
-//  Modified 	: 12.04.2002
+//	Module 		: ai_soldier_selectors.cpp
+//	Created 	: 25.04.2002
+//  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Hen"
+//	Description : AI Behaviour for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "..\\..\\entity.h"
 #include "..\\..\\CustomMonster.h"
-#include "ai_hen_selectors.h"
+#include "ai_soldier_selectors.h"
 
-CHenSelectorAttack::CHenSelectorAttack()
+CSoldierSelectorAttack::CSoldierSelectorAttack()
 { 
 	Name = "selector_attack"; 
 }
 
-float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CSoldierSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -55,12 +55,12 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	return(m_fResult);
 }
 
-CHenSelectorFreeHunting::CHenSelectorFreeHunting()
+CSoldierSelectorFreeHunting::CSoldierSelectorFreeHunting()
 { 
 	Name = "selector_free_hunting"; 
 }
 
-float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -95,12 +95,12 @@ float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 	return(m_fResult);
 }
 
-CHenSelectorFollow::CHenSelectorFollow()
+CSoldierSelectorFollow::CSoldierSelectorFollow()
 { 
 	Name = "selector_follow"; 
 }
 
-float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CSoldierSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -135,12 +135,12 @@ float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	return(m_fResult);
 }
 
-CHenSelectorPursuit::CHenSelectorPursuit()
+CSoldierSelectorPursuit::CSoldierSelectorPursuit()
 { 
 	Name = "selector_pursuit"; 
 }
 
-float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -177,12 +177,12 @@ float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL
 	return(m_fResult);
 }
 
-CHenSelectorUnderFire::CHenSelectorUnderFire()
+CSoldierSelectorUnderFire::CSoldierSelectorUnderFire()
 { 
 	Name = "selector_under_fire"; 
 }
 
-float CHenSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 {
 	// initialization
 	m_tpCurrentNode = tNode;
