@@ -305,12 +305,12 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 		if (Ini)
 			xr_delete				(Ini);
 
-		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
-		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
-		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
-		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
-		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
-		PHelper.CreateText			(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
+		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
+		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
+		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
+		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+		PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
+		PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
 }
 #endif
 
@@ -372,8 +372,8 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateFloat			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
-	PHelper.CreateSceneItem		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
+	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
+	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
 #endif
 
@@ -412,7 +412,7 @@ void CSE_ALifeAbstractGroup::UPDATE_Write	(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeAbstractGroup::FillProp		(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateU16			(items,	PHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
+	PHelper.CreateU16			(items,	FHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
 };	
 #endif
 
@@ -497,7 +497,7 @@ void CSE_ALifeDynamicObjectVisual::UPDATE_Read(NET_Packet &tNetPacket)
 void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	inherited2::FillProp		(PHelper.PrepareKey(pref,s_name),items);
+	inherited2::FillProp		(FHelper.PrepareKey(pref,s_name),items);
 }
 #endif
 
@@ -633,15 +633,15 @@ xr_token TokenAnomalyType[]={
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	PHelper.CreateToken			(items,PHelper.PrepareKey(pref,s_name,"Type"),								&m_tAnomalyType,	TokenAnomalyType, 1);
-	PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
-    PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
+	PHelper.CreateToken			(items,FHelper.PrepareKey(pref,s_name,"Type"),								&m_tAnomalyType,	TokenAnomalyType, 1);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
+    PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
+    PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
+    PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; i++)
-		PHelper.CreateFloat		(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
-	PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
-	PHelper.CreateU16			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
+		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
 }
 #endif
 
@@ -724,9 +724,9 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 
 void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp			(pref,	 values);
-	PHelper.CreateToken			(values, PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
-	PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
-	PHelper.CreateText			(values, PHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
+	PHelper.CreateToken			(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
+	PHelper.CreateText			(values, FHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
     
 	if (visual && PKinematics(visual))
 	{
@@ -748,7 +748,7 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 
 		if (!bFound)
 			startup_animation[0]= 0;
-		PropValue				*tNetPacket = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
+		PropValue				*tNetPacket = PHelper.CreateList	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
 		tNetPacket->OnChangeEvent			= OnChangeAnim;
 	}
 }
@@ -841,14 +841,14 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
-	PHelper.CreateColor			(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateFlag16		(values, PHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
-	PHelper.CreateLightAnim		(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	color_animator,		sizeof(color_animator));
-	PHelper.CreateTexture		(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
-	PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle			(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
-    PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
-    PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
+	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
+	PHelper.CreateFlag16		(values, FHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
+	PHelper.CreateLightAnim		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	color_animator,		sizeof(color_animator));
+	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
+    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
 
     if (visual && PKinematics(visual))
     {
@@ -870,7 +870,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         
 		if (!bFound)
 			startup_animation[0]= 0;
-        PropValue				*tNetPacket = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
+        PropValue				*tNetPacket = PHelper.CreateList	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
         tNetPacket->OnChangeEvent			= OnChangeAnim;
 		// motions
         vec.clear				();
@@ -885,7 +885,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         
 		if (!bFound)
 			spot_bone[0]		= 0;
-		PHelper.CreateList		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,	sizeof(spot_bone), &vec);
+		PHelper.CreateList		(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,	sizeof(spot_bone), &vec);
     }
 }
 #endif

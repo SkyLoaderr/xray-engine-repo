@@ -100,12 +100,12 @@ void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
-	PHelper.CreateColor			(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateLightAnim		(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator));
-	PHelper.CreateTexture		(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
-	PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle			(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
-    PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
+	PHelper.CreateLightAnim		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator));
+	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
+    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
 }
 #endif
 
@@ -209,8 +209,8 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateU16			(items,PHelper.PrepareKey(pref,s_name,"Ammo: total"),			&a_current,0,1000,1);
-	PHelper.CreateU16			(items,PHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: total"),			&a_current,0,1000,1);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
 }
 #endif
 
@@ -251,7 +251,7 @@ void CSE_ALifeItemAmmo::UPDATE_Write		(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp			(pref,values);
-	PHelper.CreateU16			(values, PHelper.PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
+	PHelper.CreateU16			(values, FHelper.PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
 #endif
 
@@ -344,6 +344,6 @@ void CSE_ALifeItemArtefact::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-	PHelper.CreateFloat			(items, PHelper.PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
+	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
 }
 #endif

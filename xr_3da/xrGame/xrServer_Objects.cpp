@@ -105,9 +105,9 @@ xr_token game_types[]={
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateToken			(items,	PHelper.PrepareKey(pref,"Game Type"),			&s_gameid,		game_types, 1);
-    PHelper.CreateFlag16		(items,	PHelper.PrepareKey(pref, "Active"),				&s_flags, 		M_SPAWN_OBJECT_ACTIVE);
-    PHelper.CreateU16			(items,	PHelper.PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
+	PHelper.CreateToken			(items,	FHelper.PrepareKey(pref,"Game Type"),			&s_gameid,		game_types, 1);
+    PHelper.CreateFlag16		(items,	FHelper.PrepareKey(pref, "Active"),				&s_flags, 		M_SPAWN_OBJECT_ACTIVE);
+    PHelper.CreateU16			(items,	FHelper.PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
 }
 #endif
 
@@ -202,7 +202,7 @@ void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)
 
 void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-    PropValue					*V = PHelper.CreateGameObject(values, PHelper.PrepareKey(pref,"Model"),visual_name,sizeof(visual_name));
+    PropValue					*V = PHelper.CreateGameObject(values, FHelper.PrepareKey(pref,"Model"),visual_name,sizeof(visual_name));
     V->OnChangeEvent			= OnChangeVisual;
 }
 #endif
@@ -443,8 +443,8 @@ void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_Target_CS_Base::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
-    PHelper.CreateU8			(items,PHelper.PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
+    PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
+    PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
 }
 #endif
 
@@ -476,7 +476,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateGameObject	(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
+	PHelper.CreateGameObject	(items, FHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
 }
 #endif
 
@@ -509,7 +509,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateGameObject	(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
+	PHelper.CreateGameObject	(items, FHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
 }
 #endif
 
@@ -574,7 +574,7 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
-	PHelper.CreateFloat			(values,PHelper.PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
+	PHelper.CreateFloat			(values,FHelper.PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
 
 #endif
