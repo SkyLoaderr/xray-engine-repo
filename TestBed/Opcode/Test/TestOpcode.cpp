@@ -21,10 +21,10 @@ int main(int argc, char* argv[])
 
 	// 2) Create a tree collider and setup it:
 	AABBTreeCollider TC;
-	TC.SetFirstContact(false);		// report all contacts
-	TC.SetFullBoxBoxTest(false);	// use coarse BV-BV tests
-	TC.SetFullPrimBoxTest(false);	// use coarse primitive-BV tests
-	TC.SetTemporalCoherence(false);	// don't use temporal coherence
+	TC.SetFirstContact		(false);	// report all contacts
+	TC.SetFullBoxBoxTest	(false);	// use coarse BV-BV tests
+	TC.SetFullPrimBoxTest	(false);	// use coarse primitive-BV tests
+	TC.SetTemporalCoherence	(false);	// don't use temporal coherence
 
 	// 3) Setup object callbacks. Geometry & topology are NOT stored in the collision system,
 	// in order to save some ram. So, when the system needs them to perform accurate intersection
