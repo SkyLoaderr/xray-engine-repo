@@ -41,7 +41,11 @@ class CDeflector
 public:
 	vector<UVtri>		tris;
 	Fvector				N;
-	b_texture			lm;
+	struct Layer
+	{
+		DWORD			id;
+		b_texture		lm;
+	}					Layers;
 
 	Fvector				Center;
 	float				Radius;
@@ -50,17 +54,17 @@ public:
 	vector<R_Light>		LightsSelected;
 	RAPID::XRCollide	DB;
 public:
-	CDeflector		();
-	~CDeflector		();
+	CDeflector				();
+	~CDeflector				();
 
-	VOID	OA_SetNormal(Fvector &_N )	{ N.set(_N); N.normalize(); }
-	BOOL	OA_Place	(Face *owner);
-	VOID	OA_Export	();
-	VOID	Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotate);
+	VOID	OA_SetNormal	(Fvector &_N )	{ N.set(_N); N.normalize(); }
+	BOOL	OA_Place		(Face *owner);
+	VOID	OA_Export		();
+	VOID	Capture			(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotate);
 
-	VOID	GetRect		(UVpoint &min, UVpoint &max);
+	VOID	GetRect			(UVpoint &min, UVpoint &max);
 
-	DWORD	GetFaceCount() { return tris.size();	};
+	DWORD	GetFaceCount()	{ return tris.size();	};
 
 	VOID	Light			(HASH& H);
 	VOID	L_Direct		(HASH& H);
@@ -70,7 +74,7 @@ public:
 
 	WORD	GetBaseMaterial() { return tris.front().owner->dwMaterial;	}
 
-	void	Bounds		(DWORD ID, Fbox2& dest)
+	void	Bounds			(DWORD ID, Fbox2& dest)
 	{
 		UVtri& TC		= tris[ID];
 		dest.min.set	(TC.uv[0].conv());
@@ -88,7 +92,7 @@ public:
 			bounds.merge(B);
 		}
 	}
-	void	RemapUV		(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
+	void	RemapUV			(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
 };
 
 typedef vector<UVtri>::iterator UVIt;
