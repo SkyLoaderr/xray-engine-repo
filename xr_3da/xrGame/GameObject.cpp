@@ -181,15 +181,17 @@ void CGameObject::spatial_move		()
 	if (H_Parent())
 	{
 //		// Use parent information
-//		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
-//		VERIFY						(O);
+		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
+		VERIFY						(O);
 //		CAI_Space&	AI				= getAI();
 //		Msg							("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 //		AI.ref_dec					(AI_NodeID);
-//		AI_NodeID					= O->AI_NodeID;
+
+		//Position().set				(O->Position());
+		AI_NodeID					= O->AI_NodeID;
 //		Msg							("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 //		AI.ref_add					(AI_NodeID);
-//		AI_Node						= O->AI_Node;
+		AI_Node						= O->AI_Node;
 		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find _new AI-Node
