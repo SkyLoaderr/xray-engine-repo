@@ -6103,6 +6103,16 @@
 										RelativePath="WeaponFORT.h">
 									</File>
 								</Filter>
+								<Filter
+									Name="Weapon RG6"
+									Filter="">
+									<File
+										RelativePath=".\WeaponRG6.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponRG6.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="HUD"

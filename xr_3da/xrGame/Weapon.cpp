@@ -32,7 +32,7 @@
 CWeapon::CWeapon(LPCSTR name)
 {
 	STATE				= NEXT_STATE		= eHidden;
-
+	m_sub_state			= eSubstateReloadBegin;
 	SetDefaults			();
 
 	m_Offset.identity		();
@@ -361,6 +361,7 @@ void CWeapon::Load		(LPCSTR section)
 	m_bHideCrosshairInZoom = true;
 	if(pSettings->line_exist(hud_sect, "zoom_hide_crosshair"))
 		m_bHideCrosshairInZoom = !!pSettings->r_bool(hud_sect, "zoom_hide_crosshair");
+
 }
 
 
@@ -525,6 +526,17 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 			InitAddons();
 			UpdateAddonsVisibility();
 		}break;
+
+	case GE_WPN_STATE_CHANGE:
+		{
+			u8				state, sub_state;
+			P.r_u8			(state);
+			P.r_u8			(sub_state);
+			m_sub_state		=(EWeaponSubStates)sub_state;
+			OnStateSwitch	(u32(state));
+		}
+		break;
+
 	}
 };
 
@@ -956,9 +968,21 @@ CUIStaticItem* CWeapon::ZoomTexture()
 		return NULL;
 }
 
+
 void CWeapon::SwitchState(u32 S)
 {
 	inherited::SwitchState(S);
+
+	NEXT_STATE		= S;	// Very-very important line of code!!! :)
+	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/)	
+	{
+		// !!! Just single entry for given state !!!
+		NET_Packet		P;
+		CHudItem::object().u_EventGen		(P,GE_WPN_STATE_CHANGE,CHudItem::object().ID());
+		P.w_u8			(u8(S));
+		P.w_u8			(u8(m_sub_state));
+		CHudItem::object().u_EventSend		(P);
+	}
 }
 
 void CWeapon::OnMagazineEmpty	()

@@ -295,7 +295,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 	{
 		SMapLocation* map_location = (*it);
 
-		if (!(Level().name() == map_location->LevelName())) 
+		if ( Level().name() != map_location->LevelName() ) 
 			continue;
 
 		entity_color = map_location->icon_color;

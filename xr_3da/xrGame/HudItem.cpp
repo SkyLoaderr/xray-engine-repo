@@ -133,8 +133,9 @@ void CHudItem::OnAnimationEnd()
 
 void CHudItem::SwitchState(u32 S)
 {
+/* moved to weapon.cpp
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
-	if (object().Local() && !object().getDestroy()/* && (S!=NEXT_STATE)*/)	
+	if (object().Local() && !object().getDestroy())	
 	{
 		// !!! Just single entry for given state !!!
 		NET_Packet		P;
@@ -142,10 +143,12 @@ void CHudItem::SwitchState(u32 S)
 		P.w_u8			(u8(S));
 		object().u_EventSend		(P);
 	}
+*/
 }
 
 void CHudItem::OnEvent		(NET_Packet& P, u16 type)
 {
+/* moved to Weapon.cpp
 	switch (type)
 	{
 	case GE_WPN_STATE_CHANGE:
@@ -156,6 +159,7 @@ void CHudItem::OnEvent		(NET_Packet& P, u16 type)
 		}
 		break;
 	}
+*/
 }
 
 void CHudItem::OnStateSwitch	(u32 S)

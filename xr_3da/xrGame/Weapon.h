@@ -52,7 +52,6 @@ public:
 	virtual void	load				(IReader &input_packet);
 	virtual BOOL	net_SaveRelevant	()								{return inherited::net_SaveRelevant();}
 
-
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
 
@@ -140,6 +139,11 @@ public:
 		eMagEmpty,
 		eSwitch,
 	};
+	enum EWeaponSubStates{
+		eSubstateReloadBegin		=0,
+		eSubstateReloadInProcess,
+		eSubstateReloadEnd,
+	};
 
 	virtual bool			IsHidden			()	const		{	return STATE == eHidden;}						// Does weapon is in hidden state
 	virtual bool			IsHiding			()	const		{	return STATE == eHiding;}
@@ -156,6 +160,7 @@ public:
 	BOOL					AutoSpawnAmmo		() const		{ return m_bAutoSpawnAmmo; };
 
 protected:
+	u8						m_sub_state;
 	// Weapon fires now
 	bool					bWorking2;
 	// a misfire happens, you'll need to rearm weapon

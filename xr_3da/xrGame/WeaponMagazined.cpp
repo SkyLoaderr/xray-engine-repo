@@ -5,7 +5,6 @@
 #include "WeaponMagazined.h"
 #include "entity.h"
 #include "actor.h"
-#include "actor.h"
 #include "ParticlesObject.h"
 #include "scope.h"
 #include "silencer.h"
@@ -102,6 +101,8 @@ void CWeaponMagazined::Load	(LPCSTR section)
 			m_sSilencerSmokeParticles = pSettings->r_string(section, "silencer_smoke_particles");
 		HUD_SOUND::LoadSound(section,"snd_silncer_shot", sndSilencerShot, TRUE, m_eSoundShot);
 	}
+
+
 }
 
 void CWeaponMagazined::FireStart		()

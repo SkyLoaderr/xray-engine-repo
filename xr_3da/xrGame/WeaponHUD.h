@@ -78,10 +78,10 @@ class CWeaponHUD
 public:
 						CWeaponHUD		();
 						CWeaponHUD		(CHudItem* pHudItem);
-	virtual				~CWeaponHUD		();
+						~CWeaponHUD		();
 
 	// misc
-	virtual void		Load			(LPCSTR section);
+	void				Load			(LPCSTR section);
 	void				net_DestroyHud	();
 	void				Init			();
 

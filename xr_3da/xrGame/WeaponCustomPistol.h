@@ -16,8 +16,6 @@ public:
 protected:
 	virtual void	FireEnd				();
 	virtual void	switch2_Fire		();
-	virtual void	state_Fire			(float dt);
-	virtual void	state_MagEmpty		(float dt);
 	virtual void	OnAnimationEnd		();
 
 };

@@ -20,14 +20,6 @@ void CWeaponCustomPistol::switch2_Fire	()
 }
 
 
-void	CWeaponCustomPistol::state_Fire	(float dt) 
-{
-	inherited::state_Fire(dt);
-}
-void	CWeaponCustomPistol::state_MagEmpty	(float dt) 
-{
-	inherited::state_MagEmpty(dt);
-}
 void CWeaponCustomPistol::OnAnimationEnd() {
 	switch(STATE) {
 		case eIdle:
