@@ -29,24 +29,15 @@ st_Surface::~st_Surface(){
 // mimimal bounding box size
 float g_MinBoxSize = 0.05f;
 
-CEditObject::CEditObject( char *name, bool bLib ):CCustomObject(){
+CEditObject::CEditObject(){
 	Construct();
-	strcpy( m_Name, name );
-    bLibItem = bLib;
 }
 
-CEditObject::CEditObject( bool bLib ):CCustomObject(){
-	Construct();
-    bLibItem = bLib;
-}
-
-CEditObject::CEditObject(CEditObject* source):CCustomObject((CCustomObject*)source){
+CEditObject::CEditObject(CEditObject* source){
     CloneFrom(source,true);
 }
 
 void CEditObject::Construct(){
-	m_ClassID = OBJCLASS_EDITOBJECT;
-
 	mTransform.identity();
     vScale.set(1,1,1);
     vRotate.set(0,0,0);
@@ -54,7 +45,6 @@ void CEditObject::Construct(){
 
 	m_DynamicObject = false;
 
-	m_LibRef 	= 0;
     m_ObjVer.reset();
 
 	m_Box.set( 0,0,0, 0,0,0 );
@@ -89,13 +79,9 @@ void CEditObject::CloneFrom(CEditObject* source, bool bSetPlacement){
 
     ClearGeometry();
     CopyGeometry(source);
-
-	m_LibRef = source->m_LibRef;
-    bLibItem = source->bLibItem;
 }
 
 void CEditObject::VerifyMeshNames(){
-    VERIFY2(m_LibRef==0,"Can't generate mesh names in ref object.");
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){
     	AnsiString nm = (*m_def)->m_Name;
@@ -106,49 +92,44 @@ void CEditObject::VerifyMeshNames(){
 }
 
 void CEditObject::GenerateMeshNames(){
-    VERIFY2(m_LibRef==0,"Can't generate mesh names in ref object.");
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++,idx++)
     	sprintf((*m_def)->m_Name,"Mesh#%d",idx);
 }
 bool CEditObject::ContainsMesh(const CEditMesh* m){
     VERIFY(m);
-    CEditObject* _O = m_LibRef?m_LibRef:this;
-    for(EditMeshIt m_def=_O->m_Meshes.begin();m_def!=_O->m_Meshes.end();m_def++)
+    for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++)
         if (m==(*m_def)) return true;
     return false;
 }
 
 CEditMesh* CEditObject::FindMeshByName	(const char* name, CEditMesh* Ignore){
-    CEditObject* _O = m_LibRef?m_LibRef:this;
-    for(EditMeshIt m=_O->m_Meshes.begin();m!=_O->m_Meshes.end();m++)
+    for(EditMeshIt m=m_Meshes.begin();m!=m_Meshes.end();m++)
         if ((Ignore!=(*m))&&(strcmp((*m)->GetName(),name)==0)) return (*m);
     return 0;
 }
 
 void CEditObject::ClearGeometry (){
-	if (!m_LibRef){
-        ClearRenderBuffers();
-        if (!m_Meshes.empty())
-        	for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)_DELETE(*m);
-        if (!m_Surfaces.empty())
-            for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-                _DELETE(*s_it);
-        m_Meshes.clear();
-        m_Surfaces.clear();
-        // bones
-		for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end();b_it++)_DELETE(*b_it);
-        m_Bones.clear();
-        // skeletal motions
-		for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++)_DELETE(*s_it);
-        m_SMotions.clear();
-        // object motions
-		for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)_DELETE(*o_it);
-        m_OMotions.clear();
+    ClearRenderBuffers();
+    if (!m_Meshes.empty())
+        for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)_DELETE(*m);
+    if (!m_Surfaces.empty())
+        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+            _DELETE(*s_it);
+    m_Meshes.clear();
+    m_Surfaces.clear();
+    // bones
+    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end();b_it++)_DELETE(*b_it);
+    m_Bones.clear();
+    // skeletal motions
+    for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++)_DELETE(*s_it);
+    m_SMotions.clear();
+    // object motions
+    for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)_DELETE(*o_it);
+    m_OMotions.clear();
 
-		m_ActiveOMotion = 0;
-    	m_ActiveSMotion = 0;
-    }
+    m_ActiveOMotion = 0;
+    m_ActiveSMotion = 0;
 }
 
 void CEditObject::CopyGeometry (CEditObject* source){
@@ -178,8 +159,7 @@ void CEditObject::CopyGeometry (CEditObject* source){
 
 int CEditObject::GetFaceCount(){
 	int cnt=0;
-    CEditObject* _O=IsReference()?m_LibRef:this;
-    for(EditMeshIt m = _O->m_Meshes.begin();m!=_O->m_Meshes.end();m++)
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         cnt+=(*m)->GetFaceCount();
 	return cnt;
 }
@@ -187,16 +167,14 @@ int CEditObject::GetFaceCount(){
 int CEditObject::GetSurfFaceCount(const char* surf_name){
 	int cnt=0;
     st_Surface* surf = FindSurfaceByName(surf_name);
-    CEditObject* _O=IsReference()?m_LibRef:this;
-    for(EditMeshIt m = _O->m_Meshes.begin();m!=_O->m_Meshes.end();m++)
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         cnt+=(*m)->GetSurfFaceCount(surf);
 	return cnt;
 }
 
 int CEditObject::GetVertexCount(){
 	int cnt=0;
-    CEditObject* _O=IsReference()?m_LibRef:this;
-    for(EditMeshIt m = _O->m_Meshes.begin();m!=_O->m_Meshes.end();m++)
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         cnt+=(*m)->GetVertexCount();
 	return cnt;
 }
@@ -222,41 +200,36 @@ void CEditObject::UpdateTransform( ){
 
 void CEditObject::UpdateBox(){
     UI->RedrawScene();
-    if(!bLibItem) UpdateTransform();
-	if(IsReference()){
-		m_LibRef->UpdateBox();
-		m_Box.set(m_LibRef->m_Box);
-	}else{
-		if(m_Meshes.empty()){
-			m_Box.set( vPosition, vPosition );
-			m_Box.grow( g_MinBoxSize );
-		}else{
-			Fvector pt;
-			bool boxdefined = false;
-			EditMeshIt m = m_Meshes.begin();
-			for(;m!=m_Meshes.end();m++){
-				Fbox meshbox;
-				(*m)->GetBox(meshbox);
-				if(boxdefined){
-					for(int i=0; i<8; i++){
-						Fvector pt;
-						meshbox.getpoint(i, pt);
-						m_Box.modify(pt);
-					}
-				}else{
-					meshbox.getpoint( 0, pt );
-					m_Box.set(pt,pt);
-					boxdefined = true;
-					for(int i=1; i<8; i++){
-						meshbox.getpoint( i, pt );
-						m_Box.modify(pt);
-					}
-				}
-			}
-		}
-	}
+///    if(!bLibItem) UpdateTransform();
+    if(m_Meshes.empty()){
+        m_Box.set( vPosition, vPosition );
+        m_Box.grow( g_MinBoxSize );
+    }else{
+        Fvector pt;
+        bool boxdefined = false;
+        EditMeshIt m = m_Meshes.begin();
+        for(;m!=m_Meshes.end();m++){
+            Fbox meshbox;
+            (*m)->GetBox(meshbox);
+            if(boxdefined){
+                for(int i=0; i<8; i++){
+                    Fvector pt;
+                    meshbox.getpoint(i, pt);
+                    m_Box.modify(pt);
+                }
+            }else{
+                meshbox.getpoint( 0, pt );
+                m_Box.set(pt,pt);
+                boxdefined = true;
+                for(int i=1; i<8; i++){
+                    meshbox.getpoint( i, pt );
+                    m_Box.modify(pt);
+                }
+            }
+        }
+    }
     // update transform matrix
-    if (!bLibItem) UpdateTransform();
+///    if (!bLibItem) UpdateTransform();
 }
 //----------------------------------------------------
 
@@ -264,59 +237,46 @@ bool CEditObject::GetBox( Fbox& box ){
     box.transform(m_Box,mTransform);
 	return true;
 }
-
+/*
 bool __inline CEditObject::IsRender(Fmatrix& parent){
-    bool bRes = bLibItem||Device.m_Frustum.testSphere(m_Center,m_fRadius);
+    bool bRes = Device.m_Frustum.testSphere(m_Center,m_fRadius);
     if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(precalc_identity);
     return bRes;
 }
-
+*/
 void CEditObject::Render(Fmatrix& parent, ERenderPriority flag){
-    if ((UI->GetEState()==esEditScene)&&(!bLibItem)) 	Scene->TurnLightsForObject(this);
-    else if (UI->GetEState()==esEditLibrary) 			Scene->TurnLightsForObject(this);
+    Scene->TurnLightsForObject(this);
 
-    if(!bLibItem&&(flag==rpNormal)){
+    if(flag==rpNormal){
     	Fmatrix matrix; matrix.mul(parent,mTransform);
-        if (Selected()){
-	        Device.Shader.Set(Device.m_WireShader);
-    	    Device.SetTransform(D3DTS_WORLD,matrix);
-        	DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-	        DU::DrawSelectionBox(m_Box,&clr);
-        }
 		if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(matrix);
 		if (fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(matrix);
     }
-    if(IsReference()){
-    	Fmatrix matrix;
-        matrix.mul(parent,mTransform);
-        m_LibRef->Render(matrix, flag);
-    }else{
-    	if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
+    if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    	Fmatrix matrix;
-        matrix.mul(parent,mTransform);
+    Fmatrix matrix;
+    matrix.mul(parent,mTransform);
 
-        if(UI->bRenderEdgedFaces&&(flag==rpNormal))
-        	RenderEdge(matrix);
+    if(UI->bRenderEdgedFaces&&(flag==rpNormal))
+        RenderEdge(matrix);
 
-	    Device.SetTransform(D3DTS_WORLD,matrix);
-        for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-        	if ((flag==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
-				Device.Shader.Set((*s_it)->shader);
-    	        for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                	(*_M)->Render(matrix,*s_it);
-            }
-        	if ((flag==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
-				Device.Shader.Set((*s_it)->shader);
-    	        for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-					(*_M)->Render(matrix,*s_it);
-            }
-            if ((flag==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
-				Device.Shader.Set((*s_it)->shader);
-                // Now iterate on passes
-				for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-    	    		(*_M)->Render(matrix,*s_it);
-            }
+    Device.SetTransform(D3DTS_WORLD,matrix);
+    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+        if ((flag==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
+            Device.Shader.Set((*s_it)->shader);
+            for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+                (*_M)->Render(matrix,*s_it);
+        }
+        if ((flag==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
+            Device.Shader.Set((*s_it)->shader);
+            for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+                (*_M)->Render(matrix,*s_it);
+        }
+        if ((flag==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
+            Device.Shader.Set((*s_it)->shader);
+            // Now iterate on passes
+            for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+                (*_M)->Render(matrix,*s_it);
         }
     }
 }
@@ -358,7 +318,7 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
 
 void CEditObject::RenderBones(const Fmatrix& parent){
 	if (IsSkeleton()){
-		BoneVec& lst = (m_LibRef)?m_LibRef->m_Bones:m_Bones;
+		BoneVec& lst = m_Bones;
     	if (IsSMotionActive()){
             Fvector R,T;
             int i=0;
@@ -404,9 +364,8 @@ void CEditObject::RenderBones(const Fmatrix& parent){
 }
 
 void CEditObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
-    if (bLibItem || Device.m_Frustum.testSphere(m_Center,m_fRadius)){
+    if (Device.m_Frustum.testSphere(m_Center,m_fRadius)){
 		Device.Shader.Set(Device.m_WireShader);
-        VERIFY(!IsReference());
         DWORD c=D3DCOLOR_RGBA(192,192,192,255);
         if(mesh) mesh->RenderEdge(parent, c);
         else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
@@ -415,24 +374,17 @@ void CEditObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
 }
 
 void CEditObject::RenderSelection(Fmatrix& parent){
-    if(IsReference()){
-    	Fmatrix matrix;
-        matrix.mul(parent,mTransform);
-        m_LibRef->RenderSelection(matrix);
-    }else{
-        DWORD c=D3DCOLOR_RGBA(230,70,70,64);
-	    Device.SetTransform(D3DTS_WORLD,parent);
-		Device.Shader.Set(Device.m_SelectionShader);
-		Device.RenderNearer(0.0005);
-        for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-			(*_M)->RenderSelection(parent, c);
-	    Device.ResetNearer();
-    }
+    DWORD c=D3DCOLOR_RGBA(230,70,70,64);
+    Device.SetTransform(D3DTS_WORLD,parent);
+    Device.Shader.Set(Device.m_SelectionShader);
+    Device.RenderNearer(0.0005);
+    for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
+        (*_M)->RenderSelection(parent, c);
+    Device.ResetNearer();
 }
 
 bool CEditObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-    if (!bLibItem&&!Device.m_Frustum.testSphere(m_Center,m_fRadius))return false;
-	if(IsReference()) return m_LibRef->FrustumPick( frustum, mTransform );
+    if(!Device.m_Frustum.testSphere(m_Center,m_fRadius))return false;
     Fmatrix matrix;
     matrix.mul(parent, mTransform);
 	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
@@ -448,118 +400,24 @@ bool CEditObject::SpherePick(const Fvector& center, float radius, const Fmatrix&
 }
 
 bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
-    if (!bLibItem&&!Device.m_Frustum.testSphere(m_Center,m_fRadius)) return false;
+    if (!Device.m_Frustum.testSphere(m_Center,m_fRadius)) return false;
 
 	bool picked = false;
 
-	if(IsReference()){
-		picked = m_LibRef->RayPick( dist, S, D, mTransform, pinf );
-        if (pinf&&picked) pinf->obj = this;
-	}else{
-    	Fmatrix matrix;
-        matrix.mul(parent, mTransform);
-		for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-            if( (*m)->RayPick( dist, S, D, matrix, pinf ) )
-            	picked = true;
-	}
+    Fmatrix matrix;
+    matrix.mul(parent, mTransform);
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        if( (*m)->RayPick( dist, S, D, matrix, pinf ) )
+            picked = true;
 
 	return picked;
 }
 
 void CEditObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
-	if(IsReference()){
-    	DWORD offs = pinf.size();
-		m_LibRef->BoxPick(box,mTransform,pinf);
-        if (pinf.size()>offs)
-        	for (SBoxPickInfoIt it=pinf.begin()+offs; it!=pinf.end(); it++)
-            	it->obj=this;
-	}else{
-    	Fmatrix matrix;
-        matrix.mul(parent, mTransform);
-		for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-            (*m)->BoxPick(box, matrix, pinf);
-	}
-}
-
-void CEditObject::Move(Fvector& amount){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-	vPosition.add( amount );
-    UpdateTransform();
-}
-
-void CEditObject::Rotate(Fvector& center, Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-
-	Fmatrix m;
-	m.rotation(axis, -angle);
-
-	vPosition.sub( center );
-    m.transform_tiny(vPosition);
-	vPosition.add( center );
-
-    vRotate.direct(vRotate,axis,axis.z?-angle:angle);
-
-    UpdateTransform();
-}
-void CEditObject::LocalRotate(Fvector& axis, float angle){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-    vRotate.direct(vRotate,axis,angle);
-    UpdateTransform();
-}
-
-void CEditObject::Scale( Fvector& center, Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    if (IsDynamic()){
-    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-	vScale.add(amount);
-	if (vScale.x<EPS) vScale.x=EPS;
-	if (vScale.y<EPS) vScale.y=EPS;
-	if (vScale.z<EPS) vScale.z=EPS;
-
-	Fmatrix m;
-    Fvector S;
-    S.add(amount,1.f);
-	m.scale( S );
-	vPosition.sub( center );
-	m.transform_tiny(vPosition);
-	vPosition.add( center );
-
-    UpdateBox();
-}
-
-void CEditObject::LocalScale( Fvector& amount ){
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    if (IsDynamic()){
-    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-	vScale.add(amount);
-    if (vScale.x<EPS) vScale.x=EPS;
-    if (vScale.y<EPS) vScale.y=EPS;
-    if (vScale.z<EPS) vScale.z=EPS;
-    UpdateBox();
+    Fmatrix matrix;
+    matrix.mul(parent, mTransform);
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        (*m)->BoxPick(box, matrix, pinf);
 }
 
 void CEditObject::ClearRenderBuffers(){
@@ -584,34 +442,7 @@ void CEditObject::RemoveMesh(CEditMesh* mesh){
     _DELETE(mesh);
 }
 
-void CEditObject::CloneFromLib( CCustomObject *source ){
-	VERIFY( source );
-	VERIFY( source->ClassID() == ClassID() );
-	CEditObject *obj = (CEditObject*)source;
-    CloneFrom(obj,true);
-    bLibItem = false;
-}
-
-void CEditObject::ResolveReference() {
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-	if( IsReference() ){
-        CloneFrom(m_LibRef,false);
-		m_LibRef = 0;
-        bLibItem = false;
-		UpdateBox();
-	}
-}
-
 void CEditObject::TranslateToWorld() {
-	if (Locked()){
-    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
-        return;
-    }
-    UI->UpdateScene();
-	VERIFY( !IsReference() );
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++) (*m)->Transform( mTransform );
 
@@ -626,32 +457,12 @@ void CEditObject::TranslateToWorld() {
 	UpdateBox();
 }
 
-void CEditObject::LibReference( CCustomObject *source ){
-	VERIFY( source );
-	VERIFY( source->ClassID() == ClassID() );
-
-	CEditObject *obj = (CEditObject*)source;
-	m_LibRef = obj;
-
-	m_Meshes.clear();
-	m_Surfaces.clear();
-	m_DynamicObject	= obj->m_DynamicObject;
-    m_ClassScript 	= obj->m_ClassScript;
-
-    // reset placement
-    vPosition.set(0,0,0);
-    vScale.set(1,1,1);
-    vRotate.set(0,0,0);
-	UpdateBox();
-}
-
 void CEditObject::GetFullTransformToWorld( Fmatrix& m ){
     m.set( mTransform );
 }
 
 void CEditObject::GetFullTransformToLocal( Fmatrix& m ){
-    m.set( mTransform );
-    m.invert();
+    m.invert(mTransform);
 }
 
 st_Surface*	CEditObject::FindSurfaceByName(const char* surf_name, int* s_id){
@@ -684,12 +495,5 @@ void CEditObject::LightenObject(){
     	(*m)->UnloadPNormals();
     }
     ClearRenderBuffers();
-}
-
-void CEditObject::OnSynchronize(){
-	EditMeshIt m = m_Meshes.begin();
-	for(;m!=m_Meshes.end();m++){
-    	(*m)->OnSynchronize();
-    }
 }
 

@@ -34,9 +34,6 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	if (I){
         bool bResult=true;
         ELog.Msg( mtInformation, "CEditObject: import lwo %s...", fname );
-        char name[1024];
-        _splitpath( fname, 0, 0, name, 0 );
-        strcpy(m_Name,name);
 
         // parse lwo object
         {

@@ -83,8 +83,6 @@ bool CEditObject::Load(CStream& F){
             break;
         }
 
-		CCustomObject::Load(F);
-
         R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
         F.Rvector(vPosition);
         F.Rvector(vRotate);
@@ -96,108 +94,91 @@ bool CEditObject::Load(CStream& F){
             F.RstringZ	(buf); m_ClassScript=buf;
         }
 
-        if (F.FindChunk(EOBJ_CHUNK_REFERENCE)){
-            VERIFY(m_LibRef==0 && m_Meshes.size()==0);
-            F.Read(&m_ObjVer, sizeof(m_ObjVer));
+        R_ASSERT(F.FindChunk(EOBJ_CHUNK_REFERENCE));
+        // file version
+        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
+        // surfaces
+        R_ASSERT(F.FindChunk(EOBJ_CHUNK_SURFACES));
+        DWORD cnt = F.Rdword();
+        m_Surfaces.resize(cnt);
+        for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+            *s_it = new st_Surface();
+            F.RstringZ((*s_it)->name);
             F.RstringZ(buf);
-            CLibObject* LO = Lib->SearchObject(buf);
-            if (!LO){
-                ELog.Msg( mtError, "CEditObject: '%s' not found in library", buf );
-	            bRes = false;
-    	        break;
+            (*s_it)->sh_name	= buf;
+            (*s_it)->sideflag 	= F.Rbyte();
+            (*s_it)->dwFVF 		= F.Rdword();
+            cnt 				= F.Rdword();
+            (*s_it)->textures.resize(cnt);
+            (*s_it)->vmaps.resize(cnt);
+            for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++){
+                F.RstringZ		(buf); *n_it = buf;
             }
-            if (0==(m_LibRef=LO->GetReference())){
-                ELog.Msg( mtError, "CEditObject: '%s' can't load", buf );
-	            bRes = false;
-    	        break;
+            for (AStringIt v_it=(*s_it)->vmaps.begin(); v_it!=(*s_it)->vmaps.end(); v_it++){
+                F.RstringZ		(buf); *v_it = buf;
             }
-            if(!CheckVersion())
-                ELog.Msg( mtError, "CEditObject: '%s' different file version! Some objects will work incorrectly.", buf );
-        }else{
-            // file version
-            R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
-            // surfaces
-            R_ASSERT(F.FindChunk(EOBJ_CHUNK_SURFACES));
-            DWORD cnt = F.Rdword();
-            m_Surfaces.resize(cnt);
-            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it = new st_Surface();
-                F.RstringZ((*s_it)->name);
-                F.RstringZ(buf);
-                (*s_it)->sh_name	= buf;
-                (*s_it)->sideflag 	= F.Rbyte();
-                (*s_it)->dwFVF 		= F.Rdword();
-                cnt 				= F.Rdword();
-                (*s_it)->textures.resize(cnt);
-                (*s_it)->vmaps.resize(cnt);
-                for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++){
-                    F.RstringZ		(buf); *n_it = buf;
-                }
-                for (AStringIt v_it=(*s_it)->vmaps.begin(); v_it!=(*s_it)->vmaps.end(); v_it++){
-                    F.RstringZ		(buf); *v_it = buf;
-                }
-                (*s_it)->shader 	= Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
-                SH_ShaderDef* sh_base = SHLib->FindShader((*s_it)->sh_name);
-                if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
-            }
-
-            // Load meshes
-            CStream* OBJ = F.OpenChunk(EOBJ_CHUNK_EDITMESHES);
-            if(OBJ){
-                CStream* M   = OBJ->OpenChunk(0);
-                for (int count=1; M; count++) {
-                    CEditMesh* mesh=new CEditMesh(this);
-                    if (mesh->LoadMesh(*M))
-                        m_Meshes.push_back(mesh);
-                    else{
-                        _DELETE(mesh);
-                        ELog.DlgMsg( mtError, "CEditObject: Can't load mesh!", buf );
-                        bRes = false;
-                    }
-                    M->Close();
-                    if (!bRes)	break;
-                    M = OBJ->OpenChunk(count);
-                }
-                OBJ->Close();
-            }
-
-            // bones
-            if (F.FindChunk(EOBJ_CHUNK_BONES)){
-            	m_Bones.resize(F.Rdword());
-    	        for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-                	*b_it = new CBone();
-                	(*b_it)->Load(F);
-                }
-                UpdateBoneParenting();
-    		}
-
-            // object motions
-            if (F.FindChunk(EOBJ_CHUNK_OMOTIONS)){
-            	m_OMotions.resize(F.Rdword());
-    	        for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){
-                	*o_it = new COMotion();
-					if (!(*o_it)->Load(F)){
-			            ELog.Msg(mtError,"Motions has different version. Load failed.");
-                        _DELETE(*o_it);
-                        m_OMotions.clear();
-                        break;
-                    }
-                }
-    		}
-            // skeleton motions
-            if (F.FindChunk(EOBJ_CHUNK_SMOTIONS)){
-            	m_SMotions.resize(F.Rdword());
-    	        for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
-                	*s_it = new CSMotion();
-					if (!(*s_it)->Load(F)){
-			            ELog.Msg(mtError,"Motions has different version. Load failed.");
-                        _DELETE(*s_it);
-                        m_SMotions.clear();
-                        break;
-                    }
-                }
-    		}
+            (*s_it)->shader 	= Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
+            SH_ShaderDef* sh_base = SHLib->FindShader((*s_it)->sh_name);
+            if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
         }
+
+        // Load meshes
+        CStream* OBJ = F.OpenChunk(EOBJ_CHUNK_EDITMESHES);
+        if(OBJ){
+            CStream* M   = OBJ->OpenChunk(0);
+            for (int count=1; M; count++) {
+                CEditMesh* mesh=new CEditMesh(this);
+                if (mesh->LoadMesh(*M))
+                    m_Meshes.push_back(mesh);
+                else{
+                    _DELETE(mesh);
+                    ELog.DlgMsg( mtError, "CEditObject: Can't load mesh!", buf );
+                    bRes = false;
+                }
+                M->Close();
+                if (!bRes)	break;
+                M = OBJ->OpenChunk(count);
+            }
+            OBJ->Close();
+        }
+
+        // bones
+        if (F.FindChunk(EOBJ_CHUNK_BONES)){
+            m_Bones.resize(F.Rdword());
+            for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+                *b_it = new CBone();
+                (*b_it)->Load(F);
+            }
+            UpdateBoneParenting();
+        }
+
+        // object motions
+        if (F.FindChunk(EOBJ_CHUNK_OMOTIONS)){
+            m_OMotions.resize(F.Rdword());
+            for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){
+                *o_it = new COMotion();
+                if (!(*o_it)->Load(F)){
+                    ELog.Msg(mtError,"Motions has different version. Load failed.");
+                    _DELETE(*o_it);
+                    m_OMotions.clear();
+                    break;
+                }
+            }
+        }
+        // skeleton motions
+        if (F.FindChunk(EOBJ_CHUNK_SMOTIONS)){
+            m_SMotions.resize(F.Rdword());
+            for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
+                *s_it = new CSMotion();
+                if (!(*s_it)->Load(F)){
+                    ELog.Msg(mtError,"Motions has different version. Load failed.");
+                    _DELETE(*s_it);
+                    m_SMotions.clear();
+                    break;
+                }
+            }
+        }
+
         ResetAnimation(false);
 		if (F.FindChunk	(EOBJ_CHUNK_ACTIVE_OMOTION)){
         	F.RstringZ	(buf);
@@ -217,8 +198,6 @@ bool CEditObject::Load(CStream& F){
 }
 
 void CEditObject::Save(CFS_Base& F){
-	CCustomObject::Save(F);
-
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
 	F.Wword			(EOBJ_CURRENT_VERSION);
 	F.close_chunk	();
@@ -235,58 +214,50 @@ void CEditObject::Save(CFS_Base& F){
 
     F.write_chunk	(EOBJ_CHUNK_FLAG,&m_DynamicObject,1);
 
-    if( IsReference() ){
-    	// reference object version
-        F.open_chunk	(EOBJ_CHUNK_REFERENCE);
-        F.write			(&m_LibRef->m_ObjVer,sizeof(m_LibRef->m_ObjVer));
-        F.WstringZ		(m_LibRef->m_Name);
-        F.close_chunk	();
-    } else {
-    	// object version
-        F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
-        // meshes
-        F.open_chunk	(EOBJ_CHUNK_EDITMESHES);
-        int count = 0;
-        for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++){
-			F.open_chunk(count); count++;
-            (*m)->SaveMesh(F);
-			F.close_chunk();
-        }
-		F.close_chunk	();
-        // surfaces
-        F.open_chunk	(EOBJ_CHUNK_SURFACES);
-        F.Wdword		(m_Surfaces.size());
-        for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
-            F.WstringZ	((*sf_it)->name);
-            F.WstringZ	((*sf_it)->shader?(*sf_it)->shader->shader->cName:"");
-            F.Wbyte		((*sf_it)->sideflag);
-            F.Wdword	((*sf_it)->dwFVF);
-            F.Wdword	((*sf_it)->textures.size());
-            for (AStringIt n_it=(*sf_it)->textures.begin(); n_it!=(*sf_it)->textures.end(); n_it++)
-                F.WstringZ(n_it->c_str());
-            for (AStringIt v_it=(*sf_it)->vmaps.begin(); v_it!=(*sf_it)->vmaps.end(); v_it++)
-                F.WstringZ(v_it->c_str());
-        }
-        F.close_chunk	();
-
-		// bones
-        F.open_chunk	(EOBJ_CHUNK_BONES);
-		F.Wdword		(m_Bones.size());
-		for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
-		F.close_chunk	();
-
-		// object motions
-		F.open_chunk	(EOBJ_CHUNK_OMOTIONS);
-		F.Wdword		(m_OMotions.size());
-		for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
-		F.close_chunk	();
-
-		// skeleton motions
-		F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
-		F.Wdword		(m_SMotions.size());
-		for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
-		F.close_chunk	();
+    // object version
+    F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
+    // meshes
+    F.open_chunk	(EOBJ_CHUNK_EDITMESHES);
+    int count = 0;
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++){
+        F.open_chunk(count); count++;
+        (*m)->SaveMesh(F);
+        F.close_chunk();
     }
+    F.close_chunk	();
+    // surfaces
+    F.open_chunk	(EOBJ_CHUNK_SURFACES);
+    F.Wdword		(m_Surfaces.size());
+    for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
+        F.WstringZ	((*sf_it)->name);
+        F.WstringZ	((*sf_it)->shader?(*sf_it)->shader->shader->cName:"");
+        F.Wbyte		((*sf_it)->sideflag);
+        F.Wdword	((*sf_it)->dwFVF);
+        F.Wdword	((*sf_it)->textures.size());
+        for (AStringIt n_it=(*sf_it)->textures.begin(); n_it!=(*sf_it)->textures.end(); n_it++)
+            F.WstringZ(n_it->c_str());
+        for (AStringIt v_it=(*sf_it)->vmaps.begin(); v_it!=(*sf_it)->vmaps.end(); v_it++)
+            F.WstringZ(v_it->c_str());
+    }
+    F.close_chunk	();
+
+    // bones
+    F.open_chunk	(EOBJ_CHUNK_BONES);
+    F.Wdword		(m_Bones.size());
+    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
+    F.close_chunk	();
+
+    // object motions
+    F.open_chunk	(EOBJ_CHUNK_OMOTIONS);
+    F.Wdword		(m_OMotions.size());
+    for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
+    F.close_chunk	();
+
+    // skeleton motions
+    F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
+    F.Wdword		(m_SMotions.size());
+    for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
+    F.close_chunk	();
 
     if (m_ActiveOMotion){
 	    F.open_chunk	(EOBJ_CHUNK_ACTIVE_OMOTION);

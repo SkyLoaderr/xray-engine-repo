@@ -46,7 +46,7 @@ struct st_AnimParam{
     void			Update	(float dt);
 };
 
-class CEditObject : public CCustomObject {
+class CEditObject{
 	friend class CEditMesh;
     friend class TfrmPropertiesObject;
     friend class CSector;
@@ -102,8 +102,6 @@ public:
     };
 protected:
     st_ObjVer		m_ObjVer;
-	CEditObject 	*m_LibRef;
-    bool 			bLibItem;
 
     void 			CopyGeometry			(CEditObject* source);
     void 			ClearGeometry			();
@@ -120,8 +118,7 @@ public:
     DWORD			m_LoadState;
 public:
     // constructor/destructor methods
-					CEditObject				(bool bLib=false);
-					CEditObject				(char *name, bool bLib=false);
+					CEditObject				();
     				CEditObject				(CEditObject* source);
 	virtual 		~CEditObject			();
 
@@ -146,22 +143,17 @@ public:
     IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
     IC int			OMotionCount 			()	{return m_OMotions.size();}
 
-    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
+///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
-	IC bool 		IsLibItem     			()	{return bLibItem; }
-	IC bool 		IsReference   			()	{return (m_LibRef!=0); }
-	IC bool 		IsSceneItem   			()	{return ((m_LibRef==0)&&!bLibItem); }
 	IC bool 		IsDynamic     			()	{return (m_DynamicObject!=0); }
     IC void			SetDynamic				(bool bDynamic){m_DynamicObject=bDynamic;}
-	IC char 		*GetRefName   			()	{return m_LibRef?m_LibRef->m_Name:m_Name; }
-	IC bool 		RefCompare				(CEditObject *to){return (m_LibRef==to); }
-	IC CEditObject*	GetRef					()	{return m_LibRef; }
-	IC void			SetRef					(CEditObject* ref)	{m_LibRef = ref;}
 	IC AnsiString&	GetClassScript			()	{return m_ClassScript; }
-    IC bool			IsOMotionable			()	{return (m_LibRef)?!!m_LibRef->IsOMotionable():!!m_OMotions.size();}
+
+    // animation
+    IC bool			IsOMotionable			()	{return !!m_OMotions.size();}
     IC bool			IsOMotionActive			()	{return IsOMotionable()&&m_ActiveOMotion; }
 	void			SetActiveOMotion		(COMotion* mot, bool upd_t=true);
-    IC bool			IsSkeleton				()	{return (m_LibRef)?m_LibRef->IsSkeleton():!!m_Bones.size();}
+    IC bool			IsSkeleton				()	{return !!m_Bones.size();}
     IC bool			IsSMotionActive			()	{return IsSkeleton()&&m_ActiveSMotion; }
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
@@ -175,7 +167,7 @@ public:
     int 			GetSurfFaceCount		(const char* surf_name);
 
     // render methods
-	virtual bool 	IsRender				(Fmatrix& parent);
+//	virtual bool 	IsRender				(Fmatrix& parent);
 	virtual void 	Render					(Fmatrix& parent, ERenderPriority flag);
 	void 			RenderSelection			(Fmatrix& parent);
 	void 			RenderEdge				(Fmatrix& parent, CEditMesh* m=0);
@@ -191,20 +183,15 @@ public:
 
     // pick methods
     void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
-	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
-	virtual bool 	FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
-    virtual bool 	SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
+	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
+	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
+    bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 
     // change position/orientation methods
-	virtual void 	Move					(Fvector& amount);
-	virtual void 	Rotate					(Fvector& center, Fvector& axis, float angle);
-	virtual void 	Scale					(Fvector& center, Fvector& amount);
-	virtual void 	LocalRotate				(Fvector& axis, float angle);
-	virtual void 	LocalScale				(Fvector& amount);
-	virtual void 	TranslateToWorld		();
+	void 			TranslateToWorld		();
 
     // get orintation/bounding volume methods
-	virtual bool 	GetBox					(Fbox& box);
+	bool 			GetBox					(Fbox& box);
     void 			GetFullTransformToWorld	(Fmatrix& m);
     void 			GetFullTransformToLocal	(Fmatrix& m);
     IC const Fvector& GetCenter				(){return m_Center;}
@@ -217,18 +204,7 @@ public:
     IC Fvector& 	Rotate					(){return vRotate;}
     IC Fvector& 	Scale					(){return vScale;}
 
-    virtual bool 	GetPosition				(Fvector& pos){pos.set(vPosition); return true; }
-    virtual bool 	GetRotate				(Fvector& rot){rot.set(vRotate); return true; }
-    virtual bool 	GetScale				(Fvector& scale){scale.set(vScale); return true; }
-
-    virtual void 	SetPosition				(Fvector& pos){vPosition.set(pos);}
-    virtual void 	SetRotate				(Fvector& rot){vRotate.set(rot);}
-    virtual void 	SetScale				(Fvector& scale){vScale.set(scale);}
-
     // clone/copy methods
-	virtual void 	CloneFromLib			(CCustomObject *source);
-	virtual void 	LibReference			(CCustomObject *source);
-	virtual void 	ResolveReference		();
     void			RemoveMesh				(CEditMesh* mesh);
     void			RemoveOMotion			(const char* name);
     bool			RenameOMotion			(const char* old_name, const char* new_name);
@@ -269,9 +245,8 @@ public:
     void			GenerateSMotionName		(char* buffer, const char* start_name, const CSMotion* M);
 
     // device dependent routine
-	virtual void 	OnDeviceCreate 			();
-	virtual void 	OnDeviceDestroy			();
-	virtual void 	OnSynchronize			();
+	void 			OnDeviceCreate 			();
+	void 			OnDeviceDestroy			();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/
