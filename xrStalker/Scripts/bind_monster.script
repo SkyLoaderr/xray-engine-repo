@@ -6,7 +6,7 @@ function bind(obj)
 	printf("_bp: monster.bind: name='%s', id='%d'", obj:name(), obj:id())
 
 	-- Для спауна
-	xr_spawner.spawn_client(obj)
+	--xr_spawner.spawn_client(obj)
 
 	local new_binder = generic_object_binder(obj)
 	obj:bind_object(new_binder)
