@@ -343,10 +343,13 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 		pKinematics->CalculateBones_Invalidate();
 		pKinematics->CalculateBones();
 	}
-	Fmatrix InvET;
-	InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
-	InvET.invert();
-	m_guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
+
+	if (guid_physic_bone){
+		Fmatrix InvET;
+		InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
+		InvET.invert();
+		m_guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
+	}
 /////////////////////////////////////////////////////////////////////////////
 	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
 	for(;i!=e;i++)
