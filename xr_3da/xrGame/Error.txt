@@ -68,13 +68,13 @@ To AlexMX:
 To Dima:
 -S  маршруты между несв€занными по высоте нодами
 -S	вороны вылетают в ai_primary_func.cpp ffGetValue() -NODEFAULT
--O	ai_alife_switch.cpp / line 294 - "non RTTI object"
++O	ai_alife_switch.cpp / line 294 - "non RTTI object"
 +K	сталкеры перемещаютс€ быстрее отыгрываемой анимации
 +D	при выставлении у-ка позиции по ноде при звуке у сталкера только(?) в симул€ции
 +D	после оффлайна оживают трупы????
--D	Can't update online object во врем€ симул€ции
--D	xrServer::Process_event_reject(...) вылетает R_ASSERT(0xffff != e_entity->ID_Parent) в симул€ции
--D	вылетает где-то здесь или похерилс€ стэк:
++D	Can't update online object во врем€ симул€ции
++D	xrServer::Process_event_reject(...) вылетает R_ASSERT(0xffff != e_entity->ID_Parent) в симул€ции
++D	вылетает где-то здесь или похерилс€ стэк:
 	CSE_ALifeSimulator::vfValidatePosition :
 		if (tpALifeAbstractGroup) {
 			if (tpALifeAbstractGroup->m_tpMembers.empty())
