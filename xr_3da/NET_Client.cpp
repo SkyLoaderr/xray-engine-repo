@@ -241,6 +241,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 	}
 
 	// Caps
+	/*
 	GUID			sp_guid;
 	DPN_SP_CAPS		sp_caps;
 
@@ -251,6 +252,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 	sp_caps.dwSystemBufferSize	= 0;
 	R_CHK			(NET->SetSPCaps(&sp_guid,&sp_caps,0));
 	R_CHK			(NET->GetSPCaps(&sp_guid,&sp_caps,0));
+	*/
 
 	// Sync
 	net_Syncronize	();
