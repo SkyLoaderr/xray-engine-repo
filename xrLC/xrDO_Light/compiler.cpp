@@ -351,15 +351,14 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 			Shader_xrLC& SH	= *g_shaders_xrlc.Get		(M.shader_xrlc);
 			if (!SH.flags.bLIGHT_CastShadow)			continue;
 
-			if (!T.bHasAlpha)		
-			{
+			if (0==T.pSurface)	T.bHasAlpha = FALSE;
+			if (!T.bHasAlpha)	{
 				// Opaque poly - cache it
 				L.tri[0].set	(*clT.verts[0]);
 				L.tri[1].set	(*clT.verts[1]);
 				L.tri[2].set	(*clT.verts[2]);
 				return 0;
 			}
-			R_ASSERT2(T.pSurface,"Empty surface.");
 
 			// barycentric coords
 			// note: W,U,V order
