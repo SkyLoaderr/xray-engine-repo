@@ -1,3 +1,5 @@
+#ifndef SoundRender_TargetH
+#endif SoundRender_TargetH
 #pragma once
 
 #include "soundrender.h"
@@ -43,3 +45,4 @@ public:
 	CSoundRender_Target(void);
 	~CSoundRender_Target(void);
 };
+#endif

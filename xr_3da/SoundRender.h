@@ -1,3 +1,5 @@
+#ifndef SoundRenderH
+#endif SoundRenderH
 #pragma once
 
 #include "sound.h"
@@ -16,3 +18,4 @@ const	u32		sdef_source_footer		= 0;					// ms of silence after buffer data, just
 const	u32		sdef_env_version		= 1;					// current version of env-def
 const	u32		sdef_level_version		= 1;					// current version of level-def
 const	u32		sdef_event_pulse		= 500;					// ms
+#endif

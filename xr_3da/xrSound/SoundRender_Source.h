@@ -1,3 +1,5 @@
+#ifndef SoundRender_SourceH
+#endif SoundRender_SourceH
 #pragma once
 
 #include "soundrender.h"
@@ -20,3 +22,4 @@ public:
 
 	void					Load					(LPCSTR name,	BOOL b3D);
 };
+#endif

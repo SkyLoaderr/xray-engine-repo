@@ -1,3 +1,5 @@
+#ifndef SoundRender_CoreH
+#endif SoundRender_CoreH
 #pragma once
 
 #include "SoundRender.h"
@@ -72,3 +74,4 @@ public:
 };
 
 extern CSoundRender_Core	SoundRender;
+#endif
