@@ -187,42 +187,10 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	FS.r_close	(src);
 }
 
-class		A 
-{
-public:
-	int		x;
-public:
-	~A()	
-	{ 
-		x = 0;
-	}
-};
-class		B		: public A
-{
-public:
-	int		x;
-public:
-	~B()
-	{
-		x = 0;
-	}
-};
-
-__declspec(noinline)	A*		create	()		{
-	return	xr_new<B>	();
-}
-__declspec(noinline)	void	destroy	(A* p)	{
-	xr_delete			(p);
-}
-
 int __cdecl main	(int argc, char* argv[])
 {
 	Core._initialize("xrCompress");
 	printf			("\n\n");
-
-	A*		aaa		= create	();
-	aaa->x			= 1;
-	destroy			(aaa);
 
 	if (argc!=2)	{
 		printf("ERROR: u must pass folder name as parameter.\n");
