@@ -607,6 +607,7 @@ void	CRender::Render		()
 								{
 									SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
 									SceneGraph::mapNormalItems&	items					= Nconstant->val;
+									RCache.set_Constants		(Nconstant->key);
 									mapNormal_Render			(Nconstant->val);
 									items.ssa					= 0;
 								}
