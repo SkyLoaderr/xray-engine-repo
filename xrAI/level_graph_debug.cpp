@@ -774,7 +774,7 @@ bool compute_trajectory(
 
 void CLevelGraph::compute_path()
 {
-	STrajectoryPoint		start, dest;
+//	STrajectoryPoint		start, dest;
 
 //	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
 //	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
