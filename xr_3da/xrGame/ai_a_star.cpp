@@ -66,6 +66,7 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Nod
 
 __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fvector tEnemyPosition, float fOptimalEnemyDistance)
 {
+	/**/
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
 	float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
@@ -83,6 +84,21 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fve
 	float fLight = (float)(tNode1.light)/255.f;
 	
 	return(fCriteriaEnemyViewWeight*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	/**
+	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+	float fCover = (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f;
+
+	float fLight = (float)(tNode1.light)/255.f;
+	
+	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + 0*fYSize2*SQR(y2 - y1))));
+	/**/
 }
 
 __forceinline void vfUpdateSuccessors(TNode *tpList, float dDifference)

@@ -17,41 +17,107 @@ void CAI_Soldier::vfComputeCircle(DWORD dwNode0, DWORD dwNode1, float &fRadius, 
 {
 	Fvector tTemp0, tTemp1, tPoint0, tPoint1, tPoint2, tPoint3;
 	
+	// initializing current patrol point
 	Level().AI.UnpackPosition(tTemp0,Level().AI.Node(dwNode0)->p0);
 	Level().AI.UnpackPosition(tTemp1,Level().AI.Node(dwNode0)->p1);
 	tPoint0.average(tTemp0,tTemp1);
 
+	// initializing the next patrol point
 	Level().AI.UnpackPosition(tTemp0,Level().AI.Node(dwNode1)->p0);
 	Level().AI.UnpackPosition(tTemp1,Level().AI.Node(dwNode1)->p1);
 	tPoint1.average(tTemp0,tTemp1);
 
-	tPoint1.sub(tPoint0);
-	tPoint1.normalize();
+	// making that vector the same length
 	tTemp0 = vPosition;
 	tTemp0.sub(tPoint0);
-	tPoint1.mul(tTemp0.magnitude());
 
-	tPoint2 = vPosition;
+	tPoint1.sub(tPoint0);
+	tPoint1.normalize();
+	tPoint1.mul(tTemp0.magnitude());
+	tPoint1.add(tPoint0);
+
+	tPoint2 = tTemp0;
 	tPoint3 = tPoint1;
 	
 	tPoint2.normalize();
 	tPoint3.normalize();
 
-	float fAngle = acosf(tPoint3.dotproduct(tPoint2))*0.5f, fSinus, fCosinus;
+	float fAngle = acosf(tPoint3.dotproduct(tPoint2))*0.5f, fSinus, fCosinus, fRx;
 	_sincos(fAngle,fSinus,fCosinus);
 	
-	fRadius = (tTemp0.magnitude()/(fCosinus*(1 + 1/(1 - fSinus))))/(1 - fSinus);
+	fRadius = tTemp0.magnitude()*fSinus/fCosinus;
+	fRx = fRadius*(1 - fSinus)/fSinus;
 	
-	Fvector2 tVector2D;
-	tVector2D.set(vPosition.x,vPosition.z);
-	tVector2D.mul(1/(SQR(tVector2D.x) + SQR(tVector2D.y)));
+	/**
+	Fvector2 tVector2D,tVector2D_0;
+	tVector2D.set(-tTemp0.x,-tTemp0.z);
+	tVector2D.mul(1/sqrt(SQR(tVector2D.x) + SQR(tVector2D.y)));
+	tVector2D_0 = tVector2D;
+	tVector2D_0.mul(-1);
+	
 	tVector2D.rot90();
 	tVector2D.mul(fRadius);
-
-	if (fabsf(SQR(tVector2D.x - vPosition.x) + SQR(tVector2D.y - vPosition.z) - (SQR(tVector2D.x - tPoint1.x) + SQR(tVector2D.y - tPoint1.z))) > 0.1f)
-		tVector2D.mul(-1);
+	tVector2D.x += vPosition.x;
+	tVector2D.y += vPosition.z;
 	
-	tPosition.set(tVector2D.x,vPosition.y,tVector2D.y);
+	tVector2D_0.rot90();
+	tVector2D_0.mul(fRadius);
+	tVector2D_0.x += vPosition.x;
+	tVector2D_0.y += vPosition.z;
+	/**
+
+	tTemp1 = tPoint1;
+	tTemp1.sub(tPoint0);
+
+	tPosition.add(tTemp0,tTemp1);
+	tPosition.normalize();
+	tPosition.mul(fRx + fRadius);
+	tPosition.add(tPoint0);
+
+	tTemp0.sub(vPosition,tPosition);
+	tTemp1.sub(tPoint1,tPosition);
+
+	bool bDummy = tTemp0.magnitude() == tTemp1.magnitude();
+	/**/
+
+	Fvector2 tVector2D,tVector2D_0;
+	tVector2D.set(tTemp0.x,tTemp0.z);
+	tVector2D.mul(fRadius/tTemp0.magnitude());
+	tVector2D.rot90();
+	tVector2D.x += vPosition.x;
+	tVector2D.y += vPosition.z;
+	
+	tVector2D_0.set(-tTemp0.x,-tTemp0.z);
+	tVector2D_0.mul(fRadius/tTemp0.magnitude());
+	tVector2D_0.rot90();
+	tVector2D_0.x += vPosition.x;
+	tVector2D_0.y += vPosition.z;
+
+	tVector2D.set(tTemp0.x,tTemp0.z);
+	tVector2D.mul(fRadius/tTemp0.magnitude());
+	tVector2D.rot90();
+	tVector2D.rot90();
+	tVector2D.x += vPosition.x;
+	tVector2D.y += vPosition.z;
+	
+	tVector2D_0.set(-tTemp0.x,-tTemp0.z);
+	tVector2D_0.mul(fRadius/tTemp0.magnitude());
+	tVector2D_0.rot90();
+	tVector2D_0.rot90();
+	tVector2D_0.x += vPosition.x;
+	tVector2D_0.y += vPosition.z;
+
+	float f1 = (SQR(tVector2D.x - vPosition.x) + SQR(tVector2D.y - vPosition.z) + SQR(tVector2D.x - tPoint1.x) + SQR(tVector2D.y - tPoint1.z));
+	float f2 = (SQR(tVector2D_0.x - vPosition.x) + SQR(tVector2D_0.y - vPosition.z) + SQR(tVector2D_0.x - tPoint1.x) + SQR(tVector2D_0.y - tPoint1.z));
+	/**/
+	if (f1 < f2)
+		tPosition.set(tVector2D.x,vPosition.y,tVector2D.y);
+	else
+		tPosition.set(tVector2D_0.x,vPosition.y,tVector2D_0.y);
+	/**/
+	
+
+	//fRadius += 10;
 }
 
 float CAI_Soldier::bfCheckForChange(DWORD dwNode0, DWORD dwNode1, float fSwitchAngle, float fSwitchDistance)
@@ -68,7 +134,8 @@ float CAI_Soldier::bfCheckForChange(DWORD dwNode0, DWORD dwNode1, float fSwitchA
 	tPoint1.average(tTemp0,tTemp1);
 	tPoint1.sub(vPosition);
 
-	if (fabsf(tPoint0.magnitude() - tPoint1.magnitude()) > 5.f)
+	//if (fabsf(tPoint0.magnitude() - tPoint1.magnitude()) > 5.f)
+	if (tPoint1.magnitude() > 8.f)
 		return(false);
 
 	vfNormalizeSafe(tPoint0);
@@ -252,7 +319,9 @@ void CAI_Soldier::Patrol()
 	SetLessCoverLook(AI_Node);
 
 	if (AI_Path.bNeedRebuild) {
-		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,SelectorPatrol.m_tEnemyPosition,::Random.randF(SelectorPatrol.m_fRadius - 0.0f,SelectorPatrol.m_fRadius + 0.0f),0,0,100,10);
+		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,SelectorPatrol.m_tEnemyPosition,SelectorPatrol.m_fRadius,0,0,100,4);
+		//Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(SelectorPatrol.m_tpEnemyNode),2,0,0,100,33);
+		//Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 		if (AI_Path.Nodes.size() > 1)
 			AI_Path.BuildTravelLine(Position());
 		else {
