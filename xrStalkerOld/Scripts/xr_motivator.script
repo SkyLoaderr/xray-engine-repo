@@ -115,10 +115,10 @@ function motivator_binder:net_spawn(sobject)
 		return false
 	end
 
-	local sim = alife()
-	if sim ~= nil then 
-		xr_spawner.spawn(sobject)
-	end
+	--local sim = alife()
+	--if sim ~= nil then 
+		--xr_spawner.spawn(sobject)
+	--end
 
 	db.add_obj(self.object)
 
