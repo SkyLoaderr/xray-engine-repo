@@ -29,7 +29,7 @@ private:
 	{
 		u32	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
-		TNode*	newNodes = (TNode*) _aligned_malloc	(Size(newLimit),SG_REALLOC_ALIGN);
+		TNode*	newNodes = (TNode*) xr_malloc	(Size(newLimit),SG_REALLOC_ALIGN);
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));
@@ -50,7 +50,7 @@ private:
 				Nnew->right		= newNodes + Rid;
 			}
 		}
-		if (nodes) _aligned_free(nodes);
+		if (nodes) xr_free(nodes);
 
 		nodes = newNodes;
 		limit = newLimit;
@@ -117,7 +117,7 @@ public:
 	}
 	~FixedMAP() {
 		if (nodes) {
-			_aligned_free(nodes);
+			xr_free(nodes);
 			nodes	= 0;
 		}
 	}
@@ -190,7 +190,7 @@ public:
 		N->val		= v;
 		return	N;
 	}
-	IC void		discard()	{ if (nodes) _aligned_free(nodes); nodes = 0; pool=0; limit=0;	}
+	IC void		discard()	{ if (nodes) xr_free(nodes); nodes = 0; pool=0; limit=0;	}
 	IC u32	allocated()	{ return this->limit;				}
 	IC void		clear()		{ pool=0;				}
 	IC TNode*	begin()		{ return nodes;			}
