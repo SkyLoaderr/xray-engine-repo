@@ -6,7 +6,7 @@
 CInifile *pSettings	= NULL;
 
 CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
-{	return 0/*xr_new<CInifile>(szFileName,ReadOnly)*/; }
+{	return xr_new<CInifile>(szFileName,ReadOnly); }
 
 void CInifile::Destroy(CInifile* ini)
 {	xr_delete(ini); }
