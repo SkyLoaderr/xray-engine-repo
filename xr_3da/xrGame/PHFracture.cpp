@@ -3,6 +3,12 @@
 #include "Physics.h"
 #include "PHElement.h"
 #include "PHShell.h"
+#pragma warning(disable:4995)
+#pragma warning(disable:4267)
+#include "..\ode\src\joint.h"
+#pragma warning(default:4995)
+#pragma warning(default:4267)
+
 CPHFracturesHolder::CPHFracturesHolder()
 {
 	m_has_breaks=false;
@@ -149,19 +155,19 @@ void CPHFracturesHolder::PhTune(dBodyID body)
 	}
 
 }
-bool CPHFracturesHolder::PhDataUpdate(dBodyID body)
+bool CPHFracturesHolder::PhDataUpdate(CPHElement* element)
 {
 	FRACTURE_I i=m_fractures.begin(),e=m_fractures.end();
 	for(;i!=e;i++)
 	{
-		m_has_breaks=i->Update(m_impacts,body)||m_has_breaks;
+		m_has_breaks=i->Update(element)||m_has_breaks;
 	}
 	return m_has_breaks;
 }
 
-void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point)
+void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point,u16 id)
 {
-	m_impacts.push_back(SPHImpact(force,point));
+	m_impacts.push_back(SPHImpact(force,point,id));
 }
 CPHFracture& CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
 {
@@ -234,9 +240,10 @@ m_breaked=false;
 }
 
 
-bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
+bool CPHFracture::Update(CPHElement* element)
 {
 	//itterate through impacts & calculate 
+
 	m_breaked=true;
 	return m_breaked;
 }

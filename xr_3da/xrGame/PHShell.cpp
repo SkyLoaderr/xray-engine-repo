@@ -218,15 +218,15 @@ void CPHShell::Update(){
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
-	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val);
+	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);
 }
 
-void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element){
+void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 element){
 	if(!bActive) return;
 	VERIFY(m_pKinematics);
 	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(element);
 	if(!instance.Callback_Param) return;
-	((CPHElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val);
+	((CPHElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val, element);
 
 }
 
@@ -764,6 +764,11 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		B.set_callback(0,root_e);
 		E=root_e;
 	}
+	
+	if(m_spliter_holder)
+	{
+		m_spliter_holder->AddToGeomMap(mk_pair(id,E->last_geom())); 
+	}
 
 	if(spGetingMap)
 	{
@@ -1022,4 +1027,10 @@ void CPHShell::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 if(! m_spliter_holder) return;
 m_spliter_holder->SplitProcess(out_shels);
 if(!m_spliter_holder->m_splitters.size()) xr_delete(m_spliter_holder);
+}
+
+u16 CPHShell::BoneIdToRootGeom(u16 id)
+{
+	if(! m_spliter_holder)return u16(-1);
+	return m_spliter_holder->FindRootGeom(id);
 }

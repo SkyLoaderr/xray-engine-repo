@@ -17,7 +17,7 @@ inline void dMULTIPLY3_333(dReal *A, const dReal *B, const dReal *C)
 
 typedef  void __stdcall ContactCallbackFun		(CDB::TRI* T,		dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
-
+#include "ExtendedGeom.h"
 class CPhysicsRefObject;
 class CPHObject;
 class CODEGeom
@@ -51,7 +51,11 @@ public:
 							}
 	IC			dGeomID		geometry()
 							{
-								if(m_geom_transform) return geom() ? geom() : m_geom_transform;
+								return m_geom_transform ? (geom() ? geom() : m_geom_transform) : NULL;
+							}
+	IC			u16&		element_position()
+							{
+								return dGeomGetUserData(geometry())->element_position;
 							}
 virtual const	Fvector&	local_center		()																	=0;
 virtual			void		get_local_form		(Fmatrix& form)														=0;

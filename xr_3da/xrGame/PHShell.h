@@ -47,7 +47,7 @@ virtual ~CPHShell				()
 						if(m_spliter_holder)xr_delete(m_spliter_holder);
 	}
 
-	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element);
+	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 element);
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	static void __stdcall	BonesCallback1				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
@@ -171,6 +171,7 @@ virtual ~CPHShell				()
 	void PassEndJoints(u16 from,u16 to,CPHShell *dest);
 	void DeleteElement(u16 element);
 	void DeleteJoint(u16 joint);
+	u16  BoneIdToRootGeom(u16 id);
 	void SetTransform(Fmatrix m);
 private:
 	//breakable

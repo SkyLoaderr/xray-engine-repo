@@ -93,7 +93,6 @@ void GetTransformedGeometryExtensions(dGeomID geom_transform,const dReal* axis,f
 CODEGeom::CODEGeom()
 {
 	m_geom_transform=NULL;
-	m_bone_id		=BI_NONE;
 }
 
 CODEGeom::~CODEGeom()

@@ -29,6 +29,7 @@ class CPhysicsElement;
 class CPhysicsShell;
 class CPHFracture;
 class CPHJointDestroyInfo;
+class CODEGeom;
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -106,6 +107,7 @@ public:
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
 	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
 	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
+	virtual CODEGeom*		last_geom				()												= 0;
 	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
@@ -225,7 +227,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
 	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;
 	virtual void				Update					()													= 0;
-	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element) = 0;
+	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 element) = 0;
 	virtual void				setMass1				(float M)											= 0;
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;

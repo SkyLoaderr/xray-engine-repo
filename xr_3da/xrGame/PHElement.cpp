@@ -40,6 +40,7 @@ void CPHElement::			add_Box		(const Fobb&		V)
 	if(box.m_halfsize.y<0.005f) box.m_halfsize.y=0.005f;
 	if(box.m_halfsize.z<0.005f) box.m_halfsize.z=0.005f;
 	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CBoxGeom>(box)));
+
 }
 
 void CPHElement::			build_Geom	(CODEGeom& geom)
@@ -56,6 +57,14 @@ void CPHElement::			build_Geom	(CODEGeom& geom)
 			geom.add_to_space((dSpaceID)m_group);
 		}
 }
+
+void CPHElement::build_Geom(u16 i)
+{
+CODEGeom& geom=*m_geoms[i];
+build_Geom(geom);
+geom.element_position()=i;
+}
+
 void CPHElement::			add_Sphere	(const Fsphere&	V)
 {
 	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CSphereGeom>(V)));
@@ -87,9 +96,10 @@ void CPHElement::			build	(){
 	m_inverse_local_transform.invert();
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 	///////////////////////////////////////////////////////////////////////////////////////
-	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;i_geom++) build_Geom(**i_geom);
-	
+	//GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
+	//for(;i_geom!=e;i_geom++) build_Geom(**i_geom);
+	u16 geoms_size=u16(m_geoms.size());
+	for(u16 i=0;i<geoms_size;i++) build_Geom(i);
 }
 
 void CPHElement::RunSimulation()
@@ -684,7 +694,7 @@ void CPHElement::ReEnable(){
 }
 
 
-void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)
+void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,u16 id)
 {
 
 	if(!bActive) return;
@@ -699,7 +709,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,body_pos.x, body_pos.y, body_pos.z);
 	if(m_fratures_holder)
 	{
-		m_fratures_holder->AddImpact(impulse,body_pos);
+		m_fratures_holder->AddImpact(impulse,body_pos,m_shell->BoneIdToRootGeom(id));
 	}
 	
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
@@ -1255,14 +1265,24 @@ dGeomID CPHElement::dSpacedGeometry()
 void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 {
 	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.begin()+to;
-
-	for(GEOM_I i=i_from;i!=e;i++)
+	u16 shift=to-from;
+	GEOM_I i=i_from;
+	for(;i!=e;i++)
 	{
 		(*i)->remove_from_space(m_group);
 		//(*i)->add_to_space(dest->m_group);
 		//(*i)->set_body(dest->m_body);
 		(*i)->set_body(0);
+		u16& element_pos=(*i)->element_position();
+		element_pos=element_pos-shift;
 	}
+	e=m_geoms.end();
+	for(;i!=e;)
+	{
+		u16& element_pos=(*i)->element_position();
+		element_pos=element_pos-shift;
+	}
+
 	dest->m_geoms.insert(dest->m_geoms.end(),i_from,e);
 	m_geoms.erase(i_from,e);
 }

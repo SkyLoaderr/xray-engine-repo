@@ -4,6 +4,9 @@
 #include "PHObject.h"
 class CPHShellSplitter;
 class CPHShell;
+class CODEGeom;
+typedef std::pair<u16,CODEGeom*>	id_geom;
+DEFINE_MAP(u16,CODEGeom*,GEOM_MAP,GEOM_MAP_I)
 DEFINE_VECTOR(CPHShellSplitter,SPLITTER_STORAGE,SPLITTER_I)
 typedef		xr_vector<CPHShellSplitter>::reverse_iterator	SPLITTER_RI;
 
@@ -29,7 +32,8 @@ friend class CPHShell;
 bool					m_has_breaks;
 bool					bActive;
 CPHShell*				m_pShell;								//purpose: to extract elements and joints corresponded splitters
-SPLITTER_STORAGE		m_splitters;
+SPLITTER_STORAGE		m_splitters;							//
+GEOM_MAP				m_geom_root_map;							//to find geom pointer by bone id
 virtual	void			PhTune(dReal step);						//call fractures PhTune for element splitters m_pShell->m_elements[m_splitters[i]->m_element]->m_pFracturesHolder->PhTune()
 virtual void			PhDataUpdate(dReal step);				//call fractures PhDataUpdate for element splitters m_pShell->m_elements[m_splitters[i]->m_element]->m_pFracturesHolder->PhDataUpdate()
 virtual void			InitContact(dContact* c){};
@@ -47,6 +51,8 @@ virtual					~CPHShellSplitterHolder();
 		void			Deactivate();
 		void			AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint);
 		void			SplitProcess(PHSHELL_PAIR_VECTOR &out_shels);
+		void			AddToGeomMap(const id_geom& id_rootgeom);
+		u16				FindRootGeom (u16 bone_id);
 IC      bool			Breaked(){return m_has_breaks;}
 };
 

@@ -43,6 +43,7 @@ struct dxGeomUserData
 	u32			tri_material;
 	ContactCallbackFun* callback;
 	ObjectContactCallbackFun* object_callback;
+	u16			element_position;
 //	struct ContactsParameters
 //	{
 //	dReal damping;
@@ -53,22 +54,27 @@ struct dxGeomUserData
 //	unsigned int maxc;
 //	};
 };
+IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
+{
+	return (dxGeomUserData*) dGeomGetData(geom);
+}
 
 IC void dGeomCreateUserData(dxGeom* geom)
 {
 	if(!geom) return;
 	dGeomSetData(geom,xr_new<dxGeomUserData>());
-	((dxGeomUserData*)dGeomGetData(geom))->pushing_neg=false;
-	((dxGeomUserData*)dGeomGetData(geom))->pushing_b_neg=false;
-	((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=-dInfinity;
-	((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=-dInfinity;
-	((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=-dInfinity;
-	((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
-	((dxGeomUserData*)dGeomGetData(geom))->material=0;
-	((dxGeomUserData*)dGeomGetData(geom))->tri_material=0;
-	((dxGeomUserData*)dGeomGetData(geom))->callback=NULL;
-	((dxGeomUserData*)dGeomGetData(geom))->object_callback=NULL;
-	((dxGeomUserData*)dGeomGetData(geom))->ph_ref_object=NULL;
+	(dGeomGetUserData(geom))->pushing_neg=false;
+	(dGeomGetUserData(geom))->pushing_b_neg=false;
+	(dGeomGetUserData(geom))->last_pos[0]=-dInfinity;
+	(dGeomGetUserData(geom))->last_pos[1]=-dInfinity;
+	(dGeomGetUserData(geom))->last_pos[2]=-dInfinity;
+	(dGeomGetUserData(geom))->ph_object=NULL;
+	(dGeomGetUserData(geom))->material=0;
+	(dGeomGetUserData(geom))->tri_material=0;
+	(dGeomGetUserData(geom))->callback=NULL;
+	(dGeomGetUserData(geom))->object_callback=NULL;
+	(dGeomGetUserData(geom))->ph_ref_object=NULL;
+	(dGeomGetUserData(geom))->element_position=u16(-1);
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::damping=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::spring=1.f;
@@ -76,10 +82,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::bonce_vel=0.f;
 }
 
-IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
-{
-	return (dxGeomUserData*) dGeomGetData(geom);
-}
+
 
 IC void dGeomDestroyUserData(dxGeom* geom)
 {
@@ -91,21 +94,27 @@ IC void dGeomDestroyUserData(dxGeom* geom)
 
 IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 {
-	((dxGeomUserData*)dGeomGetData(geom))->ph_object=phObject;
+	(dGeomGetUserData(geom))->ph_object=phObject;
 }
 
 IC void dGeomUserDataSetPhysicsRefObject(dxGeom* geom,CPhysicsRefObject* phRefObject)
 {
-	((dxGeomUserData*)dGeomGetData(geom))->ph_ref_object=phRefObject;
+	(dGeomGetUserData(geom))->ph_ref_object=phRefObject;
 }
 
 IC void dGeomUserDataSetContactCallback(dxGeom* geom,ContactCallbackFun* callback)
 {
-	((dxGeomUserData*)dGeomGetData(geom))->callback=callback;
+	(dGeomGetUserData(geom))->callback=callback;
 }
 
 IC void dGeomUserDataSetObjectContactCallback(dxGeom* geom,ObjectContactCallbackFun* obj_callback)
 {
-	((dxGeomUserData*)dGeomGetData(geom))->object_callback=obj_callback;
+	(dGeomGetUserData(geom))->object_callback=obj_callback;
 }
+
+IC void dGeomUserDataSetElementPosition(dxGeom* geom,u16 e_pos)
+{
+	(dGeomGetUserData(geom))->element_position=e_pos;
+}
+
 #endif

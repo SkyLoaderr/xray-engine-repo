@@ -248,6 +248,7 @@ void CPhysicObject::SpawnCopy()
 		D->ID_Parent		=	u16(ID());
 		D->ID_Phantom		=	0xffff;
 		D->o_Position		=	Position();
+	
 		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send

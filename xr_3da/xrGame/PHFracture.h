@@ -12,7 +12,8 @@ struct SPHImpact
 {
 	Fvector force;
 	Fvector point;
-	SPHImpact(const Fvector& aforce,const Fvector& apoint){force.set(aforce);point.set(apoint);}
+	u16		geom;
+	SPHImpact(const Fvector& aforce,const Fvector& apoint,u16 root_geom){force.set(aforce);point.set(apoint);geom=root_geom;}
 };
 
 DEFINE_VECTOR(SPHImpact,PH_IMPACT_STORAGE,PH_IMPACT_I)
@@ -32,7 +33,7 @@ CPHFracturesHolder			();
 ~CPHFracturesHolder			();
 void				DistributeAdditionalMass	(u16 geom_num,const dMass& m);//
 void				SubFractureMass				(u16 fracture_num);
-void				AddImpact		(const Fvector& force,const Fvector& point);
+void				AddImpact		(const Fvector& force,const Fvector& point,u16 id);
 protected:
 private:
 
@@ -45,7 +46,7 @@ public:
 void				SplitProcess	(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements);
 CPHFracture&		AddFracture		(const CPHFracture& fracture);
 void				PhTune			(dBodyID body);										//set feedback for joints called from PhTune of ShellSplitterHolder
-bool				PhDataUpdate	(dBodyID body);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
+bool				PhDataUpdate	(CPHElement* element);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
 
 };
 
@@ -70,15 +71,12 @@ friend class  CPHFracturesHolder;
 friend class CPHElement;
 friend class CPHShell;
 bool			m_breaked;
-Fvector			m_position;							//vs body//when fractured is additional linear vel for seccond body
-Fvector			m_direction;						//norm to fracture plane vs body//when fractured is additional angular vel for seccond body
-dMass			m_firstM;
 dMass			m_seccondM;
 float			m_break_force;
 float			m_break_torque;
 				CPHFracture();
 public:
-bool			Update(PH_IMPACT_STORAGE& impacts,dBodyID body);
+bool			Update(CPHElement* element);
 IC bool			Breaked(){return m_breaked;}
 void			SetMassParts(const dMass& first,const dMass& second);
 void			MassSetZerro();

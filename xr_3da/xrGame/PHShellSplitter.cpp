@@ -4,6 +4,7 @@
 #include "PHShellSplitter.h"
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
+#include "Geometry.h"
 CPHShellSplitterHolder::CPHShellSplitterHolder(CPHShell* shell)
 {
 	m_pShell=shell;
@@ -15,6 +16,7 @@ CPHShellSplitterHolder::~CPHShellSplitterHolder()
 {
 	Deactivate();
 	m_splitters.clear();
+	m_geom_root_map.clear();
 }
 //the simpliest case - a joint to be destroied 
 shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
@@ -317,7 +319,7 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 				CPHElement* element=m_pShell->elements[i->m_element];
 				dBodyID body=element->get_body();
 				if(!dBodyIsEnabled(body)) return;
-				m_has_breaks=(element->FracturesHolder()->PhDataUpdate(body))||m_has_breaks;
+				m_has_breaks=(element->FracturesHolder()->PhDataUpdate(element))||m_has_breaks;
 				break;
 			}
 		case CPHShellSplitter::splJoint:
@@ -352,6 +354,20 @@ CPHShellSplitter::CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 
 	m_type=type;
 	m_element=element;
 	m_joint=joint;
+}
+
+void CPHShellSplitterHolder::AddToGeomMap(const id_geom& id_rootgeom)
+{
+	m_geom_root_map.insert(id_rootgeom);
+}
+
+u16 CPHShellSplitterHolder::FindRootGeom(u16 bone_id)
+{
+	GEOM_MAP_I iter=m_geom_root_map.find(bone_id);
+	if(iter==m_geom_root_map.end()) return u16(-1);
+
+	return iter->second->element_position();
+
 }
 
 CPHShellSplitter::CPHShellSplitter()

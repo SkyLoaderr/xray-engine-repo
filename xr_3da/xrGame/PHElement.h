@@ -73,6 +73,7 @@ public:
 	////////////////////////////
 private:
 	void					build_Geom						(CODEGeom&	V);
+	void					build_Geom						(u16 i);
 	void					calculate_it_data				(const Fvector& mc,float mass);
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);
 	void					calc_it_fract_data_use_density  (const Fvector& mc,float density);//sets element mass and fractures parts mass
@@ -102,7 +103,7 @@ public:
 	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
 	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);
-	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val)	;
+	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,u16 id)	;
 	Fmatrix					m_inverse_local_transform;
 
 	///
@@ -111,6 +112,7 @@ public:
 	virtual	void			add_Cylinder					(const Fcylinder&	V);
 	virtual void			add_Shape						(const SBoneShape& shape);
 	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);
+	virtual CODEGeom*		last_geom						(){return m_geoms.back();}
 
 	virtual void			set_ContactCallback				(ContactCallbackFun* callback);
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);
