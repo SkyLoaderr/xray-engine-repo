@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\xr_ioconsole.h"
 #include "..\xr_ioc_cmd.h"
+#include "xrRender_console.h"
 
 extern void			xrRender_initconsole	()
 {
