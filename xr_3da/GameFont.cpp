@@ -129,8 +129,8 @@ void CGameFont::OnRender()
 
 				switch(PS.align)
 				{
-				case alCenter:	X-=SizeOf(*PS.string,PS.size)*.5f;	break;
-				case alRight:	X-=SizeOf(*PS.string,PS.size);		break;
+				case alCenter:	X-=SizeOf(PS.string,PS.size)*.5f;	break;
+				case alRight:	X-=SizeOf(PS.string,PS.size);		break;
 				}
 
 				u32	clr,clr2;
@@ -187,7 +187,6 @@ void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 	strcpy((char *) &(strings[strings.size()-1].string),s);
 }
 
-static string2048 s_tmp;
 void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 {
 	String rs;
@@ -200,8 +199,7 @@ void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 	va_list p;
 	va_start(p,fmt);
 
-	int vs_sz = vsprintf(s_tmp,fmt,p); VERIFY(vs_sz<sizeof(s_tmp));
-	rs.string = s_tmp;
+	int vs_sz = vsprintf(rs.string,fmt,p); VERIFY(vs_sz<sizeof(rs.string));
 	va_end(p);
 
 	strings.push_back(rs);
@@ -218,8 +216,7 @@ void __cdecl CGameFont::OutNext(LPCSTR fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	int vs_sz = vsprintf(s_tmp,fmt,p); VERIFY(vs_sz<sizeof(s_tmp));
-	rs.string = s_tmp;
+	int vs_sz = vsprintf(rs.string,fmt,p); VERIFY(vs_sz<sizeof(rs.string));
 	va_end(p);
 
 	strings.push_back(rs);
@@ -237,8 +234,7 @@ void __cdecl CGameFont::OutPrev(LPCSTR fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	int vs_sz = vsprintf(s_tmp,fmt,p); VERIFY(vs_sz<sizeof(s_tmp));
-	rs.string = s_tmp;
+	int vs_sz = vsprintf(rs.string,fmt,p); VERIFY(vs_sz<sizeof(rs.string));
 	va_end(p);
 
 	strings.push_back(rs);
