@@ -391,10 +391,16 @@ void CConsole::SelectCommand()
 
 void CConsole::Execute(char *cmd)
 {
-	strncpy(editor,cmd,63); editor[63]=0;
+	strncpy			(editor,cmd,63); editor[63]=0;
 	RecordCommands	= false;
 	ExecuteCommand	();
 	RecordCommands	= true;
+}
+void CConsole::ExecuteScript(char* N)
+{
+	string128	cmd;
+	strconcat	(cmd,"cfg_load ",N);
+	Execute		(cmd);
 }
 
 /*
