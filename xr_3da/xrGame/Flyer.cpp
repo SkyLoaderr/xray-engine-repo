@@ -254,7 +254,6 @@ void CFlyer::Update(u32 DT)
 
 	if (IsMyCamera()) UpdateCamera();
 
-
 	// HUD update
 
 //	pApp->pFont->Out(-1,0.88f,"Fly P: %.3f, %.3f, %.3f",Position().x,Position().y,Position().z);
