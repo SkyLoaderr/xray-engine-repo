@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 
 //#define WRITE_TO_LOG
-#define MONSTER_TO_GENERATE	40
+#define MONSTER_TO_GENERATE	100
 
 CAI_ALife::CAI_ALife()
 {
@@ -104,6 +104,14 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 		"wpn_fort",
 		"wpn_binoc",
 		"wpn_toz34",
+		// wepon charges
+		"wpn_fn2000_ch",
+		"wpn_lr300_ch",
+		"wpn_ak74_ch",
+		"wpn_hpsa_ch",
+		"wpn_pm_ch",
+		"wpn_fort_ch",
+		"wpn_toz34_ch",
 		// equipment
 		"eq_radio",
 		"eq_life_saver",
@@ -340,14 +348,14 @@ void CAI_ALife::Generate()
 			}
 		}
 		CALifeDynamicObject	*tpALifeDynamicObject;
-		if (pSettings->ReadBOOL(k->caModel, "Scheduled"))
-			if (pSettings->ReadBOOL(k->caModel, "Human"))
-				if (((*k).wCount > 1) && (pSettings->ReadBOOL(k->caModel, "Single")))
+		if (pSettings->ReadBOOL(k->caModel, "scheduled"))
+			if (pSettings->ReadBOOL(k->caModel, "human"))
+				if (((*k).wCount > 1) && (pSettings->ReadBOOL(k->caModel, "single")))
 					tpALifeDynamicObject	= new CALifeHumanGroup;
 				else
 					tpALifeDynamicObject	= new CALifeHuman;
 			else
-				if (((*k).wCount > 1) && (pSettings->ReadBOOL(k->caModel, "Single")))
+				if (((*k).wCount > 1) && (pSettings->ReadBOOL(k->caModel, "single")))
 					tpALifeDynamicObject	= new CALifeMonsterGroup;
 				else
 					tpALifeDynamicObject	= new CALifeMonster;

@@ -30,6 +30,7 @@
 #define CLSID_AI_CHIMERA			MK_CLSID('A','I','_','H','I','M','E','R')
 #define CLSID_AI_FRACTURE			MK_CLSID('A','I','_','F','R','A','C','T')
 #define CLSID_AI_DOG_BLACK			MK_CLSID('A','I','_','D','O','G','_','B')
+#define CLSID_AI_TRADER				MK_CLSID('A','I','_','T','R','A','D','E')
 
 #define CLSID_CAR_NIVA				MK_CLSID('C','_','N','I','V','A',' ',' ')
 
