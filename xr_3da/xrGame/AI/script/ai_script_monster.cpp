@@ -248,110 +248,6 @@ bool CScriptMonster::bfAssignObject(CEntityAction * /**tpEntityAction/**/)
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tObjectAction.m_bCompleted);
 }
 
-void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
-{
-	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	if (l_tMovementAction.m_bCompleted)
-		return;
-
-	CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*l_tMovementAction.m_caPatrolPathToGo);
-	if (I == Level().m_PatrolPaths.end()) {
-		LuaOut		(Lua::eLuaMessageTypeError,"Patrol path %s not found!",l_tMovementAction.m_caPatrolPathToGo);
-		m_iPreviousPatrolPoint = -1;
-		l_tMovementAction.m_bCompleted = true;
-		return;
-	}
-
-	const CLevel::SPath	&l_tPatrolPath = (*I).second;
-
-	int			l_iFirst = -1;
-	if (m_iPreviousPatrolPoint == -1) {
-		switch (l_tMovementAction.m_tPatrolPathStart) {
-			case CPatrolPathParams::ePatrolPathFirst : {
-				l_iFirst = 0;
-				break;
-			}
-			case CPatrolPathParams::ePatrolPathLast : {
-				l_iFirst = l_tPatrolPath.tpaWayPoints.size() - 1;
-				break;
-			}
-			case CPatrolPathParams::ePatrolPathNearest : {
-				float		l_fMinLength = 10000.f;
-				for (int i=0, n=l_tPatrolPath.tpaWayPoints.size(); i<n; ++i) {
-					float	l_fTempDistance = l_tPatrolPath.tpaWayPoints[i].tWayPoint.distance_to(Position());
-					if (l_fTempDistance < l_fMinLength) {
-						l_iFirst		= i;
-						l_fMinLength	= l_fTempDistance;
-					}
-				}
-				break;
-			}
-			default : NODEFAULT;
-		}
-		R_ASSERT	(l_iFirst>=0);
-		m_iPreviousPatrolPoint	= l_iFirst;
-		m_iCurrentPatrolPoint	= l_iFirst;
-		l_tMovementAction.m_tNodeID = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].dwNodeID;
-		l_tMovementAction.m_tDestinationPosition = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].tWayPoint;
-		return;
-	}
-
-	if (l_tMovementAction.m_tDestinationPosition.distance_to(Position()) > .1f)
-		return;
-
-	int			l_iCount = 0;
-	for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
-		if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint)) {
-			if (!l_iCount)
-				l_iFirst = i;
-			++l_iCount;
-		}
-
-	if (!l_iCount) {
-		switch (l_tMovementAction.m_tPatrolPathStop) {
-			case CPatrolPathParams::ePatrolPathStop : {
-				m_iPreviousPatrolPoint = -1;
-				l_tMovementAction.m_bCompleted = true;
-				return;
-			}
-			case CPatrolPathParams::ePatrolPathContinue : {
-				for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
-					if (l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) {
-						l_iFirst = i;
-						break;
-					}
-				if (l_iFirst == -1) {
-					m_iPreviousPatrolPoint = -1;
-					l_tMovementAction.m_bCompleted = true;
-					return;
-				}
-				break;
-			}
-			default : NODEFAULT;
-		}
-	}
-	else {
-		int				l_iChoosed = l_iCount - 1;
-		if (l_tMovementAction.m_bRandom && (l_iCount > 1))
-			l_iChoosed	= ::Random.randI(l_iCount);
-		l_iCount	= 0;
-		for (int i=0, n=(int)l_tPatrolPath.tpaWayLinks.size(); i<n; ++i)
-			if ((l_tPatrolPath.tpaWayLinks[i].wFrom == m_iCurrentPatrolPoint) && (l_tPatrolPath.tpaWayLinks[i].wTo != m_iPreviousPatrolPoint))
-				if (l_iCount == l_iChoosed) {
-					l_iFirst = i;
-					break;
-				}
-				else
-					++l_iCount;
-		VERIFY(l_iFirst > -1);
-	}
-	
-	m_iPreviousPatrolPoint	= m_iCurrentPatrolPoint;
-	m_iCurrentPatrolPoint	= l_tPatrolPath.tpaWayLinks[l_iFirst].wTo;
-	l_tMovementAction.m_tNodeID = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].dwNodeID;
-	l_tMovementAction.m_tDestinationPosition = l_tPatrolPath.tpaWayPoints[m_iCurrentPatrolPoint].tWayPoint;
-}
-
 bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 {
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
@@ -359,50 +255,37 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (l_tMovementAction.m_bCompleted)
 		return		(false);
 
-	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
+	CMovementManager		*l_tpMovementManager = dynamic_cast<CMovementManager*>(this);
 
 	switch (l_tMovementAction.m_tGoalType) {
 		case CMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
-			l_tMovementAction.m_tDestinationPosition = l_tMovementAction.m_tpObjectToGo->Position();
-			if (Position().distance_to(l_tMovementAction.m_tDestinationPosition) < .1f)
-				l_tMovementAction.m_bCompleted = true;
-			else
-				if (!l_tpGameObject)
-					if (ai().level_graph().inside(level_vertex(),l_tMovementAction.m_tDestinationPosition))
-						l_tMovementAction.m_tNodeID	= level_vertex_id();
-					else
-						if (l_tpCustomMonster && ai().level_graph().valid_vertex_id(l_tpCustomMonster->level_dest_vertex_id()) && ai().level_graph().inside(ai().level_graph().vertex(l_tpCustomMonster->level_dest_vertex_id()),l_tMovementAction.m_tDestinationPosition))
-							l_tMovementAction.m_tNodeID	= l_tpCustomMonster->level_dest_vertex_id();
-						else
-							l_tMovementAction.m_tNodeID	= ai().level_graph().vertex(l_tpCustomMonster->level_dest_vertex_id(),l_tMovementAction.m_tDestinationPosition,false);
-				else
-					l_tMovementAction.m_tNodeID	= l_tpGameObject->level_vertex_id();
+			l_tpMovementManager->set_dest_position(l_tpGameObject->Position());
+			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
 		}
 		case CMovementAction::eGoalTypePatrolPath : {
-			vfChoosePatrolPathPoint(tpEntityAction);
+			l_tpMovementManager->set_path		(l_tMovementAction.m_caPatrolPathToGo);
+			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
+			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
+			l_tpMovementManager->set_random		(l_tMovementAction.m_bRandom);
 			break;
 		}
 		case CMovementAction::eGoalTypePathPosition : {
-			if (ai().level_graph().inside(level_vertex(),l_tMovementAction.m_tDestinationPosition))
-				l_tMovementAction.m_tNodeID	= level_vertex_id();
-			else
-				if (l_tpCustomMonster && (int(l_tpCustomMonster->level_dest_vertex_id()) > 0) && ai().level_graph().inside(ai().level_graph().vertex(l_tpCustomMonster->level_dest_vertex_id()),l_tMovementAction.m_tDestinationPosition))
-					l_tMovementAction.m_tNodeID	= l_tpCustomMonster->level_dest_vertex_id();
-				else
-					l_tMovementAction.m_tNodeID	= ai().level_graph().vertex(level_vertex_id(),l_tMovementAction.m_tDestinationPosition,false);
+			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
+			l_tpMovementManager->set_level_dest_vertex(ai().level_graph().vertex(l_tpMovementManager->level_vertex_id(),l_tMovementAction.m_tDestinationPosition,true));
+			l_tpMovementManager->CLevelLocationSelector::set_evaluator(0);
+			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			break;
 		}
 		case CMovementAction::eGoalTypeNoPathPosition : {
-			l_tMovementAction.m_tNodeID	= 1;
-			if (l_tpCustomMonster) {
-				if (l_tpCustomMonster->CDetailPathManager::path().empty() || (l_tpCustomMonster->CDetailPathManager::path()[l_tpCustomMonster->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
-					l_tpCustomMonster->CDetailPathManager::m_path.resize(2);
-					l_tpCustomMonster->CDetailPathManager::m_path[0].m_position = Position();
-					l_tpCustomMonster->CDetailPathManager::m_path[1].m_position = l_tMovementAction.m_tDestinationPosition;
-					l_tpCustomMonster->CDetailPathManager::m_current_travel_point	= 0;
+			if (l_tpMovementManager) {
+				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
+					l_tpMovementManager->CDetailPathManager::m_path.resize(2);
+					l_tpMovementManager->CDetailPathManager::m_path[0].m_position = Position();
+					l_tpMovementManager->CDetailPathManager::m_path[1].m_position = l_tMovementAction.m_tDestinationPosition;
+					l_tpMovementManager->CDetailPathManager::m_current_travel_point	= 0;
 				}
 			}
 			break;
@@ -411,13 +294,9 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			return(l_tMovementAction.m_bCompleted = true);
 	}
 
-	if (ai().level_graph().valid_vertex_id(l_tMovementAction.m_tNodeID))
-		l_tpCustomMonster->set_level_dest_vertex	(l_tMovementAction.m_tNodeID);
-	else {
-		LuaOut	(Lua::eLuaMessageTypeError,"Cannot find a vertex for the specified position [%f][%f][%f]",VPUSH(l_tMovementAction.m_tDestinationPosition));
-		l_tMovementAction.m_tDestinationPosition = Position();
-		l_tMovementAction.m_tNodeID = level_vertex_id();
-	}
+	l_tpMovementManager->build_path();
+	if (l_tpMovementManager->path_completed())
+		l_tMovementAction.m_bCompleted = true;
 
 	return		(!l_tMovementAction.m_bCompleted);
 }

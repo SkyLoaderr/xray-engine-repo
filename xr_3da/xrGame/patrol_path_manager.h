@@ -26,7 +26,7 @@ public:
 		ePatrolRouteTypeDummy = u32(-1),
 	};
 private:
-	LPSTR										m_path_name;
+	ref_str										m_path_name;
 	EPatrolStartType							m_start_type;
 	EPatrolRouteType							m_route_type;
 	bool										m_actuality;
@@ -42,7 +42,7 @@ protected:
 	IC			bool	failed						() const;
 	IC			bool	random						() const;
 	IC			const Fvector &destination_position	() const;
-	IC			void	set_path					(LPCSTR patrol_path_name);
+	IC			void	set_path					(ref_str patrol_path_name);
 	IC			void	set_start_type				(const EPatrolStartType patrol_start_type);
 	IC			void	set_route_type				(const EPatrolRouteType patrol_route_type);
 	IC			void	set_random					(bool random);

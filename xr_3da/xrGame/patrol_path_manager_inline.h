@@ -55,14 +55,13 @@ IC	const Fvector &CPatrolPathManager::destination_position	() const
 	return					(m_dest_position);
 }
 
-IC	void CPatrolPathManager::set_path	(LPCSTR patrol_path_name)
+IC	void CPatrolPathManager::set_path	(ref_str patrol_path_name)
 {
-	if (m_path_name && !strcmp(m_path_name,patrol_path_name))
+	if (m_path_name.equal(patrol_path_name))
 		return;
-	CLevel::SPathPairIt		I = Level().m_PatrolPaths.find(patrol_path_name);
+	CLevel::SPathPairIt		I = Level().m_PatrolPaths.find(*patrol_path_name);
 	VERIFY					(I != Level().m_PatrolPaths.end());
-	xr_free					(m_path_name);
-	m_path_name				= xr_strdup(patrol_path_name);
+	m_path_name				= patrol_path_name;
 	m_actuality				= false;
 }
 

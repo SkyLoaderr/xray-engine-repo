@@ -11,8 +11,8 @@
 
 void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_id)
 {
-	VERIFY					(Level().m_PatrolPaths.find(m_path_name) != Level().m_PatrolPaths.end());
-	const CLevel::SPath		&patrol_path = (*Level().m_PatrolPaths.find(m_path_name)).second;
+	VERIFY					(Level().m_PatrolPaths.find(*m_path_name) != Level().m_PatrolPaths.end());
+	const CLevel::SPath		&patrol_path = (*Level().m_PatrolPaths.find(*m_path_name)).second;
 	VERIFY					(!patrol_path.tpaWayPoints.empty());
 	u32						temp = u32(-1);
 	if (!actual()) {

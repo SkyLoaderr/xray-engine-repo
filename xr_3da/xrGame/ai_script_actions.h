@@ -29,25 +29,12 @@ public:
 
 class CPatrolPathParams {
 public:
-	enum EPatrolPathStart {
-		ePatrolPathFirst = u32(0),
-		ePatrolPathLast,
-		ePatrolPathNearest,
-		ePatrolPathDummy = u32(-1),
-	};
-	
-	enum EPatrolPathStop {
-		ePatrolPathStop = u32(0),
-		ePatrolPathContinue,
-		ePatrolPathInvalid = u32(-1),
-	};
+	ref_str									m_caPatrolPathToGo;
+	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
+	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
+	bool									m_bRandom;
 
-	ref_str							m_caPatrolPathToGo;
-	EPatrolPathStart				m_tPatrolPathStart;
-	EPatrolPathStop					m_tPatrolPathStop;
-	bool							m_bRandom;
-
-							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const EPatrolPathStart tPatrolPathStart = ePatrolPathNearest, const EPatrolPathStop tPatrolPathStop = ePatrolPathContinue, bool bRandom = true)
+							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true)
 	{
 		m_caPatrolPathToGo	= caPatrolPathToGo;
 		m_tPatrolPathStart	= tPatrolPathStart;
@@ -89,11 +76,11 @@ public:
 
 	MonsterSpace::EBodyState		m_tBodyState;
 	MonsterSpace::EMovementType		m_tMovementType;
-	CMovementManager::EPathType		m_tPathType;
+	CDetailPathManager::EDetailPathType		m_tPathType;
 	CObject							*m_tpObjectToGo;
 	ref_str							m_caPatrolPathToGo;
-	CPatrolPathParams::EPatrolPathStart	m_tPatrolPathStart;
-	CPatrolPathParams::EPatrolPathStop	m_tPatrolPathStop;
+	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
+	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
 	Fvector							m_tDestinationPosition;
 	u32								m_tNodeID;
 	EGoalType						m_tGoalType;
@@ -107,10 +94,10 @@ public:
 		SetInputKeys		(eInputKeyNone);
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
-//		SetPathType			(CMovementManager::ePathTypeStraight);
+		SetPathType			(CDetailPathManager::eDetailPathTypeSmooth);
 		SetPatrolPath		("");
-		SetPatrolStart		(CPatrolPathParams::ePatrolPathNearest);
-		SetPatrolStop		(CPatrolPathParams::ePatrolPathContinue);
+		SetPatrolStart		(CPatrolPathManager::ePatrolStartTypeNearest);
+		SetPatrolStop		(CPatrolPathManager::ePatrolRouteTypeContinue);
 		SetPatrolRandom		(true);
 		SetSpeed			(0);
 		SetObjectToGo		(0);
@@ -118,7 +105,7 @@ public:
 		m_tGoalType			= eGoalTypeDummy;
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CMovementManager::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -127,7 +114,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CMovementManager::EPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -139,7 +126,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CMovementManager::EPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CDetailPathManager::EDetailPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -152,7 +139,7 @@ public:
 	{
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
-//		SetPathType			(MonsterSpace::ePathTypeStraight);
+		SetPathType			(CDetailPathManager::eDetailPathTypeSmooth);
 		SetPosition			(tPosition);
 		SetSpeed			(fSpeed);
 		m_tGoalType			= eGoalTypeNoPathPosition;
@@ -195,7 +182,7 @@ public:
 		m_bCompleted		= false;
 	}
 
-			void			SetPathType			(const CMovementManager::EPathType tPathType)
+			void			SetPathType			(const CDetailPathManager::EDetailPathType tPathType)
 	{
 		m_tPathType			= tPathType;
 		m_bCompleted		= false;
@@ -223,13 +210,13 @@ public:
 		m_bCompleted		= false;
 	}
 
-			void			SetPatrolStart		(CPatrolPathParams::EPatrolPathStart tPatrolPathStart)
+			void			SetPatrolStart		(CPatrolPathManager::EPatrolStartType tPatrolPathStart)
 	{
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_bCompleted		= false;
 	}
 
-			void			SetPatrolStop		(CPatrolPathParams::EPatrolPathStop tPatrolPathStop)
+			void			SetPatrolStop		(CPatrolPathManager::EPatrolRouteType tPatrolPathStop)
 	{
 		m_tPatrolPathStop	= tPatrolPathStop;
 		m_bCompleted		= false;

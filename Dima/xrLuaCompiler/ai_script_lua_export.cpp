@@ -407,21 +407,21 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CPatrolPathParams>("patrol")
 			.enum_("start")
 			[
-				value("start",					int(CPatrolPathParams::ePatrolPathFirst)),
-				value("stop",					int(CPatrolPathParams::ePatrolPathLast)),
-				value("nearest",				int(CPatrolPathParams::ePatrolPathNearest)),
-				value("dummy",					int(CPatrolPathParams::ePatrolPathDummy))
+				value("start",					int(CPatrolPathManager::ePatrolStartTypeFirst)),
+				value("stop",					int(CPatrolPathManager::ePatrolStartTypeLast)),
+				value("nearest",				int(CPatrolPathManager::ePatrolStartTypeNearest)),
+				value("dummy",					int(CPatrolPathManager::ePatrolStartTypeDummy))
 			]
 			.enum_("stop")
 			[
-				value("stop",					int(CPatrolPathParams::ePatrolPathStop)),
-				value("continue",				int(CPatrolPathParams::ePatrolPathContinue)),
-				value("dummy",					int(CPatrolPathParams::ePatrolPathInvalid))
+				value("stop",					int(CPatrolPathManager::ePatrolRouteTypeStop)),
+				value("continue",				int(CPatrolPathManager::ePatrolRouteTypeContinue)),
+				value("dummy",					int(CPatrolPathManager::ePatrolRouteTypeDummy))
 			]
 			.def(								constructor<LPCSTR>())
-			.def(								constructor<LPCSTR,const CPatrolPathParams::EPatrolPathStart>())
-			.def(								constructor<LPCSTR,const CPatrolPathParams::EPatrolPathStart,const CPatrolPathParams::EPatrolPathStop>())
-			.def(								constructor<LPCSTR,const CPatrolPathParams::EPatrolPathStart,const CPatrolPathParams::EPatrolPathStop, bool>()),
+			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType>())
+			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType>())
+			.def(								constructor<LPCSTR,const CPatrolPathManager::EPatrolStartType,const CPatrolPathManager::EPatrolRouteType, bool>()),
 
 		class_<CMovementAction>("move")
 			.enum_("body")
@@ -477,12 +477,12 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<>())
 			.def(								constructor<const CMovementAction::EInputKeys>())
 			.def(								constructor<const CMovementAction::EInputKeys, float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,CLuaGameObject*>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,CLuaGameObject*,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const CPatrolPathParams &>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const CPatrolPathParams &,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const Fvector &>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const Fvector &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,CLuaGameObject*>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,CLuaGameObject*,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &,float>())
 			.def(								constructor<MonsterSpace::EActState,const Fvector &>())
 			.def(								constructor<MonsterSpace::EActState,const CPatrolPathParams &>())
 			.def(								constructor<MonsterSpace::EActState,CLuaGameObject*>())

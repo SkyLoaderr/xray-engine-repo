@@ -49,5 +49,4 @@ public:
 	virtual	bool				bfAssignSound			(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignParticles		(CEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignObject			(CEntityAction		*tpEntityAction);
-	virtual	void				vfChoosePatrolPathPoint	(CEntityAction		*tpEntityAction);
 };
