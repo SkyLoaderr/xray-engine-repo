@@ -136,7 +136,7 @@ function new_game_dlg:OnKeyboard(dik, keyboard_action)  --virtual function
    WINDOW_KEY_PRESSED = 6
 
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-		self:OnButton_ok_clicked()
+		level.start_stop_menu(self,true)
 	end
    
 	return true
