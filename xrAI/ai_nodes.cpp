@@ -219,7 +219,7 @@ IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &t
 		Log("! AI_PathNodes: Can't find intersection segment");
 }
 
-float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition)
+float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -235,7 +235,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
 
-	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition)) {
+	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition) && (fCumulativeDistance < fMaxDistance)) {
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -291,7 +291,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 			else
 				return(MAX_VALUE);
 	}
-	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition)) {
+	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition) && (fCumulativeDistance < fMaxDistance)) {
 		fCumulativeDistance += tPrevPoint.distance_to(tFinishPoint);
 		return(fCumulativeDistance);
 	}

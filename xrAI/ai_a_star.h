@@ -37,7 +37,7 @@ typedef struct tagTIndexNode {
 } TIndexNode;
 #pragma pack()
 
-extern void		vfLoadSearch();
-extern void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance);
+extern void	vfLoadSearch();
+extern void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance, Fvector tStartPosition, Fvector tFinishPosition, vector<u32> &tpaNodes);
 
 #endif
