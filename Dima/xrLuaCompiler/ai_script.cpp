@@ -42,7 +42,7 @@ CScript::CScript(LPCSTR caNamespaceName)
 
 	m_bActive			= true;
 
-	Update				();
+//	Update				();
 }
 
 CScript::~CScript()
