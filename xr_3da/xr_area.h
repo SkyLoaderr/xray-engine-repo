@@ -126,6 +126,7 @@ public:
 	virtual void					OnDeviceCreate		();
 	virtual void					OnDeviceDestroy		();
 	void							dbgRender			();
+	Shader*							dbgGetShader		()	{ return sh_debug;	}
 };
 
 
