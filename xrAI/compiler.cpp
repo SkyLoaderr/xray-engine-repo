@@ -6,7 +6,7 @@
 Nodes			g_nodes;
 Merged			g_merged;
 Lights			g_lights;
-Params			g_params;
+SAIParams		g_params;
 CDB::MODEL		Level;
 CDB::MODEL		LevelLight;
 CDB::COLLIDER	XRC;
@@ -65,11 +65,11 @@ void xrCompiler(LPCSTR name)
 	xrLoad		(name);
 	mem_Optimize();
 
-	Phase("Building nodes...");
-	xrBuildNodes();
-	Msg("%d nodes created",int(g_nodes.size()));
-	mem_Optimize();
-	
+//	Phase("Building nodes...");
+//	xrBuildNodes();
+//	Msg("%d nodes created",int(g_nodes.size()));
+//	mem_Optimize();
+//	
 	Phase("Smoothing nodes...");
 	xrSmoothNodes();
 	mem_Optimize();

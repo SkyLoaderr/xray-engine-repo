@@ -2,23 +2,7 @@
 
 #include "xrCDB.h"
 #include "xrLevel.h"
-
-struct Params
-{
-	float		fPatchSize;			// patch size
-	float		fTestHeight;		// test height (center of the "tester")
-	float		fCanUP;				// can reach point in up (dist)
-	float		fCanDOWN;			// can reach point down  (dist)
-	
-	void		Init	()
-	{
-		fPatchSize		= 0.7f;
-		fTestHeight		= 1.0f;
-		fCanUP			= 1.5f;
-		fCanDOWN		= 4.0f;
-	}
-};
-
+#include "AIMapExport.h"
 
 // base patch used all the time up to merging
 const DWORD InvalidNode		= (1<<24)-1;
@@ -102,7 +86,7 @@ DEF_VECTOR(Lights,R_Light		);
 extern	Nodes			g_nodes;
 extern	Merged			g_merged;
 extern	Lights			g_lights;
-extern	Params			g_params;
+extern	SAIParams		g_params;
 extern	CDB::MODEL		Level;
 extern	CDB::MODEL		LevelLight;
 extern	CDB::COLLIDER	XRC;

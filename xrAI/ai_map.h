@@ -2,6 +2,7 @@
 
 #include "xrLevel.h"
 #include "ai_a_star_search.h"
+#include "AIMapExport.h"
 
 #define EPS_H				0.5f
 
@@ -29,6 +30,11 @@ public:
 	float						m_fSize2;
 	float						m_fYSize2;
 
+								CAI_Map()
+	{
+		m_nodes_ptr				= 0;
+		vfs						= 0;
+	}
 								CAI_Map(LPCSTR name)
 	{
 		string256	fName;
@@ -92,6 +98,13 @@ public:
 		Pdest.x = float(Psrc.x)*m_header.size;
 		Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
 		Pdest.z = float(Psrc.z)*m_header.size;
+	}
+
+	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc, Fbox& bb, SAIParams& params)
+	{
+		Pdest.x = float(Psrc.x)*params.fPatchSize;
+		Pdest.y = (float(Psrc.y)/65535)*(bb.max.y-bb.min.y) + bb.min.y;
+		Pdest.z = float(Psrc.z)*params.fPatchSize;
 	}
 
 	IC Fvector tfGetNodeCenter(NodeCompressed *tpNode) const

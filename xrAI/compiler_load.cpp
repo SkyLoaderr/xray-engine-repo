@@ -2,6 +2,8 @@
 #include "compiler.h"
 #include "communicate.h"
 #include "levelgamedef.h"
+#include "ai_map.h"
+#include "AIMapExport.h"
 
 void xrLoad(LPCSTR name)
 {
@@ -42,20 +44,20 @@ void xrLoad(LPCSTR name)
 		Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
 	}
 	
-	// Load emitters
-	{
-		strconcat			(N,name,"level.game");
-		IReader				*F = FS.r_open(N);
-		IReader				*O = 0;
-		if (0!=(O = F->open_chunk	(AIPOINT_CHUNK))) {
-			for (int id=0; O->find_chunk(id); id++) {
-				Emitters.push_back(Fvector());
-				O->r_fvector3	(Emitters.back());
-			}
-			O->close();
-		}
-	}
-
+//	// Load emitters
+//	{
+//		strconcat			(N,name,"level.game");
+//		IReader				*F = FS.r_open(N);
+//		IReader				*O = 0;
+//		if (0!=(O = F->open_chunk	(AIPOINT_CHUNK))) {
+//			for (int id=0; O->find_chunk(id); id++) {
+//				Emitters.push_back(Fvector());
+//				O->r_fvector3	(Emitters.back());
+//			}
+//			O->close();
+//		}
+//	}
+//
 	// Load lights
 	{
 		strconcat				(N,name,"build.prj");
@@ -108,5 +110,50 @@ void xrLoad(LPCSTR name)
 	}
 
 	// Init params
-	g_params.Init		();
+//	g_params.Init		();
+	
+	// Load AlexMX initial map from the Level Editor
+	{
+		strconcat			(N,name,"build.aimap");
+		IReader				*F = FS.r_open(N);
+		IReader				*O = 0;
+
+		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_VERSION));
+		R_ASSERT			(F->r_u16() != AIMAP_VERSION);
+
+		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_BOX));
+		F->r				(&LevelBB,sizeof(LevelBB));
+
+		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_PARAMS));
+		F->r				(&g_params,sizeof(g_params));
+
+		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_NODES));
+		u32					N = F->r_u32();
+		g_nodes.resize		(N);
+		CAI_Map				tAIMap;
+		
+		for (u32 i=0; i<N; i++) {
+			NodeLink		id;
+			u16 			pl;
+			NodePosition 	np;
+			
+			F->r			(&id,3);
+			g_nodes[i].n1	= tAIMap.UnpackLink(id);
+			F->r			(&id,3);
+			g_nodes[i].n2	= tAIMap.UnpackLink(id);
+			F->r			(&id,3);
+			g_nodes[i].n3	= tAIMap.UnpackLink(id);
+			F->r			(&id,3);
+			g_nodes[i].n4	= tAIMap.UnpackLink(id);
+
+			pl				= F->r_u16();
+			pvDecompress	(g_nodes[i].Plane.n,pl);
+			F->r			(&np,sizeof(np));
+			tAIMap.UnpackPosition(g_nodes[i].Pos,np,LevelBB,g_params);
+
+			g_nodes[i].Plane.build(g_nodes[i].Pos,g_nodes[i].Plane.n);
+		}
+
+		F->close			();
+	}
 }
