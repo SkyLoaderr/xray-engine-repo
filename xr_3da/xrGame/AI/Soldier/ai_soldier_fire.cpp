@@ -264,3 +264,51 @@ bool CAI_Soldier::bfCheckIfGroupFightType()
 
 	return(dwMemberCount > 0);
 }
+
+#define RAT_ENEMY		1.f
+#define SOLDIER_ENEMY	20.f
+#define ZOMBIE_ENEMY	3.f
+
+EFightTypes CAI_Soldier::tfGetAloneFightType()
+{
+	objVisible &KnownEnemies = Level().Teams[g_Team()].KnownEnemys;
+	float fFightCoefficient = 0.f;
+	for (int i=0; i<KnownEnemies.size(); i++) {
+		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(KnownEnemies[i]);
+		if (!tpEntityAlive)
+			continue;
+		switch (KnownEnemies[i].SUB_CLS_ID) {
+			case CLSID_AI_RAT		: {
+				fFightCoefficient += RAT_ENEMY*tpEntityAlive->g_Health()/100.f;
+				break;
+			}
+			case CLSID_AI_SOLDIER	: {
+				fFightCoefficient += SOLDIER_ENEMY*tpEntityAlive->g_Health()/100.f;
+				for (int j=0; j<tpEntityAlive->Weapons()->WeaponCount(); j++) {
+					CWeapon *tpWeapon = tpEntityAlive->Weapons()->GetWeaponByIndex(j);
+					int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
+					int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+					switch (tpWeapon->SUB_CLS_ID) {
+						case 
+							case CLSID_OBJECT_W_M134		: {
+								fFightCoefficient += 
+								break;
+							}
+							case CLSID_OBJECT_W_M134_en		: {
+							case CLSID_OBJECT_W_FN2000		: {
+							case CLSID_OBJECT_W_AK74		: {	
+							case CLSID_OBJECT_W_LR300		: {
+							case CLSID_OBJECT_W_HPSA		: {	
+							case CLSID_OBJECT_W_PM			: {
+							case CLSID_OBJECT_W_FORT		: {	
+							case CLSID_OBJECT_W_BINOCULAR	: {
+					}
+				}
+			}
+			case CLSID_AI_ZOMBIE	: {
+				fFightCoefficient += ZOMBIE_ENEMY*tpEntityAlive->g_Health()/100.f;
+				break;
+			}
+		}
+	}
+}

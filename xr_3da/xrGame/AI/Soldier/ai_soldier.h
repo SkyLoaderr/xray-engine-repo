@@ -129,6 +129,12 @@ class CAI_Soldier : public CCustomMonster
 		WALK_NO,
 	};
 
+	enum EFightTypes {
+		FIGHT_TYPE_ATTACK = 0,
+		FIGHT_TYPE_DEFEND,
+		FIGHT_TYPE_RETREAT,
+	};
+
 	typedef	CCustomMonster inherited;
 
 	protected:
@@ -475,6 +481,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		EFightTypes tfGetAloneFightType();
 		bool bfCheckIfGroupFightType();
 		bool bfCheckForDanger();
 		void vfStopFire();
