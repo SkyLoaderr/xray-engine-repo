@@ -225,6 +225,7 @@ void CActor::Load		(LPCSTR section )
 	// patch : ZoneAreas
 	if (Level().pLevel->SectionExists("zone_areas"))
 	{
+		Log("...Using zones...");
 		CInifile::Sect&		S = Level().pLevel->ReadSection("zone_areas");
 		for (CInifile::SectIt I = S.begin(); I!=S.end(); I++)
 		{
