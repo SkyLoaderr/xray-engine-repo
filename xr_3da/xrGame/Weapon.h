@@ -120,6 +120,7 @@ public:
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}
 	IC int			GetAmmoLimit	()				{return iAmmoLimit;		}
 	IC int			GetAmmoCurrent	()				{return iAmmoCurrent;	}
+	IC int			GetAmmoMagSize	()				{return iMagazineSize;	}
 	IC Shader*		GetUIIcon		()				{return hUIIcon;		}
 	
 	virtual void	OnDeviceCreate	();
