@@ -62,7 +62,7 @@ void CHUDCrosshair::SetDispersion	(float disp)
 
 void CHUDCrosshair::OnRender ()
 {
-	RCache.OnFrameEnd();
+//	RCache.OnFrameEnd();
 
 	// draw back
 	u32			dwOffset,dwCount;
@@ -98,7 +98,7 @@ void CHUDCrosshair::OnRender ()
 	dwCount 				= u32(pv-pv_start);
 	RCache.Vertex.Unlock	(dwCount,hGeomLine->vb_stride);
 
-	//RCache.set_Shader		(hShader);
+	RCache.set_Shader		(Device.m_WireShader);
 	RCache.set_Geometry		(hGeomLine);
 	RCache.Render	   		(D3DPT_LINELIST,dwOffset,dwCount/2);
 
