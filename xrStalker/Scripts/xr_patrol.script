@@ -123,6 +123,7 @@ function action_single_patrol:initialize ()
     action_base.initialize (self)
       
     self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:clear_animations ()
     
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
@@ -131,7 +132,6 @@ function action_single_patrol:initialize ()
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (move.walk)
-           --self.object:add_animation ("walk_poisk_0", true)    --!!!
     self.object:set_path_type             (game_object.patrol_path)
     self.object:set_patrol_path           (self.a.patrol_path, patrol.nearest, patrol.continue, true)
     self.object:set_mental_state          (anim.free)
@@ -452,6 +452,7 @@ function action_raid:initialize ()
     action_base.initialize (self)
     
     self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:clear_animations ()
     
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()

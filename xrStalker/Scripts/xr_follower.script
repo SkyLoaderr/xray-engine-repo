@@ -117,6 +117,8 @@ end
 --------------
 function action_leader_wait:initialize ()
     action_base.initialize (self)
+    self.object:clear_animations ()
+    
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
@@ -173,6 +175,7 @@ function action_follow:initialize ()
     action_base.initialize (self)
 
     self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:clear_animations ()
     
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
@@ -438,6 +441,7 @@ function action_raid:initialize ()
     action_base.initialize (self)
     
     self.object:set_callback (self, "move_callback", game_object.movement)
+    self.object:clear_animations ()
     
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
