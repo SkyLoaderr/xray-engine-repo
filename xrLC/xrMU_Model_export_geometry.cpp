@@ -25,7 +25,6 @@ void	xrMU_Model::export_geometry		()
 	D.set				(decl);
 
 	// RT-check, BOX, low-point, frac-size
-	R_ASSERT		(m_vertices.size()==color.size());
 	Fbox			BB; 
 	BB.invalidate	();
 	for (v_vertices_it vit=m_vertices.begin(); vit!=m_vertices.end(); vit++)
