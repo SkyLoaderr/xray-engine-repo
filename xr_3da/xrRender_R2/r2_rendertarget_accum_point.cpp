@@ -39,7 +39,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
 	}
 
-	// Mask area by stencil
+	// 2D texgen
 	Fvector2						p0,p1;
 	float	_w						= float(Device.dwWidth);
 	float	_h						= float(Device.dwHeight);
@@ -47,7 +47,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	p1.set							((_w+.5f)/_w, (_h+.5f)/_h );
 
 	// Constants
-	
 	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
 	RCache.set_c					("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
 	RCache.set_c					("near",			np,np,np,np);
