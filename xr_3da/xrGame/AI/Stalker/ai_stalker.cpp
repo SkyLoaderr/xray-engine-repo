@@ -218,17 +218,17 @@ void CAI_Stalker::Load				(LPCSTR section)
 	g_vfLoadSounds					(m_tpSoundSurrender,pSettings->r_string(section,"sound_surrender"),100);
 
 	// prefetching
-	cNameVisual_set					("actors\\different_stalkers\\stalker_black_mask");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_ecolog");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_hood_multiplayer");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_no_hood_singleplayer");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_scientist");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda2");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda3");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda4");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_ik_test");
-	cNameVisual_set					("actors\\different_stalkers\\stalker_ik_test_koan");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_black_mask");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_ecolog");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_hood_multiplayer");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_no_hood_singleplayer");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_scientist");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda2");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda3");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda4");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_ik_test");
+//	cNameVisual_set					("actors\\different_stalkers\\stalker_ik_test_koan");
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
