@@ -106,6 +106,7 @@ void	CRender::render_lights	(light_Package& LP)
 		// if (has_spot_shadowed)
 		xr_vector<light*>	L_spot_s;
 		if	(!LP.v_spot_s.empty())	{
+			stats.s_used++;
 			// generate spot shadowmap
 			Target.phase_smap_spot_clear	();
 			xr_vector<light*>&	source		= LP.v_spot_s;
@@ -125,6 +126,7 @@ void	CRender::render_lights	(light_Package& LP)
 				L->svis[0].begin						();
 				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
 				if (mapNormal[0].size() || mapMatrix[0].size())	{
+					stats.s_merged						++;
 					Target.phase_smap_spot				(L);
 					RCache.set_xform_world				(Fidentity);
 					RCache.set_xform_view				(L->X.S.view);
