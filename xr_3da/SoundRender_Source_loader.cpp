@@ -163,7 +163,7 @@ void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		if (!conv)				{xr_free(pFormat); return; }
+		if (!conv)				{ xr_free(pFormat); return; }
 
 		// Secondly convert to best format for 3D
 		Memory.mem_copy			(pFormat,&wfxdest,sizeof(wfxdest));
