@@ -95,6 +95,7 @@ public:
 	IC void			_init		(COLLIDER* CL, Fvector* V, TRI* T, const Fvector& C, const Fvector& E)
 	{
 		dest		= CL;
+		verts		= V;
 		tris		= T;
 		center		= Point(C.x,C.y,C.z);
 		extents		= Point(E.x,E.y,E.z);
@@ -188,9 +189,9 @@ public:
 	void			_prim		(DWORD prim)
 	{
 		TRI&	T	= tris[prim];
-		Fvector& v0	= *T.verts[0];	mLeafVerts[0].x = v0.x;	mLeafVerts[0].y = v0.y;	mLeafVerts[0].z = v0.z;
-		Fvector& v1	= *T.verts[1];	mLeafVerts[1].x = v1.x;	mLeafVerts[1].y = v1.y;	mLeafVerts[1].z = v1.z;
-		Fvector& v2	= *T.verts[2];	mLeafVerts[2].x = v2.x;	mLeafVerts[2].y = v2.y;	mLeafVerts[2].z = v2.z;
+		Fvector& v0	= verts[ T.verts[0] ];	mLeafVerts[0].x = v0.x;	mLeafVerts[0].y = v0.y;	mLeafVerts[0].z = v0.z;
+		Fvector& v1	= verts[ T.verts[1] ];	mLeafVerts[1].x = v1.x;	mLeafVerts[1].y = v1.y;	mLeafVerts[1].z = v1.z;
+		Fvector& v2	= verts[ T.verts[2] ];	mLeafVerts[2].x = v2.x;	mLeafVerts[2].y = v2.y;	mLeafVerts[2].z = v2.z;
 		if (!_tri())			return;
 		RESULT& R	= dest->r_add();
 		R.id		= prim;
@@ -228,22 +229,22 @@ void COLLIDER::box_query(const MODEL *m_def, const Fvector& b_center, const Fvec
 		if (box_mode&OPT_ONLYFIRST)
 		{
 			box_collider<true,true> BC;
-			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._init	(this,m_def->verts,m_def->tris,b_center,b_dim);
 			BC._stab	(N);
 		} else {
 			box_collider<true,false> BC;
-			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._init	(this,m_def->verts,m_def->tris,b_center,b_dim);
 			BC._stab	(N);
 		}
 	} else {
 		if (box_mode&OPT_ONLYFIRST)
 		{
 			box_collider<false,true> BC;
-			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._init	(this,m_def->verts,m_def->tris,b_center,b_dim);
 			BC._stab	(N);
 		} else {
 			box_collider<false,false> BC;
-			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._init	(this,m_def->verts,m_def->tris,b_center,b_dim);
 			BC._stab	(N);
 		}
 	}
