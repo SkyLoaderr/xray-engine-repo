@@ -31,6 +31,7 @@ class CCustomEvent : public CObject, public pureRender
 	EV_LIST				OnExit;
 	CLASS_ID			clsid_Target;
 	vector<CObject*>	Contacted;
+	BOOL				ExecuteOnce;
 public:
 	CCustomEvent();
 	virtual ~CCustomEvent();

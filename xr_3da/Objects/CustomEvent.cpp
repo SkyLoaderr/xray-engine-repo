@@ -132,6 +132,7 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	// Events
 	OnEnter.Create				(ini->ReadSTRING(section,"OnEnter"));
 	OnExit.Create				(ini->ReadSTRING(section,"OnExit"));
+	ExecuteOnce					= ini->ReadBOOL(section,"execute_once");
 	
 	// Target
 	clsid_Target				= ini->ReadCLSID(section,"target_class");
@@ -171,6 +172,8 @@ void CCustomEvent::OnNear( CObject* O )
 	if (M->Contact(O)) {
 		OnEnter.Signal((DWORD)O);
 		Contacted.push_back(O);
+
+		if (ExecuteOnce)	_DELETE(this);
 		return;
 	}
 	
