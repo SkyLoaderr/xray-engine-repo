@@ -908,6 +908,10 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
+	if (m_bScriptControl) {
+		ProcessScripts();
+		return;
+	}
 	if (!m_dwLastUpdate) {
 		Level().ObjectSpace.GetNearest(Position(),3.f);
 		if (Level().ObjectSpace.q_nearest.size()) {

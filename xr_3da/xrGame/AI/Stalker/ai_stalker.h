@@ -25,6 +25,8 @@ class CCharacterPhysicsSupport;
 extern FILE	*ST_VF;
 #endif
 
+class CEntityAction;
+
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations, public CInventoryOwner {
 private:
 	typedef CCustomMonster inherited;
@@ -449,17 +451,8 @@ public:
 	/////////////////////////
 
 protected:
-	EBodyState					m_tScriptBodyState;
-	EMovementType				m_tScriptMovementType;
-	CObject						*m_tScriptDestinationObject;
-	EPathType					m_tScriptPathType;
-	string256					m_caScriptPatrolPath;
-	CObject						*m_tpScriptWatchObject;
-	Fvector						m_tScriptWatchDirection;
-	ELookType					m_tScriptWatchType;
-	EMentalState				m_tScriptMentalState;
-	EWeaponState				m_tScriptWeaponState;
-	CWeapon						*m_tpScriptWeapon;
+	xr_deque<CEntityAction*>	m_tpActionQueue;
+
 public:
 
 	virtual void				UseObject				(const CObject			*tpObject);
@@ -469,18 +462,6 @@ public:
 	virtual CInventoryItem		*GetCurrentEquipment	() const;
 	virtual CInventoryItem		*GetMedikit				() const;
 	virtual CInventoryItem		*GetFood				() const;
-	virtual void				SetBodyState			(const EBodyState		tBodyState);
-	virtual void				SetMovementType			(const EMovementType	tMovementType);
-	virtual void				SetDestination			(CObject				*tpObject);
-	virtual void				SetPathType				(const EPathType		tPathType);
-	virtual void				SetPath					(LPCSTR					caPatrolPath);
-	virtual void				SetWatchObject			(CObject				*tpObject);
-	virtual void				SetWatchDirection		(const Fvector			&tDirection);
-	virtual void				SetWatchType			(const ELookType		tWatchType);
-	virtual void				SetMentalState			(const EMentalState		tMentalState);
-	virtual void				SetWeaponState			(const EWeaponState		tWeaponState);
-	virtual void				SetWeapon				(CWeapon				*tpWeapon);
-//	virtual const EObjectState	GetObjectState			() const;
-//	virtual void				SetObjectState			(const EObjectState	tObjectState);
-//	virtual void				SetTarget				(const CObject		*tpObject);
+	virtual	void				AddAction				(const CEntityAction	*tpEntityAction);
+	virtual void				ProcessScripts			();
 };

@@ -233,7 +233,7 @@ public:
 		R_ASSERT2		(m_tpGameObject,"Null actual object passed!");
 	}
 
-	virtual					~CLuaGameObject()
+	virtual					~CLuaGameObject		()
 	{
 	}
 
@@ -324,25 +324,12 @@ public:
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControl,	CCustomMonster,	GetScriptControl,	bool,								false);
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CCustomMonster,GetScriptControlName,LPCSTR,							"");
 	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
-	BIND_FUNCTION01	(m_tpGameObject,	SetAnimation,		CCustomMonster,	SetAnimation,		LPCSTR,								LPCSTR);
-	BIND_FUNCTION01	(m_tpGameObject,	SetSound,			CCustomMonster,	SetSound,			LPCSTR,								LPCSTR);
-	BIND_FUNCTION10	(m_tpGameObject,	CheckIfCompleted,	CCustomMonster,	CheckIfCompleted,	bool,								false);
 
 	// CAI_Stalker
 	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
 	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
 	BIND_FUNCTION10	(m_tpGameObject,	GetWeaponAmmo,		CAI_Stalker,	GetWeaponAmmo,		u32,								0);
-	BIND_FUNCTION01	(m_tpGameObject,	SetBodyState,		CAI_Stalker,	SetBodyState,		const StalkerSpace::EBodyState,		const StalkerSpace::EBodyState);
-	BIND_FUNCTION01	(m_tpGameObject,	SetMovementType,	CAI_Stalker,	SetMovementType,	const StalkerSpace::EMovementType,	const StalkerSpace::EMovementType);
-	BIND_FUNCTION01	(m_tpGameObject,	SetDestination,		CAI_Stalker,	SetDestination,		const CLuaGameObject*,				CObject*);
-	BIND_FUNCTION01	(m_tpGameObject,	SetPathType,		CAI_Stalker,	SetPathType,		const StalkerSpace::EPathType,		const StalkerSpace::EPathType);
-	BIND_FUNCTION01	(m_tpGameObject,	SetPath,			CAI_Stalker,	SetPath,			LPCSTR,								LPCSTR);
-	BIND_FUNCTION01	(m_tpGameObject,	SetWatchObject,		CAI_Stalker,	SetWatchObject,		const CLuaGameObject*,				CObject*);
-	BIND_FUNCTION01	(m_tpGameObject,	SetWatchDirection,	CAI_Stalker,	SetWatchDirection,	const Fvector &,					const Fvector &);
-	BIND_FUNCTION01	(m_tpGameObject,	SetWatchType,		CAI_Stalker,	SetWatchType,		const StalkerSpace::ELookType,		const StalkerSpace::ELookType);
-	BIND_FUNCTION01	(m_tpGameObject,	SetMentalState,		CAI_Stalker,	SetMentalState,		const StalkerSpace::EMentalState,	const StalkerSpace::EMentalState);
-	BIND_FUNCTION01	(m_tpGameObject,	SetWeaponState,		CAI_Stalker,	SetWeaponState,		const StalkerSpace::EWeaponState,	const StalkerSpace::EWeaponState);
-	BIND_FUNCTION01	(m_tpGameObject,	SetWeapon,			CAI_Stalker,	SetWeapon,			const CLuaGameObject*,				CWeapon*);
+	BIND_FUNCTION01	(m_tpGameObject,	AddAction,			CAI_Stalker,	AddAction,			const CEntityAction *,				const CEntityAction *);
 	
 	IC		CLuaGameObject	*GetCurrentWeapon() const
 	{
@@ -384,4 +371,3 @@ public:
 		return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));
 	}
 };
-

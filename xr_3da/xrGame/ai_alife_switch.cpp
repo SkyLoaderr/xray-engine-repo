@@ -18,6 +18,10 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 #endif
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = tpfGetObjectByID(tpSE_Abstract->ID);
 	VERIFY							(tpALifeDynamicObject);
+	CSE_ALifeInventoryItem			*l_tpInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
+	if (l_tpInventoryItem && l_tpInventoryItem->bfAttached())
+		vfDetachItem				(*tpfGetObjectByID(l_tpInventoryItem->ID_Parent),l_tpInventoryItem,tpfGetObjectByID(l_tpInventoryItem->ID_Parent)->m_tGraphID,bALifeRequest);
+
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
 	if (!tpALifeDynamicObject->m_bOnline) {

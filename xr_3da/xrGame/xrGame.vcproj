@@ -2560,6 +2560,9 @@
 						RelativePath=".\ai_script.h">
 					</File>
 					<File
+						RelativePath=".\ai_script_actions.h">
+					</File>
+					<File
 						RelativePath=".\ai_script_classes.cpp">
 					</File>
 					<File
@@ -2893,6 +2896,15 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\blockpost.cpp">
+			<FileConfiguration
+				Name="Debug|Win32"
+				ExcludedFromBuild="TRUE">
+				<Tool
+					Name="VCCLCompilerTool"/>
+			</FileConfiguration>
+		</File>
 		<File
 			RelativePath=".\environment.ltx">
 		</File>

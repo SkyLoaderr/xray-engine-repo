@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "..\\..\\ai_script_actions.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {
@@ -50,57 +51,17 @@ CInventoryItem *CAI_Stalker::GetFood() const
 	return			(0);
 }
 
-void CAI_Stalker::SetBodyState(const EBodyState tBodyState)
+void CAI_Stalker::AddAction(const CEntityAction *tpEntityAction)
 {
-	m_tScriptBodyState		= tBodyState;
+	m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
 }
 
-void CAI_Stalker::SetMovementType(const EMovementType tMovementType)
+void CAI_Stalker::ProcessScripts()
 {
-	m_tScriptMovementType	= tMovementType;
-}
-
-void CAI_Stalker::SetDestination(CObject *tpObject)
-{
-	m_tScriptDestinationObject = tpObject;
-}
-
-void CAI_Stalker::SetPathType(const EPathType tPathType)
-{
-	m_tScriptPathType		= tPathType;
-}
-
-void CAI_Stalker::SetPath(LPCSTR caPatrolPath)
-{
-	strcpy					(m_caScriptPatrolPath,caPatrolPath);
-}
-
-void CAI_Stalker::SetWatchObject(CObject *tpObject)
-{
-	m_tpScriptWatchObject	= tpObject;
-}
-
-void CAI_Stalker::SetWatchDirection(const Fvector &tDirection)
-{
-	m_tScriptWatchDirection	= tDirection;
-}
-
-void CAI_Stalker::SetWatchType(const ELookType	tWatchType)
-{
-	m_tScriptWatchType		= tWatchType;
-}
-
-void CAI_Stalker::SetMentalState(const EMentalState	tMentalState)
-{
-	m_tScriptMentalState	= tMentalState;
-}
-
-void CAI_Stalker::SetWeaponState(const EWeaponState	tWeaponState)
-{
-	m_tScriptWeaponState	= tWeaponState;
-}
-
-void CAI_Stalker::SetWeapon(CWeapon *tpWeapon)
-{
-	m_tpScriptWeapon		= tpWeapon;
+	if (m_tpActionQueue.empty()) {
+		Msg			("* Object %s has an empty script queue!",cName());
+		return;
+	}
+	CEntityAction	*tpEntityAction = m_tpActionQueue.back();
+	vfSetParameters	(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeNormal,eLookTypeDirection,Fvector().set(0,0,0),0);
 }

@@ -10,6 +10,7 @@
 #include "ai_script_lua_extension.h"
 #include "ParticlesObject.h"
 #include "ai_script_classes.h"
+#include "ai_script_actions.h"
 
 using namespace Script;
 
@@ -22,7 +23,6 @@ double get_time()
 {
 	return((double)Device.TimerAsync());
 }
-
 CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 {
 	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
@@ -67,22 +67,21 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	module(tpLuaVirtualMachine,"Game")
 	[
 		// declarations
-		def("get_time",							get_time),
+		def("time",								get_time)
 //		def("get_surge_time",					Game::get_surge_time),
 //		def("get_object_by_name",				Game::get_object_by_name),
-		
-		namespace_("Level")
-		[
-//			// declarations
-			def("get_object_by_name",			get_object_by_name)
-//			def("get_weather",					Level::get_weather)
-		]
+	];
 
+	namespace_("Level")
+	[
+		// declarations
+		def("object",							get_object_by_name)
+//		def("get_weather",						Level::get_weather)
 	];
 
 	module(tpLuaVirtualMachine)
 	[
-		class_<Fvector>("Fvector")
+		class_<Fvector>("vector")
 			.def_readwrite("x",					&Fvector::x)
 			.def_readwrite("y",					&Fvector::y)
 			.def_readwrite("z",					&Fvector::z)
@@ -154,7 +153,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("generate_orthonormal_basis",	&Fvector::generate_orthonormal_basis),
 
 
-		class_<Fmatrix>("Fmatrix")
+		class_<Fmatrix>("matrix")
 			.def_readwrite("i",					&Fmatrix::i)
 			.def_readwrite("_14_",				&Fmatrix::_14_)
 			.def_readwrite("j",					&Fmatrix::j)
@@ -236,167 +235,210 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("getXYZi",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getXYZi))
 			.def("getXYZi",						(void	   (Fmatrix::*)(float &, float &, float &) const)(Fmatrix::getXYZi)),
 
-		class_<CParticlesObject>("CParticleSystem")
+		class_<CParticlesObject>("partciles")
 			.def(								constructor<LPCSTR, bool>())
-			.def("Position",					&CParticlesObject::Position)
-			.def("PlayAtPos",					&CParticlesObject::play_at_pos)
-			.def("Stop",						&CParticlesObject::Stop),
+			.def("position",					&CParticlesObject::Position)
+			.def("play_at_pos",					&CParticlesObject::play_at_pos)
+			.def("stop",						&CParticlesObject::Stop),
 
-		class_<CSound_params>("CSoundParams")
-			.def_readwrite("Position",			&CSound_params::position)
-			.def_readwrite("Volume",			&CSound_params::volume)
-			.def_readwrite("Frequency",			&CSound_params::freq)
-			.def_readwrite("MinDistance",		&CSound_params::min_distance)
-			.def_readwrite("MaxDistance",		&CSound_params::max_distance),
+		class_<CSound_params>("sound_params")
+			.def_readwrite("position",			&CSound_params::position)
+			.def_readwrite("volume",			&CSound_params::volume)
+			.def_readwrite("frequency",			&CSound_params::freq)
+			.def_readwrite("min_distance",		&CSound_params::min_distance)
+			.def_readwrite("max_distance",		&CSound_params::max_distance),
 			
-		class_<CLuaSound>("CSound")
-			.property("Frequency",				&CLuaSound::GetFrequency,	&CLuaSound::SetFrequency)
-			.property("MinDistance",			&CLuaSound::GetMinDistance,	&CLuaSound::SetMinDistance)
-			.property("MaxDistance",			&CLuaSound::GetMaxDistance,	&CLuaSound::SetMaxDistance)
-			.property("Volume",					&CLuaSound::GetVolume,		&CLuaSound::SetVolume)
+		class_<CLuaSound>("sound")
+			.property("frequency",				&CLuaSound::GetFrequency,	&CLuaSound::SetFrequency)
+			.property("min_distance",			&CLuaSound::GetMinDistance,	&CLuaSound::SetMinDistance)
+			.property("max_distance",			&CLuaSound::GetMaxDistance,	&CLuaSound::SetMaxDistance)
+			.property("volume",					&CLuaSound::GetVolume,		&CLuaSound::SetVolume)
 			.def(								constructor<LPCSTR>())
-			.def("GetPosition",					&CLuaSound::GetPosition)
-			.def("SetPosition",					&CLuaSound::SetPosition)
-			.def("Play",						&CLuaSound::Play)
-			.def("PlayAtPos",					&CLuaSound::PlayAtPos)
-			.def("PlayUnlimited",				&CLuaSound::PlayUnlimited)
-			.def("PlayAtPosUnlimited",			&CLuaSound::PlayAtPosUnlimited)
-			.def("Stop",						&CLuaSound::Stop),
+			.def("get_position",					&CLuaSound::GetPosition)
+			.def("set_position",					&CLuaSound::SetPosition)
+			.def("play",						&CLuaSound::Play)
+			.def("play_at_pos",					&CLuaSound::PlayAtPos)
+			.def("play_unlimited",				&CLuaSound::PlayUnlimited)
+			.def("play_at_pos_unlimited",		&CLuaSound::PlayAtPosUnlimited)
+			.def("stop",						&CLuaSound::Stop),
 
-		class_<CLuaHit>("CHit")
-			.enum_("EHitType")
+		class_<CLuaHit>("hit")
+			.enum_("hit_type")
 			[
-				value("eHitTypeBurn",			int(ALife::eHitTypeBurn)),
-				value("eHitTypeShock",			int(ALife::eHitTypeShock)),
-				value("eHitTypeStrike",			int(ALife::eHitTypeStrike)),
-				value("eHitTypeWound",			int(ALife::eHitTypeWound)),
-				value("eHitTypeRadiation",		int(ALife::eHitTypeRadiation)),
-				value("eHitTypeTelepatic",		int(ALife::eHitTypeTelepatic)),
-				value("eHitTypeChemicalBurn",	int(ALife::eHitTypeChemicalBurn)),
-				value("eHitTypeExplosion",		int(ALife::eHitTypeExplosion)),
-				value("eHitTypeFireWound",		int(ALife::eHitTypeFireWound)),
-				value("eHitTypeFireDummy",		int(ALife::eHitTypeMax))
+				value("burn",					int(ALife::eHitTypeBurn)),
+				value("shock",					int(ALife::eHitTypeShock)),
+				value("strike",					int(ALife::eHitTypeStrike)),
+				value("wound",					int(ALife::eHitTypeWound)),
+				value("radiation",				int(ALife::eHitTypeRadiation)),
+				value("telepatic",				int(ALife::eHitTypeTelepatic)),
+				value("chemical_burn",			int(ALife::eHitTypeChemicalBurn)),
+				value("explosion",				int(ALife::eHitTypeExplosion)),
+				value("fire_wound",				int(ALife::eHitTypeFireWound)),
+				value("dummy",					int(ALife::eHitTypeMax))
 			]
-			.def_readwrite("Power",				&CLuaHit::m_fPower)
-			.def_readwrite("Direction",			&CLuaHit::m_tDirection)
-			.def_readwrite("Draftsman",			&CLuaHit::m_tpDraftsman)
-			.def_readwrite("BoneName",			&CLuaHit::m_caBoneName)
-			.def_readwrite("Impulse",			&CLuaHit::m_fImpulse)
-			.def_readwrite("HitType",			&CLuaHit::m_tHitType)
+			.def_readwrite("power",				&CLuaHit::m_fPower)
+			.def_readwrite("direction",			&CLuaHit::m_tDirection)
+			.def_readwrite("draftsman",			&CLuaHit::m_tpDraftsman)
+			.def_readwrite("bone",				&CLuaHit::m_caBoneName)
+			.def_readwrite("impulse",			&CLuaHit::m_fImpulse)
+			.def_readwrite("type",				&CLuaHit::m_tHitType)
 			.def(								constructor<>())
 			.def(								constructor<const CLuaHit *>()),
 
 		class_<CLuaGameObject>("CGameObject")
-			.enum_("ERelationType")
+			.enum_("relation")
 			[
-				value("eRelationTypeFriend",	int(ALife::eRelationTypeFriend)),
-				value("eRelationTypeNeutral",	int(ALife::eRelationTypeNeutral)),
-				value("eRelationTypeEnemy",		int(ALife::eRelationTypeEnemy)),
-				value("eRelationTypeDummy",		int(ALife::eRelationTypeDummy))
+				value("friend",					int(ALife::eRelationTypeFriend)),
+				value("neutral",				int(ALife::eRelationTypeNeutral)),
+				value("enemy",					int(ALife::eRelationTypeEnemy)),
+				value("dummy",					int(ALife::eRelationTypeDummy))
 			]
-			.property("Visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
-			.property("Enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
-			.property("Health",					&CLuaGameObject::GetHealth,			&CLuaGameObject::SetHealth)
-			.property("Power",					&CLuaGameObject::GetPower,			&CLuaGameObject::SetPower)
-			.property("Satiety",				&CLuaGameObject::GetSatiety,		&CLuaGameObject::SetSatiety)
-			.property("Radiation",				&CLuaGameObject::GetRadiation,		&CLuaGameObject::SetRadiation)
-			.property("Circumspection",			&CLuaGameObject::GetCircumspection,	&CLuaGameObject::SetCircumspection)
-			.property("Morale",					&CLuaGameObject::GetMorale,			&CLuaGameObject::SetMorale)
+			.property("visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
+			.property("enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
+			.property("health",					&CLuaGameObject::GetHealth,			&CLuaGameObject::SetHealth)
+			.property("power",					&CLuaGameObject::GetPower,			&CLuaGameObject::SetPower)
+			.property("satiety",				&CLuaGameObject::GetSatiety,		&CLuaGameObject::SetSatiety)
+			.property("radiation",				&CLuaGameObject::GetRadiation,		&CLuaGameObject::SetRadiation)
+			.property("circumspection",			&CLuaGameObject::GetCircumspection,	&CLuaGameObject::SetCircumspection)
+			.property("morale",					&CLuaGameObject::GetMorale,			&CLuaGameObject::SetMorale)
 			.def(								constructor<LPCSTR>())
 			.def(								constructor<const CLuaGameObject *>())
-			.def("Position",					&CLuaGameObject::Position)
-			.def("ClassID",						&CLuaGameObject::ClassID)
-			.def("ID",							&CLuaGameObject::ID)
-			.def("Section",						&CLuaGameObject::Section)
-			.def("Name",						&CLuaGameObject::Name)
-			.def("Parent",						&CLuaGameObject::Parent)
-			.def("Mass",						&CLuaGameObject::Mass)
-			.def("Cost",						&CLuaGameObject::Cost)
-			.def("DeathTime",					&CLuaGameObject::DeathTime)
-			.def("Armor",						&CLuaGameObject::Armor)
-			.def("MaxHealth",					&CLuaGameObject::DeathTime)
-			.def("Accuracy",					&CLuaGameObject::Accuracy)
-			.def("Alive",						&CLuaGameObject::Alive)
-			.def("Team",						&CLuaGameObject::Team)
-			.def("Squad",						&CLuaGameObject::Squad)
-			.def("Group",						&CLuaGameObject::Group)
-			.def("Kill",						&CLuaGameObject::Kill)
-			.def("Hit",							&CLuaGameObject::Hit)
-			.def("GetFOV",						&CLuaGameObject::GetFOV)
-			.def("GetRange",					&CLuaGameObject::GetRange)
-			.def("GetRelationType",				&CLuaGameObject::GetRelationType)
-			.def("SetScriptControl",			&CLuaGameObject::SetScriptControl)
-			.def("GetScriptControl",			&CLuaGameObject::GetScriptControl)
-			.def("GetScriptControlName",		&CLuaGameObject::GetScriptControlName)
-			.def("CheckObjectVisibility",		&CLuaGameObject::CheckObjectVisibility)
-			.def("CheckIfCompleted",			&CLuaGameObject::CheckIfCompleted)
-			.enum_("EStalkerRank")
+			.def("position",					&CLuaGameObject::Position)
+			.def("classid",						&CLuaGameObject::ClassID)
+			.def("id",							&CLuaGameObject::ID)
+			.def("section",						&CLuaGameObject::Section)
+			.def("name",						&CLuaGameObject::Name)
+			.def("parent",						&CLuaGameObject::Parent)
+			.def("mass",						&CLuaGameObject::Mass)
+			.def("cost",						&CLuaGameObject::Cost)
+			.def("death_time",					&CLuaGameObject::DeathTime)
+			.def("armor",						&CLuaGameObject::Armor)
+			.def("max_health",					&CLuaGameObject::DeathTime)
+			.def("accuracy",					&CLuaGameObject::Accuracy)
+			.def("alive",						&CLuaGameObject::Alive)
+			.def("team",						&CLuaGameObject::Team)
+			.def("squad",						&CLuaGameObject::Squad)
+			.def("group",						&CLuaGameObject::Group)
+			.def("kill",						&CLuaGameObject::Kill)
+			.def("hit",							&CLuaGameObject::Hit)
+			.def("fov",							&CLuaGameObject::GetFOV)
+			.def("range",						&CLuaGameObject::GetRange)
+			.def("relation",					&CLuaGameObject::GetRelationType)
+			.def("set_script",					&CLuaGameObject::SetScriptControl)
+			.def("get_script",					&CLuaGameObject::GetScriptControl)
+			.def("get_script_name",				&CLuaGameObject::GetScriptControlName)
+			.def("see",							&CLuaGameObject::CheckObjectVisibility)
+			.def("add_action",					&CLuaGameObject::AddAction)
+			.enum_("rank")
 			[
-				value("eStalkerRankNovice",		int(ALife::eStalkerRankNovice)),
-				value("eStalkerRankExperienced",int(ALife::eStalkerRankExperienced)),
-				value("eStalkerRankVeteran",	int(ALife::eStalkerRankVeteran)),
-				value("eStalkerRankMaster",		int(ALife::eStalkerRankMaster)),
-				value("eStalkerRankDummy",		int(ALife::eStalkerRankDummy))
+				value("novice",					int(ALife::eStalkerRankNovice)),
+				value("experienced",			int(ALife::eStalkerRankExperienced)),
+				value("veteran",				int(ALife::eStalkerRankVeteran)),
+				value("master",					int(ALife::eStalkerRankMaster)),
+				value("dummy",					int(ALife::eStalkerRankDummy))
 			]
-			.enum_("EBodyState")
+			.def("use",							&CLuaGameObject::UseObject)				// time
+			.def("rank",						&CLuaGameObject::GetRank)
+			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo),
+		
+		class_<CMovementAction>("move")
+			.enum_("body")
 			[
-				value("eBodyStateCrouch",		int(StalkerSpace::eBodyStateCrouch)),
-				value("eBodyStateStand",		int(StalkerSpace::eBodyStateStand))
+				value("crouch",					int(StalkerSpace::eBodyStateCrouch)),
+				value("standing",				int(StalkerSpace::eBodyStateStand))
 			]
-			.enum_("EMovementType")
+			.enum_("move")
 			[
-				value("eMovementTypeWalk",		int(StalkerSpace::eMovementTypeWalk)),
-				value("eMovementTypeRun",		int(StalkerSpace::eMovementTypeRun)),
-				value("eMovementTypeStand",		int(StalkerSpace::eMovementTypeStand))
+				value("walk",					int(StalkerSpace::eMovementTypeWalk)),
+				value("run",					int(StalkerSpace::eMovementTypeRun)),
+				value("stand",					int(StalkerSpace::eMovementTypeStand))
 			]
-			.enum_("ELookType")
+			.enum_("path")
 			[
-				value("eLookTypeDirection",		int(StalkerSpace::eLookTypeDirection)),
-				value("eLookTypeSearch",		int(StalkerSpace::eLookTypeSearch)),
-				value("eLookTypeDanger",		int(StalkerSpace::eLookTypeDanger)),
-				value("eLookTypePoint",			int(StalkerSpace::eLookTypePoint)),
-				value("eLookTypeFirePoint",		int(StalkerSpace::eLookTypeFirePoint)),
-				value("eLookTypeLookOver",		int(StalkerSpace::eLookTypeLookOver)),
-				value("eLookTypeLookFireOver",	int(StalkerSpace::eLookTypeLookFireOver))
+				value("line",					int(StalkerSpace::ePathTypeStraight)),
+				value("dodge",					int(StalkerSpace::ePathTypeDodge)),
+				value("criteria",				int(StalkerSpace::ePathTypeCriteria)),
+				value("curve",					int(StalkerSpace::ePathTypeStraightDodge)),
+				value("curve_criteria",			int(StalkerSpace::ePathTypeDodgeCriteria))
 			]
-			.enum_("EPathType")
+			.def(								constructor<>())
+			.def("body",						&CMovementAction::SetBodyState)
+			.def("move",						&CMovementAction::SetMovementType)
+			.def("path",						&CMovementAction::SetPathType)
+			.def("object",						&CMovementAction::SetObjectToGo)
+			.def("patrol",						&CMovementAction::SetPatrolPath)
+			.def("position",					&CMovementAction::SetPosition),
+
+		class_<CWatchAction>("look")
+			.enum_("look")
 			[
-				value("ePathTypeStraight",		int(StalkerSpace::ePathTypeStraight)),
-				value("ePathTypeDodge",			int(StalkerSpace::ePathTypeDodge)),
-				value("ePathTypeCriteria",		int(StalkerSpace::ePathTypeCriteria)),
-				value("ePathTypeStraightDodge",	int(StalkerSpace::ePathTypeStraightDodge)),
-				value("ePathTypeDodgeCriteria",	int(StalkerSpace::ePathTypeDodgeCriteria))
+				value("direction",				int(StalkerSpace::eLookTypeDirection)),
+				value("search",					int(StalkerSpace::eLookTypeSearch)),
+				value("danger",					int(StalkerSpace::eLookTypeDanger)),
+				value("point",					int(StalkerSpace::eLookTypePoint)),
+				value("fire_point",				int(StalkerSpace::eLookTypeFirePoint))
 			]
-			.enum_("EWeaponState")
-				[
-				value("eWeaponStateIdle",		int(StalkerSpace::eWeaponStateIdle)),
-				value("eWeaponStatePrimaryFire",int(StalkerSpace::eWeaponStatePrimaryFire)),
-				value("eWeaponStateSecondaryFire",int(StalkerSpace::eWeaponStateSecondaryFire))
-			]
-			.enum_("EMentalState")
+			.def(								constructor<>())
+			.def("object",						&CWatchAction::SetWatchObject)		// time
+			.def("direction",					&CWatchAction::SetWatchDirection)		// time
+			.def("type",						&CWatchAction::SetWatchType),
+
+		class_<CAnimationAction>("anim")
+			.enum_("type")
 			[
-				value("eMentalStateFree",		int(StalkerSpace::eMentalStateFree)),
-				value("eMentalStateDanger",		int(StalkerSpace::eMentalStateDanger)),
-				value("eMentalStateAsleep",		int(StalkerSpace::eMentalStateAsleep)),
-				value("eMentalStateZombied",	int(StalkerSpace::eMentalStateZombied)),
-				value("eMentalStateDummy",		int(StalkerSpace::eMentalStateDummy))
+				value("free",					int(StalkerSpace::eMentalStateFree)),
+				value("danger",					int(StalkerSpace::eMentalStateDanger)),
+				value("asleep",					int(StalkerSpace::eMentalStateAsleep)),
+				value("zombied",				int(StalkerSpace::eMentalStateZombied)),
+				value("dummy",					int(StalkerSpace::eMentalStateDummy))
 			]
-			.def("SetAnimation",				&CLuaGameObject::SetAnimation)
-			.def("SetSound",					&CLuaGameObject::SetSound)
-			.def("UseObject",					&CLuaGameObject::UseObject)				// time
-			.def("GetRank",						&CLuaGameObject::GetRank)
-			.def("GetWeaponAmmo",				&CLuaGameObject::GetWeaponAmmo)
-			.def("SetBodyState",				&CLuaGameObject::SetBodyState)
-			.def("SetMovementType",				&CLuaGameObject::SetMovementType)
-			.def("SetDestination",				&CLuaGameObject::SetDestination)
-			.def("SetPathType",					&CLuaGameObject::SetPathType)
-			.def("SetPath",						&CLuaGameObject::SetPath)
-			.def("SetWatchObject",				&CLuaGameObject::SetWatchObject)		// time
-			.def("SetWatchDirection",			&CLuaGameObject::SetWatchDirection)		// time
-			.def("SetWatchType",				&CLuaGameObject::SetWatchType)
-			.def("SetMentalState",				&CLuaGameObject::SetMentalState)
-			.def("SetWeaponState",				&CLuaGameObject::SetWeaponState)		// time
-			.def("SetWeapon",					&CLuaGameObject::SetWeapon)				// time
+			.def(								constructor<>())
+			.def("anim",						&CAnimationAction::SetAnimation)
+			.def("type",						&CAnimationAction::SetMentalState),
+
+		class_<CSoundAction>("sound")
+			.def(								constructor<>())
+			.def("set",							&CSoundAction::SetSound),
+
+		class_<CObjectAction>("object")
+			.enum_("state")
+			[
+				value("idle",					int(StalkerSpace::eWeaponStateIdle)),
+				value("primary_fire",			int(StalkerSpace::eWeaponStatePrimaryFire)),
+				value("secondary_fire"			,int(StalkerSpace::eWeaponStateSecondaryFire))
+			]
+			.def(								constructor<>())
+			.def("action",						&CObjectAction::SetObjectAction)
+			.def("object",						&CObjectAction::SetObject),
+			
+		class_<CActionCondition>("cond")
+			.enum_("cond")
+			[
+				value("move_end",				int(CActionCondition::MOVEMENT_FLAG	)),
+				value("look_end",				int(CActionCondition::WATCH_FLAG)),
+				value("anim_end",				int(CActionCondition::ANIMATION_FLAG)),
+				value("sound_end",				int(CActionCondition::SOUND_FLAG)),
+				value("object_end",				int(CActionCondition::OBJECT_FLAG)),
+				value("time_end",				int(CActionCondition::TIME_FLAG))
+			]
+			.def(								constructor<>())
+			.def(								constructor<u32>())
+			.def(								constructor<u32,double>()),
+
+		class_<CEntityAction>("CEntityAction")
+			.def(								constructor<>())
+			.def("set_action",					(void (CEntityAction::*)(const CMovementAction	&tMovementAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CWatchAction		&tWatchAction))		(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CAnimationAction &tAnimationAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CSoundAction		&tSoundAction))		(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CObjectAction	&tObjectAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CActionCondition &tActionCondition))	(CEntityAction::SetAction))
+			.def("move",						&CEntityAction::CheckIfMovementCompleted)
+			.def("look",						&CEntityAction::CheckIfWatchCompleted)
+			.def("anim",						&CEntityAction::CheckIfAnimationCompleted)
+			.def("sound",						&CEntityAction::CheckIfSoundCompleted)
+			.def("object",						&CEntityAction::CheckIfObjectCompleted)
+			.def("wait",						(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
 	];
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);
