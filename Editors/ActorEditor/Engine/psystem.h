@@ -36,6 +36,7 @@
 
 #define drand48() (((float) rand())/((float) RAND_MAX))
 #define srand48(x) srand(x)
+#define age_quant	33.f
 
 namespace PAPI
 {
@@ -78,7 +79,7 @@ namespace PAPI
 		pVector	size;   // 12
 		pVector	rot;	// 12   60
 		u32		color;	// 4
-		float	age;	// 4
+		u16		_age;	// 4
 		u16		frame;	// 2
 		Flags16	flags;	// 2
 	};                  // 		72
@@ -116,7 +117,7 @@ namespace PAPI
 				P.rot = rot;
 				P.vel = vel;
 				P.color = color;
-				P.age = age;
+				P._age = iFloor(age*age_quant);
 				P.frame = frame;
 				P.flags.set(flags);
 				p_count++;
@@ -335,7 +336,7 @@ namespace PAPI
 
 	struct PAKillOld : public ParticleAction
 	{
-		float age_limit;		// Exact age at which to kill particles.
+    	float age_limit;		// Exact age at which to kill particles.
 		BOOL kill_less_than;	// True to kill particles less than limit.
 
 		Methods
