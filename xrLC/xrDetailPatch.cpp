@@ -65,8 +65,7 @@ void CBuild::LightPatches()
 		Fcolor C,Lumel;
 		LightPatch(C,g_pathes[i].P,.7f);
 
-		Lumel.lerp			(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-		g_pathes[i].color	= Lumel.get();
+		g_pathes[i].color	= Ñ.get();
 
 		if (0 == i%32)		Progress(float(i)/float(g_pathes.size()));
 	}
