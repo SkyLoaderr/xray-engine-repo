@@ -500,6 +500,20 @@ void	CShaderManager::OnFrameEnd	()
 
 void CShaderManager::DeferredUpload	()
 {
+	if (!Device.bReady)				return;
 	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
 		t->second->Load(t->first);
+}
+
+void CShaderManager::ED_UpdateTextures(vector<LPSTR>& names)
+{
+	// 1. Unload
+	for (DWORD nid=0; nid<names.size(); nid++)
+	{
+		map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	(names[nid]);
+		if (I!=textures.end())	I->second->Unload();
+	}
+
+	// 2. Load
+	DeferredUpload	();
 }
