@@ -8,12 +8,10 @@ private:
 	BOOL				bAvailable;
 
 	CRT*				RT;
-	CRT*				RT_temp;
 
 	Shader*				pShaderSet;
 	Shader*				pShaderGray;
 	Shader*				pShaderBlend;
-	Shader*				pShaderAdd;
 	CVS*				pVS;
 	
 	BOOL				Create				();
@@ -32,6 +30,6 @@ public:
 	void				Begin				();
 	void				End					();
 
-	virtual void		set_blur			(float f)		{ param_blur=f; }
-	virtual void		set_gray			(float f)		{ param_gray=f; }
+	void				set_blur			(float f)		{ param_blur=f; }
+	void				set_gray			(float f)		{ param_gray=f; }
 };

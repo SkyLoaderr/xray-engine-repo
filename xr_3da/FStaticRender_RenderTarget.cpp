@@ -2,7 +2,6 @@
 #include "fstaticrender_rendertarget.h"
 
 static LPCSTR		RTname	= "$user$rendertarget";
-static LPCSTR		RTtemp	= "$user$temp_small";
 static CPS*			hPS		= 0;
 static CTexture*	hTex	= 0;
 
@@ -23,37 +22,28 @@ BOOL CRenderTarget::Create	()
 {
 	// 
 	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
-	RT_temp		= Device.Shader._CreateRT		(RTtemp,64,64);
 	
 	// Shaders and stream
 	pVS			= Device.Shader._CreateVS		(FVF::F_TL);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend= Device.Shader.Create			("effects\\screen_blend",	RTname);
-	pShaderAdd	= Device.Shader.Create			("effects\\screen_add",		RTtemp);
-	return	RT->Valid() && RT_temp->Valid();
+	return	RT->Valid();
 }
 
 void CRenderTarget::OnDeviceCreate	()
 {
-	// hPS			= Device.Shader._CreatePS		("hdr");
-	// hTex		= Device.Shader._CreateTexture	("transfer3");
-
 	bAvailable	= Create	();
+	set_blur	(1.f);
 }
 
 void CRenderTarget::OnDeviceDestroy	()
 {
-	Device.Shader.Delete		(pShaderAdd);
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
-	Device.Shader._DeleteRT		(RT_temp);
 	Device.Shader._DeleteRT		(RT);
 	Device.Shader._DeleteVS		(pVS);
-
-	// Device.Shader._DeletePS		(hPS);
-	// Device.Shader._DeleteTexture(hTex);
 }
 
 void CRenderTarget::Begin	()
