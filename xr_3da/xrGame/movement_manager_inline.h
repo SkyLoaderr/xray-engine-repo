@@ -79,3 +79,13 @@ IC	void CMovementManager::set_desirable_speed	(float speed)
 {
 	m_desirable_speed		= speed;
 }
+
+IC	void CMovementManager::use_selector_path	(bool selector_path_usage)
+{
+	m_selector_path_usage	= selector_path_usage;
+}
+
+IC	bool CMovementManager::selector_path_used	() const
+{
+	return					(m_selector_path_usage);
+}

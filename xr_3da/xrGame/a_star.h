@@ -170,18 +170,23 @@ public:
 		// iterate while opened list is not empty
 		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
 			// check if we reached limit
-			if (path_manager.is_limit_reached(i))
+			if (path_manager.is_limit_reached(i)) {
 				// so we reaches limit, return failure
+				path_manager.finalize();
 				return			(false);
+			}
 			
 			// so, limit is not reached
 			// check if new step will get us success
-			if (step(data_storage, path_manager))
+			if (step(data_storage, path_manager)) {
 				// so this step reached the goal, return success
+				path_manager.finalize();
 				return			(true);
+			}
 		}
 
 		// so, opened list is empty, return failure
+		path_manager.finalize	();
 		return					(false);
 	}
 };

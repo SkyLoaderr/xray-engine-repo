@@ -83,6 +83,7 @@ private:
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
 	float									m_speed;
 	float									m_desirable_speed;
+	bool									m_selector_path_usage;
 
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
@@ -111,6 +112,8 @@ public:
 	IC		bool	path_completed			() const;
 	IC		float	desirable_speed			() const;
 	IC		void	set_desirable_speed		(float speed);
+	IC		void	use_selector_path		(bool selector_path_usage);
+	IC		bool	selector_path_used		() const;
 
 			void	update_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);

@@ -23,6 +23,7 @@ namespace PathManagers {
 	> {
 		u8				m_vertex_types[LOCATION_TYPE_COUNT];
 		_index_type		m_vertex_id;
+		xr_vector<_index_type> *m_path;
 
 		IC	SVertexType (
 				const u8				*vertex_types,

@@ -21,9 +21,11 @@ void CMovementManager::process_level_path()
 				break;
 		}
 		case ePathStateBuildLevelPath : {
-			CLevelPathManager::build_path(level_vertex_id(),level_dest_vertex_id());
-			if (CLevelPathManager::failed())
-				break;
+			if (!m_selector_path_usage) {
+				CLevelPathManager::build_path(level_vertex_id(),level_dest_vertex_id());
+				if (CLevelPathManager::failed())
+					break;
+			}
 			m_path_state		= ePathStateContinueLevelPath;
 			if (time_over())
 				break;

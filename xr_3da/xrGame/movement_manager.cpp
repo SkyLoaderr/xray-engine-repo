@@ -31,6 +31,7 @@ void CMovementManager::Init			()
 	m_path_actuality				= true;
 	m_speed							= 0.f;
 	m_desirable_speed				= 0.f;
+	m_selector_path_usage			= true;
 
 	enable_movement					(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
@@ -42,6 +43,8 @@ void CMovementManager::Init			()
 
 	CGamePathManager::set_evaluator	(m_base_game_selector);
 	CLevelPathManager::set_evaluator(m_base_level_selector);
+	CGameLocationSelector::set_dest_path(CGamePathManager::m_path);
+	CLevelLocationSelector::set_dest_path(CLevelPathManager::m_path);
 }
 
 void CMovementManager::Load			(LPCSTR caSection)

@@ -204,6 +204,11 @@ public:
 		VERIFY					(is_visited(vertex_id));
 		return					(*indexes[vertex_id].vertex);
 	}
+
+	IC		void		get_node_path	(xr_vector<_index_type> &path, _index_type node_index)
+	{
+		inherited::get_path		(path,&get_node(node_index));
+	}
 };
 
 template <

@@ -36,6 +36,7 @@ IC	void CSelectorTemplate::Init					(const _Graph *graph)
 	m_last_query_time		= 0;
 	m_query_interval		= 0;
 	m_graph					= graph;
+	m_path					= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -94,12 +95,19 @@ TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 {
 	VERIFY						(m_evaluator && m_graph);
+	m_evaluator->m_path			= m_path;
 	ai().graph_engine().search	(*m_graph,vertex_id,vertex_id,0,*m_evaluator);
 	m_failed	= 
 		!m_graph->valid_vertex_id(m_evaluator->selected_vertex_id()) || 
 		(m_evaluator->selected_vertex_id() == m_selected_vertex_id);
 	if (!failed())
 		m_selected_vertex_id	= m_evaluator->selected_vertex_id();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSelectorTemplate::set_dest_path		(xr_vector<_vertex_id_type> &path)
+{
+	m_path						= &path;
 }
 
 #undef CSelectorTemplate

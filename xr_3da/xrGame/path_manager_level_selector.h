@@ -130,6 +130,7 @@ namespace PathManagers {
 		const CLevelGraph::CVertex *m_tpCurrentMemberNode;
 		Fvector			m_tCurrentMemberPosition;
 		Fvector			m_tCurrentMemberDirection;
+		xr_vector<u32>	*m_path;
 
 		// common
 		float			m_fResult;
@@ -170,6 +171,7 @@ namespace PathManagers {
 
 						CVertexEvaluator			()
 		{
+			m_path			= 0;
 		}
 
 						CVertexEvaluator			(LPCSTR section, LPCSTR Name)
@@ -301,7 +303,11 @@ namespace PathManagers {
 			direction.sub	(m_tEnemyPosition,m_tCurrentPosition);
 			float			yaw, pitch;
 			direction.getHP	(yaw,pitch);
-			m_fResult		+= m_fCoverFromEnemyWeight*ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode);
+			m_fResult		+= 
+				m_fCoverFromEnemyWeight*(
+					ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode) +
+					ai().level_graph().cover_in_direction(-yaw,m_tpEnemyNode)
+				);
 		}
 
 		IC		void vfAddCoverFromMemberCost				()
@@ -310,7 +316,11 @@ namespace PathManagers {
 			direction.sub	(m_tCurrentMemberDirection,m_tCurrentPosition);
 			float			yaw, pitch;
 			direction.getHP	(yaw,pitch);
-			m_fResult		+= m_fCoverFromMemberWeight*ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode);
+			m_fResult		+= 
+				m_fCoverFromEnemyWeight*(
+					ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode) +
+					ai().level_graph().cover_in_direction(-yaw,m_tpCurrentMemberNode)
+				);
 		}
 
 		IC		void vfAddTotalCoverCost					()

@@ -21,6 +21,7 @@ protected:
 	const _Graph				*m_graph;
 	u32							m_last_query_time;
 	u32							m_query_interval;
+	xr_vector<_vertex_id_type>	*m_path;
 	
 	IC		void				perform_search				(const _vertex_id_type game_vertex_id);
 public:
@@ -36,8 +37,8 @@ public:
 	IC			bool			failed						() const;
 	IC			bool			actual						(const _vertex_id_type start_vertex_id);
 	IC			bool			used						() const;
-
 	IC			void			select_location				(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
+	IC			void			set_dest_path				(xr_vector<_vertex_id_type> &path);
 };
 
 #include "abstract_location_selector_inline.h"

@@ -906,6 +906,8 @@ public:
 				_Parameters				&parameters
 			)
 	{
+		m_evaluator				= &parameters;
+		m_evaluator->max_range	= parameters.m_fSearchRange;
 		inherited::setup(
 			_graph,
 			_data_storage,
@@ -914,9 +916,8 @@ public:
 			_goal_node_index,
 			parameters
 		);
-		m_evaluator				= &parameters;
-		m_evaluator->max_range	= parameters.m_fSearchRange;
 		m_evaluator->m_fBestCost= flt_max;
+		path					= parameters.m_path;
 		graph->set_invalid_vertex(m_evaluator->m_dwBestNode);
 	}
 
@@ -943,8 +944,10 @@ public:
 		return					(false);
 	}
 
-	IC		void		create_path		()
+	IC		void		finalize		()
 	{
+		if (path && graph->valid_vertex_id(m_evaluator->m_dwBestNode))
+			data_storage->get_node_path(*path,m_evaluator->m_dwBestNode);
 	}
 };
 
@@ -1021,6 +1024,7 @@ public:
 			parameters
 		);
 		m_evaluator		= &parameters;
+		path			= m_evaluator->m_path;
 		m_evaluator->m_vertex_id = _index_type(-1);
 	}
 
@@ -1041,6 +1045,8 @@ public:
 	
 	IC		void		create_path		()
 	{
+		if (path)
+			inherited::create_path();
 	}
 };
 #else

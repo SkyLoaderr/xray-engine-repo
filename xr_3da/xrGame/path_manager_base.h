@@ -124,5 +124,9 @@ public:
 	{
 		return					(graph->value(best_node_index,i));
 	}
+
+	IC		void		finalize		()
+	{
+	}
 };
 
