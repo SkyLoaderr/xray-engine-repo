@@ -206,16 +206,19 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	}
 
 	//отправить хит пораженному объекту
-	NET_Packet		P;
-	u_EventGen		(P,GE_HIT,R.O->ID());
-	P.w_u16			(u16(m_iCurrentParentID));
-	P.w_dir			(m_vCurrentShootDir);
-	P.w_float		(power);
-	P.w_s16			((s16)R.element);
-	P.w_vec3		(position_in_bone_space);
-	P.w_float		(impulse);
-	P.w_u16			(eHitTypeWound);
-	u_EventSend		(P);
+	if(Level().Server->client_Count())
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_HIT,R.O->ID());
+		P.w_u16			(u16(m_iCurrentParentID));
+		P.w_dir			(m_vCurrentShootDir);
+		P.w_float		(power);
+		P.w_s16			((s16)R.element);
+		P.w_vec3		(position_in_bone_space);
+		P.w_float		(impulse);
+		P.w_u16			(eHitTypeWound);
+		u_EventSend		(P);
+	}
 
 	//визуальное обозначение попадание на объекте
 	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
