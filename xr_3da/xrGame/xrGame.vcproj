@@ -1975,10 +1975,19 @@
 									RelativePath=".\ai\Monsters\state_inline.h">
 								</File>
 								<File
-									RelativePath=".\ai\Monsters\state_movement.h">
+									RelativePath=".\ai\Monsters\state_manager.h">
 								</File>
 								<File
-									RelativePath=".\ai\Monsters\state_movement_inline.h">
+									RelativePath=".\ai\Monsters\state_manager_first.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\state_manager_first.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\state_manager_second.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\state_manager_second_inline.h">
 								</File>
 							</Filter>
 							<Filter
@@ -2614,6 +2623,12 @@
 						<File
 							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_state_manager.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Boar"
@@ -2623,6 +2638,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Boar\boar.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Boar\boar_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Boar\boar_state_manager.h">
 						</File>
 					</Filter>
 					<Filter
@@ -2644,6 +2665,12 @@
 						<File
 							RelativePath=".\ai\Monsters\Dog\dog.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Dog\dog_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Dog\dog_state_manager.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Flesh"
@@ -2653,6 +2680,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Flesh\flesh.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Flesh\flesh_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Flesh\flesh_state_manager.h">
 						</File>
 					</Filter>
 					<Filter
@@ -2730,6 +2763,12 @@
 						<File
 							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_growling.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_manager.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Burer"
@@ -2777,72 +2816,14 @@
 							RelativePath=".\ai\Monsters\Burer\burer_scan.h">
 						</File>
 						<File
+							RelativePath=".\ai\Monsters\Burer\burer_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Burer\burer_state_manager.h">
+						</File>
+						<File
 							RelativePath=".\ai\Monsters\Burer\burer_states.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="Controller"
-						Filter="">
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller_state_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Controller\controller_state_manager.h">
-						</File>
-						<Filter
-							Name="State Attack"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_attack.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_attack_inline.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit_inline.h">
-							</File>
-							<Filter
-								Name="Cover"
-								Filter="">
-								<File
-									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide_inline.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="State Panic"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\Controller\controller_state_panic.h">
-							</File>
-							<File
-								RelativePath=".\controller_state_panic_inline.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="Chimera"
@@ -2880,6 +2861,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant_step_effector.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\PseudoGigant\pseudogigant_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\PseudoGigant\pseudogigant_state_manager.h">
 						</File>
 					</Filter>
 					<Filter
@@ -2981,6 +2968,70 @@
 						<File
 							RelativePath=".\ai\Monsters\Snork\snork_state_manager.h">
 						</File>
+					</Filter>
+					<Filter
+						Name="Controller"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_psy_aura.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_state_manager.h">
+						</File>
+						<Filter
+							Name="State Attack"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit_inline.h">
+							</File>
+							<Filter
+								Name="Cover"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_hide_inline.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\Controller\controller_state_attack_moveout_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="State Panic"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_panic.h">
+							</File>
+							<File
+								RelativePath=".\controller_state_panic_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

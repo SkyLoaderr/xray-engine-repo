@@ -1,41 +1,20 @@
 #include "stdafx.h"
 #include "burer.h"
 #include "../ai_monster_utils.h"
-#include "burer_states.h"
 #include "../../../PhysicsShell.h"
 #include "../../../actor.h"
 #include "../ai_monster_debug.h"
-
-
-#define SCAN_STATE_TIME 4000
+#include "burer_state_manager.h"
 
 CBurer::CBurer()
 {
-	stateRest			= xr_new<CBaseMonsterRest>		(this);
-	stateAttack			= xr_new<CBurerAttack>			(this);
-	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>(this);
-	stateExploreDNE		= xr_new<CBaseMonsterExploreDNE>(this);
-	stateNull			= xr_new<CBaseMonsterNull>		();
-	stateScan			= xr_new<CBurerScan>			(this);
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-
+	StateMan = xr_new<CStateManagerBurer>(this);
 	TScanner::init_external(this);
 }
 
 CBurer::~CBurer()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateNull);
-	xr_delete(stateScan);
+	xr_delete(StateMan);
 }
 
 
@@ -57,29 +36,19 @@ void CBurer::reload(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 
+	CSkeletonAnimated *pSkel = smart_cast<CSkeletonAnimated*>(Visual());
+	
 	// Load triple gravi animations
 	CMotionDef *def1, *def2, *def3;
-	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_gravi_0");
-	VERIFY(def1);
-
-	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_gravi_1");
-	VERIFY(def2);
-
-	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_gravi_2");
-	VERIFY(def3);
-
+	def1 = pSkel->ID_Cycle_Safe("stand_gravi_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("stand_gravi_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("stand_gravi_2");	VERIFY(def3);
 	anim_triple_gravi.init_external	(def1, def2, def3);
 	
 	// Load triple tele animations
-	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_tele_0");
-	VERIFY(def1);
-
-	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_tele_1");
-	VERIFY(def2);
-
-	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("stand_tele_2");
-	VERIFY(def3);
-
+	def1 = pSkel->ID_Cycle_Safe("stand_tele_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("stand_tele_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("stand_tele_2");	VERIFY(def3);
 	anim_triple_tele.init_external	(def1, def2, def3);
 
 }
@@ -174,32 +143,6 @@ void CBurer::Load(LPCSTR section)
 
 }
 
-
-void CBurer::StateSelector()
-{	
-	IState *state = 0;
-
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = stateAttack; break;
-		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			state = stateExploreNDE;		
-		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else if (time_last_scan + SCAN_STATE_TIME > m_current_update){
-		state = stateScan;
-	} else	if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
-											state = stateEat;	
-	else									state = stateRest;
-		
-	(!EnemyMan.get_enemy()) ? TScanner::enable() : TScanner::disable();
-
-	SetState(state); 
-}
-
 void CBurer::ProcessTurn()
 {
 	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
@@ -224,12 +167,6 @@ void CBurer::ProcessTurn()
 			return;
 	}
 }
-
-bool CBurer::UpdateStateManager()
-{
-	return false;
-}
-
 
 void CBurer::shedule_Update(u32 dt)
 {

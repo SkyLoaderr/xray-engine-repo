@@ -14,5 +14,4 @@ public:
 	virtual			~CSnork				();	
 
 	virtual void	Load				(LPCSTR section);
-	virtual bool	UpdateStateManager	();
 };

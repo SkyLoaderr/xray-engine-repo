@@ -157,9 +157,6 @@ bool CBaseMonster::bfAssignSound(CScriptEntityAction *tpEntityAction)
 	return				(true);
 }
 
-
-
-
 bool CBaseMonster::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMonsterAction(tpEntityAction)) return false;
@@ -171,27 +168,27 @@ bool CBaseMonster::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 
 	switch(l_tAction.m_tAction) {
 		case eGA_Rest:		
-			SetState(stateRest, true);	
+			StateMan->force_script_state(eStateRest);	
 			break;
 		case eGA_Eat:		
 			if (pE && !pE->getDestroy() && !pE->g_Alive()){
-				SetState(stateEat, true);	
+				StateMan->force_script_state(eStateEat);	
 				CorpseMan.force_corpse(pE);
-			} else SetState(stateRest, true);	
+			} else StateMan->force_script_state(eStateRest);	
 
 			break;
 		case eGA_Attack:
 			if (pE && !pE->getDestroy() && pE->g_Alive()){
-				SetState(stateAttack, true);	
+				StateMan->force_script_state(eStateAttack);
 				EnemyMan.force_enemy(pE);
-			} else SetState(stateRest, true);	
+			} else StateMan->force_script_state(eStateRest);
 
 			break;
 		case eGA_Panic:		
 			if (pE && !pE->getDestroy() && pE->g_Alive()){
-				SetState(statePanic, true);
-				EnemyMan.force_enemy(pE);
-			} else SetState(stateRest, true);	
+				StateMan->force_script_state	(eStatePanic);
+				EnemyMan.force_enemy			(pE);
+			} else StateMan->force_script_state	(eStateRest);	
 			break;
 	}
 
@@ -208,7 +205,6 @@ void CBaseMonster::ProcessScripts()
 	
 	script_processing_active = true;
 
-
 	// Инициализировать action
 	MotionMan.m_tAction = ACT_STAND_IDLE;
 
@@ -218,18 +214,16 @@ void CBaseMonster::ProcessScripts()
 	b_script_state_must_execute					= false;
 	inherited::ProcessScripts					();
 	
-	m_dwLastUpdateTime						= m_current_update;
-	m_current_update						= Level().timeServer();
+	m_current_update							= Level().timeServer();
 
 	// обновить мир (память, враги, объекты)
 	vfUpdateParameters							();
 	
-	
 	MotionMan.accel_deactivate					();
 
 	// если из скрипта выбрано действие по универсальной схеме, выполнить его
-	if (b_script_state_must_execute)			
-		CurrentState->Execute					(m_current_update);
+	if (b_script_state_must_execute) 	
+		StateMan->execute_script_state			();		
 	
 	TranslateActionToPathParams					();
 
@@ -354,7 +348,7 @@ void CBaseMonster::TranslateActionToPathParams()
 
 void CBaseMonster::SetScriptControl(const bool bScriptControl, shared_str caScriptName)
 {
-	if (CurrentState) CurrentState->Done();
+	//if (CurrentState) CurrentState->Done();
 
 	CScriptMonster::SetScriptControl(bScriptControl, caScriptName);
 }

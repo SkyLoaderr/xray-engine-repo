@@ -1,26 +1,28 @@
 #include "stdafx.h"
-#include "burer.h"
-#include "burer_state_manager.h"
+#include "dog.h"
+#include "dog_state_manager.h"
 #include "../BaseMonster/base_monster_state.h"
-#include "burer_states.h"
+#include "../ai_monster_utils.h"
 
-
-CStateManagerBurer::CStateManagerBurer(CBurer *monster) : m_object(monster), inherited(monster)
+CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : m_object(monster), inherited(monster)
 {
 	add_state(eStateRest,					xr_new<CBaseMonsterRest>		(monster));
 	add_state(eStateEat,					xr_new<CBaseMonsterEat>			(monster));
-	add_state(eStateAttack,					xr_new<CBurerAttack>			(monster));
+	add_state(eStateAttack,					xr_new<CBaseMonsterAttack>		(monster));
 	add_state(eStatePanic,					xr_new<CBaseMonsterPanic>		(monster));
 	add_state(eStateHearInterestingSound,	xr_new<CBaseMonsterExploreNDE>	(monster));
 	add_state(eStateHearDangerousSound,		xr_new<CBaseMonsterRunAway>		(monster));
-	add_state(eStateCustom,					xr_new<CBurerScan>				(monster));
+	add_state(eStateHitted,					xr_new<CBaseMonsterRunAway>		(monster));
+	add_state(eStateControlled,				xr_new<CBaseMonsterControlled>	(monster));
 }
 
-#define SCAN_STATE_TIME 4000
-
-
-void CStateManagerBurer::update()
+void CStateManagerDog::update()
 {
+	if (m_object->is_under_control()) {
+		set_state(eStateControlled);
+		return;
+	}
+
 	EGlobalStates state = eStateUnknown;
 
 	TTime last_hit_time = 0;
@@ -35,13 +37,23 @@ void CStateManagerBurer::update()
 		}
 	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->m_current_update)) state = eStateHitted;
 	else if (m_object->hear_dangerous_sound || m_object->hear_interesting_sound) {
-		state = eStateHearInterestingSound;
-	} else if (m_object->time_last_scan + SCAN_STATE_TIME > m_object->m_current_update){
-		state = eStateCustom;
+		if (m_object->hear_dangerous_sound)			state = eStateHearDangerousSound;	
+		if (m_object->hear_interesting_sound)		state = eStateHearInterestingSound;	
 	} else if (m_object->can_eat_now())	state = eStateEat;	
 	else								state = eStateRest;
 
-	(!m_object->EnemyMan.get_enemy()) ? m_object->TScanner::enable() : m_object->TScanner::disable();
-	
+	if (state == eStateAttack) {
+		float yaw,pitch;
+		Fvector().sub(m_object->EnemyMan.get_enemy_position(), m_object->Position()).getHP(yaw,pitch);
+
+		yaw = angle_normalize(-yaw);
+
+		if (angle_difference(yaw, m_object->m_body.current.yaw) > PI_DIV_2) {
+
+			if (from_right(yaw, m_object->m_body.current.yaw)) m_object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_RIGHT);
+			else m_object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_LEFT);
+		}
+	}
+
 	set_state(state);
 }

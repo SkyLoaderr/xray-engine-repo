@@ -73,12 +73,6 @@ void CFracture::Load(LPCSTR section)
 
 }
 
-bool CFracture::UpdateStateManager()
-{
-	StateMan->execute	();
-	return true;
-}
-
 void CFracture::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {

@@ -3,15 +3,11 @@
 #include "../ai_monster_bones.h"
 #include "../anim_triple.h"
 
-class CStateManagerZombie;
-
 #define FAKE_DEATH_TYPES_COUNT	3
 
 class CZombie :	public CBaseMonster {
 	
 	typedef		CBaseMonster		inherited;
-
-	CStateManagerZombie *StateMan;
 
 	bonesManipulation	Bones;
 
@@ -26,7 +22,6 @@ public:
 
 	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);
 
-	virtual bool	UpdateStateManager	();
 	virtual	void	PitchCorrection		() {}
 
 	virtual void	shedule_Update		(u32 dt);

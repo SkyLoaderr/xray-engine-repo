@@ -12,6 +12,7 @@
 #include "../ai_monster_motion.h"
 #include "../ai_monster_shared_data.h"
 #include "../ai_monster_movement.h"
+#include "../state_manager.h"
 
 #include "../monster_enemy_memory.h"
 #include "../monster_corpse_memory.h"
@@ -21,7 +22,6 @@
 #include "../monster_enemy_manager.h"
 #include "../monster_corpse_manager.h"
 
-#include "base_monster_state.h"
 #include "../../../step_manager.h"
 
 
@@ -169,14 +169,6 @@ public:
 	
 	virtual void			SetScriptControl				(const bool bScriptControl, shared_str caSciptName);
 
-
-	// ---------------------------------------------------------------------------------
-	// Process FSM
-	virtual bool			UpdateStateManager				() {return false;}
-	virtual void            StateSelector					() {}  
-			void			squad_notify					();
-	// ---------------------------------------------------------------------------------
-	
 	virtual void			Exec_Look						( float dt );
 
 	virtual void			ProcessTurn						();
@@ -204,13 +196,6 @@ public:
 	virtual bool			ability_distant_feel			() {return false;}
 
 	// ---------------------------------------------------------------------------------
-			//u16				m_FootBones[eLegsMaxNumber];
-
-			//Fvector			get_foot_position				(ELegType leg_type);
-			//void			LoadFootBones					();
-
-			//u8				get_legs_number					() {return get_sd()->m_legs_number;}
-	
 	virtual void			event_on_step					() {}
 	virtual float			get_current_animation_time		();
 	virtual	void			on_animation_start				(shared_str anim);
@@ -255,6 +240,8 @@ public:
 
 			bool			IsVisibleObject					(const CGameObject *object);
 
+			bool			can_eat_now						();
+
 // members
 public:
 
@@ -278,29 +265,10 @@ public:
 	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;
 	CCoverEvaluatorCloseToEnemy		*m_cover_evaluator_close_point;
 
-	// -----------------------------------------------------------------------
-	// FSM
-			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
+	// ---------------------------------------------------------------------------------
+	IStateManagerBase		*StateMan;
+	// ---------------------------------------------------------------------------------
 
-	IState					*stateRest;
-	IState					*stateEat;
-	IState					*stateAttack;
-	IState					*statePanic;
-	IState					*stateExploreDNE;
-	IState					*stateExploreDE;
-	IState					*stateExploreNDE;
-	IState					*stateTest;
-	IState					*stateNull;
-	IState					*stateControlled;
-
-	IState					*CurrentState;
-
-	void					State_PlaySound(u32 internal_type, u32 max_stop_time);
-	
-	// -----------------------------------------------------------------------------	
-	
-
-	
 	CMonsterEnemyMemory		EnemyMemory;
 	CMonsterSoundMemory		SoundMemory;
 	CMonsterCorpseMemory	CorpseMemory;

@@ -21,7 +21,6 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 
-	virtual void	StateSelector		();
 	virtual bool	ability_earthquake	() {return true;}
 	virtual void	event_on_step		();
 

@@ -1,34 +1,18 @@
 #include "stdafx.h"
 #include "boar.h"
 #include "../ai_monster_utils.h"
+#include "boar_state_manager.h"
 
 CAI_Boar::CAI_Boar()
 {
-	stateRest			= xr_new<CBaseMonsterRest>		(this);
-	stateAttack			= xr_new<CBaseMonsterAttack>		(this);
-	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
-	stateNull			= xr_new<CBaseMonsterNull>		();
-	stateControlled		= xr_new<CBaseMonsterControlled>	(this);
-
-	CurrentState		= stateRest;
-	CurrentState->Reset	();
+	StateMan = xr_new<CStateManagerBoar>	(this);
 
 	controlled::init_external(this);
 }
 
 CAI_Boar::~CAI_Boar()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateNull);
-	xr_delete(stateControlled);
+	xr_delete(StateMan);
 }
 
 
@@ -104,51 +88,6 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.accel_chain_test		();
 #endif
 
-}
-
-void CAI_Boar::StateSelector()
-{	
-	if (is_under_control()) {
-		SetState(stateControlled);
-		return;
-	}
-
-	IState *state = 0;
-
-	TTime last_hit_time = 0;
-	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
-
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = stateAttack; break;
-		}
-	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) state = stateExploreDNE;
-	else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			state = stateExploreNDE;		
-		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
-											state= stateEat;	
-	else									state = stateRest;
-
-	if (state == stateAttack) {
-		look_at_enemy = true;
-		// calc new target delta
-		float yaw, pitch;
-		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
-		yaw *= -1;
-		yaw = angle_normalize(yaw);
-
-		if (from_right(yaw,m_body.current.yaw)) {
-			_target_delta = angle_difference(yaw,m_body.current.yaw);
-		} else _target_delta = -angle_difference(yaw,m_body.current.yaw);
-
-		clamp(_target_delta, -PI_DIV_4, PI_DIV_4);
-	}
-	
-	SetState(state);
 }
 
 void __stdcall CAI_Boar::BoneCallback(CBoneInstance *B)

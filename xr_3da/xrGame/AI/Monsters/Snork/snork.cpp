@@ -49,8 +49,3 @@ void CSnork::Load(LPCSTR section)
 #endif
 
 }
-bool CSnork::UpdateStateManager()
-{
-	StateMan->execute	();
-	return true;
-}

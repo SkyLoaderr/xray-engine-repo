@@ -58,24 +58,6 @@ void CZombie::Load(LPCSTR section)
 
 }
 
-bool CZombie::UpdateStateManager()
-{
-	if (MotionMan.TA_IsActive()) return true;
-	
-	StateMan->execute	();
-
-	//if (!Bones.IsActive()) {
-	//	
-	//	float look_k = (Random.randI(2) ? (-1.f) : (1.f));
-	//	
-	//	Bones.SetMotion(bone_spine, AXIS_Z, 2 * look_k * PI_DIV_6/2,	2 * PI_DIV_6 / 2,	1);		
-	//	Bones.SetMotion(bone_spine, AXIS_Y, PI_DIV_6,					2 * PI_DIV_6,		1);
-	//	Bones.SetMotion(bone_spine, AXIS_X, 2 * look_k * PI_DIV_6,		2 * PI_DIV_6,		1);
-	//}
-	
-	return true;
-}
-
 void CZombie::reinit()
 {
 	inherited::reinit();

@@ -1,5 +1,8 @@
 #pragma once 
 
+#include "../ai_monster_state.h"
+class CAI_PseudoDog;
+
 class CPseudodogGrowling : public IState {
 	CAI_PseudoDog		*pMonster;
 

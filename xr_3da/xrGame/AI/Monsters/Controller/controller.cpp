@@ -121,13 +121,6 @@ void CController::Load(LPCSTR section)
 
 }
 
-bool CController::UpdateStateManager()
-{
-	UpdateControlled	();
-	StateMan->execute	();
-	return true;
-}
-
 void CController::UpdateControlled()
 {
 	// если есть враг, проверить может ли быть враг взят под контроль
@@ -334,6 +327,8 @@ void CController::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	CPsyAuraController::schedule_update();
+
+	UpdateControlled();
 }
 
 void CController::Jump()

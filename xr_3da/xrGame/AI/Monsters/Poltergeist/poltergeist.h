@@ -41,8 +41,6 @@ public:
 
 	virtual void	ForceFinalAnimation	();
 
-	virtual bool	UpdateStateManager	();
-
 	virtual	void	on_activate			();
 	virtual	void	on_deactivate		();
 

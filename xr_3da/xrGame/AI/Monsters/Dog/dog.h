@@ -24,7 +24,6 @@ public:
 	virtual void	UpdateCL			();
 
 	virtual void	reinit				();
-	virtual void	StateSelector		();
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual	void	OnSoundPlay			();
 

@@ -2,19 +2,11 @@
 #include "flesh.h"
 #include "../../../ai_space.h"
 #include "../ai_monster_utils.h"
+#include "flesh_state_manager.h"
 
 CAI_Flesh::CAI_Flesh()
 {
-	stateRest			= xr_new<CBaseMonsterRest>			(this);
-	stateAttack			= xr_new<CBaseMonsterAttack>		(this);
-	stateEat			= xr_new<CBaseMonsterEat>			(this);
-	statePanic			= xr_new<CBaseMonsterPanic>			(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
-	stateControlled		= xr_new<CBaseMonsterControlled>	(this);
-
-	CurrentState		= stateRest;
-	CurrentState->Reset();
+	StateMan = xr_new<CStateManagerFlesh>(this);
 	
 	m_fEyeShiftYaw		= PI_DIV_6;
 
@@ -23,13 +15,7 @@ CAI_Flesh::CAI_Flesh()
 
 CAI_Flesh::~CAI_Flesh()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(statePanic);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateControlled);
+	xr_delete(StateMan);
 }
 
 BOOL CAI_Flesh::net_Spawn (LPVOID DC) 
@@ -116,36 +102,6 @@ void CAI_Flesh::Load(LPCSTR section)
 #endif
 
 }
-
-
-void CAI_Flesh::StateSelector()
-{
-	if (is_under_control()) {
-		SetState(stateControlled);
-		return;
-	}
-	
-	
-	TTime last_hit_time = 0;
-	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
-
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:	SetState(statePanic); break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:			SetState(stateAttack); break;
-		}
-	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) SetState(stateExploreDNE);
-	else if (hear_dangerous_sound || hear_interesting_sound) {
-			if (hear_dangerous_sound)			SetState(stateExploreDNE);		
-		if (hear_interesting_sound)			SetState(stateExploreNDE);	
-	} else if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
-											SetState(stateEat);	
-	else									SetState(stateRest);
-
-}
-
 
 // возвращает true, если после выполнения этой функции необходимо прервать обработку
 // т.е. если активирована последовательность

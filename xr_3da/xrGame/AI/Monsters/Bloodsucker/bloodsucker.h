@@ -35,7 +35,6 @@ public:
 
 	virtual void			Die						();
 
-	virtual void			StateSelector			();
 	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual void			net_Destroy				();
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "../state.h"
+#include "../state_manager_second.h"
 
 class CPoltergeist;
 
-class CStateManagerPoltergeist : public CState<CPoltergeist> {
-	typedef CState<CPoltergeist> inherited;
+class CStateManagerPoltergeist : public CStateManagerSecond<CPoltergeist> {
+	typedef CStateManagerSecond<CPoltergeist> inherited;
 
 	enum {
 		eStateRest					 = u32(0),

@@ -1,10 +1,10 @@
 #pragma once
-#include "../state.h"
+#include "../state_manager_second.h"
 
 class CZombie;
 
-class CStateManagerZombie : public CState<CZombie> {
-	typedef CState<CZombie> inherited;
+class CStateManagerZombie : public CStateManagerSecond<CZombie> {
+	typedef CStateManagerSecond<CZombie> inherited;
 
 	enum {
 		eStateRest					 = u32(0),

@@ -32,5 +32,5 @@ void CBaseMonsterRunAway::Run()
 		pMonster->FaceTarget	(danger_pos);
 		break;
 	}
-	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundPanic, pMonster->get_sd()->m_dwAttackSndDelay);
+	pMonster->set_state_sound(MonsterSpace::eMonsterSoundPanic);
 }

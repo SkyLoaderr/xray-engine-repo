@@ -48,6 +48,8 @@ void CBaseMonster::reinit()
 	EnemyMan.reinit						();
 	CorpseMan.reinit					();
 
+	StateMan->reinit					();
+
 	flagEatNow						= false;
 	m_bDamaged						= false;
 	m_bAngry						= false;

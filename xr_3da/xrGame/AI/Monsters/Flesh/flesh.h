@@ -14,7 +14,6 @@ public:
 	
 	virtual	void	Load					(LPCSTR section);
 	virtual	BOOL	net_Spawn				(LPVOID DC);
-	virtual void    StateSelector			();
 
 	virtual	void	CheckSpecParams			(u32 spec_params);
 

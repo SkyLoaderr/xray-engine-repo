@@ -188,8 +188,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 			(ai().level_graph().level_id() != u32(-1)),
 			"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!"
 		);
-		set_game_vertex				(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
-		set_game_dest_vertex		(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
+//		set_game_vertex				(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
+//		set_game_dest_vertex		(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

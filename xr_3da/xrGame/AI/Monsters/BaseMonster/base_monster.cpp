@@ -17,6 +17,7 @@
 #include "../../../squad_hierarchy_holder.h"
 #include "../../../group_hierarchy_holder.h"
 #include "../../../phdestroyable.h"
+
 CBaseMonster::CBaseMonster()
 {
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
@@ -54,11 +55,11 @@ CBaseMonster::CBaseMonster()
 	// Attack-stops init
 	AS_Init							();
 
-	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>(this);
-	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>(this);
-	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>(this);
+	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>	(this);
+	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>	(this);
+	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>	(this);
 
-	CurrentState					= 0;
+	StateMan						= 0;
 
 	CStepManager::init_external		(this);
 }
@@ -90,7 +91,6 @@ void CBaseMonster::UpdateCL()
 
 		// Проверка состояния анимации (атака)
 		AA_CheckHit							();
-		//MotionMan.STEPS_Update				(get_legs_number());
 
 		// Поправка Pitch
 		PitchCorrection						();
@@ -389,13 +389,13 @@ void CBaseMonster::PitchCorrection()
 	if (b_need_pitch_correction) inherited::PitchCorrection();
 }
 
-void CBaseMonster::State_PlaySound(u32 internal_type, u32 max_stop_time)
-{
-	if (m_bAngry && ((internal_type == eMonsterSoundIdle) ||  (internal_type == eMonsterSoundEat)))
-		CSoundPlayer::play(MonsterSpace::eMonsterSoundGrowling, 0, 0, get_sd()->m_dwAttackSndDelay);
-	else 
-		CSoundPlayer::play(internal_type, 0, 0, max_stop_time);
-}
+//void CBaseMonster::State_PlaySound(u32 internal_type, u32 max_stop_time)
+//{
+//	if (m_bAngry && ((internal_type == eMonsterSoundIdle) ||  (internal_type == eMonsterSoundEat)))
+//		CSoundPlayer::play(MonsterSpace::eMonsterSoundGrowling, 0, 0, get_sd()->m_dwAttackSndDelay);
+//	else 
+//		CSoundPlayer::play(internal_type, 0, 0, max_stop_time);
+//}
 
 void CBaseMonster::set_state_sound(u32 type, bool once)
 {
@@ -426,23 +426,28 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 
 
 
-void CBaseMonster::SetState(IState *pS, bool bSkipInertiaCheck)
-{
-	if (CurrentState != pS) {
-		// проверка инерций
-		if (!bSkipInertiaCheck)
-			if (CurrentState->IsInertia()) {
-				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
-			}
-
-			CurrentState->Done();
-			CurrentState->Reset();
-			CurrentState = pS;
-			CurrentState->Activate();
-	}
-}
+//void CBaseMonster::SetState(IState *pS, bool bSkipInertiaCheck)
+//{
+//	if (CurrentState != pS) {
+//		// проверка инерций
+//		if (!bSkipInertiaCheck)
+//			if (CurrentState->IsInertia()) {
+//				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
+//			}
+//
+//			CurrentState->Done();
+//			CurrentState->Reset();
+//			CurrentState = pS;
+//			CurrentState->Activate();
+//	}
+//}
 
 BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 {
 	return		(inherited::feel_touch_on_contact(O));
+}
+
+bool CBaseMonster::can_eat_now()
+{
+	return (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow));
 }

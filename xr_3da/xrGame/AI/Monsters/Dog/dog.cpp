@@ -1,33 +1,19 @@
 #include "stdafx.h"
 #include "dog.h"
 #include "../ai_monster_utils.h"
+#include "dog_state_manager.h"
 
 CAI_Dog::CAI_Dog()
 {
-	stateRest			= xr_new<CBaseMonsterRest>		(this);
-	stateAttack			= xr_new<CBaseMonsterAttack>	(this);
-	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
-	stateControlled		= xr_new<CBaseMonsterControlled>(this);
-	
-	CurrentState		= stateRest;
-	CurrentState->Reset	();
-	
+	StateMan = xr_new<CStateManagerDog>(this);
+
 	CJumping::Init		(this);
 	controlled::init_external(this);
 }
 
 CAI_Dog::~CAI_Dog()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateControlled);
+	xr_delete(StateMan);
 }
 
 void CAI_Dog::reinit()
@@ -128,54 +114,6 @@ void CAI_Dog::Load(LPCSTR section)
 
 }
 
-
-
-void CAI_Dog::StateSelector()
-{	
-	if (is_under_control()) {
-		SetState(stateControlled);
-		return;
-	}
-	
-	IState *state = 0;
-	
-	TTime last_hit_time = 0;
-	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
-
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = stateAttack; break;
-		}
-	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) state = stateExploreDNE;
-	else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			state = stateExploreNDE;		
-		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
-											state = stateEat;	
-	else									state = stateRest;
-
-
-	// Temp
-	ChangeEntityMorale(-0.5f);
-
-	if (state == stateAttack) {
-		float yaw,pitch;
-		Fvector().sub(EnemyMan.get_enemy_position(), Position()).getHP(yaw,pitch);
-		
-		yaw = angle_normalize(-yaw);
-
-		if (angle_difference(yaw, m_body.current.yaw) > PI_DIV_2) {
-			
-			if (from_right(yaw, m_body.current.yaw)) MotionMan.SetSpecParams(ASP_ROTATION_RUN_RIGHT);
-			else MotionMan.SetSpecParams(ASP_ROTATION_RUN_LEFT);
-		}
-	}
-
-	SetState(state);
-}
 
 
 void CAI_Dog::CheckSpecParams(u32 spec_params)

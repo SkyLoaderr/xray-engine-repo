@@ -271,9 +271,8 @@ void CBaseMonsterEat::Run()
 
 
 	(pMonster->MotionMan.m_tAction == ACT_EAT) ?
-		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundEat, pMonster->get_sd()->m_dwEatSndDelay)	:
-		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->get_sd()->m_dwIdleSndDelay) ;		
-
+		pMonster->set_state_sound	(MonsterSpace::eMonsterSoundEat) :
+		pMonster->set_state_sound	(MonsterSpace::eMonsterSoundIdle);		
 }
 
 void CBaseMonsterEat::Done()

@@ -1,11 +1,11 @@
 #pragma once
-#include "../state.h"
+#include "../state_manager_second.h"
 
 class CChimera;
 
-class CStateManagerChimera : public CState<CChimera> {
+class CStateManagerChimera : public CStateManagerSecond<CChimera> {
 	
-	typedef CState<CChimera> inherited;
+	typedef CStateManagerSecond<CChimera> inherited;
 
 	enum {
 		eStateRest					 = u32(0),

@@ -6,6 +6,7 @@
 class CAI_PseudoDog : public CBaseMonster, public CJumping {
 	typedef		CBaseMonster	inherited;
 
+public:
 	bool			strike_in_jump;
 
 	SAttackEffector m_psi_effector;
@@ -15,8 +16,6 @@ class CAI_PseudoDog : public CBaseMonster, public CJumping {
 
 	TTime			m_time_became_angry;
 
-
-	IState			*stateGrowling;
 	TTime			time_growling;			// время нахождения в состоянии пугания
 
 	ref_sound		psy_effect_sound;		// звук, который играется в голове у актера
@@ -31,7 +30,6 @@ public:
 	virtual void	reinit				();
 	virtual void	reload				(LPCSTR section);
 
-	virtual void	StateSelector		();
 	virtual void	UpdateCL			();
 
 	virtual void	OnJumpStop			();

@@ -12,3 +12,16 @@ enum EStateType {
 	ST_CustomAction,
 	ST_Unknown					= u32(-1),
 };
+
+enum EGlobalStates {
+	eStateRest,
+	eStateEat,
+	eStateAttack,
+	eStatePanic,
+	eStateHitted,
+	eStateHearDangerousSound,
+	eStateHearInterestingSound,
+	eStateControlled,
+	eStateCustom,
+	eStateUnknown
+};

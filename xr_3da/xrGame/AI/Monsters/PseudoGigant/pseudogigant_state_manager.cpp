@@ -1,26 +1,27 @@
 #include "stdafx.h"
-#include "burer.h"
-#include "burer_state_manager.h"
+#include "pseudo_gigant.h"
+#include "pseudogigant_state_manager.h" 
 #include "../BaseMonster/base_monster_state.h"
-#include "burer_states.h"
 
-
-CStateManagerBurer::CStateManagerBurer(CBurer *monster) : m_object(monster), inherited(monster)
+CStateManagerGigant::CStateManagerGigant(CPseudoGigant *monster) : m_object(monster), inherited(monster)
 {
 	add_state(eStateRest,					xr_new<CBaseMonsterRest>		(monster));
 	add_state(eStateEat,					xr_new<CBaseMonsterEat>			(monster));
-	add_state(eStateAttack,					xr_new<CBurerAttack>			(monster));
+	add_state(eStateAttack,					xr_new<CBaseMonsterAttack>		(monster));
 	add_state(eStatePanic,					xr_new<CBaseMonsterPanic>		(monster));
 	add_state(eStateHearInterestingSound,	xr_new<CBaseMonsterExploreNDE>	(monster));
 	add_state(eStateHearDangerousSound,		xr_new<CBaseMonsterRunAway>		(monster));
-	add_state(eStateCustom,					xr_new<CBurerScan>				(monster));
+	add_state(eStateHitted,					xr_new<CBaseMonsterRunAway>		(monster));
+	add_state(eStateControlled,				xr_new<CBaseMonsterControlled>	(monster));
 }
 
-#define SCAN_STATE_TIME 4000
-
-
-void CStateManagerBurer::update()
+void CStateManagerGigant::update()
 {
+	if (m_object->is_under_control()) {
+		set_state(eStateControlled);
+		return;
+	}
+
 	EGlobalStates state = eStateUnknown;
 
 	TTime last_hit_time = 0;
@@ -35,13 +36,10 @@ void CStateManagerBurer::update()
 		}
 	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->m_current_update)) state = eStateHitted;
 	else if (m_object->hear_dangerous_sound || m_object->hear_interesting_sound) {
-		state = eStateHearInterestingSound;
-	} else if (m_object->time_last_scan + SCAN_STATE_TIME > m_object->m_current_update){
-		state = eStateCustom;
+		if (m_object->hear_dangerous_sound)			state = eStateHearDangerousSound;	
+		if (m_object->hear_interesting_sound)		state = eStateHearInterestingSound;	
 	} else if (m_object->can_eat_now())	state = eStateEat;	
 	else								state = eStateRest;
 
-	(!m_object->EnemyMan.get_enemy()) ? m_object->TScanner::enable() : m_object->TScanner::disable();
-	
 	set_state(state);
 }

@@ -65,6 +65,6 @@ void CBaseMonsterExploreNDE::Run()
 		break;
 	}
 
-	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->get_sd()->m_dwIdleSndDelay);
+	pMonster->set_state_sound	(MonsterSpace::eMonsterSoundIdle);
 
 }

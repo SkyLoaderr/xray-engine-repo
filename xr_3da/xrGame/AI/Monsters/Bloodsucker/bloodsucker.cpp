@@ -3,27 +3,18 @@
 #include "bloodsucker_effector.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
+#include "bloodsucker_state_manager.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
-	stateRest			= xr_new<CBaseMonsterRest>			(this);
-	stateEat			= xr_new<CBaseMonsterEat>			(this);
-	stateAttack			= xr_new<CBaseMonsterAttack>			(this);
-	statePanic			= xr_new<CBaseMonsterPanic>			(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>		(this);
+	StateMan			= xr_new<CStateManagerBloodsucker>	(this);
 
 	invisible_vel.set	(0.1f, 0.1f);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
 {
-	xr_delete(stateRest);
-	xr_delete(stateEat);
-	xr_delete(stateAttack);
-	xr_delete(statePanic);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateExploreNDE);
+	xr_delete	(StateMan);
 }
 
 void CAI_Bloodsucker::Load(LPCSTR section) 
@@ -107,11 +98,7 @@ void CAI_Bloodsucker::reinit()
 	inherited::reinit();
 	CInvisibility::reinit();
 
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-
 	Bones.Reset();
-	
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -248,35 +235,6 @@ void CAI_Bloodsucker::UpdateCL()
 	CInvisibility::frame_update();
 }
 
-void CAI_Bloodsucker::StateSelector()
-{
-	IState *pState = CurrentState;
-
-	TTime last_hit_time = 0;
-	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
-
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				pState = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						pState = stateAttack; break;
-		}
-	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) pState = stateExploreDNE;
-	else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			pState = stateExploreNDE;		
-		if (hear_interesting_sound)			pState = stateExploreNDE;	
-	} else	if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
-											pState= stateEat;	
-	else									pState = stateRest;
-	
-	SetState(pState);
-
-	CEnergyHolder::set_aggressive(pState->GetStateAggressiveness());
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CAI_Bloodsucker::shedule_Update(u32 dt)
 {

@@ -1,11 +1,11 @@
 #pragma once
-#include "../state.h"
+#include "../state_manager_second.h"
 
 class CController;
 
-class CStateManagerController : public CState<CController> {
+class CStateManagerController : public CStateManagerSecond<CController> {
 
-	typedef CState<CController> inherited;
+	typedef CStateManagerSecond<CController> inherited;
 
 	enum {
 		eStateRest					 = u32(0),

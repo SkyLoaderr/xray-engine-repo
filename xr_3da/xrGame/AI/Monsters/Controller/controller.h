@@ -5,15 +5,11 @@
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
 
-class CStateManagerController;
-
 class CController : public CBaseMonster, 
 					public CJumping,
 					public CPsyAuraController {
 
 	typedef		CBaseMonster	inherited;
-
-	CStateManagerController	*StateMan;
 
 	u8					m_max_controlled_number;
 	ref_sound			control_start_sound;		// звук, который играется в голове у актера
@@ -47,7 +43,6 @@ public:
 	virtual void	net_Destroy			();
 
 	virtual	void	CheckSpecParams		(u32 spec_params);
-	virtual bool	UpdateStateManager	();
 
 	virtual	void	PitchCorrection		() {}
 

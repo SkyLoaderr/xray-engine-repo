@@ -6,8 +6,6 @@
 
 CChimera::CChimera()
 {
-	init();
-	
 	StateMan = xr_new<CStateManagerChimera>(this);
 }
 
@@ -15,12 +13,6 @@ CChimera::~CChimera()
 {
 	xr_delete(StateMan);
 }
-
-
-void CChimera::init()
-{
-}
-
 void CChimera::reinit()
 {
 	inherited::reinit();
@@ -115,10 +107,6 @@ void CChimera::Load(LPCSTR section)
 	//*****************************************************************************
 }
 
-void CChimera::StateSelector()
-{	
-}
-
 void CChimera::ProcessTurn()
 {
 	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
@@ -140,12 +128,6 @@ void CChimera::ProcessTurn()
 			return;
 	}
 
-}
-
-bool CChimera::UpdateStateManager()
-{
-	StateMan->execute();
-	return true;
 }
 
 void CChimera::CheckSpecParams(u32 spec_params)

@@ -57,7 +57,6 @@ void CBurerAttackRunAround::Run()
 	}
 
 	pMonster->MotionMan.m_tAction = ACT_RUN;
-	pMonster->MoveToTarget(selected_point);
 	pMonster->CMonsterMovement::set_target_point		(selected_point);
 	pMonster->CMonsterMovement::set_generic_parameters	();
 

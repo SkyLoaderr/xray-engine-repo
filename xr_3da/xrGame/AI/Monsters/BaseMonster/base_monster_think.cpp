@@ -32,13 +32,21 @@ void CBaseMonster::Think()
 	START_PROFILE("AI/Base Monster/Think/FSM");
 	if (MotionMan.IsCriticalAction()) disable_path();
 	else {
-		if (!UpdateStateManager()) {
-			StateSelector				();
-			CurrentState->Execute		(m_current_update);
-			squad_notify				();
-		}
-
+		StateMan->update				();		
 		TranslateActionToPathParams		();
+		
+		//if (!UpdateStateManager()) {
+		//	StateSelector				();
+		//	CurrentState->Execute		(m_current_update);
+		//	squad_notify				();
+		//}
+		//
+		// TranslateActionToPathParams		();
+
+		//StateMan->update				();
+		//squad_notify					();	
+		
+		//TranslateActionToPathParams		();
 	}
 	STOP_PROFILE;
 
@@ -61,16 +69,16 @@ void CBaseMonster::Think()
 	STOP_PROFILE;
 }
 
-void CBaseMonster::squad_notify()
-{
-	CMonsterSquad	*squad = monster_squad().get_squad(this);
-	SMemberGoal		goal;
-
-	if (CurrentState == stateAttack) {
-		goal.type	= MG_AttackEnemy;
-		goal.entity	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
-	}  
-	
-	squad->UpdateGoal(this, goal);
-}
+//void CBaseMonster::squad_notify()
+//{
+//	CMonsterSquad	*squad = monster_squad().get_squad(this);
+//	SMemberGoal		goal;
+//
+//	if (CurrentState == stateAttack) {
+//		goal.type	= MG_AttackEnemy;
+//		goal.entity	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
+//	}  
+//	
+//	squad->UpdateGoal(this, goal);
+//}
 

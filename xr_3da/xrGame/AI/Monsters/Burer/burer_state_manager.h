@@ -1,29 +1,14 @@
 #pragma once
-
-#include "../../../state_manager_state.h"
+#include "../state_manager_first.h"
 
 class CBurer;
 
-class CStateManagerBurer : public CStateManagerState<CBurer> {
-protected:
-	typedef CStateManagerState<CBurer> inherited;
-
-	enum EBurerStates {
-		eStateRest = u32(0),
-		eStateEat,
-		eStateAttack,
-		eStatePanic,
-		eStateDummy = u32(-1),
-	};
-
+class CStateManagerBurer : public CStateManagerFirst {
+	typedef CStateManagerFirst inherited;
+	CBurer *m_object;
 public:
-						CStateManagerBurer		(LPCSTR state_name);
-	virtual				~CStateManagerBurer		();
 
-	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(CBurer *object);
-
-	virtual	void		initialize				();
-	virtual	void		execute					();
-	virtual	void		finalize				();
+					CStateManagerBurer	(CBurer *monster); 
+	virtual void	update				();
 };
+

@@ -1,10 +1,10 @@
 #pragma once
-#include "../state.h"
+#include "../state_manager_second.h"
 
 class CSnork;
 
-class CStateManagerSnork : public CState<CSnork> {
-	typedef CState<CSnork> inherited;
+class CStateManagerSnork : public CStateManagerSecond<CSnork> {
+	typedef CStateManagerSecond<CSnork> inherited;
 
 	enum {
 		eStateRest					 = u32(0),

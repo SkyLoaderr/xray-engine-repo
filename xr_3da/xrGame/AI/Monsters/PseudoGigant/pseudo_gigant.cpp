@@ -4,34 +4,18 @@
 #include "pseudo_gigant_step_effector.h"
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
+#include "pseudogigant_state_manager.h"
 
 CPseudoGigant::CPseudoGigant()
 {
-	stateRest			= xr_new<CBaseMonsterRest>		(this);
-	stateAttack			= xr_new<CBaseMonsterAttack>	(this);
-	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
-	stateNull			= xr_new<CBaseMonsterNull>		();
-	stateControlled		= xr_new<CBaseMonsterControlled>(this);
-
-	CurrentState		= stateRest;
-	CurrentState->Reset	();
-
 	controlled::init_external(this);
+
+	StateMan = xr_new<CStateManagerGigant>(this);
 }
 
 CPseudoGigant::~CPseudoGigant()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateNull);
-	xr_delete(stateControlled);
+	xr_delete(StateMan);
 }
 
 
@@ -100,40 +84,6 @@ void CPseudoGigant::Load(LPCSTR section)
 	MotionMan.accel_chain_test		();
 #endif
 
-}
-
-
-void CPseudoGigant::StateSelector()
-{	
-	if (is_under_control()) {
-		SetState(stateControlled);
-		return;
-	}
-	
-	IState *state = 0;
-
-	TTime last_hit_time = 0;
-	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
-
-	if (EnemyMan.get_enemy()) {
-		if (!EnemyMan.get_enemy()->getVisible()) state = statePanic;
-		else {
-			switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = stateAttack; break;
-			}
-		}
-	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) state = stateExploreDNE;
-	else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			state = stateExploreNDE;		
-		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))					
-											state= stateEat;	
-	else									state = stateRest;
-
-	SetState(state);
 }
 
 #define MAX_STEP_RADIUS 60.f

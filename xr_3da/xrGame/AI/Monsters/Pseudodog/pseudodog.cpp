@@ -5,37 +5,20 @@
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
 #include "../../stalker/ai_stalker.h"
-#include "pseudodog_state_growling.h"
 #include "../../../../CameraBase.h"
 #include "../../../xr_level_controller.h"
-
+#include "pseudodog_state_manager.h"
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
-	stateRest			= xr_new<CBaseMonsterRest>		(this);
-	stateAttack			= xr_new<CBaseMonsterAttack>	(this);
-	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
-	stateGrowling		= xr_new<CPseudodogGrowling>(this);
-
-	CurrentState		= stateRest;
-	CurrentState->Reset	();
-
+	StateMan = xr_new<CStateManagerPseudodog>(this);
+	
 	CJumping::Init		(this);
 }
 
 CAI_PseudoDog::~CAI_PseudoDog()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateGrowling);
-
+	xr_delete(StateMan);
 }
 
 void CAI_PseudoDog::reinit()
@@ -169,59 +152,6 @@ void CAI_PseudoDog::reload(LPCSTR section)
 	
 	CJumping::AddState	(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_prepare_0"),	JT_CUSTOM,	true,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 	CJumping::AddState	(smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("jump_glide_0"),	JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
-}
-
-
-#define MIN_ANGRY_TIME		10000
-#define MAX_GROWLING_TIME	20000
-
-void CAI_PseudoDog::StateSelector()
-{	
-	bool prev_angry = m_bAngry;
-	m_bAngry = false;
-
-	if (HitMemory.is_hit())																m_bAngry = true;
-	if (SoundMemory.is_loud_sound(m_anger_loud_threshold) || hear_dangerous_sound)		m_bAngry = true;
-	if (CEntityCondition::GetSatiety() < m_anger_hunger_threshold)						m_bAngry = true;
-	
-	// если слишком долго рычит - включать универсальную схему
-	if ((time_growling !=0) && (time_growling + MAX_GROWLING_TIME < m_current_update))	m_bAngry = true;
-
-	// если на этом кадре стал злым, сохранить время когда стал злым
-	if ((prev_angry == false) && m_bAngry) m_time_became_angry = m_current_update;
-	if (!m_bAngry && (m_time_became_angry + MIN_ANGRY_TIME > m_current_update))			m_bAngry = true;
-	
-	const CEntityAlive	*enemy		= EnemyMan.get_enemy();
-	const CAI_Stalker	*pStalker	= smart_cast<const CAI_Stalker *>(enemy);
-	const CActor		*pActor		= smart_cast<const CActor *>(enemy);
-
-	TTime last_hit_time = 0;
-	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
-
-	if (!m_bAngry && (pActor || pStalker)) {
-		if (EnemyMan.get_danger_type() == eVeryStrong) SetState(statePanic);
-		else SetState(stateGrowling);
-	} else {
-		// если злой или враг - монстр
-		if (enemy) {
-			switch (EnemyMan.get_danger_type()) {
-				case eVeryStrong:	SetState(statePanic); break;
-				case eStrong:		
-				case eNormal:
-				case eWeak:			SetState(stateAttack); break;
-			}
-	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) SetState(stateExploreDNE);
-	else if (hear_dangerous_sound || hear_interesting_sound) {
-			if (hear_dangerous_sound)			SetState(stateExploreNDE);		
-			if (hear_interesting_sound)			SetState(stateExploreNDE);	
-		} else if (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow))
-			SetState(stateEat);	
-		else									SetState(stateRest);
-	}
-
-	if ((time_growling == 0) && (CurrentState == stateGrowling)) time_growling = m_current_update;
-	if ((CurrentState != stateGrowling)) time_growling = 0;
-
 }
 
 void CAI_PseudoDog::UpdateCL()
