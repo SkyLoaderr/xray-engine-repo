@@ -98,20 +98,26 @@ void CBulletManager::Load		()
 
 void CBulletManager::Clear		()
 {
-	for(BULLET_LIST_it it = m_BulletList.begin();
-		it != m_BulletList.end() ;it++)
-	{
-		xr_delete(*it);
-	}
-	m_BulletList.clear();
+	m_Bullets.clear();
 }
 
-void CBulletManager::AddBullet(SBullet* bullet)
+void CBulletManager::AddBullet(const Fvector& position,
+							   const Fvector& direction,
+							   float starting_speed,
+							   float power,
+							   float impulse,
+							   u16	sender_id,
+							   u16 sendersweapon_id,
+							   ALife::EHitType e_hit_type,
+							   float maximum_distance,
+							   const CCartridge& cartridge)
 {
-	VERIFY(bullet);
-	bullet->frame_num = Device.dwFrame;
-	m_BulletList.push_back(bullet);
+	m_Bullets.push_back(SBullet());
+	SBullet& bullet	= m_Bullets.back();
+	bullet.Init		(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge);
+	bullet.frame_num = Device.dwFrame;
 }
+
 
 void CBulletManager::Update()
 {
@@ -120,12 +126,8 @@ void CBulletManager::Update()
 	m_dwTimeRemainder = delta_time%m_dwStepTime;
 	
 
-	for(BULLET_LIST_it it = m_BulletList.begin();
-						it != m_BulletList.end();)
-	{
-		BULLET_LIST_it cur_it = it;
-		SBullet* bullet = *cur_it;
-		
+	for(int k=m_Bullets.size()-1; k<=0; k--){
+		SBullet& bullet = m_Bullets[k];
 		//для пули пущенной на этом же кадре считаем только 1 шаг
 		//(хотя по теории вообще ничего считать на надо)
 		//который пропустим на следующем кадре, 
@@ -133,24 +135,19 @@ void CBulletManager::Update()
 		//с 2х метров
 		u32 cur_step_num = step_num;
 
-		u32 frames_pass = Device.dwFrame - bullet->frame_num;
-		if(frames_pass == 0)
-			cur_step_num = 1;
-		else if (frames_pass == 1 && step_num>0)
-			cur_step_num -= 1;
+		u32 frames_pass = Device.dwFrame - bullet.frame_num;
+		if(frames_pass == 0)						cur_step_num = 1;
+		else if (frames_pass == 1 && step_num>0)	cur_step_num -= 1;
 
-		for(u32 i=0; i<cur_step_num; i++)
-		{
-			if(!CalcBullet(bullet, m_dwStepTime))
-			{
-				xr_delete(bullet);
-				it++;
-				m_BulletList.erase(cur_it);
+		// calculate bullet
+		for(u32 i=0; i<cur_step_num; i++){
+			if(!CalcBullet(&bullet, m_dwStepTime)){
+				m_Bullets[k] = m_Bullets.back();
+				m_Bullets.pop_back();
+				k--;
 				break;
 			}
 		}
-		if(!bullet) continue;
-		it++;
 	}
 }
 
@@ -217,10 +214,10 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 
 void CBulletManager::Render	()
 {
-	if(m_BulletList.empty()) return;
+	if(m_Bullets.empty()) return;
 
 	u32	vOffset;
-	u32 bullet_num = m_BulletList.size();
+	u32 bullet_num = m_Bullets.size();
 
 	
 
@@ -231,10 +228,8 @@ void CBulletManager::Render	()
 
 
 
-	for(BULLET_LIST_it it = m_BulletList.begin();
-		it != m_BulletList.end(); it++)
-	{
-		SBullet* bullet = *it;
+	for(BulletVecIt it = m_Bullets.begin(); it!=m_Bullets.end(); it++){
+		SBullet* bullet = &(*it);
 
 		Fvector dist;
 		dist.sub(bullet->prev_pos,bullet->pos);

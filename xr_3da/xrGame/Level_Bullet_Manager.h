@@ -8,9 +8,6 @@
 #include "weaponammo.h"
 #include "tracer.h"
 
-
-
-
 //структура, описывающая пулю и ее свойства в полете
 struct SBullet
 {
@@ -90,7 +87,9 @@ public:
 
 	void Clear		();
 
-	void AddBullet	(SBullet* pBullet);
+	void AddBullet	(const Fvector& position, const Fvector& direction, float starting_speed,
+					float power, float impulse, u16	sender_id, u16 sendersweapon_id,
+					ALife::EHitType e_hit_type, float maximum_distance, const CCartridge& cartridge);
 	void Update		();
 
 	void Render		();
@@ -119,9 +118,9 @@ protected:
 	bool CalcBullet (SBullet* bullet, u32 delta_time);
 
 
-	DEF_LIST(BULLET_LIST, SBullet*);
+	DEFINE_VECTOR(SBullet,BulletVec,BulletVecIt);
 	//список пуль находящихся в данный момент на уровне
-	BULLET_LIST m_BulletList;
+	BulletVec m_Bullets;
 
 	//остаток времени, который не был учтен на предыдущем кадре
 	u32	m_dwTimeRemainder;
