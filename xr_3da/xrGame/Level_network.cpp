@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void CLevel::net_Disconnect		()
+void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
 	IPureClient::Disconnect		();
