@@ -58,13 +58,15 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 
 	// DIRECT:UNSORTED
 	vector<_MatrixItem>&	L		= N.unsorted;
-	IVisual **I=&*L.begin(), **E	= &*L.end();
-	for (; I!=E; I++)
+	_MatrixItem *it =L.begin(), *end	= L.end();
+	for (; it!=end; it++)
 	{
-		IVisual *V = *I;
-		V->Render	(0);	// zero lod 'cause it is too small onscreen
+		_MatrixItem&	I		= N->val;
+		IVisual			*V		= I.pVisual;
+		RCache.set_xform_world	(I.Matrix);
+		V->Render				(0);	// zero lod 'cause it is too small onscreen
 	}
-	L.clear	();
+	L.clear					();
 }
 
 // ALPHA
