@@ -71,7 +71,6 @@ CCar::~CCar(void)
 	xr_delete			(camera[0]);
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
-	m_car_sound->Destroy();
 	xr_delete			(m_car_sound);
 	ClearExhausts();
 	xr_delete			(inventory);
@@ -164,6 +163,7 @@ void	CCar::net_Destroy()
 	m_breaking_wheels.clear();
 	m_doors.clear();
 	m_gear_ratious.clear();
+	m_car_sound->Destroy();
 	CPHUpdateObject::Deactivate();
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 

@@ -11,7 +11,7 @@ CCar::SCarSound::SCarSound(CCar* car)
 
 CCar::SCarSound::~SCarSound()
 {
-	Destroy();
+	
 }
 void CCar::SCarSound::Init()
 {
