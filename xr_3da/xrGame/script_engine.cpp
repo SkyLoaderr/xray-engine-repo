@@ -119,6 +119,7 @@ void CScriptEngine::process	()
 		m_load_queue.pop_front	();
 		if (!xr_strlen(S2) || !xr_strcmp(S2,"_G") || !namespace_loaded(S2)) {
 			FS.update_path		(S,"$game_scripts$",strconcat(S1,S2,".script"));
+			Msg					("* loading script %s",S1);
 			load_file			(S,true);
 		}
 

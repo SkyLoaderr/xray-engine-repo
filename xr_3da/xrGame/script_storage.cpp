@@ -106,7 +106,6 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 	vsprintf(S1,caFormat,l_tMarker);
 
 #ifdef ENGINE_BUILD
-	// Msg("[LUA Output] : %s",S2);
 #else
 	ai().script_engine().m_output->w_string(S2);
 #endif
@@ -409,11 +408,9 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 		default : NODEFAULT;
 	}
 	
-	for (int i=0; ; ++i) {
-		Msg		("! Stack level %d",i);
+	for (int i=0; ; ++i)
 		if (!print_stack_level(L,i))
 			return;
-	}
 }
 
 IC	LPCSTR CScriptStorage::event2string(int iEventCode)
@@ -433,33 +430,36 @@ IC	LPCSTR CScriptStorage::event2string(int iEventCode)
 
 bool CScriptStorage::print_stack_level(CLuaVirtualMachine *L, int iStackLevel)
 {
-//	lua_Debug	l_tDebugInfo;
-//	int			i;
-//	const char	*name;
-//
-//	if (lua_getstack(lua(), iStackLevel, &l_tDebugInfo) == 0)
-//		return	(false);  /* failure: no such level in the stack */
-//	Msg			("  Event			: %d",event2string(l_tDebugInfo.event));
-//	Msg			("  Name			: %s",l_tDebugInfo.name);
-//	Msg			("  Name what		: %s",l_tDebugInfo.namewhat);
-//	Msg			("  What			: %s",l_tDebugInfo.what);
-//	Msg			("  Source			: %s",l_tDebugInfo.source);
-//	Msg			("  Source (short)	: %s",l_tDebugInfo.short_src);
-//	Msg			("  Current line	: %d",l_tDebugInfo.currentline);
-//	Msg			("  Nups			: %d",l_tDebugInfo.nups);
-//	Msg			("  Line defined	: %d",l_tDebugInfo.linedefined);
-//	i			= 1;
-//	while (NULL != (name = lua_getlocal(lua(), &l_tDebugInfo, i++))) {
-//		Msg		("    local   %d %s", i-1, name);
-//		lua_pop	(lua(), 1);  /* remove variable value */
-//	}
-//
-//	lua_getinfo	(lua(), "f", &l_tDebugInfo);  /* retrieves function */
-//	i = 1;
-//	while (NULL != (name = lua_getupvalue(lua(), -1, i++))) {
-//		Msg		("    upvalue %d %s", i-1, name);
-//		lua_pop	(lua(), 1);  /* remove upvalue value */
-//	}
-//	return		(true);
-	return		(false);
+	lua_Debug	l_tDebugInfo;
+	int			i;
+	LPCSTR		name;
+
+	if (lua_getstack(L, iStackLevel, &l_tDebugInfo) == 0)
+		return	(false);
+
+	Msg			("! Stack level %d",iStackLevel);
+
+	lua_getinfo	(L,"nSluf",&l_tDebugInfo);
+
+	Msg			("  Event			: %d",event2string(l_tDebugInfo.event));
+	Msg			("  Name			: %s",l_tDebugInfo.name);
+	Msg			("  Name what		: %s",l_tDebugInfo.namewhat);
+	Msg			("  What			: %s",l_tDebugInfo.what);
+	Msg			("  Source			: %s",l_tDebugInfo.source);
+	Msg			("  Source (short)	: %s",l_tDebugInfo.short_src);
+	Msg			("  Current line	: %d",l_tDebugInfo.currentline);
+	Msg			("  Nups			: %d",l_tDebugInfo.nups);
+	Msg			("  Line defined	: %d",l_tDebugInfo.linedefined);
+	i			= 1;
+	while (NULL != (name = lua_getlocal(L, &l_tDebugInfo, i++))) {
+		Msg		("    local   %d %s", i-1, name);
+		lua_pop	(L, 1);  /* remove variable value */
+	}
+
+	i = 1;
+	while (NULL != (name = lua_getupvalue(L, -1, i++))) {
+		Msg		("    upvalue %d %s", i-1, name);
+		lua_pop	(L, 1);  /* remove upvalue value */
+	}
+	return		(true);
 }
