@@ -1,5 +1,5 @@
-function animation_callback(action_type)
-	printf		("Animation is finished!")
+function movement_callback(action_type,index)
+	printf		("Patrol point %d",index)
 end
 
 function main ()
@@ -37,7 +37,7 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker:set_callback(stalker_test.animation_callback,game_object.animation)
+	stalker:set_callback(stalker_test.movement_callback,game_object.movement)
 	
 	action (
 		stalker, 
@@ -47,14 +47,14 @@ function main ()
 		cond		(cond.move_end)
 	)
 	
-	wait			(2000)
+--	wait			(2000)
 	
-	action_first (
-		stalker, 
-		move		(move.standing, move.stand, move.line, patrol ("way0000")),
-		anim		("stoya_ruje_ 0"),
-		cond		(cond.anim_end)
-	)
+--	action_first (
+--		stalker, 
+--		move		(move.standing, move.stand, move.line, patrol ("way0000")),
+--		anim		("stoya_ruje_ 0"),
+--		cond		(cond.anim_end)
+--	)
 	
 	while stalker:action() do
 		wait		();
