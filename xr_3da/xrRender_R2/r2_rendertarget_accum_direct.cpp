@@ -126,12 +126,12 @@ void CRenderTarget::accum_direct()
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
 	L_dir.normalize				();
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-	RCache.set_c				("light_color",		1,1,1,1);
+	RCache.set_c				("light_color",		1,1,1,.1f);
 
 	// RS-set
-	CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,TRUE));
-	CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SRCBLENDALPHA,			D3DBLEND_ONE));
-	CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_DESTBLENDALPHA,			D3DBLEND_ZERO));
+	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,TRUE));
+	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SRCBLENDALPHA,			D3DBLEND_ONE));
+	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_DESTBLENDALPHA,			D3DBLEND_ZERO));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-	CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,FALSE));
+	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,FALSE));
 }
