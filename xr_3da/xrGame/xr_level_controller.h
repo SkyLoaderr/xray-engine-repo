@@ -49,9 +49,27 @@ enum	EKeyBinding
 	kSCREENSHOT		,
 	kQUIT			,
 	kCONSOLE		,
-
 	kHyperKick		,
-
+	kINVENTORY		,
+	kBUY			,
+	kSKIN			,
+	kTEAM			,
+	kPDA			,
+	kEXT_1			,
+	kEXT_2			,
+	kEXT_3			,
+	kEXT_4			,
+	kEXT_5			,
+	kEXT_6			,
+	kEXT_7			,
+	kEXT_8			,
+	kEXT_9			,
+	kEXT_10			,
+	kEXT_11			,
+	kEXT_12			,
+	kEXT_13			,
+	kEXT_14			,
+	kEXT_15			,
 	kFORCEDWORD		= u32(-1)
 };
 
