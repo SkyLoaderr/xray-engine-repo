@@ -17,6 +17,7 @@
 					- 16bit lmap-TC for level	
 					- LMAP geom: 	3*4(pos) + 4(norm) + 2*4(tc0) + 2*2(tc1) + 4(diffuse.rgb + hemi) 	= 32bytes = ideal
 					- VLIGHT geom:	3*4(pos) + 4(norm) + 2*4(tc0) + 4(diffuse.rgb + hemi)			= 28bytes = ~ideal
+		*	xrLC - hemisphere (R1)
 				
 		bugs/features:
 		*	освещение монстров вдали (загасить проекцию)
@@ -41,7 +42,6 @@
 		*	кровь, следы от машин
 
 		*	xrLC - optimize cform 				( )
-		*	xrLC - hemisphere (R1)
 		*	xrRenderR1/R2 - statistical flow analysis (yarigra :()
 		*	hierrarchical profiler
 		*	R2 - shaders (ATI rm/ nvCG FX)
