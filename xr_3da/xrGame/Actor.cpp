@@ -1007,8 +1007,10 @@ void CActor::renderable_Render	()
 {
 	inherited::renderable_Render			();
 
-	if (!m_holder)
+	if (!m_holder)	{
+		CInventoryOwner::
 		CInventoryOwner::renderable_Render	();
+	}
 	//-------------------------------------------------------------
 	if (g_Alive())
 	{

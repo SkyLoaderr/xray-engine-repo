@@ -28,7 +28,7 @@ public:
 	virtual	void			reload				(LPCSTR section);
 	virtual void			OnH_A_Chield		();
 	virtual void			renderable_Render	();
-	IC		shared_str			bone_name			() const;
+	IC		shared_str		bone_name			() const;
 	IC		u16				bone_id				() const;
 	IC		void			set_bone_id			(u16 bone_id);
 	IC		const Fmatrix	&offset				() const;

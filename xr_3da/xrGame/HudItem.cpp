@@ -81,8 +81,9 @@ BOOL  CHudItem::net_Spawn(LPVOID DC)
 
 void CHudItem::renderable_Render()
 {
-	UpdateXForm();
-	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
+	UpdateXForm	();
+	BOOL		_hud_render		= ::Render->get_HUD() && hud_mode;
+	if(_hud_render && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
 		// HUD render
 		if(m_bRenderHud)
@@ -92,7 +93,7 @@ void CHudItem::renderable_Render()
 		}
 	}
 	else
-		if(!H_Parent() || (!hud_mode && m_pHUD && !m_pHUD->IsHidden() && !IsHidden()))
+		if(!H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !IsHidden()))
 		{
 			inherited::renderable_Render();
 		}
