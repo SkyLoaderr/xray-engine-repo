@@ -39,28 +39,28 @@ private:
 	OBJECT_VECTOR					m_tpChildren;
 
 	// comnmon
-	void							vfUpdateDynamicData			(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+	void							vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 	void							vfUpdateDynamicData			();
-	void							vfCreateNewTask				(CSE_ALifeTrader *tpTrader);
-	void							vfAssignGraphPosition		(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract);
+	void							vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
+	void							vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	// surge
 	void							vfGenerateAnomalousZones	();
 	void							vfGenerateArtefacts			();
-	void							vfSellArtefacts				(CSE_ALifeTrader &tTrader);
-	void							vfUpdateArtefactOrders		(CSE_ALifeTrader &tTrader);
-	void							vfGiveMilitariesBribe		(CSE_ALifeTrader &tTrader);
-	void							vfBuySupplies				(CSE_ALifeTrader &tTrader);
-	void							vfAssignPrices				(CSE_ALifeTrader &tTrader);
+	void							vfSellArtefacts				(CSE_ALifeTrader			&tTrader);
+	void							vfUpdateArtefactOrders		(CSE_ALifeTrader			&tTrader);
+	void							vfGiveMilitariesBribe		(CSE_ALifeTrader			&tTrader);
+	void							vfBuySupplies				(CSE_ALifeTrader			&tTrader);
+	void							vfAssignPrices				(CSE_ALifeTrader			&tTrader);
 	void							vfBallanceCreatures			();
 	void							vfUpdateCreatures			();
 	// after surge
-	CSE_ALifeTrader *					tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract			*tpALifeHuman);
-	void							vfCommunicateWithTrader		(CSE_ALifeHumanAbstract			*tpALifeHuman, CSE_ALifeTrader *tpTrader);
+	CSE_ALifeTrader *				tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract		*tpALifeHuman);
+	void							vfCommunicateWithTrader		(CSE_ALifeHumanAbstract		*tpALifeHuman, CSE_ALifeTrader *tpTrader);
 	void							vfUpdateMonster				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-	void							vfUpdateHuman				(CSE_ALifeHumanAbstract	*tpALifeHuman);
-	bool							bfProcessItems				(CSE_Abstract	&tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
-	bool							bfCheckForItems				(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract);
-	void							vfCheckForDeletedEvents		(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract);
+	void							vfUpdateHuman				(CSE_ALifeHumanAbstract		*tpALifeHuman);
+	bool							bfProcessItems				(CSE_Abstract				&tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
+	bool							bfCheckForItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+	void							vfCheckForDeletedEvents		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfChooseNextRoutePoint		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfProcessNPC				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
@@ -69,36 +69,36 @@ public:
 	// members
 	bool							m_bLoaded;
 	// methods
-									CSE_ALifeSimulator					(xrServer *tpServer);
-	virtual							~CSE_ALifeSimulator					();
+									CSE_ALifeSimulator			(xrServer					*tpServer);
+	virtual							~CSE_ALifeSimulator			();
 	virtual float					shedule_Scale				();
 	virtual BOOL					Ready						();
 	virtual LPCSTR					cName						();
 	virtual void					Update						(u32 dt);	
-	virtual void					Load						(LPCSTR caSaveName = SAVE_NAME);
-			void					Save						(LPCSTR caSaveName = SAVE_NAME);
+	virtual void					Load						(LPCSTR						caSaveName = SAVE_NAME);
+			void					Save						(LPCSTR						caSaveName = SAVE_NAME);
 			void					Generate					();
-			void					vfCreateObject				(CSE_ALifeDynamicObject *tpALifeObject);
-			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject *tpALifeObject);
-			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject *tpALifeObject);
-			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I);
-			void					vfReleaseObject				(CSE_ALifeDynamicObject *tpALifeObject);
+			void					vfCreateObject				(CSE_ALifeDynamicObject		*tpALifeObject);
+			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeObject);
+			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeObject);
+			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*I);
+			void					vfReleaseObject				(CSE_ALifeDynamicObject		*tpALifeObject);
 			void					vfNewGame					();
-			void					vfRemoveObject				(CSE_Abstract *tpServerEntity);
+			void					vfRemoveObject				(CSE_Abstract				*tpServerEntity);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();
 			void					vfListEvents				();
 			void					vfListTasks					();
 			void					vfListTerrain				();
 			void					vfListSpawnPoints			();
-			void					vfObjectInfo				(_OBJECT_ID	&tObjectID);
-			void					vfEventInfo					(_EVENT_ID &tEventID);
-			void					vfTaskInfo					(_TASK_ID &tTaskID);
-			void					vfSpawnPointInfo			(_SPAWN_ID &tSpawnID);
-			void					vfGraphVertexInfo			(_GRAPH_ID &tGraphID);
-			void					vfSetOnlineDistance			(float	fNewDistance);
-			void					vfSetProcessTime			(int	iMicroSeconds);
-			void					vfSetSwitchDelay			(int	iMilliSeconds);
+			void					vfObjectInfo				(_OBJECT_ID					&tObjectID);
+			void					vfEventInfo					(_EVENT_ID					&tEventID);
+			void					vfTaskInfo					(_TASK_ID					&tTaskID);
+			void					vfSpawnPointInfo			(_SPAWN_ID					&tSpawnID);
+			void					vfGraphVertexInfo			(_GRAPH_ID					&tGraphID);
+			void					vfSetOnlineDistance			(float						fNewDistance);
+			void					vfSetProcessTime			(int						iMicroSeconds);
+			void					vfSetSwitchDelay			(int						iMilliSeconds);
 			void					vfSetScheduleMin			(int	iMilliSeconds);
 			void					vfSetScheduleMax			(int	iMilliSeconds);
 #endif
