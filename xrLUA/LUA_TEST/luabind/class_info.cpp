@@ -23,35 +23,50 @@
 #include <luabind/lua_include.hpp>
 
 #include <luabind/luabind.hpp>
+#include <luabind/class_info.hpp>
 
-using namespace luabind::detail;
-
-std::string luabind::detail::stack_content_by_name(lua_State* L, int start_index)
+namespace luabind
 {
-	std::string ret;
-	int top = lua_gettop(L);
-	for (int i = start_index; i <= top; ++i)
+	class_info get_class_info(const object& o)
 	{
-		object_rep* obj = is_class_object(L, i);
-		class_rep* crep = is_class_rep(L, i)?(class_rep*)lua_touserdata(L, i):0;
-		if (obj == 0 && crep == 0)
+		lua_State* L = o.lua_state();
+	
+		class_info result(L);
+	
+		o.pushvalue();
+		detail::object_rep* obj = static_cast<detail::object_rep*>(lua_touserdata(L, -1));
+		lua_pop(L, 1);
+
+		result.name = obj->crep()->name();
+		detail::getref(L, obj->crep()->table_ref());
+		result.methods.set();
+
+		result.attributes = newtable(L);
+
+		typedef detail::class_rep::property_map map_type;
+		
+		std::size_t index = 1;
+		
+		for (map_type::const_iterator i = obj->crep()->properties().begin();
+				i != obj->crep()->properties().end(); ++i)
 		{
-			int type = lua_type(L, i);
-			ret += lua_typename(L, type);
+			result.attributes[index] = i->first;
 		}
-		else if (obj)
-		{
-			if (obj->flags() & object_rep::constant) ret += "const ";
-			ret += obj->crep()->name();
-		}
-		else if (crep)
-		{
-			ret += "<";
-			ret += crep->name();
-			ret += ">";
-		}
-		if (i < top) ret += ", ";
+
+		return result;
 	}
-	return ret;
+
+	void bind_class_info(lua_State* L)
+	{
+		module(L)
+		[
+			class_<class_info>("class_info_data")
+				.def_readonly("name", &class_info::name)
+				.def_readonly("methods", &class_info::methods)
+				.def_readonly("attributes", &class_info::attributes),
+		
+			def("class_info", &get_class_info)
+		];
+	}
 }
 

@@ -1304,18 +1304,23 @@ bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 	sprintf				(SS,"local this = %s\n",N);
 	strcpy				(S1,"@");
 	strcat				(S1,S);
-	luaL_loadbuffer		(L,SS,xr_strlen(SS),S1);
-	lua_call			(L,0,0);
+//	luaL_loadbuffer		(L,SS,xr_strlen(SS),S1);
+//	lua_call			(L,0,0);
 
-	FILE				*f = fopen(S,"rt");
-	fread				(SS1,1,90,f);
+	FILE				*f = fopen(S,"rb");
+	fseek				(f,0,SEEK_END);
+	long				e = ftell(f), u = e + strlen(SS);
+	fseek				(f,0,SEEK_SET);
+	fread				(SS + xr_strlen(SS),1,e,f);
 	fclose				(f);
+//	memcpy				(SS1,SS,u);
+	SS[u]			= 0;
 
-	if (luaL_loadbuffer(L,SS1,90,S1)) {
+	if (luaL_loadbuffer(L,SS,u,S1)) {
 		xr_free			(SS);
 		xr_free			(SS1);
 		printf			("\n");
-		for (int i=0; ; i++)
+		for (int i=-1; ; i++)
 			if (lua_isstring(L,i))
 				printf	(" %s\n",lua_tostring(L,i));
 			else
@@ -1422,8 +1427,12 @@ luabind::object lua_this()
 	return		(return_this(""));
 }
 
+extern void test0();
+
 int __cdecl main(int argc, char* argv[])
 {
+	test0();
+	return 0;
 	printf	("xrLuaCompiler v0.1\n");
 	if (argc < 2) {
 		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
@@ -1451,21 +1460,21 @@ int __cdecl main(int argc, char* argv[])
 
 //	function		(L,"this",lua_this);
 
-	for (int i=1; i<argc; i++) {
-		string256	l_caScriptName;
-		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
-		printf		("File %s : ",l_caScriptName);
-		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
-		print_stack	(L);
-		lua_dostring	(L,"test_this._1._2._3.main()");
-		if (xr_strlen(SSS)) {
-			printf		("\n%s\n",SSS);
-			strcpy		(SSS,"");
-		}
-		else
-			if (b)
-				printf	("0 syntax errors\n");
-	}
+//	for (int i=1; i<argc; i++) {
+//		string256	l_caScriptName;
+//		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
+//		printf		("File %s : ",l_caScriptName);
+//		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
+//		print_stack	(L);
+//		lua_dostring	(L,"test_this._1._2._3.main()");
+//		if (xr_strlen(SSS)) {
+//			printf		("\n%s\n",SSS);
+//			strcpy		(SSS,"");
+//		}
+//		else
+//			if (b)
+//				printf	("0 syntax errors\n");
+//	}
 
 	lua_close		(L);
 }

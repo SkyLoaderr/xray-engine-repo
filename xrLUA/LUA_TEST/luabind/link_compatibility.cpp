@@ -20,38 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include <luabind/lua_include.hpp>
+#include <luabind/detail/link_compatibility.hpp>
 
-#include <luabind/luabind.hpp>
-
-using namespace luabind::detail;
-
-std::string luabind::detail::stack_content_by_name(lua_State* L, int start_index)
+namespace luabind { namespace detail
 {
-	std::string ret;
-	int top = lua_gettop(L);
-	for (int i = start_index; i <= top; ++i)
-	{
-		object_rep* obj = is_class_object(L, i);
-		class_rep* crep = is_class_rep(L, i)?(class_rep*)lua_touserdata(L, i):0;
-		if (obj == 0 && crep == 0)
-		{
-			int type = lua_type(L, i);
-			ret += lua_typename(L, type);
-		}
-		else if (obj)
-		{
-			if (obj->flags() & object_rep::constant) ret += "const ";
-			ret += obj->crep()->name();
-		}
-		else if (crep)
-		{
-			ret += "<";
-			ret += crep->name();
-			ret += ">";
-		}
-		if (i < top) ret += ", ";
-	}
-	return ret;
-}
+
+#ifdef LUABIND_NOT_THREADSAFE
+	void not_threadsafe_defined_conflict() {}
+#else
+	void not_threadsafe_not_defined_conflict() {}
+#endif
+
+#ifdef LUABIND_NO_ERROR_CHECKING
+	void no_error_checking_defined_conflict() {}
+#else
+	void no_error_checking_not_defined_conflict() {}
+#endif
+
+}}
 

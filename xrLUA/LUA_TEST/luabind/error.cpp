@@ -20,38 +20,57 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include <luabind/lua_include.hpp>
+#include <luabind/error.hpp>
 
-#include <luabind/luabind.hpp>
 
-using namespace luabind::detail;
-
-std::string luabind::detail::stack_content_by_name(lua_State* L, int start_index)
+namespace luabind
 {
-	std::string ret;
-	int top = lua_gettop(L);
-	for (int i = start_index; i <= top; ++i)
-	{
-		object_rep* obj = is_class_object(L, i);
-		class_rep* crep = is_class_rep(L, i)?(class_rep*)lua_touserdata(L, i):0;
-		if (obj == 0 && crep == 0)
-		{
-			int type = lua_type(L, i);
-			ret += lua_typename(L, type);
-		}
-		else if (obj)
-		{
-			if (obj->flags() & object_rep::constant) ret += "const ";
-			ret += obj->crep()->name();
-		}
-		else if (crep)
-		{
-			ret += "<";
-			ret += crep->name();
-			ret += ">";
-		}
-		if (i < top) ret += ", ";
-	}
-	return ret;
-}
 
+	namespace
+	{
+		pcall_callback_fun pcall_callback = 0;
+#ifdef LUABIND_NO_EXCEPTIONS
+		error_callback_fun error_callback = 0;
+		cast_failed_callback_fun cast_failed_callback = 0;
+#endif
+	}
+
+
+#ifdef LUABIND_NO_EXCEPTIONS
+
+	typedef void(*error_callback_fun)(lua_State*);
+	typedef void(*cast_failed_callback_fun)(lua_State*, LUABIND_TYPE_INFO);
+
+	void set_error_callback(error_callback_fun e)
+	{
+		error_callback = e;
+	}
+
+	void set_cast_failed_callback(cast_failed_callback_fun c)
+	{
+		cast_failed_callback = c;
+	}
+
+	error_callback_fun get_error_callback()
+	{
+		return error_callback;
+	}
+
+	cast_failed_callback_fun get_cast_failed_callback()
+	{
+		return cast_failed_callback;
+	}
+
+#endif
+
+	void set_pcall_callback(pcall_callback_fun e)
+	{
+		pcall_callback = e;
+	}
+
+	pcall_callback_fun get_pcall_callback()
+	{
+		return pcall_callback;
+	}
+
+}
