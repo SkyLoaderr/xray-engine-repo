@@ -152,18 +152,22 @@ void CObject::net_Destroy		()
 void CObject::UpdateCL			()
 {
 	// consistency check
+#ifdef DEBUG
 	if (Device.dwFrame==chk_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",cName());
 	chk_update_cl	= Device.dwFrame;
 
 	if (Parent && spatial.node_ptr)		Debug.fatal	("Object %s has parent but is still registered inside spatial DB",cName());
+#endif
 }
 
 void CObject::shedule_Update	( u32 T )
 {
 	// consistency check
+#ifdef DEBUG
 	if (Device.dwFrame==chk_update_shedule)	
 		Debug.fatal	("'shedule_Update' called twice per frame for %s",cName());
 	chk_update_shedule	= Device.dwFrame;
+#endif
 
 	//
 	BOOL	bUpdate=FALSE;
@@ -194,8 +198,7 @@ void CObject::shedule_Update	( u32 T )
 		}
 	}
 
-	if (bUpdate)
-	{	
+	if (bUpdate)		{	
 		spatial_move	();
 	}
 }

@@ -32,6 +32,7 @@ float		CBoneInstance::get_param	(u32 idx)
 	return		param[idx];
 }
 
+#ifdef	DEBUG
 void	CBoneData::DebugQuery		(BoneDebug& L)
 {
 	for (u32 i=0; i<children.size(); i++)
@@ -41,6 +42,7 @@ void	CBoneData::DebugQuery		(BoneDebug& L)
 		children[i]->DebugQuery(L);
 	}
 }
+#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

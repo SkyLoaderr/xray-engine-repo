@@ -48,7 +48,9 @@ void __stdcall _sound_event	(ref_sound* S, float range)
 //----------------------------------------------------------------------
 CObjectSpace::CObjectSpace	( )
 {
+#ifdef DEBUG
 	sh_debug.create				("debug\\wireframe","$null");
+#endif
 	m_BoundingVolume.invalidate	();
 }
 //----------------------------------------------------------------------
@@ -56,7 +58,9 @@ CObjectSpace::~CObjectSpace	( )
 {
 	Sound->set_geometry_occ		(NULL);
 	Sound->set_handler			(NULL);
+#ifdef DEBUG
 	sh_debug.destroy			();
+#endif
 }
 //----------------------------------------------------------------------
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )

@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xrMemory_align.h"
+#include	"xrMemory_align.h"
 
-#ifndef __BORLANDC__
+#ifndef		__BORLANDC__
 
 #ifndef		DEBUG
 #define		debug_mode 0

@@ -9,6 +9,7 @@
 #pragma once
 
 //#define NO_AI
-#ifdef DEBUG
 //#define LOG_STATE
+#ifndef DEBUG
+#undef LOG_STATE
 #endif

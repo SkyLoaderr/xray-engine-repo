@@ -1,16 +1,14 @@
 #ifndef DefinesH
 #define DefinesH
 
-ENGINE_API	extern BOOL			bDebug;
+#ifdef	DEBUG
+	ENGINE_API	extern BOOL			bDebug;
+#endif
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 #define _SHOW_REF(msg, x)   { if(x) { x->AddRef(); Log(msg,u32(x->Release()));}}
 
 // textures
-enum {
-	TF_ShowMipmaps		= 1<<0,
-	TF_forcedword		= u32(-1)
-};
 ENGINE_API extern	int		psTextureLOD		;
 
 // video
@@ -37,11 +35,11 @@ ENGINE_API extern	u32			psCurrentMode		;
 ENGINE_API extern	u32			psCurrentBPP		;
 ENGINE_API extern	Flags32		psDeviceFlags		;
 
-#define _game_data_			"$game_data$"
-#define _game_textures_		"$game_textures$"
-#define _game_levels_		"$game_levels$"
-#define _game_sounds_		"$game_sounds$"
-#define _game_meshes_		"$game_meshes$"
-#define _game_shaders_		"$game_shaders$"
+#define _game_data_				"$game_data$"
+#define _game_textures_			"$game_textures$"
+#define _game_levels_			"$game_levels$"
+#define _game_sounds_			"$game_sounds$"
+#define _game_meshes_			"$game_meshes$"
+#define _game_shaders_			"$game_shaders$"
 
 #endif

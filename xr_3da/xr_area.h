@@ -16,7 +16,6 @@ class	ENGINE_API						CObjectSpace
 {
 private:
 	// Debug
-	ref_shader							sh_debug;
 	CDB::MODEL							Static;
 	Fvector								Static_Shift;
 	Fbox								m_BoundingVolume;
@@ -27,6 +26,7 @@ public:
 	clQueryCollision					q_result;
 
 #ifdef DEBUG
+	ref_shader							sh_debug;
 	clQueryCollision					q_debug;
 	xr_vector<std::pair<Fsphere,u32> >	dbg_S;
 #endif

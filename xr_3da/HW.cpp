@@ -13,7 +13,9 @@
 
 ENGINE_API CHW HW;
 
+#ifdef DEBUG
 IDirect3DStateBlock9*	dwDebugSB = 0;
+#endif
 
 void CHW::CreateD3D()
 {
@@ -62,7 +64,9 @@ void	CHW::DestroyDevice	()
 {
 	_RELEASE				(pBaseZB);
 	_RELEASE				(pBaseRT);
+#ifdef DEBUG
 	_RELEASE				(dwDebugSB);
+#endif
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	_RELEASE				(HW.pDevice);
 	DestroyD3D				();
@@ -202,7 +206,9 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 
 	// Capture misc data
+#ifdef DEBUG
 	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
+#endif
 	R_CHK	(pDevice->GetRenderTarget			(0,&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
 	u32	memory									= pDevice->GetAvailableTextureMem	();

@@ -43,9 +43,9 @@ public:
 	//
 	void Add	(T *obj, int priority=REG_PRIORITY_NORMAL, u32 flags=0)
 	{
-		VERIFY(obj);
 #ifdef DEBUG
-		for (int i=0; i<Count; i++) VERIFY(R[i].Object!=(void*)obj);
+		VERIFY	(obj);
+		for		(int i=0; i<Count; i++) VERIFY(R[i].Object!=(void*)obj);
 #endif
 		R[Count].Object	=obj;
 		R[Count].Prio	=priority;

@@ -51,8 +51,10 @@ private:
 	ObjectFlags							FLAGS;
 	u32									net_ID;
 
-	u32									chk_update_shedule;
-	u32									chk_update_cl;
+#ifdef DEBUG
+	u32									dbg_update_shedule;
+	u32									dbg_update_cl;
+#endif
 
 	// Some property variables
 	ref_str								NameObject;
