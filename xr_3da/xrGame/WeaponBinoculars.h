@@ -10,10 +10,9 @@ private:
 	typedef CWeapon inherited;
 protected:
 	// Media :: sounds
+	sound			sndIdle;
 	sound			sndShow;
 	sound			sndHide;
-	ESoundTypes		m_eSoundShow;
-	ESoundTypes		m_eSoundHide;
 	// HUD :: Animations
 	MotionSVec		mhud_idle;
 	MotionSVec		mhud_hide;
@@ -38,7 +37,7 @@ protected:
 	virtual void	OnHide			();
 	virtual void	OnAnimationEnd	();
 public:
-					CWeaponBinoculars();
+					CWeaponBinoculars(); 
 	virtual			~CWeaponBinoculars();
 	virtual BOOL	HasOpticalAim	()		{ return TRUE; }
 	void			Load			(CInifile* ini, const char* section);

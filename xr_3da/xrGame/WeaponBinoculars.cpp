@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "WeaponBinocular.h"
+#include "WeaponBinoculars.h"
 #include "..\render.h"
 #include "..\bodyinstance.h"
 #include "..\3DSound.h"
@@ -55,8 +55,9 @@ void CWeaponBinoculars::Load(CInifile* ini, const char* section)
 	bVisible			= FALSE;
 
 	// Sounds
-	SoundCreate			(sndShow,		"draw"    ,m_eSoundShow);
-	SoundCreate			(sndHide,		"holster" ,m_eSoundHide);
+	SoundCreate			(sndShow,		"draw");
+	SoundCreate			(sndHide,		"holster");
+	SoundCreate			(sndIdle,		"idle");
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	animGet				(mhud_idle,		"idle");
@@ -82,7 +83,7 @@ void CWeaponBinoculars::UpdateXForm(BOOL bHUDView)
 			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
 			
-			Fvector			R,D,N;
+			Fvector			R,D,N; 
 			D.sub			(mL.c,mR.c);	D.normalize_safe();
 			R.crossproduct	(mR.j,D);		R.normalize_safe();
 			N.crossproduct	(D,R);			N.normalize_safe();

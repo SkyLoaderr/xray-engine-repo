@@ -13,7 +13,7 @@
 #include "WeaponHPSA.h"
 #include "WeaponPM.h"
 #include "WeaponFORT.h"
-#include "WeaponBinocular.h"
+#include "WeaponBinoculars.h"
 
 class fClassEQ {
 	CLASS_ID cls;
@@ -185,7 +185,7 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		strcpy(sect_name,"wpn_FORT");
 		break;
 	case CLSID_OBJECT_W_BINOCULAR:
-		pWeapon = new CWeaponBinocular	(); 
+		pWeapon = new CWeaponBinoculars	(); 
 		strcpy(sect_name,"wpn_BINOC");
 		break;
 	}
