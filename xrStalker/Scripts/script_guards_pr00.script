@@ -258,7 +258,7 @@ function main()
 	end
 
 	while true do
-		if final_guard01:see(actor) then
+		if final_guard01:see(actor) or final_guard02:see(actor) or final_guard03:see(actor) then
 			wait(1000)			
 			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
 			wait(1000)			
