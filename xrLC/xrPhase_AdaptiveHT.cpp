@@ -118,6 +118,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 	DB.ray_options	(0);
 
 	Status			("Tesselating...");
+	if (0)
 	{
 		for (u32 fit=0; fit<g_faces.size(); fit++)	{		// clear split flag from all faces + calculate normals
 			g_faces[fit]->flags.bSplitted		= false;
@@ -154,11 +155,12 @@ void CBuild::xrPhase_AdaptiveHT	()
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	Status			("Adaptive tesselation...");
+	Status				("Adaptive tesselation...");
+	if (0)
 	{
 		for (u32 fit=0; fit<g_faces.size(); fit++)	{					// clear split flag from all faces + calculate normals
-			g_faces[fit]->flags.bSplitted		= false;
-			g_faces[fit]->flags.bLocked			= true;
+			g_faces[fit]->flags.bSplitted	= false;
+			g_faces[fit]->flags.bLocked		= true;
 		}
 		u_Tesselate		(callback_edge_error,0,callback_vertex_hemi);	// tesselate
 	}
@@ -169,8 +171,11 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Status				("Exporting to SMF...");
-	string_path			fn;
-	GSaveAsSMF			(strconcat(fn,pBuild->path,"hemi_source.smf"));
+	if (0)
+	{
+		string_path			fn;
+		GSaveAsSMF			(strconcat(fn,pBuild->path,"hemi_source.smf"));
+	}
 }
 
 void CBuild::u_Tesselate	(tesscb_estimator* cb_E, tesscb_face* cb_F, tesscb_vertex* cb_V)
