@@ -78,6 +78,7 @@ private:
 	float					m_fAttackSuccessProbability1;
 	float					m_fAttackSuccessProbability2;
 	float					m_fAttackSuccessProbability3;
+	u32						m_dwRandomState;
 	
 	// fire  constants
 	u32						m_dwFireRandomMin;

@@ -132,17 +132,41 @@ void CAI_Stalker::Think()
 //		ForwardStraight	();
 //	} else
 	if (K) {
-//		BackDodge();
+		switch (m_dwRandomState) {
+			case 0 : {
+				Msg("Back dodge");
+				ForwardDodge();
+//				BackDodge();
+				break;
+			}
+			case 1 : {
+				Msg("Back cover");
+//				BackCover();
+				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
+					m_bStateChanged = true;
+				ForwardCover();
+				break;
+			}
+			case 2 : {
+				Msg("Forward cover");
+				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
+					m_bStateChanged = true;
+				ForwardCover();
+				break;
+			}
+			case 3 : {
+				Msg("Forward dodge");
+				ForwardDodge();
+				break;
+			}
+			case 4 : {
+				Msg("Forward straight");
+				ForwardStraight();
+				break;
+			}
+			default : NODEFAULT;
+		}
 
-//		BackCover();
-
-		if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
-			m_bStateChanged = true;
-		ForwardCover();
-		
-//		ForwardDodge();
-		
-//		ForwardStraight();
 	} else
 	if (M) {
 		m_tSelectorFreeHunting.m_fMaxEnemyDistance	= vPosition.distance_to(m_tpItemToTake->Position());

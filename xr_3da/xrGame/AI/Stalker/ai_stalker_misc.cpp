@@ -139,8 +139,18 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	
 	C = D = E = F = G	= false;
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	if (m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime  < 20000))
-		VisibleEnemies.insert(m_tSavedEnemy);
+	if (m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime  < 20000)) {
+		bool	bOk = false;
+		u32		N = VisibleEnemies.size();
+		for (int i=0; i<N; i++) {
+			if (VisibleEnemies[i].key == m_tSavedEnemy) {
+				bOk = true;
+				break;
+			}
+		}
+		if (!bOk)
+			VisibleEnemies.insert(m_tSavedEnemy);
+	}
 	if (VisibleEnemies.size()) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4)) {
 			case 0 : 
