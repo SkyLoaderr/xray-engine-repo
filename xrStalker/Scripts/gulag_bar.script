@@ -641,63 +641,148 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "bar_roaming_dogs" then
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_1"
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_1"
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_1"
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_1"
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_1"
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = "bar_roaming_dogs_sr_1"
 		}
 		table.insert(sj, t)
 
+
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_2"
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_2"
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_2"
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_2"
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_roaming_dogs", 
 			idle = 0,
-			prior = 4, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "mon_gulag_sr_2"
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_roaming_dogs", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 
@@ -811,22 +896,39 @@ function load_states(gname, type)
 
 
 	if type == "bar_roaming_dogs" then        
-		return function (gulag)
-			if gulag.alarm_start == nil or
-				game.get_game_time():diffSec(gulag.alarm_start) > 300 
-			then
-				gulag.alarm_start = game.get_game_time()
-				if gulag.state == 0 then
+		return function(gulag)
+			local t = db.zone_by_name["bar_roaming_dogs_territory"]
+			if t and db.actor then
+				if t:inside(db.actor:position()) then
 					return 1
 				else
 					return 0
-				end			
-			else
-				return gulag.state
-			end				
-		
-			return 0
+				end
+			end
 		end
+
+
+//		return function (gulag)
+//			if gulag.alarm_start == nil or
+//				game.get_game_time():diffSec(gulag.alarm_start) > 500 
+//			then
+//				gulag.alarm_start = game.get_game_time()
+//				if gulag.state == nil then
+//					return math.random(0, 2)
+//				else
+//					local t = math.random(0, 1)
+//					if t <= gulag.state then
+//						return t
+//					else
+//						return t+1
+//					end					
+//				end				
+//			else
+//				return gulag.state
+//			end				
+//		
+//			return 0
+//		end
 	end
 
 end
