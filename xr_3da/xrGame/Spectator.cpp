@@ -48,7 +48,7 @@ void CSpectator::UpdateCL()
 							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
 							if (A&&A->g_Alive()){
 								if(idx==look_idx){
-									cam_Update(&A->clXFORM());
+									cam_Update		(A);
 									return;
 								}
 								idx++;
@@ -160,23 +160,25 @@ void CSpectator::cam_Set	(EActorCameras style)
 	cameras[cam_active]->OnActivate(old_cam);
 }
 
-void CSpectator::cam_Update	(const Fmatrix* M)
+void CSpectator::cam_Update	(CActor* A)
 {
-	if (M){
+	if (A){
+		const Fmatrix& M			= A->clXFORM();
 		switch(cam_active) {
 		case eacFirstEye:{
 			CCameraBase* cam		= cameras[cam_active];
 			Fvector P;
-			P.add					(M->c,1.6f);
-			cam->Set				(P,M->k,M->j);
+			P.add					(M.c,1.6f);
+			cam->Set				(P,M.k,M.j);
 			pCreator->Cameras.Update(cam);
 			}break;
 		case eacFreeLook:
 		case eacLookAt:{
 			CCameraBase* cam		= cameras[cam_active];
+			cam->SetParent			(A);
 			Fvector point, dangle;
 			point.set				(0.f,1.6f,0.f);
-			M->transform_tiny		(point);
+			M.transform_tiny		(point);
 			cam->Update				(point,dangle);
 			pCreator->Cameras.Update(cam);
 			}break;

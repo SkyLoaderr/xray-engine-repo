@@ -8,14 +8,7 @@
 #include "..\feel_touch.h"
 
 // refs
-class ENGINE_API CCameraBase;
-class ENGINE_API CBoneInstance;
-class ENGINE_API CMotionDef;
-class ENGINE_API CKinematics;
-class ENGINE_API CBlend;
-class CWeaponList;
-class CEffectorBobbing;
-class CTargetCS;
+class CActor;
 
 class CSpectator: public CGameObject
 {
@@ -37,7 +30,7 @@ private:
 	int						look_idx;
 	//------------------------------
 	void					cam_Set					(EActorCameras style);
-	void					cam_Update				(const Fmatrix* M=0);
+	void					cam_Update				(CActor* A=0);
 public:
 							CSpectator				( );
 	virtual					~CSpectator				( );
