@@ -31,7 +31,7 @@ void CUICSFragList::OnFrame()
 	sort(items.begin(),items.end(),pred_player);
 
 	// out info
-	CGameFont* H		= Level().HUD()->pFontSmall;
+	CGameFont* H		= Level().HUD()->pFontMedium;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
 	if (Game().timelimit)	H->OutNext	("Time remain: %3d (sec)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
@@ -55,7 +55,6 @@ void CUICSFragList::OnFrame()
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
 		H->OutNext		("%3d. %-20s %-8s %-5d",k++,P->name,P->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD?"dead":"",P->kills);
-//		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
 	}
 }
 //--------------------------------------------------------------------

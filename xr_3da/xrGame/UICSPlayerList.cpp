@@ -50,7 +50,7 @@ void CUICSPlayerList::OnFrame()
 		if(P->team != 1) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
-		H->OutNext		("s%3d. %-20s %-5d %s",k++,P->name,P->kills,(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
+		H->OutNext		("%3d. %-20s %-5d %s",k++,P->name,P->kills,(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
 	}
 	H->OutSkip(3.f);
 }
