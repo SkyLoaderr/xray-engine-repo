@@ -216,7 +216,6 @@ void CLevelGraph::render()
 
 	if (!bDebug)	return;
 
-	if (!loaded())						return;
 	//	if (0==sh_debug)				return;
 	if (!psAI_Flags.test(aiDebug))	return;
 
@@ -488,7 +487,7 @@ void CLevelGraph::compute_path() const
 	u32						l_dwFinishNodeID	= vertex(m_finish_point);
 	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
 	xr_vector<u32>			l_tpNodePath;
-	ai().graph_search_engine().build_path<CLevelGraph>(l_dwStartNodeID,l_dwFinishNodeID,l_tpNodePath,true);
+	ai().graph_search_engine().build_path(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,l_tpNodePath,CGraphSearchEngine::CObstacleParams());
 	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
 }
 

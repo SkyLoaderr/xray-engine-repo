@@ -24,6 +24,9 @@ public:
 	u32										m_level_dest_node;
 	u32										m_level_cur_node_index;
 	ELevelPathType							m_level_path_type;
+	float									m_max_range;
+	u32										m_max_iterations;
+	u32										m_max_node_visited;
 	bool									m_consider_obstacles;
 	float									m_cover_weight;
 	float									m_light_weight;

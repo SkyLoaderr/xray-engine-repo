@@ -85,7 +85,7 @@ public:
 #pragma pack(pop)
 
 	typedef const CEdge				*const_iterator;
-	typedef const ALife::SLevelPoint*const_spawn_iterator;
+	typedef const ALife::CLevelPoint*const_spawn_iterator;
 
 protected:
 	CHeader							m_tGraphHeader;	// graph header
@@ -93,7 +93,11 @@ protected:
 	CVertex							*m_tpaGraph;
 
 public:
+#ifndef AI_COMPILER
+	IC 								CGameGraph		();
+#else
 	IC 								CGameGraph		(LPCSTR file_name);
+#endif
 	IC virtual						~CGameGraph		();
 	IC const CHeader				&header			() const;
 	IC		bool					mask			(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;

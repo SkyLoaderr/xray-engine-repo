@@ -9,17 +9,19 @@
 #include "stdafx.h"
 #include "level_graph.h"
 
-CLevelGraph::CLevelGraph		(LPCSTR file_name)
+#ifndef AI_COMPILER
+CLevelGraph::CLevelGraph					()
+#else
+CLevelGraph::CLevelGraph					(LPCSTR file_name)
+#endif
 {
-//#ifdef DEBUG
-//#ifndef AI_COMPILER
-//	sh_debug.create				("debug\\ai_nodes","$null");
-//#endif
-//#endif
-//	m_reader					= 0;
-//	string256					file_name;
-//	if (!FS.exist(file_name,"$level$","level.ai"))
-//		return;
+#ifndef AI_COMPILER
+#ifdef DEBUG
+	sh_debug.create				("debug\\ai_nodes","$null");
+#endif
+	string256					file_name;
+	FS.update_path				(file_name,"$level$","level.ai");
+#endif
 	m_reader					= FS.r_open	(file_name);
 
 	// m_header & data

@@ -78,7 +78,11 @@ public:
 	typedef u32 const_spawn_iterator;
 	typedef u32 const_death_iterator;
 
+#ifndef AI_COMPILER
+					CLevelGraph					();
+#else
 					CLevelGraph					(LPCSTR file_name);
+#endif
 	virtual			~CLevelGraph				();
 	IC		u8		ref_add						(u32 vertex_id);
 	IC		u8		ref_dec						(u32 vertex_id);
@@ -89,6 +93,7 @@ public:
 	IC		u32		value						(const CVertex &vertex, const_iterator &i) const;
 	IC		u32		value						(const CVertex *vertex, const_iterator &i) const;
 	IC		u32		value						(const u32 vertex_id,	const_iterator &i) const;
+	IC		bool	is_accessible				(const u32 vertex_id) const;
 	IC		const CHeader &header				() const;
 	IC		bool	valid_vertex_id				(u32 vertex_id) const;
 	IC		u32		level_id					() const;
@@ -127,6 +132,8 @@ public:
 	IC		bool	inside						(const u32 vertex_id,	const Fvector &position, const float epsilon) const;
 	IC		void	project_point				(const Fplane &plane,	Fvector &point) const;
 			float	distance					(const Fvector &position, const CVertex *vertex) const;
+			float	distance					(const Fvector &position, const u32 vertex_id) const;
+			float	distance					(const u32 vertex_id, const Fvector &position) const;
 	IC		float	distance					(const Fvector &position, const Fvector &point0, const Fvector &point1) const;
 	IC		float	distance					(u32 vertex_id0, u32 vertex_id1) const;
 	IC		float	distance					(const CVertex *tpNode0, u32 vertex_id1) const;

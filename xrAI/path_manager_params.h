@@ -82,7 +82,11 @@ namespace PathManagers {
 				_index_type		max_visited_node_count = _index_type(-1),
 				bool			avoid_dynamic_obstacles = true
 			) :
-			SBaseParameters(
+			SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>(
 				max_range,
 				max_iteration_count,
 				max_visited_node_count
@@ -115,7 +119,11 @@ namespace PathManagers {
 				float			cover_weight = 20.f,
 				float			distance_weight = 40.f
 			) :
-			SObstacleParams (
+			SObstacleParams <
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>(
 				max_range,
 				max_iteration_count,
 				max_visited_node_count,
@@ -154,7 +162,11 @@ namespace PathManagers {
 				float			enemy_distance = 30.f,
 				float			enemy_view_weight = 100.f
 			) : 
-			SObstaclesLightCover(
+			SObstaclesLightCover<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>(
 				max_range,
 				max_iteration_count,
 				max_visited_node_count,

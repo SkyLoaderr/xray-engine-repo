@@ -310,3 +310,9 @@ IC void CLevelGraph::set_finish_point	(const Fvector &finish_point)
 }
 #endif
 #endif
+
+IC	bool CLevelGraph::is_accessible		(const u32 vertex_id) const
+{
+	VERIFY				(valid_vertex_id(vertex_id));
+	return				(!m_ref_counts[vertex_id]);
+}

@@ -8,10 +8,16 @@
 
 #pragma once
 
+#ifdef AI_COMPILER
 IC CGameLevelCrossTable::CGameLevelCrossTable(LPCSTR fName)
+#else
+IC CGameLevelCrossTable::CGameLevelCrossTable()
+#endif
 {
-//	string256							fName;
-//	R_ASSERT							(!FS.exist(fName,"$level$",CROSS_TABLE_NAME));
+#ifndef AI_COMPILER
+	string256							fName;
+	FS.update_path						(fName,"$level$",CROSS_TABLE_NAME);
+#endif
 	m_tpCrossTableVFS					= FS.r_open(fName);
 	R_ASSERT2							(m_tpCrossTableVFS,"Can't open cross table!");
 	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION),"Can't find chunk CROSS_TABLE_CHUNK_VERSION!");

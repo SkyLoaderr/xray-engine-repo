@@ -22,6 +22,13 @@ protected:
 	typedef float _dist_type;
 	typedef u32	  _index_type;
 	typedef u32	  _iteration_type;
+public:
+	typedef PathManagers::SBaseParameters<_dist_type,_index_type,_iteration_type>			CBaseParameters;
+	typedef PathManagers::SFlooder<_dist_type,_index_type,_iteration_type>					CFlooder;
+	typedef PathManagers::SObstacleParams<_dist_type,_index_type,_iteration_type>			CObstacleParams;
+	typedef PathManagers::SObstaclesLightCover<_dist_type,_index_type,_iteration_type>		CObstaclesLightCover;
+	typedef PathManagers::SObstaclesLightCoverEnemy<_dist_type,_index_type,_iteration_type> CObstaclesLightCoverEnemy;
+protected:
 
 	// data storage type definition
 //	typedef CDataStorageUL				<							_dist_type,_index_type,u32,true,24,8> CDataStorage;

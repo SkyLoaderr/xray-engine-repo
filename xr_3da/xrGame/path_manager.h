@@ -523,7 +523,7 @@ public:
 		y2						= (float)(tNode1.position().y);
 
 		float					cover = 1/(EPS_L + (float)(graph->cover(tNode1)[0])/255.f + (float)(graph->cover(tNode1)[1])/255.f + (float)(graph->cover(tNode1)[2])/255.f  + (float)(graph->cover(tNode1)[3])/255.f);
-		float					light = (float)(tNode1.light)/15.f;
+		float					light = (float)(tNode1.light())/15.f;
 		return					(light_weight*light + cover_weight*cover + distance_weight*inherited::evaluate(node_index1,node_index2,i));
 	}
 

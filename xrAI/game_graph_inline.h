@@ -8,12 +8,16 @@
 
 #pragma once
 
+#ifndef AI_COMPILER
+IC CGameGraph::CGameGraph		()
+#else
 IC CGameGraph::CGameGraph		(LPCSTR file_name)
+#endif
 {
-//	m_tpGraphVFS				= 0;
-//	m_tpaGraph					= 0;
-//	string256					file_name;
-//	VERIFY						(FS.exist(file_name,"$game_data$",GRAPH_NAME));
+#ifndef AI_COMPILER
+	string256					file_name;
+	FS.update_path				(file_name,"$game_data$",GRAPH_NAME);
+#endif	
 	m_tpGraphVFS				= FS.r_open(file_name);
 	m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();

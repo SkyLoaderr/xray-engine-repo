@@ -53,8 +53,10 @@ protected:
 public:
 #ifdef AI_COMPILER
 	IC						CGameLevelCrossTable	(){};
-#endif
 	IC						CGameLevelCrossTable	(LPCSTR fName);
+#else
+	IC						CGameLevelCrossTable	();
+#endif
 	IC virtual				~CGameLevelCrossTable	();
 	IC		const CCell		&vertex					(u32 level_vertex_id) const;
 	IC		const CHeader	&header					() const;
