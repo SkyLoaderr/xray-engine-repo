@@ -153,6 +153,7 @@ private:
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
 	CAI_NodeEvaluatorFull												m_tSelectorAttack;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode>				m_tSelectorNode;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
 	Fvector					m_tMySavedPosition;
