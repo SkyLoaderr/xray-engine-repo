@@ -125,13 +125,19 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 		IReader F				(m_Def->m_Actions.pointer(),m_Def->m_Actions.size());
         ParticleManager()->LoadActions		(m_HandleActionList,F);
         ParticleManager()->SetMaxParticles	(m_HandleEffect,m_Def->m_MaxParticles);
-        ParticleManager()->SetCallback		(m_HandleEffect,OnParticleBirth,OnParticleDead,m_Def);
+        ParticleManager()->SetCallback		(m_HandleEffect,OnEffectParticleBirth,OnEffectParticleDead,m_Def);
 		// time limit
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
 			m_fElapsedLimit 	= m_Def->m_fTimeLimit;
 	}
 	if (def)	hShader			= def->m_CachedShader;
 	return TRUE;
+}
+
+void CParticleEffect::SetBirthDeadCB(PAPI::OnBirthParticleCB bc, PAPI::OnDeadParticleCB dc)
+{
+	if (m_Def)
+        ParticleManager()->SetCallback		(m_HandleEffect,bc,dc,m_Def);
 }
 
 u32 CParticleEffect::ParticlesCount()

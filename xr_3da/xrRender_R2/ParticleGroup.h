@@ -17,7 +17,7 @@ namespace PS
 		struct SEffect{
 			enum{
 				flDefferedStop	= (1<<0),
-				flChild			= (1<<1),
+				flHaveChild		= (1<<1),
 				flEnabled		= (1<<2),
 			};
 			Flags32			m_Flags;
@@ -63,7 +63,7 @@ namespace PS
 		Fvector				m_InitialPosition;
 	public:
     	DEFINE_VECTOR(IRender_Visual*,VisualVec,VisualVecIt);
-    	class SItem{
+    	struct SItem{
         	IRender_Visual*	_effect;
             VisualVec		_children;
             VisualVec		_children_stopped;
@@ -87,7 +87,7 @@ namespace PS
             void			RemoveChild		(u32 idx);
 
             void 			UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
-            void			OnFrame			(u32 u_dt, Fbox& box, bool& bPlaying);
+            void			OnFrame			(u32 u_dt, const CPGDef::SEffect& def, Fbox& box, bool& bPlaying);
 
             u32				ParticlesCount	();
             BOOL			IsPlaying		();

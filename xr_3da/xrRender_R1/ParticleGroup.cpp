@@ -151,11 +151,22 @@ void CParticleGroup::SItem::UpdateParent(const Fmatrix& m, const Fvector& veloci
     CParticleEffect* E	= static_cast<CParticleEffect*>(_effect);
     if (E) E->UpdateParent(m,velocity,bXFORM);
 }
+//------------------------------------------------------------------------------
+void OnGroupParticleBirth(void* owner, PAPI::Particle& m, u32 idx)
+{
+	PS::OnEffectParticleBirth(owner, m, idx);
+}
+void OnGroupParticleDead(void* owner, PAPI::Particle& m, u32 idx)
+{
+	PS::OnEffectParticleDead(owner, m, idx);
+}
+//------------------------------------------------------------------------------
 struct zero_vis_pred : public std::unary_function<IRender_Visual*, bool>
 {
 	bool operator()(const IRender_Visual* x){ return x==0; }
 };
-void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
+static const Fvector zero_vel={0,0,0};
+void CParticleGroup::SItem::OnFrame(u32 u_dt, const CPGDef::SEffect& def, Fbox& box, bool& bPlaying)
 {
     CParticleEffect* E		= static_cast<CParticleEffect*>(_effect);
     if (E){
@@ -163,6 +174,20 @@ void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
         if (E->IsPlaying()){ 
             bPlaying		= true;
             if (E->vis.box.is_valid())     box.merge	(E->vis.box);
+            if (def.m_Flags.is(CPGDef::SEffect::flHaveChild)&&*def.m_ChildEffectName){
+//                AppendChild	(*def.m_ChildEffectName);
+                PAPI::Particle* particles;
+                u32 p_cnt;
+                PAPI::ParticleManager()->GetParticles(E->GetHandleEffect(),particles,p_cnt);
+                if (p_cnt){
+                    for(u32 i = 0; i < p_cnt; i++){
+                        PAPI::Particle &m	= particles[i]; 
+                        CParticleEffect* C 	= static_cast<CParticleEffect*>(_children[i]);
+                        Fmatrix M; M.translate(m.pos);
+                        C->UpdateParent	(M,zero_vel,FALSE);
+                    }
+                }
+            }
         }
     }
     VisualVecIt it;
@@ -256,7 +281,7 @@ void CParticleGroup::OnFrame(u32 u_dt)
 
         bool bPlaying = false;
         Fbox box; box.invalidate();
-        for (SItemVecIt i_it=items.begin(); i_it!=items.end(); i_it++) i_it->OnFrame(u_dt,box,bPlaying);
+        for (SItemVecIt i_it=items.begin(); i_it!=items.end(); i_it++) i_it->OnFrame(u_dt,m_Def->m_Effects[i_it-items.begin()],box,bPlaying);
 
         if (m_RT_Flags.is(flRT_DefferedStop)&&!bPlaying){
             m_RT_Flags.set		(flRT_Playing|flRT_DefferedStop,FALSE);
@@ -291,6 +316,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
         items.resize			(m_Def->m_Effects.size());
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){
         	CParticleEffect* eff = (CParticleEffect*)RImplementation.model_CreatePE(*e_it->m_EffectName);
+            eff->SetBirthDeadCB	(OnGroupParticleBirth,OnGroupParticleDead);
 			items[e_it-def->m_Effects.begin()].Set(eff);
         }
     }

@@ -139,8 +139,8 @@ namespace PS
 		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
 #endif
 	};
-    void OnParticleBirth(void* owner, PAPI::Particle& m, u32 idx);
-    void OnParticleDead	(void* owner, PAPI::Particle& m, u32 idx);
+    void OnEffectParticleBirth	(void* owner, PAPI::Particle& m, u32 idx);
+    void OnEffectParticleDead	(void* owner, PAPI::Particle& m, u32 idx);
 };
 //----------------------------------------------------
 #define PED_VERSION				0x0001

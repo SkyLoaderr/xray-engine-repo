@@ -55,7 +55,9 @@ namespace PS
 
 		BOOL				Compile				(CPEDef* def);
 
-		CPEDef*				GetDefinition		(){return m_Def;}
+		IC CPEDef*			GetDefinition		(){return m_Def;}
+		IC int				GetHandleEffect		(){return m_HandleEffect;}
+		IC int				GetHandleActionList	(){return m_HandleActionList;}
 
 		virtual void		Play				();
 		virtual void		Stop				(BOOL bDefferedStop=TRUE);
@@ -67,6 +69,7 @@ namespace PS
 
         void				SetDestroyCB		(DestroyCallback 	destroy_cb)		{m_DestroyCallback 	= destroy_cb;}
         void				SetCollisionCB		(CollisionCallback	collision_cb)	{m_CollisionCallback= collision_cb;}
+        void				SetBirthDeadCB		(PAPI::OnBirthParticleCB bc, PAPI::OnDeadParticleCB dc);		
 
 	    virtual u32			ParticlesCount		();
 	};
