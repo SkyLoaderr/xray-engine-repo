@@ -1,11 +1,14 @@
 
-news = {}
+news = {
+	tips_esc_trader_about_pda = [[characters_voice\human_01\scenario\trader\trader_tutorial_contacts_on_1]]
+}
 
 
 
-random_sounds = {	"script_replics\\radio\\message\\radio_voice_1",
-					"script_replics\\radio\\message\\radio_voice_2",
-					"script_replics\\radio\\message\\radio_voice_3"
+
+random_sounds = {	[[script_replics\radio\message\radio_voice_1]],
+					[[script_replics\radio\message\radio_voice_2]],
+					[[script_replics\radio\message\radio_voice_3]]
 				}
 
 
@@ -17,6 +20,10 @@ function send_news(actor, news_id, nosound)
 	if nosound ~= true then
 		if news[news_id] ~= nil then
 			--' Играем звук забитый
+			local snd_obj = sound_object(news[news_id])
+			if snd_obj ~= nil then
+				snd_obj:play_at_pos(actor, actor:position(), 0, sound_object.s3d)
+			end		
 		else
 			--' Играем один из рандомных звуков
 			local snd_obj = sound_object(random_sounds[math.random(table.getn(random_sounds)-1)])
