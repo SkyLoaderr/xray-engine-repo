@@ -131,7 +131,8 @@ int _ParticleState::GenerateEffects(int p_effect_count)
 	
 	// Couldn't find a big enough gap. Reallocate.
 	first_empty = effect_vec.size();
-	effect_vec.push_back	(xr_alloc<ParticleEffect>(p_effect_count));
+    for (int k=0; k<p_effect_count; k++)
+		effect_vec.push_back	(0);//xr_alloc<ParticleEffect>(p_effect_count));
 	
 	return first_empty;
 }
@@ -162,7 +163,8 @@ int _ParticleState::GenerateLists(int list_count)
 	
 	// Couldn't find a big enough gap. Allocate.
 	first_empty = alist_vec.size();
-	alist_vec.push_back(xr_alloc<PAHeader>(list_count));
+    for (int k=0; k<list_count; k++)
+		alist_vec.push_back(0);
 	
 	return first_empty;
 }
