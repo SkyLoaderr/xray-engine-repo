@@ -34,6 +34,7 @@ CUIEditBox::CUIEditBox(void)
 	m_bHoldWaitMode = false;
 
 	m_iCursorPos = 0;
+	SetText("");
 /*
 	m_sEdit.push_back('y');
 	m_sEdit.push_back('u');
@@ -297,7 +298,7 @@ void  CUIEditBox::Draw()
 
 		STRING buf_str;
 		buf_str.assign(&m_sEdit.front(), 
-					   &m_sEdit[m_iCursorPos]);
+					&m_sEdit[m_iCursorPos]);
 		buf_str.push_back(0);
 
 		outX = GetFont()->SizeOf(&buf_str.front());

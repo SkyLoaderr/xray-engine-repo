@@ -45,7 +45,8 @@ void CUICheckButton::Draw()
 	if(m_bIsChecked)
 	{
 		GetFont()->SetColor(0xFF00FF00);
-		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+30,	"X");
+		float dy = ((float)rect.bottom-(float)rect.top)/2.0f;
+		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+dy,	"X");
 	}
 
 	GetFont()->OnRender();
