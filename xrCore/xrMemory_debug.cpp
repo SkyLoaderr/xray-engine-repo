@@ -1,14 +1,22 @@
 #include "StdAfx.h"
 #pragma hdrstop
 
+bool	pred_mdbg	(const xrMemory::mdbg& A)	{
+	return (0==A._p && 0==A._size);
+}
+
 void	xrMemory::dbg_register		(void* _p, u32 _size)
 {
 	VERIFY					(debug_mode);
 	debug_cs.Enter			();
 	debug_mode				= FALSE;
 
+	// register + mark
 	mdbg	dbg				=  { _p,_size };
 	debug_info.push_back	(dbg);
+	u8*			_ptr		= (u8*)	_p;
+	u32*		_shred		= (u32*)(_ptr + _size);
+	*_shred					= u32	(-1);
 
 	debug_mode				= TRUE;
 	debug_cs.Leave			();
@@ -33,7 +41,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 		__asm int 3;	
 		Debug.fatal			("Memory allocation error"); 
 	} else	{
-		u8*			_ptr	= debug_info[_found]._p;
+		u8*			_ptr	= (u8*)	debug_info[_found]._p;
 		u32*		_shred	= (u32*)(_ptr + debug_info[_found]._size);
 		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
 		debug_info[_found]._p		= NULL; 
@@ -45,8 +53,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 	if (debug_info_update>1024)
 	{
 		debug_info_update	=	0;
-		mdbg	dbg			=	{ 0,0 };
-		debug_info.erase	(std::remove(debug_info.begin(),debug_info.end(),dbg),debug_info.end());
+		debug_info.erase	(std::remove_if(debug_info.begin(),debug_info.end(),pred_mdbg),debug_info.end());
 	}
 
 	debug_mode				= TRUE;

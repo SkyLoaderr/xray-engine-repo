@@ -23,36 +23,35 @@ void*	xrMemory::mem_alloc		(size_t size)
 
 	// if (size>14310800 && size<14310860)	__asm int 3;
 
+	u32		_footer				=	debug_mode?4:0;
+	void*	_ptr				=	0;
+
 	//
-	void* _ptr					= 0;
 	if (!mem_initialized || debug_mode)		
 	{
 		// generic
-		// stat_counter			+=	size;
-		void*	_real			=	xr_aligned_offset_malloc	(size,16,0x1);
-		_ptr					=	(void*)(((u8*)_real)+1);
-		*acc_header(_ptr)		=	mem_generic;
-		if (debug_mode)			dbg_register	(_ptr);
-		return	_ptr;
-	}
-
-	//	accelerated
-	u32	pool					=	get_pool	(size);
-	if (mem_generic==pool)		
-	{
-		// generic
-		// stat_counter			+=	size;
-		void*	_real			=	xr_aligned_offset_malloc	(size,16,0x1);
+		void*	_real			=	xr_aligned_offset_malloc	(size + _footer, 16, 0x1);
 		_ptr					=	(void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		=	mem_generic;
 	} else {
-		// pooled
-		// stat_counter			+=	mem_pools[pool].get_element	();
-		void*	_real			=	mem_pools[pool].create();
-		_ptr					=	(void*)(((u8*)_real)+1);
-		*acc_header(_ptr)		=	(u8)pool;
+		//	accelerated
+		if (debug_mode)	size		+=	4;
+		u32	pool					=	get_pool	(size+_footer);
+		if (mem_generic==pool)		
+		{
+			// generic
+			void*	_real			=	xr_aligned_offset_malloc	(size + _footer,16,0x1);
+			_ptr					=	(void*)(((u8*)_real)+1);
+			*acc_header(_ptr)		=	mem_generic;
+		} else {
+			// pooled
+			void*	_real			=	mem_pools[pool].create();
+			_ptr					=	(void*)(((u8*)_real)+1);
+			*acc_header(_ptr)		=	(u8)pool;
+		}
 	}
-	if (debug_mode)				dbg_register	(_ptr);
+
+	if (debug_mode)				dbg_register	(_ptr,_size);
 	return	_ptr;
 }
 
@@ -85,11 +84,12 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	void*	_ptr				= NULL;
 	if (mem_generic==p_current)
 	{
+		u32		_footer			=	debug_mode?4:0;
 		if		(debug_mode)	dbg_unregister	(P);
-		void*	_real2			=	xr_aligned_offset_realloc	(_real,size,16,0x1);
+		void*	_real2			=	xr_aligned_offset_realloc	(_real,size+_footer,16,0x1);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
-		if		(debug_mode)	dbg_register	(_ptr);
+		if		(debug_mode)	dbg_register	(_ptr,size);
 	} else {
 		R_ASSERT2				(p_current<mem_pools_count,"Memory corruption");
 		u32		s_current		= mem_pools[p_current].get_element();

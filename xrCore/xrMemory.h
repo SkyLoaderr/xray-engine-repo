@@ -7,7 +7,7 @@
 
 class XRCORE_API		xrMemory
 {
-private:
+public:
 	struct				mdbg {
 		void*			_p;
 		u32				_size;
