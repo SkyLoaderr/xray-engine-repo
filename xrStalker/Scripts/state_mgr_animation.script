@@ -432,7 +432,9 @@ function animation:set_state(id)
 			end
 		end
 		if self.mgr.reset_state == true then
-			self.mgr.callback.begin = nil
+			if self.mgr.callback ~= nil then
+				self.mgr.callback.begin = nil
+			end
 		end
 		self.mgr.reset_state = false
 		if self.animations[id].idle ~= nil then
