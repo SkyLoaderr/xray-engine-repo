@@ -16,9 +16,11 @@ void CBurerAttackMelee::Init()
 {
 	inherited::Init();
 
-	enemy = pMonster->EnemyMan.get_enemy();	
+	enemy = pMonster->EnemyMan.get_enemy	();	
 
-	time_path_last_rebuild	= 0;
+	pMonster->MeleeChecker.init_attack		();
+
+	time_path_last_rebuild					= 0;
 
 	m_tAction = ACTION_RUN;
 }
@@ -65,9 +67,7 @@ void CBurerAttackMelee::Run()
 
 			pMonster->movement().set_target_point	(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
 			pMonster->movement().set_rebuild_time	(100 + u32(50.f * dist));
-			pMonster->movement().set_distance_to_end	(2.5f);
-			pMonster->movement().set_use_covers		();
-			pMonster->movement().set_cover_params	(5.f, 30.f, 1.f, 30.f);
+			pMonster->movement().set_distance_to_end(0.1f);
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
