@@ -49,13 +49,13 @@ if(D<0.f){	//somewhat strange solution
 			//- it is needed to set some 
 			//axis to sepparate cylinders
 			//when their edges approach
-	t1=-B_A+_sqrt(-D);
-	t2=-B_A-_sqrt(-D);
+	t1=-B_A+dSqrt(-D);
+	t2=-B_A-dSqrt(-D);
 //	return false;
 	}
 else{
-t1=-B_A-_sqrt(D);
-t2=-B_A+_sqrt(D);
+t1=-B_A-dSqrt(D);
+t2=-B_A+dSqrt(D);
 }
 B=dDOT(LC2,n);
 C=dDOT(LC2,LC2)-r2*r2;
@@ -64,13 +64,13 @@ B_A_2=B_A*B_A;
 D=B_A_2-C;
 
 if(D<0.f) {
-	t3=-B_A+_sqrt(-D);
-	t4=-B_A-_sqrt(-D);
+	t3=-B_A+dSqrt(-D);
+	t4=-B_A-dSqrt(-D);
 //	return false;
 	}
 else{
-t3=-B_A-_sqrt(D);
-t4=-B_A+_sqrt(D);
+t3=-B_A-dSqrt(D);
+t4=-B_A+dSqrt(D);
 }
 dVector3 O1={lp[0]+n[0]*t1,lp[1]+n[1]*t1,lp[2]+n[2]*t1};
 dVector3 O2={lp[0]+n[0]*t2,lp[1]+n[1]*t2,lp[2]+n[2]*t2};
@@ -248,18 +248,18 @@ extern "C" int dCylBox (const dVector3 p1, const dMatrix3 R1,
 
   // separating axis = box axis v1,v2,v3
   //used when cylinder edge touches box face
-  //there is two ways to compute sQ: sQ21=_sqrt(1.f-Q21*Q21); or sQ21=_sqrt(Q23*Q23+Q22*Q22); 
+  //there is two ways to compute sQ: sQ21=dSqrt(1.f-Q21*Q21); or sQ21=dSqrt(Q23*Q23+Q22*Q22); 
   //if we did not need Q23 and Q22 the first way might be used to quiken the routine but then it need to 
   //check if Q21<=1.f, becouse it may slightly exeed 1.f.
 
  
-  sQ21=_sqrt(Q23*Q23+Q22*Q22);
+  sQ21=dSqrt(Q23*Q23+Q22*Q22);
   TEST (dDOT41(R2+0,p),(radius*sQ21 + hlz*Q21 + B1),R2+0,1);
 
-  sQ22=_sqrt(Q23*Q23+Q21*Q21);
+  sQ22=dSqrt(Q23*Q23+Q21*Q21);
   TEST (dDOT41(R2+1,p),(radius*sQ22 + hlz*Q22 + B2),R2+1,2);
 
-  sQ23=_sqrt(Q22*Q22+Q21*Q21);
+  sQ23=dSqrt(Q22*Q22+Q21*Q21);
   TEST (dDOT41(R2+2,p),(radius*sQ23 + hlz*Q23 + B3),R2+2,3);
 
  
@@ -348,7 +348,7 @@ boxProj=dFabs(dDOT14(Ax,R2+1)*B2)+
   _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  _sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=dSqrt(cos1*cos1+cos3*cos3);
 
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],5);
 
@@ -378,7 +378,7 @@ boxProj=dFabs(dDOT14(Ax,R2+0)*B1)+
   _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  _sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=dSqrt(cos1*cos1+cos3*cos3);
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],6);
 
 //same thing with the third axis of the box
@@ -404,7 +404,7 @@ boxProj=dFabs(dDOT14(Ax,R2+1)*B2)+
   _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  _sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=dSqrt(cos1*cos1+cos3*cos3);
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1],Ax[2],7);
 
 
@@ -414,9 +414,9 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1]
 // normal (n1,n2,n3) is relative to box 1.
 
 #define TEST(expr1,expr2,n1,n2,n3,cc) \
-  s2 = _abs(expr1) - (expr2); \
+  s2 = dFabs(expr1) - (expr2); \
   if (s2 > 0) return 0; \
-  l = _sqrt ((n1)*(n1) + (n2)*(n2) + (n3)*(n3)); \
+  l = dSqrt ((n1)*(n1) + (n2)*(n2) + (n3)*(n3)); \
   if (l > 0) { \
     s2 /= l; \
     if (s2 > s) { \
@@ -468,7 +468,7 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1]
 
   	cos1 = dDOT14(normal,R1+0);
 	cos3 = dDOT14(normal,R1+2) ;
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 
 	cos1/=factor;
 	cos3/=factor;
@@ -532,7 +532,7 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],(_sin*radius+_cos*hlz+boxProj),Ax[0],Ax[1]
     for (i=0; i<3; ++i) vertex[i] = p1[i];
     cos1 = dDOT14(normal,R1+0) ;
 	cos3 = dDOT14(normal,R1+2);
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	factor= factor ? factor : 1.f;
 	cos1/=factor;
 	cos3/=factor;
@@ -590,7 +590,7 @@ extern "C" int dCylCyl (const dVector3 p1, const dMatrix3 R1,
   *code = 0;
 
   _cos=dFabs(dDOT44(R1+1,R2+1));
-  _sin=_sqrt(1.f-(_cos>1.f ? 1.f : _cos));
+  _sin=dSqrt(1.f-(_cos>1.f ? 1.f : _cos));
 
   TEST (pp1[1],(hlz1 + radius2*_sin + hlz2*_cos ),R1+1,0);//pp
 
@@ -638,7 +638,7 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius1+radius2,Ax[0],Ax[1],Ax[2],6);
 //find deepest point pb of cyl2 on opposite direction of tAx
  	cos1 = dDOT14(tAx,R2+0);
 	cos3 = dDOT14(tAx,R2+2) ;
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	cos1/=factor;
 	cos3/=factor;
     for (i=0; i<3; ++i) pb[i] -= cos1 * radius2 * R2[i*4];
@@ -663,7 +663,7 @@ dNormalize3(Ax);
   _cos=dFabs(dDOT14(Ax,R2+1));
   cos1=dDOT14(Ax,R2+0);
   cos3=dDOT14(Ax,R2+2);
-  _sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=dSqrt(cos1*cos1+cos3*cos3);
 
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius1+_cos*hlz2+_sin*radius2,Ax[0],Ax[1],Ax[2],3);
 
@@ -686,7 +686,7 @@ TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius1+_cos*hlz2+_sin*radius2,Ax[0],Ax[1]
 
  	cos1 = dDOT14(tAx,R1+0);
 	cos3 = dDOT14(tAx,R1+2) ;
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	cos1/=factor;
 	cos3/=factor;
 
@@ -713,7 +713,7 @@ dNormalize3(Ax);
   _cos=dFabs(dDOT14(Ax,R1+1));
   cos1=dDOT14(Ax,R1+0);
   cos3=dDOT14(Ax,R1+2);
-  _sin=_sqrt(cos1*cos1+cos3*cos3);
+  _sin=dSqrt(cos1*cos1+cos3*cos3);
 
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],radius2+_cos*hlz1+_sin*radius1,Ax[0],Ax[1],Ax[2],4);
 
@@ -775,13 +775,13 @@ dReal cyl1Pr,cyl2Pr;
  _cos=dFabs(dDOT14(Ax,R1+1));
  cos1=dDOT14(Ax,R1+0);
  cos3=dDOT14(Ax,R1+2);
- _sin=_sqrt(cos1*cos1+cos3*cos3);
+ _sin=dSqrt(cos1*cos1+cos3*cos3);
  cyl1Pr=_cos*hlz1+_sin*radius1;
 
  _cos=dFabs(dDOT14(Ax,R2+1));
  cos1=dDOT14(Ax,R2+0);
  cos3=dDOT14(Ax,R2+2);
- _sin=_sqrt(cos1*cos1+cos3*cos3);
+ _sin=dSqrt(cos1*cos1+cos3*cos3);
  cyl2Pr=_cos*hlz2+_sin*radius2;
 TEST(p[0]*Ax[0]+p[1]*Ax[1]+p[2]*Ax[2],cyl1Pr+cyl2Pr,Ax[0],Ax[1],Ax[2],5);
 
@@ -840,7 +840,7 @@ if (*code == 6) {
 
   	cos1 = dDOT14(normal,R1+0);
 	cos3 = dDOT14(normal,R1+2) ;
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	if(factor>0.f)
 	{
 		cos1/=factor;
@@ -859,7 +859,7 @@ if (*code == 6) {
     for (i=0; i<3; ++i) pb[i] = p2[i];
  	cos1 = dDOT14(normal,R2+0);
 	cos3 = dDOT14(normal,R2+2) ;
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	if(factor>0.f)
 	{
 		cos1/=factor;
@@ -901,7 +901,7 @@ if (*code == 6) {
     for (i=0; i<3; ++i) vertex[i] = p2[i];
     cos1 = dDOT14(normal,R2+0) ;
 	cos3 = dDOT14(normal,R2+2);
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	if(factor>0.f)
 	{
 		cos1/=factor;
@@ -920,7 +920,7 @@ if (*code == 6) {
     for (i=0; i<3; ++i) vertex[i] = p1[i];
     cos1 = dDOT14(normal,R1+0) ;
 	cos3 = dDOT14(normal,R1+2);
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	if(factor>0.f)
 	{
 		cos1/=factor;
@@ -1026,7 +1026,7 @@ dNormalize3(Ax);
 
   	cos1 = dDOT14(Ax,R+0);
 	cos3 = dDOT14(Ax,R+2) ;
-	factor=_sqrt(cos1*cos1+cos3*cos3);
+	factor=dSqrt(cos1*cos1+cos3*cos3);
 	cos1/=factor;
 	cos3/=factor;
     for (i=0; i<3; ++i) pa[i] += cos1 * cylRadius * R[i*4];
@@ -1042,7 +1042,7 @@ dNormalize3(Ax);
  _cos=dFabs(dDOT14(Ax,R+1));
  cos1=dDOT14(Ax,R+0);
  cos3=dDOT14(Ax,R+2);
- _sin=_sqrt(cos1*cos1+cos3*cos3);
+ _sin=dSqrt(cos1*cos1+cos3*cos3);
 TEST(dDOT(p,Ax),sphereRadius+cylRadius*_sin+hl*_cos,Ax[0],Ax[1],Ax[2],14);
 
 
@@ -1157,7 +1157,7 @@ int dCollideCylPlane
   cos1=dFabs(dDOT14(n,R+1));
 
 cos1=cos1<REAL(1.) ? cos1 : REAL(1.); //cos1 may slightly exeed 1.f
-sin1=_sqrt(REAL(1.)-cos1*cos1);
+sin1=dSqrt(REAL(1.)-cos1*cos1);
 //////////////////////////////
 
 dReal sidePr=cos1*hlz+sin1*radius;
@@ -1174,7 +1174,7 @@ dVector3 pos;
   dReal Q1 = dDOT14(n,R+0);
   dReal Q2 = dDOT14(n,R+1);
   dReal Q3 = dDOT14(n,R+2);
-  dReal factor =_sqrt(Q1*Q1+Q3*Q3);
+  dReal factor =dSqrt(Q1*Q1+Q3*Q3);
   factor= factor ? factor :1.f;
   dReal A1 = radius *		Q1/factor;
   dReal A2 = hlz*Q2;
@@ -1261,11 +1261,11 @@ const dReal* R= dGeomGetRotation(geom);
 const dReal* pos= dGeomGetPosition(geom);
 
 	
-  dReal xrange = REAL(0.5) * dFabs (R[1] * lz) + (_sqrt(R[0]*R[0]+R[2]*R[2]) * radius);
+  dReal xrange = REAL(0.5) * dFabs (R[1] * lz) + (dSqrt(R[0]*R[0]+R[2]*R[2]) * radius);
 
-  dReal yrange = REAL(0.5) * dFabs (R[5] * lz) + (_sqrt(R[4]*R[4]+R[6]*R[6]) * radius);
+  dReal yrange = REAL(0.5) * dFabs (R[5] * lz) + (dSqrt(R[4]*R[4]+R[6]*R[6]) * radius);
 
-  dReal zrange = REAL(0.5) * dFabs (R[9] * lz) + (_sqrt(R[8]*R[8]+R[10]*R[10]) * radius);
+  dReal zrange = REAL(0.5) * dFabs (R[9] * lz) + (dSqrt(R[8]*R[8]+R[10]*R[10]) * radius);
 
   aabb[0] = pos[0] - xrange;
   aabb[1] = pos[0] + xrange;

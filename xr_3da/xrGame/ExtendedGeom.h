@@ -49,12 +49,21 @@ IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
 	return (dxGeomUserData*) dGeomGetData(geom);
 }
 
+IC dGeomID retrieveGeom(dGeomID geom)
+{
+	if(dGeomGetClass(geom)==dGeomTransformClass)
+		return dGeomTransformGetGeom(geom);
+	else
+		return geom;
+}
+
 IC dxGeomUserData* retrieveGeomUserData(dGeomID geom)
 {
-			if(dGeomGetClass(geom)==dGeomTransformClass)
-				return dGeomGetUserData(dGeomTransformGetGeom(geom));
-			else
-				return dGeomGetUserData(geom);
+			return dGeomGetUserData(retrieveGeom(geom));
+			//if(dGeomGetClass(geom)==dGeomTransformClass)
+			//	return dGeomGetUserData(dGeomTransformGetGeom(geom));
+			//else
+			//	return dGeomGetUserData(geom);
 }
 
 IC void dGeomCreateUserData(dxGeom* geom)
