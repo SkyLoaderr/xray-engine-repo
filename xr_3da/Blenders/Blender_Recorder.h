@@ -74,12 +74,12 @@ public:
 	void				Stage_Constant		(LPCSTR name);
 	void				StageEnd			();
 
-	// R2-compiler
-	void				r2_Pass				(LPCSTR vs,		LPCSTR ps,		BOOL	bZtest=TRUE,				BOOL	bZwrite=TRUE,			BOOL	bABlend=FALSE,			u32	abSRC=D3DBLEND_ONE,		u32 abDST=D3DBLEND_ZERO,	BOOL aTest=FALSE,			u32 aRef=0);
-	void				r2_Constant			(LPCSTR name,	R_constant_setup* s);
-	void				r2_Sampler			(LPCSTR name,	LPCSTR texture, u32		address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0);
-	void				r2_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	u32		element=0);
-	void				r2_End				();
+	// R1/R2-compiler	[programmable]
+	void				r_Pass				(LPCSTR vs,		LPCSTR ps,				BOOL	bFog,	BOOL	bZtest=TRUE,				BOOL	bZwrite=TRUE,			BOOL	bABlend=FALSE,			u32	abSRC=D3DBLEND_ONE,		u32 abDST=D3DBLEND_ZERO,	BOOL aTest=FALSE,	u32 aRef=0);
+	void				r_Constant			(LPCSTR name,	R_constant_setup* s);
+	void				r_Sampler			(LPCSTR name,	LPCSTR texture, u32		address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0);
+	void				r_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	u32		element=0);
+	void				r_End				();
 
 	CBlender_Compile	();
 	~CBlender_Compile	();
