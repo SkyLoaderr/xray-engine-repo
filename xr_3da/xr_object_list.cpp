@@ -47,18 +47,6 @@ CObject* CObjectList::LoadOne( CInifile *ini, const char* Name )
 	return pObject;
 }
 
-VOID CObjectList::Load	( CInifile *ini, LPSTR section )
-{
-	R_ASSERT(pCreator);
-
-	CInifile::Sect&	S		= ini->ReadSection("mobileobjects");
-	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-		if ((0==I->first) || (0==I->second))	continue;
-		LPCSTR	Name		= I->second;
-		LoadOne				(ini,Name);
-	}
-}
-
 CObject*	CObjectList::FindObjectByName	( LPSTR name )
 {
 	OBJ_IT O=find_if(objects.begin(),objects.end(),fNameEQ(name));

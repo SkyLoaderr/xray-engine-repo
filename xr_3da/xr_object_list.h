@@ -26,7 +26,6 @@ public:
 	CObject*					FindObjectByName	( char* name );
 	CObject*					FindObjectByCLS_ID	( CLASS_ID cls );
 
-	VOID						Load				( CInifile *ini, LPSTR section );
 	VOID						Unload				( );
 
 	CObject*					LoadOne				( CInifile *ini, const char* name);
