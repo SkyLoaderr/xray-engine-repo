@@ -199,7 +199,7 @@ BOOL CHOM::Visible		(Fbox& B)
 	Fmatrix&	XF		= Device.mFullTransform;
 	Fbox		rect;
 	Fvector		test,src;
-	float		D		= occ_dim_0/2;
+	float		D		= 1.f;
 	B.getpoint(0,src);	xform(XF,test,src,D);	rect.set	(test,test);
 	B.getpoint(1,src);	xform(XF,test,src,D);	rect.modify	(test);
 	B.getpoint(2,src);	xform(XF,test,src,D);	rect.modify	(test);
@@ -209,5 +209,5 @@ BOOL CHOM::Visible		(Fbox& B)
 	B.getpoint(6,src);	xform(XF,test,src,D);	rect.modify	(test);
 	B.getpoint(7,src);	xform(XF,test,src,D);	rect.modify	(test);
 	
-	return Raster.test	(rect.min.x+1,rect.min.y+1,rect.max.x+1,rect.max.y+1,rect.min.z);
+	return Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
 }
