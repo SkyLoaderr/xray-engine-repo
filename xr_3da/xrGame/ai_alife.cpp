@@ -181,7 +181,7 @@ void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
 	CALifeGraphRegistry::Update		(tpALifeDynamicObject);
 	CALifeTraderRegistry::Update	(tpALifeDynamicObject);
 	CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
-	m_tpServer->PerformIDgen		(tpALifeDynamicObject->ID);
+	//m_tpServer->PerformIDgen		(tpALifeDynamicObject->ID);
 }
 
 void CAI_ALife::vfUpdateDynamicData()
