@@ -223,7 +223,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
 	static const dReal weelSepXF=scaleBox[0]*1.32f,weelSepXB=scaleBox[0]*1.155f,weelSepZ=scaleBox[2]*1.53f/2.f,weelSepY=scaleBox[1]*0.463f;
 	static const dReal cabinSepX=scaleBox[0]*0.61f,cabinSepY=scaleBox[1]*0.55f;
-	MassShift=0.35f;
+	MassShift=0.25f;
 	dMass m;
 
 	// car body
@@ -446,10 +446,12 @@ void CPHJeep::Steer(const char& steering)
 			if(angle < 0)
 			{
 				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);///
 				dJointSetHinge2Param(Joints[i], dParamVel, steeringRate);
 			}
 			else
-			{
+			{	
+				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);//
 				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 				dJointSetHinge2Param(Joints[i], dParamVel, -steeringRate);
 			}
