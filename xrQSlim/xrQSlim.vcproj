@@ -78,7 +78,7 @@
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;XR_QSLIM_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;DEBUG;XR_QSLIM_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
