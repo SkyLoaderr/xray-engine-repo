@@ -105,7 +105,7 @@ str_container::~str_container		()
 	clean	();
 	//R_ASSERT(container.empty());
 }
-
+/*
 ref_str& __cdecl ref_str::sprintf(const char* format, ...)
 {
 	string4096 	buf;
@@ -116,4 +116,4 @@ ref_str& __cdecl ref_str::sprintf(const char* format, ...)
     if (vs_sz)	_set(buf);	
     return 		(ref_str&)*this;
 }
-
+*/

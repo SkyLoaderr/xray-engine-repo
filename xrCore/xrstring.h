@@ -37,7 +37,7 @@ public:
 XRCORE_API	extern		str_container*	g_pStringContainer;
 
 //////////////////////////////////////////////////////////////////////////
-class		XRCORE_API	ref_str
+class					ref_str
 {
 private:
 	str_value*			p_;
@@ -67,7 +67,15 @@ public:
 	u32					size		()						const	{	if (0==p_) return 0; else return p_->dwLength;	}
 	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
 	bool				equal		(const ref_str & rhs)	const	{	return (p_ == rhs.p_);							}
-    ref_str& __cdecl	sprintf		(const char* format, ...);
+    ref_str& __cdecl	sprintf		(const char* format, ...)		{
+		string4096 	buf;
+		va_list		p;
+		va_start	(p,format);
+		int vs_sz	= _vsnprintf(buf,sizeof(buf)-1,format,p); buf[sizeof(buf)-1]=0;
+		va_end		(p);
+		if (vs_sz)	_set(buf);	
+		return 		(ref_str&)*this;
+	}
 };
 
 // res_ptr == res_ptr
