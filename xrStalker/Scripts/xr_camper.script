@@ -60,6 +60,9 @@ function action_patrol:execute()
 	action_base.execute (self)
 	if xr_state.finish_state(self.object) == true then
 		self.move_mgr:update()
+  	    if self.move_mgr:arrived_to_first_waypoint() then
+		   xr_logic.try_switch_to_another_section (self.object, self.a)
+	    end
 	end
 end
 function action_patrol:process_point(mode, number)
