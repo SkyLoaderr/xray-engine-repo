@@ -599,6 +599,7 @@ Level:
 - сортировать в EditObj Props по имени, текстуре ...
 - Update Textures (reload) (только детайл)
 - всунуть DO как объект сцены
+- variable flares count
 + with ignore mode - tormoz
 + DO не все объекты установлены (3 из 4)
 + sp.id error
