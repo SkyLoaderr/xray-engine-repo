@@ -20,6 +20,6 @@ void CPSLibrary::xrShutDown(){
 }
 //----------------------------------------------------
 PS::SDef* CPSLibrary::FindPS(const char* name){
-	return psLibrary_Find(name,m_PSs);
+	return psLibrary_FindSorted(name,m_PSs);
 }
 //----------------------------------------------------
