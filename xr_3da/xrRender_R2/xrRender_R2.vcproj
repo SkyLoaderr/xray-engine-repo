@@ -469,6 +469,12 @@
 				RelativePath="Light_DB.h">
 			</File>
 			<File
+				RelativePath=".\light_GI.cpp">
+			</File>
+			<File
+				RelativePath=".\light_gi.h">
+			</File>
+			<File
 				RelativePath=".\Light_Package.cpp">
 			</File>
 			<File
@@ -488,6 +494,15 @@
 			</File>
 			<File
 				RelativePath="Light_Render_Direct_ComputeXFS.cpp">
+			</File>
+			<File
+				RelativePath=".\light_smapvis.cpp">
+			</File>
+			<File
+				RelativePath=".\light_smapvis.h">
+			</File>
+			<File
+				RelativePath=".\light_vis.cpp">
 			</File>
 		</Filter>
 		<Filter

@@ -1,13 +1,8 @@
 #pragma once
 
 #include "..\ispatial.h"
-
-struct	light_indirect		{
-	Fvector			P;
-	Fvector			D;
-	float			E;
-	IRender_Sector*	S;
-};
+#include "light_smapvis.h"
+#include "light_GI.h"
 
 class	light		:	public IRender_Light, public ISpatial
 {
@@ -26,11 +21,12 @@ public:
 	Fcolor			color;
 
 	u32				frame_render;
-	u32				frame_sleep;
 
 #if RENDER==R_R2
 	xr_vector<light_indirect>	indirect;
 	u32							indirect_photons;
+
+	smapvis			svis;
 
 	ref_shader		s_spot;
 	ref_shader		s_point;
@@ -85,8 +81,6 @@ public:
 
 	virtual	void	spatial_move			();
 	virtual	Fvector	spatial_sector_point	();
-
-	IC		bool	sleep					()								{ return Device.dwFrame > frame_sleep; }
 
 #if RENDER==R_R2
 	void			gi_generate				();

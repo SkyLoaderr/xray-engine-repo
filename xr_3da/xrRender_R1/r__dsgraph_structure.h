@@ -6,9 +6,18 @@
 #include "r__sector.h"
 
 //////////////////////////////////////////////////////////////////////////
+// feedback	for receiving visuals										//
+//////////////////////////////////////////////////////////////////////////
+class	R_feedback
+{
+public:
+	virtual		void	rfeedback_static	(IRender_Visual*	V)		= 0;
+};
+
+//////////////////////////////////////////////////////////////////////////
 // common part of interface implementation for all D3D renderers		//
 //////////////////////////////////////////////////////////////////////////
-class R_dsgraph_structure										: public IRender_interface
+class	R_dsgraph_structure										: public IRender_interface
 {
 public:
 	IRenderable*												val_pObject;
@@ -16,6 +25,8 @@ public:
 	BOOL														val_bHUD;
 	BOOL														val_bInvisible;
 	BOOL														val_bRecordMP;		// record nearest for multi-pass
+	R_feedback*													val_feedback;		// feedback for geometry being rendered
+	u32															val_feedback_breakp;// breakpoint
 	u32															phase;
 	u32															marker;
 	bool														pmask		[2];
@@ -55,11 +66,17 @@ public:
 	xr_vector<IRender_Visual*>									lstVisuals;
 
 	xr_vector<IRender_Visual*>									lstRecorded;
+
+	u32															counter_S;
+	u32															counter_D;
 public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
 	virtual		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
 				void					set_RecordMP			(BOOL		V	)				{ val_bRecordMP	= V;				}
+				void					set_Feedback			(R_feedback*V, u32	id)			{ val_feedback_breakp = id; val_feedback = V;	}
+				void					get_Counters			(u32&	s,	u32& d)				{ s=counter_S; d=counter_D;			}
+				void					clear_Counters			()								{ counter_S=counter_D=0; 			}
 public:
 	R_dsgraph_structure	()
 	{
@@ -68,6 +85,8 @@ public:
 		val_bHUD			= FALSE;
 		val_bInvisible		= FALSE;
 		val_bRecordMP		= FALSE;
+		val_feedback		= 0;
+		val_feedback_breakp	= 0;
 		marker				= 0;
 		r_pmask				(true,true);
 	};
