@@ -3,21 +3,7 @@
 
 ENGINE_API	extern BOOL		bDebug;
 
-struct ENGINE_API			FS_Defs
-{
-	const char*				GameData;
-	const char*				Levels;
-	const char*				Textures;
-	const char*				Sounds;
-	const char*				CForms;
-	const char*				Meshes;
-	const char*				SShot;
-	const char*				Shaders;
-	string256				Current;
-};
-extern ENGINE_API FS_Defs	Path;
-extern FS_Defs				Path_InternalBuild;
-extern FS_Defs				Path_ExternalBuild;
+string256					PathCurrent;
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 #define THROW				throw 123456789

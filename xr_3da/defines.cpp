@@ -2,32 +2,6 @@
 
 ENGINE_API BOOL bDebug	= FALSE;
 
-FS_Defs		Path_ExternalBuild =
-{
-	"GameData\\",
-	"GameData\\levels\\",
-	"GameData\\textures\\",
-	"GameData\\sounds\\",
-	"GameData\\cforms\\",
-	"GameData\\meshes\\",
-	"ScreenShots\\",
-	"GameData\\shaders\\",
-	""
-};
-FS_Defs		Path_InternalBuild =
-{
-	"\\\\x-ray\\StalkerGameData$\\",
-	"\\\\x-ray\\StalkerGameData$\\levels\\",
-	"\\\\x-ray\\StalkerGameData$\\textures\\",
-	"\\\\x-ray\\StalkerGameData$\\sounds\\",
-	"\\\\x-ray\\StalkerGameData$\\cforms\\",
-	"\\\\x-ray\\StalkerGameData$\\meshes\\",
-	"ScreenShots\\",
-	"\\\\x-ray\\StalkerGameData$\\shaders\\",
-	""
-};
-FS_Defs		Path;
-
 // Video
 u32		psCurrentMode		= 800;
 u32		psCurrentBPP		= 32;
