@@ -199,6 +199,7 @@ void	CEnvironment::mods_load			()
 			CEnvModifier		E;
 			E.load				(fs);
 			Modifiers.push_back	(E);
+			id					++;
 		}
 		FS.r_close	(fs);
 	}
