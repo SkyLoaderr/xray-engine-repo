@@ -43,6 +43,7 @@ public:
 	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
 	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
 
+	virtual void		OnBuyMenu_Ok			();
 
 /*
 	virtual void		Render				();

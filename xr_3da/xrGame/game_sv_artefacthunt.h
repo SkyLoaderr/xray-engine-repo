@@ -19,4 +19,10 @@ public:
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
 	virtual		void				LoadTeams				();
+
+	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
+	
+	bool							IsBuyableItem			(CSE_Abstract* pItem);
+	void							RemoveItemFromActor		(CSE_Abstract* pItem);
+
 };

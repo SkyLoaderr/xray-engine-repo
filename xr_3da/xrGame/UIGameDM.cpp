@@ -310,3 +310,17 @@ CUISkinSelectorWnd*		CUIGameDM::InitSkinMenu			(s16 Team)
 	
 	return pMenu;
 };
+//--------------------------------------------------------------------
+void		CUIGameDM::OnSkinMenu_Ok			()
+{
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_SKIN,l_pPlayer->ID()	);
+	P.w_u8			(pCurSkinMenu->GetActiveIndex());
+	l_pPlayer->u_EventSend		(P);
+	//-----------------------------------------------------------------
+};

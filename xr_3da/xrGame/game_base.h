@@ -53,6 +53,7 @@ struct	game_PlayerState
 	//---------------------------
 	u16			m_lasthitter;
 	u16			m_lasthitweapon;
+	u8			m_skin;
 
 	game_PlayerState();
 	~game_PlayerState();

@@ -39,8 +39,13 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData *l_pC = ID_to_client(sender);
 			s16 l_team; P.r_s16(l_team);
 			game->OnPlayerChangeTeam(l_pC->ID, l_team);
-		}
-		break;
+		}break;
+	case GEG_PLAYER_CHANGE_SKIN:
+		{
+			xrClientData *l_pC = ID_to_client(sender);
+			u8 l_skin; P.r_u8(l_skin);
+			game->OnPlayerChangeSkin(l_pC->ID, l_skin);
+		}break;
 	case GEG_PLAYER_KILL:
 		{
 			xrClientData *l_pC = ID_to_client(sender);

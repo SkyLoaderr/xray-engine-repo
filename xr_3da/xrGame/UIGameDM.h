@@ -65,6 +65,7 @@ public:
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 
 	virtual void		OnBuyMenu_Ok			();
+	virtual void		OnSkinMenu_Ok			();
 
 	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pCurBuyMenu; };
 	virtual CUIDialogWnd*	GetSkinWnd			()	{ return (CUIDialogWnd*) pCurSkinMenu; };

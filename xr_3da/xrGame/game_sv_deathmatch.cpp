@@ -348,7 +348,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	{
 		pA->s_team				=	u8(ps_who->team);
 		assign_RP				(pA);
-		SetSkin(E, pA->s_team, 0);
+		SetSkin(E, pA->s_team, ps_who->m_skin);
 	}
 	else
 		if (pS)
@@ -630,7 +630,7 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	for (u32 i = 0; i<ps->BeltItems.size(); i++)
 	{
 		game_PlayerState::BeltItem	pBeltItem = ps->BeltItems[i]; 
-		SpawnItem4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
+		SpawnWeapon4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps), GetItemAddonsForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
 	};
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
@@ -727,7 +727,7 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	CSE_Visual* pV = dynamic_cast<CSE_Visual*>(E);
 	if (!pV) return;
 	//-------------------------------------------
-	string256 SkinName = {"actors\\Different_stalkers\\"};
+	string256 SkinName = {"actors\\Different_stalkers\\Mp_Skins\\"};
 	//загружены ли скины для этой комманды
 	if (SkinID != -1) ID = u16(SkinID);
 
@@ -767,6 +767,8 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	};
 	std::strcat(SkinName, ".ogf");
 	Msg("* Skin - %s", SkinName);
+	int len = xr_strlen(SkinName);
+	R_ASSERT2(len < 64, "Skin Name is too LONG!!!");
 	pV->set_visual(SkinName);
 	//-------------------------------------------
 };
@@ -858,3 +860,16 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 
 	TeamList.push_back(NewTeam);
 };
+
+void game_sv_Deathmatch::OnPlayerChangeSkin(u32 id_who, u8 skin) 
+{
+	game_PlayerState*	ps_who	=	get_id	(id_who);
+	if (!ps_who) return;
+	ps_who->m_skin = skin;
+
+	if (OnServer())
+	{
+		KillPlayer(id_who);
+	};
+	signal_Syncronize();
+}

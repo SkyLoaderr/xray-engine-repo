@@ -81,20 +81,13 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	
 	ClearPlayerItems(ps_who);
 
-/*
-	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
-	char	pTeamName[2][1024] = {"Red Team", "Blue Team"};
-	DWORD	pTeamColor[2] = {0xffff0000, 0xff0000ff};
-	
-	HUD().outMessage		(pTeamColor[team-1],"","%s has switched to %s",get_option_s(xrCData->Name,"name",xrCData->Name), pTeamName[team-1]);
-*/		
 	signal_Syncronize();
 }
 
 void	game_sv_TeamDeathmatch::OnRoundStart			()
 {
-	__super::OnRoundStart	();
-
+	inherited::OnRoundStart	();
+/*
 	// Respawn all players and some info
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -105,6 +98,7 @@ void	game_sv_TeamDeathmatch::OnRoundStart			()
 
 		SpawnActor(get_it_2_id(it), "spectator");
 	}
+	*/
 }
 
 void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)

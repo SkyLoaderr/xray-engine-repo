@@ -377,8 +377,6 @@ protected:
 	int									m_l_finger1;
     int									m_r_finger2;
 
-	virtual void	SpawnAmmoForWeapon		(CInventoryItem *pIItem);
-	virtual void	RemoveAmmoForWeapon		(CInventoryItem *pIItem);
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -452,6 +450,9 @@ public:
 	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps
 	virtual void			UpdatePosStack	( u32 Time0, u32 Time1 );
+
+	virtual void			SpawnAmmoForWeapon		(CInventoryItem *pIItem);
+	virtual void			RemoveAmmoForWeapon		(CInventoryItem *pIItem);
 
 protected:
 	int						skel_ddelay;

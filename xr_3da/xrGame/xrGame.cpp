@@ -58,7 +58,6 @@ extern	float				psSqueezeVelocity;
 extern	int					lvInterp;
 extern	float				g_fMaxDesyncLen;
 extern	bool				g_bUnlimitedAmmo;
-extern	int					SkinID;
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -144,8 +143,39 @@ public:
 	CCC_Dbg_NumObjects(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) 
 	{
-		Msg("Client Objects : %d", Level().Objects.objects.size());
-		Msg("Server Objects : %d", Level().Server->GetEntitiesNum());
+		u32 SVObjNum = Level().Server->GetEntitiesNum();
+		u32 CLObjNum = Level().Objects.objects.size();
+
+		Msg("Client Objects : %d", CLObjNum);
+		Msg("Server Objects : %d", SVObjNum);
+
+		for (u32 CO= 0; CO<max(CLObjNum, SVObjNum); CO++)
+		{
+			if (CO < CLObjNum && CO < SVObjNum)
+			{
+				CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
+				Msg("*%4d: Client - %20s[%5d] <===> Server - %s [%d]", CO+1, 
+						*(Level().Objects.objects[CO]->cNameSect()), Level().Objects.objects[CO]->ID(),
+						pEntity->s_name, pEntity->ID);
+			}
+			else
+			{
+				if (CO<CLObjNum)
+				{
+					Msg("! %2d: Client - %s [%d] <===> Server - -----------------", CO+1, 
+						*(Level().Objects.objects[CO]->cNameSect()), Level().Objects.objects[CO]->ID());
+				}
+				else
+				{
+					CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
+					Msg("! %2d: Client - ----- <===> Server - %s [%d]", CO+1, 
+						pEntity->s_name, pEntity->ID);
+				}
+			}
+		};
+		
+		Msg("Client Objects : %d", CLObjNum);
+		Msg("Server Objects : %d", SVObjNum);
 	}
 	virtual void	Info	(TInfo& I)		
 	{
@@ -927,8 +957,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Float,				"net_cl_maxdesync",				&g_fMaxDesyncLen,		0, 10);
 		CMD1(CCC_Net_CL_Resync,		"net_cl_resync" );
 		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
-		CMD4(CCC_Integer,			"skin",						&SkinID,			-1,20);
-		
+				
 		// adjust mode support
 		CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 2);
 		CMD4(CCC_Float,				"hud_adjust_value",			&g_fHudAdjustValue,	0.0f, 1.0f);
@@ -941,7 +970,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Integer,	"net_port",				&psNET_Port,		5400,	5500);
 		CMD3(CCC_String,	"net_name",				psNET_Name,			32			);
 		CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		0x1			);
-		CMD1(CCC_Dbg_NumObjects,	"dbg_num_objects"				);
+		CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
 
 
 		// keyboard binding

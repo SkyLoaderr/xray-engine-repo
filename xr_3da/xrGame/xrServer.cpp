@@ -298,3 +298,12 @@ bool		xrServer::OnCL_QueryHost		()
 	if (Game().type == GAME_SINGLE) return false;
 	return (client_Count() != 0); 
 };
+
+CSE_Abstract*	xrServer::GetEntity			(u32 Num)
+{
+	xrS_entities::iterator	I=entities.begin(),E=entities.end();
+	for (u32 C=0; I!=E; ++I,++C)
+	{
+		if (C == Num) return I->second;
+	};
+};

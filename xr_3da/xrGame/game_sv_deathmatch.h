@@ -69,6 +69,7 @@ public:
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 	virtual		void				OnPlayerWantsDie		(u32 id_who);
+	virtual		void				OnPlayerChangeSkin		(u32 id_who, u8 skin);
 
 	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
 	

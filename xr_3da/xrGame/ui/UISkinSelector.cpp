@@ -142,7 +142,7 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		// Нажали ОК.
 		HUD().GetUI()->UIGame()->StartStopMenu(this);
-//		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
+		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
 	}
 	else if (&UICancelBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{

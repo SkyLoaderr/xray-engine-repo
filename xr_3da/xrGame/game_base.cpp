@@ -9,6 +9,8 @@ game_PlayerState::game_PlayerState()
 	money_total			=	0;
 	money_for_round		=	0;
 	flags				=	0;
+
+	m_skin				=	0;
 }
 
 game_PlayerState::~game_PlayerState()

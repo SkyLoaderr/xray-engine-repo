@@ -15,7 +15,7 @@
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt(CUI* parent):CUIGameTDM(parent)
 {
-	m_bBuyEnabled = FALSE;
+	m_bBuyEnabled = TRUE;
 }
 //--------------------------------------------------------------------
 void		CUIGameAHunt::Init				()
@@ -119,4 +119,58 @@ void			CUIGameAHunt::OnFrame()
 			};
 		};
 	}
+};
+//--------------------------------------------------------------------
+void CUIGameAHunt::OnBuyMenu_Ok	()
+{
+	if (!m_bBuyEnabled) return;
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+//-------------------------------------------------------------------------------
+	u8 NumItems = pCurBuyMenu->GetBeltSize();
+	for (u8 Slot=KNIFE_SLOT; Slot<APPARATUS_SLOT; Slot++)
+	{
+		if (pCurBuyMenu->GetWeaponIndex(Slot) != 0xff) NumItems++;
+	}
+
+	//-------------------------------------------------------------------------------
+	P.w_u8		(NumItems);
+	//-------------------------------------------------------------------------------
+	for (Slot=KNIFE_SLOT; Slot<APPARATUS_SLOT; Slot++)
+	{
+		u8 ItemID = pCurBuyMenu->GetWeaponIndex(Slot);
+		if (ItemID == 0xff) continue;
+		P.w_u8	(Slot);
+		P.w_u8	(ItemID);
+	};
+	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
+	{
+		u8 SectID, ItemID;
+		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+		P.w_u8	(SectID);
+		P.w_u8	(ItemID);
+	};	
+	//-------------------------------------------------------------------------------
+	/*
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT));
+
+	P.w_u8		(pCurBuyMenu->GetBeltSize());
+
+	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
+	{
+		u8 SectID, ItemID;
+		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+		P.w_u8	(SectID);
+		P.w_u8	(ItemID);
+	};	
+	*/
+	l_pPlayer->u_EventSend		(P);
 };
