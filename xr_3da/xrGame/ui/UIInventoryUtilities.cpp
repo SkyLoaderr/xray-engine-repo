@@ -55,6 +55,7 @@ CharInfoStrings		*charInfoGoodwillStrings	= NULL;
 
 void InventoryUtilities::DestroyShaders()
 {
+	g_BuyMenuShader.destroy();
 	g_EquipmentIconsShader.destroy();
 	g_CharIconsShader.destroy();	
 	g_MapIconsShader.destroy();
