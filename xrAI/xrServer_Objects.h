@@ -16,7 +16,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(64)
+#define SPAWN_VERSION	u16(65)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -80,6 +80,7 @@
 // 62 - CSE_AlifeObject					appended with m_story_id
 // 63 - CSE_AlifeTraderAbstract			remove bug with money
 // 64 - CSE_ALifeObjectPhysic			flags, source_id, saved_bones moved to CSE_AlifePHSkeletonObject
+// 65 -CSE_ALifeObjectPhysic			startup_anim moved to CSE_AlifePHSkeletonObject
 //------------------------------------------------------------------------------
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)

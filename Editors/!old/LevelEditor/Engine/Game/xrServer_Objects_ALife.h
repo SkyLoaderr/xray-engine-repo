@@ -184,6 +184,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisu
 		flSavedData					= (1<<2),
 		flNotSave					= (1<<3)
 	};
+	ref_str							startup_animation;
 	Flags8							flags;
 	SPHBonesData					saved_bones;
 	u16								source_id;//for break only
@@ -221,7 +222,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifePHSkeletonObject)
 	u32 							type;
 	f32 							mass;
     ref_str 						fixed_bones;
-	ref_str							startup_animation;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);
     virtual 						~CSE_ALifeObjectPhysic	();
 	virtual bool					used_ai_locations		() const;

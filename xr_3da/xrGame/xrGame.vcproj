@@ -4388,6 +4388,12 @@
 							<File
 								RelativePath=".\PhysicsShellHolder.h">
 							</File>
+							<File
+								RelativePath=".\PhysicsSkeletonObject.cpp">
+							</File>
+							<File
+								RelativePath=".\PhysicsSkeletonObject.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="ParticlesPlayer"
@@ -4409,44 +4415,6 @@
 								RelativePath=".\holder_custom.h">
 							</File>
 						</Filter>
-					</Filter>
-					<Filter
-						Name="_door"
-						Filter="">
-						<File
-							RelativePath=".\CustomDoor.cpp">
-						</File>
-						<File
-							RelativePath=".\CustomDoor.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="Events"
-						Filter="">
-						<File
-							RelativePath=".\CustomEvent.cpp">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Mixed|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\CustomEvent.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="Inventory"
@@ -4558,16 +4526,6 @@
 								RelativePath=".\inventory_item_inline.h">
 							</File>
 						</Filter>
-					</Filter>
-					<Filter
-						Name="_item"
-						Filter="">
-						<File
-							RelativePath=".\CustomItem.cpp">
-						</File>
-						<File
-							RelativePath=".\CustomItem.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="Items &amp; Weapons"
@@ -5319,16 +5277,6 @@
 								RelativePath=".\ExplosiveItem.h">
 							</File>
 						</Filter>
-					</Filter>
-					<Filter
-						Name="_lift"
-						Filter="">
-						<File
-							RelativePath=".\CustomLift.cpp">
-						</File>
-						<File
-							RelativePath=".\CustomLift.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="Vehicles"
