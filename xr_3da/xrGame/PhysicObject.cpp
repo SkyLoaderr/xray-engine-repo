@@ -32,6 +32,15 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 		P.w_u64(u64(-1));
 		P.w_u16(0);
 	}
+	/////////////////////////////
+	Fvector center,min,max;
+	Center(center);
+	float r=Radius();
+	min.set(center.x-r,center.y-r,center.z-r);
+	max.set(center.x+r,center.y+r,center.z+r);
+	/////////////////////////////////////
+	P.w_vec3(min);
+	P.w_vec3(max);
 	u16 bones_number=PHGetSyncItemsNumber();
 	P.w_u16(bones_number);
 	for(u16 i=0;i<bones_number;i++)
@@ -134,7 +143,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	//PKinematics(Visual())->Calculate();
 	if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
 	{
-		PHNETSTATE_VECTOR& saved_bones=po->saved_bones;
+		PHNETSTATE_VECTOR& saved_bones=po->saved_bones.bones;
 		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
 		for(u16 bone=0;e!=i;i++,bone++)
 		{
@@ -311,8 +320,8 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 {
 	if (!Visual()) return;
 	CKinematics* K= PKinematics(Visual());
-	K->LL_SetBoneRoot(po->root_bone);
-	K->LL_SetBonesVisible(po->bones_mask);
+	K->LL_SetBoneRoot(po->saved_bones.root_bone);
+	K->LL_SetBonesVisible(po->saved_bones.bones_mask);
 	LPCSTR	fixed_bones=*po->fixed_bones;
 	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifeObjectPhysic::flActive),fixed_bones);
 }

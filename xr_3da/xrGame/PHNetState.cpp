@@ -94,3 +94,41 @@ void SPHNetState::net_Load(NET_Packet &P,const Fvector& min,const Fvector& max)
 	enabled=true;
 
 }
+
+SPHBonesData::SPHBonesData()
+{
+	bones_mask					=u64(-1);
+	root_bone					=0;
+	min.set(-100.f,-100.f,-100.f);
+	max.set(100.f,100.f,100.f);
+}
+void SPHBonesData::net_Save(NET_Packet &P)
+{
+	P.w_u64			(bones_mask);
+	P.w_u16			(root_bone);
+	
+	P.w_vec3		(min);
+	P.w_vec3		(max);
+	P.w_u16			((u16)bones.size());//bones number;
+	PHNETSTATE_I	i=bones.begin(),e=bones.end();
+	for(;e!=i;i++)
+	{
+		(*i).net_Save(P);
+	}
+	bones.clear();
+}
+
+void SPHBonesData::net_Load(NET_Packet &P)
+{
+	bones_mask					=P.r_u64();
+	root_bone					=P.r_u16();
+	P.r_vec3					(min);
+	P.r_vec3					(max);
+	u16 bones_number			=P.r_u16();//bones number
+	for(int i=0;i<bones_number;i++)
+	{
+		SPHNetState	S;
+		S.net_Load(P);
+		bones.push_back(S);
+	}
+}
