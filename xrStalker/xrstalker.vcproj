@@ -1703,9 +1703,6 @@
 					RelativePath=".\scripts\xr_storyline.script">
 				</File>
 				<File
-					RelativePath=".\scripts\xr_swat.script">
-				</File>
-				<File
 					RelativePath=".\scripts\xr_talker.script">
 				</File>
 				<File
