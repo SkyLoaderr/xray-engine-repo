@@ -166,7 +166,14 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_RSHIFT:
 		bShift = true;
 		break;
-	case DIK_0:	strcat(editor,"0");	break;
+	case DIK_0:
+		if (bShift) strcat(editor,")");
+		else		strcat(editor,"0");
+		break;
+	case DIK_9:
+		if (bShift) strcat(editor,"(");
+		else		strcat(editor,"9");
+		break;
 	case DIK_1:	strcat(editor,"1");	break;
 	case DIK_2:	strcat(editor,"2");	break;
 	case DIK_3:	strcat(editor,"3");	break;
@@ -175,7 +182,6 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_6:	strcat(editor,"6");	break;
 	case DIK_7:	strcat(editor,"7");	break;
 	case DIK_8:	strcat(editor,"8");	break;
-	case DIK_9:	strcat(editor,"9");	break;
 	case DIK_A:	strcat(editor,"a");	break;
 	case DIK_B:	strcat(editor,"b");	break;
 	case DIK_C:	strcat(editor,"c");	break;
@@ -202,7 +208,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_X:	strcat(editor,"x");	break;
 	case DIK_Y:	strcat(editor,"y");	break;
 	case DIK_Z:	strcat(editor,"z");	break;
-	case DIK_SPACE:	strcat(editor," "); break;
+	case DIK_SPACE:		strcat(editor," "); break;
 	case DIK_COMMA:
 		if (bShift) strcat(editor,"<");
 		else		strcat(editor,",");
