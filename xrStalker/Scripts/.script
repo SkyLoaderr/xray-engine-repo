@@ -348,18 +348,3 @@ function last_action(obj)
 end
 
 
---
--- Передача персонажу информации
---
-function GiveInfo(obj, info_number)
-
-	local result = obj:give_info_portion(info_number)
-	while not result do
-		wait()
-		result = obj:give_info_portion(info_number)
-	end
-end 
-
-function GiveInfoViaPda(obj_receiver, obj_sender, info_number)
-	obj_receiver:give_info_portion_via_pda(info_number, obj_sender)
-end 
