@@ -228,13 +228,17 @@ function action_follow:calculate_position ()
     local need_id = self.object:vertex_in_direction (l_vid, dir, dist)
     if need_id == -1 then
        need_id = l_vid
+    else
+       if self.object:accessible (need_id) == false then
+          utils.abort ("FOLLOWER %s, ACCESSIBLE VERTEX ID ERROR !!!", self.object:name ())
+       end 
     end
     
     if self.object:accessible (need_id) == false then
        need_id = leader:level_vertex_id ()
        if self.object:accessible (need_id) == false then
           printf ("!!!ERROR!!! Follower %s can't found accessible vertex id !!!", self.object:name ())
-          need_id = self.object:level_vertex_id ()
+          need_id = self.object:nearest_accessible_position ()
           --utils.abort ("ERROR: can't find vertex id for object %s", self.object:name ())
        end 
     end
