@@ -29,11 +29,7 @@ IC void CCustomMonster::vfNormalizeSafe(Fvector& Vector)
 
 IC	bool left_angle(float y1, float y2)
 {
-	Fvector			dir, dir1, dir2;
-	dir1.setHP		(y1,0.f);
-	dir2.setHP		(y2,0.f);
-	dir.crossproduct(dir1,dir2);
-	return			(dir.y <= 0.f);
+	return			(_sin(y1)*_cos(y2) - _sin(y2)*_cos(y1) <= 0.f);
 }
 
 IC	CMemoryManager &CCustomMonster::memory		() const
