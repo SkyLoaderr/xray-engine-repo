@@ -354,13 +354,14 @@ CRenderTarget::CRenderTarget		()
 							float	s2	=	_abs	(1-_abs	(ld-ls));
 							fd		=	ld;				// 1.0
 							fs		=	powf	(_max(_max(s0,s1),s2), 24.f);
-							fs		*=	powf	(ld,1/8.f);
+							fs		*=	powf	(ld,1/7.f);
 								}	break;
 						default:
 							fd	= fs = 0;
 						}
 						s32		_d	=	clampr	(iFloor	(fd*255.5f),	0,255);
 						s32		_s	=	clampr	(iFloor	(fs*255.5f),	0,255);
+						if ((y==(TEX_material_LdotH-1)) && (x==(TEX_material_LdotN-1)))	{ _d = 255; _s=255;	}
 						*p			=	u16		(_s*256 + _d);
 					}
 				}
