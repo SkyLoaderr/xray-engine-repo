@@ -156,7 +156,7 @@ void CParticleTools::Render()
     	if (m_EditPG){
          	int cnt 		= m_EditPG->items.size();
             for (int k=0; k<cnt; k++){
-                PS::CParticleEffect* E		= (PS::CParticleEffect*)m_EditPG->items[k].effect;
+                PS::CParticleEffect* E		= (PS::CParticleEffect*)m_EditPG->items[k]._effect;
 				if (E&&E->GetDefinition()&&m_LibPGD->m_Effects[k].m_Flags.is(PS::CPGDef::SEffect::flEnabled))	
                 	E->GetDefinition()->Render(m_Transform);
             }
@@ -538,7 +538,7 @@ void CParticleTools::PlayCurrent(int idx)
     case emGroup:	
     	if (idx>-1){
         	VERIFY(idx<m_EditPG->items.size());
-            m_LibPED = ((PS::CParticleEffect*)m_EditPG->items[idx].effect)->GetDefinition();
+            m_LibPED = ((PS::CParticleEffect*)m_EditPG->items[idx]._effect)->GetDefinition();
 			m_EditPE->Compile(m_LibPED);
         	m_EditPE->Play	();
         }else{

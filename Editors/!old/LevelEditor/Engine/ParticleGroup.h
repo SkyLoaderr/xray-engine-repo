@@ -43,6 +43,7 @@ namespace PS
 		void __fastcall 	OnEffectEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 		void __fastcall 	OnControlClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 		void __fastcall 	OnParamsChange	(PropValue* sender);
+		void __fastcall 	OnChildChange	(PropValue* sender);
 		void				FillProp	   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		BOOL				Equal			(const CPGDef* pe);
 #endif

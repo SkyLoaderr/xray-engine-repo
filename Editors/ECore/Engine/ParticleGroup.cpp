@@ -8,8 +8,6 @@
 
 using namespace PS;
 
-static const Fvector zero_vel={0,0,0};
-
 //------------------------------------------------------------------------------
 CPGDef::CPGDef()
 {                             
@@ -143,8 +141,21 @@ void CParticleGroup::SItem::Play()
 }
 void CParticleGroup::SItem::Stop(BOOL def_stop)
 {
+	// stop all effects
     CParticleEffect* E	= static_cast<CParticleEffect*>(_effect);
     if (E) E->Stop(def_stop);
+    VisualVecIt it;
+    for (it=_children.begin(); it!=_children.end(); it++)
+        static_cast<CParticleEffect*>(*it)->Stop(def_stop);
+    for (it=_children_stopped.begin(); it!=_children_stopped.end(); it++)
+        static_cast<CParticleEffect*>(*it)->Stop(def_stop);
+    // and delete if !deffered
+    if (!def_stop){
+        for (it=_children.begin(); it!=_children.end(); it++)            		::Render->model_Delete(*it);
+        for (it=_children_stopped.begin(); it!=_children_stopped.end(); it++)   ::Render->model_Delete(*it);
+        _children.clear			();
+        _children_stopped.clear	();
+    }
 }
 BOOL CParticleGroup::SItem::IsPlaying()
 {
@@ -157,6 +168,8 @@ void CParticleGroup::SItem::UpdateParent(const Fmatrix& m, const Fvector& veloci
     if (E) E->UpdateParent(m,velocity,bXFORM);
 }
 //------------------------------------------------------------------------------
+static const u32	uDT_STEP = 33;
+static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 void OnGroupParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 {
 	CParticleGroup* PG 	= static_cast<CParticleGroup*>(owner); 	VERIFY(PG);
@@ -167,8 +180,9 @@ void OnGroupParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
     const CPGDef::SEffect& eff	= PGD->m_Effects[param];
     if (eff.m_Flags.is(CPGDef::SEffect::flHaveChild)){
 	    CParticleEffect*C		= static_cast<CParticleEffect*>(PG->items[param].AppendChild(*eff.m_ChildEffectName));
-        Fmatrix M; M.translate(m.pos);
-        C->UpdateParent	(M,zero_vel,FALSE);
+        Fmatrix M; 				M.translate(m.pos);
+        Fvector vel; 			vel.sub(m.pos,m.posB); vel.div(fDT_STEP);
+        C->UpdateParent	(M,vel,FALSE);
     }
 }
 void OnGroupParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
@@ -176,6 +190,11 @@ void OnGroupParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 	CParticleGroup* PG 	= static_cast<CParticleGroup*>(owner); VERIFY(PG);
     CParticleEffect*PE	= static_cast<CParticleEffect*>(PG->items[param]._effect);
 	PS::OnEffectParticleDead(PE, param, m, idx);
+    // if have child
+    const CPGDef* PGD			= PG->GetDefinition();					VERIFY(PGD);
+    const CPGDef::SEffect& eff	= PGD->m_Effects[param];
+    if (eff.m_Flags.is(CPGDef::SEffect::flHaveChild))
+    	PG->items[param].RemoveChild(idx);
 }
 //------------------------------------------------------------------------------
 struct zero_vis_pred : public std::unary_function<IRender_Visual*, bool>
@@ -187,51 +206,63 @@ void CParticleGroup::SItem::OnFrame(u32 u_dt, const CPGDef::SEffect& def, Fbox& 
     CParticleEffect* E		= static_cast<CParticleEffect*>(_effect);
     if (E){
         E->OnFrame			(u_dt);
-        if (E->IsPlaying()){ 
+        if (E->IsPlaying()){
             bPlaying		= true;
             if (E->vis.box.is_valid())     box.merge	(E->vis.box);
             if (def.m_Flags.is(CPGDef::SEffect::flHaveChild)&&*def.m_ChildEffectName){
-//                AppendChild	(*def.m_ChildEffectName);
                 PAPI::Particle* particles;
                 u32 p_cnt;
                 PAPI::ParticleManager()->GetParticles(E->GetHandleEffect(),particles,p_cnt);
+                VERIFY(p_cnt==_children.size());
                 if (p_cnt){
                     for(u32 i = 0; i < p_cnt; i++){
                         PAPI::Particle &m	= particles[i]; 
                         CParticleEffect* C 	= static_cast<CParticleEffect*>(_children[i]);
-                        Fmatrix M; M.translate(m.pos);
-                        C->UpdateParent	(M,zero_vel,FALSE);
+                        C->Play				();
+                        Fmatrix M; 			M.translate(m.pos);
+				        Fvector vel; 		vel.sub(m.pos,m.posB); vel.div(fDT_STEP);
+                        C->UpdateParent	(M,vel,FALSE);
                     }
                 }
             }
         }
     }
     VisualVecIt it;
-    for (it=_children.begin(); it!=_children.end(); it++){
-        CParticleEffect* E	= static_cast<CParticleEffect*>(*it);
-        if (E){
-            E->OnFrame			(u_dt);
-            if (E->IsPlaying()){ 
-                bPlaying		= true;
-                if (E->vis.box.is_valid())     box.merge	(E->vis.box);
+    if (!_children.empty()){
+        for (it=_children.begin(); it!=_children.end(); it++){
+            CParticleEffect* E	= static_cast<CParticleEffect*>(*it);
+            if (E){
+                E->OnFrame		(u_dt);
+                if (E->IsPlaying()){
+                    bPlaying	= true;
+                    if (E->vis.box.is_valid())     box.merge	(E->vis.box);
+                }else
+                    ::Render->model_Delete(*it);
             }
         }
     }
-    for (it=_children_stopped.begin(); it!=_children_stopped.end(); it++){
-    	if (!((CParticleEffect*)(*it))->IsPlaying()) ::Render->model_Delete(*it);
-        else{
+    if (!_children_stopped.empty()){
+    	u32 rem_cnt				= 0;
+        for (it=_children_stopped.begin(); it!=_children_stopped.end(); it++){
             CParticleEffect* E	= static_cast<CParticleEffect*>(*it);
             if (E){
                 E->OnFrame		(u_dt);
                 if (E->IsPlaying()){ 
                     bPlaying	= true;
                     if (E->vis.box.is_valid()) box.merge	(E->vis.box);
+                }else{
+                	rem_cnt++;
+                    ::Render->model_Delete(*it);
                 }
             }
         }
+        // remove if stopped
+        if (rem_cnt){
+            VisualVecIt new_end=std::remove_if(_children_stopped.begin(),_children_stopped.end(),zero_vis_pred());
+            _children_stopped.erase(new_end,_children_stopped.end());
+        }
     }
-    VisualVecIt new_end=std::remove_if(_children_stopped.begin(),_children_stopped.end(),zero_vis_pred());
-    _children_stopped.erase(new_end,_children_stopped.end());
+//	Msg("C: %d CS: %d",_children.size(),_children_stopped.size());
 }
 void CParticleGroup::SItem::OnDeviceCreate()
 {

@@ -89,6 +89,13 @@ void __fastcall PS::CPGDef::OnParamsChange(PropValue* sender)
 	PTools->SetCurrentPG	(this);
 }
 
+void __fastcall PS::CPGDef::OnChildChange(PropValue* sender)
+{
+	PTools->SetCurrentPG	(0);
+	PTools->SetCurrentPG	(this);
+//    if (!m_Flags.is(SEffect::flHaveChild))
+}
+
 void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),*m_OwnerName);
@@ -114,10 +121,16 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
         V->OnChangeEvent		= OnParamsChange;
         V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"End Time (s)"),	&it->m_Time1,		0.f,1000.f);
         V->OnChangeEvent		= OnParamsChange;
-        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),	&it->m_Flags,	SEffect::flDefferedStop);
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),&it->m_Flags,	SEffect::flDefferedStop);
         V->OnChangeEvent		= OnParamsChange;
-        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags,		SEffect::flEnabled);
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags, 	SEffect::flEnabled);
         V->OnChangeEvent		= OnParamsChange;
+        V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Child"),		&it->m_Flags,	SEffect::flHaveChild);
+        V->OnChangeEvent		= OnChildChange;
+        if (it->m_Flags.is(SEffect::flHaveChild)){
+	        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Child\\Name"),	&it->m_ChildEffectName,smPE);
+    	    V->OnChangeEvent	= OnParamsChange;
+        }
     }
 }
 
