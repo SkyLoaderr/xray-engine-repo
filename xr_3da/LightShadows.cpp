@@ -9,7 +9,7 @@
 #include "flightscontroller.h"
 #include "xr_creator.h"
 #include "fbasicvisual.h"
-#include "lightrack.h"
+#include "lighttrack.h"
 
 int		psSH_Blur			= 1;
 
@@ -136,7 +136,7 @@ IC float PLC_energy	(Fvector& P, Fvector& N, Flight* L, float E)
 	}
 }
 
-IC int PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float energy, Fvector& O)
+IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
 {
 	float	E		= PLC_energy(P,N,L,energy);
 	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
@@ -189,11 +189,11 @@ void CLightShadows::calculate	()
 			if (L.energy<S_level)	continue;
 			
 			// calculate light center
-			Fvector		Lpos	= L->position;
-			float		Lrange	= L->range;
-			if (L->type==D3DLIGHT_DIRECTIONAL)
+			Fvector		Lpos	= L.L.position;
+			float		Lrange	= L.L.range;
+			if (L.L.type==D3DLIGHT_DIRECTIONAL)
 			{
-				Lpos.mul	(L->direction,-100);
+				Lpos.mul	(L.L.direction,-100);
 				Lpos.add	(C.C);
 				Lrange		= 120;
 			}
@@ -247,7 +247,7 @@ void CLightShadows::calculate	()
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombine;
-			shadows.back().L	=	L;
+			shadows.back().L	=	&L.L;
 			slot_id	++;
 		}
 	}
