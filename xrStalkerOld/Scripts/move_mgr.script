@@ -108,7 +108,7 @@ end
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state_moving, move_cb_info, no_validation)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation)
 	--printf("move_mgr:reset()")
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
@@ -155,11 +155,23 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.is_shooting = false
 
 	self.cur_state_standing = default_state_standing
-	if not suggested_state_moving then
-		self.cur_state_moving = default_state_moving1
+	if not suggested_state then
+		self.default_state_standing = default_state_standing
+		self.default_state_moving1 = default_state_moving1
+		self.default_state_moving2 = default_state_moving2
+		self.default_state_moving3 = default_state_moving3
 	else
-		self.cur_state_moving = suggested_state_moving
+		self.default_state_standing = if_then_else(
+			suggested_state.standing, suggested_state.standing, default_state_standing)
+		self.default_state_moving1 = if_then_else(
+			suggested_state.moving1, suggested_state.moving1, default_state.moving1)
+		self.default_state_moving2 = if_then_else(
+			suggested_state.moving2, suggested_state.moving1, default_state.moving2)
+		self.default_state_moving3 = if_then_else(
+			suggested_state.moving3, suggested_state.moving1, default_state.moving3)
 	end
+
+	self.cur_state_moving = self.default_state_moving1
 
 	self.moving = false -- переменная для проверки из внешнего скрипта, стоит ли персонаж на месте
 
@@ -335,11 +347,11 @@ function move_mgr:update()
 			local dist = self.object:position():distance_to(self.patrol_walk:point(cur_pt))
 			--printf("_bp: move_mgr: distance to destination waypoint: %d", dist)
 			if dist <= dist_walk or t < self.walk_until then
-				self.cur_state_moving = default_state_moving1
+				self.cur_state_moving = self.default_state_moving1
 			elseif dist <= dist_run or t < self.run_until then
-				self.cur_state_moving = default_state_moving2
+				self.cur_state_moving = self.default_state_moving2
 			else
-				self.cur_state_moving = default_state_moving3
+				self.cur_state_moving = self.default_state_moving3
 			end
 			self:update_movement_state()
 		end
@@ -460,7 +472,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if suggested_state_moving then
 		self.cur_state_moving = suggested_state_moving
 	else
-		self.cur_state_moving = default_state_moving1
+		self.cur_state_moving = self.default_state_moving1
 	end
 	self.standing_crouch = self.crouch
 
@@ -508,7 +520,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		if suggested_anim_set then
 			self.cur_state_standing = suggested_anim_set
 		else
-			self.cur_state_standing = default_state_standing
+			self.cur_state_standing = self.default_state_standing
 		end
 
 		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
