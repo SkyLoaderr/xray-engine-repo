@@ -35,6 +35,11 @@ FS_file_list file_list_open_script(CLocatorAPI* fs, LPCSTR initial, u32 flags)
 	return FS_file_list(fs->file_list_open(initial,flags));
 }
 
+FS_file_list file_list_open_script_2(CLocatorAPI* fs, LPCSTR initial, LPCSTR folder, u32 flags)
+{
+	return FS_file_list(fs->file_list_open(initial,folder,flags));
+}
+
 void dir_delete_script_2(CLocatorAPI* fs, LPCSTR path, LPCSTR nm, int remove_files)
 {
 	fs->dir_delete(path,nm,remove_files);
@@ -43,6 +48,15 @@ void dir_delete_script(CLocatorAPI* fs, LPCSTR full_path, int remove_files)
 {
 	fs->dir_delete(full_path,remove_files);
 }
+
+LPCSTR get_file_age_str(CLocatorAPI* fs, LPCSTR nm)
+{
+	time_t t= fs->get_file_age(nm);
+	struct tm *newtime;
+	newtime = localtime( &t );
+	return asctime( newtime );
+}
+
 void fs_registrator::script_register(lua_State *L)
 {
 	module(L)
@@ -84,14 +98,18 @@ void fs_registrator::script_register(lua_State *L)
 			.def("file_delete",					(void	(CLocatorAPI::*)(LPCSTR,LPCSTR)) (CLocatorAPI::file_delete))
 			.def("file_delete",					(void	(CLocatorAPI::*)(LPCSTR)) (CLocatorAPI::file_delete))
 
-			.def("dir_delete",					(void	(*)(LPCSTR, LPCSTR ,int)) (dir_delete_script_2))
-			.def("dir_delete",					(void	(*)(LPCSTR, int)) (dir_delete_script))
+			.def("dir_delete",					&dir_delete_script)
+			.def("dir_delete",					&dir_delete_script_2)
+
+			.def("file_rename",					&CLocatorAPI::file_rename)
+			.def("file_length",					&CLocatorAPI::file_length)
+			.def("file_copy",					&CLocatorAPI::file_copy)
 
 			.def("exist",						(const CLocatorAPI::file*	(CLocatorAPI::*)(LPCSTR)) (CLocatorAPI::exist))
 			.def("exist",						(const CLocatorAPI::file*	(CLocatorAPI::*)(LPCSTR, LPCSTR)) (CLocatorAPI::exist))
-//			.def("exist",						(const CLocatorAPI::file*	(CLocatorAPI::*)(LPSTR, LPCSTR, LPCSTR)) (CLocatorAPI::exist))
-//			.def("exist",						(const CLocatorAPI::file*	(CLocatorAPI::*)(LPSTR, LPCSTR, LPCSTR, LPCSTR)) (CLocatorAPI::exist))
 
+			.def("get_file_age",				&CLocatorAPI::get_file_age)
+			.def("get_file_age_str",			&get_file_age_str)
 			.def("r_open",						(IReader*	(CLocatorAPI::*)(LPCSTR,LPCSTR)) (CLocatorAPI::r_open))
 			.def("r_open",						(IReader*	(CLocatorAPI::*)(LPCSTR)) (CLocatorAPI::r_open))
 			.def("r_close",						&CLocatorAPI::r_close)
@@ -100,7 +118,8 @@ void fs_registrator::script_register(lua_State *L)
 			.def("w_open",						(IWriter*	(CLocatorAPI::*)(LPCSTR)) (CLocatorAPI::w_close))
 			.def("w_close",						&CLocatorAPI::w_close)
 
-			.def("file_list_open",				&file_list_open_script),
+			.def("file_list_open",				&file_list_open_script)
+			.def("file_list_open",				&file_list_open_script_2),
 
 		def("getFS",							getFS)
 	];
