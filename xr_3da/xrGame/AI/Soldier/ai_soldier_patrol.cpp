@@ -998,6 +998,7 @@ void CAI_Soldier::PatrolReturn()
 		vfInitSelector(SelectorPatrol,Squad,Leader);
 		SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[0];
 		float fTemp, fDistance = m_tpaPatrolPoints[0].distance_to(Position());
+		/**
 		for (int i=1; i<m_tpaPatrolPoints.size(); i++)
 			if ((fTemp = m_tpaPatrolPoints[i].distance_to(Position())) < fDistance) {
 				fDistance = fTemp;
@@ -1010,8 +1011,17 @@ void CAI_Soldier::PatrolReturn()
 			bStopThinking = true;
 			return;
 		}
+		else 
+		/**/
+		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+		if ((fDistance < 2.f) || (AI_NodeID == AI_Path.DestNode)) {
+			m_ePreviousState = eCurrentState = tStateStack.top();
+			tStateStack.pop();
+			m_dwLastRangeSearch = 0;
+			bStopThinking = true;
+			return;
+		}
 		else {
-			vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 			AI_Path.bNeedRebuild = TRUE;
 		}
 	}

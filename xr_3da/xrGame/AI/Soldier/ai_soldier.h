@@ -51,6 +51,7 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
+		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/30
@@ -219,6 +220,7 @@ typedef struct tagSSoldierAnimations{
 
 		// ai
 		ESoldierStates	eCurrentState;
+		ESoldierStates	m_ePreviousState;
 		bool			bStopThinking;
 		
 		// hit data

@@ -14,8 +14,6 @@
 #include "..\\..\\..\\bodyinstance.h"
 #include "..\\..\\..\\xr_trims.h"
 
-#define WRITE_LOG
-
 CAI_Soldier::CAI_Soldier()
 {
 	dwHitTime = 0;
@@ -1470,7 +1468,7 @@ void CAI_Soldier::Think()
 {
 	bStopThinking = false;
 	do {
-		ESoldierStates ePreviousState = eCurrentState;
+		m_ePreviousState = eCurrentState;
 		switch(eCurrentState) {
 			case aiSoldierAttackRun : {
 				AttackRun();
@@ -1557,7 +1555,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 		}
-		m_bStateChanged = ePreviousState != eCurrentState;
+		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
 	while (!bStopThinking);
 }
