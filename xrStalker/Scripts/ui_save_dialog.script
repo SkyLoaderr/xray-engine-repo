@@ -15,7 +15,7 @@ function save_dialog:InitControls()
 	self:Init(100,100,257,271) --init self position and size
 	
 	local screen_height = device().height
-	//local screen_width  = get_device():width
+	local screen_width  = device():width
 	
 	
 	local txt_main   = CUIStatic()
@@ -56,9 +56,11 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnButton_ok_clicked()
+	printf("ok")
 
 end
 
 function save_dialog:OnButton_cansel_clicked()
+	printf("cancel")
 
 end
