@@ -86,7 +86,6 @@
 
 // stl
 #include <algorithm>
-#include <numeric>
 #include <limits>
 #include <vector>
 #include <stack>
@@ -95,7 +94,6 @@
 #include <map>
 #include <deque>
 using namespace std;
-
 
 // Property-set support
 #define PropertyG(a)	__declspec( property( get=a ) )

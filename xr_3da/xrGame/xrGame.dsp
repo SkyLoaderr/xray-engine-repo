@@ -613,6 +613,10 @@ SOURCE=X:\game\engine.log
 # End Source File
 # Begin Source File
 
+SOURCE=.\FStaticRender_RenderTarget.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\notes.txt
 # End Source File
 # Begin Source File
