@@ -88,6 +88,8 @@ end
 
 function Defender:process ()
 
+	printf ("Process object %s : ", self.npc:name ())
+
 	--если npc помер, то выйдем
 	if self.npc == nil or self.npc:alive () == false then 
 	   return 
@@ -101,7 +103,7 @@ function Defender:process ()
 	--если мы еще не сидим, то сядем 
 	if self.setdown == false then
 	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (move.crouch, move.stand), look (look.free), anim (anim.danger), cond (cond.time_end, time_infinite))
+	   action (self.npc, move (move.crouch, move.stand), look (look.search), anim (anim.danger), cond (cond.time_end, time_infinite))
 	   selt.setdown = true
     end
 	
@@ -179,6 +181,8 @@ function Monster:find_enemy ()
 end
 
 function Monster:process ()
+
+	printf ("Process object %s : ", self.npc:name ())
 
 	if self.first_start == true then
 	   self.first_start = false	
