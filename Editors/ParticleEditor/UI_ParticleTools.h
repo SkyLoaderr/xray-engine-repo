@@ -118,7 +118,7 @@ public:
     virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     virtual void		RefreshProperties	(){;}
 
-    void				PlayCurrent			();
+    void				PlayCurrent			(int idx=-1);
     void				StopCurrent			(bool bFinishPlaying);
 
     void				Rename				(LPCSTR src_name, LPCSTR part_name, int part_idx);

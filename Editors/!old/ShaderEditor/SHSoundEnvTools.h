@@ -18,7 +18,8 @@ class CSHSoundEnvTools: public ISHTools
     SoundEnvironment_LIB		m_Library;
 
     ESoundSource*				m_PreviewSnd;
-    void __fastcall 			OnRevResetClick		(PropValue* sender, bool& bModif);
+    void __fastcall 			OnERevResetClick	(PropValue* sender, bool& bModif);
+    void __fastcall 			OnWRevResetClick	(PropValue* sender, bool& bModif);
     void __fastcall 			OnEchoResetClick	(PropValue* sender, bool& bModif);
 public:
     CSoundRender_Environment* 	m_Env;

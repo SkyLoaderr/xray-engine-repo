@@ -286,7 +286,6 @@ public:
         else if (command=="pRotate")			pRotate			(P3);
         else if (command=="pRotateD")			pRotateD 		(P10);
         else if (command=="pStartingAge")		pStartingAge   	(P2);
-        else if (command=="pTimeStep")	  		pTimeStep	   	(P1);
         else if (command=="pSetMaxParticles")	pSetMaxParticles(P1);
 //        else if (command=="pObject")       		parent->pObject	(P1);
 		else if (command=="pAlignToPath")		parent->pAlignToPath(P3);
@@ -362,7 +361,6 @@ static LPCSTR PStateCommands[]={
 	"pSize(float size_x, float size_y=1.0f, float size_z=1.0f);",
 	"pSizeD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL single_size=TRUE);",
 	"pStartingAge(float age, float sigma=1.0f);",
-	"pTimeStep(float new_dt);",
 	"pVelocity(float x, float y, float z);",
 	"pVelocityD(PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f);",
 	"pVertexB(float x, float y, float z);",

@@ -182,7 +182,7 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
 	                UI->Command	(COMMAND_UPDATE_PROPERTIES);
                 }
             }else{
-            	SetParent		(GAMEMTL_NONE);
+            	SetParent		(GAMEMTL_NONE_ID);
 			    bModif 			= true;
                 UI->Command		(COMMAND_UPDATE_PROPERTIES);
             }
@@ -236,7 +236,7 @@ void SGameMtlPair::FillProp(PropItemVec& items)
 	TOnChange OnChange	= 0;
     u32 show_CB			= 0;
     SGameMtlPair* P		= 0;
-    if (ID_parent!=GAMEMTL_NONE){ 
+    if (ID_parent!=GAMEMTL_NONE_ID){ 
        	OnChange 		= OnFlagChange;
         show_CB		    = PropItem::flShowCB;
 	    P				= m_Owner->GetMaterialPair(ID_parent);
@@ -310,16 +310,16 @@ void CGameMtlLibrary::NameToMtlPair			(LPCSTR name, int& mtl0, int& mtl1)
 {
     string256 		buf0, buf1;
     if (_GetItemCount(name,'\\')<2){
-        mtl0		= GAMEMTL_NONE;
-        mtl1		= GAMEMTL_NONE;
+        mtl0		= GAMEMTL_NONE_ID;
+        mtl1		= GAMEMTL_NONE_ID;
     	return;
     }
     _GetItem		(name,0,buf0,'\\');
     _GetItem		(name,1,buf1,'\\');
     _ChangeSymbol	(buf0,'/','\\');
     _ChangeSymbol	(buf1,'/','\\');
-    SGameMtl* M0	= GetMaterial(buf0);	mtl0=M0?M0->GetID():GAMEMTL_NONE;
-    SGameMtl* M1	= GetMaterial(buf1);	mtl1=M1?M1->GetID():GAMEMTL_NONE;
+    SGameMtl* M0	= GetMaterial(buf0);	mtl0=M0?M0->GetID():GAMEMTL_NONE_ID;
+    SGameMtl* M1	= GetMaterial(buf1);	mtl1=M1?M1->GetID():GAMEMTL_NONE_ID;
 }
 void CGameMtlLibrary::MtlNameToMtlPair		(LPCSTR name, int& mtl0, int& mtl1)
 {
@@ -495,7 +495,7 @@ void SGameMtlPair::Save(IWriter& fs)
 	fs.close_chunk		();
 
 // copy from parent
-	if (ID_parent!=GAMEMTL_NONE){
+	if (ID_parent!=GAMEMTL_NONE_ID){
         SGameMtlPair* P; 
         if ((0!=(P=GetLastParentValue(this,flBreakingSounds)))&&(P!=this))	
             BreakingSounds	= P->BreakingSounds;

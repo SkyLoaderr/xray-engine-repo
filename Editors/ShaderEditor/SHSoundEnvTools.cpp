@@ -204,7 +204,17 @@ void CSHSoundEnvTools::ResetCurrentItem()
 	UseEnvironment	();
 }
 
-void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif)
+void __fastcall CSHSoundEnvTools::OnERevResetClick(PropValue* sender, bool& bModif)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0: m_Env->set_default(false,false,true);	break;
+    case 1: m_Env->set_identity(false,false,true);	break;
+	}
+    Ext.m_ItemProps->RefreshForm();
+    Modified();
+}
+void __fastcall CSHSoundEnvTools::OnWRevResetClick(PropValue* sender, bool& bModif)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -231,19 +241,39 @@ void CSHSoundEnvTools::RealUpdateProperties()
         // fill environment
 		CSoundRender_Environment& S	= *m_Env;
         ButtonValue* B=0;
-        PHelper.CreateName_TI	(items, "Environment\\Name",					S.name,  		sizeof(S.name), FHelper.FindObject(View(),S.name));
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\In Gain",			&S.R_InGain, 	-96,	0, 		0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\Mix",				&S.R_Mix,		-96,	0, 		0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\Time",			&S.R_Time,		0.01f,	3000, 	0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\HF Ratio",		&S.R_HFRatio,	0.001f,	0.999f, 0.01f,	3);
-        B=PHelper.CreateButton	(items, "Environment\\Reverb\\Set",				"Default,Identity",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent 		= OnRevResetClick;
+        PHelper.CreateName_TI	(items, "Environment\\Name",								S.name,  		sizeof(S.name), FHelper.FindObject(View(),S.name));
 
-        PHelper.CreateFloat		(items, "Environment\\Echo\\Wet Dry",			&S.E_WetDry,	0,		100,	0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Echo\\Feedback",			&S.E_FeedBack,	0,		100,	0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Echo\\Delay",				&S.E_Delay,		1,		2000,	0.01f,	3);
-        B=PHelper.CreateButton	(items, "Environment\\Echo\\Set",				"Default,Identity",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent 		= OnEchoResetClick;
+        if (psSoundFlags.is(ssHardware)){
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\Room",				&S.L_Room, 				DSFX_I3DL2REVERB_ROOM_MIN,				DSFX_I3DL2REVERB_ROOM_MAX, 				1.f,	0);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\RoomHF",				&S.L_RoomHF, 			DSFX_I3DL2REVERB_ROOMHF_MIN,			DSFX_I3DL2REVERB_ROOMHF_MAX, 			1.f,	0);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\RoomRolloffFactor",	&S.L_RoomRolloffFactor,	DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_MIN,	DSFX_I3DL2REVERB_ROOMROLLOFFFACTOR_MAX,	0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\DecayTime",			&S.L_DecayTime, 		DSFX_I3DL2REVERB_DECAYTIME_MIN,			DSFX_I3DL2REVERB_DECAYTIME_MAX, 		0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\DecayHFRatio",		&S.L_DecayHFRatio, 		DSFX_I3DL2REVERB_DECAYHFRATIO_MIN,		DSFX_I3DL2REVERB_DECAYHFRATIO_MAX, 		0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\Reflections",			&S.L_Reflections, 		DSFX_I3DL2REVERB_REFLECTIONS_MIN,		DSFX_I3DL2REVERB_REFLECTIONS_MAX, 		1.f,	0);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\ReflectionsDelay",	&S.L_ReflectionsDelay, 	DSFX_I3DL2REVERB_REFLECTIONSDELAY_MIN,	DSFX_I3DL2REVERB_REFLECTIONSDELAY_MAX,	0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\Reverb",				&S.L_Reverb, 			DSFX_I3DL2REVERB_REVERB_MIN,			DSFX_I3DL2REVERB_REVERB_MAX, 			1.f,	0);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\ReverbDelay",			&S.L_ReverbDelay, 		DSFX_I3DL2REVERB_REVERBDELAY_MIN,		DSFX_I3DL2REVERB_REVERBDELAY_MAX, 		0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\Diffusion",			&S.L_Diffusion, 		DSFX_I3DL2REVERB_DIFFUSION_MIN,			DSFX_I3DL2REVERB_DIFFUSION_MAX, 		0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\Density",				&S.L_Density, 			DSFX_I3DL2REVERB_DENSITY_MIN,			DSFX_I3DL2REVERB_DENSITY_MAX, 			0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Env Reverb\\HFReference",			&S.L_HFReference, 		DSFX_I3DL2REVERB_HFREFERENCE_MIN,		DSFX_I3DL2REVERB_HFREFERENCE_MAX, 		0.01f,	3);
+            B=PHelper.CreateButton	(items, "Environment\\Env Reverb\\Set",					"Default,Identity",ButtonValue::flFirstOnly);
+            B->OnBtnClickEvent 		= OnERevResetClick;
+        }
+
+        if (!psSoundFlags.is(ssHardware)){
+            PHelper.CreateFloat		(items, "Environment\\Waves Reverb\\In Gain",  	        &S.R_InGain,           	-96,	0, 		0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Waves Reverb\\Mix",	   	        &S.R_Mix,	           	-96,	0, 		0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Waves Reverb\\Time",	   	        &S.R_Time,	           	0.01f,	3000, 	0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Waves Reverb\\HF Ratio",	        &S.R_HFRatio,          	0.001f,	0.999f, 0.01f,	3);
+            B=PHelper.CreateButton	(items, "Environment\\Waves Reverb\\Set",		        "Default,Identity",ButtonValue::flFirstOnly);
+            B->OnBtnClickEvent 		= OnWRevResetClick;
+
+            PHelper.CreateFloat		(items, "Environment\\Echo\\Wet Dry",			        &S.E_WetDry,	        0,		100,	0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Echo\\Feedback",			        &S.E_FeedBack,	        0,		100,	0.01f,	3);
+            PHelper.CreateFloat		(items, "Environment\\Echo\\Delay",				        &S.E_Delay,		        1,		2000,	0.01f,	3);
+            B=PHelper.CreateButton	(items, "Environment\\Echo\\Set",				        "Default,Identity",ButtonValue::flFirstOnly);
+            B->OnBtnClickEvent 		= OnEchoResetClick;
+        }
     }
     Ext.m_ItemProps->AssignItems		(items,true);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);

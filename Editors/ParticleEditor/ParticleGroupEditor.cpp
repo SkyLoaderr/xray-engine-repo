@@ -62,7 +62,11 @@ void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModi
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
-    case 0:
+    case 0:		    	
+    	PTools->PlayCurrent(B->Owner()->tag);    
+		bDataModified	= false;
+    break;
+    case 1:
         if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected folder?") == mrYes){
             m_Effects.erase	(m_Effects.begin()+B->Owner()->tag);
             UI->Command		(COMMAND_UPDATE_PROPERTIES);
@@ -101,7 +105,7 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     V->OnChangeEvent			= OnParamsChange;
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
         AnsiString nm 			= AnsiString("Effect #")+(it-m_Effects.begin()+1);
-        B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,nm.c_str()),"Remove",ButtonValue::flFirstOnly); B->Owner()->tag = it-m_Effects.begin();
+        B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,nm.c_str()),"Preview,Remove",ButtonValue::flFirstOnly); B->Owner()->tag = it-m_Effects.begin();
         B->OnBtnClickEvent		= OnEffectEditClick;
         V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Name"),it->m_EffectName,sizeof(it->m_EffectName),smPE);
         V->OnChangeEvent		= OnParamsChange;

@@ -154,21 +154,20 @@ void CParticleTools::Render()
     case emEffect:{	
 		if (m_Flags.is(flDrawDomain)&&m_EditPE&&m_EditPE->GetDefinition())	
         	m_EditPE->GetDefinition()->Render();
-    	::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	
     }break;
     case emGroup:{
     	if (m_EditPG&&m_Flags.is(flDrawDomain)){
          	int cnt = m_EditPG->children.size();
             for (int k=0; k<cnt; k++){
-                IRender_Visual*  V  = m_EditPG->children[k];
-                PS::CParticleEffect* E	= (PS::CParticleEffect*)V;
+                PS::CParticleEffect* E		= m_EditPG->children[k];
 				if (E&&E->GetDefinition())	E->GetDefinition()->Render();
             }
         }
-    	::Render->Models->RenderSingle(m_EditPG,Fidentity,1.f);	
     }break;
     default: THROW;
     }
+    ::Render->Models->RenderSingle(m_EditPG,Fidentity,1.f);	
+    ::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	
 }
 
 void CParticleTools::OnFrame()
@@ -498,8 +497,9 @@ void CParticleTools::SetCurrentPE(PS::CPEDef* P)
     // load shader
     if (m_LibPED&&m_EditText&&m_EditText->Modified()){
 //    	if (ELog.DlgMsg(mtConfirmation, "The commands has been modified.\nDo you want to apply your changes?")==mrYes)
-	    	m_EditText->ApplyEdit();
+	    	m_EditText->ApplyEdit(); 
     }
+    m_EditPG->Compile		(0);
 	if (m_LibPED!=P){
 	    m_LibPED = P;
         m_EditPE->Compile(m_LibPED);
@@ -513,8 +513,8 @@ void CParticleTools::SetCurrentPE(PS::CPEDef* P)
 void CParticleTools::SetCurrentPG(PS::CPGDef* P)
 {
 	VERIFY(m_bReady);
-//	if (m_LibPGD!=P)
-    {
+    m_EditPE->Compile		(0);
+	if (m_LibPGD!=P){
 	    m_LibPGD = P;
         if (m_LibPGD){
 			m_EditMode		= emGroup;
@@ -533,14 +533,24 @@ PS::CPGDef*	CParticleTools::FindPG(LPCSTR name)
 	return ::Render->PSLibrary.FindPGD(name);
 }
 
-void CParticleTools::PlayCurrent()
+void CParticleTools::PlayCurrent(int idx)
 {
 	VERIFY(m_bReady);
     StopCurrent		(false);
     switch(m_EditMode){
     case emNone: break;
-    case emEffect:	m_EditPE->Play(); break;
-    case emGroup:	m_EditPG->Play(); break;
+    case emEffect:	m_EditPE->Play(); 		break;
+    case emGroup:	
+    	if (idx>-1){
+        	VERIFY(idx<m_EditPG->children.size());
+            m_LibPED = m_EditPG->children[idx]->GetDefinition();
+            m_EditPE->Compile(m_LibPED);
+        	m_EditPE->Play	();
+        }else{
+        	// play all
+	    	m_EditPG->Play(); 	
+        }
+    break;
     default: THROW;
     }
     ApplyParent		();
@@ -549,12 +559,8 @@ void CParticleTools::PlayCurrent()
 void CParticleTools::StopCurrent(bool bFinishPlaying)
 {
 	VERIFY(m_bReady);
-    switch(m_EditMode){
-    case emNone: break;
-    case emEffect:	m_EditPE->Stop(bFinishPlaying);	break;
-    case emGroup:	m_EditPG->Stop(bFinishPlaying);	break;
-    default: THROW;
-    }
+    m_EditPE->Stop(bFinishPlaying);
+    m_EditPG->Stop(bFinishPlaying);
 }
 
 void CParticleTools::OnShowHint(AStringVec& SS)
