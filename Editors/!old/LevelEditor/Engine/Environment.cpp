@@ -455,8 +455,8 @@ void CEnvironment::OnFrame()
 		music*	_old		= playlist.front();
 		playlist.pop_front	();
 		playlist.push_back	(_old);
-		playlist.front()->left.play_at_pos	(Device.vCameraPosition);
-		playlist.front()->right.play_at_pos	(Device.vCameraPosition);
+		playlist.front()->left.play_at_pos	(0,Device.vCameraPosition);
+		playlist.front()->right.play_at_pos	(0,Device.vCameraPosition);
 	}
 
 	// update
