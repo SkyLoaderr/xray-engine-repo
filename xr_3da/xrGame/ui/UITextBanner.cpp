@@ -9,7 +9,8 @@ CUITextBanner::CUITextBanner()
 	:	m_bAnimate			(true),
 		m_Cl				(0xffffffff),
 		m_pFont				(NULL),
-		m_bNewRenderMethod	(false)
+		m_bNewRenderMethod	(false),
+		fontSize			(-1.0f)
 {
 }
 
@@ -82,6 +83,9 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 
 	R_ASSERT(m_pFont);
 	m_pFont->SetColor(m_Cl);
+	if(fontSize>0.0f)
+		m_pFont->SetSize(fontSize);
+
 	m_pFont->Out(x, y, buf.c_str());
 	if (m_bNewRenderMethod)
 		m_pFont->OnRender();

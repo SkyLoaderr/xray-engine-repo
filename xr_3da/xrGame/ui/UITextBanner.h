@@ -63,6 +63,7 @@ public:
 
 	// Font
 	void	SetFont				(CGameFont *pFont)	{ m_pFont = pFont; }
+	void	SetFontSize			(float sz)	{ fontSize = sz; }
 
 	// Color
 	void	SetTextColor		(u32 cl);
@@ -92,6 +93,7 @@ protected:
 
 	// Font
 	CGameFont	*m_pFont;
+	float		fontSize;
 
 	// Letters color
 	u32			m_Cl;
