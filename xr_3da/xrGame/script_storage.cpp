@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "script_storage.h"
-#include "script_space.h"
 #include <stdarg.h>
 
 #ifndef ENGINE_BUILD
@@ -130,14 +129,19 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 	return	(l_iResult);
 }
 
-bool CScriptStorage::parse_namespace(LPCSTR caNamespaceName, LPSTR b, LPSTR c)
+bool CScriptStorage::create_namespace	(LPCSTR caNamespaceName)
 {
-	strcpy			(b,"");
-	strcpy			(c,"");
+	int				start = lua_gettop(lua());
+	lua_pushstring	(lua(),"_G");
+	lua_gettable	(lua(),LUA_GLOBALSINDEX);
 	LPSTR			S2	= xr_strdup(caNamespaceName);
 	LPSTR			S	= S2;
-	for (int i=0;;++i) {
+	for (;;) {
 		if (!xr_strlen(S)) {
+//			lua_settop	(lua(),0);
+			VERIFY		(lua_gettop(lua()) >= 1);
+			lua_pop		(lua(),1);
+			VERIFY		(lua_gettop(lua()) == start);
 			script_log	(ScriptStorage::eLuaMessageTypeError,"the namespace name %s is incorrect!",caNamespaceName);
 			xr_free		(S2);
 			return		(false);
@@ -145,43 +149,63 @@ bool CScriptStorage::parse_namespace(LPCSTR caNamespaceName, LPSTR b, LPSTR c)
 		LPSTR			S1 = strchr(S,'.');
 		if (S1)
 			*S1				= 0;
-
-		if (i)
-			strcat		(b,"{");
-		strcat			(b,S);
-		strcat			(b,"=");
-		if (i)
-			strcat		(c,"}");
-		if (S1)
-			S			= ++S1;
+		lua_pushstring	(lua(),S);
+		lua_gettable	(lua(),-2);
+		if (lua_isnil(lua(),-1)) {
+			lua_pop			(lua(),1);
+			lua_newtable	(lua());
+			lua_pushstring	(lua(),S);
+			lua_pushvalue	(lua(),-2);
+			lua_settable	(lua(),-4);
+		}
 		else
-			break;
+			if (!lua_istable(lua(),-1)) {
+				xr_free		(S2);
+
+//				lua_settop	(lua(),0);
+				VERIFY		(lua_gettop(lua()) >= 1);
+				lua_pop		(lua(),1);
+				VERIFY		(lua_gettop(lua()) == start);
+				script_log	(ScriptStorage::eLuaMessageTypeError,"the namespace name %s is already being used by the non-table object!",caNamespaceName);
+				return		(false);
+			}
+			lua_remove		(lua(),-2);
+			if (S1)
+				S			= ++S1;
+			else
+				break;
 	}
 	xr_free			(S2);
+	VERIFY			(lua_gettop(lua()) == start + 1);
 	return			(true);
+}
+
+void CScriptStorage::copy_globals	()
+{
+	int					start = lua_gettop(lua());
+	lua_newtable		(lua());
+	lua_pushstring		(lua(),"_G");
+	lua_gettable		(lua(),LUA_GLOBALSINDEX);
+	lua_pushnil			(lua());
+	while (lua_next(lua(), -2)) {
+		lua_pushvalue	(lua(),-2);
+		lua_pushvalue	(lua(),-2);
+		lua_settable	(lua(),-6);
+		lua_pop			(lua(), 1);
+	}
+	VERIFY				(lua_gettop(lua()) == start + 2);
 }
 
 bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t tSize, LPCSTR caScriptName, LPCSTR caNameSpaceName)
 {
-	int					l_iErrorCode;
-	if (caNameSpaceName && xr_strcmp("_G",caNameSpaceName)) {
-		string256		insert, a, b;
-
-		LPCSTR			header = "\
-local function script_name() \
-return \"%s\" \
-end \
-local this = {} \
-%s this %s \
-setmetatable(this, {__index = _G}) \
-setfenv(1, this) \
-		";
-
-		if (!parse_namespace(caNameSpaceName,a,b))
-			return		(false);
-		sprintf			(insert,header,caNameSpaceName,a,b);
+//	int				start = lua_gettop(L);
+	int				l_iErrorCode;
+	if (caNameSpaceName) {
+		string256		insert;
+		sprintf			(insert,"local this = %s; function %s.script_name() return \"%s\" end local function script_name() return \"%s\" end ",caNameSpaceName,caNameSpaceName,caNameSpaceName,caNameSpaceName);
 		size_t			str_len = xr_strlen(insert);
 		LPSTR			script = (LPSTR)xr_malloc((str_len + tSize)*sizeof(char));
+#pragma todo("Dima to Dima : remove memory leak from here!")
 		strcpy			(script,insert);
 		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
 		l_iErrorCode	= luaL_loadbuffer(L,script,tSize + str_len,caScriptName);
@@ -195,8 +219,10 @@ setfenv(1, this) \
 		if (!print_output(L,caScriptName,l_iErrorCode))
 			print_error	(L,l_iErrorCode);
 #endif
+//		VERIFY			(lua_gettop(L) == start + 1);
 		return			(false);
 	}
+//	VERIFY				(lua_gettop(L) == start + 1);
 	return				(true);
 }
 
@@ -239,16 +265,65 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	}
 	else
 		lua_insert	(lua(),-4);
+
+//	VERIFY			(lua_gettop(lua()) == start);
 	return			(true);
+}
+
+void CScriptStorage::set_namespace()
+{
+	int				start = lua_gettop(lua());
+	lua_pushnil		(lua());
+	while (lua_next(lua(), -2)) {
+		lua_pushvalue	(lua(),-2);
+		lua_gettable	(lua(),-5);
+		if (lua_isnil(lua(),-1)) {
+			lua_pop			(lua(),1);
+			lua_pushvalue	(lua(),-2);
+			lua_pushvalue	(lua(),-2);
+			lua_pushvalue	(lua(),-2);
+			lua_pushnil		(lua());
+			lua_settable	(lua(),-7);
+			lua_settable	(lua(),-7);
+		}
+		else {
+			lua_pop			(lua(),1);
+			lua_pushvalue	(lua(),-2);
+			lua_gettable	(lua(),-4);
+			if (!lua_equal(lua(),-1,-2)) {
+				lua_pushvalue	(lua(),-3);
+				lua_pushvalue	(lua(),-2);
+				lua_pushvalue	(lua(),-2);
+				lua_pushvalue	(lua(),-5);
+				lua_settable	(lua(),-8);
+				lua_settable	(lua(),-8);
+			}
+			lua_pop			(lua(),1);
+		}
+		lua_pushvalue	(lua(),-2);
+		lua_pushnil		(lua());
+		lua_settable	(lua(),-6);
+		lua_pop			(lua(), 1);
+	}
+//	lua_settop		(lua(),0);
+	VERIFY			(lua_gettop(lua()) >= 3);
+	lua_pop			(lua(),3);
+	VERIFY			(lua_gettop(lua()) == start - 3);
 }
 
 bool CScriptStorage::load_file_into_namespace(LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
 {
 	int				start = lua_gettop(lua());
+	if (!create_namespace(caNamespaceName)) {
+		VERIFY		(lua_gettop(lua()) == start);
+		return		(false);
+	}
+	copy_globals	();
 	if (!do_file(caScriptName,caNamespaceName,bCall)) {
 		lua_settop	(lua(),start);
 		return		(false);
 	}
+	set_namespace	();
 	VERIFY			(lua_gettop(lua()) == start);
 	return			(true);
 }
@@ -315,6 +390,7 @@ bool CScriptStorage::object	(LPCSTR identifier, int type)
 		} 
 		lua_pop				(lua(), 1); 
 	} 
+//	lua_settop				(lua(),0);
 	VERIFY					(lua_gettop(lua()) >= 1);
 	lua_pop					(lua(), 1); 
 	VERIFY					(lua_gettop(lua()) == start - 1);
