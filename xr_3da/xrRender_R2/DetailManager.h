@@ -63,6 +63,18 @@ public:
 public:
 	int								dither			[16][16];
 public:
+	// swing values
+	struct SSwingValue{
+		float						rot1;
+		float						rot2;
+		float						amp1;
+		float						amp2;
+		float						speed;
+		void						lerp	(const SSwingValue& v1, const SSwingValue& v2, float factor);
+	};
+	SSwingValue						swing_desc[2];
+	SSwingValue						swing_current; 
+public:
 	IReader*						dtFS;
 	DetailHeader					dtH;
 	DetailSlot*						dtSlots;		// note: pointer into VFS

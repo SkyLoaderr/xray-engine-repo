@@ -9,9 +9,14 @@
 #include "cl_intersect.h"
 
 #ifdef _EDITOR
-	#include "SceneClassList.h"
-	#include "Scene.h"
-	#include "SceneObject.h"
+#	include "SceneClassList.h"
+#	include "Scene.h"
+#	include "SceneObject.h"
+#	include "igame_persistent.h"
+#	include "environment.h"
+#else
+#	include "..\igame_persistent.h"
+#	include "..\environment.h"
 #endif
 
 const float dbgOffset			= 0.f;
@@ -51,6 +56,18 @@ void bwdithermap	(int levels, int magic[16][16])
 					(magic4x4[k][l] / 16.) * magicfact);
 }
 //--------------------------------------------------- Decompression
+
+void CDetailManager::SSwingValue::lerp(const SSwingValue& A, const SSwingValue& B, float f)
+{
+	float fi	= 1.f-f;
+	amp1		= fi*A.amp1  + f*B.amp1;
+	amp2		= fi*A.amp2  + f*B.amp2;
+	rot1		= fi*A.rot1  + f*B.rot1;
+	rot2		= fi*A.rot2  + f*B.rot2;
+	speed		= fi*A.speed + f*B.speed;
+}
+//---------------------------------------------------
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -130,6 +147,20 @@ void CDetailManager::Load		()
 	// Hardware specific optimizations
 	if (UseVS())	hw_Load		();
 	else			soft_Load	();
+
+	// swing desc
+	// normal
+	swing_desc[0].amp1	= .1f;
+	swing_desc[0].amp2	= .05f;
+	swing_desc[0].rot1	= 30.f;
+	swing_desc[0].rot2	= 1.f;
+	swing_desc[0].speed	= 2.f;
+	// fast
+	swing_desc[1].amp1	= 1.f;
+	swing_desc[1].amp2	= .5f;
+	swing_desc[1].rot1	= .01f;
+	swing_desc[1].rot2	= .9f;
+	swing_desc[1].speed	= 1.f;
 }
 #endif
 void CDetailManager::Unload		()
@@ -157,6 +188,8 @@ void CDetailManager::Render		()
 	if (0==dtFS)						return;
 	if (!psDeviceFlags.is(rsDetails))	return;
 #endif
+	float factor				= g_pGamePersistent->Environment.wind_strength;
+	swing_current.lerp			(swing_desc[0],swing_desc[1],factor);
 
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
 

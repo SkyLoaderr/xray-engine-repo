@@ -4,11 +4,11 @@
 #include "detailmanager.h"
 
 #ifdef _EDITOR
-#include "igame_persistent.h"
-#include "environment.h"
+#	include "igame_persistent.h"
+#	include "environment.h"
 #else
-#include "..\igame_persistent.h"
-#include "..\environment.h"
+#	include "..\igame_persistent.h"
+#	include "..\environment.h"
 #endif
 
 const int			quant	= 16384;
@@ -138,17 +138,11 @@ void CDetailManager::hw_Unload()
 void CDetailManager::hw_Render()
 {
 	// Render-prepare
-	// CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector4	dir1,dir2;
-	Fvector3	wnd;
-	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot1;
-	float	tm_rot2			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot2;
-	wnd.set		(0,0,0);
-	//wnd.setHP	(desc.wind_direction,0);
-	//wnd.mul	(desc.wind_velocity /5);
-	//Log		("wd:",desc.wind_direction);
-	dir1.set	(_sin(tm_rot1)+wnd.x,0+wnd.y,_cos(tm_rot1)+wnd.z,0);	dir1.normalize	();	dir1.mul(ps_r__Detail_w_amp1);	// dir1*amplitude
-	dir2.set	(_sin(tm_rot2)+wnd.x,0+wnd.y,_cos(tm_rot2)+wnd.z,0);	dir2.normalize	(); dir2.mul(ps_r__Detail_w_amp2);	// dir2*amplitude
+	float	tm_rot1			= (PI_MUL_2*Device.fTimeGlobal/swing_current.rot1);
+	float	tm_rot2			= (PI_MUL_2*Device.fTimeGlobal/swing_current.rot2);
+	dir1.set				(_sin(tm_rot1),0,_cos(tm_rot1),0).normalize().mul(swing_current.amp1);
+	dir2.set				(_sin(tm_rot2),0,_cos(tm_rot2),0).normalize().mul(swing_current.amp2);
 
 	// Setup geometry and DMA
 	RCache.set_Geometry		(hw_Geom);
@@ -156,14 +150,14 @@ void CDetailManager::hw_Render()
 	// Wave0
 	float		scale			=	1.f/float(quant);
 	Fvector4	wave;
-	wave.set				(1.f/5.f,		1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*ps_r__Detail_w_speed);
+	wave.set				(1.f/5.f,		1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*swing_current.speed);
 	RCache.set_c			(hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);				// consts
 	RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
 	RCache.set_c			(hwc_wind,		dir1);																					// wind-dir
 	hw_Render_dump			(hwc_array,		1, 0, c_hdr );
 
 	// Wave1
-	wave.set				(1.f/3.f,		1.f/7.f,	1.f/5.f,	Device.fTimeGlobal*ps_r__Detail_w_speed);
+	wave.set				(1.f/3.f,		1.f/7.f,	1.f/5.f,	Device.fTimeGlobal*swing_current.speed);
 	RCache.set_c			(hwc_wave,		wave.div(PI_MUL_2));	// wave
 	RCache.set_c			(hwc_wind,		dir2);																					// wind-dir
 	hw_Render_dump			(hwc_array,		2, 0, c_hdr );
