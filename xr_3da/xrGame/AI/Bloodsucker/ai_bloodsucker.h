@@ -55,8 +55,6 @@ public:
 	bonesManipulation		Bones;
 
 	CBloodsuckerVisibility	m_tVisibility;
-
-	bool					flagEatNow;						// true - сейчас монстр ест
 	
 	float					m_fInvisibilityDist;			// дистанция до врага, на которой монстр может становиться нивидимым
 	float					m_ftrPowerDown;					// коэффициент, на который падает сила монстра при активации невидимости 

@@ -10,6 +10,8 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 #include "..\\rat\\ai_rat.h"
+#include "..\\..\\PhysicsShell.h"
+#include "..\\..\\phcapture.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest implementation
@@ -348,10 +350,16 @@ void CBitingEat::Run()
 			pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 
 			if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) {
-				m_tAction = ACTION_DRAG;
-				
+				// взять труп
 				pMonster->Movement.PHCaptureObject(pCorpse);
-				bDragging = true;
+				if (pMonster->Movement.PHCapture()->Failed()) {
+					bDragging = false;
+					m_tAction = ACTION_EAT;
+				}else {
+					bDragging = true;
+					m_tAction = ACTION_DRAG;
+				}
+				
 				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
 				pMonster->Motion.m_tSeq.Add(eAnimCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 				pMonster->Motion.m_tSeq.Switch();
@@ -374,6 +382,9 @@ void CBitingEat::Run()
 			pMonster->Motion.m_tTurn.Set		(eAnimWalkBkwd, eAnimWalkBkwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);			
 			pMonster->Motion.m_tTurn.SetMoveBkwd(true);
 
+			// если не может тащить
+			if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_RUN;
+
 			if (cur_dist > m_fDistToDrag) {
 				// бросить труп
 				pMonster->Movement.PHReleaseObject();
@@ -384,17 +395,21 @@ void CBitingEat::Run()
 				pMonster->Motion.m_tSeq.Add(eAnimStandLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 				pMonster->Motion.m_tSeq.Switch();
 			}
-
+			
 			break;
 		case ACTION_EAT:
 			pMonster->Motion.m_tParams.SetParams(eAnimEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 
+			if (pMonster->GetSatiety() >= 1.0f) pMonster->flagEatNow = false;
+			else pMonster->flagEatNow = true;
+
 			// съесть часть
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
+				pMonster->ChangeSatiety(0.05f);
 				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
-				m_dwLastTimeEat = m_dwCurrentTime;
 			DO_IN_TIME_INTERVAL_END();
+
 			break;
 	}
 }
@@ -406,6 +421,10 @@ bool CBitingEat::CheckCompletion()
 
 void CBitingEat::Done()
 {
+	inherited::Done();
+
+	pMonster->flagEatNow = false;
+
 	pMonster->Motion.m_tTurn.SetMoveBkwd(false);
 	// если тащит труп - бросить
 	if (bDragging) {

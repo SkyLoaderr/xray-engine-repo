@@ -192,11 +192,8 @@ void CBloodsuckerEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
 	VisionElem ve;
-	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
-	if (pCorpse != ve.obj) {
-		Reset();
-		Init();
-	}	
+	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
+	if (pCorpse != ve.obj) Init();
 
 	float dist = pMonster->Position().distance_to(pCorpse->Position());
 	if ((m_tAction != ACTION_EAT)  && (dist < m_fWalkDistToCorpse) && (dist > m_fDistToCorpse)) {
@@ -244,11 +241,11 @@ void CBloodsuckerEat::Run()
 			else pMonster->flagEatNow = true;
 		
 			// съесть часть
-			if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentTime) {
+			DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
 				pMonster->ChangeSatiety(0.05f);
 				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
-				m_dwLastTimeEat = m_dwCurrentTime;
-			}
+			DO_IN_TIME_INTERVAL_END();
+			
 			break;
 	}
 }

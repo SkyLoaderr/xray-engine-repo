@@ -239,4 +239,7 @@ public:
 	friend	class 			CBitingExploreDE;
 	friend	class 			CBitingExploreNDE;
 
+	// State flags
+	bool					flagEatNow;				// true - сейчас монстр ест
+
 };

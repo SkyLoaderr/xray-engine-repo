@@ -33,8 +33,6 @@ void CAI_Bloodsucker::Init()
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
 
-	flagEatNow						= false;
-
 	Bones.Reset();
 }
 

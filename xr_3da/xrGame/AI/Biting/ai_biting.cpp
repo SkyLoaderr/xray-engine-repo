@@ -65,6 +65,8 @@ void CAI_Biting::Init()
 
 	m_tLockedAnims.clear			();
 	m_tAnimPlaying					= DEFAULT_ANIM;
+
+	flagEatNow						= false;
 }
 
 void CAI_Biting::Die()
