@@ -197,7 +197,7 @@ public:
 
 	// Fire control
 	virtual void		g_fireParams			(Fvector& P, Fvector& D);
-	virtual void		g_cl_fireStart			( );
+	virtual void		g_fireStart				( );
 	virtual void		g_fireEnd				( );
 
 	// Network

@@ -132,7 +132,7 @@ void CCustomMonster::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 	fire_dir.set					(eye_matrix.k);
 }
 
-void CCustomMonster::g_cl_fireStart	( )
+void CCustomMonster::g_fireStart	( )
 {
 	Weapons->FireStart	();
 }

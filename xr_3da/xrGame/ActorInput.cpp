@@ -23,7 +23,7 @@ void CActor::OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
-	case kWPN_FIRE:	g_cl_fireStart	(); 						break;
+	case kWPN_FIRE:	g_fireStart		(); 						break;
 	case kWPN_ZOOM:	Weapons->Zoom	(TRUE);						break;
 	case kWPN_1:	
 	case kWPN_2:	
