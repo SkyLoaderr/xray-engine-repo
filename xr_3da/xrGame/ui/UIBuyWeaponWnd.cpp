@@ -950,6 +950,18 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	if (WINDOW_KEY_RELEASED == keyboard_action) 
 		return false;
 
+	if (DIK_ESCAPE == dik)
+	{
+		OnButtonClicked(&UIBtnCancel);		
+		return true;
+	}
+	else if (g_iOkAccelerator == dik)
+	{
+		OnButtonClicked(&UIBtnOK);
+		return true;
+	}
+
+
 	switch (UIBagWnd.GetMenuLevel())
 	{
 	case mlRoot:
@@ -958,17 +970,6 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	default:
 		if (UIBagWnd.OnKeyboard(dik, keyboard_action))
 			return true;
-	}
-
-	if (DIK_ESCAPE == dik)
-	{
-		GetHolder()->StartStopMenu(this, true);		return true;
-	}
-
-	if (dik == g_iOkAccelerator)
-	{
-		SendMessage(&UIBtnOK, BUTTON_CLICKED, NULL);
-		return true;
 	}
 
 	return true;
