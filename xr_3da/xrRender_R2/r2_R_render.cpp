@@ -131,7 +131,7 @@ void CRender::Render	()
 				// calculate
 				LR_Direct.compute_xfs_1					(0, L);
 				render_smap_direct						(LR_Direct.L_combine);
-				LR_Direct.compute_xfp_2					(0, L);
+				LR_Direct.compute_xfs_2					(0, L);
 
 				// rendering
 				if (mapNormal.size())

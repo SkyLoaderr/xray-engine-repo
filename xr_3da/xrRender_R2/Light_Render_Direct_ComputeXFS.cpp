@@ -11,7 +11,7 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 	L_up.crossproduct			(L_dir,L_right);					L_up.normalize		();
 	L_pos.set					(L->position);
 	L_view.build_camera_dir		(L_pos,L_dir,L_up);
-	L_project.build_projection	(deg2rad(L->cone),1.f,SSM_near_plane,L->range+EPS_S);
+	L_project.build_projection	(L->cone,1.f,SSM_near_plane,L->range+EPS_S);
 	L_combine.mul				(L_project,L_view);
 }
 

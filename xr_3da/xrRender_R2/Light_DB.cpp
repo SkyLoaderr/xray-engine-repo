@@ -49,7 +49,7 @@ void CLight_DB::Load			(IReader *fs)
 			L->flags.bShadow			= true;
 			L->flags.bActive			= true;
 			L->direction.set			(-.5f,-1,0);L->direction.normalize	();
-			L->cone						= deg2rad	(60.f);
+			L->cone						= deg2rad	(75.f);
 			F->r						(&L->controller,4);
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
