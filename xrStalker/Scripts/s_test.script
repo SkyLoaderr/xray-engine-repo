@@ -18,7 +18,7 @@ function main ()
 --	stalker:script (false, s_test.script_name ())
 
 	local door = get_level_object ("door")
-	local bones = {"bone16"}
+	local bones = {"bone16", "bone22"}
 
 	local starthit = 10;
 	while true do
