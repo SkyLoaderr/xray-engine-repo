@@ -7,7 +7,14 @@
 #pragma warning(disable:4267)
 
 #include "..\ode\src\collision_kernel.h"
+
+//for debug only
 //#include <..\ode\src\joint.h>
+//struct dxSphere : public dxGeom {
+//	dReal radius;		// sphere radius
+//	dxSphere (dSpaceID space, dReal _radius);
+//	void computeAABB();
+//};
 //#include <..\ode\src\objects.h>
 #pragma warning(default:4267)
 #pragma warning(default:4995)
