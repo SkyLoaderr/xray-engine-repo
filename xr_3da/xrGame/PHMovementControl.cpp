@@ -709,7 +709,7 @@ void	CPHMovementControl::PHCaptureObject(CGameObject* object,int element)
 }
 void CPHMovementControl::PHReleaseObject()
 {
-	m_capture->Release();
+	if(m_capture) m_capture->Release();
 }
 
 void	CPHMovementControl::DestroyCharacter()
