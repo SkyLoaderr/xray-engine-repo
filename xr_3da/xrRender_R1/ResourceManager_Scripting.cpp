@@ -158,7 +158,8 @@ void	CResourceManager::LS_Load			()
 		strcpy							(namesp,(*folder)[it]);
 		if		(strext(namesp))		*strext	(namesp)=0;
 		if		(0==namesp[0])			strcpy	(namesp,"_G");
-		FS.update_path					(fn,"$game_shaders$",(*folder)[it]);
+		strconcat						(fn,::Render->getShaderPath(),(*folder)[it]);
+		FS.update_path					(fn,"$game_shaders$",fn);
 		Script::bfLoadFileIntoNamespace	(LSVM,fn,namesp,true);
 	}
 	FS.file_list_close			(folder);
