@@ -10,6 +10,7 @@ function main()
 
 	wait(15000)
 	GiveInfoViaPda(actor, actor, "actor_start01")
+	GiveInfoViaPda(actor, actor, "actor_start05")
 
 	while true do
 	wait()
@@ -46,7 +47,14 @@ function is_wounded (first_speaker, second_speaker)
 	return false
 end
 
+function is_loser (first_speaker, second_speaker)
 
+	if (second_speaker:name() == "trivial_novice3_0_1") then
+		return true
+	end
+
+	return false
+end
 
 function if_not_a_trader (first_speaker, second_speaker)
 
@@ -85,6 +93,17 @@ function is_medkit_present(first_speaker, second_speaker)
 	return false
 
 end
+
+function is_weapon_present(first_speaker, second_speaker)
+
+	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
+	if( first_speaker:object("wpn_ak74") or first_speaker:object("wpn_toz34") )  then
+		return true
+	end
+	return false
+
+end
+
 
 
 function give_box_to_trader(first_speaker, second_speaker)
