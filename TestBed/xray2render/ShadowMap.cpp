@@ -557,8 +557,8 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		const float  eps	= 0.01f;
 
 		// uv-offsets
-		D3DXVECTOR2		one	= D3DXVECTOR2(1./w,1./h);
-		D3DXVECTOR2		half= D3DXVECTOR2(.5/w,.5/h);
+		D3DXVECTOR2		one	= D3DXVECTOR2(1.f/w,1.f/h);
+		D3DXVECTOR2		half= D3DXVECTOR2(.5f/w,.5f/h);
 		D3DXVECTOR2		offs[4];
 		offs[0]				= D3DXVECTOR2(-half.x,-half.y);
 		offs[1]				= D3DXVECTOR2(+half.x,-half.y);
@@ -628,6 +628,35 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		pDstT[3].tv = 0.0f+thh;
 
 		m_pQuadVB->Unlock					();
+	}
+
+	// Bloom-filter VB
+	{
+		const float	 w	= float(m_d3dsdBackBuffer.Width/2),	h = float(m_d3dsdBackBuffer.Height/2);
+		const float  eps= 0.01f;
+		const float _w	= w-1.f, _h = h-1.f;
+		const float thw = .5f/w;
+		const float thh = .5f/h;
+
+		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pBloom_Filter_VB, NULL);
+		m_pBloom_Filter_VB->Lock			(0, 0, (void**)&pDstT, 0);
+		pDstT[0].p	= D3DXVECTOR4(0+eps, _h+eps,	0.001f, 1.0f);
+		pDstT[0].tu = 0.0f+thw;
+		pDstT[0].tv = 1.0f+thh;
+
+		pDstT[1].p	= D3DXVECTOR4(_w+eps, _h+eps,	0.001f, 1.0f);
+		pDstT[1].tu = 1.0f+thw;
+		pDstT[1].tv = 1.0f+thh;
+
+		pDstT[2].p	= D3DXVECTOR4(0+eps, 0+eps,		0.001f, 1.0f);
+		pDstT[2].tu = 0.0f+thw;
+		pDstT[2].tv = 0.0f+thh;
+
+		pDstT[3].p	= D3DXVECTOR4(_w+eps, 0+eps,	0.001f, 1.0f);
+		pDstT[3].tu = 1.0f+thw;
+		pDstT[3].tv = 0.0f+thh;
+
+		m_pBloom_Filter_VB->Unlock			();
 	}
 
 	// Create shader declaration(s)
