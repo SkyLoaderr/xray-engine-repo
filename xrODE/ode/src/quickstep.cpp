@@ -113,6 +113,30 @@ static int compare_index_error (const void *a, const void *b)
 
 #endif
 
+static void Multiply1_8q1 (dReal *A, dReal *B, dReal *C, int q)
+{
+	int k;
+	dReal sum;
+	dIASSERT (q>0 && A && B && C);
+	sum = 0;
+	for (k=0; k<q; k++) sum += B[k*8] * C[k];
+	A[0] = sum;
+	sum = 0;
+	for (k=0; k<q; k++) sum += B[1+k*8] * C[k];
+	A[1] = sum;
+	sum = 0;
+	for (k=0; k<q; k++) sum += B[2+k*8] * C[k];
+	A[2] = sum;
+	sum = 0;
+	for (k=0; k<q; k++) sum += B[4+k*8] * C[k];
+	A[4] = sum;
+	sum = 0;
+	for (k=0; k<q; k++) sum += B[5+k*8] * C[k];
+	A[5] = sum;
+	sum = 0;
+	for (k=0; k<q; k++) sum += B[6+k*8] * C[k];
+	A[6] = sum;
+}
 
 static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *body,
 	dRealPtr invI, dRealMutablePtr lambda, dRealMutablePtr fc, dRealMutablePtr b,
@@ -548,37 +572,40 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 			for (j=0; j<3; j++) body[i]->avel[j] += stepsize * cforce[i*6+3+j];
 		}
 
-		      //@@@ reinstate joint feedback:
-		      // BUT: cforce is inv(M)*J'*lambda, whereas we want just J'*lambda
-		      /*
-		      dJointFeedback *fb = joint[i]->feedback;
-		
-		      if (fb) {
-			// the user has requested feedback on the amount of force that this
-			// joint is applying to the bodies. we use a slightly slower
-			// computation that splits out the force components and puts them
-			// in the feedback structure.
-			dVector8 data1,data2;
-			Multiply1_8q1 (data1, JJ, lambda+ofs[i], info[i].m);
-			dRealPtr cf1 = cforce + 8*b1->tag;
-			cf1[0] += (fb->f1[0] = data1[0]);
-			cf1[1] += (fb->f1[1] = data1[1]);
-			cf1[2] += (fb->f1[2] = data1[2]);
-			cf1[4] += (fb->t1[0] = data1[4]);
-			cf1[5] += (fb->t1[1] = data1[5]);
-			cf1[6] += (fb->t1[2] = data1[6]);
-			if (b2){
-			  Multiply1_8q1 (data2, JJ + 8*info[i].m, lambda+ofs[i], info[i].m);
-			  dRealPtr cf2 = cforce + 8*b2->tag;
-			  cf2[0] += (fb->f2[0] = data2[0]);
-			  cf2[1] += (fb->f2[1] = data2[1]);
-			  cf2[2] += (fb->f2[2] = data2[2]);
-			  cf2[4] += (fb->t2[0] = data2[4]);
-			  cf2[5] += (fb->t2[1] = data2[5]);
-			  cf2[6] += (fb->t2[2] = data2[6]);
+		//@@@ reinstate joint feedback:
+		// BUT: cforce is inv(M)*J'*lambda, whereas we want just J'*lambda
+		/*
+		for (i=0; i<nj; i++) {
+			dJointFeedback *fb = joint[i]->feedback;
+			dxBody* b1=joint[i]->node[0].body;
+			dxBody* b2=joint[i]->node[1].body;
+			if (fb) {
+				// the user has requested feedback on the amount of force that this
+				// joint is applying to the bodies. we use a slightly slower
+				// computation that splits out the force components and puts them
+				// in the feedback structure.
+				dReal data1[8],data2[8];
+				Multiply1_8q1 (data1, J + ofs[i]*12, lambda+ofs[i], info[i].m);
+				//dRealPtr cf1 = cforce + 8*b1->tag;
+				(fb->f1[0] = data1[0]);
+				(fb->f1[1] = data1[1]);
+				(fb->f1[2] = data1[2]);
+				(fb->t1[0] = data1[4]);
+				(fb->t1[1] = data1[5]);
+				(fb->t1[2] = data1[6]);
+				if (b2){
+					Multiply1_8q1 (data2,  J + ofs[i]*12+6, lambda+ofs[i], info[i].m);
+					//dRealPtr cf2 = cforce + 8*b2->tag;
+					(fb->f2[0] = data2[0]);
+					(fb->f2[1] = data2[1]);
+					(fb->f2[2] = data2[2]);
+					(fb->t2[0] = data2[4]);
+					(fb->t2[1] = data2[5]);
+					(fb->t2[2] = data2[6]);
+				}
 			}
-		      }
-		      */
+		}
+		*/
 	}
 
 	// compute the velocity update:

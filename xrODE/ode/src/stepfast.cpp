@@ -68,6 +68,7 @@ int dWorldGetAutoEnableDepthSF1 (dxWorld *world)
 	return autoEnableDepth;
 }
 
+
 //little bit of math.... the _sym_ functions assume the return matrix will be symmetric
 static void
 Multiply2_sym_p8p (dReal * A, dReal * B, dReal * C, int p, int Askip)
