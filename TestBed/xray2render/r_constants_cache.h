@@ -108,12 +108,12 @@ private:
 public:
 	// fp, non-array versions
 	void					set		(R_constant* C, Fmatrix& A)		{
-		if (C->destination&1)		a_pixel.set		(C,C->ps,A);
-		if (C->destination&2)		a_vertex.set	(C,C->vs,A);
+		if (C->destination&1)		{ a_pixel.set	(C,C->ps,A); a_pixel.b_dirty=TRUE;	}
+		if (C->destination&2)		{ a_vertex.set	(C,C->vs,A); a_vertex.b_dirty=TRUE;	}
 	}
 	void					set		(R_constant* C, Fvector4& A)	{
-		if (C->destination&1)		a_pixel.set		(C,C->ps,A);
-		if (C->destination&2)		a_vertex.set	(C,C->vs,A);
+		if (C->destination&1)		{ a_pixel.set	(C,C->ps,A); a_pixel.b_dirty=TRUE;	}
+		if (C->destination&2)		{ a_vertex.set	(C,C->vs,A); a_vertex.b_dirty=TRUE;	}
 	}
 	void					set		(R_constant* C, float x, float y, float z, float w)	{
 		Fvector4 data;		data.set(x,y,z,w);
