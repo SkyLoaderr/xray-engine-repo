@@ -343,7 +343,7 @@ IC	u32	CLevelGraph::level_id() const
 	return				(m_level_id);
 }
 
-IC	void CLevelGraph::set_level_id(u32 level_id)
+IC	void CLevelGraph::level_id(u32 level_id)
 {
 	m_level_id			= level_id;
 }

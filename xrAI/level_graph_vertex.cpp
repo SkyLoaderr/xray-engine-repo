@@ -41,36 +41,6 @@ float CLevelGraph::distance(const Fvector &position, const CLevelGraph::CVertex 
 	return					(best);
 }
 
-void CLevelGraph::compute_circle(const Fvector &position, const Fvector &point0, const Fvector &point1, float &radius, Fvector &center, Fvector &final_position, float &beta) const
-{
-	Fvector			tP0, tP1;
-	float			alpha, fSinus, fCosinus, fRx;
-
-	tP0.sub			(position,point0);
-	tP1.sub			(point1,point0);
-	fRx				= tP0.magnitude();
-	tP0.normalize	();
-	tP1.normalize	();
-
-	clamp			(alpha = tP0.dotproduct(tP1),-0.9999999f,0.9999999f);
-	alpha			= .5f*(beta = acosf(alpha));
-	beta			= PI - beta;
-
-	tP0.mul			(fRx);
-	tP1.mul			(fRx);
-
-	final_position	= tP1;
-	final_position.add(point0);
-
-	center.add		(tP0,tP1);
-	fSinus			= _sin(alpha);
-	fCosinus		= _cos(alpha);
-	radius			= fRx*fSinus/fCosinus;
-	fRx				= radius*(1.f/fSinus - 1.f);
-	center.mul		((radius + fRx)/center.magnitude());
-	center.add		(point0);
-}
-
 void CLevelGraph::choose_point(const Fvector &start_point, const Fvector &finish_point, const SContour &_contour, int node_id, Fvector &temp_point, int &saved_index) const
 {
 	SContour					tNextContour;

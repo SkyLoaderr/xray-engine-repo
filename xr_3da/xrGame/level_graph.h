@@ -83,7 +83,7 @@ public:
 	IC		bool	is_accessible				(const u32 vertex_id) const;
 	IC		u8		ref_add						(u32 vertex_id);
 	IC		u8		ref_dec						(u32 vertex_id);
-	IC		void	set_level_id				(u32 level_id);
+	IC		void	level_id					(u32 level_id);
 	IC		void	begin						(const CVertex &vertex, const_iterator &begin, const_iterator &end) const;
 	IC		void	begin						(const CVertex *vertex, const_iterator &begin, const_iterator &end) const;
 	IC		void	begin						(u32 vertex_id,			const_iterator &begin, const_iterator &end) const;
@@ -164,7 +164,6 @@ public:
 	IC		const u32 vertex_id					(const CLevelGraph::CVertex *vertex) const;
 			u32		vertex_id					(const Fvector &position) const;
 			u32		vertex						(u32 current_vertex_id, const Fvector &position) const;
-			void	compute_circle				(const Fvector &position,	const Fvector &point0, const Fvector &point1, float &radius, Fvector &center, Fvector &final_position, float &beta) const;
 			void	choose_point				(const Fvector &start_point, const Fvector &finish_point, const SContour &contour, int vertex_id, Fvector &temp_point, int &saved_index) const;
 	IC		bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const;
 	IC		u32		check_position_in_direction (u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const;

@@ -81,44 +81,60 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 	u32						id;
 
 	if (valid_vertex_position(position)) {
+		// so, our position is inside the level graph bounding box
 		if (valid_vertex_id(current_node_id) && inside(vertex(current_node_id),position)) {
 			// so, our node corresponds to the position
-#ifdef _DEBUG
-//			if (valid_vertex_id(current_node_id))
-//				Msg					("%6d No search (%d,[%f][%f][%f],[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position),VPUSH(vertex_position(current_node_id)));
-#endif
 #ifndef AI_COMPILER
 			Device.Statistic.AI_Node.End();
 #endif
 			return				(current_node_id);
 		}
 
-		// so, our position is inside the level graph bounding box
-		// so, there is a node which corresponds with x and z to the position
+		// so, our node doesn't correspond to the position
 		// try to search it with O(logN) time algorithm
-#ifdef _DEBUG
-//		if (valid_vertex_id(current_node_id))
-//			Msg						("%6d Logarithmic search (%d,[%f][%f][%f],[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position),VPUSH(vertex_position(current_node_id)));
-#endif
 		u32						_vertex_id = vertex_id(position);
 		if (valid_vertex_id(_vertex_id)) {
-			if (!inside(_vertex_id,position)) {
-				vertex_id(position);
-				inside(_vertex_id,position);
+			// so, there is a node which corresponds with x and z to the position
+			bool				ok = true;
+			if (valid_vertex_id(current_node_id)) {
+				float				y0 = vertex_plane_y(current_node_id,position.x,position.z);
+				float				y1 = vertex_plane_y(_vertex_id,position.x,position.z);
+				bool				over0 = position.y > y0;
+				bool				over1 = position.y > y1;
+				float				y_dist0 = position.y - y0;
+				float				y_dist1 = position.y - y1;
+				if (over0) {
+					if (over1) {
+						if (y_dist1 - y_dist0 > 1.f)
+							ok		= false;
+						else
+							ok		= true;
+					}
+					else {
+						ok			= false;
+					}
+				}
+				else {
+					if (over1) {
+						ok			= true;
+					}
+					else {
+						ok			= false;
+					}
+				}
 			}
+			if (ok) {
 #ifndef AI_COMPILER
-			Device.Statistic.AI_Node.End();
+				Device.Statistic.AI_Node.End();
 #endif
-			return				(_vertex_id);
+				return			(_vertex_id);
+			}
 		}
 	}
 
 	if (!valid_vertex_id(current_node_id)) {
 		// so, we do not have a correct current node
 		// performing very slow full search
-#ifdef _DEBUG
-//		Msg					("%6d Full search (%d,[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position));
-#endif
 		id					= vertex(position);
 		VERIFY				(valid_vertex_id(id));
 #ifndef AI_COMPILER
@@ -126,15 +142,11 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 #endif
 		return				(id);
 	}
+
 	// so, our position is outside the level graph bounding box
 	// or
 	// there is no node for the current position
 	// try to search the nearest one iteratively
-
-#ifdef _DEBUG
-//	Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position));
-#endif
-	valid_vertex_position(position);
 	SContour			_contour;
 	Fvector				point;
 	u32					best_vertex_id = current_node_id;
