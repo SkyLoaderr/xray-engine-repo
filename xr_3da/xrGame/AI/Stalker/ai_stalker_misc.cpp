@@ -11,6 +11,7 @@
 #include "../../bolt.h"
 #include "../../inventory.h"
 #include "../../character_info.h"
+#include "../../relation_registry.h"
 
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
@@ -18,7 +19,7 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 		return			(false);
 
 	const CInventoryItem *inventory_item = smart_cast<const CInventoryItem*>(object);
-	if (!inventory_item || !inventory_item->useful_for_NPC())
+	if (!inventory_item || !inventory_item->Useful())
 		return			(false);
 
 	const CBolt			*bolt = smart_cast<const CBolt*>(object);
@@ -47,7 +48,7 @@ ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEnti
 	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 		
 	if(pOtherIO)
-		relation = CInventoryOwner::CharacterInfo().Relations().GetRelationType(tpEntityAlive->ID(), pOtherIO->CharacterInfo().Community().index());
+		relation = RELATION_REGISTRY().GetRelationType(static_cast<const CInventoryOwner*>(this), pOtherIO);
 	
 	if(ALife::eRelationTypeDummy != relation)
 		return relation;
