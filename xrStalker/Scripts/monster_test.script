@@ -4,25 +4,58 @@
 -- Updated:	21 dec 2004	
 --------------------------------------------------------------------------------
 
-function main()
+local	last_index		= 0
+local	callback_var	= 0
 
-	local monster = get_level_object("monster")
 
-	monster:script( true, script_name() )
-
-	while true do
-		action( monster,
+function action_one(npc) 
+	action	( npc,
 			move	(move.run_fwd, patrol("way", patrol.next, patrol.continue)), 
 			cond	(cond.move_end)
-		)
+	)
 
-		while monster:action() do wait() end
+	printf		("fun")
+end
+
+function callback1(obj, action_type, index)
+	last_index		= index
+	callback_var	= 1
+	printf		("fun1")
+end
+
+
+function main()
+
+	local monster			= get_level_object("monster")
+
+	monster:set_callback	(callback1, game_object.movement)
+
+	monster:script			( true, script_name() )
+	
+	action_one				(monster)
+
+	while true do
+
+		while monster:action() do 
+			//if (callback_var == 1) then
+			//	
+			//	callback_var	= 0
+			//	monster:script	( false,	script_name() )
+			//	monster:script	( true,	script_name() )
+			//	
+			//	action_one		(monster)
+			//end
+
+			wait() 
+		end
 		
 	end
 
 	monster:script( false, script_name() )
 
 end
+
+
 
 
 //monster:switch_animation_state(BONE_PART_ALL);
