@@ -703,7 +703,7 @@
         <text>Я НЕ ВКУСНЫЙ!!! Я часто в детстве болел - желтухой, рахитом, геморроем...</text>
     </string>
     <string id="mil_patrol_dialog2_13">
-        <text>От блин,  что ж ты сразу не сказал, только время зря тратили....Эх, пацаны, невкусный попался. Вали отсюда.</text>
+        <text>От блин, что ж ты сразу не сказал, только время зря тратили....Эх, пацаны, невкусный попался. Вали отсюда.</text>
     </string>
     <string id="mil_patrol_dialog2_2">
         <text>Не понял?</text>
@@ -732,9 +732,6 @@
     <string id="mil_trader_dialog_0">
         <text>Ну, чего приволок ?</text>
     </string>
-    <string id="mil_zoneguard_dialog_0">
-        <text>Чего тебе надобно, старче ?</text>
-    </string>
     <string id="mil_zoneguard_dialog_10">
         <text>Тебе того же. Что тебя сюда привело ?\n</text>
     </string>
@@ -758,6 +755,9 @@
     </string>
     <string id="mil_zoneguard_dialog_20">
         <text>Да так себе. Не мешай...</text>
+    </string>
+    <string id="mil_zoneguard_dialog_3">
+        <text>Здорово !</text>
     </string>
     <string id="mil_zoneguard_dialog_30">
         <text>Стой! Пароль?</text>
@@ -880,7 +880,7 @@
         <text>Я такой! Я Мужик!</text>
     </string>
     <string id="mil_zoneguard_dialog_6208">
-        <text>Второй, уже потяжелее. Внимай: Количество патронов в рожке пистолета - пулемета "Бизон" российского спецназа?</text>
+        <text>Второй, уже потяжелее. Внимай: Количество патронов в рожке пистолета-пулемета "Бизон" российского спецназа?</text>
     </string>
     <string id="mil_zoneguard_dialog_6300">
         <text>14</text>
