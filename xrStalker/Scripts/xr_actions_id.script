@@ -74,3 +74,9 @@ jon_stalker_attack     = jon_actions + 4
 
 jon_scientist          = jon_actions + 5
 jon_security           = jon_actions + 6
+
+
+jon_sniper_enabled     = jon_actions + 10
+jon_sniper_see_monster = jon_actions + 11
+jon_sniper_see_enemy   = jon_actions + 12
+jon_sniper_receive_hit = jon_actions + 13
