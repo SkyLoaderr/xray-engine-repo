@@ -81,6 +81,7 @@ void CPHObject::spatial_register()
 {
 	get_spatial_params();
 	ISpatial::spatial_register();
+	b_dirty=true;
 }
 
 CPHUpdateObject::CPHUpdateObject()
