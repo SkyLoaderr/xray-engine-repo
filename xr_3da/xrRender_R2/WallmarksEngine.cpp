@@ -228,7 +228,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	}
 
 	// search if similar wallmark exists
-	wm_slot* slot	= FindSlot(hShader);
+	wm_slot* slot	= FindSlot	(hShader);
 	if (slot){
 		WMVecIt		it	= slot->items.begin	();
 		WMVecIt		end	= slot->items.end	();
@@ -238,7 +238,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 			if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
 				wm_destroy	(wm);
 				*it			= W;
-				return;
+				return		;
 			}
 		}
 	}else{
