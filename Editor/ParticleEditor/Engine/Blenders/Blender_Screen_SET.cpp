@@ -11,7 +11,7 @@ CBlender_Screen_SET::CBlender_Screen_SET()
 {
 	description.CLS		= B_SCREEN_SET;
 	description.version	= 2;
-	oBlend.Count		= 6;
+	oBlend.Count		= 7;
 	oBlend.IDselected	= 0;
 	oAREF.value			= 32;
 	oAREF.min			= 0;
@@ -40,6 +40,7 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 	I.ID = 3; strcpy(I.str,"MUL");		FS.write	(&I,sizeof(I));
 	I.ID = 4; strcpy(I.str,"MUL_2X");	FS.write	(&I,sizeof(I));
 	I.ID = 5; strcpy(I.str,"ALPHA-ADD");FS.write	(&I,sizeof(I));
+	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");FS.write	(&I,sizeof(I));
 	
 	// Params
 	xrPWRITE_PROP		(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
