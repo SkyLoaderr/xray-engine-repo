@@ -27,12 +27,12 @@ public:
 	typedef vecC::iterator		vecCIT;
 	IReader*					LL_Stream;
 	vecC						LL_strings;
-	LPCSTR						getString	(int id)	{
+	LPCSTR						getString	(int id)	
+	{
 		if (id<0)	return 0;
 		R_ASSERT	(id<int(LL_strings.size()));
 		return LL_strings[id];
 	}
-
 protected:
 	// Network interface
 	CObject*					pCurrentEntity;
@@ -40,8 +40,8 @@ protected:
 
 	// Static sounds
 	sound						Sounds_Ambience;
-	xr_vector<sound>				Sounds;
-	xr_vector<sound>				Sounds_Random;
+	xr_vector<sound>			Sounds;
+	xr_vector<sound>			Sounds_Random;
 	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
@@ -64,8 +64,8 @@ public:
 	virtual void				net_Stop				( );
 
 	virtual BOOL				Load					( u32 dwNum );
-	virtual BOOL				Load_GameSpecific_Before( ) { return TRUE; };		// before object loading
-	virtual BOOL				Load_GameSpecific_After	( ) { return TRUE; };		// after object loading
+	virtual BOOL				Load_GameSpecific_Before( )										{ return TRUE; };		// before object loading
+	virtual BOOL				Load_GameSpecific_After	( )										{ return TRUE; };		// after object loading
 	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count )				= 0;
 
 	virtual void				OnFrame					( void );
@@ -74,8 +74,6 @@ public:
 	// Main interface
 	CObject*					CurrentEntity			( void )const	{ return pCurrentEntity; }
 	CObject*					CurrentViewEntity		( void )const	{ return pCurrentViewEntity; }
-	void						ChangeEntity			( CLASS_ID id )	{ pCurrentEntity=pCurrentViewEntity=(CObject*)Objects.FindObjectByCLS_ID(id); }
-	void						ChangeViewEntity		( CLASS_ID id )	{ pCurrentViewEntity=(CObject*)Objects.FindObjectByCLS_ID(id); }
 	void						SetEntity				( CObject* O  ) { pCurrentEntity=pCurrentViewEntity=O; }
 
 	// Loader interface
