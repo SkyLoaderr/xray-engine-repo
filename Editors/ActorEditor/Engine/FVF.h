@@ -25,7 +25,7 @@ namespace FVF {
 
 	struct LIT {
 		Fvector		p;
-		u32		color;
+		u32			color;
 		Fvector2	t;
 		IC void		set(const LIT& src) {*this = src;};
 		IC void		set(float x, float y, float z, u32 C, float u, float v) { p.set(x,y,z); color=C; t.set(u,v);}
