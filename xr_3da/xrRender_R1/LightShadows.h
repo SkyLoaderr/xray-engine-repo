@@ -41,6 +41,7 @@ private:
 	xr_vector<caster>		casters;
 	xr_vector<shadow>		shadows;
 	xr_vector<tess_tri>		tess;
+	xrXRC					xrc;
 
 	ref_rt					RT;
 	ref_rt					RT_temp;

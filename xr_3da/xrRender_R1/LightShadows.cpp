@@ -8,7 +8,7 @@
 #include "..\xr_object.h"
 #include "..\fbasicvisual.h"
 #include "..\CustomHUD.h"
-
+ 
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 
@@ -349,17 +349,17 @@ void CLightShadows::render	()
 		F.CreateFromMatrix		(S.M,FRUSTUM_P_ALL);
 
 		// Query
-		XRC.frustum_options		(0);
-		XRC.frustum_query		(DB,F);
-		if (0==XRC.r_count())	continue;
+		xrc.frustum_options		(0);
+		xrc.frustum_query		(DB,F);
+		if (0==xrc.r_count())	continue;
 		
 		// Clip polys by frustum
 		tess.clear				();
-		for (CDB::RESULT* p = XRC.r_begin(); p!=XRC.r_end(); p++)
+		for (CDB::RESULT* p = xrc.r_begin(); p!=xrc.r_end(); p++)
 		{
 #pragma todo ("AlexMX to Oles: p->id - invalid value")
-			if (!((p->id>=0)&&(p->id<DB->get_tris_count()))) break;
-//			VERIFY((p->id>=0)&&(p->id<DB->get_tris_count()));
+			//if (!((p->id>=0)&&(p->id<DB->get_tris_count()))) break;
+			VERIFY((p->id>=0)&&(p->id<DB->get_tris_count()));
 			// 
 			CDB::TRI&	t		= TRIS[p->id];
 			sPoly		A,B;
