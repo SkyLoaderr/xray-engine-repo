@@ -57,7 +57,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	d_Z							= center_pt.z	;
 
 	// nv-stencil recompression
-	//. if (RImplementation.o.nvstencil)	u_stencil_optimize((SE_SUN_NEAR==sub_phase)?TRUE:FALSE);
+	if (RImplementation.o.nvstencil && (SE_SUN_NEAR==sub_phase))	u_stencil_optimize();
 	RCache.set_ColorWriteEnable			();
 
 	// Perform lighting
