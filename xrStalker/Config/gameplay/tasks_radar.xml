@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_tasks_data>
+	<game_task id="bar_radar_turn_off">
+		<title>bar_radar_turn_off</title>
+		<objective>
+			<text>bar_radar_turn_off</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_radar_turn_off</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+</game_tasks_data>
