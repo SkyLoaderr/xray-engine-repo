@@ -109,10 +109,10 @@ void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 		
 		Fmatrix *m1,*m2,*m3,*m4;
 		Fvector v[4];
-		m1 = (Fmatrix *) seq[f1].d3d();
-		m2 = (Fmatrix *) seq[f2].d3d();
-		m3 = (Fmatrix *) seq[f3].d3d();
-		m4 = (Fmatrix *) seq[f4].d3d();
+		m1 = (Fmatrix *) seq[f1];
+		m2 = (Fmatrix *) seq[f2];
+		m3 = (Fmatrix *) seq[f3];
+		m4 = (Fmatrix *) seq[f4];
 		
 		for (int i=0; i<4; i++) {
 			v[0].x = m1->m[i][0]; v[0].y = m1->m[i][1];  v[0].z = m1->m[i][2];
