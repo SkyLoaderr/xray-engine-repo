@@ -4,14 +4,6 @@
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
 --' Эвалуатор, который синхронизирует менеджер.
-class "evaluator_state_mgr" (property_evaluator)
-function evaluator_state_mgr:__init(name, state_manager) super (nil, name)
-	self.st = state_manager
-end
-function evaluator_state_mgr:evaluate()
-	return self.st.planner:evaluator(self.st.properties["animstate_idle_now"]):evaluate() and
-		   self.st.planner:evaluator(self.st.properties["animation_none_now"]):evaluate()
-end
 --' Мы уже в безраличном состоянии idle или нет
 class "evaluator_state_mgr_idle" (property_evaluator)
 function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
@@ -20,21 +12,16 @@ end
 function evaluator_state_mgr_idle:evaluate()
 	return self.st.target_state == "idle"
 end
+--' Мы уже в безраличном состоянии idle или нет ()учет с проверкой alife
+class "evaluator_state_mgr_idle_alife" (property_evaluator)
+function evaluator_state_mgr_idle_alife:__init(name, state_manager) super (nil, name)
+	self.st = state_manager
+end
+function evaluator_state_mgr_idle_alife:evaluate()
+	if db.storage[self.st.npc:id()].active_section == nil then return true end
+	return self.st.target_state == "idle"
+end
 
-
---' Затычка перед нежелательными выходами в комбат или свободногуляние
-class "act_state_mgr" (action_base)
-function act_state_mgr:__init(name) super (nil, name)	
-end
-function act_state_mgr:initialize()
-	action_base.initialize(self)
-end
-function act_state_mgr:execute()
-	action_base.execute(self)
-end
-function act_state_mgr:finalize()
-	action_base.finalize(self)
-end
 
 --' Переход в idle
 class "act_state_mgr_to_idle" (action_base)
@@ -171,7 +158,8 @@ function state_manager:__init(npc)
 	self.properties["bodystate_standing_now"]= 45
 
 	self.properties["direction"]			= 51
-	self.properties["direction_turning"]	= 52
+	self.properties["direction_search"]		= 52
+	self.properties["direction_turning"]	= 53
 
 	self.properties["animstate"]			= 61
 	self.properties["animstate_locked"]		= 62
@@ -222,6 +210,7 @@ function state_manager:__init(npc)
 	self.planner:add_evaluator(self.properties["bodystate_standing_now"],	state_mgr_bodystate.eva_state_mgr_bodystate_standing_now("state_mgr_bodystate_standing_now", self))
 	
 	self.planner:add_evaluator(self.properties["direction"],				state_mgr_direction.eva_state_mgr_direction("state_mgr_direction", self))
+	self.planner:add_evaluator(self.properties["direction_search"],			state_mgr_direction.eva_state_mgr_direction_search("state_mgr_direction_search", self))
 	self.planner:add_evaluator(self.properties["direction_turning"],		state_mgr_direction.eva_state_mgr_direction_turning("state_mgr_direction_turning", self))
 
 	self.animstate = state_mgr_animstate.body_state(npc)
@@ -264,8 +253,9 @@ function state_manager:__init(npc)
 	self.operators["bodystate_standing"]	= 42	
 	
 	self.operators["direction_turn"]		= 51	
-	self.operators["direction_clear_anim"]	= 52
-	self.operators["direction_stand_up"]	= 53
+	self.operators["direction_search"]		= 52
+	self.operators["direction_clear_anim"]	= 53
+	self.operators["direction_stand_up"]	= 54
 
 	self.operators["animstate_wait"]		= 61
 	self.operators["animstate_2sit"]		= 62
@@ -368,12 +358,22 @@ function state_manager:__init(npc)
 	action = state_mgr_direction.act_state_mgr_direction_turn("state_mgr_direction_turn", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
 	action:add_precondition		(world_property(self.properties["direction"],			false))
+	action:add_precondition		(world_property(self.properties["direction_search"],	false))
 	action:add_precondition		(world_property(self.properties["movement"],			true))
---	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
 	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
 	action:add_effect 			(world_property(self.properties["direction"],			true))
 	self.planner:add_action(self.operators["direction_turn"], action)
+
+	action = state_mgr_direction.act_state_mgr_direction_search("state_mgr_direction_search", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["direction"],			false))
+	action:add_precondition		(world_property(self.properties["direction_search"],	true))
+	action:add_precondition		(world_property(self.properties["movement"],			true))
+	action:add_precondition		(world_property(self.properties["animation_none_now"],	true))
+	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	action:add_effect 			(world_property(self.properties["direction"],			true))
+	self.planner:add_action(self.operators["direction_search"], action)
 
 	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_direction_clear_anim", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
@@ -487,6 +487,7 @@ function state_manager:__init(npc)
 	self.planner:set_goal_world_state(goal)
 		
 	self.target_state = "idle"
+	self.current_direction = nil
 end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s for %s", state_name, self.npc:name())
@@ -561,35 +562,33 @@ function bind_manager(object)
 
 
 	local properties	= {}
-	properties["state_mgr"] 		= xr_evaluators_id.state_mgr
-	properties["state_mgr_idle"] 	= xr_evaluators_id.state_mgr + 1
+	properties["state_mgr_idle_combat"] 	= xr_evaluators_id.state_mgr + 1
+	properties["state_mgr_idle_alife"]	 	= xr_evaluators_id.state_mgr + 2
 
 	local operators		= {}
-	operators["state_mgr"] 			= xr_actions_id.state_mgr
-	operators["state_mgr_to_idle"]  = xr_actions_id.state_mgr + 1
+	operators["state_mgr_to_idle_combat"]	= xr_actions_id.state_mgr + 1
+	operators["state_mgr_to_idle_alife"]	= xr_actions_id.state_mgr + 2
 
 	local state_manager = state_mgr.state_manager(object)
 	
-	manager:add_evaluator(properties["state_mgr"], 			evaluator_state_mgr("state_mgr_allow", state_manager))
-	manager:add_evaluator(properties["state_mgr_idle"], 	evaluator_state_mgr_idle("state_mgr_idle", state_manager))
+	manager:add_evaluator(properties["state_mgr_idle_combat"], 	evaluator_state_mgr_idle("state_mgr_idle_combat", state_manager))
+	manager:add_evaluator(properties["state_mgr_idle_alife"], 	evaluator_state_mgr_idle_alife("state_mgr_idle_alife", state_manager))
 
-	local action = this.act_state_mgr("state_mgr")
-	action:add_precondition		(world_property(properties["state_mgr"],	false))
-	action:add_effect 			(world_property(properties["state_mgr"],	true))
-	manager:add_action(operators["state_mgr"], action)
+	local action = this.act_state_mgr_to_idle("state_mgr_to_idle_combat", state_manager)
+	action:add_precondition		(world_property(properties["state_mgr_idle_combat"],	false))
+	action:add_effect 			(world_property(properties["state_mgr_idle_combat"],	true))
+	manager:add_action(operators["state_mgr_to_idle_combat"], action)
 
-	action = this.act_state_mgr_to_idle("state_mgr_to_idle", state_manager)
-	action:add_precondition		(world_property(properties["state_mgr_idle"],	false))
-	action:add_effect 			(world_property(properties["state_mgr_idle"],	true))
-	manager:add_action(operators["state_mgr_to_idle"], action)
+	action = this.act_state_mgr_to_idle("state_mgr_to_idle_alife", state_manager)
+	action:add_precondition		(world_property(properties["state_mgr_idle_alife"],	false))
+	action:add_effect 			(world_property(properties["state_mgr_idle_alife"],	true))
+	manager:add_action(operators["state_mgr_to_idle_alife"], action)
 
 	action = manager:action(xr_actions_id.alife)
-	action:add_precondition(world_property(properties["state_mgr_idle"],true))
-	action:add_precondition(world_property(properties["state_mgr"],		true))
+	action:add_precondition(world_property(properties["state_mgr_idle_alife"],true))
 
   	action = manager:action(stalker_ids.action_combat_planner)
-  	action:add_precondition(world_property(properties["state_mgr_idle"],true))
-	action:add_precondition(world_property(properties["state_mgr"],		true))
+  	action:add_precondition(world_property(properties["state_mgr_idle_combat"],true))
 	
 	return state_manager
 end

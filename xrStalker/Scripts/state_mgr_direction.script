@@ -1,5 +1,3 @@
-
-
 --' Повороты тела
 --' Смотрим ли мы сейчас туда, куда нужно или нет?
 class "eva_state_mgr_direction" (property_evaluator)
@@ -23,28 +21,36 @@ function eva_state_mgr_direction:evaluate()
 		self.target_position = self.st.look_position
 --		printf("changed for position")
 	end
-
-	if self.target_position == nil then
-		self.object:set_sight(look.danger, nil, 0)
-		return true
-	end
 	
-	if self.target_position ~= nil then
+	if self.target_position == nil then
+		-- если текущая позиция нулевая
+		if self.st.current_direction == nil then
+			return true
+		else
+			return false
+		end	
+	else	
+		-- если текущая позиция ненулевая
 		local dir = utils.vector_copy_by_val(self.target_position):sub(self.object:position())
 		--printf("head: %s", utils.to_str(yaw_degree(dir, self.object:head_orientation())))
 		--printf("body: %s", utils.to_str(yaw_degree(dir, self.object:direction())))
 
 		if yaw_degree(dir, self.object:head_orientation()) > 5 then
-			--printf("false")
+			self.st.planner:action(self.st.operators["direction_turn"]).target_position = self.target_position
 			return false
 		else
-			--printf("true")
 			return true
 		end
-	end
-	
-	printf("ERROR: ILLEGAL STATE INITIALIZATION (state_mgr.direction)")
+	end	
 	return true
+end
+
+class "eva_state_mgr_direction_search" (property_evaluator)
+function eva_state_mgr_direction_search:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_direction_search:evaluate()
+	return self.st.current_direction ~= nil
 end
 
 --' Поворачиваемся ли мы сейчас
@@ -58,6 +64,7 @@ function eva_state_mgr_direction_turning:evaluate()
 end
 
 
+
 --' Включаем поворот
 class "act_state_mgr_direction_turn" (action_base)
 function act_state_mgr_direction_turn:__init(name, st) super (nil, name)
@@ -66,28 +73,29 @@ function act_state_mgr_direction_turn:__init(name, st) super (nil, name)
 end
 function act_state_mgr_direction_turn:initialize()
 	action_base.initialize(self)
+	self.object:set_sight(look.direction, utils.vector_copy_by_val(self.target_position):sub(self.object:position()), true)
 end
 function act_state_mgr_direction_turn:execute()
 	action_base.execute(self)
-	
-
-	self.target_position = nil
-
-	if self.st.look_object ~= nil and
-	   self.object:see(self.st.look_object) == true
-	then
-		self.target_position = self.st.look_object:position()
-	end
-		
-	if self.target_position == nil and
-	   self.st.look_position ~= nil
-	then
-		self.target_position = self.st.look_position
-	end
 	self.object:set_sight(look.direction, utils.vector_copy_by_val(self.target_position):sub(self.object:position()), true)
-	--self.object:set_sight(look.point, self.target_position, 0)
-
 end
 function act_state_mgr_direction_turn:finalize()
+	action_base.finalize(self)
+end
+
+--' Включаем поворот
+class "act_state_mgr_direction_search" (action_base)
+function act_state_mgr_direction_search:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_direction_search:initialize()
+	action_base.initialize(self)
+	self.object:set_sight(look.danger, nil, 0)
+	self.st.current_direction = nil
+end
+function act_state_mgr_direction_search:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_direction_search:finalize()
 	action_base.finalize(self)
 end
