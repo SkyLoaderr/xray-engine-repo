@@ -133,9 +133,7 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 
 	m_use_limping_state = pSettings->line_exist(section,"use_limping_state") ? !!pSettings->r_bool(section,"use_limping_state") : false;
 
-	m_limping_threshold	= .5f;
-	if (pSettings->line_exist(section, "limping_threshold"))
-		m_limping_threshold	= pSettings->r_float(section, "limping_threshold");
+	m_limping_threshold	= READ_IF_EXISTS(pSettings,line_exist,section,"limping_threshold",.5f);
 }
 
 void CEntityCondition::reinit	()
