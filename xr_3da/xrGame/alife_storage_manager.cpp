@@ -120,6 +120,8 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	registry().load				(*stream);
 
 	FS.r_close					(stream);
+
+	VERIFY						(graph().actor());
 	
 	u64							finish = CPU::GetCycleCount();
 	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,float(finish - start)*CPU::cycles2seconds);

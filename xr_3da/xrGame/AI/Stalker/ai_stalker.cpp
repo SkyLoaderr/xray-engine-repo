@@ -179,11 +179,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
 
-	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
-		set_game_vertex				(tpHuman->m_tGraphID);
-	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID))
-		set_game_dest_vertex		(tpHuman->m_tNextGraphID);
-
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (u32(-1) == m_dwParticularState) {
 		R_ASSERT2					(

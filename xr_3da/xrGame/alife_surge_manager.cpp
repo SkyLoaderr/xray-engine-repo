@@ -16,6 +16,7 @@
 #include "alife_organization.h"
 #include "alife_organization_registry.h"
 #include "alife_time_manager.h"
+#include "alife_graph_registry.h"
 #include "ef_storage.h"
 #include "graph_engine.h"
 #include "alife_task_registry.h"
@@ -47,6 +48,7 @@ void CALifeSurgeManager::surge		()
 	generate_anomaly_map				();
 	kill_creatures						();
 	ballance_creatures					();
+	VERIFY								(graph().actor());
 	{
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
