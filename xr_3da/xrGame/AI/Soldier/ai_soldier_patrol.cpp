@@ -158,24 +158,76 @@ void CAI_Soldier::vfCreateStraightForwardPath(Fvector &tStartPoint, Fvector tFin
 	}
 }
 
-void CAI_Soldier::vfComputeCircle(DWORD dwNode0, DWORD dwNode1, float &fRadius, Fvector &tCircleCentre)
+void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD> &dwaNodes, vector<CTravelNode> &tpaPath)
 {
-	Fvector tPoint0, tPoint1, tP0, tP1;
-	float fAlpha, fSinus, fCosinus, fRx;
+	CTravelNode tTravelNode;
+	Fvector tPrevPoint, tStartPoint, tFinishPoint;
 	NodeCompressed *tpNode;
+	NodeLink *taLinks;
+	PContour tCurContour, tNextContour;
+	PSegment tSegment;
+	int i, iCurrentPatrolPoint, iCount, iNodeIndex;
+	DWORD dwCurNode, dwStartNode, dwFinishNode;
+	float fDistance;
 	CAI_Space &AI = Level().AI;
 
-	tpNode = AI.Node(dwNode0);
-	AI.UnpackPosition(tP0, tpNode->p0);
-	AI.UnpackPosition(tP1, tpNode->p1);
-	tPoint0.average(tP0,tP1);
+	tpaPath.clear();
+	for ( iCurrentPatrolPoint=0; iCurrentPatrolPoint < tpaPoints.size(); iCurrentPatrolPoint++) {
+		// init points
+		tStartPoint = tpaPoints[iCurrentPatrolPoint];
+		tFinishPoint = tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0];
+		dwStartNode = dwaNodes[iCurrentPatrolPoint];
+		dwFinishNode = dwaNodes[iCurrentPatrolPoint < dwaNodes.size() - 1 ? iCurrentPatrolPoint + 1 : 0];
+		
+		// correct y coordinates
+		tStartPoint.y = ffGetY(*(AI.Node(dwStartNode)),tStartPoint.x,tStartPoint.z);
+		tFinishPoint.y = ffGetY(*(AI.Node(dwFinishNode)),tFinishPoint.x,tFinishPoint.z);
 
-	tpNode = AI.Node(dwNode1);
-	AI.UnpackPosition(tP0, tpNode->p0);
-	AI.UnpackPosition(tP1, tpNode->p1);
-	tPoint1.average(tP0,tP1);
+		// compute distance
+		fDistance = COMPUTE_DISTANCE_2D(tStartPoint,tFinishPoint);
 
-	tP0.sub(vPosition,tPoint0);
+		if (!iCurrentPatrolPoint) {
+			tTravelNode.P = tStartPoint;
+			tTravelNode.floating = FALSE;
+			tpaPath.push_back(tTravelNode);
+		}
+
+		dwCurNode = dwaNodes[iCurrentPatrolPoint];
+		tPrevPoint = tStartPoint;
+		do {
+			UnpackContour(tCurContour,dwCurNode);
+			tpNode = AI.Node(dwCurNode);
+			taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+			iCount = tpNode->link_count;
+			for ( i=0; i < iCount; i++) {
+				iNodeIndex = AI.UnpackLink(taLinks[i]);
+				UnpackContour(tNextContour,iNodeIndex);
+				IntersectContours(tSegment,tCurContour,tNextContour);
+				if ((lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z)) &&	(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < .1f) && (fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x- tTravelNode.P.z) > 0.1)) {
+					tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+					tpaPath.push_back(tTravelNode);
+					tPrevPoint = tTravelNode.P;
+					dwCurNode = iNodeIndex;
+					break;
+				}
+			}
+			VERIFY(i<iCount);
+		}
+		while (dwCurNode != dwFinishNode);
+
+		if (fabsf(tPrevPoint.x + tPrevPoint.z - tFinishPoint.x- tFinishPoint.z) > 0.1) {
+			tTravelNode.P = tFinishPoint;
+			tpaPath.push_back(tTravelNode);
+		}
+	}
+}
+
+void CAI_Soldier::vfComputeCircle(Fvector tPosition, Fvector tPoint0, Fvector tPoint1, float &fRadius, Fvector &tCircleCentre)
+{
+	Fvector tP0, tP1;
+	float fAlpha, fSinus, fCosinus, fRx;
+
+	tP0.sub(tPosition,tPoint0);
 	tP1.sub(tPoint1,tPoint0);
 	fRx = tP0.magnitude();
 	tP0.normalize();
@@ -397,7 +449,7 @@ void CAI_Soldier::Patrol()
 	SetLessCoverLook(AI_Node);
 
 	if (AI_Path.bNeedRebuild) {
-		AI_Path.DestNode = tpaPatrolNodes[m_iCurrentPoint];
+		AI_Path.DestNode = dwaPatrolNodes[m_iCurrentPoint];
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
 		if (AI_Path.Nodes.size() > 1) {
 			AI_Path.BuildTravelLine(Position());
@@ -415,8 +467,9 @@ void CAI_Soldier::Patrol()
 	else
 		if (!(AI_Path.fSpeed)) {
 			
-			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolNodes.size() - 1 ? 0 : m_iCurrentPoint + 1;
+			m_iCurrentPoint = m_iCurrentPoint == dwaPatrolNodes.size() - 1 ? 0 : m_iCurrentPoint + 1;
 			
+			/**
 			for (int i=0, iCount = 0; i<tpaPatrolPathes.size(); i++)
 				iCount += tpaPatrolPathes[i].size();
 			
@@ -427,6 +480,13 @@ void CAI_Soldier::Patrol()
 					AI_Path.TravelPath[iCount + j] = tpaPatrolPathes[i][j];
 				iCount += tpaPatrolPathes[i].size();
 			}
+
+			AI_Path.TravelStart = 0;
+			/**/
+			AI_Path.TravelPath.resize(tpaPatrolPath.size());
+
+			for (int i=0; i<tpaPatrolPath.size(); i++)
+				AI_Path.TravelPath[i] = tpaPatrolPath[i];
 
 			AI_Path.TravelStart = 0;
 		}
