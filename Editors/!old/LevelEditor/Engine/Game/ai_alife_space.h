@@ -13,7 +13,7 @@
 #define SPAWN_POINT_VERSION			0x0001
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
 // ALife objects, events and tasks
-#define ALIFE_VERSION				0x0002
+#define ALIFE_VERSION				0x0001
 #define ALIFE_CHUNK_DATA			0x0000
 #define OBJECT_CHUNK_DATA			0x0001
 #define EVENT_CHUNK_DATA			0x0002
