@@ -111,7 +111,7 @@ struct OGF_Base
 		}
 
 		// select best one
-		if (fis_gremlin(S1.R) || fis_denormal(S1.R) || fis_gremlin(S1.P.x) || fis_denormal(S1.P.x))
+		if (TRUE || fis_gremlin(S1.R) || fis_denormal(S1.R) || fis_gremlin(S1.P.x) || fis_denormal(S1.P.x))
 		{
 			// sphere 2 selected
 			C.set	(S2.P);
