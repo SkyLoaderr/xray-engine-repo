@@ -206,15 +206,12 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 		CCFModel&	M = *(*nl_idx);
 		
 		DWORD C = D3DCOLOR_XRGB(64,64,64);
-		if (M.M.GetSphere().intersect(Q.start,Q.dir))	
-		{
+		if (M._svRayTest(Q)) {
 			C	= D3DCOLOR_XRGB(128,128,196);
-			if (M._svRayTest(Q)) {
-				if (Q.range<R.range) {
-					R.O			= M.owner;
-					R.range		= Q.range;
-					R.element	= Q.element;
-				}
+			if (Q.range<R.range) {
+				R.O			= M.owner;
+				R.range		= Q.range;
+				R.element	= Q.element;
 			}
 		}
 		if (bDebug) dbg_S.push_back(make_pair(M.GetSphere(),C));
