@@ -307,6 +307,11 @@ HRESULT	CRender::shader_compile			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
+	if (o.sjitter)			{
+		defines[def_it].Name		=	"USE_SJITTER";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
 	if (HW.Caps.raster_major >= 3)	{
 		defines[def_it].Name		=	"USE_SHADER3";
 		defines[def_it].Definition	=	"1";
