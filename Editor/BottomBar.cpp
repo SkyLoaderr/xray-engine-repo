@@ -6,7 +6,6 @@
 #include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
-#include "statisticform.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -160,8 +159,9 @@ void __fastcall TfraBottomBar::ebStopClick(TObject *Sender)
 
 void __fastcall TfraBottomBar::ebStatClick(TObject *Sender)
 {
-	if (ebStat->Down) 	TfrmStatistic::ShowStatistic();
-    else				TfrmStatistic::HideStatistic();
+	if (ebStat->Down) 	psDeviceFlags |= rsStatistic;
+    else				psDeviceFlags &=~rsStatistic;
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 

@@ -510,8 +510,8 @@ void DrawAxis(){
     DWORD vBase;
 	FVF::TL* pv = (FVF::TL*)TLStream->Lock(6,vBase);
     // transform to screen
-    float dx=-Device.m_RenderWidth/2.2f;
-    float dy=Device.m_RenderHeight/2.25f;
+    float dx=-Device.dwWidth/2.2f;
+    float dy=Device.dwHeight/2.25f;
 
     for (int i=0; i<6; i++,pv++){
 	    pv->color = c[i]; pv->transform(p[i],Device.mFullTransform);
@@ -544,7 +544,7 @@ void DrawGrid(){
     Device.DIP(	D3DPT_LINELIST,LStream,vBase,m_GridPoints.size(),IS,iBase,m_GridIndices.size()/2);
 }
 
-void DrawSelectionRect(const Fvector2& m_SelStart, const Fvector2& m_SelEnd){
+void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd){
 	VERIFY( Device.bReady );
 	// fill VB
     DWORD vBase;

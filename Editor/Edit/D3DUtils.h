@@ -44,7 +44,7 @@ namespace DU{
     void DrawGrid	();
     void DrawPivot	(const Fvector& pos);
 	void DrawAxis	();
-	void DrawSelectionRect(const Fvector2& m_SelStart, const Fvector2& m_SelEnd);
+	void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd);
 
     void DrawPrimitiveL(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, DWORD color, bool bCull, bool bCycle);
     void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle);

@@ -904,7 +904,7 @@ void EScene::GroupSave(){
 void EScene::GroupUpdateBox(int idx){
 	VERIFY(m_Groups.find(idx)!=m_Groups.end());
 	st_GroupItem& gi = m_Groups[idx];
-    if (gi.dwUpdateFrame==Device.m_Statistic.dwTotalFrame) return;
+    if (gi.dwUpdateFrame==Device.dwFrame) return;
 
     ObjectList& lst = gi.objects;
 
@@ -918,7 +918,7 @@ void EScene::GroupUpdateBox(int idx){
             gi.box.modify( bb.max );
         }
     }
-    gi.dwUpdateFrame=Device.m_Statistic.dwTotalFrame;
+    gi.dwUpdateFrame=Device.dwFrame;
 }
 
 st_GroupItem& EScene::GetGroupItem(int idx){

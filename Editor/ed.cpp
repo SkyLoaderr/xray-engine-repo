@@ -87,7 +87,6 @@ USEFORM("OneEnvironment.cpp", frmOneEnvironment);
 USEUNIT("shared\xrShaderLib.cpp");
 USEUNIT("shared\XRShader.cpp");
 USEUNIT("shared\ShaderManager.cpp");
-USEFORM("StatisticForm.cpp", frmStatistic);
 USELIB("lib\MagicFMd.lib");
 USEFORM("EditParticles.cpp", frmEditParticles);
 USEUNIT("edit\PSLibrary.cpp");
@@ -157,7 +156,6 @@ USEUNIT("edit\UI_SoundTools.cpp");
 USEUNIT("edit\ui_tools.cpp");
 USEUNIT("edit\ELight.cpp");
 USEUNIT("shared\FS.cpp");
-USEUNIT("edit\Statistic.cpp");
 USEOBJ("ed_debug\cpuid.obj");
 USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("DOOneColor.cpp", frmOneColor);
@@ -174,6 +172,13 @@ USEOBJ("ed_debug\_math.obj");
 USELIB("lib\DX\d3d8.lib");
 USELIB("lib\DX\d3dx8d.lib");
 USEUNIT("edit\EditObject.cpp");
+USEUNIT("shared\Xr_input.cpp");
+USEUNIT("shared\fcontroller.cpp");
+USEUNIT("shared\EStats.cpp");
+USEUNIT("shared\XR_CustomFont.cpp");
+USEUNIT("shared\XR_HUDFont.cpp");
+USELIB("lib\DX\dinput.lib");
+USEUNIT("lib\DX\c_dinput.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -181,7 +181,7 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
 }
 
 void COccluder::UpdatePoints3D(){
-	if (m_3DPoints.dwFrame==Device.m_Statistic.dwTotalFrame) return;
+	if (m_3DPoints.dwFrame==Device.dwFrame) return;
     VERIFY(m_Points.size()>2);
     // update transform matrix
     Fmatrix	                M,mScale,mTranslate,mRotate;
@@ -190,7 +190,7 @@ void COccluder::UpdatePoints3D(){
     mTranslate.translate	(m_vCenter);
     M.mul			        (mTranslate,mRotate);
     M.mul			        (mScale);
-    m_3DPoints.dwFrame		= Device.m_Statistic.dwTotalFrame;
+    m_3DPoints.dwFrame		= Device.dwFrame;
     m_3DPoints.m_Points.resize(m_Points.size());
     FvectorIt lst_it		= m_3DPoints.m_Points.begin();
     Fvector					p;

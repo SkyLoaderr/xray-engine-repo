@@ -8,6 +8,7 @@
 #include "FileSystem.h"
 #include "UI_MainCommand.h"
 #include "ColorPicker.h"
+#include "FController.h"
 extern bool g_bEditorValid;
 
 
@@ -33,7 +34,7 @@ enum EEditorState{
 typedef vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
-class TUI{
+class TUI: public CController{
     friend class TfrmEditorPreferences;
 	char m_LastFileName[MAX_PATH];
     TD3DWindow* m_D3DWindow;
@@ -47,8 +48,8 @@ protected:
 	Fvector m_Pivot;
 protected:
 	bool m_SelectionRect;
-	Fvector2 m_SelStart;
-	Fvector2 m_SelEnd;
+	Ipoint m_SelStart;
+	Ipoint m_SelEnd;
 protected:
 	bool bRedraw;
     bool bUpdateScene;
@@ -68,8 +69,8 @@ public:
 //    CTexturizer*        m_pTexturizer;
 
 	// non-hidden ops
-	Fvector2 m_StartCp;
-	Fvector2 m_CurrentCp;
+	Ipoint m_StartCp;
+	Ipoint m_CurrentCp;
 
 	Fvector m_StartRStart;
 	Fvector m_StartRNorm;
@@ -78,9 +79,8 @@ public:
 	Fvector m_CurrentRNorm;
 
 	// hidden ops
-	POINT m_CenterCpH;
-	POINT m_StartCpH;
-	POINT m_DeltaCpH;
+	Ipoint m_StartCpH;
+	Ipoint m_DeltaCpH;
 
     C3DCursor*   m_Cursor;
 protected:
@@ -115,8 +115,8 @@ public:
     TUI();
     virtual ~TUI();
     IC HANDLE GetHWND()					{   return m_D3DWindow->Handle; }
-    int GetRenderWidth()                {   return Device.m_RenderWidth; }
-    int GetRenderHeight()               {   return Device.m_RenderHeight; }
+    int GetRenderWidth()                {   return Device.dwWidth; }
+    int GetRenderHeight()               {   return Device.dwHeight; }
     int GetRealWidth()            	    {   return Device.m_RealWidth; }
     int GetRealHeight()             	{   return Device.m_RealHeight; }
 	__inline Fvector& pivot()           {	return m_Pivot; }
@@ -140,14 +140,11 @@ public:
     void SetRenderQuality(float q)      {   Device.m_ScreenQuality = q;}
 // mouse action
     void EnableSelectionRect	( bool flag );
-    void UpdateSelectionRect	( const Fvector2& from, const Fvector2& to );
+    void UpdateSelectionRect	( const Ipoint& from, const Ipoint& to );
 //	bool MouseBox( ICullPlane *planes, const Fvector2& point1, const Fvector2& point2 );
 	bool PickGround				(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1);
     bool SelectionFrustum		(CFrustum& frustum);
 
-    void __fastcall MouseStart  (TShiftState Shift, int X, int Y);
-    void __fastcall MouseEnd    (TShiftState Shift, int X, int Y);
-    void __fastcall MouseProcess(TShiftState Shift, int X, int Y);
     void MouseMultiClickCapture (bool b){m_MouseMultiClickCaptured = b;}
 
     bool __fastcall IsMouseCaptured(){return m_MouseCaptured|m_MouseMultiClickCaptured;}
@@ -181,6 +178,17 @@ public:
     void SetStatus(LPSTR s);
 
     EObjClass CurrentClassID();
+
+	// direct input
+	virtual void OnMousePress			(int btn);
+	virtual void OnMouseRelease			(int btn);
+	virtual void OnMouseHold			(int btn);
+	virtual void OnMouseMove			(int x, int y);
+	virtual void OnMouseStop			(int x, int y);
+
+	virtual void OnKeyboardPress		(int dik);
+	virtual void OnKeyboardRelease		(int dik);
+	virtual void OnKeyboardHold			(int dik);
 };
 extern TUI* UI;
 #endif

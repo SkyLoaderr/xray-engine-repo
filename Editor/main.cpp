@@ -19,12 +19,11 @@ TfrmMain *frmMain;
 #include "scene.h"
 #include "SceneClassList.h"
 #include "ui_tools.h"
-#include "statistic.h"
-#include "statisticform.h"
 #include "topbar.h"
 #include "leftbar.h"
 #include "bottombar.h"
 #include "EditorPref.h"
+#include "xr_input.h"
 
 //---------------------------------------------------------------------------
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
@@ -36,6 +35,9 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     fraTopBar   = new TfraTopBar(0);
 	fsMainForm->RestoreFormPlacement();
 	if (!UI->Init(D3DWindow)) exit(-1);
+    pInput		= new CInput(FALSE);
+    UI->iCapture();
+	Device.InitTimer();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
@@ -53,12 +55,11 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	TfrmStatistic::HideStatistic();
-
     fraLeftBar->fsStorage->SaveFormPlacement();
     fraBottomBar->fsStorage->SaveFormPlacement();
     fraTopBar->fsStorage->SaveFormPlacement();
 
+	UI->iRelease			();
     _DELETE(UI);
     fraTopBar->Parent       = 0;
     fraLeftBar->Parent      = 0;
@@ -66,6 +67,7 @@ void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
     _DELETE(fraLeftBar);
     _DELETE(fraTopBar);
     _DELETE(fraBottomBar);
+    _DELETE(pInput);
 
     Application->OnIdle     = 0;
 }
@@ -116,6 +118,7 @@ void __fastcall TfrmMain::TopClick(TObject *Sender)
 void __fastcall TfrmMain::IdleHandler(TObject *Sender, bool &Done)
 {
     Done = false;
+    pInput->OnFrame();
     if (g_bEditorValid) UI->Idle();
 }
 void __fastcall TfrmMain::D3DWindowResize(TObject *Sender)
@@ -127,29 +130,9 @@ void __fastcall TfrmMain::D3DWindowResize(TObject *Sender)
 void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-    if (!g_bEditorValid) return;
-
     ShiftMouse = Shift;
-    UI->MouseStart(Shift,X,Y);
-    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmMain::D3DWindowMouseMove(TObject *Sender,
-      TShiftState Shift, int X, int Y)
-{
-	if (!g_bEditorValid) return;
-    UI->MouseProcess(Shift,X,Y);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmMain::D3DWindowMouseUp(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    if (!g_bEditorValid) return;
-    UI->MouseEnd(Shift,X,Y);
-    UI->RedrawScene();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmMain::D3DWindowKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
@@ -416,6 +399,18 @@ void __fastcall TfrmMain::UnlockSelected1Click(TObject *Sender)
 void __fastcall TfrmMain::LockSelected1Click(TObject *Sender)
 {
 	UI->Command(COMMAND_LOCK_SEL,TRUE);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::FormActivate(TObject *Sender)
+{
+    pInput->OnAppActivate();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
+{
+    pInput->OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
 

@@ -3,14 +3,15 @@
 
 #include "ui_camera.h"
 #include "frustum.h"
-#include "Statistic.h"
 #include "ShaderManager.h"
 #include "hw.h"
 #include "ftimer.h"
+#include "estats.h"
 #include "primitivesR.h"
 //---------------------------------------------------------------------------
 // refs
 class Shader;
+class CFontHUD;
 
 //------------------------------------------------------------------------------
 class ENGINE_API CRenderDevice{
@@ -20,6 +21,8 @@ class ENGINE_API CRenderDevice{
     float 					m_fNearer;
 
     Shader*					m_NullShader;
+
+	DWORD					Timer_MM_Delta;
 	CTimer					Timer;
 	CTimer					TimerGlobal;
 public:
@@ -29,17 +32,17 @@ public:
     Fmaterial				m_DefaultMat;
 
     CFrustum    			m_Frustum;
-    CStatistic     			m_Statistic;
 
 	CShaderManager			Shader;
 public:
-    int 					m_RenderWidth, m_RenderHeight;
+    int 					dwWidth, dwHeight;
     int 					m_RenderWidth_2, m_RenderHeight_2;
     int 					m_RealWidth, m_RealHeight;
     float					m_RenderArea;
     float 					m_ScreenQuality;
 public:
-    HANDLE 					m_Handle;
+    HANDLE 					m_hWnd;
+    HANDLE 					m_hRenderWnd;
 
 	DWORD					dwFrame;
 
@@ -62,6 +65,10 @@ public:
 	// Shared Streams
 	CSharedStreams	 	  	Streams;
 	IDirect3DIndexBuffer8*	Streams_QuadIB;
+
+	CStats					Statistic;
+
+	CFontHUD* 				pHUDFont;
 public:
 							CRenderDevice 	();
     virtual 				~CRenderDevice	();
@@ -123,8 +130,37 @@ public:
 
     void					OnDeviceCreate	();
     void					OnDeviceDestroy	();
+
+	void 					InitTimer		();
+	// Mode control
+	IC u32	 				TimerAsync		(void){
+		u64	qTime		= TimerGlobal.GetElapsed();
+		return u32((qTime*u64(1000))/CPU::cycles_per_second);
+	}
+	IC u32	 				TimerAsyncMM	(void){
+		return TimerAsync()+Timer_MM_Delta;
+	}
 };
 
 extern ENGINE_API CRenderDevice Device;
+
+// video
+enum {
+	rsFullscreen		= (1ul<<0ul),
+	rsTriplebuffer		= (1ul<<1ul),
+	rsClearBB			= (1ul<<2ul),
+	rsNoVSync			= (1ul<<3ul),
+	rsWireframe			= (1ul<<4ul),
+	rsAntialias			= (1ul<<5ul),
+	rsNormalize			= (1ul<<6ul),
+	rsOverdrawView		= (1ul<<7ul),
+	rsOcclusion			= (1ul<<8ul),
+	rsDepthEnhance		= (1ul<<9ul),
+	rsAnisotropic		= (1ul<<10ul),
+	rsStatistic			= (1ul<<11ul),
+	mtSound				= (1ul<<24ul),
+	mtInput				= (1ul<<25ul)
+};
+extern DWORD psDeviceFlags;
 
 #endif

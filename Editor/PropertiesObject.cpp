@@ -268,7 +268,7 @@ void __fastcall TfrmPropertiesObject::OnIdle(){
 
             if (ks&0x0001){
                 Fvector S, D;
-                Fvector2 CP;
+                Ipoint CP;
                 pt = UI->GetD3DWindow()->ScreenToClient(pt);
                 CP.set(float(pt.x),float(pt.y));
                 Device.m_Camera.MouseRayFromPoint(S, D, CP );

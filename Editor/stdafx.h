@@ -26,6 +26,9 @@
 #define atan2f atan2
 #define logf log
 
+#define DIRECTSOUND_VERSION 0x0700
+#define DIRECTINPUT_VERSION 0x0700
+
 // DirectX headers
 #include <d3d8.h>
 #include <d3dx8.h>
@@ -107,7 +110,6 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define THROW 			_verify("ERROR", __FILE__, __LINE__)
 #define THROW2(expr) 	_verify(#expr, __FILE__, __LINE__)
 #define NODEFAULT THROW
-#define UPDATEC(a,b,c)
 
 #define _FREE(x)		{ if(x) { free(x); (x)=NULL; } }
 #define _DELETE(a)      {delete(a); (a)=NULL;}

@@ -4,7 +4,6 @@
 #include "tlsprite.h"
 #include "ui_main.h"
 #include "texture.h"
-#include "statistic.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -20,7 +20,6 @@
 #include "EditShaders.h"
 #include "EditParticles.h"
 #include "PropertiesShader.h"
-#include "StatisticForm.h"
 #include "ImageEditor.h"
 #include "main.h"
 #include "xr_trims.h"
@@ -238,7 +237,7 @@ bool TUI::MouseBox(
 
 bool TUI::SelectionFrustum(CFrustum& frustum){
     Fvector st,d,p[4];
-    Fvector2 pt[4];
+    Ipoint pt[4];
 
     float depth = 0;
 
@@ -280,7 +279,6 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 //----------------------------------------------------
 
 void TUI::Redraw(){
-    Device.m_Statistic.Reset();
 // set render state
     // filter
     for (DWORD k=0; k<HW.Caps.dwNumBlendStages; k++){
@@ -299,7 +297,6 @@ void TUI::Redraw(){
     else                Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
-        Device.m_Statistic.dwTotalFrame++;
 	    if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 
         Device.Begin();
@@ -342,20 +339,12 @@ void TUI::Redraw(){
 
     if (!bRenderRealTime) bRedraw = false;
 
-    if (TfrmStatistic::Visible()){
-        TfrmStatistic::GetForm()->lbPoly->Caption   		= Device.m_Statistic.dwRenderPolyCount;
-        TfrmStatistic::GetForm()->lbTLight->Caption 		= Device.m_Statistic.dwTotalLight;
-        TfrmStatistic::GetForm()->lbRLight->Caption 		= Device.m_Statistic.dwLightInScene;
-        TfrmStatistic::GetForm()->lbTotalFrame->Caption 	= Device.m_Statistic.dwTotalFrame;
-        TfrmStatistic::GetForm()->lbUndoCount->Caption  	= Scene->GetUndoCount();
-    }
     fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene->SelectionCount(true,UI->CurrentClassID())));
 }
 //---------------------------------------------------------------------------
 void TUI::Idle()
 {
     if (g_ErrorMode) return;
-	Device.UpdateTimer();
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
     Sleep(2);
     EEditorState est = GetEState();
@@ -368,6 +357,7 @@ void TUI::Idle()
         }
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
+			Device.UpdateTimer();
             Scene->Update(Device.fTimeDelta);
         	Redraw();
         }
@@ -383,113 +373,9 @@ void TUI::EnableSelectionRect( bool flag ){
 	m_SelEnd.y = m_SelStart.y = 0;
 }
 
-void TUI::UpdateSelectionRect( const Fvector2& from, const Fvector2& to ){
+void TUI::UpdateSelectionRect( const Ipoint& from, const Ipoint& to ){
 	m_SelStart.set(from);
 	m_SelEnd.set(to);
-}
-
-void __fastcall TUI::MouseStart(TShiftState Shift, int X, int Y){
-	if(!g_bEditorValid) return;
-//    if(m_MouseCaptured||Device.m_Camera.IsMoving()) return;
-    if(m_MouseCaptured) return;
-
-    bMouseInUse = true;
-
-    // camera activate
-    if(!Device.m_Camera.MoveStart(Shift)){
-        if( Scene->locked() ){
-		// ELog.DlgMsg( mtError, "Scene sharing violation..." );
-            return;
-        }
-        if( !m_MouseCaptured ){
-            if( m_Tools->HiddenMode() ){
-                m_CenterCpH.x = GetSystemMetrics(SM_CXSCREEN)/2;
-                m_CenterCpH.y = GetSystemMetrics(SM_CYSCREEN)/2;
-                GetCursorPos( &m_StartCpH );
-                m_DeltaCpH.x = 0;
-                m_DeltaCpH.y = 0;
-            }else{
-                m_CurrentCp.x = X; m_CurrentCp.y = Y;
-                m_StartCp = m_CurrentCp;
-
-                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
-            }
-
-            if( m_Tools->MouseStart(Shift) ){
-                if( m_Tools->HiddenMode() ){
-                    ShowCursor( FALSE );
-                    SetCursorPos(
-                        m_CenterCpH.x,
-                        m_CenterCpH.y );
-                }
-
-                SetCapture( m_D3DWindow );
-                m_MouseCaptured = true;
-            }
-        }
-    }
-}
-
-void __fastcall TUI::MouseEnd(TShiftState Shift, int X, int Y){
-	if(!g_bEditorValid) return;
-    if( Device.m_Camera.IsMoving() ){
-        if (Device.m_Camera.MoveEnd(Shift)) bMouseInUse = false;
-    }else{
-	    bMouseInUse = false;
-        if( m_MouseCaptured ){
-            if( m_Tools->HiddenMode() ){
-                GetCursorPos( &m_DeltaCpH );
-                m_DeltaCpH.x -= m_CenterCpH.x;
-                m_DeltaCpH.y -= m_CenterCpH.y;
-            }
-            else {
-                m_CurrentCp.x = X; m_CurrentCp.y = Y;
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
-            }
-            if( m_Tools->MouseEnd(Shift) ){
-                if( m_Tools->HiddenMode() ){
-                    SetCursorPos(m_StartCpH.x,m_StartCpH.y);
-                    ShowCursor( TRUE );
-                }
-                ReleaseCapture();
-                m_MouseCaptured = false;
-            }
-        }
-    }
-    // update tools (change action)
-    m_Tools->Update();
-}
-
-void __fastcall TUI::MouseProcess(TShiftState Shift, int X, int Y){
-	if(!g_bEditorValid) return;
-    bool bRayUpdated = false;
-	if (!Device.m_Camera.Process(Shift)){
-        if( m_MouseCaptured || m_MouseMultiClickCaptured ){
-            if( m_Tools->HiddenMode() ){
-                GetCursorPos( &m_DeltaCpH );
-                m_DeltaCpH.x -= m_CenterCpH.x;
-                m_DeltaCpH.y -= m_CenterCpH.y;
-                if( m_DeltaCpH.x || m_DeltaCpH.y ){
-                	SetCursorPos(m_CenterCpH.x,m_CenterCpH.y);
-                	m_Tools->MouseMove(Shift);
-                }
-            }else{
-                m_CurrentCp.x = X; m_CurrentCp.y = Y;
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
-                m_Tools->MouseMove(Shift);
-            }
-		    UI->RedrawScene();
-            bRayUpdated = true;
-        }
-    }
-    if (!bRayUpdated){
-        m_CurrentCp.x = X; m_CurrentCp.y = Y;
-        Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
-    }
-    if (m_Cursor->GetVisible()) UI->RedrawScene();
-    // Out cursor pos
-    OutUICursorPos();
 }
 
 static int iLastMouseX=0;
@@ -588,5 +474,149 @@ void TUI::RealUpdateScene(){
 
 EObjClass TUI::CurrentClassID(){
 	return (fraLeftBar->ebIgnoreTarget->Down)?OBJCLASS_DUMMY:m_Tools->GetTargetClassID();
+}
+
+void TUI::OnMousePress(int btn){
+	if(!g_bEditorValid) return;
+//    if(m_MouseCaptured||Device.m_Camera.IsMoving()) return;
+    if(m_MouseCaptured) return;
+
+    bMouseInUse = true;
+
+    TShiftState Shift;
+    if (iGetKeyState(DIK_LSHIFT)) 	Shift << ssShift;
+    if (iGetKeyState(DIK_RSHIFT)) 	Shift << ssShift;
+    if (iGetKeyState(DIK_LALT)) 	Shift << ssAlt;
+    if (iGetKeyState(DIK_RALT)) 	Shift << ssAlt;
+    if (iGetKeyState(DIK_LCONTROL))	Shift << ssCtrl;
+    if (iGetKeyState(DIK_RCONTROL)) Shift << ssCtrl;
+    if (iGetBtnState(0))			Shift << ssLeft;
+    if (iGetBtnState(1))			Shift << ssRight;
+
+    // camera activate
+    if(!Device.m_Camera.MoveStart(Shift)){
+        if( Scene->locked() ){
+		// ELog.DlgMsg( mtError, "Scene sharing violation..." );
+            return;
+        }
+        if( !m_MouseCaptured ){
+            if( m_Tools->HiddenMode() ){
+				iGetMousePosReal(m_StartCpH);
+                m_DeltaCpH.set(0,0);
+            }else{
+                iGetMousePosReal(m_CurrentCp);
+                ClientToScreen(Device.m_hWnd,(LPPOINT)&m_CurrentCp);
+                ScreenToClient(Device.m_hRenderWnd,(LPPOINT)&m_CurrentCp);
+                m_StartCp = m_CurrentCp;
+
+                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
+                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
+            }
+
+            if(m_Tools->MouseStart(Shift)){
+                if(m_Tools->HiddenMode()) ShowCursor( FALSE );
+
+                SetCapture( m_D3DWindow );
+                m_MouseCaptured = true;
+            }
+        }
+    }
+    RedrawScene();
+}
+void TUI::OnMouseRelease(int btn){
+	if(!g_bEditorValid) return;
+
+    TShiftState Shift;
+    if (iGetKeyState(DIK_LSHIFT)) 	Shift << ssShift;
+    if (iGetKeyState(DIK_RSHIFT)) 	Shift << ssShift;
+    if (iGetKeyState(DIK_LALT)) 	Shift << ssAlt;
+    if (iGetKeyState(DIK_RALT)) 	Shift << ssAlt;
+    if (iGetKeyState(DIK_LCONTROL))	Shift << ssCtrl;
+    if (iGetKeyState(DIK_RCONTROL)) Shift << ssCtrl;
+    if (iGetBtnState(0))			Shift << ssLeft;
+    if (iGetBtnState(1))			Shift << ssRight;
+
+    if( Device.m_Camera.IsMoving() ){
+        if (Device.m_Camera.MoveEnd(Shift)) bMouseInUse = false;
+    }else{
+	    bMouseInUse = false;
+        if( m_MouseCaptured ){
+            if( m_Tools->HiddenMode() ){
+//                GetCursorPos( &m_DeltaCpH );
+//                m_DeltaCpH.x -= m_CenterCpH.x;
+//                m_DeltaCpH.y -= m_CenterCpH.y;
+            }else{
+                iGetMousePosReal(m_CurrentCp);
+                ClientToScreen(Device.m_hWnd,(LPPOINT)&m_CurrentCp);
+                ScreenToClient(Device.m_hRenderWnd,(LPPOINT)&m_CurrentCp);
+                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
+            }
+            if( m_Tools->MouseEnd(Shift) ){
+                if( m_Tools->HiddenMode() ){
+                    SetCursorPos(m_StartCpH.x,m_StartCpH.y);
+                    ShowCursor( TRUE );
+                }
+                ReleaseCapture();
+                m_MouseCaptured = false;
+            }
+        }
+    }
+    // update tools (change action)
+    m_Tools->Update();
+    RedrawScene();
+}
+void TUI::OnMouseHold(int btn){
+}
+void TUI::OnMouseMove(int x, int y){
+	if(!g_bEditorValid) return;
+    bool bRayUpdated = false;
+    TShiftState Shift;
+    if (iGetKeyState(DIK_LSHIFT)) 	Shift << ssShift;
+    if (iGetKeyState(DIK_RSHIFT)) 	Shift << ssShift;
+    if (iGetKeyState(DIK_LALT)) 	Shift << ssAlt;
+    if (iGetKeyState(DIK_RALT)) 	Shift << ssAlt;
+    if (iGetKeyState(DIK_LCONTROL))	Shift << ssCtrl;
+    if (iGetKeyState(DIK_RCONTROL)) Shift << ssCtrl;
+    if (iGetBtnState(0))			Shift << ssLeft;
+    if (iGetBtnState(1))			Shift << ssRight;
+	if (!Device.m_Camera.Process(Shift)){
+        if( m_MouseCaptured || m_MouseMultiClickCaptured ){
+            if( m_Tools->HiddenMode() ){
+//                GetCursorPos( &m_DeltaCpH );
+//                m_DeltaCpH.x -= m_CenterCpH.x;
+//                m_DeltaCpH.y -= m_CenterCpH.y;
+				m_DeltaCpH.set(x,y);
+                if( m_DeltaCpH.x || m_DeltaCpH.y ){
+//                	SetCursorPos(m_CenterCpH.x,m_CenterCpH.y);
+                	m_Tools->MouseMove(Shift);
+                }
+            }else{
+                iGetMousePosReal(m_CurrentCp);
+                ClientToScreen(Device.m_hWnd,(LPPOINT)&m_CurrentCp);
+                ScreenToClient(Device.m_hRenderWnd,(LPPOINT)&m_CurrentCp);
+
+                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
+                m_Tools->MouseMove(Shift);
+            }
+		    UI->RedrawScene();
+            bRayUpdated = true;
+        }
+    }
+    if (!bRayUpdated){
+		iGetMousePosReal(m_CurrentCp);
+        Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
+    }
+    if (m_Cursor->GetVisible()) UI->RedrawScene();
+    // Out cursor pos
+    OutUICursorPos();
+}
+void TUI::OnMouseStop(int x, int y){
+}
+
+void TUI::OnKeyboardPress(int dik){
+}
+void TUI::OnKeyboardRelease(int dik){
+}
+void TUI::OnKeyboardHold(int dik){
 }
 

@@ -11,7 +11,6 @@
 #include "Frustum.h"
 #include "D3DUtils.h"
 #include "Scene.h"
-#include "Statistic.h"
 #include "cl_intersect.h"
 #include "sector.h"
 #include "MgcConvexHull2D.h"

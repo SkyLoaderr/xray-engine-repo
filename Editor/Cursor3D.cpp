@@ -62,7 +62,7 @@ void C3DCursor::Render(){
         SRayPickInfo pinf;
         Fvector start, dir, N, D;
         POINT start_pt;
-        Fvector2 pt;
+        Ipoint pt;
         GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
         pt.set(float(start_pt.x),float(start_pt.y));
         Device.m_Camera.MouseRayFromPoint(start,dir,pt);
@@ -117,7 +117,7 @@ bool C3DCursor::PrepareBrush(){
     bool bPickObject, bPickGround;
     Fvector N, D;
     POINT start_pt;
-    Fvector2 pt;
+    Ipoint pt;
     GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
     pt.set(float(start_pt.x),float(start_pt.y));
     Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);

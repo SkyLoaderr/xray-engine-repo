@@ -15,9 +15,11 @@ object frmMain: TfrmMain
   KeyPreview = True
   OldCreateOrder = False
   Scaled = False
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
@@ -122,8 +124,6 @@ object frmMain: TfrmMain
         OnKeyPress = D3DWindowKeyPress
         OnKeyUp = D3DWindowKeyUp
         OnMouseDown = D3DWindowMouseDown
-        OnMouseMove = D3DWindowMouseMove
-        OnMouseUp = D3DWindowMouseUp
         OnResize = D3DWindowResize
         OnPaint = D3DWindowPaint
       end

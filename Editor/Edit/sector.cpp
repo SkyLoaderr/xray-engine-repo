@@ -14,7 +14,6 @@
 #include "EditObject.h"
 #include "Scene.h"
 #include "Texture.h"
-#include "Statistic.h"
 #include "cl_intersect.h"
 #include "bottombar.h"
 #include "portal.h"

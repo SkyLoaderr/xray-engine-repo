@@ -70,6 +70,6 @@ public:
 
     void			ZoomExtents	(const Fbox& bb);
 
-	void 			MouseRayFromPoint(Fvector& start, Fvector& direction, const Fvector2& point);
+	void 			MouseRayFromPoint(Fvector& start, Fvector& direction, const Ipoint& point);
 };
 #endif

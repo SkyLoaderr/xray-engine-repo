@@ -5,35 +5,20 @@
 #include "Scene.h"
 #include "ui_main.h"
 #include "library.h"
+#include "main.h"
+#include "xr_hudfont.h"
 
 #pragma package(smart_init)
 
 CRenderDevice Device;
 
-// video
-enum {
-	rsFullscreen		= (1ul<<0ul),
-	rsTriplebuffer		= (1ul<<1ul),
-	rsClearBB			= (1ul<<2ul),
-	rsNoVSync			= (1ul<<3ul),
-	rsWireframe			= (1ul<<4ul),
-	rsAntialias			= (1ul<<5ul),
-	rsNormalize			= (1ul<<6ul),
-	rsOverdrawView		= (1ul<<7ul),
-	rsOcclusion			= (1ul<<8ul),
-	rsDepthEnhance		= (1ul<<9ul),
-	rsAnisotropic		= (1ul<<10ul),
-	rsStatistic			= (1ul<<11ul),
-	mtSound				= (1ul<<24ul),
-	mtInput				= (1ul<<25ul)
-};
-DWORD psDeviceFlags 	= rsClearBB|rsNoVSync;
+DWORD psDeviceFlags 	= rsClearBB|rsNoVSync|rsStatistic;
 DWORD dwClearColor		= 0x00555555;
 
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice(){
     m_ScreenQuality = 1.f;
-    m_RenderWidth 	= m_RenderHeight 	= 256;
+    dwWidth 		= dwHeight 	= 256;
     m_RealWidth 	= m_RealHeight 		= 256;
     m_RenderWidth_2	= m_RenderHeight_2 	= 128;
 	mProjection.identity();
@@ -57,6 +42,17 @@ CRenderDevice::CRenderDevice(){
 CRenderDevice::~CRenderDevice(){
 	VERIFY(!bReady);
 }
+
+void CRenderDevice::InitTimer(){
+	Timer_MM_Delta	= 0;
+	{
+		DWORD time_mm			= timeGetTime	();
+		while (timeGetTime()==time_mm);			// wait for next tick
+		DWORD time_system		= timeGetTime	();
+		DWORD time_local		= TimerAsync	();
+		Timer_MM_Delta			= time_system-time_local;
+	}
+}
 //---------------------------------------------------------------------------
 void CRenderDevice::RenderNearer(float n){
     mProjection._43=m_fNearer-n;
@@ -71,9 +67,10 @@ bool CRenderDevice::Create(HANDLE handle){
 	if (bReady)	return false;
 	ELog.Msg(mtInformation,"Starting RENDER device...");
 
-    m_Handle			= handle;
+    m_hWnd				= frmMain->Handle;// Application->Handle;
+    m_hRenderWnd		= handle;
 
-	HW.CreateDevice		(handle,m_RenderWidth,m_RenderHeight);
+	HW.CreateDevice		(handle,dwWidth,dwHeight);
 
 	// after creation
 	bReady				= TRUE;
@@ -115,25 +112,6 @@ void CRenderDevice::Destroy(){
 }
 
 void CRenderDevice::OnDeviceCreate(){
-/*	SetRS(D3DRS_COLORVERTEX,TRUE);
-	SetRS(D3DRS_ALPHAFUNC,D3DCMP_GREATER);
-	SetRS(D3DRS_DITHERENABLE,		TRUE				);
-	SetRS(D3DRS_STENCILENABLE,		FALSE				);
-    SetRS(D3DRS_ZENABLE,			TRUE				);
-	SetRS(D3DRS_CULLMODE,			D3DCULL_CCW			);
-	SetRS(D3DRS_LOCALVIEWER,		FALSE				);
-
-	SetRS(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	);
-	SetRS(D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL	);
-	SetRS(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_COLOR1	);
-	SetRS(D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	);
-
-	SetRS(D3DRS_NORMALIZENORMALS,TRUE);
-
-	float fBias = -1.f;
-    for (int k=0; k<m_Caps.wMaxSimultaneousTextures; k++)
-		SetTSS( k, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias)));
-*/
 	// General Render States
 	HW.Caps.Update();
 	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++)
@@ -207,9 +185,11 @@ void CRenderDevice::OnDeviceCreate(){
 		}
 		R_CHK(Streams_QuadIB->Unlock());
 	}
+	pHUDFont = new CFontHUD();
 }
 
 void CRenderDevice::OnDeviceDestroy(){
+	_DELETE(pHUDFont);
     Scene->OnDeviceDestroy		();
     Shader.OnDeviceDestroy		();
 	Primitive.OnDeviceDestroy	();
@@ -251,18 +231,18 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     m_RealHeight 	= h;
     m_RenderArea	= w*h;
 
-    m_RenderWidth  	= m_RealWidth * m_ScreenQuality;
-    m_RenderHeight 	= m_RealHeight * m_ScreenQuality;
-    m_RenderWidth_2 = m_RenderWidth * 0.5f;
-    m_RenderHeight_2= m_RenderHeight * 0.5f;
+    dwWidth  		= m_RealWidth * m_ScreenQuality;
+    dwHeight 		= m_RealHeight * m_ScreenQuality;
+    m_RenderWidth_2 = dwWidth * 0.5f;
+    m_RenderHeight_2= dwHeight * 0.5f;
 
     Destroy			();
 
-    m_Camera.m_Aspect = (float)m_RenderHeight / (float)m_RenderWidth;
+    m_Camera.m_Aspect = (float)dwHeight / (float)dwWidth;
     mProjection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
     m_fNearer = mProjection._43;
 
-    Create			(m_Handle);
+    Create			(m_hRenderWnd);
 
     SetTransform	(D3DTS_PROJECTION,mProjection);
     SetTransform	(D3DTS_WORLD,precalc_identity);
@@ -276,7 +256,7 @@ void CRenderDevice::Begin( ){
     if (HW.pDevice->TestCooperativeLevel()!=D3D_OK){
 		Sleep	(500);
 		Destroy	();
-		Create	(m_Handle);
+		Create	(m_hRenderWnd);
 	}
 
 	CHK_DX(HW.pDevice->BeginScene());
@@ -294,9 +274,12 @@ void CRenderDevice::End(){
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
 
+	Statistic.Show(pHUDFont);
+    pHUDFont->OnRender();
+
 	// end scene
 	Shader.SetNULL	();
-//	Primitive.Reset	();
+	Primitive.Reset	();
     CHK_DX(HW.pDevice->EndScene());
 
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
@@ -319,7 +302,7 @@ void CRenderDevice::UpdateTimer(){
 	// Timer
 	float fPreviousFrameTime = Timer.GetAsync(); Timer.Start();	// previous frame
 	fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;	// smooth random system activity - worst case ~7% error
-	if (fTimeDelta>.06666f) fTimeDelta=.06666f;					// limit to 15fps minimum
+	if (fTimeDelta>1.f) fTimeDelta=1.f;							// limit to 1 fps minimum
 
 	u64	qTime		= TimerGlobal.GetElapsed();
 	fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
@@ -336,8 +319,8 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWOR
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.SetupPass(dwPass);
 		Primitive.Render(pt,vBase,pc);
-		m_Statistic.dwRenderPolyCount += pc/3;
     }
+    UPDATEC(pc*3,pc,dwRequired);
 }
 
 void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
@@ -347,8 +330,8 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWO
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.SetupPass(dwPass);
 		Primitive.Render(pt,vBase,vc,iBase,pc);
-		m_Statistic.dwRenderPolyCount += pc/3;
     }
+    UPDATEC(vc,pc,dwRequired);
 }
 
 void CRenderDevice::Validate()

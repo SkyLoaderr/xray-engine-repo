@@ -12,7 +12,6 @@
 #include "EditObject.h"
 #include "ui_main.h"
 #include "Frustum.h"
-#include "Statistic.h"
 #include "ui_tools.h"
 
 //----------------------------------------------------
@@ -79,8 +78,8 @@ void EScene::SetLights(){
                     l->Enable(FALSE);
                 }
         }
-        Device.m_Statistic.dwTotalLight = l_cnt;
-        Device.m_Statistic.dwLightInScene = frame_light.size();
+        Device.Statistic.dwTotalLight = l_cnt;
+        Device.Statistic.dwLightInScene = frame_light.size();
     }
 }
 

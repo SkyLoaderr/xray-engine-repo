@@ -205,7 +205,7 @@ bool CUI_Camera::KeyUp(WORD Key, TShiftState Shift){
 	return false;
 }
 
-void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Fvector2& point ){
+void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ipoint& point ){
     if (!UI) return;
 
 	int halfwidth  = UI->GetRealWidth()*0.5f;
@@ -213,7 +213,7 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Fv
 
     if (!halfwidth||!halfheight) return;
 
-    Fvector2 point2;
+    Ipoint point2;
     point2.set(point.x-halfwidth, halfheight-point.y);
 
 	start.set( m_Position );
@@ -221,8 +221,8 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Fv
 	float size_y = m_Znear * tan( m_FOV * 0.5f );
 	float size_x = size_y / m_Aspect;
 
-	float r_pt = point2.x * size_x / (float) halfwidth;
-	float u_pt = point2.y * size_y / (float) halfheight;
+	float r_pt = float(point2.x) * size_x / (float) halfwidth;
+	float u_pt = float(point2.y) * size_y / (float) halfheight;
 
 	direction.mul( m_CamMat.k, m_Znear );
 	direction.direct( direction, m_CamMat.j, u_pt );

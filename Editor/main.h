@@ -20,7 +20,8 @@
 #include "SceneClassList.h"
 #include "RenderWindow.hpp"
 //---------------------------------------------------------------------------
-//class TUI;
+// refs
+
 class TfrmMain : public TForm
 {
 __published:	// IDE-managed Components
@@ -62,14 +63,10 @@ __published:	// IDE-managed Components
 	TMenuItem *Edit1;
         void __fastcall FormCreate(TObject *Sender);
     void __fastcall D3DWindowResize(TObject *Sender);
-    void __fastcall D3DWindowMouseMove(TObject *Sender, TShiftState Shift,
-          int X, int Y);
     void __fastcall D3DWindowMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
     void __fastcall D3DWindowKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-    void __fastcall D3DWindowMouseUp(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
     void __fastcall D3DWindowKeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall sbToolsMinClick(TObject *Sender);
@@ -102,6 +99,8 @@ __published:	// IDE-managed Components
 	void __fastcall UnlockUnselected1Click(TObject *Sender);
 	void __fastcall UnlockSelected1Click(TObject *Sender);
 	void __fastcall LockSelected1Click(TObject *Sender);
+	void __fastcall FormActivate(TObject *Sender);
+	void __fastcall FormDeactivate(TObject *Sender);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 
