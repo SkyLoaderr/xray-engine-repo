@@ -276,7 +276,7 @@ void	OGF::PreSave			()
 		x_VB.Begin		(D);
 		for (itXV V=x_vertices.begin(); V!=x_vertices.end(); V++)
 		{
-			x_vert		v	(V->P,V->UV[0]);
+			x_vert		v	(V->P,V->UV);
 			g_VB.Add		(&v,sizeof(v));
 		}
 		x_VB.End		(&xvb_id,&xvb_start);
