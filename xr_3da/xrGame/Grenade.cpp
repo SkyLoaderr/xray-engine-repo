@@ -378,5 +378,6 @@ ALife::_TIME_ID	 CGrenade::TimePassedAfterIndependant()	const
 
 BOOL CGrenade::UsedAI_Locations		()
 {
-	return m_dwDestroyTime == 0xffffffff;
+#pragma todo("Dima to Yura : It crashes, because on net_Spawn object doesn't use AI locations, but on net_Destroy it does use them")
+	return TRUE;//m_dwDestroyTime == 0xffffffff;
 }
