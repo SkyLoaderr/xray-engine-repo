@@ -261,6 +261,8 @@ void CUIInventoryWnd::Update()
 				m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
 			}
 		}
+
+		UpdateWeight(UIBagWnd, true);
 	}
 
 	// Update time indicator

@@ -70,6 +70,7 @@ public:
 				bool				IR_OnKeyboardPress		(int dik);
 				bool				IR_OnKeyboardRelease	(int dik);
 				bool				IR_OnMouseMove			(int dx, int dy);
+				bool				IR_OnMouseWheel			(int direction);
 
 
 	virtual		bool				OnKeyboardPress			(int key){return false;};

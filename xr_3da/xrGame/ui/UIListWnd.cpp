@@ -462,6 +462,16 @@ int CUIListWnd::FindItemWithValue(int iValue)
 }
 
 //////////////////////////////////////////////////////////////////////////
+void CUIListWnd::OnMouseWheel(int direction)
+{
+	if(m_bScrollBarEnabled){
+		if(direction<0)
+			m_ScrollBar.TryScrollInc();
+		else
+			m_ScrollBar.TryScrollDec();
+
+	}
+}
 
 void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {

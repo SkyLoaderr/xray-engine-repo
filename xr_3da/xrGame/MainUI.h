@@ -49,6 +49,8 @@ public:
 	virtual void	IR_OnKeyboardRelease			(int dik);
 	virtual void	IR_OnKeyboardHold				(int dik);
 
+	virtual void	IR_OnMouseWheel					(int direction)	;
+
 	//pureRender
 	virtual void	OnRender						(void);
 

@@ -44,6 +44,7 @@ void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
 
 //////////////////////////////////////////////////////////////////////////
 
+
 void CUIScrollBox::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	int deltaX = 0;

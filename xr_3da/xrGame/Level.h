@@ -159,6 +159,7 @@ public:
 	virtual void				IR_OnMouseHold			( int btn );
 	virtual void				IR_OnMouseMove			( int, int);
 	virtual void				IR_OnMouseStop			( int, int);
+	virtual void				IR_OnMouseWheel			( int direction);
 	
 			int					get_RPID				(LPCSTR name);
 

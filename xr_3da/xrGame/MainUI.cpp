@@ -136,6 +136,12 @@ void	CMainUI::IR_OnKeyboardHold				(int dik)
 	if(!IsActive()) return;
 };
 
+void CMainUI::IR_OnMouseWheel(int direction)
+{
+	if(!IsActive()) return;
+	MainInputReceiver()->IR_OnMouseWheel(direction);
+}
+
 //pureRender
 void	CMainUI::OnRender		(void)
 {

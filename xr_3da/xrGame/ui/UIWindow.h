@@ -67,6 +67,7 @@ public:
 //				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouseWheel(int direction);
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому

@@ -91,6 +91,10 @@ bool CUIGameCustom::IR_OnMouseMove(int dx,int dy)
 	}*/
 	return false;
 }
+bool CUIGameCustom::IR_OnMouseWheel			(int direction)
+{
+	return false;
+}
 
 void CUIGameCustom::AddDialogToRender(CUIWindow* pDialog)
 {

@@ -126,6 +126,17 @@ bool CUI::Render()
 
 	return false;
 }
+bool	CUI::IR_OnMouseWheel			(int direction)
+{
+	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnMouseWheel(direction)) 
+		return true;
+
+	if (pUIGame&&pUIGame->IR_OnMouseWheel(direction)) 
+		return true;
+
+	return false;
+}
+
 //--------------------------------------------------------------------
 bool CUI::IR_OnKeyboardPress(int dik)
 {

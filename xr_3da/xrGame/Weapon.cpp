@@ -940,6 +940,12 @@ void CWeapon::UpdateAddonsVisibility()
 	pWeaponVisual->CalculateBones();
 }
 
+bool CWeapon::Activate() 
+{
+	UpdateAddonsVisibility();
+	return inherited::Activate();
+}
+
 void CWeapon::InitAddons()
 {
 }

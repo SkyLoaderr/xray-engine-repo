@@ -121,6 +121,14 @@ void CUIScrollBar::UpdateScrollBar()
 	}
 }
 
+void CUIScrollBar::OnMouseWheel(int direction)
+{
+	if(direction>0)
+		ScrollInc();
+	else
+		ScrollDec();
+
+}
 
 void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -128,22 +136,14 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(msg == BUTTON_CLICKED)
 		{
-			if(ScrollDec())
-				if(m_bIsHorizontal)
-					GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
-				else
-					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
+			TryScrollDec();
 		}
 	}
 	else if(pWnd == &m_IncButton)
 	{
 		if(msg == BUTTON_CLICKED)
 		{
-			if(ScrollInc())
-				if(m_bIsHorizontal)
-					GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
-				else
-					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
+			TryScrollInc();
 		}
 	}	
 	else if(pWnd == &m_ScrollBox)
@@ -215,6 +215,25 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
+}
+
+void CUIScrollBar::TryScrollInc()
+{
+	if(ScrollInc())
+		if(m_bIsHorizontal)
+			GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
+		else
+			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
+}
+
+void CUIScrollBar::TryScrollDec()
+{
+	if(ScrollDec())
+		if(m_bIsHorizontal)
+			GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
+		else
+			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
+
 }
 
 

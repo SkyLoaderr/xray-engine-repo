@@ -43,6 +43,7 @@ public:
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
+	virtual bool		IR_OnMouseWheel			(int direction);
 
 
 	void				AddDialogToRender		(CUIWindow* pDialog);

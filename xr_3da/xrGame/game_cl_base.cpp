@@ -289,6 +289,10 @@ bool game_cl_GameState::IR_OnMouseMove			(int dx, int dy)
 {
 	return false;	
 }
+bool game_cl_GameState::IR_OnMouseWheel			(int direction)
+{
+	return false;
+}
 
 void game_cl_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 {

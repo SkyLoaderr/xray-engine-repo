@@ -41,6 +41,7 @@ public:
 
 	virtual void DropAll();
 		
+	virtual void OnMouseWheel(int direction);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	virtual void Init(int x, int y, int width, int height);

@@ -75,6 +75,7 @@ public:
 	bool					IR_OnKeyboardPress		(int dik);
 	bool					IR_OnKeyboardRelease	(int dik);
 	bool					IR_OnMouseMove			(int,int);
+	bool					IR_OnMouseWheel			(int direction);
 
 	CUIGameCustom*			UIGame					()					{return pUIGame;}
 	// --- depends on game type

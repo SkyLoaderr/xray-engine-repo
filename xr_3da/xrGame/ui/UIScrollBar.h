@@ -26,6 +26,7 @@ public:
 	//сообщения, отправляемые родительскому окну
 //	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
+	virtual void OnMouseWheel(int direction);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	virtual void Draw();
@@ -53,14 +54,17 @@ public:
 
 	//базовые размеры для кнопок
 	enum {SCROLLBAR_WIDTH = 16, SCROLLBAR_HEIGHT = 16};
+	void TryScrollInc();
+	void TryScrollDec();
 
 protected:
-	//обновить полосу
-	void UpdateScrollBar();
-
 	//передвинуть каретку, если возможно
 	bool ScrollInc();
 	bool ScrollDec();
+
+	//обновить полосу
+	void UpdateScrollBar();
+
 
 	//горизонтальный или вертикальный 
 	bool m_bIsHorizontal;

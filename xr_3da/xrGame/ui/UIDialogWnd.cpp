@@ -83,6 +83,13 @@ bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 
 	return 	OnKeyboard(dik,	WINDOW_KEY_RELEASED);
 }
+
+bool CUIDialogWnd::IR_OnMouseWheel (int direction)
+{
+	OnMouseWheel(direction);
+	return true;
+}
+
 bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 {
 	if(!IsEnabled()) return false;

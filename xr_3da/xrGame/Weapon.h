@@ -79,7 +79,8 @@ public:
 	virtual void			activate_physic_shell();
 	virtual void			setup_physic_shell	();
 
-	virtual void			SwitchState(u32 S);
+	virtual void			SwitchState			(u32 S);
+	virtual bool			Activate			();
 
 	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
 	virtual void	OnActiveItem		();
