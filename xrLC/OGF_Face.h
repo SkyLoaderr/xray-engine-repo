@@ -112,9 +112,8 @@ struct OGF : public OGF_Base
 	xr_vector<Vsplit>	pmap_vsplit	;
 	xr_vector<u16>		pmap_faces	;
 	u32					dwMinVerts	;
-	int					I_Current	;
 
-	FSlideWindowItem	m_SWI;		// The records of the collapses.
+	FSlideWindowItem	m_SWI		;		// The records of the collapses.
 
 	// for build only
 	u32					dwRelevantUV	;
@@ -135,7 +134,6 @@ struct OGF : public OGF_Base
 		m_SWI.reserved[3]	= 0;
 		dwRelevantUV		= 0;
 		dwRelevantUVMASK	= 0;
-		I_Current			= -1;
 	};
 	~OGF(){
 		xr_free			(m_SWI.sw);
@@ -150,6 +148,8 @@ struct OGF : public OGF_Base
 	void				MakeProgressive	();
 	void				Stripify		();
 	void				DumpFaces		();
+
+	BOOL				is_progressive	()	{ return m_SWI.count;	}
 
 	virtual void		PreSave			();
 	virtual void		Save			(IWriter &fs);

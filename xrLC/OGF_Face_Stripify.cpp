@@ -57,9 +57,9 @@ void xrStripify		(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSi
 	PGROUP.clear	();
 }
 
-void OGF::Stripify	()
+void OGF::Stripify		()
 {
-	if (m_SWI.count||(I_Current>=0))	return;	// Mesh already progressive - don't stripify it
+	if (m_SWI.count)	return;	// Mesh already progressive - don't stripify it
 
 	// fast verts
 	if (x_vertices.size() && x_faces.size())

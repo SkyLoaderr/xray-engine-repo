@@ -126,16 +126,6 @@ struct ENGINE_API FSlideWindowItem {
 //	u32		Count
 //  ..indices itself (u16[Count]);
 
-// OGF_P_MAP
-//		PMAP_HEADER = 0x1
-//			u32		MinVertCount
-//			u32		I_Current
-//		PMAP_VSPLIT	= 0x2
-//			VSPLIT[dwVertCount-MinVertCount]
-//		PMAP_FACES	= 0x3
-//			u32 dwCount
-//			u16[dwCount]
-
 // OGF_VCONTAINER
 // u32		CID;		// Container ID
 // u32		Offset;		// Add for every IDX and use as the start vertex
