@@ -444,10 +444,10 @@ public:
 		m_avoid_dynamic_obstacles		= parameters.avoid_dynamic_obstacles;
 	}
 
-	IC	bool		is_accessible	(const _index_type node_index) const
+	IC	bool		is_accessible	(const _index_type vertex_id) const
 	{
 		VERIFY					(graph);
-		return					(graph->valid_vertex_id(vertex_id) && (!m_avoid_dynamic_obstacles || graph->is_accessible(node_index)));
+		return					(graph->valid_vertex_id(vertex_id) && (!m_avoid_dynamic_obstacles || graph->is_accessible(vertex_id)));
 	}
 };
 
@@ -819,7 +819,7 @@ public:
 			return					(false);
 		}
 
-		if ((_abs(m_params->m_position.y() - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon))
+		if ((_abs(m_params->m_position.y - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon))
 			return					(false);
 		else {
 			m_params->m_distance	= 0.f;
