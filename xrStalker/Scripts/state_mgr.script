@@ -68,7 +68,10 @@ function act_state_mgr_end:execute()
 	if state_lib.states[self.st.target_state].weapon ~= nil and
 	   state_lib.states[self.st.target_state].weapon ~= "strapped"
 	then
-		if state_lib.states[self.st.target_state].weapon == "fire" then
+		if state_lib.states[self.st.target_state].weapon == "fire" and
+		   (self.object:best_enemy() ~= nil and
+		    self.object:best_enemy():alive() == true)
+		then
 			self.object:set_item(object.fire1, self.object:best_weapon())
 		else
 			self.object:set_item(object.idle, self.object:best_weapon())
