@@ -29,7 +29,7 @@ void CDetailManager::VS_Load()
 	_RELEASE		(errors);
 
 	// Analyze batch-size
-	VS_BatchSize	= (DWORD(HW.Caps.vertex.dwRegisters)-1)/5;
+	VS_BatchSize	= 10; //(DWORD(HW.Caps.vertex.dwRegisters)-1)/5;
 
 	// Pre-process objects
 	DWORD			dwVerts		= 0;
@@ -41,6 +41,7 @@ void CDetailManager::VS_Load()
 		dwIndices	+=	D.number_indices*VS_BatchSize;
 	}
 	DWORD			vSize		= (3+1+2)*4;
+	Msg("* [DETAILS] %d v, %d p",dwVerts,dwIndices/3);
 
 	// Determine POOL & USAGE
 	DWORD dwUsage	=	D3DUSAGE_WRITEONLY;
