@@ -205,11 +205,11 @@ void CCreator::OnFrame	( void )
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))
 	{
-		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(200,5000);
+		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(1000,10000);
 		Fvector	pos;
 		pos.random_dir			();
 		pos.normalize			();
-		pos.mul					(::Random.randF(10,40));
+		pos.mul					(::Random.randF(10,50));
 		pos.add					(Device.vCameraPosition);
 		pSounds->Play3DAtPos	(Sounds_Random[::Random.randI(Sounds_Random.size())],pos,false);
 	}
