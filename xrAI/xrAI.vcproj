@@ -1312,6 +1312,12 @@
 					Name="ALife"
 					Filter="">
 					<File
+						RelativePath=".\alife_artefact_order.cpp">
+					</File>
+					<File
+						RelativePath=".\alife_artefact_order.h">
+					</File>
+					<File
 						RelativePath=".\alife_event_personal.cpp">
 					</File>
 					<File
