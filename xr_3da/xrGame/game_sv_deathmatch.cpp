@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "game_sv_deathmatch.h"
+#include "HUDmanager.h"
 
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
@@ -169,4 +170,35 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
+
+//	HUD().outMessage			(0xffffffff,"DM","Player '%s' connected",A->s_name_replace);
 }
+
+
+void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
+{
+	__super::OnPlayerDisconnect	(id_who);
+
+	LPCSTR	Name = NULL;
+	Name = get_name_id(id_who);
+
+	xrServer*	S					=	Level().Server;
+	
+	// Remove everything
+	xr_vector<u16>*	C				=	get_children(id_who);
+	xr_vector<u16>::iterator i,e;
+	i=C->begin();
+	e=C->end();
+	for(;i!=e;i++)
+//	while(C->size())
+	{
+		u16		eid						= (*i);
+		
+		CSE_Abstract*		what		= S->ID_to_entity(eid);
+		S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
+	}
+	CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
+	S->Perform_destroy				(from,net_flags(TRUE, TRUE), TRUE);
+
+	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
+};
