@@ -2233,6 +2233,9 @@
 				RelativePath="PHShell.h">
 			</File>
 			<File
+				RelativePath=".\PHSkeletonSupport.h">
+			</File>
+			<File
 				RelativePath="Physics.cpp">
 			</File>
 			<File
