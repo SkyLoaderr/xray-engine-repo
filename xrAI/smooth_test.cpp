@@ -299,8 +299,7 @@ IC	bool build_line_trajectory(
 		TIMER_STOP(BuildLineTrajectory)
 		return			(true);
 	}
-	Fvector				start_point = v3d(start.point), dest_point = v3d(dest.point);
-	bool				b = path ? level_graph.create_straight_PTN_path(vertex_id,start_point,dest_point,*path,node_path,false,false) : level_graph.valid_vertex_id(level_graph.check_position_in_direction(vertex_id,start_point,dest_point));
+	bool				b = path ? level_graph.create_straight_PTN_path(vertex_id,start.point,dest.point,*path,node_path,false,false) : level_graph.valid_vertex_id(level_graph.check_position_in_direction(vertex_id,start.point,dest.point));
 	TIMER_STOP(BuildLineTrajectory)
 	return				(b);
 }

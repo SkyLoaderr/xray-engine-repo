@@ -477,7 +477,6 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 	dir.sub					(dest,start);
 	Fvector2				temp;
 	Fvector					pos3d;
-	SContour				_contour;
 	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
 
 	if (bClearPath) {
@@ -512,13 +511,33 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 					continue;
 				cur_sqr			= dist;
 
-				SContour		tNextContour;
-				SSegment		tNextSegment;
+				Fvector2		next1, next2;
 				Fvector			tIntersectPoint;
-				contour			(tNextContour,cur_vertex_id);
-				contour			(_contour,next_vertex_id);
-				intersect		(tNextSegment,tNextContour,_contour);
-				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
+
+				switch (I) {
+					case 0 : {
+						next1		= box.max;
+						next2.set	(box.max.x,box.min.y);
+						break;
+					}
+					case 1 : {
+						next1		= box.min;
+						next2.set	(box.max.x,box.min.y);
+						break;
+					}
+					case 2 : {
+						next1		= box.min;
+						next2.set	(box.min.x,box.max.y);
+						break;
+					}
+					case 3 : {
+						next1		= box.max;
+						next2.set	(box.min.x,box.max.y);
+						break;
+					}
+					default : NODEFAULT;
+				}
+				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
 				VERIFY			(dwIntersect);
 				tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 
