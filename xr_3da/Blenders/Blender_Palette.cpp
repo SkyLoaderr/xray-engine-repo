@@ -29,7 +29,6 @@ void		IBlender::CreatePalette(xr_vector<IBlender*> &palette)
 	palette.push_back(Create(B_EDITOR_WIRE));
 	palette.push_back(Create(B_EDITOR_SEL));
 	palette.push_back(Create(B_LIGHT));
-	palette.push_back(Create(B_LmBmmD));
 	palette.push_back(Create(B_LaEmB));
 	palette.push_back(Create(B_LmEbB));
 	palette.push_back(Create(B_BmmD));
@@ -86,7 +85,6 @@ void		IBlender::Destroy	(IBlender*& B)
 #include "blender_light.h"
 #include "blender_LaEmB.h"
 #include "blender_Lm(EbB).h"
-#include "blender_LmBmmD.h"
 #include "blender_BmmD.h"
 #include "blender_B.h"
 #include "blender_shadow_texture.h"
@@ -110,7 +108,6 @@ IBlender*	IBlender::Create	(CLASS_ID cls)
 	case B_EDITOR_WIRE:		return xr_new<CBlender_Editor_Wire>();	
 	case B_EDITOR_SEL:		return xr_new<CBlender_Editor_Selection>();
 	case B_LIGHT:			return xr_new<CBlender_LIGHT>();		
-	case B_LmBmmD:			return xr_new<CBlender_LmBmmD>();		
 	case B_LaEmB:			return xr_new<CBlender_LaEmB>();		
 	case B_LmEbB:			return xr_new<CBlender_LmEbB>();		
 	case B_B:				return xr_new<CBlender_B>();			

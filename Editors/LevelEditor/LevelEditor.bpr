@@ -279,7 +279,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=102
+Build=103
 Debug=1
 PreRelease=0
 Special=0
@@ -291,7 +291,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.102
+FileVersion=1.0.2.103
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -301,15 +301,17 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=2
-Item0=r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals
-Item1=P:\;C:\Rad\Borland\CBuilder6\Projects;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Game;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source
+Count=3
+Item0=C:\Rad\Borland\CBuilder6\Projects;Engine\Game;Edit;Engine;r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals
+Item1=r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals
+Item2=P:\;C:\Rad\Borland\CBuilder6\Projects;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Game;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source
 
 [HistoryLists\hlLibraryPath]
-Count=3
-Item0=C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
-Item1=P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;x:\
+Count=4
+Item0=Engine\Game;Edit;Engine;C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
+Item1=C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
 Item2=P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;x:\
+Item3=P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;x:\
 
 [HistoryLists\hlDebugSourcePath]
 Count=5

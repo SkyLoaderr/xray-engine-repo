@@ -49,6 +49,7 @@ bool TUI::Command( int _Command, int p1, int p2 )
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);
 			Command			(COMMAND_CHANGE_ACTION, etaSelect);
+			Command			(COMMAND_RENDER_RESIZE);
         }else{
         	bRes = false;
         }

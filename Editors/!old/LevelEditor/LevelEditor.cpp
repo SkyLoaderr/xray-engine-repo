@@ -54,7 +54,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         TfrmLog::CreateLog		();
 
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmSplash), &frmSplash);
 		frmMain->SetHInst		(hInst);
 
 		xr_delete(frmSplash);

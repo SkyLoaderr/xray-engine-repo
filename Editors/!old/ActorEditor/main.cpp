@@ -244,3 +244,5 @@ void __fastcall TfrmMain::paRenderResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+

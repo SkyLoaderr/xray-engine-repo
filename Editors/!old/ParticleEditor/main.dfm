@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 322
-  Top = 238
+  Left = 298
+  Top = 210
   Width = 770
   Height = 446
   Color = clBtnFace
@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Position = poDefault
   Scaled = False
   OnActivate = FormActivate
   OnClose = FormClose
@@ -144,10 +145,10 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnResize = paRenderResize
       object D3DWindow: TD3DWindow
-        Left = 22
-        Top = 22
-        Width = 339
-        Height = 259
+        Left = 6
+        Top = 6
+        Width = 531
+        Height = 371
         FocusedColor = 9502719
         UnfocusedColor = 9211020
         OnChangeFocus = D3DWindowChangeFocus
