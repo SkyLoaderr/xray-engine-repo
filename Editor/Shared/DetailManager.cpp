@@ -178,13 +178,16 @@ void CDetailManager::Render		(Fvector& EYE)
 	float fade_range			= fade_limit-fade_start;
 
 	// Collect objects for rendering
+	Device.Statistic.RenderDUMP_DT_VIS.Begin	();
 	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++)
 	{
 		for (int _x=s_x-dm_size; _x<=(s_x+dm_size); _x++)
 		{
 			// Query for slot
+			Device.Statistic.RenderDUMP_DT_Cache.Begin	();
 			Slot&	S		= Query(_x,_z);
 			S.dwFrameUsed	= Device.dwFrame;
+			Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 			// Transfer visibile and partially visible slot contents
 			BYTE mask		= 0xff;
@@ -242,8 +245,10 @@ void CDetailManager::Render		(Fvector& EYE)
 			}
 		}
 	}
+	Device.Statistic.RenderDUMP_DT_VIS.End	();
 
-	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
+	Device.Statistic.RenderDUMP_DT_Render.Begin	();
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
 
 	// Render itself
 	float	fPhaseRange	= PI/16;
@@ -367,6 +372,7 @@ void CDetailManager::Render		(Fvector& EYE)
 		vis.clear	();
 	}
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
+	Device.Statistic.RenderDUMP_DT_Render.End	();
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
