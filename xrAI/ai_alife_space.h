@@ -275,7 +275,7 @@ namespace ALife {
 							if (!stricmp(caHitType,"telepatic"))
 								return(eHitTypeTelepatic);
 							else
-								R_ASSERT2(false,"Unsupported hit type!");
+								Debug.fatal("Unsupported hit type!");
 #ifndef _EDITOR
 		__assume(0);
 #else
