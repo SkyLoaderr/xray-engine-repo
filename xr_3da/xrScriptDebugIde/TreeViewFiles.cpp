@@ -391,7 +391,7 @@ void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult)
 		mnu_itm = mnu.GetMenuItemID(3);
 		mnu.EnableMenuItem(mnu_itm,(stat != -1)?MF_ENABLED : MF_GRAYED);
 		mnu_itm = mnu.GetMenuItemID(4);
-		mnu.EnableMenuItem(mnu_itm,/*(stat != -1)?MF_ENABLED : */MF_GRAYED);
+		mnu.EnableMenuItem(mnu_itm,((stat != vss_no_ss)&&(stat != vss_unknown))?MF_ENABLED : MF_GRAYED);
 
 			POINT mouse;
 			GetCursorPos(&mouse);
