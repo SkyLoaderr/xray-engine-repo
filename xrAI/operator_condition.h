@@ -8,6 +8,9 @@
 
 #pragma once
 
+//#define USE_HASH
+
+#ifdef USE_HASH
 class CRandom32 {
 private:
 	u32			m_seed;
@@ -31,6 +34,7 @@ public:
 };
 
 extern CRandom32 rand32;
+#endif
 
 template <
 	typename _condition_type,
@@ -42,14 +46,18 @@ protected:
 protected:
 	_condition_type		m_condition;
 	_value_type			m_value;
+#ifdef USE_HASH
 	u32					m_hash;
+#endif
 
 public:
 	IC								COperatorConditionAbstract	(const _condition_type condition, const _value_type value);
 	virtual							~COperatorConditionAbstract	();
 	IC		const _condition_type	&condition					() const;
 	IC		const _value_type		&value						() const;
+#ifdef USE_HASH
 	IC		const u32				&hash_value					() const;
+#endif
 	IC		bool					operator<					(const COperatorCondition &condition) const;
 	IC		bool					operator==					(const COperatorCondition &condition) const;
 };

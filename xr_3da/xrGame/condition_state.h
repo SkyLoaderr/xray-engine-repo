@@ -36,8 +36,10 @@ public:
 	IC	void									clear				();
 	IC	CSConditionState						&operator-=			(const CConditionState &condition);
 	IC	bool 									operator==			(const CConditionState &condition);
+#ifdef USE_HASH
 	IC											operator u32		() const;
 	IC	u32										hash_value			() const;
+#endif
 };
 
 #include "condition_state_inline.h"
