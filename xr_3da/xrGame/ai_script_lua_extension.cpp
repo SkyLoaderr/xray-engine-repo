@@ -19,9 +19,9 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCS
 	R_ASSERT		(l_tpIniFile);
 	LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
 
-	u32				N = _GetItemCount(caScriptString);
+	u32				caNamespaceName = _GetItemCount(caScriptString);
 	string16		I;
-	for (u32 i=0; i<N; i++) {
+	for (u32 i=0; i<caNamespaceName; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
 		vfLoadFile	(tpLuaVirtualMachine,S,true);
 	}
@@ -58,26 +58,38 @@ void Script::vfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScript
 	string256		l_caNamespaceName;
 	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
 	if (!strlen(l_caNamespaceName))
-		vfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall);
+		bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall);
 	else
-		vfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall);
+		bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall);
 }
 
-void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
+bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
 {
-	lua_newtable	(tpLuaVirtualMachine);
 	lua_pushstring	(tpLuaVirtualMachine,caNamespaceName);
-	lua_pushvalue	(tpLuaVirtualMachine,-2);
-	lua_settable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
+	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
+	if (lua_isnil(tpLuaVirtualMachine,-1)) {
+		lua_pop			(tpLuaVirtualMachine,1);
+		lua_newtable	(tpLuaVirtualMachine);
+		lua_pushstring	(tpLuaVirtualMachine,caNamespaceName);
+		lua_pushvalue	(tpLuaVirtualMachine,-2);
+		lua_settable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
+	}
+	else
+		if (!lua_istable(tpLuaVirtualMachine,-1)) {
+			lua_pop			(tpLuaVirtualMachine,1);
+			Msg				(" [LUA] Error : the namespace name %s is already being used by the non-table object!",caNamespaceName);
+			return			(false);
+		}
+	
 	lua_newtable	(tpLuaVirtualMachine);
 	lua_pushstring	(tpLuaVirtualMachine,"_G");
 	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
 	lua_pushnil		(tpLuaVirtualMachine);
-	while (lua_next(tpLuaVirtualMachine,-2) != 0) {
+	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_settable	(tpLuaVirtualMachine,-6);
-		lua_pop			(tpLuaVirtualMachine,1);
+		lua_pop			(tpLuaVirtualMachine, 1);
 	}
 
 	string256		l_caLuaFileName;
@@ -93,24 +105,24 @@ void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
 	}
 #endif
-	
+
 	if (bCall)
 		lua_call		(tpLuaVirtualMachine,0,0);
 	else
 		lua_insert		(tpLuaVirtualMachine,-4);
 
 	lua_pushnil		(tpLuaVirtualMachine);
-	while (lua_next(tpLuaVirtualMachine,-2) != 0) {
+	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_gettable	(tpLuaVirtualMachine,-5);
 		if (lua_isnil(tpLuaVirtualMachine,-1)) {
 			lua_pop			(tpLuaVirtualMachine,1);
 			lua_pushvalue	(tpLuaVirtualMachine,-2);
 			lua_pushvalue	(tpLuaVirtualMachine,-2);
-			lua_settable	(tpLuaVirtualMachine,-7);
 			lua_pushvalue	(tpLuaVirtualMachine,-2);
 			lua_pushnil		(tpLuaVirtualMachine);
-			lua_settable	(tpLuaVirtualMachine,-5);
+			lua_settable	(tpLuaVirtualMachine,-7);
+			lua_settable	(tpLuaVirtualMachine,-7);
 		}
 		else {
 			lua_pop			(tpLuaVirtualMachine,1);
@@ -119,18 +131,19 @@ void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 			if (!lua_equal(tpLuaVirtualMachine,-1,-2)) {
 				lua_pushvalue	(tpLuaVirtualMachine,-3);
 				lua_pushvalue	(tpLuaVirtualMachine,-2);
-				lua_settable	(tpLuaVirtualMachine,-7);
-				lua_pop			(tpLuaVirtualMachine,1);
 				lua_pushvalue	(tpLuaVirtualMachine,-2);
-				lua_pushvalue	(tpLuaVirtualMachine,-2);
-				lua_settable	(tpLuaVirtualMachine,-5);
+				lua_pushvalue	(tpLuaVirtualMachine,-5);
+				lua_settable	(tpLuaVirtualMachine,-8);
+				lua_settable	(tpLuaVirtualMachine,-8);
 			}
+			lua_pop			(tpLuaVirtualMachine,1);
 		}
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_pushnil		(tpLuaVirtualMachine);
 		lua_settable	(tpLuaVirtualMachine,-6);
-		lua_pop			(tpLuaVirtualMachine,1);
+		lua_pop			(tpLuaVirtualMachine, 1);
 	}
 	
 	lua_pop			(tpLuaVirtualMachine,3);
+	return			(true);
 }

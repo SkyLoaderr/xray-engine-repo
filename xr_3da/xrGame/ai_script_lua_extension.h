@@ -25,7 +25,7 @@ namespace Script {
 	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
 	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
 	void		vfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, bool bCall = true);
-	void		vfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, LPCSTR caNamespaceName, bool bCall);
+	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, LPCSTR caNamespaceName, bool bCall);
 #ifdef DEBUG
 	LPCSTR		cafEventToString			(int				iEventCode);
 	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
