@@ -52,9 +52,9 @@ Irect CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (
 
 void CUICustomMap::FitToWidth	(u32 width)
 {
-	float kW = m_BoundRect.width()/m_BoundRect.height();
+	float k = m_BoundRect.width()/m_BoundRect.height();
 	int w = width;
-	int h = iFloor(kW*width);
+	int h = iFloor(k*width);
 	SetWndRect(0,0,w,h);
 	
 	m_zoom_factor = m_BoundRect.width()/w;
@@ -62,9 +62,9 @@ void CUICustomMap::FitToWidth	(u32 width)
 
 void CUICustomMap::FitToHeight	(u32 height)
 {
-	float kH = m_BoundRect.height()/m_BoundRect.width();
+	float k = m_BoundRect.width()/m_BoundRect.height();
 	int h = height;
-	int w = iFloor(kH*height);
+	int w = iFloor(k*height);
 	SetWndRect(0,0,w,h);
 	
 	m_zoom_factor = m_BoundRect.height()/h;
@@ -294,6 +294,7 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	
 	m_activeLevelMap = it->second;
 	m_UILevelFrame.AttachChild(m_activeLevelMap);
+	BringToTop(m_GlobalMap);
 }
 
 void CUIMapWnd::Draw()
