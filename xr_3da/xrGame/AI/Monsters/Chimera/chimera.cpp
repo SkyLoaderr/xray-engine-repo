@@ -27,7 +27,6 @@ void CChimera::Init()
 void CChimera::reinit()
 {
 	inherited::reinit();
-	//CStateManagerChimera::reinit(this);	
 
 	b_upper_state					= false;
 }
@@ -35,7 +34,6 @@ void CChimera::reinit()
 void CChimera::Load(LPCSTR section)
 {
 	inherited::Load	(section);
-	//CStateManagerChimera::Init();
 
 	MotionMan.AddReplacedAnim(&b_upper_state, eAnimAttack,			eAnimUpperAttack);
 	MotionMan.AddReplacedAnim(&b_upper_state, eAnimWalkFwd,			eAnimUpperWalkFwd);
@@ -46,11 +44,10 @@ void CChimera::Load(LPCSTR section)
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
-}
 
-void CChimera::load_shared(LPCSTR section)
-{
-	inherited::load_shared(section);
+	//*****************************************************************************
+	// load shared motion data
+	//*****************************************************************************
 
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
@@ -89,7 +86,6 @@ void CChimera::load_shared(LPCSTR section)
 	MotionMan.AddAnim(eAnimUpperAttack,			"stand_up_attack_",		-1, &inherited::get_sd()->m_fsVelocitySteal,			PS_STAND_UPPER);
 
 	//////////////////////////////////////////////////////////////////////////
-
 	// define transitions
 	MotionMan.AddTransition(PS_STAND,			PS_STAND_UPPER,		eAnimStandToUpperStand,		false);
 	MotionMan.AddTransition(PS_STAND_UPPER,		PS_STAND,			eAnimUppperStandToStand,	false);
@@ -111,12 +107,9 @@ void CChimera::load_shared(LPCSTR section)
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
 
 	MotionMan.finish_load_shared();
+	
+	//*****************************************************************************
 }
-
-
-
-
-
 
 void CChimera::StateSelector()
 {	
