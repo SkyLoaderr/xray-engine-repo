@@ -46,7 +46,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 						  width = 0,
 						  height = 0}
 	lst_rect.width  = self.main_rect.width - lst_rect.x - edit_rect.width - self.indent*2
-	lst_rect.height = self.main_rect.height - lst_rect.x - self.indent
+	lst_rect.height = self.main_rect.height - lst_rect.y - self.indent
 	
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
