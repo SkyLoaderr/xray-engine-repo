@@ -125,9 +125,6 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 			SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
 			break;
 	}
-	
-	if (CurrentState->CheckCompletion()) l_tAction.m_bCompleted = true;
-	else l_tAction.m_bCompleted = false;
 
 	b_script_state_must_execute = true;
 	return (!l_tAction.m_bCompleted);
@@ -153,7 +150,7 @@ void CAI_Biting::ProcessScripts()
 	MotionMan.accel_deactivate					();
 
 	// если из скрипта выбрано действие по универсальной схеме, выполнить его
-	if (b_script_state_must_execute && !CurrentState->CheckCompletion())			
+	if (b_script_state_must_execute)			
 		CurrentState->Execute					(m_current_update);
 	
 	TranslateActionToPathParams					();
@@ -273,6 +270,5 @@ int	CAI_Biting::get_enemy_strength()
 			case 0 : 	return (4);
 		}
 	} 
-	
 	return (0);
 }

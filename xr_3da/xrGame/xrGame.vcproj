@@ -6082,13 +6082,22 @@
 					RelativePath=".\M_Boar.ltx">
 				</File>
 				<File
+					RelativePath=".\M_burer.ltx">
+				</File>
+				<File
 					RelativePath=".\M_Chimera.ltx">
+				</File>
+				<File
+					RelativePath=".\M_controller.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Dog.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Flesh.ltx">
+				</File>
+				<File
+					RelativePath=".\M_giant.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Pseudodog.ltx">
