@@ -14,8 +14,7 @@ void blit	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD 
 			DWORD dx = px+x;
 			DWORD dy = py+y;
 			DWORD sc = src[y*ss_x+x];
-			if (RGBA_GETALPHA(sc)<aREF)	sc=0;
-			dest[dy*ds_x+dx] = sc;
+			if (RGBA_GETALPHA(sc)>=aREF) dest[dy*ds_x+dx] = sc;
 		}
 }
 
@@ -29,8 +28,7 @@ void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWOR
 			DWORD dx = px+y;
 			DWORD dy = py+x;
 			DWORD sc = src[y*ss_x+x];
-			if (RGBA_GETALPHA(sc)<aREF)	sc=0;
-			dest[dy*ds_x+dx] = sc;
+			if (RGBA_GETALPHA(sc)>=aREF) dest[dy*ds_x+dx] = sc;
 		}
 }
 
