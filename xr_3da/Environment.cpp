@@ -80,8 +80,6 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 			Suns.push_back(pSun);
 		}
 	}
-	if (pIni->LineExists(section,"pm_workaround"))
-	{	pm_bug = TRUE; }
 
 	c_Invalidate		();
 	Current.Sky.set		(0,0,0,0);
@@ -148,22 +146,9 @@ void CEnvironment::OnMove()
 	// Suns
 	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->OnMove();
 
-	// Flash and brightness
-	if (fFlash>0) fFlash -= Device.fTimeDelta;
-	if (fFlash>0) SetGradient(fFlash*3);
-
-	if (bUpdateBrightness){
-		Device.Gamma.Brightness(1.f+fBrightness);
-		Device.Gamma.Update();
-		bUpdateBrightness = false;
-		fBrightness = 0;
-	}
-
 	// ******************** Viewport params
 	float src = 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
 	float dst = 1-src;
-	FOV_Current= FOV_Current*dst + FOV_Dest*src;
-	psMouseSensScale = psMouseSensScale*dst + MOUSE_Sens*src;
 
 	// ******************** Environment params (interpolation)
 	float _s	= CurrentSpeed*Device.fTimeDelta;	clamp(_s,0.f,1.f);
@@ -208,13 +193,8 @@ void CEnvironment::OnMove()
 //	if (pWeather) ((CPSObject*)pWeather)->Update();
 }
 
-void CEnvironment::SetGradient(float b){
-	if (bUpdateBrightness){
-		if (b>fBrightness) fBrightness = b;
-	}else{
-		bUpdateBrightness = true;
-		fBrightness = b;
-	}
+void CEnvironment::SetGradient(float b)
+{
 }
 
 void CEnvironment::OnDeviceCreate()

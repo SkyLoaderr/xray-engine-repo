@@ -64,7 +64,7 @@ void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 		data->Read(&bv_Radius,sizeof(float));
 	}
 
-	if ((*((DWORD*)&bv_Radius)==0xffc00000)||(pCreator->Environment.pm_bug))
+	if (*LPDWORD(&bv_Radius) == 0xffc00000)
 	{
 		bv_Position.sub	(bbox.max,bbox.min);
 		bv_Position.div	(2);
