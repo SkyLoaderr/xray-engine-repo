@@ -27,7 +27,6 @@ end
 
 function Patrol:set_friend (npc_object)
 	self.friend = npc_object
-	printf ("Set friend %s for object %s", self.friend.npc:name (), self.npc:name ())
 end
 
 function Patrol:add_animation (anim_name)
@@ -56,6 +55,7 @@ end
 function Patrol:reset ()
 	self.npc:script (false, self.script)
 	self.npc:script (true, self.script)
+	printf ("Reset object %s, script %s", self.npc:name (), self.script)
 end
 
 function Patrol:start ()
@@ -78,7 +78,7 @@ end
 function Patrol:move_alternate ()
 
     if table.getn (self.alt_paths) < self.current_path then return 0 end
-	if math.random (1, 100) > self.probability  or self.moved == 1 then return 0 end
+	if math.random (1, 100) > self.probability or self.moved == 1 then return 0 end
 	self:reset ()
 	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.alt_paths[self.current_path])),
 			look (look.search), anim (anim.free), cond (cond.move_end))
@@ -227,8 +227,9 @@ function main ()
 	patrol2:add_animation ("uslishal")
 	patrol2:add_animation ("plechi")
 
-	patrol1:set_friend (patrol2)
-	patrol2:set_friend (patrol1)
+	patrol1.friend = patrol2
+	patrol2.friend = patrol1
+
 	patrol1.probability = 40
 	patrol2.probability = 40
 

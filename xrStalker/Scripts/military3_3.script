@@ -5,7 +5,7 @@ local anims = {"stoya_ruje_ 0", "vishka_3"}
 function waiting (actor)
     military3_3.reset (actor)
 	action (actor, move (move.standing, move.stand, move.line, patrol ("way_sh1")), 
-			look (), anim (anims[math.random (1, table.getn (anims))]), cond (cond.anim_end))
+			look (), anim (anims[math.random (1, table.getn (anims))], true), cond (cond.anim_end))
 	while actor:action () do wait () end
 end
 

@@ -77,6 +77,7 @@ function SinglePatrol:__init (npc, script_name, path_name, anim_set)
 end
 
 function SinglePatrol:process ()
+
 	if self.started == false then
 	   self.npc:script (true, self.script_name)
 	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
@@ -89,7 +90,7 @@ function SinglePatrol:process ()
 	   if self.npc:action () then return 
 	   else		
 	      reset_action (self.npc, self.script_name)
-	      action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+	      action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
 	   		      look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
 		  self.current_state = 0
 		  return
@@ -102,6 +103,7 @@ function SinglePatrol:process ()
 
     action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
 		 	anim (self.animations:get_animation ()), cond (cond.anim_end))
+	self.current_state = 1
 
 end
 
