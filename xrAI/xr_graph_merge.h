@@ -10,19 +10,24 @@
 
 struct CLevelInfo {
 	u32				id;
-	LPCSTR			name;
+	LPSTR			name;
 	Fvector			offset;
 
 	CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset) :
-	id(_id),
-		name(_name),
+		id(_id),
 		offset(_offset)
 	{
+		name		= strlwr(xr_strdup(_name));
 	}
 
 	IC	bool	operator< (const CLevelInfo &info) const
 	{
 		return		(id < info.id);
+	}
+
+	virtual ~CLevelInfo()
+	{
+		xr_free		(name);
 	}
 };
 
