@@ -11,6 +11,7 @@ dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
 
 #ifdef DEBUG
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
+	BoxCenter = 0;
 #endif
 }
 
@@ -273,7 +274,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	/* Get box */
 #ifndef DEBUG
 	Fvector AABB;
-	Fvector* BoxCenter;
+	Fvector* BoxCenter=0;
 #endif
 	Fvector BoxExtents;
 
@@ -577,8 +578,10 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 #ifdef DEBUG
 void dcTriListCollider::OnRender()
 {
-	Fvector C;
-	C.set(0,0,0);
-	Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+	if (BoxCenter){
+		Fvector C;
+		C.set(0,0,0);
+		Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+	}
 }
 #endif
