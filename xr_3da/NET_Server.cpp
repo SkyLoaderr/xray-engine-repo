@@ -120,7 +120,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 	// Parse options
 	string256				session_name;
 	strcpy					(session_name,options);
-	if (strchr(session_name,'|'))	*strchr(session_name,'|')=0;
+	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
 
     // Create the IDirectPlay8Client object.
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));

@@ -123,7 +123,7 @@ public:
 		}
 		string64	l_name;
 		strcpy		(l_name,args);
-		if (strchr(l_name,'|'))		*strchr(l_name,'|') = 0;
+		if (strchr(l_name,'/'))		*strchr(l_name,'/') = 0;
 		int id		= pApp->Level_ID(l_name);
 		if (id>=0) {
 			Engine.Event.Defer("KERNEL:server",DWORD(xr_strdup(args)));

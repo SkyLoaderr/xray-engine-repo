@@ -14,7 +14,7 @@ BOOL CLevel::net_Start	( LPCSTR options, BOOL server )
 		// Activate level
 		string64					l_name;
 		strcpy						(l_name,options);
-		if (strchr(l_name,'|'))		*strchr(l_name,'|') = 0;
+		if (strchr(l_name,'/'))		*strchr(l_name,'/') = 0;
 		int id						= pApp->Level_ID(l_name);
 		if (id<0)	
 		{

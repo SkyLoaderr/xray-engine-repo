@@ -23,9 +23,9 @@ BOOL xrServer::Connect(LPCSTR session_name)
 	if (bResult)
 	{
 		// Parse options and create game
-		if (0==strchr(session_name,'|'))	return FALSE;
+		if (0==strchr(session_name,'/'))	return FALSE;
 		string256				options;
-		strcpy					(options,strchr(session_name,'|')+1);
+		strcpy					(options,strchr(session_name,'/')+1);
 		
 		// Parse game type
 		string64				type;
