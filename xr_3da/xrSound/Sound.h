@@ -185,7 +185,7 @@ class XRSOUND_API	CSound_manager_interface
 public:
 	//@{
 	/// General
-	virtual void					_initialize				( u32 window )																			= 0;
+	virtual void					_initialize				( u64 window )																			= 0;
 	virtual void					_destroy				( )																						= 0;
 	virtual void					_restart				( )																						= 0;
 	//@}
