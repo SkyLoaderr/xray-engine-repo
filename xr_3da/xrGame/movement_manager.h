@@ -25,17 +25,27 @@ class CMovementManager :
 {
 private:
 	enum EPathState {
-		ePathStateBuildGamePath = u32(0),
+		ePathStateSelectGameVertex = u32(0),
+		ePathStateBuildGamePath,
+		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
 		ePathStateBuildDetailPath,
-		ePathStateSelectGameNode,
-		ePathStateSelectLevelNode,
+		ePathStatePathVerification,
+		ePathStatePredictEnemyVertices,
+		ePathStateSelectEnemyVertex,
 		ePathStateDummy = u32(-1),
 	};
 	
-	float									m_cumulative_time_delta;
+	enum EPathType {
+		ePathTypeGamePath = u32(0),
+		ePathTypeLevelPath,
+		ePathTypeEnemySearch,
+		ePathStateDummy = u32(-1),
+	};
+	
 	EPathState								m_path_state;
-	EPathState								m_path_state_previous;
+	EPathType								m_path_type;
+	EPathType								m_path_type_previous;
 
 	template <u64 flags>
 	void			find_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);

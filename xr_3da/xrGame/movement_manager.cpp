@@ -189,6 +189,113 @@ void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_eva
 	if (node_evaluator)
 		init_evaluator			(node_evaluator);
 
+	if (m_path_type != m_path_type_previous) {
+		m_path_type_previous	= m_path_type;
+		switch (m_path_type) {
+			case ePathTypeGamePath : {
+				m_path_state	= m_game_vertex_evaluator ? ePathStateSelectGameVertex : ePathStateBuildGamePath;
+				break;
+			}
+			case ePathTypeLevelPath : {
+				m_path_state	= m_level_vertex_evaluator ? ePathStateSelectLevelVertex : ePathStateBuildLevelPath;
+				break;
+			}
+			case ePathTypeGamePath : {
+				m_path_state	= ePathStatePredictEnemyVertices;
+				break;
+			}
+			default : NODEFAULT;
+		}
+	}
+
+	switch (m_path_type) {
+		case ePathTypeGamePath : {
+			switch (m_path_state) {
+				case ePathStateSelectGameVertex : {
+					m_path_state	= ePathStateBuildGamePath;
+					break;
+				}
+				case ePathStateBuildGamePath : {
+					m_path_state	= ePathStateBuildLevelPath;
+					break;
+				}
+				case ePathStateSelectLevelVertex : {
+					m_path_state	= ePathStateBuildGamePath;
+					break;
+												  }
+				case ePathStateBuildLevelPath : {
+					m_path_state	= ePathStateBuildDetailPath;
+					break;
+				}
+				case ePathStateBuildDetailPath : {
+					m_path_state	= ePathStatePathVerification;
+					break;
+				}
+				case ePathStatePathVerification : {
+					if (true)
+						m_path_state	= ePathStateSelectLevelVertex;
+					else
+						m_path_state	= ePathStateSelectGameVertex;
+					break;
+				}
+				default : NODEFAULT;
+			}
+			break;
+		}
+		case ePathTypeLevelPath : {
+			switch (m_path_state) {
+				case ePathStateSelectLevelVertex : {
+					m_path_state	= ePathStateBuildLevelPath;
+					break;
+				}
+				case ePathStateBuildLevelPath : {
+					m_path_state	= ePathStateBuildDetailPath;
+					break;
+				}
+				case ePathStateBuildDetailPath : {
+					m_path_state	= ePathStatePathVerification;
+					break;
+				}
+				case ePathStatePathVerification : {
+					m_path_state	= ePathStateSelectLevelVertex;
+					break;
+				}
+				default : NODEFAULT;
+			}
+			break;
+		}
+		case ePathTypeEnemySearch : {
+			switch (m_path_state) {
+				case ePathStatePredictEnemyVertices : {
+					m_path_state	= ePathStateSelectEnemyVertex;
+					break;
+				}
+				case ePathStateSelectEnemyVertex : {
+					m_path_state	= ePathStateBuildLevelPath;
+					break;
+				}
+				case ePathStateBuildLevelPath : {
+					m_path_state	= ePathStateBuildDetailPath;
+					break;
+				}
+				case ePathStateBuildDetailPath : {
+					m_path_state	= ePathStatePathVerification;
+					break;
+				}
+				case ePathStatePathVerification : {
+					if (true)
+						m_path_state	= ePathStateSelectEnemyVertex;
+					else
+						m_path_state	= ePathStateBuildLevelPath;
+					break;
+				}
+				default : NODEFAULT;
+			}
+			break;
+		}
+		default : NODEFAULT;
+	}
+
 //	if (m_path_state_previous != m_path_state) {
 //		m_path_state_previous	= m_path_state;
 //		m_path_state			= ePathStateSearchNode;
