@@ -20,7 +20,7 @@ __fastcall TfraPS::TfraPS(TComponent* Owner)
     m_Current = 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfraPS::OnItemFocused(ListItemsVec& items)
+void TfraPS::OnItemFocused(ListItemsVec& items)
 {
 	VERIFY(items.size()<=1);
     m_Current 			= 0;
@@ -103,11 +103,11 @@ void __fastcall TfraPS::FormShow(TObject *Sender)
     m_Items->LoadSelection	(fsStorage);
     ListItemsVec items;
     for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++){
-    	ListItem* I=LHelper.CreateItem(items,*(*E)->m_Name,0,0,*E);
+    	ListItem* I=LHelper().CreateItem(items,*(*E)->m_Name,0,0,*E);
         I->SetIcon(1);
     }
     for (PS::PGDIt G=::Render->PSLibrary.FirstPGD(); G!=::Render->PSLibrary.LastPGD(); G++){
-    	ListItem* I=LHelper.CreateItem(items,*(*G)->m_Name,0,0,*G);
+    	ListItem* I=LHelper().CreateItem(items,*(*G)->m_Name,0,0,*G);
         I->SetIcon(2);
     }
     m_Items->AssignItems	(items,false,true);
@@ -116,15 +116,15 @@ void __fastcall TfraPS::FormShow(TObject *Sender)
 
 void __fastcall TfraPS::FormCreate(TObject *Sender)
 {
-    m_Items 				= TItemList::CreateForm("Particles",paItems, alClient, 0);
+    m_Items 				= IItemList::CreateForm("Particles",paItems, alClient, 0);
     m_Items->SetImages		(ilModeIcons);
-    m_Items->OnItemsFocused	= OnItemFocused;
+    m_Items->SetOnItemsFocusedEvent(OnItemFocused);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraPS::FormDestroy(TObject *Sender)
 {
-    TItemList::DestroyForm	(m_Items);
+    IItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 

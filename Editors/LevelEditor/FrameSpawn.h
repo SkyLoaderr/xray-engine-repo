@@ -14,7 +14,6 @@
 #include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
 
-#include "ItemList.h"
 #include "ESceneCustomMTools.h"
 // refs
 class CEditObject;
@@ -58,8 +57,8 @@ __published:	// IDE-managed Components
 	void __fastcall ebMultiSelectByRefAppendClick(TObject *Sender);
 	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
-    TItemList* m_Items;
-    void __fastcall OnItemFocused	(ListItemsVec& items);
+    IItemList* m_Items;
+    void __stdcall  OnItemFocused	(ListItemsVec& items);
     LPCSTR m_Current;
 	void 	SelByRefObject		( bool flag );
 	void 	MultiSelByRefObject ( bool clear_prev );

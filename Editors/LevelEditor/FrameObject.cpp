@@ -27,7 +27,7 @@ __fastcall TfraObject::TfraObject(TComponent* Owner,ESceneObjectTools* parent_to
     ParentTools	= parent_tools;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R)
+bool TfraObject::OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R)
 {
 	return FHelper.DrawThumbnail(Surface,R,sender->Key(),ECustomThumbnail::ETObject);
 }
@@ -203,7 +203,7 @@ void TfraObject::RefreshList()
 	    for (; it!=_E; it++){
             AnsiString fn 	= ChangeFileExt(it->first.c_str(),".thm");
             FS.update_path	(_objects_,fn);
-	    	ListItem* I=LHelper.CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
+	    	ListItem* I=LHelper().CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
             if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail= OnDrawObjectThumbnail;
         }
     }
@@ -231,14 +231,14 @@ void __fastcall TfraObject::FormHide(TObject *Sender)
 
 void __fastcall TfraObject::FormCreate(TObject *Sender)
 {
-    m_Items 				= TItemList::CreateForm("Objects", paItems, alClient, 0);
-    m_Items->OnItemsFocused	= OnItemFocused;
+    m_Items 				= IItemList::CreateForm("Objects", paItems, alClient, 0);
+    m_Items->SetOnItemsFocusedEvent(OnItemFocused);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraObject::FormDestroy(TObject *Sender)
 {
-    TItemList::DestroyForm	(m_Items);
+    IItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 

@@ -96,7 +96,7 @@ TElTreeItem* TfrmObjectList::AddFolder(EObjClass type)
     return node;
 }
 
-TElTreeItem* TfrmObjectList::AddObject(TElTreeItem* node, LPSTR name, void* obj)
+TElTreeItem* TfrmObjectList::AddObject(TElTreeItem* node, LPCSTR name, void* obj)
 {
     return tvItems->Items->AddChildObject(node, name, obj);
 }

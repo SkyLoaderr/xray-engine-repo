@@ -54,7 +54,7 @@ private:	// User declarations
     TProperties* 	m_SurfProp;
     bool			bModified;
     TOnModifiedEvent OnModifiedEvent;
-    void __fastcall	OnSurfaceFocused	   	(TElTreeItem* item);
+    void __stdcall 	OnSurfaceFocused	   	(TElTreeItem* item);
     ETextureThumbnail* m_Thumbnail;
     CSceneObject* 	m_pEditObject;
     void			FillBasicProps			();

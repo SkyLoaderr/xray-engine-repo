@@ -13,7 +13,6 @@
 #include "multi_edit.hpp"
 #include "mxPlacemnt.hpp"
 
-#include "ItemList.h"
 #include "ESceneCustomMTools.h"
 
 // refs
@@ -78,10 +77,10 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
-    TItemList* m_Items;
-    void __fastcall OnItemFocused		(ListItemsVec& items);
+    IItemList* m_Items;
+    void __stdcall  OnItemFocused		(ListItemsVec& items);
     LPCSTR m_Current;
-	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
+	bool __stdcall  OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
 public:		// User declarations
 	ESceneObjectTools* ParentTools;
     void			RefreshList();

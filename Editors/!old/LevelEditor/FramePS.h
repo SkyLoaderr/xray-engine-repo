@@ -10,7 +10,6 @@
 #include <ExtCtrls.hpp>
 #include "ExtBtn.hpp"
 
-#include "ItemList.h"
 #include "mxPlacemnt.hpp"
 #include <ImgList.hpp>
 #include "ESceneCustomMTools.h"
@@ -47,8 +46,8 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
     void __fastcall SelByRef		(bool flag);
-    TItemList* m_Items;
-    void __fastcall OnItemFocused	(ListItemsVec& items);
+    IItemList* m_Items;
+    void __stdcall  OnItemFocused	(ListItemsVec& items);
     LPCSTR m_Current;
 public:		// User declarations
 	__fastcall 		TfraPS	(TComponent* Owner);

@@ -75,9 +75,9 @@ void TfrmPropertiesEObject::FillSurfProps()
 //        O->FillSurfacesProps("Surfaces",values);
         for (SurfaceIt it=O->FirstSurface(); it!=O->LastSurface(); it++){
         	AnsiString	pref	= AnsiString("Surfaces\\")+(*it)->_Name();
-            PropValue* V		= PHelper.CreateCaption(values,pref,"");
-            V->tag				= *it;
-        	O->FillSurfaceProps(*it,pref.c_str(),values);
+            PropValue* V		= PHelper().CreateCaption(values,pref.c_str(),"");
+            V->tag				= (int)*it;
+        	O->FillSurfaceProps	(*it,pref.c_str(),values);
         }
     }
     m_SurfProp->AssignItems(values);
@@ -115,7 +115,7 @@ void __fastcall TfrmPropertiesEObject::fsStorageSavePlacement(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
+void TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 {
 	xr_delete(m_Thumbnail);
 	if (item&&item->Tag){
@@ -129,7 +129,7 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
                 O->Blink			(S);
             }break;
         	case PROP_CHOOSE:{                                                             
-		    	ChooseValueCustom* V	= dynamic_cast<ChooseValueCustom*>(prop->GetFrontValue()); VERIFY(V);
+		    	ChooseValue* V		= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); VERIFY(V);
                 if (smTexture==V->choose_id){
                     LPCSTR nm 				= TProperties::GetItemColumn(item,0);
                     if (nm&&nm[0]){

@@ -92,7 +92,7 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateU32			(items, FHelper.PrepareKey(pref,base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
+	PHelper().CreateU32			(items, PHelper().PrepareKey(pref,base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
 }
 #endif
 
@@ -220,24 +220,24 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 {
 	inherited1::FillProp		(_pref,items);
 	inherited2::FillProp		(_pref,items);
-	PHelper.CreateU32			(items, FHelper.PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
+	PHelper().CreateU32			(items, PHelper().PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
 
 	AnsiString					S;
-    AnsiString 					pref = FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
+    AnsiString 					pref = PHelper().PrepareKey(_pref,s_name,"ALife\\Supplies").c_str();
 
     supplies_count				= m_tpSupplies.size();
-	PropValue					*V = PHelper.CreateS32(items, FHelper.PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
+	PropValue					*V = PHelper().CreateS32(items, PHelper().PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
     V->OnChangeEvent			= OnSuppliesCountChange;
     
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
 	for ( ; I != E; ++I) {
     	S.sprintf				("Slot #%d",I-B+1).c_str();
-		V=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections), smEntity);
+//.		V=PHelper().CreateChoose(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections), smEntity);
         V->Owner()->subitem		= 8;
-		PHelper.CreateU32		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
-		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
-		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Max Factor"),&(*I).m_fMaxFactor,0.f, 1.f);
+		PHelper().CreateU32		(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
+		PHelper().CreateFloat	(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
+		PHelper().CreateFloat	(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Max Factor"),&(*I).m_fMaxFactor,0.f, 1.f);
 	}
 }
 #endif
@@ -319,10 +319,10 @@ void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeCustomZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-//	PHelper.CreateToken<u8>		(items,FHelper.PrepareKey(pref,s_name,"Type"),								(u8*)&m_tAnomalyType,	TokenAnomalyType);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
-	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
+//	PHelper().CreateToken<u8>		(items,PHelper().PrepareKey(pref,s_name,"Type"),								(u8*)&m_tAnomalyType,	TokenAnomalyType);
+	PHelper().CreateFloat			(items,PHelper().PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
+	PHelper().CreateFloat			(items,PHelper().PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
+	PHelper().CreateU32			(items,PHelper().PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
 }
 #endif
 
@@ -452,11 +452,11 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
+	PHelper().CreateFloat			(items,PHelper().PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; ++i)
-		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
-	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
+		PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+	PHelper().CreateFloat			(items,PHelper().PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
+	PHelper().CreateU16			(items,PHelper().PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
 }
 #endif
 
@@ -511,7 +511,7 @@ void CSE_ALifeTorridZone::FillProp(LPCSTR pref, PropItemVec& values)
 	inherited1::FillProp		(pref,	 values);
 
 	// motion
-	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
+	CSE_Motion::FillProp		(PHelper().PrepareKey(pref,s_name).c_str(),	 values);
 }
 #endif
 
@@ -628,10 +628,10 @@ u8 CSE_ALifeCreatureAbstract::g_group		()
 void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp			(pref,items);
-    PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name, "Team"),		&s_team, 	0,64,1);
-    PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name, "Squad"),	&s_squad, 	0,64,1);
-    PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name, "Group"),	&s_group, 	0,64,1);
-   	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
+    PHelper().CreateU8			(items,PHelper().PrepareKey(pref,s_name, "Team"),		&s_team, 	0,64,1);
+    PHelper().CreateU8			(items,PHelper().PrepareKey(pref,s_name, "Squad"),	&s_squad, 	0,64,1);
+    PHelper().CreateU8			(items,PHelper().PrepareKey(pref,s_name, "Group"),	&s_group, 	0,64,1);
+   	PHelper().CreateFloat			(items,PHelper().PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
 }
 #endif
 
@@ -1079,28 +1079,28 @@ void CSE_ALifeMonsterRat::FillProp			(LPCSTR pref, PropItemVec& items)
 	inherited1::FillProp		(pref, items);
 	inherited2::FillProp		(pref, items);
 	// personal characteristics
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Pursuit distance" 		),&fMaxPursuitRadius,				0,300,10);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Home distance" 		),&fMaxHomeRadius,					0,300,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Pursuit distance" 		),&fMaxPursuitRadius,				0,300,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Home distance" 		),&fMaxHomeRadius,					0,300,10);
 	// morale																			
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Success attack quant" 	),&fMoraleSuccessAttackQuant,		-100,100,5);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Death quant" 			),&fMoraleDeathQuant,				-100,100,5);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Fear quant" 			),&fMoraleFearQuant,				-100,100,5);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Restore quant" 		),&fMoraleRestoreQuant,				-100,100,5);
-	PHelper.CreateU16  			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Restore time interval" ),&u16MoraleRestoreTimeInterval,	0,65535,500);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Minimum value" 		),&fMoraleMinValue,					-100,100,5);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Maximum value" 		),&fMoraleMaxValue,					-100,100,5);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Morale",		"Normal value" 			),&fMoraleNormalValue,				-100,100,5);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Success attack quant" 	),&fMoraleSuccessAttackQuant,		-100,100,5);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Death quant" 			),&fMoraleDeathQuant,				-100,100,5);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Fear quant" 			),&fMoraleFearQuant,				-100,100,5);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Restore quant" 		),&fMoraleRestoreQuant,				-100,100,5);
+	PHelper().CreateU16  			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Restore time interval" ),&u16MoraleRestoreTimeInterval,	0,65535,500);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Minimum value" 		),&fMoraleMinValue,					-100,100,5);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Maximum value" 		),&fMoraleMaxValue,					-100,100,5);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Morale",		"Normal value" 			),&fMoraleNormalValue,				-100,100,5);
 	// attack																			 	
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Hit power" 			),&fHitPower,						0,200,5);
-	PHelper.CreateU16  			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Hit interval" 			),&u16HitInterval,					0,65535,500);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Distance" 				),&fAttackDistance,					0,300,10);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Maximum angle" 		),&fAttackAngle,					0,180,10);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Success probability" 	),&fAttackSuccessProbability,		0,100,1);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Hit power" 			),&fHitPower,						0,200,5);
+	PHelper().CreateU16  			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Hit interval" 			),&u16HitInterval,					0,65535,500);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Distance" 				),&fAttackDistance,					0,300,10);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Maximum angle" 		),&fAttackAngle,					0,180,10);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Success probability" 	),&fAttackSuccessProbability,		0,100,1);
 }	
 #endif
 
@@ -1191,18 +1191,18 @@ void CSE_ALifeMonsterZombie::FillProp		(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp			(pref, items);
 	// personal characteristics
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Pursuit distance" 		),&fMaxPursuitRadius,				0,300,10);
-   	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Personal",	"Home distance" 		),&fMaxHomeRadius,					0,300,10);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Pursuit distance" 		),&fMaxPursuitRadius,				0,300,10);
+   	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Personal",	"Home distance" 		),&fMaxHomeRadius,					0,300,10);
 	// attack																			 	
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Hit power" 			),&fHitPower,						0,200,5);
-	PHelper.CreateU16  			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Hit interval" 			),&u16HitInterval,					0,65535,500);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Distance" 				),&fAttackDistance,					0,300,10);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,s_name,"Attack",		"Maximum angle" 		),&fAttackAngle,					0,100,1);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Hit power" 			),&fHitPower,						0,200,5);
+	PHelper().CreateU16  			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Hit interval" 			),&u16HitInterval,					0,65535,500);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Distance" 				),&fAttackDistance,					0,300,10);
+	PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,s_name,"Attack",		"Maximum angle" 		),&fAttackAngle,					0,100,1);
 }
 #endif
 
@@ -1457,7 +1457,7 @@ void CSE_ALifeObjectIdol::UPDATE_Write		(NET_Packet& tNetPacket)
 void CSE_ALifeObjectIdol::FillProp			(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp			(pref, items);
-    PHelper.CreateText			(items, FHelper.PrepareKey(pref,s_name,"Idol", "Animations"),m_caAnimations,sizeof(m_caAnimations));
-   	PHelper.CreateU32			(items, FHelper.PrepareKey(pref,s_name,"Idol", "Animation playing type"),&m_dwAniPlayType,0,2,1);
+//.	PHelper().CreateText		(items, PHelper().PrepareKey(pref,s_name,"Idol", "Animations"),m_caAnimations,sizeof(m_caAnimations));
+   	PHelper().CreateU32			(items, PHelper().PrepareKey(pref,s_name,"Idol", "Animation playing type"),&m_dwAniPlayType,0,2,1);
 }	
 #endif

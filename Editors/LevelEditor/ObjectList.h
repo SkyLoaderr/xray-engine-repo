@@ -50,7 +50,7 @@ private:	// User declarations
     TElTreeItem* FindObjectByType(int type, void *obj);
     TElTreeItem* FindFolderByType(int type);
     TElTreeItem* AddFolder(EObjClass type);
-    TElTreeItem* AddObject(TElTreeItem* node, LPSTR name, void* obj);
+    TElTreeItem* AddObject(TElTreeItem* node, LPCSTR name, void* obj);
     void UpdateState();
     void UpdateSelection();
     bool bLockUpdate;

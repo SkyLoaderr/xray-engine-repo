@@ -19,7 +19,7 @@ __fastcall TfraSpawn::TfraSpawn(TComponent* Owner)
     m_Current = 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfraSpawn::OnItemFocused(ListItemsVec& items)
+void TfraSpawn::OnItemFocused(ListItemsVec& items)
 {
 	VERIFY(items.size()<=1);
     m_Current 			= 0;
@@ -69,14 +69,14 @@ void __fastcall TfraSpawn::FormShow(TObject *Sender)
 {
     m_Items->LoadSelection	(fsStorage);
     ListItemsVec items;
-    LHelper.CreateItem		(items,RPOINT_CHOOSE_NAME,0,0,RPOINT_CHOOSE_NAME);
-    LHelper.CreateItem		(items,ENVMOD_CHOOSE_NAME,0,0,ENVMOD_CHOOSE_NAME);
+    LHelper().CreateItem	(items,RPOINT_CHOOSE_NAME,0,0,RPOINT_CHOOSE_NAME);
+    LHelper().CreateItem	(items,ENVMOD_CHOOSE_NAME,0,0,ENVMOD_CHOOSE_NAME);
     CInifile::Root& data 	= pSettings->sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
     	LPCSTR val;
     	if (it->line_exist	("$spawn",&val)){
         	ref_str v		= pSettings->r_string_wb(it->Name,"$spawn");
-	    	LHelper.CreateItem(items,*v,0,0,(LPVOID)*it->Name);
+	    	LHelper().CreateItem(items,*v,0,0,(LPVOID)*it->Name);
         }
     }
     m_Items->AssignItems	(items,false,true);
@@ -85,14 +85,14 @@ void __fastcall TfraSpawn::FormShow(TObject *Sender)
 
 void __fastcall TfraSpawn::FormCreate(TObject *Sender)
 {
-    m_Items 				= TItemList::CreateForm("Spawns",paItems, alClient, 0);
-    m_Items->OnItemsFocused	= OnItemFocused;
+    m_Items 				= IItemList::CreateForm("Spawns",paItems, alClient, 0);
+    m_Items->SetOnItemsFocusedEvent(OnItemFocused);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraSpawn::FormDestroy(TObject *Sender)
 {
-    TItemList::DestroyForm	(m_Items);
+    IItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 

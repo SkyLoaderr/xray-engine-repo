@@ -54,7 +54,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	virtual const CSE_Abstract		*base					() const;
 #ifdef _EDITOR
 	int 							supplies_count;
-    void __fastcall   				OnSuppliesCountChange	(PropValue* sender);
+    void 							OnSuppliesCountChange	(PropValue* sender);
 #endif    
 #ifdef XRGAME_EXPORTS
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
