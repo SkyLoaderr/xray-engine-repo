@@ -136,8 +136,7 @@ void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB:
 void					CRender::set_Object				(IRenderable*		O )	
 {
 	val_pObject				= O;		// NULL is OK, trust me :)
-	if (PHASE_NORMAL==phase)
-	{
+	if (PHASE_NORMAL==phase)	{
 		L_Shadows->set_object	(O);
 		L_Projector->set_object	(O);
 		if (O)	{
@@ -153,8 +152,7 @@ void					CRender::set_Object				(IRenderable*		O )
 void					CRender::ApplyObject			(IRenderable*		O )
 {
 	if (0==O)			return;
-	if (PHASE_NORMAL==phase)
-	{
+	if (PHASE_NORMAL==phase)	{
 		VERIFY				(O->renderable.ROS);
 		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
 
