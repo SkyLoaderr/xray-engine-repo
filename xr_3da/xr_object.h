@@ -181,6 +181,8 @@ public:
 	virtual void						OnDeviceDestroy		();
 	virtual void						OnDeviceCreate		();
 	virtual void						OnEvent				(EVENT E, u32 P1, u32 P2) {};
+
+	virtual void						ForceTransform		(const Fmatrix& m){};
 };
 
 #endif //__XR_OBJECT_H__
