@@ -13,7 +13,7 @@
 // textures
 ENGINE_API extern	int		psTextureLOD		;
 
-// video
+// psDeviceFlags
 enum {
 	rsFullscreen		= (1ul<<0ul),
 	rsClearBB			= (1ul<<1ul),
@@ -27,9 +27,14 @@ enum {
 	rsConstantFPS		= (1ul<<9ul),
 	mtSound				= (1ul<<10ul),
 	mtPhysics			= (1ul<<11ul),
-	mtNetwork			= (1ul<<12ul)
+	mtNetwork			= (1ul<<12ul),
+
+	rsOcclusionDraw		= (1ul<<13ul),
+	rsOcclusionStats	= (1ul<<14ul),
 	// 20-32 bit - defined in Editor
 };
+
+
 ENGINE_API extern	u32			psCurrentMode		;
 ENGINE_API extern	u32			psCurrentBPP		;
 ENGINE_API extern	Flags32		psDeviceFlags		;

@@ -8,6 +8,8 @@
 
 class ENGINE_API CGameFont;
 
+DECLARE_MESSAGE(Stats);
+
 class ENGINE_API CStats
 {
 public:
@@ -78,9 +80,13 @@ public:
 	void		Show				(void);
 	void		OnDeviceCreate		(void);
 	void		OnDeviceDestroy		(void);
+public:
+	CRegistrator	<pureStats>		seqStats;
+public:
+					CStats			();
+					~CStats			();
 
-	CStats	();
-	~CStats	();
+	IC CGameFont*	Font			(){return pFont;}
 };
 
 #endif // !defined(AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_)

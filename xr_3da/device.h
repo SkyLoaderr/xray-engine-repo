@@ -35,7 +35,6 @@ private:
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
 	void									_SetupStates();
-	
 public:
     HWND									m_hWnd;
 	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
@@ -48,6 +47,24 @@ public:
 	float									fWidth_2, fHeight_2;
 	BOOL									bReady;
 	BOOL									bActive;
+public:
+#ifdef DEBUG
+	ref_shader								m_WireShader;
+	ref_shader								m_SelectionShader;
+
+	BOOL									m_bNearer;
+	void									SetNearer	(BOOL enabled)
+	{
+		if (enabled&&!m_bNearer){
+			m_bNearer						= TRUE;
+			mProject._43					-= EPS_L;
+		}else if (!enabled&&m_bNearer){
+			m_bNearer						= FALSE;
+			mProject._43					+= EPS_L;
+		}
+		RCache.set_xform_project			(mProject);
+	}
+#endif
 public:
 	// Registrators
 	CRegistrator	<pureFrame			 >	seqFrame;
@@ -87,6 +104,9 @@ public:
 		bActive				= FALSE;
 		bReady				= FALSE;
 		Timer.Start			();
+#ifdef DEBUG
+		m_bNearer			= FALSE;
+#endif
 		
 	};
 	void	Pause							(bool bOn);

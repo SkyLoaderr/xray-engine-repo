@@ -6,6 +6,9 @@
 class occTri;
 
 class CHOM  
+#ifdef DEBUG
+	: public pureRender, pureStats
+#endif
 {
 private:
 	xrXRC					xrc;
@@ -21,7 +24,7 @@ public:
 	void					Unload		();
 	void					Render		(CFrustum&	base);
 	void					Render_ZB	();
-	void					Debug		();
+//	void					Debug		();
 
 	void					occlude		(Fbox2&		space) { }
 	void					Disable		();
@@ -34,4 +37,9 @@ public:
 	
 	CHOM();
 	~CHOM();
+
+#ifdef DEBUG
+	virtual void			OnRender	();
+	virtual void			OnStats		();
+#endif
 };

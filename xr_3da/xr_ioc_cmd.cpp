@@ -332,6 +332,9 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic);
 	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.01f,	1.0f);
 
+	CMD3(CCC_Mask,		"rs_occ_draw",			&psDeviceFlags,		rsOcclusionDraw);
+	CMD3(CCC_Mask,		"rs_occ_stats",			&psDeviceFlags,		rsOcclusionStats);
+
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
 	CMD1(CCC_Gamma,		"rs_c_brightness"		);
 	CMD1(CCC_Gamma,		"rs_c_contrast"			);

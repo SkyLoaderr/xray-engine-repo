@@ -16,6 +16,9 @@ struct	_scissor					: public Fbox2
 
 // Connector
 class	CPortal						: public IRender_Portal
+#ifdef DEBUG
+	, public pureRender
+#endif
 {
 private:
 	svector<Fvector,8>				poly;
@@ -35,7 +38,13 @@ public:
 	CSector*						getSectorFacing	(const Fvector& V)	{ if (P.classify(V)>0) return pFace; else return pBack; }
 	CSector*						getSectorBack	(const Fvector& V)	{ if (P.classify(V)>0) return pBack; else return pFace;	}
 	float							distance		(const Fvector &V)	{ return _abs(P.classify(V)); }
-	virtual ~CPortal				();
+
+									CPortal			();
+	virtual							~CPortal		();
+
+#ifdef DEBUG
+	virtual void					OnRender		();
+#endif
 };
 
 // Main 'Sector' class

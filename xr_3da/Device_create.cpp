@@ -68,8 +68,13 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	Resources->OnDeviceCreate	(shName);
 	::Render->create			();
 	Statistic.OnDeviceCreate	();
+
+	m_WireShader.create			("editor\\wire");
+	m_SelectionShader.create	("editor\\selection");
+
 	dwFrame						= 0;
 }
+
 
 void CRenderDevice::Create	() 
 {

@@ -8,8 +8,9 @@
 #define REG_PRIORITY_CAPTURE	0x7ffffffful
 #define MAX_REGISTERED_OBJECTS	256
 
-typedef void __fastcall RP_FUNC	(void *obj);
-#define DECLARE_MESSAGE(name)	extern ENGINE_API RP_FUNC rp_##name; class ENGINE_API pure##name { public: virtual void  On##name(void)=0; }
+typedef void __fastcall RP_FUNC		(void *obj);
+#define DECLARE_MESSAGE(name)		extern ENGINE_API RP_FUNC rp_##name; class ENGINE_API pure##name { public: virtual void  On##name(void)=0;	}
+#define DECLARE_RP(name) void __fastcall rp_##name(void *p) { ((pure##name *)p)->On##name(); }
 
 DECLARE_MESSAGE(Frame);
 DECLARE_MESSAGE(Render);

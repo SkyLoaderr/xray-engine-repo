@@ -6,6 +6,9 @@
 #include "IGame_Persistent.h"
 #include "render.h"
 
+// stats
+DECLARE_RP(Stats);
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -23,7 +26,6 @@ CStats::~CStats()
 	xr_delete		(pFont);
 }
 
-#define QS if(psDeviceFlags&rsStatistic)
 void CStats::Show() 
 {
 	// Stop timers
@@ -246,6 +248,12 @@ void CStats::Show()
 		//////////////////////////////////////////////////////////////////////////
 		F.SetSize	(f_base_size);
 		F.OnRender	();
+	}
+
+	// process PURE STATS
+	{
+		seqStats.Process				(rp_Stats);
+		pFont->OnRender					();
 	}
 
 	{

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "HOM.h"
 #include "occRasterizer.h"
+#include "../GameFont.h"
  
 float	psOSSR		= .001f;
 
@@ -17,10 +18,18 @@ CHOM::CHOM()
 	bEnabled		= FALSE;
 	m_pModel		= 0;
 	m_pTris			= 0;
+#ifdef DEBUG
+	Device.seqRender.Add(this,REG_PRIORITY_LOW-1000);
+	Device.Statistic.seqStats.Add(this,REG_PRIORITY_LOW-1000);
+#endif
 }
 
 CHOM::~CHOM()
 {
+#ifdef DEBUG
+	Device.Statistic.seqStats.Remove(this);
+	Device.seqRender.Remove(this);
+#endif
 }
 
 #pragma pack(push,4)
@@ -278,3 +287,60 @@ void CHOM::Enable		()
 {
 	bEnabled			= m_pModel?TRUE:FALSE;
 }
+
+#ifdef DEBUG
+void CHOM::OnRender	()
+{
+	if (psDeviceFlags.is(rsOcclusionDraw)){
+		if (m_pModel){
+			DEFINE_VECTOR		(FVF::L,LVec,LVecIt);
+			static LVec	poly;	poly.resize(m_pModel->get_tris_count()*3);
+			static LVec	line;	line.resize(m_pModel->get_tris_count()*6);
+			for (u32 it=0; it<m_pModel->get_tris_count(); it++){
+				CDB::TRI* T		= m_pModel->get_tris()+it;
+				Fvector* verts	= m_pModel->get_verts();
+				poly[it*3+0].set(*(verts+T->verts[0]),0x80FFFFFF);
+				poly[it*3+1].set(*(verts+T->verts[1]),0x80FFFFFF);
+				poly[it*3+2].set(*(verts+T->verts[2]),0x80FFFFFF);
+				line[it*6+0].set(*(verts+T->verts[0]),0xFFFFFFFF);
+				line[it*6+1].set(*(verts+T->verts[1]),0xFFFFFFFF);
+				line[it*6+2].set(*(verts+T->verts[1]),0xFFFFFFFF);
+				line[it*6+3].set(*(verts+T->verts[2]),0xFFFFFFFF);
+				line[it*6+4].set(*(verts+T->verts[2]),0xFFFFFFFF);
+				line[it*6+5].set(*(verts+T->verts[0]),0xFFFFFFFF);
+			}
+			RCache.set_xform_world(Fidentity);
+			// draw solid
+			Device.SetNearer(TRUE);
+			RCache.set_Shader	(Device.m_SelectionShader);
+			RCache.dbg_Draw		(D3DPT_TRIANGLELIST,&*poly.begin(),poly.size()/3);
+			Device.SetNearer(FALSE);
+			// draw wire
+			if (bDebug){
+				RImplementation.rmNear();
+			}else{
+				Device.SetNearer(TRUE);
+			}
+			RCache.set_Shader	(Device.m_SelectionShader);
+			RCache.dbg_Draw		(D3DPT_LINELIST,&*line.begin(),line.size()/2);
+			if (bDebug){
+				RImplementation.rmNormal();
+			}else{
+				Device.SetNearer(FALSE);
+			}
+		}
+	}
+}
+void CHOM::OnStats()
+{
+	if (psDeviceFlags.is(rsOcclusionStats)){
+		if (m_pModel){
+			CGameFont& F		= *Device.Statistic.Font();
+			F.OutSet			(200,0);
+			F.SetColor			(0xFFFFFFFF);
+			F.OutNext			("OCCLUSION:", m_pModel->get_tris_count());
+			F.OutNext			("  HOM TRIS:  %d", m_pModel->get_tris_count());
+		}
+	}
+}
+#endif

@@ -5,6 +5,9 @@
 
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
+	m_WireShader.destroy		();
+	m_SelectionShader.destroy	();
+
 	// before destroy
 	bReady						= FALSE;
 	Statistic.OnDeviceDestroy	();
