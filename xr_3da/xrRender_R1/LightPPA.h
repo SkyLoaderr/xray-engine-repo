@@ -26,6 +26,7 @@ public:
 
 	virtual void	set_type		(LT type)						{ };
 	virtual void	set_active		(bool b);
+	virtual bool	get_active		()								{ return bActive;	}
 	virtual void	set_shadow		(bool)							{ };
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);	}
 	virtual void	set_direction	(const Fvector& P)				{};

@@ -25,6 +25,7 @@ public:
 public:
 	virtual void	set_type		(LT type)						{ flags.type = type;		}
 	virtual void	set_active		(bool b);
+	virtual bool	get_active		()								{ return flags.bActive;		}
 	virtual void	set_shadow		(bool b)						{ flags.bShadow=b;			}
 	virtual void	set_position	(const Fvector& P)				{ position.set(P);			}
 	virtual void	set_direction	(const Fvector& D)				{ direction.normalize(D);	}
