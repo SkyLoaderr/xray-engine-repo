@@ -396,43 +396,98 @@ void CAI_Stalker::ForwardCover()
 void CAI_Stalker::SearchEnemy()
 {
 	WRITE_TO_LOG				("Search enemy");
-	
-	m_dwInertion				= 60000;
+	m_dwInertion				= 180000;
 
 	INIT_SQUAD_AND_LEADER;
-	CGroup &Group = *getGroup();
-	if (Group.m_tpaSuspiciousNodes.empty())
-		if (m_iCurrentSuspiciousNodeIndex != -2) {
-			if (m_iCurrentSuspiciousNodeIndex == -1) {
-				vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,40.f,Group);
-				if (Group.m_tpaSuspiciousNodes.empty())
-					m_iCurrentSuspiciousNodeIndex = -2;
-				else
-					m_iCurrentSuspiciousNodeIndex = 0;
-			}
+	CGroup						&Group = *getGroup();
+	
+	if (m_dwLastEnemySearch != m_dwLastUpdate) {
+		m_tActionState			= eActionStateDontWatch;
+		m_iCurrentSuspiciousNodeIndex = 0;
+		m_bSearchedForEnemy		= true;
+		m_tPathState			= ePathStateBuildNodePath;
+	}
+	m_bSearchedForEnemy			= true;
+
+	switch (m_tActionState) {
+		case eActionStateDontWatch : {
 			Msg("Last enemy position");
-			AI_Path.DestNode			= m_dwSavedEnemyNodeID;
-			vfSetParameters				(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
+			AI_Path.DestNode	= m_dwSavedEnemyNodeID;
+			if (Group.m_tpaSuspiciousNodes.empty()) {
+				if (!m_iCurrentSuspiciousNodeIndex) {
+					vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,40.f,Group);
+					m_iCurrentSuspiciousNodeIndex = -1;
+				}
+			}
+			if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && getAI().bfTooSmallAngle(r_current.yaw,r_target.yaw,PI_DIV_6))
+				m_tActionState = eActionStateWatchGo;
+			else {
+				bool bOk = false;	
+				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
+						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
+							bOk = true;
+							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
+							if (getAI().bfTooSmallAngle(r_current.yaw,r_target.yaw,PI_DIV_6))
+								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							break;
+						}
+					}
+				if (!bOk)
+					vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
+			}
+			break;
 		}
-		else {
+		case eActionStateWatchGo : {
+			Msg("The higher-level prediction");
+			if ((m_iCurrentSuspiciousNodeIndex == -1) || getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
+				if (m_iCurrentSuspiciousNodeIndex != -1)
+					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
+				m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
+				if (m_iCurrentSuspiciousNodeIndex == -1) {
+					Group.m_tpaSuspiciousNodes.clear();
+					m_iCurrentSuspiciousNodeIndex = -1;
+					m_tActionState = eActionStateWatchLook;
+				}
+				else {
+					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
+					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+					m_tPathState = ePathStateBuildNodePath;
+				}
+			}
+			
+			if (m_iCurrentSuspiciousNodeIndex >= 0) {
+				bool bOk = false;	
+				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
+						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
+							bOk = true;
+							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
+							if (getAI().bfTooSmallAngle(r_current.yaw,r_target.yaw,PI_DIV_6))
+								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							break;
+						}
+					}
+				if (!bOk)
+					vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID));
+			}
+	
+			break;
+		}
+		case eActionStateWatchLook : {
 			Msg("Predicting by selector");
 			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
 			m_tSelectorRetreat.m_tpEnemyNode	= getAI().Node(m_dwMyNodeID);
-			m_tSelectorRetreat.m_tMyPosition	= m_tSavedEnemyPosition;
-			m_tSelectorRetreat.m_tpMyNode		= getAI().Node(m_dwSavedEnemyNodeID);
-			vfSetParameters				(&m_tSelectorRetreat,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeDanger);
+			m_tSelectorRetreat.m_tMyPosition	= vPosition;
+			m_tSelectorRetreat.m_tpMyNode		= getAI().Node(AI_NodeID);
+			m_tSelectorRetreat.m_fMinEnemyDistance = vPosition.distance_to(m_tMySavedPosition) + 3.f;
+			vfSetParameters		(&m_tSelectorRetreat,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeDanger);
+			if (m_bIfSearchFailed)
+				m_dwInertion						= 0;
+			else
+				m_dwInertion						= 120000;
+			break;
 		}
-	else {
-		Msg("The higher-level prediction");
-		if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
-			m_iCurrentSuspiciousNodeIndex++;
-			if (Group.m_tpaSuspiciousNodes.size() <= m_iCurrentSuspiciousNodeIndex) {
-				Group.m_tpaSuspiciousNodes.clear();
-				m_iCurrentSuspiciousNodeIndex = -2;
-			}
-		}
-		AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-		vfSetParameters				(0,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID));
 	}
 }
 
@@ -701,6 +756,7 @@ void CAI_Stalker::Think()
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 	m_bStopThinking			= false;
+	m_bSearchedForEnemy		= false;
 	
 	m_tEnemy.Enemy			= 0;
 	vfUpdateDynamicObjects	();
@@ -897,6 +953,8 @@ void CAI_Stalker::Think()
 	}
 	
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
+	if (m_bSearchedForEnemy)
+		m_dwLastEnemySearch		= m_dwCurrentUpdate;
 
 	_A	= A;
 	_B	= B;

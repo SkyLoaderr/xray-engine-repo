@@ -333,6 +333,10 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 					AI_Path.Nodes.push_back(AI_NodeID);
 					m_tPathState = ePathStateBuildTravelLine;
 				}
+				else
+					if (bSearchForNode && tpNodeEvaluator)
+						m_tPathState = ePathStateSearchNode;
+
 			break;
 		}
 		case ePathStateBuildTravelLine : {

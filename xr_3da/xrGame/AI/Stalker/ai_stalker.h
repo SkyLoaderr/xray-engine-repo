@@ -94,6 +94,8 @@ private:
 	u32						m_dwRandomFactor;
 	u32						m_dwInertion;
 	u32						m_dwParticularState;
+	bool					m_bSearchedForEnemy;
+	u32						m_dwLastEnemySearch;
 	
 	// firing
 	bool					m_bFiring;

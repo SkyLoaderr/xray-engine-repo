@@ -86,7 +86,7 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_fHitFactor					= 1.f;
 
-	m_iCurrentSuspiciousNodeIndex	= -1;
+	m_dwLastEnemySearch				= 0;
 
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
