@@ -151,8 +151,17 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			m_tpOrderedArtefacts.insert(std::make_pair(l_tpArtefactOrder->m_caSection,l_tpArtefactOrder));
 		}
 	}
-	if (m_wVersion > 30)
-		load_data				(m_tpSupplies,tNetPacket,true);
+	if (m_wVersion > 30) {
+		m_tpSupplies.resize		(tNetPacket.r_u32());
+		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
+		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
+		for ( ; I != E; I++) {
+			tNetPacket.r_string	((*I).m_caSections);
+			tNetPacket.r_u32	((*I).m_dwCount);
+			tNetPacket.r_float	((*I).m_fMinFactor);
+			tNetPacket.r_float	((*I).m_fMaxFactor);
+		}
+	}
 }
 
 void CSE_ALifeTrader::UPDATE_Write			(NET_Packet &tNetPacket)
