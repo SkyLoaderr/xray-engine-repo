@@ -41,6 +41,8 @@ public:
     void		MuteSounds			(BOOL bVal);
 
     void 		RefreshSounds		(bool bSync);
+
+    AnsiString	UpdateFileName		(AnsiString& fn);
 };
 
 extern CSoundManager SndLib;

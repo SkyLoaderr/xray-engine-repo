@@ -57,6 +57,12 @@ bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
     }
 	return false;
 }
+//------------------------------------------------------------------------------
+
+AnsiString CImageManager::UpdateFileName(AnsiString& fn)
+{
+	return EFS.AppendFolderToName(fn,1,TRUE);
+}
 
 //------------------------------------------------------------------------------
 // создает тхм
@@ -193,13 +199,13 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
         // copy thm
 		AnsiString fn = ChangeFileExt(it->first,".thm");
 		src_name 	= p_import	+ AnsiString(fn);
-		EFS.AppendFolderToName(fn);
+		UpdateFileName(fn);
 		dest_name 	= p_textures+ AnsiString(fn);
 		FS.file_rename(src_name.c_str(),dest_name.c_str(),true);
     	// copy sources
 		fn 			= it->first;
 		src_name 	= p_import	+ fn;
-		EFS.AppendFolderToName(fn);
+		UpdateFileName(fn);
 		dest_name 	= p_textures+ ChangeFileExt(fn,".tga");
         if (FS.exist(dest_name.c_str()))
 	        EFS.BackupFile	(_textures_,ChangeFileExt(fn,".tga"));

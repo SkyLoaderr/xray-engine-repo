@@ -11,6 +11,12 @@ CSoundManager SndLib;
 
 extern "C" int ogg_enc(const char* in_fn, const char* out_fn, float quality, void* comment, int size);
 //------------------------------------------------------------------------------
+AnsiString CSoundManager::UpdateFileName(AnsiString& fn)
+{
+	return EFS.AppendFolderToName(fn,-1,FALSE);
+}
+
+//------------------------------------------------------------------------------
 // возвращает список всех звуков
 //------------------------------------------------------------------------------
 int CSoundManager::GetSounds(FS_QueryMap& files)
@@ -116,13 +122,13 @@ void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
         // copy thm
 		AnsiString fn = ChangeFileExt(it->first,".thm");
 		src_name 	= p_import	+ fn;
-		EFS.AppendFolderToName(fn);
+		UpdateFileName(fn);
 		dest_name 	= p_sounds	+ fn;
 		FS.file_rename(src_name.c_str(),dest_name.c_str(),true);
     	// copy sources
 		fn 			= ChangeFileExt(it->first,".wav");
 		src_name 	= p_import	+ fn;
-		EFS.AppendFolderToName(fn);
+		UpdateFileName(fn);
 		dest_name 	= p_sounds	+ fn;
         if (FS.exist(dest_name.c_str()))
 	        EFS.BackupFile	(_sounds_,ChangeFileExt(fn,".wav"));

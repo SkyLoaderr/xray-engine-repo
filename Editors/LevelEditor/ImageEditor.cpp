@@ -88,11 +88,12 @@ void __fastcall TfrmImageLib::UpdateImageLib()
 		// rename with folder
 		FS_QueryMap	files=texture_map;
         texture_map.clear();
-        string256 fn;
+        AnsiString fn;
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	EFS.AppendFolderToName(ChangeFileExt(it->first,".tga").c_str(),fn);
+        	fn = ChangeFileExt(it->first,".tga");
+        	ImageLib.UpdateFileName(fn);
             texture_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
         // sync
@@ -322,7 +323,7 @@ void __fastcall TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                 if (bImportMode){
                     thm = xr_new<ETextureThumbnail>(prop->Key(),false);
                     AnsiString fn = prop->Key();
-                    EFS.AppendFolderToName(fn);
+                    ImageLib.UpdateFileName(fn);
         //            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
                     if (!thm->Load(prop->Key(),_import_)){
                         bool bLoad = thm->Load(fn.c_str(),_textures_);

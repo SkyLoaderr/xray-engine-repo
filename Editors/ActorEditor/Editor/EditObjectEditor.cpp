@@ -13,6 +13,7 @@
 #include "PropertiesListHelper.h"
 #include "bottombar.h"
 #include "ResourceManager.h"
+#include "ImageManager.h"
 
 const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;
@@ -264,8 +265,7 @@ AnsiString CEditableObject::GetLODTextureName()
 	AnsiString l_name;
     string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
     l_name = "lod_"+AnsiString(nm);
-    l_name = EFS.AppendFolderToName(l_name);
-    return l_name;
+    return ImageLib.UpdateFileName(l_name);
 }
 
 void CEditableObject::OnDeviceCreate()

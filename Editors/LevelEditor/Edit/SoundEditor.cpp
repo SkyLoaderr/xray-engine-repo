@@ -89,11 +89,12 @@ void __fastcall TfrmSoundLib::UpdateLib()
 		// rename with folder
 		FS_QueryMap	files=sound_map;
         sound_map.clear();
-        string256 fn;
+        AnsiString fn;
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	EFS.AppendFolderToName(it->first.c_str(),fn);
+        	fn 	= it->first;
+        	SndLib.UpdateFileName	(fn);
             sound_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
         // sync
@@ -272,7 +273,7 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
                 if (bImportMode){
                     thm = xr_new<ESoundThumbnail>(prop->Key(),false);
                     AnsiString fn = prop->Key();
-                    EFS.AppendFolderToName(fn);
+                    SndLib.UpdateFileName(fn);
         //            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
                     if (!thm->Load(prop->Key(),_import_)){
                         bool bLoad = thm->Load(fn.c_str(),_sounds_);

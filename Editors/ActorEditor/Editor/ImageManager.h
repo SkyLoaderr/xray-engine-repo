@@ -37,6 +37,8 @@ public:
     EImageThumbnail* CreateThumbnail(LPCSTR src_name, ECustomThumbnail::THMType type, bool bLoad=true);
 
     void 		RefreshTextures		(AStringVec* modif);
+
+    AnsiString	UpdateFileName		(AnsiString& fn);
 };
 
 extern CImageManager ImageLib;
