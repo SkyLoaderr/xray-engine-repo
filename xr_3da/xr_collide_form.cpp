@@ -402,7 +402,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 				Fplane		P;
 				Fvector		A[8],B[8];
 				Fmatrix&	T		= shapes[el].data.box;
-				Q.mul_43			(XF,T);
+				Q.mul_43			(T,XF);
 
 				// Build points
 				A[0].set( -.5f, -.5f, -.5f); Q.transform_tiny	(B[0],A[0]);
