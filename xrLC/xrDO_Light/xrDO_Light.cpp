@@ -11,6 +11,7 @@
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
 #pragma comment(lib,"X:\\xrHemisphere.lib")
+#pragma comment(lib,"X:\\xrCDB.lib")
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);

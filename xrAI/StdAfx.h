@@ -110,6 +110,7 @@ using namespace std;
 #include "fs.h"
 #include "xr_list.h"
 #include "fixedvector.h"
+#include "xrCDB.h"
 
 // TODO: reference additional headers your program requires here
 
