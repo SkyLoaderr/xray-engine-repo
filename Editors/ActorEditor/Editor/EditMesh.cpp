@@ -113,33 +113,52 @@ void CEditableMesh::GeneratePNormals()
 {
 	if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
 
-    m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
-    for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
-    	u32 sg			= m_SGs[f_i];
-		Fvector& FN 	= m_FNormals[f_i];
-        for (int k=0; k<3; k++){
-			Fvector& N 	= m_PNormals[f_i*3+k];
-            if (sg!=-1){
-                N.set		(0,0,0);
-                IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
-                VERIFY(a_lst.size());
-                for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
-                    if (sg != m_SGs[*i_it]) continue;
-                    N.add	(m_FNormals[*i_it]);
-                }
-                N.normalize_safe();
-		    }else{
-                N.set		(FN);
-                N.set		(0,0,0);
-                IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
-                VERIFY(a_lst.size());
-                for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
-                    N.add	(m_FNormals[*i_it]);
-                N.normalize_safe();
-            }
-        }
-    }
+    m_PNormals.resize	(m_Faces.size()*3);
+	if (m_Flags.is(flSGMask)){
+		for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
+			u32 sg			= m_SGs[f_i];
+			Fvector& FN 	= m_FNormals[f_i];
+			for (int k=0; k<3; k++){
+				Fvector& N 	= m_PNormals[f_i*3+k];
+				if (sg){
+					N.set		(0,0,0);
+					IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+					VERIFY(a_lst.size());
+					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
+						if (sg&m_SGs[*i_it]) N.add	(m_FNormals[*i_it]);
+					N.normalize_safe();
+				}else{
+					N.set		(FN);
+				}
+			}
+		}
+	}else{
+		for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
+			u32 sg			= m_SGs[f_i];
+			Fvector& FN 	= m_FNormals[f_i];
+			for (int k=0; k<3; k++){
+				Fvector& N 	= m_PNormals[f_i*3+k];
+				if (sg!=-1){
+					N.set		(0,0,0);
+					IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+					VERIFY(a_lst.size());
+					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
+						if (sg != m_SGs[*i_it]) continue;
+						N.add	(m_FNormals[*i_it]);
+					}
+					N.normalize_safe();
+				}else{
+					N.set		(0,0,0);
+					IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+					VERIFY(a_lst.size());
+					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
+						N.add	(m_FNormals[*i_it]);
+					N.normalize_safe();
+				}
+			}
+		}
+	}
     m_LoadState.set(LS_PNORMALS,TRUE);
 }
 
