@@ -68,8 +68,6 @@ __published:	// IDE-managed Components
 	TRadioGroup *rgLMJitterSamples;
 	TLabel *Label2;
 	TEdit *edLevelPrefix;
-	TLabel *Label3;
-	TRadioGroup *rgLODQuality;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall btContinueClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
