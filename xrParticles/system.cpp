@@ -1,8 +1,3 @@
-// system.cpp
-//
-// Copyright 1998 by David K. McAllister.
-//
-// This file implements the API calls that are not particle actions.
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -12,60 +7,29 @@ BOOL APIENTRY DllMain( HANDLE hModule,
                        LPVOID lpReserved
 					 )
 {
-    switch (ul_reason_for_call)
-	{
-		case DLL_PROCESS_ATTACH: 
-			break;
-		case DLL_THREAD_ATTACH:
-		case DLL_THREAD_DETACH:
-		case DLL_PROCESS_DETACH:
-			break;
+    switch (ul_reason_for_call){
+		case DLL_PROCESS_ATTACH:	break;
+		case DLL_THREAD_ATTACH:		break;
+		case DLL_THREAD_DETACH:		break;
+		case DLL_PROCESS_DETACH:	break;
     }
     return TRUE;
 }
 
 namespace PAPI{
 
-class _auto_check
-{
-public:
-	_auto_check()
-	{
-		R_ASSERT(sizeof(PAAvoid)<sizeof(PAHeader));
-		R_ASSERT(sizeof(PABounce)<sizeof(PAHeader));
-		R_ASSERT(sizeof(PAExplosion)<sizeof(PAHeader));
-		R_ASSERT(sizeof(PAJet)<sizeof(PAHeader));
-		R_ASSERT(sizeof(PAOrbitLine)<sizeof(PAHeader));
-		R_ASSERT(sizeof(PAOrbitPoint)<sizeof(PAHeader));
-		R_ASSERT(sizeof(PASource)<sizeof(PAHeader));
-	}
-}	_auto_checker;
-
-
+// static variables
 float ParticleAction::dt;
-
 _ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
-_ParticleState::PAHeaderVec			_ParticleState::alist_vec;
+_ParticleState::LPParticleActionVec	_ParticleState::alist_vec;
 
 // This is the global state.
-_ParticleState __ps;
-_ParticleState& _GetPState()
-{
-	// This is the global state.
-//	extern _ParticleState __ps;
-
-	return __ps;
-}
+_ParticleState 	__ps;
+_ParticleState&	_GetPState		()						{return __ps;}
 
 // Get a pointer to the particles in gp memory
-ParticleEffect* _GetEffectPtr(int p_effect_num)
-{
-	return __ps.GetEffectPtr(p_effect_num);
-}
-PAHeader* _GetListPtr(int action_list_num)
-{
-	return __ps.GetListPtr(action_list_num);
-}
+ParticleEffect* _GetEffectPtr	(int p_effect_num)		{return __ps.GetEffectPtr(p_effect_num);}
+PAVec*			_GetListPtr		(int action_list_num)	{return __ps.GetListPtr(action_list_num);}
 
 _ParticleState::_ParticleState()
 {
@@ -102,10 +66,10 @@ ParticleEffect *_ParticleState::GetEffectPtr(int p_effect_num)
 	return effect_vec[p_effect_num];
 }
 
-PAHeader *_ParticleState::GetListPtr(int a_list_num)
+PAVec* _ParticleState::GetListPtr(int a_list_num)
 {
 	R_ASSERT(a_list_num>=0&&a_list_num<(int)alist_vec.size());
-	return alist_vec[a_list_num];
+	return &alist_vec[a_list_num];
 }
 
 // Return an index into the list of particle effects where
@@ -131,7 +95,7 @@ int _ParticleState::GenerateEffects(int p_effect_count)
 	// Couldn't find a big enough gap. Reallocate.
 	first_empty = effect_vec.size();
     for (int k=0; k<p_effect_count; k++)
-		effect_vec.push_back	(0);//xr_alloc<ParticleEffect>(p_effect_count));
+		effect_vec.push_back	(0);
 	
 	return first_empty;
 }
@@ -145,7 +109,7 @@ int _ParticleState::GenerateLists(int list_count)
 	
 	for(int i=0; i<(int)alist_vec.size(); i++)
 	{
-		if(alist_vec[i])
+		if(!alist_vec[i].empty())
 		{
 			num_empty = 0;
 			first_empty = -1;
@@ -163,158 +127,128 @@ int _ParticleState::GenerateLists(int list_count)
 	// Couldn't find a big enough gap. Allocate.
 	first_empty = alist_vec.size();
     for (int k=0; k<list_count; k++)
-		alist_vec.push_back(0);
+		alist_vec.push_back(PAVec());
 	
 	return first_empty;
 }
 
+ParticleAction* pCreateAction(PActionEnum type)
+{
+	ParticleAction* pa			= 0;
+    switch(type){
+    case PAAvoidID:				pa = xr_new<PAAvoid>();				break;
+    case PABounceID:    		pa = xr_new<PABounce>();			break;
+    case PACallActionListID:    pa = xr_new<PACallActionList>();	break;
+    case PACopyVertexBID:    	pa = xr_new<PACopyVertexB>();		break;
+    case PADampingID:    		pa = xr_new<PADamping>();			break;
+    case PAExplosionID:    		pa = xr_new<PAExplosion>();			break;
+    case PAFollowID:    		pa = xr_new<PAFollow>();			break;
+    case PAGravitateID:    		pa = xr_new<PAGravitate>();			break;
+    case PAGravityID:    		pa = xr_new<PAGravity>();			break;
+    case PAJetID:    			pa = xr_new<PAJet>();				break;
+    case PAKillOldID:    		pa = xr_new<PAKillOld>();			break;
+    case PAMatchVelocityID:    	pa = xr_new<PAMatchVelocity>();		break;
+    case PAMoveID:    			pa = xr_new<PAMove>();				break;
+    case PAOrbitLineID:    		pa = xr_new<PAOrbitLine>();			break;
+    case PAOrbitPointID:    	pa = xr_new<PAOrbitPoint>();		break;
+    case PARandomAccelID:    	pa = xr_new<PARandomAccel>();		break;
+    case PARandomDisplaceID:    pa = xr_new<PARandomDisplace>();	break;
+    case PARandomVelocityID:    pa = xr_new<PARandomVelocity>();	break;
+    case PARestoreID:    		pa = xr_new<PARestore>();			break;
+    case PASinkID:    			pa = xr_new<PASink>();				break;
+    case PASinkVelocityID:    	pa = xr_new<PASinkVelocity>();		break;
+    case PASourceID:    		pa = xr_new<PASource>();			break;
+    case PASpeedLimitID:    	pa = xr_new<PASpeedLimit>();		break;
+    case PATargetColorID:    	pa = xr_new<PATargetColor>();		break;
+    case PATargetSizeID:    	pa = xr_new<PATargetSize>();		break;
+    case PATargetRotateID:    	pa = xr_new<PATargetRotate>();		break;
+    case PATargetRotateDID:    	pa = xr_new<PATargetRotate>();		break;
+    case PATargetVelocityID:    pa = xr_new<PATargetVelocity>(); 	break;
+    case PATargetVelocityDID:   pa = xr_new<PATargetVelocity>();	break;
+    case PAVortexID:    		pa = xr_new<PAVortex>();			break;
+    default: NODEFAULT;
+    }
+    pa->type					= type;
+	return pa;
+}
+
+ParticleAction* pCreateAction(ParticleAction* src)
+{
+	VERIFY(src);
+	ParticleAction* pa			= pCreateAction(src->type);
+    switch(src->type){
+    case PAAvoidID:				*dynamic_cast<PAAvoid*			>(pa) = *dynamic_cast<PAAvoid*			>(src);break;
+    case PABounceID:    		*dynamic_cast<PABounce*			>(pa) = *dynamic_cast<PABounce*			>(src);break;
+    case PACallActionListID:    *dynamic_cast<PACallActionList*	>(pa) = *dynamic_cast<PACallActionList*	>(src);break;
+    case PACopyVertexBID:    	*dynamic_cast<PACopyVertexB*   	>(pa) = *dynamic_cast<PACopyVertexB*  	>(src);break;
+    case PADampingID:    		*dynamic_cast<PADamping*	   	>(pa) = *dynamic_cast<PADamping*	  	>(src);break;
+    case PAExplosionID:    		*dynamic_cast<PAExplosion*		>(pa) = *dynamic_cast<PAExplosion*		>(src);break;
+    case PAFollowID:    		*dynamic_cast<PAFollow*			>(pa) = *dynamic_cast<PAFollow*			>(src);break;
+    case PAGravitateID:    		*dynamic_cast<PAGravitate*		>(pa) = *dynamic_cast<PAGravitate*		>(src);break;
+    case PAGravityID:    		*dynamic_cast<PAGravity*	   	>(pa) = *dynamic_cast<PAGravity*	  	>(src);break;
+    case PAJetID:    			*dynamic_cast<PAJet*		   	>(pa) = *dynamic_cast<PAJet*		   	>(src);break;
+    case PAKillOldID:    		*dynamic_cast<PAKillOld*	   	>(pa) = *dynamic_cast<PAKillOld*	  	>(src);break;
+    case PAMatchVelocityID:    	*dynamic_cast<PAMatchVelocity*	>(pa) = *dynamic_cast<PAMatchVelocity*	>(src);break;
+    case PAMoveID:    			*dynamic_cast<PAMove*		   	>(pa) = *dynamic_cast<PAMove*		  	>(src);break;
+    case PAOrbitLineID:    		*dynamic_cast<PAOrbitLine*		>(pa) = *dynamic_cast<PAOrbitLine*		>(src);break;
+    case PAOrbitPointID:    	*dynamic_cast<PAOrbitPoint*		>(pa) = *dynamic_cast<PAOrbitPoint*		>(src);break;
+    case PARandomAccelID:    	*dynamic_cast<PARandomAccel*   	>(pa) = *dynamic_cast<PARandomAccel*   	>(src);break;
+    case PARandomDisplaceID:    *dynamic_cast<PARandomDisplace*	>(pa) = *dynamic_cast<PARandomDisplace*	>(src);break;
+    case PARandomVelocityID:    *dynamic_cast<PARandomVelocity*	>(pa) = *dynamic_cast<PARandomVelocity*	>(src);break;
+    case PARestoreID:    		*dynamic_cast<PARestore*	   	>(pa) = *dynamic_cast<PARestore*	   	>(src);break;
+    case PASinkID:    			*dynamic_cast<PASink*		   	>(pa) = *dynamic_cast<PASink*		   	>(src);break;
+    case PASinkVelocityID:    	*dynamic_cast<PASinkVelocity*  	>(pa) = *dynamic_cast<PASinkVelocity* 	>(src);break;
+    case PASourceID:    		*dynamic_cast<PASource*		   	>(pa) = *dynamic_cast<PASource*			>(src);break;
+    case PASpeedLimitID:    	*dynamic_cast<PASpeedLimit*		>(pa) = *dynamic_cast<PASpeedLimit*		>(src);break;
+    case PATargetColorID:    	*dynamic_cast<PATargetColor*	>(pa) = *dynamic_cast<PATargetColor*   	>(src);break;
+    case PATargetSizeID:    	*dynamic_cast<PATargetSize*		>(pa) = *dynamic_cast<PATargetSize*		>(src);break;
+    case PATargetRotateID:    	*dynamic_cast<PATargetRotate*	>(pa) = *dynamic_cast<PATargetRotate* 	>(src);break;
+    case PATargetRotateDID:    	*dynamic_cast<PATargetRotate*	>(pa) = *dynamic_cast<PATargetRotate* 	>(src);break;
+    case PATargetVelocityID:    *dynamic_cast<PATargetVelocity*	>(pa) = *dynamic_cast<PATargetVelocity*	>(src);break;
+    case PATargetVelocityDID:   *dynamic_cast<PATargetVelocity*	>(pa) = *dynamic_cast<PATargetVelocity*	>(src);break;
+    case PAVortexID:    		*dynamic_cast<PAVortex*			>(pa) = *dynamic_cast<PAVortex*			>(src);break;
+    default: NODEFAULT;
+    }
+	return pa;
+}
 ////////////////////////////////////////////////////////
 // Auxiliary calls
-void _pCallActionList(ParticleAction *apa, int num_actions,
-					  ParticleEffect *pe)
+void _pCallActionList(PAVec* pa, ParticleEffect *pe)
 {
 	// All these require a particle effect, so check for it.
 	if(pe == NULL)
 		return;
 	
-	PAHeader *pa = (PAHeader *)apa;
+	// Step through all the actions in the action list.
+	for(PAVecIt it=pa->begin(); it!=pa->end(); it++)
+    	(*it)->Execute(pe);
+}
+
+void _pCallAction(ParticleAction* pa, ParticleEffect *pe)
+{
+	// All these require a particle effect, so check for it.
+	if(pe == NULL)
+		return;
 	
 	// Step through all the actions in the action list.
-	for(int action = 0; action < num_actions; action++, pa++)
-	{
-		switch(pa->type)
-		{
-		case PAAvoidID:
-			((PAAvoid *)pa)->Execute(pe);
-			break;
-		case PABounceID:
-			((PABounce *)pa)->Execute(pe);
-			break;
-		case PACallActionListID:
-			((PACallActionList *)pa)->Execute(pe);
-			break;
-		case PACopyVertexBID:
-			((PACopyVertexB *)pa)->Execute(pe);
-			break;
-		case PADampingID:
-			((PADamping *)pa)->Execute(pe);
-			break;
-		case PAExplosionID:
-			((PAExplosion *)pa)->Execute(pe);
-			break;
-		case PAFollowID:
-			((PAFollow *)pa)->Execute(pe);
-			break;
-		case PAGravitateID:
-			((PAGravitate *)pa)->Execute(pe);
-			break;
-		case PAGravityID:
-			((PAGravity *)pa)->Execute(pe);
-			break;
-		case PAJetID:
-			((PAJet *)pa)->Execute(pe);
-			break;
-		case PAKillOldID:
-			((PAKillOld *)pa)->Execute(pe);
-			break;
-		case PAMatchVelocityID:
-			((PAMatchVelocity *)pa)->Execute(pe);
-			break;
-		case PAMoveID:
-			((PAMove *)pa)->Execute(pe);
-			break;
-		case PAOrbitLineID:
-			((PAOrbitLine *)pa)->Execute(pe);
-			break;
-		case PAOrbitPointID:
-			((PAOrbitPoint *)pa)->Execute(pe);
-			break;
-		case PARandomAccelID:
-			((PARandomAccel *)pa)->Execute(pe);
-			break;
-		case PARandomDisplaceID:
-			((PARandomDisplace *)pa)->Execute(pe);
-			break;
-		case PARandomVelocityID:
-			((PARandomVelocity *)pa)->Execute(pe);
-			break;
-		case PARestoreID:
-			((PARestore *)pa)->Execute(pe);
-			break;
-		case PASinkID:
-			((PASink *)pa)->Execute(pe);
-			break;
-		case PASinkVelocityID:
-			((PASinkVelocity *)pa)->Execute(pe);
-			break;
-		case PASourceID:
-			((PASource *)pa)->Execute(pe);
-			break;
-		case PASpeedLimitID:
-			((PASpeedLimit *)pa)->Execute(pe);
-			break;
-		case PATargetColorID:
-			((PATargetColor *)pa)->Execute(pe);
-			break;
-		case PATargetSizeID:
-			((PATargetSize *)pa)->Execute(pe);
-			break;
-		case PATargetRotateID:
-			((PATargetRotate *)pa)->Execute(pe);
-			break;
-		case PATargetRotateDID:
-			((PATargetRotate *)pa)->Execute(pe);
-			break;
-		case PATargetVelocityID:
-			((PATargetVelocity *)pa)->Execute(pe);
-			break;
-		case PATargetVelocityDID:
-			((PATargetVelocity *)pa)->Execute(pe);
-			break;
-		case PAVortexID:
-			((PAVortex *)pa)->Execute(pe);
-			break;
-		}
-	}
+    pa->Execute(pe);
 }
 
 // Add the incoming action to the end of the current action list.
-void _pAddActionToList(ParticleAction *S, int size)
+void _pAddActionToList(ParticleAction *S)
 {
-	_ParticleState &_ps = _GetPState();
+	_ParticleState &_ps		= _GetPState();
 
-	if(!_ps.in_new_list)
-		return; // ERROR
-	
-	if(_ps.pact == NULL)
-		return; // ERROR
-	
-	if(_ps.list_id < 0)
-		return; // ERROR
-	
-	PAHeader *alist = _ps.pact;
-	
-	if(alist->actions_allocated <= alist->count)
-	{
-		// Must reallocate.
-		int new_alloc = 16 + alist->actions_allocated;
-		PAHeader *new_alist = xr_alloc<PAHeader>(new_alloc);
-		Memory.mem_copy(new_alist, alist, alist->count * sizeof(PAHeader));
-		
-		xr_free(alist);
-		_ps.alist_vec[_ps.list_id] = _ps.pact = alist = new_alist;
-		
-		alist->actions_allocated = new_alloc;
-	}
-	
-	// Now add it in.
-	Memory.mem_copy(&alist[alist->count], S, size);
-	alist->count++;
+	if(!_ps.in_new_list)	return; // ERROR
+	if(_ps.pact == NULL)   	return; // ERROR
+	if(_ps.list_id < 0)		return; // ERROR
+
+	_ps.pact->push_back		(S);
 }
 
-PARTICLEDLL_API void pAddActionToList(PAHeader *S)
+PARTICLEDLL_API void pAddActionToList(ParticleAction* S)
 {
-	_pAddActionToList(S,sizeof(PAHeader));
+	_pAddActionToList(pCreateAction(S));
 }
 
 ////////////////////////////////////////////////////////
@@ -455,12 +389,7 @@ PARTICLEDLL_API int pGenActionLists(int action_list_count)
 	int ind = _ps.GenerateLists(action_list_count);
 	
 	for(int i=ind; i<ind+action_list_count; i++)
-	{
-		_ps.alist_vec[i] 					= xr_alloc<PAHeader>(8);
-		_ps.alist_vec[i]->actions_allocated = 8;
-		_ps.alist_vec[i]->type				= PAHeaderID;
-		_ps.alist_vec[i]->count				= 1;
-	}
+		_ps.alist_vec[i].reserve(8);
 
 	return ind;
 }
@@ -469,19 +398,17 @@ PARTICLEDLL_API void pNewActionList(int action_list_num)
 {
 	_ParticleState &_ps = _GetPState();
 
-	if(_ps.in_new_list)
-		return; // ERROR
+	if(_ps.in_new_list) return; // ERROR
 	
-	_ps.pact = _ps.GetListPtr(action_list_num);
+	_ps.pact 			= _ps.GetListPtr(action_list_num);
+	if(_ps.pact == NULL)return; // ERROR
 	
-	if(_ps.pact == NULL)
-		return; // ERROR
-	
-	_ps.list_id = action_list_num;
-	_ps.in_new_list = TRUE;
+	_ps.list_id 		= action_list_num;
+	_ps.in_new_list 	= TRUE;
 
-	// Remove whatever used to be in the list.
-	_ps.pact->count = 1;
+    for (PAVecIt it=_ps.pact->begin(); it!=_ps.pact->end(); it++) 
+    	xr_delete		(*it);
+    _ps.pact->clear		();
 }
 
 PARTICLEDLL_API void pEndActionList()
@@ -512,12 +439,14 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 
 	for(int i = action_list_num; i < action_list_num + action_list_count; i++)
 	{
-		if(_ps.alist_vec[i])	xr_free(_ps.alist_vec[i]);
-		else					return; // ERROR
+        PAVec& lst				= _ps.alist_vec[i];
+	    for (PAVecIt it=lst.begin(); it!=lst.end(); it++)
+            xr_delete			(*it);
+	    lst.clear				();
 	}
 }
 
-void _pSendAction(ParticleAction *S, PActionEnum type, int size);
+void _pSendAction(ParticleAction *S);
 
 PARTICLEDLL_API void pCallActionList(int action_list_num)
 {
@@ -527,27 +456,26 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 	{
 		// Add this call as an action to the current list.
 
-		PACallActionList S;
-		S.action_list_num = action_list_num;
+		PACallActionList* S= dynamic_cast<PACallActionList*>(pCreateAction(PACallActionListID));
+		S->action_list_num = action_list_num;
 		
-		_pSendAction(&S, PACallActionListID, sizeof(PACallActionList));
+		_pSendAction(S);
 	}
 	else
 	{
 		// Execute the specified action list.
-		PAHeader *pa = _ps.GetListPtr(action_list_num);
+		PAVec* pa			= _ps.GetListPtr(action_list_num);
 		
-		if(pa == NULL)
-			return; // ERRROR
+		if((pa==NULL)||pa->empty())	return; // ERROR
 		
 		// XXX A temporary hack.
-		pa->dt = _ps.dt;
+        ParticleAction::dt	= _ps.dt;
 		
-		_ps.in_call_list = TRUE;
-		
-		_pCallActionList(pa+1, pa->count-1, _ps.peff);
-		
-		_ps.in_call_list = FALSE;
+		_ps.in_call_list 	= TRUE;
+
+		_pCallActionList	(pa, _ps.peff);
+
+		_ps.in_call_list 	= FALSE;
 	}
 }
 
@@ -555,89 +483,29 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 {
 	_ParticleState &_ps = _GetPState();
 
-	if(_ps.in_new_list)
-		return; // ERROR
+	if(_ps.in_new_list) return; // ERROR
 
 	// Execute the specified action list.
-	PAHeader *pa	= _ps.GetListPtr(action_list_num);
+	PAVec* pa			= _ps.GetListPtr(action_list_num);
 
-	if(pa == NULL)
-		return; // ERROR
-
-	int num_act = pa->count-1; pa++;
+	if(pa == NULL)		return; // ERROR
 
 	Fmatrix mR=full;	mR.c.set(0,0,0);
 	Fmatrix mT;			mT.translate(full.c);
 
 	// Step through all the actions in the action list.
-	for(int act = 0; act < num_act; act++, pa++){
-		BOOL t = pa->m_Flags.is(ParticleAction::ALLOW_TRANSLATE);
-		BOOL r = pa->m_Flags.is(ParticleAction::ALLOW_ROTATE);
+	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
+		BOOL t = (*it)->m_Flags.is(ParticleAction::ALLOW_TRANSLATE);
+		BOOL r = (*it)->m_Flags.is(ParticleAction::ALLOW_ROTATE);
 		if ((!t)&&(!r)) continue;
 		const Fmatrix& m = t&&r?full:(t?mT:mR);
-		switch(pa->type)
+        (*it)->Transform(m);
+		switch((*it)->type)
 		{
-		case PAAvoidID:
-			((PAAvoid *)pa)->Transform(m);
-			break;
-		case PABounceID:
-			((PABounce *)pa)->Transform(m);
-			break;
-		case PACallActionListID:			break;
-		case PACopyVertexBID:				break;
-		case PADampingID:					break;
-		case PAExplosionID:
-			((PAExplosion *)pa)->Transform(m);
-			break;
-		case PAFollowID:					break;
-		case PAGravitateID:					break;
-		case PAGravityID:					break;
-		case PAJetID:
-			((PAJet *)pa)->Transform(m);
-			break;
-		case PAKillOldID:					break;
-		case PAMatchVelocityID:				break;
-		case PAMoveID:						break;
-		case PAOrbitLineID:
-			((PAOrbitLine *)pa)->Transform(m);
-			break;
-		case PAOrbitPointID:
-			((PAOrbitPoint *)pa)->Transform(m);
-			break;
-		case PARandomAccelID:
-			((PARandomAccel *)pa)->Transform(m);
-			break;
-		case PARandomDisplaceID:
-			((PARandomDisplace *)pa)->Transform(m);
-			break;
-		case PARandomVelocityID:
-			((PARandomVelocity *)pa)->Transform(m);
-			break;
-		case PARestoreID:					break;
-		case PASinkID:
-			((PASink *)pa)->Transform(m);
-			break;
-		case PASinkVelocityID:
-			((PASinkVelocity *)pa)->Transform(m);
-			break;
 		case PASourceID:
-			((PASource *)pa)->Transform(m);
-			((PASource *)pa)->parent_vel = pVector(vel.x,vel.y,vel.z)*((PASource *)pa)->parent_motion;
+			dynamic_cast<PASource*>(*it)->parent_vel = pVector(vel.x,vel.y,vel.z)*dynamic_cast<PASource*>(*it)->parent_motion;
 			break;
-		case PASpeedLimitID:			break;
-		case PATargetColorID:			break;
-		case PATargetSizeID:			break;
-		case PATargetRotateID:			break;
-		case PATargetRotateDID:			break;
-		case PATargetVelocityID:
-			((PATargetVelocity *)pa)->Transform(m);
-			break;
-		case PATargetVelocityDID:
-			((PATargetVelocity *)pa)->Transform(m);
-			break;
-		case PAVortexID:
-			((PAVortex *)pa)->Transform(m);
-			break;
+//.            
 		}
 	}
 }
@@ -647,14 +515,13 @@ PARTICLEDLL_API void pStopPlaying(int action_list_num)
 	_ParticleState &_ps = _GetPState();
 	if(_ps.in_new_list) return; // ERROR
 	// Execute the specified action list.
-	PAHeader *pa		= _ps.GetListPtr(action_list_num);
+	PAVec* pa			= _ps.GetListPtr(action_list_num);
 	if(pa == NULL)		return; // ERROR
-	int num_act = pa->count-1; pa++;
 	// Step through all the actions in the action list.
-	for(int act = 0; act < num_act; act++, pa++){
-		switch(pa->type){
+	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
+		switch((*it)->type){
 		case PASourceID:
-			((PASource *)pa)->m_Flags.set(PASource::flSilent,TRUE);
+			dynamic_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);
 			break;
 		}
 	}
@@ -665,14 +532,13 @@ PARTICLEDLL_API void pStartPlaying(int action_list_num)
 	_ParticleState &_ps = _GetPState();
 	if(_ps.in_new_list) return; // ERROR
 	// Execute the specified action list.
-	PAHeader *pa		= _ps.GetListPtr(action_list_num);
+	PAVec* pa			= _ps.GetListPtr(action_list_num);
 	if(pa == NULL)		return; // ERROR
-	int num_act = pa->count-1; pa++;
 	// Step through all the actions in the action list.
-	for(int act = 0; act < num_act; act++, pa++){
-		switch(pa->type){
+	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
+		switch((*it)->type){
 		case PASourceID:
-			((PASource *)pa)->m_Flags.set(PASource::flSilent,FALSE);
+			dynamic_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE);
 			break;
 		}
 	}

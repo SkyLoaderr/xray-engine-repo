@@ -166,13 +166,16 @@ namespace PAPI
 			float a0=0.0f, float a1=0.0f, float a2=0.0f,
 			float a3=0.0f, float a4=0.0f, float a5=0.0f,
 			float a6=0.0f, float a7=0.0f, float a8=0.0f);
+#ifdef _PARTICLE_EDITOR        
+		void 	Render		(u32 clr);
+		void 	FillProp	(PropItemVec& items, LPCSTR pref);
+#endif
 	};
 
 	//////////////////////////////////////////////////////////////////////
 	// Type codes for all actions
 	enum PActionEnum
 	{
-		PAHeaderID,			// The first action in each list.
 		PAAvoidID,			// Avoid entering the domain of space.
 		PABounceID,			// Bounce particles off a domain of space.
 		PACallActionListID,	// 
@@ -203,37 +206,40 @@ namespace PAPI
 		PATargetVelocityID,	// 
 		PATargetVelocityDID,// 
 		PAVortexID,			// 
-		action_enum_force_dword = DWORD(-1)
+		action_enum_force_dword = u32(-1)
 	};
 
 	///////////////////////////////////////////////////////////////////////////
 	// Data types derived from Action.
-	struct ParticleAction
+	// This Methods actually does the particle's action.
+	struct PARTICLEDLL_API ParticleAction
 	{
 		enum{
 			ALLOW_TRANSLATE	= (1<<0),
 			ALLOW_ROTATE	= (1<<1)
 		};
-		static float	dt;	// This is copied to here from global state.
+		static float	dt;		// This is copied to here from global state.
 		Flags32			m_Flags;
 		PActionEnum		type;	// Type field
 		ParticleAction	(){m_Flags.zero();}
+        
+		virtual void 	Execute		(ParticleEffect *pe)= 0;
+		virtual void 	Transform	(const Fmatrix& m)	= 0;
+
+		virtual void 	Load		(IReader& F)=0;
+		virtual void 	Save		(IWriter& F)=0;
+#ifdef _PARTICLE_EDITOR        
+		virtual void 	Render		()=0;
+		virtual void 	FillProp	(PropItemVec& items, LPCSTR pref)=0;
+#endif
 	};
+    
+#define _METHODS	virtual void 	Load		(IReader& F);\
+                    virtual void 	Save		(IWriter& F);\
+                    virtual void 	Execute		(ParticleEffect *pe);\
+                    virtual void 	Transform	(const Fmatrix& m);
 
-	// This Methods actually does the particle's action.
-	#define Methods	void Execute	(ParticleEffect *pe);\
-	void Transform	(const Fmatrix& m);
-
-	struct PAHeader : public ParticleAction
-	{
-		int actions_allocated;
-		int count;			// Total actions in the list.
-		float padding[126];	// This must be the largest action.
-
-		Methods
-	};
-
-	struct PAAvoid : public ParticleAction
+	struct PARTICLEDLL_API PAAvoid : public ParticleAction
 	{
 		pDomain positionL;	// Avoid region (in local space)
 		pDomain position;	// Avoid region
@@ -241,10 +247,10 @@ namespace PAPI
 		float magnitude;	// what percent of the way to go each time
 		float epsilon;		// add to r^2 for softening
 
-		Methods
+        _METHODS;
 	};
 
-	struct PABounce : public ParticleAction
+	struct PARTICLEDLL_API PABounce : public ParticleAction
 	{
 		pDomain positionL;	// Bounce region (in local space)
 		pDomain position;	// Bounce region
@@ -252,34 +258,33 @@ namespace PAPI
 		float resilience;	// Resilence perpendicular to surface
 		float cutoffSqr;	// cutoff velocity; friction applies iff v > cutoff
 
-		Methods
+        _METHODS;
 	};
 
-	struct PACallActionList : public ParticleAction
+	struct PARTICLEDLL_API PACallActionList : public ParticleAction
 	{
 		int action_list_num;	// The action list number to call
 
-		Methods
+        _METHODS;
 	};
 
-	struct PACopyVertexB : public ParticleAction
+	struct PARTICLEDLL_API PACopyVertexB : public ParticleAction
 	{
 		BOOL copy_pos;		// True to copy pos to posB.
-		BOOL copy_vel;		// True to copy vel to velB.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PADamping : public ParticleAction
+	struct PARTICLEDLL_API PADamping : public ParticleAction
 	{
 		pVector damping;	// Damping constant applied to velocity
 		float vlowSqr;		// Low and high cutoff velocities
 		float vhighSqr;
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAExplosion : public ParticleAction
+	struct PARTICLEDLL_API PAExplosion : public ParticleAction
 	{
 		pVector centerL;	// The center of the explosion (in local space)
 		pVector center;		// The center of the explosion
@@ -289,36 +294,36 @@ namespace PAPI
 		float age;			// How long it's been going on
 		float epsilon;		// Softening parameter
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAFollow : public ParticleAction
+	struct PARTICLEDLL_API PAFollow : public ParticleAction
 	{
 		float magnitude;	// The grav of each particle
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAGravitate : public ParticleAction
+	struct PARTICLEDLL_API PAGravitate : public ParticleAction
 	{
 		float magnitude;	// The grav of each particle
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAGravity : public ParticleAction
+	struct PARTICLEDLL_API PAGravity : public ParticleAction
 	{
 		pVector directionL;	// Amount to increment velocity (in local space)
 		pVector direction;	// Amount to increment velocity
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAJet : public ParticleAction
+	struct PARTICLEDLL_API PAJet : public ParticleAction
 	{
 		pVector	centerL;	// Center of the fan (in local space)
 		pDomain accL;		// Acceleration vector domain  (in local space)
@@ -328,33 +333,32 @@ namespace PAPI
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAKillOld : public ParticleAction
+	struct PARTICLEDLL_API PAKillOld : public ParticleAction
 	{
     	float age_limit;		// Exact age at which to kill particles.
 		BOOL kill_less_than;	// True to kill particles less than limit.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAMatchVelocity : public ParticleAction
+	struct PARTICLEDLL_API PAMatchVelocity : public ParticleAction
 	{
 		float magnitude;	// The grav of each particle
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAMove : public ParticleAction
+	struct PARTICLEDLL_API PAMove : public ParticleAction
 	{
-
-		Methods
+        _METHODS;
 	};
 
-	struct PAOrbitLine : public ParticleAction
+	struct PARTICLEDLL_API PAOrbitLine : public ParticleAction
 	{
 		pVector pL, axisL;	// Endpoints of line to which particles are attracted (in local space)
 		pVector p, axis;	// Endpoints of line to which particles are attracted
@@ -362,10 +366,10 @@ namespace PAPI
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAOrbitPoint : public ParticleAction
+	struct PARTICLEDLL_API PAOrbitPoint : public ParticleAction
 	{
 		pVector centerL;	// Point to which particles are attracted (in local space)
 		pVector center;		// Point to which particles are attracted
@@ -373,67 +377,67 @@ namespace PAPI
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
-	struct PARandomAccel : public ParticleAction
+	struct PARTICLEDLL_API PARandomAccel : public ParticleAction
 	{
 		pDomain gen_accL;	// The domain of random accelerations.(in local space)
 		pDomain gen_acc;	// The domain of random accelerations.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PARandomDisplace : public ParticleAction
+	struct PARTICLEDLL_API PARandomDisplace : public ParticleAction
 	{
 		pDomain gen_dispL;	// The domain of random displacements.(in local space)
 		pDomain gen_disp;	// The domain of random displacements.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PARandomVelocity : public ParticleAction
+	struct PARTICLEDLL_API PARandomVelocity : public ParticleAction
 	{
 		pDomain gen_velL;	// The domain of random velocities.(in local space)
 		pDomain gen_vel;	// The domain of random velocities.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PARestore : public ParticleAction
+	struct PARTICLEDLL_API PARestore : public ParticleAction
 	{
-		float time_left;		// Time remaining until they should be in position.
+		float time_left;	// Time remaining until they should be in position.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PASink : public ParticleAction
+	struct PARTICLEDLL_API PASink : public ParticleAction
 	{
 		BOOL kill_inside;	// True to dispose of particles *inside* domain
 		pDomain positionL;	// Disposal region (in local space)
 		pDomain position;	// Disposal region
 
-		Methods
+        _METHODS;
 	};
 
-	struct PASinkVelocity : public ParticleAction
+	struct PARTICLEDLL_API PASinkVelocity : public ParticleAction
 	{
 		BOOL kill_inside;	// True to dispose of particles with vel *inside* domain
 		pDomain velocityL;	// Disposal region (in local space)
 		pDomain velocity;	// Disposal region
 
-		Methods
+        _METHODS;
 	};
 
-	struct PASpeedLimit : public ParticleAction
+	struct PARTICLEDLL_API PASpeedLimit : public ParticleAction
 	{
 		float min_speed;		// Clamp speed to this minimum.
 		float max_speed;		// Clamp speed to this maximum.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PASource : public ParticleAction
+	struct PARTICLEDLL_API PASource : public ParticleAction
 	{
 		enum{
 			flVertexB_tracks	= (1ul<<31ul),// True to get positionB from position.
@@ -454,52 +458,52 @@ namespace PAPI
 		pVector parent_vel;	
 		float parent_motion;
 
-		Methods
+        _METHODS;
 	};
 
-	struct PATargetColor : public ParticleAction
+	struct PARTICLEDLL_API PATargetColor : public ParticleAction
 	{
 		pVector color;		// Color to shift towards
 		float alpha;		// Alpha value to shift towards
 		float scale;		// Amount to shift by (1 == all the way)
 
-		Methods
+        _METHODS;
 	};
 
-	struct PATargetSize : public ParticleAction
+	struct PARTICLEDLL_API PATargetSize : public ParticleAction
 	{
 		pVector size;		// Size to shift towards
 		pVector scale;		// Amount to shift by per frame (1 == all the way)
 
-		Methods
+        _METHODS;
 	};
 
-	struct PATargetRotate : public ParticleAction
+	struct PARTICLEDLL_API PATargetRotate : public ParticleAction
 	{
 		pVector rot;		// Rotation to shift towards
 		float scale;		// Amount to shift by per frame (1 == all the way)
 
-		Methods
+        _METHODS;
 	};
 
-	struct PATargetVelocity : public ParticleAction
+	struct PARTICLEDLL_API PATargetVelocity : public ParticleAction
 	{
 		pVector velocityL;	// Velocity to shift towards (in local space)
 		pVector velocity;	// Velocity to shift towards
 		float scale;		// Amount to shift by (1 == all the way)
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAVelocityD : public ParticleAction
+	struct PARTICLEDLL_API PAVelocityD : public ParticleAction
 	{
 		pDomain gen_velL;	// The domain of startup velocity.(in local space)
 		pDomain gen_vel;	// The domain of startup velocity.
 
-		Methods
+        _METHODS;
 	};
 
-	struct PAVortex : public ParticleAction
+	struct PARTICLEDLL_API PAVortex : public ParticleAction
 	{
 		pVector centerL;	// Center of vortex (in local space)
 		pVector axisL;		// Axis around which vortex is applied (in local space)
@@ -509,58 +513,61 @@ namespace PAPI
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		Methods
+        _METHODS;
 	};
 
+    DEFINE_VECTOR(ParticleAction*,PAVec,PAVecIt);
 	// Global state _vector
 	struct _ParticleState
 	{
-		float	dt;
-		BOOL	in_call_list;
-		BOOL	in_new_list;
+		float			dt;
+		BOOL			in_call_list;
+		BOOL			in_new_list;
 
-		int effect_id;
-		int list_id;
-		ParticleEffect *peff;
-		PAHeader *pact;
+		int 			effect_id;
+		int 			list_id;
+		ParticleEffect*	peff;
+		PAVec*			pact;
 
 		// These are static because all threads access the same effects.
 		// All accesses to these should be locked.
 		DEFINE_VECTOR(ParticleEffect*,ParticleEffectVec,ParticleEffectVecIt);
-		DEFINE_VECTOR(PAHeader*,PAHeaderVec,PAHeaderVecIt);
+		DEFINE_VECTOR(PAVec,LPParticleActionVec,LPParticleActionVecIt);
 		static ParticleEffectVec	effect_vec;
-		static PAHeaderVec		alist_vec;
+		static LPParticleActionVec	alist_vec;
 
 		// state part
-		Flags32	flags;
-		pDomain Size;
-		pDomain Vel;
-		pDomain VertexB;
-		pDomain Color;
-		pDomain Rot;
-		float	Alpha;
-		float	Age;
-		float	AgeSigma;
-		float	parent_motion;
+		Flags32			flags;
+		pDomain 		Size;
+		pDomain 		Vel;
+		pDomain 		VertexB;
+		pDomain 		Color;
+		pDomain 		Rot;
+		float			Alpha;
+		float			Age;
+		float			AgeSigma;
+		float			parent_motion;
 
-		_ParticleState();
+						_ParticleState	();
 
 		// Return an index into the list of particle effects where
 		// p_effect_count effects can be added.
 		int				GenerateEffects	(int p_effect_count);
 		int				GenerateLists	(int alist_count);
 		ParticleEffect*	GetEffectPtr	(int p_effect_num);
-		PAHeader*		GetListPtr		(int action_list_num);
+		PAVec*			GetListPtr		(int action_list_num);
 		// 
 		void			ResetState		();
 	};
 
 	// All entry points call this to get their particle state.
 	// For the non-MP case this is practically a no-op.
-	PARTICLEDLL_API		_ParticleState& _GetPState();
-	PARTICLEDLL_API		ParticleEffect*	_GetEffectPtr(int p_effect_num);
-	PARTICLEDLL_API		PAHeader*		_GetListPtr(int action_list_num);
+	PARTICLEDLL_API		_ParticleState& _GetPState		();
+	PARTICLEDLL_API		ParticleEffect*	_GetEffectPtr	(int p_effect_num);
+	PARTICLEDLL_API		PAVec*			_GetListPtr		(int action_list_num);
 	#pragma pack( pop ) // push 4
+
+	PARTICLEDLL_API ParticleAction* pCreateAction	(PActionEnum type);
 
 	// State setting calls
 	PARTICLEDLL_API void pResetState();
@@ -622,7 +629,7 @@ namespace PAPI
 
 	PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& velocity);
 
-	PARTICLEDLL_API void pAddActionToList(PAHeader *S);		
+	PARTICLEDLL_API void pAddActionToList(ParticleAction *S);		
 
 	PARTICLEDLL_API void pStopPlaying(int action_list_num);
 
@@ -666,7 +673,7 @@ namespace PAPI
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
-	PARTICLEDLL_API void pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);
+	PARTICLEDLL_API void pCopyVertexB(BOOL copy_pos = TRUE);
 
 	PARTICLEDLL_API void pDamping(float damping_x, float damping_y, float damping_z,
 		float vlow = 0.0f, float vhigh = P_MAXFLOAT);

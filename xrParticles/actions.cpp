@@ -1,11 +1,3 @@
-// actions.cpp
-//
-// Copyright 1997-1998 by David K. McAllister
-//
-// I used code Copyright 1997 by Jonathan P. Leech
-// as an example in implenting this.
-//
-// This file implements the dynamics of particle actions.
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -42,7 +34,7 @@ static inline float NRand(float sigma = 1.0f)
 		return -y * sigma * ONE_OVER_SIGMA_EXP;
 }
 
-void PAAvoid::Execute(ParticleEffect *effect)
+void PAPI::PAAvoid::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	
@@ -173,7 +165,7 @@ void PAAvoid::Execute(ParticleEffect *effect)
 				else if(fdistSqr <= gdistSqr) S = fofs;
 				else S = gofs;
 				
-				S.normalize();
+				S.normalize_safe();
 				
 				// We now have a vector3 to safety.
 				float vm = m.vel.length();
@@ -198,7 +190,7 @@ void PAAvoid::Execute(ParticleEffect *effect)
 			// f is the third (non-basis) triangle edge.
 			pVector f = v - u;
 			pVector fn(f);
-			fn.normalize();
+			fn.normalize_safe();
 			
 			// w = u cross v
 			float wx = u.y*v.z-u.z*v.y;
@@ -264,7 +256,7 @@ void PAAvoid::Execute(ParticleEffect *effect)
 				else if(vdistSqr <= fdistSqr) S = vofs;
 				else S = fofs;
 				
-				S.normalize();
+				S.normalize_safe();
 				
 				// We now have a vector3 to safety.
 				float vm = m.vel.length();
@@ -327,7 +319,7 @@ void PAAvoid::Execute(ParticleEffect *effect)
 				
 				// A hit! A most palpable hit!
 				pVector S = offset;
-				S.normalize();
+				S.normalize_safe();
 				
 				// We now have a vector3 to safety.
 				float vm = m.vel.length();
@@ -368,7 +360,7 @@ void PAAvoid::Execute(ParticleEffect *effect)
 				
 				// Get a vector3 to safety.
 				pVector C = Vn ^ L;
-				C.normalize();
+				C.normalize_safe();
 				pVector S = Vn ^ C;
 				
 				// Blend S into V.
@@ -379,7 +371,7 @@ void PAAvoid::Execute(ParticleEffect *effect)
 		break;
 	}
 }
-void PAAvoid::Transform(const Fmatrix& m)
+void PAPI::PAAvoid::Transform(const Fmatrix& m)
 {
 	position.transform(positionL,m);
 }
@@ -666,7 +658,7 @@ void PABounce::Execute(ParticleEffect *effect)
 					// computed quite right, should extrapolate particle
 					// position to surface.
 					pVector n(m.pos - position.p1);
-					n.normalize();
+					n.normalize_safe();
 					
 					// Compute tangential and normal components of velocity
 					float nmag = m.vel * n;
@@ -712,6 +704,7 @@ void PACallActionList::Execute(ParticleEffect *effect)
 {
 	pCallActionList(action_list_num);
 }
+void PACallActionList::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
 
 // Set the secondary position of each particle to be its position.
@@ -738,6 +731,7 @@ void PACopyVertexB::Execute(ParticleEffect *effect)
 	}
 */
 }
+void PACopyVertexB::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
 
 // Dampen velocities
@@ -760,6 +754,7 @@ void PADamping::Execute(ParticleEffect *effect)
 		}
 	}
 }
+void PADamping::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
 
 // Exert force on each particle away from explosion center
@@ -832,6 +827,7 @@ void PAFollow::Execute(ParticleEffect *effect)
 		}
 	}
 }
+void PAFollow::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
 
 // Inter-particle gravitation
@@ -888,6 +884,7 @@ void PAGravitate::Execute(ParticleEffect *effect)
 		}
 	}
 }
+void PAGravitate::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
 
 // Acceleration in a constant direction
@@ -901,6 +898,7 @@ void PAGravity::Execute(ParticleEffect *effect)
 		effect->list[i].vel += ddir;
 	}
 }
+void PAGravity::Transform(const Fmatrix&){;}
 //-------------------------------------------------------------------------------------------------
 
 // Accelerate particles along a line
@@ -972,6 +970,8 @@ void PAKillOld::Execute(ParticleEffect *effect)
 			effect->Remove(i);
 	}
 }
+void PAKillOld::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Match velocity to near neighbors
 void PAMatchVelocity::Execute(ParticleEffect *effect)
@@ -1027,6 +1027,8 @@ void PAMatchVelocity::Execute(ParticleEffect *effect)
 		}
 	}
 }
+void PAMatchVelocity::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 void PAMove::Execute(ParticleEffect *effect)
 {
@@ -1043,6 +1045,8 @@ void PAMove::Execute(ParticleEffect *effect)
 		m.pos	+= m.vel * dt;
 	}
 }
+void PAMove::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Accelerate particles towards a line
 void PAOrbitLine::Execute(ParticleEffect *effect)
@@ -1313,6 +1317,8 @@ void PARestore::Execute(ParticleEffect *effect)
 	
 	time_left -= dt;
 }
+void PARestore::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Kill particles with positions on wrong side of the specified domain
 void PASink::Execute(ParticleEffect *effect)
@@ -1400,7 +1406,6 @@ void PASource::Transform(const Fmatrix& m)
 }
 //-------------------------------------------------------------------------------------------------
 
-
 void PASpeedLimit::Execute(ParticleEffect *effect)
 {
 	float min_sqr = min_speed*min_speed;
@@ -1422,6 +1427,8 @@ void PASpeedLimit::Execute(ParticleEffect *effect)
 		}
 	}
 }
+void PASpeedLimit::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Change color of all particles toward the specified color
 void PATargetColor::Execute(ParticleEffect *effect)
@@ -1441,6 +1448,8 @@ void PATargetColor::Execute(ParticleEffect *effect)
 //		m.alpha += (alpha - m.alpha) * scaleFac;
 	}
 }
+void PATargetColor::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Change sizes of all particles toward the specified size
 void PATargetSize::Execute(ParticleEffect *effect)
@@ -1459,6 +1468,8 @@ void PATargetSize::Execute(ParticleEffect *effect)
 		m.size += dif;
 	}
 }
+void PATargetSize::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Change rotation of all particles toward the specified velocity
 void PATargetRotate::Execute(ParticleEffect *effect)
@@ -1476,6 +1487,8 @@ void PATargetRotate::Execute(ParticleEffect *effect)
 		m.rot	+= dif;
 	}
 }
+void PATargetRotate::Transform(const Fmatrix&){;}
+//-------------------------------------------------------------------------------------------------
 
 // Change velocity of all particles toward the specified velocity
 void PATargetVelocity::Execute(ParticleEffect *effect)
@@ -1658,7 +1671,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			pVector tv = v / radius2Sqr;
 			
 			p2 = tu ^ tv; // This is the non-unit normal.
-			p2.normalize(); // Must normalize it.
+			p2.normalize_safe(); // Must normalize it.
 			
 			// radius1 stores the d of the plane eqn.
 			radius1 = -(p1 * p2);
@@ -1677,7 +1690,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			pVector tv = v / radius2Sqr;
 			
 			p2 = tu ^ tv; // This is the non-unit normal.
-			p2.normalize(); // Must normalize it.
+			p2.normalize_safe(); // Must normalize it.
 			
 			// radius1 stores the d of the plane eqn.
 			radius1 = -(p1 * p2);
@@ -1687,7 +1700,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 		{
 			p1 = pVector(a0, a1, a2);
 			p2 = pVector(a3, a4, a5);
-			p2.normalize(); // Must normalize it.
+			p2.normalize_safe(); // Must normalize it.
 			
 			// radius1 stores the d of the plane eqn.
 			radius1 = -(p1 * p2);
@@ -1730,7 +1743,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			// vectors u and v forming a frame [u,v,n.normalize()].
 			pVector n = p2;
 			float p2l2 = n.length2(); // Optimize this.
-			n.normalize();
+			n.normalize_safe();
 			
 			// radius2Sqr stores 1 / (p2.p2)
 			// XXX Used to have an actual if.
@@ -1744,7 +1757,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			// Project away N component, normalize and cross to get
 			// second orthonormal vector3.
 			u = basis - n * (basis * n);
-			u.normalize();
+			u.normalize_safe();
 			v = n ^ u;
 		}
 		break;
@@ -1761,7 +1774,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 		{
 			p1 = pVector(a0, a1, a2); // Center point
 			p2 = pVector(a3, a4, a5); // Normal (not used in Within and Generate)
-			p2.normalize();
+			p2.normalize_safe();
 			
 			if(a6 > a7)
 			{
@@ -1780,7 +1793,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			// Project away N component, normalize and cross to get
 			// second orthonormal vector3.
 			u = basis - p2 * (basis * p2);
-			u.normalize();
+			u.normalize_safe();
 			v = p2 ^ u;
 			radius1Sqr = -(p1 * p2); // D of the plane eqn.
 		}
@@ -1892,7 +1905,7 @@ void pDomain::Generate(pVector &pos) const
 	case PDSphere:
 		// Place on [-1..1] sphere
 		pos = RandVec() - vHalf;
-		pos.normalize();
+		pos.normalize_safe();
 		
 		// Scale unit sphere pos by [0..r] and translate
 		// (should distribute as r^2 law)
@@ -2000,7 +2013,7 @@ void pDomain::transform(const pDomain& domain, const Fmatrix& m)
 		m.transform_dir(v,domain.v);
 		break;
 	default:
-		R_ASSERT2(0,"Unknown domain type.");
+    	NODEFAULT;
 	}
 }
 
