@@ -158,7 +158,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	archives.push_back	(A);
 
 	// Create base path
-	string1024			base;
+	string_path			base;
 	strcpy				(base,path);
 	if (strext(base))	*strext(base)	= 0;
 	strcat				(base,"\\");
