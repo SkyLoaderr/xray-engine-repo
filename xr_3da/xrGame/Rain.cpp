@@ -291,6 +291,7 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
+	Device.Statistic.TEST.Begin		();
 	Particle*	P	= particle_active;
 	DWORD	dwTime	= Device.dwTimeGlobal;
 	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
@@ -320,4 +321,5 @@ void	CEffect_Rain::Render	()
 		
 		P = next;
 	}
+	Device.Statistic.TEST.End		();
 }
