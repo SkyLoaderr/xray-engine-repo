@@ -142,7 +142,7 @@ ENGINE_API IDirect3DBaseTexture9*	TW_LoadTextureFromTexture
 	Reduce					(top_width,top_height,levels_exist,levels_2_skip);
 
 	// Create HW-surface
-	if (D3DX_DEFAULT=t_dest_fmt)	t_dest_fmt = T_sysmem_desc0.Format;
+	if (D3DX_DEFAULT==t_dest_fmt)	t_dest_fmt = T_sysmem_desc0.Format;
 	R_CHK					(D3DXCreateTexture(
 		HW.pDevice,
 		top_width,top_height,
