@@ -22,12 +22,14 @@ private:
 	BOOL							bDeferredLoad;
 
 	// cache
-	CShader*						cache_shader;
-	CTexture*						cache_surfaces	[8];
-	CTextureArray*					cache_textures;
-	CConstantArray*					cache_constants;
-	DWORD							cache_pass;
-	
+	struct
+	{
+		CShader*					shader;
+		CTexture*					surfaces	[8];
+		CTextureArray*				textures;
+		CConstantArray*				constants;
+		DWORD						pass;
+	} cache;
 public:
 	CTexture*						_CreateTexture	(LPCSTR Name);
 	CShader*						_CreateShader	(LPCSTR Name);
@@ -66,6 +68,10 @@ public:
 	void	__fastcall	Set			(Shader& S);
 	void	__fastcall	SetupPass	(DWORD	pass);
 	void				SetNULL		() { Set(sh_list[0]); }
+	void				Invalidate	()	
+	{
+		cache_shader	= 0;
+	}
 };
 
 #endif // !defined(AFX_TEXTUREMANAGER_H__0E25CF4B_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_)

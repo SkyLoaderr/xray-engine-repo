@@ -220,37 +220,3 @@ void CShaderManager::TexturesUnload	()
 		}
 	}
 }
-
-void CShaderManager::Set(Shader* S) 
-{
-	VERIFY(S);
-	if (current_shader==S) return;
-
-	Device.Statistic.dwShader_Changes++;
-
-	current_shader		= S;
-	S->shader->Activate	();
-	current_SBH			= 0xffffffff;
-
-	dwPassesRequired = S->shader->Passes_Count;
-}
-
-void CShaderManager::SetupPass(DWORD pass) 
-{
-	VERIFY(current_shader);
-	CXRShader* S = current_shader->shader;
-	if (S->Passes[pass].SB != current_SBH)  
-	{
-		current_SBH = S->Passes[pass].SB;
-		S->Passes[pass].Apply();
-		tex_vector &V = current_shader->H[pass];
-		for (DWORD i=0; i<V.size(); i++) 
-		{
-			if (current_surf[i]!=V[i]) 
-			{
-				current_surf[i]=V[i];
-				V[i]->Apply(i);
-			}
-		}
-	}
-}
