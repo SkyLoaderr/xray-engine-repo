@@ -245,7 +245,7 @@ void CParticleEffect::Render(float LOD)
     
 	if(p_cnt>0){
 		if (m_Def&&m_Def->m_Flags.is(CPEDef::dfSprite)){
-			FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(p_cnt*4*4,hGeom->vb_stride,dwOffset);
+			FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(p_cnt*4*4,geom->vb_stride,dwOffset);
 			FVF::LIT* pv		= pv_start;
 
 			for(u32 i = 0; i < p_cnt; i++){
@@ -314,10 +314,10 @@ void CParticleEffect::Render(float LOD)
 				}
 			}
 			dwCount 			= u32(pv-pv_start);
-			RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
+			RCache.Vertex.Unlock(dwCount,geom->vb_stride);
 			if (dwCount)    {
 				RCache.set_xform_world	(Fidentity);
-				RCache.set_Geometry		(hGeom);
+				RCache.set_Geometry		(geom);
 
                 u32 cm					= RCache.get_CullMode();
                 RCache.set_CullMode		(CULL_NONE	);
