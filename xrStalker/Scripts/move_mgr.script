@@ -40,8 +40,8 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.object:set_node_evaluator   ()
 	self.object:set_path_evaluator   ()
 	self.object:set_desired_direction()
-	--self.object:set_path_type        ( game_object.level_path )
-	--self.object:set_detail_path_type ( move.line )
+	self.object:set_path_type        (game_object.level_path) -- чтобы сбросить инфу о предыдущем пути
+	self.object:set_detail_path_type (move.line)
 
 	self.patrol_walk = patrol(path_walk)
 	if not self.patrol_walk then
@@ -115,13 +115,12 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	
 	self.object:clear_animations()
 
-	self.object:set_detail_path_type(move.line)
-
 	--self.object:set_mental_state(anim.free)
 	--self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
 	self:update_movement_state()
 
 	self.object:set_path_type(game_object.patrol_path)
+	self.object:set_detail_path_type(move.line)
 	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
 	self.object:set_sight(look.danger, nil, 0)
 	self.state = state_moving
