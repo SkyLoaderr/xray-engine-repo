@@ -7,6 +7,7 @@
 
 #ifdef M_BORLAND
 DEFINE_MAP(AnsiString,HANDLE,HANDLEMap,HANDLEPairIt);
+#endif
 
 class XRCORE_API EFS_Utils {
 #ifdef M_BORLAND
@@ -45,7 +46,7 @@ public:
 	LPSTR		UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name);
 };
 extern XRCORE_API EFS_Utils EFS;
-#endif
+//#endif
 
 #endif /*_INCDEF_FileSystem_H_*/
 

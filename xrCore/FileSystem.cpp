@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef M_BORLAND
+//#ifdef M_BORLAND
 #include "cderr.h"
 #include "commdlg.h"
 
@@ -181,4 +181,4 @@ LPCSTR EFS_Utils::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ex
 	return out_name;
 }
 
-#endif
+//#endif
