@@ -143,9 +143,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			if(ScrollDec())
 				if(m_bIsHorizontal)
-					GetParent()->SendMessage(this, HSCROLL);
+					GetMessageTarget()->SendMessage(this, HSCROLL);
 				else
-					GetParent()->SendMessage(this, VSCROLL);
+					GetMessageTarget()->SendMessage(this, VSCROLL);
 		}
 	}
 	else if(pWnd == &m_IncButton)
@@ -154,9 +154,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			if(ScrollInc())
 				if(m_bIsHorizontal)
-					GetParent()->SendMessage(this, HSCROLL);
+					GetMessageTarget()->SendMessage(this, HSCROLL);
 				else
-					GetParent()->SendMessage(this, VSCROLL);
+					GetMessageTarget()->SendMessage(this, VSCROLL);
 		}
 	}	
 	else if(pWnd == &m_ScrollBox)
@@ -185,7 +185,7 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					m_iScrollPos = m_iMinPos;
 
 
-				GetParent()->SendMessage(this, HSCROLL);
+				GetMessageTarget()->SendMessage(this, HSCROLL);
 			}
 			//вертикальный
 			else
@@ -207,7 +207,7 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 							m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
 				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
 
-				GetParent()->SendMessage(this, VSCROLL);
+				GetMessageTarget()->SendMessage(this, VSCROLL);
 			}
 			
 		}
@@ -217,9 +217,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			UpdateScrollBar();
 
 			if(m_bIsHorizontal)
-				GetParent()->SendMessage(this, HSCROLL);
+				GetMessageTarget()->SendMessage(this, HSCROLL);
 			else
-				GetParent()->SendMessage(this, VSCROLL);
+				GetMessageTarget()->SendMessage(this, VSCROLL);
 		}
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);

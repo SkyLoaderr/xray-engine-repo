@@ -23,7 +23,7 @@ void CUIRadioButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	if(m_bButtonClicked)
 		if(!m_bIsChecked) 
 		{
-			GetParent()->SendMessage(this, CUIRadioButton::RADIO_BUTTON_SET);
+			GetMessageTarget()->SendMessage(this, CUIRadioButton::RADIO_BUTTON_SET);
 		}
 }
 

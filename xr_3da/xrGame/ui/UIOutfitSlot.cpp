@@ -114,7 +114,7 @@ void CUIOutfitSlot::OnMouse(int x, int y, CUIWindow::E_MOUSEACTION mouse_action)
 {
 	if (CUIWindow::LBUTTON_DB_CLICK == mouse_action)
 	{
-		GetParent()->SendMessage(this, UNDRESS_OUTFIT, NULL);
+		GetMessageTarget()->SendMessage(this, UNDRESS_OUTFIT, NULL);
 	}
 //	else if (CUIWindow::LBUTTON_DOWN == mouse_action && GetCurrentOutfit())
 //	{

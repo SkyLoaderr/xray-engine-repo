@@ -168,7 +168,7 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIToTalkButton && msg == CUIButton::BUTTON_CLICKED)
 	{
-		GetParent()->SendMessage(this, TRADE_WND_CLOSED);
+		GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
 	}
 	else if(pWnd == &UIMessageBox && msg == CUIMessageBox::OK_CLICKED)
 	{

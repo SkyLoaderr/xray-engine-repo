@@ -80,9 +80,9 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	if(m_bCursorOverButton != cursor_on_button)
 	{
 		if(cursor_on_button)
-			GetParent()->SendMessage(this,BUTTON_FOCUS_RECEIVED, NULL);
+			GetMessageTarget()->SendMessage(this,BUTTON_FOCUS_RECEIVED, NULL);
 		else
-			GetParent()->SendMessage(this,BUTTON_FOCUS_LOST, NULL);
+			GetMessageTarget()->SendMessage(this,BUTTON_FOCUS_LOST, NULL);
 	}
 	m_bCursorOverButton = cursor_on_button;
 
@@ -117,7 +117,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			{
 				if(cursor_on_button)
 				{
-					GetParent()->SendMessage(this, BUTTON_CLICKED);
+					GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 					m_bButtonClicked = true;
 				}
 			
@@ -170,7 +170,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		{
 			if(cursor_on_button)
 			{
-				GetParent()->SendMessage(this, BUTTON_CLICKED);
+				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 				m_bButtonClicked = true;
 			}
 		}
@@ -198,7 +198,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		{
 			if(cursor_on_button)
 			{
-				GetParent()->SendMessage(this, BUTTON_CLICKED);
+				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 				m_bButtonClicked = true;
 			}	
 		} 

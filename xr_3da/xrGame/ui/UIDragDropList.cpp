@@ -250,7 +250,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			OffCustomPlacement();
 			pItem->GetParent()->SetCapture(pItem, false);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
-			pItem->GetParent()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
+			pItem->GetMessageTarget()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
 			//pItem->MoveWindow(pItem->GetPreviousPos().x,
 	 		//				  pItem->GetPreviousPos().y);
 		}

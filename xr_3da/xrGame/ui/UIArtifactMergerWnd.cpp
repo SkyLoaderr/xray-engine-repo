@@ -52,14 +52,14 @@ void CUIArtifactMerger::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if(pWnd == &UIPerformButton && msg == CUIButton::BUTTON_CLICKED)
 	{
 		PerformArtifactMerger();
-		GetParent()->SendMessage(this, PERFORM_BUTTON_CLICKED);
+		GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED);
 	}
 	else if(pWnd == &UICloseButton && msg == CUIButton::BUTTON_CLICKED)
 	{
 		//выкинуть все артефакты
 		m_pArtifactMerger->RemoveAllArtifacts();
 
-		GetParent()->SendMessage(this, CLOSE_BUTTON_CLICKED);
+		GetMessageTarget()->SendMessage(this, CLOSE_BUTTON_CLICKED);
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);

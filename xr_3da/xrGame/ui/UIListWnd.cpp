@@ -350,7 +350,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 			if(CUIListItem::BUTTON_CLICKED == msg)
 			{
-				GetParent()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
+				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 			}
 			else if(CUIListItem::BUTTON_FOCUS_RECEIVED == msg)
 			{

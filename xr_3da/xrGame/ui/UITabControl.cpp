@@ -94,7 +94,7 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			m_iPushedIndex = i;
 			m_TabsArr[iPrevPushedIndex]->SetButtonMode(CUIButton::BUTTON_NORMAL);
 			m_TabsArr[iPrevPushedIndex]->OnMouse(-1, -1, CUIWindow::MOUSE_MOVE);
-			GetParent()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
+			GetMessageTarget()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
 			break;
 		}
 	}

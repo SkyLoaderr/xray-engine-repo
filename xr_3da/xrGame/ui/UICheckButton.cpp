@@ -23,12 +23,12 @@ void CUICheckButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		if(m_bIsChecked) 
 		{
 			m_bIsChecked = false;
-			GetParent()->SendMessage(this, CHECK_BUTTON_RESET);
+			GetMessageTarget()->SendMessage(this, CHECK_BUTTON_RESET);
 		}
 		else
 		{
 			m_bIsChecked = true;
-			GetParent()->SendMessage(this, CHECK_BUTTON_SET);
+			GetMessageTarget()->SendMessage(this, CHECK_BUTTON_SET);
 		}
 }
 

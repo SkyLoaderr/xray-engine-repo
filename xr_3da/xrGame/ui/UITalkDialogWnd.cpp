@@ -98,7 +98,7 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			m_iClickedQuestion = ((CUIListItem*)pData)->GetIndex();
 			m_pClickedQuestion =(SInfoQuestion*) (((CUIListItem*)pData)->GetData());
 
-			GetParent()->SendMessage(this, QUESTION_CLICKED);
+			GetMessageTarget()->SendMessage(this, QUESTION_CLICKED);
 		}
 	}
 	else if(pWnd == &UIToTradeButton && msg == CUIButton::BUTTON_CLICKED)

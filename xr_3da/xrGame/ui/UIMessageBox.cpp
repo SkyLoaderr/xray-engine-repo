@@ -89,21 +89,21 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	case MESSAGEBOX_OK:
 		if(pWnd == &m_UIButton1)
 			if(msg == CUIButton::BUTTON_CLICKED)
-				GetParent()->SendMessage(this, OK_CLICKED);
+				GetMessageTarget()->SendMessage(this, OK_CLICKED);
 		break;
 	case MESSAGEBOX_YES_NO:
 		if(pWnd == &m_UIButton1)
 		{
 			if(msg == CUIButton::BUTTON_CLICKED)
 			{
-				GetParent()->SendMessage(this, YES_CLICKED);
+				GetMessageTarget()->SendMessage(this, YES_CLICKED);
 			}
 		}
 		else if(pWnd == &m_UIButton2)
 		{
 			if(msg == CUIButton::BUTTON_CLICKED)
 			{
-				GetParent()->SendMessage(this, NO_CLICKED);
+				GetMessageTarget()->SendMessage(this, NO_CLICKED);
 			}
 		}
 		break;
@@ -112,21 +112,21 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			if(msg == CUIButton::BUTTON_CLICKED)
 			{
-				GetParent()->SendMessage(this, YES_CLICKED);
+				GetMessageTarget()->SendMessage(this, YES_CLICKED);
 			}
 		}
 		else if(pWnd == &m_UIButton2)
 		{
 			if(msg == CUIButton::BUTTON_CLICKED)
 			{
-				GetParent()->SendMessage(this, NO_CLICKED);
+				GetMessageTarget()->SendMessage(this, NO_CLICKED);
 			}
 		}
 		else if(pWnd == &m_UIButton3)
 		{
 			if(msg == CUIButton::BUTTON_CLICKED)
 			{
-				GetParent()->SendMessage(this, CANCEL_CLICKED);
+				GetMessageTarget()->SendMessage(this, CANCEL_CLICKED);
 			}
 		}
 		break;

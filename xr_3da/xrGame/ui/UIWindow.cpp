@@ -17,6 +17,7 @@ CUIWindow::CUIWindow()
 	
 	m_pMouseCapturer =  NULL;
 	m_pOrignMouseCapturer = NULL;
+	m_pMessageTarget = NULL;
 
 
 	m_pKeyboardCapturer =  NULL;
@@ -334,6 +335,12 @@ void CUIWindow::ResetAll()
 	{
 		(*it)->Reset();
 	}
+}
+
+
+CUIWindow* CUIWindow::GetMessageTarget()
+{
+	return m_pMessageTarget?m_pMessageTarget:GetParent();
 }
 
 

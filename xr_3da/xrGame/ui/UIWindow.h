@@ -61,6 +61,10 @@ public:
 	virtual void SetCapture(CUIWindow* pChildWindow, bool capture_status);
 	virtual CUIWindow* GetMouseCapturer(){return m_pMouseCapturer;}
 
+	//окошко, которому пересылаются сообщения,
+	//если NULL, то шлем на GetParent()
+	virtual void SetMessageTarget(CUIWindow* pWindow) {	m_pMessageTarget = pWindow;}
+	virtual CUIWindow* GetMessageTarget();
 
 	//реакция на клавиатуру
 	typedef enum{KEY_PRESSED, KEY_RELEASED} E_KEYBOARDACTION;
@@ -166,6 +170,9 @@ protected:
 
 	//дочернее окно которое, захватило ввод клавиатуры
 	CUIWindow* m_pKeyboardCapturer;
+
+	//кому шлем сообщения
+	CUIWindow* m_pMessageTarget;
 
 	//положение и размер окна, задается 
 	//относительно родительского окна

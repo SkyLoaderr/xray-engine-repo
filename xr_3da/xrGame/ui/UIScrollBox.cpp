@@ -74,7 +74,7 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		{
 			if(cursor_on_button)
 			{
-				GetParent()->SendMessage(this, BUTTON_CLICKED);
+				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 				m_bButtonClicked = true;
 			}
 		
@@ -83,7 +83,7 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			//освободить мышь
 			GetParent()->SetCapture(this, false);
 
-			GetParent()->SendMessage(this, SCROLLBOX_STOP);
+			GetMessageTarget()->SendMessage(this, SCROLLBOX_STOP);
 		}
 		else if(mouse_action == MOUSE_MOVE)
 		{
@@ -101,7 +101,7 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 				else
 					MoveWindow(GetWndRect().left, GetWndRect().top+deltaY);
 
-				GetParent()->SendMessage(this, SCROLLBOX_MOVE);
+				GetMessageTarget()->SendMessage(this, SCROLLBOX_MOVE);
 			}
 		}
 	}

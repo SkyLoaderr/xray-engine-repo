@@ -57,7 +57,7 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
 		{
 			m_iClickedElement = ((CUIListItem*)pData)->GetIndex();
-			GetParent()->SendMessage(this, PROPERTY_CLICKED);
+			GetMessageTarget()->SendMessage(this, PROPERTY_CLICKED);
 			
 			Hide();
 		}
