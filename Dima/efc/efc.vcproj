@@ -39,7 +39,7 @@
 				StructMemberAlignment="4"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/efc.pch"
 				AssemblerListingLocation=".\Release/"
@@ -150,6 +150,12 @@
 			</File>
 			<File
 				RelativePath="stdafx.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="stdafx.h">

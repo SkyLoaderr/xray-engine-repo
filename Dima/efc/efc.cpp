@@ -133,56 +133,50 @@ void vfPerformOperations( int argc, char *argv[], char *caProjectFolder, bool bS
 
 void __cdecl main( int argc, char *argv[], char *envp[])
 {
-	__try {
-		bfLoadIniFile(INI_FILE);
-		if (bfCheckForSwitch(argc, argv,"pa")) {
-			struct _finddata_t tProject;
-			bool bFirst = true;
-			uint uiHandle;
-			uint uiProjectProcessedCount = 0;
-			vfPrintHeader(true);
-			while (true) {
-				if (bFirst) {
-					bFirst = false;
-					uiHandle = _findfirst("data\\*.*",&tProject);
-					if (uiHandle == 0xffffffff) {
-						vfDualPrintF("Projects not found\n");
-						break;
-					}
+	bfLoadIniFile(INI_FILE);
+	if (bfCheckForSwitch(argc, argv,"pa")) {
+		struct _finddata_t tProject;
+		bool bFirst = true;
+		uint uiHandle;
+		uint uiProjectProcessedCount = 0;
+		vfPrintHeader(true);
+		while (true) {
+			if (bFirst) {
+				bFirst = false;
+				uiHandle = _findfirst("data\\*.*",&tProject);
+				if (uiHandle == 0xffffffff) {
+					vfDualPrintF("Projects not found\n");
+					break;
 				}
-				else
-					if (_findnext(uiHandle,&tProject) != 0) {
-						_findclose(uiHandle);
-						if (!uiProjectProcessedCount)
-							vfDualPrintF("Projects not found\n");
-						else
-							vfDualPrintF("\nTotal processed %d projects\n\n",uiProjectProcessedCount);
-						break;
-					}
-					if ((tProject.attrib & _A_SUBDIR) && (strcmp(tProject.name,".")) && (strcmp(tProject.name,".."))) {
-						uiProjectProcessedCount++;
-						char *caString = (char *)malloc((strlen(tProject.name) + 1)*sizeof(char));
-						memcpy(caString,tProject.name,(strlen(tProject.name) + 1)*sizeof(char));
-						vfDualPrintF("\nPROJECT BEING PROCESSED : %s\n",caString);
-						free(caString);
-						vfPerformOperations(argc,argv,tProject.name,false);
-					}
 			}
-		}
-		else {
-			char *caProjectFolder = cafGetStringNextToSwitch(argc, argv,"p");
-			if (!caProjectFolder) {
-				vfPrintHeader(true);
-				if (argc > 1)
-					vfDualPrintF(" Project folder is not specified!\n\n");
-				vfShowHelpScreen();
-				return;
-			}
-			vfPerformOperations(argc,argv,caProjectFolder);
+			else
+				if (_findnext(uiHandle,&tProject) != 0) {
+					_findclose(uiHandle);
+					if (!uiProjectProcessedCount)
+						vfDualPrintF("Projects not found\n");
+					else
+						vfDualPrintF("\nTotal processed %d projects\n\n",uiProjectProcessedCount);
+					break;
+				}
+				if ((tProject.attrib & _A_SUBDIR) && (strcmp(tProject.name,".")) && (strcmp(tProject.name,".."))) {
+					uiProjectProcessedCount++;
+					char *caString = (char *)malloc((strlen(tProject.name) + 1)*sizeof(char));
+					memcpy(caString,tProject.name,(strlen(tProject.name) + 1)*sizeof(char));
+					vfDualPrintF("\nPROJECT BEING PROCESSED : %s\n",caString);
+					free(caString);
+					vfPerformOperations(argc,argv,tProject.name,false);
+				}
 		}
 	}
-	__finally {
-		printf("Press any key to continue...");
-
+	else {
+		char *caProjectFolder = cafGetStringNextToSwitch(argc, argv,"p");
+		if (!caProjectFolder) {
+			vfPrintHeader(true);
+			if (argc > 1)
+				vfDualPrintF(" Project folder is not specified!\n\n");
+			vfShowHelpScreen();
+			return;
+		}
+		vfPerformOperations(argc,argv,caProjectFolder);
 	}
 }

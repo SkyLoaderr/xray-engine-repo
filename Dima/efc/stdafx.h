@@ -11,6 +11,7 @@
 #include <io.h>
 #include <math.h>
 #include <memory.h>
+#include <conio.h>
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
