@@ -171,6 +171,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	m_fSwitchDistance			= pSettings->r_float("alife","switch_distance");
 	m_fSwitchFactor				= pSettings->r_float("alife","switch_factor");
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
+	m_fNormalTimeFactor			= pSettings->r_float("alife","normal_time_factor");
 	m_dwMaxCombatIterationCount	= pSettings->r_u32	("alife","max_combat_iteration_count");
 	vfSetSwitchDistance			(m_fSwitchDistance);
 

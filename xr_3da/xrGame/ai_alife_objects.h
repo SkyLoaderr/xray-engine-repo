@@ -14,10 +14,11 @@
 
 class CSE_ALifeGameTime : public IPureALifeLSObject {
 public:
-	ALife::_TIME_ID						m_tGameTime;
-	ALife::_TIME_ID						m_tLastSurgeTime;
-	ALife::_TIME_ID						m_tNextSurgeTime;
+	ALife::_TIME_ID					m_tGameTime;
+	ALife::_TIME_ID					m_tLastSurgeTime;
+	ALife::_TIME_ID					m_tNextSurgeTime;
 	float							m_fTimeFactor;
+	float							m_fNormalTimeFactor;
 	u32								m_dwStartTime;
 	u64								m_qwStartProcessorCycle;
 
@@ -32,6 +33,7 @@ public:
 		tMemoryStream.w				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
 		tMemoryStream.w				(&m_tNextSurgeTime,	sizeof(m_tNextSurgeTime));
 		tMemoryStream.w_float		(m_fTimeFactor);
+		tMemoryStream.w_float		(m_fNormalTimeFactor);
 		tMemoryStream.close_chunk	();
 	};
 	
@@ -42,6 +44,7 @@ public:
 		tFileStream.r				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
 		tFileStream.r				(&m_tNextSurgeTime,	sizeof(m_tNextSurgeTime));
 		m_fTimeFactor				= tFileStream.r_float();
+		m_fNormalTimeFactor			= tFileStream.r_float();
 		m_qwStartProcessorCycle		= CPU::GetCycleCount();
 		m_dwStartTime				= Device.TimerAsync();
 	};
@@ -55,10 +58,15 @@ public:
 	};
 //#endif
 
-	IC ALife::_TIME_ID						tfGetGameTime()
+	IC ALife::_TIME_ID				tfGetGameTime()
 	{
 		return						(m_tGameTime + iFloor(m_fTimeFactor*float(Device.TimerAsync() - m_dwStartTime)));
 	};
+
+	IC	float						normal_time_factor() const
+	{
+		return						(m_fNormalTimeFactor);
+	}
 };
 
 class CSE_ALifeHeader : public IPureALifeLSObject {

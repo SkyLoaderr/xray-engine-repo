@@ -22,11 +22,11 @@ void CSE_ALifeMonsterAbstract::Update		()
 		bContinue		= false;
 		if (m_tNextGraphID != m_tGraphID) {
 			_TIME_ID					tCurTime = m_tpALife->tfGetGameTime();
-			m_fDistanceFromPoint		+= float(tCurTime - m_tTimeID)/1000.f * m_fCurSpeed;
+			m_fDistanceFromPoint		+= float(tCurTime - m_tTimeID)/1000.f/m_tpALife->normal_time_factor()*m_fCurSpeed;
 			if (m_fDistanceToPoint - m_fDistanceFromPoint < EPS_L) {
 				bContinue = true;
 				if ((m_fDistanceFromPoint - m_fDistanceToPoint > EPS_L) && (m_fCurSpeed > EPS_L))
-					m_tTimeID		= tCurTime - _TIME_ID(iFloor((m_fDistanceFromPoint - m_fDistanceToPoint)*1000.f/m_fCurSpeed));
+					m_tTimeID			= tCurTime - _TIME_ID(iFloor((m_fDistanceFromPoint - m_fDistanceToPoint)*1000.f/m_fCurSpeed));
 				m_fDistanceToPoint		= m_fDistanceFromPoint	= 0.0f;
 				m_tPrevGraphID			= m_tGraphID;
 				m_tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
