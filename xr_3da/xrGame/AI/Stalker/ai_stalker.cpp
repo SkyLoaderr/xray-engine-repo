@@ -60,7 +60,11 @@ CAI_Stalker::CAI_Stalker			()
 
 	_A=_B=_C=_D=_E=_F=_G=_H=_I=_J=_K=_L=_M=false;
 
-	m_dwRandomState					= 4+0*::Random.randI(5);
+	m_fAttackSuccessProbability0	= .8f;
+	m_fAttackSuccessProbability1	= .6f;
+	m_fAttackSuccessProbability2	= .4f;
+	m_fAttackSuccessProbability3	= .2f;
+	m_dwRandomState					= 2+0*::Random.randI(5);
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;

@@ -39,12 +39,12 @@ protected:
 //	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
 	
 	typedef struct tagSDynamicObject {
-		u32			dwTime;
-		u32			dwUpdateCount;
-		u32			dwNodeID;
+		u32				dwTime;
+		u32				dwUpdateCount;
+		u32				dwNodeID;
 		Fvector			tSavedPosition;
 		SRotation		tOrientation;
-		u32			dwMyNodeID;
+		u32				dwMyNodeID;
 		Fvector			tMySavedPosition;
 		SRotation		tMyOrientation;
 		CEntity			*tpEntity;
@@ -66,7 +66,7 @@ protected:
 
 	typedef struct tagSSimpleSound {
 		ESoundTypes		eSoundType;
-		u32			dwTime;
+		u32				dwTime;
 		float			fPower;
 		Fvector			tSavedPosition;
 		CEntity			*tpEntity;

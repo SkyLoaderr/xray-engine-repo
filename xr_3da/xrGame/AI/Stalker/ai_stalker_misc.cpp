@@ -72,7 +72,7 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		}
 		case eLookTypePoint : {
 			Fvector tTemp;
-			tTemp.sub	(tPointToLook,vPosition);
+			tTemp.sub	(tPointToLook,eye_matrix.c);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
@@ -80,7 +80,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		}
 		case eLookTypeFirePoint : {
 			Fvector tTemp;
-			tTemp.sub	(tPointToLook,vPosition);
+			clCenter(tTemp);
+			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
 			r_target.pitch *= -1;
@@ -103,7 +104,7 @@ void CAI_Stalker::vfCheckForItems()
 	for (u32 i=0, n=m_tpaVisibleObjects.size(); i<n; i++) {
 		CInventoryItem *tpInventoryItem = dynamic_cast<CInventoryItem*>(m_tpaVisibleObjects[i]);
 #pragma todo("Check if rukzak is not full!!")
-		if (tpInventoryItem && (tpInventoryItem->Position().distance_to(vPosition) < fDistance)) {
+		if (tpInventoryItem && (tpInventoryItem->Position().distance_to(vPosition) < fDistance) && getAI().bfInsideNode(tpInventoryItem->AI_Node,tpInventoryItem->Position())) {
 			fDistance		= tpInventoryItem->Position().distance_to(vPosition);
 			m_tpItemToTake	= tpInventoryItem;
 		}
@@ -153,24 +154,25 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 //	}
 	if (VisibleEnemies.size()) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4)) {
-			case 0 : 
+			case 4 : 
 				C = true;
 				break;
-			case 1 : 
+			case 3 : 
 				D = true;
 				break;
 			case 2 : 
 				E = true;
 				break;
-			case 3 : 
+			case 1 : 
 				F = true;
 				break;
-			case 4 : 
+			case 0 : 
 				G = true;
 				break;
 		}
 	}
 	K					= C | D | E | F | G;
+	SelectEnemy			(m_tEnemy);
 	I					= false;
 	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
 		float			yaw1, pitch1, yaw2, pitch2, fYawFov, fPitchFov, fRange;

@@ -1438,3 +1438,38 @@ float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPoint, Fv
 	
 	return(fCurDistance);
 }
+
+float CAI_Space::ffFindFarthestNodeInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, vector<bool> *tpaMarks)
+{
+	PContour				tCurContour;
+	NodeCompressed			*tpNode;
+	NodeLink				*taLinks;
+	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
+	Fvector					tTempPoint = tStartPoint;
+	float					fDistance = tStartPoint.distance_to(tFinishPoint), fCurDistance = 0.f;
+	u32						dwCurNode = dwStartNode;
+
+	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {
+		tpNode				= Node(dwCurNode);
+		taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+		iCount				= tpNode->links;
+		iSavedIndex			= -1;
+		UnpackContour		(tCurContour,dwCurNode);
+		for ( i=0; i < iCount; i++)
+			if ((iNextNode = UnpackLink(taLinks[i])) != iPrevIndex)
+				vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
+
+		if (iSavedIndex > -1) {
+			fCurDistance	= tStartPoint.distance_to_xz(tTempPoint);
+			iPrevIndex		= dwCurNode;
+			dwCurNode		= iSavedIndex;
+		}
+		else
+			return(fCurDistance);
+		
+		if (tpaMarks)
+			(*tpaMarks)[dwCurNode]	= true;
+		dwFinishNode		= dwCurNode;
+	}
+	return(fCurDistance);
+}

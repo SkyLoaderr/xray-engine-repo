@@ -174,6 +174,8 @@ public:
 	void	vfChoosePoint					(Fvector &tStartPoint, Fvector &tFinishPoint, AI::PContour	&tCurContour, int iNodeIndex, Fvector &tTempPoint, int &iSavedIndex);
 	u32		dwfCheckPositionInDirection		(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
 
+	float	ffFindFarthestNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, vector<bool> *tpaMarks = 0);
+	
 	// Device dependance
 	virtual void	OnDeviceCreate			();
 	virtual void	OnDeviceDestroy			();
