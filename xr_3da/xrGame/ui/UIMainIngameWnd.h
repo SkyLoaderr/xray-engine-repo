@@ -37,6 +37,8 @@ public:
 
 	//для отображения сообщения пришедшего по PDA
 	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index);
+	
+	void AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage);
 
 protected:
 	void HideAll();

@@ -101,13 +101,20 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 		{
 			string64 PlayerName;
 			P.r_string(PlayerName);
-			HUD().outMessage			(0xffffffff,"","Player %s connected",PlayerName);
+			
+			string512 Text;
+			sprintf(Text, "Player %s connected",PlayerName);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	case GMSG_PLAYER_DISCONNECTED:
 		{
 			string64 PlayerName;
 			P.r_string(PlayerName);
 			HUD().outMessage			(0xffffffff,"","Player %s disconnected",PlayerName);
+
+			string512 Text;
+			sprintf(Text, "Player %s disconnected",PlayerName);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	case GMSG_PLAYER_KILLED:
 		{
@@ -116,21 +123,36 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			P.r_u16 (KillerID);
 			P.r_u16 (WeaponID);
 
-//			CObject* pPlayer = Level().Objects.net_Find(PlayerID);
-//			CObject* pKiller = Level().Objects.net_Find(KillerID);
+			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			game_cl_GameState::Player* pKiller = GetPlayerByGameID(KillerID);
 			CObject* pWeapon = Level().Objects.net_Find(WeaponID);
 
-			if (pWeapon)
-				HUD().outMessage			(0xffffffff,"","%d killed from %d by %d",PlayerID, WeaponID, KillerID);
-//			HUD().outMessage			(0xffffffff,"","%s killed from %s by %s",pPlayer->cName(), pWeapon->cName(), pKiller->cName());
-			else
-				HUD().outMessage			(0xffffffff,"","%d killed by %d",PlayerID, KillerID);
-//			HUD().outMessage			(0xffffffff,"","%s killed by %s",pPlayer->cName(), pKiller->cName());
+			if (!pPlayer || !pKiller) break;
 			
+			string512 Text;
+			if (pWeapon)
+				sprintf(Text, "%s killed from %s by %s",pPlayer->name, *(pWeapon->cName()), pKiller->name);
+			else
+				sprintf(Text, "%s killed by %s",pPlayer->name, pKiller->name);
+
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	default:
 		{
 			R_ASSERT2(0,"Unknown Game Message");
 		}break;
 	};
+};
+
+game_cl_GameState::Player*				game_cl_GameState::GetPlayerByGameID		(u32 GameID)
+{
+	xr_map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
+	xr_map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
+
+	for (;I!=E;++I)
+	{
+		game_cl_GameState::Player* P = (game_cl_GameState::Player*)(&I->second);
+		if (P->GameID == GameID) return P;
+	};
+	return NULL;
 };

@@ -25,4 +25,7 @@ public:
 	virtual		void				net_signal				(NET_Packet& P);
 
 	virtual		void				OnGameMessage			(NET_Packet& P);
+
+	virtual		game_cl_GameState::Player*				GetPlayerByGameID		(u32 GameID);
+
 };

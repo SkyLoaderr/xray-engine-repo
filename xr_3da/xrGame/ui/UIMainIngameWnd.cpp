@@ -600,6 +600,24 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	m_dwMsgShowingTime = m_dwMaxShowTime;
 }
 
+void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage)
+{
+	CUIPdaMsgListItem* pItem = NULL;
+	pItem = xr_new<CUIPdaMsgListItem>();
+	UIPdaMsgListWnd.AddItem(pItem, true); 
+	UIPdaMsgListWnd.ScrollToBegin();
+
+	int* pShowTime = xr_new<int>();
+	*pShowTime = m_dwMaxShowTime;
+	pItem->SetData(pShowTime);
+
+	UIPdaMsgListWnd.Show(true);	
+
+	pItem->UIMsgText.SetText(TextMessage);
+
+	m_dwMsgShowingTime = m_dwMaxShowTime;
+};
+
 void CUIMainIngameWnd::RenderQuickInfos()
 {
 	static string256	text;
