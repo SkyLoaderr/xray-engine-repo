@@ -591,7 +591,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		for (DWORD it=0; it<size; it++)
 		{
 			float	v		= float(it)/float(size);
-			array	[it]	= powf		(v,32.f);
+			array	[it]	= powf		(v,48.f);
 		}
 		m_pd3dDevice->CreateTexture		(size,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, &t_SpecularPower_32, NULL);
 		D3DLOCKED_RECT					R;
