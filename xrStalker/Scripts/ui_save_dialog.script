@@ -147,6 +147,7 @@ function save_dialog:InitControls()
 	message_box:Init("ui\\ui_frame",message_rect.x, message_rect.y, message_rect.width, message_rect.height)
 	message_box:SetStyle(0)	
 	message_box:Hide()
+	self:Register(message_box)
 	main_frame:AttachChild(message_box)
 	message_box:AutoCenter()
 end
