@@ -167,7 +167,6 @@ void CRender::Calculate()
 	HOM.Render	(ViewBase);
 
 	// Build L_DB visibility & perform basic initialization
-	// L_DB
 	L_DB.UnselectAll				();
 	gm_Data.diffuse.set				(1,1,1,1);
 	gm_Data.ambient.set				(1,1,1,1);
@@ -263,17 +262,16 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 }
 
 // MATRIX
-void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
+void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 {
-	CVisual *V = N->val.pVisual;
-	::Render_Implementation.L_DB.Select(N->val.vCenter,V->bv_Radius);
+	CVisual *V				= N->val.pVisual;
 	Device.set_xform_world	(N->val.Matrix);
-	// gm_SetAmbientLevel	(N->val.iLighting);
 	gm_SetNearer			(N->val.nearer);
+	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
 
-void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
+void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 {
 	Device.Shader.set_Shader(N->key);
 	N->val.traverseLR		(matrix_L2);
@@ -281,14 +279,13 @@ void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
 }
 
 // ALPHA
-void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
+void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 {
 	CVisual *V = N->val.pVisual;
-	::Render_Implementation.L_DB.Select			(N->val.vCenter,V->bv_Radius);
 	Device.Shader.set_Shader(V->hShader);
 	Device.set_xform_world	(N->val.Matrix);
-	// gm_SetAmbientLevel	(N->val.iLighting);
 	gm_SetNearer			(N->val.nearer);
+	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
 
