@@ -33,6 +33,8 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_pData = NULL;
 	m_pCustomUpdateProc = NULL;
 	m_pCustomDrawProc = NULL;
+
+	m_bClipper = false;
 }
 
 CUIDragDropItem::~ CUIDragDropItem()
@@ -57,6 +59,8 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 
 	m_previousPos.x = x;
 	m_previousPos.y = y;
+
+	ClipperOn();
 
 	CUIButton::Init(tex_name, x, y, width, height);
 }
@@ -112,6 +116,8 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			GetTop()->SendMessage(this, ITEM_DRAG);
 			GetParent()->SetCapture(this, true);
 
+			ClipperOff();
+
 
 			m_previousPos.x = GetWndRect().left;
 			m_previousPos.y = GetWndRect().top;
@@ -127,6 +133,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 				GetTop()->SendMessage(this, ITEM_DROP);
 				
 				m_bButtonClicked = true;
+				ClipperOn();
 
 				//////
 				//MoveWindow(m_previousPos.x,	m_previousPos.y);
@@ -171,6 +178,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 
 			GetTop()->SendMessage(this, ITEM_DROP);
+			ClipperOn();
 			
 			/////
 			//MoveWindow(m_previousPos.x,	m_previousPos.y);
@@ -192,11 +200,16 @@ void CUIDragDropItem::Draw()
 	RECT rect = GetAbsoluteRect();
 
 	//отцентрировать текстуру по центру ее окна
-	int right_offset = (GetWidth()-m_UIStaticItem.GetRect().width())/2;
-	int down_offset = (GetHeight()-m_UIStaticItem.GetRect().height())/2;
+	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRect().width())/2;
+	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRect().height())/2;
 
 	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
+	
+	if(m_bClipper)
+		TextureClipper(right_offset, down_offset);
+
 	m_UIStaticItem.Render();
+
 
 	//вызвать дополнительную функцию рисования
 	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);

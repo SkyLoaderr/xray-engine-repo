@@ -12,9 +12,10 @@
 #include "UIScrollBox.h"
 
 
-class CUIScrollBar :
-	public CUIWindow
+class CUIScrollBar :public CUIWindow
 {
+private:
+	typedef CUIWindow inherited;
 public:
 	CUIScrollBar(void);
 	virtual ~CUIScrollBar(void);
@@ -27,6 +28,8 @@ public:
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
+	virtual void SetWidth(int width);
+	virtual void SetHeight(int height);
 
 	//скролинг
 	void SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;

@@ -51,6 +51,9 @@ protected:
 	CUIWeapon UIWeapon;
 	CUIZoneMap UIZoneMap;
 
+	CUIStatic	UIWeapon1;
+	CUIStatic	UIWeapon2;
+
 	//a test	
 //	CUIStaticItem g_UIStaticItem;
 	

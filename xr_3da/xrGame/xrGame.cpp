@@ -554,33 +554,38 @@ public:
 		_GetItem(args,0,param1,' ');
 		_GetItem(args,1,param2,' ');
 		if (strcmp(param1,"show_items") == 0) {
-			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
+			if (pActor->GetTrade()->IsInTradeState()) 
+				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowItems();
 		} else if (strcmp(param1,"show_my_items") == 0) {
-			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->ShowItems();
+			if (pActor->GetTrade()->IsInTradeState()) 
+				pActor->GetTrade()->ShowItems();
 		} else if (strcmp(param1,"show_money") == 0) {
-			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->ShowMoney();
+			if (pActor->GetTrade()->IsInTradeState()) 
+				pActor->GetTrade()->ShowMoney();
 		} else if (strcmp(param1,"show_your_money") == 0) {
-			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->pPartner.inv_owner->m_trade->ShowMoney();
+			if (pActor->GetTrade()->IsInTradeState()) 
+				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowMoney();
 		} else if (strcmp(param1,"show_artifact_prices") == 0) {
-			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->pPartner.inv_owner->m_trade->ShowArtifactPrices();
+			if (pActor->GetTrade()->IsInTradeState()) 
+				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowArtifactPrices();
 		} else if (strcmp(param1,"show_all") == 0) {
-			if (pActor->m_trade->IsInTradeState()) {
-				pActor->m_trade->ShowItems();
-				pActor->m_trade->ShowMoney();
-				pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
-				pActor->m_trade->pPartner.inv_owner->m_trade->ShowArtifactPrices();
+			if (pActor->GetTrade()->IsInTradeState()) {
+				pActor->GetTrade()->ShowItems();
+				pActor->GetTrade()->ShowMoney();
+				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowItems();
+				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowArtifactPrices();
 			}
 		} else if (strcmp(param1,"sell") == 0) {
-			if (pActor->m_trade->IsInTradeState()) {
+			if (pActor->GetTrade()->IsInTradeState()) {
 				int id = 0;
 				sscanf(param2 ,"%d",&id);
-				pActor->m_trade->SellItem(id);
+				pActor->GetTrade()->SellItem(id);
 			}
 		} else if (strcmp(param1,"buy") == 0) {
-			if (pActor->m_trade->IsInTradeState()) {
+			if (pActor->GetTrade()->IsInTradeState()) {
 				int id = 0;
 				sscanf(param2 ,"%d",&id);
-				pActor->m_trade->pPartner.inv_owner->m_trade->SellItem(id);
+				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->SellItem(id);
 			}
 		} else if (strcmp(param1,"help") == 0) {
 			Msg("	show_all");		Msg("	show_items");		Msg("	show_my_items"); 

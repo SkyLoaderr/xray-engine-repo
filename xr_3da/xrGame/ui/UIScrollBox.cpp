@@ -6,9 +6,11 @@
 #include ".\uiscrollbox.h"
 
 
+
+
 CUIScrollBox::CUIScrollBox(void)
 {
-//	m_ePressMode = NORMAL_PRESS;
+	m_bAvailableTexture = true;
 }
 
 CUIScrollBox::~CUIScrollBox(void)
@@ -27,8 +29,7 @@ void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
 	}
 	else
 	{
-//		m_UIStaticItem.Init(x,y);
-		m_UIStaticItem.SetTile(1,length/2,0,length%2);
+		m_UIStaticItem.Init("ui\\ui_scb_scroll_box_v", "hud\\default",x,y, alNone);
 		CUIWindow::Init(x,y, broad, length);
 	}
 }
@@ -78,9 +79,9 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		}
 		else if(mouse_action == MOUSE_MOVE)
 		{
-			if(!cursor_on_button)
-				m_eButtonState = BUTTON_UP;
-			else
+//			if(!cursor_on_button)
+//				m_eButtonState = BUTTON_UP;
+//			else
 			{
 				deltaX = x - m_iOldMouseX;
 				deltaY = y - m_iOldMouseY;
@@ -121,11 +122,13 @@ void CUIScrollBox::Draw()
 {
 	if(m_bIsHorizontal)
 	{
-		m_UIStaticItem.SetTile(GetWidth()/4,1,GetWidth()%2,0);
+		m_UIStaticItem.SetTile(GetWidth()/4>0?GetWidth()/4:1, 1,
+							  GetWidth()%2, 0);
 	}
 	else
 	{
-		m_UIStaticItem.SetTile(1,GetHeight()/4,0,GetHeight()%2);
+		m_UIStaticItem.SetTile(1, GetHeight()/4>0?GetHeight()/4:1,
+							   0, GetHeight()%2);
 	}
 
 	 CUIButton::Draw();

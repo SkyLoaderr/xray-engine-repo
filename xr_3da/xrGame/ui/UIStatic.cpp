@@ -20,11 +20,13 @@ CUIStatic:: CUIStatic()
 	m_str = NULL;
 	m_bAvailableTexture = false;
 
+	m_bClipper = false;
+
+	SetTextAlign(CGameFont::alLeft);
 }
 
  CUIStatic::~ CUIStatic()
 {
-
 }
 
 
@@ -38,6 +40,12 @@ void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	CUIWindow::Init(x, y, width, height);
 }
 
+void CUIStatic::InitTexture(LPCSTR tex_name)
+{
+	m_UIStaticItem.Init(tex_name,"hud\\default", GetAbsoluteRect().left,
+						                         GetAbsoluteRect().top,alNone);
+	m_bAvailableTexture = true;
+}
 
 void CUIStatic::Init(int x, int y, int width, int height)
 {
@@ -54,6 +62,10 @@ void  CUIStatic::Draw()
 	
 	RECT rect = GetAbsoluteRect();
 	m_UIStaticItem.SetPos(rect.left, rect.top);
+
+	if(m_bClipper)
+		TextureClipper();
+
 	m_UIStaticItem.Render();
 			
 }
@@ -67,7 +79,7 @@ void CUIStatic::Update()
 	
 
 	//RECT rect = GetAbsoluteRect();
-	GetFont()->SetAligment(CGameFont::alLeft);
+	GetFont()->SetAligment(GetTextAlign());
 	GetFont()->SetColor(0xFFEEEEEE);
 
 
@@ -323,3 +335,127 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 		// Get next token: 
 		token = strtok( NULL, seps );
     }*/
+
+void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
+{
+	RECT parent_rect;
+	
+	if(pClipRect == NULL)
+		if(GetParent())
+			parent_rect = GetParent()->GetAbsoluteRect();
+		else
+			parent_rect = GetAbsoluteRect();
+	else
+		parent_rect = *pClipRect;
+		
+	RECT rect = GetAbsoluteRect();
+	RECT wnd_rect = GetWndRect();
+	RECT out_rect;
+
+
+	//проверить попадает ли изображение в окно
+	if(rect.left>parent_rect.right || rect.right<parent_rect.left ||
+		rect.top>parent_rect.bottom ||  rect.bottom<parent_rect.top)
+	{
+		Irect r;
+		r.set(0,0,0,0);
+		m_UIStaticItem.SetRect(r);
+		return;
+	}
+
+	
+	int out_x, out_y;
+	out_x = rect.left;
+	out_y = rect.top;
+
+	out_rect.top =   0;
+	out_rect.bottom = GetHeight();
+	out_rect.left =  0;
+	out_rect.right = GetWidth();
+
+	//	out_rect.right = m_UIStaticItem.GetOriginalRect().width();
+	
+
+
+	if(wnd_rect.left<0)
+	{
+		out_rect.left = -wnd_rect.left - offset_x;
+	}
+	else if(rect.right>parent_rect.right)
+	{
+		out_rect.right = GetWidth() - (rect.right-parent_rect.right) - offset_x;
+	}
+
+
+	if(wnd_rect.top<0)
+	{
+		out_rect.top = -wnd_rect.top - offset_y;
+	}
+	else if(rect.bottom>parent_rect.bottom)
+	{
+		out_rect.bottom = GetHeight() - (rect.bottom-parent_rect.bottom) - offset_y;
+	}
+
+	
+	
+	Irect r;
+	r.x1 = out_rect.left;
+	r.x2 = out_rect.right;
+	r.y1 = out_rect.top;
+	r.y2 = out_rect.bottom;
+	m_UIStaticItem.SetRect(r);
+
+	m_UIStaticItem.SetPos(out_x + offset_x , out_y + offset_y);
+	
+}
+void CUIStatic::ClipperOn() 
+{
+	m_bClipper = true;
+
+	TextureClipper(0, 0);
+} 
+
+void CUIStatic::ClipperOff() 
+{
+	m_bClipper = false;
+
+	RECT out_rect;
+
+	out_rect.top =   0;
+	out_rect.bottom = GetHeight();
+	out_rect.left =  0;
+	out_rect.right = GetWidth();
+	
+	Irect r;
+	r.x1 = out_rect.left;
+	r.x2 = out_rect.right;
+	r.y1 = out_rect.top;
+	r.y2 = out_rect.bottom;
+	m_UIStaticItem.SetRect(r);
+}
+
+void CUIStatic::SetTextureScale(float new_scale)
+{
+	m_UIStaticItem.SetScale(new_scale);
+}
+
+float CUIStatic::GetTextureScale()
+{
+	return m_UIStaticItem.GetScale();
+}
+void CUIStatic::SetText(LPSTR str) 
+{
+	m_sEdit.clear();
+
+	if(str == NULL) 
+	{
+		m_str = NULL;
+		return;
+	}
+
+	for(u32 i=0; i<strlen(str); i++)
+		m_sEdit.push_back(str[i]);
+	m_sEdit.push_back(0);
+
+	m_str = &m_sEdit.front();
+}

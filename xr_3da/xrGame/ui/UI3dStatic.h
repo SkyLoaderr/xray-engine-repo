@@ -23,7 +23,7 @@ public:
 											  m_y_angle = y;
 											  m_z_angle = z;}
 
-	void SetGameObject(CInventoryItem* pItem);
+	void SetGameObject(CGameObject* pItem);
 	
 	//прорисовка окна
 	virtual void Draw();
@@ -37,7 +37,7 @@ protected:
 	//где находиться объект
 	void FromScreenToItem(int x_screen, int y_screen, float& x_item, float& y_item);
 
-	CInventoryItem* m_pCurrentItem;
+	CGameObject* m_pCurrentItem;
 	
 };
 

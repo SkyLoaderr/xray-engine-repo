@@ -139,7 +139,7 @@ void  CUI3dStatic::Draw()
 	}
 }
 
-void CUI3dStatic::SetGameObject(CInventoryItem* pItem)
+void CUI3dStatic::SetGameObject(CGameObject* pItem)
 {
 	m_pCurrentItem = pItem;
 }

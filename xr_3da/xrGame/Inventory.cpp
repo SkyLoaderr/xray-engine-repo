@@ -3,6 +3,9 @@
 #include "actor.h"
 #include "trade.h"
 
+#include "ui\\UIInventoryUtilities.h"
+using namespace InventoryUtilities;
+
 // CInventoryItem class ///////////////////////////////////////////////////////////////////////////////
 
 CInventoryItem::CInventoryItem() 
@@ -14,6 +17,19 @@ CInventoryItem::CInventoryItem()
 	m_pInventory = NULL;
 	m_drop = false;
 	m_ruck = true;
+
+	m_fCondition = 1.0f;
+	m_bUsingCondition = false;
+
+	m_fK_Burn = 1.0f;
+	m_fK_Strike = 1.0f;
+	m_fK_Wound = 1.0f;
+	m_fK_Radiation = 1.0f;
+	m_fK_Telepatic = 1.0f;
+	m_fK_Shock = 1.0f;
+	m_fK_ChemicalBurn = 1.0f;
+	m_fK_Explosion = 1.0f;
+	m_fK_FireWound = 1.0f;
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -35,6 +51,59 @@ void CInventoryItem::Load(LPCSTR section)
 	m_sIconTexture = pSettings->r_string(section, "inv_icon");
 	m_iGridWidth = pSettings->r_u32(section, "inv_grid_width");
 	m_iGridHeight = pSettings->r_u32(section, "inv_grid_height");
+}
+
+void  CInventoryItem::ChangeCondition(float fDeltaCondition)
+{
+	m_fCondition += fDeltaCondition;
+
+	if(m_fCondition <0.0f) m_fCondition = 0.0f;
+	else if(m_fCondition >1.0f) m_fCondition = 1.0f;
+}
+
+void CInventoryItem::Hit(float P, Fvector &dir,	
+						 CObject* who, s16 element,
+						 Fvector position_in_object_space, 
+						 float impulse, 
+						 ALife::EHitType hit_type)
+{
+	inherited::Hit(P, dir, who, element, position_in_object_space, 
+					  impulse, hit_type);
+
+
+	if(!m_bUsingCondition) return;
+
+	float hit_power = P/100.f;
+
+	switch(hit_type)
+	{
+	case eHitTypeBurn:
+		hit_power *= m_fK_Burn;
+		break;
+	case eHitTypeChemicalBurn:
+		hit_power *= m_fK_ChemicalBurn;
+		break;
+	case eHitTypeStrike:
+		hit_power *= m_fK_Strike;
+		break;
+	case eHitTypeTelepatic:
+		hit_power *= m_fK_Telepatic;
+		break;
+	case eHitTypeShock:
+		hit_power *= m_fK_Shock;
+		break;
+	case eHitTypeExplosion:
+		hit_power *= m_fK_Explosion;
+		break;
+	case eHitTypeFireWound:
+		hit_power *= m_fK_FireWound;
+		break;
+	case eHitTypeWound:
+		hit_power *= m_fK_Wound;
+		break;
+	}
+
+	ChangeCondition(-hit_power);
 }
 
 const char* CInventoryItem::Name() 
@@ -61,6 +130,21 @@ char* CInventoryItem::NameComplex()
 		if(l_subName)
 			strcpy(&m_nameComplex[strlen(m_nameComplex)], l_subName);
 	}
+
+
+	if(m_bUsingCondition)
+	{
+		/*if(GetCondition()<0.33)
+			strcpy(&m_nameComplex[strlen(m_nameComplex)], " bad");
+		else if(GetCondition()<0.66)
+			strcpy(&m_nameComplex[strlen(m_nameComplex)], " good");
+		else
+			strcpy(&m_nameComplex[strlen(m_nameComplex)], " excelent");
+		*/
+		sprintf(&m_nameComplex[strlen(m_nameComplex)]," %f",GetCondition());
+	}
+
+
 	return m_nameComplex;
 }
 
@@ -332,6 +416,7 @@ CInventory::~CInventory()
 //вещи размещаются по тому же принципу, что и 
 //в UIInventoryWnd: сначала самые объемные
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
+/*
 bool CInventory::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {
 	int item1_room = item1->m_iGridWidth*item1->m_iGridHeight;
@@ -346,12 +431,92 @@ bool CInventory::GreaterRoomInRuck(PIItem item1, PIItem item2)
 	}
 
 	return false;
-}
+}*/
 
-//разместились ли вещи в рюкзаке
-bool CInventory::FreeRuckRoom() 
+/*
+bool CInventory::FreeRoom(TIItemList item_list, int width, int height)
 {
-	bool ruck_room[RUCK_HEIGHT][RUCK_WIDTH];
+	BOOL* ruck_room = (BOOL*)xr_malloc(width*height);
+	
+	R_ASSERT(ruck_room);
+
+	int i,j,k,m;
+	int place_row = 0,  place_col = 0;
+	bool found_place;
+	bool can_place;
+
+
+	for(i=0; i<height; i++)
+		for(j=0; j<width; j++)
+			ruck_room[i*width + j] = false;
+
+
+	ruck_list = item_list;
+	
+	ruck_list.sort(GreaterRoomInRuck);
+	
+	found_place = true;
+
+	for(PPIItem it = ruck_list.begin(); (it != ruck_list.end()) && found_place; it++) 
+	{
+		PIItem pItem = *it;
+
+		//проверить можно ли разместить элемент,
+		//проверяем последовательно каждую клеточку
+		found_place = false;
+	
+		for(i=0; (i<height - pItem->m_iGridHeight+1) && !found_place; i++)
+		{
+			for(j=0; (j<width - pItem->m_iGridWidth +1) && !found_place; j++)
+			{
+				can_place = true;
+
+				for(k=0; (k<pItem->m_iGridHeight) && can_place; k++)
+				{
+					for(m=0; (m<pItem->m_iGridWidth) && can_place; m++)
+					{
+						if(ruck_room[(i+k)*width + (j+m)])
+								can_place =  false;
+					}
+				}
+			
+				if(can_place)
+				{
+					found_place=true;	
+					place_row = i;
+					place_col = j;
+				}
+
+			}
+		}
+
+		//разместить элемент на найденном месте
+		if(found_place)
+		{
+			for(k=0; k<pItem->m_iGridHeight; k++)
+			{
+				for(m=0; m<pItem->m_iGridWidth; m++)
+				{
+					ruck_room[(place_row+k)*width + place_col+m] = true;
+				}
+			}
+		}
+	}
+
+
+	xr_free(ruck_room);
+
+	//для какого-то элемента места не нашлось
+	if(!found_place) return false;
+
+	return true;
+}
+*/
+//разместились ли вещи в рюкзаке
+bool CInventory::FreeRuckRoom()
+{
+	return FreeRoom(m_ruck,RUCK_WIDTH,RUCK_HEIGHT);
+/*	bool ruck_room[RUCK_HEIGHT][RUCK_WIDTH];
 
 	int i,j,k,m;
 	int place_row = 0,  place_col = 0;
@@ -420,12 +585,14 @@ bool CInventory::FreeRuckRoom()
 	if(!found_place) return false;
 
 	return true;
+//*/
 }
 
 //разместились ли вещи на поясе
 bool CInventory::FreeBeltRoom()
 {
-	u32 total_width = 0;
+	return FreeRoom(m_belt, m_maxBelt, 1);
+/*	u32 total_width = 0;
 
 	for(PPIItem it = m_belt.begin(); it != m_belt.end(); it++) 
 	{
@@ -438,6 +605,7 @@ bool CInventory::FreeBeltRoom()
 	}
 
 	return true;
+//*/
 }
 
 
@@ -487,7 +655,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 				} 
 				else if(!Belt(l_pIItem) || !FreeBeltRoom()) 
 					 if(m_ruck.size() > m_maxRuck || 
-											!l_pIItem->m_ruck || !FreeRuckRoom()) 
+						!l_pIItem->m_ruck || !FreeRuckRoom()) 
 				{
 					//return true;
 					//else 
@@ -760,7 +928,7 @@ void CInventory::Update(u32 deltaT)
 		l_pA->setEnabled(true);
 	}
 	
-	//проверить рюкзак и пояс
+	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
 	for(int i = 0; i < 2; i++) 
 	{
 		TIItemList &l_list = i?m_ruck:m_belt;
@@ -837,6 +1005,7 @@ PIItem CInventory::SameSlot(u32 slot)
 	return NULL;
 }
 
+//найти в инвенторе вещь с указанным именем
 PIItem CInventory::Get(const char *name, bool bSearchRuck) 
 {
 	TIItemList &l_list = bSearchRuck ? m_ruck : m_belt;
@@ -970,9 +1139,11 @@ bool CInventory::CanPutInSlot(PIItem pIItem)
 	if(pIItem->m_slot < m_slots.size() && 
 		m_slots[pIItem->m_slot].m_pIItem == NULL)
 		return true;
+	
 	return false;
 }
-
+//проверяет можем ли поместить вещь на пояс,
+//при этом реально ничего не меняется
 bool CInventory::CanPutInBelt(PIItem pIItem)
 {
 	if(InBelt(pIItem)) return false;
@@ -980,16 +1151,21 @@ bool CInventory::CanPutInBelt(PIItem pIItem)
 	//запомнить предыдущее место (слот или рюкзак)
 	bool bInSlot = InSlot(pIItem);
 
-	if(!Belt(pIItem) || !FreeBeltRoom()) return false;
+	if(!Belt(pIItem)) return false;
+
+	bool result = true;
+	if(!FreeBeltRoom()) result = false;
 
 	//поместить элемент обратно на место
 	if(bInSlot)
 		Slot(pIItem);
 	else
 		Ruck(pIItem);
-	
-	return true;
+
+	return result;
 }
+//проверяет можем ли поместить вещь в рюкзак,
+//при этом реально ничего не меняется
 bool CInventory::CanPutInRuck(PIItem pIItem)
 {
 	if(InRuck(pIItem)) return false;
@@ -997,15 +1173,19 @@ bool CInventory::CanPutInRuck(PIItem pIItem)
 	//запомнить предыдущее место (слот или пояс)
 	bool bInSlot = InSlot(pIItem);
 
-	if(!Ruck(pIItem) || !FreeRuckRoom()) return false;
+	if(!Ruck(pIItem))return false;
+
+	bool result = true;
+
+	if(!FreeRuckRoom()) result = false;
 
 	//поместить элемент обратно на место
 	if(bInSlot)
 		Slot(pIItem);
 	else
 		Belt(pIItem);
-
-	return true;
+	 
+	return result;
 }
 
 

@@ -6,6 +6,9 @@
 #include "..\CameraBase.h"
 #include "Car.h"
 
+#include "HudManager.h"
+#include "UIGameSP.h"
+
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
@@ -25,9 +28,16 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	if (!g_Alive())												return;
 
 	if (cmd == kUSE) {
-		if (!m_trade->IsInTradeState()) {
-			if (m_trade->CanTrade()) {
-				m_trade->Communicate();		
+		if (!GetTrade()->IsInTradeState()) {
+			if (GetTrade()->CanTrade()) {
+				GetTrade()->Communicate();		
+				//если предложение начать торговлю принято, запустить окно торговли
+				if(GetTrade()->IsInTradeState())
+				{
+					//только если находимся в режиме single
+					CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+					if(pGameSP)pGameSP->StartTrade();
+				}
 				return;
 			}
 		}

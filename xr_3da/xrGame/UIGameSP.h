@@ -24,8 +24,9 @@ public:
 	//by Dandy 4.07.03
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
-protected:
+	void StartTrade();
 	void StartStopMenu(CUIDialogWnd* pDialog);
+protected:
 
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;
@@ -34,7 +35,6 @@ protected:
 	CUIDiaryWnd			DiaryMenu;
 	
 	//текущее меню пользователя показанное на экране
-	//NULL если 
+	//NULL если такого сейчас нет
 	CUIDialogWnd* m_pUserMenu;
-
 };

@@ -33,6 +33,8 @@ protected:
 	BOOL					bPending;		// Weapon needs some time to update itself, even if hidden
 	LPSTR					m_WpnName;
 
+	BOOL					bMisfire;		//a misfire happens, you'll need to rearm weapon
+
 	Fmatrix					m_Offset;
 
 	void					signal_HideComplete		();
@@ -70,13 +72,20 @@ protected:
 	float					fHitImpulse;
 
 	Fvector					vLastFP, vLastFD, vLastSP;
-							
+		
+	//рассеивание во время стрельбы
 	float					fireDistance;
 	float					fireDispersionBase;
 	float					fireDispersion;
 	float					fireDispersion_Inc;
 	float					fireDispersion_Dec;
 	float					fireDispersion_Current;
+	//фактор увеличения дисперсии при максимальной изношености (в процентах)
+	float					fireDispersionConditionFactor;
+	//вероятность осечки при максимальной изношености
+	float					misfireProbability;
+	//увеличение изношености при выстреле
+	float					conditionDecreasePerShot;
 
 	float					camMaxAngle;
 	float					camRelaxSpeed;
@@ -146,7 +155,8 @@ public:
 		eReload,
 		eShowing,
 		eHiding,
-		eHidden
+		eHidden,
+		eMisfire
 	};
 	// Events/States
 	u32						STATE, NEXT_STATE;
@@ -177,6 +187,12 @@ public:
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();
 
+	virtual	void			Hit					(float P, Fvector &dir,	
+												 CObject* who, s16 element,
+												 Fvector position_in_object_space, 
+												 float impulse, 
+												 ALife::EHitType hit_type = eHitTypeWound);
+
 	// logic & effects
 	virtual void			SetDefaults			();
 	virtual void			Ammo_add			(int iValue);
@@ -185,10 +201,13 @@ public:
 	virtual void			FireEnd				()				{ bWorking=false;	}
 	virtual void			Fire2Start			()				{ bWorking2=true;	}
 	virtual void			Fire2End			()				{ bWorking2=false;	}
-	virtual void			Reload				()				{};
+	virtual void			Reload				();
 	
 	virtual void			Hide				()				= 0;
 	virtual void			Show				()				= 0;
+
+	   BOOL					IsMisfire			();
+	   BOOL					CheckForMisfire		();
 
 	IC BOOL					IsWorking			()				{	return bWorking;							}
 	IC BOOL					IsValid				()				{	return iAmmoElapsed;						}
@@ -202,6 +221,11 @@ public:
 	IC LPCSTR				GetName				()				{	return m_WpnName;							}
 	IC int					GetAmmoElapsed		()				{	return int(m_magazine.size())/*iAmmoElapsed*/;						}
 	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
+
+	//параметы оружия в зависимоти от его состояния исправности
+	float					GetConditionDispersionFactor	();
+	float					GetConditionMisfireProbability	();
+
 
 	// @@@ WT: Subject to delete
 	IC int					GetAmmoLimit		()				{	return 0/*iAmmoLimit*/;						}

@@ -73,6 +73,7 @@ protected:
 
 	virtual void	state_Fire		(float dt);
 	virtual void	state_MagEmpty	(float dt);
+	virtual void	state_Misfire	(float dt);
 public:
 					CWeaponMagazined	(LPCSTR name,ESoundTypes eSoundType);
 	virtual			~CWeaponMagazined	();

@@ -26,9 +26,6 @@ protected:
 	void AddLetter(char c);
 	void AddChar(char c);
 
-	DEFINE_VECTOR	(char, STRING, STRING_IT);
-	STRING m_sEdit;
-
 	bool m_bInputFocus;
 	bool m_bShift;
 

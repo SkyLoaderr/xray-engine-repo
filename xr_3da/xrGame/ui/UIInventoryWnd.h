@@ -62,7 +62,10 @@ protected:
 	CUIStatic			UIStaticPersonal;
 
 	CUIStatic			UIStaticText;
-	CUI3dStatic			UI3dStatic; 
+	//дл€ изображени€ одежды
+	CUI3dStatic			UI3dStatic;
+	//дл€ изображени€ персонажа
+	CUI3dStatic			UI3dCharacter;
 
 		
 	#define SLOTS_NUM 5
@@ -84,7 +87,7 @@ protected:
 	CUIPropertiesBox UIPropertiesBox;
 
     
-	#define MAX_ITEMS 70
+	static const int MAX_ITEMS = 70;
 	CUIDragDropItem m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
 
@@ -94,11 +97,6 @@ protected:
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
 	CUIDragDropItem* m_pCurrentDragDropItem;
-
-	//сравнивает элементы по пространству занимаемому ими в рюкзаке
-	//дл€ сортировки
-	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);
-
 
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем
@@ -112,10 +110,14 @@ protected:
 	static bool BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
+
+	//сравнивает элементы по пространству занимаемому ими в рюкзаке
+/*	//дл€ сортировки
+	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);
 	//дл€ надписей на иконках с оружием
 	static void AmmoUpdateProc(CUIDragDropItem* pItem);
 	//дл€ надписей на иконках с едой
-	static void FoodUpdateProc(CUIDragDropItem* pItem);
+	static void FoodUpdateProc(CUIDragDropItem* pItem);*/
 
 	
 	
@@ -129,9 +131,10 @@ protected:
 	void DropItem();
 	//съесть элемент
 	void EatItem();
-	void ToSlot();
-	void ToBag();
-	void ToBelt();
+	
+	bool ToSlot();
+	bool ToBag();
+	bool ToBelt();
 
 
 	//дл€ сортировки вещей

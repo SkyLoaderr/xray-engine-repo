@@ -21,9 +21,9 @@ public:
 
 	////////////////////////////////////
 	//работа с дочерними и родительскими окнами
-	void AttachChild(CUIWindow* pChild);
-	void DetachChild(CUIWindow* pChild);
-	void DetachAll();
+	virtual void AttachChild(CUIWindow* pChild);
+	virtual void DetachChild(CUIWindow* pChild);
+	virtual void DetachAll();
 	int GetChildNum() {return m_ChildWndList.size();} 
 
 	void SetParent(CUIWindow* pNewParent) {m_pParentWnd = pNewParent;}
@@ -37,10 +37,10 @@ public:
 
 
 	//поднять на вершину списка выбранное дочернее окно
-	bool BringToTop(CUIWindow* pChild);
+	virtual bool BringToTop(CUIWindow* pChild);
 
 	//поднять на вершину списка всех родителей окна и его самого
-	void BringAllToTop();
+	virtual void BringAllToTop();
 	
 
 	////////////////////////////////////
@@ -77,12 +77,12 @@ public:
 	
 
 	//запрещение/разрешение на ввод с клавиатуры
-	void Enable(bool status) {m_bIsEnabled =  status;}
-	bool IsEnabled() {return m_bIsEnabled;}
+	virtual void Enable(bool status) {m_bIsEnabled =  status;}
+	virtual bool IsEnabled() {return m_bIsEnabled;}
 
 	//убрать/показать окно и его дочерние окна
-	void Show(bool status) {m_bIsShown =  status;}
-	bool IsShown() {return m_bIsShown;}
+	virtual void Show(bool status) {m_bIsShown =  status;}
+	virtual bool IsShown() {return m_bIsShown;}
 	
 	////////////////////////////////////
 	//положение и размеры окна
@@ -102,15 +102,15 @@ public:
 	//абсолютные координаты
 	RECT GetAbsoluteRect();
 
-	int GetWidth() {return m_WndRect.right-m_WndRect.left;}
-	void SetWidth(int width) {SetRect(&m_WndRect,
+	virtual int GetWidth() {return m_WndRect.right-m_WndRect.left;}
+	virtual void SetWidth(int width) {SetRect(&m_WndRect,
 										m_WndRect.left,
 										m_WndRect.top,
 										m_WndRect.left+width,
 										m_WndRect.bottom);}
 
-	int GetHeight() {return m_WndRect.bottom-m_WndRect.top;}
-	void SetHeight(int height) {SetRect(&m_WndRect,
+	virtual int GetHeight() {return m_WndRect.bottom-m_WndRect.top;}
+	virtual void SetHeight(int height) {SetRect(&m_WndRect,
 										m_WndRect.left,
 										m_WndRect.top,
 										m_WndRect.right,
@@ -133,9 +133,12 @@ public:
 							else
 								return  m_pParentWnd->GetFont();}
 
+	DEF_LIST (WINDOW_LIST, CUIWindow*);
+	WINDOW_LIST& GetChildWndList() {return m_ChildWndList;}
+
 protected:
 
-	DEF_LIST (WINDOW_LIST, CUIWindow*);
+
 
 
 	//список дочерних окон

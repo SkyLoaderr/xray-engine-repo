@@ -65,9 +65,12 @@ protected:
 	virtual void UpdateCircumspection();
 	virtual void UpdateEntityMorale();
 
+	virtual void AddWound(float hit_power, s16 element = 0);
+
 	//изменение силы хита в зависимости от надетого костюма
 	//(только для InventoryOwner)
 	virtual float HitOutfitEffect(float hit_power, ALife::EHitType hit_type);
+	
 
 
 	//для подсчета состояния открытых ран,
@@ -158,6 +161,10 @@ protected:
 	float m_fK_Wound;
 	float m_fK_Radiation;
 	float m_fK_Telepatic;
+	float m_fK_ChemicalBurn;
+	float m_fK_Explosion;
+	float m_fK_FireWound;
+
 
 	//состояние сна
 	bool m_bIsSleeping;

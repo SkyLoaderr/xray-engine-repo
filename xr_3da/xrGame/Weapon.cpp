@@ -21,6 +21,23 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+/*
+//нормальное распределение с дисперсией
+//m - мат.ожидание, s - среднеквадратичное отклонение
+static float RandNormal(float m, float s)
+{
+	const float epsilon = 0.00000000001f;
+	float r1, r2;
+
+	r1 = ::Random.randF(0.f,1.0f);
+	r2 = ::Random.randF(0.f,1.0f);
+	
+	float norm_num = (-2 * log(r1<epsilon?epsilon:r1) * _cos (2 * PI * r2));
+
+	norm_num = m + norm_num*s;
+};
+*/
+
 CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire			= 0;
@@ -67,6 +84,9 @@ CWeapon::CWeapon(LPCSTR name)
 	light_render				= ::Render->light_create();
 	light_render->set_shadow	(true);
 	m_shotLight = true;
+
+	m_bUsingCondition = true;
+	bMisfire = false;
 }
 
 CWeapon::~CWeapon		()
@@ -81,6 +101,16 @@ CWeapon::~CWeapon		()
 	hUIIcon.destroy		();
 	hWallmark.destroy	();
 }
+
+void CWeapon::Hit(float P, Fvector &dir,	
+		    CObject* who, s16 element,
+		    Fvector position_in_object_space, 
+		    float impulse, 
+		    ALife::EHitType hit_type)
+{
+	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
+}
+
 
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 {
@@ -268,6 +298,18 @@ void CWeapon::Load		(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT			(load_cls==SUB_CLS_ID);
 
+	//станадртные настройки коэффициентов хитов попадания для всех типов оружия
+	m_fK_Burn = pSettings->r_float("weapon","burn_immunity");
+	m_fK_Strike = pSettings->r_float("weapon","strike_immunity");
+	m_fK_Shock = pSettings->r_float("weapon","shock_immunity");
+	m_fK_Wound = pSettings->r_float("weapon","wound_immunity");
+	m_fK_Radiation = pSettings->r_float("weapon","radiation_immunity");
+	m_fK_Telepatic = pSettings->r_float("weapon","telepatic_immunity");
+	m_fK_ChemicalBurn = pSettings->r_float("weapon","chemical_burn_immunity");
+	m_fK_Explosion = pSettings->r_float("weapon","explosion_immunity");
+	m_fK_FireWound = pSettings->r_float("weapon","fire_wound_immunity");
+	
+	
 	inherited::Load		(section);
 
 	Fvector				pos,ypr;
@@ -316,10 +358,17 @@ void CWeapon::Load		(LPCSTR section)
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
 	fireDistance		= pSettings->r_float		(section,"fire_distance"	);
-	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
-	fireDispersion		= pSettings->r_float		(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
+	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);	
+	fireDispersionBase	= deg2rad(fireDispersionBase);
+	fireDispersion		= pSettings->r_float		(section,"fire_dispersion"	);		
+	fireDispersion		= deg2rad(fireDispersion);
 	fireDispersion_Inc	= pSettings->r_float		(section,"fire_dispersion_add"); 
 	fireDispersion_Dec	= pSettings->r_float		(section,"fire_dispersion_relax"); 
+
+	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
+	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
+	conditionDecreasePerShot	  = pSettings->r_float(section,"condition_shot_dec"); 
+
 	fireDispersion_Current	= 0;
 
 	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
@@ -633,10 +682,7 @@ void CWeapon::SwitchState(u32 S)
 	//R_ASSERT(S <= eHidden);
 	if (Local() && /*??????? (S!=STATE) ??????? &&*/ (S!=NEXT_STATE))	
 	{
-		/// sdlkajdklsjaskldjlkasjdkljaskljdklasjldkjasklj
-
 		// !!! Just single entry for given state !!!
-
 		NEXT_STATE			= S;	// Very-very important line of code!!! :)
 		NET_Packet		P;
 		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
@@ -712,15 +758,22 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	// direct it by dispersion factor
 	Fvector dir, dir1;
 	//dir.random_dir			(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
-	dir.random_dir(D,(fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
+	dir.random_dir(D,(fireDispersion*fireDispersion_Current)*
+						GetPrecision()*
+						GetConditionDispersionFactor(),Random);
 
 	// increase dispersion
 	fireDispersion_Current += fireDispersion_Inc;
 	clamp(fireDispersion_Current,0.f,1.f);
 
+	//повысить изношенность оружия
+	ChangeCondition(-conditionDecreasePerShot);
+	
+
 	BOOL bResult = false;
 
-	for(int i = 0; i < l_cartridge.m_buckShot; i++) {
+	for(int i = 0; i < l_cartridge.m_buckShot; i++) 
+	{
 		dir1.random_dir(dir, fireDispersionBase * l_cartridge.m_kDisp, Random);
 
 		// ...and trace line
@@ -732,8 +785,10 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		// ...analyze
 		Fvector end_point; 
 		end_point.mad(P,D,RQ.range);
-		if(bResult) {
-			if(Local() && RQ.O) {
+		if(bResult) 
+		{
+			if(Local() && RQ.O) 
+			{
 				float power = float(iHitPower) * l_cartridge.m_kHit;
 				float scale = 1-(RQ.range/(fireDistance*l_cartridge.m_kDist)); clamp(scale,0.f,1.f); scale = _sqrt(scale);
 				power *= scale;
@@ -750,16 +805,17 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 				// bone-space
 				CKinematics* V = PKinematics(RQ.O->Visual());
+				
 				if(V)
 				{
-				Fmatrix& m_bone = (V->LL_GetInstance(RQ.element)).mTransform;
-				Fmatrix  m_inv_bone;
-				m_inv_bone.invert(m_bone);
-				m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);
+					Fmatrix& m_bone = (V->LL_GetInstance(RQ.element)).mTransform;
+					Fmatrix  m_inv_bone;
+					m_inv_bone.invert(m_bone);
+					m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);
 				}
 				else
 				{
-				position_in_bone_space.set(p_in_object_space);
+					position_in_bone_space.set(p_in_object_space);
 				}
 
 				//  
@@ -778,7 +834,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		}
 
 		// tracer
-		if(l_cartridge.m_tracer && tracerFrame != Device.dwFrame) {
+		if(l_cartridge.m_tracer && tracerFrame != Device.dwFrame) 
+		{
 			tracerFrame = Device.dwFrame;
 			Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
 		}
@@ -788,10 +845,14 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	if(m_shotLight) Light_Start();
 	
 	// Ammo
-	if(Local()) {
+	if(Local()) 
+	{
 		m_abrasion		= _max(0.f, m_abrasion - l_cartridge.m_impair);
 		m_magazine.pop	();
 		if(!(--iAmmoElapsed)) OnMagazineEmpty();
+
+		//проверить не произошла ли осечка
+		CheckForMisfire();
 	}
 	
 	return				bResult;
@@ -851,7 +912,6 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_WPN_STATE_CHANGE:
 		{
-			/// sdlkajdklsjaskldjlkasjdkljaskljdklasjldkjasklj
 			u8				S;
 			P.r_u8			(S);
 			OnStateSwitch	(u32(S));
@@ -881,20 +941,26 @@ void CWeapon::Deactivate() {
 	Hide();
 }
 
-bool CWeapon::Action(s32 cmd, u32 flags) {
+bool CWeapon::Action(s32 cmd, u32 flags) 
+{
 	if(inherited::Action(cmd, flags)) return true;
 	switch(cmd) {
 		case kWPN_FIRE : {
-			if(flags&CMD_START) FireStart();
-			else FireEnd();
+			if(flags&CMD_START) 
+				FireStart();
+			else 
+				FireEnd();
 		} return true;
 		case kWPN_NEXT : {
 			if(flags&CMD_START) {
 				u32 l_newType = m_ammoType;
 				do {
 					l_newType = (l_newType+1)%m_ammoTypes.size();
-				} while(l_newType != m_ammoType && !m_pInventory->Get(m_ammoTypes[l_newType],!dynamic_cast<CActor*>(H_Parent())));
-				if(l_newType != m_ammoType) {
+				} while(l_newType != m_ammoType && !m_pInventory->Get(m_ammoTypes[l_newType],
+																	 !dynamic_cast<CActor*>(H_Parent())));
+				
+				if(l_newType != m_ammoType) 
+				{
 					m_ammoType = l_newType;
 					m_pAmmo = NULL;
 					Reload();
@@ -905,7 +971,8 @@ bool CWeapon::Action(s32 cmd, u32 flags) {
 	return false;
 }
 
-bool CWeapon::Attach(PIItem pIItem, bool force) {
+bool CWeapon::Attach(PIItem pIItem, bool force) 
+{
 	// A?aoiaio force anaaaa ?aaai false
 	// ianeaaiee aie?ai eciaieou aai ia true
 	// anee aaiiue IItem *II?AO* auou e iaio i?eniaaeiai,
@@ -915,7 +982,8 @@ bool CWeapon::Attach(PIItem pIItem, bool force) {
 	*/return inherited::Attach(pIItem, force);
 }
 
-bool CWeapon::Detach(PIItem pIItem, bool force) {
+bool CWeapon::Detach(PIItem pIItem, bool force) 
+{
 	// A?aoiaio force anaaaa ?aaai true
 	// ianeaaiee aie?ai eciaieou aai ia false
 	// anee aaiiue IItem *IA II?AO* auou ioniaaeiai,
@@ -923,11 +991,16 @@ bool CWeapon::Detach(PIItem pIItem, bool force) {
 	return CInventoryItem::Detach(pIItem, false);
 }
 
-void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
+void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) 
+{
 	if(!m_ammoTypes.size()) return;
+	
 	static l_type = 0; l_type %= m_ammoTypes.size();
-	if(!ammoSect) ammoSect = m_ammoTypes[l_type/*m_ammoType*/]; //m_ammoType++; m_ammoType %= m_ammoTypes.size();
-	l_type++; l_type %= m_ammoTypes.size();
+	if(!ammoSect) 
+		ammoSect = m_ammoTypes[l_type/*m_ammoType*/]; //m_ammoType++; m_ammoType %= m_ammoTypes.size();
+	
+	l_type++; 
+	l_type %= m_ammoTypes.size();
 
 	// Create
 	CSE_Abstract		*D		= F_entity_Create(ammoSect);
@@ -947,7 +1020,8 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	l_pA->m_tNodeID	= AI_NodeID;
 	// Send
 	if(boxCurr == 0xffffffff) boxCurr = l_pA->m_boxSize;
-	while(boxCurr) {
+	while(boxCurr) 
+	{
 		l_pA->a_elapsed = (u16)(boxCurr > l_pA->m_boxSize ? l_pA->m_boxSize : boxCurr);
 		NET_Packet P;
 		D->Spawn_Write(P, TRUE);
@@ -959,34 +1033,88 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	F_entity_Destroy(D);
 }
 
-const char* CWeapon::Name() {
-	if(m_name) strcpy(m_tmpName, m_name); else m_tmpName[0] = 0;
-	char l_tmp[20]; sprintf(l_tmp, " %d/%d %s", iAmmoElapsed, iMagazineSize, m_ammoName);
+const char* CWeapon::Name() 
+{
+	if(m_name) 
+		strcpy(m_tmpName, m_name); 
+	else m_tmpName[0] = 0;
+	
+	char l_tmp[20]; 
+	sprintf(l_tmp, " %d/%d %s", iAmmoElapsed, iMagazineSize, m_ammoName);
 	strcpy(&m_tmpName[strlen(m_tmpName)], l_tmp);
 	return m_tmpName;
 }
 
-int CWeapon::GetAmmoCurrent() {
+int CWeapon::GetAmmoCurrent() 
+{
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
-	for(int i = 0; i < (int)m_ammoTypes.size(); i++) {
+
+	for(int i = 0; i < (int)m_ammoTypes.size(); i++) 
+	{
 		LPCSTR l_ammoType = m_ammoTypes[i];
-		if(dynamic_cast<CActor*>(H_Parent())) {
+		if(dynamic_cast<CActor*>(H_Parent())) 
+		{
 			TIItemList &l_list = m_pInventory->m_belt;
-			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
+			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+			{
 				CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
-				if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) {
+				
+				if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
+				{
 					l_count = l_count + l_pAmmo->m_boxCurr;
 				}
 			}
 		}
+		
 		TIItemList &l_list = m_pInventory->m_ruck;
-		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
+		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+		{
 			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
-			if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) {
+			if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) 
+			{
 				l_count = l_count + l_pAmmo->m_boxCurr;
 			}
 		}
 	}
 	return l_count;
+}
+
+
+float CWeapon::GetConditionDispersionFactor()
+{
+	return fireDispersionConditionFactor*GetCondition();
+}
+float CWeapon::GetConditionMisfireProbability()
+{
+	return misfireProbability*(1.f-GetCondition());
+}
+
+BOOL CWeapon::CheckForMisfire()
+{
+	float rnd = ::Random.randF(0.f,1.f);
+	if(rnd<GetConditionMisfireProbability())
+	{
+		FireEnd();
+
+		bMisfire = true;
+		SwitchState(eMisfire);
+		
+		if(dynamic_cast<CActor*>(this->H_Parent()))
+			HUD().outMessage(0xffffffff,this->cName(), "gun jammed");
+		
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+BOOL CWeapon::IsMisfire()
+{	
+	return bMisfire;
+}
+void CWeapon::Reload()
+{
 }

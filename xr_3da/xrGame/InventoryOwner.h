@@ -40,11 +40,6 @@ public:
 	virtual BOOL net_Spawn		(LPVOID DC);
 
 
-	CInventory	m_inventory;									// Инвентарь
-	CInventory	m_trade_storage;								// склад 
-	
-	CTrade		*m_trade;										// торговля
-
 	// свойства
 	u32					m_dwMoney;
 	EStalkerRank		m_tRank;
@@ -59,6 +54,14 @@ public:
 	//отправка сообщения другому владельцу PDA
 	virtual void SendPdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
 
+
+	CInventory	m_inventory;									// Инвентарь
+	CInventory	m_trade_storage;								// склад 
+
+	void InitTrade();
+	CTrade* GetTrade();
 protected:
+	// торговля
+	CTrade*	m_pTrade;
 	
 };

@@ -10,6 +10,8 @@
 #include "entity.h"
 #include "pda.h"
 
+#include "trade.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -18,14 +20,14 @@ CInventoryOwner::CInventoryOwner()
  {
 	m_inventory.m_pOwner		= this;
 	m_trade_storage.m_pOwner	= this;
-	m_trade						= NULL;
+	m_pTrade					= NULL;
 
 	m_dwMoney					= 0;
 	m_tRank						= eStalkerRankNone;
 }
-
 CInventoryOwner::~CInventoryOwner() 
 {
+	if(m_pTrade) xr_delete(m_pTrade);
 }
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
@@ -103,4 +105,14 @@ void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger)
 	if(!GetPDA() || !GetPDA()->IsActive()) return;
 
 	GetPDA()->SendMessageID(who, msg, anger);
+}
+
+void CInventoryOwner::InitTrade()
+{
+	m_pTrade = xr_new<CTrade>(this);
+}
+CTrade* CInventoryOwner::GetTrade() 
+{
+	R_ASSERT2(m_pTrade, "trade for object does not init yet");
+	return m_pTrade;
 }

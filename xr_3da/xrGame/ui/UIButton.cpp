@@ -21,6 +21,8 @@ CUIButton:: CUIButton()
 	m_bCursorOverButton = false;
 
 	m_bAvailableTexture = false;
+
+	SetTextAlign(CGameFont::alCenter);
 }
 
  CUIButton::~ CUIButton()
@@ -44,15 +46,15 @@ void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
 
-	if(tex_name!=NULL)
+
+	inherited::Init(tex_name, x, y, width, height);
+	/*if(tex_name!=NULL)
 	{
         m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
 		m_bAvailableTexture = true;
 	}
 	else
-		m_bAvailableTexture = false;
-	
-	CUIWindow::Init(x, y, width, height);
+		m_bAvailableTexture = false;*/
 }
 
 
@@ -90,7 +92,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	case NORMAL_PRESS:
 		if(m_eButtonState == BUTTON_NORMAL)
 		{
-			if(mouse_action == LBUTTON_DOWN)
+			if(mouse_action == LBUTTON_DOWN || mouse_action == LBUTTON_DB_CLICK)
 			{
 				m_eButtonState = BUTTON_PUSHED;
 			
@@ -151,7 +153,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 			}
 		}
-		else if(mouse_action == LBUTTON_DOWN)
+		else if(mouse_action == LBUTTON_DOWN || mouse_action == LBUTTON_DB_CLICK)
 		{
 			if(cursor_on_button)
 			{
@@ -216,14 +218,6 @@ void  CUIButton::Draw()
 	}
 
 	m_UIStaticItem.Render();
-
-	//установить размер кнопки в соответствии с размером отрендеренной текстуры
-	/*SetWndRect(GetWndRect().left + m_UIStaticNormal.GetRect().x1,
-			   GetWndRect().top  + m_UIStaticNormal.GetRect().y1,
-			   m_UIStaticNormal.GetRect().x2-m_UIStaticNormal.GetRect().x1,
-			   m_UIStaticNormal.GetRect().y2-m_UIStaticNormal.GetRect().y1);*/
-
-				
 }
 
 
@@ -260,7 +254,7 @@ void  CUIButton::Update()
 	}
 
 
-	GetFont()->SetAligment(CGameFont::alCenter);
+	GetFont()->SetAligment(GetTextAlign());
 	
 
 	if(m_bCursorOverButton)

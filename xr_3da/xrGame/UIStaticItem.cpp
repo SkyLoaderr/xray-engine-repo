@@ -14,6 +14,7 @@ CUIStaticItem::CUIStaticItem()
 	iRemX		= 0;
 	iRemY		= 0;
 	hGeom.create(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+
 }
 //--------------------------------------------------------------------
 CUIStaticItem::~CUIStaticItem()
@@ -55,6 +56,9 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	Ivector2		pos;
 	int fw			= iVisRect.width();
 	int fh			= iVisRect.height();
+	
+	
+	
 	int				x,y;
 	for (x=0; x<iTileX; x++){
 		for (y=0; y<iTileY; y++){

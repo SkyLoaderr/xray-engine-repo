@@ -238,7 +238,10 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 		m_pMouseCapturer = pChildWindow;
 	}
 	else
-		m_pMouseCapturer = NULL;
+	{
+		/*if(m_pMouseCapturer == pChildWindow)*/
+			m_pMouseCapturer = NULL;
+	}
 }
 
 

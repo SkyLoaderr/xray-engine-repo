@@ -51,6 +51,9 @@ CEntityCondition::CEntityCondition(void)
 	m_fK_Radiation = 1.0f;
 	m_fK_Telepatic = 1.0f;
 	m_fK_Shock = 1.0f;
+	m_fK_ChemicalBurn = 1.0f;
+	m_fK_Explosion = 1.0f;
+	m_fK_FireWound = 1.0f;
 
 	m_fHealthHitPart = 1.0f;
 	m_fPowerHitPart = 0.5f;
@@ -101,6 +104,10 @@ void CEntityCondition::Load(LPCSTR section)
 	m_fK_Wound = pSettings->r_float(section,"wound_immunity");
 	m_fK_Radiation = pSettings->r_float(section,"radiation_immunity");
 	m_fK_Telepatic = pSettings->r_float(section,"telepatic_immunity");
+	m_fK_ChemicalBurn = pSettings->r_float(section,"chemical_burn_immunity");
+	m_fK_FireWound = pSettings->r_float(section,"fire_wound_immunity");
+	m_fK_Explosion = pSettings->r_float(section,"explosion_immunity");
+	
 
 	m_fK_SleepHealth = pSettings->r_float(section,"sleep_health");
 	m_fK_SleepPower = pSettings->r_float(section,"sleep_power");
@@ -288,9 +295,36 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 	case eHitTypeRadiation:
 		hit_power *= pOutfit->m_fOutfitRadiation;
 		break;
+	case eHitTypeChemicalBurn:
+		hit_power *= pOutfit->m_fOutfitChemicalBurn;
+		break;
+	case eHitTypeExplosion:
+		hit_power *= pOutfit->m_fOutfitExplosion;
+		break;
+	case eHitTypeFireWound:
+		hit_power *= pOutfit->m_fOutfitFireWound;
+		break;				
 	}
 		
 	return hit_power;
+}
+
+void CEntityCondition::AddWound(float hit_power, s16 element)
+{
+	//запомнить кость по которой ударили и силу удара
+	WOUND_PAIR_IT it = m_mWound.find(element);
+	//новая рана
+	if (it == m_mWound.end())
+	{
+		m_mWound[element] = hit_power*m_fV_Bleeding*
+							::Random.randF(0.5f,1.5f);
+		}
+		//старая 
+		else
+		{
+			m_mWound[element] += hit_power*m_fV_Bleeding*
+								::Random.randF(0.5f,1.5f);
+		}
 }
 
 void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
@@ -311,6 +345,9 @@ void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitTy
 	case eHitTypeBurn:
 		hit_power *= m_fK_Burn;
 		break;
+	case eHitTypeChemicalBurn:
+		hit_power *= m_fK_ChemicalBurn;
+		break;
 	case eHitTypeStrike:
 		hit_power *= m_fK_Strike;
 		break;
@@ -320,37 +357,28 @@ void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitTy
 	case eHitTypeShock:
 		hit_power *= m_fK_Shock;
 		break;
-	case eHitTypeWound:
-		{
-			hit_power *= m_fK_Wound;
-
-			m_fHealthLost = hit_power*m_fHealthHitPart;
-
-			m_fDeltaHealth -= m_fHealthLost;
-			m_fDeltaPower -= hit_power*m_fPowerHitPart;
-
-			//запомнить кость по которой ударили и силу удара
-			WOUND_PAIR_IT it = m_mWound.find(element);
-			//новая рана
-			if (it == m_mWound.end())
-			{
-				m_mWound[element] = hit_power*m_fV_Bleeding*
-									::Random.randF(0.5f,1.5f);
-			}
-			//старая 
-			else
-			{
-				m_mWound[element] += hit_power*m_fV_Bleeding*
-									::Random.randF(0.5f,1.5f);
-			}
-		}
+	case eHitTypeExplosion:
+		hit_power *= m_fK_Explosion;
+		m_fHealthLost = hit_power*m_fHealthHitPart;
+		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaPower -= hit_power*m_fPowerHitPart;
+		AddWound(hit_power, element);
 		break;
-	case eHitTypeRadiation:
-		hit_power *= m_fK_Radiation;
-		m_fDeltaRadiation += hit_power;
+	case eHitTypeFireWound:
+		hit_power *= m_fK_FireWound;
+		m_fHealthLost = hit_power*m_fHealthHitPart;
+		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaPower -= hit_power*m_fPowerHitPart;
+		AddWound(hit_power, element);
+		break;
+	case eHitTypeWound:
+		hit_power *= m_fK_Wound;
+		m_fHealthLost = hit_power*m_fHealthHitPart;
+		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaPower -= hit_power*m_fPowerHitPart;
+		AddWound(hit_power, element);
 		break;
 	}
-	
 }
 
 

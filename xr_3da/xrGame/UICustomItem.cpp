@@ -10,31 +10,63 @@ CUICustomItem::CUICustomItem()
 	uAlign			= alNone;
 	uFlags			= 0;
 	iVisRect.lt.set	(0,0); iVisRect.rb.set(0,0);
+
+	fScale = 1.f;
 }
 //--------------------------------------------------------------------
 
 CUICustomItem::~CUICustomItem()
 {
 }
+void CUICustomItem::SetScale(float new_scale)
+{
+	fScale = 1.f/new_scale;
+}
+
+float CUICustomItem::GetScale()
+{
+	return 1.f/fScale;
+}
 //--------------------------------------------------------------------
- 
-void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, int x1, int y1, int x2, int y2)
+//для вывода части изображения
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 
+						   int x1, int y1, int x2, int y2)
 {
 	CTexture* T		= RCache.get_ActiveTexture(0);
 	Ivector2		ts;
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
-	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
+	
+	if (!(uFlags&flValidRect))
+	{
+		SetRect		(0,0,ts.x,ts.y);
+	}
+
+	if (!(uFlags&flValidOriginalRect))
+	{
+		iOriginalRect.set(0,0,ts.x,ts.y);
+		uFlags |= flValidOriginalRect;
+	}
+			
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
+	
+	//координаты на экране
 	float sc		= HUD().GetScale();
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
+//	LTp.set			(float(pos.x),float(pos.y));
+//	RBp.set			(pos.x + float(x2-x1)*sc,
+//					 pos.y + float(y2-y1)*sc);
 
-	LTt.set			(float(x1)/float(ts.x)+hp.x,float(y1)/float(ts.y)+hp.y);
-	RBt.set			(float(x2)/float(ts.x)+hp.x,float(y2)/float(ts.y)+hp.y);
+
+	//текстурные координаты
+	LTt.set			(fScale* float(x1)/float(ts.x)+hp.x,
+					 fScale* float(y1)/float(ts.y)+hp.y);
+	RBt.set			(fScale*float(x2)/float(ts.x)+hp.x,
+					fScale*float(y2)/float(ts.y)+hp.y);
 
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;
 	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
@@ -71,8 +103,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;
-	LTt.set			(float(iVisRect.x1)/float(ts.x)+hp.x,float(iVisRect.y1)/float(ts.y)+hp.y);
-	RBt.set			(float(iVisRect.x2)/float(ts.x)+hp.x,float(iVisRect.y2)/float(ts.y)+hp.y);
+	LTt.set			(fScale*float(iVisRect.x1)/float(ts.x)+hp.x,
+					 fScale*float(iVisRect.y1)/float(ts.y)+hp.y);
+	RBt.set			(fScale*float(iVisRect.x2)/float(ts.x)+hp.x,
+					 fScale*float(iVisRect.y2)/float(ts.y)+hp.y);
 
 	// Rotation
 	iVisRect.getcenter(RS); 
@@ -114,3 +148,15 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); Pointer++;
 	Pointer->set	(RBp.x,	LTp.y,	color, RTt.x, RTt.y); Pointer++;
 }
+
+Irect CUICustomItem::GetOriginalRect()
+{
+	Irect rect;
+	rect.x1 = iOriginalRect.x1;
+	rect.y1 = iOriginalRect.y1;
+	rect.x2 = int(rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1)*GetScale());
+	rect.y2 = int(rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1)*GetScale());
+
+	return rect;
+}
+

@@ -16,12 +16,12 @@ CAI_Trader::CAI_Trader()
 {
 	m_bPlaying						= false;
 
-	m_trade							= xr_new<CTrade>(this);
+	InitTrade();
 } 
 
 CAI_Trader::~CAI_Trader()
 {
-	xr_delete(m_trade);
+	//xr_delete(m_trade);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -175,7 +175,7 @@ void CAI_Trader::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update	(dt);
 	m_inventory.Update			(dt);
-	m_trade->UpdateTrade		();
+	GetTrade()->UpdateTrade		();
 
 	Think();
 }

@@ -124,10 +124,11 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, const char* path,
 	int cell_height = xml_doc.ReadAttribInt(path, index, "cell_height");
 	int rows_num = xml_doc.ReadAttribInt(path, index, "rows_num");
 	int cols_num = xml_doc.ReadAttribInt(path, index, "cols_num");
+	int rows_num_view = xml_doc.ReadAttribInt(path, index, "rows_num_view");
 
 	pWnd->SetCellWidth(cell_width);
 	pWnd->SetCellHeight(cell_height);
-	pWnd->InitGrid(rows_num,cols_num);
+	pWnd->InitGrid(rows_num, cols_num, true, rows_num_view);
 
 
 	return true;

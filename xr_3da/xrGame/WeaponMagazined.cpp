@@ -78,47 +78,86 @@ void CWeaponMagazined::Load	(LPCSTR section)
 void CWeaponMagazined::FireStart		()
 {
 	if(dynamic_cast<CActor*>(H_Parent())) m_queueSize = 0;
-	if(IsValid()) {
-		if(!IsWorking()) {
+	if(IsValid() && !IsMisfire()) 
+	{
+		if(!IsWorking())
+		{
 			if(STATE==eReload) return;
 			if(STATE==eShowing) return;
 			if(STATE==eHiding) return;
+			if(STATE==eMisfire) return;
 
-			if (!iAmmoElapsed) {
+			/*if (iAmmoElapsed == 0) 
+			{
 				CWeapon::FireStart();
 				SwitchState(eMagEmpty);
-			} else {
+			} else 	{
 				CWeapon::FireStart();
 				SwitchState(eFire);
-			}
+			}*/
+			inherited::FireStart();
+			if (iAmmoElapsed == 0) 
+				SwitchState(eMagEmpty);
+			else
+				SwitchState(eFire);
 		}
-	} else {
+	} 
+	else 
+	{
+		if(STATE!=eReload && STATE!=eMisfire) OnMagazineEmpty();
 		//if (1/*!iAmmoElapsed && !iAmmoCurrent*/)	
-		//	SwitchState			(eMagEmpty);
+		//	
 	}
 }
 
-void CWeaponMagazined::FireEnd() {
+void CWeaponMagazined::FireEnd() 
+{
 	m_shotNum = 0;
-	if(IsWorking()) {
+	if(IsWorking()) 
+	{
 		CWeapon::FireEnd();
+		SwitchState(eIdle);
 	}
-	if(!iAmmoElapsed) TryReload();
-	else SwitchState(eIdle);
+
+	if(!iAmmoElapsed) Reload();//TryReload();
+//		else SwitchState(eIdle);
 }
 
-void CWeaponMagazined::Reload() {
+void CWeaponMagazined::Reload() 
+{
+	inherited::Reload();
 	TryReload();
 }
 
-void CWeaponMagazined::TryReload() {
-	if(m_pInventory) {
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent())));
-		if(m_pAmmo) {
-			SwitchState(eReload); return;
-		} else for(u32 i = 0; i < m_ammoTypes.size(); i++) {
-			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent())));
-			if(m_pAmmo) { m_ammoType = i; SwitchState(eReload); return; }
+void CWeaponMagazined::TryReload() 
+{
+	if(m_pInventory) 
+	{
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],
+											!dynamic_cast<CActor*>(H_Parent())));
+
+		
+		if(IsMisfire())
+		{
+			SwitchState(eReload); 
+			return;
+		}
+
+		if(m_pAmmo) 
+		{
+			SwitchState(eReload); 
+			return;
+		} 
+		else for(u32 i = 0; i < m_ammoTypes.size(); i++) 
+		{
+			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],
+																   !dynamic_cast<CActor*>(H_Parent())));
+			if(m_pAmmo) 
+			{ 
+				m_ammoType = i; 
+				SwitchState(eReload); 
+				return; 
+			}
 		}
 	}
 	SwitchState(eIdle);
@@ -146,23 +185,38 @@ bool CWeaponMagazined::IsAmmoAvailable()
 	return(false);
 }
 
-void CWeaponMagazined::OnMagazineEmpty() {
+void CWeaponMagazined::OnMagazineEmpty() 
+{
 	SwitchState(eMagEmpty);
 }
 
-void CWeaponMagazined::UnloadMagazine() {
+void CWeaponMagazined::UnloadMagazine() 
+{
 	xr_map<LPCSTR, u16> l_ammo;
-	while(m_magazine.size()) {
+	
+	while(m_magazine.size()) 
+	{
 		CCartridge &l_cartridge = m_magazine.top();
 		xr_map<LPCSTR, u16>::iterator l_it;
-		for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) if(!strcmp(l_cartridge.m_ammoSect, l_it->first)) { l_it->second++; break; }
+		for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) 
+            if(!strcmp(l_cartridge.m_ammoSect, l_it->first)) 
+            { 
+				 l_it->second++; 
+				 break; 
+			}
+
 		if(l_it == l_ammo.end()) l_ammo[l_cartridge.m_ammoSect] = 1;
-		m_magazine.pop(); iAmmoElapsed--;
+		m_magazine.pop(); 
+		iAmmoElapsed--;
 	}
+	
 	xr_map<LPCSTR, u16>::iterator l_it;
-	for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) {
-		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,!dynamic_cast<CActor*>(H_Parent())));
-		if(l_pA) {
+	for(l_it = l_ammo.begin(); l_it != l_ammo.end(); l_it++) 
+	{
+		CWeaponAmmo *l_pA = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(l_it->first,
+														!dynamic_cast<CActor*>(H_Parent())));
+		if(l_pA) 
+		{
 			u16 l_free = l_pA->m_boxSize - l_pA->m_boxCurr;
 			l_pA->m_boxCurr = l_pA->m_boxCurr + (l_free < l_it->second ? l_free : l_it->second);
 			l_it->second = l_it->second - (l_free < l_it->second ? l_free : l_it->second);
@@ -171,21 +225,50 @@ void CWeaponMagazined::UnloadMagazine() {
 	}
 }
 
-void CWeaponMagazined::ReloadMagazine() {
+void CWeaponMagazined::ReloadMagazine() 
+{
 	SwitchState(eIdle);
+
+	//устранить осечку при перезарядке
+	if(IsMisfire())	bMisfire = false;
+	
 	static l_lockType = false;
 	if(!l_lockType) m_ammoName = NULL;
-	if(m_pInventory) {
-		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent())));
-		if(!m_pAmmo && !l_lockType) for(u32 i = 0; i < m_ammoTypes.size(); i++) {
-			m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent())));
-			if(m_pAmmo) { m_ammoType = i; break; }
+	
+	if(m_pInventory) 
+	{
+		m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],
+														   !dynamic_cast<CActor*>(H_Parent())));
+		
+		if(!m_pAmmo && !l_lockType) 
+		{
+			for(u32 i = 0; i < m_ammoTypes.size(); i++) 
+			{
+				m_pAmmo = dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],
+													!dynamic_cast<CActor*>(H_Parent())));
+				if(m_pAmmo) 
+				{ 
+					m_ammoType = i; 
+					break; 
+				}
+			}
 		}
 	}
-	if(!l_lockType && m_magazine.size() && (!m_pAmmo || strcmp(m_pAmmo->cNameSect(), m_magazine.top().m_ammoSect))) UnloadMagazine();
-	if(m_pAmmo) {
+
+	if(!m_pAmmo) return;
+
+	//разрядить магазин, если загружаемя патронами другого типа
+	if(!l_lockType && m_magazine.size() && 
+		(!m_pAmmo || strcmp(m_pAmmo->cNameSect(), 
+					 m_magazine.top().m_ammoSect))) 
+		UnloadMagazine();
+	
+	
+	if(m_pAmmo) 
+	{
 		CCartridge l_cartridge;
-		while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) {
+		while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) 
+		{
 			iAmmoElapsed++;
 			m_magazine.push(l_cartridge);
 		}
@@ -198,7 +281,12 @@ void CWeaponMagazined::ReloadMagazine() {
 		//	//m_pInventory->Drop(m_pAmmo);
 		//	m_pAmmo = NULL;
 		//}
-		if(iMagazineSize > iAmmoElapsed) { l_lockType = true; ReloadMagazine(); l_lockType = false; }
+		if(iMagazineSize > iAmmoElapsed) 
+		{ 
+			l_lockType = true; 
+			ReloadMagazine(); 
+			l_lockType = false; 
+		}
 	}
 }
 
@@ -216,8 +304,10 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 	case eFire2:
 		switch2_Fire2	();
 		break;
+	case eMisfire:
+		bFlame			= FALSE;
+		break;
 	case eMagEmpty:
-		//bFlame			= FALSE;
 		switch2_Empty	();
 		break;
 	case eReload:
@@ -255,6 +345,7 @@ void CWeaponMagazined::UpdateCL			()
 		if (fTime<0)	fTime = 0;
 		break;
 	case eFire:			state_Fire		(dt);	break;
+	case eMisfire:		state_Misfire	(dt);	break;
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	case eHidden:		break;
 	}
@@ -294,7 +385,20 @@ void CWeaponMagazined::state_Fire	(float dt)
 		FireTrace		(p1,vLastFP,d);
 	}
 	UpdateSounds			();
+	
+	//для стрельбы сталкеров, к которым апдейты приходят редко, очередями
 	if(m_shotNum == m_queueSize) FireEnd();
+}
+
+void CWeaponMagazined::state_Misfire	(float dt)
+{
+	UpdateFP				();
+	OnEmptyClick			();
+	SwitchState				(eIdle);
+	
+	bMisfire = true;
+
+	UpdateSounds			();
 }
 
 void CWeaponMagazined::state_MagEmpty	(float dt)
@@ -453,8 +557,10 @@ void CWeaponMagazined::OnEmptyClick	()
 	if (sndEmptyClick.feedback)
 		sndEmptyClick.feedback->set_volume(.2f);
 }
-void CWeaponMagazined::OnAnimationEnd() {
-	switch(STATE) {
+void CWeaponMagazined::OnAnimationEnd() 
+{
+	switch(STATE) 
+	{
 		case eReload:	ReloadMagazine();		break;	// End of reload animation
 		case eHiding:	SwitchState(eHidden); /*if(H_Parent()) setVisible(false);*/	break;	// End of Hide
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
@@ -502,11 +608,15 @@ void CWeaponMagazined::switch2_Showing()
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 
-bool CWeaponMagazined::Action(s32 cmd, u32 flags) {
+bool CWeaponMagazined::Action(s32 cmd, u32 flags) 
+{
 	if(inherited::Action(cmd, flags)) return true;
-	switch(cmd) {
+	switch(cmd) 
+	{
 		case kWPN_RELOAD : {
-			if(flags&CMD_START) if(iAmmoElapsed < iMagazineSize) TryReload();//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
+			if(flags&CMD_START) 
+				if(iAmmoElapsed < iMagazineSize || IsMisfire()) 
+					Reload();//TryReload();//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
 		} return true;
 	}
 	return false;

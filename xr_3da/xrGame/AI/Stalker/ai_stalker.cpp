@@ -21,6 +21,8 @@ CAI_Stalker::CAI_Stalker			()
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
 	m_dwParticularState				= u32(-1);
+
+	InitTrade();
 }
 
 CAI_Stalker::~CAI_Stalker			()

@@ -803,10 +803,10 @@
 						Name="ai_dog"
 						Filter="">
 						<File
-							RelativePath=".\ai\dog\ai_dog.cpp">
+							RelativePath=".\Ai\Dog\ai_dog.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\dog\ai_dog.h">
+							RelativePath=".\Ai\Dog\ai_dog.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -1319,16 +1319,16 @@
 							<File
 								RelativePath="WeaponVal.h">
 							</File>
-						</Filter>
-						<Filter
-							Name="Weapon Vintorez"
-							Filter="">
-							<File
-								RelativePath="WeaponVintorez.cpp">
-							</File>
-							<File
-								RelativePath="WeaponVintorez.h">
-							</File>
+							<Filter
+								Name="Weapon Vintorez"
+								Filter="">
+								<File
+									RelativePath="WeaponVintorez.cpp">
+								</File>
+								<File
+									RelativePath="WeaponVintorez.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Weapon Walther 99"
@@ -1784,24 +1784,6 @@
 				<File
 					RelativePath=".\UIGroup.h">
 				</File>
-				<File
-					RelativePath=".\UIHealth.cpp">
-				</File>
-				<File
-					RelativePath=".\UIHealth.h">
-				</File>
-				<File
-					RelativePath=".\UIWeapon.cpp">
-				</File>
-				<File
-					RelativePath=".\UIWeapon.h">
-				</File>
-				<File
-					RelativePath=".\UIZoneMap.cpp">
-				</File>
-				<File
-					RelativePath=".\UIZoneMap.h">
-				</File>
 				<Filter
 					Name="Custom"
 					Filter="">
@@ -1913,15 +1895,21 @@
 					<File
 						RelativePath="UICHTMenu.h">
 					</File>
-					<File
-						RelativePath="UIInventory.cpp">
-					</File>
-					<File
-						RelativePath="UIInventory.h">
-					</File>
 					<Filter
 						Name="InventoryWnd"
 						Filter="">
+						<File
+							RelativePath="UIInventory.cpp">
+						</File>
+						<File
+							RelativePath="UIInventory.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIInventoryUtilities.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIInventoryUtilities.h">
+						</File>
 						<File
 							RelativePath=".\ui\UIInventoryWnd.cpp">
 						</File>
@@ -1971,10 +1959,28 @@
 						Name="MainIngame"
 						Filter="">
 						<File
+							RelativePath=".\UIHealth.cpp">
+						</File>
+						<File
+							RelativePath=".\UIHealth.h">
+						</File>
+						<File
 							RelativePath=".\ui\UIMainIngameWnd.cpp">
 						</File>
 						<File
 							RelativePath=".\ui\UIMainIngameWnd.h">
+						</File>
+						<File
+							RelativePath=".\UIWeapon.cpp">
+						</File>
+						<File
+							RelativePath=".\UIWeapon.h">
+						</File>
+						<File
+							RelativePath=".\UIZoneMap.cpp">
+						</File>
+						<File
+							RelativePath=".\UIZoneMap.h">
 						</File>
 					</Filter>
 					<Filter

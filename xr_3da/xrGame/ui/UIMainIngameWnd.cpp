@@ -79,6 +79,20 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIStaticWeapon);
 	xml_init.InitStatic(uiXml, "static", 6, &UIStaticWeapon);
 
+	
+/*	AttachChild(&UIWeapon1);
+	UIWeapon1.InitTexture("ui\\ui_inv_lr300");
+	UIWeapon1.MoveWindow(300,200);
+	UIWeapon1.GetStaticItem()->bScaling = true;
+	UIWeapon1.GetStaticItem()->fScalingProportional = 0.2f;
+	//UIWeapon1.GetStaticItem()->SetRect(0,0,200,200);
+
+	AttachChild(&UIWeapon2);
+	UIWeapon2.InitTexture("ui\\ui_inv_lr300");
+	UIWeapon2.MoveWindow(300,300);
+	UIWeapon2.GetStaticItem()->bScaling = false;
+	//UIWeapon2.GetStaticItem()->SetRect(0,0,200,200);*/
+
 	AttachChild(&UITextWound);
 	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
 						UIStaticWound.GetWndRect().top+40,
@@ -92,7 +106,7 @@ void CUIMainIngameWnd::Init()
 	UITextAmmo.SetText("T30/250");
 
 	AttachChild(&UITextWeaponName);
-	UITextWeaponName.Init(UIStaticWeapon.GetWndRect().left+119, 
+	UITextWeaponName.Init(UIStaticWeapon.GetWndRect().left + 119, 
 						UIStaticWeapon.GetWndRect().top + 15,
 						130,30);
 	UITextWeaponName.SetFont(HUD().pFontSmall);

@@ -17,9 +17,10 @@
 DEF_LIST (LIST_ITEM_LIST, CUIListItem*);
 
 
-class CUIListWnd :
-	public CUIWindow
+class CUIListWnd :public CUIWindow
 {
+private:
+	typedef CUIWindow inherited;
 public:
 	CUIListWnd(void);
 	virtual ~CUIListWnd(void);
@@ -73,8 +74,6 @@ protected:
 	
 	//индекс первого показанного элемента
 	int m_iFirstShownIndex;
-
-
 };
 
 #endif //_UI_LIST_WND_H_

@@ -2,6 +2,7 @@
 
 class CInventoryOwner;
 class CInventory;
+class CInventoryItem;
 
 struct TradeFactors {
 	float	TraderBuyPriceFactor;
@@ -64,6 +65,14 @@ public:
 	void		ShowMoney();
 	void		ShowArtifactPrices();
 	void		SellItem(int id);
+	void		SellItem(CInventoryItem* pItem);
+
+	CInventoryOwner*	GetPartner();	
+	CTrade*				GetPartnerTrade();
+	CInventory*			GetPartnerInventory();
+
+	//возвращает цену элемента с учетом отношения конкретного торговца.
+	u32			GetItemPrice(CInventoryItem* pItem);
 
 	void		UpdateTrade();
 private:
@@ -71,5 +80,5 @@ private:
 	void		RemovePartner();
 
 	// выбор инвентаря для торговли (если TRADER, то торговать через ammunition_depot)
-	CInventory	&GetTradeInv(SInventoryOwner owner);				
+	CInventory	&GetTradeInv(SInventoryOwner owner);
 };

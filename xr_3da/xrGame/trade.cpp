@@ -107,7 +107,7 @@ void CTrade::Communicate()
 	Msg("--TRADE:: - Hello, my name is [%s]", pThis.base->cName());
 	Msg("--TRADE::   Wanna trade with me?" );
 
-	if (pPartner.inv_owner->m_trade->OfferTrade(pThis)) { 
+	if (pPartner.inv_owner->GetTrade()->OfferTrade(pThis)) { 
 		StartTrade();
 	}
 
@@ -298,22 +298,6 @@ void CTrade::SellItem(int id)
 	PIItem	l_pIItem;
 	int i=1;
 
-	// определение коэффициента
-	float factor = 1.0f;
-	
-	if (pThis.type == TT_TRADER) {
-		factor = m_tTradeFactors.TraderSellPriceFactor;
-	} else {
-		if (pPartner.type == TT_TRADER) {
-			factor = m_tTradeFactors.TraderBuyPriceFactor;
-		} else if (pPartner.type == TT_STALKER) {
-			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
-			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-			if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) {
-				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
-			} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
-		}
-	}
 	
 	// id - в списке, т.е. найти первый элемент из группы в списке
 	CInventory &pThisInv		= GetTradeInv(pThis);
@@ -330,7 +314,7 @@ void CTrade::SellItem(int id)
 			l_pIItem = (*it);
 
 			// сумма сделки учитывая ценовой коэффициент
-			u32	dwTransferMoney = (u32)(((float) l_pIItem->Cost()) * factor );
+			u32	dwTransferMoney = GetItemPrice(l_pIItem);
 
 			if ((l_pIItem->m_weight + pPartnerInv.TotalWeight() < pPartnerInv.m_maxWeight) && 
 				(pPartnerInv.m_all.find(l_pIItem) == pPartnerInv.m_all.end()) && 
@@ -367,9 +351,90 @@ void CTrade::SellItem(int id)
 	}
 }
 
-CInventory &CTrade::GetTradeInv(SInventoryOwner owner)
+void CTrade::SellItem(CInventoryItem* pItem)
+{
+	// сумма сделки учитывая ценовой коэффициент
+	// актер цену не говорит никогда, все делают за него
+	u32	dwTransferMoney;
+
+	if (pPartner.type != TT_ACTOR) 
+		dwTransferMoney = GetPartnerTrade()->GetItemPrice(pItem);
+	else
+		dwTransferMoney = GetItemPrice(pItem);
+
+
+	// выбросить у себя 
+	NET_Packet				P;
+	CGameObject				*O = dynamic_cast<CGameObject *>(pThis.inv_owner);
+	O->u_EventGen			(P,GE_TRADE_SELL,O->ID());
+	P.w_u16					(u16(pItem->ID()));
+	O->u_EventSend			(P);
+
+	// добавить себе денег
+	pThis.inv_owner->m_dwMoney += dwTransferMoney;
+
+	// взять у партнера
+	O						= dynamic_cast<CGameObject *>(pPartner.inv_owner);
+	O->u_EventGen			(P,GE_TRADE_BUY,O->ID());
+	P.w_u16					(u16(pItem->ID()));
+	O->u_EventSend			(P);
+
+	// уменьшить денег у партнера
+	pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
+}
+
+
+CInventory& CTrade::GetTradeInv(SInventoryOwner owner)
 {
 	R_ASSERT(owner.type != TT_NONE);
 
 	return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
+}
+
+CTrade*	CTrade::GetPartnerTrade()
+{
+	return pPartner.inv_owner->GetTrade();
+}
+CInventory*	CTrade::GetPartnerInventory()
+{
+	return &pPartner.inv_owner->m_inventory;
+}
+
+CInventoryOwner* CTrade::GetPartner()
+{
+	return pPartner.inv_owner;
+}
+
+u32	CTrade::GetItemPrice(PIItem pItem)
+{
+	// определение коэффициента
+	float factor = 1.0f;
+	
+	if (pThis.type == TT_TRADER) 
+	{
+		factor = m_tTradeFactors.TraderSellPriceFactor;
+	}
+	else 
+	{
+		if (pPartner.type == TT_TRADER) 
+		{
+			factor = m_tTradeFactors.TraderBuyPriceFactor;
+		} 
+		else if (pPartner.type == TT_STALKER) 
+		{
+			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
+			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
+			if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) 
+			{
+				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
+			} 
+			else 
+				factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
+		}
+	}
+
+	// сумма сделки учитывая ценовой коэффициент
+	u32	dwTransferMoney = (u32)(((float) pItem->Cost()) * factor );
+
+	return dwTransferMoney;
 }

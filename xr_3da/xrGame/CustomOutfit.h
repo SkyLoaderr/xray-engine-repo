@@ -26,6 +26,11 @@ public:
 	virtual void OnH_A_Chield		();
 	virtual void OnH_B_Independent	();
 
+	virtual	void Hit (float P, Fvector &dir,	
+					  CObject* who, s16 element,
+					  Fvector position_in_object_space, 
+					  float impulse, 
+					  ALife::EHitType hit_type = eHitTypeWound);
 
 	//коэффициенты на которые домножается хит
 	//при соответствующем типе воздействия
@@ -36,5 +41,7 @@ public:
 	float m_fOutfitWound;
 	float m_fOutfitRadiation;
 	float m_fOutfitTelepatic;
-
+	float m_fOutfitChemicalBurn;
+	float m_fOutfitExplosion;
+	float m_fOutfitFireWound;
 };

@@ -17,25 +17,16 @@ CUIMessageBox::CUIMessageBox()
 CUIMessageBox::~CUIMessageBox()
 {
 }
-/*
 
-	virtual void Init(LPSTR text, LPSTR caption, 
-						LPCSTR base_name, int x, int y, int width, int height
-						E_MB_STYLE messageBoxStyle);
-	virtual void Init(LPSTR text, LPSTR caption,
-						LPCSTR base_name, RECT* pRect,
-						E_MB_STYLE messageBoxStyle);
-*/
-
-#define BUTTON_UP_OFFSET 55
+#define BUTTON_UP_OFFSET 75
 #define BUTTON_WIDTH 140
 
 
-void CUIMessageBox::Init(LPSTR text, LPSTR caption, E_MESSAGEBOX_STYLE messageBoxStyle,
-						LPCSTR base_name, int x, int y, int width, int height)
+void CUIMessageBox::Init(LPCSTR base_name, int x, int y, int width, int height)
 {
-	m_eMessageBoxStyle = messageBoxStyle;
-
+	AttachChild(&m_UIStatic);
+	m_UIStatic.Init(0,0, width, height);
+	m_UIStatic.SetTextAlign(CGameFont::EAligment::alLeft);
 
 	AttachChild(&m_UIButton1);
 	AttachChild(&m_UIButton2);
@@ -59,65 +50,37 @@ void CUIMessageBox::Init(LPSTR text, LPSTR caption, E_MESSAGEBOX_STYLE messageBo
 	m_UIButton2.Enable(false);
 	m_UIButton3.Enable(false);
 
-	switch(m_eMessageBoxStyle)
-	{
-	case MESSAGEBOX_OK:
-		m_UIButton1.Show(true);
-		m_UIButton1.Enable(true);
-		m_UIButton1.SetText("OK");
+	inherited::Init(base_name, x,y, width, height);
 
-		m_UIButton1.SetWndRect(width/2 - BUTTON_WIDTH/2, 
-						 m_UIButton1.GetWndRect().top,
-						 BUTTON_WIDTH,50);
-
-
-		break;
-	case MESSAGEBOX_YES_NO:
-		m_UIButton1.Show(true);
-		m_UIButton1.Enable(true);
-		m_UIButton1.SetText("Yes");
-		
-		m_UIButton1.SetWndRect(width/4 - BUTTON_WIDTH/2, 
-							 m_UIButton1.GetWndRect().top,
-							 BUTTON_WIDTH,50);
-				
-
-		m_UIButton2.Show(true);
-		m_UIButton2.Enable(true);
-		m_UIButton2.SetText("No");
-
-
-		m_UIButton2.SetWndRect(width/2 + BUTTON_WIDTH/2, 
-							 m_UIButton1.GetWndRect().top,
-							 BUTTON_WIDTH,50);
-		break;
-	case MESSAGEBOX_YES_NO_CANCEL:
-		m_UIButton1.Show(true);
-		m_UIButton1.Enable(true);
-		m_UIButton1.SetText("Yes");
-
-		m_UIButton2.Show(true);
-		m_UIButton2.Enable(true);
-		m_UIButton2.SetText("No");
-
-		m_UIButton3.Show(true);
-		m_UIButton3.Enable(true);
-		m_UIButton3.SetText("Cancel");
-		break;
-	}
-	
-	CUIFrameWindow::Init(base_name, x,y, width, height);
+	SetStyle(MESSAGEBOX_OK);
 }
 
-void CUIMessageBox::Init(LPSTR text, LPSTR caption,E_MESSAGEBOX_STYLE messageBoxStyle,
-						LPCSTR base_name, RECT* pRect)
+void CUIMessageBox::AutoCenter()
 {
-	Init(text,  caption, messageBoxStyle,
-			base_name, pRect->left, pRect->top, 
-			pRect->right - pRect->left, 
-			pRect->bottom - pRect->top);
+	if(!GetParent()) return;
+
+	int x = (GetParent()->GetWidth() - GetWidth())/2;
+	int y = (GetParent()->GetHeight() - GetHeight())/2;
+
+	MoveWindow(x,y);
 }
 
+void CUIMessageBox::Show()
+{
+	BringAllToTop();
+	inherited::Enable(true);
+	inherited::Show(true);
+
+	m_UIButton1.Reset();
+	m_UIButton2.Reset();
+	m_UIButton3.Reset();
+
+}
+void CUIMessageBox::Hide()
+{
+	inherited::Enable(false);
+	inherited::Show(false);
+}
 
 void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -168,7 +131,68 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 		break;
 	}
+	inherited::SendMessage(pWnd, msg, pData);
+}
+
+void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
+{
+	m_eMessageBoxStyle = messageBoxStyle;
+
+	int width = GetWidth();
+
+	switch(m_eMessageBoxStyle)
+	{
+	case MESSAGEBOX_OK:
+		m_UIButton1.Show(true);
+		m_UIButton1.Enable(true);
+		m_UIButton1.SetText("OK");
+
+		m_UIButton1.SetWndRect(width/2 - BUTTON_WIDTH/2, 
+						 m_UIButton1.GetWndRect().top,
+						 BUTTON_WIDTH,50);
 
 
-	CUIFrameWindow::SendMessage(pWnd, msg, pData);
+		break;
+	case MESSAGEBOX_YES_NO:
+		m_UIButton1.Show(true);
+		m_UIButton1.Enable(true);
+		m_UIButton1.SetText("Yes");
+		
+		m_UIButton1.SetWndRect(width/4 - BUTTON_WIDTH/2, 
+							 m_UIButton1.GetWndRect().top,
+							 BUTTON_WIDTH,50);
+				
+
+		m_UIButton2.Show(true);
+		m_UIButton2.Enable(true);
+		m_UIButton2.SetText("No");
+
+
+		m_UIButton2.SetWndRect(width/2 + BUTTON_WIDTH/2, 
+							 m_UIButton1.GetWndRect().top,
+							 BUTTON_WIDTH,50);
+		break;
+	case MESSAGEBOX_YES_NO_CANCEL:
+		m_UIButton1.Show(true);
+		m_UIButton1.Enable(true);
+		m_UIButton1.SetText("Yes");
+
+		m_UIButton2.Show(true);
+		m_UIButton2.Enable(true);
+		m_UIButton2.SetText("No");
+
+		m_UIButton3.Show(true);
+		m_UIButton3.Enable(true);
+		m_UIButton3.SetText("Cancel");
+		break;
+	}
+}
+
+void CUIMessageBox::SetText(LPSTR str)
+{
+	m_UIStatic.SetText(str);
+}
+void CUIMessageBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+{
+	inherited::OnMouse(x, y, mouse_action);
 }

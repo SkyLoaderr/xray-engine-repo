@@ -44,10 +44,10 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&InventoryMenu);
 		return true;
 		break;
-	case DIK_T:
+/*	case DIK_T:
 		StartStopMenu(&TradeMenu);
 		return true;
-		break;
+		break;*/
 	case DIK_P:
 		StartStopMenu(&PdaMenu);
 		return true;
@@ -73,8 +73,8 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	//временно! пока, по убыванию сил до критического
 	//уровня персонаж не засыпает, а просто переходит
 	//в меню инвенторя
-	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(l_pA && l_pA->g_Alive() && !l_pA->GetPower())
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor && pActor->g_Alive() && !pActor->GetPower())
 	{
 			if(m_pUserMenu == NULL)
 			{
@@ -127,4 +127,8 @@ void CUIGameSP::StartStopMenu(CUIDialogWnd* pDialog)
 			m_pUserMenu = NULL;
 		}
 	}
+}
+void CUIGameSP::StartTrade()
+{
+	StartStopMenu(&TradeMenu);
 }

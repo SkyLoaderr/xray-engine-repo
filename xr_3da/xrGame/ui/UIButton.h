@@ -12,13 +12,16 @@
 
 
 #include "..\uistaticitem.h"
+#include "UIStatic.h"
 
 
 
-class CUIButton : public CUIWindow  
+class CUIButton : public CUIStatic
 {
+private:
+	typedef CUIStatic inherited;
 public:
-	 CUIButton();
+	CUIButton();
 	virtual ~ CUIButton();
 
 
@@ -46,8 +49,8 @@ public:
 	E_PRESS_MODE GetPressMode() {return m_ePressMode;}
 
 
-	void SetText(LPSTR str) {m_str = str;}
-	LPSTR GetText() {return m_str;}
+	//void SetText(LPSTR str) {m_str = str;}
+	//LPSTR GetText() {return m_str;}
 
 	//заново подготовить состояние
     virtual void Reset();
@@ -72,15 +75,15 @@ protected:
 	E_PRESS_MODE m_ePressMode;
 
 	//текст на кнопке
-	LPSTR m_str;
+	//LPSTR m_str;
 
 
 
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
-    CUIStaticItem m_UIStaticItem;
-	bool m_bAvailableTexture;
+    //CUIStaticItem m_UIStaticItem;
+	//bool m_bAvailableTexture;
 	
 };
 

@@ -50,8 +50,16 @@ public:
 
 	virtual void	UpdateCL	();
 
+	virtual	void	Hit	(float P, Fvector &dir,	
+								  CObject* who, s16 element,
+								  Fvector position_in_object_space, 
+								  float impulse, 
+								  ALife::EHitType hit_type = eHitTypeWound);
+
 	bool DetachAll();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 	void Drop();											// Если объект в инвенторе, то он будет выброшен
+
+	u32	Cost() {return m_cost;}
 
 	f32 m_weight;											// Вес объекта
 	u32 m_slot;												// Слот в который можно установить объект (0xffffffff если нельзя)
@@ -63,13 +71,35 @@ public:
 	bool m_showHUD;
 	bool m_drop;
 
-	u32	m_cost;												// цена по умолчанию
-	u32	Cost() {return m_cost;}
-
+	
 	const char* m_sIconTexture;								//текстура с иконкой для меню
 	
 	int m_iGridWidth;										//ширина в сетке инвенторя
 	int m_iGridHeight;										//высота в сетке инвенторя
+
+	float GetCondition() {return m_fCondition;}
+	void  ChangeCondition(float fDeltaCondition);
+	
+protected:
+	u32	m_cost;												// цена по умолчанию
+	
+	//состояние вещи, 1.0 - полностью работоспособная
+	// 0 - испорченная
+	float m_fCondition;
+	//флаг использования состояния для вещи
+	bool m_bUsingCondition;
+
+	//коэффициенты изменения типов хитов (задается только там где надо)
+	float m_fK_Burn;
+	float m_fK_Strike;
+	float m_fK_Shock;
+	float m_fK_Wound;
+	float m_fK_Radiation;
+	float m_fK_Telepatic;
+	float m_fK_ChemicalBurn;
+	float m_fK_Explosion;
+	float m_fK_FireWound;
+
 
 };
 
@@ -168,10 +198,9 @@ public:
 	bool m_bBeltUseful;										//флаг, показывающий наличие пояса в инвенторе
 
 	//для проверки свободного места
-	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);
 	bool FreeRuckRoom();
 	bool FreeBeltRoom();
-
+	
 	//буферный список для сортировки
 	TIItemList ruck_list;
 

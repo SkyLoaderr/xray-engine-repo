@@ -22,6 +22,9 @@ CUIDragDropList::CUIDragDropList()
 
 	m_bCustomPlacement = false;
 	m_bBlockCustomPlacement = false;
+
+	m_iViewRowsNum = 0;
+	m_iCurrentFirstRow = 0;
 }
 
 CUIDragDropList::~CUIDragDropList()
@@ -39,6 +42,15 @@ void CUIDragDropList::AttachChild(CUIDragDropItem* pChild)
 	pChild->SetWidth(GetCellWidth()*pChild->GetGridWidth());
 	pChild->SetHeight(GetCellHeight()*pChild->GetGridHeight());
 
+
+	/*
+	m_iCurrentFirstRow = pChild->GetGridRow();
+	m_ScrollBar.SetScrollPos(s16(m_iCurrentFirstRow));
+	m_iCurrentFirstRow = m_ScrollBar.GetScrollPos();
+	UpdateList();
+	*/
+
+	pChild->TextureClipper();
 }
 
 void CUIDragDropList::DetachChild(CUIDragDropItem* pChild)
@@ -54,6 +66,14 @@ void CUIDragDropList::DetachChild(CUIDragDropItem* pChild)
 	}
 }
 
+void CUIDragDropList::AttachChild(CUIWindow* pChild)
+{
+	inherited::AttachChild(pChild);
+}
+void CUIDragDropList::DetachChild(CUIWindow* pChild)
+{
+	inherited::DetachChild(pChild);
+}
 
 void CUIDragDropList::DropAll()
 {
@@ -66,13 +86,19 @@ void CUIDragDropList::DropAll()
 	GetParent()->SetCapture(this, false);
 	m_pMouseCapturer = NULL;
 
-
-
 	for(u32 i=0; i<m_vCellStatic.size(); i++)
 	{
 		CUIWindow::AttachChild(&m_vCellStatic[i]);
 	}
+	CUIWindow::AttachChild(&m_ScrollBar);
 
+/*	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	{
+		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
+		if(pDragDropItem) DetachChild(pDragDropItem);
+	}*/
+
+	
 
 	int k,m;
 
@@ -83,29 +109,35 @@ void CUIDragDropList::DropAll()
 			GetCell(k, m) = CELL_EMPTY;
 		}
 	}
-
 }
 
 
 //обработка сообщений для DragDrop
 void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(msg == CUIDragDropItem::ITEM_DRAG)
+	if(pWnd == &m_ScrollBar)
+	{
+		if(msg == CUIScrollBar::VSCROLL)
+		{
+			m_iCurrentFirstRow = m_ScrollBar.GetScrollPos();
+			UpdateList();
+		}
+	}
+	else if(msg == CUIDragDropItem::ITEM_DRAG)
 	{
 		//принадлежит ли элемент отправивший сообщение ITEM_DRAG нашему списку
-		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
-										m_ChildWndList.end(), 
+		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),
+										m_ChildWndList.end(),
 										pWnd);
 		
 		//элемент наш, поднять окно на вершину списка, 
-		//чтоб оно могло выводить себя и этот элемент поверх всех оконо
+		//чтоб оно могло выводить себя и этот элемент поверх всех окон
 		//и получило сообщения DRAG в последнюю очередь
 		if( it != m_ChildWndList.end())
 		{
 			//поднять окно вместе с родителями на вершину
 			(*it)->BringAllToTop(); 
 
-			
 			//выбросить элемент из сетки
 			RemoveItemFromGrid((CUIDragDropItem*)pWnd);
 
@@ -197,35 +229,71 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 	
-
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
 
 
+void CUIDragDropList::Init(int x, int y, int width, int height)
+{
+//	m_ScrollBar.Init(GetWidth()-CUIScrollBar::SCROLLBAR_WIDTH,0,
+//					 GetHeight(), false);
+
+	inherited::Init(x, y, width, height);
+}
 //инициализация сетки Drag&Drop
-void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, bool bGridVisible)
+void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, 
+							   bool bGridVisible, int iViewRowsNum)
 {
 	OffCustomPlacement();
 
 	m_iColsNum=iColsNum;
 	m_iRowsNum=iRowsNum;
 
-	SetWidth(m_iColsNum*GetCellWidth());
-	SetHeight(m_iRowsNum*GetCellHeight());
-	
+	if(iViewRowsNum>=m_iRowsNum || iViewRowsNum == 0)
+	{
+        m_iViewRowsNum = m_iRowsNum;
+		m_ScrollBar.Show(false);
+		m_ScrollBar.Enable(false);
+	}
+	else
+	{
+		m_iViewRowsNum = iViewRowsNum;
+
+		//инициализировать скроллинг
+		m_ScrollBar.SetRange(0, s16(GetRows()-1));
+		m_ScrollBar.SetPageSize(s16(m_iViewRowsNum));
+		m_ScrollBar.SetScrollPos(0);
+	}
+
+
+
+	SetWidth(m_iColsNum*GetCellWidth() + CUIScrollBar::SCROLLBAR_WIDTH);
+	SetHeight(GetViewRows()*GetCellHeight());
+
+	AttachChild(&m_ScrollBar);
+	m_ScrollBar.Init(GetWidth() - CUIScrollBar::SCROLLBAR_WIDTH, 0, 
+					GetHeight(), false);
+	/*m_ScrollBar.SetRange(0,10);
+	m_ScrollBar.SetPageSize(2);
+	m_ScrollBar.SetScrollPos(0);*/
+
+
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);
 
 	if(bGridVisible)
 	{
-		m_vCellStatic.resize(m_iRowsNum*m_iColsNum);
+		m_vCellStatic.resize(GetViewRows()*m_iColsNum);
 
 		int i,j;
 
+		//временно!
+		//установить масштаб для клеточки
+		float scale = GetCellWidth()/50.f;
 		
 		CELL_STATIC_IT it=m_vCellStatic.begin();
 		
-		for(i=0; i<GetRows(); i++)
+		for(i=0; i<GetViewRows(); i++)
 		{
 			for(j=0; j<GetCols(); j++)
 			{
@@ -236,13 +304,15 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, bool bGridVisible)
 								GetCellWidth(),
 								GetCellHeight());
 
-				CUIWindow::AttachChild(&(*it));
+				AttachChild(&(*it));
+				
+				(*it).SetTextureScale(scale);
+
 				it++;
 			}
 		}
 
 	}
-
 }
 
 //размещение элемента на свободном месте в сетке
@@ -268,6 +338,7 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	//котором он сейчас
 	RECT item_rect = pItem->GetAbsoluteRect();
 	RECT rect = GetAbsoluteRect();
+//	RECT wnd_rect = GetWndRect();
 
 	if(item_rect.left - rect.left<0)
 		place_col = 0;
@@ -275,9 +346,9 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		place_col = GetCols()-pItem->GetGridWidth();
 
 	if(item_rect.top - rect.top<0)
-		place_row = 0;
+		place_row = m_iCurrentFirstRow;
 	else if(item_rect.bottom - rect.bottom>=0)
-		place_row = GetRows()- pItem->GetGridHeight();
+		place_row = m_iCurrentFirstRow + GetViewRows()- pItem->GetGridHeight();
 
 
 	int item_center_x = pItem->GetWidth()/2 + item_rect.left - rect.left;
@@ -292,7 +363,8 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 
 	if(place_row == -1)
 	{
-		place_row = item_center_y/GetCellHeight() - pItem->GetGridHeight()/2;
+		place_row = m_iCurrentFirstRow + 
+					item_center_y/GetCellHeight() - pItem->GetGridHeight()/2;
 	}
 
 
@@ -304,22 +376,6 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		place_row = 0;
 	if(place_row>=GetRows())
 		place_row = GetRows()- 1 - pItem->GetGridHeight()/2;
-/*	
-int item_center_x = pItem->GetWidth()/2 + item_rect.left - rect.left;
-	int item_center_y = pItem->GetHeight()/2 + item_rect.top - rect.top;
-
-	place_col = item_center_x/GetCellWidth() - pItem->GetGridWidth()/2;
-	place_row = item_center_y/GetCellHeight()  - pItem->GetGridHeight()/2 ; 
-
-	
-	if(place_col<0)
-		place_col = 0;
-	if(place_col>=GetCols())
-		place_col = GetCols()-1 -  pItem->GetGridWidth()/2;
-	if(place_row<0)
-		place_row = 0;
-	if(place_row>=GetRows())
-		place_row = GetRows()-1 - pItem->GetGridHeight()/2;*/
 
 	//m_bCustomPlacement = false;
 	if(m_bCustomPlacement && !m_bBlockCustomPlacement)
@@ -395,7 +451,7 @@ int item_center_x = pItem->GetWidth()/2 + item_rect.left - rect.left;
 
 		//разместить само окно элемента
 		pItem->MoveWindow(place_col*GetCellWidth(),
-							place_row*GetCellHeight());
+						  (place_row-m_iCurrentFirstRow)*GetCellHeight());
 
 		pItem->SetWidth(GetCellWidth()*pItem->GetGridWidth());
 		pItem->SetHeight(GetCellHeight()*pItem->GetGridHeight());
@@ -457,4 +513,40 @@ E_CELL_STATE CUIDragDropList::GetCellState(int row, int col)
 		return m_vGridState[row*GetCols() + col];
 	else
 		return CELL_FULL;
+}
+
+
+void CUIDragDropList::Draw()
+{
+	inherited::Draw();
+}
+void CUIDragDropList::Update()
+{
+	inherited::Update();
+}
+
+void CUIDragDropList::UpdateList()
+{
+	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	{
+		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
+		if(pDragDropItem)
+		{
+			int y = (pDragDropItem->GetGridRow()-m_iCurrentFirstRow)*GetCellHeight();
+			int x = (pDragDropItem->GetGridCol())*GetCellWidth();
+			pDragDropItem->MoveWindow(x, y);
+		}
+	}
+}
+
+//установление позиции скролинга
+void CUIDragDropList::SetScrollPos(int iScrollPos)
+{
+	m_ScrollBar.SetScrollPos(s16(iScrollPos));
+	m_iCurrentFirstRow = m_ScrollBar.GetScrollPos();
+	UpdateList();
+}
+int CUIDragDropList::GetScrollPos()
+{
+	return m_iCurrentFirstRow;
 }

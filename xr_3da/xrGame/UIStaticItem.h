@@ -15,6 +15,7 @@ class CUIStaticItem: public CUICustomItem
 	int				iTileY;
 	int				iRemX;
 	int				iRemY;
+
 protected:
 	typedef CUICustomItem inherited;
 public:
@@ -34,6 +35,10 @@ public:
 	IC void			SetPos			(int left, int top)			{iPos.set(left,top);}
 	IC void			SetPosX			(int left)					{iPos.x = left;}
 	IC void			SetPosY			(int top)					{iPos.y = top;}
+
+	IC int			GetPosX			()							{return iPos.x;}
+	IC int			GetPosY			()							{return iPos.y;}
+
 	IC void			SetColor		(u32 clr)					{dwColor= clr;}
 	IC void			SetColor		(Fcolor clr)				{dwColor= clr.get();}
 	IC ref_shader&	GetShader		()							{return hShader;}

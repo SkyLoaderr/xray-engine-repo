@@ -33,11 +33,13 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 	}
 	else
 	{
-/*		CUIWindow::Init(x,y, SCROLLBAR_WIDTH, length);
-		m_DecButton.Init(0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init(0, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		CUIWindow::Init(x,y, SCROLLBAR_WIDTH, length);
+		m_DecButton.Init("ui\\ui_scb_rigth_arrow",0, 0,	SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+		m_IncButton.Init("ui\\ui_scb_left_arrow", 0, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, 
+													 length);
+		
 
-		m_ScrollBox.Init(0, SCROLLBAR_HEIGHT, length/2, SCROLLBAR_WIDTH, m_bIsHorizontal);*/
+		m_ScrollBox.Init(0, SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, length/2, m_bIsHorizontal);
 	}
 
 	
@@ -50,6 +52,16 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 	UpdateScrollBar();
 }
 
+void CUIScrollBar::SetWidth(int width)
+{
+	if(width<=0) width = 1;
+	inherited::SetWidth(width);
+}
+void CUIScrollBar::SetHeight(int height)
+{
+	if(height<=0) height = 1;
+	inherited::SetHeight(height);
+}
 
 void CUIScrollBar::UpdateScrollBar()
 {

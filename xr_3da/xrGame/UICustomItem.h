@@ -15,21 +15,32 @@ class CUICustomItem
 {
 protected:
 	enum {
-		flValidRect=0x0001
+		flValidRect=0x0001,
+		flValidOriginalRect=0x0002
 	};
 
+	//прямоугольние(в пикселях) который выводится в данный момент
 	Irect			iVisRect;
+	//оригинальный размер текстуры в пикселях
+	Irect			iOriginalRect;
+
+	float			fScale;
+
 	u32				uFlags;
 	u32				uAlign;
+
 public:
 					CUICustomItem	();
 	virtual			~CUICustomItem	();
 	IC void			SetRect			(int x1, int y1, int x2, int y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
 	IC void			SetRect			(const Irect& r){iVisRect.set(r); uFlags|=flValidRect; }
 
-	IC Irect		GetRect			(){return iVisRect;}
+	IC Irect		GetRect			() {return iVisRect;}
+	   Irect		GetOriginalRect	();
 
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, int x1, int y1, int x2, int y2);
+	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 
+														int x1, int y1, 
+														int x2, int y2);
 	
 	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color);
 	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle);
@@ -42,6 +53,10 @@ public:
 
 	IC void			SetAlign		(u32 align)					{uAlign=align;};
 	IC u32			GetAlign		()							{return uAlign;}
+
+	//для пропорционального масштабирования выводимой текстуры
+	void			SetScale		(float new_scale);
+	float			GetScale		();
 };
 
 #endif //__XR_UICUSTOMITEM_H__

@@ -243,6 +243,9 @@ namespace ALife {
 		eHitTypeWound,
 		eHitTypeRadiation,
 		eHitTypeTelepatic,
+		eHitTypeChemicalBurn,
+		eHitTypeExplosion,
+		eHitTypeFireWound,
 		eHitTypeMax,
 	};
 
@@ -271,23 +274,24 @@ namespace ALife {
 	{
 		if (!stricmp(caHitType,"burn"))
 			return(eHitTypeBurn);
-		else
-			if (!stricmp(caHitType,"shock"))
+		else if (!stricmp(caHitType,"shock"))
 				return(eHitTypeShock);
-			else
-				if (!stricmp(caHitType,"strike"))
-					return(eHitTypeStrike);
-				else
-					if (!stricmp(caHitType,"wound"))
-						return(eHitTypeWound);
-					else
-						if (!stricmp(caHitType,"radiation"))
-							return(eHitTypeRadiation);
-						else
-							if (!stricmp(caHitType,"telepatic"))
-								return(eHitTypeTelepatic);
-							else
-								Debug.fatal("Unsupported hit type!");
+		else if (!stricmp(caHitType,"strike"))
+            	return(eHitTypeStrike);
+		else if (!stricmp(caHitType,"wound"))
+				return(eHitTypeWound);
+		else if (!stricmp(caHitType,"radiation"))
+				return(eHitTypeRadiation);
+		else if (!stricmp(caHitType,"telepatic"))
+				return(eHitTypeTelepatic);
+		else if (!stricmp(caHitType,"fire_wound"))
+				return(eHitTypeFireWound);
+		else if (!stricmp(caHitType,"chemical_burn"))
+				return(eHitTypeChemicalBurn);
+		else if (!stricmp(caHitType,"explosion"))
+				return(eHitTypeExplosion);
+		else
+				Debug.fatal("Unsupported hit type!");
 #ifndef _EDITOR
 		__assume(0);
 #else
@@ -298,13 +302,16 @@ namespace ALife {
 	IC LPCSTR g_cafHitType2String(EHitType tHitType)
 	{
 		switch (tHitType) {
-			case eHitTypeBurn		: return("burn");
-			case eHitTypeShock		: return("shock");
-			case eHitTypeStrike		: return("strike");
-			case eHitTypeWound		: return("wound");
-			case eHitTypeRadiation	: return("radiation");
-			case eHitTypeTelepatic	: return("telepatic");
-			default					: NODEFAULT;
+			case eHitTypeBurn			: return("burn");
+			case eHitTypeShock			: return("shock");
+			case eHitTypeStrike			: return("strike");
+			case eHitTypeWound			: return("wound");
+			case eHitTypeRadiation		: return("radiation");
+			case eHitTypeTelepatic		: return("telepatic");
+			case eHitTypeFireWound		: return("fire_wound");
+			case eHitTypeChemicalBurn	: return("chemical_burn");
+			case eHitTypeExplosion		: return("explosion");
+			default						: NODEFAULT;
 		}
 #ifndef _EDITOR
 		__assume(0);
