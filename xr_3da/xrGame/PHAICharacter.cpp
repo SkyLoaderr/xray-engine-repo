@@ -4,7 +4,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "ExtendedGeom.h"
-#include "..\cl_intersect.h"
+#include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 #include "GameObject.h"
 
@@ -28,7 +28,7 @@ void CPHAICharacter::		SetPosition							(Fvector pos)
 
 }
 
-void CPHAICharacter::BringToDesired(float time,float velocity,float force)
+void CPHAICharacter::BringToDesired(float time,float velocity,float /**force/**/)
 {
 	Fvector pos,move;
 	GetPosition(pos);
@@ -166,7 +166,7 @@ void CPHAICharacter::InitContact(dContact* c){
 
 
 
-	m_contact_count++;
+	++m_contact_count;
 
 	//if( !b_saved_contact_velocity)
 	//		{//b_lose_control &&

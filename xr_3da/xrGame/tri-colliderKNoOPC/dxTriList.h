@@ -4,7 +4,7 @@
 #define __DXTRILIST_INCLUDED__
 
 
-#include "..\ode_include.h"
+#include "../ode_include.h"
 
 
 
@@ -266,7 +266,7 @@ struct dcVector3{
 
 	bool operator!=(const dcVector3& v) const{
 
-		return x != v.x || y != v.y || z != v.z;
+		return v.x != x || v.y != y || v.z != z;
 
 	}
 

@@ -59,12 +59,12 @@ public:
 public:
 void		SetPLastMaterial								(u32* p)								{p_lastMaterial=p;}
 
-virtual void			SetMaximumVelocity					(dReal vel)								{}
-virtual	void			SetJupmUpVelocity					(dReal velocity)						{}
-virtual	void			IPosition							(Fvector& pos)							{}
+virtual void			SetMaximumVelocity					(dReal /**vel/**/)						{}
+virtual	void			SetJupmUpVelocity					(dReal /**velocity/**/)					{}
+virtual	void			IPosition							(Fvector& /**pos/**/)					{}
 virtual u16				ContactBone							()										{return 0;}
-virtual void			DeathPosition						(Fvector& deathPos)						{}
-virtual		void		ApplyImpulse						(const Fvector& dir,const dReal P)		{}	;
+virtual void			DeathPosition						(Fvector& /**deathPos/**/)				{}
+virtual		void		ApplyImpulse						(const Fvector& /**dir/**/,const dReal /**P/**/){}	;
 virtual		void		ApplyForce							(const Fvector& force)					=0 ;
 virtual		void		ApplyForce							(const Fvector& dir,float force)		=0 ;
 virtual		void		ApplyForce							(float x,float y, float z)				=0 ;
@@ -72,7 +72,7 @@ virtual		void		Jump								(const Fvector& jump_velocity)			=0 ;
 virtual		bool		JumpState							()				=0  ;
 virtual		EEnvironment CheckInvironment					()				=0	;
 virtual		bool		ContactWas							()				=0	;
-virtual		void		Create								(dVector3 sizes)=0	;
+virtual		void		Create								(dVector3 /**sizes/**/)=0	;
 virtual		void		Destroy								(void)			=0	;
 virtual		void		SetAcceleration						(Fvector accel)	=0	;
 virtual		void		SetPosition							(Fvector pos)	=0	;
@@ -86,10 +86,13 @@ virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object)=0;
 virtual		CPhysicsRefObject* PhysicsRefObject				(){return m_phys_ref_object;}
 
 //AICharacter
-virtual		void		GetDesiredPosition					(Fvector& dpos)	{}
-virtual		void		SetDesiredPosition					(const Fvector& pos)	{}
-virtual		void		BringToDesired						(float time,float velocity,float force=1.f){}	;
-virtual		bool		TryPosition							(Fvector pos)	{return false;}	
+virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)	{}
+virtual		void		SetDesiredPosition					(const Fvector& /**pos/**/)	{}
+#pragma warning(push)
+#pragma warning(disable:4100)
+virtual		void		BringToDesired						(float /**time/**/,float /**velocity/**/,float force=1.f){}	;
+#pragma warning(pop)
+virtual		bool		TryPosition							(Fvector /**pos/**/)	{return false;}	
 
 			CPHCharacter									(void)				;
 virtual		~CPHCharacter									(void)				;

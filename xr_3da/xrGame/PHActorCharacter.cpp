@@ -179,7 +179,7 @@ void CPHActorCharacter::InitContact(dContact* c){
 
 
 
-	m_contact_count++;
+	++m_contact_count;
 
 	//if( !b_saved_contact_velocity)
 	//		{//b_lose_control &&

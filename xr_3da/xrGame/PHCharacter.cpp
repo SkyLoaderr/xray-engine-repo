@@ -4,7 +4,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "ExtendedGeom.h"
-#include "..\cl_intersect.h"
+#include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 #include "GameObject.h"
 
@@ -47,7 +47,7 @@ CPHCharacter::~CPHCharacter(void)
 
 
 
-void __stdcall CarHitCallback(bool& do_colide,dContact& c)
+void __stdcall CarHitCallback(bool& /**do_colide/**/,dContact& /**c/**/)
 {
 	/*
 	dxGeomUserData* usr_data_1=NULL;
