@@ -90,8 +90,8 @@
 		</phrase>
 		<phrase id="62">
 			<text>Ладно, я берусь за это дело, только объясни как туда пройти.[Задание]</text>
-			<give_info>escape_need_agroprom_documents</give_info>
 			<give_info>garbage_find_stalker</give_info>
+			<give_info>escape_need_agroprom_documents</give_info>
 			<next>82</next>
 		</phrase>
 		<phrase id="72">
