@@ -30,6 +30,7 @@ public:
 	void					u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
 	
 	// Methods
+	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Relevant		()	{ return getLocal();	}	// send messages only if active and local

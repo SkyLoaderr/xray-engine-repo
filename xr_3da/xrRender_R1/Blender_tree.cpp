@@ -68,8 +68,8 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 			C.r_End			();
 		} else {
 			// Level view
-			if (oBlend.value)	C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
-			else				C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,			D3DBLEND_ZERO,			TRUE,oAREF.value);
+			if (oBlend.value)	C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,200);
+			else				C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,			D3DBLEND_ZERO,			TRUE,200);
 			C.r_Sampler		("s_base",	C.L_textures[0]);
 			C.r_Sampler		("s_detail",C.detail_texture);
 			C.r_End			();
