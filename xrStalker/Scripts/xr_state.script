@@ -180,6 +180,9 @@ function change_state(object, new)
 			object:add_animation("spit_2", true)
 		end
 	      	st.target_state = new
+		return true
+	else
+		return false
 	end
 end
 

@@ -4,9 +4,186 @@ function addMember(name, npc)
 	if xr_gulag.fraction[name] == nil then
 		xr_gulag.fraction[name] = xr_gulag.fract(name)
 	end
+	xr_gulag.fraction[name]:addObject(npc)
+	xr_gulag.fraction[name]:print()
+	xr_gulag.fraction[name]:setJob(npc)
 end
 
 class "fract"
 function fract:__init(name)
 	self.name = name
+
+	self.state = 0 		-- состояние схемы. 0 - дефолтовое. 1 и дальше - различные особые состояния, например тревога для блокпоста
+	self.stateBegin = nil
+
+	self.checkTime = 15000 	-- время между проверками постов
+	self.checkBegin = nil
+
+	self.Object = {}        -- список ресурсов
+	self.Job = {}           -- список заданий
+	self.States = {}	-- список состояний
+
+	self:loadJob(name)
+	self:loadStates(name)
+end
+function fract:addObject(npc)
+	if self.Object[npc:id()] == nil then
+		table.insert(self.Object, npc:id(), npc)
+	end
+end
+function fract:calculate() -- просчет лагеря
+	-- проверка не закончилось ли время особого состояния
+	if self.stateBegin ~= nil and self.state ~= 0 then
+		local timeout = 0
+		for k,v in self.States do
+			if v.id == self.state then	
+				timeout = v.timeout
+				break
+			end
+		end
+		
+		if device():time_global() - self.stateBegin > timeout then
+			self.state = 0
+		end
+	end
+
+	-- убирание мертвых сталкеров	
+	local tt = {}
+	for k,v in self.Object do
+		if v:alive() ~= true then
+--			table.insert(tt,k)	
+		self.Object[k] = nil
+		end
+	end
+--	for k,v in tt do
+--		self.Object[v] = nil
+--	end
+
+	-- обнуление несуществующих акторов у заданий
+	for k,v in self.Job do
+		if v.object ~= nil then
+			-- проверить что этот актор есть в обжектах
+			if is_object_online(v.object) then
+				if self.Object[v.object] == nil then
+					v.object = nil				
+				end
+			end			
+		end	
+	end
+
+	-- проверка незанятых точек, переведение сталкеров на более приоритетные задания
+	-- такую проверку нужно делать раз в какое то время
+	local order = false
+	if self.checkBegin == nil or
+	   device():time_global() - self.checkBegin > self.checkTime then
+		order = true
+	end
+	if order then
+		self.checkBegin = device():time_global()
+		for k,v in self.Object do
+			self:setJob(v)
+		end
+	end
+	self:print()
+end
+function fract:print()
+	printf("---------------------- %s ----------------------", self.name)
+	printf("Resurses:")
+	for k,v in self.Object do
+		printf("id: %d name: %s", k, v:name())
+	end
+	printf("Jobs:")
+	for k,v in self.Job do
+		printf("name: %s, prior %d", v.name, v.prior)
+		if v.object ~= nil then
+			printf("    ObjID: %d", v.object)
+			printf("    Actor: %s", self.Object[v.object]:name())
+		end
+		if v.name == "guard" then
+			printf("    path_main: %s, path_hideout: %s", v.path_main, v.path_hideout)
+		end
+	end
+end
+function fract:loadJob(name) -- загружает список заданий
+	if name == "blockpost" then
+		local t = { name = "guard",
+			object = nil,
+			prior = 1,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			path_main = "way_blockpost",
+			path_hideout = "way_blockpost" }
+		table.insert(self.Job, t)			
+	end
+end
+function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное задание
+	local t
+
+	for k,v in self.Job do
+		local ena = false
+		-- проверка что это задание доступно при данном состоянии
+		for kk,vv in v.state do
+			if vv == self.state then
+				ena = true
+				break
+			end
+		end
+		-- проверка что данное задание не занято
+		if v.object ~= nil then ena = false end
+
+		if ena then
+			if t == nil then
+				t = v
+			else
+				-- проверка по приоритету
+				if v.prior < t.prior then
+					t = v
+				end
+			end
+		end
+	end
+	if t ~= nil then
+		-- удаляем у этого npc все работы (в сторадже)
+		printf("Found Job %s", t.name)
+		self:clearAllJob(npc)
+		t.object = npc:id()
+		--устанавливаем данные для текущей работы	
+		if t.name == "guard" then
+			xr_motivator.storage[npc:id()].guard.path_main = t.path_main
+			xr_motivator.storage[npc:id()].guard.path_hideout = t.path_hideout
+			xr_motivator.storage[npc:id()].guard.enabled = true
+		end
+	end
+end
+function fract:clearAllJob(npc)
+	for k,v in xr_motivator.storage[npc:id()] do
+		if k == "sleeper" or
+		   k == "camper" or
+		   k == "scout" or
+		   k == "follower" or
+		   k == "patrol" or
+		   k == "guard"
+		then
+			v.enabled = false
+		end
+	end
+end
+function fract:loadStates(name) -- загружает список заданий
+	if name == "blockpost" then
+		local t = { id = 1,
+			    timeout = 300000 }
+		table.insert(self.States, t)			
+	end
+end
+function fract:setState(id)
+	-- проверка что это состояние возможно
+	for k,v in self.States do
+		if v.id == id then	
+			self.stateBegin = device():time_global()	
+			self.state = id
+			return
+		end
+	end
+end
+function setFractionState(name, id)
+	xr_gulag.fraction[name]:setState(id)
 end

@@ -60,6 +60,14 @@ function motivator_binder:net_destroy()
     object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:update(delta)
+    object_binder.update(self, delta)
+	-- вызов апдейта у управления группировками
+	if xr_gulag.fraction["blockpost"] ~= nil then
+		xr_gulag.fraction["blockpost"]:calculate()
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reload (section)
     object_binder.reload(self, section)
 
