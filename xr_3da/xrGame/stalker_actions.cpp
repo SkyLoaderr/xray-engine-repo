@@ -1376,8 +1376,8 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 	if (!mem_object.m_object)
 		return;
 
-	if (Level().timeServer() >= m_start_level_time + 3000)
-		m_storage->set_property	(eWorldPropertyEnemyLost,true);
+//	if (Level().timeServer() >= m_start_level_time + 3000)
+//		m_storage->set_property	(eWorldPropertyEnemyLost,true);
 
 	if (m_object->enemy()) {
 		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
