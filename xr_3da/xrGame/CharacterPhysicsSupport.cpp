@@ -100,6 +100,7 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 	
 	CPHSkeleton::RespawnInit();
 	CPHDestroyable::RespawnInit();
+	m_eState=esAlive;
 	//if(m_pPhysicsShell)	
 	//{
 	//	//m_pPhysicsShell->Deactivate();

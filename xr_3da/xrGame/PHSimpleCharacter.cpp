@@ -1247,7 +1247,10 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 
 	///m_friction_factor=(c->surface.mu<1.f&&!object) ? c->surface.mu : 1.f;
-	if(c->surface.mu<1.f&&!object && !b_side_contact)m_friction_factor=c->surface.mu; else m_friction_factor=1.f;
+	if(c->surface.mu<1.f&&!object && !b_side_contact)
+										m_friction_factor=c->surface.mu; 
+	else 
+										m_friction_factor=1.f;
 
 
 	++m_contact_count;
