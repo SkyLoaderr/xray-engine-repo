@@ -139,7 +139,7 @@ static SSceneSummary s_summary;
 void EScene::ShowSummaryInfo()
 {
 	s_summary.Clear	();
-	bool bRes=false;
+	bool bRes=true;
 
     SceneToolsMapPairIt _I = m_SceneTools.begin();
     SceneToolsMapPairIt _E = m_SceneTools.end();
