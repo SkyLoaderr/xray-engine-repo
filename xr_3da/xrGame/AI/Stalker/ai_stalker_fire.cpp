@@ -77,22 +77,31 @@ bool CAI_Stalker::bfCheckIfCanKillMember()
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
-	// Save event
 	Fvector D;
 	svTransform.transform_dir(D,vLocalDir);
-	
-	m_dwHitTime = Level().timeServer();
-	m_tHitDir.set(D);
-	m_tHitDir.normalize();
-	m_tHitPosition = who->Position();
-	
-	SHurt	tHurt;
-	tHurt.dwTime	= Level().timeServer();
-	if (tHurt.tpEntity = dynamic_cast<CEntity*>(who))
-		vfUpdateHurt(tHurt);
+		
+	if (g_Alive()) {
+		// Save event
+		m_dwHitTime = Level().timeServer();
+		m_tHitDir.set(D);
+		m_tHitDir.normalize();
+		m_tHitPosition = who->Position();
+		
+		SHurt	tHurt;
+		tHurt.dwTime	= Level().timeServer();
+		if (tHurt.tpEntity = dynamic_cast<CEntity*>(who))
+			vfUpdateHurt(tHurt);
 
-	feel_sound_new(who,SOUND_TYPE_MONSTER_ATTACKING,who->Position(),1.f);
-	
+		feel_sound_new(who,SOUND_TYPE_MONSTER_ATTACKING,who->Position(),1.f);
+
+		// Play hit-sound
+		sound& S = m_tpSoundHit[::Random.randI(m_tpSoundHit.size())];
+		if (!S.feedback && g_Alive()) {
+			S.play_at_pos(this,eye_matrix.c);
+			S.feedback->set_volume(1.f);
+		}
+	}
+
 	float	yaw, pitch;
 	D.getHP(yaw,pitch);
 	CKinematics *tpKinematics = PKinematics(pVisual);
@@ -100,13 +109,6 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	CMotionDef *tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_torso_current.yaw,-yaw,PI_DIV_2) ? 0 : 1))];
 	float power_factor = amount/100.f; clamp(power_factor,0.f,1.f);
 	tpKinematics->PlayFX(tpMotionDef,power_factor);
-
-	// Play hit-sound
-	sound& S = m_tpSoundHit[::Random.randI(m_tpSoundHit.size())];
-	if (!S.feedback && g_Alive()) {
-		S.play_at_pos(this,eye_matrix.c);
-		S.feedback->set_volume(1.f);
-	}
 }
 
 float CAI_Stalker::EnemyHeuristics(CEntity* E)
@@ -313,7 +315,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		for ( ; I != E; I++)
 			if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 				best_slot = I - B;
-		if (best_slot != m_inventory.m_activeSlot)														   
+		if (best_slot != -1)														   
 			m_inventory.Activate(best_slot);
 	}
 	else
