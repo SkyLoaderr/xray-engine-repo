@@ -150,20 +150,23 @@ void CPSVisual::Render(float LOD)
     int 	mb_samples 	= 1;
     float 	mb_step 	= 0;
 	
-	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++){
+	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++)
+	{
 		DWORD 	C;
 		float 	sz;
 		float 	angle;
-        if (m_Definition->m_dwFlag&PS_MOTIONBLUR){
-            float T 	= fTime-P->m_Time.start;
-            float k 	= T/(P->m_Time.end-P->m_Time.start);
-            float k_inv = 1-k;
-            mb_samples 	= iFloor(m_Definition->m_BlurSubdiv.start*k_inv+m_Definition->m_BlurSubdiv.end*k+0.5f);
-            mb_step 	= m_Definition->m_BlurTime.start*k_inv+m_Definition->m_BlurTime.end*k;
-            mb_step /= mb_samples;
+        if (m_Definition->m_dwFlag&PS_MOTIONBLUR)
+		{
+            float T 	=	fTime-P->m_Time.start;
+            float k 	=	T/(P->m_Time.end-P->m_Time.start);
+            float k_inv =	1-k;
+            mb_samples 	=	iFloor(m_Definition->m_BlurSubdiv.start*k_inv+m_Definition->m_BlurSubdiv.end*k+0.5f);
+            mb_step 	=	m_Definition->m_BlurTime.start*k_inv+m_Definition->m_BlurTime.end*k;
+            mb_step		/=	mb_samples;
         }
         // update
-		for (int sample=mb_samples-1; sample>=0; sample--){
+		for (int sample=mb_samples-1; sample>=0; sample--)
+		{
             float T 	= fTime-P->m_Time.start-(sample*mb_step);
             if (T<0) continue;
             float mb_v	= 1-float(sample)/float(mb_samples);
@@ -172,12 +175,11 @@ void CPSVisual::Render(float LOD)
             float k_inv = 1-k;
 			
             Fvector Pos;
-            // this moves the particle using the last known velocity and the time that has passed
-            PS::SimulatePosition(Pos,P,T,k);
-            // adjust current Color from calculated Deltas and time elapsed.
-            PS::SimulateColor(C,P,k,k_inv,mb_v);
-            // adjust current Size & Angle
-            PS::SimulateSize(sz,P,k,k_inv);
+            
+            PS::SimulatePosition(Pos,P,T,k);		// this moves the particle using the last known velocity and the time that has passed
+            
+            PS::SimulateColor	(C,P,k,k_inv,mb_v);	// adjust current Color from calculated Deltas and time elapsed.
+            PS::SimulateSize	(sz,P,k,k_inv);		// adjust current Size & Angle
 
             Fvector D;
 			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH){
