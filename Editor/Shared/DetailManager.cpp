@@ -185,6 +185,7 @@ void CDetailManager::Render		(Fvector& EYE)
 
 	float fade_limit	= 13.5f;fade_limit=fade_limit*fade_limit;
 	float fade_start	= 8.f;	fade_start=fade_start*fade_start;
+	float fade_range	= fade_limit-fade_start;
 
 	// Collect objects for rendering
 	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++)
@@ -218,13 +219,13 @@ void CDetailManager::Render		(Fvector& EYE)
 
 							float	dist_sq = Device.vCameraPosition.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-
-							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/(fade_limit-fade_start);
-							float	scale	= Item.scale*(1-alpha);
-							float	radius	= R*scale;
-
-							if (::Render.ViewBase.testSphereDirty(siIT->P,R*scale))	
+							
+							if (::Render.ViewBase.testSphereDirty(siIT->P,R*Item.scale))	
 							{
+								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
+								float	scale	= Item.scale*(1-alpha);
+								float	radius	= R*scale;
+								
 								Item.scale_calculated = scale;
 								vis.push_back(siIT);
 							}
@@ -260,7 +261,7 @@ void CDetailManager::Render		(Fvector& EYE)
 
 	for (DWORD O=0; O<dm_max_objects; O++)
 	{
-		CList<SlotItem>&	vis = visible	[O];
+		CList<SlotItem*>&	vis = visible	[O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= objects[O];
@@ -293,7 +294,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			CDetail::fvfVertexOut* vDest = (CDetail::fvfVertexOut*)VS->Lock(vCount_Lock,vOffset);
 			for (DWORD item=item_start; item<item_end; item++)
 			{
-				SlotItem&	Instance	= vis[item];
+				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated; 
 
 				// Build matrix and xform vertices
