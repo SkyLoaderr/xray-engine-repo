@@ -375,9 +375,6 @@
 				RelativePath=".\communicate.h">
 			</File>
 			<File
-				RelativePath=".\light.h">
-			</File>
-			<File
 				RelativePath=".\progmesh.h">
 			</File>
 			<File
