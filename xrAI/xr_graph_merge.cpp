@@ -17,7 +17,6 @@
 #include "ai_map.h"
 #include "net_utils.h"
 #include "ai_alife_templates.h"
-#include "ai_alife_space.h"
 using namespace ALife;
 
 class CLevelGraph;
@@ -377,7 +376,7 @@ void xrMergeGraphs(LPCSTR name)
 	}
 
 	dwOffset					*= sizeof(CSE_ALifeGraph::SGraphVertex);
-	l_dwPointOffset				= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
+	l_dwPointOffset				= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge) + sizeof(u32);
 	{
 		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
 		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
@@ -410,5 +409,5 @@ void xrMergeGraphs(LPCSTR name)
 		for ( ; I != E; I++)
 			xr_free((*I).second);
 	}
-	xr_delete			(Ini);
+	xr_delete						(Ini);
 }
