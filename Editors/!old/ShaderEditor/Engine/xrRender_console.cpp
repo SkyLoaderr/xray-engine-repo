@@ -37,7 +37,7 @@ float		ps_r2_ssaLOD_B				= 48.f;
 float		ps_r2_ssaHZBvsTEX			= 256.f;
 
 // R2-specific
-Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_FASTBLOOM | R2FLAG_AA };	// r2-only
+Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_FASTBLOOM | R2FLAG_AA };	// r2-only
 float		ps_r2_df_parallaxh			= 0.02f;
 float		ps_r2_tonemap_middlegray	= 0.01f;			// r2-only
 float		ps_r2_tonemap_adaptation	= 5.f;				// r2-only
