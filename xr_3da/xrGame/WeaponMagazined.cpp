@@ -117,7 +117,8 @@ void CWeaponMagazined::FireStart		()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart	();
-		st_target			= eFire;
+		if (0==iAmmoElapsed && iAmmoCurrent)	st_target	= eMagEmpty;
+		else									st_target	= eFire;
 	}
 }
 
@@ -176,6 +177,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		st_current = st_target;
 	}
 
+	/*
 	LPCSTR st_name = 0;
 	switch(st_current)
 	{
@@ -188,6 +190,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	}
 	pApp->pFont->Out(0,0,"state: %s",st_name);
 	// Log("****",st_name);
+	*/
 	
 	// cycle update
 	switch (st_current)

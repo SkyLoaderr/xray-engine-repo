@@ -107,7 +107,7 @@ public:
 	virtual void	Show			();
 
 	IC BOOL			IsWorking		()				{ return bWorking;							}
-	IC BOOL			IsValid			()				{ return (iAmmoElapsed!=0);					}
+	IC BOOL			IsValid			()				{ return (iAmmoCurrent!=0);					}
 	IC BOOL			IsVisible		()				{ return bVisible;							}	// Weapon change occur only after visibility change
 	IC BOOL			IsUpdating		()				{ return bWorking || bPending || bVisible;	}	// Does weapon need's update?
 	virtual BOOL	HasOpticalAim	()				{ return FALSE; }
