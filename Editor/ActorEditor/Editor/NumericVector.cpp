@@ -2,8 +2,6 @@
 #pragma hdrstop
 
 #include "NumericVector.h"
-#include "SceneClassList.h"
-#include "Sector.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -99,7 +97,7 @@ bool __fastcall TfrmNumericVector::Run(const char* title, Fvector* data, int dec
 	    seZ->MaxValue = 0;
     }
 
-    if (X) Left = *X;
+    if (X) Left = *X-(Width*0.5f);
     if (Y) Top = *Y;
 
     return (ShowModal()==mrOk);

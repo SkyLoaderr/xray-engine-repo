@@ -249,7 +249,7 @@ void CActorTools::Update(){
     m_PreviewObject.Update();
 	if (m_pEditObject){
     	if (m_RenderObject.IsRenderable()) PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
-    	m_pEditObject->RTL_Update(Device.fTimeDelta);
+    	m_pEditObject->OnFrame();
     }
 }
 
@@ -403,7 +403,7 @@ bool __fastcall CActorTools::MouseStart(TShiftState Shift)
         m_MovingReminder.set(0,0,0);
     }break;
     case eaRotate:{
-        m_RotateCenter.set( UI.pivot() );
+        m_RotateCenter.set(0,0,0);
         m_RotateVector.set(0,0,0);
         if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
         else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,1,0);
@@ -428,7 +428,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
     case eaMove:{
     	Fvector amount;
         amount.mul( m_MovingXVector, UI.m_MouseSM * UI.m_DeltaCpH.x );
-        amount.direct( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
+        amount.mad( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
 
         if( fraTopBar->ebMSnap->Down ){
         	CHECK_SNAP(m_MovingReminder.x,amount.x,UI.movesnap());
@@ -476,21 +476,55 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     }
 }
 
-void __fastcall CActorTools::FloatOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::RotateOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-    *(float*)edit_val = deg2rad(*(float*)edit_val);
+	Fvector* V = (Fvector*)edit_val;
+	V->x = deg2rad(V->x);
+	V->y = deg2rad(V->y);
+	V->z = deg2rad(V->z);
+	UI.RedrawScene();
 }
 
-void __fastcall CActorTools::FloatOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::RotateOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-    *(float*)edit_val = rad2deg(*(float*)edit_val);
+	Fvector* V = (Fvector*)edit_val;
+	V->x = rad2deg(V->x);
+	V->y = rad2deg(V->y);
+	V->z = rad2deg(V->z);
 }
 
-void __fastcall CActorTools::FloatOnDraw(PropValue* sender, LPVOID draw_val)
+void __fastcall CActorTools::RotateOnDraw(PropValue* sender, LPVOID draw_val)
 {
-    *(float*)draw_val = rad2deg(*(float*)draw_val);
+	Fvector* V = (Fvector*)draw_val;
+	V->x = rad2deg(V->x);
+	V->y = rad2deg(V->y);
+	V->z = rad2deg(V->z);
 }
+void __fastcall CActorTools::OnAfterTransformation(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	UI.RedrawScene();
+}
+void __fastcall CActorTools::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	AnsiString new_name = *(AnsiString*)edit_val;
+	TElTreeItem* parent	= item->Parent; VERIFY(parent);
+	CSurface* surf 		= (CSurface*)parent->Data;	VERIFY(surf);
+    surf->DeleteShader	();
+    surf->ED_SetShader	(new_name.c_str());
+    surf->CreateShader	();
+}
+//---------------------------------------------------------------------------
 
+void __fastcall CActorTools::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	AnsiString new_name = *(AnsiString*)edit_val;
+	TElTreeItem* parent	= item->Parent; VERIFY(parent);
+	CSurface* surf 		= (CSurface*)parent->Data; 	VERIFY(surf);
+    surf->DeleteShader	();
+    surf->SetTexture	(new_name.c_str());
+    surf->CreateShader	();
+}
+//---------------------------------------------------------------------------
 void CActorTools::FillObjectProperties()
 {
 	R_ASSERT(m_pEditObject);
@@ -500,43 +534,27 @@ void CActorTools::FillObjectProperties()
 	m_ObjectProps->AddItem(0,PROP_FLAG,	"Make progressive",	m_ObjectProps->MakeFlagValue(&m_pEditObject->GetFlags(),CEditableObject::eoProgressive));
     M = m_ObjectProps->AddItem(0,PROP_MARKER,	"Transformation");
     {
-	    N = m_ObjectProps->AddItem(M,PROP_MARKER,	"Rotate (Grd)");
-        {
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Yaw", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vRotate.y,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Pitch", 	m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vRotate.x,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Heading", 	m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vRotate.z,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
-        }
-	    N = m_ObjectProps->AddItem(M,PROP_MARKER,	"Offset");
-        {
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"X", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vPosition.x,	-100000.f,100000.f,0.01f,2));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Y", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vPosition.y,	-100000.f,100000.f,0.01f,2));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Z", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vPosition.z,	-100000.f,100000.f,0.01f,2));
-        }
+		m_ObjectProps->AddItem	(M,PROP_VECTOR,	"Position",	m_ObjectProps->MakeVectorValue(&m_pEditObject->a_vPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
+		m_ObjectProps->AddItem	(M,PROP_VECTOR,	"Rotation",	m_ObjectProps->MakeVectorValue(&m_pEditObject->a_vRotate,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
     }
+    // surfaces
     M = m_ObjectProps->AddItem(0,PROP_MARKER,		"Surfaces");
-    {
-        for (SurfaceIt& it=m_pEditObject->FirstSurface(); it!=m_pEditObject->LastSurface(); it++){
-            CSurface* S=*it;
-            N = m_ObjectProps->AddItem(M,PROP_MARKER,	S->_Name());
-            {
-                m_ObjectProps->AddItem(N,PROP_S_SH_ENGINE,	"Shader",	&S->m_ShaderName);
-//                m_ObjectProps->AddItem(N,PROP_S_SH_COMPILE,	"Compile",	&S->m_ShaderXRLCName);
-                m_ObjectProps->AddItem(N,PROP_S_TEXTURE,		"Texture",	&S->m_Texture);
-            }
-        }
+    for (SurfaceIt s_it=m_pEditObject->FirstSurface(); s_it!=m_pEditObject->LastSurface(); s_it++){
+        CSurface* SURF=*s_it;
+        N=m_ObjectProps->AddItem(M,PROP_MARKER,SURF->_Name(),SURF);
+        m_ObjectProps->AddItem(N,PROP_ANSI_SH_ENGINE,	"Shader",	m_ObjectProps->MakeAnsiTextValue(&SURF->m_ShaderName, 	OnAfterShaderEdit));
+//        m_ObjectProps->AddItem(N,PROP_ANSI_SH_COMPILE,	"Compile",	m_ObjectProps->MakeAnsiTextValue(&SURF->m_ShaderXRLCName));
+        m_ObjectProps->AddItem(N,PROP_ANSI_TEXTURE,		"Texture",	m_ObjectProps->MakeAnsiTextValue(&SURF->m_Texture,		OnAfterTextureEdit));
     }
-    M = m_ObjectProps->AddItem(0,PROP_MARKER,	"Geometry");
-    {
-        m_ObjectProps->AddItem(M,PROP_MARKER2,"Vertex Count",	AnsiString(m_pEditObject->GetVertexCount()).c_str());
-        m_ObjectProps->AddItem(M,PROP_MARKER2,"Face Count",		AnsiString(m_pEditObject->GetFaceCount()).c_str());
-        for (EditMeshIt& it=m_pEditObject->FirstMesh(); it!=m_pEditObject->LastMesh(); it++){
-            CEditableMesh* S=*it;
-            N = m_ObjectProps->AddItem(M,PROP_MARKER,	S->GetName());
-            {
-                m_ObjectProps->AddItem(N,PROP_MARKER2,"Vertex Count",	AnsiString(S->GetVertexCount()).c_str());
-                m_ObjectProps->AddItem(N,PROP_MARKER2,"Face Count",		AnsiString(S->GetFaceCount()).c_str());
-            }
-        }
+    // geometry
+    M = m_ObjectProps->AddItem	(0,PROP_MARKER,	"Summary");
+    AnsiString t; t.sprintf("V: %d, F: %d",m_pEditObject->GetVertexCount(),m_pEditObject->GetFaceCount());
+    m_ObjectProps->AddItem		(M,PROP_MARKER2,"Object",t.c_str());
+    M = m_ObjectProps->AddItem	(M,PROP_MARKER,	"Meshes");
+    for (EditMeshIt m_it=m_pEditObject->FirstMesh(); m_it!=m_pEditObject->LastMesh(); m_it++){
+        CEditableMesh* MESH=*m_it;
+        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
+        m_ObjectProps->AddItem(M,PROP_MARKER2,MESH->GetName(),t.c_str());
     }
 	m_ObjectProps->EndFillMode(false);
 }

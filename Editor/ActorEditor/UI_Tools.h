@@ -69,7 +69,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     	bool			UpdateMotionsStream	(CEditableObject* source);
     public:
     	float			m_fLOD;
-	    FBasicVisual*	m_pVisual;
+	    CVisual*		m_pVisual;
         CBlend*			m_pBlend;
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
@@ -101,9 +101,12 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     TElTreeItem*		m_pFXNode;
 	void __fastcall		MotionOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 
-	void __fastcall 	FloatOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	FloatOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	FloatOnDraw			(PropValue* sender, LPVOID draw_val);
+	void __fastcall 	RotateOnAfterEdit	 	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	RotateOnBeforeEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	RotateOnDraw			(PropValue* sender, LPVOID draw_val);
+	void __fastcall 	OnAfterTransformation	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	OnAfterShaderEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	OnAfterTextureEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;

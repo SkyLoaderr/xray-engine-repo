@@ -59,7 +59,8 @@
       Intermediate\UI_ToolsMotions.obj Intermediate\KeyBar.obj 
       Intermediate\xrXRC.obj Intermediate\cl_collector.obj 
       Intermediate\Blender_Shadow_Texture.obj 
-      Intermediate\Blender_Shadow_World.obj"/>
+      Intermediate\Blender_Shadow_World.obj Intermediate\SH_RT.obj 
+      Intermediate\SH_VS.obj Intermediate\NumericVector.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -67,7 +68,7 @@
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
       LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
       Editor\FrameEmitter.dfm Editor\TopBar.dfm Editor\PropertiesList.dfm 
-      BonePart.dfm KeyBar.dfm"/>
+      BonePart.dfm KeyBar.dfm Editor\NumericVector.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\MagicFMd.lib lib\DXT.lib lib\d3d8.lib 
       lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib Lib\ETools.lib 
       Lib\xrProgressive.lib Lib\xrCDB.lib"/>

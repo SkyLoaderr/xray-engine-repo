@@ -238,7 +238,8 @@ object fraBottomBar: TfraBottomBar
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked'
-      'miShowHint.Checked')
+      'miShowHint.Checked'
+      'miDrawObjectsPivot.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -382,6 +383,12 @@ object fraBottomBar: TfraBottomBar
         Caption = 'Draw Bones'
         OnClick = ClickOptionsMenuItem
       end
+    end
+    object miDrawObjectsPivot: TMenuItem
+      Caption = 'Draw Objects Pivot'
+      Checked = True
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
     end
     object N4: TMenuItem
       Caption = '-'

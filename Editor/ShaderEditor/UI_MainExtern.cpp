@@ -55,7 +55,7 @@ void TUI::Redraw(){
 		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
 
     // draw axis
-        DU::DrawAxis();
+        DU::DrawAxis(Device.m_Camera.GetTransform());
 
     // end draw
         Device.End();

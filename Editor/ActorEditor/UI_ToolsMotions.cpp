@@ -51,24 +51,24 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
     {
     case MT_SKELETON:{
         CKinematics* pV					= (CKinematics*)m_pVisual;
-        vector<FBasicVisual*>::iterator I,E;
+        vector<CVisual*>::iterator I,E;
         I = pV->chields.begin			();
         E = pV->chields.end				();
         for (; I!=E; I++)
         {
-            FBasicVisual* V				= *I;
+            CVisual* V					= *I;
             Device.Shader.set_Shader	(V->hShader);
             V->Render					(m_fLOD);
         }
     }break;
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
-        vector<FBasicVisual*>::iterator I,E;
+        vector<CVisual*>::iterator 		I,E;
         I = pV->chields.begin			();
         E = pV->chields.end				();
         for (; I!=E; I++)
         {
-            FBasicVisual* V				= *I;
+            CVisual* V					= *I;
             Device.Shader.set_Shader	(V->hShader);
             V->Render					(m_fLOD);
         }

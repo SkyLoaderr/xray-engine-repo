@@ -129,6 +129,9 @@ USEUNIT("Engine\cl_collector.cpp");
 USELIB("Lib\xrCDB.lib");
 USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
 USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
+USEUNIT("Engine\SH_RT.cpp");
+USEUNIT("Engine\SH_VS.cpp");
+USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
