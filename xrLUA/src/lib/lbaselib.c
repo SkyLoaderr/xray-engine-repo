@@ -17,9 +17,7 @@
 
 #include "lauxlib.h"
 #include "lualib.h"
-
-
-
+#include "..\\debug_str.h"
 
 /*
 ** If your system does not support `stdout', you can just remove this function.
@@ -39,11 +37,12 @@ static int luaB_print (lua_State *L) {
     s = lua_tostring(L, -1);  /* get result */
     if (s == NULL)
       return luaL_error(L, "`tostring' must return a string to `print'");
-    if (i>1) fputs("\t", stdout);
-    fputs(s, stdout);
+    if (i>1)
+		xr_print(stdout,"\t");
+	xr_print(stdout,"%s",s);
     lua_pop(L, 1);  /* pop result */
   }
-  fputs("\n", stdout);
+  xr_print(stdout,"\n");
   return 0;
 }
 
