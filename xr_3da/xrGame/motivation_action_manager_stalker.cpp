@@ -53,7 +53,10 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	m_storage.set_property	(eWorldPropertyDead,false);
 
 #ifdef LOG_ACTION
-	m_use_log				= true;
+	if (psAI_Flags.test(aiGOAP))
+		m_use_log			= true;
+	else
+		m_use_log			= false;
 #endif
 }
 
@@ -69,6 +72,15 @@ void CMotivationActionManagerStalker::reload			(LPCSTR section)
 
 void CMotivationActionManagerStalker::update			(u32 time_delta)
 {
+#ifdef LOG_ACTION
+	if ((psAI_Flags.test(aiGOAP) && !m_use_log) || (!psAI_Flags.test(aiGOAP) && m_use_log)) {
+		m_use_log			= !m_use_log;
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
+		for ( ; I != E; ++I)
+			(*I).get_operator()->m_use_log = m_use_log;
+	}
+#endif
 	inherited::update		(time_delta);
 }
 

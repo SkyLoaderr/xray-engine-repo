@@ -63,7 +63,8 @@ void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
 #else
 	CObjectHandlerGOAP::OnItemTake	(inventory_item);
 #endif
-	m_last_best_item_frame	= 0;
+	m_last_best_item_frame		= 0;
+	m_item_actuality			= false;
 }
 
 void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
@@ -73,7 +74,8 @@ void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
 #else
 	CObjectHandlerGOAP::OnItemDrop	(inventory_item);
 #endif
-	m_last_best_item_frame	= 0;
+	m_last_best_item_frame		= 0;
+	m_item_actuality			= false;
 }
 
 void CAI_Stalker::update_best_item_info	()
@@ -82,7 +84,15 @@ void CAI_Stalker::update_best_item_info	()
 	if (!frame_check(m_last_best_item_frame))
 		return;
 
+	if (m_item_actuality) {
+		if (m_best_item_to_kill) {
+			if (m_best_item_to_kill->can_kill())
+				return;
+		}
+	}
+
 	// initialize parameters
+	m_item_actuality							= true;
 	ai().ef_storage().m_tpCurrentMember			= this;
 	ai().ef_storage().m_tpCurrentALifeMember	= 0;
 	ai().ef_storage().m_tpCurrentEnemy			= enemy() ? enemy() : this;

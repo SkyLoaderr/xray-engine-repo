@@ -243,6 +243,7 @@ public:
 
 public:
 	u32							m_last_best_item_frame;
+	bool						m_item_actuality;
 	CInventoryItem				*m_best_item_to_kill;
 	CInventoryItem				*m_best_ammo;
 	const CInventoryItem		*m_best_found_item_to_kill;

@@ -64,6 +64,7 @@ protected:
 	mutable bool				m_applied;
 	bool						m_actuality;
 	bool						m_solution_changed;
+	bool						m_failed;
 
 public:
 	// common interface

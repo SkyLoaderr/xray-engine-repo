@@ -38,12 +38,16 @@ CSQuadTree::~CQuadTree			()
 TEMPLATE_SPECIALIZATION
 IC	void CSQuadTree::clear	()
 {
+#ifndef AI_COMPILER
 	Device.Statistic.AI_Range.Begin();
+#endif
 	m_nodes->clear		();
 	m_list_items->clear	();
 	m_root				= 0;
 	m_leaf_count		= 0;
+#ifndef AI_COMPILER
 	Device.Statistic.AI_Range.End();
+#endif
 }
 
 TEMPLATE_SPECIALIZATION

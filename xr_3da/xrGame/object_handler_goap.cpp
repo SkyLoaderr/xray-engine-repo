@@ -634,5 +634,11 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 
 void CObjectHandlerGOAP::update(u32 time_delta)
 {
+	if (initialized()) {
+		CInventoryItem			*item = m_object->inventory().get_object_by_id((ALife::_OBJECT_ID)current_action_object_id());
+		u32						action_id = current_action_state_id();
+		if (item && ((action_id == eWorldOperatorFire1) || (action_id == eWorldOperatorFire2)) && !item->can_kill())
+			set_goal			(eObjectActionDeactivate);
+	}
 	inherited::update		(time_delta);
 }

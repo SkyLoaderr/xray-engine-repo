@@ -860,6 +860,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD3(CCC_Mask,				"ai_dbg_funcs",			&psAI_Flags,	aiFuncs);
 		CMD3(CCC_Mask,				"ai_dbg_alife",			&psAI_Flags,	aiALife);
 		CMD3(CCC_Mask,				"ai_dbg_lua",			&psAI_Flags,	aiLua);
+		CMD3(CCC_Mask,				"ai_dbg_goap",			&psAI_Flags,	aiGOAP);
 		CMD1(CCC_Script,			"run_script");
 
 		// Trader

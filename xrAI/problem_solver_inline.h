@@ -62,6 +62,8 @@ void CProblemSolverAbstract::reinit						(bool clear_all)
 	m_solution.clear		();
 	m_applied				= false;
 	m_solution_changed		= false;
+	m_actuality				= true;
+	m_failed				= false;
 
 	if (!clear_all)
 		return;
@@ -250,14 +252,14 @@ IC	void CProblemSolverAbstract::solve			()
 #ifndef AI_COMPILER
 	m_solution_changed			= false;
 	if (m_actuality) {
-		bool			actual = true;
+		bool					actual = true;
 		xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
 		xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
 		for ( ; I != E; ++I) {
 			EVALUATOR_MAP::const_iterator J = evaluators().find((*I).condition());
-			VERIFY			(evaluators().end() != J);
+			VERIFY				(evaluators().end() != J);
 			if ((*J).second->evaluate() != (*I).value()) {
-				actual	= false;
+				actual			= false;
 				break;
 			}
 		}
@@ -265,10 +267,11 @@ IC	void CProblemSolverAbstract::solve			()
 			return;
 	}
 
+	m_actuality					= true;
 	m_solution_changed			= true;
 	m_current_state.clear		();
 	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
-	m_actuality					= successful;
+	m_failed					= !successful;
 #endif
 }
 

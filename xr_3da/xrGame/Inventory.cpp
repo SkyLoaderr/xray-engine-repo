@@ -599,14 +599,26 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 
 bool CInventory::bfCheckForObject(ALife::_OBJECT_ID tObjectID)
 {
-	TIItemList	&l_list = m_ruck;
-	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+	TIItemSet	&l_list = m_all;
+	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
 		if (l_pIItem->ID() == tObjectID)
 			return(true);
 	}
 	return		(false);
+}
+
+CInventoryItem *CInventory::get_object_by_id(ALife::_OBJECT_ID tObjectID)
+{
+	TIItemSet	&l_list = m_all;
+	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+	{
+		PIItem	l_pIItem = *l_it;
+		if (l_pIItem->ID() == tObjectID)
+			return	(l_pIItem);
+	}
+	return		(0);
 }
 
 //скушать предмет 

@@ -99,7 +99,6 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 		if (clear_all)
 			m_evaluators.clear	();
 	}
-	m_actuality				= true;
 	m_initialized			= false;
 }
 
@@ -135,7 +134,7 @@ void CPlanner::update				(u32 time_delta)
 			for (int i=0; i<(int)solution().size(); ++i)
 				Msg					("%s",action2string(solution()[i]));
 		}
-		if (!m_actuality) {
+		if (m_failed) {
 			// printing current world state
 			{
 				Msg						("%6d : Current world state",Level().timeServer());
@@ -164,7 +163,7 @@ void CPlanner::update				(u32 time_delta)
 					}
 				}
 			}
-//			VERIFY2						(m_actuality,"Problem solver couldn't build a valid path - verify your conditions, effects and goals!");
+//			VERIFY2						(!m_failed,"Problem solver couldn't build a valid path - verify your conditions, effects and goals!");
 		}
 	}
 #endif

@@ -22,15 +22,15 @@
 #include "vertex_allocator_fixed.h"
 //		priority queues
 #include "data_storage_bucket_list.h"
-#include "data_storage_cheap_list.h"
-#include "data_storage_single_linked_list.h"
-#include "data_storage_double_linked_list.h"
-#include "boost/f_heap.hpp"
-#include "boost/p_heap.hpp"
-#include "data_storage_priority_queue.h"
+//#include "data_storage_cheap_list.h"
+//#include "data_storage_single_linked_list.h"
+//#include "data_storage_double_linked_list.h"
+//#include "boost/f_heap.hpp"
+//#include "boost/p_heap.hpp"
+//#include "data_storage_priority_queue.h"
 #include "data_storage_binary_heap.h"
-#include "data_storage_binary_heap_list.h"
-#include "data_storage_multi_binary_heap.h"
+//#include "data_storage_binary_heap_list.h"
+//#include "data_storage_multi_binary_heap.h"
 //		path_managers
 #include "path_manager.h"
 

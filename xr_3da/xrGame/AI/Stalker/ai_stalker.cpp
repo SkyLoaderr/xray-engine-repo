@@ -76,6 +76,7 @@ void CAI_Stalker::reinit			()
 	m_best_ammo						= 0;
 	m_best_found_item_to_kill		= 0;
 	m_best_found_ammo				= 0;
+	m_item_actuality				= false;
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
