@@ -201,7 +201,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 	// find all files    
 	if (-1==(hFile=_findfirst(N, &sFile))){
-    	Log			("Wrong path: ",path);
+    	// Log		("! Wrong path: ",path);
     	return		false;
     }
     // загоняем в вектор для того *.xp* приходили в сортированном порядке
