@@ -90,7 +90,7 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 	switch(C.iElement) 
 	{
 	case 0: 					// deffer wave
-		uber_deffer				(C,"detail_s","base",true);
+		uber_deffer				(C,"detail_w","base",true);
 		break;
 	case 1: 					// deffer still
 		uber_deffer				(C,"detail_s","base",true);
