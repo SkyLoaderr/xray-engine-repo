@@ -28,7 +28,7 @@ void CMotionParams::SetParams(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim 
 	speed = s;
 }
 
-void CMotionParams::SetData(CAI_Biting *pData)
+void CMotionParams::ApplyData(CAI_Biting *pData)
 {
 	if ((mask & MASK_ANIM) == MASK_ANIM) {
 		pData->m_tPostureAnim = posture; 
@@ -63,8 +63,8 @@ bool CMotionTurn::CheckTurning(CAI_Biting *pData)
 	if (0 == fMinAngle) return false;
 
 	if (NeedToTurn(pData)){
-		if (bLeftSide) TurnLeft.SetData(pData);
-		else TurnRight.SetData(pData);
+		if (bLeftSide) TurnLeft.ApplyData(pData);
+		else TurnRight.ApplyData(pData);
 		return true;
 	}
 
@@ -119,9 +119,9 @@ void CMotionSequence::Switch()
 		}
 }
 
-void CMotionSequence::SetData(CAI_Biting *pData)
+void CMotionSequence::ApplyData(CAI_Biting *pData)
 {
-	it->SetData(pData);
+	it->ApplyData(pData);
 }
 
 void CMotionSequence::Finish()
@@ -132,6 +132,36 @@ void CMotionSequence::Finish()
 void CMotionSequence::Cycle(u32 cur_time)
 {
 	if (((it->mask & MASK_TIME) == MASK_TIME) && (cur_time > it->time))	Switch();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingMotion implementation
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CBitingMotion::Init()
+{
+	m_tSeq.Init();
+}
+
+void CBitingMotion::SetFrameParams(CAI_Biting *pData) 
+{
+	if (!m_tSeq.Active()) {
+
+		m_tParams.ApplyData(pData);
+		m_tTurn.CheckTurning(pData);
+
+
+		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
+		if ((pData->m_tActionAnimPrevFrame == eActionIdle) && (pData->m_tPostureAnimPrevFrame == ePostureLie) &&
+			((pData->m_tActionAnim != eActionIdle) || (pData->m_tPostureAnim != ePostureLie))) {
+				m_tSeq.Add(ePostureLie,eActionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+				m_tSeq.Switch();
+				m_tSeq.ApplyData(pData);
+			}
+
+		//!---
+	} else {
+		m_tSeq.ApplyData(pData);
+	}
 }
 
 
@@ -217,7 +247,7 @@ void CRest::Run()
 		case ACTION_WALK:
 			pData->Motion.m_tParams.SetParams(ePostureStand,eActionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pData->Motion.m_tTurn.Set(ePostureStand,eActionWalkTurnLeft,ePostureStand,eActionWalkTurnRight, 
-									  m_cfWalkSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+									  m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
 			break;
 		case ACTION_STAND:
 			pData->Motion.m_tParams.SetParams(ePostureStand,eActionIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
@@ -228,19 +258,19 @@ void CRest::Run()
 			pData->Motion.m_tTurn.Clear();
 			break;
 		case ACTION_TURN:
-			pData->Motion.m_tParams.SetParams(ePostureStand,eActionIdleTurnLeft,0,m_cfStandTurnRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tParams.SetParams(ePostureStand,eActionIdleTurnLeft,0,m_cfStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pData->Motion.m_tTurn.Clear();
 			break;
 	}
-
 }
 
 void CRest::Replanning()
 {
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
+	u32		dwMinRand = 0, dwMaxRand = 0;
 
-	if (rand_val < 10) {	
+	if (rand_val < 50) {	
 		m_tAction = ACTION_WALK;
 
 		// Построить путь обхода точек графа
@@ -250,19 +280,33 @@ void CRest::Replanning()
 		
 		pData->vfChoosePointAndBuildPathAtOnce(0,0, false, 0);
 
-	} else if (rand_val < 11) {	
+		dwMinRand = 3000;
+		dwMaxRand = 5000;
+
+	} else if (rand_val < 60) {	
 		m_tAction = ACTION_STAND;
-	} else if (rand_val < 90) {	
+
+		dwMinRand = 3000;
+		dwMaxRand = 5000;
+
+	} else if (rand_val < 70) {	
 		m_tAction = ACTION_LIE;
 		pData->Motion.m_tSeq.Add(ePostureStand,eActionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 		pData->Motion.m_tSeq.Switch();
+
+		dwMinRand = 5000;
+		dwMaxRand = 7000;
+
 	} else  {	
 		m_tAction = ACTION_TURN;
-		pData->r_torso_target.yaw += PI_DIV_2;
 		pData->r_torso_target.yaw = angle_normalize(pData->r_torso_target.yaw + PI_DIV_2);
+
+		dwMinRand = 1200;
+		dwMaxRand = 1700;
+
 	}
 	
-	m_dwReplanTime = 5000;
+	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -387,6 +431,7 @@ void CAI_Biting::ControlAnimation()
 	}
 	//--------------------------------------
 
-	m_tActionAnimPrevFrame	= m_tActionAnim;
-	m_tPostureAnimPrevFrame	= m_tPostureAnim;
+	// Сохранение предыдущей анимации
+	m_tActionAnimPrevFrame = m_tActionAnim;
+	m_tPostureAnimPrevFrame = m_tPostureAnim;
 }

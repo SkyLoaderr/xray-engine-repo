@@ -60,7 +60,7 @@ void CAI_Biting::OnAnimationEnd()
 		if (Motion.m_tSeq.Finished) {
 			Motion.m_tSeq.Init();		// сброс
 			// После проигрывания Seq, m_tParams содержит необходимые данные для установки анимации
-			Motion.m_tParams.SetData(this);
+			Motion.m_tParams.ApplyData(this);
 		}
 	}
 }

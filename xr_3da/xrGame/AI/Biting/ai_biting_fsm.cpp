@@ -599,9 +599,12 @@ void CAI_Biting::Think()
 	// Обновление памяти монстра
 	UpdateMemory();
 
+
 	if (Motion.m_tSeq.Active())	{
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	} else {
+		
+		//- FSM 1-level 
 		VisionElem VE;
 		if (SelectEnemy(VE)) {
 			SetState(stateAttack);
@@ -609,7 +612,9 @@ void CAI_Biting::Think()
 			SetState(stateRest);
 		}
 		CurrentState->Execute(true);
+		//---
 	}
+	
 	Motion.SetFrameParams(this);
 
 	ControlAnimation();

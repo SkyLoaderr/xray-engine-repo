@@ -103,8 +103,8 @@ void CAI_Biting::Init()
 	m_dwAttackMeleeTime				= 0;
 	m_dwAttackActorMeleeTime		= 0;
 
-	m_tActionAnimPrevFrame	= m_tActionAnim;
-	m_tPostureAnimPrevFrame	= m_tPostureAnim;
+///	m_tActionAnimPrevFrame	= m_tActionAnim;
+//	m_tPostureAnimPrevFrame	= m_tPostureAnim;
 
 	Motion.Init();
 	

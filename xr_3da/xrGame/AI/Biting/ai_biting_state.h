@@ -10,21 +10,24 @@
 
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// STATE MANAGMENT
+// MOTION MANAGMENT
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*********************************************************************************************************
 
 class CAI_Biting;
 
-const float m_cfWalkSpeed		=	2.0;
-const float m_cfWalkRSpeed		=	PI_DIV_4;
-const float m_cfWalkTurnRSpeed	=	PI_DIV_2;
-const float m_cfWalkMinAngle	=   PI_DIV_6;
-const float m_cfStandTurnRSpeed	=	PI_DIV_2;
+const float m_cfStandTurnRSpeed	=	PI_DIV_3;
 
-const float m_cfRunAttackSpeed		=	4.0;
-const float m_cfRunAttackTurnSpeed	=	4.0;
-const float m_cfRunAttackTurnRSpeed	=	4.0;
+const float m_cfWalkSpeed		 =	1.7f;
+const float m_cfWalkTurningSpeed =	1.0f;
+const float m_cfWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
+const float m_cfWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
+const float m_cfWalkMinAngle	=   PI_DIV_6;
+
+
+const float m_cfRunAttackSpeed		=	5.0f;
+const float m_cfRunAttackTurnSpeed	=	2.5f;
+const float m_cfRunAttackTurnRSpeed	=	PI_DIV_2;
 const float m_cfRunRSpeed			=	PI_DIV_2;
 const float m_cfRunAttackMinAngle	=   PI_DIV_6;
 
@@ -54,7 +57,7 @@ public:
 	u32							mask;
 public:	
 	void SetParams(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m);
-	void SetData(CAI_Biting *pData);
+	void ApplyData(CAI_Biting *pData);
 };
 
 
@@ -104,10 +107,10 @@ public:
 	void Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m);
 	// Перейти в следующее состояние, если такового не имеется - завершить
 	void Switch();
-	// Выполняется в каждом фрейме
+	// Выполняется в каждом фрейме 
 	void Cycle(u32 cur_time);
 	
-	void SetData(CAI_Biting *pData);
+	void ApplyData(CAI_Biting *pData);
 
 	void Finish();
 	bool Active() {return (Playing || Started);}
@@ -120,23 +123,24 @@ public:
 
 class CBitingMotion {
 public:
-	CMotionParams		m_tParams;
-	CMotionTurn			m_tTurn;
-	CMotionSequence		m_tSeq;
+	CMotionParams		m_tParams;			//!< Общие параметры движения для конкретного состояния
+	CMotionTurn			m_tTurn;			//!< Параметры движения в случае, если необходим поворот
+	CMotionSequence		m_tSeq;				//!< Последовательность действий для специфического состояния
+		
 
-	void Init() {
-		m_tSeq.Init();
-	}
+	void Init();							//!< Иницализация движения
+	void SetFrameParams(CAI_Biting *pData);	//!< Установка параметров на текущий фрейм
 
-	void SetFrameParams(CAI_Biting *pData) {
-		if (!m_tSeq.Active()) {
-			m_tParams.SetData(pData);
-			m_tTurn.CheckTurning(pData);
-		} else {
-			m_tSeq.SetData(pData);
-		}
-	}
 };
+
+
+
+//*********************************************************************************************************
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// STATE MANAGMENT
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*********************************************************************************************************
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

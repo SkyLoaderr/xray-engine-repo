@@ -314,9 +314,12 @@ private:
 	u32						m_dwLastTimeEat;
 	u32						m_dwEatInterval;
 
-	// Animation Parameters
+	// Animation Parameters (current frame)
 	AI_Biting::EActionAnim		m_tActionAnim;
 	AI_Biting::EPostureAnim		m_tPostureAnim;
+	// Animation Parameters (previous frame)
+	AI_Biting::EActionAnim		m_tActionAnimPrevFrame;
+	AI_Biting::EPostureAnim		m_tPostureAnimPrevFrame;
 
 
 	_TCA					_CA;
@@ -361,11 +364,6 @@ private:
 
 
 	void SetState(IState *pS);
-	
-	
-	AI_Biting::EActionAnim		m_tActionAnimPrevFrame;
-	AI_Biting::EPostureAnim		m_tPostureAnimPrevFrame;
-	
 	
 	void ControlAnimation();
 
