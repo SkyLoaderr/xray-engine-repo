@@ -10,6 +10,7 @@ enum {
 	M_UPDATE			= 0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
 
+	M_SV_CONFIG_NEW_CLIENT,
 	M_SV_CONFIG_GAME,
 	M_SV_CONFIG_FINISHED,
 

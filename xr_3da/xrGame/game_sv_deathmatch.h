@@ -103,7 +103,7 @@ public:
 									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
 	virtual		void				Create					(LPSTR &options);
 
-	virtual		LPCSTR				section_name		() const { return "deathmatch";};
+	virtual		LPCSTR				type_name		() const { return "deathmatch";};
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда

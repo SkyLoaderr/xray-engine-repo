@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "game_base.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 game_PlayerState::game_PlayerState()
 {
@@ -65,4 +67,23 @@ game_GameState::game_GameState()
 	fraglimit			=	-1;
 	timelimit			=	-1;
 	buy_time			=	60000; // 60 sec
+}
+
+CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)
+{
+	string256		S;
+	FS.update_path	(S,"$game_data$","script.ltx");
+	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
+	R_ASSERT		(l_tpIniFile);
+
+	string256				I;
+	strcpy(I,l_tpIniFile->r_string("common","game_type_clsid_factory"));
+
+	luabind::functor<LPCSTR>	result;
+	R_ASSERT					(ai().script_engine().functor(I,result));
+	ref_str clsid = result		(game_type_name, isServer);
+
+	xr_delete			(l_tpIniFile);
+	
+	return TEXT2CLSID(*clsid);
 }

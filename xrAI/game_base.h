@@ -87,6 +87,10 @@ public:
 	game_GameState();
 
 	virtual		void				Create					(LPSTR &options){};
+	virtual		LPCSTR				type_name				() const {return "base game";};
+//for scripting enhancement
+	static		CLASS_ID			getCLASS_ID(LPCSTR game_type_name, bool bServer);
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_GameState)

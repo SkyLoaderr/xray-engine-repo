@@ -54,12 +54,15 @@ void xrServer::SendConnectionData	(IClient* _CL)
 void xrServer::OnCL_Connected		(IClient* _CL)
 {
 	xrClientData*	CL				= (xrClientData*)_CL;
+	Server_Client_Check(CL); 
+
 	csPlayers.Enter					();
 
 	//. HUD().outMessage			(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 //	NET_Packet		P;
 
 	// Game config (all, info includes _new_ player)
+	Export_game_type(CL);
 	Perform_game_export();
 	SendConnectionData(CL);
 /*
@@ -74,7 +77,6 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	SendTo							(CL->ID,P,mode);
 */
 	//
-	Server_Client_Check(CL); 
 	
 	game->OnPlayerConnect			(CL->ID);
 	csPlayers.Leave					();

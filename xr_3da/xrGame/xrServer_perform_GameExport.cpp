@@ -25,3 +25,17 @@ void xrServer::Perform_game_export	()
 
 	game->sv_force_sync	= FALSE;
 }
+
+void xrServer::Export_game_type(IClient* CL)
+{
+	NET_Packet			P;
+	u32					mode = net_flags(TRUE,TRUE);
+	csPlayers.Enter		();
+
+	P.w_begin						(M_SV_CONFIG_NEW_CLIENT);
+	P.w_string						(game->type_name() );
+	SendTo							(CL->ID,P,mode);
+
+	csPlayers.Leave		();
+}
+

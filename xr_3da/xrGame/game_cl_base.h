@@ -32,5 +32,6 @@ public:
 	virtual		char*				getTeamSection			(int Team);
 
 	virtual		game_cl_GameState::Player*				GetPlayerByGameID		(u32 GameID);
+	virtual		LPCSTR				type_name				() const {return "base client game";};
 
 };

@@ -18,7 +18,7 @@ class	game_sv_CS					: public game_sv_GameState
 public:
 									game_sv_CS				(){type = GAME_CS;}
 	virtual		void				Create					(LPSTR &options);
-	virtual		LPCSTR				section_name			() const { return "cs";};
+	virtual		LPCSTR				type_name			() const { return "cs";};
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда

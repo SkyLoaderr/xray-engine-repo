@@ -43,6 +43,9 @@ void CLevel::ClientReceive()
 			
 			UpdateDeltaUpd(timeServer());
 			break;
+		case 	M_SV_CONFIG_NEW_CLIENT:
+			InitializeClientGame(*P);
+			break;
 		case M_SV_CONFIG_GAME:
 			game->net_import_state	(*P);
 			break;

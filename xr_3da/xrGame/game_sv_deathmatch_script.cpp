@@ -10,7 +10,7 @@ template <typename T>
 struct CWrapperBase : public T, public luabind::wrap_base {
 	typedef T inherited;
 	typedef CWrapperBase<T>	self_type;
-	DEFINE_LUA_WRAPPER_CONST_METHOD_0(section_name, LPCSTR)
+	DEFINE_LUA_WRAPPER_CONST_METHOD_0(type_name, LPCSTR)
 //	DEFINE_LUA_WRAPPER_METHOD_1(Money_SetStart, void, u32)
 };
 
@@ -24,7 +24,7 @@ void game_sv_Deathmatch::script_register(lua_State *L)
 			.def("GetTeamData",			&game_sv_Deathmatch::GetTeamData)
 			
 			
-			.def("section_name",		&WrapType::section_name, &WrapType::section_name_static)
+			.def("type_name",		&WrapType::type_name, &WrapType::type_name_static)
 //			.def("Money_SetStart",		&CWrapperBase<game_sv_Deathmatch>::Money_SetStart, &CWrapperBase<game_sv_Deathmatch>::Money_SetStart_static)
 		];
 

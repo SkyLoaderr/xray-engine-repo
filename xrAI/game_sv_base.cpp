@@ -296,8 +296,8 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 	FS.update_path				(S,"$game_data$","script.ltx");
 	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT					(l_tpIniFile);
-	if (l_tpIniFile->r_string(section_name(),"script"))
-		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",l_tpIniFile->r_string(section_name(),"script")));
+	if (l_tpIniFile->r_string(type_name(),"script"))
+		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",l_tpIniFile->r_string(type_name(),"script")));
 	else
 		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",""));
 	xr_delete					(l_tpIniFile);

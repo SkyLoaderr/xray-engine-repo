@@ -31,7 +31,6 @@ public:
 									game_sv_GameState		();
 	virtual							~game_sv_GameState		();
 	// Main accessors
-	virtual		LPCSTR				section_name		() const = 0;
 	virtual		game_PlayerState*	get_it					(u32 it);
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID
 	virtual		LPCSTR				get_name_it				(u32 it);

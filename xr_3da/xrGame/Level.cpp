@@ -49,7 +49,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 //	XML_DisableStringCaching();
 	Server						= NULL;
 
-	game						= xr_new<game_cl_GameState>();
+	game						= NULL;
+//	game						= xr_new<game_cl_GameState>();
 	game_events					= xr_new<NET_Queue_Event>();
 
 	game_configured				= FALSE;

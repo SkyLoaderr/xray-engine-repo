@@ -138,6 +138,11 @@
 #	include "game_sv_teamdeathmatch.h"
 #	include "game_sv_ArtefactHunt.h"
 
+#	include "game_cl_single.h"
+#	include "game_cl_deathmatch.h"
+#	include "game_cl_teamdeathmatch.h"
+#	include "game_cl_ArtefactHunt.h"
+
 #	include "UIGameSP.h"
 #	include "UIGameAHunt.h"
 #endif
@@ -157,12 +162,17 @@ void CObjectFactory::register_classes	()
 	add<CHUDManager>											(CLSID_HUDMANAGER			,"hud_manager");
 	add<CCustomTarget>											(CLSID_TARGET				,"custom_target");
 
-	//Game type
-	add<game_sv_Single>											(CLSID_GAME_SINGLE			,"game_single");
-	add<game_sv_Deathmatch>										(CLSID_GAME_DEATHMATCH		,"game_deathmatch");
-	add<game_sv_TeamDeathmatch>									(CLSID_GAME_TEAMDEATHMATCH	,"game_team_deathmatch");
-	add<game_sv_ArtefactHunt>									(CLSID_GAME_ARTEFACTHUNT	,"game_artefact_hunt");
-//	add<game_sv_CS>												(CLSID_GAME_CS				,"game_cs");
+	//Server Game type
+	add<game_sv_Single>											(CLSID_SV_GAME_SINGLE			,"game_sv_single");
+	add<game_sv_Deathmatch>										(CLSID_SV_GAME_DEATHMATCH		,"game_sv_deathmatch");
+	add<game_sv_TeamDeathmatch>									(CLSID_SV_GAME_TEAMDEATHMATCH	,"game_sv_team_deathmatch");
+	add<game_sv_ArtefactHunt>									(CLSID_SV_GAME_ARTEFACTHUNT		,"game_sv_artefact_hunt");
+//	add<game_sv_CS>												(CLSID_GAME_CS					,"game_cs");
+	//Client Game type
+	add<game_cl_Single>											(CLSID_CL_GAME_SINGLE			,"game_cl_single");
+	add<game_cl_Deathmatch>										(CLSID_CL_GAME_DEATHMATCH		,"game_cl_deathmatch");
+	add<game_cl_TeamDeathmatch>									(CLSID_CL_GAME_TEAMDEATHMATCH	,"game_cl_team_deathmatch");
+	add<game_cl_ArtefactHunt>									(CLSID_CL_GAME_ARTEFACTHUNT		,"game_cl_artefact_hunt");
 
 	//Game UI type
 	add<CUIGameSP>												(CLSID_GAME_UI_SINGLE			,"game_ui_single");

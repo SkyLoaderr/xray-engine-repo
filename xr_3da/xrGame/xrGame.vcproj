@@ -6557,6 +6557,46 @@
 						<File
 							RelativePath="game_cl_base.h">
 						</File>
+						<Filter
+							Name="artefact_hunt"
+							Filter="">
+							<File
+								RelativePath=".\game_cl_artefacthunt.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_artefacthunt.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="deathmatch"
+							Filter="">
+							<File
+								RelativePath=".\game_cl_deathmatch.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_deathmatch.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="team_deathmatch"
+							Filter="">
+							<File
+								RelativePath=".\game_cl_teamdeathmatch.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_teamdeathmatch.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="single"
+							Filter="">
+							<File
+								RelativePath=".\game_cl_single.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_single.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="server"

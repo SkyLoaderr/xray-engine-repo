@@ -63,6 +63,7 @@ private:
 public:
 	game_sv_GameState*			game;
 
+	void					Export_game_type		(IClient* CL);
 	void					Perform_game_export		();
 	BOOL					PerformRP				(CSE_Abstract* E);
 	void					PerformMigration		(CSE_Abstract* E, xrClientData* from, xrClientData* to);
@@ -89,8 +90,6 @@ public:
 
 	void					SendConnectionData		(IClient* _CL);
 
-	//for scripting enhancement
-	CLASS_ID				getGameCLASS_ID(LPCSTR options);
 public:
 	// constr / destr
 	xrServer				();

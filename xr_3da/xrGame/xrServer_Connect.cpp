@@ -40,7 +40,7 @@ BOOL xrServer::Connect(LPSTR &session_name)
 	if (strchr(type,'/'))	*strchr(type,'/') = 0;
 	game					= NULL;
 
-	CLASS_ID clsid			= getGameCLASS_ID(type);
+	CLASS_ID clsid			= game_GameState::getCLASS_ID(type,true);
 	game					= dynamic_cast<game_sv_GameState*> ( NEW_INSTANCE ( clsid ) );
 
 /*
@@ -74,7 +74,7 @@ BOOL xrServer::Connect(LPSTR &session_name)
 	if (0==game)			return FALSE;
 	csPlayers.Enter			();
 //	game->type				= type_id;
-	Msg("Created server_game %s",game->section_name());
+	Msg("Created server_game %s",game->type_name());
 	game->Create			(session_name);
 	csPlayers.Leave			();
 	

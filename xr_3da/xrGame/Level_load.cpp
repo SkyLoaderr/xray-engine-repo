@@ -135,5 +135,5 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 
 void CLevel::BlockCheatLoad()
 {
-	if(Game().type!=GAME_SINGLE) phTimefactor=1.f;
+	if( game && (game->type!=GAME_SINGLE) ) phTimefactor=1.f;
 }

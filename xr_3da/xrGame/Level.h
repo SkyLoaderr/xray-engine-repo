@@ -66,6 +66,7 @@ private:
 	u32							m_dwLastNetUpdateTime;
 	void						UpdateDeltaUpd					( u32 LastTime );
 	void						BlockCheatLoad					()				;
+
 public:
 	//////////////////////////////////////////////	
 	// static particles
@@ -158,6 +159,7 @@ public:
 
 
 	// Game
+	void						InitializeClientGame	(NET_Packet& P);
 	void						ClientReceive			();
 	void						ClientSend				();
 	void						ClientSave				();

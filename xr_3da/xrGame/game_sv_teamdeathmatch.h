@@ -13,7 +13,7 @@ public:
 									game_sv_TeamDeathmatch	(){type = GAME_TEAMDEATHMATCH;}
 	virtual		void				Create					(LPSTR &options);
 
-	virtual		LPCSTR				section_name			() const { return "teamdeathmatch";};
+	virtual		LPCSTR				type_name			() const { return "teamdeathmatch";};
 
 	// Events	
 	virtual		void				OnPlayerConnect			(u32 id_who);

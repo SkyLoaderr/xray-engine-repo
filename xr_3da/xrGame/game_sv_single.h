@@ -18,7 +18,7 @@ public:
 									game_sv_Single			();
 	virtual							~game_sv_Single			();
 
-	virtual		LPCSTR				section_name		() const { return "single";};
+	virtual		LPCSTR				type_name		() const { return "single";};
 	virtual		void				Create					(LPSTR &options);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
 

@@ -47,7 +47,7 @@ public:
 									game_sv_ArtefactHunt	(){type = GAME_ARTEFACTHUNT;}
 	virtual		void				Create					(LPSTR &options);
 
-	virtual		LPCSTR				section_name			() const { return "artefacthunt";};
+	virtual		LPCSTR				type_name			() const { return "artefacthunt";};
 	// Events	
 	virtual		void				OnRoundStart			();							// старт раунда
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);

@@ -79,3 +79,16 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 
 	return						bResult;
 }
+
+void CLevel::InitializeClientGame	(NET_Packet& P)
+{
+	string256 game_type_name;
+	P.r_string(game_type_name);
+	if(game && !xr_strcmp(game_type_name, game->type_name()) )
+		return;
+	
+	xr_delete(game);
+	CLASS_ID clsid			= game_GameState::getCLASS_ID(game_type_name,false);
+	game					= dynamic_cast<game_cl_GameState*> ( NEW_INSTANCE ( clsid ) );
+}
+
