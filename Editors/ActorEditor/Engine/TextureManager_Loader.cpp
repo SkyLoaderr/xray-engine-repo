@@ -240,7 +240,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 			D.T				= xr_strdup		(T);
 			D.M				= xr_strdup		(M);
 			LPSTR N			= xr_strdup(item.first);
-			TDMap.insert	(make_pair(N,D));
+			td.insert		(make_pair(N,D));
 		}
 	}
 }
