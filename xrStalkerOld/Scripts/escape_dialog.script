@@ -9,7 +9,7 @@ function trader_alredy_give_job(trader, actor)
 	if actor:has_info("tutorial_artefact_start") or actor:has_info("tutorial_artefact_gain") or
 	   actor:has_info("tutorial_wounded_start") or
 	   actor:has_info("escape_artefact_start") or actor:has_info("escape_artefact_gain") or
-	   actor:has_info("escape_stalker_help") or actor:has_info("escape_stalker_give") or
+	   actor:has_info("escape_stalker_meet") or actor:has_info("escape_stalker_give") or
 	   actor:has_info("escape_blockpost_case") or actor:has_info("escape_blockpost_have")
 	then
 		return true
@@ -60,14 +60,19 @@ function trader_need_fox_info(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
 	   actor:has_info("escape_artefact_done") and
-	   actor:dont_has_info("escape_stalker_done") and
+	   actor:dont_has_info("escape_stalker_meet") and
 	   actor:dont_has_info("escape_stalker_give") and
-	   actor:dont_has_info("escape_stalker_help") and
-	   actor:dont_has_info("escape_stalker_die")
+	   actor:dont_has_info("escape_stalker_done")
 	then
 		return true
 	end
 	return false
+end
+function give_flash_to_actor(npc, actor)
+	local item = npc:object("fox_flash")
+	if item then
+		npc:transfer_item(item, actor)
+	end
 end
 function give_fox_info(first_speaker, second_speaker)
 	local item = first_speaker:object("fox_flash")

@@ -124,27 +124,27 @@
 
 	
 	<info_portion id="escape_stalker_help">
+	</info_portion>
+	<info_portion id="escape_stalker_spawn">
+	</info_portion>
+	<info_portion id="escape_stalker_dog_spawn">
+	</info_portion>	
+	<info_portion id="escape_stalker_meet">
 		<location>
 			<level>l01_escape</level>
 			<object>005</object>
 			<icon name="Сталкер" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Вернувшийся из рейда сталкер.</text>
 		</location>
-		<task>esc_help_wounded_from_raid</task>	
+		<task>esc_help_wounded_from_raid</task>		
 	</info_portion>
-	<info_portion id="escape_stalker_spawn">
-	</info_portion>
-	<info_portion id="escape_stalker_dog_spawn">
-	</info_portion>	
 	<info_portion id="escape_stalker_give">	
+		<disable>escape_stalker_meet</disable>
 	</info_portion>	
 	<info_portion id="escape_stalker_done">
-		<disable>escape_stalker_help</disable>
+		<disable>escape_stalker_meet</disable>
+		<disable>escape_stalker_give</disable>
 	</info_portion>
-	<info_portion id="escape_stalker_die">
-		<disable>escape_stalker_help</disable>
-	</info_portion>
-
 	
 	<info_portion id="escape_blockpost_case">
 		<location>
@@ -215,6 +215,8 @@
 	<info_portion id="esc_trader_newbie">
 	</info_portion>
 	<info_portion id="esc_trader_tutorial_chosen">
+	</info_portion>
+	<info_portion id="esc_trader_can_leave">
 	</info_portion>
 
 

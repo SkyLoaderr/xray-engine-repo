@@ -24,9 +24,6 @@ function proceed(actor)
 		news_manager.send_news(actor, "escape_stalker_killed")
 	end
 
-	if actor:has_info("escape_stalker_die") then
-		actor:set_task_state(task.fail, "esc_help_wounded_from_raid", 0)
-	end
 	if actor:has_info("escape_stalker_done") then
 		actor:set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
 	end
