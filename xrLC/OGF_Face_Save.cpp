@@ -9,7 +9,8 @@ extern int	RegisterString	(string &T);
 
 void OGF::Save(CFS_Base &fs)
 {
-	Msg					("%3d: %d faces")
+	Msg					("%3d: %d faces",treeID,faces.size());
+
 	// Create header
 	ogf_header H;
 	H.format_version	= xrOGF_FormatVersion;
