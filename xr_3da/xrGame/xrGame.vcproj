@@ -1473,6 +1473,86 @@
 								RelativePath=".\BastArtifact.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="BlackGraviArtifact"
+							Filter="">
+							<File
+								RelativePath=".\BlackGraviArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\BlackGraviArtifact.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="DummyArtifact"
+							Filter="">
+							<File
+								RelativePath=".\DummyArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\DummyArtifact.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ZudaArtifact"
+							Filter="">
+							<File
+								RelativePath=".\ZudaArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\ZudaArtifact.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ThornArtifact"
+							Filter="">
+							<File
+								RelativePath=".\ThornArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\ThornArtifact.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Faded Ball"
+							Filter="">
+							<File
+								RelativePath=".\FadedBall.cpp">
+							</File>
+							<File
+								RelativePath=".\FadedBall.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Electric Ball"
+							Filter="">
+							<File
+								RelativePath=".\ElectricBall.cpp">
+							</File>
+							<File
+								RelativePath=".\ElectricBall.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="RustyHairArtifact"
+							Filter="">
+							<File
+								RelativePath=".\RustyHairArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\RustyHairArtifact.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="GalantineArtifact"
+							Filter="">
+							<File
+								RelativePath=".\GalantineArtifact.cpp">
+							</File>
+							<File
+								RelativePath=".\GalantineArtifact.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Devices"

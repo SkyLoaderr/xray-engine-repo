@@ -829,6 +829,14 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "BlackDrops.h"
 #include "Needles.h"
 #include "BastArtifact.h"
+#include "BlackGraviArtifact.h"
+#include "DummyArtifact.h"
+#include "ZudaArtifact.h"
+#include "ThornArtifact.h"
+#include "FadedBall.h"
+#include "ElectricBall.h"
+#include "RustyHairArtifact.h"
+#include "GalantineArtifact.h"
 
 #include "customzone.h"
 #include "mosquitobald.h"
@@ -877,8 +885,20 @@ extern "C" {
 			// Artifacts
 			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
 			case CLSID_AF_BLACKDROPS:		P = xr_new<CBlackDrops>();			break;
-			//case CLSID_AF_NEEDLES:			P = xr_new<CNeedles>();				break;
-			case CLSID_AF_NEEDLES:			P = xr_new<CBastArtifact>();		break;
+			//case CLSID_AF_NEEDLES:		P = xr_new<CNeedles>();				break;
+			//case CLSID_AF_NEEDLES:		P = xr_new<CBastArtifact>();		break;
+			case CLSID_AF_NEEDLES:			P = xr_new<CBlackGraviArtifact>();	break;
+
+			case CLSID_AF_BAST:				P = xr_new<CBastArtifact>();		break;
+			case CLSID_AF_BLACK_GRAVI:		P = xr_new<CBlackGraviArtifact>();	break;
+			case CLSID_AF_DUMMY:			P = xr_new<CDummyArtifact>();		break;
+			case CLSID_AF_ZUDA:				P = xr_new<CZudaArtifact>();		break;
+			case CLSID_AF_THORN:			P = xr_new<CThornArtifact>();		break;
+			case CLSID_AF_FADED_BALL:		P = xr_new<CFadedBall>();			break;
+			case CLSID_AF_ELECTRIC_BALL:	P = xr_new<CElectricBall>();		break;	
+			case CLSID_AF_RUSTY_HAIR:		P = xr_new<CRustyHairArtifact>();	break;
+			case CLSID_AF_GALANTINE:		P = xr_new<CGalantineArtifact>();	break;
+
 			case CLSID_AF_GRAVI:	
 			case CLSID_ARTEFACT:			P = xr_new<CGraviArtifact>();		break;
 

@@ -1,29 +1,29 @@
 ///////////////////////////////////////////////////////////////
-// BlackDrops.cpp
-// BlackDrops - черные капли
+// ElectricBall.cpp
+// ElectricBall - артефакт электрический шар
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "BlackDrops.h"
+#include "ElectricBall.h"
 #include "PhysicsShell.h"
 
 
-CBlackDrops::CBlackDrops(void) 
+CElectricBall::CElectricBall(void) 
 {
 }
 
-CBlackDrops::~CBlackDrops(void) 
+CElectricBall::~CElectricBall(void) 
 {
 }
 
-void CBlackDrops::Load(LPCSTR section) 
+void CElectricBall::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
 
 
-void CBlackDrops::UpdateCL() 
+void CElectricBall::UpdateCL() 
 {
 	inherited::UpdateCL();
 

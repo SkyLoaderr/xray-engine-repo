@@ -1,29 +1,29 @@
 ///////////////////////////////////////////////////////////////
-// BlackDrops.cpp
-// BlackDrops - черные капли
+// RustyHairArtifact.cpp
+// RustyHairArtifact - артефакт ржавые волосы
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "BlackDrops.h"
+#include "RustyHairArtifact.h"
 #include "PhysicsShell.h"
 
 
-CBlackDrops::CBlackDrops(void) 
+CRustyHairArtifact::CRustyHairArtifact(void) 
 {
 }
 
-CBlackDrops::~CBlackDrops(void) 
+CRustyHairArtifact::~CRustyHairArtifact(void) 
 {
 }
 
-void CBlackDrops::Load(LPCSTR section) 
+void CRustyHairArtifact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
 
 
-void CBlackDrops::UpdateCL() 
+void CRustyHairArtifact::UpdateCL() 
 {
 	inherited::UpdateCL();
 

@@ -56,6 +56,15 @@
 #define CLSID_AF_GRAVI				MK_CLSID('A','F','_','G','R','A','V','I')
 #define CLSID_AF_BLACKDROPS			MK_CLSID('A','F','_','B','D','R','O','P')
 #define CLSID_AF_NEEDLES			MK_CLSID('A','F','_','N','E','E','D','L')
+#define CLSID_AF_BAST				MK_CLSID('A','F','_','B','A','S','T',' ')
+#define CLSID_AF_BLACK_GRAVI		MK_CLSID('A','F','_','B','G','R','A','V')
+#define CLSID_AF_DUMMY				MK_CLSID('A','F','_','D','U','M','M','Y')
+#define CLSID_AF_ZUDA				MK_CLSID('A','F','_','Z','U','D','A',' ')
+#define CLSID_AF_THORN				MK_CLSID('A','F','_','T','H','O','R','N')
+#define CLSID_AF_FADED_BALL			MK_CLSID('A','F','_','F','B','A','L','L')
+#define CLSID_AF_ELECTRIC_BALL		MK_CLSID('A','F','_','E','B','A','L','L')
+#define CLSID_AF_RUSTY_HAIR			MK_CLSID('A','F','_','R','H','A','I','R')
+#define CLSID_AF_GALANTINE			MK_CLSID('A','F','_','G','A','L','A','N')
 
 #define CLSID_ARTEFACT				MK_CLSID('A','R','T','E','F','A','C','T')
 

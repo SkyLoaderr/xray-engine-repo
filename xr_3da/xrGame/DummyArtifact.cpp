@@ -1,29 +1,29 @@
 ///////////////////////////////////////////////////////////////
-// BlackDrops.cpp
-// BlackDrops - черные капли
+// DummyArtifact.cpp
+// DummyArtifact - артефакт пустышка
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "BlackDrops.h"
+#include "DummyArtifact.h"
 #include "PhysicsShell.h"
 
 
-CBlackDrops::CBlackDrops(void) 
+CDummyArtifact::CDummyArtifact(void) 
 {
 }
 
-CBlackDrops::~CBlackDrops(void) 
+CDummyArtifact::~CDummyArtifact(void) 
 {
 }
 
-void CBlackDrops::Load(LPCSTR section) 
+void CDummyArtifact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
 
 
-void CBlackDrops::UpdateCL() 
+void CDummyArtifact::UpdateCL() 
 {
 	inherited::UpdateCL();
 

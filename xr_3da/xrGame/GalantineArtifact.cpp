@@ -1,29 +1,29 @@
 ///////////////////////////////////////////////////////////////
-// BlackDrops.cpp
-// BlackDrops - черные капли
+// GalantineArtifact.cpp
+// GalantineArtifact - артефакт ведбмин студень
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "BlackDrops.h"
+#include "GalantineArtifact.h"
 #include "PhysicsShell.h"
 
 
-CBlackDrops::CBlackDrops(void) 
+CGalantineArtifact::CGalantineArtifact(void) 
 {
 }
 
-CBlackDrops::~CBlackDrops(void) 
+CGalantineArtifact::~CGalantineArtifact(void) 
 {
 }
 
-void CBlackDrops::Load(LPCSTR section) 
+void CGalantineArtifact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
 
 
-void CBlackDrops::UpdateCL() 
+void CGalantineArtifact::UpdateCL() 
 {
 	inherited::UpdateCL();
 

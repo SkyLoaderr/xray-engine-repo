@@ -1,29 +1,29 @@
 ///////////////////////////////////////////////////////////////
-// BlackDrops.cpp
-// BlackDrops - черные капли
+// ThornArtifact.cpp
+// ThornArtifact - артефакт колючка
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "BlackDrops.h"
+#include "ThornArtifact.h"
 #include "PhysicsShell.h"
 
 
-CBlackDrops::CBlackDrops(void) 
+CThornArtifact::CThornArtifact(void) 
 {
 }
 
-CBlackDrops::~CBlackDrops(void) 
+CThornArtifact::~CThornArtifact(void) 
 {
 }
 
-void CBlackDrops::Load(LPCSTR section) 
+void CThornArtifact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
 
 
-void CBlackDrops::UpdateCL() 
+void CThornArtifact::UpdateCL() 
 {
 	inherited::UpdateCL();
 

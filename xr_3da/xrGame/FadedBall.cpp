@@ -1,29 +1,29 @@
 ///////////////////////////////////////////////////////////////
-// BlackDrops.cpp
-// BlackDrops - черные капли
+// FadedBall.cpp
+// FadedBall - артефакт блеклый шар
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "BlackDrops.h"
+#include "FadedBall.h"
 #include "PhysicsShell.h"
 
 
-CBlackDrops::CBlackDrops(void) 
+CFadedBall::CFadedBall(void) 
 {
 }
 
-CBlackDrops::~CBlackDrops(void) 
+CFadedBall::~CFadedBall(void) 
 {
 }
 
-void CBlackDrops::Load(LPCSTR section) 
+void CFadedBall::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
 
 
-void CBlackDrops::UpdateCL() 
+void CFadedBall::UpdateCL() 
 {
 	inherited::UpdateCL();
 

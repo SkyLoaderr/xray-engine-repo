@@ -50,6 +50,15 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AF_GRAVI:
 		case CLSID_AF_BLACKDROPS:
 		case CLSID_AF_NEEDLES:
+		case CLSID_AF_BAST:
+		case CLSID_AF_BLACK_GRAVI:
+		case CLSID_AF_DUMMY:
+		case CLSID_AF_ZUDA:
+		case CLSID_AF_THORN:
+		case CLSID_AF_FADED_BALL:
+		case CLSID_AF_ELECTRIC_BALL:
+		case CLSID_AF_RUSTY_HAIR:
+		case CLSID_AF_GALANTINE:
 		case CLSID_ARTEFACT:			return xr_new<CSE_ALifeItemArtefact>			(caSection);
 
 		// Zones
