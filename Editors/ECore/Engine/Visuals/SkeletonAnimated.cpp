@@ -656,7 +656,7 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 
 void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
 {
-	CSkeletonAnimated* K 			= dynamic_cast<CSkeletonAnimated*>(_K); R_ASSERT(K);
+	CSkeletonAnimated* K 			= (CSkeletonAnimated*)_K; 
 
     if (K->LL_GetBoneVisible(SelfID)){
         CBoneInstance& BONE_INST	= K->LL_GetBoneInstance(SelfID);
