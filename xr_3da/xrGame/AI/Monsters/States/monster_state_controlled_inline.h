@@ -19,17 +19,15 @@ CStateMonsterControlledAbstract::CStateMonsterControlled(_Object *obj) : inherit
 TEMPLATE_SPECIALIZATION
 void CStateMonsterControlledAbstract::execute()
 {
-	CControlledEntityBase *entity = smart_cast<CControlledEntityBase *>(object);
-	VERIFY(entity);
-
-	switch (entity->get_data().m_task) {
+	switch (object->get_data().m_task) {
 		case eTaskFollow:	select_state(eStateFollow);	break;
 		case eTaskAttack:	{
 			// проверить валидность данных атаки
-			const CEntity *obj = entity->get_data().m_object;
-			if (!m_object || m_object->getDestroy() || !m_object->g_Alive())
+			const CEntity *enemy = object->get_data().m_object;
+			if (!enemy || enemy->getDestroy() || !enemy->g_Alive()) {
+				object->get_data().m_object = object->get_controller();
 				select_state(eStateFollow);
-			else 
+			} else 
 				select_state(eStateAttack);	break;
 		}
 		default:			NODEFAULT;
