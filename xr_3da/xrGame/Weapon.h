@@ -83,6 +83,8 @@ protected:
 protected:			// Utilities
 	void			SoundCreate		(sound3D& dest, LPCSTR name);
 	void			SoundDestroy	(sound3D& dest);
+	void			ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T);
+	void			ShaderDestroy	(Shader* &dest);
 public:
 	virtual void	OnMagazineEmpty	()			= 0;
 	virtual void	OnAnimationEnd	()			{};

@@ -67,6 +67,43 @@ void CWeapon::SoundDestroy(	sound3D& dest)
 {
 	pSounds->Delete3D	(dest);
 }
+void CWeapon::ShaderCreate(Shader* &dest, LPCSTR S, LPCSTR T)
+{
+	string256	name,temp;
+
+	// test 'WEAPONS' folder
+	strconcat	(name,"weapons\\",GetName(),"\\",T);
+	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	{
+		dest = Device.Shader.Create(S,name);
+		return;
+	}
+	strconcat	(name,"weapons\\","generic_\\",T);
+	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	{
+		dest = Device.Shader.Create(S,name);
+		return;
+	}
+
+	// test 'UI' folder
+	strconcat	(name,"ui\\hud_wpn_",GetName());
+	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	{
+		dest = Device.Shader.Create(S,name);
+		return;
+	}
+	strcpy		(name,"ui\\hud_wpn_generic");
+	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
+	{
+		dest = Device.Shader.Create(S,name);
+		return;
+	}
+	Device.Fatal("Can't find texture '%s' for weapon '%s'",T,GetName());
+}
+void CWeapon::ShaderDestroy	(Shader* &dest)
+{
+	Device.Shader.Delete	(dest);
+}
 
 void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
 {
