@@ -207,7 +207,7 @@ void CUIMapWnd::Show(bool status)
 //		SetLocalMap						(Level().name());
 	}else{
 		GetUICursor()->HoldMode(false);
-		m_flags.set(lmMouseHold,FALSE)
+		m_flags.set(lmMouseHold,FALSE);
 	}
 
 	inherited::Show(status);
