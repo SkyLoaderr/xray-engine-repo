@@ -927,6 +927,10 @@ function add_to_binder( npc, char_ini )
 
     action = manager:action( stalker_ids.action_death_planner )
     action:add_precondition( world_property( prop_dead_hook, true ) )
+
+    if char_ini then
+        this.set_commander( npc )
+    end
 end
 
 function init_commander( npc, a )
@@ -1069,6 +1073,7 @@ function init_commander( npc, a )
 end
 
 function set_commander( npc, enable )
+    printf( "SET COMMANDER" )
     local a = xr_motivator.storage[npc:id()].commander
 
     if enable == nil then
@@ -1076,4 +1081,6 @@ function set_commander( npc, enable )
     else
         a.enabled = enable and this.init_commander( npc, a )
     end
+
+    xr_motivator.checkStorage( npc )
 end
