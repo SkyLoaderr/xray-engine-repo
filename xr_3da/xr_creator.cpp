@@ -7,6 +7,7 @@
 #include "fstaticrender.h"
 #include "xr_sndman.h"
 #include "xr_smallfont.h"
+#include "xrLevel.h"
 
 CCreator::CCreator( ) 
 {
@@ -121,10 +122,6 @@ BOOL CCreator::Load(DWORD dwNum)
 	Device.seqDevDestroy.Add	(&Render);
 	Device.seqDevCreate.Add		(&Render);
 
-	// AI space
-	pApp->LoadTitle("Loading AI space...");
-	AI.Load(Path.Current);
-	
 	// Objects
 	pApp->LoadTitle	("Loading entities...");
 	R_ASSERT(Load_GameSpecific_Before());

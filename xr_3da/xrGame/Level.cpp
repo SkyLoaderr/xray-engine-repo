@@ -245,6 +245,10 @@ void CLevel::net_Disconnect	( )
 
 BOOL CLevel::Load_GameSpecific_Before()
 {
+	// AI space
+	pApp->LoadTitle("Loading AI space...");
+	AI.Load(Path.Current);
+	
 	// Load RPoints
 	CInifile::Sect& S = pLevel->ReadSection("respawn_point");
 	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
