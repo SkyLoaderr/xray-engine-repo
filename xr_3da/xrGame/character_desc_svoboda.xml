@@ -342,7 +342,9 @@
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>mil_max_dialog</start_dialog>
+		<actor_dialog>mil_max_dialog_common1</actor_dialog>
+		<actor_dialog>mil_max_dialog_common1</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
