@@ -224,7 +224,12 @@ void CCustomZone::Load(LPCSTR section)
 		m_dwBlowoutWindTimeEnd = pSettings->r_u32(section,"blowout_wind_time_end"); 
 		R_ASSERT(m_dwBlowoutWindTimeStart < m_dwBlowoutWindTimePeak);
 		R_ASSERT(m_dwBlowoutWindTimePeak < m_dwBlowoutWindTimeEnd);
-		R_ASSERT((s32)m_dwBlowoutWindTimeEnd < m_StateTime[eZoneStateBlowout]);
+		if((s32)m_dwBlowoutWindTimeEnd < m_StateTime[eZoneStateBlowout])
+		{
+			m_dwBlowoutWindTimeEnd =u32( m_StateTime[eZoneStateBlowout]-1);
+			Msg("! ERROR: invalid 'blowout_wind_time_end' in '%s'",section);
+		}
+
 		
 		m_fBlowoutWindPowerMax = pSettings->r_float(section,"blowout_wind_power");
 	}
