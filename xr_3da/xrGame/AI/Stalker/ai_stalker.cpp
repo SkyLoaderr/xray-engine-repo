@@ -740,7 +740,8 @@ void CAI_Stalker::load (IReader &input_packet)
 
 void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, float speed)
 {
-	animation().update();
+	if (!Device.Pause())
+		animation().update();
 }
 
 const SRotation CAI_Stalker::Orientation	() const
