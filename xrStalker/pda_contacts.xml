@@ -14,7 +14,7 @@
 	</cntd_frame_line>
 
 	<!-- CONTACT LIST -->
-	<list x="13" y="70" width="430" height="390" item_height = "74"></list>
+	<list x="13" y="70" width="425" height="380" item_height = "74"></list>
 	
 	<!-- AUTOSTATICS -->
 	
@@ -23,7 +23,7 @@
 		<texture>ui\ui_pda_vertical_line_r_l</texture>
 	</auto_static>
 	<!-- RIGHT LADDER -->
-	<auto_static x="416" y="77" width="4" height="430">
+	<auto_static x="410" y="77" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</auto_static>
 
