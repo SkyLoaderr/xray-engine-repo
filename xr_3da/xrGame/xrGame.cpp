@@ -892,7 +892,6 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "targetcs.h"
 #include "targetcscask.h"
 
-#include "weaponM134.h"
 #include "weaponAK74.h"
 #include "weaponLR300.h"
 #include "weaponFN2000.h"
