@@ -517,6 +517,12 @@
 						RelativePath=".\Rain.h">
 					</File>
 					<File
+						RelativePath=".\thunderbolt.cpp">
+					</File>
+					<File
+						RelativePath=".\thunderbolt.h">
+					</File>
+					<File
 						RelativePath=".\xr_efflensflare.cpp">
 					</File>
 					<File
