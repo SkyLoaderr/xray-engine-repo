@@ -46,7 +46,11 @@ function action_remark_activity:reset_scheme()
 	self.state = state_initial
 
 	self.reset_time = device():time_global()
+	
+	self.snd_scheduled = false
+	self.snd_start_time = nil
 	self.snd_started = false
+	
 	self.target = nil
 
 	self.st.signals = {}
@@ -63,19 +67,20 @@ function action_remark_activity:signal_arrival()
 end
 
 function action_remark_activity:activate_sound()
-	if self.snd_started then
+	if self.snd_scheduled then
 		return
 	end
-	self.snd_started = true
+	self.snd_start_time = device():time_global()
+	self.snd_scheduled = true
 
 	local snd = {}
 	snd.rnd = snd_prob
 	snd.maxidle = 1
 	snd.sumidle = -1
 	snd.themes = parse_names(self.st.snd)
-	printf("_bp1: num_snd = %d", self.object:active_sound_count())
+	printf("_bp1 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
 	xr_sound.sound_update(self.object, snd, true)
-	printf("_bp2: num_snd = %d", self.object:active_sound_count())
+	printf("_bp2 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
 end
 
 function action_remark_activity:update_anim()
@@ -100,7 +105,7 @@ function action_remark_activity:step()
 	if not self.sound_end_signalled and self.snd_started and self.object:active_sound_count() == 0 then
 		self.sound_end_signalled = true
 		self.st.signals["sound_end"] = true
-		printf("xr_remark: signalling sound_end")
+		printf("xr_remark [%s]: signalling sound_end", self.object:name())
 	end
 
 	-- Try to switch to another scheme:
@@ -229,6 +234,14 @@ function action_remark_activity:execute()
 		self:step()
 	until old_state == self.state
 
+	--printf("_bp3 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
+	if self.snd_scheduled then -- запросили запуск звука на этом апдейте
+		if device():time_global() - self.snd_start_time > 1000 then
+			-- нужно, чтобы прошел как минимум 1 апдейт, но не меньше 1-й секунды, прежде чем считать, что звук
+			-- стартовал и ждать его окончания
+			self.snd_started = true
+		end
+	end
 end
 
 function action_remark_activity:finalize()

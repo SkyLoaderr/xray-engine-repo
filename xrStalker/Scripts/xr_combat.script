@@ -4,13 +4,14 @@
 -- Константа
 class "evaluator_check_combat" (property_evaluator)
 function evaluator_check_combat:__init(name, storage) super (nil, name)
-  self.a = storage
+	self.a = storage
 end
 function evaluator_check_combat:evaluate ()
-	if self.object:best_enemy() then
+	if self.a.enabled and self.object:best_enemy() then
 		xr_logic.try_switch_to_another_section(self.object, self.a)	
 	end
-    return true
+
+	return true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -33,4 +34,5 @@ end
 function set_combat_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
+	st.enabled = true
 end

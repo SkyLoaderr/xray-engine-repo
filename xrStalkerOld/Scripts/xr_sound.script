@@ -159,6 +159,7 @@ function load_sound(obj)
 	
 	--print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+	print_table(theme)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Sound Player Function
@@ -261,6 +262,7 @@ function sound_update(npc, sound, now)
 --				printf("Number")
 --				npc:play_sound(id, now+1, now, 1, 0, num)
 --			else
+				printf("_bp: play_sound: %d, %d", id, num)
 				npc:play_sound(id, 1, 0, 1, 0, num)
 --			end
 		end

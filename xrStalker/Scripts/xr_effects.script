@@ -2,7 +2,7 @@
 -- Кто-то из участников сценки вступил в бой - теперь нужно пообижать всех на всех
 function gar_bandits_fight(actor, npc)
 	local novice = level.object("gar_dramscene_novice")
-	if not novice then
+	if not novice or not novice:alive() then
 		return
 	end
 
@@ -30,6 +30,14 @@ end
 	
 function actor_friend(actor, npc)
 	npc:set_relation(game_object.friend, actor)
+end
+
+-- Вызов этой функции отключит обработчик [combat] боя для персонажа.
+-- Используется в случаях, когда все необходимые действия, такие как переключение на другую секцию,
+-- уже выполнены, и повторно выполнять их во время боя нельзя (а условия секции [combat] проверяются на каждом
+-- апдейте, когда персонаж в бою, если, конечно, не отключены вызовом этой функции).
+function disable_combat_handler(actor, npc)
+	xr_motivator.storage[npc:id()].combat.enabled = false
 end
 
 function log_bp1(actor, npc)
