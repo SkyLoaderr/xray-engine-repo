@@ -264,15 +264,15 @@ public:
 	{	Read(&v,3*sizeof(float));	}
 	IC void	Rcolor(Fcolor &v)
 	{	Read(&v,4*sizeof(float));	}
-
+	
 	// Set file pointer to start of chunk data (0 for root chunk)
 	void	Rewind	(void)
 	{	Seek(0); }
-
+	
 	DWORD		FindChunk(DWORD ID, BOOL* bCompressed=0)	// поиск XR Chunk'ов - возврат - размер или 0
 	{
 		DWORD	dwSize,dwType;
-
+		
 		Rewind();
 		while (!Eof()) {
 			dwType = Rdword();
@@ -291,6 +291,15 @@ public:
 		DWORD	dwSize = FindChunk(ID);
 		if (dwSize!=0) {
 			Read(dest,dwSize);
+			return TRUE;
+		} else return FALSE;
+	};
+	BOOL		ReadChunkSafe	(DWORD ID, void *dest, DWORD dest_size)	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
+	{
+		DWORD	dwSize = FindChunk(ID);
+		if (dwSize!=0) {
+			R_ASSERT(dwSize==dest_size);
+			Read	(dest,dwSize);
 			return TRUE;
 		} else return FALSE;
 	};
