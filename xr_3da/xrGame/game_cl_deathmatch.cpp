@@ -413,6 +413,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				};
 
 				//-----------------------------------------------------
+				/*
 				if (Level().CurrentViewEntity())
 				{
 					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
@@ -429,6 +430,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						m_game_ui->SetFragsAndPlaceCaption(FragsStr);
 					};
 				};
+				*/
 				//-----------------------------------------------------
 			};
 		}break;
