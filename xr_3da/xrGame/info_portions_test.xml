@@ -63,6 +63,7 @@
 	<info_portion id="location_test1">
 		<article>one</article>
 		<article>two</article>
+		<article>bbb</article>
 		<location >
 			<object story_id = "0"></object>
 			<icon name="брод€га сталкер" x="0" y="0" width="1" height="1"></icon>
