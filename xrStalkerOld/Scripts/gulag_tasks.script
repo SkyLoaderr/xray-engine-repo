@@ -24,49 +24,79 @@ function loadJob(sj, gname, type, squad, groups)
 	if type == "gar_bandits" then
 		t = { section = "walker1@gar_bandits",
 			idle = 0,
-			prior = 3, state = {0},
+			prior = 3, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker2@gar_bandits",
 			idle = 0,
-			prior = 3, state = {0},
+			prior = 3, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker3@gar_bandits",
 			idle = 0,
-			prior = 3, state = {0},
+			prior = 3, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "kamp1@gar_bandits",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "kamp1@gar_bandits",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "kamp1@gar_bandits",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "kamp1@gar_bandits",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "kamp1@gar_bandits",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker1@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker4@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker5@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
@@ -74,49 +104,79 @@ function loadJob(sj, gname, type, squad, groups)
 	if type == "gar_stalkers" then
 		t = { section = "walker1@gar_stalkers",
 			idle = 0,
-			prior = 0, state = {0},
+			prior = 3, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker2@gar_stalkers",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 3, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "walker3@gar_stalkers",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 3, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "kamp1@gar_stalkers",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@gar_stalkers",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_stalkers",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_stalkers",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_stalkers",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker1@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker4@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker5@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
