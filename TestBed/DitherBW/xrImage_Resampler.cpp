@@ -216,7 +216,7 @@ struct CLIST
 	CONTRIB	*p;					/* pointer to list of contributions */
 };
 
-DWORD	clamp	(double a)
+DWORD	CC	(double a)
 {
 	int	p	= iFloor(float(a));
 	if	(p<0)	return 0; else if (p>255) return 255;
@@ -331,32 +331,31 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 				w_b			+=	W*double(RGBA_GETBLUE(P));
 				w_a			+=	W*double(RGBA_GETALPHA(P));
 			}
-			put_pixel(tmp, i, k, (Pixel)CLAMP(weight, BLACK_PIXEL, WHITE_PIXEL));
+			put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
 		}
 	}
 	free(raster);
 
 	/* free the memory allocated for horizontal filter weights */
-	for(i = 0; i < tmp->xsize; ++i) {
-		free(contrib[i].p);
-	}
+	for(i = 0; i < tmp->xsize; ++i) free(contrib[i].p);
 	free(contrib);
 
 	/* pre-calculate filter contributions for a column */
 	contrib = (CLIST *)calloc(dst->ysize, sizeof(CLIST));
 	if(yscale < 1.0) {
-		width = fwidth / yscale;
-		fscale = 1.0 / yscale;
-		for(i = 0; i < dst->ysize; ++i) {
-			contrib[i].n = 0;
-			contrib[i].p = (CONTRIB *)calloc((int) (width * 2 + 1),
-					sizeof(CONTRIB));
-			center = (double) i / yscale;
-			left = ceil(center - width);
-			right = floor(center + width);
-			for(j = left; j <= right; ++j) {
-				weight = center - (double) j;
-				weight = (*filterf)(weight / fscale) / fscale;
+		width	= fwidth / yscale;
+		fscale	= 1.0 / yscale;
+		for	(i = 0; i < dst->ysize; ++i) 
+		{
+			contrib[i].n	= 0;
+			contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),sizeof(CONTRIB));
+			center			= (double) i / yscale;
+			left			= ceil	(center - width);
+			right			= floor	(center + width);
+			for(j = left; j <= right; ++j) 
+			{
+				weight	= center - (double) j;
+				weight	= filterf(weight / fscale) / fscale;
 				if(j < 0) {
 					n = -j;
 				} else if(j >= tmp->ysize) {
@@ -365,18 +364,18 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					n = j;
 				}
 				k = contrib[i].n++;
-				contrib[i].p[k].pixel = n;
-				contrib[i].p[k].weight = weight;
+				contrib[i].p[k].pixel	= n;
+				contrib[i].p[k].weight	= weight;
 			}
 		}
 	} else {
-		for(i = 0; i < dst->ysize; ++i) {
-			contrib[i].n = 0;
-			contrib[i].p = (CONTRIB *)calloc((int) (fwidth * 2 + 1),
-					sizeof(CONTRIB));
-			center = (double) i / yscale;
-			left = ceil(center - fwidth);
-			right = floor(center + fwidth);
+		for(i = 0; i < dst->ysize; ++i) 
+		{
+			contrib[i].n	= 0;
+			contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),sizeof(CONTRIB));
+			center			= (double) i / yscale;
+			left			= ceil	(center - fwidth);
+			right			= floor	(center + fwidth);
 			for(j = left; j <= right; ++j) {
 				weight = center - (double) j;
 				weight = (*filterf)(weight);
@@ -388,32 +387,38 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					n = j;
 				}
 				k = contrib[i].n++;
-				contrib[i].p[k].pixel = n;
-				contrib[i].p[k].weight = weight;
+				contrib[i].p[k].pixel	= n;
+				contrib[i].p[k].weight	= weight;
 			}
 		}
 	}
 
 	/* apply filter to zoom vertically from tmp to dst */
 	raster = (Pixel *)calloc(tmp->ysize, sizeof(Pixel));
-	for(k = 0; k < dst->xsize; ++k) {
-		get_column(raster, tmp, k);
-		for(i = 0; i < dst->ysize; ++i) {
-			weight = 0.0;
-			for(j = 0; j < contrib[i].n; ++j) {
-				weight += raster[contrib[i].p[j].pixel]
-					* contrib[i].p[j].weight;
+	for(k = 0; k < dst->xsize; ++k) 
+	{
+		get_column	(raster, tmp, k);
+		for(i = 0; i < dst->ysize; ++i) 
+		{
+			double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
+
+			for	(j = 0; j < contrib[i].n; ++j) 
+			{
+				double	W	=	contrib[i].p[j].weight;
+				Pixel	P	=	raster[contrib[i].p[j].pixel];
+				w_r			+=	W*double(RGBA_GETRED(P));
+				w_g			+=	W*double(RGBA_GETGREEN(P));
+				w_b			+=	W*double(RGBA_GETBLUE(P));
+				w_a			+=	W*double(RGBA_GETALPHA(P));
 			}
-			put_pixel(dst, k, i,
-				(Pixel)CLAMP(weight, BLACK_PIXEL, WHITE_PIXEL));
+			put_pixel(dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
 		}
+
 	}
 	free(raster);
 
 	/* free the memory allocated for vertical filter weights */
-	for(i = 0; i < tmp->xsize; ++i) {
-		free(contrib[i].p);
-	}
+	for	(i = 0; i < tmp->xsize; ++i) free(contrib[i].p);
 	free(contrib);
 
 	free_image(tmp);
