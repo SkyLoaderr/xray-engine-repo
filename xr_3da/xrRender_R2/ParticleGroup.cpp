@@ -168,8 +168,6 @@ void CParticleGroup::SItem::UpdateParent(const Fmatrix& m, const Fvector& veloci
     if (E) E->UpdateParent(m,velocity,bXFORM);
 }
 //------------------------------------------------------------------------------
-static const u32	uDT_STEP = 33;
-static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 void OnGroupParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 {
 	CParticleGroup* PG 	= static_cast<CParticleGroup*>(owner); 	VERIFY(PG);

@@ -6,6 +6,9 @@
 using namespace PAPI;
 using namespace PS;
 
+const u32	PS::uDT_STEP 	= 33;
+const float	PS::fDT_STEP 	= float(uDT_STEP)/1000.f;
+
 void PS::OnEffectParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 {
 	CParticleEffect* PE = static_cast<CParticleEffect*>(owner); VERIFY(PE);
@@ -74,9 +77,6 @@ void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity, BO
         ParticleManager()->Transform(m_HandleActionList,m,velocity);
 	}
 }
-
-static const u32	uDT_STEP = 33;
-static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 
 void CParticleEffect::OnFrame(u32 frame_dt)
 {
