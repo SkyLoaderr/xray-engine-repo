@@ -64,7 +64,8 @@ void Startup(LPSTR     lpCmdLine)
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
 	string prjName			= "game\\data\\levels\\"+string(name)+"\\build.prj";
 	Phase					("Reading project...");
-	CCompressedStream		FS(prjName.c_str(),	"xrLC");
+	CCompressedStream*		F	= new CCompressedStream(prjName.c_str(),	"xrLC");
+	CStream&				FS	= *F;
 
 	// Version
 	DWORD version;
@@ -92,11 +93,11 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Conversion
 	Phase					("Converting data structures...");
-	pBuild					= new CBuild(&Params,FS);
-	_DELETE					(FS);
+	pBuild					= new CBuild(Params,FS);
+	_DELETE					(F);
 	
 	// Call for builder
-	pBuild->Run				(("game\\data\\levels\\"+string(name)).c_str());
+	pBuild->Run				("game\\data\\levels\\"+string(name));
 	delete					pBuild;
 
 	// Show statistic

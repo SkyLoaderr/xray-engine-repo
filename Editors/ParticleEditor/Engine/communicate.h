@@ -42,20 +42,20 @@ struct b_texture
 
 struct b_light_control						// controller or "layer", 30fps
 {
-	string64			name;
-	DWORD				count;
+	string64			name;				// empty for base layer
+	DWORD				count;				// 0 for base layer
 	// DWORD			data[];
 };
 
 struct b_light_static						// For static lighting
 {
-	DWORD				controller_ID;		// DWORD(-1) = no controller
+	DWORD				controller_ID;		// 0 = base layer
 	Flight				data;
 };
 
 struct b_light_dynamic						// For dynamic models
 {
-	DWORD				controller_ID;		// DWORD(-1) = no controller
+	DWORD				controller_ID;		// 0 = base layer
 	Flight				data;
 	svector<WORD,16>	sectors;
 };
@@ -80,7 +80,7 @@ struct b_lod_face
 	Fvector				v		[4];
 	Fvector2			t		[4];
 };
-
+ 
 struct b_lod
 {
 	b_lod_face			faces	[4];

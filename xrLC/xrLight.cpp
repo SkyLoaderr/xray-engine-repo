@@ -146,7 +146,7 @@ public:
 		CDB::COLLIDER	DB;
 		DB.ray_options	(CDB::OPT_CULL);
 		
-		vector<R_Light>	Lights = pBuild->lights[0].lights;
+		vector<R_Light>	Lights = pBuild->L_layers.front().lights;
 		if (Lights.empty())		return;
 		
 		for (DWORD I = faceStart; I<faceEnd; I++)
