@@ -67,7 +67,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 void CRT::Destroy	()
 {
 	pTexture->surface_set				(0);
-	Device.Shader._DeleteTexture		(pTexture);
+	pTexture	= NULL;
 	_RELEASE	(pRT		);
 	_RELEASE	(pSurface	);
 }
@@ -78,7 +78,6 @@ CRTC::CRTC			()
 	pSurface									= NULL;
 	pRT[0]=pRT[1]=pRT[2]=pRT[3]=pRT[4]=pRT[5]	= NULL;
 	dwSize										= 0;
-	dwHeight									= 0;
 	fmt											= D3DFMT_UNKNOWN;
 }
 CRTC::~CRTC			()
@@ -127,8 +126,8 @@ void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 
 void CRTC::Destroy()
 {
-	pTexture->surface_set				(0);
-	Device.Shader._DeleteTexture		(pTexture);
+	pTexture->surface_set	(0);
+	pTexture				= NULL;
 	for (u32 face=0; face<6; face++)
 		_RELEASE	(pRT[face]	);
 	_RELEASE	(pSurface	);

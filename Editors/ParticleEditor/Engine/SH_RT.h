@@ -19,7 +19,7 @@ public:
 
 	void				Create	(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
 	void				Destroy	();
-	IC BOOL				Valid	()	{ return 0!=pTexture; }
+	IC BOOL				Valid	()	{ return !pTexture; }
 };
 typedef	resptr_core<CRT,resptr_base<CRT> >					ref_rt;
 
@@ -37,7 +37,7 @@ public:
 
 	void				Create	(LPCSTR name, u32 size, D3DFORMAT f);
 	void				Destroy	();
-	IC BOOL				Valid	()	{ return 0!=pTexture; }
+	IC BOOL				Valid	()	{ return !pTexture; }
 };
 typedef	resptr_core<CRTC,resptr_base<CRTC> >				ref_rtc;
 
