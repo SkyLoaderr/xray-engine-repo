@@ -167,8 +167,15 @@ IC	void CAbstractGraph::save			(IWriter &stream)
 	const_vertex_iterator		E = vertices().end();
 	for (int i=0; I != E; ++I, ++i) {
 		stream.open_chunk		(i);
-		save_data				((*I).second->vertex_id(),stream);
-		save_data				((*I).second->data(),stream);
+		{
+			stream.open_chunk	(0);
+			save_data			((*I).second->vertex_id(),stream);
+			stream.close_chunk	();
+
+			stream.open_chunk	(1);
+			save_data			((*I).second->data(),stream);
+			stream.close_chunk	();
+		}
 		stream.close_chunk		();
 	}
 	stream.close_chunk			();
@@ -202,7 +209,7 @@ IC	void CAbstractGraph::load			(IReader &stream)
 
 	_data_type					data;
 	_vertex_id_type				vertex_id;
-	IReader						*chunk0;
+	IReader						*chunk0, *chunk1, *chunk2;
 
 	chunk0						= stream.open_chunk(0);
 	u32							n = chunk0->r_u32();
@@ -210,10 +217,18 @@ IC	void CAbstractGraph::load			(IReader &stream)
 
 	chunk0						= stream.open_chunk(1);
 	for (u32 i=0; i<n; ++i) {
-		IReader					*chunk1	= chunk0->open_chunk(i);
-		load_data				(vertex_id,*chunk1);
-		load_data				(data,*chunk1);
+		chunk1					= chunk0->open_chunk(i);
+		{
+			chunk2				= chunk1->open_chunk(0);
+			load_data			(vertex_id,*chunk1);
+			chunk2->close		();
+
+			chunk2				= chunk1->open_chunk(1);
+			load_data			(data,*chunk1);
+			chunk2->close		();
+		}
 		chunk1->close			();
+
 		add_vertex				(data,vertex_id);
 	}
 	chunk0->close				();
