@@ -54,7 +54,7 @@ function motivator_binder:reinit()
 
     --' Положения тела
     self.st.state = xr_state.body_state(self.object)
-	state_mgr.bind_manager(self.object, self.st.state_mgr)
+	--state_mgr.bind_manager(self.object, self.st.state_mgr)
 
     --' удар в морду
     xr_punch.add_to_binder (self.object)   
