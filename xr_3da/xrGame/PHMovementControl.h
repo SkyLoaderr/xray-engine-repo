@@ -20,6 +20,7 @@ void				PHReleaseObject();
 Fvector				PHCaptureGetNearestElemPos(CGameObject* object);
 Fmatrix				PHCaptureGetNearestElemTransform(CGameObject* object);
 void				SetMaterial(u16 material);
+void				SetAirControlParam(float param){fAirControlParam=param;}
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point
@@ -79,6 +80,8 @@ private:
 	float				fMass;
 	float				fMinCrashSpeed;
 	float				fMaxCrashSpeed;
+	
+	float				fAirControlParam;
 
 	Fvector				vVelocity;
 	Fvector				vPosition;

@@ -67,7 +67,7 @@ void CPHActorCharacter::SetAcceleration(Fvector accel)
 void CPHActorCharacter::Jump(const Fvector& accel)
 {
 	if(!b_exist) return;
-	if(!b_lose_ground && (m_ground_contact_normal[1]>0.5f||b_at_wall))
+	if(!b_lose_control && (m_ground_contact_normal[1]>0.5f||b_at_wall))
 	{
 		b_jump=true;
 		const dReal* vel=dBodyGetLinearVel(m_body);

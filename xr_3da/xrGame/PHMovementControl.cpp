@@ -48,7 +48,7 @@ CPHMovementControl::CPHMovementControl(void)
 	m_fGroundDelayFactor= 1.f;
 	gcontact_HealthLost = 0;
 	fContactSpeed		= 0.f;
-
+	fAirControlParam	= 0.f;
 	m_character=NULL;
 
 	m_dwCurBox = 0xffffffff;
@@ -640,6 +640,8 @@ void CPHMovementControl::Load					(LPCSTR section){
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
+	
+
 	SetCrashSpeeds	(cs_min,cs_max);
 	SetMass		(mass);
 
@@ -879,6 +881,7 @@ void CPHMovementControl::CreateCharacter()
 	dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
 	m_character->Create(size);
 	m_character->SetMaterial(m_material);
+	m_character->SetAirControlFactor(fAirControlParam);
 }
 CPHSynchronize*	CPHMovementControl::GetSyncItem()
 {

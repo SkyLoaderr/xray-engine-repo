@@ -187,10 +187,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		//		mstate_real			&=~ mcAnyMove;
 	}
 
-	// transform local dir to world dir
+	//transform local dir to world dir
 	Fmatrix				mOrient;
 	mOrient.rotateY		(-r_model_yaw);
 	mOrient.transform_dir(vControlAccel);
+	//XFORM().transform_dir(vControlAccel);
 }
 
 void CActor::g_Orientate	(u32 mstate_rl, float dt)

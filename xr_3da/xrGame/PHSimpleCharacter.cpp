@@ -70,7 +70,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	b_jumping=false;
 	b_death_pos=false;
 	jump_up_velocity=6.f;
-
+	m_air_control_factor=0;
 
 	m_capture_joint=NULL;
 
@@ -533,7 +533,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	//else
 	dMass m;
 	dBodyGetMass(m_body,&m);
-	if((!b_lose_control||b_clamb_jump)&&is_control){
+	if(is_control){
 		dVector3 sidedir;
 		dVector3 y={0.,1.,0.};
 		dCROSS(sidedir,=,m_control_force,y);
@@ -541,11 +541,12 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		dReal vProj=dDOT(sidedir,chVel);
 
 		dBodyAddForce(m_body,m_control_force[0],m_control_force[1],m_control_force[2]);//+2.f*9.8f*70.f
-		dBodyAddForce(m_body,
-			-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor,
-			-m.mass*(50.f+90.f*b_at_wall)*(!b_lose_control&&!(is_contact||(b_climb&&b_any_contacts))),//&&!b_climb
-			-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
-			);
+		if(!b_lose_control||b_clamb_jump)
+			dBodyAddForce(m_body,
+				-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor,
+				-m.mass*(50.f+90.f*b_at_wall)*(!b_lose_control&&!(is_contact||(b_climb&&b_any_contacts))),//&&!b_climb
+				-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
+				);
 		//if(b_clamb_jump){
 		//dNormalize3(m_control_force);
 		//dReal proj=dDOT(m_control_force,chVel);
@@ -710,7 +711,13 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	//if(b_jump) 
 	//	m_control_force[1]=60.f*m.mass*2.f;
 
-	if(b_lose_control) return;
+	if(b_lose_control) 
+	{
+		m_control_force[0]=m_acceleration.x*m.mass*m_air_control_factor;
+		m_control_force[1]=m_acceleration.y*m.mass*m_air_control_factor;
+		m_control_force[2]=m_acceleration.x*m.mass*m_air_control_factor;
+		return;
+	}
 
 
 	dVector3 accel={m_acceleration.x,0.f,m_acceleration.z};

@@ -43,7 +43,7 @@ protected:
 
 	dReal	 m_max_velocity;
 
-
+	float   m_air_control_factor;
 
 	dVector3 m_jump_depart_position;
 	dVector3 m_death_position;
@@ -113,6 +113,7 @@ public:
 	virtual		void		SetPosition							(Fvector pos)		;
 	virtual		void		GetVelocity							(Fvector& vvel)		;
 	virtual		void		SetVelocity							(Fvector vel)		;
+	virtual		void		SetAirControlFactor					(float factor)		{m_air_control_factor=factor;}
 	virtual		void		GetPosition							(Fvector& vpos)		;
 	virtual		float		FootRadius							()					;
 	virtual		void		DeathPosition						(Fvector& deathPos){ deathPos.set(m_death_position);deathPos.y=m_death_position[1]-m_radius;}
@@ -163,8 +164,10 @@ IC	void		SafeAndLimitVelocity						()
 			if(mag>l_limit)
 			{
 				dReal f=mag/l_limit;
-				if(b_lose_ground)dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
-				else			 dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
+				if(b_lose_ground&&linear_velocity[1]<0.f)
+					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
+				else			 
+					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
 				if(is_control&&!b_lose_control)
 										dBodySetPosition(m_body,
 														m_safe_position[0]+linear_velocity[0]*fixed_step,

@@ -27,6 +27,7 @@ public:
 	virtual		void		SetAcceleration						(Fvector /**accel/**/)	{}	;
 	virtual		void		SetMaterial							(u16	/**material/**/){}	;
 	virtual		void		SetPosition							(Fvector /**pos/**/)	{}	;
+	virtual		void		SetAirControlFactor					(float /**factor/**/)	{}	;
 	virtual		void		GetVelocity							(Fvector& /**vel/**/)	{}	;
 	virtual		void		SetVelocity							(Fvector /**vel/**/)	{}	;
 	virtual		void		GetPosition							(Fvector& /**pos/**/)	{}	;

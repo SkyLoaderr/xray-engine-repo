@@ -264,7 +264,9 @@ void CActor::Load	(LPCSTR section )
 	skel_ddelay					= pSettings->r_s32	(section,"ph_skeleton_ddelay");
 	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
-	m_PhysicMovementControl->SetJumpUpVelocity(m_fJumpSpeed);
+	m_PhysicMovementControl		->SetJumpUpVelocity(m_fJumpSpeed);
+	float AirControlParam		= pSettings->r_float	(section,"air_control_param"	);
+	m_PhysicMovementControl		->SetAirControlParam(AirControlParam);
 
 	m_fPickupInfoRadius	= pSettings->r_float(section,"pickup_info_radius");
 	m_fSleepTimeFactor	= pSettings->r_float(section,"sleep_time_factor");
