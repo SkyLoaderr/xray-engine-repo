@@ -184,7 +184,3 @@ function patrol_binder:net_import	(packet)
 end
 ----------------------------------------------------------------------------------------------------------------------
 
-function main ()
-    local obj = get_level_object ("patrol_1_1")
-    obj:bind_object (this.patrol_binder (obj))
-end    
