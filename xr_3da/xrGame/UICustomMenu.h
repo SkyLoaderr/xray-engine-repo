@@ -2,42 +2,61 @@
 #define __XR_UICUSTOMMENU_H__
 #pragma once
 
+class					CCustomMenuItem;
 DEFINE_VECTOR			(CCustomMenuItem*,MIVec,MIIt);
-typedef void 			(*OnExecuteEvent)		(CCustomMenuItem* sender);
+typedef void 			(*OnExecuteEvent)	(CCustomMenuItem* sender);
+typedef void			(*OnItemDrawEvent)	(CGameFont* F, int num, int col);
+
 class CCustomMenuItem{
-public:
-	LPSTR				caption;
-	int					tag;
+	CCustomMenuItem*	m_Parent;
 	MIVec				items;
 	OnExecuteEvent		OnExecute;
-	CCustomMenuItem*	m_Parent;
+	OnItemDrawEvent		OnItemDraw;
+	LPSTR				OnExecuteCC;
 public:
-	CCustomMenuItem		(CCustomMenuItem* parent, LPCSTR text, int t, OnExecuteEvent event=0)
+	LPSTR				caption;
+	LPSTR				value;
+	int					tag;
+public:
+	CCustomMenuItem		(CCustomMenuItem* parent, LPCSTR text, LPCSTR val, LPCSTR execCC=0, OnExecuteEvent exec=0, OnItemDrawEvent draw=0)
 	{
 		m_Parent		= parent;
-		caption			= xr_strdup(text);
-		tag				= t;
-		OnExecute		= event;
+		caption			= text?xr_strdup(text):0;
+		value			= val?xr_strdup(val):0;
+		tag				= 0;
+		OnExecute		= exec;
+		OnItemDraw		= draw;
+		OnExecuteCC		= execCC?xr_strdup(execCC):0;
 	}
 	~CCustomMenuItem	()
 	{
-		xr_free			(caption);
+		_FREE			(OnExecuteCC);
+		_FREE			(value);
+		_FREE			(caption);
 		for (MIIt it=items.begin(); it!=items.end(); it++)
 			_DELETE		(*it);
 	}
-	void				AppendItem(CMenuItem* I)
+	void				AppendItem			(CCustomMenuItem* I)
 	{
 		items.push_back	(I);
 	}
-	void				OnItemDraw(CGameFont* F, int num, int col)
+	void				DrawItem			(CGameFont* F, int num, int col)
 	{
-		switch(col){
-		case 0: F->OutNext		("%d. %s",num,caption);	break;
-		case 1: if (!IsMenu())	F->OutNext	("%d",tag);	break;
-		default: THROW;
+		if (OnItemDraw)	{
+			OnItemDraw	(F,num,col);
+		}else{
+			switch(col){
+			case 0:						F->OutNext	("%d. %s",num,caption);	break;
+			case 1: if (!HasChildren())	F->OutNext	("%s",value);			break;
+			default: THROW;
+			}
 		}
 	}
-	IC BOOL				IsMenu				()			{return (tag==-1);}
+	IC BOOL				HasChildren			()			{return !items.empty();}
+	IC CCustomMenuItem*	Parent				()			{return m_Parent;}
+	IC MIIt				FirstItem			()			{return items.begin();}
+	IC MIIt				LastItem			()			{return items.end();}
+	IC DWORD			ItemCount			()			{return items.size();}
 	IC CCustomMenuItem*	GetItem				(int id)	
 	{
 		id--;
@@ -45,6 +64,10 @@ public:
 		if (id<(int)(items.size())) return items[id];
 		return 0;
 	}
-	IC void				Execute				()			{if (OnExecute) OnExecute(this);}
+	void				Execute				();
 };
-void					ParseMenu			(CInifile* ini, CMenuItem* root, LPCSTR sect);
+CCustomMenuItem*		UIParseMenu			(CInifile* ini, CCustomMenuItem* root, LPCSTR sect, OnExecuteEvent exec=0, OnItemDrawEvent draw=0);
+CCustomMenuItem*		UILoadMenu			(LPCSTR ini_name, OnExecuteEvent exec=0, OnItemDrawEvent draw=0);
+CCustomMenuItem*		UIFindMenuItem		(CCustomMenuItem* root, LPCSTR name);
+
+#endif //__XR_UICUSTOMMENU_H__

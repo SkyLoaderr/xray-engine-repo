@@ -26,10 +26,7 @@ protected:
 protected:
 	enum EState
 	{
-		eIdle,
-		eZooming,
-		eShowing,
-		eHiding
+		eZooming	= 128
 	};
 
 	virtual void	switch2_Idle	();

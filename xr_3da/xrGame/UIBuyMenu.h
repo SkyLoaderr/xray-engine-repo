@@ -2,60 +2,16 @@
 #define __XR_UIBUYMENU_H__
 #pragma once
 
-class CUIBuyMenu{
-	class CMenuItem;
-	DEFINE_VECTOR		(CMenuItem*,MIVec,MIIt);
-	typedef void 		(*OnExecuteEvent)		(CMenuItem* sender);
-	class CMenuItem{
-	public:
-		LPSTR			caption;
-		int				tag;
-		MIVec			items;
-		OnExecuteEvent	OnExecute;
-		CMenuItem*		m_Parent;
-	public:
-		CMenuItem		(CMenuItem* parent, LPCSTR text, int t, OnExecuteEvent event=0)
-		{
-			m_Parent	= parent;
-			caption		= xr_strdup(text);
-			tag			= t;
-			OnExecute	= event;
-		}
-		~CMenuItem		()
-		{
-			xr_free		(caption);
-			for (MIIt it=items.begin(); it!=items.end(); it++)
-				_DELETE	(*it);
-		}
-		void			AppendItem(CMenuItem* I)
-		{
-			items.push_back(I);
-		}
-		void			OnItemDraw(CGameFont* F, int num, int col)
-		{
-			switch(col){
-			case 0: F->OutNext		("%d. %s",num,caption);	break;
-			case 1: if (!IsMenu())	F->OutNext	("%d",tag);	break;
-			default: THROW;
-			}
-		}
-		IC BOOL			IsMenu				()			{return (tag==-1);}
-		IC CMenuItem*	GetItem				(int id)	
-		{
-			id--;
-			if (-1==id) return m_Parent;
-			if (id<(int)(items.size())) return items[id];
-			return 0;
-		}
-		IC void			Execute				()			{if (OnExecute) OnExecute(this);}
-	};
-	CMenuItem*			menu_root;	
-	CMenuItem*			menu_active;
+// refs
+class CCustomMenuItem;
 
-	static void 		BuyItem				(CMenuItem* sender);
+class CUIBuyMenu{
+	CCustomMenuItem*	menu_root;	
+	CCustomMenuItem*	menu_active;
+
+	static void 		BuyItem				(CCustomMenuItem* sender);
 	int					menu_offs;
 	int					menu_offs_col[2];
-	void				ParseMenu			(CInifile* ini, CMenuItem* root, LPCSTR sect);
 public:
 						CUIBuyMenu			();
 	virtual				~CUIBuyMenu			();

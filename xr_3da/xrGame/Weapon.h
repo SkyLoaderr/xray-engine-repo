@@ -23,7 +23,13 @@ private:
 public:
 	enum					{ MAX_ANIM_COUNT = 8 };
 	typedef					svector<CMotionDef*,MAX_ANIM_COUNT>		MotionSVec;
+	enum EHandDependence{
+		hdNone	= 0,
+		hd1Hand	= 1,
+		hd2Hand	= 2
+	};
 protected:
+	EHandDependence			eHandDependence;// 0-используется без участия рук, 1-одна рука, 2-две руки
 	BOOL					bWorking;		// Weapon fires now
 	BOOL					bPending;		// Weapon needs some time to update itself, even if hidden
 	LPSTR					m_WpnName;
@@ -127,7 +133,15 @@ protected:
 	void					ShaderDestroy		(Shader*	&dest);
 
 public:
-
+	enum EState
+	{
+		eIdle		= 0,
+		eFire,
+		eReload,
+		eShowing,
+		eHiding,
+		eHidden
+	};
 	// Events/States
 	DWORD					STATE;
 
@@ -170,6 +184,7 @@ public:
 	IC BOOL					IsValid				()				{	return iAmmoCurrent || iAmmoElapsed;		}
 	IC BOOL					IsVisible			()				{	return getVisible();						}	// Weapon change occur only after visibility change
 	IC BOOL					IsUpdating			()				{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
+	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
 	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
 	virtual float			GetZoomFactor		()				{	return DEFAULT_FOV;							}
 

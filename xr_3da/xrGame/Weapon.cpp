@@ -55,6 +55,8 @@ CWeapon::CWeapon(LPCSTR name)
 
 	m_pPhysicsShell		= 0;
 	hud_mode			= FALSE;
+	
+	eHandDependence		= hdNone;
 }
 
 CWeapon::~CWeapon		()
@@ -248,24 +250,24 @@ void CWeapon::UpdateFP		()
 void CWeapon::Load		(LPCSTR section)
 {
 	// verify class
-	LPCSTR Class		= pSettings->ReadSTRING(section,"class");
+	LPCSTR Class		= pSettings->ReadSTRING		(section,"class");
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT			(load_cls==SUB_CLS_ID);
 
 	inherited::Load		(section);
 
 	Fvector				pos,ypr;
-	pos					= pSettings->ReadVECTOR(section,"position");
-	ypr					= pSettings->ReadVECTOR(section,"orientation");
+	pos					= pSettings->ReadVECTOR		(section,"position");
+	ypr					= pSettings->ReadVECTOR		(section,"orientation");
 	ypr.mul				(PI/180.f);
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
 
-	fTimeToFire			= pSettings->ReadFLOAT	(section,"rpm");
+	fTimeToFire			= pSettings->ReadFLOAT		(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
-	LPCSTR	name		= pSettings->ReadSTRING	(section,"wm_name");
+	LPCSTR	name		= pSettings->ReadSTRING		(section,"wm_name");
 	pstrWallmark		= xr_strdup(name);
 	fWallmarkSize		= pSettings->ReadFLOAT		(section,"wm_size");
 
@@ -316,6 +318,7 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameLength		= pSettings->ReadFLOAT		(section,"flame_length"		);
 	fFlameSize			= pSettings->ReadFLOAT		(section,"flame_size"		);
 
+	eHandDependence		= EHandDependence(pSettings->ReadINT(section,"hand_dependence"));
 	setVisible			(FALSE);
 }
 

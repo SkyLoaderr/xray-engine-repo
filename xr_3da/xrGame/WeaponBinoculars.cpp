@@ -20,7 +20,7 @@ CWeaponBinoculars::~CWeaponBinoculars()
 	SoundDestroy		(sndHide		);
 	SoundDestroy		(sndGyro		);
 	SoundDestroy		(sndZoomIn		);
-	SoundDestroy		(sndZoomOut		);
+	SoundDestroy		(sndZoomOut		); 
 }
 
 void CWeaponBinoculars::Load	(LPCSTR section)
@@ -30,7 +30,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	CObject::Load		(section);
+	CGameObject::Load	(section);
 
 	Fvector				pos,ypr;
 	pos					= pSettings->ReadVECTOR(section,"position");
@@ -54,6 +54,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	dispVelFactor		= pSettings->ReadFLOAT	(section,"disp_vel_factor"	);
 	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
 	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
+	eHandDependence		= CWeapon::EHandDependence(pSettings->ReadINT(section,"hand_dependence"));
 
 	setVisible			(FALSE);
 

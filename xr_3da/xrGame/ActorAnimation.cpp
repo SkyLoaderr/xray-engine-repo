@@ -4,6 +4,7 @@
 #include "..\xr_level_controller.h"
 #include "hudmanager.h"
 #include "UI.h"
+#include "xr_weapon_list.h"
 
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;
@@ -51,7 +52,18 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	B->mTransform.c		= c;
 }
 
-void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1){
+void CActor::SActorState::STorsoWpn::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
+{
+	char			buf[128];
+	aim				= K->ID_Cycle(strconcat(buf,base0,"_torso_aim",		base1));
+	holster			= K->ID_Cycle(strconcat(buf,base0,"_torso_holster",	base1));
+	draw			= K->ID_Cycle(strconcat(buf,base0,"_torso_draw",	base1));
+	reload			= K->ID_Cycle(strconcat(buf,base0,"_torso_reload",	base1));
+	drop			= K->ID_Cycle(strconcat(buf,base0,"_torso_drop",	base1));
+	attack			= K->ID_Cycle(strconcat(buf,base0,"_torso_attack",	base1));
+}
+void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
+{
 	char			buf[128];
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd"));
 	legs_back		= K->ID_Cycle(strconcat(buf,base0,base1,"_back"));
@@ -59,14 +71,16 @@ void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCST
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs"));
 }
 
-void CActor::SActorState::Create(CKinematics* K, LPCSTR base){
+void CActor::SActorState::Create(CKinematics* K, LPCSTR base)
+{
 	char			buf[128];
-	idle			= K->ID_Cycle(strconcat(buf,base,"_idle"));
-	torso_aim		= K->ID_Cycle(strconcat(buf,base,"_torso_aim"));
+	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle"));
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
 	death			= K->ID_Cycle(strconcat(buf,base,"_death"));
 	m_walk.Create	(K,base,"_walk");
 	m_run.Create	(K,base,"_run");
+	m_torso[1].Create(K,base,"_1");
+	m_torso[2].Create(K,base,"_2");
 
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
@@ -90,8 +104,8 @@ void CActor::g_SetAnimation( DWORD mstate_rl )
 		// анимации
 		CMotionDef* M_legs	= 0;
 		CMotionDef* M_torso	= 0;
-		CMotionDef* M_all	= 0;
 		
+		// Legs
 		if		(mstate_rl&mcLanding)	M_legs	= ST->landing[0];
 		else if (mstate_rl&mcLanding2)	M_legs	= ST->landing[1];
 		else if (mstate_rl&mcTurn)		M_legs	= ST->legs_turn;
@@ -102,26 +116,31 @@ void CActor::g_SetAnimation( DWORD mstate_rl )
 		else if (mstate_rl&mcLStrafe)	M_legs	= AS->legs_ls;
 		else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
 		
+		// Torso
+		CWeapon* W = dynamic_cast<CWeapon*>(Weapons->ActiveWeapon());
+		if (W){
+			SActorState::STorsoWpn* TW = &ST->m_torso[W->HandDependence()];
+			switch (W->STATE){
+			case CWeapon::eIdle:		M_torso	= TW->aim;		break;
+			case CWeapon::eFire:		M_torso	= TW->attack;	break;
+			case CWeapon::eReload:		M_torso	= TW->reload;	break;
+			case CWeapon::eShowing:		M_torso	= TW->draw;		break;
+			case CWeapon::eHiding:		M_torso	= TW->holster;	break;
+			}
+		}
+
 		// на ноги есть анимация - установим еще и на торс / иначе Idle для всего
-		if (M_legs)						M_torso = ST->torso_aim;
-		else							M_all	= ST->idle;
+		if (!M_legs)					M_legs	= ST->legs_idle;
+		if (!M_torso)					M_torso = ST->m_torso[1].aim; // fake
 		
 		// есть анимация для всего - запустим / иначе запустим анимацию по частям
-		if (M_all){
-			if(m_current_torso!=M_all){ 
-				m_current_legs_blend = PKinematics	(pVisual)->PlayCycle(M_all);
-				m_current_torso = M_all;
-				m_current_legs	= M_all;
-			}
-		}else{
-			if (m_current_torso!=M_torso){
-				PKinematics	(pVisual)->PlayCycle(M_torso);
-				m_current_torso=M_torso;
-			}
-			if (m_current_legs!=M_legs){
-				m_current_legs_blend = PKinematics(pVisual)->PlayCycle(M_legs);
-				m_current_legs=M_legs;
-			}
+		if (m_current_torso!=M_torso){
+			PKinematics	(pVisual)->PlayCycle(M_torso);
+			m_current_torso=M_torso;
+		}
+		if (m_current_legs!=M_legs){
+			m_current_legs_blend = PKinematics(pVisual)->PlayCycle(M_legs);
+			m_current_legs=M_legs;
 		}
 	}else{
 		if (m_current_legs||m_current_torso){

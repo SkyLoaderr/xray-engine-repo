@@ -42,17 +42,17 @@ protected:
 public:
 	enum EMoveCommand
 	{
-		mcFwd		= 0x0001,
-		mcBack		= 0x0002,
-		mcLStrafe	= 0x0004,
-		mcRStrafe	= 0x0008,
-		mcCrouch	= 0x0010,
-		mcAccel		= 0x0020,
-		mcTurn		= 0x0040,
-		mcJump		= 0x0080,
-		mcFall		= 0x0100,
-		mcLanding	= 0x0200,
-		mcLanding2	= 0x0400,
+		mcFwd		= (1ul<<0ul),
+		mcBack		= (1ul<<1ul),
+		mcLStrafe	= (1ul<<2ul),
+		mcRStrafe	= (1ul<<3ul),
+		mcCrouch	= (1ul<<4ul),
+		mcAccel		= (1ul<<5ul),
+		mcTurn		= (1ul<<6ul),
+		mcJump		= (1ul<<7ul),
+		mcFall		= (1ul<<8ul),
+		mcLanding	= (1ul<<9ul),
+		mcLanding2	= (1ul<<10ul),
 
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 	};
@@ -86,11 +86,19 @@ protected:
 			CMotionDef*		legs_back;
 			CMotionDef*		legs_ls;
 			CMotionDef*		legs_rs;
-			
 			void			Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
 		};
-		CMotionDef*			torso_aim;
-		CMotionDef*			idle;
+		struct				STorsoWpn{
+			CMotionDef*		aim;
+			CMotionDef*		holster;
+			CMotionDef*		draw;
+			CMotionDef*		drop;
+			CMotionDef*		reload;
+			CMotionDef*		attack;
+			void			Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
+		};
+
+		CMotionDef*			legs_idle;
 		CMotionDef*			jump_begin;
 		CMotionDef*			jump_idle;
 		CMotionDef*			landing[2];
@@ -98,6 +106,7 @@ protected:
 		CMotionDef*			death;
 		SAnimState			m_walk;
 		SAnimState			m_run;
+		STorsoWpn			m_torso[3];
 		void				Create(CKinematics* K, LPCSTR base);
 	};
 public:

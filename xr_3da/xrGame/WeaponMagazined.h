@@ -40,14 +40,8 @@ protected:
 protected:
 	enum EState
 	{
-		eIdle,
-		eFire,
-		eFrozen,	// for pistols, etc
-		eMagEmpty,
-		eReload,
-		eShowing,
-		eHiding,
-		eHidden
+		eFrozen		= 128,	// for pistols, etc
+		eMagEmpty
 	};
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);

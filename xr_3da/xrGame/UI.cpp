@@ -47,6 +47,8 @@ void CUI::Load()
 		pUIBuyMenu->Load				();
 		break;
 	case GAME_DEATHMATCH:
+		pUIBuyMenu	= new CUIBuyMenu	();
+		pUIBuyMenu->Load				();
 		pUIFragList	= new CUIFragList	();
 		pUIFragList->Init				();
 		break;
@@ -179,6 +181,14 @@ bool CUI::OnKeyboardPress(int dik)
 		}
 	break;
 	case GAME_DEATHMATCH:
+		if (bShowBuyMenu){
+			VERIFY(pUIBuyMenu);
+			if (pUIBuyMenu->OnKeyboardPress(dik)) return true;
+		}else{
+			switch (dik){
+			case DIK_B:			ShowBuyMenu	(!bShowBuyMenu);return true;
+			}
+		}
 		switch (dik){
 		case DIK_TAB:		ShowFragList(TRUE);	return true;
 		}
