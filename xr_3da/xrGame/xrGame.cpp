@@ -593,6 +593,7 @@ public:
 class CCC_DemoRecord : public IConsole_Command
 {
 public:
+
 	CCC_DemoRecord(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 //#ifndef	DEBUG
