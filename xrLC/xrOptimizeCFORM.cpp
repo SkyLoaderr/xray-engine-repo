@@ -138,6 +138,10 @@ void	CBuild::BuildCForm	()
 		cform_FailFace&	F	= failedfaces[it];
 		CL.add_face_D		( F.P[0], F.P[1], F.P[2], F.props );
 	}
+			nf_after		= int	(CL.getVS());
+			nv_after		= int	(CL.getTS());
+	clMsg					("vertices: was[%d], now[%d] => %f %% left",nv_before,nv_after, 100.f*float(nv_after)/float(nv_before) );
+	clMsg					("   faces: was[%d], now[%d] => %f %% left",nf_before,nf_after, 100.f*float(nf_after)/float(nf_before) );
 
 	// Saving
 	Status			("Saving...");
