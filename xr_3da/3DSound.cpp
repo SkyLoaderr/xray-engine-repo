@@ -320,14 +320,14 @@ void C3DSound::OnMove()
 			if (old_Status&DSBSTATUS_PLAYING) 
 			{
 				// The sound-play has ended
-				internalStopOrComplete();
+				internalStopOrComplete	();
 			}
 		}
 	}
 	Update	();
 }
 
-void C3DSound::internalStopOrComplete()
+void C3DSound::internalStopOrComplete	()
 {
 	if (owner)			{ *owner = 0; owner	= 0; }
 	ps.dwMode			=	DS3DMODE_DISABLE;
