@@ -8,18 +8,20 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
-#include "game_sv_single.h"
+#include "ai_funcs.h"
 
 CAI_ALife::CAI_ALife(xrServer *tpServer)
 {
+	m_tpServer			= tpServer;
 	m_bLoaded			= false;
 	m_tpActor			= 0;
-	m_tpServer			= tpServer;
+	m_tpAI_DDD			= 0;
 }
 
 CAI_ALife::~CAI_ALife()
 {
 	shedule_Unregister	();
+	xr_delete			(m_tpAI_DDD);
 }
 
 
@@ -93,12 +95,14 @@ void CAI_ALife::Save()
 
 void CAI_ALife::Load()
 {
+	Log							("* Loading ALife Simulator...");
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tpActor					= 0;
 	m_tGameTime					= 0;
 	m_dwObjectsBeingProcessed	= 0;
 	m_dwObjectsBeingSwitched	= 0;
 	
+	Log							("* Loading parameters...");
 	shedule_Min					= pSettings->ReadINT	("alife","schedule_min");
 	shedule_Max					= pSettings->ReadINT	("alife","schedule_max");
 	m_qwMaxProcessTime			= pSettings->ReadINT	("alife","procees_time")*CPU::cycles_per_microsec;
@@ -113,20 +117,28 @@ void CAI_ALife::Load()
 		Log						("* Loading spawn registry");
 		CALifeSpawnRegistry::Load(*tpStream);
 		Engine.FS.Close			(tpStream);
-		vfNewGame();
-		Save();
-		R_ASSERT(false);
+		vfNewGame				();
+		Save					();
+		R_ASSERT				(false);
 	}
 	tpStream					= Engine.FS.Open(caFileName);
 	R_ASSERT					(tpStream);
+	Log							("* Loading header...");
 	CALifeHeader::Load			(*tpStream);
 	CALifeGameTime::Load		(*tpStream);
+	Log							("* Loading objects...");
 	CALifeObjectRegistry::Load	(*tpStream);
+	Log							("* Loading events...");
 	CALifeEventRegistry::Load	(*tpStream);
+	Log							("* Loading tasks...");
 	CALifeTaskRegistry::Load	(*tpStream);
+	Log							("* Creating dynamic data...");
 	vfUpdateDynamicData			();
-
-	m_bLoaded = true;
+	Log							("* Loading evaluation functions...");
+	m_tpAI_DDD					= xr_new<CAI_DDD>();
+	m_tpAI_DDD->vfLoad			();
+	m_bLoaded					= true;
+	Log							("* Loading ALife Simulator is successfully completed");
 }
 
 void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
