@@ -470,8 +470,6 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_trivial.add_novice     (self.object)
     xr_trivial.add_novice2    (self.object)
     xr_trivial.add_novice3    (self.object)
-    xr_commander.set_commander(self.object)
-
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
@@ -482,10 +480,11 @@ xr_motivator.storage[self.object:id()].reactions = {
         -- включение схем
         xr_kamp.set_kamp(self.object)
         xr_guard.set_guard(self.object)
-		xr_talker.set_talker(self.object)
-	    xr_sleeper.set_sleeper(self.object)
+	xr_talker.set_talker(self.object)
+	xr_sleeper.set_sleeper(self.object)
         xr_patrol.set_patrol (self.object)
         xr_follower.set_follower (self.object)
+	xr_commander.set_commander(self.object)
     end
 end
 ----------------------------------------------------------------------------------------------------------------------
