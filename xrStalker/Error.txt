@@ -20,9 +20,10 @@ To OLES :
 -O	resolved	no particles
 -WT				ни хера не работает (level - cs_test)
 -J	resolved	актер не видим для сталкеров и монстров
+-WT				ни хера по прежнему не работает (level - cs_test)
+-WT				когда выбрасываешь оружие, оно исчезает (level - cs_test)
 
 To WT:
--D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
 
 To AlexMX:
 -O				ocasional invalid radius and/or center after update of particle system
@@ -30,3 +31,4 @@ To AlexMX:
 				(cs_test/single)
 -O				ocasional memory corruption inside particle system (on destructor, probably?)
 				(game00/single/alife)
+-D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
