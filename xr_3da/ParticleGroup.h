@@ -51,10 +51,12 @@ public:
 };
 DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 
-class ENGINE_API CParticleGroup: public FHierrarhyVisual, IParticleCustom{
+class ENGINE_API CParticleGroup: public IParticleCustom
+{
 	const CPGDef*		m_Def;
     float				m_CurrentTime;
 	Fvector				m_InitialPosition;
+	xr_vector<IRender_Visual*>		children;
 public:
     enum{
     	flRT_Playing		= (1<<0),
@@ -63,7 +65,7 @@ public:
     Flags8				m_RT_Flags;
 public:
 						CParticleGroup	();
-						~CParticleGroup	(){;}
+	virtual				~CParticleGroup	();
 	virtual void	 	OnFrame			(u32 dt);
 
 	virtual void		Copy			(IRender_Visual* pFrom) {Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");}

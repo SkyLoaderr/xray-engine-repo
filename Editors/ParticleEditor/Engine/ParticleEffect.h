@@ -112,7 +112,7 @@ public:
 #endif
 };
 
-class ENGINE_API CParticleEffect: public IRender_Visual, IParticleCustom
+class ENGINE_API CParticleEffect: public IParticleCustom
 {
 	friend class PFunction;
 protected:

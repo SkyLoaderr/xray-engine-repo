@@ -6,6 +6,7 @@
 
 #include "ParticlesObject.h"
 #include "..\ParticleCustom.h"
+#include "..\ParticleEffect.h"
 #include "..\render.h"
 
 CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
@@ -15,8 +16,7 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAuto
 	// create visual
 	renderable.visual		= Render->model_CreateParticles(p_name);
 	VERIFY					(renderable.visual);
-	IParticleCustom* V		= dynamic_cast<IParticleCustom*>(renderable.visual); R_ASSERT(V);
-	
+	IParticleCustom* V		= dynamic_cast<IParticleCustom*>(renderable.visual);  VERIFY(V);
 	float time_limit		= V->GetTimeLimit();
 	if (bAutoRemove&&(time_limit>=0.f)){
 		m_iLifeTime			= iFloor(time_limit*1000.f);
@@ -37,7 +37,6 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAuto
 //----------------------------------------------------
 CParticlesObject::~CParticlesObject()
 {
-//.	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual); R_ASSERT(V);
 }
 
 LPCSTR CParticlesObject::dbg_ref_name()

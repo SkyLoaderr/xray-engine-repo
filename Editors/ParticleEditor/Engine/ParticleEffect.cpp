@@ -177,7 +177,7 @@ void CPEDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 // class CParticleEffect
 //------------------------------------------------------------------------------
-CParticleEffect::CParticleEffect():IRender_Visual()
+CParticleEffect::CParticleEffect()
 {
 	m_HandleEffect 			= pGenParticleEffects(1, 1);
     m_HandleActionList		= pGenActionLists();

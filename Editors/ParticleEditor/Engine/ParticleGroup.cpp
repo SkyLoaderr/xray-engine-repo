@@ -95,6 +95,17 @@ CParticleGroup::CParticleGroup()
 	m_InitialPosition.set	(0,0,0);
 }
 
+CParticleGroup::~CParticleGroup()
+{
+	for (u32 i=0; i<children.size(); i++)	
+#ifdef _EDITOR
+		::Device.Models.Delete(children[i]);
+#else
+		::Render->model_Delete(children[i]);
+#endif
+	children.clear();
+}
+
 void CParticleGroup::OnFrame(u32 u_dt)
 {
 	if (m_Def&&m_RT_Flags.is(flRT_Playing)){
@@ -122,12 +133,13 @@ void CParticleGroup::OnFrame(u32 u_dt)
         bool bPlaying = false;
         Fbox box; box.invalidate();
         for (u32 i=0; i<children.size(); i++){
-            CParticleEffect* E	= (CParticleEffect*)children[i];
+			IRender_Visual*  V  = children[i];
+            CParticleEffect* E	= (CParticleEffect*)V;
             E->OnFrame		(u_dt);
             if (E->IsPlaying()){ 
             	bPlaying	= true;
-                if (E->vis.box.is_valid())
-                	box.merge(E->vis.box);
+                if (V->vis.box.is_valid())
+                	box.merge(V->vis.box);
             }
         }
         if (m_RT_Flags.is(flRT_DefferedStop)&&!bPlaying){

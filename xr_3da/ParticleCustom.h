@@ -2,7 +2,8 @@
 #ifndef ParticleCustomH
 #define ParticleCustomH
 //---------------------------------------------------------------------------
-class ENGINE_API IParticleCustom{
+class ENGINE_API IParticleCustom: public IRender_Visual
+{
 public:
 	virtual 		~IParticleCustom	(){;}
 
