@@ -471,6 +471,10 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<MonsterSpace::ELookType, const Fvector &>())
 			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*>())
 			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*, LPCSTR>())
+
+			// searchlight 
+			.def(								constructor<const Fvector &,float,float>())
+
 			.def("object",						&CWatchAction::SetWatchObject)		// time
 			.def("direct",						&CWatchAction::SetWatchDirection)		// time
 			.def("type",						&CWatchAction::SetWatchType)

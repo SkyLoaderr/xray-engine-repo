@@ -134,6 +134,7 @@ public:
 	EInputKeys						m_tInputKeys;
 	MonsterSpace::EActState			m_tActState;
 	MonsterSpace::EActTypeEx		m_tActTypeEx;
+	
 
 							CMovementAction		()
 	{
@@ -217,8 +218,7 @@ public:
 		SetObjectToGo		(tpObjectToGo);
 		m_tActTypeEx		= type_ex;
 	}
-
-
+	
 			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)
 	{
 		m_tBodyState		= tBodyState;
@@ -306,6 +306,12 @@ public:
 	Fvector							m_tWatchVector;
 	ref_str							m_bone_to_watch;
 
+	// Searchlight 
+	Fvector							m_tTargetPoint;
+	float							vel_bone_x;
+	float							vel_bone_y;
+
+
 							CWatchAction		()
 	{
 		m_tpObjectToWatch	= 0;
@@ -332,6 +338,15 @@ public:
 		SetWatchObject		(tpObjectToWatch);
 		SetWatchBone		(bone_to_watch);
 	}
+
+	// Searchlight look
+							CWatchAction		(const Fvector &tTarget, float vel1, float vel2)
+	{
+		m_tTargetPoint		= tTarget;
+		vel_bone_x			= vel1;
+		vel_bone_y			= vel2;
+	}
+
 
 			void			SetWatchObject		(CLuaGameObject *tpObjectToWatch);
 
