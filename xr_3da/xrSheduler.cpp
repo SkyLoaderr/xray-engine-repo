@@ -57,6 +57,7 @@ void CSheduler::Destroy			()
 
 void CSheduler::Register		(ISheduled* O, BOOL RT)
 {
+	if (O->shedule.b_locked)	return;
 	if (RT)
 	{
 		// Fill item structure
@@ -82,6 +83,7 @@ void CSheduler::Register		(ISheduled* O, BOOL RT)
 
 void CSheduler::Unregister		(ISheduled* O)
 {
+	if (O->shedule.b_locked)	return;
 	if (O->shedule.b_RT)
 	{
 		for (u32 i=0; i<ItemsRT.size(); i++)
@@ -118,13 +120,13 @@ void CSheduler::EnsureOrder	(ISheduled* Before, ISheduled* After)
 	}
 }
 
-void CSheduler::Push		(Item& I)
+void CSheduler::Push				(Item& I)
 {
 	Items.push_back	(I);
 	std::push_heap	(Items.begin(), Items.end());
 }
 
-void CSheduler::Pop		()
+void CSheduler::Pop					()
 {
 	std::pop_heap	(Items.begin(), Items.end());
 	Items.pop_back	();
@@ -142,12 +144,25 @@ void CSheduler::ProcessStep			()
 		// Update
 		Item	T					= Top	();
 		u32		Elapsed				= dwTime-T.dwTimeOfLastExecute;
-		if (NULL==T.Object)			
-		{
+		if	(NULL==T.Object)		{
 			// Erase element
 			Pop						();
 			continue;
 		}
+
+		// Insert into priority Queue
+		Pop							();
+
+		// Real update call
+		// Msg						("------- %d:",Device.dwFrame);
+#ifdef DEBUG
+		T.Object->dbg_startframe	= Device.dwFrame;
+		eTimer.Start				();
+#endif
+
+		T.Object->shedule.b_locked	= TRUE;
+		T.Object->shedule_Update	(Elapsed);
+		T.Object->shedule.b_locked	= FALSE;
 
 		// Calc next update interval
 		u32		dwMin				= _max(u32(30),T.Object->shedule.t_min);
@@ -162,20 +177,7 @@ void CSheduler::ProcessStep			()
 		TNext.dwTimeOfLastExecute	= dwTime;
 		TNext.Object				= T.Object;
 
-		// Insert into priority Queue
-		Pop							();
 		ItemsProcessed.push_back	(TNext);
-
-		// Real update call
-		// Msg						("------- %d:",Device.dwFrame);
-#ifdef DEBUG
-		T.Object->dbg_startframe	= Device.dwFrame;
-		eTimer.Start				();
-#endif
-
-		T.Object->shedule.b_locked	= TRUE;
-		T.Object->shedule_Update	(Elapsed);
-		T.Object->shedule.b_locked	= FALSE;
 
 #ifdef DEBUG
 		u32	execTime				= eTimer.GetElapsed_ms		();
