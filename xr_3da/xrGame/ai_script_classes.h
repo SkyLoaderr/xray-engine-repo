@@ -115,7 +115,7 @@ public:
 	float			GetCondition	() const;
 
 	// CEntity
-	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		ALife::_TIME_ID,						ALife::_TIME_ID(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	DeathTime,			CEntity,		GetLevelDeathTime,	u32,							0);
 	BIND_FUNCTION10	(m_tpGameObject,	Armor,				CEntity,		g_Armor,			float,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	MaxHealth,			CEntity,		g_MaxHealth,		float,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	Accuracy,			CInventoryOwner,GetWeaponAccuracy,	float,							-1);
@@ -668,4 +668,5 @@ public:
 			int					active_sound_count		();
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
 			CScriptIniFile		*spawn_ini				() const;
+			const xr_vector<CVisibleObject>	&visible_objects	() const;
 };

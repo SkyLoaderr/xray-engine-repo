@@ -351,7 +351,7 @@ void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
 		CActor* pActor = dynamic_cast <CActor*>(pObject);
 		if (pActor)
 		{
-			pActor->m_dwDeathTime = Level().timeServer();
+			pActor->set_death_time		();
 			pActor->m_bAllowDeathRemove = true;
 		};
 	};	

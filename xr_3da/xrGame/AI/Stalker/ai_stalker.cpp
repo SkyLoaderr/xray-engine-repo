@@ -434,9 +434,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 
 	// inventory update
-	if (m_dwDeathTime && (inventory().TotalWeight() > 0)) {
+	if (GetLevelDeathTime() && (inventory().TotalWeight() > 0)) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
-		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
+		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - GetLevelDeathTime() > 500)) {
 			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
 			for ( ; I != E; ++I)

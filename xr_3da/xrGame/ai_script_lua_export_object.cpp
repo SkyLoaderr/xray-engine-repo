@@ -11,6 +11,7 @@
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
+#include "luabind/iterator_policy.hpp"
 #include "ai_script_classes.h"
 #include "script_binder_object.h"
 #include "pdamsg.h"
@@ -194,6 +195,8 @@ void CScriptEngine::export_object()
 			.def("active_sound_count",			&CLuaGameObject::active_sound_count)
 			.def("best_cover",					&CLuaGameObject::best_cover)
 			.def("spawn_ini",					&CLuaGameObject::spawn_ini)
+			.def("visible_objects",				&CLuaGameObject::visible_objects, return_stl_iterator)
+
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)

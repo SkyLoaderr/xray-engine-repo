@@ -1160,7 +1160,7 @@ bool  CActor::NeedToDestroyObject() const
 ALife::_TIME_ID	 CActor::TimePassedAfterDeath()	const
 {
 	if(!g_Alive())
-		return Level().timeServer() - m_dwDeathTime;
+		return Level().timeServer() - GetLevelDeathTime();
 	else
 		return 0;
 }

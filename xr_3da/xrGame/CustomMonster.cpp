@@ -654,6 +654,8 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	m_body.current.yaw		= m_body.target.yaw	= -E->o_Angle.y;
 	m_body.current.pitch	= m_body.target.pitch	= 0;
 	fEntityHealth			= E->fHealth;
+	if (!g_Alive())
+		set_death_time		();
 
 	R_ASSERT				(MT_SKELETON_ANIM == Visual()->Type);
 

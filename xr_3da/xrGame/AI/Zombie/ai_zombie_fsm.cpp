@@ -114,7 +114,7 @@ void CAI_Zombie::Death()
 	enable_movement	(false);
 
 	if (m_fFood <= 0) {
-		if (m_previous_query_time <= m_dwDeathTime)
+		if (m_previous_query_time <= GetLevelDeathTime())
 			m_previous_query_time = Level().timeServer();
 		setVisible	(false);
 		if (Level().timeServer() - m_previous_query_time > m_dwToWaitBeforeDestroy) {
@@ -125,7 +125,7 @@ void CAI_Zombie::Death()
 		}
 	}
 	else {
-		if (Level().timeServer() - m_dwDeathTime > m_dwTimeToLie) {
+		if (Level().timeServer() - GetLevelDeathTime() > m_dwTimeToLie) {
 			//m_fFood = m_PhysicMovementControl->GetMass()*100;
 			fEntityHealth = m_fMaxHealthValue;
 			m_tpSoundBeingPlayed = 0;

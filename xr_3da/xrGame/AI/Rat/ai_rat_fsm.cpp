@@ -127,7 +127,7 @@ void CAI_Rat::Death()
 	enable_movement	(false);
 
 	if (m_fFood <= 0) {
-		if (m_previous_query_time <= m_dwDeathTime)
+		if (m_previous_query_time <= GetLevelDeathTime())
 			m_previous_query_time = Level().timeServer();
 		setVisible(false);
 		if (Level().timeServer() - m_previous_query_time > 10000) {

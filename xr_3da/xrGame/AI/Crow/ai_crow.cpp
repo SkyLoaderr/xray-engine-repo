@@ -366,7 +366,7 @@ void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, COb
 {
 	
 	fEntityHealth		= 0;
-	m_dwDeathTime = Level().timeServer();
+	set_death_time		();
 	if (eDeathDead!=st_current) 
 	{	
 		Die();

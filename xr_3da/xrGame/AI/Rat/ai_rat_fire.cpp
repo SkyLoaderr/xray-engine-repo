@@ -111,7 +111,7 @@ float CAI_Rat::evaluate		(const CGameObject *object) const
 	const CEntityAlive	*entity_alive = dynamic_cast<const CEntityAlive*>(object);
 	VERIFY				(entity_alive);
 	if (!entity_alive->g_Alive()) {
-		if ((Level().timeServer() - entity_alive->m_dwDeathTime < m_dwEatCorpseInterval) && (entity_alive->m_fFood > 0) && (m_bEatMemberCorpses || (entity_alive->g_Team() != g_Team())) && (m_bCannibalism || (entity_alive->SUB_CLS_ID != SUB_CLS_ID)))
+		if ((Level().timeServer() - entity_alive->GetLevelDeathTime() < m_dwEatCorpseInterval) && (entity_alive->m_fFood > 0) && (m_bEatMemberCorpses || (entity_alive->g_Team() != g_Team())) && (m_bCannibalism || (entity_alive->SUB_CLS_ID != SUB_CLS_ID)))
 			return		(entity_alive->m_fFood*entity_alive->m_fFood)*Position().distance_to(entity_alive->Position());
 		else
 			return		(flt_max);

@@ -90,8 +90,9 @@ public:
 	virtual BOOL			g_Alive				()const	{ return fEntityHealth>0; }
 	virtual BOOL			g_State				(SEntityState&) const	{return FALSE;}
 	
-	virtual bool			AlreadyDie()			{return  0!=m_dwDeathTime?true:false;}
-	virtual ALife::_TIME_ID	GetDeathTime()			{return m_dwDeathTime;}
+	virtual bool			AlreadyDie()			{return  0!=GetLevelDeathTime()?true:false;}
+	virtual ALife::_TIME_ID	GetGameDeathTime()const	{return m_game_death_time;}
+	virtual u32				GetLevelDeathTime()const{return m_level_death_time;}
 	
 	virtual float			CalcCondition		(float hit);
 
@@ -123,8 +124,10 @@ public:
 	virtual int GetMapIconY()	const {return m_iMapIconY;}
 
 	//time of entity death
-	ALife::_TIME_ID			m_dwDeathTime;
+	u32						m_level_death_time;
+	ALife::_TIME_ID			m_game_death_time;
 
+			void			set_death_time		();
 };
 
 #endif // AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_

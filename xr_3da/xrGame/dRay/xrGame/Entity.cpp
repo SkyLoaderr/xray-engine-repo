@@ -22,13 +22,12 @@ CEntity::CEntity()
 	fMAX_Health			= MAX_HEALTH;
 	fMAX_Armor			= MAX_ARMOR;
 
-	m_iTradeIconX = m_iTradeIconY = 0;
-	m_iMapIconX = m_iMapIconY = 0;
+	m_iTradeIconX		= m_iTradeIconY = 0;
+	m_iMapIconX			= m_iMapIconY = 0;
 }
 
 CEntity::~CEntity()
 {	
-	m_dwDeathTime = 0;
 }
 
 void CEntity::OnEvent		(NET_Packet& P, u16 type)
@@ -228,7 +227,6 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	// Initialize variables
 	fEntityHealth			= 100;
 	fArmor					= 0;
-	m_dwDeathTime			= 0;
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
@@ -270,11 +268,19 @@ void CEntity::KillEntity(CObject* who)
 	if (OnServer())
 		u_EventSend		(P);
 
-	m_dwDeathTime = Level().timeServer();
+	set_death_time		();
 }
 
 void CEntity::reinit			()
 {
 	inherited::reinit			();
-	m_dwDeathTime			= 0;
+
+	m_level_death_time			= 0;
+	m_game_death_time			= 0;
+}
+
+void CEntity::set_death_time	()
+{
+	m_level_death_time	= Level().timeServer();
+	m_game_death_time	= Level().GetGameTime();
 }
