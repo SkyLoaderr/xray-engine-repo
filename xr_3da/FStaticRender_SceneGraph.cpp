@@ -188,7 +188,7 @@ void CRender::add_leafs_Dynamic(FBasicVisual *pVisual)
 
 void CRender::add_leafs_Static(FBasicVisual *pVisual)
 {
-	if (!HOM.Visible(pVisual->bv_BBox))	return;
+	if (!HOM.visible(pVisual->bv_BBox))		return;
 
 	// Visual is 100% visible - simply add it
 	vector<FBasicVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -231,14 +231,14 @@ void CRender::add_leafs_Static(FBasicVisual *pVisual)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CRender::add_Dynamic(FBasicVisual *pVisual, CVisiCache C)
+BOOL CRender::add_Dynamic(FBasicVisual *pVisual, DWORD planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	Fvector		Tpos;	// transformed position
 	EFC_Visible	VIS;
 
-	pTransform->transform_tiny(Tpos, pVisual->bv_Position);
-	VIS = View->visibleSphere(C,Tpos,pVisual->bv_Radius);
+	pTransform->transform_tiny	(Tpos, pVisual->bv_Position);
+	VIS = View->testSphere		(Tpos,pVisual->bv_Radius,planes);
 	if (fcvNone==VIS) return FALSE;
 
 	// If we get here visual is visible or partially visible
@@ -253,7 +253,7 @@ BOOL CRender::add_Dynamic(FBasicVisual *pVisual, CVisiCache C)
 			I = pV->chields.begin	();
 			E = pV->chields.end		();
 			if (fcvPartial==VIS) {
-				for (; I!=E; I++)	add_Dynamic			(*I,C);
+				for (; I!=E; I++)	add_Dynamic			(*I,planes);
 			} else {
 				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 			}
@@ -267,7 +267,7 @@ BOOL CRender::add_Dynamic(FBasicVisual *pVisual, CVisiCache C)
 			I = pV->chields.begin	();
 			E = pV->chields.end		();
 			if (fcvPartial==VIS) {
-				for (; I!=E; I++)	add_Dynamic			(*I,C);
+				for (; I!=E; I++)	add_Dynamic			(*I,planes);
 			} else {
 				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 			}
@@ -283,13 +283,13 @@ BOOL CRender::add_Dynamic(FBasicVisual *pVisual, CVisiCache C)
 	return TRUE;
 }
 
-void CRender::add_Static(FBasicVisual *pVisual, CVisiCache C)
+void CRender::add_Static(FBasicVisual *pVisual, DWORD planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;
-	VIS = View->visibleVisual(C,pVisual);
+	VIS = View->testSAABB	(pVisual->bv_Position,pVisual->bv_Radius,pVisual->bv_BBox.min,pVisual->bv_BBox.max,planes);
 	if (fcvNone==VIS)					return;
-	if (!HOM.Visible(pVisual->bv_BBox))	return;
+	if (!HOM.visible(pVisual->bv_BBox))	return;
 	
 	// If we get here visual is visible or partially visible
 	vector<FBasicVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -302,7 +302,7 @@ void CRender::add_Static(FBasicVisual *pVisual, CVisiCache C)
 			I = pV->chields.begin	();
 			E = pV->chields.end		();
 			if (fcvPartial==VIS) {
-				for (; I!=E; I++)	add_Static			(*I,C);
+				for (; I!=E; I++)	add_Static			(*I,planes);
 			} else {
 				for (; I!=E; I++)	add_leafs_Static	(*I);
 			}
@@ -316,7 +316,7 @@ void CRender::add_Static(FBasicVisual *pVisual, CVisiCache C)
 			I = pV->chields.begin	();
 			E = pV->chields.end		();
 			if (fcvPartial==VIS) {
-				for (; I!=E; I++)	add_Static			(*I,C);
+				for (; I!=E; I++)	add_Static			(*I,planes);
 			} else {
 				for (; I!=E; I++)	add_leafs_Static	(*I);
 			}

@@ -3,12 +3,12 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "frustum.h"
 #include "HOM.h"
 #include "occRasterizer.h"
 #include "cl_collector.h"
-#include "frustum.h"
 
-int a[2][2][2] = { 0,0,0,0,0,0,0,0 };
+float	psOSSR	= .001f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
