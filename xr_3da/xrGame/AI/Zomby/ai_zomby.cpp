@@ -477,7 +477,6 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
 		if (!tpFreeNeighbourNodes.empty()) {
-			m_bMobility = true;
 			Fvector tLeaderPosition = Leader->Position();
 			float fBestCost = SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z);
 			for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
@@ -488,6 +487,7 @@ void CAI_Zomby::FollowLeader(CSquad &Squad, CEntity* Leader)
 				}
 			}
 			if (iBestI >= 0) {
+				m_bMobility = true;
 				Fvector tFinishPosition;
 				tFinishPosition.x = (tpFreeNeighbourNodes[iBestI].tLeftDown.x + tpFreeNeighbourNodes[iBestI].tRightUp.x)/2.f;
 				tFinishPosition.y = (tpFreeNeighbourNodes[iBestI].tLeftDown.y + tpFreeNeighbourNodes[iBestI].tRightUp.y)/2.f;
@@ -592,6 +592,7 @@ void CAI_Zomby::Attack()
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Attack");
 #endif
+	Msg("%d",m_bMobility);
 	if (g_Health() <= 0) {
 		eCurrentState = aiZombyDie;
 		return;
@@ -1562,7 +1563,8 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 			}
 		}
 		else {
-			if (!m_bMobility)//(speed<0.2f)
+			if (speed<0.2f)
+			//if (!bMobility)
 				S = m_idle;
 			else {
 				Fvector view = _view; 
@@ -1575,25 +1577,22 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 				
 				SAnimState* AState = &m_walk;
 				
-				if (speed > m_fMinSpeed)
-					AState = &m_run;
-				else 
-					if (dot>0.7f)
-						S = AState->fwd;
-					else
-						/**/
-						if ((dot<=0.7f)&&(dot>=-0.7f)) {
-							Fvector cross; 
-							cross.crossproduct(view,move);
-							if (cross.y>0)
-								S = AState->rs;
-							else
-								S = AState->ls;
-						}
-						else 
-							//if (dot<-0.7f)
-								S = AState->back;
-						/**/
+				if (dot>0.7f)
+					S = AState->fwd;
+				else
+					/**/
+					if ((dot<=0.7f)&&(dot>=-0.7f)) {
+						Fvector cross; 
+						cross.crossproduct(view,move);
+						if (cross.y>0)
+							S = AState->rs;
+						else
+							S = AState->ls;
+					}
+					else 
+						//if (dot<-0.7f)
+							S = AState->back;
+					/**/
 			}
 		}
 	}

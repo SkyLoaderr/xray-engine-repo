@@ -840,6 +840,8 @@ SOURCE=.\Spawn.cpp
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
 
+# PROP Exclude_From_Build 1
+
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
 !ENDIF 
@@ -858,6 +860,8 @@ SOURCE=.\Spawn_Event.cpp
 # PROP Exclude_From_Build 1
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
+
+# PROP Exclude_From_Build 1
 
 !ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
 
