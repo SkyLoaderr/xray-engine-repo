@@ -877,7 +877,7 @@ function action_dead_hook:initialize()
     action_base.initialize( self )
 
     self.a.dead_hook = true
-    xr_gulag.changeCasualites( self.a.fraction, 3 )
+    xr_gulag.changeCasualities( self.a.fraction, 3 )
 
     printf( "[commander] : dead" )
 end
