@@ -104,20 +104,20 @@ void CStalkerActionFreeNoALife::initialize	()
 	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
 
 #ifdef STALKER_DEBUG_MODE
-	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
-//	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+//	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_direction	(0);
 
-//	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 
 //	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
 //	direction.normalize_safe		();
 //	m_object->set_desired_direction	(&direction);
 //	m_object->set_desired_position	(0);
-//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-//	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
+	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
@@ -129,12 +129,12 @@ void CStalkerActionFreeNoALife::initialize	()
 
 	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
 //	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
 //	smart_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
-	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
-	m_object->CSightManager::setup	(CSightAction(actor,true));
+//	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
+//	m_object->CSightManager::setup	(CSightAction(actor,true));
 #endif
 }
 
@@ -175,7 +175,7 @@ void CStalkerActionFreeNoALife::execute		()
 //	look_pos.y						+= .8f;
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
-	m_object->play					(eStalkerSoundAttack,10000);
+//	m_object->play					(eStalkerSoundAttack,10000);
 #endif
 }
 
@@ -1842,37 +1842,71 @@ CStalkerActionGetOutOfAnomaly::CStalkerActionGetOutOfAnomaly	(CAI_Stalker *objec
 
 void CStalkerActionGetOutOfAnomaly::initialize	()
 {
-	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+	inherited::initialize				();
+
+	m_object->set_sound_mask			(u32(eStalkerSoundMaskNoHumming));
+
+	m_object->set_node_evaluator		(0);
+	m_object->set_path_evaluator		(0);
+	m_object->set_desired_direction		(0);
+	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state			(eBodyStateStand);
+	m_object->set_movement_type			(eMovementTypeWalk);
+	m_object->set_mental_state			(eMentalStateDanger);
+	m_object->CSightManager::setup		(SightManager::eSightTypePathDirection);
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 }
 
 void CStalkerActionGetOutOfAnomaly::finalize	()
 {
-	inherited::finalize		();
+	inherited::finalize					();
 
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask(0);
+	m_object->set_sound_mask			(0);
 }
+
+#include "customzone.h"
+#include "space_restriction_manager.h"
+#include "space_restriction_bridge.h"
+#include "space_restriction_base.h"
 
 void CStalkerActionGetOutOfAnomaly::execute	()
 {
-	inherited::execute		();
+	inherited::execute					();
 
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->Position());
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateDanger);
+	strcpy								(m_temp,"");
+	xr_vector<CObject*>::const_iterator	I = m_object->feel_touch.begin();
+	xr_vector<CObject*>::const_iterator	E = m_object->feel_touch.end();
+	for ( ; I != E; ++I) {
+		CCustomZone						*zone = smart_cast<CCustomZone*>(*I);
+		if (zone)
+			strcat						(m_temp,*zone->cName());
+	}
+	
+	SpaceRestrictionHolder::CBaseRestrictionPtr	restriction = Level().space_restriction_manager().restriction(m_temp);
+	if (!restriction->inside(m_object->Position())) {
+		m_object->add_restrictions		("",m_temp);
+		if (!m_object->accessible(m_object->Position())) {
+			Fvector						dest_pos = m_object->Position();
+			u32 dest_vertex_id			= m_object->accessible_nearest(m_object->Position(),dest_pos);
+			m_object->set_level_dest_vertex	(dest_vertex_id);
+			m_object->set_desired_position	(&dest_pos);
+		}
+		else {
+			m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+			m_object->set_desired_position	(&m_object->Position());
+		}
+		return;
+	}
+	
+	Fvector								dest_pos = m_object->Position();
+	u32 dest_vertex_id					= restriction->accessible_nearest(m_object->Position(),dest_pos);
 
-	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	m_object->set_level_dest_vertex		(dest_vertex_id);
+	m_object->set_desired_position		(&dest_pos);
 }
 
 //////////////////////////////////////////////////////////////////////////

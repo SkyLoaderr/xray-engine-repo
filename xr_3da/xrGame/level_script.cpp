@@ -116,9 +116,9 @@ bool patrol_path_exists(LPCSTR patrol_path)
 	return		(!!Level().patrol_paths().path(patrol_path,true));
 }
 
-LPCSTR name()
+LPCSTR get_name()
 {
-	return		(Level().Name());
+	return		(*Level().name());
 }
 
 void CLevel::script_register(lua_State *L)
@@ -139,7 +139,7 @@ void CLevel::script_register(lua_State *L)
 		def("rain_factor",						rain_factor),
 		def("patrol_path_exists",				patrol_path_exists),
 		def("vertex_position",					vertex_position),
-		def("name",								name),
+		def("name",								get_name),
 
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon)

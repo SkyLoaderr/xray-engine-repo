@@ -46,6 +46,8 @@ protected:
 	CSpaceRestrictionManager	*m_space_restriction_manager;
 	// seniority hierarchy holder
 	CSeniorityHierarchyHolder	*m_seniority_hierarchy_holder;
+	// level name
+	ref_str						m_name;
 	// Local events
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
@@ -163,7 +165,7 @@ public:
 	virtual ~CLevel();
 
 	//названияе текущего уровня
-	LPCSTR				Name					();
+	IC	ref_str			name					() const;
 
 	//gets the time from the game simulation
 	
@@ -234,6 +236,11 @@ IC CSeniorityHierarchyHolder &CLevel::seniority_holder()
 {
 	VERIFY				(m_seniority_hierarchy_holder);
 	return				(*m_seniority_hierarchy_holder);
+}
+
+IC	ref_str	CLevel::name	() const
+{
+	return				(m_name);
 }
 
 //by Mad Max 

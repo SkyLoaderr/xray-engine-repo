@@ -42,6 +42,8 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 			if (strchr(l_name,'/'))
 				*strchr(l_name,'/')	= 0;
 
+			m_name				= l_name;
+
 			int					id = pApp->Level_ID(l_name);
 
 			if (id<0) {
@@ -55,6 +57,16 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		Server->Connect			(m_caServerOptions);	
 		Server->SLS_Default		();
 		
+		{
+			string64			l_name;
+			strcpy				(l_name,*m_caServerOptions);
+			// Activate level
+			if (strchr(l_name,'/'))
+				*strchr(l_name,'/')	= 0;
+
+			m_name				= l_name;
+		}
+
 		m_caServerOptions		= op_server;
 	}
 

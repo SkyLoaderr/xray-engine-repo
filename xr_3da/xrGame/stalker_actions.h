@@ -435,6 +435,9 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 class CStalkerActionGetOutOfAnomaly : public CStalkerActionBase {
+private:
+	string512			m_temp;
+
 protected:
 	typedef CStalkerActionBase inherited;
 
