@@ -279,12 +279,6 @@
 				RelativePath="_sphere.h">
 			</File>
 			<File
-				RelativePath="_std_extensions.h">
-			</File>
-			<File
-				RelativePath="_stl_extensions.h">
-			</File>
-			<File
 				RelativePath="_types.h">
 			</File>
 			<File
@@ -325,6 +319,28 @@
 					RelativePath="xrPool.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Extensions"
+				Filter="">
+				<File
+					RelativePath="_std_extensions.h">
+				</File>
+				<File
+					RelativePath="_stl_extensions.h">
+				</File>
+				<File
+					RelativePath="clsid.cpp">
+				</File>
+				<File
+					RelativePath="clsid.h">
+				</File>
+				<File
+					RelativePath="xr_trims.cpp">
+				</File>
+				<File
+					RelativePath="xr_trims.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="FS"
@@ -342,12 +358,6 @@
 				RelativePath="Xr_ini.cpp">
 			</File>
 			<File
-				RelativePath="clsid.cpp">
-			</File>
-			<File
-				RelativePath="clsid.h">
-			</File>
-			<File
 				RelativePath="log.cpp">
 			</File>
 			<File
@@ -358,12 +368,6 @@
 			</File>
 			<File
 				RelativePath="xr_ini.h">
-			</File>
-			<File
-				RelativePath="xr_trims.cpp">
-			</File>
-			<File
-				RelativePath="xr_trims.h">
 			</File>
 		</Filter>
 		<File
