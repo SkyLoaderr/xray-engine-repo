@@ -23,6 +23,7 @@
 #include "../../actor.h"
 #include "../../xrserver.h"
 #include "../../xr_level_controller.h"
+#include "../../hudmanager.h"
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -320,16 +321,19 @@ void CAI_Stalker::UpdateCL(){
 	m_pPhysics_support->in_UpdateCL();
 
 	if (g_Alive()) {
-		CObjectHandler::update		(Level().timeServer() - m_dwLastUpdateTime);
 		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
 		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
 		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
 		CSightManager::update		(Device.dwTimeDelta);
+		CObjectHandler::update		(Device.dwTimeDelta);
+		Exec_Look					(Device.fTimeDelta);
 	}
 
+#ifdef DEBUG
 	if (this->ID() == Level().CurrentViewEntity()->ID())
-		Exec_Visibility();
+		Exec_Visibility				();
+#endif
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -385,7 +389,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		// Look and action streams
 		if (fEntityHealth>0) {
 			VERIFY				(_valid(Position()));
-			Exec_Look				(dt);
+//			Exec_Look				(dt);
 			VERIFY				(_valid(Position()));
 			Exec_Visibility			();
 
@@ -489,4 +493,42 @@ void CAI_Stalker::spawn_supplies	()
 {
 	inherited::spawn_supplies			();
 	CObjectHandler::spawn_supplies	();
+}
+
+void CAI_Stalker::OnRender			()
+{
+	inherited::OnRender		();
+
+	if (!psAI_Flags.is(aiVision))
+		return;
+
+	if (!dynamic_cast<CGameObject*>(Level().CurrentEntity()))
+		return;
+
+	Fvector						shift;
+	shift.set					(0.f,2.5f,0.f);
+
+	Fmatrix						res;
+	res.mul						(Device.mFullTransform,XFORM());
+
+	Fvector4					v_res;
+
+	res.transform				(v_res,shift);
+
+	if (v_res.z < 0 || v_res.w < 0)
+		return;
+
+	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f)
+		return;
+
+	float						x = (1.f + v_res.x)/2.f * (Device.dwWidth);
+	float						y = (1.f - v_res.y)/2.f * (Device.dwHeight);
+
+	CNotYetVisibleObject		*object = not_yet_visible_object(dynamic_cast<CGameObject*>(Level().CurrentEntity()));
+	string64					out_text;
+	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
+
+	HUD().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,0,0));
+	HUD().pFontMedium->OutSet	(x,y);
+	HUD().pFontMedium->OutNext	(out_text);
 }

@@ -114,7 +114,7 @@ public:
 	virtual float				Radius							() const;
 	virtual void				OnHUDDraw						(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
 #ifdef DEBUG
-	virtual void				OnRender						() {inherited::OnRender();}
+	virtual void				OnRender						();
 #endif
 
 	virtual bool				useful							(const CGameObject *object) const;
@@ -236,6 +236,7 @@ public:
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
 			bool				can_kill_member			();
 			bool				can_kill_member			(const Fvector &position, const Fvector &direction) const;
+			void				dbg_animation			(LPCSTR caption, CMotionDef *animation);
 };
 
 #include "ai_stalker_inline.h"

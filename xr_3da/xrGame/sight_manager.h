@@ -18,6 +18,9 @@ class CSightManager : public CSetupManager<CSightControlAction,CAI_Stalker,u32> 
 public:
 	typedef CSetupManager<CSightControlAction,CAI_Stalker,u32> inherited;
 
+protected:
+	bool			m_enabled;
+
 public:
 					CSightManager						();
 	virtual			~CSightManager						();
@@ -34,11 +37,13 @@ public:
 			void	vfValidateAngleDependency			(float x1, float &x2, float x3);
 			bool	need_correction						(float x1, float x2, float x3);
 	IC		void	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);
-	IC		void	GetDirectionAngles					(float &yaw, float &pitch);
+			void	GetDirectionAngles					(float &yaw, float &pitch);
 	IC		bool	use_torso_look						() const;
 			void	setup								(const SightManager::ESightType &sight_type, const Fvector *vector3d = 0, u32 interval = u32(-1));
 			void	setup								(const CSightAction &sight_action);
 	virtual void	update								(u32 time_delta);
+	IC		bool	enabled								() const;
+	IC		void	enable								(bool value);
 };
 
 #include "sight_manager_inline.h"

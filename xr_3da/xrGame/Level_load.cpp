@@ -65,6 +65,9 @@ BOOL CLevel::Load_GameSpecific_Before()
 					OBJ->r_fvector3	(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
 					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(u32(-1),tPatrolPath.tpaWayPoints[i].tWayPoint);
+					if (!ai().level_graph().inside(tPatrolPath.tpaWayPoints[i].dwNodeID,tPatrolPath.tpaWayPoints[i].tWayPoint))
+						tPatrolPath.tpaWayPoints[i].tWayPoint = ai().level_graph().vertex_position(tPatrolPath.tpaWayPoints[i].dwNodeID);
+
 					string256		S;
 					OBJ->r_stringZ	(S);
 					tPatrolPath.tpaWayPoints[i].name = S;

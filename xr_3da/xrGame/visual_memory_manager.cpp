@@ -207,6 +207,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 		new_object.m_object		= game_object;
 		new_object.m_prev_time	= 0;
 		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object));
+		clamp					(new_object.m_value,0.f,m_visibility_threshold + EPS_L);
 		new_object.m_updated	= true;
 		new_object.m_prev_time	= get_prev_time(game_object);
 		add_not_yet_visible_object(new_object);
@@ -221,6 +222,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	
 	object->m_updated			= true;
 	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object));
+	clamp						(object->m_value,0.f,m_visibility_threshold + EPS_L);
 	object->m_prev_time			= get_prev_time(game_object);
 
 #ifdef VISIBILITY_TEST

@@ -89,8 +89,8 @@ LPCSTR caMovementActionNames[] = {
 
 LPCSTR caInPlaceNames		[] = {
 	"idle_1",
-	"turn_left",
-	"turn_right",
+	"turn_left_0",
+	"turn_right_0",
 	"jump_begin",
 	"jump_idle",
 	"jump_end",
@@ -468,12 +468,17 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 
 	if ((m_object->speed() < EPS_L) || (eMovementTypeStand == m_object->movement_type())) {
 		// standing
-		if (angle_difference(m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw) <= EPS_L) {
+		if (angle_difference(m_object->body_orientation().current.yaw,m_object->body_orientation().target.yaw) <= EPS_L) {
 			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[0];
+//			Msg				("%6d : Playing animation standing",Level().timeServer());
+//			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->body_orientation().current.yaw)),((m_object->body_orientation().target.yaw)));
+//			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
 		}
 		else {
-			bool			left = (angle_difference(yaw,angle_normalize_signed(m_object->head_orientation().current.yaw + PI_DIV_2)) <= PI_DIV_4);
-			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[left ? 1 : 2];
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[left_angle(-m_object->body_orientation().current.yaw,-m_object->body_orientation().target.yaw) ? 1 : 2];
+//			Msg				("%6d : Playing animation turn %s",Level().timeServer(),left ? "LEFT" : "RIGHT");
+//			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->body_orientation().current.yaw)),((m_object->body_orientation().target.yaw)));
+//			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
 		}
 		return;
 	}
@@ -481,6 +486,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
 	if	(((eMovementDirectionForward == m_tDesirableDirection) && (eMovementDirectionBack == m_tMovementDirection))	||	((eMovementDirectionBack == m_tDesirableDirection) && (eMovementDirectionForward == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
+
 	if	(((eMovementDirectionRight == m_tDesirableDirection) && (eMovementDirectionLeft == m_tMovementDirection))	||	((eMovementDirectionLeft == m_tDesirableDirection) && (eMovementDirectionRight == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
 
@@ -498,7 +504,13 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //			m_object->m_head.speed	= 3*PI_DIV_2;
 		}
 
-	if (angle_difference(yaw,m_object->head_orientation().current.yaw) <= MAX_HEAD_TURN_ANGLE) {
+	bool	forward_direction = false;
+	if (left_angle(-m_object->head_orientation().current.yaw,-yaw) && (angle_difference(yaw,m_object->head_orientation().current.yaw) <= PI_DIV_6))
+		forward_direction = true;
+	if (!left_angle(-m_object->head_orientation().current.yaw,-yaw) && (angle_difference(yaw,m_object->head_orientation().current.yaw) <= PI_DIV_3))
+		forward_direction = true;
+
+	if (forward_direction) {
 		// moving forward
 		if (eMovementDirectionForward == m_tMovementDirection)
 			m_dwDirectionStartTime	= Level().timeServer();
@@ -514,8 +526,16 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 				}
 	}
 	else {
-		bool	left = (angle_difference(yaw,angle_normalize_signed(m_object->head_orientation().current.yaw + PI_DIV_2)) <= PI_DIV_4);
-		bool	back = left ? !(angle_difference(yaw,m_object->head_orientation().current.yaw) <= 2*PI_DIV_6) : !(angle_difference(yaw,m_object->head_orientation().current.yaw) <= 4*PI_DIV_6);
+		bool	left = left_angle(-m_object->head_orientation().current.yaw,-yaw);
+		bool	back = false;
+		if (left) {
+			if (angle_difference(m_object->head_orientation().current.yaw,yaw) > PI_DIV_3)
+				back = true;
+		}
+		else {
+			if (angle_difference(m_object->head_orientation().current.yaw,yaw) > 2*PI_DIV_6)
+				back = true;
+		}
 		if (!back)
 			// moving left|right
 			if (left) {
@@ -573,6 +593,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	MonsterSpace::SBoneRotation		body_orientation = m_object->body_orientation();
 	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	m_object->set_body_orientation	(body_orientation);
+//	Msg								("Setting up body orientation %f, %f, speed : %f, %d",m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->speed(),m_object->movement_type());
 	m_object->adjust_speed_to_animation(m_tMovementDirection);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw,m_object->head_orientation().target.yaw,m_object->head_orientation().current.yaw);
 }
@@ -640,18 +661,20 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 		m_tpCurrentLegsAnimation	= 0;
 		if (m_current_script_animation != m_script_animations.front().m_motion)
 			tVisualObject.PlayCycle	(m_current_script_animation = m_script_animations.front().m_motion,TRUE,ScriptPlayCallback,this);
+		dbg_animation				("Script",m_current_script_animation);
 		return;
 	}
 
-	if (m_tAnims.A.empty())	return;
+	if (m_tAnims.A.empty())
+		return;
 
-	m_current_script_animation	= 0;
-	CMotionDef				*tpGlobalAnimation	=	0;
-	CMotionDef				*tpHeadAnimation	=	0;
-	CMotionDef				*tpTorsoAnimation	=	0;
-	CMotionDef				*tpLegsAnimation	=	0;
+	m_current_script_animation		= 0;
+	CMotionDef *tpGlobalAnimation	=	0;
+	CMotionDef *tpHeadAnimation		=	0;
+	CMotionDef *tpTorsoAnimation	=	0;
+	CMotionDef *tpLegsAnimation		=	0;
 
-	vfAssignGlobalAnimation	(tpGlobalAnimation);
+	vfAssignGlobalAnimation			(tpGlobalAnimation);
 
 	if (tpGlobalAnimation) {
 		m_tpCurrentTorsoAnimation	= 0;
@@ -688,16 +711,17 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 			}
 		}
 
-#ifdef _DEBUG
-//	if (tpGlobalAnimation)
-//		Msg				("%6d Global animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpGlobalAnimation));
-//	
-//	if (tpTorsoAnimation)
-//		Msg				("%6d Torso animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpTorsoAnimation));
-//	
-//	if (tpLegsAnimation)
-//		Msg				("%6d Legs animation : %s",Level().timeServer(),PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(tpLegsAnimation));
-#endif
+	if (tpGlobalAnimation)
+		dbg_animation	("Global",tpGlobalAnimation);
+	
+	if (tpTorsoAnimation)
+		dbg_animation	("Torso",tpTorsoAnimation);
+	
+	if (tpLegsAnimation)
+		dbg_animation	("Legs",tpLegsAnimation);
+
+	if (tpHeadAnimation)
+		dbg_animation	("Head",tpHeadAnimation);
 }
 
 void CStalkerAnimations::add_animation		(LPCSTR animation, bool hand_usage)
@@ -765,4 +789,12 @@ void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection movement_d
 					set_desirable_speed(m_fCurSpeed = m_fRunBackFactor);
 		}
 	}
+}
+
+void CAI_Stalker::dbg_animation				(LPCSTR caption, CMotionDef *animation)
+{
+#ifdef DEBUG
+	if (psAI_Flags.is(aiAnimation))
+		Msg			("%6d %s animation : %s",Level().timeServer(),caption,PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(animation));
+#endif
 }

@@ -22,6 +22,7 @@ CSightManager::~CSightManager		()
 
 void CSightManager::Init			()
 {
+	m_enabled					= true;
 }
 
 void CSightManager::Load			(LPCSTR section)
@@ -31,6 +32,7 @@ void CSightManager::Load			(LPCSTR section)
 void CSightManager::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit			(object);
+	m_enabled					= true;
 }
 
 void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
@@ -174,16 +176,6 @@ void CSightManager::Exec_Look		(float dt)
 	m_object->m_head.target.yaw		= angle_normalize_signed	(m_object->m_head.target.yaw);
 	m_object->m_head.target.pitch	= angle_normalize_signed	(m_object->m_head.target.pitch);
 
-	// validating angles
-	VERIFY							(_valid(m_object->m_head.current.yaw));
-	VERIFY							(_valid(m_object->m_head.current.pitch));
-	VERIFY							(_valid(m_object->m_head.target.yaw));
-	VERIFY							(_valid(m_object->m_head.target.pitch));
-	VERIFY							(_valid(m_object->m_body.current.yaw));
-	VERIFY							(_valid(m_object->m_body.current.pitch));
-	VERIFY							(_valid(m_object->m_body.target.yaw));
-	VERIFY							(_valid(m_object->m_body.target.pitch));
-
 	// updating torso angles
 	float							fSpeedFactor = 1.f;
 
@@ -214,14 +206,13 @@ void CSightManager::Exec_Look		(float dt)
 	m_object->m_head.current.yaw	= angle_normalize_signed	(m_object->m_head.current.yaw);
 	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
 
-	VERIFY							(_valid(m_object->m_head.current.yaw));
-	VERIFY							(_valid(m_object->m_head.current.pitch));
-	VERIFY							(_valid(m_object->m_head.target.yaw));
-	VERIFY							(_valid(m_object->m_head.target.pitch));
-	VERIFY							(_valid(m_object->m_body.current.yaw));
-	VERIFY							(_valid(m_object->m_body.current.pitch));
-	VERIFY							(_valid(m_object->m_body.target.yaw));
-	VERIFY							(_valid(m_object->m_body.target.pitch));
+	Fmatrix							mXFORM;
+	mXFORM.setHPB					(-m_object->NET_Last.o_model,0,0);
+	mXFORM.c.set					(m_object->Position());
+	m_object->XFORM().set			(mXFORM);
+
+//	Msg								("%6d : %f, %f",Level().timeServer(),((m_object->body_orientation().current.yaw)),((m_object->body_orientation().target.yaw)));
+//	Msg								("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
 }
 
 void CSightManager::setup			(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
@@ -241,12 +232,29 @@ void CSightManager::setup			(const CSightAction &sight_action)
 
 void CSightManager::update			(u32 time_delta)
 {
-	inherited::update	(time_delta);
+	if (enabled())
+		inherited::update	(time_delta);
 	
-	if	(
-			(m_object->speed() < EPS_L) && 
-			(angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_6)// &&
-//			fsimilar(m_object->m_head.target.yaw,m_object->m_head.current.yaw)
-		)
-		m_object->m_body.target.yaw = m_object->m_head.target.yaw;
+//	if (m_object->turn_in_place())
+//		m_object->m_body.target.yaw		= m_object->m_head.current.yaw;
+//	else
+//		if (m_object->speed() < EPS_L) {
+//			if (angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_6)
+//				m_object->m_body.target.yaw = m_object->m_head.current.yaw;
+//		}
 }
+
+void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
+{
+	if (!m_object->path().empty() && (m_object->curr_travel_point_index() + 1 < m_object->path().size())) {
+		Fvector				t;
+		t.sub					(
+			m_object->path()[m_object->curr_travel_point_index() + 1].position,
+			m_object->path()[m_object->curr_travel_point_index()].position
+		);
+		t.getHP				(yaw,pitch);
+		return;
+	}
+	GetDirectionAnglesByPrevPositions	(yaw,pitch);
+};
+

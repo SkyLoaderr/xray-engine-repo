@@ -568,7 +568,7 @@ void CDetailPathManager::build_path_via_key_points(
 {
 	STrajectoryPoint					s,d,p;
 	s 									= start;
-	//m_dest_params						= m_start_params;
+//	m_dest_params						= m_start_params;
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for ( ; I != E; ++I) {
@@ -608,12 +608,16 @@ void CDetailPathManager::build_path_via_key_points(
 			s							= d;
 
 			VERIFY						(m_path.size() > 1);
+			u32							add = 0;
+			if (m_path[m_path.size()-1].position.similar(m_path[m_path.size()-2].position))
+				add						= 1;
+			VERIFY						(m_path.size() > 1 + add);
 			s.direction.sub				(
 				ai().level_graph().v2d(
-					m_path[m_path.size()-1].position
+					m_path[m_path.size() - 1 - add].position
 				),
 				ai().level_graph().v2d(
-					m_path[m_path.size()-2].position
+					m_path[m_path.size() - 2 - add].position
 				)
 			);
 			VERIFY						(s.direction.square_magnitude() > EPS_L);

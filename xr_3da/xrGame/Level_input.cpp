@@ -119,6 +119,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 #ifdef DEBUG
 	case DIK_F9:{
+//		ai().level_graph().set_start_point();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;
 //		if (!m_bSynchronization) {
@@ -132,6 +133,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 		return;
 	case DIK_F10:{
+//		ai().level_graph().set_dest_point();
+//		ai().level_graph().build_detail_path();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;
 //		if (!m_bSynchronization) {
@@ -145,6 +148,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 		return;
 	case DIK_F11:
+//		ai().level_graph().build_detail_path();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;
 //		if (!m_bSynchronization) {

@@ -2056,6 +2056,9 @@
 							<File
 								RelativePath=".\stalker_movement_manager_inline.h">
 							</File>
+							<File
+								RelativePath=".\stalker_movement_manager_space.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -7446,6 +7449,9 @@
 			</File>
 			<File
 				RelativePath=".\inventoryMP_new.xml">
+			</File>
+			<File
+				RelativePath=".\inventoryMP_new2.xml">
 			</File>
 			<File
 				RelativePath=".\inventoryMP_new2.xml">

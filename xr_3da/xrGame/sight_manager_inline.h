@@ -28,15 +28,20 @@ IC	void CSightManager::GetDirectionAnglesByPrevPositions(float &yaw, float &pitc
 	VERIFY					(_valid(pitch));
 }
 
-IC	void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
-{
-	GetDirectionAnglesByPrevPositions(yaw,pitch);
-};
-
 IC	bool CSightManager::use_torso_look	() const
 {
 	if (!m_actions.empty())
 		return				(current_action().use_torso_look());
 	else
 		return				(true);
+}
+
+IC	bool CSightManager::enabled			() const
+{
+	return					(m_enabled);
+}
+
+IC	void CSightManager::enable			(bool value)
+{
+	m_enabled				= value;
 }

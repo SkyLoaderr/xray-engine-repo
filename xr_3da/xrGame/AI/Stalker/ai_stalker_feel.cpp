@@ -31,7 +31,7 @@ void CAI_Stalker::renderable_Render	()
 	CInventoryOwner::renderable_Render	();
 }
 
-void CAI_Stalker::Exec_Look(float dt)
+void CAI_Stalker::Exec_Look			(float dt)
 {
 	CSightManager::Exec_Look		(dt);
 
