@@ -144,6 +144,8 @@ function add_to_spawn_list (s_object)
 	                        id = s_object.id,
 	                        cond = xr_logic.cfg_get_condlist (s_object:spawn_ini (), "spawner", "cond", s_object)
 	                        }
+    printf ("Add object : %s", s_object:name ())
+    print_table (spawn_list[s_object.id].cond)
 end
 -----------------------------
 function check_spawn (s_object)

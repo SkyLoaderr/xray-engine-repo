@@ -23,7 +23,7 @@ function evaluator_contact:evaluate()
 		return false
 	end
 	
-	local actor = level.actor()
+	local actor = db.actor
 
 	if actor then
 		if actor:alive() and 
