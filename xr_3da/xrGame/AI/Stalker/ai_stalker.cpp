@@ -113,6 +113,8 @@ void CAI_Stalker::Init()
 	AI_Path.Nodes.clear				();
 
 	m_dwStartFireTime				= 0;
+
+	m_tTaskState					= eTaskStateChooseTask;
 }
 
 // when soldier is dead
