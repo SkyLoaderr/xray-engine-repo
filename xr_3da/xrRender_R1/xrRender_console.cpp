@@ -44,8 +44,8 @@ float		ps_r2_ls_psm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_ssm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_bloom_threshold= .3f;	// r2-only
 float		ps_r2_ls_spower			= 64.f;
-Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY };	// r2-only
-Fvector		ps_r2_ls_hemi			= { 1,1,1};						// r2-only
+Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_SPOTPRJ };	// r2-only
+Fvector		ps_r2_ls_hemi			= { 1,1,1};										// r2-only
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -100,6 +100,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN);
 	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY);
 	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF);
+	CMD3(CCC_Mask,		"r2_spotprj",			&ps_r2_ls_flags,			R2FLAG_SPOTPRJ);
 	CMD4(CCC_Vector3,	"r2_ls_hemi",			&ps_r2_ls_hemi,				tw_min, tw_max	);
 }
 #endif
