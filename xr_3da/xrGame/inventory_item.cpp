@@ -15,6 +15,7 @@
 #include "entity_alive.h"
 #include "level.h"
 #include "game_cl_base.h"
+#include "Actor.h"
 
 CInventoryItem::CInventoryItem() 
 {
@@ -267,19 +268,34 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 	inherited::OnEvent(P, type);
 	switch (type)
 	{
-	case GE_ADDON_DETACH:
-		{
-			string64			i_name;
-			P.r_string			(i_name);
-			Detach(i_name);
-		}break;
 	case GE_ADDON_ATTACH:
 		{
 			u32 ItemID;
 			P.r_u32			(ItemID);
 			CInventoryItem*	 ItemToAttach	= dynamic_cast<CInventoryItem*>(Level().Objects.net_Find(ItemID));
-			if (ItemToAttach) Attach(ItemToAttach);
+			if (!ItemToAttach) break;
+			Attach(ItemToAttach);
+			CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+			if (pActor && pActor->inventory().ActiveItem() == this)
+			{
+				u32 CurrentActiveSlot = pActor->inventory().GetActiveSlot();
+				pActor->inventory().Activate(NO_ACTIVE_SLOT);
+				pActor->inventory().Activate(CurrentActiveSlot);
+			}
 		}break;
+	case GE_ADDON_DETACH:
+		{
+			string64			i_name;
+			P.r_string			(i_name);
+			Detach(i_name);
+			CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+			if (pActor && pActor->inventory().ActiveItem() == this)
+			{
+				u32 CurrentActiveSlot = pActor->inventory().GetActiveSlot();
+				pActor->inventory().Activate(NO_ACTIVE_SLOT);
+				pActor->inventory().Activate(CurrentActiveSlot);
+			};
+		}break;	
 	}
 }
 

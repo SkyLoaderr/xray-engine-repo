@@ -298,6 +298,10 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			SendBroadcast		(sender,P,MODE);
 		}break;
+	case GEG_PLAYER_ITEMDROP:
+		{
+			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

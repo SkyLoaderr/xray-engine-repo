@@ -443,7 +443,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 	u8 NewAddonState;
 //	P.r_u8					(m_flagsAddOnState);
 	P.r_u8					(NewAddonState);
-	if (m_flagsAddOnState != NewAddonState)
+///	if (m_flagsAddOnState != NewAddonState)
 	{
 		m_flagsAddOnState = NewAddonState;
 		UpdateAddonsVisibility();

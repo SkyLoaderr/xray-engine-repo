@@ -33,6 +33,11 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			// Log("CActor::OnEvent - TAKE - ", *cName());
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
+			if (!O)
+			{
+				Msg("!Error: No object to take/buy [%d]", id);
+				break;
+			}
 
 			if(inventory().Take(dynamic_cast<CGameObject*>(O))) 
 			{
@@ -85,6 +90,11 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
+			if (!O)
+			{
+				Msg("!Error: No object to reject/sell [%d]", id);
+				break;
+			}
 			
 			if (inventory().Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) 
 			{
@@ -126,6 +136,12 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			case GEG_PLAYER_ITEM2SLOT:	inventory().Slot(dynamic_cast<CInventoryItem*>(O)); break;
 			case GEG_PLAYER_ITEM2BELT:	inventory().Belt(dynamic_cast<CInventoryItem*>(O)); break;
 			case GEG_PLAYER_ITEM2RUCK:	inventory().Ruck(dynamic_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEMDROP:	
+				{
+					CInventoryItem* pIItem = dynamic_cast<CInventoryItem*>(O);
+					if (!pIItem) break;
+					pIItem->Drop();
+				}break;
 			}
 		}break;
 	}
