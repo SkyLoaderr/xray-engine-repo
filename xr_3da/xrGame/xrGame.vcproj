@@ -5006,6 +5006,9 @@
 						RelativePath=".\Level.h">
 					</File>
 					<File
+						RelativePath=".\Level_GameSpy_Funcs.cpp">
+					</File>
+					<File
 						RelativePath="Level_input.cpp">
 					</File>
 					<File

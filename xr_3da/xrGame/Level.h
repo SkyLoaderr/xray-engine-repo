@@ -92,6 +92,8 @@ private:
 	void						UpdateDeltaUpd					( u32 LastTime );
 	void						BlockCheatLoad					()				;
 
+public:	
+	void						OnGameSpyChallenge			(NET_Packet* P);
 public:
 	//////////////////////////////////////////////	
 	// static particles

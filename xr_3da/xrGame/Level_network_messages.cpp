@@ -151,8 +151,7 @@ void CLevel::ClientReceive()
 			}break;
 		case M_GAMESPY_CHALLENGE:
 			{
-				int x=0;
-				x=x;
+				OnGameSpyChallenge(P);
 			}break;
 		}
 
