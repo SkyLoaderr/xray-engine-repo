@@ -15,7 +15,8 @@ public:
 		float	u,v;
 	};
 public:
-	Fsphere		bounds;
+	Fsphere		bv_sphere;
+	Fbox		bv_bb;
 	DWORD		flags;	
 	float		s_min;
 	float		s_max;

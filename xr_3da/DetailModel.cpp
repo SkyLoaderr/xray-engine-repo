@@ -32,11 +32,10 @@ void CDetail::Load		(CStream* S)
 		R_ASSERT	(indices[idx]<number_vertices);
 	
 	// Calc BB & SphereRadius
-	Fbox bb;
-	bb.invalidate	();
+	bv_bb.invalidate	();
 	for (DWORD i=0; i<number_vertices; i++)
-		bb.modify	(vertices[i].P);
-	bb.getsphere	(bounds.P,bounds.R);
+		bv_bb.modify	(vertices[i].P);
+	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 }
 
 void CDetail::Unload	()

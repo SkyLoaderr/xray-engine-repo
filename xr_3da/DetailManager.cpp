@@ -416,10 +416,12 @@ void CDetailManager::UpdateCache	(int limit)
 				
 				// X-Form BBox
 				Fmatrix		mScale,mXform;
+				Fbox		ItemBB;
 				mScale.scale					(Item.scale,Item.scale,Item.scale);
 				mXform.mul_43					(Item.mRotY,mScale);
 				mXform.translate_over			(Item.P);
-
+				ItemBB.xform					(Dobj.bv_bb,mXform);
+				Bounds.merge					(ItemBB);
 				
 				// Color
 				DetailPalette*	c_pal	= (DetailPalette*)&DS.color;
