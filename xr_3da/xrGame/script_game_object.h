@@ -212,6 +212,10 @@ public:
 			void				DisableTalk			();
 			bool				IsTalkEnabled		();
 
+			void				EnableTrade			();	
+			void				DisableTrade		();
+			bool				IsTradeEnabled		();
+
 			void				DropItem			(CScriptGameObject* pItem, Fvector pos);
 			void				ForEachInventoryItems(const luabind::functor<void> &functor);
 			void				TransferItem		(CScriptGameObject* pItem, CScriptGameObject* pForWho);

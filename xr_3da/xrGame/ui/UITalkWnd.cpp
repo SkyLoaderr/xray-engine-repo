@@ -368,12 +368,15 @@ void CUITalkWnd::AddAnswer(LPCSTR text, const CUIString &SpeakerName)
 
 void CUITalkWnd::SwitchToTrade()
 {
-	UITalkDialogWnd.Hide();
+	if(m_pOurInvOwner->IsTradeEnabled() && m_pOthersInvOwner->IsTradeEnabled() ){
 
-	UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
-	UITradeWnd.Show();
-	UITradeWnd.StartTrade();
-	UITradeWnd.BringAllToTop();
+		UITalkDialogWnd.Hide();
+
+		UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
+		UITradeWnd.Show();
+		UITradeWnd.StartTrade();
+		UITradeWnd.BringAllToTop();
+	}
 }
 
 bool CUITalkWnd::IR_OnKeyboardPress(int dik)

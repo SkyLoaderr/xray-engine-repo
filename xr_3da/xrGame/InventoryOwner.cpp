@@ -33,13 +33,14 @@
 //////////////////////////////////////////////////////////////////////////
 CInventoryOwner::CInventoryOwner			()
 {
-	m_pCharacterInfo = NULL;
-	m_pTrade = NULL;
+	m_pCharacterInfo			= NULL;
+	m_pTrade					= NULL;
 	
 	m_inventory					= xr_new<CInventory>();
 	m_pCharacterInfo			= xr_new<CCharacterInfo>();
 	
 	EnableTalk();
+	EnableTrade();
 	
 	m_known_info_registry		= xr_new<CInfoPortionWrapper>();
 }

@@ -96,7 +96,8 @@ protected:
 	void SendEvent_ItemDrop(PIItem pItem);
 	
 	//посчет цены вещей в списке
-	u32 CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade);
+	u32		CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade);
+	float	CalcItemsWeight(CUIDragDropList* pList);	
 	//продажа вещей из списка с переносом их в другой список
 	void SellItems(CUIDragDropList* pSellList,
 				   CUIDragDropList* pBuyList,
@@ -118,7 +119,7 @@ protected:
 
 	void SwitchDealControls(bool on);
 	bool GetDealControlStatus() { return m_bDealControlsVisible; }
-
+	bool CanMoveToOther(CUIDragDropItem* pItem);
 	//список элементов drag drop
 	DD_ITEMS_VECTOR	m_vDragDropItems;
 

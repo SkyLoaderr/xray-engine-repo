@@ -140,6 +140,9 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("enable_talk",					&CScriptGameObject::EnableTalk)
 		.def("disable_talk",				&CScriptGameObject::DisableTalk)
 		.def("is_talk_enabled",				&CScriptGameObject::IsTalkEnabled)
+		.def("enable_trade",				&CScriptGameObject::EnableTrade)
+		.def("disable_trade",				&CScriptGameObject::DisableTrade)
+		.def("is_trade_enabled",			&CScriptGameObject::IsTradeEnabled)
 
 		.def("inventory_for_each",			&CScriptGameObject::ForEachInventoryItems)
 		.def("drop_item",					&CScriptGameObject::DropItem)

@@ -356,10 +356,28 @@ bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(&this_trade_wnd->UIOurBagList != pItem->GetParent()) return false;
 
-	return true;
+	return this_trade_wnd->CanMoveToOther(pItem);
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+bool CUITradeWnd::CanMoveToOther(CUIDragDropItem* itm)
+{
+	PIItem pItem = (PIItem)itm->GetData();
+
+	float r1 = CalcItemsWeight(&UIOurTradeList);	// our
+	float r2 = CalcItemsWeight(&UIOthersTradeList);	// other
+
+	float itmWeight			= pItem->Weight();
+	float otherInvWeight	= m_pOthersInv->CalcTotalWeight();
+	float otherMaxWeight	= m_pOthersInv->GetMaxWeight();
+
+	if(otherInvWeight-r2+r1+itmWeight > otherMaxWeight){
+		Msg("partner inventory is full");
+		return false;
+	}
+	return true;
+}
 
 bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
@@ -375,6 +393,9 @@ bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 
 bool CUITradeWnd::ToOurTrade()
 {
+	if (!CanMoveToOther(m_pCurrentDragDropItem))return false;
+
+
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
 	UIOurTradeList.AttachChild(m_pCurrentDragDropItem);
 		
@@ -417,6 +438,7 @@ bool CUITradeWnd::ToOurBag()
 
 bool CUITradeWnd::ToOthersBag()
 {
+
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
 	UIOthersBagList.AttachChild(m_pCurrentDragDropItem);
 
@@ -428,6 +450,18 @@ bool CUITradeWnd::ToOthersBag()
 }
 
 //////////////////////////////////////////////////////////////////////////
+float CUITradeWnd::CalcItemsWeight(CUIDragDropList* pList)
+{
+	float res = 0.0f;
+	for(DRAG_DROP_LIST_it it = pList->GetDragDropItemsList().begin(); 
+ 			  			  pList->GetDragDropItemsList().end() != it; 
+						  ++it)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		res += ((PIItem)pDragDropItem->GetData())->Weight();
+	}
+	return res;
+}
 
 u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 {
