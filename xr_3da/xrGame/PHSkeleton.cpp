@@ -271,6 +271,10 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 	u16 split_bone=m_unsplited_shels.front().second;
 	mask1.assign(pKinematics->LL_GetBonesVisible());//source bones mask
 	pKinematics->LL_SetBoneVisible(split_bone,FALSE,TRUE);
+
+	pKinematics->CalculateBones_Invalidate	();
+	pKinematics->CalculateBones				();
+
 	mask0.assign(pKinematics->LL_GetBonesVisible());//first part mask
 	VERIFY2(mask0.flags,"mask0 -Zero");
 	mask0.invert();

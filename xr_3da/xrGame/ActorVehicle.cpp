@@ -41,6 +41,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	//setVisible(true);
 	//clear actor movement states 
 	mstate_wishful=0;
+
 }
 
 void CActor::detach_Vehicle()

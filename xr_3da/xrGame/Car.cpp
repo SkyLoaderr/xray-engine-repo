@@ -12,6 +12,7 @@
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 #include "../skeletonanimated.h"
+#include "level.h"
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
@@ -306,6 +307,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	HitEffect();
 	WheelHit(P,element,hit_type);
 	DoorHit(P,element,hit_type);
+	HUD().GetUI()->UIMainIngameWnd.SetCarHealth(fEntityHealth/100.f);
 }
 void CCar::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
@@ -317,6 +319,10 @@ void CCar::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, flo
 void CCar::ApplyDamage(u16 level)
 {
 	CDamagableItem::ApplyDamage(level);
+	switch(level)
+	{
+		case 3: m_fuel=0.f;
+	}
 
 }
 void CCar::detach_Actor()
@@ -328,7 +334,7 @@ void CCar::detach_Actor()
 	Unclutch();
 	ResetKeys();
 	m_current_rpm=m_min_rpm;
-
+	HUD().GetUI()->UIMainIngameWnd.ShowCarHealth(false);
 	///Break();
 }
 
@@ -354,7 +360,9 @@ bool CCar::attach_Actor(CActor* actor)
 	VisualUpdate();
 	
 
-
+	HUD().GetUI()->UIMainIngameWnd.ShowCarHealth(true);
+	HUD().GetUI()->UIMainIngameWnd.SetCarHealth(fEntityHealth/100.f);
+	//HUD().GetUI()->UIMainIngameWnd.ShowBattery(true);
 	//CBoneData&	bone_data=K->LL_GetData(id);
 	//Fmatrix driver_pos_tranform;
 	//driver_pos_tranform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);

@@ -92,6 +92,7 @@ protected:
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticMapBack;
 	CUIStatic			UIStaticBattery;
+	CUIStatic			UIStaticCarHealth;
 
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
@@ -100,6 +101,7 @@ protected:
 	CUIProgressBar		UIHealthBar;
 	CUIProgressBar		UIArmorBar;
 	CUIProgressBar		UIBatteryBar;
+	CUIProgressBar		UICarHealthBar;
 
 	CUIZoneMap			UIZoneMap;
 
@@ -237,4 +239,9 @@ public:
 	void				SetBatteryCharge(float value);
 	// Показать/спрятать батарейку
 	void				ShowBattery(bool on);
+
+		// Установить позицию заряда батарейки
+	void				SetCarHealth(float value);
+	// Показать/спрятать батарейку
+	void				ShowCarHealth(bool on);
 };

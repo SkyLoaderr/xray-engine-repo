@@ -82,11 +82,13 @@ void _stdcall CPHCollisionDamageReceiver::CollisionCallback(bool& do_colide,dCon
 	
 }
 
+const static float hit_threthhold=0.2f;
 void CPHCollisionDamageReceiver::Hit(u16 source_id,u16 bone_id,float power,const Fvector& dir,Fvector &pos )
 {
 	xr_map<u16,float>::iterator i=m_controled_bones.find(bone_id);
 	VERIFY2(i!=m_controled_bones.end(),"wrong bone");
 	power*=i->second;
+	if(power<hit_threthhold)return;
 	NET_Packet		P;
 	CPhysicsShellHolder *ph=PPhysicsShellHolder();
 	ph->u_EventGen(P,GE_HIT,ph->ID());

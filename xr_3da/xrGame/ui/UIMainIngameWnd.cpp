@@ -266,6 +266,14 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
 	ShowBattery(false);
 	SetBatteryCharge(1.0f);
+	////////////////////////////////////////////////////////////////////
+	AttachChild(&UIStaticCarHealth);
+	xml_init.InitStatic(uiXml, "car_health_static", 0, &UIStaticCarHealth);
+	//Полоса прогресса армора
+	UIStaticCarHealth.AttachChild(&UICarHealthBar);
+	xml_init.InitProgressBar(uiXml, "car_health_progress_bar", 0, &UICarHealthBar);
+	ShowCarHealth(false);
+	SetCarHealth(1.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1236,4 +1244,20 @@ void CUIMainIngameWnd::SetBatteryCharge(float value)
 	s16 pos = static_cast<s16>(value * 100);
 	clamp<s16>(pos, 0, 100);
 	UIBatteryBar.SetProgressPos(pos);
+}
+////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::ShowCarHealth(bool on)
+{
+	UIStaticCarHealth.Show(on);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::SetCarHealth(float value)
+{
+	s16 pos = static_cast<s16>(value * 100);
+	clamp<s16>(pos, 0, 100);
+	UICarHealthBar.SetProgressPos(pos);
 }
