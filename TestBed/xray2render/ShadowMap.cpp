@@ -801,9 +801,9 @@ void	CalcGauss	(
 	vector<float>	w;
 	for (int i=-n; i<=0; i++)
 	{
-		//w.push_back		(1.f);
-		float weight	=	expf(-float(i*i)/(2*r*r));
-		w.push_back		(weight);	// weight
+		w.push_back		(1.f);
+		//float weight	=	expf(-float(i*i)/(2*r*r));
+		//w.push_back		(weight);	// weight
 
 		float offset	= bs*float(-i); 
 		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
@@ -867,7 +867,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Filter_Bloom.compile			(m_pd3dDevice,"shaders\\D\\filter_bloom.s");
 
 	// Create bloom filter
-	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.9f,1.f,w/2.f,h/2.f);
+	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.0f,1.0f,w/2.f,h/2.f);
 
 	// Create special textures
 	LPDIRECT3DTEXTURE9				height	= 0;
