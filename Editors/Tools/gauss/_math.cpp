@@ -15,12 +15,12 @@ WORD getFPUsw()
 
 namespace FPU 
 {
-	XRCORE_API u16		_24	=0;
-	XRCORE_API u16		_24r=0;
-	XRCORE_API u16		_53	=0;
-	XRCORE_API u16		_53r=0;
-	XRCORE_API u16		_64	=0;
-	XRCORE_API u16		_64r=0;
+	u16			_24	=0;
+	u16			_24r=0;
+	u16			_53	=0;
+	u16			_53r=0;
+	u16			_64	=0;
+	u16			_64r=0;
 
 	XRCORE_API void __stdcall	m24		(u16 p)	{
 		__asm fldcw p;	

@@ -4,13 +4,6 @@
 #include "cpuid.h"
 
 namespace FPU {
-	XRCORE_API extern	u16		_24;
-	XRCORE_API extern	u16		_24r;
-	XRCORE_API extern	u16		_53;
-	XRCORE_API extern 	u16		_53r;
-	XRCORE_API extern 	u16		_64;
-	XRCORE_API extern 	u16		_64r;
-	
 	XRCORE_API void	__stdcall	m24		(u16 p=_24);
 	XRCORE_API void	__stdcall	m24r	(u16 p=_24r);	
 	XRCORE_API void	__stdcall	m53		(u16 p=_53);	
@@ -37,7 +30,6 @@ namespace CPU {
 	}
 	#pragma warning(default:4035)
 #endif
-
 #ifdef M_BORLAND
 	XRCORE_API u64 __fastcall	GetCycleCount		(void);
 #endif
