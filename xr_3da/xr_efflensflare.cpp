@@ -40,19 +40,12 @@ CLensFlare::CLensFlare()
 
     LightColor.set				( 0xFFFFFFFF );
 	fGradientValue				= 0.f;
-
-	// VS
-	hGeom				= Device.Shader.CreateGeom	(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
-
-	// shaders
-	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
-	m_Source.hShader	= CreateSourceShader	(m_Source.texture);
-	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
 }
 
 
 CLensFlare::~CLensFlare()
 {
+	DDUnload			();
 	// shaders
 	Device.Shader.Delete	(m_Gradient.hShader);
 	Device.Shader.Delete	(m_Source.hShader);
@@ -128,7 +121,10 @@ void CLensFlare::Load( CInifile* pIni, LPCSTR section )
 		o = pIni->ReadFLOAT	( section,"gradient_opacity" );
 		SetGradient(r,o,T);
 	}
-	bInit			= false;
+
+	DDLoad();
+
+  	bInit			= false;
 }
 
 void CLensFlare::OnFrame()
