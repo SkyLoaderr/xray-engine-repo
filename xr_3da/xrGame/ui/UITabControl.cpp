@@ -171,10 +171,10 @@ void CUITabControl::SetNewActiveTab(const int iNewTab)
 {
 	if (m_iPushedIndex == iNewTab)
 		return;
-    m_iPrevPushedIndex = m_iPushedIndex;
+    
 	m_iPushedIndex = iNewTab;
-
 	OnTabChange(m_iPushedIndex, m_iPrevPushedIndex);
+	m_iPrevPushedIndex = m_iPushedIndex;
 }
 
 bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
