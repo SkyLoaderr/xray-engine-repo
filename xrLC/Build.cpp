@@ -39,7 +39,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	CStream*		F	= 0;
 
 	// 
-	shaders.Load	("x:\\game\\shaders_xrlc.xr");
+	shaders.Load		("gamedata\\shaders_xrlc.xr");
 	/*
 	{
 		Shader_xrLCVec&	S = shaders.Library();

@@ -20,7 +20,7 @@ extern volatile BOOL bClose;
 static const char* h_str = 
 	"The following keys are supported / required:\n"
 	"-? or -h	== this help\n"
-	"-f<NAME>	== compile level in x:\\game\\data\\<NAME>\\\n"
+	"-f<NAME>	== compile level in gamedata\\levels\\<NAME>\\\n"
 	"-o			== modify build options\n"
 	"\n"
 	"NOTE: The last key is required for any functionality\n";
@@ -49,7 +49,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	// Load project
 	name[0]=0; sscanf	(strstr(cmd,"-f")+2,"%s",name);
-	string prjName = "x:\\game\\data\\levels\\"+string(name)+"\\";
+	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
 
 	DWORD				dwStartupTime	= timeGetTime();
 	xrCompiler			(prjName.c_str());
