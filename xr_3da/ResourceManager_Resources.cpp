@@ -171,6 +171,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 
 		// vertex
 		IReader*					fs			= FS.r_open(cname);
+		R_ASSERT2					(fs,cname);
 		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 
