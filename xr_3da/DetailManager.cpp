@@ -169,7 +169,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
 						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].bounds.R;
+						float				R   = objects	[sp.id].bv_sphere.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
@@ -202,7 +202,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
 						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].bounds.R;
+						float				R   = objects	[sp.id].bv_sphere.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
@@ -441,6 +441,7 @@ void CDetailManager::UpdateCache	(int limit)
 
 		// Check for number of decompressions
 		limit--;
+		D.BB.set	(Bounds);
 	}
 }
 
