@@ -74,7 +74,9 @@ public:
 	// Network
 	IC BOOL								Local()			{ return net_Local;		}
 	IC BOOL								Remote()		{ return !net_Local;	}
-
+	IC DWORD							ID()			{ return net_ID;		}
+	virtual BOOL						Ready()			{ return net_Ready; }		
+	
 	// Geometry xform
 	void								UpdateTransform	(void);
 	IC void								svCenter		(Fvector& C) const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
@@ -82,8 +84,6 @@ public:
 	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
 	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
 	
-	virtual BOOL						Ready			()					{ return net_Ready; }		
-
 	IC CSector*							Sector			()					{ return pSector; }
 
 	IC float							Radius			() const			{ VERIFY(pVisual); return pVisual->bv_Radius;}
