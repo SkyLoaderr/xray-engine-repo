@@ -39,6 +39,9 @@ IC void mk_vertex					(CLightR_Vertex& D, Fvector& P, Fvector& N, Fvector& C, fl
 
 void CLightR_Manager::render_point	()
 {
+	// Implementation banned / non-working
+	return;
+
 	// Worl/View/Projection
 	float _43					 = Device.mProject._43;
 	Device.mProject._43			-= 0.001f; 
