@@ -88,6 +88,8 @@ function action_go_position:initialize()
 
 	self.begin = false	
 end
+function action_go_position:activate_scheme()
+end
 function action_go_position:execute ()
 	action_base.execute (self)
 	
@@ -330,6 +332,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 	action:add_precondition		(world_property(properties["need_patrol"],	false))
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
 	manager:add_action (operators["wait"], action)
+	xr_logic.subscribe_action_for_events(object, storage, action)
 
 	action = this.action_go_position (object:name(),"action_go_kamp", db.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
