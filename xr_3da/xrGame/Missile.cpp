@@ -94,11 +94,13 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 	m_throw_matrix.identity();
 	///////////////////////////////////
 
+//	Msg		("Object [%d][%s][%s] is spawned",ID(),*cName(),*cNameSect());
 	return l_res;
 }
 
 void CMissile::net_Destroy() 
 {
+//	Msg		("Object [%d][%s][%s] is destroyed",ID(),*cName(),*cNameSect());
 	inherited::net_Destroy();
 	m_fake_missile = 0;
 }
@@ -149,7 +151,8 @@ void CMissile::spawn_fake_missile()
 //	Level().Send		(P,net_flags(TRUE));
 //	// Destroy
 //	F_entity_Destroy	(D);
-	Level().spawn_item	(*cNameSect(),Position(),level_vertex_id(),ID());
+	if (!getDestroy())
+		Level().spawn_item	(*cNameSect(),Position(),level_vertex_id(),ID());
 }
 
 void CMissile::OnH_A_Chield() 
