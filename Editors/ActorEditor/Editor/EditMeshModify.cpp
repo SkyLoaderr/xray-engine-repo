@@ -214,7 +214,8 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 	}
 }
 
-void CEditableMesh::Optimize(BOOL NoOpt){
+void CEditableMesh::Optimize(BOOL NoOpt)
+{
 	if (!NoOpt){
 		// clear static data
 		for (int x=0; x<MX+1; x++)
