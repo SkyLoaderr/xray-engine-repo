@@ -10,6 +10,7 @@
 #include "cl_intersect.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
+#include "SceneObject.h"
 
 const DWORD	vs_size				= 3000;
 const float slot_size			= DETAIL_SLOT_SIZE;
@@ -486,15 +487,18 @@ void CDetailManager::UpdateCache	(int limit)
 				float		r_u,r_v,r_range;
 				for (DWORD tid=0; tid<triCount; tid++)
 				{
-/*                	Fvector* verts = pinf[tid].bp_inf.p;
-					if (RAPID::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
-					{
-						if (r_range>=0)	{
-							float y_test	= Item.P.y - r_range;
-							if (y_test>y)	y = y_test;
-						}
-					}
-*/
+                    Fvector verts[3];
+                    SBoxPickInfo& I=pinf[tid];
+		        	for (int k=0; k<I.bp_inf.size(); k++){
+                        I.s_obj->GetFaceWorld(I.e_mesh,I.bp_inf[k].id,verts);
+                        if (CDB::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
+                        {
+                            if (r_range>=0)	{
+                                float y_test	= Item.P.y - r_range;
+                                if (y_test>y)	y = y_test;
+                            }
+                        }
+                    }
 				}
 				if (y<D.BB.min.y)	continue;
 				Item.P.y	= y;

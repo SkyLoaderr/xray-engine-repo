@@ -64,7 +64,7 @@ void CEditableMesh::GenerateCFModel(){
 			0,0,0 );
 	}
 
-	m_CFModel->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+    cdb_model_build(m_CFModel,CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState |= EMESH_LS_CF_MODEL;
 }
 
@@ -72,11 +72,11 @@ bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction,
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
-    float m_r = UI.ZFar();//pinf?pinf->rp_inf.range: (bugs: не всегда выбирает)
+    float m_r = UI.ZFar();//S pinf?pinf->rp_inf.range: (bugs: не всегда выбирает)
 
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
     XRC.ray_query	(parent, m_CFModel, start, direction, m_r);
-    if (XRC.r_count()){// XRC.GetMinRayPickDistance(new_dist)){
+    if (XRC.r_count()){
 		CDB::RESULT* I	= XRC.r_begin	();
 		if (I->range<distance) {
 	        if (pinf){
@@ -149,17 +149,20 @@ void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, b
 }
 //----------------------------------------------------
 
-void CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+bool CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
     if (!m_CFModel) GenerateCFModel();
 
     XRC.box_options(0);
 
     XRC.box_query(parent, m_CFModel, box);
-    for (CDB::RESULT* I=XRC.r_begin(); I!=XRC.r_end(); I++){
-        pinf.push_back(SBoxPickInfo());
-        pinf.back().bp_inf	= *I;
-        pinf.back().e_mesh	= this;
+    if (XRC.r_count()){
+    	pinf.push_back(SBoxPickInfo());
+		pinf.back().e_obj 	= m_Parent;
+	    pinf.back().e_mesh	= this;
+	    for (CDB::RESULT* I=XRC.r_begin(); I!=XRC.r_end(); I++) pinf.back().bp_inf.push_back(*I);
+        return true;
     }
+    return false;
 }
 //----------------------------------------------------
 

@@ -33,6 +33,11 @@ void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
     seScaleY->Value = S.y;
     seScaleZ->Value = S.z;
 
+	seScaleX->Enabled = m_LibObject->IsDynamic();
+	seScaleY->Enabled = m_LibObject->IsDynamic();
+	seScaleZ->Enabled = m_LibObject->IsDynamic();
+
+
     Fbox& BB = m_LibObject->GetBox();
     for (int col=1; col<5; col++){
         Fvector p;

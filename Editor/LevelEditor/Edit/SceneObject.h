@@ -43,6 +43,7 @@ public:
     // statistics methods
 	IC bool 		IsDynamic     			()	{return (m_pRefs->IsFlag(CEditableObject::eoDynamic)); }
     int 			GetFaceCount			();
+    void			GetFaceWorld			(CEditableMesh* M, int idx, Fvector* verts);
 	int 			GetVertexCount			();
     int 			GetSurfFaceCount		(const char* surf_name);
 
@@ -61,7 +62,7 @@ public:
 	void		    LightenObject			();
 
     // pick methods
-    void 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);
 	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf=0);
 	virtual bool 	FrustumPick				(const CFrustum& frustum);
     virtual bool 	SpherePick				(const Fvector& center, float radius);

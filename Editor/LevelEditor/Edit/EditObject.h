@@ -258,7 +258,7 @@ public:
     // pick methods
 	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
 #ifdef _LEVEL_EDITOR
-    void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 #endif
@@ -310,6 +310,7 @@ public:
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
 
+    // export routine
 	bool			ExportSkeletonOGF		(LPCSTR fname);
     bool			PrepareSVGeometry		(CFS_Base& F);
     bool			PrepareSVMotions		(CFS_Base& F);

@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "D3DUtils.h"
 #include "Scene.h"
+#include "SceneObject.h"
 #include "EditorPref.h"
 #include "leftbar.h"
 #include "cl_intersect.h"
@@ -423,7 +424,7 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
 
 #define EPS_L_VAR 0.0012345f
 void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
-/*	Fbox bbox;
+	Fbox bbox;
     Frect rect;
     GetSlotRect			(rect,sx,sz);
     bbox.min.set		(rect.x1, slot.y_min, rect.y1);
@@ -444,15 +445,19 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
         slot.y_min		= flt_max;
         slot.y_max		= flt_min;
 		for (SBoxPickInfoIt it=pinf.begin(); it!=pinf.end(); it++){
-    		float range;
-            sPoly sSrc	(it->bp_inf.p,3);
-            sPoly sDest;
-            sPoly* sRes = frustum.ClipPoly(sSrc, sDest);
-            if (sRes){
-            	for (DWORD k=0; k<sRes->size(); k++){
-                	float H = (*sRes)[k].y;
-                    if (H>slot.y_max) slot.y_max = H+0.03f;
-                    if (H<slot.y_min) slot.y_min = H-0.03f;
+        	for (int k=0; k<it->bp_inf.size(); k++){
+                float range;
+                Fvector verts[3];
+                it->s_obj->GetFaceWorld(it->e_mesh,it->bp_inf[k].id,verts);
+                sPoly sSrc	(verts,3);
+                sPoly sDest;
+                sPoly* sRes = frustum.ClipPoly(sSrc, sDest);
+                if (sRes){
+                    for (DWORD k=0; k<sRes->size(); k++){
+                        float H = (*sRes)[k].y;
+                        if (H>slot.y_max) slot.y_max = H+0.03f;
+                        if (H<slot.y_min) slot.y_min = H-0.03f;
+                    }
                 }
             }
 	    }
@@ -463,7 +468,6 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
     	slot.items[2].id=0xff;
     	slot.items[3].id=0xff;
     }
-*/
 }
 
 bool CDetailManager::UpdateBBox(){

@@ -11,6 +11,7 @@
 #include "scene.h"
 #include "d3dutils.h"
 #include "library.h"
+#include "EditMesh.h"
 
 //----------------------------------------------------
 CSceneObject::CSceneObject( char *name ):CCustomObject(){
@@ -42,6 +43,13 @@ CSceneObject::~CSceneObject(){
 }
 
 //----------------------------------------------------
+void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts){
+	const Fvector* PT[3];
+	M->GetFacePT(idx, PT);
+	mTransform.transform_tiny(verts[0],*PT[0]);
+    mTransform.transform_tiny(verts[1],*PT[1]);
+	mTransform.transform_tiny(verts[2],*PT[2]);
+}
 
 int CSceneObject::GetFaceCount(){
 	return m_pRefs->GetFaceCount();
@@ -141,8 +149,12 @@ bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pi
 	return false;
 }
 
-void CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
-	m_pRefs->BoxPick(box, mTransform, pinf);
+bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
+	if (m_pRefs->BoxPick(box, mTransform, pinf)){
+        pinf.back().s_obj = this;
+        return true;
+    }
+	return false;
 }
 
 void CSceneObject::Move(Fvector& amount){
@@ -205,6 +217,7 @@ void CSceneObject::Scale( Fvector& center, Fvector& amount ){
 	vPosition.sub( center );
 	m.transform_tiny(vPosition);
 	vPosition.add( center );
+    UpdateTransform();
 }
 
 void CSceneObject::LocalScale( Fvector& amount ){
@@ -221,6 +234,7 @@ void CSceneObject::LocalScale( Fvector& amount ){
     if (vScale.x<EPS) vScale.x=EPS;
     if (vScale.y<EPS) vScale.y=EPS;
     if (vScale.z<EPS) vScale.z=EPS;
+    UpdateTransform();
 }
 
 void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){

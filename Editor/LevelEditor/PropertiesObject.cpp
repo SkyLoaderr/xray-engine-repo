@@ -190,16 +190,14 @@ void __fastcall TfrmPropertiesObject::pcObjectsChange(TObject *Sender)
 void __fastcall TfrmPropertiesObject::OnPick(const SRayPickInfo& pinf){
 	R_ASSERT(pinf.e_mesh);
 	if (form&&form->ebDropper->Down&&m_LibObject){
-		if ((form->pcObjects->ActivePage==form->tsMeshes)||(form->pcObjects->ActivePage==form->tsSurfaces)){
-            if (form->pcObjects->ActivePage==form->tsMeshes){
-                form->tvMeshes->Selected = form->tvMeshes->Items->LookForItem(0,pinf.e_mesh->GetName(),0,0,false,true,false,false,true);
-				form->tvMeshes->EnsureVisible(form->tvMeshes->Selected);
-            }else if (form->pcObjects->ActivePage==form->tsSurfaces){
-                UI.RedrawScene();
-				CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
-    	        form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->_Name(),0,0,false,true,false,false,true);
-				form->tvSurfaces->EnsureVisible(form->tvSurfaces->Selected);
-            }
+        if (form->pcObjects->ActivePage==form->tsMeshes){
+            form->tvMeshes->Selected = form->tvMeshes->Items->LookForItem(0,pinf.e_mesh->GetName(),0,0,false,true,false,false,true);
+            form->tvMeshes->EnsureVisible(form->tvMeshes->Selected);
+        }else if (form->pcObjects->ActivePage==form->tsSurfaces){
+            UI.RedrawScene();
+            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+            form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->_Name(),0,0,false,true,false,false,true);
+            form->tvSurfaces->EnsureVisible(form->tvSurfaces->Selected);
         }
     }
 }

@@ -9,6 +9,7 @@
 #include "topbar.h"
 #include "leftbar.h"
 #include "scene.h"
+#include "sceneobject.h"
 #include "EditorPref.h"
 #include "D3DUtils.h"
 #include "Cursor3D.h"
@@ -31,20 +32,21 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         default: THROW;
         }
         if (bPickObject){
-/*		    if (fraTopBar->ebVSnap->Down&&bSnap){
+		    if (fraTopBar->ebVSnap->Down&&bSnap){
                 Fvector pn;
                 float u = pinf.rp_inf.u;
                 float v = pinf.rp_inf.v;
                 float w = 1-(u+v);
-                if ((w>u) && (w>v)) pn.set(pinf.rp_inf.p[0]);
-                else if ((u>w) && (u>v)) pn.set(pinf.rp_inf.p[1]);
-                else pn.set(pinf.rp_inf.p[2]);
+				Fvector verts[3];
+				pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.rp_inf.id,verts);
+                if ((w>u) && (w>v)) pn.set(verts[0]);
+                else if ((u>w) && (u>v)) pn.set(verts[1]);
+                else pn.set(verts[2]);
                 if (pn.distance_to(pinf.pt) < movesnap()) hitpoint.set(pn);
                 else hitpoint.set(pinf.pt);
             }else{
             	hitpoint.set(pinf.pt);
             }
-*/
             return true;
         }
     }
@@ -169,9 +171,20 @@ void TUI::Redraw(){
     // draw axis
         DU::DrawAxis();
 
+		static int y=20;
+        y--;
+        if (y==0){
+        	C3DCursor* C=0;
+            C->Render();
+        }
     // end draw
         Device.End();
-    }catch(...){
+    }
+    catch(...)
+    {
+		_clear87();
+		FPU::m24r();
+    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
         Device.End();
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }

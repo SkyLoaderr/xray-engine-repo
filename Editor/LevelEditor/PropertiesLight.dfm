@@ -56,11 +56,11 @@ object frmPropertiesLight: TfrmPropertiesLight
       Top = 13
       Width = 85
       Height = 17
-      Max = 150
-      Min = -150
+      Max = 300
+      Min = -300
       Orientation = trHorizontal
-      Frequency = 25
-      Position = 100
+      Frequency = 75
+      Position = 0
       SelEnd = 0
       SelStart = 0
       TabOrder = 0
@@ -77,8 +77,8 @@ object frmPropertiesLight: TfrmPropertiesLight
       LWSensitivity = 1
       ButtonKind = bkLightWave
       Increment = 0.1
-      MaxValue = 1.5
-      MinValue = -1.5
+      MaxValue = 3
+      MinValue = -3
       ValueType = vtFloat
       AutoSize = False
       TabOrder = 1

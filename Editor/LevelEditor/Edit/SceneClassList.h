@@ -20,11 +20,12 @@ class CSceneObject;
 		SRayPickInfo		(){Reset();}
 		IC void Reset		(){ ZeroMemory(this,sizeof(SRayPickInfo));rp_inf.range = 5000;}
 	};
+    DEFINE_VECTOR(CDB::RESULT,BPInfVec,BPInfIt);
 	struct SBoxPickInfo{
 		CSceneObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
-		CDB::RESULT 		bp_inf;
+    	BPInfVec			bp_inf;
 		SBoxPickInfo		(){Reset();}
 		IC void Reset		(){ZeroMemory(this,sizeof(SBoxPickInfo));}
 	};

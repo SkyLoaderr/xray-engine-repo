@@ -33,7 +33,7 @@ void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
     tvMeshes->Sort(true);
     tvMeshes->FullExpand();
     tvMeshes->IsUpdating = false;
-	tvSurfaces->Selected=root;
+	tvMeshes->Selected=root;
 }
 //---------------------------------------------------------------------------
 

@@ -82,14 +82,22 @@ void __fastcall TfrmEditLibrary::OnRender(){
         mTransform.mul			(mTranslate,mRotate);
         mTransform.mul			(mScale);
         form->m_SelectedObject->RenderSingle(mTransform);
-        if (fraBottomBar->miDrawObjectBones->Checked) form->m_SelectedObject->RenderBones(mTransform);
+//        if (fraBottomBar->miDrawObjectBones->Checked) form->m_SelectedObject->RenderBones(mTransform);
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ZoomObject(){
 	if (!form) return;
 	if (form->m_SelectedObject&&form->cbPreview->Checked){
-		Fbox& bb = form->m_SelectedObject->GetBox();
+        Fmatrix	mTransform,mScale,mTranslate,mRotate;
+        mRotate.setHPB			(form->m_SelectedObject->t_vRotate.y, form->m_SelectedObject->t_vRotate.x, form->m_SelectedObject->t_vRotate.z);
+        mScale.scale			(form->m_SelectedObject->t_vScale);
+        mTranslate.translate	(form->m_SelectedObject->t_vPosition);
+        mTransform.mul			(mTranslate,mRotate);
+        mTransform.mul			(mScale);
+        // get bbox&transform
+		Fbox& bb 				= form->m_SelectedObject->GetBox();
+        bb.transform			(mTransform);
         Device.m_Camera.ZoomExtents(bb);
     }
 }

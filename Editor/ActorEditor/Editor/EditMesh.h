@@ -200,7 +200,7 @@ public:
     // pick routine
 	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
 #ifdef _LEVEL_EDITOR
-    void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     void            FrustumPickFaces		(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl);
     bool			CHullPickMesh			(PlaneVec& pl, Fmatrix& parent);
