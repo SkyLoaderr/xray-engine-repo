@@ -25,13 +25,13 @@ function main ()
   	action (bredun1, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
             look (look.search), anim (anim.free), particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false), cond (cond.time_end, 10000000))
   	action (bredun2, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+            look (look.search), anim (anim.free), particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false), cond (cond.time_end, 10000000))
   	action (bredun3, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+            look (look.search), anim (anim.free), particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false), cond (cond.time_end, 10000000))
   	action (bredun4, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+            look (look.search), anim (anim.free), particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false), cond (cond.time_end, 10000000))
   	action (bredun5, move (move.standing, move.walk, move.line, patrol ("way_ptr80")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+            look (look.search), anim (anim.free), particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false), cond (cond.time_end, 10000000))
 
 	while true do 
 		  wait (5000) 
