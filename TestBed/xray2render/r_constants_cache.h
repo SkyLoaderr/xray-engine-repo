@@ -41,6 +41,11 @@ public:
 		Fvector4*	it	= c_f.access	(L.index);
 		switch		(L.cls)
 		{
+		case RC_2x4:
+			c_f.dirty			(L.index,L.index+2);
+			it[0].set			(A._11, A._21, A._31, A._41);
+			it[1].set			(A._12, A._22, A._32, A._42);
+			break;
 		case RC_3x4:
 			c_f.dirty			(L.index,L.index+3);
 			it[0].set			(A._11, A._21, A._31, A._41);
@@ -55,8 +60,11 @@ public:
 			it[3].set			(A._14, A._24, A._34, A._44);
 			break;
 		default:
+#ifdef DEBUG
 			Debug.fatal		("Invalid constant run-time-type for '%s'",C->name);
-			break;
+#else
+			NODEFAULT;
+#endif
 		}
 	}
 
@@ -75,6 +83,13 @@ public:
 		Fvector4*	it;
 		switch		(L.cls)
 		{
+		case RC_2x4:
+			base				= L.index + 2*e;
+			it					= c_f.access	(base);
+			c_f.dirty			(base,base+2);
+			it[0].set			(A._11, A._21, A._31, A._41);
+			it[1].set			(A._12, A._22, A._32, A._42);
+			break;
 		case RC_3x4:
 			base				= L.index + 3*e;
 			it					= c_f.access	(base);
@@ -93,8 +108,11 @@ public:
 			it[3].set			(A._14, A._24, A._34, A._44);
 			break;
 		default:
+#ifdef DEBUG
 			Debug.fatal		("Invalid constant run-time-type for '%s'",C->name);
-			break;
+#else
+			NODEFAULT;
+#endif
 		}
 	}
 

@@ -79,11 +79,19 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 				switch (T->Columns)
 				{
 				case 4:
-					Msg		("rows(%d), elements(%d), reg_count(%d)",T->Rows,T->Elements,it->RegisterCount);
 					switch (T->Rows)
 					{
-					case 3:			r_type		=	RC_3x4;		break;
-					case 4:			r_type		=	RC_4x4;		break;
+					case 3:
+						switch (it->RegisterCount)
+						{
+						case 2:	r_type	=	RC_2x4;	break;
+						case 3: r_type	=	RC_3x4;	break;
+						default:	
+							fatal		("MATRIX_ROWS: unsupported number of RegisterCount");
+							break;
+						}
+						break;
+					case 4:			r_type		=	RC_4x4;		VERIFY(4 == it->RegisterCount); break;
 					default:
 						fatal		("MATRIX_ROWS: unsupported number of Rows");
 						break;
