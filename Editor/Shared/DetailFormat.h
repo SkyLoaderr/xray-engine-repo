@@ -20,6 +20,25 @@
 	..
 	obj_count-1
 2 - slots
+
+	CFS_Memory F;
+    m_Header.object_count=m_Objects.size();
+	// header
+	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
+    // objects
+	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
+    for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+		F.open_chunk	(it-m_Objects.begin());
+        (*it)->Export	(F);
+	    F.close_chunk	();
+    }
+    F.close_chunk		();
+    // slots
+	F.open_chunk		(DETMGR_CHUNK_SLOTS);
+	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
+    F.close_chunk		();
+
+    F.SaveTo			(fn,0);
 */
 /*
 // detail object
