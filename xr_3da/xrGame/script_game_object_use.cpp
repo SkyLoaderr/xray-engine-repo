@@ -253,4 +253,3 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 	}
 	return			(ret_val);
 }
-
