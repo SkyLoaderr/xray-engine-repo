@@ -19,4 +19,6 @@ public:
 
 	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}
+
+	CBitingNull		*stateTest;
 };

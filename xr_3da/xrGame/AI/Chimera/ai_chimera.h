@@ -34,4 +34,6 @@ public:
 
 	bonesManipulation		Bones;
 
+	CBitingNull		*stateTest;
+
 };

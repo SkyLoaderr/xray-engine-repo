@@ -194,19 +194,62 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 
+	LOG_EX("Scripting now!!!");
+	
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
+	
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
-	
-	CJumping  *pJ = dynamic_cast<CJumping*>(this);
-	
-	if (pJ && !pJ->IsActive() && (ACT_JUMP == MotionMan.m_tAction)) {
-		pJ->Check(Position(), l_tMovementAction.m_tDestinationPosition, 0);
-	} else 	if (ACT_DRAG == MotionMan.m_tAction) {
-		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
+
+	bool bEnablePath = true;
+//
+//	switch (m_tAction) {
+//	case ACT_STAND_IDLE:
+//	case ACT_SIT_IDLE:
+//	case ACT_LIE_IDLE:
+//	case ACT_EAT:
+//	case ACT_SLEEP:
+//	case ACT_REST:
+//	case ACT_LOOK_AROUND:
+//		bEnablePath = false;
+//		break;
+//	case ACT_WALK_FWD:
+//		break;
+//	case ACT_WALK_BKWD:
+//		break;
+//	case ACT_RUN:
+//		break;
+//	case ACT_DRAG:
+//		break;
+//	case ACT_ATTACK:
+//		break;
+//	case ACT_STEAL:
+//		break;
+//	case ACT_JUMP:
+//		break;
+//	}
+
+	if (bEnablePath) {
+		CDetailPathManager::set_velocity_mask(eMovementParameterAnyType);
+		CDetailPathManager::set_desirable_mask(eMovementParameterRunFree | eMovementParameterWalkFree);
+
+		CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
+		CDetailPathManager::set_try_min_time(true);
+	} else {
+		enable_movement(false);
 	}
-	
-//	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
+
+	update_path				();
+
+	PreprocessAction();
 	MotionMan.ProcessAction();
+
+	SetVelocity();
+
+#pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")
+	set_desirable_speed		(m_fCurSpeed);
+
+	m_head = m_body;
+
 	return			(true);		
 }
 

@@ -138,9 +138,9 @@ class CAI_Biting : public CCustomMonster,
 public:
 
 	enum EMovementParameters {
-		eMovementParameterStand						= u32(1) <<  1,
-		eMovementParameterWalkFree					= u32(1) <<  2,
-		eMovementParameterRunFree					= u32(1) <<  3,
+		eMovementParameterStand						= u32(1) <<  4,
+		eMovementParameterWalkFree					= u32(1) <<  3,
+		eMovementParameterRunFree					= u32(1) <<  2,
 
 		eMovementParameterAnyType					= eMovementParameterStand | eMovementParameterWalkFree | eMovementParameterRunFree,
 	};
@@ -184,8 +184,11 @@ public:
 			void			Path_CoverFromPoint				(CEntity *pE, Fvector position);
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
 			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
-
+			
 			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos, u32 velocity_mask, u32 desirable_vel);
+			
+			void			SetVelocity						();
+			void			PreprocessAction				();
 
 	// Other
 			void			vfUpdateParameters				();
@@ -347,6 +350,9 @@ public:
 
 		DEFINE_MAP(u32,TTime,TNODES_MAP,TNODES_MAP_IT);
 		TNODES_MAP nodes;
+
+		DEFINE_VECTOR(u32, TNODES_VECTOR, TNODES_VECTOR_IT);
+		TNODES_VECTOR node_vec;
 	} dbg_info;
 
 	

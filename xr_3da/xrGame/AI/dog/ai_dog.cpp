@@ -14,6 +14,8 @@ CAI_Dog::CAI_Dog()
 	
 	CurrentState		= stateRest;
 
+	stateTest			= xr_new<CBitingNull>		(this);
+
 	Init();
 	
 }
@@ -27,6 +29,8 @@ CAI_Dog::~CAI_Dog()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
+
+	xr_delete(stateTest);
 }
 
 
@@ -138,6 +142,10 @@ void CAI_Dog::Load(LPCSTR section)
 void CAI_Dog::StateSelector()
 {	
 	VisionElem ve;
+
+	SetState(stateTest);
+	return;
+
 	
 	if (C || D || E || F) SetBkgndSound();
 	else SetBkgndSound(false);

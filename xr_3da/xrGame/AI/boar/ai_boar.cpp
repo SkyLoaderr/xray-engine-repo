@@ -103,6 +103,9 @@ void CAI_Boar::Load(LPCSTR section)
 
 void CAI_Boar::StateSelector()
 {	
+	SetState(stateTest);
+	return;
+
 
 	VisionElem ve;
 

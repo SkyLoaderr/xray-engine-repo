@@ -29,7 +29,7 @@ void CBitingTest::Run()
 	if (pMonster->CMovementManager::path_completed() || (!pMonster->CDetailPathManager::path().empty() && (pMonster->CDetailPathManager::path().size() < pMonster->CDetailPathManager::curr_travel_point_index() + 5 ))) {
 		bNeedRebuild = true;
 	} else {
-		DO_IN_TIME_INTERVAL_BEGIN(last_time, 500);
+		DO_IN_TIME_INTERVAL_BEGIN(last_time, 1000);
 			bNeedRebuild = true;
 		DO_IN_TIME_INTERVAL_END();
 	}
@@ -37,6 +37,12 @@ void CBitingTest::Run()
 	
 	if (bNeedRebuild) {
 		vertex_id = dynamic_cast<CEntity*>(Level().CurrentEntity())->level_vertex_id();
+
+		float radius = 10.f;
+		pMonster->dbg_info.node_vec.clear();
+
+//		ai().graph_engine().search( ai().level_graph(), vertex_id, vertex_id, &pMonster->dbg_info.node_vec, CGraphEngine::CFlooder(radius));
+		
 	}
 
 	pMonster->SetPathParams(
@@ -46,4 +52,5 @@ void CBitingTest::Run()
 		pMonster->eMovementParameterAnyType,
 		pMonster->eMovementParameterRunFree | pMonster->eMovementParameterWalkFree
 	);
+
 }

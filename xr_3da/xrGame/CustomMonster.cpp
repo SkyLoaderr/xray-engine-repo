@@ -636,6 +636,8 @@ void CCustomMonster::OnRender()
 //	up_vect.y += 1.5f;
 //	RCache.dbg_DrawLINE(Fidentity,pM->dbg_info.pos,up_vect,D3DCOLOR_XRGB(255,0,128));
 
+//
+//
 //	CAI_Biting::s_dbg::TNODES_MAP_IT I, B = pM->dbg_info.nodes.begin();
 //	CAI_Biting::s_dbg::TNODES_MAP_IT E = pM->dbg_info.nodes.end();
 //	
@@ -651,8 +653,22 @@ void CCustomMonster::OnRender()
 //
 //		RCache.dbg_DrawAABB(pos,0.25f,0.25f,0.25f,D3DCOLOR_XRGB(128,col,128));
 //	}
+
+//	for (u32 i=0; i<pM->dbg_info.node_vec.size();i++) {
+//		Fvector pos = ai().level_graph().vertex_position(pM->dbg_info.node_vec[i]);
+//		u8 col;
+//		
+//		
+//		col = u8(float(ai().level_graph().vertex_cover(pM->dbg_info.node_vec[i]) / 4.f * 255.f));
 //
-//	// JIM TEMP END
+////		LOG_EX2("NODE %u: COVER = [%f] COL = %u", *"*/  i, ai().level_graph().vertex_cover(pM->dbg_info.node_vec[i]),col /*"*);
+//
+//		for (float f = 0.25f; f > 0.2f; f-=0.01)
+//			RCache.dbg_DrawAABB(pos,f,f,f,D3DCOLOR_XRGB(0x0,0x0,col));
+//	}
+	
+
+	// JIM TEMP END
 
 }
 #endif
