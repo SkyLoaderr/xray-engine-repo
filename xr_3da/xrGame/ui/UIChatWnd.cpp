@@ -23,7 +23,8 @@ const int			fadeDelay		= 5000;
 //////////////////////////////////////////////////////////////////////////
 
 CUIChatWnd::CUIChatWnd(CUIChatLog *pList)
-	:	pUILogList		(pList)
+	:	pUILogList				(pList),
+		sendNextMessageToTeam	(false)
 {
 	R_ASSERT(pUILogList);
 }
@@ -93,8 +94,13 @@ void CUIChatWnd::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status
 {
 	if (&UIEditBox == pChildWindow && false == capture_status)
 	{
-		if (pOwner)
-			pOwner->OnKeyboardPress(kCHAT);
+		if (xr_strlen(UIEditBox.GetText()) > 0)
+		{
+			ref_str phrase = UIEditBox.GetText();
+			Say(phrase);
+			sendNextMessageToTeam ? Game().ChatSayTeam(phrase) : Game().ChatSayAll(phrase);
+			UIEditBox.SetText("");
+		}
 	}
 
 	inherited::SetKeyboardCapture(pChildWindow, capture_status);

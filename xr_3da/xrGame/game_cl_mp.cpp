@@ -27,7 +27,6 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	pChatLog->Init();
 	pChatWnd = xr_new<CUIChatWnd>(pChatLog);
 	pChatWnd->Init();
-	pChatWnd->SetOwner(this);
 	return NULL;
 };
 
@@ -118,9 +117,15 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			ref_str prefix;
 
 			if (kCHAT_TEAM == key)
+			{
 				prefix = "to team> ";
+				pChatWnd->TeamChat();
+			}
 			else
+			{
 				prefix = "to all> ";
+				pChatWnd->AllChat();
+			}
 
 			pChatWnd->SetEditBoxPrefix(prefix);
 
