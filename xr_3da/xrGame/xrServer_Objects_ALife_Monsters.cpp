@@ -329,9 +329,9 @@ CHARACTER_COMMUNITY_INDEX		CSE_ALifeTraderAbstract::Community	() const
 	return m_community_index;
 }
 
-CHARACTER_COMMUNITY_ID			CSE_ALifeTraderAbstract::CommunityName () const
+LPCSTR			CSE_ALifeTraderAbstract::CommunityName () const
 {
-	return CHARACTER_COMMUNITY::IndexToId(m_community_index);
+	return *CHARACTER_COMMUNITY::IndexToId(m_community_index);
 }
 
 CHARACTER_RANK_VALUE			CSE_ALifeTraderAbstract::Rank		() const
