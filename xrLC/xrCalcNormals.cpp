@@ -73,6 +73,9 @@ void CBuild::CalcNormals()
 		(*it)->bSplitted = FALSE;
 
 	// Models
+	Status	("Models...");
+	for		(u32 m=0; m<mu_models.size(); m++)
+		mu_models[m]->calc_normals();
 
 	Msg("%d vertices was duplicated 'cause of SM groups",g_vertices.size()-Vcount);
 }
