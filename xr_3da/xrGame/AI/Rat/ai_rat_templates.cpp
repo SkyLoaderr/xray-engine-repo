@@ -135,19 +135,19 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 	//float fDistance = tOffset.magnitude();
 	
 	// First, tweak the pitch
-	if (tOffset.y > 1.0) {			// We're too low
-		m_tHPB.y += fAT;
-		if (m_tHPB.y > 0.8f)	
-			m_tHPB.y = 0.8f;
-	}
-	else 
-		if (tOffset.y < -1.0) {	// We're too high
-			m_tHPB.y -= fAT;
-			if (m_tHPB.y < -0.8f)
-				m_tHPB.y = -0.8f;
-		}
-		else							// Add damping
-			m_tHPB.y *= 0.95f;
+//	if (tOffset.y > 1.0) {			// We're too low
+//		m_tHPB.y += fAT;
+//		if (m_tHPB.y > 0.8f)	
+//			m_tHPB.y = 0.8f;
+//	}
+//	else 
+//		if (tOffset.y < -1.0) {	// We're too high
+//			m_tHPB.y -= fAT;
+//			if (m_tHPB.y < -0.8f)
+//				m_tHPB.y = -0.8f;
+//		}
+//		else							// Add damping
+//			m_tHPB.y *= 0.95f;
 
 	// Now figure out yaw changes
 	tDirection.normalize();
@@ -179,16 +179,15 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 		}
 
 	m_tHPB.x  +=  m_fDHeading;
-	m_tHPB.z  = -m_fDHeading * 9.0f;
+	//m_tHPB.z  = -m_fDHeading * 9.0f;
 
 	m_tHPB.x = angle_normalize_signed(m_tHPB.x);
 	m_tHPB.y = angle_normalize_signed(m_tHPB.y);
-	m_tHPB.z = angle_normalize_signed(m_tHPB.z);
+	//m_tHPB.z = angle_normalize_signed(m_tHPB.z);
 
 	// Build the local matrix for the pplane
 	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 	r_target.yaw = r_torso_target.yaw = -m_tHPB.x;
-	UpdateTransform();
 	// Update position
 	Fvector tTemp;
 	tTemp.set(vPosition);
@@ -212,4 +211,5 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 		m_fSafeSpeed = m_fSpeed = EPS_S;
 		m_bNoWay = true;
 	}
+	UpdateTransform();
 }
