@@ -2722,6 +2722,16 @@
 					Name="humans"
 					Filter="">
 					<Filter
+						Name="trader"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Trader\ai_trader.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Trader\ai_trader.h">
+						</File>
+					</Filter>
+					<Filter
 						Name="stalker"
 						Filter="">
 						<File
@@ -2936,16 +2946,6 @@
 								RelativePath=".\stalker_movement_manager_space.h">
 							</File>
 						</Filter>
-					</Filter>
-					<Filter
-						Name="trader"
-						Filter="">
-						<File
-							RelativePath=".\Ai\Trader\ai_trader.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Trader\ai_trader.h">
-						</File>
 					</Filter>
 				</Filter>
 			</Filter>
