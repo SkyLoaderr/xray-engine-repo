@@ -34,12 +34,31 @@ bool WriteSlot	(char *name, char* dest, char *msg)
 }
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+					   HINSTANCE hPrevInstance,
+					   LPTSTR    lpCmdLine,
+					   int       nCmdShow)
 {
-	char		dest[128],msg[128];
-	sscanf		(lpCmdLine,"%s %s",dest,msg);
-	WriteSlot	("*",dest,msg);
+	// Users
+	BOOL		bHighPriority	= FALSE;
+	char		u_name[128];
+	DWORD		u_size	= sizeof(u_name)-1;
+	GetUserName	(u_name,&u_size);
+	_strlwr		(u_name);
+	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
+
+	// Send
+	if (bHighPriority) 
+	{
+		char		dest[128],msg[128];
+		sscanf		(lpCmdLine,"%s %s",dest,msg);
+
+		for (int i=0; i<10; i++) 
+		{
+			WriteSlot	("*",dest,msg);
+			Sleep		(1);
+		}
+	}
+
+	//
 	return 0;
 }
