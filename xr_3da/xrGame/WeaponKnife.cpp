@@ -11,7 +11,7 @@
 CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE") 
 {
 	m_attackStart = false;
-	m_shotLight = false;
+	m_bShotLight = false;
 	STATE = NEXT_STATE = eHidden;
 }
 

@@ -84,11 +84,11 @@ protected:
 	//эффекты и подсветка
 	ref_str m_sExplodeParticles;
 	
-	//подсветка
+	//подсветка взрыва
 	IRender_Light*		m_pLight;
-	Fcolor m_lightColor;
-	float m_lightRange;
-	u32 m_lightTime;
+	Fcolor				m_LightColor;
+	float				m_fLightRange;
+	u32					m_dwLightTime;
 
 	// эффектор
 	struct {

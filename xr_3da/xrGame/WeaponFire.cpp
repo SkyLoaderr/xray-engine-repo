@@ -86,7 +86,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	}
 
 	// light
-	if(m_shotLight) Light_Start();
+	if(m_bShotLight) Light_Start();
 	
 	// Ammo
 	if(Local()) 
@@ -149,9 +149,9 @@ void CWeapon::StartFlameParticles	()
 
 	StopFlameParticles();
 	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParticlesCurrent,Sector(),false);
-	
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
+	
 }
 void CWeapon::StopFlameParticles	()
 {
@@ -161,7 +161,6 @@ void CWeapon::StopFlameParticles	()
 	m_pFlameParticles->SetAutoRemove(true);
 	m_pFlameParticles->Stop();
 	m_pFlameParticles = NULL;
-	//m_pFlameParticles->PSI_destroy();
 }
 
 void CWeapon::UpdateFlameParticles	()
@@ -173,6 +172,7 @@ void CWeapon::UpdateFlameParticles	()
 	pos.set(XFORM()); 
 	pos.c.set(vLastFP);
 
+	//m_pFlameParticles->UpdateParent(pos, zero_vel);
 	m_pFlameParticles->SetXFORM(pos);
 
 	
@@ -181,6 +181,7 @@ void CWeapon::UpdateFlameParticles	()
 		!m_pFlameParticles->PSI_alive())
 	{
 		m_pFlameParticles->Stop();
+		//m_pFlameParticles->SetAutoRemove(true);
 		m_pFlameParticles->PSI_destroy();
 		m_pFlameParticles = NULL;
 	}
@@ -269,6 +270,7 @@ void CWeapon::UpdateParticles (CParticlesObject*& pParticles,
 	Fmatrix particles_pos; 
 	particles_pos.set(XFORM());
 	particles_pos.c.set(pos);
+	
 	//pParticles->UpdateParent(particles_pos,vel);
 	pParticles->SetXFORM(particles_pos);
 

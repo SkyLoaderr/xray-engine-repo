@@ -1633,7 +1633,6 @@ bool CActor::use_bolts				() const
 	return CInventoryOwner::use_bolts();
 };
 
-#define BODY_REMOVE_TIME 100000
 
 bool  CActor::NeedToDestroyEntity()
 {
@@ -1643,7 +1642,7 @@ bool  CActor::NeedToDestroyEntity()
 	}
 	else //if(this != Level().CurrentEntity())
 	{
-		if(TimePassedAfterDeath()>BODY_REMOVE_TIME && m_bAllowDeathRemove)
+		if(TimePassedAfterDeath()>m_dwBodyRemoveTime && m_bAllowDeathRemove)
 			return true;
 		else
 			return false;

@@ -164,7 +164,9 @@ public:
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
 
-	bool					m_bAllowDeathRemove;
+	bool					m_bAllowDeathRemove; //разрешения на удаление трупа актера 
+												 //после того как контролирующий его игрок зареспавнился заново. 
+												 //устанавливается в game
 
 protected:
 	// skeleton

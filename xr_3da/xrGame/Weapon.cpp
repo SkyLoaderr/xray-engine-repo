@@ -71,7 +71,7 @@ CWeapon::CWeapon(LPCSTR name)
 
 	light_render				= ::Render->light_create();
 	light_render->set_shadow	(true);
-	m_shotLight = true;
+	m_bShotLight = true;
 
 
 	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
@@ -336,7 +336,7 @@ void CWeapon::Load		(LPCSTR section)
 	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
 
 	// light
-	if(m_shotLight) 
+	if(m_bShotLight) 
 	{
 		Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
 		light_base_color.set(clr.x,clr.y,clr.z,1);
@@ -601,7 +601,7 @@ void CWeapon::UpdateCL		()
 	float dt				= Device.fTimeDelta;
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
-	if (m_shotLight && light_time>0)		{
+	if (m_bShotLight && light_time>0)		{
 		light_time -= dt;
 		if (light_time<=0)
 			light_render->set_active(false);
@@ -618,7 +618,7 @@ void CWeapon::UpdateCL		()
 
 void CWeapon::renderable_Render		()
 {
-	if (m_shotLight && light_time>0) 
+	if (m_bShotLight && light_time>0) 
 	{
 		UpdateFP	();
 		Light_Render(vLastFP);

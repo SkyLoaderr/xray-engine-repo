@@ -11,6 +11,8 @@
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
 
+#define BODY_REMOVE_TIME 100000
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -126,7 +128,13 @@ void CEntity::Load		(LPCSTR section)
 	CLS_ID				= CLSID_ENTITY;
 	
 	m_fMaxHealthValue = fEntityHealth = 100;
-	//GetEntityHealth()				= fArmor = 100;
+	
+	//время убирания тела с уровня
+	if(pSettings->line_exist(section,"body_remove_time"))
+		m_dwBodyRemoveTime = pSettings->r_u32(section,"body_remove_time");
+	else
+		m_dwBodyRemoveTime = BODY_REMOVE_TIME;
+
 
 	// Team params
 	id_Team = -1; if (pSettings->line_exist(section,"team"))	id_Team		= pSettings->r_s32	(section,"team");

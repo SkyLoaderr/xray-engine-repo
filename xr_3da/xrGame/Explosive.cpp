@@ -54,9 +54,9 @@ void CExplosive::Load(LPCSTR section)
 
 	m_sExplodeParticles = pSettings->r_string(section,"explode_particles");
 
-	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
-	m_lightRange	= pSettings->r_float(section,"light_range");
-	m_lightTime		= iFloor(pSettings->r_float(section,"light_time")*1000.f);
+	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
+	m_fLightRange	= pSettings->r_float(section,"light_range");
+	m_dwLightTime		= iFloor(pSettings->r_float(section,"light_time")*1000.f);
 
 	//трассы для разлета осколков
 	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
@@ -96,12 +96,12 @@ void CExplosive::Explode()
 
 	
 	//включаем подсветку от взрыва
-	if(m_lightTime>0)
+	if(m_dwLightTime>0)
 	{
-		m_pLight->set_color(m_lightColor.r, 
-			m_lightColor.g, 
-			m_lightColor.b);
-		m_pLight->set_range(m_lightRange);
+		m_pLight->set_color(m_LightColor.r, 
+			m_LightColor.g, 
+			m_LightColor.b);
+		m_pLight->set_range(m_fLightRange);
 		m_pLight->set_position(Position()); 
 		m_pLight->set_active(true);
 	}
@@ -268,17 +268,17 @@ void CExplosive::UpdateCL()
 	{
 		m_dwExplodeDuration -= Device.dwTimeDelta;
 		
-		if(m_dwExplodeDuration > (m_dwExplodeDurationMax - m_lightTime)) 
+		if(m_dwExplodeDuration > (m_dwExplodeDurationMax - m_dwLightTime)) 
 		{
-			if(m_lightTime>0)
+			if(m_dwLightTime>0)
 			{
 				float scale = float(m_dwExplodeDuration - 
-					(m_dwExplodeDurationMax - m_lightTime))/float(m_lightTime);
-				m_pLight->set_color(m_lightColor.r*scale, 
-					m_lightColor.g*scale, 
-					m_lightColor.b*scale);
+					(m_dwExplodeDurationMax - m_dwLightTime))/float(m_dwLightTime);
+				m_pLight->set_color(m_LightColor.r*scale, 
+					m_LightColor.g*scale, 
+					m_LightColor.b*scale);
 
-				m_pLight->set_range(m_lightRange*scale);
+				m_pLight->set_range(m_fLightRange*scale);
 			}
 		} 
 //		else m_pLight->set_range(0);

@@ -241,7 +241,7 @@ void CWeaponRPG7Grenade::activate_physic_shell()
 	l_r.rotateY(M_PI*2.f); 
 	
 	l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
-	l_p1.c.set(/*m_pos*/*l_pW->m_pGrenadePoint);
+	l_p1.c.set(*l_pW->m_pGrenadePoint);
 	Fvector a_vel; a_vel.set(0, 0, 0);
 	
 	m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);

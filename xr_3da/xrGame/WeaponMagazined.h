@@ -39,8 +39,8 @@ protected:
 	MotionSVec		mhud_shots;
 
 	// General
+	//счетчик времени, затрачиваемого на выстрел
 	float			fTime;
-	BOOL			bFlame;
 
 	//кадр момента пересчета UpdateSounds
 	u32				dwUpdateSounds_Frame;

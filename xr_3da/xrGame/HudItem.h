@@ -86,7 +86,6 @@ public:
 
 	virtual void	UpdateCL();
 	virtual void	renderable_Render			();
-	virtual BOOL	renderable_ShadowGenerate	(); 
 
 	virtual void	Hide() = 0;
 	virtual void	Show() = 0;

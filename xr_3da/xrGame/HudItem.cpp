@@ -128,7 +128,7 @@ void CHudItem::renderable_Render()
 	if(m_pHUD)
 		PSkeletonAnimated(m_pHUD->Visual())->Update	();
 }
-
+/*
 BOOL CHudItem::renderable_ShadowGenerate() 
 {
 	return TRUE;
@@ -136,7 +136,7 @@ BOOL CHudItem::renderable_ShadowGenerate()
 		return FALSE;
 	else
 		return 	inherited::renderable_ShadowGenerate();
-}
+}*/
 
 bool CHudItem::Action(s32 cmd, u32 flags) 
 {

@@ -143,7 +143,6 @@ void CWeaponShotgun::switch2_Fire	()
 
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
-		bFlame						=	TRUE;
 		OnShot						();
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;
@@ -167,7 +166,6 @@ void CWeaponShotgun::switch2_Fire2	()
 
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
-		bFlame						=	TRUE;
 		
 		OnShotBoth						();
 

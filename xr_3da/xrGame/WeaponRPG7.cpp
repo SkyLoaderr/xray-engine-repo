@@ -161,7 +161,6 @@ void CWeaponRPG7::switch2_Fire	()
 		//P.w_u16(u16(m_pGrenade->ID()));
 		//u_EventSend(P);
 
-		bFlame						=	TRUE;
 		OnShot						();
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;

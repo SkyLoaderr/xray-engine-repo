@@ -51,7 +51,7 @@ void CWeaponMagazined::net_Destroy()
 void CWeaponMagazined::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
-	bFlame				= FALSE;
+
 	// Sounds
 	LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		);
 	LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		);
@@ -289,7 +289,6 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 	switch (S)
 	{
 	case eIdle:
-		bFlame			= FALSE;
 		switch2_Idle	();
 		break;
 	case eFire:
@@ -299,13 +298,11 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 		switch2_Fire2	();
 		break;
 	case eMisfire:
-		bFlame			= FALSE;
 		break;
 	case eMagEmpty:
 		switch2_Empty	();
 		break;
 	case eReload:
-		bFlame			= FALSE;
 		switch2_Reload	();
 		break;
 	case eShowing:
@@ -386,7 +383,6 @@ void CWeaponMagazined::state_Fire	(float dt)
 	
 	while (fTime<0)
 	{
-		bFlame			=	TRUE;
 		fTime			+=	fTimeToFire;
 
 		++m_shotNum;
@@ -678,7 +674,7 @@ void CWeaponMagazined::InitAddons()
 		fireDistance		= pSettings->r_float	(cNameSect(),"silencer_fire_distance"	);
 
 		//подсветка от выстрела
-		if(m_shotLight) 
+		if(m_bShotLight) 
 		{
 			Fvector clr			= pSettings->r_fvector3		(cNameSect(),"silencer_light_color"		);
 			light_base_color.set(clr.x,clr.y,clr.z,1);
@@ -701,7 +697,7 @@ void CWeaponMagazined::InitAddons()
 		fireDistance		= pSettings->r_float	(cNameSect(),"fire_distance"	);
 
 		//подсветка от выстрела
-		if(m_shotLight) 
+		if(m_bShotLight) 
 		{
 			Fvector clr			= pSettings->r_fvector3		(cNameSect(),"light_color"		);
 			light_base_color.set(clr.x,clr.y,clr.z,1);

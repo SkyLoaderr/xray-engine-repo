@@ -69,11 +69,7 @@ public:
 	virtual void feel_touch_delete(CObject* O);
 	virtual BOOL feel_touch_contact(CObject* O);
 
-	virtual void Postprocess(float /**val/**/) {}
-
-	/*virtual void spatial_move();
-	virtual void spatial_register();
-	virtual void spatial_unregister();*/
+	virtual void Postprocess(float val) {}
 
 	virtual void  Center (Fvector& C)	const;
 	virtual float Radius () const;
@@ -144,6 +140,20 @@ protected:
 
 	//объект партиклов обычного состояния зоны
 	CParticlesObject* m_pIdleParticles;
+
+	//////////////////////////////
+	//подсветка аномалии
+
+	//подсветка выброса
+	bool				m_bBlowoutLight;
+	IRender_Light*		m_pLight;
+	Fcolor				m_LightColor;
+	float				m_fLightRange;
+	u32					m_dwLightTime;
+	u32					m_dwLightTimeLeft;
+
+	virtual	void		StartBlowoutLight	();
+	virtual	void		UpdateBlowoutLight	();
 
 	//список партиклов для объетов внутри зоны
 	DEFINE_MAP (CObject*, SZoneObjectInfo, OBJECT_INFO_MAP, OBJECT_INFO_MAP_IT);

@@ -33,6 +33,9 @@ CCustomZone::CCustomZone(void)
 	m_sHitParticlesBig = NULL;
 	m_sIdleObjectParticlesSmall = NULL;
 	m_sIdleObjectParticlesBig = NULL;
+
+
+	m_pLight = NULL;
 }
 
 CCustomZone::~CCustomZone(void) 
@@ -41,6 +44,9 @@ CCustomZone::~CCustomZone(void)
 	m_blowout_sound.destroy();
 	m_hit_sound.destroy();
 	m_entrance_sound.destroy();
+
+	if(m_pLight)
+        ::Render->light_destroy	(m_pLight);
 }
 
 void CCustomZone::Load(LPCSTR section) 
@@ -113,6 +119,25 @@ void CCustomZone::Load(LPCSTR section)
 		m_sIdleObjectParticlesSmall = pSettings->r_string(section,"idle_small_particles");
 
 	m_effector.Load(pSettings->r_string(section,"postprocess"));
+
+
+	//загрузить параметры световой вспышки от взрыва
+	m_bBlowoutLight = !!pSettings->r_bool (section, "blowout_light");
+
+	if(m_bBlowoutLight) 
+	{
+		sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
+		m_fLightRange			= pSettings->r_float(section,"light_range");
+		m_dwLightTime			= iFloor(pSettings->r_float(section,"light_time")*1000.f);
+		m_dwLightTimeLeft		= 0;
+
+		m_pLight = ::Render->light_create();
+		m_pLight->set_shadow(true);
+	}
+	else
+	{
+		m_pLight = NULL;
+	}
 }
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
@@ -196,6 +221,8 @@ void CCustomZone::UpdateCL()
 	
 	if (EnableEffector())
 		m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
+
+	UpdateBlowoutLight	();
 }
 
 void CCustomZone::shedule_Update(u32 dt)
@@ -451,6 +478,8 @@ void CCustomZone::PlayBlowoutParticles()
 {
 	m_blowout_sound.play_at_pos	(this, Position());
 
+	StartBlowoutLight ();
+
 	if(!m_sBlowoutParticles) return;
 
 	CParticlesObject* pParticles;
@@ -596,41 +625,40 @@ void  CCustomZone::Hit(float P, Fvector &dir,
 }
 
 
-
-
-/*	string512		m_effectsSTR;
-	strcpy			(m_effectsSTR,pSettings->r_string(section,"effects"));
+void CCustomZone::StartBlowoutLight		()
+{
+	if(!m_pLight || m_dwLightTime<=0) return;
 	
-	char* l_effectsSTR	= m_effectsSTR; 
-	
-	R_ASSERT		(l_effectsSTR);
-	
+	m_dwLightTimeLeft = m_dwLightTime;
 
-	//no particles, that distinguish zone
-	if(l_effectsSTR[0] == 'n' &&
-		l_effectsSTR[1] == 'o' &&
-		l_effectsSTR[2] == 'n' &&
-		l_effectsSTR[3] == 'e')
+	m_pLight->set_color(m_LightColor.r, 
+						m_LightColor.g, 
+						m_LightColor.b);
+	m_pLight->set_range(m_fLightRange);
+	
+	Fvector pos = Position();
+	pos.y += 0.5f;
+	m_pLight->set_position(pos);
+	m_pLight->set_active(true);
+}
+void CCustomZone::UpdateBlowoutLight	()
+{
+	if(!m_pLight->get_active()) return;
+
+	if(m_dwLightTimeLeft>0)
 	{
-		m_effects.clear();
-		return;
+		m_dwLightTimeLeft -= Device.dwTimeDelta;
+
+		float scale = float(m_dwLightTimeLeft)/float(m_dwLightTime);
+		m_pLight->set_color(m_LightColor.r*scale, 
+							m_LightColor.g*scale, 
+							m_LightColor.b*scale);
+		m_pLight->set_range(m_fLightRange*scale);
 	}
-	
-	m_effects.clear		(); 
-	m_effects.push_back	(l_effectsSTR);
-
-	//parse the string
-	while(*l_effectsSTR)
+	else
 	{
-		if(*l_effectsSTR == ',')
-		{
-			*l_effectsSTR = 0;
-			++l_effectsSTR;
-
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t')
-				++l_effectsSTR;
-
-			m_effects.push_back(l_effectsSTR);
-		}
-		++l_effectsSTR;
-	}*/
+		m_dwLightTimeLeft = 0;
+		m_pLight->set_active(false);
+		m_pLight->set_range(0.1f);
+	}
+}

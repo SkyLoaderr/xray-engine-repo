@@ -205,7 +205,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		
 		while (fTime<0)
 		{
-			bFlame			=	TRUE;
+
 			fTime			+=	fTimeToFire;
 
 			++m_shotNum;
