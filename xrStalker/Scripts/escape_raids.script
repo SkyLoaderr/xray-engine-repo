@@ -119,9 +119,11 @@ function on_enter (zone, obj)
     for a = 1, table.getn (patrols), 1 do
         for b = 1, table.getn (patrols[a]), 1 do
             if obj:id () == patrols[a][b].id then
-               patrols[a][b].on_move = false
-               this.switch_offline (obj, a, b) 
-               this.check_for_return ()
+               if patrols[a][b].on_move == true then
+                  patrols[a][b].on_move = false
+                  this.switch_offline (obj, a, b) 
+                  this.check_for_return ()
+               end   
             end      
         end                          
     end         
