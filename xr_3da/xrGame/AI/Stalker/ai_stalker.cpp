@@ -23,10 +23,10 @@ CAI_Stalker::~CAI_Stalker			()
 
 void CAI_Stalker::Init()
 {
-//	m_tStateList.clear				();
-//	while (m_tStateStack.size())
-//		m_tStateStack.pop			();
-	
+	//	m_tStateList.clear				();
+	//	while (m_tStateStack.size())
+	//		m_tStateStack.pop			();
+
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_tLookType						= eLookTypeDirection;
@@ -35,7 +35,7 @@ void CAI_Stalker::Init()
 	m_dwAnimationSwitchInterval		= 500;
 	r_torso_speed					= PI_MUL_2;
 	r_head_speed					= 3*PI_DIV_2;
-																				  
+
 	m_dwTimeToChange				= 0;
 	m_dwHitTime						= 0;
 
@@ -83,9 +83,9 @@ void CAI_Stalker::Init()
 	m_fAttackSuccessProbability2	= .4f;
 	m_fAttackSuccessProbability3	= .2f;
 	m_dwRandomState					= 2+0*::Random.randI(5);
-	
-//	m_fAccuracy						= 0.f;
-//	m_fIntelligence					= 0.f;
+
+	//	m_fAccuracy						= 0.f;
+	//	m_fIntelligence					= 0.f;
 
 	m_fTimeToStep					= 0;
 	m_dwMyMaterialID				= GAMEMTL_NONE;
@@ -113,7 +113,7 @@ void CAI_Stalker::Init()
 // when soldier is dead
 void CAI_Stalker::Die				()
 {
-//	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
+	//	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
 
 	Fvector	dir;
 	AI_Path.Direction				(dir);
@@ -208,7 +208,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	g_vfLoadSounds					(m_tpSoundHumming,pSettings->r_string(section,"sound_humming"),100);
 	g_vfLoadSounds					(m_tpSoundAlarm,pSettings->r_string(section,"sound_alarm"),100);
 	g_vfLoadSounds					(m_tpSoundSurrender,pSettings->r_string(section,"sound_surrender"),100);
-	
+
 	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
 	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
 
@@ -234,7 +234,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	CSE_ALifeHumanAbstract						*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->get_visual());
-	
+
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= -tpHuman->o_Angle.y;
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 
@@ -242,30 +242,30 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
 	m_dwBornTime					= Level().timeServer();
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (m_dwParticularState == u32(-1))
 		m_tNextGP					= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
-//	vfAddStateToList				(m_eCurrentState);
+	//	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
+	//	vfAddStateToList				(m_eCurrentState);
 
 	CStalkerAnimations::Load		(PKinematics(pVisual));
 	vfAssignBones					(pSettings,cNameSect());
 
 	setEnabled						(true);
 
-	#ifndef NO_PHYSICS_IN_AI_MOVE
+#ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(this);
-	#endif
+#endif
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);
 
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
-	
+
 	// load damage params
 	if (pSettings->line_exist(cNameSect(),"damage")) {
 		string32 buf;
@@ -283,7 +283,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 			}
 		}
 	}
-	
+
 	return							(TRUE);
 }
 
@@ -310,7 +310,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_model);
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
-	
+
 	P.w_float						(m_inventory.TotalWeight());
 	P.w_u32							(0);
 	P.w_u32							(0);
@@ -319,7 +319,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
 	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	
+
 	float							f1;
 	if (m_tCurGP != u16(-1)) {
 		f1							= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
@@ -332,7 +332,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w							(&f1,						sizeof(f1));
 		P.w							(&f1,						sizeof(f1));
 	}
-	
+
 	P.w_u32							(0);
 	P.w_u32							(0);
 	P.w_u32							(0);
@@ -370,7 +370,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r_u32							(dwDummy);
 	P.r_u32							(dwDummy);
 	P.r_u32							(dwDummy);
-	
+
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
 }
@@ -384,9 +384,9 @@ void CAI_Stalker::CreateSkeleton()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.GetDeathPosition(vPosition);
-	 //vPosition.y+=.1f;
+	//vPosition.y+=.1f;
 	UpdateTransform();
-//#else
+	//#else
 	//vPosition.y+=0.1f;
 #endif
 
@@ -458,7 +458,7 @@ void CAI_Stalker::CreateSkeleton()
 	CPhysicsElement* root=parent;
 
 	//spine
-	
+
 	id=M->LL_BoneID("bip01_spine");
 	element=P_create_Element				();
 	element->mXFORM.set(m1);
@@ -476,10 +476,10 @@ void CAI_Stalker::CreateSkeleton()
 	//Fquaternion k;
 	//k.get_axis_angle
 	//Fmatrix m;
-	
-	
+
+
 	//parent=element;
-	
+
 	id=M->LL_BoneID("bip01_spine1");
 	element=P_create_Element				();
 	element->mXFORM.set(m1);
@@ -518,7 +518,7 @@ void CAI_Stalker::CreateSkeleton()
 	joint->SetAxisDirVsSecondElement(0,1,0,0);
 	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
 	*/
-	
+
 	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisDirVsSecondElement(0,1,0,2);
@@ -528,7 +528,7 @@ void CAI_Stalker::CreateSkeleton()
 	joint->SetLimits(-M_PI/5.f,M_PI/5.f,0);
 	joint->SetLimits(0.f,0.f,1);
 	joint->SetLimits(-M_PI/3.f,M_PI/3.f,2);
-	
+
 	//joint->SetLimits(0.1f,0.f,0);
 	//joint->SetLimits(0.f,0.f,1);
 	//joint->SetLimits(0.f,0.f,2);
@@ -554,12 +554,12 @@ void CAI_Stalker::CreateSkeleton()
 	element->SetMaterial(material);
 
 	parent=root1;
-	
+
 	id=M->LL_BoneID("bip01_l_clavicle");
 	element=P_create_Element				();
 	element->mXFORM.set(m2);
 	(M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),element);
-//	const Fobb& box=M->LL_GetBox(id);
+	//	const Fobb& box=M->LL_GetBox(id);
 	element->add_Box(M->LL_GetBox(id));
 	element->setDensity(density);
 	element->set_ParentElement(parent);
@@ -573,7 +573,7 @@ void CAI_Stalker::CreateSkeleton()
 	element->SetMaterial(material);
 
 	//parent=element;
-	
+
 	id=M->LL_BoneID("bip01_l_upperarm");
 	element=P_create_Element				();
 	element->mXFORM.set(m2);
@@ -794,7 +794,7 @@ void CAI_Stalker::CreateSkeleton()
 	m_pPhysicsShell->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
- 	parent=element;
+	parent=element;
 	id=M->LL_BoneID("bip01_l_foot");
 	element=P_create_Element				();
 	element->mXFORM.set(m6);
@@ -815,15 +815,15 @@ void CAI_Stalker::CreateSkeleton()
 	//set shell start position
 	Fmatrix m;
 	m.set(mRotate);
-	
+
 	m.c.set(vPosition);
 	//Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
 	m_pPhysicsShell->mXFORM.set(m);
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
-								   0.3f*skel_airr_ang_factor);
+		0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-	
+
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 }
 
@@ -842,18 +842,18 @@ void CAI_Stalker::UpdateCL(){
 			CreateSkeleton();
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
-		Movement.DestroyCharacter();
-		PHSetPushOut();
+			Movement.DestroyCharacter();
+			PHSetPushOut();
 #endif
 		}
-	if (Level().CurrentViewEntity() == this) {
-		Exec_Visibility();
-	}
+		if (Level().CurrentViewEntity() == this) {
+			Exec_Visibility();
+		}
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
-	
-	
+
+
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
 	{
 		inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
@@ -869,7 +869,7 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 		if (!g_Alive()) {
 			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
 				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
-				//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
+			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
 			else{
 				m_saved_hit_dir.set(dir);
 				m_saved_impulse=impulse*skel_fatal_impulse_factor;
@@ -886,12 +886,12 @@ void CAI_Stalker::Update	( u32 DT )
 	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
-	
+
 	// Queue setup
 	float dt			= float(DT)/1000.f;
 	if (dt > 3)
 		return;
-	
+
 	if (Remote())		{
 	} else {
 		// here is monster AI call
@@ -908,7 +908,7 @@ void CAI_Stalker::Update	( u32 DT )
 			Exec_Look				(dt);
 			Exec_Movement			(dt);
 			Exec_Visibility			();
-			
+
 			//////////////////////////////////////
 			Fvector C; float R;
 			//////////////////////////////////////
@@ -953,7 +953,7 @@ void CAI_Stalker::Update	( u32 DT )
 			}
 		}
 	}
-	
+
 	// inventory update
 	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
@@ -974,12 +974,12 @@ void CAI_Stalker::Update	( u32 DT )
 			for ( ; I != E; I++)
 				if ((I - B) != (int)m_inventory.m_activeSlot)
 					m_inventory.Ruck((*I).m_pIItem);
-//			TIItemList &l_list = m_inventory.m_ruck;
-//			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-//				(**l_it).Drop();
+			//			TIItemList &l_list = m_inventory.m_ruck;
+			//			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+			//				(**l_it).Drop();
 		}
 	}
-	
+
 	if (g_Alive()) {
 		R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
 		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
@@ -1011,11 +1011,11 @@ void CAI_Stalker::Update	( u32 DT )
 
 	// *** general stuff
 	inherited::inherited::Update	(DT);
-	
+
 	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
 	{
 
-	if(m_saved_impulse!=0.f)
+		if(m_saved_impulse!=0.f)
 		{
 			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
 			m_saved_impulse=0.f;
@@ -1027,30 +1027,30 @@ void CAI_Stalker::Update	( u32 DT )
 
 		if(skel_ddelay==0)
 		{
-		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-		//m_pPhysicsShell->SetAirResistance()
-		
+			m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
+			//m_pPhysicsShell->SetAirResistance()
+
 		}
 		//if(skel_ddelay==-10)
 		//{
-			//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-			//m_pPhysicsShell->SetAirResistance()
+		//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
+		//m_pPhysicsShell->SetAirResistance()
 
 		//}
 
 		skel_ddelay--;
-		
+
 		///mRotate.set(m_pPhysicsShell->mXFORM);
 		//mRotate.c.set(0,0,0);
 		//UpdateTransform					();
 		//vPosition.set(m_pPhysicsShell->mXFORM.c);
 		//svTransform.set(m_pPhysicsShell->mXFORM);
 		//UpdateTransform();		
-	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
-	//	int id=M->LL_BoneID("bip01_pelvis");
-	//	CBoneInstance& instance=M->LL_GetInstance				(id);
-	//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
-			
+		//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+		//	int id=M->LL_BoneID("bip01_pelvis");
+		//	CBoneInstance& instance=M->LL_GetInstance				(id);
+		//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
+
 	}
 }
 
