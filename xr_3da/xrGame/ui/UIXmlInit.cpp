@@ -513,7 +513,7 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
-		CUIButton *newButton = xr_new<CUIButton>();
+		CUITabButton *newButton = xr_new<CUITabButton>();
 
 		status &= InitButton(xml_doc, "button", i, newButton);
 		pWnd->AddItem(newButton);
