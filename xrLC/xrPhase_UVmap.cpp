@@ -94,7 +94,7 @@ void	CBuild::xrPhase_UVmap()
 					Face *F = (*g_XSplit[SP])[i];
 					if ( F->pDeflector==Deflector ) {
 						faces_affected.push_back(F);
-						g_XSplit[SP]->erase		(g_XSplit[SP].begin()+i);
+						g_XSplit[SP]->erase		(g_XSplit[SP]->begin()+i);
 						i--;
 					}
 				}
