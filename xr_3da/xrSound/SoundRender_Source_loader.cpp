@@ -61,7 +61,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	dwBytesTotal			= u32(pcm_total*wfxdest.nBlockAlign); 
 	dwBytesPerMS			= wfxdest.nAvgBytesPerSec/1000;
 //	dwBytesPerSec			= wfxdest.nAvgBytesPerSec;
-	dwTimeTotal				= sdef_source_footer + (dwBytesTotal*1000)/wfxdest.nAvgBytesPerSec;
+	dwTimeTotal				= u32 ( sdef_source_footer + u64( (u64(dwBytesTotal)*u64(1000))/u64(wfxdest.nAvgBytesPerSec) ) );
 
 	vorbis_comment*	ovm		= ov_comment(ovf,-1);
 	if (ovm->comments){
