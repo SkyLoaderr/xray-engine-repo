@@ -356,11 +356,22 @@ void CModelPool::dump()
 	for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++) {
 		CKinematics* K		= PKinematics(I->model);
 		if (K){
-			sz				+= K->mem_usage	();
+			sz				+= K->mem_usage	(false);
 			Msg("#%3d: [%3d/%5d Kb] - %s",k++,I->refs,K->mem_usage()/1024,I->name.c_str());
 		}
 	}
-	Msg ("--- kinematics: %d, mem usage: %d Kb ",k,sz/1024);
+	Msg ("--- models: %d, mem usage: %d Kb ",k,sz/1024);
+	sz						= 0;
+	k						= 0;
+	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++)
+	{
+		CKinematics* K		= PKinematics((IRender_Visual*)it->first);
+		if (K){
+			sz				+= K->mem_usage	(true);
+			Msg("#%3d: [%5d Kb] - %s",k++,K->mem_usage()/1024,it->second);
+		}
+	}
+	Msg ("--- instances: %d, mem usage: %d Kb ",k,sz/1024);
 	Log	("--- model pool --- end.");
 }
 
