@@ -284,7 +284,8 @@ void	o_test (int iA, int iB, int count, base_color* A, base_color* B, float& C, 
 
 void xrMU_Reference::calc_lighting	()
 {
-	static BOOL					bFirst	= TRUE;
+	xr_vector<base_color>		color;
+
 	model->calc_lighting		(color,xform,RCAST_Model,pBuild->L_static,LP_DEFAULT);
 
 	R_ASSERT					(color.size()==model->color.size());

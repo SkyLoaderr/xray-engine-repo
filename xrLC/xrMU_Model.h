@@ -108,8 +108,6 @@ public:
     Flags32					flags;
 	u16						sector;
 
-	xr_vector<base_color>	color;
-
 	base_color				c_scale;
 	base_color				c_bias;
 public:

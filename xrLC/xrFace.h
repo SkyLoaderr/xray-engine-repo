@@ -3,6 +3,7 @@
 #include "shader_xrlc.h"
 #include "r_light.h"
 
+#pragma pack(push,4)
 class base_lighting
 {
 public:
@@ -98,12 +99,12 @@ public:
 	IC	void	prep_remove			(Face* F)					{	vecFaceIt	I = std::find(adjacent.begin(),adjacent.end(),F);	if (I!=adjacent.end())	adjacent.erase(I);	}
 	void		normalFromAdj		();
 
-	Vertex();
+	Vertex	();
 	virtual ~Vertex();
 };
 
 struct _TCF {
-	Fvector2		uv	[3];
+	Fvector2			uv	[3];
 
 	void	barycentric	(Fvector2 &P, float &u, float &v, float &w);
 	IC void	barycentric	(Fvector2 &P, Fvector &B)		{	barycentric(P,B.x,B.y,B.z); }
@@ -202,3 +203,4 @@ extern poolFaces				FacePool;
 
 extern bool						g_bUnregister;
 
+#pragma pack(pop)
