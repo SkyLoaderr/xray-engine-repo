@@ -10,7 +10,7 @@
 	</frame_window>
 
 	<!-- LOG LIST -->
-	<list x="10" y="40" width="400" height="410" item_height="18" active_bg="0">
+	<list x="10" y="40" width="390" height="410" item_height="18" active_bg="0">
 		<font font="letterica18" r="255" g="255" b="255"></font>
 		<!-- SUBITEMS IN LISTITEM -->
 		<static x="0" y="0" width="200" height="15">
@@ -19,10 +19,10 @@
 		<static x="240" y="0" width="50" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
-		<static x="270" y="0" width="50" height="15">
+		<static x="290" y="0" width="50" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
-		<static x="300" y="0" width="50" height="15">
+		<static x="340" y="0" width="50" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
 
