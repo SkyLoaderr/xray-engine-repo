@@ -10,10 +10,13 @@
 
 local intruder = nil
 local called = false
+local alarm = sound_object ("Scripts\\alarm\\a_siren")
+local source = get_level_object ("projector1")
 
 function on_enter (zone, obj)
 	intruder = obj
 	zone:clear_callback (true)
+	alarm:play_at_pos (source, source:position (), 1)
 end
 
 function main ()
