@@ -83,7 +83,8 @@ void CImageManager::MakeThumbnailImage(ETextureThumbnail* THM, u32* data, u32 w,
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam){
+void CImageManager::CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam)
+{
 	R_ASSERT(src_name.Length());
 	AnsiString base_name;
     if (initial)	FS.update_path(base_name,initial,src_name.c_str());

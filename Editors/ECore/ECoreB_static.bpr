@@ -47,44 +47,38 @@
       intermediate\SkeletonCustom.obj intermediate\SkeletonRigid.obj 
       intermediate\SkeletonX.obj intermediate\xrSkin1W.obj 
       intermediate\UI_MainMail.obj intermediate\BoneEditor.obj 
-      intermediate\c_dinput.obj intermediate\ChoseForm.obj 
-      intermediate\ColorPicker.obj intermediate\CustomObject.obj 
-      intermediate\CustomObjectAnimation.obj intermediate\D3DUtils.obj 
-      intermediate\Device.obj intermediate\du_box.obj intermediate\du_cone.obj 
-      intermediate\du_cylinder.obj intermediate\du_sphere.obj 
-      intermediate\EDetailModel.obj intermediate\EditMesh.obj 
-      intermediate\EditMeshIO.obj intermediate\EditMeshModify.obj 
-      intermediate\EditMeshPick.obj intermediate\EditMeshRender.obj 
-      intermediate\EditObject.obj intermediate\EditObjectEditor.obj 
-      intermediate\EditObjectImport.obj intermediate\EditObjectIO.obj 
-      intermediate\EditObjectMotions.obj intermediate\EditObjectProps.obj 
-      intermediate\EditObjectSkin.obj intermediate\EditorPreferences.obj 
-      intermediate\ELog.obj intermediate\Engine.obj intermediate\EStats.obj 
+      intermediate\c_dinput.obj intermediate\ColorPicker.obj 
+      intermediate\CustomObject.obj intermediate\CustomObjectAnimation.obj 
+      intermediate\D3DUtils.obj intermediate\Device.obj intermediate\du_box.obj 
+      intermediate\du_cone.obj intermediate\du_cylinder.obj 
+      intermediate\du_sphere.obj intermediate\EDetailModel.obj 
+      intermediate\EditMesh.obj intermediate\EditMeshIO.obj 
+      intermediate\EditMeshModify.obj intermediate\EditMeshPick.obj 
+      intermediate\EditMeshRender.obj intermediate\EditObject.obj 
+      intermediate\EditObjectEditor.obj intermediate\EditObjectImport.obj 
+      intermediate\EditObjectIO.obj intermediate\EditObjectMotions.obj 
+      intermediate\EditObjectProps.obj intermediate\EditObjectSkin.obj 
+      intermediate\EditorPreferences.obj intermediate\ELog.obj 
+      intermediate\Engine.obj intermediate\EStats.obj 
       intermediate\ETextureParams.obj intermediate\EThumbnail.obj 
       intermediate\EThumbnailObject.obj intermediate\EThumbnailSound.obj 
       intermediate\EThumbnailTexture.obj intermediate\ExportObjectOGF.obj 
-      intermediate\ExportSkeleton.obj intermediate\FolderLib.obj 
-      intermediate\ImageEditor.obj intermediate\ImageManager.obj 
-      intermediate\ItemList.obj intermediate\ItemListHelper.obj 
-      intermediate\ItemListTypes.obj intermediate\Library.obj 
+      intermediate\ExportSkeleton.obj intermediate\ImageEditor.obj 
+      intermediate\ImageManager.obj intermediate\Library.obj 
       intermediate\LightAnimLibrary.obj intermediate\LogForm.obj 
-      intermediate\NumericVector.obj intermediate\PropertiesList.obj 
-      intermediate\PropertiesListHelper.obj intermediate\PropertiesListTypes.obj 
       intermediate\render.obj intermediate\ShaderFunction.obj 
       intermediate\SoundEditor.obj intermediate\SoundManager.obj 
-      intermediate\TextForm.obj intermediate\TLSPRITE.obj 
-      intermediate\UI_Camera.obj intermediate\UI_MainCommand.obj 
-      intermediate\UI_Main.obj intermediate\stdafx.obj 
-      intermediate\UI_ToolsCustom.obj intermediate\ItemDialog.obj 
-      intermediate\ImageManagerDO.obj intermediate\ParticleEffectDef.obj"/>
+      intermediate\TLSPRITE.obj intermediate\UI_Camera.obj 
+      intermediate\UI_MainCommand.obj intermediate\UI_Main.obj 
+      intermediate\stdafx.obj intermediate\UI_ToolsCustom.obj 
+      intermediate\ItemDialog.obj intermediate\ImageManagerDO.obj 
+      intermediate\ParticleEffectDef.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) Editor\ChoseForm.dfm Editor\ImageEditor.dfm 
-      Editor\ItemList.dfm Editor\LogForm.dfm Editor\NumericVector.dfm 
-      Editor\PropertiesList.dfm Editor\ShaderFunction.dfm Editor\SoundEditor.dfm 
-      Editor\TextForm.dfm Editor\ItemDialog.dfm"/>
+    <RESDEPEN value="$(RESFILES) Editor\ImageEditor.dfm Editor\LogForm.dfm 
+      Editor\ShaderFunction.dfm Editor\SoundEditor.dfm Editor\ItemDialog.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <PACKAGES value=""/>
@@ -96,7 +90,7 @@
     <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT"/>
     <MAINSOURCE value="ECoreB_static.bpf"/>
-    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor;engine;engine\blenders;engine\visuals"/>
+    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor;engine;engine\blenders;engine\visuals;..\xrEProps"/>
     <LIBPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Visuals;Editor;Engine\Blenders;Engine;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;..\lib;..\lib\dx;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par"/>
     <LISTFILE value=""/>
@@ -108,9 +102,9 @@
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
       -IP:\xrCore -Ieditor -Iengine -Iengine\blenders -Iengine\visuals 
-      -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -X- -r- -ps -a4 -6 -b- 
-      -k -y -v -vi- -c -tW -tWM"/>
+      -I..\xrEProps -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -X- -r- -ps -a4 -6 
+      -b- -k -y -v -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <AFLAGS value="/mx /w2 /zi"/>
     <LFLAGS value="/P1024"/>
@@ -211,7 +205,6 @@
       <FILE FILENAME="Editor\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -245,35 +238,21 @@
       <FILE FILENAME="Editor\EThumbnailTexture.cpp" FORMNAME="" UNITNAME="EThumbnailTexture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\TextForm.dfm" FORMNAME="" UNITNAME="TextForm.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ChoseForm.dfm" FORMNAME="" UNITNAME="ChoseForm.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.dfm" FORMNAME="" UNITNAME="ImageEditor.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ItemList.dfm" FORMNAME="" UNITNAME="ItemList.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LogForm.dfm" FORMNAME="" UNITNAME="LogForm.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\NumericVector.dfm" FORMNAME="" UNITNAME="NumericVector.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesList.dfm" FORMNAME="" UNITNAME="PropertiesList.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ShaderFunction.dfm" FORMNAME="" UNITNAME="ShaderFunction.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundEditor.dfm" FORMNAME="" UNITNAME="SoundEditor.dfm" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -315,11 +294,12 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=4
-Item0=C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor;engine;engine\blenders;engine\visuals
-Item1=C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor    ;engine;engine\blenders;engine\visuals
-Item2=Engine;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore
-Item3=Engine;$(BCB)\include;$(BCB)\include\vcl
+Count=5
+Item0=C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor;engine;engine\blenders;engine\visuals;..\xrEProps
+Item1=C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor;engine;engine\blenders;engine\visuals
+Item2=C:\Rad\Borland\CBuilder6\Projects;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;editor    ;engine;engine\blenders;engine\visuals
+Item3=Engine;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore
+Item4=Engine;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=2
