@@ -106,11 +106,6 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel29;
 	TMultiObjSpinEdit *seSnapMove;
 	TMultiObjSpinEdit *seSnapAngle;
-	TGroupBox *GroupBox6;
-	TLabel *RxLabel12;
-	TMultiObjSpinEdit *seDOHideDistance;
-	TLabel *RxLabel13;
-	TMultiObjSpinEdit *seDORayPickHeight;
 	TGroupBox *GroupBox5;
 	TLabel *RxLabel21;
 	TMultiObjSpinEdit *seCameraFlySpeed;

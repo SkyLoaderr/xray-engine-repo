@@ -210,6 +210,7 @@ USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
 USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
 USEFORM("PropertiesGroup.cpp", frmPropertiesGroup);
 USEFORM("FrameEvent.cpp", fraEvent); /* TFrame: File Type */
+USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

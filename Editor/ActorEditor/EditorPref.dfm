@@ -32,7 +32,7 @@ object frmEditorPreferences: TfrmEditorPreferences
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsScene
+      ActivePage = tsMouse
       Align = alClient
       TabOrder = 0
       object tsCamera: TTabSheet
@@ -558,65 +558,13 @@ object frmEditorPreferences: TfrmEditorPreferences
             TabOrder = 2
           end
         end
-        object GroupBox6: TGroupBox
-          Left = 185
-          Top = 20
-          Width = 203
-          Height = 57
-          Caption = ' Detail Objects '
-          TabOrder = 3
-          object RxLabel12: TLabel
-            Left = 5
-            Top = 17
-            Width = 67
-            Height = 13
-            Caption = 'Hide Distance'
-          end
-          object RxLabel13: TLabel
-            Left = 5
-            Top = 36
-            Width = 94
-            Height = 13
-            Caption = 'Ray Pick Height (m)'
-          end
-          object seDOHideDistance: TMultiObjSpinEdit
-            Left = 98
-            Top = 16
-            Width = 103
-            Height = 18
-            LWSensitivity = 0.1
-            ButtonKind = bkLightWave
-            Decimal = 1
-            Increment = 0.1
-            MaxValue = 1000
-            ValueType = vtFloat
-            Value = 50
-            AutoSize = False
-            TabOrder = 0
-          end
-          object seDORayPickHeight: TMultiObjSpinEdit
-            Left = 98
-            Top = 35
-            Width = 103
-            Height = 18
-            LWSensitivity = 0.1
-            ButtonKind = bkLightWave
-            Decimal = 1
-            Increment = 0.1
-            MaxValue = 1000
-            ValueType = vtFloat
-            Value = 5
-            AutoSize = False
-            TabOrder = 1
-          end
-        end
         object GroupBox3: TGroupBox
           Left = 0
           Top = 154
           Width = 181
           Height = 53
           Caption = ' Grid '
-          TabOrder = 4
+          TabOrder = 3
           object MxLabel1: TLabel
             Left = 4
             Top = 15
@@ -1040,8 +988,6 @@ object frmEditorPreferences: TfrmEditorPreferences
       'seCameraSM.Value'
       'seCameraSR.Value'
       'pcObjects.ActivePage'
-      'seDOHideDistance.Value'
-      'seDORayPickHeight.Value'
       'cbBoxPickFaceCulling.Checked'
       'cbBoxPickLimitedDepth.Checked'
       'seBoxPickDepthTolerance.Value'

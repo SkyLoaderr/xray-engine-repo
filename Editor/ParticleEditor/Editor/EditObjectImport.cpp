@@ -293,6 +293,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     //MESH->DumpAdjacency();
                     if (bNeedOptimize) MESH->Optimize(false);
                     //MESH->DumpAdjacency();
+                    MESH->RebuildVMaps(); // !!!!!!
                 }
     		}
         }

@@ -77,27 +77,28 @@ void CDetailManager::Render(int priority, bool strictB2F){
                     Fbox			bbox;
                     DWORD			inactive = 0xff808080;
                     DWORD			selected = 0xffffffff;
+                    float dist_lim	= 75.f*75.f;
                     for (DWORD z=0; z<m_Header.size_z; z++){
                         c.z			= fromSlotZ(z);
                         for (DWORD x=0; x<m_Header.size_x; x++){
-                            bool bSel = m_Selected[z*m_Header.size_x+x];
+                            bool bSel 	= m_Selected[z*m_Header.size_x+x];
                             DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
                             c.x			= fromSlotX(x);
                             c.y			= (slot->y_max+slot->y_min)*0.5f;
-                            bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
-                            bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
-                            bbox.shrink	(0.05f);
-
-                            if (Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2))
-                                DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
+                            float dist = Device.m_Camera.GetPosition().distance_to_sqr(c);
+                         	if ((dist<dist_lim)&&Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2)){
+								bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
+                            	bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
+                            	bbox.shrink	(0.05f);
+								DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
+							}
                         }
                     }
                 }
             }else{
-                if (fraBottomBar->miDODrawObjects->Checked)
-                    RenderObjects(Device.m_Camera.GetPosition());
-                if (fraBottomBar->miDrawDOBaseTexture->Checked&&m_pBase)
-                    m_pBase->Render();
+				Device.SetTransform(D3DTS_WORLD,Fidentity);
+                if (fraBottomBar->miDrawDOBaseTexture->Checked)	m_Base.Render();
+                if (fraBottomBar->miDODrawObjects->Checked) 	RenderObjects(Device.m_Camera.GetPosition());
             }
         }
     }

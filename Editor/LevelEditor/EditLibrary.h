@@ -43,6 +43,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebExportDO;
 	TExtBtn *ebImport;
 	TExtBtn *ebExportHOM;
+	TExtBtn *ExtBtn1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -60,6 +61,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebImportClick(TObject *Sender);
 	void __fastcall ebExportHOMClick(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
+	void __fastcall ExtBtn1Click(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* 		m_Thm;

@@ -366,8 +366,8 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         switch(type){
 		case PROP_FLAG:{
         	FlagValue*	V 				= (FlagValue*)item->Data;
-            DWORD new_val 				= *V->val;
             DWORD old_val 				= *V->val;
+            DWORD new_val 				= *V->val;
             if (new_val&V->mask)new_val &=~V->mask;
             else				new_val |= V->mask;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
@@ -476,8 +476,8 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
 		case PROP_TOKEN:{
         	TokenValue* V				= (TokenValue*)item->Data;
             xr_token* token_list 	   	= V->token;
+            DWORD old_val				= *V->val;
             DWORD new_val				= token_list[mi->MenuIndex].id;
-            DWORD old_val				= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			*V->val						= new_val;
             if (old_val	!= new_val)		Modified();
@@ -485,8 +485,8 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_TOKEN2:{
         	TokenValue2* V				= (TokenValue2*)item->Data;
+            DWORD old_val				= *V->val;
             DWORD new_val				= mi->MenuIndex;
-            DWORD old_val				= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			*V->val						= new_val;
             if (old_val	!= new_val)		Modified();
@@ -494,8 +494,8 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_TOKEN3:{
         	TokenValue3* V				= (TokenValue3*)item->Data;
+            DWORD old_val				= *V->val;
             DWORD new_val				= V->items[mi->MenuIndex].ID;
-            DWORD old_val				= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			*V->val						= new_val;
             if (old_val	!= new_val)		Modified();
@@ -504,10 +504,8 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
 		case PROP_LIST:{
         	ListValue* V				= (ListValue*)item->Data;
             AStringVec& lst				= V->items;
-            string256 new_val;
-            string256 old_val;
-            strcpy(new_val,lst[mi->MenuIndex].c_str());
-            strcpy(old_val,new_val);
+            string256 old_val;	strcpy(old_val,V->val);
+            string256 new_val;	strcpy(new_val,lst[mi->MenuIndex].c_str());
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			strcpy(V->val,new_val);
             if (strcmp(old_val,new_val))Modified();
@@ -693,8 +691,8 @@ void TfrmProperties::ApplyLWNumber()
 	    switch (type){
     	case PROP_INTEGER:{
 	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
+            int old_val		= *V->val;
             int new_val		= seNumber->Value;
-            int old_val		= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			*V->val 		= new_val;
             if (old_val != new_val) Modified();
@@ -702,8 +700,8 @@ void TfrmProperties::ApplyLWNumber()
         }break;
 	    case PROP_FLOAT:{
 	        FloatValue* V 	= (FloatValue*)item->Data; VERIFY(V);
+            float old_val	= *V->val;
             float new_val	= seNumber->Value;
-            float old_val	= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			*V->val 		= new_val;
 		    if (!fsimilar(old_val,new_val)) Modified();
@@ -781,7 +779,7 @@ void TfrmProperties::ApplyLWText()
     	case PROP_TEXT:{
 	        TextValue* V 	= (TextValue*)item->Data; VERIFY(V);
 			AnsiString new_val=edText->Text;
-			AnsiString old_val=new_val;
+			AnsiString old_val=V->val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
 			strcpy(V->val,new_val.c_str());
             if (new_val != old_val) Modified();

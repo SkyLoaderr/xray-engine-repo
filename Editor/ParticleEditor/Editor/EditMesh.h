@@ -199,6 +199,7 @@ public:
 
     IC FaceVec&		GetFaces				(){ return m_Faces;}
     IC FvectorVec&	GetPoints				(){ return m_Points;}
+    IC FvectorVec&	GetFNormals				(){ return m_FNormals;}
 
     // pick routine
 	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);

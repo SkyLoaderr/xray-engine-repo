@@ -78,12 +78,14 @@ __published:	// IDE-managed Components
 	TCGauge *cgProgress;
 	TMenuItem *DetailObjects1;
 	TMenuItem *miDrawDOSlotBoxes;
-	TMenuItem *miDrawDOBaseTexture;
+	TMenuItem *miDOBase;
 	TMenuItem *miDODrawObjects;
 	TPanel *paGridSquareSize;
 	TMenuItem *Glow1;
 	TMenuItem *miGlowTestVisibility;
 	TMenuItem *miDrawObjectsPivot;
+	TMenuItem *miDrawDOBaseTexture;
+	TMenuItem *miDrawDOBlended;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

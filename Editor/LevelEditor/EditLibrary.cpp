@@ -497,5 +497,80 @@ void TfrmEditLibrary::UpdateObjectProperties()
 	m_Props->UpdateProperties(m_pEditObject);
 }
 
-
+void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
+{
+    TElTreeItem* node = tvObjects->Selected;
+    if (node&&FOLDER::IsObject(node)){
+    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+        int age;
+   	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
+    	if (obj){
+		    AnsiString save_nm="c:\\test.txt";
+//------------------------------------------------------------------------------
+            CFS_Memory FS;
+            EditMeshVec& m_lst=obj->Meshes();
+            R_ASSERT(m_lst.size()==1);
+            AnsiString t;
+            for (EditMeshIt m_it=m_lst.begin(); m_it!=m_lst.end(); m_it++){
+                FvectorVec& p_lst 	= (*m_it)->GetPoints();
+                FaceVec& f_lst 		= (*m_it)->GetFaces();
+                (*m_it)->GenerateFNormals();
+                FvectorVec& n_lst 		= (*m_it)->GetFNormals();
+                t.sprintf("#define POINT_COUNT (%d)",p_lst.size());	FS.Wstring(t.c_str());
+                t.sprintf("#define FACE_COUNT (%d)",f_lst.size());	FS.Wstring(t.c_str());
+                FvectorVec n_vec;
+                Fvector2Vec uv_vec;
+                n_vec.resize(p_lst.size());
+                uv_vec.resize(p_lst.size());
+                // points
+                t.sprintf("float GroundVertices[POINT_COUNT][3]={");	FS.Wstring(t.c_str());
+				FvectorIt itE=p_lst.end(); itE--;
+                for (FvectorIt it=p_lst.begin(); it!=itE; it++){
+                    t.sprintf("{%3.3f,%3.3f,%3.3f},",it->x,it->y,it->z);	FS.Wstring(t.c_str());
+                }
+                t.sprintf("{%3.3f,%3.3f,%3.3f}};",it->x,it->y,it->z);		FS.Wstring(t.c_str());
+                // faces
+                t.sprintf("WORD GroundFaces[FACE_COUNT][3]={");	FS.Wstring(t.c_str());
+                FaceIt fitE = f_lst.end(); fitE--;
+                for (FaceIt fit=f_lst.begin(); fit!=fitE; fit++){
+                    t.sprintf("{%d,%d,%d},",fit->pv[0].pindex,fit->pv[1].pindex,fit->pv[2].pindex);	FS.Wstring(t.c_str());
+                    n_vec[fit->pv[0].pindex].set(n_lst[fit-f_lst.begin()]);
+                    n_vec[fit->pv[1].pindex].set(n_lst[fit-f_lst.begin()]);
+                    n_vec[fit->pv[2].pindex].set(n_lst[fit-f_lst.begin()]);
+                    const Fvector2* uv[3];
+                    (*m_it)->GetFaceTC(fit-f_lst.begin(),uv);
+                    uv_vec[fit->pv[0].pindex].set(*uv[0]);
+                    uv_vec[fit->pv[1].pindex].set(*uv[1]);
+                    uv_vec[fit->pv[2].pindex].set(*uv[2]);
+                }
+                t.sprintf("{%d,%d,%d}};",fit->pv[0].pindex,fit->pv[1].pindex,fit->pv[2].pindex);	FS.Wstring(t.c_str());
+                n_vec[fit->pv[0].pindex].set(n_lst[fit-f_lst.begin()]);
+                n_vec[fit->pv[1].pindex].set(n_lst[fit-f_lst.begin()]);
+                n_vec[fit->pv[2].pindex].set(n_lst[fit-f_lst.begin()]);
+                // normals
+                t.sprintf("float GroundNormals[POINT_COUNT][3]={");	FS.Wstring(t.c_str());
+				itE=n_vec.end(); itE--;
+                for (it=n_vec.begin(); it!=itE; it++){
+                    t.sprintf("{%3.3f,%3.3f,%3.3f},",it->x,it->y,it->z);	FS.Wstring(t.c_str());
+                }
+                t.sprintf("{%3.3f,%3.3f,%3.3f}};",it->x,it->y,it->z);		FS.Wstring(t.c_str());
+                // TX_UV
+                t.sprintf("float GroundUV[POINT_COUNT][2]={");	FS.Wstring(t.c_str());
+				Fvector2It itE2=uv_vec.end(); itE2--;
+                for (Fvector2It uvit=uv_vec.begin(); uvit!=itE2; uvit++){
+                    t.sprintf("{%3.3f,%3.3f},",uvit->x,uvit->y);	FS.Wstring(t.c_str());
+                }
+                t.sprintf("{%3.3f,%3.3f}};",uvit->x,uvit->y);		FS.Wstring(t.c_str());
+            }
+            FS.SaveTo(save_nm.c_str(),0);
+            ELog.DlgMsg(mtInformation, "Export complete.");
+	    }else{
+            ELog.DlgMsg(mtError,"Can't load object.");
+        }
+		Lib.RemoveEditObject(obj);
+    }else{
+        ELog.DlgMsg(mtInformation, "Select object to export.");
+    }
+}
+//---------------------------------------------------------------------------
 

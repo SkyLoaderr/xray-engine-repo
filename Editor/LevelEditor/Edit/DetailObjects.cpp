@@ -230,7 +230,6 @@ void CDetail::Export(CFS_Base& F){
 //------------------------------------------------------------------------------
 CDetailManager::CDetailManager(){
 	m_fDensity			= 0.1f;
-	m_pBase		 		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Selected.clear	();
     InitRender			();
@@ -250,7 +249,7 @@ CDetailManager::~CDetailManager(){
 
 void CDetailManager::OnDeviceCreate(){
 	// base texture
-    if (m_pBase&&m_pBase->Valid()) m_pBase->shader = Device.Shader.Create("editor\\do_base",m_pBase->name);
+    m_Base.CreateShader();
 	// detail objects
 	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceCreate();
@@ -258,7 +257,7 @@ void CDetailManager::OnDeviceCreate(){
 
 void CDetailManager::OnDeviceDestroy(){
 	// base texture
-    if (m_pBase->shader) Device.Shader.Delete(m_pBase->shader);
+    m_Base.DestroyShader();
 	// detail objects
 	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceDestroy();
@@ -268,28 +267,6 @@ DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){
 	VERIFY(sx<m_Header.size_x);
 	VERIFY(sz<m_Header.size_z);
 	return m_Slots[sz*m_Header.size_x+sx];
-}
-
-bool CDetailManager::GetColor(DWORD& color, int U, int V){
-	if (m_pBase&&m_pBase->Valid()&&(U<m_pBase->w)&&(V<m_pBase->h)){
-    	color = m_pBase->data[V*m_pBase->w+U];
-    	return true;
-    }
-    return false;
-}
-
-DWORD CDetailManager::GetUFromX(float x){
-	R_ASSERT(m_pBase&&m_pBase->Valid());
-	float u = (x-m_BBox.min.x)/(m_BBox.max.x-m_BBox.min.x);
-	int U = iFloor(u*(m_pBase->w-1)+0.5f); if (U<0) U=0;
-    return U;
-}
-
-DWORD CDetailManager::GetVFromZ(float z){
-	R_ASSERT(m_pBase&&m_pBase->Valid());
-	float v = 1.f-(z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
-	int V = iFloor(v*(m_pBase->h-1)+0.5f); if (V<0) V=0;
-    return V;
 }
 
 void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
@@ -396,24 +373,20 @@ bool CDetailManager::Reinitialize(){
 
 bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     // create base texture
-    if (!tex_name&&!m_pBase){
+    if (!tex_name&&!m_Base.Valid()){
     	ELog.DlgMsg(mtError,"Initialize at first!");
     	return false;
     }
-    AnsiString fn = tex_name?tex_name:m_pBase->name;
-    SBase* NB = new SBase(fn.c_str());
-    if (NB->Valid()){
-	    _DELETE(m_pBase);
-		m_pBase = NB;
-    }else{
+    AnsiString fn = tex_name?tex_name:m_Base.GetName();
+    m_Base.Clear();
+    m_Base.LoadImage(fn.c_str());
+    if (!m_Base.Valid()){
+	    m_Base.Clear();
     	ELog.DlgMsg(mtError,"Can't load base image '%s'!",fn.c_str());
-        _DELETE(NB);
     	return false;
     }
-    if (m_pBase->shader) Device.Shader.Delete(m_pBase->shader);
-    m_pBase->shader = Device.Shader.Create("editor\\do_base",fn.c_str());
-    m_pBase->CreateFromObjects(m_BBox,m_SnapObjects);
-//S    UI.Command(COMMAND_REFRESH_TEXTURES);
+	m_Base.RecreateShader();
+    m_Base.CreateFromObjects(m_BBox,m_SnapObjects);
     return true;
 }
 
@@ -511,10 +484,10 @@ void CDetailManager::GetSlotRect(Frect& rect, int sx, int sz){
 void CDetailManager::GetSlotTCRect(Irect& rect, int sx, int sz){
 	Frect R;
 	GetSlotRect			(R,sx,sz);
-	rect.x1 			= GetUFromX(R.x1);
-	rect.x2 			= GetUFromX(R.x2);
-	rect.y2 			= GetVFromZ(R.y1); // v - координата флипнута
-	rect.y1 			= GetVFromZ(R.y2);
+	rect.x1 			= m_Base.GetPixelUFromX(R.x1,m_BBox);
+	rect.x2 			= m_Base.GetPixelUFromX(R.x2,m_BBox);
+	rect.y2 			= m_Base.GetPixelVFromZ(R.y1,m_BBox); // v - координата флипнута
+	rect.y1 			= m_Base.GetPixelVFromZ(R.y2,m_BBox);
 }
 
 void CDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best){
@@ -574,7 +547,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         for (int v=R.y1; v<=R.y2; v++){
             for (int u=R.x1; u<=R.x2; u++){
                 DWORD clr;
-                if (GetColor(clr,u,v)){
+                if (m_Base.GetColor(clr,u,v)){
                     Fcolor C;
                     C.set(clr);
                     FindClosestIndex(C,best);
@@ -601,7 +574,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         for (int v=P[part].y1; v<=P[part].y2; v++){
             for (int u=P[part].x1; u<=P[part].x2; u++){
                 DWORD clr;
-                if (GetColor(clr,u,v)){
+                if (m_Base.GetColor(clr,u,v)){
                     Fcolor C;
                     C.set(clr);
                     CalcClosestCount(part,C,best);
@@ -701,8 +674,7 @@ void CDetailManager::Clear(bool bOnlySlots){
 	if (!bOnlySlots){
 		RemoveObjects		();
 		m_ColorIndices.clear();
-	    if (m_pBase->shader)Device.Shader.Delete(m_pBase->shader);
-    	_DELETE				(m_pBase);
+	    m_Base.Clear		();
    		m_SnapObjects.clear	();
     }
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
@@ -801,6 +773,7 @@ void CDetailManager::RemoveFromSnapList(CCustomObject* O)
 }
 
 bool CDetailManager::Load(CStream& F){
+    string256 buf;
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
 	DWORD version		= F.Rdword();
 
@@ -840,13 +813,6 @@ bool CDetailManager::Load(CStream& F){
     // internal
     // bbox
     R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
-	// base texture
-    char buf[255];
-	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
-	    F.RstringZ		(buf);
-    	m_pBase			= new SBase(buf);
-	    m_pBase->shader	= Device.Shader.Create("editor\\do_base",m_pBase->name);
-    }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
     cnt					= F.Rbyte();
@@ -877,6 +843,14 @@ bool CDetailManager::Load(CStream& F){
         }
     }else{
     	m_SnapObjects	= Scene.m_SnapObjects;
+    }
+
+	// base texture
+	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
+	    F.RstringZ		(buf);
+    	m_Base.LoadImage(buf);
+	    m_Base.CreateShader();
+	    m_Base.CreateFromObjects(m_BBox,m_SnapObjects);
     }
 
     if (F.FindChunk(DETMGR_CHUNK_DENSITY))
@@ -912,9 +886,9 @@ void CDetailManager::Save(CFS_Base& F){
     // bbox
 	F.write_chunk		(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));
 	// base texture
-    if (m_pBase){
+    if (m_Base.Valid()){
 		F.open_chunk	(DETMGR_CHUNK_BASE_TEXTURE);
-    	F.WstringZ		(m_pBase->name);
+    	F.WstringZ		(m_Base.GetName());
 	    F.close_chunk	();
     }
     // color index map
@@ -977,10 +951,16 @@ void CDetailManager::Export(LPCSTR fn){
 //------------------------------------------------------------------------------
 #define MAX_BUF_SIZE 0xFFFF
 
-CDetailManager::SBase::SBase(LPCSTR nm){
+CDetailManager::SBase::SBase(){
+	name[0]			= 0;
+	shader_overlap	= 0;
+    shader_blended	= 0;
+}
+
+bool CDetailManager::SBase::LoadImage(LPCSTR nm){
 	strcpy(name,nm);
     ImageManager.LoadTextureData(nm,data,w,h);
-	shader		= 0;
+    return Valid();
 }
 
 void CDetailManager::SBase::CreateFromObjects(const Fbox& box, ObjectList& lst)
@@ -998,6 +978,8 @@ void CDetailManager::SBase::CreateFromObjects(const Fbox& box, ObjectList& lst)
             	FVF::V v;
                 for (int k=0; k<3; k++){
                 	T.transform_tiny(v.p,pts[f_it->pv[k].pindex]);
+					v.t.x = GetUFromX(v.p.x,box);
+					v.t.y = GetVFromZ(v.p.z,box);
                     mesh.push_back(v);
                 }
             }
@@ -1008,19 +990,35 @@ void CDetailManager::SBase::CreateFromObjects(const Fbox& box, ObjectList& lst)
 
 void CDetailManager::SBase::Render()
 {
+	if (!Valid()) return;
 	Device.SetTransform(D3DTS_WORLD,Fidentity);
-	Device.SetShader(shader);
+    Device.SetShader((fraBottomBar->miDrawDOBlended->Checked)?shader_blended:shader_overlap);
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
     DWORD vBase;
     for (int k=0; k<cnt.quot; k++){
 		LPBYTE pv = (LPBYTE)stream->Lock(MAX_BUF_SIZE,vBase);
-		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,MAX_BUF_SIZE);
+		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
 		stream->Unlock(MAX_BUF_SIZE);
 		Device.DP(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
     }
-    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
-	CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,cnt.rem);
-    stream->Unlock(cnt.rem);
-    Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
+    if (cnt.rem){
+	    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
+		CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
+	    stream->Unlock(cnt.rem);
+    	Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
+    }
 }
 
+void CDetailManager::SBase::CreateShader()
+{
+	if (Valid()){
+		shader_blended = Device.Shader.Create("editor\\do_base",name);
+		shader_overlap = Device.Shader.Create("default",name);
+	}
+}
+
+void CDetailManager::SBase::DestroyShader()
+{
+	if (shader_blended) Device.Shader.Delete(shader_blended);
+	if (shader_overlap) Device.Shader.Delete(shader_overlap);
+}

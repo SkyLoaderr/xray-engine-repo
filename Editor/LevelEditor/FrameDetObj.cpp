@@ -12,8 +12,10 @@
 #include "LeftBar.h"
 #include "Texture.h"
 #include "DOShuffle.h"
+#include "BottomBar.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "multi_color"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
@@ -21,6 +23,7 @@ __fastcall TfraDetailObject::TfraDetailObject(TComponent* Owner)
         : TFrame(Owner)
 {
     DEFINE_INI(fsStorage);
+	ebBaseBlended->Down = fraBottomBar->miDrawDOBlended->Checked;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraDetailObject::PaneMinClick(TObject *Sender)
@@ -37,7 +40,7 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
-	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_pBase)?Scene.m_DetailObjects->m_pBase->name:0,false);
+	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_Base.Valid())?Scene.m_DetailObjects->m_Base.GetName():0,false);
     if (T){
 		Scene.m_DetailObjects->Initialize(T);
     	Scene.UndoSave();
@@ -131,6 +134,10 @@ void __fastcall TfraDetailObject::seDensityLWChange(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-
-
+void __fastcall TfraDetailObject::ebBaseBlendedClick(TObject *Sender)
+{
+	fraBottomBar->miDrawDOBlended->Checked = ebBaseBlended->Down;
+    UI.RedrawScene();
+}
+//---------------------------------------------------------------------------
 

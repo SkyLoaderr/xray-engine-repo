@@ -14,6 +14,7 @@
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
+#include "multi_color.hpp"
 // refs
 struct SDOClusterDef;
 //---------------------------------------------------------------------------
@@ -38,6 +39,16 @@ __published:	// IDE-managed Components
 	TExtBtn *ebResetSlots;
 	TExtBtn *ExtBtn7;
 	TExtBtn *ebClearDetails;
+	TPanel *Panel1;
+	TLabel *Label3;
+	TExtBtn *ExtBtn8;
+	TExtBtn *ebBaseBlended;
+	TLabel *RxLabel16;
+	TMultiObjColor *mcBrushColor;
+	TLabel *Label4;
+	TMultiObjSpinEdit *seBrushSize;
+	TExtBtn *ebPaintMode;
+	TBevel *Bevel1;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
@@ -52,6 +63,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebInvalidateCacheClick(TObject *Sender);
 	void __fastcall ebResetSlotsClick(TObject *Sender);
 	void __fastcall ebClearDetailsClick(TObject *Sender);
+	void __fastcall ebBaseBlendedClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraDetailObject(TComponent* Owner);

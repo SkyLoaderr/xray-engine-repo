@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 443
+  Width = 786
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 786
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -18,7 +18,7 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 310
+      Width = 653
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
@@ -27,7 +27,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 150
         Top = 0
-        Width = 201
+        Width = 221
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -40,7 +40,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 0
         object cgProgress: TCGauge
-          Left = 72
+          Left = 92
           Top = 2
           Width = 127
           Height = 11
@@ -68,7 +68,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 86
+        Left = 429
         Top = 0
         Width = 130
         Height = 15
@@ -159,7 +159,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paSel: TPanel
-        Left = 28
+        Left = 371
         Top = 0
         Width = 58
         Height = 15
@@ -177,7 +177,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 4
       end
       object paUICursor: TPanel
-        Left = 216
+        Left = 559
         Top = 0
         Width = 94
         Height = 15
@@ -224,7 +224,7 @@ object fraBottomBar: TfraBottomBar
       end
     end
     object paGridSquareSize: TPanel
-      Left = 384
+      Left = 727
       Top = 1
       Width = 58
       Height = 15
@@ -279,10 +279,11 @@ object fraBottomBar: TfraBottomBar
       'miDrawSectorSolid.Checked'
       'miShowHint.Checked'
       'miDrawDOSlotBoxes.Checked'
-      'miDrawDOBaseTexture.Checked'
       'miDODrawObjects.Checked'
       'miGlowTestVisibility.Checked'
-      'miDrawObjectsPivot.Checked')
+      'miDrawObjectsPivot.Checked'
+      'miDrawDOBaseTexture.Checked'
+      'miDrawDOBlended.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -465,12 +466,19 @@ object fraBottomBar: TfraBottomBar
     object DetailObjects1: TMenuItem
       Caption = 'Detail Objects'
       GroupIndex = 4
+      object miDOBase: TMenuItem
+        Caption = 'Base Texture'
+        object miDrawDOBaseTexture: TMenuItem
+          Caption = 'Draw'
+          OnClick = ClickOptionsMenuItem
+        end
+        object miDrawDOBlended: TMenuItem
+          Caption = 'Blended'
+          OnClick = ClickOptionsMenuItem
+        end
+      end
       object miDrawDOSlotBoxes: TMenuItem
         Caption = 'Draw Slot Boxes'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawDOBaseTexture: TMenuItem
-        Caption = 'Draw Base Texture'
         OnClick = ClickOptionsMenuItem
       end
       object miDODrawObjects: TMenuItem

@@ -120,11 +120,6 @@ class CDetailManager:
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
 
-	bool 				GetColor		(DWORD& color, int U, int V);
-
-    DWORD				GetUFromX		(float x);
-    DWORD				GetVFromZ		(float z);
-
     DetailSlot&			GetSlot			(DWORD sx, DWORD sz);
 public:
 // render part -----------------------------------------------------------------
@@ -178,25 +173,55 @@ public:
     void				InvalidateCache			();
 // render part -----------------------------------------------------------------
 public:
-	struct SBase{
-        char 			name[128];
+	class SBase{
+		Shader*			shader_blended;
+        Shader*			shader_overlap;
+        string128		name;
         int 			w;
         int 			h;
 		DWORDVec		data;
 	    DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
 		TVertVec		mesh;
 	    CVertexStream*	stream;
-		Shader*			shader;
     public:
-        				SBase(LPCSTR nm);
-        bool			Valid(){return !data.empty();}
-        void			CreateFromObjects(const Fbox& box, ObjectList& lst); 
-        void			Render();
+        				SBase				();
+        IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
+    	IC void			Clear				(){name[0]=0; w=0; h=0; stream=0; data.clear(); mesh.clear(); DestroyShader();}
+        void			CreateFromObjects	(const Fbox& box, ObjectList& lst);
+        void			Render				();
+        void			CreateShader		();
+        void			DestroyShader		();
+        void			RecreateShader		(){DestroyShader();CreateShader();}
+        bool			LoadImage			(LPCSTR nm);
+		IC LPCSTR 		GetName				(){ return name; }
+		IC bool 		GetColor			(DWORD& color, int U, int V){
+        	if (Valid()&&(U<w)&&(V<h)){
+    			color 	= data[V*w+U];
+    			return true;
+            }
+            return false;
+	    }
+        IC float 		GetUFromX			(float x, const Fbox& box){
+			R_ASSERT(Valid());
+			return 		(x-box.min.x)/(box.max.x-box.min.x);
+        }
+        IC int			GetPixelUFromX		(float x, const Fbox& box){
+        	int U		= iFloor(GetUFromX(x,box)*(w-1)+0.5f); if (U<0) U=0;
+			return U;
+        }
+        IC float 		GetVFromZ			(float z, const Fbox& box){
+			R_ASSERT(Valid());
+			return 		1.f-(z-box.min.z)/(box.max.z-box.min.z);
+        }
+        IC int			GetPixelVFromZ		(float z, const Fbox& box){
+			int V 		= iFloor(GetVFromZ(z,box)*(h-1)+0.5f); if (V<0) V=0;
+			return V;
+        }
     };
 
     ColorIndexMap		m_ColorIndices;
 	BOOLVec				m_Selected;
-    SBase*				m_pBase;
+    SBase				m_Base;
 
     float				m_fDensity;
 public:
