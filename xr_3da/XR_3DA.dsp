@@ -19,6 +19,7 @@ CFG=XR_3DA - Win32 Debug
 !MESSAGE 
 !MESSAGE "XR_3DA - Win32 Release" (based on "Win32 (x86) Application")
 !MESSAGE "XR_3DA - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "XR_3DA - Win32 Mixed" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -44,7 +45,6 @@ RSC=rc.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Ob2 /I "scripting\\" /I ".." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /c
-# SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x422 /d "NDEBUG"
@@ -83,12 +83,41 @@ LINK32=link.exe
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msacm32.lib vfw32.lib /nologo /subsystem:windows /map /debug /machine:I386
 # SUBTRACT LINK32 /verbose /profile
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "XR_3DA___Win32_Mixed"
+# PROP BASE Intermediate_Dir "XR_3DA___Win32_Mixed"
+# PROP BASE Ignore_Export_Lib 0
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "x:\game\"
+# PROP Intermediate_Dir "Mixed"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Ob2 /I "scripting\\" /I ".." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /c
+# SUBTRACT BASE CPP /Fr
+# ADD CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Oy- /Ob2 /I "scripting\\" /I ".." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD BASE RSC /l 0x422 /d "NDEBUG"
+# ADD RSC /l 0x422 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msacm32.lib vfw32.lib /nologo /subsystem:windows /profile /map:"x:\game\XR_3DA.map" /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msacm32.lib vfw32.lib /nologo /subsystem:windows /profile /map:"x:\game\XR_3DA.map" /machine:I386
+
 !ENDIF 
 
 # Begin Target
 
 # Name "XR_3DA - Win32 Release"
 # Name "XR_3DA - Win32 Debug"
+# Name "XR_3DA - Win32 Mixed"
 # Begin Group "General"
 
 # PROP Default_Filter ""
@@ -118,57 +147,222 @@ SOURCE=.\StartUp_Logo.bmp
 # Begin Source File
 
 SOURCE=.\StackTrace\Array.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\MapFile.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\MapFile.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\MapFileEntry.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\MapFileEntry.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\printStackTrace.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\printStackTrace.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\StackTrace.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\StackTrace.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\TextFile.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StackTrace\TextFile.h
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # End Group
 # Begin Source File
@@ -440,6 +634,11 @@ SOURCE=.\PrimitivesR.cpp
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
+
 !ENDIF 
 
 # End Source File
@@ -500,7 +699,22 @@ SOURCE=.\tss_def.h
 # Begin Source File
 
 SOURCE=.\Blenders\blender_complex2.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -617,6 +831,11 @@ SOURCE=.\Texture.cpp
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
+
 !ENDIF 
 
 # End Source File
@@ -633,6 +852,11 @@ SOURCE=.\TextureManager.cpp
 # ADD CPP /FAs
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
 
 !ENDIF 
 
@@ -1132,6 +1356,13 @@ SOURCE=.\Scripting\Callasm.c
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1146,6 +1377,13 @@ SOURCE=.\Scripting\Compiler.c
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1164,6 +1402,13 @@ SOURCE=.\Scripting\Consts.c
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1178,6 +1423,13 @@ SOURCE=.\Scripting\DECLARE.C
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1196,6 +1448,13 @@ SOURCE=.\Scripting\DICT.C
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1210,6 +1469,13 @@ SOURCE=.\Scripting\EXPR.C
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1228,6 +1494,13 @@ SOURCE=.\Scripting\HEADERS.C
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1242,6 +1515,13 @@ SOURCE=.\Scripting\INITIAL.C
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1260,6 +1540,13 @@ SOURCE=.\Scripting\Instance.c
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1274,6 +1561,13 @@ SOURCE=.\Scripting\PARSER.C
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1292,6 +1586,13 @@ SOURCE=.\Scripting\Pmem.c
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1306,6 +1607,13 @@ SOURCE=.\Scripting\PREPROC.C
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1324,6 +1632,13 @@ SOURCE=.\Scripting\PROTECT.C
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1336,6 +1651,8 @@ SOURCE=.\Scripting\Script.cpp
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
 # ADD CPP /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
 
 !ENDIF 
 
@@ -1357,6 +1674,13 @@ SOURCE=.\Scripting\Script_int.c
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1371,6 +1695,13 @@ SOURCE=.\Scripting\VARS.C
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1389,6 +1720,13 @@ SOURCE=.\Scripting\Vcpucode.c
 
 # SUBTRACT CPP /YX /Yc /Yu
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
+# SUBTRACT CPP /YX /Yc /Yu
+
 !ENDIF 
 
 # End Source File
@@ -1403,6 +1741,13 @@ SOURCE=.\Scripting\Vcpudeco.c
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+# SUBTRACT CPP /YX /Yc /Yu
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /Gd
+# SUBTRACT BASE CPP /YX /Yc /Yu
+# ADD CPP /Gd
 # SUBTRACT CPP /YX /Yc /Yu
 
 !ENDIF 
@@ -1559,7 +1904,22 @@ SOURCE=.\CustomHUD.h
 # Begin Source File
 
 SOURCE=.\XR_Animator.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -1626,6 +1986,11 @@ SOURCE=.\CameraDefs.h
 # PROP Exclude_From_Build 1
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
 
 !ENDIF 
 
@@ -1697,12 +2062,42 @@ SOURCE=.\xr_area.h
 # Begin Source File
 
 SOURCE=.\xr_area_collide.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\xr_area_debug.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -1798,6 +2193,11 @@ SOURCE=.\FLightsController.cpp
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
+
 !ENDIF 
 
 # End Source File
@@ -1827,7 +2227,22 @@ SOURCE=.\LightPPA.h
 # Begin Source File
 
 SOURCE=.\FShadowForm.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -1846,6 +2261,11 @@ SOURCE=.\BodyInstance.cpp
 # ADD CPP /FAs
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
 
 !ENDIF 
 
@@ -1867,6 +2287,11 @@ SOURCE=.\SkeletonX.cpp
 # ADD CPP /FAcs
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAcs
+# ADD CPP /FAcs
 
 !ENDIF 
 
@@ -1933,6 +2358,11 @@ SOURCE=.\FastSprite.cpp
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
+
 !ENDIF 
 
 # End Source File
@@ -1973,6 +2403,11 @@ SOURCE=.\FCached.cpp
 # ADD CPP /FAs
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
 
 !ENDIF 
 
@@ -2153,6 +2588,11 @@ SOURCE=.\FStaticRender.cpp
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
+
 !ENDIF 
 
 # End Source File
@@ -2207,7 +2647,22 @@ SOURCE=.\screenshot.cpp
 # Begin Source File
 
 SOURCE=.\ShadowController.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -2228,7 +2683,22 @@ SOURCE=.\tempobject.h
 # Begin Source File
 
 SOURCE=.\XR_Menu.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -2237,7 +2707,22 @@ SOURCE=.\XR_Menu.h
 # Begin Source File
 
 SOURCE=.\XR_Options.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -2246,7 +2731,22 @@ SOURCE=.\XR_Options.h
 # Begin Source File
 
 SOURCE=.\XR_Quit.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
 # PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
