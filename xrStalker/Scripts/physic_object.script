@@ -119,6 +119,7 @@ end
 
 function handing_lamp_binding:update(delta)
 	object_binder.update(self, delta)
+	printf("update")
 	if(self.joint == nil) then
 		self.joint	= self.object:get_physics_shell():get_joint_by_bone_name("provod")
 	end	
