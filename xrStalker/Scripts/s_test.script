@@ -40,9 +40,10 @@ end
 -- define class action patrol
 class "action_patrol"		(action_base)
 
-function action_patrol:__init(obj_name,name) super(object,name)
+function action_patrol:__init(obj_name,name) super(object,patrol_path,name)
 	self.object				= get_level_object(obj_name)
 	self.name				= name
+	self.patrol_path		= patrol_path
 	printf					("action %s is constructed!",self.name)
 end
 
@@ -51,7 +52,7 @@ function action_patrol:initialize()
 	self.object:script		(true,s_test.script_name())
 	action					(
 		self.object,
-		move				(move.standing,move.walk,move.line,patrol("way0000"))),
+		move				(move.standing,move.walk,move.line,patrol(self.patrol_path))),
 		anim				(anim.free),
 		cond				(cond.move_end)
 	)
@@ -125,10 +126,10 @@ function custom_planner:reinit	(obj, clear_all)
 	printf					("planner is reinitialized!")
 end
 
-function main ()
+function setup(obj_name0,obj_name1,patrol_path)
 	-- define planner
-    planner0					= s_test.custom_planner()
-    planner0:reinit				("m_stalker_e0000",false)
+    planner						= s_test.custom_planner()
+    planner:reinit				(get_actor(),false)
     
 	-- define world properties
 	local property_patrol_over	= 0
@@ -140,11 +141,11 @@ function main ()
 	
 	-- define evaluators
 	local eval_patrol_over		= s_test.const_evaluator		(false)
-	local eval_first_meet		= s_test.evaluator_first_meet	("m_stalker_e0000","m_stalker_e0001",planner0.first_meet)
+	local eval_first_meet		= s_test.evaluator_first_meet	(obj_name0,obj_name1,planner.first_meet)
 	
 	-- define actions
-	local _action_patrol		= s_test.action_patrol			("m_stalker_e0000","action_patrol")
-	local _action_patrol_hi		= s_test.action_patrol_hi		("m_stalker_e0000","action_patrol_hi",planner0.set_first_meet)
+	local _action_patrol		= s_test.action_patrol			(obj_name0,patrol_path,"action_patrol")
+	local _action_patrol_hi		= s_test.action_patrol_hi		(obj_name0,"action_patrol_hi",planner.set_first_meet)
     
 	-- define action conditions and effects
 	
@@ -156,8 +157,8 @@ function main ()
 	_action_patrol_hi:add_effect		(world_property(property_first_meet,	false))
 	
 	-- add evaluators
-	planner0:add_evaluator	(property_patrol_over,eval_patrol_over)
-	planner0:add_evaluator	(property_first_meet,eval_first_meet)
+	planner:add_evaluator	(property_patrol_over,eval_patrol_over)
+	planner:add_evaluator	(property_first_meet,eval_first_meet)
 	
 	-- add actions
 	planner:add_action		(action_patrol_id,_action_patrol)
@@ -170,11 +171,19 @@ function main ()
 	-- setup goal
 	planner:set_goal_world_state(goal)
 	
+	return					planner
+end
+
+function main ()
+	planner0				= setup	("m_stalker_e0000","m_stalker_e0001","way0000")
+	planner1				= setup	("m_stalker_e0001","m_stalker_e0000","way0001")
+
 	-- update cycle
 	while true do
 		planner0:update		(1000)
+		planner1:update		(1000)
 		wait				(1000)
 	end
 	
 	-- the end
-end
+endss
