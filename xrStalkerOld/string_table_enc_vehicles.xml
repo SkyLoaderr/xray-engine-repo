@@ -2,19 +2,16 @@
 <!-- таблица строк-подсказок -->
 <string_table>
 	<string id="Vehicles">
-		<text>Vehicles</text>
-		<text ln="rus">Транспорт</text>
+		<text>Транспорт</text>
 	</string>
 
 
 	<string id="Niva">
-		<text>Niva</text>
-		<text ln="rus">Нива</text>
+		<text>Нива</text>
 	</string>
 
 	<string id="enc_vehicles_niva">
-		<text>Niva</text>
-		<text ln="rus">Легковой автомобиль повышенной проходимости.
+		<text>Легковой автомобиль повышенной проходимости.
 Цена:  1800 рублей
 Вместительность: четыре человека.
 Грузоподъемность: 200 кг
@@ -24,13 +21,11 @@
 
 
 	<string id="btr-70">
-		<text>btr-70</text>
-		<text ln="rus">БТР-70</text>
+		<text>БТР-70</text>
 	</string>
 
 	<string id="enc_vehicles_btr-70">
-		<text>btr-70</text>
-		<text ln="rus">Бронетранспортер.
+		<text>Бронетранспортер.
 Цена:  5300 рублей
 Вместительность: шестнадцать человек.
 Грузоподъемность: 1000 кг
@@ -40,13 +35,11 @@
 
 
 	<string id="bmp-2">
-		<text>bmp-2</text>
-		<text ln="rus">БМП-2</text>
+		<text>БМП-2</text>
 	</string>
 
 	<string id="enc_vehicles_bmp-2">
-		<text>bmp-2</text>
-		<text ln="rus">Боевая машина пехоты.
+		<text>Боевая машина пехоты.
 Цена:  4500 рублей
 Вместительность: двенадцать человек.
 Грузоподъемность: 800 кг
@@ -56,13 +49,11 @@
 
 
 	<string id="mi-24">
-		<text>mi-24</text>
-		<text ln="rus">Вертолет МИ-24</text>
+		<text>Вертолет МИ-24</text>
 	</string>
 
 	<string id="enc_vehicles_mi-24">
-		<text>mi-24</text>
-		<text ln="rus">Армейский штурмовой вертолет.
+		<text>Армейский штурмовой вертолет.
 Цена:  25000 рублей
 Вместительность: десять человек.
 Грузоподъемность: 900 кг
@@ -72,13 +63,11 @@
 
 
 	<string id="Kamaz">
-		<text>Kamaz</text>
-		<text ln="rus">Грузовик КАМАЗ</text>
+		<text>Грузовик КАМАЗ</text>
 	</string>
 
 	<string id="enc_vehicles_kamaz">
-		<text>Kamaz</text>
-		<text ln="rus">Цена:  6000 рублей
+		<text>Цена:  6000 рублей
 Вместительность: два человека.
 Грузоподъемность: 2000 кг
 Для работы необходимы: тяжелый аккумулятор, запас бензина.
@@ -87,13 +76,11 @@
 
 
 	<string id="Lada">
-		<text>Lada</text>
-		<text ln="rus">Лада</text>
+		<text>Лада</text>
 	</string>
 
 	<string id="enc_vehicles_lada">
-		<text>Lada</text>
-		<text ln="rus">Легковой автомобиль.
+		<text>Легковой автомобиль.
 Цена:  1200 рублей
 Вместительность: четыре человека.
 Грузоподъемность: 200 кг
@@ -103,13 +90,11 @@
 
 
 	<string id="Moskvich">
-		<text>Moskvich</text>
-		<text ln="rus">Москвич</text>
+		<text>Москвич</text>
 	</string>
 
 	<string id="enc_vehicles_moskvich">
-		<text>Moskvich</text>
-		<text ln="rus">Легковой автомобиль.
+		<text>Легковой автомобиль.
 Цена:  1500 рублей
 Вместительность: четыре человека.
 Грузоподъемность: 300 кг
@@ -119,13 +104,12 @@
 
 
 	<string id="Gaz">
-		<text>Gaz</text>
-		<text ln="rus">Грузовик ГАЗ</text>
+		<text>Грузовик ГАЗ</text>
 	</string>
 
 	<string id="enc_vehicles_gaz">
 		<text>Gaz</text>
-		<text ln="rus">Цена:  3200 рублей
+		<text>Цена:  3200 рублей
 Вместительность: два человека.
 Грузоподъемность: 700 кг
 Для работы необходимы: тяжелый аккумулятор, запас бензина.
@@ -134,13 +118,11 @@
 
 
 	<string id="Rafik">
-		<text>Rafik</text>
-		<text ln="rus">Рафик</text>
+		<text>Рафик</text>
 	</string>
 
 	<string id="enc_vehicles_rafik">
-		<text>Rafik</text>
-		<text ln="rus">Маленькая грузовая машина.
+		<text>Маленькая грузовая машина.
 Цена:  2400 рублей
 Вместительность: два человека.
 Грузоподъемность: 600 кг
@@ -150,13 +132,11 @@
 
 
 	<string id="Bus">
-		<text>Bus</text>
-		<text ln="rus">Пассажирский автобус</text>
+		<text>Пассажирский автобус</text>
 	</string>
 
 	<string id="enc_vehicles_bus">
-		<text>Bus</text>
-		<text ln="rus">Цена:  2000 рублей
+		<text>Цена:  2000 рублей
 Вместительность: шестнадцать человек.
 Грузоподъемность: 400 кг
 Для работы необходимы: тяжелый аккумулятор, запас бензина.
