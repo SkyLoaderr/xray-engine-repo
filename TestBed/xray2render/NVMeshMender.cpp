@@ -92,29 +92,9 @@ Comments:
 
 ******************************************************************************/
 
-/*
-#ifdef _WIN32
-#  pragma warning (disable : 4786)
-#  pragma comment (lib,"x:\\nv_math.lib")
-#endif
-*/
-
 #include "stdafx.h"
 #include "NVMeshMender.h"
 #include "nv_math.h"
-#include <assert.h>
-
-inline vec3 normalize_(vec3& a)
-{
-	vec3			res;
-	res				= a;
-	res.normalize	();
-	return res;
-}
-inline float dot_(const vec3& a, const vec3& b)
-{
-	return a.x*b.x + a.y*b.y + a.z*b.z;
-}
 
 bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input, 
 			               NVMeshMender::VAVector& output, 
@@ -830,9 +810,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 					else
 					{
 						// otherwise, check our neighbor's s,t & sxt vectors vs our own
-						const float sAgreement		= dot_(s, sVector[(*iter).face]);
-						const float tAgreement		= dot_(t, tVector[(*iter).face]);
-						const float sxtAgreement	= dot_(sxt, sxtVector[(*iter).face]);
+						const float sAgreement		= dot(s, sVector[(*iter).face]);
+						const float tAgreement		= dot(t, tVector[(*iter).face]);
+						const float sxtAgreement	= dot(sxt, sxtVector[(*iter).face]);
 
 						// Check Radian angle split limit
 						const float epsilon			= _cos( bSmoothCreaseAngleRadians );
@@ -931,8 +911,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
         // now renormalize
         for ( unsigned int b = 0; b < positions.size(); b += 3 ) 
         {
-            *reinterpret_cast<vec3*>(&output[(*tangent).second].floatVector_[b]) = normalize_(avgS[b / 3]);  // s
-            *reinterpret_cast<vec3*>(&output[(*binormal).second].floatVector_[b]) = normalize_(avgT[b / 3]);  // T
+            *reinterpret_cast<vec3*>(&output[(*tangent).second].floatVector_[b]) = normalize(avgS[b / 3]);  // s
+            *reinterpret_cast<vec3*>(&output[(*binormal).second].floatVector_[b]) = normalize(avgT[b / 3]);  // T
         }
 	}
 
