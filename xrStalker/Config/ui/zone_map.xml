@@ -9,7 +9,7 @@
 		</level_frame>
 	</background>
 	
-	<compass x="154" y="154" width="32" height="32">
+	<compass x="175" y="185" width="32" height="32">
 		<base_texture >ui\hud_map_arrow</base_texture>
 	</compass>
 	
