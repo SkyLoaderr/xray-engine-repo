@@ -202,7 +202,7 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 	if (strext(N))		*strext(N) = 0;
 
 	strconcat			(fn,N,".wav");
-	if (!FS.exist("$level$",fn))	FS.update_path	(fn,"$sounds$",fn);
+	if (!FS.exist("$level$",fn))	FS.update_path	(fn,"$game_sounds$",fn);
 
 	if (_3D)			LoadWaveAs3D		( fn );
 	else				LoadWaveAs2D		( fn );

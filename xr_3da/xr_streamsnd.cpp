@@ -269,7 +269,7 @@ void CSoundStream::LoadADPCM( )
 
 	DataPos			= NULL;
 
-    hf				= FS.r_open("$sounds$",fn);
+    hf				= FS.r_open("$game_sounds$",fn);
 	R_ASSERT		(hf>=0);
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);

@@ -243,6 +243,7 @@ void CApplication::LoadSwitch()
 
 void CApplication::OnFrame( )
 {
+	::Sound->update		();
 	Engine.Event.OnFrame();
 }
 

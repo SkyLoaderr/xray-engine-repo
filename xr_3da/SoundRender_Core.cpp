@@ -106,6 +106,8 @@ void CSoundRender_Core::_initialize	(u32 window)
 		s_environment				= xr_new<SoundEnvironment_LIB>();
 		s_environment->Load			(fn);
 	}
+
+	bPresent					= TRUE;
 }
 
 void CSoundRender_Core::_destroy	()

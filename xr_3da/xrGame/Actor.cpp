@@ -857,8 +857,8 @@ void CActor::Update	(u32 DT)
 			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
 			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
-			sndStep[bStep].clone(mtl_pair->StepSounds[bStep]);
-			::Sound->play_at_pos	(sndStep[bStep],this,Position());
+			sndStep[bStep].clone		(mtl_pair->StepSounds[bStep]);
+			sndStep[bStep].play_at_pos	(this,Position());
 		}
 		m_fTimeToStep -= dt;
 	}
