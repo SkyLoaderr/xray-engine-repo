@@ -80,7 +80,7 @@ IC	int				MaxBodies(CPHIsland* island)
 
 IC	bool			CanMerge(CPHIsland* island,int& MAX_JOINTS)
 {
-	MAX_JOINTS=MaxJoints();
+	MAX_JOINTS=MaxJoints(island);
 	return MAX_JOINTS>0 && ((nb+island->nb)<BODIES_LIMIT);
 }
 

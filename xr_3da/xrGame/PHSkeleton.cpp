@@ -335,7 +335,8 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 
 void CPHSkeleton::CopySpawnInit()
 {
-	if(ReadyForRemove()) SetAutoRemove();
+	if(ReadyForRemove())
+			SetAutoRemove();
 }
 
 

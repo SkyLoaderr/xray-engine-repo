@@ -110,7 +110,9 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 	// get the contacts up to a maximum of N contacts
 	int n;
 	
-	VERIFY	(o1 && o2 && (&contacts[0].geom) );
+	VERIFY	(o1);
+	VERIFY	(o2); 
+	VERIFY(&contacts[0].geom);
 	n		= dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 
 	if(n>N-1)

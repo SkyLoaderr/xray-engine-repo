@@ -24,10 +24,10 @@ void DBG_DrawPHObject(CPHObject* obj)
 		obj_draw.AABB_center.set(obj->spatial.center);
 		if(draw_frame)
 		{
-			dbg_draw_objects1.push_back(obj_draw);
+			dbg_draw_objects0.push_back(obj_draw);
 		}else
 		{
-			dbg_draw_objects0.push_back(obj_draw);
+			dbg_draw_objects1.push_back(obj_draw);
 		}
 	}
 }
@@ -56,8 +56,9 @@ void DBG_DrawContact(dContact& c)
 }
 void DBG_DrawFrameStart()
 {
+	
 #ifdef DRAW_CONTACTS
-	if(draw_frame)
+	if(!draw_frame)
 	{
 		Contacts0.clear();
 		dbg_draw_objects0.clear();
@@ -68,6 +69,7 @@ void DBG_DrawFrameStart()
 		dbg_draw_objects1.clear();
 	}
 #endif
+	 draw_frame=!draw_frame;
 }
 
 void PH_DBG_Render()
@@ -119,7 +121,9 @@ void PH_DBG_Render()
 			RCache.dbg_DrawLINE(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 		}
 	}
-	draw_frame=!draw_frame;
+
+	DBG_DrawFrameStart();
+
 #endif
 }
 #endif

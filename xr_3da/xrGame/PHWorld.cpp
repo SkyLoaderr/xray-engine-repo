@@ -153,9 +153,6 @@ void CPHWorld::Step()
 	--disable_count;
 
 	++m_steps_num;
-#ifdef DEBUG
-	DBG_DrawFrameStart();
-#endif
 	Device.Statistic.ph_collision.Begin	();
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
