@@ -10,14 +10,8 @@ module("game_last_ps")
 class "game_sv_LastStanding" (game_sv_mp_script)
 
 ---------------------------------------------------------
-function ps_create()
-   return game_last_ps.game_last_playerState()
-end
-
----------------------------------------------------------
 function game_sv_LastStanding:__init() super()
 	self.type = game_types.game_types.GAME_LASTSTANDING
-
 end
 
 ---------------------------------------------------------
@@ -271,17 +265,17 @@ function game_sv_LastStanding:GetRespawnPoint(team_idx)
 end 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnPlayerHitPlayer(game_id_hitter, game_id_hitted, P)
---      local ps_hitter = self:get_eid(game_id_hitter)
---      local ps_hitted = self:get_eid(game_id_hitted)
+      local ps_hitter = self:get_eid(game_id_hitter)
+      local ps_hitted = self:get_eid(game_id_hitted)
 
---      if ps_hitted == nil or ps_hitter == nil or ps_hitted.GameID==ps_hitter.GameID then return end
+      if ps_hitted == nil or ps_hitter == nil or ps_hitted.GameID==ps_hitter.GameID then return end
       --for example:
---      local impulse = self:GetHitParamsImpulse(P)
---      local power = self:GetHitParamsPower(P)
---      impulse        = impulse* 1.01
---      power          = power * 1.01
+      local impulse = self:GetHitParamsImpulse(P)
+      local power = self:GetHitParamsPower(P)
+      impulse        = impulse* 1.01
+      power          = power * 1.01
 
---      self:SetHitParams(P, impulse, power)
+      self:SetHitParams(P, impulse, power)
 end
 
 

@@ -1,10 +1,6 @@
 module("game_types")
---module("game_phases")
---module("game_messages")
-
 module("game_last_ui")
 module("game_last_ps")
---module("key_bindings")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -79,12 +75,16 @@ function game_cl_LastStanding:GetMapEntities(ent_container)
    local players_count = self:GetPlayersCount()
    for it=0,players_count-1 do
        local ps_who = self:GetPlayerByOrderID(it)
-        
-      local game_object = self:GetObjectByGameID(ps_who.GameID)
-      if game_object ~=nil then
-         D.pos = game_object:position()
-         ent_container:push_back(D)
-      end
+        if  (ps_who:testFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)==false) and 
+            (ps_who:testFlag(game_player_flags.GAME_PLAYER_FLAG_CS_SPECTATOR)==false) then
+
+            local game_object = self:GetObjectByGameID(ps_who.GameID)
+            if game_object ~=nil then
+               D.pos = game_object:position()
+               D.color = GetARGB(255,255,0,0)
+               ent_container:push_back(D)
+            end
+         end
    end
 
 

@@ -7,10 +7,10 @@ function ui_game_LastStanding:__init() super()
 
    self.m_life_total_caption = "life_total"
 
-   self:AddCustomMessage(self.m_life_total_caption, 0, -0.95, 0.03, self:GetFontDI(), CGameFont.alCenter, self:GetARGB(255,255,0,0),"")
+   self:AddCustomMessage(self.m_life_total_caption, 0, -0.95, 0.03, self:GetFontDI(), CGameFont.alCenter, GetARGB(255,255,0,0),"")
 
    self.m_todo_caption = "todo"
-   self:AddCustomMessage(self.m_todo_caption, 0, 0.9, 0.02, self:GetFontDI(), CGameFont.alCenter, self:GetARGB(255,0,255,0),"")
+   self:AddCustomMessage(self.m_todo_caption, 0, 0.9, 0.02, self:GetFontDI(), CGameFont.alCenter, GetARGB(255,0,255,0),"")
 
 end
 
@@ -77,9 +77,9 @@ function ui_game_LastStanding:ShowPlayersList			(bShow)
 end
 
 function ui_game_LastStanding:SetLifeCaption(str)
-   		self:CustomMessageOut(self.m_life_total_caption, str, self:GetARGB(255,255,0,0))
+   		self:CustomMessageOut(self.m_life_total_caption, str, GetARGB(255,255,0,0))
 end
 
 function ui_game_LastStanding:SetTodoCaption(str)
-   		self:CustomMessageOut(self.m_todo_caption, str, self:GetARGB(255,0,255,0))
+   		self:CustomMessageOut(self.m_todo_caption, str, GetARGB(255,0,255,0))
 end
