@@ -13,7 +13,11 @@ CMonsterSquadManager::CMonsterSquadManager()
 }
 CMonsterSquadManager::~CMonsterSquadManager()
 {
-
+	for (u32 team_id=0; team_id<team.size();team_id++) {
+		for (u32 squad_id=0; squad_id<team[team_id].size(); squad_id++) {
+			xr_delete(team[team_id][squad_id]);
+		}
+	}
 }
 
 void CMonsterSquadManager::register_member(u8 team_id, u8 squad_id, CEntity *e)
@@ -46,9 +50,11 @@ void CMonsterSquadManager::register_member(u8 team_id, u8 squad_id, CEntity *e)
 		pSquad = xr_new<CMonsterSquad>();
 		team[team_id][squad_id]	= pSquad;
 	} else {
-		pSquad = team[team_id][squad_id];
+		if (team[team_id][squad_id] == 0) {
+			pSquad = xr_new<CMonsterSquad>();
+			team[team_id][squad_id]	= pSquad;
+		} else pSquad = team[team_id][squad_id];
 	}
-
 
 	pSquad->RegisterMember(e);
 }
