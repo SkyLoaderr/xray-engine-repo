@@ -12,24 +12,20 @@ function CStateDangerSound:__init(_data, _mem)
 end
 
 function CStateDangerSound:initialize()
-	printf("start-1111")
 	reset_action(self.data.npc, self.data.scr_name)
 	self.sound_time	= self.memory.sound.time
 	self.position	= self.memory.sound.position
 end
 
 function CStateDangerSound:execute()
-	printf("Execute-1111")
 	if(self:sound_changed()) then
 		reset_action(self.data.npc, self.data.scr_name)
 	end
 	
 	if(self.data.npc:action() == nil) then
-		printf("1")
 		if(self.data.npc == nil) then printf("nil1") end
 		if(level.actor() == nil) then printf("nil2") end
 		action(self.data.npc, act(act.panic, level.actor()), cond(cond.time_end, 30000))
-		printf("2")
 	end
 end
 
