@@ -16,14 +16,14 @@
 ////////////////////////////////////////////////////////////////////////////
 void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
-	save_vector					(m_tpEvents,tNetPacket);
+	save_entity_vector			(m_tpEvents,tNetPacket);
 	save_base_vector			(m_tpTaskIDs,tNetPacket);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion > 19) {
-		load_vector				(m_tpEvents,tNetPacket);
+		load_entity_vector		(m_tpEvents,tNetPacket);
 		load_base_vector		(m_tpTaskIDs,tNetPacket);
 	}
 }
@@ -560,7 +560,7 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	save_base_vector			(m_tpaVertices,tNetPacket);
 	save_bool_vector			(m_baVisitedVertices,tNetPacket);
-	save_vector					(m_tpTasks,tNetPacket);
+	save_entity_vector			(m_tpTasks,tNetPacket);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
@@ -570,7 +570,7 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 19) {
 		load_base_vector		(m_tpaVertices,tNetPacket);
 		load_bool_vector		(m_baVisitedVertices,tNetPacket);
-		load_vector				(m_tpTasks,tNetPacket);
+		load_entity_vector		(m_tpTasks,tNetPacket);
 	}
 }
 

@@ -46,6 +46,7 @@ void CSE_ALifeSimulator::Save(LPCSTR caSaveName)
 	CSE_ALifeObjectRegistry::Save(tStream);
 	CSE_ALifeEventRegistry::Save(tStream);
 	CSE_ALifeTaskRegistry::Save	(tStream);
+	CSE_ALifeAnomalyRegistry::Save(tStream);
 	string256					S;
 	strconcat					(S,SAVE_PATH,caSaveName);
 	tStream.save_to				(S);
@@ -101,6 +102,8 @@ void CSE_ALifeSimulator::Load(LPCSTR caSaveName)
 	CSE_ALifeEventRegistry::Load(*tpStream);
 	Log							("* Loading tasks...");
 	CSE_ALifeTaskRegistry::Load	(*tpStream);
+	Log							("* Loading anomly map...");
+	CSE_ALifeAnomalyRegistry::Load(*tpStream);
 	Log							("* Building dynamic objects...");
 	vfUpdateDynamicData			();
 	m_tpChildren.reserve		(128);
@@ -308,32 +311,30 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		// proceed random artefacts generation for the active zone
 		fProbability			= randF(1.f);
 		fSum					= 0;
-		{
-			for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower*10/3); ii<jj; ii++) {
-				for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; p++) {
-					fSum			+= l_tpSpawnAnomalousZone->m_faWeights[p];
-					if (fSum > fProbability)
-						break;
-				}
-				if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
-					CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
-					R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
+		for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower*10/3); ii<jj; ii++) {
+			for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; p++) {
+				fSum			+= l_tpSpawnAnomalousZone->m_faWeights[p];
+				if (fSum > fProbability)
+					break;
+			}
+			if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
+				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create	(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
+				R_ASSERT2		(l_tpSE_Abstract,"Can't create entity.");
 
-					CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
-					R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
-					i->ID			= m_tpServer->PerformIDgen(0xffff);
-					i->m_tSpawnID	= _SPAWN_ID(j - b);
-					i->m_tGraphID	= l_tpSpawnAnomalousZone->m_tGraphID;
-					i->o_Position	= m_tpArtefactSpawnPositions[l_tpSpawnAnomalousZone->m_tSpawnID + randI(l_tpSpawnAnomalousZone->m_wArtefactSpawnCount)];
-					
-					CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
-					R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
+				CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
+				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
+				i->ID			= m_tpServer->PerformIDgen(0xffff);
+				i->m_tSpawnID	= _SPAWN_ID(j - b);
+				i->m_tGraphID	= l_tpSpawnAnomalousZone->m_tGraphID;
+				i->o_Position	= m_tpArtefactSpawnPositions[l_tpSpawnAnomalousZone->m_dwStartIndex + randI(l_tpSpawnAnomalousZone->m_wArtefactSpawnCount)];
+				
+				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
+				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
 
-					l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
+				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
-					m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-					vfUpdateDynamicData(i);
-				}
+				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
+				vfUpdateDynamicData(i);
 			}
 		}
 	}

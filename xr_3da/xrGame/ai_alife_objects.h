@@ -102,3 +102,28 @@ public:
 		m_dwLevelCount				= tFileStream.r_u32();
 	};
 };
+
+class CSE_ALifeKnownAnomaly : public IPureALifeLSObject {
+public:
+	EAnomalousZoneType				m_tAnomalousZoneType;
+	float							m_fAnomalyPower;
+	float							m_fDistance;
+
+									CSE_ALifeKnownAnomaly()
+	{
+	}
+
+	virtual void					Save(IWriter	&tMemoryStream)
+	{
+		tMemoryStream.w				(&m_tAnomalousZoneType,	sizeof(m_tAnomalousZoneType));
+		tMemoryStream.w_float		(m_fAnomalyPower);
+		tMemoryStream.w_float		(m_fDistance);
+	}
+	
+	virtual void					Load(IReader	&tFileStream)
+	{
+		tFileStream.r				(&m_tAnomalousZoneType,	sizeof(m_tAnomalousZoneType));
+		m_fAnomalyPower				= tFileStream.r_float();
+		m_fDistance					= tFileStream.r_float();
+	};
+};

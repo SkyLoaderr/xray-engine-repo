@@ -18,7 +18,7 @@ class CSE_ALifeObjectRegistry : public IPureALifeLSObject {
 public:
 	OBJECT_MAP						m_tObjectRegistry;		// список событий игры
 
-	CSE_ALifeObjectRegistry()
+									CSE_ALifeObjectRegistry()
 	{
 		m_tObjectRegistry.clear		();
 	};
@@ -51,7 +51,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	void CSE_ALifeObjectRegistry::Load(IReader	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{ 
 		R_ASSERT2					(tFileStream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
 		m_tObjectRegistry.clear();
@@ -491,5 +491,31 @@ public:
 				(*I).z				= S->r_float();
 			}
 		}
+	};
+};
+
+class CSE_ALifeAnomalyRegistry : public IPureALifeLSObject {
+public:
+	ANOMALY_P_VECTOR				m_tpAnomalies;
+
+									CSE_ALifeAnomalyRegistry()
+	{
+	};
+
+	virtual							~CSE_ALifeAnomalyRegistry()
+	{
+	};
+	
+	virtual	void					Save(IWriter &tMemoryStream)
+	{
+		tMemoryStream.open_chunk	(ANOMALY_CHUNK_DATA);
+		save_object_vector			(m_tpAnomalies,tMemoryStream);
+		tMemoryStream.close_chunk	();
+	};
+	
+	virtual	void					Load(IReader	&tFileStream)
+	{ 
+		R_ASSERT2					(tFileStream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
+		load_object_vector			(m_tpAnomalies,tFileStream);
 	};
 };

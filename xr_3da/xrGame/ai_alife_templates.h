@@ -10,6 +10,7 @@
 #define XRAY_AI_ALIFE_TEMPLATES
 
 #include "ai_alife_space.h"
+#include "ai_alife_interfaces.h"
 using namespace ALife;
 
 template <class T>
@@ -105,7 +106,7 @@ void init_vector(xr_vector<T *> &tpVector, LPCSTR caSection)
 };
 
 template <class T, class M>
-void save_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+void save_entity_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
 	tNetPacket.w_u32			((u32)tpVector.size());
 	xr_vector<T *>::iterator	I = tpVector.begin();
@@ -115,7 +116,7 @@ void save_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 };
 
 template <class T, class M>
-void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+void load_entity_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
@@ -125,6 +126,30 @@ void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 	for ( ; I != E; I++) {
 		*I = xr_new<T>			();
 		(*I)->UPDATE_Read		(tNetPacket);
+	}
+};
+
+template <class T, class M>
+void save_object_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+{
+	tNetPacket.w_u32			((u32)tpVector.size());
+	xr_vector<T *>::iterator	I = tpVector.begin();
+	xr_vector<T *>::iterator	E = tpVector.end();
+	for ( ; I != E; I++)
+		(*I)->Save				(tNetPacket);
+};
+
+template <class T, class M>
+void load_object_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+{
+	u32							dwDummy;
+	dwDummy						= tNetPacket.r_u32();
+	tpVector.resize				(dwDummy);
+	xr_vector<T *>::iterator	I = tpVector.begin();
+	xr_vector<T *>::iterator	E = tpVector.end();
+	for ( ; I != E; I++) {
+		*I = xr_new<T>			();
+		(*I)->Load				(tNetPacket);
 	}
 };
 

@@ -21,6 +21,7 @@ class CSE_ALifeSimulator :
 	public CSE_ALifeGraphRegistry,
 	public CSE_ALifeTraderRegistry,
 	public CSE_ALifeScheduleRegistry,
+	public CSE_ALifeAnomalyRegistry,
 	public CSheduled,
 	public CRandom 
 {
