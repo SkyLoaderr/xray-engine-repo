@@ -56,7 +56,7 @@ function main()
 	local dlg = test_avi_dlg()
 	
 	local snd = sound_object(
-		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream",
+		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream_l",
 		sound_object.s2d
 	)
 	local actor = level.actor()
