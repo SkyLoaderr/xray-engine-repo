@@ -5,9 +5,11 @@
 
 #include "EditorPref.h"
 #include "ui_main.h"
-#include "cursor3d.h"
 #include "texture.h"
 #include "xr_func.h"
+#ifdef _LEVEL_EDITOR
+	#include "cursor3d.h"	
+#endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
