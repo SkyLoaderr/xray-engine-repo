@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "radioactivezone.h"
 #include "hudmanager.h"
-#include "PGObject.h"
 
 static f32 g_pp_fade = 2000.f;
 
