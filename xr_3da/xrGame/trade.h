@@ -36,6 +36,8 @@ class CTrade {
 		void Set (EOwnerType t, CEntity	*b, CInventoryOwner *io) { type = t; base = b; inv_owner = io;}
 	};
 
+	//если нужно провести синхронизацию с сервером для торговцев
+	bool	m_bNeedToUpdateArtefactTasks;
 public:
 	static TradeFactors m_tTradeFactors;
 

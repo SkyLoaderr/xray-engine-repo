@@ -14,19 +14,25 @@
 
 #include "../InfoPortionDefs.h"
 #include "../Actor.h"
+#include "../character_info.h"
+#include "../ai/trader/ai_trader.h"
+
+#include "../xrserver.h"
+//#include "../xrServer_Objects_ALife.h"
+//#include "../xrServer_Objects_ALife_Items.h"
+#include "../xrServer_Objects_ALife_Monsters.h"
+
 
 const char * const DIARY_XML = "events_new.xml";
 
 // ID for tree view items
 enum EDiaryIDs
 {
-	idJobsCurrent = 0,
+	idJobsCurrent,
 	idJobsAccomplished,
 	idJobsFailed,
 
-	idContractsCurrent,
-	idContractsAccomplished,
-	idContractsFailed,
+	idContracts,
 
 	idNews
 };
@@ -38,6 +44,7 @@ CUIDiaryWnd::CUIDiaryWnd()
 	:	m_pActiveSubdialog	(NULL),
 		m_pTreeItemFont		(NULL),
 		m_pTreeRootFont		(NULL),
+		m_pContractsTreeItem(NULL),
 		m_uTreeRootColor	(0xffffffff),
 		m_uTreeItemColor	(0xffffffff)
 {
@@ -140,9 +147,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveSubdialog = &UIJobsWnd;
 				break;
 
-			case idContractsCurrent:
-			case idContractsAccomplished:
-			case idContractsFailed:
+			case idContracts:
 				m_pActiveSubdialog = NULL;
 				break;
 
@@ -234,28 +239,55 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
+	m_pContractsTreeItem = pTVItem;
 
-	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetText("Current");
-	pTVItemSub->SetValue(idContractsCurrent);
-	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
-	pTVItem->AddItem(pTVItemSub);
-
-	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetText("Accomplished");
-	pTVItemSub->SetValue(idContractsAccomplished);
-	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
-	pTVItem->AddItem(pTVItemSub);
-
-	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetText("Failed");
-	pTVItemSub->SetValue(idContractsFailed);
-	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
-	pTVItem->AddItem(pTVItemSub);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDiaryWnd::Show()
+{
+	inherited::Show();
+	InitDiary();
+}
+
+void CUIDiaryWnd::InitDiary()
+{
+	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
+
+	m_pContractsTreeItem->DeleteAllSubItems();
+
+	if(pActor->contacts_registry.objects_ptr())
+	{
+		const TALK_CONTACT_VECTOR& contacts = *pActor->contacts_registry.objects_ptr();
+		for(TALK_CONTACT_VECTOR::const_iterator it = contacts.begin();
+			contacts.end() != it; it++)
+		{
+			CSE_Abstract* E = Level().Server->game->get_entity_from_eid((*it).id);
+			CSE_ALifeTrader* pTrader = NULL;
+			if(E) pTrader = dynamic_cast<CSE_ALifeTrader*>(E);
+
+			if(pTrader)
+			{
+				CCharacterInfo character_info;
+				CSE_ALifeObject *O = dynamic_cast<CSE_ALifeObject*>(E);
+				bool init_default_profile =true;
+				if(*O->m_sCharacterProfileID)
+					init_default_profile = !character_info.Load(*O->m_sCharacterProfileID);
+
+				CUITreeViewItem* pTVItemSub = xr_new<CUITreeViewItem>();
+				pTVItemSub->SetText(init_default_profile?E->name():character_info.Name());
+				m_TraderID = (*it).id;
+				pTVItemSub->SetValue(idContracts);
+				pTVItemSub->SetFont(m_pTreeItemFont);
+				pTVItemSub->SetTextColor(m_uTreeItemColor);
+				m_pContractsTreeItem->AddItem(pTVItemSub);
+			}
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -65,7 +65,7 @@ void CUIPdaCommunication::Init()
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 }
 
-void CUIPdaCommunication::InitPDA()
+void CUIPdaCommunication::InitPDACommunication()
 {
 	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
 	if(!m_pInvOwner) return;
@@ -173,7 +173,7 @@ void CUIPdaCommunication::Draw()
 void CUIPdaCommunication::Show()
 {
 	inherited::Show();
-	InitPDA();
+	InitPDACommunication();
 }
 
 

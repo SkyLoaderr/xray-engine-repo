@@ -31,7 +31,7 @@ public:
 	CUIPdaWnd();
 	virtual ~CUIPdaWnd();
 
-	virtual void Init();
+	virtual void Init		();
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 

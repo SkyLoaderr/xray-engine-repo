@@ -53,8 +53,9 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	//	unaffected_r_torso_pitch = r_torso.pitch;
 
 	P.w_float			(inventory().TotalWeight());
-	P.w_u32				(0);
-	P.w_u32				(0);
+
+	P.w_u32				(m_dwMoney);
+	P.w_u32				(m_tRank);
 
 	u16 ms	= (u16)(mstate_real & 0x0000ffff);
 	P.w_u16				(u16(ms));
@@ -113,7 +114,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	//------------------------------------------------
 
 	float				fDummy;
-	u32					dwDummy;
+	//u32					dwDummy;
 
 	P.r_u32				(N.dwTimeStamp	);
 	
@@ -177,8 +178,8 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	};
 
 	P.r_float			(fDummy);
-	P.r_u32				(dwDummy);
-	P.r_u32				(dwDummy);
+	m_dwMoney =			P.r_u32();
+	m_tRank	  =			ALife::EStalkerRank(P.r_u32());
 
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
@@ -476,9 +477,12 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 	m_PhysicMovementControl->ActivateBox	(0);
 
-	E->o_model = E->o_Angle.y;
-	E->o_torso.yaw = E->o_Angle.y;
-	E->o_torso.pitch = -E->o_Angle.x;
+	if (GameID() != GAME_SINGLE)
+	{
+		E->o_model = E->o_Angle.y;
+		E->o_torso.yaw = E->o_Angle.y;
+		E->o_torso.pitch = -E->o_Angle.x;
+	}
 
 	r_model_yaw				= E->o_model;
 	r_torso.yaw				= E->o_torso.yaw;

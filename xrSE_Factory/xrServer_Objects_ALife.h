@@ -85,6 +85,8 @@ public:
 	ref_str							m_caGroupControl;
 	flags32							m_flags;
 	ALife::_STORY_ID				m_story_id;
+	ref_str							m_sCharacterProfileID;
+
 #ifdef XRGAME_EXPORTS
 	CALifeSimulator					*m_alife_simulator;
 #endif

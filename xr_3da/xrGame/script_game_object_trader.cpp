@@ -88,46 +88,6 @@ const ALIFE_TASK_VECTOR& CScriptGameObject::TraderArtefactTask ()
 		return dummy_vector;
 	}
 
-	pTrader->alife_tasks.clear();
-/*	
-	//пройтись по всем заданиям, выбрать те, которые выдал этот торговец
-	ALife::OBJECT_TASK_MAP task_id_map = ai().alife().tasks().cross();
-	ALife::TASK_MAP task_prt_map = ai().alife().tasks().tasks();
-    
-	ALife::OBJECT_TASK_PAIR_IT it = task_id_map.find(pTrader->ID());
-	if(task_id_map.end() != it)
-	{
-		ALife::TASK_SET& task_set = (*it).second;
-		
-		for(ALife::TASK_SET_IT set_it = task_set.begin();
-			                      task_set.end() != set_it; set_it++)
-		{
-			R_ASSERT(task_prt_map.find(*set_it)!=task_prt_map.end());
-			CScriptTask script_task(task_prt_map[*set_it]);
-			pTrader->alife_tasks.push_back(script_task);
-		}
-	}
-*/
-
-	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator        i = pTrader->m_tpOrderedArtefacts.begin();
-	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator        e = pTrader->m_tpOrderedArtefacts.end();
-	for ( ; i != e; ++i) {
-		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
-		//			Msg     ("Orders : ");
-		CScriptTask script_task;
-		script_task.m_sName = pSettings->r_string((*i).second->m_caSection, "inv_name");
-
-		ALife::ARTEFACT_ORDER_VECTOR::const_iterator    II = (*i).second->m_tpOrders.begin();
-		ALife::ARTEFACT_ORDER_VECTOR::const_iterator    EE = (*i).second->m_tpOrders.end();
-		for ( ; II != EE; ++II)
-		{
-			script_task.m_iPrice = (*II).m_price; 
-			script_task.m_iQuantity = (*II).m_count;
-			script_task.m_sOrganization = pSettings->r_string((*II).m_section, "name");
-			pTrader->alife_tasks.push_back(script_task);
-			//Msg("order : section[%s], count[%d], price[%d]",(*II).m_section,(*II).m_count,(*II).m_price);
-		}
-	}
-
+	pTrader->PrepareTasks();
 	return pTrader->alife_tasks;
 }

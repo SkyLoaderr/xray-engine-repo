@@ -18,6 +18,7 @@
 #include "../../script_task.h"
 
 class CInventoryItem;
+class CArtifact;
 
 class CAI_Trader : public CEntityAlive, 
 				   public CInventoryOwner, 
@@ -45,13 +46,6 @@ private:
 	CMotionDef*			m_tpGlobalDef;
 
 	MonsterSpace::EMonsterHeadAnimType m_cur_head_anim_type;
-
-
-public:
-	
-	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
-	//буфферный массив для передачи списка заданий в скрипты
-	ALIFE_TASK_VECTOR					alife_tasks;
 
 public:
 						CAI_Trader		();
@@ -131,4 +125,19 @@ private:
 
 	virtual	bool			bfAssignSound			(CScriptEntityAction *tpEntityAction);
 
+	//////////////////////////////////////////////////////////////////////////
+	//генерируемые задания
+public:
+	//подготовка заданий к виду удобному для вывода пользователю
+	virtual	void			PrepareTasks				();
+	//проверяет список артефактов в заказах
+	virtual	u32				ArtifactPrice				(CArtifact* pArtifact);
+	//продажа артефакта, с последуещим изменением списка заказов  (true - если артефакт был в списке)
+	virtual	bool			BuyArtifact				(CArtifact* pArtifact);
+	//синхронизация заданий артефактов для сервера
+	virtual	void			SyncArtifactsWithServer	();
+public:
+	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
+	//буфферный массив для передачи списка заданий в скрипты
+	ALIFE_TASK_VECTOR					alife_tasks;
 };

@@ -21,6 +21,8 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 	m_dwLastTradeTime	= 0;
 	pPartner.Set(TT_NONE,0,0);
 
+	m_bNeedToUpdateArtefactTasks = false;
+
 	// Заполнить pThis
 	CAI_Trader *pTrader;
 	CActor *pActor;
@@ -159,9 +161,6 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 {
 	StartTrade();
 	pPartner.Set(man.type,man.base,man.inv_owner); 
-//	Msg("--TRADE:: - My name is [%s]", *pThis.base->cName());
-//	Msg("--TRADE:: [%s]: I know smth about you...", *pThis.base->cName());
-//	Msg("--TRADE:: [%s]: a. Your name is %s", *pThis.base->cName(),pPartner.base->cName());
 	
 	string64	s;
 	switch (pPartner.type) 
@@ -171,7 +170,6 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 		case TT_ACTOR: strcpy(s, "stalker"); break;
 	}
 	
-//	Msg("--TRADE:: [%s]: b. You are a %s", *pThis.base->cName(),s);
 	
 	switch (pPartner.inv_owner->m_tRank) 
 	{
@@ -182,12 +180,6 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 		case ALife::eStalkerRankMaster: strcpy(s,"MASTER"); break;
 		case ALife::eStalkerRankDummy: strcpy(s,"DUMMY"); break;
 	}
-	
-//	Msg("--TRADE:: [%s]: c. Your rank is %s", *pThis.base->cName(),s);
-//	Msg("--TRADE:: [%s]: d. You have %i money", *pThis.base->cName(),pPartner.inv_owner->m_dwMoney);
-//	strcpy(s,"POSITIVE");
-//	Msg("--TRADE:: [%s]: e. My attitude to you is %s", *pThis.base->cName(),s);
-//	Msg("--TRADE:: [%s]: So, lets trade...",*pThis.base->cName());
 
 	return true;
 }
@@ -197,6 +189,7 @@ void CTrade::StartTrade()
 {
 	TradeState = true;
 	m_dwLastTradeTime =  Level().timeServer();
+	m_bNeedToUpdateArtefactTasks = false;
 }
 
 void CTrade::StartTrade(CInventoryOwner* pInvOwner)
@@ -211,51 +204,29 @@ void CTrade::StopTrade()
 {
 	TradeState = false;
 	m_dwLastTradeTime = 0;
-	RemovePartner();
 //	Msg("--TRADE:: [%s]: Trade stopped...",*pThis.base->cName());
 
-	if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnStopTrade();
+	CAI_Trader* pTrader = NULL;
+	if (pThis.type == TT_TRADER)
+	{
+		pTrader = dynamic_cast<CAI_Trader*>(pThis.base);
+		pTrader->OnStopTrade();
+	}
+	else if (pPartner.type == TT_TRADER)
+	{
+		pTrader = dynamic_cast<CAI_Trader*>(pPartner.base);
+	}
+
+	if(pTrader && m_bNeedToUpdateArtefactTasks)
+	{
+		pTrader->SyncArtifactsWithServer();
+	}
+	RemovePartner();
 }
 
 void CTrade::UpdateTrade()
 {
 }
-
-/*
-void CTrade::ShowArtifactPrices()
-{
-	if (TradeState) m_dwLastTradeTime = Level().timeServer();
-	else { 
-	//	Msg("I'm not ready to trade"); 
-		return;
-	}
-
-	if (pThis.type == TT_TRADER) 
-	{
-		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
-		R_ASSERT					(l_pTrader);
-//		Msg							("--TRADE:: [%s]: I need the following artefacts :",*pThis.base->cName());
-		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
-		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
-		for ( ; ii != ee; ++ii) {
-			u32						l_dwAlreadyPurchased = GetTradeInv(pThis).dwfGetSameItemCount((*ii).second->m_caSection);
-			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).second->m_dwTotalCount);
-//			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).second->m_caSection,"inv_name"),(*ii).second->m_dwTotalCount - l_dwAlreadyPurchased);
-			ALife::ARTEFACT_ORDER_IT	iii = (*ii).second->m_tpOrders.begin();
-			ALife::ARTEFACT_ORDER_IT	eee = (*ii).second->m_tpOrders.end();
-			for ( ; iii != eee; ++iii)
-				if (l_dwAlreadyPurchased < (*iii).m_count) {
-//					Msg				("-       %d items for $%d for organization %s",(*iii).m_count - l_dwAlreadyPurchased,(*iii).m_price,(*iii).m_section);
-					l_dwAlreadyPurchased = 0;
-				}else
-					l_dwAlreadyPurchased -= (*iii).m_count;
-		}
-	}
-	else {
-//		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",*pThis.base->cName());
-	}
-}
-*/
 
 
 void CTrade::SellItem(int id)
@@ -355,8 +326,21 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	// уменьшить денег у партнера
 	pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
 
-	if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnTradeAction(pItem, true);
-	else if (pPartner.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(pItem, false);
+	CAI_Trader* pTrader = NULL;
+	if (pThis.type == TT_TRADER) 
+	{
+		pTrader = dynamic_cast<CAI_Trader*>(pThis.base);
+		pTrader->OnTradeAction(pItem, true);
+	}
+	else if (pPartner.type == TT_TRADER) 
+	{
+		pTrader = dynamic_cast<CAI_Trader*>(pPartner.base);
+		pTrader->OnTradeAction(pItem, false);
+		CArtifact* pArtifact= dynamic_cast<CArtifact*>(pItem);
+		if(pArtifact)
+			m_bNeedToUpdateArtefactTasks |= pTrader->BuyArtifact(pArtifact);
+
+	}
 }
 
 
@@ -384,13 +368,24 @@ CInventoryOwner* CTrade::GetPartner()
 
 u32	CTrade::GetItemPrice(PIItem pItem)
 {
+	CArtifact* pArtifact = dynamic_cast<CArtifact*>(pItem);
+
 	// определение коэффициента
 	float factor = 1.0f;
+	u32 item_cost = pItem->Cost();
 	
 	//для актера цену вещи всегда определяют 
 	//его собеседники
 	if (pThis.type == TT_ACTOR)
 	{
+		if(pPartner.type == TT_TRADER && pArtifact)
+		{
+			CAI_Trader* pTrader = dynamic_cast<CAI_Trader*>(pPartner.inv_owner); VERIFY(pTrader);
+			if (pTrader)
+				item_cost = pTrader->ArtifactPrice(pArtifact);
+		}
+
+
 		int goodwill = pPartner.inv_owner->CharacterInfo().GetGoodwill(pThis.base->ID());
 		float goodwill_factor;
 		
@@ -404,6 +399,14 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 	}
 	else if(pPartner.type == TT_ACTOR)
 	{
+		if(pThis.type == TT_TRADER && pArtifact)
+		{
+			CAI_Trader* pTrader = dynamic_cast<CAI_Trader*>(pThis.inv_owner); VERIFY(pTrader);
+			if (pTrader)
+				item_cost = pTrader->ArtifactPrice(pArtifact);
+		}
+
+
 		int goodwill = pThis.inv_owner->CharacterInfo().GetGoodwill(pPartner.base->ID());
 		float goodwill_factor;
 
@@ -418,7 +421,7 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 	}
 
 	// сумма сделки учитывая ценовой коэффициент
-	u32	dwTransferMoney = (u32)(((float) pItem->Cost()) * factor );
+	u32	dwTransferMoney = (u32)(((float) item_cost) * factor );
 
 	return dwTransferMoney;
 }

@@ -31,7 +31,7 @@ public:
 	virtual ~CUIPdaCommunication();
 
 	virtual void Init();
-	virtual void InitPDA();
+	virtual void InitPDACommunication();
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 

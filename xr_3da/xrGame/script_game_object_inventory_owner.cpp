@@ -160,6 +160,13 @@ void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 }
 
 
+int	CScriptGameObject::GetGoodwill(CScriptGameObject* pToWho)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().GetGoodwill(pToWho->m_tpGameObject->ID());
+}
+
 void CScriptGameObject::SetGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);

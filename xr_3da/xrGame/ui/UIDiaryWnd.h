@@ -28,10 +28,14 @@ public:
 
 	virtual void Init();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	virtual void Show();
+
 	// Добавить новую новость
 	void AddNewsItem(const char *sData);
 	// Вывести заголовок текущего раздела
 	void ArticleCaption(LPCSTR caption);
+
+
 protected:
 	// Дочерние окна входящие в окно информации
 	CUINewsWnd			UINewsWnd;
@@ -61,6 +65,14 @@ protected:
 	CGameFont			*m_pTreeItemFont;
 	u32					m_uTreeItemColor;
 
+	//список торговцев, которые дают заказы на артефакты
+	CUITreeViewItem*	m_pContractsTreeItem;
+
 	// Инициализируем TreeView
 	void				InitTreeView();
+	//инициализация перед показом
+	void				InitDiary();
+
+	//id торговца, для списка контрактов
+	u32					m_TraderID;
 };

@@ -178,6 +178,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_alife_simulator			= 0;
 #endif
     fp_data.inc					();
+	m_sCharacterProfileID		= NULL;
 }
 
 #ifdef XRGAME_EXPORTS
@@ -261,6 +262,11 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			)
 			);
 #pragma warning(pop)
+
+		if (ini.section_exist("game_info") && ini.line_exist("game_info","name_id"))
+			m_sCharacterProfileID = ini.r_string("game_info", "name_id");
+		else
+			m_sCharacterProfileID = NULL;
 
 //		if (ini.section_exist("alife") && ini.line_exist("alife","interactive"))
 //			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
