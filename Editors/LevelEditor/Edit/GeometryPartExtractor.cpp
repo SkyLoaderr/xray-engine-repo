@@ -40,7 +40,6 @@ void SBPart::recurse_fragment		(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces,
         } 
     }
 }
-extern Fobb M_OBB;
 bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
 {
     m_bValid	= true;
@@ -51,7 +50,6 @@ bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
         for (int k=0; k<3; k++)		pts.push_back((*f_it)->o[k]);
     }
     ComputeOBB						(m_OBB,pts);
-    M_OBB = m_OBB;
     // fill adjacent
     for (SBFaceVecIt a_it=m_Faces.begin(); a_it!=m_Faces.end(); a_it++){
         SBFace* A					= *a_it;
