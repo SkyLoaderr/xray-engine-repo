@@ -36,7 +36,7 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 
 	// Remap indices
 	PrimitiveGroup*	xPGROUP=0;
-	RemapIndices	(PGROUP,PGROUP_Count,perturb.size(),&xPGROUP);
+	RemapIndices	(PGROUP,PGROUP_Count,u16(perturb.size()),&xPGROUP);
 	R_ASSERT		(xPGROUP);
 
 	// Build perturberation table
