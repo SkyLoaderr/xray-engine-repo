@@ -4013,6 +4013,9 @@
 							RelativePath="Actor.h">
 						</File>
 						<File
+							RelativePath=".\actor_communication.cpp">
+						</File>
+						<File
 							RelativePath=".\actor_defs.h">
 						</File>
 						<File
@@ -5493,6 +5496,15 @@
 						</File>
 						<File
 							RelativePath=".\PhraseDialog.h">
+						</File>
+						<File
+							RelativePath=".\PhraseDialogDefs.h">
+						</File>
+						<File
+							RelativePath=".\PhraseDialogManager.cpp">
+						</File>
+						<File
+							RelativePath=".\PhraseDialogManager.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -7073,6 +7085,9 @@
 				</File>
 				<File
 					RelativePath=".\w_knife.ltx">
+				</File>
+				<File
+					RelativePath=".\w_l85.ltx">
 				</File>
 				<File
 					RelativePath=".\w_lr300.ltx">
