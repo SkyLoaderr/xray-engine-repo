@@ -403,7 +403,7 @@ void CActor::Update	(DWORD DT)
 	if (!getEnabled())	return;
 	if (!net_Ready)		return;
 
-	Log("~~~~~~~~~~~~~~~~~~~~~ UPDATE");
+	// Log("~~~~~~~~~~~~~~~~~~~~~ UPDATE");
 
 	// patch
 	if (patch_frame<patch_frames)	{
