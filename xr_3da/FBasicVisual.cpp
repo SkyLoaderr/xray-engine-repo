@@ -84,7 +84,7 @@ void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 			data->RstringZ(fnS);
 			hShader = Device.Shader.Create(fnS,fnT);
 		} else {
-			hShader = Device.Shader.Create("null","$null");
+			hShader = 0; // Device.Shader.Create("null","$null");
 		}
 	}
 }
