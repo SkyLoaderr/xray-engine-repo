@@ -148,6 +148,8 @@ void CBurer::Load(LPCSTR section)
 	particle_tele_object	= pSettings->r_string(section,"Particle_Tele_Object");
 	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
+	
 	::Sound->create(sound_gravi_wave,TRUE, pSettings->r_string(section,"sound_gravi_wave"), SOUND_TYPE_WORLD);
 }
 
@@ -216,12 +218,12 @@ void CBurer::CheckSpecParams(u32 spec_params)
 }
 
 // speed 30 m/sec
-#define SPEED						30/1000
+#define SPEED						42/1000
 // 1 meter
-#define GRAVI_STEP					2
+#define GRAVI_STEP					3
 
 #define GRAVI_RADIUS				3.f
-#define GRAVI_IMPULSE				5.f
+#define GRAVI_IMPULSE				8.f
 
 void CBurer::UpdateGraviObject()
 {

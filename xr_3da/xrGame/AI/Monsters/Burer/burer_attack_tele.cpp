@@ -81,7 +81,7 @@ void CBurerAttack::Execute_Tele()
 
 		pMonster->StopTeleObjectParticle(tele_object.get_object());
 
-		pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
+		pMonster->CSoundPlayer::play(eMonsterSoundTeleAttack);
 		m_tAction = ACTION_WAIT_TRIPLE_END;
 
 		if (pMonster->CTelekinesis::get_objects_count() == 0) {
