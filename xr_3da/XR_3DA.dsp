@@ -390,10 +390,6 @@ SOURCE=.\x_ray.cpp
 
 SOURCE=.\x_ray.h
 # End Source File
-# Begin Source File
-
-SOURCE=.\xr_mac.h
-# End Source File
 # End Group
 # Begin Group "Math"
 

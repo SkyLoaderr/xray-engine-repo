@@ -11,7 +11,6 @@
 // Font out
 #include "x_ray.h"
 #include "xr_smallfont.h"
-#include "xr_mac.h"
 
 ENGINE_API CRender	Render;
 
