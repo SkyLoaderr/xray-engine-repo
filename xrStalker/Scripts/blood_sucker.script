@@ -1,4 +1,4 @@
-//Local variable
+//'Local variable
 local s_attack	= 1
 local s_hit		= 2
 local s_sound	= 3
@@ -6,9 +6,9 @@ local s_eat		= 4
 local s_rest	= 5
 local s_ambush	= 6
 
-//Proba
+//'Proba
 --------------------------------------------------------------------------------
-----                             BloodSucker                                ----
+---'                             BloodSucker                                ----
 --------------------------------------------------------------------------------
 
 
@@ -24,7 +24,7 @@ function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _st
                             sound,
                             enemy
                           }
-  //Устанавливаем состония атаки, отдыха, реакции на звук и на хит
+  //'Устанавливаем состония атаки, отдыха, реакции на звук и на хит
     if(_state_attack == nil) then
         self.stateAttack    = this.CStateAttack  (self.npc, self.memory)
     else
@@ -57,7 +57,6 @@ function CBaseBloodsucker:initialize()
 end
 
 function CBaseBloodsucker:execute()
-//  printf("Satiety %f", self.npc.satiety)
 	if(self.npc:alive() == false) then
 		return false
     end
@@ -72,14 +71,14 @@ end
 
 function CBaseBloodsucker:set_state(new_state)
 	if(self.curState) then
-        //testing curState == newState
+        //'testing curState == newState
 		if(self.curState:id() == new_state) then
 			return
         end
         self.curState:finalize()
     end
 
-    //Set new state
+    //'Set new state
     if(new_state == s_attack) then
       self.curState  = self.stateAttack
     elseif(new_state == s_hit) then
@@ -107,7 +106,7 @@ function CBaseBloodsucker:select_state()
     elseif(self.eating and self.npc.satiety < 0.2 and self.npc:get_corpse()) then
 		self:set_state(s_eat)
     elseif(self.eating and self.curState and self.curState:id() == s_eat and self.npc:get_corpse() and self.npc.satiety < 0.8) then
-        //Если текушее состояние еды, еще не наелись и есть труп, то продолжаем кушать
+        //'Если текушее состояние еды, еще не наелись и есть труп, то продолжаем кушать
         self:set_state(s_eat)
     else
 		self:set_state(s_rest)
@@ -132,7 +131,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                            State Attack                                ----
+---'                            State Attack                                ----
 --------------------------------------------------------------------------------
 
 
@@ -157,10 +156,10 @@ function CStateAttack:execute()
 end
 
 function CStateAttack:check_enemy()
-	//If enemy new, then reset action
+	//'If enemy new, then reset action
 
     if(self.memory.enemy:id() ~= self.enemy_id) then
-      //New enemy
+      //'New enemy
         reset_action(self.npc, script_name())
         self.enemy_id  = self.memory.enemy:id()
     end
@@ -176,7 +175,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                              State Hit                                 ----
+---'                              State Hit                                 ----
 --------------------------------------------------------------------------------
 
 
@@ -221,7 +220,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                             State Sound                                ----
+---'                             State Sound                                ----
 --------------------------------------------------------------------------------
 
 
@@ -270,7 +269,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                              State Eat                                 ----
+---'                              State Eat                                 ----
 --------------------------------------------------------------------------------
 
 
@@ -313,8 +312,8 @@ end
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-----                            State Attack                                ----
----         Наносит хит и убегает. Садится на точку сидения          ----
+---'                            State Attack                                ----
+--'         Наносит хит и убегает. Садится на точку сидения          ----
 --------------------------------------------------------------------------------
 local attack  = 1
 local coward  = 2
@@ -344,13 +343,13 @@ function CStateAttackCoward:execute()
     self:check_enemy()
 
   if(self.angry == false and self.state == attack and self.memory.enemy.health < (self.enemy_health - 0.2)) then
-      //Немного нанесли повреждение врагу, возращаемся назад
+      //'Немного нанесли повреждение врагу, возращаемся назад
         reset_action(self.npc, script_name())
         self.state  = coward
     end
 
     if(device():time_global() < (self.memory.hit.time + 1000)) then
-    //Если нам нанесли хит, то атакуем врага
+    //'Если нам нанесли хит, то атакуем врага
 		self.angry  = true
         reset_action(self.npc, script_name())
         self.state  = attack
@@ -372,10 +371,10 @@ function CStateAttackCoward:execute()
 end
 
 function CStateAttackCoward:check_enemy()
-    //If enemy new, then reset action
+    //'If enemy new, then reset action
 
     if(self.memory.enemy:id() ~= self.enemy_id) then
-        //New enemy
+        //'New enemy
         reset_action(self.npc, script_name())
         self.enemy_id     = self.memory.enemy:id()
         self.enemy_health = self.memory.enemy.health
@@ -391,12 +390,12 @@ function CStateAttackCoward:id()
 end
 
 --------------------------------------------------------------------------------
-----                              State Rest                                ----
+---'                              State Rest                                ----
 --------------------------------------------------------------------------------
 
 
-//Если задан путь где сидеть, то сидит в точке, помеченной битом 0 и смотрит в точку, помеченную битом 1
-//Если не задан, то сидит, где расположен
+//'Если задан путь где сидеть, то сидит в точке, помеченной битом 0 и смотрит в точку, помеченную битом 1
+//'Если не задан, то сидит, где расположен
 class "CStateRest"
 function CStateRest:__init(_npc, _mem)
     self.npc        = _npc
@@ -436,7 +435,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                              State Rest                                ----
+---'                              State Rest                                ----
 --------------------------------------------------------------------------------
 
 
@@ -473,9 +472,9 @@ function CStatePatrol:movement_callback(obj, action_type, index)
     action(self.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, math.random(4000, 8000)))
 
     self.prev_point = index
-//  if(self.prev_point == patrol(self.way):count() - 1) then
-//      self.prev_point = 0
-//    end
+//'  if(self.prev_point == patrol(self.way):count() - 1) then
+//'      self.prev_point = 0
+//'    end
 end
 
 
@@ -489,7 +488,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                              State Rest                                ----
+---'                              State Rest                                ----
 --------------------------------------------------------------------------------
 
 
@@ -547,7 +546,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                              State Rest                                ----
+---'                              State Rest                                ----
 --------------------------------------------------------------------------------
 
 class "CStateRestPanic"
@@ -576,7 +575,7 @@ end
 
 
 --------------------------------------------------------------------------------
----          State Ambush - идем к точке засады и ждем друзей                ---
+--'          State Ambush - идем к точке засады и ждем друзей                ---
 --------------------------------------------------------------------------------
 
 
@@ -618,7 +617,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                  Кровосос, который бросает ящик                        ----
+---'                  Кровосос, который бросает ящик                        ----
 --------------------------------------------------------------------------------
 
 
@@ -646,7 +645,7 @@ function CBloodsuckerBox:execute()
     end
 
     if(self.is_box and level.actor() and self.npc:see(level.actor())) then
-        //Если случайно появился актер, то становимся видимым
+        //'Если случайно появился актер, то становимся видимым
         self.enter  = true
         self.is_box = false
         self.zone:clear_callback(true)
@@ -670,7 +669,7 @@ function CBloodsuckerBox:execute()
 
     self:update_memory()
     if(self.is_box) then
-    //Пока в засаде, на звук не реагируем
+    //'Пока в засаде, на звук не реагируем
 		self.memory.sound.time = 0
     end
 
@@ -695,7 +694,7 @@ end
 
 
 --------------------------------------------------------------------------------
---========================       Участник засады         =======================
+--'=======================       Участник засады         =======================
 --------------------------------------------------------------------------------
 
 class "CBloodsuckerAmbush" (CBaseBloodsucker)
@@ -709,7 +708,7 @@ function CBloodsuckerAmbush:__init(_npc, _can_eat, _state_rest, _state_attack, _
     self.radius			= 10
     self.start_attack   = false
     self.invisible		= false
-    if(ini:section_exist ("ambush")) then                    --Если радиус задан в кастом дате, то берем его от туда
+    if(ini:section_exist ("ambush")) then                    //'Если радиус задан в кастом дате, то берем его от туда
         if(ini:line_exist ("ambush", "radius")) then
 			self.radius = ini:r_float("ambush", "radius")
             printf("name = %s  radius = %f", self.npc:name(), self.radius)
@@ -726,9 +725,9 @@ function CBloodsuckerAmbush:initialize()
 end
 
 function CBloodsuckerAmbush:select_state()
-/*В обычном соотояние ходим, реагируем на хиты, звуки. На врага нападаем, если он рядом.
-Когда актер входит в скриптовую зону, подходим к заданной точке и ждем подхода остальных членов
-засады к этой точке. Как только все подойдут, атакуем актера.
+/*'В обычном соотояние ходим, реагируем на хиты, звуки. На врага нападаем, если он рядом.
+'Когда актер входит в скриптовую зону, подходим к заданной точке и ждем подхода остальных членов
+'засады к этой точке. Как только все подойдут, атакуем актера.
 */
 	if(self.memory.enemy) then
 		if(self:on_position()) then
@@ -743,7 +742,7 @@ function CBloodsuckerAmbush:select_state()
                 end
             end
       else
-            //Когда мы не на позиции: в зависимости от то, вощел ли враг в зону и на каком он расстоянии выбераем состояние
+            //'Когда мы не на позиции: в зависимости от то, вощел ли враг в зону и на каком он расстоянии выбераем состояние
             if(self.enter) then
               if(self.ambush_attack or distance_between(self.npc, self.memory.enemy) < 5 or self.memory.hit.time ~= 0) then
 					self:set_state(s_attack)
@@ -759,7 +758,7 @@ function CBloodsuckerAmbush:select_state()
         end
             end
     end
-    else    //if(self.memory.enemy)
+    else    //'if(self.memory.enemy)
       if(self.enter) then
           self:set_state(s_ambush)
         else
@@ -777,7 +776,7 @@ function CBloodsuckerAmbush:select_standart_state()
     elseif(self.eating and self.npc.satiety < 0.2 and self.npc:get_corpse()) then
         self:set_state(s_eat)
     elseif(self.eating and self.curState and self.curState:id() == s_eat and self.npc:get_corpse() and self.npc.satiety < 0.8) then
-        //Если текушее состояние еды, еще не наелись и есть труп, то продолжаем кушать
+        //'Если текушее состояние еды, еще не наелись и есть труп, то продолжаем кушать
         self:set_state(s_eat)
     else
         self:set_state(s_rest)
@@ -786,19 +785,19 @@ end
 
 function CBloodsuckerAmbush:set_state(new_state)
     if(self.curState) then
-        //testing curState == newState
+        //'testing curState == newState
         if(self.curState:id() == new_state) then
             return
         end
         self.curState:finalize()
     end
 
-    //Set new state
+    //'Set new state
     if(new_state == s_attack) then
         self.curState      = self.stateAttack
         self.npc:set_invisible          (false)
 		if(level.actor() and self.memory.enemy:id() == level.actor():id()) then
-            //Если уже атакуем врага, то в засаде участия не принимаем
+            //'Если уже атакуем врага, то в засаде участия не принимаем
             self.ambush_attack = true
         end
     elseif(new_state == s_ambush) then
@@ -826,7 +825,7 @@ function CBloodsuckerAmbush:set_state(new_state)
 end
 
 function CBloodsuckerAmbush:all_on_position()
-  //Возвращает true, если все члены засады на позициях
+  //'Возвращает true, если все члены засады на позициях
     if(self.ambush_attack) then return true end
 
     if(self:on_position()) then
@@ -848,7 +847,7 @@ function CBloodsuckerAmbush:add_friend(friend)
 end
 
 function CBloodsuckerAmbush:on_position()
-	//Возвращает, находится ли данный монстр на позиции
+	//'Возвращает, находится ли данный монстр на позиции
 	if(self.curState and self.curState:id() == s_attack) then return true end          //Если находимся в состоянии атаки, то кому нужна это позиция
     if(self.ambush_attack) then return true end
     return(self.curState ~= nil and self.curState:id() == s_ambush and self.curState:on_position())
@@ -875,7 +874,7 @@ function CBloodsuckerAmbush:finalize()
 end
 
 --------------------------------------------------------------------------------
---=====  Кровосос, который кемперит, видит врага атакует и опять кемперит   ====
+--'====  Кровосос, который кемперит, видит врага атакует и опять кемперит   ====
 --------------------------------------------------------------------------------
 
 class "CBloodsuckerCoward" (CBaseBloodsucker)
@@ -890,14 +889,14 @@ end
 
 function CBloodsuckerCoward:set_state(new_state)
     if(self.curState) then
-        //testing curState == newState
+        //'testing curState == newState
         if(self.curState:id() == new_state) then
             return
         end
         self.curState:finalize()
     end
 
-    //Set new state
+    //'Set new state
     if(new_state == s_attack) then
         self.curState   = self.stateAttack
         self.npc:set_manual_invisibility(true)
@@ -928,7 +927,7 @@ end
 
 
 --------------------------------------------------------------------------------
-----                             CObjectHit                                 ----
+---'                             CObjectHit                                 ----
 --------------------------------------------------------------------------------
 
 
@@ -954,7 +953,7 @@ end
 
 function CObjectHit:execute()
 	if(self.enter) then
-    //Наносим хит и проигруем звук
+    //'Наносим хит и проигруем звук
 		local snd     = sound_object(self.sound)
         snd:play_at_pos(self.object1, self.object1:position(), 0, sound_object.s3d)
         local h              = hit()
@@ -983,13 +982,13 @@ function CObjectHit:finalize()
 end
 
 function main1()
-//  local npc  = this.CBaseBloodsucker("blood_sucker1", true, this.CStatePatrolCorpse)
+//'  local npc  = this.CBaseBloodsucker("blood_sucker1", true, this.CStatePatrolCorpse)
 
---    local npc   = this.CBaseBloodsucker("blood_sucker1", true)
+//'    local npc   = this.CBaseBloodsucker("blood_sucker1", true)
 
     local npc1  = this.CBloodsuckerBox("blood_sucker1", true)
     local npc2  = this.CBaseBloodsucker("blood_sucker2", true, this.CStatePatrol)
-//    local npc3  = this.CBaseBloodsucker("blood_sucker3", true, this.CStatePatrolCorpse)
+//'    local npc3  = this.CBaseBloodsucker("blood_sucker3", true, this.CStatePatrolCorpse)
 	local npc3  = this.CBloodsuckerAmbush("blood_sucker3", true, this.CStatePatrolCorpse)
 	local npc4  = this.CBloodsuckerAmbush("bloodsucker04", false)
 	local npc5  = this.CBloodsuckerCoward("bloodsucker05", true, nil, this.CStateAttackCoward)
