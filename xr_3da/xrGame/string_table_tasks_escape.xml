@@ -47,20 +47,22 @@
 	</string>
 
 	<string id="esc_help_wounded_from_raid">
-		<text>Помочь сталкеру.</text>
+		<text>Передать торговцу информацию.</text>
 	</string>
 
 	<string id="esc_help_wounded_from_raid_0">
-		<text>Помочь сталкеру, возвращающемуся из рейда к центру Зоны.</text>
+		<text>Помочь торговцу достать важную информацию о результатах военной разведки.</text>
 	</string>
 
-	<string id="esc_wounded_to_trader_gift">
-		<text>Передайте посылку торговцу.</text>
+	<string id="esc_help_wounded_from_raid_1">
+		<text>Встретить сталкера по прозвищу "Лис".</text>
 	</string>
 
-	<string id="esc_wounded_to_trader_gift_0">
-		<text>Передайте посылку торговцу. Возможно, это поможет и вам.</text>
+	<string id="esc_help_wounded_from_raid_2">
+		<text>Доставить торговцу информацию от "Лиса".</text>
 	</string>
+
+
 
 	<string id="esc_blockpost_case_to_trader">
 		<text>Украсть ящик с блокпоста.</text>

@@ -69,7 +69,7 @@ end
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:has_info("escape_stalker_to_trader_done") and
+	   actor:has_info("escape_stalker_done") and
 	   actor:dont_has_info("escape_blockpost_case") and
 	   actor:dont_has_info("escape_blockpost_case_have") and
 	   actor:dont_has_info("escape_blockpost_case_done")
@@ -172,7 +172,7 @@ end
 function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	first_speaker:transfer_item (case, second_speaker)
-	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 2)
 	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
 

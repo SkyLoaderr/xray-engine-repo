@@ -61,17 +61,19 @@
 		<title>esc_help_wounded_from_raid</title>
 		<objective>
 			<text>esc_help_wounded_from_raid_0</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
-	</game_task>
-
-	<game_task id="esc_wounded_to_trader_gift">
-		<title>esc_wounded_to_trader_gift</title>
 		<objective>
-			<text>esc_wounded_to_trader_gift_0</text>
+			<text>esc_help_wounded_from_raid_1</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>esc_help_wounded_from_raid_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+
+
 
 	<game_task id="esc_blockpost_case_to_trader">
 		<title>esc_blockpost_case_to_trader</title>
