@@ -55,10 +55,10 @@ void CAI_Stalker::OnDeviceCreate	()
 
 	CTimer		T; T.Start		();
 	CStalkerAnimations::Load		(PKinematics(pVisual));
-	Msg			("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
+	// Msg		("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
 	T.Start		();
 	vfAssignBones					(pSettings,cNameSect());
-	Msg			("--spawn--dc-anim-bones: %f ms",1000.f*T.GetAsync());
+	// Msg		("--spawn--dc-anim-bones: %f ms",1000.f*T.GetAsync());
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -120,6 +120,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 	hinge_force_factor2 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
 	hinge_vel			=pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor=pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
+
+	Msg	("! stalker size: %d",sizeof(*this));
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)

@@ -133,25 +133,25 @@ void CObject::OnDeviceDestroy	()
 
 void CObject::OnDeviceCreate	()
 {
-	CTimer		T;
+	// CTimer		T;
 
 	// visual and shadow
-	T.Start		();
+	// T.Start		();
 	REQ_CREATE					();
 	LPCSTR visual_name			= cNameVisual();
  	if (visual_name&&visual_name[0]) pVisual	= Render->model_Create	(visual_name);
-	Msg			("--spawn--dc-visual: %f ms",1000.f*T.GetAsync());
+	// Msg			("--spawn--dc-visual: %f ms",1000.f*T.GetAsync());
 
-	T.Start		();
+	// T.Start		();
 	pLights						= xr_new<CLightTrack> ();
-	Msg			("--spawn--dc-ltrack: %f ms",1000.f*T.GetAsync());
+	// Msg			("--spawn--dc-ltrack: %f ms",1000.f*T.GetAsync());
 
-	T.Start		();
+	// T.Start		();
 	Sector_Detect				();
-	Msg			("--spawn--dc-sector: %f ms",1000.f*T.GetAsync());
+	// Msg			("--spawn--dc-sector: %f ms",1000.f*T.GetAsync());
 
 	// Collision model
-	T.Start		();
+	// T.Start		();
 	if (0==cfModel) 
 	{
 		if (pSettings->LineExists(cNameSect(),"cform")) {
@@ -166,7 +166,7 @@ void CObject::OnDeviceCreate	()
 			cfModel->OnMove();
 		}
 	}
-	Msg			("--spawn--dc-cform: %f ms",1000.f*T.GetAsync());
+	// Msg			("--spawn--dc-cform: %f ms",1000.f*T.GetAsync());
 }
 
 // Updates

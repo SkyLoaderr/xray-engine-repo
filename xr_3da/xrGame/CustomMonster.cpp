@@ -75,7 +75,7 @@ void CCustomMonster::OnDeviceCreate()
 		LPCSTR S1 = pSettings->ReadSTRING(cNameSect(),"bone_torso_weapon"),S2 = pSettings->ReadSTRING(cNameSect(),"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 	}
-	Msg			("--spawn--dc-cmonster: %f ms",1000.f*T.GetAsync());
+	// Msg			("--spawn--dc-cmonster: %f ms",1000.f*T.GetAsync());
 
 	// Motions
 //	CKinematics* skeleton	= PKinematics(pVisual);
