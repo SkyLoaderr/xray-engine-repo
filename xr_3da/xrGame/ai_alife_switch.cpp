@@ -24,7 +24,7 @@ void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpSE_Abstract)
 	tpSE_Abstract->m_bALifeControl = false;
 }
 
-void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromScheduled)
 {
 	NET_Packet						tNetPacket;
 	
@@ -58,10 +58,11 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 			tpItem->m_bOnline		= true;
 		}
 	}
-	vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
+	if (bRemoveFromScheduled)
+		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 }
 
-void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToScheduled)
 {
 	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
@@ -87,7 +88,8 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicO
 			tpItem->m_bOnline		= false;
 		}
 	}
-	vfAddObjectToScheduled			(tpALifeDynamicObject);
+	if (bAddToScheduled)
+		vfAddObjectToScheduled		(tpALifeDynamicObject);
 #ifdef DEBUG_LOG
 	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
 #endif
@@ -121,7 +123,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 				if (tpEnemy)
 					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
-			vfCreateObject		((*J).second);
+			vfCreateObject		((*J).second, false);
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
 	}
@@ -162,7 +164,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 				CSE_ALifeGraph::SGraphEdge				*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].dwEdgeOffset);
 				tpALifeMonsterAbstract->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[randI(0,wNeighbourCount)].dwVertexNumber);
 			}
-			vfReleaseObject			((*J).second);
+			vfReleaseObject			((*J).second, false);
 			I++;
 		}
 		for ( ; I != E; I++) {

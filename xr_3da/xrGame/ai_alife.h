@@ -71,8 +71,8 @@ private:
 			void					vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfChooseNextRoutePoint		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfProcessNPC				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-			void					vfReleaseObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
-			void					vfCreateObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
+			void					vfReleaseObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bAddToScheduled = true);
+			void					vfCreateObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bRemoveFromScheduled = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
