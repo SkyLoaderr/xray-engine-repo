@@ -201,6 +201,9 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 {
 	switch (clsid_object()) {
+		case CLSID_GRENADE_F1:
+		case CLSID_GRENADE_RGD5:
+			return(10);
 		case CLSID_OBJECT_W_RPG7:
 		case CLSID_OBJECT_W_M134:
 			return(9);
@@ -209,10 +212,8 @@ u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 		case CLSID_OBJECT_W_SVU:
 		case CLSID_OBJECT_W_VINTOREZ:
 			return(8);
-		case CLSID_GRENADE_F1:
-		case CLSID_GRENADE_RGD5:
-			return(7);
 		case CLSID_OBJECT_W_SHOTGUN:
+			return(7);
 		case CLSID_OBJECT_W_AK74:
 		case CLSID_OBJECT_W_VAL:
 		case CLSID_OBJECT_W_GROZA:
