@@ -30,8 +30,10 @@ function evaluator_escape:evaluate ()
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return false end
     for count = 1, size, 1 do
-        if xr_motivator.storage[self.object:id()].followers[count].npc:alive () == false then
-            return true
+        local npc_id = xr_motivator.storage[self.object:id()].followers[count].npc_id
+        local npc = xr_motivator.storage[self.object:id()].followers[count].npc
+        if is_object_online (npc_id) == false or npc == nil or npc:alive () == false then
+           return true
         end
     end        
     return false
