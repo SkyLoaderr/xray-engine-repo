@@ -9,8 +9,11 @@
 #pragma once
 
 #include "level_graph.h"
+#include "ai_object_location.h"
 
-class CDetailPathManager {
+class CDetailPathManager :
+	virtual public CAI_ObjectLocation
+{
 public:
 	enum EMovementParameters {
 		eMovementParameterStand		= u32(1) << 1,
@@ -48,6 +51,13 @@ private:
 	Fvector										m_dest_position;
 	EDetailPathType								m_path_type;
 	xr_map<EMovementParameters,SMovementParams>	m_movement_params;
+// old heritage
+	xr_vector<Fvector>							m_tpaPoints;
+	xr_vector<Fvector>							m_tpaDeviations;
+	xr_vector<Fvector>							m_tpaTravelPath;
+	xr_vector<u32>								m_tpaPointNodes;
+	xr_vector<Fvector>							m_tpaLine;
+	xr_vector<u32>								m_tpaNodes;
 
 	friend class CScriptMonster;
 	friend class CMotionManager;
