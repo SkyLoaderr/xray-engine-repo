@@ -68,8 +68,8 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				C.PassSET_LightFog	(FALSE,FALSE);
 
 				switch (C.iElement)	{
-				case 0:	C.PassSET_VS("r1\\r1_detail_wave");		break;
-				case 1:	C.PassSET_VS("r1\\r1_detail_still");	break;
+				case 0:	C.PassSET_VS("r1_detail_wave");		break;
+				case 1:	C.PassSET_VS("r1_detail_still");	break;
 				}
 
 				// Stage1 - Base texture
@@ -88,7 +88,7 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
 				else				C.PassSET_Blend_SET		(TRUE, 200);
 				C.PassSET_LightFog	(FALSE,FALSE);
-				C.PassSET_VS		("r1\\r1_detail_still");
+				C.PassSET_VS		("r1_detail_still");
 
 				// Stage1 - Base texture
 				C.StageBegin		();
