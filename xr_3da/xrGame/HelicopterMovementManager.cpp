@@ -252,8 +252,8 @@ void CHelicopterMovManager::truncatePathSafe(float from_time,
 
 		FindNearestKey(from_time, minT, maxT, minIdx, maxIdx);
 
-		if( maxIdx < (sz-2) )// 2 key ahead
-			DropHeadKeys(sz-maxIdx-2);
+		if( maxIdx < (sz-3) )// 2 key ahead
+			DropHeadKeys(sz-maxIdx-3);
 
 		safe_time = m_endTime;
 
