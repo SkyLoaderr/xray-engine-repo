@@ -72,7 +72,7 @@ void CActorTools::PMMotionItemClick(TObject *Sender)
 
 void CActorTools::OnChangeTransform(PropValue* sender)
 {
-//    OnMotionKeysModified();
+    OnMotionKeysModified();
 	UI->RedrawScene();
 }
 //------------------------------------------------------------------------------

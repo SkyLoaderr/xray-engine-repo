@@ -126,9 +126,10 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         if (!m_GeometryStream.size()) return false;
         F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
     }
-    IReader R(F.pointer(), F.size());
-    ::Render->model_Delete(m_pVisual,TRUE);
-    m_pVisual = ::Render->model_Create(ChangeFileExt(source->GetName(),"").c_str(),&R);
+    IReader R							(F.pointer(), F.size());
+    ::Render->model_Delete				(m_pVisual,TRUE);
+    g_pMotionsContainer->clean			(false);
+    m_pVisual = ::Render->model_Create	(ChangeFileExt(source->GetName(),"").c_str(),&R);
     m_pBlend = 0;
     return bRes;
 }

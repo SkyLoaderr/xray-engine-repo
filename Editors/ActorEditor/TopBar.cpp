@@ -80,7 +80,7 @@ void __fastcall TfraTopBar::ebSettingsClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    ExecCommand(COMMAND_CHANGE_SETTINGS, btn->Tag, btn->Down);
+    ExecCommand(COMMAND_SET_SETTINGS, btn->Tag, btn->Down);
 }
 //---------------------------------------------------------------------------
 

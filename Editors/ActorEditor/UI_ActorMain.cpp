@@ -288,33 +288,33 @@ void CActorMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools
-	RegisterCommand(COMMAND_CLEAR,              xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandClear)));
-    RegisterCommand(COMMAND_LOAD,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandLoad)));
-    RegisterCommand(COMMAND_SAVE_BACKUP,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSaveBackup)));
-    RegisterCommand(COMMAND_SAVEAS,             xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSaveAs)));
-	RegisterCommand(COMMAND_SAVE,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandSave)));
-    RegisterCommand(COMMAND_IMPORT,             xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandImport)));
-    RegisterCommand(COMMAND_EXPORT_DM,          xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportDM)));
-    RegisterCommand(COMMAND_EXPORT_OBJ,			xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOBJ)));
-    RegisterCommand(COMMAND_EXPORT_OGF,         xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOGF)));
-    RegisterCommand(COMMAND_EXPORT_OMF,         xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandExportOMF)));
-	RegisterCommand(COMMAND_UNDO,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandUndo)));
-	RegisterCommand(COMMAND_REDO,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandRedo)));
-    RegisterCommand(COMMAND_OPTIMIZE_MOTIONS,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandOptimizeMotions)));
-    RegisterCommand(COMMAND_MAKE_THUMBNAIL, 	xr_new<SECommand>("Make Thumbnail","",true,BIND_CMD_EVENT_C(ATools,CActorTools::CommandMakeThumbnail)));
-    RegisterCommand(COMMAND_BATCH_CONVERT,		xr_new<SECommand>("Batch Convert","",true,BIND_CMD_EVENT_C(ATools,CActorTools::CommandBatchConvert)));
+	REGISTER_CMD_C	(COMMAND_CLEAR,             ATools,CActorTools::CommandClear);
+    REGISTER_CMD_C	(COMMAND_LOAD,              ATools,CActorTools::CommandLoad);
+    REGISTER_CMD_C	(COMMAND_SAVE_BACKUP,       ATools,CActorTools::CommandSaveBackup);
+    REGISTER_CMD_C	(COMMAND_SAVEAS,            ATools,CActorTools::CommandSaveAs);
+	REGISTER_CMD_C	(COMMAND_SAVE,              ATools,CActorTools::CommandSave);
+    REGISTER_CMD_C	(COMMAND_IMPORT,            ATools,CActorTools::CommandImport);
+    REGISTER_CMD_C	(COMMAND_EXPORT_DM,         ATools,CActorTools::CommandExportDM);
+    REGISTER_CMD_C	(COMMAND_EXPORT_OBJ,		ATools,CActorTools::CommandExportOBJ);
+    REGISTER_CMD_C	(COMMAND_EXPORT_OGF,        ATools,CActorTools::CommandExportOGF);
+    REGISTER_CMD_C	(COMMAND_EXPORT_OMF,        ATools,CActorTools::CommandExportOMF);
+	REGISTER_CMD_C	(COMMAND_UNDO,              ATools,CActorTools::CommandUndo);
+	REGISTER_CMD_C	(COMMAND_REDO,              ATools,CActorTools::CommandRedo);
+    REGISTER_CMD_C	(COMMAND_OPTIMIZE_MOTIONS,  ATools,CActorTools::CommandOptimizeMotions);
+    REGISTER_CMD_CE	(COMMAND_MAKE_THUMBNAIL, 	"Make Thumbnail",ATools,CActorTools::CommandMakeThumbnail);
+    REGISTER_CMD_CE	(COMMAND_BATCH_CONVERT,		"Batch Convert",ATools,CActorTools::CommandBatchConvert);
     // ui
-    RegisterCommand(COMMAND_SHOW_CLIPMAKER,  	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandShowClipMaker)));
-    RegisterCommand(COMMAND_MAKE_PREVIEW,       xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandMakePreview)));
-    RegisterCommand(COMMAND_PREVIEW_OBJ_PREF,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandPreviewObjPref)));
-    RegisterCommand(COMMAND_SELECT_PREVIEW_OBJ, xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSelectPreviewObj)));
-    RegisterCommand(COMMAND_LOAD_FIRSTRECENT,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandLoadFirstRecent)));
-    RegisterCommand(COMMAND_FILE_MENU,          xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandFileMenu)));
-    RegisterCommand(COMMAND_REFRESH_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
-    RegisterCommand(COMMAND_RESTORE_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
-    RegisterCommand(COMMAND_SAVE_UI_BAR,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSaveUIBar)));
-	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
-    RegisterCommand(COMMAND_UPDATE_CAPTION,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateCaption)));
+    REGISTER_CMD_S	(COMMAND_SHOW_CLIPMAKER,  	CommandShowClipMaker);
+    REGISTER_CMD_S	(COMMAND_MAKE_PREVIEW,      CommandMakePreview);
+    REGISTER_CMD_S	(COMMAND_PREVIEW_OBJ_PREF,  CommandPreviewObjPref);
+    REGISTER_CMD_S	(COMMAND_SELECT_PREVIEW_OBJ,CommandSelectPreviewObj);
+    REGISTER_CMD_S	(COMMAND_LOAD_FIRSTRECENT,  CommandLoadFirstRecent);
+    REGISTER_CMD_S	(COMMAND_FILE_MENU,         CommandFileMenu);
+    REGISTER_CMD_S	(COMMAND_REFRESH_UI_BAR,    CommandRefreshUIBar);
+    REGISTER_CMD_S	(COMMAND_RESTORE_UI_BAR,    CommandRestoreUIBar);
+    REGISTER_CMD_S	(COMMAND_SAVE_UI_BAR,       CommandSaveUIBar);
+	REGISTER_CMD_S	(COMMAND_UPDATE_TOOLBAR,    CommandUpdateToolBar);
+    REGISTER_CMD_S	(COMMAND_UPDATE_CAPTION,    CommandUpdateCaption);
 }                                                                    
 
 char* CActorMain::GetCaption()
