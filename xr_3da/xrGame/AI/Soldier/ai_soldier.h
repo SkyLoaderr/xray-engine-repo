@@ -64,6 +64,8 @@ class CAI_Soldier : public CCustomMonster
 		CMotionDef* 	m_tpaDeathAnimations[2];
 		
 		DWORD			m_dwLastRangeSearch;
+		
+		SEnemySelected	Enemy;
 
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
@@ -94,6 +96,15 @@ class CAI_Soldier : public CCustomMonster
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
+		void vfInitAttack(CSoldierSelectorAttack &S, CSquad &Squad, CEntity* &Leader);
+		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
+		void vfSearchForBetterPosition(CSoldierSelectorAttack &S, CSquad &Squad, CEntity* &Leader);
+		void vfAimAtEnemy();
+		bool bfCheckIfCanKillMember(CSoldierSelectorAttack &S, CEntity* &Leader);
+		void vfSetFire(bool bFire, CSoldierSelectorAttack &S, CEntity* &Leader);
+		void vfSetMovementType();
+		void vfCheckForSavedEnemy();
+
 	public:
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
