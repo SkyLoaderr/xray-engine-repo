@@ -219,6 +219,8 @@ protected:
 
 	//random seed для Zoom mode
 	s32						m_ZoomRndSeed;
+	//random seed для Weapon Effector Shot
+	s32						m_ShotRndSeed;
 
 	//разрешения на удаление трупа актера 
 	//после того как контролирующий его игрок зареспавнился заново. 
@@ -229,6 +231,9 @@ public:
 	////////////////////////////////////////////////////////
 	void					SetZoomRndSeed			(s32 Seed = 0);
 	s32						GetZoomRndSeed			()	{ return m_ZoomRndSeed;	};
+	////////////////////////////////////////////////////////
+	void					SetShotRndSeed			(s32 Seed = 0);
+	s32						GetShotRndSeed			()	{ return m_ShotRndSeed;	};
 	/////////////////////////////////////////////////////////
 	// car usage
 	/////////////////////////////////////////////////////////

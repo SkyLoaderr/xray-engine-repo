@@ -15,6 +15,9 @@ class CEffectorShot : public CCameraEffector
 	BOOL	bActive;
 	float	fDispProbability;
 	float	fHorzDispFactor;
+
+	CRandom		m_Random;
+	s32			m_LastSeed;
 public:
 	CEffectorShot					(float max_angle, float relax_time , float max_angle_horz, float step_angle_horz);
 	virtual ~CEffectorShot			();
@@ -23,8 +26,8 @@ public:
 			void	Shot				(float angle);
 			void	MountedWeaponShot	();
 
-			void	GetDeltaAngle	(Fvector& delta_angle);
-
+			void	GetDeltaAngle		(Fvector& delta_angle);
+	virtual	void	SetRndSeed			(s32 Seed);
 protected:
 			void	UpdateAngles	();
 			float	fAngleHorz;

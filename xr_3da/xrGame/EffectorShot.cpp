@@ -16,6 +16,7 @@ CEffectorShot::CEffectorShot	(float max_angle, float relax_speed,
 	fAngleCurrent	= -EPS_S;
 	fMaxAngle		= _abs(max_angle);
 	bActive			= FALSE;
+	m_LastSeed = 0;
 
 
 	fAngleHorz = 0.f;
@@ -32,12 +33,12 @@ CEffectorShot::~CEffectorShot	()
 
 void CEffectorShot::Shot		(float angle)
 {
-	fAngleCurrent	+= (angle*.7f+::Random.randF(-1,1)*angle*.3f);
+	fAngleCurrent	+= (angle*.7f+m_Random.randF(-1,1)*angle*.3f);
 	clamp			(fAngleCurrent,-fMaxAngle,fMaxAngle);
 	if(fis_zero(fAngleCurrent - fMaxAngle))
-			fAngleCurrent *= ::Random.randF(0.9f,1.1f);
+			fAngleCurrent *= m_Random.randF(0.9f,1.1f);
 
-	fAngleHorz		= fAngleHorz + (fAngleCurrent/fMaxAngle)*::Random.randF(-1,1)*fAngleHorzStep;
+	fAngleHorz		= fAngleHorz + (fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1)*fAngleHorzStep;
 	clamp			(fAngleHorz,-fAngleHorzMax,fAngleHorzMax);
 		
 	bActive			= TRUE;
@@ -46,10 +47,10 @@ void CEffectorShot::Shot		(float angle)
 
 void CEffectorShot::MountedWeaponShot		()
 {
-	fAngleCurrent	= (fMaxAngle*.75f+::Random.randF(-1,1)*fMaxAngle*.25f);
-	float r1		= (::Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*::Random.randF(-1,1):0.f;
-	float r2		= (::Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*::Random.randF(-1,1):0.f;
-	float r3		= (::Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*::Random.randF(-1,1):0.f;
+	fAngleCurrent	= (fMaxAngle*.75f+m_Random.randF(-1,1)*fMaxAngle*.25f);
+	float r1		= (m_Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1):0.f;
+	float r2		= (m_Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1):0.f;
+	float r3		= (m_Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1):0.f;
 	vDispersionDir.set(r1,r2,r3); 
 	vDispersionDir.normalize_safe();
 	bActive			= TRUE;
@@ -80,6 +81,7 @@ BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, f
 				fAngleCurrent	= 0.f;
 				fAngleHorz		= 0.f;
 				bActive			= FALSE;
+				m_LastSeed		= 0;
 			}
 		}
 		else
@@ -90,6 +92,7 @@ BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, f
 				fAngleCurrent	= 0.f;
 				fAngleHorz		= 0.f;
 				bActive			= FALSE;
+				m_LastSeed		= 0;
 			}
 		}
 	}
@@ -110,3 +113,12 @@ void  CEffectorShot::GetDeltaAngle	(Fvector &delta_angle)
 	delta_angle.y = 0.f;
 	delta_angle.z = 0.f;
 }
+
+void	CEffectorShot::SetRndSeed			(s32 Seed)
+{
+	if (m_LastSeed == 0)
+	{
+		m_LastSeed = Seed;
+		m_Random.seed(Seed);
+	};
+};

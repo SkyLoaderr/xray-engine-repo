@@ -482,6 +482,7 @@ void CInventory::SendActionEvent(s32 cmd, u32 flags)
 	P.w_s32					(cmd);
 	P.w_u32					(flags);
 	P.w_s32					(pActor->GetZoomRndSeed());		//Random Seed
+	P.w_s32					(pActor->GetShotRndSeed());		//Random Seed
 	pActor->u_EventSend		(P);
 };
 
@@ -489,6 +490,21 @@ bool CInventory::Action(s32 cmd, u32 flags)
 {
 	CActor *pActor = smart_cast<CActor*>(m_pOwner);
 	
+	if (pActor)
+	{
+		switch(cmd)
+		{
+			case kWPN_FIRE:
+			{
+				pActor->SetShotRndSeed();
+			}break;
+			case kWPN_ZOOM : 
+			{
+				pActor->SetZoomRndSeed();
+			}break;
+		};
+	};
+
 	if (OnClient() && pActor)
 	{
 		switch(cmd)
@@ -509,6 +525,9 @@ bool CInventory::Action(s32 cmd, u32 flags)
 				return true;
 			}break;
 		case kWPN_FIRE:
+			{
+				SendActionEvent(cmd, flags);
+			}break;
 		case kWPN_FUNC:
 		case kWPN_1:
 		case kWPN_2:
@@ -522,7 +541,6 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			}break;
 		case kWPN_ZOOM : 
 			{
-				pActor->SetZoomRndSeed();
 				SendActionEvent(cmd, flags);
 			}break;
 		}

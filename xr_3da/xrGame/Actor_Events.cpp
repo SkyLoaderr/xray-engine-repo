@@ -119,13 +119,15 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			P.r_s32		(cmd);
 			u32 flags;
 			P.r_u32		(flags);
-			s32 RandomSeed;
-			P.r_s32		(RandomSeed);
-						
+			s32 ZoomRndSeed = P.r_s32();
+			s32 ShotRndSeed = P.r_s32();
+									
 			if (flags & CMD_START)
 			{
 				if (cmd == kWPN_ZOOM)
-					SetZoomRndSeed(RandomSeed);
+					SetZoomRndSeed(ZoomRndSeed);
+				if (cmd == kWPN_FIRE)
+					SetShotRndSeed(ShotRndSeed);
 				IR_OnKeyboardPress(cmd);
 			}
 			else
