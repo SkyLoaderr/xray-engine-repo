@@ -286,12 +286,12 @@ void CRender::render_forward				()
 	//.todo: should be done inside "combine" with estimation of of luminance, tone-mapping, etc.
 	{
 		// level
-		r_pmask									(false,true);	// enable priority "1"
-		render_main								();
-		r_dsgraph_render_graph					(1);			// normal level, secondary priority
-		r_dsgraph_render_sorted					();				// strict-sorted geoms
-		g_pGamePersistent->Environment.RenderLast();			// rain/thunder-bolts
+		r_pmask									(false,true);			// enable priority "1"
+		render_main								(Device.mFullTransform);//
+		r_dsgraph_render_graph					(1);					// normal level, secondary priority
+		r_dsgraph_render_sorted					();						// strict-sorted geoms
+		g_pGamePersistent->Environment.RenderLast();					// rain/thunder-bolts
 	}
 
-	RImplementation.o.distortion				= FALSE;		// disable distorion
+	RImplementation.o.distortion				= FALSE;				// disable distorion
 }
