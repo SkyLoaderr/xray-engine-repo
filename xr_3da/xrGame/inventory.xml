@@ -73,7 +73,7 @@
 	<!-- Drop button -->
     <drop_button x="235" y="410" width="100" height="50">
         <texture a="192" r="200" g="200" b="200">ui\ui_cm_drop_over</texture>
-        <text font="medium" r="240" g="217" b="182" a="255">Drop Item</text>
+        <text x="35" font="medium" r="240" g="217" b="182" a="255">Drop Item</text>
     </drop_button>
     
     <!-- BELT LIST -->
