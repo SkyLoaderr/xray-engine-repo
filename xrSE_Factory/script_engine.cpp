@@ -191,9 +191,6 @@ void CScriptEngine::register_script_classes	()
 	string256					I, script_namespace, script_function;
 	for (u32 i=0; i<n; ++i) {
 		_GetItem				(*m_class_registrators,i,I);
-		parse_script_namespace	(I,script_namespace,script_function);
-		add_file				(script_namespace);
-		process					();
 		luabind::functor<void>	result;
 		R_ASSERT				(functor(I,result));
 		result					(const_cast<CObjectFactory*>(&object_factory()));

@@ -77,7 +77,9 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 	string256				name_space, function;
 
 	parse_script_namespace	(function_to_call,name_space,function);
-	
+	add_file				(name_space);
+	process					();
+
 	if	(!object(name_space,function,LUA_TFUNCTION))
 		return				(false);
 
