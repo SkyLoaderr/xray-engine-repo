@@ -49,7 +49,7 @@ public:
 
 class ENGINE_API CCC_Mask : public CConsoleCommand
 {
-	u32*			value;
+	Flags32*	value;
 	u32			mask;
 public:
 	CCC_Mask(LPCSTR N, u32* V, u32 M) :
@@ -60,10 +60,10 @@ public:
 
 	virtual void	Execute	(LPCSTR args)
 	{
-		if (EQ(args,"on"))			*value |= mask;
-		else if (EQ(args,"off"))	*value &= ~mask;
-		else if (EQ(args,"1"))		*value |= mask;
-		else if (EQ(args,"0"))		*value &= ~mask;
+		if (EQ(args,"on"))			value->set(mask,TRUE);
+		else if (EQ(args,"off"))	value->set(mask,FALSE);
+		else if (EQ(args,"1"))		value->set(mask,TRUE);
+		else if (EQ(args,"0"))		value->set(mask,FALSE);
 		else InvalidSyntax();
 	}
 	virtual void	Status	(TStatus& S)

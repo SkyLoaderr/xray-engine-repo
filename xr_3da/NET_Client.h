@@ -6,7 +6,7 @@ class ENGINE_API INetQueue
 {
 	CCriticalSection	cs;
 	deque<NET_Packet*>	ready;
-	vector<NET_Packet*>	free;
+	vector<NET_Packet*>	unused;
 public:
 	INetQueue();
 	~INetQueue();

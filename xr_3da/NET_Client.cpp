@@ -13,15 +13,15 @@ void	dump_URL	(LPCSTR p, IDirectPlay8Address* A)
 // 
 INetQueue::INetQueue()		
 {
-	free.reserve	(128);
+	unused.reserve	(128);
 	for (int i=0; i<16; i++)
-		free.push_back	(new NET_Packet());
+		unused.push_back	(new NET_Packet());
 }
 INetQueue::~INetQueue()
 {
 	cs.Enter		();
 	u32				it;
-	for				(it=0; it<free.size(); it++)	_DELETE(free[it]);
+	for				(it=0; it<unused.size(); it++)	_DELETE(unused[it]);
 	for				(it=0; it<ready.size(); it++)	_DELETE(ready[it]);
 	cs.Leave		();
 }
@@ -29,13 +29,13 @@ NET_Packet*		INetQueue::Create	()
 {
 	NET_Packet*	P			= 0;
 	cs.Enter		();
-	if (free.empty())	
+	if (unused.empty())	
 	{
 		ready.push_back		(new NET_Packet());
 		P					= ready.back	();
 	} else {
-		ready.push_back		(free.back());
-		free.pop_back		();
+		ready.push_back		(unused.back());
+		unused.pop_back		();
 		P					= ready.back	();
 	}
 	cs.Leave		();

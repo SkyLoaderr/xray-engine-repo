@@ -413,9 +413,9 @@ void reconst(void)
         for (k = j - 1; f < freq[k]; k--);
         k++;
         l = (j - k) * sizeof(unsigned);
-        memmove(&freq[k + 1], &freq[k], l);
+        memmove	(&freq[k + 1], &freq[k], l);
         freq[k] = f;
-        memmove(&son[k + 1], &son[k], l);
+        memmove	(&son[k + 1], &son[k], l);
         son[k] = i;
     }
     /* connect prnt */
