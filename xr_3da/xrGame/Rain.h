@@ -6,6 +6,8 @@
 #define AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_
 #pragma once
 
+const int	RAIN_max_particles	= 300;
+
 class CEffect_Rain	: public CEventBase, public pureDeviceDestroy, public pureDeviceCreate
 {
 private:
@@ -18,7 +20,8 @@ private:
 	};
 	struct	Particle
 	{
-		CPSVisual*		visual;
+		Particle		*next,*prev;
+		CPSVisual		visual;
 		PS::SEmitter	emitter;
 	};
 	enum	States
@@ -40,6 +43,9 @@ private:
 	// Data and logic
 	vector<Item>	items;
 	States			state;
+
+	// Particles
+	vector<Particle>	particles_pool;
 
 	// Sounds
 	int				snd_Ambient;

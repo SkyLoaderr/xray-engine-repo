@@ -11,7 +11,8 @@
 
 static int dwPCNT=0;
 
-CPSVisual::CPSVisual():FBasicVisual(){
+CPSVisual::CPSVisual():FBasicVisual()
+{
 	m_Stream	= Device.Streams.Create(FVF::F_TL,MAX_PARTICLES*4);
 	
 	m_Definition= 0;
@@ -21,20 +22,18 @@ CPSVisual::CPSVisual():FBasicVisual(){
 	dwPCNT++;
 }
 //----------------------------------------------------
-
-CPSVisual::~CPSVisual(){
+CPSVisual::~CPSVisual()
+{
 	dwPCNT--;
 	m_Particles.clear();
 	m_Stream	= 0;
 }
 //----------------------------------------------------
-
 void CPSVisual::Copy(FBasicVisual* pFrom)
 {
 	Device.Fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }
 //----------------------------------------------------
-
 //////////////////////////////////////////////////
 // - доделать рождение/умирание без удаления и добавления в массив
 // 
