@@ -105,10 +105,11 @@ void CWatchList::UpdateRow(int iItem)
 
 void CWatchList::Redraw()
 {
-/*	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CMainFrame* pFrame = g_mainFrame;
 	for ( int i=0; i<m_exps.GetSize(); ++i )
-		SetItemText(i, 1, pFrame->GetDebugger()->Eval(m_exps[i]));
-*/
+//		SetItemText(i, 1, pFrame->GetDebugger()->Eval(m_exps[i]));
+	pFrame->EvalWatch(m_exps[i],i);
+
 }
 void CWatchList::SetResult(int iItem, LPSTR str)
 {
