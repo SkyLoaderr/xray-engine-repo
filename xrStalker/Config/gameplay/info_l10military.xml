@@ -38,6 +38,7 @@
 	<info_portion id="mil_max_job_failed"></info_portion>
 	<info_portion id="mil_max_dolg_killed"></info_portion>
 	<info_portion id="mil_max_arrive"></info_portion>
+	<info_portion id="mil_max_dead"></info_portion>
 	
 	<!-- Диалог с Лукашем-->
 	<info_portion id="mil_lukash_first_talk"></info_portion>
