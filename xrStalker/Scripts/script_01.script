@@ -69,6 +69,15 @@ function main()
 
 	wait		(1000)
 
+
+	local 	snd = sound_object("water_bulkaet")
+	local	obj = get_actor()
+	wait	(1000)
+	snd:play_at_pos(obj,obj:position(),0);
+	while true do
+		wait()
+	end
+
 	script_01.play_sound_object("actor","scripts\\kto-to_idet",1)
 
 	stalker1:script	(true,script_01.script_name())
