@@ -163,7 +163,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	mView.mulA			(mScale);
 }
 
-void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
+void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
 {
 	// query for polygons in bounding box
 	// calculate adjacency
@@ -179,11 +179,10 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector &cont
 		if (0==triCount)	return;
 		CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 		sml_collector.clear	();
-		sml_collector.add_face_packed_D	(*pTri->verts[0],*pTri->verts[1],*pTri->verts[2],0);
-		for (u32 t=0; t<triCount; t++)
-		{
+		sml_collector.add_face_packed_D	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]],0);
+		for (u32 t=0; t<triCount; t++)	{
 			CDB::TRI*	T	= tris+xrc.r_begin()[t].id;
-			sml_collector.add_face_packed_D		(*T->verts[0],*T->verts[1],*T->verts[2],0);
+			sml_collector.add_face_packed_D		(pVerts[T->verts[0]],pVerts[T->verts[1]],pVerts[T->verts[2]],0);
 		}
 		sml_collector.calc_adjacency	(sml_adjacency);
 	}

@@ -47,8 +47,9 @@ public:
 	int									GetNearest			( ICollisionForm *obj, float range );
 	int									GetNearest			( const Fvector &point, float range );
 
-	CDB::TRI*							GetStaticTris		() { return Static.get_tris();  }
-	CDB::MODEL*							GetStaticModel		() { return &Static; }
+	CDB::TRI*							GetStaticTris		() { return Static.get_tris();	}
+	Fvector*							GetStaticVerts		() { return Static.get_verts(); }
+	CDB::MODEL*							GetStaticModel		() { return &Static;			}
 
 	const Fbox&							GetBoundingVolume	() { return m_BoundingVolume;}
 

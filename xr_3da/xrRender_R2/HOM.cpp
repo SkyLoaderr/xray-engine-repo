@@ -144,11 +144,12 @@ void CHOM::Render_DB	(CFrustum& base)
 		{ T.skip=next; continue; }
 
 		// Access to triangle vertices
-		CDB::TRI& t		= m_pModel->get_tris() [it->id];
+		CDB::TRI& t		= m_pModel->get_tris()	[it->id];
+		Fvector*  v		= m_pModel->get_verts();
 		src.clear		();	dst.clear	();
-		src.push_back	(*t.verts[0]);
-		src.push_back	(*t.verts[1]);
-		src.push_back	(*t.verts[2]);
+		src.push_back	(v[t.verts[0]]);
+		src.push_back	(v[t.verts[1]]);
+		src.push_back	(v[t.verts[2]]);
 		sPoly* P =		clip.ClipPoly	(src,dst);
 		if (0==P)		{ T.skip=next; continue; }
 

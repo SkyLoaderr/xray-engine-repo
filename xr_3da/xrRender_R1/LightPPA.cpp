@@ -77,6 +77,7 @@ void CLightR_Manager::render_point	()
 			u32	triCount		= xrc.r_count	();
 			if	(0==triCount)	return;
 			CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
+			Fvector* verts		= g_pGameLevel->ObjectSpace.GetStaticVerts();
 
 			// Lock
 			RCache.set_Geometry		(hGeom);
@@ -92,9 +93,9 @@ void CLightR_Manager::render_point	()
 			{
 				CDB::TRI&	T	= tris	[xrc.r_begin()[t].id];
 
-				Fvector	V1		= *T.verts[0];
-				Fvector V2		= *T.verts[1];
-				Fvector V3		= *T.verts[2];
+				Fvector	V1		= verts[T.verts[0]];
+				Fvector V2		= verts[T.verts[1]];
+				Fvector V3		= verts[T.verts[2]];
 				Fplane  Poly;	Poly.build(V1,V2,V3);
 
 				// Test for poly facing away from light or camera
