@@ -838,6 +838,7 @@ function cfg_get_overrides(ini, section, npc)
 	l.meet_dialog  = utils.cfg_get_string(ini, section, "meet_dialog", npc, false, "")
 	l.reactions    = parse_names(utils.cfg_get_string(ini, section, "reactions", npc, false, "", ""))
 	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)
+	l.wounded_enabled = utils.cfg_get_bool(ini, section, "wounded_enabled", npc, false)
 
 	return l
 end
