@@ -19,7 +19,10 @@ void		CBlendInstance::construct()
 void		CBlendInstance::blend_add	(CBlend* H)
 {	
 	if (Blend.size()>=MAX_BLENDED)	{
+// for E3 by Dima
+#ifdef _DEBUG
 		Msg	("! WARNING: more than 16 blend-sequences per bone played");
+#endif
 		return;
 	}
 	Blend.push_back(H);	
