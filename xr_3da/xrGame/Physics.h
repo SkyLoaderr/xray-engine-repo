@@ -112,20 +112,32 @@ public:
 
 };
 ////////////////////////////////////////////////////////////////////////////
+const dReal fixed_step=0.02f;
+/////////////////////////////////////////////////////////////////////////////
 class CPHWorld {
+	__int64 m_steps_num;
+	double m_start_time;
+	UINT   m_delay;
+	UINT   m_previous_delay;
+	UINT   m_reduce_delay;
+	UINT   m_update_delay_count;
+	static const UINT update_delay=1;
 	dSpaceID Space;
-	dReal frame_time;
+	
 	CPHMesh Mesh;
 	list<CPHObject*> m_objects;
 public:
-
+	double m_frame_sum;
+	dReal frame_time;
+	float m_update_time;
 	CPHGun Gun;
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//vector<CPHElement*> elements;
-	CPHWorld(){disable_count=0;frame_time=0.f;};
+	CPHWorld(){disable_count=0;frame_time=0.f;m_steps_num=0;m_start_time=Device.fTimeGlobal;m_frame_sum=0.f;
+	m_delay=0; m_previous_delay=0;m_reduce_delay=0;m_update_delay_count=0;}
 	~CPHWorld(){};
-
+	double Time(){return m_start_time+m_steps_num*fixed_step;}
 	dSpaceID GetSpace(){return Space;};
 	//	dWorldID GetWorld(){return phWorld;};
 	void Create();
@@ -231,8 +243,9 @@ public:
 	CPHShell				()							{bActive=false;
 														dis_count_f=0;
 														dis_count_f1=0;
-												
+											
 																		};
+	~CPHShell				()							{if(bActive) Deactivate();}
 
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);
@@ -252,6 +265,7 @@ public:
 	virtual	void PhDataUpdate(dReal step);
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};
+	virtual void StepFrameUpdate(dReal step){};
 
 };
 

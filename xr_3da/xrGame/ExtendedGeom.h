@@ -66,6 +66,7 @@ dGeomSetData(geom,new dxGeomUserData());
 ((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=dInfinity;
 ((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=dInfinity;
 ((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=dInfinity;
+((dxGeomUserData*)dGeomGetData(geom))->friction=dInfinity;
 ((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
 }
 

@@ -33,6 +33,7 @@ private:
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
 	virtual void InitContact(dContact*c){};
+	virtual void StepFrameUpdate(dReal step){};
 public:
 	// Core events
 	virtual void			Load				( LPCSTR section );

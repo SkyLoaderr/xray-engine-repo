@@ -428,3 +428,20 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 		}
 	}
 }
+
+void	CMovementControl::SetEnvironment( int enviroment,int old_enviroment){
+	switch(enviroment){
+	case 0: eEnvironment=peOnGround;
+	break;
+	case 1: eEnvironment=peAtWall;
+	break;
+	case 2: eEnvironment=peInAir;
+	}
+	switch(old_enviroment){
+	case 0: eOldEnvironment=peOnGround;
+	break;
+	case 1: eOldEnvironment=peAtWall;
+	break;
+	case 2: eOldEnvironment=peInAir;
+	}
+}

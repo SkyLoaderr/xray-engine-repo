@@ -337,8 +337,59 @@ inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,con
 }
 
 
+inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2, const dReal* pos){
+  dVector3 cross0, cross1, cross2;
+  dReal ds0,ds1,ds2;
 
+  
+  dVector3 triSideAx0={v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
+  dVector3 triSideAx1={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
+  dVector3 triSideAx2={v0[0]-v2[0],v0[1]-v2[1],v0[2]-v2[2]};
 
+  dVector3 triAx;
+  dCROSS(triAx,=,triSideAx0,triSideAx1);
+
+  dCROSS(cross0,=,triAx,triSideAx0);
+  ds0=dDOT(cross0,v0);
+
+  dCROSS(cross1,=,triAx,triSideAx1);
+  ds1=dDOT(cross1,v1);
+
+  dCROSS(cross2,=,triAx,triSideAx2);
+  ds2=dDOT(cross2,v2);
+
+  if(dDOT(cross0,pos)-ds0>0.f && 
+	 dDOT(cross1,pos)-ds1>0.f && 
+	 dDOT(cross2,pos)-ds2>0.f) return true;
+  else return false;
+  
+
+}
+
+inline bool  TriPlaneContainPoint(const dReal* v0,const dReal* v1,const dReal* v2, const dReal* pos){
+  
+ 
+  dVector3 triSideAx0={v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
+  dVector3 triSideAx1={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
+  
+  dVector3 triAx;
+  dCROSS(triAx,=,triSideAx0,triSideAx1);
+  
+
+  if(dDOT(triAx,pos)-dDOT(triAx,v0)>0.f) return true;
+  else									 return false;
+  
+
+}
+
+inline bool  TriPlaneContainPoint(const dReal* triAx,const dReal* v0, const dReal* pos){
+  
+
+  if(dDOT(triAx,pos)-dDOT(triAx,v0)>0.f) return true;
+  else									 return false;
+  
+
+}
 
 
 /*

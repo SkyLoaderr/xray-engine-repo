@@ -685,7 +685,7 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 						 const dReal* v0,const dReal* v1,const dReal* l,dVector3 pos){
 	dReal cos=dDOT14(l,R);
 
-	if(cos>=1.f) return false;
+	if(!(dFabs(cos)<1.f)) return false;
 	
 	dReal sin2=1.f-cos*cos;
 

@@ -9,7 +9,7 @@
 #include "entity.h"
 #include "actor_flags.h"
 #include "..\feel_touch.h"
-
+#include "PHMovementControl.h"
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
@@ -27,6 +27,7 @@ class CActor:
 private:
 	typedef CEntityAlive	inherited;
 protected:
+	CPHMovementControl ph_Movement;
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4

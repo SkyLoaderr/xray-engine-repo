@@ -47,6 +47,7 @@ u32			psActorFlags=0;
 //////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntityAlive()
 {
+	
 	// Cameras
 	cameras[eacFirstEye]	= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 	cameras[eacLookAt]		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
@@ -98,8 +99,10 @@ CActor::~CActor()
 void CActor::Load		(LPCSTR section )
 {
 	Msg("Loading actor: %s",section);
-
 	inherited::Load		(section);
+	
+	ph_Movement.Load(section);
+	ph_Movement.SetParent(this);
 
 	m_fWalkAccel		= pSettings->ReadFLOAT(section,"walk_accel");	
 	m_fJumpSpeed		= pSettings->ReadFLOAT(section,"jump_speed");
@@ -125,7 +128,7 @@ void CActor::Load		(LPCSTR section )
 	::Sound->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 
 	Movement.ActivateBox(0);
-	
+	ph_Movement.ActivateBox(0);
 	cam_Set				(eacFirstEye);
 
 	// motions
@@ -213,6 +216,10 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 BOOL CActor::net_Spawn		(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+	ph_Movement.CreateCharacter();
+	ph_Movement.SetPosition	(vPosition);
+	ph_Movement.SetVelocity	(0,0,0);
+
 	xrSE_Actor*			E	= (xrSE_Actor*)DC;
 
 	//
@@ -343,11 +350,38 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	accel.mul					(1.f-hit_slowmo);
 
 	// Calculate physics
-	Movement.SetPosition		(vPosition);
-	Movement.Calculate			(accel,0,jump,dt,false);
-	Movement.GetPosition		(vPosition);
 
-	// Check ground-contact
+	//Movement.SetPosition		(vPosition);
+	//Movement.Calculate		(accel,0,jump,dt,false);
+	//Movement.GetPosition		(vPosition);
+	//Fvector vAccel;
+	//Movement.vExternalImpulse.div(dt);
+	
+	//ph_Movement.SetPosition		(vPosition);
+
+	ph_Movement.Calculate			(_accel,0,jump,dt,false);
+	ph_Movement.GetPosition		(vPosition);
+
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////Update Movement///////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////
+	
+	Movement.SetEnvironment(ph_Movement.Environment(),ph_Movement.OldEnvironment());//peOnGround,peAtWall,peInAir
+	Movement.SetPosition		(vPosition);
+	Fvector velocity=ph_Movement.GetVelocity();
+	Movement.SetVelocity(velocity);
+	Movement.gcontact_Was=ph_Movement.gcontact_Was;
+	Movement.SetContactSpeed(ph_Movement.GetContactSpeed());
+	//velocity.y=0.f;
+	Movement.SetActualVelocity(velocity.magnitude());
+	Movement.bSleep=false;
+	Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
+	Movement.gcontact_Power=ph_Movement.gcontact_Power;
+
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+/*
 	if (Movement.gcontact_Was) 
 	{
 		Fvector correctV					= Movement.GetVelocity	();
@@ -361,6 +395,18 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if (Movement.gcontact_HealthLost)	Hit	(1.5f * Movement.gcontact_HealthLost,D,this,-1);
 		}
 	}
+*/	
+
+	if (ph_Movement.gcontact_Was) 
+	{
+		::Sound->PlayAtPos					(sndLanding,this,Position());
+
+		if (Local()) {
+			pCreator->Cameras.AddEffector		(new CEffectorFall(ph_Movement.gcontact_Power));
+			Fvector D; D.set					(0,1,0);
+			if (ph_Movement.gcontact_HealthLost)	Hit	(ph_Movement.gcontact_HealthLost,D,this,-1);
+		}
+	}	
 }
 
 void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, float f)
@@ -501,6 +547,7 @@ void CActor::Update	(u32 DT)
 
 				// Setup last known data
 				Movement.SetVelocity	(NET_Last.p_velocity);
+				ph_Movement.SetVelocity	(NET_Last.p_velocity);
 				vPosition.set			(NET_Last.p_pos);
 				UpdateTransform			();
 			}
@@ -618,12 +665,22 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		{
 			// can we change size to "bbStandBox"
 			Fvector				start_pos;
-			bbStandBox.getcenter(start_pos);
+			//bbStandBox.getcenter(start_pos);
 			start_pos.add		(vPosition);
-			if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,bbStandBox))
+			//if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,bbStandBox))
+			Fbox stand_box=ph_Movement.Boxes()[0];
+			stand_box.y1+=ph_Movement.FootExtent().y;
+			ph_Movement.GetPosition(start_pos);
+			start_pos.y+=(
+						//-(ph_Movement.Box().y2-ph_Movement.Box().y1)+
+						(ph_Movement.Boxes()[0].y2-ph_Movement.Boxes()[0].y1)
+						)/2.f;
+			start_pos.y+=ph_Movement.FootExtent().y/2.f;
+			if (!pCreator->ObjectSpace.EllipsoidCollide(cfModel,svTransform,start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;
 				Movement.ActivateBox(0);
+				ph_Movement.ActivateBox(0);
 			}
 		}
 	}
@@ -652,7 +709,8 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		m_fJumpTime			= s_fJumpTime;
 		mstate_real			&=~	(mcFall|mcJump);
 	}
-	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed	=	FALSE;
+	if ((mstate_wf&mcJump)==0)	
+		m_bJumpKeyPressed	=	FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
 	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&(mcFall|mcJump)))) || Movement.bSleep) 
@@ -689,6 +747,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	{
 		// jump
 		m_fJumpTime				-=	dt;
+		
 		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && (m_fJumpTime<=0.f) && !m_bJumpKeyPressed)
 		{
 			mstate_real			|=	mcJump;
@@ -696,12 +755,17 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			Jump				= m_fJumpSpeed;
 			m_fJumpTime			= s_fJumpTime;
 		}
-
+		
+		/*
+		if(m_bJumpKeyPressed)
+				Jump				= m_fJumpSpeed;
+			*/
 		// crouch
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
 			mstate_real			|=	mcCrouch;
 			Movement.ActivateBox(1);
+			ph_Movement.ActivateBox(1);
 		}
 		
 		// mask input into "real" state
@@ -995,7 +1059,7 @@ void CActor::OnRender	()
 	if (!bDebug)				return;
 
 	Movement.dbg_Draw			();
-
+	ph_Movement.dbg_Draw();
 	CCameraBase* C				= cameras	[cam_active];
 	dbg_draw_frustum			(C->f_fov, 20.f, C->f_aspect, C->vPosition, C->vDirection, C->vNormal);
 }

@@ -46,6 +46,8 @@ private:
 	float				fActualVelocity;
 	float				fContactSpeed;
 public:
+	void				SetEnvironment( EEnvironment enviroment){eEnvironment=enviroment;} 
+	void				SetEnvironment( int enviroment,int old_enviroment);
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
 
@@ -72,6 +74,8 @@ public:
 	float				GetContactSpeed	()			{ return fContactSpeed; }
 	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);}
 	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);}
+	void				SetActualVelocity(float avelocity){fActualVelocity=avelocity;}
+	void				SetContactSpeed(float aspeed)		{fContactSpeed=aspeed;}
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction);
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction);
 

@@ -38,8 +38,8 @@
 #include "..\fmesh.h"
 #include "..\BodyInstance.h"
 
-#define FUNCCALL __cdecl
-#define _CALLING __cdecl
+//#define FUNCCALL __cdecl
+//#define _CALLING __cdecl
 
 #include <ode/ode.h>
 

@@ -353,7 +353,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 
 int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom* Contacts, int Stride){
-
+	
 
 	Fvector* CylinderCenter;
 	Fvector AABB;
@@ -405,16 +405,457 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 			CONTACT(Contacts, OutTriCount * Stride),   Stride);
 	}
 	return OutTriCount;
+	
+
+	
 }
 ///end @slipch
 
+int dTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
+			   dxGeom* Sphere,dxGeom* Geometry, int Flags, 
+			   dContactGeom* Contacts){
+const dReal* SphereCenter=dGeomGetPosition(Sphere);
+const float SphereRadius = dGeomSphereGetRadius(Sphere);
+
+		//dVector3 triSideAx0={V[1][0]-V[0][0],V[1][1]-V[0][1],V[1][2]-V[0][2]};
+	//	dVector3 triSideAx1={V[2][0]-V[1][0],V[2][1]-V[1][1],V[2][2]-V[1][2]};
+//		dVector3 triSideAx2={V[0][0]-V[2][0],V[0][1]-V[2][1],V[0][2]-V[2][2]};
+		dVector3 triSideAx0={v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
+		dVector3 triSideAx1={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
+		dVector3 triAx;
+		dCROSS(triAx,=,triSideAx0,triSideAx1);
+
+		if(!TriPlaneContainPoint(triAx,v0,SphereCenter)) return 0;
+
+		dVector3 norm;	
+		bool isLC=false;
+		bool isPC=false;
+		float Depth=0;
+		/*
+		for(int i=0;i<3;i++){
+
+			Depth=FragmentonSphereTest(dGeomGetPosition(Sphere),
+				dGeomSphereGetRadius(Sphere),
+				V[i],V[(i+1)%3],norm);
+
+			if	(Depth>0.f) {
+
+				isLC=true;
+				break;
+			}
+			;
+
+		}
+*/
+		Depth=FragmentonSphereTest(dGeomGetPosition(Sphere),
+				dGeomSphereGetRadius(Sphere),
+				v0,v1,norm);
+		isLC=Depth>0.f;
+		if(!isLC){ Depth=FragmentonSphereTest(dGeomGetPosition(Sphere),
+				dGeomSphereGetRadius(Sphere),
+				v1,v2,norm);
+				isLC=Depth>0.f;
+		}
+		if(!isLC){ Depth=FragmentonSphereTest(dGeomGetPosition(Sphere),
+				dGeomSphereGetRadius(Sphere),
+				v2,v0,norm);
+		}
+/*
+		if(!isLC)
+			for(int i=0;i<3;i++){
+
+				Depth=PointSphereTest(dGeomGetPosition(Sphere),
+					dGeomSphereGetRadius(Sphere),
+					V[i],norm);
+
+				if	(Depth>0.f) {
+
+					isPC=true;
+					break;
+				};
+
+			}		
+
+*/
+		if(!isLC){
+				Depth=PointSphereTest(dGeomGetPosition(Sphere),
+					dGeomSphereGetRadius(Sphere),v0,norm);
+					isPC=Depth>0.f;
+					if(!isPC){Depth=PointSphereTest(dGeomGetPosition(Sphere),
+					dGeomSphereGetRadius(Sphere),v1,norm);
+					isPC=Depth>0.f;
+					}
+
+					if(!isPC){Depth=PointSphereTest(dGeomGetPosition(Sphere),
+					dGeomSphereGetRadius(Sphere),v2,norm);
+					isPC=Depth>0.f;
+					}
+
+				}
+			
+			dNormalize3(triAx);
+			dVector3 ContactNormal={triAx[0],triAx[1],triAx[2]};
+			dVector3 ContactPos={SphereCenter[0]-triAx[0]* SphereRadius,SphereCenter[1]-triAx[1]* SphereRadius,SphereCenter[2]-triAx[2]* SphereRadius};
+
+			float ContactDepth= dDOT(triAx,v0) - dDOT(SphereCenter,triAx) + SphereRadius;
+			if (ContactDepth >= 0){
+
+	
+				bool contains=TriContainPoint(v0,v1,v2,ContactPos);
+
+				if(contains&&ContactDepth>Depth&&ContactDepth>0.f)
+				{
+					isLC=false;
+					isPC=false;
+				}
+
+				if(isLC||isPC){
+	
+					ContactNormal[0]=norm[0];
+					ContactNormal[1]=norm[1];
+					ContactNormal[2]=norm[2];
+					ContactPos[0]=SphereCenter[0]-ContactNormal[0];
+					ContactPos[1]=SphereCenter[1]-ContactNormal[1];
+					ContactPos[2]=SphereCenter[2]-ContactNormal[2];
+
+					ContactDepth=Depth;
+				}
+
+
+				dNormalize3(ContactNormal);
+
+
+				if (contains||isPC||isLC){
+
+				//	dContactGeom* Contact = CONTACT(Contacts, Skip);
+
+					Contacts->normal[0] =-ContactNormal[0];
+					Contacts->normal[1] =-ContactNormal[1];
+					Contacts->normal[2] =-ContactNormal[2];
+					Contacts->depth = ContactDepth;
+					////////////////////
+	
+					Contacts->pos[0]=ContactPos[0];
+					Contacts->pos[1]=ContactPos[1];
+					Contacts->pos[2]=ContactPos[2];
+					Contacts->g1 = Geometry;
+					Contacts->g2 = Sphere;
+					//////////////////////////////////
+				//	OutTriCount++;
+					return 1;
+
+
+				}
+
+			}
+		
+		return 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+int dSortedTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
+					 const dReal* triAx,
+					 dxGeom* Sphere,dxGeom* Geometry, int Flags, dContactGeom* Contacts){
+const dReal* SphereCenter=dGeomGetPosition(Sphere);
+const float SphereRadius = dGeomSphereGetRadius(Sphere);
+
+
+		
+		//	dNormalize3(triAx);
+			dVector3 ContactNormal={triAx[0],triAx[1],triAx[2]};
+			dVector3 ContactPos={SphereCenter[0]-triAx[0]* SphereRadius,SphereCenter[1]-triAx[1]* SphereRadius,SphereCenter[2]-triAx[2]* SphereRadius};
+
+			float ContactDepth= dDOT(triAx,v0) - dDOT(SphereCenter,triAx) + SphereRadius;
+			if (ContactDepth >= 0){
 
 
 
+
+				
+
+					//dContactGeom* Contact = CONTACT(Contacts, Skip);
+
+					Contacts->normal[0] =-ContactNormal[0];
+					Contacts->normal[1] =-ContactNormal[1];
+					Contacts->normal[2] =-ContactNormal[2];
+					Contacts->depth = ContactDepth;
+					////////////////////
+	
+					Contacts->pos[0]=ContactPos[0];
+					Contacts->pos[1]=ContactPos[1];
+					Contacts->pos[2]=ContactPos[2];
+					Contacts->g1 = Geometry;
+					Contacts->g2 = Sphere;
+					//////////////////////////////////
+				//	OutTriCount++;
+					return 1;
+
+
+				
+
+			}
+		
+		return 0;
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+extern "C" int dSortTriSphereCollide (
+								   dxGeom *o1, dxGeom *o2,
+								   int flags, dContactGeom *contact, int skip,
+								   CDB::RESULT*    R_begin,
+								   CDB::RESULT*    R_end ,
+								   CDB::TRI*       T_array,
+								   Fvector AABB
+								   )
+{
+	//	Log("in dSortTriBoxCollide");
+	//Msg("%f",dInfinity);
+	int ret=0;
+	Triangle tri;
+	//bool pushing_b_neg_reset=false,pushing_neg_reset=false;
+	dxGeomUserData* data=dGeomGetUserData(o1);
+	Triangle* neg_tri=&(data->neg_tri);
+	Triangle* b_neg_tri=&(data->b_neg_tri);
+	dReal* last_pos=data->last_pos;
+
+	bool* pushing_neg=&data->pushing_neg;
+	bool* pushing_b_neg=&data->pushing_b_neg;
+	pos_tries.clear	();
+	//neg_tries.clear	();
+	//pos_dist=dInfinity,
+	dReal neg_depth=dInfinity,b_neg_depth=dInfinity;
+	//dReal max_proj=-dInfinity,proj;
+	const dReal* p=dGeomGetPosition(o1);
+	UINT b_count=0;
+	//dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
+
+	
+	dReal sidePr=dGeomSphereGetRadius(o1);
+
+	//if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
+
+	if(*pushing_neg){
+		neg_tri->dist=dDOT(p,neg_tri->norm)-neg_tri->pos;
+		neg_tri->depth=sidePr-neg_tri->dist;
+
+		if(neg_tri->dist<0.f)
+			neg_depth=neg_tri->depth;
+		else
+		{
+			*pushing_neg=false;
+
+		}
+	}
+
+	if(*pushing_b_neg){
+	
+		b_neg_tri->dist=dDOT(p,b_neg_tri->norm)-b_neg_tri->pos;
+		b_neg_tri->depth=sidePr-b_neg_tri->dist;
+
+		if(b_neg_tri->dist<0.f)
+			b_neg_depth=b_neg_tri->depth;
+		else{
+			*pushing_b_neg=false;
+
+		}
+	}
+
+
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	{
+		CDB::TRI* T = T_array + Res->id;
+		tri.v0=(dReal*)T->verts[0];
+		tri.v1=(dReal*)T->verts[1];
+		tri.v2=(dReal*)T->verts[2];
+		tri.side0[0]=tri.v1[0]-tri.v0[0];
+		tri.side0[1]=tri.v1[1]-tri.v0[1];
+		tri.side0[2]=tri.v1[2]-tri.v0[2];
+		tri.side1[0]=tri.v2[0]-tri.v1[0];
+		tri.side1[1]=tri.v2[1]-tri.v1[1];
+		tri.side1[2]=tri.v2[2]-tri.v1[2];
+
+		dCROSS(tri.norm,=,tri.side0,tri.side1);
+		dNormalize3(tri.norm);
+
+
+		tri.pos=dDOT(tri.v0,tri.norm);
+		tri.dist=dDOT(p,tri.norm)-tri.pos;
+		tri.depth=sidePr-tri.dist;
+		Point vertices[3]={Point(tri.v0),Point(tri.v1),Point(tri.v2)};
+		if(tri.dist<0.f){
+			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
+				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
+				{
+					if(TriContainPoint(tri.v0,tri.v1,tri.v2,
+						tri.norm,tri.side0,
+						tri.side1,p)
+
+						){
+							if(neg_depth>tri.depth)
+							{
+								neg_depth=tri.depth;
+								(*neg_tri)=tri;
+								//		pushing_neg_reset=true;
+							}
+
+
+						}
+					else{
+						b_count++;
+						if(b_neg_depth>tri.depth){
+							b_neg_depth=tri.depth;
+							(*b_neg_tri)=tri;
+							//	pushing_b_neg_reset=true;
+						}
+					}
+				}
+		}
+		else{
+			pos_tries.push_back(tri);
+			//if(tri.dist<pos_dist) pos_dist=tri.dist;
+		}
+	}
+
+
+	vector<Triangle>::iterator i;
+
+
+
+	//(*pushing_neg)=(*pushing_neg)&&(!ret);
+
+
+
+	if(neg_depth<dInfinity&&ret==0){
+		bool include = true;
+
+		for(i=pos_tries.begin();i!=pos_tries.end();i++){
+			if(TriContainPoint(i->v0,i->v1,i->v2,
+				i->norm,i->side0,
+				i->side1,p))
+				if((dDOT(neg_tri->norm,i->v0)-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,i->v1)-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,i->v2)-neg_tri->pos)<0.f
+					){
+						include=false;
+						break;
+					}
+		};
+		if(include){
+			ret+=dSortedTriSphere(
+				neg_tri->v0,neg_tri->v1,neg_tri->v2,neg_tri->norm,
+				o1,o2,flags,
+				CONTACT(contact, ret * skip));	
+
+		
+			*pushing_neg=!!ret;
+		}
+
+	}
+
+	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
+	//if(ret==0)
+	for(i=pos_tries.begin();i!=pos_tries.end();i++)
+		
+		ret+=dTriSphere (i->v0,i->v1,i->v2,
+		o1,
+		o2,
+		3,
+		CONTACT(contact, ret * skip));
+
+	//((b_count>1)||(*pushing_b_neg))&&
+	if(b_neg_depth<dInfinity&&ret==0){
+		bool include = true;
+		for(i=pos_tries.begin();i!=pos_tries.end();i++){
+			if((((dDOT(b_neg_tri->norm,i->v0)-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,i->v1)-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,i->v2)-b_neg_tri->pos)<0.f))
+				){
+					include=false;
+					break;
+				}
+		};
+
+		if(include)	{
+
+			ret+=dSortedTriSphere(
+				b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,b_neg_tri->norm,
+				o1,o2,flags,
+				CONTACT(contact, ret * skip));	
+			*pushing_b_neg=!!ret;
+		}
+
+	}
+	memcpy(last_pos,p,sizeof(dVector3));
+	return ret;
+}
+///////////////////////////////////////////////////////////////////////////
 int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contacts, int Stride){
 
 
-	/* Get sphere */
+	// Get sphere 
+
+
+	const dReal* SphereCenter=dGeomGetPosition(Sphere);
+
+	const float SphereRadius = dGeomSphereGetRadius(Sphere);
+
+	Fvector AABB;
+	Fvector SphereCenterF;
+
+	memcpy(&SphereCenterF,SphereCenter,sizeof(Fvector));
+
+
+	// Make AABB 
+	AABB.x=SphereRadius;
+	AABB.y=SphereRadius;
+	AABB.z=SphereRadius;
+
+	const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Sphere));
+	AABB.x+=dFabs(velocity[0])*0.02f;
+	AABB.y+=dFabs(velocity[1])*0.02f;
+	AABB.z+=dFabs(velocity[2])*0.02f;
+
+	// Retrieve data 
+
+	// Creating minimum contacts 
+
+	int OutTriCount = 0;
+	//UINT TriangleIDCount; // Num of tries
+
+	XRC.box_options                (0);
+	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),SphereCenterF,AABB);
+
+	// 
+	//int count                                       =XRC.r_count   ();
+	CDB::RESULT*    R_begin                         = XRC.r_begin();
+	CDB::RESULT*    R_end                           = XRC.r_end();
+	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
+	return dSortTriSphereCollide(Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,AABB);
+    /*
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	{
+		CDB::TRI* T = T_array + Res->id;
+
+	
+
+
+		OutTriCount+=dTriSphere((dReal*)(T->verts[0]),(dReal*)(T->verts[1]),(dReal*)(T->verts[2]),Sphere,Geometry,Flags,CONTACT(Contacts, OutTriCount * Stride));
+	}
+	return OutTriCount;
+
+
+*/
+
+}
+
+
+/*
+int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contacts, int Stride){
+
+
+	// Get sphere 
 
 	const dcVector3 SphereCenter(dGeomGetPosition(Sphere));
 
@@ -425,16 +866,16 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 	memcpy(&SphereCenterF,&SphereCenter,sizeof(Fvector));
 
 
-	/* Make AABB */
-	AABB.x=SphereRadius;//*2.f;
-	AABB.y=SphereRadius;//*2.f;
-	AABB.z=SphereRadius;//*2.f;
+	//Make AABB 
+	AABB.x=SphereRadius;//
+	AABB.y=SphereRadius;//
+	AABB.z=SphereRadius;//
 
 
 
-	/* Retrieve data */
+	// Retrieve data 
 
-	/* Creating minimum contacts */
+	// Creating minimum contacts 
 
 	int OutTriCount = 0;
 	//UINT TriangleIDCount; // Num of tries
@@ -452,10 +893,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		//
-		// T->verts[0];
-		// T->verts[1];
-		// T->verts[2];
+	
 
 
 
@@ -582,6 +1020,8 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 
 }
+*/
+
 #ifdef DEBUG
 void dcTriListCollider::OnRender()
 {

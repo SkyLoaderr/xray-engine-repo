@@ -3,25 +3,30 @@
 #define CPHMOVEMENT_CONTROL_H
 
 #include "PHCharacter.h"
+//#include "MovementControl.h"
+class CPHMovementControl 
 
-class CPHMovementControl
 {
 
 public:
+	
 		enum EEnvironment
 	{
 		peOnGround,
 		peAtWall,
 		peInAir
 	};
+	
 private:
 	void				CheckEnvironment	(const Fvector& V);
 
+	CPHSimpleCharacter  m_character;
+	
 	float				m_fGroundDelayFactor;
 	BOOL				bIsAffectedByGravity;
 	//------------------------------
 	CObject*			pObject;
-	CPHSimpleCharacter  m_character;
+
 	EEnvironment		eOldEnvironment;
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
@@ -45,17 +50,24 @@ private:
 
 	float				fActualVelocity;
 	float				fContactSpeed;
+	float				fLastUpdateTime;
+	Fvector				vLastUpdatePosition;
 public:
+	
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
 
 	BOOL				gcontact_Was;			// Приземление
 	float				gcontact_Power;			// Насколько сильно ударились
 	float				gcontact_HealthLost;	// Скоко здоровья потеряли
-
-
-	void				dbg_Draw(){};
-
+	void				CreateCharacter()		{	
+													dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
+													m_character.Create(size);
+												}
+	void				Load					(LPCSTR section);
+#ifdef DEBUG
+	void				dbg_Draw(){m_character.OnRender();};
+#endif
 
 	void				SetFriction(float air, float wall, float ground)
 	{
@@ -76,15 +88,25 @@ public:
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction){};
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction){};
 
-	void				ActivateBox		(DWORD id)	{ aabb.set(boxes[id]);	}
+	void				ActivateBox		(DWORD id)	{ aabb.set(boxes[id]);
+													
+														m_character.Destroy();
+														CreateCharacter();	
+														m_character.SetPosition(vPosition);	
+													}
 
-	const EEnvironment	Environment		( )			{ return eEnvironment; }
+	EEnvironment	Environment		( )			{ return eEnvironment; }
+	EEnvironment	OldEnvironment		( )		{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
+	const Fbox*			Boxes			( )			{return boxes;}
+	const Fvector&		FootExtent		( )			{return vFootExt;}
 	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
 	void				SetParent		(CObject* P){ pObject = P; }
 
-	void				SetMass			(float M)	{ fMass = M; }
+	void				SetMass			(float M)	{ fMass = M;
+													  m_character.SetMas(fMass);
+													}
 	float				GetMass			()			{ return fMass;	}
 
 	void				SetFoots		(Fvector& C, Fvector &E)
@@ -94,13 +116,16 @@ public:
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}
 
 	void				SetPosition		(Fvector &P)
-	{	vPosition.set	(P); m_character.SetPosition(vPosition);}
+	{	vPosition.set	(P); vLastUpdatePosition.set(P); m_character.SetPosition(vPosition);}
 
 	void				SetPosition		(float x, float y, float z)
 	{	vPosition.set	(x,y,z);m_character.SetPosition(vPosition); 	}
 
 	void				GetPosition		(Fvector &P)
 	{	P.set			(vPosition); }
+	void				GetCharacterPosition(Fvector &P)
+	{ P.set(m_character.GetPosition());}
+
 
 	void				GetBoundingSphere(Fvector &P, float &R)
 	{
@@ -112,7 +137,7 @@ public:
 	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
 
-
+	void SetEnvironment( int enviroment,int old_enviroment);
 
 	CPHMovementControl(void);
 	~CPHMovementControl(void);

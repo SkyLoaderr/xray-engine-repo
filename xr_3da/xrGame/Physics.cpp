@@ -248,10 +248,13 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
 	dGeomSetPosition(Geoms[6], -cabinSepX, cabinSepY+MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
+
 	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
 	dGeomTransformSetGeom(Geoms[7],Geoms[0]);
+
 	dGeomTransformSetInfo(Geoms[5],1);
 	dGeomTransformSetInfo(Geoms[7],1);
+
 	dGeomSetBody(Geoms[5], Bodies[0]);
 	dGeomSetBody(Geoms[7], Bodies[0]);
 
@@ -330,17 +333,35 @@ const	dReal k_d=1000.f;
 		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (step*k_p + k_d));
 
 	}
+	static const dReal w_limit = M_PI/16.f/0.02f;
+	const dReal* rot = dBodyGetAngularVel(Bodies[0]);
+	dReal mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
+				if(mag>w_limit){
+					dReal f=mag/w_limit;
+					dBodySetAngularVel(Bodies[0],rot[0]/f,rot[1]/f,rot[2]/f);
+				}
 }
 /////////
 void CPHJeep::Destroy(){
 	for(UINT i=0;i<NofGeoms;i++) dGeomDestroyUserData(Geoms[i]);
 	DynamicData.Destroy();
-	/*
+	
 	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
 	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
-	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
+
+	dGeomDestroyUserData(Geoms[5]);
+	dGeomDestroyUserData(Geoms[7]);
+	dGeomDestroyUserData(Geoms[0]);
+	dGeomDestroyUserData(Geoms[6]);
+
+	for(UINT i=0;i<5;i++) {
+		dGeomDestroy(Geoms[i]);
+	}
+	dGeomDestroy(Geoms[6]);
+//	dGeomDestroy(Geoms[5]);
+	dGeomDestroy(Geoms[7]);
 	dGeomDestroy(GeomsGroup);
-*/
+
 
 }
 
@@ -604,31 +625,49 @@ void CPHWorld::Destroy(){
 const int dis_frames=11;
 void CPHWorld::Step(dReal step)
 {
+	
 			// compute contact joints and forces
 
 	list<CPHObject*>::iterator iter;
 	//step+=astep;
-	//const dReal max_step=0.02f;//0.0034f;
-	//const dReal min_step=0.005f;
+	
 	const  dReal k_p=24000000.f;//550000.f;///1000000.f;
 	const dReal k_d=400000.f;
 	UINT it_number;
-	const dReal fixed_step=0.02f;
 	frame_time+=step;
-
+	//m_frame_sum+=step;
+	
 	if(!(frame_time<fixed_step)){
 	it_number=(UINT)(frame_time/fixed_step);
 	frame_time-=it_number*fixed_step;
 	}
 	else return;
+/*
+	m_update_delay_count++;
+	
+	if(m_update_delay_count==update_delay){
+		if(m_delay){
+		if(m_delay<m_previous_delay) m_reduce_delay--;
+		else 	m_reduce_delay++;
+		}
+		m_previous_delay=m_delay;
+		m_update_delay_count=0;
+	}
 
-
-			for(UINT i=0; i<it_number;i++)
+	m_delay+=(it_number-m_reduce_delay-1);
+*/
+	//for(UINT i=0;i<(m_reduce_delay+1);i++)
+	for(UINT i=0; i<it_number;i++)
 		{
-			disable_count++;	
+				
+			disable_count++;		
 			if(disable_count==dis_frames+1) disable_count=0;
+			
+			m_steps_num++;
+			double dif=m_frame_sum-Time();
+			if(fabs(dif)>fixed_step) 
+				m_start_time+=dif;
 
-					
 			dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
 			dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
 
@@ -638,100 +677,38 @@ void CPHWorld::Step(dReal step)
 
 
 			dSpaceCollide(Space, 0, &NearCallback); 
-		
+
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 				(*iter)->PhTune(fixed_step);	
+	
+
 
 			dWorldStep(phWorld, fixed_step);
-			
+		
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 				(*iter)->PhDataUpdate(fixed_step);
 			dJointGroupEmpty(ContactGroup);
-	
-		
 
-		}
-	
-/*
-	if(step<=max_step){
-			
-	disable_count++;	
-	if(disable_count==dis_frames+1) disable_count=0;
+
+
 
 		
-			dWorldSetERP(phWorld,  step*k_p / (step*k_p + k_d));
-			dWorldSetCFM(phWorld,  1.f / (step*k_p + k_d));
-	
-			
-			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhTune(step);	
-			
-			
-			dSpaceCollide(Space, 0, &NearCallback);
-		
-			
-			//if(isShooting&&bulletContact.geom.pos[0]!=dInfinity){
-			//	dJointID c = dJointCreateContact(phWorld, ContactGroup, &bulletContact);
-			//	dJointAttach(c, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
-				
-			//	}
-			
-		
-			
-	
 
-			dWorldStep(phWorld, step);
+	//	for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+	//			(*iter)->StepFrameUpdate(step);
 
-			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhDataUpdate(step);
-			//Jeep.DynamicData.CalculateData();
-			
-			dJointGroupEmpty(ContactGroup);
-	
-			//isShooting=false;
-			//bulletContact.geom.pos[0]=dInfinity;
-				
 	}
-	else{
-		UINT n=(UINT)(step/max_step)+1;
-		for(UINT i=0; i<n;i++)
-		{
-			disable_count++;	
-			if(disable_count==dis_frames+1) disable_count=0;
 
-			dWorldSetERP(phWorld,  step*k_p/n / (step*k_p/n + k_d));
-			dWorldSetCFM(phWorld,  1.f / (step*k_p/n + k_d));
-
-//			dWorldSetERP(phWorld,  0.2);
-//			dWorldSetCFM(phWorld,  0.0001);
-
-			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhTune(step/n);	
-//			Jeep.JointTune(step/n);
-			dSpaceCollide(Space, 0, &NearCallback); 
-		
-
-			dWorldStep(phWorld, step/n);
-			//Jeep.DynamicData.CalculateData();
-		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhDataUpdate(step/n);
-			dJointGroupEmpty(ContactGroup);
-	
-		
-
-		}
-	}
-//Jeep.DynamicData.CalculateData();
-//	}
-//step=0.f;
-*/
 }
 
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
+
 		const ULONG N = 100;
 		dContact contacts[N];
 		// get the contacts up to a maximum of N contacts
-		ULONG n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
+		ULONG n;
+	
+		n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 		
 
 		if(
@@ -804,13 +781,14 @@ else
 	for(i = 0; i < n; ++i)
 	{
 
-        contacts[i].surface.mode =dContactApprox1; //dContactBounce|dContactApprox1;
+        contacts[i].surface.mode =dContactBounce|dContactApprox1;
 		contacts[i].surface.mu =1.f;// 5000.f;
 		bool pushing_neg=false;
 		if(dGeomGetUserData(contacts[i].geom.g2)){ 
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
 			if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
+				if(dGeomGetUserData(geom))
 				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
 			}
 			else
@@ -828,6 +806,7 @@ else
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
 			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
+				if(dGeomGetUserData(geom))
 				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
 			}
 			else
@@ -836,6 +815,10 @@ else
 
 			if(dGeomGetUserData(contacts[i].geom.g1)->ph_object){
 					dGeomGetUserData(contacts[i].geom.g1)->ph_object->InitContact(&contacts[i]);
+					pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
+					dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
+					if(pushing_neg) contacts[i].surface.mu=
+														dInfinity;
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					continue;
@@ -844,11 +827,13 @@ else
 		}
 		if(pushing_neg) contacts[i].surface.mu=dInfinity;
 
-		contacts[i].surface.bounce = 0.0f;//0.1f;
-		contacts[i].surface.bounce_vel =0.001f;//0.005f;
+		contacts[i].surface.bounce = 0.01f;//0.1f;
+		contacts[i].surface.bounce_vel =0.5f;//0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 		}
+	
+	
 }
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////CPHGun//////////////////////////////////////////////////////////
@@ -1190,7 +1175,7 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 
 				static const dReal u = -0.1f;
-				static const dReal w_limit = M_PI/4.f/0.02f;
+				static const dReal w_limit = M_PI/2.f/0.02f;
 				static const dReal l_limit = 3.f/0.02f;
 				dReal mag;
 				const dReal* pos = dBodyGetLinearVel(m_body);
@@ -1199,6 +1184,8 @@ void CPHShell::PhDataUpdate(dReal step){
 					dReal f=mag/l_limit;
 					dBodySetLinearVel(m_body,pos[0]/f,pos[1]/f,pos[2]/f);
 				}
+				//const dReal k_l=0.1f;
+				//dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);
 				//dBodyAddForce(m_body, u * pos[0]*mag, u * pos[1]*mag, u * pos[2]*mag);
 				const dReal* rot = dBodyGetAngularVel(m_body);
 				mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
@@ -1206,6 +1193,8 @@ void CPHShell::PhDataUpdate(dReal step){
 					dReal f=mag/w_limit;
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 				}
+				//const dReal k_w=0.1f;
+				//dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
@@ -1320,12 +1309,15 @@ void CPHShell::PhDataUpdate(dReal step){
 
 
 					}
-					
-				
+	
 				}
 /////////////////////////////////////////////////////////////////
 	
-				
+				const dReal k_w=0.1f;
+				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+	
+				const dReal k_l=0.1f;
+				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
 
 }
 void CPHShell::PhTune(dReal step){
@@ -1347,3 +1339,4 @@ if( !dBodyIsEnabled(m_body)) return;
 				mXFORM.mulB(m_inverse_local_transform);
 
 }
+
