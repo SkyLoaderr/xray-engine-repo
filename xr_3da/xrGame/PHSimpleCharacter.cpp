@@ -1100,6 +1100,7 @@ const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
 void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
+	
 	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
 	if(is_control&&b_at_wall)
@@ -1133,6 +1134,29 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 		c->surface.mu		=0.00f;
 	}
 	
+	if(bo1)
+	{
+		if(c->geom.g1==m_wheel)
+		{
+			if(c->geom.normal[1]<0.f)
+			{
+				do_collide=false;
+				return;
+			}
+		}
+	}
+	else
+	{
+		if(c->geom.g2==m_wheel)
+		{
+			if(c->geom.normal[1]>0.f)
+			{
+				do_collide=false;
+				return;
+			}
+		}
+	}
+
 	if(!do_collide) return;
 	
 	if(object){
