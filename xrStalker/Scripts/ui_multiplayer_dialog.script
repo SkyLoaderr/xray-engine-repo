@@ -28,7 +28,7 @@ function multiplayer_dialog:InitControls()
 
 	----- DATA ----
 	----- BUTTONS --->>>
-	local btn_find_rect   = {x = self.left_align_x,
+	local btn_find_rect   = {x = self.btn_rect.x,
 							 y = self.top_align_y,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
