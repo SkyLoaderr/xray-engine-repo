@@ -750,8 +750,8 @@ void CPHElement::PhDataUpdate(dReal step){
 	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
-	const dReal m_l_scale=1.01f;
-	const dReal m_w_scale=1.01f;
+	///const dReal m_l_scale=1.01f;
+	//const dReal m_w_scale=1.01f;
 	const dReal* vel1= dBodyGetLinearVel(m_body);
 	dBodySetLinearVel(m_body,vel1[0]/m_l_scale,vel1[1]/m_l_scale,vel1[2]/m_l_scale);
 	const dReal* wvel1 = dBodyGetAngularVel(m_body);

@@ -31,6 +31,11 @@ struct physicsBone
 {
 	CPhysicsJoint* joint;
 	CPhysicsElement* element;
+	physicsBone()
+	{
+		joint=NULL;
+		element=NULL;
+	}
 };
 DEFINE_MAP	(u32,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
 

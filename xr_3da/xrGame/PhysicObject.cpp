@@ -148,16 +148,42 @@ void CPhysicObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector
 	}
 }
 
+static BONE_P_MAP bone_map=BONE_P_MAP();
 void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 {
 	if (!Visual()) return;
+
+	CKinematics* pKinematics=PKinematics(Visual());
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
+	CPhysicsElement* fixed_element=NULL;
+	if(fixed_bone[0]!=0)
+	{
+		u32 fixed_bone_id=pKinematics->LL_BoneID(fixed_bone);
+		R_ASSERT2(fixed_bone_id!=BI_NONE,"wrong fixed bone");
+		bone_map.clear();
+		bone_map.insert(mk_pair(fixed_bone_id,physicsBone()));
+		m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
+		fixed_element=bone_map.find(fixed_bone_id)->second.element;
+		R_ASSERT2(fixed_element,"fixed bone has no physics");
+
+		//m_pPhysicsShell->add_Joint(P_create_Joint(CPhysicsJoint::enumType::full_control,0,fixed_element));
+	}
+	else
+		m_pPhysicsShell->build_FromKinematics(pKinematics);
+
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true);
-//	m_pPhysicsShell->SetAirResistance(0.0014f,
-//	1.5f);
+	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
+	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
+	if(fixed_element)
+	{
+		dMass m;
+		dMassSetBox(&m,1.f,10000.f,10000.f,10000.f);
+		dMassAdjust(&m,100000000.f);
+		dBodySetMass(fixed_element->get_body(),&m);
+		dBodySetGravityMode(fixed_element->get_body(),0);
+	}
 
 }
 

@@ -227,7 +227,9 @@ void CPHJoint::CreateWelding()
 		->DynamicAttach(dynamic_cast<CPHElement*>(pSecond_element));
 
 }
-
+#ifdef  ODE_SLOW_SOLVER
+#define FIX_BY_ONE_HINGE
+#endif
 void CPHJoint::CreateFullControl()
 {
 
@@ -277,7 +279,7 @@ default:NODEFAULT;
 
 		dJointAttach(m_joint,body1,body2);
 
-#ifndef ODE_SLOW_SOLVER
+#ifndef FIX_BY_ONE_HINGE
 		dJointSetHingeAnchor(m_joint,pos.x-1.f,pos.y,pos.z);
 #else
 		dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
@@ -292,7 +294,7 @@ default:NODEFAULT;
 		dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm);
 
 
-#ifndef ODE_SLOW_SOLVER
+#ifndef FIX_BY_ONE_HINGE
 
 		m_joint1=dJointCreateHinge(phWorld,0);
 
