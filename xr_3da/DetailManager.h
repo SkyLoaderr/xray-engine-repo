@@ -26,7 +26,7 @@ const float		dm_fade				= float(2*dm_size)-.5f;
 const float		dm_slot_size		= DETAIL_SLOT_SIZE;
 const float		dm_slot_radius		= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
 
-class ENGINE_API CDetailManager
+class CDetailManager
 {
 public:
 	struct	SlotItem
