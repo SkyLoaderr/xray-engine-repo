@@ -18,10 +18,12 @@
 
 Fvisual::Fvisual()  : IRender_Visual()
 {
+	m_fast	=	0;
 }
 
 Fvisual::~Fvisual()
 {
+	xr_delete(m_fast);
 }
 
 void Fvisual::Release	()
@@ -121,10 +123,14 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	else	geom.create		(vFormat,pVertices,pIndices);
 }
 
-void Fvisual::Render	(float LOD)
+void Fvisual::Render		(float LOD)
 {
 	RCache.set_Geometry		(geom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+}
+void Fvisual::Render_Fast	(float LOD)
+{
+	Render	(LOD);
 }
 
 #define PCOPY(a)	a = pFrom->a
