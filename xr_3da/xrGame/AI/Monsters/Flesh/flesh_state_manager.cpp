@@ -9,6 +9,7 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
+#include "../../../entitycondition.h"
 
 CStateManagerFlesh::CStateManagerFlesh(CAI_Flesh *monster) : inherited(monster)
 {
@@ -54,7 +55,7 @@ void CStateManagerFlesh::execute()
 			if (prev_substate == eStateEat) {
 				if (!get_state_current()->check_completion())				can_eat = true;
 			} else {
-				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
+				if (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
 			}
 		}
 

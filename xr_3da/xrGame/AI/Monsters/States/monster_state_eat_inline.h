@@ -169,7 +169,7 @@ bool CStateMonsterEatAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatAbstract::check_start_conditions()
 {
-	return (object->GetSatiety() < object->get_sd()->m_fMinSatiety);
+	return (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety);
 }
 
 #undef TEMPLATE_SPECIALIZATION

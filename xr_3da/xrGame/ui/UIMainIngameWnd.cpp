@@ -29,6 +29,7 @@
 #include "UIXmlInit.h"
 #include "UIPdaMsgListItem.h"
 #include "../alife_registry_wrappers.h"
+#include "../actorcondition.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -501,20 +502,20 @@ void CUIMainIngameWnd::Update()
 		{
 		//radiation
 		case ewiRadiation:
-			value = m_pActor->GetRadiation();
+			value = m_pActor->conditions().GetRadiation();
 			break;
 		case ewiWound:
-			value = m_pActor->BleedingSpeed();
+			value = m_pActor->conditions().BleedingSpeed();
 			break;
 		case ewiWeaponJammed:
 			if (m_pWeapon)
 				value = 1 - m_pWeapon->GetCondition();
 			break;
 		case ewiStarvation:
-			value = 1 - m_pActor->GetSatiety();
+			value = 1 - m_pActor->conditions().GetSatiety();
 			break;
 		case ewiFatigue:
-			value = 1 - m_pActor->GetPower();
+			value = 1 - m_pActor->conditions().GetPower();
 			break;
 		default:
 			R_ASSERT(!"Unknown type of warning icon");

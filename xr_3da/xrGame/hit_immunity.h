@@ -5,10 +5,7 @@
 #pragma once
 
 #include "alife_space.h"
-
-
-//раны полученные различными типами хитов
-typedef	svector<float,ALife::eHitTypeMax> HitTypeSVec;
+#include "hit_immunity_space.h"
 
 class CHitImmunity
 {
@@ -26,5 +23,5 @@ protected:
 	//коэффициенты на которые домножается хит
 	//при соответствующем типе воздействия
 	//(для защитных костюмов и специфичных животных)
-	HitTypeSVec m_HitTypeK;
+	HitImmunity::HitTypeSVec m_HitTypeK;
 };

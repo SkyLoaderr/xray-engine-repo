@@ -5,7 +5,9 @@
 #pragma once
 
 #include "alife_space.h"
-#include "EntityCondition.h"
+#include "hit_immunity_space.h"
+
+class NET_Packet;
 
 class CWound
 {
@@ -50,7 +52,7 @@ protected:
 	shared_str m_sParticleName;
 
 	//список составл€ющих раны 
-	HitTypeSVec m_Wounds;
+	HitImmunity::HitTypeSVec m_Wounds;
 
 	bool		m_bToBeDestroy;
 };

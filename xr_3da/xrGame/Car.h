@@ -12,6 +12,9 @@
 #include "phcollisiondamagereceiver.h"
 #include "CarDamageParticles.h"
 #include "xrserver_objects_alife.h"
+#include "CarDamageParticles.h"
+#include "hit_immunity.h"
+
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;

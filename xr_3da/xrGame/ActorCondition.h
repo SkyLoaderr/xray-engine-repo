@@ -8,12 +8,15 @@
 
 #include "EntityCondition.h"
 
-class CActorCondition: virtual public CEntityCondition
-{
+class CActorCondition: public CEntityCondition {
 private:
 	typedef CEntityCondition inherited;
+
+private:
+	CActor		*m_object;
+
 public:
-	CActorCondition(void);
+	CActorCondition(CActor *object);
 	virtual ~CActorCondition(void);
 
 	virtual void LoadCondition(LPCSTR section);
@@ -21,11 +24,11 @@ public:
 	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void UpdateCondition();
 
-protected:
 	void ConditionJump(float weight);
 	void ConditionWalk(float weight, bool accel, bool sprint);
 	void ConditionStand(float weight);
 
+protected:
 	float m_fAlcohol;
 
 	//силы расходуемые на прыжки и бег
@@ -39,10 +42,13 @@ protected:
 	float m_fOverweightJumpK;
 	float m_fAccelK;
 	float m_fSprintK;
-protected:
+
+public:
 	//хромание при потере сил и здоровья
 	virtual bool IsLimping() const;
 	virtual bool IsCantWalk() const;
+
+protected:
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;
 

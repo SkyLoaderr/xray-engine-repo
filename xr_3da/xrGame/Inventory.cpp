@@ -13,6 +13,7 @@
 #include "xr_level_controller.h"
 #include "level.h"
 #include "ai_space.h"
+#include "entitycondition.h"
 
 using namespace InventoryUtilities;
 
@@ -812,14 +813,14 @@ bool CInventory::Eat(PIItem pIItem)
 	CEatableItem* pItemToEat = smart_cast<CEatableItem*>(pIItem);
 	if(!pItemToEat) return false;
 
-	CEntityCondition *pCondition = smart_cast<CEntityCondition*>(m_pOwner);
-	if(!pCondition) return false;
+	CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(m_pOwner);
+	if(!entity_alive) return false;
 
-	pCondition->ChangeHealth(pItemToEat->m_fHealthInfluence);
-	pCondition->ChangePower(pItemToEat->m_fPowerInfluence);
-	pCondition->ChangeSatiety(pItemToEat->m_fSatietyInfluence);
-	pCondition->ChangeRadiation(pItemToEat->m_fRadiationInfluence);
-	pCondition->ChangeBleeding(pItemToEat->m_fWoundsHealPerc);
+	entity_alive->conditions().ChangeHealth(pItemToEat->m_fHealthInfluence);
+	entity_alive->conditions().ChangePower(pItemToEat->m_fPowerInfluence);
+	entity_alive->conditions().ChangeSatiety(pItemToEat->m_fSatietyInfluence);
+	entity_alive->conditions().ChangeRadiation(pItemToEat->m_fRadiationInfluence);
+	entity_alive->conditions().ChangeBleeding(pItemToEat->m_fWoundsHealPerc);
 	
 
 	//уменьшить количество порций

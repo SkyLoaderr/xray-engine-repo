@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../state.h"
+#include "../../../entitycondition.h"
 
 template<typename _Object>
 class	CStateMonsterRest : public CState<_Object> {

@@ -17,6 +17,7 @@
 #include "level_path_manager.h"
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
+#include "entitycondition.h"
 
 using namespace StalkerMovement;
 
@@ -246,7 +247,7 @@ void CStalkerMovementManager::setup_velocities		()
 	int						velocity_mask = eVelocityPositiveVelocity;
 
 	// setup health state
-	if (object().IsLimping())
+	if (object().conditions().IsLimping())
 		velocity_mask		|= eVelocityDamaged;
 
 	// setup body state

@@ -11,6 +11,7 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "../ai_monster_debug.h"
+#include "../../../entitycondition.h"
 
 CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherited(obj)
 {
@@ -69,7 +70,7 @@ void CStateManagerPoltergeist::execute()
 			if (prev_substate == eStateEat) {	// уже ест
 				if (!get_state_current()->check_completion())				can_eat = true;
 			} else {							// ещё не ест	
-				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;	
+				if (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;	
 			}
 		}
 
@@ -118,7 +119,7 @@ void CStateManagerPoltergeist::polter_attack()
 	u32 cur_time = Level().timeServer();
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	
-	bool b_aggressive = object->GetHealth() < 0.5f;
+	bool b_aggressive = object->conditions().GetHealth() < 0.5f;
 
 	if (time_next_flame_attack < cur_time) {
 		object->FireFlame(enemy);

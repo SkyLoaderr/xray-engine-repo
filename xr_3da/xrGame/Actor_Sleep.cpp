@@ -13,6 +13,7 @@
 #include "xrServer.h"
 #include "autosave_manager.h"
 #include "ai_space.h"
+#include "actorcondition.h"
 
 #define ONLINE_RADIUS				2.f
 #define MIN_SPRING_TO_SLEEP			0.8f	
@@ -74,13 +75,13 @@ EActorSleep CActor::CanSleepHere()
 
 EActorSleep CActor::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 {
-	if(IsSleeping()) return easCanSleep;
+	if (conditions().IsSleeping()) return easCanSleep;
 
 	EActorSleep result = without_check?easCanSleep:CanSleepHere();
 	if(easCanSleep != result) 
 		return result;
 
-	CActorCondition::GoSleep();
+	conditions().GoSleep();
 
 	//остановить актера, если он двигался
 	mstate_wishful	&=		~mcAnyMove;
@@ -104,8 +105,8 @@ EActorSleep CActor::GoSleep(ALife::_TIME_ID sleep_time, bool without_check)
 
 void CActor::Awoke()
 {
-	if(!IsSleeping()) return;
-	CActorCondition::Awoke();
+	if(!conditions().IsSleeping()) return;
+	conditions().Awoke();
 
 	Level().Server->game->SetGameTimeFactor(m_fOldTimeFactor);
 
@@ -135,7 +136,7 @@ void CActor::Awoke()
 
 void CActor::UpdateSleep()
 {
-	if(!IsSleeping()) return;
+	if(!conditions().IsSleeping()) return;
 
 
 	VERIFY(this == smart_cast<CActor*>(Level().CurrentEntity()));

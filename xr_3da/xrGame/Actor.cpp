@@ -27,6 +27,7 @@
 #include "character_info.h"
 #include "CustomOutfit.h"
 
+#include "actorcondition.h"
 
 
 // breakpoints
@@ -1107,7 +1108,7 @@ CWound* CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_
 {
 	if (psActorFlags.test(AF_GODMODE)) return NULL;
 
-	return CActorCondition::ConditionHit(who, hit_power, hit_type, element);
+	return conditions().ConditionHit(who, hit_power, hit_type, element);
 }
 
 void CActor::UpdateCondition()
@@ -1117,14 +1118,14 @@ void CActor::UpdateCondition()
 
 	if((mstate_real&mcAnyMove))
 	{
-		ConditionWalk(inventory().TotalWeight()/inventory().GetMaxWeight(), isAccelerated(mstate_real), (mstate_real&mcSprint) != 0);
+		conditions().ConditionWalk(inventory().TotalWeight()/inventory().GetMaxWeight(), isAccelerated(mstate_real), (mstate_real&mcSprint) != 0);
 	}
 	else
 	{
-		ConditionStand(inventory().TotalWeight()/inventory().GetMaxWeight());
+		conditions().ConditionStand(inventory().TotalWeight()/inventory().GetMaxWeight());
 	};
 	
-	CActorCondition::UpdateCondition();
+	conditions().UpdateCondition();
 }
 
 
@@ -1405,7 +1406,7 @@ void CActor::UpdateArtefactsOnBelt()
 
 	if(update_time<ARTEFACTS_UPDATE_TIME)
 	{
-		update_time += CActorCondition::m_iDeltaTime;
+		update_time += conditions().delta_time();
 		return;
 	}
 	else
@@ -1420,11 +1421,11 @@ void CActor::UpdateArtefactsOnBelt()
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
 		if(artefact && artefact->m_bActorPropertiesEnabled)
 		{
-			ChangeBleeding(artefact->m_fBleedingRestoreSpeed*f_update_time);
-			ChangeHealth(artefact->m_fHealthRestoreSpeed*f_update_time);
-			ChangePower(artefact->m_fPowerRestoreSpeed*f_update_time);
-			ChangeSatiety(artefact->m_fSatietyRestoreSpeed*f_update_time);
-			ChangeRadiation(artefact->m_fRadiationRestoreSpeed*f_update_time);
+			conditions().ChangeBleeding(artefact->m_fBleedingRestoreSpeed*f_update_time);
+			conditions().ChangeHealth(artefact->m_fHealthRestoreSpeed*f_update_time);
+			conditions().ChangePower(artefact->m_fPowerRestoreSpeed*f_update_time);
+			conditions().ChangeSatiety(artefact->m_fSatietyRestoreSpeed*f_update_time);
+			conditions().ChangeRadiation(artefact->m_fRadiationRestoreSpeed*f_update_time);
 		}
 	}
 }
@@ -1442,7 +1443,22 @@ float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 	return hit_power;
 }
 
-CPHDestroyable*	CActor::	ph_destroyable	()
+CPHDestroyable*	CActor::ph_destroyable	()
 {
 	return smart_cast<CPHDestroyable*>(character_physics_support());
+}
+
+CEntityCondition *CActor::create_entity_condition	()
+{
+	return		(m_entity_condition = xr_new<CActorCondition>(this));
+}
+
+void CActor::LoadCondition(LPCSTR section)
+{
+	conditions().LoadCondition(section);
+}
+
+bool CActor::IsLimping() const
+{
+	return		(conditions().IsLimping());
 }

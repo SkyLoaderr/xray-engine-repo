@@ -13,6 +13,7 @@
 #include "../../../inventory.h"
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement.h"
+#include "../../../entitycondition.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -540,7 +541,7 @@ void CBaseMonsterAttack::UpdateFrameFlags()
 	if (pMonster->movement().IsMovingOnPath())			frame_flags.or(AF_GOOD_MOVEMENT_ON_PATH);
 	if (IS_NEED_REBUILD())					frame_flags.or(AF_NEED_REBUILD_PATH);
 
-	if (pMonster->GetEntityMorale() < 0.8f) frame_flags.or(AF_LOW_MORALE);
+	if (pMonster->conditions().GetEntityMorale() < 0.8f) frame_flags.or(AF_LOW_MORALE);
 
 	if (CanAttackFromBack())				frame_flags.or(AF_CAN_ATTACK_FROM_BACK);
 

@@ -10,6 +10,7 @@
 #include "../states/monster_state_hitted.h"
 
 #include "../ai_monster_debug.h"
+#include "../../../entitycondition.h"
 
 CStateManagerFracture::CStateManagerFracture(CFracture *obj) : inherited(obj)
 {
@@ -54,7 +55,7 @@ void CStateManagerFracture::execute()
 				if (!get_state_current()->check_completion()) can_eat = true;
 			}
 
-			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+			if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety)) 
 				can_eat = true;		
 		}
 

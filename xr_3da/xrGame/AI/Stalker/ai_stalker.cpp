@@ -38,6 +38,7 @@
 #include "../../sight_manager.h"
 #include "../../ai_object_location.h"
 #include "../../stalker_movement_manager.h"
+#include "../../entitycondition.h"
 
 extern int g_AI_inactive_time;
 
@@ -257,7 +258,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		if(ini->section_exist("immunities"))
 		{
 			LPCSTR imm_sect = ini->r_string("immunities", "immunities_sect");
-			InitImmunities(imm_sect,pSettings);
+			conditions().InitImmunities(imm_sect,pSettings);
 		}
 	}
 

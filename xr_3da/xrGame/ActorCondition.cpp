@@ -1,9 +1,12 @@
 #include "stdafx.h"
-#include ".\actorcondition.h"
+#include "actorcondition.h"
+#include "actor.h"
 
-
-CActorCondition::CActorCondition(void)
+CActorCondition::CActorCondition(CActor *object) :
+	inherited	(object)
 {
+	VERIFY		(object);
+	m_object	= object;
 	m_fJumpPower = 0.f;
 	m_fStandPower = 0.f;
 	m_fWalkPower = 0.f;

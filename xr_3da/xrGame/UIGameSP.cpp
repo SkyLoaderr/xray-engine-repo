@@ -6,6 +6,7 @@
 #include "game_cl_Single.h"
 #include "ui/UIPdaAux.h"
 #include "xr_level_controller.h"
+#include "actorcondition.h"
 
 CUIGameSP::CUIGameSP()
 {
@@ -70,7 +71,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	//уровня персонаж не засыпает, а просто переходит
 	//в меню инвенторя
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor && pActor->g_Alive() && !pActor->GetPower())
+	if(pActor && pActor->g_Alive() && !pActor->conditions().GetPower())
 	{
 			if( MainInputReceiver() == NULL)
 			{

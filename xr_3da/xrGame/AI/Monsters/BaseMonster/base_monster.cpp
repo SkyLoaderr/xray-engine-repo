@@ -25,6 +25,7 @@
 #include "../../../visual_memory_manager.h"
 #include "../../../ai_debug.h"
 #include "../ai_monster_movement.h"
+#include "../../../entitycondition.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -303,7 +304,7 @@ BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
 
 bool CBaseMonster::can_eat_now()
 {
-	return (CorpseMan.get_corpse() && ((GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow));
+	return (CorpseMan.get_corpse() && ((conditions().GetSatiety() < get_sd()->m_fMinSatiety) || flagEatNow));
 }
 
 void CBaseMonster::TranslateActionToPathParams()

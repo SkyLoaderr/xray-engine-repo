@@ -11,7 +11,6 @@
 #include "inventory_space.h"
 #include "physic_item.h"
 #include "phsynchronize.h"
-#include "entitycondition.h"
 #include "hit_immunity.h"
 
 enum EHandDependence{

@@ -31,6 +31,7 @@
 #include "../states/state_move_to_point.h"
 #include "../states/state_look_point.h"
 #include "../states/state_custom_action.h"
+#include "../../../entitycondition.h"
 
 CStateManagerController::CStateManagerController(CController *obj) : inherited(obj)
 {
@@ -137,7 +138,7 @@ void CStateManagerController::execute()
 				if (!get_state_current()->check_completion()) can_eat = true;
 			}
 			
-			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+			if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety)) 
 				can_eat = true;		
 		}
 		

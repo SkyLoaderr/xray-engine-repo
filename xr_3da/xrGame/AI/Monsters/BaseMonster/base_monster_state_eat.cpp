@@ -10,6 +10,7 @@
 #include "../../../ai_object_location.h"
 #include "../../../level_graph.h"
 #include "../ai_monster_movement.h"
+#include "../../../entitycondition.h"
 
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
@@ -157,11 +158,11 @@ void CBaseMonsterEat::Run()
 		pMonster->MotionMan.m_tAction	= ACT_EAT;
 
 		bEating = true;
-		if (pMonster->GetSatiety() >= 0.9f) bHideAfterLunch = true;
+		if (pMonster->conditions().GetSatiety() >= 0.9f) bHideAfterLunch = true;
 
 		// סתוסעü קאסעü
 		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, u32(1000/pMonster->get_sd()->m_fEatFreq));
-			pMonster->ChangeSatiety(pMonster->get_sd()->m_fEatSlice);
+			pMonster->conditions().ChangeSatiety(pMonster->get_sd()->m_fEatSlice);
 			pCorpse->m_fFood -= pMonster->get_sd()->m_fEatSliceWeight;
 		DO_IN_TIME_INTERVAL_END();
 	

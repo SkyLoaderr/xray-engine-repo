@@ -14,16 +14,17 @@
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "InventoryOwner.h"
-#include "ActorCondition.h"
 #include "damage_manager.h"
 #include "material_manager.h"
 #include "StatGraph.h"
 #include "PhraseDialogManager.h"
 #include "CharacterPhysicsSupport.h"
+
 using namespace ACTOR_DEFS;
 
 class CInfoPortion;
 struct GAME_NEWS_DATA;
+class CActorCondition;
 
 class CKnownContactsRegistryWrapper;
 class CEncyclopediaRegistryWrapper;
@@ -50,14 +51,13 @@ class	CHudItem;
 
 struct SActorMotions;
 struct SActorVehicleAnims;
-
+class  CActorCondition;
 
 class	CActor: 
 	public CEntityAlive, 
 	public IInputReceiver,
 	public Feel::Touch,
 	public CInventoryOwner,
-	public CActorCondition,
 	public CMaterialManager,
 	public CPhraseDialogManager
 #ifdef DEBUG
@@ -176,14 +176,14 @@ public:
 	virtual void		Awoke();
 			void		UpdateSleep();
 
-	virtual void		LoadCondition(LPCSTR section) {CActorCondition::LoadCondition(section);}
+	virtual void		LoadCondition(LPCSTR section);
 	
 	//свойства артефактов
 	virtual void		UpdateArtefactsOnBelt	();
 	virtual float		HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type);
 protected:
 	//хромание
-	virtual bool		IsLimping() const {return CActorCondition::IsLimping();	}
+	virtual bool		IsLimping() const;
 	//звук тяжелого дыхания
 	ref_sound			m_HeavyBreathSnd;
 	bool				m_bHeavyBreathSndPlaying;
@@ -598,8 +598,21 @@ public:
 		virtual void					HideCurrentWeapon		(u32 Msg);//, bool only2handed);
 		virtual	void					RestoreHidedWeapon		(u32 Msg);
 
+private:
+	CActorCondition				*m_entity_condition;
 
+protected:
+	virtual	CEntityCondition	*create_entity_condition	();
+
+public:
+	IC		CActorCondition		&conditions					() const;
 };
+
+IC	CActorCondition	&CActor::conditions	() const
+{
+	VERIFY			(m_entity_condition);
+	return			(*m_entity_condition);
+}
 
 //extern float	g_fNumUpdates;
 extern const float	s_fFallTime;

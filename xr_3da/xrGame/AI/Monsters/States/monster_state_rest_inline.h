@@ -47,8 +47,8 @@ void CStateMonsterRestAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestAbstract::execute()
 {
-	bool bNormalSatiety =	(object->GetSatiety() > object->get_sd()->m_fMinSatiety) && 
-		(object->GetSatiety() < object->get_sd()->m_fMaxSatiety); 
+	bool bNormalSatiety =	(object->conditions().GetSatiety() > object->get_sd()->m_fMinSatiety) && 
+		(object->conditions().GetSatiety() < object->get_sd()->m_fMaxSatiety); 
 
 	bool state_fun = false;
 

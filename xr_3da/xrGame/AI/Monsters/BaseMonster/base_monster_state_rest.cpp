@@ -2,6 +2,7 @@
 #include "base_monster.h"
 #include "base_monster_state.h"
 #include "../ai_monster_movement.h"
+#include "../../../entitycondition.h"
 
 #define DELTA_NEXT_THINK	5000
 
@@ -37,7 +38,7 @@ void CBaseMonsterRest::Replanning()
 
 	if ((day_time >= pMonster->get_sd()->m_dwDayTimeBegin) && (day_time <= pMonster->get_sd()->m_dwDayTimeEnd)) {  // день?
 
-		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->get_sd()->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->get_sd()->m_fMaxSatiety); 
+		bool bNormalSatiety = (pMonster->conditions().GetSatiety() > pMonster->get_sd()->m_fMinSatiety) && (pMonster->conditions().GetSatiety() < pMonster->get_sd()->m_fMaxSatiety); 
 		if (bNormalSatiety) {		// отдых
 			m_tAction = ACTION_SATIETY_GOOD;
 		} else {					// бродит, ищет еду

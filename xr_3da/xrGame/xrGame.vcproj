@@ -5309,6 +5309,9 @@
 							<File
 								RelativePath=".\entity_alive.h">
 							</File>
+							<File
+								RelativePath=".\entity_alive_inline.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="EntityCondition"
@@ -5324,6 +5327,9 @@
 							</File>
 							<File
 								RelativePath=".\hit_immunity.h">
+							</File>
+							<File
+								RelativePath=".\hit_immunity_space.h">
 							</File>
 							<File
 								RelativePath=".\Wound.cpp">

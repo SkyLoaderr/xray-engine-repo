@@ -16,6 +16,7 @@
 #include "object_handler_space.h"
 #include "object_handler_planner.h"
 #include "stalker_movement_manager.h"
+#include "entitycondition.h"
 
 bool CStalkerAnimationManager::strapped				() const
 {
@@ -48,7 +49,7 @@ const CAnimationPair *CStalkerAnimationManager::no_object_animation(const EBodyS
 		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
 			return			(&m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
 		else
-			return			(&m_part_animations.A[body_state].m_torso.A[0].A[object().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[object().IsLimping() ? 0 : 1]);
+			return			(&m_part_animations.A[body_state].m_torso.A[0].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[object().conditions().IsLimping() ? 0 : 1]);
 	}
 	else
 		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
@@ -99,15 +100,15 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 				if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
 					return &m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
 				else
-					return &m_part_animations.A[body_state].m_torso.A[slot].A[object().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[1];
+					return &m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[1];
 			}
 			else {
 				if (fis_zero(object().movement().speed())) {
-					return &m_part_animations.A[body_state].m_torso.A[slot].A[object().IsLimping() ? 9 : 6].A[0];
+					return &m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 				}
 				switch (object().movement().movement_type()) {
 					case eMovementTypeStand :
-						return &m_part_animations.A[body_state].m_torso.A[slot].A[object().IsLimping() ? 9 : 6].A[0];
+						return &m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 					case eMovementTypeWalk :
 						if (object().movement().body_state() == eBodyStateStand)
 							return &m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
@@ -115,7 +116,7 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 							return &m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
 					case eMovementTypeRun :
 						if (object().movement().body_state() == eBodyStateStand)
-							return &m_part_animations.A[body_state].m_torso.A[slot].A[object().IsLimping() ? 7 : 8].A[0];
+							return &m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 7 : 8].A[0];
 						else
 							return &m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
 					default : NODEFAULT;
@@ -215,7 +216,7 @@ const CAnimationPair *CStalkerAnimationManager::missile_animation	(u32 slot, con
 		case MS_HIDDEN	 :
 		case MS_EMPTY	 :
 		default			 :
-			return  (&m_part_animations.A[body_state].m_torso.A[slot].A[object().IsLimping() ? 9 : 6].A[0]);
+			return  (&m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0]);
 	}
 }
 

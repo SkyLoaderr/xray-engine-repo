@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "../skeletonanimated.h"
 #include "stalker_movement_manager.h"
+#include "entitycondition.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -59,7 +60,7 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 
 CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state() const
 {
-	return						(((eBodyStateStand == object().movement().body_state()) && object().IsLimping()) ? eBodyStateStandDamaged : object().movement().body_state());
+	return						(((eBodyStateStand == object().movement().body_state()) && object().conditions().IsLimping()) ? eBodyStateStandDamaged : object().movement().body_state());
 }
 
 void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)

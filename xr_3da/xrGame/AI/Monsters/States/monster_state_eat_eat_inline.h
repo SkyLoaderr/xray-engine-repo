@@ -60,7 +60,7 @@ void CStateMonsterEatingAbstract::execute()
 
 		// סתוסעü קאסעü
 		if (time_last_eat + u32(1000/object->get_sd()->m_fEatFreq) < object->m_current_update) {
-			object->ChangeSatiety(object->get_sd()->m_fEatSlice);
+			object->conditions().ChangeSatiety(object->get_sd()->m_fEatSlice);
 			corpse->m_fFood -= object->get_sd()->m_fEatSliceWeight;
 			time_last_eat = object->m_current_update;
 		}
@@ -70,7 +70,7 @@ void CStateMonsterEatingAbstract::execute()
 			object->HDebug->M_Add(0,"Eat :: Eating", D3DCOLOR_XRGB(255,0,0));
 			
 			string64 s;
-			sprintf(s,"Food[%f] Satiety[%f]", object->GetSatiety(), corpse->m_fFood);
+			sprintf(s,"Food[%f] Satiety[%f]", object->conditions().GetSatiety(), corpse->m_fFood);
 			object->HDebug->M_Add(1, s, D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
@@ -94,7 +94,7 @@ void CStateMonsterEatingAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatingAbstract::check_completion()
 {
-	if (object->GetSatiety() > object->get_sd()->m_fMaxSatiety) return true;
+	if (object->conditions().GetSatiety() > object->get_sd()->m_fMaxSatiety) return true;
 	return false;
 }
 

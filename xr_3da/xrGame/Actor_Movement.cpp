@@ -14,8 +14,7 @@
 #include "UI.h"
 #include "ui/UIMainIngameWnd.h"
 #include "string_table.h"
-
-
+#include "actorcondition.h"
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
@@ -203,7 +202,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 			//уменьшить силу игрока из-за выполненого прыжка
 			if (!psActorFlags.test(AF_GODMODE))	
-				ConditionJump(inventory().TotalWeight()/
+				conditions().ConditionJump(inventory().TotalWeight()/
 				inventory().GetMaxWeight());
 		}
 
@@ -515,7 +514,7 @@ bool	CActor::CanJump				()
 
 bool	CActor::CanMove				()
 {
-	if(IsCantWalk())
+	if(conditions().IsCantWalk())
 	{
 		static float m_fSignTime = 0.f;
 

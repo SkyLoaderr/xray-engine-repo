@@ -22,7 +22,7 @@ void CStateZombieAttackRunAbstract::initialize()
 	inherited::initialize();
 	m_time_path_rebuild	= 0;
 
-	if (object->HitMemory.is_hit() && (object->GetHealth() < 0.5f)) {
+	if (object->HitMemory.is_hit() && (object->conditions().GetHealth() < 0.5f)) {
 		action = ACT_RUN;
 	} else {
 		action = ACT_WALK_FWD;

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "base_monster.h"
+#include "../../../entitycondition.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ¬ходные воздействи€ 
@@ -34,7 +35,7 @@ void CBaseMonster::vfUpdateParameters()
 	}
 
 	// Setup is own additional flags
-	m_bDamaged = ((GetHealth() < get_sd()->m_fDamagedThreshold) ? true : false);
+	m_bDamaged = ((conditions().GetHealth() < get_sd()->m_fDamagedThreshold) ? true : false);
 }
 
 

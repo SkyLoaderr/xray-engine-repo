@@ -1,17 +1,16 @@
 #pragma once
 
 #include "entity.h"
-#include "entitycondition.h"
 
 DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
 DEFINE_VECTOR(shared_str, STR_VECTOR, STR_VECTOR_IT);
 
 
 class MONSTER_COMMUNITY;
+class CEntityCondition;
+class CWound;
 
-class CEntityAlive			: public CEntity, 
-							  virtual public CEntityCondition
-{
+class CEntityAlive : public CEntity {
 private:
 	typedef	CEntity			inherited;			
 public:
@@ -52,12 +51,12 @@ public:
 	virtual void			Die						(CObject* who);
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 	
-	virtual float GetfHealth() const { return m_fHealth*100.f; }
-	virtual float SetfHealth(float value) {m_fHealth = value/100.f; return value;}
+	virtual float GetfHealth() const;
+	virtual float SetfHealth(float value);
 	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
 
-	virtual float			g_Health			()	const { return GetHealth()*100.f; }
-	virtual float			g_MaxHealth			()	const { return GetMaxHealth()*100.f; }
+	virtual float			g_Health			()	const;
+	virtual float			g_MaxHealth			()	const;
 
 	virtual float			CalcCondition		(float hit);
 
@@ -145,4 +144,15 @@ public:
 	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
 protected:	
 	MONSTER_COMMUNITY*		monster_community;
+
+private:
+	CEntityCondition			*m_entity_condition;
+
+protected:
+	virtual	CEntityCondition	*create_entity_condition	();
+
+public:
+	IC		CEntityCondition	&conditions					() const;
 };
+
+#include "entity_alive_inline.h"

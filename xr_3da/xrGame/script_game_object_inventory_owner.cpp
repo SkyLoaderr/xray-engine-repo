@@ -25,6 +25,7 @@
 #include "relation_registry.h"
 #include "custommonster.h"
 #include "movement_manager.h"
+#include "entitycondition.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -562,12 +563,12 @@ u32	 CScriptGameObject::accessible_nearest	(const Fvector &position, Fvector &re
 
 bool CScriptGameObject::limping				() const
 {
-	CEntityCondition						*entity_condition = smart_cast<CEntityCondition*>(&object());
-	if (!entity_condition) {
+	CEntityAlive							*entity_alive = smart_cast<CEntityAlive*>(&object());
+	if (!entity_alive) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member limping!");
 		return								(false);
 	}
-	return									(entity_condition->IsLimping());
+	return									(entity_alive->conditions().IsLimping());
 }
 
 void CScriptGameObject::enable_attachable_item	(bool value)

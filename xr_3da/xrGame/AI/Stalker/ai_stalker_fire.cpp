@@ -24,6 +24,7 @@
 #include "../../enemy_manager.h"
 #include "../../item_manager.h"
 #include "../../stalker_movement_manager.h"
+#include "../../entitycondition.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -67,7 +68,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	R1				= r_hand;
 	R2				= r_finger2;
 	if	(
-			(IsLimping() && (movement().mental_state() == eMentalStateFree)) || 
+			(conditions().IsLimping() && (movement().mental_state() == eMentalStateFree)) || 
 			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
 			(!animation().script_animations().empty() && animation().script_animations().front().hand_usage())
 		)

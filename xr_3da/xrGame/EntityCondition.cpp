@@ -21,8 +21,10 @@
 
 
 
-CEntityCondition::CEntityCondition(void)
+CEntityCondition::CEntityCondition(CEntityAlive *object)
 {
+	VERIFY		(object);
+	m_object	= object;
 	m_use_limping_state = false;
 	m_iLastTimeCalled = 0;
 	m_bTimeValid = false;

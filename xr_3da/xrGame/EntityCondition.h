@@ -8,6 +8,7 @@
 
 class CWound;
 class NET_Packet;
+class CEntityAlive;
 
 #include "hit_immunity.h"
 #include "../bone.h"
@@ -16,9 +17,10 @@ class CEntityCondition: public CHitImmunity
 {
 private:
 	bool			m_use_limping_state;
+	CEntityAlive	*m_object;
 
 public:
-	CEntityCondition(void);
+	CEntityCondition(CEntityAlive *object);
 	virtual ~CEntityCondition(void);
 
 	virtual void LoadCondition (LPCSTR section);
@@ -189,7 +191,33 @@ protected:
 
 	float m_limping_threshold;
 
+public:
 	virtual void reinit	();
+	
+	IC		const u64	delta_time	() const 
+	{
+		return		(m_iDeltaTime);
+	}
+
+	IC		const WOUND_VECTOR wounds	() const
+	{
+		return		(m_WoundVector);
+	}
+
+	IC		float	&health()
+	{
+		return		(m_fHealth);
+	}
+
+	IC		float	&hit_bone_scale	()
+	{
+		return		(m_fHitBoneScale);
+	}
+
+	IC		float	&wound_bone_scale()
+	{
+		return		(m_fWoundBoneScale);
+	}
 };
 
 #endif //_ENTITY_CONDITION_H_

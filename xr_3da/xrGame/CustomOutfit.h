@@ -50,7 +50,7 @@ protected:
 	int m_iOutfitIconX;
 	int m_iOutfitIconY;
 
-	HitTypeSVec m_HitTypeProtection;
+	HitImmunity::HitTypeSVec m_HitTypeProtection;
 
 	shared_str		m_ActorVisual;
 };

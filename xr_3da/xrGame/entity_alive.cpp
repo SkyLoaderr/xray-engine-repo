@@ -9,11 +9,9 @@
 #include "xrmessages.h"
 #include "level.h"
 #include "../skeletoncustom.h"
-
 #include "relation_registry.h"
 #include "monster_community.h"
-
-
+#include "entitycondition.h"
 
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"
@@ -56,6 +54,7 @@ CEntityAlive::~CEntityAlive()
 {
 	xr_delete				(m_PhysicMovementControl);
 	xr_delete				(monster_community);
+	xr_delete				(m_entity_condition);
 }
 
 void CEntityAlive::init			()
@@ -65,9 +64,11 @@ void CEntityAlive::init			()
 
 void CEntityAlive::Load		(LPCSTR section)
 {
+	m_entity_condition				= create_entity_condition();
+
 	CEntity::Load					(section);
-	LoadCondition					(section);
-	LoadImmunities					(section);
+	conditions().LoadCondition		(section);
+	conditions().LoadImmunities		(section);
 
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
@@ -171,7 +172,7 @@ void CEntityAlive::UnloadFireParticles()
 void CEntityAlive::reinit			()
 {
 	CEntity::reinit			();
-	CEntityCondition::reinit();
+	conditions().reinit		();
 
 	m_fAccuracy				= 25.f;
 	m_fIntelligence			= 25.f;
@@ -190,21 +191,21 @@ void CEntityAlive::shedule_Update(u32 dt)
 	inherited::shedule_Update	(dt);
 
 	//condition update with the game time pass
-	UpdateConditionTime	();
-	UpdateCondition		();
+	conditions().UpdateConditionTime	();
+	conditions().UpdateCondition		();
 	//Обновление партиклов огня
 	UpdateFireParticles	();
 	//капли крови
 	UpdateBloodDrops	();
 	//обновить раны
-	UpdateWounds		();
+	conditions().UpdateWounds		();
 
 	//убить сущность
 	if(Local() && !g_Alive() && !AlreadyDie())
 	{
-		if(GetWhoHitLastTime()) {
+		if(conditions().GetWhoHitLastTime()) {
 //			Msg			("%6d : KillEntity from CEntityAlive (using who hit last time) for object %s",Level().timeServer(),*cName());
-			KillEntity(GetWhoHitLastTime());
+			KillEntity(conditions().GetWhoHitLastTime());
 		}
 		else {
 //			Msg			("%6d : KillEntity from CEntityAlive for object %s",Level().timeServer(),*cName());
@@ -225,7 +226,7 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 	m_ParticleWounds.clear();
 
 	//добавить кровь и огонь на партиклы, если нужно
-	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
+	for(WOUND_VECTOR::const_iterator it = conditions().wounds().begin(); conditions().wounds().end() != it; ++it)
 	{
 		CWound* pWound = *it;
 		StartFireParticles(pWound);
@@ -256,10 +257,10 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 	}
 		
-	HitScale(element, m_fHitBoneScale, m_fWoundBoneScale);
+	HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит
-	CWound* pWound = ConditionHit(who, P, hit_type, element);
+	CWound* pWound = conditions().ConditionHit(who, P, hit_type, element);
 
 	if(pWound)
 	{
@@ -284,10 +285,10 @@ void CEntityAlive::Die	(CObject* who)
 //вывзывает при подсчете хита
 float CEntityAlive::CalcCondition(float /**hit/**/)
 {	
-	UpdateCondition();
+	conditions().UpdateCondition();
 
 	//dont call inherited::CalcCondition it will be meaningless
-	return GetHealthLost()*100.f;
+	return conditions().GetHealthLost()*100.f;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -529,16 +530,42 @@ void CEntityAlive::UpdateBloodDrops()
 void CEntityAlive::save	(NET_Packet &output_packet)
 {
 	inherited::save(output_packet);
-	CEntityCondition::save(output_packet);
+	conditions().save(output_packet);
 }
 
 void CEntityAlive::load	(IReader &input_packet)
 {
 	inherited::load(input_packet);
-	CEntityCondition::load(input_packet);
+	conditions().load(input_packet);
 }
 
 BOOL	CEntityAlive::net_SaveRelevant		()
 {
 	return TRUE;
+}
+
+CEntityCondition *CEntityAlive::create_entity_condition	()
+{
+	return		(xr_new<CEntityCondition>(this));
+}
+
+float CEntityAlive::GetfHealth	() const
+{
+	return conditions().health()*100.f;
+}
+
+float CEntityAlive::SetfHealth	(float value)
+{
+	conditions().health() = value/100.f;
+	return value;
+}
+
+float CEntityAlive::g_Health	() const
+{
+	return conditions().GetHealth()*100.f;
+}
+
+float CEntityAlive::g_MaxHealth	() const
+{
+	return conditions().GetMaxHealth()*100.f;
 }

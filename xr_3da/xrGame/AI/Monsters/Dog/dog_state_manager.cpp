@@ -57,7 +57,7 @@ void CStateManagerDog::execute()
 			if (prev_substate == eStateEat) {
 				if (!get_state_current()->check_completion())				can_eat = true;
 			} else {
-				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
+				if (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
 			}
 		}
 

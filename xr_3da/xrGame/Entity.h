@@ -10,7 +10,6 @@
 #define PropertyGP(a,b) __declspec( property( get=a, put=b ) )
 
 #include "physicsshellholder.h"
-#include "entitycondition.h"
 #include "damage_manager.h"
 
 // refs

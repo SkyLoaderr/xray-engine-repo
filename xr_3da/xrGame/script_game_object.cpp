@@ -28,6 +28,7 @@
 #include "patrol_path_manager.h"
 #include "ai_object_location.h"
 #include "custommonster.h"
+#include "entitycondition.h"
 
 class CScriptBinderObject;
 
@@ -51,18 +52,18 @@ BIND_FUNCTION10	(&object(),	CScriptGameObject::Squad,				CEntity,		g_Squad,			in
 BIND_FUNCTION10	(&object(),	CScriptGameObject::Group,				CEntity,		g_Group,			int,							-1);
 BIND_FUNCTION10	(&object(),	CScriptGameObject::GetFOV,				CEntityAlive,	ffGetFov,			float,							-1);
 BIND_FUNCTION10	(&object(),	CScriptGameObject::GetRange,			CEntityAlive,	ffGetRange,			float,							-1);
-BIND_FUNCTION10	(&object(),	CScriptGameObject::GetHealth,			CEntityAlive,	GetHealth,			float,							-1);
-BIND_FUNCTION10	(&object(),	CScriptGameObject::GetPower,			CEntityAlive,	GetPower,			float,							-1);
-BIND_FUNCTION10	(&object(),	CScriptGameObject::GetSatiety,			CEntityAlive,	GetSatiety,			float,							-1);
-BIND_FUNCTION10	(&object(),	CScriptGameObject::GetRadiation,		CEntityAlive,	GetRadiation,		float,							-1);
-BIND_FUNCTION10	(&object(),	CScriptGameObject::GetCircumspection,	CEntityAlive,	GetCircumspection,	float,							-1);
-BIND_FUNCTION10	(&object(),	CScriptGameObject::GetMorale,			CEntityAlive,	GetEntityMorale,	float,							-1);
-BIND_FUNCTION01	(&object(),	CScriptGameObject::SetHealth,			CEntityAlive,	ChangeHealth,		float,							float);
-BIND_FUNCTION01	(&object(),	CScriptGameObject::SetPower,			CEntityAlive,	ChangePower,		float,							float);
-BIND_FUNCTION01	(&object(),	CScriptGameObject::SetSatiety,			CEntityAlive,	ChangeSatiety,		float,							float);
-BIND_FUNCTION01	(&object(),	CScriptGameObject::SetRadiation,		CEntityAlive,	ChangeRadiation,	float,							float);
-BIND_FUNCTION01	(&object(),	CScriptGameObject::SetCircumspection,	CEntityAlive,	ChangeCircumspection,float,							float);
-BIND_FUNCTION01	(&object(),	CScriptGameObject::SetMorale,			CEntityAlive,	ChangeEntityMorale,	float,							float);
+BIND_FUNCTION10	(&object(),	CScriptGameObject::GetHealth,			CEntityAlive,	conditions().GetHealth,			float,							-1);
+BIND_FUNCTION10	(&object(),	CScriptGameObject::GetPower,			CEntityAlive,	conditions().GetPower,			float,							-1);
+BIND_FUNCTION10	(&object(),	CScriptGameObject::GetSatiety,			CEntityAlive,	conditions().GetSatiety,			float,							-1);
+BIND_FUNCTION10	(&object(),	CScriptGameObject::GetRadiation,		CEntityAlive,	conditions().GetRadiation,		float,							-1);
+BIND_FUNCTION10	(&object(),	CScriptGameObject::GetCircumspection,	CEntityAlive,	conditions().GetCircumspection,	float,							-1);
+BIND_FUNCTION10	(&object(),	CScriptGameObject::GetMorale,			CEntityAlive,	conditions().GetEntityMorale,	float,							-1);
+BIND_FUNCTION01	(&object(),	CScriptGameObject::SetHealth,			CEntityAlive,	conditions().ChangeHealth,		float,							float);
+BIND_FUNCTION01	(&object(),	CScriptGameObject::SetPower,			CEntityAlive,	conditions().ChangePower,		float,							float);
+BIND_FUNCTION01	(&object(),	CScriptGameObject::SetSatiety,			CEntityAlive,	conditions().ChangeSatiety,		float,							float);
+BIND_FUNCTION01	(&object(),	CScriptGameObject::SetRadiation,		CEntityAlive,	conditions().ChangeRadiation,	float,							float);
+BIND_FUNCTION01	(&object(),	CScriptGameObject::SetCircumspection,	CEntityAlive,	conditions().ChangeCircumspection,float,							float);
+BIND_FUNCTION01	(&object(),	CScriptGameObject::SetMorale,			CEntityAlive,	conditions().ChangeEntityMorale,	float,							float);
 BIND_FUNCTION02	(&object(),	CScriptGameObject::SetScriptControl,	CScriptMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					shared_str);
 BIND_FUNCTION10	(&object(),	CScriptGameObject::GetScriptControl,	CScriptMonster,	GetScriptControl,	bool,								false);
 BIND_FUNCTION10	(&object(),	CScriptGameObject::GetScriptControlName,CScriptMonster,GetScriptControlName,LPCSTR,							"");
@@ -235,11 +236,9 @@ CHangingLamp* CScriptGameObject::get_hanging_lamp()
 
 LPCSTR CScriptGameObject::WhoHitName()
 {
-	CEntityCondition *pEntityCondition = 
-						smart_cast<CEntityCondition*>(&object());
-	
-	if (pEntityCondition)
-		return			pEntityCondition->GetWhoHitLastTime()?(*pEntityCondition->GetWhoHitLastTime()->cName()):NULL;
+	CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(&object());
+	if (entity_alive)
+		return			entity_alive->conditions().GetWhoHitLastTime()?(*entity_alive->conditions().GetWhoHitLastTime()->cName()):NULL;
 	else 
 	{
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member  WhoHitName()");
@@ -249,11 +248,9 @@ LPCSTR CScriptGameObject::WhoHitName()
 
 LPCSTR CScriptGameObject::WhoHitSectionName()
 {
-	CEntityCondition *pEntityCondition = 
-						smart_cast<CEntityCondition*>(&object());
-	
-	if (pEntityCondition)
-		return			pEntityCondition->GetWhoHitLastTime()?(*pEntityCondition->GetWhoHitLastTime()->cNameSect()):NULL;
+	CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(&object());
+	if (entity_alive)
+		return			entity_alive->conditions().GetWhoHitLastTime()?(*entity_alive->conditions().GetWhoHitLastTime()->cNameSect()):NULL;
 	else 
 	{
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member  WhoHitName()");

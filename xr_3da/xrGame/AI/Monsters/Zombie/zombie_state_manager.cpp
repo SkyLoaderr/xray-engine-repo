@@ -12,6 +12,7 @@
 #include "../states/monster_state_squad_rest.h"
 #include "../states/monster_state_squad_rest_follow.h"
 #include "../ai_monster_debug.h"
+#include "../../../entitycondition.h"
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {
@@ -56,7 +57,7 @@ void CStateManagerZombie::execute()
 				if (!get_state_current()->check_completion()) can_eat = true;
 			}
 
-			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+			if ((prev_substate != eStateEat) && (object->conditions().GetSatiety() < object->get_sd()->m_fMinSatiety)) 
 				can_eat = true;		
 		}
 
