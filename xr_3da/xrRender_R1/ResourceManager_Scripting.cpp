@@ -187,7 +187,9 @@ BOOL	CResourceManager::_lua_HasShader	(LPCSTR s_shader)
 #ifdef _EDITOR
 	return Script::bfIsObjectPresent(LSVM,undercorated,"editor",LUA_TFUNCTION);
 #else
-	return Script::bfIsObjectPresent(LSVM,undercorated,"normal",LUA_TFUNCTION);
+	return	Script::bfIsObjectPresent(LSVM,undercorated,"normal",LUA_TFUNCTION)		||
+			Script::bfIsObjectPresent(LSVM,undercorated,"l_special",LUA_TFUNCTION)
+			;
 #endif
 }
 
