@@ -30,7 +30,9 @@
 #include <io.h>
 #include <stdio.h>
 
-#include "smart_cast.h"
+#ifdef AI_COMPILER
+#	include "smart_cast.h"
+#endif
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}
