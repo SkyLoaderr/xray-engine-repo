@@ -224,13 +224,13 @@ end
 -- end of postprocess for rainbow
 --
 
-function get_level_object(obj_name)
-    local res = level.object(obj_name)
+function debug_get_level_object(obj_name)
+    local res = level.debug_object(obj_name)
     while res == nil do
 
-    	-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    	-- !!!!! ме гюйнллемрюпхбюире, хмюве ме асдер бхдмн ньханй опх пюяярюмнбйе назейрнб !!!!!
-	-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!! ме гюйнллемрюпхбюире, хмюве ме асдер бхдмн ньханй опх пюяярюмнбйе назейрнб !!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         printf("get_level_object() is waiting for object \"%s\"", obj_name)
 
         res         = level.object(obj_name)
@@ -239,10 +239,10 @@ function get_level_object(obj_name)
     return          res
 end
 
-function get_actor()
-    local res       = level.actor()
+function debug_get_actor()
+    local res       = level.debug_actor()
     while res == nil do
-        res         = level.actor()
+        res         = level.debug_actor()
         wait        ()
     end
     return          res

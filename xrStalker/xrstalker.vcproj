@@ -1012,9 +1012,6 @@
 					RelativePath=".\scripts\anomaly.script">
 				</File>
 				<File
-					RelativePath=".\scripts\anomaly_player.script">
-				</File>
-				<File
 					RelativePath=".\scripts\arbug.script">
 				</File>
 				<File
@@ -1028,12 +1025,6 @@
 				</File>
 				<File
 					RelativePath=".\scripts\ce_new_game_dm.script">
-				</File>
-				<File
-					RelativePath=".\scripts\Copy of _test.script">
-				</File>
-				<File
-					RelativePath=".\scripts\Copy of a1.script">
 				</File>
 				<File
 					RelativePath=".\scripts\dbg_test.script">
