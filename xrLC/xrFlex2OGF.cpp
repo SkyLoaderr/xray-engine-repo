@@ -18,7 +18,7 @@ void CBuild::Flex2OGF()
 	{
 		R_ASSERT( ! (*it)->empty() );
 		
-		u32 MODEL_ID		= it-g_XSplit.begin();
+		u32 MODEL_ID		= u32(it-g_XSplit.begin());
 		
 		OGF*		pOGF	= xr_new<OGF> ();
 		Face*		F		= *((*it)->begin());			// first face

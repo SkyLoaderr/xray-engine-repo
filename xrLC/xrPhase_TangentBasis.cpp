@@ -77,7 +77,7 @@ void CBuild::xrPhase_TangentBasis()
 		{
 			Vertex*		V	= F->v[v];	
 			Fvector2	Ftc = F->tc.front().uv[v];
-			u32 ID			= std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin();
+			u32 ID			= u32(std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin());
 			xr_vector<u32>& m	= remap[ID];
 
 			// Search
