@@ -209,10 +209,13 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	
 	if ((A || !_A) && (B || !_B))
 		m_iSoundIndex = iIndex;
-	else {
-		A = _A;
-		B = _B;
-	}
+	else
+		if (!m_tpaDynamicSounds[m_iSoundIndex].tpEntity || m_tpaDynamicSounds[m_iSoundIndex].tpEntity->g_Alive()) {
+			A = _A;
+			B = _B;
+		}
+		else
+			m_iSoundIndex = -1;
 	J					= A || B;
 	
 	// victory probability

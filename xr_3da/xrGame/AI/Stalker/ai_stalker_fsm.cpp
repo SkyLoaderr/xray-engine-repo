@@ -255,6 +255,7 @@ void CAI_Stalker::ForwardCover()
 		m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 		m_dwLastRangeSearch = 0;
 		m_tActionState = eActionStateRun;
+		m_dwActionStartTime = Level().timeServer();
 	}
 	m_dwRandomFactor			= 50;
 	switch (m_tActionState) {
@@ -275,8 +276,10 @@ void CAI_Stalker::ForwardCover()
 				eStateTypeDanger,
 				eLookTypeFirePoint,
 				tPoint);
-			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L))
+			if ((m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) || (Level().timeServer() - m_dwActionStartTime > 2000)) {
+				m_dwActionStartTime = Level().timeServer();
 				m_tActionState = eActionStateStand;
+			}
 			break;
 		}
 		case eActionStateStand : {
@@ -299,8 +302,10 @@ void CAI_Stalker::ForwardCover()
 				eLookTypeFirePoint,
 				tPoint);
 			
-			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || (!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1)))
+			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || (!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1))) {
 				m_tActionState			= eActionStateRun;
+				m_dwActionStartTime		= Level().timeServer();
+			}
 			break;
 		}
 		default : m_tActionState = eActionStateRun;
@@ -504,7 +509,10 @@ void CAI_Stalker::Think()
 		m_dwInertion			= 20000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (A && !K && !H && L) {

@@ -449,6 +449,7 @@ void CCustomMonster::eye_pp_s0			( )
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 	Device.Statistic.TEST0.End				();
 }
+
 void CCustomMonster::eye_pp_s1			( )
 {
 	eye_pp_stage						++;

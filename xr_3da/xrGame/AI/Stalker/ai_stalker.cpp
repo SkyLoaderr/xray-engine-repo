@@ -887,32 +887,33 @@ void CAI_Stalker::Update	( u32 DT )
 		}
 	}
 	
-	R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
-	SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
-	R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(m_dwLastMaterialID)->name);
-	// sound step
-	if (m_tMovementType != eMovementTypeStand) {
-		if(m_fTimeToStep < 0) {
-			m_bStep				= !m_bStep;
-			float k				= (m_tBodyState == eBodyStateCrouch) ? 0.75f : 1.f;
-			float tm			= (m_tMovementType == eMovementTypeRun)?(PI/(k*10.f)):(PI/(k*7.f));
-			m_fTimeToStep		= tm;
-			m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
-			m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
+	if (g_Alive()) {
+		R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
+		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
+		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(m_dwLastMaterialID)->name);
+		// sound step
+		if (m_tMovementType != eMovementTypeStand) {
+			if(m_fTimeToStep < 0) {
+				m_bStep				= !m_bStep;
+				float k				= (m_tBodyState == eBodyStateCrouch) ? 0.75f : 1.f;
+				float tm			= (m_tMovementType == eMovementTypeRun)?(PI/(k*10.f)):(PI/(k*7.f));
+				m_fTimeToStep		= tm;
+				m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
+				m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
+			}
+			m_fTimeToStep -= dt;
 		}
-		m_fTimeToStep -= dt;
+		float	s_k			=	(m_tBodyState == eBodyStateCrouch)?0.85f:1.f;
+		float	s_vol		=	s_k * ((m_tMovementType == eMovementTypeRun)?1.f:.85f);
+		if (m_tpSoundStep[0].feedback)		{
+			m_tpSoundStep[0].set_position	(vPosition);
+			m_tpSoundStep[0].set_volume	(s_vol);
+		}
+		if (m_tpSoundStep[1].feedback)		{
+			m_tpSoundStep[1].set_position	(vPosition);
+			m_tpSoundStep[1].set_volume	(s_vol);
+		}
 	}
-	float	s_k			=	(m_tBodyState == eBodyStateCrouch)?0.85f:1.f;
-	float	s_vol		=	s_k * ((m_tMovementType == eMovementTypeRun)?1.f:.85f);
-	if (m_tpSoundStep[0].feedback)		{
-		m_tpSoundStep[0].set_position	(vPosition);
-		m_tpSoundStep[0].set_volume	(s_vol);
-	}
-	if (m_tpSoundStep[1].feedback)		{
-		m_tpSoundStep[1].set_position	(vPosition);
-		m_tpSoundStep[1].set_volume	(s_vol);
-	}
-
 	m_inventory.Update(DT);
 
 	// *** general stuff

@@ -142,9 +142,9 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			else
 				if (tpDestinationPosition)
 					if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
-						if (dwCurNode != AI_Path.Nodes[i - 1])
-							m_tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
-						m_tpaPoints.push_back(tStartPosition = *tpDestinationPosition);
+						if (dwCurNode != AI_Path.DestNode)
+							m_tpaPointNodes.push_back(AI_Path.DestNode);
+						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 					else {
 						if (dwCurNode != AI_Path.DestNode)
@@ -152,7 +152,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 		
-		if ((!tpDestinationPosition) && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)) {
+		if (!tpDestinationPosition && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)) {
 			m_tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
 			m_tpaPointNodes.push_back(AI_Path.Nodes[N - 1]);
 		}
