@@ -10,10 +10,18 @@ void	CRenderTarget::OnDeviceCreate	()
 	rt_Accumulator	= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
 	rt_Bloom_1		= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
 	rt_Bloom_2		= Device.Shader._CreateRT	(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
+
+	s_combine_dbg_Color			= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
+	s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
+	s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
 }
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
+	Device.Shader.Delete		(s_combine_dbg_Color);
+	Device.Shader.Delete		(s_combine_dbg_Normal);
+	Device.Shader.Delete		(s_combine_dbg_Accumulator);
+
 	Device.Shader._DeleteRT		(rt_Bloom_2		);
 	Device.Shader._DeleteRT		(rt_Bloom_1		);
 	Device.Shader._DeleteRT		(rt_Accumulator	);
