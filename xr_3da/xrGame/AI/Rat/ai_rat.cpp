@@ -240,19 +240,19 @@ IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode
 {
 	// check if it is left node
 	if ((fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tRightUp.z) < EPSILON) &&
-		(fabs(tCurrentSubNode.tRightUp.x == tMySubNode.tLeftDown.x) < EPSILON))
+		(fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON))
 		return(true);
 	// check if it is front node
-	if ((fabs(tCurrentSubNode.tLeftDown.z == tMySubNode.tRightUp.z)  < EPSILON) &&
-		(fabs(tCurrentSubNode.tLeftDown.x == tMySubNode.tLeftDown.x) < EPSILON))
+	if ((fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z)  < EPSILON) &&
+		(fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPSILON))
 		return(true);
 	// check if it is right node
-	if ((fabs(tCurrentSubNode.tLeftDown.z == tMySubNode.tLeftDown.z) < EPSILON) &&
-		(fabs(tCurrentSubNode.tLeftDown.x == tMySubNode.tRightUp.x) < EPSILON))
+	if ((fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPSILON) &&
+		(fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPSILON))
 		return(true);
 	// check if it is back node
-	if ((fabs(tCurrentSubNode.tRightUp.z == tMySubNode.tLeftDown.z) < EPSILON) &&
-		(fabs(tCurrentSubNode.tRightUp.x == tMySubNode.tRightUp.x) < EPSILON))
+	if ((fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPSILON) &&
+		(fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tRightUp.x) < EPSILON))
 		return(true);
 	// otherwise
 	return(false);
@@ -293,38 +293,77 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 	Fvector tRightUp;
 	AI.UnpackPosition(tLeftDown,tpStartNode->p0);
 	AI.UnpackPosition(tRightUp,tpStartNode->p1);
+	
+	/**/
+	float x = tCurrentPosition.x - (tLeftDown.x - fSubNodeSize/2.f);
+	float z = tCurrentPosition.z - (tLeftDown.z - fSubNodeSize/2.f);
+	//iResult = floor(x/fSubNodeSize)*(floor((tRightUp.z - tLeftDown.z)/fSubNodeSize) + 1) + floor(z/fSubNodeSize);
+	/**/
+	SSubNode tMySubNode;
+	tMySubNode.tLeftDown.x = tLeftDown.x - fSubNodeSize/2.f + fSubNodeSize*floor(x/fSubNodeSize);
+	tMySubNode.tLeftDown.z = tLeftDown.z - fSubNodeSize/2.f + fSubNodeSize*floor(z/fSubNodeSize);
+	tMySubNode.tRightUp.x = tMySubNode.tLeftDown.x + fSubNodeSize;
+	tMySubNode.tRightUp.z = tMySubNode.tLeftDown.z + fSubNodeSize;
 	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
 		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 			tNode.tLeftDown.x = i;
-			tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
 			tNode.tLeftDown.z = j;
 			tNode.tRightUp.x = i + fSubNodeSize;
-			tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
 			tNode.tRightUp.z = j + fSubNodeSize;
-			tNode.bEmpty = true;
-			tpSubNodes.push_back(tNode);
-			if (bfInsideSubNode(tCurrentPosition,tNode))
+			if (
+				(tNode.tLeftDown.x == tMySubNode.tLeftDown.x) &&
+				(tNode.tLeftDown.z == tMySubNode.tLeftDown.z) &&
+				(tNode.tRightUp.x == tMySubNode.tRightUp.x) &&
+				(tNode.tRightUp.z == tMySubNode.tRightUp.z)
+				) {
 				iResult = iCount;
-			iCount++;
-		}
-	}
-	NodeLink *taLinks = (NodeLink *)((u8 *)tpStartNode + sizeof(NodeCompressed));
-	iCount = tpStartNode->link_count;
-	for (int k=0; k<iCount; k++) {
-		NodeCompressed *tpCurrentNode = AI.Node(AI.UnpackLink(taLinks[k]));
-		AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
-		AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
-		for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize)
-			for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
-				tNode.tLeftDown.x = i;
-				tNode.tLeftDown.y = ffGetY(*tpCurrentNode,i,j);
-				tNode.tLeftDown.z = j;
-				tNode.tRightUp.x = i + fSubNodeSize;
-				tNode.tRightUp.y = ffGetY(*tpCurrentNode,i + fSubNodeSize,j + fSubNodeSize);
-				tNode.tRightUp.z = j + fSubNodeSize;
-				tNode.bEmpty = true;
-				tpSubNodes.push_back(tNode);
+				iCount++;
 			}
+			else
+				if (bfNeighbourNode(tNode,tMySubNode)) {
+					tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+					tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+					tNode.bEmpty = true;
+					tpSubNodes.push_back(tNode);
+					//if (bfInsideSubNode(tCurrentPosition,tNode))
+					//	iResult = iCount;
+					iCount++;
+					if (iCount >= 5)
+						break;
+				}
+		}
+		if (iCount >= 5)
+			break;
+	}
+	if (iCount < 5) {
+		NodeLink *taLinks = (NodeLink *)((u8 *)tpStartNode + sizeof(NodeCompressed));
+		iCount = tpStartNode->link_count;
+		for (int k=0; k<iCount; k++) {
+			NodeCompressed *tpCurrentNode = AI.Node(AI.UnpackLink(taLinks[k]));
+			AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
+			AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
+			for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+				for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
+					tNode.tLeftDown.x = i;
+					tNode.tLeftDown.z = j;
+					tNode.tRightUp.x = i + fSubNodeSize;
+					tNode.tRightUp.z = j + fSubNodeSize;
+					if (bfNeighbourNode(tNode,tMySubNode)) {
+						tNode.tLeftDown.y = ffGetY(*tpCurrentNode,i,j);
+						tNode.tRightUp.y = ffGetY(*tpCurrentNode,i + fSubNodeSize,j + fSubNodeSize);
+						tNode.bEmpty = true;
+						tpSubNodes.push_back(tNode);
+						iCount++;
+						if (iCount >= 5)
+							break;
+					}
+				}
+				if (iCount >= 5)
+					break;
+			}
+			if (iCount >= 5)
+				break;
+		}
 	}
 	return(iResult);
 }
@@ -367,22 +406,21 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
 	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
-		vector<SSubNode> tpSubNodes;
 		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
 		//Level().AI.UnpackPosition(tCurrentPosition,AI_Node->p0);
 		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 		// filling the subnodes with the moving objects
-		/**
+		/**/
 		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-		vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
-		if (Squad.Leader != this)
-			Members.push_back(Squad.Leader);
-		for (int i=0; i<Members.size(); i++)
-			Members[i]->tpfGetCCFModel()->Enable(TRUE);
-		Level().ObjectSpace.GetNearest(tCurrentPosition,2*(Level().AI.GetHeader().size));
+		vector<CEntity*> &Members = Squad.Groups[g_Group()].Members;
+		//if (Squad.Leader != this)
+		//	Members.push_back(Squad.Leader);
+		//for (int i=0; i<Members.size(); i++)
+		//	Members[i]->tpfGetCCFModel()->Enable(TRUE);
+		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
 		//Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,3*(Level().AI.GetHeader().size));
 		//Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
-		CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
 		Fvector tCenter;
 		if (!(tpNearestList.empty())) {
 			int i=0;
@@ -395,14 +433,24 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 				for (int j=0; j<tpSubNodes.size(); j++)
 					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
 						tpSubNodes[j].bEmpty = false;
+
+				CAI_Rat *tMember = dynamic_cast<CAI_Rat*>(tpCurrentObject);
+				if (tMember)
+					if (tMember->AI_Path.TravelPath.size() > tMember->AI_Path.TravelStart + 2) {
+						CAI_Space &AI = Level().AI;
+						tCenter = tMember->AI_Path.TravelPath[tMember->AI_Path.TravelStart + 1].P;
+						for (int j=0; j<tpSubNodes.size(); j++)
+							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
+								tpSubNodes[j].bEmpty = false;
+					}
 				i++;
 			}
-			Msg("%d",i);
+			//Msg("%d",i);
 		}
 		else {
-			Msg("empty");
+			//Msg("empty");
 		}
-		/**/
+		/**
 		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 		vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
 		if (Squad.Leader != this)
@@ -425,14 +473,14 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j]))
 								tpSubNodes[j].bEmpty = false;
 					}
-				/**/
+				/**
 			}
 		/**/
 		// checking the nearest nodes
-		vector<SSubNode> tpFreeNeighbourNodes;
 		tpFreeNeighbourNodes.clear();
-		for ( i=0; i<tpSubNodes.size(); i++)
-			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
+		for (int i=0; i<tpSubNodes.size(); i++)
+			//if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
+			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty))
 				tpFreeNeighbourNodes.push_back(tpSubNodes[i]);
 		tpSubNodes.clear();
 		AI_Path.TravelPath.clear();
@@ -468,13 +516,12 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 		}
 	}
 	else {
-		vector<SSubNode> tpSubNodes;
 
 		//Msg("Outside the node");
 
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 
-		/**
+		/**/
 		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
 		//Level().ObjectSpace.GetNearest(tCurrentPosition,3*(Level().AI.GetHeader().size));
 		//Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
@@ -493,7 +540,7 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 				}
 			}
 		}
-		/**/
+		/**
 		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 		vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
 		if (Squad.Leader != this)
@@ -518,7 +565,7 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 							break;
 						}
 					}
-				/**/
+				/**
 			}
 		/**/
 		AI_Path.TravelPath.clear();
@@ -577,220 +624,16 @@ void CAI_Rat::Attack()
 				}
 			return;
 		}
-		else {
-			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-			// determining who is leader
-			CEntity* Leader = Squad.Leader;
-			// checking if the leader exists
-			R_ASSERT (Leader);
-			// checking if leader is dead then make myself a leader
-			if (Leader != this)
-				if ((Leader->g_Health() <= 0) 
-					|| (!(Leader->m_bMobility)) 
-					/**/
-					|| (
-					 (!(Squad.Groups[g_Group()].m_bLeaderViewsEnemy)) && 
-					 (Enemy.bVisible)
-					 )
-					 /**/
-					 ) {
-						Leader = this;
-						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
-						//Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
-					}
-			
-			if (Leader == this) {
-				if (Enemy.bVisible) {
+		else
+			if (Enemy.bVisible) {
+				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+				// determining who is leader
+				CEntity* Leader = Squad.Leader;
+				if (!Squad.Groups[g_Group()].m_bLeaderViewsEnemy) {
+					Squad.Leader = this;
 					Squad.Groups[g_Group()].m_bLeaderViewsEnemy = true;
-					bBuildPathToLostEnemy = false;
-					// saving an enemy
-					tSavedEnemy = Enemy.Enemy;
-					tSavedEnemyPosition = Enemy.Enemy->Position();
-					tpSavedEnemyNode = Enemy.Enemy->AI_Node;
-					dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
-					// determining the team
-					// setting watch mode to false
-					bool bWatch = false;
-					// get pointer to the class of node estimator 
-					// for finding the best node in the area
-					CRatSelectorAttack S = SelectorAttack;
-					// if i am not a leader then assign leader
-					if (Leader != this) {
-						S.m_tLeader = Leader;
-						S.m_tLeaderPosition = Leader->Position();
-						S.m_tpLeaderNode = Leader->AI_Node;
-						S.m_tLeaderNode = Leader->AI_NodeID;
-					}
-					// otherwise assign leader to null
-					else {
-						S.m_tLeader = 0;
-						S.m_tLeaderPosition.set(0,0,0);
-						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
-					}
-					S.m_tHitDir			= tHitDir;
-					S.m_dwHitTime		= dwHitTime;
-					
-					S.m_dwCurTime		= Level().timeServer();
-					//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
-					
-					S.m_tMe				= this;
-					S.m_tpMyNode		= AI_Node;
-					S.m_tMyPosition		= Position();
-					
-					S.m_tEnemy			= Enemy.Enemy;
-					S.m_tEnemyPosition	= Enemy.Enemy->Position();
-					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
-					
-					S.taMembers = Squad.Groups[g_Group()].Members;
-					if (S.m_tLeader)
-						S.taMembers.push_back(S.m_tLeader);
-
-					// checking if I need to rebuild the path i.e. previous search
-					// has found better destination node
-					if (AI_Path.bNeedRebuild) {
-						// building a path from and to
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
-						if (AI_Path.Nodes.size() > 2) {
-						// if path is long enough then build travel line
-							AI_Path.BuildTravelLine(Position());
-							//m_bMobility = true;
-						}
-						else {
-						// if path is too short then clear it (patch for ExecMove)
-							AI_Path.TravelPath.clear();
-							AI_Path.bNeedRebuild = FALSE;
-							//m_bMobility = false;
-						}
-					} 
-					else {
-						Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
-						// search for the best node according to the 
-						// SelectFollow evaluation function in the radius N meteres
-						float fOldCost;
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path)) || (!(Leader->m_bMobility))) && (S.BestCost < (fOldCost - S.fLaziness))){
-							AI_Path.DestNode		= S.BestNode;
-							AI_Path.bNeedRebuild	= TRUE;
-							if (AI_Path.DestNode != S.BestNode)
-								m_bMobility = true;
-						} 
-						else {
-							// search hasn't found a better node we have to look around
-							bWatch = true;
-							//if (AI_Path.Nodes.size() <= 2)
-							m_bMobility = false;
-						}
-						if (AI_Path.Nodes.size() <= 2)
-							AI_Path.bNeedRebuild = TRUE;
-					}
-					if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
-						q_action.setup(AI::AIC_Action::AttackBegin);
-						m_tpEnemyBeingAttacked = Enemy.Enemy;
-						// setting up a look
-						q_look.setup(
-							AI::AIC_Look::Look, 
-							AI::t_Object, 
-							&Enemy,
-							1000);
-						q_look.o_look_speed=_FB_look_speed;
-					}
-					else {
-						q_action.setup(AI::AIC_Action::AttackEnd);
-						SetDirectionLook(AI_Node);
-					}
-
-					m_fCurSpeed = m_fMaxSpeed;
-					bStopThinking = true;
-					return;
 				}
-				else {
-					Squad.Groups[g_Group()].m_bLeaderViewsEnemy = false;
-					tSavedEnemy = Enemy.Enemy;
-					tSavedEnemyPosition = Enemy.Enemy->Position();
-					tpSavedEnemyNode = Enemy.Enemy->AI_Node;
-					dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
-					if ((dwSavedEnemyNodeID != AI_Path.DestNode) || (!bBuildPathToLostEnemy)) {
-						bBuildPathToLostEnemy = true;
-						// determining the team
-						CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-						// determining who is leader
-						CEntity* Leader = Squad.Leader;
-						// checking if the leader exists
-						R_ASSERT (Leader);
-						// setting watch mode to false
-						bool bWatch = false;
-						// get pointer to the class of node estimator 
-						// for finding the best node in the area
-						CRatSelectorAttack S = SelectorAttack;
-						// if i am not a leader then assign leader
-						/**/
-						if (Leader != this) {
-							S.m_tLeader = Leader;
-							S.m_tLeaderPosition = Leader->Position();
-							S.m_tpLeaderNode = Leader->AI_Node;
-							S.m_tLeaderNode = Leader->AI_NodeID;
-						}
-						// otherwise assign leader to null
-						else {
-							S.m_tLeader = 0;
-							S.m_tLeaderPosition.set(0,0,0);
-							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
-						}
-						/**/
-						S.m_tHitDir			= tHitDir;
-						S.m_dwHitTime		= dwHitTime;
-						
-						S.m_dwCurTime		= Level().timeServer();
-						
-						S.m_tMe				= this;
-						S.m_tpMyNode        = AI_Node;
-						S.m_tMyPosition		= Position();
-						
-						S.m_tEnemy			= Enemy.Enemy;
-						S.m_tEnemyPosition	= Enemy.Enemy->Position();
-						S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
-						
-						S.taMembers = Squad.Groups[g_Group()].Members;
-						if (S.m_tLeader)
-							S.taMembers.push_back(S.m_tLeader);
-						// building a path from and to
-						AI_Path.DestNode = dwSavedEnemyNodeID;
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-						if (AI_Path.Nodes.size() > 2) {
-						// if path is long enough then build travel line
-							AI_Path.BuildTravelLine(Position());
-							m_bMobility = true;
-						}
-						else {
-						// if path is too short then clear it (patch for ExecMove)
-							AI_Path.TravelPath.clear();
-							m_bMobility = false;
-						}
-					}
-					else {
-						if (AI_Path.Nodes.size() < 2)
-							m_bMobility = false;
-					}
-					
-					SetDirectionLook(AI_Node);
-					q_action.setup(AI::AIC_Action::AttackEnd);
-
-					// checking flag to stop processing more states
-					m_fCurSpeed = m_fMaxSpeed;
-					bStopThinking = true;
-					return;
-				}
-			}
-			else {
-				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) 
-					FollowLeader(Squad,Enemy.Enemy);				
-				else
-					FollowLeader(Squad,Leader);				
-				q_action.setup(AI::AIC_Action::FireEnd);
-
+				FollowLeader(Level().Teams[g_Team()].Squads[g_Squad()],Enemy.Enemy);				
 				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
 					q_action.setup(AI::AIC_Action::AttackBegin);
 					m_tpEnemyBeingAttacked = Enemy.Enemy;
@@ -810,8 +653,27 @@ void CAI_Rat::Attack()
 				bStopThinking = true;
 				return;
 			}
-			/**/
-		}
+			else {
+				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+				// determining who is leader
+				CEntity* Leader = Squad.Leader;
+				if (Squad.Leader == this) {
+					Squad.Groups[g_Group()].m_bLeaderViewsEnemy = false;
+					eCurrentState = tStateStack.top();
+					tStateStack.pop();
+					bStopThinking = true;
+					return;
+				}
+				else {
+					FollowLeader(Level().Teams[g_Team()].Squads[g_Squad()],Squad.Leader);
+					q_action.setup(AI::AIC_Action::AttackEnd);
+					SetDirectionLook(AI_Node);
+				}
+				// checking flag to stop processing more states
+				m_fCurSpeed = m_fMaxSpeed;
+				bStopThinking = true;
+				return;
+			}
 	}
 }
 
@@ -1592,7 +1454,7 @@ void CAI_Rat::Exec_Movement	( float dt )
 				Movement.SetPosition(vPosition);
 				Movement.SetVelocity(tVelocity);
 				tAcceleration.set(0,0,0);
-				Movement.Calculate	(tAcceleration,0,7,dt,false);
+				Movement.Calculate	(tAcceleration,0,6,dt,false);
 				Movement.GetPosition(vPosition);
 				m_bStartAttack = false;
 			}

@@ -77,6 +77,8 @@ class CAI_Rat : public CCustomMonster
 		DWORD			m_dwHitInterval;
 
 		bool			m_bStartAttack;
+		vector<SSubNode> tpFreeNeighbourNodes;
+		vector<SSubNode> tpSubNodes;
 
 		// finite state machine
 		stack<ERatStates>	tStateStack;
