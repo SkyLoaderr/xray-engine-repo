@@ -6,6 +6,21 @@
 
 #define ROUND_RADIUS 20.0f
 
+void dumpMotion(CHelicopterMotion* m)
+{
+	Log("----begin-----dumpMotion--------------");
+	int cnt = m->KeyCount();
+	for(int i=0; i<cnt; ++i){
+		Fvector P,R;
+		float t;
+		m->GetKey(i,P,R);
+		m->GetKeyTime(i,t);
+		Msg("[%d] time=%f p=<%f,%f,%f> r=<%f,%f,%f>",i,t,P.x,P.y,P.z,R.x,R.y,R.z);
+
+	}
+	Log("----end-----dumpMotion--------------");
+}
+
 CHelicopterMovManager::CHelicopterMovManager()
 {
 }
@@ -452,12 +467,12 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	truncatePathSafe(from_time, safe_time, fromPos);
 	
 	xr_vector<Fvector> vAddedKeys;
-
 	createHuntPathTrajectory(from_time, fromPos, m_via_point, vAddedKeys);
 	getPathAltitude(m_to_point,m_baseAltitude);
 	vAddedKeys.push_back(m_to_point);
 	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false, false);
 	
+//	dumpMotion(this);
 	
 	fixateKeyPath(safe_time);
 	
@@ -470,10 +485,16 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	dir.sub(dstPos,T).normalize_safe();
 
 	vAddedKeys.clear();
+//	dumpMotion(this);
+
 	createRocking(dstPos, dir, vAddedKeys, m_wait_in_point);
 	insertKeyPoints(m_endTime, vAddedKeys, 0.1f, false, false);
 
+//	dumpMotion(this);
+
 	updatePathHPB(safe_time);
+
+//	dumpMotion(this);
 
 }
 

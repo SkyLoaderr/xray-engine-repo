@@ -27,13 +27,15 @@ function main()
 --	enemy = get_actor()
 
 	while active do
-		heli:heli_go_to_point( path:point( pnt ), path:point( pnt + 1 ), 1 )
+		heli:heli_go_to_point( path:point( pnt ), path:point( pnt + 1 ), 5 )
 		wait( 1000 ) -- чтобы update сработал у вертолёта
 		local t = heli:heli_last_point_time() * 1000
 
 		printf( "%d", pnt )
-		while t > device():time_global() and active and not enemy do
+      local dt = device():time_global() 
+		while t-3000 > dt and active and not enemy do
 			wait()
+         dt = device():time_global() 
 		end
 
 		if enemy then
