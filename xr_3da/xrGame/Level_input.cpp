@@ -188,7 +188,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 #endif
 	default:
-		if (CurrentEntity())		CurrentEntity()->IR_OnKeyboardPress(key_binding[key]);
+		if (CurrentEntity())		{
+			IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+			if (IR)				IR->IR_OnKeyboardPress(key_binding[key]);
+		}
 		break;
 	}
 
@@ -241,12 +244,18 @@ void CLevel::IR_OnKeyboardRelease(int key)
 //	if (pHUD->IsUIActive()) 
 	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 
-	if (CurrentEntity())	CurrentEntity()->IR_OnKeyboardRelease(key_binding[key]);
+	if (CurrentEntity())		{
+		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+		if (IR)				IR->IR_OnKeyboardRelease			(key_binding[key]);
+	}
 }
 
 void CLevel::IR_OnKeyboardHold(int key)
 {
-	if (CurrentEntity())	CurrentEntity()->IR_OnKeyboardHold(key_binding[key]);
+	if (CurrentEntity())		{
+		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);
+	}
 }
 
 static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
@@ -260,7 +269,10 @@ void CLevel::IR_OnMouseHold(int btn)
 void CLevel::IR_OnMouseMove( int dx, int dy )
 {
 	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy)) return;
-	if (CurrentEntity())	CurrentEntity()->IR_OnMouseMove(dx,dy);
+	if (CurrentEntity())		{
+		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());
+		if (IR)				IR->IR_OnMouseMove					(dx,dy);
+	}
 }
 
 void CLevel::IR_OnMouseStop( int /**axis/**/, int /**value/**/)

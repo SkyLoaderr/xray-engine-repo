@@ -6,11 +6,13 @@
 #define AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_
 #pragma once
 
+#include "../feel_touch.h"
+#include "../iinputreceiver.h"
+
 #include "actor_flags.h"
 #include "actor_defs.h"
 
 #include "entity_alive.h"
-#include "../feel_touch.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "InventoryOwner.h"
@@ -42,8 +44,9 @@ class  CActorEffector;
 
 class	CHudItem;
 
-class CActor: 
+class	CActor: 
 	public CEntityAlive, 
+	public IInputReceiver,
 	public Feel::Touch,
 	public CInventoryOwner,
 	public CActorCondition,

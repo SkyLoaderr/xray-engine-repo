@@ -10,15 +10,6 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
-void CObject::StatusBegin	()
-{
-	Fvector		T;
-	Fvector4	S;
-
-	Center							(T);
-	Device.mFullTransform.transform	(S,T);
-}
-
 void CObject::cName_set			(ref_str N)
 { 
 	NameObject	=	N; 

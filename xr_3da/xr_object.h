@@ -3,7 +3,7 @@
 
 #include "ispatial.h"
 #include "isheduled.h"
-#include "iinputreceiver.h"
+//#include "iinputreceiver.h"
 #include "irenderable.h"
 #include "icollidable.h"
 
@@ -23,10 +23,10 @@ class	ENGINE_API						CObject :
 	public DLL_Pure,
 	public ISpatial,
 	public ISheduled,
-	public IInputReceiver,
 	public IRenderable,
-	public ICollidable,
-	public IEventReceiver
+	public ICollidable	//,
+	//public IInputReceiver,
+	//public IEventReceiver
 {
 public:
 	struct	SavedPosition
@@ -61,9 +61,6 @@ protected:
 
 	// Geometric (transformation)
 	svector<SavedPosition,4>			PositionStack;
-	
-	// Information and status
-	void								StatusBegin			();
 public:
 #ifdef DEBUG
 	u32									dbg_update_cl;
@@ -174,7 +171,7 @@ public:
 	virtual void						OnH_A_Independent	();
 	
 	// Device dependance
-	virtual void						OnEvent				(EVENT E, u64 P1, u64 P2) {};
+	// virtual void						OnEvent				(EVENT E, u64 P1, u64 P2) {};
 };
 
 #pragma pack(pop)
