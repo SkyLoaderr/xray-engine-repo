@@ -79,7 +79,10 @@ protected:
 
 	virtual void	UpdateFP		(BOOL bHUD)	= 0;
 	virtual void	UpdateXForm		(BOOL bHUD)	= 0;
-	
+
+protected:			// Utilities
+	void			SoundCreate		(sound3D& dest, LPCSTR name);
+	void			SoundDestroy	(sound3D& dest);
 public:
 	virtual void	OnMagazineEmpty	()			= 0;
 	virtual void	OnAnimationEnd	()			{};
@@ -109,7 +112,7 @@ public:
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);
 
-	IC const char*	GetName			()				{return m_WpnName;		}
+	IC LPCSTR*		GetName			()				{return m_WpnName;		}
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}
 	IC int			GetAmmoLimit	()				{return iAmmoLimit;		}
 	IC int			GetAmmoCurrent	()				{return iAmmoCurrent;	}

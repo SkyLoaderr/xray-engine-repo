@@ -46,6 +46,28 @@ CWeapon::~CWeapon()
 	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
 
+void CWeapon::SoundCreate(sound3D& dest, LPCSTR name)
+{
+	string256	name,temp;
+	strconcat	(name,"weapons\\",GetName(),"_",name);
+	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
+	{
+		pSounds->Create3D(dest,name);
+		return;
+	}
+	strconcat	(name,"weapons\\","generic_",name);
+	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
+	{
+		pSounds->Create3D(dest,name);
+		return;
+	}
+	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());
+}
+void CWeapon::SoundDestroy(	sound3D& dest)
+{
+	pSounds->Delete3D	(dest);
+}
+
 void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
 {
 	R_ASSERT(parent);		m_pParent		= parent;

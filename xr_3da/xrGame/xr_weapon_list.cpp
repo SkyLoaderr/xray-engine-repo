@@ -182,13 +182,13 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 	switch (cls)
 	{
 	case CLSID_OBJECT_A_M134:		idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
-	case CLSID_OBJECT_A_GROZA:		idx = FindWeapon(CLSID_OBJECT_W_GROZA);		break;
+	case CLSID_OBJECT_A_FN2000:		idx = FindWeapon(CLSID_OBJECT_W_FN2000);	break;
 	case CLSID_OBJECT_A_AK74:		idx = FindWeapon(CLSID_OBJECT_W_AK74);		break;
 	case CLSID_OBJECT_A_LR300:		idx = FindWeapon(CLSID_OBJECT_W_LR300);		break;
 	case CLSID_OBJECT_A_ROCKET:		idx = FindWeapon(CLSID_OBJECT_W_ROCKET);	break;
 
 	case CLSID_OBJECT_W_M134:	
-	case CLSID_OBJECT_W_GROZA:	
+	case CLSID_OBJECT_W_FN2000:	
 	case CLSID_OBJECT_W_AK74:
 	case CLSID_OBJECT_W_LR300:	
 	case CLSID_OBJECT_W_M134_en:	
