@@ -207,8 +207,8 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 		w_offs				+= dwP;
 
 		float	blend		= 0;
-//		float	d			= (float(fmt->fade_amount)/100.f)*numMipmaps-1;
-		float	d			= numMipmaps-1;
+		float	d			= (float(fmt->fade_amount)/100.f)*numMipmaps-1;
+//		float	d			= numMipmaps-1;
 		if (d<1.f) d		= 1.f;
 		for (int i=1; i<numMipmaps; i++){
 			if ((fmt->flags.is(STextureParams::flFadeToColor))||(fmt->flags.is(STextureParams::flFadeToAlpha))){
