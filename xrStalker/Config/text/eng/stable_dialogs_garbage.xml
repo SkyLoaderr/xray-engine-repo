@@ -60,11 +60,26 @@
     <string id="gar_dolg_guard_start_3">
         <text>You’re not a bad guy, go ahead.</text>
     </string>
+    <string id="gar_dolg_guard_start_4">
+        <text>Thanks my friend! You are doing quite well killing mutants. You can access the "Rostok" area any time.</text>
+    </string>
+    <string id="gar_dolg_guard_start_5">
+        <text>Well, buddy, you are a mere pro in getting rid of monsters. When you are in "Rostok" area - make sure to come to see our leader. Possibly you will find common language with him.</text>
+    </string>
+    <string id="gar_dolg_guard_start_6">
+        <text>Why are you standing? Move on.</text>
+    </string>
     <string id="gar_dolg_start_2">
         <text>Hmm… What do you want?</text>
     </string>
     <string id="gar_dolg_start_3">
         <text>Hi, I’m glad that you also don’t like mutants. It was fun. You’re decent guy. We’ll admit you to the North.</text>
+    </string>
+    <string id="gar_dolg_start_4">
+        <text>Hey. I'm glad you hate mutants too. It was funny. You are a good guy. We will let you pass to the north.</text>
+    </string>
+    <string id="gar_dolg_start_5">
+        <text>Great! You gave them a hard time. Should everybody kill so many mutants as you, they would have vanished long ago. The path to the north is open to you. </text>
     </string>
     <string id="gar_dram_novice_level_0">
         <text>Can you tell something about the Dump?</text>
