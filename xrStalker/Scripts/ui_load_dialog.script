@@ -49,7 +49,7 @@ function load_dialog:FillList()
 end
 
 function load_dialog:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Main Menu")
+	ui_base_dialog.base_dialog.InitControls(self, "Load Game")
 	
 	----- DATA ----	
 	local info_rect       = {x = 0, 
