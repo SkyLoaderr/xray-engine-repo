@@ -20,6 +20,11 @@ enum EWayType{
     wt_force_dword=u32(-1)
 };
 
+enum ERPpointType{		// [0..255]
+	rptActorSpawn		= 0,
+};
+extern xr_token rpoint_type[];
+
 // BASE offset
 #define WAY_BASE					0x1000
 #define POINT_BASE					0x2000
