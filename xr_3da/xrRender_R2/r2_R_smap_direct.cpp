@@ -28,11 +28,7 @@ void	CRender::render_smap_sector(Fmatrix& mCombined, Fvector& C)
 	View							= &ViewBase;
 	CSector*	S					= detectSector	(C);
 	R_ASSERT	(S);
-	S->Render	();
-
-		add_Geometry				(S->Root());
-		S->Render_objects			(ViewBase);
-	}
+	S->Render_objects_s				(ViewBase,C,mCombined);
 
 	// Restore
 	ViewBase						= ViewSave;
