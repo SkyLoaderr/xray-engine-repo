@@ -274,7 +274,7 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 
 void CGameFont::OutSkip(float val)		
 {
-	fCurrentY += val*fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);
+	fCurrentY += val*CurrentHeight();
 }
 
 float CGameFont::SizeOf(char *s)	

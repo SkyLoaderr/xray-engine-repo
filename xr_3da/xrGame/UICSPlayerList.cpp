@@ -25,33 +25,55 @@ void CUICSPlayerList::OnFrame()
 	map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
 	map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
 
-	// create temporary map (sort by kills)
+	// create temporary (sort by kills)
 	items.clear			();
 	for (;I!=E;I++)		items.push_back(&I->second);
 	sort(items.begin(),items.end(),pred_player);
 
 	// out info
-	CGameFont* H		= Level().HUD()->pFontMedium;
-	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
-	H->SetColor(0xf0ffa0a0); H->OutNext("Team 1:");
 	int k=1;
+	CGameFont* H		= Level().HUD()->pFontMedium;
+	float h 			= H->CurrentHeight();
+	float y				= float(list_rect.lt.y);
+	float x0			= float(list_rect.lt.x);
+	float x1			= x0+20;
+    float x2			= x1+200;
+	float x3			= x2+50;
+	float x4			= x3+50;
+	// global info
+	H->SetColor			(0xf0ffa0a0); 
+	H->Out				(x0,y,"Team 1: %d", Game().teams[0].num_targets);
+	H->Out				(x0,y,"__________________________________________________________");
+	y+=1*h;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
 		if(P->team != 0) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
-		H->OutNext		("%3d. %-20s %-5d %s",k++,P->name,P->kills,(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
+		H->Out			(x0,y,"%3d.",		k++);
+		H->Out			(x1,y,"%-20s",		P->name);
+		H->Out			(x2,y,"%-5d",		P->kills);
+		H->Out			(x3,y,"ping:%-4d",	P->ping);
+		H->Out			(x4,y,"%-5s",		(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
+		y				+= h;
 	}
-	H->OutSkip(2.f);
-	H->SetColor(0xf0a0a0ff); H->OutNext("Team 2:");
+	y+=2*h;
+	H->SetColor			(0xf0a0a0ff); 
+	H->Out				(x0,y,"Team 2: %d", Game().teams[1].num_targets);
+	H->Out				(x0,y,"__________________________________________________________");
+	y+=1*h;
 	k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
 		if(P->team != 1) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
-		H->OutNext		("%3d. %-20s %-5d %s",k++,P->name,P->kills,(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
+		H->Out			(x0,y,"%3d.",		k++);
+		H->Out			(x1,y,"%-20s",		P->name);
+		H->Out			(x2,y,"%-5d",		P->kills);
+		H->Out			(x3,y,"ping:%-4d",	P->ping);
+		H->Out			(x4,y,"%-5s",		(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
+		y				+= h;
 	}
-	H->OutSkip(3.f);
 }
 //--------------------------------------------------------------------

@@ -67,6 +67,7 @@ public:
 	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
 	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
 	float					SizeOf			(char *s);
+	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
 	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}
 	void __cdecl            OutNext			(char *fmt, ...);
 	void __cdecl            OutPrev			(char *fmt, ...);
