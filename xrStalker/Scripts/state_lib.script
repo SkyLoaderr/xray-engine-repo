@@ -5,6 +5,7 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 states = {
+	-- Дефолтовый
 	idle = {	weapon = "strapped",
 				movement = nil,
 				mental = nil,
@@ -13,23 +14,54 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
-	
-	wait = {	weapon = "unstrapped",
+
+	-- Ходячие состояния
+	walk = {	weapon = "strapped",
+				movement = move.walk,
+				mental = anim.free,
+				bodystate = move.standing,
+				direction = nil,
+				animstate = "stand",
+				animation = nil
+			},
+	patrol = {	weapon = "unstrapped",
+				movement = move.walk,
+				mental = anim.free,
+				bodystate = move.standing,
+				direction = nil,
+				animstate = "stand",
+				animation = nil
+			},
+
+
+	-- Стоячие состояния
+	wait = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				direction = "object",
+				animstate = "stand",
+				animation = "idle"
+			},
+
+	threat = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.danger,
-				bodystate = move.crouch,
+				bodystate = move.standing,
 				direction = "object",
 				animstate = "stand",
 				animation = nil
 			},
 
-	threat = {	weapon = "strapped",
+
+	-- Сидячие состояния
+	sit = {		weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
-				direction = "object",
+				direction = "position",
 				animstate = "sit",
-				animation = "eating"
+				animation = nil
 			}
 
 }
