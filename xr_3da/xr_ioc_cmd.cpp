@@ -230,12 +230,38 @@ class CCC_Gamma : public CCC_Float
 {
 	float	gamma;
 public:
-	CCC_Gamma(LPCSTR N) : CCC_Float(N, &gamma, 0, 5), gamma(1) {};
+	CCC_Gamma(LPCSTR N) : CCC_Float(N, &gamma, 0, 2), gamma(1) {};
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute(args);
-		Device.Gamma.Gamma(gamma);
-		Device.Gamma.Update();
+		Device.Gamma.Gamma	(gamma);
+		Device.Gamma.Update	();
+	}
+};
+//-----------------------------------------------------------------------
+class CCC_Brightness : public CCC_Float
+{
+	float	value;
+public:
+	CCC_Brightness(LPCSTR N) : CCC_Float(N, &value, 0, 2), value(1) {};
+	virtual void Execute(LPCSTR args)
+	{
+		CCC_Float::Execute		(args);
+		Device.Gamma.Brightness	(value);
+		Device.Gamma.Update		();
+	}
+};
+//-----------------------------------------------------------------------
+class CCC_Contrast : public CCC_Float
+{
+	float	value;
+public:
+	CCC_Contrast(LPCSTR N) : CCC_Float(N, &value, 0, 2), value(1) {};
+	virtual void Execute(LPCSTR args)
+	{
+		CCC_Float::Execute		(args);
+		Device.Gamma.Contrast	(value);
+		Device.Gamma.Update		();
 	}
 };
 //-----------------------------------------------------------------------
@@ -305,7 +331,9 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT_SS,	16,65536	);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
 	
-	CMD1(CCC_Gamma,		"rs_gamma"				);
+	CMD1(CCC_Gamma,		"rs_c_gamma"			);
+	CMD1(CCC_Gamma,		"rs_c_brightness"		);
+	CMD1(CCC_Gamma,		"rs_c_contrast"			);
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);
 	CMD4(CCC_Integer,	"rs_glows_per_frame",	&psGlowsPerFrame,	2,		32	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
