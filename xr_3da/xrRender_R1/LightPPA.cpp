@@ -22,15 +22,20 @@ CLightPPA::~CLightPPA()
 
 }
 
-void CLightPPA::set_mode	(mode _M)
+void CLightPPA::set_mode	(u32 _M)
 {
-	if (M == _M)										return;
-	if (M==LIGHT_ENABLED && _M==LIGHT_ENABLED_SHADOWED)	return;
-	if (_M==LIGHT_ENABLED && M==LIGHT_ENABLED_SHADOWED)	return;
-
-	M	= _M;
-	if (LIGHT_DISABLED == M)	RImplementation.L_Dynamic.Deactivate	(this);
-	else						RImplementation.L_Dynamic.Activate		(this);
+	if (_M&ENABLED)
+	{
+		if (flags.bActive)	return;
+		flags.bActive		= true;
+		RImplementation.L_Dynamic.Activate		(this);	
+	}
+	else
+	{
+		if (!flags.bActive)	return;
+		flags.bActive		= false;
+		RImplementation.L_Dynamic.Deactivate	(this);
+	}
 }
 
 IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)

@@ -3,14 +3,17 @@
 class light		:	public IRender_Light
 {
 public:
-	mode			M;				
+	struct {
+		u32			bActive	:	1;
+		u32			bShadow	:	1;
+	}				flags;
 	Fsphere			sphere;
 	Fcolor			color;
 	u32				controller;
 
 	u32				dwFrame;
 public:
-	virtual void	set_mode		(mode M);
+	virtual void	set_mode		(u32 M);
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);		}
 	virtual void	set_range		(float R)						{ sphere.R = R;			}
 	virtual void	set_color		(const Fcolor& C)				{ color.set(C);			}
