@@ -85,6 +85,7 @@ public:
 		vfAddEventToGraphPoint		(tEventID,tNextGraphPointID);
 	}
 
+	void							vfProcessItems			(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass);
 	void							vfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents	(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle		(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
