@@ -82,6 +82,7 @@ public:
 		u32	iPriority	:	2;
 		u32	bStrictB2F	:	1;
 		u32	bEmissive	:	1;
+		u32	bElevation	:	1;
 	};
 public:
 	Sflags								Flags;
