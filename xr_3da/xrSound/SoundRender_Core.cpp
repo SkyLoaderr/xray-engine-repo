@@ -5,6 +5,7 @@
 #include "soundrender_core.h"
 #include "soundrender_source.h"
 #include "soundrender_emitter.h"
+#include "soundrender_target.h"
  
 CSoundRender_Core				SoundRender;
 CSound_manager_interface*		Sound		= &SoundRender;
