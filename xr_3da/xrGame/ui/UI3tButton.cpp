@@ -173,7 +173,7 @@ void CUI3tButton::Update(){
 }
 
 void CUI3tButton::SendMessage(CUIWindow *pWnd, s16 msg, void *pData){
-	CUIStatic::SendMessage(pWnd, s16 msg, pData);
+	CUIButton::SendMessage(pWnd, msg, pData);
 }
 
 

@@ -26,7 +26,7 @@ public:
 	virtual void Update();
 	
 	//virtual void Enable(bool bEnable);	
-	//virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
 private:
 	// textures
