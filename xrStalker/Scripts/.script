@@ -563,7 +563,7 @@ function str_split (str)
         end
     end
     
-    --if cpart ~= 4 then return "unknown", "stalker", 0, 0 end
+    if cpart ~= 4 then return "unknown", "stalker", 0, 0 end
 
     local str1 = string.char ()
     local str2 = string.char ()
