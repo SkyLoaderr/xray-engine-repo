@@ -18,9 +18,9 @@ PHDynamicData::PHDynamicData()
 PHDynamicData::~PHDynamicData()
 {
 	if(numOfChilds){
-		//for(unsigned int i=0;i<numOfChilds;i++)
+		//for(unsigned int i=0;i<numOfChilds;++i)
 		//	delete
-		for(unsigned int i=0;i<numOfChilds;i++){
+		for(unsigned int i=0;i<numOfChilds;++i){
 			Childs[i].Destroy();
 		}
 		Childs.clear();
@@ -78,7 +78,7 @@ void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 	//BoneTransform.mulA(mYM);
 	BoneTransform.mulA(parent_transform);
 
-	for(unsigned int i=0;i<numOfChilds;i++){
+	for(unsigned int i=0;i<numOfChilds;++i){
 
 		Childs[i].CalculateR_N_PosOfChilds(body);
 	}
@@ -87,7 +87,7 @@ void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 void PHDynamicData::UpdateInterpolationRecursive(){
 	UpdateInterpolation();
 
-	for(unsigned int i=0;i<numOfChilds;i++){
+	for(unsigned int i=0;i<numOfChilds;++i){
 		Childs[i].UpdateInterpolationRecursive();
 	}
 }
@@ -138,7 +138,7 @@ void PHDynamicData::CalculateData()
 	zero.set(ZeroTransform);
 	zero.invert();
 	BoneTransform.mulB(zero);
-	for(unsigned int i=0;i<numOfChilds;i++){
+	for(unsigned int i=0;i<numOfChilds;++i){
 
 		Childs[i].CalculateR_N_PosOfChilds(body);
 	}
@@ -159,7 +159,7 @@ void PHDynamicData::Create(unsigned int numOfchilds, dBodyID Body)
 void PHDynamicData::Destroy()
 {
 	if(numOfChilds){
-		for(unsigned int i=0;i<numOfChilds;i++)
+		for(unsigned int i=0;i<numOfChilds;++i)
 			Childs[i].Destroy();
 
 		Childs.clear();
@@ -192,7 +192,7 @@ void PHDynamicData::SetAsZero(){
 
 void PHDynamicData::SetAsZeroRecursive(){
 	ZeroTransform.set(BoneTransform);
-	for(unsigned int i=0;  i<numOfChilds;i++)
+	for(unsigned int i=0;  i<numOfChilds;++i)
 	{
 		Childs[i].SetAsZeroRecursive();
 	}
