@@ -46,6 +46,7 @@
 		*	OPT:		fast pixel correct projection 
 		*	NEW:		4tap projection filter
 		*	NEW:		2tap duality filter
+		*	BUG:		sun source shadowing
 
 ***[OLES]*** In progress:
 -------------------------
