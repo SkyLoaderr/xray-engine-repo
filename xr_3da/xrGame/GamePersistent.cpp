@@ -52,6 +52,8 @@ void CGamePersistent::OnAppCycleEnd	()
 
 void CGamePersistent::OnFrame		()
 {
+	inherited::OnFrame	();
+
 	VERIFY	(pDemoFile);
 	
 	if (Device.dwTimeGlobal>uTime2Change)

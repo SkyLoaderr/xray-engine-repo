@@ -6,7 +6,6 @@
 
 class CGamePersistent				: 
 	public IGame_Persistent, 
-	public pureFrame, 
 	public IEventReceiver
 {
 public:

@@ -10,10 +10,12 @@ IGame_Persistent::IGame_Persistent	()
 {
 	Device.seqAppCycleStart.Add		(this);
 	Device.seqAppCycleEnd.Add		(this);
+	Device.seqFrame.Add				(this);
 }
 
 IGame_Persistent::~IGame_Persistent	()
 {
+	Device.seqFrame.Remove			(this);
 	Device.seqAppCycleStart.Remove	(this);
 	Device.seqAppCycleEnd.Remove	(this);
 }
@@ -31,4 +33,9 @@ void IGame_Persistent::OnAppCycleEnd()
 #ifndef _EDITOR
 	ObjectPool.unload				();
 #endif
+}
+
+void IGame_Persistent::OnFrame		()
+{
+	Environment.OnFrame				();
 }

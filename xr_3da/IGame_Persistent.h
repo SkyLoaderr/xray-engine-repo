@@ -13,7 +13,8 @@ class ENGINE_API IGame_Persistent	:
 	public DLL_Pure,
 #endif
 	public pureAppCycleStart, 
-	public pureAppCycleEnd
+	public pureAppCycleEnd,
+	public pureFrame
 {
 public:
 #ifndef _EDITOR
@@ -23,6 +24,7 @@ public:
 
 	virtual	void					OnAppCycleStart	();
 	virtual void					OnAppCycleEnd	();
+	virtual void					OnFrame			();
 
 	IGame_Persistent				();
 	virtual ~IGame_Persistent		();
