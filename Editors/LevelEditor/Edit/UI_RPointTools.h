@@ -17,6 +17,7 @@ public:
 };
 //---------------------------------------------------------------------------
 class TUI_ControlSpawnPointAdd: public TUI_CustomControl{
+    bool __fastcall AppendCallback(SAppendCallbackParams* p);
 public:
     TUI_ControlSpawnPointAdd(int st, int act, TUI_CustomTools* parent);
     virtual ~TUI_ControlSpawnPointAdd(){;}

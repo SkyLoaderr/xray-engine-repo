@@ -3,6 +3,16 @@
 
 #include "customobject.h"
 //---------------------------------------------------------------------------
+struct SAppendCallbackParams{
+	LPVOID 		data;
+    AnsiString 	prefix;
+    SAppendCallbackParams()
+    {
+    	data 	= 0;
+        prefix  = 0;
+    }
+};
+typedef bool __fastcall (__closure *TAppendCallback)(SAppendCallbackParams* p);
 class TUI_CustomControl{
 protected:
     friend class TUI_CustomTools;
@@ -35,7 +45,7 @@ protected:
     void RotateProcess	(TShiftState _Shift);
     bool RotateEnd		(TShiftState _Shift);
 protected:
-    CCustomObject*		DefaultAddObject(TShiftState Shift, LPVOID data, LPCSTR prefix=0);
+    CCustomObject*		DefaultAddObject(TShiftState Shift, TAppendCallback cb=0);
     bool				DefaultMovingProcess(TShiftState Shift, Fvector& amount);
 public:
     TUI_CustomTools* 	parent_tool;
