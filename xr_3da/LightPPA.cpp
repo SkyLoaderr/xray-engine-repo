@@ -93,7 +93,6 @@ void CLightPPA_Manager::OnDeviceCreate	()
 
 void CLightPPA_Manager::OnDeviceDestroy	()
 {
-	REQ_DESTROY	();
 	Device.Shader.Delete		(SH);
 }
 
@@ -101,14 +100,14 @@ void CLightPPA_Manager::Initialize	()
 {
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
-	OnDeviceCreate		();
+	OnDeviceCreate				();
 }
 
 void CLightPPA_Manager::Destroy		()
 {
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
-	OnDeviceDestroy		();
+	OnDeviceDestroy				();
 }
 
 void CLightPPA_Manager::Render()
