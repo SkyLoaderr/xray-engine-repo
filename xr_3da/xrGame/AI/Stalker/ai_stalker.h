@@ -18,12 +18,12 @@ class CAI_Stalker : public CCustomMonster, public CStalkerAnimations {
 private:
 	typedef CCustomMonster inherited;
 	enum EStalkerStates {
-		aiStalkerDie = 0,
-		aiStalkerTurnOver,
-		aiStalkerWaitForAnimation,
-		aiStalkerWaitForTime,
-		aiStalkerRecharge,
-		aiStalkerLookingOver,
+		eStalkerStateDie = 0,
+		eStalkerStateTurnOver,
+		eStalkerStateWaitForAnimation,
+		eStalkerStateWaitForTime,
+		eStalkerStateRecharge,
+		eStalkerStateLookingOver,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -34,8 +34,13 @@ private:
 	DEFINE_SVECTOR			(SStalkerStates, MAX_STATE_LIST_SIZE, STATE_VECTOR, STATE_IT)
 
 	STATE_VECTOR			m_tStateList;
-	u32						m_dwUpdateCount;
+	u32						m_dwLastUpdate;
 	u32						m_dwCurrentUpdate;
+	u32						m_dwUpdateCount;
+	bool					m_bStopThinking;
+	EStalkerStates			m_eCurrentState;
+	EStalkerStates			m_ePreviousState;
+	bool					m_bStateChanged;
 
 	IC		void			vfAddStateToList		(EStalkerStates eState)
 	{
@@ -50,7 +55,12 @@ private:
 		tStalkerStates.eState = eState;
 		m_tStateList.push_back(tStalkerStates);
 	};
-			void			vfLoadAnimations		();
+
+			void			TurnOver();
+			void			WaitForAnimation();
+			void			WaitForTime();
+			void			Recharge();
+			void			LookingOver();
 
 public:
 	typedef CCustomMonster inherited;
@@ -63,15 +73,11 @@ public:
 	virtual void			Load					(LPCSTR	section );				
 	virtual void			HitSignal				(float P,	Fvector& vLocalDir, CObject* who, s16 element);
 	virtual void			g_WeaponBones			(int& L,	int& R	){};
-	virtual void			Think					(){};
-	virtual void			Die						(){};
-//
-//	// Fire control
+	virtual void			Think					();
+	virtual void			Die						();
 	virtual void			g_fireParams			(Fvector& P, Fvector& D);
-//
-//	// Network
-	virtual void			net_Export				(NET_Packet& P);				// export to server
-	virtual void			net_Import				(NET_Packet& P);				// import from server
-//
+	virtual void			net_Export				(NET_Packet& P);
+	virtual void			net_Import				(NET_Packet& P);
 	virtual void			SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed );
+	virtual void			OnEvent					(NET_Packet& P, u16 type);
 };

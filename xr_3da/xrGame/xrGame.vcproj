@@ -617,6 +617,9 @@
 							RelativePath="AI\Stalker\ai_stalker_animations.h">
 						</File>
 						<File
+							RelativePath="AI\Stalker\ai_stalker_events.cpp">
+						</File>
+						<File
 							RelativePath="AI\Stalker\ai_stalker_fire.cpp">
 						</File>
 						<File

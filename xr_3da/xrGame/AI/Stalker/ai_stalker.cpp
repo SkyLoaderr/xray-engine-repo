@@ -23,10 +23,9 @@ CAI_Stalker::~CAI_Stalker()
 }
 
 // when soldier is dead
-void CAI_Stalker::Death()
+void CAI_Stalker::Die()
 {
-	inherited::Death( );
-//	eCurrentState = aiStalkerDie;
+	m_eCurrentState = eStalkerStateDie;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
@@ -42,12 +41,6 @@ void CAI_Stalker::OnDeviceCreate()
 void CAI_Stalker::Load	(LPCSTR section)
 { 
 	inherited::Load		(section);
-	
-//	Fvector				P = vPosition;
-//	P.x					+= ::Random.randF();
-//	P.z					+= ::Random.randF();
-	
-//	vfLoadSounds		();
 }
 
 BOOL CAI_Stalker::net_Spawn	(LPVOID DC)
@@ -55,6 +48,7 @@ BOOL CAI_Stalker::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 	cNameVisual_set		("actors\\Different_stalkers\\stalker_no_hood_singleplayer.ogf");
+	m_eCurrentState = m_ePreviousState = eStalkerStateLookingOver;
 	return				(TRUE);
 }
 

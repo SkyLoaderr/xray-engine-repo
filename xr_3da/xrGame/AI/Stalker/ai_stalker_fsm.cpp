@@ -7,3 +7,89 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_stalker.h"
+
+#undef	WRITE_TO_LOG
+//#define WRITE_TO_LOG(s) bStopThinking = true;
+#define WRITE_TO_LOG(s) {\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
+	m_bStopThinking = true;\
+}
+
+#ifndef DEBUG
+	#undef	WRITE_TO_LOG
+	#define WRITE_TO_LOG(s) bStopThinking = true;
+#endif
+
+void CAI_Stalker::Think()
+{
+	m_dwUpdateCount++;
+	m_dwLastUpdate			= m_dwCurrentUpdate;
+	m_dwCurrentUpdate		= Level().timeServer();
+	m_bStopThinking			= false;
+	do {
+		m_ePreviousState	= m_eCurrentState;
+		switch (m_eCurrentState) {
+			case eStalkerStateDie : {
+				Death();
+				break;
+			}
+			case eStalkerStateTurnOver : {
+				TurnOver();
+				break;
+			}
+			case eStalkerStateWaitForAnimation : {
+				WaitForAnimation();
+				break;
+			}
+			case eStalkerStateWaitForTime : {
+				WaitForTime();
+				break;
+			}
+			case eStalkerStateRecharge : {
+				Recharge();
+				break;
+			}
+			case eStalkerStateLookingOver : {
+				LookingOver();
+				break;
+			}
+		}
+		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
+	}
+	while (!m_bStopThinking);
+};
+
+void CAI_Stalker::Death()
+{
+	WRITE_TO_LOG("Death");
+	
+	Fvector	dir;
+	AI_Path.Direction(dir);
+	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+}
+
+void CAI_Stalker::TurnOver()
+{
+	WRITE_TO_LOG("Turn over");
+}
+
+void CAI_Stalker::WaitForAnimation()
+{
+	WRITE_TO_LOG("Wait for animation");
+}
+
+void CAI_Stalker::WaitForTime()
+{
+	WRITE_TO_LOG("Wait for time");
+}
+
+void CAI_Stalker::Recharge()
+{
+	WRITE_TO_LOG("Recharge");
+}
+
+void CAI_Stalker::LookingOver()
+{
+	WRITE_TO_LOG("Looking over");
+}
