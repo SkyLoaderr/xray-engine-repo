@@ -4,7 +4,7 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 {
 	// Sanity check
 	R_ASSERT	(what && from && to);
-	R_ASSERT	(from |= to);
+	R_ASSERT	(from != to);
 	R_ASSERT	(what->ID_Parent == from->ID);
 	NET_Packet	P;
 	u32			time		= Device.dwTimeGlobal;
