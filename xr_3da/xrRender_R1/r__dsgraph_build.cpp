@@ -123,7 +123,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
 	mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
 	mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-	mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+	mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->geom->vb);
 	mapMatrixItems&				items	= Nvb->val;
 	items.push_back						(item);
 
@@ -221,7 +221,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
 	mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
 	mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-	mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+	mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->geom->vb);
 	mapNormalItems&				items	= Nvb->val;
 	_NormalItem					item	= {SSA,pVisual};
 	items.push_back						(item);

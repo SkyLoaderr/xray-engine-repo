@@ -9,11 +9,9 @@
 
 #define _game_data_			"$game_data$"
 
-bool ps_sort_pred	(const PS::SDef& a, 	const PS::SDef& b)		{	return xr_strcmp(a.m_Name,b.m_Name)<0;	}
 bool ped_sort_pred	(const PS::CPEDef* a, 	const PS::CPEDef* b)	{	return xr_strcmp(a->Name(),b->Name())<0;}
 bool pgd_sort_pred	(const PS::CPGDef* a, 	const PS::CPGDef* b)	{	return xr_strcmp(a->m_Name,b->m_Name)<0;}
 
-bool ps_find_pred	(const PS::SDef& a, 	LPCSTR b)				{	return xr_strcmp(a.m_Name,b)<0;	}
 bool ped_find_pred	(const PS::CPEDef* a, 	LPCSTR b)				{	return xr_strcmp(a->Name(),b)<0;}
 bool pgd_find_pred	(const PS::CPGDef* a, 	LPCSTR b)				{	return xr_strcmp(a->m_Name,b)<0;}
 //----------------------------------------------------
