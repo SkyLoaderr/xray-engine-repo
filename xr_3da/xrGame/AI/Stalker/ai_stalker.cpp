@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
-#define NO_PHYSICS_IN_AI_MOVE
 #ifdef LOG_PARAMETERS
 FILE *ST_VF = 0;
 #endif
