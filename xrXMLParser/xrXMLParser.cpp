@@ -137,7 +137,7 @@ char* CUIXml::Read(XML_NODE* node,  const char*  default_str_val)
 
 
 
-int XRXMLPARSER_API CUIXml::ReadInt(XML_NODE* node, int default_int_val)
+int CUIXml::ReadInt(XML_NODE* node, int default_int_val)
 {
 	char* result_str = Read(node, NULL ); 
 
@@ -173,7 +173,6 @@ char* CUIXml::ReadAttrib(XML_NODE* start_node, const char *path,  int index,
 					const char *attrib, const char*  default_str_val)
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
-	
 	char* result = ReadAttrib(node, attrib, default_str_val);
 	xr_delete(node);
 
@@ -252,12 +251,7 @@ int CUIXml::ReadAttribInt(XML_NODE* start_node, const char *path, int index,
 	return atoi(result_str);
 }
 
-
-
-
-
-
-int XRXMLPARSER_API CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
+int CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
 {
 	XML_NODE* node = NULL;
 	
@@ -269,10 +263,8 @@ int XRXMLPARSER_API CUIXml::GetNodesNum(const char *path, int index, const char*
 	}
 	else
 		node = &m_root;
-
 	
 	if(node == NULL) return 0;
-
 	int result =  node->NumChildrenHavingTag(tag_name);
 	if(GetRoot()!=node) xr_delete(node);
 	return result;
