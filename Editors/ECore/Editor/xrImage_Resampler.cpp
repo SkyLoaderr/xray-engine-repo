@@ -4,8 +4,6 @@
  *		  by Dale Schumacher
  */
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!! support for 5-color
-
 #include "stdafx.h"
 #pragma hdrstop
 

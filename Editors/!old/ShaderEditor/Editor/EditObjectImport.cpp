@@ -120,15 +120,20 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         }
                     }
                     if (!bResult) break;
+                    if (!Osf->_VMap()||!Osf->_VMap()[0]){
+						ELog.DlgMsg(mtError, "Invalid surface '%s'. VMap empty.",Osf->_Name());
+                        bResult = false;
+						break;
+                    }
                     if (!Osf->_Texture()||!Osf->_Texture()[0]){
 						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->_Name());
                         bResult = false;
-                        break;
+						break;
                     }
                     if (en_name.c_str()==0){
 						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Shader empty.",Osf->_Name());
                         bResult = false;
-                        break;
+						break;
                     }
 
                     Osf->SetShader		(en_name.c_str());

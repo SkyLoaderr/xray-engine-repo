@@ -102,12 +102,13 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -IEditor -IEngine -IEngine\Visuals 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG 
+      -IR:\SDK\DirectX9.0_sum_2004\Include -IEditor -IEngine -IEngine\Visuals 
       -IEngine\Blenders -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps 
-      -I..\..\Tools\Etools -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
+      -I..\..\Tools\Etools -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -360,7 +361,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=
