@@ -6,7 +6,7 @@ function main()
     
     action(
 		stalker,
-		look			(look.fire_point,actor)
+		look			(look.fire_point,actor),
 		cond			(cond.time_end,10000000)
     )
         
