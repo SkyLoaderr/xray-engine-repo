@@ -26,11 +26,11 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
     strcpy			(temp,_Root); 
     if (_Add) 		strcat(temp,_Add);
 	if (temp[0] && temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
-	m_Path			= xr_strdup(temp);
-	m_DefExt		= _DefExt?xr_strdup(_DefExt):0;
-	m_FilterCaption	= _FilterCaption?xr_strdup(_FilterCaption):0;
-	m_Add			= _Add?xr_strdup(_Add):0;
-	m_Root			= _Root?xr_strdup(_Root):0;
+	m_Path			= xr_strlwr(xr_strdup(temp));
+	m_DefExt		= _DefExt?xr_strlwr(xr_strdup(_DefExt)):0;
+	m_FilterCaption	= _FilterCaption?xr_strlwr(xr_strdup(_FilterCaption)):0;
+	m_Add			= _Add?xr_strlwr(xr_strdup(_Add)):0;
+	m_Root			= _Root?xr_strlwr(xr_strdup(_Root)):0;
     m_Flags.assign	(flags);
 #ifdef _EDITOR
 	// Editor(s)/User(s) wants pathes already created in "real" file system :)
@@ -52,14 +52,14 @@ void	FS_Path::_set	(LPSTR add)
 	// m_Add
 	R_ASSERT		(add);
 	xr_free			(m_Add);
-	m_Add			= strlwr(xr_strdup(add));
+	m_Add			= xr_strlwr(xr_strdup(add));
 
 	// m_Path
 	string_path		temp;
 	strconcat		(temp,m_Root,m_Add);
 	if (temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	xr_free			(m_Path);
-	m_Path			= strlwr(xr_strdup(temp));
+	m_Path			= xr_strlwr(xr_strdup(temp));
 }
 
 
@@ -69,7 +69,7 @@ LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
     R_ASSERT(src);
 	string_path		temp;
 	strcpy			(temp,src);
-	return strlwr	(strconcat(dest,m_Path,temp));
+	return xr_strlwr(strconcat(dest,m_Path,temp));
 }
 
 void FS_Path::_update(std::string& dest, LPCSTR src)const
@@ -100,7 +100,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 {
 	// Register file
 	file				desc;
-	desc.name			= strlwr(xr_strdup(name));
+	desc.name			= xr_strlwr(xr_strdup(name));
 	desc.vfs			= vfs;
 	desc.ptr			= ptr;
 	desc.size_real		= size_real;
@@ -184,7 +184,7 @@ void CLocatorAPI::ProcessOne	(const char* path, void* _F)
 	string_path	N;
 	strcpy		(N,path);
 	strcat		(N,F.name);
-	strlwr		(N);
+	xr_strlwr	(N);
 	
 	if (F.attrib&_A_HIDDEN)			return;
 
@@ -242,7 +242,7 @@ bool CLocatorAPI::Recurse		(const char* path)
     return true;
 }
 
-void CLocatorAPI::_initialize	(u32 flags)
+void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 {
 	Log				("Initializing File System...");
 	u32	M1			= Memory.mem_usage();
@@ -255,50 +255,60 @@ void CLocatorAPI::_initialize	(u32 flags)
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
         strconcat		(app_root,dr,di);                                       
-        FS_Path* P		= xr_new<FS_Path>(strlwr(app_root),LPCSTR(0),LPCSTR(0),LPCSTR(0),0);
+        FS_Path* P		= xr_new<FS_Path>(app_root,LPCSTR(0),LPCSTR(0),LPCSTR(0),0);
         bNoRecurse		= !(P->m_Flags.is(FS_Path::flRecurse));
         Recurse			(P->m_Path);
         pathes.insert	(mk_pair(xr_strdup("$app_root$"),P));
     }
-	// scan root directory
-	bNoRecurse		= TRUE;
-	string_path		buf;
-	IReader* F		= 0;
-    Recurse			("");
-    F				= r_open("fs.ltx"); 
-    if (!F) F		= r_open("$app_root$","fs.ltx"); 
-	R_ASSERT2		(F,"Can't open file 'fs.ltx'");
-    // append all pathes    
-	string_path		id, temp, root, add, def, capt;
-	LPCSTR			lp_add, lp_def, lp_capt;
-    string16		b_v;
-	while(!F->eof()){
-		F->r_string	(buf);
-        _GetItem(buf,0,id,'=');
-        if (id[0]==';') continue;
-        _GetItem(buf,1,temp,'=');
-		int cnt		= _GetItemCount(temp);  R_ASSERT(cnt>=3);
-        u32 fl		= 0;
-        _GetItem	(temp,0,b_v);	if (CInifile::IsBOOL(b_v)) fl |= FS_Path::flRecurse;
-        _GetItem	(temp,1,b_v);	if (CInifile::IsBOOL(b_v)) fl |= FS_Path::flNotif;
-        _GetItem	(temp,2,root);
-        _GetItem	(temp,3,add);
-        _GetItem	(temp,4,def);
-        _GetItem	(temp,5,capt);
-		strlwr		(id);			if (!m_Flags.is(flBuildCopy)&&(0==xr_strcmp(id,"$build_copy$"))) continue;
-		strlwr		(root);
-		lp_add		=(cnt>=4)?strlwr(add):0;
-		lp_def		=(cnt>=5)?def:0;
-		lp_capt		=(cnt>=6)?capt:0;
-		PathPairIt p_it = pathes.find(root);
-		std::pair<PathPairIt, bool> I;
-        FS_Path* P	= xr_new<FS_Path>((p_it!=pathes.end())?p_it->second->m_Path:root,lp_add,lp_def,lp_capt,fl);
-        bNoRecurse	= !(fl&FS_Path::flRecurse);
-		Recurse		(P->m_Path);
-		I			= pathes.insert(mk_pair(xr_strdup(id),P));
-        R_ASSERT	(I.second);
+	if (m_Flags.is(flTargetFolderOnly)){
+		VERIFY			(target_folder&&target_folder[0]);
+		string_path		tgt_fld;
+		strcpy			(tgt_fld,target_folder);
+		FS_Path* P		= xr_new<FS_Path>(tgt_fld,LPCSTR(0),LPCSTR(0),LPCSTR(0),0);
+		bNoRecurse		= FALSE;
+		Recurse			(P->m_Path);
+		pathes.insert	(mk_pair(xr_strdup("$target_folder$"),P));
+	}else{
+		// scan root directory
+		bNoRecurse		= TRUE;
+		string_path		buf;
+		IReader* F		= 0;
+		Recurse			("");
+		F				= r_open("fs.ltx"); 
+		if (!F) F		= r_open("$app_root$","fs.ltx"); 
+		R_ASSERT2		(F,"Can't open file 'fs.ltx'");
+		// append all pathes    
+		string_path		id, temp, root, add, def, capt;
+		LPCSTR			lp_add, lp_def, lp_capt;
+		string16		b_v;
+		while(!F->eof()){
+			F->r_string	(buf);
+			_GetItem(buf,0,id,'=');
+			if (id[0]==';') continue;
+			_GetItem(buf,1,temp,'=');
+			int cnt		= _GetItemCount(temp);  R_ASSERT(cnt>=3);
+			u32 fl		= 0;
+			_GetItem	(temp,0,b_v);	if (CInifile::IsBOOL(b_v)) fl |= FS_Path::flRecurse;
+			_GetItem	(temp,1,b_v);	if (CInifile::IsBOOL(b_v)) fl |= FS_Path::flNotif;
+			_GetItem	(temp,2,root);
+			_GetItem	(temp,3,add);
+			_GetItem	(temp,4,def);
+			_GetItem	(temp,5,capt);
+			xr_strlwr	(id);			if (!m_Flags.is(flBuildCopy)&&(0==xr_strcmp(id,"$build_copy$"))) continue;
+			xr_strlwr	(root);
+			lp_add		=(cnt>=4)?xr_strlwr(add):0;
+			lp_def		=(cnt>=5)?def:0;
+			lp_capt		=(cnt>=6)?capt:0;
+			PathPairIt p_it = pathes.find(root);
+			std::pair<PathPairIt, bool> I;
+			FS_Path* P	= xr_new<FS_Path>((p_it!=pathes.end())?p_it->second->m_Path:root,lp_add,lp_def,lp_capt,fl);
+			bNoRecurse	= !(fl&FS_Path::flRecurse);
+			Recurse		(P->m_Path);
+			I			= pathes.insert(mk_pair(xr_strdup(id),P));
+			R_ASSERT	(I.second);
+		}
+		r_close			(F);
 	}
-	r_close			(F);
 	u32	M2		= Memory.mem_usage();
 	Msg				("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 
@@ -546,7 +556,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	// correct path
 	string_path		fname;
 	strcpy			(fname,_fname);
-	strlwr			(fname);
+	xr_strlwr		(fname);
 	if (path&&path[0]) update_path(fname,path,fname);
 
 	// Search entry
@@ -692,7 +702,7 @@ void	CLocatorAPI::r_close	(IReader* &fs)
 IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 {
 	string_path	fname;
-	strlwr(strcpy(fname,_fname));//,".$");
+	xr_strlwr(strcpy(fname,_fname));//,".$");
 	if (path&&path[0]) update_path(fname,path,fname);
 	return xr_new<CFileWriter>(fname);
 }
@@ -714,7 +724,7 @@ CLocatorAPI::files_it CLocatorAPI::file_find_it(LPCSTR fname)
     check_pathes	();
 
 	file			desc_f;
-	desc_f.name		= strlwr(xr_strdup(fname));
+	desc_f.name		= xr_strlwr(xr_strdup(fname));
     files_it I		= files.find(desc_f);
     xr_free			(desc_f.name);
 	return I;
@@ -806,7 +816,7 @@ void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 		xr_free			(str);
 		files.erase		(S);
 		// insert updated item
-        new_desc.name	= strlwr(xr_strdup(dest));
+        new_desc.name	= xr_strlwr(xr_strdup(dest));
 		files.insert	(new_desc); 
         
         // physically rename file

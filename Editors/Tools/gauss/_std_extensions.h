@@ -135,6 +135,9 @@ IC char*						strext					( const char* S )
 IC u32							xr_strlen				( const char* S )
 {	return (u32)strlen(S);			}
 
+IC char*						xr_strlwr				(char* S)
+{	return strlwr(S);				}
+
 #ifdef BREAK_AT_STRCMP
 XRCORE_API	int					xr_strcmp				( const char* S1, const char* S2 );
 #else

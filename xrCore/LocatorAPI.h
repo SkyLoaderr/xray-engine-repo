@@ -99,6 +99,7 @@ public:
 		flReady					= (1<<3),
 		flEBuildCopy			= (1<<4),
         flEventNotificator      = (1<<5),
+		flTargetFolderOnly		= (1<<6),
     };    
     Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
@@ -121,7 +122,7 @@ private:
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
-	void						_initialize		(u32 flags);
+	void						_initialize		(u32 flags, LPCSTR target_folder=0);
 	void						_destroy		();
 
 	IReader*					r_open			(LPCSTR initial, LPCSTR N);

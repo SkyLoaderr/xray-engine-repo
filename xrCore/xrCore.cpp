@@ -30,7 +30,7 @@ namespace CPU
 {
 	extern	void			Detect	();
 };
-void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
+void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 {
 	static BOOL				bInitialized	= FALSE;
 
@@ -60,15 +60,17 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 	xr_FS					= xr_new<CLocatorAPI>	();
 	xr_EFS					= xr_new<EFS_Utils>		();
 
-	u32 flags				= 0;
-	if (0!=strstr(Params,"-build"))	flags |= CLocatorAPI::flBuildCopy;
-	if (0!=strstr(Params,"-ebuild"))flags |= CLocatorAPI::flBuildCopy|CLocatorAPI::flEBuildCopy;
+	if (init_fs){
+		u32 flags			= 0;
+		if (0!=strstr(Params,"-build"))	flags |= CLocatorAPI::flBuildCopy;
+		if (0!=strstr(Params,"-ebuild"))flags |= CLocatorAPI::flBuildCopy|CLocatorAPI::flEBuildCopy;
 
-	FS._initialize			(flags);
-	EFS._initialize			();
+		FS._initialize		(flags);
+		EFS._initialize		();
+
+		CreateLog			(cb,0!=strstr(Params,"-nolog"));
+	}
     
-	CreateLog				(cb,0!=strstr(Params,"-nolog"));
-
 	bInitialized			= TRUE;
 }
 
