@@ -449,6 +449,8 @@ public:
 			E->UPDATE_Read			(tNetPacket);
 			
 			E->Init					(E->s_name);
+			CALifeObject			*tpALifeObject = dynamic_cast<CALifeObject*>(E);
+			VERIFY(tpALifeObject);
 
 			R_ASSERT				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY));
 			R_ASSERT				((*I = dynamic_cast<CALifeDynamicObject*>(E)) != 0);

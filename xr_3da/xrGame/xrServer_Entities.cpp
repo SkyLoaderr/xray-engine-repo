@@ -1165,6 +1165,8 @@ xrSE_Zone::xrSE_Zone(LPCSTR caSection) : CALifeDynamicObject(caSection)
 
 void xrSE_Zone::STATE_Read		(NET_Packet& P, u16 size)	{
 	// CForm
+	if (m_wVersion >= 15)
+		inherited::STATE_Read(P,size);
 	cform_read			(P);
 
 	P.r_float(m_maxPower);
@@ -1172,6 +1174,7 @@ void xrSE_Zone::STATE_Read		(NET_Packet& P, u16 size)	{
 	P.r_u32(m_period);
 };
 void xrSE_Zone::STATE_Write		(NET_Packet& P)				{
+	inherited::STATE_Write(P);
 	// CForm
 	cform_write			(P);
 
