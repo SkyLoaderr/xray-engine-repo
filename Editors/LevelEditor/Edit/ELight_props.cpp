@@ -45,7 +45,7 @@ void __fastcall	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif)
 
 void __fastcall	CLight::OnFuzzyFlagChange(PropValue* value)
 {
-	if (m_Flags.is(flPointFuzzy)){ 
+	if (m_Flags.is(ELight::flPointFuzzy)){ 
     	m_FuzzyData		= xr_new<SFuzzyData>();
 	    OnFuzzyTypeChange	(value);
     }else{
@@ -136,7 +136,7 @@ void CLight::FillAttProp(LPCSTR pref, PropItemVec& items)
     V->OnChangeEvent 		= OnPointDataChange;
     V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Constant"),	&m_Attenuation0,0.f,1.f,0.0001f,6);
     V->OnChangeEvent 		= OnPointDataChange;
-    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Linear"),		&m_Attenuation1,0.f,1.f,0.0001f,6);
+    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Linear"),	&m_Attenuation1,0.f,1.f,0.0001f,6);
     V->OnChangeEvent 		= OnPointDataChange;
     V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Quadratic"),	&m_Attenuation2,0.f,1.f,0.0001f,6);
     V->OnChangeEvent 		= OnPointDataChange;
@@ -158,17 +158,17 @@ xr_token fuzzy_shape_types[]={
 void CLight::FillPointR1Prop(LPCSTR pref, PropItemVec& items)
 {
 	// flags
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
 //    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp			(pref,items);
     PropValue* 			P=0;
     ButtonValue* 		B=0;
-    P=PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref, "Fuzzy"),					&m_Flags,	CLight::flPointFuzzy);
+    P=PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref, "Fuzzy"),				&m_Flags,	ELight::flPointFuzzy);
     P->OnChangeEvent		= OnFuzzyFlagChange;
-	if (m_Flags.is(CLight::flPointFuzzy)){
+	if (m_Flags.is(ELight::flPointFuzzy)){
         VERIFY				(m_FuzzyData);
         P=PHelper.CreateS16		(items,	FHelper.PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,0,100);
         P->OnChangeEvent		= OnFuzzyDataChange;
@@ -193,13 +193,13 @@ void CLight::FillPointR1Prop(LPCSTR pref, PropItemVec& items)
 void CLight::FillSpotR1Prop(LPCSTR pref, PropItemVec& items)
 {
 	// flags
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	CLight::flProcedural);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
+    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
 //    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp				(pref,items);
-	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(150),0.01f,2);
+	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
 	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R1\\Texture"),		&m_FalloffTex, 	smTexture);
 }
 //----------------------------------------------------
@@ -213,17 +213,17 @@ void CLight::FillPointR2Prop(LPCSTR pref, PropItemVec& items)
 
 void CLight::FillSpotR2Prop(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R2\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(150),0.01f,2);
+	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R2\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
 	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_FalloffTex, 	smTexture);
     PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot R2\\Virtual Size"),	&m_VirtualSize);
 }
 //----------------------------------------------------
 
 xr_token			token_light_type[ ]	=	{
-    { "Point R1",	CLight::ltPointR1		},
-    { "Spot R1",	CLight::ltSpotR1		},
-    { "Point R2",	CLight::ltPointR2		},
-    { "Spot R2",	CLight::ltSpotR2		},
+    { "Point R1",	ELight::ltPointR1		},
+    { "Spot R1",	ELight::ltSpotR1		},
+    { "Point R2",	ELight::ltPointR2		},
+    { "Spot R2",	ELight::ltSpotR2		},
     { 0,			0	  					}
 };
 
@@ -244,10 +244,10 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
 
     switch(m_Type){
-    case ltPointR1:	 		FillPointR1Prop	(pref, items);	break;
-    case ltPointR2:	 		FillPointR2Prop	(pref, items);	break;
-    case ltSpotR1: 			FillSpotR1Prop 	(pref, items);	break;
-    case ltSpotR2: 			FillSpotR2Prop 	(pref, items);	break;
+    case ELight::ltPointR1:	FillPointR1Prop	(pref, items);	break;
+    case ELight::ltPointR2:	FillPointR2Prop	(pref, items);	break;
+    case ELight::ltSpotR1: 	FillSpotR1Prop 	(pref, items);	break;
+    case ELight::ltSpotR2: 	FillSpotR2Prop 	(pref, items);	break;
     default: THROW;
     }
     PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
@@ -266,15 +266,15 @@ void CLight::OnShowHint(AStringVec& dest){
     AnsiString temp;
     temp.sprintf("Type:  ");
     switch(m_Type){
-    case ltPointR1:	        temp+="point"; break;
-    case ltSpotR1:			temp+="spot"; break;
+    case ELight::ltPointR1:	        temp+="point"; break;
+    case ELight::ltSpotR1:			temp+="spot"; break;
     default: temp+="undef";
     }
     dest.push_back(temp);
     temp = "Flags: ";
-    if (m_Flags.is(flAffectStatic))  	temp+="Stat ";
-    if (m_Flags.is(flAffectDynamic)) 	temp+="Dyn ";
-    if (m_Flags.is(flProcedural))		temp+="Proc ";
+    if (m_Flags.is(ELight::flAffectStatic))  	temp+="Stat ";
+    if (m_Flags.is(ELight::flAffectDynamic)) 	temp+="Dyn ";
+    if (m_Flags.is(ELight::flProcedural))		temp+="Proc ";
     dest.push_back(temp);
     temp.sprintf("Pos:   %3.2f, %3.2f, %3.2f",PPosition.x,PPosition.y,PPosition.z);
     dest.push_back(temp);

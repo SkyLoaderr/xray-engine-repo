@@ -39,7 +39,7 @@ bool CLight::Load(IReader& F)
 	CCustomObject::Load(F);
 
     if (F.find_chunk(LIGHT_CHUNK_PARAMS)){
-        m_Type			= (ELightType)F.r_u32();            
+        m_Type			= (ELight::EType)F.r_u32();            
         F.r_fcolor		(m_Color);  	        
         m_Brightness   	= F.r_float();			
         m_Range			= F.r_float();			
@@ -52,7 +52,7 @@ bool CLight::Load(IReader& F)
 	    R_ASSERT(F.find_chunk(LIGHT_CHUNK_D3D_PARAMS));
         Flight			d3d;
 	    F.r				(&d3d,sizeof(d3d));
-        m_Type			= (ELightType)d3d.type;   	        
+        m_Type			= (ELight::EType)d3d.type;   	        
         m_Color.set		(d3d.diffuse); 	        
         m_Range			= d3d.range;			
         m_Attenuation0	= d3d.attenuation0;		
@@ -94,9 +94,9 @@ bool CLight::Load(IReader& F)
     if (F.find_chunk(LIGHT_CHUNK_FUZZY_DATA)){
         m_FuzzyData	= xr_new<SFuzzyData>();
         m_FuzzyData->Load(F);
-		m_Flags.set(CLight::flPointFuzzy,TRUE);
+		m_Flags.set(ELight::flPointFuzzy,TRUE);
     }else{
-		m_Flags.set(CLight::flPointFuzzy,FALSE);
+		m_Flags.set(ELight::flPointFuzzy,FALSE);
     }
     
 	UpdateTransform	();
@@ -141,7 +141,7 @@ void CLight::Save(IWriter& F)
 	    F.close_chunk();
     }
 
-	if (m_Flags.is(CLight::flPointFuzzy)){
+	if (m_Flags.is(ELight::flPointFuzzy)){
         VERIFY(m_FuzzyData);
         F.open_chunk(LIGHT_CHUNK_FUZZY_DATA);
         m_FuzzyData->Save(F);

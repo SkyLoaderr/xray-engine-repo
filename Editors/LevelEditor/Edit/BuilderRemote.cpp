@@ -448,7 +448,7 @@ BOOL SceneBuilder::BuildSun(u8 quality, Fvector2 dir)
 
 BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points, const Fmatrix* soft_transform)
 {
-    if (usage.is(CLight::flAffectStatic)){
+    if (usage.is(ELight::flAffectStatic)){
     	if (soft_points&&!soft_points->empty()){
         	R_ASSERT(soft_transform);
         // make soft light
@@ -473,7 +473,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
             sl.data			    = b->data;
         }
     }
-    if (usage.is(CLight::flAffectDynamic)){
+    if (usage.is(ELight::flAffectDynamic)){
         R_ASSERT			(sectors);
 		l_light_dynamic.push_back(b_light_dynamic());
         b_light_dynamic& dl	= l_light_dynamic.back();
@@ -487,7 +487,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
 
 BOOL SceneBuilder::BuildLight(CLight* e)
 {
-    if (!e->m_Flags.is_any(CLight::flAffectStatic|CLight::flAffectDynamic))
+    if (!e->m_Flags.is_any(ELight::flAffectStatic|ELight::flAffectDynamic))
     	return FALSE;
 
     if (!e->GetLControlName()){
@@ -497,8 +497,8 @@ BOOL SceneBuilder::BuildLight(CLight* e)
         
     b_light	L;
     switch(e->m_Type){
-    case CLight::ltPointR1:	L.data.type	= D3DLIGHT_POINT; 	break;
-    case CLight::ltSpotR1: 	L.data.type	= D3DLIGHT_SPOT; 	break;
+    case ELight::ltPointR1:	L.data.type	= D3DLIGHT_POINT; 	break;
+    case ELight::ltSpotR1: 	L.data.type	= D3DLIGHT_SPOT; 	break;
     default: return FALSE;
     }
     
@@ -516,7 +516,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     L.controller_ID	= BuildLightControl(e->GetLControlName()); //BuildLightControl(LCONTROL_STATIC); 
 
 	svector<WORD,16>* lpSectors;
-    if (e->m_Flags.is(CLight::flAffectDynamic)){
+    if (e->m_Flags.is(ELight::flAffectDynamic)){
 		svector<WORD,16> sectors;
         lpSectors		= &sectors;
         Fvector& pos 	= e->PPosition;
@@ -549,7 +549,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 
 
     switch (e->m_Type){
-    case CLight::ltPointR1:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
+    case ELight::ltPointR1:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
     default:
     	THROW2("Invalid light type.");
 	    return FALSE;

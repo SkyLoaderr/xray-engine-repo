@@ -46,7 +46,7 @@ void CLight::Construct(LPVOID data)
 
     m_FuzzyData		= 0;
     
-    m_Type 			= ltPointR1;
+    m_Type 			= ELight::ltPointR1;
 	m_Color.set		(1.f,1.f,1.f,0);
     m_Brightness 	= 1.f;
 	m_Attenuation0 	= 1.f;
@@ -60,7 +60,7 @@ void CLight::Construct(LPVOID data)
     m_pAnimRef		= 0;
     m_LControl		= 0;
 
-    m_Flags.set		(flAffectStatic);
+    m_Flags.set		(ELight::flAffectStatic);
 }
 
 CLight::~CLight()
@@ -99,13 +99,13 @@ void CLight::Render(int priority, bool strictB2F)
     if ((1==priority)&&(false==strictB2F)){
         Device.SetShader		(Device.m_WireShader);
         RCache.set_xform_world	(Fidentity);
-    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
+    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(ELight::flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_Type){
-        case ltPointR1:
-        case ltPointR2:
+        case ELight::ltPointR1:
+        case ELight::ltPointR2:
             if (Selected()) 	DU.DrawLineSphere( PPosition, m_Range, clr, true );
             DU.DrawPointLight(PPosition,VIS_RADIUS, clr);
-            if (m_Flags.is(CLight::flPointFuzzy)){
+            if (m_Flags.is(ELight::flPointFuzzy)){
             	VERIFY(m_FuzzyData);
 			    for (FvectorIt it=m_FuzzyData->m_Positions.begin(); it!=m_FuzzyData->m_Positions.end(); it++){
                 	Fvector tmp; _Transform().transform_tiny(tmp,*it);
@@ -113,15 +113,13 @@ void CLight::Render(int priority, bool strictB2F)
 	            }
 			}
         break;
-        case ltSpotR1:
-        case ltSpotR2:{
+        case ELight::ltSpotR1:
+        case ELight::ltSpotR2:{
 //			Fvector dir;
 //			dir.setHP		(PRotation.y,PRotation.x);
 //			DU.DrawCone		(Fidentity, PPosition, dir, Selected()?m_Range:VIS_RADIUS, radius2, clr, true, false);
-			Fvector dir;
-            dir.setHP		(PRotation.y,PRotation.x);
-        	if (Selected())	DU.DrawSpotLight( PPosition, dir, m_Range, m_Cone, clr );
-            else			DU.DrawSpotLight( PPosition, dir, VIS_RADIUS, m_Cone, clr );
+        	if (Selected())	DU.DrawSpotLight( PPosition, FTransformR.k, m_Range, m_Cone, clr );
+            else			DU.DrawSpotLight( PPosition, FTransformR.k, VIS_RADIUS, m_Cone, clr );
         }break;
         default: THROW;
         }
@@ -136,10 +134,10 @@ void CLight::Render(int priority, bool strictB2F)
         Device.SetShader		(Device.m_SelectionShader);
         RCache.set_xform_world	(Fidentity);
     	switch (m_Type){
-        case ltPointR1:
-        case ltPointR2:
-            if (m_Flags.is(CLight::flPointFuzzy)){
-		    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
+        case ELight::ltPointR1:
+        case ELight::ltPointR2:
+            if (m_Flags.is(ELight::flPointFuzzy)){
+		    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(ELight::flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
                 clr 	= subst_alpha(clr,0x40);
             	const Fvector zero={0.f,0.f,0.f};
                 VERIFY(m_FuzzyData);
@@ -153,8 +151,8 @@ void CLight::Render(int priority, bool strictB2F)
                 }
 			}
         break;
-        case ltSpotR1:
-        case ltSpotR2:               break;
+        case ELight::ltSpotR1:
+        case ELight::ltSpotR2:               break;
         default: THROW;
         }
 	}
@@ -213,19 +211,19 @@ void __fastcall	CLight::OnNeedUpdate(PropValue* value)
 bool CLight::GetSummaryInfo(SSceneSummary* inf)
 {
     switch (m_Type){
-    case ltPointR1:		inf->light_pointR1_cnt++; break;
-    case ltPointR2:		inf->light_pointR2_cnt++; break;
-    case ltSpotR1:		inf->light_spotR1_cnt++; 	break;
-    case ltSpotR2:		inf->light_spotR2_cnt++; 	break;
+    case ELight::ltPointR1:		inf->light_pointR1_cnt++; break;
+    case ELight::ltPointR2:		inf->light_pointR2_cnt++; break;
+    case ELight::ltSpotR1:		inf->light_spotR1_cnt++; 	break;
+    case ELight::ltSpotR2:		inf->light_spotR2_cnt++; 	break;
     }
 
     switch (m_Type){
-    case ltPointR1:
-    case ltSpotR1:
-        if (m_Flags.is(flAffectStatic))		inf->light_static_cnt++;
-        if (m_Flags.is(flAffectDynamic))	inf->light_dynamic_cnt++;
-        if (m_Flags.is(flProcedural))		inf->light_procedural_cnt++;
-        if (m_Flags.is(flBreaking))			inf->light_breakable_cnt++;
+    case ELight::ltPointR1:
+    case ELight::ltSpotR1:
+        if (m_Flags.is(ELight::flAffectStatic))		inf->light_static_cnt++;
+        if (m_Flags.is(ELight::flAffectDynamic))	inf->light_dynamic_cnt++;
+        if (m_Flags.is(ELight::flProcedural))		inf->light_procedural_cnt++;
+        if (m_Flags.is(ELight::flBreaking))			inf->light_breakable_cnt++;
         break;
     }
 	return true;

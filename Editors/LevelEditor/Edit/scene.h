@@ -266,6 +266,8 @@ public:
     void			SynchronizeObjects();
 
     void			ShowSummaryInfo	();
+
+    AnsiString 		LevelPath		();
 };
 
 //----------------------------------------------------

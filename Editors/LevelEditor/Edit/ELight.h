@@ -5,6 +5,7 @@
 #ifndef ELightH
 #define ELightH
 
+#include "ELight_def.h"
 // refs
 class CLAItem;
 
@@ -12,27 +13,11 @@ class CLight : public CCustomObject{
 protected:
 	typedef CCustomObject inherited;
 public:
-	enum{
-		flAffectStatic	= (1<<0),
-		flAffectDynamic	= (1<<1),
-		flProcedural	= (1<<2),
-        flBreaking 		= (1<<3),
-        flPointFuzzy	= (1<<4),
-        flCastShadow	= (1<<5),
-    };
+	// flags
     Flags32			m_Flags;
-
-    enum ELightType{
-    	ltPointR1	= 1,
-    	ltSpotR1  	= 2,
-        ltDirectR1	= 3,
-    	ltPointR2	= 4,
-    	ltSpotR2  	= 5,
-    	lt_max_type = u32(-1),
-    };
     
     // light
-    ELightType     	m_Type;             /* Type of light source */
+    ELight::EType   m_Type;             /* Type of light source */
     Fcolor          m_Color;            /* Diffuse color of light */
     float 			m_Brightness;
     float		    m_Range;            /* Cutoff range */
@@ -43,6 +28,14 @@ public:
 
     float			m_VirtualSize;
     
+    CLAItem*		m_pAnimRef;
+
+    // spot light
+    AnsiString		m_FalloffTex;
+
+    // controller
+    u32				m_LControl;
+
 	// build options
     BOOL 			m_UseInD3D;
 
@@ -95,14 +88,6 @@ public:
         }
     };
     SFuzzyData*		m_FuzzyData;
-
-    CLAItem*		m_pAnimRef;
-
-    // spot light
-    AnsiString		m_FalloffTex;
-
-    // controller
-    u32				m_LControl;
 
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);

@@ -370,4 +370,13 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     return bRes;
 }
 
+AnsiString EScene::LevelPath()
+{
+    AnsiString path;
+	if (m_LevelOp.m_FNLevelPath.Length()){
+        FS.update_path	(path,"$level$",m_LevelOp.m_FNLevelPath.c_str());
+        path			+= "\\";
+    }
+    return path;
+}
 

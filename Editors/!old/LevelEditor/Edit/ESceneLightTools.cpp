@@ -76,7 +76,7 @@ void ESceneLightTools::BeforeRender()
         for(ObjectIt _F = m_Objects.begin();_F!=m_Objects.end();_F++){
             CLight* l 		= (CLight*)(*_F);
             l_cnt++;
-            if (l->Visible()&&l->m_UseInD3D&&l->m_Flags.is_any(CLight::flAffectDynamic|CLight::flAffectStatic))
+            if (l->Visible()&&l->m_UseInD3D&&l->m_Flags.is_any(ELight::flAffectDynamic|ELight::flAffectStatic))
                 if (::Render->ViewBase.testSphere_dirty(l->PPosition,l->m_Range))
                 	AppendFrameLight(l);
         }
@@ -172,8 +172,26 @@ void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, 
     bDataModified = true;
 }
 //------------------------------------------------------------------------------
+void __fastcall ESceneLightTools::OnControlFilesClick(PropValue* sender, bool& bDataModified)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    AnsiString item_name = sender->Owner()->Item()->Text;
+    switch (V->btn_num){
+    case 0:{ 
+        if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export game?"))
+		    if (!ExportLevelLights())
+            	ELog.DlgMsg(mtError, "Failed to export level lights.");
+    }break;
+	}
+    UI->Command(COMMAND_UPDATE_PROPERTIES);
+    bDataModified = false;
+}
+//------------------------------------------------------------------------------
 void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
+    ButtonValue*	B 	= 0;
+	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"File"),	"Export Lights",		ButtonValue::flFirstOnly);
+	B->OnBtnClickEvent	= OnControlFilesClick;
     // hemisphere
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),		&m_HemiQuality,		1,2);
     // sun
@@ -184,7 +202,6 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
     // light controls
     PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),&m_Flags,			flShowControlName);
     PHelper.CreateCaption(items,FHelper.PrepareKey(pref,"Common\\Controls\\Count"),			lcontrols.size());
-    ButtonValue*	B 	= 0;
 //	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);
 //	B->OnBtnClickEvent	= OnControlAppendClick;
 	ATokenIt		_I 	= lcontrols.begin();
