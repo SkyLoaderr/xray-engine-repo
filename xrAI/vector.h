@@ -146,7 +146,7 @@ ICF float		angle_normalize_signed(float a)
 }
 
 // -PI..PI
-IC float		angle_difference_signed(float a, float b)
+ICF float		angle_difference_signed(float a, float b)
 {
 	float diff	= angle_normalize_signed(a) - angle_normalize_signed(b);
 	if (diff>0) {
@@ -160,7 +160,7 @@ IC float		angle_difference_signed(float a, float b)
 }
 
 // 0..PI
-IC float		angle_difference(float a, float b)
+ICF float		angle_difference(float a, float b)
 {
 	return _abs	(angle_difference_signed(a,b));
 }
@@ -194,7 +194,7 @@ IC bool			angle_lerp		(float& c, float t, float s, float dt)
 }
 
 // Just lerp :)	expects normalized angles in range [0..2PI)
-IC float		angle_lerp		(float A, float B, float f)
+ICF float		angle_lerp		(float A, float B, float f)
 {
 	float diff		= B - A;
 	if (diff>PI)		diff	-= PI_MUL_2;

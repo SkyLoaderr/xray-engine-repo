@@ -263,11 +263,11 @@ public:
 	}
 
 	// DotProduct
-	IC	T		dotproduct(const Self &v) const		   // v1*v2
+	ICF	T		dotproduct(const Self &v) const		   // v1*v2
 	{	return x*v.x + y*v.y + z*v.z; }
 
 	// CrossProduct
-	IC	SelfRef	crossproduct(const Self &v1, const Self &v2) // (v1,v2) -> this
+	ICF	SelfRef	crossproduct(const Self &v1, const Self &v2) // (v1,v2) -> this
 	{
 		x = v1.y  * v2.z  - v1.z  * v2.y ;
 		y = v1.z  * v2.x  - v1.x  * v2.z ;
