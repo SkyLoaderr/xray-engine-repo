@@ -233,7 +233,7 @@ $spawn 			= "artifacts\zharka drops"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_BDROP
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_kaply.ogf
 inv_name			= "Drops"
@@ -262,7 +262,7 @@ $spawn 			= "artifacts\zharka fireball"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_NEEDL
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_fire.ogf
 inv_name			= "Fireball"
@@ -300,7 +300,7 @@ $spawn 			= "artifacts\zharka cristall"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_BAST
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_cristall.ogf
 inv_name			= "Cristall"
@@ -316,15 +316,11 @@ inv_grid_x			= 0
 inv_grid_y			= 0
 
 cost				= 800	;100
-
+jump_height			= .1
+energy				= 1
 detector_dist		= 8
 detector_sound		= zone_mosquito_bald
 
-impulse_threshold		= 10
-radius					= 10
-strike_impulse			= 20
-energy_max				= 10
-energy_decrease_speed	= 1.5
 
 particles			= anomaly2\artefact\artefact_zharka_idle_00
 
@@ -665,7 +661,7 @@ $spawn 			= "artifacts\dummy spring"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_DUMMY
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_pustishka.ogf
 inv_name			= "Spring"
@@ -695,7 +691,7 @@ $spawn 			= "artifacts\dummy dummy"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_DUMMY
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_pustishka1.ogf
 inv_name			= "Dummy"
@@ -725,7 +721,7 @@ $spawn 			= "artifacts\dummy battery"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_ZUDA
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_battery.ogf
 inv_name			= "Battery"
@@ -753,7 +749,7 @@ $spawn 			= "artifacts\dummy pellicle"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_ZUDA
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_plenka.ogf
 inv_name			= "Pellicle"
@@ -781,7 +777,7 @@ $spawn 			= "artifacts\dummy glassbeads"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_ZUDA
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_spiral.ogf
 inv_name			= "Glassbeads for Mummy"
@@ -813,7 +809,7 @@ $spawn 			= "artifacts\rusty thorn"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_THORN
+class   		= ARTEFACT
 
 visual				= physics\anomaly\artefact_rusty_hairs.ogf
 inv_name			= "Thorn"
