@@ -32,7 +32,8 @@ void CImage::Hflip()
 	}
 }
 
-IC BYTE ClampColor(float a) {
+IC BYTE ClampColor(float a) 
+{
 	clamp(a,0.f,255.f);
     return BYTE(a);
 }

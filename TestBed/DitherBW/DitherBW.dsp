@@ -86,11 +86,27 @@ SOURCE=.\DitherBW.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FS.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Image.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\Image.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LzHuf.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lzhuf.h
 # End Source File
 # Begin Source File
 

@@ -16,11 +16,22 @@
 #include <malloc.h>
 #include <windows.h>
 #include <math.h>
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+
+#include <stack>
+
+typedef float Fvector[3];
+typedef float Fcolor[4];
 
 #define ENGINE_API
 #define _FREE(a) if (a) { free(a); a=0; }
 #define R_ASSERT(a)
+#define VERIFY(a)
+#define Log(a,b)
 #define IC __forceinline
+#include "fs.h"
 #include "image.h"
 
 
