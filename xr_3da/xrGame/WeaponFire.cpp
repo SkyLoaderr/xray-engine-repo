@@ -344,8 +344,29 @@ void CWeapon::OnDrawFlame	()
 	}
 }
 
+void CWeapon::FireStart	()
+{
+	bWorking=true;	
+}
+void CWeapon::FireEnd	()				
+{ 
+	bWorking=false;	
+	StopFlameParticles	();
+}
+void CWeapon::Fire2Start()				
+{ 
+	bWorking2=true;	
+}
+void CWeapon::Fire2End	()
+{ 
+	bWorking2=false;
+	StopFlameParticles	();
+}
+
+
 void CWeapon::StartFlameParticles	()
 {
+	//StartParticles(m_pFlameParticles, m_sFlameParitcles, vLastFP);
 	if(!m_sFlameParitcles) return;
 
 	if(m_pFlameParticles != NULL) 
@@ -356,24 +377,12 @@ void CWeapon::StartFlameParticles	()
 
 	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParitcles,Sector(),false);
 
-	//если партикл не цикличный то поставить
-	//автоудаление и просто забыть про него
-	if(!m_pFlameParticles->IsLooped())
-	{
-		UpdateFlameParticles();
-		m_pFlameParticles->Play();
-
-		//m_pFlameParticles->SetAutoRemove(true);
-		//m_pFlameParticles = NULL;
-	}
-	else
-	{
-		UpdateFlameParticles();
-		m_pFlameParticles->Play();
-	}
+	UpdateFlameParticles();
+	m_pFlameParticles->Play();
 }
 void CWeapon::StopFlameParticles	()
 {
+//	StopParticles(m_pFlameParticles);
 	if(!m_sFlameParitcles) return;
 
 	if(m_pFlameParticles == NULL) return;
@@ -385,6 +394,7 @@ void CWeapon::StopFlameParticles	()
 
 void CWeapon::UpdateFlameParticles	()
 {
+//	UpdateParticles	(m_pFlameParticles, vLastFP);
 	if(!m_sFlameParitcles) return;
 
 	Fmatrix pos; 
@@ -410,7 +420,9 @@ void CWeapon::UpdateFlameParticles	()
 //партиклы дыма
 void CWeapon::StartSmokeParticles	()
 {
-	if(!m_sSmokeParitcles) return;
+	CParticlesObject* pSmokeParticles = NULL;
+	StartParticles(pSmokeParticles, m_sSmokeParitcles, vLastFP, zero_vel, true);
+	/*if(!m_sSmokeParitcles) return;
 
 	CParticlesObject* pSmokeParticles = xr_new<CParticlesObject>(m_sSmokeParitcles,Sector());
 
@@ -423,76 +435,54 @@ void CWeapon::StartSmokeParticles	()
 	pos.c.set(vLastFP);
 
 	pSmokeParticles->UpdateParent(pos, vel); 
-	pSmokeParticles->Play();
+	pSmokeParticles->Play();*/
 }
 
 
-void CWeapon::FireStart	()
+
+void CWeapon::StartParticles (CParticlesObject*& pParticles, LPCSTR particles_name, 
+							  const Fvector& pos, const  Fvector& vel, bool auto_remove_flag)
 {
-	bWorking=true;	
-}
-void CWeapon::FireEnd	()				
-{ 
-	bWorking=false;	
-	StopFlameParticles	();
-}
-void CWeapon::Fire2Start()				
-{ 
-	bWorking2=true;	
-}
-void CWeapon::Fire2End	()
-{ 
-	bWorking2=false;
-	StopFlameParticles	();
-}
+	if(!particles_name) return;
 
-//StartFlameParticles	();
-//StopFlameParticles	();
-
-/*
-def:
-	u32				self_gmtl_id;
-	u32				last_gmtl_id;
-init:
-	self_gmtl_id	= GAMEMTL_NONE;
-	last_gmtl_id	= GAMEMTL_NONE;
-load:
-	self_gmtl_id	= GMLib.GetMaterialIdx("actor");
-	last_gmtl_id	= GMLib.GetMaterialIdx("default");
-use:
-	SGameMtl* mtl0	= GMLib.GetMaterial(self_gmtl_id);
-	SGameMtl* mtl1	= GMLib.GetMaterial(last_gmtl_id);
-	SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
-
-	if (result.O){
-		// dynamic
-		CKinematics* V = 0;
-		if (0!=(V=PKinematics(result.O->Visual()))){
-			CBoneData* B = V->LL_GetData(result.element);
-			B->game_mtl_idx;
-		}
-	}else{
-		// static 
-		CDB::TRI& T		= g_pGameLevel->ObjectSpace.Static->get_tris()+result.element;
-		T.material;
-	}
-query:
-	if(0){
-	Collide::ray_defs RD(P,dir,fireDistance*l_cartridge.m_kDist,0,Collide::rqtBoth);
-	if (g_pGameLevel->ObjectSpace.RayQuery( RD, firetrace_callback, this ))
-	{ 
-	for (int k=0; k<g_pGameLevel->ObjectSpace.r_results.r_count(); k++){
-	Collide::rq_result* R = g_pGameLevel->ObjectSpace.r_results.r_begin()+k;
-	}
-	}
+	if(pParticles != NULL) 
+	{
+		UpdateParticles(pParticles, pos, vel);
+		return;
 	}
 
-	//		Fvector N,D;
-//		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-//		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
-//		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-//		D.reflect			(m_vCurrentShootDir,N);
+	pParticles = xr_new<CParticlesObject>(particles_name,Sector(),auto_remove_flag);
 
-*/
+	UpdateParticles(pParticles, pos, vel);
+	pParticles->Play();
 
+}
+void CWeapon::StopParticles (CParticlesObject*&	pParticles)
+{
+	if(pParticles == NULL) return;
 
+	pParticles->Stop();
+	pParticles->PSI_destroy();
+	pParticles = NULL;
+
+}
+void CWeapon::UpdateParticles (CParticlesObject*& pParticles, 
+							   const Fvector& pos, const Fvector& vel)
+{
+	if(!pParticles) return;
+
+	Fmatrix particles_pos; 
+	particles_pos.set(XFORM());
+	particles_pos.c.set(pos);
+	//pParticles->UpdateParent(particles_pos,vel);
+	pParticles->SetXFORM(particles_pos);
+
+	
+	if(!pParticles->IsAutoRemove() && !pParticles->IsLooped() 
+		&& !pParticles->PSI_alive())
+	{
+		pParticles->Stop();
+		pParticles->PSI_destroy();
+		pParticles = NULL;
+	}
+}

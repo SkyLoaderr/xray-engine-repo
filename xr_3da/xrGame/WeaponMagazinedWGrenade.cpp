@@ -86,7 +86,7 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 
 BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC) 
 {
-	m_pGrenadePoint = &vLastFP;
+	m_pGrenadePoint = &vLastFP2;
 	BOOL l_res = inherited::net_Spawn(DC);
 	
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);

@@ -20,10 +20,22 @@ public:
 	virtual void	OnDrawFlame			();
 	virtual	void	renderable_Render	();
 
+	virtual void	UpdateSounds	();
+	virtual void	UpdateCL		();
+
+	//для второго ствола
+	virtual void			StartFlameParticles2	();
+	virtual void			StopFlameParticles2		();
+	virtual void			UpdateFlameParticles2	();
+
+
 	virtual bool Action(s32 cmd, u32 flags);
 
 protected:
 	ref_sound		sndShotBoth;
 	ESoundTypes		m_eSoundShotBoth;
 	MotionSVec		mhud_shot_boths;
+
+	//объект партиклов для стрельбы из 2-го ствола
+	CParticlesObject*	m_pFlameParticles2;
 };

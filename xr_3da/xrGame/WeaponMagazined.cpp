@@ -187,8 +187,6 @@ void CWeaponMagazined::OnMagazineEmpty()
 {
 	bPending = true;
 	SwitchState(eMagEmpty); 
-
-	//!!! just for testing reasons !!!
 	inherited::OnMagazineEmpty();
 }
 

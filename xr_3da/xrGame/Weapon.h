@@ -9,12 +9,15 @@
 #include "PhysicsShell.h"
 #include "weaponammo.h"
 #include "UIStaticItem.h"
+#include "ParticlesObject.h"
 #include "PHShellCreator.h"
+
 // refs
 class CEntity;
 class CWeaponHUD;
 class ENGINE_API CMotionDef;
-class CParticlesObject;
+
+
 
 #include "xrServer_Objects_ALife_Items.h"
 
@@ -235,14 +238,20 @@ public:
 
 	virtual void			OnDrawFlame			();
 	
+	//общие функции для работы с партиклами оружия
+	virtual void			StartParticles		(CParticlesObject*& pParticles, LPCSTR particles_name, const Fvector& pos, const Fvector& vel = zero_vel, bool auto_remove_flag = false);
+	virtual void			StopParticles		(CParticlesObject*& pParticles);
+	virtual void			UpdateParticles		(CParticlesObject*& pParticles, const Fvector& pos, const  Fvector& vel = zero_vel);
+
+	//спецефические функции для партиклов
+	//партиклы огня
 	virtual void			StartFlameParticles	();
 	virtual void			StopFlameParticles	();
 	virtual void			UpdateFlameParticles();
-
+	//партиклы дыма
 	virtual void			StartSmokeParticles	();
-
+	
 	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
-
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();

@@ -13,8 +13,6 @@
 #include "entity_alive.h"
 #include "actor.h"
 
-
-
 u16 CWeapon::bullet_material_id = GAMEMTL_NONE;
 
 #define WEAPON_MATERIAL_NAME "objects\\bullet"
@@ -1194,5 +1192,4 @@ CUIStaticItem* CWeapon::ZoomTexture()
 
 void CWeapon::OnMagazineEmpty()
 {
-	StopFlameParticles	();
 }
