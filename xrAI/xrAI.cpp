@@ -65,6 +65,9 @@ void Startup(LPSTR     lpCmdLine)
 	else
 		if (strstr(cmd,"-g"))
 			sscanf	(strstr(cmd,"-g")+2,"%s",name);
+		else
+			if (strstr(cmd,"-s"))
+				sscanf	(strstr(cmd,"-s")+2,"%s",name);
 
 	if (strlen(name))
 		strcat			(name,"\\");
@@ -92,7 +95,9 @@ void Startup(LPSTR     lpCmdLine)
 			}
 			else
 				if (strstr(cmd,"-s")) {
-					xrMergeSpawns		(prjName);
+					if (strlen(name))
+						name[strlen(name) - 1] = 0;
+					xrMergeSpawns		(name);
 				}
 		}
 	// Show statistic

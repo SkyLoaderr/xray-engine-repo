@@ -57,16 +57,15 @@ public:
 		m_tLevel				= tLevel;
 		m_dwLevelID				= dwLevelID;
 		string256				fName;
-		strconcat				(fName,name,m_tLevel.caLevelName);
-		strconcat				(fName,fName,"\\");
+		FS.update_path			(fName,name,m_tLevel.caLevelName);
+		strcat					(fName,"\\");
 		m_tpAI_Map				= xr_new<CAI_Map>(fName);
 		// loading cross table
 		strcat					(fName,CROSS_TABLE_NAME);
 		m_tpCrossTable			= xr_new<CSE_ALifeCrossTable>(fName);
 		// loading spawn points
-		fName[0]				= 0;
-		strconcat				(fName,name,m_tLevel.caLevelName);
-		strconcat				(fName,fName,"\\level.spawn");
+		FS.update_path			(fName,name,m_tLevel.caLevelName);
+		strcat					(fName,"\\level.spawn");
 		IReader					*SP = FS.r_open(fName);
 		IReader					*S = 0;
 		NET_Packet				P;
@@ -375,10 +374,12 @@ void xrMergeSpawns(LPCSTR name)
 			R_ASSERT2			(Ini->section_exist(N),S);
 		}
 		V						= Ini->r_string(N,"name");
+		if (strlen(name) && stricmp(name,V))
+			continue;
 		Memory.mem_copy			(tLevel.caLevelName,V,(u32)strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
 		u32						id = Ini->r_s32(N,"id");
-		tpLevels.push_back		(xr_new<CSpawn>(name,tLevel,id,&dwGroupOffset));
+		tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,id,&dwGroupOffset));
     }
 	R_ASSERT2					(tpLevels.size(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
 	
