@@ -93,10 +93,11 @@ public:
 	void				calc_normals		();
 	void				calc_materials		();
 	void				calc_faceopacity	();
-	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer, BOOL bDisableFaces);
+	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, vector<R_Light>& Lights_src, BOOL bDisableFaces);
 	void				calc_lighting		();
 	void				calc_ogf			();
 	void				export_geometry		();
+	void				export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform);
 };
 
 class xrMU_Reference
@@ -115,8 +116,8 @@ public:
 	void				Load				(CStream& FS);
 	void				calc_lighting		();
 
-	void				export_cform_rcast	(CDB::CollectorPacked& CL);
 	void				export_cform_game	(CDB::CollectorPacked& CL);
+	void				export_cform_rcast	(CDB::CollectorPacked& CL);
 	void				export_ogf			();
 };
 

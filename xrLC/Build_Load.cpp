@@ -207,7 +207,7 @@ void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
 		for (u32 LH=0; LH<L_layers.size(); LH++)
 		{
 			R_Layer&	TEST	= L_layers[LH];
-			if (0=stricmp(TEST.control.name,LCONTROL_HEMI))
+			if (0==stricmp(TEST.control.name,LCONTROL_HEMI))
 			{
 				// Hemi found
 				L_hemi	= TEST.lights;

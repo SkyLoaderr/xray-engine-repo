@@ -35,7 +35,7 @@ var _x	= var(x);
 */
 
 //-----------------------------------------------------------------------
-void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer, BOOL bDisableFaces)
+void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, vector<R_Light>& Lights_src, BOOL bDisableFaces)
 {
 	// trans-map
 	typedef	multimap<float,v_vertices>	mapVert;
@@ -57,7 +57,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	// Perform lighting
 	CDB::COLLIDER			DB;
 	DB.ray_options			(0);
-	vector<R_Light>	Lights = pBuild->L_layers.front().lights;
+	vector<R_Light>	Lights = Lights_src;
 	if (Lights.empty())		return;
 
 	// Disable faces if needed
@@ -212,15 +212,28 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 
 void xrMU_Model::calc_lighting		()
 {
-	clMsg				("model '%s' - REF_lighted.",m_name);
-	Fcolor ref;
-	ref.set				(.5f, .5f, .5f, 1.f);
-	color.assign		(m_vertices.size(),ref);
+	// BB
+	Fbox			BB; 
+	BB.invalidate	();
+	for (v_vertices_it vit=m_vertices.begin(); vit!=m_vertices.end(); vit++)
+		BB.modify	((*vit)->P);
+
+	// Export CForm
+	CDB::CollectorPacked	CL	(BB,m_vertices.size(),m_faces.size());
+	export_cform_rcast		(CL,Fidentity);
+
+	CDB::MODEL*				M	= xr_new<CDB::MODEL>	();
+	M->build				(CL.getV(),CL.getVS(),CL.getT(),CL.getTS(),FALSE);
+	calc_lighting			(color,Fidentity,M,pBuild->L_hemi,FALSE);
+
+	xr_delete				(M);
+
+	clMsg					("model '%s' - REF_lighted.",m_name);
 }
 
 void xrMU_Reference::calc_lighting	()
 {
-	model->calc_lighting	(color,xform,RCAST_Model,0,TRUE);
+	model->calc_lighting	(color,xform,RCAST_Model,pBuild->L_layers.front().lights,TRUE);
 
 	// A*C + D = B
 	// build data

@@ -1,26 +1,22 @@
 #include "stdafx.h"
 
-void xrMU_Reference::export_cform_rcast	(CDB::CollectorPacked& CL)
+void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 {
-	xrMU_Model::v_faces&		m_faces		= model->m_faces;
-
 	for		(u32 fit=0; fit<m_faces.size(); fit++)	m_faces[fit]->bProcessed = FALSE;
 
-	xrMU_Model::v_faces			adjacent;	adjacent.reserve(6*2*3);
+	v_faces			adjacent;	adjacent.reserve(6*2*3);
 
-	for (xrMU_Model::v_faces_it it = m_faces.begin(); it!=m_faces.end(); it++)
+	for (v_faces_it it = m_faces.begin(); it!=m_faces.end(); it++)
 	{
-		xrMU_Model::_face*	F	= (*it);
+		_face*	F		= (*it);
 
 		// Collect
 		adjacent.clear	();
 		for (int vit=0; vit<3; vit++)
 		{
-			xrMU_Model::_vertex* V	= F->v[vit];
+			_vertex* V	= F->v[vit];
 			for (u32 adj=0; adj<V->adjacent.size(); adj++)
-			{
 				adjacent.push_back(V->adjacent[adj]);
-			}
 		}
 
 		// Unique
@@ -29,7 +25,7 @@ void xrMU_Reference::export_cform_rcast	(CDB::CollectorPacked& CL)
 		BOOL			bAlready	= FALSE;
 		for (DWORD ait=0; ait<adjacent.size(); ait++)
 		{
-			xrMU_Model::_face*	Test	= adjacent[ait];
+			_face*	Test				= adjacent[ait];
 			if (Test==F)				continue;
 			if (!Test->bProcessed)		continue;
 			if (F->isEqual(*Test))
@@ -54,4 +50,9 @@ void xrMU_Reference::export_cform_rcast	(CDB::CollectorPacked& CL)
 				);
 		}
 	}
+}
+
+void xrMU_Reference::export_cform_rcast(CDB::CollectorPacked& CL)
+{
+	model->export_cform_rcast(CL,xform);
 }
