@@ -49,15 +49,16 @@ public:
 //*** Shared Bone Data ****************************************************************************
 class ENGINE_API		CBoneData
 {
+protected:
+	u16					SelfID;
+	u16					ParentID;
 public:
 	shared_str			name;
 
-	u16					SelfID;
-	u16					ParentID;
 	vecBones			children;		// bones which are slaves to this
 	Fobb				obb;			
 
-    Fmatrix				bind_transform;
+	Fmatrix				bind_transform;
     Fmatrix				m2b_transform;	// model to bone conversion transform
     SBoneShape			shape;
     shared_str			game_mtl_name;
@@ -70,12 +71,17 @@ public:
 	DEFINE_VECTOR		(FacesVec,ChildFacesVec,ChildFacesVecIt);
 	ChildFacesVec		child_faces;	// shared
 public:    
-						CBoneData		(u16 ID):SelfID(ID)	{}
+						CBoneData		(u16 ID):SelfID(ID)	{VERIFY(SelfID!=BI_NONE);}
 	virtual				~CBoneData		()					{}
 #ifdef DEBUG
 	typedef svector<int,128>	BoneDebug;
 	void						DebugQuery		(BoneDebug& L);
 #endif
+	IC void				SetParentID		(u16 id){ParentID=id;}
+	
+	IC u16				GetSelfID		(){return SelfID;}
+	IC u16				GetParentID		(){return ParentID;}
+
 	// assign face
 	void				AppendFace		(u16 child_idx, u16 idx)
 	{

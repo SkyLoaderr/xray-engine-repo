@@ -364,7 +364,7 @@ void CPHSkeleton::RecursiveBonesCheck(u16 id)
 		}
 		///////////////////////////////////////////////
 		for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
-			RecursiveBonesCheck		((*it)->SelfID);
+			RecursiveBonesCheck		((*it)->GetSelfID());
 		}
 }
 bool CPHSkeleton::ReadyForRemove()

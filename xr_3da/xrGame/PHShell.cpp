@@ -528,7 +528,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	{
 	
 		for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
-			AddElementRecursive		(root_e,(*it)->SelfID,fm_position,element_number,&lvis_check);
+			AddElementRecursive		(root_e,(*it)->GetSelfID(),fm_position,element_number,&lvis_check);
 		return;
 	}
 	
@@ -853,7 +853,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
-		AddElementRecursive		(E,(*it)->SelfID,fm_position,element_number,arg_check);
+		AddElementRecursive		(E,(*it)->GetSelfID(),fm_position,element_number,arg_check);
 	/////////////////////////////////////////////////////////////////////////////////////
 	if(breakable)
 	{
@@ -915,7 +915,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		}
 	}
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
-		ResetCallbacksRecursive((*it)->SelfID,element,mask);
+		ResetCallbacksRecursive((*it)->GetSelfID(),element,mask);
 }
 
 void CPHShell::EnabledCallbacks(BOOL val)
@@ -964,7 +964,7 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 	}
 
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
-		SetCallbacksRecursive((*it)->SelfID,element);
+		SetCallbacksRecursive((*it)->GetSelfID(),element);
 }
 
 void CPHShell::ZeroCallbacks()
@@ -978,7 +978,7 @@ void CPHShell::ZeroCallbacksRecursive(u16 id)
 	B.set_callback(0,0);
 	B.Callback_overwrite=FALSE;
 	for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
-		ZeroCallbacksRecursive		((*it)->SelfID);
+		ZeroCallbacksRecursive		((*it)->GetSelfID());
 
 }
 void CPHShell::set_DynamicLimits(float l_limit,float w_limit)
@@ -1252,7 +1252,7 @@ void CPHShell::PlaceBindToElFormsRecursive(Fmatrix parent,u16 id,u16 element,Fla
 		}
 	}
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
-		PlaceBindToElFormsRecursive(mXFORM,(*it)->SelfID,element,mask);
+		PlaceBindToElFormsRecursive(mXFORM,(*it)->GetSelfID(),element,mask);
 
 }
 
@@ -1269,7 +1269,7 @@ void CPHShell::BonesBindCalculateRecursive(Fmatrix parent,u16 id)
 	bone_instance.mTransform.mul(parent,bone_data.bind_transform);
 	
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
-		BonesBindCalculateRecursive(bone_instance.mTransform,(*it)->SelfID);
+		BonesBindCalculateRecursive(bone_instance.mTransform,(*it)->GetSelfID());
 }
 
 void CPHShell::AddTracedGeom				(u16 element/*=0*/,u16 geom/*=0*/)

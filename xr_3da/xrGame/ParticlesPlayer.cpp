@@ -105,7 +105,7 @@ CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics
 	while((BI_NONE!=play_bone)&&!(bone_mask&(u64(1)<<u64(play_bone))))
 	{
 		//cur_bone = play_bone;
-		play_bone	= K->LL_GetData(play_bone).ParentID;
+		play_bone	= K->LL_GetData(play_bone).GetParentID();
 	}
 	//return get_bone_info(cur_bone);
 	return get_bone_info(play_bone);
@@ -267,7 +267,7 @@ u16 CParticlesPlayer::GetNearestBone	(CKinematics* K, u16 bone_id)
 	while((BI_NONE!=play_bone)&&!(bone_mask&(u64(1)<<u64(play_bone))))
 	{
 		//cur_bone = play_bone;
-		play_bone	= K->LL_GetData(play_bone).ParentID;
+		play_bone	= K->LL_GetData(play_bone).GetParentID();
 	}
 	//return cur_bone;
 	return play_bone;

@@ -233,13 +233,13 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 			// no parent - this is root bone
 			R_ASSERT	(BI_NONE==iRoot);
 			iRoot		= u16(i);
-			B->ParentID	= BI_NONE;
+			B->SetParentID(BI_NONE);
 			continue;
 		} else {
 			u16 ID		= LL_BoneID(P);
 			R_ASSERT	(ID!=BI_NONE);
 			(*bones)[ID]->children.push_back(B);
-			B->ParentID	= ID;
+			B->SetParentID(ID);
 		}
 	}
 	R_ASSERT	(BI_NONE != iRoot);
@@ -362,7 +362,7 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
         bone_instances[bone_id].mRenderTransform.mul_43(bone_instances[bone_id].mTransform,(*bones)[bone_id]->m2b_transform);
     if (bRecursive){
         for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)
-            LL_SetBoneVisible((*C)->SelfID,val,bRecursive);
+            LL_SetBoneVisible((*C)->GetSelfID(),val,bRecursive);
     }
 }
 
@@ -389,7 +389,7 @@ IC static void RecursiveBindTransform(CKinematics* K, xr_vector<Fmatrix>& matric
 	// Build matrix
 	BM.mul_43				(parent,BD.bind_transform);
     for (xr_vector<CBoneData*>::iterator C=BD.children.begin(); C!=BD.children.end(); C++)
-		RecursiveBindTransform(K,matrices,(*C)->SelfID,BM);	
+		RecursiveBindTransform(K,matrices,(*C)->GetSelfID(),BM);	
 }
 
 void CKinematics::LL_GetBindTransform(xr_vector<Fmatrix>& matrices)

@@ -159,7 +159,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 
 	CBoneData& BD		= K->LL_GetData(u16(id));
 	for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
-		AddElement		(E,(*it)->SelfID);
+		AddElement		(E,(*it)->GetSelfID());
 	}
 }
 
