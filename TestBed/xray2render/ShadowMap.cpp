@@ -334,7 +334,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		}
 		gMesh->UnlockIndexBuffer();
 
-		gMesh->Release();
+		// gMesh->Release();
 
 		// Prepare the parameters to the mesh mender
 
@@ -388,7 +388,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			3.141592654f / 3.0f,					// tangent space smooth angle
 			0,										// no texture matrix applied to my texture coordinates
 			NVMeshMender::FixTangents,				// fix degenerate bases & texture mirroring
-			NVMeshMender::FixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
+			NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
 			NVMeshMender::WeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 			))
 		{
