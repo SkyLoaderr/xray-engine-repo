@@ -42,6 +42,7 @@ void CEditableMesh::CreateRenderBuffers()
             num_face			= (v_cnt<V_LIM)?v_cnt/3:F_LIM;
 
             int buf_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
+            R_ASSERT2			(buf_size,"Empty buffer size or bad FVF.");
 			u8*	bytes			= 0;
 			IDirect3DVertexBuffer9*	pVB=0;
 //			IDirect3DIndexBuffer9*	pIB=0;

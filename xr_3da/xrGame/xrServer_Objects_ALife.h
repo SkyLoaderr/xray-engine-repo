@@ -230,6 +230,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
+#ifdef _EDITOR
+	void __fastcall					OnChangeAnim	(PropValue* sender);
+#endif
 	u32 							type;
 	f32 							mass;
     string32 						fixed_bone;

@@ -141,6 +141,8 @@ public:
   	virtual bool 	Load					(IReader&);
 	virtual void 	Save					(IWriter&);
     virtual bool	ExportGame				(SExportStreams& data);
+
+    virtual void 	OnShowHint				(AStringVec& dest);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

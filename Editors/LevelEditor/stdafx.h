@@ -112,6 +112,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 
 	#include "xrXRC.h"
+	#include "net_utils.h"
 
 	#include "CustomObject.h"
 #endif

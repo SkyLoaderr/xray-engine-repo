@@ -422,3 +422,10 @@ bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 	return true;
 }
 
+void CSceneObject::OnShowHint(AStringVec& dest)
+{
+	inherited::OnShowHint(dest);
+    dest.push_back(AnsiString("Reference: ")+m_ReferenceName);
+}
+//----------------------------------------------------
+
