@@ -128,7 +128,7 @@ void CUIDragDropItemMP::ClipperOn()
 
 	for (u8 i = 0; i < CUIDragDropItemMP::NUM_OF_ADDONS; ++i)
 	{
-		if(1 == m_AddonInfo[i].iAttachStatus) this->TextureClipper(0,0,NULL, m_pAddon[i]->GetUIStaticItem());
+//		if(1 == m_AddonInfo[i].iAttachStatus) this->TextureClipper(0,0,NULL, m_pAddon[i]->GetUIStaticItem());
 	}
 }
 
@@ -169,11 +169,11 @@ void CUIDragDropItemMP::Draw()
 			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
 				rect.top + down_offset + iFloor(0.5f+(float)nfo.y * GetTextureScaleY()));
 
-			if(m_bClipper) 
-				TextureClipper(	right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
-								down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScaleY()), 
-								NULL, 
-								pDDItemMP->GetUIStaticItem());
+			//if(m_bClipper) 
+			//	TextureClipper(	right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
+			//					down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScaleY()), 
+			//					NULL, 
+			//					pDDItemMP->GetUIStaticItem());
 
 			pDDItemMP->GetUIStaticItem().Render();
 		}
