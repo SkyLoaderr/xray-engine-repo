@@ -60,8 +60,9 @@ struct Triangle {
 static	dVector3 last_pos={dInfinity,0.f,0.f,0.f};
 static 	vector<Triangle> pos_tries;
 static 	vector<Triangle> neg_tries;
-
-extern "C" int dSortTriCollide (
+static bool pushing_neg=false,pushing_b_neg=false;
+Triangle neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0},b_neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0};
+extern "C" int dSortTriBoxCollide (
 								const dxGeom *o1, const dxGeom *o2,
 								int flags, dContactGeom *contact, int skip,
 								CDB::RESULT*    R_begin,
@@ -69,9 +70,10 @@ extern "C" int dSortTriCollide (
 								CDB::TRI*       T_array
 								)
 {
-//	Log("in dSortTriCollide");
+//	Log("in dSortTriBoxCollide");
 	int ret=0;
-	Triangle tri,neg_tri={NULL,NULL,NULL},b_neg_tri={NULL,NULL,NULL};
+	Triangle tri;
+	//bool pushing_b_neg_reset=false,pushing_neg_reset=false;
 
 	pos_tries.clear	();
 	neg_tries.clear	();
@@ -84,6 +86,36 @@ extern "C" int dSortTriCollide (
 	dxBox *box = (dxBox*) CLASSDATA(o1);
 	const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
 	const dReal *R = o1->R;
+
+
+	if(pushing_neg){
+		dReal sidePr=
+			dFabs(dDOT14(neg_tri.norm,R+0)*hside[0])+
+			dFabs(dDOT14(neg_tri.norm,R+1)*hside[1])+
+			dFabs(dDOT14(neg_tri.norm,R+2)*hside[2]);
+		neg_tri.dist=dDOT(p,neg_tri.norm)-neg_tri.pos;
+		neg_tri.depth=sidePr-neg_tri.dist;
+		if(neg_tri.dist<0.f)
+			neg_depth=neg_tri.depth;
+		else
+			pushing_neg=false;
+	}
+
+	if(pushing_b_neg){
+		dReal sidePr=
+			dFabs(dDOT14(b_neg_tri.norm,R+0)*hside[0])+
+			dFabs(dDOT14(b_neg_tri.norm,R+1)*hside[1])+
+			dFabs(dDOT14(b_neg_tri.norm,R+2)*hside[2]);
+		b_neg_tri.dist=dDOT(p,b_neg_tri.norm)-b_neg_tri.pos;
+		b_neg_tri.depth=sidePr-b_neg_tri.dist;
+		if(b_neg_tri.dist<0.f)
+			b_neg_depth=b_neg_tri.depth;
+		else
+			pushing_b_neg=false;
+	}
+
+	
+
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 	{
 		CDB::TRI* T = T_array + Res->id;
@@ -115,6 +147,7 @@ extern "C" int dSortTriCollide (
 					if(neg_depth>tri.depth){
 						neg_depth=tri.depth;
 						neg_tri=tri;
+				//		pushing_neg_reset=true;
 					}
 
 
@@ -124,6 +157,7 @@ extern "C" int dSortTriCollide (
 				if(b_neg_depth>tri.depth){
 					b_neg_depth=tri.depth;
 					b_neg_tri=tri;
+				//	pushing_b_neg_reset=true;
 				}
 			}
 		}
@@ -133,41 +167,27 @@ extern "C" int dSortTriCollide (
 		}
 	}
 
-	vector<Triangle>::iterator i;
-	//if( neg_dist==-dInfinity){
+/*
 
-
-
-	//}
-	/*
-	vector<Triangle>::iterator j;
-	if(max_proj==-dInfinity)
-	for(i=neg_tries.begin();i!=neg_tries.end();i++){
-	bool include = true;
-	for(j=pos_tries.begin();j!=pos_tries.end();j++){
-	//if(!(dDOT(i->norm,j->norm)>0.f))
-	if((dDOT(i->norm,j->v0)-i->pos)<0.f||
-	(dDOT(i->norm,j->v1)-i->pos)<0.f||
-	(dDOT(i->norm,j->v2)-i->pos)<0.f
-	){
-	include=false;
-	break;
-	}
-	};
-	if(include)
-	ret+=dSortedTriBox(i->side0,i->side1,i->norm,
-	i->v0,i->v1,i->v2,i->dist,
-	o1,o2,flags,
-	CONTACT(contact, ret * skip),
-	skip);
-
+	if(pushing_neg&&!pushing_neg_reset){
+		ret+=dSortedTriBox(neg_tri.side0,neg_tri.side1,neg_tri.norm,
+			neg_tri.v0,neg_tri.v1,neg_tri.v2,neg_tri.dist,
+			o1,o2,flags,
+			CONTACT(contact, ret * skip),
+			skip);	
+		return ret;
 	}
 
+	if(pushing_b_neg&&!pushing_b_neg_reset){
+		ret+=dSortedTriBox(b_neg_tri.side0,b_neg_tri.side1,b_neg_tri.norm,
+			b_neg_tri.v0,b_neg_tri.v1,b_neg_tri.v2,b_neg_tri.dist,
+			o1,o2,flags,
+			CONTACT(contact, ret * skip),
+			skip);	
+		return ret;
+	}
 	*/
-
-
-
-
+	vector<Triangle>::iterator i;
 
 	if(neg_depth<dInfinity&&ret==0){
 		bool include = true;
@@ -184,12 +204,14 @@ extern "C" int dSortTriCollide (
 						break;
 					}
 		};
-		if(include)		
+		if(include){		
 			ret+=dSortedTriBox(neg_tri.side0,neg_tri.side1,neg_tri.norm,
 			neg_tri.v0,neg_tri.v1,neg_tri.v2,neg_tri.dist,
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
+			pushing_neg=true;
+		}
 
 	}
 
@@ -202,7 +224,7 @@ extern "C" int dSortTriCollide (
 		CONTACT(contact, ret * skip),   skip);
 
 
-	if(b_neg_depth<dInfinity&&b_count>1&&ret==0){
+	if(b_neg_depth<dInfinity&&(b_count>1||pushing_b_neg)&&ret==0){
 		bool include = true;
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
 			if((dDOT(b_neg_tri.norm,i->v0)-b_neg_tri.pos)<0.f||
@@ -213,12 +235,14 @@ extern "C" int dSortTriCollide (
 					break;
 				}
 		};
-		if(include)		
+		if(include)	{	
 			ret+=dSortedTriBox(b_neg_tri.side0,b_neg_tri.side1,b_neg_tri.norm,
 			b_neg_tri.v0,b_neg_tri.v1,b_neg_tri.v2,b_neg_tri.dist,
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
+			pushing_b_neg=true;
+		}
 
 	}
 
@@ -248,9 +272,13 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
 	AABB.x=(dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[1])+dFabs(BoxSides[2]*R[2]))/2.f+1.f*EPS_L;
-	AABB.y=(dFabs(BoxSides[0]*R[4])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[6]))/2.f+1000.f*EPS_L;
+	AABB.y=(dFabs(BoxSides[0]*R[4])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[6]))/2.f+EPS_L;//*1000.f;
 	AABB.z=(dFabs(BoxSides[0]*R[8])+dFabs(BoxSides[1]*R[9])+dFabs(BoxSides[2]*R[10]))/2.f+1.f*EPS_L;
 
+	const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Box));
+	AABB.x+=dFabs(velocity[0])*0.02;
+	AABB.y+=dFabs(velocity[1])*0.02;
+	AABB.z+=dFabs(velocity[2])*0.02;
 	//
 	XRC.box_options                (0);
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),*BoxCenter,AABB);
@@ -262,7 +290,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
 	int OutTriCount = 0;
 
-return dSortTriCollide (Box,
+return dSortTriBoxCollide (Box,
 						Geometry,
 						3,
 						CONTACT(Contacts, OutTriCount * Stride),   Stride,
