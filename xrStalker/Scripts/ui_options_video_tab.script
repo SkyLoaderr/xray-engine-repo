@@ -22,7 +22,7 @@ function options_video_tab:__finalize()
 end
 
 function options_video_tab:InitControls(x_pos, y_pos)
-	ui_options_base_tab.options_base_tab(self, "Video", x_pos, y_pos)
+	ui_options_base_tab.options_base_tab:InitControls(self, "Video", x_pos, y_pos)
 	--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA
 	local btn_rect  = {x = self.left_align_x,
 					   y = self.top_align_y,
