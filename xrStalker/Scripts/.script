@@ -38,6 +38,7 @@ module ("xr_report")
 module ("xr_rest")
 
 module ("bar_stalker")
+module ("barman")
 
 module ("escape")
 
@@ -786,6 +787,6 @@ function new_point(center_id, position_id,radius, min_radius)
 end
 
 function stop_play_sound(obj)
-	obj:set_sound_mask (-1)
+    obj:set_sound_mask (-1)
     obj:set_sound_mask (0)
 end
