@@ -17,6 +17,6 @@ To OLES :
 -J	resolved	монстры исчезают в определённых позициях (level - occ_part_jim)
 -О	resolved	Обьекты у которых парент - рендерятся
 -O	resolved	~160 memory operations per frame
--O				no particles
+-O	resolved	no particles
 -WT				ни хера не работает (level - cs_test)
 -D				зоны глючат постоянно из-за spatial-хрени!
