@@ -40,7 +40,7 @@ bool CDetailPathManager::valid			(const Fvector &position) const
 	return					(!!_valid(position));
 }
 
-const Fvector &CDetailPathManager::direction() const
+const Fvector CDetailPathManager::direction()
 {
 	if ((m_path.size() < 2) || (m_path.size() <= m_current_travel_point + 1))
 		return				(Fvector().set(0,0,1));
@@ -48,10 +48,10 @@ const Fvector &CDetailPathManager::direction() const
 	Fvector					direction;
 	direction.sub			(m_path[m_current_travel_point + 1].m_position, m_path[m_current_travel_point].m_position);
 
-	if (direction.magnitude() < EPS_L)
-		return				(direction.set(0,0,1));
-	else
-		return				(direction.normalize());
+	if (direction.magnitude() < EPS_L) direction.set(0.f,0.f,1.f);
+	else direction.normalize();
+
+	return					(direction);
 }
 
 void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 intermediate_index)

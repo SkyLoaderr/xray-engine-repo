@@ -49,6 +49,7 @@ private:
 	xr_vector<CLevelGraph::SSegment>			m_segments;
 	Fvector										m_start_position;
 	Fvector										m_dest_position;
+
 	EDetailPathType								m_path_type;
 	xr_map<EMovementParameters,SMovementParams>	m_movement_params;
 // old heritage
@@ -68,7 +69,7 @@ private:
 
 protected:
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index);
-			const	Fvector &direction		() const;
+			const	Fvector direction		();
 			bool	actual					() const;
 	IC		bool	failed					() const;
 	IC		bool	completed				(const Fvector &position) const;
