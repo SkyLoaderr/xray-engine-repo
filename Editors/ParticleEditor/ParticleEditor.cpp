@@ -22,10 +22,11 @@ USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
-    try{
+//    try
+    {
+		Core._initialize		(_EDITOR_FILE_NAME_);
         TfrmLog::CreateLog();
-
-        frmSplash = new TfrmSplash(0);
+        frmSplash = xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show();
         frmSplash->Repaint();
 
@@ -41,16 +42,16 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);
 
-        _DELETE(frmSplash);
+        xr_delete(frmSplash);
 
         Application->Run();
 
         TfrmLog::DestroyLog();
     }
-    catch (Exception &exception)
-    {
-           Application->ShowException(&exception);
-    }
+//    catch (Exception &exception)
+//    {
+//           Application->ShowException(&exception);
+//    }
     return 0;
 }
 //---------------------------------------------------------------------------

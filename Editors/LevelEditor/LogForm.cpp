@@ -17,10 +17,10 @@ __fastcall TfrmLog::TfrmLog(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfrmLog::CreateLog(){
 	VERIFY(!form);
-	form = new TfrmLog(0);
+	form = xr_new<TfrmLog>((TComponent*)0);
 }
 void __fastcall TfrmLog::DestroyLog(){
-	_DELETE(form);
+	xr_delete(form);
 }
 void __fastcall TfrmLog::ShowLog(){
 	VERIFY(form);

@@ -18,6 +18,7 @@
 #pragma link "ElTreeAdvEdit"
 #pragma link "ElPgCtl"
 #pragma link "MXCtrls"
+#pragma link "ElTree"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
 
@@ -276,7 +277,7 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
 	TElTreeInplaceAdvancedEdit* IE=InplaceParticleEdit;
 
     AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text = new_text;
+    IE->Editor->Text = new_text;                
 
     TElTreeItem* node = IE->Item;
     for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){

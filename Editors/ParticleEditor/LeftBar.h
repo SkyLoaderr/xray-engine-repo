@@ -13,13 +13,13 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 #include "mxPlacemnt.hpp"
-#include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
-
-#include "UI_Tools.h"
+#include "ElTree.hpp"
 #include "ElTreeAdvEdit.hpp"
 #include "ElPgCtl.hpp"
 #include "MXCtrls.hpp"
+
+#include "UI_Tools.h"
 
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
