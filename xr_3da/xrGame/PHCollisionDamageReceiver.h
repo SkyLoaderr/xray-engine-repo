@@ -17,7 +17,7 @@ protected:
 			void						Clear						()																		;
 private:
 			void						BoneInsert					(u16 id,float k)														;
-			float						BoneFactor					(u16 id)																;
+
 	IC		DAMAGE_BONES_I				FindBone					(u16 id)
 	{
 		return std::find_if(m_controled_bones.begin(),m_controled_bones.end(),SFind(id));
