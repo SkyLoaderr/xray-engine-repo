@@ -73,8 +73,8 @@ void CRender::Render	()
 	}
 
 	// Multiply by lighting contribution
-	Target.phase_accumulator				();
-	Target.accum_direct						();
+	//Target.phase_accumulator				();
+	//Target.accum_direct						();
 
 	// Postprocess
 	Target.phase_combine					();
