@@ -126,13 +126,31 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	switch(pIItem->m_eItemPlace)
 	{
 	case eItemPlaceBelt:
-		result = Belt(pIItem); VERIFY(result);
+		result = Belt(pIItem); 
+#ifdef DEBUG
+		//VERIFY(result);
+		if(!result) 
+			Msg("cant put in belt item %s", *pIItem->object().cName());
+#endif
+
 		break;
 	case eItemPlaceRuck:
-		result = Ruck(pIItem); VERIFY(result);
+		result = Ruck(pIItem);
+#ifdef DEBUG
+		//VERIFY(result);
+		if(!result) 
+			Msg("cant put in ruck item %s", *pIItem->object().cName());
+#endif
+
 		break;
 	case eItemPlaceSlot:
-		result = Slot(pIItem, bNotActivate); VERIFY(result);
+		result = Slot(pIItem, bNotActivate); 
+#ifdef DEBUG
+		//VERIFY(result);
+		if(!result) 
+			Msg("cant slot in ruck item %s", *pIItem->object().cName());
+#endif
+
 		break;
 	default:
 		if(CanPutInSlot(pIItem))
