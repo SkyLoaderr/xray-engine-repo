@@ -198,9 +198,9 @@ void CDetailManager::Render		(Fvector& EYE)
 
 	UpdateCache					(1);
 
-	float fade_limit	= 14.5f;fade_limit=fade_limit*fade_limit;
-	float fade_start	= 1.f;	fade_start=fade_start*fade_start;
-	float fade_range	= fade_limit-fade_start;
+	float fade_limit			= 14.5f;fade_limit=fade_limit*fade_limit;
+	float fade_start			= 1.f;	fade_start=fade_start*fade_start;
+	float fade_range			= fade_limit-fade_start;
 
 	// Collect objects for rendering
 	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++)
@@ -268,6 +268,8 @@ void CDetailManager::Render		(Fvector& EYE)
 		}
 	}
 
+	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
+
 	// Render itself
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
@@ -334,7 +336,7 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
-				Object.Transfer			(mXform, vDest, Instance.C);
+				Object.Transfer			(mXform, vDest, Instance.C,iDest,iOffset);
 				vDest					+=	vCount_Object;
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
@@ -347,7 +349,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
-			UPDATEC							(vCount_Lock,dwNumPrimitives,dwPassesRequired);
+			UPDATEC							(vCount_Lock,dwNumPrimitives,1);
 //			Device.Primitive.Draw			(VS,vCount_Lock/3,vOffset);
 		}
 
