@@ -61,52 +61,55 @@ function action_guard_activity:__init (npc_name,action_name,storage) super (nil,
 
 end
 function action_guard_activity:initialize()
-  --printf("_bp: action_guard_activity: initialize")
-    action_base.initialize(self)
-    self.object:set_node_evaluator()
-    self.object:set_path_evaluator()
-    self.object:set_desired_position()
-    self.object:set_desired_direction()
+	--printf("_bp: action_guard_activity: initialize")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
 
-    self.state = self.state_none
+	self.path_main = self.a.path_main
+	if self.a.path_hideout then
+		self.path_hideout = self.a.path_hideout
+	else
+		self.path_hideout = self.path_main
+	end
+	self.projector_name = self.a.projector_name
 
-    self.path_main = self.a.path_main
-  if self.a.path_hideout then
-      self.path_hideout = self.a.path_hideout
-  else
-    self.path_hideout = self.path_main
-  end
-  self.projector_name = self.a.projector_name
+	-- Прожектор будет найден и инициализирован позже (в момент его использования)
+	self.projector = nil
+	self.speedh = 0.52
+	self.speedv = 0.22
 
-  -- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
-    self.path_active = self.path_main
+	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 
-    -- Флажок, включить если прибыли в путь, состоящий из одной точки
-    self.arrived_to_single_point_path = false
-
-    -- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
-    -- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
-    self.last_look_index = nil
-
-  -- Прожектор будет найден и инициализирован позже (в момент его использования)
-  self.projector = nil
-  self.speedh = 0.52
-  self.speedv = 0.22
-
-    self.object:set_item(object.idle, self.object:best_weapon())
-    self.object:set_detail_path_type(move.line)
-    self.object:set_body_state(move.standing)
-    self.object:set_movement_type(move.walk)
-    self.object:set_path_type(game_object.patrol_path)
-    self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-    --self.object:set_mental_state(anim.free)
-    --self.object:set_sight(look.search, nil, 0)
-    self.object:set_sight(look.danger, nil, 0)
-
-    self.state = self.state_moving
-
-    self.object:set_callback(self, "waypoint_callback", game_object.movement)
+	self.reset_scheme()
 end
+
+function action_guard_activity:reset_scheme()
+	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
+	self.path_active = self.path_main
+
+	-- Флажок, включить если прибыли в путь, состоящий из одной точки
+	self.arrived_to_single_point_path = false
+
+	-- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
+	-- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
+	self.last_look_index = nil
+
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+	self.object:set_movement_type(move.walk)
+	self.object:set_path_type(game_object.patrol_path)
+	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
+	--self.object:set_mental_state(anim.free)
+	--self.object:set_sight(look.search, nil, 0)
+	self.object:set_sight(look.danger, nil, 0)
+
+	self.state = self.state_moving
+end
+	
 function action_guard_activity:waypoint_callback(obj, action_type, index)
     -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
     self.last_action_type = action_type
@@ -186,6 +189,8 @@ end
 function action_guard_activity:execute()
   --[[printf("_debug_guard [%s]: state [%d], animation_count [%d]",
     self.object:name(), self.state, self.object:animation_count())]]
+
+    self.object:set_item(object.idle, self.object:best_weapon())
 
     if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
     --printf("_debug_guard [%s]: adding animations", self.object:name())
@@ -393,4 +398,9 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 		end
 	end
 	xr_motivator.checkStorage(object)
+
+	local manager = object:motivation_action_manager()
+	local action = manager:get_action(xr_actions_id.zmey_action_guard_activity) 
+	action:reset_scheme()
 end
+
