@@ -66,6 +66,16 @@ void CPHCharacter::get_State(SPHNetState& state)
 	m_body_interpolation.GetPosition(state.previous_position,0);
 	GetVelocity(state.linear_vel);
 	getForce(state.force);
+
+//	state.accel = GetAcceleration();
+//	state.max_velocity = GetMaximumVelocity();
+
+	if(!b_exist) 
+	{
+		state.enabled=false;
+		return;
+	}
+	state.enabled=!!dBodyIsEnabled(m_body);
 }
 void CPHCharacter::set_State(const SPHNetState& state)
 {
@@ -74,6 +84,19 @@ void CPHCharacter::set_State(const SPHNetState& state)
 	SetPosition(state.position);
 	SetVelocity(state.linear_vel);
 	setForce(state.force);
+	
+//	SetAcceleration(state.accel);
+//	SetMaximumVelocity(state.max_velocity);
+
+	if(!b_exist) return;
+	if(state.enabled&& !dBodyIsEnabled(m_body)) 
+	{
+		dBodyEnable(m_body);
+	};
+	if(!state.enabled && dBodyIsEnabled(m_body)) 
+	{
+		Disable();
+	};
 }
 //////////////////////////////////////////////////////////////////////////
 /////////////////////CPHWheeledCharacter//////////////////////////////////
