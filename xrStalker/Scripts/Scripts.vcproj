@@ -303,6 +303,9 @@
 			Name="levels"
 			Filter="">
 			<File
+				RelativePath=".\level_news.script">
+			</File>
+			<File
 				RelativePath=".\level_tasks.script">
 			</File>
 			<File
