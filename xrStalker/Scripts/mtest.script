@@ -13,13 +13,24 @@ function main()
 	
 //	scene:insert(monsterai.CMonsterBase("zombie", s_zombie_walk.CStateZombieWalk))	
 	
-	scene:insert(monsterai.CMonsterAttack("dog", s_black_devil_walk.CStateDevilWalk, 
+//	scene:insert(monsterai.CMonsterAttack("dog", s_black_devil_walk.CStateDevilWalk, 
 												 stateattack.CStateAttackDevil))	
-	scene:initialize()
+//	scene:initialize()
 	
-	while(scene:execute()) do
-		wait()
-	end
+//	while(scene:execute()) do
+//		wait()
+//	end
+
+	local dog  = get_level_object("dog")
+	dog:script(true, script_name())
 	
+	wait(2000)
+	action(dog, anim("stand_howling_0"), cond(cond.anim_end))
+	action(dog, anim(anim.stand_idle, 0), cond(cond.time_end, 20000))
+	
+	wait(20000)	
+	
+	dog:script(false, script_name())	
+
 	scene:finalize()
 end
