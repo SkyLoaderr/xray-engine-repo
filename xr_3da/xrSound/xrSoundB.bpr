@@ -213,7 +213,7 @@ Item4=!run
 DebugSourceDirs=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [Parameters]
-RunParams=-opena
+RunParams=-openal
 Launcher=
 UseLauncher=0
 DebugCWD=

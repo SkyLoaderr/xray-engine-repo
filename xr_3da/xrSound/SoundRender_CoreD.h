@@ -21,7 +21,8 @@ class CSoundRender_CoreD: public CSoundRender_Core
 		float			fRolloffFactor;
 		float			fDopplerFactor;
 	};
-	BOOL 				QuerySupport				(ULONG ulQuery);
+    BOOL 				EAXQuerySupport			(const GUID* guid, u32 prop);
+	BOOL 				EAXTestSupport			(BOOL bDeferred);
 public:
 	// DSound interface
 	IDirectSound8*				pDevice;		// The device itself

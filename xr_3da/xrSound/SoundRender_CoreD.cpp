@@ -18,10 +18,10 @@ CSoundRender_CoreD::~CSoundRender_CoreD()
 {
 }
 
-BOOL CSoundRender_CoreD::QuerySupport(ULONG ulQuery)
+BOOL CSoundRender_CoreD::EAXQuerySupport(const GUID* guid, u32 prop)
 {
     ULONG ulSupport = 0;
-    HRESULT hr = pExtensions->QuerySupport(DSPROPSETID_EAX_ListenerProperties, ulQuery, &ulSupport);
+    HRESULT hr = pExtensions->QuerySupport(*guid, prop, &ulSupport);
     if (FAILED(hr)) return FALSE;
  
     if ((ulSupport&(KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET)) == (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET))
@@ -29,6 +29,30 @@ BOOL CSoundRender_CoreD::QuerySupport(ULONG ulQuery)
  
     return FALSE;
 }
+
+BOOL CSoundRender_CoreD::EAXTestSupport	(BOOL bDeferred)
+{
+	BOOL support 	= TRUE;
+    u32 ext			= bDeferred?DSPROPERTY_EAXLISTENER_DEFERRED:0;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_NONE)) 					support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ALLPARAMETERS)) 			support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ROOM)) 					support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ROOMHF)) 			  	support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ROOMROLLOFFFACTOR)) 		support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_DECAYTIME)) 				support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_DECAYHFRATIO)) 			support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_REFLECTIONS)) 			support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_REFLECTIONSDELAY)) 		support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_REVERB)) 		      	support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_REVERBDELAY)) 		    support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ENVIRONMENT)) 		    support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE)) 	    support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_ENVIRONMENTDIFFUSION)) 	support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_AIRABSORPTIONHF)) 		support = FALSE;
+    if (!EAXQuerySupport(&DSPROPSETID_EAX_ListenerProperties, ext | DSPROPERTY_EAXLISTENER_FLAGS)) 					support = FALSE;
+    return support;
+}
+
 
 void CSoundRender_CoreD::_initialize	(u64 window)
 {
@@ -107,23 +131,8 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 			if (FAILED(pTempBuf->QueryInterface(IID_IKsPropertySet, (LPVOID *)&pExtensions))){
                 bEAX			= FALSE;
             }else{
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_NONE)) 				bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ALLPARAMETERS)) 		bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ROOM)) 				bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ROOMHF)) 				bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ROOMROLLOFFFACTOR)) 	bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_DECAYTIME)) 			bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_DECAYHFRATIO)) 		bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_REFLECTIONS)) 			bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_REFLECTIONSDELAY)) 	bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_REVERB)) 			    bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_REVERBDELAY)) 		    bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ENVIRONMENT)) 		    bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE)) 	    bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_ENVIRONMENTDIFFUSION)) bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_AIRABSORPTIONHF)) 		bEAX = FALSE;
-                if (!QuerySupport(DSPROPERTY_EAXLISTENER_FLAGS)) 				bEAX = FALSE;
-                ULONG support	= 0;
+            	bEAX 			= EAXTestSupport(FALSE);
+            	bDeferredEAX	= EAXTestSupport(TRUE);
             }
         }
         _RELEASE				(pTempBuf);
