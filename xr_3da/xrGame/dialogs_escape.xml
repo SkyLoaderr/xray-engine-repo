@@ -265,7 +265,7 @@
                 <next>6</next>
             </phrase>
             <phrase id="1">
-                <text>Я посмотрю что можно сделать.</text>
+                <text>Я посмотрю что можно сделать.[Задание]</text>
                 <give_info>escape_novice_need_weapon</give_info>
                 <next>5</next>
             </phrase>
