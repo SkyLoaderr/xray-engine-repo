@@ -190,18 +190,24 @@ void CUIMainIngameWnd::Init()
 	// Загружаем иконки 
 	AttachChild(&UIWeaponJammedIcon);
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
+	UIWeaponJammedIcon.GetStaticItem()->SetScale(0.75);
+	UIWeaponJammedIcon.ClipperOn();
 
 	AttachChild(&UIRadiaitionIcon);
 	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
+	UIRadiaitionIcon.GetStaticItem()->SetScale(0.75);
 
 	AttachChild(&UIWoundIcon);
 	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
+	UIWoundIcon.GetStaticItem()->SetScale(0.75);
 
 	AttachChild(&UIStarvationIcon);
 	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
+	UIStarvationIcon.GetStaticItem()->SetScale(0.75);
 
 	AttachChild(&UIFatigueIcon);
 	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
+	UIFatigueIcon.GetStaticItem()->SetScale(0.75);
 
 	shared_str warningStrings[5] = 
 	{	
@@ -288,7 +294,7 @@ void CUIMainIngameWnd::Init()
 	//rect.left = 749; rect.right = 801;
 	//vRects.push_back(rect);
 
-	m_artefactPanel.InitIcons(vRects); 
+	m_artefactPanel.InitIcons(vRects);	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -889,6 +895,7 @@ CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message)
 	pItem->UIMsgText.MoveWindow(0, 0);
 
 	pItem->UIMsgText.SetText(message);
+
 	return pItem;
 }
 
@@ -1026,7 +1033,7 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 		if (bMagicFlag) break;
 	case ewiFatigue:
 		UIFatigueIcon.SetColor(cl);
-		if (bMagicFlag) break;
+		break;
 	default:
 		R_ASSERT(!"Unknown warning icon type");
 	}
