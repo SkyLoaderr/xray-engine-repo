@@ -77,12 +77,13 @@ LPCSTR caMovementActionNames[] = {
 };
 
 LPCSTR caInPlaceNames		[] = {
-	"idle",
+	"idle_0",
 	"turn",
 	"jump_begin",
 	"jump_idle",
 	"jump_end",
 	"jump_end_1",
+	"idle_1",
 	0
 };
 

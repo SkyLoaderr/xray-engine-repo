@@ -11,7 +11,6 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\hudmanager.h"
 
-#define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
 #define LIGHT_FITTING			
 

@@ -13,8 +13,6 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
-#define	FIRE_SAFETY_ANGLE				PI/10
-
 //#define LOG_PARAMETERS
 
 #ifdef LOG_PARAMETERS

@@ -26,7 +26,7 @@
 //#define OLD_COVER_COST
 #define DEST_POSITIONS
 #define ATTACK_HIT_REACTION_TIME		30000
-#define FIRE_SAFETY_ANGLE				PI/10
+#define FIRE_SAFETY_ANGLE				PI/18.f
 #define MAGNITUDE_EPSILON				0.01
 
 #define aiSearchRange					(u64(1) <<  0)

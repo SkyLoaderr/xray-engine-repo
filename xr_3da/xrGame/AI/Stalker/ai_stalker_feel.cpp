@@ -434,7 +434,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						bFound	= true;
 					}
 				}
-				if (bFound && bfCheckIfCanKillTarget(tpEntity,vPosition,yaw1,pitch1)) {
+				if (bFound && bfCheckIfCanKillTarget(tpEntity,vPosition,yaw1,pitch1)) {//,5.f/180.f*PI)) {
 					SHurt tHurt;
 					tHurt.tpEntity = tpEntity;
 					tHurt.dwTime = Level().timeServer();
