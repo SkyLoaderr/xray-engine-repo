@@ -80,8 +80,8 @@ void CUIListItemPair::Draw(){
 	int maxDateTimeLength = width - maxFileNameLength;
 
 	// get length of elements
-	int realFileNameLength = (int)m_staticFileName.GetFont()->SizeOf(m_staticFileName.GetText());
-	int realDateTimeLength = (int)m_staticDateTime.GetFont()->SizeOf(m_staticDateTime.GetText());
+//	int realFileNameLength = (int)m_staticFileName.GetFont()->SizeOf(m_staticFileName.GetText());
+//	int realDateTimeLength = (int)m_staticDateTime.GetFont()->SizeOf(m_staticDateTime.GetText());
 
 	// get height of elements
 	int fileNameHeight = (int)m_staticFileName.GetFont()->CurrentHeight();
