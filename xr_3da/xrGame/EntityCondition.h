@@ -199,7 +199,7 @@ public:
 		return		(m_iDeltaTime);
 	}
 
-	IC		const WOUND_VECTOR wounds	() const
+	IC		const WOUND_VECTOR &wounds	() const
 	{
 		return		(m_WoundVector);
 	}
