@@ -100,6 +100,19 @@ void lesha_test()
 	];
 
 	lua_dofile			(L,"x:/test.script");
+	lua_State			*T = lua_newthread(L);
+	assert				(T);
+	int					t_ref = luaL_ref(L,LUA_REGISTRYINDEX);
+	
+	luaL_loadbuffer		(T,"main()",6,"");
+	
+	for (;;) {
+		int				l_iErrorCode = lua_resume(T,0);
+		if (l_iErrorCode)
+			break;
+	}
+	luaL_unref			(L,LUA_REGISTRYINDEX,t_ref);
+
 	delete				(g_custom);
 	lua_setgcthreshold	(L,0);
 	lua_close			(L);
