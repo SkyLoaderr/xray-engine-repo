@@ -15,68 +15,69 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 {
 	if (fHealth <= 0)
 		return;
+	m_tpALife				= tpALife;
 #ifdef OLD_BEHAVIOUR
-	inherited2::Update		(tpALife);
-	tpALife->vfCheckForTheBattle(this);
-	bfProcessItems			(tpALife);
+	inherited2::Update		(m_tpALife);
+	m_tpALife->vfCheckForTheBattle(this);
+	bfProcessItems			();
 #else
 	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
 	bool				bOk;
 	do {
 		switch (m_tTaskState) {
 			case eTaskStateChooseTask : {
-				vfChooseTask(tpALife);
+				vfChooseTask();
 				break;
 										}
 			case eTaskStateHealthCare : {
-				vfHealthCare(tpALife);
+				vfHealthCare();
 				break;
 										}
 			case eTaskStateBuySupplies : {
-				vfBuySupplies(tpALife);
+				vfBuySupplies();
 				break;
 										 }
 			case eTaskStateGoToCustomer : {
-				vfGoToCustomer(tpALife);
+				vfGoToCustomer();
 				break;
 										  }
 			case eTaskStateBringToCustomer : {
-				vfBringToCustomer(tpALife);
+				vfBringToCustomer();
 				break;
 											 }
 			case eTaskStateGoToSOS : {
-				vfGoToSOS(tpALife);
+				vfGoToSOS();
 				break;
 									 }
 			case eTaskStateSendSOS : {
-				vfSendSOS(tpALife);
+				vfSendSOS();
 				break;
 									 }
 			case eTaskStateAccomplishTask : {
-				vfAccomplishTask(tpALife);
+				vfAccomplishTask();
 				break;
 											}
 			case eTaskStateSearchItem : {
-				vfSearchObject	(tpALife);
+				vfSearchObject	();
 				break;
 										}
 			default				: NODEFAULT;
 		}
-		bOk						= bfChooseNextRoutePoint(tpALife);
-		tpALife->vfCheckForTheBattle(this);
-		bfProcessItems			(tpALife);
-		vfCheckForDeletedEvents	(tpALife);
+		bOk						= bfChooseNextRoutePoint();
+		m_tpALife->vfCheckForTheBattle(this);
+		bfProcessItems			();
+		vfCheckForDeletedEvents	();
 	}
-	while (bOk && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
+	while (bOk && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
 #endif
-	m_tTimeID					= tpALife->tfGetGameTime();
+	m_tTimeID					= m_tpALife->tfGetGameTime();
 }
 
-void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfChooseTask()
 {
-	if (!HealthIsGood(tpALife)) {
-		if (!CanTreat(tpALife)) {
-			if (!EnoughMoneyToTreat(tpALife) || !EnoughTimeToTreat(tpALife)) {
+	if (!bfHealthIsGood()) {
+		if (!bfCanTreat()) {
+			if (!bfEnoughMoneyToTreat() || !bfEnoughTimeToTreat()) {
 				m_tTaskState = eTaskStateSendSOS;
 				return;
 			}
@@ -91,8 +92,8 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 		}
 	}
 	else {
-		if (!EnoughEquipmentToGo(tpALife)) {
-			if (DistanceToTraderIsDanger(tpALife) || !EnoughMoneyToEquip(tpALife)) {
+		if (!bfEnoughEquipmentToGo()) {
+			if (bfDistanceToTraderIsDanger() || !bfEnoughMoneyToEquip()) {
 				m_tTaskState = eTaskStateSendSOS;
 				return;
 			}
@@ -103,8 +104,8 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 		}
 		else {
 			m_tDestGraphPointIndex	= _GRAPH_ID(-1);
-			vfChooseHumanTask		(tpALife);
-			CSE_ALifeTask			*l_tpTask = tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			vfChooseHumanTask		();
+			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
 			switch (l_tpTask->m_tTaskType) {
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
@@ -127,7 +128,7 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 	}
 }
 
-void CSE_ALifeHumanAbstract::vfHealthCare(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfHealthCare()
 {
 	// if health is low -> use medikit
 	// if hunhry -> eat or drink vodka
@@ -136,22 +137,22 @@ void CSE_ALifeHumanAbstract::vfHealthCare(CSE_ALifeSimulator *tpALife)
 	m_tTaskState = eTaskStateChooseTask;
 }
 
-void CSE_ALifeHumanAbstract::vfBuySupplies(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfBuySupplies()
 {
 	// choose an appropriate trader and go to him to buy supplies
 	m_tTaskState = eTaskStateChooseTask;
 }
 
-void CSE_ALifeHumanAbstract::vfGoToCustomer(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfGoToCustomer()
 {
 	// go to customer to get something to accomplish task
 }
 
-void CSE_ALifeHumanAbstract::vfBringToCustomer(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfBringToCustomer()
 {
 	// go to customer to sell found artefacts
 	if (m_tpPath.empty()) {
-		tpALife->ffFindMinimalPath	(m_tGraphID,tpALife->tpfGetObjectByID(tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpPath);
+		m_tpALife->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpPath);
 		m_dwCurNode					= 0;
 		m_tNextGraphID				= m_tGraphID;
 		m_fCurSpeed					= m_fGoingSpeed;
@@ -160,46 +161,46 @@ void CSE_ALifeHumanAbstract::vfBringToCustomer(CSE_ALifeSimulator *tpALife)
 		m_tpPath.clear();
 		m_dwCurNode = 0;
 		if (int(m_dwCurTaskID) > 0) {
-			CSE_ALifeTask			*l_tpTask = tpALife->tpfGetTaskByID(m_dwCurTaskID);
-			CSE_ALifeTraderAbstract	*l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
+			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			CSE_ALifeTraderAbstract	*l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(m_tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
 			if (l_tpTraderAbstract)
-				tpALife->vfCommunicateWithCustomer(this,l_tpTraderAbstract);
+				m_tpALife->vfCommunicateWithCustomer(this,l_tpTraderAbstract);
 		}
 		m_tTaskState = eTaskStateChooseTask;
 	}
 }
 
-void CSE_ALifeHumanAbstract::vfGoToSOS(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfGoToSOS()
 {
 	// go to person who sent SOS to save or kill
 }
 
-void CSE_ALifeHumanAbstract::vfSendSOS(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfSendSOS()
 {
 	// send SOS by myself
 	m_fCurSpeed						= 0.f;
 }
 
-void CSE_ALifeHumanAbstract::vfAccomplishTask(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfAccomplishTask()
 {
 	// build path and wait until we go to the end of it
 	if (m_tpPath.empty()) {
-		tpALife->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpPath);
+		m_tpALife->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpPath);
 		m_dwCurNode				= 0;
 		m_tNextGraphID			= m_tGraphID;
 		m_fCurSpeed				= m_fGoingSpeed;
 	}
 	if ((m_dwCurNode + 1 >= (m_tpPath.size())) && (m_tGraphID == m_tNextGraphID)) {
-		if (bfCheckIfTaskCompleted(tpALife)) {
+		if (bfCheckIfTaskCompleted()) {
 			m_tpPath.clear		();
 			m_tTaskState		= eTaskStateBringToCustomer;
 		}
 		else {
-			switch (tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tTaskType) {
+			switch (m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tTaskType) {
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
 					if ((m_dwCurNode + 1>= (m_tpPath.size())) && (m_tGraphID == m_tNextGraphID)) {
-						tpALife->tpfGetTaskByID	(m_dwCurTaskID)->m_dwTryCount++;
+						m_tpALife->tpfGetTaskByID	(m_dwCurTaskID)->m_dwTryCount++;
 						m_tTaskState = eTaskStateChooseTask;
 					}
 					break;
@@ -224,6 +225,6 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask(CSE_ALifeSimulator *tpALife)
 	}
 }
 
-void CSE_ALifeHumanAbstract::vfSearchObject(CSE_ALifeSimulator *tpALife)
+void CSE_ALifeHumanAbstract::vfSearchObject()
 {
 }

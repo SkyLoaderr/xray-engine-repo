@@ -61,6 +61,10 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 			VERIFY(*i != l_tpALifeItem->ID);
 		II->children.push_back(l_tpALifeItem->ID);
 	}
+	
+	CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeDynamicObject);
+	if (l_tpALifeHumanAbstract)
+		l_tpALifeHumanAbstract->m_tpALife = this;
 }
 
 void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)

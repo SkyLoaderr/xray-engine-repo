@@ -11,7 +11,11 @@
 
 #include "xrServer_Objects_ALife.h"
 
+#ifndef _EDITOR
+#ifndef AI_COMPILER
 class CSE_ALifeSimulator;
+#endif
+#endif
 
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
 public:
@@ -156,7 +160,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterChimera,CSE_ALifeMonsterAbstract)
 SERVER_ENTITY_DECLARE_END
 //-------------------------------
 
-
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpPath;
 	u32								m_dwCurNode;
@@ -168,6 +171,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	float							m_fSearchSpeed;
 	string128						m_caKnownCustomers;
 	OBJECT_VECTOR					m_tpKnownCustomers;
+	CSE_ALifeSimulator				*m_tpALife;
 
 									CSE_ALifeHumanAbstract	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
@@ -175,33 +179,33 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 #ifndef AI_COMPILER
 	virtual	void					Update					(CSE_ALifeSimulator	*tpALife);
 			// FSM
-			void					vfChooseTask			(CSE_ALifeSimulator	*tpALife);
-			void					vfHealthCare			(CSE_ALifeSimulator	*tpALife);
-			void					vfBuySupplies			(CSE_ALifeSimulator	*tpALife);
-			void					vfGoToCustomer			(CSE_ALifeSimulator	*tpALife);
-			void					vfBringToCustomer		(CSE_ALifeSimulator	*tpALife);
-			void					vfGoToSOS				(CSE_ALifeSimulator	*tpALife);
-			void					vfSendSOS				(CSE_ALifeSimulator	*tpALife);
-			void					vfAccomplishTask		(CSE_ALifeSimulator	*tpALife);
-			void					vfSearchObject			(CSE_ALifeSimulator	*tpALife);
+			void					vfChooseTask			();
+			void					vfHealthCare			();
+			void					vfBuySupplies			();
+			void					vfGoToCustomer			();
+			void					vfBringToCustomer		();
+			void					vfGoToSOS				();
+			void					vfSendSOS				();
+			void					vfAccomplishTask		();
+			void					vfSearchObject			();
 			// FSM miscellanious
-			void					vfChooseHumanTask		(CSE_ALifeSimulator	*tpALife);
-			bool					HealthIsGood			(CSE_ALifeSimulator	*tpALife);
+			void					vfChooseHumanTask		();
+			bool					bfHealthIsGood			();
 			bool					bfItemCanTreat			(CSE_ALifeItem *tpALifeItem);
 			void					vfUseItem				(CSE_ALifeItem *tpALifeItem);
-			bool					CanTreat				(CSE_ALifeSimulator	*tpALife);
-			bool					EnoughMoneyToTreat		(CSE_ALifeSimulator	*tpALife);
-			bool					EnoughTimeToTreat		(CSE_ALifeSimulator	*tpALife);
-			bool					EnoughEquipmentToGo		(CSE_ALifeSimulator	*tpALife);
-			bool					DistanceToTraderIsDanger(CSE_ALifeSimulator	*tpALife);
-			bool					EnoughMoneyToEquip		(CSE_ALifeSimulator	*tpALife);
+			bool					bfCanTreat				();
+			bool					bfEnoughMoneyToTreat	();
+			bool					bfEnoughTimeToTreat		();
+			bool					bfEnoughEquipmentToGo	();
+			bool					bfDistanceToTraderIsDanger();
+			bool					bfEnoughMoneyToEquip	();
 			// miscellanious
-			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife, OBJECT_IT &I);
-			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife);
-			bool					bfProcessItems			(CSE_ALifeSimulator	*tpALife);
-			void					vfCheckForDeletedEvents	(CSE_ALifeSimulator	*tpALife);
-			bool					bfChooseNextRoutePoint	(CSE_ALifeSimulator	*tpALife);
-			void					vfSetCurrentTask		(CSE_ALifeSimulator	*tpALife, _TASK_ID &tTaskID);
+			bool					bfCheckIfTaskCompleted	(OBJECT_IT		&I);
+			bool					bfCheckIfTaskCompleted	();
+			bool					bfProcessItems			();
+			void					vfCheckForDeletedEvents	();
+			bool					bfChooseNextRoutePoint	();
+			void					vfSetCurrentTask		(_TASK_ID		&tTaskID);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
