@@ -1,16 +1,90 @@
 #include "stdafx.h"
 
+#pragma pack(push,4)
+struct v_build	{
+	Fvector4	p;
+	Fvector2	uv0;
+	Fvector2	uv1;
+	Fvector2	uv2;
+	Fvector2	uv3;
+};
+
+struct v_filter {
+	Fvector4	p;
+	Fvector4	uv[8];
+};
+#pragma pack(pop)
+
 void	CRenderTarget::phase_luminance()
 {
+	u32		Offset;
+
 	// Targets
-	u_setrt									(rt_LUM_16x16,NULL,NULL,NULL);
 	RCache.set_Stencil						(FALSE);
 	RCache.set_CullMode						(CULL_NONE);
 	RCache.set_ColorWriteEnable				();
-	CHK_DX		(HW.pDevice->SetRenderState	(D3DRS_ZENABLE,FALSE));
-	CHK_DX		(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0, 1.0f, 0L));
+	CHK_DX									(HW.pDevice->SetRenderState	(D3DRS_ZENABLE,FALSE));
 
-	// Perform LUM-SAT
+	// Perform LUM-SAT, pass 0, 256x256 => 64x64
+	u_setrt									(rt_LUM_64,NULL,NULL,NULL);
+	{
+		float		ts				= 64;
+		float		_w				= float(BLOOM_size_X);
+		float		_h				= float(BLOOM_size_Y);
+		Fvector2	one				= { 2.f/_w, 2.f/_h };	// two, infact
+		Fvector2	half			= { 1.f/_w, 1.f/_h };	// one, infact
+		Fvector2	a_0				= { half.x + 0,		half.y + 0		};
+		Fvector2	a_1				= { half.x + one.x, half.y + 0		};
+		Fvector2	a_2				= { half.x + 0,		half.y + one.y	};
+		Fvector2	a_3				= { half.x + one.x,	half.y + one.y	};
+		Fvector2	b_0				= { 1 + a_0.x,		1 + a_0.y		};
+		Fvector2	b_1				= { 1 + a_1.x,		1 + a_1.y		};
+		Fvector2	b_2				= { 1 + a_2.x,		1 + a_2.y		};
+		Fvector2	b_3				= { 1 + a_3.x,		1 + a_3.y		};
 
+		// Fill vertex buffer
+		v_build* pv					= (v_build*) RCache.Vertex.Lock	(4,g_bloom_build->vb_stride,Offset);
+		pv->p.set	(EPS,			float(ts+EPS),	EPS,1.f);	pv->uv0.set	(a_0.x,b_0.y);	pv->uv1.set	(a_1.x,b_1.y);	pv->uv2.set	(a_2.x,b_2.y);	pv->uv3.set	(a_3.x,b_3.y);	pv++;
+		pv->p.set	(EPS,			EPS,			EPS,1.f);	pv->uv0.set	(a_0.x,a_0.y);	pv->uv1.set	(a_1.x,a_1.y);	pv->uv2.set	(a_2.x,a_2.y);	pv->uv3.set	(a_3.x,a_3.y);	pv++;
+		pv->p.set	(float(ts+EPS), float(ts+EPS),	EPS,1.f);	pv->uv0.set	(b_0.x,b_0.y);	pv->uv1.set	(b_1.x,b_1.y);	pv->uv2.set	(b_2.x,b_2.y);	pv->uv3.set	(b_3.x,b_3.y);	pv++;
+		pv->p.set	(float(ts+EPS), EPS,			EPS,1.f);	pv->uv0.set	(b_0.x,a_0.y);	pv->uv1.set	(b_1.x,a_1.y);	pv->uv2.set	(b_2.x,a_2.y);	pv->uv3.set	(b_3.x,a_3.y);	pv++;
+		RCache.Vertex.Unlock		(4,g_bloom_build->vb_stride);
+		RCache.set_Element			(s_luminance->E[0]);
+		RCache.set_Geometry			(g_bloom_build		);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
+
+	// Perform LUM-SAT, pass 1, 64x64 => 8x8
+	u_setrt									(rt_LUM_64,NULL,NULL,NULL);
+	{
+		// Build filter-kernel
+		float		_dst			= 8;
+		float		_src			= float(64);
+		Fvector2	a[16],b[16];
+		for (int k=0; k<16; k++)
+		{
+			int	_x	= (k*2+1)%8;	// 1,3,5,7
+			int	_y	= ((k/4)*2+1);	// 1,1,1,1 ~ 3,3,3,3 ~...etc...
+			a.set	(_x,_y).div		(_src);
+			b.set	(a).add			(1);
+		}
+
+		// Fill vertex buffer
+		v_filter* pv				= (v_filter*) RCache.Vertex.Lock	(4,g_bloom_filter->vb_stride,Offset);
+		pv->p.set	(EPS,			float(ts+EPS),	EPS,1.f);	for (t=0; t<8; t++)	pv->uv[t].set(a[t].x,b[t].y, b[t+8].y,a[t+8].x);	// xy/yx	- left+down
+		pv++;
+		pv->p.set	(EPS,			EPS,			EPS,1.f);	for (t=0; t<8; t++)	pv->uv[t].set(a[t].x,a[t].y, a[t+8].y,a[t+8].x);	// xy/yx	- left+up
+		pv++;
+		pv->p.set	(float(ts+EPS), float(ts+EPS),	EPS,1.f);	for (t=0; t<8; t++)	pv->uv[t].set(b[t].x,b[t].y, b[t+8].y,b[t+8].x);	// xy/yx	- right+down
+		pv++;
+		pv->p.set	(float(ts+EPS), EPS,			EPS,1.f);	for (t=0; t<8; t++)	pv->uv[t].set(b[t].x,a[t].y, a[t+8].y,b[t+8].x);	// xy/yx	- right+up
+		pv++;
+		RCache.Vertex.Unlock		(4,g_bloom_filter->vb_stride);
+		RCache.set_Element			(s_luminance->E[0]	);
+		RCache.set_Geometry			(g_bloom_filter		);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
+
+	// Cleanup states
 	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_ZENABLE,TRUE));
 }
