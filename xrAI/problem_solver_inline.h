@@ -167,11 +167,6 @@ IC	void CProblemSolverAbstract::begin			(const _index_type &vertex_index, const_
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CProblemSolverAbstract::solve			()
-{
-}
-
-TEMPLATE_SPECIALIZATION
 IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index) const
 {
 	xr_vector<COperatorCondition>::const_iterator	I = m_current_state.conditions().begin();
@@ -198,6 +193,14 @@ IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index)
 				}
 	}
 	return						(true);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::solve			()
+{
+	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CBaseParameters());
+	if (!successful)
+		return;
 }
 
 #undef TEMPLATE_SPECIALIZATION
