@@ -556,7 +556,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	
 
 		if(object){
-		//const dReal* vel=dBodyGetLinearVel(m_body);
+		const dReal* vel=dBodyGetLinearVel(m_body);
 		dReal c_vel;
 	//	if(bo1)
 		{
@@ -564,8 +564,19 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 			dMass m;
 			dBodyGetMass(b,&m);
 			const dReal* obj_vel=dBodyGetLinearVel(b);
-		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
-			c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*_sqrt(m.mass/m_mass));
+			dVector3 obj_impuls={obj_vel[0]*m.mass,obj_vel[1]*m.mass,obj_vel[2]*m.mass};
+			dVector3 impuls={vel[0]*m_mass,vel[1]*m_mass,vel[2]*m_mass};
+			dVector3 c_mas_impuls={obj_impuls[0]+impuls[0],obj_impuls[1]+impuls[1],obj_impuls[2]+impuls[2]};
+			dReal cmass=m_mass+m.mass;
+			dVector3 c_mass_vel={c_mas_impuls[0]/cmass,c_mas_impuls[1]/cmass,c_mas_impuls[2]/cmass};
+			//dVector3 rel_impuls={obj_impuls[0]-impuls[0],obj_impuls[1]-impuls[1],obj_impuls[2]-impuls[2]};
+			//c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*_sqrt(m.mass/m_mass));
+			dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f;
+			dReal kin_energy_end=dDOT(c_mass_vel,c_mass_vel)*cmass/2.f;
+			dReal accepted_energy=(kin_energy_start-kin_energy_end);
+			if(accepted_energy>0.f)
+				c_vel=dSqrt(accepted_energy/m_mass*2.f);
+			else c_vel=0.f;
 		}
 	//	else
 	//	{
