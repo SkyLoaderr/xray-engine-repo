@@ -77,7 +77,7 @@ CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItemCS<_client_type,_s
 template <typename _client_type, typename _server_type>
 CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItemCS<_client_type,_server_type>::server_object	(LPCSTR section) const
 {
-	return				(xr_new<SERVER_TYPE>(section)->init());
+	return				(xr_new<SERVER_TYPE>(section));
 }
 
 template <typename _unknown_type, bool _client_object>
@@ -100,7 +100,7 @@ CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,_cl
 template <typename _unknown_type, bool _client_object>
 CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,_client_object>::server_object	(LPCSTR section) const
 {
-	return				(xr_new<SERVER_TYPE>(section)->init());
+	return				(xr_new<SERVER_TYPE>(section));
 }
 
 #ifndef NO_XR_GAME
@@ -233,12 +233,12 @@ IC	CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::client_object	(const CLASS
 
 IC	CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::server_object	(const CLASS_ID &clsid, LPCSTR section) const
 {
-	return				(item(clsid).server_object(section));
+	return				(item(clsid).server_object(section)->init());
 }
 #else
 IC	CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::server_object	(const CLASS_ID &clsid, LPCSTR section) const
 {
 	const CObjectItemAbstract	*object = item(clsid,true);
-	return				(object ? object->server_object(section) : 0);
+	return				(object ? object->server_object(section)->init() : 0);
 }
 #endif

@@ -75,7 +75,7 @@ CObjectFactory::SERVER_BASE_CLASS	*CObjectFactory::CObjectItemScript::server_obj
 {
 	object_factory().set_instance((SERVER_SCRIPT_BASE_CLASS*)0);
 	m_server_creator			(const_cast<CObjectFactory*>(&object_factory()),section);
-	return						(object_factory().server_instance()->init());
+	return						(object_factory().server_instance());
 }
 
 void CObjectFactory::register_script_class	(LPCSTR client_class, LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid)
