@@ -33,8 +33,8 @@ void CTelekinesis<CMonster>::Activate()
 	Level().ObjectSpace.GetNearest		(monster->Position(),10.f); 
 	xr_vector<CObject*> &tpNearest		= Level().ObjectSpace.q_nearest; 
 
-	float ar_linear		= 0.f;
-	float ar_angular	= 0.f;
+//	float ar_linear		= 0.f;
+//	float ar_angular	= 0.f;
 
 	for (u32 i = 0; i < tpNearest.size(); i++) {
 		CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
