@@ -64,8 +64,7 @@ void CStateFreeNoAlife::execute			()
 		eMentalStateFree
 	);
 	m_object->CSightManager::update				(eLookTypePathDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle,m_object->best_weapon());
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 }
 
 void CStateFreeNoAlife::finalize		()

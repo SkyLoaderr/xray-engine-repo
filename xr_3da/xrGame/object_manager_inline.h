@@ -51,7 +51,7 @@ TEMPLATE_SPECIALIZATION
 void CAbstractObjectManager::update					()
 {
 	float						result = flt_max;
-//	m_selected					= 0;
+	m_selected					= 0;
 	xr_set<T*>::const_iterator	I = m_objects.begin();
 	xr_set<T*>::const_iterator	E = m_objects.end();
 	for ( ; I != E; ++I) {

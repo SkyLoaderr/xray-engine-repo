@@ -51,10 +51,6 @@ void CStateGatherItems::initialize		()
 void CStateGatherItems::execute			()
 {
 	VERIFY										(m_object->item());
-	Msg											("%6d : %s",Level().timeServer(),m_object->item()->cName());
-	if (m_object->item()->H_Parent()) {
-		m_object = m_object;
-	}
 	m_object->set_level_dest_vertex				(m_object->item()->level_vertex_id());
 	m_object->CStalkerMovementManager::update	(
 		0,
