@@ -173,13 +173,13 @@ CSound* CSoundRender::GetFreeSound	(u32 hSound)
 	return pSnd;
 }
 
-void CSoundRender::Play	(u32 hSound, sound* P, BOOL bLoop, int iLoopCnt)
+void CSoundRender::Play		(u32 hSound, sound* P, BOOL bLoop, int iLoopCnt)
 {
-	P->feedback			= GetFreeSound	(hSound);
-	P->feedback->Play	(P, bLoop, iLoopCnt);
+	P->feedback				= GetFreeSound	(hSound);
+	P->feedback->Play		(P, bLoop, iLoopCnt);
 }
 
-void CSoundRender::Reload()
+void CSoundRender::Reload	()
 {
 	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
