@@ -22,7 +22,7 @@
 #include "../alife_space.h"
 
 #include "xrXMLParser.h"
-
+#include "UICarPanel.h"
 //////////////////////////////////////////////////////////////////////////
 
 //для режима настройки HUD
@@ -87,12 +87,12 @@ protected:
 	void ShowAll();
 	bool m_bShowHudInfo;
 	bool m_bShowHudCrosshair;
-
+	
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticMapBack;
 	CUIStatic			UIStaticBattery;
-	CUIStatic			UIStaticCarHealth;
+
 
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
@@ -101,7 +101,7 @@ protected:
 	CUIProgressBar		UIHealthBar;
 	CUIProgressBar		UIArmorBar;
 	CUIProgressBar		UIBatteryBar;
-	CUIProgressBar		UICarHealthBar;
+	CUICarPanel			UICarPanel;
 
 	CUIZoneMap			UIZoneMap;
 
@@ -239,9 +239,5 @@ public:
 	void				SetBatteryCharge(float value);
 	// Показать/спрятать батарейку
 	void				ShowBattery(bool on);
-
-		// Установить позицию заряда батарейки
-	void				SetCarHealth(float value);
-	// Показать/спрятать батарейку
-	void				ShowCarHealth(bool on);
+	CUICarPanel&		CarPanel(){return UICarPanel;};
 };

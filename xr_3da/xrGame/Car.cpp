@@ -347,7 +347,7 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	HitEffect();
 
-	HUD().GetUI()->UIMainIngameWnd.SetCarHealth(fEntityHealth/100.f);
+	HUD().GetUI()->UIMainIngameWnd.CarPanel().SetCarHealth(fEntityHealth/100.f);
 }
 void CCar::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
@@ -381,7 +381,7 @@ void CCar::detach_Actor()
 	Unclutch();
 	ResetKeys();
 	m_current_rpm=m_min_rpm;
-	HUD().GetUI()->UIMainIngameWnd.ShowCarHealth(false);
+	HUD().GetUI()->UIMainIngameWnd.CarPanel().ShowCarHealth(false);
 	///Break();
 }
 
@@ -407,8 +407,8 @@ bool CCar::attach_Actor(CActor* actor)
 	VisualUpdate();
 	
 
-	HUD().GetUI()->UIMainIngameWnd.ShowCarHealth(true);
-	HUD().GetUI()->UIMainIngameWnd.SetCarHealth(fEntityHealth/100.f);
+	HUD().GetUI()->UIMainIngameWnd.CarPanel().ShowCarHealth(true);
+	HUD().GetUI()->UIMainIngameWnd.CarPanel().SetCarHealth(fEntityHealth/100.f);
 	//HUD().GetUI()->UIMainIngameWnd.ShowBattery(true);
 	//CBoneData&	bone_data=K->LL_GetData(id);
 	//Fmatrix driver_pos_tranform;
