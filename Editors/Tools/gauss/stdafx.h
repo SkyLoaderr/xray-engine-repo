@@ -97,11 +97,15 @@ typedef TMsgDlgBtn TMsgDlgButtons[mbHelp];
 #define NO_XR_NETWORK
 #define	NO_XR_VERTEX
 
+#define THROW throw -1
+
 #ifdef DEBUG
 #define R_ASSERT	_ASSERT
+#define R_ASSERT2	_ASSERT
 #define VERIFY		_ASSERT
 #else
 #define R_ASSERT
+#define R_ASSERT2
 #define VERIFY  
 #endif
 #define NODEFAULT 
@@ -143,7 +147,7 @@ DEFINE_VECTOR(bool,BOOLVec,BOOLIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
 DEFINE_VECTOR(WORD,WORDVec,WORDIt);
 DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
-DEFINE_VECTOR(int,INTVec,INTIt);
+DEFINE_VECTOR(int,IntVec,IntIt);
 DEFINE_VECTOR(float,FloatVec,FloatIt);
 DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);      
 DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);

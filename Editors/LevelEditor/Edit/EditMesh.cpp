@@ -10,7 +10,9 @@
 
 CEditableMesh::~CEditableMesh(){
 	Clear();
+#ifdef _EDITOR
     R_ASSERT2(m_RenderBuffers.empty(),"Render buffer still referenced.");
+#endif
 }
 
 void CEditableMesh::Construct(){

@@ -188,7 +188,9 @@ bool CEditableObject::Load(CStream& F){
 
         ResetAnimation();
 
+#ifdef _EDITOR
         UpdateLODShader();
+#endif
 
         if (!bRes) break;
         UpdateBox();

@@ -135,7 +135,7 @@ class CEditableMesh {
 
 #ifdef _EDITOR
     CDB::MODEL*		m_CFModel;
-    RBMap			m_RenderBuffers;
+	RBMap			m_RenderBuffers;
 #endif
 
     void            GenerateCFModel		();
