@@ -347,7 +347,9 @@ end
 function pda_call_back(recepient, who, msg, info_index)
     if msg == game_object.trade_pda_msg then
         xr_motivator.trade_arhive[recepient:id()]:save(who)
-    elseif msg == game_object.help_pda_msg and xr_motivator.storage[recepient:id()].sos.npc == nil then
+    elseif msg == game_object.help_pda_msg and 
+           xr_motivator.storage[recepient:id()].sos.npc == nil and
+           recepient:relation (who) ~= game_object.enemy then
         xr_motivator.storage[recepient:id()].sos.npc = who
     else
         recepient:send_pda_message(4, who)
