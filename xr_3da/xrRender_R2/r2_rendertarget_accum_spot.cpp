@@ -49,7 +49,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 
 		// Constants
 		Fvector		L_dir,L_clr;	float L_spec;
-		L_clr.div					(L->color, ps_r2_ls_dynamic_range);
+		L_clr.set					(L->color.r,L->color.g,L->color.b);
+		L_clr.div					(ps_r2_ls_dynamic_range);
 		L_spec						= L_clr.magnitude()/_sqrt(3.f);
 		Device.mView.transform_dir	(L_dir,L->direction);
 		L_dir.normalize				();
@@ -69,45 +70,11 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		J.set(9,  7,  15, 9);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
 		J.set(13, 15, 7,  13);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
 
-
-
 		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x01	));
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 }
 
-void CRenderTarget::accum_direct()
+void CRenderTarget::accum_spot_unshadow	(light* L)
 {
-	u32		Offset;
-	u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
-	float	_w					= float(Device.dwWidth);
-	float	_h					= float(Device.dwHeight);
-
-	Fvector2					p0,p1;
-	p0.set						(.5f/_w, .5f/_h);
-	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
-
-	// Fill vertex buffer
-	float	d_Z	= EPS_S, d_W = 1.f;
-	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-	pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
-	pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
-	pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
-	pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
-	RCache.set_Geometry			(g_combine);
-	RCache.set_Element			(s_accum_direct->E[2]);
-
-	// Constants
-	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.div					(RImplementation.Lights.sun_color, ps_r2_ls_dynamic_range);
-	L_spec						= L_clr.magnitude()/_sqrt(3.f);
-	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
-	L_dir.normalize				();
-	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
-
-	// Render if stencil >= 0x2
-	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
-	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }

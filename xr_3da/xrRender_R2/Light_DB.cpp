@@ -44,9 +44,12 @@ void CLight_DB::Load			(IReader *fs)
 		{
 			Flight		Ldata;
 			light*		L				= xr_new<light>		();
+			L->flags.type				= IRender_Light::SPOT;
 			L->flags.bStatic			= true;
-			L->flags.bShadow			= false;
+			L->flags.bShadow			= true;
 			L->flags.bActive			= true;
+			L->direction.set			(0,-1,0);
+			L->cone						= deg2rad	(60.f);
 			F->r						(&L->controller,4);
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
@@ -198,7 +201,7 @@ void			CLight_DB::Update()
 	sun_color.lerp			(sun_color_0,sun_color_1,f);
 //	sun_color.lerp			(sun_color,sun_color_base,.5f);
 
-	// move point lights
+	// move point/spot lights
 	{
 		static float t		=	0;
 		t					+=	.01f;
