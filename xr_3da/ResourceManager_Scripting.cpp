@@ -82,38 +82,39 @@ void	CResourceManager::LS_Load			()
 
 	function		(LSVM, "log",	LuaLog);
 
-	class_<adopt_sampler>("_sampler")
-		.def(								constructor<const adopt_sampler&>())
-		.def("texture",						&adopt_sampler::_texture		)
-		.def("project",						&adopt_sampler::_projective		)
-		.def("clamp",						&adopt_sampler::_clamp			)
-		.def("wrap",						&adopt_sampler::_wrap			)
-		.def("mirror",						&adopt_sampler::_mirror			)
-		.def("f_anisotropic",				&adopt_sampler::_f_anisotropic	)
-		.def("f_trilinear",					&adopt_sampler::_f_trilinear	)
-		.def("f_bilinear",					&adopt_sampler::_f_bilinear		)
-		.def("f_none",						&adopt_sampler::_f_none			)
-		.def("fmin_none",					&adopt_sampler::_fmin_none		)
-		.def("fmin_point",					&adopt_sampler::_fmin_point		)
-		.def("fmin_linear",					&adopt_sampler::_fmin_linear	)
-		.def("fmin_aniso",					&adopt_sampler::_fmin_aniso		)
-		.def("fmip_none",					&adopt_sampler::_fmip_none		)
-		.def("fmip_point",					&adopt_sampler::_fmip_point		)
-		.def("fmip_linear",					&adopt_sampler::_fmip_linear	)
-		.def("fmag_none",					&adopt_sampler::_fmag_none		)
-		.def("fmag_point",					&adopt_sampler::_fmag_point		)
-		.def("fmag_linear",					&adopt_sampler::_fmag_linear	)
-		;
+	module			(LSVM)
+	[
+		class_<adopt_sampler>("_sampler")
+			.def(								constructor<const adopt_sampler&>())
+			.def("texture",						&adopt_sampler::_texture		)
+			.def("project",						&adopt_sampler::_projective		)
+			.def("clamp",						&adopt_sampler::_clamp			)
+			.def("wrap",						&adopt_sampler::_wrap			)
+			.def("mirror",						&adopt_sampler::_mirror			)
+			.def("f_anisotropic",				&adopt_sampler::_f_anisotropic	)
+			.def("f_trilinear",					&adopt_sampler::_f_trilinear	)
+			.def("f_bilinear",					&adopt_sampler::_f_bilinear		)
+			.def("f_none",						&adopt_sampler::_f_none			)
+			.def("fmin_none",					&adopt_sampler::_fmin_none		)
+			.def("fmin_point",					&adopt_sampler::_fmin_point		)
+			.def("fmin_linear",					&adopt_sampler::_fmin_linear	)
+			.def("fmin_aniso",					&adopt_sampler::_fmin_aniso		)
+			.def("fmip_none",					&adopt_sampler::_fmip_none		)
+			.def("fmip_point",					&adopt_sampler::_fmip_point		)
+			.def("fmip_linear",					&adopt_sampler::_fmip_linear	)
+			.def("fmag_none",					&adopt_sampler::_fmag_none		)
+			.def("fmag_point",					&adopt_sampler::_fmag_point		)
+			.def("fmag_linear",					&adopt_sampler::_fmag_linear	),
 
-	class_<adopt_compiler>("_compiler")
-		.def(								constructor<const adopt_compiler&>())
-		.def("begin",						&adopt_compiler::_pass			)
-		.def("fog",							&adopt_compiler::_fog			)
-		.def("zb",							&adopt_compiler::_ZB			)
-		.def("blend",						&adopt_compiler::_blend			)
-		.def("aref",						&adopt_compiler::_aref			)
-		.def("sampler",						&adopt_compiler::_sampler		)
-		;
+		class_<adopt_compiler>("_compiler")
+			.def(								constructor<const adopt_compiler&>())
+			.def("begin",						&adopt_compiler::_pass			)
+			.def("fog",							&adopt_compiler::_fog			)
+			.def("zb",							&adopt_compiler::_ZB			)
+			.def("blend",						&adopt_compiler::_blend			)
+			.def("aref",						&adopt_compiler::_aref			)
+			.def("sampler",						&adopt_compiler::_sampler		)
+	];
 
 	// load shaders
 	xr_vector<char*>*	folder	= FS.file_list_open	("$game_shaders$","",FS_ListFiles|FS_RootOnly);
@@ -223,13 +224,12 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	RS.Invalidate		();
 
 	// Compile
-	adopt_compiler		ac		(this);
 	LPCSTR				t_0		= L_textures[0];
 	LPCSTR				t_1		= (L_textures.size() > 1) ? L_textures[1] : "null";
 	lua_State*			LSVM	= Device.Resources->LSVM; 
 	object				shader	= get_globals(LSVM)[namesp];
 	functor<void>		element	= object_cast<functor<void> >(shader[name]);
-	element						(ac);
+	element						(adopt_compiler(this));
 	r_End						();
 
 	return				Device.Resources->_CreateElement(E);
