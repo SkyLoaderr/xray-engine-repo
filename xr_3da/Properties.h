@@ -13,43 +13,43 @@
 
 enum	xrProperties
 {
-	xrP_MARKER	= 0,
-	xrP_MATRIX,		// really only name(stringZ) is written into stream
-	xrP_CONSTANT,	// really only name(stringZ) is written into stream
-	xrP_TEXTURE,	// really only name(stringZ) is written into stream
-	xrP_INTEGER,
-	xrP_FLOAT,
-	xrP_BOOL,
-	xrP_TOKEN,
-	xrP_OBJECT,		// really only name(stringZ) is written into stream
-	xrP_FORCEDWORD=DWORD(-1)
+	xrPID_MARKER	= 0,
+	xrPID_MATRIX,		// really only name(stringZ) is written into stream
+	xrPID_CONSTANT,	// really only name(stringZ) is written into stream
+	xrPID_TEXTURE,	// really only name(stringZ) is written into stream
+	xrPID_INTEGER,
+	xrPID_FLOAT,
+	xrPID_BOOL,
+	xrPID_TOKEN,
+	xrPID_OBJECT,		// really only name(stringZ) is written into stream
+	xrPID_FORCEDWORD=DWORD(-1)
 };
 
-struct	xrPDEF_Integer
+struct	xrP_Integer
 {
 	int					value;
 	int					min;
 	int					max;
 
-	xrPDEF_Integer() : value(0), min(0), max(255)	{}
+	xrP_Integer() : value(0), min(0), max(255)	{}
 };
 
-struct	xrPDEF_Float
+struct	xrP_Float
 {
 	float				value;
 	float				min;
 	float				max;
 
-	xrPDEF_Float()	: value(0), min(0), max(1)		{}
+	xrP_Float()	: value(0), min(0), max(1)		{}
 };
 
-struct	xrPDEF_BOOL
+struct	xrP_BOOL
 {
 	BOOL				value;
-	xrPDEF_BOOL() : value(FALSE)					{}
+	xrP_BOOL() : value(FALSE)					{}
 };
 
-struct	xrPDEF_TOKEN
+struct	xrP_TOKEN
 {
 	struct Item {
 		DWORD		ID;
@@ -61,7 +61,7 @@ struct	xrPDEF_TOKEN
 	
 	//--- elements:		(ID,string64)
 
-	xrPDEF_TOKEN()	: IDselected(0), Count(0)		{}
+	xrP_TOKEN()	: IDselected(0), Count(0)		{}
 };
 
 #pragma pack(pop)

@@ -60,8 +60,8 @@ class ENGINE_API CBlender
 {
 protected:
 	CBlender_DESC	description;
-	BP_Integer		oPriority;
-	BP_BOOL			oStrictSorting;
+	xrP_Integer		oPriority;
+	xrP_BOOL		oStrictSorting;
 	string64		oT_Name;
 	string64		oT_xform;
 protected:
