@@ -1289,19 +1289,7 @@ void CAI_Soldier::Patrol()
 				AI_Path.bNeedRebuild = TRUE;
 			SetLessCoverLook(AI_Node);
 		}
-		
-		/**
-		Fvector tTemp0,tTemp1;
-		Level().AI.UnpackPosition(tTemp0,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p0);
-		Level().AI.UnpackPosition(tTemp1,Level().AI.Node(tpaPatrolPoints[m_iCurrentPoint])->p1);
-		SelectorPatrol.m_tEnemyPosition.average(tTemp0,tTemp1);
-		SelectorPatrol.m_tCurrentPosition = Position();
-		m_dwLastRangeSearch = 0;
-		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
-		/**/
 	}
-	/////////////////////////
-
 
 	vfSetFire(false,Group);
 
