@@ -231,7 +231,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		return						(FALSE);
 
 	//проспавнить PDA у InventoryOwner
-//	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
