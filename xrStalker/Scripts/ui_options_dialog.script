@@ -33,7 +33,7 @@ function options_dialog:SetClGame(game_cl)
 end
 
 function options_dialog:InitControls()
-	base_dialog.InitControls(self, "Options")
+	ui_base_dialog.base_dialog.InitControls(self, "Options")
 
 	----- DATA ----
 		----- BUTTONS --->>>
