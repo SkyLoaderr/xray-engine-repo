@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat_fire.cpp
+//	Module 		: ai_zombie_fire.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Fire and enemy parameters for monster "Rat"
+//	Description : Fire and enemy parameters for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_rat.h"
+#include "ai_zombie.h"
 #include "..\\..\\ai_funcs.h"
 
-void CAI_Rat::Exec_Action(float dt)
+void CAI_Zombie::Exec_Action(float dt)
 {
 	AI::C_Command* C	= &q_action;
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
@@ -44,7 +44,7 @@ void CAI_Rat::Exec_Action(float dt)
 		L->setTimeout();
 }
 
-void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
+void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
 	Fvector D;
@@ -66,12 +66,12 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 	}
 	if (g_Health() - amount <= 0) {
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
-			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
-				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
+			if (m_tpCurrentGlobalAnimation != m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0])
+				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
 	}
 }
 
-float CAI_Rat::EnemyHeuristics(CEntity* E)
+float CAI_Zombie::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
@@ -88,7 +88,7 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	return  f1*f2;//*f3;
 }
 
-void CAI_Rat::SelectEnemy(SEnemySelected& S)
+void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
@@ -129,7 +129,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-void CAI_Rat::vfUpdateMorale()
+void CAI_Zombie::vfUpdateMorale()
 {
 	u32 dwCurTime = Level().timeServer();
 	if (m_fMorale < m_fMoraleMinValue)
@@ -141,8 +141,8 @@ void CAI_Rat::vfUpdateMorale()
 		float fDistance = vPosition.distance_to(m_tSafeSpawnPosition);
 		fDistance = fDistance < 1.f ? 1.f : fDistance;
 		switch (eCurrentState) {
-			case aiRatFreeHuntingActive :
-			case aiRatFreeHuntingPassive : {
+			case aiZombieFreeHuntingActive :
+			case aiZombieFreeHuntingPassive : {
 				if (m_fMorale < m_fMoraleNormalValue) {
 					m_fMorale += m_fMoraleRestoreQuant;//*(1.f - fDistance/m_fMoraleNullRadius);
 					if (m_fMorale > m_fMoraleNormalValue)
@@ -156,16 +156,16 @@ void CAI_Rat::vfUpdateMorale()
 					}
 				break;
 			}
-			case aiRatUnderFire :
-			case aiRatRetreat : {
+			case aiZombieUnderFire :
+			case aiZombieRetreat : {
 				//m_fMorale += fDistance <= m_fMoraleNullRadius ? m_fMoraleRestoreQuant : 0;
 				//m_fMorale += m_fMoraleRestoreQuant*(m_fMoraleNullRadius/fDistance);
 				m_fMorale += m_fMoraleRestoreQuant;
 				break;
 			}
-			case aiRatAttackRun :
-			case aiRatAttackFire :
-			case aiRatReturnHome : {
+			case aiZombieAttackRun :
+			case aiZombieAttackFire :
+			case aiZombieReturnHome : {
 				//m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
 				//m_fMorale += m_fMoraleRestoreQuant*(m_fMoraleNullRadius/fDistance);
 				m_fMorale += m_fMoraleRestoreQuant;
@@ -179,7 +179,7 @@ void CAI_Rat::vfUpdateMorale()
 	}
 }
 
-void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float fRadius)
+void CAI_Zombie::vfUpdateMoraleBroadcast(float fValue, float fRadius)
 {
 	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
 	if (tpLeader->g_Alive())

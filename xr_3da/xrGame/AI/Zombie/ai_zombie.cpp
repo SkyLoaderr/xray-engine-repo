@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat.cpp
+//	Module 		: ai_zombie.cpp
 //	Created 	: 23.04.2002
 //  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Rat"
+//	Description : AI Behaviour for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_rat.h"
+#include "ai_zombie.h"
 
-CAI_Rat::CAI_Rat()
+CAI_Zombie::CAI_Zombie()
 {
 	m_tHitDir.set			(0,0,1);
 	m_tSavedEnemyPosition.set(0,0,0);
@@ -42,7 +42,7 @@ CAI_Rat::CAI_Rat()
 	q_look.o_look_speed		= PI;
 }
 
-CAI_Rat::~CAI_Rat()
+CAI_Zombie::~CAI_Zombie()
 {
 	for (int i=0; i<SND_HIT_COUNT; i++) 
 		pSounds->Delete(m_tpaSoundHit[i]);
@@ -54,10 +54,10 @@ CAI_Rat::~CAI_Rat()
 		pSounds->Delete(m_tpaSoundVoice[i]);
 }
 
-void CAI_Rat::Die()
+void CAI_Zombie::Die()
 {
 	inherited::Death( );
-	eCurrentState = aiRatDie;
+	eCurrentState = aiZombieDie;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
@@ -71,16 +71,16 @@ void CAI_Rat::Die()
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
-	eCurrentState = aiRatDie;
+	eCurrentState = aiZombieDie;
 }
 
-void CAI_Rat::OnDeviceCreate()
+void CAI_Zombie::OnDeviceCreate()
 {
 	inherited::OnDeviceCreate();
 	vfLoadAnimations();
 }
 
-void CAI_Rat::Load(LPCSTR section)
+void CAI_Zombie::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
 	inherited::Load(section);
@@ -95,7 +95,7 @@ void CAI_Rat::Load(LPCSTR section)
 	// sounds
 	m_fMinVoiceIinterval			= pSettings->ReadFLOAT (section,"MinVoiceInterval");
 	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT (section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate				= pSettings->ReadFLOAT (section,"VoiceRefreshRate");
+	m_fVoiceRefreshZombiee				= pSettings->ReadFLOAT (section,"VoiceRefreshZombiee");
 	
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
@@ -124,7 +124,7 @@ void CAI_Rat::Load(LPCSTR section)
 
 	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"DeathDistance");
 
-	m_dwActionRefreshRate	 		= pSettings->ReadINT   (section,"ActionRefreshRate");
+	m_dwActionRefreshZombiee	 		= pSettings->ReadINT   (section,"ActionRefreshZombiee");
 
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 
@@ -134,38 +134,38 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwActiveScheduleMax			= shedule_Max;
 }
 
-BOOL CAI_Rat::net_Spawn	(LPVOID DC)
+BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
 	//////////////////////////////////////////////////////////////////////////
-	xrSE_Rat *tpSE_Rat = (xrSE_Rat *)DC;
-	// model
-	cNameVisual_set					(tpSE_Rat->caModel);
-	// personal characteristics
-	eye_fov							= tpSE_Rat->fEyeFov;
-	eye_range						= tpSE_Rat->fEyeRange;
-	fHealth							= tpSE_Rat->fHealth;
-	m_fMinSpeed						= tpSE_Rat->fMinSpeed;
-	m_fMaxSpeed						= tpSE_Rat->fMaxSpeed;
-	m_fAttackSpeed					= tpSE_Rat->fAttackSpeed;
-	m_fMaxPursuitRadius				= tpSE_Rat->fMaxPursuitRadius;
-	m_fMaxHomeRadius				= tpSE_Rat->fMaxHomeRadius;
-	// morale
-	m_fMoraleSuccessAttackQuant		= tpSE_Rat->fMoraleSuccessAttackQuant;
-	m_fMoraleDeathQuant				= tpSE_Rat->fMoraleDeathQuant;
-	m_fMoraleFearQuant				= tpSE_Rat->fMoraleFearQuant;
-	m_fMoraleRestoreQuant			= tpSE_Rat->fMoraleRestoreQuant;
-	m_dwMoraleRestoreTimeInterval	= tpSE_Rat->u16MoraleRestoreTimeInterval;
-	m_fMoraleMinValue				= tpSE_Rat->fMoraleMinValue;
-	m_fMoraleMaxValue				= tpSE_Rat->fMoraleMaxValue;
-	m_fMoraleNormalValue			= tpSE_Rat->fMoraleNormalValue;
-	// attack
-	m_fHitPower						= tpSE_Rat->fHitPower;
-	m_dwHitInterval					= tpSE_Rat->u16HitInterval;
-	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
-	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
-	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
+//	xrSE_Zombie *tpSE_Zombie = (xrSE_Zombie *)DC;
+//	// model
+//	cNameVisual_set					(tpSE_Zombie->caModel);
+//	// personal characteristics
+//	eye_fov							= tpSE_Zombie->fEyeFov;
+//	eye_range						= tpSE_Zombie->fEyeRange;
+//	fHealth							= tpSE_Zombie->fHealth;
+//	m_fMinSpeed						= tpSE_Zombie->fMinSpeed;
+//	m_fMaxSpeed						= tpSE_Zombie->fMaxSpeed;
+//	m_fAttackSpeed					= tpSE_Zombie->fAttackSpeed;
+//	m_fMaxPursuitRadius				= tpSE_Zombie->fMaxPursuitRadius;
+//	m_fMaxHomeRadius				= tpSE_Zombie->fMaxHomeRadius;
+//	// morale
+//	m_fMoraleSuccessAttackQuant		= tpSE_Zombie->fMoraleSuccessAttackQuant;
+//	m_fMoraleDeathQuant				= tpSE_Zombie->fMoraleDeathQuant;
+//	m_fMoraleFearQuant				= tpSE_Zombie->fMoraleFearQuant;
+//	m_fMoraleRestoreQuant			= tpSE_Zombie->fMoraleRestoreQuant;
+//	m_dwMoraleRestoreTimeInterval	= tpSE_Zombie->u16MoraleRestoreTimeInterval;
+//	m_fMoraleMinValue				= tpSE_Zombie->fMoraleMinValue;
+//	m_fMoraleMaxValue				= tpSE_Zombie->fMoraleMaxValue;
+//	m_fMoraleNormalValue			= tpSE_Zombie->fMoraleNormalValue;
+//	// attack
+//	m_fHitPower						= tpSE_Zombie->fHitPower;
+//	m_dwHitInterval					= tpSE_Zombie->u16HitInterval;
+//	m_fAttackDistance				= tpSE_Zombie->fAttackDistance;
+//	m_fAttackAngle					= tpSE_Zombie->fAttackAngle/180.f*PI;
+//	m_fAttackSuccessProbability		= tpSE_Zombie->fAttackSuccessProbability;
 	//////////////////////////////////////////////////////////////////////////
 
 	m_fCurSpeed						= m_fMaxSpeed;
@@ -173,7 +173,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
-	tStateStack.push(eCurrentState = aiRatFreeHuntingActive);
+	tStateStack.push(eCurrentState = aiZombieFreeHuntingActive);
 	vfAddActiveMember(true);
 	m_bStateChanged = true;
 
@@ -186,12 +186,12 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	return TRUE;
 }
 
-void CAI_Rat::Exec_Movement	( float dt )
+void CAI_Zombie::Exec_Movement	( float dt )
 {
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 }
 
-void CAI_Rat::net_Export(NET_Packet& P)
+void CAI_Zombie::net_Export(NET_Packet& P)
 {
 	R_ASSERT				(Local());
 
@@ -206,7 +206,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	P.w_angle8				(N.o_torso.pitch);
 }
 
-void CAI_Rat::net_Import(NET_Packet& P)
+void CAI_Zombie::net_Import(NET_Packet& P)
 {
 	R_ASSERT				(Remote());
 	net_update				N;

@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat.h
+//	Module 		: ai_zombie.h
 //	Created 	: 23.04.2002
 //  Modified 	: 26.11.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Rat"
+//	Description : AI Behaviour for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_RAT__
-#define __XRAY_AI_RAT__
+#ifndef __XRAY_AI_ZOMBIE__
+#define __XRAY_AI_ZOMBIE__
 
 #include "..\\ai_monsters.h"
 #include "..\\..\\CustomMonster.h"
 
-class CAI_Rat : public CCustomMonster  
+class CAI_Zombie : public CCustomMonster  
 {
 	protected:
 		//////////////////////////
@@ -25,18 +25,18 @@ class CAI_Rat : public CCustomMonster
 			SND_VOICE_COUNT=2,
 		};
 
-		enum ERatStates 	{
-			aiRatDie = 0,
-			aiRatTurn,
-			aiRatFreeHuntingActive,
-			aiRatFreeHuntingPassive,
-			aiRatAttackFire,
-			aiRatAttackRun,
-			aiRatUnderFire,
-			aiRatRetreat,
-			aiRatPursuit,
-			aiRatFreeRecoil,
-			aiRatReturnHome,
+		enum EZombieStates 	{
+			aiZombieDie = 0,
+			aiZombieTurn,
+			aiZombieFreeHuntingActive,
+			aiZombieFreeHuntingPassive,
+			aiZombieAttackFire,
+			aiZombieAttackRun,
+			aiZombieUnderFire,
+			aiZombieRetreat,
+			aiZombiePursuit,
+			aiZombieFreeRecoil,
+			aiZombieReturnHome,
 		};
 
 	
@@ -58,9 +58,9 @@ class CAI_Rat : public CCustomMonster
 			SNormalGlobalAnimations tGlobal;
 		}SNormalAnimations;
 
-		typedef struct tagSRatAnimations{
+		typedef struct tagSZombieAnimations{
 			SNormalAnimations	tNormal;
-		}SRatAnimations;
+		}SZombieAnimations;
 		//////////////////////////
 		// END OF STRUCTURES
 		//////////////////////////
@@ -70,14 +70,14 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		
 		// FSM
-		stack<ERatStates>	tStateStack;
-		ERatStates			eCurrentState;
-		ERatStates			m_ePreviousState;
+		stack<EZombieStates>	tStateStack;
+		EZombieStates			eCurrentState;
+		EZombieStates			m_ePreviousState;
 		bool				bStopThinking;
 		bool				m_bStateChanged;
 
 		// ANIMATIONS
-		SRatAnimations		m_tRatAnimations;
+		SZombieAnimations		m_tZombieAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
 		CBlend*				m_tpCurrentGlobalBlend;
 		
@@ -90,7 +90,7 @@ class CAI_Rat : public CCustomMonster
 		u32					m_dwLastSoundRefresh;
 		float				m_fMinVoiceIinterval;
 		float				m_fMaxVoiceIinterval;
-		float				m_fVoiceRefreshRate;
+		float				m_fVoiceRefreshZombiee;
 		u32					m_dwLastVoiceTalk;
 		
 		// ATTACK
@@ -176,7 +176,7 @@ class CAI_Rat : public CCustomMonster
 		float				m_fMaxHomeRadius;
 
 		// DDD
-		u32					m_dwActionRefreshRate;
+		u32					m_dwActionRefreshZombiee;
 		float				m_fAttackSuccessProbability;
 
 		// former constants
@@ -240,7 +240,7 @@ class CAI_Rat : public CCustomMonster
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 			if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
 				m_bActive = true;
-				eCurrentState = aiRatFreeHuntingActive;
+				eCurrentState = aiZombieFreeHuntingActive;
 				Group.m_dwActiveCount++;
 				shedule_Min	= m_dwActiveScheduleMin;
 				shedule_Max	= m_dwActiveScheduleMax;
@@ -256,7 +256,7 @@ class CAI_Rat : public CCustomMonster
 				R_ASSERT(Group.m_dwActiveCount > 0);
 				Group.m_dwActiveCount--;
 				m_bActive = false;
-				eCurrentState = aiRatFreeHuntingPassive;
+				eCurrentState = aiZombieFreeHuntingPassive;
 				shedule_Min	= m_dwPassiveScheduleMin;
 				shedule_Max	= m_dwPassiveScheduleMax;
 			}
@@ -317,8 +317,8 @@ class CAI_Rat : public CCustomMonster
 		void	FreeRecoil();
 		void	ReturnHome();
 	public:
-					   CAI_Rat();
-		virtual		  ~CAI_Rat();
+					   CAI_Zombie();
+		virtual		  ~CAI_Zombie();
 		virtual BOOL  ShadowReceive	()			{ return FALSE;	}
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual void  net_Export(NET_Packet& P);

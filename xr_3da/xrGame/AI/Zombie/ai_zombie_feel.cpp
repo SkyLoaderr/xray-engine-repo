@@ -1,15 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat_feel.cpp
+//	Module 		: ai_zombie_feel.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Visibility and look for monster "Rat"
+//	Description : Visibility and look for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_rat.h"
+#include "ai_zombie.h"
 
-void CAI_Rat::SetDirectionLook()
+void CAI_Zombie::SetDirectionLook()
 {
 	int i = ps_Size();
 	if (i > 1) {
@@ -25,7 +25,7 @@ void CAI_Rat::SetDirectionLook()
 	r_target = r_torso_target;
 }
 
-void CAI_Rat::vfAimAtEnemy()
+void CAI_Zombie::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
 	m_Enemy.Enemy->svCenter(pos1);
@@ -35,7 +35,7 @@ void CAI_Rat::vfAimAtEnemy()
 	r_target.yaw = r_torso_target.yaw;
 }
 
-static BOOL __fastcall RatQualifier(CObject* O, void* P)
+static BOOL __fastcall ZombieQualifier(CObject* O, void* P)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
@@ -48,12 +48,12 @@ static BOOL __fastcall RatQualifier(CObject* O, void* P)
 	}
 }
 
-objQualifier* CAI_Rat::GetQualifier	()
+objQualifier* CAI_Zombie::GetQualifier	()
 {
-	return(&RatQualifier);
+	return(&ZombieQualifier);
 }
 
-void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
+void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
 {
 	if (!g_Alive())
 		return;

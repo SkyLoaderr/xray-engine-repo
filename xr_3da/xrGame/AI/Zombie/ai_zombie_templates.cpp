@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat_templates.cpp
+//	Module 		: ai_zombie_templates.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Templates for monster "Rat"
+//	Description : Templates for monster "Zombie"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_rat.h"
+#include "ai_zombie.h"
 #include "..\\ai_monsters_misc.h"
 
-void CAI_Rat::vfSaveEnemy()
+void CAI_Zombie::vfSaveEnemy()
 {
 	m_tSavedEnemy = m_Enemy.Enemy;
 	m_tSavedEnemyPosition = m_Enemy.Enemy->Position();
@@ -18,7 +18,7 @@ void CAI_Rat::vfSaveEnemy()
 	m_dwSavedEnemyNodeID = m_Enemy.Enemy->AI_NodeID;
 }
 
-void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
+void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
 {
 	if (bFire) {
 		m_bFiring = true;
@@ -30,13 +30,13 @@ void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 	}
 }
 
-void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
+void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
 {
 	StandUp();
 	m_fSpeed = m_fCurSpeed = fSpeed;
 }
 
-void CAI_Rat::vfComputeNewPosition()
+void CAI_Zombie::vfComputeNewPosition()
 {
 	// saving current parameters
 	Fvector tSafeHPB = m_tHPB;
@@ -130,7 +130,7 @@ void CAI_Rat::vfComputeNewPosition()
 	}
 }
 
-void CAI_Rat::vfComputeNextDirectionPosition()
+void CAI_Zombie::vfComputeNextDirectionPosition()
 {
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
