@@ -1,5 +1,4 @@
 List of the classes exported to LUA
-
 C++ class entity_memory_object : memory_object {
     property first_game_time;
     property first_level_time;
@@ -4414,3 +4413,4 @@ namespace  {
     };
 };
 End of list of the namespaces exported to LUA
+

@@ -113,6 +113,7 @@ protected:
 	afx_msg void OnEditReplace();
 	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
 	afx_msg void OnFunctionList();
+	afx_msg void OnBreakPointList();
 	afx_msg void OnCompleteWord();
 	afx_msg void OnNextBookMark();
 	afx_msg void OnToggleBookMark();

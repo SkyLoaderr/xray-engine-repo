@@ -107,15 +107,33 @@ void CLuaEditor::createFunctionList(CMenu& mnu)
 		line = Sci(SCI_LINEFROMPOSITION,r);
 		Sci(SCI_GETLINE,line,(int)&str_line[0]);
 		line_length = Sci(SCI_LINELENGTH,line);
-		if(str_line[line_length-1]=10) 
-			--line_length;
-		if(str_line[line_length-1]=13) 
-			--line_length;
-
 		str_line[line_length] = 0;
 		StrTrim(str_line,trim);
 		mnu.AppendMenu(MF_STRING,line+1,str_line);
 		ttf.chrg.cpMin = r+1;
+	}
+}
+
+bool CLuaEditor::createBreakPointList(CMenu& mnu)
+{
+	int line = 0;
+	int line_length;
+	bool bAdded = false;
+	char str_line[1024];
+	char trim[] = "\t\n\r";
+
+	while(true){
+		line = Sci(SCI_MARKERNEXT,line,1);
+		if ( line == -1 )
+			return bAdded;
+
+
+		Sci(SCI_GETLINE,line,(int)&str_line[0]);
+		line_length = Sci(SCI_LINELENGTH,line);
+		str_line[line_length] = 0;
+		StrTrim(str_line,trim);
+		mnu.AppendMenu(MF_STRING,line+1,str_line);
+		++line;
 	}
 }
 

@@ -105,6 +105,7 @@
 #define ID_EDIT_COMPLETEWORD            32860
 #define ID_EDIT_TOGGLEBOOKMARK          32866
 #define ID_EDIT_GOTONEXTBOOKMARK        32867
+#define ID_EDIT_BREAKPOINTSLIST         32874
 
 // Next default values for new objects
 // 
@@ -112,7 +113,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        143
-#define _APS_NEXT_COMMAND_VALUE         32868
+#define _APS_NEXT_COMMAND_VALUE         32880
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           112
 #endif

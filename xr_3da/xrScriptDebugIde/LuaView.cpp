@@ -59,6 +59,7 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	ON_COMMAND(ID_EDIT_TOGGLEBOOKMARK, OnToggleBookMark)
 	ON_COMMAND(ID_EDIT_GOTONEXTBOOKMARK, OnNextBookMark)
 	
+	ON_COMMAND(ID_EDIT_BREAKPOINTSLIST, OnBreakPointList)
 		
 
 	
@@ -760,12 +761,33 @@ void CLuaView::OnFunctionList()
 	mnu.CreatePopupMenu();
 	GetEditor()->createFunctionList(mnu);
 
-	POINT mouse;
-	//GetCursorPos(&mouse);
-	mouse.x = GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
-	mouse.y = GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+	RECT rct;
+	GetWindowRect(&rct);
+	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
+	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+
 	::SetForegroundWindow(m_hWnd);	
-	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD,mouse.x, mouse.y,this,NULL); 
+
+	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
+	if( 0 != idx ){
+		GetEditor()->GotoLine(idx);
+	}
+	
+}
+
+void CLuaView::OnBreakPointList()
+{
+	CMenu mnu;
+	mnu.CreatePopupMenu();
+	GetEditor()->createBreakPointList(mnu);
+
+	RECT rct;
+	GetWindowRect(&rct);
+	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
+	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+
+	::SetForegroundWindow(m_hWnd);	
+	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
 	if( 0 != idx ){
 		GetEditor()->GotoLine(idx);
 	}

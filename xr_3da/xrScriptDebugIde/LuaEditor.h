@@ -88,6 +88,7 @@ public:
 	void	CompleteWord(const char* word);
 	void	createFunctionList(CMenu& mnu);
 	bool	createWordList(CMenu& mnu);
+	bool	createBreakPointList(CMenu& mnu);
 	long	GetWordStart(long end);
 //lexer
 	void	SetLexer(int lexer, BOOL bDirect = TRUE);
