@@ -7,6 +7,8 @@
 #include "PSVisual.h"
 #include "..\PSLibrary.h"
 
+#define MAX_PARTICLES	1024
+
 CPSVisual::CPSVisual():IRender_Visual()
 {
 	m_Definition= 0;

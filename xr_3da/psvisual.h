@@ -4,8 +4,6 @@
 #include "..\FBasicVisual.h"
 #include "ParticleSystem.h"
 
-#define MAX_PARTICLES	1024
-
 class CPSVisual: public IRender_Visual
 {
 protected:
