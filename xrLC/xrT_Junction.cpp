@@ -31,30 +31,30 @@ struct record
 };
 
 vector<record>	vecJunctions;
+vector<record>	vecEdges;
 
 void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
 	if (_sqrt(SqrDistance2Segment(vTEST->P,vE1->P,vE2->P))<0.005f)	
 	{
 		BOOL bWeld = FALSE;
-		// sort verts
-		if (vE1>vE2)	swap(vE1,vE2);
-
+		
 		// check for duplicated errors
+		if (vE1>vE2)	swap(vE1,vE2);
 		for (DWORD i=0; i<vecJunctions.size(); i++)
 		{
 			record&	rec = vecJunctions[i];
 			if (rec.T==vTEST)						return;
 			if (rec.T->P.similar(vTEST->P,.005f))	bWeld = TRUE;
 		}
-
+		
 		// register
 		record	rec;
 		rec.E1	= vE1;
 		rec.E2	= vE2;
 		rec.T	= vTEST;
 		vecJunctions.push_back	(rec);
-
+		
 		// display
 		if (bWeld)	Msg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
 		else		Msg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
@@ -63,10 +63,25 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 
 void edge(Vertex* vE1, Vertex* vE2)
 {
-	if (vE1>vE2)	swap(vE1,vE2);
 	float		len	= vE1->P.distance_to(vE2->P);
-	if (len>32.f)	
-		Msg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
+	if (len<32.f)	return;
+
+	// check for duplicated errors
+	if (vE1>vE2)	swap(vE1,vE2);
+	for (DWORD i=0; i<vecEdges.size(); i++)
+	{
+		record&	rec = vecEdges[i];
+		if ((rec.E1==vE1)&&(rec.E2==vE2))		return;
+	}
+	
+	// register
+	record	rec;
+	rec.E1	= vE1;
+	rec.E2	= vE2;
+	rec.T	= 0;
+	vecEdges.push_back	(rec);
+	
+	Msg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
 }
 
 void CBuild::CorrectTJunctions()
@@ -116,5 +131,5 @@ void CBuild::CorrectTJunctions()
 		}
 		Progress(float(I)/float(g_faces.size()));
 	}
-	Msg("*** %d errors found.",vecJunctions.size());
+	Msg("*** %d junctions and %d long edges found.",vecJunctions.size(),vecEdges.size());
 }
