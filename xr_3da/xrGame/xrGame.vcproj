@@ -996,6 +996,12 @@
 						RelativePath=".\ai\ai_monster_defs.h">
 					</File>
 					<File
+						RelativePath=".\ai\ai_monster_effector.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_effector.h">
+					</File>
+					<File
 						RelativePath=".\Ai\ai_monster_group.cpp">
 					</File>
 					<File

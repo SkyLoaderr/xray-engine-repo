@@ -179,8 +179,6 @@ void CCustomZone::UpdateCL()
 	Fvector					P;
 	XFORM().transform_tiny(P,s.P);
 	feel_touch_update		(P,s.R);
-
-	
 	
 	if(m_bZoneReady) 
 	{
@@ -230,6 +228,8 @@ void CCustomZone::shedule_Update(u32 dt)
 
 void CCustomZone::feel_touch_new(CObject* O) 
 {
+	if (dynamic_cast<CCustomZone*>(O)) return;
+	
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
 	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity())
