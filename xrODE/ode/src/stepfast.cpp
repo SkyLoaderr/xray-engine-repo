@@ -876,7 +876,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 
 	}
 
-	if (nj>3)	dInternalStepIslandFast (world, bodies, nb, joints, nj, stepsize, maxiterations);
+	if (nj>3)		dInternalStepIslandFast (world, bodies, nb, joints, nj, stepsize, maxiterations);
 	else			dInternalStepIsland		(world, bodies, nb, joints, nj, stepsize);		
 #	ifdef TIMING
 	dTimerEnd ();

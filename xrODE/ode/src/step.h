@@ -28,7 +28,7 @@
 
 void dInternalStepIsland (dxWorld *world,
 			  dxBody * const *body, int nb,
-			  dxJoint **joint, int nj,
+			  dxJoint * const *joint, int nj,
 			  dReal stepsize);
 
 
