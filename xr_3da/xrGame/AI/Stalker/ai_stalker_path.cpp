@@ -134,7 +134,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 
 		u32							N = AI_Path.Nodes.size();
 		if (!N) {
-			Msg("! Node lis is empty!");
+			Msg("! Node list is empty!");
 			m_tPathState = ePathStateBuildNodePath;
 			return;
 		}
@@ -422,6 +422,8 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);
+		if (tpEntity->AI_NodeID >= getAI().Header().count)
+			continue;
 		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,fRange,getAI().m_dwaNodeStackM,&getAI().m_baNodeMarks);
 		Device.Statistic.TEST2.End	();
 #pragma todo("Instead of slice implement time-delay computations")

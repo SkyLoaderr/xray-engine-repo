@@ -14,11 +14,11 @@
 /**
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
+	Msg("Monster %s : \n* State : %s",cName(),s);\
 /**/
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s",cName(),s);\
 	m_bStopThinking = true;\
 }
 
@@ -362,7 +362,7 @@ void CAI_Stalker::SearchEnemy()
 
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
-			Msg("Last enemy position");
+			OUT_TEXT("Last enemy position");
 			AI_Path.DestNode	= m_dwSavedEnemyNodeID;
 			if (Group.m_tpaSuspiciousNodes.empty()) {
 				if (!m_iCurrentSuspiciousNodeIndex) {
@@ -412,7 +412,7 @@ void CAI_Stalker::SearchEnemy()
 			break;
 		}
 		case eActionStateWatchGo : {
-			Msg("The higher-level prediction");
+			OUT_TEXT("The higher-level prediction");
 			if ((m_iCurrentSuspiciousNodeIndex == -1) || getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
 				if (m_iCurrentSuspiciousNodeIndex != -1)
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
@@ -464,7 +464,7 @@ void CAI_Stalker::SearchEnemy()
 			break;
 		}
 		case eActionStateWatchLook : {
-//			Msg("Predicting by selector");
+//			OUT_TEXT("Predicting by selector");
 //			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
 //			m_tSelectorRetreat.m_tpEnemyNode	= getAI().Node(m_dwMyNodeID);
 //			m_tSelectorRetreat.m_tMyPosition	= vPosition;
@@ -744,8 +744,10 @@ void CAI_Stalker::Think()
 	m_dwUpdateCount++;
 	m_ePreviousState		= m_eCurrentState;
 
+#ifndef SILENCE
 	if (g_Alive())
 		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
+#endif
 	
 	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 	if (!g_Alive()) {

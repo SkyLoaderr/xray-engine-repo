@@ -12,7 +12,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		string64			s_name;
 		P.r_string			(s_name);
 		// create entity
-		E = entity_Create	(s_name); R_ASSERT2(E,"Can't create entity.");
+		E = entity_Create	(s_name); R_ASSERT3(E,"Can't create entity.",s_name);
 		E->Spawn_Read		(P);
 		if (!((game->type==E->s_gameid)||(GAME_ANY==E->s_gameid))){
 			Msg				("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
