@@ -14,10 +14,10 @@ CUIListWnd::CUIListWnd(void)
 CUIListWnd::~CUIListWnd(void)
 {
 	//очистить список и удалить все элементы
-	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); it!=m_ItemList.end(); it++)
+	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
 	{
 		DetachChild(*it);
-		if(*it!=NULL)xr_delete(*it);
+		if(NULL != *it)xr_delete(*it);
 	}
 
 	m_ItemList.clear();
@@ -88,9 +88,9 @@ void CUIListWnd::RemoveItem(int index)
 
 	//выбрать нужный элемент
 	it = m_ItemList.begin();
-	for(int i=0; i<index;i++, it++);
+	for(int i=0; i<index;++i, ++it);
 
-	R_ASSERT(it!=m_ItemList.end());
+	R_ASSERT(m_ItemList.end() != it);
 
 	DetachChild(*it);
 	xr_delete(*it);
@@ -118,9 +118,9 @@ CUIListItem* CUIListWnd::GetItem(int index)
 
 	//выбрать нужный элемент
 	it = m_ItemList.begin();
-	for(int i=0; i<index;i++, it++);
+	for(int i=0; i<index;++i, ++it);
 
-	R_ASSERT(it!=m_ItemList.end());
+	R_ASSERT(m_ItemList.end() != it);
 
 	return (*it);
 }
@@ -138,7 +138,7 @@ void CUIListWnd::RemoveAll()
 		it = m_ItemList.begin();
 		
 		DetachChild(*it);
-		if(*it != NULL) xr_delete(*it);
+		if(NULL != *it) xr_delete(*it);
 
 		m_ItemList.erase(it);
 	}
@@ -161,7 +161,7 @@ void CUIListWnd::UpdateList()
 	//спрятать все элементы до участка 
 	//отображающейся в данный момент
 	for(int i=0; i<_min(m_ItemList.size(),m_iFirstShownIndex);
-					i++, it++)
+					++i, ++it)
 	{
 		(*it)->Show(false);
 		(*it)->Enable(false);
@@ -171,7 +171,7 @@ void CUIListWnd::UpdateList()
 	//показать текущий список
 	for(i=m_iFirstShownIndex; 
 			i<_min(m_ItemList.size(),m_iFirstShownIndex + m_iRowNum+1);
-			i++, it++)
+			++i, ++it)
 	{
 		(*it)->SetWndRect(0, (i-m_iFirstShownIndex)* m_iItemHeight, 
 							m_iItemWidth, m_iItemHeight);
@@ -179,11 +179,11 @@ void CUIListWnd::UpdateList()
 		(*it)->Enable(true);
 	}
 
-	it--;
+	--it;
 
 	//спрятать все после
 	for(u32 k=m_iFirstShownIndex + m_iRowNum; 
-			k<m_ItemList.size(); k++, it++)
+			k<m_ItemList.size(); ++k, ++it)
 	{
 		(*it)->Show(false);
 		(*it)->Enable(false);
@@ -210,7 +210,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 									  m_ChildWndList.end(), 
 									  pWnd);
 	
-		if( it != m_ChildWndList.end() && msg == CUIListItem::BUTTON_CLICKED)
+		if( m_ChildWndList.end() != it && CUIListItem::BUTTON_CLICKED == msg)
 		{
 			GetParent()->SendMessage(this, LIST_ITEM_CLICKED, *it);
 		}
@@ -241,7 +241,7 @@ void CUIListWnd::SetItemHeight(int iItemHeight)
 
 void CUIListWnd::Reset()
 {
-	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  it != m_ItemList.end(); it++)
+	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  m_ItemList.end() != it; ++it)
 	{
 		(*it)->Reset();
 	}
@@ -255,7 +255,7 @@ void CUIListWnd::Reset()
 int CUIListWnd::FindItem(void* pData)
 {
 	int i=0;
-	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  it != m_ItemList.end(); it++,i++)
+	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  m_ItemList.end() != it; ++it,++i)
 	{
 		if((*it)->GetData()==pData) return i;
 	}
