@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 BOOL ValidateIndices(DWORD vCount, DWORD iCount, WORD* pIndices)
 {
