@@ -12,33 +12,36 @@
 
 char g_stdout[4096];
 
+extern void export_classes(lua_State *L);
+
 CScriptEngine::CScriptEngine	()
 {
-	m_virtual_machine		= 0;
-	m_virtual_machine		= lua_open();
+	m_virtual_machine	= 0;
+	m_virtual_machine	= lua_open();
 	if (!m_virtual_machine) {
-		ui().log			("ERROR : Cannot initialize script virtual machine!");
+		ui().log		("ERROR : Cannot initialize script virtual machine!");
 		return;
 	}
 	
 	// initialize lua standard library functions 
-	luaopen_base			(lua()); 
-	luaopen_table			(lua());
-	luaopen_string			(lua());
-	luaopen_math			(lua());
-#ifdef DEBUG
-	luaopen_debug			(lua());
+	luaopen_base		(lua()); 
+	luaopen_table		(lua());
+	luaopen_string		(lua());
+	luaopen_math		(lua());
+#ifdef _DEBUG
+	luaopen_debug		(lua());
 #endif
 }
 
 CScriptEngine::~CScriptEngine	()
 {
 	if (m_virtual_machine)
-		lua_close			(lua());
+		lua_close		(lua());
 }
 
 void CScriptEngine::init		()
 {
-	ui().log	("Scripting engine is initializing...");
-	ui().log	("completed\n");
+	ui().log			("Scripting engine is initializing...");
+	export_classes		(lua());
+	ui().log			("completed\n");
 }

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "script_export_space.h"
+
 class CConsoleUI {
 private:
 	FILE				*m_log;
@@ -22,4 +24,8 @@ public:
 	virtual				~CConsoleUI		();
 			int __cdecl log				(LPCSTR format, ...);
 			void		execute			(char argc, char *argv[]);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CConsoleUI)
+#undef script_type_list
+#define script_type_list save_type_list(CConsoleUI)
