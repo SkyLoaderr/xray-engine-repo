@@ -8,10 +8,13 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_default : public CBlender  
+class ENGINE_API CBlender_complex2 : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "base blender";	}
+	string64		oT_Name;
+	string64		oT_xform;
+public:
+	virtual		LPCSTR		getComment()	{ return "complex blender for 2 textures";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
@@ -19,8 +22,8 @@ public:
 	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0, BOOL bEditor=FALSE);
 
 
-	CBlender_default();
-	virtual ~CBlender_default();
+	CBlender_complex2();
+	virtual ~CBlender_complex2();
 };
 
 #endif // !defined(AFX_BLENDERDEFAULT_H__C12F64EE_43E7_4483_9AC3_29272E0401E7__INCLUDED_)

@@ -499,6 +499,14 @@ SOURCE=.\tss_def.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\Blenders\blender_complex2.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\blender_complex2.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\Blender_default_aref.cpp
 # End Source File
 # Begin Source File
