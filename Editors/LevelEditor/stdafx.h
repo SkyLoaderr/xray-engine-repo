@@ -55,7 +55,18 @@ __inline float modff(float a, float *b){
 }
 __inline float expf	(float val)                           	{ return ::exp(val);}
 
-#define ENGINE_API
+/*
+#ifdef	_ECOREB
+    #define ECORE_API		__declspec(dllexport)
+    #define ENGINE_API		__declspec(dllexport)
+#else
+    #define ECORE_API		__declspec(dllimport)
+    #define ENGINE_API		__declspec(dllimport)
+#endif
+*/
+#define ECORE_API		
+#define ENGINE_API		
+
 #define DLL_API			__declspec(dllimport)
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
 #define THROW			Debug.fatal("THROW");
@@ -130,42 +141,27 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	#include "xrXRC.h"
 
 	#include "CustomObject.h"
+	#include "EditorPreferences.h"
 #endif
 
 #ifdef _LEVEL_EDITOR
 	#include "net_utils.h"
-	#define _EDITOR_FILE_NAME_ 	"level"
-	#define _EDITOR_NAME_ 		"Level Editor"
 	#define _HAVE_RECENT_FILES
 #else
-	#ifdef _SHADER_EDITOR
-		#define _EDITOR_FILE_NAME_ 	"shader"
-		#define _EDITOR_NAME_ 		"Shader Editor"
-    #else
-		#ifdef _PARTICLE_EDITOR
-			#define _EDITOR_FILE_NAME_ 	"particle"
-			#define _EDITOR_NAME_ 		"Particle Editor"
-        #else
-			#ifdef _ACTOR_EDITOR
-				#define _EDITOR_FILE_NAME_ 	"actor"
-				#define _EDITOR_NAME_ 		"Actor Editor"
-				#define _HAVE_RECENT_FILES
-            #else
-            	#ifdef _LEVEL_OPTIONS
-					#define _EDITOR_FILE_NAME_ 	"options"
-					#define _EDITOR_NAME_ 		"Level Options"
-                #endif
-    		#endif
-		#endif
+    #ifdef _ACTOR_EDITOR
+        #define _HAVE_RECENT_FILES
     #endif
 #endif
 
-#define INI_NAME(buf) 		{buf=AnsiString(_EDITOR_FILE_NAME_)+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}
+#define INI_NAME(buf) 		{buf=AnsiString(UI->EditorName())+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}
 #define DEFINE_INI(storage)	{AnsiString buf;	INI_NAME(buf); storage->IniFileName=buf;}
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
 
 // external dependencies
+
+#pragma comment(lib,"ECoreB_static.lib")
+
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"xrSoundB.lib")
 #pragma comment(lib,"xrCDBB.lib")
