@@ -59,13 +59,13 @@ extern ECORE_API float			ps_r2_GI_refl;				// .9f
 extern ECORE_API float			ps_r2_ls_depth_scale;		// 1.0f
 extern ECORE_API float			ps_r2_ls_depth_bias;		// -0.0001f
 extern ECORE_API float			ps_r2_ls_squality;			// 1.0f
+extern ECORE_API float			ps_r2_sun_projection;		// 0.3f
 
 enum
 {
 	R2FLAG_SUN			= (1<<0),
-	R2FLAG_SKY			= (1<<1),
-	R2FLAG_AA			= (1<<2),
-	R2FLAG_PARALLAX		= (1<<3),
+	R2FLAG_SUN_FOCUS	= (1<<1),
+	R2FLAG_AA			= (1<<3),
 	R2FLAG_GI			= (1<<4),
 	R2FLAG_FASTBLOOM	= (1<<5),
 };

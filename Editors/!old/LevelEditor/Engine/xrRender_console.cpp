@@ -134,7 +134,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_squality",		&ps_r2_ls_squality,			.001f,	3.f		);
 	
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
-	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY		);
+	CMD3(CCC_Mask,		"r2_sun_focus",			&ps_r2_ls_flags,			R2FLAG_SUN_FOCUS);
+	CMD4(CCC_Float,		"r2_sun_proj",			&ps_r2_sun_projection,		.001f,	0.8f	);
 
 	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.3f,	0.7f	);
