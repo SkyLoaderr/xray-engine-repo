@@ -44,6 +44,7 @@ R2:
 	* 4*32bit	RT(s) / emissive									-	1day + emissive shaders (as need them)
 	* perspective shadow maps and all that stuff Gary talks about	-	1month...			1year :)))
 	* wallmarks :)	(?)												-	?
+	* generated bumpmaps leaks
 	* surface material:
 		- emmisive map
 		- detail-bump map
