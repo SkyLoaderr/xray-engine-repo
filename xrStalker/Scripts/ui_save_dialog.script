@@ -51,6 +51,8 @@ function save_dialog:InitControls()
 	list_rect.width  = main_rect.width - indent*2
 	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height
 	
+	local message_rect   = {x = 0, y = 0, width = 400, height = 200}	
+	
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
 	
@@ -131,6 +133,11 @@ function save_dialog:InitControls()
 	btn:SetTextY(20)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
+	-- MessageBox --
+	message_box = CUIMessageBox()
+	message_box:Init(message_rect.x, message_rect.y, message_rect.width, message_rect.height)
+	message_box:AutoCenter()
+	message_box:SetStyle(style.STYLE_OK)
 end
 
 function save_dialog:InitCallBacks()
@@ -150,6 +157,9 @@ end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+   
+   messageBox = CUIMessageBox()
+   messageBox:Init();
    
    DIK_RETURN = 28
    WINDOW_KEY_PRESSED = 6
