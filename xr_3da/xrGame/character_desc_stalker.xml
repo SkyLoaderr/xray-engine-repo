@@ -8,10 +8,8 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_novice</team>
-		
 		<class>Stalker_novice</class>
-		<community>stalker</community>
+		<community>stranger</community>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -36,10 +34,8 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_novice</team>
-		
 		<class>Stalker_novice</class>
-		<community>stalker</community>
+		<community>stranger</community>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -64,10 +60,8 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_novice</team>
-		
 		<class>Stalker_novice</class>
-		<community>stalker</community>
+		<community>stranger</community>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -92,10 +86,8 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_novice</team>
-		
 		<class>Stalker_novice</class>
-		<community>stalker</community>
+		<community>stranger</community>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -120,10 +112,8 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_novice</team>
-		
 		<class>Stalker_novice</class>
-		<community>stalker</community>
+		<community>stranger</community>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -149,8 +139,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_general</team>
-		
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
@@ -177,8 +165,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_general</team>
-		
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
@@ -205,8 +191,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_general</team>
-		
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
@@ -233,8 +217,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_general</team>
-		
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
@@ -261,8 +243,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_general</team>
-		
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
@@ -290,8 +270,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_veteran</team>
-		
 		<class>Stalker_veteran</class>
 		<community>stalker</community>
 			
@@ -318,8 +296,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_veteran</team>
-		
 		<class>Stalker_veteran</class>
 		<community>stalker</community>
 			
@@ -346,8 +322,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_veteran</team>
-		
 		<class>Stalker_veteran</class>
 		<community>stalker</community>
 		
@@ -374,8 +348,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_veteran</team>
-		
 		<class>Stalker_veteran</class>
 		<community>stalker</community>
 	
@@ -402,8 +374,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_veteran</team>
-		
 		<class>Stalker_veteran</class>
 		<community>stalker</community>
 			
@@ -432,8 +402,6 @@
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
 		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_master</team>
-
 		<class>Stalker_master</class>
 		<community>stalker</community>
 		
@@ -460,8 +428,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
 		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
-
-		<team>Stalker_master</team>
 
 		<class>Stalker_master</class>
 		<community>stalker</community>
@@ -490,8 +456,6 @@
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
 		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_master</team>
-
 		<class>Stalker_master</class>
 		<community>stalker</community>
 		
@@ -518,8 +482,6 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
 		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
-
-		<team>Stalker_master</team>
 
 		<class>Stalker_master</class>
 		<community>stalker</community>
@@ -548,11 +510,8 @@
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
 		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
 
-		<team>Stalker_master</team>
-
 		<class>Stalker_master</class>
 		<community>stalker</community>
-		
 		
 		<rank>95</rank>
 		<reputation>0</reputation>
