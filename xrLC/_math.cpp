@@ -195,6 +195,13 @@ void _initialize_cpu	(void)
 		float(CPU::cycles_per_second/u64(1000000)),
 		u32(CPU::cycles_overhead)
 		);
+
+	if (strstr(Core.Params,"-fpu"))		{
+		CPU::ID.feature	&= ~_CPU_FEATURE_3DNOW	;
+		CPU::ID.feature	&= ~_CPU_FEATURE_SSE	;
+		CPU::ID.feature	&= ~_CPU_FEATURE_SSE2	;
+	};
+
 	string128	features;	strcpy(features,"RDTSC");
     if (CPU::ID.feature&_CPU_FEATURE_MMX)	strcat(features,", MMX");
     if (CPU::ID.feature&_CPU_FEATURE_3DNOW)	strcat(features,", 3DNow!");
