@@ -476,9 +476,9 @@ void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2,
     Device.DP(D3DPT_LINELIST,LStream,vOffset,bRot45?6:3);
 }
 
-void DrawPivot(const Fvector& pos){
+void DrawPivot(const Fvector& pos, float sz){
 	Device.Shader.Set(Device.m_WireShader);
-    DrawCross(pos, 5, 5, 5, 5, 5, 5, 0xFF7FFF7F);
+    DrawCross(pos, sz, sz, sz, sz, sz, sz, 0xFF7FFF7F);
 }
 
 void DrawAxis(){

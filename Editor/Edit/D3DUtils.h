@@ -44,7 +44,7 @@ namespace DU{
     void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb);
 
     void DrawGrid	();
-    void DrawPivot	(const Fvector& pos);
+    void DrawPivot	(const Fvector& pos, float sz=5.f);
 	void DrawAxis	();
 	void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd);
 
