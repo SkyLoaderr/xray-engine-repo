@@ -104,6 +104,24 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 
 	vfAssignBones(pSettings,cNameSect());
 
+	// define animation set
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0);
+
+	// define links from Action to animations
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_RUN,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+
+
 	return TRUE;
 }
 

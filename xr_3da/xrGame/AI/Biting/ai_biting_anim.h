@@ -161,6 +161,7 @@ private:
 	// работа с анимациями атак
 	void		AA_Clear				(); 
 	void		AA_SwitchAnimation		(EMotionAnim a, u32 i3);
+
 public:
 	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);
 	void		AA_PushAttackAnim		(EMotionAnim a, u32 i3, TTime from, TTime to, Fvector &ray, 

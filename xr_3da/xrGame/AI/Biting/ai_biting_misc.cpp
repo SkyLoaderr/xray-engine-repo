@@ -22,7 +22,6 @@
 // J - A | B
 // K - C | D | E | F 
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ¬ходные воздействи€ 
 // «рение, слух, веро€тность победы, выгодность противника
@@ -40,7 +39,6 @@ void CAI_Biting::vfUpdateParameters()
 		GetSound(se,A);
 		B = !A;
 	}
-
 
 	J = A | B;
 
@@ -91,7 +89,6 @@ void CAI_Biting::vfUpdateParameters()
 			I = getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov));
 		}
 	}
-
 
 	//------------------------------------
 	// веро€тность победы
@@ -164,10 +161,5 @@ void CAI_Biting::vfUpdateParameters()
 	if (m_tEnemy.obj)
 		m_tEnemyPrevFrame = m_tEnemy;
 }
-
-
-
-
-
 
 

@@ -19,9 +19,12 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	if (g_Alive() && MotionMan.PrepareAnimation()) {
-		PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
-	}
+//	if (g_Alive() && MotionMan.PrepareAnimation()) {
+//		MotionMan.m_tpCurAnim = PKinematics(Visual())->ID_Cycle_Safe("stand_idle_0");
+//		PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+//	}
+	PKinematics(Visual())->PlayCycle(PKinematics(Visual())->ID_Cycle("stand_walk_fwd_0"),TRUE,vfPlayEndCallBack,this);
+
 }
 
 void CAI_Biting::CheckAttackHit()
@@ -172,7 +175,9 @@ bool CMotionManager::PrepareAnimation()
 	}
 
 	// установить анимацию
-	m_tpCurAnim = anim_it->second.pMotionVect[index];
+//	m_tpCurAnim = anim_it->second.pMotionVect[index];
+		
+	
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
