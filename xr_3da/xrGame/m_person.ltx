@@ -41,6 +41,17 @@ condition_sect				= trader_condition
 ; attach params
 attachable_items		= 
 
+[trader_foot_bones]
+front_left	= bip01_l_foot
+front_right	= bip01_r_foot
+
+[trader_step_manager]
+; order: left, right
+;--------------------------------------------------------------------------
+;	animation				Cycles	| time1 | power1 | time2 | power2 | 
+;--------------------------------------------------------------------------
+
+
 [m_barman]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor
@@ -128,6 +139,12 @@ eye_range					= 70;
 vision_danger_section		= stalker_vision_danger
 vision_free_section			= stalker_vision_free
 ;---------------------------------------------------------------------
+
+;---STEP MANAGER------------------------------------------------------
+step_params						= trader_step_manager
+LegsCount						= 2
+foot_bones						= trader_foot_bones
+
 min_view_distance_danger 	= 0.2				; коэффициент, который множится на eye_range, в зависимости от угла
 max_view_distance_danger 	= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
 min_view_distance_free   	= 0.1				; коэффициент, который множится на eye_range, в зависимости от угла
@@ -209,6 +226,16 @@ disp_vel_factor		 = 0.1
 disp_crouch_factor	 = 0.75
 disp_jump_factor	 = 3
 destroyed_vis_name	 = physics\Dead_Body\trupik_crash
+
+[izgoy_foot_bones]
+front_left	= bip01_l_foot
+front_right	= bip01_r_foot
+
+[izgoy_step_manager]
+; order: left, right
+;--------------------------------------------------------------------------
+;	animation				Cycles	| time1 | power1 | time2 | power2 | 
+;--------------------------------------------------------------------------
 
 
 [m_izgoy]
@@ -309,6 +336,10 @@ transparency_threshold	 	= 0.25
 ;---------------------------------------------------------------------
 ignore_monster_threshold = 0.0	;0.6	;0.8
 max_ignore_distance		 = 15.0
+;---STEP MANAGER------------------------------------------------------
+step_params						= izgoy_step_manager
+LegsCount						= 2
+foot_bones						= izgoy_foot_bones
 
 CrouchFactor             =     0.33
 WalkFactor               =     1.3	;2.15
