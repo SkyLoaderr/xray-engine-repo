@@ -27,6 +27,7 @@ public:
 		eWaitBetweenPatrol,					// ->eInitiatePatrolZone
 		eInitiateWaitBetweenPatrol,			// ->eMovingToWaitPoint
 		eMovingToWaitPoint,					// ->eWaitBetweenPatrol
+		eInitiateGoToPoint,					// ->eMovingByPatrolZonePath
 		eDead
 	}; 
 protected:
@@ -153,4 +154,5 @@ public:
 	bool					useMGun				()const				{return m_use_mgun_on_attack;};
 	void					gotoStayPoint		(float time=0.0f, Fvector* pos = 0);
 	void					goPatrol			(float time=0.0f);
+	void					goToPoint			(Fvector* to, Fvector* via, float time);
 };

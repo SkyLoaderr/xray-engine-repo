@@ -52,6 +52,8 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	addHuntPath				(float from_time, const Fvector& enemyPos);
 	void	addHuntPath2			(float from_time, const Fvector& enemyPos);
 	void	addPathToStayPoint		(float from_time);
+	void	addGoToPointPath		(float from_time);
+
 	void	getPathAltitude			(Fvector& point, float base_altitude);
 	void	truncatePathSafe		(float from_time, float& safe_time, Fvector& lastPoint);
 
@@ -81,5 +83,9 @@ public:
 	float							m_baseAttackSpeed;
 	float							m_hunt_dist;
 	float							m_hunt_time;
+	Fvector							m_to_point;//tmp, fix it
+	Fvector							m_via_point;//tmp, fix it
+	float							m_wait_in_point;//tmp, fix it
+
 
 };

@@ -56,6 +56,10 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 		str = "eMovingToWaitPoint";
 		break;
 
+	case CHelicopter::eInitiateGoToPoint:
+		str = "eInitiateGoToPoint";
+		break;
+
 	case CHelicopter::eDead:
 		str = "eDead";
 		break;
@@ -487,4 +491,13 @@ void CHelicopter::goPatrol(float time)
 		m_movMngr.m_time_patrol_period = time;
 
 	setState(CHelicopter::eInitiatePatrolZone);
+}
+
+void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
+{
+	m_movMngr.m_to_point = *to;
+	m_movMngr.m_via_point = *via;
+	m_movMngr.m_wait_in_point = time;
+
+	setState(CHelicopter::eInitiateGoToPoint);
 }

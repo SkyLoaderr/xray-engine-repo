@@ -135,6 +135,12 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 		if(lt >= m_time_delay_before_start)
 			heli->setState(CHelicopter::eInitiatePatrolZone);
 	};
+	
+	if (heli->state() == CHelicopter::eInitiateGoToPoint) {
+		addGoToPointPath(lt);
+		m_time_last_patrol_start = lt;
+		heli->setState(CHelicopter::eMovingByPatrolZonePath);
+	};
 
 	if (heli->state() == CHelicopter::eInitiatePatrolZone) {
 		addPartolPath(lt);
@@ -218,7 +224,10 @@ void CHelicopterMovManager::truncatePathSafe(float from_time,
 
 	Fvector fromRot;
 
-	CHelicopterMotion::_Evaluate(safe_time, lastPoint, fromRot);
+	if( CHelicopterMotion::KeyCount() )
+		CHelicopterMotion::_Evaluate(safe_time, lastPoint, fromRot);
+	else
+		lastPoint = m_XFORM.c;
 
 }
 
@@ -304,12 +313,6 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 
 void CHelicopterMovManager::createRocking(const Fvector& fromPos, const Fvector& dir, xr_vector<Fvector>& keys )
 {
-/*	Fvector p;
-	p.mad(fromPos,dir,1.0f);
-	keys.push_back(fromPos);
-	keys.push_back(p);
-*/
-
 	Fvector p;
 	Fvector r_dir;
 	keys.push_back(fromPos);
@@ -382,6 +385,35 @@ void CHelicopterMovManager::addPathToStayPoint (float from_time)
 	fixateKeyPath(safe_time);
 //	CHelicopterMotion::NormalizeKeys(safe_time,m_endTime,m_basePatrolSpeed);
 	updatePathHPB(safe_time);
+}
+
+void CHelicopterMovManager::addGoToPointPath(float from_time)
+{
+	Fvector fromPos;
+	float safe_time;
+
+	truncatePathSafe(from_time, safe_time, fromPos);
+
+	xr_vector<Fvector> vAddedKeys;
+
+	createHuntPathTrajectory(from_time, fromPos, m_via_point, vAddedKeys);
+	getPathAltitude(m_to_point,m_baseAltitude);
+	vAddedKeys.push_back(m_to_point);
+	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false);
+	fixateKeyPath(safe_time);
+
+	Fvector dstPos;
+	dstPos = vAddedKeys.back();
+
+	Fvector T,R, dir;
+	CHelicopterMotion::_Evaluate(m_endTime-0.1f,T,R);
+	dir.sub(dstPos,T).normalize_safe();
+
+	vAddedKeys.clear();
+	createRocking(dstPos, dir, vAddedKeys);
+	insertKeyPoints(m_endTime, vAddedKeys, 1.0f/m_wait_in_point, false);
+	updatePathHPB(safe_time);
+
 }
 
 void CHelicopterMovManager::createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys)
