@@ -93,7 +93,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 		m_level_spawns.push_back		(xr_new<CLevelSpawnConstructor>(level,this));
 	}
 
-	R_ASSERT2							(!m_level_spawns.empty(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
+	R_ASSERT2							(!m_level_spawns.empty(),"There are no valid levels (with AI-map and graph) in the section 'levels' in the 'game.ltx' to build spawn file from!");
 }
 
 void CGameSpawnConstructor::process_spawns	()
