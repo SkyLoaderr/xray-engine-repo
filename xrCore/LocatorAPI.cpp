@@ -461,53 +461,55 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		// Normal file, 100% full path - check cache
 		// Release don't need this at all
 #ifdef	DEBUG
-		string_path	fname_copy;
-		if (pathes.size()>1)
-		{
-			LPCSTR		path_base		= get_path	("$server_root$")->m_Path;
-			u32			len_base		= xr_strlen	(path_base);
-			LPCSTR		path_file		= fname;
-			u32			len_file		= xr_strlen	(path_file);
-			if (len_file>len_base)		
+		if (!m_Flags.is(flBuildCopy)){
+			string_path	fname_copy;
+			if (pathes.size()>1)
 			{
-				if (0==memcmp(path_base,fname,len_base))	{
-					BOOL		bCopy	= FALSE;
+				LPCSTR		path_base		= get_path	("$server_root$")->m_Path;
+				u32			len_base		= xr_strlen	(path_base);
+				LPCSTR		path_file		= fname;
+				u32			len_file		= xr_strlen	(path_file);
+				if (len_file>len_base)		
+				{
+					if (0==memcmp(path_base,fname,len_base))	{
+						BOOL		bCopy	= FALSE;
 
-					string_path	fname_in_cache	;
-					update_path	(fname_in_cache,"$cache$",path_file+len_base);
-					files_it	fit	= file_find(fname_in_cache);
-					if (fit!=files.end())	
-					{
-						// use
-						file&	fc	= *fit;
-						if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
+						string_path	fname_in_cache	;
+						update_path	(fname_in_cache,"$cache$",path_file+len_base);
+						files_it	fit	= file_find(fname_in_cache);
+						if (fit!=files.end())	
+						{
 							// use
+							file&	fc	= *fit;
+							if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
+								// use
+							} else {
+								// copy & use
+								bCopy	= TRUE;
+							}
 						} else {
 							// copy & use
 							bCopy	= TRUE;
 						}
-					} else {
-						// copy & use
-						bCopy	= TRUE;
-					}
 
-					// copy if need
-					if (bCopy)			
-					{
-						IReader*	_src;
-						if (desc.size_real<256*1024)	_src = xr_new<CFileReader>			(fname);
-						else							_src = xr_new<CVirtualFileReader>	(fname);
-						IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
-						_dst->w				(_src->pointer(),_src->length());
-						xr_delete			(_dst);
-						xr_delete			(_src);
-						set_file_age		(fname_in_cache,desc.modif);
-					}
+						// copy if need
+						if (bCopy)			
+						{
+							IReader*	_src;
+							if (desc.size_real<256*1024)	_src = xr_new<CFileReader>			(fname);
+							else							_src = xr_new<CVirtualFileReader>	(fname);
+							IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
+							_dst->w				(_src->pointer(),_src->length());
+							xr_delete			(_dst);
+							xr_delete			(_src);
+							set_file_age		(fname_in_cache,desc.modif);
+						}
 
-					// Use
-					source_name	= &fname_copy[0];
-					strcpy		(fname_copy,fname);
-					strcpy		(fname,fname_in_cache);
+						// Use
+						source_name	= &fname_copy[0];
+						strcpy		(fname_copy,fname);
+						strcpy		(fname,fname_in_cache);
+					}
 				}
 			}
 		}
