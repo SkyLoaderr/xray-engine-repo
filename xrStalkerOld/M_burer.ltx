@@ -246,7 +246,7 @@ Tele_Object_Max_Mass	 = 1000.0
 Tele_Find_Radius		 = 7.0
 
 ; Scanner
-scan_critical_value		= 35.0	; граничное значение 
+scan_critical_value		= 15.0	; граничное значение 
 scan_radius				= 50.0  ; радиус сканирования
 scan_velocity_threshold	= 4.0	; граничная скорость, до которой движение актера игнорируется
 scan_decrease_value		= 0.3	; уменьшение текущей суммы в секунду
@@ -276,16 +276,16 @@ bip01_neck 				= 0.2, -1, 0.1
 bip01_head 				= 1.0, -1, 0.50
 
 [m_burer_scan_effector]
-duality_h			= 0.1; 0.01 
-duality_v			= 0.01; 0.01
-blur				= 0.01
+duality_h			= 0.007; 0.01 
+duality_v			= 0.005; 0.01
+blur				= 0.04
 gray				= 0.5
-noise_intensity		= 0.1;0.0
-noise_grain			= 1
-noise_fps			= 30
-color_base			= 0.15,0.15,0.1
+noise_intensity		= 0.1
+noise_grain			= 0.5
+noise_fps			= 50
+color_base			= 0.14,0.1,0.12
 color_gray			= 0.333,0.333,0.333
 color_add			= 0.0,0.0,0.0
-time				= 3.00
-time_attack			= 0.45		; fade in
-time_release		= 0.55		; fade out
+time				= 4.00
+time_attack			= 0.25		; fade in
+time_release		= 0.35		; fade out
