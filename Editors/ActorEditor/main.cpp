@@ -21,22 +21,24 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
 // forms
-    fraBottomBar	= xr_new<TfraBottomBar>((TComponent*)0);
-    fraTopBar   	= xr_new<TfraTopBar>((TComponent*)0);
-    fraLeftBar  	= xr_new<TfraLeftBar>((TComponent*)0);
+    fraBottomBar	= xr_new<TfraBottomBar>	((TComponent*)0);
+    fraTopBar   	= xr_new<TfraTopBar>	((TComponent*)0);
+    fraLeftBar  	= xr_new<TfraLeftBar>	((TComponent*)0);
 //-
 
 	fraBottomBar->Parent    = paBottomBar;
 	fraTopBar->Parent       = paTopBar;
 	fraLeftBar->Parent      = paLeftBar;
 	if (paLeftBar->Tag > 0) paLeftBar->Parent = paTopBar;
-	else paLeftBar->Parent = frmMain;
+	else paLeftBar->Parent 	= frmMain;
 
 	Device.SetHandle		(Handle,D3DWindow->Handle);
     if (!UI->Command(COMMAND_INITIALIZE,(int)D3DWindow,(int)paRender)){ 
     	FlushLog			();
     	TerminateProcess(GetCurrentProcess(),-1);
     }
+
+	Application->OnMinimize 	= OnMinimized;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
@@ -88,6 +90,12 @@ void __fastcall TfrmMain::sbToolsMinClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::OnMinimized(TObject *Sender)
+{
+	WindowState = wsMinimized;
+}
+
 void __fastcall TfrmMain::TopClick(TObject *Sender)
 {
     if (paLeftBar->Tag > 0){

@@ -9,9 +9,9 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = xrCoreB.dll xrCDBB.dll xrParticlesB.dll xrSoundB.dll \
+PROJECTS = xrCoreB.dll xrCDBB.dll xrParticlesB.dll xrSoundB.dll xrEPropsB.dll \
   ECoreB_static.lib ActorEditor.exe LevelEditor.exe ParticleEditor.exe \
-  ShaderEditor.exe xrEPropsB.dll
+  ShaderEditor.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------

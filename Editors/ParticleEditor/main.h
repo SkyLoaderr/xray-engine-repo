@@ -69,6 +69,7 @@ private:	// User declarations
 	TShiftState	ShiftKey;
     HINSTANCE 	m_HInstance;
 
+	void __fastcall OnMinimized(TObject *Sender);
 public:		// User declarations
     __fastcall 		TfrmMain(TComponent* Owner);
     void __fastcall UpdateCaption();

@@ -16,6 +16,8 @@ USEFORM("main.cpp", 		frmMain		);
 USEFORM("TopBar.cpp", 		fraTopBar	); /* TFrame: File Type */
 USEFORM("BottomBar.cpp", 	fraBottomBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
+#pragma comment(lib,"xrEPropsB.lib")
+
 WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
@@ -27,6 +29,7 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
     	Core._initialize		("actor",ELogCallback);
 
         Application->Initialize	();
+        Application->Icon		= frmSplash->Icon;
                                        
         frmSplash->SetStatus	("Loading...");
 
@@ -42,7 +45,7 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 		frmMain->SetHInst		(hInst);
 
 		xr_delete				(frmSplash);
-        
+
 		Application->Run		();
 
         TfrmLog::DestroyLog		(); 
