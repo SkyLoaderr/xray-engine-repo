@@ -133,11 +133,12 @@ BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 		smart_cast<CKinematics*>			(Visual())->CalculateBones_Invalidate	();
 		smart_cast<CKinematics*>			(Visual())->CalculateBones();
 	}
+
 	if(lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic)&&!Visual())
 		Msg("! WARNING: lamp, obj name [%s],flag physics set, but has no visual",*cName());
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic)&&Visual()&&
 		!guid_physic_bone)	fHealth=0.f;
-
+	if(guid_physic_bone&&guid_physic_bone->isFixed())guid_physic_bone=0;
 	if (Alive())			TurnOn	();
 	else					{
 		processing_activate		();	// temporal enable
@@ -348,6 +349,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	//	pKinematics->CalculateBones();
 	//}
 //. Kostya!!!
+	//if(guid_physic_bone&&guid_physic_bone->isFixed())guid_physic_bone=0;
 	if (guid_physic_bone){
 		static xr_vector<Fmatrix> binds;
 		binds.clear();
