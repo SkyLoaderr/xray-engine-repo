@@ -8,7 +8,7 @@ void __stdcall  hemi_callback	(float x, float y, float z, float E, LPVOID P)
 	R_Light*	T				= (R_Light*)P;
 	T->energy					= E;
 	T->direction.set			(x,y,z);
-	T->diffuse.set				(E,E,E,E);
+	T->diffuse.set				(1,1,1,1);
 	pBuild->L_hemi.push_back	(*T);
 }
 
@@ -51,9 +51,9 @@ public:
 			Fcolor			C;
 			C.set			(0,0,0,0);
 			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, Lights.begin(), Lights.end(), 0);
-			//V->Color.set	(C);
-			//V->Color.a		= 1.f;
-			V->Color.set	(.7f,.7f,.7f,.7f);
+			V->Color.set	(C);
+			V->Color.a		= 1.f;
+			//V->Color.set	(.7f,.7f,.7f,.7f);
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}
