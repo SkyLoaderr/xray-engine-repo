@@ -359,8 +359,8 @@ public:
 	xrGraphPoint();
 	string32				m_caConnectionPointName;
 	u32						m_tLevelID;
-	u32						m_tTerrainID;
-	u32						m_tTerrainSubID;
+	u32						m_tLocBaseID;
+	u32						m_tLocAuxID;
 xrSE_DECLARE_END
 
 // 

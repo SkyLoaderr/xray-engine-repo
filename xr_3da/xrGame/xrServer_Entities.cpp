@@ -1037,32 +1037,32 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 #ifdef _EDITOR
-	static TokenValue4::ItemVec terrain_ids;
-	static TokenValue4::ItemVec terrain_sub_ids;
+	static TokenValue4::ItemVec loc_base_ids;
+	static TokenValue4::ItemVec loc_aux_ids;
 	static TokenValue4::ItemVec	level_ids;
 #endif
 
 xrGraphPoint::xrGraphPoint() {
 	m_caConnectionPointName[0]	= 0;
 	m_tLevelID					= 0;
-	m_tTerrainID				= 0;
-	m_tTerrainSubID				= 0;
+	m_tLocBaseID				= 0;
+	m_tLocAuxID					= 0;
 }
 
 void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 {
 	P.r_string	(m_caConnectionPointName);
 	P.r_u32		(m_tLevelID);
-	P.r_u32		(m_tTerrainID);
-	P.r_u32		(m_tTerrainSubID);
+	P.r_u32		(m_tLocBaseID);
+	P.r_u32		(m_tLocAuxID);
 };
 
 void xrGraphPoint::STATE_Write		(NET_Packet& P)
 {
 	P.w_string	(m_caConnectionPointName);
 	P.w_u32		(m_tLevelID);
-	P.w_u32		(m_tTerrainID);
-	P.w_u32		(m_tTerrainSubID);
+	P.w_u32		(m_tLocBaseID);
+	P.w_u32		(m_tLocAuxID);
 };
 void xrGraphPoint::UPDATE_Read		(NET_Packet& P)
 {
@@ -1074,54 +1074,49 @@ void xrGraphPoint::UPDATE_Write		(NET_Packet& P)
 #ifdef _EDITOR              
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-    CInifile					*Ini = 0;
-    if(terrain_ids.empty()){
-        if (!Ini)
-			Ini						= xr_new<CInifile>("game.ltx");
-		R_ASSERT					(Ini->SectionExists("terrain_ids"));
+    CInifile *Ini 					= 0;
+    if(loc_base_ids.empty()||loc_aux_ids.empty()||level_ids.empty())
+        Ini							= xr_new<CInifile>("gamedata\\game.ltx");
+    if(loc_base_ids.empty()){
+		R_ASSERT					(Ini->SectionExists("location_base"));
         LPCSTR N,V;
-        for (u32 k = 0; Ini->ReadLINE("terrain_ids",k,&N,&V); k++) {
-   			terrain_ids.push_back	(TokenValue4::Item());
-            TokenValue4::Item& val	= terrain_ids.back();
+        for (u32 k = 0; Ini->ReadLINE("location_base",k,&N,&V); k++) {
+   			loc_base_ids.push_back	(TokenValue4::Item());
+            TokenValue4::Item& val	= loc_base_ids.back();
             val.str					= V;
             val.ID					= atoi(N);
         }
     }
     
-	if(terrain_sub_ids.empty()){
-        if (!Ini)
-			Ini						= xr_new<CInifile>("game.ltx");
-        R_ASSERT					(Ini->SectionExists("terrain_sub_ids"));
+	if(loc_aux_ids.empty()){
+        R_ASSERT					(Ini->SectionExists("location_aux"));
         LPCSTR N,V;
-        for (u32 k = 0; Ini->ReadLINE("terrain_sub_ids",k,&N,&V); k++) {
-   			terrain_sub_ids.push_back	(TokenValue4::Item());
-            TokenValue4::Item& val	= terrain_sub_ids.back();
+        for (u32 k = 0; Ini->ReadLINE("location_aux",k,&N,&V); k++) {
+   			loc_aux_ids.push_back	(TokenValue4::Item());
+            TokenValue4::Item& val	= loc_aux_ids.back();
             val.str					= V;
             val.ID					= atoi(N);
         }
     }
     
 	if(level_ids.empty()){
-        if (!Ini)
-			Ini						= xr_new<CInifile>("game.ltx");
 		R_ASSERT					(Ini->SectionExists("levels"));
         LPCSTR N,V;
         for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
 			R_ASSERT(Ini->SectionExists(V));
    			level_ids.push_back		(TokenValue4::Item());
             TokenValue4::Item& val	= level_ids.back();
-			LPCSTR					S = Ini->ReadSTRING			(V,"caption")
+			LPCSTR					S = Ini->ReadSTRING			(V,"caption");
 			val.str					= S;
             val.ID					= Ini->ReadINT(V,"id");
         }
     }
-    if (Ini)
-		xr_delete(Ini);
+    if (Ini)	xr_delete(Ini);
 	
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainIDs"),				&m_tTerrainID,			&terrain_ids);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"TerrainSubID"),				&m_tTerrainSubID,		&terrain_sub_ids);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Connection\\LevelID"),		&m_tLevelID,			&level_ids);
-	PHelper.CreateText		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\PointName"),	m_caConnectionPointName,sizeof(m_caConnectionPointName));
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\Base"),			&m_tLocBaseID,			&loc_base_ids);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\Auxilary"),		&m_tLocAuxID,			&loc_aux_ids);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	&m_tLevelID,			&level_ids);
+	PHelper.CreateText		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,sizeof(m_caConnectionPointName));
 }
 #endif
 
