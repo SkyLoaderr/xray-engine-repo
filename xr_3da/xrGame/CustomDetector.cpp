@@ -321,7 +321,7 @@ void CCustomDetector::UpdateNightVisionMode()
 				m_pCurrentActor &&
 				m_pCurrentActor==Level().CurrentViewEntity()&& 
 				IsWorking() && 
-				xr_strlen(*m_nightvision_particle)!=0;
+				m_nightvision_particle.size();
 
 	ZONE_INFO_MAP_IT it;
 	for(it = m_ZoneInfoMap.begin(); m_ZoneInfoMap.end() != it; ++it) 
