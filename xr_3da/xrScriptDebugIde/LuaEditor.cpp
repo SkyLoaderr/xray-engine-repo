@@ -91,7 +91,6 @@ int CLuaEditor::Sci(int nCmd, int wParam, int lParam)
 	return m_fnScintilla(m_ptrScintilla, nCmd, wParam, lParam);
 }
 
-
 int CLuaEditor::LineFromPoint(CPoint &pt)
 {
 	return 1+Sci(SCI_LINEFROMPOSITION, Sci(SCI_POSITIONFROMPOINT, pt.x, pt.y), 0);
