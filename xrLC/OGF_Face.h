@@ -65,7 +65,6 @@ struct OGF;
 struct OGF_Base
 {
 	int					iLevel;
-	BOOL				isPatch;
 	WORD				Sector;
 	BOOL				bConnected;
 
@@ -77,7 +76,6 @@ struct OGF_Base
 		bbox.invalidate	();
 		iLevel			= _Level;
 		bConnected		= FALSE;
-		isPatch			= FALSE;
 		Sector			= 0xffff;
 	}
 
@@ -134,8 +132,7 @@ struct OGF : public OGF_Base
 {
 	DWORD				treeID;
 
-	DWORD				shader;
-	Shader_xrLC*		shader_xrlc;
+	DWORD				material;
 	vecOGF_T			textures;
 	vecOGF_V			vertices, vertices_saved;
 	vecOGF_F			faces,    faces_saved;
@@ -202,6 +199,8 @@ struct OGF_Node : public OGF_Base
 
 struct	OGF_LOD		: public OGF_Node
 {
+	OGF_LOD(int _L, WORD _Sector) : OGF_Node(_L,_Sector) {};
+
 	struct _vertex
 	{
 		Fvector		v;

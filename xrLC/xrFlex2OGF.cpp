@@ -28,11 +28,12 @@ void CBuild::Flex2OGF()
 		try {
 			// Common data
 			pOGF->Sector		= M->sector;
+			pOGF->material		= F->dwMaterial;
 			
 			// Collect textures
 			OGF_Texture			T;
-			pOGF->shader		= M->shader;
-			pOGF->shader_xrlc	= &F->Shader();
+			//pOGF->shader		= M->shader;
+			//pOGF->shader_xrlc	= &F->Shader();
 			
 			TRY(strcpy(T.name,textures[M->surfidx].name));
 			TRY(T.pSurface = &(textures[M->surfidx]));

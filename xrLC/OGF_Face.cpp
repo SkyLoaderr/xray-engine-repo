@@ -71,7 +71,8 @@ void OGF::Optimize()
 	dwRelevantUVMASK	= 0;
 	for (DWORD t=0; t<dwRelevantUV; t++) dwRelevantUVMASK |= 1<<t;
 
-	if (!shader_xrlc->flags.bOptimizeUV)	return;
+	Shader_xrLC*	SH	= pBuild->shaders.Get(pBuild->materials[material].reserved);
+	if (!SH->flags.bOptimizeUV)		return;
 
 	// Optimize texture coordinates
 	// 1. Calc bounds

@@ -28,7 +28,7 @@ void OGF::Save(CFS_Base &fs)
 		Tname += fname;
 	}
 	fs.Wdword			(RegisterString(Tname));
-	fs.Wdword			(RegisterString(string(pBuild->shader_render[shader].name)));
+	fs.Wdword			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
 	fs.close_chunk		();
 
 	// BBox (already computed)
@@ -43,7 +43,8 @@ void OGF::Save(CFS_Base &fs)
 	fs.close_chunk		();
 
 	// Vertices
-	bool bVertexColors	=	(shader_xrlc->flags.bLIGHT_Vertex);
+	Shader_xrLC*	SH	= pBuild->shaders.Get(pBuild->materials[material].reserved);
+	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
 	bool bNeedLighting	=	FALSE;
 	DWORD	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
 							(bVertexColors?D3DFVF_DIFFUSE:0) |

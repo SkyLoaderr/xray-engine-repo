@@ -47,13 +47,12 @@ void CSector::BuildHierrarhy()
 	delimiter = _max(scene_size.x,_max(scene_size.y,scene_size.z));
 	delimiter *= 2;
 
-	int		iLevel = 1;
+	int		iLevel = 2;
 	float	SizeLimit = g_params.m_SS_maxsize/4.f;
 	if		(SizeLimit<4.f) SizeLimit=4.f;
 	for (; SizeLimit<=delimiter; SizeLimit*=2)
 	{
 		int iSize			= g_tree.size();
-//		Status("Level #%d",iLevel);
 
 		for (int I=0; I<iSize; I++)
 		{
