@@ -216,28 +216,37 @@ end
 
 function save_dialog:OnMsgOk()
 	local msg_box = self:GetMessageBox("message_box")
+	local main_frame = self:GetFrameWindow("main_frame")
+	main_frame:Enable(true)
 	msg_box:Hide()
 end
 
 function save_dialog:OnMsgCancel()
 	local msg_box = self:GetMessageBox("message_box")
+	local main_frame = self:GetFrameWindow("main_frame")
+	main_frame:Enable(true)
 	msg_box:Hide()
 end
 
 function save_dialog:OnMsgYes()
 	local msg_box = self:GetMessageBox("message_box")
+	local main_frame = self:GetFrameWindow("main_frame")
+	main_frame:Enable(true)
 	msg_box:Hide()
 	self:SaveFile(self.new_save)
 end
 
 function save_dialog:OnMsgNo()
 	local msg_box = self:GetMessageBox("message_box")
+	local main_frame = self:GetFrameWindow("main_frame")
+	main_frame:Enable(true)
 	msg_box:Hide()
 end
 
 function save_dialog:OnButton_ok_clicked()
 	-- prepare message box
 	local message_box = self:GetMessageBox("message_box")
+	local main_frame = self:GetFrameWindow("main_frame")	
 	
 	-- Get file name
 	local edit_box = self:GetEditBox("edit_filename")
@@ -260,6 +269,7 @@ function save_dialog:OnButton_ok_clicked()
 		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
 		message_box:SetText("The file with this name already exist. Do you want to overwrite it?")
 		message_box:Show()
+		main_frame:Enable(false)
 		flist:Free()	
 		return
 	end
