@@ -6,16 +6,15 @@
 #define AFX_HOM_H__94471B51_E215_4C67_B753_B02F66D79911__INCLUDED_
 #pragma once
 
-class ENGINE_API CHOM_Triangle;
-class ENGINE_API CHOM_Node;
+class ENGINE_API occTri;
 
 class ENGINE_API CHOM  
 {
 private:
-	vector<CHOM_Triangle*>	m_pTris;
-	vector<CHOM_Node*>		m_pNodes;
+	CDB::MODEL*				m_pModel;
+	occTri*					m_pTris;
 public:
-	void					Load	(CStream* S);
+	void					Load	();
 
 	CHOM();
 	~CHOM();
