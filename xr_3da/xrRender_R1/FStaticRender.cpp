@@ -563,13 +563,13 @@ IC	bool	cmp_codes			(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNorma
 IC	bool	cmp_matrices		(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::mapNormalMatrices::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
+IC	bool	cmp_constants		(SceneGraph::mapNormalCS::TNode* N1, SceneGraph::mapNormalCS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
 IC	bool	cmp_vs				(SceneGraph::mapNormalVS::TNode* N1, SceneGraph::mapNormalVS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_cs				(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
+IC	bool	cmp_cs				(SceneGraph::mapNormalCS::TNode* N1, SceneGraph::mapNormalCS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
 IC	bool	cmp_vb				(SceneGraph::mapNormalVB::TNode* N1, SceneGraph::mapNormalVB::TNode* N2)
@@ -718,11 +718,11 @@ void	CRender::Render		()
 					SceneGraph::mapNormalVS::TNode*		Nvs		= lstVS[vs_id];
 					RCache.set_VS						(Nvs->key);	
 				
-					SceneGraph::mapNormalConstants&	cs			= Nvs->val;		cs.ssa	= 0;
+					SceneGraph::mapNormalCS&	cs			= Nvs->val;		cs.ssa	= 0;
 					cs.getANY_P		(lstCS);	if (sort)		std::sort	(lstCS.begin(),lstCS.end(),cmp_cs);
 					for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
 					{
-						SceneGraph::mapNormalConstants::TNode*	Ncs	= lstCS[cs_id];
+						SceneGraph::mapNormalCS::TNode*	Ncs	= lstCS[cs_id];
 						RCache.set_xform_world					(Fidentity);
 						RCache.set_Constants					(Ncs->key);
 						

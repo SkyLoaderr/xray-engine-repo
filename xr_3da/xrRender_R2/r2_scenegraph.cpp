@@ -50,7 +50,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		N->val.vCenter.set		(Center);
 	} else {
 		// Normal
-		SPass&									pass	= *sh->Passes.front();
+		SPass&						pass	= *sh->Passes.front();
 		mapMatrix_T&				map		= mapMatrix;
 		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
 		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
@@ -80,17 +80,17 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 
 		if (SSA<r_ssaDONTSORT)	
 		{
-			item.unsorted.push_back	(_MatrixItem());
+			item.unsorted.push_back			(_MatrixItem());
 			item.unsorted.back().pVisual	= pVisual;
 			item.unsorted.back().Matrix		= *val_pTransform;
 			item.unsorted.back().vCenter.set(Center);
 		}
 		else					
 		{
-			FixedMAP<float,_MatrixItem>::TNode*	N		= item.sorted.insertInAnyWay	(distSQ);
-			N->val.pVisual					= pVisual;
-			N->val.Matrix					= *val_pTransform;
-			N->val.vCenter.set				(Center);
+			FixedMAP<float,_MatrixItem>::TNode*	N	= item.sorted.insertInAnyWay	(distSQ);
+			N->val.pVisual							= pVisual;
+			N->val.Matrix							= *val_pTransform;
+			N->val.vCenter.set						(Center);
 		}
 	}
 }

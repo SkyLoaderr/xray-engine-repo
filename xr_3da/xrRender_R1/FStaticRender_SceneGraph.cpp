@@ -88,8 +88,9 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
 				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state->state);
 				SceneGraph::mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs->vs);
-				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nvs->val.insert	(pass.constants._get());
-				SceneGraph::mapNormalTextures::TNode*	Ntex	= Nconst->val.insert(pass.T._get());
+				SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+				SceneGraph::mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+				SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncs->val.insert	(pass.T._get());
 				SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M._get());
 				SceneGraph::mapNormalItems&				item	= Nmat->val;
@@ -104,11 +105,14 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 							Nvb->val.ssa = SSA;
 							if (SSA>Ntex->val.ssa) {
 								Ntex->val.ssa = SSA;
-								if (SSA>Nconst->val.ssa) {
-									Nconst->val.ssa = SSA;
-									if (SSA>Nvs->val.ssa)	{
-										Nvs->val.ssa = SSA; 
-										if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
+								if (SSA>Ncs->val.ssa) {
+									Ncs->val.ssa = SSA;
+									if (SSA>Nps->val.ssa)	{
+										Nps->val.ssa = SSA; 
+										if (SSA>Nvs->val.ssa)	{
+											Nvs->val.ssa = SSA; 
+											if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
+										}
 									}
 								}
 							}

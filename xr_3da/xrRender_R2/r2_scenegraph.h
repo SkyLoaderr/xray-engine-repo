@@ -7,18 +7,18 @@ namespace SceneGraph
 	// Low level
 	struct _MatrixItem	{
 		IRender_Visual*		pVisual;
-		Fmatrix			Matrix;				// matrix (copy)
-		Fvector3		vCenter;
+		Fmatrix				Matrix;				// matrix (copy)
+		Fvector3			vCenter;
 	};
 	struct _LodItem		{
-		float			ssa;
+		float				ssa;
 		IRender_Visual*		pVisual;
 	};
 
 	// Higher level	- NORMAL
 	struct	mapNormalDirect
 	{
-		FixedMAP<float,IRender_Visual*>			sorted;
+		FixedMAP<float,IRender_Visual*>		sorted;
 		xr_vector<IRender_Visual*>			unsorted;
 	};
 	struct	mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};

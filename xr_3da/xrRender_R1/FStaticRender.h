@@ -35,7 +35,8 @@ public:
 	xr_vector<int>											vecGroups;
 	xr_vector<SceneGraph::mapNormalCodes::TNode*>			lstCodes;
 	xr_vector<SceneGraph::mapNormalVS::TNode*>				lstVS;
-	xr_vector<SceneGraph::mapNormalConstants::TNode*>		lstCS;
+	xr_vector<SceneGraph::mapNormalPS::TNode*>				lstPS;
+	xr_vector<SceneGraph::mapNormalCS::TNode*>				lstCS;
 	xr_vector<SceneGraph::mapNormalTextures::TNode*>		lstTextures;
 	xr_vector<SceneGraph::mapNormalTextures::TNode*>		lstTexturesTemp;
 	xr_vector<SceneGraph::mapNormalVB::TNode*>				lstVB;
