@@ -141,9 +141,9 @@ void	light::vis_prepare			()
 	}
 
 	// testing
-	RImplementation.occq_begin	(vis.query_id);
-	RImplementation.Target.
-	RImplementation.occq_end	(vis.query_id);
+	RImplementation.occq_begin			(vis.query_id);
+	RImplementation.Target.draw_volume	(this);
+	RImplementation.occq_end			(vis.query_id);
 }
 
 void	light::vis_update			()
