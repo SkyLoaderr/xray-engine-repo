@@ -50,11 +50,11 @@ protected:
 
 template <class T>
 CUIInteractiveBackground<T>::CUIInteractiveBackground(){
-	this->m_stateCurrent     = NULL;
-	this->m_stateEnabled     = NULL;
-	this->m_stateDisabled    = NULL;
-	this->m_stateHighlighted = NULL;
-	this->m_stateTouched     = NULL;	
+	m_stateCurrent     = NULL;
+	m_stateEnabled     = NULL;
+	m_stateDisabled    = NULL;
+	m_stateHighlighted = NULL;
+	m_stateTouched     = NULL;	
 }
 
 template <class T>
@@ -159,6 +159,5 @@ void CUIInteractiveBackground<T>::Draw(){
         m_stateCurrent->Draw();
 }
 
-typedef CUIInteractiveBackground<CUIStatic> CUI_IB_Static;
 typedef CUIInteractiveBackground<CUIFrameWindow> CUI_IB_FrameWindow;
 typedef CUIInteractiveBackground<CUIFrameLineWnd> CUI_IB_FrameLineWnd;
