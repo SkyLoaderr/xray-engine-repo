@@ -115,9 +115,9 @@ void FTreeVisual::Render	(float LOD)
 
 #pragma todo("5color scale/bias")
 	// setup constants
-	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);	// consts/scale
-	RCache.set_c			(c_wave,	tvs.wave);					// wave
-	RCache.set_c			(c_wind,	tvs.wind);					// wind
+	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);						// consts/scale
+	RCache.set_c			(c_wave,	tvs.wave);										// wave
+	RCache.set_c			(c_wind,	tvs.wind);										// wind
 	RCache.set_c			(c_c_scale,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,1);	// scale
 	RCache.set_c			(c_c_bias,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,1);		// bias
 
