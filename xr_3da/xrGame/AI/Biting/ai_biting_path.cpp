@@ -232,8 +232,11 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 
 	INIT_SQUAD_AND_LEADER;
 
-	if (tpNodeEvaluator)
+	if (tpNodeEvaluator) {
 		vfInitSelector			(*tpNodeEvaluator,Squad);
+		if (!tpNodeEvaluator->m_tEnemy) return;
+	}
+
 
 	Fvector tempV;
 

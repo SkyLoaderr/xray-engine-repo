@@ -100,79 +100,6 @@ float CAI_Biting::CorpHeuristics(CEntity* E)
 		return flt_max;
 }
 
-// Возвращает true - если необходимо нанести Hit
-bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat) 
-{
-	// Если actor
-	CActor *pA = dynamic_cast<CActor *>(obj);
-	if (pA) {
-		// получить координаты fire bones
-		Fmatrix MBoneLeft;
-		Fmatrix MBoneRight;
-
-		MBoneLeft.mul(XFORM(), PKinematics(Visual())->LL_GetInstance(m_iLeftFireBone).mTransform);
-		MBoneRight.mul(XFORM(), PKinematics(Visual())->LL_GetInstance(m_iRightFireBone).mTransform);
-
-		// получить BBox врага
-		Fvector vEnemyBoxCenter;
-		float   fEnemyBoxRadius;
-
-		pA->Center(vEnemyBoxCenter);
-		fEnemyBoxRadius = pA->Radius();
-
-		// положение костей внутри bbox врага?
-		bool LeftBoneIn = false, RightBoneIn = false;
-
-		if (MBoneLeft.c.distance_to(vEnemyBoxCenter) < fEnemyBoxRadius) LeftBoneIn = true;
-		if (MBoneRight.c.distance_to(vEnemyBoxCenter) < fEnemyBoxRadius) RightBoneIn = true;
-
-		if (LeftBoneIn || RightBoneIn) {
-			
-			if (m_dwAttackActorMeleeTime + 2000 < m_dwCurrentUpdate){
-				m_dwAttackActorMeleeTime = m_dwCurrentUpdate;	
-				return true;
-			}
-			
-		}	
-		return false;
-	}
-	
-	// если плоть в прыжке || бьёт 
-	// если "нужное" время аттаки 
-	if (((m_dwAttackMeleeTime + 1000>m_dwCurrentUpdate) && (m_dwAttackMeleeTime + 700 < m_dwCurrentUpdate)) ||
-		(m_dwAttackMeleeTime + 2000 < m_dwCurrentUpdate)){
-		
-		if (obj->Position().distance_to(Position()) < .8f) {
-			m_dwAttackMeleeTime = m_dwCurrentUpdate;
-			return true;
-		}
-
-
-		this->setEnabled(false);
-		Collide::ray_query	l_rq;
-		Fvector vCenter;
-		Center(vCenter);
-		Fvector dir = Direction();
-		if (bAttackRat) {
-			Fvector tempV;
-
-			tempV.set(0,-Radius(),0);
-			dir.add(tempV);
-		} 
-
-
-		if (g_pGameLevel->ObjectSpace.RayPick(vCenter, dir, 1.5f, l_rq)) {
-			if ((l_rq.O == obj) && (l_rq.range < 1.0)) {
-				m_dwAttackMeleeTime = m_dwCurrentUpdate;
-				this->setEnabled(true);
-				return true;
-			}
-		}
-		this->setEnabled(true);
-	}
-	
-	return false;
-}	
 
 void CAI_Biting::FillAttackStructure(u32 i, TTime t)
 {
@@ -198,8 +125,8 @@ void CAI_Biting::FillAttackStructure(u32 i, TTime t)
 			Center(m_tAttack.TraceFrom);
 			break;
 		case 2:
-			m_tAttack.time_from = 1300;
-			m_tAttack.time_to	= 1400;
+			m_tAttack.time_from = 1100;
+			m_tAttack.time_to	= 1250;
 			m_tAttack.dist		= 1.5f;
 			Center(m_tAttack.TraceFrom);
 			tempV.set(0.1f,0.f,0.f);
@@ -223,8 +150,8 @@ void CAI_Biting::FillAttackStructure(u32 i, TTime t)
 			m_tAttack.b_attack_rat = true;
 			break;
 		case 5:
-			m_tAttack.time_from = 1000;
-			m_tAttack.time_to	= 1200;
+			m_tAttack.time_from = 700;
+			m_tAttack.time_to	= 850;
 			m_tAttack.b_fire_anyway = true;
 			break;
 	}

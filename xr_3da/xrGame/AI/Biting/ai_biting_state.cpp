@@ -99,7 +99,6 @@ void CBitingRest::Run()
 	switch (m_tAction) {
 		case ACTION_WALK:		// обход точек графа
 			pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
-
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 			break;
@@ -259,10 +258,6 @@ void CBitingAttack::Run()
 	if (bAttackMelee && m_tAction == ACTION_RUN) {
 		nStartStop++;
 	}
-//	if (nStartStop > 3) {
-//		nStartStop = 0;
-//		m_fDistMin -= 0.3f;
-//	}
 	
 	// задержка для построения пути
 	u32 delay;
@@ -274,28 +269,10 @@ void CBitingAttack::Run()
 		}
 	}
 
-//	// если враг не виден более 3 сек, не перестраивать путь и перейти в состояние поиска врага
-//	if (m_dwEnemyLostSightTime + 3000 > m_dwCurrentTime) {
-//		m_tAction = ACTION_FIND_ENEMY;
-//	} 
-//
-//	// todo: Add selector for enemy find	
-//
-//	if (pMonster->flagEnemyLostSight) m_dwEnemyLostSightTime = m_dwCurrentTime;
-//	else m_dwEnemyLostSightTime = 0;
-
-	if (pMonster->flagEnemyLostSight) pMonster->SetMemoryTime(3000);
-
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
 			delay = ((m_bAttackRat)? 0: 300);
-			
-//			if (!pMonster->flagEnemyLostSight) {
-//				pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
-//				pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
-//			}
-	
 			
 			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
@@ -309,7 +286,7 @@ void CBitingAttack::Run()
 			if (m_tEnemy.obj->Position().distance_to(pMonster->Position()) < 0.6f) {
 				if (!m_dwSuperMeleeStarted)	m_dwSuperMeleeStarted = m_dwCurrentTime;
 
-				if (m_dwSuperMeleeStarted + 1000 < m_dwCurrentTime) {
+				if (m_dwSuperMeleeStarted + 600 < m_dwCurrentTime) {
 					// прыгнуть
 					pMonster->Motion.m_tSeq.Add(eMotionAttackJump,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 					pMonster->Motion.m_tSeq.Switch();
@@ -341,9 +318,15 @@ void CBitingAttack::Run()
 			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
 			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
 			pMonster->Motion.m_tTurn.Set(eMotionFastTurnLeft, eMotionFastTurnLeft, 0, m_cfBitingAttackFastRSpeed,m_cfBitingRunAttackMinAngle);
-
 			break;
 	}
+}
+
+bool CBitingAttack::CheckCompletion()
+{	
+//	if (!m_tEnemy.obj) return true;
+//	if (!m_tEnemy.obj->g_Alive()) return true;
+	return false;
 }
 
 
@@ -435,6 +418,11 @@ void CBitingEat::Run()
 	}
 }
 
+bool CBitingEat::CheckCompletion()
+{	
+//	if (!pCorpse) return true;
+	return false;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,8 +443,8 @@ void CBitingHide::Init()
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->SaveEnemy();
 
-	SetInertia(30000);
-	pMonster->SetMemoryTime(30000);
+	SetInertia(20000);
+	pMonster->SetMemoryTime(20000);
 
 	// Test
 	//Msg("_ Hide Init _");
@@ -488,6 +476,8 @@ void CBitingHide::Run()
 
 bool CBitingHide::CheckCompletion()
 {	
+//	if (!m_tEnemy.obj) return true;
+//	if (m_tEnemy.position.distance_to(pMonster->Position()) > 30) return true;
 	return false;
 }
 
@@ -545,11 +535,6 @@ void CBitingDetour::Run()
 
 }
 
-bool CBitingDetour::CheckCompletion()
-{	
-	return false;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingPanic class
@@ -566,7 +551,13 @@ void CBitingPanic::Reset()
 {
 	inherited::Reset();
 
-	m_tEnemy.obj = 0;
+	m_tEnemy.obj	= 0;
+
+	cur_pos.set		(0.f,0.f,0.f);
+	prev_pos		= cur_pos;
+	bFacedOpenArea	= false;
+	m_dwStayTime	= 0;
+
 }
 
 void CBitingPanic::Init()
@@ -580,12 +571,29 @@ void CBitingPanic::Init()
 	pMonster->SetMemoryTime(15000);
 
 	// Test
-	//Msg("_ Panic Init _");
-
+	Msg("_ Panic Init _");
 }
 
 void CBitingPanic::Run()
 {
+	cur_pos = pMonster->Position();
+
+	// implementation of 'face the most open area'
+	if (!bFacedOpenArea && cur_pos.similar(prev_pos) && (m_dwStayTime != 0) && (m_dwStayTime + 300 < m_dwCurrentTime) && (m_dwStateStartedTime + 3000 < m_dwCurrentTime)) {
+		bFacedOpenArea	= true;
+		pMonster->AI_Path.TravelPath.clear();
+
+		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
+
+		pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,m_cfBitingScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
+		pMonster->Motion.m_tSeq.Switch();
+	} 
+
+	if (!cur_pos.similar(prev_pos)) {
+		bFacedOpenArea = false;
+		m_dwStayTime = 0;
+	} else if (m_dwStayTime == 0) m_dwStayTime = m_dwCurrentTime;
+
 
 	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
 	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
@@ -593,13 +601,21 @@ void CBitingPanic::Run()
 
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
 
-	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
-}
-
-bool CBitingPanic::CheckCompletion()
-{	
-	return false;
+	if (!bFacedOpenArea) {
+		pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
+	} else {
+		// try to rebuild path
+		if (pMonster->AI_Path.TravelPath.size() > 5) {
+			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
+		} else {
+			pMonster->Motion.m_tParams.SetParams(eMotionStandDamaged,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Clear();
+		}
+	}
+	
+	prev_pos = cur_pos;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -617,6 +633,12 @@ void CBitingExploreDNE::Reset()
 {
 	inherited::Reset();
 	m_tEnemy.obj = 0;
+
+	cur_pos.set		(0.f,0.f,0.f);
+	prev_pos		= cur_pos;
+	bFacedOpenArea	= false;
+	m_dwStayTime	= 0;
+
 }
 
 void CBitingExploreDNE::Init()
@@ -633,11 +655,16 @@ void CBitingExploreDNE::Init()
 	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
 	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
 	m_tEnemy.position = se.Position;
+	m_tEnemy.time = se.time;
 
+	Fvector dir; 
+	dir.sub(m_tEnemy.position,pMonster->Position());
+	float yaw,pitch;
+	dir.getHP(yaw,pitch);
+	
 	// проиграть анимацию испуга
-	float yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
 
-	pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,m_cfBitingScaredRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+	pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,m_cfBitingScaredRSpeed * 2.0f,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
 	pMonster->Motion.m_tSeq.Add(eMotionScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tSeq.Switch();
 
@@ -648,17 +675,42 @@ void CBitingExploreDNE::Init()
 void CBitingExploreDNE::Run()
 {
 	// Тикать нафиг
-	VisionElem tempEnemy;
+	cur_pos = pMonster->Position();
+
+	// implementation of 'face the most open area'
+	if (!bFacedOpenArea && cur_pos.similar(prev_pos) && (m_dwStayTime != 0) && (m_dwStayTime + 300 < m_dwCurrentTime) && (m_dwStateStartedTime + 3000 < m_dwCurrentTime)) {
+		bFacedOpenArea	= true;
+		pMonster->AI_Path.TravelPath.clear();
+
+		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
+
+		pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,m_cfBitingScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
+		pMonster->Motion.m_tSeq.Switch();
+	} 
+
+	if (!cur_pos.similar(prev_pos)) {
+		bFacedOpenArea = false;
+		m_dwStayTime = 0;
+	} else if (m_dwStayTime == 0) m_dwStayTime = m_dwCurrentTime;
+
 
 	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
 	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,1000);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
 
-	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
+	if (!bFacedOpenArea) {
+		pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
+	} else {
+		pMonster->Motion.m_tParams.SetParams(eMotionStandDamaged,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tTurn.Clear();
+	}
+
+	prev_pos = cur_pos;
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -677,6 +729,7 @@ void CBitingExploreDE::Reset()
 	inherited::Reset();
 	m_tEnemy.obj = 0;
 	m_tAction = ACTION_LOOK_AROUND;
+	m_dwTimeToTurn	= 0;	
 }
 
 void CBitingExploreDE::Init()
@@ -693,10 +746,16 @@ void CBitingExploreDE::Init()
 	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
 	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
 	m_tEnemy.position = se.Position;
+	m_dwSoundTime	  = se.time;
 
-	pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
+	float	yaw,pitch;
+	Fvector dir;
+	dir.sub(m_tEnemy.position,pMonster->Position());
+	dir.getHP(yaw,pitch);
 
-	// проиграть анимацию испуга
+	pMonster->r_torso_target.yaw = yaw;
+	m_dwTimeToTurn = (TTime)(_abs(angle_normalize_signed(yaw - pMonster->r_torso_current.yaw)) / m_cfBitingStandTurnRSpeed * 1000);
+
 	SetInertia(20000);
 	pMonster->SetMemoryTime(20000);
 }
@@ -704,7 +763,11 @@ void CBitingExploreDE::Init()
 void CBitingExploreDE::Run()
 {
 	// определение состояния
-	if (m_tAction == ACTION_LOOK_AROUND && (m_dwStateStartedTime + 2000 < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
+	if (m_tAction == ACTION_LOOK_AROUND && (m_dwStateStartedTime + m_dwTimeToTurn < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
 	
 	switch(m_tAction) {
 	case ACTION_LOOK_AROUND:
@@ -723,6 +786,20 @@ void CBitingExploreDE::Run()
 		pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 		break;
 	}
+}
+
+bool CBitingExploreDE::CheckCompletion()
+{	
+//	if (!m_tEnemy.obj) return true;
+//	
+//	// проверить, если ли новый звук, завершить состояние
+//	SoundElem se;
+//	bool bDangerous;
+//	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+//	
+//	if ((m_dwSoundTime + 2000)< se.time) return true;
+//
+	return false;
 }
 
 
@@ -770,7 +847,6 @@ void CBitingExploreNDE::Run()
 	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CFindEnemy class  

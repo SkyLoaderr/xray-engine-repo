@@ -6,38 +6,47 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CSoundMemory implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#define CHECK_SOUND_TYPE(a,b,c) { if ((a & b) == b) return c; }
+
 TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 {
-	TSoundDangerValue tValue;
+	
+	if (((stype & SOUND_TYPE_WEAPON) != SOUND_TYPE_WEAPON) && 
+		((stype & SOUND_TYPE_MONSTER) != SOUND_TYPE_MONSTER) && 
+		((stype & SOUND_TYPE_WORLD) != SOUND_TYPE_WORLD)) return NONE_DANGEROUS_SOUND;
 
-	switch (stype) {
-		case SOUND_TYPE_WEAPON_RECHARGING:		tValue = WEAPON_RECHARGING; break;
-		case SOUND_TYPE_WEAPON_SHOOTING:		tValue = WEAPON_SHOOTING; break;	
-		case SOUND_TYPE_WEAPON_TAKING:			tValue = WEAPON_TAKING; break;
-		case SOUND_TYPE_WEAPON_HIDING:			tValue = WEAPON_HIDING; break;
-		case SOUND_TYPE_WEAPON_CHANGING:		tValue = WEAPON_CHANGING; break;
-		case SOUND_TYPE_WEAPON_EMPTY_CLICKING:  tValue = WEAPON_EMPTY_CLICKING; break;
-		case SOUND_TYPE_WEAPON_BULLET_RICOCHET:	tValue = WEAPON_BULLET_RICOCHET; break;
-		case SOUND_TYPE_MONSTER_DYING:			tValue = MONSTER_DYING; break;
-		case SOUND_TYPE_MONSTER_INJURING:		tValue = MONSTER_INJURING; break;
-		case SOUND_TYPE_MONSTER_WALKING:		tValue = MONSTER_WALKING; break;
-		case SOUND_TYPE_MONSTER_JUMPING:		tValue = MONSTER_JUMPING; break;
-		case SOUND_TYPE_MONSTER_FALLING:		tValue = MONSTER_FALLING; break;
-		case SOUND_TYPE_MONSTER_TALKING:		tValue = MONSTER_TALKING; break;
-		case SOUND_TYPE_MONSTER_ATTACKING:		tValue = MONSTER_ATTACKING; break;
-		case SOUND_TYPE_WORLD_DOOR_OPENING:		tValue = DOOR_OPENING; break;
-		case SOUND_TYPE_WORLD_DOOR_CLOSING:		tValue = DOOR_CLOSING; break;
-		case SOUND_TYPE_WORLD_OBJECT_BREAKING:  tValue = OBJECT_BREAKING; break;
-		case SOUND_TYPE_WORLD_OBJECT_FALLING:	tValue = OBJECT_FALLING; break;
-		default:								tValue = NONE_DANGEROUS_SOUND;
-	}
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_RECHARGING,	WEAPON_RECHARGING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_SHOOTING,		WEAPON_SHOOTING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_TAKING,		WEAPON_TAKING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_HIDING,		WEAPON_HIDING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_CHANGING,		WEAPON_CHANGING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_EMPTY_CLICKING,	WEAPON_EMPTY_CLICKING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WEAPON_BULLET_RICOCHET,	WEAPON_BULLET_RICOCHET);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_DYING,		MONSTER_DYING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_INJURING,	MONSTER_INJURING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_WALKING,		MONSTER_WALKING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_JUMPING,		MONSTER_JUMPING);
 
-	return tValue;
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_FALLING,		MONSTER_FALLING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_TALKING,		MONSTER_TALKING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_MONSTER_ATTACKING,	MONSTER_ATTACKING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WORLD_DOOR_OPENING,	DOOR_OPENING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WORLD_DOOR_CLOSING,	DOOR_CLOSING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WORLD_OBJECT_BREAKING,	OBJECT_BREAKING);
+	CHECK_SOUND_TYPE(stype,	SOUND_TYPE_WORLD_OBJECT_FALLING,	OBJECT_FALLING);
+
+
+	return NONE_DANGEROUS_SOUND;
 }
 
 
 void CSoundMemory::HearSound(const SoundElem &s)
 {
+	if (s.type == SOUND_TYPE_MONSTER_DYING) return;		// todo
+	if (s.type == NONE_DANGEROUS_SOUND) return;			// todo
+	if (s.type == WEAPON_BULLET_RICOCHET) return;		// todo
+
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
 	
@@ -54,7 +63,7 @@ void CSoundMemory::HearSound(const SoundElem &s)
 void CSoundMemory::HearSound(CObject* who, int eType, const Fvector &Position, float power, TTime time)
 {
 	SoundElem s;
-	s.Set(who,eType,Position,power,time);
+	s.SetConvert(who,eType,Position,power,time);
 
 	HearSound(s);
 }

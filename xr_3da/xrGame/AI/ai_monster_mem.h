@@ -62,8 +62,11 @@ typedef struct tagSoundElement
 	void operator = (const tagSoundElement &s) {
 		Set(s.who, s.type, s.Position, s.power, s.time);
 	}
-	IC void Set(CObject* who, int eType, const Fvector &Position, float power, TTime time) {
+	IC void SetConvert(CObject* who, int eType, const Fvector &Position, float power, TTime time) {
 		this->who = who; type = ConvertSoundType((ESoundTypes)eType); this->Position = Position; this->power = power; this->time = time;
+	}
+	IC void Set(CObject* who, TSoundDangerValue eType, const Fvector &Position, float power, TTime time) {
+		this->who = who; type = eType; this->Position = Position; this->power = power; this->time = time;
 	}
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
 } SoundElem;

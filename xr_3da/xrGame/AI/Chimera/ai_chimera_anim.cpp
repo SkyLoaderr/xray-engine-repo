@@ -113,7 +113,7 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
 		case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  index3 = -1;	break;
 		case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
-		case eMotionDamage:			index1 = 0; index2 = 0;  index3 = -1;	break;
+		case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
 		case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
 		case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
 		case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;

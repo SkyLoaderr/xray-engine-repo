@@ -35,7 +35,7 @@ namespace AI_Biting {
 		"attack2_",				// 10
 		"attack_ls_",			// 11
 		"eat_",					// 12
-		"damage_",				// 13
+		"damaged_",				// 13
 		"scared_",				// 14
 		"die_",					// 15	
 		"lie_down_",			// 16
@@ -116,7 +116,7 @@ void CAI_Biting::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int 
 		case eMotionAttackRat:		index1 = 0; index2 = 10; index3 = -1;	break;
 		case eMotionFastTurnLeft:	index1 = 0; index2 = 11; index3 = -1;	break;
 		case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
-		case eMotionDamage:			index1 = 0; index2 = 13; index3 = -1;	break;
+		case eMotionStandDamaged:	index1 = 0; index2 = 13; index3 = -1;	break;
 		case eMotionScared:			index1 = 0; index2 = 14; index3 = -1;	break;
 		case eMotionDie:			index1 = 0; index2 = 15; index3 = -1;	break;
 		case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;

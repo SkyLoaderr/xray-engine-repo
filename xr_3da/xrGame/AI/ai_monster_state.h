@@ -42,7 +42,7 @@ enum EMotionAnim {
 	eMotionAttackRat,
 	eMotionFastTurnLeft,
 	eMotionEat,
-	eMotionDamage,
+	eMotionStandDamaged,
 	eMotionScared,
 	eMotionDie,
 	eMotionLieDown,

@@ -76,12 +76,10 @@ void CAI_Biting::Think()
 		else if (F && H && !I)  	SetState(stateAttack); 
 		else if (F && !H && I)  	SetState(stateDetour); 
 		else if (F && !H && !I) 	SetState(stateHide);
-		else if (A && !K && !H)		SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
-		else if (A && !K && H)		SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		
-			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
 									SetState(stateEat);
 		else						SetState(stateRest); 
@@ -91,7 +89,7 @@ void CAI_Biting::Think()
 		CurrentState->Execute(m_dwCurrentUpdate);
 		
 		// проверяем на завершённость
-		//if (CurrentState->CheckCompletion()) {SetState(stateRest, true);
+		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
 	}
 
 	Motion.SetFrameParams(this);

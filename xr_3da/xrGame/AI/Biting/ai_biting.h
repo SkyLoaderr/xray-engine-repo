@@ -205,12 +205,9 @@ private:
 	float					m_fAttackSuccessProbability2;
 	float					m_fAttackSuccessProbability3;
 	
-	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
-	u32						m_dwInertion;							// Инерция состояния
 	u32						m_dwActionStartTime;
-	bool					m_bStateChanged;
 	float					m_ls_yaw;
 	u32						m_dwRandomFactor;
 	svector<SHurt,MAX_HURT_COUNT>	m_tpaHurts;
@@ -266,7 +263,6 @@ private:
 
 	u32		m_dwAttackMeleeTime;
 	u32		m_dwAttackActorMeleeTime;
-	bool	AttackMelee(CObject *obj,bool bAttackRat);
 
 
 	// Extended FSM
@@ -308,8 +304,12 @@ private:
 
 	SAttackAnimation	m_tAttack;		
 	void				FillAttackStructure(u32, TTime);
-	void				vfBuildTravelLine(const Fvector &tpDestinationPosition, const Fvector& current_pos);
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	void				SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAngle);
 
+	
 	SEnemy				m_tEnemy;
 	SEnemy				m_tEnemyPrevFrame;
 
@@ -324,5 +324,6 @@ private:
 	bool	flagEnemyDoesntKnowAboutMe;
 	bool	flagEnemyHiding;
 	bool	flagEnemyRunAway;
+
 
 };

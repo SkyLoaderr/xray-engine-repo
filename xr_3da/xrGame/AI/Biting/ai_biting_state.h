@@ -15,14 +15,14 @@ class CAI_Biting;
 
 const float m_cfBitingStandTurnRSpeed	=	PI_DIV_4;
 
-const float m_cfBitingWalkSpeed			=	1.7f;
+const float m_cfBitingWalkSpeed			=	3.0f;
 const float m_cfBitingWalkTurningSpeed	=	1.0f;
 const float m_cfBitingWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
 const float m_cfBitingWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
 const float m_cfBitingWalkMinAngle		=   PI_DIV_6;
 
 
-const float m_cfBitingRunAttackSpeed		=	5.0f;
+const float m_cfBitingRunAttackSpeed		=	7.0f;
 const float m_cfBitingRunAttackTurnSpeed	=	3.5f;
 const float m_cfBitingRunAttackTurnRSpeed	=	5* PI_DIV_6;
 const float m_cfBitingRunRSpeed				=	PI_DIV_2;
@@ -118,10 +118,12 @@ public:
 					CBitingAttack	(CAI_Biting *p);
 
 	virtual	void	Reset			();
+	virtual bool	CheckCompletion	();
 
 private:
 	virtual	void	Init			();
 	virtual void	Run				();
+
 			
 };
 
@@ -148,6 +150,7 @@ public:
 					CBitingEat		(CAI_Biting *p);
 
 	virtual	void	Reset			();
+	virtual bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();
@@ -188,7 +191,6 @@ public:
 					CBitingDetour			(CAI_Biting *p);
 
 	virtual void	Reset			();	
-	virtual	bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();
@@ -203,12 +205,18 @@ class CBitingPanic : public IState {
 
 	VisionElem		m_tEnemy;
 
+	// implementation of 'face the most open area'
+	bool			bFacedOpenArea;
+	Fvector			cur_pos;			
+	Fvector			prev_pos;
+	TTime			m_dwStayTime;
+
+
 	typedef IState inherited;
 public:
 					CBitingPanic			(CAI_Biting *p);
 
 	virtual void	Reset			();	
-	virtual	bool	CheckCompletion	();
 
 private:
 	virtual void	Init			();
@@ -221,6 +229,13 @@ private:
 class CBitingExploreDNE : public IState {
 	CAI_Biting		*pMonster;
 	VisionElem		m_tEnemy;
+
+	// implementation of 'face the most open area'
+	bool			bFacedOpenArea;
+	Fvector			cur_pos;			
+	Fvector			prev_pos;
+	TTime			m_dwStayTime;
+
 
 	typedef IState inherited;
 public:
@@ -240,6 +255,9 @@ class CBitingExploreDE : public IState {
 	CAI_Biting		*pMonster;
 	VisionElem		m_tEnemy;
 
+	TTime			m_dwTimeToTurn;
+	TTime			m_dwSoundTime;
+
 	enum {
 		ACTION_LOOK_AROUND,
 		ACTION_HIDE,
@@ -250,7 +268,8 @@ class CBitingExploreDE : public IState {
 public:
 					CBitingExploreDE	(CAI_Biting *p);
 
-	virtual void	Reset				();	
+	virtual void	Reset				();
+	virtual bool	CheckCompletion		();
 
 private:
 	virtual void	Init				();

@@ -13,8 +13,8 @@ using namespace AI_Biting;
 
 CAI_Biting::CAI_Biting()
 {
-//	shedule.t_min	=	200;
-//	shedule.t_max	=	350;
+	//shedule.t_min	=	50;
+	//shedule.t_max	=	150;
 	
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
@@ -63,11 +63,6 @@ void CAI_Biting::Init()
 	
 	m_dwLastRangeSearch				= 0;
 
-
-	// »нициализаци€ параметров состо€ни€
-	vfSetMotionActionParams			(eBodyStateStand, eMovementTypeStand, 
-									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
-
 	// »нициализаци€ параметров анимации
 	m_tAnim							= DEFAULT_ANIM;
 
@@ -81,14 +76,8 @@ void CAI_Biting::Init()
 
 	m_dwLostEnemyTime				= 0;
 
-	m_dwInertion					= 100000;
-
-	m_bStateChanged					= true;
-	
 	m_dwActionStartTime				= 0;
 
-	_A=_B=_C=_D=_E=_F=_H=_I=_J=_K   = false;
-	
 	m_dwAnimFrameDelay				= 100;
 	m_dwAnimLastSetTime				= 0;
 	m_bActionFinished				= true;
@@ -145,10 +134,8 @@ void CAI_Biting::Die()
 	DeinitMemory();
 
 	Fvector	dir;
-//	AI_Path.Direction(dir);
 	
 	bShowDeath = true;
-//	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
 	SelectAnimation(dir,dir,0.f);
 
 	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
@@ -336,7 +323,10 @@ void CAI_Biting::UpdateCL()
 			(m_tAttack.LastAttack + 1000 < cur_time)) {
 
 			// трассировка нужна?
-			if (m_tAttack.b_fire_anyway) DoDamage(ve.obj); // не нужна
+			if (m_tAttack.b_fire_anyway) {
+				DoDamage(ve.obj); // не нужна
+				m_tAttack.LastAttack = cur_time;
+			}
 			else if (m_tAttack.b_attack_rat) {
 				
 				// TestIntersection конуса(копыта) и сферы(крысы)

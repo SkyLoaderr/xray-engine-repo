@@ -252,3 +252,23 @@ bool CAI_Biting::IsLeftSide(float current_yaw,float target_yaw)
 			return true;
 	return false;
 }
+
+void CAI_Biting::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAngle)
+{
+	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_torso_target.yaw;
+	
+	for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+		float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tpNode);
+		if (fSquare > fMaxSquare) {
+			fMaxSquare = fSquare;
+			fBestAngle = fIncrement;
+		}
+	}
+	
+	r_target.yaw = r_torso_target.yaw = fBestAngle; // angle_normalize(fBestAngle * (-1));
+
+
+	VERIFY (_valid(r_torso_target.yaw));
+}
+
+

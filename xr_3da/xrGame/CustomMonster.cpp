@@ -706,16 +706,42 @@ void CCustomMonster::Exec_Action(float dt)
 // Развернуть объект в направление движения
 void CCustomMonster::SetDirectionLook()
 {
-	int i = ps_Size();		// position stack size
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.magnitude() > EPS_L) {
-			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_torso_target);
+	bool bYawSet = false;
+
+//	if (!AI_Path.TravelPath.empty() && (AI_Path.TravelPath.size() > 2) && (AI_Path.TravelStart < (AI_Path.TravelPath.size() - 2))) {
+//		Fvector thisPoint,nextPoint, next_nextPoint;
+//
+//		thisPoint = Position();
+//		nextPoint = AI_Path.TravelPath[AI_Path.TravelStart + 1].P;
+//		next_nextPoint = AI_Path.TravelPath[AI_Path.TravelStart + 2].P;
+//
+//		float yaw,pitch;
+//
+//		next_nextPoint.sub	(nextPoint);
+//		nextPoint.sub		(thisPoint);
+//		
+//		if ((nextPoint.magnitude() > EPS_L) && (next_nextPoint.magnitude() > EPS_L) &&
+//			(nextPoint.magnitude() < 3) && (next_nextPoint.magnitude() < 3)) {
+//			
+//			nextPoint.add		(next_nextPoint);
+//			nextPoint.getHP		(yaw,pitch);
+//			r_torso_target.yaw = -yaw ;
+//			bYawSet		= true;
+//		}
+//	}
+
+	if (!bYawSet) {
+		int i = ps_Size();		// position stack size
+		if (i > 1) {
+			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+			tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+			if (tWatchDirection.magnitude() > EPS_L) {
+				tWatchDirection.normalize();
+				mk_rotation(tWatchDirection,r_torso_target);
+			}
 		}
+		else r_torso_target.pitch = 0;
 	}
-	else
-		r_torso_target.pitch = 0;
+
 	r_target = r_torso_target;
 }
