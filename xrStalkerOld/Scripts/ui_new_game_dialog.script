@@ -14,7 +14,6 @@ function main()
 	end
 end
 
-
 class "new_game_dlg" (ui_base_dialog.base_dialog)
 
 function new_game_dlg:__init() super()
@@ -58,6 +57,9 @@ function new_game_dlg:InitControls()
 							 height = self.btn_rect.height}	
 	
 	----- CODE -------
+	local tab = CUITabControl()
+	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
+	self.main_frame:AttachChild(tab)
 
 -------- BUTTONS ------------------------------- 
 	--------->> EASY
@@ -70,7 +72,8 @@ function new_game_dlg:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	self.main_frame:AttachChild(btn)
+--	self.main_frame:AttachChild(btn)
+	tab:AddItem(btn)
 	
 	--------->> NORMAL
 	btn = CUIButton()
@@ -82,7 +85,8 @@ function new_game_dlg:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	self.main_frame:AttachChild(btn)	
+	--self.main_frame:AttachChild(btn)
+	tab:AddItem(btn)
 	
 	--------->> HARDCORE
 	btn = CUIButton()
@@ -94,7 +98,8 @@ function new_game_dlg:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	self.main_frame:AttachChild(btn)
+	--self.main_frame:AttachChild(btn)
+	tab:AddItem(btn)
 	
 	--------->> BACK
 	btn = CUIButton()
