@@ -207,17 +207,6 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_VID_Restart : public IConsole_Command
-{
-public:
-	CCC_VID_Restart(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
-	virtual void Execute(LPCSTR args) {
-		if (Device.bReady) {
-			Device.Destroy	();
-			Device.Create	();
-		}
-	}
-};
 class CCC_VID_Reset : public IConsole_Command
 {
 public:
@@ -350,8 +339,7 @@ void CCC_Register()
 	// General video control
 	CMD3(CCC_Token,		"vid_mode",				&psCurrentMode, vid_mode_token);
 	CMD3(CCC_Token,		"vid_bpp",				&psCurrentBPP,	vid_bpp_token);
-	CMD1(CCC_VID_Restart,"vid_restart"			);
-	CMD1(CCC_VID_Reset, "vid_reset"				);
+	CMD1(CCC_VID_Reset, "vid_restart"			);
 	
 	// Sound
 	CMD2(CCC_Float,		"snd_volume_eff",		&psSoundVEffects);
