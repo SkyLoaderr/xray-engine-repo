@@ -1,7 +1,7 @@
 -- скрипт для сталкеров, которые стоят на вышках
 
-local anims = {"stoya_ruje_ 0"}
-local num_anims = {1}
+local anims = {"stoya_ruje_ 0", "vishka_1", "vishka_2", "vishka_3"}
+local num_anims = {1, 1, 1, 1}
 
 class "Guardian"
 

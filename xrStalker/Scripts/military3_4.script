@@ -1,5 +1,58 @@
--- разговаривающие сталкеры
+local banka_in_zone = true
+local banka_id = 0
+local zone_id = 0
+local moving = 0
+
+function on_exit(zone,object)
+  if zone_id == zone:id () and banka_id == object:id () then
+    banka_in_zone = false
+  end
+end
+
+
+function reset (npc)
+	npc:script (false, military3_4.script_name ())
+	npc:script (true, military3_4.script_name ())
+end
+
+function move_player (npc, ball)
+    local dist = distance_between (npc, ball)
+--	printf ("Distance to banka %f", dist)
+	if moving == 1 then 
+	   if dist < 2.0 then
+--		  printf ("NPC reset")
+		  military3_4.reset (npc)
+		  local animation = "myach_1"
+		  if math.random (1, 100) > 50 then	animation = "myach_2" end
+--		  printf ("Animation %s", animation)
+		  action (npc, move (move.standing, move.stand, move.line, patrol ("way_ptr30")),
+				  look (), anim (animation), cond (cond.anim_end))
+--		  action (npc, move (move.standing, move.stand, move.line, patrol ("way_ptr30")),
+--				  look (), anim (anim.free), cond (cond.time_end, 100000000))
+		  moving = 0
+		  return 1
+		  end
+	else
+       military3_4.reset (npc)
+--	   printf ("NPC move")
+	   action (npc, move (move.standing, move.walk, move.line, ball),
+			   look (), anim (anim.free), cond (cond.time_end, 1000000))	
+	   moving = 1	 
+	end	    
+	return 0
+end
+
 function main ()
+
+	local banka = get_level_object ("banka")
+  	banka_id = banka:id ()
+
+  	local game_zone = get_level_object ("game_zone")
+  	game_zone:clear_callback (true)
+    game_zone:clear_callback (false)
+    game_zone:set_callback (military3_4.on_exit, false)
+  	game_zone_id = game_zone:id ()
+--	printf ("Game zone set")
 
 	local stalker1 = get_level_object ("stalker_b1")
 	local stalker2 = get_level_object ("stalker_b2")
@@ -7,13 +60,23 @@ function main ()
 	stalker1:script (true, military3_4.script_name ())
 	stalker2:script (true, military3_4.script_name ())
 
-	action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+--	printf ("Start set player")
+	military3_4.move_player (stalker1, banka)
+--	printf ("End set player")
+	local queue = 0
+
+	action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_ptr30")),
 			look (), anim (anim.free), cond (cond.time_end, 10000000))
 
-	action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
-			look (), anim (anim.free), cond (cond.time_end, 10000000))
 
-    while stalker1:action () do wait () end
+	while banka_in_zone == true do
+		  if queue == 0 then 
+			 if military3_4.move_player (stalker2, banka) == 1 then queue = 1 end
+			 else
+				if military3_4.move_player (stalker1, banka) == 1 then queue = 0 end
+ 	 	 	 end
+		  wait ()
+		end
 
 	stalker1:script (false, military3_4.script_name ())
 	stalker2:script (false, military3_4.script_name ())
