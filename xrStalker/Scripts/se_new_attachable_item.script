@@ -264,5 +264,5 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_flag32(items,"script\\flags32\\2",self,"_flag32_0",4)
 	properties_helper():create_flag32(items,"script\\flags32\\3",self,"_flag32_0",8)
 	// color
-	properties_helper():create_color(items,"script\\u32\\0",self,"_color_0")
+	properties_helper():create_color(items,"script\\color\\0",self,"_color_0")
 end
