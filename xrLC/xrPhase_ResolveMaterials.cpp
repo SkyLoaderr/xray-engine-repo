@@ -70,7 +70,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 	Status				("Removing empty subdivs...");
 	{
 		for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
-			if (g_XSplit[SP]->empty())	_DELETE			(g_XSplit[SP]);
+			if (g_XSplit[SP]->empty())	xr_delete(g_XSplit[SP]);
 		g_XSplit.erase(remove(g_XSplit.begin(),g_XSplit.end(),(vecFace*) NULL),g_XSplit.end());
 	}
 	

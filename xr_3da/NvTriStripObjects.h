@@ -64,7 +64,12 @@ public:
 	}
 	
 	// ref and unref
-	void Unref ()	{ if (--m_refCount == 0) xr_delete(this); }
+	void Unref ()	{ 
+		if (--m_refCount == 0) 
+		{
+			xr_free	(this); 
+		}
+	}
 	
 	// data members are left public
 	UINT         m_refCount;
