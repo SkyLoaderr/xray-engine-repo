@@ -9,7 +9,7 @@
 #pragma once
 
 template <typename _DataStorage, typename _PathManager, typename _Graph, typename _iteration_type = u32, typename _dist_type = float> class CAStar {
-//	typedef _DataStorage::SGraphNode CGraphNode;
+	typedef typename _DataStorage::CGraphNode CGraphNode;
 public:
 						CAStar			()
 	{
@@ -24,7 +24,7 @@ public:
 		// initialize data structures before we started path search
 		data_storage.init		();
 		// add start node to the opened list
-		_DataStorage::SGraphNode	&start = data_storage.add_opened(path_manager.start_node());
+		CGraphNode				&start = data_storage.add_opened(path_manager.start_node());
 		start.g()				= _dist_type(0);
 		start.h()				= path_manager.estimate(start.index());
 		start.f()				= start.g() + start.h();
@@ -33,7 +33,7 @@ public:
 	IC		bool		step			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
 	{
 		// get the best node, i.e. a node with the minimum 'f'
-		_DataStorage::SGraphNode	&best = data_storage.get_best();
+		CGraphNode				&best = data_storage.get_best();
 
 		// check if this node is the one we are searching for
 		if (path_manager.is_goal_reached(best.index())) {
@@ -43,6 +43,7 @@ public:
 			return				(true);
 		}
 
+#pragma todo("Dima to Dima : make it more clear here")
 		// put best node to the closed list
 		data_storage.add_closed	();
 		// and remove this node from the opened one
@@ -54,6 +55,7 @@ public:
 		graph.begin				(best.index(),i,e);
 		for (  ; i != e; ++i) {
 			// check if neighbour is accessible
+#pragma todo("Dima to Dima : override operator * here instead of calling get_value function")
 			if (!path_manager.is_accessible(graph.get_value(i)))
 				continue;
 			// check if neighbour is visited, i.e. is in the opened or 
@@ -61,7 +63,7 @@ public:
 			if (data_storage.is_visited(graph.get_value(i))) {
 				// so, this neighbour node has been already visited
 				// therefore get the pointer to this node
-				_DataStorage::SGraphNode	&neighbour	= data_storage.get_node(graph.get_value(i));
+				CGraphNode				&neighbour	= data_storage.get_node(graph.get_value(i));
 				// check if this node is in the opened list
 				if (data_storage.is_opened(neighbour)) {
 					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
@@ -105,7 +107,7 @@ public:
 			else {
 				// so, this neighbour node is not in the opened or closed lists
 				// put neighbour node to the opened list
-				_DataStorage::SGraphNode	&neighbour = data_storage.add_opened(graph.get_value(i));
+				CGraphNode				&neighbour = data_storage.add_opened(graph.get_value(i));
 				// assign best node as its parent
 				data_storage.assign_parent(neighbour,best);
 				// fill the corresponding node parameters 

@@ -48,11 +48,13 @@ public:
 		this->max_iteration_count = max_iteration_count;
 	}
 
+#pragma todo("Dima to Dima : optimize code here")
 	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2)
 	{
 		return					(graph->get_edge_weight(node_index1,node_index2));
 	}
 
+#pragma todo("Dima to Dima : optimize code here")
 	IC		_dist_type	estimate		(const _index_type node_index)
 	{
 		return					(graph->get_edge_weight(node_index,goal_node_index));
@@ -79,11 +81,12 @@ public:
 
 	IC		bool		is_accessible	(const _index_type node_index) const
 	{
-		return					(true);
+		return					(graph->is_accessible(node_index));
 	}
 
 	IC		bool		is_metric_euclidian()
 	{
+#pragma todo("Dima to Dima : implement path manager for non-euclidian metrics")
 		return					(true);
 	}
 

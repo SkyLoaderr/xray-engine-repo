@@ -644,4 +644,9 @@ public:
 	{
 		return					(UnpackLink(*i));
 	}
+
+	IC		bool		is_accessible	(const u32 node_index) const
+	{
+		return					(true);
+	}
 };
