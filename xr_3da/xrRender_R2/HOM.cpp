@@ -134,13 +134,13 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 void CHOM::Render_DB	(CFrustum& base)
 {
 	// Query DB
-	XRC.frustum_options		(0);
-	XRC.frustum_query		(m_pModel,base);
-	if (0==XRC.r_count())	return;
+	xrc.frustum_options		(0);
+	xrc.frustum_query		(m_pModel,base);
+	if (0==xrc.r_count())	return;
 
 	// Prepare
-	CDB::RESULT*	it		= XRC.r_begin	();
-	CDB::RESULT*	end		= XRC.r_end		();
+	CDB::RESULT*	it		= xrc.r_begin	();
+	CDB::RESULT*	end		= xrc.r_end		();
 	Fvector			COP		= Device.vCameraPosition;
 	Fmatrix			XF		= Device.mFullTransform;
 	float			dim		= occ_dim_0/2;

@@ -8,6 +8,7 @@ class occTri;
 class CHOM  
 {
 private:
+	xrXRC					xrc;
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
 	xr_vector<u32>			m_ZB;
