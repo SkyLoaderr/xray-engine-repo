@@ -22,18 +22,18 @@ CLightPPA::~CLightPPA()
 
 }
 
-void CLightPPA::set_mode	(u32 _M)
+void CLightPPA::set_active(bool a)
 {
-	if (_M&ENABLED)
+	if (a)
 	{
-		if (flags.bActive)	return;
-		flags.bActive		= true;
+		if (bActive)		return;
+		bActive				= true;
 		RImplementation.L_Dynamic.Activate		(this);	
 	}
 	else
 	{
-		if (!flags.bActive)	return;
-		flags.bActive		= false;
+		if (!bActive)		return;
+		bActive				= false;
 		RImplementation.L_Dynamic.Deactivate	(this);
 	}
 }

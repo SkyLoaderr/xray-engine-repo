@@ -17,16 +17,15 @@ struct	CLightPPA_Vertex
 class	CLightPPA	:	public IRender_Light
 {
 public:
-	struct {
-		u32			bActive	:	1;
-	}				flags;
+	bool			bActive;
 	Fsphere			sphere;
 	Fcolor			color;
 public:
 	CLightPPA			();
 	virtual ~CLightPPA	();
 
-	virtual void	set_mode		(u32 M);
+	virtual void	set_active		(bool b);
+	virtual void	set_shadow		(bool)							{ };
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);	}
 	virtual void	set_range		(float R)						{ sphere.R = R;		}
 	virtual void	set_color		(const Fcolor& C)				{ color.set(C);		}
