@@ -79,14 +79,18 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 	}
 }
 #else
+//////////////////////////////////////////////////////////////////////////
+// R2
+//////////////////////////////////////////////////////////////////////////
+#include "uber_deffer.h"
 void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 {
 	IBlender::Compile	(C);
 
 	switch(C.iElement) 
 	{
-	case 0: 	// deffer
-		uber_deffer		(C,"detail","base",true);
+	case 0: 					// deffer
+		uber_deffer				(C,"detail","base",true);
 		break;
 	case CRender::PHASE_SMAP_D:	// smap-direct
 	case CRender::PHASE_SMAP_P:	// smap-point
