@@ -82,7 +82,10 @@ function base_dialog:InitControls(txt_caption)
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
 	
 	-- init self position and size
-	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
+	self:Init(self.main_rect.x, 
+			  self.main_rect.y, 
+			  self.main_rect.width, 
+			  self.main_rect.height)
 	
 	-- MAIN FRAME WINDOW
 	self.main_frame = CUIFrameWindow()
