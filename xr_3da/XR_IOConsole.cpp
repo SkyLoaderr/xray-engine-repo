@@ -43,7 +43,7 @@ void CConsole::Initialize()
 
 	// Commands
 	extern void CCC_Register();
-	CCC_Register();
+	CCC_Register	();
 }
 
 void CConsole::OnDeviceDestroy()
@@ -56,6 +56,8 @@ void CConsole::Destroy	()
 
 	Device.seqDevDestroy.Remove	(this);
 	_DELETE						(pFont);
+
+	Commands.clear				();
 }
 
 void CConsole::OnFrame	()
