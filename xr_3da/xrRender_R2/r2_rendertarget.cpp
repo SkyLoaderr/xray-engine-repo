@@ -40,6 +40,7 @@ void	CRenderTarget::phase_scene		()
 	RCache.set_RT				(rt_Normal->pRT,		1);
 	RCache.set_RT				(rt_Color->pRT,			2);
 	RCache.set_ZB				(HW.pBaseZB);
+	Device.Clear				();
 }
 
 void	CRenderTarget::phase_combine	()
