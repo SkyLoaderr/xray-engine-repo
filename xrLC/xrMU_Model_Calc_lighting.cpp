@@ -39,9 +39,9 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 {
 	// trans-map
 	typedef	xr_multimap<float,v_vertices>	mapVert;
-	typedef	mapVert::iterator			mapVertIt;
-	mapVert								g_trans;
-	u32									I;
+	typedef	mapVert::iterator				mapVertIt;
+	mapVert									g_trans;
+	u32										I;
 
 	// trans-epsilons
 	const float eps			= EPS_L;
@@ -55,10 +55,10 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 	Rxform.invert		(tmp	);
 
 	// Perform lighting
-	CDB::COLLIDER			DB;
-	DB.ray_options			(0);
-	xr_vector<R_Light>& Lights = Lights_src;
-	if (Lights.empty())		return;
+	CDB::COLLIDER				DB;
+	DB.ray_options				(0);
+	xr_vector<R_Light>& Lights	= Lights_src;
+	R_ASSERT					(!Lights.empty());
 
 	// Disable faces if needed
 	if	(bDisableFaces)
