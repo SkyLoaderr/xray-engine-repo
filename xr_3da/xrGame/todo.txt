@@ -1,3 +1,4 @@
+	. 
 	+ TODO: NET: Can't connect
 	+ TODO: Level-unload
 	+ TODO: ltx
@@ -6,6 +7,9 @@
 	. TODO: Weapons drop/take
 	. TODO: NET: Weapons drop/take
 	. TODO: NET: Weapons
+	. TODO: Save/Load
+	. TODO: NET: Save/Load
+	. TODO: NET: Demo Record/Replay
 	
 	. TODO: Detail texturing
 
