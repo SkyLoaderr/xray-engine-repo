@@ -14,7 +14,7 @@
 
 IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
-	NodeCompressed tNode0 = *Level().AI.Node(dwStartNode), tNode1 = *Level().AI.Node(dwFinishNode);
+	NodeCompressed &tNode0 = *Level().AI.Node(dwStartNode), &tNode1 = *Level().AI.Node(dwFinishNode);
 	
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -27,19 +27,14 @@ IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 	return(_sqrt((float)(Level().AI.m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + Level().AI.m_fYSize2*_sqr(y2 - y1))));
 }
 
-IC u32 CAIMapShortestPathNode::dwfGetNodeEdgeCount(u32 dwNode)
+IC void CAIMapShortestPathNode::begin(u32 dwNode, CAIMapShortestPathNode::iterator &tIterator, CAIMapShortestPathNode::iterator &tEnd)
 {
-	return(Level().AI.Node(dwNode)->links);
+	tEnd = (tIterator = (NodeLink *)((BYTE *)Level().AI.Node(dwNode) + sizeof(NodeCompressed))) + Level().AI.Node(dwNode)->links;
 }
 
-IC u32 CAIMapShortestPathNode::dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
+IC u32 CAIMapShortestPathNode::get_value(CAIMapShortestPathNode::iterator &tIterator)
 {
-	return(Level().AI.UnpackLink(((NodeLink *)((BYTE *)Level().AI.Node(dwNode) + sizeof(NodeCompressed)))[dwNeighbourIndex]));
-}
-
-IC bool CAIMapShortestPathNode::bfCheckIfAccessible(u32 dwNode)
-{
-	return(true);
+	return(Level().AI.UnpackLink(*tIterator));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,19 +59,16 @@ IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 	return(fLight*m_fCriteriaLightWeight + fCover*m_fCriteriaCoverWeight + m_fCriteriaDistanceWeight*_sqrt((float)(Level().AI.m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + Level().AI.m_fYSize2*_sqr(y2 - y1))));
 }
 
-IC u32 CAIMapLCDPathNode::dwfGetNodeEdgeCount(u32 dwNode)
+IC void CAIMapLCDPathNode::begin(u32 dwNode, CAIMapLCDPathNode::iterator &tIterator, CAIMapLCDPathNode::iterator &tEnd)
 {
-	return(Level().AI.Node(dwNode)->links);
+	NodeCompressed *tpNode = Level().AI.Node(dwNode);
+	tIterator = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+	tEnd = tIterator + tpNode->links;
 }
 
-IC u32 CAIMapLCDPathNode::dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
+IC u32 CAIMapLCDPathNode::get_value(CAIMapLCDPathNode::iterator &tIterator)
 {
-	return(Level().AI.UnpackLink(((NodeLink *)((BYTE *)Level().AI.Node(dwNode) + sizeof(NodeCompressed)))[dwNeighbourIndex]));
-}
-
-IC bool CAIMapLCDPathNode::bfCheckIfAccessible(u32 dwNode)
-{
-	return(true);
+	return(Level().AI.UnpackLink(*tIterator));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -105,19 +97,11 @@ IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 	return(m_fCriteriaEnemyViewWeight*(_sqrt((float)(Level().AI.m_fSize2*(_sqr(x3 - x1) + _sqr(z3 - z1)) + Level().AI.m_fYSize2*_sqr(y3 - y1))) - m_fOptimalEnemyDistance) + fLight*m_fCriteriaLightWeight + fCover*m_fCriteriaCoverWeight + m_fCriteriaDistanceWeight*(float)sqrt((float)(Level().AI.m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + Level().AI.m_fYSize2*_sqr(y2 - y1))));
 }
 
-IC u32 CAIMapEnemyPathNode::dwfGetNodeEdgeCount(u32 dwNode)
+IC void CAIMapEnemyPathNode::begin(u32 dwNode, CAIMapEnemyPathNode::iterator &tIterator, CAIMapEnemyPathNode::iterator &tEnd)
 {
-	return(Level().AI.Node(dwNode)->links);
-}
-
-IC u32 CAIMapEnemyPathNode::dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
-{
-	return(Level().AI.UnpackLink(((NodeLink *)((BYTE *)Level().AI.Node(dwNode) + sizeof(NodeCompressed)))[dwNeighbourIndex]));
-}
-
-IC bool CAIMapEnemyPathNode::bfCheckIfAccessible(u32 dwNode)
-{
-	return(true);
+	NodeCompressed *tpNode = Level().AI.Node(dwNode);
+	tIterator = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+	tEnd = tIterator + tpNode->links;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -129,17 +113,9 @@ IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 	return(((AI::SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + Level().AI.m_tpaGraph[dwStartNode].dwEdgeOffset) + dwFinishNode)->fPathDistance);
 }
 
-IC u32 CAIGraphShortestPathNode::dwfGetNodeEdgeCount(u32 dwNode)
+IC void CAIGraphShortestPathNode::begin(u32 dwNode, CAIGraphShortestPathNode::iterator &tIterator, CAIGraphShortestPathNode::iterator &tEnd)
 {
-	return(Level().AI.m_tpaGraph[dwNode].dwNeighbourCount);
-}
-
-IC u32 CAIGraphShortestPathNode::dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex)
-{
-	return(((AI::SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + Level().AI.m_tpaGraph[dwNode].dwEdgeOffset) + dwNeighbourIndex)->dwVertexNumber);
-}
-
-IC bool CAIGraphShortestPathNode::bfCheckIfAccessible(u32 dwNode)
-{
-	return(true);
+	NodeCompressed *tpNode = Level().AI.Node(dwNode);
+	//tIterator = CAIGraphShortestPathNode::iterator((BYTE *)tpNode + sizeof(NodeCompressed));
+	tEnd = tIterator + tpNode->links;
 }

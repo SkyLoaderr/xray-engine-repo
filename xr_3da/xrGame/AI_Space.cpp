@@ -27,6 +27,7 @@ CAI_Space::CAI_Space	()
 
 	m_tpHeap					= 0;
 	m_tpIndexes					= 0;
+	m_dwAStarStaticCounter		= 0;
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate				();
@@ -111,29 +112,45 @@ void CAI_Space::Load(LPCSTR name)
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 	
-//	AI::Path		tPath;
-//	vector<u32>		tpPath;
-//	float			fDistance;
-//	m_tpLCDPath		= new CAStarSearch<CAIMapLCDPathNode>(MAX_NODES);
-//	vfLoadSearch();
-//	vfFindTheXestPath(77,67,tPath);
-//	u64 t1 = CPU::GetCycleCount();
-//	vfFindTheXestPath(77,67,tPath);
-//	u64 t2 = CPU::GetCycleCount();
-//	t2 -= t1;
-//	vfUnloadSearch();
-//	m_tpLCDPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,77,67,1000.f,fDistance,tpPath);
-//	u64 t1x = CPU::GetCycleCount();
-//	m_tpLCDPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,77,67,1000.f,fDistance,tpPath);
-//	u64 t2x = CPU::GetCycleCount();
-//	t2x -= t1x;
-//	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
-//	if (tPath.Nodes.size() != tpPath.size())
-//		Msg("different sizes!");
-//	else
-//		for (int i=0; i<(int)tpPath.size(); i++)
-//			if (tPath.Nodes[i] != tpPath[i])
-//				Msg("%d : %d -> %d",i,tPath.Nodes[i],tpPath[i]);
+	vector<u32>		tpPath1;
+	vector<u32>		tpPath2;
+	float			fDistance;
+	m_tpMapPath		= new CAStarSearch<CAIMapShortestPathNode>(MAX_NODES);
+	vfLoadSearch();
+	vfFindTheXestPath(77,2103,tpPath1);
+	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	Sleep				(1);
+	u64 t1 = CPU::GetCycleCount();
+	{
+	for (int i=0; i<10000; i++)
+		vfFindTheXestPath(77,2103,tpPath1);
+	}
+	u64 t2 = CPU::GetCycleCount();
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	t2 -= t1;
+	vfUnloadSearch();
+	m_tpMapPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,77,2103,1000.f,fDistance,tpPath2);
+	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	Sleep				(1);
+	u64 t1x = CPU::GetCycleCount();
+	{
+	for (int i=0; i<10000; i++)
+		m_tpMapPath->vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,77,2103,1000.f,fDistance,tpPath2);
+	}
+	u64 t2x = CPU::GetCycleCount();
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	t2x -= t1x;
+	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
+	if (tpPath1.size() != tpPath2.size())
+		Msg("different sizes!");
+	else
+		for (int i=0; i<(int)tpPath1.size(); i++)
+			if (tpPath1[i] != tpPath2[i])
+				Msg("%d : %d -> %d",i,tpPath1[i],tpPath2[i]);
 }
 
 void CAI_Space::Render()
@@ -443,4 +460,3 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 //		_FREE(tppMap[i]);
 //	_FREE(tppMap);
 //}
-

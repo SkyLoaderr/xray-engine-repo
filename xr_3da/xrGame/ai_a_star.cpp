@@ -27,6 +27,19 @@ SIndexNode	*tpaIndexes;
 
 #define OPTINAL_ENEMY_DISTANCE 40.f
 
+IC float ffCriteria1(NodeCompressed &tNode0, NodeCompressed &tNode1)
+{
+	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	float x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+	return(_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 1*fYSize2*_sqr(y2 - y1))));
+}
+
 IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1)
 {
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
@@ -170,7 +183,7 @@ float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	tpTemp->h = ffCriteria(mNodeStructure(dwStartNode),mNodeStructure(dwGoalNode));
 	tpTemp->tpOpenedPrev = tpOpenedList;
 	tpTemp->ucOpenCloseMask = OPEN_MASK;
-	ASSIGN_GOODNESS(tpTemp)
+	ASSIGN_GOODNESS(tpTemp);
 	
 	while (tpOpenedList->tpOpenedNext) {
 		
@@ -683,3 +696,177 @@ float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }
+
+float CAI_Space::vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpResult)
+{
+	Device.Statistic.AI_Path.Begin();
+	// initialization
+	dwAStarStaticCounter++;
+
+	uint uiHeap = 0;
+
+	SNode  *tpOpenedList = taHeap + uiHeap++,
+		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
+		   *tpTemp1,
+		   *tpTemp2,
+		   *tpBestNode;
+	
+	memset(tpOpenedList,0,sizeof(SNode));
+	memset(tpTemp,0,sizeof(SNode));
+	
+	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
+
+	tpOpenedList->tpOpenedNext = tpTemp;
+	tpTemp->iIndex = dwStartNode;
+	tpTemp->g = 0.0;
+	tpTemp->h = ffCriteria1(mNodeStructure(dwStartNode),mNodeStructure(dwGoalNode));
+	tpTemp->tpOpenedPrev = tpOpenedList;
+	tpTemp->ucOpenCloseMask = OPEN_MASK;
+	ASSIGN_GOODNESS(tpTemp);
+	
+	while (tpOpenedList->tpOpenedNext) {
+		
+		// finding the node being estimated as the cheapest among the opened ones
+		tpBestNode = tpOpenedList->tpOpenedNext;
+		
+		// remove that node from the opened list and put that node to the closed list
+		tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
+		if (tpBestNode->tpOpenedNext)
+			tpBestNode->tpOpenedNext->tpOpenedPrev = tpOpenedList;
+		tpBestNode->ucOpenCloseMask = 0;
+
+		// check if that node is our goal
+		if (tpBestNode->iIndex == (int)dwGoalNode) {
+
+			float fDistance = 0.0;
+			tpTemp1 = tpBestNode;
+			tpTemp = tpTemp1->tpBack;
+			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
+
+			tpResult.resize(i);
+
+			tpTemp1 = tpBestNode;
+			tpResult[--i] = tpBestNode->iIndex;
+			tpTemp = tpTemp1->tpBack;
+			for (uint j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
+				tpResult[i - j] = tpTemp->iIndex;
+				
+			Device.Statistic.AI_Path.End();
+			return(fDistance);
+		}
+		
+		NodeLink *taLinks = (NodeLink *)((uchar *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
+		for (int i=0, iNodeIndex, iCount = mNode(tpBestNode->iIndex)->links; i<iCount; i++) {
+			// checking if that node is in the path of the BESTNODE ones
+			iNodeIndex = this->UnpackLink(taLinks[i]);
+			// checking if that node the node of the moving object 
+//				if (q_mark[iNodeIndex])
+//					continue;
+			// checking if that node is in the path of the BESTNODE ones
+			if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
+				bool bOk = true;
+				tpTemp = tpaIndexes[iNodeIndex].tpNode;
+				if (!(tpTemp->ucOpenCloseMask)) {
+					int iBestIndex = tpBestNode->iIndex;
+					tpTemp2 = tpTemp->tpForward;
+					while (tpTemp2) {
+						if (tpTemp2->iIndex == iBestIndex) {
+							bOk = false;
+							break;
+						}
+						tpTemp2 = tpTemp2->tpForward;
+					}
+					if (!bOk)
+						continue;
+				}
+				
+				// initialize node
+				float dG = tpBestNode->g + ffCriteria1(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex));
+				
+				// check if this node is already in the opened list
+				if (tpTemp->ucOpenCloseMask) {
+					if (tpTemp->g > dG) {
+						tpTemp->g = dG;
+						ASSIGN_GOODNESS(tpTemp)
+						tpTemp->tpBack = tpBestNode;
+						if (tpTemp->tpOpenedPrev->f > tpTemp->f) {
+							tpTemp->tpOpenedPrev->tpOpenedNext = tpTemp->tpOpenedNext;
+							if (tpTemp->tpOpenedNext)
+								tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
+							float dTemp = tpTemp->f;
+							tpTemp1 = tpTemp;
+							for (tpTemp = tpTemp->tpOpenedPrev; tpTemp; tpTemp = tpTemp->tpOpenedPrev)
+								if (tpTemp->f <= dTemp) {
+									tpTemp1->tpOpenedNext = tpTemp->tpOpenedNext;
+									tpTemp1->tpOpenedPrev = tpTemp;
+									if (tpTemp->tpOpenedNext)
+										tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp1;
+									tpTemp->tpOpenedNext = tpTemp1;
+									break;
+								}
+						}
+					}
+					continue;
+				}
+
+				if (!(tpTemp->ucOpenCloseMask)) {
+					if (tpTemp->g > dG) {
+						vfUpdateSuccessors(tpTemp,tpTemp->g - dG);
+						tpTemp->g = dG;
+						ASSIGN_GOODNESS(tpTemp)
+						tpTemp->tpBack = tpBestNode;
+					}
+					continue;
+				}
+			}
+			else {
+				tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
+				tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
+				//*(u32 *)(tpTemp2) = 0;
+				tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
+
+				tpTemp2->iIndex = iNodeIndex;
+				tpTemp2->tpBack = tpBestNode;
+				tpTemp2->g = tpBestNode->g + ffCriteria1(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex));
+
+				// put that node to the opened list if wasn't found there and in the closed one
+				tpTemp2->h = ffCriteria1(mNodeStructure(dwGoalNode),mNodeStructure(iNodeIndex));
+				ASSIGN_GOODNESS(tpTemp2)
+				
+				tpTemp  = tpOpenedList;
+				tpTemp1 = tpOpenedList->tpOpenedNext;
+				float dTemp = tpTemp2->f;
+				bool bOk = false;
+				while (tpTemp1) {
+					if (tpTemp1->f >= dTemp) {
+						tpTemp2->tpOpenedNext = tpTemp1;
+						tpTemp2->tpOpenedPrev = tpTemp;
+						tpTemp->tpOpenedNext = tpTemp2;
+						tpTemp1->tpOpenedPrev = tpTemp2;
+						bOk = true;
+						break;
+					}
+					tpTemp  = tpTemp1;
+					tpTemp1 = tpTemp1->tpOpenedNext;
+				}
+				if (!bOk) {
+					tpTemp->tpOpenedNext = tpTemp2;
+					tpTemp2->tpOpenedPrev = tpTemp;
+				}
+				tpTemp2->ucOpenCloseMask = OPEN_MASK;
+				
+				// make it a BESTNODE successor
+				tpTemp1 = tpBestNode->tpForward;
+				tpBestNode->tpForward = tpTemp2;
+				tpTemp2->tpNext = tpTemp1;
+			}
+		}
+		if (uiHeap > MAX_NODES)
+			break;
+	}
+	
+	tpResult.clear();
+	Device.Statistic.AI_Path.End();
+	return(MAX_VALUE);
+}
+

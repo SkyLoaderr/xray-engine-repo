@@ -1528,6 +1528,12 @@
 			Filter="">
 			<File
 				RelativePath=".\AI_Space.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\AI_Space.h">
@@ -1543,6 +1549,12 @@
 			</File>
 			<File
 				RelativePath=".\ai_a_star.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\ai_a_star.h">

@@ -26,19 +26,14 @@ typedef struct tagSIndexNode {
 	SNode		*tpNode;
 	u32			dwTime;
 } SIndexNode;
-
-class CTemplateNode {
-public:
-	float	ffEvaluate(u32 dwStartNode, u32 dwFinishNode) {};
-	u32		dwfGetNodeEdgeCount(u32 dwNode){};
-	u32		dwfGetNodeNeighbour(u32 dwNode, u32 dwNeighbourIndex){};
-};
+#pragma pack(pop)
 
 template<class CTemplateNode> class CAStarSearch {
 
 private:
-	u32			m_dwAStarStaticCounter;
+
 	u32			m_dwMaxNodeCount;
+	u32			dwAStarStaticCounter;
 
 	IC void vfUpdateSuccessors(SNode *tpList, float dDifference)
 	{
@@ -76,13 +71,14 @@ private:
 public:
 	CAStarSearch(u32 dwMaxNodeCount)
 	{
-		m_dwAStarStaticCounter	= 0;
 		m_dwMaxNodeCount		= dwMaxNodeCount;
+		dwAStarStaticCounter	= 0;
 	}
 	
 	void vfFindOptimalPath(
 			SNode	*tpHeap,
 			SIndexNode	*tpIndexes,
+			u32 &dwAStarStaticCounter1,
 			u32 dwStartNode, 
 			u32 dwGoalNode, 
 			float fMaxValue, 
@@ -92,10 +88,10 @@ public:
 		Device.Statistic.AI_Path.Begin();
 		
 		// initialization
-		m_dwAStarStaticCounter++;
+		dwAStarStaticCounter++;
 
-		u32		dwHeap = 0;
-		CTemplateNode	tTemplateNode;
+		u32					dwHeap = 0;
+		CTemplateNode		tTemplateNode;
 
 		SNode  *tpOpenedList = tpHeap + dwHeap++,
 			*tpTemp       = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
@@ -106,7 +102,7 @@ public:
 		memset(tpOpenedList,0,sizeof(SNode));
 		memset(tpTemp,0,sizeof(SNode));
 		
-		tpIndexes[dwStartNode].dwTime = m_dwAStarStaticCounter;
+		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
 		tpOpenedList->tpOpenedNext = tpTemp;
 		tpTemp->iIndex = dwStartNode;
@@ -147,14 +143,18 @@ public:
 				return;
 			}
 			
-			for (int i=0, iBestIndex = tpBestNode->iIndex, iCount = tTemplateNode.dwfGetNodeEdgeCount(iBestIndex); i<iCount; i++) {
+			int iBestIndex = tpBestNode->iIndex;
+			CTemplateNode::iterator tIterator;
+			CTemplateNode::iterator tEnd;
+			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
+			for (  ; tIterator != tEnd; tIterator++) {
 				// checking if that node is in the path of the BESTNODE ones
-				int iNodeIndex = tTemplateNode.dwfGetNodeNeighbour(iBestIndex,i);
+				int iNodeIndex = tTemplateNode.get_value(tIterator);
 				// checking if that node the node of the moving object 
 				if (!tTemplateNode.bfCheckIfAccessible(iNodeIndex))
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				if (tpIndexes[iNodeIndex].dwTime == m_dwAStarStaticCounter) {
+				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
 					if (!(tpTemp->ucOpenCloseMask)) {
@@ -214,7 +214,7 @@ public:
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
 					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
 					//*(u32 *)(tpTemp2) = 0;
-					tpIndexes[iNodeIndex].dwTime = m_dwAStarStaticCounter;
+					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
