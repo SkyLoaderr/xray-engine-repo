@@ -54,8 +54,9 @@ end
 -- Dialog & InfoPortions Function                                                                                                    
 --------------------------------------------------------------------------------------------------------
 function give_weapon_to_loser(first_speaker, second_speaker)
-	printf("%s", first_speaker:name())
-	printf("%s", second_speaker:name())
+	printf("looser")
+	printf("LOOSER %s", first_speaker:name())
+	printf("LOOSER %s", second_speaker:name())
 
 --	if(second_speaker:object("wpn_ak74")) then
 --		wpn = second_speaker:object("wpn_ak74")
@@ -65,3 +66,6 @@ function give_weapon_to_loser(first_speaker, second_speaker)
 --	second_speaker:transfer_item (wpn, first_speaker)
 end
 
+function break_dialog(first_speaker, second_speaker)
+		second_speaker:stop_talk()
+end
