@@ -23,6 +23,7 @@
 #include "../skeletonanimated.h"
 #include "client_spawn_manager.h"
 #include "CharacterPhysicsSupport.h"
+#include "Grenade.h"
 
 #include "actor_anim_defs.h"
 
@@ -1663,6 +1664,8 @@ void	CActor::Check_for_AutoPickUp()
 		ISpatial*		spatial	= ISpatialResult[o_it];
 		CInventoryItem*	pIItem	= smart_cast<CInventoryItem*> (spatial->dcast_CObject        ());
 		if (0 == pIItem) continue;
+		CGrenade*	pGrenade	= smart_cast<CGrenade*> (pIItem);
+		if (pGrenade) continue;
 
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
