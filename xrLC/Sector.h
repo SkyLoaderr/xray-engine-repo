@@ -15,7 +15,6 @@ class CSector
 	vector<WORD>		Lights;
 public: 
 	void add_portal		(WORD P)		{ Portals.push_back(P);		}
-	void add_occluder	(b_occluder& O)	{ Occluders.push_back(O);	}
 	void add_glow		(WORD G)		{ Glows.push_back(G);		}
 	void add_light		(WORD L)		{ Lights.push_back(L);		}
 
