@@ -88,6 +88,35 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			*I					= l_tpAbstract->ID;
 		}
 	}
+	else {
+		CSE_ALifeTraderAbstract	*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(i);
+		if (l_tpALifeTraderAbstract) {
+			CSE_Abstract		*l_tpAbstract = F_entity_Create("device_pda");
+			R_ASSERT			(l_tpAbstract);
+			CSE_ALifeDynamicObject *l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
+			R_ASSERT			(l_tpALifeDynamicObject);
+
+			// Fill
+			strcpy						(l_tpAbstract->s_name,"device_pda");
+			l_tpAbstract->s_gameid		=	u8(GameID());
+			l_tpAbstract->s_RP			=	0xff;
+			l_tpAbstract->ID			=	0xffff;
+			l_tpAbstract->ID_Parent		=	l_tpALifeTraderAbstract->ID;
+			l_tpAbstract->ID_Phantom	=	0xffff;
+			l_tpAbstract->o_Position	=	l_tpALifeTraderAbstract->o_Position;
+			strcpy						(l_tpAbstract->s_name_replace,l_tpAbstract->s_name);
+			if (l_tpAbstract->ID < 1000)
+				strcat					(l_tpAbstract->s_name_replace,"0");
+			if (l_tpAbstract->ID < 100)
+				strcat					(l_tpAbstract->s_name_replace,"0");
+			if (l_tpAbstract->ID < 10)
+				strcat					(l_tpAbstract->s_name_replace,"0");
+			string16					S1;
+			strcat						(l_tpAbstract->s_name_replace,itoa(l_tpAbstract->ID,S1,10));
+			CSE_ALifeObjectRegistry::Add(l_tpALifeDynamicObject);
+			vfUpdateDynamicData			(l_tpALifeDynamicObject);
+		}
+	}
 }
 
 void CSE_ALifeSimulator::vfGenerateAnomalousZones()
