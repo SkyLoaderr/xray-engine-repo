@@ -58,12 +58,6 @@ void CPHShell::EnableObject()
 }
 void CPHShell::DisableObject()
 {
-	if(!b_contacts_saved) 
-	{
-		//SaveContacts(m_saved_contacts);
-		b_contacts_saved=true;
-	}
-	
 	CPHObject::Deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
 }
@@ -71,7 +65,7 @@ void CPHShell::DisableObject()
 void CPHShell::ReanableObject()
 {
 	//if(b_contacts_saved) dJointGroupEmpty(m_saved_contacts);
-	b_contacts_saved=false;
+	//b_contacts_saved=false;
 }
 
 void CPHShell::setDensity(float M)
@@ -176,18 +170,28 @@ void CPHShell::Update(){
 
 void	CPHShell::Freeze()
 {
-	//was_enabled_before_freeze=CPHObject::IsActive();
-	ELEMENT_I i=elements.begin(),e=elements.end();
-	for(; e!=i ;++i)
-		(*i)->Freeze();
-	///DisableObject();
+	CPHObject::Freeze();
 }
 void	CPHShell::UnFreeze()
 {
+	CPHObject::UnFreeze();
+}
+void	CPHShell::FreezeContent()
+{
+	
+	CPHObject::FreezeContent();
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		(*i)->Freeze();
+	
+}
+void	CPHShell::UnFreezeContent()
+{
+	CPHObject::UnFreezeContent();
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(; e!=i ;++i)
 		(*i)->UnFreeze();
-	//if(was_enabled_before_freeze) EnableObject();
+	
 }
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;

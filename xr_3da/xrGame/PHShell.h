@@ -17,9 +17,6 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	ELEMENT_STORAGE			elements;
 	JOINT_STORAGE			joints;
 	dSpaceID			    m_space;
-	bool					b_contacts_saved;		//e					//aux
-	dJointGroupID			m_saved_contacts;		//e					//bt
-	bool					was_enabled_before_freeze;
 	CPHShellSplitterHolder* m_spliter_holder;
 public:
 	Fmatrix					m_object_in_root;
@@ -131,6 +128,8 @@ public:
 	virtual	void				PhTune						(dReal step);
 
 	virtual void				InitContact					(dContact* c,bool &do_collide){};
+	virtual void				FreezeContent				();
+	virtual void				UnFreezeContent				();
 	virtual void				Freeze						();
 	virtual void				UnFreeze					();
 	virtual void				StepFrameUpdate				(dReal step){};

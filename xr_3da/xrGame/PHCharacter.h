@@ -50,8 +50,8 @@ dVector3 m_safe_position;
 
 
 public:
-	virtual void		Freeze								();
-	virtual void		UnFreeze							();
+	virtual void		FreezeContent						();
+	virtual void		UnFreezeContent						();
 	virtual	dBodyID		get_body							()															{return m_body;}
 	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				

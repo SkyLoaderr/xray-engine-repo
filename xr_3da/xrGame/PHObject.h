@@ -15,6 +15,7 @@ class CPHObject :
 	DECLARE_PHLIST_ITEM(CPHObject)
 				//PH_OBJECT_I m_ident;
 				bool		b_activated;
+				bool		b_freezed;
 				bool		b_dirty;
 								
 protected:
@@ -27,15 +28,18 @@ protected:
 	virtual		void		spatial_register	()								;
 
 public:
-	virtual	void EnableObject	()												;
-	virtual void PhDataUpdate	(dReal step)									=0;
-	virtual void PhTune			(dReal step)									=0;
-	virtual	void spatial_move	()												;
+	virtual		void		FreezeContent		()								;
+	virtual		void		UnFreezeContent		()								;
+	virtual		void EnableObject	()											;
+	virtual 	void PhDataUpdate	(dReal step)								=0;
+	virtual 	void PhTune			(dReal step)								=0;
+	virtual		void spatial_move	()											;
 
-	virtual void InitContact	(dContact* c,bool& do_collide)					=0;
+	virtual 	void InitContact	(dContact* c,bool& do_collide)				=0;
 	
-	virtual void Freeze			()												=0;
-	virtual void UnFreeze		()												=0;
+				void Freeze			()											;
+				void UnFreeze		()											;
+
 	//virtual void StepFrameUpdate(dReal step)=0;
 
 
@@ -44,7 +48,7 @@ public:
 	IC	bool	IsActive		()												{return b_activated;}
 	void		Deactivate		()												;
 	void		Collide			()					;
-	void		SaveContacts	(dJointGroupID jointGroup)						;
+
 
 };
 

@@ -52,6 +52,14 @@ template<class T>
 				item->next=0;
 				size++;
 			}
+			void			move_items		(CPHItemList<T>& sourse_list)
+			{
+				*(last_tome)=sourse_list.first_next;
+				sourse_list.first_next->tome= last_tome;
+				last_tome=sourse_list.last_tome;
+				size+=sourse_list.size;
+				sourse_list.empty();
+			}
 			void			erase			(iterator i)
 			{
 				T* item=*i;

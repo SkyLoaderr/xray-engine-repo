@@ -8,12 +8,14 @@ DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
 	CPHObject::CPHObject()
 {
 	b_activated=false;
+	b_freezed =false;
 	spatial.type|=STYPE_PHYSIC;
 }
 
 void CPHObject::Activate()
 {
 	if(b_activated)return;
+	if(b_freezed)	UnFreeze();
 	ph_world->AddObject(this);
 	b_activated=true;
 
@@ -59,22 +61,13 @@ void CPHObject::Collide()
 	//near_callback(this,0,(dGeomID)dSpace(),ph_world->GetMeshGeom());
 }
 
-void CPHObject::SaveContacts(dJointGroupID jointGroup)
+void CPHObject::FreezeContent()
 {
-	spatial_move();
-
-	g_SpatialSpace->q_box(0,STYPE_PHYSIC,spatial.center,AABB);
-	qResultVec& result=g_SpatialSpace->q_result;
-	qResultIt i=result.begin(),e=result.end();
-	for(;i!=e;++i)
-	{
-
-		CPHObject* obj2=static_cast<CPHObject*>(*i);
-		if(obj2==this)				continue;
-		::SaveContacts(this,obj2,(dGeomID)dSpace(),(dGeomID)obj2->dSpace(),jointGroup);
-	}
-	///////////////////////////////
-	SaveContactsStatic((dGeomID)dSpace(),jointGroup);
+	b_freezed=true;
+}
+void CPHObject::UnFreezeContent()
+{
+	b_freezed=false;
 }
 
 void CPHObject::spatial_register()
@@ -84,14 +77,33 @@ void CPHObject::spatial_register()
 	b_dirty=true;
 }
 
+
+void CPHObject::Freeze()
+{
+	if(!b_activated)return;
+	Deactivate();
+	ph_world->AddFreezedObject(this);
+	FreezeContent();
+}
+
+void CPHObject::UnFreeze()
+{
+	if(!b_activated) return;
+	UnFreezeContent();
+	ph_world->RemoveFreezedObject(this);
+	Activate();
+}
+
 CPHUpdateObject::CPHUpdateObject()
 {
 	b_activated=false;
+
 }
 
 void CPHUpdateObject::Activate()
 {
 	if(b_activated)return;
+
 	ph_world->AddUpdateObject(this);
 	b_activated=true;
 }

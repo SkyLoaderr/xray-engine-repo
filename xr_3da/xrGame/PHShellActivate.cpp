@@ -37,8 +37,8 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	bActive=true;
 	bActivating=true;
 	spatial_register();
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 }
 
 
@@ -64,8 +64,8 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 	bActive=true;
 	bActivating=true;
 	spatial_register();
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 }
 
 
@@ -94,8 +94,8 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 	bActive=true;
 	bActivating=true;
 	spatial_register();
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 }
 
 
@@ -124,8 +124,8 @@ void CPHShell::Build(bool place_current_forms/*true*/,bool disable/*false*/)
 		for(;i!=e;++i) (*i)->Activate();
 	}	
 	spatial_register();
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 }
 
 void CPHShell::RunSimulation(bool place_current_forms/*true*/)
@@ -161,8 +161,8 @@ void CPHShell::PureActivate()
 	dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
 	EnableObject();
 	spatial_register();
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 	//if(m_spliter_holder)m_spliter_holder->Activate();
 	m_object_in_root.identity();
 }
@@ -200,7 +200,7 @@ void CPHShell::Deactivate(){
 	bActive=false;
 	bActivating=false;
 	spatial_unregister();
-	dJointGroupDestroy(m_saved_contacts);
-	b_contacts_saved=false;
+	//dJointGroupDestroy(m_saved_contacts);
+	//b_contacts_saved=false;
 	ZeroCallbacks();
 }

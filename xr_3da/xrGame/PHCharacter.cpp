@@ -39,13 +39,18 @@ CPHCharacter::~CPHCharacter(void)
 
 }
 
-void	CPHCharacter::Freeze()
+void	CPHCharacter::FreezeContent()
 {
-	was_enabled_before_freeze=CPHObject::IsActive();//!!dBodyIsEnabled(m_body);
+	
 	dBodyDisable(m_body);
-	CPHObject::Deactivate();
+	CPHObject::FreezeContent();
 }
+void	CPHCharacter::UnFreezeContent()
+{
 
+	dBodyEnable(m_body);
+	CPHObject::UnFreezeContent();
+}
 void	CPHCharacter::getForce(Fvector& force)
 {
 	if(!b_exist)return;
@@ -56,14 +61,7 @@ void	CPHCharacter::setForce(const Fvector &force)
 	if(!b_exist)return;
 	dBodySetForce(m_body,force.x,force.y,force.z);
 }
-void	CPHCharacter::UnFreeze()
-{
-	if(was_enabled_before_freeze)
-	{
-		dBodyEnable(m_body);
-		CPHObject::Activate();
-	}
-}
+
 
 void CPHCharacter::get_State(SPHNetState& state)
 {

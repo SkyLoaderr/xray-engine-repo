@@ -26,6 +26,7 @@ class CPHWorld	: public pureFrame
 
 	CPHMesh						Mesh														;
 	PH_OBJECT_STORAGE			m_objects													;
+	PH_OBJECT_STORAGE			m_freezed_objects											;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
 public:
 	u64							m_steps_num													;
@@ -53,6 +54,8 @@ IC	dSpaceID					GetSpace						()			{return Space;}	;
 	void						Step							()							;
 	void 						Freeze							()							;
 	void 						UnFreeze						()							;
+	void						AddFreezedObject				(CPHObject* obj)				;
+	void						RemoveFreezedObject				(PH_OBJECT_I i)				;
 	bool 						IsFreezed						()							;
 	u32							CalcNumSteps			(u32 dTime)							;
 	void 						Render							()							;

@@ -262,23 +262,35 @@ void CPHWorld::RemoveUpdateObject(PH_UPDATE_OBJECT_I i)
 void CPHWorld::RemoveObject(PH_OBJECT_I i){
 	m_objects.erase((i));
 };
+
+void CPHWorld::AddFreezedObject(CPHObject* obj)
+{
+	m_freezed_objects.push_back(obj);
+}
+
+void CPHWorld::RemoveFreezedObject(PH_OBJECT_I i)
+{
+	m_freezed_objects.erase(i);
+}
 void CPHWorld::Freeze()
 {
 	R_ASSERT2(!b_world_freezed,"already freezed!!!");
-	PH_OBJECT_I iter=m_objects.begin(),
-		e=	m_objects.end()	;
+	m_freezed_objects.move_items(m_objects);
+	PH_OBJECT_I iter=m_freezed_objects.begin(),
+		e=	m_freezed_objects.end()	;
 
 	for(; e != iter;++iter)
-		(*iter)->Freeze();
+		(*iter)->FreezeContent();
 	b_world_freezed=true;
 }
 void CPHWorld::UnFreeze()
 {
 	R_ASSERT2(b_world_freezed,"is not freezed!!!");
-	PH_OBJECT_I iter=m_objects.begin(),
-		e=	m_objects.end()	;
+	PH_OBJECT_I iter=m_freezed_objects.begin(),
+		e=	m_freezed_objects.end()	;
 	for(; e != iter;++iter)
-		(*iter)->UnFreeze();	
+		(*iter)->UnFreezeContent();
+	m_objects.move_items(m_freezed_objects);
 	b_world_freezed=false;
 }
 bool CPHWorld::IsFreezed()
