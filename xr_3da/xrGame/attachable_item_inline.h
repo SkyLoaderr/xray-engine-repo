@@ -19,7 +19,7 @@ IC	void CAttachableItem::init						()
 	m_bone_name			= "";
 }
 
-IC	LPCSTR CAttachableItem::bone_name				() const
+IC	ref_str CAttachableItem::bone_name				() const
 {
 	return				(m_bone_name);
 }
