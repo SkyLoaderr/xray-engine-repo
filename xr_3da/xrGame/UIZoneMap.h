@@ -5,7 +5,7 @@
 #include "uistaticitem.h"
 #include "uidynamicitem.h"
 
-class CEntity;
+class CActor;
 
 class CUIZoneMap
 {
@@ -39,7 +39,7 @@ public:
 	void			SetHeading		(float angle);
 	void			Init			();
 
-	void			UpdateRadar		(CEntity* Actor);
+	void			UpdateRadar		(CActor* Actor);
 
 	void			SetScale		(float scale)						{m_fScale = scale;}
 	float			GetScale		()									{return m_fScale;}

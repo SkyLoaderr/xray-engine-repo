@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "uizonemap.h"
-#include "entity.h"
+
 #include "hudmanager.h"
 
 #include "levelFogOfWar.h"
@@ -15,6 +15,8 @@
 #include "Grenade.h"
 #include "level.h"
 #include "game_cl_base.h"
+
+#include "actor.h"
 
 #define MAX_VIEW_DISTANCE 50.f
 #define VIEW_DISTANCE	(MAX_VIEW_DISTANCE/m_fScale)
@@ -177,10 +179,8 @@ void CUIZoneMap::EntityOut(float diff, u32 color, const Ivector2& pt)
 
 int x_m_x = 0;
 int x_m_z = 0;
-void CUIZoneMap::UpdateRadar(CEntity* Actor)
+void CUIZoneMap::UpdateRadar(CActor* pActor)
 {
-	CActor* pActor = dynamic_cast<CActor*>(Actor);
-
 	entity.Clear		();
 	entity_up.Clear		();
 	entity_down.Clear	();
@@ -189,7 +189,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 
 	Fmatrix LM,T;
 	T.rotateY			(heading); 
-	T.translate_over	(Actor->Position());
+	T.translate_over	(pActor->Position());
 	LM.invert			(T);
 
 
@@ -201,7 +201,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 		Ivector2 pt;
 		bool b;
 		ConvertToLocal(LM, (*it).pos, pt, map_radius, b);
-		diff = (*it).pos.y - Actor->Position().y;
+		diff = (*it).pos.y - pActor->Position().y;
 		EntityOut(diff, (*it).color, pt);
 	};
 
@@ -231,21 +231,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 		if(map_location.attached_to_object)
 		{
 			pObject = Level().Objects.net_Find	(map_location.object_id);
-
-			CEntityAlive* pEntityAlive = NULL;
 			//если объект и мы его не взяли себе в инвентарь
-			if(pObject && pObject->H_Parent() != dynamic_cast<CObject*>(Actor))
+			if(pObject && !(pObject->H_Parent() && pObject->H_Parent()->ID() == pActor->ID()))
 			{
-				pEntityAlive = dynamic_cast<CEntityAlive*>(pObject);
-
-/*				if(pEntityAlive)
-				{
-					if(ALife::eRelationTypeEnemy == pActor->tfGetRelationType(pEntityAlive))
-						entity_color = COLOR_FRIEND;
-					else
-						entity_color = COLOR_ENEMY;
-				}*/
-	
 				src.x = pObject->Position().x;
 				src.y = 0;
 				src.z = pObject->Position().z;
@@ -304,14 +292,17 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 
 
 	// draw self
-	bool b;
-	ConvertToLocal	(LM,Actor->Position(),P, map_radius, b);
+/*	bool b;
+	ConvertToLocal	(LM,pActor->Position(),P, map_radius, b);
 	entity.Out		(map_center.x,P.y,COLOR_SELF);
+*/
+	entity.Out		(map_center.x, map_center.y,COLOR_SELF);
 
 	/////////////////////
 	// calc coord for the part of the landscape texture to show
-	float map_x = Actor->Position().x;
-	float map_y = Actor->Position().z;
+
+	float map_x = pActor->Position().x;
+	float map_y = pActor->Position().z;
 
 	float width = level_box.x2 - level_box.x1;
 	float height = level_box.z2 - level_box.z1;
