@@ -86,7 +86,7 @@ private:
 	}
 IC	void					UpdateInterpolation				()																				//interpolation called from ph update visual influent
 	{
-		VERIFY(dBodyStateValide(m_body));
+		///VERIFY(dBodyStateValide(m_body));
 		m_body_interpolation.UpdatePositions();
 		m_body_interpolation.UpdateRotations();
 		bUpdate=true;

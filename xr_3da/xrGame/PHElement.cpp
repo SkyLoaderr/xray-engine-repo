@@ -585,7 +585,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		);
 
 	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
-	VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
+	VERIFY2(dV_valid(dBodyGetQuaternion(m_body)),"invalid body rotation");
 	UpdateInterpolation				();
 
 }
@@ -799,7 +799,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 
 	if(!m_parent_element)
 	{
-		VERIFY(dBodyStateValide(m_body));
+	
 		m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
 		VERIFY(_valid(m_shell->mXFORM));
 	}
@@ -808,7 +808,6 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 
 	{
 		InterpolateGlobalTransform(&mXFORM);
-		VERIFY(_valid(m_shell->mXFORM));
 		parent.set(m_shell->mXFORM);
 		parent.invert();
 		mXFORM.mulA(parent);
