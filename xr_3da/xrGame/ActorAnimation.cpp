@@ -202,7 +202,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			PKinematics(Visual())->PlayCycle(m_anims.m_dead_stop);
 		}
 	}
-#ifdef _DEBUG
+#ifdef DEBUG
 	string128 buf;
 	strcpy(buf,"");
 	if (mstate_rl&mcAccel)		strcat(buf,"Accel ");

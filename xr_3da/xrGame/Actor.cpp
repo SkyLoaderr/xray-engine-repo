@@ -1303,7 +1303,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	}
 
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	string128 buf;
 	HUD().pFontSmall->SetColor(0xffffffff);
 	HUD().pFontSmall->OutSet	(120,530);
