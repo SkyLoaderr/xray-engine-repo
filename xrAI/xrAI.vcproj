@@ -506,9 +506,6 @@
 				Name="Spawn"
 				Filter="">
 				<File
-					RelativePath="clsid_game.h">
-				</File>
-				<File
 					RelativePath="xr_spawn_merge.cpp">
 				</File>
 				<File
@@ -522,6 +519,9 @@
 					</File>
 					<File
 						RelativePath="NET_utils.h">
+					</File>
+					<File
+						RelativePath="clsid_game.h">
 					</File>
 					<File
 						RelativePath="game_base.h">
