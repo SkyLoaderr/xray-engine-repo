@@ -19,5 +19,10 @@
 		<text>Default tips</text>
 		<text ln="rus">Помни! Помогая раненым, ты помогаешь самому себе.</text>
 	</string>
+
+	<string id="tutorial_trader_give_medikit">
+		<text>Default tips</text>
+		<text ln="rus">Дай аптечку этому придурку.</text>
+	</string>
 	
 </string_table>
