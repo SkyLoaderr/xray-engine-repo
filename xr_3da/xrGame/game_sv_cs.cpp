@@ -118,12 +118,12 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 		ps_killer->money_total	+=	500;
 		ps_killer->kills			+=	1;
 
-		// Check if there is no opponents left
-		u32 alive					=	get_alive_count	(ps_killed->team);
-		if (0==alive) {
-			OnTeamScore(ps_killer->team);
-			OnRoundEnd("ENEMY_quelled");
-		}
+	}
+	// Check if there is no opponents left
+	u32 alive					=	get_alive_count	(ps_killed->team);
+	if (0==alive) {
+		OnTeamScore(ps_killer->team);
+		OnRoundEnd("ENEMY_quelled");
 	}
 
 	// Drop everything
