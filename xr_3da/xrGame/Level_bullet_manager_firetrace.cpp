@@ -83,7 +83,7 @@ private:
 };
 
 
-void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, Fvector& vNormal)
+void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, Fvector& vNormal, bool ShowMark)
 {
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
 
@@ -91,20 +91,6 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 
 	if (R.O)
 	{
-		//на текущем актере отметок не ставим
-		if(Level().CurrentEntity()->ID() == R.O->ID()) return;
-
-		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
-						NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
-
-		if (pWallmarkShader)
-		{
-			//добавить отметку на материале
-			::Render->add_SkeletonWallmark	(&R.O->renderable.xform, 
-							PKinematics(R.O->Visual()), *pWallmarkShader,
-							bullet->pos, bullet->dir, bullet->wallmark_size);
-		}
-
 		particle_dir = vDir;
 		particle_dir.invert();
 
@@ -114,8 +100,8 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 		if(skeletion)
 		{
 			xr_vector<CCF_OBB>::iterator it = std::find_if(skeletion->_GetElements().begin(),
-												skeletion->_GetElements().end(),
-												CFindByIDPred(R.element));
+				skeletion->_GetElements().end(),
+				CFindByIDPred(R.element));
 			VERIFY(skeletion->_GetElements().end() != it);
 			CCF_OBB& ccf_obb = *it;
 			vNormal.sub(vEnd, ccf_obb.OBB.m_translate);
@@ -124,6 +110,20 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 			else
 				vNormal = particle_dir;
 		}
+
+		//на текущем актере отметок не ставим
+		if(Level().CurrentEntity()->ID() == R.O->ID()) return;
+
+		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
+						NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+
+		if (pWallmarkShader && ShowMark)
+		{
+			//добавить отметку на материале
+			::Render->add_SkeletonWallmark	(&R.O->renderable.xform, 
+							PKinematics(R.O->Visual()), *pWallmarkShader,
+							bullet->pos, bullet->dir, bullet->wallmark_size);
+		}		
 	} 
 	else 
 	{
@@ -141,7 +141,7 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
 NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
 
-		if (pWallmarkShader)
+		if (pWallmarkShader && ShowMark)
 		{
 			//добавить отметку на материале
 			::Render->add_StaticWallmark	(*pWallmarkShader, vEnd,
@@ -153,7 +153,7 @@ NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
 NULL:&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
 
 	//проиграть звук
-	if(pSound)
+	if(pSound && ShowMark)
 	{
 		CObject* O = Level().Objects.net_Find(bullet->parent_id );
 		pSound->play_at_pos_unlimited(O, vEnd, false);
@@ -162,7 +162,7 @@ NULL:&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
 NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 
-	if(ps_name)
+	if(ps_name && ShowMark)
 	{
 		//отыграть партиклы попадания в материал
 		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
@@ -209,11 +209,8 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	
 	//визуальное обозначение попадание на объекте
 	Fvector hit_normal;
-	if (NeedShootmark)
-	{
-		FireShotmark(bullet, bullet->dir, end_point, R, target_material, hit_normal);
-	};
-
+	FireShotmark(bullet, bullet->dir, end_point, R, target_material, hit_normal, NeedShootmark);
+	
 	Fvector original_dir = bullet->dir;
 	float power, impulse;
 	std::pair<float,float> hit_result = ObjectHit(bullet, end_point, R, target_material, hit_normal);

@@ -133,7 +133,8 @@ protected:
 	void FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
 							 const Fvector &vEnd, collide::rq_result& R, 
 							 u16 target_material,
-							 Fvector& vNormal);
+							 Fvector& vNormal,
+							 bool ShowMark = true);
 
 	//просчет полета пули за некоторый промежуток времени
 	//принимается что на этом участке пуля движется прямолинейно
