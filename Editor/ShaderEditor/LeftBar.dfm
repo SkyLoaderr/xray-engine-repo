@@ -406,6 +406,7 @@ object fraLeftBar: TfraLeftBar
             ScrollTracking = True
             ShowLeafButton = False
             ShowLines = False
+            SortMode = smAddClick
             StoragePath = '\Tree'
             TabOrder = 1
             TabStop = True

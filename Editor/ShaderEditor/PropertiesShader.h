@@ -82,7 +82,7 @@ public:		// User declarations
     static void __fastcall SetModified(bool bFlag){ m_bModified=bFlag; }
 
     static void __fastcall InitProperties();
-    static void __fastcall FreezeUpdate(bool val){m_bFreeze=val;}
+    static void __fastcall FreezeUpdate(bool val){m_bFreeze=val; if (!val) InitProperties();}
 };
 //---------------------------------------------------------------------------
 #endif

@@ -182,13 +182,13 @@ void CShaderTools::UpdateObjectShader(bool bClearOnly){
     // apply this shader to non custom object
 	if (Engine.m_CurrentBlender&&m_EditObject&&!m_bCustomEditObject){
     	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
-	    if (0!=strcmp(surf->_ShaderName(),Engine.m_CurrentBlender->getName())){
+//	    if (0!=strcmp(surf->_ShaderName(),Engine.m_CurrentBlender->getName())){
     	    Device.Shader.Delete(surf->_Shader());
             string512 tex; strcpy(tex,surf->_Texture());
             for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
 	        surf->SetShader(Engine.m_CurrentBlender->getName(),bClearOnly?0:Device.Shader.Create(Engine.m_CurrentBlender->getName(),tex));
             UI.RedrawScene();
-    	}
+//    	}
     }
 }
 

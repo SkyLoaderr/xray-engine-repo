@@ -130,7 +130,7 @@ void CSHEngineTools::UpdateDeviceShaders()
 	Tools.UpdateObjectShader(true);
 	ResetCurrentBlender	();
     // save to temp file
-    Save				(TRUE);
+    SaveForRender		();
     // reset device shaders from temp file
     Device.Reset		(SHADER_FILENAME_TEMP,TRUE);
 	// restore current shader
@@ -218,7 +218,7 @@ void CSHEngineTools::Load(){
                 LPSTR blender_name = strdup(desc.cName);
                 pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
                 R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
-                fraLeftBar->AddBlender(desc.cName,true);
+                fraLeftBar->AddBlender(desc.cName);
                 chunk->Close	();
                 chunk_id++;
             }
@@ -234,16 +234,8 @@ void CSHEngineTools::Load(){
 	TfrmShaderProperties::FreezeUpdate(false);
 }
 
-void CSHEngineTools::Save(BOOL bForVisUpdate){
-	m_bUpdateCurrent			= false;
-
-	CollapseReferences();
-    // save
-	AnsiString fn 				= bForVisUpdate?SHADER_FILENAME_TEMP:SHADER_FILENAME_BASE;
-    FS.m_GameRoot.Update		(fn);
-
-    CFS_Memory F;
-
+void CSHEngineTools::Save(CFS_Memory& F)
+{
     // Save constants
     {
     	F.open_chunk(0);
@@ -283,20 +275,44 @@ void CSHEngineTools::Save(BOOL bForVisUpdate){
         	F.WstringZ(b->first);
         F.close_chunk();
     }
+}
+
+void CSHEngineTools::Save()
+{
+    // set name
+	AnsiString fn 				= SHADER_FILENAME_BASE;
+    FS.m_GameRoot.Update		(fn);
+
+    // collapse reference
+	CollapseReferences();
+
+    // save to stream
+    CFS_Memory F;
+
+    Save(F);
 
     // copy exist file
     FS.MarkFile(fn);
+
     // save new file
-    if (!bForVisUpdate) FS.UnlockFile(0,fn.c_str(),false);
+    FS.UnlockFile(0,fn.c_str(),false);
     F.SaveTo(fn.c_str(), "shENGINE");
-    if (!bForVisUpdate) FS.LockFile(0,fn.c_str(),false);
+    FS.LockFile(0,fn.c_str(),false);
 
-	m_bUpdateCurrent		= true;
+    m_bModified	= FALSE;
+	TfrmShaderProperties::SetModified(false);
+}
 
-	if (!bForVisUpdate){
-    	m_bModified	= FALSE;
-		TfrmShaderProperties::SetModified(false);
-    }
+void CSHEngineTools::SaveForRender()
+{
+    // set name
+	AnsiString fn = SHADER_FILENAME_TEMP; FS.m_Temp.Update(fn);
+    // collapse reference
+	CollapseReferences();
+    // save
+    CFS_Memory F;
+    Save(F);
+    F.SaveTo(fn.c_str(), "shENGINE");
 }
 
 CBlender* CSHEngineTools::FindBlender(LPCSTR name){
@@ -412,14 +428,17 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
 	pair<BlenderPairIt, bool> I = m_Blenders.insert(make_pair(strdup(name),B));
 	R_ASSERT2 (I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-	fraLeftBar->AddBlender(name,false);
+	fraLeftBar->AddBlender(name);
 
     return B;
 }
 
 CBlender* CSHEngineTools::CloneBlender(LPCSTR name){
-	CBlender* B = FindBlender(name); R_ASSERT(B);
-	return AppendBlender(B->getDescription().CLS,0,B);
+	CBlender* parent 	= FindBlender(name); R_ASSERT(parent);
+	CBlender* B 		= AppendBlender(parent->getDescription().CLS,0,parent);
+    ApplyChanges		(true);
+    SetCurrentBlender	(B);
+    return B;
 }
 
 void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
@@ -543,6 +562,7 @@ void CSHEngineTools::SetCurrentBlender(CBlender* B, bool bApply){
         UpdateStreamFromObject();
         // apply this shader to non custom object
         Tools.UpdateObjectShader();
+		fraLeftBar->SetCurrent(m_CurrentBlender?m_CurrentBlender->getName():0);
     }
 }
 
@@ -577,17 +597,18 @@ void CSHEngineTools::CollapseConstant(LPSTR name){
 	if (*name=='$') return;
 	R_ASSERT(name&&name[0]);
     CConstant* C = FindConstant(name,false); VERIFY(C);
+	C->dwReference--;
     for (ConstantPairIt c=m_OptConstants.begin(); c!=m_OptConstants.end(); c++){
-    	if (C==c->second){ c->second->dwReference++; return; }
         if (c->second->Similar(*C)){
             strcpy(name,c->first);
-            _DELETE(C);
             c->second->dwReference++;
             return;
         }
     }
     // append opt constant
-	m_OptConstants.insert(make_pair(strdup(name),C));
+    CConstant* N = new CConstant(*C);
+    N->dwReference=1;
+	m_OptConstants.insert(make_pair(strdup(name),N));
 }
 
 void CSHEngineTools::UpdateMatrixRefs(LPSTR name){
@@ -620,9 +641,9 @@ void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
         switch(type){
         case xrPID_MARKER:							break;
         case xrPID_MATRIX:	sz=sizeof(string64); 	break;
-        case xrPID_CONSTANT:	sz=sizeof(string64); 	break;
-        case xrPID_TEXTURE: 	sz=sizeof(string64); 	break;
-        case xrPID_INTEGER: 	sz=sizeof(xrP_Integer);	break;
+        case xrPID_CONSTANT:sz=sizeof(string64); 	break;
+        case xrPID_TEXTURE: sz=sizeof(string64); 	break;
+        case xrPID_INTEGER: sz=sizeof(xrP_Integer);	break;
         case xrPID_FLOAT: 	sz=sizeof(xrP_Float); 	break;
         case xrPID_BOOL: 	sz=sizeof(xrP_BOOL); 	break;
 		case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count); break;

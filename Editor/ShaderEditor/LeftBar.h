@@ -132,8 +132,9 @@ public:		// User declarations
 	void 			ChangeTarget	(int tgt);
     void 			UpdateBar		();
     void 			InitPalette		(TemplateVec& lst);
-	void 			AddBlender		(LPCSTR full_name, bool bLoadMode);
-	void 			AddCShader		(LPCSTR full_name, bool bLoadMode);
+	void 			AddBlender		(LPCSTR full_name);
+	void 			AddCShader		(LPCSTR full_name);
+    void			SetCurrent		(LPCSTR full_name);
 	void 			ClearEShaderList();
     void			ClearCShaderList();
 };

@@ -206,22 +206,26 @@ void TfraLeftBar::ClearCShaderList(){
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::AddBlender(LPCSTR full_name, bool bLoadMode){
-	TElTreeItem* node = FOLDER::AppendObject(tvEngine,full_name);
-    if (!bLoadMode){
-	    if (node&&node->Parent) node->Parent->Expand(false);
-    	node->Selected = true;
-		tvEngine->Selected = node;
-    }
+void TfraLeftBar::AddBlender(LPCSTR full_name){
+	FOLDER::AppendObject(tvEngine,full_name);
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::AddCShader(LPCSTR full_name, bool bLoadMode){
-	TElTreeItem* node = FOLDER::AppendObject(tvCompiler,full_name);
-    if (!bLoadMode){
-	    if (node&&node->Parent) node->Parent->Expand(false);
-    	node->Selected = true;
-		tvCompiler->Selected = node;
+void TfraLeftBar::AddCShader(LPCSTR full_name){
+	FOLDER::AppendObject(tvCompiler,full_name);
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::SetCurrent(LPCSTR full_name){
+	if (full_name&&full_name[0]){
+		TElTreeItem* node = FOLDER::FindObject(CurrentView(),full_name);
+    	if (node){
+        	if(node->Parent) node->Parent->Expand(false);
+		    node->Selected = true;
+        }
+    	tvEngine->Selected = node;
+    }else{
+    	tvEngine->Selected = 0;
     }
 }
 //---------------------------------------------------------------------------

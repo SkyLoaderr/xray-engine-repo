@@ -58,6 +58,9 @@ friend class TfrmShaderProperties;
 	CFS_Memory 			m_BlenderStream;	// пользоваться функциями обновления стрима для синхронизации
     bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
     bool				m_bCurBlenderChanged;
+
+    void 				Save				(CFS_Memory& F);
+    void 				SaveForRender		();
 public:
     CBlender*			m_CurrentBlender;
     CBlender*			AppendBlender		(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);
@@ -77,7 +80,7 @@ public:
 
 	void				Reload				();
 	void				Load				();
-	void				Save				(BOOL bForVisUpdate=false);
+	void				Save				();
 
     bool				IfModified			();
     bool				IsModified			(){return m_bModified;}
