@@ -175,8 +175,10 @@ void game_sv_GameState::OnRoundStart			()
 	Unlock	();
 
 	// 1. We have to destroy all player-entities and entities
+	Level().Server->SLS_Clear	();
 
 	// 2. We have to create them at respawn points and/or specified positions
+	Level().Server->SLS_Default	();
 }
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)

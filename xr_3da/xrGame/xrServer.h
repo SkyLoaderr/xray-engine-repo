@@ -90,6 +90,7 @@ public:
 	virtual void			Disconnect			();
 	void					Update				();
 	void					SLS_Default			();
+	void					SLS_Clear			();
 	void					SLS_Save			(CFS_Base& FS);
 	void					SLS_Load			(CStream&  FS);
 };

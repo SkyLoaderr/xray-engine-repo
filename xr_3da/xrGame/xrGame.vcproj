@@ -1248,6 +1248,9 @@
 			<File
 				RelativePath="xrServer_process_update.cpp">
 			</File>
+			<File
+				RelativePath="xrServer_sls_clear.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Effects"
