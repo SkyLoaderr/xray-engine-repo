@@ -19,7 +19,8 @@ class CMovementManager :
 	public CGamePathManager,
 	public CLevelPathManager,
 	public CDetailPathManager,
-	public CLocationSelector
+	public CLocationSelector,
+	public CEnemyPredictor
 {
 private:
 	enum EPathState {
