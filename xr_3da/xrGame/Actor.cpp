@@ -176,6 +176,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_anims = xr_new<SActorMotions>();
 	m_vehicle_anims = xr_new<SActorVehicleAnims>();
+	m_entity_condition = NULL;
 }
 
 

@@ -245,11 +245,7 @@ void CGrenade::OnAnimationEnd()
 void CGrenade::UpdateCL() 
 {
 	if (OnServer())
-	{
-		if (CMissile::State() != MS_IDLE)
-		{
-			m_throw = true;
-		};
+	{		
 		if (m_constpower && CMissile::State() == MS_READY)
 		{
 			m_throw = true; 
