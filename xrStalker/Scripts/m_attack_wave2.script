@@ -1,3 +1,112 @@
+-- „то используетс€ в скрипте
+-- stalker_young (молодой сталкер)  путь: way_young	от костра
+-- stalker_veteran (ветеран)		путь	
+
+-- ƒл€ защитников создан класс Defender
+-- ≈сли не задан патрульный путь, то npc изначально находитс€ в позиции "на корточках" с
+-- оружием и цель выбирает из таблицы монстров 
+-- ѕараметры коструктора:
+--			npc			-	npc объект
+--			patrol_way  -   объект патрульного пути
+--			script_name	-	им€ управл€ющего скрипта
+--			monsters	-	таблица, котора€ содержит монстров или еще кого, от кого надо отбиватьс€	
+
+class "Defender"
+
+function Defender:__init (npc, patrol_way, script_name, monsters)
+	self.npc = npc
+	self.patrol_way = way
+	self.script_name = script_name
+	self.monsters = monsters
+	self.setdown = false
+	self.pre_state = true
+	self.enemy = nil
+	self.waiting = 0
+end
+
+function Defender:initialize ()
+	self.npc:script (true, self.script_name)
+	action (self.npc, anim (anim.free), cond (cond.time_end, time_infinite))	
+end
+
+function Defender:find_enemy ()
+	if table.getn (self.monsters) == 0 then return nil end
+	local distance = 10000000.0
+	local enemy = nil
+	for a = 1, table.getn (self.monsters), 1 do
+		local tmonster = self.monsters[a]
+		if tmonster ~= nil then
+		   local tdist = distance_between (self.npc, tmonster)
+		   if tdist < distance and self.npc:see (tmonster) == true then
+		   	  distance = tdist
+		   	  enemy = tmonster
+		   end	  
+		end
+	end	
+	return enemy		
+end
+
+function Defender:prestate ()
+	if self.patrol_way == nil then 
+	   self.pre_state = false 
+	   return true
+	end
+	if npc:action () then 
+	   return false 
+	end
+	self.pre_state = false
+	self.patrol_way = nil
+	return true
+end
+
+
+function Defender:process ()
+
+	--если npc помер, то выйдем
+	if self.npc == nil or self.npc:alive () == false then 
+	   return 
+    end
+	
+	--если мы еще не на позиции, то выйдем на нее
+	if self.pre_state == true and self:prestate () == false then 
+	   return 
+    end
+
+	--если мы еще не сидим, то с€дем 
+	if self.setdown == false then
+	   reset_action (self.npc, self.script_name)
+	   action (self.npc, move (move.crouch, move.stand), look (look.free), anim (anim.danger), cond (cond.time_end, time_infinite))
+	   selt.setdown = true
+    end
+	
+	
+	-- или, если не нашли достойного врага
+	local enemy = self:find_enemy ()
+	if enemy == nil then 
+	   self.enemy = nil	
+	   return 
+	end
+	
+	if self.enemy ~= enemy then
+  	   reset_action (self.npc, self.script_name)
+	   action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), cond (cond.time_end, time_infinite))
+	   self.enemy = enemy
+	else
+  	   reset_action (self.npc, self.script_name)
+	   action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), cond (cond.time_end, time_infinite))	
+	end
+ 
+	if waiting ~= 0 then
+	   waiting = waiting - game.time ()
+	   if waiting < 0 then
+		  waiting = game.time () + math.random (2000, 3000)
+	   end
+	end		
+		
+end         		  
+	   	  				
+
+
 local chief = nil
 
 function boar_callback (obj, action_type, index)
@@ -28,6 +137,8 @@ end
 function main ()
 	
 	chief = get_level_object ("stalker_chief")
+	chief:script (true, m_attack_wave2.script_name ())
+	printf ("Script name : %s", m_attack_wave2.script_name ())
 
     local t = {
                get_level_object ("m_boar_e0000"),
