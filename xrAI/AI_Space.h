@@ -25,6 +25,19 @@ namespace AI {
 	public:
 		DWORD_VECTOR	Nodes;
 	};
+	class CTravelNode {
+	public:
+		Fvector	P;
+		BOOL	floating;
+	};
+	struct PContour
+	{
+		Fvector v1,v2,v3,v4;
+	};
+	struct PSegment
+	{
+		Fvector v1,v2;
+	};
 };
 
 class CAStar;
@@ -153,6 +166,7 @@ public:
 	void	vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<u32> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 2.0f, float fRoundedDistanceMax = 2.0f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
 	float	ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack);
 	bool	bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
+	void	vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, AI::PContour	&tCurContour, int iNodeIndex, Fvector &tTempPoint, int &iSavedIndex);
 	u32		dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
 
 	// Device dependance

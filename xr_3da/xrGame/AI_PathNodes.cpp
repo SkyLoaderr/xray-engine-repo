@@ -33,7 +33,7 @@ IC void projectPoint(const Fplane& PL, Fvector& P)
 
 
 //******* PContour unpacking
-void	UnpackContour(CPathNodes::PContour& C, u32 ID)
+void	UnpackContour(PContour& C, u32 ID)
 {
 	CAI_Space&	AI			= getAI();
 	NodeCompressed* Node	= AI.Node(ID);
@@ -95,7 +95,7 @@ void	IntersectContours	(PSegment& Dest, PContour& C1, PContour& C2)
 /**/
 
 /**/
-IC bool bfInsideContour(Fvector &tPoint, CPathNodes::PContour &tContour)
+IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
 {
 	return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
 }
@@ -105,7 +105,7 @@ IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
 	return((_abs(tPoint0.x - tPoint1.x) < EPS_L) && (_abs(tPoint0.z - tPoint1.z) < EPS_L));
 }
 
-IC void vfIntersectContours(CPathNodes::PSegment &tSegment, CPathNodes::PContour &tContour0, CPathNodes::PContour &tContour1)
+IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1)
 {
 	bool bFound = false;
 	

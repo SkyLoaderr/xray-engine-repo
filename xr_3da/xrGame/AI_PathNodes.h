@@ -9,21 +9,6 @@ namespace AI
 	class CPathNodes : public NodePath
 	{
 	public:
-		class CTravelNode
-		{
-		public:
-			Fvector	P;
-			BOOL	floating;
-		};
-		struct PContour
-		{
-			Fvector v1,v2,v3,v4;
-		};
-		struct PSegment
-		{
-			Fvector v1,v2;
-		};
-	public:
 		BOOL				bNeedRebuild;
 		u32				DestNode;
 

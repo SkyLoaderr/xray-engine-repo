@@ -237,7 +237,7 @@ class CBaseFunction;
 		bool	bEmpty;
 	} SSubNode;
 
-	extern void			vfGoToPointViaNodes(vector<AI::CPathNodes::CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint);
+	extern void			vfGoToPointViaNodes(vector<AI::CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint);
 	extern float		ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3);
 	extern float		ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode);
 	extern float		ffCalcSquare(float fAngle, float fAngleOfView, u32 dwNodeID);

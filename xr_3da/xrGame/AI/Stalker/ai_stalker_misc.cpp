@@ -38,7 +38,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 			if (tpDestinationPosition) {
 				VERIFY(!AI_Path.TravelPath.empty());
 				if (AI_Path.TravelPath[AI_Path.TravelPath.size() - 2].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) < AI_Path.TravelPath[AI_Path.TravelPath.size() - 2].P.distance_to(*tpDestinationPosition)) {
-					AI::CPathNodes::CTravelNode T;
+					AI::CTravelNode T;
 					T.P = *tpDestinationPosition;
 					AI_Path.TravelPath.push_back(T);
 				}
@@ -54,6 +54,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 			vector<u32>			tpaPointNodes(0);
 			u32					N = AI_Path.Nodes.size();
 			Fvector				tStartPosition = vPosition;
+			//Msg					("[%f][%f][%f]",VPUSH(vPosition));
 			u32					dwCurNode = AI_NodeID;
 			tpaPoints.push_back	(vPosition);
 			tpaPointNodes.push_back(dwCurNode);
@@ -91,13 +92,14 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 				tpaLine.push_back(tpaPoints[i]);
 				getAI().vfCreateFastRealisticPath(tpaLine,tpaPointNodes[i-1],tpaDeviations,tpaTravelPath,tpaNodes,false,false,0,0);
 				u32 n = tpaTravelPath.size();
-				AI::CPathNodes::CTravelNode	T;
+				AI::CTravelNode	T;
 				for (u32 j= i<2?0:1; j<n; j++) {
 					T.P = tpaTravelPath[j];
 					AI_Path.TravelPath.push_back(T);
 					AI_Path.Nodes.push_back(tpaNodes[j]);
 				}
 			}
+			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 	//		vector<Fvector>		tpaPoints(0);
 	//		vector<Fvector>		tpaDeviations(0);
 	//		vector<Fvector>		tpaTravelPath(0);
@@ -121,7 +123,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 	//		getAI().vfCreateFastRealisticPath(tpaPoints,AI_NodeID,tpaDeviations,tpaTravelPath,AI_Path.Nodes,false,false);
 	//		
 	//		N = tpaTravelPath.size();
-	//		AI::CPathNodes::CTravelNode	T;
+	//		AI::CTravelNode	T;
 	//		AI_Path.TravelPath.clear();
 	//		for (i=0; i<N; i++) {
 	//			T.P = tpaTravelPath[i];

@@ -15,8 +15,8 @@
 
 using namespace AI;
 
-extern void	UnpackContour		(CPathNodes::PContour& C, u32 ID);
-extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
+extern void	UnpackContour		(PContour& C, u32 ID);
+extern void	IntersectContours	(PSegment& Dest, PContour& C1, PContour& C2);
 
 #define COMPUTE_DISTANCE_2D(t,p) (_sqrt(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
@@ -100,12 +100,12 @@ IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
 	return((_abs(tPoint0.x - tPoint1.x) < EPS_L) && (_abs(tPoint0.z - tPoint1.z) < EPS_L));
 }
 
-IC bool bfInsideContour(Fvector &tPoint, CPathNodes::PContour &tContour)
+IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
 {
 	return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
 }
 
-IC void vfIntersectContours(CPathNodes::PSegment &tSegment, CPathNodes::PContour &tContour0, CPathNodes::PContour &tContour1)
+IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1)
 {
 	bool bFound = false;
 	
@@ -222,16 +222,16 @@ SRotation tfGetOrientation(CEntity *tpEntity)
 	}
 }
 
-void vfGoToPointViaNodes(vector<CPathNodes::CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
+void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, u32 dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
 {
 	NodeCompressed *tpNode;
-	CPathNodes::PContour tCurContour,tNextContour;
+	PContour tCurContour,tNextContour;
 	NodeLink *taLinks;
 	int iCount, iSavedIndex, iNodeIndex, i;
 	Fvector tTempPoint;
-	CPathNodes::CTravelNode tTravelNode;
+	CTravelNode tTravelNode;
 	CAI_Space &AI = getAI();
-	CPathNodes::PSegment tSegment;
+	PSegment tSegment;
 
 	tpaPath.clear();
 	UnpackContour(tCurContour,dwCurNode);
