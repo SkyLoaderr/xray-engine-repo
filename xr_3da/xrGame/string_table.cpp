@@ -108,7 +108,8 @@ STRING_VALUE CStringTable::operator() (const STRING_ID& str_id) const
 	//если строки с соответствующим ID нет, то возвращаем сам строковый ID
 	if(NO_STRING == index)
 	{
-		Msg("[string table] '%s' has no entry", *str_id);
+		if(*str_id != NULL && xr_strlen(*str_id)>0)
+			Msg("[string table] '%s' has no entry", *str_id);
 		return str_id;
 	}
 	return pData->m_Strings[index];
