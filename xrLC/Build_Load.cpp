@@ -219,8 +219,14 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
 				else											RL.type = LT_POINT;
 
+				// split energy/color
+				float			_e		=	(L.diffuse.r+L.diffuse.g+L.diffuse.b)/3.f;
+				Fvector			_c		=	{L.diffuse.r,L.diffuse.g,L.diffuse.b};
+				if (_abs(_e)>EPS_S)		_c.div	(_e);
+				else					{ _c.set(0,0,0); _e=0; }
+
 				// generic properties
-				RL.diffuse.normalize_rgb	(L.diffuse);
+				RL.diffuse.set				(_c);
 				RL.position.set				(L.position);
 				RL.direction.normalize_safe	(L.direction);
 				RL.range				=	L.range*1.1f;
@@ -228,7 +234,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				RL.attenuation0			=	L.attenuation0;
 				RL.attenuation1			=	L.attenuation1;
 				RL.attenuation2			=	L.attenuation2;
-				RL.energy				=	L.diffuse.magnitude_rgb	();
+				RL.energy				=	_e;
 
 				// place into layer
 				R_ASSERT	(temp.controller_ID<L_layers.size());

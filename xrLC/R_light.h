@@ -6,8 +6,8 @@
 
 struct R_Light
 {
-	u32				 type;				// Type of light source		
-	Fcolor          diffuse;			// Diffuse color of light	
+	u32				type;				// Type of light source		
+	Fvector         diffuse;			// Diffuse color of light	
 	Fvector         position;			// Position in world space	
 	Fvector         direction;			// Direction in world space	
 	float		    range;				// Cutoff range
