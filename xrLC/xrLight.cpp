@@ -68,8 +68,8 @@ void CBuild::Light()
 		mem_Compact		();
 
 		// Randomize deflectors
-		random_shuffle	(g_deflectors.begin(),g_deflectors.end());
-		for				(u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
+		std::random_shuffle	(g_deflectors.begin(),g_deflectors.end());
+		for					(u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 
 		// Main process (4 threads)
 		Status			("Lighting...");
@@ -116,7 +116,7 @@ void	g_trans_register_internal	(Vertex* V)
 	
 	// Search
 	const float key		= V->P.x;
-	mapVertIt	it		= g_trans->std::lower_bound	(key);
+	mapVertIt	it		= g_trans->lower_bound	(key);
 	mapVertIt	it2		= it;
 
 	// Decrement to the start and inc to end

@@ -236,8 +236,8 @@ void OGF_LOD::Save		(IWriter &fs)
 
 	// Texture & shader
 	fs.open_chunk		(OGF_TEXTURE_L);
-	string Tname		= pBuild->textures[pBuild->materials[lod_Material].surfidx].name;
-	string Sname		= pBuild->shader_render[pBuild->materials[lod_Material].shader].name;
+	std::string Tname	= pBuild->textures[pBuild->materials[lod_Material].surfidx].name;
+	std::string Sname	= pBuild->shader_render[pBuild->materials[lod_Material].shader].name;
 	fs.w_u32			(RegisterString(Tname));
 	fs.w_u32			(RegisterString(Sname));
 	fs.close_chunk		();

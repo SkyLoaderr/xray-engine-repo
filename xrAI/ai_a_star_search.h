@@ -154,7 +154,7 @@ public:
 			
 			// remove that node from the opened list and put that node to the closed list
 			tpBestNode->ucOpenCloseMask = 0;
-			pop_heap(tppHeapStart,tppHeapEnd--,CComparePredicate());
+			std::pop_heap(tppHeapStart,tppHeapEnd--,CComparePredicate());
 
 			// iterating on children/neighbours
 			CTemplateNode::iterator tIterator;
@@ -173,7 +173,7 @@ public:
 							tpTemp->f = tpTemp->g + tpTemp->h;
 							tpTemp->tpBack = tpBestNode;
 							for (SNode **tpIndex = tppHeapStart; *tpIndex != tpTemp; tpIndex++);
-							push_heap(tppHeapStart,tpIndex + 1,CComparePredicate());
+							std::push_heap(tppHeapStart,tpIndex + 1,CComparePredicate());
 							continue;
 						}
 						continue;
@@ -199,7 +199,7 @@ public:
 					tpBestNode->tpForward = tpTemp2;
 					
 					*tppHeapEnd = tpTemp2;
-					push_heap(tppHeapStart,++tppHeapEnd,CComparePredicate());
+					std::push_heap(tppHeapStart,++tppHeapEnd,CComparePredicate());
 				}
 			}
 			if (dwHeap > dwMaxCount)

@@ -51,7 +51,8 @@ void CBuild::BuildCForm(IWriter &fs)
 	vecFace*	cfFaces		= xr_new<vecFace>	();
 	vecVertex*	cfVertices	= xr_new<vecVertex>	();
 	{
-		xr_vector<bool>	cfVertexMarks(g_vertices.size(),false);
+		xr_vector<bool>	cfVertexMarks;
+		cfVertexMarks.assign	(g_vertices.size(),false);
 
 		Status("Sorting...");
 		std::sort(g_vertices.begin(),g_vertices.end());

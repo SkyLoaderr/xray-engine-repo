@@ -63,7 +63,8 @@ void CBuild::CalcNormals()
 
 	// Destroy unused vertices
 	g_bUnregister = false;
-	vecVertex vtmp	(g_vertices.begin(),g_vertices.begin()+Vcount);
+	vecVertex vtmp;
+	vtmp.assign		(g_vertices.begin(),g_vertices.begin()+Vcount);
 	g_vertices.erase(g_vertices.begin(),g_vertices.begin()+Vcount);
 	for (I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
 	g_bUnregister = true;

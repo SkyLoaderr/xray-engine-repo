@@ -79,7 +79,7 @@ void	dumb_sort	(vecDefl& L)
 	{
 		Progress(float(n1)/float(L.size()));
 		for (int n2=2; n2<int(L.size()); n2++)
-			if (compare2_defl(L[n2],L[n2-1]))	swap(L[n2],L[n2-1]);
+			if (compare2_defl(L[n2],L[n2-1]))	std::swap(L[n2],L[n2-1]);
 	}
 }
 
@@ -177,7 +177,7 @@ void CBuild::xrPhase_MergeLM()
 			
 			// Remove merged lightmaps
 			Status		("Cleanup...");
-			vecDeflIt last	= remove_if	(Layer.begin(),Layer.end(),pred_remove());
+			vecDeflIt last	= std::remove_if	(Layer.begin(),Layer.end(),pred_remove());
 			Layer.erase		(last,Layer.end());
 
 			// Save

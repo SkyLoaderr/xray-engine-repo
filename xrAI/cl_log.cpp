@@ -55,7 +55,7 @@ static VOID _process_messages(VOID)
 	}
 }
 
-string make_time	(DWORD sec)
+std::string make_time	(DWORD sec)
 {
 	char		buf[64];
 	sprintf		(buf,"%2.0d:%2.0d:%2.0d",sec/3600,(sec%3600)/60,sec%60);

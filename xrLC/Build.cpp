@@ -19,7 +19,7 @@ CBuild::~CBuild()
 {
 }
  
-extern int RegisterString(string &T);
+extern int RegisterString(std::string &T);
 
 
 class CMUThread : public CThread
@@ -53,7 +53,7 @@ public:
 	}
 };
 
-void CBuild::Run	(string& P)
+void CBuild::Run	(std::string& P)
 {
 	//****************************************** Open Level
 	path						= P+"\\";
@@ -214,8 +214,8 @@ void CBuild::Run	(string& P)
 	{
 		b_glow&	G	= glows[i];
 		fs->w		(&G,4*sizeof(float));
-		string T	= textures		[materials[G.dwMaterial].surfidx].name;
-		string S	= shader_render	[materials[G.dwMaterial].shader].name;
+		std::string T	= textures		[materials[G.dwMaterial].surfidx].name;
+		std::string S	= shader_render	[materials[G.dwMaterial].shader].name;
 		fs->w_u32	(RegisterString(T));
 		fs->w_u32	(RegisterString(S));
 	}

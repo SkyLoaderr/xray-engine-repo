@@ -44,7 +44,7 @@ void OGF::Save			(IWriter &fs)
 
 	// Texture & shader
 	fs.open_chunk		(OGF_TEXTURE_L);
-	string Tname;
+	std::string Tname;
 	for (DWORD i=0; i<textures.size(); i++)
 	{
 		if (!Tname.empty()) Tname += ',';
@@ -53,7 +53,7 @@ void OGF::Save			(IWriter &fs)
 		Tname += fname;
 	}
 	fs.w_u32			(RegisterString(Tname));
-	fs.w_u32			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.w_u32			(RegisterString(std::string(pBuild->shader_render[pBuild->materials[material].shader].name)));
 	fs.close_chunk		();
 
 	// Vertices
@@ -99,7 +99,7 @@ void OGF_Reference::Save	(IWriter &fs)
 
 	// Texture & shader
 	fs.open_chunk		(OGF_TEXTURE_L);
-	string				Tname;
+	std::string			Tname;
 	for (DWORD i=0; i<textures.size(); i++)
 	{
 		if (!Tname.empty()) Tname += ',';
@@ -108,7 +108,7 @@ void OGF_Reference::Save	(IWriter &fs)
 		Tname += fname;
 	}
 	fs.w_u32			(RegisterString(Tname));
-	fs.w_u32			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.w_u32			(RegisterString(std::string(pBuild->shader_render[pBuild->materials[material].shader].name)));
 	fs.close_chunk		();
 
 	// Vertices

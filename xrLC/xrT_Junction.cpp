@@ -68,7 +68,7 @@ void edge(Vertex* vE1, Vertex* vE2)
 	if (len<32.f)	return;
 
 	// check for duplicated errors
-	if (vE1>vE2)	swap(vE1,vE2);
+	if (vE1>vE2)	std::swap(vE1,vE2);
 	for (DWORD i=0; i<vecEdges->size(); i++)
 	{
 		record&	rec = (*vecEdges)[i];

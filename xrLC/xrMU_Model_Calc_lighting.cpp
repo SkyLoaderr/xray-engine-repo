@@ -115,7 +115,7 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 
 		// Search
 		const float key			= V->P.x;
-		mapVertIt	it			= g_trans.std::lower_bound	(key);
+		mapVertIt	it			= g_trans.lower_bound	(key);
 		mapVertIt	it2			= it;
 
 		// Decrement to the start and inc to end
@@ -151,7 +151,7 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 		// Unique
 		v_vertices&	VL		= it->second;
 		std::sort			(VL.begin(),VL.end());
-		VL.erase			(unique(VL.begin(),VL.end()),VL.end());
+		VL.erase			(std::unique(VL.begin(),VL.end()),VL.end());
 
 		// Calc summary color
 		Fcolor		C;
@@ -239,8 +239,8 @@ void xrMU_Reference::calc_lighting	()
 	// A*C + D = B
 	// build data
 	{
-		xr_vector<xr_vector<REAL> >	A(color.size());
-		xr_vector<xr_vector<REAL> >	B(color.size());
+		xr_vector<xr_vector<REAL> >	A;	A.resize(color.size());
+		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
 		xr_vector<REAL>			C;
 		xr_vector<REAL>			D;
 

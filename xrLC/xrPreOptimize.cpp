@@ -146,8 +146,8 @@ void CBuild::PreOptimize()
 	
 	Status	("Cleanup...");
 	u32 M1				= Memory.mem_usage	();
-	g_vertices.erase	(remove(g_vertices.begin(),g_vertices.end(),(Vertex*)0),g_vertices.end());
-	g_faces.erase		(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
+	g_vertices.erase	(std::remove(g_vertices.begin(),g_vertices.end(),(Vertex*)0),g_vertices.end());
+	g_faces.erase		(std::remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
 	{
 		for (int ix=0; ix<HDIM_X+1; ix++)
 			for (int iy=0; iy<HDIM_Y+1; iy++)
