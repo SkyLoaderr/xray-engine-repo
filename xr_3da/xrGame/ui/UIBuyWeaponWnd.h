@@ -298,7 +298,10 @@ public:
 
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона
+	// Проверка ведется только для оружия в слотах
 	CUIDragDropItemMP * IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID);
+	// Примитивная проверка на то, что вещь является аддоном
+	bool		IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const;
 	// Получить указатель на аддон по ID. В случае несуществования аддона возвращаем NULL.
 	CUIDragDropItemMP * GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
 	// Обработчик нажатий на кнопки клавы

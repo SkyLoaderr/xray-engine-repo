@@ -1055,7 +1055,7 @@ bool CUIBuyWeaponWnd::ToBelt()
 	if (!CanPutInBelt(m_pCurrentDragDropItem)							||
 		&UITopList[BELT_SLOT] == m_pCurrentDragDropItem->GetParent()	||
 		!UITopList[BELT_SLOT].CanPlaceItem(m_pCurrentDragDropItem)		||
-		5 == m_pCurrentDragDropItem->GetSectionGroupID())
+		IsItemAnAddonSimple(m_pCurrentDragDropItem))
 		return false;
 
 	static_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
@@ -2147,4 +2147,15 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleA
 	}
 
 	return NULL;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
+{
+	R_ASSERT(pPossibleAddon);
+	if (!pPossibleAddon) return false;
+
+	std::string str = pPossibleAddon->GetSectionName();
+	return str.find("addon") != std::string::npos;
 }

@@ -147,7 +147,6 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UISleepButton);
 	xml_init.InitButton(uiXml, "sleep_button", 0, &UISleepButton);
 
-
 	//окошко для диалога параметров сна
 	AttachChild(&UISleepWnd);
 	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
@@ -215,6 +214,7 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
+
 }
 
 void CUIInventoryWnd::InitInventory() 
@@ -1296,7 +1296,17 @@ void  CUIInventoryWnd::StopSleepWnd()
 	UISleepWnd.Hide();
 
 	UISleepButton.Reset();
-	UISleepButton.Enable(true);
+
+	// Для мультиплеера мы ее отключаем кнопку сна
+	if (Game().type != GAME_SINGLE)
+	{
+		UISleepButton.SetTextColor(0xff808080);
+		UISleepButton.GetUIStaticItem().SetColor(0xff808080);
+		UISleepButton.Enable(false);
+	}
+	else
+		UISleepButton.Enable(true);
+
 	UISleepButton.Show(true);
 }
 
