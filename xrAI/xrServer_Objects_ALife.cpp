@@ -638,8 +638,6 @@ CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScript
 	m_dwNextNodeID				= u32(-1);
 	m_tNextPosition.set			(0.f,0.f,0.f);
 	m_fAngle					= 0.f;
-	m_caLevelToChange[0]		= 0;
-	m_caLevelPointToChange[0]	= 0;
 }
 
 CSE_ALifeLevelChanger::~CSE_ALifeLevelChanger()
