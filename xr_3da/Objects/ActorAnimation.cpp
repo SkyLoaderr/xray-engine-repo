@@ -12,7 +12,7 @@ static const float p_head_factor		= 0.1f;
 
 #include "hudmanager.h"
 
-float angle_normalize2(float a)
+float angle_normalize_signed	(float a)
 {
 	float angle = angle_normalize(a);
 	if (angle>PI) angle-=PI_MUL_2;
@@ -24,25 +24,18 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 
 	Fmatrix				spin;
-	float				bone_yaw	= angle_normalize2(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_spin_factor;
-	float				bone_pitch	= A->r_torso.pitch*p_spin_factor;
-	// clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_spin_factor;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_spin_factor;
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mulB_43(spin);
-
-	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	string128 buf;
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->OutSet(120,520);
-	HUD->pHUDFont->OutNext("Bone Yaw:      [%3.2f]",bone_yaw);
 }
+
 void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 	Fmatrix				spin;
-	float				bone_yaw	= angle_normalize2(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_shoulder_factor;
-	float				bone_pitch	= A->r_torso.pitch*p_shoulder_factor;
-	// clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_shoulder_factor;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_shoulder_factor;
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mulB_43(spin);
 }
@@ -50,9 +43,8 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 	Fmatrix				spin;
-	float				bone_yaw	= angle_normalize2(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_head_factor;
-	float				bone_pitch	= A->r_torso.pitch*p_head_factor;
-	// clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_head_factor;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_head_factor;
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mulB_43(spin);
 }
