@@ -49,6 +49,12 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	
 	
 	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2	
+	
+	-- Fonts
+	self.caption_font = GetFontLetterica25()
+	self.edit_font    = GetFontLetterica25()
+	self.button_font  = GetFontLetterica25()		
+	
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
