@@ -7,7 +7,7 @@
 bool WriteSlot	(char *name, char* dest, char *msg) 
 {
 	HANDLE	hFile; 
-	u32		cbWritten;
+	DWORD	cbWritten;
 	BOOL	fResult;
 	char    cName[256];
 
@@ -41,7 +41,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	// Users
 	BOOL		bHighPriority	= FALSE;
 	char		u_name[128];
-	u32		u_size	= sizeof(u_name)-1;
+	DWORD		u_size	= sizeof(u_name)-1;
 	GetUserName	(u_name,&u_size);
 	_strlwr		(u_name);
 	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
