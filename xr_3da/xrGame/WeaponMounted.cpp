@@ -211,6 +211,7 @@ void	CWeaponMounted::cam_Update			(float dt)
 	if(Owner())	Owner()->setEnabled	(false);
 
 	CKinematics* K					= smart_cast<CKinematics*>(Visual());
+	K->CalculateBones_Invalidate	();
 	K->CalculateBones				();
 	const Fmatrix& C				= K->LL_GetTransform(camera_bone);
 	XFORM().transform_tiny			(P,C.c);
