@@ -24,6 +24,7 @@ game_PlayerState::~game_PlayerState()
 {
 	BeltItems.clear();
 	pItemList.clear();
+	LastBuyAcount = 0;
 };
 
 void	game_PlayerState::net_Export		(NET_Packet& P)

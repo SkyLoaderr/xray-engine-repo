@@ -9,7 +9,7 @@
 #include "ai_space.h"
 #include "alife_object_registry.h"
 
-void xrServer::Process_event_destroy	(NET_Packet& P, DPNID sender, u32 time, u16 ID)
+void xrServer::Process_event_destroy	(NET_Packet& P, DPNID sender, u32 time, u16 ID, NET_Packet* pEPack)
 {
 	u32								MODE = net_flags(TRUE,TRUE);
 	// Parse message
@@ -27,22 +27,46 @@ void xrServer::Process_event_destroy	(NET_Packet& P, DPNID sender, u32 time, u16
 	R_ASSERT						(c_dest == c_from);							// assure client ownership of event
 	u16								parent_id = e_dest->ID_Parent;
 
+	//---------------------------------------------
+	NET_Packet	P2, *pEventPack = pEPack;
+	P2.w_begin	(M_EVENT_PACK);
+	//---------------------------------------------
 	// check if we have children 
-	while (!e_dest->children.empty())
-		Process_event_destroy		(P,sender,time,e_dest->children.back());
+	if (!e_dest->children.empty())
+	{
+		if (!pEventPack) pEventPack = &P2;
 
-	// check if we have parent and we can be detached from it
-	if ((0xffff == parent_id) || !Process_event_reject(P,sender,time,parent_id,ID,false)) {
+		while (!e_dest->children.empty())
+			Process_event_destroy		(P,sender,time,*e_dest->children.begin(), pEventPack);
+	};
+
+	if (0xffff == parent_id && NULL == pEventPack)
+	{
 		SendBroadcast				(0xffffffff,P,MODE);
 	}
-	else {
-		NET_Packet					P2;
-		P2.w_begin					(M_EVENT);
-		P2.w_u32					(time);
-		P2.w_u16					(GE_DESTROY_REJECT);
-		P2.w_u16					(parent_id);
-		P2.w_u16					(id_dest);
-		SendBroadcast				(0xffffffff,P2,MODE);
+	else
+	{
+		NET_Packet	tmpP;
+		if (0xffff != parent_id && Process_event_reject(P,sender,time,parent_id,ID,false))
+		{
+			game->u_EventGen(tmpP, GE_OWNERSHIP_REJECT, parent_id);
+			tmpP.w_u16(id_dest);
+		
+			if (!pEventPack) pEventPack = &P2;
+			
+			pEventPack->w_u8(u8(tmpP.B.count));
+			pEventPack->w(&tmpP.B.data, tmpP.B.count);
+		};
+		
+ 		game->u_EventGen(tmpP, GE_DESTROY, id_dest);
+		
+		pEventPack->w_u8(u8(tmpP.B.count));
+		pEventPack->w(&tmpP.B.data, tmpP.B.count);
+	};
+
+	if (NULL == pEPack && NULL != pEventPack)
+	{
+		SendBroadcast				(0xffffffff, *pEventPack, MODE);
 	}
 
 	// Everything OK, so perform entity-destroy

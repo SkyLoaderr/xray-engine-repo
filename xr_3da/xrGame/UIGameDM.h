@@ -83,6 +83,7 @@ public:
 	virtual BOOL		CanCallBuyMenu			();
 
 	virtual	void		SetBuyMenuItems			();
+	virtual void		ClearBuyMenu			();
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;

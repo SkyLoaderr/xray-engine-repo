@@ -203,58 +203,8 @@ void			CUIGameAHunt::OnFrame()
 	};
 };
 //--------------------------------------------------------------------
-static	u8 SlotsToCheck [] = {
-		KNIFE_SLOT		,		// 0
-		PISTOL_SLOT		,		// 1
-		RIFLE_SLOT		,		// 2
-		GRENADE_SLOT	,		// 3
-		APPARATUS_SLOT	,		// 4
-		OUTFIT_SLOT		,		// 5
-};
-/*
-void CUIGameAHunt::OnBuyMenu_Ok	()
-{
-	if (!m_bBuyEnabled) return;
-	CObject *l_pObj = Level().CurrentEntity();
-
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
-	if(!l_pPlayer) return;
-
-	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
-//-------------------------------------------------------------------------------
-	u8 NumItems = pCurBuyMenu->GetBeltSize();
-	for (u8 s =0; s<6; s++)
-	{
-		if (pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]) != 0xff) NumItems++;
-	}
-
-	//-------------------------------------------------------------------------------
-	P.w_u8		(NumItems);
-	//-------------------------------------------------------------------------------
-	for (s =0; s<6; s++)
-	{
-		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
-		if (ItemID == 0xff) continue;
-		P.w_u8	(SlotsToCheck[s]);
-		P.w_u8	(ItemID);
-	}
-
-	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
-	{
-		u8 SectID, ItemID;
-		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
-		P.w_u8	(SectID);
-		P.w_u8	(ItemID);
-	};	
-	//-------------------------------------------------------------------------------
-	l_pPlayer->u_EventSend		(P);
-};
-*/
 BOOL		CUIGameAHunt::CanCallBuyMenu			()
 {
-//	BOOL res = inherited::CanCallBuyMenu();
-//	if (!res) return FALSE;
 	if (!m_bBuyEnabled) return FALSE;
 
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
@@ -273,5 +223,9 @@ bool		CUIGameAHunt::CanBeReady				()
 		StartStopMenu(pUITeamSelectWnd);
 		return false;
 	};
+
+	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
+		ClearBuyMenu();
+
 	return true;
 };

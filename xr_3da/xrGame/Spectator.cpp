@@ -96,18 +96,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 		else
 			return;
 	};
-	/*
-	if (GAME_PHASE_PENDING	== Game().phase || GAME_PHASE_INPROGRESS	== Game().phase )
-	{
-		if (kWPN_FIRE == cmd && HUD().GetUI()->UIGame()->CanBeReady()){
-			// Switch our "ready" status
-			NET_Packet			P;
-			u_EventGen			(P,GEG_PLAYER_READY,ID());
-			u_EventSend			(P);
-		}
-		return;
-	}
-	*/
+
 	switch(cmd) {
 	case kCAM_1:	cam_Set			(eacFirstEye);				break;
 	case kCAM_2:	cam_Set			(eacLookAt);				break;

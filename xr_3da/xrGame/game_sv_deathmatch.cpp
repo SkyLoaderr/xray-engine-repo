@@ -662,12 +662,14 @@ void	game_sv_Deathmatch::ClearPlayerItems		(game_PlayerState* ps)
 
 	ps->BeltItems.clear();
 	ps->pItemList.clear();
+	ps->LastBuyAcount = 0;
 };
 
 void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 {
 	ps->BeltItems.clear();
 	ps->pItemList.clear();
+	ps->LastBuyAcount = 0;
 	//-------------------------------------------
 
 	//fill player with default items
@@ -1246,7 +1248,9 @@ void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
 	{
 	};
 	//-------------------------------------------------------------
+	
 	NET_Packet			P;
+	/*
 	u_EventGen			(P,GE_OWNERSHIP_REJECT,pItem->ID_Parent);
 	P.w_u16				(pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
@@ -1258,6 +1262,7 @@ void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
 		u_EventGen			(P,GE_DESTROY,*I);
 		Level().Send(P,net_flags(TRUE,TRUE));
 	}
+	*/
 	u_EventGen			(P,GE_DESTROY,pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
 };

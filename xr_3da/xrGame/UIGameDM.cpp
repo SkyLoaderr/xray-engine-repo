@@ -361,6 +361,7 @@ bool		CUIGameDM::CanBeReady				()
 	SetCurrentSkinMenu();
 
 	SetCurrentBuyMenu();
+	
 	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
 		SetBuyMenuItems		();
 
@@ -477,15 +478,20 @@ void		CUIGameDM::SetCurrentBuyMenu	()
 	if (!P) return;
 };
 
+void		CUIGameDM::ClearBuyMenu			()
+{
+	if (!pCurBuyMenu) return;
+	pCurBuyMenu->ClearSlots();
+	pCurBuyMenu->ClearRealRepresentationFlags();
+};
+
 void		CUIGameDM::SetBuyMenuItems		()
 {
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
-	
 	//---------------------------------------------------------
-	pCurBuyMenu->ClearSlots();
-	pCurBuyMenu->ClearRealRepresentationFlags();
+	ClearBuyMenu			();
 	//---------------------------------------------------------
 	xr_vector <s16>			TmpPresetItems;
 	PRESET_ITEMS_it		It = pCurPresetItems->begin();

@@ -140,7 +140,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		}break;
 	case GE_DESTROY:
 		{
-			Process_event_destroy	(P,sender,timestamp,destination);
+			Process_event_destroy	(P,sender,timestamp,destination, NULL);
 			VERIFY					(verify_entities());
 		}
 		break;
