@@ -1,0 +1,52 @@
+-- Используются:
+-- m_stalker_pes
+-- wpn_pes
+
+-- Имена звуковых файлов
+local snd_davay_davay =     [[scripts\Rolik\stalker_hound\davay-davay]]
+local snd_ey_spryatalsa =   [[scripts\Rolik\stalker_hound\ey-spryatalsa]]
+local snd_gav_gav =         [[scripts\Rolik\stalker_hound\gav-gav1]]
+local snd_ispugalsa =       [[scripts\Rolik\stalker_hound\ispugalsa]]
+local snd_kashel =          [[scripts\Rolik\stalker_hound\kashel1]]
+local snd_kishki =          [[scripts\Rolik\stalker_hound\kishki1]]
+local snd_napali_v_volnu =  [[scripts\Rolik\stalker_hound\napali-v-volnu1]]
+local snd_nashi_podberut =  [[scripts\Rolik\stalker_hound\nashi-podberut]]
+local snd_padli =           [[scripts\Rolik\stalker_hound\padli]]
+local snd_po_sklonam =      [[scripts\Rolik\stalker_hound\po-sklonam]]
+local snd_skoti_truslivie = [[scripts\Rolik\stalker_hound\skoti-truslivie1]]
+local snd_vihodi_str =      [[scripts\Rolik\stalker_hound\vihodi-str]]
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+-- MAIN
+----------------------------------------------------------------------------------------------------
+
+function main ()
+	debug_script_name = zmey_gameplay_1.script_name()
+	debug_log(zmey_gameplay_1.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_1")
+
+	local stalker_wounded = get_level_object("m_stalker_wounded")
+
+	stalker_wounded:script(true, zmey_gameplay_1.script_name())
+
+	action(stalker_wounded,
+	       cond(cond.time_end, time_infinite)
+	)
+	
+	while true do
+		printf("ZZZZZZZ")
+		wait()
+	end
+
+	--stalker_wounded:script(false, zmey_gameplay_1.script_name())
+	
+	debug_log(zmey_gameplay_1.script_name(), "SCRIPT STOPPED: zmey_gameplay_1")
+end
+
+----------------------------------------------------------------------------------------------------
+
