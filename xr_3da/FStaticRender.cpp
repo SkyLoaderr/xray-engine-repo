@@ -76,11 +76,11 @@ void CRender::Calculate()
 	if (QualityControl.fScaleGLOD>1.2f) QualityControl.fScaleGLOD=1.2f;
 
 	// ******************** Geometry detail
-	float	fFar = 50.f;
-	ViewBase.CreateFromViewMatrix(Device.mFullTransform);
-	View = 0;
+	ViewBase.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+	View			= 0;
 
 	// Transfer to global space to avoid deep pointer access
+	float fFar	=	50.f;
 	g_fFarSq	=	fFar; 
 	g_fFarSq	*=	g_fFarSq;
 	g_fSCREEN	=	float(Device.dwWidth*Device.dwHeight);

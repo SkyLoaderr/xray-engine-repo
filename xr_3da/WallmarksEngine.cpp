@@ -128,7 +128,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
 	mView.mul2_43		(mRot);
 	CFrustum			F;
-	F.CreateFromMatrix	(mView);
+	F.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
 	// create empty wallmark
 	marks.push_back		(CWallmark());
@@ -252,7 +252,7 @@ void CWallmarksEngine::Render()
 			Fmatrix				mView;
 			BuildMatrix			(mView,1/Size,sPOS);
 			CFrustum			F;
-			F.CreateFromMatrix	(mView);
+			F.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 			
 			// Build box & xform
 			Fbox				BB; 
