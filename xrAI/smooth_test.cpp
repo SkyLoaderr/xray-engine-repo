@@ -669,7 +669,7 @@ void test_smooth_path(LPCSTR name)
 	start.vertex_id				= level_graph->vertex(v3d(start.position));
 
 	dest.position.set			(-84.000008f,-0.093299f);
-	dest.direction.set			(0.f,0.f);
+	dest.direction.set			(0.f,1.f);
 	dest.vertex_id				= level_graph->vertex(v3d(dest.position));
 	
 	fill_params					(start,dest,start_set,dest_set);
