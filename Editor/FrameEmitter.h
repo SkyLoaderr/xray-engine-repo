@@ -15,6 +15,9 @@
 #include "particlesystem.h"
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
+#include "ElPgCtl.hpp"
+#include "ElXPThemedControl.hpp"
+#include <ExtCtrls.hpp>
 
 class TfraEmitter : public TFrame
 {
@@ -24,35 +27,36 @@ __published:	// IDE-managed Components
 	TExtBtn *ebBirthFunc;
 	TMultiObjSpinEdit *seBirthRate;
 	TMultiObjSpinEdit *seParticleLimit;
-	TPageControl *pcEmitterType;
-	TTabSheet *tsPoint;
-	TMxLabel *RxLabel42;
-	TTabSheet *tsCone;
-	TMultiObjSpinEdit *seConeAngle;
-	TMultiObjSpinEdit *seConeDirH;
-	TMultiObjSpinEdit *seConeDirP;
-	TMultiObjSpinEdit *seConeDirB;
-	TTabSheet *tsSphere;
-	TMultiObjSpinEdit *seSphereRadius;
-	TTabSheet *tsBox;
-	TMultiObjSpinEdit *seBoxSizeX;
-	TMultiObjSpinEdit *seBoxSizeY;
-	TMultiObjSpinEdit *seBoxSizeZ;
 	TMxLabel *RxLabel1;
 	TMultiObjCheck *cbBurst;
-	TMxLabel *RxLabel2;
-	TMxLabel *RxLabel3;
-	TMxLabel *RxLabel5;
-	TMxLabel *RxLabel39;
-	TMxLabel *RxLabel40;
-	TMxLabel *RxLabel41;
-	TMxLabel *RxLabel38;
+	TMxLabel *RxLabel6;
+	TMultiObjCheck *cbPlayOnce;
+	TElPageControl *pcEmitterType;
+	TElTabSheet *tsPoint1;
+	TPanel *Panel3;
+	TElTabSheet *tsCone;
+	TPanel *Panel1;
+	TElTabSheet *tsSphere;
+	TPanel *Panel5;
+	TElTabSheet *tsBox;
+	TPanel *Panel4;
+	TMxLabel *RxLabel42;
 	TMxLabel *RxLabel4;
 	TMxLabel *RxLabel35;
 	TMxLabel *RxLabel36;
 	TMxLabel *RxLabel37;
-	TMxLabel *RxLabel6;
-	TMultiObjCheck *cbPlayOnce;
+	TMultiObjSpinEdit *seConeAngle;
+	TMultiObjSpinEdit *seConeDirH;
+	TMultiObjSpinEdit *seConeDirP;
+	TMultiObjSpinEdit *seConeDirB;
+	TMxLabel *RxLabel38;
+	TMultiObjSpinEdit *seSphereRadius;
+	TMxLabel *RxLabel39;
+	TMxLabel *RxLabel40;
+	TMxLabel *RxLabel41;
+	TMultiObjSpinEdit *seBoxSizeX;
+	TMultiObjSpinEdit *seBoxSizeY;
+	TMultiObjSpinEdit *seBoxSizeZ;
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraEmitter(TComponent* Owner);

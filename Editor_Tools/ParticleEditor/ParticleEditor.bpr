@@ -9,9 +9,8 @@
       Intermediate\frustum.obj Intermediate\EditMesh.obj 
       Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
       Intermediate\EditMeshModify.obj Intermediate\Device.obj 
-      Intermediate\EditMeshRender.obj Intermediate\TopBar.obj 
-      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\Splash.obj Intermediate\main.obj 
+      Intermediate\EditMeshRender.obj Intermediate\BottomBar.obj 
+      Intermediate\EditorPref.obj Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
       Intermediate\_quaternion.obj Intermediate\_compressed_normal.obj 
       Intermediate\xr_trims.obj Intermediate\interp.obj 
@@ -50,14 +49,15 @@
       Intermediate\ShaderFunction.obj Intermediate\PSLibrary.obj 
       Intermediate\xrParticlesLib.obj Intermediate\PSObject.obj 
       Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj 
-      Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj"/>
+      Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj 
+      Intermediate\TopBar.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) TopBar.dfm BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm 
-      LeftBar.dfm LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
-      Editor\FrameEmitter.dfm"/>
+    <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
+      LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
+      Editor\FrameEmitter.dfm Editor\TopBar.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib 
       Lib\ETools.lib"/>

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 565
+  Height = 752
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 565
+    Height = 752
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -36,6 +36,7 @@ object fraLeftBar: TfraLeftBar
       Height = 68
       Hint = 'Scene commands'
       Align = alTop
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
@@ -78,11 +79,12 @@ object fraLeftBar: TfraLeftBar
       object ebSceneCommands: TExtBtn
         Left = 2
         Top = 16
-        Width = 140
+        Width = 207
         Height = 15
         Align = alNone
         BevelShow = False
         HotTrack = True
+        HotColor = 15790320
         CloseButton = False
         Caption = 'Preview Object'
         Font.Charset = DEFAULT_CHARSET
@@ -102,17 +104,17 @@ object fraLeftBar: TfraLeftBar
         Margin = 3
         ParentFont = False
         Spacing = 3
-        Transparent = False
         OnMouseDown = ebSceneCommandsMouseDown
       end
       object ebPreferences: TExtBtn
         Left = 2
         Top = 50
-        Width = 140
+        Width = 207
         Height = 15
         Align = alNone
         BevelShow = False
         HotTrack = True
+        HotColor = 15790320
         CloseButton = False
         Caption = 'Preferences'
         Font.Charset = DEFAULT_CHARSET
@@ -122,17 +124,17 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebEditorPreferencesClick
       end
       object ExtBtn3: TExtBtn
         Left = 2
         Top = 33
-        Width = 140
+        Width = 207
         Height = 15
         Align = alNone
         BevelShow = False
         HotTrack = True
+        HotColor = 15790320
         CloseButton = False
         Caption = 'Refresh Textures'
         Font.Charset = DEFAULT_CHARSET
@@ -142,7 +144,6 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        Transparent = False
         OnClick = ebRefreshTexturesClick
       end
     end
@@ -150,7 +151,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 103
+      Height = 290
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -171,13 +172,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 72
+        Height = 259
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 70
+          Top = 257
           Width = 208
           Height = 2
           Align = alBottom
@@ -193,7 +194,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 34
+          Height = 221
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -287,6 +288,7 @@ object fraLeftBar: TfraLeftBar
           Height = 34
           Align = alTop
           BevelOuter = bvNone
+          Color = 10528425
           TabOrder = 1
           object ebEngineShaderRemove: TExtBtn
             Left = 69
@@ -296,6 +298,7 @@ object fraLeftBar: TfraLeftBar
             Align = alNone
             BevelShow = False
             HotTrack = True
+            HotColor = 15790320
             CloseButton = False
             Caption = 'Remove'
             Font.Charset = DEFAULT_CHARSET
@@ -305,7 +308,6 @@ object fraLeftBar: TfraLeftBar
             Font.Style = []
             Margin = 13
             ParentFont = False
-            Transparent = False
             OnClick = ebParticleShaderRemoveClick
           end
           object ebEngineShaderClone: TExtBtn
@@ -316,6 +318,7 @@ object fraLeftBar: TfraLeftBar
             Align = alNone
             BevelShow = False
             HotTrack = True
+            HotColor = 15790320
             CloseButton = False
             Caption = 'Clone'
             Font.Charset = DEFAULT_CHARSET
@@ -325,7 +328,6 @@ object fraLeftBar: TfraLeftBar
             Font.Style = []
             Margin = 13
             ParentFont = False
-            Transparent = False
             OnClick = ebParticleCloneClick
           end
           object ebEngineShaderFile: TExtBtn
@@ -336,6 +338,7 @@ object fraLeftBar: TfraLeftBar
             Align = alNone
             BevelShow = False
             HotTrack = True
+            HotColor = 15790320
             CloseButton = False
             CloseWidth = 24
             Caption = 'File'
@@ -357,7 +360,6 @@ object fraLeftBar: TfraLeftBar
             Margin = 3
             ParentFont = False
             Spacing = 3
-            Transparent = False
             OnMouseDown = ebEngineShaderFileMouseDown
           end
           object ebCShaderCreate: TExtBtn
@@ -368,6 +370,7 @@ object fraLeftBar: TfraLeftBar
             Align = alNone
             BevelShow = False
             HotTrack = True
+            HotColor = 15790320
             CloseButton = False
             CloseWidth = 24
             Caption = 'Create'
@@ -380,27 +383,28 @@ object fraLeftBar: TfraLeftBar
             Margin = 13
             ParentFont = False
             Spacing = 3
-            Transparent = False
             OnClick = ebPSCreateClick
           end
         end
       end
       object paAction: TPanel
         Left = 1
-        Top = 86
+        Top = 273
         Width = 208
         Height = 16
         Align = alBottom
         BevelOuter = bvNone
+        Color = 10528425
         TabOrder = 1
         object ebEngineApplyChanges: TExtBtn
           Left = 1
           Top = 0
-          Width = 205
+          Width = 202
           Height = 15
           Align = alNone
           BevelShow = False
           HotTrack = True
+          HotColor = 15790320
           CloseButton = False
           Caption = 'Apply Changes'
           Font.Charset = DEFAULT_CHARSET
@@ -410,14 +414,13 @@ object fraLeftBar: TfraLeftBar
           Font.Style = []
           Margin = 13
           ParentFont = False
-          Transparent = False
           OnClick = ebEngineApplyChangesClick
         end
       end
     end
     object paProperties: TPanel
       Left = 1
-      Top = 214
+      Top = 401
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -468,16 +471,18 @@ object fraLeftBar: TfraLeftBar
         Height = 335
         Align = alClient
         BevelOuter = bvNone
+        Color = 10528425
         TabOrder = 0
       end
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 172
+      Top = 359
       Width = 210
       Height = 42
       Hint = 'Scene commands'
       Align = alBottom
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
@@ -547,7 +552,6 @@ object fraLeftBar: TfraLeftBar
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFF}
         ParentFont = False
-        Transparent = False
         FlatAlwaysEdge = True
         OnClick = ebCurrentPSPlayClick
       end
@@ -580,7 +584,6 @@ object fraLeftBar: TfraLeftBar
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFF}
         ParentFont = False
-        Transparent = False
         FlatAlwaysEdge = True
         OnClick = ebCurrentPSStopClick
       end
@@ -597,6 +600,7 @@ object fraLeftBar: TfraLeftBar
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ShadowColor = 10528425
       end
       object lbParticleCount: TMxLabel
         Left = 113
@@ -611,6 +615,7 @@ object fraLeftBar: TfraLeftBar
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ShadowColor = 10528425
       end
       object RxLabel2: TMxLabel
         Left = 65
@@ -624,7 +629,7 @@ object fraLeftBar: TfraLeftBar
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        ShadowColor = 15790320
+        ShadowColor = 10528425
       end
       object RxLabel1: TMxLabel
         Left = 65
@@ -638,7 +643,7 @@ object fraLeftBar: TfraLeftBar
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        ShadowColor = 15790320
+        ShadowColor = 10528425
       end
     end
   end

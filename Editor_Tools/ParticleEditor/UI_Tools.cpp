@@ -277,7 +277,7 @@ void CParticleTools::UpdateCurrent(){
 
 void CParticleTools::UpdateEmitter(){
 	VERIFY(m_bReady);
-    VERIFY(m_LibPS);
+    if (!m_LibPS) return;
     if (m_TestObject) m_TestObject->UpdateEmitter(&m_EditPS.m_DefaultEmitter);
 }
 //---------------------------------------------------------------------------

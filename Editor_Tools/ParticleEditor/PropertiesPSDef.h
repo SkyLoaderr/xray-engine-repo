@@ -17,23 +17,17 @@
 //---------------------------------------------------------------------------
 
 #include "particlesystem.h"
+#include "ElPgCtl.hpp"
+#include "ElTree.hpp"
+#include "ElXPThemedControl.hpp"
 
 class TfrmPropertiesPSDef : public TForm
 {
 __published:	// IDE-managed Components
-	TPageControl *pcPS;
-	TTabSheet *tsBase;
-	TTabSheet *tsParams;
-	TTabSheet *tsVary;
-	TTabSheet *tsBlur;
-	TGroupBox *gbBase;
-	TMxLabel *RxLabel19;
-	TMxLabel *lbCreator;
-	TExtBtn *ebSelectShader;
-	TMxLabel *lbShader;
-	TMxLabel *lbTexture;
-	TExtBtn *ebSelectTexture;
-	TGroupBox *gbParams;
+	TElPageControl *pcPS;
+	TElTabSheet *tsVary;
+	TPanel *Panel1;
+	TElTabSheet *tsParams;
 	TMxLabel *RxLabel31;
 	TMxLabel *RxLabel1;
 	TMxLabel *RxLabel5;
@@ -59,6 +53,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn9;
 	TExtBtn *ExtBtn10;
 	TExtBtn *ExtBtn1;
+	TMxLabel *RxLabel40;
+	TMxLabel *RxLabel41;
 	TMultiObjSpinEdit *seLife;
 	TMultiObjSpinEdit *seSizeStart;
 	TMultiObjSpinEdit *seGravityStartX;
@@ -81,24 +77,8 @@ __published:	// IDE-managed Components
 	TGradient *grColor;
 	TMultiObjSpinEdit *seSpeedStart;
 	TMultiObjSpinEdit *seSpeedEnd;
-	TTabSheet *tsEmitter;
-	TGroupBox *GroupBox2;
-	TfraEmitter *fraEmitter;
-	TGroupBox *GroupBox1;
-	TMxLabel *RxLabel30;
-	TMxLabel *RxLabel32;
-	TMxLabel *RxLabel33;
-	TExtBtn *ExtBtn11;
-	TExtBtn *ExtBtn12;
-	TMxLabel *RxLabel4;
-	TMxLabel *RxLabel20;
-	TMultiObjCheck *cbMotionBlur;
-	TMultiObjSpinEdit *seBlurTimeStart;
-	TMultiObjSpinEdit *seBlurSubdivStart;
-	TMultiObjSpinEdit *seBlurTimeEnd;
-	TMultiObjSpinEdit *seBlurSubdivEnd;
-	TTabSheet *tsFrame;
-	TGroupBox *gbVariability;
+	TMultiObjCheck *cbAlignToPath;
+	TMultiObjCheck *cbRandomInitAngle;
 	TMxLabel *RxLabel2;
 	TMxLabel *RxLabel3;
 	TMxLabel *RxLabel16;
@@ -116,35 +96,57 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seColorVarB;
 	TMultiObjSpinEdit *seColorVarA;
 	TMultiObjSpinEdit *seASpeedVar;
-	TGroupBox *GroupBox4;
+	TElTabSheet *tsBlur;
+	TElTabSheet *tsBase;
+	TPanel *Panel2;
+	TPanel *Panel3;
+	TElTabSheet *tsFrame;
+	TElTabSheet *tsEmitter;
+	TPanel *Panel4;
+	TPanel *Panel5;
+	TMxLabel *RxLabel30;
+	TMxLabel *RxLabel32;
+	TMxLabel *RxLabel33;
+	TExtBtn *ExtBtn11;
+	TExtBtn *ExtBtn12;
+	TMxLabel *RxLabel4;
+	TMxLabel *RxLabel20;
+	TMultiObjCheck *cbMotionBlur;
+	TMultiObjSpinEdit *seBlurTimeStart;
+	TMultiObjSpinEdit *seBlurSubdivStart;
+	TMultiObjSpinEdit *seBlurTimeEnd;
+	TMultiObjSpinEdit *seBlurSubdivEnd;
+	TMxLabel *RxLabel19;
+	TMxLabel *lbCreator;
+	TExtBtn *ebSelectShader;
+	TMxLabel *lbShader;
+	TMxLabel *lbTexture;
+	TExtBtn *ebSelectTexture;
 	TMxLabel *RxLabel29;
+	TMxLabel *RxLabel36;
+	TMxLabel *RxLabel37;
+	TMxLabel *RxLabel42;
+	TMxLabel *RxLabel43;
+	TMxLabel *RxLabel44;
 	TMultiObjCheck *cbAnimEnabled;
 	TGroupBox *GroupBox5;
 	TMxLabel *RxLabel18;
-	TMultiObjSpinEdit *seAnimFrameWidth;
 	TMxLabel *RxLabel22;
-	TMultiObjSpinEdit *seAnimFrameHeight;
 	TMxLabel *RxLabel35;
+	TMultiObjSpinEdit *seAnimFrameWidth;
+	TMultiObjSpinEdit *seAnimFrameHeight;
 	TMultiObjSpinEdit *seAnimFrameCount;
-	TMxLabel *RxLabel36;
 	TMultiObjSpinEdit *seAnimSpeed;
-	TMxLabel *RxLabel37;
 	TMultiObjSpinEdit *seAnimSpeedVar;
 	TGroupBox *GroupBox6;
 	TMxLabel *RxLabel38;
 	TMxLabel *RxLabel39;
 	TMultiObjSpinEdit *seAnimTexWidth;
 	TMultiObjSpinEdit *seAnimTexHeight;
-	TMxLabel *RxLabel40;
-	TMultiObjCheck *cbAlignToPath;
-	TMxLabel *RxLabel41;
-	TMultiObjCheck *cbRandomInitAngle;
-	TMxLabel *RxLabel42;
 	TMultiObjCheck *cbAnimAnimate;
-	TMxLabel *RxLabel43;
 	TMultiObjCheck *cbAnimRandomInitialFrame;
-	TMxLabel *RxLabel44;
 	TMultiObjCheck *cbAnimRandomPlaybackDir;
+	TfraEmitter *fraEmitter1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormShow(TObject *Sender);

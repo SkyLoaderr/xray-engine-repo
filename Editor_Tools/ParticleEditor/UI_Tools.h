@@ -82,9 +82,9 @@ public:
 
     void				OnShowHint			(AStringVec& SS);
 
-    bool __fastcall 	MouseStart  		(TShiftState Shift)
-    bool __fastcall 	MouseEnd    		(TShiftState Shift)
-    void __fastcall 	MouseMove   		(TShiftState Shift)
+    bool __fastcall 	MouseStart  		(TShiftState Shift);
+    bool __fastcall 	MouseEnd    		(TShiftState Shift);
+    void __fastcall 	MouseMove   		(TShiftState Shift);
 	bool __fastcall 	HiddenMode  		(){return false;}
     bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}

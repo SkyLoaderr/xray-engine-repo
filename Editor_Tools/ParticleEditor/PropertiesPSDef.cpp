@@ -11,6 +11,9 @@
 #include "ui_tools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ElPgCtl"
+#pragma link "ElTree"
+#pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------

@@ -1,12 +1,14 @@
 object fraEmitter: TfraEmitter
   Left = 0
   Top = 0
-  Width = 232
-  Height = 209
+  Width = 781
+  Height = 384
+  Color = 10528425
+  ParentColor = False
   TabOrder = 0
   object RxLabel20: TMxLabel
     Left = 4
-    Top = 103
+    Top = 102
     Width = 47
     Height = 13
     Caption = 'Birth rate:'
@@ -16,10 +18,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
+    ShadowColor = 10528425
   end
   object RxLabel22: TMxLabel
     Left = 4
-    Top = 121
+    Top = 120
     Width = 60
     Height = 13
     Caption = 'Particle limit:'
@@ -29,10 +32,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
+    ShadowColor = 10528425
   end
   object ebBirthFunc: TExtBtn
     Left = 171
-    Top = 100
+    Top = 99
     Width = 17
     Height = 17
     Align = alNone
@@ -47,12 +51,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
-    Transparent = False
     FlatAlwaysEdge = True
   end
   object RxLabel1: TMxLabel
     Left = 4
-    Top = 138
+    Top = 137
     Width = 29
     Height = 13
     Caption = 'Burst:'
@@ -62,49 +65,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-  end
-  object RxLabel2: TMxLabel
-    Left = -1
-    Top = 3
-    Width = 52
-    Height = 13
-    Caption = 'Size X (m):'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object RxLabel3: TMxLabel
-    Left = 0
-    Top = 21
-    Width = 52
-    Height = 13
-    Caption = 'Size Y (m):'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object RxLabel5: TMxLabel
-    Left = -1
-    Top = 40
-    Width = 52
-    Height = 13
-    Caption = 'Size Z (m):'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
+    ShadowColor = 10528425
   end
   object RxLabel6: TMxLabel
     Left = 4
-    Top = 153
+    Top = 152
     Width = 52
     Height = 13
     Caption = 'Play once:'
@@ -114,10 +79,11 @@ object fraEmitter: TfraEmitter
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
+    ShadowColor = 10528425
   end
   object seBirthRate: TMultiObjSpinEdit
     Left = 84
-    Top = 100
+    Top = 99
     Width = 88
     Height = 18
     LWSensitivity = 0.01
@@ -126,7 +92,7 @@ object fraEmitter: TfraEmitter
     MaxValue = 10000
     ValueType = vtFloat
     AutoSize = False
-    Color = 14671839
+    Color = 10526880
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -137,14 +103,14 @@ object fraEmitter: TfraEmitter
   end
   object seParticleLimit: TMultiObjSpinEdit
     Left = 84
-    Top = 118
+    Top = 117
     Width = 105
     Height = 18
     LWSensitivity = 1
     ButtonKind = bkLightWave
     MaxValue = 1000000
     AutoSize = False
-    Color = 14671839
+    Color = 10526880
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -153,336 +119,22 @@ object fraEmitter: TfraEmitter
     ParentFont = False
     TabOrder = 1
   end
-  object pcEmitterType: TPageControl
-    Left = 0
-    Top = 0
-    Width = 232
-    Height = 100
-    ActivePage = tsCone
-    Align = alTop
+  object cbBurst: TMultiObjCheck
+    Left = 84
+    Top = 137
+    Width = 13
+    Height = 13
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    MultiLine = True
     ParentFont = False
-    Style = tsFlatButtons
-    TabHeight = 18
     TabOrder = 2
-    TabWidth = 39
-    object tsPoint: TTabSheet
-      Caption = 'Point'
-      object RxLabel42: TMxLabel
-        Left = 47
-        Top = 27
-        Width = 65
-        Height = 13
-        Caption = '<No params>'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-    end
-    object tsCone: TTabSheet
-      Caption = 'Cone'
-      ImageIndex = 1
-      object RxLabel4: TMxLabel
-        Left = -1
-        Top = 3
-        Width = 45
-        Height = 13
-        Caption = 'Angle (°):'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RxLabel35: TMxLabel
-        Left = -1
-        Top = 21
-        Width = 62
-        Height = 13
-        Caption = 'Heading (Y°)'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RxLabel36: TMxLabel
-        Left = 0
-        Top = 39
-        Width = 46
-        Height = 13
-        Caption = 'Pitch (X°)'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RxLabel37: TMxLabel
-        Left = -1
-        Top = 58
-        Width = 47
-        Height = 13
-        Caption = 'Bank (Z°)'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object seConeAngle: TMultiObjSpinEdit
-        Left = 81
-        Top = 0
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 180
-        ValueType = vtFloat
-        Value = 30
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-      end
-      object seConeDirH: TMultiObjSpinEdit
-        Left = 81
-        Top = 18
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 360
-        MinValue = -360
-        ValueType = vtFloat
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-      end
-      object seConeDirP: TMultiObjSpinEdit
-        Left = 81
-        Top = 36
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 360
-        MinValue = -360
-        ValueType = vtFloat
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-      end
-      object seConeDirB: TMultiObjSpinEdit
-        Left = 81
-        Top = 54
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 360
-        MinValue = -360
-        ValueType = vtFloat
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 3
-      end
-    end
-    object tsSphere: TTabSheet
-      Caption = 'Sphere'
-      ImageIndex = 2
-      object RxLabel38: TMxLabel
-        Left = -1
-        Top = 3
-        Width = 55
-        Height = 13
-        Caption = 'Radius (m):'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object seSphereRadius: TMultiObjSpinEdit
-        Left = 81
-        Top = 0
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 10000
-        ValueType = vtFloat
-        Value = 1
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-      end
-    end
-    object tsBox: TTabSheet
-      Caption = 'Box'
-      ImageIndex = 3
-      object RxLabel39: TMxLabel
-        Left = -1
-        Top = 3
-        Width = 52
-        Height = 13
-        Caption = 'Size X (m):'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RxLabel40: TMxLabel
-        Left = 0
-        Top = 21
-        Width = 52
-        Height = 13
-        Caption = 'Size Y (m):'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RxLabel41: TMxLabel
-        Left = -1
-        Top = 40
-        Width = 52
-        Height = 13
-        Caption = 'Size Z (m):'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object seBoxSizeX: TMultiObjSpinEdit
-        Left = 81
-        Top = 0
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 360
-        MinValue = -360
-        ValueType = vtFloat
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-      end
-      object seBoxSizeY: TMultiObjSpinEdit
-        Left = 81
-        Top = 18
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 360
-        MinValue = -360
-        ValueType = vtFloat
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-      end
-      object seBoxSizeZ: TMultiObjSpinEdit
-        Left = 81
-        Top = 36
-        Width = 105
-        Height = 18
-        LWSensitivity = 0.1
-        ButtonKind = bkLightWave
-        Decimal = 1
-        Increment = 0.1
-        MaxValue = 360
-        MinValue = -360
-        ValueType = vtFloat
-        AutoSize = False
-        Color = 14671839
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-      end
-    end
   end
-  object cbBurst: TMultiObjCheck
+  object cbPlayOnce: TMultiObjCheck
     Left = 84
-    Top = 138
+    Top = 152
     Width = 13
     Height = 13
     Font.Charset = DEFAULT_CHARSET
@@ -493,17 +145,406 @@ object fraEmitter: TfraEmitter
     ParentFont = False
     TabOrder = 3
   end
-  object cbPlayOnce: TMultiObjCheck
-    Left = 84
-    Top = 153
-    Width = 13
-    Height = 13
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
+  object pcEmitterType: TElPageControl
+    Left = 2
+    Top = 2
+    Width = 195
+    Height = 96
+    ActiveTabColor = 10528425
+    BorderWidth = 0
+    Color = 10528425
+    DrawFocus = False
+    Flat = True
+    HotTrack = True
+    InactiveTabColor = 10528425
+    MinTabHeight = 20
+    MinTabWidth = 20
+    Multiline = False
+    RaggedRight = False
+    ScrollOpposite = False
+    Style = etsButtons
+    TabIndex = 0
+    TabPosition = etpTop
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = 15790320
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
+    TabBkColor = 10528425
+    ActivePage = tsPoint1
+    FlatTabBorderColor = clBtnShadow
+    ParentColor = False
     TabOrder = 4
+    object tsPoint1: TElTabSheet
+      PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
+      Caption = 'Point'
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 195
+        Height = 75
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 0
+        object RxLabel42: TMxLabel
+          Left = 60
+          Top = 29
+          Width = 65
+          Height = 13
+          Caption = '<No params>'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+      end
+    end
+    object tsCone: TElTabSheet
+      TabColor = 10528425
+      PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
+      Caption = 'Cone'
+      Color = 10528425
+      Visible = False
+      object Panel1: TPanel
+        Left = 0
+        Top = 0
+        Width = 195
+        Height = 75
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 0
+        object RxLabel4: TMxLabel
+          Left = 2
+          Top = 4
+          Width = 45
+          Height = 13
+          Caption = 'Angle (°):'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object RxLabel35: TMxLabel
+          Left = 2
+          Top = 22
+          Width = 62
+          Height = 13
+          Caption = 'Heading (Y°)'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object RxLabel36: TMxLabel
+          Left = 3
+          Top = 40
+          Width = 46
+          Height = 13
+          Caption = 'Pitch (X°)'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object RxLabel37: TMxLabel
+          Left = 2
+          Top = 59
+          Width = 47
+          Height = 13
+          Caption = 'Bank (Z°)'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object seConeAngle: TMultiObjSpinEdit
+          Left = 82
+          Top = 1
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 180
+          ValueType = vtFloat
+          Value = 30
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+        end
+        object seConeDirH: TMultiObjSpinEdit
+          Left = 82
+          Top = 19
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          MinValue = -360
+          ValueType = vtFloat
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+        end
+        object seConeDirP: TMultiObjSpinEdit
+          Left = 82
+          Top = 37
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          MinValue = -360
+          ValueType = vtFloat
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+        end
+        object seConeDirB: TMultiObjSpinEdit
+          Left = 82
+          Top = 55
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          MinValue = -360
+          ValueType = vtFloat
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+        end
+      end
+    end
+    object tsSphere: TElTabSheet
+      PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
+      Caption = 'Sphere'
+      Visible = False
+      object Panel5: TPanel
+        Left = 0
+        Top = 0
+        Width = 195
+        Height = 75
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 0
+        object RxLabel38: TMxLabel
+          Left = 2
+          Top = 4
+          Width = 55
+          Height = 13
+          Caption = 'Radius (m):'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object seSphereRadius: TMultiObjSpinEdit
+          Left = 82
+          Top = 1
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 10000
+          ValueType = vtFloat
+          Value = 1
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+        end
+      end
+    end
+    object tsBox: TElTabSheet
+      PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
+      Caption = 'Box'
+      Visible = False
+      object Panel4: TPanel
+        Left = 0
+        Top = 0
+        Width = 195
+        Height = 75
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 0
+        object RxLabel39: TMxLabel
+          Left = 0
+          Top = 4
+          Width = 52
+          Height = 13
+          Caption = 'Size X (m):'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object RxLabel40: TMxLabel
+          Left = 1
+          Top = 22
+          Width = 52
+          Height = 13
+          Caption = 'Size Y (m):'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object RxLabel41: TMxLabel
+          Left = 0
+          Top = 41
+          Width = 52
+          Height = 13
+          Caption = 'Size Z (m):'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ShadowColor = 10528425
+        end
+        object seBoxSizeX: TMultiObjSpinEdit
+          Left = 82
+          Top = 1
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          MinValue = -360
+          ValueType = vtFloat
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+        end
+        object seBoxSizeY: TMultiObjSpinEdit
+          Left = 82
+          Top = 19
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          MinValue = -360
+          ValueType = vtFloat
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+        end
+        object seBoxSizeZ: TMultiObjSpinEdit
+          Left = 82
+          Top = 37
+          Width = 105
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          MinValue = -360
+          ValueType = vtFloat
+          AutoSize = False
+          Color = 10526880
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+        end
+      end
+    end
   end
 end

@@ -3,11 +3,13 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "FrameEmitter.h"
+#include "FrameEmitter.h"                                                                                
 #include "ShaderFunction.h"
 #include "ParticleSystem.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ElPgCtl"
+#pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfraEmitter *fraEmitter;
 //---------------------------------------------------------------------------

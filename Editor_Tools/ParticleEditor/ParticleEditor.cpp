@@ -17,7 +17,6 @@ USEUNIT("editor\EditMeshIO.cpp");
 USEUNIT("editor\EditMeshModify.cpp");
 USEUNIT("editor\Device.cpp");
 USEUNIT("editor\EditMeshRender.cpp");
-USEFORM("TopBar.cpp", fraTopBar);
 USEFORM("BottomBar.cpp", fraBottomBar);
 USEFORM("EditorPref.cpp", frmEditorPreferences);
 USEFORM("Splash.cpp", frmSplash);
@@ -113,6 +112,7 @@ USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEUNIT("Editor\TLSPRITE.CPP");
 USEUNIT("Editor\CustomObject.cpp");
 USELIB("Lib\ETools.lib");
+USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -138,6 +138,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Title = "Particle Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+		Application->CreateForm(__classid(TfraEmitter), &fraEmitter);
 		frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);
