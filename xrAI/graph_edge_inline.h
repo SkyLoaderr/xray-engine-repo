@@ -36,7 +36,7 @@ IC	typename CSGraphEdge::_vertex_type *CSGraphEdge::vertex				() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CSGraphEdge::_vertex_type_id &CSGraphEdge::vertex_id	() const
+IC	const typename CSGraphEdge::_vertex_id_type &CSGraphEdge::vertex_id	() const
 {
 	return			(vertex()->vertex_id());
 }
