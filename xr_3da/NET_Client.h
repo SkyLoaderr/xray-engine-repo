@@ -2,7 +2,7 @@
 
 #include "net_shared.h"
 
-const DWORD NET_QueueSize	= 128;
+const DWORD NET_QueueSize	= 256;
 class ENGINE_API INetQueue
 {
 	CCriticalSection	cs;

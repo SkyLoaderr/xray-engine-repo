@@ -86,9 +86,11 @@ void CSpawn_Event::Load	(CStream& FS)
 }
 
 #ifndef _EDITOR
-void CSpawn_Event::Execute()
+void CSpawn_Event::Execute(CStream& FS_CFORM)
 {
 	NET_Packet	P;
+
+	//*** generic
 	P.w_begin	(M_CL_SPAWN);
 	P.w_string	("m_event");
 	P.w_u8		(0);
@@ -97,10 +99,23 @@ void CSpawn_Event::Execute()
 	P.w_u8		(0xFE);
 	P.w_vec3	(description.o_Position);
 	P.w_vec3	(description.o_Orientation);
+
+	//*** addititional data
+	u32 size	= P.w_tell();
 	P.w_u16		(0);
+	
+	// CForm
+	CStream*	cform	= FS_CFORM.OpenChunk	(description.IDcform);
+	R_ASSERT	(cform);
+	P.w			(cform->Pointer(),cform->Length());
+	cform->Close();
+
+	// Commands
+	
+
 }
 #else
-void CSpawn_Event::Execute()
+void CSpawn_Event::Execute(CStream& FS)
 {
 }
 #endif
