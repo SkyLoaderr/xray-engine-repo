@@ -37,6 +37,7 @@ private:
 	vector<int>				id;
 	vector<xrLIGHT*>		lights;
 	CRT*					RT;
+	CRT*					RT_Blur;
 	Shader*					sh_Texture;
 	Shader*					sh_World;
 	Shader*					sh_Screen;

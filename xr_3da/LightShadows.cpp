@@ -11,7 +11,7 @@
 
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;
-const	int		S_size		= 64;
+const	int		S_size		= 128;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 
@@ -37,7 +37,7 @@ void CLightShadows::OnDeviceCreate	()
 	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",RTname);
-	vs_World	= Device.Streams.Create		(FVF::F_L, 4*batch_size*3);
+	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
 
 	// Debug
 	vs_Screen	= Device.Streams.Create		(FVF::F_TL,4);
@@ -99,7 +99,7 @@ void CLightShadows::calculate	()
 
 	Device.Shader.set_RT		(RT->pRT,0);
 	Device.Statistic.TEST.Begin	();
-	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0),1,0);
+	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 	
 	// set shader
 	Device.Shader.set_Shader	(sh_Texture);
@@ -166,7 +166,7 @@ void CLightShadows::calculate	()
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
 				Device.set_xform_world	(N.val.Matrix);
-				V->Render				(.7f);
+				V->Render				(1.0f);
 			}
 			
 			// register shadow and increment slot
@@ -195,11 +195,17 @@ void CLightShadows::render	()
 	int slot_line	= S_rt_size/S_size;
 	int slot_max	= slot_line*slot_line;
 	
+	// Projection and xform
+	float _43 = Device.mProject._43;
+	Device.mProject._43 -= 0.001f; 
+	Device.set_xform_world	(Fidentity);
+	Device.set_xform_project(Device.mProject);
+	
 	// Render shadows
 	Device.Shader.set_Shader	(sh_World);
 	int batch					= 0;
 	DWORD Offset				= 0;
-	DWORD C						= 0;
+	DWORD C						= 0xffffffff;
 	FVF::LIT* pv				= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
 	for (int s_it=0; s_it<shadows.size(); s_it++)
 	{
@@ -208,6 +214,7 @@ void CLightShadows::render	()
 		int			s_y			=	S.slot/slot_line;
 		Fvector2	t_scale, t_offset;
 		t_scale.set	(float(S_size)/float(S_rt_size),float(S_size)/float(S_rt_size));
+		t_scale.mul (.5f);
 		t_offset.set(float(s_x)/float(slot_line),float(s_y)/float(slot_line));
 		t_offset.x	+= .5f/S_rt_size;
 		t_offset.y	+= .5f/S_rt_size;
@@ -229,6 +236,7 @@ void CLightShadows::render	()
 			A.push_back			(*t.verts[0]);
 			A.push_back			(*t.verts[1]);
 			A.push_back			(*t.verts[2]);
+
 			sPoly*		clip	= F.ClipPoly(A,B);
 			if (0==clip)		continue;
 
@@ -239,15 +247,16 @@ void CLightShadows::render	()
 				Fvector& v3		= (*clip)[v];
 				Fvector	 T;
 				
-				S.M.transform(T,v1); pv->set(v1,C,T.x*t_scale.x+t_offset.x,T.y*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v2); pv->set(v2,C,T.x*t_scale.x+t_offset.x,T.y*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v3); pv->set(v3,C,T.x*t_scale.x+t_offset.x,T.y*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v1); pv->set(v1,C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v2); pv->set(v2,C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v3); pv->set(v3,C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 				batch++;
 				if (batch==batch_size)	{
 					// Flush
 					vs_World->Unlock		(batch*3);
 					Device.Primitive.Draw	(vs_World,batch,Offset);
 					pv						= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
+					batch					= 0;
 				}
 			}
 		}
@@ -281,4 +290,8 @@ void CLightShadows::render	()
 		Device.Shader.set_Shader(sh_Screen);
 		Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
 	}
+
+	// Projection
+	Device.mProject._43 = _43;
+	Device.set_xform_project	(Device.mProject);
 }
