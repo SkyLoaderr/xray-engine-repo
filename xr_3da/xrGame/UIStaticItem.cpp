@@ -42,6 +42,7 @@ void CUIStaticItem::Render(Shader* sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
 	Device.Shader.set_Shader		(sh?sh:hShader);
+	// convert&set pos
 	Ivector2		bp;
 	Level().HUD()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
@@ -91,15 +92,20 @@ void CUIStaticItem::Render(Shader* sh)
 
 void CUIStaticItem::Render(float angle, Shader* sh)
 {
+	// установить обязательно перед вызовом CustomItem::Render() !!!
+	Device.Shader.set_Shader		(sh?sh:hShader);
+	// convert&set pos
+	Ivector2		bp;
+	Level().HUD()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+
 	// actual rendering
 	u32			vOffset;
 	FVF::TL*		pv				= (FVF::TL*)Device.Streams.Vertex.Lock	(4,hVS->dwStride,vOffset);
 	
-	inherited::Render(pv,iPos,dwColor,angle);	
+	inherited::Render(pv,bp,dwColor,angle);	
 
 	// unlock VB and Render it as triangle list
 	Device.Streams.Vertex.Unlock	(4,hVS->dwStride);
-	Device.Shader.set_Shader		(sh?sh:hShader);
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
 	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);

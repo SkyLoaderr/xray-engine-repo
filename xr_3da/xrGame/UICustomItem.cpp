@@ -24,7 +24,6 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, in
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
-	
 	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
 	Fvector2 LTp,RBp;
@@ -56,6 +55,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
+	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
 	float			_sin1,_cos1,_sin2,_cos2;
 	angle			-=PI_DIV_4;
