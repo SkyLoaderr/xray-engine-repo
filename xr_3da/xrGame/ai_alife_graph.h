@@ -8,7 +8,7 @@
 
 #pragma once
 
-#define GRAPH_NAME					"game.graph"
+#define GRAPH_NAME							"game.graph"
 
 class CALifeGraph {
 public:
@@ -59,7 +59,7 @@ public:
 
 	IC const SGraphHeader&					Header()
 	{
-		return(m_tGraphHeader);
+		return								(m_tGraphHeader);
 	};
 
 	IC void Load							(const FILE_NAME &fName)
@@ -74,8 +74,8 @@ public:
 				vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
 				vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
 				for ( ; I != E; I++) {
-					m_tpGraphVFS->RstringZ((*I).caLevelName);
-					m_tpGraphVFS->Rvector((*I).tOffset);
+					m_tpGraphVFS->RstringZ	((*I).caLevelName);
+					m_tpGraphVFS->Rvector	((*I).tOffset);
 				}
 			}
 			R_ASSERT						(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
