@@ -41,6 +41,8 @@ public:
 	// Добавить надпись
 	// Return:	Указатель на добавленную запись
 	SinglePhrase * AddPhrase();
+	// Получить запись по номеру
+	SinglePhrase * GetPhraseByIndex(u32 idx);
 };
 
 

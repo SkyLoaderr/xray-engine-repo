@@ -12,6 +12,7 @@
 #include "UIProgressBar.h"
 #include "UIWpnDragDropItem.h"
 #include "UIListWnd.h"
+#include "UIMultiTextStatic.h"
 
 #include "../UIZoneMap.h"
 
@@ -80,6 +81,15 @@ protected:
 	CUIStatic			UIWeaponBack;
 	CUIStatic			UIWeaponSignAmmo;
 	CUIStatic			UIWeaponIcon;
+
+	// Для мультиплеера выводим денежки
+	CUIMultiTextStatic	UIMoneyIndicator;
+public:
+	// Изменить индикатор текущего количества денег
+	void ChangeTotalMoneyIndicator(ref_str newMoneyString);
+	// Показать (с анимацией) помледнте заработанные/отняные денежки
+	void DisplayMoneyChange(ref_str deltaMoney);
+protected:
 
 	// Надписи armor & health
 //	CUIStatic			UIHealthString;

@@ -19,6 +19,9 @@
 #include "UIProgressBar.h"
 #include "UIListWnd.h"
 #include "UITabControl.h"
+#include "UIFrameLineWnd.h"
+#include "UITextBanner.h"
+#include "UIMultiTextStatic.h"
 
 class CUIXmlInit
 {
@@ -31,6 +34,9 @@ public:
 
 	bool InitFrameWindow(CUIXml& xml_doc, const char* path, 
 							int index, CUIFrameWindow* pWnd);
+
+	bool InitFrameLine(CUIXml& xml_doc, const char* path, 
+							int index, CUIFrameLineWnd* pWnd);
 
 	bool InitStatic(CUIXml& xml_doc, const char* path, 
 							int index, CUIStatic* pWnd);
@@ -54,9 +60,14 @@ public:
 	bool InitTabControl(CUIXml &xml_doc, const char *path,
 						int index, CUITabControl *pWnd);
 
+	bool InitTextBanner(CUIXml &xml_doc, const char *path,
+						int index, CUITextBanner *pBnr);
+
+	bool InitMultiTextStatic(CUIXml &xml_doc, const char *path,
+							 int index, CUIMultiTextStatic *pWnd);
+
 	//автоматическая инициализация статических элеменитов
 	bool InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
-
 
 protected:
 	

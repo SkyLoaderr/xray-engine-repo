@@ -81,17 +81,17 @@ void		CUIGameAHunt::Init				()
 	pSkinMenuTeam1 = InitSkinMenu(1);
 	pSkinMenuTeam2 = InitSkinMenu(2);
 	//----------------------------------------------------------------
-	BuyMsg.SetStyleParams		(CUITextBanner::tbsNone, 1);
+	BuyMsg.SetStyleParams		(CUITextBanner::tbsNone);
 	BuyMsg.SetFont				(HUD().pFontDI);
 	BuyMsg.SetTextColor			(0xffffff00);
 
 	StaticMsg.SetFont			(HUD().pFontDI);
 
-	WarningMsg.SetStyleParams	(CUITextBanner::tbsFade, 1);
+	WarningMsg.SetStyleParams	(CUITextBanner::tbsFade)->fPeriod = 1;
 	WarningMsg.SetFont			(HUD().pFontDI);
 	WarningMsg.SetTextColor		(0xffff0000);
 
-	WarningMsg2.SetStyleParams	(CUITextBanner::tbsFlicker, 0.5);
+	WarningMsg2.SetStyleParams	(CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 	WarningMsg2.SetFont			(HUD().pFontDI);
 };
 //--------------------------------------------------------------------

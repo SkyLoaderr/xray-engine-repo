@@ -25,6 +25,7 @@
 
 #define LETTERICA16_FONT_NAME	"letterica16"
 #define LETTERICA18_FONT_NAME	"letterica18"
+#define LETTERICA25_FONT_NAME	"letterica25"
 
 
 CUIXmlInit::CUIXmlInit()
@@ -378,6 +379,10 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		{
 			pFnt = HUD().pFontLetterica18Russian;
 		}
+		else if(!xr_strcmp(*font_name, LETTERICA25_FONT_NAME))
+		{
+			pFnt = HUD().pFontLetterica25;
+		}
 	}
 	return true;
 }
@@ -401,6 +406,117 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 		pWnd->AddItem(newButton);
 	}
 	
+	xml_doc.SetLocalRoot(xml_doc.GetRoot());
+
+	return status;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUIFrameLineWnd* pWnd)
+{
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
+	string256 buf;
+
+	int x			= xml_doc.ReadAttribInt(path, index, "x");
+	int y			= xml_doc.ReadAttribInt(path, index, "y");
+	int width		= xml_doc.ReadAttribInt(path, index, "width");
+	int height		= xml_doc.ReadAttribInt(path, index, "height");
+	bool vertical	= !!xml_doc.ReadAttribInt(path, index, "vertical");
+
+	int	r			= xml_doc.ReadAttribInt(path, index, "r", 0xff);
+	int	g			= xml_doc.ReadAttribInt(path, index, "g", 0xff);
+	int	b			= xml_doc.ReadAttribInt(path, index, "b", 0xff);
+	int	a			= xml_doc.ReadAttribInt(path, index, "a", 0xff);
+
+	pWnd->SetColor(color_rgba(r, g, b, a));
+
+	ref_str base_name = xml_doc.Read(strconcat(buf,path,":base_texture"), index, NULL);
+
+	if(!base_name) return false;
+
+	pWnd->Init(*base_name, x, y, width, height, !vertical);
+
+	strconcat(buf,path,":title");
+	if(xml_doc.NavigateToNode(buf,index)) InitStatic(xml_doc, buf, index, &pWnd->UITitleText);
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitTextBanner(CUIXml &xml_doc, const char *path, int index, CUITextBanner *pBnr)
+{
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
+	std::map<ref_str, CUITextBanner::TextBannerStyles> conformityTable;
+	conformityTable["none"]		= CUITextBanner::TextBannerStyles::tbsNone;
+	conformityTable["fade"]		= CUITextBanner::TextBannerStyles::tbsFade;
+	conformityTable["flicker"]	= CUITextBanner::TextBannerStyles::tbsFlicker;
+
+//	XML_NODE *tab_node = xml_doc.NavigateToNode(path, index);
+//	xml_doc.SetLocalRoot(tab_node);
+
+	int animationsCount = xml_doc.GetNodesNum(path, index, "animation");
+
+	XML_NODE *tab_node = xml_doc.NavigateToNode(path, index);
+	XML_NODE *old_node = xml_doc.GetLocalRoot();
+	xml_doc.SetLocalRoot(tab_node);
+
+	ref_str a;
+
+	for (int i = 0; i < animationsCount; ++i)
+	{
+		a						= xml_doc.ReadAttrib("animation", i, "anim", "none");
+		EffectParams * param	= pBnr->SetStyleParams(conformityTable[a]);
+
+		param->bCyclic			= !!xml_doc.ReadAttribInt("animation", i, "cyclic", 1);
+		param->bOn				= !!xml_doc.ReadAttribInt("animation", i, "on", 1);
+		param->fPeriod			= static_cast<float>(atof(xml_doc.ReadAttrib("animation", i, "period", "1")));
+		param->iEffectStage		= xml_doc.ReadAttribInt("animation", i, "stage", 0);
+	}
+
+	xml_doc.SetLocalRoot(old_node);
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int index, CUIMultiTextStatic *pWnd)
+{
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
+	bool status = true;
+	string128	buf;
+
+	status &= InitStatic(xml_doc, path, index, pWnd);
+	int phrasesCount = xml_doc.GetNodesNum(path, index, "phrase");
+
+	strconcat(buf, path, ":phrase");
+	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
+	xml_doc.SetLocalRoot(tab_node);
+
+	CUIMultiTextStatic::SinglePhrase * p;
+	u32	argb = 0;
+	const char * const ph = "phrase";
+
+	for (int i = 0; i < phrasesCount; ++i)
+	{
+		p = pWnd->AddPhrase();
+
+		status	&= InitTextBanner(xml_doc, ph, i, &p->effect);
+		p->outX	= static_cast<float>(xml_doc.ReadAttribInt(ph, i, "x", 0));
+		p->outY = static_cast<float>(xml_doc.ReadAttribInt(ph, i, "y", 0));
+
+		CGameFont *pFont;
+		InitFont(xml_doc, ph, i, argb, pFont);
+        p->effect.SetFont(pFont);
+		p->effect.SetTextColor(argb);
+	}
+
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
 
 	return status;

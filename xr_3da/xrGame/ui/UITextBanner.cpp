@@ -17,24 +17,20 @@ CUITextBanner::CUITextBanner()
 
 CUITextBanner::~CUITextBanner()
 {
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUITextBanner::SetStyleParams(const TextBannerStyles styleName, const float period)
+EffectParams * CUITextBanner::SetStyleParams(const TextBannerStyles styleName)
 {
 	if (tbsNone == styleName)
 	{
 		if (!m_StyleParams.empty())
 			m_StyleParams.clear();
-		return;
+		return NULL;
 	}
 
-	EffectParams	param;
-	param.fPeriod	= period;
-
-	m_StyleParams[styleName] = param;
+	return &m_StyleParams[styleName];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,9 +43,8 @@ void CUITextBanner::Update()
 	if (m_bAnimate)
 	{
 		for (; it != m_StyleParams.end(); ++it)
-		{
-			it->second.fTimePassed += Device.fTimeDelta;
-		}
+			if (it->second.bOn)
+				it->second.fTimePassed += Device.fTimeDelta;
 	}
 }
 
@@ -57,6 +52,8 @@ void CUITextBanner::Update()
 
 void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 {
+	if (!fmt) return;
+
 	StyleParams_it it = m_StyleParams.begin();
 
 	// Применяем эффекты
@@ -96,9 +93,18 @@ void CUITextBanner::EffectFade()
 {
 	EffectParams	&fade = m_StyleParams[tbsFade];
 
+	// Проверям включена ли анимация
+	if (!fade.bOn) return;
+
 	// Если пришло время сменить направление фейда
 	if (fade.fTimePassed > fade.fPeriod)
 	{
+		if (!fade.bCyclic)
+		{
+			fade.bOn = false;
+			return;
+		}
+
 		if (0 == fade.iEffectStage)
 			fade.iEffectStage = 1;
 		else
@@ -122,9 +128,18 @@ void CUITextBanner::EffectFlicker()
 {
 	EffectParams	&flicker = m_StyleParams[tbsFlicker];
 
+	// Проверям включена ли анимация
+	if (!flicker.bOn) return;
+
 	// Если пришло время, показать/спрятать надпись
 	if (flicker.fTimePassed > flicker.fPeriod)
 	{
+		if (!flicker.bCyclic)
+		{ 
+			flicker.bOn = false;
+			return;
+		}
+		
 		if (0 == flicker.iEffectStage)
 			flicker.iEffectStage = 1;
 		else
@@ -160,4 +175,11 @@ u32  CUITextBanner::GetTextColor()
 	u32  GetTextColor			();
 
 	return m_Cl;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUITextBanner::ResetAnimation(const TextBannerStyles styleName)
+{
+	m_StyleParams[styleName].fTimePassed = 0;
 }

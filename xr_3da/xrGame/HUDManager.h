@@ -51,6 +51,7 @@ public:
 	CGameFont*				pFontLetterica18Russian;
 	CGameFont*				pFontGraffiti32Russian;
 	CGameFont*				pFontGraffiti50Russian;
+	CGameFont*				pFontLetterica25;
 
 	void					OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...);
 

@@ -33,7 +33,7 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	TimeMsgStatic.SetFont			(HUD().pFontDI);
 
 	TimeMsgDyn.SetFont				(HUD().pFontDI);
-	TimeMsgDyn.SetStyleParams		(CUITextBanner::tbsFade, 0.5);
+	TimeMsgDyn.SetStyleParams		(CUITextBanner::tbsFade)->fPeriod = 0.5f;
 	TimeMsgDyn.SetTextColor			(0xffff0000);
 }
 //--------------------------------------------------------------------

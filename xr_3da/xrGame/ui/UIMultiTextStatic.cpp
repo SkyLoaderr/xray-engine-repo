@@ -25,9 +25,11 @@ void CUIMultiTextStatic::Draw()
 {
 	inherited::Draw();
 
+	RECT r = GetAbsoluteRect();
+
 	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
 	{
-		it->effect.Out(it->outX, it->outY, *it->str);
+		it->effect.Out(it->outX + r.left, it->outY + r.top, *it->str);
 	}
 }
 
@@ -45,6 +47,15 @@ void CUIMultiTextStatic::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
+CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::GetPhraseByIndex(u32 idx)
+{
+	R_ASSERT(idx < m_vPhrases.size());
+
+	return &m_vPhrases[idx];
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 //-----------------------------------------------------------------------------/
 //  SinglePhrase struct
 //-----------------------------------------------------------------------------/
@@ -53,7 +64,7 @@ void CUIMultiTextStatic::Update()
 
 CUIMultiTextStatic::SPh::SPh()
 {
-	effect.SetStyleParams(CUITextBanner::tbsNone, 0.0f);
+	effect.SetStyleParams(CUITextBanner::tbsNone);
 	effect.StopAnimation();
 }
 

@@ -58,7 +58,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 	SetFont(HUD().pFontMedium);
 
 	m_mlCurrLevel	= mlRoot;
-	SetMoneyAmount(50000);
+	SetMoneyAmount(160);
 
 	// Инициализируем вещи
 	Init(strSectionName);
@@ -270,15 +270,15 @@ void CUIBuyWeaponWnd::InitBackgroundStatics()
 		r = (*it)->GetAbsoluteRect();
 
 		pSP = UIMTStatic.AddPhrase();
-		pSP->outX = r.left + numberShiftX;
-		pSP->outY = r.top + numberShiftY;
+		pSP->outX = r.left - UIMTStatic.GetAbsoluteRect().left + numberShiftX;
+		pSP->outY = r.top  - UIMTStatic.GetAbsoluteRect().top + numberShiftY;
 		pSP->effect.SetFont(pNumberF);
 		pSP->effect.SetTextColor(numberC);
 		pSP->SetText("%i.", i);
 
 		pSP = UIMTStatic.AddPhrase();
-		pSP->outX = r.left + captionShiftX;
-		pSP->outY = r.top + captionShiftY;
+		pSP->outX = r.left - UIMTStatic.GetAbsoluteRect().left + captionShiftX;
+		pSP->outY = r.top - UIMTStatic.GetAbsoluteRect().top + captionShiftY;
 		pSP->effect.SetFont(pCaptionF);
 		pSP->effect.SetTextColor(captionC);
 		pSP->str = captionsArr[i - 1];
@@ -327,7 +327,7 @@ void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 	UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 
 	// Проверяем возможность покупки для каждой вещи
-	CheckBuyAvailability();
+	CheckBuyAvailabilityInShop();
 };
 
 void CUIBuyWeaponWnd::InitInventory() 
@@ -786,7 +786,6 @@ void CUIBuyWeaponWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 void CUIBuyWeaponWnd::Draw()
 {
-	DrawBuyButtonCaptions();
 	inherited::Draw();
 }
 
@@ -1657,13 +1656,6 @@ void CUIBuyWeaponWnd::MoveWeapon(const char *sectionName)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::DrawBuyButtonCaptions()
-{
-	// Надписи
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
 {
 	if (bOn)
@@ -1694,7 +1686,7 @@ const u8 CUIBuyWeaponWnd::GetCurrentSuit()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::CheckBuyAvailability()
+void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 {
 	// Пробегаемся по всем вещам и проверяем иx на возможность покупки
 	for (WEAPON_TYPES_it it = m_WeaponSubBags.begin(); it != m_WeaponSubBags.end(); ++it)	
@@ -1704,6 +1696,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 			// В данном диалоге вещь не UIDragDropItemMP быть не может
 			CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it2);
 			R_ASSERT(pDDItemMP);
+
 			if (pDDItemMP->GetCost() < GetMoneyAmount())
 			{
 				pDDItemMP->SetColor(cWhite);
@@ -1711,9 +1704,42 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 			}
 			else
 			{
-				pDDItemMP->SetColor(cRed);
-				pDDItemMP->EnableDragDrop(false);
+				if (m_pCurrentDragDropItem != pDDItemMP)
+				{
+					pDDItemMP->SetColor(cRed);
+					pDDItemMP->EnableDragDrop(false);
+				}
 			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
+{
+	for (int i = KNIFE_SLOT; i < OUTFIT_SLOT; ++i)
+	{
+		// для пояса поведение отдельное
+		if (i != BELT_SLOT)
+		{
+			// Если вещь есть, и ее цена меньше то делаем ее красным цветом
+			if (!UITopList[i].GetDragDropItemsList().empty() &&
+				dynamic_cast<CUIDragDropItemMP*>(UITopList[i].GetDragDropItemsList().front())->GetCost() < GetMoneyAmount())
+			{
+				UITopList[i].GetDragDropItemsList().front()->SetColor(cRed);
+			}
+		}
+	}
+
+	// Теперь пояс
+	for (DRAG_DROP_LIST_it it = UITopList[i].GetDragDropItemsList().begin();
+		 it != UITopList[i].GetDragDropItemsList().end();
+		 ++it)
+	{
+		if (dynamic_cast<CUIDragDropItemMP*>(*it)->GetCost() > GetMoneyAmount())
+		{
+			(*it)->SetColor(cRed);
 		}
 	}
 }

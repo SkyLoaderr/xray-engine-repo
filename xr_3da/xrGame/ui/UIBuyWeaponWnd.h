@@ -345,8 +345,6 @@ protected:
 	bool MenuLevelDown()	{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel - 1)); }
 	// callback функция для отрисовки цифровых подписей к оружию
 	friend void WpnDrawIndex(CUIDragDropItem *pDDItem);
-	// функция отрисовки подписей к главным кнопкам покупки оружия
-	void DrawBuyButtonCaptions();
 	// Включаем, выключаем индикатор активной кнопки табконтрола
 	void SwitchIndicator(bool bOn, const int activeTabIndex);
 	// Запрос количества денег у игрока
@@ -358,10 +356,14 @@ protected:
 	// Получаем количество денег
 	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
 	// Устанавливам количество денег
-	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailability(); }
+	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailabilityInShop(); }
 	// Проверка всех вещей на возможность покупки (достаточно ли денег?)
 	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
-	void		CheckBuyAvailability();
+	// проверяем только в листах с доступным оружием
+	void		CheckBuyAvailabilityInShop();
+	// Теперь проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
+	// возможности купить предыдущее оружие установленное в слотах, если нет денег.
+	void		CheckBuyAvailabilityInSlots();
 
 	// Работа с арморами
 

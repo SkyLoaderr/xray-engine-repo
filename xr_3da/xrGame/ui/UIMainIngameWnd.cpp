@@ -64,6 +64,7 @@ const u32	g_clWhite					= 0xffffffff;
 const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
 const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
+const char * const MAININGAME_XML				= "maingame_new.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction//////////////////////////////////////////////////////////////////////
@@ -92,7 +93,7 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 void CUIMainIngameWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","maingame_new.xml");
+	uiXml.Init("$game_data$", MAININGAME_XML);
 	
 	CUIXmlInit xml_init;
 	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
@@ -263,6 +264,14 @@ void CUIMainIngameWnd::Init()
 		}
 
 		j = static_cast<EWarningIcons>(j + 1);
+	}
+
+	// Money
+	if (Game().type != GAME_SINGLE)
+	{
+		AttachChild(&UIMoneyIndicator);
+		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);
+//		ChangeTotalMoneyIndicator("100$");
 	}
 }
 
@@ -1069,3 +1078,25 @@ void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 {
 	SetWarningIconColor(icon, 0x00ffffff);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::ChangeTotalMoneyIndicator(ref_str newMoneyString)
+{
+	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(0);
+	sp->str = newMoneyString;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::DisplayMoneyChange(ref_str deltaMoney)
+{
+	CUIMultiTextStatic::SinglePhrase * sp = UIMoneyIndicator.GetPhraseByIndex(1);
+	sp->str				= deltaMoney;
+	sp->effect.PlayAnimation();
+	EffectParams *eff	= sp->effect.SetStyleParams(CUITextBanner::TextBannerStyles::tbsFade);
+	eff->bOn			= true;
+	sp->effect.ResetAnimation(CUITextBanner::TextBannerStyles::tbsFade);
+}
+
+//////////////////////////////////////////////////////////////////////////

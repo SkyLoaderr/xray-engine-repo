@@ -17,8 +17,11 @@ struct EffectParams
 {
 	friend class	CUITextBanner;
 	float			fPeriod;
+	bool			bCyclic;
+	bool			bOn;
 	int				iAdditionalParam;
 	float			fAdditionalParam;
+	int				iEffectStage;
 
 	// Constructor
 	EffectParams()
@@ -26,18 +29,17 @@ struct EffectParams
 			fTimePassed			(0.0f),
 			iEffectStage		(0),
 			fAdditionalParam	(0.0f),
-			iAdditionalParam	(0)
+			iAdditionalParam	(0),
+			bCyclic				(true),
+			bOn					(true)
 	{}
 private:
 	float			fTimePassed;
-	int				iEffectStage;
-
 };
 
 //-----------------------------------------------------------------------------/
 //  Класс анимироанного баннера
 //-----------------------------------------------------------------------------/
-
 
 class CUITextBanner
 {
@@ -56,14 +58,15 @@ public:
 	void			Out			(float x, float y, const char *fmt, ...);
 
 	// Установить параметры визуализации баннера. Флаги см. перечисление TextBannerStyles
-	void SetStyleParams			(const TextBannerStyles styleName, const float period);
+	EffectParams * SetStyleParams(const TextBannerStyles styleName);
+	void	ResetAnimation		(const TextBannerStyles styleName);
 
 	// Font
-	void SetFont				(CGameFont *pFont)	{ m_pFont = pFont; }
+	void	SetFont				(CGameFont *pFont)	{ m_pFont = pFont; }
 
 	// Color
-	void SetTextColor			(u32 cl);
-	u32  GetTextColor			();
+	void	SetTextColor		(u32 cl);
+	u32		GetTextColor		();
 
 	// Вкл/выкл анимации
 	void	PlayAnimation		()					{ m_bAnimate = true;	}

@@ -30,6 +30,7 @@ CHUDManager::CHUDManager()
 	pFontLetterica18Russian = xr_new<CGameFont> ("ui_font_letterica18_russian");
 	pFontGraffiti32Russian	= xr_new<CGameFont> ("ui_font_graff_32");
 	pFontGraffiti50Russian	= xr_new<CGameFont> ("ui_font_graff_50");
+	pFontLetterica25		= xr_new<CGameFont> ("ui_font_letter_25");
 	
 	pUI						= 0;
 	Device.seqDevCreate.Add	(this);
@@ -59,7 +60,9 @@ CHUDManager::~CHUDManager()
 	xr_delete			(pFontLetterica18Russian);
 	xr_delete			(pFontGraffiti32Russian);
 	xr_delete			(pFontGraffiti50Russian);
+	xr_delete			(pFontLetterica25);
 }
+
 //--------------------------------------------------------------------
 void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
 {
