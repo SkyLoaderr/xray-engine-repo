@@ -88,6 +88,7 @@ function main()
 			stalker1:script	(true,  script_01.script_name())
 			stalker2:script	(false, script_01.script_name())
 			stalker2:script	(true,  script_01.script_name())
+			sound_object("Debris5-m"):play		(actor,1);
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
