@@ -42,8 +42,7 @@ R_constant* R_constant_table::get	(ref_str& S)
 	// linear search, but only ptr-compare
 	c_table::iterator I	= table.begin	();
 	c_table::iterator E	= table.end		();
-	for (; I!=E; ++I)
-	{
+	for (; I!=E; ++I)	{
 		R_constant*		C		= *I;
 		if (C->name.equal(S))	return C;
 	}
