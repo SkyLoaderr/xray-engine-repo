@@ -15,7 +15,6 @@
 #define MIN_SOUND_VOLUME				.05f
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
-	Msg				("Checking if I see an item %s",O->cName());
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);
 	CInventoryItem*	I = dynamic_cast<CInventoryItem*>	(O);
 	if (!E && !I)	return	(FALSE);
@@ -398,9 +397,8 @@ void CAI_Stalker::SelectSound(int &iIndex)
 
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
-	//return;
 	#ifdef WRITE_LOG
-		//Msg("%s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+		Msg("%s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
 #ifdef IGNORE_ACTOR
