@@ -282,6 +282,9 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 				//float dh=sqrtf((dv-A)*k);
 				gcontact_HealthLost = 
 					(100*(contact_speed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+				
+				Msg	("sres: %2.1f, scalc: %2.1f, cspeed: %2.1f (min: %2.1f)",
+					s_res,s_calc,contact_speed,fMinCrashSpeed);
 			}
 		}
 	}
