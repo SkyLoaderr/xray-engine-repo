@@ -5,8 +5,7 @@
 #define PSLibraryH
 
 #include "ParticleSystem.h"
-
-#define PSLIB_FILENAME "particles2.xr"
+#include "ParticleGroup.h"
 
 class CPSLibrary{
     PS::PSVec			m_PSs;
@@ -14,35 +13,41 @@ class CPSLibrary{
     void				Save			(LPCSTR nm);
     AnsiString			m_CurrentPS;
 
-    void				Sort			();
+    PS::PGVec			m_PGs;
 public:
 						CPSLibrary		(){;}
-    virtual 			~CPSLibrary		(){m_PSs.clear();}
+    		 			~CPSLibrary		(){m_PSs.clear();}
 
     void				OnCreate		();
     void				OnDestroy		();
 
-    PS::SDef*			FindSorted		(LPCSTR name);
-    PS::SDef*			FindUnsorted	(LPCSTR name);
-
+    PS::SDef*			FindPS			(LPCSTR name);
+    PS::CPGDef*			FindPG			(LPCSTR name);
+    PS::PGIt			FindPGIt		(LPCSTR name);
 	// editor part
     char*				GenerateName	(char* buffer, LPCSTR pref=0);
 
     // get object properties methods
     IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}
     IC PS::PSIt			LastPS			()	{return m_PSs.end();}
-    IC int				PSCount			()	{return m_PSs.size();}
+    IC PS::PGIt			FirstPG			()	{return m_PGs.begin();}
+    IC PS::PGIt			LastPG			()	{return m_PGs.end();}
 
     PS::SDef*			AppendPS		(PS::SDef* src=0);
-    void				RemovePS		(LPCSTR name);
+    PS::CPGDef*			AppendPG		(PS::CPGDef* src=0);
+    void				Remove			(LPCSTR name);
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
+    void				RenamePG		(PS::CPGDef* src, LPCSTR new_name);
 
-	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindUnsorted(m_CurrentPS.c_str());}
+	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindPS(m_CurrentPS.c_str());}
     PS::SDef*			ChoosePS		(bool bSetCurrent=true);
-
+    
     void				Reload			();
     void				Save			();
 };
+
+#define PSLIB_FILENAME 			"particles2.xr"
+#define PS_LIB_SIGN 			"PS_LIB"
 
 #define PS_VERSION				0x0001
 //----------------------------------------------------
