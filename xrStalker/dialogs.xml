@@ -59,6 +59,34 @@
 		</phrase_list>
 	</dialog>
 
+	<dialog id="trader_job4">
+		<phrase_list>
+			<phrase id="0">
+				<text>Артефакты?</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>ДА, блин, артефакты!!!!.</text>
+				<script_text>trader_job.artefacts_task_text</script_text>
+			</phrase>
+
+		</phrase_list>
+	</dialog>
+
+	<dialog id="trader_job5">
+		<phrase_list>
+			<phrase id="0">
+				<text>Артефакты?</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>ДА, блин, артефакты!!!!.</text>
+				<script_text>trader_job.artefacts_task_text</script_text>
+			</phrase>
+
+		</phrase_list>
+	</dialog>
+
 	<!-- TEMPORARY -->
     <dialog id="hello_dialog">
         <phrase_list>

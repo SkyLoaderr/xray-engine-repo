@@ -22,6 +22,8 @@
 		<dialog>trader_job1</dialog>		
 		<dialog>trader_job2</dialog>		
 		<dialog>trader_job3</dialog>		
+		<dialog>trader_job4</dialog>		
+		<dialog>trader_job5</dialog>		
 		<task>storyline_eliminate_gunslinger</task>
 	</info_portion>
 
