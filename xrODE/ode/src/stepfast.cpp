@@ -894,7 +894,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 // bodies will not be included in the simulation. disabled bodies are
 // re-enabled if they are found to be part of an active island.
 const int MAXJ_ALLOC= 2000;
-const int MAXB_ALLOC= 1000;
+//const int MAXB_ALLOC= 1000;
 static void
 processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 {
@@ -907,8 +907,8 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 	// nothing to do if no bodies
 	if (world->nb <= 0)
 		return;
-	int jalloc=world->nj>MAXJ_ALLOC ? world->nj : MAXJ_ALLOC;
-	int balloc=world->nb>MAXB_ALLOC ? world->nb : MAXB_ALLOC;
+	int jalloc=world->nj<MAXJ_ALLOC ? world->nj : MAXJ_ALLOC;
+	int balloc=world->nb;//<MAXB_ALLOC ? world->nb : MAXB_ALLOC;
 	// make arrays for body and joint lists (for a single island) to go into
 	body = (dxBody **) ALLOCA (balloc * sizeof (dxBody *));
 	joint = (dxJoint **) ALLOCA (jalloc * sizeof (dxJoint *));
@@ -953,7 +953,6 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 		{
 			b = stack[--stacksize];	// pop body off stack
 			autoDepth = autostack[stacksize];
-			if(bcount==balloc) goto quit;
 			body[bcount++] = b;	// put body on body list
 
 quickstart:
@@ -965,9 +964,10 @@ quickstart:
 				if (!n->joint->tag)
 				{
 					int thisDepth = autoEnableDepth;
+					
 					n->joint->tag = 1;
-					if(jcount==jalloc) goto quit;
-					joint[jcount++] = n->joint;
+					if(jcount!=jalloc)
+						joint[jcount++] = n->joint;
 					if (n->body && !n->body->tag)
 					{
 						if (n->body->flags & dxBodyDisabled)
@@ -1030,8 +1030,8 @@ quit:
 	{
 		if ((j->node[0].body && (j->node[0].body->flags & dxBodyDisabled) == 0) || (j->node[1].body && (j->node[1].body->flags & dxBodyDisabled) == 0))
 		{
-			if (!j->tag)
-				dDebug (0, "attached enabled joint not tagged");
+			//if (!j->tag)
+				//dDebug (0, "attached enabled joint not tagged");
 		}
 		else
 		{
