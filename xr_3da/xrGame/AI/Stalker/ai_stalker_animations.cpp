@@ -470,10 +470,6 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			vfAssignTorsoAnimation	(tpTorsoAnimation);
 			vfAssignLegsAnimation	(tpLegsAnimation);
 
-			if (tpTorsoAnimation == (CMotionDef*)0xcdcdcdcd) {
-				vfAssignTorsoAnimation	(tpTorsoAnimation);
-			}
-			
 			if (tpTorsoAnimation && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
 				m_tpCurrentTorsoBlend	= tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
 			if (tpLegsAnimation && (m_tpCurrentLegsAnimation != tpLegsAnimation))
