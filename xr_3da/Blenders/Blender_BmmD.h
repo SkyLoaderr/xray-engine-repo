@@ -11,7 +11,8 @@
 class ENGINE_API CBlender_BmmD : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "LEVEL: base**detail";	}
+	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit";	}
+	virtual		BOOL		canBeDetailed()	{ return TRUE; }
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
