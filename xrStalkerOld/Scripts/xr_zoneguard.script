@@ -206,7 +206,19 @@ function action_zoneguard_activity:fsm_step()
 	if self.st.zone_guard_obj then
 		if see_actor and self.st.zone_guard_obj:inside(actor:position()) then
 			if not self:ignore_actor(actor) then
-				self.object:set_relation(game_object.enemy, actor)
+				-- FIXME:
+				-- Вместо set_relation используем hit с нулевой силой,
+				-- чтобы на игрока обиделась вся группа, а не только
+				-- один zoneguard.
+				--self.object:set_relation(game_object.enemy, actor)
+				local h = hit()
+				h.power = 0
+				h.direction = self.object:direction()
+				h.bone = "bip01_spine"
+				h.draftsman = actor
+				h.impulse = 0
+				h.type = hit.wound
+				self.object:hit(h)
 			end
 		end
 	end
