@@ -14,11 +14,6 @@
 		<reputation>50</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -40,11 +35,6 @@
 		<reputation>70</reputation>
 
 		<visual>actors\soldier\soldier_bandana_1</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -65,11 +55,6 @@
 		<reputation>60</reputation>
 
 		<visual>actors\soldier\soldier_bandana_2</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -91,11 +76,6 @@
 		<reputation>70</reputation>
 
 		<visual>actors\soldier\soldier_bandana_3</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -118,11 +98,6 @@
 		<reputation>25</reputation>
 
 		<visual>actors\soldier\soldier_bandana_4</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -142,11 +117,6 @@
 		<reputation>10</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -168,11 +138,6 @@
 		<reputation>80</reputation>
 
 		<visual>actors\soldier\soldier_bandana_6</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -194,11 +159,6 @@
 		<reputation>90</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -222,11 +182,6 @@
 		<reputation>40</reputation>
 
 		<visual>actors\soldier\soldier_beret_1</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -249,11 +204,6 @@
 		<reputation>10</reputation>
 
 		<visual>actors\soldier\soldier_beret_2</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -277,11 +227,6 @@
 		<reputation>10</reputation>
 
 		<visual>actors\soldier\soldier_beret_3</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -303,11 +248,6 @@
 		<reputation>20</reputation>
 
 		<visual>actors\soldier\soldier_beret_4</visual>
-		<supplies>
-		[spawn] \n
-		wpn_svu \n
-		ammo_7.62x54_7h1 = 1 \n
-		</supplies>	
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
