@@ -689,7 +689,6 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		for (DWORD i = 0; i < mips; i++)
 		{
 			D3DLOCKED_RECT				Rsrc,Rdst;
-			float						w,h;
 			D3DSURFACE_DESC				desc;
 
 			tDest->GetLevelDesc			(i, &desc);
