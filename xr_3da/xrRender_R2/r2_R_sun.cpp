@@ -729,4 +729,9 @@ void CRender::render_sun				()
 	// Accumulate
 	Target.phase_accumulator	();
 	Target.accum_direct			();
+
+	// Restore XForms
+	RCache.set_xform_world				(Fidentity			);
+	RCache.set_xform_view				(Device.mView		);
+	RCache.set_xform_project			(Device.mProject	);
 }
