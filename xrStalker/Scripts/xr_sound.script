@@ -186,8 +186,7 @@ end
 --            themes = { "weather", "state" }  -- список тем для разговора
 --  }
 function sound_update(npc, sound, now)
-	if ( sound.begin == nil  or  now  or  device():time_global() - sound.begin > sound.idle*1000 )
-	   and npc:active_sound_count() == 0 then
+	if sound.begin == nil  or  now  or  device():time_global() - sound.begin > sound.idle*1000 then
 		sound.begin = device():time_global()
 
 		if sound.maxidle ~= nil then
@@ -200,6 +199,10 @@ function sound_update(npc, sound, now)
 			sound.idle = sound.idle + sound.sumidle
 		else
 			sound.idle = sound.idle + 10
+		end
+
+		if npc:active_sound_count() > 0 then
+			return
 		end
 
 		-- получить id-шки пачек звуков, которые могут быть проиграны
