@@ -279,7 +279,7 @@ void CHelicopterMovManager::updatePatrolPath(float t)
 	float maxT = 0.0f;
 
 	u32 sz = CHelicopterMotion::KeyCount();
-	VERIFY(sz>4);
+	VERIFY(sz>=4);
 
 	CHelicopterMotion::FindNearestKey(t, minT, maxT, minIdx, maxIdx);
 
@@ -475,6 +475,7 @@ void CHelicopterMovManager::makeSmoothKeyPath(	float time_from,
 		CHelicopterMotion::GetKeyTime(idx,t);
 		Fvector T,R;
 		CHelicopterMotion::_Evaluate(t,T,R);
+		getPathAltitude(T);
 		vSmoothKeys.push_back(T);
 		float end_time;
 		if(idx==vTmpKeys2.size()-1)
@@ -485,6 +486,7 @@ void CHelicopterMovManager::makeSmoothKeyPath(	float time_from,
 
 		for (t+=5.0f;t<(end_time-5.0f);t+=5.0f) {
 			CHelicopterMotion::_Evaluate(t,T,R);
+			getPathAltitude(T);
 			vSmoothKeys.push_back(T);
 		}
 	}
