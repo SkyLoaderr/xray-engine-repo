@@ -161,7 +161,7 @@ void CDetailManager::VS_Render()
 					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
 					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
 				}
-				mTemp.mul				(mScreen,mXform);
+				mTemp.mul				(mScreen,	mXform);
 				VSC.set					(cBase,		mTemp);
 				VSC.set					(cBase+4,	Instance.C);
 				
