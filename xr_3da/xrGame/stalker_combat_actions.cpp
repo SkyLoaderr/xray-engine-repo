@@ -541,7 +541,7 @@ void CStalkerActionHoldPosition::initialize		()
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position		();
 	object().movement().set_body_state			(eBodyStateCrouch);
-	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_movement_type			(eMovementTypeStand);
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
 	if (object().agent_manager().member().group_behaviour())
@@ -658,7 +658,7 @@ void CStalkerActionSearchEnemy::initialize		()
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_movement_type			(eMovementTypeRun);
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
 	last_cover							(0);
