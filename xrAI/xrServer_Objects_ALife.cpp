@@ -147,12 +147,12 @@ void CSE_ALifeGraphPoint::UPDATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeGraphPoint::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&fp_data.locations[0]);
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&fp_data.locations[1]);
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&fp_data.locations[2]);
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&fp_data.locations[3]);
-	PHelper().CreateList	 	(items,	PrepareKey(pref,s_name,"Connection\\Level name"),		&m_caConnectionLevelName,	&fp_data.level_ids);
-	PHelper().CreateRText	 	(items,	PrepareKey(pref,s_name,"Connection\\Point name"),		&m_caConnectionPointName);
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&*fp_data.locations[0].begin(), fp_data.locations[0].size());
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&*fp_data.locations[1].begin(), fp_data.locations[1].size());
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&*fp_data.locations[2].begin(), fp_data.locations[2].size());
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&*fp_data.locations[3].begin(), fp_data.locations[3].size());
+	PHelper().CreateList	 	(items,	PrepareKey(pref,s_name,"Connection\\Level name"),	&m_caConnectionLevelName,	&*fp_data.level_ids.begin(),	fp_data.level_ids.size());
+	PHelper().CreateRText	 	(items,	PrepareKey(pref,s_name,"Connection\\Point name"),	&m_caConnectionPointName);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -302,7 +302,7 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 	}                            
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
-	PHelper().CreateRToken32	(items,	PrepareKey(pref,s_name,"ALife\\Story ID"),		&m_story_id,		&fp_data.story_names);
+	PHelper().CreateRToken32	(items,	PrepareKey(pref,s_name,"ALife\\Story ID"),			&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
 }
 
 bool CSE_ALifeObject::used_ai_locations		() const
@@ -659,9 +659,9 @@ void CSE_ALifeLevelChanger::UPDATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeLevelChanger::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProps			(pref,items);
+	inherited::FillProps		(pref,items);
 	
-	PHelper().CreateList		(items,PrepareKey(pref,s_name,"Level to change"),			&m_caLevelToChange,		&fp_data.level_ids);
+	PHelper().CreateList		(items,PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&*fp_data.level_ids.begin(), fp_data.level_ids.size());
 	PHelper().CreateRText		(items,PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
 }
 

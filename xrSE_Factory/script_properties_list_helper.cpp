@@ -166,8 +166,8 @@ Token32Value*	CScriptPropertiesListHelper::CreateToken32	(PropItemVec& items, LP
 {
 	return		(PHelper().CreateToken32(items,key,val,&*token->tokens().begin()));
 }
-
-RToken8Value*	CScriptPropertiesListHelper::CreateRToken8	(PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token)
+/*
+RToken8Value*	CScriptPropertiesListHelper::CreateRToken8	(PropItemVec& items, LPCSTR key, u8* val, xr_rtoken* token, u32 t_cnt)
 {
 	return		(PHelper().CreateRToken8(items,key,val,token));
 }
@@ -181,7 +181,7 @@ RToken32Value*	CScriptPropertiesListHelper::CreateRToken32	(PropItemVec& items, 
 {
 	return		(PHelper().CreateRToken32(items,key,val,token));
 }
-
+*/
 U32Value*  CScriptPropertiesListHelper::CreateColor	(PropItemVec& items, LPCSTR key, u32* val)
 {
 	return		(PHelper().CreateColor(items,key,val));

@@ -50,11 +50,11 @@ public:
 			Token8Value*		CreateToken8	    (PropItemVec& items, LPCSTR key, u8* val, CScriptTokenList* token);
 			Token16Value*		CreateToken16	    (PropItemVec& items, LPCSTR key, u16* val, CScriptTokenList* token);
 			Token32Value*		CreateToken32	    (PropItemVec& items, LPCSTR key, u32* val, CScriptTokenList* token);
-			RToken8Value* 		CreateRToken8	    (PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token);
-			RToken16Value* 		CreateRToken16	    (PropItemVec& items, LPCSTR key, u16* val, RTokenVec* token);
-			RToken32Value* 		CreateRToken32	    (PropItemVec& items, LPCSTR key, u32* val, RTokenVec* token);
+//			RToken8Value* 		CreateRToken8	    (PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token);
+//			RToken16Value* 		CreateRToken16	    (PropItemVec& items, LPCSTR key, u16* val, RTokenVec* token);
+//			RToken32Value* 		CreateRToken32	    (PropItemVec& items, LPCSTR key, u32* val, RTokenVec* token);
 //			TokenValueSH*   	CreateTokenSH	    (PropItemVec& items, LPCSTR key, u32* val, u32 cnt, const TokenValueSH::Item* lst);
-//			ListValue* 	 		CreateList		    (PropItemVec& items, LPCSTR key, LPCSTR* val, RStringVec* lst);
+//			ListValue* 	 		CreateList		    (PropItemVec& items, LPCSTR key, LPCSTR* val, ref_str* lst, u32 cnt);
 			U32Value*  			CreateColor		    (PropItemVec& items, LPCSTR key, u32* val);
 			ColorValue*			CreateFColor	    (PropItemVec& items, LPCSTR key, Fcolor* val);
 			VectorValue*		CreateVColor	    (PropItemVec& items, LPCSTR key, Fvector* val);

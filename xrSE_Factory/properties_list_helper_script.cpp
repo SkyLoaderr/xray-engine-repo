@@ -230,9 +230,9 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("create_token16",	&CScriptPropertiesListHelper::CreateToken16)
 			.def("create_token32",	&CScriptPropertiesListHelper::CreateToken32)
 
-			.def("create_rtoken8",	&CScriptPropertiesListHelper::CreateRToken8)
-			.def("create_rtoken16",	&CScriptPropertiesListHelper::CreateRToken16)
-			.def("create_rtoken32",	&CScriptPropertiesListHelper::CreateRToken32)
+//			.def("create_rtoken8",	&CScriptPropertiesListHelper::CreateRToken8)
+//			.def("create_rtoken16",	&CScriptPropertiesListHelper::CreateRToken16)
+//			.def("create_rtoken32",	&CScriptPropertiesListHelper::CreateRToken32)
 
 			.def("create_color",&CScriptPropertiesListHelper::CreateColor)
 			.def("create_fcolor",&CScriptPropertiesListHelper::CreateFColor)
