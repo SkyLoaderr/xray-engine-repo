@@ -46,7 +46,6 @@ public:
 	u16								ID_Parent;		// internal ParentID, 0xffff means no parent
 	u16								ID_Phantom;		// internal PhantomID, 0xffff means no phantom
 	xrClientData*					owner;
-	xr_vector<u16>*					children;
 
 	// spawn data
 	string64						s_name;
@@ -62,6 +61,7 @@ public:
 	// for ALife control
 	bool							m_bALifeControl;
 	ref_str							m_ini_string;
+	xr_vector<u16>*					children;
 
 									CSE_Abstract	(LPCSTR caSection);
 	virtual							~CSE_Abstract	();
