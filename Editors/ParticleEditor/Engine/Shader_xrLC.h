@@ -60,13 +60,13 @@ public:
 		int count			= fs->length()/sizeof(Shader_xrLC);
 		R_ASSERT			(int(fs->length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
-		fs->r				(library.begin(),fs->length());
+		fs->r				(&*library.begin(),fs->length());
         FS.r_close			(fs);
 	}
 	void					Save	(LPCSTR name)
 	{
 		IWriter* F			= FS.w_open(name);
-		F->w				(library.begin(),library.size()*sizeof(Shader_xrLC));
+		F->w				(&*library.begin(),library.size()*sizeof(Shader_xrLC));
         FS.w_close			(F);
 	}
 	void					Unload	()
