@@ -37,7 +37,7 @@
 	</chicon_frame_line>
 	
 	<!--  ANIMATED STATIC TEST -->
-	<a_static x="210" y="1" width="32" height="32"
+	<a_static x="210" y="-3" width="32" height="32"
 			frames			= "16"
 			duration		= "500"
 			columns			= "8"
@@ -46,7 +46,7 @@
 			cyclic			= "1"
 			autoplay		= "1"
 	>
-		<texture>ui\ui_pda_anims_03</texture>
+		<texture>ui\ui_pda_anims_05</texture>
 	</a_static>
 
             
