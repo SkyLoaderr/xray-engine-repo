@@ -375,6 +375,7 @@ void CCC_Register()
 	CMD1(CCC_SND_Restart,"snd_restart"			);
 	CMD3(CCC_Mask,		"snd_occlusion",		&psSoundFlags,		ssWaveTrace);
 	CMD3(CCC_Mask,		"snd_acceleration",		&psSoundFlags,		ssHardware);
+	CMD3(CCC_Mask,		"snd_fx",				&psSoundFlags,		ssFX);
 	CMD4(CCC_Integer,	"snd_targets",			&psSoundTargets,	4,24);
 	CMD4(CCC_Integer,	"snd_cache_size",		&psSoundCacheSizeMB,4,32);
 	
