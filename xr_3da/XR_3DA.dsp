@@ -99,7 +99,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Ob2 /I "scripting\\" /I ".." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /G6 /Gr /MT /W3 /GX /O2 /Oy- /Ob2 /I "scripting\\" /I ".." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /G6 /Gr /MT /W3 /GX /Zi /O2 /Oy- /Ob2 /I "scripting\\" /I ".." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "ENGINE_BUILD" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x422 /d "NDEBUG"
@@ -109,7 +109,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msacm32.lib vfw32.lib /nologo /subsystem:windows /profile /map:"x:\game\XR_3DA.map" /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msacm32.lib vfw32.lib /nologo /subsystem:windows /profile /map:"x:\game\XR_3DA.map" /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msacm32.lib vfw32.lib /nologo /subsystem:windows /profile /map:"x:\game\XR_3DA.map" /debug /machine:I386
 
 !ENDIF 
 
