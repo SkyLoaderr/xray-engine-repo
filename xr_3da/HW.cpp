@@ -57,7 +57,7 @@ void CHW::CreateD3D	()
     typedef IDirect3D9 * WINAPI _Direct3DCreate9(UINT SDKVersion);
     _Direct3DCreate9* createD3D	= (_Direct3DCreate9*)GetProcAddress(hD3D9,"Direct3DCreate9");	R_ASSERT(createD3D);
     HW.pD3D 					= createD3D( D3D_SDK_VERSION );
-    R_ASSERT					(HW.pD3D);
+    R_ASSERT2					(HW.pD3D,"Please install DirectX 9.0c");
 }
 void CHW::DestroyD3D()
 {
@@ -238,7 +238,7 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
     R_CHK(HW.pD3D->CreateDevice(DevAdapter,
 								DevT,
                                 m_hWnd,
-								GPU,
+								GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
 								&P,
                                 &pDevice ));
 
