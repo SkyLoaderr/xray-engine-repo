@@ -29,7 +29,7 @@ function stalker_zombe_action:initialize ()
     self.object:set_movement_type   ( move.walk )
     self.object:set_body_state      ( move.standing )
     self.object:set_mental_state	( anim.free )
-    self.object:set_patrol_path		( "way1", patrol.nearest, patrol.continue, true )
+    self.object:set_patrol_path		( "way3", patrol.nearest, patrol.continue, true )
     self.object:set_path_type		( game_object.patrol_path )
     self.object:set_sight			( look.path_dir, nil, 0 )
     self.object:set_item            ( object.idle, self.object:best_weapon() )
@@ -219,8 +219,8 @@ function add_novice(obj)
     --Чтение данных из кастом даты
     local char_ini = obj:spawn_ini()
     if( char_ini:section_exist ("novice") == true ) then
-        if( char_ini:line_exist("novice", "way") == true ) then
-			st.path = char_ini:r_string("novice", "way")
+        if( char_ini:line_exist("novice", "path") == true ) then
+			st.path = char_ini:r_string("novice", "path")
             --printf( "Read path: %s", st.path )
         end
         if( char_ini:line_exist("novice", "rest") == true ) then
