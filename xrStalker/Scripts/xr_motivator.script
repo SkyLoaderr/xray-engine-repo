@@ -189,7 +189,7 @@ function motivator_binder:update(delta)
 			be:group()
 		)
 	end
-	--]]
+	]]--
 end
 
 function motivator_binder:reload(section)
