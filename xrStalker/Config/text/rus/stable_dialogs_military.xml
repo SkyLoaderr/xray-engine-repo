@@ -735,9 +735,6 @@
     <string id="mil_zoneguard_dialog_0">
         <text>Чего тебе надобно, старче ?</text>
     </string>
-    <string id="mil_zoneguard_dialog_1">
-        <text>Здорово, брат.</text>
-    </string>
     <string id="mil_zoneguard_dialog_10">
         <text>Тебе того же. Что тебя сюда привело ?\n</text>
     </string>
@@ -759,17 +756,17 @@
     <string id="mil_zoneguard_dialog_10000000">
         <text>Ладно, иди.</text>
     </string>
-    <string id="mil_zoneguard_dialog_2">
-        <text>Как служба движется ?</text>
-    </string>
     <string id="mil_zoneguard_dialog_20">
         <text>Да так себе. Не мешай...</text>
     </string>
-    <string id="mil_zoneguard_dialog_3">
-        <text>Как служба движется ?</text>
-    </string>
     <string id="mil_zoneguard_dialog_30">
-        <text>Да так себе. Не мешай...</text>
+        <text>Стой! Пароль?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_31">
+        <text>Южноафриканская ласточка!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_32">
+        <text>Молодец! Проходи!</text>
     </string>
     <string id="mil_zoneguard_dialog_4">
         <text>Что тут за болото рядом ?</text>
@@ -794,5 +791,128 @@
     </string>
     <string id="mil_zoneguard_dialog_51">
         <text>Иди в главное здание. Там на первом этаже найдешь.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6">
+        <text>Стой!!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_601">
+        <text>Стою!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_602">
+        <text>Пароль?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_603">
+        <text>Бомопаглавибли.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_604">
+        <text>Чего???</text>
+    </string>
+    <string id="mil_zoneguard_dialog_605">
+        <text>Бомопаглавибли.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_606">
+        <text>Не, не тот...</text>
+    </string>
+    <string id="mil_zoneguard_dialog_607">
+        <text>Говорящая лошадь?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_608">
+        <text>Мимо.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_609">
+        <text>А 9?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_610">
+        <text>Ранил, тьфу блин. Харе зубы заговривать. Еще будут варианты?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_611">
+        <text>Себе.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_612">
+        <text>Очко. Блин опять. Ну ты и жук. Ладно, я понял, пароль ты не знаешь?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_613">
+        <text>Подскажешь?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_614">
+        <text>Щассс.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_615">
+        <text>Ну пропусти меня, не в поле же мне ночевать?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_616">
+        <text>А че погода хорошая - лето можно сказать. Ну ладно пройдешь тест - пущу, нет - свободен.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_617">
+        <text>Тест?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_618">
+        <text>Ага, всего три вопроса, на которые должен ответить настоящий мужчина.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_619">
+        <text>Я не боюсь, задавай свои вопросы.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_620">
+        <text>Первый - самый простой. Готов? Слушай: размер груди Памелы Андерсон?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6200">
+        <text>3</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6201">
+        <text>Ни хрена ты не знаешь. Вали отсюда.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6202">
+        <text>Блин.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6203">
+        <text>5</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6204">
+        <text>Ни хрена ты не знаешь. Вали отсюда.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6205">
+        <text>9</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6206">
+        <text>Молодец - сразу видно - мужик!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6207">
+        <text>Я такой! Я Мужик!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6208">
+        <text>Второй, уже потяжелее. Внимай: Количество патронов в рожке пистолета - пулемета <Бизон> российского спецназа?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6300">
+        <text>14</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6301">
+        <text>27</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6302">
+        <text>54</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6400">
+        <text>Отлично! Ты мне нравишься все больше и больше, не пойми меня не правильно.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6401">
+        <text>Я тоже горжусь собой!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6402">
+        <text>Ну и третий! С какой скоростью летит южноафриканская ласточка?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6403">
+        <text>Чего???</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6404">
+        <text>Ласточка!</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6405">
+        <text>Откуда я могу эту хрень знать! Ты хоть сам знаешь?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6406">
+        <text>Нет конечно. Просто подумал мало ли... Ладно проходи...</text>
+    </string>
+    <string id="mil_zoneguard_dialog_6407">
+        <text>Запарил ты.</text>
     </string>
 </string_table>

@@ -327,162 +327,10 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_zoneguard_dialog">
-        <phrase_list>
-            <phrase id="10">
-                <text>mil_zoneguard_dialog_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="100">
-                <text>mil_zoneguard_dialog_100</text>
-                <next>1000</next>
-            </phrase>
-            <phrase id="1000">
-                <text>mil_zoneguard_dialog_1000</text>
-                <next>10000</next>
-            </phrase>
-            <phrase id="10000">
-                <text>mil_zoneguard_dialog_10000</text>
-                <next>100000</next>
-            </phrase>
-            <phrase id="100000">
-                <text>mil_zoneguard_dialog_100000</text>
-                <next>1000000</next>
-            </phrase>
-            <phrase id="1000000">
-                <text>mil_zoneguard_dialog_1000000</text>
-                <next>10000000</next>
-            </phrase>
-            <phrase id="10000000">
-                <text>mil_zoneguard_dialog_10000000</text>
-            </phrase>
-            <phrase id="20">
-                <text>mil_zoneguard_dialog_20</text>
-            </phrase>
-            <phrase id="30">
-                <text>mil_zoneguard_dialog_30</text>
-            </phrase>
-            <phrase id="41">
-                <text>mil_zoneguard_dialog_41</text>
-                <next>42</next>
-            </phrase>
-            <phrase id="42">
-                <text>mil_zoneguard_dialog_42</text>
-                <next>43</next>
-            </phrase>
-            <phrase id="43">
-                <text>mil_zoneguard_dialog_43</text>
-                <next>44</next>
-            </phrase>
-            <phrase id="44">
-                <text>mil_zoneguard_dialog_44</text>
-                <next>45</next>
-            </phrase>
-            <phrase id="45">
-                <text>mil_zoneguard_dialog_45</text>
-            </phrase>
-            <phrase id="2">
-                <text>mil_zoneguard_dialog_2</text>
-                <dont_has_info>mil_zoneguard_talk</dont_has_info>
-                <has_info>mil_max_talk</has_info>
-                <next>20</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_zoneguard_dialog_3</text>
-                <dont_has_info>mil_max_talk</dont_has_info>
-                <has_info>mil_zoneguard_talk</has_info>
-                <next>30</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_zoneguard_dialog_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="1">
-                <text>mil_zoneguard_dialog_1</text>
-                <dont_has_info>mil_zoneguard_talk</dont_has_info>
-                <dont_has_info>mil_max_talk</dont_has_info>
-                <give_info>mil_zoneguard_talk</give_info>
-                <next>10</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_zoneguard_dialog_0</text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_zoneguard_dialog_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>mil_zoneguard_dialog_51</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_trader_dialog">
         <phrase_list>
             <phrase id="0">
                 <text>mil_trader_dialog_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_max_dialog_common2">
-        <precondition>dialogs.dialog_allowed</precondition>
-        <phrase_list>
-            <phrase id="4">
-                <text>mil_max_dialog_common2_4</text>
-                <next>5</next>
-                <next>100</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_max_dialog_common2_5</text>
-                <dont_has_info>mil_max_flash_get</dont_has_info>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_max_dialog_common2_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="8">
-                <text>mil_max_dialog_common2_8</text>
-                <next>80</next>
-            </phrase>
-            <phrase id="80">
-                <text>mil_max_dialog_common2_80</text>
-            </phrase>
-            <phrase id="9">
-                <text>mil_max_dialog_common2_9</text>
-                <next>90</next>
-            </phrase>
-            <phrase id="90">
-                <text>mil_max_dialog_common2_90</text>
-            </phrase>
-            <phrase id="3">
-                <text>mil_max_dialog_common2_3</text>
-            </phrase>
-            <phrase id="7">
-                <text>mil_max_dialog_common2_7</text>
-            </phrase>
-            <phrase id="2">
-                <text>mil_max_dialog_common2_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="100">
-                <text>mil_max_dialog_common2_100</text>
-                <has_info>mil_max_flash_get</has_info>
-            </phrase>
-            <phrase id="1">
-                <text>mil_max_dialog_common2_1</text>
-                <next>2</next>
-                <next>4</next>
-                <next>8</next>
-                <next>9</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_max_dialog_common2_0</text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1472,6 +1320,326 @@
             <phrase id="4">
                 <text>mil_patrol_dialog1_4</text>
                 <next>5</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_max_dialog_common2">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <phrase_list>
+            <phrase id="5">
+                <text>mil_max_dialog_common2_5</text>
+                <dont_has_info>mil_max_flash_get</dont_has_info>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_max_dialog_common2_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="8">
+                <text>mil_max_dialog_common2_8</text>
+                <next>80</next>
+            </phrase>
+            <phrase id="80">
+                <text>mil_max_dialog_common2_80</text>
+            </phrase>
+            <phrase id="9">
+                <text>mil_max_dialog_common2_9</text>
+                <next>90</next>
+            </phrase>
+            <phrase id="90">
+                <text>mil_max_dialog_common2_90</text>
+            </phrase>
+            <phrase id="3">
+                <text>mil_max_dialog_common2_3</text>
+            </phrase>
+            <phrase id="7">
+                <text>mil_max_dialog_common2_7</text>
+            </phrase>
+            <phrase id="2">
+                <text>mil_max_dialog_common2_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="100">
+                <text>mil_max_dialog_common2_100</text>
+                <has_info>mil_max_flash_get</has_info>
+            </phrase>
+            <phrase id="1">
+                <text>mil_max_dialog_common2_1</text>
+                <next>2</next>
+                <next>4</next>
+                <next>8</next>
+                <next>9</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_max_dialog_common2_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_max_dialog_common2_4</text>
+                <next>5</next>
+                <next>100</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_zoneguard_dialog">
+        <phrase_list>
+            <phrase id="100">
+                <text>mil_zoneguard_dialog_100</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text>mil_zoneguard_dialog_1000</text>
+                <next>10000</next>
+            </phrase>
+            <phrase id="10000">
+                <text>mil_zoneguard_dialog_10000</text>
+                <next>100000</next>
+            </phrase>
+            <phrase id="100000">
+                <text>mil_zoneguard_dialog_100000</text>
+                <next>1000000</next>
+            </phrase>
+            <phrase id="1000000">
+                <text>mil_zoneguard_dialog_1000000</text>
+                <next>10000000</next>
+            </phrase>
+            <phrase id="10000000">
+                <text>mil_zoneguard_dialog_10000000</text>
+            </phrase>
+            <phrase id="20">
+                <text>mil_zoneguard_dialog_20</text>
+            </phrase>
+            <phrase id="41">
+                <text>mil_zoneguard_dialog_41</text>
+                <next>42</next>
+            </phrase>
+            <phrase id="42">
+                <text>mil_zoneguard_dialog_42</text>
+                <next>43</next>
+            </phrase>
+            <phrase id="43">
+                <text>mil_zoneguard_dialog_43</text>
+                <next>44</next>
+            </phrase>
+            <phrase id="44">
+                <text>mil_zoneguard_dialog_44</text>
+                <next>45</next>
+            </phrase>
+            <phrase id="51">
+                <text>mil_zoneguard_dialog_51</text>
+            </phrase>
+            <phrase id="602">
+                <text>mil_zoneguard_dialog_602</text>
+                <next>603</next>
+            </phrase>
+            <phrase id="603">
+                <text>mil_zoneguard_dialog_603</text>
+                <next>604</next>
+            </phrase>
+            <phrase id="604">
+                <text>mil_zoneguard_dialog_604</text>
+                <next>605</next>
+            </phrase>
+            <phrase id="605">
+                <text>mil_zoneguard_dialog_605</text>
+                <next>606</next>
+            </phrase>
+            <phrase id="606">
+                <text>mil_zoneguard_dialog_606</text>
+                <next>607</next>
+            </phrase>
+            <phrase id="607">
+                <text>mil_zoneguard_dialog_607</text>
+                <next>608</next>
+            </phrase>
+            <phrase id="608">
+                <text>mil_zoneguard_dialog_608</text>
+                <next>609</next>
+            </phrase>
+            <phrase id="609">
+                <text>mil_zoneguard_dialog_609</text>
+                <next>610</next>
+            </phrase>
+            <phrase id="610">
+                <text>mil_zoneguard_dialog_610</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="611">
+                <text>mil_zoneguard_dialog_611</text>
+                <next>612</next>
+            </phrase>
+            <phrase id="612">
+                <text>mil_zoneguard_dialog_612</text>
+                <next>613</next>
+            </phrase>
+            <phrase id="613">
+                <text>mil_zoneguard_dialog_613</text>
+                <next>614</next>
+            </phrase>
+            <phrase id="614">
+                <text>mil_zoneguard_dialog_614</text>
+                <next>615</next>
+            </phrase>
+            <phrase id="615">
+                <text>mil_zoneguard_dialog_615</text>
+                <next>616</next>
+            </phrase>
+            <phrase id="616">
+                <text>mil_zoneguard_dialog_616</text>
+                <next>617</next>
+            </phrase>
+            <phrase id="617">
+                <text>mil_zoneguard_dialog_617</text>
+                <next>618</next>
+            </phrase>
+            <phrase id="618">
+                <text>mil_zoneguard_dialog_618</text>
+                <next>619</next>
+            </phrase>
+            <phrase id="619">
+                <text>mil_zoneguard_dialog_619</text>
+                <next>620</next>
+            </phrase>
+            <phrase id="620">
+                <text>mil_zoneguard_dialog_620</text>
+                <next>6200</next>
+                <next>6203</next>
+                <next>6205</next>
+            </phrase>
+            <phrase id="6205">
+                <text>mil_zoneguard_dialog_6205</text>
+                <next>6206</next>
+            </phrase>
+            <phrase id="6206">
+                <text>mil_zoneguard_dialog_6206</text>
+                <next>6207</next>
+            </phrase>
+            <phrase id="6207">
+                <text>mil_zoneguard_dialog_6207</text>
+                <next>6208</next>
+            </phrase>
+            <phrase id="6200">
+                <text>mil_zoneguard_dialog_6200</text>
+                <next>6201</next>
+            </phrase>
+            <phrase id="6300">
+                <text>mil_zoneguard_dialog_6300</text>
+                <next>6201</next>
+            </phrase>
+            <phrase id="6301">
+                <text>mil_zoneguard_dialog_6301</text>
+                <next>6201</next>
+            </phrase>
+            <phrase id="6208">
+                <text>mil_zoneguard_dialog_6208</text>
+                <next>6300</next>
+                <next>6301</next>
+                <next>6302</next>
+            </phrase>
+            <phrase id="6302">
+                <text>mil_zoneguard_dialog_6302</text>
+                <next>6400</next>
+            </phrase>
+            <phrase id="6400">
+                <text>mil_zoneguard_dialog_6400</text>
+                <next>6401</next>
+            </phrase>
+            <phrase id="6401">
+                <text>mil_zoneguard_dialog_6401</text>
+                <next>6402</next>
+            </phrase>
+            <phrase id="6402">
+                <text>mil_zoneguard_dialog_6402</text>
+                <next>6403</next>
+            </phrase>
+            <phrase id="6403">
+                <text>mil_zoneguard_dialog_6403</text>
+                <next>6404</next>
+            </phrase>
+            <phrase id="6404">
+                <text>mil_zoneguard_dialog_6404</text>
+                <next>6405</next>
+            </phrase>
+            <phrase id="6204">
+                <text>mil_zoneguard_dialog_6204</text>
+            </phrase>
+            <phrase id="6203">
+                <text>mil_zoneguard_dialog_6203</text>
+                <next>6201</next>
+            </phrase>
+            <phrase id="6201">
+                <text>mil_zoneguard_dialog_6201</text>
+                <next>6202</next>
+            </phrase>
+            <phrase id="6202">
+                <text>mil_zoneguard_dialog_6202</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="6406">
+                <text>mil_zoneguard_dialog_6406</text>
+                <next>6407</next>
+            </phrase>
+            <phrase id="6405">
+                <text>mil_zoneguard_dialog_6405</text>
+                <next>6406</next>
+            </phrase>
+            <phrase id="10">
+                <text>mil_zoneguard_dialog_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_zoneguard_dialog_6</text>
+                <next>601</next>
+            </phrase>
+            <phrase id="601">
+                <text>mil_zoneguard_dialog_601</text>
+                <next>602</next>
+            </phrase>
+            <phrase id="6407">
+                <text>mil_zoneguard_dialog_6407</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_zoneguard_talk</give_info>
+            </phrase>
+            <phrase id="45">
+                <text>mil_zoneguard_dialog_45</text>
+            </phrase>
+            <phrase id="30">
+                <text>mil_zoneguard_dialog_30</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_zoneguard_dialog_0</text>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="31">
+                <text>mil_zoneguard_dialog_31</text>
+                <next>32</next>
+            </phrase>
+            <phrase id="32">
+                <text>mil_zoneguard_dialog_32</text>
+            </phrase>
+            <phrase id="4">
+                <text>mil_zoneguard_dialog_4</text>
+                <has_info>mil_zoneguard_talk</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_zoneguard_dialog_5</text>
+                <has_info>mil_zoneguard_talk</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="7">
+                <text></text>
+                <dont_has_info>mil_zoneguard_talk</dont_has_info>
+                <next>6</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <has_info>mil_zoneguard_talk</has_info>
+                <next>30</next>
             </phrase>
         </phrase_list>
     </dialog>
