@@ -77,7 +77,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler_clf		("s_lmap",	"$user$projector");
+			C.r_Sampler_clf		("s_lmap",	"$user$projector",true);
 			C.r_End				();
 			break;
 		case SE_R1_NORMAL_LQ:
