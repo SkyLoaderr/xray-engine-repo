@@ -220,7 +220,7 @@ void CGameObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p
 	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
 }
 
-f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, list<s16> &elements, list<Fvector> &bs_positions) {
+f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) {
 	Collide::ray_query RQ;
 	Fvector l_pos; clCenter(l_pos);
 	Fvector l_dir; l_dir.sub(l_pos, expl_centre); l_dir.normalize();

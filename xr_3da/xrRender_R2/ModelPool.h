@@ -26,7 +26,7 @@ private:
 		IVisual*		model;
 	};
 
-	typedef multimap<LPCSTR,IVisual*,str_pred>		POOL;
+	typedef xr_multimap<LPCSTR,IVisual*,str_pred>	POOL;
 	typedef POOL::iterator							POOL_IT;
 	typedef xr_map<IVisual*,LPCSTR>					REGISTRY;
 	typedef REGISTRY::iterator						REGISTRY_IT;
