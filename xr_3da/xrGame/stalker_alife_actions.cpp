@@ -33,8 +33,20 @@ CStalkerActionGatherItems::CStalkerActionGatherItems	(CAI_Stalker *object, LPCST
 
 void CStalkerActionGatherItems::initialize	()
 {
-	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+	inherited::initialize			();
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	if (!m_object->inventory().ActiveItem())
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	else
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->inventory().ActiveItem());
 }
 
 void CStalkerActionGatherItems::finalize	()
@@ -55,18 +67,8 @@ void CStalkerActionGatherItems::execute		()
 		return;
 
 	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->item()->Position());
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateDanger);
-
 	m_object->setup					(SightManager::eSightTypePosition,&m_object->item()->Position());
-	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
 }
 
 //////////////////////////////////////////////////////////////////////////
