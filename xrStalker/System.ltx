@@ -548,17 +548,11 @@ DynamicObjectsCount			= 32
 ; Trade
 ;-----------------------------------------------------------------
 [trade]
-trader_buy_price_factor					= 0.5 
-trader_sell_price_factor				= 2.0
-stalker_neutral_buy_price_factor		= 0.6
-stalker_neutral_sell_price_factor		= 1.5
-stalker_friend_buy_price_factor			= 0.9
-stalker_friend_sell_price_factor		= 1.1
-
-
-buy_price_factor_hostile	= 0.3		;коэффициент покупки при goodwill = 0
+;коэффициенты изменения цены при торговле в зависимости от отношения к персонажу
+;линейно апроксимируются между значения
+buy_price_factor_hostile	= 0.3		;коэффициент покупки при goodwill = -100
 buy_price_factor_friendly	= 0.9		;коэффициент покупки при goodwill = 100
-sell_price_factor_hostile	= 2.0		;коэффициент покупки при goodwill = 0
+sell_price_factor_hostile	= 2.0		;коэффициент покупки при goodwill = -100
 sell_price_factor_friendly	= 1.1		;коэффициент покупки при goodwill = 100
 
 
