@@ -1182,32 +1182,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Shaders "
-						Filter="">
-						<Filter
-							Name="dx9_R_shader"
-							Filter="">
-							<File
-								RelativePath="r_constants.cpp">
-							</File>
-							<File
-								RelativePath="r_constants.h">
-							</File>
-							<File
-								RelativePath="r_constants_cache.cpp">
-							</File>
-							<File
-								RelativePath="r_constants_cache.h">
-							</File>
-							<File
-								RelativePath="r_shader.cpp">
-							</File>
-							<File
-								RelativePath="r_shader.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
 						Name="ShaderManager"
 						Filter="">
 						<File
@@ -1238,6 +1212,12 @@
 					<Filter
 						Name="Resources"
 						Filter="">
+						<File
+							RelativePath="r_constants.cpp">
+						</File>
+						<File
+							RelativePath="r_constants.h">
+						</File>
 						<File
 							RelativePath=".\SH_Atomic.cpp">
 						</File>
@@ -1286,6 +1266,22 @@
 						<File
 							RelativePath=".\Shader.h">
 						</File>
+						<Filter
+							Name="dx9_R_shader"
+							Filter="">
+							<File
+								RelativePath="r_constants_cache.cpp">
+							</File>
+							<File
+								RelativePath="r_constants_cache.h">
+							</File>
+							<File
+								RelativePath="r_shader.cpp">
+							</File>
+							<File
+								RelativePath="r_shader.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

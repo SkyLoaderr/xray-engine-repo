@@ -71,8 +71,7 @@ public:
 	virtual void			setup		(R_constant* C)	= 0;
 };
 
-class	ENGINE_API			R_constant_table
-{
+class	ENGINE_API			R_constant_table	: public xr_resource	{
 public:
 	typedef svector<R_constant*,32>		c_table;
 	c_table					table;
@@ -84,23 +83,17 @@ public:
 	void					merge		(R_constant_table* C);
 	R_constant*				get			(LPCSTR name);
 
-	IC BOOL					empty		()
+	BOOL					empty		()
 	{
 		return 0==table.size();
 	}
-	IC BOOL					equal		(R_constant_table& C)
-	{
-		if (table.size() != C.table.size())	return FALSE;
-		u32 size			= table.size();
-		for (u32 it=0; it<size; it++)
-		{
-			if (!table[it]->equal(C.table[it]))	return FALSE;
-		}
-		return TRUE;
-	}
-	IC BOOL					equal		(R_constant_table* C)
+	BOOL					equal		(R_constant_table& C);
+	BOOL					equal		(R_constant_table* C)
 	{
 		return equal(*C);
 	}
 };
+
+typedef	resptr_core<R_constant_table,resptr_base<R_constant_table> >				ref_ctable;
+
 #endif

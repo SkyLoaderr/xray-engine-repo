@@ -66,7 +66,7 @@ struct	ENGINE_API		SPass			: public xr_resource									{
 	ref_state							state;		// Generic state, like Z-Buffering, samplers, etc
 	ref_ps								ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
 	ref_vs								vs;			// may be NULL = FFP, in that case "state" must contain RS setup, *and* FVF-compatible declaration must be used
-	R_constant_table*					constants;
+	ref_ctable							constants;	// may be NULL
 
 	ref_texture_list					T;
 	ref_matrix_list						M;

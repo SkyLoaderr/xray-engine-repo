@@ -96,13 +96,13 @@ void		CShaderManager::_DeleteDecl		(SDeclaration* dcl)
 //--------------------------------------------------------------------------------------------------------------
 SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 {
-	LPSTR N				= LPSTR(name);
+	LPSTR N				= LPSTR		(name);
 	map_VS::iterator I	= m_vs.find	(N);
 	if (I!=m_vs.end())	return I->second;
 	else
 	{
 		SVS*	_vs					= xr_new<SVS>	();
-		m_vs.insert					(mk_pair(xr_strdup(name),_vs));
+		m_vs.insert					(mk_pair(_vs->set_name(name),_vs));
 		if (0==stricmp(name,"null"))	{
 			_vs->vs				= NULL;
 			return _vs;
@@ -153,11 +153,13 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 
 void	CShaderManager::_DeleteVS			(SVS* vs)
 {
-	for (map_VSIt v=m_vs.begin(); v!=m_vs.end(); v++)
-	{
-		xr_free		((char*)v->first);
-		xr_delete	(v->second);
+	LPSTR N				= LPSTR		(vs->cName);
+	map_VS::iterator I	= m_vs.find	(N);
+	if (I!=m_vs.end())	{
+		m_vs.erase(I);
+		return;
 	}
+	Msg	("! ERROR: Failed to find compiled vertex-shader '%s'",vs->cName);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -169,7 +171,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 	else
 	{
 		SPS*	_ps					= xr_new<SPS>	();
-		m_ps.insert					(mk_pair(xr_strdup(name),_ps));
+		m_ps.insert					(mk_pair(_ps->set_name(name),_ps));
 		if (0==stricmp(name,"null"))	{
 			_ps->ps				= NULL;
 			return _ps;
@@ -222,17 +224,23 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		return			_ps;
 	}
 }
-void	CShaderManager::_DeletePS			(IDirect3DPixelShader9* &ps)
+void	CShaderManager::_DeletePS			(SPS* ps)
 {
-	ps = NULL;
+	LPSTR N				= LPSTR		(ps->cName);
+	map_VS::iterator I	= m_vs.find	(N);
+	if (I!=m_vs.end())	{
+		m_vs.erase(I);
+		return;
+	}
+	Msg	("! ERROR: Failed to find compiled pixel-shader '%s'",vs->cName);
 }
 
-R_constant_table*	CShaderManager::_CreateConstantTable(R_constant_table& C)
+R_constant_table*	CShaderManager::_CreateConstantTable	(R_constant_table& C)
 {
 	if (C.empty())		return NULL;
 	for (u32 it=0; it<v_constant_tables.size(); it++)
 		if (v_constant_tables[it]->equal(C))	return v_constant_tables[it];
-	v_constant_tables.push_back(xr_new<R_constant_table>(C));
+	v_constant_tables.push_back	(xr_new<R_constant_table>(C));
 	return v_constant_tables.back();
 }
 
@@ -252,7 +260,7 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	else
 	{
 		CRT *RT				=	xr_new<CRT>();
-		m_rtargets.insert		(mk_pair(xr_strdup(Name),RT));
+		m_rtargets.insert	(mk_pair(RT->set_name(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h,f);
 		return				RT;
 	}
@@ -285,7 +293,7 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 	else
 	{
 		CRTC *RT			=	xr_new<CRTC>();
-		m_rtargets_c.insert	(mk_pair(xr_strdup(Name),RT));
+		m_rtargets_c.insert	(mk_pair(RT->set_name(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,size,f);
 		return				RT;
 	}
@@ -359,13 +367,13 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	map_TextureIt I = m_textures.find	(N);
 	if (I!=m_textures.end())
 	{
-		CTexture *T		=	I->second;
+		CTexture *	T		=	I->second;
 		return		T;
 	}
 	else
 	{
-		CTexture *T		= xr_new<CTexture>();
-		m_textures.insert	(mk_pair(xr_strdup(Name),T));
+		CTexture *	T		=	xr_new<CTexture>();
+		m_textures.insert	(mk_pair(T->set_name(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
 	}
@@ -398,7 +406,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	else
 	{
 		CMatrix* M		=	xr_new<CMatrix>();
-		m_matrices.insert	(mk_pair(xr_strdup(Name),M));
+		m_matrices.insert	(mk_pair(M->set_name(Name),M));
 		return	M;
 	}
 }
@@ -435,7 +443,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	else
 	{
 		CConstant* C	=	xr_new<CConstant>();
-		m_constants.insert	(mk_pair(xr_strdup(Name),C));
+		m_constants.insert	(mk_pair(C->set_name(Name),C));
 		return	C;
 	}
 }
