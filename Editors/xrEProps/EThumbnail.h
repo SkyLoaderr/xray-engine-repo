@@ -45,13 +45,13 @@ protected:
     U32Vec 			m_Pixels;
 protected:
 	void 			CreatePixels	(u32* p, u32 w, u32 h);
-	void 			Draw			(TCanvas* pCanvas, const TRect& R, u32 w, u32 h, bool bUseAlpha=false);
+	void 			Draw			(void* pCanvas, const Irect& R, u32 w, u32 h, bool bUseAlpha=false);
 	void 			Draw			(TMxPanel* panel, u32 w, u32 h, bool bUseAlpha=false);
     void			VFlip			();
 public:
 					EImageThumbnail	(LPCSTR src_name, THMType type):ECustomThumbnail(src_name, type){};
 	virtual			~EImageThumbnail();
-	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false)=0;
+	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false)=0;
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false)=0;
     virtual	int		MemoryUsage		()=0;
 };
@@ -77,7 +77,7 @@ public:
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values);
 	virtual void	FillInfo		(PropItemVec& values);
-	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,_Width(),_Height(),bUseAlpha);}
+	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,_Width(),_Height(),bUseAlpha);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,_Width(),_Height(),bUseAlpha);}
 
     virtual int		MemoryUsage		();
@@ -106,7 +106,7 @@ public:
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values);
 	virtual void	FillInfo		(PropItemVec& values);
-	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,0,0,false);}
+	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,0,0,false);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,0,0,false);}
 
     virtual int		MemoryUsage		(){return 0;}

@@ -577,18 +577,19 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiStrin
     return true;
 }
 
-bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, ref_str fname, u32 thm_type)
+bool CFolderHelper::DrawThumbnail(void *_Surface, Irect &R, ref_str fname, u32 thm_type)
 {
 	if (fname.size()){
+		TCanvas* Surface = (TCanvas*)_Surface;
         EImageThumbnail* m_Thm 	= CreateThumbnail(fname.c_str(),EImageThumbnail::THMType(thm_type));
         VERIFY		(m_Thm);
-        int dw 		= R.Width()-R.Height();
-        if (dw>=0) 	R.right		-= dw;
+        int dw 		= R.width()-R.height();
+        if (dw>=0) 	R.x2		-= dw;
         bool bRes 	= m_Thm->Valid();
         if (bRes) 	m_Thm->Draw(Surface,R);
         else{		
         	Surface->Brush->Color 	= clBlack;
-        	Surface->FillRect		(R);
+        	Surface->FillRect		(*((TRect*)&R)); 
         }
         xr_delete	(m_Thm);
         return bRes;

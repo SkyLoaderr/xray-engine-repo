@@ -87,9 +87,11 @@ void EImageThumbnail::CreatePixels(u32* p, u32 w, u32 h)
 	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
 }
 
-void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, u32 w, u32 h, bool bUseAlpha)
+void EImageThumbnail::Draw(void* _pCanvas, const Irect& _R, u32 w, u32 h, bool bUseAlpha)
 {
 	if (Valid()){
+		TCanvas* pCanvas= (TCanvas*)_pCanvas;
+        const TRect& R	= *((TRect*)&_R);
     	switch (m_Type){
         case ETTexture:{
             TRect r = R; r.left += 1; r.top += 1;

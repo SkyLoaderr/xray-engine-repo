@@ -256,7 +256,7 @@ public:
 class CanvasValue: public PropValue{
 	ref_str				value;
 public:
-	typedef fastdelegate::FastDelegate3<CanvasValue*,PropValue*,bool&>			TOnTestEqual;
+	typedef fastdelegate::FastDelegate3<CanvasValue*,CanvasValue*,bool&>					TOnTestEqual;
 	typedef fastdelegate::FastDelegate3<CanvasValue*,void* /* TCanvas* */, const Irect&>	TOnDrawCanvasEvent;
 public:
     int					height;
@@ -268,7 +268,7 @@ public:
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)
     {
-    	if (!OnTestEqual.empty()){bool res=true; OnTestEqual(this,val,res); return res;}
+    	if (!OnTestEqual.empty()){bool res=true; OnTestEqual(this,(CanvasValue*)val,res); return res;}
     	return false;
     }
 };

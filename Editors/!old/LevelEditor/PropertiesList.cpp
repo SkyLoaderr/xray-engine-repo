@@ -588,7 +588,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (miDrawThumbnails->Checked&&prop->m_Flags.is(PropItem::flDrawThumbnail)){ 
                     R.top	+=	tvProperties->LineHeight-4;
                     R.left 	= 	R.Right-(R.bottom-R.top);
-                    FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
+                    FHelper.DrawThumbnail	(Surface,Irect().set(R.left,R.top,R.right,R.bottom),prop->GetText(),EImageThumbnail::ETTexture);
                 }
             }break;
             case PROP_TEXTURE2:
@@ -596,7 +596,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->LineHeight-4;
                     R.left 	= 	R.Right-(R.bottom-R.top);
-                    FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
+                    FHelper.DrawThumbnail	(Surface,Irect().set(R.left,R.top,R.right,R.bottom),prop->GetText(),EImageThumbnail::ETTexture);
                 }
             break;
             case PROP_WAVE:
