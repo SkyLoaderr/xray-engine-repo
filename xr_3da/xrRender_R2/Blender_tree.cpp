@@ -60,7 +60,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (C.bLighting)	
+		if (C.iElement==2)	
 		{
 			C.PassBegin		();
 			{
