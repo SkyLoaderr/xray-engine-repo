@@ -43,7 +43,8 @@ void CAI_Stalker::vfUpdateSearchPosition()
 			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			//Msg("Next graph point %d",m_tNextGP);
 		}
-
+		else
+			AI_Path.DestNode			= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	}
 }
 
