@@ -88,9 +88,7 @@ public:
 
 	unsigned int		quadric_count			() const { return __quadrics.length(); }
 	MxQuadric&			quadric					(unsigned int i)       { return *(__quadrics(i)); }
-	const MxQuadric&	quadric					(unsigned int i) const { return *(__quadrpublic:
-	void (*contraction_callback)(const MxPairContraction&, float, void*);
-ics(i)); }
+	const MxQuadric&	quadric					(unsigned int i) const { return *(__quadrics(i)); }
 };
 
 // MXPROPSLIM_INCLUD

@@ -576,7 +576,7 @@ void MxEdgeQSlim::apply_expansion(const MxPairContraction& conx)
 	update_post_expand(conx);
 }
 
-bool MxEdgeQSlim::decimate(unsigned int target, float max_error)
+bool MxEdgeQSlim::decimate(unsigned int target, float max_error, void* cb_params)
 {
 	MxPairContraction local_conx;
 
@@ -600,7 +600,7 @@ bool MxEdgeQSlim::decimate(unsigned int target, float max_error)
 			if( will_join_only && conx.dead_faces.length()>0 ) continue;
 
 			if( contraction_callback )
-				(*contraction_callback)(conx, -(info->heap_key()+EDGE_BASE_ERROR));
+				(*contraction_callback)(conx, -(info->heap_key()+EDGE_BASE_ERROR), cb_params);
 
 			apply_contraction(conx);
 		}
@@ -676,7 +676,7 @@ void MxFaceQSlim::initialize()
 		compute_face_info(f);
 }
 
-bool MxFaceQSlim::decimate(unsigned int target, float max_error)
+bool MxFaceQSlim::decimate(unsigned int target, float max_error, void* cb_params)
 {
 	unsigned int i;
 

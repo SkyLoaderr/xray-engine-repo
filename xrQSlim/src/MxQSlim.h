@@ -84,16 +84,13 @@ public:
     void initialize			();
 	void collect_edges		();
 	void collect_edges		(const MxEdge *edges, unsigned int count);
-    bool decimate			(unsigned int target, float max_error);
+    bool decimate			(unsigned int target, float max_error, void* cb_params=0);
 
     void apply_contraction	(const MxPairContraction& conx);
     void apply_expansion	(const MxPairContraction& conx);
 
     unsigned int edge_count	() const { return heap.size(); }
     const MxQSlimEdge *edge	(unsigned int i) const {return (MxQSlimEdge *)heap.item(i);}
-
-public:
-    void (*contraction_callback)(const MxPairContraction&, float);
 };
 
 class MxFaceQSlim : public MxQSlim
@@ -116,7 +113,7 @@ public:
     MxFaceQSlim(MxStdModel*);
 
     void initialize();
-    bool decimate(unsigned int target, float max_error);
+    bool decimate(unsigned int target, float max_error, void* cb_params=0);
 };
 
 // MXQSLIM_INCLUDED

@@ -57,9 +57,11 @@ public:
     MxStdSlim(MxStdModel *m0);
 
     virtual void initialize() = 0;
-    virtual bool decimate(unsigned int, float max_error) = 0;
+    virtual bool decimate(unsigned int, float max_error, void* cb_params=0) = 0;
 
     MxStdModel& model() { return *m; }
+public:
+	void (*contraction_callback)(const MxPairContraction&, float, void*);
 };
 
 // MXSTDSLIM_INCLUDED
