@@ -69,11 +69,13 @@ void main(int argc, char* argv[])
 			float		f2	= dist2d(x,y,0,tex.dwHeight);
 			float		f3	= dist2d(x,y,tex.dwWidth,tex.dwHeight);
 			float		cl	= float(p0)*(1-f0/f) + float(p1)*(1-f1/f) + float(p2)*(1-f2/f) + float(p3)*(1-f3/f);
-			new_c			= DWORD(cl);
+			new_c			= DWORD(cl/4);
 
+			/*
 		    int row		= y % 16; 
 			int col		= x % 16;
  			new_c		= new_c > magic[col][row] ? 255 : 0;
+			*/
 			
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
 		}
