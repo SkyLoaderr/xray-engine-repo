@@ -219,9 +219,9 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 #ifdef _EDITOR
 	if (!name||!name[0])	return 0;
 #endif
-	string1024 low_name;	R_ASSERT(xr_strlen(name)<sizeof(low_name));
-	strcpy(low_name,name);	strlwr(low_name);
-	if (strext(low_name))	*strext(low_name)=0;
+	string1024 low_name;	VERIFY	(xr_strlen(name)<sizeof(low_name));
+	strcpy(low_name,name);	strlwr	(low_name);
+	if (strext(low_name))	*strext	(low_name)=0;
 //	Msg						("-CREATE %s",low_name);
 
 	// 0. Search POOL
@@ -256,9 +256,9 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 
 IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 {
-	string256 low_name;		R_ASSERT(xr_strlen(name)<128);
-	strcpy(low_name,name);	strlwr(low_name);
-	if (strext(low_name))	*strext(low_name) = 0;
+	string256 low_name;		VERIFY	(xr_strlen(name)<256);
+	strcpy(low_name,name);	strlwr	(low_name);
+	if (strext(low_name))	*strext	(low_name) = 0;
 
 	// 1. Search for already loaded model
 	IRender_Visual* Base	= Instance_Find(low_name);
@@ -358,7 +358,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     case MT_SKELETON_RIGID:
     case MT_HIERRARHY:{
         if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
-            FHierrarhyVisual* pV		= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
+            FHierrarhyVisual* pV		= dynamic_cast<FHierrarhyVisual*>(m_pVisual); VERIFY(pV);
             I = pV->children.begin		();
             E = pV->children.end		();
             for (; I!=E; I++){
@@ -369,7 +369,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
         }
     }break;
     case MT_PARTICLE_GROUP:{
-        PS::CParticleGroup* pG			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pG);
+        PS::CParticleGroup* pG			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); VERIFY(pG);
         RCache.set_xform_world			(mTransform);
 	    for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
             xr_vector<IRender_Visual*>	visuals;
