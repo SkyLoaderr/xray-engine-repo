@@ -116,6 +116,9 @@ end
 --------
 function action_follow:execute ()
     action_base.execute (self)
+    
+    printf ("XR_ATTENDANT : OBJECT %s : UPDATE RECEIVED AT %d TIME", self.object:name (), device ():time_global ())
+    
     -- проверим, а жив ли еще старшќй.
     if level.object_by_id(self.st.leader_id) == nil or 
        level.object_by_id(self.st.leader_id):alive () == false then
