@@ -2,15 +2,12 @@
 #include "weaponpistol.h"
 #include "rocketlauncher.h"
 
-class CWeaponRPG7Grenade;
 
 class CWeaponRPG7 :	public CWeaponCustomPistol,
 					public CRocketLauncher
 {
 private:
 	typedef CWeaponCustomPistol inherited;
-
-	friend CWeaponRPG7Grenade;
 public:
 	CWeaponRPG7(void);
 	virtual ~CWeaponRPG7(void);

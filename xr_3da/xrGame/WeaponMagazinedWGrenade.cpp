@@ -5,18 +5,16 @@
 #include "PSObject.h"
 #include "ParticlesObject.h"
 #include "GrenadeLauncher.h"
-#include "WeaponFakeGrenade.h"
 #include "xrserver_objects_alife_items.h"
+#include "ExplosiveRocket.h"
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 CWeaponMagazinedWGrenade::CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType) : CWeaponMagazined(name, eSoundType)
 {
 	m_ammoType2 = 0;
-
-	m_pGrenade = NULL;
     m_bGrenadeMode = false;
-	m_fGrenadeVel = 0.f;
 }
 
 CWeaponMagazinedWGrenade::~CWeaponMagazinedWGrenade(void)
@@ -25,7 +23,10 @@ CWeaponMagazinedWGrenade::~CWeaponMagazinedWGrenade(void)
 
 void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 {
-	inherited::Load		(section);
+	inherited::Load			(section);
+	CRocketLauncher::Load	(section);
+	
+	
 	//// Sounds
 	HUD_SOUND::LoadSound(section,"snd_shoot_grenade"	, sndShotG		, TRUE, m_eSoundShot);
 	HUD_SOUND::LoadSound(section,"snd_reload_grenade"	, sndReloadG	, TRUE, m_eSoundReload);
@@ -61,7 +62,7 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 
 	if(m_eGrenadeLauncherStatus == ALife::eAddonPermanent)
 	{
-		m_fGrenadeVel = pSettings->r_float(section, "grenade_vel");
+		CRocketLauncher::m_fLaunchSpeed = pSettings->r_float(section, "grenade_vel");
 	}
 
 	grenade_bone_name = pSettings->r_string(*hud_sect, "grenade_bone");
@@ -118,7 +119,7 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 	if(m_bGrenadeMode) 
 	{
 		UpdateFP();
-		PlaySound(sndReloadG,vLastFP);
+		PlaySound(sndReloadG,vLastFP2);
 
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
 		m_bPending = true;
@@ -132,7 +133,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 	if(m_bGrenadeMode)
 	{
 		UpdateFP();
-		PlaySound(sndShotG, vLastFP);
+		PlaySound(sndShotG, vLastFP2);
 		
 		AddShotEffector		();
 		
@@ -231,7 +232,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		UpdateFP				();
 		fTime					-=dt;
 		Fvector					p1, d; 
-		p1.set(vLastFP); 
+		p1.set(vLastFP2); 
 		d.set(vLastFD);
 		
 		if(H_Parent()) 
@@ -268,25 +269,39 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 	inherited::SwitchState(S);
 	
 	//стрельнуть из подствольника
-	if(m_bGrenadeMode && STATE == eIdle && S == eFire && m_pGrenade) 
+	if(m_bGrenadeMode && STATE == eIdle && S == eFire && m_pRocket) 
 	{
 		Fvector						p1, d; 
-		p1.set(vLastFP); 
+		p1.set(vLastFP2);
 		d.set(vLastFD);
 
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+				
+		if (E)
+			E->g_fireParams		(this, p1,d);
+
+		p1.set(*m_pGrenadePoint);
+
 		
-		if (E) E->g_fireParams		(this, p1,d);
-		
-		m_pGrenade->m_pos.set(p1);
-		m_pGrenade->m_vel.set(d); 
-		m_pGrenade->m_vel.y += .0f; 
-		m_pGrenade->m_vel.mul(m_fGrenadeVel);
-		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
+		Fmatrix launch_matrix;
+		launch_matrix.identity();
+		launch_matrix.k.set(d);
+		Fvector::generate_orthonormal_basis(launch_matrix.k,
+											launch_matrix.i, launch_matrix.j);
+		launch_matrix.c.set(p1);
+
+		d.normalize();
+		d.mul(CRocketLauncher::m_fLaunchSpeed);
+		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
+
+		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
+		VERIFY(pGrenade);
+		pGrenade->SetCurrentParentID(H_Parent()->ID());
+
 		
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(u16(m_pGrenade->ID()));
+		P.w_u16(m_pRocket->ID());
 		u_EventSend(P);
 	}
 }
@@ -300,20 +315,13 @@ void CWeaponMagazinedWGrenade::OnEvent(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE: 
 			{
 				P.r_u16(id);
-				CWeaponFakeGrenade *l_pG = dynamic_cast<CWeaponFakeGrenade*>(Level().Objects.net_Find(id));
-				VERIFY(l_pG);
-				m_pGrenade = l_pG;
-				m_pGrenade->m_iCurrentParentID = H_Parent()->ID();
-				m_pGrenade->ExplodeParams(Position(), XFORM().k);
-				l_pG->H_SetParent(this);
+				CRocketLauncher::AttachRocket(id, this);
 			}
 			break;
 		case GE_OWNERSHIP_REJECT :
 			{
 				P.r_u16(id);
-				CWeaponFakeGrenade *l_pG = dynamic_cast<CWeaponFakeGrenade*>(Level().Objects.net_Find(id));
-				m_pGrenade = NULL;
-				l_pG->H_SetParent(0);
+				CRocketLauncher::DetachRocket(id);
 				break;
 			}
 	}
@@ -324,10 +332,10 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	inherited::ReloadMagazine();
 	
 	//перезарядка подствольного гранатомета
-	if(iAmmoElapsed && !m_pGrenade && m_bGrenadeMode) 
+	if(iAmmoElapsed && !m_pRocket && m_bGrenadeMode) 
 	{
 		ref_str fake_grenade_name = pSettings->r_string(*m_pAmmo->cNameSect(), "fake_grenade_name");
-		SpawFakeGrenade(*fake_grenade_name);
+		CRocketLauncher::SpawnRocket(*fake_grenade_name, this);
 	}
 }
 
@@ -401,7 +409,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
 
-		m_fGrenadeVel = pGrenadeLauncher->GetGrenadeVel();
+		CRocketLauncher::m_fLaunchSpeed = pGrenadeLauncher->GetGrenadeVel();
 
  		//уничтожить подствольник из инвентаря
 		pIItem->Drop();
@@ -449,7 +457,7 @@ void CWeaponMagazinedWGrenade::InitAddons()
 	{
 		if(IsGrenadeLauncherAttached())
 		{
-			m_fGrenadeVel = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
+			CRocketLauncher::m_fLaunchSpeed = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
 
 			if(m_bZoomEnabled && m_pHUD)
 				LoadZoomOffset(*hud_sect, "grenade_normal_");
@@ -463,29 +471,6 @@ void CWeaponMagazinedWGrenade::InitAddons()
 }
 
 
-void CWeaponMagazinedWGrenade::SpawFakeGrenade(const char* grenade_section_name)
-{
-		CSE_Abstract*		D	= F_entity_Create(grenade_section_name);
-		R_ASSERT			(D);
-	
-	
-		// Fill
-		strcpy				(D->s_name, grenade_section_name);
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-}
 
 
 //виртуальные функции для проигрывания анимации HUD

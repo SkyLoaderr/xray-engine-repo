@@ -1,12 +1,13 @@
 #pragma once
 #include "weaponmagazined.h"
-#include "..\feel_touch.h"
+#include "rocketlauncher.h"
 
 
 class CWeaponFakeGrenade;
 
 
-class CWeaponMagazinedWGrenade : public CWeaponMagazined
+class CWeaponMagazinedWGrenade : public CWeaponMagazined,
+								 public CRocketLauncher
 {
 	typedef CWeaponMagazined inherited;
 public:
@@ -20,6 +21,7 @@ public:
 	
 	virtual void	OnH_B_Chield	();
 	virtual void	OnH_B_Independent();
+
 
 	virtual bool	Attach(PIItem pIItem);
 	virtual bool	Detach(const char* item_section_name);
@@ -93,17 +95,8 @@ public:
 	bool m_bHideGrenade;
 	bool m_bGrenadeMode;
 
-
-
 	Fvector* m_pGrenadePoint;
-	CWeaponFakeGrenade* m_pGrenade;
 
 	//название косточки для гранаты подствольника в HUD
 	ref_str grenade_bone_name;
-
-	//скорость вылета гранаты из подствольника
-	float m_fGrenadeVel;
-	
-protected:
-	void SpawFakeGrenade(const char*  grenade_section_name);
 };

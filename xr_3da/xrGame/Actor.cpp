@@ -623,6 +623,8 @@ void CActor::UpdateCL()
 		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
 		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(self_material_idx(),last_material_idx());
+		
+		CMaterialManager::set_run_mode(isAccelerated(mstate_real));
 		CMaterialManager::update		(
 			Device.fTimeDelta,
 			s_vol,

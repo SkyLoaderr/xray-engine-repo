@@ -1,8 +1,11 @@
 #include "stdafx.h"
-#include "WeaponRPG7Grenade.h"
+
 #include "weaponrpg7.h"
+
 #include "WeaponHUD.h"
 #include "xrserver_objects_alife_items.h"
+
+#include "explosiverocket.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -22,6 +25,8 @@ CWeaponRPG7::~CWeaponRPG7(void)
 void CWeaponRPG7::Load	(LPCSTR section)
 {
 	inherited::Load			(section);
+	CRocketLauncher::Load	(section);
+
 	m_fScopeZoomFactor		= pSettings->r_float	(section,"max_zoom_factor");
 
 	m_sGrenadeBoneName		= pSettings->r_string	(section,"grenade_bone");
@@ -92,12 +97,16 @@ void CWeaponRPG7::SwitchState(u32 S)
 		launch_matrix.c.set(p1);
 
 		d.normalize();
-		d.mul(50.f);
-		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
+		d.mul(m_fLaunchSpeed);
+		
+		Fvector angular_vel;
+		angular_vel.set(d);
+		angular_vel.mul(1400.f);
+		CRocketLauncher::LaunchRocket(launch_matrix, d, angular_vel);
 
-		CWeaponRPG7Grenade* pGrenade = dynamic_cast<CWeaponRPG7Grenade*>(m_pRocket);
+		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
 		VERIFY(pGrenade);
-		pGrenade->m_iCurrentParentID = H_Parent()->ID();
+		pGrenade->SetCurrentParentID(H_Parent()->ID());
 
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
@@ -123,14 +132,10 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE : {
 			P.r_u16(id);
 			CRocketLauncher::AttachRocket(id, this);
-			//m_pRocket->m_iCurrentParentID = H_Parent()->ID();
 		} break;
 		case GE_OWNERSHIP_REJECT : {
 			P.r_u16(id);
-			CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
-			VERIFY(m_pRocket);
-			m_pRocket = NULL;
-			l_pG->H_SetParent(0);
+			CRocketLauncher::DetachRocket(id);
 		} break;
 	}
 }

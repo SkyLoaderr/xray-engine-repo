@@ -4142,6 +4142,12 @@
 										RelativePath=".\CustomRocket.h">
 									</File>
 									<File
+										RelativePath=".\ExplosiveRocket.cpp">
+									</File>
+									<File
+										RelativePath=".\ExplosiveRocket.h">
+									</File>
+									<File
 										RelativePath=".\RocketLauncher.cpp">
 									</File>
 									<File
@@ -4266,12 +4272,6 @@
 									</File>
 									<File
 										RelativePath="WeaponRPG7.h">
-									</File>
-									<File
-										RelativePath=".\WeaponRPG7Grenade.cpp">
-									</File>
-									<File
-										RelativePath=".\WeaponRPG7Grenade.h">
 									</File>
 								</Filter>
 								<Filter

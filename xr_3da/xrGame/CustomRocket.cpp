@@ -201,6 +201,7 @@ void CCustomRocket::OnH_A_Independent()
 {
 	inherited::OnH_A_Independent();
 
+	setVisible(true);
 	StartFlying();
 	StartEngine();
 }
@@ -266,7 +267,17 @@ void CCustomRocket::UpdateEngine				()
 	}
 
 	m_dwEngineTime -= Device.dwTimeDelta;
-	//float force = m_fEngineImpulse * Device.fTimeDelta;
+	float force = m_fEngineImpulse * Device.fTimeDelta *100.f;
+
+	Fvector l_pos, l_dir;; 
+	l_pos.set(0, 0, 5.f);
+	l_dir.set(XFORM().k);
+	l_dir.normalize();
+	
+	m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, force);
+	l_dir.set(0, 1.f, 0);
+	force = m_fEngineImpulse * Device.fTimeDelta;
+	m_pPhysicsShell->applyImpulse(l_dir, force);
 }
 
 

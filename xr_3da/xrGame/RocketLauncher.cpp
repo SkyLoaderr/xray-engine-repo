@@ -17,6 +17,14 @@ CRocketLauncher::CRocketLauncher()
 CRocketLauncher::~CRocketLauncher()
 {
 }
+void  CRocketLauncher::Load	(LPCSTR section)
+{
+	if(pSettings->line_exist(section, "launch_speed"))
+		m_fLaunchSpeed = pSettings->r_float(section, "launch_speed");
+	else
+		m_fLaunchSpeed = 0.f;
+}
+
 void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_rocket_launcher)
 {
 	VERIFY(m_pRocket == NULL);
@@ -55,6 +63,17 @@ void CRocketLauncher::AttachRocket(u16 rocket_id, CGameObject* parent_rocket_lau
 	VERIFY(m_pRocket->m_pOwner);
 	m_pRocket->H_SetParent(parent_rocket_launcher);
 }
+
+void CRocketLauncher::DetachRocket(u16 rocket_id)
+{
+	CCustomRocket *pRocket = dynamic_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
+	VERIFY(pRocket);
+	VERIFY(m_pRocket == pRocket);
+	m_pRocket->H_SetParent(NULL);
+	m_pRocket = NULL;
+}
+
+
 
 
 void CRocketLauncher::LaunchRocket(const Fmatrix& xform,  
