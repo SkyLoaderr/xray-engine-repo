@@ -156,12 +156,27 @@ void CHOM::Render		(CFrustum& base)
 }
 void CHOM::Debug		()
 {
+	// Texture
+	D3DLOCKED_RECT		R;
+	R_CHK				(m_pDBG->LockRect(0,&R,0,0));
+	for (int y=0; y<occ_dim_0; y++)
+	{
+		for (int x=0; x<occ_dim_0; x++)
+		{
+			int*	pD	= Raster.get_depth_level(0);
+			int		D	= pD[y*occ_dim_0+x];
+			int		V	= iFloor(Raster.d2float(D)*255.f);
+			clamp	(V,0,255);
+			DWORD	C	= D3DCOLOR_XRGB(V,V,V);
+			LPDWORD(R.pBits)[y*occ_dim_0+x]	= C;
+		}
+	}
+	m_pDBG->UnlockRect	(0);
+	
 	// UV
-	Fvector2		shift,p0,p1;
+	Fvector2		p0,p1;
 	p0.set			(.5f/occ_dim_0, .5f/occ_dim_0);
 	p1.set			((occ_dim_0+.5f)/occ_dim_0, (occ_dim_0+.5f)/occ_dim_0);
-	p0.add			(shift);
-	p1.add			(shift);
 	
 	// Fill vertex buffer
 	DWORD Offset, C=0xffffffff;
@@ -174,7 +189,7 @@ void CHOM::Debug		()
 	pStream->Unlock			(4);
 	
 	// Actual rendering
-	Device.Shader.set_Shader(pShaderGray);
+	Device.Shader.set_Shader(pShader);
 	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }
 

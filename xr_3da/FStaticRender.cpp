@@ -423,6 +423,7 @@ void	CRender::Render		()
 	
 	// Postprocess
 	Target.End				();
+	HOM.Debug				();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
