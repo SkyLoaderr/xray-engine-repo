@@ -185,17 +185,17 @@ function Trader:set_idle ()
     if variant == 1 then 
        self.current.start_anim = "idle"
        self.current.process_anim = "idle"
-       self.current.repeats = math.random (1, 5)
+       self.current.repeats = math.random (3, 5)
        self.current.end_anim = "idle"
     elseif variant == 2 then
        self.current.start_anim = "idle_spinka"
        self.current.process_anim = "spinka"
-       self.current.repeats = math.random (1, 8)
+       self.current.repeats = math.random (3, 8)
        self.current.end_anim = "spinka_idle"
     elseif variant == 3 then
        self.current.start_anim = "idle_chitaet"
        self.current.process_anim = "chitaet"
-       self.current.repeats = math.random (1, 8)
+       self.current.repeats = math.random (3, 8)
        self.current.end_anim = "chitaet_idle"
     end   
     self.current.use_start_end = true
