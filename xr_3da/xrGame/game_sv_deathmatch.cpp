@@ -25,7 +25,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		ps->kills				=	0;
 		ps->deaths				=	0;
 
-		SpawnActor(get_it_2_id(it), "actor");
+		SpawnActor(get_it_2_id(it), "spectator");
 	}
 }
 
