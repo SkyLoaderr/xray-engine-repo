@@ -413,15 +413,16 @@ void CAI_Stalker::UpdateCL(){
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type){
 
-if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
+	if (m_pPhysics_support->isAlive())
+		inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 }
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
 	// Queue shrink
 	VERIFY				(_valid(Position()));
-	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
+	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
@@ -430,22 +431,21 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (dt > 3)
 		return;
 
-	XFORM()				= m_tServerTransform;
-	VERIFY				(_valid(Position()));
-	if (!Remote()) {
-		if ((fEntityHealth>0) || bfExecMovement())
-			// функция должна выполняться до inherited::shedule_Update, для smooth movement
-			//Msg				("TIME DELTA : %d",DT);
-			Exec_Movement	(dt);  
-	}
-	m_tServerTransform	= XFORM();
+//	XFORM()				= m_tServerTransform;
+//	VERIFY				(_valid(Position()));
+//	if (!Remote()) {
+//		if ((fEntityHealth>0) || bfExecMovement())
+//			// функция должна выполняться до inherited::shedule_Update, для smooth movement
+//			//Msg				("TIME DELTA : %d",DT);
+//			Exec_Movement	(dt);  
+//	}
+//	m_tServerTransform	= XFORM();
 ///ниже по коду вызывается Engine.Sheduler.Slice			(),который может перехренячить позицию полученную 
 // в Exec_Movement	(dt) взяв ее из сетевого пакета пакета который отправляется после (	uNext.p_pos			= Position();) 
 // если такое однажды получается Engine.Sheduler.Slice			() может все время устанавливать неправильную позицию
 // поетому сохраним позицию
-//	Fvector				vNewPosition = Position();
-
-	VERIFY				(_valid(Position()));
+	Fvector				vNewPosition = Position();
+//	VERIFY				(_valid(Position()));
 	// *** general stuff
 	inherited::inherited::shedule_Update	(DT);
 	
@@ -493,7 +493,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.dwTimeStamp		= Level().timeServer();
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_current;
-			uNext.p_pos				= m_tServerTransform.c;
+			uNext.p_pos				= vNewPosition;
 			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
 		}
@@ -503,7 +503,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.dwTimeStamp	= Level().timeServer();
 			uNext.o_model		= r_torso_current.yaw;
 			uNext.o_torso		= r_current;
-			uNext.p_pos			= m_tServerTransform.c;
+			uNext.p_pos			= vNewPosition;
 			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
 		}
