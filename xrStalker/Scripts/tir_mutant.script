@@ -1,7 +1,26 @@
 function main ()
 
-    local monsters = {get_level_object ("boar00")}
-    local ways = {patrol ("way_boar00")}
+    local monsters = {
+                      get_level_object ("boar00"), 
+                      get_level_object ("flesh00"),
+                      get_level_object ("dog00"),
+                      get_level_object ("boar01"), 
+                      get_level_object ("flesh01"),
+                      get_level_object ("flesh02"),
+                      get_level_object ("dog01"),
+                      get_level_object ("dog02"),
+                      get_level_object ("boar02") 
+                     } 
+    local ways = {
+                  patrol ("way_boar00"),
+                  patrol ("way_flesh00"),
+                  patrol ("way_dog00"),
+                  patrol ("way_boar01"),
+                  nil,
+                  nil,                  
+                  patrol ("way_dogs"),
+                  nil,
+                 }
     
     for a = 1, table.getn (monsters), 1 do
         monsters[a]:script (true, tir_mutant.script_name ())
