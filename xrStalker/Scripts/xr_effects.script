@@ -335,7 +335,12 @@ function bar_ecolog_spam(actor, npc)
 	news_manager.send_tip(actor, "bar_ecolog_spam_"..t, nil, "ecolog")
 end
 function bar_freedom_angry_actor(actor,npc)
-	npc:set_relation(game_object.enemy, actor)
+	if actor:has_info("bar_resque_research_gain") and
+	   (actor:dont_has_info("bar_get_research_start") or
+	   actor:has_info("bar_get_research_fail"))
+	then
+		npc:set_relation(game_object.enemy, actor)
+	end
 end
 
 
