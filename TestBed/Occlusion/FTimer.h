@@ -2,7 +2,7 @@
 #define _FTIMER_H_
 #pragma once
 
-class ENGINE_API CTimer {
+class CTimer {
 private:
 	u64		qwStartTime;
 	float	fResult;
