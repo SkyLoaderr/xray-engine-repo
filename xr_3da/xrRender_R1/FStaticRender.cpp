@@ -337,28 +337,27 @@ void CRender::Calculate()
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 			{
 				CFrustum&	view	= sector->r_frustums[v_it];
-				if (view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))
-				{
-					// renderable
-					IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-					VERIFY							(renderable);
+				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
 
-					// Occlusion
-					vis_data&		v_orig			= renderable->renderable.visual->vis;
-					vis_data		v_copy			= v_orig;
-					v_copy.box.xform				(renderable->renderable.xform);
-					BOOL			bVisible		= HOM.visible(v_copy);
-					v_orig.frame					= v_copy.frame;
-					v_orig.hom_frame				= v_copy.hom_frame;
-					v_orig.hom_tested				= v_copy.hom_tested;
-					if (!bVisible)					continue;
+				// renderable
+				IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+				VERIFY							(renderable);
 
-					// Rendering
-					set_Object						(renderable);
-					renderable->renderable_Render	();
-					set_Object						(0);
+				// Occlusion
+				vis_data&		v_orig			= renderable->renderable.visual->vis;
+				vis_data		v_copy			= v_orig;
+				v_copy.box.xform				(renderable->renderable.xform);
+				BOOL			bVisible		= HOM.visible(v_copy);
+				v_orig.frame					= v_copy.frame;
+				v_orig.hom_frame				= v_copy.hom_frame;
+				v_orig.hom_tested				= v_copy.hom_tested;
+				if (!bVisible)					continue;
+
+				// Rendering
+				set_Object						(renderable);
+				renderable->renderable_Render	();
+				set_Object						(0);
 #pragma todo("Oles to Oles: verify if it is needed at all")
-				}
 			}
 		}
 		g_pGameLevel->pHUD->Render_Last						();	
