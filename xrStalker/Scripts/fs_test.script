@@ -6,6 +6,6 @@ function main()
 	
 	for it=0,sz-1 do
 	local fl = fs_list:GetAt(it)
-		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
 	end
 end
