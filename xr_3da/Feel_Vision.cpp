@@ -50,6 +50,14 @@ namespace Feel {
 			}
 	}
 
+	void	Vision::feel_vision_clear	()
+	{
+		seen.clear			();
+		query.clear			();
+		diff.clear			();
+		feel_visible.clear	();
+	}
+
 	void	Vision::feel_vision_get		(xr_vector<CObject*>& R)
 	{
 		R.clear		();
