@@ -167,7 +167,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 		LPCSTR						target		= NULL;
 
 		/*if (HW.Caps.geometry.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
-		else*/ if (HW.Caps.geometry.dwVersion_major>=2)				target="vs_2_0";
+		else*/ if (HW.Caps.geometry_major>=2)						target="vs_2_0";
 		else 														target="vs_1_1";
 
 		// vertex
