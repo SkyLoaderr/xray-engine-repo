@@ -456,6 +456,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 	if (g_Alive()<=0) return;
 	Fvector position_in_bone_space;
 	position_in_bone_space.set(0.f,0.f,0.f);
+
 	if(g_pGameLevel->CurrentEntity() == this) {
 		Fvector l_d; l_d.set(dir); l_d.normalize();
 		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
@@ -497,11 +498,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	if (g_Alive()<=0) return;
 
-	if(g_pGameLevel->CurrentEntity() == this) {
-		Fvector l_d; l_d.set(dir); l_d.normalize();
-		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
-		Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
-	}
+//	if(g_pGameLevel->CurrentEntity() == this) {
+//		Fvector l_d; l_d.set(dir); l_d.normalize();
+//		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .003f*iLost));
+//		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .8f, .003f*iLost));
+//	}
 
 	switch (GameID())
 	{
