@@ -21,7 +21,7 @@ function main ()
     action				(
 		stalker,
 		anim			("walk_fwd_crawl"),
-		cond			(cond.anim_end)
+		cond			(cond.time_end,5000)
     )
     
     action				(
