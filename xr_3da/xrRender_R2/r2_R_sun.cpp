@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\igame_persistent.h"
 #include "..\irenderable.h"
 
 const	float	tweak_COP_initial_offs			= 100000.f	;
@@ -399,6 +400,13 @@ void CRender::render_sun				()
 		{ 3, 2, 4, 5 },		{ 1, 0, 7, 6 },
 	};
 
+	Fmatrix	ex_project, ex_full, ex_full_inverse;
+	{
+		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,tweak_guaranteed_range,g_pGamePersistent->Environment.CurrentEnv.far_plane); 
+		ex_full.mul					(ex_project,Device.mView);
+		D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&ex_full);
+	}
+
 	// Compute volume(s) - something like a frustum for infinite directional light
 	// Also compute virtual light position and sector it is inside
 	CFrustum					cull_frustum	;
@@ -409,10 +417,7 @@ void CRender::render_sun				()
 	{
 		FPU::m64r					();
 		// Lets begin from base frustum
-		Fmatrix		fullxform_inv,	viewxform_inv;
-		D3DXMatrixInverse			((D3DXMATRIX*)&fullxform_inv,0,(D3DXMATRIX*)&Device.mFullTransform	);
-		D3DXMatrixInverse			((D3DXMATRIX*)&viewxform_inv,0,(D3DXMATRIX*)&Device.mView			);
-
+		Fmatrix		fullxform_inv	= ex_full_inverse;
 		DumbConvexVolume			hull;
 		{
 			hull.points.reserve		(8);

@@ -200,7 +200,7 @@ void CRender::Render		()
 	if (ps_r2_ls_flags.test(R2FLAG_SUN))	{
 		Lights_LastFrame.push_back			(Lights.sun_adapted);
 		render_sun_near						();
-		//render_sun							();
+		render_sun							();
 	}
 
 	// Lighting, non dependant on OCCQ
