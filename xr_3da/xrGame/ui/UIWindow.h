@@ -45,7 +45,7 @@ public:
 	int						GetChildNum			()								{return m_ChildWndList.size();} 
 
 	void					SetParent			(CUIWindow* pNewParent);
-	CUIWindow*				GetParent			()	const							{return m_pParentWnd;}
+IC	CUIWindow*				GetParent			()	const							{return m_pParentWnd;}
 	
 	//получить окно самого верхнего уровня
 	CUIWindow*				GetTop				()								{if(m_pParentWnd == NULL) return  this; 
