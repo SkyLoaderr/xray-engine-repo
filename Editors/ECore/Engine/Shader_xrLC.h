@@ -54,6 +54,16 @@ public:
 	void					Load	(LPCSTR name)
 	{
 		IReader* fs			= FS.r_open(name);
+		if(NULL==fs){
+			string256 inf;
+			extern  HWND logWindow;
+			sprintf				(inf,"Build failed!\nCan't load shaders library: '%s'",name);
+			clMsg				(inf);
+//			MessageBox			(logWindow,inf,"Error!",MB_OK|MB_ICONERROR);
+			Debug.fatal			(inf);
+			return;
+		};
+
 		int count			= fs->length()/sizeof(Shader_xrLC);
 		R_ASSERT			(int(fs->length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
