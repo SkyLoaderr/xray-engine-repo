@@ -118,7 +118,7 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CActor::CActor() : CEntity()
+CActor::CActor() : CEntityAlive()
 {
 	// Cameras
 	cameras[eacFirstEye]	= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);

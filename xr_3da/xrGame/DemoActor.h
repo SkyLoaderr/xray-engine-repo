@@ -11,6 +11,9 @@ class CObjectAnimator;
 
 class CDemoActor:		public CEntity
 {
+private:
+	typedef CEntity		inherited;
+private:
 	CObjectAnimator*	animator;
 	Fvector				start_position;
 
@@ -21,8 +24,6 @@ class CDemoActor:		public CEntity
 	void				UpdateCamera	( );
 
 	float				time2start,time2start_ltx;
-private:
-	typedef CEntity		inherited;
 public:
 						CDemoActor		();
 	virtual				~CDemoActor		();

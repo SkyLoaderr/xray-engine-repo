@@ -18,10 +18,10 @@ class ENGINE_API CKinematics;
 class ENGINE_API CBoneInstance;
 class CWeaponList;
 
-class CCustomMonster : public CEntity, public pureRender, public soundListener
+class CCustomMonster : public CEntityAlive, public pureRender, public soundListener
 {
 private:
-	typedef	CEntity		inherited;
+	typedef	CEntityAlive	inherited;
 protected:
 	// weapons
 	CWeaponList*		Weapons;

@@ -20,8 +20,11 @@ class CEffectorBobbing;
 
 #define DEFAULT_FOV 90.f
 
-class CActor: public CEntity, public pureRender
+class CActor: public CEntityAlive, public pureRender
 {
+private:
+	typedef CEntity		inherited;
+protected:
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4
@@ -98,7 +101,6 @@ protected:
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
 private:
-	typedef CEntity		inherited;
 	BOOL				bAlive;
 
 	// Motions
