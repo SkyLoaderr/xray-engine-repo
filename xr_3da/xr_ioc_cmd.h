@@ -67,7 +67,7 @@ public:
 		else InvalidSyntax();
 	}
 	virtual void	Status	(TStatus& S)
-	{	strcpy(S,value->test(mask)?"on (1)":"off (0)"); }
+	{	strcpy(S,value->test(mask)?"on":"off"); }
 	virtual void	Info	(TInfo& I)
 	{	strcpy(I,"'on/off' or '1/0'"); }
 };
