@@ -1,0 +1,67 @@
+;-----------------------------------------------------------------------------------
+; Trader
+;-----------------------------------------------------------------------------------
+[m_trader]
+GroupControlSection	= spawn_group
+$spawn						= "monsters\trader"		; option for Level Editor
+$prefetch 					= 5
+cform						= skeleton
+class						= AI_TRADE
+visual						= actors\trader\trader
+rank						= 1
+; format : section{,section},count,min_factor,max_factor, ...
+;supplies					= m_bread,50,0.5,1.5, CANNED,30,0.5,1.5, MEDI_KIT,7,0,0.7, DETECTOR_SIMPLE,3,0,0.6, WPN_BINOC,1,0,0.70, WPN_FORT,WPN_PM,3,0.3,0.8, WPN_LR300,WPN_AK47,2,0.3,0.65, WPN_SVD,1,0,0.53, WPN_RPG7,1,0,0.53, grenade_f1,15,0,1.0, ammo_5.45x39_ap,ammo_5.45x39_fmj,50,0,1.0, ammo_5.56x45_ap,ammo_5.56х45_ss190,50,0,1.0, ammo_9x19_fmj,50,0,1.0, ammo_7.62х54_fmj,10,0,1.0, ammo_og-7b,10,0,1.0 
+supplies					= grenade_f1,15,0,1.0, ammo_5.45x39_ap,ammo_5.45x39_fmj,50,0,1.0, ammo_5.56x45_ap,ammo_5.56х45_ss190,50,0,1.0, ammo_9x19_fmj,50,0,1.0, ammo_7.62x54_ap,10,0,1.0, ammo_og-7b,10,0,1.0 
+max_item_mass				= 10000.0
+
+scheduled		     = on						; option for ALife Simulator
+Human		     	 = off						; option for ALife Simulator
+Health			     = 40						; option for ALife Simulator
+MinSpeed		     = 1.0						; option for ALife Simulator
+MaxSpeed		     = 1.5						; option for ALife Simulator
+going_speed          = 1.0                      ; option for ALife Simulator
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_crash_speed_min   = 8;16
+ph_crash_speed_max   = 16;30
+ph_mass 		     = 170.
+cost			     = 1
+
+
+Health				 = 100.0
+money				 = 1000000
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+min_wound_size				= 0.0			;
+wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
+morale_v			= 0.01					;скорость восстановления морали
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0				;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
+; attach params
+attachable_items		= 
+
