@@ -336,7 +336,7 @@ function CGarbageRunMonster:update()
 	end
 		
 	if(self.object:alive() == false) then
-		self.end_work	= true
+		self:finalize()
 		return
 	end
 	
@@ -348,7 +348,9 @@ function CGarbageRunMonster:update()
 	if(self.started) then
 		// Уже начали бежать
 		if(self.object:position():distance_to(self.way:point(self.way:count() - 1)) < 1) then
-			self.end_work	= true
+			// Если добежали, то все, отпускаем монстра
+			self:finalize()
+			return
 		end
 		self:actions()
 	else
@@ -406,7 +408,7 @@ function CGarbageRunMonster:actions()
 end 
 
 function CGarbageRunMonster:completed()
-	return self.end_work
+	return (self.end_work == true)
 end 
 
 function CGarbageRunMonster:finalize()
