@@ -126,7 +126,8 @@ function r_CTime( p )
 
 	if Y ~= 0 then
 		local t = game.CTime()
-		t:set( Y + 2000, p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16() )
+		local M, D, h, m, s, ms = p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16()
+		t:set( Y + 2000,  M, D, h, m, s, ms)
 		return t
 	else
 		return CTime_0
