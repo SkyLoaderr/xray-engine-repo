@@ -46,6 +46,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvPropertiesHeaderColumnResize(TObject *Sender,
           int SectionIndex);
 	void __fastcall FormDeactivate(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);

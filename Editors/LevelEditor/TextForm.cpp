@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "TextForm.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -28,6 +29,8 @@ void __fastcall TfrmText::FormKeyDown(TObject *Sender,
 void __fastcall TfrmText::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

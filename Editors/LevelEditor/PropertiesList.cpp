@@ -20,6 +20,7 @@
 #include "NumericVector.h"
 #include "TextForm.h"
 #include "xr_trims.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -1166,4 +1167,11 @@ void __fastcall TProperties::FormDeactivate(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+
+void __fastcall TProperties::FormShow(TObject *Sender)
+{
+	// check window position
+	UI.CheckWindowPos(this);
+}
+//---------------------------------------------------------------------------
 
