@@ -91,7 +91,7 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 }
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);		VERIFY(SE);
+	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);		R_ASSERT3(SE,"Particle effect doesn't exist",name);
 	return				Models->CreatePE	(SE);
 }
 
@@ -100,7 +100,7 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);
 	if (SE) return		Models->CreatePE	(SE);
 	else{
-		PS::CPGDef*	SG	= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
+		PS::CPGDef*	SG	= PSLibrary.FindPGD	(name);		R_ASSERT3(SG,"Particle effect or group doesn't exist",name);
 		return			Models->CreatePG	(SG);
 	}
 }
