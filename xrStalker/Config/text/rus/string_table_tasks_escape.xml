@@ -93,11 +93,11 @@
     <string id="agroprom_get_military_documents_2">
         <text>Отнесите документы бармену в баре сталкеров.</text>
     </string>
-    <string id="agroprom_meet_gunslinger_band">
-        <text>Встретиться с группой Крота.</text>
+    <string id="agr_meet_krot_band">
+        <text>Добыть информацию о пути к центру Зоны.</text>
     </string>
-    <string id="agroprom_meet_gunslinger_band_0">
-        <text>Вам стало известно, что группа Крота собирается на заброшенной фабрике около НИИ Агропром. Они знают что-то о центре Зоны.</text>
+    <string id="agr_meet_krot_band_0">
+        <text>Найти группу Крота и получить от них информацию о пути к центру Зоны.</text>
     </string>
     <string id="agroprom_find_gunslinger_hide">
         <text>Найти тайник группировки Стрелка.</text>

@@ -329,16 +329,3 @@ end
 function transfer_vodka (stalker, player)
    player:transfer_item (player:object ("vodka"), stalker) 
 end
-
-------------------------------------------------------------------------------------
--- Agroprom Krot
-------------------------------------------------------------------------------------
-function sell_krot_flash(first_speaker, second_speaker)
-	first_speaker:transfer_item(first_speaker:object("krot_flash"), second_speaker)
-    second_speaker:transfer_money(2000, first_speaker)
-end
-
-function sell_krot_flash_to_friend(first_speaker, second_speaker)
-	first_speaker:transfer_item(first_speaker:object("krot_flash"), second_speaker)
-    second_speaker:transfer_money(1000, first_speaker)
-end
