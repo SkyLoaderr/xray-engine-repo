@@ -8,8 +8,8 @@
 // and may not be copied or disclosed except in accordance with the terms of
 // that agreement.
 
-#ifndef WMLCONTMINBOX3_H
-#define WMLCONTMINBOX3_H
+#ifndef WMLCONTMINBOX3H
+#define WMLCONTMINBOX3H
 
 // Compute minimum volume oriented box containing the specified points.
 
