@@ -19,6 +19,7 @@ extern LPCSTR caInPlaceNames		[];
 extern LPCSTR caGlobalNames			[];
 extern float  faTurnAngles			[];
 
+
 class CStateAnimations {
 public:
 	typedef CAniCollection<CAniVector,	caMovementActionNames>	CMovementActions;

@@ -8,19 +8,15 @@
 
 #pragma once
 
-#define MAX_STATE_LIST_SIZE				256
 #define MAX_DYNAMIC_OBJECTS 			32
 #define MAX_DYNAMIC_SOUNDS  			32
 #define MAX_HURT_COUNT					32
 #define MAX_SEARCH_COUNT				32
 
-#define MAX_STATE_LIST_SIZE				256
 #define MAX_TIME_RANGE_SEARCH			5000.f
 #define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 
 #define	STALKER_SND_STEP_COUNT			2
-#define	STALKER_SND_HIT_COUNT			4
-#define	STALKER_SND_DIE_COUNT			4
 
 #define SOUND_UPDATE_DELAY				3000
 

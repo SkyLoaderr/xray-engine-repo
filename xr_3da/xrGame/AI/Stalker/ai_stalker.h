@@ -23,24 +23,10 @@ class CAI_Stalker : public CCustomMonster, public CStalkerAnimations, public CIn
 private:
 	typedef CCustomMonster inherited;
 	
-	enum EStalkerStates {
-		//eStalkerStateAccomplishingTask = 0,
-	};
-
-	typedef struct tagSStalkerStates {
-		EStalkerStates		eState;
-		u32					dwTime;
-	} SStalkerStates;
-
 	typedef struct tagSHurt {
 		CEntity *tpEntity;
 		u32	dwTime;
 	} SHurt;
-
-	typedef struct tagSSearch {
-		u32	dwTime;
-		u32	dwNodeID;
-	} SSearch;
 
 	// path structures
 	EPathState				m_tPathState;	
@@ -89,7 +75,6 @@ private:
 	svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>		m_tpaDynamicObjects;
 	svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>			m_tpaDynamicSounds;
 	svector<SHurt,			MAX_HURT_COUNT>				m_tpaHurts;
-	svector<SSearch,		MAX_SEARCH_COUNT>			m_tpaSearchPositions;
 	objSET					m_tpaVisibleObjects;
 	u32						m_dwMaxDynamicObjectsCount;
 	u32						m_dwMaxDynamicSoundsCount;
@@ -140,6 +125,10 @@ private:
 	u32						m_dwLostEnemyTime;
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
+	Fvector					m_tMySavedPosition;
+	u32						m_dwMyNodeID;
+	
+	// items to take
 	xr_vector<CInventoryItem*>	m_tpItemsToTake;
 	u32						m_dwItemToTakeIndex;
 	
@@ -185,8 +174,6 @@ private:
 	u32						m_dwCurrentUpdate;
 	u32						m_dwUpdateCount;
 	bool					m_bStopThinking;
-	EStalkerStates			m_eCurrentState;
-	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight>	m_tSelectorReload;
@@ -196,8 +183,6 @@ private:
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode>				m_tSelectorNode;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
-	Fvector					m_tMySavedPosition;
-	u32						m_dwMyNodeID;
 	
 	// visibility constants
 	u32						m_dwMovementIdleTime;
@@ -229,19 +214,19 @@ private:
 
 			// state machine
 
-	IC		void			vfAddStateToList(EStalkerStates eState)
-	{
-		if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
-			m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
-			return;
-		}
-		if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
-			m_tStateList.erase(u32(0));
-		SStalkerStates tStalkerStates;
-		tStalkerStates.dwTime = m_dwCurrentUpdate;
-		tStalkerStates.eState = eState;
-		m_tStateList.push_back(tStalkerStates);
-	}
+//	IC		void			vfAddStateToList(EStalkerStates eState)
+//	{
+//		if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
+//			m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
+//			return;
+//		}
+//		if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
+//			m_tStateList.erase(u32(0));
+//		SStalkerStates tStalkerStates;
+//		tStalkerStates.dwTime = m_dwCurrentUpdate;
+//		tStalkerStates.eState = eState;
+//		m_tStateList.push_back(tStalkerStates);
+//	}
 			void			BackStraight					();
 			void			BackCover						(bool bFire = true);
 			void			ForwardCover					();
@@ -381,17 +366,6 @@ private:
 		m_tMySavedPosition		= vPosition;
 		m_dwMyNodeID			= AI_NodeID;
 		vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
-	}
-
-	IC		void		vfAddToSearchList()
-	{
-		if (m_tpaSearchPositions.size() >= MAX_SEARCH_COUNT)
-			m_tpaSearchPositions.erase(u32(0));
-
-		SSearch							tSearch;
-		tSearch.dwTime					= m_dwCurrentUpdate;
-		tSearch.dwNodeID				= AI_Path.DestNode;
-		m_tpaSearchPositions.push_back	(tSearch);
 	}
 
 	IC	ERelationType	bfGetRelation(CEntityAlive *tpEntityAlive)

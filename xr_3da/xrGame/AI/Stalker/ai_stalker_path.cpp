@@ -63,8 +63,12 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 
 		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
 		
+		Device.Statistic.AI_Range.End();
+		
 		tNodeEvaluator.vfShallowGraphSearch(getAI().q_mark_bit);
 		
+		Device.Statistic.AI_Range.Begin();
+
 //		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
 //		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.Enemy->Position().distance_to(vPosition),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
 //		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
@@ -75,7 +79,6 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 			}
 			AI_Path.Nodes.clear		();
 			m_tPathState			= ePathStateBuildNodePath;
-			vfAddToSearchList		();
 			m_bIfSearchFailed		= false;
 		} 
 		else
@@ -656,7 +659,7 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 			AI_Path.TravelPath.clear();
 			if (!iCount && (m_dwCurrentUpdate - m_dwLostEnemyTime > TIME_TO_SEARCH)) {
 				m_tSavedEnemy = 0;
-				GO_TO_PREV_STATE;
+				//GO_TO_PREV_STATE;
 			}
 			else {
 				m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;

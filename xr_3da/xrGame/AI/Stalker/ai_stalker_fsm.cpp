@@ -1072,7 +1072,6 @@ void CAI_Stalker::Think()
 		AI_Path.TravelPath.clear();
 
 	m_dwUpdateCount++;
-	m_ePreviousState		= m_eCurrentState;
 
 #ifndef SILENCE
 	if (g_Alive())
@@ -1238,7 +1237,6 @@ void CAI_Stalker::Think()
 		AccomplishTask();
 	}
 
-	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
 	if (m_bSearchedForEnemy)
 		m_dwLastEnemySearch		= m_dwCurrentUpdate;
 	else {
