@@ -10,18 +10,6 @@ function load_scheme(filename, scheme)
 end
 
 ----------------------------------------------------------------------
--- Загрузка схем:
-----------------------------------------------------------------------
-
-load_scheme("xr_walker", "walker")
-load_scheme("xr_sleeper", "sleeper")
-load_scheme("xr_kamp", "kamp")
-load_scheme("xr_camper", "camper")
-load_scheme("xr_comm_ptr", "patrol")
-load_scheme("xr_follower", "follower")
-load_scheme("xr_test", "test")
-
-----------------------------------------------------------------------
 -- Загрузка остальных модулей:
 ----------------------------------------------------------------------
 
@@ -106,6 +94,20 @@ module ("xr_sniper")
 module ("xr_heli")
 module ("small_script")
 module ("monster")
+
+
+----------------------------------------------------------------------
+-- Загрузка схем:
+----------------------------------------------------------------------
+
+load_scheme("xr_walker", "walker")
+load_scheme("xr_sleeper", "sleeper")
+load_scheme("xr_kamp", "kamp")
+load_scheme("xr_camper", "camper")
+load_scheme("xr_comm_ptr", "patrol")
+load_scheme("xr_follower", "follower")
+load_scheme("xr_test", "test")
+
 
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
