@@ -39,11 +39,40 @@
 		<team>Soldier_master</team>
 	</character>
 
-
-
+	<!-- Dolg  -->
 	<character id="dolg">
 		<team>Dolg</team>
 	</character>
+	<character id="dolg_novice">
+		<team>Dolg_novice</team>
+	</character>
+	<character id="dolg_general">
+		<team>Dolg_general</team>
+	</character>
+	<character id="dolg_veteran">
+		<team>Dolg_veteran</team>
+	</character>
+	<character id="dolg_master">
+		<team>Dolg_master</team>
+	</character>
+
+	<!-- Svoboda -->
+	<character id="Svoboda">
+		<team>Svoboda</team>
+	</character>
+	<character id="Svoboda_novice">
+		<team>Svoboda_novice</team>
+	</character>
+	<character id="Svoboda_general">
+		<team>Svoboda_general</team>
+	</character>
+	<character id="Svoboda_veteran">
+		<team>Svoboda_veteran</team>
+	</character>
+	<character id="Svoboda_master">
+		<team>Svoboda_master</team>
+	</character>
+
 	
 	<character id="escape_trader">
 		<team>Trader</team>
