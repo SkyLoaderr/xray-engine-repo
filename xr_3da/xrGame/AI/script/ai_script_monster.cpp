@@ -26,15 +26,28 @@ CScriptMonster::~CScriptMonster()
 {
 }
 
-void CScriptMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptName)
+void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
 {
+	VERIFY				(
+		(
+			(m_bScriptControl && !bScriptControl) || 
+			(!m_bScriptControl && bScriptControl)
+		) &&
+			(
+				bScriptControl || 
+				(
+					xr_strlen(*m_caScriptName) && 
+					!strcmp(*caSciptName,*m_caScriptName)
+				)
+			)
+		);
 	m_bScriptControl	= bScriptControl;
 	m_caScriptName		= caSciptName;
 #ifdef DEBUG
 	if (bScriptControl)
-		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",caSciptName,cName());
+		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",*caSciptName,cName());
 	else
-		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s freed object %s from its control",caSciptName,cName());
+		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s freed object %s from its control",*caSciptName,cName());
 #endif
 	if (!bScriptControl)
 		ResetScriptData(this);
@@ -47,7 +60,7 @@ bool CScriptMonster::GetScriptControl() const
 
 LPCSTR CScriptMonster::GetScriptControlName() const
 {
-	return				*(m_caScriptName);
+	return				(*m_caScriptName);
 }
 
 bool CScriptMonster::CheckObjectVisibility(const CObject *tpObject)
@@ -325,8 +338,6 @@ void CScriptMonster::InitScript()
 		xr_delete	(m_tpActionQueue.front());
 		m_tpActionQueue.erase(m_tpActionQueue.begin());
 	}
-	// movement
-	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
 	// animation
 	m_tpScriptAnimation		= 0;
 	// callbacks

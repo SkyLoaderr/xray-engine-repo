@@ -18,8 +18,6 @@ protected:
 	xr_deque<CEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
 	ref_str						m_caScriptName;
-	int							m_iCurrentPatrolPoint;
-	int							m_iPreviousPatrolPoint;
 	CMotionDef					*m_tpScriptAnimation;
 public:
 								CScriptMonster			();
@@ -30,7 +28,7 @@ public:
 			void				vfUpdateParticles		();
 			void				vfUpdateSounds			();
 			void				vfFinishAction			(CEntityAction		*tpEntityAction);
-	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR	caSciptName);
+	virtual	void				SetScriptControl		(const bool			bScriptControl, ref_str	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
 	
