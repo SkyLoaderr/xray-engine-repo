@@ -136,6 +136,7 @@ void CRenderTarget::End		()
 	pStream->Unlock			(8);
 
 	// Actual rendering
+	/*
 	if (param_gray>0.001f) {
 		// Draw GRAY
 		Device.Shader.set_Shader(pShaderGray);
@@ -146,8 +147,9 @@ void CRenderTarget::End		()
 			Device.Primitive.Draw	(pStream,4,2,Offset+4,Device.Streams_QuadIB);
 		}
 	} else {
+	*/
 		// Draw COLOR
 		Device.Shader.set_Shader(pShaderSet);
 		Device.Primitive.Draw	(pStream,4,2,Offset+4,Device.Streams_QuadIB);
-	}
+//	}
 }
