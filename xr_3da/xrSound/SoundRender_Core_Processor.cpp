@@ -68,6 +68,22 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		s_targets_defer[it]->render	();
 }
 
+u32		CSoundRender_Core::stat_render	()
+{
+	u32 counter		= 0;
+	for (it=0; it<s_targets.size(); it++)
+	{
+		CSoundRender_Target*	T	= s_targets	[it];
+		if (T->get_emitter() && T->get_Rendering())	counter++;
+	}
+	return counter;
+}
+
+u32		CSoundRender_Core::stat_simulate()
+{
+	return s_emitters.size();
+}
+
 BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 {
 	if (0==geom_MODEL)		return FALSE;

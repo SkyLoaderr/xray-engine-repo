@@ -65,6 +65,8 @@ public:
 	virtual void						set_handler				( sound_event* E );
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
+	virtual u32							stat_render				( );
+	virtual u32							stat_simulate			( );
 
 #ifdef _EDITOR
 	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }

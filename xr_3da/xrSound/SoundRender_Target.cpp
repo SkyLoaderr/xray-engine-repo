@@ -60,7 +60,8 @@ void	CSoundRender_Target::_initialize		()
 	dsBD.dwReserved			= 0;
 	dsBD.lpwfxFormat		= &wfx;
 
-	switch (psSoundModel) {
+	switch (psSoundModel) 
+	{
 	case sq_DEFAULT:	dsBD.guid3DAlgorithm = DS3DALG_DEFAULT; 			break;
 	case sq_NOVIRT:		dsBD.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION; 	break;
 	case sq_LIGHT:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_LIGHT;			break;

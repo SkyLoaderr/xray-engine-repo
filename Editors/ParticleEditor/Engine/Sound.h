@@ -203,6 +203,8 @@ public:
 	//@}
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
+	virtual u32						stat_render				( )																						= 0;
+	virtual u32						stat_simulate			( )																						= 0;
 
 #ifdef __BORLANDC__
 	virtual SoundEnvironment_LIB*	get_env_library			()																						= 0;
