@@ -103,7 +103,7 @@ public:
 	// evaluator interface
 	IC		void						add_evaluator			(const _condition_type &condition_id, CConditionEvaluator *evaluator);
 	IC		void						remove_evaluator		(const _condition_type &condition_id);
-	IC		const CConditionEvaluator	*evaluator				(const _condition_type &condition_id) const;
+	IC		CConditionEvaluator			*evaluator				(const _condition_type &condition_id) const;
 	IC		const EVALUATOR_MAP			&evaluators				() const;
 	IC		void						evaluate_condition		(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const;
 

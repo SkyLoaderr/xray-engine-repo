@@ -166,7 +166,7 @@ IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condi
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CProblemSolverAbstract::CConditionEvaluator *CProblemSolverAbstract::evaluator	(const _condition_type &condition_id) const
+IC	typename CProblemSolverAbstract::CConditionEvaluator *CProblemSolverAbstract::evaluator	(const _condition_type &condition_id) const
 {
 	EVALUATOR_MAP::const_iterator	I = evaluators().find(condition_id);
 	VERIFY							(evaluators().end() != I);

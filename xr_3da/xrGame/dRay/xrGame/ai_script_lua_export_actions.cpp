@@ -102,7 +102,7 @@ void CScriptEngine::export_action_management()
 			.def("action",						&CScriptActionPlanner::action)
 			.def("add_evaluator",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &, CScriptActionPlanner::CConditionEvaluator *))(CScriptActionPlanner::add_evaluator),adopt(_3))
 			.def("remove_evaluator",			(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &))(CScriptActionPlanner::remove_evaluator))
-			.def("evaluator",					(const CScriptActionPlanner::CConditionEvaluator * (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &) const)(CScriptActionPlanner::evaluator))
+			.def("evaluator",					(CScriptActionPlanner::CConditionEvaluator * (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &) const)(CScriptActionPlanner::evaluator))
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
 			.def("current_action",				&CScriptActionPlanner::current_action)
 			.def("initialized",					&CScriptActionPlanner::initialized)
@@ -155,8 +155,8 @@ void CScriptEngine::export_motivation_management()
 			.def("reload",						&CScriptMotivationActionManager::reload,	&CScriptMotivationActionManagerWrapper::reload_static)
 			.def("update",						&CScriptMotivationActionManager::update,	&CScriptMotivationActionManagerWrapper::update_static)
 			.def("clear",						&CScriptMotivationActionManager::clear)
-			.def("clear_motivations",			&CScriptMotivationManager::clear)
-			.def("clear_actions",				&CScriptActionPlanner::clear),
+			.def("clear_motivations",			&CScriptMotivationActionManager::clear_motivations)
+			.def("clear_actions",				&CScriptMotivationActionManager::clear_actions),
 
 		class_<CSE_Abstract>("server_object"),
 			

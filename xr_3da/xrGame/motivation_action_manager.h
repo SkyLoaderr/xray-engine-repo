@@ -34,6 +34,8 @@ public:
 	virtual void	reload						(LPCSTR section);
 	virtual void	update						(u32 time_delta);
 	virtual void	clear						();
+	IC		void	clear_motivations			();
+	IC		void	clear_actions				();
 };
 
 #include "motivation_action_manager_inline.h"

@@ -116,13 +116,13 @@ IC	void CSMotivationManager::remove_connection	(u32 motivation_id, u32 sub_motiv
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CSMotivationManager::CSMotivation *CSMotivationManager::motivation	(u32 motivation_id) const
+IC	typename CSMotivationManager::CSMotivation *CSMotivationManager::motivation	(u32 motivation_id) const
 {
 	return				(m_graph->vertex(m_selected_id)->data());
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CSMotivationManager::CSMotivation *CSMotivationManager::selected	() const
+IC	typename CSMotivationManager::CSMotivation *CSMotivationManager::selected	() const
 {
 	xr_map<u32,float>::const_iterator	I = m_actions.find(m_selected_id);
 	VERIFY				(m_actions.end() != I);

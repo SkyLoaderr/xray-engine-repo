@@ -55,8 +55,8 @@ public:
 	IC		void					remove_motivation	(u32 motivation_id);
 	IC		void					add_connection		(u32 motivation_id, u32 sub_motivation_id);
 	IC		void					remove_connection	(u32 motivation_id, u32 sub_motivation_id);
-	IC		const CSMotivation		*motivation			(u32 motivation_id) const;
-	IC		const CSMotivation		*selected			() const;
+	IC		CSMotivation			*motivation			(u32 motivation_id) const;
+	IC		CSMotivation			*selected			() const;
 	IC		u32						selected_id			() const;
 	IC		const CSGraphAbstract	&graph				() const;
 	IC		bool					actual				() const;

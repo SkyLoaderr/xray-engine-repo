@@ -68,5 +68,17 @@ void CSMotivationActionManager::clear	()
 	CSActionPlanner::clear				();
 }
 
+TEMPLATE_SPECIALIZATION
+IC	void CSMotivationActionManager::clear_motivations	()
+{
+	CSMotivationManager::clear			();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSMotivationActionManager::clear_actions	()
+{
+	CSActionPlanner::clear				();
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSMotivationActionManager

@@ -74,7 +74,7 @@ void CALifeStorageManager::save	(LPCSTR save_name)
 	string256					temp;
 	FS.update_path				(temp,"$game_saves$",m_save_name);
 	stream.save_to				(temp);
-	Msg							("* Game %s is successfully saved to file '%s'",save_name,temp);
+	Msg							("* Game %s is successfully saved to file '%s' (%d bytes)",m_save_name,temp,stream.size());
 }
 
 bool CALifeStorageManager::load	(LPCSTR save_name)
@@ -111,6 +111,8 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	anomalies().load			(*stream);
 	organizations().load		(*stream);
 	news().load					(*stream);
+
+	FS.r_close					(stream);
 	
 	u64							finish = CPU::GetCycleCount();
 	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,float(finish - start)*CPU::cycles2seconds);
