@@ -143,7 +143,7 @@ end
 
 function main_menu:InitCallBacks()
 	self:AddCallback("btn_new_game",  ui_events.BUTTON_CLICKED,             self,"OnButton_new_game_clicked")
-	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,             self,"OnButton_cancel_clicked")
+	self:AddCallback("btn_options",   ui_events.BUTTON_CLICKED,				self,"OnButton_options_clicked")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_CANCEL_CLICKED, self,"OnMsgCancel")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_YES_CLICKED,    self,"OnMsgYes")
@@ -152,6 +152,11 @@ end
 
 function main_menu:OnButton_new_game_clicked()
 	local dlg = ui_new_game_dialog.new_game_dlg()
+	level.start_stop_menu(dlg, true)
+end
+
+function main_menu:OnButton_new_options_clicked()
+	local dlg = ui_options_dialog.options_dialog()
 	level.start_stop_menu(dlg, true)
 end
 
