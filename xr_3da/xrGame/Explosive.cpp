@@ -120,6 +120,7 @@ void CExplosive::Explode()
 	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
+	//включаем подсветку от взрыва
 	m_pLight->set_position(Position()); 
 	m_pLight->set_active(true);
 
@@ -317,7 +318,7 @@ void CExplosive::UpdateCL()
 		u_EventGen			(P,GE_DESTROY,ID());
 		if (Local()) u_EventSend			(P);
 	} 
-	else if(m_expoldeTime < 0xffffffff) 
+	else if(m_expoldeTime>0 && m_expoldeTime < 0xffffffff) 
 	{
 		m_expoldeTime -= Device.dwTimeDelta;
 		
@@ -330,7 +331,7 @@ void CExplosive::UpdateCL()
 			
 			m_pLight->set_range(m_lightRange*l_scale);
 		} 
-		else m_pLight->set_range(0);
+//		else m_pLight->set_range(0);
 	} 
 	else m_pLight->set_active(false);
 }

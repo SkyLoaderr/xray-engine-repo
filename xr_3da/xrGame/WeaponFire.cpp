@@ -43,7 +43,11 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 		}
 	} else 
 	{
-		if (hWallmark)
+		/*ref_shader* pShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
+					 NULL:
+					 *mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+		*/
+		 if (hWallmark)
 		{
 			//добавить отметку на материале
 			::Render->add_Wallmark	(
@@ -55,10 +59,15 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 		}
 	}		
 	
-/*	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
-						GROUND_HIT_PARTICLES:
-						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];*/
-
+	ref_sound* pSound = (!mtl_pair || mtl_pair->CollideSounds.empty())?
+						 NULL:
+						 &mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
+	//проиграть звук
+	if(pSound)
+	{
+		pSound->play_at_pos_unlimited(this, vEnd, false);
+	}
+    
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
 						NULL:
 						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
@@ -76,11 +85,10 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 //		D.reflect			(m_vCurrentShootDir,N);
 
 	Fmatrix pos; 
-	Fvector reversed_dir = m_vCurrentShootDir;
 	Fvector zero_vel = {0.f,0.f,0.f};
-
-	pos.j.normalize(reversed_dir.invert());
-	Fvector::generate_orthonormal_basis(pos.j, pos.i, pos.k);
+	Fvector reversed_dir = m_vCurrentShootDir;
+	pos.k.normalize(reversed_dir.invert());
+	Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
 	pos.c.set(vEnd);
 
 	pStaticPG->UpdateParent(pos,zero_vel);
