@@ -99,7 +99,7 @@ CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollect
 {
 	m_b2Link	= FALSE;
 	m_Texture 	= surf->_Texture();
-	m_Shader	= "models\\model";//surf->_ShaderName();
+	m_Shader	= surf->_ShaderName();
 }
 //----------------------------------------------------
 
