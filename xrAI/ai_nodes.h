@@ -33,8 +33,11 @@ public:
 	{
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
 		thProgress = 0.0f;
-		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize)
+		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize) {
 			tpaGraph[i].tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(tpaGraph[i].tLocalPoint);
+			if ((int(tpaGraph[i].tNodeID) > 0) && !m_tpAI_Map->bfInsideNode(m_tpAI_Map->Node(tpaGraph[i].tNodeID),tpaGraph[i].tLocalPoint,true))
+				tpaGraph[i].tNodeID = u32(-1);
+		}
 		thProgress = 1.0f;
 	}
 };
