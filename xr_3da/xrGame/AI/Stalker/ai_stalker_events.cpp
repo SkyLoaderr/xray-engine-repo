@@ -26,13 +26,14 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
 
-	//. hack
+	u16 id;
 	P.r_u16		(id);
 	CObject* O	= Level().Objects.net_Find	(id);
+	
+	//. hack
 	if (!O)
 		return;
 
-	u16 id;
 	switch (type)
 	{
 		case GE_TRADE_BUY :
