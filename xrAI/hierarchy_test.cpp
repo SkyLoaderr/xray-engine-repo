@@ -6,7 +6,6 @@
 struct CCellVertex {
 	u32		m_vertex_id;
 	union {
-#if 1
 		typedef u16 _use_type;
 
 		struct {
@@ -14,15 +13,6 @@ struct CCellVertex {
 			u32	m_use  : 16;
 		};
 		u32		m_data;
-#else
-		typedef u32 _use_type;
-
-		struct {
-			u32	m_mark;
-			u32	m_use;
-		};
-		u64		m_data;
-#endif
 	};
 
 			CCellVertex		()
