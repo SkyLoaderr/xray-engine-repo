@@ -15,6 +15,11 @@
 		<text>Weapon</text>
 		<text ln="rus">Автоматы</text>
 	</string>
+	<string id="AK-74">
+		<text>AK-74</text>
+		<text ln="rus">Автомат АК-74</text>
+	</string>
+
 	<string id="ak_74_desc">
 		<text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
 			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
