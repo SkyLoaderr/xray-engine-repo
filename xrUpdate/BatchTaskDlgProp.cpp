@@ -83,9 +83,12 @@ void CBatchTaskDlgProp::OnBnClickedBtnAddFile3()
 void CBatchTaskDlgProp::OnBnClickedBtnRemoveFile3()
 {
 	CFileNamesArray new_fl;
-	for(int i=0;	i<m_files_list_box.GetCount();++i )
+	for(int i=0;	i<m_files_list_box.GetCount();++i ){
 		if(!m_files_list_box.GetSel(i))
 			new_fl.push_back(m_task->file_list()->at(i));
+		else
+			Msg("Removed file %s index=%d from task %s",m_task->file_list()->at(i).c_str(), i, m_task->name());
+	};
 
 	m_task->file_list()->clear();
 	*(m_task->file_list()) = new_fl;
@@ -104,7 +107,7 @@ void CBatchTaskDlgProp::redrawFileList()
 	CFileNamesArray* fl = m_task->file_list();
 	CFileNamesArray::iterator it = fl->begin();
 	for(;it!=fl->end();++it){
-		m_files_list_box.AddString(*(*it));
+		m_files_list_box.AddString((*it).c_str());
 	}
 }
 

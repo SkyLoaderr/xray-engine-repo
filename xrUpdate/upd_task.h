@@ -17,7 +17,7 @@ shared_str typeToStr(ETaskType t);
 class CTask;
 
 typedef xr_vector<CTask*>			CTaskArray;
-typedef xr_vector<shared_str>		CFileNamesArray;
+typedef xr_vector<std::string>		CFileNamesArray;
 
 class CTask{
 protected:

@@ -44,13 +44,13 @@ void CTaskCopyFiles::run()
 
 
 	for(;it!=m_file_names.end();){
-		_splitpath(*(*it),drive,dir,file_name,ext);
+		_splitpath((*it).c_str(),drive,dir,file_name,ext);
 //		strcpy(new_path,target_folder());
 
-		Msg("[%s]:Copying %s to %s ", name(), *(*it), target_folder() );
+		Msg("[%s]:Copying %s to %s ", name(), (*it).c_str(), target_folder() );
 		string_path dst_file_name;
 		strconcat(dst_file_name, target_folder(), "\\", file_name, ext );
-		BOOL res = copy_file( *(*it), target_folder(), dst_file_name );
+		BOOL res = copy_file( (*it).c_str(), target_folder(), dst_file_name );
 
 		++it;
 		}
@@ -109,7 +109,7 @@ void CTaskBatchExecute::run					()
 	
 
 		for(;it!=m_file_names.end();++it){
-			params = parseParams(*(*it), *m_params);
+			params = parseParams((*it).c_str(), *m_params);
 	//		spawnl(_P_WAIT, *m_app_name, (params.IsEmpty())?" ":params.GetBuffer() );
 	//		command.Format( "%s %s",*m_app_name,params.GetBuffer() );
 			Msg("[%s]:Executing %s", name(), params.GetBuffer() );

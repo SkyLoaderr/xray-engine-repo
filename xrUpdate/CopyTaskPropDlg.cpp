@@ -93,7 +93,7 @@ void CCopyFilesTaskPropDlg::OnBnClickedBtnRemoveFile()
 		if(!m_files_list_box.GetSel(i))
 			new_fl.push_back(m_task->file_list()->at(i));
 		else
-			Msg("Removed file %s index=%d from task %s",*m_task->file_list()->at(i), i, m_task->name());
+			Msg("Removed file %s index=%d from task %s",m_task->file_list()->at(i).c_str(), i, m_task->name());
 	};
 	c = m_task->file_list()->size();
 	m_task->file_list()->clear();
@@ -116,7 +116,7 @@ void CCopyFilesTaskPropDlg::redrawFileList()
 	int c = m_task->file_list()->size();
 	CFileNamesArray::iterator it = fl->begin();
 	for(;it!=fl->end();++it){
-		m_files_list_box.AddString(*(*it));
+		m_files_list_box.AddString((*it).c_str());
 	}
 	int cc = m_files_list_box.GetCount();
 

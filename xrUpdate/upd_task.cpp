@@ -222,7 +222,7 @@ BOOL CTaskCopyFiles::save				(CInifile& ini, LPCSTR section)
 		string16 idx;
 		itoa(i,idx,10);
 		strconcat(s,"file",idx);
-		ini.w_string(section,s,*m_file_names[i]);
+		ini.w_string(section,s,m_file_names[i].c_str());
 	}
 	return TRUE;
 }
@@ -331,7 +331,7 @@ BOOL CTaskBatchExecute::save				(CInifile& ini, LPCSTR section)
 		string16 idx;
 		itoa(i,idx,10);
 		strconcat(s,"file",idx);
-		ini.w_string(section,s,*m_file_names[i]);
+		ini.w_string(section,s,m_file_names[i].c_str());
 	}
 	return TRUE;
 }
