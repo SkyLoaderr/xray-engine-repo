@@ -182,7 +182,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 				Fvector		end;
 				end.direct	(vLastFP,vLastFD,100.f);
 				Fcolor		c; c.set(1,1,1,1);
-				Level().Tracers.Add(vLastFP,end,10,0.6f,1,c);
+				Level().Tracers.Add(vLastFP,end,10,0.1f,1,c);
 //				::Render.add_Line(b1,b2,.05f,D3DCOLOR_XRGB(255,0,0),hBulletTracer);
 			}
 			
