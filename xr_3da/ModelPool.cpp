@@ -8,6 +8,7 @@
 #include "ModelPool.h"
 
 #ifndef _EDITOR
+	#include "..\IGame_Persistent.h"
     #include "..\fmesh.h"
     #include "..\fvisual.h"
     #include "..\fprogressivefixedvisual.h"
@@ -29,8 +30,8 @@
     #include "fhierrarhyvisual.h"
     #include "SkeletonAnimated.h"
     #include "SkeletonRigid.h"
+	#include "IGame_Persistent.h"
 #endif
-#include "..\IGame_Persistent.h"
 
 IRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
