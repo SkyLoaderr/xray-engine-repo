@@ -23,6 +23,7 @@ private:
 	float					m_max_ignore_distance;
 	mutable bool			m_ready_to_save;
 	mutable bool			m_visible_now;
+	u32						m_last_enemy_time;
 
 protected:
 			bool			expedient			(const CEntityAlive *object) const;
@@ -36,6 +37,7 @@ public:
 	virtual	float			do_evaluate			(const CEntityAlive *object) const;
 	virtual void			update				();
 	virtual void			set_ready_to_save	();
+	IC		u32				last_enemy_time		() const;
 };
 
 #include "enemy_manager_inline.h"

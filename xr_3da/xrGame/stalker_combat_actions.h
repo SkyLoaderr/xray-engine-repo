@@ -187,3 +187,19 @@ public:
 	virtual void		finalize					();
 };
 
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionPostCombatWait
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionPostCombatWait : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+public:
+						CStalkerActionPostCombatWait(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+

@@ -62,9 +62,11 @@ public:
 class CStalkerPropertyEvaluatorEnemies : public CStalkerPropertyEvaluator {
 protected:
 	typedef CStalkerPropertyEvaluator inherited;
+protected:
+	u32					m_time_to_wait;
 
 public:
-						CStalkerPropertyEvaluatorEnemies(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+						CStalkerPropertyEvaluatorEnemies(CAI_Stalker *object = 0, LPCSTR evaluator_name = "", u32 time_to_wait = 0);
 	virtual _value_type	evaluate						();
 };
 

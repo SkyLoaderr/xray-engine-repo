@@ -31,22 +31,16 @@
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::CActionPlanner			()
 {
-	init					();
+	m_initialized			= false;
+#ifdef LOG_ACTION
+	m_use_log				= false;
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::~CActionPlanner			()
 {
 	m_object						= 0;
-}
-
-TEMPLATE_SPECIALIZATION
-void CPlanner::init				()
-{
-	m_initialized			= false;
-#ifdef LOG_ACTION
-	m_use_log				= false;
-#endif
 }
 
 TEMPLATE_SPECIALIZATION

@@ -83,7 +83,6 @@ public:
 public:
 								CActionPlanner			();
 	virtual						~CActionPlanner			();
-			void				init					();
 	virtual	void				setup					(_object_type *object);
 	virtual	void				update					();
 	IC		COperator			&action					(const _action_id_type &action_id);

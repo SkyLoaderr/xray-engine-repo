@@ -27,7 +27,7 @@ void	CStalkerAnimationManager::global_play_callback(CBlend *blend)
 
 const CAnimationPair *CStalkerAnimationManager::assign_global_animation	()
 {
-	if ((eMentalStatePanic == object().movement().mental_state()) && !fis_zero(object().movement().speed()))
+	if ((eMentalStatePanic == object().movement().mental_state()) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 		return					(&m_part_animations.A[body_state()].m_global.A[1].A[0]);
 
 	if ((eBodyActionHello == object().body_action()))

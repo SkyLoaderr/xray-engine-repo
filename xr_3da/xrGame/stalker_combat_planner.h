@@ -13,6 +13,11 @@
 class CAI_Stalker;
 
 class CStalkerCombatPlanner : public CActionPlannerActionScript<CAI_Stalker> {
+public:
+	enum {
+		POST_COMBAT_WAIT_INTERVAL = 3000,
+	};
+
 private:
 	typedef CActionPlannerActionScript<CAI_Stalker> inherited;
 

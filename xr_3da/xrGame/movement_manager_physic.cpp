@@ -15,6 +15,11 @@
 
 #define DISTANCE_PHISICS_ENABLE_CHARACTERS 2.f
 
+float CMovementManager::speed			(CPHMovementControl *movement_control) const
+{
+	VERIFY					(movement_control);
+	return					(movement_control->GetVelocityActual());
+}
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {

@@ -46,13 +46,13 @@ const CAnimationPair *CStalkerAnimationManager::no_object_animation(const EBodyS
 {
 	if (eMentalStateFree == object().movement().mental_state()) {
 		R_ASSERT2(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!");
-		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
+		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 			return			(&m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
 		else
 			return			(&m_part_animations.A[body_state].m_torso.A[0].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[object().conditions().IsLimping() ? 0 : 1]);
 	}
 	else
-		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
+		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 			return			(&m_part_animations.A[body_state].m_torso.A[0].A[6].A[0]);
 		else
 			return			(&m_part_animations.A[body_state].m_torso.A[0].A[6].A[1]);
@@ -69,7 +69,7 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 		case ObjectHandlerSpace::eWorldOperatorFire2 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait2 : {
-			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed()))
+			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[1];
 			else
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
@@ -97,13 +97,13 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 			if (eMentalStateFree == object().movement().mental_state()) {
 				//. hack
 				R_ASSERT2	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!");
-				if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
+				if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 					return &m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
 				else
 					return &m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[1];
 			}
 			else {
-				if (fis_zero(object().movement().speed())) {
+				if (fis_zero(object().movement().speed(object().m_PhysicMovementControl))) {
 					return &m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
 				}
 				switch (object().movement().movement_type()) {
@@ -142,12 +142,12 @@ const CAnimationPair *CStalkerAnimationManager::weapon_animation	(u32 slot, cons
 		case CWeapon::eHiding :
 			return &m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0];
 		case CWeapon::eFire:
-			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed()))
+			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
 			else
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
 		case CWeapon::eFire2 :
-			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed()))
+			if ((body_state == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
 			else
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];

@@ -6,8 +6,6 @@
 //	Description : Stalker squad action
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
 #include "stdafx.h"
 #include "stalker_squad_action.h"
 #include "ai/stalker/ai_stalker.h"
@@ -17,6 +15,10 @@
 #include "script_game_object.h"
 #include "setup_manager.h"
 #include "setup_action.h"
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionSquad
+//////////////////////////////////////////////////////////////////////////
 
 CStalkerActionSquad::CStalkerActionSquad	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)

@@ -1191,6 +1191,9 @@
 					Name="Binders"
 					Filter="">
 					<File
+						RelativePath=".\scripts\_G.script">
+					</File>
+					<File
 						RelativePath=".\scripts\modules.script">
 					</File>
 					<File

@@ -70,6 +70,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_squad_goal",						StalkerDecisionSpace::eWorldPropertySquadAction),
 				luabind::value("property_anomaly",							StalkerDecisionSpace::eWorldPropertyAnomaly),
 				luabind::value("property_inside_anomaly",					StalkerDecisionSpace::eWorldPropertyInsideAnomaly),
+				luabind::value("property_pure_enemy",						StalkerDecisionSpace::eWorldPropertyPureEnemy),
 				luabind::value("property_script",							StalkerDecisionSpace::eWorldPropertyScript)
 			]
 			
@@ -106,6 +107,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_alife_dialog_planner",				StalkerDecisionSpace::eWorldOperatorALifeDialogPlanner),
 				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner),
 				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorAnomalyPlanner),
+				luabind::value("action_post_combat_wait",					StalkerDecisionSpace::eWorldOperatorPostCombatWait),
 				luabind::value("action_script",								StalkerDecisionSpace::eWorldOperatorScript)
 			]
 

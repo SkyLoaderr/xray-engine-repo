@@ -212,7 +212,8 @@ public:
 	IC		u32		refresh_rate			() const;
 			void	update_path				();
 	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
-			float	speed					() const;
+	IC		float	speed					() const;
+			float	speed					(CPHMovementControl *movement_control) const;
 
 	virtual void	on_travel_point_change	() {}
 

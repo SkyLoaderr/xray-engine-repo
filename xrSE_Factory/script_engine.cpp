@@ -145,7 +145,7 @@ bool CScriptEngine::load_file			(LPCSTR caScriptName, bool bCall)
 	VERIFY			(bCall);
 	string256		l_caNamespaceName;
 	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
-	if (!xr_strlen(l_caNamespaceName))
+	if (!xr_strlen(l_caNamespaceName) || !xr_strcmp(l_caNamespaceName,"_g") || !xr_strcmp(l_caNamespaceName,"_G"))
 		return		(load_file_into_namespace(caScriptName,"_G",bCall));
 	else
 		return		(load_file_into_namespace(caScriptName,l_caNamespaceName,bCall));
@@ -200,9 +200,10 @@ void CScriptEngine::process	()
 	for (u32 i=0, n=m_load_queue.size(); !m_load_queue.empty(); ++i) {
 		LPSTR					S2 = m_load_queue.front();
 		m_load_queue.pop_front	();
-		R_ASSERT2				(xr_strcmp(S2,"_G"),"File name \"_G.script\" is reserved and cannot be used!");
-		if ((!*S2 && !m_global_script_loaded) || ((m_reload_modules && (i < n)) || !namespace_loaded(S2))) {
-			if (!*S2)
+		bool					global_script_loaded = (!*S2 || !xr_strcmp(S2,"_G"));
+//		R_ASSERT2				(xr_strcmp(S2,"_G"),"File name \"_G.script\" is reserved and cannot be used!");
+		if ((global_script_loaded && !m_global_script_loaded) || ((m_reload_modules && (i < n)) || !namespace_loaded(S2))) {
+			if (global_script_loaded)
 				m_global_script_loaded = true;
 			FS.update_path		(S,"$game_scripts$",strconcat(S1,S2,".script"));
 			Msg					("* loading script %s",S1);

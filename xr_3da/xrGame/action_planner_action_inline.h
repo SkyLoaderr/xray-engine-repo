@@ -15,16 +15,10 @@ TEMPLATE_SPECIALIZATION
 IC	CPlanner::CActionPlannerAction	(_object_type *object, LPCSTR action_name) :
 	inherited_action					(object,action_name)
 {
-	init								();
 }
 
 TEMPLATE_SPECIALIZATION
 CPlanner::~CActionPlannerAction		()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CPlanner::init				()
 {
 }
 

@@ -700,3 +700,30 @@ void CStalkerActionSearchEnemy::execute			()
 
 	object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionPostCombatWait
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionPostCombatWait::CStalkerActionPostCombatWait	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(last_cover, object, action_name)
+{
+}
+
+void CStalkerActionPostCombatWait::initialize		()
+{
+	inherited::initialize	();
+	object().movement().set_movement_type	(eMovementTypeStand);
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
+		object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+}
+
+void CStalkerActionPostCombatWait::execute			()
+{
+	inherited::execute		();
+}
+
+void CStalkerActionPostCombatWait::finalize			()
+{
+	inherited::finalize		();
+}

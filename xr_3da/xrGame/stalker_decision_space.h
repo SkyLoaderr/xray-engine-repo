@@ -63,6 +63,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyLookedOut,
 		eWorldPropertyPositionHolded,
 		eWorldPropertyEnemyDetoured,
+		eWorldPropertyPureEnemy,
 
 		eWorldPropertySquadAction,
 		eWorldPropertySquadGoal,
@@ -116,6 +117,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorSearchEnemy,
 
 // global
+		eWorldOperatorPostCombatWait,
 		eWorldOperatorSquadAction,
 		eWorldOperatorDeathPlanner,
 		eWorldOperatorALifePlanner,

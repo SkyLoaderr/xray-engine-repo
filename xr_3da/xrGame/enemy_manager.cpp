@@ -115,6 +115,9 @@ void CEnemyManager::update					()
 
 	inherited::update			();
 
+	if (selected())
+		m_last_enemy_time		= Device.dwTimeGlobal;
+
 	if (!m_ready_to_save)
 		Level().autosave_manager().inc_not_ready();
 }
