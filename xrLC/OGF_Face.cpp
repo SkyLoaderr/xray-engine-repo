@@ -222,6 +222,10 @@ void OGF_LOD::Save		(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_LOD;
 	H.shader_id			= RegisterShader(sid);
+	H.bb.min			= bbox.min;
+	H.bb.max			= bbox.max;
+	H.bs.c				= C;
+	H.bs.r				= R;
 	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 

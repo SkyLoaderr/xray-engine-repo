@@ -143,6 +143,10 @@ void OGF::Save			(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_NORMAL;
 	H.shader_id			= RegisterShader			(sid);
+	H.bb.min			= bbox.min;
+	H.bb.max			= bbox.max;
+	H.bs.c				= C;
+	H.bs.r				= R;
 
 	// Vertices
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
@@ -190,6 +194,10 @@ void OGF_Reference::Save	(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_TREE;
 	H.shader_id			= RegisterShader	(sid);
+	H.bb.min			= bbox.min;
+	H.bb.max			= bbox.max;
+	H.bs.c				= C;
+	H.bs.r				= R;
 
 	// Vertices
 	fs.open_chunk		(OGF_VCONTAINER);
