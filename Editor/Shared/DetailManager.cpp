@@ -47,8 +47,6 @@ void bwdithermap	(int levels, int magic[16][16] )
 					(magic4x4[k][l] / 16.) * magicfact);
 }
 //--------------------------------------------------- Decompression
-
-
 void CDetail::Load		(CStream* S)
 {
 	// Shader
