@@ -17,7 +17,6 @@ public:
 };
 //---------------------------------------------------------------------------
 class TUI_ControlWayPointAdd: public TUI_CustomControl{
-	CWayPoint* last_obj;
 public:
     TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent);
     virtual ~TUI_ControlWayPointAdd(){;}

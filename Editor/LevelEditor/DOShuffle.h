@@ -34,11 +34,6 @@ __published:	// IDE-managed Components
 	TPanel *Panel3;
 	TScrollBox *sbDO;
 	TExtBtn *ebAppendIndex;
-	TPanel *Panel1;
-	TExtBtn *ebAddObject;
-	TExtBtn *ebDelObject;
-	TExtBtn *ebOk;
-	TExtBtn *ebCancel;
 	TExtBtn *ebMultiClear;
 	TPanel *Panel2;
 	TElTree *tvItems;
@@ -49,8 +44,12 @@ __published:	// IDE-managed Components
 	TLabel *lbInfo;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-	TExtBtn *ExtBtn2;
-	TExtBtn *ExtBtn1;
+	TPanel *Panel5;
+	TExtBtn *ebOk;
+	TExtBtn *ebCancel;
+	TPanel *Panel1;
+	TExtBtn *ebAddObject;
+	TExtBtn *ebDelObject;
 	TExtBtn *ebDOProperties;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);

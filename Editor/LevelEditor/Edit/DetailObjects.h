@@ -224,6 +224,9 @@ public:
     SBase				m_Base;
 
     float				m_fDensity;
+
+    void				SaveColorIndices		(CFS_Base&);
+    void				LoadColorIndices		(CStream&);
 public:
 						CDetailManager			();
     virtual 			~CDetailManager			();
@@ -248,6 +251,8 @@ public:
     void				RemoveColorIndices		();
 	void				AppendIndexObject		(DWORD color,LPCSTR name,bool bTestUnique=true);
     CDetail*			FindObjectInColorIndices(DWORD index, LPCSTR name);
+    void				ExportColorIndices		(LPCSTR fname);
+    void				ImportColorIndices		(LPCSTR fname);
 
     int					ObjCount				(){return m_Slots.size();}
     void				Render					(int priority, bool strictB2F);

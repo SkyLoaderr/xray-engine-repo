@@ -141,3 +141,21 @@ void __fastcall TfraDetailObject::ebBaseBlendedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraDetailObject::ebImportColorIndicesClick(
+      TObject *Sender)
+{
+	AnsiString fname;
+	if (Engine.FS.GetOpenName(Engine.FS.m_DetailObjects,fname))
+		Scene.m_DetailObjects->ImportColorIndices(fname.c_str());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::ebExportColorIndicesClick(
+      TObject *Sender)
+{
+	AnsiString fname;
+	if (Engine.FS.GetSaveName(Engine.FS.m_DetailObjects,fname))
+		Scene.m_DetailObjects->ExportColorIndices(fname.c_str());
+}
+//---------------------------------------------------------------------------
+

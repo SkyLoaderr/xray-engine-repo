@@ -57,10 +57,11 @@ public:
     TBeforeEdit			OnBeforeEdit;
     TOnDrawValue		OnDrawValue;
 public:
-						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw),bChanged(false){};
+						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
 	virtual 			~PropValue		(){};
     virtual LPCSTR		GetText			()=0;
-    virtual bool		IsC
+    virtual bool		IsChanged		()=0;
+    virtual void		Reset			()=0;
 };
 class TextValue: public PropValue{
 	AnsiString			init_val;
@@ -68,6 +69,8 @@ public:
 	LPSTR				val;
 						TextValue		(LPSTR value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
+    virtual bool		IsChanged		(){return (init_val==val);}
+    virtual void		Reset			(){strcpy(val,init_val.c_str());}
 };
 class AnsiTextValue: public PropValue{
 	AnsiString			init_val;
@@ -75,6 +78,8 @@ public:
 	AnsiString*			val;
 						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			();
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class IntValue: public PropValue{
 	int					init_val;
@@ -92,6 +97,8 @@ public:
         draw_text		= draw_val;
         return draw_text.c_str();
     }
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class FloatValue: public PropValue{
 	float				init_val;
@@ -111,6 +118,8 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val);
 		return draw_text.c_str();
     }
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class VectorValue: public PropValue{
 	Fvector				init_val;
@@ -130,6 +139,8 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val.x,draw_val.y,draw_val.z);
 		return draw_text.c_str();
     }
+    virtual bool		IsChanged		(){return (init_val.similar(*val));}
+    virtual void		Reset			(){val->set(init_val);}
 };
 class FlagValue: public PropValue{
 	DWORD				init_val;
@@ -138,6 +149,8 @@ public:
 	DWORD				mask;
 						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),mask(_mask),PropValue(after,before,draw){};
     virtual LPCSTR		GetText			(){return 0;}
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class TokenValue: public PropValue{
 	DWORD				init_val;
@@ -146,6 +159,8 @@ public:
 	xr_token* 			token;
 						TokenValue		(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),token(_token),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class TokenValue2: public PropValue{
 	DWORD				init_val;
@@ -154,6 +169,8 @@ public:
 	AStringVec 			items;
 						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),items(*_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class TokenValue3: public PropValue{
 	DWORD				init_val;
@@ -167,6 +184,8 @@ public:
     const Item*			items;
 						TokenValue3		(DWORD* value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(*value),val(value),cnt(_cnt),items(_items),PropValue(after,before,draw){};
 	virtual LPCSTR 		GetText			();
+    virtual bool		IsChanged		(){return (init_val==*val);}
+    virtual void		Reset			(){*val=init_val;}
 };
 class ListValue: public PropValue{
 	LPSTR				init_val;
@@ -176,6 +195,8 @@ public:
 						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),items(*_items),PropValue(after,before,draw){};
 						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):init_val(value),val(value),PropValue(after,before,draw){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
+    virtual bool		IsChanged		(){return (strcmp(init_val,val));}
+    virtual void		Reset			(){strcpy(val,init_val);}
 };
 //---------------------------------------------------------------------------
 DEFINE_VECTOR(PropValue*,PropValVec,PropValIt)
@@ -242,6 +263,7 @@ public:		// User declarations
     void __fastcall ShowProperties			();
     void __fastcall HideProperties			();                                   
     void __fastcall ClearProperties			();
+    void __fastcall ResetProperties			();
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall ResetModified			(){bModified = false;}
     void __fastcall RefreshProperties		(){tvProperties->Repaint();}

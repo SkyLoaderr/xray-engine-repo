@@ -91,6 +91,7 @@ void CFileSystem::OnCreate(){
 	m_Groups.Init   	(m_Server, 	"objects\\",       		"*.group", 			"Groups" );
     m_Objects.Init  	(m_Server, 	"objects\\",       		"*.object;*.lwo",	"Editor objects" );
 	m_Import.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Object files" );
+    m_DetailObjects.Init(m_Local, 	"import\\",       		"*.dti",		 	"Detail indices" );
 	m_Envelope.Init  	(m_Local, 	"import\\",       		"*.env", 			"Envelope files" );
 	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anm",			"Object animation files" );
 	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anms",	    	"Object animation list files" );

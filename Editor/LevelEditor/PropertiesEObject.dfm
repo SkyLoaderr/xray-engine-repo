@@ -335,7 +335,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       CloseButton = False
       GroupIndex = 1
       Caption = 'Texture'
-      Transparent = False
       FlatAlwaysEdge = True
     end
     object ebSortByName: TExtBtn
@@ -350,7 +349,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       GroupIndex = 1
       Down = True
       Caption = 'Name'
-      Transparent = False
       FlatAlwaysEdge = True
     end
     object ebDropper: TExtBtn
@@ -386,7 +384,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
         A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
         A900}
       Margin = 2
-      Transparent = False
       FlatAlwaysEdge = True
     end
     object ebSortByShader: TExtBtn
@@ -400,7 +397,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       CloseButton = False
       GroupIndex = 1
       Caption = 'Shader'
-      Transparent = False
       FlatAlwaysEdge = True
     end
     object Label1: TLabel

@@ -29,7 +29,6 @@ __published:	// IDE-managed Components
 	TLabel *Label1;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ExtBtn1;
-	TExtBtn *ExtBtn5;
 	TExtBtn *ebReinitializeSlotObjects;
 	TExtBtn *ExtBtn6;
 	TExtBtn *ExtBtn4;
@@ -39,7 +38,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebResetSlots;
 	TExtBtn *ExtBtn7;
 	TExtBtn *ebClearDetails;
-	TPanel *Panel1;
+	TPanel *paBaseTexture;
 	TLabel *Label3;
 	TExtBtn *ExtBtn8;
 	TExtBtn *ebBaseBlended;
@@ -49,6 +48,12 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seBrushSize;
 	TExtBtn *ebPaintMode;
 	TBevel *Bevel1;
+	TPanel *paObjects;
+	TLabel *Label5;
+	TExtBtn *ExtBtn9;
+	TExtBtn *ExtBtn5;
+	TExtBtn *ebExportColorIndices;
+	TExtBtn *ebImportColorIndices;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
@@ -64,6 +69,8 @@ __published:	// IDE-managed Components
 	void __fastcall ebResetSlotsClick(TObject *Sender);
 	void __fastcall ebClearDetailsClick(TObject *Sender);
 	void __fastcall ebBaseBlendedClick(TObject *Sender);
+	void __fastcall ebImportColorIndicesClick(TObject *Sender);
+	void __fastcall ebExportColorIndicesClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraDetailObject(TComponent* Owner);

@@ -25,20 +25,21 @@ void TUI_WayPointTools::OnDeactivate(){
 }
 //--------------------------------------------------------------------------------------------------
 __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
-	last_obj = 0;
 }
 
 bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
+    ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAYPOINT,1,1,-1);
+	CWayPoint* last_obj = (lst.size()==1)?(CWayPoint*)lst.front():0;
+
 	CWayPoint* obj = (CWayPoint*)DefaultAddObject(Shift);
+
 	if (obj&&Shift.Contains(ssAlt))
 		if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
         	if (last_obj) obj->AddLink(last_obj);
-        	last_obj = obj;
 		}
     return false;
 }
 
 void __fastcall TUI_ControlWayPointAdd::OnEnter(){
-	last_obj = 0;
 }
 

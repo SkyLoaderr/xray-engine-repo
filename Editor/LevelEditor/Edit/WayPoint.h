@@ -25,6 +25,8 @@ class CWayPoint: public CCustomObject {
 
     typedef CCustomObject inherited;
 public:
+    void			GetLinkedObjects(ObjectList& lst);
+public:
 	                CWayPoint		();
 	                CWayPoint   	(char *name);
     void            Construct   	();
@@ -41,7 +43,8 @@ public:
 
     bool			AddLink			(CWayPoint* P);
     bool			RemoveLink		(CWayPoint* P);
-    void			SetPathName     (LPCSTR name){m_PathName="";}
+    LPCSTR			GetPathName		(){return m_PathName.c_str();}
+    void			SetPathName     (LPCSTR name, bool bOnlyThis=false);
 
 	virtual void 	RotateParent	(Fvector& axis, float angle ){;}
 	virtual void 	RotateLocal		(Fvector& axis, float angle ){;}

@@ -772,19 +772,48 @@ void CDetailManager::RemoveFromSnapList(CCustomObject* O)
 	m_SnapObjects.remove(O);
 }
 
-bool CDetailManager::Load(CStream& F){
-    string256 buf;
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
-	DWORD version		= F.Rdword();
+void CDetailManager::ExportColorIndices(LPCSTR fname)
+{
+	CFS_Memory F;
+    SaveColorIndices(F);
+    F.SaveTo(fname,0);
+}
 
-    if (version!=DETMGR_VERSION){
-    	ELog.Msg(mtError,"CDetailManager: unsupported version.");
-        return false;
+void CDetailManager::ImportColorIndices(LPCSTR fname)
+{
+	Clear				(false);
+	CStream* F=Engine.FS.Open(fname); R_ASSERT(F);
+	LoadColorIndices(*F);
+	Engine.FS.Close(F);
+}
+
+void CDetailManager::SaveColorIndices(CFS_Base& F)
+{
+	// objects
+	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
+    for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+		F.open_chunk	(it-m_Objects.begin());
+        (*it)->Save		(F);
+	    F.close_chunk	();
     }
+    F.close_chunk		();
+    // color index map
+	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
+    F.Wbyte				(m_ColorIndices.size());
+    ColorIndexPairIt S 	= m_ColorIndices.begin();
+    ColorIndexPairIt E 	= m_ColorIndices.end();
+    ColorIndexPairIt i_it= S;
+	for(; i_it!=E; i_it++){
+		F.Wdword		(i_it->first);
+        F.Wbyte			(i_it->second.size());
+	    for (DOIt do_it=i_it->second.begin(); do_it!=i_it->second.end(); do_it++)
+        	F.WstringZ	((*do_it)->GetName());
+    }
+    F.close_chunk		();
+}
 
-	// header
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&m_Header));
-
+void CDetailManager::LoadColorIndices(CStream& F)
+{
     // objects
     CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
     if (OBJ){
@@ -802,20 +831,10 @@ bool CDetailManager::Load(CStream& F){
         }
         OBJ->Close();
     }
-
-    // slots
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_SLOTS));
-    int cnt 			= F.Rdword();
-    m_Slots.resize		(cnt);
-    m_Selected.resize	(cnt);
-	F.Read				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
-
-    // internal
-    // bbox
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
-    cnt					= F.Rbyte();
+    int cnt				= F.Rbyte();
+    string256			buf;
     DWORD index;
     int ref_cnt;
     for (int k=0; k<cnt; k++){
@@ -827,6 +846,34 @@ bool CDetailManager::Load(CStream& F){
             if (DO) 	m_ColorIndices[index].push_back(DO);
         }
     }
+}
+
+bool CDetailManager::Load(CStream& F){
+    string256 buf;
+    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
+	DWORD version		= F.Rdword();
+
+    if (version!=DETMGR_VERSION){
+    	ELog.Msg(mtError,"CDetailManager: unsupported version.");
+        return false;
+    }
+
+	// header
+    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&m_Header));
+
+    // objects
+    LoadColorIndices	(F);
+
+    // slots
+    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_SLOTS));
+    int cnt 			= F.Rdword();
+    m_Slots.resize		(cnt);
+    m_Selected.resize	(cnt);
+	F.Read				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
+
+    // internal
+    // bbox
+    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
 
 	// snap objects
     if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
@@ -869,14 +916,10 @@ void CDetailManager::Save(CFS_Base& F){
 
 	// header
 	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
+
     // objects
-	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
-    for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-		F.open_chunk	(it-m_Objects.begin());
-        (*it)->Save		(F);
-	    F.close_chunk	();
-    }
-    F.close_chunk		();
+    SaveColorIndices	(F);
+
     // slots
 	F.open_chunk		(DETMGR_CHUNK_SLOTS);
     F.Wdword			(m_Slots.size());
@@ -891,19 +934,6 @@ void CDetailManager::Save(CFS_Base& F){
     	F.WstringZ		(m_Base.GetName());
 	    F.close_chunk	();
     }
-    // color index map
-	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
-    F.Wbyte				(m_ColorIndices.size());
-    ColorIndexPairIt S 	= m_ColorIndices.begin();
-    ColorIndexPairIt E 	= m_ColorIndices.end();
-    ColorIndexPairIt i_it= S;
-	for(; i_it!=E; i_it++){
-		F.Wdword		(i_it->first);
-        F.Wbyte			(i_it->second.size());
-	    for (DOIt do_it=i_it->second.begin(); do_it!=i_it->second.end(); do_it++)
-        	F.WstringZ	((*do_it)->GetName());
-    }
-    F.close_chunk		();
 	// snap objects
 	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
     F.Wdword			(m_SnapObjects.size());

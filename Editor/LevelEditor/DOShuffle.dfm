@@ -1,6 +1,6 @@
 object frmDOShuffle: TfrmDOShuffle
-  Left = 606
-  Top = 326
+  Left = 353
+  Top = 55
   Width = 320
   Height = 454
   BorderStyle = bsSizeToolWin
@@ -25,7 +25,7 @@ object frmDOShuffle: TfrmDOShuffle
     Left = 158
     Top = 0
     Width = 154
-    Height = 390
+    Height = 427
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 0
@@ -83,7 +83,7 @@ object frmDOShuffle: TfrmDOShuffle
       Left = 0
       Top = 19
       Width = 154
-      Height = 371
+      Height = 390
       VertScrollBar.ButtonSize = 11
       VertScrollBar.Increment = 10
       VertScrollBar.Size = 11
@@ -93,120 +93,55 @@ object frmDOShuffle: TfrmDOShuffle
       BorderStyle = bsNone
       TabOrder = 1
     end
-  end
-  object Panel1: TPanel
-    Left = 0
-    Top = 390
-    Width = 312
-    Height = 37
-    Align = alBottom
-    BevelOuter = bvNone
-    TabOrder = 1
-    object ebAddObject: TExtBtn
-      Left = 1
-      Top = 18
-      Width = 78
+    object Panel5: TPanel
+      Left = 0
+      Top = 409
+      Width = 154
       Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Add Object'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebAddObjectClick
-    end
-    object ebDelObject: TExtBtn
-      Left = 79
-      Top = 18
-      Width = 78
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Del Object'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebDelObjectClick
-    end
-    object ebOk: TExtBtn
-      Left = 158
-      Top = 18
-      Width = 77
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Ok'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebOkClick
-    end
-    object ebCancel: TExtBtn
-      Left = 235
-      Top = 18
-      Width = 77
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Cancel'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebCancelClick
-    end
-    object ExtBtn2: TExtBtn
-      Left = 158
-      Top = 0
-      Width = 77
-      Height = 18
-      Align = alNone
-      CloseButton = False
-      Caption = 'Load'
-      Enabled = False
-      Spacing = 0
-      Transparent = False
-      FlatAlwaysEdge = True
-    end
-    object ExtBtn1: TExtBtn
-      Left = 235
-      Top = 0
-      Width = 77
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Save'
-      Enabled = False
-      Transparent = False
-      FlatAlwaysEdge = True
-    end
-    object ebDOProperties: TExtBtn
-      Left = 1
-      Top = 0
-      Width = 156
-      Height = 18
-      Align = alNone
-      CloseButton = False
-      Caption = 'Object Properties'
-      Spacing = 0
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebDOPropertiesClick
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 2
+      object ebOk: TExtBtn
+        Left = 0
+        Top = 0
+        Width = 77
+        Height = 18
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Ok'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebOkClick
+      end
+      object ebCancel: TExtBtn
+        Left = 77
+        Top = 0
+        Width = 77
+        Height = 18
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Cancel'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebCancelClick
+      end
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 158
-    Height = 390
+    Height = 427
     Align = alClient
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
     object tvItems: TElTree
       Left = 0
       Top = 185
       Width = 158
-      Height = 205
+      Height = 206
       Cursor = crDefault
       LeftPosition = 0
       DragCursor = crDrag
@@ -234,41 +169,41 @@ object frmDOShuffle: TfrmDOShuffle
       HeaderHeight = 19
       HeaderHotTrack = False
       HeaderSections.Data = {
-        F4FFFFFF0700000034F3C60000410000FFFFFFFF0000010101002D2D78000000
-        00000000102700000001002D401C7A030000000000004974000000000000016D
-        00000000000000000001000000000000656D2854456C547265654974656D2A20
-        6E6F64652C20636F6E737420636861722A206E616D652C20766F69642A206F62
-        6A290D0A7B0D0A2020202054456C547265654974010000000001000000000000
-        00000000000034F3C60000410000FFFFFFFF0000010101002D2D780000000000
-        0000102700000001002DF44106100100000000004974000000000000016D0000
-        0000000000000001000000000000656D2854456C547265654974656D2A206E6F
-        64652C20636F6E737420636861722A206E616D652C20766F69642A206F626A29
-        0D0A7B0D0A2020202054456C5472656549740100000000010000000000000000
-        0000000034F3C60000410000FFFFFFFF0000010101002D2D7800000000000000
-        102700000001002DA86C620E0200000000004974000000000000016D00000000
-        000000000001000000000000656D2854456C547265654974656D2A206E6F6465
-        2C20636F6E737420636861722A206E616D652C20766F69642A206F626A290D0A
-        7B0D0A2020202054456C54726565497401000000000100000000000000000000
-        000034F3C60000410000FFFFFFFF0000010101002D2D78000000000000001027
-        00000001002D0051320F0300000000004974000000000000016D000000000000
-        00000001000000000000656D2854456C547265654974656D2A206E6F64652C20
-        636F6E737420636861722A206E616D652C20766F69642A206F626A290D0A7B0D
-        0A2020202054456C547265654974010000000001000000000000000000000000
-        34F3C60000410000FFFFFFFF0000010101002D2D780000000000000010270000
-        0001002D7802F7020400000000004974000000000000016D0000000000000000
-        0001000000000000656D2854456C547265654974656D2A206E6F64652C20636F
-        6E737420636861722A206E616D652C20766F69642A206F626A290D0A7B0D0A20
-        20202054456C54726565497401000000000100000000000000000000000034F3
-        C60000410000FFFFFFFF0000010101002D2D7800000000000000102700000001
-        002DB4E1DA040500000000004974000000000000016D00000000000000000001
-        000000000000656D2854456C547265654974656D2A206E6F64652C20636F6E73
-        7420636861722A206E616D652C20766F69642A206F626A290D0A7B0D0A202020
-        2054456C54726565497401000000000100000000000000000000000034F3C600
-        00410000FFFFFFFF0000010101002D2D7800000000000000102700000001002D
-        288C870D0600000000004974000000000000016D000000000000000000010000
-        00000000656D2854456C547265654974656D2A206E6F64652C20636F6E737420
-        636861722A206E616D652C20766F69642A206F626A290D0A7B0D0A2020202054
-        456C547265654974010000000001000000000000000000000000}
+        F4FFFFFF0700000060E0D60000000000FFFFFFFF000001010100284278000000
+        00000000102700000001006C401C7A03000000000000645C000000000000016E
+        000000000000000000010000000000006C616E645C436F6D706F6E656E74735C
+        456C646F735C436F64653B523A5C426F726C616E645C436F6D706F6E656E7473
+        5C456C646F735C436F64655C536F757290000000010000000001000000000000
+        00000000000060E0D60000000000FFFFFFFF0000010101002842780000000000
+        0000102700000001006CF4410610010000000000645C000000000000016E0000
+        00000000000000010000000000006C616E645C436F6D706F6E656E74735C456C
+        646F735C436F64653B523A5C426F726C616E645C436F6D706F6E656E74735C45
+        6C646F735C436F64655C536F7572900000000100000000010000000000000000
+        0000000060E0D60000000000FFFFFFFF00000101010028427800000000000000
+        102700000001006CA86C620E020000000000645C000000000000016E00000000
+        0000000000010000000000006C616E645C436F6D706F6E656E74735C456C646F
+        735C436F64653B523A5C426F726C616E645C436F6D706F6E656E74735C456C64
+        6F735C436F64655C536F75729000000001000000000100000000000000000000
+        000060E0D60000000000FFFFFFFF000001010100284278000000000000001027
+        00000001006C0051320F030000000000645C000000000000016E000000000000
+        000000010000000000006C616E645C436F6D706F6E656E74735C456C646F735C
+        436F64653B523A5C426F726C616E645C436F6D706F6E656E74735C456C646F73
+        5C436F64655C536F757290000000010000000001000000000000000000000000
+        60E0D60000000000FFFFFFFF0000010101002842780000000000000010270000
+        0001006C7802F702040000000000645C000000000000016E0000000000000000
+        00010000000000006C616E645C436F6D706F6E656E74735C456C646F735C436F
+        64653B523A5C426F726C616E645C436F6D706F6E656E74735C456C646F735C43
+        6F64655C536F75729000000001000000000100000000000000000000000060E0
+        D60000000000FFFFFFFF00000101010028427800000000000000102700000001
+        006CB4E1DA04050000000000645C000000000000016E00000000000000000001
+        0000000000006C616E645C436F6D706F6E656E74735C456C646F735C436F6465
+        3B523A5C426F726C616E645C436F6D706F6E656E74735C456C646F735C436F64
+        655C536F75729000000001000000000100000000000000000000000060E0D600
+        00000000FFFFFFFF00000101010028427800000000000000102700000001006C
+        288C870D060000000000645C000000000000016E000000000000000000010000
+        000000006C616E645C436F6D706F6E656E74735C456C646F735C436F64653B52
+        3A5C426F726C616E645C436F6D706F6E656E74735C456C646F735C436F64655C
+        536F757290000000010000000001000000000000000000000000}
       HeaderFont.Charset = DEFAULT_CHARSET
       HeaderFont.Color = clWindowText
       HeaderFont.Height = -11
@@ -408,6 +343,54 @@ object frmDOShuffle: TfrmDOShuffle
           ParentColor = False
           OnPaint = pbImagePaint
         end
+      end
+    end
+    object Panel1: TPanel
+      Left = 0
+      Top = 391
+      Width = 158
+      Height = 36
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 2
+      object ebAddObject: TExtBtn
+        Left = 1
+        Top = 18
+        Width = 78
+        Height = 18
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Add Object'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebAddObjectClick
+      end
+      object ebDelObject: TExtBtn
+        Left = 79
+        Top = 18
+        Width = 78
+        Height = 18
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Del Object'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebDelObjectClick
+      end
+      object ebDOProperties: TExtBtn
+        Left = 1
+        Top = 0
+        Width = 156
+        Height = 18
+        Align = alNone
+        CloseButton = False
+        Caption = 'Object Properties'
+        Spacing = 0
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebDOPropertiesClick
       end
     end
   end

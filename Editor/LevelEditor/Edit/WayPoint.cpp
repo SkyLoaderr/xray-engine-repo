@@ -23,26 +23,31 @@
 //------------------------------------------------------------------------------
 // AI Traffic points
 //------------------------------------------------------------------------------
-CWayPoint::CWayPoint(char *name):CCustomObject(){
+CWayPoint::CWayPoint(char *name):CCustomObject()
+{
 	Construct();
 	Name		= name;
 }
 
-CWayPoint::CWayPoint():CCustomObject(){
+CWayPoint::CWayPoint():CCustomObject()
+{
 	Construct();
 }
 
-void CWayPoint::Construct(){
+void CWayPoint::Construct()
+{
 	ClassID   	= OBJCLASS_WAYPOINT;
     m_PathName	= "";
 }
 
-CWayPoint::~CWayPoint(){
+CWayPoint::~CWayPoint()
+{
 	OnDestroy();
 }
 //----------------------------------------------------
 
-void CWayPoint::OnDestroy(){
+void CWayPoint::OnDestroy()
+{
 	inherited::OnDestroy();
 	// удалить у всех линков себя
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
@@ -50,7 +55,8 @@ void CWayPoint::OnDestroy(){
 }
 //----------------------------------------------------
 
-bool CWayPoint::GetBox( Fbox& box ){
+bool CWayPoint::GetBox( Fbox& box )
+{
 	box.set( PPosition, PPosition );
 	box.min.x -= WAYPOINT_RADIUS;
 	box.min.y -= 0;
@@ -61,14 +67,16 @@ bool CWayPoint::GetBox( Fbox& box ){
 	return true;
 }
 
-void CWayPoint::DrawPoint(Fcolor& c){
+void CWayPoint::DrawPoint(Fcolor& c)
+{
 	Fvector pos;
     pos.set	(PPosition.x,PPosition.y+WAYPOINT_SIZE*0.85f,PPosition.z);
     DU::DrawCross(pos,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.85f,WAYPOINT_RADIUS,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.15f,WAYPOINT_RADIUS,c.get());
 }
 //----------------------------------------------------
 
-void CWayPoint::DrawLinks(Fcolor& c){
+void CWayPoint::DrawLinks(Fcolor& c)
+{
 	Fvector p1,p2;
     p1.set	(PPosition.x,PPosition.y+WAYPOINT_SIZE*0.85f,PPosition.z);
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++){
@@ -79,7 +87,8 @@ void CWayPoint::DrawLinks(Fcolor& c){
 }
 //----------------------------------------------------
 
-void CWayPoint::Render(int priority, bool strictB2F){
+void CWayPoint::Render(int priority, bool strictB2F)
+{
 	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(PPosition,WAYPOINT_SIZE)){
@@ -98,12 +107,14 @@ void CWayPoint::Render(int priority, bool strictB2F){
 }
 //----------------------------------------------------
 
-bool CWayPoint::FrustumPick(const CFrustum& frustum){
+bool CWayPoint::FrustumPick(const CFrustum& frustum)
+{
     return (frustum.testSphere(PPosition,WAYPOINT_SIZE))?true:false;
 }
 //----------------------------------------------------
 
-bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf){
+bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf)
+{
 	Fvector ray2;
 	ray2.sub( PPosition, S );
 
@@ -121,7 +132,8 @@ bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* p
 }
 //----------------------------------------------------
 
-bool CWayPoint::Load(CStream& F){
+bool CWayPoint::Load(CStream& F)
+{
 	DWORD version = 0;
 	char buf[1024];
 
@@ -153,7 +165,8 @@ bool CWayPoint::Load(CStream& F){
 }
 //----------------------------------------------------
 
-void CWayPoint::Save(CFS_Base& F){
+void CWayPoint::Save(CFS_Base& F)
+{
 	CCustomObject::Save(F);
 
 	F.open_chunk	(WAYPOINT_CHUNK_VERSION);
@@ -172,7 +185,8 @@ void CWayPoint::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-void CWayPoint::OnSynchronize(){
+void CWayPoint::OnSynchronize()
+{
 	m_Links.resize(m_NameLinks.size());
     ObjectIt o_it = m_Links.begin();
 	for (AStringIt s_it=m_NameLinks.begin(); s_it!=m_NameLinks.end(); s_it++,o_it++){
@@ -183,15 +197,18 @@ void CWayPoint::OnSynchronize(){
 }
 //----------------------------------------------------
 
-void CWayPoint::AppendLink(CWayPoint* P){
+void CWayPoint::AppendLink(CWayPoint* P)
+{
 	m_Links.push_back(P);
 }
 //----------------------------------------------------
 
-bool CWayPoint::AddLink(CWayPoint* P){
+bool CWayPoint::AddLink(CWayPoint* P)
+{
 	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
     	AppendLink(P);
         P->AppendLink(this);
+        SetPathName(P->GetPathName(),true);
         UI.RedrawScene();
     	return true;
     }
@@ -199,7 +216,8 @@ bool CWayPoint::AddLink(CWayPoint* P){
 }
 //----------------------------------------------------
 
-bool CWayPoint::DeleteLink(CWayPoint* P){
+bool CWayPoint::DeleteLink(CWayPoint* P)
+{
 	ObjectIt it = find(m_Links.begin(),m_Links.end(),P);
 	if (it!=m_Links.end()){
 		m_Links.erase(it);
@@ -211,12 +229,36 @@ bool CWayPoint::DeleteLink(CWayPoint* P){
 }
 //----------------------------------------------------
 
-bool CWayPoint::RemoveLink(CWayPoint* P){
+bool CWayPoint::RemoveLink(CWayPoint* P)
+{
 	if (DeleteLink(P)){
     	P->DeleteLink(this);
         return true;
     }
 	return false;
+}
+//----------------------------------------------------
+
+void CWayPoint::GetLinkedObjects(ObjectList& lst)
+{
+	for (ObjectIt it=m_Links.begin(); it!=m_Links.end(); it++){
+    	if (find(lst.begin(),lst.end(),*it)!=lst.end()) continue;
+    	lst.push_back(*it);
+    	((CWayPoint*)(*it))->GetLinkedObjects(lst);
+    }
+}
+//----------------------------------------------------
+
+void CWayPoint::SetPathName(LPCSTR name, bool bOnlyThis)
+{
+	if (bOnlyThis){
+    	m_PathName=name;
+    }else{
+		ObjectList objects;
+        GetLinkedObjects(objects);
+		for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
+			((CWayPoint*)(*it))->SetPathName(name,true);
+    }
 }
 //----------------------------------------------------
 
