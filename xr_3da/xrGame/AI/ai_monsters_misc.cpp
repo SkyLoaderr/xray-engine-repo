@@ -274,6 +274,11 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 		
 		do {
 			// if distance to corner is small enough - round the corner
+			if (tpaPath.size() > 768) {
+				//VERIFY(false);
+				tpaPath.clear();
+				return;
+			}
 			if (((COMPUTE_DISTANCE_2D(tPrevPoint,tFinishPoint) - fRoundedDistance < EPS_L))) {
 				if ((!bLooped) && (iCurrentPatrolPoint == tpaPoints.size() - 1)) {
 					bStop = true;
