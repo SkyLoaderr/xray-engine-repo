@@ -73,7 +73,7 @@ void Startup(LPSTR     lpCmdLine)
 				if (strstr(cmd,"-t"))
 					sscanf	(strstr(cmd,"-t")+2,"%s",name);
 
-	if (strlen(name))
+	if (xr_strlen(name))
 		strcat			(name,"\\");
 	char				prjName[256];
 	prjName				[0] = 0;
@@ -99,8 +99,8 @@ void Startup(LPSTR     lpCmdLine)
 			}
 			else
 				if (strstr(cmd,"-s")) {
-					if (strlen(name))
-						name[strlen(name) - 1] = 0;
+					if (xr_strlen(name))
+						name[xr_strlen(name) - 1] = 0;
 					xrMergeSpawns		(name);
 				}
 				else
