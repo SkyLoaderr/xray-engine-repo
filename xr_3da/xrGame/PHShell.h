@@ -146,11 +146,15 @@ public:
 	virtual CODEGeom*			get_GeomByID			  (u16 bone_id);
 	virtual void				Enable					  ();
 	virtual void				Disable					  ();
+	virtual void				DisableCollision		  ();
 	virtual bool				isEnabled				  (){return CPHObject::is_active();}
-
+	
 //CPHObject 
-	virtual		void			vis_update_activate()		;
-	virtual		void			vis_update_deactivate()		;
+	virtual		void			vis_update_activate		   ();
+	virtual		void			vis_update_deactivate	   ();
+	
+	virtual void				PureStep					(float step);
+	virtual void				StaticCollideStep			(float step);
 
 	virtual	void				PhDataUpdate				(dReal step);
 	virtual	void				PhTune						(dReal step);

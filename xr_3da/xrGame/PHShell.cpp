@@ -76,6 +76,11 @@ void CPHShell::Disable()
 		(*i)->Disable();
 	}
 }
+void CPHShell::DisableCollision()
+{
+	CPHObject::collision_disable();
+}
+
 void CPHShell::ReanableObject()
 {
 	//if(b_contacts_saved) dJointGroupEmpty(m_saved_contacts);
@@ -1321,7 +1326,14 @@ CODEGeom* CPHShell::get_GeomByID(u16 bone_id)
 	}
 	return NULL;
 }
+void	CPHShell::PureStep(float step)
+{
+	CPHObject::Island().Step(step);
+}
+void	CPHShell::StaticCollideStep(float step)
+{
 
+}
 void	CPHShell::RegisterToCLGroup	(CGID g)	
 {
 	CPHCollideValidator::RegisterObjToGroup(g,*static_cast<CPHObject*>(this));

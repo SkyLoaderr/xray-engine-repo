@@ -16,6 +16,7 @@ CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
 	m_flags.set(fl_released,TRUE);
+	m_depended_objects=0;
 }
 /////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
 void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual_name)
@@ -38,6 +39,7 @@ void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual
 	Level().Send		(P,net_flags(TRUE));
 	// Destroy
 	F_entity_Destroy	(D);
+	m_depended_objects++;
 }
 
 void CPHDestroyable::InitServerObject(CSE_Abstract* D)
@@ -82,7 +84,13 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 		A->character_physics_support()->SetRemoved();
 	}
 	else
-		obj->PPhysicsShell()->Deactivate();
+	{
+		//obj->PPhysicsShell()->Deactivate();
+		obj->PPhysicsShell()->PureStep();
+		obj->PPhysicsShell()->Disable();
+		obj->PPhysicsShell()->DisableCollision();
+		
+	}
 
 	obj->setVisible(false);
 	obj->setEnabled(false);
@@ -145,7 +153,7 @@ void CPHDestroyable::Load(LPCSTR section)
 
 void CPHDestroyable::Init()
 {
-
+	m_depended_objects=0;
 }
 
 void CPHDestroyable::RespawnInit()
@@ -153,6 +161,7 @@ void CPHDestroyable::RespawnInit()
 	m_flags.set(fl_destroyed,FALSE);
 	m_flags.set(fl_released,TRUE);
 	m_destroyed_obj_visual_names.clear();
+	m_depended_objects=0;
 }
 void CPHDestroyable::SheduleUpdate(u32 dt)
 {
@@ -178,5 +187,23 @@ void CPHDestroyable::SheduleUpdate(u32 dt)
 
 void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 {
-	m_flags.set(fl_released,TRUE);
+	VERIFY(m_depended_objects);
+	m_depended_objects--;
+	if(!m_depended_objects)m_flags.set(fl_released,TRUE);
+	CPhysicsShell* own_shell=PPhysicsShellHolder()->PPhysicsShell();
+	CPhysicsShell* new_shell=dn->PPhysicsShellHolder()->PPhysicsShell();
+	
+	dBodyID own_body=own_shell->get_ElementByStoreOrder(0)->get_body();
+
+	u16 new_el_number = new_shell->get_ElementsNumber();
+
+	for(u16 i=0;i<new_el_number;++i)
+	{
+		CPhysicsElement* e=new_shell->get_ElementByStoreOrder(i);
+		Fvector mc; mc.set(e->mass_Center());
+		dVector3 res_vell;
+		dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_vell);
+		e->set_LinearVel(*(Fvector*)&res_vell);
+	}
+	
 }
