@@ -1044,7 +1044,8 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 		}
 
 		// now do something with body and joint lists
-		dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
+		if (jcount>1)	dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
+		else			dInternalStepIsland		(world, body, bcount, joint, jcount, stepsize);		
 
 		// what we've just done may have altered the body/joint tag values.
 		// we must make sure that these tags are nonzero.
