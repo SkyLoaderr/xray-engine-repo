@@ -32,9 +32,17 @@ protected:
 	TEAM_LISTS	wpnTeamsSectStorage;
 
 	// Вектор имен скинов комманды
-	DEF_DEQUE(SKINS_NAMES, std::string);
+	DEF_VECTOR(SKINS_NAMES, std::string);
+	// Структура скинов
+
+	struct		SkinsStruct
+	{
+		string256		caSection;
+		SKINS_NAMES		Skins;
+	};
+
 	// Вектор скинов комманд
-	DEF_DEQUE(SKINS_LISTS, SKINS_NAMES);
+	DEF_DEQUE(SKINS_LISTS, SkinsStruct);
 
 	SKINS_LISTS	SkinsTeamSectStorage;
 
@@ -83,7 +91,7 @@ public:
 	virtual		const char * 		GetWeaponForSlot		(u32 SlotNum, game_PlayerState* ps);
 
 	virtual		void				LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection);
-	virtual		void				LoadSkinsForTeam		(SKINS_NAMES *pTeamList, char* caSection);
+	virtual		void				LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSection);
 
 	virtual		void				LoadWeapons				();
 	virtual		void				LoadSkins				();

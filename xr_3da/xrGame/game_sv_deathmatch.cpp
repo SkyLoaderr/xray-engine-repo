@@ -4,6 +4,8 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "ui\UIBuyWeaponWnd.h"
 
+int		SkinID = -1;
+
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
 	__super::Create					(options);
@@ -592,14 +594,16 @@ void	game_sv_Deathmatch::LoadWeapons				()
 	wpnTeamsSectStorage.push_back(DefaultTeam);
 };
 
-void	game_sv_Deathmatch::LoadSkinsForTeam		(SKINS_NAMES *pTeamList, char* caSection)
+void	game_sv_Deathmatch::LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSection)
 {
-	string256			Skins, SkinSingleName;
+	string256			SkinSingleName;
+	string4096			Skins;
 
 	// Поле strSectionName должно содержать имя секции
 	R_ASSERT(xr_strcmp(caSection,""));
 
-	pTeamList->clear();
+	std::strcpy(pTeamList->caSection, caSection);
+	pTeamList->Skins.clear();
 
 	// Имя поля
 	if (!pSettings->line_exist(caSection, "skins")) return;
@@ -611,14 +615,14 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(SKINS_NAMES *pTeamList, char* caSect
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(Skins, i, SkinSingleName);
-		pTeamList->push_back(SkinSingleName);
+		pTeamList->Skins.push_back(SkinSingleName);
 	};
 };
 
 void	game_sv_Deathmatch::LoadSkins				()
 {
 	//Loading Skins List
-	SKINS_NAMES		DefaultTeam;
+	SkinsStruct		DefaultTeam;
 	LoadSkinsForTeam				(&DefaultTeam, "deathmatch");
 
 	SkinsTeamSectStorage.push_back(DefaultTeam);
@@ -633,17 +637,19 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 	string256 SkinName = {"actors\\Different_stalkers\\"};
 	//загружены ли скины для этой комманды
+	if (SkinID != -1) ID = u16(SkinID);
+
 	if (!SkinsTeamSectStorage.empty() && 
 		SkinsTeamSectStorage.size() > Team && 
-		!SkinsTeamSectStorage[Team].empty())
+		!SkinsTeamSectStorage[Team].Skins.empty())
 	{
 		//загружено ли достаточно скинов для этой комманды
-		if (SkinsTeamSectStorage[Team].size() > ID)
+		if (SkinsTeamSectStorage[Team].Skins.size() > ID)
 		{
-			std::strcat(SkinName, SkinsTeamSectStorage[Team][ID].c_str());
+			std::strcat(SkinName, SkinsTeamSectStorage[Team].Skins[ID].c_str());
 		}
 		else
-			std::strcat(SkinName, SkinsTeamSectStorage[Team][0].c_str());
+			std::strcat(SkinName, SkinsTeamSectStorage[Team].Skins[0].c_str());
 	}
 	else
 	{
@@ -665,6 +671,7 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 		};
 	};
 	std::strcat(SkinName, ".ogf");
+	Msg("* Skin - %s", SkinName);
 	pV->set_visual(SkinName);
 	//-------------------------------------------
 };

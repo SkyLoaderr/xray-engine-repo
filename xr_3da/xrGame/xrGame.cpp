@@ -53,6 +53,7 @@ extern	float				psSqueezeVelocity;
 extern	int					lvInterp;
 extern	float				g_fMaxDesyncLen;
 extern	bool				g_bUnlimitedAmmo;
+extern	int					SkinID;
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -898,6 +899,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Float,				"net_cl_maxdesync",				&g_fMaxDesyncLen,		0, 10);
 		CMD1(CCC_Net_CL_Resync,		"net_cl_resync" );
 		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
+		CMD4(CCC_Integer,			"skin",						&SkinID,			-1,20);
 
 		// keyboard binding
 		CCC_RegisterInput			();

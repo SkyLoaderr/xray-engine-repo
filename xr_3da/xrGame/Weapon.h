@@ -78,8 +78,8 @@ public:
 	virtual CInventoryItem	*can_kill			(CInventory *inventory) const;
 	virtual const CInventoryItem *can_kill		(const xr_set<const CGameObject*> &items) const;
 	virtual bool			ready_to_kill		() const;
-	virtual bool			NeedToDestroyObject	();
-	virtual ALife::_TIME_ID	TimePassedAfterIndependant();
+	virtual bool			NeedToDestroyObject	() const; 
+	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
 protected:
 	//время удаления оружия
 	ALife::_TIME_ID			m_dwWeaponRemoveTime;

@@ -13,7 +13,7 @@
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 
-#define WEAPON_REMOVE_TIME		600000
+#define WEAPON_REMOVE_TIME		180000
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -985,7 +985,7 @@ void CWeapon::setup_physic_shell()
 	CGameObject::setup_physic_shell();
 }
 
-bool CWeapon::NeedToDestroyObject()	
+bool CWeapon::NeedToDestroyObject()	const
 {
 	if (Game().type == GAME_SINGLE) return false;
 	if (Remote()) return false;
@@ -995,7 +995,7 @@ bool CWeapon::NeedToDestroyObject()
 	return false;
 }
 
-ALife::_TIME_ID	 CWeapon::TimePassedAfterIndependant()	
+ALife::_TIME_ID	 CWeapon::TimePassedAfterIndependant()	const
 {
 	if(!H_Parent() && m_dwWeaponIndependencyTime != 0)
 		return Level().GetGameTime() - m_dwWeaponIndependencyTime;

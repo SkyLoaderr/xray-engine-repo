@@ -224,7 +224,7 @@ void	game_sv_TeamDeathmatch::LoadSkins				()
 {
 	/////////////////////////////////////////////////////////////////////////
 	//Loading Skins List
-	SKINS_NAMES		DefaultTeam, Team1, Team2;
+	SkinsStruct		DefaultTeam, Team1, Team2;
 
 	LoadSkinsForTeam				(&Team1, "teamdeathmatch_team1");
 	LoadSkinsForTeam				(&Team2, "teamdeathmatch_team2");
