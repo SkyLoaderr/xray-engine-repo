@@ -194,7 +194,8 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 	case CLSID_OBJECT_W_M134_en:	
 	case CLSID_OBJECT_W_ROCKET:		idx = FindWeapon(cls); bTakeWeapon = true; break;
 	}
-	if (idx>=0){
+	if (idx>=0)
+	{
 		// add ammo
 		return m_Weapons[idx]->AddAmmo(iAmmoCount);
 	}else{
@@ -211,14 +212,6 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 
 void CWeaponList::LeaveWeapon(CLASS_ID cls)
 {
-/*	int idx = FindWeapon(cls);
-	if (idx>=0){ 
-		if (m_iActiveWeapon==idx) ActivateWeaponNext();
-		CLASS_ID prev_cls = m_ActiveWeapon->SUB_CLS_ID;
-		m_Weapons.erase(m_Weapons.begin()+idx);
-		ActivateWeapon(prev_cls);
-	}
-*/
 }
 
 void CWeaponList::Update(float dt, BOOL bHUDView)
