@@ -293,7 +293,8 @@ void CActor::Die	( )
 	ChangeCamStyle(eacFreeLook);
 	g_fireEnd();
 	bAlive	= FALSE;
-	mstate_real &= ~mcAnyMove;
+	mstate_wishful	&= ~mcAnyMove;
+	mstate_real		&= ~mcAnyMove;
 }
 
 BOOL CActor::TakeItem		( DWORD CID )
@@ -364,6 +365,11 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 
 void CActor::Update	(DWORD DT)
 {
+	if (pInput && pInput->iGetAsyncKeyState(DIK_RSHIFT)){ 
+		Die();
+//		__asm	int 3;
+	}
+
 	if (!bEnabled)	return;
 
 	float	dt		= float(DT)/1000.f;
