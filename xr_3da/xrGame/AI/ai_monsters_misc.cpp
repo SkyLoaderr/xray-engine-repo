@@ -664,14 +664,14 @@ void g_vfLoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount)
 		string128				fn, s;
 		LPSTR					S = (LPSTR)&s;
 		_GetItem				(prefix,j,S);
-		if (FS.exist(fn,"$game_sounds$",S,".wav")){
+		if (FS.exist(fn,"$game_sounds$",S,".ogg")){
 			tpSounds.push_back	(ref_sound());
 			::Sound->create		(tpSounds.back(),TRUE,prefix,0);
 		}
 		for (u32 i=0; i<dwMaxCount; i++){
 			string64			name;
 			sprintf				(name,"%s%d",S,i);
-			if (FS.exist(fn,"$game_sounds$",name,".wav")){
+			if (FS.exist(fn,"$game_sounds$",name,".ogg")){
 				tpSounds.push_back(ref_sound());
 				::Sound->create(tpSounds.back(),TRUE,name,0);
 			}

@@ -413,7 +413,7 @@ public:
 		m_tpSound			= 0;
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
-		if (FS.exist(l_caFileName,"$game_sounds$",*m_caSoundToPlay,".wav")) {
+		if (FS.exist(l_caFileName,"$game_sounds$",*m_caSoundToPlay,".ogg")) {
 			m_bStartedToPlay= false;
 			m_bCompleted	= false;
 		}

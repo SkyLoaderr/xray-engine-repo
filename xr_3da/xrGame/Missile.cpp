@@ -404,7 +404,7 @@ void CMissile::SoundCreate(ref_sound& dest, LPCSTR s_name,
 						   int iType, BOOL bCtrlFreq) 
 {
 	string256	name,temp;
-	strconcat	(name,"weapons\\",Name(),"_",s_name,".wav");
+	strconcat	(name,"weapons\\",Name(),"_",s_name,".ogg");
 
 	if (FS.exist(temp,"$game_sounds$",name)) 
 	{
@@ -412,7 +412,7 @@ void CMissile::SoundCreate(ref_sound& dest, LPCSTR s_name,
 		return;
 	}
 
-	strconcat	(name,"weapons\\","generic_",s_name,".wav");
+	strconcat	(name,"weapons\\","generic_",s_name,".ogg");
 
 	if (FS.exist(temp,"$game_sounds$",name))	
 	{

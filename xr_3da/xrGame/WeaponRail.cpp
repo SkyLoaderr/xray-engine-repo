@@ -20,7 +20,7 @@
 CWeaponRail::CWeaponRail() : CWeapon("rail")
 {
 	pTrail			= NULL;
-	pSounds->Create	(sndFire,TRUE,"weapons\\rail_fire.wav");
+	pSounds->Create	(sndFire,TRUE,"weapons\\rail_fire.ogg");
 	bCanFire		= true;
 	iAmmoElapsed	= 10;
 }

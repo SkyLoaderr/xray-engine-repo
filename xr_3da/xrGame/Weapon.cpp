@@ -130,13 +130,13 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 void CWeapon::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
-	strconcat	(name,"weapons\\",GetName(),"_",s_name,".wav");
+	strconcat	(name,"weapons\\",GetName(),"_",s_name,".ogg");
 	if (FS.exist(temp,"$game_sounds$",name)) 
 	{
 		dest.create		(TRUE,name,iType);
 		return;
 	}
-	strconcat	(name,"weapons\\","generic_",s_name,".wav");
+	strconcat	(name,"weapons\\","generic_",s_name,".ogg");
 	if (FS.exist(temp,"$game_sounds$",name))	
 	{
 		dest.create		(TRUE,name,iType);

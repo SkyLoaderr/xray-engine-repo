@@ -115,7 +115,7 @@ public:
 								CLuaSound		(LPCSTR caSoundName)
 	{
 		string256			l_caFileName;
-		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".wav"))
+		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".ogg"))
 			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName,0);
 		else {
 			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
