@@ -53,37 +53,23 @@ class cl_fog_plane	: public R_constant_setup {
 };
 static cl_fog_plane		binder_fog_plane;
 
-// fog-plane-E
-class cl_fog_plane_E	: public R_constant_setup {
+// fog-params
+class cl_fog_params	: public R_constant_setup {
 	u32			marker;
 	Fvector4	result;
 	virtual void setup(R_constant* C)
 	{
 		if (marker!=Device.dwFrame)
 		{
-			// Plane
-			Fvector4		plane,plane_t;
-			Fmatrix&	M	= Device.mFullTransform;
-			plane.x			= -(M._14 + M._13);
-			plane.y			= -(M._24 + M._23);
-			plane.z			= -(M._34 + M._33);
-			plane.w			= -(M._44 + M._43);
-			float denom		= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-			plane.mul		(denom);
-
-			// Transform into view-space
-			D3DXPlaneTransform	((D3DXPLANE*)&plane_t,(D3DXPLANE*)&plane,(D3DXMATRIX*)&Device.mView);
-			plane			= plane_t;
-
 			// Near/Far
-			float A			= g_pGamePersistent->Environment.CurrentEnv.fog_near;
-			float B			= 1/(g_pGamePersistent->Environment.CurrentEnv.fog_far - A);
-
-			result.set		(-plane.x*B, -plane.y*B, -plane.z*B, 1 - (plane.w-A)*B	);								// view-plane
+			float	n		= g_pGamePersistent->Environment.CurrentEnv.fog_near;
+			float	f		= g_pGamePersistent->Environment.CurrentEnv.fog_far;
+			float	r		= 1/(f-n);
+			result.set		(f, r, r, r);
 		}
 		RCache.set_c	(C,result);
 	}
-};	static cl_fog_plane_E	binder_fog_plane_E;
+};	static cl_fog_params	binder_fog_params;
 
 // fog-color
 class cl_fog_color	: public R_constant_setup {
@@ -215,7 +201,7 @@ void	CBlender_Compile::SetMapping	()
 
 	// fog-params
 	r_Constant				("fog_plane",		&binder_fog_plane);
-	r_Constant				("fog_plane_e",		&binder_fog_plane_E);
+	r_Constant				("fog_params",		&binder_fog_params);
 	r_Constant				("fog_color",		&binder_fog_color);
 
 	// eye-params
