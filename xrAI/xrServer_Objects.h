@@ -17,23 +17,24 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(22)
+#define SPAWN_VERSION	u16(23)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
-// 10 - CSE_ALifeObjectPhysic append 	'fixed_bone'
-// 11 - CSE_ALifeObjectHangingLamp append 	'spot_brightness'
-// 12 - CSE_ALifeObjectHangingLamp append 	'flags'
-// 13 - CSE_ALifeObjectHangingLamp append 	'mass'
-// 14 - CSE_ALifeObjectPhysic append 	inherited from CSE_ALifeObject
-// 15 - CSE_ALifeAnomalousZone append 			inherited calls from CSE_ALifeDynamicObject
-// 16 - CSE_ALifeObjectPhysic append 	inherited from CSE_ALifeDynamicObject
-// 17 - xrSE_...		  append 	inherited from CSE_Visual for smart Level Editor
+// 10 - CSE_ALifeObjectPhysic		append 	'fixed_bone'
+// 11 - CSE_ALifeObjectHangingLamp	append 	'spot_brightness'
+// 12 - CSE_ALifeObjectHangingLamp	append 	'flags'
+// 13 - CSE_ALifeObjectHangingLamp	append 	'mass'
+// 14 - CSE_ALifeObjectPhysic		append 	inherited from CSE_ALifeObject
+// 15 - CSE_ALifeAnomalousZone		append 	inherited calls from CSE_ALifeDynamicObject
+// 16 - CSE_ALifeObjectPhysic		append 	inherited from CSE_ALifeDynamicObject
+// 17 - xrSE_...					append 	inherited from CSE_Visual for smart Level Editor
 // 18 - CSE_ALifeObjectHangingLamp  append 	'startup_animation'
-// 19 - xrSE_Teamed		  didn't save health parameter
-// 20 - CSE_ALife...		  saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
-// 21 - Global class hierarchy update
-// 22 - CSE_AnomalousZone append artefact spawns
+// 19 - xrSE_Teamed					didn't save health parameter
+// 20 - CSE_ALife...				saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
+// 21 - GLOBAL CLASS HIERARCHY UPDATE
+// 22 - CSE_AnomalousZone			append artefact spawns
+// 23 - CSE_ALifeObject				append spawn ID
 //------------------------------------------------------------------------------
 
 class xrClientData;

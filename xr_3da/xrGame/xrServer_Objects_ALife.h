@@ -94,6 +94,7 @@ public:
 		m_tClassID					= _CLASS_ID(-1);
 		m_tObjectID					= _OBJECT_ID(-1);
 		m_tGraphID					= _GRAPH_ID(-1);
+		m_tGraphID					= _SPAWN_ID(-1);
 		m_ucProbability				= 1;
 		m_dwSpawnGroup				= 0;
 		m_bDirectControl			= true;
