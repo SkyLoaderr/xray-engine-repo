@@ -124,7 +124,7 @@ zone_guard = guard_kill_zone
 zone_warn  = guard_warn_zone1
 team       = guards
 snd_greet  = novice_camp_guards
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker1@esc_lager
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker1@esc_lager, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
 
 [zoneguard1@esc_lager_friend]
 path_walk  = guard_walk1
@@ -134,13 +134,21 @@ snd_greet  = talk_hello_friend
 no_move    = true
 on_info    = {+tutorial_volk_acquainted} walker1@esc_lager
 
+[zoneguard1@esc_lager_enemy]
+path_walk  = guard_walk1
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone1
+team       = guards
+snd_greet  = threat_stop
+
+
 [zoneguard2@esc_lager]
 path_walk  = guard_walk2
 zone_guard = guard_kill_zone
 zone_warn  = guard_warn_zone2
 team       = guards
 snd_greet  = novice_camp_guards
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker2@esc_lager
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker2@esc_lager, {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
 
 [zoneguard2@esc_lager_friend]
 path_walk  = guard_walk2
@@ -149,6 +157,14 @@ team       = guards
 snd_greet  = talk_hello_friend
 no_move    = true
 on_info    = {+tutorial_volk_acquainted} walker2@esc_lager
+
+[zoneguard2@esc_lager_enemy]
+path_walk  = guard_walk2
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone2
+team       = guards
+snd_greet  = threat_stop
+
 
 [walker1@esc_lager]
 path_walk  = guard_walk1
