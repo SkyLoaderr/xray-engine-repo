@@ -282,16 +282,16 @@ SOURCE=.\WeaponRail.cpp
 SOURCE=.\WeaponRail.h
 # End Source File
 # End Group
-# Begin Group "Weapon EMS Rifle"
+# Begin Group "Weapon Protecta"
 
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\WeaponEMSRifle.cpp
+SOURCE=.\WeaponProtecta.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\WeaponEMSRifle.h
+SOURCE=.\WeaponProtecta.h
 # End Source File
 # End Group
 # Begin Source File

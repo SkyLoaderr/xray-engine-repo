@@ -40,8 +40,7 @@ private:
 	sound3D			sndServo;
 	sound3D			sndRicochet[SND_RIC_COUNT];
 
-	Shader*			hTrail;
-	Shader*			hFlame[5];
+	vector<Shader*>	hFlames;
 
 	int				iWpnRotBone;
 	int				iHUDRotBone;

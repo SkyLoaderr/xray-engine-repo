@@ -5,17 +5,13 @@
 #include "..\xr_tokens.h"
 #include "..\3DSound.h"
 #include "..\PSObject.h"
+#include "..\xr_trims.h"
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
 #include "WeaponGroza.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
-
-#define EMS_SPRITE_SIZE	.15f
-#define TRAIL_WIDTH		.1f
-#define TRAIL_COLOR		D3DCOLOR_XRGB(255,255,255)
-#define EMS_TEX_COUNT	2
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -29,13 +25,6 @@ CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
 	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
 	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
 
-	hTrail		= Device.Shader.Create("fire_trail","m134\\trace",false);
-	for (int i=0; i<EMS_TEX_COUNT; i++){
-		char name[128];
-		sprintf(name,"m134\\ShotFlame%d",i+1);
-		hFlame[i] = Device.Shader.Create("fire_trail",name,false);
-	}
-	
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
@@ -46,9 +35,8 @@ CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
 
 CWeaponGroza::~CWeaponGroza()
 {
-	for (int i=0; i<EMS_TEX_COUNT; i++)
-		Device.Shader.Delete(hFlame[i]);
-	Device.Shader.Delete(hTrail);
+	for (int i=0; i<hFlames.size(); i++)
+		Device.Shader.Delete(hFlames[i]);
 
 	// sounds
 	pSounds->Delete3D(sndFire);
@@ -64,6 +52,13 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	iFlameDiv		= ini->ReadINT	(section,"flame_div");
 	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
+
+	// flame textures
+	LPCSTR S		= ini->ReadSTRING(section,"flame");
+	DWORD scnt		= _GetItemCount(S);
+	char name[255];
+	for (DWORD i=0; i<scnt; i++)
+		hFlames.push_back(Device.Shader.Create("fire_trail",_GetItem(S,i,name),false));
 }
 
 void CWeaponGroza::FireStart()
@@ -239,7 +234,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 			f*=0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render.add_Patch				(hFlame[Random.randI(EMS_TEX_COUNT)],P,S,A,bHUDView);
+			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
 			P.add(D);
 		}
 	}

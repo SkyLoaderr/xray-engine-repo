@@ -8,8 +8,8 @@
 
 // Factory
 #include "WeaponM134.h"
-#include "WeaponEMSRifle.h"
 #include "WeaponGroza.h"
+#include "WeaponProtecta.h"
 
 class fClassEQ {
 	CLASS_ID cls;
@@ -115,16 +115,15 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		pWeapon = new CWeaponM134(); 
 		strcpy(sect_name,"m134");
 	break;
-	case CLSID_OBJECT_W_EMSRIFLE:
-		pWeapon = new CWeaponEMSRifle(); 
-		strcpy(sect_name,"EMSRifle");
-	break;
 	case CLSID_OBJECT_W_GROZA:
 		pWeapon = new CWeaponGroza(); 
 		strcpy(sect_name,"wpn_groza");
 	break;
+	case CLSID_OBJECT_W_PROTECTA:
+		pWeapon = new CWeaponProtecta(); 
+		strcpy(sect_name,"wpn_protecta");
+	break;
 	case CLSID_OBJECT_W_RAIL:		break;
-	case CLSID_OBJECT_W_MGUN:		break;
 	case CLSID_OBJECT_W_ROCKET:		break;
 	}
 	// load weapon
@@ -142,18 +141,15 @@ bool CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
 	int idx = -1;
 	bool bTakeWeapon = false;
 	switch (cls){
-	case CLSID_OBJECT_A_M134:	idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
-	case CLSID_OBJECT_A_EMSRIFLE:idx= FindWeapon(CLSID_OBJECT_W_EMSRIFLE);	break;
-	case CLSID_OBJECT_A_GROZA:	idx = FindWeapon(CLSID_OBJECT_W_GROZA);		break;
-	case CLSID_OBJECT_A_RAIL:	idx = FindWeapon(CLSID_OBJECT_W_RAIL);		break;
-	case CLSID_OBJECT_A_MGUN:	idx = FindWeapon(CLSID_OBJECT_W_MGUN);		break;
-	case CLSID_OBJECT_A_ROCKET:	idx = FindWeapon(CLSID_OBJECT_W_ROCKET);	break;
+	case CLSID_OBJECT_A_M134:		idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
+	case CLSID_OBJECT_A_GROZA:		idx = FindWeapon(CLSID_OBJECT_W_GROZA);		break;
+	case CLSID_OBJECT_A_PROTECTA:	idx = FindWeapon(CLSID_OBJECT_W_PROTECTA);	break;
+	case CLSID_OBJECT_A_RAIL:		idx = FindWeapon(CLSID_OBJECT_W_RAIL);		break;
+	case CLSID_OBJECT_A_ROCKET:		idx = FindWeapon(CLSID_OBJECT_W_ROCKET);	break;
 	case CLSID_OBJECT_W_M134:	
-	case CLSID_OBJECT_W_EMSRIFLE:	
 	case CLSID_OBJECT_W_GROZA:	
 	case CLSID_OBJECT_W_RAIL:	
-	case CLSID_OBJECT_W_MGUN:	
-	case CLSID_OBJECT_W_ROCKET:	idx = FindWeapon(cls); bTakeWeapon = true; break;
+	case CLSID_OBJECT_W_ROCKET:		idx = FindWeapon(cls); bTakeWeapon = true; break;
 	}
 	if (idx>=0){
 		// add ammo

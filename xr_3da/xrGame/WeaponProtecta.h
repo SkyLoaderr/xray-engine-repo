@@ -1,5 +1,5 @@
-#ifndef __XR_WEAPON_GROZA_H__
-#define __XR_WEAPON_GROZA_H__
+#ifndef __XR_WEAPON_PROTECTA_H__
+#define __XR_WEAPON_PROTECTA_H__
 #pragma once
 
 #include "weapon.h"
@@ -8,7 +8,7 @@ class ENGINE_API C3DSound;
 
 #define SND_RIC_COUNT 5
 
-class CWeaponGroza: public CWeapon
+class CWeaponProtecta: public CWeapon
 {
 	enum EGrozaState
 	{
@@ -36,6 +36,8 @@ private:
 	int				iFlameDiv;
 	float			fFlameLength;
 	float			fFlameSize;
+
+	int				iShotCount;
 	
 	EGrozaState		st_current, st_target;
 
@@ -46,8 +48,8 @@ private:
 protected:
 	virtual void	AddShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
-					CWeaponGroza	();
-	virtual			~CWeaponGroza();
+					CWeaponProtecta	();
+	virtual			~CWeaponProtecta();
 
 	// misc
 	virtual void	Load		(CInifile* ini, const char* section);
@@ -59,4 +61,4 @@ public:
 	virtual	void	Render		(BOOL bHUDView);
 };
 
-#endif //__XR_WEAPON_GROZA_H__
+#endif //__XR_WEAPON_PROTECTA_H__

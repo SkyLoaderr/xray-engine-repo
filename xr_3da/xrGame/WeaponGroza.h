@@ -25,8 +25,7 @@ private:
 	sound3D			sndFire;
 	sound3D			sndRicochet[SND_RIC_COUNT];
 
-	Shader*			hTrail;
-	Shader*			hFlame[5];
+	vector<Shader*>	hFlames;
 
 	Fvector			vFirePoint;
 

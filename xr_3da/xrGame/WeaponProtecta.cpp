@@ -9,16 +9,16 @@
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
-#include "WeaponGroza.h"
+#include "WeaponProtecta.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
+CWeaponProtecta::CWeaponProtecta() : CWeapon("Groza")
 {
-	pSounds->Create3D(sndFire,		 "weapons\\Groza_fire");
+	pSounds->Create3D(sndFire,		 "weapons\\Protecta_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
@@ -28,12 +28,13 @@ CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
+	iShotCount		= 0;
 
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 }
 
-CWeaponGroza::~CWeaponGroza()
+CWeaponProtecta::~CWeaponProtecta()
 {
 	for (int i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
@@ -43,11 +44,12 @@ CWeaponGroza::~CWeaponGroza()
 	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
-void CWeaponGroza::Load(CInifile* ini, const char* section){
+void CWeaponProtecta::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
 	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
+	iShotCount		= ini->ReadINT(section,"shot_count");
 	
 	iFlameDiv		= ini->ReadINT	(section,"flame_div");
 	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
@@ -61,7 +63,7 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 		hFlames.push_back(Device.Shader.Create("fire_trail",_GetItem(S,i,name),false));
 }
 
-void CWeaponGroza::FireStart()
+void CWeaponProtecta::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
@@ -70,7 +72,7 @@ void CWeaponGroza::FireStart()
 	}
 }
 
-void CWeaponGroza::FireEnd(){
+void CWeaponProtecta::FireEnd(){
 	if (IsWorking()){
 		CWeapon::FireEnd();
 		m_pHUD->FireEnd();
@@ -79,7 +81,7 @@ void CWeaponGroza::FireEnd(){
 }
 
 
-void CWeaponGroza::UpdateXForm(BOOL bHUDView)
+void CWeaponProtecta::UpdateXForm(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
@@ -114,7 +116,7 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::UpdateFP(BOOL bHUDView)
+void CWeaponProtecta::UpdateFP(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -136,7 +138,7 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::Update(float dt, BOOL bHUDView)
+void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
 
@@ -171,18 +173,20 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
 				
-				// real fire
-				Collide::ray_query RQ;
-				if (FireTrace( p1, d, RQ )){
-					if (RQ.O){
-						if (RQ.O->CLS_ID == CLSID_ENTITY)
-						{
-							CEntity* E = (CEntity*)RQ.O;
-							E->Hit	(iHitPower,d,m_pParent);
+				for (int i=0; i<iShotCount; i++){
+					// real fire
+					Collide::ray_query RQ;
+					if (FireTrace( p1, d, RQ )){
+						if (RQ.O){
+							if (RQ.O->CLS_ID == CLSID_ENTITY)
+							{
+								CEntity* E = (CEntity*)RQ.O;
+								E->Hit	(iHitPower,d,m_pParent);
+							}
+						} else {
+							Fvector end; end.direct(p1,d,RQ.range);
+							AddShotmark(d,end,RQ);
 						}
-					} else {
-						Fvector end; end.direct(p1,d,RQ.range);
-						AddShotmark(d,end,RQ);
 					}
 				}
 				
@@ -199,7 +203,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 	m_pHUD->UpdateAnimation();
 }
 
-void CWeaponGroza::Render(BOOL bHUDView)
+void CWeaponProtecta::Render(BOOL bHUDView)
 {
 	UpdateXForm	(bHUDView);
 	if (bHUDView)
@@ -240,13 +244,13 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::SetDefaults()
+void CWeaponProtecta::SetDefaults()
 {
 	CWeapon::SetDefaults();
 	iAmmoElapsed = 0;
 }
 
-void CWeaponGroza::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::AddShotmark(vDir, vEnd, R);
 	pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
