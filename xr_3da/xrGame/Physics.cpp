@@ -216,7 +216,7 @@ void CPHWorld::Step(dReal step)
 }
 
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
-const ULONG N = 300;
+const ULONG N = 800;
 static dContact contacts[N];
 
 		// get the contacts up to a maximum of N contacts
