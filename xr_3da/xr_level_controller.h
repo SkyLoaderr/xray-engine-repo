@@ -45,6 +45,7 @@ enum	EKeyBinding
 	kCHAT			,
 	kSCREENSHOT		,
 	kQUIT			,
+	kCONSOLE		,
 
 	kFORCEDWORD		= u32(-1)
 };

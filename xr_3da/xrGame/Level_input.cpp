@@ -12,9 +12,6 @@ void CLevel::OnKeyboardPress(int key)
 
 	switch (key) 
 	{
-	case DIK_GRAVE:
-		Console.Show				();
-		return;
 	case DIK_RETURN:
 		bDebug	= !bDebug;
 		return;
@@ -36,11 +33,12 @@ void CLevel::OnKeyboardPress(int key)
 	}
 
 	switch (key_binding[key]) {
+	case kCONSOLE:
+		Console.Show				();
+		break;
 	case kQUIT:	
-		{
-			Console.Execute			("quit");
-			break;
-		}
+		Console.Execute				("quit");
+		break;
 	default:
 		if (CurrentEntity())		CurrentEntity()->OnKeyboardPress(key_binding[key]);
 		break;

@@ -59,6 +59,7 @@ _keybind  keybind[] = {
 	{ "chat",			kCHAT		},	
 	{ "screenshot",		kSCREENSHOT	},	
 	{ "quit",			kQUIT		},
+	{ "console",		kCONSOLE	},
 
 	{ NULL, 			0			}
 };
