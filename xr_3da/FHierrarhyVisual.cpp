@@ -68,24 +68,7 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
         }
 		else
 		{
-			// From FILE
-			if (data->find_chunk(OGF_CHIELDS)) {
-                string32		c_drv;
-                string256		c_dir;
-                string256		fn,fn_full;
-                _splitpath		(N,c_drv,c_dir,0,0);
-                int				cnt = data->r_u32();
-                children.reserve(cnt);
-                for (int i=0; i<cnt; i++) 
-				{
-                    data->r_stringZ		(fn);
-                    strconcat			(fn_full,c_drv,c_dir,fn);
-                    children.push_back	(::Render->model_Create(fn_full));
-                }
-                bDontDelete = FALSE;
-            } else {
-				Debug.fatal	("Invalid visual");
-            }
+			Debug.fatal	("Invalid visual");
     	}
 	}
 }

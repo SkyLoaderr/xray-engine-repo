@@ -10,50 +10,44 @@ enum MT {
 	MT_NORMAL				=0,
 	MT_HIERRARHY			=1,
 	MT_PROGRESSIVE			=2,
-	MT_SKELETON_ANIM		=4,
-	MT_SKELETON_GEOMDEF_PM	=3,
-	MT_SKELETON_GEOMDEF_ST	=7,
-	MT_CACHED				=8,
-	MT_PARTICLE_SYSTEM		=9,
-	MT_LOD					=11,
-	MT_TREE					=12,
-	MT_PARTICLE_EFFECT		=13,
-	MT_PARTICLE_GROUP		=14,
-	MT_SKELETON_RIGID		=15,
+	MT_SKELETON_ANIM		=3,
+	MT_SKELETON_GEOMDEF_PM	=4,
+	MT_SKELETON_GEOMDEF_ST	=5,
+	MT_LOD					=6,
+	MT_TREE					=7,
+	MT_PARTICLE_EFFECT		=8,
+	MT_PARTICLE_GROUP		=9,
+	MT_SKELETON_RIGID		=10,
 };
 
 enum OGF_Chuncks {
-	OGF_HEADER		= 1,
-	OGF_TEXTURE		= 2,
-	OGF_MATERIAL	= 4,	// actors only
-	OGF_CHIELDS		= 5,
-	OGF_BBOX		= 6,
-	OGF_VERTICES	= 7,
-	OGF_INDICES		= 8,
-	OGF_P_MAP		= 9,
-	OGF_VCONTAINER	= 10,
-	OGF_BSPHERE		= 11,
-	OGF_CHIELDS_L	= 12,	// Link to child visuals
-	OGF_BONE_NAMES	= 13,	// * For skeletons only
-	OGF_MOTIONS 	= 14,	// * For skeletons only
-	OGF_DPATCH		= 15,	// --- DPatches only
-	OGF_P_LODS		= 16,
-    OGF_CHILDREN	= 17,	// * For skeletons only
-	OGF_SMPARAMS  	= 18,	// * For skeletons only
-	OGF_ICONTAINER	= 19,
-	OGF_IKDATA		= 20,	// * For skeletons only
-	OGF_LODDEF2		= 21,	// + 5 channel data
-	OGF_TREEDEF2	= 22,	// + 5 channel data
-	OGF_USERDATA	= 23,	// * For skeletons only (Ini-file)
-	OGF_DESC		= 24,	// * For skeletons only
-	OGF_MOTION_REFS	= 25,	// * For skeletons only
-    OGF_forcedword	= 0xFFFFFFFF         
-};
-
+	OGF_HEADER				= 1,
+	OGF_TEXTURE				= 2,
+	OGF_BSPHERE				= 3,
+	OGF_BBOX				= 4,
+	OGF_VERTICES			= 5,
+	OGF_INDICES				= 6,
+	OGF_P_MAP				= 7,
+	OGF_P_LODS				= 8,
+	OGF_VCONTAINER			= 9,
+	OGF_ICONTAINER			= 10,
+    OGF_CHILDREN			= 11,	// * For skeletons only
+	OGF_CHILDREN_L			= 12,	// Link to child visuals
+	OGF_LODDEF2				= 13,	// + 5 channel data
+	OGF_TREEDEF2			= 14,	// + 5 channel data
+	OGF_S_BONE_NAMES		= 15,	// * For skeletons only
+	OGF_S_MOTIONS 			= 16,	// * For skeletons only
+	OGF_S_SMPARAMS  		= 17,	// * For skeletons only
+	OGF_S_IKDATA			= 18,	// * For skeletons only
+	OGF_S_USERDATA			= 19,	// * For skeletons only (Ini-file)
+	OGF_S_DESC				= 20,	// * For skeletons only
+	OGF_S_MOTION_REFS		= 21,	// * For skeletons only
+    OGF_forcedword			= 0xFFFFFFFF         
+};							
+							
 enum OGF_VertType {
-	OGF_STATIC		= 0,
-	OGF_SKELETON_1L	= 1,
-	OGF_SKELETON_2L	= 2,
+	OGF_VERTEXFORMAT_FVF_1L	= 1*0x12071980,
+	OGF_VERTEXFORMAT_FVF_2L	= 2*0x12071980,
 };
 
 const u16	xrOGF_SMParamsVersion	= 3;

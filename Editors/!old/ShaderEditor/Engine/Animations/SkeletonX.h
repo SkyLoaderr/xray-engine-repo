@@ -33,7 +33,7 @@ struct vertBoned2W	// (1+3+3 + 1+3+3 + 2)*4 = 16*4 = 64 bytes
 	float	w;
 	float	u,v;
 };
-struct vertRender
+struct vertRender			// T&B are not skinned, because in R2 skinning occurs always in hardware
 {
 	Fvector	P;
 	Fvector	N;
