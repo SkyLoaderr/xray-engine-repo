@@ -7,7 +7,6 @@
 #include "..\igame_persistent.h"
 #include "..\environment.h"
 #include "..\fbasicvisual.h"
-#include "..\fcached.h"
 #include "..\CustomHUD.h"
 
 const u32	MAX_POLYGONS			=	1024*8;

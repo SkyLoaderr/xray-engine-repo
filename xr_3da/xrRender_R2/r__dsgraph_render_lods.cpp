@@ -42,20 +42,20 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 	if (lstLODs.empty())		return;
  
 	// *** Fill VB and generate groups
-	IRender_Visual*				firstV		= lstLODs[0].pVisual;
-	ref_shader					cur_S		= &*firstV->hShader;
+	FLOD*						firstV		= (FLOD*)lstLODs[0].pVisual;
+	ref_shader					cur_S		= &*firstV->shader;
 	int							cur_count	= 0;
 	u32							vOffset;
-	FLOD::_hw*					V			= (FLOD::_hw*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
+	FLOD::_hw*					V			= (FLOD::_hw*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->geom->vb_stride, vOffset);
 	float	ssaRange						= r_ssaLOD_A - r_ssaLOD_B;
 	for (u32 i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy
 		R_dsgraph::_LodItem		&P = lstLODs[i];
-		if (P.pVisual->hShader==cur_S)	cur_count++;
+		if (P.pVisual->shader==cur_S)	cur_count++;
 		else {
 			lstLODgroups.push_back	(cur_count);
-			cur_S				= &*(P.pVisual->hShader);
+			cur_S				= &*(P.pVisual->shader);
 			cur_count			= 1;
 		}
 
@@ -103,15 +103,15 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 		_P.add(F.v[1].v,shift);	V->set	(_P,N,color(N,F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	lstLODgroups.push_back				(cur_count);
-	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->hGeom->vb_stride);
+	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->geom->vb_stride);
 
 	// *** Render
 	int current=0;
 	RCache.set_xform_world		(Fidentity);
 	for (u32 g=0; g<lstLODgroups.size(); g++)	{
 		int p_count				= lstLODgroups[g];
-		RCache.set_Shader		(lstLODs[current].pVisual->hShader);
-		RCache.set_Geometry		(firstV->hGeom);
+		RCache.set_Shader		(lstLODs[current].pVisual->shader);
+		RCache.set_Geometry		(firstV->geom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
 		current	+=	p_count;
 		vOffset	+=	4*p_count;

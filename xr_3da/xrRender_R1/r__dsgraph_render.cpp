@@ -56,7 +56,7 @@ void __fastcall sorted_L1		(mapSorted_Node *N)
 {
 	VERIFY (N);
 	IRender_Visual *V				= N->val.pVisual;
-	VERIFY (V && V->hShader._get() && V->hGeom._get());
+	VERIFY (V && V->shader._get());
 	RCache.set_Element				(N->val.se);
 	RCache.set_xform_world			(N->val.Matrix);
 	RImplementation.apply_object	(N->val.pObject);
@@ -572,7 +572,7 @@ void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB,
 		default:
 			{
 				// Renderable visual
-				ShaderElement* E	= V->hShader->E[sh]._get();
+				ShaderElement* E	= V->shader->E[sh]._get();
 				if (E) {
 					for (u32 pass=0; pass<E->passes.size(); pass++)
 					{
