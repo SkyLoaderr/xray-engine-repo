@@ -127,6 +127,12 @@ public:
     											VERIFY(bReady);
                                		  		   	CHK_DX(HW.pDevice->SetTransform(p1,m.d3d()));
 							   			 	}
+
+	IC void					set_xform		(DWORD ID, const Fmatrix& m){	SetTransform((D3DTRANSFORMSTATETYPE)ID,m); }
+	IC void					set_xform_world	(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
+	IC void					set_xform_view	(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
+	IC void					set_xform_project(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
+
 	// draw
 	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
 	void			   		DP				(D3DPRIMITIVETYPE pt, CVertexStream* VS, DWORD vBase, DWORD pc);
@@ -186,6 +192,7 @@ enum {
 	mtSound				= (1ul<<24ul),
 	mtInput				= (1ul<<25ul)
 };
+
 extern DWORD psDeviceFlags;
 // textures
 extern int psTextureLOD;

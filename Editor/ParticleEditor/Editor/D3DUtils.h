@@ -24,11 +24,11 @@ namespace DU{
     IC void DrawLine(const Fvector* p, DWORD clr){DrawLine(p[0],p[1],clr);}
     IC void DrawFaceNormal(const Fvector& p1, const Fvector& p2, const Fvector& p3, float size, DWORD clr){
         Fvector N,C,P; N.mknormal(p1,p2,p3); C.set(p1);C.add(p2);C.add(p3);C.div(3);
-        P.direct(C,N,size);
+        P.mad(C,N,size);
         DrawLine(C,P,clr);}
     IC void DrawFaceNormal(const Fvector* p, float size, DWORD clr){DrawFaceNormal(p[0],p[1],p[2],size,clr);}
     IC void DrawFaceNormal(const Fvector& C, const Fvector& N, float size, DWORD clr){
-        Fvector P; P.direct(C,N,size);DrawLine(C,P,clr);}
+        Fvector P; P.mad(C,N,size);DrawLine(C,P,clr);}
     void DrawSelectionBox(const Fvector& center, const Fvector& size, DWORD* c=0);
     IC void DrawSelectionBox(const Fbox& box, DWORD* c=0){
         Fvector S,C;

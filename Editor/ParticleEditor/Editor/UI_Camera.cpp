@@ -235,8 +235,8 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ip
 	float u_pt = float(point2.y) * size_y / (float) halfheight;
 
 	direction.mul( m_CamMat.k, m_Znear );
-	direction.direct( direction, m_CamMat.j, u_pt );
-	direction.direct( direction, m_CamMat.i, r_pt );
+	direction.mad( direction, m_CamMat.j, u_pt );
+	direction.mad( direction, m_CamMat.i, r_pt );
 	direction.normalize();
 }
 
@@ -247,7 +247,7 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
 	D.mul(m_CamMat.k,-1);
     H1 = R/sinf(m_FOV*0.5f);
     H2 = R/sinf(m_FOV*0.5f/m_Aspect);
-    m_Position.direct(C,D,_MAX(H1,H2));
+    m_Position.mad(C,D,_MAX(H1,H2));
 	m_Target.set(C);
 
 	BuildCamera();
@@ -293,7 +293,7 @@ void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
     }
 
     Fvector D;
-    D.direct		(m_HPB.x,m_HPB.y);
+    D.setHP			(m_HPB.x,m_HPB.y);
 
     Fvector new_pos;
 

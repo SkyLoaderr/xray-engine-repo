@@ -110,7 +110,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 
     for (i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
-        p[i].direct(st,d,depth);
+        p[i].mad(st,d,depth);
     }
 
     frustum.CreateFromPoints(p,4);

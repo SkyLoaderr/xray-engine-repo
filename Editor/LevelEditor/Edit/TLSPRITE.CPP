@@ -76,8 +76,8 @@ void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
 
 void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& D ){
 	Fvector			P1,P2;
-    P1.direct		(pos,D,-radius);
-    P2.direct		(pos,D,radius);
+    P1.mad			(pos,D,-radius);
+    P2.mad 			(pos,D,radius);
 
 	FVF::TL			s1,s2;
 	s1.transform	(P1,Device.mFullTransform);

@@ -118,7 +118,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
             DWORD c 		= D3DCOLOR_RGBA(255,255,0,255);
             Fvector p2,d; 	d.set	(0,0,1);
             M.transform_dir	(d);
-            p2.direct		(p1,d,(*b_it)->Length());
+            p2.mad			(p1,d,(*b_it)->Length());
             DU::DrawLine	(p1,p2,c);
             DU::DrawRomboid	(p1,0.025,c);
         }

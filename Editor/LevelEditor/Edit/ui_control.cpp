@@ -175,7 +175,7 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
 bool __fastcall TUI_CustomControl::DefaultMovingProcess(TShiftState Shift, Fvector& amount){
     if (Shift.Contains(ssLeft)||Shift.Contains(ssRight)){
         amount.mul( m_MovingXVector, UI.m_MouseSM * UI.m_DeltaCpH.x );
-        amount.direct( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
+        amount.mad( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
 
         if( fraTopBar->ebMSnap->Down ){
         	CHECK_SNAP(m_MovingReminder.x,amount.x,UI.movesnap());

@@ -72,7 +72,7 @@ CLight::~CLight(){
 
 void CLight::OnUpdateTransform(){
 	inherited::OnUpdateTransform();
-	m_D3D.direction.direct(PRotation.y,PRotation.x);
+	m_D3D.direction.setHP(PRotation.y,PRotation.x);
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
 	if (D3DLIGHT_POINT==m_D3D.type)
         m_D3D.range=PScale.x;

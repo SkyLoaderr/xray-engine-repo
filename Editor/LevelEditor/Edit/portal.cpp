@@ -175,8 +175,8 @@ bool CPortal::Update(bool bLoadMode){
 
         while(step<=1.f){
             // test inverted
-            SF_point.direct(m_Center,m_Normal,step);
-            SB_point.direct(m_Center,m_Normal,-step);
+            SF_point.mad(m_Center,m_Normal,step);
+            SB_point.mad(m_Center,m_Normal,-step);
 
             front.clear();
             back.clear();

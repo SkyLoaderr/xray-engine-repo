@@ -481,7 +481,7 @@ void DrawAxis(const Fmatrix& T){
     c[0]=c[2]=c[4]=0x00222222; c[1]=0x00FF0000; c[3]=0x0000FF00; c[5]=0x000000FF;
 
     // position
-  	p[0].direct(T.c,T.k,0.25f);
+  	p[0].mad(T.c,T.k,0.25f);
     p[1].set(p[0]); p[1].x+=.015f;
     p[2].set(p[0]);
     p[3].set(p[0]); p[3].y+=.015f;
