@@ -14,6 +14,50 @@
 
 extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+DLL_API CTestInterface *create_test_object	()
+{
+	return				(xr_new<CTestInterface>());
+}
+
+DLL_API void			destroy_test_object	(CTestInterface *&object)
+{
+	xr_delete			(object);
+}
+
+CTestInterface::CTestInterface	()
+{
+	test0.bind			(this,&CTestInterface::test_0);
+	test1.bind			(this,&CTestInterface::test_1);
+}
+
+void CTestInterface::test_0		(LPCSTR str)
+{
+	Msg					("TEST_0 : %s",str);
+}
+
+void CTestInterface::test_1		(int num)
+{
+	Msg					("TEST_1 : %d",num);
+}
+
+void CTestInterface::test_test0	()
+{
+	test0				("VC7.1 : OK!");
+}
+
+void CTestInterface::test_test1	()
+{
+	test1				(1);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
 DLL_API CSE_Abstract *create_object	(LPCSTR section)
 {
 	return				(F_entity_Create(section));
@@ -40,24 +84,3 @@ BOOL APIENTRY DllMain				(HANDLE module_handle, DWORD call_reason, LPVOID reserv
 	}
     return				(TRUE);
 }
-
-//#include "import_export.h"
-//
-//struct CTestInterface0 : public CTestInterface {
-//	CTestInterface0()
-//	{
-////		OnGetString = Delegate(this,&CTestInterface0::get_string);
-//	}
-//
-//	virtual void get_string(LPCSTR &string)
-//	{
-//		string		= "Wow!!!";
-//	}
-//};
-//
-//DLL_API CTestInterface	*create_test_object	()
-//{
-//	return	(xr_new<CTestInterface0>)
-//}
-//
-//DLL_API void			destroy_test_object	(CSE_Abstract *&CTestInterface);

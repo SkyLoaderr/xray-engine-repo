@@ -15,8 +15,8 @@
 extern "C" {
 	DLL_API CSE_Abstract	*create_object	(LPCSTR section);
 	DLL_API void			destroy_object	(CSE_Abstract *&abstract);
-//	DLL_API CTestInterface	*create_test_object	();
-//	DLL_API void			destroy_test_object	(CSE_Abstract *&CTestInterface);
+	DLL_API CTestInterface	*create_test_object	();
+	DLL_API void			destroy_test_object	(CTestInterface *&object);
 };
 
 #endif // XRSE_FACTORY_H
