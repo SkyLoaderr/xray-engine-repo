@@ -174,9 +174,8 @@
 #define XRCORE_API __declspec(dllimport)
 #endif
 
-#define VERIFY assert
+#include "xrDebug.h"
 #include "vector.h"
-#undef  VERIFY
 
 #include "clsid.h"
 #include "xrSyncronize.h"
