@@ -40,6 +40,7 @@ class CPHJeep {
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
+	CPhysicsRefObject* m_ref_object;
 	dVector3 startPosition;
 	bool	 weels_limited;
 	bool	 bActive;
@@ -49,8 +50,9 @@ public:
 	{
 		weels_limited=true;
 		bActive=false;
+		m_ref_object=NULL;
 	}
-
+	void SetPhRefObject(CPhysicsRefObject * ref_object);
 	void applyImpulseTrace		(int part,const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
 	val/=fixed_step;

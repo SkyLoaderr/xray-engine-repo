@@ -252,6 +252,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	#ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
+	Movement.SetPhysicsRefObject(this);
 	#endif
 	
 	Movement.SetPosition	(vPosition);

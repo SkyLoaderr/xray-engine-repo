@@ -213,6 +213,7 @@ CreateDynamicData();
 bActive=true;
 }
 
+void __stdcall CarHitCallback(bool& do_colide,dContact& c);
 /////////////////////////////////////////////////////////////////////////////
 void CPHJeep::Create(dSpaceID space, dWorldID world){
 	if(bActive) return;
@@ -259,6 +260,14 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	dGeomCreateUserData(Geoms[6]);
 	dGeomGetUserData(Geoms[0])->material=GMLib.GetMaterialIdx("materials\\car_cabine");
 	dGeomGetUserData(Geoms[6])->material=GMLib.GetMaterialIdx("materials\\car_cabine");
+	
+	dGeomUserDataSetObjectContactCallback(Geoms[0],CarHitCallback);
+	dGeomUserDataSetObjectContactCallback(Geoms[6],CarHitCallback);
+	if(m_ref_object)
+	{
+	dGeomUserDataSetPhysicsRefObject(Geoms[0],m_ref_object);
+	dGeomUserDataSetPhysicsRefObject(Geoms[6],m_ref_object);
+	}
 	//dGeomGetUserData(Geoms[5])->friction=500.f;
 	//dGeomGetUserData(Geoms[7])->friction=500.f;
 
@@ -631,6 +640,17 @@ void CPHJeep::Revert(){
 if(!bActive) return;
 dBodyAddForce(Bodies[0], 0, 2*9000, 0);
 dBodyAddRelTorque(Bodies[0], 300, 0, 0);
+}
+
+
+void CPHJeep::SetPhRefObject(CPhysicsRefObject * ref_object)
+{
+	m_ref_object=ref_object;
+	if(bActive)
+	{
+			dGeomUserDataSetPhysicsRefObject(Geoms[0],m_ref_object);
+			dGeomUserDataSetPhysicsRefObject(Geoms[6],m_ref_object);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////
@@ -3377,3 +3397,4 @@ void CPHElement::unset_Pushout()
 	set_ObjectContactCallback(object_contact_callback);
 	push_untill=0;
 }
+

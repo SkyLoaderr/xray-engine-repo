@@ -35,7 +35,7 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 		dxGeomUserData* usr_data_1=NULL;
 		dxGeomUserData* usr_data_2=NULL;
 		if(dGeomGetClass(c.geom.g1)==dGeomTransformClass){
-			const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
+			const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
 			usr_data_1 = dGeomGetUserData(geom);
 		}
 		else

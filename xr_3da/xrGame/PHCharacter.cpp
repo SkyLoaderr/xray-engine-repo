@@ -6,6 +6,9 @@
 #include "..\cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 
+#include "GameObject.h"
+#include "Car.h"
+
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 //const float JUMP_HIGHT=0.5;
@@ -1283,5 +1286,73 @@ void	CPHCharacter::Disable(){
 	
 				}
 /////////////////////////////////////////////////////////////////
+
+}
+
+void __stdcall CarHitCallback(bool& do_colide,dContact& c)
+{
+	dxGeomUserData* usr_data_1=NULL;
+	dxGeomUserData* usr_data_2=NULL;
+	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass){
+		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
+		usr_data_1 = dGeomGetUserData(geom);
+	}
+	else
+		usr_data_1 = dGeomGetUserData(c.geom.g1);
+
+	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass){
+		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
+		usr_data_2 = dGeomGetUserData(geom);
+	}
+	else
+		usr_data_2 = dGeomGetUserData(c.geom.g2);
+
+	if(!(usr_data_1&&usr_data_2)) return;
+	
+	CPHCharacter* Character;
+	Character=dynamic_cast<CPHCharacter*>(usr_data_1->ph_object);
+	if(Character)
+	{
+		CGameObject* Obj=dynamic_cast<CGameObject*>(usr_data_1->ph_ref_object);
+		CCar*		 Car=dynamic_cast<CCar*>	   (usr_data_2->ph_ref_object);
+		if(Obj&&Car)
+		{
+			Fvector vel,rvel;
+			Car->GetVelocity(vel);
+			rvel.sub(vel,Character->GetVelocity());
+			if(rvel.magnitude()>1.f)
+			{
+			vel.normalize();
+			Fvector pos;
+
+			pos.set(0,0,0);
+			Obj->Hit(100.f,vel,Car,0,pos,10.f);
+			Obj->PHSetPushOut();
+			}
+		}
+	}
+
+	Character=dynamic_cast<CPHCharacter*>(usr_data_2->ph_object);
+	if(Character)
+	{
+		CGameObject* Obj=dynamic_cast<CGameObject*>(usr_data_2->ph_ref_object);
+		CCar*		 Car=dynamic_cast<CCar*>	   (usr_data_1->ph_ref_object);
+		if(Obj&&Car)
+		{
+			Fvector vel,rvel;
+			Car->GetVelocity(vel);
+			rvel.sub(vel,Character->GetVelocity());
+			if(rvel.magnitude()>1.f)
+			{
+			vel.normalize();
+			Fvector pos;
+
+			pos.set(0,0,0);
+			Obj->Hit(100.f,vel,Car,0,pos,100.f);
+			Obj->PHSetPushOut();
+			}
+		}
+	}
+
 
 }

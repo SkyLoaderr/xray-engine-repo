@@ -46,7 +46,7 @@ public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetMaterial		(LPCSTR m);
 	virtual void			PHSetMaterial		(u32 m);
-
+	virtual void			PHSetPushOut		();
 
 	virtual bool			IsVisibleForZones() { return true; }
 

@@ -48,7 +48,7 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 		Msg						("! Failed to spawn entity '%s'",E->s_name);
 	} else {
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
-		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) && dynamic_cast<xrSE_Actor*>(E))	SetEntity		(O);
+		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	SetEntity		(O);
 		if (E->s_flags.is(M_SPAWN_OBJECT_ACTIVE))											O->OnActivate	( );
 
 		if (0xffff != E->ID_Parent)	

@@ -40,7 +40,7 @@ void Revert();
 void SetStartPosition(Fvector pos){}
 void SetPosition(Fvector pos){}
 void SetRotation(dReal* R){}
-Fvector GetVelocity(){}
+
 ////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);
@@ -66,7 +66,7 @@ Fvector GetVelocity(){}
 	virtual void StepFrameUpdate(dReal step){};
 
 public:
-
+	void					GetVelocity			(Fvector& vel)	{vel.set(m_jeep.GetVelocity());}
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);

@@ -249,10 +249,14 @@ m_pPhysicsShell->get_LinearVel(velocity);
 void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
+	PHSetPushOut();
+}
+
+void CGameObject::PHSetPushOut()
+{
 	if(m_pPhysicsShell)
 		m_pPhysicsShell->set_PushOut(5000);
 }
-
 ///void CGameObject::OnH_A_Independent()
 //{
 //	if(m_pPhysicsShell)

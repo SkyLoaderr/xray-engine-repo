@@ -448,6 +448,7 @@ return true;
 void CCar::ActivateJeep()
 {
 	m_jeep.Create	(ph_world->GetSpace(),phWorld);
+	m_jeep.SetPhRefObject(this);
 	ph_world->AddObject((CPHObject*)this);
 	m_jeep.SetPosition				(vPosition);
 	dMatrix3						Rot;
