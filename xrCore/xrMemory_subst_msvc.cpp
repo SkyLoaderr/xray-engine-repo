@@ -80,15 +80,14 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	stat_calls++;
 	if (0==P)					return mem_alloc(size);
 
-	if		(debug_mode)		dbg_unregister	(P);
 	u32		p_current			= get_header(P);
 	void*	_real				= (void*)(((u8*)P)-1);
 	void*	_ptr				= NULL;
 	if (mem_generic==p_current)
 	{
-		// stat_counter			-=	xr_aligned_msize			(_real);
+		if		(debug_mode)	dbg_unregister	(P);
 		void*	_real2			=	xr_aligned_offset_realloc	(_real,size,16,0x1);
-		// stat_counter			+=	xr_aligned_msize			(_real2);
+		if		(debug_mode)	dbg_register	(P);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
 	} else {
@@ -101,7 +100,6 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 		mem_free				(p_old);
 		_ptr					= p_new;
 	}
-	if		(debug_mode)		dbg_register	(P);
 	return	_ptr;
 }
 
