@@ -25,6 +25,11 @@ CScriptProcessor *CScriptEngine::script_processor	(LPCSTR processor_name) const
 
 IC	void CScriptEngine::set_current_thread			(LPCSTR thread_name)
 {
+#ifdef DEBUG
+	int										i1 = xr_strlen(m_thread_name);
+	int										i2 = xr_strlen(thread_name);
+	VERIFY									((!i1 && i2) || (i1 && !i2));
+#endif
 	m_thread_name							= thread_name;
 }
 

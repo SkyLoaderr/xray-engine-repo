@@ -9,10 +9,14 @@
 #pragma once
 
 #include "script_storage.h"
+#include "script_class_id.h"
 
 class CScriptProcessor;
 
-class CScriptEngine : public CScriptStorage {
+class CScriptEngine : 
+	public CScriptStorage,
+	public CLSID_Holder
+{
 public:
 	typedef CScriptStorage inherited;
 	typedef xr_map<LPCSTR,CScriptProcessor*,pred_str> CScriptProcessorStorage;
@@ -21,6 +25,7 @@ protected:
 	CScriptProcessorStorage		m_script_processors;
 	xr_deque<LPSTR>				m_load_queue;
 	LPCSTR						m_thread_name;
+	int							m_stack_level;
 
 protected:
 			void		export_globals				();

@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "script_binder_object_wrapper.h"
 
-CScriptBinderObjectWrapper::CScriptBinderObjectWrapper	(const luabind::object &lua_instance, CLuaGameObject *object) :
+CScriptBinderObjectWrapper::CScriptBinderObjectWrapper	(luabind::weak_ref lua_instance, CLuaGameObject *object) :
 	CScriptBinderObject	(object),
 	m_lua_instance		(lua_instance)
 {

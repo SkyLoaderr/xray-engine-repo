@@ -35,12 +35,30 @@ IC	const MonsterSpace::EBodyState CStalkerMovementManager::body_state() const
 
 IC	void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)
 {
-	m_desired_position	= desired_position;
+	if (desired_position) {
+		m_use_desired_position	= true;
+		m_desired_position		= *desired_position;
+	}
+	else {
+		m_use_desired_position	= false;
+#ifdef DEBUG
+		m_desired_position		= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
+#endif
+	}
 }
 
 IC	void CStalkerMovementManager::set_desired_direction(const Fvector *desired_direction)
 {
-	m_desired_direction	= desired_direction;
+	if (desired_direction) {
+		m_use_desired_direction	= true;
+		m_desired_direction		= *desired_direction;
+	}
+	else {
+		m_use_desired_direction	= false;
+#ifdef DEBUG
+		m_desired_direction		= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
+#endif
+	}
 }
 
 IC	void CStalkerMovementManager::set_body_state(EBodyState body_state)

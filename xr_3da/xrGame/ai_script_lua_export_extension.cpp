@@ -39,11 +39,6 @@ CLuaGameObject *tpfGetActor()
 		return	(0);
 }
 
-CCameraManager &get_camera_manager()
-{
-	return		(Level().Cameras);
-}
-
 CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 {
 	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
@@ -74,6 +69,13 @@ float get_time_factor()
 	return			(Level().GetGameTimeFactor());
 }
 
+float cover_in_direction(u32 level_vertex_id, const Fvector &direction)
+{
+	float			y,p;
+	direction.getHP	(y,p);
+	return			(ai().level_graph().cover_in_direction(y,level_vertex_id));
+}
+
 void CScriptEngine::export_artifact_merger()
 {
 	module(lua())
@@ -95,9 +97,6 @@ void CScriptEngine::export_artifact_merger()
 		.def("spawn_needles",		&CArtifactMerger::SpawnNeedles)
 	];
 }
-
-
-
 
 void CScriptEngine::export_effector()
 {
@@ -144,14 +143,14 @@ void CScriptEngine::export_level()
 	module(lua(),"level")
 	[
 		// declarations
-		def("cameras",						get_camera_manager),
 		def("object",							get_object_by_name),
 		def("actor",							tpfGetActor),
 		//def("set_artifact_merge",				SetArtifactMergeFunctor),
-		def("get_weather",					get_weather),
-		def("set_weather",					set_weather),
+		def("get_weather",						get_weather),
+		def("set_weather",						set_weather),
 		def("set_time_factor",					set_time_factor),
-		def("get_time_factor",					get_time_factor)
+		def("get_time_factor",					get_time_factor),
+		def("cover_in_direction",				cover_in_direction)
 	];
 
 	module(lua())
@@ -354,7 +353,7 @@ void CScriptEngine::export_object()
 			.def(								constructor<const CLuaGameObject *>())
 			.def("position",					&CLuaGameObject::Position)
 			.def("direction",					&CLuaGameObject::Direction)
-			.def("class_id",					&CLuaGameObject::ClassID)
+			.def("clsid",						&CLuaGameObject::clsid)
 			.def("id",							&CLuaGameObject::ID)
 			.def("section",						&CLuaGameObject::Section)
 			.def("name",						&CLuaGameObject::Name)
@@ -446,6 +445,10 @@ void CScriptEngine::export_object()
 			.def("set_patrol_path",				&CLuaGameObject::set_patrol_path)
 			.def("set_dest_level_vertex_id",	&CLuaGameObject::set_dest_level_vertex_id)
 			.def("level_vertex_id",				&CLuaGameObject::level_vertex_id)
+			.def("add_animation",				(void (CLuaGameObject::*)(LPCSTR))(CLuaGameObject::add_animation))
+			.def("add_animation",				(void (CLuaGameObject::*)(LPCSTR, bool))(CLuaGameObject::add_animation))
+			.def("clear_animations",			&CLuaGameObject::clear_animations)
+			.def("animation_count",				&CLuaGameObject::animation_count)
 			
 			// sound_player
 			
@@ -466,7 +469,6 @@ void CScriptEngine::export_object()
 			// object handler
 			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction ))(CLuaGameObject::set_item))
 			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction, CLuaGameObject *))(CLuaGameObject::set_item))
-
 
 			//////////////////////////////////////////////////////////////////////////
 			//inventory owner
@@ -494,6 +496,9 @@ void CScriptEngine::export_object()
 			.def("is_talking",					&CLuaGameObject::IsTalking)
 			.def("stop_talk",					&CLuaGameObject::StopTalk)
 
-
+			.enum_("CLSIDS")
+			[
+				value("no_pda_msg",				int(ePdaMsgMax))
+			]
 	];
 }

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_binder_object.h"
+#include "ai_script_classes.h"
 
 CScriptBinderObject::CScriptBinderObject	(CLuaGameObject *object)
 {
@@ -16,6 +17,8 @@ CScriptBinderObject::CScriptBinderObject	(CLuaGameObject *object)
 
 CScriptBinderObject::~CScriptBinderObject	()
 {
+	if (m_object)
+		Msg			("Destroying binded object %s",m_object->Name());
 }
 
 void CScriptBinderObject::reinit			()

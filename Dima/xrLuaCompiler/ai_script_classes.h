@@ -79,7 +79,12 @@ public:
 			void			Hit					(CLuaHit &tLuaHit);
 
 	// CGameObject
-	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	SUB_CLS_ID,			CLASS_ID,						CLASS_ID(-1));
+	IC		int				clsid				() const
+	{
+		VERIFY			(m_tpGameObject);
+		return			(m_tpGameObject->clsid());
+	}
+	
 	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,						Fvector());
 	BIND_FUNCTION10	(m_tpGameObject,	Direction,			CGameObject,	Direction,			Fvector,						Fvector());
 	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,							float(-1));
@@ -629,4 +634,7 @@ public:
 			void				set_patrol_path			(LPCSTR path_name, const CMovementManager::EPatrolStartType patrol_start_type, const CMovementManager::EPatrolRouteType patrol_route_type, bool random);
 			void				set_dest_level_vertex_id(u32 level_vertex_id);
 			u32					level_vertex_id			() const;
+			void				add_animation			(LPCSTR animation, bool hand_usage = true);
+			void				clear_animations		();
+			int					animation_count			() const;
 };

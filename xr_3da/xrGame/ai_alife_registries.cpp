@@ -40,12 +40,24 @@ CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
-	tMemoryStream.w_u32			((u32)m_tObjectRegistry.size());
+	u32							object_count = 0;
 	D_OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
+	for ( ; I != E; ++I)
+		if (!(*I).second->can_save())
+			++object_count;
+
+	VERIFY						(object_count <= m_tObjectRegistry.size());
+
+	tMemoryStream.w_u32			(u32(m_tObjectRegistry.size() - object_count));
+	I							= m_tObjectRegistry.begin();
 	for ( ; I != E; ++I) {
 		if (!(*I).second->can_save())
 			continue;
+
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("Saving object %s",(*I).second->s_name);
+		}
 		NET_Packet				tNetPacket;
 		// Spawn
 		(*I).second->Spawn_Write(tNetPacket,TRUE);
@@ -60,6 +72,7 @@ void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
 		tMemoryStream.w			(tNetPacket.B.data,tNetPacket.B.count);
 	}
 	tMemoryStream.close_chunk	();
+	Msg							("%d objects are successfully saved",u32(m_tObjectRegistry.size() - object_count));
 }
 
 void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
@@ -78,6 +91,9 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 
 		string64				s_name;
 		tNetPacket.r_string		(s_name);
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("Loading object %s",s_name);
+		}
 		// create entity
 		CSE_Abstract			*tpSE_Abstract = F_entity_Create	(s_name);
 		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
@@ -93,6 +109,7 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		tpALifeDynamicObject->UPDATE_Read(tNetPacket);
 		Add						(tpALifeDynamicObject);
 	}
+	Msg							("%d objects are successfully loaded",dwCount);
 }
 
 void CSE_ALifeObjectRegistry::Add(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -610,7 +627,9 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 
 		string64				s_name;
 		tNetPacket.r_string		(s_name);
-		Msg						("Loading spawn point %s",s_name);
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("Loading spawn point %s",s_name);
+		}
 		CSE_Abstract			*E = F_entity_Create(s_name);
 
 		R_ASSERT2				(E,"Can't create entity.");
@@ -647,6 +666,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 	}
 	R_ASSERT2					(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
 	load_data					(m_tpArtefactSpawnPositions,tFileStream);
+	Msg							("%d spawn points are successfully loaded",id);
 }
 
 ////////////////////////////////////////////////////////////////////////////

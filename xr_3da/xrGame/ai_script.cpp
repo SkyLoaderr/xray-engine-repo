@@ -11,13 +11,6 @@
 #include "script_engine.h"
 #include "ai_script.h"
 
-//void print_stack(lua_State *L)
-//{
-//	Msg					("Lua stack");
-//	for (int i=0; lua_type(L, -i-1); i++)
-//		Msg				("%2d : %s",-i-1,lua_typename(L, lua_type(L, -i-1)));
-//}
-//
 CScript::CScript(LPCSTR caNamespaceName)
 {
 	string256			S;
@@ -30,18 +23,20 @@ CScript::CScript(LPCSTR caNamespaceName)
 
 	m_tpLuaThread		= lua_newthread(ai().script_engine().lua());
 	
-	sprintf				(S,"%s.main()\n",caNamespaceName);
-	if (!ai().script_engine().load_buffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
-		if (!ai().script_engine().print_output(m_tpLuaThread,m_script_name,1))
-			ai().script_engine().print_error(m_tpLuaThread,1);
+//	sprintf				(S,"function start_thread()\n%s.main()\nend\n",caNamespaceName);
+	sprintf				(S,"%s.main()",caNamespaceName);
+	if (!ai().script_engine().load_buffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script"))
 		return;
-	}
 
-#ifdef DEBUG
-	lua_sethook			(m_tpLuaThread, CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
-#endif
+//	lua_call			(m_tpLuaThread,0,0);
+
+//	ai().script_engine().set_current_thread	(m_script_name);
+//	luabind::resume_function<void>(m_tpLuaThread,"start_thread");
+//	ai().script_engine().set_current_thread	("");
 
 	m_bActive			= true;
+
+	Update				();
 }
 
 CScript::~CScript()
@@ -55,14 +50,31 @@ bool CScript::Update()
 		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
 	ai().script_engine().set_current_thread	(m_script_name);
 	int					l_iErrorCode = lua_resume(m_tpLuaThread,0);
+//	luabind::resume<void>(m_tpLuaThread);
 	ai().script_engine().set_current_thread	("");
 	if (l_iErrorCode) {
-#ifdef DEBUG
 		if (!ai().script_engine().print_output(m_tpLuaThread,m_script_name,l_iErrorCode))
 			ai().script_engine().print_error(m_tpLuaThread,l_iErrorCode);
 		m_bActive		= false;
-		return			(false);
-#endif
 	}
-	return				(true);
+	else
+		if (!lua_gettop(m_tpLuaThread)) {
+			m_bActive	= false;
+			bool		ok = false;
+			CLuaVirtualMachine *L = ai().script_engine().lua();
+			for (int i=1, n=lua_gettop(L); i<=n; ++i)
+				if ((lua_type(L,i) == LUA_TTHREAD) && (lua_tothread(L,i) == m_tpLuaThread)) {
+					lua_remove(L,i);
+					ok	= true;
+					break;
+				}
+			VERIFY2		(ok,"Cannot find LUA thread in the LUA stack!");
+			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
+		}
+		else {
+			VERIFY		(lua_isnumber(m_tpLuaThread,-1));
+			VERIFY		(lua_tonumber(m_tpLuaThread,-1) == 1);
+			lua_pop		(m_tpLuaThread,1);
+		}
+	return				(m_bActive);
 }

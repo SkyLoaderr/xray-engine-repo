@@ -34,12 +34,14 @@ public:
 	static	bool				print_stack_level			(CLuaVirtualMachine *L,		int		iStackLevel);
 			bool				load_buffer					(CLuaVirtualMachine *L,		LPCSTR	caBuffer,			size_t	tSize,				LPCSTR	caScriptName, LPCSTR caNameSpaceName = 0);
 			bool				load_file_into_namespace	(LPCSTR	caScriptName,		LPCSTR	caNamespaceName,	bool	bCall);
-			bool				namespace_loaded			(LPCSTR	caName);
+			bool				namespace_loaded			(LPCSTR	caName, bool remove_from_stack = true);
 			bool				object						(LPCSTR	caIdentifier,		int		type);
 			bool				object						(LPCSTR	caNamespaceName,	LPCSTR	caIdentifier,		int		type);
 			luabind::object		name_space					(LPCSTR	namespace_name);
 	IC		CLuaVirtualMachine	*lua						();
 			void				flush_log					();
+			void				print_stack					(CLuaVirtualMachine *L);
+			void				print_table					(CLuaVirtualMachine *L, LPCSTR S, bool bRecursive = false);
 };
 
 #include "script_storage_inline.h"

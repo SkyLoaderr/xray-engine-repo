@@ -21,10 +21,10 @@ protected:
 	typedef CLuaGameObject			_object_type;
 
 public:
-	luabind::object			m_lua_instance;
+	luabind::weak_ref		m_lua_instance;
 
 public:
-	IC						CScriptMotivationActionWrapper	(const luabind::object &lua_instance, const CGraphEngine::CWorldState &goal);
+	IC						CScriptMotivationActionWrapper	(luabind::weak_ref lua_instance, const CGraphEngine::CWorldState &goal);
 	virtual					~CScriptMotivationActionWrapper	();
 	virtual void			reinit							(_object_type *object);
 	static	void			reinit_static					(inherited *motivation, CLuaGameObject *object);

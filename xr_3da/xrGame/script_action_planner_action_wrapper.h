@@ -15,10 +15,10 @@ typedef CActionPlannerAction<CLuaGameObject> CScriptActionPlannerAction;
 
 class CScriptActionPlannerActionWrapper : public CScriptActionPlannerAction {
 public:
-	luabind::object			m_lua_instance;
+	luabind::weak_ref		m_lua_instance;
 
 public:
-	IC						CScriptActionPlannerActionWrapper	(const luabind::object &lua_instance);
+	IC						CScriptActionPlannerActionWrapper	(luabind::weak_ref lua_instance);
 	virtual void			reinit								(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all = false);
 	static	void			reinit_static						(CScriptActionPlannerAction *planner, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all = false);
 };

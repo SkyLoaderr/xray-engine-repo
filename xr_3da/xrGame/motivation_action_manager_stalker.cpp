@@ -191,6 +191,14 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertySeeEnemy,		true);
 	add_operator			(eWorldOperatorGetEnemySeen,		action);
 
+	action					= xr_new<CStalkerActionCamp>(m_object,"camping");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertySeeEnemy,		false);
+	add_effect				(action,eWorldPropertySeeEnemy,		true);
+	add_operator			(eWorldOperatorCamping,				action);
+
 	action					= xr_new<CStalkerActionGetItemToKill>	(m_object,"get_item_to_kill");
 	add_condition			(action,eWorldPropertyAlive,			true);
 	add_condition			(action,eWorldPropertyFoundItemToKill,	true);

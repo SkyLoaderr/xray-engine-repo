@@ -70,6 +70,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorRetreatFromEnemy,
 
 		eWorldOperatorAimEnemy,
+		eWorldOperatorCamping,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

@@ -24,6 +24,8 @@ protected:
 
 public:
 						CStalkerActionBase	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		finalize					();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -110,6 +112,7 @@ public:
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -335,6 +338,22 @@ public:
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionCamp
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionCamp : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionCamp			(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
 #include "stalker_actions_inline.h"

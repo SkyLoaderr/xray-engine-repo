@@ -38,9 +38,10 @@ double get_time()
 
 int CScriptEngine::lua_panic(CLuaVirtualMachine *L)
 {
+	script_log		(eLuaMessageTypeError,"PANIC");
 	if (!print_output(L,"unknown script"))
 		print_error(L,LUA_ERRRUN);
-	return(0);
+	return			(0);
 }
 
 void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)

@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CPropertyEvaluatorWrapper::CPropertyEvaluatorWrapper	(const luabind::object &lua_instance, CLuaGameObject *object) : 
+IC	CPropertyEvaluatorWrapper::CPropertyEvaluatorWrapper	(luabind::weak_ref lua_instance, CLuaGameObject *object) : 
 	CScriptPropertyEvaluator	(object),
 	m_lua_instance				(lua_instance)
 {

@@ -12,8 +12,9 @@
 
 CScriptEngine::CScriptEngine	()
 {
-	lua_setgcthreshold		(m_virtual_machine,64);
+	lua_setgcthreshold		(lua(),64*1024);
 	m_thread_name			= "";
+	m_stack_level			= 0;
 }
 
 CScriptEngine::~CScriptEngine			()
@@ -25,7 +26,7 @@ CScriptEngine::~CScriptEngine			()
 
 void CScriptEngine::unload				()
 {
-	lua_settop				(m_virtual_machine,0);
+	lua_settop				(lua(),m_stack_level);
 }
 
 void CScriptEngine::lua_error(CLuaVirtualMachine *L)
@@ -35,6 +36,7 @@ void CScriptEngine::lua_error(CLuaVirtualMachine *L)
 
 void CScriptEngine::lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 {
+	print_output			(L,ai().script_engine().current_thread(),0);
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
@@ -63,16 +65,22 @@ void CScriptEngine::export()
 	export_action_management	();
 	export_motivation_management();
 	export_sound_info			();
+	script_register				(lua());
 
 #ifdef DEBUG
 	lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
+//	print_table					(lua(),"_G");
+//	print_stack					(lua());
 	load_common_scripts			();
+	m_stack_level				= lua_gettop(lua());
+//	print_table					(lua(),"_G");
 }
 
 bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)
 {
+	VERIFY			(bCall);
 	string256		l_caNamespaceName;
 	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
 	if (!xr_strlen(l_caNamespaceName))
@@ -118,6 +126,8 @@ void CScriptEngine::process	()
 {
 	string256					S,S1;
 	while (!m_load_queue.empty()) {
+//		print_table				(lua(),"_G");
+//		print_stack				(lua());
 		LPSTR					S2 = m_load_queue.front();
 		m_load_queue.pop_front	();
 		if (!xr_strlen(S2) || !xr_strcmp(S2,"_G") || !namespace_loaded(S2)) {
@@ -126,6 +136,10 @@ void CScriptEngine::process	()
 			load_file			(S,true);
 		}
 
+
 		xr_free					(S2);
+		
+//		print_table				(lua(),"_G");
+//		print_stack				(lua());
 	}
 }

@@ -124,8 +124,8 @@ protected:
 	float								m_fDamagedPanicFactor;
 
 protected:
-	const Fvector						*m_desired_position;
-	const Fvector						*m_desired_direction;
+	Fvector								m_desired_position;
+	Fvector								m_desired_direction;
 	EBodyState							m_body_state;
 	EMovementType						m_movement_type;
 	EMentalState						m_mental_state;
@@ -133,6 +133,8 @@ protected:
 	EDetailPathType						m_detail_path_type;
 	CAbstractVertexEvaluator			*m_node_evaluator;
 	CAbstractVertexEvaluator			*m_path_evaluator;
+	bool								m_use_desired_position;
+	bool								m_use_desired_direction;
 
 public:
 	MonsterSpace::SBoneRotation			m_head;

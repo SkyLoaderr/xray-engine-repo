@@ -19,10 +19,10 @@ protected:
 	typedef	CScriptMotivationManager	inherited;
 
 public:
-	luabind::object			m_lua_instance;
+	luabind::weak_ref		m_lua_instance;
 
 public:
-	IC						CScriptMotivationManagerWrapper	(const luabind::object &lua_instance);
+	IC						CScriptMotivationManagerWrapper	(luabind::weak_ref lua_instance);
 	virtual					~CScriptMotivationManagerWrapper();
 	virtual void			reinit							(_object_type *object, bool clear_all = false);
 	static	void			reinit_static					(CScriptMotivationManager *manager, CLuaGameObject *object, bool clear_all = false);

@@ -15,6 +15,8 @@
 
 using namespace StalkerDecisionSpace;
 
+EStalkerBehaviour	g_stalker_behaviour = eStalkerBehaviourAggressive;
+
 typedef CStalkerActionBase::_edge_value_type _edge_value_type;
 
 //////////////////////////////////////////////////////////////////////////
@@ -24,6 +26,18 @@ typedef CStalkerActionBase::_edge_value_type _edge_value_type;
 CStalkerActionBase::CStalkerActionBase		(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
+}
+
+void CStalkerActionBase::initialize			()
+{
+	inherited::initialize	();
+	m_object->m_script_animations.clear	();
+}
+
+void CStalkerActionBase::finalize			()
+{
+	inherited::finalize		();
+	m_object->m_script_animations.clear	();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -243,8 +257,6 @@ void CStalkerActionGetEnemySeen::execute	()
 	if (!m_object->enemy())
 		return;
 
-	
-	
 	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
 
 	if (!mem_object.m_object)
@@ -277,6 +289,14 @@ void CStalkerActionGetEnemySeen::execute	()
 		if ((mem_object.m_object_params.m_level_vertex_id == m_object->level_vertex_id()) || 
 			 (m_object->Position().distance_to_xz(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id)) < ai().level_graph().header().cell_size() * 1.5f))
 				m_object->CMemoryManager::enable	(m_object->enemy(),false);
+}
+
+_edge_value_type CStalkerActionGetEnemySeen::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	if ((g_stalker_behaviour == eStalkerBehaviourVeryAggressive) || (g_stalker_behaviour == eStalkerBehaviourAggressive))
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -485,7 +505,6 @@ void CStalkerActionFindAmmo::execute	()
 CStalkerActionGetReadyToKillVeryAggressive::CStalkerActionGetReadyToKillVeryAggressive	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionGetReadyToKillVeryAggressive::initialize	()
@@ -507,9 +526,8 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	if (!m_object->m_best_item_to_kill)
 		return;
 
-	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
-
-	if (m_object->Position().distance_to(m_object->enemy()->Position()) >= 10.f) {
+	if (m_object->enemy() && m_object->Position().distance_to(m_object->enemy()->Position()) >= 10.f) {
+		CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
 		m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
 		m_object->set_desired_position	(&mem_object.m_object_params.m_position);
 		m_object->set_movement_type		(eMovementTypeWalk);
@@ -533,7 +551,10 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourVeryAggressive)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -543,7 +564,11 @@ _edge_value_type CStalkerActionGetReadyToKillVeryAggressive::weight	(const CSCon
 CStalkerActionKillEnemyVeryAggressive::CStalkerActionKillEnemyVeryAggressive	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
+#ifdef VERY_AGGRESSIVE
+	m_weight				= _edge_value_type(1);
+#else
 	m_weight				= _edge_value_type(100);
+#endif
 }
 
 void CStalkerActionKillEnemyVeryAggressive::initialize	()
@@ -599,7 +624,10 @@ void CStalkerActionKillEnemyVeryAggressive::execute		()
 
 _edge_value_type CStalkerActionKillEnemyVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourVeryAggressive)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -609,7 +637,6 @@ _edge_value_type CStalkerActionKillEnemyVeryAggressive::weight	(const CSConditio
 CStalkerActionGetReadyToKillAggressive::CStalkerActionGetReadyToKillAggressive	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(1);
 }
 
 void CStalkerActionGetReadyToKillAggressive::initialize	()
@@ -632,9 +659,12 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	if (!m_object->m_best_item_to_kill)
 		return;
 
-	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
+	CMemoryInfo						mem_object;
+	
+	if (m_object->enemy())
+		mem_object					= m_object->memory(m_object->enemy());
 
-	if (mem_object.m_object && (m_object->visible(mem_object.m_object) || !completed())) {
+	if (m_object->enemy() && (m_object->visible(mem_object.m_object) || !completed())) {
 		Fvector						position = mem_object.m_object_params.m_position;
 		CCoverPoint					*point = m_object->best_cover_point(
 			m_object->Position(),
@@ -659,15 +689,10 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 		m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
 	}
 
-//	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-//	m_object->set_node_evaluator	(0);
-//	m_object->set_path_evaluator	(0);
-//	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
-//	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
@@ -680,7 +705,10 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourAggressive)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -690,7 +718,11 @@ _edge_value_type CStalkerActionGetReadyToKillAggressive::weight	(const CSConditi
 CStalkerActionKillEnemyAggressive::CStalkerActionKillEnemyAggressive	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
+#ifdef AGGRESSIVE
 	m_weight				= _edge_value_type(1);
+#else
+	m_weight				= _edge_value_type(100);
+#endif
 }
 
 void CStalkerActionKillEnemyAggressive::initialize	()
@@ -764,7 +796,10 @@ void CStalkerActionKillEnemyAggressive::execute		()
 
 _edge_value_type CStalkerActionKillEnemyAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourAggressive)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -830,7 +865,7 @@ void CStalkerActionAimEnemy::execute		()
 	if (m_object->Position().distance_to(m_object->enemy()->Position()) > 5.f) {
 		m_object->set_level_dest_vertex	(m_object->enemy()->level_vertex_id());
 		m_object->set_desired_position	(&m_object->enemy()->Position());
-		m_object->set_movement_type		(eMovementTypeStand);//m_run ? eMovementTypeRun : eMovementTypeWalk);
+		m_object->set_movement_type		(eMovementTypeStand);
 	}
 	else
 		m_object->set_movement_type		(eMovementTypeStand);
@@ -855,7 +890,6 @@ void CStalkerActionAimEnemy::execute		()
 CStalkerActionGetReadyToKillModerate::CStalkerActionGetReadyToKillModerate	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionGetReadyToKillModerate::initialize	()
@@ -877,23 +911,22 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	if (!m_object->m_best_item_to_kill)
 		return;
 
-	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
-
-	if (mem_object.m_object) {
+	if (m_object->enemy()) {
+		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
 		Fvector						position = mem_object.m_object_params.m_position;
 		CCoverPoint					*point = m_object->best_cover_point(
 			m_object->Position(),
 			position,
-			StalkerSpace::eCoverTypeCloseToEnemy,
+			StalkerSpace::eCoverTypeFarFromEnemy,
 			30.f,
-			5.f,
 			10.f,
-			70.f
+			10.f,
+			170.f
 		);
 		if (point) {
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
-			m_object->set_movement_type		(eMovementTypeWalk);
+			m_object->set_movement_type		(eMovementTypeRun);
 		}
 		else
 			m_object->set_movement_type	(eMovementTypeStand);
@@ -901,15 +934,10 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	else
 		m_object->set_movement_type	(eMovementTypeStand);
 
-//	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-//	m_object->set_node_evaluator	(0);
-//	m_object->set_path_evaluator	(0);
-//	m_object->set_desired_position	(&m_object->Position());
 	m_object->set_desired_direction	(0);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
-//	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
@@ -923,7 +951,10 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourModerate)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -933,7 +964,6 @@ _edge_value_type CStalkerActionGetReadyToKillModerate::weight	(const CSCondition
 CStalkerActionKillEnemyModerate::CStalkerActionKillEnemyModerate	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionKillEnemyModerate::initialize	()
@@ -966,16 +996,7 @@ void CStalkerActionKillEnemyModerate::execute		()
 	Fvector							position;
 	m_object->enemy()->Center		(position);
 
-//	if (m_object->Position().distance_to(m_object->enemy()->Position()) >= 10.f) {
-//		m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-//		m_object->set_desired_position	(&mem_object.m_object_params.m_position);
-//		m_object->set_movement_type		(eMovementTypeWalk);
-//	}
-//	else
-//		m_object->set_movement_type		(eMovementTypeStand);
-
 	m_object->set_movement_type		(eMovementTypeStand);
-
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
@@ -991,7 +1012,10 @@ void CStalkerActionKillEnemyModerate::execute		()
 
 _edge_value_type CStalkerActionKillEnemyModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourModerate)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1001,7 +1025,6 @@ _edge_value_type CStalkerActionKillEnemyModerate::weight	(const CSConditionState
 CStalkerActionGetReadyToKillAvoid::CStalkerActionGetReadyToKillAvoid	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionGetReadyToKillAvoid::initialize	()
@@ -1023,14 +1046,13 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 	if (!m_object->m_best_item_to_kill)
 		return;
 
-	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
-
-	if (mem_object.m_object) {
+	if (m_object->enemy()) {
+		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
 		Fvector						position = mem_object.m_object_params.m_position;
 		CCoverPoint					*point = m_object->best_cover_point(
 			m_object->Position(),
 			position,
-			StalkerSpace::eCoverTypeCloseToEnemy,
+			StalkerSpace::eCoverTypeFarFromEnemy,
 			30.f,
 			5.f,
 			10.f,
@@ -1069,7 +1091,10 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 
 _edge_value_type CStalkerActionGetReadyToKillAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourAvoiding)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1079,7 +1104,6 @@ _edge_value_type CStalkerActionGetReadyToKillAvoid::weight	(const CSConditionSta
 CStalkerActionKillEnemyAvoid::CStalkerActionKillEnemyAvoid	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionKillEnemyAvoid::initialize	()
@@ -1137,7 +1161,10 @@ void CStalkerActionKillEnemyAvoid::execute		()
 
 _edge_value_type CStalkerActionKillEnemyAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourAvoiding)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1147,7 +1174,6 @@ _edge_value_type CStalkerActionKillEnemyAvoid::weight	(const CSConditionState &c
 CStalkerActionRetreatFromEnemy::CStalkerActionRetreatFromEnemy	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionRetreatFromEnemy::initialize	()
@@ -1169,10 +1195,10 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	if (!m_object->enemy())
 		return;
 
-	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
-
-	if (!mem_object.m_object)
+	if (!m_object->enemy())
 		return;
+
+	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
 
 	if (!m_object->visible(m_object->enemy()))
 		return;
@@ -1205,5 +1231,89 @@ void CStalkerActionRetreatFromEnemy::execute		()
 
 _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(inherited::weight(condition0,condition1));
+	if (g_stalker_behaviour == eStalkerBehaviourRetreat)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionCamp
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionCamp::CStalkerActionCamp	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+	set_inertia_time		(30000);
+}
+
+void CStalkerActionCamp::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionCamp::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionCamp::execute	()
+{
+	inherited::execute		();
+
+	if (!m_object->enemy())
+		return;
+
+	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
+
+	if (!mem_object.m_object)
+		return;
+
+	if (completed()) {
+//		m_object->enable			(m_object->enemy(),false);
+//		return;
+	}
+
+	Fvector							position = mem_object.m_object_params.m_position;
+	CCoverPoint						*point = m_object->best_cover_point(
+		mem_object.m_self_params.m_position,
+		mem_object.m_self_params.m_position,
+		StalkerSpace::eCoverTypeBest,
+		30.f,
+		30.f,
+		0.f,
+		30.f
+	);
+	if (point) {
+		m_object->set_level_dest_vertex	(point->level_vertex_id());
+		m_object->set_desired_position	(&point->position());
+		m_object->set_movement_type		(eMovementTypeRun);
+		m_object->set_body_state		(eBodyStateStand);
+		m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+	}
+	else {
+		m_object->set_movement_type		(eMovementTypeStand);
+		m_object->set_body_state		(eBodyStateCrouch);
+		m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+	}
+
+	m_object->set_path_type				(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type		(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_mental_state			(eMentalStateDanger);
+
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
+#else
+	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionAim1,m_object->best_weapon());
+#endif
+}
+
+_edge_value_type CStalkerActionCamp::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	if ((g_stalker_behaviour == eStalkerBehaviourVeryAggressive) || (g_stalker_behaviour == eStalkerBehaviourAggressive))
+		return				(_edge_value_type(100));
+	else
+		return				(_edge_value_type(1));
 }

@@ -48,9 +48,9 @@ void CScriptEngine::export_action_management()
 		class_<CScriptWorldProperty>("world_property")
 			.def(								constructor<CScriptWorldProperty::_condition_type, CScriptWorldProperty::_value_type>())
 			.def("condition",					&CScriptWorldProperty::condition)
-			.def("value",						&CScriptWorldProperty::value),
-//			.def(const_self < CScriptWorldProperty())
-//			.def(const_self == CScriptWorldProperty()),
+			.def("value",						&CScriptWorldProperty::value)
+			.def(const_self < other<CScriptWorldProperty>())
+			.def(const_self == other<CScriptWorldProperty>()),
 
 		class_<CScriptWorldState>("world_state")
 			.def(								constructor<>())
@@ -129,7 +129,7 @@ void CScriptEngine::export_motivation_management()
 			.def("reload",						&CScriptMotivationWrapper::reload_static)
 			.def("evaluate",					&CScriptMotivationWrapper::evaluate_static),
 
-		class_<CScriptMotivationAction,CScriptMotivationActionWrapper,CScriptMotivation>("motivation_action")
+		class_<CScriptMotivationAction,CScriptMotivationActionWrapper,bases<CScriptMotivation> >("motivation_action")
 			.def(								constructor<const CScriptWorldState &>())
 			.def("goal",						&CScriptMotivationAction::goal),
 

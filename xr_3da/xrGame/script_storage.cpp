@@ -22,14 +22,18 @@ CScriptStorage::CScriptStorage		()
 		return;
 	}
 	// initialize lua standard library functions 
-	luaopen_base			(m_virtual_machine); 
-	luaopen_table			(m_virtual_machine);
-	luaopen_string			(m_virtual_machine);
-	luaopen_math			(m_virtual_machine);
+//	print_table				(lua(),"_G");
+//	print_stack				(lua());
+	luaopen_base			(lua()); 
+	luaopen_table			(lua());
+	luaopen_string			(lua());
+	luaopen_math			(lua());
 #ifdef DEBUG
-	luaopen_debug			(m_virtual_machine);
+	luaopen_debug			(lua());
 #endif
-	lua_settop				(m_virtual_machine,0);
+//	print_table				(lua(),"_G");
+//	print_stack				(lua());
+//	lua_settop				(lua(),0);
 }
 
 CScriptStorage::~CScriptStorage		()
@@ -117,13 +121,17 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 
 bool CScriptStorage::create_namespace	(LPCSTR caNamespaceName)
 {
+	int				start = lua_gettop(lua());
 	lua_pushstring	(lua(),"_G");
 	lua_gettable	(lua(),LUA_GLOBALSINDEX);
 	LPSTR			S2	= xr_strdup(caNamespaceName);
 	LPSTR			S	= S2;
 	for (;;) {
 		if (!xr_strlen(S)) {
+//			lua_settop	(lua(),0);
+			VERIFY		(lua_gettop(ai().script_engine().lua()) >= 1);
 			lua_pop		(lua(),1);
+			VERIFY		(lua_gettop(lua()) == start);
 			script_log	(ScriptStorage::eLuaMessageTypeError,"the namespace name %s is incorrect!",caNamespaceName);
 			xr_free		(S2);
 			return		(false);
@@ -142,10 +150,14 @@ bool CScriptStorage::create_namespace	(LPCSTR caNamespaceName)
 		}
 		else
 			if (!lua_istable(lua(),-1)) {
-				xr_free			(S2);
-				lua_pop			(lua(),2);
-				script_log		(ScriptStorage::eLuaMessageTypeError,"the namespace name %s is already being used by the non-table object!",caNamespaceName);
-				return			(false);
+				xr_free		(S2);
+
+//				lua_settop	(lua(),0);
+				VERIFY		(lua_gettop(ai().script_engine().lua()) >= 1);
+				lua_pop		(lua(),1);
+				VERIFY		(lua_gettop(lua()) == start);
+				script_log	(ScriptStorage::eLuaMessageTypeError,"the namespace name %s is already being used by the non-table object!",caNamespaceName);
+				return		(false);
 			}
 			lua_remove		(lua(),-2);
 			if (S1)
@@ -154,34 +166,42 @@ bool CScriptStorage::create_namespace	(LPCSTR caNamespaceName)
 				break;
 	}
 	xr_free			(S2);
+	VERIFY			(lua_gettop(lua()) == start + 1);
 	return			(true);
 }
 
 void CScriptStorage::copy_globals	()
 {
-	lua_newtable	(lua());
-	lua_pushstring	(lua(),"_G");
-	lua_gettable	(lua(),LUA_GLOBALSINDEX);
-	lua_pushnil		(lua());
+	int					start = lua_gettop(lua());
+	lua_newtable		(lua());
+	lua_pushstring		(lua(),"_G");
+	lua_gettable		(lua(),LUA_GLOBALSINDEX);
+	lua_pushnil			(lua());
 	while (lua_next(lua(), -2)) {
 		lua_pushvalue	(lua(),-2);
 		lua_pushvalue	(lua(),-2);
 		lua_settable	(lua(),-6);
 		lua_pop			(lua(), 1);
 	}
+	VERIFY				(lua_gettop(lua()) == start + 2);
 }
 
 bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t tSize, LPCSTR caScriptName, LPCSTR caNameSpaceName)
 {
+//	int				start = lua_gettop(L);
 	int				l_iErrorCode;
 	if (caNameSpaceName) {
 		string256		insert;
-		sprintf			(insert,"local this = %s\n\nfunction %s.script_name()\nreturn \"%s\"\nend\n",caNameSpaceName,caNameSpaceName,caNameSpaceName);
+		sprintf			(insert,"local this = %s\nfunction %s.script_name()\nreturn \"%s\"\nend\n",caNameSpaceName,caNameSpaceName,caNameSpaceName);
 		size_t			str_len = xr_strlen(insert);
 		LPSTR			script = (LPSTR)xr_malloc((str_len + tSize)*sizeof(char));
 		strcpy			(script,insert);
 		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
 		l_iErrorCode	= luaL_loadbuffer(L,script,tSize + str_len,caScriptName);
+//		l_iErrorCode	= luaL_loadbuffer(L,insert,xr_strlen(insert),caScriptName);
+//		VERIFY2			(!l_iErrorCode,"Unexpected error in the script file header");
+//		lua_call		(L,0,0);
+//		l_iErrorCode	= luaL_loadbuffer(L,caBuffer,tSize,caScriptName);
 	}
 	else
 		l_iErrorCode	= luaL_loadbuffer(L,caBuffer,tSize,caScriptName);
@@ -191,20 +211,26 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 		if (!print_output(L,caScriptName,l_iErrorCode))
 			print_error	(L,l_iErrorCode);
 #endif
+//		VERIFY			(lua_gettop(L) == start + 1);
 		return			(false);
 	}
-	return			(true);
+//	VERIFY				(lua_gettop(L) == start + 1);
+	return				(true);
 }
 
 bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool bCall)
 {
+	int				start = lua_gettop(lua());
 	string256		l_caLuaFileName;
 	IReader			*l_tpFileReader = FS.r_open(caScriptName);
 	R_ASSERT		(l_tpFileReader);
 	strconcat		(l_caLuaFileName,"@",caScriptName);
 	
 	if (!load_buffer(lua(),static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName,caNameSpaceName)) {
+//		lua_settop	(lua(),0);
+		VERIFY		(lua_gettop(ai().script_engine().lua()) >= 4);
 		lua_pop		(lua(),4);
+		VERIFY		(lua_gettop(lua()) == start - 3);
 		FS.r_close	(l_tpFileReader);
 		return		(false);
 	}
@@ -212,6 +238,8 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 
 	if (bCall) {
 		lua_call	(lua(),0,0);
+//		if (lua_gettop(lua()) != start)
+//			lua_call(lua(),0,0);
 //		int			l_iErrorCode = lua_pcall(lua(),0,0,0);
 //		if (l_iErrorCode) {
 //#ifdef DEBUG
@@ -224,11 +252,13 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	else
 		lua_insert	(lua(),-4);
 
+	VERIFY			(lua_gettop(lua()) == start);
 	return			(true);
 }
 
 void CScriptStorage::set_namespace()
 {
+	int				start = lua_gettop(lua());
 	lua_pushnil		(lua());
 	while (lua_next(lua(), -2)) {
 		lua_pushvalue	(lua(),-2);
@@ -261,22 +291,32 @@ void CScriptStorage::set_namespace()
 		lua_settable	(lua(),-6);
 		lua_pop			(lua(), 1);
 	}
+//	lua_settop		(lua(),0);
+	VERIFY			(lua_gettop(ai().script_engine().lua()) >= 3);
 	lua_pop			(lua(),3);
+	VERIFY			(lua_gettop(lua()) == start - 3);
 }
 
 bool CScriptStorage::load_file_into_namespace(LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
 {
-	if (!create_namespace(caNamespaceName))
+	int				start = lua_gettop(lua());
+	if (!create_namespace(caNamespaceName)) {
+		VERIFY		(lua_gettop(lua()) == start);
 		return		(false);
+	}
 	copy_globals	();
-	if (!do_file(caScriptName,caNamespaceName,bCall))
+	if (!do_file(caScriptName,caNamespaceName,bCall)) {
+		VERIFY		(lua_gettop(lua()) == start);
 		return		(false);
+	}
 	set_namespace	();
+	VERIFY			(lua_gettop(lua()) == start);
 	return			(true);
 }
 
-bool CScriptStorage::namespace_loaded(LPCSTR N)
+bool CScriptStorage::namespace_loaded(LPCSTR N, bool remove_from_stack)
 {
+	int						start = lua_gettop(lua());
 	lua_pushstring 			(lua(),"_G"); 
 	lua_gettable 			(lua(),LUA_GLOBALSINDEX); 
 	string256				S2;
@@ -291,12 +331,18 @@ bool CScriptStorage::namespace_loaded(LPCSTR N)
 		lua_pushstring 		(lua(),S); 
 		lua_gettable 		(lua(),-2); 
 		if (lua_isnil(lua(),-1)) { 
+//			lua_settop		(lua(),0);
+			VERIFY			(lua_gettop(ai().script_engine().lua()) >= 2);
 			lua_pop			(lua(),2); 
+			VERIFY			(start == lua_gettop(lua()));
 			return			(false);	//	there is no namespace!
 		}
 		else 
 			if (!lua_istable(lua(),-1)) { 
-				lua_pop		(lua(),2); 
+//				lua_settop	(lua(),0);
+				VERIFY		(lua_gettop(ai().script_engine().lua()) >= 1);
+				lua_pop		(lua(),1); 
+				VERIFY		(start == lua_gettop(lua()));
 				Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
 				return		(false); 
 			} 
@@ -306,28 +352,47 @@ bool CScriptStorage::namespace_loaded(LPCSTR N)
 			else
 				break; 
 	} 
+	if (!remove_from_stack) {
+		VERIFY				(lua_gettop(lua()) == start + 1);
+	}
+	else {
+		VERIFY				(lua_gettop(lua()) >= 1);
+		lua_pop				(lua(),1);
+		VERIFY				(lua_gettop(lua()) == start);
+	}
 	return					(true); 
 }
 
 bool CScriptStorage::object	(LPCSTR identifier, int type)
 {
+	int						start = lua_gettop(lua());
 	lua_pushnil (lua()); 
 	while (lua_next(lua(), -2)) { 
 		if ((lua_type(lua(), -1) == type) && !xr_strcmp(identifier,lua_tostring(lua(), -2))) { 
-			lua_pop (lua(), 3); 
-			return	(true); 
+			VERIFY			(lua_gettop(ai().script_engine().lua()) >= 3);
+			lua_pop			(lua(), 3); 
+			VERIFY			(lua_gettop(lua()) == start - 1);
+			return			(true); 
 		} 
-		lua_pop (lua(), 1); 
+		lua_pop				(lua(), 1); 
 	} 
-	lua_pop (lua(), 1); 
-	return	(false); 
+//	lua_settop				(lua(),0);
+	VERIFY					(lua_gettop(ai().script_engine().lua()) >= 1);
+	lua_pop					(lua(), 1); 
+	VERIFY					(lua_gettop(lua()) == start - 1);
+	return					(false); 
 }
 
 bool CScriptStorage::object	(LPCSTR namespace_name, LPCSTR identifier, int type)
 {
-	if (xr_strlen(namespace_name) && !namespace_loaded(namespace_name))
+	int						start = lua_gettop(lua());
+	if (xr_strlen(namespace_name) && !namespace_loaded(namespace_name,false)) {
+		VERIFY				(lua_gettop(lua()) == start);
 		return				(false); 
-	return					(object(identifier,type)); 
+	}
+	bool					result = object(identifier,type);
+	VERIFY					(lua_gettop(lua()) == start);
+	return					(result); 
 }
 
 luabind::object CScriptStorage::name_space(LPCSTR namespace_name)
@@ -350,11 +415,11 @@ luabind::object CScriptStorage::name_space(LPCSTR namespace_name)
 
 bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName, int iErorCode)
 {
-	for (int i=-1; ; --i)
+	for (int i=0; ; --i)
 		if (lua_isstring(L,i)) {
 			LPCSTR	S = lua_tostring(L,i);
 			if (!xr_strcmp(S,"cannot resume dead coroutine")) {
-				script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished",caScriptFileName);
+				VERIFY2	("Please do not return any values from main!!!",caScriptFileName);
 				return	(true);
 			}
 			else {
@@ -363,23 +428,9 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 				script_log	(iErorCode ? ScriptStorage::eLuaMessageTypeError : ScriptStorage::eLuaMessageTypeMessage,"%s",S);
 			}
 		}
-		else {
-			for ( i=0; ; ++i)
-				if (lua_isstring(L,i)) {
-					LPCSTR	S = lua_tostring(L,i);
-					if (!xr_strcmp(S,"cannot resume dead coroutine")) {
-						script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished",caScriptFileName);
-						return	(true);
-					}
-					else {
-						if (!i && !iErorCode)
-							script_log	(ScriptStorage::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
-						script_log	(iErorCode ? ScriptStorage::eLuaMessageTypeError : ScriptStorage::eLuaMessageTypeMessage,"%s",S);
-					}
-				}
-				else
-					return		(false);
-		}
+		else
+			if (i)
+				return	(false);
 }
 
 void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
@@ -466,9 +517,56 @@ bool CScriptStorage::print_stack_level(CLuaVirtualMachine *L, int iStackLevel)
 
 void CScriptStorage::flush_log()
 {
-	string256				log_file_name;
-	strconcat               (log_file_name,Core.ApplicationName,"_",Core.UserName,"_lua.log");
-	FS.update_path          (log_file_name,"$logs$",log_file_name);
-	m_output.save_to		(log_file_name);
+	string256			log_file_name;
+	strconcat           (log_file_name,Core.ApplicationName,"_",Core.UserName,"_lua.log");
+	FS.update_path      (log_file_name,"$logs$",log_file_name);
+	m_output.save_to	(log_file_name);
 }
 
+void CScriptStorage::print_stack	(CLuaVirtualMachine *L)
+{
+	int					start = lua_gettop(L);
+	Msg					("Lua stack");
+	for (int i=0, n=lua_gettop(L); i<n; ++i)
+		Msg				("%2d : %s",-i-1,lua_typename(L, lua_type(L, -i-1)));
+	VERIFY				(lua_gettop(L) == start);
+}
+
+void CScriptStorage::print_table	(lua_State *L, LPCSTR S, bool bRecursive)
+{
+	int					start = lua_gettop(L);
+	int t				= -2;
+	lua_pushstring		(L, S);
+	lua_gettable		(L, LUA_GLOBALSINDEX);
+	
+	if (!lua_istable(L,-1))
+		lua_error		(L);
+	
+	Msg					("\nContent of the table \"%s\" :",S);
+	
+	lua_pushnil			(L);
+	while (lua_next(L, t) != 0) {
+		Msg				("%16s - %s", lua_tostring(L, -2), lua_typename(L, lua_type(L, -1)));
+		lua_pop			(L, 1);
+	}
+
+//	print_stack			(L);
+
+	VERIFY				(lua_gettop(L) >= 1);
+	lua_pop				(L,1); 
+	VERIFY				(lua_gettop(L) == start);
+
+	if (!bRecursive)
+		return;
+
+	lua_pushnil			(L);
+	while (lua_next(L, t) != 0) {
+		if (lua_istable(L, lua_type(L, -1)))
+			print_table	(L,lua_tostring(L, -2),false);
+		lua_pop			(L, 1);
+	}
+
+	VERIFY				(lua_gettop(L) >= 1);
+	lua_pop				(L,1); 
+	VERIFY				(lua_gettop(L) == start);
+}

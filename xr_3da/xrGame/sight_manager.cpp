@@ -215,6 +215,10 @@ void CSightManager::update			(u32 time_delta)
 {
 	inherited::update	(time_delta);
 	
-	if ((m_object->speed() < EPS_L) && (angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_2))
+	if	(
+			(m_object->speed() < EPS_L) && 
+			(angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_6) &&
+			fsimilar(m_object->m_head.target.yaw,m_object->m_head.current.yaw)
+		)
 		m_object->m_body.target.yaw = m_object->m_head.target.yaw;
 }

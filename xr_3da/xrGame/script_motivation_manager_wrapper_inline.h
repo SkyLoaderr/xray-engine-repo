@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CScriptMotivationManagerWrapper::CScriptMotivationManagerWrapper	(const luabind::object &lua_instance) :
+IC	CScriptMotivationManagerWrapper::CScriptMotivationManagerWrapper	(luabind::weak_ref lua_instance) :
 	m_lua_instance					(lua_instance)
 {
 }

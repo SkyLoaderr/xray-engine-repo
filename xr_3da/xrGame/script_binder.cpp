@@ -102,11 +102,16 @@ void CScriptBinder::net_Import		(NET_Packet &net_packet)
 
 void CScriptBinder::net_Export		(NET_Packet &net_packet)
 {
+	if (!xr_strcmp("bandit_stalker_0_0",*dynamic_cast<CGameObject*>(this)->cName())) {
+		m_object = m_object;
+	}
 	if (m_object)
 		m_object->net_Export(&net_packet);
 }
 
 void CScriptBinder::set_object		(CScriptBinderObject *object)
 {
+	VERIFY2					(!m_object,"Cannot bind to the object twice!");
+	Msg						("Core object %s is binded with the script object",dynamic_cast<CGameObject*>(this) ? *dynamic_cast<CGameObject*>(this)->cName() : "");
 	m_object				= object;
 }

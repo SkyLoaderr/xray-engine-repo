@@ -98,8 +98,11 @@ void CStalkerMovementManager::reinit				()
 	custom_monster->m_body.speed	= PI_MUL_2;
 	m_head.speed					= 3*PI_DIV_2;
 
-	m_desired_position				= 0;
-	m_desired_direction				= 0;
+	m_use_desired_position			= false;
+	m_use_desired_direction			= false;
+	m_desired_position				= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
+	m_desired_direction				= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
+
 	m_path_evaluator				= 0;
 	m_node_evaluator				= 0;
 	m_body_state					= eBodyStateStand;
@@ -123,14 +126,17 @@ void CStalkerMovementManager::update(u32 time_delta)
 	m_movement_type										= m_movement_type;
 	m_mental_state										= m_mental_state;
 	
-	if (m_desired_position)
-		CDetailPathManager::set_dest_position			(*m_desired_position);
+	if (m_use_desired_position) {
+		VERIFY											(valid(m_desired_position));
+		CDetailPathManager::set_dest_position			(m_desired_position);
+	}
 	else
 		if ((m_path_type != ePathTypePatrolPath) && (m_path_type != ePathTypeGamePath))
 			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
 
-	if (m_desired_direction) {
-		CDetailPathManager::set_dest_direction			(*m_desired_direction);
+	if (m_use_desired_direction) {
+		VERIFY											(valid(m_desired_direction));
+		CDetailPathManager::set_dest_direction			(m_desired_direction);
 		CDetailPathManager::set_use_dest_orientation	(true);
 	}
 	else

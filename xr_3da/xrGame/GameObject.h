@@ -152,8 +152,14 @@ public:
 
 private:
 	CLuaGameObject			*m_lua_game_object;
+	int						m_script_clsid;
 public:
 			CLuaGameObject	*lua_game_object();
+			int				clsid			() const
+	{
+		VERIFY				(m_script_clsid >= 0);
+		return				(m_script_clsid);
+	}
 protected:
 			bool	frame_check			(u32 &frame);
 };

@@ -42,6 +42,7 @@ void CGameObject::Init		()
 	m_dwFrameSpawn				= u32(-1);
 	m_dwFrameDestroy			= u32(-1);
 	m_dwFrameClient				= u32(-1);
+	m_script_clsid				= -1;
 }
 
 void CGameObject::Load(LPCSTR section)
@@ -77,6 +78,7 @@ void CGameObject::reload	(LPCSTR section)
 {
 	if (!frame_check(m_dwFrameReload))
 		return;
+	m_script_clsid			= ai().script_engine().clsid(SUB_CLS_ID);
 }
 
 void CGameObject::net_Destroy	()
@@ -84,6 +86,7 @@ void CGameObject::net_Destroy	()
 	if (!frame_check(m_dwFrameDestroy))
 		return;
 
+	m_script_clsid			= -1;
 	if (Visual() && PKinematics(Visual()))
 		PKinematics(Visual())->Callback	(0,0);
 

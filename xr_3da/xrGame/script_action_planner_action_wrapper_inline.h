@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CScriptActionPlannerActionWrapper::CScriptActionPlannerActionWrapper	(const luabind::object &lua_instance) :
+IC	CScriptActionPlannerActionWrapper::CScriptActionPlannerActionWrapper	(luabind::weak_ref lua_instance) :
 	m_lua_instance		(lua_instance)
 {
 }

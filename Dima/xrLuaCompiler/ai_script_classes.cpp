@@ -574,3 +574,33 @@ LPCSTR CLuaGameObject::GetPatrolPathName()
 	else
 		return			(*stalker->path_name());
 }
+
+void CLuaGameObject::add_animation			(LPCSTR animation, bool hand_usage)
+{
+	CAI_Stalker			*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member add_animation!");
+		return;
+	}
+	stalker->add_animation(animation,hand_usage);
+}
+
+void CLuaGameObject::clear_animations		()
+{
+	CAI_Stalker			*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member clear_animations!");
+		return;
+	}
+	stalker->clear_animations();
+}
+
+int	CLuaGameObject::animation_count		() const
+{
+	CAI_Stalker			*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member clear_animations!");
+		return			(-1);
+	}
+	return				((int)stalker->m_script_animations.size());
+}
