@@ -26,6 +26,11 @@ struct CNotYetVisibleObjectPredicate{
 	}
 };
 
+IC	const CVisualMemoryManager::CVisionParameters &CVisualMemoryManager::current_state() const
+{
+	return				(!m_stalker || (m_stalker->mental_state() != eMentalStateDanger) ? m_free : m_danger);
+}
+
 CVisualMemoryManager::CVisualMemoryManager		()
 {
 	init				();
@@ -41,28 +46,32 @@ void CVisualMemoryManager::init					()
 	m_enabled					= true;
 }
 
+void CVisualMemoryManager::CVisionParameters::Load	(LPCSTR section, bool not_a_stalker)
+{
+	m_transparency_threshold	= pSettings->r_float(section,"transparency_threshold");
+	if (!not_a_stalker)
+		return;
+	m_min_view_distance			= pSettings->r_float(section,"min_view_distance");
+	m_max_view_distance			= pSettings->r_float(section,"max_view_distance");
+	m_visibility_threshold		= pSettings->r_float(section,"visibility_threshold");
+	m_always_visible_distance	= pSettings->r_float(section,"always_visible_distance");
+	m_time_quant				= pSettings->r_float(section,"time_quant");
+	m_decrease_value			= pSettings->r_float(section,"decrease_value");
+	m_velocity_factor			= pSettings->r_float(section,"velocity_factor");
+}
+
 void CVisualMemoryManager::Load					(LPCSTR section)
 {
 	CGameObject::Load			(section);
 	
 	m_max_object_count			= pSettings->r_s32(section,"DynamicObjectsCount");
-	m_transparency_threshold	= pSettings->r_float(section,"transparency_threshold");
+
 	m_monster					= smart_cast<CCustomMonster*>(this);
 	m_stalker					= smart_cast<CAI_Stalker*>(this);
 
-	if (!m_stalker)
-		return;
-	
-	m_min_view_distance_danger			= pSettings->r_float(section,"min_view_distance_danger");
-	m_max_view_distance_danger			= pSettings->r_float(section,"max_view_distance_danger");
-	m_min_view_distance_free			= pSettings->r_float(section,"min_view_distance_free");
-	m_max_view_distance_free			= pSettings->r_float(section,"max_view_distance_free");
-	m_visibility_threshold				= pSettings->r_float(section,"visibility_threshold");
-	m_always_visible_distance_danger	= pSettings->r_float(section,"always_visible_distance_danger");
-	m_always_visible_distance_free		= pSettings->r_float(section,"always_visible_distance_free");
-	m_time_quant						= pSettings->r_float(section,"time_quant");
-	m_decrease_value					= pSettings->r_float(section,"decrease_value");
-	m_velocity_factor					= pSettings->r_float(section,"velocity_factor");
+	m_free.Load					(m_stalker ? pSettings->r_string(section,"vision_danger_section") : section,!!m_stalker);
+	if (m_stalker)
+		m_danger.Load			(pSettings->r_string(section,"vision_free_section"),!!m_stalker);
 }
 
 void CVisualMemoryManager::reinit					()
@@ -105,14 +114,8 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	clamp								(alpha,0.f,fov);
 
 	float								max_view_distance = m_stalker->eye_range, min_view_distance = m_stalker->eye_range;
-	if (m_stalker->mental_state() == eMentalStateDanger) {
-		max_view_distance				*= m_max_view_distance_danger;
-		min_view_distance				*= m_min_view_distance_danger;
-	}
-	else {
-		max_view_distance				*= m_max_view_distance_free;
-		min_view_distance				*= m_min_view_distance_free;
-	}
+	max_view_distance					*= current_state().m_max_view_distance;
+	min_view_distance					*= current_state().m_min_view_distance;
 
 	float								distance = (1.f - alpha/fov)*(max_view_distance - min_view_distance) + min_view_distance;
 
@@ -138,17 +141,15 @@ float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object,
 
 float CVisualMemoryManager::get_visible_value	(float distance, float object_distance, float time_delta, float object_velocity) const
 {
-	float								always_visible_distance = m_always_visible_distance_free;
-	if (m_stalker->mental_state() == eMentalStateDanger)
-		always_visible_distance			= m_always_visible_distance_danger;
+	float								always_visible_distance = current_state().m_always_visible_distance;
 
 	if (distance <= always_visible_distance + EPS_L)
-		return							(m_visibility_threshold);
+		return							(current_state().m_visibility_threshold);
 
 	return								(
 		time_delta / 
-		m_time_quant * 
-		(1.f + m_velocity_factor*object_velocity) *
+		current_state().m_time_quant * 
+		(1.f + current_state().m_velocity_factor*object_velocity) *
 		(distance - object_distance) /
 		(distance - always_visible_distance)
 	);
@@ -196,12 +197,12 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	
 	if (distance < object_distance) {
 		if (object) {
-			object->m_value		-= m_decrease_value;
+			object->m_value		-= current_state().m_decrease_value;
 			if (object->m_value < 0.f)
 				object->m_value	= 0.f;
 			else
 				object->m_updated = true;
-			return				(object->m_value >= m_visibility_threshold);
+			return				(object->m_value >= current_state().m_visibility_threshold);
 		}
 		return					(false);
 	}
@@ -211,19 +212,19 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 		new_object.m_object		= game_object;
 		new_object.m_prev_time	= 0;
 		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object));
-		clamp					(new_object.m_value,0.f,m_visibility_threshold + EPS_L);
+		clamp					(new_object.m_value,0.f,current_state().m_visibility_threshold + EPS_L);
 		new_object.m_updated	= true;
 		new_object.m_prev_time	= get_prev_time(game_object);
 		add_not_yet_visible_object(new_object);
-		return					(new_object.m_value >= m_visibility_threshold);
+		return					(new_object.m_value >= current_state().m_visibility_threshold);
 	}
 	
 	object->m_updated			= true;
 	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object));
-	clamp						(object->m_value,0.f,m_visibility_threshold + EPS_L);
+	clamp						(object->m_value,0.f,current_state().m_visibility_threshold + EPS_L);
 	object->m_prev_time			= get_prev_time(game_object);
 
-	return						(object->m_value >= m_visibility_threshold);
+	return						(object->m_value >= current_state().m_visibility_threshold);
 }
 
 void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta)

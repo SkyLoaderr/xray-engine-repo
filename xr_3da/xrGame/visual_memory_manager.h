@@ -53,21 +53,25 @@ public:
 		}
 	};
 
+	struct CVisionParameters {
+		float						m_min_view_distance;
+		float						m_max_view_distance;
+		float						m_visibility_threshold;
+		float						m_always_visible_distance;
+		float						m_time_quant;
+		float						m_decrease_value;
+		float						m_velocity_factor;
+		float						m_transparency_threshold;
+
+			void	Load			(LPCSTR section, bool not_a_stalker);
+	};
+
 private:
 	u32								m_max_object_count;
 	xr_vector<CVisibleObject>		*m_objects;
 	xr_vector<CNotYetVisibleObject>	m_not_yet_visible_objects;
-	float							m_min_view_distance_danger;
-	float							m_max_view_distance_danger;
-	float							m_min_view_distance_free;
-	float							m_max_view_distance_free;
-	float							m_visibility_threshold;
-	float							m_always_visible_distance_danger;
-	float							m_always_visible_distance_free;
-	float							m_time_quant;
-	float							m_decrease_value;
-	float							m_velocity_factor;
-	float							m_transparency_threshold;
+	CVisionParameters				m_free;
+	CVisionParameters				m_danger;
 	bool							m_enabled;
 
 private:
@@ -76,6 +80,7 @@ private:
 	CAI_Stalker						*m_stalker;
 
 protected:
+	IC		const CVisionParameters &current_state	() const;
 	IC		void	fill_object						(CVisibleObject &visible_object, const CGameObject *game_object);
 			void	add_visible_object				(const CObject *object, float time_delta);
 			void	add_visible_object				(const CVisibleObject visible_object);

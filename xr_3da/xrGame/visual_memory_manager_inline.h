@@ -55,12 +55,12 @@ IC	const xr_vector<CNotYetVisibleObject> &CVisualMemoryManager::not_yet_visible_
 
 IC	float CVisualMemoryManager::visibility_threshold	() const
 {
-	return							(m_visibility_threshold);
+	return							(current_state().m_visibility_threshold);
 }
 
 IC	float CVisualMemoryManager::transparency_threshold	() const
 {
-	return							(m_transparency_threshold);
+	return							(current_state().m_transparency_threshold);
 }
 
 IC	bool CVisualMemoryManager::enabled					() const
