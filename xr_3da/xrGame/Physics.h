@@ -7,8 +7,8 @@
 
 class CPHObject {
 public:
-virtual void PhDataUpdate(dReal step)=0;
-virtual void PhTune(dReal step)=0;
+	virtual void PhDataUpdate(dReal step)=0;
+	virtual void PhTune(dReal step)=0;
 };
 ///////////////////////////////////////////////////////////////////////////////
 class CPHMesh {
@@ -46,13 +46,13 @@ public:
 	void Revert();
 	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
 	void SetPosition(Fvector pos){
-	const dReal* currentPos=dBodyGetPosition(Bodies[0]);	
-	Fvector v={pos.x-currentPos[0],pos.y-currentPos[1],pos.z-currentPos[2]};
-	dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);
-	for(unsigned int i=1;i<NofBodies; i++ ){
-		const dReal* currentPos=dBodyGetPosition(Bodies[i]);
-		dVector3 newPos={currentPos[0]+v.x,currentPos[1]+v.y,currentPos[2]+v.z};
-		dBodySetPosition(Bodies[i],newPos[0],newPos[1],newPos[2]);
+		const dReal* currentPos=dBodyGetPosition(Bodies[0]);	
+		Fvector v={pos.x-currentPos[0],pos.y-currentPos[1],pos.z-currentPos[2]};
+		dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);
+		for(unsigned int i=1;i<NofBodies; i++ ){
+			const dReal* currentPos=dBodyGetPosition(Bodies[i]);
+			dVector3 newPos={currentPos[0]+v.x,currentPos[1]+v.y,currentPos[2]+v.z};
+			dBodySetPosition(Bodies[i],newPos[0],newPos[1],newPos[2]);
 		}
 	}
 	Fvector GetVelocity(){
@@ -68,7 +68,7 @@ public:
 	dVector3 cabinBox;
 	dReal VelocityRate;
 	dReal DriveForce;
-	
+
 	dReal DriveVelocity;
 	char  DriveDirection;
 	bool Breaks;
@@ -95,11 +95,11 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 class CPHWorld {
 	dSpaceID Space;
-	
+
 	CPHMesh Mesh;
 	list<CPHObject*> m_objects;
 public:
-	
+
 	CPHGun Gun;
 	//CPHJeep Jeep;
 	unsigned int disable_count;
@@ -108,13 +108,13 @@ public:
 	~CPHWorld(){};
 
 	dSpaceID GetSpace(){return Space;};
-//	dWorldID GetWorld(){return phWorld;};
+	//	dWorldID GetWorld(){return phWorld;};
 	void Create();
 	list <CPHObject*> ::iterator AddObject(CPHObject* object){
 		m_objects.push_back(object);
-	//list <CPHObject*> ::iterator i= m_objects.end();
-	return --(m_objects.end());
-		};
+		//list <CPHObject*> ::iterator i= m_objects.end();
+		return --(m_objects.end());
+	};
 	void RemoveObject(list<CPHObject*> :: iterator i){
 		m_objects.erase((i));
 	};
@@ -129,8 +129,8 @@ public:
 
 	void Render();
 
-//private:
-//static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+	//private:
+	//static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 };
 /////////////////////////////////////////////////////////////////////////////
 
@@ -143,24 +143,24 @@ static dJointGroupID ContactGroup;
 ////////////////////////////////////////////////////////////////////////////////
 //using namespace std;
 class CPHElement: public CPhysicsElement {
-vector <dGeomID> m_geoms;
-vector <dGeomID> m_trans;
-vector <Fsphere> m_spheras_data;
-vector <Fobb>    m_boxes_data;
-float m_volume;
-Fvector m_mass_center;
-dMass m_mass;
-dSpaceID m_space;
-dBodyID m_body;
-dGeomID m_group;
-Fmatrix m_m0,m_m2;
-void			create_Sphere				(Fsphere&	V);
-void			create_Box					(Fobb&		V);
-void			calculate_it_data			(const Fvector& mc,float mass);
+	vector <dGeomID> m_geoms;
+	vector <dGeomID> m_trans;
+	vector <Fsphere> m_spheras_data;
+	vector <Fobb>    m_boxes_data;
+	float m_volume;
+	Fvector m_mass_center;
+	dMass m_mass;
+	dSpaceID m_space;
+	dBodyID m_body;
+	dGeomID m_group;
+	Fmatrix m_m0,m_m2;
+	void			create_Sphere				(Fsphere&	V);
+	void			create_Box					(Fobb&		V);
+	void			calculate_it_data			(const Fvector& mc,float mass);
 public:
-///
+	///
 	virtual	void			add_Sphere				(const Fsphere&	V);
-														
+
 	virtual	void			add_Box					(const Fobb&		V);
 
 	void			build(dSpaceID space);
@@ -171,8 +171,8 @@ public:
 	dBodyID			get_body(){return m_body;};
 	float			get_volume(){get_mc_data();return m_volume;};
 	void			SetTransform(const Fmatrix& m0);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2);
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
@@ -180,33 +180,33 @@ public:
 	virtual void			applyImpulse			(const Fvector& dir, float val){;};
 	virtual void			Update					();
 	CPHElement(dSpaceID a_space){ 
-								m_space=a_space;
-								m_body=NULL;};
-	//CPHElement(){ m_space=ph_world->GetSpace();};
-	virtual ~CPHElement	();
+		m_space=a_space;
+		m_body=NULL;};
+		//CPHElement(){ m_space=ph_world->GetSpace();};
+		virtual ~CPHElement	();
 };
 ///////////////////////////////////////////////////////////////////////
 class CPHShell: public CPhysicsShell,public CPHObject {
-vector<CPHElement*> elements;
-Fmatrix m_m2;
-Fmatrix m_m0;
-dBodyID m_body;
+	vector<CPHElement*> elements;
+	Fmatrix m_m2;
+	Fmatrix m_m0;
+	dBodyID m_body;
 
-//dVector3 mean_w;
-//dVector3 mean_v;
-dVector3 previous_p;
-dMatrix3 previous_r;
-dVector3 previous_f;
-dVector3 previous_t;
-dReal previous_dev;
-dReal previous_v;
-UINT dis_count_f;
-list<CPHObject*>::iterator m_ident;
+	//dVector3 mean_w;
+	//dVector3 mean_v;
+	dVector3 previous_p;
+	dMatrix3 previous_r;
+	dVector3 previous_f;
+	dVector3 previous_t;
+	dReal previous_dev;
+	dReal previous_v;
+	UINT dis_count_f;
+	list<CPHObject*>::iterator m_ident;
 public:
 	CPHShell				()							{bActive=false;
-														dis_count_f=0;
-													//	ph_world->AddObject(this);
-																		};
+	dis_count_f=0;
+	//	ph_world->AddObject(this);
+	};
 
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);
@@ -223,8 +223,8 @@ public:
 
 	virtual void			applyForce				(const Fvector& dir, float val)				{};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{};
-virtual	void PhDataUpdate(dReal step);
-virtual	void PhTune(dReal step);
+	virtual	void PhDataUpdate(dReal step);
+	virtual	void PhTune(dReal step);
 
 };
 
