@@ -42,7 +42,7 @@ private:
 	
 	// State machine
 	EFlyerState			eState;
-	u32				new_mstate, cur_mstate;
+	u32					new_mstate, cur_mstate;
 
 	float				mYaw;
 	float				mYawVelocity;
