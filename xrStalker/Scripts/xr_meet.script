@@ -234,8 +234,9 @@ function action_meet_wait:initialize()
 	self.object:set_movement_type(move.stand)
 	self.object:set_mental_state(anim.free)
 
-	xr_state.change_state(self.object,xr_state.stand)
-   	self.object:set_item(object.deactivate, self.object:best_weapon())	
+   	self.object:set_item(object.strap, self.object:best_weapon())	
+   	xr_state.change_state(self.object,xr_state.stand)
+	
    	self.a.Buyer = nil
 end
 function action_meet_wait:execute ()
@@ -296,7 +297,7 @@ function action_weapon:execute ()
 	local pos = self.a.actor:position()
 
 	local dir = self.a.actor:position():sub(self.object:position())
-	self.object:set_sight(look.direction, dir, 0)
+	self.object:set_sight(look.direction, dir, true)
 
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_e)		
@@ -470,24 +471,24 @@ function dialog_manager_reset(npc, stype)
 		local overrides = xr_logic.generic_scheme_overrides(npc)
 		if overrides ~= nil then
 			if overrides.meet_talk_enabled then
-				printf("*DIALOGS*: Enable talk", overrides.meet_dialog)
+--				printf("*DIALOGS*: Enable talk", overrides.meet_dialog)
 				npc:enable_talk()
 			else
-				printf("*DIALOGS*: Disable talk", overrides.meet_dialog)
+--				printf("*DIALOGS*: Disable talk", overrides.meet_dialog)
 				npc:disable_talk()
 			end
 
 			if overrides.meet_dialog then
-				printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
+--				printf("*DIALOGS*: Set start dialog %s", overrides.meet_dialog)
 				npc:set_start_dialog(overrides.meet_dialog)
 			else
-				printf("*DIALOGS*: Restore start dialog")
+--				printf("*DIALOGS*: Restore start dialog")
 				npc:restore_default_start_dialog()
 			end
 		else
-			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Restore start dialog")
+--			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Restore start dialog")
 			npc:restore_default_start_dialog()
-			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Disable talk", overrides.meet_dialog)
+--			printf("*DIALOGS*: SCHEME HAS NO OVERRIDES: Disable talk", overrides.meet_dialog)
 			npc:disable_talk()
 		end
 	end
