@@ -387,7 +387,7 @@ void CALifeSurgeManager::setup_next_surge_time		()
 IC	bool CALifeSurgeManager::redundant				(CSE_ALifeDynamicObject *object)
 {
 	xr_vector<ALife::_SPAWN_ID>::iterator	I = std::lower_bound(m_temp_spawns.begin(),m_temp_spawns.end(),object->m_tSpawnID);
-	if (I == m_temp_spawns.end())
+	if ((I == m_temp_spawns.end()) || (*I != object->m_tSpawnID))
 		return								(false);
 	return									(true);
 }
@@ -398,10 +398,42 @@ void CALifeSurgeManager::fill_redundant_objects		()
 
 	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
-	for ( ; I != E; ++I) {
+	for ( ; I != E; ++I)
 		if (redundant((*I).second))
 			m_temp_objects.push_back((*I).second->ID);
+
+	if (m_temp_objects.empty())
+		return;
+
+	bool			stable;
+	do {
+		stable		= true;
+		std::sort	(m_temp_objects.begin(),m_temp_objects.end());
+		D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
+		D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
+		for ( ; I != E; ++I) {
+			if ((*I).second->ID_Parent == 0xffff)
+				continue;
+
+			xr_vector<ALife::_OBJECT_ID>::const_iterator	i = std::lower_bound(
+				m_temp_objects.begin(),
+				m_temp_objects.end(),
+				(*I).second->ID_Parent
+			);
+
+			xr_vector<ALife::_OBJECT_ID>::const_iterator	j = std::lower_bound(
+				m_temp_objects.begin(),
+				m_temp_objects.end(),
+				(*I).second->ID
+			);
+
+			if ((i != m_temp_objects.end()) && (j == m_temp_objects.end())) {
+				m_temp_objects.push_back((*I).second->ID);
+				stable	= false;
+			}
+		}
 	}
+	while (!stable);
 }
 
 void CALifeSurgeManager::release_redundant_objects	()
@@ -428,7 +460,7 @@ void CALifeSurgeManager::spawn_new_spawns			()
 		VERIFY					(spawn);
 //		Msg						("LSS : SURGE : SPAWN : [%s],[%s], level %s",*spawn->s_name,spawn->name_replace(),*ai().game_graph().header().level(ai().game_graph().vertex(spawn->m_tGraphID)->level_id()).name());
 		create					(object,spawn,*I);
-		object->on_spawn		();
+//		object->on_spawn		();
 	}
 }
 
