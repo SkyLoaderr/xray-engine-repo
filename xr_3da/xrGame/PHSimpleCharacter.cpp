@@ -86,7 +86,7 @@ void __stdcall TestPathCallback(bool& do_colide,dContact& c)
 void CPHSimpleCharacter::Create(dVector3 sizes){
 
 	if(b_exist) return;
-
+	b_air_contact_state=false;
 	////////////////////////////////////////////////////////
 	/*
 	m_control_force[0]=0.f;
@@ -332,7 +332,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		if(!ph_world->IsFreezed())b_lose_control=false;
 		return;
 	}
-	if(is_contact&&!is_control)
+	if(is_contact&&!is_control&&!b_lose_control)
 		Disabling();
 
 	if( !dBodyIsEnabled(m_body)) {
@@ -383,6 +383,8 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 	//if(!b_exist)return;
+	b_air_contact_state=!is_contact;
+	bool b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2;
 	if(!b_death_pos)Memory.mem_copy(m_death_position,dGeomGetPosition(m_wheel),sizeof(dVector3));
 	CPHContactBodyEffector* contact_effector=
 		(CPHContactBodyEffector*) dBodyGetData(m_body);
@@ -402,14 +404,14 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 			b_at_wall=true;
 
 	if(b_lose_control || (!b_climb&&is_contact)||
-		(!b_pure_climb&&b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2)
+		(!b_pure_climb&&b_good_graund)//b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2
 		) b_at_wall=false;
 
 	b_depart=was_contact&&(!is_contact);
 	b_stop_control=was_control&&(!is_control);
 	b_meet=(!was_contact)&&(is_contact);
 	if(b_lose_control&&is_contact)b_meet_control=true;
-	b_on_ground=b_valide_ground_contact||(b_meet&&(!b_depart));
+	b_on_ground=b_valide_ground_contact ||(b_meet&&(!b_depart));
 
 
 	if(b_at_wall ) 
@@ -439,7 +441,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		b_lose_control=false;
 	
 	
-	if(b_jumping&&b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2 ||(b_at_wall&&b_valide_wall_contact)) 
+	if(b_jumping&&b_good_graund ||(b_at_wall&&b_valide_wall_contact)) //b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2
 		b_jumping=false;
 
 	//deside if control lost

@@ -64,7 +64,7 @@ void CPHActorCharacter::SetAcceleration(Fvector accel)
 
 	inherited::SetAcceleration(accel);
 	if(!b_exist) return;
-
+	
 	if( m_acceleration.y>0.f&&!b_lose_control && (m_ground_contact_normal[1]>0.5f||b_at_wall))
 	{
 		b_jump=true;
@@ -81,4 +81,9 @@ void CPHActorCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callb
 	inherited::SetObjectContactCallback(callback);
 ///	if(!b_exist) return;
 //	dGeomUserDataSetObjectContactCallback(m_cap,callback);
+}
+
+void CPHActorCharacter::Disable()
+{
+	inherited::Disable();
 }

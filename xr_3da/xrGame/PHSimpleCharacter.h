@@ -63,6 +63,7 @@ protected:
 	bool b_clamb_jump;
 	bool b_side_contact;
 	bool b_any_contacts;
+	bool b_air_contact_state;
 	bool b_valide_ground_contact;
 	bool b_valide_wall_contact;
 	bool b_saved_contact_velocity;
