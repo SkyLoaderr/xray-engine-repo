@@ -23,9 +23,7 @@ public:
 	
 					CBitingAnimations()
 	{
-		m_tpCurrentGlobalAnimation = 
-		m_tpCurrentTorsoAnimation = 
-		m_tpCurrentLegsAnimation = 0;
+		m_tpCurrentGlobalAnimation = 0;
 	};
 	
 	virtual	void	Load(CKinematics *tpKinematics)

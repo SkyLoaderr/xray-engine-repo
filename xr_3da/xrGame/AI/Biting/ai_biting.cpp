@@ -85,7 +85,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	xrSE_Biting						*l_tpSE_Biting = (xrSE_Biting*)DC;
 	cNameVisual_set					(l_tpSE_Biting->caModel);
 	// loading animations
-	CBitingAnimations::
+	CBitingAnimations::Load			(PKinematics(pVisual));
 	return(TRUE);
 }
 

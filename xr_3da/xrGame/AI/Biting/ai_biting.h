@@ -10,8 +10,9 @@
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\ai_monsters_misc.h"
+#include "ai_biting_anim.h"
 
-class CAI_Biting : public CCustomMonster  
+class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
 public:
 	typedef	CCustomMonster inherited;
