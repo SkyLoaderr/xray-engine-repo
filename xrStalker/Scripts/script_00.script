@@ -63,17 +63,6 @@ function main()
 	stalker1:script	(true,this.script_name())
 	stalker2:script	(true,this.script_name())
 
-			action(                                                                                                       
-			    stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0003")),
-				cond	(cond.time_end, 2000000)
-			)
-			action(                                                                                                       
-			    stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0003")),
-				cond	(cond.time_end, 2000000)
-			)
-
 			wait(2000)			
 			printf("entered")
 			flush()
@@ -128,10 +117,6 @@ function main()
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 
-	while stalker1:action() and stalker2:action() do
-	    wait	()
-
-	end
 
 	event:clear_callback(true)
 	event:clear_callback(false)
