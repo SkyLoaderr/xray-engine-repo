@@ -213,7 +213,7 @@
 				TerminalServerAware="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="x:/xrHemisphere.lib"
+				ImportLibrary="x:\xrHemisphere.lib"
 				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"
