@@ -417,11 +417,12 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id, u32 link)
 }
 
 struct sort_cells_predicate {
-	IC	bool	operator()	(const CLevelNavigationGraph::CCellVertex *&v0, const CLevelNavigationGraph::CCellVertex *&v1) const
+	IC	bool	operator()	(const CLevelNavigationGraph::CCellVertex *v0, const CLevelNavigationGraph::CCellVertex *v1) const
 	{
-		u32					square0 = v0->m_all_computed_dirs ? v0->m_computed_down*v0->m_computed_right : v0->m_down*v0->m_right;
-		u32					square1 = v1->m_all_computed_dirs ? v1->m_computed_down*v1->m_computed_right : v1->m_down*v1->m_right;
-		return				(square0 > square1);
+//		u32					square0 = v0->m_all_computed_dirs ? v0->m_computed_down*v0->m_computed_right : v0->m_down*v0->m_right;
+//		u32					square1 = v1->m_all_computed_dirs ? v1->m_computed_down*v1->m_computed_right : v1->m_down*v1->m_right;
+//		return				(square0 > square1);
+		return				(v0->m_down*v0->m_right > v1->m_down*v1->m_right);
 	}
 };
 
@@ -454,7 +455,22 @@ struct remove_cell_preciate {
 
 IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 {
-	for (u32 current_vertex_id = start_vertex_id, i = 1, index = (link + 1) & 3; ;++i) {
+	u32								set_id = vertex(start_vertex_id)->link(link);
+	if (!valid_vertex_id(set_id))
+		return;
+
+	if (m_cross[set_id].m_mark)
+		return;
+
+	if (vertex(set_id)->link((link + 2) & 3) != start_vertex_id)
+		return;
+
+	for (u32 current_vertex_id = set_id, i = 1, index = (link + 1) & 3; ;++i) {
+		CCellVertex					&cell = m_cross[current_vertex_id];
+		cell.m_dirs[index]			= (u16)i;
+		cell.m_dirs_id[index]		= (u16)set_id;
+		cell.m_all_computed_dirs	= 0;
+
 		u32							vertex_id = vertex(current_vertex_id)->link(link);
 		if (!valid_vertex_id(vertex_id))
 			break;
@@ -464,10 +480,6 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 
 		if (vertex(vertex_id)->link((link + 2) & 3) != current_vertex_id)
 			break;
-
-		CCellVertex					&cell = m_cross[vertex_id];
-		cell.m_dirs[index]			= (u16)i;
-		cell.m_all_computed_dirs	= 0;
 
 		current_vertex_id			= vertex_id;
 	}
@@ -483,18 +495,20 @@ IC	void CLevelNavigationGraph::update_cells	(u32 vertex_id, u32 right, u32 down)
 	for (u32 down_id = vertex_id, j=0; j<down; down_id = vertex(down_id)->link(2), ++j)
 		update_cell				(down_id,3);
 
-	std::sort					(m_temp.begin(),m_temp.end(),sort_cells_predicate());
+	std::sort				(m_temp.begin(),m_temp.end(),sort_cells_predicate());
 }
 
 IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &down, u32 max_square)
 {
 	VERIFY					(!v->m_mark);
 
-//	if (v->m_all_computed_dirs) {
-//		right				= v->m_computed_right;
-//		down				= v->m_computed_down;
-//		return;
-//	}
+#if 1
+	if (v->m_all_computed_dirs) {
+		right				= v->m_computed_right;
+		down				= v->m_computed_down;
+		return;
+	}
+#endif
 
 	if (v->m_right >= v->m_down) {
 		right				= v->m_right;
@@ -505,6 +519,7 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		down				= v->m_down;
 	}
 
+	bool					completed = true;
 	for	(u32 right_id = vertex(vertex_id(v))->link(1), i=2, min_side = v->m_down; ; right_id = vertex(right_id)->link(1), ++i) {
 		if (!valid_vertex_id(right_id))
 			break;
@@ -519,8 +534,10 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		else
 			current_down	= min_side;
 
-		if (current_down*v->m_right <= max_square)
+		if (current_down*v->m_right <= max_square) {
+			completed		= false;
 			break;
+		}
 
 		for	(u32 down_id = vertex(right_id)->link(2), j=2; j <= current_down; down_id = vertex(down_id)->link(2), ++j) {
 			if (m_cross[down_id].m_mark)
@@ -549,6 +566,12 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 			break;
 	}
 
+	if (!completed)
+		return;
+
+//	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_right == right));
+//	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_down == down));
+
 	v->m_computed_right		= u16(right);
 	v->m_computed_down		= u16(down);
 }
@@ -562,14 +585,14 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 		if (u32((*I)->m_right)*u32((*I)->m_down) <= max_square)
 			return			(true);
 
-		bool				can_continue = !(*I)->m_all_computed_dirs;
+//		bool				can_continue = !(*I)->m_all_computed_dirs;
 		select_sector		(*I,current_right,current_down,max_square);
 
 		if (current_right*current_down <= max_square)
-			if (can_continue)
+//			if (can_continue)
 				continue;
-			else
-				return		(!!max_square);
+//			else
+//				return		(!!max_square);
 
 		right				= current_right;
 		down				= current_down;
@@ -581,6 +604,7 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 
 IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _down, u32 group_id)
 {
+	Msg							("* Sector %d (%3dx%3d)",_right*_down,_right,_down);
 	CCellVertex					*cell = 0;
 	u32							j, down_id, mask = left;
 	for (u32 right_id = vertex_id, i=0; i<_right; right_id = vertex(right_id)->link(1), ++i) {
