@@ -42,7 +42,7 @@ void Startup()
 #ifdef DEBUG
 	pInput						= new CInput		(FALSE);
 #else
-	pInput						= new CInput		(FALSE);
+	pInput						= new CInput		(TRUE);
 #endif
 	pSounds						= new CSoundManager	( );
 
