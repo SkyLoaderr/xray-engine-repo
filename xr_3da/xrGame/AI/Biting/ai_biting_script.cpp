@@ -232,13 +232,26 @@ void CAI_Biting::ProcessScripts()
 
 CEntity *CAI_Biting::GetCurrentEnemy()
 {
-	if (EnemyMan.get_enemy()) return (const_cast<CEntity *>(dynamic_cast<const CEntity*>(EnemyMan.get_enemy())));
-	else return (0);
+	CEntity *enemy = 0;
+	
+	if (EnemyMan.get_enemy()) 
+		enemy = const_cast<CEntity *>(dynamic_cast<const CEntity*>(EnemyMan.get_enemy()));
+
+	if (!enemy || enemy->getDestroy() || !enemy->g_Alive()) enemy = 0;
+
+	return (enemy);
 }
+
 CEntity *CAI_Biting::GetCurrentCorpse()
 {
-	if (CorpseMan.get_corpse()) return (const_cast<CEntity *>(dynamic_cast<const CEntity*>(CorpseMan.get_corpse())));
-	return (0);
+	CEntity *corpse = 0;
+
+	if (CorpseMan.get_corpse()) 
+		corpse = const_cast<CEntity *>(dynamic_cast<const CEntity*>(CorpseMan.get_corpse()));
+
+	if (!corpse || corpse->getDestroy() || corpse->g_Alive()) corpse = 0;
+
+	return (corpse);
 }
 
 

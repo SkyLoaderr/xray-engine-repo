@@ -22,7 +22,6 @@ void CAI_Biting::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**
 	if (MotionMan.PrepareAnimation()) {
 		MotionMan.cur_blend = MotionMan.m_tpCurAnim->PlayCycle(PSkeletonAnimated(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
 	}
-
 	if (MotionMan.anim_speed > 0.f && MotionMan.cur_blend) MotionMan.cur_blend->speed = MotionMan.anim_speed;
 }
 

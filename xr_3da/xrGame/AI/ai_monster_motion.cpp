@@ -94,10 +94,10 @@ bool CMotionManager::PrepareAnimation()
 	
 	if (TA_IsActive() && pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
 
-	// получить элемент SAnimItem соответствующий cur_anim
-
+	// перекрыть все определения и установть анимацию
 	pMonster->ForceFinalAnimation();
 
+	// получить элемент SAnimItem соответствующий cur_anim
 	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
 	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 
@@ -120,6 +120,8 @@ bool CMotionManager::PrepareAnimation()
 	pMonster->cur_anim.anim		= cur_anim;
 	pMonster->cur_anim.index	= u8(index);
 	pMonster->cur_anim.started	= Level().timeServer();
+	
+	Msg("Set Anim = [%s%u]", *pMonster->cur_anim.name, pMonster->cur_anim.index);
 
 	// инициализировать информацию о текущей анимации шагания
 	STEPS_Initialize();
@@ -488,6 +490,8 @@ void CMotionManager::SelectVelocities()
 		cur_anim = new_anim;
 		SetAnimSpeed(a_speed);
 	} else SetAnimSpeed(-1.f);
+
+	SetAnimSpeed(-1.f);
 
 	// установка угловой скорости
 	if (!b_forced_velocity) {

@@ -2847,6 +2847,16 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="Fracture"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\Fracture\fracture.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Fracture\fracture.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="humans"

@@ -3,76 +3,25 @@
 #include "poltergeist_state_manager.h"
 #include "../../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
-#include "../states/monster_state_rest_sleep.h"
-#include "../states/monster_state_rest_walk_graph.h"
+#include "../states/monster_state_eat.h"
+#include "../states/monster_state_attack.h"
+#include "../states/monster_state_panic.h"
 #include "poltergeist_state_attack_hidden.h"
-
+#include "../states/monster_state_hear_int_sound.h"
+#include "../states/monster_state_hear_danger_sound.h"
+#include "../states/monster_state_hitted.h"
 #include "../../ai_monster_debug.h"
 
 CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherited(obj)
 {
-	add_state(
-		eStateRest, 
-		xr_new<CStateMonsterRest<CPoltergeist> > (obj, 
-			xr_new<CStateMonsterRestSleep<CPoltergeist> >(obj), 
-			xr_new<CStateMonsterRestWalkGraph<CPoltergeist> >(obj)
-		)
-	);
-
-	add_state(
-		eStateAttackHidden,
-		xr_new<CStatePoltergeistAttackHidden<CPoltergeist> > (obj)
-	);
-
-	//add_state(
-	//	eStateAttack, 
-	//	xr_new<CStateControllerAttack<CController> > (obj,
-	//		xr_new<CStateMonsterAttackRun<CController> >(obj), 
-	//		xr_new<CStateMonsterAttackMelee<CController> >(obj)
-	//	)
-	//);
-
-
-	//add_state(
-	//	eStateEat,
-	//	xr_new<CStateMonsterEat<CController> >(obj,
-	//	xr_new<CStateMonsterEating<CController> >(obj)
-	//	)
-	//	);
-
-	//add_state(
-	//	eStatePanic,
-	//	xr_new<CStateMonsterPanic<CController> >(obj)
-	//	);
-
-	//add_state(
-	//	eStateHitted,
-	//	xr_new<CStateMonsterHitted<CController> >(obj)
-	//	);
-
-	//add_state(
-	//	eStateInterestingSound,
-	//	xr_new<CStateMonsterHearInterestingSound<CController> >(obj)
-	//	);
-
-	//add_state(
-	//	eStateDangerousSound,
-	//	xr_new<CStateMonsterHearDangerousSound<CController> >(obj)
-	//	);
-
-
-	//add_state(
-	//	eStateFindEnemy, 
-	//	xr_new<CStateMonsterFindEnemy<CController> > (obj,
-	//	xr_new<CStateMonsterFindEnemyRun<CController> >(obj), 
-	//	xr_new<CStateMonsterFindEnemyLook<CController> >(obj,
-	//	xr_new<CStateMonsterMoveToPoint<CController> >(obj), 
-	//	xr_new<CStateMonsterCustomAction<CController> >(obj),
-	//	xr_new<CStateMonsterLookToPoint<CController> >(obj)),
-	//	xr_new<CStateMonsterFindEnemyAngry<CController> >(obj), 
-	//	xr_new<CStateMonsterFindEnemyWalkAround<CController> >(obj)
-	//	)
-	//	);
+	add_state(eStateRest,				xr_new<CStateMonsterRest<CPoltergeist> > (obj));
+	add_state(eStateEat,				xr_new<CStateMonsterEat<CPoltergeist> >(obj));
+	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CPoltergeist> >(obj));
+	add_state(eStateAttackHidden,		xr_new<CStatePoltergeistAttackHidden<CPoltergeist> > (obj));
+	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CPoltergeist> >(obj));
+	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CPoltergeist> >(obj));
+	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CPoltergeist> >(obj));
+	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CPoltergeist> >(obj));
 }
 
 CStateManagerPoltergeist::~CStateManagerPoltergeist()
@@ -94,18 +43,56 @@ void CStateManagerPoltergeist::execute()
 	u32 state_id = u32(-1);
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	//const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
+	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 	if (enemy) {
-		if (object->is_hidden()) {
-			state_id = eStateAttackHidden;
-		} 	
-		state_id = eStateAttackHidden;
-	} else
-		state_id = eStateRest;
-	
-	
+		if (object->is_hidden()) state_id = eStateAttackHidden;
+		else {
+			switch (object->EnemyMan.get_danger_type()) {
+			case eVeryStrong:	state_id = eStatePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:			state_id = eStateAttack; break;
+			}
+		}
+	} else if (object->HitMemory.is_hit() && !object->is_hidden()) {
+		state_id = eStateHitted;
+	} else if (object->hear_dangerous_sound) {
+		if (!object->is_hidden()) state_id = eStateDangerousSound;
+		else state_id = eStateInterestingSound;
+	} else if (object->hear_interesting_sound ) {
+		state_id = eStateInterestingSound;
+	} else {
+		bool can_eat = false;
+		if (corpse) {
+
+			if (prev_substate == eStateEat) {
+				if (!get_state_current()->check_completion()) can_eat = true;
+			}
+
+			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+				can_eat = true;		
+		}
+
+		if (can_eat) state_id = eStateEat;
+		else state_id = eStateRest;
+		
+		if (state_id == eStateEat) {
+			if (object->CorpseMan.get_corpse()->Position().distance_to(object->Position()) < 5.f) {
+				if (object->is_hidden()) {
+					object->CEnergyHolder::deactivate();
+				}
+				
+				object->DisableHide();
+			}
+		}
+
+	}
+
 	if (state_id == eStateAttackHidden) polter_attack();
+
+	if ((prev_substate == eStateEat) && (state_id != eStateEat)) 
+		object->EnableHide();
 	
 	select_state(state_id); 
 

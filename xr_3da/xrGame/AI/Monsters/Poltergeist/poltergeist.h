@@ -23,6 +23,8 @@ class CPoltergeist :	public CAI_Biting ,
 
 	CStateManagerPoltergeist *StateMan;
 
+	bool				m_disable_hide;
+
 public:
 					CPoltergeist		();
 	virtual			~CPoltergeist		();	
@@ -105,6 +107,12 @@ public:
 			float	target_height;
 
 			void	UpdateHeight			();
+
+	// Invisibility 
+
+			void	EnableHide				(){m_disable_hide = false;}
+			void	DisableHide				(){m_disable_hide = true;}
+	
 
 private:
 			void	Hide					();

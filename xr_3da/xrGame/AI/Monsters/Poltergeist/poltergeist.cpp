@@ -51,7 +51,8 @@ void CPoltergeist::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			 0, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-	MotionMan.AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	//MotionMan.AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimMiscAction_00,	"stand_look_around_",	-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimMiscAction_01,	"fly_",					-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
@@ -101,7 +102,8 @@ void CPoltergeist::reinit()
 	Energy::set_auto_activate();
 	Energy::set_auto_deactivate();
 	Energy::enable();
-	
+
+	m_disable_hide		= false;
 }
 
 void CPoltergeist::Hide()
@@ -127,10 +129,10 @@ void CPoltergeist::Show()
 
 	m_hidden = false;
 	
+	setVisible(TRUE);
+
 	MotionMan.Seq_Add	(eAnimMiscAction_00);
 	MotionMan.Seq_Switch();
-
-	setVisible(true);
 
 	Position() = m_current_position;
 	movement_control()->SetPosition(Position());
@@ -149,7 +151,8 @@ void CPoltergeist::UpdateCL()
 
 void CPoltergeist::ForceFinalAnimation()
 {
-	if (m_hidden) MotionMan.SetCurAnim(eAnimMiscAction_01);
+	if (m_hidden) 
+		MotionMan.SetCurAnim(eAnimMiscAction_01);
 }
 
 
@@ -203,6 +206,8 @@ bool CPoltergeist::UpdateStateManager()
 
 void CPoltergeist::on_activate()
 {
+	if (m_disable_hide) return;
+
 	Hide();
 	
 	m_height			= 0.3f;
@@ -211,6 +216,8 @@ void CPoltergeist::on_activate()
 
 void CPoltergeist::on_deactivate()
 {
+	if (m_disable_hide) return;
+
 	Show();
 }
 
