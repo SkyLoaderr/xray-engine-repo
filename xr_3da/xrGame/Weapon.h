@@ -12,6 +12,11 @@
 // refs
 class CEntity;
 class CWeaponHUD;
+class ENGINE_API CMotionDef;
+
+#define MAX_ANIM_COUNT 8
+ 
+typedef svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
 
 class CWeapon : public CObject
 {
@@ -35,6 +40,7 @@ protected:
 	float			fFlameSize;
 	float			fFlameTime;
 
+	void			animGet			(MotionSVec& lst, LPCSTR prefix);
 public:
 	float			GetPrecision();
 protected:

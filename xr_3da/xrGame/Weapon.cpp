@@ -46,6 +46,11 @@ CWeapon::CWeapon(LPCSTR name)
 	dispVelFactor	= 0.2f;
 	dispJumpFactor	= 4.f;
 	dispCrouchFactor= 0.75f;
+
+	iAmmoLimit		= -1;
+	iAmmoCurrent	= -1;
+	iAmmoElapsed	= -1;
+	iMagazineSize	= -1;
 }
 
 CWeapon::~CWeapon()
@@ -58,6 +63,18 @@ CWeapon::~CWeapon()
 	
 	Device.Shader.Delete(hUIIcon);
 	if (hWallmark) Device.Shader.Delete(hWallmark);
+}
+
+void CWeapon::animGet(MotionSVec& lst, LPCSTR prefix)
+{
+	CMotionDef* M		= m_pHUD->animGet(prefix);
+	if (M)				lst.push_back(M);
+	for (int i=0; i<MAX_ANIM_COUNT; i++){
+		string128		sh_anim;
+		sprintf			(sh_anim,"%s%d",prefix,i);
+		M				= m_pHUD->animGet(sh_anim);
+		if (M)			lst.push_back(M);
+	}
 }
 
 void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType)

@@ -63,6 +63,7 @@ public:
 	IC CWeapon*		ActiveWeapon		()	{ return (m_iActiveWeapon==-1)?0:m_Weapons[m_iActiveWeapon]; }
 	IC	int			ActiveWeaponID		()	{ return m_iActiveWeapon;	}
 	IC	int			SelectedWeaponID	()	{ return m_iSelectedWeapon; }
+	IC int			WeaponCount			()	{ return m_Weapons.size();	}
 };
 
 #endif //__XR_OBJECT_LIST_H__

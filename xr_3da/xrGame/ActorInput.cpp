@@ -31,10 +31,13 @@ void CActor::OnKeyboardPress(int cmd)
 	case kWPN_4:	
 	case kWPN_5:	
 	case kWPN_6:	
-	case kWPN_7:	
-	case kWPN_8:	
-	case kWPN_9:	
+//	case kWPN_7:	
+//	case kWPN_8:	
+//	case kWPN_9:	
 		Weapons->ActivateWeaponID(cmd-kWPN_1);			
+		break;
+	case kBINOCULAR:
+		Weapons->ActivateWeaponID(Weapons->WeaponCount()-1);
 		break;
 	case kWPN_RELOAD:
 		Weapons->Reload			();

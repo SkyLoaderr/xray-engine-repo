@@ -185,10 +185,10 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		pWeapon = new CWeaponFORT	(); 
 		strcpy(sect_name,"wpn_FORT");
 		break;
-//	case CLSID_OBJECT_W_BINOCULAR:
-//		pWeapon = new CWeaponBinocular	(); 
-//		strcpy(sect_name,"wpn_BINOC");
-//		break;
+	case CLSID_OBJECT_W_BINOCULAR:
+		pWeapon = new CWeaponBinocular	(); 
+		strcpy(sect_name,"wpn_BINOC");
+		break;
 	}
 
 	// load weapon

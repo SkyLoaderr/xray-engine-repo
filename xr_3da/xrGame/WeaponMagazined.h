@@ -7,9 +7,6 @@
 class ENGINE_API CMotionDef;
 
 #define SND_RIC_COUNT 5
-#define MAX_ANIM_COUNT 8
- 
-typedef svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
 
 class CWeaponMagazined: public CWeapon
 {
@@ -55,7 +52,6 @@ protected:
 		eHiding
 	};
 	EState			st_current, st_target;
-	void			animGet			(MotionSVec& lst, LPCSTR prefix);
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnMagazineEmpty	();
