@@ -30,8 +30,8 @@ IC	void CMovementManager::time_start()
 
 IC	bool CMovementManager::time_over() const
 {
-//	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
-	return					(false);
+	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
+//	return					(false);
 }
 
 IC	void CMovementManager::enable_movement(bool enabled)
@@ -88,4 +88,9 @@ IC	float CMovementManager::old_desirable_speed		() const
 IC	void CMovementManager::set_desirable_speed		(float speed)
 {
 	m_old_desirable_speed	= speed;
+}
+
+IC	const xr_vector<CDetailPathManager::STravelPathPoint>	&CMovementManager::path	() const
+{
+	return					(CDetailPathManager::path());
 }

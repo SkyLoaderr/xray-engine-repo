@@ -23,7 +23,7 @@ class
 		_vertex_id_type,
 		_index_type
 	> :
-	private CAbstractPathManager<
+	public CAbstractPathManager<
 		CLevelGraph,
 		_VertexEvaluator,
 		_vertex_id_type,

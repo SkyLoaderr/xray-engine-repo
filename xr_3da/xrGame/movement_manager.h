@@ -87,7 +87,6 @@ private:
 
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
-	IC		bool	actual					() const;
 			void	process_game_path		();
 			void	process_level_path		();
 			void	process_enemy_search	();
@@ -109,6 +108,7 @@ public:
 	virtual			~CMovementManager		();
 	virtual void	Init					();
 	virtual void	Load					(LPCSTR caSection);
+	IC		bool	actual					() const;
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_vertex	(const u32 level_vertex_id);
@@ -122,7 +122,7 @@ public:
 	IC		void	set_desirable_speed		(float speed);
 	IC		void	use_selector_path		(bool selector_path_usage);
 	IC		bool	selector_path_used		() const;
-
+	IC		const xr_vector<STravelPathPoint>	&path	() const;
 			void	update_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;

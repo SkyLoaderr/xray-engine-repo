@@ -46,70 +46,6 @@ void CAI_Stalker::vfSetParameters(
 	u32										dwLookOverDelay
 )
 {
-//	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
-//		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
-//			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
-//		else {
-//			switch (m_tBodyState) {
-//				case eBodyStateCrouch : {
-//					m_fCurSpeed *= m_fCrouchFactor;
-//					break;
-//				}
-//				case eBodyStateStand : {
-//					break;
-//				}
-//				default : NODEFAULT;
-//			}
-//			switch (m_tMovementType) {
-//				case eMovementTypeWalk : {
-//					m_body.speed	= PI_MUL_2;
-//					m_head.speed	= 3*PI_DIV_2;
-//					switch (m_tMentalState) {
-//						case eMentalStateDanger : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
-//							break;
-//						}
-//						case eMentalStateFree : {
-//							m_fCurSpeed		*= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
-//							break;
-//						}
-//						case eMentalStatePanic : {
-//							Debug.fatal("");
-//							break;
-//						}
-//					}
-//					break;
-//				}
-//				case eMovementTypeRun : {
-//					switch (m_tMentalState) {
-//						case eMentalStateDanger : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
-//							break;
-//						}
-//						case eMentalStateFree : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
-//							break;
-//						}
-//						case eMentalStatePanic : {
-//							m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
-//							break;
-//						}
-//					}
-//					m_body.speed	= PI_MUL_2;
-//					m_head.speed	= 3*PI_DIV_2;
-//					break;
-//				}
-//				default : m_fCurSpeed = 0.f;
-//			}
-//		}
-//	}
-//	else {
-//		m_tMovementType = eMovementTypeStand;
-//		m_body.speed	= PI_MUL_2;
-//		m_head.speed	= 3*PI_DIV_2;
-//		m_fCurSpeed		= 0.f;
-//	}
-
 	u32					velocity_mask = IsLimping() ? eMovementParameterDamaged : 0;
 
 	switch (m_tBodyState) {
@@ -158,6 +94,20 @@ void CAI_Stalker::vfSetParameters(
 
 	CMovementManager::set_path_type(tGlobalPathType);
 	CDetailPathManager::set_path_type(tPathType);
+	
+	INIT_SQUAD_AND_LEADER;
+
+	if (bSearchNode) {
+		VERIFY		(tpNodeEvaluator);
+		vfInitSelector(*tpNodeEvaluator,Squad,Leader);
+		CLevelLocationSelector::set_evaluator(tpNodeEvaluator);
+	}
+	else
+		if (tpNodeEvaluator) {
+			vfInitSelector(*tpNodeEvaluator,Squad,Leader);
+			CMovementManager::CLevelPathManager::set_evaluator(tpNodeEvaluator);
+		}
+
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tMentalState	= tMentalState;

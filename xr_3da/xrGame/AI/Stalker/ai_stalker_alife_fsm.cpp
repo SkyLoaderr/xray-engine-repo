@@ -11,7 +11,7 @@
 #include "../../game_graph.h"
 #include "../../game_level_cross_table.h"
 
-void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/)
+void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator)
 {
 	if (m_bStateChanged && !m_bPlayHumming && m_tpCurrentSound) {
 		m_tpCurrentSound->stop();
@@ -22,10 +22,10 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 	//WRITE_TO_LOG			("Accomplishing task");
 	m_bPlayHumming = true;
 
-//	if (m_bStateChanged || m_level_path.empty() || (m_level_path[m_level_path.size() - 1] != m_level_dest_vertex_id)) {
-//		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
-//		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
-//	}
+	if (m_bStateChanged || path().empty() || (!CMovementManager::actual())) {
+		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
+		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
+	}
 
 	if (!bfAssignDestinationNode()) {
 		switch (m_tTaskState) {
@@ -66,6 +66,7 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 //		vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
 //	else
 //		vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
+	vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
 
 	switch (m_tActionState) {
 		case eActionStateWatch : {

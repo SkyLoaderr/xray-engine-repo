@@ -44,18 +44,12 @@ void CAI_Stalker::Death()
 {
 	WRITE_TO_LOG("Death");
 	
-//#ifdef DEBUG
-//	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
-//#endif
 	if (!m_bPlayHumming && m_tpCurrentSound) {
 		m_tpCurrentSound->stop();
 		m_tpCurrentSound = 0;
 	}
 	
 	SelectAnimation(XFORM().k,direction(),speed());
-//#ifdef DEBUG
-//	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
-//#endif
 }
 
 void CAI_Stalker::BackCover(bool bFire)
@@ -85,10 +79,10 @@ void CAI_Stalker::BackCover(bool bFire)
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : BackCover");
-//			if (Level().timeServer() - m_dwActionStartTime < 8500)
-//				vfSetParameters			(m_tSelectorCover,0,true,eObjectActionIdle,ePathTypeDodgeCriteria,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(Position()) > 3.f) && m_tEnemy.m_enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eMentalStateDanger,eLookTypePathDirection);
-//			else
-//				vfSetParameters			(0,0,true,eObjectActionIdle,ePathTypeDodgeCriteria,eBodyStateStand, eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+			if (Level().timeServer() - m_dwActionStartTime < 8500)
+				vfSetParameters			(m_tpSelectorCover,0,true,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(Position()) > 3.f) && m_tEnemy.m_enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eMentalStateDanger,eLookTypePathDirection);
+			else
+				vfSetParameters			(0,0,true,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand, eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 10000) && (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -100,7 +94,7 @@ void CAI_Stalker::BackCover(bool bFire)
 			if (!m_tEnemy.m_enemy && (angle_difference(m_body.current.yaw, m_body.target.yaw) <= PI_DIV_6) && bfCheckIfCanKillTarget(this,m_tSavedEnemyPosition,-m_body.current.yaw,-m_body.current.pitch,ffGetFov()/180.f*PI))
 				Camp(bFire);
 			else {
-//				vfSetParameters			(m_tSelectorCover,0,true,bFire ? eObjectActionPrimaryFire : eObjectActionIdle,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+				vfSetParameters			(m_tpSelectorCover,0,true,bFire ? eObjectActionPrimaryFire : eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 				if (Level().timeServer() - m_dwActionStartTime > 6000) {
 					m_tActionState		= eActionStateWatchGo;
 					m_dwActionStartTime = Level().timeServer();
@@ -154,46 +148,51 @@ void CAI_Stalker::ForwardStraight()
 		m_tpSelectorFreeHunting->m_fOptEnemyDistance = 15.f;//tpWeapon->m_fMinRadius + 3.f;
 	}
 
-//	vfSetParameters				(m_tSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,m_tEnemy.m_enemy->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+//	vfSetParameters				(m_tpSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,m_tEnemy.m_enemy->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+	vfSetParameters				(m_tpSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,m_tEnemy.m_enemy->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::Camp(bool /**bWeapon/**/)
 {
-//	WRITE_TO_LOG			("Camping...");
-//
-//	if (m_bStateChanged && !m_bPlayHumming && m_tpCurrentSound) {
-//		m_tpCurrentSound->stop();
-//		m_tpCurrentSound = 0;
-//	}
-//
-//	m_bPlayHumming			= false;
-//	int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
-//	if (iIndex == -1)
-//		return;
-//	float					fDistance = Position().distance_to(m_tpaDynamicObjects[iIndex].tSavedPosition);
-//
-//	if (Position().distance_to(m_tpaDynamicObjects[iIndex].tMySavedPosition) > .1f) {
-//		m_level_dest_vertex_id		= m_tpaDynamicObjects[iIndex].dwMyNodeID;
-//		if (!m_level_dest_vertex_id) {
-//			Msg("! Object %s is in invalid vertex",m_tpaDynamicObjects[iIndex].tpEntity ? m_tpaDynamicObjects[iIndex].tpEntity->cName() : "world");
-//		}
+	WRITE_TO_LOG			("Camping...");
+
+	if (m_bStateChanged && !m_bPlayHumming && m_tpCurrentSound) {
+		m_tpCurrentSound->stop();
+		m_tpCurrentSound = 0;
+	}
+
+	m_bPlayHumming			= false;
+	int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
+	if (iIndex == -1)
+		return;
+	float					fDistance = Position().distance_to(m_tpaDynamicObjects[iIndex].tSavedPosition);
+
+	if (Position().distance_to(m_tpaDynamicObjects[iIndex].tMySavedPosition) > .1f) {
+		set_level_dest_vertex(m_tpaDynamicObjects[iIndex].dwMyNodeID);
+		if (!ai().level_graph().valid_vertex_id(level_dest_vertex_id())) {
+			Msg("! Object %s is in invalid vertex",m_tpaDynamicObjects[iIndex].tpEntity ? m_tpaDynamicObjects[iIndex].tpEntity->cName() : "world");
+		}
 //		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),false,eObjectActionIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
-//	}
-//	else {
-//		float fDistanceToCover = ai().ffFindFarthestNodeInDirection(level_vertex_id(),Position(),m_tpaDynamicObjects[iIndex].tSavedPosition,m_level_dest_vertex_id);
-//		if ((fDistanceToCover < fDistance/3.f) && (fDistanceToCover > .5f)) {
-//			m_tpaDynamicObjects[iIndex].tMySavedPosition.sub(m_tpaDynamicObjects[iIndex].tSavedPosition,Position());
-//			m_tpaDynamicObjects[iIndex].tMySavedPosition.mul((fDistanceToCover - .5f)/fDistance);
-//			m_tpaDynamicObjects[iIndex].tMySavedPosition.add(Position());
-//			m_tpaDynamicObjects[iIndex].dwMyNodeID			= m_level_dest_vertex_id;
-//			//CDetailPathManager::path().clear();
-//			//m_level_path.clear();
-//			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-//			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2))
-//				m_inventory.Action(kWPN_RELOAD,CMD_START);
+		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
+	}
+	else {
+		u32						dest_vertex_id;
+		float fDistanceToCover = ai().level_graph().find_farthest_node_in_direction(level_vertex_id(),Position(),m_tpaDynamicObjects[iIndex].tSavedPosition,dest_vertex_id,0);
+		set_level_dest_vertex	(dest_vertex_id);
+		if ((fDistanceToCover < fDistance/3.f) && (fDistanceToCover > .5f)) {
+			m_tpaDynamicObjects[iIndex].tMySavedPosition.sub(m_tpaDynamicObjects[iIndex].tSavedPosition,Position());
+			m_tpaDynamicObjects[iIndex].tMySavedPosition.mul((fDistanceToCover - .5f)/fDistance);
+			m_tpaDynamicObjects[iIndex].tMySavedPosition.add(Position());
+			m_tpaDynamicObjects[iIndex].dwMyNodeID			= level_dest_vertex_id();
+			//CDetailPathManager::path().clear();
+			//m_level_path.clear();
+			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2))
+				m_inventory.Action(kWPN_RELOAD,CMD_START);
 //			vfSetParameters		(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
-//		}
-//	}
+			vfSetParameters		(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
+		}
+	}
 }
 
 void CAI_Stalker::Panic()
@@ -212,7 +211,7 @@ void CAI_Stalker::Panic()
 	if ((speed() < EPS_L) && !m_tEnemy.m_enemy) {
 		switch (m_tActionState) {
 			case eActionStateWatch : {
-//				vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeDanger);
+				vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeDanger);
 				if (m_body.current.yaw == m_body.target.yaw) {
 					m_ls_yaw = m_body.current.yaw;
 					m_tActionState = eActionStateDontWatch;
@@ -224,7 +223,7 @@ void CAI_Stalker::Panic()
 				tPoint.setHP			(m_ls_yaw,0);
 				tPoint.mul				(100.f);
 				tPoint.add				(Position());
-//				vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeLookOver,tPoint,2500);
+				vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeLookOver,tPoint,2500);
 				break;
 			}
 			default : {
@@ -248,6 +247,8 @@ void CAI_Stalker::Panic()
 //        vfSetParameters				(m_tSelectorFreeHunting,0,true,eObjectActionIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eMentalStatePanic,eLookTypePathDirection);
 //	else
 //        vfSetParameters				(m_tSelectorFreeHunting,0,true,eObjectActionIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eMentalStateDanger,eLookTypePathDirection);
+
+	vfSetParameters				(m_tpSelectorFreeHunting,0,true,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeRun,eMentalStatePanic,eLookTypePathDirection);
 
 	if (bfIfHuman(m_tSavedEnemy)) {
 		switch (m_tActionState) {
@@ -307,6 +308,7 @@ void CAI_Stalker::Hide()
 	Fvector						tPoint;
 	m_tEnemy.m_enemy->Center	(tPoint);
 //	vfSetParameters				(m_tSelectorCover,0,true,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+	vfSetParameters				(m_tpSelectorCover,0,true,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::Detour()
@@ -365,6 +367,7 @@ void CAI_Stalker::Detour()
 					Msg("%3d : %6d",i,ai().game_graph().vertex(i)->level_vertex_id());
 			}
 //			vfSetParameters			((F || G) ? 0 : m_tSelectorFreeHunting,0,false,eObjectActionIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint);
+			vfSetParameters			((F || G) ? 0 : m_tpSelectorFreeHunting,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > dwDelay2) || (ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
@@ -417,7 +420,7 @@ void CAI_Stalker::ForwardCover()
 		tPoint					=	m_tSavedEnemyPosition;
 	
 	bool bBackMove = false;
-	if (!path_completed() && (curr_travel_point_index() < CDetailPathManager::path().size() - 1)) {
+	if (!path_completed() && !path().empty() && (curr_travel_point_index() < path().size() - 1)) {
 		Fvector tTemp0, tTemp1;
 		tTemp0.sub(m_tSavedEnemyPosition,Position());
 		tTemp1.sub(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position,Position());
@@ -440,9 +443,11 @@ void CAI_Stalker::ForwardCover()
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : ForwardCover");
-//			if ((Level().timeServer() - m_dwActionStartTime < 5500) && (CDetailPathManager::path().size() > CDetailPathManager::curr_travel_point_index() + 1))
+			if ((Level().timeServer() - m_dwActionStartTime < 5500) && (CDetailPathManager::path().size() > CDetailPathManager::curr_travel_point_index() + 1))
 //				vfSetParameters			(m_tSelectorCover,0,true,eObjectActionIdle,ePathTypeDodgeCriteria,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(Position()) > 3.f) && m_tEnemy.m_enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eMentalStateDanger,eLookTypePathDirection);
-//			else
+				vfSetParameters			(m_tpSelectorCover,0,true,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(Position()) > 3.f) && m_tEnemy.m_enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eMentalStateDanger,eLookTypePathDirection);
+			else
+				vfSetParameters			(0,0,true,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand, eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 //				vfSetParameters			(0,0,true,eObjectActionIdle,ePathTypeDodgeCriteria,eBodyStateStand, eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 7000) && (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
 				m_tActionState		= eActionStateWatchLook;
@@ -459,6 +464,7 @@ void CAI_Stalker::ForwardCover()
 			m_tpSelectorCover->m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tpSelectorCover->m_fOptEnemyDistance + 3.f);
 			m_tpSelectorCover->m_fMinEnemyDistance = _max(fDistance - m_tpSelectorCover->m_fSearchRange,m_tpSelectorCover->m_fOptEnemyDistance - 3.f);
 //			vfSetParameters			(m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+			vfSetParameters			(m_tpSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 			if (!tpWeapon || ((CWeapon::eFire != tpWeapon->STATE) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!CDetailPathManager::path().empty() && CDetailPathManager::path().size() > CDetailPathManager::curr_travel_point_index() + 1) && (Level().timeServer() - m_dwActionStartTime > 5000))))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
@@ -722,7 +728,7 @@ void CAI_Stalker::ExploreDNE()
 				for (int i=0; i<(int)ai().game_graph().header().vertex_count(); ++i)
 					Msg("%3d : %6d",i,ai().game_graph().vertex(i)->level_vertex_id());
 			}
-//			vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
+			vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 5000) || (ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
@@ -766,7 +772,6 @@ void CAI_Stalker::ExploreDE()
 void CAI_Stalker::ExploreNDE()
 {
 	m_dwInertion			= 60000;
-
 	m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 	R_ASSERT2				(ai().level_graph().valid_vertex_id(m_dwSavedEnemyNodeID), "Invalid enemy vertex");
@@ -776,7 +781,7 @@ void CAI_Stalker::ExploreNDE()
 	if (m_tpaDynamicSounds[m_iSoundIndex].dwTime - m_dwLastSoundUpdate > SOUND_UPDATE_DELAY)
 		m_dwLastEnemySearch = 0;
 	m_dwLastSoundUpdate		= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
-	SearchEnemy();
+	SearchEnemy				();
 }
 
 void CAI_Stalker::ExploreNDNE()
@@ -809,7 +814,7 @@ void CAI_Stalker::ExploreNDNE()
 		}
 		case eActionStateWatch : {
 			WRITE_TO_LOG			("Watch : Exploring non-danger non-expedient ref_sound");
-//			vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eMentalStateDanger,eLookTypeLookOver,tPoint,1200);
+			vfSetParameters			(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeStand,eMentalStateDanger,eLookTypeLookOver,tPoint,1200);
 			if (Level().timeServer() - m_dwActionStartTime > 5000) {
 				m_tActionState = eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
@@ -834,7 +839,7 @@ void CAI_Stalker::ExploreNDNE()
 				for (int i=0; i<(int)ai().game_graph().header().vertex_count(); ++i)
 					Msg("%3d : %6d",i,ai().game_graph().vertex(i)->level_vertex_id());
 			}
-//			vfSetParameters(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
+			vfSetParameters(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 3000) || (ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint) == u32(-1))) {
 				m_tActionState = eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
@@ -897,10 +902,10 @@ void CAI_Stalker::TakeItems()
 	else
 		tPoint				= ai().level_graph().vertex_position(level_dest_vertex_id());
 	
-//	if (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint)))
-//		vfSetParameters(0,&tPoint,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
-//	else
-//		vfSetParameters(0,&tPoint,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypeDanger);
+	if (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),tPoint)))
+		vfSetParameters(0,&tPoint,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypePoint,tPoint);
+	else
+		vfSetParameters(0,&tPoint,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateDanger,eLookTypeDanger);
 	
 	if (Position().distance_to(tPoint) < 5.f)
 		J = A = B = false;
@@ -908,36 +913,6 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
-//	m_tMovementType		= eMovementTypeWalk;
-//	m_tMentalState		= eMentalStateFree;
-//	CMovementManager::set_path_type		(ePathTypePatrolPath);
-//	CPatrolPathManager::set_path		("way0000");
-//	CPatrolPathManager::set_start_type	(ePatrolStartTypeNearest);
-//	CPatrolPathManager::set_route_type	(ePatrolRouteTypeContinue);
-//	CPatrolPathManager::set_random		(true);
-//	update_path			();
-//	SetDirectionLook	();
-
-
-
-//	m_tEnemy.m_enemy	= 0;
-//	m_tSavedEnemy		= dynamic_cast<CEntity*>(Level().CurrentEntity());
-//	m_tSavedEnemyPosition = m_tSavedEnemy->Position();
-//	m_dwLostEnemyTime	= Level().timeServer();
-//	m_tpSavedEnemyNode	= ai().level_graph().vertex(m_dwSavedEnemyNodeID = m_tSavedEnemy->level_vertex_id());
-//	m_tMySavedPosition	= Position();
-//	m_dwMyNodeID		= level_vertex_id();
-//	INIT_SQUAD_AND_LEADER;
-//	vfInitSelector		(*m_tpSelectorRetreat,Squad,Leader);
-//
-//	m_tMovementType		= eMovementTypeWalk;
-//	m_tMentalState		= eMentalStateDanger;
-//	CMovementManager::set_path_type		(ePathTypeLevelPath);
-//	CLevelLocationSelector::set_evaluator(m_tpSelectorRetreat);
-//	update_path			();
-//	SetPointLookAngles	(m_tSavedEnemyPosition,m_head.target.yaw,m_head.target.pitch);
-//	set_desirable_speed	(m_fWalkFactor);
-	return;
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
 //		if (Level().ObjectSpace.q_nearest.size()) {
