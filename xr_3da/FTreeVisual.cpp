@@ -175,8 +175,6 @@ void	FTreeVisual::Copy			(IVisual *pSrc)
 	PCOPY(c_wind);
 	PCOPY(c_c_bias);
 	PCOPY(c_c_scale);
-	PCOPY(c_m_m2w);
-	PCOPY(c_m_w2v2p);
 
 	PCOPY(xform);
 	PCOPY(c_scale);
