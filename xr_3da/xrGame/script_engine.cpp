@@ -254,7 +254,7 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 			Msg			("%s",member_to_string(object,S.c_str()).c_str());
 		}
 	}
-	Msg			("};");
+	Msg			("};\n");
 }
 
 void print_help(lua_State *L)
