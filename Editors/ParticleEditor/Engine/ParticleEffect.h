@@ -69,7 +69,7 @@ public:
 
     SFrame				m_Frame;
 
-	u32					m_TimeLimit;
+	float				m_fTimeLimit;
 
     int					m_MaxParticles;
 
