@@ -261,8 +261,12 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 					I->m_tNodeID		= getAI().q_Node(I->m_tNodeID,I->o_Position);
 					// validating graph point and changing it if needed
 					_GRAPH_ID			tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
-					if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff) && !I->m_bOnline)
-						vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
+					if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
+						if (!I->m_bOnline)
+							vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
+						else
+							I->m_tGraphID = tGraphID;
+
 					// validating distance to graph point via graph cross-table
 					I->m_fDistance		= getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
 				}
@@ -275,8 +279,11 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				I->m_tNodeID			= getAI().q_Node(I->m_tNodeID,I->o_Position);
 				// validating graph point and changing it if needed
 				_GRAPH_ID				tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
-				if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff) && !I->m_bOnline)
-					vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
+				if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
+					if (!I->m_bOnline)
+						vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
+					else
+						I->m_tGraphID = tGraphID;
 				// validating distance to graph point via graph cross-table
 				I->m_fDistance			= getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
 			}

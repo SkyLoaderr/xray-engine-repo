@@ -122,6 +122,13 @@ void CAI_Space::Load()
 }
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
+#define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
+	Fvector t1 = (t0);\
+	t1.y += .6f;\
+	NORMALIZE_VECTOR(t1);\
+	RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(c0,c1,c2));\
+}
+
 void CAI_Space::Render()
 {
 	if (!psHUD_Flags.test(HUD_DRAW))
@@ -180,12 +187,6 @@ void CAI_Space::Render()
 					OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
 					OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 					for ( ; I != E; I++) {
-						//					{
-						//						Fvector t1 = m_tpaGraph[tpGame->m_tpALife->m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
-						//						t1.y += .6f;
-						//						NORMALIZE_VECTOR(t1);
-						//						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
-						//					}
 						{
 							CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);
 							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
@@ -228,6 +229,24 @@ void CAI_Space::Render()
 									t1.y += .6f;
 									NORMALIZE_VECTOR(t1);
 									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+								}
+								else {
+									CSE_ALifeCreatureActor *tpALifeCreatureActor = dynamic_cast<CSE_ALifeCreatureActor*>((*I).second);
+									if (tpALifeCreatureActor) {
+										Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
+										t1.y += .6f;
+										NORMALIZE_VECTOR(t1);
+										RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,255));
+									}
+									else {
+										CSE_ALifeTrader *tpALifeTrader = dynamic_cast<CSE_ALifeTrader*>((*I).second);
+										if (tpALifeTrader) {
+											Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
+											t1.y += .6f;
+											NORMALIZE_VECTOR(t1);
+											RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+										}
+									}
 								}
 							}
 						}
