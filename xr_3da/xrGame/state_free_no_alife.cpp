@@ -12,7 +12,7 @@
 #include "state_free_no_alife.h"
 #include "ai/stalker/ai_stalker.h"
 
-CStateFreeNoAlife::CStateFreeNoAlife	(CAI_Stalker *object) : CStateBase(object)
+CStateFreeNoAlife::CStateFreeNoAlife	()
 {
 	Init							();
 }
@@ -30,9 +30,9 @@ void CStateFreeNoAlife::Load			(LPCSTR section)
 	inherited::Load					(section);
 }
 
-void CStateFreeNoAlife::reinit			()
+void CStateFreeNoAlife::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit				();
+	inherited::reinit				(object);
 }
 
 void CStateFreeNoAlife::reload			(LPCSTR section)

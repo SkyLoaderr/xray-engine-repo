@@ -8,6 +8,10 @@
 
 #include "stdafx.h"
 #include "state_manager_stalker.h"
+#include "state_manager_death.h"
+#include "state_manager_no_alife.h"
+#include "state_manager_alife.h"
+#include "state_manager_combat.h"
 
 CStateManagerStalker::CStateManagerStalker	()
 {
@@ -20,10 +24,10 @@ CStateManagerStalker::~CStateManagerStalker	()
 
 void CStateManagerStalker::Init				()
 {
-//	add						(xr_new<CStateManagerDeath>(this),	eStalkerStateDeath,		0);
-//	add						(xr_new<CStateManagerNoALife>(this),eStalkerStateNoALife,	3);
-//	add						(xr_new<CStateManagerALife>(this),	eStalkerStateALife,		2);
-//	add						(xr_new<CStateManagerCombat>(this),	eStalkerStateCombat,	1);
+	add						(xr_new<CStateManagerDeath>(),	eStalkerStateDeath,		0);
+	add						(xr_new<CStateManagerNoALife>(),eStalkerStateNoALife,	3);
+	add						(xr_new<CStateManagerALife>(),	eStalkerStateALife,		2);
+	add						(xr_new<CStateManagerCombat>(),	eStalkerStateCombat,	1);
 }
 
 void CStateManagerStalker::Load				(LPCSTR section)
@@ -31,9 +35,9 @@ void CStateManagerStalker::Load				(LPCSTR section)
 	inherited::Load			(section);
 }
 
-void CStateManagerStalker::reinit			()
+void CStateManagerStalker::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit		();
+	inherited::reinit		(object);
 }
 
 void CStateManagerStalker::reload			(LPCSTR section)
@@ -43,5 +47,6 @@ void CStateManagerStalker::reload			(LPCSTR section)
 
 void CStateManagerStalker::update			(u32 time_delta)
 {
-
+	inherited::update		(time_delta);
+	set_dest_state			(eStalkerStateNoALife);
 }

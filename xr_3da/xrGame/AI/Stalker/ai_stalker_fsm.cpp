@@ -916,8 +916,7 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
-//	CStateManagerGlobal::set_dest_state	(eStateFreeNoAlife);
-//	CStateManagerGlobal::update			();
+	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
 //		if (Level().ObjectSpace.q_nearest.size()) {

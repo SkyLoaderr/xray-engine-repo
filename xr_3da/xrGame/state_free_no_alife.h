@@ -11,15 +11,18 @@
 #include "state_base.h"
 
 class CStateFreeNoAlife : public CStateBase {
-private:
+protected:
 	typedef CStateBase inherited;
+
+private:
 	u32					m_priority;
+
 public:
-						CStateFreeNoAlife	(CAI_Stalker *object);
+						CStateFreeNoAlife	();
 	virtual				~CStateFreeNoAlife	();
 			void		Init				();
 	virtual	void		Load				(LPCSTR section);
-	virtual	void		reinit				();
+	virtual	void		reinit				(CAI_Stalker *object);
 	virtual	void		reload				(LPCSTR section);
 	virtual	void		initialize			();
 	virtual	void		execute				();

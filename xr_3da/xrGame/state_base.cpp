@@ -11,11 +11,9 @@
 #include "stdafx.h"
 #include "state_base.h"
 
-CStateBase::CStateBase			(CAI_Stalker *object)
+CStateBase::CStateBase			()
 {
 	Init				();
-	VERIFY				(object);
-	m_object			= object;
 }
 
 CStateBase::~CStateBase			()
@@ -30,9 +28,10 @@ void CStateBase::Load			(LPCSTR section)
 {
 }
 
-void CStateBase::reinit			()
+void CStateBase::reinit			(CAI_Stalker *object)
 {
-	VERIFY				(m_object);
+	VERIFY				(object);
+	m_object			= object;
 	m_inertia_time		= 0;
 }
 

@@ -17,11 +17,11 @@ protected:
 	ALife::_TIME_ID		m_start_game_time;
 	u32					m_inertia_time;
 public:
-							CStateBase			(CAI_Stalker *object);
+							CStateBase			();
 	virtual					~CStateBase			();
 			void			Init				();
 	virtual	void			Load				(LPCSTR section);
-	virtual	void			reinit				();
+	virtual	void			reinit				(CAI_Stalker *object);
 	virtual	void			reload				(LPCSTR section);
 	virtual	void			initialize			();
 	virtual	void			execute				();

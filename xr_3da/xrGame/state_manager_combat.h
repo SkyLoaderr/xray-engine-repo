@@ -1,36 +1,36 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: state_manager_stalker.h
-//	Created 	: 13.01.2004
-//  Modified 	: 13.01.2004
+//	Module 		: state_manager_combat.h
+//	Created 	: 14.01.2004
+//  Modified 	: 14.01.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker state manager
+//	Description : Stalker state manager combat
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include "state_manager_state.h"
 
-class CStateManagerStalker : public CStateManagerState {
+class CStateManagerCombat : public CStateManagerState {
 protected:
 	typedef CStateManagerState inherited;
 
-	enum EStalkerStates {
-		eStalkerStateDeath = u32(0),
-		eStalkerStateNoALife,
-		eStalkerStateALife,
-		eStalkerStateCombat,
-		eStalkerStateDummy = u32(-1),
+	enum ECombatStates {
+		eCombatStateXXXX	= u32(0),
+		eCombatStateDummy	= u32(-1),
 	};
 public:
-						CStateManagerStalker	();
-	virtual				~CStateManagerStalker	();
+						CStateManagerCombat		();
+	virtual				~CStateManagerCombat	();
 			void		Init					();
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(CAI_Stalker *object);
 	virtual	void		reload					(LPCSTR section);
+	virtual	void		initialize				();
+	virtual	void		execute					();
+	virtual	void		finalize				();
 
 protected:
 	virtual	void		update					(u32 time_delta);
 };
 
-#include "state_manager_stalker_inline.h"
+#include "state_manager_combat_inline.h"

@@ -43,7 +43,7 @@ void CAI_Stalker::reinit			()
 	CSightManager::reinit			();
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
-	CStateManagerStalker::reinit	();
+	CStateManagerStalker::reinit	(this);
 
 	m_pPhysics_support->in_Init		();
 	m_dwRandomFactor				= 100;

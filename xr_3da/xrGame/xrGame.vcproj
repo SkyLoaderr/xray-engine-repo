@@ -1129,55 +1129,99 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="StateManagerStalker"
+								Name="StateManagerState"
 								Filter="">
 								<File
-									RelativePath=".\state_manager_stalker.cpp">
+									RelativePath=".\state_manager_state.cpp">
 								</File>
 								<File
-									RelativePath=".\state_manager_stalker.h">
+									RelativePath=".\state_manager_state.h">
 								</File>
 								<File
-									RelativePath=".\state_manager_stalker_inline.h">
+									RelativePath=".\state_manager_state_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="StateManagerDeath"
+								Name="States"
 								Filter="">
-							</Filter>
-							<Filter
-								Name="StateManagerNoALife"
-								Filter="">
-								<File
-									RelativePath=".\state_manager_no_alife.cpp">
-								</File>
-								<File
-									RelativePath=".\state_manager_no_alife.h">
-								</File>
-								<File
-									RelativePath=".\state_manager_no_alife_inline.h">
-								</File>
 								<Filter
-									Name="StateFreeNoALife"
+									Name="StateManagerALife"
 									Filter="">
 									<File
-										RelativePath=".\state_free_no_alife.cpp">
+										RelativePath=".\state_manager_alife.cpp">
 									</File>
 									<File
-										RelativePath=".\state_free_no_alife.h">
+										RelativePath=".\state_manager_alife.h">
 									</File>
 									<File
-										RelativePath=".\state_free_no_alife_inline.h">
+										RelativePath=".\state_manager_alife_inline.h">
 									</File>
 								</Filter>
-							</Filter>
-							<Filter
-								Name="StateManagerALife"
-								Filter="">
-							</Filter>
-							<Filter
-								Name="StateManagerCombat"
-								Filter="">
+								<Filter
+									Name="StateManagerCombat"
+									Filter="">
+									<File
+										RelativePath=".\state_manager_combat.cpp">
+									</File>
+									<File
+										RelativePath=".\state_manager_combat.h">
+									</File>
+									<File
+										RelativePath=".\state_manager_combat_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="StateManagerDeath"
+									Filter="">
+									<File
+										RelativePath=".\state_manager_death.cpp">
+									</File>
+									<File
+										RelativePath=".\state_manager_death.h">
+									</File>
+									<File
+										RelativePath=".\state_manager_death_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="StateManagerNoALife"
+									Filter="">
+									<File
+										RelativePath=".\state_manager_no_alife.cpp">
+									</File>
+									<File
+										RelativePath=".\state_manager_no_alife.h">
+									</File>
+									<File
+										RelativePath=".\state_manager_no_alife_inline.h">
+									</File>
+									<Filter
+										Name="StateFreeNoALife"
+										Filter="">
+										<File
+											RelativePath=".\state_free_no_alife.cpp">
+										</File>
+										<File
+											RelativePath=".\state_free_no_alife.h">
+										</File>
+										<File
+											RelativePath=".\state_free_no_alife_inline.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="StateManagerStalker"
+									Filter="">
+									<File
+										RelativePath=".\state_manager_stalker.cpp">
+									</File>
+									<File
+										RelativePath=".\state_manager_stalker.h">
+									</File>
+									<File
+										RelativePath=".\state_manager_stalker_inline.h">
+									</File>
+								</Filter>
 							</Filter>
 						</Filter>
 					</Filter>

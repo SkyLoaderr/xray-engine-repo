@@ -19,6 +19,12 @@ class CStateManagerAbstract {
 		{
 		}
 
+						CState(const CState *state)
+		{
+			*this		= *state;
+			m_state		= xr_new<T>(m_state);
+		}
+
 						~CState()
 		{
 			xr_delete	(m_state);

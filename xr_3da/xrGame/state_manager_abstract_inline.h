@@ -55,7 +55,8 @@ void CAbstractStateManager::add				(T *state, u32 state_id, u32 priority)
 {
 	xr_map<u32,CState>::const_iterator	I = m_states.find(state_id);
 	VERIFY								(m_states.end() == I);
-	m_states.insert						(std::make_pair(state_id,CState(state,priority)));
+	std::pair<xr_map<u32,CState>::iterator,bool>	J = m_states.insert(std::make_pair(state_id,CState(0,priority)));
+	J.first->second.m_state				= state;
 }
 
 TEMPLATE_SPECIALIZATION
