@@ -235,7 +235,12 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 		]
 
 	];
-	
+
+	vfLoadStandardScripts(tpLuaVirtualMachine);
+}
+
+void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
 	string256		S,S1;
 	FS.update_path	(S,"$game_data$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
