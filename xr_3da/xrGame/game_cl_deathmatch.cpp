@@ -6,6 +6,7 @@
 #include "Spectator.h"
 #include "level.h"
 #include "xr_level_controller.h"
+#include "ui/UIChatWnd.h"
 
 #define	TEAM0_MENU		"deathmatch_team0"
 
@@ -30,6 +31,7 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	m_game_ui		= NULL;
 	
 	m_iCurrentPlayersMoney = 0;
+	pChatWnd		= NULL;
 }
 
 void game_cl_Deathmatch::Init ()
@@ -47,6 +49,7 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pBuyMenuTeam0);
 	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
+	xr_delete(pChatWnd);
 }
 
 
@@ -65,8 +68,11 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	pSkinMenuTeam0	= InitSkinMenu(0);
 	pCurSkinMenu	= pSkinMenuTeam0;
 
-	pInventoryMenu = xr_new<CUIInventoryWnd>();
-
+	pInventoryMenu	= xr_new<CUIInventoryWnd>();
+	pChatWnd		= xr_new<CUIChatWnd>(&HUD().GetUI()->UIMainIngameWnd.UIMPChatLog);
+	pChatWnd->Init				();
+	pChatWnd->SetOwner			(this);
+	pChatWnd->SetReplicaAuthor	(Level().CurrentEntity()->cName());
 
 	return m_game_ui;
 }
@@ -327,7 +333,28 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 		return true;
 	};
 
-	
+	if ((kCHAT == key || kCHAT_TEAM == key) && pChatWnd)
+	{
+		ref_str prefix;
+
+		if (kCHAT_TEAM == key)
+			prefix = "to team> ";
+		else
+			prefix = "to all> ";
+
+		pChatWnd->SetEditBoxPrefix(prefix);
+
+		StartStopMenu(pChatWnd, false);
+		if (!pChatWnd->IsShown() && xr_strlen(pChatWnd->UIEditBox.GetText()) > 0)
+		{
+			ref_str phrase = pChatWnd->UIEditBox.GetText();
+			pChatWnd->Say(phrase);
+			kCHAT == key ? ChatSayAll(phrase) : ChatSayTeam(phrase);
+			pChatWnd->UIEditBox.SetText("");
+		}
+		return false;
+	}
+
 	return inherited::OnKeyboardPress(key);
 }
 
@@ -342,3 +369,15 @@ bool	game_cl_Deathmatch::OnKeyboardRelease		(int key)
 	return inherited::OnKeyboardRelease(key);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
+void game_cl_Deathmatch::ChatSayAll(const ref_str &phrase)
+{
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void game_cl_Deathmatch::ChatSayTeam(const ref_str &phrase)
+{
+
+}

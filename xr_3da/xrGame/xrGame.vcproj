@@ -9032,6 +9032,12 @@
 					RelativePath=".\ui\UIBuyWeaponWnd.h">
 				</File>
 				<File
+					RelativePath=".\ui\UIChatWnd.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIChatWnd.h">
+				</File>
+				<File
 					RelativePath=".\ui\UIDragDropItemMP.cpp">
 				</File>
 				<File

@@ -120,6 +120,8 @@ bool CUIEditBox::KeyPressed(int dik)
 		m_bShift = true;
 		return true;
 		break;
+	case DIK_ESCAPE:
+		SetText("");
 	case DIK_RETURN:
 	case DIK_NUMPADENTER:
 		GetParent()->SetKeyboardCapture(this, false);
@@ -303,4 +305,10 @@ void  CUIEditBox::Draw()
 					   (float)rect.top+outY,  "|");
 
 	}
+}
+
+void CUIEditBox::SetText(LPCSTR str)
+{
+	inherited::SetText(str);
+	m_iCursorPos = m_sEdit.size() - 1;
 }

@@ -48,6 +48,7 @@ enum	EKeyBinding
 	kDROP			,
 	kSCORES			,
 	kCHAT			,
+	kCHAT_TEAM		,
 	kSCREENSHOT		,
 	kQUIT			,
 	kCONSOLE		,

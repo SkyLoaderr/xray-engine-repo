@@ -56,6 +56,7 @@ _keybind  keybind[]		= {
 	{ "use",			kUSE			},	
 	{ "scores",			kSCORES			},	
 	{ "chat",			kCHAT			},	
+	{ "chat_team",		kCHAT_TEAM		},	
 	{ "screenshot",		kSCREENSHOT		},	
 	{ "quit",			kQUIT			},
 	{ "console",		kCONSOLE		},

@@ -80,6 +80,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	fuzzyShowInfo				= 0.f;
 	m_iPdaMessagesFade_mSec		= 0;
 	m_iInfoMessagesFade_mSec	= 0;
+	m_iChatMessagesFade_mSec	= 0;
 	m_iPrevTime					= 0;
 }
 
@@ -265,6 +266,11 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
 	ShowBattery(false);
 	SetBatteryCharge(1.0f);
+
+	// Multiplayer chat log
+	AttachChild(&UIMPChatLog);
+	xml_init.InitListWnd(uiXml, "chat_log_list", 0, &UIMPChatLog);
+	m_iChatMessagesFade_mSec = uiXml.ReadAttribInt("chat_log_list", 0, "fade", 0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -537,6 +543,7 @@ void CUIMainIngameWnd::Update()
 	// Fade animations
 	FadeUpdate(&UIPdaMsgListWnd, m_iPdaMessagesFade_mSec);
 	FadeUpdate(&UIInfoMessages, m_iInfoMessagesFade_mSec);
+	FadeUpdate(&UIMPChatLog, m_iChatMessagesFade_mSec);
 
 	// Check for new news
 	CheckForNewNews();
@@ -780,11 +787,6 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			break;
 		case DIK_NUMPADPLUS:
 			UIZoneMap.ZoomIn();
-			return true;
-			break;
-		// TEST
-		case DIK_O:
-			PlayClawsAnimation("aa");
 			return true;
 			break;
 		}
@@ -1143,8 +1145,9 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd, int fadeDuration)
 {
 	for(int i=0; i<pWnd->GetSize(); i++)
 	{
-		CUIPdaMsgListItem* pItem = smart_cast<CUIPdaMsgListItem*>(pWnd->GetItem(i));
-		R_ASSERT(pItem);
+		CUIListItem			*pItem	= pWnd->GetItem(i);
+		CUIPdaMsgListItem	*pPItem = smart_cast<CUIPdaMsgListItem*>(pItem);
+
 		int show_time = pItem->GetValue();
 
 		if(show_time>0)
@@ -1152,10 +1155,24 @@ void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd, int fadeDuration)
 			// Плавное исчезновение надписи
 			float fAlphaFactor = static_cast<float>(fadeDuration - show_time) / fadeDuration;
 			if (fAlphaFactor < 0) fAlphaFactor = 0;
-			pItem->UIMsgText.SetTextColor(subst_alpha(pItem->UIMsgText.GetTextColor(), u8(iFloor(255.f * (1 - fAlphaFactor)))));
+			
+			u32 color = 0xffffffff;
+
+			if (pPItem)
+				color = pPItem->UIMsgText.GetTextColor();
+			else
+				color = pItem->GetTextColor();
+
+			color = subst_alpha(color, u8(iFloor(255.f * (1 - fAlphaFactor))));
+
+			if (pPItem)
+				pPItem->UIMsgText.SetTextColor(color);
+			else
+				pItem->SetTextColor(color);
 
 			show_time -= Device.dwTimeDelta;
 			pItem->SetValue(show_time);
+			pItem->Show(true);
 		}
 		else
 			pWnd->RemoveItem(i);

@@ -214,7 +214,7 @@ protected:
 	// для лога сообщений на экране устанавливаем время постепенного исчезновения надписи
 	int					m_iPdaMessagesFade_mSec;
 	int					m_iInfoMessagesFade_mSec;
-	
+	int					m_iChatMessagesFade_mSec;
 	//-----------------------------------------------------------------------------/
 	//	News related routines
 	//-----------------------------------------------------------------------------/
@@ -273,4 +273,7 @@ public:
 	void				SetBatteryCharge(float value);
 	// Показать/спрятать батарейку
 	void				ShowBattery(bool on);
+
+	// Multiplayer chat log
+	CUIListWnd			UIMPChatLog;
 };

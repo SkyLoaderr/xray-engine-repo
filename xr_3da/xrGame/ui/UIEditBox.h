@@ -6,20 +6,29 @@
 #include "UIStatic.h"
 #include "../script_export_space.h"
 
+//////////////////////////////////////////////////////////////////////////
+
+class game_cl_GameState;
+
+//////////////////////////////////////////////////////////////////////////
+
 class CUIEditBox : public CUIStatic
 {
+	typedef CUIStatic inherited;
 public:
-	CUIEditBox(void);
-	virtual ~CUIEditBox(void);
+					CUIEditBox		();
+	virtual			~CUIEditBox		();
 
-	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+	virtual void	OnMouse			(int x, int y, EUIMessages mouse_action);
+	virtual bool	OnKeyboard		(int dik, EUIMessages keyboard_action);
 
-	virtual void Update();
-	virtual void Draw();
+	virtual void	Update			();
+	virtual void	Draw			();
 
+	void			CaptureFocus	(bool bCapture) { m_bInputFocus = bCapture; }
+	virtual	void	SetText			(LPCSTR str);
 protected:
 
 	bool KeyPressed(int dik);
