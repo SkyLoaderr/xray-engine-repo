@@ -40,6 +40,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call) {
 		case DLL_PROCESS_ATTACH: {
+			// script registration
 			ai().script_engine().script_export();
 			// register console commands
 			CCC_RegisterCommands();
@@ -47,7 +48,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			CCC_RegisterInput			();
 			// xml parser options
 			XML_DisableStringCaching	();
-			// script registration
 #ifdef DEBUG
 			g_profiler			= xr_new<CProfiler>();
 #endif

@@ -77,6 +77,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("direction",					&CScriptGameObject::Direction)
 		.def("clsid",						&CScriptGameObject::clsid)
 		.def("id",							&CScriptGameObject::ID)
+		.def("story_id",					&CScriptGameObject::story_id)
 		.def("section",						&CScriptGameObject::Section)
 		.def("name",						&CScriptGameObject::Name)
 		.def("parent",						&CScriptGameObject::Parent)
@@ -145,7 +146,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		//.def("set_hear_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetSoundCallback))
 		//.def("clear_hear_callback",			&CScriptGameObject::ClearSoundCallback)
 		
-		.def("memory",						&CScriptGameObject::memory, adopt(result))
+		.def("memory_time",					&CScriptGameObject::memory_time)
 		.def("best_weapon",					&CScriptGameObject::best_weapon)
 		.def("explode",						&CScriptGameObject::explode)
 		.def("get_enemy",					&CScriptGameObject::GetEnemy)

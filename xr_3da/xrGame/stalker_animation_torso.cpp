@@ -45,7 +45,7 @@ void CStalkerAnimationManager::fill_object_info		()
 MotionID CStalkerAnimationManager::no_object_animation(const EBodyState &body_state) const
 {
 	if (eMentalStateFree == object().movement().mental_state()) {
-		R_ASSERT2(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!");
+		R_ASSERT3			(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 		if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 			return			(m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
 		else
@@ -96,7 +96,7 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 		default : {
 			if (eMentalStateFree == object().movement().mental_state()) {
 				//. hack
-				R_ASSERT2	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!");
+				R_ASSERT3	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 				if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 					return m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
 				else

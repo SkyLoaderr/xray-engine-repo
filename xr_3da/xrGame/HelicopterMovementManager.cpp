@@ -819,7 +819,7 @@ void CHelicopterMovManager::GoByRoundPatrolPath()
 		xr_delete( tmp );
 	}
 
-	CPatrolPath* pp = xr_new<CPatrolPath>();
+	CPatrolPath* pp = xr_new<CPatrolPath>(m_heli->cName());
 	m_need_to_del_path = true;
 	xr_vector<Fvector> pts;
 	//fill new path points
@@ -856,7 +856,7 @@ void CHelicopterMovManager::GoByRoundPatrolPath()
 
 	xr_vector<Fvector>::iterator it = pts.begin();
 	for(u32 idx=0;it!=pts.end();++it,++idx){//create patrol path
-		CPatrolPoint pt = CPatrolPoint(*it,0,0,"");
+		CPatrolPoint pt = CPatrolPoint(pp,*it,0,0,"");
 		pp->add_vertex(pt,idx);
 		if (idx)
 			pp->add_edge(idx-1,idx,1.f);

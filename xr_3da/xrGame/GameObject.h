@@ -51,6 +51,7 @@ class CGameObject :
 	bool					m_spawned;
 	Flags32					m_server_flags;
 	CAI_ObjectLocation		*m_ai_location;
+	ALife::_STORY_ID		m_story_id;
 
 protected:
 	//время удаления объекта
@@ -231,6 +232,11 @@ public:
 	{
 		VERIFY				(m_spawned);
 		return				(m_spawn_time);
+	}
+
+	IC		const ALife::_STORY_ID &story_id	() const
+	{
+		return				(m_story_id);
 	}
 	
 public:

@@ -17,6 +17,9 @@ IC	const Fvector &CPatrolPoint::position	() const
 IC	u32	 CPatrolPoint::level_vertex_id		() const
 {
 	VERIFY				(m_initialized);
+#ifdef DEBUG
+	verify_vertex_id	();
+#endif
 	return				(m_level_vertex_id);
 }
 

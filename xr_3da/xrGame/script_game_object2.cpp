@@ -222,15 +222,15 @@ CScriptGameObject *CScriptGameObject::GetBestItem()
 	return					(0);
 }
 
-MemorySpace::CMemoryInfo *CScriptGameObject::memory(const CScriptGameObject &lua_game_object)
+u32 CScriptGameObject::memory_time(const CScriptGameObject &lua_game_object)
 {
 	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member memory!");
-		return			(0);
+		return				(0);
 	}
 	else
-		return			(xr_new<MemorySpace::CMemoryInfo>(monster->memory().memory(&lua_game_object.object())));
+		return				(monster->memory().memory_time(&lua_game_object.object()));
 }
 
 void CScriptGameObject::enable_memory_object	(CScriptGameObject *game_object, bool enable)

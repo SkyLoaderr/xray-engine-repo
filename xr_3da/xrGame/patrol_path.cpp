@@ -10,12 +10,19 @@
 #include "patrol_path.h"
 #include "levelgamedef.h"
 
-CPatrolPath	&CPatrolPath::load_path(IReader &stream)
+#ifdef DEBUG
+CPatrolPath::CPatrolPath			(shared_str name)
+{
+	m_name			= name;
+}
+#endif
+
+CPatrolPath	&CPatrolPath::load_path	(IReader &stream)
 {
 	R_ASSERT		(stream.find_chunk(WAYOBJECT_CHUNK_POINTS));
 	u32				vertex_count = stream.r_u16();
 	for (u32 i=0; i<vertex_count; ++i)
-		add_vertex	(CPatrolPoint().load(stream),i);
+		add_vertex	(CPatrolPoint(this).load(stream),i);
 
 	R_ASSERT		(stream.find_chunk(WAYOBJECT_CHUNK_LINKS));
 	u32				edge_count = stream.r_u16();

@@ -25,6 +25,10 @@ protected:
 	typedef CGraphAbstract<CPatrolPoint,float,u32> inherited;
 
 public:
+#ifdef DEBUG
+	shared_str				m_name;
+							CPatrolPath		(shared_str name);
+#endif
 	virtual					~CPatrolPath	();
 			CPatrolPath		&load_path		(IReader &stream);
 	IC		const CVertex	*point			(shared_str name) const;

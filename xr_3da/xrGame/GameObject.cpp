@@ -207,6 +207,10 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 #pragma warning(pop)
 	}
 
+	m_story_id						= ALife::_STORY_ID(-1);
+	if (O)
+		m_story_id					= O->m_story_id;
+
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setReady						(TRUE);

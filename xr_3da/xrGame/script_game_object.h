@@ -98,6 +98,7 @@ public:
 	_DECLARE_FUNCTION11	(setVisible	,	void, BOOL	);
 	_DECLARE_FUNCTION10	(getEnabled	,	BOOL		);
 	_DECLARE_FUNCTION11	(setEnabled	,	void, BOOL	);
+	_DECLARE_FUNCTION10	(story_id	,	ALife::_STORY_ID);
 	
 			LPCSTR				Name				() const;
 			shared_str			cName				() const;
@@ -309,7 +310,7 @@ public:
 			LPCSTR				snd_character_profile_sect	()			const;
 
 			//////////////////////////////////////////////////////////////////////////
-			MemorySpace::CMemoryInfo *memory		(const CScriptGameObject &lua_game_object);
+			u32						memory_time		(const CScriptGameObject &lua_game_object);
 			CScriptGameObject		*best_weapon	();
 			void					explode			(u32 level_time);
 			CScriptGameObject		*GetEnemy		() const;

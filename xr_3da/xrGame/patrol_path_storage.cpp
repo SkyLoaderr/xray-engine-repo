@@ -32,7 +32,11 @@ void CPatrolPathStorage::load				(IReader &stream)
 
 		shared_str				patrol_name;
 		sub_chunk->r_stringZ(patrol_name);
+#ifdef DEBUG
+		m_registry.insert	(std::make_pair(patrol_name,&xr_new<CPatrolPath>(patrol_name)->load_path(*sub_chunk)));
+#else
 		m_registry.insert	(std::make_pair(patrol_name,&xr_new<CPatrolPath>()->load_path(*sub_chunk)));
+#endif
 	}
 	
 	chunk->close			();

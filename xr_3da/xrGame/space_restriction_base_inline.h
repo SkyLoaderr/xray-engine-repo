@@ -18,6 +18,7 @@ IC	const xr_vector<u32> &CSpaceRestrictionBase::border	()
 	if (!initialized())
 		initialize				();
 	VERIFY						(initialized());
+	VERIFY3						(!m_border.empty(),"Space restrictor has no border!",*name());
 	return						(m_border);
 }
 
