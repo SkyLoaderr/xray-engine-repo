@@ -381,7 +381,9 @@ void CAISelectorBase::vfAddDeviationFromMemberViewCost()
 	tTempDirection1.sub(m_tCurrentPosition,m_tCurrentMemberPosition);
 	vfNormalizeSafe(tTempDirection0);
 	vfNormalizeSafe(tTempDirection1);
-	float fAlpha = acosf(tTempDirection0.dotproduct(tTempDirection1));
+	float fAlpha = tTempDirection0.dotproduct(tTempDirection1);
+	clamp(fAlpha,-0.999999f,0.999999f);
+	fAlpha = acosf(fAlpha);
 	if (fAlpha < m_fFireDispersionAngle)
 		m_fResult += fMemberViewDeviationWeight;
 }
@@ -391,7 +393,9 @@ void CAISelectorBase::vfAddDeviationFromPreviousDirectionCost()
 	Fvector tTempDirection;
 	tTempDirection.sub(m_tCurrentPosition,m_tMyPosition);
 	vfNormalizeSafe(tTempDirection);
-	float fAlpha = acosf(tTempDirection.dotproduct(m_tDirection));
+	float fAlpha = tTempDirection.dotproduct(m_tDirection);
+	clamp(fAlpha,-0.99999f,0.99999f);
+	fAlpha = acosf(fAlpha);
 	m_fResult += fAlpha * fMemberViewDeviationWeight;
 }
 

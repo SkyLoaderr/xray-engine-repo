@@ -14,6 +14,8 @@
 #include "..\\..\\..\\bodyinstance.h"
 #include "..\\..\\..\\xr_trims.h"
 
+#define WRITE_LOG
+
 CAI_Soldier::CAI_Soldier()
 {
 	dwHitTime = 0;
@@ -163,6 +165,18 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->Play3DAtPos(S,vPosition);
+	
+	if (iHealth > 0)
+		if (!m_bCrouched)
+			if (::Random.randI(0,2))
+				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
+			else
+				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
+		else
+			if (::Random.randI(0,2))
+				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
+			else
+				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
 }
 
 // when someone hit soldier
@@ -1248,7 +1262,7 @@ void CAI_Soldier::SenseSomething()
 	// setting up a look to watch at the least safe direction
 	q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tSenseDir,1000);
 	// setting up look speed
-	q_look.o_look_speed=_FB_look_speed;
+	//q_look.o_look_speed=_FB_look_speed;
 
 	eCurrentState = tStateStack.top();
 	tStateStack.pop();
@@ -1299,12 +1313,14 @@ void CAI_Soldier::UnderFire()
 	mk_rotation(tHitDir,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+	//r_target.pitch = 0;
+	//r_torso_target.pitch = 0;
 	
-	q_look.o_look_speed=8*_FB_look_speed;
+	//q_look.o_look_speed=8*_FB_look_speed;
 
 	vfSetFire(dwCurTime - dwHitTime < 1000,Group);
 
-	vfSetMovementType(true,m_fMaxSpeed);
+	vfSetMovementType(false,m_fMaxSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }

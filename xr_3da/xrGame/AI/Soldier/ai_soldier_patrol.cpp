@@ -693,6 +693,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	DWORD dwCurTime = Level().timeServer();
 	
+	/**/
 	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
@@ -719,7 +720,13 @@ void CAI_Soldier::FollowLeaderPatrol()
 		m_dwLastRangeSearch = 0;
 		return;
 	}
+	/**
 
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	/**/
 	if (Leader == this) {
 		eCurrentState = aiSoldierPatrolDetour;
 		return;
@@ -837,6 +844,7 @@ void CAI_Soldier::Patrol()
 
 	DWORD dwCurTime = Level().timeServer();
 	
+	/**/
 	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
@@ -863,7 +871,13 @@ void CAI_Soldier::Patrol()
 		m_dwLastRangeSearch = 0;
 		return;
 	}
+	/**
 
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	/**/
 	if (AI_Path.bNeedRebuild) {
 		AI_Path.DestNode = m_dwStartPatrolNode;
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);

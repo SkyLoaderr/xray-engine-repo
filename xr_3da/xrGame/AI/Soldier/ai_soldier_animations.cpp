@@ -36,16 +36,16 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tTorso.tpReload = tpVisualObject->ID_Cycle_Safe("norm_torso_reload");
 
 	// loading crouch animations
-	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle_Safe("crouch_death");
-	tSoldierAnimations.tCrouch.tGlobal.tpJumpBegin = tpVisualObject->ID_Cycle_Safe("crouch_jump_begin");
-	tSoldierAnimations.tCrouch.tGlobal.tpJumpIdle = tpVisualObject->ID_Cycle_Safe("crouch_jump_idle");
+	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle_Safe("cr_death");
+	tSoldierAnimations.tCrouch.tGlobal.tpJumpBegin = tpVisualObject->ID_Cycle_Safe("cr_jump_begin");
+	tSoldierAnimations.tCrouch.tGlobal.tpJumpIdle = tpVisualObject->ID_Cycle_Safe("cr_jump_idle");
 	
-	tSoldierAnimations.tCrouch.tLegs.tRun.Create(tpVisualObject, "crouch_run");
-	tSoldierAnimations.tCrouch.tLegs.tWalk.Create(tpVisualObject, "crouch_walk");
-	tSoldierAnimations.tCrouch.tLegs.tpIdle = tpVisualObject->ID_Cycle_Safe("crouch_idle");
-	tSoldierAnimations.tCrouch.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("crouch_turn");
+	tSoldierAnimations.tCrouch.tLegs.tRun.Create(tpVisualObject, "cr_run");
+	tSoldierAnimations.tCrouch.tLegs.tWalk.Create(tpVisualObject, "cr_walk");
+	tSoldierAnimations.tCrouch.tLegs.tpIdle = tpVisualObject->ID_Cycle_Safe("cr_idle");
+	tSoldierAnimations.tCrouch.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("cr_turn");
 	
-	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle_Safe("crouch_torso_aim");
+	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle_Safe("cr_torso_aim");
 	
 	tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpaIdle[0]);
 	tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tLegs.tpIdle);
@@ -123,13 +123,13 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					AState = &tSoldierAnimations.tCrouch.tLegs.tRun;
 			}
 			else		
-				if (speed >= m_fMaxSpeed)
+				if (speed >= m_fMaxSpeed - EPS_L)
 					AState = &tSoldierAnimations.tNormal.tLegs.tRun;
 			
-			if (dot>0.5f)
+			if (dot>0.7f)
 				tpLegsAnimation = AState->fwd;
 			else 
-				if ((dot<=0.5f)&&(dot>=-0.5f)) {
+				if ((dot<=0.7f)&&(dot>=-0.7f)) {
 					Fvector cross; 
 					cross.crossproduct(view,move);
 					if (cross.y > 0)
@@ -149,6 +149,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				
 				if (!tpTorsoAnimation)
 					tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaIdle[::Random.randI(0,2)];
+			}
+			else {
+				tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
 			}
 		}
 	}
