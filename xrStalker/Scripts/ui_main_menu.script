@@ -97,10 +97,10 @@ function main_menu:InitControls()
 	main_frame:AttachChild(btn)
 	--------->> LOAD
 	
-	btn = CUIButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_load")
-	btn:Init("ui\\ui_button_")
+--	btn = CUIButton()
+--	-btn:SetAutoDelete(true)
+--	btn:SetWindowName("btn_load")
+	--btn:Init("ui\\ui_button_")
 	
 	
 	
