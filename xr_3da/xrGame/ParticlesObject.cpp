@@ -141,6 +141,7 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 	inherited::shedule_Update		(_dt);
 
 	// Update
+	if (m_bDead)					return;
 	u32 dt							= Device.dwTimeGlobal - dwLastTime;
 	if (dt)							{
 		if (psDeviceFlags.test(mtParticles))	{
@@ -171,9 +172,10 @@ void CParticlesObject::PerformAllTheWork(u32 _dt)
 
 void CParticlesObject::PerformAllTheWork_mt()
 {
-	VERIFY					(mt_dt);
+	if (0==mt_dt)			return;	//???
 	IParticleCustom* V		= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->OnFrame				(mt_dt);
+	mt_dt					= 0;
 }
 
 void CParticlesObject::SetXFORM			(const Fmatrix& m)

@@ -147,8 +147,10 @@ void	IGame_Level::OnFrame		( )
 	while (ps_destroy.size())
 	{
 		CPS_Instance*	psi		= ps_destroy.back	();
-		ps_destroy.pop_back		();
-		xr_delete				(psi);
+		if (!psi->Locked())		{
+			ps_destroy.pop_back		();
+			xr_delete				(psi);
+		}
 	}
 
 	// Ambience

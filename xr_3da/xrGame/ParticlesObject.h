@@ -37,6 +37,7 @@ public:
 	void				play_at_pos			(const Fvector& pos, BOOL xform=FALSE);
 	virtual void		Play				();
 	void				Stop				(BOOL bDefferedStop=TRUE);
+	virtual BOOL		Locked				()				{ return mt_dt; }
 	
 	bool				IsLooped			() {return m_bLooped;}
 	bool				IsAutoRemove		();

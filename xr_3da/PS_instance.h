@@ -11,8 +11,9 @@ class ENGINE_API CPS_Instance	:
 	public IRenderable
 {
 protected:
-	int						m_iLifeTime;
-	BOOL					m_bAutoRemove;
+	int						m_iLifeTime			;
+	BOOL					m_bAutoRemove		;
+	BOOL					m_bDead				;
 public:
 	CPS_Instance			();
 	virtual					~CPS_Instance		();
@@ -23,7 +24,8 @@ public:
 
 	void					PSI_destroy			();
 
-	virtual void			Play				()	=0;
+	virtual void			Play				()				= 0;
+	virtual BOOL			Locked				()				{ return FALSE; }
 
 	virtual void			shedule_Update		(u32 dt);
 	virtual	IRenderable*	dcast_Renderable	()				{ return this;	}

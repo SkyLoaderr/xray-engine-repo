@@ -13,6 +13,7 @@ CPS_Instance::CPS_Instance			()
 
 	m_iLifeTime								= int_max;
 	m_bAutoRemove							= TRUE;
+	m_bDead									= FALSE;
 }
 
 //----------------------------------------------------
@@ -32,12 +33,14 @@ void CPS_Instance::shedule_Update	(u32 dt)
 	m_iLifeTime						-= dt;
 
 	// remove???
+	if (m_bDead)					return;
 	if (m_bAutoRemove && m_iLifeTime<=0)
 		PSI_destroy					();
 }
 //----------------------------------------------------
 void CPS_Instance::PSI_destroy		()
 {
+	m_bDead								= TRUE;
 	m_iLifeTime							= 0;
 	g_pGameLevel->ps_destroy.push_back	(this);
 }
