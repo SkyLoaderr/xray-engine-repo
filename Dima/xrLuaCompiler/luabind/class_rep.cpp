@@ -251,13 +251,13 @@ bool luabind::detail::class_rep::settable(lua_State* L)
 		{
 			// msvc has a bug which deletes the string twice, that's
 			// why we have to create it on the heap
-			std::string* msg = xr_new<std::string>("cannot set attribute '");
-			*msg			+= obj->crep()->m_name;
-			*msg			+= ".";
-			*msg			+= lua_tostring(L, -2);
-			*msg			+= "'";
-			lua_pushstring	(L, msg->c_str());
-			xr_delete		(msg);
+			std::string* msg = new std::string("cannot set attribute '");
+			*msg += obj->crep()->m_name;
+			*msg += ".";
+			*msg += lua_tostring(L, -2);
+			*msg += "'";
+			lua_pushstring(L, msg->c_str());
+			delete msg;
 		}
 #else
 		{
