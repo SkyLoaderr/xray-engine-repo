@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "inventory_item.h"
 #include "script_game_object.h"
+#include "inventory.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionFreeNoALife
@@ -24,7 +25,10 @@ CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCST
 void CStalkerActionFreeNoALife::initialize	()
 {
 	inherited::initialize			();
-	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
+	m_stop_weapon_handling_time		= Level().timeServer();
+
+	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
+		m_stop_weapon_handling_time	+= ::Random.randI(120000,180000);
 
 #ifndef STALKER_DEBUG_MODE
 	m_object->set_node_evaluator	(0);

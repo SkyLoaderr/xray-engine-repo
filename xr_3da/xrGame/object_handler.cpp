@@ -567,6 +567,7 @@ void CObjectHandler::add_evaluators		(CMissile *missile)
 	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyAimingReady1)	,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
 void CObjectHandler::add_operators		(CMissile *missile)
@@ -603,6 +604,7 @@ void CObjectHandler::add_operators		(CMissile *missile)
 	add_condition		(action,id,eWorldPropertyThrowIdle,	false);
 	add_condition		(action,id,eWorldPropertyFiring1,	false);
 	add_effect			(action,id,eWorldPropertyIdle,		true);
+	add_effect			(action,id,eWorldPropertyAimingReady1,true);
 	add_operator		(uid(id,eWorldOperatorIdle),		action);
 
 	// fire start

@@ -146,8 +146,7 @@ void CStalkerActionGetEnemySeen::execute	()
 
 	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	if (!smart_cast<CMissile*>(m_object->best_weapon()))
-		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
 		if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <=.5f)
@@ -427,8 +426,7 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	else
 		m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCurrentDirection,true));
 
-	if (!smart_cast<CMissile*>(m_object->best_weapon()))
-		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -589,8 +587,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	if (!smart_cast<CMissile*>(m_object->best_weapon()))
-		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -846,8 +843,7 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-	if (!smart_cast<CMissile*>(m_object->best_weapon()))
-		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1148,8 +1144,7 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	else
 		m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePosition,m_object->memory(m_object->enemy()).m_object_params.m_position,true));
 
-	if (!smart_cast<CMissile*>(m_object->best_weapon()))
-		m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1378,8 +1373,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	if (!smart_cast<CMissile*>(m_object->best_weapon()))
-		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
+	m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
 		if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <=.5f)

@@ -81,7 +81,7 @@ public:
 	IC		bool	turn_in_place			() const;
 
 	IC		void	set_head_orientation	(const MonsterSpace::SBoneRotation &orientation);
-	IC		void	set_desired_position	(const Fvector *desired_position);
+			void	set_desired_position	(const Fvector *desired_position);
 	IC		void	set_desired_direction	(const Fvector *desired_direction);
 	IC		void	set_body_state			(EBodyState body_state);
 	IC		void	set_movement_type		(EMovementType movement_type);

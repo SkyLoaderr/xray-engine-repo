@@ -18,20 +18,6 @@ IC void CStalkerMovementManager::set_head_orientation(const MonsterSpace::SBoneR
 	m_head							= orientation;
 }
 
-IC	void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)
-{
-	if (desired_position) {
-		m_target.m_use_desired_position	= true;
-		m_target.m_desired_position		= *desired_position;
-	}
-	else {
-		m_target.m_use_desired_position	= false;
-#ifdef DEBUG
-		m_target.m_desired_position		= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
-#endif
-	}
-}
-
 IC	void CStalkerMovementManager::set_desired_direction(const Fvector *desired_direction)
 {
 	if (desired_direction) {

@@ -25,6 +25,21 @@ IC	void CStalkerMovementManager::setup_head_speed		()
 		m_head.speed			= 3*PI_DIV_2;
 }
 
+void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)
+{
+	if (desired_position) {
+		m_target.m_use_desired_position	= true;
+		VERIFY2							(m_stalker->accessible(*desired_position),*m_stalker->cName());
+		m_target.m_desired_position		= *desired_position;
+	}
+	else {
+		m_target.m_use_desired_position	= false;
+#ifdef DEBUG
+		m_target.m_desired_position		= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
+#endif
+	}
+}
+
 IC	void CStalkerMovementManager::setup_body_orientation	()
 {
 	if (!path().empty() && (path().size() > curr_travel_point_index() + 1)) {
@@ -187,8 +202,16 @@ void CStalkerMovementManager::setup_movement_params	()
 		CDetailPathManager::set_dest_position			(desired_position());
 	}
 	else
-		if ((path_type() != ePathTypePatrolPath) && (path_type() != ePathTypeGamePath))
-			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
+		if ((path_type() != ePathTypePatrolPath) && (path_type() != ePathTypeGamePath)) {
+			Fvector	dest_position = ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id());
+			if (m_stalker->accessible(dest_position)) {
+				Fvector	new_dest_position;
+				u32	level_vertex_id = m_stalker->accessible_nearest(dest_position,new_dest_position);
+				VERIFY	(level_vertex_id == CLevelPathManager::dest_vertex_id());
+				dest_position = new_dest_position;
+			}
+			CDetailPathManager::set_dest_position		(dest_position);
+		}
 
 	if (use_desired_direction()) {
 		VERIFY											(valid(desired_direction()));
