@@ -69,6 +69,8 @@ void CAI_Stalker::BackCover(bool bFire)
 		m_tpCurrentSound		= 0;
 	}
 	
+	m_bPlayHumming				= false;
+
 	m_dwInertion				= bFire ? 20000 : 60000;
 	
 	m_tSelectorCover.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(Position()) + 3.f;
@@ -144,6 +146,7 @@ void CAI_Stalker::ForwardStraight()
 		if (m_tpCurrentSound && m_tpCurrentSound->feedback)
 			m_tpCurrentSound->feedback->set_position(eye_matrix.c);
 
+	m_bPlayHumming				= false;
 	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	if (tpWeapon) {
 		m_tSelectorFreeHunting.m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
@@ -163,6 +166,7 @@ void CAI_Stalker::Camp(bool bWeapon)
 		m_tpCurrentSound = 0;
 	}
 
+	m_bPlayHumming			= false;
 	int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
 	if (iIndex == -1)
 		return;
@@ -432,6 +436,7 @@ void CAI_Stalker::ForwardCover()
 		if (m_tpCurrentSound && m_tpCurrentSound->feedback)
 			m_tpCurrentSound->feedback->set_position(eye_matrix.c);
 
+	m_bPlayHumming				= false;
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : ForwardCover");
@@ -475,6 +480,7 @@ void CAI_Stalker::SearchEnemy()
 		m_tpCurrentSound = 0;
 	}
 
+	m_bPlayHumming				= false;
 	m_dwInertion				= 180000;
 
 	INIT_SQUAD_AND_LEADER;
