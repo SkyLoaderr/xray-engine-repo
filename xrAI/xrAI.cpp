@@ -116,7 +116,12 @@ void Startup(LPSTR     lpCmdLine)
 						output			+= xr_strlen("-out");
 						_TrimLeft		(output);
 					}
-					xrMergeSpawns		(name,output);
+					char				*start = strstr(cmd,"-start");
+					if (start) {
+						start			+= xr_strlen("-start");
+						_TrimLeft		(start);
+					}
+					xrMergeSpawns		(name,output,start);
 				}
 				else
 					if (strstr(cmd,"-t")) {

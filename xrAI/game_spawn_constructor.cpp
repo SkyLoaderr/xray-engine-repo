@@ -13,13 +13,15 @@
 #include "xrServer_Objects_ALife_All.h"
 #include "xrai.h"
 #include "server_entity_wrapper.h"
+#include "graph_engine.h"
 
 #define NO_MULTITHREADING
 
-CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output)
+CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start)
 {
 	load_spawns		(name);
 	process_spawns	();
+	process_actor	(start);
 	save_spawn		(name,output);
 }
 
@@ -34,26 +36,16 @@ CGameSpawnConstructor::~CGameSpawnConstructor	()
 IC	shared_str CGameSpawnConstructor::actor_level_name()
 {
 	string256						temp;
-	CSE_ALifeCreatureActor			*actor = 0;
-	CLevelSpawnConstructor			*level = 0;
-	
-	LEVEL_SPAWN_STORAGE::iterator	I = m_level_spawns.begin();
-	LEVEL_SPAWN_STORAGE::iterator	E = m_level_spawns.end();
-	for ( ; I != E; ++I) {
-		if (!(*I)->actor())
-			continue;
-
-		Msg							("Actor is on the level %s",game_graph().header().level(game_graph().vertex((*I)->actor()->m_tGraphID)->level_id()).name());
-		VERIFY2						(!actor,"There must be the SINGLE level with ACTOR!");
-		actor						= (*I)->actor();
-		level						= *I;
-	}
-
-	if (actor)
-		return						(strconcat(temp,level->level().name(),".spawn"));
-
-	R_ASSERT2						(false,"There is no actor!");
-	return							("game.spawn");
+	return							(
+		strconcat(
+			temp,
+			game_graph().header().level(
+				game_graph().vertex(
+					m_actor->m_tGraphID
+				)->level_id()).name(),
+			".spawn"
+		)
+	);
 }
 
 extern void read_levels			(CInifile *ini, xr_set<CLevelInfo> &m_levels);
@@ -259,4 +251,56 @@ void CGameSpawnConstructor::add_object				(CSE_Abstract *object)
 	object->m_tSpawnID			= spawn_id();
 	spawn_graph().add_vertex	(xr_new<CServerEntityWrapper>(object),object->m_tSpawnID);
 	m_critical_section.Leave	();
+}
+
+void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
+{
+	m_actor							= 0;
+	
+	LEVEL_SPAWN_STORAGE::iterator	I = m_level_spawns.begin();
+	LEVEL_SPAWN_STORAGE::iterator	E = m_level_spawns.end();
+	for ( ; I != E; ++I) {
+		if (!(*I)->actor())
+			continue;
+
+		Msg							("Actor is on the level %s",game_graph().header().level(game_graph().vertex((*I)->actor()->m_tGraphID)->level_id()).name());
+		VERIFY2						(!m_actor,"There must be the SINGLE level with ACTOR!");
+		m_actor						= (*I)->actor();
+	}
+
+	if (!start_level_name)
+		return;
+
+	const CGameGraph::SLevel		&level = game_graph().header().level(start_level_name);
+	ALife::_GRAPH_ID				dest = ALife::_GRAPH_ID(-1);
+	CGraphEngine::CGameLevelParams	evaluator(level.id());
+	CGraphEngine					*graph_engine = xr_new<CGraphEngine>(game_graph().header().vertex_count());
+
+	bool							failed = !graph_engine->search(game_graph(),m_actor->m_tGraphID,ALife::_GRAPH_ID(-1),0,evaluator);
+	if (failed) {
+		Msg							("! Cannot build path via game graph from the current level to the level %s!",start_level_name);
+		float						min_dist = flt_max;
+		Fvector						current = game_graph().vertex(m_actor->m_tGraphID)->game_point();
+		ALife::_GRAPH_ID			n = game_graph().header().vertex_count();
+		for (ALife::_GRAPH_ID i=0; i<n; ++i)
+			if (game_graph().vertex(i)->level_id() == level.id()) {
+				float				distance = game_graph().vertex(i)->game_point().distance_to_sqr(current);
+				if (distance < min_dist) {
+					min_dist		= distance;
+					dest			= i;
+				}
+			}
+			if (!game_graph().vertex(dest)) {
+				Msg						("! There is no game vertices on the level %s, cannot jump to the specified level",start_level_name);
+				return;
+			}
+	}
+	else
+		dest						= (ALife::_GRAPH_ID)evaluator.selected_vertex_id();
+
+	m_actor->m_tGraphID				= dest;
+	m_actor->m_tNodeID				= game_graph().vertex(dest)->level_vertex_id();
+	m_actor->o_Position				= game_graph().vertex(dest)->level_point();
+
+	xr_delete						(graph_engine);
 }

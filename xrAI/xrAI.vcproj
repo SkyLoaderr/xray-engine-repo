@@ -1343,6 +1343,9 @@
 						RelativePath=".\ChooseTypes.h">
 					</File>
 					<File
+						RelativePath=".\InfoPortionDefs.h">
+					</File>
+					<File
 						RelativePath=".\inventory_space.h">
 					</File>
 					<File

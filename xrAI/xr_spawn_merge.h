@@ -8,4 +8,4 @@
 
 #pragma once
 
-extern void xrMergeSpawns(LPCSTR name, LPCSTR output);
+extern void xrMergeSpawns(LPCSTR name, LPCSTR output, LPCSTR start);

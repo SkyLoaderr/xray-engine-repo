@@ -568,8 +568,8 @@ void xrMergeSpawns(LPCSTR name, LPCSTR output)
 }
 
 /**/
-void xrMergeSpawns(LPCSTR name, LPCSTR output)
+void xrMergeSpawns(LPCSTR name, LPCSTR output, LPCSTR start)
 {
-	CGameSpawnConstructor			spawn(name,output);
+	CGameSpawnConstructor			spawn(name,output,start);
 }
 /**/

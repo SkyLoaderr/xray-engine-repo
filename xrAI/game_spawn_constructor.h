@@ -18,6 +18,7 @@
 
 class CSE_Abstract;
 class CLevelSpawnConstructor;
+class CSE_ALifeCreatureAbstract;
 
 class CGameSpawnConstructor {
 	friend class CSpawnMerger;
@@ -55,6 +56,7 @@ private:
 	CGameGraph						*m_game_graph;
 	SPAWN_GRAPH						*m_spawn_graph;
 	CInifile						*m_game_info;
+	CSE_ALifeCreatureAbstract		*m_actor;
 
 protected:
 	IC		shared_str				actor_level_name		();
@@ -69,9 +71,10 @@ protected:
 	IC		SPAWN_GRAPH				&spawn_graph			();
 	IC		ALife::_SPAWN_ID		spawn_id				();
 	IC		void					process_spawns			(xr_vector<ALife::_SPAWN_ID> &spawns);
+			void					process_actor			(LPCSTR start_level_name);
 
 public:
-									CGameSpawnConstructor	(LPCSTR name, LPCSTR output);
+									CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start);
 	virtual							~CGameSpawnConstructor	();
 			void					add_story_object		(ALife::_STORY_ID id,CSE_ALifeDynamicObject *object, LPCSTR level_name);
 			void					add_object				(CSE_Abstract *object);
