@@ -9,8 +9,8 @@
 #include "collide\cl_intersect.h"
 
 const DWORD	vs_size				= 3000;
-const float slot_size			= 4.f;
-const float slot_radius			= 2.83f;
+const float slot_size			= DETAIL_SLOT_SIZE;
+const float slot_radius			= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f; // (slot_size/2)*sqrtf(2)
 
 const float dbgOffset			= 0.f;
 const int	dbgItems			= 128;
