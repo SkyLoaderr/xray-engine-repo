@@ -180,15 +180,30 @@ void CRender::render_sun				()
 			cull_frustum._add		(cull_planes[p]);
 	}
 
+	// Compute approximate ortho transform for light-source
+	{
+		//. ?????????????????????????????????
+	}
 
-	// Fill the database
+	// Begin SMAP-render
 	{
 		HOM.Disable								();
 		phase									= PHASE_SMAP_S;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
 		fuckingsun->svis.begin					();
-		r_dsgraph_render_subspace				(cull_sector, &cull_frustum, fuckingsun->X.S.combine, cull_COP, TRUE);
+	}
+
+	// Fill the database
+	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, fuckingsun->X.S.combine, cull_COP, TRUE);
+
+	// Compute REAL sheared xform based on receivers/casters information
+	{
+		//. ?????????????????????????????????
+	}
+
+	// Render shadow-map
+	{
 		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
@@ -205,7 +220,11 @@ void CRender::render_sun				()
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
 		}
-		L->svis.end								();
+	}
+
+	// End SMAP-render
+	{
+		fuckingsun->svis.end					();
 		r_pmask									(true,false);
 	}
 }
