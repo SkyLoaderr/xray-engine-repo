@@ -9151,6 +9151,25 @@
 					<File
 						RelativePath=".\ui\UIListWnd_script.cpp">
 					</File>
+					<Filter
+						Name="Ex"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIListItemEx.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemEx.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIListWndEx.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListWndEx.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIListWndEx_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScrollBar"

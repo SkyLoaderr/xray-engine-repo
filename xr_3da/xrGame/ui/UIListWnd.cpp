@@ -23,7 +23,9 @@ CUIListWnd::CUIListWnd()
 	m_bActiveBackgroundEnable	= false;
 	m_bListActivity				= true;
 	m_iFocusedItem				= -1;
+	m_iSelectedItem             = -1;
 	m_iFocusedItemGroupID		= -1;
+	m_iSelectedItemGroupID      = -1;
 	m_dwFontColor				= 0xFFFFFFFF;
 	SetItemHeight				(DEFAULT_ITEM_HEIGHT);
 	m_bVertFlip					= false;
@@ -279,7 +281,29 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			if(BUTTON_CLICKED == msg)
 			{
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
+				// 
+				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				{
+					pListItem2 = smart_cast<CUIListItem*>(*it);
+					if (!pListItem2) 
+						continue;
+					if (pListItem2->GetGroupID() == -1) 
+						continue;
+					if (pListItem2->GetGroupID() == pListItem->GetGroupID())
+					{
+						pListItem2->SetHighlightText(true);
+						pListItem2->SendMessage(this, LIST_ITEM_SELECT, pData);
+						m_iSelectedItem = pListItem2->GetIndex();
+						m_iSelectedItemGroupID = pListItem2->GetGroupID();
+					}					
+					else
+					{
+						pListItem2->SetHighlightText(false);
+						pListItem2->SendMessage(this, LIST_ITEM_UNSELECT, pData);
+					}
+				}
 			}
+			
 			else if(STATIC_FOCUS_RECEIVED == msg)
 			{
 				if (!m_bForceFocusedItem)
@@ -299,9 +323,15 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					if (!pListItem2) continue;
 					if (pListItem2->GetGroupID() == -1) continue;
 					if (pListItem2->GetGroupID() == pListItem->GetGroupID())
+					{
 						pListItem2->SetHighlightText(true);
+						pListItem2->SendMessage(this, STATIC_FOCUS_RECEIVED, pData);
+					}					
 					else
+					{
 						pListItem2->SetHighlightText(false);
+						pListItem2->SendMessage(this, STATIC_FOCUS_LOST, pData);
+					}
 				}
 				// end prototype code
 			}
@@ -314,6 +344,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;
 					pListItem2->SetHighlightText(false);
+					pListItem2->SendMessage(this, STATIC_FOCUS_LOST, pData);
 				}
 				m_bUpdateMouseMove = true;
 

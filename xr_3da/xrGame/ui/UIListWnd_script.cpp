@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIListWnd.h"
+#include "UIListItemEx.h"
 
 #include "../script_space.h"
 
@@ -49,6 +50,8 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("GetVertFlip",				&CUIListWnd::GetVertFlip)
 		.def("SetFocusedItem",				&CUIListWnd::SetFocusedItem)
 		.def("GetFocusedItem",				&CUIListWnd::GetFocusedItem)
+
+		.def("GetSelectedItem",				&CUIListWnd::GetSelectedItem)
 		.def("ResetFocusCapture",				&CUIListWnd::ResetFocusCapture)
 		.def("SetRightIndention",				&CUIListWnd::SetRightIndention)
 		.def("GetRightIndention",				&CUIListWnd::GetRightIndention),

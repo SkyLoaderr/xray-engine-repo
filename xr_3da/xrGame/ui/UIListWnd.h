@@ -45,7 +45,7 @@ public:
 	bool AddItem			(const char*  str, const int shift = 0, void* pData = NULL,
 							 int value = 0, int insertBeforeIdx = -1);
 
-	bool AddText_script		(LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
+	virtual bool AddText_script (LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
 
 	template <class Element>
 	bool AddParsedItem		(const CUIString &str, const int shift,
@@ -111,6 +111,8 @@ public:
 	// ѕринудительна€ установка фокуса
 	void SetFocusedItem(int iNewFocusedItem);
 	int GetFocusedItem() { return m_iFocusedItem; }
+	int GetSelectedItem() { return m_iSelectedItem; }
+	
 	void ResetFocusCapture() { m_bForceFocusedItem = false; }
 
 	// »нтерактивна€ запись представл€ет собой 
@@ -165,6 +167,9 @@ protected:
 	//элемент над которым курсор в данный момент или -1, если такого нет
 	int		m_iFocusedItem;
 	int		m_iFocusedItemGroupID;
+	int     m_iSelectedItem;
+	int     m_iSelectedItemGroupID;
+
 	// ≈сли хотим принудительно выставл€ть фокус, то подн€ть этот флаг
 	bool	m_bForceFocusedItem;
 
