@@ -33,7 +33,7 @@ function action_scientist_walk:initialize ()
     self.object:set_movement_type 	(move.walk)
     self.object:set_patrol_path   	(self.a.path, patrol.nearest, patrol.continue, true)
 
-    self.zone	= get_level_object	(self.a.zone)
+    self.zone	= level.object		(self.a.zone)
     self.zone:set_callback(self, "zone_callback_enter", true)
     self.zone:set_callback(self, "zone_callback_exit", false)
 
