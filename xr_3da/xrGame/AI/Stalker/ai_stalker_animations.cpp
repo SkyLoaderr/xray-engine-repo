@@ -453,7 +453,10 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[m_object->IsLimping() ? 9 : (7 + m_object->movement_type())].A[m_object->IsLimping() ? 0 : 1];
 		}
 		else
-			tpTorsoAnimation = m_tAnims.A[m_object->body_state()].m_tTorso.A[0].A[6].A[0];
+			if ((eMovementTypeStand == m_object->movement_type()) || fis_zero(m_object->speed()))
+				tpTorsoAnimation = m_tAnims.A[m_object->body_state()].m_tTorso.A[0].A[6].A[0];
+			else
+				tpTorsoAnimation = m_tAnims.A[m_object->body_state()].m_tTorso.A[0].A[6].A[1];
 	}
 }
 

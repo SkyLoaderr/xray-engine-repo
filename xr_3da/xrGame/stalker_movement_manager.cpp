@@ -98,7 +98,7 @@ void CStalkerMovementManager::init_velocity_masks	()
 {
 	float			cf = 2.f;
 
-	add_velocity	(eVelocityStandingFreeStand						,0.f							,PI_MUL_2	);
+	add_velocity	(eVelocityStandingFreeStand						,0.f							,PI_DIV_4	,PI_MUL_2	);
 	add_velocity	(eVelocityStandingPanicStand					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingDangerStand					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingFreeStandDamaged				,0.f							,PI_MUL_2	);
@@ -269,24 +269,26 @@ void CStalkerMovementManager::setup_velocities		()
 		}
 	}
 
-	// setup desirbale velocities mask
-	// if we want to stand, fdo not setup velocity to prevent path rebuilding
-	set_desirable_mask		(velocity_mask);
+	// setup desirable velocities mask
+	// if we want to stand, do not setup velocity to prevent path rebuilding
 
 	// setup all the possible velocities
-	if (velocity_mask & eVelocityDanger)
+	if (velocity_mask & eVelocityDanger) {
+		set_desirable_mask		(velocity_mask);
 		set_velocity_mask	(
 			velocity_mask | 
 			eVelocityStanding
 		);
-	else
+	}
+	else {
+		set_try_min_time		(true);
+		set_desirable_mask		(velocity_mask | eVelocityStanding);
 		set_velocity_mask	(
 			velocity_mask | 
 			eVelocityWalk | 
-//			eVelocityRun | 
-			eVelocityStanding //| 
-//			eVelocityNegativeVelocity
+			eVelocityStanding
 		);
+	}
 }
 
 void CStalkerMovementManager::parse_velocity_mask	()
