@@ -367,10 +367,27 @@ float CCar::SDoor::GetAngle()
 }
 
 
-
-bool CCar::SDoor::IsInArea(const Fvector& pos)
+static xr_vector<Fmatrix> bones_bind_forms;
+bool CCar::SDoor::IsInArea(const Fvector& pos,const Fvector& dir)
 {
-	if(!joint)return true;
+	if(!joint)
+	{
+		CKinematics* K=PKinematics(pcar->Visual());
+		//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
+		//CBoneData& bd=K->LL_GetData(bone_id);
+		K->LL_GetBindTransform(bones_bind_forms);
+		//		Fobb bb=bd.obb;
+		Fmatrix pf;
+		pf.mul(pcar->XFORM(),bones_bind_forms[bone_id]);
+		Fvector dif,dif1;
+		dif.sub(pf.c,pos);
+		pcar->Center(dif1);
+		dif1.sub(pos);
+		//dif.normalize_safe();
+		return (dif.dotproduct(dir)<dif1.dotproduct(dir));
+
+		
+	}
 	Fmatrix closed_door_form,door_form;
 	Fvector closed_door_dir,door_dir,anchor_to_pos,door_axis;
 	joint->GetAxisDirDynamic(0,door_axis);
@@ -414,7 +431,7 @@ bool CCar::SDoor::CanExit(const Fvector& pos,const Fvector& dir)
 	if(state==closed&&joint)return false;
 	return TestPass(pos,dir);
 }
-static xr_vector<Fmatrix> bones_bind_forms;
+
 void CCar::SDoor::GetExitPosition(Fvector& pos)
 {
 	if(!joint) 
@@ -538,7 +555,7 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	//if(!joint) return true;//temp for fake doors
-	return (state==opened || state == broken || !joint) && TestPass(foot_pos,dir)&& IsInArea(pos);//
+	return (state==opened || state == broken || !joint) && TestPass(foot_pos,dir)&& IsInArea(pos,dir);//
 }
 
 void CCar::SDoor::SaveNetState(NET_Packet& P)

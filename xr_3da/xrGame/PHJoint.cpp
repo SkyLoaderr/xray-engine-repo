@@ -737,7 +737,7 @@ void CPHJoint::SetLimitsActive(int axis_num)
 											case 0:
 											case 1:
 												dJointSetHinge2Param(m_joint,dParamLoStop ,axes[0].low);
-												dJointSetHinge2Param(m_joint,dParamHiStop,axes[1].high);break;
+												dJointSetHinge2Param(m_joint,dParamHiStop,axes[0].high);break;
 											}
 									break;
 						case ball:					break;
@@ -751,10 +751,10 @@ void CPHJoint::SetLimitsActive(int axis_num)
 							switch(axis_num){
 						case -1:
 							dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[0].low);
-							dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[1].low);
-							dJointSetAMotorParam(m_joint1,dParamLoStop2 ,axes[2].low);
-							dJointSetAMotorParam(m_joint1,dParamHiStop2 ,axes[0].high);
-							dJointSetAMotorParam(m_joint1,dParamHiStop3 ,axes[1].high);
+							dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[0].low);
+							dJointSetAMotorParam(m_joint1,dParamLoStop2 ,axes[1].low);
+							dJointSetAMotorParam(m_joint1,dParamHiStop2 ,axes[1].high);
+							dJointSetAMotorParam(m_joint1,dParamHiStop3 ,axes[2].high);
 							dJointSetAMotorParam(m_joint1,dParamHiStop3 ,axes[2].high);
 						case 0:dJointSetAMotorParam(m_joint1,dParamLoStop ,axes[0].low);
 							   dJointSetAMotorParam(m_joint1,dParamHiStop ,axes[0].high);

@@ -214,7 +214,7 @@ virtual void ApplyDamage(u16 level);
 		void Update();
 		float GetAngle();
 		bool CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
-		bool IsInArea(const Fvector& pos);
+		bool IsInArea(const Fvector& pos,const Fvector& dir);
 		bool CanExit(const Fvector& pos,const Fvector& dir);
 		bool TestPass(const Fvector& pos,const Fvector& dir);
 		//bool TestPass1(const Fvector& pos,const Fvector& dir);
