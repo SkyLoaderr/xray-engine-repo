@@ -79,6 +79,8 @@ public:
 #ifdef _PARTICLE_EDITOR
 public:
 	AnsiString			m_SourceText;
+	void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
+	void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 #endif
 public:
     // api function
@@ -155,7 +157,7 @@ public:
 	void				Play				();
     void				Stop				(bool bFinishPlaying=true);
 };
-DEFINE_VECTOR			(PS::CPEDef*,PEVec,PEIt);
+DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }
 #define PED_VERSION				0x0001
 //----------------------------------------------------

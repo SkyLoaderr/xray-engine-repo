@@ -4,7 +4,10 @@
 
 #include "ParticleSystem.h"
 #include "ParticleEffect.h"
+#include "ParticleGroup.h"
 #include "pure.h"
+#include "PropertiesList.h"
+#include "ItemList.h"
 
 // refs
 class CPSObject;
@@ -29,12 +32,17 @@ enum EAxis{
     eAxisZX
 };
 
+enum EEditMode{
+	emNone,
+    emSystem,
+    emEffect,
+    emGroup
+};
+
 class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
     CPSObject*  		m_TestObject;
-    PS::SDef* 			m_LibPS;
-    PS::SDef			m_EditPS;
     bool				m_bModified;
 	TfrmPropertiesPSDef*m_PSProps;
     bool				m_bReady;
@@ -51,19 +59,46 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateCenter;
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
-    
-    TfrmText*			m_TextPE;
+
+	// PS variables    
+    PS::SDef* 			m_LibPS;
+    PS::SDef			m_EditPS;
+
+    // PE variables
     PS::CPEDef*			m_LibPED;
     PS::CParticleEffect*m_EditPE;
+
+    // PG variables
+    PS::CPGDef*			m_LibPGD;
+    PS::CParticleGroup*	m_EditPG;
 
     void __fastcall		OnApplyClick		();
     void __fastcall		OnCloseClick		(bool& can_close);
 	bool __fastcall 	OnCodeInsight		(const AnsiString& src_line, AnsiString& hint);
 
     void __fastcall		OnPPMenuItemClick	(TObject* sender);
+
+    void __fastcall		OnItemModified		(void); 
+
+    void __fastcall 	OnParticleItemFocused	(ListItemsVec& items);
+
+    void				RealUpdateProperties();
+	void 				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
+public:
+	EEditMode			m_EditMode;
+    
+    TfrmText*			m_EditText;
+    TProperties*		m_ItemProps;
+    TItemList*			m_PList;
 public:
 	void				EditActionList		();
     void				ResetState			();
+public:
+	// flags
+    enum{
+    	flRefreshProps 		= (1<<0),
+    };
+    Flags32				m_Flags;
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();
@@ -82,7 +117,6 @@ public:
     void				ZoomObject			(BOOL bObjectOnly);
     void				ChangeAction		(EAction action);
 
-    void				SetCurrent			(LPCSTR name);
     void				PlayCurrent			();
     void				StopCurrent			();
 
@@ -90,8 +124,8 @@ public:
     void				Rename				(LPCSTR src_name, LPCSTR dest_name);
 
     // PS routine
+    PS::SDef*			AppendPS			(PS::SDef* src);
     PS::SDef*			FindPS				(LPCSTR name);
-    PS::SDef*			AppendPS			(LPCSTR folder_name, PS::SDef* src);
     void				RemovePS			(LPCSTR name);
     void				ResetCurrent		();
     void 				SetCurrentPS		(PS::SDef* P);
@@ -102,8 +136,13 @@ public:
 
     // PG routine
     PS::CPEDef*			FindPE				(LPCSTR name);
-    PS::CPEDef*			AppendPE			(LPCSTR folder_name, PS::CPEDef* src);
+    PS::CPEDef*			AppendPE			(PS::CPEDef* src);
     void 				SetCurrentPE		(PS::CPEDef* P);
+
+    // PG routine
+    PS::CPGDef*			FindPG				(LPCSTR name);
+    PS::CPGDef*			AppendPG			(PS::CPGDef* src);
+    void 				SetCurrentPG		(PS::CPGDef* P);
 
     void				Load				();
     void				Save				();
@@ -135,9 +174,12 @@ public:
 	void				SetNumScale			(CCustomObject* p1){;}
 
     void				ShowProperties		(){;}
-    void				UpdateProperties	(bool bForced=false){;}
+    void				UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     void				RefreshProperties	(){;}
 };
+#define SYSTEM_PREFIX 	"Systems"
+#define EFFECT_PREFIX 	"Effects"
+#define GROUP_PREFIX 	"Groups"
 extern CParticleTools	Tools;
 //---------------------------------------------------------------------------
 #endif

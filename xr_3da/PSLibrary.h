@@ -6,14 +6,19 @@
 
 #include "ParticleSystem.h"
 #include "ParticleEffect.h"
+#include "ParticleGroup.h"
 
 class ENGINE_API CPSLibrary{
     PS::PSVec			m_PSs;
+
+    string256			m_CurrentPED;
+    PS::PEDVec			m_PEDs;
+
+    string256			m_CurrentPGD;            
+    PS::PGDVec			m_PGDs;
+
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
-
-    string256			m_CurrentPE;
-    PS::PEVec			m_PEs;
 public:
 						CPSLibrary		(){;}
     		 			~CPSLibrary		(){m_PSs.clear();}
@@ -22,26 +27,34 @@ public:
     void				OnDestroy		();
 
     PS::SDef*			FindPS			(LPCSTR name);
-    PS::CPEDef*			FindPE			(LPCSTR name);
-    PS::PEIt			FindPEIt		(LPCSTR name);
+    PS::CPEDef*			FindPED			(LPCSTR name);
+    PS::PEDIt			FindPEDIt		(LPCSTR name);
+    PS::CPGDef*			FindPGD			(LPCSTR name);
+    PS::PGDIt			FindPGDIt		(LPCSTR name);
 	// editor part
     char*				GenerateName	(char* buffer, LPCSTR folder, LPCSTR pref);
 
     // get object properties methods
     IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}
     IC PS::PSIt			LastPS			()	{return m_PSs.end();}
-    IC PS::PEIt			FirstPE			()	{return m_PEs.begin();}
-    IC PS::PEIt			LastPE			()	{return m_PEs.end();}
+    IC PS::PEDIt		FirstPED		()	{return m_PEDs.begin();}
+    IC PS::PEDIt		LastPED			()	{return m_PEDs.end();}
+    IC PS::PGDIt		FirstPGD		()	{return m_PGDs.begin();}
+    IC PS::PGDIt		LastPGD			()	{return m_PGDs.end();}
 
     PS::SDef*			AppendPS		(PS::SDef* src=0);
-    PS::CPEDef*			AppendPE		(PS::CPEDef* src=0);
+    PS::CPEDef*			AppendPED		(PS::CPEDef* src=0);
+    PS::CPGDef*			AppendPGD		(PS::CPGDef* src=0);
     void				Remove			(LPCSTR name);
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
-    void				RenamePE		(PS::CPEDef* src, LPCSTR new_name);
+    void				RenamePED		(PS::CPEDef* src, LPCSTR new_name);
+    void				RenamePGD		(PS::CPGDef* src, LPCSTR new_name);
 
 #ifdef _EDITOR
-	LPCSTR				GetCurrentPE	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPE[0])?ChoosePE():(m_CurrentPE[0]?m_CurrentPE:0);}
-    LPCSTR				ChoosePE		();
+	LPCSTR				GetCurrentPED	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPED[0])?ChoosePED():(m_CurrentPED[0]?m_CurrentPED:0);}
+    LPCSTR				ChoosePED		();
+	LPCSTR				GetCurrentPGD	(bool bChooseWindow=true){return (bChooseWindow&&!m_CurrentPGD[0])?ChoosePGD():(m_CurrentPGD[0]?m_CurrentPGD:0);}
+    LPCSTR				ChoosePGD		();
 #endif
     void				Reload			();
     void				Save			();
@@ -58,6 +71,7 @@ public:
 #define PS_CHUNK_VERSION		0x0001
 #define PS_CHUNK_FIRSTGEN		0x0002
 #define PS_CHUNK_SECONDGEN		0x0003
+#define PS_CHUNK_THIRDGEN		0x0004
 
 #endif /*_INCDEF_PSLibrary_H_*/
 

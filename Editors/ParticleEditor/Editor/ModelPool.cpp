@@ -37,6 +37,12 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 	case MT_SKELETON_PART_STRIPPED:
 		V	= xr_new<CSkeletonX_ST>();
 		break;
+	case MT_PARTICLE_EFFECT:
+		V	= xr_new<PS::CParticleEffect> ();
+		break;
+	case MT_PARTICLE_GROUP:
+		V	= xr_new<PS::CParticleGroup> ();
+		break;
 //	case MT_PROGRESSIVE_STRIPS:
 //  		V	= xr_new<FProgressive>();
 //		break;
@@ -185,20 +191,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     // render visual
     RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type){
-    case MT_SKELETON:{
-        CKinematics* pV					= (CKinematics*)m_pVisual;
-        xr_vector<IRender_Visual*>::iterator I,E;
-        I = pV->children.begin			();
-        E = pV->children.end			();
-        for (; I!=E; I++){
-            IRender_Visual* V					= *I;
-            // frustum test
-			if (_IsRender(V,mTransform,priority,strictB2F)){
-		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
-    	        V->Render		 		(m_fLOD);
-            }
-        }
-    }break;
+    case MT_SKELETON:
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
         xr_vector<IRender_Visual*>::iterator 		I,E;
@@ -227,5 +220,20 @@ void 	CModelPool::RenderSingle(IRender_Visual* m_pVisual, const Fmatrix& mTransf
     	Render(m_pVisual,mTransform,p,false,m_fLOD);
     	Render(m_pVisual,mTransform,p,true,m_fLOD);
     }
+}
+
+IRender_Visual* CModelPool::CreatePE	(PS::CPEDef* source)
+{
+	PS::CParticleEffect* V	= (PS::CParticleEffect*)Instance_Create(MT_PARTICLE_EFFECT);
+	V->Compile		(source);
+	return V;
+}
+
+IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
+{
+//	PS::CParticleGroup* V	= (PS::CParticleGroup*)Instance_Create(MT_PARTICLE_GROUP);
+//	V->Compile		(source);
+//.	return V;  	
+	return 0;
 }
 

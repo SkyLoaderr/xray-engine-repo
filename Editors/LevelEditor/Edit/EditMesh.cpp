@@ -188,7 +188,7 @@ void CEditableMesh::GenerateSVertices()
             CBone* B=0;
             switch (cnt){
                 case 0:
-                 	R_ASSERT2(0,"Vertex has't any weights attached.");
+                	THROW2("Vertex has't any weights attached.");
                 break;
                 case 1:{
                     SV.bone0 	= wb[0].bone;

@@ -2,14 +2,14 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 719
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
   VertScrollBar.Style = ssHotTrack
   VertScrollBar.Tracking = True
   Align = alClient
-  Color = clBtnFace
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -21,18 +21,19 @@ object fraLeftBar: TfraLeftBar
   object paLeftBar: TPanel
     Left = 0
     Top = 0
-    Width = 212
-    Height = 277
+    Width = 300
+    Height = 719
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 212
-    Constraints.MinWidth = 212
+    Color = 10528425
+    Constraints.MaxWidth = 300
+    Constraints.MinWidth = 300
     TabOrder = 0
     object paScene: TPanel
       Left = 1
       Top = 1
-      Width = 210
+      Width = 298
       Height = 67
       Align = alTop
       Color = 10528425
@@ -42,7 +43,7 @@ object fraLeftBar: TfraLeftBar
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 208
+        Width = 296
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -52,7 +53,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object ebSceneMin: TExtBtn
-        Left = 197
+        Left = 285
         Top = 2
         Width = 11
         Height = 11
@@ -160,8 +161,8 @@ object fraLeftBar: TfraLeftBar
     object paParticles: TPanel
       Left = 1
       Top = 68
-      Width = 210
-      Height = 247
+      Width = 298
+      Height = 258
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -170,7 +171,7 @@ object fraLeftBar: TfraLeftBar
       object Label1: TLabel
         Left = 1
         Top = 1
-        Width = 208
+        Width = 296
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -182,36 +183,36 @@ object fraLeftBar: TfraLeftBar
       object paPSList: TPanel
         Left = 1
         Top = 14
-        Width = 208
-        Height = 215
+        Width = 296
+        Height = 226
         Align = alClient
         BevelOuter = bvNone
+        ParentColor = True
         ParentShowHint = False
         ShowHint = False
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 213
-          Width = 208
+          Top = 224
+          Width = 296
           Height = 2
           Align = alBottom
         end
         object Bevel1: TBevel
           Left = 0
           Top = 34
-          Width = 208
+          Width = 296
           Height = 2
           Align = alTop
         end
-        object tvParticles: TElTree
+        object tvParticles___: TElTree
           Left = 0
           Top = 36
-          Width = 208
-          Height = 177
+          Width = 296
+          Height = 93
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
-          Align = alClient
           AutoCollapse = False
           DockOrientation = doNoOrient
           DefaultSectionWidth = 120
@@ -293,16 +294,15 @@ object fraLeftBar: TfraLeftBar
           VertScrollBarStyles.ButtonSize = 16
           VirtualityLevel = vlNone
           BkColor = clGray
-          OnItemFocused = tvParticlesItemFocused
           OnDragDrop = OnDragDrop
-          OnMouseDown = tvParticlesMouseDown
-          OnDblClick = tvParticlesDblClick
-          OnKeyDown = tvParticlesKeyDown
+          OnMouseDown = tvParticles___MouseDown
+          OnDblClick = tvParticles___DblClick
+          OnKeyDown = tvParticles___KeyDown
         end
         object Panel1: TPanel
           Left = 0
           Top = 0
-          Width = 208
+          Width = 296
           Height = 34
           Align = alTop
           BevelOuter = bvNone
@@ -413,11 +413,20 @@ object fraLeftBar: TfraLeftBar
             OnMouseDown = ebCreateMouseDown
           end
         end
+        object paItemList: TPanel
+          Left = 16
+          Top = 152
+          Width = 265
+          Height = 177
+          Caption = 'paItemList'
+          ParentColor = True
+          TabOrder = 2
+        end
       end
       object paAction: TPanel
         Left = 1
-        Top = 229
-        Width = 208
+        Top = 240
+        Width = 296
         Height = 17
         Align = alBottom
         BevelOuter = bvNone
@@ -467,18 +476,18 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = -74
-      Width = 210
+      Top = 368
+      Width = 298
       Height = 350
       Align = alBottom
-      Color = 10528425
+      ParentColor = True
       ParentShowHint = False
       ShowHint = False
       TabOrder = 2
       object Label2: TLabel
         Left = 1
         Top = 1
-        Width = 208
+        Width = 296
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -488,7 +497,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object ExtBtn1: TExtBtn
-        Left = 197
+        Left = 285
         Top = 2
         Width = 11
         Height = 11
@@ -511,10 +520,10 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClick
       end
-      object paPSProps: TPanel
+      object paItemProps: TPanel
         Left = 1
         Top = 14
-        Width = 208
+        Width = 296
         Height = 335
         Align = alClient
         BevelOuter = bvNone
@@ -524,8 +533,8 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = -116
-      Width = 210
+      Top = 326
+      Width = 298
       Height = 42
       Align = alBottom
       Color = 10528425
@@ -535,7 +544,7 @@ object fraLeftBar: TfraLeftBar
       object Label3: TLabel
         Left = 1
         Top = 1
-        Width = 208
+        Width = 296
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -545,7 +554,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = PanelMaximizeClick
       end
       object ExtBtn4: TExtBtn
-        Left = 197
+        Left = 285
         Top = 2
         Width = 11
         Height = 11
@@ -697,7 +706,9 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 7
+    Version = 8
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'
@@ -722,8 +733,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 181
-    Top = 80
+    Left = 253
+    Top = 72
     object N4: TMenuItem
       Caption = '-'
     end
@@ -760,8 +771,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 181
-    Top = 18
+    Left = 253
+    Top = 10
     object N7: TMenuItem
       Caption = '-'
     end
@@ -809,7 +820,7 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object InplaceParticleEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvParticles
+    Tree = tvParticles___
     Types = [sftText]
     OnValidateResult = InplaceParticleEditValidateResult
     Left = 5
@@ -828,8 +839,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 181
-    Top = 34
+    Left = 253
+    Top = 26
     object N5: TMenuItem
       Caption = '-'
     end
@@ -862,8 +873,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 181
-    Top = 96
+    Left = 253
+    Top = 88
     object N3: TMenuItem
       Caption = '-'
     end
@@ -872,6 +883,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebPSCreateClick
     end
     object MenuItem2: TMenuItem
+      Caption = 'Particle Effect'
+      OnClick = ebPECreateClick
+    end
+    object ParticleGroup1: TMenuItem
       Caption = 'Particle Group'
       OnClick = ebPGCreateClick
     end
@@ -882,7 +897,7 @@ object fraLeftBar: TfraLeftBar
     Left = 96
     Top = 104
     Bitmap = {
-      494C010103000400040009000E00FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010103000400040009000E00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000240000000E0000000100200000000000E007
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -952,6 +967,7 @@ object fraLeftBar: TfraLeftBar
       000000000000000000000000FFFFFF00FFFFFFE000000000FFFFFFE000000000
       FFFFFFE00000000079BC5F00000000007EBDDEC0000000001D8CC68000000000
       6BB5DAE0000000001C8C470000000000FFFFFFE000000000FFFFFFE000000000
-      FFFFFFE000000000FFFFFFE000000000FFFFFFE000000000FFFFFFE000000000}
+      FFFFFFE000000000FFFFFFE000000000FFFFFFE000000000FFFFFFE000000000
+      00000000000000000000000000000000000000000000}
   end
 end

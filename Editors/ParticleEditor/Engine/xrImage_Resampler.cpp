@@ -42,7 +42,7 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 {
 	Image *image;
 
-	if((image = (Image *)xr_malloc(sizeof(Image))) && (image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel))))
+	if((0!=(image = (Image *)xr_malloc(sizeof(Image)))) && (0!=(image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel)))))
 	{
 		ZeroMemory(image->data,ysize*xsize*sizeof(Pixel));
 		image->xsize	= xsize;

@@ -968,7 +968,6 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 	AnsiString edit_val		= V->GetValue();
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
-    LPVOID filter			= 0;
     TfrmChoseItem::ESelectMode mode;
     AStringVec items;
     bool bIgnoreExt 		= false;
@@ -1365,14 +1364,14 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
     	case PROP_TEXT:{
 			TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim))
+			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim))
              	edText->Text = new_val;
             ApplyLWText();
             HideLWText();
         }break;
     	case PROP_A_TEXT:{
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str()))
+			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str()))
             	edText->Text = new_val;
             ApplyLWText();
             HideLWText();
@@ -1390,7 +1389,7 @@ void TProperties::ExecTextEditor(PropItem* prop)
             TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
             AnsiString edit_val	= V->GetValue();
             prop->OnBeforeEdit	(&edit_val);
-            if (TfrmText::ShowModalEditor(edit_val,prop->GetText(),false,V->lim)){
+            if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false,V->lim)){
                 prop->OnAfterEdit	(&edit_val);
                 if (prop->ApplyValue(edit_val.c_str()))
                     Modified		();
@@ -1401,7 +1400,7 @@ void TProperties::ExecTextEditor(PropItem* prop)
             ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
             AnsiString edit_val	= V->GetValue();
             prop->OnBeforeEdit	(&edit_val);
-            if (TfrmText::ShowModalEditor(edit_val,prop->GetText(),false)){
+            if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false)){
                 prop->OnAfterEdit	(&edit_val);
                 if (prop->ApplyValue(&edit_val))
                     Modified();

@@ -12,7 +12,8 @@
 //----------------------------------------------------
 void CPSLibrary::OnCreate()
 {
-	m_CurrentPE[0]	= 0;
+	m_CurrentPED[0]	= 0;
+	m_CurrentPGD[0]	= 0;
 	string256 fn;
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
 	if (FS.exist(fn)){
@@ -25,7 +26,8 @@ void CPSLibrary::OnCreate()
 void CPSLibrary::OnDestroy()
 {
     m_PSs.clear();
-	m_PEs.clear();
+	m_PEDs.clear();
+	m_PGDs.clear();
 }
 
 //----------------------------------------------------
@@ -33,15 +35,15 @@ void CPSLibrary::OnDeviceCreate	()
 {
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
 		s_it->m_CachedShader	= (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])?Device.Shader.Create(s_it->m_ShaderName,s_it->m_TextureName):0;
-	for (PS::PEIt g_it = m_PEs.begin(); g_it!=m_PEs.end(); g_it++)
+	for (PS::PEDIt g_it = m_PEDs.begin(); g_it!=m_PEDs.end(); g_it++)
 		(*g_it)->m_CachedShader	= ((*g_it)->m_ShaderName&&(*g_it)->m_ShaderName[0]&&(*g_it)->m_TextureName&&(*g_it)->m_TextureName[0])?Device.Shader.Create((*g_it)->m_ShaderName,(*g_it)->m_TextureName):0;
 }
 void CPSLibrary::OnDeviceDestroy()
 {
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
 		s_it->m_CachedShader.destroy();
-	for (PS::PEIt g_it = m_PEs.begin(); g_it!=m_PEs.end(); g_it++)
-		(*g_it)->m_CachedShader.destroy();
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+		(*e_it)->m_CachedShader.destroy();
 }
 
 PS::SDef* CPSLibrary::FindPS(LPCSTR Name)
@@ -51,17 +53,30 @@ PS::SDef* CPSLibrary::FindPS(LPCSTR Name)
 	return NULL;
 }
 
-PS::PEIt CPSLibrary::FindPEIt(LPCSTR Name)
+PS::PEDIt CPSLibrary::FindPEDIt(LPCSTR Name)
 {
-	for (PS::PEIt it=m_PEs.begin(); it!=m_PEs.end(); it++)
+	for (PS::PEDIt it=m_PEDs.begin(); it!=m_PEDs.end(); it++)
     	if (0==strcmp((*it)->m_Name,Name)) return it;
-	return m_PEs.end();
+	return m_PEDs.end();
 }
 
-PS::CPEDef* CPSLibrary::FindPE(LPCSTR Name)
+PS::CPEDef* CPSLibrary::FindPED(LPCSTR Name)
 {
-	PS::PEIt it = FindPEIt(Name);
-    return (it==m_PEs.end())?0:*it;
+	PS::PEDIt it = FindPEDIt(Name);
+    return (it==m_PEDs.end())?0:*it;
+}
+
+PS::PGDIt CPSLibrary::FindPGDIt(LPCSTR Name)
+{
+	for (PS::PGDIt it=m_PGDs.begin(); it!=m_PGDs.end(); it++)
+    	if (0==strcmp((*it)->m_Name,Name)) return it;
+	return m_PGDs.end();
+}
+
+PS::CPGDef* CPSLibrary::FindPGD(LPCSTR Name)
+{
+	PS::PGDIt it = FindPGDIt(Name);
+    return (it==m_PGDs.end())?0:*it;
 }
 
 void CPSLibrary::RenamePS(PS::SDef* src, LPCSTR new_name)
@@ -70,7 +85,13 @@ void CPSLibrary::RenamePS(PS::SDef* src, LPCSTR new_name)
 	src->SetName(new_name);
 }
 
-void CPSLibrary::RenamePE(PS::CPEDef* src, LPCSTR new_name)
+void CPSLibrary::RenamePED(PS::CPEDef* src, LPCSTR new_name)
+{
+	R_ASSERT(src&&new_name&&new_name[0]);
+	src->SetName(new_name);
+}
+
+void CPSLibrary::RenamePGD(PS::CPGDef* src, LPCSTR new_name)
 {
 	R_ASSERT(src&&new_name&&new_name[0]);
 	src->SetName(new_name);
@@ -83,11 +104,17 @@ void CPSLibrary::Remove(const char* nm)
     	sh->m_CachedShader.destroy();
     	m_PSs.erase(sh);
     }else{
-    	PS::PEIt it = FindPEIt(nm);
-        if (it!=m_PEs.end()){
+    	PS::PEDIt it = FindPEDIt(nm);
+        if (it!=m_PEDs.end()){
 	    	(*it)->m_CachedShader.destroy();
-	       	m_PEs.erase	(it);
-        	xr_delete	(*it);
+	       	m_PEDs.erase	(it);
+        	xr_delete		(*it);
+        }else{
+            PS::PGDIt it = FindPGDIt(nm);
+            if (it!=m_PGDs.end()){
+		       	m_PGDs.erase(it);
+    	    	xr_delete	(*it);
+            }
         }
     }
 }
@@ -113,12 +140,27 @@ bool CPSLibrary::Load(const char* nm)
             s_it->m_CachedShader._object = 0;
     }
     // second generation
-    IReader* OBJ 			= F->open_chunk(PS_CHUNK_SECONDGEN);
+    IReader* OBJ;
+    OBJ			 			= F->open_chunk(PS_CHUNK_SECONDGEN);
     if (OBJ){
         IReader* O   		= OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             PS::CPEDef*	def	= xr_new<PS::CPEDef>();
-            if (def->Load(*O)) m_PEs.push_back(def);
+            if (def->Load(*O)) m_PEDs.push_back(def);
+            else{ bRes = false; xr_delete(def); }
+            O->close();
+            if (!bRes)	break;
+            O 			= OBJ->open_chunk(count);
+        }
+        OBJ->close();
+    }
+    // second generation
+    OBJ 					= F->open_chunk(PS_CHUNK_THIRDGEN);
+    if (OBJ){
+        IReader* O   		= OBJ->open_chunk(0);
+        for (int count=1; O; count++) {
+            PS::CPGDef*	def	= xr_new<PS::CPGDef>();
+            if (def->Load(*O)) m_PGDs.push_back(def);
             else{ bRes = false; xr_delete(def); }
             O->close();
             if (!bRes)	break;

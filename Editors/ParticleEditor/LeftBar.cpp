@@ -56,8 +56,8 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     InplaceParticleEdit->Editor->BorderStyle= bsNone;
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
-    tvParticles->OnStartDrag 	= FHelper.StartDrag;
-    tvParticles->OnDragOver 	= FHelper.DragOver;
+//    tvParticles->OnStartDrag 	= FHelper.StartDrag;
+//.    tvParticles->OnDragOver 	= FHelper.DragOver;
 }
 //---------------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::tvParticles___MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
@@ -162,28 +162,16 @@ void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::ClearParticleList(){
-	tvParticles->Items->Clear();
-}
-//---------------------------------------------------------------------------
-
-void TfraLeftBar::AddItem(LPCSTR full_name, bool bLoadMode, bool bPS)
+void TfraLeftBar::ClearParticleList()
 {
-	TElTreeItem* node 	= FHelper.AppendObject(tvParticles,full_name);
-//    node->ParentColors	= false;
-//    node->Color			= bPS?0x005D0005:0x00005D05;
-//	node->UseBkColor	= false;
-	node->ImageIndex	= bPS?0:1;
-    if (!bLoadMode){
-	    if (node&&node->Parent) node->Parent->Expand(false);
-    	node->Selected = true;
-		tvParticles->Selected = node;
-    }
+//.	tvParticles->Items->Clear();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
+/*
+//.
 	AnsiString folder;
     AnsiString start_folder;
     FHelper.MakeName(tvParticles->Selected,0,start_folder,true);
@@ -193,18 +181,19 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
     if (tvParticles->Selected) tvParticles->Selected->Expand(false);
     tvParticles->EditItem(node,-1);
 	Tools.Modified();
+*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExpandAll1Click(TObject *Sender)
 {
-	tvParticles->FullExpand();
+//.	tvParticles->FullExpand();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 {
-	tvParticles->FullCollapse();
+//.	tvParticles->FullCollapse();
 }
 //---------------------------------------------------------------------------
 
@@ -223,19 +212,11 @@ void __fastcall TfraLeftBar::AfterRemoveItem()
 
 void __fastcall TfraLeftBar::ebParticleRemoveClick(TObject *Sender)
 {
-	FHelper.RemoveItem(tvParticles,tvParticles->Selected,RemoveItem);
+//.	FHelper.RemoveItem(tvParticles,tvParticles->Selected,RemoveItem);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesItemFocused(TObject *Sender)
-{
-	AnsiString name;
-    FHelper.MakeName(tvParticles->Selected, 0, name, false);
-	Tools.SetCurrent(name.c_str());
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::tvParticlesDblClick(TObject *Sender)
+void __fastcall TfraLeftBar::tvParticles___DblClick(TObject *Sender)
 {
 	Tools.EditActionList();	
 }
@@ -243,6 +224,7 @@ void __fastcall TfraLeftBar::tvParticlesDblClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 {
+/*
     TElTreeItem* pNode = tvParticles->Selected;
     if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
@@ -256,10 +238,11 @@ void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
+*/
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesKeyDown(TObject *Sender, WORD &Key,
+void __fastcall TfraLeftBar::tvParticles___KeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 	if (Key==VK_DELETE) ebParticleRemoveClick(Sender);
@@ -268,8 +251,8 @@ void __fastcall TfraLeftBar::tvParticlesKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 {
-	TElTreeItem* node = tvParticles->Selected;
-    if (node) tvParticles->EditItem(node,-1);
+//.	TElTreeItem* node = tvParticles->Selected;
+//.	if (node) tvParticles->EditItem(node,-1);
 }
 //---------------------------------------------------------------------------
 
@@ -277,6 +260,8 @@ void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
       TObject *Sender, bool &InputValid)
 {
+/*
+//.
 	TElTreeInplaceAdvancedEdit* IE=InplaceParticleEdit;
 
     AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
@@ -302,25 +287,27 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
         Tools.Rename(full_name.c_str(),new_text.c_str(),node->Level);
     }
 	Tools.Modified();
+*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
 {
-    AnsiString folder;
-	FHelper.MakeName(tvParticles->Selected,0,folder,true);
-    PS::SDef* S = Tools.AppendPS(folder.IsEmpty()?0:folder.c_str(),0);
-	Tools.SetCurrentPS(S);
+	Tools.AppendPS(0);
+	Tools.Modified();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebPECreateClick(TObject *Sender)
+{
+    Tools.AppendPE(0);
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPGCreateClick(TObject *Sender)
 {
-    AnsiString folder;
-	FHelper.MakeName(tvParticles->Selected,0,folder,true);
-    PS::CPEDef* S = Tools.AppendPE(folder.IsEmpty()?0:folder.c_str(),0);
-	Tools.SetCurrentPE(S);
+    Tools.AppendPG(0);
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------
@@ -388,4 +375,17 @@ void __fastcall TfraLeftBar::ebCreateMouseDown(TObject *Sender,
 	ShowPPMenu(pmCreateMenu,Sender);
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
+{
+    Tools.m_ItemProps->RestoreParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
+{
+    Tools.m_ItemProps->SaveParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
 

@@ -209,7 +209,7 @@ void __fastcall TfrmChoseItem::FillPS()
 void __fastcall TfrmChoseItem::FillPE()
 {
     form->Caption					= "Select Particle System";
-    for (PS::PEIt S=::Render->PSystems.FirstPE(); S!=::Render->PSystems.LastPE(); S++)AppendItem((*S)->m_Name);
+    for (PS::PEDIt S=::Render->PSystems.FirstPED(); S!=::Render->PSystems.LastPED(); S++)AppendItem((*S)->m_Name);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillTexture()

@@ -174,9 +174,9 @@ public:
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPS);      }
     IC ATextValue*	 	CreateALibPS	(PropItemVec& items, LPCSTR key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
-    IC TextValue*	 	CreateLibPG		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
+    IC TextValue*	 	CreateLibPE		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPE);		}
-    IC ATextValue*	 	CreateALibPG	(PropItemVec& items, LPCSTR key, AnsiString* val)
+    IC ATextValue*	 	CreateALibPE	(PropItemVec& items, LPCSTR key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPE);       }
 	IC TextValue* 		CreateEntity	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ENTITY);     }

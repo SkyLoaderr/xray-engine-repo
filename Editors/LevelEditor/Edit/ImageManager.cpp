@@ -434,8 +434,8 @@ IC void CopyLODImage(U32Vec& src, U32Vec& dest, u32 src_w, u32 src_h, int id, in
 IC void GET(U32Vec& pixels, u32 w, u32 h, u32 x, u32 y, u32 ref, u32 &count, u32 &r, u32 &g, u32 &b)
 {
     // wrap pixels
-    if (x<0) return; else if (x>=w)	return;
-	if (y<0) return; else if (y>=h)	return;
+    if (x>=w)	return;
+	if (y>=h)	return;
 
     // summarize
     u32 pixel = pixels[y*w + x];

@@ -86,7 +86,8 @@ void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bo
     if (item){
     	if (!bLeaveSel)			tvItems->DeselectAll();
         if (bExpand) 			FHelper.ExpandItem(tvItems,item);
-    	item->Selected			= bVal;
+        if (tvItems->MultiSelect) 	item->Selected 		= bVal;
+        else 						tvItems->Selected   = item;
 		tvItems->EnsureVisible	(item);
 		if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(tvItems);
     }
@@ -99,11 +100,12 @@ __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 }
 //---------------------------------------------------------------------------
 
-TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, TOnItemsFocused focused, TOnCloseEvent on_close)
+TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, TOnItemsFocused focused, TOnCloseEvent on_close, bool allow_multiselect)
 {
 	TItemList* props 			= xr_new<TItemList>(parent);
     props->OnItemsFocused    	= focused;
     props->OnCloseEvent			= on_close;
+    props->tvItems->MultiSelect	= allow_multiselect;
     if (parent){
 		props->Parent 			= parent;
     	props->Align 			= align;
@@ -114,9 +116,10 @@ TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, TOnItemsFocu
 	return props;
 }
 
-TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& items, bool bFullExpand, TOnItemsFocused on_focused, TOnCloseEvent on_close)
+TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& items, bool bFullExpand, TOnItemsFocused on_focused, TOnCloseEvent on_close, bool allow_multiselect)
 {
 	TItemList* props 			= xr_new<TItemList>((TComponent*)0);
+    props->tvItems->MultiSelect	= allow_multiselect;
     props->OnItemsFocused    	= on_focused;
     props->OnCloseEvent			= on_close;
     props->AssignItems			(items,bFullExpand,title);

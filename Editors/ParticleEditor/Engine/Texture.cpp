@@ -147,7 +147,7 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// validation
 	R_ASSERT				(fRName);
 	R_ASSERT				(fRName[0]);
-	R_ASSERT				(Quality>=0 && Quality<=4);
+	R_ASSERT				(Quality<=4);
 	R_ASSERT				(fContrast>=0 && fContrast<=1);
 
 	// make file name

@@ -72,7 +72,10 @@
       Intermediate\Blender_Recorder_R2.obj Intermediate\du_cone.obj 
       Intermediate\du_cylinder.obj Intermediate\BoneEditor.obj 
       Intermediate\ParticleEffect.obj Intermediate\ParticleEffectParser.obj 
-      Intermediate\ParticleEffectEditor.obj Intermediate\IInputReceiver.obj"/>
+      Intermediate\ParticleEffectEditor.obj Intermediate\IInputReceiver.obj 
+      Intermediate\ParticleGroupEditor.obj Intermediate\ItemListTypes.obj 
+      Intermediate\ItemList.obj Intermediate\ItemListHelper.obj 
+      Intermediate\UI_ToolsProps.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -80,7 +83,8 @@
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
       LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
       Editor\FrameEmitter.dfm Editor\TopBar.dfm Editor\TextForm.dfm 
-      Editor\ImageEditor.dfm Editor\PropertiesList.dfm Editor\NumericVector.dfm"/>
+      Editor\ImageEditor.dfm Editor\PropertiesList.dfm Editor\NumericVector.dfm 
+      Editor\ItemList.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -266,6 +270,11 @@
       <FILE FILENAME="Editor\ParticleEffectParser.cpp" FORMNAME="" UNITNAME="ParticleEffectParser.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ParticleEffectEditor.cpp" FORMNAME="" UNITNAME="ParticleEffectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\IInputReceiver.cpp" FORMNAME="" UNITNAME="IInputReceiver" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UI_ToolsProps.cpp" FORMNAME="" UNITNAME="UI_ToolsProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

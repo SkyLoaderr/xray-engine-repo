@@ -14,6 +14,7 @@ USEFORM("Editor\TextForm.cpp", frmText);
 USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 USEFORM("Editor\PropertiesList.cpp", frmProperties);
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
+USEFORM("Editor\ItemList.cpp", ItemList);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -6,13 +6,25 @@
 #include "ParticleEffect.h"
 //------------------------------------------------------------------------------
 
-LPCSTR CPSLibrary::ChoosePE()
+LPCSTR CPSLibrary::ChoosePED()
 {
 	LPCSTR T=0;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPE,T,1,m_CurrentPE)){
-    	strcpy(m_CurrentPE,T);
-        return m_CurrentPE;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPE,T,1,m_CurrentPED)){
+    	strcpy(m_CurrentPED,T);
+        return m_CurrentPED;
     }else return 0;
+}
+//------------------------------------------------------------------------------
+
+LPCSTR CPSLibrary::ChoosePGD()
+{
+/*/..
+	LPCSTR T=0;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smPG,T,1,m_CurrentPE)){
+    	strcpy(m_CurrentPGD,T);
+        return m_CurrentPGD;
+    }else 
+*/    return 0;
 }
 //------------------------------------------------------------------------------
 
@@ -25,7 +37,7 @@ char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
         for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
 		sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++);
     }else        sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
-    while (FindPS(buffer)||FindPE(buffer)){
+    while (FindPS(buffer)||FindPED(buffer)||FindPGD(buffer)){
         if (pref&&pref[0])	sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++ );
         else   	  			sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
 	}
@@ -44,10 +56,17 @@ PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)
     return &m_PSs.back();
 }
 
-PS::CPEDef* CPSLibrary::AppendPE(PS::CPEDef* src)
+PS::CPEDef* CPSLibrary::AppendPED(PS::CPEDef* src)
 {
-	m_PEs.push_back(src?xr_new<PS::CPEDef>(*src):xr_new<PS::CPEDef>());
-    return m_PEs.back();
+	m_PEDs.push_back(src?xr_new<PS::CPEDef>(*src):xr_new<PS::CPEDef>());
+    return m_PEDs.back();
+}
+//------------------------------------------------------------------------------
+
+PS::CPGDef* CPSLibrary::AppendPGD(PS::CPGDef* src)
+{
+	m_PGDs.push_back(src?xr_new<PS::CPGDef>(*src):xr_new<PS::CPGDef>());
+    return m_PGDs.back();
 }
 //------------------------------------------------------------------------------
 
@@ -73,9 +92,17 @@ void CPSLibrary::Save(const char* nm)
 	F.close_chunk	();
 
 	F.open_chunk	(PS_CHUNK_SECONDGEN);
-    for (PS::PEIt it=m_PEs.begin(); it!=m_PEs.end(); it++){
-		F.open_chunk(it-m_PEs.begin());
+    for (PS::PEDIt it=m_PEDs.begin(); it!=m_PEDs.end(); it++){
+		F.open_chunk(it-m_PEDs.begin());
         (*it)->Save	(F);
+		F.close_chunk();
+    }
+	F.close_chunk	();
+
+	F.open_chunk	(PS_CHUNK_THIRDGEN);
+    for (PS::PGDIt g_it=m_PGDs.begin(); g_it!=m_PGDs.end(); g_it++){
+		F.open_chunk(g_it-m_PGDs.begin());
+        (*g_it)->Save(F);
 		F.close_chunk();
     }
 	F.close_chunk	();

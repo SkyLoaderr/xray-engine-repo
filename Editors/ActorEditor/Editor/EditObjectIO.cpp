@@ -20,7 +20,6 @@ bool CEditableObject::Load(const char* fname)
     ext=ext.LowerCase();
     if 	(ext==".lwo")    		return Import_LWO(fname,false);
     else return LoadObject(fname);
-	return false;
 }
 #endif
 

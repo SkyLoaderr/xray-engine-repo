@@ -8,6 +8,11 @@
 
 class ENGINE_API IRender_Visual;
 
+namespace PS{
+	class CPEDef;
+	class CPGDef;
+};
+
 class ENGINE_API CModelPool
 {
 	friend class CRender;
@@ -37,6 +42,9 @@ public:
 
 	void 				Render				(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD=1.f);
 	void 				RenderSingle		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD=1.f);
+
+	IRender_Visual* 	CreatePE			(PS::CPEDef* source);
+	IRender_Visual* 	CreatePG			(PS::CPGDef* source);
 };
 
 #endif

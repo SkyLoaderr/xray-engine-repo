@@ -124,7 +124,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
     const CLocatorAPI::file* F = FS.exist(fn.c_str());
     if (F){
         if (m_EditObject->Load(fn.c_str())){
-        	if (m_EditObject->m_Version!=F->modif){
+        	if (m_EditObject->m_Version!=(int)F->modif){
 	            m_EditObject->m_Version = F->modif;
 //                m_EditObject->Modified();
             }
@@ -148,7 +148,7 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm)
     CEditableObject* m_EditObject = 0;
 	EditObjPairIt it 	= m_EditObjects.find(name);
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
-    else if (m_EditObject=LoadEditObject(name.c_str()))
+    else if (0!=(m_EditObject=LoadEditObject(name.c_str())))
 		m_EditObjects[name]	= m_EditObject;
     if (m_EditObject)	m_EditObject->m_RefCount++;
 	return m_EditObject;

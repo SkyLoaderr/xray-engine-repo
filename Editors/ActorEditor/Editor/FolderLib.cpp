@@ -44,9 +44,9 @@ AnsiString CFolderHelper::GetObjectName(const AnsiString& full_name, AnsiString&
 // может включать либо не включать имя объекта
 bool CFolderHelper::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name, bool bOnlyFolder)
 {
+    name = "";
 	if (begin_item){
     	TElTreeItem* node = (u32(begin_item->Data)==TYPE_OBJECT)?begin_item->Parent:begin_item;
-        name = "";
         while (node){
 			name.Insert(node->Text+AnsiString('\\'),0);
         	if (node==end_item) break;
@@ -58,7 +58,6 @@ bool CFolderHelper::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, Ans
         }
         return true;
     }else{
-		name = "";
         return false;
     }
 }

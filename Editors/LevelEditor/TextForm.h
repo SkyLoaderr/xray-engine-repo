@@ -62,7 +62,6 @@ private:	// User declarations
     TOnApplyClick 	OnApplyClick;
     TOnCloseClick 	OnCloseClick;
     TOnCodeIndight  OnCodeInsight;
-	static TfrmText*  form;
     void			OutLineNumber();
 public:		// User declarations
 	enum{
@@ -71,9 +70,9 @@ public:		// User declarations
     };
 public:
     __fastcall TfrmText(TComponent* Owner);
-    static TfrmText* 	__fastcall ShowEditor		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
-    static bool		 	__fastcall ShowModalEditor	(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
-    static void 		__fastcall HideEditor		();
+    static TfrmText* 	__fastcall CreateForm		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
+    static bool		 	__fastcall RunEditor		(AnsiString& text, LPCSTR caption="Text", u32 flags=0, int lim=0, TOnApplyClick on_apply=0, TOnCloseClick on_close=0, TOnCodeIndight on_insight=0);
+    static void 		__fastcall DestroyForm		(TfrmText* form);
     bool 	Modified	(){return mmText->Modified;}
     void 	ApplyEdit	(){ebApplyClick(0);}
     void 	InsertLine	(const AnsiString& line);

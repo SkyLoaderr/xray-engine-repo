@@ -58,8 +58,8 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #define ENGINE_API
 #define DLL_API			__declspec(dllimport)
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
-#define THROW			R_ASSERT2(0,"THROW");
-#define THROW2(a)		R_ASSERT2(0,a);
+#define THROW			Debug.fatal("THROW");
+#define THROW2(a)		Debug.fatal(a);
 
 // core
 #include <xrCore.h>

@@ -13,6 +13,7 @@
 #include "PSLibrary.h"
 #include "ParticleSystem.h"
 #include "PropertiesPSDef.h"
+#include "ItemList.h"
 #include "xr_trims.h"
 #include "library.h"
 
@@ -25,11 +26,12 @@ CParticleTools Tools;
 
 CParticleTools::CParticleTools()
 {
+    m_ItemProps 		= 0;
 	m_EditObject		= 0;
 	m_TestObject 		= 0;
     m_LibPS				= 0;
     m_PSProps			= 0;
-    m_TextPE			= 0;
+    m_EditText			= 0;
     m_bModified			= false;
     m_bReady			= false;
 }
@@ -40,7 +42,8 @@ CParticleTools::~CParticleTools()
 }
 //---------------------------------------------------------------------------
 
-bool CParticleTools::OnCreate(){
+bool CParticleTools::OnCreate()
+{
 	// shader test locking
 	AnsiString fn; 
     FS.update_path(fn,_game_data_,"particles2.xr");
@@ -51,8 +54,8 @@ bool CParticleTools::OnCreate(){
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-    m_PSProps = xr_new<TfrmPropertiesPSDef>(fraLeftBar->paPSProps);
-	m_PSProps->Parent = fraLeftBar->paPSProps;
+    m_PSProps = xr_new<TfrmPropertiesPSDef>(fraLeftBar->paItemProps);
+	m_PSProps->Parent = fraLeftBar->paItemProps;
     m_PSProps->Align = alClient;
     m_PSProps->BorderStyle = bsNone;
     m_PSProps->ShowProperties();
@@ -60,24 +63,33 @@ bool CParticleTools::OnCreate(){
     m_bReady = true;
 
     Load();
+
 	m_PSProps->SetCurrent(0);
     ChangeAction(eaSelect);
 
 	// lock
     EFS.LockFile(0,fn.c_str());
 
-    m_EditPE = xr_new<PS::CParticleEffect>();
+    m_EditPE 		= xr_new<PS::CParticleEffect>();
+    m_EditPG		= xr_new<PS::CParticleGroup>();
+    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
+	m_ItemProps->HideProperties();
+    m_PList			= TItemList::CreateForm(fraLeftBar->paItemList,alClient,OnParticleItemFocused,0,false);
 
     return true;
 }
 
-void CParticleTools::OnDestroy(){
+void CParticleTools::OnDestroy()
+{
 	VERIFY(m_bReady);
     m_bReady			= false;
 	// unlock
     EFS.UnlockFile		(_game_data_,"particles2.xr");
 
 	Lib.RemoveEditObject(m_EditObject);
+    TItemList::DestroyForm(m_PList);
+	TProperties::DestroyForm(m_ItemProps);
+    xr_delete			(m_EditPG);
     xr_delete			(m_EditPE);
 	xr_delete			(m_TestObject);
     m_LibPS				= 0;
@@ -107,6 +119,12 @@ void CParticleTools::Modified()
 }
 //---------------------------------------------------------------------------
 
+void CParticleTools::OnItemModified()
+{
+	Modified();
+}
+
+
 void CParticleTools::Render()
 {
 	if (!m_bReady) return;
@@ -114,7 +132,8 @@ void CParticleTools::Render()
 	if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
 	// Draw the particles.
 	RCache.set_xform_world		(Fidentity);
-    if (m_LibPED) Device.Models.RenderSingle(m_EditPE,Fidentity,1.f);
+    if (m_LibPED) 		Device.Models.RenderSingle(m_EditPE,Fidentity,1.f);
+    else if (m_EditPG)	Device.Models.RenderSingle(m_EditPG,Fidentity,1.f);
     else if (m_LibPS){
         if (m_TestObject){	
         	m_TestObject->RenderSingle	();
@@ -135,6 +154,10 @@ void CParticleTools::OnFrame()
     	m_EditObject->OnFrame();
         
     m_EditPE->OnFrame(Device.dwTimeDelta);
+    m_EditPG->OnFrame(Device.dwTimeDelta);
+
+	if (m_Flags.is(flRefreshProps))
+    	RealUpdateProperties();
 }
 
 void CParticleTools::ZoomObject(BOOL bObjectOnly){
@@ -214,12 +237,7 @@ void CParticleTools::ResetPreviewObject(){
 void CParticleTools::Load()
 {
 	VERIFY(m_bReady);
-    PS::PSIt Ps = ::Render->PSystems.FirstPS();
-    PS::PSIt Es = ::Render->PSystems.LastPS();
-    for (; Ps!=Es; Ps++) fraLeftBar->AddItem(Ps->m_Name,true,true);
-    PS::PEIt Pe = ::Render->PSystems.FirstPE();
-    PS::PEIt Ee = ::Render->PSystems.LastPE();
-    for (; Pe!=Ee; Pe++) fraLeftBar->AddItem((*Pe)->m_Name,true,false);
+    UpdateProperties();
 }
 
 void CParticleTools::Save()
@@ -241,22 +259,27 @@ void CParticleTools::Reload()
 	::Render->PSystems.Reload();
     // visual part
     fraLeftBar->ClearParticleList();
+    m_ItemProps->ClearProperties();
     Load();
     ResetCurrent();
 }
 
 
-void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR ren_part, int level){
+void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR ren_part, int level)
+{
     VERIFY(level<_GetItemCount(old_full_name,'\\'));
     char new_full_name[255];
     _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
     Rename(old_full_name, new_full_name);
 }
 
-void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name){
+void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name)
+{
 	VERIFY(m_bReady);
     if (m_LibPED){
-        ::Render->PSystems.RenamePE(m_LibPED,new_full_name);
+        ::Render->PSystems.RenamePED(m_LibPED,new_full_name);
+    }else if (m_LibPGD){
+        ::Render->PSystems.RenamePGD(m_LibPGD,new_full_name);
     }else if (m_LibPS){
         ApplyChanges();
         PS::SDef* S = ::Render->PSystems.FindPS(old_full_name); R_ASSERT(S);
@@ -265,19 +288,6 @@ void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name){
             m_EditPS = *S;
         }
     }
-}
-
-PS::SDef* CParticleTools::AppendPS(LPCSTR folder_name, PS::SDef* src)
-{
-	VERIFY(m_bReady);
-    string64 new_name;
-    string64 pref; pref[0]=0;
-    if (src) 			strcat(pref,src->m_Name);
-    ::Render->PSystems.GenerateName	(new_name,folder_name,pref);
-    PS::SDef* S 		= ::Render->PSystems.AppendPS(src);
-    strcpy				(S->m_Name,new_name);
-	fraLeftBar->AddItem	(S->m_Name,false,true);
-    return S;
 }
 
 void CParticleTools::RemovePS(LPCSTR name)
@@ -291,6 +301,7 @@ void CParticleTools::ResetCurrent()
 	VERIFY(m_bReady);
 	m_LibPS = 0;
     m_LibPED= 0;
+    m_LibPGD= 0;
 	xr_delete(m_TestObject);
 }
 
@@ -303,7 +314,10 @@ void CParticleTools::SetCurrentPS(PS::SDef* P)
     // load shader
 	if (m_LibPS!=P){
         m_LibPS = P;
-        if (m_LibPS) m_EditPS = *m_LibPS;
+        if (m_LibPS){ 
+        	m_EditPS 		= *m_LibPS;
+			m_EditMode		= emSystem;
+        }
         m_PSProps->SetCurrent(m_LibPS?&m_EditPS:0);
         // update visual
         xr_delete(m_TestObject);
@@ -316,15 +330,29 @@ void CParticleTools::SetCurrentPE(PS::CPEDef* P)
 {
 	VERIFY(m_bReady);
     // load shader
-    if (m_LibPED&&m_TextPE&&m_TextPE->Modified()){
+    if (m_LibPED&&m_EditText&&m_EditText->Modified()){
 //    	if (ELog.DlgMsg(mtConfirmation, "The commands has been modified.\nDo you want to apply your changes?")==mrYes)
-	    	m_TextPE->ApplyEdit();
+	    	m_EditText->ApplyEdit();
     }
 	if (m_LibPED!=P){
 	    m_LibPED = P;
         m_EditPE->Compile(m_LibPED);
-		if (m_LibPED) EditActionList();        
-        else if (m_TextPE) m_TextPE->Close();
+		if (m_LibPED){ 
+			m_EditMode		= emEffect;
+        	EditActionList	();
+        }else if (m_EditText) TfrmText::DestroyForm(m_EditText);
+    }
+}
+
+void CParticleTools::SetCurrentPG(PS::CPGDef* P)
+{
+	VERIFY(m_bReady);
+	if (m_LibPGD!=P){
+	    m_LibPGD = P;
+        if (m_LibPGD){
+			m_EditMode		= emGroup;
+	        m_EditPG->Compile(m_LibPGD);
+        }
     }
 }
 
@@ -335,19 +363,16 @@ PS::SDef* CParticleTools::FindPS(LPCSTR name)
 
 PS::CPEDef*	CParticleTools::FindPE(LPCSTR name)
 {
-	return ::Render->PSystems.FindPE(name);
+	return ::Render->PSystems.FindPED(name);
 }
 
-void CParticleTools::SetCurrent(LPCSTR name)
+PS::CPGDef*	CParticleTools::FindPG(LPCSTR name)
 {
-	PS::SDef* 	ps=0;
-	PS::CPEDef* pe=0;
-	if (ps=::Render->PSystems.FindPS(name)){		SetCurrentPS(ps); 	SetCurrentPE(0);}
-    else if (pe=::Render->PSystems.FindPE(name)){	SetCurrentPE(pe); 	SetCurrentPS(0);}
-    else{											SetCurrentPE(0);	SetCurrentPS(0);}
+	return ::Render->PSystems.FindPGD(name);
 }
 
-void CParticleTools::UpdateCurrent(){
+void CParticleTools::UpdateCurrent()
+{
 	VERIFY(m_bReady);
     VERIFY(m_LibPS);
 	xr_delete(m_TestObject);
@@ -356,7 +381,8 @@ void CParticleTools::UpdateCurrent(){
 }
 //---------------------------------------------------------------------------
 
-void CParticleTools::UpdateEmitter(){
+void CParticleTools::UpdateEmitter()
+{
 	VERIFY(m_bReady);
     if (!m_LibPS) return;
     if (m_TestObject) m_TestObject->UpdateEmitter(&m_EditPS.m_DefaultEmitter);
@@ -367,10 +393,11 @@ PS::SDef* CParticleTools::ClonePS(LPCSTR name)
 {
 	VERIFY(m_bReady);
 	PS::SDef* S = ::Render->PSystems.FindPS(name); R_ASSERT(S);
-	return AppendPS(0,S);
+	return AppendPS(S);
 }
 
-void CParticleTools::ApplyChanges(){
+void CParticleTools::ApplyChanges()
+{
 	VERIFY(m_bReady);
     if (m_LibPS){
 		*m_LibPS = m_EditPS;
@@ -547,13 +574,13 @@ void __fastcall	CParticleTools::OnApplyClick()
 {
 	if (m_LibPED) m_LibPED->Compile();
 	m_EditPE->Compile(m_LibPED);
-    if (m_TextPE&&m_TextPE->Modified()) Modified();
+    if (m_EditText&&m_EditText->Modified()) Modified();
 }
 
 void __fastcall	CParticleTools::OnCloseClick(bool& can_close)
 {
-	m_TextPE->ApplyEdit();
-	m_TextPE = 0;
+	m_EditText->ApplyEdit();
+	m_EditText = 0;
 }
 
 bool __fastcall CParticleTools::OnCodeInsight(const AnsiString& src_line, AnsiString& hint)
@@ -576,12 +603,12 @@ extern const AnsiString GetFunctionTemplate(const AnsiString& command);
 void __fastcall	CParticleTools::OnPPMenuItemClick(TObject* sender)
 {
 	TMenuItem* mi = dynamic_cast<TMenuItem*>(sender);
-    if (m_TextPE&&mi){ 
+    if (m_EditText&&mi){ 
 		LPCSTR T;
     	switch(mi->Tag){
-        case -2: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,T)) m_TextPE->InsertTextCP(T); break;
-        case -1: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smShader,T)) m_TextPE->InsertTextCP(T); break;
-        case 0: 	m_TextPE->InsertLine(GetFunctionTemplate(mi->Caption)); break;
+        case -2: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,T)) m_EditText->InsertTextCP(T); break;
+        case -1: 	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smShader,T)) m_EditText->InsertTextCP(T); break;
+        case 0: 	m_EditText->InsertLine(GetFunctionTemplate(mi->Caption)); break;
         }
     	
     }
@@ -589,59 +616,63 @@ void __fastcall	CParticleTools::OnPPMenuItemClick(TObject* sender)
 
 void __fastcall CParticleTools::EditActionList()
 {
-	m_TextPE = TfrmText::ShowEditor(m_LibPED->m_SourceText,"Edit action list",TfrmText::flOurPPMenu,0,OnApplyClick,OnCloseClick,OnCodeInsight);
+	if (!m_EditText){
+        m_EditText 					= TfrmText::CreateForm(m_LibPED->m_SourceText,"Edit action list",TfrmText::flOurPPMenu,0,OnApplyClick,OnCloseClick,OnCodeInsight);
 
-    m_TextPE->pmTextMenu->Items->Clear();
-    // make popup menu
-    TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "-";
-    m_TextPE->pmTextMenu->Items->Add(mi);
+        m_EditText->pmTextMenu->Items->Clear();
+        // make popup menu
+        TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "-";
+        m_EditText->pmTextMenu->Items->Add(mi);
 
-    TMenuItem* miStateCommands	= xr_new<TMenuItem>((TComponent*)0);
-    miStateCommands->Caption	= "Insert State Commands";
-    m_TextPE->pmTextMenu->Items->Add(miStateCommands);
+        TMenuItem* miStateCommands	= xr_new<TMenuItem>((TComponent*)0);
+        miStateCommands->Caption	= "Insert State Commands";
+        m_EditText->pmTextMenu->Items->Add(miStateCommands);
 
-    TMenuItem* miActionCommands	= xr_new<TMenuItem>((TComponent*)0);
-    miActionCommands->Caption 	= "Insert Action Commands";
-    m_TextPE->pmTextMenu->Items->Add(miActionCommands);
+        TMenuItem* miActionCommands	= xr_new<TMenuItem>((TComponent*)0);
+        miActionCommands->Caption 	= "Insert Action Commands";
+        m_EditText->pmTextMenu->Items->Add(miActionCommands);
 
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "-";
-    m_TextPE->pmTextMenu->Items->Add(mi);
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "Insert Shader";
-    mi->OnClick					= OnPPMenuItemClick;
-    mi->Tag						= -1;
-    m_TextPE->pmTextMenu->Items->Add(mi);
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "Insert Texture";
-    mi->OnClick					= OnPPMenuItemClick;
-    mi->Tag						= -2;
-    m_TextPE->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "-";
+        m_EditText->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "Insert Shader";
+        mi->OnClick					= OnPPMenuItemClick;
+        mi->Tag						= -1;
+        m_EditText->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "Insert Texture";
+        mi->OnClick					= OnPPMenuItemClick;
+        mi->Tag						= -2;
+        m_EditText->pmTextMenu->Items->Add(mi);
 
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "-";
-    m_TextPE->pmTextMenu->Items->Add(mi);
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "Load";
-    mi->OnClick					= m_TextPE->ebLoadClick;
-    m_TextPE->pmTextMenu->Items->Add(mi);
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "Save";
-    mi->OnClick					= m_TextPE->ebSaveClick;
-    m_TextPE->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "-";
+        m_EditText->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "Load";
+        mi->OnClick					= m_EditText->ebLoadClick;
+        m_EditText->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "Save";
+        mi->OnClick					= m_EditText->ebSaveClick;
+        m_EditText->pmTextMenu->Items->Add(mi);
     
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "-";
-    m_TextPE->pmTextMenu->Items->Add(mi);
-    mi 							= xr_new<TMenuItem>((TComponent*)0);
-    mi->Caption 				= "Clear";
-    mi->OnClick					= m_TextPE->ebClearClick;
-    m_TextPE->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "-";
+        m_EditText->pmTextMenu->Items->Add(mi);
+        mi 							= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 				= "Clear";
+        mi->OnClick					= m_EditText->ebClearClick;
+        m_EditText->pmTextMenu->Items->Add(mi);
 
-    // fill commands
-	FillStateMenu				(miStateCommands, OnPPMenuItemClick);
-	FillActionMenu				(miActionCommands, OnPPMenuItemClick);
+        // fill commands
+        FillStateMenu				(miStateCommands, OnPPMenuItemClick);
+        FillActionMenu				(miActionCommands, OnPPMenuItemClick);
+    }else{
+    	m_EditText->SetFocus		();
+    }
 }
 
 void __fastcall CParticleTools::ResetState()
@@ -660,18 +691,144 @@ LPCSTR CParticleTools::GetInfo()
 {
 	return 0;
 }
-
 //------------------------------------------------------------------------------
-PS::CPEDef* CParticleTools::AppendPE(LPCSTR folder_name, PS::CPEDef* src)
+
+void CParticleTools::SelectListItem(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand)
+{
+	AnsiString nm = (name&&name[0])?FHelper.PrepareKey(pref,name):pref;
+	m_PList->SelectItem(nm,bVal,bLeaveSel,bExpand);
+	if (pref){
+    	m_PList->SelectItem(pref,true,true,bExpand);
+    }
+}
+//------------------------------------------------------------------------------
+
+PS::SDef* CParticleTools::AppendPS(PS::SDef* src)
 {
 	VERIFY(m_bReady);
+	AnsiString folder_name;
+    ListItemsVec		items;
+    if (m_PList->GetSelected(items))
+		FHelper.MakeName(items.front()->Item(),0,folder_name,true);
     string64 new_name;
-    string64 pref; pref[0]=0;
+    string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
-    ::Render->PSystems.GenerateName	(new_name,folder_name,pref);
-    PS::CPEDef* S 		= ::Render->PSystems.AppendPE(src);
+    ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
+    PS::SDef* S 		= ::Render->PSystems.AppendPS(src);
     strcpy				(S->m_Name,new_name);
-	fraLeftBar->AddItem	(S->m_Name,false,false);
+
+    UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
+    if (new_name[0]) 	SelectListItem(0,new_name,true,false,true);
+
+//.	fraLeftBar->AddItem	(S->m_Name,false,emSystem);
     return S;
 }
 
+PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
+{
+	VERIFY(m_bReady);
+	AnsiString folder_name;
+    ListItemsVec		items;
+    if (m_PList->GetSelected(items))
+		FHelper.MakeName(items.front()->Item(),0,folder_name,true);
+    string64 new_name;
+    string64 pref		={0};
+    if (src) 			strcat(pref,src->m_Name);
+    ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
+    PS::CPEDef* S 		= ::Render->PSystems.AppendPED(src);
+    strcpy				(S->m_Name,new_name);
+//.	fraLeftBar->AddItem	(S->m_Name,false,emEffect);
+    return S;
+}
+
+PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
+{
+	VERIFY(m_bReady);
+	AnsiString folder_name;
+    ListItemsVec		items;
+    if (m_PList->GetSelected(items))
+		FHelper.MakeName(items.front()->Item(),0,folder_name,true);
+    string64 new_name;
+    string64 pref		={0};
+    if (src) 			strcat(pref,src->m_Name);
+    ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
+    PS::CPGDef* S 		= ::Render->PSystems.AppendPGD(src);
+    strcpy				(S->m_Name,new_name);
+//.	fraLeftBar->AddItem	(S->m_Name,false,emGroup);  
+    return S;
+}
+
+void CParticleTools::RealUpdateProperties()
+{
+	m_Flags.set(flRefreshProps,FALSE); 
+
+	ListItemsVec items;
+    {
+        PS::PSIt Ps = ::Render->PSystems.FirstPS();
+        PS::PSIt Es = ::Render->PSystems.LastPS();
+        for (; Ps!=Es; Ps++){
+            ListItem* I=LHelper.CreateItem(items,Ps->m_Name,emSystem,0,Ps);
+            I->SetIcon(0);
+        }
+	}
+    {
+        PS::PEDIt Pe = ::Render->PSystems.FirstPED();
+        PS::PEDIt Ee = ::Render->PSystems.LastPED();
+        for (; Pe!=Ee; Pe++){
+            ListItem* I=LHelper.CreateItem(items,(*Pe)->m_Name,emEffect,0,*Pe);
+            I->SetIcon(1);
+        }
+	}
+    {
+        PS::PGDIt Pg = ::Render->PSystems.FirstPGD();
+        PS::PGDIt Eg = ::Render->PSystems.LastPGD();
+        for (; Pg!=Eg; Pg++){
+            ListItem* I=LHelper.CreateItem(items,(*Pg)->m_Name,emGroup,0,*Pg);
+            I->SetIcon(2);
+        }
+	}
+	m_PList->AssignItems(items,false,"",true);
+}
+
+/*
+	PropItemVec props;
+	m_EditMode	= emObject;
+    
+    // unselect
+    if (m_pEditObject){
+    	m_pEditObject->ResetSAnimation(false);
+	    StopMotion					();
+    	m_pEditObject->SelectBones	(false);
+    }
+    
+	if (!items.empty()){
+	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
+            ListItem* prop = *it;
+            m_ObjectItems->pmItems->Items->Clear();
+            if (prop){
+                m_EditMode = EEditMode(prop->Type());
+                switch(m_EditMode){
+                case emObject:
+                    FillObjectProperties(props,MOTIONS_PREFIX,prop);
+                break;
+                case emMotion:{ 	
+                    FillMotionProperties(props,MOTIONS_PREFIX,prop);
+                    CSMotion* MOT		= ((CSMotion*)prop->m_Object);
+                    SetCurrentMotion	(MOT?MOT->Name():"");
+                }break;
+                case emBone:{
+                    FillBoneProperties	(props,BONES_PREFIX,prop);
+                    CBone* BONE 		= (CBone*)prop->m_Object;
+                    if (BONE) 			BONE->Select(TRUE);
+                }break;
+                case emSurface: 
+                    FillSurfaceProperties(props,SURFACES_PREFIX,prop);
+                break;
+                case emMesh: 
+                break;
+                }
+            }
+        }
+    }
+	m_ItemProps->AssignItems(props,true);
+*/

@@ -20,6 +20,7 @@ public:
 public:
     int 				tag;
     LPVOID				m_Object;
+    int					icon_index;
 public:
     enum{
     	flShowCB		= (1<<0),
@@ -30,7 +31,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						ListItem		(int _type):type(_type),item(0),key(0),tag(0),OnItemFocused(0),m_Object(0){m_Flags.zero();}
+						ListItem		(int _type):type(_type),item(0),key(0),tag(0),icon_index(-1),OnItemFocused(0),m_Object(0){m_Flags.zero();}
 	virtual 			~ListItem		(){};
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
     void				SetName			(LPCSTR _key){key=_key;}
@@ -38,6 +39,7 @@ public:
     IC int				Type			(){return type;}
 	IC TElTreeItem*		Item			(){return item;}
 	IC LPCSTR			Key				(){return key.c_str();}
+    IC void				SetIcon			(int index){icon_index=index;}
 };
 
 DEFINE_VECTOR			(ListItem*,ListItemsVec,ListItemsIt);

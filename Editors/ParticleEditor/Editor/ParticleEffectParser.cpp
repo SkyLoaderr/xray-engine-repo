@@ -544,7 +544,7 @@ void CPEDef::Compile()
     if (!bRes) return;
 
     // destroy shader (may be changed)
-    Device.Shader.Delete(m_CachedShader);
+    m_CachedShader.destroy	();
     
     // create temporary handles
 	int effect_handle 		= pGenParticleEffects(1, 1);

@@ -62,8 +62,8 @@ private:	// User declarations
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g=0, bool bArrow=false);
 public:		// User declarations
 	__fastcall 			TItemList	       		(TComponent* Owner);
-	static TItemList* 	CreateForm				(TWinControl* parent=0, TAlign align=alNone, TOnItemsFocused focused=0, TOnCloseEvent close=0);
-	static TItemList* 	CreateModalForm			(const AnsiString& title, ListItemsVec& items, bool bFullExpand=true, TOnItemsFocused focused=0, TOnCloseEvent close=0);
+	static TItemList* 	CreateForm				(TWinControl* parent=0, TAlign align=alNone, TOnItemsFocused focused=0, TOnCloseEvent close=0, bool allow_multiselect=true);
+	static TItemList* 	CreateModalForm			(const AnsiString& title, ListItemsVec& items, bool bFullExpand=true, TOnItemsFocused focused=0, TOnCloseEvent close=0, bool allow_multiselect=true);
 	static void 		DestroyForm				(TItemList*& props);
     void __fastcall 	ShowListModal			();
     void __fastcall 	ShowList				();
@@ -76,9 +76,12 @@ public:		// User declarations
     bool __fastcall 	IsFocused				(){return tvItems->Focused();}
 
     int __fastcall		GetSelected				(ListItemsVec& items);
+    TElTreeItem*		GetSelected				(){return (tvItems->MultiSelect)?0:tvItems->Selected;}
 
     void 				LockUpdating			(){ tvItems->IsUpdating = true; }
     void 				UnlockUpdating			(){ tvItems->IsUpdating = false; }
+
+    void				SetImages				(TImageList* image_list){tvItems->Images=image_list;}
 };
 //---------------------------------------------------------------------------
 #endif

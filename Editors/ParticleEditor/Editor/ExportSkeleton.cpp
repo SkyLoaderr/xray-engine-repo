@@ -287,13 +287,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                         st_FaceVert& 	fv = face.pv[k];
                         st_SVert& 		sv = MESH->m_SVertices[f_idx*3+k];
                         v[k].set(MESH->m_Points[fv.pindex],sv.uv,sv.w);
-
-		                CBone* B;
-                        B = m_Source->GetBone(sv.bone0);
                         v[k].set0(sv.offs0,sv.norm0,sv.bone0);
                         if (sv.bone1!=-1){
                         	b2Link = TRUE;
-			                B = m_Source->GetBone(sv.bone1);
         	                v[k].set1(sv.offs1,sv.norm1,sv.bone1);
                         }else{
         	                v[k].set1(sv.offs0,sv.norm0,sv.bone0);

@@ -20,7 +20,6 @@ public:
 
 	IC	void		set	(u32 ltType, float x, float y, float z)
 	{
-		VERIFY(sizeof(Flight)==sizeof(D3DLIGHT9));
 		ZeroMemory( this, sizeof(Flight) );
 		type=ltType;
 		diffuse.set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -50,7 +49,6 @@ public:
 
 	IC	void		set	(float r, float g, float b)
 	{
-		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
 		ZeroMemory	(this, sizeof(Fmaterial));
 		diffuse.r = ambient.r = r;
 		diffuse.g = ambient.g = g;
@@ -60,7 +58,6 @@ public:
 	}
 	IC	void	set(float r, float g, float b, float a)
 	{
-		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
 		ZeroMemory	(this, sizeof(Fmaterial));
 		diffuse.r = ambient.r = r;
 		diffuse.g = ambient.g = g;
@@ -70,7 +67,6 @@ public:
 	}
 	IC	void	set	(Fcolor &c)
 	{
-		VERIFY		(sizeof(Fmaterial)==sizeof(D3DMATERIAL9));
 		ZeroMemory	( this, sizeof(Fmaterial) );
 		diffuse.r = ambient.r = c.r;
 		diffuse.g = ambient.g = c.g;
@@ -105,6 +101,14 @@ struct	VDeclarator	: public svector<D3DVERTEXELEMENT9, MAXD3DDECLLENGTH+1>
 		else					return 0==memcmp(begin(),d.begin(),size()*sizeof(D3DVERTEXELEMENT9));
 	}
 };
+#endif
+
+#if (sizeof(Flight)!=sizeof(D3DLIGHT9)) 
+#error Different structure size
+#endif
+
+#if (sizeof(Fmaterial)!=sizeof(D3DMATERIAL9)) 
+#error Different structure size
 #endif
 
 #endif
