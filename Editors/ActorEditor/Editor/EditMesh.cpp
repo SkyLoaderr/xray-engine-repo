@@ -239,8 +239,8 @@ int CEditableMesh::GetFaceCount(bool bMatch2Sided){
 	int f_cnt = 0;
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
     	if (bMatch2Sided){
-	    	if (sp_it->first->IsFlag(CSurface::sf2Sided))	f_cnt+=sp_it->second.size()*2;
-    	    else											f_cnt+=sp_it->second.size();
+	    	if (sp_it->first->m_Flags.is(CSurface::sf2Sided))	f_cnt+=sp_it->second.size()*2;
+    	    else												f_cnt+=sp_it->second.size();
         }else{
         	f_cnt+=sp_it->second.size();
         }
@@ -252,7 +252,7 @@ int CEditableMesh::GetSurfFaceCount(CSurface* surf, bool bMatch2Sided){
 	SurfFacesPairIt sp_it = m_SurfFaces.find(surf);
     if (sp_it==m_SurfFaces.end()) return 0;
 	int f_cnt = sp_it->second.size();
-    if (bMatch2Sided&&sp_it->first->IsFlag(CSurface::sf2Sided)) f_cnt*=2;
+    if (bMatch2Sided&&sp_it->first->m_Flags.is(CSurface::sf2Sided)) f_cnt*=2;
     return f_cnt;
 }
 

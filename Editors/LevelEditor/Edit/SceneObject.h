@@ -72,7 +72,7 @@ public:
 	virtual void 	SetRotation				(Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale				(Fvector& scale)
     { 
-    	if (m_pRefs&&m_pRefs->IsFlag(CEditableObject::eoDynamic)){
+    	if (m_pRefs&&m_pRefs->IsDynamic()){
         	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
         }else{
 			FScale.set(scale); 

@@ -53,9 +53,10 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 
     InplaceParticleEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceParticleEdit->Editor->BorderStyle= bsNone;
-    DragItem = 0;
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
+    tvParticles->OnStartDrag 	= FHelper.StartDrag;
+    tvParticles->OnDragOver 	= FHelper.DragOver;
 }
 //---------------------------------------------------------------------------
 
@@ -177,7 +178,7 @@ void TfraLeftBar::ClearParticleList(){
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::AddPS(LPCSTR full_name, bool bLoadMode){
-	TElTreeItem* node = FOLDER::AppendObject(tvParticles,full_name);
+	TElTreeItem* node = FHelper.AppendObject(tvParticles,full_name);
     if (!bLoadMode){
 	    if (node&&node->Parent) node->Parent->Expand(false);
     	node->Selected = true;
@@ -190,10 +191,10 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
 	AnsiString folder;
     AnsiString start_folder;
-    FOLDER::MakeName(tvParticles->Selected,0,start_folder,true);
-    FOLDER::GenerateFolderName(tvParticles,tvParticles->Selected,folder);
+    FHelper.MakeName(tvParticles->Selected,0,start_folder,true);
+    FHelper.GenerateFolderName(tvParticles,tvParticles->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FOLDER::AppendFolder(tvParticles,folder.c_str());
+	TElTreeItem* node = FHelper.AppendFolder(tvParticles,folder.c_str());
     if (tvParticles->Selected) tvParticles->Selected->Expand(false);
     tvParticles->EditItem(node,-1);
 	Tools.Modified();
@@ -212,41 +213,29 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebParticleShaderRemoveClick(TObject *Sender)
+BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0)
 {
-    TElTreeItem* pNode = tvParticles->Selected;
-    if (pNode){
-		AnsiString full_name;
-    	if (FOLDER::IsFolder(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
-		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
-                    FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) Tools.RemovePS(full_name.c_str());
-                }
-				Tools.ResetCurrentPS();
-	            pNode->Delete();
-                Tools.Modified();
-        	}
-        }
-    	if (FOLDER::IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
-				FOLDER::MakeName(pNode,0,full_name,false);
-	            Tools.RemovePS(full_name.c_str());
-				Tools.ResetCurrentPS();
-	            pNode->Delete();
-                Tools.Modified();
-        	}
-        }
-    }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
-    }
+	Tools.RemovePS(p0);
+    return TRUE;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::AfterRemoveItem()
+{
+	Tools.ResetCurrentPS();
+	Tools.Modified();
+}
+
+void __fastcall TfraLeftBar::ebParticleRemoveClick(TObject *Sender)
+{
+	FHelper.RemoveItem(tvParticles,tvParticles->Selected,RemoveItem);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvParticlesItemFocused(TObject *Sender)
 {
 	AnsiString name;
-    FOLDER::MakeName(tvParticles->Selected, 0, name, false);
+    FHelper.MakeName(tvParticles->Selected, 0, name, false);
 	Tools.SetCurrentPS(name.c_str());
 }
 //---------------------------------------------------------------------------
@@ -254,9 +243,9 @@ void __fastcall TfraLeftBar::tvParticlesItemFocused(TObject *Sender)
 void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvParticles->Selected;
-    if (pNode&&FOLDER::IsObject(pNode)){
+    if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
-		FOLDER::MakeName(pNode,0,full_name,false);
+		FHelper.MakeName(pNode,0,full_name,false);
         PS::SDef* P = Tools.ClonePS(full_name.c_str());
 		Tools.SetCurrentPS(P);
 		Tools.Modified();
@@ -269,7 +258,7 @@ void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 void __fastcall TfraLeftBar::tvParticlesKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-	if (Key==VK_DELETE) ebParticleShaderRemoveClick(Sender);
+	if (Key==VK_DELETE) ebParticleRemoveClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -297,15 +286,15 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
         }
     }
     AnsiString full_name;
-    if (FOLDER::IsFolder(node)){
+    if (FHelper.IsFolder(node)){
         for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FOLDER::IsObject(item)){
-                FOLDER::MakeName(item,0,full_name,false);
+            if (FHelper.IsObject(item)){
+                FHelper.MakeName(item,0,full_name,false);
                 Tools.RenamePS(full_name.c_str(),new_text.c_str(),node->Level);
             }
         }
-    }else if (FOLDER::IsObject(node)){
-        FOLDER::MakeName(node,0,full_name,false);
+    }else if (FHelper.IsObject(node)){
+        FHelper.MakeName(node,0,full_name,false);
         Tools.RenamePS(full_name.c_str(),new_text.c_str(),node->Level);
     }
 	Tools.Modified();
@@ -315,100 +304,24 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
 void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
 {
     AnsiString folder;
-	FOLDER::MakeName(tvParticles->Selected,0,folder,true);
+	FHelper.MakeName(tvParticles->Selected,0,folder,true);
     PS::SDef* S = Tools.AppendPS(folder.IsEmpty()?0:folder.c_str(),0);
 	Tools.SetCurrentPS(S);
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesStartDrag(TObject *Sender,
-      TDragObject *&DragObject)
+void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
-  	else					DragItem = 0;
+	Tools.RenamePS(p0,p1);
+	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesDragOver(TObject *Sender,
-      TObject *Source, int X, int Y, TDragState State, bool &Accept)
-{
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	TElTreeItem* tgt;
-    TElTreeItem* src=DragItem;
-    TSTItemPart IP;
-    int HCol;
-    if (!DragItem) Accept = false;
-  	else{
-		tgt = tv->GetItemAt(X, Y, IP, HCol);
-        if (tgt){
-        	if (FOLDER::IsFolder(src)){
-            	if (FOLDER::IsFolder(tgt)){
-		        	Accept = (tgt!=src)&&(src->Parent!=tgt);
-                }else if (FOLDER::IsObject(tgt)){
-		        	Accept = (tgt!=src)&&(tgt->Parent!=src->Parent)&&(src!=tgt->Parent);
-                }
-            }else if (FOLDER::IsObject(src)){
-            	if (FOLDER::IsFolder(tgt)){
-		        	Accept = (tgt!=src)&&(src->Parent!=tgt);
-                }else if (FOLDER::IsObject(tgt)){
-		        	Accept = (tgt!=src)&&(src->Parent!=tgt->Parent);
-                }
-            }
-        }else Accept = !!DragItem->Parent;
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraLeftBar::tvParticlesDragDrop(TObject *Sender,
+void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, 0, 0);
-    if (tgt_folder&&(FOLDER::IsObject(tgt_folder))) tgt_folder=tgt_folder->Parent;
-
-    AnsiString base_name;
-    FOLDER::MakeName(tgt_folder,0,base_name,true);
-    AnsiString cur_fld_name=base_name;
-    TElTreeItem* cur_folder=tgt_folder;
-
-    int drg_level=DragItem->Level;
-
-    TElTreeItem* item = DragItem;
-    do{
-    	DWORD type = DWORD(item->Data);
-		TElTreeItem* pNode = FOLDER::FindItemInFolder(type,tvParticles,cur_folder,item->Text);
-		if (pNode&&FOLDER::IsObject(item)){
-            item=item->GetNext();
-        	continue;
-        }
-
-        if (!pNode) pNode = tvParticles->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
-		if (FOLDER::IsFolder(item)){
-        	cur_folder = pNode;
-		    FOLDER::MakeName(cur_folder,0,cur_fld_name,true);
-            item=item->GetNext();
-        }else{
-        	// rename
-		    AnsiString old_name, new_name;
-		    FOLDER::MakeName(item,0,old_name,false);
-		    FOLDER::MakeName(pNode,0,new_name,false);
-            Tools.RenamePS(old_name.c_str(),new_name.c_str());
-            Tools.Modified();
-
-            TElTreeItem* parent=item->Parent;
-            // get next item && delete existance
-            TElTreeItem* next=item->GetNext();
-			item->Delete();
-
-            if (parent&&((parent->GetLastChild()==item)||(0==parent->ChildrenCount))){
-	            if (0==parent->ChildrenCount) parent->Delete();
-	        	cur_folder = cur_folder->Parent;
-            }
-
-            item=next;
-        }
-    }while(item&&(item->Level>drg_level));
+	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
 }
 //---------------------------------------------------------------------------
 
@@ -442,4 +355,5 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 	UI.Command( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
+
 

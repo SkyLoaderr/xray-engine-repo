@@ -90,7 +90,7 @@ bool CEditableObject::Load(CStream& F){
             break;
         }
 
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAGS, &m_dwFlags));
+        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAGS, &m_Flags.flags));
 
         if (F.FindChunk	(EOBJ_CHUNK_CLASSSCRIPT)){
             F.RstringZ	(buf); m_ClassScript=buf;
@@ -110,7 +110,7 @@ bool CEditableObject::Load(CStream& F){
                 F.RstringZ	(buf);	(*s_it)->SetGameMtl		(buf);
                 F.RstringZ	(buf); 	(*s_it)->SetTexture		(buf);
                 F.RstringZ	(buf); 	(*s_it)->SetVMap		(buf);
-                (*s_it)->SetFlags	(F.Rdword());
+                (*s_it)->m_Flags.set(F.Rdword());
                 (*s_it)->SetFVF		(F.Rdword());
                 cnt 				= F.Rdword();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
@@ -126,7 +126,7 @@ bool CEditableObject::Load(CStream& F){
                 F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
                 F.RstringZ	(buf); 	(*s_it)->SetTexture		(buf);
                 F.RstringZ	(buf); 	(*s_it)->SetVMap		(buf);
-                (*s_it)->SetFlags	(F.Rdword());
+                (*s_it)->m_Flags.set(F.Rdword());
                 (*s_it)->SetFVF		(F.Rdword());
                 cnt 				= F.Rdword();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
@@ -141,7 +141,7 @@ bool CEditableObject::Load(CStream& F){
                 F.RstringZ(buf);
                 (*s_it)->SetName(buf);
                 F.RstringZ(sh_name);
-                (*s_it)->SetFlag	(CSurface::sf2Sided,!!F.Rbyte());
+                (*s_it)->m_Flags.set(CSurface::sf2Sided,!!F.Rbyte());
                 (*s_it)->SetFVF		(F.Rdword());
                 cnt 				= F.Rdword();
                 if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
@@ -236,7 +236,7 @@ void CEditableObject::Save(CFS_Base& F){
 	F.WstringZ		(m_ClassScript.c_str());
 	F.close_chunk	();
 
-    F.write_chunk	(EOBJ_CHUNK_FLAGS,&m_dwFlags,sizeof(m_dwFlags));
+    F.write_chunk	(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));
 
     // object version
     F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
@@ -259,7 +259,7 @@ void CEditableObject::Save(CFS_Base& F){
         F.WstringZ	((*sf_it)->_GameMtlName		());
 		F.WstringZ	((*sf_it)->_Texture			());
 		F.WstringZ	((*sf_it)->_VMap			());
-        F.Wdword	((*sf_it)->GetFlags			());
+        F.Wdword	((*sf_it)->m_Flags.get		());
         F.Wdword	((*sf_it)->_FVF				());
         F.Wdword	(1);
     }
@@ -338,7 +338,7 @@ bool CEditableObject::ExportHOMPart(CFS_Base& F)
 {
     for (EditMeshIt m_it=m_Meshes.begin(); m_it!=m_Meshes.end(); m_it++){
         for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
-            BOOL b2Sided = sf_it->first->IsFlag(CSurface::sf2Sided);
+            BOOL b2Sided = sf_it->first->m_Flags.is(CSurface::sf2Sided);
             IntVec& i_lst= sf_it->second;
             for (IntIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
                 st_Face& face = (*m_it)->m_Faces[*i_it];

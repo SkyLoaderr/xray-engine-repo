@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 621
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 277
+    Height = 621
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -162,7 +162,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 144
+      Height = 159
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -184,13 +184,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 113
+        Height = 128
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 111
+          Top = 126
           Width = 208
           Height = 2
           Align = alBottom
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 75
+          Height = 90
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -287,9 +287,7 @@ object fraLeftBar: TfraLeftBar
           VirtualityLevel = vlNone
           BkColor = clGray
           OnItemFocused = tvParticlesItemFocused
-          OnDragDrop = tvParticlesDragDrop
-          OnDragOver = tvParticlesDragOver
-          OnStartDrag = tvParticlesStartDrag
+          OnDragDrop = OnDragDrop
           OnMouseDown = tvParticlesMouseDown
           OnKeyDown = tvParticlesKeyDown
         end
@@ -320,7 +318,7 @@ object fraLeftBar: TfraLeftBar
             Font.Style = []
             Margin = 13
             ParentFont = False
-            OnClick = ebParticleShaderRemoveClick
+            OnClick = ebParticleRemoveClick
           end
           object ebEngineShaderClone: TExtBtn
             Left = 138
@@ -401,7 +399,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 127
+        Top = 142
         Width = 208
         Height = 16
         Align = alBottom
@@ -432,7 +430,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = -74
+      Top = 270
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -490,7 +488,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = -116
+      Top = 228
       Width = 210
       Height = 42
       Hint = 'Scene commands'

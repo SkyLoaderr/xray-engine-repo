@@ -39,7 +39,7 @@ bool SceneBuilder::BuildHOMModel(){
     ObjectList& lst = Scene.ListObj(OBJCLASS_SCENEOBJECT);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
     	CEditableObject* E=((CSceneObject*)(*it))->GetReference(); R_ASSERT(E);
-    	if (E->IsFlag(CEditableObject::eoHOM)) E->ExportHOMPart(F);
+    	if (E->m_Flags.is(CEditableObject::eoHOM)) E->ExportHOMPart(F);
     }
     BOOL bValid = !!F.chunk_size();
     F.close_chunk();

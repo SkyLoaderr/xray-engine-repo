@@ -252,7 +252,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     // mem active motion
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
-    R_ASSERT(m_Source->IsFlag(CEditableObject::eoDynamic)&&m_Source->IsSkeleton());
+    R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
     BOOL b2Link = FALSE;
 
     UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
@@ -327,7 +327,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
                         }
                     }
                     split.add_face(v[0], v[1], v[2]);
-			        if (surf->IsFlag(CSurface::sf2Sided)){
+			        if (surf->m_Flags.is(CSurface::sf2Sided)){
                     	v[0].N0.invert(); v[1].N0.invert(); v[2].N0.invert();
                     	v[0].N1.invert(); v[1].N1.invert(); v[2].N1.invert();
                     	split.add_face(v[0], v[2], v[1]);
@@ -346,7 +346,7 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++)
 		    bone_points[sv_it->B0].push_back(sv_it->O0);
-        if (m_Source->IsFlag(CEditableObject::eoProgressive)) split_it->MakeProgressive();
+        if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
 		UI.ProgressInc();
     }
 	UI.ProgressInc();

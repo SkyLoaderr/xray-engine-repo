@@ -97,7 +97,7 @@ __published:	// IDE-managed Components
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall ebParticleShaderRemoveClick(TObject *Sender);
+	void __fastcall ebParticleRemoveClick(TObject *Sender);
 	void __fastcall tvParticlesItemFocused(TObject *Sender);
 	void __fastcall ebParticleCloneClick(TObject *Sender);
 	void __fastcall tvParticlesKeyDown(TObject *Sender, WORD &Key,
@@ -106,12 +106,6 @@ __published:	// IDE-managed Components
 	void __fastcall InplaceParticleEditValidateResult(TObject *Sender,
           bool &InputValid);
 	void __fastcall ebPSCreateClick(TObject *Sender);
-	void __fastcall tvParticlesStartDrag(TObject *Sender,
-          TDragObject *&DragObject);
-	void __fastcall tvParticlesDragOver(TObject *Sender, TObject *Source, int X,
-          int Y, TDragState State, bool &Accept);
-	void __fastcall tvParticlesDragDrop(TObject *Sender, TObject *Source, int X,
-          int Y);
 	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
 	void __fastcall ebCurrentPSStopClick(TObject *Sender);
 	void __fastcall ebImageCommandsMouseDown(TObject *Sender,
@@ -119,9 +113,13 @@ __published:	// IDE-managed Components
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
+	void __fastcall OnDragDrop(TObject *Sender, TObject *Source,
+          int X, int Y);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
-    TElTreeItem*	DragItem;
+	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);
+	BOOL __fastcall RemoveItem(LPCSTR p0);
+	void __fastcall AfterRemoveItem();
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();

@@ -8,6 +8,7 @@
 #include "SceneClassList.h"
 #ifdef _EDITOR
 	#include "PropertiesListTypes.h"
+	#include "GameMtlLib.h"
 #endif
 //----------------------------------------------------
 struct 	SRayPickInfo;
@@ -37,9 +38,11 @@ class XRayMtl;
 
 class CSurface
 {
+    u32				m_GameMtlID;
 public:
 	enum EFlags{
     	sf2Sided	= (1<<0),
+        sfValidGameMtlID= (1<<1),
     	sfForceDWORD= (-1)
     };
 
@@ -50,7 +53,7 @@ public:
     AnsiString		m_ShaderXRLCName;
     AnsiString		m_GameMtlName;
     Shader*			m_Shader;
-    DWORD			m_dwFlags;
+    Flags32			m_Flags;
     DWORD			m_dwFVF;
 #ifdef _MAX_EXPORT
 	DWORD			mid;
@@ -64,8 +67,9 @@ public:
 	CSurface		()
 	{
     	m_GameMtlName="default";
+        m_GameMtlID	= GAMEMTL_NONE;
 		m_Shader	= 0;
-		m_dwFlags	= 0;
+		m_Flags.zero();
 		m_dwFVF		= 0;
 #ifdef _MAX_EXPORT
 		mtl			= 0;
@@ -93,16 +97,24 @@ public:
     IC void			SetName			(LPCSTR name){m_Name=name;}
     IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
-    IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;}
-	IC void			SetFlag			(EFlags flag, bool val){if (val) m_dwFlags|=flag; else m_dwFlags&=~flag;}
-    IC bool			IsFlag			(EFlags flag)const {return !!(m_dwFlags&flag);}
-    IC DWORD		GetFlags		()const {return m_dwFlags;}
-    IC void			SetFlags		(DWORD flags){m_dwFlags=flags;}
+    IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;m_Flags.set(sfValidGameMtlID,FALSE);}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
-    IC void			OnDeviceCreate	(){m_Shader=Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str());}
+	void __fastcall OnChangeGameMtl	(PropValue* sender)
+    {
+	    m_Flags.set(sfValidGameMtlID,FALSE);
+    }
+    IC u32			_GameMtl		() 
+    {
+    	if (!m_Flags.is(sfValidGameMtlID)){ 
+        	m_GameMtlID = GMLib.GetMaterialID(m_GameMtlName.c_str()); R_ASSERT(m_GameMtlID!=GAMEMTL_NONE);
+        	m_Flags.set(sfValidGameMtlID,TRUE);
+        }
+        return m_GameMtlID;
+    }
+    IC void			OnDeviceCreate	(){ m_Shader = Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str()); }
     IC void			OnDeviceDestroy	(){Device.Shader.Delete(m_Shader);}
 #endif
 };
@@ -161,6 +173,8 @@ class CEditableObject{
 public:
     st_AnimParam	m_SMParam;
 public:
+	// options
+	Flags32			m_Flags;
 	enum{
 		eoDynamic 	 	= (1<<0),
 		eoProgressive 	= (1<<1),
@@ -168,14 +182,9 @@ public:
         eoHOM			= (1<<3),
 		eoFORCE32		= DWORD(-1)
     };
-	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
-	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
-    IC void			SetFlag					(DWORD flag, bool value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag;}
-    IC bool			IsDynamic				(){return IsFlag(eoDynamic);}
-    IC bool			IsStatic				(){return !IsFlag(eoDynamic)&&!IsFlag(eoHOM);}
+    IC bool			IsDynamic				(){return m_Flags.is(eoDynamic);}
+    IC bool			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM);}
 private:
-	// options
-	DWORD			m_dwFlags;
 	// bounding volume
 	Fbox 			m_Box;
 public:

@@ -658,7 +658,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
     ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
     for(ObjectIt it=lst.begin();it!=lst.end();it++){
     	CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
-        if (O->IsFlag(CEditableObject::eoHOM)){ bHasHOM = true; break; }
+        if (O->m_Flags.is(CEditableObject::eoHOM)){ bHasHOM = true; break; }
     }                            
     if (!bHasHOM)
     	if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))

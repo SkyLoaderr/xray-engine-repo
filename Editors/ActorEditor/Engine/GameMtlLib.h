@@ -204,12 +204,21 @@ public:
             if ((*it)->ID==id) return it;
         return materials.end();
     }
+	IC u32				GetMaterialID	(LPCSTR name)
+    {
+    	GameMtlIt it	= GetMaterialIt	(name);
+        return (it==materials.end())?GAMEMTL_NONE:(*it)->ID;
+    }
 #ifdef _EDITOR
 	// editor
 	SGameMtl*			AppendMaterial	(SGameMtl* parent);
 	void				RemoveMaterial	(LPCSTR name);
 	SGameMtl*			GetMaterialByID	(int ID);
-	SGameMtl*			GetMaterial		(LPCSTR name);
+	IC SGameMtl*		GetMaterial		(LPCSTR name)
+    {
+	    GameMtlIt it=GetMaterialIt(name);
+    	return it!=materials.end()?*it:0;
+	}
 #else
 	// game
 	IC u32				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(it!=materials.end()); return it-materials.begin();}

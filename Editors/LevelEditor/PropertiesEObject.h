@@ -66,8 +66,8 @@ private:	// User declarations
 	void __fastcall OnChangeShader			(PropValue* sender);
 	void __fastcall OnChangeTransform		(PropValue* sender);
 
-    bool			m_bNeedRereshShaders;
-    void			RefreshShaders			(){m_bNeedRereshShaders = true;}
+    bool			m_bNeedRefreshShaders;
+    void			RefreshShaders			(){m_bNeedRefreshShaders = true;}
 public:
 public:		// User declarations
     __fastcall 		TfrmPropertiesEObject	(TComponent* Owner);

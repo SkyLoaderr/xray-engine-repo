@@ -511,9 +511,9 @@ void __fastcall TfraLeftBar::ebShaderRemoveClick(TObject* Sender)
 {
 //	bFocusedAffected = false;
 	TElTree* tv = CurrentView(); VERIFY(tv);
-	FHelper.RemoveItem(tv,tv->Selected,RemoveItem);
+	FHelper.RemoveItem(tv,tv->Selected,RemoveItem,AfterRemoveItem);
 //	bFocusedAffected = true;
-	Tools.Modified();
+//	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 

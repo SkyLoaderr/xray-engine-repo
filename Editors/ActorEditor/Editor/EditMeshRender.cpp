@@ -35,7 +35,7 @@ void CEditableMesh::CreateRenderBuffers()
         do{
 	        rb_vec.push_back	(st_RenderBuffer(0,(v_cnt<V_LIM)?v_cnt:V_LIM));
             st_RenderBuffer& rb	= rb_vec.back();
-            if (_S->IsFlag(CSurface::sf2Sided)) 	rb.dwNumVertex *= 2;
+            if (_S->m_Flags.is(CSurface::sf2Sided)) 	rb.dwNumVertex *= 2;
             num_face			= (v_cnt<V_LIM)?v_cnt/3:F_LIM;
 
             int buf_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
@@ -48,7 +48,7 @@ void CEditableMesh::CreateRenderBuffers()
 			rb.pVB->Unlock		();
 
             v_cnt				-= V_LIM;
-            start_face			+= (_S->IsFlag(CSurface::sf2Sided))?rb.dwNumVertex/6:rb.dwNumVertex/3;
+            start_face			+= (_S->m_Flags.is(CSurface::sf2Sided))?rb.dwNumVertex/6:rb.dwNumVertex/3;
         }while(v_cnt>0);
         if (num_verts>0) m_RenderBuffers.insert(make_pair(_S,rb_vec));
 		UI.ProgressInc();
@@ -111,7 +111,7 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
                 CopyMemory(data,&vmap->getUV(vm_pt.index),sz); data+=sz;
             }
         }
-        if (surf->IsFlag(CSurface::sf2Sided)){
+        if (surf->m_Flags.is(CSurface::sf2Sided)){
             for (int k=2; k>=0; k--){
                 st_FaceVert& fv = face.pv[k];
 	            Fvector& PN = m_PNormals[f_index*3+k];

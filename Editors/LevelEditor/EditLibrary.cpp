@@ -327,8 +327,8 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
         int age;
         CEditableObject* O = m_pEditObject->GetReference();
     	if (O&&cbPreview->Checked){
-        	bool bLod = O->IsFlag(CEditableObject::eoUsingLOD);
-        	O->SetFlag(CEditableObject::eoUsingLOD,false);
+        	BOOL bLod = O->m_Flags.is(CEditableObject::eoUsingLOD);
+        	O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
             AnsiString tex_name;
             tex_name = ChangeFileExt(name,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
@@ -337,7 +337,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,age);
             m_pEditObject->GetReference()->OnDeviceDestroy();
         	tvObjectsItemFocused(Sender);
-        	O->SetFlag(CEditableObject::eoUsingLOD,bLod);
+        	O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
 		    ELog.DlgMsg(mtInformation,"LOD successfully created."); 
 	    }else{
             ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");

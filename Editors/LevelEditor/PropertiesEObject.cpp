@@ -24,7 +24,7 @@ __fastcall TfrmPropertiesEObject::TfrmPropertiesEObject(TComponent* Owner)
 {
 	m_Thumbnail	= 0;
     m_pEditObject=0;
-	m_bNeedRereshShaders = false;
+	m_bNeedRefreshShaders = false;
 }
 //---------------------------------------------------------------------------
 
@@ -63,9 +63,9 @@ void TfrmPropertiesEObject::FillBasicProps()
         PropValueVec values;
 
 	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PHelper.CreateMarker());
-	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoDynamic));
-	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoHOM));
-	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoUsingLOD));
+	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoDynamic));
+	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoHOM));
+	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_Flags.flags,		PHelper.CreateFlag(CEditableObject::eoUsingLOD));
 
 	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,	0,OnChangeTransform));
     	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PHelper.CreateVector(-10000,	10000,0.1,1,		0,PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,PHelper.FvectorRDOnDraw,OnChangeTransform));
@@ -194,9 +194,9 @@ void __fastcall TfrmPropertiesEObject::OnChangeTransform(PropValue* sender)
 
 void __fastcall TfrmPropertiesEObject::tmIdleTimer(TObject *Sender)
 {
-	if (m_bNeedRereshShaders){
+	if (m_bNeedRefreshShaders){
 	    m_pEditObject->GetReference()->OnDeviceDestroy();
-        m_bNeedRereshShaders = false;
+        m_bNeedRefreshShaders = false;
         UI.RedrawScene();
     }
 }

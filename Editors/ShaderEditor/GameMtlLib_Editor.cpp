@@ -58,11 +58,6 @@ SGameMtl* CGameMtlLibrary::GetMaterialByID	(int id)
 	GameMtlIt it = GetMaterialItByID(id);
     return it!=materials.end()?*it:0;
 }
-SGameMtl* CGameMtlLibrary::GetMaterial		(LPCSTR name)
-{
-    GameMtlIt it=GetMaterialIt(name);
-    return it!=materials.end()?*it:0;
-}
 
 //------------------------------------------------------------------------------
 // material pair routines

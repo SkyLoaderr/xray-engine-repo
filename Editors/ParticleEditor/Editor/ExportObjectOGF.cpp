@@ -272,7 +272,7 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
                         v[k].set(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],*uv);
                     }
                     split.add_face(v[0], v[1], v[2]);
-			        if (surf->IsFlag(CSurface::sf2Sided)){
+			        if (surf->m_Flags.is(CSurface::sf2Sided)){
                     	v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
                     	split.add_face(v[0], v[2], v[1]);
                     }

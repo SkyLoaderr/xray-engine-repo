@@ -74,12 +74,12 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
 	Fvector v; float r; 
     Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
     
-    if (IsFlag(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
+    if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
 		Device.SetTransform(D3DTS_WORLD,parent);
         
-	    if (IsFlag(eoHOM)){
+	    if (m_Flags.is(eoHOM)){
         	if ((1==priority)&&(false==strictB2F)){
 	            RenderEdge(parent,0,0x00000000);
                 Device.SetShader(Device.m_WireShader);
@@ -177,7 +177,7 @@ IC static void CalculateLODTC(int frame, int w_cnt, int h_cnt, Fvector2& lt, Fve
 
 void CEditableObject::GetLODFrame(int frame, Fvector p[4], Fvector2 t[4], const Fmatrix* parent)
 {
-	R_ASSERT(IsFlag(eoUsingLOD));
+	R_ASSERT(m_Flags.is(eoUsingLOD));
     Fvector P,S;
     m_Box.get_CD(P,S);
     float r = max(S.x,S.z);//sqrtf(S.x*S.x+S.z*S.z);
@@ -344,8 +344,8 @@ void CEditableObject::FillPropSurf(LPCSTR pref, PropValueVec& values, TOnChange 
         FILL_PROP_EX(values, pref, AnsiString(nm+"\\Texture").c_str(), 		&SURF->m_Texture, 				PHelper.CreateATexture(0,0,0,0,onchange));
         FILL_PROP_EX(values, pref, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName, 			PHelper.CreateAEShader(0,0,0,0,onchange));
         FILL_PROP_EX(values, pref, AnsiString(nm+"\\Compile").c_str(), 		&SURF->m_ShaderXRLCName,		PHelper.CreateACShader());
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Game Mtl").c_str(),		&SURF->m_GameMtlName,			PHelper.CreateAGameMtl());
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 		&SURF->m_dwFlags,				PHelper.CreateFlag(CSurface::sf2Sided,0,0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Game Mtl").c_str(),		&SURF->m_GameMtlName,			PHelper.CreateAGameMtl(0,0,0,0,SURF->OnChangeGameMtl));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 		&SURF->m_Flags.flags,			PHelper.CreateFlag(CSurface::sf2Sided,0,0,0,0,onchange));
         FILL_PROP_EX(values, pref, AnsiString(nm+"\\Face count").c_str(), 	AnsiString(face_cnt).c_str(), 	PHelper.CreateMarker());
     }
 }

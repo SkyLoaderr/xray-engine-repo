@@ -107,7 +107,8 @@
       intermediate\UI_MainMail.obj intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_CACHE.obj intermediate\HW.obj 
       intermediate\defines.obj intermediate\GameFont.obj 
-      intermediate\Blender_Model_EbB.obj intermediate\GameMtlLib.obj"/>
+      intermediate\Blender_Model_EbB.obj intermediate\GameMtlLib.obj 
+      intermediate\Blender_B.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -403,6 +404,7 @@
       <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\LevelGameDef.h" FORMNAME="" UNITNAME="LevelGameDef.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

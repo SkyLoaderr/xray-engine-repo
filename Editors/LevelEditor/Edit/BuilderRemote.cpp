@@ -194,7 +194,8 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 	bResult 		= FALSE;
                     break;
                 }
-                new_face.dwMaterial = m_id;
+                new_face.dwMaterial 	= m_id;
+                new_face.dwMaterialGame = surf->_GameMtl();
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
                     // vertex index
@@ -214,7 +215,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 }
             }
 
-	        if (surf->IsFlag(CSurface::sf2Sided)){
+	        if (surf->m_Flags.is(CSurface::sf2Sided)){
 		    	R_ASSERT(l_faces_it<l_faces_cnt);
                 b_face& new_face 	= l_faces[l_faces_it++];
                 new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;
@@ -589,7 +590,7 @@ int SceneBuilder::BuildTexture(const char* name){
 //------------------------------------------------------------------------------
 int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int sector_num)
 {
-	if (!e->IsFlag(CEditableObject::eoUsingLOD)) return -1;
+	if (!e->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
     AnsiString lod_name;
 	R_ASSERT(e->GetLODTextureName(lod_name));
 
