@@ -313,7 +313,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
 	if	(((m_tDesirableDirection == eMovementDirectionForward) && (m_tMovementDirection == eMovementDirectionBack))	||	((m_tDesirableDirection == eMovementDirectionBack) && (m_tMovementDirection == eMovementDirectionForward)))
 		fAnimationSwitchFactor = .0f;
-	if	(((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
+	if	(((m_tDesirableDirection == eMovementDirectionRight) && (m_tMovementDirection == eMovementDirectionLeft))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
 		fAnimationSwitchFactor = .0f;
 
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
