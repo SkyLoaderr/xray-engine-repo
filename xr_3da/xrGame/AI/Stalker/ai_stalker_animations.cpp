@@ -256,6 +256,11 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			}
 			default : NODEFAULT;
 		}
+
+	
+//	Msg			("[%s] Current weapon slot   : %d",cName(),dwCurrentAniSlot);
+//	Msg			("[%s] Current movement type : %d",cName(),m_tMovementType);
+
 	if (m_tStateType == eStateTypeNormal) {
 		tpTorsoAnimation = 0;
 		VERIFY(m_tBodyState == eBodyStateStand);

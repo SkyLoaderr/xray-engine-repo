@@ -410,7 +410,6 @@ void CAI_Stalker::SelectSound(int &iIndex)
 	iIndex = -1;
 	float fMaxPower = 0.f;
 	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
-//		if ((!m_tpaDynamicSounds[i].tpEntity) || (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
 		if (m_tpaDynamicSounds[i].tpEntity && (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
 			if ((m_tpaDynamicSounds[i].dwTime + SOUND_UPDATE_DELAY > m_dwCurrentUpdate) && (m_tpaDynamicSounds[i].fPower > fMaxPower)) {
 				fMaxPower = m_tpaDynamicSounds[i].fPower;
@@ -421,7 +420,7 @@ void CAI_Stalker::SelectSound(int &iIndex)
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 #ifndef SILENCE
-	Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+	Msg("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),Level().timeServer(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 #endif
 
 #ifdef IGNORE_ACTOR
@@ -570,11 +569,21 @@ void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 			if (m_tpaDynamicSounds[i].dwTime > m_dwLostEnemyTime) {
 				m_iSoundIndex			= i;
 				m_dwLostEnemyTime		= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
+
 				m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 				m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 				m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 				m_dwLastEnemySearch		= 0;
+				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
+				if (iIndex == -1) {
+					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
+					m_tpaDynamicObjects[iIndex].dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+					m_tpaDynamicObjects[iIndex].tMyOrientation		= m_tpaDynamicSounds[m_iSoundIndex].tMyOrientation;
+					m_tpaDynamicObjects[iIndex].dwTime				= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
+				}
 				vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 			}
 			break;
