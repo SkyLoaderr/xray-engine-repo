@@ -73,4 +73,5 @@ jon_security            = jon_evaluators + 6
 jon_sniper_enabled      = jon_evaluators + 10           --5029
 jon_sniper_see_monster  = jon_evaluators + 11           --5030
 jon_sniper_see_enemy    = jon_evaluators + 12           --5031
-jon_sniper_enemy_near   = jon_evaluators + 13           --5032
+jon_sniper_enemy_near   = jon_evaluators + 13           --5034
+jon_sniper_enemy_is		= jon_evaluators + 14           --5035
