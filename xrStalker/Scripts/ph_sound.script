@@ -60,6 +60,7 @@ function snd_source:update(delta)
           self.current_sound = 1
        end
        self.sound_list[self.current_sound]:play (self.object)
+       printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        played_sound = self.sound_list[self.current_sound]
     end
        
