@@ -10498,6 +10498,13 @@
 						RelativePath=".\ui\UITabButtonMP.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="common"
+					Filter="">
+					<File
+						RelativePath=".\ui\KillMessageStruct.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>
