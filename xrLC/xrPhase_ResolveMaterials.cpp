@@ -40,4 +40,5 @@ void	CBuild::xrPhase_ResolveMaterials()
 		Detach(&g_XSplit[it]);
 	}
 	Msg("%d subdivisions.",g_XSplit.size());
+	mem_CompactSubdivs	();
 }
