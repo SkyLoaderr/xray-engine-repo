@@ -418,15 +418,15 @@ void CObjectHandler::update(u32 time_delta)
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
-	if (!path().empty()) {
-		Msg				("Path : ");
-		xr_vector<u32>::const_iterator	I = path().begin();
-		xr_vector<u32>::const_iterator	E = path().end();
-		for ( ; I != E; ++I)
-			Msg			("%s",to_string(*I));
-	}
-	else
-		Msg			("Path : %s",to_string(current_state_id()));
+//	if (!path().empty()) {
+//		Msg				("Path : ");
+//		xr_vector<u32>::const_iterator	I = path().begin();
+//		xr_vector<u32>::const_iterator	E = path().end();
+//		for ( ; I != E; ++I)
+//			Msg			("%s",to_string(*I));
+//	}
+//	else
+//		Msg			("Path : %s",to_string(current_state_id()));
 #endif
 }
 
@@ -738,27 +738,27 @@ void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 #ifdef DEBUG
 void CObjectHandler::show_graph()
 {
-	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
-	state_iterator			I = graph().vertices().begin(), B = I;
-	state_iterator			E = graph().vertices().end();
-	for ( ;I != E; ++I) {
-		string4096			S;
-		char				*S1 = S;
-		if ((*I).edges().empty())
-			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
-		else
-			for (u32 i=0; i<(*I).edges().size(); ++i) {
-				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
-				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
-			}
-			Msg					("%s",S);
-	}
+//	Msg						("\nGraph dump (%d vertices, %d edges)",graph().vertices().size(),graph().edge_count());
+//	state_iterator			I = graph().vertices().begin(), B = I;
+//	state_iterator			E = graph().vertices().end();
+//	for ( ;I != E; ++I) {
+//		string4096			S;
+//		char				*S1 = S;
+//		if ((*I).edges().empty())
+//			S1				+= sprintf(S1,"%32s -> %32s",to_string((*I).vertex_id()),"(no edges)");
+//		else
+//			for (u32 i=0; i<(*I).edges().size(); ++i) {
+//				S1				+= sprintf(S1,"%32s -> ",to_string((*I).vertex_id()));
+//				S1				+= sprintf(S1,"%32s%s",to_string(graph().vertices()[(*I).edges()[i].vertex_index()].vertex_id()),i != ((*I).edges().size() - 1) ? "\n" : "");
+//			}
+//			Msg					("%s",S);
+//	}
 }
 #endif
 
 void CObjectHandler::OnItemTake			(CInventoryItem *inventory_item)
 {
-	Msg						("Adding item %s (%d)",inventory_item->cName(),inventory_item->ID());
+//	Msg						("Adding item %s (%d)",inventory_item->cName(),inventory_item->ID());
 	add_item				(inventory_item);
 #ifdef DEBUG
 	show_graph				();
@@ -767,7 +767,7 @@ void CObjectHandler::OnItemTake			(CInventoryItem *inventory_item)
 
 void CObjectHandler::OnItemDrop			(CInventoryItem *inventory_item)
 {
-	Msg						("Removing item %s (%d)",inventory_item->cName(),inventory_item->ID());
+//	Msg						("Removing item %s (%d)",inventory_item->cName(),inventory_item->ID());
 	if (object_state(current_state_id(),inventory_item)) {
 		set_current_state	(eObjectActionNoItems);
 		set_dest_state		(eObjectActionNoItems);

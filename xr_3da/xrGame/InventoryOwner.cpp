@@ -323,8 +323,6 @@ void __stdcall InventoryCallback(CKinematics *tpKinematics)
 {
 	CInventoryOwner		*inventory_owner = dynamic_cast<CInventoryOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
 	VERIFY				(inventory_owner);
-	CObject				*object = dynamic_cast<CObject*>(inventory_owner);
-	Msg					("Visual callback for object %s",object->cName());
 
 	CInventoryItem		*torch = inventory_owner->m_inventory.Get(CLSID_DEVICE_TORCH,false);
 	if (!torch) {
