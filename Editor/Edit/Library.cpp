@@ -10,6 +10,7 @@
 #include "EditObject.h"
 #include "SceneClassList.h"
 #include "FileSystem.h"
+#include "Library.h"
 
 //----------------------------------------------------
 #define LOBJ_CHUNK_NAMES		0x1201
