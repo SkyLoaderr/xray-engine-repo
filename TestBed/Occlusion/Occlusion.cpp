@@ -138,25 +138,44 @@ template <class T, int N>	T	ptest2			()	{	return N * ptest2<T,N-1>();						};
 template <class T>			T	ptest2<T,1>		()	{	return 1;										};
 */
 
-//
-template <class T, class C>
-class		aptr
+// code
+template	<class T>
+class		_code
 {
-public:		// import everything from creator
-	using	::C;
+public:
+	T*		p;
+public:
+	void	dump	()
+	{
+		printf				("%x",this->p);
+	}
+};
+
+// ptr
+template <class T, typename C>
+class		aptr	: public C
+{
 public:		// types
 	typedef	aptr<T,C>	self;
-public:		// data
-	T*		p;
 public:		// methods
+			aptr(T*		_p)				{ p=_p;		}
+			aptr(self&	_p)				{ p=_p.p;	}
+
 	self&	operator = (T*		_p)		{ p=_p;		}
 	self&	operator = (self&	_p)		{ p=_p.p;	}
 };
 
+// typedef
+typedef		aptr<int,_code<int> >		_ptr;
 
 extern void t_test	();
 int __cdecl main	(int argc, char* argv[])
 {
+	{
+		_ptr	p	= (int*)0xABCD;
+		p.dump		();
+	}
+
 	int xf			= f<10>();
 	int x			= factorial<10>::value;
 	u32 a			= ptest<u32,10>::value;
@@ -227,7 +246,7 @@ int __cdecl main	(int argc, char* argv[])
 			Raster.rasterize	(&T1);
 			Raster.rasterize	(&T2);
 		}
-		total += TM.GetElapsed();
+		total += TM.GetElapsed_clk();
 		count += 2*1000;
 	}
 	//SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
