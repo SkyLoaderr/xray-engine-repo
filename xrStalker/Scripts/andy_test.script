@@ -1,4 +1,21 @@
 function main()
+--	local a = get_actor()
+--	local has = a:dont_has_info("storyline_actor_start")
+
+	if false then
+		a:give_info_portion("storyline_actor_start")
+	end
+	
+	local aa = level.actor()
+--	aa:give_info_portion("escape_stalker_meet")
+
+ aa:give_info_portion("escape_stalker_give")
+
+--a:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,0)
+end
+
+
+function __main()
 	local a = get_actor()
 	local news_id = "tips_esc_trader_how_to_talk"
 	a:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,0)
