@@ -163,7 +163,7 @@ void	light::xform_calc			()
 	mR.i					= L_right;	mR._14	= 0;
 	mR.j					= L_up;		mR._24	= 0;
 	mR.k					= L_dir;	mR._34	= 0;
-	mR.c.set				(0,0,0);	mR._44	= 1;
+	mR.c					= position;	mR._44	= 1;
 
 	// switch
 	switch(flags.type)	{
@@ -174,7 +174,7 @@ void	light::xform_calc			()
 			float		L_R			= range;
 			Fmatrix		mScale;		
 			mScale.scale			(L_R,L_R,L_R);
-			mScale.translate_over	(position);
+			//mScale.translate_over	(position);
 
 			// final xform
 			m_xform.mul_43			(mR,mScale);
