@@ -135,34 +135,47 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	if (!m_object->g_Alive())
 		return		(0);
 
-	u32				best_weapon_type = 0;
+	ai().ef_storage().m_tpCurrentMember			= m_object;
+	ai().ef_storage().m_tpCurrentALifeMember	= 0;
+	ai().ef_storage().m_tpCurrentEnemy			= m_object->enemy() ? m_object->enemy() : m_object;
+
+//	u32							best_weapon_type = 0;
+	float						best_value = 0;
 	ai().ef_storage().m_tpCurrentMember = m_object;
 	TIItemSet::const_iterator	I = inventory().m_all.begin();
 	TIItemSet::const_iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
 		if ((*I)->getDestroy())
 			continue;
-		CWeapon		*weapon = smart_cast<CWeapon*>(*I);
-		if (weapon && (weapon->GetAmmoCurrent() > 0*weapon->GetAmmoMagSize()/10)) {
-			ai().ef_storage().m_tpGameObject	= weapon;
-			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
-			if (current_weapon_type > best_weapon_type) {
-				best_weapon_type = current_weapon_type;
-				best_weapon		 = *I;
+		if ((*I)->can_kill()) {
+			ai().ef_storage().m_tpGameObject	= *I;
+			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+			if (value > best_value) {
+				best_value		= value;
+				best_weapon		= *I;
 			}
-			ai().ef_storage().m_tpGameObject	= 0;
-			continue;
 		}
-		CMissile	*missile = smart_cast<CMissile*>(*I);
-		if (missile) {
-			ai().ef_storage().m_tpGameObject	= missile;
-			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
-			if (current_weapon_type > best_weapon_type) {
-				best_weapon_type = current_weapon_type;
-				best_weapon		 = *I;
-			}
-			ai().ef_storage().m_tpGameObject	= 0;
-		}
+//		CWeapon		*weapon = smart_cast<CWeapon*>(*I);
+//		if (weapon && (weapon->GetAmmoCurrent() > 0*weapon->GetAmmoMagSize()/10)) {
+//			ai().ef_storage().m_tpGameObject	= weapon;
+//			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
+//			if (current_weapon_type > best_weapon_type) {
+//				best_weapon_type = current_weapon_type;
+//				best_weapon		 = *I;
+//			}
+//			ai().ef_storage().m_tpGameObject	= 0;
+//			continue;
+//		}
+//		CMissile	*missile = smart_cast<CMissile*>(*I);
+//		if (missile) {
+//			ai().ef_storage().m_tpGameObject	= missile;
+//			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
+//			if (current_weapon_type > best_weapon_type) {
+//				best_weapon_type = current_weapon_type;
+//				best_weapon		 = *I;
+//			}
+//			ai().ef_storage().m_tpGameObject	= 0;
+//		}
 	}
 	return			(best_weapon);
 }
