@@ -2,7 +2,7 @@ module( "m_monster_ai" )
 
 function main()
 
-   local boar = m_monster_ai.garbage_boar( "m_boar1", this.script_name(), "way01", vector():set( 0, 0, -1 ) )
+   local boar = m_monster_ai.garbage_boar( "jon_boar_1", this.script_name(), "boar_way_1", vector():set( 1, 0, 0 ) )
 
 	boar:initialize()
 
