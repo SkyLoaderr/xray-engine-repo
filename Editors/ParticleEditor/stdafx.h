@@ -57,7 +57,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 
 #ifdef	_ECOREB
     #define ECORE_API		__declspec(dllexport)
-    #define ENGINE_API		__declspec(dllimport)
+    #define ENGINE_API		
 #else
     #define ECORE_API		__declspec(dllimport)
     #define ENGINE_API		__declspec(dllimport)
