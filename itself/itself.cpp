@@ -1,1 +1,1 @@
-extern "C" int printf(const char*,...);char *S="extern %cC%c int printf(const char*,...);char *S=%c%s%c;char *T=%c%s%c%s";char *T=";main(){printf(S,34,34,34,S,34,34,T,34,T);}";main(){printf(S,34,34,34,S,34,34,T,34,T);}
+extern"C"int printf(char*,...);char*S="extern%cC%cint printf(char*,...);char*S=%c%s%c;char*T=%c%s%c%s";char*T=";main(){printf(S,34,34,34,S,34,34,T,34,T);}";main(){printf(S,34,34,34,S,34,34,T,34,T);}
