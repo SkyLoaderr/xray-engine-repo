@@ -69,6 +69,7 @@ void	EV_LIST::Create	(const char* DEF)
 		}
 	}
 }
+
 void	EV_LIST::Destroy	()
 {
 	for (DWORD i=0; i<List.size(); i++)
