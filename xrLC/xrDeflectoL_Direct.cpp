@@ -48,7 +48,7 @@ void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, LSelection* LightsSelected
 	}
 }
 
-void CDeflector::L_Direct	(RAPID::XRCollide* DB, HASH& H)
+void CDeflector::L_Direct	(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H)
 {
 	b_texture&	lm = layers.back().lm;
 
@@ -101,7 +101,7 @@ void CDeflector::L_Direct	(RAPID::XRCollide* DB, HASH& H)
 							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
 							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
 							try {
-								LightPoint	(DB, C[J], wP, wN, LightsSelected.begin(), LightsSelected.end());
+								LightPoint	(DB, C[J], wP, wN, LightsSelected->begin(), LightsSelected->end());
 								Fcount		+= 1;
 							} catch (...) {
 								Msg("* ERROR (CDB). Recovered. ");
@@ -137,9 +137,9 @@ void CDeflector::L_Direct	(RAPID::XRCollide* DB, HASH& H)
 		Face*		F	= T.owner;
 		R_ASSERT	(F);
 		try {
-			L_Direct_Edge	(DB,T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
-			L_Direct_Edge	(DB,T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
-			L_Direct_Edge	(DB,T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
+			L_Direct_Edge	(DB,LightsSelected, T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
+			L_Direct_Edge	(DB,LightsSelected, T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
+			L_Direct_Edge	(DB,LightsSelected, T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
 		} catch (...)
 		{
 			Msg("* ERROR (Edge). Recovered. ");

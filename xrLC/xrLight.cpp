@@ -25,7 +25,7 @@ public:
 		while (bContinue) 
 		{
 			try {
-				defl->Light	(&DB,H);
+				defl->Light	(&DB,&LightsSelected,H);
 			} catch (...)
 			{
 				Msg("* ERROR: CLMThread::Execute - light");

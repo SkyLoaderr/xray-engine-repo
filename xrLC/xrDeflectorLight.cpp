@@ -387,7 +387,7 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(RAPID::XRCollide* DB, HASH& H)
+VOID CDeflector::L_Calculate(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H)
 {
 	try {
 		b_texture&		lm = layers.back().lm;
@@ -412,14 +412,14 @@ VOID CDeflector::L_Calculate(RAPID::XRCollide* DB, HASH& H)
 			lm.pSurface = (DWORD *)malloc(size);
 			ZeroMemory	(lm.pSurface,size);
 		}
-		L_Direct		(DB,H);
+		L_Direct		(DB,LightsSelected,H);
 	} catch (...)
 	{
 		Msg("* ERROR: CDeflector::L_Calculate");
 	}
 }
 
-VOID CDeflector::Light(RAPID::XRCollide* DB, HASH& H)
+VOID CDeflector::Light(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H)
 {
 	// Geometrical bounds
 	Fbox bb;		bb.invalidate	();
@@ -440,7 +440,7 @@ VOID CDeflector::Light(RAPID::XRCollide* DB, HASH& H)
 	{
 		// Convert lights to local form
 		{
-			LightsSelected.clear	();
+			LightsSelected->clear	();
 			R_Light*	L			= layer->lights.begin();
 			for (; L!=layer->lights.end(); L++)
 			{
@@ -448,10 +448,10 @@ VOID CDeflector::Light(RAPID::XRCollide* DB, HASH& H)
 					float dist = Sphere.P.distance_to(L->position);
 					if (dist>(Sphere.R+L->range)) continue;
 				}
-				LightsSelected.push_back(*L);
+				LightsSelected->push_back(*L);
 			}
 		}
-		if ((layer!=pBuild->lights.begin()) && LightsSelected.empty())	continue;
+		if ((layer!=pBuild->lights.begin()) && LightsSelected->empty())	continue;
 
 		// Register new layer
 		layers.push_back	(Layer());
@@ -462,7 +462,7 @@ VOID CDeflector::Light(RAPID::XRCollide* DB, HASH& H)
 		lm.dwHeight			= dwHeight;
 		
 		// Calculate and fill borders
-		L_Calculate			(DB,H);
+		L_Calculate			(DB,LightsSelected,H);
 		for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 		
 		// Compression
@@ -474,7 +474,7 @@ VOID CDeflector::Light(RAPID::XRCollide* DB, HASH& H)
 			lm.dwWidth	= w;
 			lm.dwHeight	= h;
 			_FREE		(lm.pSurface);
-			L_Calculate	(DB,H);
+			L_Calculate	(DB,LightsSelected,H);
 		}
 		
 		// Expand with borders
