@@ -121,7 +121,11 @@ BOOL IPureServer::Connect(LPCSTR session_name)
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));
 	
     // Initialize IDirectPlay8Client object.
+#ifdef DEBUG
     CHK_DX(NET->Initialize	(this, Handler, 0));
+#else
+	CHK_DX(NET->Initialize	(this, Handler, DPNINITIALIZE_DISABLEPARAMVAL));
+#endif
 	
     // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device = NULL;
