@@ -939,10 +939,24 @@ void CAI_Stalker::TakeItems()
 
 	CInventoryItem *tpItemToTake = 0;
 	
-	vfSelectItemToTake(tpItemToTake);
-	
-	if (!tpItemToTake)
-		return;
+	bool bOk;
+	do {
+		bOk = true;
+		vfSelectItemToTake(tpItemToTake);
+
+		if (!tpItemToTake)
+			return;
+
+		if (!tpItemToTake->AI_NodeID || (tpItemToTake->AI_NodeID >= getAI().Header().count)) {
+			bOk = false;
+			for (u32 i=0; i<m_tpItemsToTake.size(); i++)
+				if (m_tpItemsToTake[i] == tpItemToTake) {
+					m_tpItemsToTake.erase(m_tpItemsToTake.begin() + i);
+					break;
+				}
+		}
+	}
+	while (!bOk);
 
 	tpItemToTake->Center(tPoint);
 	AI_Path.DestNode		= tpItemToTake->AI_NodeID;
