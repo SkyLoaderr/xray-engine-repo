@@ -93,7 +93,7 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	case 1024:	dwHeight = 768;		break;
 	case 1280:	dwHeight = 1024;	break;
 	case 1600:	dwHeight = 1200;	break;
-	default:	dwWidth  = 640; dwHeight = 480; break;
+	default:	dwWidth  = 800; dwHeight = 600; break;
 	}
 
 	// Select back-buffer & depth-stencil format
@@ -205,7 +205,7 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
 	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));
 	DWORD	memory								= pDevice->GetAvailableTextureMem	();
-	Msg		("* Texture memory:     %d M",		memory/1024);
+	Msg		("* Texture memory:     %d M",		memory/(1024*1024));
 	return dwWindowStyle;
 }
 
@@ -243,9 +243,8 @@ DWORD CHW::selectGPU ()
 
 DWORD CHW::selectRefresh(DWORD dwWidth, DWORD dwHeight)
 {
-	return D3DPRESENT_RATE_DEFAULT;
+	// return D3DPRESENT_RATE_DEFAULT;
 
-	/*
 	DWORD selected	= D3DPRESENT_RATE_DEFAULT;
 	DWORD count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
 	for (DWORD I=0; I<count; I++)
@@ -258,5 +257,4 @@ DWORD CHW::selectRefresh(DWORD dwWidth, DWORD dwHeight)
 		}
 	}
 	return selected;
-	*/
 }

@@ -290,6 +290,7 @@ extern float		psDetail_w_rot2;
 extern float		psDetail_w_speed;
 extern float		psDetail_l_ambient;
 extern float		psDetail_l_aniso;
+extern int			psSupersample;
 
 void CCC_Register()
 {
@@ -351,6 +352,7 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_sh_blur",			&psSH_Blur,			0,		2	);
+	CMD4(CCC_Integer,	"rs_supersample",		&psSupersample,		0,		4	);
 	
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,3,		100	);
@@ -361,8 +363,8 @@ void CCC_Register()
 	CMD3(CCC_String,	"net_name",				psNET_Name,			32			);
 
 	// Texture manager	
-	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,0,4);
-	CMD3(CCC_Mask,		"texture_show_mips",	&psTextureFlags, TF_ShowMipmaps);
+	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,		0,			4	);
+	CMD3(CCC_Mask,		"texture_show_mips",	&psTextureFlags,	TF_ShowMipmaps	);
 
 	// General video control
 	CMD3(CCC_Token,		"vid_mode",				&psCurrentMode, vid_mode_token);
@@ -397,10 +399,10 @@ void CCC_Register()
 	CMD1(CCC_DemoPlay,	"demo_play"				);
 
 	// Collision
-	CMD4(CCC_Integer,	"cl_act_depth",			&psCollideActDepth,			4, 32);
-	CMD4(CCC_Integer,	"cl_act_stuck_depth",	&psCollideActStuckDepth,	2, 32);
+	CMD4(CCC_Integer,	"cl_act_depth",			&psCollideActDepth,			4,	32);
+	CMD4(CCC_Integer,	"cl_act_stuck_depth",	&psCollideActStuckDepth,	2,	32);
 
 	// Physic
-	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,100);
+	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,	100);
 };
 

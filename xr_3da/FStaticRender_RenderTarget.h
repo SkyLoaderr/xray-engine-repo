@@ -6,8 +6,11 @@ class CRenderTarget		: public CRender_target
 {
 private:
 	BOOL				bAvailable;
+	DWORD				rtWidth;
+	DWORD				rtHeight;
 
 	CRT*				RT;
+	IDirect3DSurface8*	ZB;
 
 	Shader*				pShaderSet;
 	Shader*				pShaderGray;
@@ -26,6 +29,7 @@ public:
 
 	BOOL				NeedPostProcess		()	{ return (param_blur>0.01f)||(param_gray>0.01f); }
 	BOOL				Available			()	{ return bAvailable; }
+	BOOL				Perform				();
 
 	void				Begin				();
 	void				End					();
