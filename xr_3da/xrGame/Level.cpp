@@ -451,9 +451,6 @@ void CLevel::OnKeyboardPress(int key)
 	case DIK_GRAVE:
 		Console.Show				();
 		return;
-	case DIK_ESCAPE:
-		Console.Execute				("quit");
-		return;
 	case DIK_RETURN:
 		bDebug	= !bDebug;
 		return;
@@ -463,9 +460,11 @@ void CLevel::OnKeyboardPress(int key)
 	case DIK_LALT:
 		pHUD->UIActivate			();
 		return;
+		/*
 	case DIK_RALT:
 		pCreator->ChangeViewEntity	(CLSID_AI_HUMAN);
 		return;
+		*/
 	}
 
 	switch (key_binding[key]) {
@@ -484,12 +483,12 @@ void CLevel::OnKeyboardRelease(int key)
 {
 	if (pHUD->IsUIActive()) if (pHUD->GetUI()->OnKeyboardRelease(key)) return;
 
+	/*
 	switch (key)
 	{
-	case DIK_RALT:
-		pCreator->ChangeViewEntity(CLSID_OBJECT_ACTOR);
-		return;
+	case DIK_RALT:	pCreator->ChangeViewEntity(CLSID_OBJECT_ACTOR);		return;
 	}
+	*/
 	if (CurrentEntity())	CurrentEntity()->OnKeyboardRelease(key_binding[key]);
 }
 
