@@ -72,6 +72,8 @@ enum EPathType {
 	ePathTypeStraight = 0,
 	ePathTypeDodge,
 	ePathTypeCriteria,
+	ePathTypeStraightDodge,
+	ePathTypeDodgeCriteria,
 };
 
 enum EWeaponState {

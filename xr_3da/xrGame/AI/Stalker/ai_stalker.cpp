@@ -42,6 +42,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwSoundTime					= 0;
 
 	m_dwLastRangeSearch				= 0;
+	m_dwRandomFactor				= 100;
+	m_dwInertion					= 20000;
 
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;

@@ -71,6 +71,8 @@ private:
 	
 	u32						m_dwDeathTime;
 	bool					m_bHammerIsClutched;
+	u32						m_dwRandomFactor;
+	u32						m_dwInertion;
 	
 	// firing
 	bool					m_bFiring;
@@ -220,12 +222,10 @@ private:
 //			void			DropItem						();
 
 			void			BackStraight					();
-			void			BackDodge						(bool bFire = true);
 			void			BackCover						(bool bFire = true);
 			void			ForwardCover					();
-			void			ForwardDodge					();
 			void			ForwardStraight					();
-			void			Camp							();
+			void			Camp							(bool bWeapon = true);
 			void			Panic							();
 			void			Hide							();
 			void			Detour							();
