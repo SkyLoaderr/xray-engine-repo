@@ -44,7 +44,7 @@ void CRenderTarget::accum_direct	(u32 dls_phase)
 		RCache.set_Geometry			(g_combine);
 
 		// Shader + constants
-		float circle				= 2.f / DSM_size;
+		float circle				= 0.7f / DSM_size;
 		if (1)
 		{
 			Fvector4 J; float scale		= circle/11.f;
