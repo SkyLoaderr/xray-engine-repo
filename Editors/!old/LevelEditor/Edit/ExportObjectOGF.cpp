@@ -255,25 +255,29 @@ void CObjectOGFCollectorPacked::MakeProgressive()
 
     VIPM_Result* R = VIPM_Convert(u32(-1),1.f,1);
 
-    // Permute vertices
-    OGFVertVec temp_list = m_Verts;
-    for(u32 i=0; i<temp_list.size(); i++)
-        m_Verts[R->permute_verts[i]]=temp_list[i];
+    if (R){
+        // Permute vertices
+        OGFVertVec temp_list = m_Verts;
+        for(u32 i=0; i<temp_list.size(); i++)
+            m_Verts[R->permute_verts[i]]=temp_list[i];
     
-    // Fill indices
-    m_Faces.resize	(R->indices.size()/3);
-    for (u32 f_idx=0; f_idx<m_Faces.size(); f_idx++){
-	    SOGFFace& F		= m_Faces[f_idx];
-    	F.v[0]			= R->indices[f_idx*3+0];
-    	F.v[1]			= R->indices[f_idx*3+1];
-    	F.v[2]			= R->indices[f_idx*3+2];
+        // Fill indices
+        m_Faces.resize	(R->indices.size()/3);
+        for (u32 f_idx=0; f_idx<m_Faces.size(); f_idx++){
+            SOGFFace& F		= m_Faces[f_idx];
+            F.v[0]			= R->indices[f_idx*3+0];
+            F.v[1]			= R->indices[f_idx*3+1];
+            F.v[2]			= R->indices[f_idx*3+2];
+        }
+
+        // Fill SWR
+        m_SWR.resize		(R->swr_records.size());
+        for (u32 swr_idx=0; swr_idx!=m_SWR.size(); swr_idx++)
+            m_SWR[swr_idx]	= R->swr_records[swr_idx];
+	}else{
+    	Log("!..Can't make progressive.");
     }
-
-    // Fill SWR
-    m_SWR.resize		(R->swr_records.size());
-    for (u32 swr_idx=0; swr_idx!=m_SWR.size(); swr_idx++)
-    	m_SWR[swr_idx]	= R->swr_records[swr_idx];
-
+    
     // cleanup
     VIPM_Destroy		();
 }

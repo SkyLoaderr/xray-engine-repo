@@ -132,7 +132,7 @@ void CSpawnPoint::SSpawnData::Destroy()
 void CSpawnPoint::SSpawnData::get_bone_xform	(LPCSTR name, Fmatrix& xform)
 {
 	xform.identity		();
-	if (m_Visual&&m_Visual->visual){
+	if (name&&name[0]&&m_Visual&&m_Visual->visual){
     	CKinematics* P 	= PKinematics(m_Visual->visual);
     	if (P){
         	u16 id 		= P->LL_BoneID(name);

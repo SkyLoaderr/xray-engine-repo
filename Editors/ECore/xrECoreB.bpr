@@ -106,20 +106,20 @@
     <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrECoreB.bpf"/>
-    <INCLUDEPATH value="WildMagic;&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot;;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include;R:\SDK\ogg\ogg\include"/>
+    <INCLUDEPATH value="WildMagic;&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot;;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include;R:\SDK\ogg\ogg\include"/>
     <LIBPATH value="WildMagic;Editor;Engine\Visuals;Engine\Blenders;Engine;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -IWildMagic 
-      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; -IEditor 
-      -IEngine -IEngine\Visuals -IEngine\Blenders -I$(BCB)\include 
+    <IDLCFLAGS value="-IWildMagic -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot; 
+      -IEditor -IEngine -IEngine\Visuals -IEngine\Blenders -I$(BCB)\include 
       -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
       -IP:\xrCore -IP:\Editors\xrEProps -I..\..\Tools\Etools 
-      -IR:\SDK\ogg\vorbis\include -IR:\SDK\ogg\ogg\include -boa"/>
+      -IR:\SDK\ogg\vorbis\include -IR:\SDK\ogg\ogg\include -src_suffix cpp 
+      -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -348,20 +348,21 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=13
-Item0=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include;R:\SDK\ogg\ogg\include
-Item1=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include
-Item2=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
-Item3=R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
-Item4=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
-Item5=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\Tools\Etools
-Item6=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item7=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item8=..\LevelEditor\Edit;Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item9=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
-Item10=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore
-Item11=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc
-Item12=Editor;Engine\Visuals;Engine\Blenders;Engine;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;R:\Borland\CBuilder6\Include\Mfc
+Count=14
+Item0=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include;R:\SDK\ogg\ogg\include
+Item1=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include;R:\SDK\ogg\ogg\include
+Item2=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools;R:\SDK\ogg\vorbis\include
+Item3=WildMagic;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
+Item4=R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
+Item5=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools
+Item6=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\Tools\Etools
+Item7=R:\SDK\DirectX9.0_sum_2004\Include;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item8=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item9=..\LevelEditor\Edit;Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item10=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps
+Item11=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore
+Item12=Editor;Engine;Engine\Visuals;Engine\Blenders;R:\SDK\DirectX9.0_beta3\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc
+Item13=Editor;Engine\Visuals;Engine\Blenders;Engine;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;R:\Borland\CBuilder6\Include\Mfc
 
 [HistoryLists\hlLibraryPath]
 Count=4

@@ -181,20 +181,31 @@ void CDrawUtilities::DrawSpotLight(const Fvector& p, const Fvector& d, float ran
 	Fvector p1;
     float H,P;
     float da	= PI_MUL_2/LINE_DIVISION;
-	float r		= range*tanf(phi/2);
+	float b		= range*_cos(PI_DIV_2-phi/2);
+	float a		= range*_sin(PI_DIV_2-phi/2);
     d.getHP		(H,P);
-    T.setHPB	(H,P,0);
+    T.setHPB	(H,P,0);     
     T.translate_over(p);
+    _VertexStream*	Stream	= &RCache.Vertex;
+    u32				vBase;
+    FVF::L*	pv	 	= (FVF::L*)Stream->Lock(LINE_DIVISION*2+2,vs_L->vb_stride,vBase);
 	for (float angle=0; angle<PI_MUL_2; angle+=da){
-        float _sa=_sin(angle), _ca=_cos(angle);
-		p1.x	= r * _ca;
-		p1.y	= r * _sa;
-        p1.z	= range;
+        float _sa	=_sin(angle);
+        float _ca	=_cos(angle);
+		p1.x		= b * _ca;
+		p1.y		= b * _sa;
+        p1.z		= a;
         T.transform_tiny(p1);
-    	DrawLine(p,p1,clr);
+        // fill VB
+        pv->set		(p,clr); pv++;
+        pv->set		(p1,clr); pv++;
     }
-    p1.mad(p,d,range);
-   	DrawLine(p,p1,clr);
+    p1.mad			(p,d,range);
+    pv->set			(p,clr); pv++;
+    pv->set			(p1,clr); pv++;
+    Stream->Unlock	(LINE_DIVISION*2+2,vs_L->vb_stride);
+    // and Render it as triangle list
+    Device.DP		(D3DPT_LINELIST,vs_L,vBase,LINE_DIVISION+1);
 }
 
 void CDrawUtilities::DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, u32 c)
@@ -234,6 +245,7 @@ void CDrawUtilities::DrawDirectionalLight(const Fvector& p, const Fvector& d, fl
 
 void CDrawUtilities::DrawPointLight(const Fvector& p, float radius, u32 c)
 {
+	RCache.set_xform_world(Fidentity);
 	DrawCross(p, radius,radius,radius, radius,radius,radius, c, true);
 }
 
