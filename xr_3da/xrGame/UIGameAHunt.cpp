@@ -73,6 +73,9 @@ void		CUIGameAHunt::Init				()
 	//--------------------------------------------------------------------
 	pBuyMenuTeam1 = InitBuyMenu(1);
 	pBuyMenuTeam2 = InitBuyMenu(2);
+	//-----------------------------------------------------------
+	pSkinMenuTeam1 = InitSkinMenu(1);
+	pSkinMenuTeam2 = InitSkinMenu(2);
 };
 //--------------------------------------------------------------------
 

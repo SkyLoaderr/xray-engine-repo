@@ -17,6 +17,7 @@
 class CUITDMFragList;
 class CUITDMPlayerList;
 class CUIBuyWeaponWnd;
+class CUISkinSelectorWnd;
 
 class CUIGameTDM: public CUIGameDM
 {
@@ -28,6 +29,9 @@ protected:
 	CUIBuyWeaponWnd*	pBuyMenuTeam1;
 	CUIBuyWeaponWnd*	pBuyMenuTeam2;
 
+	CUISkinSelectorWnd*	pSkinMenuTeam1;
+	CUISkinSelectorWnd*	pSkinMenuTeam2;
+
 	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
 public:
 	CUIGameTDM			(CUI* parent);
@@ -35,6 +39,7 @@ public:
 
 	virtual	void		Init				();
 	virtual	void		SetCurrentBuyMenu	();
+	virtual	void		SetCurrentSkinMenu	();
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
 

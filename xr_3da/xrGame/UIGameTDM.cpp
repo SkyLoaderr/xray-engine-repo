@@ -18,6 +18,8 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 	pBuyMenuTeam1 = NULL;
 	pBuyMenuTeam2 = NULL;
 
+	pSkinMenuTeam1 = NULL;
+	pSkinMenuTeam2 = NULL;
 }
 //--------------------------------------------------------------------
 void		CUIGameTDM::Init				()
@@ -76,6 +78,9 @@ void		CUIGameTDM::Init				()
 	//-----------------------------------------------------------
 	pBuyMenuTeam1 = InitBuyMenu(1);
 	pBuyMenuTeam2 = InitBuyMenu(2);
+	//-----------------------------------------------------------
+	pSkinMenuTeam1 = InitSkinMenu(1);
+	pSkinMenuTeam2 = InitSkinMenu(2);
 }
 //--------------------------------------------------------------------
 CUIGameTDM::~CUIGameTDM()
@@ -84,6 +89,9 @@ CUIGameTDM::~CUIGameTDM()
 
 	xr_delete(pBuyMenuTeam1);
 	xr_delete(pBuyMenuTeam2);
+
+	xr_delete(pSkinMenuTeam1);
+	xr_delete(pSkinMenuTeam2);
 }
 //--------------------------------------------------------------------
 bool CUIGameTDM::IR_OnKeyboardPress(int dik)
@@ -128,5 +136,14 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 	{
 		if (Game().local_player->team == 1) pCurBuyMenu = pBuyMenuTeam1;
 		else pCurBuyMenu = pBuyMenuTeam2;
+	};
+};
+
+void CUIGameTDM::SetCurrentSkinMenu	()
+{
+	if (!pCurSkinMenu || !pCurSkinMenu->IsShown())
+	{
+		if (Game().local_player->team == 1) pCurSkinMenu = pSkinMenuTeam1;
+		else pCurSkinMenu = pSkinMenuTeam2;
 	};
 };

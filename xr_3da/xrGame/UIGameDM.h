@@ -10,11 +10,14 @@
 #include "ui/UIMapWnd.h"
 
 #include "ui/UIBuyWeaponWnd.h"
+#include "ui\UISkinSelector.h"
+
 
 // refs 
 class CUIDMFragList;
 class CUIDMPlayerList;
 class CUIBuyWeaponWnd;
+class CUISkinSelectorWnd;
 
 class CUIGameDM: public CUIGameCustom
 {
@@ -32,10 +35,15 @@ protected:
 	CUIBuyWeaponWnd*		pBuyMenuTeam0;
 	CUIBuyWeaponWnd*		pCurBuyMenu;
 
+	CUISkinSelectorWnd*		pSkinMenuTeam0;
+	CUISkinSelectorWnd*		pCurSkinMenu;
+
 	virtual	void		ClearLists ();
 	
 	virtual CUIBuyWeaponWnd*		InitBuyMenu			(s16 Team = -1);
 	virtual void					FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu);
+
+	virtual CUISkinSelectorWnd*		InitSkinMenu		(s16 Team = -1);
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team;};
 
@@ -46,6 +54,7 @@ public:
 	virtual	void		Init				();
 
 	virtual	void		SetCurrentBuyMenu	()	{pCurBuyMenu = pBuyMenuTeam0; };
+	virtual	void		SetCurrentSkinMenu	()	{pCurSkinMenu = pSkinMenuTeam0; };
 
 	virtual void		Render				();
 	virtual void		OnFrame				();
@@ -56,6 +65,7 @@ public:
 	virtual void		OnBuyMenu_Ok			();
 
 	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pCurBuyMenu; };
+	virtual CUIDialogWnd*	GetSkinWnd			()	{ return (CUIDialogWnd*) pCurSkinMenu; };
 
 	virtual bool		CanBeReady				();
 

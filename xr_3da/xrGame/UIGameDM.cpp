@@ -4,6 +4,7 @@
 #include "UIDMPlayerList.h"
 #include "UIDMFragList.h"
 #include "ui\UIBuyWeaponWnd.h"
+#include "ui\UISkinSelector.h"
 
 #define MSGS_OFFS 510
 
@@ -16,6 +17,9 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	
 	pBuyMenuTeam0	= NULL;
 	pCurBuyMenu		= NULL;
+
+	pSkinMenuTeam0	= NULL;
+	pCurSkinMenu	= NULL;
 }
 //--------------------------------------------------------------------
 void	CUIGameDM::Init				()
@@ -45,8 +49,11 @@ void	CUIGameDM::Init				()
 	std::strcpy(Team0, TEAM0_MENU);
 	m_aTeamSections.push_back(Team0);
 	//-----------------------------------------------------------
-	pBuyMenuTeam0 = InitBuyMenu(0);
-	pCurBuyMenu = pBuyMenuTeam0;
+	pBuyMenuTeam0	= InitBuyMenu(0);
+	pCurBuyMenu		= pBuyMenuTeam0;
+	//-----------------------------------------------------------
+	pSkinMenuTeam0	= InitSkinMenu(0);
+	pCurSkinMenu	= pSkinMenuTeam0;
 };
 //--------------------------------------------------------------------
 
@@ -154,6 +161,12 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 				SetCurrentBuyMenu	();
 
 				StartStopMenu(pCurBuyMenu);
+			}break;
+		case DIK_N:
+			{
+				SetCurrentSkinMenu	();
+
+				StartStopMenu(pCurSkinMenu);
 			}break;
 		}
 	}
@@ -269,5 +282,20 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(s16 Team)
 	};
 	*/
 	FillDefItems(pTeamSect->c_str(), pMenu);
+	return pMenu;
+};
+
+//--------------------------------------------------------------------
+CUISkinSelectorWnd*		CUIGameDM::InitSkinMenu			(s16 Team)
+{
+	if (Team == -1)
+	{
+		Team = Game().local_player->team;
+	};
+
+	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
+
+	CUISkinSelectorWnd* pMenu	= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->c_str());
+	
 	return pMenu;
 };
