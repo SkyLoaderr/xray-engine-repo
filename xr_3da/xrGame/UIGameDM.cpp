@@ -148,6 +148,13 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&InventoryMenu);
 		return true;
 		break;
+	case DIK_ESCAPE:
+		if(m_pUserMenu)
+		{
+			StartStopMenu(m_pUserMenu);
+			return true;
+		}
+		break;
 	}
 
 	if (Game().phase==GAME_PHASE_INPROGRESS){
