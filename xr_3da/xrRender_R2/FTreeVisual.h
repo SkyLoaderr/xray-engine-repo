@@ -1,7 +1,6 @@
 #pragma once
-#include "fbasicvisual.h"
 
-class ENGINE_API FTreeVisual :	public IVisual
+class FTreeVisual :	public IVisual
 {
 protected:
 	IDirect3DVertexBuffer9*		pVertices;
