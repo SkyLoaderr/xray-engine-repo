@@ -281,7 +281,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 end
 
 function activate_by_section(npc, ini, section)
-	printf("DEBUG: object '%s': activate_by_section: looking for section '%s'", npc:name(), section)
+	--printf("DEBUG: object '%s': activate_by_section: looking for section '%s'", npc:name(), section)
 
 	local npc_id = npc:id()
 	if db.storage[npc_id]["active_section"] then
@@ -428,7 +428,7 @@ function issue_event(npc, st, event_fn, ...)
 	end
 	for action_ptr, is_active in pairs(st.actions) do
 		if is_active and action_ptr[event_fn] then
-			printf("DEBUG: event issued")
+			--printf("DEBUG: event issued")
 			action_ptr[event_fn](action_ptr, unpack(arg))
 		end
 	end
