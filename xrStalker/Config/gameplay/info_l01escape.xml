@@ -7,11 +7,10 @@
 			<level>l01_escape</level>
 			<object>002</object>
 			<text>Артефакт.</text>
-			<icon name="Артефакт" x="2" y="4" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Артефакт" x="2" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 		</location>
 		<task>tutorial_find_artefact</task>
 	</info_portion>
-
 	<info_portion id="tutorial_artefact_gain">
 		<disable>tutorial_artefact_start</disable>
 	</info_portion>
@@ -21,19 +20,16 @@
 		<location>
 			<level>l01_escape</level>
 			<object>004</object>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Раненый" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 		</location>	
 		<task>tutorial_help_wounded</task>
 	</info_portion>
-
 	<info_portion id="tutorial_wounded_help">
 		<disable>tutorial_wounded_start</disable>
 	</info_portion>
-
 	<info_portion id="tutorial_wounded_die">
 		<disable>tutorial_wounded_start</disable>
 	</info_portion>
-	
 	<info_portion id="tutorial_end">
 	</info_portion>
 
@@ -43,63 +39,63 @@
 			<level>l01_escape</level>
 			<x>199</x>
 			<y>74</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>223</x>
 			<y>82</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>227</x>
 			<y>100</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>188</x>
 			<y>64</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>208</x>
 			<y>106</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>193</x>
 			<y>124</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>185</x>
 			<y>110</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>183</x>
 			<y>96</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<location>
 			<level>l01_escape</level>
 			<x>181</x>
 			<y>78</y>
-			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
+			<icon name="Аномалия" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
 		<task>esc_trader_need_electra_artefact</task>
@@ -117,7 +113,7 @@
 		<location>
 			<level>l01_escape</level>
 			<object>005</object>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Сталкер" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Вернувшийся из рейда сталкер.</text>
 		</location>
 		<task>esc_help_wounded_from_raid</task>	
@@ -132,22 +128,28 @@
 	</info_portion>
 
 	<info_portion id="escape_stalker_to_trader_give">
+		<location>
+			<level>l01_escape</level>
+			<object>005</object>
+			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Принеси передачу торговцу</text>
+		</location>	
 		<task>esc_wounded_to_trader_gift</task>
 	</info_portion>
 	<info_portion id="escape_stalker_to_trader_done">
 		<disable>escape_stalker_to_trader_give</disable>
 	</info_portion>
+
 	
 	<info_portion id="escape_blockpost_case">
 		<location>
 			<level>l01_escape</level>
 			<object>000</object>
-			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Украсть ящик с блокпоста</text>
 		</location>
 		<task>esc_blockpost_case_to_trader</task>
 	</info_portion>
-
 	<info_portion id="escape_blockpost_case_have">
 		<location>
 			<level>l01_escape</level>
@@ -158,7 +160,6 @@
 		<disable>escape_blockpost_case</disable>
 		<dialog>escape_trader_done_blockpost_box</dialog>
 	</info_portion>
-
 	<info_portion id="escape_blockpost_case_done">
 		<disable>escape_blockpost_case</disable>
 		<disable>escape_blockpost_case_have</disable>
@@ -169,16 +170,20 @@
 		<location>
 			<level>l01_escape</level>
 			<object>007</object>
-			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="Динамит" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Достать динамит для Волка.</text>
 		</location>
 		<task>esc_dinamit_to_volk</task>
 	</info_portion>
-
 	<info_portion id="escape_dynamite_have">
+		<location>
+			<level>l01_escape</level>
+			<object>006</object>
+			<icon name="Волк" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Принести динамит для Волку.</text>
+		</location>
 		<disable>escape_dynamite_start</disable>
 	</info_portion>
-
 	<info_portion id="escape_dynamite_done">
 		<disable>escape_dynamite_start</disable>
 	</info_portion>
