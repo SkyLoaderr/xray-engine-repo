@@ -7,6 +7,8 @@ module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_storyline")
 
+module ("utils")
+
 module ("gramofon")
 module ("escape_bobik")
 
