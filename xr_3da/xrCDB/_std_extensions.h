@@ -35,9 +35,6 @@ IC s16		_max	(s16 x, s16 y)	{ return x - ((x - y) & ((x - y) >> (sizeof(s16) * 8
 IC s32		_abs	(s32 x)			{ return x & 0x7fffffff; }
 IC s32		_sqrt	(s32 x)			{ return s32(iFloor(_sqrt(float(x))));	}
 
-IC int		_min	(int x, int y)	{ return y + ((x - y) & ((x - y) >> (sizeof(int) * 8 - 1))); };
-IC int		_max	(int x, int y)	{ return x - ((x - y) & ((x - y) >> (sizeof(int) * 8 - 1))); };
-
 IC s32		_min	(s32 x, s32 y)	{ return y + ((x - y) & ((x - y) >> (sizeof(s32) * 8 - 1))); };
 IC s32		_max	(s32 x, s32 y)	{ return x - ((x - y) & ((x - y) >> (sizeof(s32) * 8 - 1))); };
 
