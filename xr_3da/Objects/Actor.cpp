@@ -864,10 +864,8 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	pUI->OutWeapon		(Weapons->ActiveWeapon());
 	pUI->SetHeading		(-r_torso.yaw);
 	
-	/*
 	CWeapon* W			= Weapons->ActiveWeapon();
 	if (W)				W->OnVisible		();
-	*/
 
 	/**
 	char buf[128];
