@@ -6,6 +6,7 @@
 #include "sh_matrix.h"
 #include "sh_constant.h"
 #include "sh_rt.h"
+#include "sh_vs.h"
 
 // API
 IC void	CShaderManager::set_Code		(DWORD dwCode)

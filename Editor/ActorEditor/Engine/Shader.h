@@ -11,6 +11,8 @@ class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
 class	ENGINE_API	CRT;
+class	ENGINE_API	CVS;
+class	ENGINE_API	CPS;
 
 #pragma warning(disable : 4275)
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>

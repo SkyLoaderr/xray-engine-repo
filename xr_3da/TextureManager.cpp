@@ -81,43 +81,59 @@ LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
 	R_ASSERT(T);
 	for (RTMap::iterator I=rtargets.begin(); I!=rtargets.end(); I++)
 		if (I->second == T)	return I->first;
-	return 0;
+		return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
-CRT*	CShaderManager::_CreateVS		(LPCSTR Name, LPDWORD decl) 
+CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl) 
 {
-	R_ASSERT(Name && Name[0] && decl);
+	R_ASSERT			(cName && cName[0] && decl);
+	string256			Name;
+	strlwr				(strcpy(Name,cName));
+	if (strext(Name))	*strext(Name)=0;
 	
 	// ***** first pass - search already loaded texture
 	LPSTR N = LPSTR(Name);
 	VSMap::iterator I = vs.find	(N);
-	if (I!=rtargets.end())	
+	if (I!=vs.end())	
 	{
-		CRT *RT			=	I->second;
-		RT->dwReference	+=	1;
-		return		RT;
+		CVS *VS			=	I->second;
+		VS->dwReference	+=	1;
+		return		VS;
 	}
 	else 
 	{
-		CRT *RT			=	new CRT;
-		RT->dwReference	=	1;
-		rtargets.insert	(make_pair(strdup(Name),RT));
-		if (Device.bReady)	RT->Create	(Name,w,h);
-		return		RT;
+		CVS *VS			=	new CVS;
+		VS->dwReference	=	1;
+		vs.insert		(make_pair(strdup(Name),VS));
+		
+		// Load vertex shader
+		string256		fname;
+		strcat			(fname,"data\\shaders\\",Name,".vs");
+		LPD3DXBUFFER	code	= 0;
+		LPD3DXBUFFER	errors	= 0;
+		CStream*		fs		= Engine.FS.Open(fname);
+		R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
+		Engine.FS.Close	(fs);
+		R_CHK			(HW.pDevice->CreateVertexShader(decl,LPDWORD(code->GetBufferPointer()),&VS->dwHandle,0));
+		_RELEASE		(code);
+		_RELEASE		(errors);
+		
+		// Return
+		return			VS;
 	}
 }
-void	CShaderManager::_DeleteRT	(CRT* &RT)
+void	CShaderManager::_DeleteVS	(CVS* &VS)
 {
-	R_ASSERT		(RT);
-	RT->dwReference	--;
-	RT = 0;
+	R_ASSERT		(VS);
+	VS->dwReference	--;
+	VS = 0;
 }
-LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
+LPCSTR	CShaderManager::DBG_GetVSName(CVS* T)
 {
 	R_ASSERT(T);
-	for (RTMap::iterator I=rtargets.begin(); I!=rtargets.end(); I++)
+	for (RTMap::iterator I=vs.begin(); I!=vs.end(); I++)
 		if (I->second == T)	return I->first;
-		return 0;
+	return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name) 

@@ -24,8 +24,8 @@ public:
 	DEFINE_MAP_PRED(LPSTR,CBlender*,BlenderMap,BlenderPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CTexture*,TextureMap,TexturePairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CRT*,RTMap,RTPairIt,str_pred);
-	DEFINE_MAP_PRED(LPSTR,DWORD,VSMap,VSPairIt,str_pred);
-	DEFINE_MAP_PRED(LPSTR,DWORD,PSMap,PSPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,CVS*,VSMap,VSPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,CPS*,PSMap,PSPairIt,str_pred);
 private:
 	// data
 	BlenderMap						blenders;
@@ -81,6 +81,7 @@ public:
 	LPCSTR							DBG_GetMatrixName	(CMatrix*);
 	LPCSTR							DBG_GetConstantName	(CConstant*);
 	LPCSTR							DBG_GetRTName		(CRT*);
+	LPCSTR							DBG_GetVSName		(CVS*);
 	
 	// Editor cooperation
 	void							ED_UpdateBlender	(LPCSTR Name, CBlender*		data);
