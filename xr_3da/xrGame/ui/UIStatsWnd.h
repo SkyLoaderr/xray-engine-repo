@@ -59,6 +59,7 @@ public:
 	void SelectItem(const u32 uItem);
 	
 	RECT GetFrameRect () { return UIFrameWnd.GetWndRect();};
+	void RemoveItem (const u32 Index) {UIStatsList.RemoveItem(Index);};
 protected:
 //	CUIButton			UIBtn;
 	// Фрейм - оболочка

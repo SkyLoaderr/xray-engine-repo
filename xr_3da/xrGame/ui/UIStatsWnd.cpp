@@ -44,7 +44,7 @@ void CUIStatsWnd::Init()
 //	xml_init.InitButton(uiXml, "button", 0, &UIBtn);
 
 	// TEST!!! Пробуем добавлять элементы
-	CUIStatsListItem *pSLItem;
+/*	CUIStatsListItem *pSLItem;
 
 	pSLItem = AddItem();
 	pSLItem->FieldsVector[0]->SetText("NAME: ");
@@ -63,7 +63,7 @@ void CUIStatsWnd::Init()
 
 	SelectItem(0);
 	pSLItem->SetSubItemColor(0, 0xff0000ff);
-
+*/
 }
 
 CUIStatsListItem * CUIStatsWnd::AddItem()
