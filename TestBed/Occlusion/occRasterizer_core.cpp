@@ -205,9 +205,9 @@ void i_section_b0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 void i_section_b1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 {	i_section<BOTTOM,1>	(OCC,A,B,C,T);	}
 void i_section_t0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section<BOTTOM,0>	(OCC,A,B,C,T);	}
+{	i_section<TOP,0>	(OCC,A,B,C,T);	}
 void i_section_t1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section<BOTTOM,1>	(OCC,A,B,C,T);	}
+{	i_section<TOP,1>	(OCC,A,B,C,T);	}
 
 void occRasterizer::rasterize	(occTri* T)
 {
