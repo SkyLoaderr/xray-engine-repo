@@ -268,7 +268,7 @@ struct SNodePositionOld {
 typedef	SNodePositionOld NodePosition;
 #endif
 
-const u32 XRCL_CURRENT_VERSION		=	16;	// input
+const u32 XRCL_CURRENT_VERSION		=	17;	// input
 const u32 XRCL_PRODUCTION_VERSION	=	13;	// output 
 const u32 CFORM_CURRENT_VERSION		=	4;
 const u32 XRAI_CURRENT_VERSION		=	7;

@@ -8,7 +8,7 @@ const	u32								c_SS_LowVertLimit		= 64;			// polys
 const	u32								c_SS_HighVertLimit		= 3*1024;		// polys
 const	u32								c_SS_maxsize			= 40;			// meters
 const	u32								c_PM_FaceLimit			= 128;			// face-limit
-const	float							c_PM_MetricLimit_static	= 0.15;			// vertex-count-simplification-limit
+const	float							c_PM_MetricLimit_static	= 0.10;			// vertex-count-simplification-limit
 const	float							c_PM_MetricLimit_mu		= 0.05;			// vertex-count-simplification-limit
 
 BOOL	exact_normalize					(Fvector3&	a);
