@@ -29,6 +29,7 @@ extern ECORE_API	float		ps_r1_ssaLOD_B;
 extern ECORE_API	float		ps_r1_ssaHZBvsTEX;
 extern ECORE_API	float		ps_r1_tf_Mipbias;
 extern ECORE_API	int			ps_r1_tf_Anisotropic;
+extern ECORE_API	float		ps_r1_lmodel_lerp;
 
 // R1-specific
 extern ECORE_API	int			ps_r1_GlowsPerFrame;	// r1-only
