@@ -62,7 +62,7 @@ protected:
 	void					_Render_soft	(ref_geom& hGeom,	u32 vCount,		u32 pCount);
 	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);
 	void					_Load			(const char* N,		IReader *data,	u32& dwVertCount);
-	void					_Load_hw		();
+	void					_Load_hw		(Fvisual& V);
 public:
 	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 

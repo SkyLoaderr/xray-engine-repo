@@ -10,7 +10,7 @@
 
 class ENGINE_API Fvisual : public IRender_Visual
 {
-protected:
+public:
 	IDirect3DVertexBuffer9*		pVertices;
 	u32							vBase;
 	u32							vCount;

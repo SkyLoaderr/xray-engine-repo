@@ -231,16 +231,18 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	pIndices->Unlock	();
 
 	// Create HW VB in case this is possible
-	_Load_hw						(pVertices,pIndices);
+	vBase							= 0;
+	_Load_hw						(*this);
 }
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load							(N,data,vCount);
 	inherited::Load					(N,data,dwFlags|VLOAD_NOVERTICES);
 	::Render->shader_option_skinning(0);
-	_Load_hw						(pVertices,pIndices);
+	vBase							= 0;
+	_Load_hw						(*this);
 }
-
+#pragma pack(push,1)
 static	D3DVERTEXELEMENT9 dwDecl_1W	[] =
 {
 	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// pos
@@ -257,22 +259,25 @@ struct	vertHW_1W
 };
 static	D3DVERTEXELEMENT9 dwDecl_2W	[] =
 {
-	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// pos
-	{ 0, 12, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// norm
-	{ 0, 24, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// tc
-	{ 0, 32, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },	// indices
-	{ 0, 36, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },	// weight
+	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// pos0
+	{ 0, 12, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		1 },	// pos0
+	{ 0, 24, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// norm0
+	{ 0, 32, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// norm0
+	{ 0, 44, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// tc
+	{ 0, 52, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },	// indices
+	{ 0, 56, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },	// weight
 	D3DDECL_END()
 };
 struct	vertHW_2W
 {
-	Fvector3	P,N;
+	Fvector3	P0,P1,N0,N1;
 	Fvector2	uv;
 	short		ids	[2];
 	u32			weight;
 };
+#pragma pack(pop)
 
-void CSkeletonX::_Load_hw	(IDirect3DVertexBuffer9* &pVertices, IDirect3DIndexBuffer9*	&pIndices;)
+void CSkeletonX::_Load_hw	(Fvisual& V)
 {
 	// Create HW VB in case this is possible
 	BOOL	bSoft		= HW.Caps.geometry.bSoftware;
@@ -281,71 +286,73 @@ void CSkeletonX::_Load_hw	(IDirect3DVertexBuffer9* &pVertices, IDirect3DIndexBuf
 	{
 	case RM_SKINNING_SOFT:
 		Msg					("skinning: software");
-		hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+		V.hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
 		break;
 	case RM_SINGLE:
 		Msg					("skinning: hw, 0-weight");
 		{
-			vBase				= 0;
 			u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
 			BYTE*	bytes		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
-			R_CHK				(pVertices->Lock(0,0,(void**)&bytes,0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
+			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
 			vertRender*		dst	= (vertRender*)bytes;
 			vertBoned1W*	src = (vertBoned1W*)*Vertices1W;
-			for (u32 it=0; it<vCount; it++)	{
+			for (u32 it=0; it<V.vCount; it++)	{
 				dst->P			= src->P;
 				dst->N			= src->N;
 				dst->u			= src->u;
 				dst->v			= src->v;
 				dst++; src++;
 			}
-			pVertices->Unlock	();
-
-			hGeom.create		(vertRenderFVF, pVertices, pIndices);
+			V.pVertices->Unlock	();
+			V.hGeom.create		(vertRenderFVF, V.pVertices, V.pIndices);
 		}
 		break;
 	case RM_SKINNING_1B:
 		Msg					("skinning: hw, 1-weight");
 		{
-			vBase				= 0;
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_1W,0);
+			VERIFY	(vStride==sizeof(vertHW_1W));
 			BYTE*	bytes		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
-			R_CHK				(pVertices->Lock(0,0,(void**)&bytes,0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
+			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
 			vertHW_1W*		dst	= (vertHW_1W*)bytes;
 			vertBoned1W*	src = (vertBoned1W*)*Vertices1W;
-			for (u32 it=0; it<vCount; it++)	{
+			for (u32 it=0; it<V.vCount; it++)	{
 				dst->P		= src->P;
 				dst->N		= src->N;
 				dst->uv.set	(src->u,src->v);
 				dst->ids[0]	= u16(src->matrix)*3;
 				dst->ids[1] = 0;
+				dst++; src++;
 			}
-			pVertices->Unlock	();
-			hGeom.create		(dwDecl_1W, pVertices, pIndices);
+			V.pVertices->Unlock	();
+			V.hGeom.create		(dwDecl_1W, V.pVertices, V.pIndices);
 		}
 		break;
 	case RM_SKINNING_2B:
 		Msg					("skinning: hw, 2-weight");
 		{
-			vBase				= 0;
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_2W,0);
+			VERIFY	(vStride==sizeof(vertHW_2W));
 			BYTE*	bytes		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
-			R_CHK				(pVertices->Lock(0,0,(void**)&bytes,0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
+			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
 			vertHW_2W*		dst	= (vertHW_2W*)bytes;
 			vertBoned2W*	src = (vertBoned2W*)*Vertices2W;
-			for (u32 it=0; it<vCount; it++)	{
-				dst->P		= src->P;
-				dst->N		= src->N;
+			for (u32 it=0; it<V.vCount; it++)	{
+				dst->P0		= src->P0;
+				dst->P1		= src->P1;
+				dst->N0		= src->N0;
+				dst->N1		= src->N1;
 				dst->uv.set	(src->u,src->v);
 				dst->ids[0]	= u16(src->matrix0)*3;
 				dst->ids[1] = u16(src->matrix1)*3;
 				dst->weight	= color_rgba_f(0,0,0,src->w);
+				dst++; src++;
 			}
-			pVertices->Unlock	();
-			hGeom.create		(dwDecl_2W, pVertices, pIndices);
+			V.pVertices->Unlock	();
+			V.hGeom.create		(dwDecl_2W, V.pVertices, V.pIndices);
 		}
 		break;
 	}
