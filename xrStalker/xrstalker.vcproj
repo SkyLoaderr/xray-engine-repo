@@ -1622,6 +1622,9 @@
 						<File
 							RelativePath=".\scripts\xr_wounded.script">
 						</File>
+						<File
+							RelativePath=".\scripts\xr_punch.script">
+						</File>
 					</Filter>
 					<Filter
 						Name="Monster"
