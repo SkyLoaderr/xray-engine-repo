@@ -94,10 +94,8 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 3000)
 			)
-		wait(2000)
 			action(
 				stalker2,
-				cond	(cond.time_end, 5000)
 				sound	("scripts\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				cond	(cond.time_end, 3000)
 			)
