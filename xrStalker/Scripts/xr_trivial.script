@@ -605,7 +605,7 @@ function stalker_novice3_action:init_state_walk()
     self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
     self.object:set_path_type        ( game_object.patrol_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
-    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+--    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:init_state_actor()
@@ -713,7 +713,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
 
-  self.object:set_item             ( object.idle, self.object:best_weapon() )
+    self.object:set_item             ( object.activate, self.object:best_weapon() )
+--  self.object:set_item             ( object.idle, self.object:best_weapon() )
 
   if(self.object:active_sound_count() ~= 0)then
       return
