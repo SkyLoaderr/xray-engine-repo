@@ -110,7 +110,9 @@ void CSceneObject::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority,strictB2F);
     if (!m_pReference) return;
+#ifdef _LEVEL_EDITOR    
     Scene->SelectLightsForObject(this);
+#endif
 	m_pReference->Render(_Transform(), priority, strictB2F);
     if (Selected()){
     	if (1==priority){
