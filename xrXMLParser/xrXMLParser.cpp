@@ -10,8 +10,6 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-static CTimer T;
-static float parse_time = 0;
 
 XRXMLPARSER_API void XML_DisableStringCaching()
 {
@@ -20,7 +18,6 @@ XRXMLPARSER_API void XML_DisableStringCaching()
 
 XRXMLPARSER_API void XML_CleanUpMemory()
 {
-	Msg("------Parse XML file total time=%f",parse_time);
 //	CkSettings::cleanupMemory();
 }
 
@@ -81,9 +78,7 @@ bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 	if(F==NULL) return false;
 
 	CMemoryWriter W;
-	T.Start();
 	ParseFile(path, W, F);
-	parse_time += T.GetElapsed_sec();
 //	W.w(F->pointer(),F->length());
 	W.w_stringZ("");
 	FS.r_close(F);
