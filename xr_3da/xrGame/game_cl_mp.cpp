@@ -49,6 +49,15 @@ game_cl_mp::~game_cl_mp()
 
 	if (m_EquipmentIconsShader)
 		m_EquipmentIconsShader.destroy();
+	
+	if (m_KillEventIconsShader)
+		m_KillEventIconsShader.destroy();
+
+	if (m_RadiationIconsShader)
+		m_RadiationIconsShader.destroy();
+
+	if (m_BloodLossIconsShader)
+		m_BloodLossIconsShader.destroy();
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
