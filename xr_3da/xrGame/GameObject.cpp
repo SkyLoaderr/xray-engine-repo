@@ -222,6 +222,9 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				if (l_tpTemporary  && ai().level_graph().valid_vertex_id(l_tpTemporary->m_tNodeID))
 					set_level_vertex(l_tpTemporary->m_tNodeID);
 
+			if (l_tpALifeObject && ai().game_graph().valid_vertex_id(l_tpALifeObject->m_tGraphID))
+				set_game_vertex		(l_tpALifeObject->m_tGraphID);
+
 			validate_ai_locations	(false);
 
 			// validating position
@@ -283,8 +286,14 @@ void CGameObject::setup_parent_ai_locations(bool assign_position)
 
 void CGameObject::validate_ai_locations			(bool decrement_reference)
 {
-	if (!UsedAI_Locations() || !ai().get_level_graph())
+	if (!ai().get_level_graph())
 		return;
+
+	if (!UsedAI_Locations()) {
+//		if (ai().get_game_graph() && ai().get_cross_table())
+//			set_game_vertex		(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
+		return;
+	}
 
 //	u64								start = CPU::GetCycleCount();
 	Fvector							center;
