@@ -279,7 +279,7 @@ namespace ALife {
 #ifndef _EDITOR
 		__assume(0);
 #else
-		return(0);
+		return(eHitTypeMax);
 #endif
 	}
 
