@@ -111,7 +111,7 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 }
 
 // xr_strdup
-char*	xr_strdup	(const char* string)
+char* __stdcall xr_strdup	(const char* string)
 {	
 	VERIFY	(string);
 	u32		len			= u32(strlen(string))+1;
