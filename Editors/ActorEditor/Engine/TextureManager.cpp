@@ -23,7 +23,6 @@ IDirect3DStateBlock9*	CShaderManager::_CreateState		(SimulatorStates& state_code
 		SState&				C		= *v_states[it];;
 		SimulatorStates&	base	= C.state_code;
 		if (base.equal(state_code))	{
-			C.dwReference	++;
 			return C.state;
 		}
 	}
