@@ -413,9 +413,7 @@ VOID CDeflector::Light()
 	// Compression
 	const DWORD rms		= 4;
 	if (compress_Zero(lm,rms))	return;		// already with borders
-	/*
 	else compress_RMS(lm,rms);
-	*/
 
 	// Expand with borders
 	b_texture		lm_old	= lm;
