@@ -307,7 +307,7 @@ void CAI_Space::Render()
 
 	pApp->pFont->Size	(.02f);
 	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
-	pApp->pFont->Out	(0.f,0.55f,"%3d,%4d,%3d -> %d",	int(Local.x),int(Local.y),int(Local.z),DWORD(ID));
+	pApp->pFont->Out	(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(Local.x),iFloor(Local.y),iFloor(Local.z),DWORD(ID));
 
 	svector<DWORD,128>	linked;
 	{
@@ -426,7 +426,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 			PL.build(P0,vNorm);
 			v.set(pos.x,P0.y,pos.z);	
 			PL.intersectRayPoint(v,DUP,v1);
-			int dist = int((v1.y - pos.y)*(v1.y - pos.y));
+			int dist = iFloor((v1.y - pos.y)*(v1.y - pos.y));
 			if (dist < min_dist) {
 				min_dist = (short)dist;
 				selected = I;
