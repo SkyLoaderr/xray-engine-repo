@@ -233,14 +233,16 @@ function action_wait:execute()
 			--' проверка, что на патрульных пут€х никого нетути
 			local free = true
 			for key,value in xr_motivator.storage do 
-				if value.kamp.center_point == self.a.center_point and
+				if value.kamp ~= nil and
+				   value.kamp.center_point == self.a.center_point and
 				   value.kamp.action == 1 and
 				   key ~= self.object:id() and
 				   value.kamp.enabled == true then
 					free = false
 				end
 				--' ѕроверка, что последнее врем€ никто не ходил в обход 
-				if value.kamp.center_point == self.a.center_point and
+				if value.kamp ~= nil and
+				   value.kamp.center_point == self.a.center_point and
 				   value.kamp.timer.act1.begin ~= nil and
 				   (device():time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time and
 				   value.kamp.enabled == true then
