@@ -232,7 +232,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 
 	// Load detail textures association
 	string256 fname;		
-	FS.update_path	(fname,"$game_textures","textures.ltx");
+	FS.update_path	(fname,"$game_textures$","textures.ltx");
 	LPCSTR	Iname	= fname;
 	if (FS.exist(Iname))
 	{

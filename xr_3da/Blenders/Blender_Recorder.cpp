@@ -101,9 +101,7 @@ void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 
 	// 
 	LPCSTR		T,M;
-	Log				("- trying detailize: ",N);
 	if (!Device.Shader._GetDetailTexture(N,T,M))	return;
-	Msg				("- ****** detailize: %s - %s ",N,T);
 
 	// Detail
 	PassBegin		();
