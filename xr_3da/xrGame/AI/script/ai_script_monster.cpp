@@ -623,6 +623,7 @@ void ScriptCallBack(CBlend* B)
 		if (!xr_strcmp("m_stalker_wounded",l_tpScriptMonster->cName()))
 			Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
+		l_tpScriptMonster->m_tpScriptAnimation = 0;
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 		if (l_tpScriptMonster->GetActionCount())
 			l_tpScriptMonster->ProcessScripts();

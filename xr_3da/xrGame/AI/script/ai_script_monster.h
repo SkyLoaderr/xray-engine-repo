@@ -30,10 +30,10 @@ protected:
 	xr_deque<CEntityAction*>	m_tpActionQueue;
 	bool						m_bScriptControl;
 	ref_str						m_caScriptName;
-	CMotionDef					*m_tpScriptAnimation;
 	CMotionDef					*m_tpNextAnimation;
 	CEntityAction				*m_tpCurrentEntityAction;
 public:
+	CMotionDef					*m_tpScriptAnimation;
 	struct SMemberCallback {
 		luabind::functor<void>	*m_lua_function;
 		luabind::object			*m_lua_object;
