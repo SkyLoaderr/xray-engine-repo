@@ -704,6 +704,7 @@ function novice3_attack:initialize ()
     self.object:set_path_type        ( game_object.level_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
     self.object:set_item             ( object.activate, self.object:best_weapon() )
+
     self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
     self.walk_time   = device():time_global() + 10000
@@ -717,16 +718,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
 
---    self.object:set_item             ( object.activate, self.object:best_weapon() )
   self.object:set_item             ( object.idle, self.object:best_weapon() )
 
---    if( device():time_global() > self.walk_time ) then return  end
-    --В начале идем
---    if(self.object:best_weapon() == nil) then
---       printf( "Nilllllll" )
---    else
---        printf(" not nit")
---    end
 
   if(self.object:active_sound_count() ~= 0)then
       return
