@@ -1,6 +1,7 @@
 [logic]
 ;active = nil
 active = mob_remark@start_wait
+on_trade = mob_trade
 
 ; ------------------------------------------------------------------------------------------------------
 ; СТАРТ
@@ -116,9 +117,19 @@ on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolo
 on_info2 = {-esc_trader_map_quest_1_played +esc_trader_experienced} mob_remark@map_quest_1_experienced %+esc_trader_map_quest_1_played%,   {-esc_trader_newbie_course_done +esc_trader_newbie} mob_remark@newbie_pda %+esc_trader_newbie_course_done -ui_pda_jobs_current -ui_pda_contacts -ui_pda_map_local%
 on_info3 = {-tutorial_alarm_played +tutorial_alarm_start} mob_remark@tutorial_alarm %+tutorial_alarm_played%
 on_actor_dist_le_nvis = 4 | {+tutorial_end -esc_trader_hello_played} mob_remark@hello_what_have_you_got %+esc_trader_hello_played%
-on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_remark@bye %+esc_trader_bye_played%
+on_actor_dist_ge_nvis = 4 | {-esc_trader_bye_played +esc_trader_hello_played} mob_remark@bye %+esc_trader_bye_played%
+; ^^^ было 4 и 5
 on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
 ; сняли ui_pda_jobs_current, ui_pda_contacts и ui_pda_map_local, чтобы не реагировать, если игрок его включал до этого
+
+; ------------------------------------------------------------------------------------------------------
+; ТОРГОВЛЯ (общие для всех секций настройки)
+; ------------------------------------------------------------------------------------------------------
+
+[mob_trade]
+on_info = {+tutorial_end =trading =trade_exchanged} mob_remark@trade_exchanged
+on_info2 = {+tutorial_end !trading =trade_exchanged} mob_remark@trade_good
+on_info3 = {+tutorial_end !trading !trade_exchanged} mob_remark@trade_bad
 
 ; ------------------------------------------------------------------------------------------------------
 ; ОЗВУЧКА: ПРИВЕТСТВИЯ И ТОРГОВЛЯ
@@ -167,6 +178,27 @@ dialog_cond = always
 anim = idle_0_talk_2
 anim_head = head_anim_normal
 snd = trader_tutorial_alarm
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@trade_good]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_good_trade
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@trade_bad]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_bad_trade
+on_signal = action_end | mob_remark@idle_0_def_0
+
+[mob_remark@trade_exchanged]
+dialog_cond = always
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_exchanged
 on_signal = action_end | mob_remark@idle_0_def_0
 
 ; ------------------------------------------------------------------------------------------------------
