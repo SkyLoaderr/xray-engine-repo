@@ -85,7 +85,17 @@ function multiplayer_dialog:InitControls()
 end
 
 function multiplayer_dialog:InitCallbacks()
-	self:AddCallback("btn_back",   ui_events.BUTTON_CLICKED, self, "OnButton_back")
+	self:AddCallback("btn_find_server",		ui_events.BUTTON_CLICKED, self, "OnButton_find")
+	self:AddCallback("btn_create_server",	ui_events.BUTTON_CLICKED, self, "OnButton_create")
+	self:AddCallback("btn_back",			ui_events.BUTTON_CLICKED, self, "OnButton_back")
+end
+
+function multiplayer_dialog:OnButton_find()
+	
+end
+
+function multiplayer_dialog:OnButton_create()
+	
 end
 
 function multiplayer_dialog:OnButton_back()
