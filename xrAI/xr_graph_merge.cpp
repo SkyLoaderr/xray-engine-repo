@@ -25,6 +25,7 @@ class CLevelGameGraph;
 typedef struct tagSConnectionVertex {
 	LPSTR		caConnectName;
 	_GRAPH_ID	tGraphID;
+	_GRAPH_ID	tOldGraphID;
 	u32			dwLevelID;
 } SConnectionVertex;
 
@@ -174,16 +175,18 @@ public:
 					tVector							= tpGraphPoint->o_Position;
 					_GRAPH_ID						tGraphID = _GRAPH_ID(-1);
 					float							fMinDistance = 1000000.f;
-					GRAPH_VERTEX_IT					B = m_tpVertices.begin();
-					GRAPH_VERTEX_IT					I = B;
-					GRAPH_VERTEX_IT					E = m_tpVertices.end();
-					for ( ; I != E; I++) {
-						float fDistance = (*I).tLocalPoint.distance_to(tVector);
-						if (fDistance < fMinDistance) {
-							fMinDistance	= fDistance;
-							tGraphID		= _GRAPH_ID(I - B);
-							if (fMinDistance < EPS_L)
-								break;
+					{
+						GRAPH_VERTEX_IT					B = m_tpVertices.begin();
+						GRAPH_VERTEX_IT					I = B;
+						GRAPH_VERTEX_IT					E = m_tpVertices.end();
+						for ( ; I != E; I++) {
+							float fDistance = (*I).tLocalPoint.distance_to(tVector);
+							if (fDistance < fMinDistance) {
+								fMinDistance	= fDistance;
+								tGraphID		= _GRAPH_ID(I - B);
+								if (fMinDistance < EPS_L)
+									break;
+							}
 						}
 					}
 					if (fMinDistance < EPS_L) {
@@ -193,16 +196,30 @@ public:
 						T.caConnectName					= (char *)xr_malloc((xr_strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
 						T.dwLevelID						= dwfGetIDByLevelName(Ini,tpGraphPoint->m_caConnectionLevelName);
 						T.tGraphID						= i;
+						T.tOldGraphID					= tGraphID;
 						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,(u32)xr_strlen(tpGraphPoint->s_name_replace) + 1);
 						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,(u32)xr_strlen(tpGraphPoint->m_caConnectionPointName) + 1);
-						m_tVertexMap.insert				(mk_pair(S,T));
-						i++;
+
+						bool							ok = true;
+						VERTEX_MAP::const_iterator		II = m_tVertexMap.begin();
+						VERTEX_MAP::const_iterator		EE = m_tVertexMap.end();
+						for ( ; II != EE; ++II)
+							if (T.tOldGraphID == (*II).second.tOldGraphID) {
+								ok						= false;
+								Msg						("Graph point %s is removed",E->s_name_replace);
+								break;
+							}
+
+						if (ok) {
+							m_tVertexMap.insert			(mk_pair(S,T));
+							i++;
+						}
 					}
 				}
-				xr_delete							(E);
+				xr_delete								(E);
 			}
 			if (i != m_tpGraph->header().vertex_count())
-				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor!",m_tLevel.name());
+				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor! (%d : %d)",m_tLevel.name(),i,m_tpGraph->header().vertex_count());
 			
 			VERTEX_MAP::const_iterator				I = m_tVertexMap.begin();
 			VERTEX_MAP::const_iterator				E = m_tVertexMap.end();
