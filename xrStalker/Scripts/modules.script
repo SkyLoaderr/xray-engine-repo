@@ -60,6 +60,7 @@ load_scheme("ph_button",      "ph_button",   stype_item)
 load_scheme("ph_code",		  "ph_code",     stype_item)
 
 load_scheme("fx_sound",		  "fx_sound",    stype_item)
+load_scheme("snd_source",     "snd_source",  stype_item)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей вертолёта:
