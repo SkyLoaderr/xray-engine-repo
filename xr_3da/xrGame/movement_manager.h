@@ -92,6 +92,8 @@ private:
 	float									m_old_desirable_speed;
 	bool									m_selector_path_usage;
 	u32										m_dwCurrentFrame;
+	u32										m_refresh_rate;
+	u32										m_last_update;
 
 public:
 	SBoneRotation							m_body;
@@ -136,6 +138,8 @@ public:
 	IC		const CMovementManager::SBoneRotation &body_orientation() const;
 	IC		CGraphEngine::CBaseParameters	*base_game_selector();
 	IC		CGraphEngine::CBaseParameters	*base_level_selector();
+	IC		void	set_refresh_rate		(u32 refresh_rate);
+	IC		u32		refresh_rate			() const;
 			void	update_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;

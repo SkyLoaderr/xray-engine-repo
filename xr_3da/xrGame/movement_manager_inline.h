@@ -153,3 +153,13 @@ IC	CGraphEngine::CBaseParameters	*CMovementManager::base_level_selector()
 {
 	return				(m_base_level_selector);
 }
+
+IC	void CMovementManager::set_refresh_rate		(u32 refresh_rate)
+{
+	m_refresh_rate		= refresh_rate;
+}
+
+IC	u32	 CMovementManager::refresh_rate			() const
+{
+	return				(m_refresh_rate);
+}

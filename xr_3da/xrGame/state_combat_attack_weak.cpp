@@ -45,6 +45,7 @@ void CStateAttackWeak::reload			(LPCSTR section)
 void CStateAttackWeak::initialize		()
 {
 	inherited::initialize			();
+	m_object->set_refresh_rate		(1500);
 }
 
 void CStateAttackWeak::execute			()
@@ -106,4 +107,5 @@ void CStateAttackWeak::execute			()
 void CStateAttackWeak::finalize		()
 {
 	inherited::finalize				();
+	m_object->set_refresh_rate		(0);
 }

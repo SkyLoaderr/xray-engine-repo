@@ -46,6 +46,8 @@ void CMovementManager::reinit		()
 	m_speed									= 0.f;
 	m_selector_path_usage					= false;//true;
 	m_old_desirable_speed					= 0.f;
+	m_refresh_rate							= 0;
+	m_last_update							= Level().timeServer();
 
 	enable_movement							(true);
 	CGameLocationSelector::reinit			(&ai().game_graph());
@@ -71,9 +73,11 @@ void CMovementManager::reload		(LPCSTR section)
 
 void CMovementManager::update_path()
 {
-	if (!enabled())
+	if (!enabled() || actual_all() || ((m_last_update > Level().timeServer()) && !path_completed()))
 		return;
 	
+	m_last_update			= Level().timeServer() + m_refresh_rate;
+
 	time_start				();
 	
 	if (!CGamePathManager::evaluator()) 		
