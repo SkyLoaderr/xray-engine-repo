@@ -610,7 +610,7 @@ void CCustomZone::PlayBlowoutParticles()
 	pParticles->Play();
 }
 
-void CCustomZone::PlayHitParticles(CPhysicsShellHolder* pObject)
+void CCustomZone::PlayHitParticles(CGameObject* pObject)
 {
 	m_hit_sound.play_at_pos(this, pObject->Position());
 
@@ -639,7 +639,7 @@ void CCustomZone::PlayHitParticles(CPhysicsShellHolder* pObject)
 	}
 }
 
-void CCustomZone::PlayEntranceParticles(CPhysicsShellHolder* pObject)
+void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 {
 	m_entrance_sound.play_at_pos(this, pObject->Position());
 
@@ -658,7 +658,11 @@ void CCustomZone::PlayEntranceParticles(CPhysicsShellHolder* pObject)
 	}
 
 	Fvector vel;
-	pObject->PHGetLinearVell(vel);
+	CPhysicsShellHolder* shell_holder=dynamic_cast<CPhysicsShellHolder*>(pObject);
+	if(shell_holder)
+		shell_holder->PHGetLinearVell(vel);
+	else 
+		vel.set(0,0,0);
 	
 	//выбрать случайную косточку на объекте
 	CParticlesPlayer* PP = dynamic_cast<CParticlesPlayer*>(pObject);
@@ -702,7 +706,7 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 	pParticles->Play();
 }
 
-void CCustomZone::PlayObjectIdleParticles(CPhysicsShellHolder* pObject)
+void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 {
 	ref_str particle_str = NULL;
 
@@ -722,7 +726,7 @@ void CCustomZone::PlayObjectIdleParticles(CPhysicsShellHolder* pObject)
 	//запустить партиклы на объекте
 	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
 }
-void CCustomZone::StopObjectIdleParticles(CPhysicsShellHolder* pObject)
+void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 {
 	OBJECT_INFO_MAP_IT it	= m_ObjectInfoMap.find(pObject);
 	if(m_ObjectInfoMap.end() == it) return;

@@ -253,13 +253,13 @@ protected:
 
 	virtual void PlayBlowoutParticles();
 	
-	virtual void PlayEntranceParticles(CPhysicsShellHolder* pObject);
+	virtual void PlayEntranceParticles(CGameObject* pObject);
 	virtual void PlayBulletParticles(Fvector& pos );
 
-	virtual void PlayHitParticles(CPhysicsShellHolder* pObject);
+	virtual void PlayHitParticles(CGameObject* pObject);
 
-	virtual void PlayObjectIdleParticles(CPhysicsShellHolder* pObject);
-	virtual void StopObjectIdleParticles(CPhysicsShellHolder* pObject);
+	virtual void PlayObjectIdleParticles(CGameObject* pObject);
+	virtual void StopObjectIdleParticles(CGameObject* pObject);
 
 	virtual bool EnableEffector() {return false;}
 
