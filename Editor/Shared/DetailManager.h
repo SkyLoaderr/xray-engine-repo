@@ -67,6 +67,8 @@ public:
 		Fbox				BB;
 		SlotPart			G[dm_obj_in_slot];
 	};
+public:	
+	int						dither			[16][16];
 public:
 	svector<CDetail,dm_max_objects>			objects;
 	svector<Slot,dm_cache_size>				cache;

@@ -284,6 +284,60 @@ CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 	}
 }
 
+//--------------------------------------------------- Decompression
+static int magic4x4[4][4] =  
+{
+ 	 0, 14,  3, 13,
+	11,  5,  8,  6,
+	12,  2, 15,  1,
+	 7,  9,  4, 10
+};
+void bwdithermap	(int levels, int magic[16][16] )
+{
+	/* Get size of each step */
+    float N = 255.0f / (levels - 1);    
+	
+	/*
+	* Expand 4x4 dither pattern to 16x16.  4x4 leaves obvious patterning,
+	* and doesn't give us full intensity range (only 17 sublevels).
+	* 
+	* magicfact is (N - 1)/16 so that we get numbers in the matrix from 0 to
+	* N - 1: mod N gives numbers in 0 to N - 1, don't ever want all
+	* pixels incremented to the next level (this is reserved for the
+	* pixel value with mod N == 0 at the next level).
+	*/
+	
+    float	magicfact = (N - 1) / 16;
+    for ( int i = 0; i < 4; i++ )
+		for ( int j = 0; j < 4; j++ )
+			for ( int k = 0; k < 4; k++ )
+				for ( int l = 0; l < 4; l++ )
+					magic[4*k+i][4*l+j] =
+					(int)(0.5 + magic4x4[i][j] * magicfact +
+					(magic4x4[k][l] / 16.) * magicfact);
+}
+
+IC bool InterpolateAndDither(float* alpha255, DWORD x, DWORD y, DWORD size, int dither[16][16] )
+{
+	float	f	= float(size);
+	float	fx	= float(x)/f; float ifx = 1.f-fx;
+	float	fy	= float(y)/f; float ify = 1.f-fy;
+	
+	float	c01	= alpha255[0]*ifx+alpha255[1]*fx;
+	float	c23	= alpha255[2]*ifx+alpha255[3]*fx;
+	float	c02	= alpha255[0]*ify+alpha255[2]*fy;
+	float	c13	= alpha255[1]*ify+alpha255[3]*fy;
+	
+	float	cx	= ify*c01 + fy*c23;
+	float	cy	= ifx*c02 + fx*c13;
+	
+	DWORD	c	= iFloor((cx+cy)/2+.5f);
+	
+	DWORD	row	= y % 16; 
+	DWORD	col	= x % 16;
+ 	return	c	> dither[col][row];
+}
+
 const	float phase_range = PI/16;
 void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 {
@@ -311,36 +365,48 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 	D.BB.min.set(sx*slot_size,			DS.y_min,	sz*slot_size);
 	D.BB.max.set(D.BB.min.x+slot_size,	DS.y_max,	D.BB.min.z+slot_size);
 
-	float density = 0.1f;
+	float		density		= 0.1f;
+	DWORD		d_size		= iCeil		(slot_size/density);
+
+	float		alpha255	[dm_obj_in_slot][4];
+
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
-		SlotPart& SP	= D.G[i];
-		SP.id			= DS.items[i].id;
-		SP.items.clear	();
-		if (SP.id==0xff)	continue;
-		
-		/*
-		float	pal0	= float(DS.items[i].palette.a0)/15.f;
-		float	pal1	= float(DS.items[i].palette.a1)/15.f;
-		float	pal2	= float(DS.items[i].palette.a2)/15.f;
-		float	pal3	= float(DS.items[i].palette.a3)/15.f;
+		alpha255[i][0]	= 255.f*float(DS.items[i].palette.a0)/15.f;
+		alpha255[i][1]	= 255.f*float(DS.items[i].palette.a1)/15.f;
+		alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
+		alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
+	}
 
-		for (float _z=0; _z<1; _z+=density)
-		{
-			for (float _x=0; _x<1; _x+=density)
-			{
-				
-			}
-		}
-		*/
+	svector<int>		selected;
 
-		for (int j=0; j<dbgItems; j++)
+	CRandom				r_selection	(0x12071980);
+	CRandom				r_yaw		(DS.r_yaw);
+	CRandom				r_scale		(DS.r_scale);
+
+	for (DWORD z=0; z<d_size; z++)
+	{
+		for (DWORD x=0; x<d_size; x++)
 		{
+			// Iterpolate and dither palette
+			selected.clear();
+			if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,d_size,dither))	selected.push_back(0);
+			if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,d_size,dither))	selected.push_back(1);
+			if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,d_size,dither))	selected.push_back(2);
+			if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,d_size,dither))	selected.push_back(3);
+
+			// Select 
+			if (selected.empty())	continue;
+			DWORD ID;
+			if (selected.size()==1)	ID = DS.items[selected[0]].id;
+			else					ID = DS.items[selected[r_selection.randI(selected.size())]].id;
+
+
 			SlotItem	Item;
 
 			// Position
-			float		rx = ::Random.randF	(D.BB.min.x,D.BB.max.x);
-			float		rz = ::Random.randF	(D.BB.min.z,D.BB.max.z);
+			float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
+			float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
 			Item.P.set	(rx,0,rz);
 
 			// Angles and scale
@@ -357,7 +423,3 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 		}
 	}
 }
-
-/*
-
-*/
