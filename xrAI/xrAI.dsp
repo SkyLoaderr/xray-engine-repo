@@ -425,6 +425,14 @@ SOURCE=.\StdAfx.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\tga.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tga.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrAI.cpp
 # End Source File
 # Begin Source File
