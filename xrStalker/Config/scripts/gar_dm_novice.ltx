@@ -36,6 +36,7 @@ anim = hello
 snd = gar_dm_newbie_help_me
 no_rotate = true
 no_wpn = true
+no_danger = true
 on_signal = sound_end | remark2 %+gar_dm_novice_asked_for_help%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 reactions = ignore
@@ -43,6 +44,7 @@ reactions = ignore
 [remark2]
 no_move = true
 no_wpn = true
+no_danger = true
 on_actor_dist_le_nvis = 7 | remark3
 on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
@@ -51,6 +53,7 @@ reactions = ignore
 [remark3]
 no_move = false
 no_wpn = true
+no_danger = true
 snd = help
 arrival_timeout = 1500
 on_signal = move_end | remark@after_fight %=gar_dm_bandits_fight%
@@ -60,6 +63,7 @@ reactions = ignore
 [remark@after_fight]
 no_move = false
 no_wpn = true
+no_danger = true
 snd = gar_dm_newbie_thank_you
 arrival_timeout = 20000
 snd_timeout = 20000
