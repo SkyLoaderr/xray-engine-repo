@@ -31,6 +31,10 @@ public:
 	CGameFont*				pFontMedium;
 	CGameFont*				pFontDI;
 	CGameFont*				pFontBigDigit;
+
+	//חאדמכמגמקםûי רנטפע
+	CGameFont*				pFontHeaderRussian;
+	CGameFont*				pFontHeaderEurope;
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();

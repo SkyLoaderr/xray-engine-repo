@@ -18,6 +18,11 @@ CHUDManager::CHUDManager()
 	pFontMedium		= xr_new<CGameFont> ("hud_font_medium");
 	pFontDI			= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pFontBigDigit	= xr_new<CGameFont> ("hud_font_big_digit");
+
+	pFontHeaderEurope = xr_new<CGameFont> ("ui_font_header_europe");
+	pFontHeaderRussian = xr_new<CGameFont> ("ui_font_header_russian");
+	
+
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
 	if (Device.bReady) OnDeviceCreate();
@@ -32,6 +37,9 @@ CHUDManager::~CHUDManager()
 	xr_delete			(pFontSmall);
 	xr_delete			(pFontMedium);
 	xr_delete			(pFontDI);
+
+	xr_delete			(pFontHeaderEurope);
+	xr_delete			(pFontHeaderRussian);
 }
 //--------------------------------------------------------------------
 void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
@@ -146,10 +154,15 @@ void CHUDManager::Render_Direct	()
 		bAlready = ! (pUI && !pUI->Render());
 		pFontDI->OnRender		();
 		pFontSmall->OnRender	();
-
-
 		pFontMedium->OnRender	();
 		pFontBigDigit->OnRender	();
+
+		pFontHeaderEurope->OnRender	();
+		pFontHeaderRussian->OnRender();
+
+		//render UI cursor
+		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())
+			pUI->GetCursor()->Render();
 	}
 	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
 }
