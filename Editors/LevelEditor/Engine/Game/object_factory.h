@@ -130,6 +130,7 @@ protected:
 	bool							m_initialized;
 
 protected:
+			void						register_classes();
 	IC		void						add				(CObjectItemAbstract *item);
 	IC		const OBJECT_ITEM_STORAGE	&clsids			() const;
 	template <typename _unknown_type>

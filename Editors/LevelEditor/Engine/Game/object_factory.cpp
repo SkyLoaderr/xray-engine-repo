@@ -160,7 +160,14 @@ void CObjectFactory::script_register	() const
 
 CObjectFactory::CObjectFactory			()
 {
-	m_initialized			= false;
+	m_initialized				= false;
+	register_classes			();
+	std::sort					(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
+	m_initialized				= true;
+}
+
+void CObjectFactory::register_classes	()
+{
 #ifndef _EDITOR
 	// client entities
 	add<CLevel>												(CLSID_GAME_LEVEL			,"level");
@@ -306,7 +313,4 @@ CObjectFactory::CObjectFactory			()
 	ADD(CPhysicObject		,CSE_ALifeObjectPhysic			,CLSID_OBJECT_PHYSIC		,"obj_physic");
 	ADD(CScriptMonster		,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT		,"script_object");
 	ADD(CBreakableObject	,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
-
-	std::sort				(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
-	m_initialized			= true;
 }
