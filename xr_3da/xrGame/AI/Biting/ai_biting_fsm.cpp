@@ -55,7 +55,7 @@ void CAI_Biting::Think()
 	ControlSound							(m_current_update);
 
 	// Debuging
-	HDebug->SetActive						(true);
+	//HDebug->SetActive						(true);
 
 }
 
