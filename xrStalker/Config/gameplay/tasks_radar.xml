@@ -4,11 +4,11 @@
 	<game_task id="bar_radar_turn_off">
 		<title>bar_radar_turn_off</title>
 		<objective>
-			<text>bar_radar_turn_off</text>
+			<text>bar_radar_turn_off_0</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>bar_radar_turn_off</text>
+			<text>bar_radar_turn_off_1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
@@ -16,15 +16,15 @@
 	<game_task id="rad_find_stalkers">
 		<title>rad_find_stalkers</title>
 		<objective>
-			<text>rad_find_stalkers</text>
+			<text>rad_find_stalkers_0</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>rad_find_stalkers</text>
+			<text>rad_find_stalkers_1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>rad_find_stalkers</text>
+			<text>rad_find_stalkers_2</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
