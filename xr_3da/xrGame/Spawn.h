@@ -6,6 +6,12 @@
 #define AFX_SPAWN_H__88E2B303_2B31_4EA8_912D_5E9A2F9EBF10__INCLUDED_
 #pragma once
 
+// CLSID
+#define		CLSID_SPAWN_EVENT		MK_CLSID('L','M',' ',' ',' ',' ',' ',' ')
+#define		CLSID_SPAWN_ZONE		MK_CLSID('L','M','_','A','R','E','F',' ')
+#define		CLSID_SPAWN_MONSTER		MK_CLSID('L','M','_','A','R','E','F',' ')
+
+// Description
 #pragma pack(push,4)
 class CSpawn_DESC
 {
@@ -23,6 +29,7 @@ public:
 };
 #pragma pack(push,4)
 
+// Base class
 class CSpawn  
 {
 	CSpawn_DESC				description;
@@ -35,10 +42,10 @@ public:
 	IC			LPCSTR		getName			(){return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
 	
-	virtual		void		Save			(CFS_Base&  FS);
-	virtual		void		Load			(CStream&	FS);
+	virtual		void		Save			(CFS_Base&  FS) = 0;
+	virtual		void		Load			(CStream&	FS) = 0;
 	
-	virtual		void		Execute			()			= 0;
+	virtual		void		Execute			()				= 0;
 
 	CSpawn();
 	virtual ~CSpawn();
