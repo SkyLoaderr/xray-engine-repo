@@ -127,47 +127,38 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 	m_engine_f = pSettings->r_float(section,"engine_f");
 	m_engine_u = pSettings->r_float(section,"engine_u");
 
-	string512	m_effectsSTR;
-	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
-	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
-	m_effects.clear(); m_effects.push_back(l_effectsSTR);
-	while(*l_effectsSTR) 
+
+	m_effects.clear		(); 
 	{
-		if(*l_effectsSTR == ',') 
+		LPCSTR				S = pSettings->r_string(section,"effects");
+		if (S && S[0]) 
 		{
-			*l_effectsSTR = 0; l_effectsSTR++;
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
-			m_effects.push_back(l_effectsSTR);
+			string128		_eff;
+			int				count		= _GetItemCount	(S);
+			for (int it=0; it<count; it++)	
+				m_effects.push_back	(_GetItem(S,it,_eff));
 		}
-		l_effectsSTR++;
 	}
 
-	string512 m_trailEffectsSTR;
-	strcpy(m_trailEffectsSTR, pSettings->r_string(section,"trail"));
-	char* l_trailEffectsSTR = m_trailEffectsSTR; 
-	R_ASSERT(l_trailEffectsSTR);
 	m_trailEffects.clear(); 
-	m_trailEffects.push_back(l_trailEffectsSTR);
-	
-	while(*l_trailEffectsSTR) 
 	{
-		if(*l_trailEffectsSTR == ',') 
+		LPCSTR				S = pSettings->r_string(section,"trail");
+		if (S && S[0]) 
 		{
-			*l_trailEffectsSTR = 0; l_trailEffectsSTR++;
-			while(*l_trailEffectsSTR == ' ' || *l_trailEffectsSTR == '\t') l_trailEffectsSTR++;
-			m_trailEffects.push_back(l_trailEffectsSTR);
+			string128		_eff;
+			int				count		= _GetItemCount	(S);
+			for (int it=0; it<count; it++)	
+				m_trailEffects.push_back(_GetItem(S,it,_eff));
 		}
-		l_trailEffectsSTR++;
 	}
 
-	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", 
-			&m_lightColor.r, &m_lightColor.g, &m_lightColor.b); 
+	sscanf	(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); 
 	m_lightColor.a=1.f;
 	m_lightColor.normalize_rgb(); m_lightColor.mul_rgb(3.f);
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
-	SoundCreate(sndExplode, "explode", m_eSoundExplode);
+	SoundCreate(sndExplode,		"explode", m_eSoundExplode);
 	SoundCreate(sndRicochet[0], "ric1", m_eSoundRicochet);
 	SoundCreate(sndRicochet[1], "ric2", m_eSoundRicochet);
 	SoundCreate(sndRicochet[2], "ric3", m_eSoundRicochet);
