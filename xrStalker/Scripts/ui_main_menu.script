@@ -230,7 +230,7 @@ function main_menu:InitControls()
 	combo:SetAutoDelete(true)
 	combo:SetWindowName("combo_box")
 	combo:SetVertScroll(true);
-	--combo:AddItem("super", true)
+	combo:AddItem("super", true)
 	combo:Init(btn_bonus_rect.x, btn_bonus_rect.y + btn_bonus_rect.height, btn_bonus_rect.width)
 	self.main_frame:AttachChild(combo)
 end
