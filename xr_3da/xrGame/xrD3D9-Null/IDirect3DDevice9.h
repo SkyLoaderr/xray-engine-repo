@@ -20,7 +20,7 @@ extern "C" {
 		float		FLOAT_Proc(float ret);
 		void		VOID_proc();
 
-		ULONG		m_refCount;
+		LONG		m_refCount;
 		xrIDirect3D9*	m_pIDirect3D9;
 	public:
 		xrIDirect3DDevice9(xrIDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS* pPresentationParameters);

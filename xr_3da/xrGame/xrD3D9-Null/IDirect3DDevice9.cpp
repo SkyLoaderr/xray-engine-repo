@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "IDirect3D9.h"
 #include "IDirect3DDevice9.h"
+#include "IDirect3DQuery9.h"
 
 #include <stdlib.h>
 #include <objbase.h>
@@ -189,7 +190,10 @@ HRESULT		xrIDirect3DDevice9::GetRenderTarget( DWORD RenderTargetIndex,IDirect3DS
 HRESULT		xrIDirect3DDevice9::SetDepthStencilSurface( IDirect3DSurface9* pNewZStencil) 
 { APIDEBUG("xrIDirect3DDevice9::SetDepthStencilSurface");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::GetDepthStencilSurface( IDirect3DSurface9** ppZStencilSurface) 
-{ APIDEBUG("xrIDirect3DDevice9::GetDepthStencilSurface");  return HRESULT_Proc(S_OK); };
+{ 
+	APIDEBUG("xrIDirect3DDevice9::GetDepthStencilSurface");  
+	return HRESULT_Proc(S_OK); 
+};
 HRESULT		xrIDirect3DDevice9::BeginScene() 
 { APIDEBUG("xrIDirect3DDevice9::BeginScene");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::EndScene() 
@@ -338,7 +342,14 @@ HRESULT		xrIDirect3DDevice9::GetPixelShaderConstantB	( UINT StartRegister,BOOL* 
 HRESULT		xrIDirect3DDevice9::DrawRectPatch			( UINT Handle,CONST float* pNumSegs,CONST D3DRECTPATCH_INFO* pRectPatchInfo)	{ APIDEBUG("xrIDirect3DDevice9::DrawRectPatch			");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::DrawTriPatch			( UINT Handle,CONST float* pNumSegs,CONST D3DTRIPATCH_INFO* pTriPatchInfo)		{ APIDEBUG("xrIDirect3DDevice9::DrawTriPatch			");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::DeletePatch				( UINT Handle)																	{ APIDEBUG("xrIDirect3DDevice9::DeletePatch				");  return HRESULT_Proc(S_OK); };
-HRESULT		xrIDirect3DDevice9::CreateQuery				( D3DQUERYTYPE Type,IDirect3DQuery9** ppQuery)									{ APIDEBUG("xrIDirect3DDevice9::CreateQuery				");  return HRESULT_Proc(S_OK); };
+HRESULT		xrIDirect3DDevice9::CreateQuery				( D3DQUERYTYPE Type,IDirect3DQuery9** ppQuery)									
+{ 
+	APIDEBUG("xrIDirect3DDevice9::CreateQuery				");  ; 
+	*ppQuery = NULL;
+	xrIDirect3DQuery9* I = new xrIDirect3DQuery9(this, Type);
+	*ppQuery = I;
+	return HRESULT_Proc(S_OK);
+};
 //---------------------------------------------------------------------------------------------
 HRESULT		xrIDirect3DDevice9::HRESULT_Proc(HRESULT ret)
 {

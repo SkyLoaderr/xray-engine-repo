@@ -182,6 +182,16 @@
 				RelativePath=".\IDirect3DDevice9_Caps.cpp">
 			</File>
 		</Filter>
+		<Filter
+			Name="IDirect3DQuery9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DQuery9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DQuery9.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt">
 		</File>
