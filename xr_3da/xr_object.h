@@ -103,7 +103,7 @@ public:
 	IC CCFModel*						CFORM			() const			{ return cfModel;		}
 
 	// Name management
-	IC LPCSTR							cName			()					{ return NameObject;	}
+	virtual LPCSTR						cName			()					{ return NameObject;	}
 	void								cName_set		(LPCSTR N);
 	IC LPCSTR							cNameSect		()					{ return NameSection;	}
 	void								cNameSect_set	(LPCSTR N);

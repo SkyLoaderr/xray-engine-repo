@@ -108,6 +108,11 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 			cycles_elapsed			= CPU::GetCycleCount()-cycles_start;
 			float PMON				= float(u64(cycles_elapsed-cycles_save))*CPU::cycles2microsec;
 			T.Object->shedule_PMON	= .7f * T.Object->shedule_PMON + .3f * PMON;
+			if (PMON>1000.f)	
+			{
+				Msg	("! SHEDULER: thread '%s' exceeds time limit. [%d/%d] mcs",
+					T->Object->c_Name(),iFloor(PMON),1000);
+			}
 		}
 	}
 }

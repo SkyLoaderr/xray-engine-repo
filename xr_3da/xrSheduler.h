@@ -21,9 +21,10 @@ public:
 	void								shedule_Register	(DWORD priority=SHEDULE_NORMAL);
 	void								shedule_Unregister	();
 
-	virtual void						Update				(DWORD dt) {};
-	virtual Fvector&					Position			() = 0;
-	virtual BOOL						Ready				() = 0; 
+	virtual void						Update				(DWORD dt)	{};
+	virtual Fvector&					Position			()			= 0;
+	virtual BOOL						Ready				()			= 0; 
+	virtual LPCSTR						cName				()			{ return "UNKNOWN"; }; 
 };
 
 class	ENGINE_API CSheduler
