@@ -8,7 +8,7 @@ function main()
 
 	action(                                                                                                       
     	flesh,                                                                                                      
-		move(move.act_run,patrol("way0000")),
+		move(move.act_drag,patrol("way0000")),
     	cond(cond.move_end) 
 	)                                                                                                             
 
