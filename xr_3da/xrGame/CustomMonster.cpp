@@ -176,6 +176,10 @@ void CCustomMonster::reload		(LPCSTR section)
 	CMemoryManager::reload		(section);
 	CMovementManager::reload	(section);
 //	CSelectorManager::reload	(section);
+
+
+	load_killer_clsids			(section);
+	
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
@@ -860,3 +864,18 @@ void CCustomMonster::set_ready_to_save		()
 	inherited::set_ready_to_save		();
 	CMemoryManager::set_ready_to_save	();
 }
+
+void CCustomMonster::load_killer_clsids(LPCSTR section)
+{
+	m_killer_clsids.clear			();
+	LPCSTR							killers = pSettings->r_string(section,"killer_clsids");
+	string16						temp;
+	for (u32 i=0, n=_GetItemCount(killers); i<n; ++i)
+		m_killer_clsids.push_back	(TEXT2CLSID(_GetItem(killers,i,temp)));
+}
+
+bool CCustomMonster::is_special_killer(CObject *obj)
+{
+	return (obj && (std::find(m_killer_clsids.begin(),m_killer_clsids.end(),obj->SUB_CLS_ID) != m_killer_clsids.end()));  
+}
+

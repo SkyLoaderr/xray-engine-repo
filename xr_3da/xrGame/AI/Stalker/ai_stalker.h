@@ -61,9 +61,6 @@ private:
 	CMotivationActionManagerStalker	*m_brain;
 
 private:
-	xr_vector<CLASS_ID>				m_killer_clsids;
-
-private:
 	bool							m_demo_mode;
 
 private:
@@ -333,7 +330,6 @@ public:
 	IC	CStalkerAnimationManager		&animation_manager				() const;
 	IC	CMotivationActionManagerStalker &brain							() const;
 	IC		float						panic_threshold					() const;
-			void						load_killer_clsids				(LPCSTR section);
 };
 
 #include "ai_stalker_inline.h"

@@ -55,6 +55,9 @@ protected:
 private:
 //	bool				m_client_update_activated;
 
+private:
+	xr_vector<CLASS_ID>	m_killer_clsids;
+
 public:
 	// Eyes
 	Fmatrix				eye_matrix;
@@ -207,6 +210,11 @@ public:
 	virtual void				set_ready_to_save		();
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
+
+
+			void				load_killer_clsids		(LPCSTR section);
+			bool				is_special_killer		(CObject *obj);
+
 };
 
 #include "custommonster_inline.h"

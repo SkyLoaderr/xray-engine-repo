@@ -125,15 +125,6 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	5, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
 }
 
-void CAI_Stalker::load_killer_clsids(LPCSTR section)
-{
-	m_killer_clsids.clear			();
-	LPCSTR							killers = pSettings->r_string(section,"killer_clsids");
-	string16						temp;
-	for (u32 i=0, n=_GetItemCount(killers); i<n; ++i)
-		m_killer_clsids.push_back	(TEXT2CLSID(_GetItem(killers,i,temp)));
-}
-
 void CAI_Stalker::reload			(LPCSTR section)
 {
 	brain().setup					(this);
@@ -158,7 +149,6 @@ void CAI_Stalker::reload			(LPCSTR section)
 
 	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
 
-	load_killer_clsids				(section);
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -166,10 +156,10 @@ void CAI_Stalker::Die				(CObject* who)
 	SelectAnimation					(XFORM().k,detail_path_manager().direction(),speed());
 
 	set_sound_mask					(0);
-	if (!who || (std::find(m_killer_clsids.begin(),m_killer_clsids.end(),who->SUB_CLS_ID) == m_killer_clsids.end()))
-		play						(eStalkerSoundDie);
-	else
+	if (is_special_killer(who))
 		play						(eStalkerSoundDieInAnomaly);
+	else
+		play						(eStalkerSoundDie);
 	
 	inherited::Die					(who);
 	m_hammer_is_clutched			= !::Random.randI(0,2);

@@ -15,6 +15,7 @@
 #include "group_hierarchy_holder.h"
 #include "clsid_game.h"
 #include "../skeletoncustom.h"
+#include "monster_community.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
@@ -217,7 +218,25 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 		id_Team				= E->g_team();
 		id_Squad			= E->g_squad();
 		id_Group			= E->g_group();
+
+
+#ifdef DEBUG
+		if (!ai().get_alife()) {
+			
+			CSE_ALifeMonsterRat		*rat		= smart_cast<CSE_ALifeMonsterRat*>(E);
+			CSE_ALifeMonsterBase	*monster	= smart_cast<CSE_ALifeMonsterBase*>(E);
+
+			if (monster || rat) {
+				MONSTER_COMMUNITY		monster_community;
+				monster_community.set	(pSettings->r_string(*cNameSect(), "species"));
+
+				if(monster_community.team() != 255)
+					id_Team = monster_community.team();
+			}
+		}
+#endif
 	}
+
 
 	// Initialize variables
 	if(E)

@@ -145,7 +145,11 @@ void CBaseMonster::Die(CObject* who)
 {
 	inherited::Die(who);
 
-	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
+	if (is_special_killer(who))
+		CSoundPlayer::play			(MonsterSpace::eMonsterSoundDieInAnomaly);
+	else
+		CSoundPlayer::play			(MonsterSpace::eMonsterSoundDie);
+
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }
 
