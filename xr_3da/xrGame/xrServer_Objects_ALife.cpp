@@ -857,9 +857,10 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	flags.set					(flCastShadow,FALSE);
 	flags.set					(flR1,FALSE);
 	flags.set					(flR2,FALSE);
-	flags.set					(flPoint,FALSE);
+	flags.set					(flPointAmbient,FALSE);
+	flags.set					(flTypeSpot,TRUE);
 
-	spot_range					= 10.f;
+	range						= 10.f;
 	color						= 0xffffffff;
     brightness					= 1.f;
 	m_health					= 100.f;
@@ -889,7 +890,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_string			(color_animator);
 		tNetPacket.r_string			(s_tmp);
 		tNetPacket.r_string			(s_tmp);
-		tNetPacket.r_float			(spot_range);
+		tNetPacket.r_float			(range);
 		tNetPacket.r_angle8			(f_tmp);
 		if (m_wVersion>10)
 			tNetPacket.r_float		(brightness);
@@ -921,7 +922,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u32			(color);
 		tNetPacket.r_float			(brightness);
 		tNetPacket.r_string			(color_animator);
-		tNetPacket.r_float			(spot_range);
+		tNetPacket.r_float			(range);
     	tNetPacket.r_u16			(flags.flags);
 		tNetPacket.r_string			(startup_animation);
 	#ifdef _EDITOR    
@@ -934,8 +935,8 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 55)
 	{
 		tNetPacket.r_float			(m_visible_size);
-	    tNetPacket.r_float			(m_point_radius);
-    	tNetPacket.r_float			(m_point_power);
+	    tNetPacket.r_float			(m_ambient_radius);
+    	tNetPacket.r_float			(m_ambient_power);
 	}
 }
 
@@ -946,14 +947,14 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_u32			(color);
 	tNetPacket.w_float			(brightness);
 	tNetPacket.w_string			(color_animator);
-	tNetPacket.w_float			(spot_range);
+	tNetPacket.w_float			(range);
    	tNetPacket.w_u16			(flags.flags);
 	tNetPacket.w_string			(startup_animation);
     tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_float			(m_health);
 	tNetPacket.w_float			(m_visible_size);
-    tNetPacket.w_float			(m_point_radius);
-    tNetPacket.w_float			(m_point_power);
+    tNetPacket.w_float			(m_ambient_radius);
+    tNetPacket.w_float			(m_ambient_power);
 }
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -1004,21 +1005,16 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Cast shadow"),	&flags,			flCastShadow);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
-	P=PHelper.CreateFlag<Flags16>(values,FHelper.PrepareKey(pref,s_name,"Flags\\Allow Point"),	&flags,			flPoint);
+	P=PHelper.CreateFlag<Flags16>(values,FHelper.PrepareKey(pref,s_name,"Flags\\Allow Ambient Point"), &flags,	flPointAmbient);
     P->OnChangeEvent			= OnChangeFlag;
 
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Type"), 				&flags,				flTypeSpot, "Point", "Spot");
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			    &color);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		    &brightness,		0.1f, 5.f);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	    &color_animator, 	smLAnim);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			    &spot_range,		0.1f, 1000.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			    &range,				0.1f, 1000.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			    &m_health,			0.f, 100.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visible size"),	    &m_visible_size,	0.f, 100.f);
-    if (flags.is(flPoint)){
-        PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Point\\Radius"),		&m_point_radius,	0.f, 100.f);
-        PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Point\\Power"),		&m_point_power);
-    }
-	
-
 	// motions
     if (visual && PSkeletonAnimated(visual))
     {
@@ -1034,6 +1030,10 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
         V->OnChooseEvent		= OnChooseBone;
         V->Owner()->subitem		= 8;
+    }
+    if (flags.is(flPointAmbient)){
+        PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
+        PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
     }
 }
 #endif

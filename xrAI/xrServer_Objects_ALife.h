@@ -262,7 +262,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 		flCastShadow				= (1<<1),
 		flR1						= (1<<2),
 		flR2						= (1<<3),
-		flPoint						= (1<<4)
+		flTypeSpot					= (1<<4),
+        flPointAmbient				= (1<<5),
     };
 
     Flags16							flags;
@@ -270,12 +271,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
     float							brightness;
     ref_str							startup_animation;
     ref_str							color_animator;
-    float							spot_range;
+    float							range;
     ref_str							fixed_bones;
     float							m_health;
 	float							m_visible_size;
-    float							m_point_radius;
-    float							m_point_power;
+    float							m_ambient_radius;
+    float							m_ambient_power;
 	
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();

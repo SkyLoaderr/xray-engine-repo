@@ -129,7 +129,7 @@ public:
                             if (std::find(B->adjs.begin(),B->adjs.end(),A)==B->adjs.end()) B->adjs.push_back(A);
                         }
                     }
-                }
+                }        
             }
         }
         // prepare transform matrix
