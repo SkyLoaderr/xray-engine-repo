@@ -353,6 +353,24 @@
 	</dialog>
 
 
+	<dialog id="job_weapon">
+	        <precondition>trader_job.is_weapon_present</precondition>
+	        <precondition>trader_job.is_loser</precondition>
+		<phrase_list>
+			<phrase id="0">
+				<dont_has_info>job_weapon_finished</dont_has_info>
+				<text>Возьми эту пушку, может тебе она подойтет...</text>
+				<next>1</next>
+				<give_info>job_weapon_finished</give_info>
+			</phrase>
+			<phrase id="1">
+				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
+				<action>trader_job.give_weapon_to_loser</action>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
 
 
 	<dialog id="hello_dialog">
