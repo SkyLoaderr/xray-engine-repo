@@ -1,11 +1,12 @@
 [weathers]
 default			= sect_default
+normal			= sect_normal
 
 [sect_default]
-a				=	n_01
-b				=	n_02
+a				=	default_01
+b				=	default_02
 
-[n_01]
+[default_01]
 exec_time		= 	0:0:0
 flares			=	flares_default
 sky_texture		=	sky\sky_5_cube
@@ -24,7 +25,7 @@ hemi_color		=	0.757, 0.855, 1.000
 sun_color		=	0.0,    0.0,  	0.0 1.000, 0.384, 0.196      1.000, 0.782, 0.470
 sun_dir			=	-31.0, 116.0
 
-[n_02]
+[default_02]
 exec_time		= 	12:00:00
 flares			=	flares_gradient	
 sky_texture		=	sky\sky_3_cube
@@ -43,7 +44,45 @@ hemi_color		=	1.136,  1.283,  1.5
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-4.0, 292
 
+[sect_normal]
+a				=	normal_01
+b				=	normal_02
 
+[normal_20]
+flares			=	flares_moon			
+sky_texture		=	sky\sky_13_cube_night
+sky_rotation	=	0
+sky_color		=	1.0,	1.0,	1.0
+far_plane		=	350
+fog_color		=	0.098, 0.102, 0.169
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+wind_velocity	=	20.0 
+wind_direction	=	90.0
+ambient			=	0.02,   0.02,  	0.02
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	0.30,	0.30,	0.50
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-31.0, 296
+
+[normal_21]
+flares			=	flares_gradient		
+sky_texture		=	sky\sky_5_cube
+sky_rotation	=	0
+sky_color		=	0.50,	0.50,	0.50
+far_plane		=	300
+fog_color		=	0.133, 0.125, 0.110
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+wind_velocity	=	20.0 
+wind_direction	=	-90.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	0.50,	0.50,	0.50
+sun_color		=	0.0,    0.0,  	0.0
+sun_dir			=	-3.0, 292
 
 
 
