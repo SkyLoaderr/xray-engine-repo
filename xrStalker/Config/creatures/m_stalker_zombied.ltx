@@ -71,15 +71,15 @@ bip01_r_foot	 	 		= 0.05, 6, 0.3
 bip01_r_toe0	 	 		= 0.02, 6, 0.2
   
 [stalker_zombied_immunities]
-burn_immunity 				= 1.0				;коэффициенты иммунитета 
+burn_immunity 				= 0.8				;коэффициенты иммунитета 
 strike_immunity 			= 1.0
 shock_immunity 				= 1.0
-wound_immunity				= 1.0
-radiation_immunity 			= 1.0
+wound_immunity				= 0.5
+radiation_immunity 			= 0.0
 telepatic_immunity 			= 1.0
 chemical_burn_immunity 		= 1.0
 explosion_immunity 			= 1.0
-fire_wound_immunity  		= 1.0
+fire_wound_immunity  		= 0.5
 
 [stalker_zombied_condition]
 satiety_v					= 0.00001				;скорость уменьшения сытости со временем
@@ -176,7 +176,7 @@ killer_clsids					= Z_MINCER,Z_GALANT
 vision_danger_section			= stalker_zombied_vision_danger
 vision_free_section				= stalker_zombied_vision_free
 eye_fov							= 100 ; 170	
-eye_range						= 70	
+eye_range						= 50	
 far_plane_factor				= 1.0				; фактор дальности тумана
 fog_density_factor				= 0.05				; фактор плотности тумана
 
@@ -187,7 +187,7 @@ DynamicHitCount					= 32
 
 ;---ENEMY------------------------------------------------------------
 ignore_monster_threshold		= 0.0	;0.6	;0.8
-max_ignore_distance				= 15.0
+max_ignore_distance				= 5.0
 panic_threshold					= 0
 
 ;---SOUND PLAYER------------------------------------------------------
@@ -197,15 +197,15 @@ sound_hit						= characters_voice\human_01\fight\hit\stalker\hit_ ;monsters\huma
 sound_humming					= characters_voice\human_01\states\idle\stalker\idle_ ;monsters\stalker\humming\em1_humming,monsters\stalker\humming\em1_whistle
 sound_alarm						= characters_voice\human_01\fight\enemy\stalker\enemy_ ;monsters\human\combat\ukr\alarm\ukr1_
 sound_attack					= characters_voice\human_01\fight\attack\stalker\attack_ ;monsters\human\combat\ukr\attack\ukr1_attack
-sound_backup					= characters_voice\human_01\fight\backup\stalker\backup_ ;monsters\human\combat\ukr\backup\ukr1_otstup
+sound_backup					= ;characters_voice\human_01\fight\backup\stalker\backup_ ;monsters\human\combat\ukr\backup\ukr1_otstup
 sound_detour					= characters_voice\human_01\fight\detour\stalker\detour_ ;monsters\human\combat\ukr\detour\ukr1_detour
 sound_search					= characters_voice\human_01\fight\searching_enemy\stalker\search_ ;monsters\human\combat\ukr\search\ukr1_finding
-sound_friendly_fire				= characters_voice\human_01\fight\friendly_fire\stalker\friendly_fire_ ;script_sound\reactions\friendly_fire\soldier\soldier_friendlyfire_
-sound_panic_human				= characters_voice\human_01\states\panic_human\stalker\panic_ ;monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\surrender\em1_surrender,monsters\stalker\copy\default\surrender\em1_surrender
-sound_panic_monster				= characters_voice\human_01\states\panic_monster\stalker\panic_ ;script_sound\help\soldier\soldier_help_
-sound_tolls						= characters_voice\human_01\fight\tolls\tolls_; characters_voice\human_01\states\idle\stalker\idle_
-sound_grenade_alarm				= characters_voice\human_01\fight\grenade\grenade_
-sound_friendly_grenade_alarm	= characters_voice\human_01\fight\friendly_grenade\friendly_grenade_
+sound_friendly_fire				= ;characters_voice\human_01\fight\friendly_fire\stalker\friendly_fire_ ;script_sound\reactions\friendly_fire\soldier\soldier_friendlyfire_
+sound_panic_human				= ;characters_voice\human_01\states\panic_human\stalker\panic_ ;monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\surrender\em1_surrender,monsters\stalker\copy\default\surrender\em1_surrender
+sound_panic_monster				= ;characters_voice\human_01\states\panic_monster\stalker\panic_ ;script_sound\help\soldier\soldier_help_
+sound_tolls						= ;characters_voice\human_01\fight\tolls\tolls_; characters_voice\human_01\states\idle\stalker\idle_
+sound_grenade_alarm				= ;characters_voice\human_01\fight\grenade\grenade_
+sound_friendly_grenade_alarm	= ;characters_voice\human_01\fight\friendly_grenade\friendly_grenade_
 
 ;---STEP MANAGER------------------------------------------------------
 LegsCount						= 2
