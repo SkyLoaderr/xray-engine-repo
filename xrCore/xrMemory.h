@@ -23,7 +23,8 @@ public:
 #ifdef DEBUG
 	std::vector<mdbg>	debug_info;
 	u32					debug_info_update;
-	u32					stat_strcmp;
+	u32					stat_strcmp		;
+	u32					stat_strdock	;
 #endif
 
 	u32					stat_calls;

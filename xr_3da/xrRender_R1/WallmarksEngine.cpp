@@ -253,6 +253,9 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 
 void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
 {
+	// optimization cheat: don't allow wallmarks more than 50 m from viewer/actor
+	if (contact_point.distance_to_sqr(Device.vCameraPosition) > _sqr(100.f))	return;
+
 	// Physics may add wallmarks in parallel with rendering
 	lock.Enter				();
 	AddWallmark_internal	(pTri,pVerts,contact_point,hShader,sz);
@@ -261,12 +264,14 @@ void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts,
 
 void CWallmarksEngine::AddSkeletonWallmark	(const Fmatrix* xf, CKinematics* obj, ref_shader& sh, const Fvector& start, const Fvector& dir, float size)
 {
+	// optimization cheat: don't allow wallmarks more than 50 m from viewer/actor
+	if (xf->c.distance_to_sqr(Device.vCameraPosition) > _sqr(50.f))				return;
+
 	VERIFY					(obj&&xf&&(size>EPS_L));
 	lock.Enter				();
 	obj->AddWallmark		(xf,start,dir,sh,size);
 	lock.Leave				();
 }
-
 
 void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 {

@@ -90,6 +90,7 @@ class ENGINE_API CSkeletonWallmark		// 4+4+4+12+4+16+16 = 60
 	Fvector3			m_ContactPoint;	// 12		model space
 	float				m_fTimeStart;	// 4
 public:
+	Fsphere				m_LocalBounds;	// 16		model space
 	struct WMFace{
 		Fvector3		vert	[3];
 		Fvector2		uv		[3];

@@ -66,9 +66,8 @@ int luaO_log2 (unsigned int x) {
 }
 
 
-int luaO_rawequalObj (const TObject *t1, const TObject *t2) {
-  if (ttype(t1) != ttype(t2)) return 0;
-  else switch (ttype(t1)) {
+int luaO_rawequalObj_xray (const TObject *t1, const TObject *t2) {
+  switch (ttype(t1)) {
     case LUA_TNIL:
       return 1;
     case LUA_TNUMBER:

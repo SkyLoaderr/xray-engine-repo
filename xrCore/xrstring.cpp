@@ -12,8 +12,11 @@ str_value*	str_container::dock		(str_c value)
 	if (0==value)				return 0;
 
 	cs.Enter					();
+#ifdef DEBUG
+	Memory.stat_strdock			++	;
+#endif
 
-	str_value*	result			= 0;
+	str_value*	result			= 0	;
 
 	// calc len
 	u32		s_len				= xr_strlen(value);

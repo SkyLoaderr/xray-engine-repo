@@ -482,18 +482,19 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	}
 
 	// ok. allocate wallmark
-	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
-	wm->XFORM()->transform_tiny(wm->m_Bounds.P,cp);
-	wm->m_Bounds.R			= size;
+	CSkeletonWallmark* wm		= xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
+	wm->m_LocalBounds.set		(cp,size*2.f);
+	wm->XFORM()->transform_tiny	(wm->m_Bounds.P,cp);
+	wm->m_Bounds.R				= wm->m_Bounds.R; 
 
-	Fvector tmp; tmp.invert	(D);
-	normal.add(tmp).normalize();
+	Fvector tmp; tmp.invert		(D);
+	normal.add(tmp).normalize	();
 
 	// build UV projection matrix
-	Fmatrix					mView,mRot;
-	BuildMatrix				(mView,1/(0.9f*size),normal,cp);
-	mRot.rotateZ			(::Random.randF(deg2rad(-20.f),deg2rad(20.f)));
-	mView.mulA_43			(mRot);
+	Fmatrix						mView,mRot;
+	BuildMatrix					(mView,1/(0.9f*size),normal,cp);
+	mRot.rotateZ				(::Random.randF(deg2rad(-20.f),deg2rad(20.f)));
+	mView.mulA_43				(mRot);
 
 	// fill vertices
 	for (u32 i=0; i<children.size(); i++){
@@ -534,7 +535,6 @@ void CKinematics::CalculateWallmarks()
 
 void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
 {
-	Fbox bb;	bb.invalidate();
 	// skin vertices
 	for (u32 f_idx=0; f_idx<wm->m_Faces.size(); f_idx++){
 		CSkeletonWallmark::WMFace& F=wm->m_Faces[f_idx];
@@ -558,9 +558,8 @@ void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
 			V->t.set					(F.uv[k]);
 			int			aC				= iFloor	( w * 255.f);	clamp	(aC,0,255);
 			V->color					= color_rgba(128,128,128,aC);
-			bb.modify					(V->p);
 			V++;
 		}
 	}
-	bb.getsphere						(wm->m_Bounds.P,wm->m_Bounds.R);
+	wm->XFORM()->transform_tiny(wm->m_Bounds.P,wm->m_LocalBounds.P);
 }

@@ -325,7 +325,13 @@ int luaO_log2 (unsigned int x);
 int luaO_int2fb (unsigned int x);
 #define fb2int(x)	(((x) & 7) << ((x) >> 3))
 
-int luaO_rawequalObj (const TObject *t1, const TObject *t2);
+int luaO_rawequalObj_xray			(const TObject *t1, const TObject *t2);	// else part of the original function
+__forceinline int luaO_rawequalObj	(const TObject *t1, const TObject *t2)
+{
+	if (ttype(t1) != ttype(t2)) return	0;
+	else return	luaO_rawequalObj_xray	(t1,t2);
+}
+
 int luaO_str2d (const char *s, lua_Number *result);
 
 const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp);
