@@ -128,31 +128,24 @@
     </dialog>
     <dialog id="companion_hire_dialog">
         <phrase_list>
-            <phrase id="1">
-                <text>companion_hire_dialog_1</text>
-            </phrase>
-            <phrase id="2">
-                <text>companion_hire_dialog_2</text>
-            </phrase>
             <phrase id="0">
                 <text>companion_hire_dialog_0</text>
                 <next>1</next>
                 <next>2</next>
             </phrase>
+            <phrase id="2">
+                <text>companion_hire_dialog_2</text>
+                <precondition>dialogs.not_companion_will_follow</precondition>
+            </phrase>
+            <phrase id="1">
+                <text>companion_hire_dialog_1</text>
+                <precondition>dialogs.companion_will_follow</precondition>
+                <action>dialogs.companion_start_following</action>
+            </phrase>
         </phrase_list>
     </dialog>
     <dialog id="companion_management_dialog">
         <phrase_list>
-            <phrase id="1">
-                <text>companion_management_dialog_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-                <next>15</next>
-                <next>16</next>
-                <next>20</next>
-            </phrase>
             <phrase id="11">
                 <text>companion_management_dialog_11</text>
                 <next>111</next>
@@ -192,19 +185,30 @@
                 <text>companion_management_dialog_16</text>
                 <next>161</next>
             </phrase>
-            <phrase id="161">
-                <text>companion_management_dialog_161</text>
-            </phrase>
             <phrase id="0">
                 <text>companion_management_dialog_0</text>
                 <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>companion_management_dialog_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>20</next>
             </phrase>
             <phrase id="20">
                 <text>companion_management_dialog_20</text>
                 <next>201</next>
             </phrase>
+            <phrase id="161">
+                <text>companion_management_dialog_161</text>
+            </phrase>
             <phrase id="201">
                 <text>companion_management_dialog_201</text>
+                <action>dialogs.companion_stop_following</action>
             </phrase>
         </phrase_list>
     </dialog>
