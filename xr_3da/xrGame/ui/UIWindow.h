@@ -63,6 +63,7 @@ public:
 
 
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouseScroll(int iDirection);
 	virtual void OnDbClick();
 	virtual void OnMouseDown();
 

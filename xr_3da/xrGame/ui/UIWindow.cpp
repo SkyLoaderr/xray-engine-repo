@@ -188,6 +188,10 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 		case WINDOW_LBUTTON_DB_CLICK:
 			OnDbClick();
 			break;
+		case WINDOW_MOUSE_WHEEL_DOWN:
+			OnMouseScroll(WINDOW_MOUSE_WHEEL_DOWN); break;
+		case WINDOW_MOUSE_WHEEL_UP:
+			OnMouseScroll(WINDOW_MOUSE_WHEEL_UP); break;
 		default:
             break;
 	}
@@ -215,6 +219,10 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
 		}
 	}
+}
+
+void CUIWindow::OnMouseScroll(int iDirection){
+	; // do nothing
 }
 
 void CUIWindow::OnDbClick(){
