@@ -42,6 +42,10 @@ end
 
 function HeliManager:HeliOnHit( p )
 	printf( "HeliOnHit" )
+
+	-- количество оставшихся заходов для атаки
+	self.attack_passes = 3
+
 	if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
 		return --already on attack trajectory
 	end
@@ -52,13 +56,13 @@ function HeliManager:HeliOnHit( p )
 	local hit_type   = p:r_u32()
 	local enemy_name = p:r_stringZ()
 
-	local enemy = level.object( enemy_name )
+	enemy = level.object( enemy_name )
 	if enemy then
-		printf( "heli attack %s", enemy:name() )
+		printf( "[heli] attack %s", enemy_name )
 		self.m_heliObject:SetEnemy( enemy )
 		self.m_heliObject:SetDestPosition( enemy:position() )
 		self.m_heliObject:SetState( CHelicopter.eMovingByAttackTraj )
-		self.m_heliObject:SetCurrVelocity( 30.0 ) -- m/sec (max)
+		self.m_heliObject:SetCurrVelocity( 40.0 ) -- m/sec (max)
 	end
 end
 
@@ -72,10 +76,25 @@ function HeliManager:HeliOnPoint(p)
 		--select next point
 	end
 
+	-- если пролетел над позицией врага
 	if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
-		-- если пролетел над позицией врага, то закончить атаку
-		self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 )  --0==from_idx
-		printf( "[heli] attack pass finished" )
+		if self.attack_passes > 0 then
+			if not self.attack_dest_away then
+				-- отлетаем чуть-чуть
+				self.m_heliObject:SetDestPosition( self.m_heli:position():add( self.m_heli:direction():mul( 50 ) ) )
+				self.attack_dest_away = true
+				self.attack_passes = self.attack_passes - 1
+			else
+				-- опять летим на врага
+				self.m_heliObject:SetDestPosition( enemy:position() )
+				self.attack_dest_away = false
+			end
+		else
+			-- закончить атаку
+			self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 )  --0==from_idx
+			self.attack_dest_away = false
+			printf( "[heli] attack finished" )
+		end
 --		self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
 	end
 end
@@ -93,7 +112,7 @@ function HeliManager:Run()
 
 		if state == CHelicopter.eIdleState then
 			self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 ) --0==from_idx
-			self.m_heliObject:SetCurrVelocity( 20.0 ) -- m/sec (max)
+			self.m_heliObject:SetCurrVelocity( 30.0 ) -- m/sec (max)
 		end
 
 		health = self.m_heliObject:GetfHealth()
