@@ -119,6 +119,7 @@ void CAI_Space::Render()
 
 	if (m_tpaGraph)
 	{
+		CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
 		for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
 			Fvector t1 = m_tpaGraph[i].tPoint;
 			t1.y += .6f;
@@ -128,7 +129,6 @@ void CAI_Space::Render()
 				t2.y += .6f;
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
 			}
-			CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
 			Fvector         T;
 			Fvector4        S;
 			T.set			(t1);
