@@ -3,7 +3,7 @@
 #include "PHDynamicData.h"
 #include "PhysicsShell.h"
 #include "ai/script/ai_script_monster.h"
-
+#include "CarLights.h"
 #include "inventory.h"
 
 // refs
@@ -282,7 +282,8 @@ private:
 	float					m_break_torque;
 	float					m_hand_break_torque;
 	size_t					m_current_transmission_num;
-
+	///////////////////////////////////////////////////
+	CCarLights				m_lights;
 	////////////////////////////////////////////////////
 	/////////////////////////////////////////////////
 	void  InitParabola();

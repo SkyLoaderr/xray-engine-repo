@@ -192,6 +192,7 @@ void	CCar::UpdateCL				( )
 	}
 
 	UpdateExhausts();
+	m_lights.Update();
 }
 
 void	CCar::renderable_Render				( )
@@ -390,6 +391,9 @@ void CCar::ParseDefinitions()
 	m_fuel_consumption/=100000.f;
 	if(ini->line_exist("car_definition","exhaust_particles"))
 		m_exhaust_particles = ini->r_string("car_definition","exhaust_particles");
+	///////////////////////////////lights///////////////////////////////////////////////////
+	m_lights.Init(this);
+	m_lights.ParseDefinitions();
 }
 
 void CCar::CreateSkeleton()

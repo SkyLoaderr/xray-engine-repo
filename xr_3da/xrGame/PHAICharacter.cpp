@@ -137,15 +137,15 @@ void CPHAICharacter::InitContact(dContact* c){
 		if(accepted_energy>0.f)
 			c_vel=dSqrt(accepted_energy/m_mass*2.f);
 		else c_vel=0.f;
-	
-		if(c_vel>m_contact_velocity) 
-		{
-			m_contact_velocity=c_vel;
-			m_dmc_signum=bo1 ? 1.f : -1.f;
-			m_dmc_type=ctObject;
-			m_damege_contact=*c;
-		}
-		}
+
+			if(c_vel>m_contact_velocity) 
+			{
+				m_contact_velocity=c_vel;
+				m_dmc_signum=bo1 ? 1.f : -1.f;
+				m_dmc_type=ctObject;
+				m_damege_contact=*c;
+			}
+	}
 
 
  
