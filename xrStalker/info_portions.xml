@@ -5,7 +5,7 @@
 
 	<info_portion id="escape_novice_need_weapon">
 		<location >
-			<level>0/level>
+			<level></level>
 			<x>0</x>
 			<y>0</y>
 			<icon name="Novice" x="2" y="2" width="1" height="1"></icon>
@@ -14,14 +14,7 @@
 	</info_portion>
 
 	<info_portion id="escape_novice_has_weapon">
-		<location >
-			<level>0</level>
-			<x>0</x>
-			<y>0</y>
-			<icon name="Novice" x="2" y="2" width="1" height="1"></icon>
-			<text>Novice has weapon</text>
-			<disable>escape_novice_need_weapon</disable>
-		</location>
+		<disable>escape_novice_need_weapon</disable>
 	</info_portion>
 
 	<info_portion id="escape_factory_bandits_dead">
@@ -52,7 +45,7 @@
 	<info_portion id="actor_start01">
 		<text>Please... Help me!!! I need medikit...</text> 
 		<location >
-			<level>0</level>
+			<level></level>
 			<object>wounded_stalker_0_1</object>
 			<icon name="unknown" x="2" y="3" width="1" height="1"></icon>
 			<text>Please... Help me!!! I need medikit...</text>
@@ -63,7 +56,7 @@
 
 	<info_portion id="actor_start02">
 		<location >
-			<level>0</level>
+			<level></level>
 			<object>quest_case_01</object>
 			<icon name="ƒипломат" x="2" y="8" width="1" height="1"></icon>
 			<text>”кради научный \nчемоданчик с блокпоста,\nтак чтобы никто не заметил...</text>
@@ -73,7 +66,7 @@
 	<info_portion id="actor_start03">
 		<text>S.O.S. S.O.S. S.O.S.</text> 
 		<location >
-			<level>0</level>
+			<level></level>
 			<object>fedya</object>
 			<icon name="unknown" x="2" y="4" width="1" height="1"></icon>
 			<text>S.O.S.</text>
@@ -83,7 +76,7 @@
 
 	<info_portion id="actor_start04">
 		<location >
-			<level>0</level>
+			<level></level>
 			<object>quest_case_02</object>
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
 			<text>Steal the case...</text>
@@ -92,7 +85,7 @@
 
 	<info_portion id="trader_start1">
 		<location >
-			<level>0</level>
+			<level></level>
 			<object>trader1</object>
 			<icon name="stalker 'Dog'" x="0" y="5" width="1" height="1"></icon>
 			<text>You must kill the "Dog"... \nTake artefact from his body...</text>
@@ -107,7 +100,7 @@
 		<dialog>job_box</dialog>
 	
 		<location >
-			<level>0</level>
+			<level></level>
 			<object>quest_case_01</object>
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
 			<text>Steal the case...</text>
