@@ -118,7 +118,7 @@ IC	u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *objec
 
 bool CVisualMemoryManager::visible_now	(const CGameObject *game_object) const
 {
-	VISIBLES::const_iterator	I = std::find(objects().begin(),objects().end(),object_id(game_object));
+	VISIBLES::const_iterator		I = std::find(objects().begin(),objects().end(),object_id(game_object));
 	return							((objects().end() != I) && (*I).visible());
 }
 

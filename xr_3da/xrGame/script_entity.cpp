@@ -156,9 +156,11 @@ bool CScriptEntity::CheckTypeVisibility(const char* section_name)
 
 	CVisualMemoryManager::VISIBLES::const_iterator	I = m_monster->memory().visual().objects().begin();
 	CVisualMemoryManager::VISIBLES::const_iterator	E = m_monster->memory().visual().objects().end();
-	for ( ; I != E; ++I)
+	for ( ; I != E; ++I) {
+		VERIFY			((*I).m_object);
 		if (!xr_strcmp(section_name, *(*I).m_object->cNameSect()))
 			return		(true);
+	}
 	return				(false);
 }
 

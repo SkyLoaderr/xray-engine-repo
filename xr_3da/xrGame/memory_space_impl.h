@@ -48,8 +48,6 @@ IC	CMemoryObject<T>::CMemoryObject			()
 template <typename T>
 IC	bool CMemoryObject<T>::operator==		(u16 id) const
 {
-	if (!m_object)
-		return				(id == u16(-1));
 	return					(object_id(m_object) == id);
 }
 

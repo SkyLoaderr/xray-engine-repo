@@ -109,19 +109,27 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	ai().ef_storage().non_alife().member()	= &planner().object();
 	ai().ef_storage().non_alife().enemy()	= planner().object().memory().enemy().selected() ? planner().object().memory().enemy().selected() : &planner().object();
 
-	float										best_value = 0;
+	float						best_value = 0;
 	TIItemSet::const_iterator	I = inventory().m_all.begin();
 	TIItemSet::const_iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
 		if ((*I)->object().getDestroy())
 			continue;
-		if ((*I)->can_kill()) {
-			ai().ef_storage().non_alife().member_item()	= &(*I)->object();
-			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
-			if (value > best_value) {
-				best_value		= value;
-				best_weapon		= *I;
-			}
+
+		if (!(*I)->can_kill())
+			continue;
+
+		ai().ef_storage().non_alife().member_item()	= &(*I)->object();
+
+		float					value;
+		if (planner().object().memory().enemy().selected())
+			value				= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+		else
+			value				= (float)(*I)->object().ef_weapon_type();
+
+		if (value > best_value) {
+			best_value			= value;
+			best_weapon			= *I;
 		}
 	}
 	return						(best_weapon);

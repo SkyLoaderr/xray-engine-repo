@@ -87,16 +87,20 @@ u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max
 				sounds.push_back	(add(type,name,data));
 		}
 	}
+#ifdef DEBUG
 	if (sounds.empty())
-		Msg						("! There are no sounds with prefix %s",prefix);
-	return						((u32)sounds.size());
+		Msg							("- There are no sounds with prefix %s",prefix);
+#endif
+	return							((u32)sounds.size());
 }
 
 bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 {
 	xr_map<u32,CSoundCollection>::const_iterator	J = m_sounds.find(internal_type);
 	if (m_sounds.end() == J) {
+#ifdef DEBUG
 		ai().script_engine().script_log(eLuaMessageTypeError,"Can't find sound with internal type %d (sound_script = %d)",internal_type,StalkerSpace::eStalkerSoundScript);
+#endif
 		return						(false);
 	}
 
@@ -164,7 +168,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	VERIFY						(m_sounds.end() != I);
 	CSoundCollection			&sound = (*I).second;
 	if (sound.m_sounds.empty()) {
-		Msg						("! There are no sounds in sound collection \"%s\" with internal type %d (sound_script = %d)",*sound.m_sound_prefix,internal_type,StalkerSpace::eStalkerSoundScript);
+		Msg						("- There are no sounds in sound collection \"%s\" with internal type %d (sound_script = %d)",*sound.m_sound_prefix,internal_type,StalkerSpace::eStalkerSoundScript);
 		return;
 	}
 
