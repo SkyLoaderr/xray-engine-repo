@@ -184,13 +184,13 @@ Device.Statistic.TEST0.End		();
 			gray255[3]						=	255.f*float(c_pal->a3)/15.f;
 			*/
 			float c_f						=	1.f;	//Interpolate		(gray255,x,z,d_size)+.5f;
-			int c_dw						=	255;	//iFloor			(c_f);
-			clamp							(c_dw,0,255);
-			Item.C_dw						=	color_rgba		(c_dw,c_dw,c_dw,255);
+			//int c_dw						=	255;	//iFloor			(c_f);
+			//clamp							(c_dw,0,255);
+			//Item.C_dw						=	color_rgba		(c_dw,c_dw,c_dw,255);
 			Item.c_rgb.x					=	DS.r_qclr		(DS.c_r,15);
 			Item.c_rgb.y					=	DS.r_qclr		(DS.c_g,15);
 			Item.c_rgb.z					=	DS.r_qclr		(DS.c_b,15);
-			Item.c_hemi						=	.75f*DS.r_qclr		(DS.c_hemi,15);
+			Item.c_hemi						=	.75f*DS.r_qclr	(DS.c_hemi,15);
 			Item.c_sun						=	DS.r_qclr		(DS.c_dir,15);
 
 			// Vis-sorting

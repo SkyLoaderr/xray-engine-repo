@@ -83,7 +83,7 @@ void CDetailManager::soft_Render	()
 
 				// Transfer vertices
 				{
-					u32					C = Instance.C_dw;
+					u32					C = 0xffffffff;
 					CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
 					CDetail::fvfVertexOut	*dstIt = vDest;
 

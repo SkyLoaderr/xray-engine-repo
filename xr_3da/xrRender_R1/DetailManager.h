@@ -37,7 +37,6 @@ public:
 		Fvector				c_rgb;
 		float				c_hemi;
 		float				c_sun;
-		u32					C_dw;
 	};
 	struct	SlotPart	{
 		u32						id;
