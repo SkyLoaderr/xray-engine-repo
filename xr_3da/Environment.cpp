@@ -470,8 +470,8 @@ void CEnvironment::OnFrame()
 	spR.position.mad(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,+1.f).mad(Device.vCameraTop,.1f);
 
 	music*	_m				= playlist.front	();
-	_m->left.set_params		(spL);
-	_m->right.set_params	(spR);
+	_m->left.set_params		(&spL);
+	_m->right.set_params	(&spR);
 }
 
 extern float psHUD_FOV;
