@@ -121,7 +121,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	}
 }
 
-void i_test	( occRasterizer* OCC, occTri* T, int x, int y, DWORD C=255<<16  )
+void i_test	( occRasterizer* OCC, int x, int y)
 {
 	occTri**	pFrame	= OCC->get_frame();
 	float*		pDepth	= OCC->get_depth();
@@ -153,27 +153,27 @@ void i_line	( occRasterizer* OCC, int x1, int y1, int x2, int y2 )
         int d1 = dy << 1;
         int d2 = ( dy - dx ) << 1;
 		
-		i_test(x1,y1);
+		i_test(OCC,x1,y1);
 		
         for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
             if ( d > 0){
                 d += d2; y += sy;
             }else
                 d += d1;
-			i_test(x,y);
+			i_test(OCC,x,y);
         }
     }else{
         int d  = ( dx << 1 ) - dy;
         int d1 = dx << 1;
         int d2 = ( dx - dy ) << 1;
 		
-		i_test(x1,y1);
+		i_test(OCC,x1,y1);
         for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
             if ( d > 0){
                 d += d2; x += sx;
             }else
                 d += d1;
-			i_test(x,y);
+			i_test(OCC,x,y);
         }
     }
 }
