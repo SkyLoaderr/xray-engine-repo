@@ -10,7 +10,7 @@ class CWeaponMagazined: public CWeapon
 {
 private:
 	typedef CWeapon inherited;
-private:
+protected:
 	// General
 	float			fTime;
 	BOOL			bFlame;

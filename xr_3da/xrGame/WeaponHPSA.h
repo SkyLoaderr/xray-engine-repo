@@ -43,8 +43,10 @@ protected:
 	virtual void	OnDrawFlame			(BOOL bHUDView);
 	virtual void	OnShotmark			(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnAnimationEnd		();
+	virtual void	state_Fire			(BOOL bHUD, float dt);
+	virtual void	state_MagEmpty		(BOOL bHUD, float dt);
 public:
-					CWeaponHPSA			(LPCSTR name);
+					CWeaponHPSA			();
 	virtual			~CWeaponHPSA		();
 
 	virtual void	Load				(CInifile* ini, const char* section);

@@ -16,7 +16,7 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponHPSA::CWeaponHPSA(LPCSTR name) : CWeaponMagazined(name)
+CWeaponHPSA::CWeaponHPSA() : CWeaponMagazined("HPSA")
 {
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
@@ -201,7 +201,7 @@ void CWeaponHPSA::Update		(float dt, BOOL bHUDView)
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
 	UpdateFP					(bHUDView);
-	if (sndFireLoop.feedback)	sndFireLoop.feedback->SetPosition	(vLastFP);
+	if (sndFireShoot.feedback)	sndFireShoot.feedback->SetPosition	(vLastFP);
 	if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
 	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
 }
