@@ -258,3 +258,22 @@ function reset_action (npc, script_name)
 	npc:script (false, script_name)
 	npc:script (true, script_name)
 end
+
+class script_object
+
+function script_object:__init(name,script,...)
+	self.action			= action(nil,unpack(arg))
+	self.object_name	= name
+	self.script_name	= script
+	self.object			= nil
+end
+
+function script_object:update()
+	local					obj = self.object
+	self.object				= level.object(self.object_name)
+	if ((obj == nil) and (self.object ~= nil)) then
+		self.object:script	(true,self.script_name)
+		self.object:command	(self.action,false)
+	end
+end
+
