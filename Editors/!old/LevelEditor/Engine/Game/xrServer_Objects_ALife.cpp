@@ -1004,7 +1004,6 @@ void CSE_ALifeObjectProjector::FillProp			(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
-
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeSchedulable
 ////////////////////////////////////////////////////////////////////////////
@@ -1024,4 +1023,43 @@ CSE_ALifeSchedulable::CSE_ALifeSchedulable(LPCSTR caSection) : CSE_Abstract(caSe
 CSE_ALifeSchedulable::~CSE_ALifeSchedulable()
 {
 }
-////////
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeHelicopter
+////////////////////////////////////////////////////////////////////////////
+
+CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
+{
+}
+
+void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read	(tNetPacket,size);
+}
+
+void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeHelicopter::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeHelicopter::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeHelicopter::FillProp			(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,	 values);
+}
+#endif
+

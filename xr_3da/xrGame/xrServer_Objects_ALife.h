@@ -269,4 +269,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisua
 SERVER_ENTITY_DECLARE_END
 
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual)
+									CSE_ALifeHelicopter			(LPCSTR caSection);
+	virtual							~CSE_ALifeHelicopter		();
+SERVER_ENTITY_DECLARE_END
+
 #endif

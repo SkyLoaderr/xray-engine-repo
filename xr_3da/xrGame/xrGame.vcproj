@@ -3121,6 +3121,19 @@
 								</FileConfiguration>
 							</File>
 						</Filter>
+						<Filter
+							Name="helicopter"
+							Filter="">
+							<File
+								RelativePath=".\vehicle_helicopter.cpp">
+							</File>
+							<File
+								RelativePath=".\vehicle_helicopter.h">
+							</File>
+							<File
+								RelativePath=".\vehicle_helicopter_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Zones"

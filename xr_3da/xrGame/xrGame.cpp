@@ -916,6 +916,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "physicobject.h"
 #include "script_zone.h"
 
+#include "vehicle_helicopter.h"
+
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
 	{
@@ -946,6 +948,8 @@ extern "C" {
 
 			case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
 			case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
+
+			case CLSID_VEHICLE_HELICOPTER:	P = xr_new<CVehicleHelicopter>();	break;
 
 			// Artifacts
 			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
