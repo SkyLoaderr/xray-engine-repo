@@ -49,3 +49,105 @@ void CAI_Stalker::vfChooseNextGraphPoint()
 		}
 	}
 }
+
+void CAI_Stalker::vfAccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
+{
+	if (m_bStateChanged && !m_bPlayHumming && m_tpCurrentSound) {
+		m_tpCurrentSound->stop();
+		m_tpCurrentSound = 0;
+	}
+
+	// going via graph nodes
+	//WRITE_TO_LOG			("Accomplishing task");
+	m_bPlayHumming = true;
+	
+	if (getAI().m_tpaGraph[m_tNextGP].tNodeID == AI_NodeID)
+		m_dwTimeToChange = 0;
+
+	vfUpdateSearchPosition	();
+
+	if (m_bStateChanged || AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode)) {
+		//AI_Path.Nodes.clear();
+		//AI_Path.TravelPath.clear();
+		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
+		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
+	}
+
+	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	if (getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex != m_tNextGP) {
+		string4096 S;
+		sprintf(S,"Graph doesn't correspond to the cross table (graph vertex %d != Cross[Graph[%d].Node(%d)].Vertex(%d)",m_tNextGP,m_tNextGP,getAI().m_tpaGraph[m_tNextGP].tNodeID,getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex);
+		R_ASSERT2(false,S);
+	}
+	if (!AI_Path.DestNode) {
+		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+		for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
+			Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
+	}
+	float					yaw,pitch;
+	GetDirectionAngles		(yaw,pitch);
+	yaw						= angle_normalize_signed(-yaw);
+	if (!getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
+		// Msg("! Turning to path direction [%f][%f][%f][%f]",r_torso_target.yaw,r_target.yaw,r_torso_current.yaw,r_current.yaw);
+		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
+		//r_target.yaw = r_torso_target.yaw;
+	}
+	else
+		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+
+	switch (m_tActionState) {
+		case eActionStateWatch : {
+			if (m_dwActionStartTime < Level().timeServer())
+				m_tActionState = eActionStateDontWatch;
+			break;
+		}
+		case eActionStateDontWatch : {
+			if (!m_tpCurrentSound) {
+				m_tpCurrentSound = &m_tpSoundHumming[::Random.randI((int)m_tpSoundHumming.size())];
+				m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
+				m_tpCurrentSound->feedback->set_volume(1.f);
+			}
+			else
+				if (m_tpCurrentSound->feedback)
+					m_tpCurrentSound->feedback->set_position(eye_matrix.c);
+				else {
+					m_tpCurrentSound = 0;
+					m_tActionState = eActionStateWatch;
+					m_dwActionStartTime = Level().timeServer() + ::Random.randI(10000,20000);
+				}
+			break;
+		}
+	}
+}
+
+void CAI_Stalker::vfChooseTask()
+{
+}
+
+void CAI_Stalker::vfHealthCare()
+{
+}
+
+void CAI_Stalker::vfBuySupplies()
+{
+}
+
+void CAI_Stalker::vfGoToCustomer()
+{
+}
+
+void CAI_Stalker::vfBringToCustomer()
+{
+}
+
+void CAI_Stalker::vfGoToSOS()
+{
+}
+
+void CAI_Stalker::vfSendSOS()
+{
+}
+
+void CAI_Stalker::vfSearchObject()
+{
+}

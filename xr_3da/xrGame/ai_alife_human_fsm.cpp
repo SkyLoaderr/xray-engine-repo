@@ -74,9 +74,9 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 
 void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 {
-	if (!HealthIsGood()) {
-		if (!CanTreat()) {
-			if (!EnoughMoneyToTreat() || !EnoughTimeToTreat()) {
+	if (!HealthIsGood(tpALife)) {
+		if (!CanTreat(tpALife)) {
+			if (!EnoughMoneyToTreat(tpALife) || !EnoughTimeToTreat(tpALife)) {
 				m_tTaskState = eTaskStateSendSOS;
 				return;
 			}
@@ -91,8 +91,8 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 		}
 	}
 	else {
-		if (!EnoughEquipmentToGo()) {
-			if (DistanceToTraderIsDanger() || !EnoughMoneyToEquip()) {
+		if (!EnoughEquipmentToGo(tpALife)) {
+			if (DistanceToTraderIsDanger(tpALife) || !EnoughMoneyToEquip(tpALife)) {
 				m_tTaskState = eTaskStateSendSOS;
 				return;
 			}

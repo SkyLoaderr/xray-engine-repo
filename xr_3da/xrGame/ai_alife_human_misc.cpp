@@ -11,37 +11,53 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 
-bool CSE_ALifeHumanAbstract::HealthIsGood			()
+bool CSE_ALifeHumanAbstract::HealthIsGood			(CSE_ALifeSimulator *tpALife)
 {
 	return(true);
 }
 
-bool CSE_ALifeHumanAbstract::CanTreat				()
-{
-	return(true);
-}
-
-bool CSE_ALifeHumanAbstract::EnoughMoneyToTreat		()
-{
-	return(true);
-}
-
-bool CSE_ALifeHumanAbstract::EnoughTimeToTreat		()
-{
-	return(true);
-}
-
-bool CSE_ALifeHumanAbstract::EnoughEquipmentToGo	()
-{
-	return(true);
-}
-
-bool CSE_ALifeHumanAbstract::DistanceToTraderIsDanger()
+bool CSE_ALifeHumanAbstract::bfItemCanTreat			(CSE_ALifeItem *tpALifeItem)
 {
 	return(false);
 }
 
-bool CSE_ALifeHumanAbstract::EnoughMoneyToEquip		()
+void CSE_ALifeHumanAbstract::vfUseItem				(CSE_ALifeItem *tpALifeItem)
+{
+}
+
+bool CSE_ALifeHumanAbstract::CanTreat				(CSE_ALifeSimulator *tpALife)
+{
+	xr_vector<u16>::iterator	I = children.begin();
+	xr_vector<u16>::iterator	E = children.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpALife->tpfGetObjectByID(*I));
+		if (l_tpALifeItem && bfItemCanTreat(l_tpALifeItem))
+			vfUseItem			(l_tpALifeItem);
+	}
+	return						(HealthIsGood(tpALife));
+}
+
+bool CSE_ALifeHumanAbstract::EnoughMoneyToTreat		(CSE_ALifeSimulator *tpALife)
+{
+	return(true);
+}
+
+bool CSE_ALifeHumanAbstract::EnoughTimeToTreat		(CSE_ALifeSimulator *tpALife)
+{
+	return(true);
+}
+
+bool CSE_ALifeHumanAbstract::EnoughEquipmentToGo	(CSE_ALifeSimulator *tpALife)
+{
+	return(true);
+}
+
+bool CSE_ALifeHumanAbstract::DistanceToTraderIsDanger(CSE_ALifeSimulator *tpALife)
+{
+	return(false);
+}
+
+bool CSE_ALifeHumanAbstract::EnoughMoneyToEquip		(CSE_ALifeSimulator *tpALife)
 {
 	return(true);
 }

@@ -14,6 +14,8 @@
 #include "ai_stalker_space.h"
 #include "..\\..\\inventory.h"
 
+class CSE_ALifeSimulator;
+
 //#define LOG_PARAMETERS
 
 #ifdef LOG_PARAMETERS
@@ -30,19 +32,23 @@ private:
 	} SHurt;
 
 	// path structures
-	EPathState				m_tPathState;	
-	EPathType				m_tPathType;
-	EPathType				m_tPrevPathType;
-	EWeaponState			m_tWeaponState;
-	EActionState			m_tActionState;
-	EStateType				m_tStateType;
-	u32						m_dwActionStartTime;
-	u32						m_dwActionEndTime;
-	bool					m_bIfSearchFailed;
-	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
-	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
-	u32						m_dwLookChangedTime;
-	u32						m_dwBornTime;
+	EPathState					m_tPathState;	
+	EPathType					m_tPathType;
+	EPathType					m_tPrevPathType;
+	EWeaponState				m_tWeaponState;
+	EActionState				m_tActionState;
+	EStateType					m_tStateType;
+	u32							m_dwActionStartTime;
+	u32							m_dwActionEndTime;
+	bool						m_bIfSearchFailed;
+	bool						_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
+	bool						A,B,C,D,E,F,G,H,I,J,K,L,M;
+	u32							m_dwLookChangedTime;
+	u32							m_dwBornTime;
+
+	// ALife members
+	CSE_ALifeSimulator			*m_tpALife;
+	ETaskState					m_tTaskState;
 
 	xr_vector<Fvector>			m_tpaPoints;
 	xr_vector<Fvector>			m_tpaDeviations;
@@ -241,7 +247,17 @@ private:
 			void			ExploreNDE						();
 			void			ExploreNDNE						();
 			void			TakeItems						();
-			void			AccomplishTask					(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
+			
+			// ALife
+			void			vfChooseTask					();
+			void			vfHealthCare					();
+			void			vfBuySupplies					();
+			void			vfGoToCustomer					();
+			void			vfBringToCustomer				();
+			void			vfGoToSOS						();
+			void			vfSendSOS						();
+			void			vfAccomplishTask				(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
+			void			vfSearchObject					();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

@@ -186,13 +186,15 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfSearchObject			(CSE_ALifeSimulator	*tpALife);
 			// FSM miscellanious
 			void					vfChooseHumanTask		(CSE_ALifeSimulator	*tpALife);
-			bool					HealthIsGood			();
-			bool					CanTreat				();
-			bool					EnoughMoneyToTreat		();
-			bool					EnoughTimeToTreat		();
-			bool					EnoughEquipmentToGo		();
-			bool					DistanceToTraderIsDanger();
-			bool					EnoughMoneyToEquip		();
+			bool					HealthIsGood			(CSE_ALifeSimulator	*tpALife);
+			bool					bfItemCanTreat			(CSE_ALifeItem *tpALifeItem);
+			void					vfUseItem				(CSE_ALifeItem *tpALifeItem);
+			bool					CanTreat				(CSE_ALifeSimulator	*tpALife);
+			bool					EnoughMoneyToTreat		(CSE_ALifeSimulator	*tpALife);
+			bool					EnoughTimeToTreat		(CSE_ALifeSimulator	*tpALife);
+			bool					EnoughEquipmentToGo		(CSE_ALifeSimulator	*tpALife);
+			bool					DistanceToTraderIsDanger(CSE_ALifeSimulator	*tpALife);
+			bool					EnoughMoneyToEquip		(CSE_ALifeSimulator	*tpALife);
 			// miscellanious
 			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife, OBJECT_IT &I);
 			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife);

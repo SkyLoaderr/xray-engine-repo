@@ -93,7 +93,7 @@ void CSE_ALifePersonalEvent::UPDATE_Read	(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CSE_ALifePersonalEvent::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifePersonalEvent::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 }
 #endif

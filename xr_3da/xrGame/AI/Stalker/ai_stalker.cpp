@@ -10,6 +10,8 @@
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\weapon.h"
+#include "..\\..\\game_sv_single.h"
+#include "..\\..\\ai_alife.h"
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -114,6 +116,18 @@ void CAI_Stalker::Init()
 	AI_Path.Nodes.clear				();
 
 	m_dwStartFireTime				= 0;
+
+	m_tTaskState					= eTaskStateChooseTask;
+
+	if (GAME_SINGLE == Level().Server->game->type) {
+		game_sv_Single				*l_tpGameSingle = dynamic_cast<game_sv_Single*>(Level().Server->game);
+		if (l_tpGameSingle && l_tpGameSingle->m_tpALife->m_bLoaded)
+			m_tpALife				= l_tpGameSingle->m_tpALife;
+		else
+			m_tpALife				= 0;
+	}
+	else
+		m_tpALife					= 0;
 }
 
 // when soldier is dead
