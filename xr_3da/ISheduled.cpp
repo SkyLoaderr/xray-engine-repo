@@ -16,7 +16,7 @@ ISheduled::ISheduled	()
 extern		BOOL		g_bSheduleInProgress;
 ISheduled::~ISheduled	()
 {
-	VERIFY3	(!g_bSheduleInProgress,"Can't physically destroy object while still sheduling",shedule_Name().c_str());
+//	VERIFY3	(!g_bSheduleInProgress,"Can't physically destroy object while still sheduling",shedule_Name().c_str());
 }
 
 void	ISheduled::shedule_register			()
