@@ -16,10 +16,15 @@
 #define CLevelLocationSelector CBaseLocationSelector<CLevelGraph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelLocationSelector::before_search	(const _vertex_id_type vertex_id)
+IC	void CLevelLocationSelector::before_search	(_vertex_id_type &vertex_id)
 {
-	if (m_restricted_object)
+	if (m_restricted_object) {
+		if (!m_restricted_object->accessible(vertex_id)) {
+			Fvector dest_pos;
+			vertex_id	= m_restricted_object->accessible_nearest(m_graph->vertex_position(vertex_id),dest_pos);
+		}
 		m_restricted_object->add_border(vertex_id,m_evaluator->m_fRadius);
+	}
 }
 
 TEMPLATE_SPECIALIZATION

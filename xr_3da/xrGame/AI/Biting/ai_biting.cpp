@@ -49,8 +49,6 @@ CAI_Biting::CAI_Biting()
 	// »нициализаци€ параметров анимации	
 	MotionMan.Init					(this);
 
-	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
-
 	m_fGoingSpeed					= 0.f;
 
 	// Attack-stops init
@@ -61,6 +59,8 @@ CAI_Biting::CAI_Biting()
 	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>(this);
 
 	CurrentState					= 0;
+
+	CStepManager::init_external		(this);
 }
 
 CAI_Biting::~CAI_Biting()
@@ -90,7 +90,7 @@ void CAI_Biting::UpdateCL()
 
 		// ѕроверка состо€ни€ анимации (атака)
 		AA_CheckHit							();
-		MotionMan.STEPS_Update				(get_legs_number());
+		//MotionMan.STEPS_Update				(get_legs_number());
 
 		// ѕоправка Pitch
 		PitchCorrection						();
@@ -99,6 +99,8 @@ void CAI_Biting::UpdateCL()
 		CMonsterMovement::update_velocity	();
 
 		Exec_Look							(Device.fTimeDelta);
+		
+		CStepManager::update				();
 	}
 
 	m_pPhysics_support->in_UpdateCL();
@@ -253,49 +255,61 @@ float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist, const CEnt
 //////////////////////////////////////////////////////////////////////////
 // Function for foot processing
 //////////////////////////////////////////////////////////////////////////
-Fvector	CAI_Biting::get_foot_position(ELegType leg_type)
+//Fvector	CAI_Biting::get_foot_position(ELegType leg_type)
+//{
+//	R_ASSERT2(m_FootBones[leg_type] != BI_NONE, "foot bone had not been set");
+//	
+//	CKinematics *pK = smart_cast<CKinematics*>(Visual());
+//	Fmatrix bone_transform;
+//
+//	bone_transform = pK->LL_GetBoneInstance(m_FootBones[leg_type]).mTransform;	
+//
+//	Fmatrix global_transform;
+//	global_transform.set(XFORM());
+//	global_transform.mulB(bone_transform);
+//
+//	return global_transform.c;
+//}
+//
+//void CAI_Biting::LoadFootBones()
+//{
+//
+//	CInifile* ini		= smart_cast<CKinematics*>(Visual())->LL_UserData();
+//	if(ini&&ini->section_exist("foot_bones")){
+//		
+//		CInifile::Sect& data		= ini->r_section("foot_bones");
+//		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+//			CInifile::Item& item	= *I;
+//			
+//			u16 index = smart_cast<CKinematics*>(Visual())->LL_BoneID(*item.second);
+//			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
+//			
+//			if (xr_strcmp(*item.first, "front_left") == 0) 			m_FootBones[eFrontLeft]		= index;
+//			else if (xr_strcmp(*item.first, "front_right")== 0)		m_FootBones[eFrontRight]	= index;
+//			else if (xr_strcmp(*item.first, "back_right")== 0)		m_FootBones[eBackRight]		= index;
+//			else if (xr_strcmp(*item.first, "back_left")== 0)		m_FootBones[eBackLeft]		= index;
+//		}
+//	} else VERIFY("section [foot_bones] not found in monster user_data");
+//
+//	// проверка на соответсвие
+//	int count = 0;
+//	for (u32 i = 0; i < eLegsMaxNumber; i++) 
+//		if (m_FootBones[i] != BI_NONE) count++;
+//
+//	VERIFY(count == get_legs_number());
+//}
+
+float CAI_Biting::get_current_animation_time()
 {
-	R_ASSERT2(m_FootBones[leg_type] != BI_NONE, "foot bone had not been set");
-	
-	CKinematics *pK = smart_cast<CKinematics*>(Visual());
-	Fmatrix bone_transform;
-
-	bone_transform = pK->LL_GetBoneInstance(m_FootBones[leg_type]).mTransform;	
-
-	Fmatrix global_transform;
-	global_transform.set(XFORM());
-	global_transform.mulB(bone_transform);
-
-	return global_transform.c;
+	return MotionMan.GetCurAnimTime();
 }
 
-void CAI_Biting::LoadFootBones()
+void CAI_Biting::on_animation_start(ref_str anim)
 {
-
-	CInifile* ini		= smart_cast<CKinematics*>(Visual())->LL_UserData();
-	if(ini&&ini->section_exist("foot_bones")){
-		
-		CInifile::Sect& data		= ini->r_section("foot_bones");
-		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
-			CInifile::Item& item	= *I;
-			
-			u16 index = smart_cast<CKinematics*>(Visual())->LL_BoneID(*item.second);
-			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
-			
-			if (xr_strcmp(*item.first, "front_left") == 0) 			m_FootBones[eFrontLeft]		= index;
-			else if (xr_strcmp(*item.first, "front_right")== 0)		m_FootBones[eFrontRight]	= index;
-			else if (xr_strcmp(*item.first, "back_right")== 0)		m_FootBones[eBackRight]		= index;
-			else if (xr_strcmp(*item.first, "back_left")== 0)		m_FootBones[eBackLeft]		= index;
-		}
-	} else VERIFY("section [foot_bones] not found in monster user_data");
-
-	// проверка на соответсвие
-	int count = 0;
-	for (u32 i = 0; i < eLegsMaxNumber; i++) 
-		if (m_FootBones[i] != BI_NONE) count++;
-
-	VERIFY(count == get_legs_number());
+	CStepManager::on_animation_start(anim);
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -92,7 +92,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
-		MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
+		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 		MotionMan.finish_load_shared();
 	}
@@ -304,7 +304,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
 		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
 		// установить позицию
-		pos.c.set(get_foot_position(eFrontLeft));
+		pos.c.set(CStepManager::get_foot_position(eFrontLeft));
 
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 		Level().ps_needtoplay.push_back(ps);

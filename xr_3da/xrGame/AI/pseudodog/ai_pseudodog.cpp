@@ -154,7 +154,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
-		MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
+		//MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 		MotionMan.finish_load_shared();
 	}

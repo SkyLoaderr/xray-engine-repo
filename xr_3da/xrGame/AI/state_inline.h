@@ -152,3 +152,4 @@ EStateType CStateAbstract::get_state_type()
 	return state_type;
 }
 
+#undef TEMPLATE_SPECIALIZATION

@@ -21,9 +21,9 @@
 #include "../monster_enemy_manager.h"
 #include "../monster_corpse_manager.h"
 
-//#include "../ai_monster_group.h"
-
 #include "ai_biting_state.h"
+#include "../../step_manager.h"
+
 
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
@@ -34,7 +34,8 @@ class CCoverEvaluatorCloseToEnemy;
 
 class CAI_Biting : public CCustomMonster, 
 				   virtual public CMonsterMovement,
-				   public CSharedClass<_biting_shared, CLASS_ID> {
+				   public CSharedClass<_biting_shared, CLASS_ID>, 
+				   public CStepManager {
 
 	typedef	CCustomMonster							inherited;
 	typedef CSharedClass<_biting_shared,CLASS_ID>	inherited_shared;
@@ -201,15 +202,16 @@ public:
 	virtual bool			ability_distant_feel			() {return false;}
 
 	// ---------------------------------------------------------------------------------
-			u16				m_FootBones[eLegsMaxNumber];
+			//u16				m_FootBones[eLegsMaxNumber];
 
-			Fvector			get_foot_position				(ELegType leg_type);
-			void			LoadFootBones					();
+			//Fvector			get_foot_position				(ELegType leg_type);
+			//void			LoadFootBones					();
 
-			u8				get_legs_number					() {return get_sd()->m_legs_number;}
+			//u8				get_legs_number					() {return get_sd()->m_legs_number;}
 	
 	virtual void			event_on_step					() {}
-
+	virtual float			get_current_animation_time		();
+	virtual	void			on_animation_start				(ref_str anim);
 	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist,const CEntity *enemy = 0);

@@ -101,7 +101,7 @@ public:
 		} m_target, m_intermediate;
 
 		u32			m_time;					// время перестроения пути
-		u32			m_last_time_target_set;
+		u32			m_last_time_path_update;
 		float		m_distance_to_path_end;
 		bool		m_path_end;
 		bool		m_failed;
@@ -116,10 +116,12 @@ public:
 
 		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
 	IC	void		set_rebuild_time		(u32 time);
-	IC	void		set_use_covers			(float min, float max, float dev, float radius);
+	IC	void		set_cover_params		(float min, float max, float dev, float radius);
+	IC	void		set_use_covers			(bool val = true);
 	IC	void		force_target_set		();
 	IC	bool		failed					();
 	IC	bool		path_end				();
+	IC	void		set_distance_to_end		(float dist);
 
 		CCoverEvaluatorCloseToEnemy			*m_cover_approach;
 		CAbstractVertexEvaluator			*m_selector_approach;

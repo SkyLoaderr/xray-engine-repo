@@ -2,15 +2,12 @@
 
 #include "ai_monster_shared_data.h"
 
-
 class		CAI_Biting;
 class		CJumping;
 class		CAnimTriple;
 
 //////////////////////////////////////////////////////////////////////////
 class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
-
-	
 
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 
@@ -62,9 +59,6 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 	} m_accel;
 
 	// ---------------------------------------------------------------------------------------
-
-
-	SStepInfo					step_info;
 
 	CAnimTriple					*pCurAnimTriple;
 
@@ -139,10 +133,9 @@ public:
 	void		AA_GetParams			(SAAParam &params, LPCSTR anim_name);
 
 	// Steps
-	void		STEPS_Load				(LPCSTR section, u8 legs_num);
-	void		STEPS_Initialize		();
-	void		STEPS_Update			(u8 legs_num);
-	
+	//void		STEPS_Load				(LPCSTR section, u8 legs_num);
+	//void		STEPS_Initialize		();
+	//void		STEPS_Update			(u8 legs_num);
 
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);

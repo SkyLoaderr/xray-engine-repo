@@ -12,7 +12,7 @@ void CAI_Biting::reload	(LPCSTR section)
 	CCustomMonster::reload		(section);
 	CMonsterMovement::reload	(section);
 
-	LoadFootBones	();
+	//LoadFootBones	();
 
 	CSoundPlayer::add(pSettings->r_string(section,"sound_idle"),		16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_eat"),			16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
@@ -34,6 +34,7 @@ void CAI_Biting::reinit()
 
 	inherited::reinit					();
 	CMonsterMovement::reinit			();
+	CStepManager::reinit				();
 
 	MotionMan.reinit					();
 
@@ -59,6 +60,7 @@ void CAI_Biting::reinit()
 	prev_size						= 0;
 	force_real_speed				= false;
 	script_processing_active		= false;
+
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -69,6 +71,7 @@ void CAI_Biting::Load(LPCSTR section)
 	// load parameters from ".ltx" file
 	inherited::Load					(section);
 	CMonsterMovement::Load			(section);
+	CStepManager::load				(section);
 
 	AS_Load							(section);
 

@@ -343,15 +343,6 @@ struct SAAParam {
 
 DEFINE_MAP(ref_str,	SAAParam, AA_MAP, AA_MAP_IT);
 
-struct SStepParam {
-	struct{
-		float	time;
-		float	power;
-	} step[4];
-
-	u8			cycles;
-};
-
 struct SCurrentAnimationInfo {
 	ref_str		name;
 
@@ -371,26 +362,6 @@ struct SCurrentAnimationInfo {
 };
 
 
-
-
-
-DEFINE_MAP(ref_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
-
-struct SStepInfo {
-	struct {
-		ref_sound		sound;
-		
-		bool			handled;		// обработан
-		u8				cycle;			// цикл в котором отработан
-	} activity[4];
-	
-	SStepParam		params;
-	bool			disable;
-
-	u8				cur_cycle;
-
-	SStepInfo()		{disable = true;}
-};
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -510,16 +481,5 @@ enum EDangerType {
 	eVeryStrong,
 	eNone
 };
-
-// важен порядок
-enum ELegType{
-	eFrontLeft,
-	eFrontRight,
-	eBackRight,
-	eBackLeft,
-
-	eLegsMaxNumber
-};
-
 
 

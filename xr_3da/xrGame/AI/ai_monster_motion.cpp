@@ -128,7 +128,8 @@ bool CMotionManager::PrepareAnimation()
 	m_cur_anim.speed.target		= -1.f;
 
 	// инициализировать информацию о текущей анимации шагания
-	STEPS_Initialize();
+	//STEPS_Initialize();
+	pMonster->on_animation_start(m_cur_anim.name);
 
 	return true;
 }
@@ -440,105 +441,104 @@ LPCSTR CMotionManager::GetActionName(EAction action)
 // End Debug
 //////////////////////////////////////////////////////////////////////////
 
-
-void CMotionManager::STEPS_Update(u8 legs_num)
-{
-	if (step_info.disable) return;
-	
-	SGameMtlPair* mtl_pair		= pMonster->CMaterialManager::get_current_pair();
-	if (!mtl_pair) return;
-
-	// получить параметры шага
-	SStepParam &step		= step_info.params;
-	TTime		cur_time	= Level().timeServer();
-
-	// время одного цикла анимации
-	float cycle_anim_time	= GetCurAnimTime() / step.cycles;
-
-	for (u32 i=0; i<legs_num; i++) {
-		
-		// если событие уже обработано для этой ноги, то skip
-		if (step_info.activity[i].handled && (step_info.activity[i].cycle == step_info.cur_cycle)) continue;
-		
-		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
-		TTime offset_time = m_cur_anim.time_started + u32(1000 * (cycle_anim_time * (step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
-
-		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
-			
-			// Играть звук
-			if (!mtl_pair->StepSounds.empty()) {
-				
-				Fvector sound_pos = pMonster->Position();
-				sound_pos.y += 0.5;
-
-				SELECT_RANDOM(step_info.activity[i].sound, mtl_pair, StepSounds);
-				step_info.activity[i].sound.play_at_pos	(pMonster,sound_pos);
-
-			}
-			
-			// Играть партиклы
-			if (!mtl_pair->CollideParticles.empty()) {
-				LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-				
-				//отыграть партиклы столкновения материалов
-				CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
-
-				// вычислить позицию и направленность партикла
-				Fmatrix pos; 
-
-				// установить направление
-				pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
-				Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
-				
-				// установить позицию
-				pos.c.set(pMonster->get_foot_position(ELegType(i)));
-				
-				ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-				Level().ps_needtoplay.push_back(ps);
-			}
-
-			// Play Camera FXs
-			pMonster->event_on_step();
-
-			// обновить поле handle
-			step_info.activity[i].handled	= true;
-			step_info.activity[i].cycle		= step_info.cur_cycle;
-		}
-	}
-
-	// определить текущий цикл
-	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = 1 + u8(float(cur_time - m_cur_anim.time_started) / (1000.f*cycle_anim_time));
-
-	// позиционировать играемые звуки
-	for (i=0; i<legs_num; i++) {
-		if (step_info.activity[i].handled && step_info.activity[i].sound.feedback) {
-			Fvector sound_pos = pMonster->Position();
-			sound_pos.y += 0.5;
-			step_info.activity[i].sound.set_position	(sound_pos);
-			//step_info.activity[i].sound.set_volume	(step_info.params.step[i].power);
-		}
-	}
-}
-
-void CMotionManager::STEPS_Initialize() 
-{
-	// искать текущую анимацию в STEPS_MAP
-	STEPS_MAP_IT it = get_sd()->steps_map.find(m_cur_anim.name);
-	if (it == get_sd()->steps_map.end()) {
-		step_info.disable = true;
-		return;
-	}
-
-	step_info.disable	= false;
-	step_info.params	= it->second;
-	step_info.cur_cycle = 1;					// all cycles are 1-based
-
-	for (u32 i=0; i<4; i++) {
-		step_info.activity[i].handled	= false;
-		step_info.activity[i].cycle		= step_info.cur_cycle;	
-	}
-
-}
+//void CMotionManager::STEPS_Update(u8 legs_num)
+//{
+//	if (step_info.disable) return;
+//	
+//	SGameMtlPair* mtl_pair		= pMonster->CMaterialManager::get_current_pair();
+//	if (!mtl_pair) return;
+//
+//	// получить параметры шага
+//	SStepParam &step		= step_info.params;
+//	TTime		cur_time	= Level().timeServer();
+//
+//	// время одного цикла анимации
+//	float cycle_anim_time	= GetCurAnimTime() / step.cycles;
+//
+//	for (u32 i=0; i<legs_num; i++) {
+//		
+//		// если событие уже обработано для этой ноги, то skip
+//		if (step_info.activity[i].handled && (step_info.activity[i].cycle == step_info.cur_cycle)) continue;
+//		
+//		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
+//		TTime offset_time = m_cur_anim.time_started + u32(1000 * (cycle_anim_time * (step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
+//
+//		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
+//			
+//			// Играть звук
+//			if (!mtl_pair->StepSounds.empty()) {
+//				
+//				Fvector sound_pos = pMonster->Position();
+//				sound_pos.y += 0.5;
+//
+//				SELECT_RANDOM(step_info.activity[i].sound, mtl_pair, StepSounds);
+//				step_info.activity[i].sound.play_at_pos	(pMonster,sound_pos);
+//
+//			}
+//			
+//			// Играть партиклы
+//			if (!mtl_pair->CollideParticles.empty()) {
+//				LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+//				
+//				//отыграть партиклы столкновения материалов
+//				CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
+//
+//				// вычислить позицию и направленность партикла
+//				Fmatrix pos; 
+//
+//				// установить направление
+//				pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+//				Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
+//				
+//				// установить позицию
+//				pos.c.set(pMonster->get_foot_position(ELegType(i)));
+//				
+//				ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+//				Level().ps_needtoplay.push_back(ps);
+//			}
+//
+//			// Play Camera FXs
+//			pMonster->event_on_step();
+//
+//			// обновить поле handle
+//			step_info.activity[i].handled	= true;
+//			step_info.activity[i].cycle		= step_info.cur_cycle;
+//		}
+//	}
+//
+//	// определить текущий цикл
+//	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = 1 + u8(float(cur_time - m_cur_anim.time_started) / (1000.f*cycle_anim_time));
+//
+//	// позиционировать играемые звуки
+//	for (i=0; i<legs_num; i++) {
+//		if (step_info.activity[i].handled && step_info.activity[i].sound.feedback) {
+//			Fvector sound_pos = pMonster->Position();
+//			sound_pos.y += 0.5;
+//			step_info.activity[i].sound.set_position	(sound_pos);
+//			//step_info.activity[i].sound.set_volume	(step_info.params.step[i].power);
+//		}
+//	}
+//}
+//
+//void CMotionManager::STEPS_Initialize() 
+//{
+//	// искать текущую анимацию в STEPS_MAP
+//	STEPS_MAP_IT it = get_sd()->steps_map.find(m_cur_anim.name);
+//	if (it == get_sd()->steps_map.end()) {
+//		step_info.disable = true;
+//		return;
+//	}
+//
+//	step_info.disable	= false;
+//	step_info.params	= it->second;
+//	step_info.cur_cycle = 1;					// all cycles are 1-based
+//
+//	for (u32 i=0; i<4; i++) {
+//		step_info.activity[i].handled	= false;
+//		step_info.activity[i].cycle		= step_info.cur_cycle;	
+//	}
+//
+//}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

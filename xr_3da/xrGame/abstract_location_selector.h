@@ -32,7 +32,7 @@ protected:
 	
 protected:
 	IC			void			perform_search				(const _vertex_id_type game_vertex_id);
-	IC	virtual	void			before_search				(const _vertex_id_type vertex_id);
+	IC	virtual	void			before_search				(_vertex_id_type &vertex_id);
 	IC	virtual	void			after_search				();
 	IC			bool			accessible					(const _vertex_id_type vertex_id);
 

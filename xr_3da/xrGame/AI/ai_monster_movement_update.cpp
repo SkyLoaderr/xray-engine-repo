@@ -21,7 +21,9 @@ void CMonsterMovement::Update_Initialize()
 // Update Movement
 void CMonsterMovement::Update_Execute()
 {
-	//update_target_point								();
+#ifdef _DEBUG	
+	update_target_point								();
+#endif
 	
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);

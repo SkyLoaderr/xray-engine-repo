@@ -70,7 +70,7 @@ public:
 	bool					map_converted;
 	
 	AA_MAP					aa_map;
-	STEPS_MAP				steps_map;
+	//STEPS_MAP				steps_map;
 };
 
 

@@ -1949,6 +1949,12 @@
 						<File
 							RelativePath=".\ai\monster_enemy_manager.h">
 						</File>
+						<File
+							RelativePath=".\step_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\step_manager.h">
+						</File>
 						<Filter
 							Name="Components"
 							Filter="">
