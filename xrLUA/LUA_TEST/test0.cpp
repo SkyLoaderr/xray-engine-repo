@@ -604,7 +604,7 @@ void test0()
 
 		class_<A,A_wrapper>("A")
 			.def(				constructor<>())
-			.def("set",			&A::set,	return_reference_to(return_value))
+			.def("set",			&A::set,	return_reference_to(_1))
 			.def("get",			&A::get)
 			.def("a",			&A::a_virtual, &A_wrapper::a_static),
 
@@ -639,7 +639,7 @@ void test0()
 		def("c_bug",			 &c_bug),
 		def("print_error_stack", &print_error_stack),
 		def("set_a",			 &set_a, adopt(_1)),
-		def("get_a",			 &get_a, adopt(return_value))
+		def("get_a",			 &get_a)
 //		def("lua_resume", &lua_resume),
 //		def("lua_debug", &lua_debug)
 	];
@@ -653,7 +653,7 @@ void test0()
 //	lua_dostring			(L,"thread_test.bug()");
 
 	printf			("top : %d\n",lua_gettop(L));
-	for (int i=0; i<0+0*10000; ++i)
+	for (int i=0; i<1+0*10000; ++i)
 	{
 		printf			("Starting thread %d\n",i);
 		lua_State		*t = lua_newthread(L);
