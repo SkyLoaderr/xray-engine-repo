@@ -213,12 +213,13 @@ BOOL IPureClient::Connect(LPCSTR options)
 		string64						EnumData;
 		EnumData[0] = 0;
 		strcat(EnumData, "ToConnect");
+		DWORD EnumSize = xr_strlen(EnumData) + 1;
 		// We now have the host address so lets enum
 		R_CHK(NET->EnumHosts(
 			&dpAppDesc,				// pApplicationDesc
 			net_Address_server,		// pdpaddrHost
 			net_Address_device,		// pdpaddrDeviceInfo
-			EnumData, strlen(EnumData)+1,		// pvUserEnumData, size
+			EnumData, EnumSize,		// pvUserEnumData, size
 			2,						// dwEnumCount
 			0,						// dwRetryInterval
 			1500,					// dwTimeOut
