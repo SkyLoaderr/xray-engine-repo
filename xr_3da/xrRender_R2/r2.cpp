@@ -207,6 +207,7 @@ CRender::CRender()
 	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;
 	b_emap				= (strstr(Core.Params,"-emap"))?TRUE:FALSE;
 	b_distortion		= (strstr(Core.Params,"-nodistort"))?FALSE:TRUE;
+	b_nvstecil			= (strstr(Core.Params,"-nvstencil"))?TRUE:FALSE;
 }
 
 CRender::~CRender()

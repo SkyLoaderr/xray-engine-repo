@@ -38,6 +38,7 @@ public:
 	BOOL						b_noshadows;
 	BOOL						b_emap;
 	BOOL						b_distortion;
+	BOOL						b_nvstecil;
 public:
 	struct		_stats
 	{
