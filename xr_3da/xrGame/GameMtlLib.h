@@ -27,8 +27,8 @@
 
 #define GAMEMTL_SUBITEM_COUNT			4
 
-#define GAMEMTL_NONE	u32(-1)
-#define GAMEMTL_FILENAME "gamemtl.xr"
+#define GAMEMTL_NONE		u32(-1)
+#define GAMEMTL_FILENAME	"gamemtl.xr"
 
 #ifdef _EDITOR		
 #define GM_NON_GAME	
@@ -38,7 +38,7 @@
 #endif
 
 #ifdef GM_NON_GAME
-	#define SoundSVec4 	AnsiString
+	#define SoundSVec4 		AnsiString
 	#define PSSVec4 		AnsiString
 	#define ShaderSVec4 	AnsiString
 #else
@@ -132,7 +132,7 @@ public:
 public:
 	SGameMtlPair		(CGameMtlLibrary* owner)
     {
-		ZeroMemory		(this,sizeof(*this));
+		fFlotation		= 0;
     	mtl0			= -1;
     	mtl1			= -1;
         ID				= -1;
