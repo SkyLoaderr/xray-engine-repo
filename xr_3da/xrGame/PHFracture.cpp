@@ -154,11 +154,12 @@ void CPHFracturesHolder::PhTune(dBodyID body)
 		}
 		else
 		{
-			if(!dJointGetFeedback(joint))
-			{
-				m_feedbacks.push_back(dJointFeedback());
-				dJointSetFeedback(joint,&m_feedbacks.back());
-			}
+			dJointSetFeedback(joint,ContactFeedBacks.add());
+			//if(!dJointGetFeedback(joint))
+			//{
+			//	m_feedbacks.push_back(dJointFeedback());
+			//	dJointSetFeedback(joint,&m_feedbacks.back());
+			//}
 		}
 	}
 
@@ -329,12 +330,16 @@ bool CPHFracture::Update(CPHElement* element)
 		{
 			CPHJoint* J	= (CPHJoint*) dJointGetData(joint);
 			J->PSecondElement()->InterpolateGlobalPosition(&joint_position);
-			u16 el_position=J->RootGeom()->element_position();
-			if(element==J->PFirst_element()&&
-				el_position<element->numberOfGeoms()&&
-				el_position>=m_start_geom_num&&
-				el_position<m_end_geom_num
-				) applied_to_second=true;
+			CODEGeom* root_geom=J->RootGeom();
+			if(root_geom)
+			{
+				u16 el_position=root_geom->element_position();
+				if(element==J->PFirst_element()&&
+					el_position<element->numberOfGeoms()&&
+					el_position>=m_start_geom_num&&
+					el_position<m_end_geom_num
+					) applied_to_second=true;
+			}
 		}
 //accomulate forces applied by joints to first and second parts
 		Fvector body_to_joint;
