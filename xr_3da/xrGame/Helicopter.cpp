@@ -411,6 +411,8 @@ void CHelicopter::Hit(	float P,
 						float impulse,  
 						ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
+if(who==this)
+	return;
 
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end() && hit_type==ALife::eHitTypeFireWound) {
@@ -458,6 +460,8 @@ void CHelicopter::Hit(	float P,
 
 void CHelicopter::doHunt(CObject* dest)
 {
+	VERIFY(this != dest);
+
 	if( m_curState==CHelicopter::eMovingByPatrolZonePath ){
 
 

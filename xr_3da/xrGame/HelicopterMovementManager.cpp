@@ -150,11 +150,12 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 		m_endAttackTime = m_endTime;
 	};
 
+/*
 	if (heli->state() == CHelicopter::eInitiateHunt2) {
 		addHuntPath2(lt, heli->lastEnemyPos() );
 		heli->setState(CHelicopter::eMovingByAttackTraj);
 		m_endAttackTime = m_endTime;
-	};
+	};*/
 
 	if (heli->state() == CHelicopter::eMovingByAttackTraj) {
 		if(lt>m_endAttackTime)
@@ -252,7 +253,7 @@ void	CHelicopterMovManager::addHuntPath(float from_time, const Fvector& enemyPos
 
 void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPos)
 {
-	Fvector fromPos;
+/*	Fvector fromPos;
 
 	float safe_time;
 
@@ -268,6 +269,7 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	vAddedKeys.push_back(last);
 	vAddedKeys.back().y -= 2.0f;
 	insertKeyPoints(m_endTime+10.0f, vAddedKeys, 0.03f);
+*/
 }
 
 void CHelicopterMovManager::createHuntPathTrajectory(float from_time, 
