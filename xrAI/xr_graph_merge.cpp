@@ -53,7 +53,7 @@ public:
 	SLevel						m_tLevel;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
-	xr_vector<SLevelPoint>		m_tpLevelPoints;
+	xr_vector<CLevelPoint>		m_tpLevelPoints;
 	CGameGraph					*m_tpGraph;
 
 								CLevelGameGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)

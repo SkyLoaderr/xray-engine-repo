@@ -85,11 +85,7 @@ public:
 #pragma pack(pop)
 
 	typedef const CEdge				*const_iterator;
-#ifndef AI_COMPILER
 	typedef const ALife::CLevelPoint*const_spawn_iterator;
-#else
-	typedef const ALife::SLevelPoint*const_spawn_iterator;
-#endif
 
 protected:
 	CHeader							m_header;	// graph header

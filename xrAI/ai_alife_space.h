@@ -113,6 +113,9 @@ namespace ALife {
 		}
 
 		friend class CGameGraph;
+#ifdef AI_COMPILER
+		friend class CGraphSaver;
+#endif
 	};
 
 	struct SSumStackCell {
