@@ -22,6 +22,8 @@
 #include "ElPopBtn.hpp"
 #include "ExtBtn.hpp"
 
+#define TElFString ::TElFString
+
 class TProperties : public TForm
 {
 __published:	// IDE-managed Components
@@ -73,6 +75,9 @@ __published:	// IDE-managed Components
 	void __fastcall CollapseSelected1Click(TObject *Sender);
 	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
+	void __fastcall tvPropertiesShowLineHint(TObject *Sender,
+          TElTreeItem *Item, TElHeaderSection *Section, TElFString &Text,
+          THintWindow *HintWindow, TPoint &MousePos, bool &DoShowHint);
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
@@ -114,8 +119,8 @@ private:	// User declarations
     void 				ApplyEditControl		();
     void 				CancelEditControl		();
 
-	void 				OutBOOL					(BOOL val, TCanvas* Surface, const TRect& R, bool bEnable);
-	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, bool bEnable, TGraphic* g=0, bool bArrow=false);
+	void 				OutBOOL					(BOOL val, TCanvas* Surface, TRect& R, bool bEnable);
+	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
 	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);

@@ -180,10 +180,10 @@ public:
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_SOUNDENV);   }
     IC ATextValue*	  	CreateASoundEnv	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_SOUNDENV);    }
-    IC TextValue*	 	CreateLibPS		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
-    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPS);      }
-    IC ATextValue*	 	CreateALibPS	(PropItemVec& items, AnsiString key, AnsiString* val)
-    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
+//	IC TextValue*	 	CreateLibPS		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
+//	{	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPS);      }
+//	IC ATextValue*	 	CreateALibPS	(PropItemVec& items, AnsiString key, AnsiString* val)
+//	{	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
     IC TextValue*	 	CreateLibPE		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPE);		}
     IC ATextValue*	 	CreateALibPE	(PropItemVec& items, AnsiString key, AnsiString* val)

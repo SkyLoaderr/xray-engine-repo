@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 629
+  Height = 544
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 629
+    Height = 544
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 390
+      Top = 305
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 154
       Width = 258
-      Height = 236
+      Height = 151
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 221
+        Height = 136
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -219,7 +219,7 @@ object fraLeftBar: TfraLeftBar
         RaggedRight = False
         ScrollOpposite = False
         Style = etsNetTabs
-        TabIndex = 2
+        TabIndex = 3
         TabPosition = etpTop
         HotTrackFont.Charset = DEFAULT_CHARSET
         HotTrackFont.Color = 15790320
@@ -227,7 +227,7 @@ object fraLeftBar: TfraLeftBar
         HotTrackFont.Name = 'MS Sans Serif'
         HotTrackFont.Style = []
         TabBkColor = 10528425
-        ActivePage = tsMaterial
+        ActivePage = tsMaterialPair
         FlatTabBorderColor = clBtnShadow
         Align = alClient
         ParentColor = False
@@ -356,7 +356,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 144
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -571,7 +571,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 144
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -669,6 +669,7 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Material'
           Color = 10528425
+          Visible = False
           object Bevel2: TBevel
             Left = 0
             Top = 50
@@ -785,7 +786,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 144
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -882,7 +883,6 @@ object fraLeftBar: TfraLeftBar
           TabVisible = True
           Caption = 'Material Pair'
           ParentColor = True
-          Visible = False
           object Bevel4: TBevel
             Left = 0
             Top = 50
@@ -894,7 +894,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 144
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -905,7 +905,6 @@ object fraLeftBar: TfraLeftBar
             BorderStyle = bsNone
             BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
             CustomPlusMinus = True
-            DragAllowed = True
             DrawFocusRect = False
             DragTrgDrawMode = dtdDownColorLine
             ExplorerEditMode = False
@@ -980,7 +979,6 @@ object fraLeftBar: TfraLeftBar
             VirtualityLevel = vlNone
             BkColor = clGray
             OnItemFocused = tvItemFocused
-            OnDragDrop = OnDragDrop
             OnMouseDown = tvEngineMouseDown
             OnKeyDown = tvEngineKeyDown
           end
@@ -1004,6 +1002,7 @@ object fraLeftBar: TfraLeftBar
               HotColor = 15790320
               CloseButton = False
               Caption = 'Remove'
+              Enabled = False
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -1024,6 +1023,7 @@ object fraLeftBar: TfraLeftBar
               HotColor = 15790320
               CloseButton = False
               Caption = 'Inherit'
+              Enabled = False
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -1077,6 +1077,7 @@ object fraLeftBar: TfraLeftBar
               CloseButton = False
               CloseWidth = 24
               Caption = 'Create'
+              Enabled = False
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -1214,7 +1215,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 144
+            Height = 59
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1309,7 +1310,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 392
+      Top = 307
       Width = 258
       Height = 236
       Align = alBottom
@@ -1462,8 +1463,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 117
-    Top = 165
+    Left = 45
+    Top = 245
     object Rename1: TMenuItem
       Caption = 'Rename'
       OnClick = Rename1Click
@@ -1491,7 +1492,7 @@ object fraLeftBar: TfraLeftBar
     Types = [sftText]
     OnValidateResult = InplaceEditValidateResult
     Left = 10
-    Top = 165
+    Top = 245
   end
   object pmImages: TMxPopupMenu
     Alignment = paCenter
@@ -1537,8 +1538,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 101
-    Top = 104
+    Left = 117
+    Top = 192
     object MenuItem1: TMenuItem
       Caption = 'Save'
       OnClick = ebSaveClick

@@ -91,7 +91,7 @@ private:	// User declarations
     void __fastcall FillLAnim		();
     void __fastcall FillShader		();
     void __fastcall FillShaderXRLC	();
-    void __fastcall FillPS			();
+//    void __fastcall FillPS			();
     void __fastcall FillPE			();
     void __fastcall FillParticles	();
     void __fastcall FillTexture		();
@@ -108,7 +108,7 @@ public:		// User declarations
         smObject,
     	smShader,
         smShaderXRLC,
-        smPS,
+//        smPS,
         smPE,
         smParticles,
         smTexture,

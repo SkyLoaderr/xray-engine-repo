@@ -32,6 +32,12 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 
     void				RegisterTools		();
     void				UnregisterTools		();
+    void				RealUpdateProperties();
+
+    enum{
+    	flRT_UpdateProperties = (1ul<<0ul),
+    };
+    Flags32				m_RTFlags;
 public:
     float 				fFogness;
     u32					dwFogColor;
@@ -87,7 +93,7 @@ public:
     bool				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0);
 
     void				ShowProperties		();
-    void				UpdateProperties	(bool bForced=false){;}
+    void				UpdateProperties	(bool bForced=false){m_RTFlags.set(flRT_UpdateProperties,TRUE); if(bForced) RealUpdateProperties(); }
     void				RefreshProperties	(){;}
 
 	void				SetNumPosition		(CCustomObject* p1){;}

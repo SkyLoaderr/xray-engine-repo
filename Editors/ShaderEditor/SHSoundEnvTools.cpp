@@ -7,6 +7,7 @@
 #include "ui_main.h"
 #include "folderlib.h"
 #include "ChoseForm.h"
+#include "leftbar.h"
 
 //------------------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ CSHSoundEnvTools::~CSHSoundEnvTools()
 
 void CSHSoundEnvTools::OnActivate()
 {
+    fraLeftBar->InplaceEdit->Tree = View();
 	m_PreviewSnd->Play();
 	PropItemVec items;
     m_PreviewSnd->FillProp	("Sound",items);
@@ -190,7 +192,7 @@ void CSHSoundEnvTools::SetCurrentItem(LPCSTR name)
 	CSoundRender_Environment* S = FindItem(name);
 	if (m_Env!=S){
         m_Env = S;
-        UpdateProperties();
+	    UI.Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 	UseEnvironment	();
@@ -222,7 +224,7 @@ void __fastcall CSHSoundEnvTools::OnEchoResetClick(PropValue* sender, bool& bMod
     Ext.m_ItemProps->RefreshForm();
     Modified();
 }
-void CSHSoundEnvTools::UpdateProperties()
+void CSHSoundEnvTools::RealUpdateProperties()
 {
 	PropItemVec items;
 	if (m_Env){

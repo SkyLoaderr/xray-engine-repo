@@ -85,6 +85,9 @@ public:
     TElTreeItem*		ExpandItem			(TElTree* tv, AnsiString full_name);
 
 	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type);
+
+	typedef bool 		__fastcall 			(__closure *TFindObjectByName)(LPCSTR new_name);
+    AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb);
 //------------------------------------------------------------------------------
 };
 

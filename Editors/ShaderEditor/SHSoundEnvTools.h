@@ -49,7 +49,7 @@ public:
     virtual void				SetCurrentItem		(LPCSTR name);
     virtual void				ApplyChanges		(bool bForced=false);
 
-	virtual void 				UpdateProperties	();
+	virtual void 				RealUpdateProperties();
 
 	virtual void 				OnFrame				();
 	virtual void 				OnRender			();

@@ -10,18 +10,27 @@
 class CFrustum;
 class CWayPoint;
 
-DEFINE_VECTOR(CWayPoint*,WPVec,WPIt);
+struct SWPLink{          
+	CWayPoint*	way_point;
+    float		probability;
+//			    SWPLink():way_point(0),probability(0){}
+			    SWPLink(CWayPoint* wp, float pb):way_point(wp),probability(pb){}
+};
+DEFINE_VECTOR(SWPLink*,WPLVec,WPLIt);
+
 class CWayPoint{
     friend class CWayObject;
     friend class TfrmPropertiesWayPoint;
+    ref_str		m_Name;
     Fvector		m_vPosition;
     Flags32		m_Flags;
     BOOL		m_bSelected;
-    WPVec		m_Links;
-    void		AppendLink		(CWayPoint* P);
+    WPLVec		m_Links;
+    void		AppendLink		(CWayPoint* P, float pb);
     bool		DeleteLink		(CWayPoint* P);
 public:
-                CWayPoint		();
+                CWayPoint		(LPCSTR name);
+                ~CWayPoint		();
     void    	Render      	(bool bParentSelect);
     bool    	RayPick	    	(float& distance, const Fvector& S, const Fvector& D);
     bool 		FrustumPick		(const CFrustum& frustum);
@@ -32,9 +41,11 @@ public:
     bool		AddDoubleLink	(CWayPoint* P);
     bool		RemoveLink		(CWayPoint* P);
     void		InvertLink		(CWayPoint* P);
-    WPIt		HasLink			(CWayPoint* P);
+    WPLIt		FindLink		(CWayPoint* P);
     void		GetBox			(Fbox& bb);
 };
+
+DEFINE_VECTOR(CWayPoint*,WPVec,WPIt);
 
 class CWayObject: public CCustomObject{
 protected:
@@ -42,6 +53,9 @@ protected:
 	EWayType		m_Type;
     WPVec			m_WayPoints;
     typedef CCustomObject inherited;
+    CWayPoint*		FindWayPoint	(LPCSTR nm);
+	bool __fastcall FindWPByName	(LPCSTR new_name){return !!FindWayPoint(new_name);}
+	void __fastcall	OnWayPointNameAfterEdit(PropItem* sender, LPVOID edit_val);
 public:
 					CWayObject		(LPVOID data, LPCSTR name);
     void            Construct   	(LPVOID data);

@@ -127,7 +127,7 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(PropItem* sender, LPVOID edit_va
 }
 //------------------------------------------------------------------------------
 
-void CSHEngineTools::UpdateProperties()
+void CSHEngineTools::RealUpdateProperties()
 {
 	if (m_bFreezeUpdate) return;
 

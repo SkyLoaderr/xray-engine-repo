@@ -6,7 +6,7 @@
 #include "SHToolsInterface.h"
 
 // refs
-class PropValue;
+class PropValue;                               
 
 class CSHCompilerTools: public ISHTools
 {
@@ -32,7 +32,7 @@ public:
 
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();
-	virtual void 			OnActivate			(){;}
+	virtual void 			OnActivate			();
 	virtual void 			OnDeactivate		(){;}
 
     // misc
@@ -40,7 +40,7 @@ public:
     virtual void			SetCurrentItem		(LPCSTR name);
     virtual void			ApplyChanges		(bool bForced=false);
 
-	virtual void 			UpdateProperties	();
+	virtual void 			RealUpdateProperties();
 
 	virtual void 			OnFrame				();
 	virtual void 			OnRender			(){;}

@@ -32,14 +32,14 @@ public:
 
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();
-	virtual void 			OnActivate			(){;}
+	virtual void 			OnActivate			();
 	virtual void 			OnDeactivate		(){;}
 
     // misc
     virtual void			ResetCurrentItem	();
     virtual void			SetCurrentItem		(LPCSTR name);
 
-	virtual void 			UpdateProperties	();
+	virtual void 			RealUpdateProperties();
 
 	virtual void 			OnFrame				();
     virtual void			OnRender			(){;}

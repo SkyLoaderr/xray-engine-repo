@@ -21,6 +21,7 @@ CShaderTools::CShaderTools()
     m_PreviewProps		= 0;
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
+    m_RTFlags.zero		();
 }
 //---------------------------------------------------------------------------
 
@@ -34,7 +35,7 @@ void CShaderTools::OnChangeEditor(ISHTools* tools)
 	if (m_Current) m_Current->OnDeactivate();
 	m_Current = tools; R_ASSERT(m_Current);
 	m_Current->OnActivate();
-	Current()->UpdateProperties();
+    UI.Command(COMMAND_UPDATE_PROPERTIES);
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
@@ -119,6 +120,7 @@ void CShaderTools::Render()
 
 void CShaderTools::OnFrame()
 {
+	if (m_RTFlags.is(flRT_UpdateProperties)) RealUpdateProperties();
 	Current()->OnFrame();
 }
 
@@ -281,4 +283,11 @@ bool CShaderTools::RayPick(const Fvector& start, const Fvector& dir, float& dist
         }else return false;
     }
 }
+
+void CShaderTools::RealUpdateProperties()
+{
+	m_RTFlags.set(flRT_UpdateProperties,FALSE);
+    Current()->RealUpdateProperties();
+}
+
 

@@ -257,14 +257,14 @@ void __fastcall TfraLeftBar::ebCreateItemClick(TObject *Sender)
 {
     AnsiString folder;
 	FHelper.MakeName(Tools.Current()->View()->Selected,0,folder,true);
-    Tools.Current()->AppendItem(folder.c_str(),0);
+    Tools.Current()->AppendItem(folder.c_str());
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 {
+    InplaceEdit->Tree = 0;
 	Tools.OnChangeEditor(Tools.FindTools(pcShaders->ActivePage));
-    InplaceEdit->Tree = Tools.Current()->View();
 }
 //---------------------------------------------------------------------------
 

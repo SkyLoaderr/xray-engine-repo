@@ -44,10 +44,10 @@ enum EPropType{
     PROP_A_SOUNDSRC,
     PROP_SOUNDENV,
     PROP_A_SOUNDENV,
-    PROP_LIBPS,
+//    PROP_LIBPS,
 	PROP_LIBPE,
     PROP_LIBPARTICLES,
-    PROP_A_LIBPS,
+//    PROP_A_LIBPS,
 	PROP_A_LIBPE,
     PROP_A_LIBPARTICLES,
     PROP_GAMEOBJECT,
@@ -301,7 +301,7 @@ public:
         for (int k=0; k<cnt; ++k)
         	value.push_back(_GetItem(val.c_str(),k,v));
     }
-    virtual LPCSTR		GetText			(TOnDrawTextEvent){return 0;}
+    virtual LPCSTR		GetText			(TOnDrawTextEvent);
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)
     {

@@ -617,3 +617,21 @@ bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname, u32 
 }
 //---------------------------------------------------------------------------
 
+AnsiString CFolderHelper::GenerateName(LPCSTR pref, int dgt_cnt, TFindObjectByName cb)
+{
+	AnsiString result;
+    int counter 		= 0;
+    string256 	prefix	= {"name"};
+    string32	mask;
+    sprintf		(mask,"%%s%%0%dd",dgt_cnt);
+    if (pref&&pref[0]){
+    	strcpy			(prefix, pref);
+        int i			= strlen(prefix)-1;
+        for (; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
+    }
+    do	result.sprintf	(mask, prefix, counter++); //"%s%04d"
+    while(cb(result.c_str()));
+    return result;
+}
+//---------------------------------------------------------------------------
+

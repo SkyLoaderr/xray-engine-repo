@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
-
+                                                               
 #include "SHEngineTools.h"
 #include "Blender.h"
 #include "UI_Tools.h"
@@ -124,6 +124,7 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
 
 void CSHEngineTools::OnActivate()
 {
+    fraLeftBar->InplaceEdit->Tree 		= View();
 	PropItemVec items;
 //    m_PreviewObject->FillProp			("Object",items);
     PropValue* V						= PHelper.CreateToken	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token, sizeof(m_PreviewObjectType)); 
@@ -643,11 +644,12 @@ void CSHEngineTools::RemoveConstant(LPSTR name){
     }
 }
 
-void CSHEngineTools::UpdateStreamFromObject(){
+void CSHEngineTools::UpdateStreamFromObject()
+{
     m_BlenderStream.clear();
     if (m_CurrentBlender) m_CurrentBlender->Save(m_BlenderStream);
 	// init properties
-    UpdateProperties();
+    UI.Command(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSHEngineTools::UpdateObjectFromStream()

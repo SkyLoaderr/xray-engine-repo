@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-void CSHCompilerTools::UpdateProperties()
+void CSHCompilerTools::RealUpdateProperties()
 {
 	PropItemVec items;
 	if (m_Shader){

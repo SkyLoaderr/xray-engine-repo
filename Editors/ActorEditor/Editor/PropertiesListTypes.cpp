@@ -75,3 +75,9 @@ LPCSTR TokenValue4::GetText(TOnDrawTextEvent OnDrawText)
 }
 //------------------------------------------------------------------------------
 
+LPCSTR ButtonValue::GetText(TOnDrawTextEvent OnDrawText)
+{
+    prop_draw_text = _ListToSequence(value);
+    return prop_draw_text.c_str();
+}
+

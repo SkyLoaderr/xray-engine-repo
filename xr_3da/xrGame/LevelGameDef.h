@@ -30,7 +30,7 @@ enum EWayType{
 #define WAY_PATROLPATH_CHUNK		WAY_BASE+wtPatrolPath
 //----------------------------------------------------
 
-#define WAYOBJECT_VERSION			0x0012
+#define WAYOBJECT_VERSION			0x0013
 //----------------------------------------------------
 #define WAYOBJECT_CHUNK_VERSION		0x0001
 #define WAYOBJECT_CHUNK_POINTS		0x0002
@@ -65,12 +65,14 @@ enum EWayType{
             for (i=0; i<count; ++i){
             	Fvector (pos)
                 dword	(flags)
+                stringZ	(name)
             }
         chunk WAY_CHUNK_LINKS
             word (count)
             for (i=0; i<count; ++i){
             	word 	(from)
 				word 	(to)
+                float	(probability)
             }
     ...
     - chunk #n

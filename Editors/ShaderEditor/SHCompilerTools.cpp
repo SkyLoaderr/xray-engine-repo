@@ -6,6 +6,7 @@
 #include "SHCompilerTools.h"
 #include "ui_main.h"
 #include "folderlib.h"
+#include "leftbar.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -17,6 +18,11 @@ CSHCompilerTools::CSHCompilerTools(ISHInit& init):ISHTools(init)
 CSHCompilerTools::~CSHCompilerTools(){
 }
 //---------------------------------------------------------------------------
+
+void CSHCompilerTools::OnActivate()
+{
+    fraLeftBar->InplaceEdit->Tree = View();
+}
 
 void CSHCompilerTools::OnFrame()
 {
@@ -114,7 +120,7 @@ LPCSTR CSHCompilerTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source
 	return name;
 }
 
-LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
+LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name) 
 {
 	Shader_xrLC* parent 	= FindItem(parent_name);
     string64 new_name;
@@ -140,10 +146,8 @@ void CSHCompilerTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
     ApplyChanges();
 	Shader_xrLC* S = FindItem(old_full_name); R_ASSERT(S);
     strcpy(S->Name,new_full_name);
-	if (S==m_Shader){
-    	*m_Shader = *S;
-        UpdateProperties();
-    }
+	if (S==m_Shader)
+	    UI.Command(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSHCompilerTools::RemoveItem(LPCSTR name)
@@ -160,7 +164,7 @@ void CSHCompilerTools::SetCurrentItem(LPCSTR name)
     // load shader
 	if (m_Shader!=S){
         m_Shader = S;
-        UpdateProperties();
+	    UI.Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 }

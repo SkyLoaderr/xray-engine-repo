@@ -7,6 +7,8 @@
 #include "ui_main.h"
 #include "folderlib.h"
 #include "UI_Tools.h"
+#include "ChoseForm.h"
+#include "leftbar.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -20,6 +22,11 @@ CSHGameMtlTools::~CSHGameMtlTools()
 {
 }
 //---------------------------------------------------------------------------
+
+void CSHGameMtlTools::OnActivate()
+{
+    fraLeftBar->InplaceEdit->Tree = View();
+}
 
 void CSHGameMtlTools::OnFrame()
 {
@@ -111,11 +118,17 @@ LPCSTR CSHGameMtlTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source)
 
 LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
+    LPCSTR M=0;
+    AStringVec lst;
+    lst.push_back("Dynamic material");
+    lst.push_back("Static material");
+    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,M,1,0,false,&lst)||!M) return 0;
 	SGameMtl* parent 	= FindItem(parent_name);
     string64 new_name;
     GenerateItemName	(new_name,folder_name,parent_name);
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
     S->m_Name			= new_name;
+    S->Flags.set		(SGameMtl::flDynamic,0==strcmp(M,"Dynamic material"));
 	ViewAddItem			(*S->m_Name);
 	SetCurrentItem		(*S->m_Name);
 	Modified			();
@@ -134,7 +147,8 @@ void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 {
 	SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
     S->m_Name		= new_full_name;
-	if (S==m_Mtl)	UpdateProperties();
+	if (S==m_Mtl)
+	    UI.Command(COMMAND_UPDATE_PROPERTIES);
 
     // нужно переинициализировать лист пар
 	m_GameMtlPairTools->FillItemList();
@@ -156,7 +170,7 @@ void CSHGameMtlTools::SetCurrentItem(LPCSTR name)
     // load material
 	if (m_Mtl!=S){
         m_Mtl = S;
-        UpdateProperties();
+	    UI.Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 }
@@ -173,7 +187,7 @@ void __fastcall CSHGameMtlTools::OnMaterialNameChange(PropValue* sender)
 	m_GameMtlPairTools->FillItemList();
 }
 
-void CSHGameMtlTools::UpdateProperties()
+void CSHGameMtlTools::RealUpdateProperties()
 {
 	PropItemVec items;
     if (m_Mtl)

@@ -7,16 +7,19 @@
 #include "PropertiesListTypes.h"
 #include "FolderLib.h"
 #include "LeftBar.h"
+#include "ChoseForm.h"
+#include "ui_main.h"
 
 //------------------------------------------------------------------------------
 // material routines
 //------------------------------------------------------------------------------
 void SGameMtl::FillProp		(PropItemVec& items, TElTreeItem* owner)
 {
+	PropValue* V=0;
     PHelper.CreateRName_TI	(items,	"Name",					&m_Name, owner);
     PHelper.CreateRText		(items,	"Desc",					&m_Desc);
-	// flags
-	PHelper.CreateFlag32	(items,	"Flags\\Dynamic",		&Flags,	flDynamic);
+	// flags                                  
+	V=PHelper.CreateFlag32	(items,	"Flags\\Dynamic",		&Flags,	flDynamic);	V->Owner()->Enable(FALSE);
 	PHelper.CreateFlag32	(items,	"Flags\\Passable",		&Flags,	flPassable);
     PHelper.CreateFlag32	(items,	"Flags\\Breakable",		&Flags,	flBreakable);
 //.    PHelper.CreateFlag32	(items,	"Flags\\Shootable",		&Flags,	flShootable);
@@ -38,12 +41,43 @@ void SGameMtl::FillProp		(PropItemVec& items, TElTreeItem* owner)
     PHelper.CreateFloat		(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
     PHelper.CreateFloat		(items,	"Factors\\Flotation",		&fFlotationFactor);
 }
+
+BOOL CGameMtlLibrary::UpdateMtlPairs(SGameMtl* src)
+{
+	BOOL bRes = FALSE;
+    SGameMtl* M0 		= src;
+    for (GameMtlIt m1_it=materials.begin(); m1_it!=materials.end(); m1_it++){
+        SGameMtl* M1 	= *m1_it;
+        GameMtlPairIt p_it = GetMaterialPairIt(M0->GetID(),M1->GetID());
+        if ((!M0->Flags.is(SGameMtl::flDynamic))&&(!M1->Flags.is(SGameMtl::flDynamic))){
+        	R_ASSERT	(p_it==material_pairs.end());
+            continue;
+        }else{
+	        if (p_it==material_pairs.end()){
+                // create pair
+                CreateMaterialPair(M0->GetID(),M1->GetID(),0);
+                bRes = TRUE;
+            }
+        }
+    }
+    return bRes;
+}
+
+BOOL CGameMtlLibrary::UpdateMtlPairs()
+{
+	BOOL bRes = FALSE;
+    for (GameMtlIt m0_it=materials.begin(); m0_it!=materials.end(); m0_it++)
+    	if (UpdateMtlPairs(*m0_it)) bRes = TRUE;
+    return bRes;
+}
+
 SGameMtl* CGameMtlLibrary::AppendMaterial(SGameMtl* parent)
 {
     SGameMtl* M	= xr_new<SGameMtl>();
     if (parent)	*M=*parent;
     M->ID		= material_index++;
-    materials.push_back			(M);
+    materials.push_back		(M);
+    UpdateMtlPairs			(M);
     return 		M;
 }
 void CGameMtlLibrary::RemoveMaterial(LPCSTR name)
@@ -77,8 +111,8 @@ void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
     else if (sender==propCollideMarks)		mask = flCollideMarks;
     else THROW;
 
-    OwnProps.set		(mask,bChecked);
-    sender->Owner()->m_Flags.set	(PropItem::flDisabled,!bChecked);
+    OwnProps.set				(mask,bChecked);
+    sender->Owner()->m_Flags.set(PropItem::flDisabled,!bChecked);
 }
 
 IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
@@ -86,32 +120,97 @@ IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
     return mask?(mask|(flags.is(flag)?PropItem::flCBChecked:PropItem::flDisabled)):0;
 }
 
-IC SGameMtlPair* GetParentValueObj(SGameMtlPair* obj, GameMtlPairVec& parents, u32 flag)
+IC SGameMtlPair* GetLastParentValue(SGameMtlPair* who, u32 flag)
 {
-	int k 				= 0;
-    do{
-        if (obj->OwnProps.is(flag)){ break; }
-        obj				= (k<(int)parents.size())?parents[k++]:0;
-    }while(obj);
-    return obj;
+	if (!who)					return 0;
+	if (who->OwnProps.is(flag)) return who;
+    else						return GetLastParentValue(who->m_Owner->GetMaterialPair(who->GetParent()),flag);
+}
+
+IC BOOL ValidateParent(SGameMtlPair* who, SGameMtlPair* parent)
+{
+	if (!parent)				return TRUE;
+	if (who==parent)			return FALSE;
+    else						return ValidateParent(who,parent->m_Owner->GetMaterialPair(parent->GetParent()));
+}
+
+BOOL SGameMtlPair::SetParent(int parent)
+{
+	int ID_parent_save 			= ID_parent;
+	ID_parent					= parent;
+
+    for (GameMtlPairIt it=m_Owner->FirstMaterialPair(); it!=m_Owner->LastMaterialPair(); it++){
+    	if (!ValidateParent(*it,m_Owner->GetMaterialPair((*it)->GetParent()))){
+			ID_parent			= ID_parent_save;
+        	return FALSE;
+        }
+    }
+    // all right
+    OwnProps.set(flBreakingSounds,	!BreakingSounds.IsEmpty());
+    OwnProps.set(flStepSounds,		!StepSounds.IsEmpty());
+    OwnProps.set(flCollideSounds,	!CollideSounds.IsEmpty());
+    OwnProps.set(flCollideParticles,!CollideParticles.IsEmpty());
+    OwnProps.set(flCollideMarks,	!CollideMarks.IsEmpty());
+    return TRUE;
+}
+
+void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
+{
+    bModif = false;
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0:{
+        LPCSTR MP=0;
+	    AStringVec items;
+        for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
+            SGameMtl* M0 		= *m0_it;
+            for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
+                SGameMtl* M1 	= *m1_it;
+                GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
+                if (p_it!=GMLib.LastMaterialPair())
+		        	items.push_back	(GMLib.MtlPairToName(M0->GetID(),M1->GetID()));
+            }
+        }
+	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
+        AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
+        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,MP,1,nm.c_str(),false,&items)){
+        	if (MP){
+                int m0, m1;
+                m_Owner->NameToMtlPair	(MP,m0,m1);
+                SGameMtlPair* p	= m_Owner->GetMaterialPair(m0,m1);
+                if (!SetParent	(p->GetID())){
+                	ELog.DlgMsg(mtError,"Pair can't inherit from self.");
+                }else{
+			    	bModif 		= true;
+	                UI.Command	(COMMAND_UPDATE_PROPERTIES);
+                }
+            }else{
+            	SetParent		(GAMEMTL_NONE);
+			    bModif 			= true;
+                UI.Command		(COMMAND_UPDATE_PROPERTIES);
+            }
+        }
+    }break;
+	}
 }
 
 void SGameMtlPair::FillProp(PropItemVec& items)
 {
 	TOnChange OnChange	= 0;
     u32 show_CB			= 0;
-    GameMtlPairVec parents;
+    SGameMtlPair* P		= 0;
     if (ID_parent!=-1){ 
        	OnChange 		= OnFlagChange;
         show_CB		    = PropItem::flShowCB;
-		int cnt 		= m_Owner->GetParents(this,parents); R_ASSERT(cnt);
-        PHelper.CreateCaption(items,"Parent", m_Owner->MtlPairToName((*parents.begin())->GetMtl0(),(*parents.begin())->GetMtl1()));
+	    P				= m_Owner->GetMaterialPair(ID_parent);
     }
+    ButtonValue* B		= PHelper.CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
+    B->OnBtnClickEvent	= OnParentClick;
     
-	propBreakingSounds	= PHelper.CreateASoundSrc	(items,	"Braking Sounds",	&BreakingSounds);
+	propBreakingSounds	= PHelper.CreateASoundSrc	(items,	"Breaking Sounds",	&BreakingSounds);
 	propStepSounds		= PHelper.CreateASoundSrc	(items,	"Step Sounds",		&StepSounds);
 	propCollideSounds	= PHelper.CreateASoundSrc	(items,	"Collide Sounds",	&CollideSounds);
-	propCollideParticles= PHelper.CreateALibPS		(items,	"Collide Particles",&CollideParticles);
+	propCollideParticles= PHelper.CreateALibParticles(items,"Collide Particles",&CollideParticles);
 	propCollideMarks	= PHelper.CreateATexture	(items,	"Collide Marks",	&CollideMarks);
 
     propBreakingSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flBreakingSounds));
@@ -134,11 +233,11 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     
     if (show_CB){
 		SGameMtlPair* O; 
-    	if (0!=(O=GetParentValueObj(this,parents,flBreakingSounds)))	BreakingSounds	= O->BreakingSounds;
-    	if (0!=(O=GetParentValueObj(this,parents,flStepSounds))) 		StepSounds		= O->StepSounds;
-    	if (0!=(O=GetParentValueObj(this,parents,flCollideSounds))) 	CollideSounds	= O->CollideSounds;
-    	if (0!=(O=GetParentValueObj(this,parents,flCollideParticles))) 	CollideParticles= O->CollideParticles;
-    	if (0!=(O=GetParentValueObj(this,parents,flCollideMarks))) 		CollideMarks	= O->CollideMarks;
+    	if (0!=(O=GetLastParentValue(this,flBreakingSounds)))	BreakingSounds	= O->BreakingSounds;
+    	if (0!=(O=GetLastParentValue(this,flStepSounds))) 		StepSounds		= O->StepSounds;
+    	if (0!=(O=GetLastParentValue(this,flCollideSounds))) 	CollideSounds	= O->CollideSounds;
+    	if (0!=(O=GetLastParentValue(this,flCollideParticles))) CollideParticles= O->CollideParticles;
+    	if (0!=(O=GetLastParentValue(this,flCollideMarks))) 	CollideMarks	= O->CollideMarks;
     }
 }
 
@@ -160,18 +259,26 @@ LPCSTR CGameMtlLibrary::MtlPairToName		(int mtl0, int mtl1)
     static string128 buf;
     SGameMtl* M0	= GetMaterialByID(mtl0);	R_ASSERT(M0);
     SGameMtl* M1	= GetMaterialByID(mtl1);	R_ASSERT(M1);
-    sprintf			(buf,"%s # %s",*M0->m_Name,*M1->m_Name);
-    _ChangeSymbol	(buf,'\\','/');
+    string64 buf0, buf1;
+    strcpy			(buf0,*M0->m_Name);	_ChangeSymbol	(buf0,'\\','/');
+    strcpy			(buf1,*M1->m_Name);	_ChangeSymbol	(buf1,'\\','/');
+    sprintf			(buf,"%s\\%s",buf0,buf1);
     return buf;
 }
 void CGameMtlLibrary::NameToMtlPair			(LPCSTR name, int& mtl0, int& mtl1)
 {
-    string64 buf0, buf1;
-    sscanf(name,"%s # %s",buf0,buf1);
+    string64 		buf0, buf1;
+    if (_GetItemCount(name,'\\')<2){
+        mtl0		= GAMEMTL_NONE;
+        mtl1		= GAMEMTL_NONE;
+    	return;
+    }
+    _GetItem		(name,0,buf0,'\\');
+    _GetItem		(name,1,buf1,'\\');
     _ChangeSymbol	(buf0,'/','\\');
     _ChangeSymbol	(buf1,'/','\\');
-    SGameMtl* M0	= GetMaterial(buf0);	R_ASSERT(M0);	mtl0=M0->GetID();
-    SGameMtl* M1	= GetMaterial(buf1);	R_ASSERT(M1);   mtl1=M1->GetID();
+    SGameMtl* M0	= GetMaterial(buf0);	mtl0=M0?M0->GetID():GAMEMTL_NONE;
+    SGameMtl* M1	= GetMaterial(buf1);	mtl1=M1?M1->GetID():GAMEMTL_NONE;
 }
 void CGameMtlLibrary::MtlNameToMtlPair		(LPCSTR name, int& mtl0, int& mtl1)
 {
@@ -180,29 +287,23 @@ void CGameMtlLibrary::MtlNameToMtlPair		(LPCSTR name, int& mtl0, int& mtl1)
     SGameMtl* M1 	= GetMaterial(_GetItem(name,1,buf,','));	R_ASSERT(M1);	mtl1=M1->GetID();
 }
 
-int CGameMtlLibrary::GetParents(SGameMtlPair* obj, GameMtlPairVec& lst)
+SGameMtlPair* CGameMtlLibrary::CreateMaterialPair(int m0, int m1, SGameMtlPair* parent)
 {
-    do{
-        GameMtlPairIt it = GetMaterialPairIt(obj->ID_parent); R_ASSERT(it!=LastMaterialPair());
-   		obj = *it;
-	    lst.push_back(obj);
-    }while(obj&&(obj->ID_parent!=-1));
-    return lst.size();
+    SGameMtlPair* M	= xr_new<SGameMtlPair>(this);
+    if (parent){
+        M->ID_parent = parent->ID;
+        M->OwnProps.zero();
+    }
+    M->ID 		= material_pair_index++;
+    M->SetPair	(m0,m1);
+    material_pairs.push_back			(M);
+    return 		M;
 }
-
 SGameMtlPair* CGameMtlLibrary::AppendMaterialPair(int m0, int m1, SGameMtlPair* parent)
 {
     SGameMtlPair*	S = GetMaterialPair(m0,m1);
     if (!S){
-        SGameMtlPair* M	= xr_new<SGameMtlPair>(this);
-        if (parent){
-            M->ID_parent = parent->ID;
-            M->OwnProps.zero();
-        }
-        M->ID 		= material_pair_index++;
-        M->SetPair	(m0,m1);
-        material_pairs.push_back			(M);
-        return 		M;
+    	return CreateMaterialPair(m0,m1,parent);
     }else{
         return 		S;
      }
@@ -215,6 +316,7 @@ void CGameMtlLibrary::RemoveMaterialPair(LPCSTR name)
 }
 void CGameMtlLibrary::RemoveMaterialPair(GameMtlPairIt rem_it)
 {
+	if (rem_it==material_pairs.end()) return;
     // delete parent dependent
     for (GameMtlPairIt it=material_pairs.begin(); it!=material_pairs.end(); it++)
         if ((*it)->ID_parent==(*rem_it)->ID){ 
@@ -368,6 +470,7 @@ void SGameMtlPair::Save(IWriter& fs)
 
 void CGameMtlLibrary::Save()
 {
+	R_ASSERT			(FALSE==UpdateMtlPairs());
 	// save
 	CMemoryWriter fs;
     fs.open_chunk		(GAMEMTLS_CHUNK_VERSION);

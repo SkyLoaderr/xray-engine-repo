@@ -146,9 +146,9 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 	m_BMCheck 		= xr_new<Graphics::TBitmap>();
     m_BMDot 		= xr_new<Graphics::TBitmap>();
     m_BMEllipsis 	= xr_new<Graphics::TBitmap>();
-	m_BMCheck->LoadFromResourceName((u32)HInstance,"CHECK");
-	m_BMDot->LoadFromResourceName((u32)HInstance,"DOT");
-	m_BMEllipsis->LoadFromResourceName((u32)HInstance,"ELLIPSIS");
+	m_BMCheck->LoadFromResourceName		((u32)HInstance,"CHECK");
+	m_BMDot->LoadFromResourceName		((u32)HInstance,"DOT");
+	m_BMEllipsis->LoadFromResourceName	((u32)HInstance,"ELLIPSIS");
     seNumber->Parent= tvProperties;
     seNumber->Hide	();
 }
@@ -311,16 +311,18 @@ void __fastcall TProperties::tvPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TProperties::OutBOOL(BOOL val, TCanvas* Surface, const TRect& R, bool bEnable)
+void TProperties::OutBOOL(BOOL val, TCanvas* Surface, TRect& R, bool bEnable)
 {
 	if (bEnable){
-	    Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
-    	if (val)			Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-	    else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+        Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
+        if (val)			Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+        else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+    }else{
+	    DrawText			(Surface->Handle, val?"on":"off", -1, &R, DT_LEFT | DT_SINGLELINE);
     }
 }
 
-void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect R, bool bEnable, TGraphic* g, bool bArrow)
+void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g, bool bArrow)
 {
 	if (bEnable&&(g||bArrow)){
 	    R.Right	-=	g->Width+2;
@@ -487,7 +489,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 }
             break;
             case PROP_WAVE:
-            case PROP_LIBPS:
+//            case PROP_LIBPS:
             case PROP_LIBPE:
             case PROP_LIBPARTICLES:
             case PROP_SOUNDSRC:
@@ -500,7 +502,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_GAMEMTL:
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
-            case PROP_A_LIBPS:
+//			case PROP_A_LIBPS:
             case PROP_A_LIBPE:
             case PROP_A_LIBPARTICLES:
             case PROP_A_SOUNDSRC:
@@ -729,7 +731,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_FCOLOR:
                 case PROP_COLOR: 			ColorClick(item); 			break;
                 case PROP_GAMEMTL:
-                case PROP_LIBPS:
+//                case PROP_LIBPS:
 	            case PROP_LIBPE:
                 case PROP_LIBPARTICLES:
                 case PROP_SOUNDSRC:
@@ -744,7 +746,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_CSHADER:		CustomTextClick(item);      break;
                 case PROP_A_LIBOBJECT:
                 case PROP_A_GAMEMTL:
-                case PROP_A_LIBPS:
+//				case PROP_A_LIBPS:
 	            case PROP_A_LIBPE:
                 case PROP_A_LIBPARTICLES:
                 case PROP_A_SOUNDSRC:
@@ -1049,7 +1051,7 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     case PROP_ENTITY:		mode = TfrmChoseItem::smEntity;		                    break;
     case PROP_SOUNDSRC:		mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true; 	break;
     case PROP_SOUNDENV:		mode = TfrmChoseItem::smSoundEnv;						break;
-    case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
+//    case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
     case PROP_LIBPE:		mode = TfrmChoseItem::smPE;			                    break;
     case PROP_LIBPARTICLES:	mode = TfrmChoseItem::smParticles;	                    break;
     case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; 					break;
@@ -1091,7 +1093,7 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
     case PROP_A_LIBOBJECT:	mode = TfrmChoseItem::smObject;		                    break;
     case PROP_A_SOUNDSRC:  	mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true;  break;
     case PROP_A_SOUNDENV:	mode = TfrmChoseItem::smSoundEnv;						break;
-    case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
+//	case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
 	case PROP_A_LIBPE:		mode= TfrmChoseItem::smPE;			                    break;
     case PROP_A_LIBPARTICLES:mode= TfrmChoseItem::smParticles;	                    break;
     case PROP_A_GAMEMTL:	mode = TfrmChoseItem::smGameMaterial; 					break;
@@ -1677,6 +1679,18 @@ void __fastcall TProperties::ebLightAnimationEditorClick(TObject *Sender)
 void __fastcall TProperties::ExtBtn1Click(TObject *Sender)
 {
 	ModalResult = mrCancel;	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::tvPropertiesShowLineHint(TObject *Sender,
+      TElTreeItem *Item, TElHeaderSection *Section, TElFString &Text,
+      THintWindow *HintWindow, TPoint &MousePos, bool &DoShowHint)
+{
+    PropItem* prop 				= (PropItem*)Item->Tag;
+    if (prop){
+//    	HintWindow->Brush->Color= clGray;
+		Text					= prop->GetText();
+    }
 }
 //---------------------------------------------------------------------------
 

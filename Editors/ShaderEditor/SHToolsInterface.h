@@ -88,7 +88,7 @@ public:
     virtual void			SetCurrentItem		(LPCSTR name)=0;
     virtual void			ApplyChanges		(bool bForced=false)=0;
 
-	virtual void 			UpdateProperties	()=0;
+	virtual void 			RealUpdateProperties()=0;
 
 	virtual void 			OnFrame				()=0;
 	virtual void 			OnRender			()=0;
