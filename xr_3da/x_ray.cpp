@@ -71,19 +71,20 @@ void Startup()
 	char	cmd	[128];
 	if (pLevelName) 
 	{
-		strconcat		(cmd,"server ",pLevelName+8);
-		Console.Execute	(cmd);
+		strconcat				(cmd,"server ",pLevelName+8);
+		Console.Execute			(cmd);
 	} else {
 		pLevelName				= strstr(Engine.Params,"-client ");
 		if (pLevelName)	{
-			strconcat		(cmd,"client ",pLevelName+8);
-			Console.Execute	(cmd);
+			strconcat			(cmd,"client ",pLevelName+8);
+			Console.Execute		(cmd);
 		}
 	}
 
 	if (strstr(Engine.Params,"-demo ")) {
 		string64				cmd;
-		char *	pDemoName		= strstr(Engine.Params,"-demo ");
+		string64				pDemoName;
+		sscanf					(strstr(Engine.Params,"-demo ")+6,"%[^ ] ",pDemoName);
 		strconcat				(cmd,"demo_play ",pDemoName);
 		Console.Execute			(cmd);
 	}
