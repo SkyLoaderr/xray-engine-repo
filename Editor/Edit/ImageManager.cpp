@@ -6,7 +6,6 @@
 #include "ImageThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"
-#include "dxtlib.h"
 
 CImageManager ImageManager;
 //---------------------------------------------------------------------------
