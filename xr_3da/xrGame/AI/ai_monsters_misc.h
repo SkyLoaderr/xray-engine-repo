@@ -120,7 +120,7 @@
 	}
 
 	// Tests
-	//#define TEST_ACTIONS
+	#define TEST_ACTIONS
 
 	#ifdef TEST_ACTIONS
 		#define TEST_MICRO_ACTION(A) \
