@@ -17,6 +17,20 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 	return false;
 }
 
+void SaveUVM			(LPCSTR fname, xr_vector<b_rc_face>& vm)
+{
+	IWriter* W			= FS.w_open(fname);
+	string256 tmp;
+	// vertices
+	for (u32 v_idx=0; v_idx<vm.size(); v_idx++){
+		b_rc_face& rcf	= vm[v_idx];
+		sprintf			(tmp,"f %d %d [%3.2f,%3.2f]-[%3.2f,%3.2f]-[%3.2f,%3.2f]",rcf.dwMaterial,rcf.dwMaterialGame,
+						rcf.t[0].x,rcf.t[0].y, rcf.t[1].x,rcf.t[1].y, rcf.t[2].x,rcf.t[2].y);
+		W->w_string		(tmp);
+	}
+	FS.w_close	(W);
+}
+
 void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 {
 	float	p_total			= 0;
@@ -84,6 +98,12 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 	RCAST_Model				= xr_new<CDB::MODEL> ();
 	RCAST_Model->build		(CL.getV(),(int)CL.getVS(),CL.getT(),(int)CL.getTS());
 
+	extern void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL);
+	
+	// save source SMF
+	string_path				fn;
+	SaveAsSMF				(strconcat(fn,pBuild->path,"build_cform_source.smf"),CL);
+
 	// Saving for AI/DO usage
 	if (bSaveForOtherCompilers)
 	{
@@ -105,6 +125,7 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 			cf.t[1].set			(cuv[1]);
 			cf.t[2].set			(cuv[2]);
 		}
+		SaveUVM					(strconcat(fn,pBuild->path,"build_cform_source.uvm"),rc_faces);
 
 		MFS->open_chunk			(0);
 
