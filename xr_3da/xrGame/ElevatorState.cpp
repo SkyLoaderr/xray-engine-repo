@@ -124,7 +124,8 @@ void CElevatorState::UpdateStNearUp()
 {
 	Fvector d;
 	float dist=m_ladder->DDUpperP(m_character,d);
-	if(	m_ladder->InTouch(m_character)				 &&
+	if(	m_ladder->InTouch(m_character)								&&
+		//dXZDotNormalized(d,m_character->CamDir())>look_angle_cosine &&
 		//d.dotproduct(m_character->ControlAccel())<0.f&&
 		//ClimbDirection()<0.f&&
 		m_ladder->DDToPlain(m_character,d)>m_character->FootRadius()/3.f&&
@@ -138,6 +139,7 @@ void CElevatorState::UpdateStNearDown()
 	Fvector d;
 	float dist=m_ladder->DDLowerP(m_character,d);
 	if(	m_ladder->InTouch(m_character)&&
+		dXZDotNormalized(d,m_character->CamDir())>look_angle_cosine&&
 		d.dotproduct(m_character->ControlAccel())>0.f&&
 		ClimbDirection()>0.f&&
 		m_ladder->BeforeLadder(m_character)
@@ -212,12 +214,12 @@ void CElevatorState::GetControlDir(Fvector& dir)
 	case	clbDepart		: 
 	case	clbNone			: 		break;			
 	case 	clbNearUp		:		dist= m_ladder->DDUpperP(m_character,d);
-									if(	dXZDot(d,m_character->CamDir())>look_angle_cosine&&
+									if(	dXZDotNormalized(d,m_character->CamDir())>look_angle_cosine&&
 										!fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
 									break;						
 	case 	clbNearDown		:		
 									dist=m_ladder->DDLowerP(m_character,d);
-									if(dXZDot(d,m_character->CamDir())>look_angle_cosine&&
+									if(dXZDotNormalized(d,m_character->CamDir())>look_angle_cosine&&
 									   !fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
 									break;					
 	case 	clbClimbingUp	:		m_ladder->DDAxis(dir);

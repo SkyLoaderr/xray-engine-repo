@@ -24,6 +24,14 @@ IC	float	dXZDot(const float* v0,const float* v1)
 {
 	return v0[0]*v1[0]+v0[2]*v1[2];
 }
+IC	float	dXZDotNormalized(const Fvector& v0,const Fvector& v1)
+{
+	return (v0.x*v1.x+v0.z*v1.z)/_sqrt((v0.x*v0.x+v0.z*v0.z)*(v1.x*v1.x+v1.z*v1.z));
+}
+IC	float	dXZDotNormalized(const float* v0,const float* v1)
+{
+	return dXZDotNormalized(cast_fv(v0),cast_fv(v1));
+}
 IC	float	dXZDot(const Fvector& v0,const Fvector& v1)
 {
 	return v0.x*v1.x+v0.z*v1.z;
