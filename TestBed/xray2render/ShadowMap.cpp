@@ -851,12 +851,12 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
-	// samplers and texture (NORM)
-	m_pd3dDevice->SetTexture				(1, d_Normal);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+	// samplers and texture (SMAP)
+	m_pd3dDevice->SetTexture				(3, sm_ShadowMap);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// Set up the stencil states
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
@@ -881,10 +881,11 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 	cc.set									(s_Light_Direct_smap.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
 	cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9	);
-	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		dm_model2world2view2projection_light	);
+	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
 
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
-	cc.seta									(C,0,)
+	Fvector J; float scale					= 1.f / SHADOW_MAP_SIZE;
+	cc.seta									(C,0,);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
