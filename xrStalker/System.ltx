@@ -88,7 +88,7 @@ class				= ARTEFACT
 cform				= skeleton
 $prefetch 			= 64
 ;visual				= weapon\bolt\wpn_bolt.ogf
-visual				= cs\artefact_magnet.ogf
+visual				= artifacts\artifact_kristal.ogf	;visual = cs\artefact_magnet.ogf
 inv_name			= "Magnet"
 inv_name_short		= 
 inv_weight			= 1
@@ -110,6 +110,34 @@ detector_sound		= zone_mosquito_bald.wav
 
 jump_height			= .5
 energy				= 1
+
+[m_mball]
+GroupControlSection	= spawn_group
+$spawn 			= "temp\m_mball"
+$npc			= on				; option for Level Editor
+$prefetch 		= 3
+cform           = skeleton
+class   		= AF_MBALL
+
+visual				= artifacts\artifact_kristal.ogf	;visual = cs\artefact_magnet.ogf
+inv_name			= "Mercury Ball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald.wav
+
 
 [bolt]
 class				= II_BOLT
@@ -907,33 +935,6 @@ bip01_r_toe0	 	 = 0.6, 6
       
 [g_event]
 class 			 = EVENT
-
-[m_mball]
-GroupControlSection	= spawn_group
-$spawn 			= "temp\m_mball"
-$npc			= on				; option for Level Editor
-$prefetch 		= 3
-cform           = skeleton
-class   		= AF_MBALL
-
-visual				= artifacts\artifact_kristal.ogf	;visual = cs\artefact_magnet.ogf
-inv_name			= "Mercury Ball"
-inv_name_short		= 
-inv_weight			= 1
-
-food_value			= 0
-health_value		= 0
-
-inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 1000
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald.wav
 
 [m_target_assault]
 $spawn 			 = "temp\m_target_assault"
