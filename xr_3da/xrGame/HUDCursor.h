@@ -16,6 +16,7 @@ class CHUDCursor
 	ref_geom				hGeom;
 	float					fuzzyShowInfo;
 	collide::rq_result		RQ;
+	float					pick_dist;
 
 	bool					m_bShowCrosshair;
 	CHUDCrosshair			HUDCrosshair;
