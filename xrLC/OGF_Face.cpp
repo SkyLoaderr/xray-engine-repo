@@ -37,9 +37,8 @@ WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 			if (it->similar(this,V1)) return WORD(it-vertices.begin());
 		}
 		vertices.push_back(V1);
+		return vertices.size()-1;
 	} catch (...) { Msg("* ERROR: OGF::_BuildVertex");	}
-	
-	return vertices.size()-1;
 }
 
 void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
