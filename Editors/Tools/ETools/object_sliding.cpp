@@ -13,7 +13,13 @@
 #include "object.h"
 #include "object_sliding.h"
 
-void CalculateSW(Object* object, VIPM_Result* result)
+//BOOL g_bUseFastButBadOptimise = FALSE;
+
+// Call this to reorder the tris in this trilist to get good vertex-cache coherency.
+// *pwList is modified (but obviously not changed in size or memory location).
+void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris, u32 mode);
+
+void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 {
 	result->swr_records.resize(0);
 
@@ -175,12 +181,12 @@ void CalculateSW(Object* object, VIPM_Result* result)
 					}
 
 					// Now try to order them as best you can.
-//.					if ( g_bOptimiseVertexOrder )
-//.						OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), pCollapse->TriCollapsed.size() );
+					if ( optimize_vertex_order )
+						OptimiseVertexCoherencyTriList ( wTempIndices.ptr(), pCollapse->TriCollapsed.size(), optimize_vertex_order );
 
 					// And write them to the index list.
 					result->indices.insert ( iCurTriBinned * 3, wTempIndices, 0, 3 * pCollapse->TriCollapsed.size() );
-					//memcpy ( result->indices.item ( iCurTriBinned * 3 ), wTempIndices.Ptr(), sizeof(WORD) * 3 * pCollapse->TriCollapsed.size() );
+					//memcpy ( result->indices.item ( iCurTriBinned * 3 ), wTempIndices.ptr(), sizeof(WORD) * 3 * pCollapse->TriCollapsed.size() );
 					iCurTriBinned += pCollapse->TriCollapsed.size();
 				}
 			}else{
@@ -225,13 +231,13 @@ void CalculateSW(Object* object, VIPM_Result* result)
 				}
 
 				// Now try to order them as best you can.
-//.				if ( g_bOptimiseVertexOrder )
-//.					OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), pCollapse->TriOriginal.size() );
+				if ( optimize_vertex_order )
+					OptimiseVertexCoherencyTriList ( wTempIndices.ptr(), pCollapse->TriOriginal.size(), optimize_vertex_order );
 
 				// And write them to the index list.
 				result->indices.resize ( ( iCurTriAdded + pCollapse->TriOriginal.size() ) * 3 );
 				result->indices.insert ( iCurTriAdded * 3, wTempIndices, 0, 3 * pCollapse->TriOriginal.size() );
-				//memcpy ( result->indices.item ( iCurTriAdded * 3 ), wTempIndices.Ptr(), sizeof(WORD) * 3 * pCollapse->TriOriginal.size() );
+				//memcpy ( result->indices.item ( iCurTriAdded * 3 ), wTempIndices.ptr(), sizeof(WORD) * 3 * pCollapse->TriOriginal.size() );
 				iCurTriAdded += pCollapse->TriOriginal.size();
 			}
 
@@ -262,12 +268,12 @@ void CalculateSW(Object* object, VIPM_Result* result)
 		VERIFY ( iJustCheckingNumTris == iCurNumTris );
 
 		// Now try to order them as best you can.
-//.		if ( g_bOptimiseVertexOrder )
-//.			OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), iTempTriNum );
+		if ( optimize_vertex_order )
+			OptimiseVertexCoherencyTriList ( wTempIndices.ptr(), iTempTriNum, optimize_vertex_order );
 
 		// And write them to the index list.
 		result->indices.insert ( iCurTriBinned * 3, wTempIndices, 0, 3 * iTempTriNum );
-		//memcpy ( result->indices.item ( iCurTriBinned * 3 ), wTempIndices.Ptr(), sizeof(WORD) * 3 * iTempTriNum );
+		//memcpy ( result->indices.item ( iCurTriBinned * 3 ), wTempIndices.ptr(), sizeof(WORD) * 3 * iTempTriNum );
 
 		if ( object->pNextCollapse->ListNext() == NULL ){
 			// No more collapses.
@@ -293,4 +299,4 @@ void CalculateSW(Object* object, VIPM_Result* result)
 		}
 	}
 }
-
+//-----------------------------------------------------------------------------------------

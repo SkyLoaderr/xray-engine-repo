@@ -133,6 +133,8 @@ public:
 
 				~Object						();
 
+	void		Initialize					( void );
+
 	// Check that this is sensible.
 	void		CheckObject					( void );
 

@@ -210,6 +210,9 @@
 				RelativePath=".\ArbitraryList.h">
 			</File>
 			<File
+				RelativePath=".\BinaryHeap.h">
+			</File>
+			<File
 				RelativePath=".\DLink.h">
 			</File>
 			<File
@@ -226,6 +229,9 @@
 			</File>
 			<File
 				RelativePath=".\object_sliding.h">
+			</File>
+			<File
+				RelativePath=".\optimize_vertex_order.cpp">
 			</File>
 			<File
 				RelativePath=".\PropSlimTools.cpp">

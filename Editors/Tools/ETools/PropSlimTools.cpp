@@ -119,11 +119,11 @@ void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorToleran
 	}
 }
 
-ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_tolerance, BOOL optimize_vertex_order)
+ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_tolerance, u32 optimize_vertex_order)
 {
-	g_pObject->SetNewLevel	(0);
+	g_pObject->Initialize();
 	CalculateAllCollapses	(g_pObject,error_tolerance);
-	CalculateSW				(g_pObject,g_pResult);
+	CalculateSW				(g_pObject,g_pResult,optimize_vertex_order);
 	return g_pResult;
 }
 

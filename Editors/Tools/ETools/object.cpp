@@ -37,6 +37,18 @@ Object::~Object()
 	}
 }
 
+void Object::Initialize( void )
+{
+	iFullNumPts			= 0;
+	for ( MeshPt *pPt = CurPtRoot.ListNext(); pPt != NULL; pPt = pPt->ListNext() )
+		iFullNumPts++;
+	iFullNumTris		= 0;
+	for ( MeshTri *pTri = CurTriRoot.ListNext(); pTri != NULL; pTri = pTri->ListNext() )
+		iFullNumTris++;
+	SetNewLevel			(0);
+}
+
+
 // Check that this is sensible.
 void Object::CheckObject ( void )
 {
@@ -453,71 +465,70 @@ void Object::compute_face_quadric(MeshTri* tri, MxQuadric& Q)
 
 float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult /*= FALSE*/ )
 {
-	if (1){
-		static MeshPt		*pptLast;
-		static MxQuadric	qLast(QUAD_SIZE);
-		if ( pptBinned == NULL )
-		{
-			pptLast			= 0;
-			return			0.0f;
-		}
-
-		MxQuadric			qSum(QUAD_SIZE);
-		if ( bTryToCacheResult && ( pptLast == pptBinned ) ){
-			qSum			= qLast;
-		}else{
-			for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() ){
-				MxQuadric	qCur(QUAD_SIZE);
-				compute_face_quadric(ptri,qCur);
-				qSum		+= qCur;
-			}
-			if ( bTryToCacheResult ){
-				qLast		= qSum;
-				pptLast		= pptBinned;
-			}else{
-				pptLast		= NULL;
-			}
-		}
-
-		MeshPt *pptKept		= pedgeCollapse->OtherPt ( pptBinned );
-		VERIFY ( pptKept != NULL );
-
-		MxVector pos(QUAD_SIZE);
-		pack_to_vector(pos,pptKept->mypt.vPos,pptKept->mypt.fU,pptKept->mypt.fV);
-
-		return (float)qSum.evaluate(pos);
-	}else{
-		static MeshPt *pptLast;
-		static Quad qLast;
-
-		if ( pptBinned == NULL ){
-			// You can call it like this to flush the cache.
-			pptLast = NULL;
-			return 0.0f;
-		}
-
-
-		MeshPt *pptKept = pedgeCollapse->OtherPt ( pptBinned );
-		VERIFY ( pptKept != NULL );
-
-
-		Quad qSum;
-		if ( bTryToCacheResult && ( pptLast == pptBinned ) ){
-			qSum = qLast;
-		}else{
-			// Find the sum of the QEMs of the tris that will be binned.
-			for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() )
-				qSum += Quad ( ptri->pPt1->mypt.vPos, ptri->pPt2->mypt.vPos, ptri->pPt3->mypt.vPos );
-
-			if ( bTryToCacheResult ){
-				qLast = qSum;
-				pptLast = pptBinned;
-			}else{
-				pptLast = NULL;
-			}
-		}
-
-		// And find the error once the collapse has happened.
-		return qSum.FindError ( pptKept->mypt.vPos );
+	static MeshPt		*pptLast;
+	static MxQuadric	qLast(QUAD_SIZE);
+	if ( pptBinned == NULL )
+	{
+		pptLast			= 0;
+		return			0.0f;
 	}
+
+	MxQuadric qSum		= MxQuadric(QUAD_SIZE);
+	if ( bTryToCacheResult && ( pptLast == pptBinned ) ){
+		qSum			= qLast;
+	}else{
+		for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() ){
+			MxQuadric	qCur(QUAD_SIZE);
+			compute_face_quadric(ptri,qCur);
+			qSum		+= qCur;
+		}
+		if ( bTryToCacheResult ){
+			qLast		= qSum;
+			pptLast		= pptBinned;
+		}else{
+			pptLast		= NULL;
+		}
+	}
+
+	MeshPt *pptKept		= pedgeCollapse->OtherPt ( pptBinned );
+	VERIFY ( pptKept != NULL );
+
+	MxVector pos(QUAD_SIZE);
+	pack_to_vector(pos,pptKept->mypt.vPos,pptKept->mypt.fU,pptKept->mypt.fV);
+
+	return (float)qSum.evaluate(pos);
+/*
+	static MeshPt *pptLast;
+	static Quad3 qLast;
+
+	if ( pptBinned == NULL ){
+		// You can call it like this to flush the cache.
+		pptLast = NULL;
+		return 0.0f;
+	}
+
+
+	MeshPt *pptKept = pedgeCollapse->OtherPt ( pptBinned );
+	VERIFY ( pptKept != NULL );
+
+
+	Quad3 qSum;
+	if ( bTryToCacheResult && ( pptLast == pptBinned ) ){
+		qSum = qLast;
+	}else{
+		// Find the sum of the QEMs of the tris that will be binned.
+		for ( MeshTri *ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() )
+			qSum += Quad3 ( ptri->pPt1->mypt.vPos, ptri->pPt2->mypt.vPos, ptri->pPt3->mypt.vPos );
+
+		if ( bTryToCacheResult ){
+			qLast = qSum;
+			pptLast = pptBinned;
+		}else{
+			pptLast = NULL;
+		}
+	}
+
+	// And find the error once the collapse has happened.
+	return qSum.FindError ( pptKept->mypt.vPos );
+*/
 }

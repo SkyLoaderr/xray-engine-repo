@@ -24,7 +24,7 @@
 // (b) it's flexible - all vertices have a position.
 // (c) it is good enough to give plausable collapse orders.
 
-struct Quad
+struct Quad3
 {
 	float A00, A01, A02;
 	float      A11, A12;
@@ -33,7 +33,7 @@ struct Quad
 	float C;
 
 
-	Quad ( void )
+	Quad3 ( void )
 	{
 		A00 = A01 = A02 = A11 = A12 = A22 = 0.0f;
 		B0 = B1 = B2 = 0.0f;
@@ -41,7 +41,7 @@ struct Quad
 	}
 
 	// Create a quad from a triangle (numbered clockwise).
-	Quad ( const Fvector3 &vec1, const Fvector3 &vec2, const Fvector3 &vec3 )
+	Quad3 ( const Fvector3 &vec1, const Fvector3 &vec2, const Fvector3 &vec3 )
 	{
 		Fvector3 vec12; vec12.sub(vec2,vec1);
 		Fvector3 vec13; vec13.sub(vec3,vec1);
@@ -91,9 +91,9 @@ struct Quad
 				);
 	}
 
-	Quad operator+ ( const Quad &q )
+	Quad3 operator+ ( const Quad3 &q )
 	{
-		Quad rq;
+		Quad3 rq;
 		rq.A00 = A00 + q.A00;
 		rq.A01 = A01 + q.A01;
 		rq.A02 = A02 + q.A02;
@@ -107,7 +107,7 @@ struct Quad
 		return rq;
 	}
 
-	Quad &operator+= ( const Quad &q )
+	Quad3 &operator+= ( const Quad3 &q )
 	{
 		A00 += q.A00;
 		A01 += q.A01;
