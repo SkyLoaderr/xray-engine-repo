@@ -7,16 +7,17 @@
 namespace PS{
 DEFINE_VECTOR(SParticle,Particles,ParticleIt);
 
-#define PS_COLLIDE	 		0x00000001
-#define PS_MOTIONBLUR		0x00000002
-#define PS_FRAME_ENABLED	0x00000004
-#define PS_FRAME_ANIMATE	0x00000008
-#define PS_FRAME_RND_INIT	0x00000010
-#define PS_ALIGNTOPATH		0x00000020
-#define PS_RND_INIT_ANGLE	0x00000040
-#define PS_EM_BIRTHFUNC		0x00000001
-#define PS_EM_BURST			0x00000002
-#define PS_EM_PLAY_ONCE		0x00000004
+#define PS_COLLIDE	 				0x00000001
+#define PS_MOTIONBLUR				0x00000002
+#define PS_FRAME_ENABLED			0x00000004
+#define PS_FRAME_ANIMATE			0x00000008
+#define PS_FRAME_RND_INIT			0x00000010
+#define PS_ALIGNTOPATH				0x00000020
+#define PS_RND_INIT_ANGLE			0x00000040
+#define PS_FRAME_RND_PLAYBACK_DIR	0x00000080
+#define PS_EM_BIRTHFUNC				0x00000001
+#define PS_EM_BURST					0x00000002
+#define PS_EM_PLAY_ONCE				0x00000004
 
 typedef char		sh_name[64];
 #define PARTICLESYSTEM_VERSION 0x0011
@@ -300,7 +301,7 @@ public:
 			if (m_Definition->m_dwFlag&PS_FRAME_RND_INIT)
 				P.m_iAnimStartFrame	= Random.randI(m_Definition->m_Animation.m_iFrameCount);
 			if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE){
-		        int iSide 		= sign[Random.randI(2)];
+				int iSide 		= (m_Definition->m_dwFlag&PS_FRAME_RND_PLAYBACK_DIR)?sign[Random.randI(2)]:1;
 				P.m_fAnimSpeed	= iSide*m_Definition->m_Animation.m_fSpeed * (1+Random.randF(-0.5f,0.5f)*m_Definition->m_Animation.m_fSpeedVar);
             }
 		}
