@@ -600,7 +600,7 @@ function Camper:see_enemy()
 	end
 
 	if not self.c_enemy.npc:alive() and self.c_npc:is_shooting() then
-			reset(self.c_npc.npc, self.script_name)
+			reset_action(self.c_npc.npc, self.script_name)
 			self.state = nil
 			return
 	end
