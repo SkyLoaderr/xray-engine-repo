@@ -17,7 +17,7 @@
 #define mNodeStructure(x)		(*(this->Node(x)))
 #define mNode(x)				(this->Node(x))
 #define MAX_VALUE				100000.0
-#define MAX_NODES				65535
+#define MAX_NODES				4095
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
@@ -132,7 +132,7 @@ void CAI_Space::vfLoadSearch()
 	tpaIndexes	= (TIndexNode *)xr_malloc(S2);
 	ZeroMemory(tpaIndexes,S2);
 	DWORD M2	= Engine.mem_Usage();
-	Msg			("* AI path-finding-structures: %d K",(M2-M1)/(1024));
+	Msg			("* AI path-finding-structures: %d K",(S1 + S2)/(1024));
 }
 
 void CAI_Space::vfUnloadSearch()
