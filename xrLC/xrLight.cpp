@@ -139,8 +139,6 @@ public:
 		for (DWORD I = faceStart; I<faceEnd; I++)
 		{
 			Face* F = VL_faces[I];
-			if (F->pDeflector)				continue;
-			if (hasImplicitLighting(F))		continue;
 			
 			float v_amb	= F->Shader().vert_ambient;
 			float v_inv = 1.f-v_amb;
@@ -177,6 +175,7 @@ void CBuild::LightVertex()
 	
 		VL_faces.push_back				(F);
 	}
+	Msg("%d/%d selected.",VL_faces.size(),g_faces.size());
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
