@@ -15,10 +15,15 @@ enum FS_List
 
 class ENGINE_API CLocatorAPI  
 {
-	struct pred_str		: public std::binary_function<char*, char*, bool> 
-	{	
-		IC bool operator()(const char* x, const char* y) const
-		{	return strcmp(x,y)<0;	}
+public:
+	struct	file
+	{
+		LPCSTR	name;	// low-case name
+		DWORD	vfs;	// 0xffff - standart file
+		DWORD	ptr;	// pointer inside vfs
+		
+		IC bool operator < (CLocatorAPI& other) const
+		{	return strcmp(name,other.name)<0;	}
 	};
 private:
 	typedef set<char*,pred_str>	set_cstr;
@@ -26,8 +31,9 @@ private:
 
 	set_cstr			files;
 
-	void				ProcessOne	(_finddata_t& F, const char* path);
-	void				Recurse		(const char* path);
+	void				ProcessArchive	(const char* path);
+	void				ProcessOne		(_finddata_t& F, const char* path);
+	void				Recurse			(const char* path);
 public:
 	void				Initialize	();
 	void				Destroy		();
