@@ -12,7 +12,7 @@
 #include <vorbis/vorbisfile.h>
 #include <eax.h>             
 
-//#define _OPENAL
+#define _OPENAL
 
 #ifdef _OPENAL
 #	include <AL/al.h>
