@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "light.h"
 
-light::light(void)
+light::light		(void)	: ISpatial(g_SpatialSpace)
 {
 	spatial.type	= STYPE_LIGHTSOURCE;
 	flags.type		= POINT;
