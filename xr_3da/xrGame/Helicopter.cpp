@@ -131,12 +131,12 @@ void CHelicopter::Load(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
 
 
-	m_use_rocket_on_attack					= pSettings->r_bool(section,"use_rocket");
-	m_use_mgun_on_attack					= pSettings->r_bool(section,"use_mgun");
+	m_use_rocket_on_attack					= !!pSettings->r_bool(section,"use_rocket");
+	m_use_mgun_on_attack					= !!pSettings->r_bool(section,"use_mgun");
 	m_min_rocket_dist						= pSettings->r_float(section,"min_rocket_attack_dist");
 	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
 	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
-	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
+	m_syncronize_rocket						= !!pSettings->r_bool(section,"syncronize_rocket");
 
 	m_min_mgun_dist						= pSettings->r_float(section,"min_mgun_attack_dist");
 	m_max_mgun_dist						= pSettings->r_float(section,"max_mgun_attack_dist");
@@ -395,8 +395,8 @@ if(who==this)
 		hit_power			*= m_HitTypeK[hit_type];
 
 		SetfHealth(GetfHealth()-hit_power);
-		float h= GetfHealth();
-/*		Log("----Helicopter::Hit(). type=",hit_type);
+/*		float h= GetfHealth();
+		Log("----Helicopter::Hit(). type=",hit_type);
 		Log("----Helicopter::Hit(). power=",hit_power);
 		Log("----Helicopter::Hit(). health=",h);
 		Log("----Helicopter::Hit(). k=",m_HitTypeK[hit_type]);
