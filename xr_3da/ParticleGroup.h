@@ -16,13 +16,18 @@ namespace PS
 		float				m_fTimeLimit;
 		struct SEffect{
 			enum{
-				flDefferedStop	= (1<<0),
-				flHaveChild		= (1<<1),
-				flEnabled		= (1<<2),
+				flDefferedStop		= (1<<0),
+				flOnPlayChild		= (1<<1),
+				flEnabled			= (1<<2),
+                flOnPlayChildRewind	= (1<<4),
+                flOnBirthChild		= (1<<5),
+				flOnDeadChild		= (1<<6),
 			};
 			Flags32			m_Flags;
 			ref_str			m_EffectName;  
-			ref_str			m_ChildEffectName;
+			ref_str			m_OnPlayChildName;
+			ref_str			m_OnBirthChildName;
+			ref_str			m_OnDeadChildName;
 			float			m_Time0;
 			float			m_Time1;
 							SEffect				(){m_Flags.zero();/*set(flEnabled)*/m_Time0=0;m_Time1=0;}
@@ -65,26 +70,27 @@ namespace PS
     	DEFINE_VECTOR(IRender_Visual*,VisualVec,VisualVecIt);
     	struct SItem{
         	IRender_Visual*	_effect;
-            VisualVec		_children;
-            VisualVec		_children_stopped;
+            VisualVec		_children_related;
+            VisualVec		_children_free;
         public:
         	void			Set				(IRender_Visual* e);
             void			Clear			();
 
             IC u32			GetVisuals		(xr_vector<IRender_Visual*>& visuals)
             {
-            	visuals.reserve				(_children.size()+_children_stopped.size()+1);
+            	visuals.reserve				(_children_related.size()+_children_free.size()+1);
                 if (_effect)				visuals.push_back(_effect);
-                visuals.insert				(visuals.end(),_children.begin(),_children.end());
-                visuals.insert				(visuals.end(),_children_stopped.begin(),_children_stopped.end());
+                visuals.insert				(visuals.end(),_children_related.begin(),_children_related.end());
+                visuals.insert				(visuals.end(),_children_free.begin(),_children_free.end());
                 return visuals.size();
             }
             
             void			OnDeviceCreate	();
             void			OnDeviceDestroy	();
 
-            IRender_Visual*	AppendChild		(LPCSTR eff_name);
-            void			RemoveChild		(u32 idx);
+            void			StartRelatedChild	(LPCSTR eff_name, PAPI::Particle& m);
+            void			StopRelatedChild	(u32 idx);
+            void			StartFreeChild		(LPCSTR eff_name, PAPI::Particle& m);
 
             void 			UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
             void			OnFrame			(u32 u_dt, const CPGDef::SEffect& def, Fbox& box, bool& bPlaying);
