@@ -58,7 +58,7 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 	// Trace visibility
 	vector<CLightTrack::Item>& track		= dest.track;
 	vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
-	float R									= fRadius*.8f;
+	float R									= fRadius*.5f;
 	float dt								= Device.fTimeDelta;
 	for (; I!=E; I++)
 	{
