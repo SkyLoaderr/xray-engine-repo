@@ -4,7 +4,7 @@ $spawn 			= "zones\mosquito bald"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0.2;0.5 ;0.1
-effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
+effective_radius	= 0.85 ;размер радиуса в процентах от оригинального, где действует зона
 
 ef_anomaly_type			= 1
 ef_weapon_type			= 13
@@ -34,13 +34,13 @@ entrance_sound		= anomaly\anomaly_gravy_hit1								;при попадании объекта в ано
 
 
 awaking_time		= 50;100
-blowout_time		= 900	
-accamulate_time		= 50 ;200
+blowout_time		= 600	
+accamulate_time		= 10 ;200
 
-blowout_light_time		= 600
-blowout_explosion_time	= 600
-blowout_particles_time	= 600
-blowout_sound_time  	= 400
+blowout_light_time		= 300
+blowout_explosion_time	= 300
+blowout_particles_time	= 300
+blowout_sound_time  	= 200
 
 disable_time		= 10000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 10000		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -81,8 +81,8 @@ artefact_spawn_height = 3		;(м) высота на центром зоны где будет рожден артефакт
 blowout_wind		= on
 
 blowout_wind_time_start     = 0
-blowout_wind_time_peak      = 600
-blowout_wind_time_end		= 901; 899
+blowout_wind_time_peak      = 300
+blowout_wind_time_end		= 601; 899
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 [zone_mine_field]
