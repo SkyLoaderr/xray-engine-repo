@@ -88,6 +88,5 @@ IC	void CSMotivationActionManager::add_action		(const _edge_type &a, CScriptActi
 	add_operator(a,b);
 }
 
-
 #undef TEMPLATE_SPECIALIZATION
 #undef CSMotivationActionManager
