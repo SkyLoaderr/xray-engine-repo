@@ -174,8 +174,8 @@ function load_dialog:AddItemToList(file_name, date_time)
 	
 	new_item:SetTextFileName(file_name)
 	new_item:SetTextDateTime(date_time)
-	new_item:SetFileNameFont(self.list_file_font)
-	new_item:SetDateTimeFont(self.list_date_font)
+	new_item:SetFontFileName(self.list_file_font)
+	new_item:SetFontDateTime(self.list_date_font)
 	
 	--new_item:SetText(file_name)
 	
