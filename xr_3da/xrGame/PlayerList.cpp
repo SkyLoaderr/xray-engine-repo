@@ -16,7 +16,7 @@ void CPlayers::add(NET_Packet& P)
 
 	Item			I;
 	P.r_string		(I.name);
-	I.score			= 0;
+	P.r_s16			(I.score);
 	items.insert	(make_pair(ID,I));
 }
 

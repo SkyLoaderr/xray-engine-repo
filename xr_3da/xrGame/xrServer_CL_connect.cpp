@@ -1,7 +1,9 @@
 #include "stdafx.h"
 
-void xrServer::OnCL_Connected		(IClient* CL)
+void xrServer::OnCL_Connected		(IClient* _CL)
 {
+	xrClientData*	CL				= (xrClientData*)_CL;
+
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	NET_Packet		P;
 
@@ -22,15 +24,14 @@ void xrServer::OnCL_Connected		(IClient* CL)
 		if (0==Test->owner)	
 		{
 			// PROCESS NAME; Name this entity
-			xrClientData*	C	= (xrClientData*)CL;
 			if (Test->s_flags & M_SPAWN_OBJECT_ASPLAYER)
 			{
-				C->owner		= Test;
-				strcpy			(Test->s_name_replace,C->Name);
+				CL->owner		= Test;
+				strcpy			(Test->s_name_replace,CL->Name);
 			}
 
 			// Associate
-			Test->owner			= C;
+			Test->owner			= CL;
 			Test->Spawn_Write	(P,TRUE	);
 		}
 		else				
@@ -45,9 +46,25 @@ void xrServer::OnCL_Connected		(IClient* CL)
 	P.w_begin		(M_SV_CONFIG_FINISHED);
 	SendTo			(CL->ID,P,net_flags(TRUE,TRUE));
 
+	// Inform new client about already existed players
+	csPlayers.Enter		();
+	for (DWORD client=0; client<net_Players.size(); client++)
+	{
+		xrClientData*	data	= (xrClientData*)net_Players[client];
+		if (data->ID==CL->ID)	continue;
+
+		P.w_begin	(M_PLIST_ADD);
+		P.w_u32		(data->ID);
+		P.w_string	(data->Name);
+		P.w_s16		(data->g_frags);
+		SendTo		(CL->ID,P,net_flags(TRUE,TRUE));
+	}
+	csPlayers.Leave		();
+
 	// Signal to everybody about connect
 	P.w_begin		(M_PLIST_ADD);
 	P.w_u32			(CL->ID);
 	P.w_string		(CL->Name);
+	P.w_s16			(CL->g_frags)
 	SendBroadcast	(0xffffffff,P,net_flags(TRUE,TRUE));
 }

@@ -18,11 +18,14 @@ class xrClientData	: public IClient
 public:
 	xrServerEntity*			owner;
 	BOOL					net_Ready;
+
+	s16						g_frags;
 	
 	xrClientData	()
 	{
 		owner		= NULL;
 		net_Ready	= FALSE;
+		g_frags		= 0;
 	}
 };
 

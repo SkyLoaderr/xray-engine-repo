@@ -6,7 +6,7 @@ public:
 	struct Item
 	{
 		string64	name;
-		int			score;
+		s16			score;
 	};
 	map<DWORD,Item>	items;
 public:

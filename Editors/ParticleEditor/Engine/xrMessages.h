@@ -73,6 +73,7 @@ M_PLIST_ADD
 {
 	u32			ID;
 	stringZ		name;
+	s16			frags;
 }
 M_PLIST_REMOVE
 {
