@@ -34,6 +34,5 @@ template <> struct Register<Loki::NullType>
 void export_classes	(lua_State *L)
 {
 	Register<script_type_list>::_Register(L);
-//	Register<Loki::TL::NoDuplicates<script_type_list>::Result>::_Register(L);
 //	Register<Loki::TL::DerivedToFrontAll<script_type_list>::Result>::_Register(L);
 }
