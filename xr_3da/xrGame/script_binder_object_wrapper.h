@@ -27,4 +27,6 @@ public:
 	static  void		net_Import_static			(CScriptBinderObject *script_binder_object, NetPacket *net_packet);
 	virtual void		net_Export					(NetPacket *net_packet);
 	static  void		net_Export_static			(CScriptBinderObject *script_binder_object, NetPacket *net_packet);
+	virtual void		shedule_Update				(u32 time_delta);
+	static  void		shedule_Update_static		(CScriptBinderObject *script_binder_object, u32 time_delta);
 };

@@ -28,6 +28,7 @@ public:
 	virtual void		net_Destroy			();
 	virtual void		net_Import			(NetPacket *net_packet);
 	virtual void		net_Export			(NetPacket *net_packet);
+	virtual void		shedule_Update		(u32 time_delta);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptBinderObject)

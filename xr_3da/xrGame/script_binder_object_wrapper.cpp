@@ -79,3 +79,13 @@ void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script
 {
 	script_binder_object->CScriptBinderObject::net_Export	(net_packet);
 }
+
+void CScriptBinderObjectWrapper::shedule_Update			(u32 time_delta)
+{
+	call_member<void>		("update",time_delta);
+}
+
+void CScriptBinderObjectWrapper::shedule_Update_static	(CScriptBinderObject *script_binder_object, u32 time_delta)
+{
+	script_binder_object->CScriptBinderObject::shedule_Update	(time_delta);
+}

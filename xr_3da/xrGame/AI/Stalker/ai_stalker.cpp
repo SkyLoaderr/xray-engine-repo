@@ -379,12 +379,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (g_Alive())
 		CMemoryManager::update			(dt);
 	inherited::inherited::shedule_Update(DT);
+	CScriptBinder::shedule_Update		(DT);
 	
-	// Queue setup
-	if (dt > 3) {
-		return;
-	}
-
 	if (Remote())		{
 	} else {
 		// here is monster AI call

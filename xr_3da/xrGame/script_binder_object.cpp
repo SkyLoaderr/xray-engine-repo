@@ -45,3 +45,7 @@ void CScriptBinderObject::net_Import		(NetPacket *net_packet)
 void CScriptBinderObject::net_Export		(NetPacket *net_packet)
 {
 }
+
+void CScriptBinderObject::shedule_Update	(u32 time_delta)
+{
+}

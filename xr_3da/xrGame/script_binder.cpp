@@ -97,3 +97,9 @@ void CScriptBinder::set_object		(CScriptBinderObject *object)
 	Msg						("Core object %s is binded with the script object",dynamic_cast<CGameObject*>(this) ? *dynamic_cast<CGameObject*>(this)->cName() : "");
 	m_object				= object;
 }
+
+void CScriptBinder::shedule_Update	(u32 time_delta)
+{
+	if (m_object)
+		m_object->shedule_Update	(time_delta);
+}
