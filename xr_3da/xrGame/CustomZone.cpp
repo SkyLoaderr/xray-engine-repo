@@ -437,6 +437,7 @@ void CCustomZone::UpdateCL()
 {
 	inherited::UpdateCL();
 
+
 	if (!IsEnabled()) 
 	{
 		if (EnableEffector())
@@ -488,6 +489,11 @@ void CCustomZone::UpdateCL()
 	}
 
 	UpdateBlowoutLight	();
+	if(m_idle_sound.feedback)m_idle_sound.set_position(XFORM().c);
+	if(m_blowout_sound.feedback)m_blowout_sound.set_position(XFORM().c);
+	if(m_hit_sound.feedback)m_hit_sound.set_position(XFORM().c);
+	if(m_entrance_sound.feedback)m_entrance_sound.set_position(XFORM().c);
+
 }
 
 void CCustomZone::shedule_Update(u32 dt)
