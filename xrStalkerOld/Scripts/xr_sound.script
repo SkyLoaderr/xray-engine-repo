@@ -18,7 +18,9 @@ snd_files = {
 	state_sleep_stalker            = "characters_voice\\human_01\\states\\sleep\\stalker\\sleep_",
 	
 	help_stalker                   = "characters_voice\\human_01\\help\\wounded_not_see_helper\\stalker\\help_",
-	help_stalker_see               = "characters_voice\\human_01\\help\\wounded_see_helper\\stalker\\help_",
+	help_stalker_see               = "characters_voice\\human_01\\scenario\\tolik\\tolik_help_",
+	help_stalker_tutor             = "characters_voice\\human_01\\scenario\\tolik\\tolik_help_tutor_",
+	help_stalker_thanx             = "characters_voice\\human_01\\scenario\\dramatic_garbage\\dramatic_newbie_thank_you",
 	
 	hail_stalker                   = "characters_voice\\human_01\\hail\\stalker\\hail_",
 	
@@ -103,6 +105,10 @@ function load_sound(obj)
 	theme["help"].types["stalker"] = load_theme("help_stalker")
 	theme["help_see"] = { exec = npc_class, types = {}}
 	theme["help_see"].types["stalker"] = load_theme("help_stalker_see")
+	theme["help_see_tutor"] = { exec = npc_class, types = {}}
+	theme["help_see_tutor"].types["stalker"] = load_theme("help_stalker_tutor")
+	theme["help_stalker_thanx"] = { exec = npc_class, types = {}}
+	theme["help_stalker_thanx"].types["stalker"] = load_theme("help_stalker_thanx")
 
 	-- окрик
 	theme["hail"] = { exec = npc_class, types = {}}

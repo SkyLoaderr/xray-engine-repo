@@ -413,6 +413,12 @@ class "action_stand" (action_base)
 function action_stand:__init (name, storage) super (nil, name)
     self.a = storage
     self.first = false
+   	self.sounds = 
+   	            { rnd = 100,
+				  maxidle = 5, 
+				  sumidle = 2,
+				  themes = { "help_stalker_thanx" } 
+				}
 end
 ------------
 function action_stand:initialize ()
@@ -432,6 +438,7 @@ function action_stand:execute ()
        self.stage = 1
        self.object:clear_animations ()
        self.object:add_animation ("waunded_stand_up_0", true)
+       xr_sound.sound_update (self.object, self.sounds, true)
        return
     end
     
