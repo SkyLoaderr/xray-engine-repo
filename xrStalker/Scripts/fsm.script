@@ -68,9 +68,6 @@ end
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 function if_see_actor(npc)
-
-	printf("npc %s", npc:name())
-	printf("actor %s", actor:name())
 	if npc:see(actor) == true then
 		log("saw a fucking actor")
 	end
