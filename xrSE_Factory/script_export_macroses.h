@@ -41,8 +41,8 @@
 #define DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_CONST_0(a,b,c,d) \
 	.def(#c, (d (a::*)() const)(&a::c), (d (*)(const a*))(&b::c##_static))
 
-#define DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,c,d,e) \
-	.def(#c, (d (a::*)(e))(&a::c), (d (*)(b*,e))(&b::c##_static))
+#define DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,c,d,e,f) \
+	.def(#c, (d (a::*)(e))(&a::c), (d (*)(b*,f))(&b::c##_static))
 
 #define DEFINE_LUA_WRAPPER_CONST_METHOD_0(v_func_name,ret_type)							\
 		virtual ret_type v_func_name() const											\
