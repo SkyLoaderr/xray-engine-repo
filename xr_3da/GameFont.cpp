@@ -16,7 +16,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, DWORD f
 	cTexture					= xr_strdup(texture);
 	iNumber						= iCPL;
 	pShader						= 0;
-	vHalfPixel.set				(-0.5f/float(tsize),0.5f/float(tsize));
+	vHalfPixel.set				(0.5f/float(tsize),0.5f/float(tsize));
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	vUVSize.set					(1.f/float(iNumber),1.f/float(iNumber));
