@@ -34,7 +34,7 @@ function save_dialog:InitControls()
        txt_list:SetAutoDelete(true)
        txt_list:Init("ui\\hud_map_back",10,10,154,148)
        txt_list:ClipperOn()
-       txt_mian:AttachChild(txt_list) 
+       txt_main:AttachChild(txt_list) 
 
     local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
