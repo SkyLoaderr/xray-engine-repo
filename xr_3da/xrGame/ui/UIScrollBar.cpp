@@ -178,22 +178,25 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			//вертикальный
 			else
 			{
-				if(m_ScrollBox.GetWndRect().top<=SCROLLBAR_HEIGHT)
+				// limit vertical position (TOP) by position of button	
+				if(m_ScrollBox.GetWndRect().top <= SCROLLBAR_HEIGHT)
 					m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left, SCROLLBAR_HEIGHT);
-				else if(m_ScrollBox.GetWndRect().bottom>=GetHeight() - SCROLLBAR_HEIGHT)
+				// limit vertical position (BOTTOM) by position of button
+				else if(m_ScrollBox.GetWndRect().bottom >= GetHeight() - SCROLLBAR_HEIGHT)
 					m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
 											GetHeight() - SCROLLBAR_HEIGHT - 
 											m_ScrollBox.GetHeight());
 
 
-				m_iScrollPos = (s16)iFloor(0.5f +
-					        float(m_ScrollBox.GetWndRect().top - SCROLLBAR_HEIGHT)*
+				m_iScrollPos = (s16)iFloor(0.5f +            
+					        float(m_ScrollBox.GetWndRect().top - 2*SCROLLBAR_HEIGHT)*
 							float(m_iMaxPos-m_iMinPos+1)/
 							float((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos);
 
 				if(m_iScrollPos+m_iPageSize>=m_iMaxPos)
-							m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
-				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
+                    m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
+				if(m_iScrollPos<m_iMinPos) 
+					m_iScrollPos = m_iMinPos;
 
 				if (GetMessageTarget())
 					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
