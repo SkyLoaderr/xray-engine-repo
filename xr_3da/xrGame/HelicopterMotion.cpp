@@ -144,21 +144,44 @@ void CHelicopterMotion::drawPath()
 {
 // motion path
 	FvectorVec path_points;
+	FvectorVec path_rot;
 
 	float min_t				= m_startTime;
 	float max_t				= m_endTime;
 
 	Fvector 				T,r;
 	path_points.clear		();
-	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=1/15.f){
+	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=1.0f/3.0f){
 		_Evaluate(t,T,r);
 		path_points.push_back(T);
+		path_rot.push_back(r);
 	}
 
 	float path_box_size = .05f;
 	for(u32 i = 0; i<path_points.size (); ++i)
+	{
 		RCache.dbg_DrawAABB  (path_points[i],path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
+		
+/*		r.setHP(path_rot[i].y, path_rot[i].x );
+		r.mul (3.0f);
+		T.add (path_points[i],r);
+		RCache.dbg_DrawLINE (Fidentity, path_points[i], T, D3DCOLOR_XRGB(255,0,0));
+*/
+	}
 
+/*	u32 cnt = KeyCount();
+	for(u32 ii=0;ii<cnt;++ii)
+	{
+		Fvector _t, TT;
+		Fvector _r;
+		GetKey (ii,_t,_r);
+		RCache.dbg_DrawAABB  (_t,path_box_size+.1f,path_box_size+.1f,path_box_size+.1f,D3DCOLOR_XRGB(0,255,255));
+
+		_r.setHP(_r.y, _r.x );
+		_r.mul (6.0f);
+		TT.add (_t,_r);
+		RCache.dbg_DrawLINE (Fidentity, _t, TT, D3DCOLOR_XRGB(255,0,0));
+	}*/
 
 }
 void CHelicopterMotion::OnRender()
@@ -169,20 +192,28 @@ void CHelicopterMotion::OnRender()
 
 void CHelicopterMotion::DropTailKeys(u32 cnt)
 {
+	VERIFY(KeyCount()>(int)cnt+2);
+
 	CEnvelope*	env = Envelope();
 	for(u32 i=0; i<cnt; ++i)
 	{
 		DeleteKey(env->keys.front()->time);
-	}
+	};
+	GetKeyTime(0, m_startTime);
 }
 
 void CHelicopterMotion::DropHeadKeys(u32 cnt)
 {
+	VERIFY(KeyCount()>(int)cnt+2);
+
 	CEnvelope*	env = Envelope();
 	for(u32 i=0; i<cnt; ++i)
 	{
 		DeleteKey(env->keys.back()->time);
-	}
+	};
+
+	VERIFY(KeyCount()>4);
+	GetKeyTime(KeyCount()-1, m_endTime);
 }
 
 void CHelicopterMotion::GetKey(u32 idx, Fvector& T, Fvector& R)

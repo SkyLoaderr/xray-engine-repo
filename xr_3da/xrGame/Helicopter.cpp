@@ -5,6 +5,8 @@
 #include "CustomRocket.h"
 #include "ExplosiveRocket.h"
 
+
+
 CHelicopter::CHelicopter()
 {
 	init();
@@ -68,42 +70,45 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 //CAI_ObjectLocation
 void CHelicopter::init()
 {
+	m_destEnemy					= 0;
+	m_cur_x_rot					= 0.0f;
+	m_cur_y_rot					= 0.0f;
+	m_tgt_x_rot					= 0.0f;
+	m_tgt_y_rot					= 0.0f;
+	m_bind_x_rot				= 0.f;
+	m_bind_y_rot				= 0.f;
+	m_allow_fire				= FALSE;
+	m_use_rocket_on_attack		= TRUE;
+	m_use_mgun_on_attack		= TRUE;	
+	m_syncronize_rocket			= TRUE;
+	m_min_rocket_dist			= 20.0f;
+	m_max_rocket_dist			= 200.0f;
+	m_time_between_rocket_attack = 0;
+	m_last_rocket_attack		= Device.dwTimeGlobal;
+
+#ifdef MOV_MANAGER_OLD
 	m_time_delay_before_start	= 1000;//1 sec
 	m_time_patrol_period		= 60000;//1 min
 	m_time_delay_between_patrol	= 60000;//1 min
-	//	m_velocity = 5.0f;
-	m_velocity = 25.0f;
-	//	m_altitude = 4.0f;
-	m_altitude = 30.0f;
-	m_attack_altitude = m_altitude;
-	m_korridor = 10.0f;
+	m_velocity					= 25.0f;
+	m_altitude					= 30.0f;
+	m_attack_altitude			= m_altitude;
+	m_korridor					= 10.0f;
 
-	m_x_level_bound = 0.0f;
-	m_z_level_bound = 0.0f;
+	m_x_level_bound				= 0.0f;
+	m_z_level_bound				= 0.0f;
+	m_time_last_patrol_start	= 0;
+	m_time_last_patrol_end		= 0;
 
-
-	m_destEnemy = 0;
-	m_cur_x_rot = 0.0f;
-	m_cur_y_rot = 0.0f;
-	m_tgt_x_rot = 0.0f;
-	m_tgt_y_rot = 0.0f;
-	m_bind_x_rot= 0.f;
-	m_bind_y_rot= 0.f;
-	m_allow_fire= FALSE;
-	m_use_rocket_on_attack	= FALSE;
-	m_syncronize_rocket		= TRUE;
-	m_min_rocket_dist	= 20.0f;
-	m_max_rocket_dist	= 200.0f;
-	m_time_between_rocket_attack = 0;
-	m_last_rocket_attack		= Device.dwTimeGlobal;
 	m_movementMngr.init(this);
+
+#endif
+
 	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
 
 	m_stayPos.set(0.0f, 0.0f, 0.0f);
 
-	m_time_last_patrol_start	= 0;
-	m_time_last_patrol_end		= 0;
 
 	m_HitTypeK.resize(ALife::eHitTypeMax);
 
@@ -125,7 +130,9 @@ void CHelicopter::Load(LPCSTR section)
 	CShootingObject::Load	(section);
 	CRocketLauncher::Load	(section);
 	
+#ifdef MOV_MANAGER_NEW
 	m_movMngr.load (section);
+#endif
 
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load(*m_sAmmoType);
@@ -142,6 +149,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
 
+#ifdef MOV_MANAGER_OLD
 	m_time_delay_before_start				= pSettings->r_u32(section,"time_delay_before_start")*1000;
 	m_time_patrol_period					= pSettings->r_u32(section,"time_patrol_period")*1000;
 	m_time_delay_between_patrol				= pSettings->r_u32(section,"time_delay_between_patrol")*1000;
@@ -149,13 +157,16 @@ void CHelicopter::Load(LPCSTR section)
 	m_altitude								= pSettings->r_float(section,"altitude");
 	m_attack_altitude						= pSettings->r_float(section,"attack_altitude");
 	m_korridor								= pSettings->r_float(section,"alt_korridor");
+	m_x_level_bound							= pSettings->r_float(section,"x_level_bound");
+	m_z_level_bound							= pSettings->r_float(section,"z_level_bound");
+#endif
+
 	m_use_rocket_on_attack					= pSettings->r_bool(section,"use_rocket");
+	m_use_mgun_on_attack					= pSettings->r_bool(section,"use_mgun");
 	m_min_rocket_dist						= pSettings->r_float(section,"min_rocket_attack_dist");
 	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
 	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
 	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
-	m_x_level_bound							= pSettings->r_float(section,"x_level_bound");
-	m_z_level_bound							= pSettings->r_float(section,"z_level_bound");
 
 }
 
@@ -177,13 +188,13 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 
 	// assigning m_animator here
-	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
-	CSE_ALifeHelicopter	*heli	= dynamic_cast<CSE_ALifeHelicopter*>(abstract);
+	CSE_Abstract		*abstract	=(CSE_Abstract*)(DC);
+	CSE_ALifeHelicopter	*heli		= dynamic_cast<CSE_ALifeHelicopter*>(abstract);
 	VERIFY				(heli);
 
-	R_ASSERT			(Visual()&&PKinematics(Visual()));
-	CKinematics* K		= PKinematics(Visual());
-	CInifile* pUserData	= K->LL_UserData();
+	R_ASSERT						(Visual()&&PKinematics(Visual()));
+	CKinematics* K					= PKinematics(Visual());
+	CInifile* pUserData				= K->LL_UserData();
 
 	m_rotate_x_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_x_bone"));
 	m_rotate_y_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_y_bone"));
@@ -203,7 +214,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 		for (int i=0 ;i<lc; ++i) 
 		{
 			pUserData->r_line( s, i, &name, &value);
-			boneID=K->LL_BoneID(name);
+			boneID	=K->LL_BoneID(name);
 			m_hitBones.insert( std::make_pair(boneID, (float)atof(value)) );
 		}
 	}
@@ -242,7 +253,10 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_stayPos			= XFORM().c;
 
 	setState			(eInitiatePatrolZone);
-	m_movMngr.init ( XFORM() );
+
+#ifdef MOV_MANAGER_NEW
+	m_movMngr.init		(XFORM());
+#endif
 
 	return				(TRUE);
 }
@@ -269,9 +283,13 @@ void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
 	
+#ifdef MOV_MANAGER_OLD
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
+#endif
 
-//	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
+#ifdef MOV_MANAGER_NEW
+	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
+#endif
 /*	if( PPhysicsShell()&&(GetfHealth() < 99.97f) )
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
@@ -292,12 +310,12 @@ void CHelicopter::UpdateCL()
 
 	m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
 	m_left_rocket_bone_xform.mulA(XFORM());
-	m_left_rocket_bone_xform.c.y += 1.0f;
+//	m_left_rocket_bone_xform.c.y += 1.0f;
 	//.fake
 
 	m_right_rocket_bone_xform	= K->LL_GetTransform(m_right_rocket_bone);
 	m_right_rocket_bone_xform.mulA(XFORM());
-	m_right_rocket_bone_xform.c.y += 1.0f;
+//	m_right_rocket_bone_xform.c.y += 1.0f;
 //.fake
 
 	m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
@@ -308,7 +326,7 @@ void CHelicopter::UpdateCL()
 	m_fire_dir.set(0,0,1); 
 	m_fire_bone_xform.transform_dir(m_fire_dir);
 
-	UpdateFire();
+	MGunUpdateFire();
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj	|| 
 		m_curState==CHelicopter::eInitiateHunt	)
@@ -328,8 +346,13 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	
 //	if( GetfHealth() >= 0.0f )
 //	{
-		m_movementMngr.shedule_Update(time_delta);
-//		m_movMngr.shedule_Update (time_delta, this);
+#ifdef MOV_MANAGER_OLD
+	m_movementMngr.shedule_Update(time_delta);
+#endif
+
+#ifdef MOV_MANAGER_NEW
+	m_movMngr.shedule_Update (time_delta, this);
+#endif
 //	};
 
 //	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
@@ -347,7 +370,7 @@ void CHelicopter::shedule_Update(u32 time_delta)
 
 		if(m_allow_fire)
 		{
-			//FireStart(); //temporary
+			MGunFireStart();
 			
 			float d = XFORM().c.distance_to_xz(m_destEnemyPos);
 			
@@ -357,8 +380,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 			{
 				if(m_syncronize_rocket)
 				{
-					startRocket(1);
-					startRocket(2);
+						startRocket(1);
+						startRocket(2);
 				}else
 				{
 					if(m_last_launched_rocket==1)
@@ -369,8 +392,9 @@ void CHelicopter::shedule_Update(u32 time_delta)
 				m_last_rocket_attack = Device.dwTimeGlobal;
 			}
 
-		}else
-			FireEnd();
+		}else{
+				MGunFireEnd();
+		}
 
 		if( m_destEnemy->getDestroy() )
 		{
@@ -379,9 +403,9 @@ void CHelicopter::shedule_Update(u32 time_delta)
 		};
 
 	}else
-		FireEnd();
+		MGunFireEnd();
 
-	if(!(getRocketCount()<4))
+	if(getRocketCount()<4)
 		for(u32 i=getRocketCount(); i<4; ++i)
 		{
 			CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
@@ -459,8 +483,7 @@ void CHelicopter::doHunt(CObject* dest)
 	setState(CHelicopter::eInitiateHunt);
 }
 
-void CHelicopter::OnEvent(	NET_Packet& P, 
-							u16 type) 
+void CHelicopter::OnEvent(	NET_Packet& P, u16 type) 
 {
 	inherited::OnEvent(P,type);
 	u16 id;

@@ -2,8 +2,9 @@
 #include "HelicopterMovementManager.h"
 #include "Helicopter.h"
 
+#ifdef MOV_MANAGER_OLD
 
-void CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
+void CHelicopterMovementManager::buildHuntPath(const Fvector& enemyPos)
 {
 	Fvector curPoint	= helicopter()->XFORM().c;
 	
@@ -26,11 +27,18 @@ void CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
 
 
 	destPoint.y = enemyPos.y + helicopter()->m_attack_altitude;
-//	destPoint.y = 10.0f;
 	m_keyTrajectory.push_back( SWayPoint(destPoint, destDir) );
 
 	m_currKeyIdx = 0;
-//	build_smooth_path(0, true, false);
-	build_smooth_path(0, false, false); //tyt
+	build_smooth_path(0, false, false);
 
+}
+#endif
+
+void CHelicopterMovManager::createHuntPathTrajectory(const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys)
+{
+	Fvector destPos = enemyPos;
+	destPos.y += m_attackAltitude;
+	keys.push_back(fromPos);
+	keys.push_back(destPos);
 }

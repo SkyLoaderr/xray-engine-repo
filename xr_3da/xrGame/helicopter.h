@@ -6,9 +6,8 @@
 #include "weaponammo.h"
 #include "rocketlauncher.h"
 
-#define HELI_HUNT_RADIUS 30.0f
-//#define HELI_MAX_ANGULAR_VELOCITY PI
-//#define HELI_MIN_ANGULAR_VELOCITY 0.0f
+
+
 #define HELI_PITCH_K (-0.006f)
 #define HELI_VELOCITY_ROLL_K (0.03f)
 
@@ -35,15 +34,21 @@ public:
 protected:
 	
 	EHeliState						m_curState;
-	float							m_velocity;
-	float							m_altitude;
+
 
 	HitTypeSVec						m_HitTypeK;
 
 	ref_sound						m_engineSound;
-	CHelicopterMovementManager		m_movementMngr;
 
+#ifdef MOV_MANAGER_OLD
+	CHelicopterMovementManager		m_movementMngr;
+	float							m_velocity;
+	float							m_altitude;
+#endif
+
+#ifdef MOV_MANAGER_NEW
 	CHelicopterMovManager			m_movMngr;
+#endif
 
 	xr_map<s16,float>				m_hitBones;
 
@@ -61,6 +66,13 @@ protected:
 	Fvector							m_bind_x, m_bind_y;
 	BOOL							m_allow_fire;
 	BOOL							m_use_rocket_on_attack;
+	BOOL							m_use_mgun_on_attack;
+	u16								m_last_launched_rocket;
+	float							m_min_rocket_dist;
+	float							m_max_rocket_dist;
+	u32								m_time_between_rocket_attack;
+	u32								m_last_rocket_attack;
+	BOOL							m_syncronize_rocket;
 
 	u16								m_fire_bone;
 	u16								m_rotate_x_bone;
@@ -73,47 +85,45 @@ protected:
 	CObject*						m_destEnemy;
 	Fvector							m_destEnemyPos;
 
-	u16								m_last_launched_rocket;
 
 
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 
 	typedef xr_map<s16,float>::iterator bonesIt;
+
+	void							startRocket(u16 idx);
+
 public:
 	Fmatrix							m_left_rocket_bone_xform;
 	Fmatrix							m_right_rocket_bone_xform;
 
+#ifdef MOV_MANAGER_OLD
 	float							m_attack_altitude;
-	float							m_min_rocket_dist;
-	float							m_max_rocket_dist;
-	u32								m_time_between_rocket_attack;
-	u32								m_last_rocket_attack;
-	BOOL							m_syncronize_rocket;
-
-	float							m_korridor;
-	float							m_x_level_bound;
-	float							m_z_level_bound;
 	u32								m_time_delay_before_start;
 	u32								m_time_patrol_period;
 	u32								m_time_delay_between_patrol;
 	u32								m_time_last_patrol_start;
 	u32								m_time_last_patrol_end;
+	float							m_korridor;
+	float							m_x_level_bound;
+	float							m_z_level_bound;
+	const float						velocity(){return m_velocity;};
+	const float						altitude(){return m_altitude;};
+#endif
 	Fvector							m_stayPos;
+
 
 	CHelicopter();
 	virtual							~CHelicopter();
 	
 	CHelicopter::EHeliState			state(){return m_curState;};
-	float							velocity(){return m_velocity;};
-	float							altitude(){return m_altitude;};
 
 	void							setState(CHelicopter::EHeliState s);
-	Fvector&						lastEnemyPos(){return m_destEnemyPos;};
-	void							startRocket(u16 idx);
+	const Fvector&					lastEnemyPos(){return m_destEnemyPos;};
 	//CAI_ObjectLocation
-	void					init();
-	virtual	void			reinit();
+	void							init();
+	virtual	void					reinit();
 
 
 	//CGameObject
@@ -142,15 +152,15 @@ public:
 
 protected:
 	//CShootingObject
-	virtual const Fmatrix&	ParticlesXFORM()	 const;
-	virtual IRender_Sector*	Sector();
-	virtual const Fvector&	CurrentFirePoint();
+	virtual const Fmatrix&	ParticlesXFORM		()const;
+	virtual IRender_Sector*	Sector				();
+	virtual const Fvector&	CurrentFirePoint	();
 
-	virtual	void			FireStart	();
-	virtual	void			FireEnd		();
-	virtual	void			UpdateFire	();
-	virtual	void			OnShot		();
+	void					MGunFireStart		();
+	void					MGunFireEnd			();
+	void					MGunUpdateFire		();
+	virtual	void			OnShot				();
 
-	void					updateMGunDir();
-	void					doHunt(CObject* dest);
+	void					updateMGunDir		();
+	void					doHunt				(CObject* dest);
 };

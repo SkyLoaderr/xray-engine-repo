@@ -2,6 +2,10 @@
 
 class CHelicopter;
 
+#define MOV_MANAGER_OLD
+//#define MOV_MANAGER_NEW
+
+#ifdef MOV_MANAGER_OLD
 
 class CHelicopterMovementManager
 								#ifdef DEBUG
@@ -150,8 +154,9 @@ public:
 	Fvector		makeIntermediateKey	(Fvector& start, Fvector& dest, float k);
 
 
-	void		buildHuntPath		(Fvector& enemyPos);
+	void		buildHuntPath		(const Fvector& enemyPos);
 };
+#endif
 
 #include "HelicopterMovementManager_inl.h"
 
@@ -162,25 +167,43 @@ class CHelicopterMovManager :public CHelicopterMotion
 	Fmatrix							m_XFORM;
 
 	float							m_baseAltitude;
+	float							m_attackAltitude;
 	float							m_basePatrolSpeed;
 	float							m_maxKeyDist;
-	float							m_intermediateKeyRandFactor;
+	float							m_endAttackTime;
+	Fvector							m_startDir;
+	float							m_time_last_patrol_end;
+	float							m_time_last_patrol_start;
+	float							m_time_delay_between_patrol;
+	float							m_time_patrol_period;
+	float							m_time_delay_before_start;
+
 	
-	void	 buildHPB				(const Fvector& p_prev, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
-	
-	//service functions
 	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
 	bool	dice					()		{return (::Random.randF(-1.0f, 1.0f) > 0.0f); };
 
 	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
+	void	createHuntPathTrajectory(const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys );
+
 	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
-	void	buildHuntPath			(Fvector& enemyPos);
+	void	buildHuntPath			(const Fvector& enemyPos);
 	void	onFrame					();
 	void	onTime					(float t);
 	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys);
 	void	updatePathHPB			(float from_time);
+	void	 buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
 	void	addPartolPath			(float from_time);
 	void	updatePatrolPath		(float t);
+	void	addHuntPath				(float from_time, const Fvector& enemyPos);
+	
+	void	getPathAltitude			(Fvector& point);
+
+	//patrol path
+	void	makeNewPoint			(const Fvector& prevPoint, const Fvector& point, const Fbox& box, Fvector& newPoint);
+	void	makeNewPoint			(const Fbox& fbox, const Fvector& point, const Fvector& direction, Fvector& newPoint);
+	u16		getPlaneID				(const Fbox& box, const Fvector& point);
+	void	getReflectDir			(const Fvector& dir, const u16 planeID, Fvector& newDir);
+	void	selectSafeDir			(const Fvector& prevPoint,const Fbox& fbox, Fvector& newDir);
 public:
 	CHelicopterMovManager			();
 	virtual ~CHelicopterMovManager	();

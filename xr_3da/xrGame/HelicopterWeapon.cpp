@@ -35,7 +35,7 @@ const Fvector&	CHelicopter::CurrentFirePoint()
 }
 
 
-void CHelicopter::UpdateFire()
+void CHelicopter::MGunUpdateFire()
 {
 
 	fTime -= Device.fTimeDelta;
@@ -71,13 +71,19 @@ void CHelicopter::OnShot		()
 
 }
 
-void CHelicopter::FireStart()
+void CHelicopter::MGunFireStart()
 {
+	if(!m_use_mgun_on_attack)
+		return;
+
 	CShootingObject::FireStart();
 }
 
-void CHelicopter::FireEnd()
+void CHelicopter::MGunFireEnd()
 {
+	if(!m_use_mgun_on_attack)
+		return;
+
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
 }

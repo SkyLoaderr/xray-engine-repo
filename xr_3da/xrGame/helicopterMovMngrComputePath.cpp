@@ -1,7 +1,9 @@
+
 #include "stdafx.h"
 #include "HelicopterMovementManager.h"
 #include "Helicopter.h"
 
+#ifdef MOV_MANAGER_OLD
 
 
 bool is_negative_(float a)
@@ -647,3 +649,4 @@ bool CHelicopterMovementManager::init_build(	int startKeyIdx,
 	return								(true);
 }
 
+#endif

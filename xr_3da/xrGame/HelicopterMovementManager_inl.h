@@ -1,11 +1,7 @@
 #pragma once
-/*
-IC	bool 
-CHelicopterMovementManager::check_mask					(u32 mask, u32 test) const
-{
-	return					((mask & test) == test);
-}
-*/
+
+#ifdef MOV_MANAGER_OLD
+
 IC float CHelicopterMovementManager::_lerp(float src, 
 										   float dst, 
 										   float t)
@@ -69,3 +65,4 @@ IC	void CHelicopterMovementManager::assign_angle(
 
 	VERIFY				(_valid(angle));
 }
+#endif
