@@ -115,7 +115,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 {
 	BOOL R = inherited::net_Spawn	(DC);
 
-
+	
 
 	setVisible						(TRUE);
 
@@ -126,13 +126,15 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
 	InitWheels						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	m_ident=ph_world->AddObject(dynamic_cast<CPHObject*>(this));
-
-	m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
-	m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
-	m_pExhaustPG1->SetTransform		(XFORM());
-	m_pExhaustPG2->SetTransform		(XFORM());
+	
 
 
+	//m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
+	//m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
+	//m_pExhaustPG1->SetTransform		(XFORM());
+	//m_pExhaustPG2->SetTransform		(XFORM());
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	
 	return R;
 }
 
@@ -181,11 +183,11 @@ void	CCar::UpdateCL				( )
 			cam_Update	(Device.fTimeDelta);
 	}
 
-	Fvector ang_vel,res_vel;
-	Fmatrix exhast,exhast_local;
-	m_pPhysicsShell->get_AngularVel(ang_vel);
+// 	Fvector ang_vel,res_vel;
+//	Fmatrix exhast,exhast_local;
+	//m_pPhysicsShell->get_AngularVel(ang_vel);
 
-
+/*
 	exhast_local.set	(PKinematics(Visual())->LL_GetTransform(m_exhaust_ids[0]));
 	exhast.mul			(XFORM(),exhast_local);
 	res_vel.crossproduct(ang_vel,exhast_local.c);
@@ -200,6 +202,7 @@ void	CCar::UpdateCL				( )
 	res_vel.add(lin_vel);
 
 	m_pExhaustPG2->UpdateParent(exhast,res_vel);
+*/
 }
 
 void	CCar::renderable_Render				( )
@@ -238,13 +241,13 @@ void	CCar::IR_OnKeyboardPress		(int cmd)
 		break;
 	case kUP:
 		PressForward();
-		m_pExhaustPG2->Play				();
-		m_pExhaustPG1->Play				();
+		//m_pExhaustPG2->Play				();
+		//m_pExhaustPG1->Play				();
 		break;
 	case kDOWN:		;
 		PressBack();
-		m_pExhaustPG2->Play				();
-		m_pExhaustPG1->Play				();
+		//m_pExhaustPG2->Play				();
+		//m_pExhaustPG1->Play				();
 		break;
 	case kJUMP:		
 		PressBreaks();
@@ -271,13 +274,13 @@ void	CCar::IR_OnKeyboardRelease		(int cmd)
 		break;
 	case kUP:		
 		ReleaseForward			();
-		m_pExhaustPG1->Stop		();
-		m_pExhaustPG2->Stop		();
+		//m_pExhaustPG1->Stop		();
+		//m_pExhaustPG2->Stop		();
 		break;
 	case kDOWN:		;
 		ReleaseBack				();
-		m_pExhaustPG1->Stop		();
-		m_pExhaustPG2->Stop		();
+		//m_pExhaustPG1->Stop		();
+		//m_pExhaustPG2->Stop		();
 		break;
 	case kREPAIR:	m_repairing=false; break;
 	case kJUMP:		;
@@ -418,8 +421,18 @@ void CCar::CreateSkeleton()
 {
 
 	if (!Visual()) return;
+	CKinematics* K= PKinematics(Visual());
+	K->PlayCycle("idle");
+
+	K->LL_GetInstance				(K->LL_BoneID("steer")).set_callback			(cb_Steer,this);
+	m_doors_ids[1]					=K->LL_BoneID("phy_door_left");
+	m_doors_ids[0]					=K->LL_BoneID("phy_door_right");
+	//m_exhaust_ids[0]				=K->LL_BoneID("pos_exhaust_1");
+	//m_exhaust_ids[1]				=K->LL_BoneID("pos_exhaust_2");
+
+
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()),&bone_map);
+	m_pPhysicsShell->build_FromKinematics(K,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true);
