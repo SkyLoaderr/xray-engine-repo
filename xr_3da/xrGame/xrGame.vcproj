@@ -4093,10 +4093,10 @@
 										Name="Scope"
 										Filter="">
 										<File
-											RelativePath=".\Scope.cpp">
+											RelativePath=".\Scope.h">
 										</File>
 										<File
-											RelativePath=".\Scope.h">
+											RelativePath=".\Scope_impl.cpp">
 										</File>
 									</Filter>
 									<Filter
