@@ -275,6 +275,8 @@ bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 	return true;
 }
 
+extern xr_token ECORE_API eo_type_token[];
+
 void CSceneObject::OnShowHint(AStringVec& dest)
 {
 	inherited::OnShowHint(dest);
@@ -283,18 +285,19 @@ void CSceneObject::OnShowHint(AStringVec& dest)
     float dist			= flt_max;
     SRayPickInfo pinf;
     if (m_pReference->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,_ITransform(),&pinf)){
+	    dest.push_back(AnsiString("Object Type: ")+get_token_name(eo_type_token,pinf.e_obj->m_Flags.flags));
         R_ASSERT(pinf.e_mesh);
         CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
         dest.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
         dest.push_back(AnsiString("2 Sided: ")+AnsiString(surf->m_Flags.is(CSurface::sf2Sided)?"on":"off"));
         if (pinf.e_obj->m_Flags.is(CEditableObject::eoSoundOccluder)){
-        }else if (pinf.e_obj->m_Flags.is(CEditableObject::eoHOM)){
 	        dest.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
             int gm_id			= surf->_GameMtl(); 
             if (gm_id!=GAMEMTL_NONE_ID){ 
                 SGameMtl* mtl 	= GMLib.GetMaterialByID(gm_id);
-                if (mtl)		dest.push_back(AnsiString().sprintf("Occlusion: %3.2f",mtl->fSndOcclusionFactor));
+                if (mtl)		dest.push_back(AnsiString().sprintf("Occlusion Factor: %3.2f",mtl->fSndOcclusionFactor));
             }
+        }else if (pinf.e_obj->m_Flags.is(CEditableObject::eoHOM)){
         }else{
 	        dest.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
     	    dest.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
