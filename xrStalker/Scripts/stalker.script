@@ -23,6 +23,6 @@ end
 
 function init(obj)
 	printf	("stalker.init is called!")
-	return	nil
-	--stalker.stalker_script()
+	local	new_obj = stalker.stalker_script()
+	return	new_obj
 end
