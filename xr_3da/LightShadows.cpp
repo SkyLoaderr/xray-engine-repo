@@ -173,7 +173,7 @@ void CLightShadows::calculate	()
 	int slot_line	= S_rt_size/S_size;
 	int slot_max	= slot_line*slot_line;
 	const float	eps = 2*EPS_L;
-	for (int o_it=0; o_it<id.size(); o_it++)
+	for (u32 o_it=0; o_it<id.size(); o_it++)
 	{
 		caster&	C	= casters[id[o_it]];
 		if (C.nodes.empty())	continue;
@@ -183,7 +183,7 @@ void CLightShadows::calculate	()
 		vector<CLightTrack::Light>& lights = LT->lights;
 		
 		// iterate on lights
-		for (int l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)
+		for (u32 l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)
 		{
 			CLightTrack::Light&	L	=	lights[l_it];
 			if (L.energy<S_level)	continue;
@@ -237,7 +237,7 @@ void CLightShadows::calculate	()
 			CHK_DX					(HW.pDevice->SetViewport(&VP));
 			
 			// Render object-parts
-			for (int n_it=0; n_it<C.nodes.size(); n_it++)
+			for (u32 n_it=0; n_it<C.nodes.size(); n_it++)
 			{
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
@@ -330,7 +330,7 @@ void CLightShadows::render	()
 	DWORD Offset				= 0;
 	DWORD C						= 0x7f7f7f7f;
 	FVF::LIT* pv				= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
-	for (int s_it=0; s_it<shadows.size(); s_it++)
+	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
 		shadow&		S			=	shadows[s_it];
 		float		Le			=	S.L->diffuse.magnitude_rgb();
@@ -374,7 +374,7 @@ void CLightShadows::render	()
 			if (0==clip)		continue;
 			
 			// Triangulate poly 
-			for (int v=2; v<clip->size(); v++)
+			for (u32 v=2; v<clip->size(); v++)
 			{
 				tess.push_back	(tess_tri());
 				tess_tri& T		= tess.back();
@@ -389,7 +389,7 @@ void CLightShadows::render	()
 		
 		
 		// Fill VB
-		for (int tid=0; tid<tess.size(); tid++)
+		for (u32 tid=0; tid<tess.size(); tid++)
 		{
 			tess_tri&	TT		= tess[tid];
 			Fvector* 	v		= TT.v;

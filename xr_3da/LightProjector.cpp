@@ -132,7 +132,7 @@ void CLightProjector::calculate	()
 	
 	// iterate on objects
 	int	slot_id		= 0;
-	for (int o_it=0; o_it<id.size(); o_it++)
+	for (u32 o_it=0; o_it<id.size(); o_it++)
 	{
 		recv&	C	= receivers	[id[o_it]];
 		if (C.nodes.empty())	continue;

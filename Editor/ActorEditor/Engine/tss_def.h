@@ -32,7 +32,7 @@ public:
 	IC void			set_RS	(DWORD a, DWORD b)
 	{
 		// Search duplicates
-		for (int t=0; t<States.size(); t++)
+		for (int t=0; t<int(States.size()); t++)
 		{
 			State& S	= States[t];
 			if ((0==S.type)&&(a==S.v1)) {
@@ -49,7 +49,7 @@ public:
 	IC void			set_TSS	(DWORD a, DWORD b, DWORD c)
 	{
 		// Search duplicates
-		for (int t=0; t<States.size(); t++)
+		for (int t=0; t<int(States.size()); t++)
 		{
 			State& S	= States[t];
 			if ((1==S.type)&&(a==S.v1)&&(b==S.v2)) {
