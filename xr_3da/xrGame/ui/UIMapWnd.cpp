@@ -48,12 +48,13 @@ void CUICustomMap::Update()
 
 void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 {
+
 	m_name				= name;
 	LPCSTR tex;
 	Fvector4 tmp;
-	if( gameLtx.line_exist(name,"texture") ){
-		tex			= gameLtx.r_string(name,"texture");
-		tmp		= gameLtx.r_fvector4(name,"bound_rect");
+	if( gameLtx.line_exist(m_name,"texture") ){
+		tex			= gameLtx.r_string(m_name,"texture");
+		tmp		= gameLtx.r_fvector4(m_name,"bound_rect");
 	}else{
 		tex = "ui\\ui_nomap2";
 		tmp.set(-10000.0f,-10000.0f,10000.0f,10000.0f);
@@ -63,7 +64,7 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 	CUIStatic::Init		(tex, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
 	SetStretchTexture	(true);
 	ClipperOn			();
-	SetWindowName(*name);
+	SetWindowName(*m_name);
 }
 
 
@@ -271,9 +272,9 @@ CUIGlobalMap::~CUIGlobalMap()
 {
 }
 
-void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx)
+void CUIGlobalMap::Init		(shared_str _name, CInifile& gameLtx)
 {
-	inherited::Init(name, gameLtx);
+	inherited::Init(_name, gameLtx);
 
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
@@ -414,7 +415,7 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
 {
 	inherited::Init(name, gameLtx);
 
-	Fvector4 tmp = gameLtx.r_fvector4(name,"global_rect");
+	Fvector4 tmp = gameLtx.r_fvector4(MapName(),"global_rect");
 	m_GlobalRect.set(tmp.x, tmp.w, tmp.z, tmp.y);
 
 	m_globalMapSpot.Init(inactiveLocalMapColor);
@@ -536,12 +537,15 @@ void CUIMapWnd::Init()
 		CInifile::Sect& S		= gameLtx.r_section("level_maps_single");
 		CInifile::SectIt	it	= S.begin(), end = S.end();
 		for (;it!=end; it++){
-
-			R_ASSERT2	(m_GameMaps.end() == m_GameMaps.find(it->first), "Duplicate level name not allowed");
-			CUICustomMap*& l = m_GameMaps[it->first];
+			shared_str map_name = it->first;
+			xr_strlwr(map_name);
+			R_ASSERT2	(m_GameMaps.end() == m_GameMaps.find(map_name), "Duplicate level name not allowed");
+			
+			CUICustomMap*& l = m_GameMaps[map_name];
 
 			l = xr_new<CUILevelMap>();
-			l->Init(it->first, gameLtx);
+			
+			l->Init(map_name, gameLtx);
 
 			l->OptimalFit( m_UILevelFrame.GetWndRect() );
 			
