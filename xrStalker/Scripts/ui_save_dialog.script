@@ -29,7 +29,7 @@ function save_dialog:InitControls()
 	main_static:SetWindowName("static_0")	
 	main_static:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
     --textures name, root is Gamedata\Textures folder
-	txt_main:ClipperOn() --clip texture by window region
+	main_static:ClipperOn() --clip texture by window region
 	self:AttachChild(txt_main)
 	
 
@@ -38,7 +38,7 @@ function save_dialog:InitControls()
        txt_list:SetAutoDelete(true)
        txt_list:Init("ui\\hud_map_back",10,10,154,148)
        txt_list:ClipperOn()
-       txt_main:AttachChild(txt_list) 
+       main_static:AttachChild(txt_list) 
 
     local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
@@ -46,7 +46,7 @@ function save_dialog:InitControls()
     list_wnd:Init(0,0,154,148)
     list_wnd:SetItemHeight(15)
     list_wnd:EnableScrollBar(true)
-    txt_main:AttachChild(list_wnd)
+    main_static:AttachChild(list_wnd)
 
 --------------------------------------- 
     local btn   = CUIButton()
@@ -59,7 +59,7 @@ function save_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
 	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
 	self:Register(btn) --for event-handling
-	txt_main:AttachChild(btn)
+	main_static:AttachChild(btn)
 --------------------------------------
     btn   = CUIButton()
     btn:SetAutoDelete(true)
@@ -70,7 +70,7 @@ function save_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(20)
 	self:Register(btn)
-	txt_main:AttachChild(btn)
+	main_static:AttachChild(btn)
 end
 
 function save_dialog:InitCallBacks()
