@@ -31,26 +31,26 @@ public:
 	BOOL														b_nv3x;
 
 	// Dynamic scene graph
-	SceneGraph::mapNormal_T										mapNormal;
-	SceneGraph::mapMatrix_T										mapMatrix;
-	SceneGraph::mapSorted_T										mapSorted;
-	SceneGraph::mapHUD_T										mapHUD;
+	R_dsgraph::mapNormal_T										mapNormal;
+	R_dsgraph::mapMatrix_T										mapMatrix;
+	R_dsgraph::mapSorted_T										mapSorted;
+	R_dsgraph::mapHUD_T											mapHUD;
 
-	xr_vector<SceneGraph::mapNormalVS::TNode*>					nrmVS;
-	xr_vector<SceneGraph::mapNormalPS::TNode*>					nrmPS;
-	xr_vector<SceneGraph::mapNormalCS::TNode*>					nrmCS;
-	xr_vector<SceneGraph::mapNormalStates::TNode*>				nrmStates;
-	xr_vector<SceneGraph::mapNormalTextures::TNode*>			nrmTextures;
-	xr_vector<SceneGraph::mapNormalTextures::TNode*>			nrmTexturesTemp;
-	xr_vector<SceneGraph::mapNormalVB::TNode*>					nrmVB;
+	xr_vector<R_dsgraph::mapNormalVS::TNode*>					nrmVS;
+	xr_vector<R_dsgraph::mapNormalPS::TNode*>					nrmPS;
+	xr_vector<R_dsgraph::mapNormalCS::TNode*>					nrmCS;
+	xr_vector<R_dsgraph::mapNormalStates::TNode*>				nrmStates;
+	xr_vector<R_dsgraph::mapNormalTextures::TNode*>				nrmTextures;
+	xr_vector<R_dsgraph::mapNormalTextures::TNode*>				nrmTexturesTemp;
+	xr_vector<R_dsgraph::mapNormalVB::TNode*>					nrmVB;
 
-	xr_vector<SceneGraph::mapMatrixVS::TNode*>					matVS;
-	xr_vector<SceneGraph::mapMatrixPS::TNode*>					matPS;
-	xr_vector<SceneGraph::mapMatrixCS::TNode*>					matCS;
-	xr_vector<SceneGraph::mapMatrixStates::TNode*>				matStates;
-	xr_vector<SceneGraph::mapMatrixTextures::TNode*>			matTextures;
-	xr_vector<SceneGraph::mapMatrixTextures::TNode*>			matTexturesTemp;
-	xr_vector<SceneGraph::mapMatrixVB::TNode*>					matVB;
+	xr_vector<R_dsgraph::mapMatrixVS::TNode*>					matVS;
+	xr_vector<R_dsgraph::mapMatrixPS::TNode*>					matPS;
+	xr_vector<R_dsgraph::mapMatrixCS::TNode*>					matCS;
+	xr_vector<R_dsgraph::mapMatrixStates::TNode*>				matStates;
+	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTextures;
+	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTexturesTemp;
+	xr_vector<R_dsgraph::mapMatrixVB::TNode*>					matVB;
 
 	xr_vector<ISpatial*>										lstRenderables;
 

@@ -277,19 +277,10 @@
 				RelativePath="FStaticRender_LODs.cpp">
 			</File>
 			<File
-				RelativePath=".\FStaticRender_R_Dump.cpp">
-			</File>
-			<File
 				RelativePath="FStaticRender_RenderTarget.cpp">
 			</File>
 			<File
 				RelativePath="FStaticRender_RenderTarget.h">
-			</File>
-			<File
-				RelativePath="FStaticRender_SceneGraph.cpp">
-			</File>
-			<File
-				RelativePath="FStaticRender_SceneGraph.h">
 			</File>
 			<File
 				RelativePath="FStaticRender_Screenshot.cpp">
@@ -308,6 +299,12 @@
 			</File>
 			<File
 				RelativePath=".\PSLibrary.h">
+			</File>
+			<File
+				RelativePath=".\r__dsgraph.cpp">
+			</File>
+			<File
+				RelativePath=".\r__dsgraph.h">
 			</File>
 		</Filter>
 		<Filter

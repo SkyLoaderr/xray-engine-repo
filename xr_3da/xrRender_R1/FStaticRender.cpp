@@ -11,7 +11,7 @@
 #include "..\xr_object.h"
 #include "lighttrack.h"
 
-using	namespace SceneGraph;
+using	namespace		R_dsgraph;
 
 CRender													RImplementation;
 

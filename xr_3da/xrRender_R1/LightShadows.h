@@ -14,7 +14,7 @@ class	CLightShadows
 	friend class pred_casters;
 private:
 	//
-	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
+	typedef	R_dsgraph::_MatrixItem		NODE;		
 	struct	caster
 	{
 		IRenderable*		O;

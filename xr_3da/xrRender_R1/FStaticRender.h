@@ -24,27 +24,30 @@ class CRender	:	public IRender_interface
 {
 public:
 	// Dynamic scene graph
-	SceneGraph::mapNormal_T									mapNormal	[2];	// 2==(priority/2)
-	SceneGraph::mapMatrix_T									mapMatrix;
-	SceneGraph::mapSorted_T									mapSorted;
-	SceneGraph::mapHUD_T									mapHUD;
-	SceneGraph::mapLOD_T									mapLOD;
-	SceneGraph::vecPatches_T								vecPatches;
+	R_dsgraph::mapNormal_T										mapNormal	[2];	// 2==(priority/2)
+	R_dsgraph::mapMatrix_T										mapMatrix;
+	R_dsgraph::mapSorted_T										mapSorted;
+	R_dsgraph::mapHUD_T											mapHUD;
+	R_dsgraph::mapLOD_T											mapLOD;
 
-	xr_vector<int>											vecGroups;
-	xr_vector<SceneGraph::mapNormalCodes::TNode*>			lstCodes;
-	xr_vector<SceneGraph::mapNormalVS::TNode*>				lstVS;
-	xr_vector<SceneGraph::mapNormalPS::TNode*>				lstPS;
-	xr_vector<SceneGraph::mapNormalCS::TNode*>				lstCS;
-	xr_vector<SceneGraph::mapNormalTextures::TNode*>		lstTextures;
-	xr_vector<SceneGraph::mapNormalTextures::TNode*>		lstTexturesTemp;
-	xr_vector<SceneGraph::mapNormalVB::TNode*>				lstVB;
-	xr_vector<SceneGraph::mapNormalMatrices::TNode*>		lstMatrices;
-	xr_vector<SceneGraph::_LodItem>							lstLODs;
-	xr_vector<IRender_Visual*>								lstVisuals;
-	xr_vector<ISpatial*>									lstRenderables;
+	// Runtime structures
+	xr_vector<R_dsgraph::mapNormalVS::TNode*>					nrmVS;
+	xr_vector<R_dsgraph::mapNormalPS::TNode*>					nrmPS;
+	xr_vector<R_dsgraph::mapNormalCS::TNode*>					nrmCS;
+	xr_vector<R_dsgraph::mapNormalStates::TNode*>				nrmStates;
+	xr_vector<R_dsgraph::mapNormalTextures::TNode*>				nrmTextures;
+	xr_vector<R_dsgraph::mapNormalTextures::TNode*>				nrmTexturesTemp;
+	xr_vector<R_dsgraph::mapNormalVB::TNode*>					nrmVB;
 
-	ref_geom												hGeomPatches;
+	xr_vector<R_dsgraph::mapMatrixVS::TNode*>					matVS;
+	xr_vector<R_dsgraph::mapMatrixPS::TNode*>					matPS;
+	xr_vector<R_dsgraph::mapMatrixCS::TNode*>					matCS;
+	xr_vector<R_dsgraph::mapMatrixStates::TNode*>				matStates;
+	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTextures;
+	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTexturesTemp;
+	xr_vector<R_dsgraph::mapMatrixVB::TNode*>					matVB;
+
+	xr_vector<ISpatial*>										lstRenderables;
 
 	// Sector detection and visibility
 	CSector*												pLastSector;

@@ -49,7 +49,7 @@ void CRender::flush_LODs()
 	for (u32 i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy
-		SceneGraph::_LodItem		&P = lstLODs[i];
+		R_dsgraph::_LodItem		&P = lstLODs[i];
 		if (P.pVisual->hShader==cur_S)	cur_count++;
 		else {
 			vecGroups.push_back	(cur_count);

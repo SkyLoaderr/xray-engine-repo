@@ -13,7 +13,7 @@ class CLightProjector
 	friend class			pred_sorter;
 private:
 	//
-	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
+	typedef	R_dsgraph::_MatrixItem	NODE;		
 	struct	recv
 	{
 		IRenderable*		O;
