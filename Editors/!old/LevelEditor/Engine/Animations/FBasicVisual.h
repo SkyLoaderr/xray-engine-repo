@@ -13,25 +13,34 @@
 #define VLOAD_FORCESOFTWARE		(1<<2)
 
 // The class itself
-class ENGINE_API			IRender_Visual
+class	ENGINE_API			CSkeletonAnimated;
+class	ENGINE_API			CSkeletonRigid;
+class	ENGINE_API			CKinematics;
+
+// The class itself
+class	ENGINE_API				IRender_Visual
 {
 public:
 #ifdef _EDITOR
-    ogf_desc				desc;
+    ogf_desc					desc;
 #endif
 public:
-	u32						Type;					// visual's type
-	vis_data				vis;
+	u32							Type;					// visual's type
+	vis_data					vis;
 
 	// Common data for rendering
-	ref_shader				hShader;				// pipe state, shared
-	ref_geom				hGeom;					// vertex shader, shared
+	ref_shader					hShader;				// pipe state, shared
+	ref_geom					hGeom;					// vertex shader, shared
 
-	virtual void			Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
-	virtual void			Load					(const char* N, IReader *data, u32 dwFlags);
-	virtual void			Release					();						// Shared memory release
-	virtual void			Copy					(IRender_Visual* from);
-	virtual void			Spawn					()				{};
+	virtual void				Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
+	virtual void				Load					(const char* N, IReader *data, u32 dwFlags);
+	virtual void				Release					();						// Shared memory release
+	virtual void				Copy					(IRender_Visual* from);
+	virtual void				Spawn					()				{};
+
+	virtual	CKinematics*		dcast_PKinematics		()				{ return 0;	}
+	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return 0;	}
+	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return 0;	}
 
 	IRender_Visual			();
 	virtual ~IRender_Visual();

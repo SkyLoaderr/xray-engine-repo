@@ -144,7 +144,9 @@ public:
 	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void 				Spawn			();
     virtual void 				Release			();
+
+	virtual	CKinematics*		dcast_PKinematics		()				{ return this;	}
 };
-IC CKinematics* PKinematics(IRender_Visual* V) { return dynamic_cast<CKinematics*>(V); }
+IC CKinematics* PKinematics		(IRender_Visual* V)		{ return V->dcast_PKinematics(); }
 //---------------------------------------------------------------------------
 #endif

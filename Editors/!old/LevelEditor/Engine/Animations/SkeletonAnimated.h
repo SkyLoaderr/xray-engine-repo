@@ -229,8 +229,9 @@ public:
 	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void				Release			();
 	virtual void				Spawn			();
+	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return 0;	}
 	virtual						~CSkeletonAnimated	();
 };
-IC CSkeletonAnimated* PSkeletonAnimated(IRender_Visual* V) { return dynamic_cast<CSkeletonAnimated*>(V); }
+IC CSkeletonAnimated* PSkeletonAnimated(IRender_Visual* V) { return V->dcast_PSkeletonAnimated(); }
 //---------------------------------------------------------------------------
 #endif

@@ -25,9 +25,9 @@ protected:
 public:
 	// Main functionality
 	virtual void				Calculate		(BOOL bLight=FALSE);			// Recalculate skeleton (Light mode can be used to avoid interpolation)
+	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return this;	}
 };
-IC CSkeletonRigid* PSkeletonRigid(IRender_Visual* V) { return dynamic_cast<CSkeletonRigid*>(V); }
-
+IC CSkeletonRigid* PSkeletonRigid(IRender_Visual* V)	{ return V->dcast_PSkeletonRigid(); }
 
 //---------------------------------------------------------------------------
 #endif
