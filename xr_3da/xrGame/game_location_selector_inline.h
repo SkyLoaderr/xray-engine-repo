@@ -10,7 +10,7 @@
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _VertexEvaluator,\
-	typename _vertex_id_type,\
+	typename _vertex_id_type\
 >
 
 #define CGameLocationSelector CBaseLocationSelector<CGameGraph,_VertexEvaluator,_vertex_id_type>

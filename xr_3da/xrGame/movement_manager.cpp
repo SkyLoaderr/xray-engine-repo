@@ -215,7 +215,7 @@ void CMovementManager::process_game_path()
 				level_vertex_id(),
 				ai().game_graph().vertex(
 					CGamePathManager::get_intermediate_vertex_id()
-				).level_vertex_id()
+				)->level_vertex_id()
 			);
 			if (CLevelPathManager::failed()) {
 				Device.Statistic.TEST1.End();

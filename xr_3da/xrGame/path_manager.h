@@ -199,7 +199,7 @@ public:
 	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
-		return					(goal_vertex->game_point().distance_to(graph->vertex(node_index).game_point()));
+		return					(goal_vertex->game_point().distance_to(graph->vertex(node_index)->game_point()));
 	}
 
 	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const
