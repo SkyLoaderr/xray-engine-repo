@@ -195,6 +195,11 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_dolg_rg6_quest", 2)
 	end 
 
+	if	actor:has_info("bar_svoboda_rg6_finish") and 
+	then		
+		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
+	end 
+
 	if	actor:has_info("bar_decoding_start") and 
  		actor:dont_has_info("yan_decoding_gain") and
 		actor:object("bar_decoding_documents") ~= nil 
