@@ -350,9 +350,6 @@
 				RelativePath=".\Particle.h">
 			</File>
 			<File
-				RelativePath=".\ParticleSystem.h">
-			</File>
-			<File
 				RelativePath=".\PSLibrary.cpp">
 			</File>
 			<File
@@ -648,12 +645,6 @@
 				</File>
 				<File
 					RelativePath=".\ParticleGroup.h">
-				</File>
-				<File
-					RelativePath=".\psvisual.cpp">
-				</File>
-				<File
-					RelativePath=".\psvisual.h">
 				</File>
 			</Filter>
 		</Filter>
