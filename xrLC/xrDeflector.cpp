@@ -51,6 +51,8 @@ CDeflector::CDeflector()
 	dwWidth		= 0;
 	dwHeight	= 0;
 	bMerged		= FALSE;
+	UVpolys.reserve	(32);
+	layers.reserve	(16);
 }
 CDeflector::~CDeflector()
 {
