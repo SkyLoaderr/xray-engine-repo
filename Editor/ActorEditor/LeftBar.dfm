@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 752
+  Height = 712
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 752
+    Height = 712
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -86,7 +86,7 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         CloseButton = False
-        Caption = 'Preview Object'
+        Caption = 'File'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -151,7 +151,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 290
+      Height = 250
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -172,13 +172,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 259
+        Height = 219
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 257
+          Top = 217
           Width = 208
           Height = 2
           Align = alBottom
@@ -194,7 +194,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 221
+          Height = 181
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -389,7 +389,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 273
+        Top = 233
         Width = 208
         Height = 16
         Align = alBottom
@@ -420,7 +420,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 401
+      Top = 361
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -477,7 +477,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 359
+      Top = 319
       Width = 210
       Height = 42
       Hint = 'Scene commands'

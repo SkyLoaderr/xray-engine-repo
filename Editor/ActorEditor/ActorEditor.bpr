@@ -48,10 +48,9 @@
       Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
       Intermediate\ShaderFunction.obj Intermediate\PSLibrary.obj 
       Intermediate\xrParticlesLib.obj Intermediate\PSObject.obj 
-      Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj 
-      Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj 
-      Intermediate\TopBar.obj Intermediate\EditMeshPick.obj 
-      Intermediate\EditObjectEditor.obj"/>
+      Intermediate\FrameEmitter.obj Intermediate\TLSPRITE.obj 
+      Intermediate\CustomObject.obj Intermediate\TopBar.obj 
+      Intermediate\EditMeshPick.obj Intermediate\EditObjectEditor.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -66,7 +65,7 @@
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
       TeeDB50.bpi dclusr50.bpi"/>
-    <PATHCPP value=".;editor;engine;lib;Engine\BLENDERS"/>
+    <PATHCPP value=".;editor;engine;lib;Intermediate;Engine\BLENDERS"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>

@@ -2,12 +2,7 @@
 #ifndef UIToolsH
 #define UIToolsH
 
-#include "ParticleSystem.h"
-
 // refs
-class CPSObject;
-class SDef;
-class TfrmPropertiesPSDef;
 class CEditableObject;
 
 enum EAction{
@@ -26,14 +21,10 @@ enum EAxis{
     eAxisZX
 };
 
-class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
+class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
-    CPSObject*  		m_TestObject;
-    PS::SDef* 			m_LibPS;
-    PS::SDef			m_EditPS;
     bool				m_bModified;
-	TfrmPropertiesPSDef*m_PSProps;
     bool				m_bReady;
 
     EAction				m_Action;
@@ -49,8 +40,8 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
 public:
-						CParticleTools		();
-    virtual 			~CParticleTools		();
+						CActorTools			();
+    virtual 			~CActorTools		();
 
     void				Render				();
     void				Update				();
@@ -62,23 +53,8 @@ public:
     bool				IsModified			(){return m_bModified;}
     void				Modified			();
 
-    void				ZoomObject			(BOOL bObjectOnly);
+    void				ZoomObject			();
     void				ChangeAction		(EAction action);
-
-    PS::SDef*			AppendPS			(LPCSTR folder_name, PS::SDef* src);
-    void				RemovePS			(LPCSTR name);
-    void				ResetCurrentPS		();
-    void				SetCurrentPS		(LPCSTR name);
-    void 				SetCurrentPS		(PS::SDef* P);
-    PS::SDef*			ClonePS				(LPCSTR name);
-    void				RenamePS			(LPCSTR src_name, LPCSTR part_name, int part_idx);
-    void				RenamePS			(LPCSTR src_name, LPCSTR dest_name);
-    PS::SDef*			GetCurrentPS		(){return m_LibPS?&m_EditPS:0;}
-    void				UpdateCurrent		();
-    void				UpdateEmitter		();
-
-    void				PlayCurrentPS		();
-    void				StopCurrentPS		();
 
     void				Load				();
     void				Save				();
@@ -101,6 +77,6 @@ public:
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 };
-extern CParticleTools	Tools;
+extern CActorTools	Tools;
 //---------------------------------------------------------------------------
 #endif

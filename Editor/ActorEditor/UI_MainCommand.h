@@ -18,7 +18,7 @@ enum ECommands{
 	COMMAND_UPDATE_CAPTION,
 	COMMAND_REFRESH_TEXTURES,	// p1 - refresh only new (true,false)
 	COMMAND_RENDER_FOCUS,
-	COMMAND_ZOOM_EXTENTS,       // p1 - true if object
+	COMMAND_ZOOM_EXTENTS,
 	COMMAND_UPDATE_TOOLBAR,
 	COMMAND_RESET_ANIMATION,
 	COMMAND_SELECT_PREVIEW_OBJ,	// p1 - 0-plane, 1-box, 2-sphere, 3-teapot, -1-custom

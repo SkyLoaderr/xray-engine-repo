@@ -84,7 +84,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
 
 	case COMMAND_ZOOM_EXTENTS:
-		Tools.ZoomObject(p1);
+		Tools.ZoomObject();
     	break;
     case COMMAND_RENDER_FOCUS:
 		if (frmMain->Visible&&m_bReady)
@@ -184,12 +184,13 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 char* TUI::GetCaption()
 {
 	VERIFY(m_bReady);
- 	return "particles.xr";
+ 	return "KARMA";
 }
+
 char* TUI::GetTitle()
 {
 	VERIFY(m_bReady);
-	return "Particle Editor";
+	return "Actor Editor";
 }
 
 LPSTR GetNameByClassID(EObjClass cls_id){

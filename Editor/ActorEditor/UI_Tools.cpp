@@ -9,77 +9,64 @@
 #include "ui_main.h"
 #include "leftbar.h"
 #include "topbar.h"
-#include "PSObject.h"
-#include "PSLibrary.h"
-#include "ParticleSystem.h"
-#include "PropertiesPSDef.h"
 #include "xr_trims.h"
 #include "library.h"
 
 //------------------------------------------------------------------------------
-CParticleTools Tools;
+CActorTools Tools;
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
-CParticleTools::CParticleTools()
+CActorTools::CActorTools()
 {
 	m_EditObject		= 0;
-	m_TestObject 		= 0;
-    m_LibPS				= 0;
-    m_PSProps			= 0;
     m_bModified			= false;
     m_bReady			= false;
 }
 //---------------------------------------------------------------------------
 
-CParticleTools::~CParticleTools()
+CActorTools::~CActorTools()
 {
 }
 //---------------------------------------------------------------------------
 
-bool CParticleTools::OnCreate(){
+bool CActorTools::OnCreate(){
 	// shader test locking
-	AnsiString fn = "particles.xr"; FS.m_GameRoot.Update(fn);
-	if (FS.CheckLocking(0,fn.c_str(),false,true))
-    	return false;
+//	AnsiString fn = "particles.xr"; FS.m_GameRoot.Update(fn);
+//	if (FS.CheckLocking(0,fn.c_str(),false,true))
+//    	return false;
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-    m_PSProps = new TfrmPropertiesPSDef(fraLeftBar->paPSProps);
-	m_PSProps->Parent = fraLeftBar->paPSProps;
-    m_PSProps->Align = alClient;
-    m_PSProps->BorderStyle = bsNone;
-    m_PSProps->ShowProperties();
+
+    // props
 
     m_bReady = true;
 
     Load();
-	m_PSProps->SetCurrent(0);
+//	m_PSProps->SetCurrent(0);
     ChangeAction(eaSelect);
 
 	// lock
-    FS.LockFile(0,fn.c_str());
+//    FS.LockFile(0,fn.c_str());
     return true;
 }
 
-void CParticleTools::OnDestroy(){
+void CActorTools::OnDestroy(){
 	VERIFY(m_bReady);
     m_bReady			= false;
 	// unlock
-    FS.UnlockFile(&FS.m_GameRoot,"particles.xr");
+//    FS.UnlockFile(&FS.m_GameRoot,"particles.xr");
 
 	Lib.RemoveEditObject(m_EditObject);
-	_DELETE(m_TestObject);
-    m_LibPS				= 0;
-    m_PSProps->HideProperties();
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 }
 //---------------------------------------------------------------------------
 
-bool CParticleTools::IfModified(){
+bool CActorTools::IfModified(){
     if (m_bModified){
-        int mr = ELog.DlgMsg(mtConfirmation, "The particles has been modified.\nDo you want to save your changes?");
+        int mr = ELog.DlgMsg(mtConfirmation, "The ... has been modified.\nDo you want to save your changes?");
         switch(mr){
         case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
         case mrNo: m_bModified = FALSE; break;
@@ -89,50 +76,31 @@ bool CParticleTools::IfModified(){
     return true;
 }
 
-void CParticleTools::Modified(){
+void CActorTools::Modified(){
 	m_bModified = true;
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
-void CParticleTools::Render(){
+void CActorTools::Render(){
 	if (!m_bReady) return;
-	if (m_TestObject)
-    	m_TestObject->RenderSingle();
 	if (m_EditObject)
     	m_EditObject->RenderSingle(precalc_identity);
 }
 
-void CParticleTools::Update(){
+void CActorTools::Update(){
 	if (!m_bReady) return;
-	if (m_TestObject){
-    	m_TestObject->RTL_Update(Device.fTimeDelta);
-        if (m_TestObject->IsPlaying())	fraLeftBar->lbCurState->Caption = "generate&&playing";
-        else 							fraLeftBar->lbCurState->Caption = m_TestObject->ParticleCount()?"playing":"stopped";
-        fraLeftBar->lbParticleCount->Caption 	= m_TestObject->ParticleCount();
-    }
 	if (m_EditObject)
     	m_EditObject->RTL_Update(Device.fTimeDelta);
 }
 
-void CParticleTools::ZoomObject(BOOL bObjectOnly){
+void CActorTools::ZoomObject(){
 	VERIFY(m_bReady);
-    if (bObjectOnly&&m_EditObject){
+    if (m_EditObject)
         Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
-	}else{
-    	if (m_TestObject){
-			Fbox BB;
-	        m_TestObject->GetBox(BB);
-    	    Device.m_Camera.ZoomExtents(BB);
-        }else{
-			Fbox BB;
-    	    BB.set(-5,-5,-5,5,5,5);
-        	Device.m_Camera.ZoomExtents(BB);
-        }
-    }
 }
 
-void CParticleTools::OnDeviceCreate(){
+void CActorTools::OnDeviceCreate(){
 	VERIFY(m_bReady);
     // add directional light
     Flight L;
@@ -162,14 +130,12 @@ void CParticleTools::OnDeviceCreate(){
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
-	if (m_TestObject) m_TestObject->OnDeviceCreate();
 }
 
-void CParticleTools::OnDeviceDestroy(){
-	if (m_TestObject) m_TestObject->OnDeviceDestroy();
+void CActorTools::OnDeviceDestroy(){
 }
 
-void CParticleTools::SelectPreviewObject(int p){
+void CActorTools::SelectPreviewObject(int p){
     LPCSTR fn=m_EditObject?m_EditObject->GetName():"";
     fn=TfrmChoseItem::SelectObject(false,0,fn);
     if (!fn) return;
@@ -177,161 +143,43 @@ void CParticleTools::SelectPreviewObject(int p){
     m_EditObject = Lib.CreateEditObject(fn);
     if (!m_EditObject)
         ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
-	ZoomObject(TRUE);
+	ZoomObject();
     UI.RedrawScene();
 }
 
-void CParticleTools::ResetPreviewObject(){
+void CActorTools::ResetPreviewObject(){
 	VERIFY(m_bReady);
-    m_LibPS 	= 0;
     UI.RedrawScene();
 }
 
-void CParticleTools::Load()
+void CActorTools::Load()
 {
 	VERIFY(m_bReady);
-    PS::PSIt P = PSLib.FirstPS();
-    PS::PSIt E = PSLib.LastPS();
-    for (; P!=E; P++) fraLeftBar->AddPS(P->m_Name,true);
 }
 
-void CParticleTools::Save()
+void CActorTools::Save()
 {
 	VERIFY(m_bReady);
     ApplyChanges();
 	m_bModified = false;
-    FS.UnlockFile(&FS.m_GameRoot,"particles.xr",false);
-	PSLib.Save();
-    FS.LockFile(&FS.m_GameRoot,"particles.xr",false);
 }
 
-void CParticleTools::Reload()
+void CActorTools::Reload()
 {
 	VERIFY(m_bReady);
-	PSLib.Reload();
     // visual part
-    fraLeftBar->ClearParticleList();
-    PS::PSIt P = PSLib.FirstPS();
-    PS::PSIt E = PSLib.LastPS();
-    for (; P!=E; P++) fraLeftBar->AddPS(P->m_Name,true);
-    ResetCurrentPS();
 }
 
-
-void CParticleTools::RenamePS(LPCSTR old_full_name, LPCSTR ren_part, int level){
-    VERIFY(level<_GetItemCount(old_full_name,'\\'));
-    char new_full_name[255];
-    _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
-    RenamePS(old_full_name, new_full_name);
-}
-
-void CParticleTools::RenamePS(LPCSTR old_full_name, LPCSTR new_full_name){
-	VERIFY(m_bReady);
-    ApplyChanges();
-	PS::SDef* S = PSLib.FindPS(old_full_name); R_ASSERT(S);
-    PSLib.RenamePS(S,new_full_name);
-	if (S==m_LibPS){
-    	m_EditPS = *S;
-    }
-}
-
-PS::SDef* CParticleTools::AppendPS(LPCSTR folder_name, PS::SDef* src)
+void CActorTools::ApplyChanges()
 {
 	VERIFY(m_bReady);
-    char old_name[128]; if (src) strcpy(old_name,src->m_Name);
-    PS::SDef* S = PSLib.AppendPS(src);
-    char new_name[128]; new_name[0]=0;
-    if (folder_name) strcpy(new_name,folder_name);
-    PSLib.GenerateName(new_name,src?old_name:0);
-    PSLib.RenamePS(S,new_name);
-	fraLeftBar->AddPS(S->m_Name,false);
-    return S;
 }
 
-void CParticleTools::RemovePS(LPCSTR name)
-{
-	VERIFY(m_bReady);
-	PSLib.RemovePS(name);
-}
-
-void CParticleTools::ResetCurrentPS()
-{
-	VERIFY(m_bReady);
-	m_LibPS = 0;
-	_DELETE(m_TestObject);
-}
-
-void CParticleTools::SetCurrentPS(PS::SDef* P)
-{
-	VERIFY(m_bReady);
-    // save changes
-    if (m_LibPS)
-    	*m_LibPS = m_EditPS;
-    // load shader
-	if (m_LibPS!=P){
-        m_LibPS = P;
-        if (m_LibPS) m_EditPS = *m_LibPS;
-        m_PSProps->SetCurrent(m_LibPS?&m_EditPS:0);
-        // update visual
-        _DELETE(m_TestObject);
-		m_TestObject = new CPSObject("Test");
-		m_TestObject->Compile(&m_EditPS);
-    }
-}
-
-void CParticleTools::SetCurrentPS(LPCSTR name)
-{
-    SetCurrentPS(PSLib.FindPS(name));
-}
-
-void CParticleTools::UpdateCurrent(){
-	VERIFY(m_bReady);
-    VERIFY(m_LibPS);
-	_DELETE(m_TestObject);
-    m_TestObject = new CPSObject("Test");
-    m_TestObject->Compile(&m_EditPS);
-}
-//---------------------------------------------------------------------------
-
-void CParticleTools::UpdateEmitter(){
-	VERIFY(m_bReady);
-    if (!m_LibPS) return;
-    if (m_TestObject) m_TestObject->UpdateEmitter(&m_EditPS.m_DefaultEmitter);
-}
-//---------------------------------------------------------------------------
-
-PS::SDef* CParticleTools::ClonePS(LPCSTR name)
-{
-	VERIFY(m_bReady);
-	PS::SDef* S = PSLib.FindPS(name); R_ASSERT(S);
-	return AppendPS(0,S);
-}
-
-void CParticleTools::ApplyChanges(){
-	VERIFY(m_bReady);
-    if (m_LibPS){
-		*m_LibPS = m_EditPS;
-		Modified();
-    }
-}
-
-void CParticleTools::PlayCurrentPS()
-{
-	VERIFY(m_bReady);
-	if (m_TestObject) m_TestObject->Play();
-}
-
-void CParticleTools::StopCurrentPS()
-{
-	VERIFY(m_bReady);
-	if (m_TestObject) m_TestObject->Stop();
-}
-
-void CParticleTools::OnShowHint(AStringVec& SS)
+void CActorTools::OnShowHint(AStringVec& SS)
 {
 }
 
-void CParticleTools::ChangeAction(EAction action)
+void CActorTools::ChangeAction(EAction action)
 {
 	switch(action){
     case eaSelect: m_bHiddenMode=false; break;
@@ -353,21 +201,20 @@ void CParticleTools::ChangeAction(EAction action)
     fraTopBar->ChangeAction(m_Action);
 }
 
-bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
+bool __fastcall CActorTools::MouseStart(TShiftState Shift)
 {
-	if (!m_TestObject) return false;
 	switch(m_Action){
     case eaSelect: return false;
     case eaAdd:{
         if (m_EditObject){
-            Fvector p;
+/*            Fvector p;
             float dist=UI.ZFar();
             SRayPickInfo pinf;
             if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,precalc_identity,&pinf)){
                 R_ASSERT(pinf.e_mesh);
                 m_EditPS.m_DefaultEmitter.m_Position.set(pinf.pt);
             }
-        }
+*/        }
     }break;
     case eaMove:{
         if (fraTopBar->ebAxisY->Down){
@@ -395,19 +242,18 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 		m_ScaleCenter.set( UI.pivot() );
     }break;
     }
-    UpdateEmitter();
-    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
+//    UpdateEmitter();
+//    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 	return m_bHiddenMode;
 }
 
-bool __fastcall CParticleTools::MouseEnd(TShiftState Shift)
+bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 {
 	return true;
 }
 
-void __fastcall CParticleTools::MouseMove(TShiftState Shift)
+void __fastcall CActorTools::MouseMove(TShiftState Shift)
 {
-	if (!m_TestObject) return;
 	switch(m_Action){
     case eaSelect: return;
     case eaAdd: break;
@@ -425,20 +271,11 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-		m_EditPS.m_DefaultEmitter.m_Position.add(amount);
+//		amount
     }break;
     case eaRotate:{
         float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
-        switch (m_EditPS.m_DefaultEmitter.m_EmitterType){
-        case PS::SEmitterDef::emPoint:
-        case PS::SEmitterDef::emBox:
-        case PS::SEmitterDef::emSphere: 	break;
-        case PS::SEmitterDef::emCone:
-        	m_EditPS.m_DefaultEmitter.m_ConeHPB.direct(m_TestObject->m_Emitter.m_ConeHPB,m_RotateVector,amount);
-            m_EditPS.m_DefaultEmitter.UpdateConeOrientation();
-        break;
-        }
 		//m_RotateVector, amount
     }break;
     case eaScale:{
@@ -454,19 +291,8 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
             if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
         }
 
-        switch (m_EditPS.m_DefaultEmitter.m_EmitterType){
-        case PS::SEmitterDef::emCone:
-        case PS::SEmitterDef::emPoint:		break;
-        case PS::SEmitterDef::emBox:
-	        m_EditPS.m_DefaultEmitter.m_BoxSize.add(amount);
-        break;
-        case PS::SEmitterDef::emSphere:
-	        m_EditPS.m_DefaultEmitter.m_SphereRadius += dy;
-        break;
-        }
+        //amount
     }break;
     }
-    UpdateEmitter();
-    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }
 

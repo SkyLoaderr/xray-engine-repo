@@ -234,7 +234,7 @@ typedef	char FILE_NAME	[ _MAX_PATH	];
 			#define _EDITOR_FILE_NAME_ "particle"
         #else
 			#ifdef _ACTOR_EDITOR
-				#define _ACTOR_FILE_NAME_ "actor"
+				#define _EDITOR_FILE_NAME_ "actor"
     		#endif
 		#endif
     #endif

@@ -107,7 +107,6 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 USEUNIT("Editor\PSLibrary.cpp");
 USEUNIT("Engine\xrParticlesLib.cpp");
 USEUNIT("Editor\PSObject.cpp");
-USEUNIT("PropertiesPSDef.cpp");
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEUNIT("Editor\TLSPRITE.CPP");
 USEUNIT("Editor\CustomObject.cpp");
