@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
@@ -8,12 +10,19 @@ typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
 void __stdcall PushOutCallback(bool& do_colide,dContact& c);
 void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 
+
 struct Fcylinder;
 class CPhysicsRefObject
 {
 public:
 	virtual ~CPhysicsRefObject() {}
 };
+
+extern const dReal fixed_step;
+IC float Erp(float k_p,float k_d)		{return ((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)));}
+IC float Cfm(float k_p,float k_d)		{return (1.f / (((fixed_step)*(k_p)) + (k_d)));}
+IC float Spring(float cfm,float erp)	{return ((erp)/(cfm)/fixed_step);}
+IC float Damping(float cfm,float erp)	{return ((1.f-(erp))/(cfm));}
 
 
 // ABSTRACT:
@@ -76,45 +85,75 @@ class CPhysicsJoint
 {
 
 public:
-enum enumType{
-	ball,
-	hinge,
-	hinge2,
-	full_control,
-	universal_hinge,
-	shoulder1,
-	shoulder2,
-	car_wheel,
-	welding
+
+ 
+enum enumType{				//joint type
+
+	ball,					// ball-socket
+	hinge,					// standart hinge 1 - axis
+	hinge2,					// for car wheels 2-axes 
+	full_control,			// 3 - axes control (eiler - angles)
+	universal_hinge,		//uu
+	shoulder1,				//uu
+	shoulder2,				//uu
+	car_wheel,				//uu
+	welding					//spesial - creates one rigid body 
 };
+
+
+	enumType eType;          //type of the joint
+
+	float erp;				 //joint erp
+	float cfm;				 //joint cfm
+
+	enum eVs {				//coordinate system 
+		vs_first,			//in first local
+		vs_second,			//in second local 
+		vs_global			//in global 
+	};
+	struct SPHAxis {
+		float high;			//high limit
+		float low;			//law limit
+		float zero;			//zero angle position
+		float erp;			//limit erp
+		float cfm;			//limit cfm
+		eVs   vs;			//coordinate system 
+		float force;		//max force
+		float velocity;		//velocity to achieve
+		Fvector direction;	//axis direction
+		IC void set_limits(float h, float l) {high=h; low=l;}
+		IC void set_direction(const Fvector& v){direction.set(v);}
+		IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
+		IC void set_param(const float e,const float c){erp=e;cfm=c;}	
+		SPHAxis();
+	};
+
+
 protected:
-
-CPhysicsElement* pFirst_element;
-CPhysicsElement* pSecond_element;
-enumType eType;
-
-bool bActive;
-public:
+	CPhysicsElement* pFirst_element;
+	CPhysicsElement* pSecond_element;
+	bool bActive;
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
 
-
+public:
 	virtual ~CPhysicsJoint	()																{};
-
+	
+	virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
 	virtual void SetAnchorVsFirstElement	(const Fvector& position)						=0;
 	virtual void SetAnchorVsSecondElement	(const Fvector& position)						=0;
 
-	virtual void SetAxis					(const Fvector& orientation,const int axis_num)	=0;
-	virtual void SetAxisVsFirstElement		(const Fvector& orientation,const int axis_num)	=0;
-	virtual void SetAxisVsSecondElement		(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisDir					(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisDirVsFirstElement		(const Fvector& orientation,const int axis_num)	=0;
+	virtual void SetAxisDirVsSecondElement		(const Fvector& orientation,const int axis_num)	=0;
 
 	virtual void SetAnchor					(const float x,const float y,const float z)						=0;
 	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)						=0;
 	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)						=0;
 
-	virtual void SetAxis					(const float x,const float y,const float z,const int axis_num)	=0;
-	virtual void SetAxisVsFirstElement		(const float x,const float y,const float z,const int axis_num)	=0;
-	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void SetAxisDir					(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void SetAxisDirVsFirstElement		(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void SetAxisDirVsSecondElement		(const float x,const float y,const float z,const int axis_num)	=0;
 
 
 	virtual void SetLimits					(const float low,const float high,const int axis_num)=0;

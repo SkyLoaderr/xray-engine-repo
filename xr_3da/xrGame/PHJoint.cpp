@@ -652,7 +652,7 @@ void CPHJoint::SetAnchorVsSecondElement(const float x,const float y,const float 
 	anchor.set(x,y,z);	
 }
 
-void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_num)
+void CPHJoint::SetAxisDir(const float x,const float y,const float z,const int axis_num)
 {
 	int ax=axis_num;
 
@@ -682,7 +682,7 @@ void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_
 	axes[ax].direction.set(x,y,z);
 }
 
-void CPHJoint::SetAxisVsFirstElement(const float x,const float y,const float z,const int axis_num)
+void CPHJoint::SetAxisDirVsFirstElement(const float x,const float y,const float z,const int axis_num)
 {
 	int ax=axis_num;
 
@@ -710,7 +710,7 @@ void CPHJoint::SetAxisVsFirstElement(const float x,const float y,const float z,c
 	axes[ax].direction.set(x,y,z);
 }
 
-void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,const int axis_num)
+void CPHJoint::SetAxisDirVsSecondElement(const float x,const float y,const float z,const int axis_num)
 {
 	int ax=axis_num;
 
@@ -795,7 +795,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 
 	axes[ax].zero=zer;
 	m2.invert();
-	axes[ax].zero_transform.set(m2);
+	//axes[ax].zero_transform.set(m2);
 
 }
 
@@ -894,95 +894,10 @@ void CPHJoint::Deactivate()
 	bActive=false;
 }
 
-void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num){
-	int ax;
-	ax=axis_num;
-	if(ax<-1) ax=-1;
-
-	if(ax==-1) 
-		switch(eType){
-					case welding:				; 
-					case ball:					return;
-					case hinge:					axes[0].force=force;
-						axes[0].velocity=velocity;
-						break;
-					case hinge2:				;
-					case universal_hinge:		;
-					case shoulder1:				;
-					case shoulder2:				;
-					case car_wheel:				axes[0].force=force;
-						axes[0].velocity=velocity;
-						axes[1].force=force;
-						axes[1].velocity=velocity;
-						break;
-
-					case full_control:			axes[0].force=force;
-						axes[0].velocity=velocity;
-						axes[1].force=force;
-						axes[1].velocity=velocity;
-						axes[2].force=force;
-						axes[2].velocity=velocity;
-						break;
-		}
-
-	else{
-		switch(eType){
-
-						case welding:				; 
-						case ball:					return;
-						case hinge:					ax=0;
-							break;
-						case hinge2:				;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				ax= axis_num>1 ? 1 : axis_num; 
-							break;
-
-						case full_control:			ax= axis_num>2 ? 2 : axis_num; 
-							break;
-		}
-		axes[ax].force=force;
-		axes[ax].velocity=velocity;
-	}
-
-	if(bActive)
-	{
-		switch(eType){
-
-						case hinge2:switch(ax)
-									{
-						case -1:
-							dJointSetHinge2Param(m_joint,dParamFMax ,axes[0].force);
-							dJointSetHinge2Param(m_joint,dParamFMax2 ,axes[1].force);
-						case 0:		dJointSetHinge2Param(m_joint,dParamFMax ,axes[0].force);break;
-						case 1:		dJointSetHinge2Param(m_joint,dParamFMax2 ,axes[1].force);break;
-									}
-									break;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				;
-						case welding:				; 
-						case ball:					break;
-						case hinge:					dJointSetHingeParam(m_joint,dParamFMax ,axes[0].force);
-							break;
-
-
-
-						case full_control:
-							switch(ax){
-						case -1:
-							dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
-							dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
-							dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
-						case 0:dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);break;
-						case 1:dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);break;
-						case 2:dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);break;
-							}
-							break;
-		}
-	}
+void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
+{
+SetForce(force,axis_num);
+SetVelocity(velocity,axis_num);
 }
 
 
@@ -991,12 +906,12 @@ void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,cons
 void CPHJoint::SetForce		(const float force,const int axis_num){
 	int ax;
 	ax=axis_num;
-	if(ax<-1) ax=-1;
+	LimitAxisNum(ax);
 
 	if(ax==-1) 
 		switch(eType){
 					case welding:				; 
-					case ball:					break;
+					case ball:					return;
 					case hinge:					
 						axes[0].force=force;
 						break;
@@ -1017,30 +932,20 @@ void CPHJoint::SetForce		(const float force,const int axis_num){
 		}
 
 	else{
-		switch(eType){
-
-						case welding:				; 
-						case ball:					break;
-						case hinge:					ax=0;
-							break;
-						case hinge2:				;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				ax= axis_num>1 ? 1 : axis_num; 
-							break;
-
-						case full_control:			ax= axis_num>2 ? 2 : axis_num; 
-							break;
-		}
 		axes[ax].force=force;
-	}
+		}
 
 	if(bActive)
 	{
-		switch(eType){
+	SetForceActive(ax);
+	}
+}
 
-						case hinge2:switch(ax)
+void CPHJoint::SetForceActive		(const int axis_num)
+{
+	switch(eType){
+
+						case hinge2:switch(axis_num)
 									{
 						case -1:
 							dJointSetHinge2Param(m_joint,dParamFMax ,axes[0].force);
@@ -1061,7 +966,7 @@ void CPHJoint::SetForce		(const float force,const int axis_num){
 
 
 						case full_control:
-							switch(ax){
+							switch(axis_num){
 						case -1:
 							dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
 							dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
@@ -1071,14 +976,14 @@ void CPHJoint::SetForce		(const float force,const int axis_num){
 						case 2:dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);break;
 							}
 							break;
-		}
 	}
 }
 
 void CPHJoint::SetVelocity		(const float velocity,const int axis_num){
 	int ax;
 	ax=axis_num;
-	if(ax<-1) ax=-1;
+	LimitAxisNum(ax);
+
 
 	if(ax==-1) 
 		switch(eType){
@@ -1104,30 +1009,20 @@ void CPHJoint::SetVelocity		(const float velocity,const int axis_num){
 		}
 
 	else{
-		switch(eType){
-
-						case welding:				; 
-						case ball:					break;
-						case hinge:					ax=0;
-							break;
-						case hinge2:				;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				ax= axis_num>1 ? 1 : axis_num; 
-							break;
-
-						case full_control:			ax= axis_num>2 ? 2 : axis_num; 
-							break;
+			axes[ax].velocity=velocity;
 		}
-		axes[ax].velocity=velocity;
-	}
 
 	if(bActive)
 	{
-		switch(eType){
+	SetVelocityActive(ax);
+	}
+}
 
-						case hinge2:switch(ax)
+void CPHJoint::SetVelocityActive(const int axis_num)
+{
+	switch(eType){
+
+						case hinge2:switch(axis_num)
 									{
 						case -1:
 							dJointSetHinge2Param(m_joint,dParamVel ,axes[0].velocity);
@@ -1148,7 +1043,7 @@ void CPHJoint::SetVelocity		(const float velocity,const int axis_num){
 
 
 						case full_control:
-							switch(ax){
+							switch(axis_num){
 						case -1:
 							dJointSetAMotorParam(m_joint1,dParamVel ,axes[0].velocity);
 							dJointSetAMotorParam(m_joint1,dParamVel2 ,axes[1].velocity);
@@ -1158,6 +1053,63 @@ void CPHJoint::SetVelocity		(const float velocity,const int axis_num){
 						case 2:dJointSetAMotorParam(m_joint1,dParamVel3 ,axes[2].velocity);break;
 							}
 							break;
-		}
 	}
+}
+
+void CPHJoint::LimitAxisNum(int &axis_num)
+{
+	if(axis_num<-1) 
+	{
+		axis_num=-1;
+		return;
+	}
+
+	switch(eType){
+
+						case welding:				; 
+						case ball:					axis_num=-1;
+													break;
+						case hinge:					axis_num=0;
+													break;
+						case hinge2:				;
+						case universal_hinge:		;
+						case shoulder1:				;
+						case shoulder2:				;
+						case car_wheel:				axis_num= axis_num>1 ? 1 : axis_num; 
+													break;
+
+						case full_control:			axis_num= axis_num>2 ? 2 : axis_num; 
+													break;
+				}
+
+}
+
+void CPHJoint::SetAxis(const SPHAxis& axis,const int axis_num)
+{
+int ax=axis_num;
+LimitAxisNum(ax);
+if(ax==-1) 
+	switch(eType){
+		case welding:				; 
+		case ball:					break;
+		case hinge:					
+									axes[0]=axis;
+									break;
+		case hinge2:				;
+		case universal_hinge:		;
+		case shoulder1:				;
+		case shoulder2:				;
+		case car_wheel:	
+			axes[0]=axis;
+			axes[1]=axis;
+			break;
+
+		case full_control:			
+			axes[0]=axis;
+			axes[1]=axis;
+			axes[2]=axis;
+			break;
+	}
+else
+	axes[axis_num]=axis;
 }

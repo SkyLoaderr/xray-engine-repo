@@ -146,8 +146,8 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	{
 		CPhysicsJoint* J= P_create_Joint(CPhysicsJoint::full_control,root_e,E);
 		J->SetAnchorVsSecondElement	(0,0,0);
-		J->SetAxisVsSecondElement	(1,0,0,0);
-		J->SetAxisVsSecondElement	(0,1,0,2);
+		J->SetAxisDirVsSecondElement	(1,0,0,0);
+		J->SetAxisDirVsSecondElement	(0,1,0,2);
 		J->SetLimits				(-M_PI/2,M_PI/2,0);
 		J->SetLimits				(-M_PI/2,M_PI/2,1);
 		J->SetLimits				(-M_PI/2,M_PI/2,2);

@@ -8,48 +8,9 @@ class CPHJoint: public CPhysicsJoint{
 	CPHShell*   pShell;
 	dJointID m_joint;
 	dJointID m_joint1;
-	float erp;
-	float cfm;
 
-	enum eVs {
-		vs_first,
-		vs_second,
-		vs_global
-	};
-	struct SPHAxis {
-		float high;
-		float low;
-		float zero;
-		Fmatrix zero_transform;
-		float erp;
-		float cfm;
-		eVs   vs;
-		float force;
-		float velocity;
-		Fvector direction;
-		IC void set_limits(float h, float l) {high=h; low=l;}
-		IC void set_direction(const Fvector& v){direction.set(v);}
-		IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
-		IC void set_param(const float e,const float c){erp=e;cfm=c;}	
-		SPHAxis(){
-			high=M_PI/15.f;
-			low=-M_PI/15.f;;
-			zero=0.f;
-			//erp=ERP(world_spring/5.f,world_damping*5.f);
-			//cfm=CFM(world_spring/5.f,world_damping*5.f);
-#ifndef ODE_SLOW_SOLVER
-			erp=world_erp;
-			cfm=world_cfm;
-#else
-			erp=0.3f;
-			cfm=0.000001f;
-#endif
-			direction.set(0,0,1);
-			vs=vs_first;
-			force=5.f;
-			velocity=0.f;
-		}
-	};
+
+
 	xr_vector<SPHAxis> axes;
 	Fvector anchor;
 	eVs vs_anchor;
@@ -63,14 +24,18 @@ class CPHJoint: public CPhysicsJoint{
 	void CreateWelding();
 	void CreateUniversalHinge();
 	void CreateFullControl();
-
+	void LimitAxisNum						(int &axis_num);
+	void SetForceActive						(const int axis_num);
+	void SetVelocityActive					(const int axis_num);
+	
+	virtual void SetAxis					(const SPHAxis& axis,const int axis_num);
 	virtual void SetAnchor					(const Fvector& position){SetAnchor(position.x,position.y,position.z);}	
 	virtual void SetAnchorVsFirstElement	(const Fvector& position){SetAnchorVsFirstElement(position.x,position.y,position.z);}
 	virtual void SetAnchorVsSecondElement	(const Fvector& position){SetAnchorVsSecondElement(position.x,position.y,position.z);}
 
-	virtual void SetAxis					(const Fvector& orientation,const int axis_num){SetAxis(orientation.x,orientation.y,orientation.z,axis_num);}	
-	virtual void SetAxisVsFirstElement		(const Fvector& orientation,const int axis_num){SetAxisVsFirstElement(orientation.x,orientation.y,orientation.z,axis_num);}
-	virtual void SetAxisVsSecondElement		(const Fvector& orientation,const int axis_num){SetAxisVsSecondElement(orientation.x,orientation.y,orientation.z,axis_num);}
+	virtual void SetAxisDir					(const Fvector& orientation,const int axis_num){SetAxisDir(orientation.x,orientation.y,orientation.z,axis_num);}	
+	virtual void SetAxisDirVsFirstElement		(const Fvector& orientation,const int axis_num){SetAxisDirVsFirstElement(orientation.x,orientation.y,orientation.z,axis_num);}
+	virtual void SetAxisDirVsSecondElement		(const Fvector& orientation,const int axis_num){SetAxisDirVsSecondElement(orientation.x,orientation.y,orientation.z,axis_num);}
 
 	virtual void SetLimits					(const float low,const float high,const int axis_num)	;
 	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)	;
@@ -80,15 +45,16 @@ class CPHJoint: public CPhysicsJoint{
 	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)	;
 	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)	;
 
-	virtual void SetAxis					(const float x,const float y,const float z,const int axis_num);
-	virtual void SetAxisVsFirstElement		(const float x,const float y,const float z,const int axis_num);
-	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisDir					(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisDirVsFirstElement		(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisDirVsSecondElement		(const float x,const float y,const float z,const int axis_num);
 
 
 public:
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
+
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
 		if(bActive) Deactivate();
