@@ -73,6 +73,7 @@ Fvector CMonsterHitMemory::get_last_hit_dir()
 	// найти последний по времени хит
 	SMonsterHit		last_hit;
 	last_hit.time	= 0;
+	last_hit.side	= eSideFront;
 
 	for (u32 i = 0; i < m_hits.size(); i++) {
 		if (m_hits[i].time > last_hit.time)	last_hit = m_hits[i];

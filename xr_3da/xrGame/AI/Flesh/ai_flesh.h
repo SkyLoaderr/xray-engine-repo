@@ -8,7 +8,6 @@ public:
 							CAI_Flesh		();
 	virtual					~CAI_Flesh		();	
 	
-			void	Init					();
 	virtual	void	Load					(LPCSTR section);
 	virtual	BOOL	net_Spawn				(LPVOID DC);
 	virtual void    StateSelector			();
