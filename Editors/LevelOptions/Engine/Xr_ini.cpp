@@ -320,6 +320,13 @@ Fvector2 CInifile::ReadVECTOR2( LPCSTR S, LPCSTR L )
 	sscanf		(C,"%f,%f",&V.x,&V.y);
 	return V;
 }
+Fvector4 CInifile::ReadVECTOR4( LPCSTR S, LPCSTR L )
+{
+	LPCSTR		C = ReadSTRING(S,L);
+	Fvector4	V; V.set(0,0,0,0);
+	sscanf		(C,"%f,%f,%f,%f",&V.x,&V.y,&V.z,&V.w);
+	return V;
+}
 BOOL	CInifile::ReadBOOL( LPCSTR S, LPCSTR L )
 {
 	LPCSTR		C = ReadSTRING(S,L);

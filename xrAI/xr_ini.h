@@ -80,6 +80,7 @@ public:
 	u32		ReadCOLOR		( LPCSTR S, LPCSTR L );
 	Fvector		ReadVECTOR		( LPCSTR S, LPCSTR L );
 	Fvector2	ReadVECTOR2		( LPCSTR S, LPCSTR L );
+	Fvector4	ReadVECTOR4		( LPCSTR S, LPCSTR L );
 	BOOL		ReadBOOL		( LPCSTR S, LPCSTR L );
 	int			ReadTOKEN		( LPCSTR S, LPCSTR L,	const xr_token *token_list);
 	BOOL		ReadLINE		( LPCSTR S, int L,		LPCSTR* N, LPCSTR* V );
