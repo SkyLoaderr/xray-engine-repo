@@ -634,3 +634,68 @@ function Camper:heartbeat()
 	end
 	return false
 end
+
+
+
+-- Класс прожектора
+-- Параметры:
+-- 			obj		-	прожектор 
+--			speedh	-   скорость горизонтального поворота в радианах в секунду
+--			speedv	-	скорость вертикального вращения в радианах в секунду
+--			script	-	скрипт
+--			points	- 	таблица точек, куда должен смотреть прожектор
+--			rand	-	случайный (true) или последовательный (false) выбор точек
+
+class "Projector"
+
+function Projector:__init (obj, speedh, speedv, script, points, rand)
+	self.projector = obj
+	self.speedh = speedh
+	self.speedv = speedv
+	self.points = points
+	self.rand = rand
+	self.first_call = true
+	self.script = script
+	self.current = 1
+	self.in_process = false
+	self.time = 0
+end
+
+function Projector:process ()
+
+	if self.first_call == true then
+	   self.projector:script (true, self.script)
+	   self.first_call = false
+    end	
+	
+	if self.in_process == true then 
+	   if self.time - game.time () < 0 then
+		  self.in_process = false
+		  printf ("Time out !")
+	   end
+	   return
+	end
+
+	local point
+	if self.rand == true and table.getn (self.points) > 1 then 
+	   while true do 
+			 local rnd = math.random (1, table.getn (self.points) + 1)
+			 if rnd ~= self.current then 
+				self.current = rnd
+			    point = self.points[rnd]
+				break 
+			 end
+	   end
+	else
+	   self.current = self.current + 1
+	   if self.current > table.getn (self.points) then self.current = 1 end
+	   point = self.points[self.current]
+	end
+
+	action (self.projector, look (point, self.speedh, self.speedv))
+
+	self.time = game.time () + 5000
+	
+	self.in_process = true			 	
+
+end	  
