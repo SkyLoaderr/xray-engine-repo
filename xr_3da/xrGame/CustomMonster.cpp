@@ -252,7 +252,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 
 	float dt			= float(DT)/1000.f;
 	// *** general stuff
-	CMemoryManager::update		(dt);
+	if (g_Alive())
+		CMemoryManager::update	(dt);
 	inherited::shedule_Update	(DT);
 
 	// Queue setup
