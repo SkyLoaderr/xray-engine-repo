@@ -265,6 +265,9 @@ function process_map_spot(info_id)
 	       
 	elseif info_id == "mil_max_flash_get" then       
 		   remove_location (1003, "mil_crazy_location")
+		   if db.actor:has_info ("mil_max_job") then
+		      add_location (1002, "mil_max_location") 
+		   end     
 	elseif info_id == "mil_max_job_complete" then   
 	       add_location (1006, "mil_rg6_location") 	   
 	       
@@ -280,6 +283,7 @@ function process_map_spot(info_id)
 		   remove_location (1002, "mil_max_location")
 		   
     elseif info_id == "mil_max_job_complete" then
+           remove_location (1002, "mil_max_location")
 	       add_location (1006, "mil_rg6_location") 
 	elseif info_id == "mil_rg6_gain" then
 		   remove_location (1006, "mil_rg6_location")
