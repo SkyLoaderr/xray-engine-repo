@@ -37,7 +37,7 @@ CHUDManager::CHUDManager()
 	if (Device.bReady) OnDeviceCreate();
 
 
-	m_pHUDCursor = xr_new<CHUDCursor>();
+	m_pHUDCursor			= xr_new<CHUDCursor>();
 }
 //--------------------------------------------------------------------
 CHUDManager::~CHUDManager()
