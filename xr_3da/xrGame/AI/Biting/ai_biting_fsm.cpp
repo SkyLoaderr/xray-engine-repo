@@ -42,7 +42,7 @@ void CAI_Biting::Think()
 	MotionMan.ProcessAction();
 
 	// Update path
-	set_path_type			(ePathTypeLevelPath);
+	set_path_type			(ePathTypeLevelPath);	// temp here
 	build_path				();
 
 	// process sound
