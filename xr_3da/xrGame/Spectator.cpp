@@ -191,7 +191,7 @@ void CSpectator::cam_Update	(CActor* A)
 		}
 		pCreator->Cameras.Update(cam);
 		// hud output
-		HUD->pFontDI->Out			(0.f,0.9f,"%s(%d%%)",A->cName(),A->g_Health());
+		HUD->pFontDI->Out			(0.f,0.9f,"%s(%d%%)",A->cName(),iFloor(A->g_Health()));
 	}else{
 		Fvector point, dangle;
 		point.set					(0.f,1.6f,0.f);
