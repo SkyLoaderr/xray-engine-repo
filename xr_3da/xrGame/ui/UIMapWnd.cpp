@@ -468,7 +468,9 @@ void CUIMiniMap::UpdateSpots()
 CUIMapWnd::CUIMapWnd()
 {
 	m_activeLevelMap		= NULL;
+	m_GlobalMap				= NULL;
 	m_flags.zero();
+	Show(false);
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -570,7 +572,7 @@ void CUIMapWnd::Show(bool status)
 		SetActivePoint				( Level().CurrentEntity()->Position() );
 		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
 	}else{
-		m_GlobalMap->Show(false);
+		if(m_GlobalMap)m_GlobalMap->Show(false);
 		GetUICursor()->HoldMode(false);
 		m_flags.set(lmMouseHold,FALSE);
 	}
