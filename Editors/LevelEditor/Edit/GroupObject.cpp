@@ -33,7 +33,7 @@ CGroupObject::~CGroupObject	()
 void CGroupObject::OnDestroy()
 {
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-    	(*it)->m_pGroupObject=0;	// 
+    	(*it)->m_pOwnerObject=0;	// 
     	_DELETE(*it);
     }
     m_Objects.clear();
@@ -65,13 +65,13 @@ void CGroupObject::OnFrame()
 void CGroupObject::AppendObject(CCustomObject* object)
 {
 	if (!IsGroupClassID(object->ClassID)) return;
-    if (object->GetGroup()){
-        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already in group '%s'. Change group?",object->Name,object->GetGroup()->Name))
+    if (object->GetOwner()){
+        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already in group '%s'. Change group?",object->Name,object->GetOwner()->Name))
         	return;
-	    object->RemoveFromGroup();
+	    object->OnDetach();
     }
-	object->AppendToGroup(this);
-	m_Objects.push_back(object);
+	object->OnAttach		(this);
+	m_Objects.push_back		(object);
 }
 void CGroupObject::UpdateBBoxAndPivot(bool bInitFromFirstObject)
 {
@@ -129,7 +129,7 @@ void CGroupObject::GroupObjects(ObjectList& lst)
 void CGroupObject::UngroupObjects()
 {
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-        (*it)->RemoveFromGroup();
+        (*it)->OnDetach();
     m_Objects.clear();
 }
 

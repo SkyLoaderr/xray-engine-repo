@@ -88,7 +88,7 @@ public:
 
 	bool 					Create			();
 	void 					Destroy			();
-    void 					Resize			(int w, int h);
+    void 					Resize			(int w, int h, bool bRefreshDevice=true);
 	void 					RefreshTextures	(LPSTRVec* modif);
 	void 					ReloadTextures	();
 	void 					UnloadTextures	();
@@ -109,6 +109,14 @@ public:
     { return (x+1)*m_RenderWidth_2;	}
 	IC float 				_y2real			(float y)	
     { return (y+1)*m_RenderHeight_2;}
+
+    IC void					SetViewport		(u32 x, u32 y, u32 width, u32 height, float minZ=0.f, float maxZ=1.f)
+    { VERIFY(bReady); D3DVIEWPORT8 VP={x,y,width,height,minZ,maxZ}; CHK_DX(HW.pDevice->SetViewport(&VP)); }
+    IC void					ResetViewport	()
+    { VERIFY(bReady); D3DVIEWPORT8 VP={0,0,dwWidth,dwHeight,0.f,1.f}; CHK_DX(HW.pDevice->SetViewport(&VP)); }
+    IC void					SetGameViewport	()
+    { if ((0.75f*float(dwWidth))>float(dwHeight))	SetViewport(m_RenderWidth_2-1.33f*float(m_RenderHeight_2),0,1.33f*dwHeight,dwHeight); 
+      else											SetViewport(0,m_RenderHeight_2-0.75f*float(m_RenderWidth_2),dwWidth,0.75f*dwWidth);}
 
     IC void					SetTexture		(DWORD dwStage, IDirect3DTexture8* lpTexture)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetTexture( dwStage, lpTexture )); }

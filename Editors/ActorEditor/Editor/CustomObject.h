@@ -13,7 +13,6 @@ struct FSChunkDef;
 class CFrustum;
 class CStream;
 class CFS_Base;
-class CGroupObject;
 
 struct SExportStreamItem{
 	int					chunk;
@@ -49,7 +48,7 @@ public:
     Fmatrix			FITransformRP;
 	Fmatrix 		FITransform;
 
-    CGroupObject*	m_pGroupObject;
+    CCustomObject*	m_pOwnerObject;
 	void __fastcall OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val);
 protected:
 	LPSTR			GetName			(){return FName; }
@@ -100,9 +99,9 @@ public:
     virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}
 
     // grouping methods
-    void			RemoveFromGroup	();
-    void            AppendToGroup	(CGroupObject* group);
-    CGroupObject* 	GetGroup		(){return m_pGroupObject;}
+    void			OnDetach		();
+    void            OnAttach		(CCustomObject* owner);
+    CCustomObject* 	GetOwner		(){return m_pOwnerObject;}
 
     // change position/orientation methods
     virtual void 	NumSetPosition	(Fvector& pos)	{ SetPosition(pos); }
@@ -140,7 +139,7 @@ public:
                         m_bVisible 	= true;
                         m_bLocked 	= false;
                         m_bValid	= true;
-                        m_pGroupObject= 0;
+                        m_pOwnerObject= 0;
                         ResetTransform();
                         m_bUpdateTransform = FALSE;
                     }
@@ -152,7 +151,7 @@ public:
                         m_bVisible 	= true;
                         m_bLocked 	= false;
                         m_bValid	= true;
-                        m_pGroupObject= 0;
+                        m_pOwnerObject= 0;
 					}
 
 	virtual 		~CCustomObject();

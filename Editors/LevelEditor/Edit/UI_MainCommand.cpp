@@ -184,6 +184,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
                 fraLeftBar->AppendRecentFile(filebuffer);
                 // update props
 		        Command(COMMAND_UPDATE_PROPERTIES);
+                RedrawScene();
 			}
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );

@@ -670,6 +670,7 @@ void DrawSafeRect()
 {
 	VERIFY( Device.bReady );
 	// fill VB
+/*    
     Irect rect;
     if ((0.75f*float(Device.dwWidth))>float(Device.dwHeight)) 
     	rect.set(Device.m_RenderWidth_2-1.33f*float(Device.m_RenderHeight_2),0,Device.m_RenderWidth_2+1.33f*float(Device.m_RenderHeight_2),Device.dwHeight-1);
@@ -686,6 +687,34 @@ void DrawSafeRect()
 	// Render it as triangle list
 	Device.SetShader(Device.m_SelectionShader);
     Device.DP(D3DPT_LINESTRIP,vs_TL,vBase,4);
+*/
+    Irect rect;
+    if ((0.75f*float(Device.dwWidth))>float(Device.dwHeight)) 
+    	rect.set(Device.m_RenderWidth_2-1.33f*float(Device.m_RenderHeight_2),0,Device.m_RenderWidth_2+1.33f*float(Device.m_RenderHeight_2),Device.dwHeight-1);
+    else										
+    	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth-1,Device.m_RenderHeight_2+0.75f*float(Device.m_RenderWidth_2));
+        
+    DWORD vBase;
+	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(6,vs_TL->dwStride,vBase);
+    pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
+    pv->set(Device.dwWidth, 0, m_ColorSafeRect,0.f,0.f); 						pv++;
+    pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
+    pv->set(0, Device.dwHeight,m_ColorSafeRect,0.f,0.f); 						pv++;
+    pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
+    pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
+    pv->set(0, Device.dwHeight,m_ColorSafeRect,0.f,0.f); 						pv++;
+/*
+    pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
+    pv->set(Device.dwWidth, 0, m_ColorSafeRect,0.f,0.f); 						pv++;
+    pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
+    pv->set(0, Device.dwHeight,m_ColorSafeRect,0.f,0.f); 						pv++;
+    pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
+    pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
+    pv->set(0, Device.dwHeight,m_ColorSafeRect,0.f,0.f); 						pv++;
+*/	Device.Streams.Vertex.Unlock(6,vs_TL->dwStride);
+	// Render it as triangle list
+	Device.SetShader(Device.m_SelectionShader);
+//    Device.DP(D3DPT_TRIANGLELIST,vs_TL,vBase,2);
 }
 
 void DrawGrid()

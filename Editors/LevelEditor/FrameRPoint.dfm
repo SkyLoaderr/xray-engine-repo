@@ -1,8 +1,8 @@
 object fraSpawnPoint: TfraSpawnPoint
   Left = 0
   Top = 0
-  Width = 123
-  Height = 179
+  Width = 443
+  Height = 277
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 154
@@ -19,7 +19,7 @@ object fraSpawnPoint: TfraSpawnPoint
   object paCurrent: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 35
     Align = alTop
     Constraints.MaxWidth = 123
@@ -29,7 +29,7 @@ object fraSpawnPoint: TfraSpawnPoint
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -85,7 +85,7 @@ object fraSpawnPoint: TfraSpawnPoint
   object paCommands: TPanel
     Left = 0
     Top = 35
-    Width = 123
+    Width = 443
     Height = 51
     Align = alTop
     Constraints.MaxWidth = 123
@@ -95,7 +95,7 @@ object fraSpawnPoint: TfraSpawnPoint
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -128,16 +128,18 @@ object fraSpawnPoint: TfraSpawnPoint
       ParentFont = False
       OnClick = PaneMinClick
     end
-    object ExtBtn3: TExtBtn
+    object ebAttachObject: TExtBtn
       Left = 2
       Top = 17
       Width = 120
       Height = 15
       Align = alNone
+      AllowAllUp = True
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
+      GroupIndex = 1
       Caption = 'Attach Object...'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -145,9 +147,9 @@ object fraSpawnPoint: TfraSpawnPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      OnClick = ExtBtn3Click
+      OnClick = ebAttachObjectClick
     end
-    object ExtBtn4: TExtBtn
+    object evDetachObject: TExtBtn
       Left = 2
       Top = 32
       Width = 120
@@ -157,13 +159,14 @@ object fraSpawnPoint: TfraSpawnPoint
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'Detach Object...'
+      Caption = 'Detach Object'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+      OnClick = evDetachObjectClick
     end
   end
   object fsStorage: TFormStorage

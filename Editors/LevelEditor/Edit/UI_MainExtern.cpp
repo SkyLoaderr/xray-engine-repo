@@ -166,7 +166,21 @@ void TUI::Redraw(){
         Device.Begin();
         Device.UpdateView();
 		Device.ResetMaterial();
+/*	// safe rect
+		if (psDeviceFlags.is(rsDrawSafeRect)){ 
+        	DU::DrawSafeRect();
 
+			Irect rect;
+        	u32 left, top, width, height;
+			if ((0.75f*float(Device.dwWidth))>float(Device.dwHeight))
+            	rect.set(Device.m_RenderWidth_2-1.33f*float(Device.m_RenderHeight_2),0,1.33f*Device.dwHeight,Device.dwHeight); 
+			else
+            	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth,0.75f*Device.dwWidth);
+			Device.Resize			(rect.x2,rect.y2,false);
+			Device.SetViewport		(rect.x1,rect.y1,rect.x2,rect.y2);
+            Device.UpdateView();
+        }
+*/
         Device.SetRS(D3DRS_FILLMODE, Device.dwFillMode);
 		Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
@@ -188,10 +202,6 @@ void TUI::Redraw(){
         case esEditLightAnim:
         case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
         }
-	// draw safe rect
-        if (psDeviceFlags.is(rsDrawSafeRect)){
-        	DU::DrawSafeRect();
-        }
 
     // draw selection rect
 		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
@@ -201,7 +211,6 @@ void TUI::Redraw(){
 
     // draw axis
         DU::DrawAxis(Device.m_Camera.GetTransform());
-
     // end draw
         Device.End();
     	Device.Statistic.RenderDUMP_RT.End();
@@ -235,8 +244,8 @@ void TUI::Idle()
         	RealUpdateScene		();
         }
     	if (m_Flags.is(flRedraw)){
-            Scene.Update(Device.fTimeDelta);
             Render->Calculate	();
+            Scene.OnFrame		(Device.fTimeDelta);
             Render->Render		();
         	Redraw();
         }

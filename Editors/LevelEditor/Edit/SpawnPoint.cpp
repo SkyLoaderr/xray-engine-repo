@@ -23,10 +23,10 @@
 #define SPAWNPOINT_CHUNK_GROUPID		0xE416
 #define SPAWNPOINT_CHUNK_TYPE			0xE417
 #define SPAWNPOINT_CHUNK_FLAGS			0xE418
+#define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE419
 
-#define SPAWNPOINT_CHUNK_ENTITYREF		0xE419
-#define SPAWNPOINT_CHUNK_SPAWNDATA		0xE420
-#define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE421
+#define SPAWNPOINT_CHUNK_ENTITYREF		0xE500
+#define SPAWNPOINT_CHUNK_SPAWNDATA		0xE501
 //----------------------------------------------------
 #define MAX_TEAM 6
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
@@ -50,20 +50,6 @@ void CSpawnPoint::SSpawnData::Destroy()
 {
     F_entity_Destroy(m_Data);
 }
-void CSpawnPoint::SSpawnData::Render(const Fvector& pos)
-{
-    if (fraBottomBar->miSpawnPointDrawText->Checked&&m_Data->s_name){
-        FVF::TL	P;
-        float 			cx,cy;
-        P.transform		( pos, Device.mFullTransform );
-        cx				= iFloor(Device._x2real(P.p.x));
-        cy				= iFloor(Device._y2real(P.p.y));
-        Device.pSystemFont->SetColor(0xffffffff);
-        Device.pSystemFont->Out		(cx,cy,m_Data->s_name);
-    }
-    Shader* s = GetIcon	(m_Data->s_name);
-    DU::DrawEntity		(0xffffffff,s);
-}
 void CSpawnPoint::SSpawnData::Save(CFS_Base& F)
 {
     F.open_chunk		(SPAWNPOINT_CHUNK_ENTITYREF);
@@ -75,10 +61,6 @@ void CSpawnPoint::SSpawnData::Save(CFS_Base& F)
     m_Data->Spawn_Write	(Packet,TRUE);
     F.Wdword			(Packet.B.count);
     F.write				(Packet.B.data,Packet.B.count);
-    F.close_chunk		();
-
-    F.open_chunk		(SPAWNPOINT_CHUNK_ATTACHED_OBJ);
-    Scene.SaveObject	(m_Object,F);
     F.close_chunk		();
 }
 bool CSpawnPoint::SSpawnData::Load(CStream& F)
@@ -93,16 +75,17 @@ bool CSpawnPoint::SSpawnData::Load(CStream& F)
     Create				(temp);
     if (Valid())		m_Data->Spawn_Read	(Packet);
 
-    if (F.FindChunk(SPAWNPOINT_CHUNK_ATTACHED_OBJ))
-        Scene.ReadObject(F,m_Object);
-
     return Valid();
 }
-bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, LPCSTR name)
+bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 {
-    strcpy	  			(m_Data->s_name_replace,name);
-    NET_Packet			Packet;
-    m_Data->Spawn_Write	(Packet,TRUE);
+	// set params
+    strcpy	  					(m_Data->s_name_replace,owner->Name);
+    m_Data->o_Position.set		(owner->PPosition);
+    m_Data->o_Angle.set			(owner->PRotation);
+    
+    NET_Packet					Packet;
+    m_Data->Spawn_Write			(Packet,TRUE);
         
     F.spawn.stream.open_chunk	(F.spawn.chunk++);
     F.spawn.stream.write		(Packet.B.data,Packet.B.count);
@@ -114,16 +97,16 @@ void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 	m_Data->FillProp	(pref,items);
 }
 //------------------------------------------------------------------------------
-
 CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
 {
 	Construct(data);
 }
 
 void CSpawnPoint::Construct(LPVOID data){
-	ClassID		= OBJCLASS_SPAWNPOINT;
-    m_dwTeamID	= 0;
-    m_Type		= ptRPoint;
+	ClassID			= OBJCLASS_SPAWNPOINT;
+    m_dwTeamID		= 0;
+    m_AttachedObject= 0;
+    m_Type			= ptRPoint;
     if (data){
 	    CreateSpawnData(LPCSTR(data));
     	if (!m_SpawnData.Valid()){
@@ -142,8 +125,42 @@ void CSpawnPoint::Construct(LPVOID data){
 
 CSpawnPoint::~CSpawnPoint()
 {
-	F_entity_Destroy(m_SpawnData.m_Data);
+	_DELETE(m_AttachedObject);
     OnDeviceDestroy();
+}
+
+void CSpawnPoint::SetPosition(Fvector& pos)
+{ 
+	inherited::SetPosition	(pos);
+    if (m_AttachedObject) m_AttachedObject->PPosition = pos;
+}
+void CSpawnPoint::SetRotation(Fvector& rot)	
+{ 
+	inherited::SetRotation	(rot);
+    if (m_AttachedObject) m_AttachedObject->PRotation = rot;
+}
+void CSpawnPoint::SetScale(Fvector& scale)
+{ 
+	inherited::SetScale		(scale);
+    if (m_AttachedObject) m_AttachedObject->PScale = scale;
+}
+
+void CSpawnPoint::AttachObject(CCustomObject* obj)
+{
+	DetachObject();
+    m_AttachedObject = obj;
+	m_AttachedObject->OnAttach(this);
+    PPosition 	= m_AttachedObject->PPosition;
+    PRotation 	= m_AttachedObject->PRotation;
+    PScale 		= m_AttachedObject->PScale;
+}
+
+void CSpawnPoint::DetachObject()
+{
+	if (m_AttachedObject){
+		m_AttachedObject->OnDetach();
+    	m_AttachedObject = 0;
+    }
 }
 
 bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
@@ -153,8 +170,8 @@ bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
     m_SpawnData.Create	(entity_ref);
     return m_SpawnData.Valid();
 }
-
 //----------------------------------------------------
+
 bool CSpawnPoint::GetBox( Fbox& box ){
 	box.set( PPosition, PPosition );
 	box.min.x -= RPOINT_SIZE;
@@ -168,12 +185,17 @@ bool CSpawnPoint::GetBox( Fbox& box ){
 	return true;
 }
 
+void CSpawnPoint::OnFrame()
+{
+	inherited::OnFrame();
+    if (m_AttachedObject) m_AttachedObject->OnFrame();
+}
+
 void CSpawnPoint::Render( int priority, bool strictB2F )
 {
 	inherited::Render(priority, strictB2F);
     // render attached object
-    if (m_SpawnData.Valid()) 	
-    	m_SpawnData.m_Object->Re  nder(priority, strictB2F);
+    if (m_AttachedObject) m_AttachedObject->Render(priority, strictB2F);
     // render spawn point
     if (1==priority){
 		Fbox bb; GetBox(bb);
@@ -181,7 +203,9 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
             if (strictB2F){
                 Device.SetTransform(D3DTS_WORLD,_Transform());
                 if (m_SpawnData.Valid()){
-                	m_SpawnData.Render(PPosition);
+                    // render icon
+				    Shader* s 			= GetIcon(m_SpawnData.m_Data->s_name);
+				    DU::DrawEntity		(0xffffffff,s);
                 }else{
                 	float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
                     int r = m_dwTeamID%MAX_TEAM;
@@ -189,25 +213,26 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     c.set(RP_COLORS[r]);
                     c.mul_rgb(k*0.9f+0.1f);
                     DU::DrawEntity(c.get(),Device.m_WireShader);
-                    if (fraBottomBar->miSpawnPointDrawText->Checked)
-                    {
-                    	AnsiString s_name;
-                        switch (m_Type){
-                        case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
-                        case ptAIPoint: s_name.sprintf("AIPoint"); break;
-                        default: THROW;
-                        }
-                    	
-                        FVF::TL	P;
-                        float 			cx,cy;
-                        P.transform		( PPosition, Device.mFullTransform );
-                        cx				= iFloor(Device._x2real(P.p.x));
-                        cy				= iFloor(Device._y2real(P.p.y));
-                        Device.pSystemFont->SetColor(0xffffffff);
-                        Device.pSystemFont->Out		(cx,cy,s_name.c_str());
-                    }
                 }
             }else{
+                if (fraBottomBar->miSpawnPointDrawText->Checked)
+                {
+                    AnsiString s_name;
+                    switch (m_Type){
+                    case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
+                    case ptAIPoint: s_name.sprintf("AIPoint"); break;
+                    default: 
+                        if (m_SpawnData.Valid()) s_name	= m_SpawnData.m_Data->s_name;
+                        else THROW;
+                    }
+                    FVF::TL	P;
+                    float 			cx,cy;
+                    P.transform		( PPosition, Device.mFullTransform );
+                    cx				= iFloor(Device._x2real(P.p.x));
+                    cy				= iFloor(Device._y2real(P.p.y));
+                    Device.pSystemFont->SetColor(0xffffffff);
+                    Device.pSystemFont->Out		(cx,cy,s_name.c_str());
+                }
                 if( Selected() ){
                     Fbox bb; GetBox(bb);
                     DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -244,6 +269,11 @@ bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, S
 	return false;
 }
 //----------------------------------------------------
+void CSpawnPoint::OnAppendObject(CCustomObject* object)
+{
+	R_ASSERT(!m_AttachedObject);
+    m_AttachedObject = object;
+}
 
 bool CSpawnPoint::Load(CStream& F){
 	DWORD version = 0;
@@ -256,9 +286,12 @@ bool CSpawnPoint::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
+	// objects
+    Scene.ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject);
+
     // new generation
     if (F.FindChunk(SPAWNPOINT_CHUNK_ENTITYREF)){
-        if (!m_SpawnData.Valid()){
+        if (!m_SpawnData.Load(F)){
             ELog.Msg( mtError, "SPAWNPOINT: Can't find CLASS_ID.");
             return false;
         }
@@ -287,9 +320,15 @@ bool CSpawnPoint::Load(CStream& F){
 void CSpawnPoint::Save(CFS_Base& F){
 	CCustomObject::Save(F);
 
-	F.open_chunk	(SPAWNPOINT_CHUNK_VERSION);
-	F.Wword			(SPAWNPOINT_VERSION);
-	F.close_chunk	();
+	F.open_chunk		(SPAWNPOINT_CHUNK_VERSION);
+	F.Wword				(SPAWNPOINT_VERSION);
+	F.close_chunk		();
+
+    // save attachment
+    if (m_AttachedObject){
+	    ObjectList lst; lst.push_back(m_AttachedObject);
+		Scene.SaveObjects(lst,SPAWNPOINT_CHUNK_ATTACHED_OBJ,F);
+    }
 
 	if (m_SpawnData.Valid()){
     	m_SpawnData.Save(F);
@@ -311,7 +350,7 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 {
 	// spawn
 	if (m_SpawnData.Valid()){
-    	m_SpawnData.ExportGame	(F,Name);
+    	m_SpawnData.ExportGame	(F,this);
     }else{
         // game
         switch (m_Type){

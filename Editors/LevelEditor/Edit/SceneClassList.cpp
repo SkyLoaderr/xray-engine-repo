@@ -111,6 +111,24 @@ LPSTR GetClassNameByClassID(EObjClass cls_id)
     default: THROW2("Gen empty name"); return 0;
     }
 }
+
+EObjClass GetClassIDByClassName	(LPCSTR name)
+{
+	if (0==strcmp(name,"Group")) 				return OBJCLASS_GROUP;	
+	else if (0==strcmp(name,"Object")) 			return OBJCLASS_SCENEOBJECT;
+	else if (0==strcmp(name,"Light")) 			return OBJCLASS_LIGHT;
+	else if (0==strcmp(name,"Shape")) 			return OBJCLASS_SHAPE;	
+	else if (0==strcmp(name,"Glow")) 			return OBJCLASS_SOUND;    
+	else if (0==strcmp(name,"Spawn Point")) 	return OBJCLASS_GLOW;     
+	else if (0==strcmp(name,"Way")) 			return OBJCLASS_SPAWNPOINT;
+	else if (0==strcmp(name,"Sector")) 			return OBJCLASS_WAY;		
+	else if (0==strcmp(name,"Portal")) 			return OBJCLASS_SECTOR; 	
+	else if (0==strcmp(name,"Event")) 			return OBJCLASS_PORTAL; 	
+	else if (0==strcmp(name,"Particle System")) return OBJCLASS_EVENT; 	
+	else if (0==strcmp(name,"Group")) 			return OBJCLASS_PS;		
+    else THROW2("Unknown class name");
+}
+
 bool IsClassID(EObjClass cls_id){
     switch(cls_id){
 	case OBJCLASS_GROUP:		return true;
@@ -175,6 +193,7 @@ bool IsGroupClassID(EObjClass cls_id)
     case OBJCLASS_SPAWNPOINT:   return true;
     case OBJCLASS_EVENT:		return true;
     case OBJCLASS_PS:			return true;
+    case OBJCLASS_SHAPE:		return true;
     default: return false;
     }
 }

@@ -3,7 +3,6 @@
 
 #include "scene.h"
 #include "sceneobject.h"
-#include "GroupObject.h"
 #include "topbar.h"
 #include "editorpref.h"
 #include "ui_main.h"
@@ -59,22 +58,23 @@ void CCustomObject::NormalAlign(Fvector& rot, const Fvector& up)
 }
 //------------------------------------------------------------------------------
 
-void CCustomObject::RemoveFromGroup()
+void CCustomObject::OnDetach()
 {
-    m_pGroupObject = 0;
-    string64 new_name;
+    m_pOwnerObject 		= 0;
+    string64 			new_name;
     Scene.GenObjectName(ClassID,new_name,Name);
-    Name = new_name;
-    Scene.AddObject(this,false);
-    Select(true);
+    Name 				= new_name;
+    Scene.AddObject		(this,false);
+    Select				(true);
 }
 
-void CCustomObject::AppendToGroup(CGroupObject* group)
+void CCustomObject::OnAttach(CCustomObject* owner)
 {
-	R_ASSERT(group&&!m_pGroupObject);
-    m_pGroupObject = group;
-    Scene.RemoveObject(this,false);
-    Select(false);
+	R_ASSERT(owner);
+    R_ASSERT2(!m_pOwnerObject,"Object already has owner!");
+    m_pOwnerObject 		= owner;
+    Scene.RemoveObject	(this,false);
+    Select				(false);
 }
 
 void CCustomObject::Move(Fvector& amount)

@@ -3,6 +3,7 @@
 
 #include "ui_RPointtools.h"
 #include "ui_tools.h"
+#include "ui_main.h"
 #include "FrameRPoint.h"
 #include "Scene.h"
 #include "SpawnPoint.h"
@@ -35,7 +36,27 @@ bool __fastcall TUI_ControlSpawnPointAdd::AppendCallback(SBeforeAppendCallbackPa
 
 bool __fastcall TUI_ControlSpawnPointAdd::Start(TShiftState Shift)
 {
-    DefaultAddObject(Shift,AppendCallback);
+    TfraSpawnPoint* F = (TfraSpawnPoint*)parent_tool->pFrame;
+	if (F->ebAttachObject->Down){
+		CCustomObject* from = Scene.RayPick(UI.m_CurrentRStart, UI.m_CurrentRNorm, OBJCLASS_DUMMY, 0, false, 0);
+        if (IsGroupClassID(from->ClassID)&&(from->ClassID!=OBJCLASS_SPAWNPOINT)){
+            ObjectList 	lst;
+            int cnt 	= Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);
+            if (1!=cnt)	ELog.DlgMsg(mtError,"Select one shape.");
+            else{
+                CSpawnPoint* base = dynamic_cast<CSpawnPoint*>(lst.back()); R_ASSERT(base);
+                base->AttachObject(from);
+                if (!Shift.Contains(ssAlt)){ 
+                    F->ebAttachObject->Down	= false;
+                    ResetActionToSelect		();
+                }
+            }
+        }else{
+        	ELog.DlgMsg(mtError,"Attach impossible.");
+        }
+    }else{
+	    DefaultAddObject(Shift,AppendCallback);
+    }
     return false;
 }
 

@@ -206,10 +206,12 @@ void __fastcall TfrmChoseItem::FillSceneObject()
     ObjectPairIt it					= Scene.FirstClass();
     ObjectPairIt _E					= Scene.LastClass();
     for(; it!=_E; it++){
-    	LPCSTR pref					= GetClassNameByClassID(it->first);
-    	ObjectList& lst = it->second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	AppendItem				(PHelper.PrepareKey(pref,(*_F)->Name));
+    	if (IsGroupClassID(it->first)){
+            LPCSTR pref					= GetClassNameByClassID(it->first);
+            ObjectList& lst = it->second;
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                AppendItem				(PHelper.PrepareKey(pref,(*_F)->Name));
+        }
 	}
 #endif
 }

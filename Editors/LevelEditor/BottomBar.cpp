@@ -29,20 +29,20 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
     if (mi){
         mi->Checked = !mi->Checked;
         if (mi==miDrawGrid)     			psDeviceFlags.set(rsDrawGrid,mi->Checked);
-        else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
-        else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
-        else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;
-        else if (mi==miRenderShadeFlat)		Device.dwShadeMode	= D3DSHADE_FLAT;
-        else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	= D3DSHADE_GOURAUD;
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
         else if (mi==miRenderLinearFilter)	psDeviceFlags.set(rsFilterLinear,mi->Checked);
         else if (mi==miRenderEdgedFaces)	psDeviceFlags.set(rsEdgedFaces,mi->Checked);
         else if (mi==miFog)					psDeviceFlags.set(rsFog,mi->Checked);
-        else if (mi==miRenderHWTransform){	HW.Caps.bForceGPU_SW = !mi->Checked; UI.Resize(); }
         else if (mi==miRealTime)			psDeviceFlags.set(rsRenderRealTime,mi->Checked);
         else if (mi==miDODrawObjects)		psDeviceFlags.set(rsDetails,mi->Checked);
         else if (mi==miDrawSafeRect)		psDeviceFlags.set(rsDrawSafeRect,mi->Checked);
+        else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
+        else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
+        else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;
+        else if (mi==miRenderShadeFlat)		Device.dwShadeMode	= D3DSHADE_FLAT;
+        else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	= D3DSHADE_GOURAUD;
+        else if (mi==miRenderHWTransform){	HW.Caps.bForceGPU_SW = !mi->Checked; UI.Resize(); }
     }
     UI.RedrawScene();
     UI.Command(COMMAND_UPDATE_TOOLBAR);

@@ -169,7 +169,7 @@ public:
 
 	void RenderSky					(const Fmatrix& camera);
 	void Render                     (const Fmatrix& camera);
-	void Update                     (float dT);
+	void OnFrame					(float dT);
 
 	int AddToSnapList				();
     int SetSnapList					();

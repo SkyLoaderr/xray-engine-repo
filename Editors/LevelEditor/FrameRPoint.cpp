@@ -5,6 +5,7 @@
 #include "FrameRPoint.h"
 #include "Scene.h"
 #include "ChoseForm.h"
+#include "SpawnPoint.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -41,11 +42,35 @@ void __fastcall TfraSpawnPoint::ebCurObjClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraSpawnPoint::ExtBtn3Click(TObject *Sender)
+void __fastcall TfraSpawnPoint::ebAttachObjectClick(TObject *Sender)
 {
-	LPCSTR dest;
-	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smSceneObject, dest)){
-    	dest = 0;
+/*
+    ObjectList lst;
+    int cnt 		= Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);
+    if (1!=cnt)		ELog.DlgMsg(mtError,"Select one spawn point.");
+    else{
+        CSpawnPoint* base = dynamic_cast<CSpawnPoint*>(lst.back()); R_ASSERT(base);
+        LPCSTR dest;
+        CCustomObject* from = 0;
+        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smSceneObject, dest)){
+        	string64 cls_name, obj_name;
+            EObjClass cls_id = GetClassIDByClassName(_GetItem(dest));
+        	from 	= Scene.FindObjectByName(dest,base);
+            if (from) base->AttachObject(from);
+        }
+    }
+*/
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraSpawnPoint::evDetachObjectClick(TObject *Sender)
+{
+    ObjectList lst;
+    if (Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0)){
+    	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+	        CSpawnPoint* O = dynamic_cast<CSpawnPoint*>(*it); R_ASSERT(O);
+        	O->DetachObject();
+        }
     }
 }
 //---------------------------------------------------------------------------

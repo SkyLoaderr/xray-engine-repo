@@ -243,7 +243,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 }
 
 //---------------------------------------------------------------------------
-void __fastcall CRenderDevice::Resize(int w, int h)
+void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
 {
     m_RealWidth 	= w;
     m_RealHeight 	= h;
@@ -254,13 +254,13 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     m_RenderWidth_2 = dwWidth * 0.5f;
     m_RenderHeight_2= dwHeight * 0.5f;
 
-    Destroy			();
+    if (bRefreshDevice) Destroy();
 
     m_Camera.m_Aspect = (float)dwHeight / (float)dwWidth;
     mProjection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
     m_fNearer 		= mProjection._43;
 
-    Create			();
+    if (bRefreshDevice) Create();
 
     SetTransform	(D3DTS_PROJECTION,mProjection);
     SetTransform	(D3DTS_WORLD,Fidentity);

@@ -62,6 +62,7 @@ TUI_CustomTools*NewToolFromTarget		(int tgt);
 CCustomObject*	NewObjectFromClassID	(int _ClassID, LPVOID data, LPCSTR name);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 LPSTR 			GetClassNameByClassID	(EObjClass cls_id);
+EObjClass		GetClassIDByClassName	(LPCSTR name);
 bool 			IsClassID				(EObjClass cls_id);
 bool 			IsObjectListClassID		(EObjClass cls_id);
 bool 			IsGroupClassID			(EObjClass cls_id);

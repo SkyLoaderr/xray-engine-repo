@@ -583,7 +583,7 @@ void EScene::UpdateSkydome()
     }
 }
 
-void EScene::Update( float dT ){
+void EScene::OnFrame( float dT ){
 	if( !valid() ) return;
 	if( locked() ) return;
 
