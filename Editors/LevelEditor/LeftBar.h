@@ -177,6 +177,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebGame;
 	TMxPopupMenu *pmGame;
 	TMenuItem *MenuItem18;
+	TExtBtn *ebTargetAIMap;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);

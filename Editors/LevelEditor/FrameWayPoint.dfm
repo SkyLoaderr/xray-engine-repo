@@ -190,7 +190,6 @@ object fraWayPoint: TfraWayPoint
       NumGlyphs = 4
       ParentFont = False
       Spacing = 3
-      FlatAlwaysEdge = True
     end
     object Bevel2: TBevel
       Left = 2

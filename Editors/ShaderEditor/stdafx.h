@@ -16,6 +16,10 @@
 
 #define DIRECTINPUT_VERSION 0x0700
 
+#define         R_R1    1
+#define         R_R2    2
+#define         RENDER  R_R1
+
 // Std C++ headers
 #include <fastmath.h>
 #include <io.h>

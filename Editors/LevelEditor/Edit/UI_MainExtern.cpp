@@ -473,13 +473,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_MUTE_SOUND:
     	SndLib.MuteSounds(p1);
     	break;
-    case COMMAND_CLEAR_AI_MAP_MASK:
-    	Scene.m_AIMask.Clear();
-    	break;
-    case COMMAND_MAKE_AI_MAP_MASK:
-    	Scene.m_AIMask.Make();
-    	break;
-        
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;

@@ -44,17 +44,18 @@
       intermediate\UI_SectorTools.obj intermediate\UI_SoundTools.obj 
       intermediate\ui_tools.obj intermediate\ELight.obj 
       intermediate\DOShuffle.obj intermediate\DOOneColor.obj 
-      intermediate\PropertiesDetailObject.obj intermediate\DetailObjectsPick.obj 
-      intermediate\HWCaps.obj intermediate\EditObject.obj 
-      intermediate\Xr_input.obj intermediate\fcontroller.obj 
-      intermediate\pure.obj intermediate\CustomObject.obj 
-      intermediate\SceneObjectIO.obj intermediate\xrImage_Resampler.obj 
-      intermediate\TextureManager_Loader.obj intermediate\Texture.obj 
-      intermediate\Cursor3D.obj intermediate\SH_Matrix.obj 
-      intermediate\SH_Texture.obj intermediate\Shader.obj 
-      intermediate\SH_Constant.obj intermediate\xr_avi.obj 
-      intermediate\Blender_Recorder.obj intermediate\Blender.obj 
-      intermediate\Blender_Vertex.obj intermediate\Blender_Editor_Selection.obj 
+      intermediate\PropertiesDetailObject.obj 
+      intermediate\ESceneAIMapTools_Pick.obj intermediate\HWCaps.obj 
+      intermediate\EditObject.obj intermediate\Xr_input.obj 
+      intermediate\fcontroller.obj intermediate\pure.obj 
+      intermediate\CustomObject.obj intermediate\SceneObjectIO.obj 
+      intermediate\xrImage_Resampler.obj intermediate\TextureManager_Loader.obj 
+      intermediate\Texture.obj intermediate\Cursor3D.obj 
+      intermediate\SH_Matrix.obj intermediate\SH_Texture.obj 
+      intermediate\Shader.obj intermediate\SH_Constant.obj 
+      intermediate\xr_avi.obj intermediate\Blender_Recorder.obj 
+      intermediate\Blender.obj intermediate\Blender_Vertex.obj 
+      intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_Screen_GRAY.obj 
       intermediate\Blender_Screen_SET.obj intermediate\Blender_default_aref.obj 
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
@@ -109,7 +110,11 @@
       intermediate\xrRender_console.obj intermediate\Blender_Palette.obj 
       intermediate\EParticlesObject.obj intermediate\ParticleGroupEditor.obj 
       intermediate\SceneSummaryInfo.obj intermediate\Custom2DProjector.obj 
-      intermediate\R_Backend_xform.obj intermediate\Blender_Recorder_R2.obj"/>
+      intermediate\R_Backend_xform.obj intermediate\Blender_Recorder_R2.obj 
+      intermediate\ESceneAIMapTools.obj intermediate\FrameAIMap.obj 
+      intermediate\UI_AIMapTools.obj intermediate\DetailObjectsPick.obj 
+      intermediate\ESceneAIMapTools_Generate.obj 
+      intermediate\motion_simulator.obj intermediate\ESceneAIMapTools_Render.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -122,7 +127,7 @@
       FrameEmitter.dfm FrameRPoint.dfm FrameWayPoint.dfm FrameDetObj.dfm 
       DOShuffle.dfm DOOneColor.dfm PropertiesDetailObject.dfm PropertiesList.dfm 
       EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm TextForm.dfm 
-      PropertiesWayPoint.dfm FrameShape.dfm"/>
+      PropertiesWayPoint.dfm FrameShape.dfm FrameAIMap.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -254,7 +259,7 @@
       <FILE FILENAME="DOShuffle.cpp" FORMNAME="frmDOShuffle" UNITNAME="DOShuffle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="DOOneColor.cpp" FORMNAME="frmOneColor" UNITNAME="DOOneColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesDetailObject.cpp" FORMNAME="frmPropertiesDO" UNITNAME="PropertiesDetailObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneAIMapTools_Pick.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Pick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="!TODO.txt" FORMNAME="" UNITNAME="!TODO" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -388,6 +393,13 @@
       <FILE FILENAME="edit\Custom2DProjector.cpp" FORMNAME="" UNITNAME="Custom2DProjector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneAIMapTools.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameAIMap.cpp" FORMNAME="fraAIMap" UNITNAME="FrameAIMap" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_AIMapTools.cpp" FORMNAME="" UNITNAME="UI_AIMapTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneAIMapTools_Generate.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Generate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\motion_simulator.cpp" FORMNAME="" UNITNAME="motion_simulator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneAIMapTools_Render.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

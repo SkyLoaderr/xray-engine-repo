@@ -35,6 +35,7 @@ USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
 USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
+USEFORM("FrameAIMap.cpp", fraAIMap); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

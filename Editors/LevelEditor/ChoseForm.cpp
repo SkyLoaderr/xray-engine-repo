@@ -119,7 +119,6 @@ void __fastcall TfrmChoseItem::FillCustom(AStringVec* items)
 void __fastcall TfrmChoseItem::FillEntity()
 {
     form->Caption					= "Select Entity";
-    AppendItem						(AIPOINT_CHOOSE_NAME);
     AppendItem						(RPOINT_CHOOSE_NAME);
     CInifile::Root& data 			= pSettings->sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){

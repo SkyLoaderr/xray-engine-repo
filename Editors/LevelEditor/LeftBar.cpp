@@ -36,6 +36,7 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetPortal->Tag		= etPortal;
     ebTargetPS->Tag			= etPS;
     ebTargetDO->Tag			= etDO;
+    ebTargetAIMap->Tag		= etAIMap;
 
     DEFINE_INI(fsStorage);
     for (int i=5; i>=0; i--)
@@ -106,6 +107,7 @@ void TfraLeftBar::ChangeTarget(int tgt){
 	    case etPortal:		btn=ebTargetPortal; 	break;
         case etPS:			btn=ebTargetPS;			break;
         case etDO:			btn=ebTargetDO;			break;
+        case etAIMap:		btn=ebTargetAIMap;		break;
         default: throw -1;
     }
 	btn->Down = true;

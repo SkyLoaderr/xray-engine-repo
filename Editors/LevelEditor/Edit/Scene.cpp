@@ -508,7 +508,6 @@ void EScene::Render( const Fmatrix& camera )
     mapRenderObjects.traverseRL(object_StrictB2F_1);
     m_DetailObjects->Render	(1,false);
     m_DetailObjects->Render	(1,true);
-    if (m_AIMask.Valid()) 	m_AIMask.Render();
 	// draw clip planes, glows, event, sectors, portals
     RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	true);
     RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	true);
@@ -664,7 +663,6 @@ void EScene::Unload()
 	m_LastAvailObject = 0;
 	ClearObjects(true);
 	if (m_SummaryInfo) m_SummaryInfo->HideProperties();
-	m_AIMask.Clear();
 }
 
 
