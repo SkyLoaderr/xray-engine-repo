@@ -109,7 +109,7 @@ void CWeapon::Load(CInifile* ini, const char* section)
 
 void CWeapon::Hide		()
 {
-	FireEnd			();
+	FireEnd				();
 }
 void CWeapon::signal_HideComplete()
 {
