@@ -64,6 +64,7 @@ void CSpecificCharacter::Load(SPECIFIC_CHARACTER_ID id)
 
 void CSpecificCharacter::Load(SPECIFIC_CHARACTER_INDEX index)
 {
+	R_ASSERT(index != NO_SPECIFIC_CHARACTER);
 	m_iOwnIndex = index;
 	inherited_shared::load_shared(m_iOwnIndex, NULL);
 }
