@@ -27,81 +27,96 @@ CParticleMain::~CParticleMain()
 }
 //---------------------------------------------------------------------------
 
-bool CParticleMain::Command(int _Command, int p1, int p2)
+void CParticleTools::CommandSelectPreviewObj(u32 p1, u32 p2, u32& res)
 {
-	bool bRes = true;
-	string256 filebuffer;
-	switch (_Command){
-    case COMMAND_SELECT_PREVIEW_OBJ:
-		PTools->SelectPreviewObject(p1);
-    	break;
-    case COMMAND_EDIT_PREVIEW_PROPS:
-		PTools->EditPreviewPrefs();
-    	break;
-	case COMMAND_SAVE:
-    	PTools->Save(0,0);
-		Command(COMMAND_UPDATE_CAPTION);
-    	break;
-    case COMMAND_SAVE_BACKUP:
-		Command(COMMAND_SAVE);
-    break;
-    case COMMAND_MERGE:
-    	PTools->Merge();
-    break;
-    case COMMAND_RELOAD:
-		if (!PTools->IfModified()) return false;
-		PTools->Reload();
-		Command(COMMAND_UPDATE_CAPTION);
-    	break;
-	case COMMAND_CLEAR:
-		{
-			Device.m_Camera.Reset();
-            PTools->ResetPreviewObject();
-			Command(COMMAND_UPDATE_CAPTION);
-		}
-		break;
-    case COMMAND_PLAY_CURRENT:
-    	PTools->PlayCurrent();
-    	break;
-    case COMMAND_STOP_CURRENT:
-    	PTools->StopCurrent(p1);
-    	break;
-//------        
-    case COMMAND_REFRESH_UI_BAR:
-        fraTopBar->RefreshBar	();
-        fraLeftBar->RefreshBar	();
-        fraBottomBar->RefreshBar();
-        break;
-    case COMMAND_RESTORE_UI_BAR:
-        fraTopBar->fsStorage->RestoreFormPlacement();
-        fraLeftBar->fsStorage->RestoreFormPlacement();
-        fraBottomBar->fsStorage->RestoreFormPlacement();
-        break;
-    case COMMAND_SAVE_UI_BAR:
-        fraTopBar->fsStorage->SaveFormPlacement();
-        fraLeftBar->fsStorage->SaveFormPlacement();
-        fraBottomBar->fsStorage->SaveFormPlacement();
-        break;
-	case COMMAND_UPDATE_TOOLBAR:
-    	fraLeftBar->UpdateBar();
-    	break;
-    case COMMAND_UPDATE_CAPTION:
-    	frmMain->UpdateCaption();
-    	break;
-//------
-    default:
-    	return inherited::Command(_Command,p1,p2);
+    SelectPreviewObject(p1);
+}
+void CParticleTools::CommandEditPreviewProps(u32 p1, u32 p2, u32& res)
+{
+    EditPreviewPrefs();
+}
+void CParticleTools::CommandSave(u32 p1, u32 p2, u32& res)
+{
+    Save(0,0);
+    ExecCommand(COMMAND_UPDATE_CAPTION);
+}
+void CParticleTools::CommandSaveBackup(u32 p1, u32 p2, u32& res)
+{
+    ExecCommand(COMMAND_SAVE);
+}
+void CParticleTools::CommandReload(u32 p1, u32 p2, u32& res)
+{
+    if (!IfModified()){ 
+    	res = FALSE;
+    	return;
     }
-    return 	bRes;
+    Reload();
+    ExecCommand(COMMAND_UPDATE_CAPTION);
+}
+void CParticleTools::CommandClear(u32 p1, u32 p2, u32& res)
+{
+    Device.m_Camera.Reset();
+    ResetPreviewObject();
+    ExecCommand(COMMAND_UPDATE_CAPTION);
+}
+void CParticleTools::CommandPlayCurrent(u32 p1, u32 p2, u32& res)
+{
+    PlayCurrent();
+}
+void CParticleTools::CommandStopCurrent(u32 p1, u32 p2, u32& res)
+{
+    StopCurrent(p1);
+}
+void CommandRefreshUIBar(u32 p1, u32 p2, u32& res)
+{
+    fraTopBar->RefreshBar	();
+    fraLeftBar->RefreshBar	();
+    fraBottomBar->RefreshBar();
+}
+void CommandRestoreUIBar(u32 p1, u32 p2, u32& res)
+{
+    fraTopBar->fsStorage->RestoreFormPlacement();
+    fraLeftBar->fsStorage->RestoreFormPlacement();
+    fraBottomBar->fsStorage->RestoreFormPlacement();
+}
+void CommandSaveUIBar(u32 p1, u32 p2, u32& res)
+{
+    fraTopBar->fsStorage->SaveFormPlacement();
+    fraLeftBar->fsStorage->SaveFormPlacement();
+    fraBottomBar->fsStorage->SaveFormPlacement();
+}
+void CommandUpdateToolBar(u32 p1, u32 p2, u32& res)
+{
+    fraLeftBar->UpdateBar();
+}
+void CommandUpdateCaption(u32 p1, u32 p2, u32& res)
+{
+    frmMain->UpdateCaption();
+}
+
+void CParticleMain::RegisterCommands()
+{
+	inherited::RegisterCommands();
+    // tools
+	RegisterCommand(COMMAND_SELECT_PREVIEW_OBJ, SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSelectPreviewObj)));
+	RegisterCommand(COMMAND_EDIT_PREVIEW_PROPS, SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandEditPreviewProps)));
+	RegisterCommand(COMMAND_SAVE,              	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSave)));
+	RegisterCommand(COMMAND_SAVE_BACKUP,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandSaveBackup)));
+	RegisterCommand(COMMAND_RELOAD,             SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandReload)));
+	RegisterCommand(COMMAND_CLEAR,             	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandClear)));
+	RegisterCommand(COMMAND_PLAY_CURRENT,       SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandPlayCurrent)));
+	RegisterCommand(COMMAND_STOP_CURRENT,       SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(PTools,CParticleTools::CommandStopCurrent)));
+	RegisterCommand(COMMAND_REFRESH_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
+	RegisterCommand(COMMAND_RESTORE_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
+	RegisterCommand(COMMAND_SAVE_UI_BAR,     	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSaveUIBar)));
+	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
+	RegisterCommand(COMMAND_UPDATE_CAPTION,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateCaption)));
 }
 
 char* CParticleMain::GetCaption()
 {
 	return "particles";
 }
-
-#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
-#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 
 bool __fastcall CParticleMain::ApplyShortCut(WORD Key, TShiftState Shift)
 {
@@ -224,7 +239,7 @@ void CParticleMain::OutUICursorPos()
 //---------------------------------------------------------------------------
 void CParticleMain::OutGridSize()
 {
-	VERIFY(m_bReady);
+	VERIFY(fraBottomBar);
     AnsiString s;
     s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();

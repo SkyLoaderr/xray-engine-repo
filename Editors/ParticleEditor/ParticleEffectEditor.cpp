@@ -89,7 +89,7 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
                     AnsiString pref	= AnsiString(*A->actionName).LowerCase();
                     A->actionName	= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&PS::CPEDef::FindActionByName),true).LowerCase().c_str();
                     m_EActionList.push_back(A);
-                    UI->Command		(COMMAND_UPDATE_PROPERTIES);
+                    ExecCommand		(COMMAND_UPDATE_PROPERTIES);
                     bDataModified	= true;
                     bSafe			= true;
                 	return ;
@@ -103,7 +103,7 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
 
 void __fastcall PS::CPEDef::OnFlagChange(PropValue* sender)
 {
-    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 }          
 
 void __fastcall PS::CPEDef::OnShaderChange(PropValue* sender)
@@ -148,7 +148,7 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
         	EParticleAction* E	= m_EActionList[idx-1];
             m_EActionList[idx-1]= m_EActionList[idx];
             m_EActionList[idx]	= E;
-            UI->Command			(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 	        bDataModified		= true;
         }
     break;
@@ -157,7 +157,7 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
         	EParticleAction* E	= m_EActionList[idx+1];
             m_EActionList[idx+1]= m_EActionList[idx];
             m_EActionList[idx]	= E;
-            UI->Command			(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 	        bDataModified		= true;
         }
         bDataModified	= true;
@@ -165,7 +165,7 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
     case 2:        
         if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Remove action?") == mrYes){
             PTools->RemoveAction(idx);
-            UI->Command		(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand		(COMMAND_UPDATE_PROPERTIES);
             bDataModified	= true;
         }
     break;

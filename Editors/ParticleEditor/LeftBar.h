@@ -69,7 +69,6 @@ __published:	// IDE-managed Components
 	TMenuItem *ParticleGroup1;
 	TPanel *paItemList;
 	TSplitter *Splitter1;
-	TMenuItem *Merge1;
 	TMxPopupMenu *pmSounds;
 	TMenuItem *MenuItem1;
 	TMenuItem *MenuItem3;
@@ -101,7 +100,6 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebPGCreateClick(TObject *Sender);
 	void __fastcall ebEngineRemoveClick(TObject *Sender);
-	void __fastcall Merge1Click(TObject *Sender);
 	void __fastcall ebSoundCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall MenuItem3Click(TObject *Sender);

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 459
+  Height = 537
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 459
+    Height = 537
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 255
+      Top = 333
       Width = 298
       Height = 3
       Cursor = crVSplit
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 84
       Width = 298
-      Height = 171
+      Height = 249
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -225,7 +225,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 156
+        Height = 234
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -359,7 +359,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 120
+          Height = 198
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -369,7 +369,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 258
+      Top = 336
       Width = 298
       Height = 200
       Align = alBottom
@@ -468,10 +468,6 @@ object fraLeftBar: TfraLeftBar
     object Reload1: TMenuItem
       Caption = 'Reload'
       OnClick = ebReloadClick
-    end
-    object Merge1: TMenuItem
-      Caption = 'Merge...'
-      OnClick = Merge1Click
     end
     object N2: TMenuItem
       Caption = '-'

@@ -34,7 +34,7 @@ void  PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataModified, boo
     case 0:
         m_Effects.push_back(SEffect());
         m_Effects.back().m_Flags.set(CPGDef::SEffect::flEnabled,FALSE);
-        UI->Command		(COMMAND_UPDATE_PROPERTIES);
+        ExecCommand		(COMMAND_UPDATE_PROPERTIES);
         OnParamsChange	(sender);
         bDataModified	= true;
     break;
@@ -43,7 +43,7 @@ void  PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataModified, boo
 
 void  PS::CPGDef::OnEffectTypeChange(PropValue* sender)
 {
-    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
     OnParamsChange		(sender);
 }
 
@@ -75,7 +75,7 @@ void  PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModified, bool
     case 2:        
         if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Remove effect?") == mrYes){
             m_Effects.erase	(m_Effects.begin()+B->tag);
-            UI->Command		(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand		(COMMAND_UPDATE_PROPERTIES);
             OnParamsChange	(sender);
             bDataModified	= true;
         }else{

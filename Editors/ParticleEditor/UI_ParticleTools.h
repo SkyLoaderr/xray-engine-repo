@@ -138,11 +138,19 @@ public:
     PS::CPGDef*			AppendPG			(PS::CPGDef* src);
     void 				SetCurrentPG		(PS::CPGDef* P);
 
-    void				Merge				();
-
     void				SelectPreviewObject	(int p);
     void				ResetPreviewObject	();
     void				EditPreviewPrefs	();
+
+    // commands
+    void 				CommandSelectPreviewObj	(u32 p1, u32 p2, u32& res);
+	void 				CommandEditPreviewProps	(u32 p1, u32 p2, u32& res);
+	void 				CommandSave				(u32 p1, u32 p2, u32& res);
+	void 				CommandSaveBackup		(u32 p1, u32 p2, u32& res);
+	void 				CommandReload			(u32 p1, u32 p2, u32& res);
+	void 				CommandClear			(u32 p1, u32 p2, u32& res);
+	void 				CommandPlayCurrent		(u32 p1, u32 p2, u32& res);
+	void 				CommandStopCurrent		(u32 p1, u32 p2, u32& res);
 };
 #define SYSTEM_PREFIX 	"Systems"
 #define EFFECT_PREFIX 	"Effects"

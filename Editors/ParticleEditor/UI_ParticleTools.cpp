@@ -110,7 +110,7 @@ bool CParticleTools::IfModified()
     if (m_bModified){
         int mr = ELog.DlgMsg(mtConfirmation, "The particles has been modified.\nDo you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
+        case mrYes: if (!ExecCommand(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
         case mrNo: m_bModified = FALSE; break;
         case mrCancel: return false;
         }
@@ -121,7 +121,7 @@ bool CParticleTools::IfModified()
 void CParticleTools::Modified()
 {
 	m_bModified = true;
-	UI->Command(COMMAND_UPDATE_CAPTION);
+	ExecCommand(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ void CParticleTools::OnItemModified()
 	    m_LibPGD->m_ModifName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
     	m_LibPGD->m_ModifTime		= time(NULL);
     }
-	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 
 
@@ -331,120 +331,6 @@ void CParticleTools::Reload()
     // visual part
     m_ItemProps->ClearProperties();
     UpdateProperties(true);
-}
-
-void CParticleTools::Merge()
-{
-/*
-	AnsiString fn;
-    if (EFS.GetOpenName(_import_,fn,false,NULL,3)){
-    	// load lib
-        CPSLibrary 	ps_new;
-        ps_new.Load	(fn.c_str());
-        // compare effects
-        u32 append_p=0, rename_p=0, replace_p=0, skip_p=0;
-        Log("Merging particle systems...");
-        bool bReplaceAll=false,bRenameAll=false,bSkipAll=false;
-        {
-            for (PS::PEDIt b_it=ps_new.FirstPED(); b_it!=ps_new.LastPED(); b_it++){
-            	PS::CPEDef* x = ::Render->PSLibrary.FindPED(*(*b_it)->m_Name);
-                if (x){
-                	(*b_it)->Compile();
-                	if (!x->Equal(*b_it)){
-                        int res;
-                        if (bReplaceAll)	res = 0;
-                        else if (bRenameAll)res = 1;
-                        else if (bSkipAll)	res = 2;
-                        else				res = TfrmItemDialog::Run("Item", AnsiString().sprintf("Overwrite particle effect: '%s'",x->m_Name).c_str(), "Replace,Rename,Skip,Replace All,Rename All,Skip All,Cancel");
-                        switch(res){
-                        case 3: bReplaceAll	= true; 
-                        case 0:{
-                        	::Render->PSLibrary.Remove(*x->m_Name);
-                            ::Render->PSLibrary.AppendPED(*b_it);
-                            Msg(". Replace: '%s'",*(*b_it)->m_Name);
-                            replace_p++;
-                        }break;
-                        case 4: bRenameAll	= true;
-                        case 1:{
-                            AnsiString pref 	= AnsiString(*x->m_Name)+"_old";
-                            AnsiString new_name = FHelper.GenerateName(pref.c_str(),2,::Render->PSLibrary.FindByName);
-                            x->m_Name		= new_name.c_str();
-                            ::Render->PSLibrary.AppendPED(*b_it);
-                            Msg(". Rename: '%s'",new_name.c_str());
-                            rename_p++;
-                        }break;
-                        case 5: bSkipAll	= true;
-                        case 2: 
-                            Msg(". Skip: '%s'",*(*b_it)->m_Name);
-                        	skip_p++;
-                        break;
-                        case -1:
-                        case 6: return;
-                        }
-                    }
-                }else{
-                    // append new
-                    ::Render->PSLibrary.AppendPED(*b_it);
-                    Msg(". Append: '%s'",(*b_it)->m_Name);
-                    append_p++;
-                }
-            }
-        }
-        // compare groups
-        {
-            for (PS::PGDIt b_it=ps_new.FirstPGD(); b_it!=ps_new.LastPGD(); b_it++){
-            	PS::CPGDef* x = ::Render->PSLibrary.FindPGD(*(*b_it)->m_Name);
-                if (x){
-                	if (!x->Equal(*b_it)){
-                        int res;
-                        if (bReplaceAll)	res = 0;
-                        else if (bRenameAll)res = 1;
-                        else if (bSkipAll)	res = 2;
-                        else				res = TfrmItemDialog::Run("Item", AnsiString().sprintf("Overwrite particle group: '%s'",*x->m_Name).c_str(), "Replace,Rename,Skip,Replace All,Rename All,Skip All,Cancel");
-                        switch(res){
-                        case 3: bReplaceAll	= true; 
-                        case 0:{
-                        	::Render->PSLibrary.Remove(*x->m_Name);
-                            ::Render->PSLibrary.AppendPGD(*b_it);
-                            Msg(". Replace: '%s'",*(*b_it)->m_Name);
-                            replace_p++;
-                        }break;
-                        case 4: bRenameAll	= true;
-                        case 1:{
-                            AnsiString pref 	= AnsiString(*x->m_Name)+"_old";
-                            AnsiString new_name = FHelper.GenerateName(pref.c_str(),2,::Render->PSLibrary.FindByName);
-                            x->m_Name		= new_name.c_str();
-                            ::Render->PSLibrary.AppendPGD(*b_it);
-                            Msg(". Rename: '%s'",new_name.c_str());
-                            rename_p++;
-                        }break;
-                        case 5: bSkipAll	= true;
-                        case 2: 
-                            Msg(". Skip: '%s'",*(*b_it)->m_Name);
-                        	skip_p++;
-                        break;
-                        case -1:
-                        case 6: return;
-                        }
-                    }
-                }else{
-                    // append new
-                    ::Render->PSLibrary.AppendPGD(*b_it);
-                    Msg(". Append: '%s'",(*b_it)->m_Name);
-                    append_p++;
-                }
-            }
-        }
-        if (append_p+rename_p+replace_p+skip_p){
-	        ELog.DlgMsg(mtInformation,"Merge result: [%d appended / %d replaced / %d renamed / %d skipped]",append_p,replace_p,rename_p,skip_p);
-        	::Render->PSLibrary.OnDeviceDestroy();
-        	::Render->PSLibrary.OnDeviceCreate();
-		    UI->Command	(COMMAND_UPDATE_PROPERTIES);
-            Modified	();
-        }
-	    ps_new.OnDestroy();
-    }
-*/    
 }
 
 void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR ren_part, int level)
@@ -709,7 +595,7 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
     S->m_CreateTime		= time(NULL);
     S->m_ModifTime		= S->m_CreateTime;
 
-    UI->Command			(COMMAND_UPDATE_PROPERTIES,true);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES,true);
     if (!new_name.IsEmpty()) SelectListItem(0,new_name.c_str(),true,false,true);
     return S;
 }
@@ -730,7 +616,7 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
     S->m_CreateTime		= time(NULL);
     S->m_ModifTime		= S->m_CreateTime;
 
-    UI->Command			(COMMAND_UPDATE_PROPERTIES,true);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES,true);
     if (!new_name.IsEmpty()) SelectListItem(0,new_name.c_str(),true,false,true);
     return S;
 }

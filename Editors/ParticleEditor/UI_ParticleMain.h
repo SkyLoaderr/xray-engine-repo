@@ -11,8 +11,6 @@ enum {
 
     COMMAND_PLAY_CURRENT,
     COMMAND_STOP_CURRENT,
-
-	COMMAND_MERGE,
 };
 //------------------------------------------------------------------------------
 
@@ -42,9 +40,11 @@ public:
     virtual LPCSTR	EditorName				(){return "particle";}
     virtual LPCSTR	EditorDesc				(){return "Particle Editor";}
 
-    virtual bool	Command					(int _Command, int p = 0, int p2 = 0);
     virtual bool 	ApplyShortCut			(WORD Key, TShiftState Shift);
     virtual bool 	ApplyGlobalShortCut		(WORD Key, TShiftState Shift);
+
+    // commands
+	virtual	void	RegisterCommands		(); 
 };    
 extern CParticleMain*&	PUI;
 //---------------------------------------------------------------------------

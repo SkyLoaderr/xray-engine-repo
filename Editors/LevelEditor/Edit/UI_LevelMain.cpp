@@ -1551,7 +1551,7 @@ void CLevelMain::OutCameraPos()
 //---------------------------------------------------------------------------
 void CLevelMain::OutUICursorPos()
 {
-	VERIFY(m_bReady);
+	VERIFY(fraBottomBar);
     AnsiString s; POINT pt;
     GetCursorPos(&pt);
     s.sprintf("Cur: %d, %d",pt.x,pt.y);
@@ -1560,6 +1560,7 @@ void CLevelMain::OutUICursorPos()
 //---------------------------------------------------------------------------
 void CLevelMain::OutGridSize()
 {
+	VERIFY(fraBottomBar);
     AnsiString s;
     s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
     fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();

@@ -167,8 +167,8 @@ xr_token					domain_token	[ ]={
 };
 
 void PDomain::OnTypeChange(PropValue* sender)
-{
-	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+{               
+	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 
 void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref, u32 clr)

@@ -34,6 +34,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
         Tools					= xr_new<CParticleTools>();
         UI						= xr_new<CParticleMain>();
+        UI->RegisterCommands	();
+
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 
@@ -46,6 +48,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
         TfrmLog::DestroyLog		();
 
+		UI->ClearCommands		();
         xr_delete				(Tools);
         xr_delete				(UI);
 
