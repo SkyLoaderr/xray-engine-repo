@@ -418,14 +418,15 @@ void	CRender::Render		()
 }
 
 // Device events
-void CRender::OnDeviceDestroy()
-{
-	level_Unload			();
-	Target.OnDeviceDestroy	();
-}
-
 void CRender::OnDeviceCreate()
 {
+	REQ_CREATE				();
 	Target.OnDeviceCreate	();
 	level_Load				();
+}
+void CRender::OnDeviceDestroy()
+{
+	REQ_DESTROY				();
+	level_Unload			();
+	Target.OnDeviceDestroy	();
 }

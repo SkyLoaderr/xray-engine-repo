@@ -107,10 +107,10 @@ BOOL CCreator::Load(DWORD dwNum)
 	chunk->Close();
 
 	// Render-level Load
-	Render.level_Load();
 	Device.seqDevDestroy.Add	(&Render);
 	Device.seqDevCreate.Add		(&Render);
-
+	Render.OnDeviceCreate		();
+	
 	// Objects
 	pApp->LoadTitle	("Loading entities...");
 	R_ASSERT(Load_GameSpecific_Before());
