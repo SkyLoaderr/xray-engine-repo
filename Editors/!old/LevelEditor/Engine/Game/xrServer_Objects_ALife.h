@@ -341,7 +341,21 @@ add_to_type_list(CSE_ALifeHelicopter)
 #define script_type_list save_type_list(CSE_ALifeHelicopter)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
-	xr_vector<u8>					door_states;
+	struct SDoorState				
+	{
+		void read	(NET_Packet& P);
+		void write   (NET_Packet& P);
+		u8 open_state;
+		float health;
+	};
+	struct SWheelState				
+	{
+		void read	(NET_Packet& P);
+		void write   (NET_Packet& P);
+		float health;
+	};
+	xr_vector<SDoorState>			door_states;
+	xr_vector<SWheelState>			wheel_states;
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;

@@ -11,6 +11,7 @@
 #include "PHDestroyable.h"
 #include "phcollisiondamagereceiver.h"
 #include "CarDamageParticles.h"
+#include "xrserver_objects_alife.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -90,6 +91,8 @@ public:
 		CPhysicsJoint* joint;
 		CCar*	car;
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
+		void RestoreNetState(const CSE_ALifeCar::SWheelState& a_state);
+		void SaveNetState(NET_Packet& P);
 		void ApplyDriveAxisVel(float vel);
 		void ApplyDriveAxisTorque(float torque);
 		void ApplyDriveAxisVelTorque(float vel,float torque);
@@ -225,7 +228,7 @@ virtual void ApplyDamage(u16 level);
 		void PlaceInUpdate();
 		void RemoveFromUpdate();
 		void SaveNetState(NET_Packet& P);
-		void RestoreNetState(u8 a_state);
+		void RestoreNetState(const CSE_ALifeCar::SDoorState& a_state);
 		void SetDefaultNetState();
 		enum eState
 		{

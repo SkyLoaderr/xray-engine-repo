@@ -593,7 +593,7 @@ float E_NLD(dBodyID b1,dBodyID b2,const dReal* norm)// norm - from 2 to 1
 	dReal vel_pr1=dDOT(vel1,norm);
 	dReal vel_pr2=dDOT(vel2,norm);
 
-	if(vel_pr1<vel_pr2) return 0.f; //exit if the bodies are departing
+	if(vel_pr1>vel_pr2) return 0.f; //exit if the bodies are departing
 
 	dVector3 impuls1={vel1[0]*m1.mass,vel1[1]*m1.mass,vel1[2]*m1.mass};
 	dVector3 impuls2={vel2[0]*m2.mass,vel2[1]*m2.mass,vel2[2]*m2.mass};

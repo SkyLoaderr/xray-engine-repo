@@ -46,3 +46,9 @@ void CDamagableHealthItem::Hit(float P)
 	if(m_health<0.f)m_health=0.f;
 	HitEffect();
 }
+
+void CDamagableItem::RestoreEffect()
+{
+u16 dl=DamageLevel();
+for(u16 i=1;i<=dl;i++)ApplyDamage(i);
+}

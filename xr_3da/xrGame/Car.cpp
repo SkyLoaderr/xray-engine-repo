@@ -121,7 +121,9 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 	R_ASSERT						(so);
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
-	smart_cast<CKinematics*>(Visual())->CalculateBones	();
+	CKinematics *K					=smart_cast<CKinematics*>(Visual());
+	K->CalculateBones_Invalidate();//this need to call callbacks
+	K->CalculateBones	();
 	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	SetDefaultNetState				(so);
 	CPHUpdateObject::Activate       ();
@@ -177,26 +179,51 @@ BOOL CCar::net_SaveRelevant()
 void CCar::SaveNetState(NET_Packet& P)
 {
 	CPHSkeleton::SaveNetState	   (P);
-	xr_map<u16,SDoor>::iterator i,e;
-	i=m_doors.begin();
-	e=m_doors.end();
-	P.w_u16(u16(m_doors.size()));
-	for(;i!=e;++i)
-		i->second.SaveNetState(P);
+
+	{
+		xr_map<u16,SDoor>::iterator i,e;
+		i=m_doors.begin();
+		e=m_doors.end();
+		P.w_u16(u16(m_doors.size()));
+		for(;i!=e;++i)
+			i->second.SaveNetState(P);
+	}
+
+	{
+		xr_map<u16,SWheel>::iterator i,e;
+		i=m_wheels_map.begin();
+		e=m_wheels_map.end();
+		P.w_u16(u16(m_wheels_map.size()));
+		for(;i!=e;++i)
+			i->second.SaveNetState(P);
+	}
 }
 
 void CCar::RestoreNetState(CSE_PHSkeleton* po)
 {
 	if(!po->_flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPHSkeleton::RestoreNetState(po);
+	CDamagableItem::RestoreEffect();
 	CSE_ALifeCar* co=smart_cast<CSE_ALifeCar*>(po);
-	xr_map<u16,SDoor>::iterator i,e;
-	xr_vector<u8>::iterator		ii=co->door_states.begin();
-	i=m_doors.begin();
-	e=m_doors.end();
-	for(;i!=e;++i,++ii)
 	{
-		i->second.RestoreNetState(*ii);
+		xr_map<u16,SDoor>::iterator i,e;
+		xr_vector<CSE_ALifeCar::SDoorState>::iterator		ii=co->door_states.begin();
+		i=m_doors.begin();
+		e=m_doors.end();
+		for(;i!=e;++i,++ii)
+		{
+			i->second.RestoreNetState(*ii);
+		}
+	}
+	{
+		xr_map<u16,SWheel>::iterator i,e;
+		xr_vector<CSE_ALifeCar::SWheelState>::iterator		ii=co->wheel_states.begin();
+		i=m_wheels_map.begin();
+		e=m_wheels_map.end();
+		for(;i!=e;++i,++ii)
+		{
+			i->second.RestoreNetState(*ii);
+		}
 	}
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
@@ -277,12 +304,14 @@ void	CCar::renderable_Render				( )
 
 void	CCar::net_Export			(NET_Packet& P)
 {
+	inherited::net_Export(P);
 //	P.w_u32 (Level().timeServer());
 //	P.w_u16 (0);
 }
 
 void	CCar::net_Import			(NET_Packet& P)
 {
+	inherited::net_Import(P);
 //	u32 TimeStamp = 0;
 //	P.w_u32 (TimeStamp);
 //	u16 NumItems = 0;

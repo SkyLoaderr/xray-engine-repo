@@ -1215,21 +1215,59 @@ void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
 	door_states.clear();
 	u16 doors_number=tNetPacket.r_u16();
 	for(u16 i=0;i<doors_number;++i)
-		door_states.push_back(tNetPacket.r_u8());
+	{
+		SDoorState ds;ds.read(tNetPacket);
+		door_states.push_back(ds);
+	}
+
+	wheel_states.clear();
+	u16 wheels_number=tNetPacket.r_u16();
+	for(u16 i=0;i<wheels_number;++i)
+	{
+		SWheelState ws;ws.read(tNetPacket);
+		wheel_states.push_back(ws);
+	}
 }
 void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 {
 	//inherited1::data_save(tNetPacket);
 	inherited2::data_save(tNetPacket);
-	
-	tNetPacket.w_u16(u16(door_states.size()));
-	xr_vector<u8>::iterator i=door_states.begin(),e=door_states.end();
-	for(;e!=i;++i)
 	{
-		tNetPacket.w_u8(*i);
+		tNetPacket.w_u16(u16(door_states.size()));
+		xr_vector<SDoorState>::iterator i=door_states.begin(),e=door_states.end();
+		for(;e!=i;++i)
+		{
+			i->write(tNetPacket);
+		}
+		door_states.clear();
 	}
-	door_states.clear();
-}	
+	{
+		tNetPacket.w_u16(u16(wheel_states.size()));
+		xr_vector<SWheelState>::iterator i=wheel_states.begin(),e=wheel_states.end();
+		for(;e!=i;++i)
+		{
+			i->write(tNetPacket);
+		}
+		wheel_states.clear();
+	}	
+}
+void CSE_ALifeCar::SDoorState::read(NET_Packet& P)
+{
+	open_state=P.r_u8();health=P.r_float();
+}
+void CSE_ALifeCar::SDoorState::write(NET_Packet& P)
+{
+	P.w_u8(open_state);P.w_float(health); 
+}
+
+void CSE_ALifeCar::SWheelState::read(NET_Packet& P)
+{
+	health=P.r_float();
+}
+void CSE_ALifeCar::SWheelState::write(NET_Packet& P)
+{
+	P.w_float(health);
+}
 
 void CSE_ALifeCar::FillProps				(LPCSTR pref, PropItemVec& values)
 {

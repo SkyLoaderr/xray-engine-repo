@@ -319,6 +319,7 @@ void CCar::SDoor::NeutralTorque(float atorque)
 
 void CCar::SDoor::ClosedToOpening()
 {
+	if(!joint)return;
 	if(joint->bActive)return;
 	Fmatrix door_form,root_form;
 	CKinematics* pKinematics=smart_cast<CKinematics*>(pcar->Visual());
@@ -410,7 +411,7 @@ bool CCar::SDoor::CanExit(const Fvector& pos,const Fvector& dir)
 	//if(state==opened) return true;
 	//return false;
 	//if(!joint) return true;//temp for fake doors
-	if(state==closed)return false;
+	if(state==closed&&joint)return false;
 	return TestPass(pos,dir);
 }
 static xr_vector<Fmatrix> bones_bind_forms;
@@ -537,18 +538,24 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	//if(!joint) return true;//temp for fake doors
-	return state==opened || state == broken && TestPass(foot_pos,dir)&& IsInArea(pos);//
+	return (state==opened || state == broken || !joint) && TestPass(foot_pos,dir)&& IsInArea(pos);//
 }
 
 void CCar::SDoor::SaveNetState(NET_Packet& P)
 {
-	P.w_u8(u8(state));
+	CSE_ALifeCar::SDoorState ds;
+	ds.health=Health();
+	ds.open_state=u8(state);
+	ds.write(P);
 }
 
-void CCar::SDoor::RestoreNetState(u8 a_state)
+void CCar::SDoor::RestoreNetState(const CSE_ALifeCar::SDoorState& a_state)
 {
-	eState lstate=eState(a_state);
+	eState lstate=eState(a_state.open_state);
 	if(lstate==closed)	ClosingToClosed();
+	state=lstate;
+	SetHealth(a_state.health);
+	RestoreEffect();
 }
 
 void CCar::SDoor::SetDefaultNetState()

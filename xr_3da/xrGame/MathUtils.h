@@ -5,10 +5,22 @@ IC	void	dVectorSet(dReal* vd,const dReal* vs)
 {
 	vd[0]=vs[0];vd[1]=vs[1];vd[2]=vs[2];
 }
+
+IC	void dVectorSetZero(dReal* vd)
+{
+	vd[0]=0.f;vd[1]=0.f;vd[2]=0.f;
+}
+
 IC	void	dVector4Set(dReal* vd,const dReal* vs)
 {
 	vd[0]=vs[0];vd[1]=vs[1];vd[2]=vs[2];vd[3]=vs[3];
 }
+
+IC	void	dVector4SetZero(dReal* vd)
+{
+	vd[0]=0.f;vd[1]=0.f;vd[2]=0.f;vd[3]=0.f;
+} 
+
 IC void		dQuaternionSet(dReal* vd,const dReal* vs)
 {
 	dVector4Set(vd,vs);
