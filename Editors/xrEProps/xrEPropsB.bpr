@@ -14,7 +14,8 @@
       intermediate\EThumbnail.obj intermediate\EThumbnailObject.obj 
       intermediate\EThumbnailSound.obj intermediate\EThumbnailTexture.obj 
       intermediate\xrImage_Resampler.obj intermediate\ETextureParams.obj 
-      intermediate\ItemDialog.obj R:\Borland\CBuilder6\Lib\c0pkg32.obj"/>
+      intermediate\ItemDialog.obj R:\Borland\CBuilder6\Lib\c0pkg32.obj 
+      intermediate\ai_sounds.obj"/>
     <RESFILES value="xrEPropsB.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -91,6 +92,7 @@
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="R:\Borland\CBuilder6\Lib\c0pkg32.obj" FORMNAME="" UNITNAME="c0pkg32.obj" CONTAINERID="OBJTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ai_sounds.cpp" FORMNAME="" UNITNAME="ai_sounds" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -119,7 +119,7 @@ void ESoundThumbnail::FillInfo(PropItemVec& items)
     PHelper.CreateCaption		(items, "Volume",	AnsiString().sprintf("%3.2f",m_fVolume));
     LPCSTR gt_name=0;
     for (int k=0; anomaly_type_token[k].name; k++)
-    	if (m_uGameType==anomaly_type_token[k].id){ gt_name=anomaly_type_token[k].name; break;}
+    	if (m_uGameType==(u32)anomaly_type_token[k].id){ gt_name=anomaly_type_token[k].name; break;}
     PHelper.CreateCaption		(items, "Game Type",gt_name);
 }
 //------------------------------------------------------------------------------

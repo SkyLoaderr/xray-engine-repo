@@ -18,6 +18,7 @@ namespace CDB{
 
 #define ENGINE_API
 #define DLL_API		__declspec(dllimport)
+#define ECORE_API	__declspec(dllexport)
 
 #include "Defines.h"                 
 
