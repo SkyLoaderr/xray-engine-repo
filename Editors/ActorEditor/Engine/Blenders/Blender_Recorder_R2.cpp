@@ -19,15 +19,15 @@ BIND_DECLARE(wvp);
 void	CBlender_Compile::SetMapping	()
 {
 	// Standart constant-binding
-	r2_Constant				("m_W",		&binder_w);
-	r2_Constant				("m_V",		&binder_v);
-	r2_Constant				("m_P",		&binder_p);
-	r2_Constant				("m_WV",	&binder_wv);
-	r2_Constant				("m_VP",	&binder_vp);
-	r2_Constant				("m_WVP",	&binder_wvp);
+	r_Constant				("m_W",		&binder_w);
+	r_Constant				("m_V",		&binder_v);
+	r_Constant				("m_P",		&binder_p);
+	r_Constant				("m_WV",	&binder_wv);
+	r_Constant				("m_VP",	&binder_vp);
+	r_Constant				("m_WVP",	&binder_wvp);
 }
 
-void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
+void	CBlender_Compile::r_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bFog, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
 {
 	RS.Invalidate			();
 	ctable.clear			();
@@ -39,7 +39,7 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	// Setup FF-units (Z-buffer, blender)
 	PassSET_ZB				(bZtest,bZwrite);
 	PassSET_Blend			(bABlend,abSRC,abDST,aTest,aRef);
-	PassSET_LightFog		(FALSE,FALSE);
+	PassSET_LightFog		(FALSE,bFog);
 
 	// Create shaders
 	SPS* ps					= Device.Resources->_CreatePS			(_ps);
@@ -51,14 +51,14 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	SetMapping				();
 }
 
-void	CBlender_Compile::r2_Constant	(LPCSTR name, R_constant_setup* s)
+void	CBlender_Compile::r_Constant	(LPCSTR name, R_constant_setup* s)
 {
 	R_ASSERT				(s);
 	R_constant*	C			= ctable.get(name);
 	if (C)					C->handler	= s;
 }
 
-void	CBlender_Compile::r2_Sampler	(LPCSTR _name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
+void	CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
 {
 	//
 	string256				name;
@@ -85,12 +85,12 @@ void	CBlender_Compile::r2_Sampler	(LPCSTR _name, LPCSTR texture, u32 address, u3
 	RS.SetSAMP				(stage,D3DSAMP_ELEMENTINDEX,element);
 }
 
-void	CBlender_Compile::r2_Sampler_rtf(LPCSTR name, LPCSTR texture, u32 element/* =0 */)
+void	CBlender_Compile::r_Sampler_rtf	(LPCSTR name, LPCSTR texture, u32 element/* =0 */)
 {
 	r2_Sampler	(name,texture,D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT,element);
 }
 
-void	CBlender_Compile::r2_End		()
+void	CBlender_Compile::r_End			()
 {
 	dest.constants			= Device.Resources->_CreateConstantTable(ctable);
 	dest.state				= Device.Resources->_CreateState		(RS.GetContainer());
