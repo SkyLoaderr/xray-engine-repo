@@ -62,12 +62,13 @@ void OGF::Stripify	()
 	if (m_SWI.count||(I_Current>=0))	return;	// Mesh already progressive - don't stripify it
 
 	// fast verts
+	if (x_vertices.size() && x_faces.size())
 	try {
 		xr_vector<u16>	indices,permute;
 
 		// Stripify
 		u16* F			= (u16*)&*x_faces.begin(); 
-		indices.assign	(F,F+(faces.size()*3)	);
+		indices.assign	(F,F+(x_faces.size()*3)	);
 		permute.resize	(x_vertices.size()		);
 		xrStripify		(indices,permute,c_vCacheSize,0);
 
