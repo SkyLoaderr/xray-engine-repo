@@ -56,7 +56,9 @@ struct FS_QueryItem
 	u32			size;
     u32			modif;
     Flags32		flags;
-    			FS_QueryItem	(u32 sz, u32 mf, u32 fl=0)
+    			FS_QueryItem	():size(0),modif(0){flags.zero();}
+    			FS_QueryItem	(u32 sz, u32 mf, u32 fl=0){set(sz,mf,fl);}
+    void 		set				(u32 sz, u32 mf, u32 fl=0)
     {
     	size	= sz;
         modif	= mf;
@@ -156,6 +158,7 @@ public:
     LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);
 
 #ifdef __BORLANDC__
+	bool						file_find		(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext);
 	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
 	const AnsiString&			update_path		(LPCSTR initial, AnsiString& dest);
     const AnsiString&			update_path		(AnsiString& dest, LPCSTR initial, LPCSTR src);

@@ -23,12 +23,12 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 	// проверить нужно ли пересканировать пути
     check_pathes	();
 
-	string256		N;
+	AnsiString		N;
 	if (FS.path_exist(path))	update_path(N,path,"");
-    else						strcpy(N,path);
+    else						N=path;
 
 	file			desc;
-	desc.name		= N;
+	desc.name		= N.c_str();
 	files_it	I 	= files.find(desc);
 	if (I==files.end())	return 0;
 
@@ -52,11 +52,11 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
         b_mask		= !masks.empty();
 	}
 
-	size_t base_len	= strlen(N);
+	size_t base_len	= N.Length();
 	for (++I; I!=files.end(); I++)
 	{
 		const file& entry = *I;
-		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
+		if (0!=strncmp(entry.name,N.c_str(),base_len))	break;	// end of list
 		LPCSTR end_symbol = entry.name+strlen(entry.name)-1;
 		if ((*end_symbol) !='\\')	{
 			// file
@@ -82,7 +82,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 			AnsiString fn			= entry_begin;
 			// insert file entry
 			if (flags&FS_ClampExt)	fn = ChangeFileExt(fn,"");
-			u32 fl = (entry.vfs?FS_QueryItem::flVFS:0);
+			u32 fl = (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
 			dest.insert(mk_pair(fn.c_str(),FS_QueryItem(entry.size_real,entry.modif,fl)));
 		} else {
 			// folder
@@ -95,6 +95,29 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 		}
 	}
 	return dest.size();
+}
+
+bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext)
+{
+	R_ASSERT			(path);
+	// проверить нужно ли пересканировать пути
+    check_pathes		();
+
+	AnsiString			N;
+	if (FS.path_exist(path))	update_path(N,path,name);
+    else						N=AnsiString(path)+name;
+
+	file				desc;
+	desc.name			= N.c_str();
+	files_it	I 		= files.find(desc);
+	if (I==files.end())	return false;
+
+	size_t base_len		= N.Length();
+    const file& entry 	= *I;
+    AnsiString fn		= (clamp_ext)?ChangeFileExt(entry.name+base_len,""):AnsiString(entry.name+base_len);
+    u32 fl 				= (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
+    dest.set			(entry.size_real,entry.modif,fl);
+    return true;
 }
 
 static TRTLCriticalSection CS;

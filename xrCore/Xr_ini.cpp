@@ -206,18 +206,18 @@ void	CInifile::save_as( LPCSTR new_fname )
                     _decorate	(val,*I.second);
                     if (*I.comment) {
                         // name, value and comment
-                        sprintf	(temp,"%8s%-24s = %-32s ;%s"," ",*I.first,val,*I.comment);
+                        sprintf	(temp,"%8s%-32s = %-32s ;%s"," ",*I.first,val,*I.comment);
                     } else {
                         // only name and value
-                        sprintf	(temp,"%8s%-24s = %-32s"," ",*I.first,val);
+                        sprintf	(temp,"%8s%-32s = %-32s"," ",*I.first,val);
                     }
                 } else {
                     if (*I.comment) {
                         // name and comment
-                        sprintf(temp,"%8s%-24s   ;%s"," ",*I.first,*I.comment);
+                        sprintf(temp,"%8s%-32s = ;%s"," ",*I.first,*I.comment);
                     } else {
                         // only name
-                        sprintf(temp,"%8s%-24s"," ",*I.first);
+                        sprintf(temp,"%8s%-32s = "," ",*I.first);
                     }
                 }
             } else {
@@ -526,6 +526,11 @@ void	CInifile::w_fvector4	( LPCSTR S, LPCSTR L, const Fvector4&	V, LPCSTR commen
 {
 	string128 temp; sprintf		(temp,"%.3f,%.3f,%.3f,%.3f", V.x, V.y, V.z, V.w);
 	w_string	(S,L,temp,comment);
+}
+
+void	CInifile::w_bool		( LPCSTR S, LPCSTR L, BOOL				V, LPCSTR comment )
+{
+	w_string	(S,L,V?"on":"off",comment);
 }
 
 void	CInifile::remove_line	( LPCSTR S, LPCSTR L )
