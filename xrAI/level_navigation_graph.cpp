@@ -240,15 +240,6 @@ IC	void CLevelNavigationGraph::check_vertices	()
 }
 #endif
 
-#if 0
-struct CRemoveNonBorderPredicate {
-	IC	bool operator() (const LevelNavigationGraph::CCellVertex *v) const
-	{
-		return					(!v->m_use);
-	}
-};
-#endif
-
 IC	void CLevelNavigationGraph::build_edges		()
 {
 	CROSS_TABLE::const_iterator	_i = m_cross.begin();
