@@ -34,11 +34,12 @@ void CUITabButton::ShowAssociatedWindow(bool bShow){
 
 void CUITabButton::OnMouse(int x, int y, EUIMessages mouse_action){
 	CUIWindow::OnMouse(x, y, mouse_action);
+}
 
-	if (WINDOW_LBUTTON_DOWN == mouse_action)
+void CUITabButton::OnMouseDown(bool left_button){
+	if (left_button)
 	{
 		GetMessageTarget()->SendMessage(this, TAB_CHANGED);		
-		return;
 	}
 }
 
