@@ -1,7 +1,7 @@
 #pragma once
 
 const u32							DSM_size		= 1024;
-const float							DSM_distance_1	= 10.f;
+const float							DSM_distance_1	= 15.f;
 const float							DSM_distance_2	= 100.f;
 const float							DSM_d_range		= 100.f;
 
