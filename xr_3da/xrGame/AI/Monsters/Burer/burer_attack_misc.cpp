@@ -4,7 +4,7 @@
 #include "burer.h"
 #include "../../ai_monster_utils.h"
 
-#define DIST_QUANT 4.f
+#define DIST_QUANT 10.f
 
 CBurerAttackRunAround::CBurerAttackRunAround(CBurer *p)
 {
@@ -28,7 +28,7 @@ void CBurerAttackRunAround::Init()
 	dir_to_enemy.normalize();
 	
 	Fvector dir_from_enemy;
-	dir_from_enemy.sub(enemy->Position(),pMonster->Position());
+	dir_from_enemy.sub(pMonster->Position(),enemy->Position());
 	dir_from_enemy.normalize();
 
 	float dist = pMonster->Position().distance_to(enemy->Position());
