@@ -1027,6 +1027,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 
 #include "physicobject.h"
 #include "script_zone.h"
+#include "gravizone.h"
 
 #include "vehicle_helicopter.h"
 
@@ -1147,7 +1148,7 @@ extern "C" {
 			case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
 			case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
 			case CLSID_Z_ACIDF:				P = xr_new<CMosquitoBald>();		break;
-			case CLSID_Z_GALANT:			P = xr_new<CMosquitoBald>();		break;
+			case CLSID_Z_GALANT:			P = xr_new<CGraviZone>();			break;
 			case CLSID_Z_RADIO:				P = xr_new<CRadioactiveZone>();		break;
 			case CLSID_Z_BFUZZ:				P = xr_new<CMosquitoBald>();		break;
 			case CLSID_Z_RUSTYH:			P = xr_new<CMosquitoBald>();		break;

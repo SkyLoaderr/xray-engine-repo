@@ -98,7 +98,7 @@ void CWeaponKnife::UpdateCL	()
 	// setVisible			(TRUE);
 
 	// ref_sound fire loop
-	UpdateFP					();
+	///UpdateFP					();
 }
 
 void CWeaponKnife::Hide	()

@@ -3914,26 +3914,6 @@
 								Name="Custom Weapon"
 								Filter="">
 								<Filter
-									Name="GrenadeLauncher"
-									Filter="">
-									<File
-										RelativePath=".\GrenadeLauncher.cpp">
-									</File>
-									<File
-										RelativePath=".\GrenadeLauncher.h">
-									</File>
-								</Filter>
-								<Filter
-									Name="Scope"
-									Filter="">
-									<File
-										RelativePath=".\Scope.cpp">
-									</File>
-									<File
-										RelativePath=".\Scope.h">
-									</File>
-								</Filter>
-								<Filter
 									Name="Weapon Generic"
 									Filter="">
 									<File
@@ -4020,14 +4000,38 @@
 									</File>
 								</Filter>
 								<Filter
-									Name="Silencer"
+									Name="Addons"
 									Filter="">
-									<File
-										RelativePath=".\Silencer.cpp">
-									</File>
-									<File
-										RelativePath=".\Silencer.h">
-									</File>
+									<Filter
+										Name="Scope"
+										Filter="">
+										<File
+											RelativePath=".\Scope.cpp">
+										</File>
+										<File
+											RelativePath=".\Scope.h">
+										</File>
+									</Filter>
+									<Filter
+										Name="Silencer"
+										Filter="">
+										<File
+											RelativePath=".\Silencer.cpp">
+										</File>
+										<File
+											RelativePath=".\Silencer.h">
+										</File>
+									</Filter>
+									<Filter
+										Name="GrenadeLauncher"
+										Filter="">
+										<File
+											RelativePath=".\GrenadeLauncher.cpp">
+										</File>
+										<File
+											RelativePath=".\GrenadeLauncher.h">
+										</File>
+									</Filter>
 								</Filter>
 							</Filter>
 							<Filter
@@ -4860,6 +4864,16 @@
 							</File>
 							<File
 								RelativePath=".\zone_effector.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="GraviZone"
+							Filter="">
+							<File
+								RelativePath=".\GraviZone.cpp">
+							</File>
+							<File
+								RelativePath=".\GraviZone.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -6472,6 +6486,9 @@
 					RelativePath=".\w_ak74.ltx">
 				</File>
 				<File
+					RelativePath=".\w_binoc.ltx">
+				</File>
+				<File
 					RelativePath=".\w_bolt.ltx">
 				</File>
 				<File
@@ -6481,10 +6498,25 @@
 					RelativePath=".\w_fn2000.ltx">
 				</File>
 				<File
+					RelativePath=".\w_fort.ltx">
+				</File>
+				<File
+					RelativePath=".\w_groza.ltx">
+				</File>
+				<File
+					RelativePath=".\w_hpsa.ltx">
+				</File>
+				<File
 					RelativePath=".\w_knife.ltx">
 				</File>
 				<File
 					RelativePath=".\w_lr300.ltx">
+				</File>
+				<File
+					RelativePath=".\w_pb.ltx">
+				</File>
+				<File
+					RelativePath=".\w_pm.ltx">
 				</File>
 				<File
 					RelativePath=".\w_rgd5.ltx">
@@ -6493,10 +6525,25 @@
 					RelativePath=".\w_rpg7.ltx">
 				</File>
 				<File
+					RelativePath=".\w_svd.ltx">
+				</File>
+				<File
+					RelativePath=".\w_svu.ltx">
+				</File>
+				<File
+					RelativePath=".\w_toz34.ltx">
+				</File>
+				<File
+					RelativePath=".\w_ups.ltx">
+				</File>
+				<File
 					RelativePath=".\w_val.ltx">
 				</File>
 				<File
 					RelativePath=".\w_vintorez.ltx">
+				</File>
+				<File
+					RelativePath=".\w_walther.ltx">
 				</File>
 				<File
 					RelativePath=".\weapons.ltx">

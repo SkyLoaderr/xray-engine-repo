@@ -129,7 +129,7 @@ void CWeaponBinoculars::UpdateCL	()
 	m_bPending			= FALSE;
 	
 	// ref_sound fire loop
-	UpdateFP					();
+	///UpdateFP					();
 	sndShow.set_position		(vLastFP);
 	sndHide.set_position		(vLastFP);
 	sndGyro.set_position		(vLastFP);
@@ -224,7 +224,7 @@ void CWeaponBinoculars::switch2_Hiding	()
 	FireEnd					();
 	m_bPending				= TRUE;
 	
-	UpdateFP();
+	//UpdateFP();
 	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
@@ -244,7 +244,7 @@ void CWeaponBinoculars::switch2_Showing	()
 {
 	setVisible				(TRUE);
 	
-	UpdateFP();
+	//UpdateFP();
 	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }

@@ -44,7 +44,7 @@ void CWeaponShotgun::OnShot ()
 	std::swap(vFirePoint, vFirePoint2);
 	//std::swap(m_pFlameParticles, m_pFlameParticles2);
 
-	UpdateFP();
+	///UpdateFP();
 	inherited::OnShot();
 }
 
@@ -104,7 +104,7 @@ void CWeaponShotgun::OnShotBoth()
 	}
 
 	//звук выстрела дуплетом
-	UpdateFP();
+	//UpdateFP();
 	PlaySound(sndShotBoth,vLastFP);
 	
 	// Camera
@@ -157,7 +157,7 @@ void CWeaponShotgun::switch2_Fire2	()
 {
 	if (fTime<=0)
 	{
-		UpdateFP					();
+		//UpdateFP					();
 
 		// Fire
 		Fvector						p1, d; 
@@ -184,7 +184,7 @@ void CWeaponShotgun::UpdateSounds()
 {
 	inherited::UpdateSounds();
 
-	UpdateFP();
+	//UpdateFP();
 	if (sndShotBoth.snd.feedback)		sndShotBoth.set_position		(vLastFP);
 }
 

@@ -150,7 +150,7 @@ void CWeaponRPG7::switch2_Fire	()
 {
 	if (fTime<=0)
 	{
-		UpdateFP					();
+		///UpdateFP					();
 
 		// Fire
 		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
