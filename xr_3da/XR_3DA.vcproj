@@ -458,12 +458,6 @@
 				RelativePath=".\IGame_Level_check_textures.cpp">
 			</File>
 			<File
-				RelativePath=".\IGame_Persistant.cpp">
-			</File>
-			<File
-				RelativePath=".\IGame_Persistant.h">
-			</File>
-			<File
 				RelativePath=".\IGame_Persistent.cpp">
 			</File>
 			<File
