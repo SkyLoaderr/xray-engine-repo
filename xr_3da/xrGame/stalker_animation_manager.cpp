@@ -41,11 +41,11 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 	VERIFY						(m_skeleton_animated);
 
 #ifdef DEBUG
-	global().set_dbg_info		(m_skeleton_animated,*object()->cName(),"Global");
-	head().set_dbg_info			(m_skeleton_animated,*object()->cName(),"Head  ");
-	torso().set_dbg_info		(m_skeleton_animated,*object()->cName(),"Torso ");
-	legs().set_dbg_info			(m_skeleton_animated,*object()->cName(),"Legs  ");
-	script().set_dbg_info		(m_skeleton_animated,*object()->cName(),"Script");
+	global().set_dbg_info		(*object()->cName(),"Global");
+	head().set_dbg_info			(*object()->cName(),"Head  ");
+	torso().set_dbg_info		(*object()->cName(),"Torso ");
+	legs().set_dbg_info			(*object()->cName(),"Legs  ");
+	script().set_dbg_info		(*object()->cName(),"Script");
 #endif
 };
 
@@ -56,8 +56,7 @@ CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state() cons
 
 void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 {
-	CMotionDef					*animation = m_part_animations.A[m_object->body_state()].m_global.A[0].A[fx_index];
-	m_skeleton_animated->PlayFX	(animation,power_factor);
+	m_skeleton_animated->PlayFX	(m_part_animations.A[m_object->body_state()].m_global.A[0].A[fx_index].animation(),power_factor);
 }
 
 void CStalkerAnimationManager::update						()
@@ -77,7 +76,7 @@ void CStalkerAnimationManager::update						()
 	
 	script().reset			();
 
-	CMotionDef				*global_animation = assign_global_animation();
+	const CAnimationPair	*global_animation = assign_global_animation();
 	if (global_animation) {
 		head().reset		();
 		torso().reset		();

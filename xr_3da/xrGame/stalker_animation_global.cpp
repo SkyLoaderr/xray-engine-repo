@@ -19,10 +19,10 @@ void	CStalkerAnimationManager::global_play_callback(CBlend *blend)
 	object->animation_manager().global().reset();
 }
 
-CMotionDef *CStalkerAnimationManager::assign_global_animation	()
+const CAnimationPair *CStalkerAnimationManager::assign_global_animation	()
 {
 	if ((eMentalStatePanic == object()->mental_state()) && !fis_zero(object()->speed()))
-		return					(m_part_animations.A[body_state()].m_global.A[1].A[0]);
+		return					(&m_part_animations.A[body_state()].m_global.A[1].A[0]);
 
 	CFoodItem					*food_item = smart_cast<CFoodItem*>(object()->inventory().ActiveItem());
 	if (!food_item)
@@ -32,16 +32,16 @@ CMotionDef *CStalkerAnimationManager::assign_global_animation	()
 	switch (food_item->STATE) {
 		case FOOD_HIDDEN:
 		case FOOD_SHOWING:
-			return				(m_global_animations.A[slot].A[0].A[0]);
+			return				(&m_global_animations.A[slot].A[0].A[0]);
 		case FOOD_HIDING :
-			return				(m_global_animations.A[slot].A[3].A[0]);
+			return				(&m_global_animations.A[slot].A[3].A[0]);
 		case FOOD_PLAYING:
 		case FOOD_IDLE	 :
-			return				(m_global_animations.A[slot].A[6].A[0]);
+			return				(&m_global_animations.A[slot].A[6].A[0]);
 		case FOOD_PREPARE:
-			return				(m_global_animations.A[slot].A[11].A[0]);
+			return				(&m_global_animations.A[slot].A[11].A[0]);
 		case FOOD_EATING :
-			return				(m_global_animations.A[slot].A[1].A[0]);
+			return				(&m_global_animations.A[slot].A[1].A[0]);
 		default					: NODEFAULT;
 	}
 	return						(0);

@@ -11,7 +11,19 @@
 class CMotionDef;
 class CSkeletonAnimated;
 
-DEFINE_VECTOR	(CMotionDef*,ANIM_VECTOR, ANIM_IT);
+class CAnimationPair {
+private:
+	CMotionDef	*m_animation;
+	shared_str	m_name;
+
+public:
+	IC						CAnimationPair	(CMotionDef *animation=0, const shared_str &name = shared_str()) {m_animation = animation; m_name = name;}
+	IC	CMotionDef			*animation		() const {VERIFY(m_animation); return m_animation;}
+	IC	const shared_str	&name			() const {VERIFY(m_name); return m_name;}
+	IC	bool				operator==		(const CAnimationPair &pair) const {return ((animation() == pair.animation()) && (name() == pair.name()));}
+};
+
+DEFINE_VECTOR	(CAnimationPair,ANIM_VECTOR, ANIM_IT);
 
 class CAniVector {
 public:
@@ -30,8 +42,10 @@ public:
 		string256	S;
 		for (int j=0; caBaseNames[j]; ++j);
 		A.resize	(j);
-		for (int i=0; i<j; ++i)
-			A[i] = tpKinematics->ID_Cycle_Safe(strconcat(S,caBaseName,caBaseNames[i]));
+		for (int i=0; i<j; ++i) {
+			strconcat(S,caBaseName,caBaseNames[i]);
+			A[i] = CAnimationPair(tpKinematics->ID_Cycle_Safe(S),S);
+		}
 	}
 };
 

@@ -33,10 +33,10 @@ void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand
 		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object()->cName());
 		return;
 	}
-	m_script_animations.push_back	(CStalkerAnimationScript(hand_usage,motion));
+	m_script_animations.push_back	(CStalkerAnimationScript(hand_usage,CAnimationPair(motion,shared_str(animation))));
 }
 
-CMotionDef *CStalkerAnimationManager::assign_script_animation	()
+const CAnimationPair *CStalkerAnimationManager::assign_script_animation	()
 {
 	VERIFY				(!script_animations().empty());
 	return				(script_animations().front().animation());

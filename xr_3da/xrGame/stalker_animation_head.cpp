@@ -17,10 +17,10 @@ void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 	object->animation_manager().head().reset();
 }
 
-CMotionDef *CStalkerAnimationManager::assign_head_animation	()
+const CAnimationPair *CStalkerAnimationManager::assign_head_animation	()
 {
 	if (object()->active_sound_count(true))
-		return	(m_head_animations.A[1]);
+		return	(&m_head_animations.A[1]);
 	else
-		return	(m_head_animations.A[0]);
+		return	(&m_head_animations.A[0]);
 }

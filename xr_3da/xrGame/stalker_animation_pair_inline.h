@@ -11,8 +11,8 @@
 IC	CStalkerAnimationPair::CStalkerAnimationPair	()
 {
 	reset					();
+	m_step_dependence		= false;
 #ifdef DEBUG
-	m_skeleton_animated		= 0;
 	m_object_name			= "unassigned";
 	m_animation_type_name	= "unassigned";
 #endif
@@ -23,7 +23,6 @@ IC	void CStalkerAnimationPair::reset				()
 	m_animation				= 0;
 	m_blend					= 0;
 	m_actual				= true;
-	m_step_dependence		= false;
 }
 
 IC	bool CStalkerAnimationPair::actual				() const
@@ -31,13 +30,13 @@ IC	bool CStalkerAnimationPair::actual				() const
 	return					(m_actual);
 }
 
-IC	void CStalkerAnimationPair::animation			(CMotionDef	*animation)
+IC	void CStalkerAnimationPair::animation			(const CAnimationPair *animation)
 {
 	m_actual				= m_actual && (m_animation == animation);
 	m_animation				= animation;
 }
 
-IC	CMotionDef *CStalkerAnimationPair::animation	() const
+IC	const CAnimationPair *CStalkerAnimationPair::animation	() const
 {
 	return					(m_animation);
 }
@@ -58,9 +57,8 @@ IC	bool CStalkerAnimationPair::step_dependence		() const
 }
 
 #ifdef DEBUG
-IC	void CStalkerAnimationPair::set_dbg_info		(CSkeletonAnimated *skeleton_animated, LPCSTR object_name, LPCSTR animation_type_name)
+IC	void CStalkerAnimationPair::set_dbg_info		(LPCSTR object_name, LPCSTR animation_type_name)
 {
-	m_skeleton_animated		= skeleton_animated;
 	m_object_name			= object_name;
 	m_animation_type_name	= animation_type_name;
 }

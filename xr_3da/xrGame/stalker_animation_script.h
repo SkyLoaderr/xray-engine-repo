@@ -10,13 +10,13 @@
 
 class CStalkerAnimationScript {
 private:
-	bool			m_hand_usage;
-	CMotionDef		*m_animation;
+	bool					m_hand_usage;
+	CAnimationPair			m_animation;
 
 public:
-	IC				CStalkerAnimationScript	(bool hand_usage, CMotionDef *m_animation);
-	IC	bool		hand_usage				() const;
-	IC	CMotionDef	*animation				() const;
+	IC						CStalkerAnimationScript	(bool hand_usage, const CAnimationPair &animation);
+	IC	bool				hand_usage				() const;
+	IC	const CAnimationPair*animation				() const;
 };
 
 #include "stalker_animation_script_inline.h"

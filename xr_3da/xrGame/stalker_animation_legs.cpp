@@ -24,7 +24,7 @@ void CStalkerAnimationManager::legs_play_callback		(CBlend *blend)
 	object->animation_manager().legs().reset();
 }
 
-CMotionDef *CStalkerAnimationManager::assign_legs_animation	()
+const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 {
 	EBodyState				l_tBodyState = body_state();
 	
@@ -36,9 +36,9 @@ CMotionDef *CStalkerAnimationManager::assign_legs_animation	()
 	if ((object()->speed() < EPS_L) || (eMovementTypeStand == object()->movement_type())) {
 		// standing
 		if (angle_difference(object()->body_orientation().current.yaw,object()->body_orientation().target.yaw) <= EPS_L)
-			return			(m_part_animations.A[l_tBodyState].m_in_place->A[0]);
+			return			(&m_part_animations.A[l_tBodyState].m_in_place->A[0]);
 		else
-			return			(m_part_animations.A[l_tBodyState].m_in_place->A[left_angle(-object()->body_orientation().target.yaw,-object()->body_orientation().current.yaw) ? 1 : 2]);
+			return			(&m_part_animations.A[l_tBodyState].m_in_place->A[left_angle(-object()->body_orientation().target.yaw,-object()->body_orientation().current.yaw) ? 1 : 2]);
 	}
 
 	float					fAnimationSwitchFactor = 1.f;
@@ -53,7 +53,7 @@ CMotionDef *CStalkerAnimationManager::assign_legs_animation	()
 
 	if (eMentalStateDanger != object()->mental_state()) {
 		if (angle_difference(object()->body_orientation().current.yaw,yaw) <= PI_DIV_6)
-			return			(m_part_animations.A[l_tBodyState].m_movement.A[object()->movement_type()].A[eMovementDirectionForward].A[object()->mental_state()]);
+			return			(&m_part_animations.A[l_tBodyState].m_movement.A[object()->movement_type()].A[eMovementDirectionForward].A[object()->mental_state()]);
 		fAnimationSwitchFactor	= .0f;
 	}
 
@@ -187,5 +187,5 @@ CMotionDef *CStalkerAnimationManager::assign_legs_animation	()
 				direction			= eMovementDirectionLeft;
 
 	object()->adjust_speed_to_animation	(direction);
-	return							(m_part_animations.A[l_tBodyState].m_movement.A[object()->movement_type()].A[direction].A[0]);
+	return							(&m_part_animations.A[l_tBodyState].m_movement.A[object()->movement_type()].A[direction].A[0]);
 }

@@ -63,18 +63,18 @@ protected:
 			void			fill_object_info				();
 			EBodyState		body_state						() const;
 			u32				object_slot						() const;
-			CMotionDef		*no_object_animation			(const EBodyState &body_state) const;
-			CMotionDef		*unknown_object_animation		(u32 slot, const EBodyState &body_state) const;
-			CMotionDef		*weapon_animation				(u32 slot, const EBodyState &body_state) const;
-			CMotionDef		*missile_animation				(u32 slot, const EBodyState &body_state) const;
+	const CAnimationPair	*no_object_animation			(const EBodyState &body_state) const;
+	const CAnimationPair	*unknown_object_animation		(u32 slot, const EBodyState &body_state) const;
+	const CAnimationPair	*weapon_animation				(u32 slot, const EBodyState &body_state) const;
+	const CAnimationPair	*missile_animation				(u32 slot, const EBodyState &body_state) const;
 
 protected:
 			void			assign_bone_callbacks			();
-			CMotionDef 		*assign_global_animation		();
-			CMotionDef 		*assign_head_animation			();
-			CMotionDef 		*assign_torso_animation			();
-			CMotionDef		*assign_legs_animation			();
-			CMotionDef		*assign_script_animation			();
+	const CAnimationPair	*assign_global_animation		();
+	const CAnimationPair	*assign_head_animation			();
+	const CAnimationPair	*assign_torso_animation			();
+	const CAnimationPair	*assign_legs_animation			();
+	const CAnimationPair	*assign_script_animation		();
 
 protected:
 	static void				global_play_callback			(CBlend *blend);

@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CStalkerAnimationScript::CStalkerAnimationScript(bool hand_usage, CMotionDef *animation) :
+IC	CStalkerAnimationScript::CStalkerAnimationScript(bool hand_usage, const CAnimationPair &animation) :
 	m_hand_usage	(hand_usage),
 	m_animation		(animation)
 {
@@ -19,8 +19,7 @@ IC	bool CStalkerAnimationScript::hand_usage		() const
 	return			(m_hand_usage);
 }
 
-IC	CMotionDef *CStalkerAnimationScript::animation	() const
+IC	const CAnimationPair *CStalkerAnimationScript::animation	() const
 {
-	VERIFY			(m_animation);
-	return			(m_animation);
+	return			(&m_animation);
 }

@@ -47,14 +47,6 @@ namespace MonsterSpace {
 		ePathStateDodgeTravelLine,
 	};
 
-//	enum EPathType {
-//		ePathTypeStraight = 0,
-//		ePathTypeDodge,
-//		ePathTypeCriteria,
-//		ePathTypeStraightDodge,
-//		ePathTypeDodgeCriteria,
-//	};
-
 	enum EObjectAction {
 		eObjectActionSwitch1,
 		eObjectActionSwitch2,
