@@ -114,5 +114,19 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 //			inventory().Action(cmd, flags);
 		}
 		break;
+	case GEG_PLAYER_ITEM2SLOT:
+	case GEG_PLAYER_ITEM2BELT:
+	case GEG_PLAYER_ITEM2RUCK:
+		{
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+			if (!O) break;
+			switch (type)
+			{
+			case GEG_PLAYER_ITEM2SLOT:	inventory().Slot(dynamic_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2BELT:	inventory().Belt(dynamic_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2RUCK:	inventory().Ruck(dynamic_cast<CInventoryItem*>(O)); break;
+			}
+		}break;
 	}
 }

@@ -423,7 +423,11 @@ bool CUIInventoryWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
 	if( pInvItem->GetSlot() == 0)
-		return this_inventory->GetInventory()->Slot(pInvItem);
+	{
+		bool	result = this_inventory->GetInventory()->Slot(pInvItem);
+		if (result) SendEvent_Item2Slot(pInvItem);
+		return result;
+	}
 	else
 		return false;
 }
@@ -440,7 +444,11 @@ bool CUIInventoryWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
 	if(pInvItem->GetSlot() == PISTOL_SLOT)
-		return this_inventory->GetInventory()->Slot(pInvItem);
+	{
+		bool	result = this_inventory->GetInventory()->Slot(pInvItem);
+		if (result) SendEvent_Item2Slot(pInvItem);
+		return result;
+	}
 	else
 		return false;
 }
@@ -456,7 +464,11 @@ bool CUIInventoryWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
 	if( pInvItem->GetSlot() == RIFLE_SLOT)
-		return this_inventory->GetInventory()->Slot(pInvItem);
+	{
+		bool	result = this_inventory->GetInventory()->Slot(pInvItem);
+		if (result) SendEvent_Item2Slot(pInvItem);
+		return result;
+	}
 	else
 		return false;
 }
@@ -472,7 +484,11 @@ bool CUIInventoryWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
 	if( pInvItem->GetSlot() == GRENADE_SLOT)
-		return this_inventory->GetInventory()->Slot(pInvItem);
+	{
+		bool	result = this_inventory->GetInventory()->Slot(pInvItem);
+		if (result) SendEvent_Item2Slot(pInvItem);
+		return result;
+	}
 	else
 		return false;
 }
@@ -487,7 +503,11 @@ bool CUIInventoryWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
 	if(pInvItem->GetSlot() == 4)
-		return this_inventory->GetInventory()->Slot(pInvItem);
+	{
+		bool	result = this_inventory->GetInventory()->Slot(pInvItem);
+		if (result) SendEvent_Item2Slot(pInvItem);
+		return result;
+	}
 	else
 		return false;
 }
@@ -514,7 +534,9 @@ bool CUIInventoryWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 
 	if(pInvItem->GetSlot() == OUTFIT_SLOT)
 	{
-		return this_inventory->GetInventory()->Slot(pInvItem);
+		bool	result = this_inventory->GetInventory()->Slot(pInvItem);
+		if (result) SendEvent_Item2Slot(pInvItem);
+		return result;
 	}
 	else
 		return false;
@@ -536,7 +558,11 @@ bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
 	if(!this_inventory->GetInventory()->CanPutInRuck(pInvItem)) return false;
-	return this_inventory->GetInventory()->Ruck(pInvItem);
+	bool	result = this_inventory->GetInventory()->Ruck(pInvItem);
+
+	if (result)		SendEvent_Item2Ruck(pInvItem);
+
+	return  result;
 }
 
 //на пояс
@@ -549,7 +575,10 @@ bool CUIInventoryWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
 	if(!this_inventory->GetInventory()->CanPutInBelt(pInvItem)) return false;
-	return this_inventory->GetInventory()->Belt(pInvItem);
+	
+	bool	result = this_inventory->GetInventory()->Belt(pInvItem);
+	if (result) SendEvent_Item2Belt(pInvItem);
+	return result;
 }
 
 //------------------------------------------------
@@ -1060,6 +1089,9 @@ bool CUIInventoryWnd::ToSlot()
 			
 	m_pMouseCapturer = NULL;
 
+	//---------------------------------------------------------------------------
+	SendEvent_Item2Slot(m_pCurrentItem);
+	//---------------------------------------------------------------------------
 	return true;
 }
 
@@ -1077,6 +1109,9 @@ bool CUIInventoryWnd::ToBag()
 			
 	m_pMouseCapturer = NULL;
 
+	//---------------------------------------------------------------------------
+	SendEvent_Item2Ruck(m_pCurrentItem);
+	//---------------------------------------------------------------------------
 	return true;
 }
 
@@ -1092,6 +1127,9 @@ bool CUIInventoryWnd::ToBelt()
 	UIBeltList.AttachChild(m_pCurrentDragDropItem);
 			
 	m_pMouseCapturer = NULL;
+	//---------------------------------------------------------------------------
+	SendEvent_Item2Belt(m_pCurrentItem);
+	//---------------------------------------------------------------------------
 
 	return true;
 }
@@ -1292,3 +1330,28 @@ bool CUIInventoryWnd::SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 
 	}
 	return true;
 }
+
+void	CUIInventoryWnd::SendEvent_Item2Slot			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->u_EventGen(P, GEG_PLAYER_ITEM2SLOT, pItem->H_Parent()->ID());
+	P.w_u16		(pItem->ID());
+	pItem->u_EventSend(P);
+};
+
+void	CUIInventoryWnd::SendEvent_Item2Belt			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->u_EventGen(P, GEG_PLAYER_ITEM2BELT, pItem->H_Parent()->ID());
+	P.w_u16		(pItem->ID());
+	pItem->u_EventSend(P);
+
+};
+
+void	CUIInventoryWnd::SendEvent_Item2Ruck			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->u_EventGen(P, GEG_PLAYER_ITEM2RUCK, pItem->H_Parent()->ID());
+	P.w_u16		(pItem->ID());
+	pItem->u_EventSend(P);
+};

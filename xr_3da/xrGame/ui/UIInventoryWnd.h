@@ -149,8 +149,11 @@ protected:
 	static bool OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-
-
+	//---------------------------------------------------------------------
+	static void	SendEvent_Item2Slot			(PIItem	pItem);
+	static void	SendEvent_Item2Belt			(PIItem	pItem);
+	static void	SendEvent_Item2Ruck			(PIItem	pItem);
+	//---------------------------------------------------------------------
 	//для запуска меню по правой клавиши
 	void ActivatePropertiesBox();
 
