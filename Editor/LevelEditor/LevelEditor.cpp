@@ -22,7 +22,6 @@ USEUNIT("edit\RPoint.cpp");
 USEUNIT("edit\Log.cpp");
 USEUNIT("edit\BuilderCF.cpp");
 USEUNIT("edit\BuilderOGF.cpp");
-USE("edit\Fmesh.h", File);
 USE("edit\std_classes.h", File);
 USEUNIT("edit\frustum.cpp");
 USEFORM("EditLibrary.cpp", frmEditLibrary);
@@ -200,6 +199,7 @@ USEUNIT("edit\EditObjectEditor.cpp");
 USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
 USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
 USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
+USEUNIT("Engine\fmesh.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

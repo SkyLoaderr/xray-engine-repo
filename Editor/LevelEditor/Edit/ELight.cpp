@@ -36,28 +36,6 @@
 #define NORM_DYN_COLOR 	0x0000FF00
 #define LOCK_COLOR 		0x00FF0000
 
-CEditFlare::CEditFlare()
-{
-	ZeroMemory(this,sizeof(CEditFlare));
-    m_Flags.bFlare 		= true;
-    m_Flags.bSource 	= true;
-    m_Flags.bGradient 	= true;
-	// flares
-    m_Flares.resize		(6);
-    FlareIt it=m_Flares.begin();
-	it->fRadius=0.08f; it->fOpacity=0.06f; it->fPosition=1.3f; strcpy(it->texture,"flare1.tga"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=1.0f; strcpy(it->texture,"flare2.tga"); it++;
-	it->fRadius=0.04f; it->fOpacity=0.10f; it->fPosition=0.5f; strcpy(it->texture,"flare2.tga"); it++;
-	it->fRadius=0.08f; it->fOpacity=0.08f; it->fPosition=-0.3f; strcpy(it->texture,"flare2.tga"); it++;
-	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=-0.6f; strcpy(it->texture,"flare3.tga"); it++;
-	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"flare1.tga"); it++;
-	// source
-    strcpy(m_cSourceTexture,"sun.tga");
-    m_fSourceRadius = 0.15f;
-    // gradient
-    m_fGradientDensity = 0.6f;
-}
-
 CLight::CLight( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
@@ -97,6 +75,7 @@ CLight::~CLight(){
 
 void CLight::UpdateTransform(){
 	m_D3D.direction.direct(vRotate.y,vRotate.x);
+	m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
 }
 
 void CLight::CopyFrom(CLight* src){
@@ -136,6 +115,8 @@ void CLight::Render(int priority, bool strictB2F){
         break;
         default: THROW;
         }
+    }else if ((3==priority)&&(true==strictB2F)){
+		if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Render();
     }
 }
 
@@ -190,7 +171,7 @@ void CLight::Move( Fvector& amount ){
         return;
     }
 	m_D3D.position.add(amount);
-    Update();
+    UpdateTransform();
     UI.UpdateScene();
 }
 
@@ -209,8 +190,8 @@ void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
 
     vRotate.direct		(vRotate,axis,angle);
 
-    UpdateTransform();
-    UI.UpdateScene();
+    UpdateTransform		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 void CLight::LocalRotate(Fvector& axis, float angle){
@@ -218,23 +199,22 @@ void CLight::LocalRotate(Fvector& axis, float angle){
     	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    vRotate.direct(vRotate,axis,angle);
-    UpdateTransform();
-    UI.UpdateScene();
+    vRotate.direct		(vRotate,axis,angle);
+    UpdateTransform		();
+    UI.UpdateScene		();
 }
 //----------------------------------------------------
 
 void CLight::RTL_Update	(float dT){
-	if (!Locked()&&Visible()&&fraBottomBar->miDrawAnimateLight->Checked){
-//S		if (m_Flags.bProcedural)
-//S    		if (m_Data.size()>=2) m_D3D.interpolate(dT,m_TempPlayData.begin());
-    }
+	m_LensFlare.OnMove();
 }
 //----------------------------------------------------
 
 void CLight::Update(){
-//S    m_D3D.p_key_start = 0;
-//S    m_D3D.p_key_count = m_Data.size();
+	UpdateTransform();
+	m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
+    m_LensFlare.DeleteShaders();
+    m_LensFlare.CreateShaders();
 }
 //----------------------------------------------------
 
@@ -269,8 +249,6 @@ bool CLight::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    m_LensFlare.Load(F);
-
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness));
     R_ASSERT(F.FindChunk(LIGHT_CHUNK_D3D_PARAMS));
     F.Read(&m_D3D,sizeof(m_D3D));
@@ -291,10 +269,10 @@ bool CLight::Load(CStream& F){
         vRotate.y		= asinf(dir.y);
     }
 
-    Update();
-	UpdateTransform();
+    m_LensFlare.Load(F);
     return true;
 }
+//----------------------------------------------------
 
 void CLight::Save(CFS_Base& F){
 	CCustomObject::Save(F);
@@ -313,23 +291,66 @@ void CLight::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
+void CLight::OnDeviceCreate()
+{
+	m_LensFlare.OnDeviceCreate();
+}
+//----------------------------------------------------
+
+void CLight::OnDeviceDestroy()
+{
+	m_LensFlare.OnDeviceDestroy();
+}
+//----------------------------------------------------
+
+//----------------------------------------------------
+// Edit Flare
+//----------------------------------------------------
+CEditFlare::CEditFlare()
+{
+    m_Flags.bFlare 		= true;
+    m_Flags.bSource 	= true;
+    m_Flags.bGradient 	= true;
+	// flares
+    m_Flares.resize		(6);
+    FlareIt it=m_Flares.begin();
+	it->fRadius=0.08f; it->fOpacity=0.06f; it->fPosition=1.3f; strcpy(it->texture,"fx\\fx_flare1.tga"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=1.0f; strcpy(it->texture,"fx\\fx_flare2.tga"); it++;
+	it->fRadius=0.04f; it->fOpacity=0.10f; it->fPosition=0.5f; strcpy(it->texture,"fx\\fx_flare2.tga"); it++;
+	it->fRadius=0.08f; it->fOpacity=0.08f; it->fPosition=-0.3f; strcpy(it->texture,"fx\\fx_flare2.tga"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=-0.6f; strcpy(it->texture,"fx\\fx_flare3.tga"); it++;
+	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1.tga"); it++;
+	// source
+    strcpy(m_Source.texture,"fx\\fx_sun.tga");
+    m_Source.fRadius = 0.15f;
+    // gradient
+    m_fGradientDensity = 0.6f;
+
+    CreateShaders();
+}
+
 void CEditFlare::Load(CStream& F){
 	if (!F.FindChunk(FLARE_CHUNK_FLAG)) return;
-    
+
     R_ASSERT(F.FindChunk(FLARE_CHUNK_FLAG));
     F.Read			(&m_Flags,sizeof(DWORD));
 
     R_ASSERT(F.FindChunk(FLARE_CHUNK_SOURCE));
-    F.RstringZ		(m_cSourceTexture);
-    m_fSourceRadius	= F.Rfloat();
+    F.RstringZ		(m_Source.texture);
+    m_Source.fRadius= F.Rfloat();
 
     R_ASSERT(F.FindChunk(FLARE_CHUNK_GRADIENT));
     m_fGradientDensity = F.Rfloat();
 
+    // flares
+    DeleteShaders();
     R_ASSERT(F.FindChunk(FLARE_CHUNK_FLARES));
-    m_Flares.resize(F.Rdword());
-    F.Read		(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
+    DWORD deFCnt	= F.Rdword(); VERIFY(deFCnt==6);
+    F.Read			(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader=0;
+    CreateShaders();
 }
+//----------------------------------------------------
 
 void CEditFlare::Save(CFS_Base& F)
 {
@@ -338,8 +359,8 @@ void CEditFlare::Save(CFS_Base& F)
 	F.close_chunk	();
 
 	F.open_chunk	(FLARE_CHUNK_SOURCE);
-    F.WstringZ		(m_cSourceTexture);
-    F.Wfloat		(m_fSourceRadius);
+    F.WstringZ		(m_Source.texture);
+    F.Wfloat		(m_Source.fRadius);
 	F.close_chunk	();
 
 	F.open_chunk	(FLARE_CHUNK_GRADIENT);
@@ -351,8 +372,22 @@ void CEditFlare::Save(CFS_Base& F)
     F.write			(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
 	F.close_chunk	();
 }
+//----------------------------------------------------
 
-void CEditFlare::Update()
+void CEditFlare::Render()
 {
-};
+	CLensFlare::Render(m_Flags.bSource,m_Flags.bFlare);
+}
+//----------------------------------------------------
+
+void CEditFlare::DeleteShaders()
+{
+    CLensFlare::OnDeviceDestroy();
+}
+
+void CEditFlare::CreateShaders()
+{
+    CLensFlare::OnDeviceCreate();
+}
+//----------------------------------------------------
 

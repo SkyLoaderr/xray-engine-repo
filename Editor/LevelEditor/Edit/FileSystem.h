@@ -28,6 +28,8 @@ class CFileSystem {
 	void 		ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir);
 	void 		Recurse(const char* path);
 
+    HWND 		m_Handle;
+
 	FileMap* 	m_FindItems;
     LPSTR 		ext_mask;
 	bool 		bClampExt;
@@ -63,7 +65,7 @@ public:
 public:
 				CFileSystem		();
 	virtual 	~CFileSystem	();
-    void 		OnCreate		();
+    void 		OnCreate		(HWND handle);
 
 	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, bool bMulti=false, LPCSTR offset=0 );
 	bool 		GetSaveName		(FSPath& initial, char *buffer, LPCSTR offset=0 );

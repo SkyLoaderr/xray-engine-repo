@@ -138,8 +138,8 @@ bool SceneBuilder::BuildLTX(){
                	pIni->WriteString	(l->GetName(), "source", 			l->m_LensFlare.m_Flags.bSource?"on":"off");
                	pIni->WriteString	(l->GetName(), "flares", 			l->m_LensFlare.m_Flags.bFlare?"on":"off");
                 pIni->WriteFloat	(l->GetName(), "gradient_density", 	l->m_LensFlare.m_fGradientDensity);
-                pIni->WriteString	(l->GetName(), "source_texture", 	l->m_LensFlare.m_cSourceTexture);
-                pIni->WriteFloat	(l->GetName(), "source_radius", 	l->m_LensFlare.m_fSourceRadius);
+                pIni->WriteString	(l->GetName(), "source_texture", 	l->m_LensFlare.m_Source.texture);
+                pIni->WriteFloat	(l->GetName(), "source_radius", 	l->m_LensFlare.m_Source.fRadius);
                 AnsiString FT=""; AnsiString FR=""; AnsiString FO=""; AnsiString FP="";
                 int i=l->m_LensFlare.m_Flares.size();
                 for (CEditFlare::FlareIt it = l->m_LensFlare.m_Flares.begin(); it!=l->m_LensFlare.m_Flares.end(); it++,i--){

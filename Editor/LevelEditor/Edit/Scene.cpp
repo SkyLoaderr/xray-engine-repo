@@ -399,17 +399,17 @@ void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N-
 void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 3, true );}
 //----------------------------------------------------
 
-#define RENDER_CLASS_NORMAL(C)\
+#define RENDER_CLASS_NORMAL(P,C)\
  	Device.SetShader(Device.m_WireShader);\
     Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(1,false);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,false);
 
-#define RENDER_CLASS_ALPHA(C)\
+#define RENDER_CLASS_ALPHA(P,C)\
  	Device.SetShader(Device.m_SelectionShader);\
     Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(1,true);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
 
 void EScene::Render( Fmatrix *_Camera ){
 	if( !valid() )	return;
@@ -451,24 +451,24 @@ void EScene::Render( Fmatrix *_Camera ){
 
 // priority #1
 	// draw lights, sounds, respawn points, pclipper, sector, event
-    RENDER_CLASS_NORMAL(OBJCLASS_LIGHT);
-    RENDER_CLASS_NORMAL(OBJCLASS_SOUND);
-    RENDER_CLASS_NORMAL(OBJCLASS_RPOINT);
-    RENDER_CLASS_NORMAL(OBJCLASS_AITPOINT);
-    RENDER_CLASS_NORMAL(OBJCLASS_OCCLUDER);
-    RENDER_CLASS_NORMAL(OBJCLASS_EVENT);
-    RENDER_CLASS_NORMAL(OBJCLASS_SECTOR);
-    RENDER_CLASS_NORMAL(OBJCLASS_PS);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_LIGHT);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_SOUND);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_RPOINT);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_AITPOINT);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_OCCLUDER);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_EVENT);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_SECTOR);
+    RENDER_CLASS_NORMAL(1,OBJCLASS_PS);
 
     mapRenderObjects.traverseRL		(object_StrictB2F_1);
     m_DetailObjects->Render			(1,false);
     m_DetailObjects->Render			(1,true);
 	// draw clip planes, glows, event, sectors, portals
-	RENDER_CLASS_ALPHA(OBJCLASS_OCCLUDER);
-	RENDER_CLASS_ALPHA(OBJCLASS_GLOW);
-	RENDER_CLASS_ALPHA(OBJCLASS_EVENT);
-	RENDER_CLASS_ALPHA(OBJCLASS_SECTOR);
-	RENDER_CLASS_ALPHA(OBJCLASS_PORTAL);
+	RENDER_CLASS_ALPHA(1,OBJCLASS_OCCLUDER);
+	RENDER_CLASS_ALPHA(1,OBJCLASS_GLOW);
+	RENDER_CLASS_ALPHA(1,OBJCLASS_EVENT);
+	RENDER_CLASS_ALPHA(1,OBJCLASS_SECTOR);
+	RENDER_CLASS_ALPHA(1,OBJCLASS_PORTAL);
 
 // priority #2
     mapRenderObjects.traverseLR		(object_Normal_2);
@@ -481,6 +481,9 @@ void EScene::Render( Fmatrix *_Camera ){
     m_DetailObjects->Render			(3,false);
     mapRenderObjects.traverseRL		(object_StrictB2F_3);
     m_DetailObjects->Render			(3,true);
+
+	// draw lights (flares)
+    RENDER_CLASS_ALPHA(3,OBJCLASS_LIGHT);
 
     // render snap
     if (fraLeftBar->ebEnableSnapList->Down)

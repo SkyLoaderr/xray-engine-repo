@@ -64,7 +64,8 @@ CFileSystem::~CFileSystem(){
 	_DELETE(m_AccessLog);
 }
 
-void CFileSystem::OnCreate(){
+void CFileSystem::OnCreate(HWND handle){
+	m_Handle = handle;
 //	VERIFY( _ExeName );
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
@@ -118,7 +119,7 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, bool bMulti, LPCST
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
-	ofn.hwndOwner = 0;
+	ofn.hwndOwner = m_Handle;
 	ofn.lpstrDefExt = initial.m_DefExt;
 	ofn.lpstrFile = buffer;
 	ofn.lpstrFilter = flt;
@@ -165,7 +166,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, LPCSTR offset ){
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
-	ofn.hwndOwner = 0;
+	ofn.hwndOwner = m_Handle;
 	ofn.lpstrDefExt = initial.m_DefExt;
 	ofn.lpstrFile = buffer;
 	ofn.lpstrFilter = flt;

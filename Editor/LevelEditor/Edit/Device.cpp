@@ -3,7 +3,6 @@
 #pragma hdrstop
 #include "Device.h"
 #include "ui_main.h"
-#include "main.h"
 #include "xr_hudfont.h"
 #include "dxerr8.h"
 #include "ImageManager.h"
@@ -132,10 +131,7 @@ bool CRenderDevice::Create(){
 	if (bReady)	return false;
 	ELog.Msg(mtInformation,"Starting RENDER device...");
 
-    m_hWnd				= frmMain->Handle;
-    m_hRenderWnd		= frmMain->D3DWindow->Handle;
-
-	HW.CreateDevice		(frmMain->D3DWindow->Handle,dwWidth,dwHeight);
+	HW.CreateDevice		(m_hRenderWnd,dwWidth,dwHeight);
 
 	// after creation
 	dwFrame				= 0;

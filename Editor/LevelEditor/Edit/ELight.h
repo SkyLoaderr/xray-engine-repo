@@ -8,38 +8,14 @@
 #include "CustomObject.h"
 #include "xr_efflensflare.h"
 
-class CEditFlare{
-public:
-	enum {
-    	flFlare 	= (1<<0),
-    	flSource	= (1<<1),
-    	flGradient 	= (1<<2)
-    };
-	struct{
-        DWORD		bFlare			: 1;
-        DWORD		bSource			: 1;
-        DWORD		bGradient		: 1;
-	}				m_Flags;
-    // source
-    sh_name			m_cSourceTexture;
-    float			m_fSourceRadius;
-    // gradient
-    float			m_fGradientDensity;
-    // flares
-    struct SFlare{
-	    float		fOpacity;
-    	float		fRadius;
-	    float		fPosition;
-        sh_name		texture;
-    };
-    DEFINE_VECTOR	(SFlare,FlareVec,FlareIt);
-    FlareVec		m_Flares;
-//	CLensFlare		m_RTLFlares;
+class CEditFlare: public CLensFlare{
 public:
 					CEditFlare();
   	void 			Load(CStream& F);
 	void 			Save(CFS_Base& F);
-    void			Update();
+    void			Render();
+    void			DeleteShaders();
+    void			CreateShaders();
 };
 
 class CLight : public CCustomObject{
@@ -104,6 +80,9 @@ public:
 
     // events
     virtual void    OnShowHint  (AStringVec& dest);
+
+	virtual void 	OnDeviceCreate	();
+	virtual void 	OnDeviceDestroy	();
 };
 
 #endif /*_INCDEF_Light_H_*/

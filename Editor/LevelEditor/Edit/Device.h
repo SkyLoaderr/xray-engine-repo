@@ -49,6 +49,8 @@ public:
     HANDLE 					m_hWnd;
     HANDLE 					m_hRenderWnd;
 
+    IC void					SetHandle(HANDLE main_hwnd, HANDLE render_hwnd){m_hWnd=main_hwnd; m_hRenderWnd=render_hwnd;}
+
 	DWORD					dwFrame;
 
 	BOOL					bReady;

@@ -46,17 +46,19 @@ struct FlareVertex {
 CLensFlare::CLensFlare()
 {
 	// Device
+#ifndef _EDITOR
 	Device.seqDevDestroy.Add	(this);
 	Device.seqDevCreate.Add		(this);
 	if (Device.bReady) OnDeviceCreate();
-	
+#endif
+
 	bInit				= false;
-	
-	bSourcePresent		= FALSE;
-	bFlaresPresent		= FALSE;
-	bGradientPresent	= FALSE;
+
+    m_Flags.bFlare		= FALSE;
+    m_Flags.bSource		= FALSE;
+    m_Flags.bGradient	= FALSE;
 	fBlend				= 0;
-	
+
     LightColor.set		( 0xFFFFFFFF );
 	fGradientDensity	= 0.85f;
 }
@@ -65,10 +67,10 @@ CLensFlare::CLensFlare()
 CLensFlare::~CLensFlare()
 {
 	if (Device.bReady) OnDeviceDestroy();
+#ifndef _EDITOR
 	Device.seqDevDestroy.Remove	(this);
 	Device.seqDevCreate.Remove	(this);
-	
-	for(DWORD i=0; i<Flares.size(); i++) Device.Shader.Delete(Flares[i].hShader);
+#endif
 }
 
 void CLensFlare::OnDeviceCreate()
@@ -81,37 +83,50 @@ void CLensFlare::OnDeviceCreate()
 		Indices[ICnt++]=Cnt;
 		Indices[ICnt++]=Cnt+1;
 		Indices[ICnt++]=Cnt+2;
-		
+
 		Indices[ICnt++]=Cnt+2;
 		Indices[ICnt++]=Cnt+3;
 		Indices[ICnt++]=Cnt+0;
-		
+
 		Cnt+=4;
 	}
 	P.VB_Create(FVF_FlareVertex, MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
 	P.IB_Create(0, MAX_Flares*2*3, D3DUSAGE_WRITEONLY, Indices);
+	// shaders
+	m_Source.hShader = CreateShader(m_Source.texture);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateShader(it->texture);
 }
 
 void CLensFlare::OnDeviceDestroy()
 {
 	P.IB_Destroy();
 	P.VB_Destroy();
+	// shaders
+	if (m_Source.hShader){ Device.Shader.Delete(m_Source.hShader); m_Source.hShader=0; }
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) if (it->hShader){ Device.Shader.Delete(it->hShader); it->hShader=0; }
 }
 
-void CLensFlare::SetSource(float fRadius, const char* tex_name){
-	CFlare F;
-	F.fRadius	= fRadius;
-	F.hShader	= Device.Shader.Create("particles\\add",tex_name,FALSE);
-	Flares.insert(Flares.begin(),F);
+Shader* CLensFlare::CreateShader(const char* tex_name)
+{
+	return (tex_name&&tex_name[0])?Device.Shader.Create("particles\\add",tex_name):0;
 }
 
-void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const char* tex_name){
-	CFlare F;
+void CLensFlare::SetSource(float fRadius, const char* tex_name)
+{
+	m_Source.fRadius	= fRadius;
+	m_Source.hShader	= CreateShader(tex_name);
+    strcpy(m_Source.texture,tex_name);
+}
+
+void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const char* tex_name)
+{
+	SFlare F;
 	F.fRadius	= fRadius;
 	F.fOpacity	= fOpacity;
     F.fPosition	= fPosition;
-	F.hShader	= Device.Shader.Create("particles\\add",tex_name,FALSE);
-	Flares.push_back(F);
+	F.hShader	= CreateShader(tex_name);
+    strcpy(F.texture,tex_name);
+	m_Flares.push_back(F);
 }
 
 void CLensFlare::Load( CInifile* pIni, LPSTR section )
@@ -119,14 +134,14 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 	LPCSTR		T,R,O,P;
 	FILE_NAME	name;
 	float r, o, p;
-	bSourcePresent = pIni->ReadBOOL ( section,"source" );
-	if (bSourcePresent){
+	m_Flags.bSource = pIni->ReadBOOL ( section,"source" );
+	if (m_Flags.bSource){
 		T = pIni->ReadSTRING ( section,"source_texture" );
 		r = pIni->ReadFLOAT	 ( section,"source_radius" );
 		SetSource(r,T);
 	}
-	bFlaresPresent = pIni->ReadBOOL ( section,"flares" );
-	if (bFlaresPresent){
+	m_Flags.bFlare = pIni->ReadBOOL ( section,"flares" );
+	if (m_Flags.bFlare){
 		T = pIni->ReadSTRING ( section,"flare_textures" );
 		R = pIni->ReadSTRING ( section,"flare_radius" );
 		O = pIni->ReadSTRING ( section,"flare_opacity");
@@ -136,12 +151,12 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 			_GetItem(R,i,name); r=(float)atof(name);
 			_GetItem(O,i,name); o=(float)atof(name);
 			_GetItem(P,i,name); p=(float)atof(name);
-			_GetItem(T,i,name); 
+			_GetItem(T,i,name);
 			AddFlare(r,o,p,name);
 		}
 	}
-	bGradientPresent= pIni->ReadTOKEN( section, "gradient", BOOL_token );
-	if (bGradientPresent)
+	m_Flags.bGradient = pIni->ReadTOKEN( section, "gradient", BOOL_token );
+	if (m_Flags.bGradient)
 		fGradientDensity = pIni->ReadFLOAT( section, "gradient_density");
 	bInit			= false;
 }
@@ -217,7 +232,7 @@ void CLensFlare::OnMove()
 	clamp( fBlend, 0.0f, 1.0f );
 	
 	// gradient
-	if (bGradientPresent){
+	if (m_Flags.bGradient){
 		Fvector				scr_pos;
 		float w =	vecLight.x*Device.mFullTransform._14 + 
 			vecLight.y*Device.mFullTransform._24 + 
@@ -252,15 +267,15 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 	Fvector vecDx, vecDy;
 	
 	dwLight.set		( LightColor );
-	vector<CFlare*>	rlist;
+	vector<SFlare*>	rlist;
 	
 	FlareVertex *pv = (FlareVertex*) P.VB_Lock(D3DLOCK_NOSYSLOCK|D3DLOCK_DISCARD);
 	
 	float 	fDistance	= FAR_DIST*0.75f;
 	
-	if (bSourcePresent){
-		vecSx.mul(vecX, Flares[0].fRadius*fDistance);
-		vecSy.mul(vecY, Flares[0].fRadius*fDistance);
+	if (m_Flags.bSource){
+		vecSx.mul(vecX, m_Source.fRadius*fDistance);
+		vecSy.mul(vecY, m_Source.fRadius*fDistance);
 		
 		color.set		( dwLight );
 		
@@ -270,16 +285,15 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 			pv->set(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 			pv->set(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 0, 0); pv++;
 			pv->set(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-			rlist.push_back(&Flares[0]);
+			rlist.push_back(&m_Source);
 		}
 	}
 	
-	if ((fBlend>=EPS_L)&&bFlares&&bFlaresPresent){
+	if ((fBlend>=EPS_L)&&bFlares&&m_Flags.bFlare){
 		vecDx.normalize(vecAxis);
 		vecDy.crossproduct(vecDx, vecDir);
-		DWORD st = bSourcePresent?1:0;
-		for (DWORD i=st; i<Flares.size(); i++){
-			CFlare&	F		= Flares[i];
+		for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++){
+			SFlare&	F		= *it;
 			vec.mul(vecAxis, F.fPosition);
 			vec.add(vecCenter);
 			vecSx.mul(vecDx, F.fRadius*fDistance);
@@ -292,7 +306,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 			pv->set(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
 			pv->set(vec.x-vecSx.x+vecSy.x, vec.y-vecSx.y+vecSy.y, vec.z-vecSx.z+vecSy.z, c, 0, 0); pv++;
 			pv->set(vec.x-vecSx.x-vecSy.x, vec.y-vecSx.y-vecSy.y, vec.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-			rlist.push_back(&Flares[i]);
+			rlist.push_back(it);
 		}
 	}
 	
@@ -301,12 +315,14 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 	HW.pDevice->SetTransform	( D3DTS_WORLD, precalc_identity.d3d());
 	
 	for (DWORD i=0; i<rlist.size(); i++){
-		Device.Shader.set_Shader	(rlist[i]->hShader);
-		Device.Primitive.DrawSubset	(P,i*4,4,i*6,2);
+    	if (rlist[i]->hShader){
+			Device.Shader.set_Shader	(rlist[i]->hShader);
+			Device.Primitive.DrawSubset	(P,i*4,4,i*6,2);
+        }
 	}
 }
 
-void CLensFlare::Update( Fvector& sun_dir, float view_dist, Fcolor& color )
+void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 {
 	vSunDir.mul	(sun_dir,-1);
 	

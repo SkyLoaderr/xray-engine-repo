@@ -181,8 +181,8 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
 		M = m_Props->AddItem(0,PROP_MARKER,	"Source");
 			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
-			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_fSourceRadius,0.f,10.f));
-			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	&F.m_cSourceTexture);
+			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_Source.fRadius,0.f,10.f));
+			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	&F.m_Source.texture);
 		M = m_Props->AddItem(0,PROP_MARKER,	"Gradient");
 			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flGradient));
 			m_Props->AddItem(M,PROP_FLOAT,	"Density",	m_Props->MakeFloatValue(&F.m_fGradientDensity,0.f,1.f));
@@ -232,6 +232,8 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	    cbTargetDynamic->ObjApply	(c); _L->m_Flags.bAffectDynamic=c;
 	    c=(_L->m_Flags.bProcedural)?1:0;
 	    cbTargetAnimated->ObjApply(c); 	 _L->m_Flags.bProcedural=c;
+
+        _L->Update();
 	}
 
     UI.UpdateScene();

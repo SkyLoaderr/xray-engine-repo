@@ -18,6 +18,7 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
+	Device.SetHandle		(Handle,D3DWindow->Handle);
     if (!UI.Command(COMMAND_INITIALIZE)) TerminateProcess(GetCurrentProcess(),-1);
 	fsStorage->RestoreFormPlacement();
 }

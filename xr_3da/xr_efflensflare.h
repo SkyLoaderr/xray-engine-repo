@@ -3,33 +3,20 @@
 
 class CInifile;
 
-class CFlare{
-public:
-    float			fOpacity;
-    float			fRadius;
-    float			fPosition;
-	Shader*			hShader;
-};
-
-class CLensFlare:
-	public pureDeviceCreate, 
-	public pureDeviceDestroy  
+class CLensFlare
+#ifndef _EDITOR
+	:public pureDeviceCreate,
+	public pureDeviceDestroy
+#endif
 {
+protected:
 	BOOL			bInit;
-	BOOL			bSourcePresent;
-	BOOL			bFlaresPresent;
-	BOOL			bGradientPresent;
-
 	float			fBlend;
 
 	Fvector			vSunDir;
 	Fvector			vecLight;
 	Fvector			vecX, vecY, vecDir, vecAxis, vecCenter;
 	BOOL			bRender;
-protected:
-
-	vector<CFlare>	Flares;		// 0-Source if exists
-
 	// variable
     Fcolor			LightColor;
 	float			fGradientDensity;
@@ -38,6 +25,33 @@ protected:
 
     void			SetSource	(float fRadius, const char* tex_name);
     void			AddFlare	(float fRadius, float fOpacity, float fPosition, const char* tex_name);
+public:
+	struct SFlare{
+    	float		fOpacity;
+	    float		fRadius;
+    	float		fPosition;
+		Shader*		hShader;
+        string128	texture;
+    	SFlare(){ZeroMemory(this,sizeof(SFlare));}
+	};
+    DEFINE_VECTOR	(SFlare,FlareVec,FlareIt);
+    FlareVec		m_Flares;
+
+	enum {
+    	flFlare 	= (1<<0),
+    	flSource	= (1<<1),
+    	flGradient 	= (1<<2)
+    };
+	struct{
+        DWORD		bFlare			: 1;
+        DWORD		bSource			: 1;
+        DWORD		bGradient		: 1;
+	}				m_Flags;
+    // source
+    SFlare			m_Source;
+    // gradient
+    float			m_fGradientDensity;
+    Shader*			CreateShader(const char* tex_name);
 public:
 					CLensFlare	();
 					~CLensFlare	( );
@@ -48,7 +62,7 @@ public:
 	void			OnMove		( );
 	void			Load		( CInifile* pIni, LPSTR section );
     void __fastcall	Render		( BOOL bSun, BOOL bFlares );
-	void			Update		( Fvector& sun_dir, float view_dist, Fcolor& color );
+	void			Update		( Fvector& sun_dir, Fcolor& color );
 };
 
 #endif // __CLENSFLARE_HPP
