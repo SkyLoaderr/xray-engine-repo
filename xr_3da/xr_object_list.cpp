@@ -206,14 +206,14 @@ void CObjectList::Unload	( )
 	while (objects_sleeping.size())
 	{
 		CObject*	O	= objects_sleeping.back	();
-		O->setDestroy	(	);
+		O->setDestroy	( true );
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
 	while (objects_active.size())
 	{
 		CObject*	O	= objects_active.back	();
-		O->setDestroy	(	);
+		O->setDestroy	( true );
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
