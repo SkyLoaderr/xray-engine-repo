@@ -768,25 +768,28 @@ void CPHShell::ResetCallbacks(u16 id,Flags64 &mask)
 void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 {
 
+	//if(element==elements.size())	return;
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
-	if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
+	if(mask.test(1<<id))
 	{
-		B.set_callback(0,(CPHElement*)elements[element]);
-	}
-	else
-	{
-		element++;
-		R_ASSERT2(element<elements.size(),"Out of elements!!");
-		CPHElement* E=(CPHElement*)(elements[element]);
-		B.set_callback(BonesCallback1,E);
-		//Fmatrix form;
-		//form.set(mXFORM);
-		//form.mulB(B.mTransform);
-		//E->SetTransform(form);
-	}
 
+		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
+		{
+
+			B.set_callback(0,(CPHElement*)elements[element]);
+		}
+		else
+		{
+			
+				element++;
+				R_ASSERT2(element<elements.size(),"Out of elements!!");
+				//if(element==elements.size())	return;
+				CPHElement* E=(CPHElement*)(elements[element]);
+				B.set_callback(BonesCallback1,E);
+		}
+	}
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
 		ResetCallbacksRecursive((*it)->SelfID,element,mask);
 }
@@ -925,27 +928,26 @@ void CPHShell::DeleteJoint(u16 joint)
 
 void CPHShell::setEndElementSplitter()
 {
-	if(!m_spliter_holder)	m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 
 	if(!elements.back()->FracturesHolder())//adding fracture for element supposed before adding splitter. Need only one splitter for an element
-					m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,u16(elements.size()-1),u16(joints.size()-1));
+				AddSplitter(CPHShellSplitter::splElement,u16(elements.size()-1),u16(joints.size()-1));
 }
-void CPHShell::setElementSplitter(u16 element)
+
+void CPHShell::setElementSplitter(u16 element_number)
 {
-	if(!elements[element]->FracturesHolder())
-						AddSplitter(CPHShellSplitter::splElement,element,element-1);
+	if(!elements[element_number]->FracturesHolder())
+		AddSplitter(CPHShellSplitter::splElement,element_number,element_number-1);
 }
 void CPHShell::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
 {
 	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
-	m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,element,element-1);
+	m_spliter_holder->AddSplitter(type,element,joint);
 }
 
 void CPHShell::setEndJointSplitter()
 {
-	
 	if(!joints.back()->JointDestroyInfo())//setting joint breacable supposed before adding splitter. Need only one splitter for a joint
-				AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
+			AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
 }
 
 bool CPHShell::isBreakable()

@@ -262,22 +262,23 @@ void CPhysicObject::SpawnCopy()
 PHSHELL_PAIR_VECTOR new_shells;
 void CPhysicObject::PHSplit()
 {
-	if(m_unsplited_shels.empty())
+	//if(m_unsplited_shels.empty())
 	{
+		u16 spawned=u16(m_unsplited_shels.size());
 		m_pPhysicsShell->SplitProcess(m_unsplited_shels);
-		u16 i=u16(m_unsplited_shels.size());
+		u16 i=u16(m_unsplited_shels.size())-spawned;
 		//	Msg("%o,spawned,%d",this,i);
 		for(;i;i--) SpawnCopy();
 	}
-	else
-	{
-		new_shells.clear();
-		m_pPhysicsShell->SplitProcess(new_shells);
-		m_unsplited_shels.insert(m_unsplited_shels.begin(),new_shells.begin(),new_shells.end());
-		u16 i=u16(new_shells.size());
-		//	Msg("%o,spawned,%d",this,i);
-		for(;i;i--) SpawnCopy();
-	}
+	//else
+	//{
+	//	new_shells.clear();
+	//	m_pPhysicsShell->SplitProcess(new_shells);
+	//	m_unsplited_shels.insert(m_unsplited_shels.begin(),new_shells.begin(),new_shells.end());
+	//	u16 i=u16(new_shells.size());
+	//	//	Msg("%o,spawned,%d",this,i);
+	//	for(;i;i--) SpawnCopy();
+	//}
 }
 
 void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
@@ -300,13 +301,13 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
 	R_ASSERT2(m_unsplited_shels.size(),"NO_SHELLS !!");
 	R_ASSERT2(!O->m_pPhysicsShell,"this has shell already!!!");
-	CPhysicsShell* newPhysicsShell=m_unsplited_shels.back().first;
+	CPhysicsShell* newPhysicsShell=m_unsplited_shels.front().first;
 	O->m_pPhysicsShell=newPhysicsShell;
 	CKinematics *newKinematics=PKinematics(O->Visual());
 	CKinematics *pKinematics  =PKinematics(Visual());
 
 	Flags64 mask0,mask1;
-	u16 split_bone=m_unsplited_shels.back().second;
+	u16 split_bone=m_unsplited_shels.front().second;
 	mask1.set(pKinematics->LL_GetBonesVisible());//source bones mask
 	pKinematics->LL_SetBoneVisible(split_bone,FALSE,TRUE);
 
@@ -324,7 +325,7 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
 
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
-	m_unsplited_shels.erase(m_unsplited_shels.end()-1);
+	m_unsplited_shels.erase(m_unsplited_shels.begin());
 
 	NET_Packet P;
 	O->u_EventGen(P, GE_OWNERSHIP_REJECT,ID());

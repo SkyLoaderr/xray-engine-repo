@@ -176,7 +176,7 @@ virtual ~CPHShell				()
 private:
 	//breakable
 	void setEndElementSplitter	  ();
-	void setElementSplitter		  (u16 element);
+	void setElementSplitter		  (u16 element_number);
 	void setEndJointSplitter	  ();
 	void AddSplitter			  (CPHShellSplitter::EType type,u16 element,u16 joint);
 	/////////////////////////////////////////

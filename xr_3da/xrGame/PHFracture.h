@@ -58,7 +58,8 @@ class CShellSplitInfo
 friend class  CPHFracturesHolder;
 friend class  CPHShellSplitterHolder;
 friend class CPHElement;
-friend	class SplitInfRec;
+IC bool HaveElements		()		{return m_end_el_num!=m_start_el_num;}
+IC bool HaveJoints			()		{return m_start_jt_num!=m_end_jt_num;}
 protected:
 	u16				m_start_el_num;
 	u16				m_end_el_num;
