@@ -100,14 +100,16 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             if (fraBottomBar->miDrawObjectJoints->Checked)
 	            DU.DrawJoint	(p1,joint_size,c_joint);
             // center of mass
-            Fvector cm;
-            M.transform_tiny(cm,(*b_it)->center_of_mass);
-            if ((*b_it)->flags.is(CBone::flSelected)){
-            	float sz 	= joint_size*2.f;
-            	DU.DrawCross	(cm, sz,sz,sz, sz,sz,sz, 0xFFFFFFFF, false);
-	            DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_sel_cm);
-            }else{
-	            DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_norm_cm);
+            if ((*b_it)->shape.type!=SBoneShape::stNone){
+                Fvector cm;
+                M.transform_tiny(cm,(*b_it)->center_of_mass);
+                if ((*b_it)->flags.is(CBone::flSelected)){
+                    float sz 	= joint_size*2.f;
+                    DU.DrawCross	(cm, sz,sz,sz, sz,sz,sz, 0xFFFFFFFF, false);
+                    DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_sel_cm);
+                }else{
+                    DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_norm_cm);
+                }
             }
             if (0){
 	            M.transform_dir	(d);

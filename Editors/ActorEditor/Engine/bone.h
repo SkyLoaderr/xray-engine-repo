@@ -159,6 +159,8 @@ public:
     bool			Selected		(){return flags.is(flSelected);}
 
     void			ClampByLimits	();
+
+    const Fvector&  RestRotate		(){return rest_rotate;}
 #endif
 };
 DEFINE_VECTOR		(CBone*,BoneVec,BoneIt);

@@ -61,11 +61,13 @@ void TItemList::ClearParams(TElTreeItem* node)
         // save last selected items
         ListItemsVec items;
         GetSelected(items);
-        last_selected_items.clear();
-        for (ListItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
-        	last_selected_items.push_back(AnsiString());
-        	AnsiString& s = last_selected_items.back();
-	    	FHelper.MakeFullName((*l_it)->Item(),0,s);
+        if (!items.empty()){
+            last_selected_items.clear();
+            for (ListItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
+                last_selected_items.push_back(AnsiString());
+                AnsiString& s = last_selected_items.back();
+                FHelper.MakeFullName((*l_it)->Item(),0,s);
+            }
         }
         // real clear
 	    for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++)

@@ -19,14 +19,14 @@ bool CEditableObject::Load(const char* fname)
 	AnsiString ext=ExtractFileExt(fname);
     ext=ext.LowerCase();
     if 	(ext==".lwo")    		return Import_LWO(fname,false);
-    else if (ext==".object") 	return LoadObject(fname);
+    else return LoadObject(fname);
 	return false;
 }
 #endif
 
 bool CEditableObject::LoadObject(const char* fname)
 {
-    IReader* F = FS.r_open(fname);
+    IReader* F = FS.r_open(fname); R_ASSERT(F);
     IReader* OBJ = F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
     R_ASSERT(OBJ);
     bool bRes = Load(*OBJ);
@@ -59,12 +59,8 @@ void CEditableObject::SaveObject(const char* fname)
     Save			(F);
     F.close_chunk	();
 
-	string256 		save_nm,dir,path,nm;
-    _splitpath		(fname,dir,path,nm,0);
-	strconcat		(save_nm,dir,path,nm,".object");
-
-    F.save_to		(save_nm);
-	m_LoadName 		= save_nm;
+    F.save_to		(fname);
+	m_LoadName 		= fname;
 }
 
 
