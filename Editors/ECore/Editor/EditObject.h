@@ -179,7 +179,7 @@ class ECORE_API CEditableObject{
     CSMotion*		m_ActiveSMotion;
 public:
     SAnimParams		m_SMParam;
-    AnsiString		m_SMotionRefs;
+    ref_str			m_SMotionRefs;
 public:
 	// options
 	Flags32			m_Flags;
@@ -274,8 +274,8 @@ public:
     IC SMotionIt	LastSMotion				()	{return m_SMotions.end();}
 	SMotionVec&		SMotions				()	{return m_SMotions;}
     IC int			SMotionCount 			()	{return m_SMotions.size();}
-    IC bool			IsAnimated	 			()	{return SMotionCount()||(!m_SMotionRefs.IsEmpty());}
-    IC LPCSTR		SMotionRefs				()	{return m_SMotionRefs.c_str(); }
+    IC bool			IsAnimated	 			()	{return SMotionCount()||m_SMotionRefs.size();}
+    IC LPCSTR		SMotionRefs				()	{return *m_SMotionRefs; }
     IC void			SkeletonPlay 			()	{m_SMParam.Play();}
     IC void			SkeletonStop 			()	{m_SMParam.Stop();}
     IC void			SkeletonPause 			()	{m_SMParam.Pause();}
