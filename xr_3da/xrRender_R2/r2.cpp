@@ -60,7 +60,7 @@ void					CRender::create					()
 		o.fp16_filter	= FALSE;
 		o.fp16_blend	= FALSE;
 	}
-	VERIFY2				(o.mrt,"Hardware doesn't meet minimum feature-level");
+	VERIFY2				(o.mrt && (HW.Caps.raster.dwInstructions>=256),"Hardware doesn't meet minimum feature-level");
 
 	// nvstencil on NV40 and up
 	o.nvstencil			= FALSE;
