@@ -194,7 +194,7 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	AddStepSound(section, eAnimRunTurnRight,	"step_snd_run");
 
 	// Load attack postprocess --------------------------------------------------------
-	LPCSTR ppi_section = pSettings->r_string(section, "attack_postprocess");
+	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
 	_sd->m_attack_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
 	_sd->m_attack_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
 	_sd->m_attack_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
@@ -210,6 +210,12 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
 	_sd->m_attack_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
 	_sd->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
+
+	_sd->m_attack_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+	_sd->m_attack_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+	_sd->m_attack_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+	_sd->m_attack_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+
 	// --------------------------------------------------------------------------------
 
 	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");

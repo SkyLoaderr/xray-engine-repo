@@ -142,5 +142,6 @@ bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_fr
 void CAI_Biting::SetAttackEffector() 
 {
 	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(_sd->m_attack_effector.ppi, _sd->m_attack_effector.time, _sd->m_attack_effector.time_attack, _sd->m_attack_effector.time_release));
+	Level().Cameras.AddEffector(xr_new<CMonsterEffectorHit>(_sd->m_attack_effector.ce_time,_sd->m_attack_effector.ce_amplitude,_sd->m_attack_effector.ce_period_number,_sd->m_attack_effector.ce_power));
 }
 

@@ -31,7 +31,7 @@ BOOL CExplodeEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, 
 	float cur_amp		= max_amp * (PI / 180) / (10 * k * k);
 
 	Fvector dangle; 
-	dangle.x = cur_amp		* _sin(period_all	* (1.0f - time_left_perc));
+	dangle.x = cur_amp/2	* _sin(period_all	* (1.0f - time_left_perc));
 	dangle.y = cur_amp		* _cos(period_all/2 * (1.0f - time_left_perc));
 	dangle.z = cur_amp/4	* _sin(period_all/4	* (1.0f - time_left_perc));
 
