@@ -319,7 +319,7 @@ function fract:loadJob(name)
 			state = { 0, 1, 2},
 			group = 0,
 			running = false,
-			search_light = nil, --' "blockpost_search_light",
+			search_light = "blockpost_search_light",
 			path_main = "blockpost_guard_light",
 			path_hideout = "blockpost_guard_light" }
 		table.insert(self.Job, t)			
