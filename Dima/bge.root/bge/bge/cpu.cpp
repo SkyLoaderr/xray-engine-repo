@@ -8,29 +8,22 @@
 
 #include "stdafx.h"
 #include "cpu.h"
-#include "log.h"
+#include "ui.h"
+#include <float.h>
 
-#define RDTSC_TRIES_NUMBER	64
+const u32 RDTSC_TRY_COUNT = 64;
 
-/**
-IC	u16 fpu_sw				()
+IC	void detect				()
 {
-	u16 SW;
-	__asm fstcw SW;
-	return SW;
-}
-
-IC	void detect_hardware	()
-{
-	// General CPU identification
-	if (!dwfGetCPU_ID(&ID)) {
-		vfDualPrintF("Warning : can't detect CPU/FPU.");
+	// General CPU processor_infoentification
+	if (!CPU::processor_info.detected()) {
+		ui().log			("Warning : can't detect CPU/FPU.");
 		return;
 	}
 
 	// Detecting timers and frequency
-	u64	qwStart, qwEnd;
-	u32	dwStart, dwTest;
+	u64					qwStart, qwEnd;
+	u32					dwStart, dwTest;
 
 	// setting realtime priority
 	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
@@ -38,88 +31,73 @@ IC	void detect_hardware	()
 	// Detecting frequency
 	dwTest				= timeGetTime();
 	do {
-		dwStart = timeGetTime(); 
+		dwStart			= timeGetTime(); 
 	}
 	while (dwTest == dwStart);
 
-	qwStart	= CPU::qwfGetCycleCount();
+	qwStart				= CPU::cycles();
 
 	for (; timeGetTime() - dwStart < 1000;);
 	
-	qwEnd				= CPU::qwfGetCycleCount();
-	qwCyclesPerSecond	= qwEnd - qwStart;
+	qwEnd				= CPU::cycles();
+	CPU::cycles_per_second	= qwEnd - qwStart;
 
 	// Detect Overhead
-	qwCyclesPerRDTSC	= 0;
+	CPU::cycles_per_rdtsc	= 0;
 	u64 qwDummy			= 0;
-	for (s32 i=0; i<RDTSC_TRIES_NUMBER; i++) {
-		qwStart				=	CPU::qwfGetCycleCount();
-		qwCyclesPerRDTSC	+=	CPU::qwfGetCycleCount() - qwStart - qwDummy;
+	for (s32 i=0; i<RDTSC_TRY_COUNT; i++) {
+		qwStart			=	CPU::cycles();
+		CPU::cycles_per_rdtsc	+=	CPU::cycles() - qwStart - qwDummy;
 	}
-	qwCyclesPerRDTSC	/= RDTSC_TRIES_NUMBER;
-	qwCyclesPerSecond	-= qwCyclesPerRDTSC;
+	CPU::cycles_per_rdtsc	/= RDTSC_TRY_COUNT;
+	CPU::cycles_per_second	-= CPU::cycles_per_rdtsc;
 	
 	// setting normal priority
-	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
-	_control87	( _PC_64,   MCW_PC );
-	_control87	( _RC_CHOP, MCW_RC );
+	_control87			(_PC_64,MCW_PC);
+	_control87			(_RC_CHOP,MCW_RC);
 	
-	f64 a, b;
+	f64					a, b;
 	
-	a = 1.0;		
-	b = f64(s64(qwCyclesPerSecond));
-	fSecondsInCycles = f32(f64(a/b));
+	a					= 1.0;		
+	b					= f64(s64(CPU::cycles_per_second));
+	CPU::cycles2seconds	= f32(f64(a/b));
 
-	a = 1000.0;	
-	b = f64(s64(qwCyclesPerSecond));
-	fMillisecondsInCycles = f32(f64(a/b));
+	a					= 1000.0;	
+	b					= f64(s64(CPU::cycles_per_second));
+	CPU::cycles2milisec	= f32(f64(a/b));
 }
 
-void vfInitHardware() 
+void CPU::init	() 
 {
-	char caFeatures[128] = "RDTSC";
+	char features[128]	= "RDTSC";
 
-	vfDualPrintF("Detecting hardware...");
+	ui().log			("Detecting hardware...");
 	
-	vfDetectCPU_FPU();
+	detect				();
 	
-	vfDualPrintF("completed\n  Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d-clk\n",
-		CPU::ID.caVendorName,CPU::ID.caModelName,
-		CPU::ID.dwFamily,CPU::ID.dwModel,CPU::ID.dwStepping,
-		u32(CPU::qwCyclesPerSecond/s64(1000000)),
-		u32(CPU::qwCyclesPerRDTSC)
-		);
-	if (CPU::ID.dwFeatures & _CPU_FEATURE_MMX)	
-		strcat(caFeatures,", MMX");
-	if (CPU::ID.dwFeatures & _CPU_FEATURE_3DNOW)	
-		strcat(caFeatures,", 3DNow!");
-	if (CPU::ID.dwFeatures & _CPU_FEATURE_SSE)	
-		strcat(caFeatures,", SSE");
-	if (CPU::ID.dwFeatures & _CPU_FEATURE_SSE2)	
-		strcat(caFeatures,", SSE2");
-	vfDualPrintF("  CPU Features: %s\n", caFeatures);
+	ui().log			("completed\n  Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d-clk\n",
+		CPU::processor_info.vendor_name(),
+		CPU::processor_info.model_name(),
+		CPU::processor_info.family(),
+		CPU::processor_info.model(),
+		CPU::processor_info.stepping(),
+		u32(CPU::cycles_per_second/s64(1000000)),
+		u32(CPU::cycles_per_rdtsc)
+	);
 
-	_clear87();
+	if (CPU::processor_info.features() & CProcessorInfo::CPU_FEATURE_MMX)	
+		strcat			(features,", MMX");
 
-	_control87( _PC_24,   MCW_PC );
-	_control87( _RC_CHOP, MCW_RC );
-	FPU::_24  = wfGetFPU_SW();	// 24, chop
-	_control87( _RC_NEAR, MCW_RC );
-	FPU::_24r = wfGetFPU_SW();	// 24, rounding
+	if (CPU::processor_info.features() & CProcessorInfo::CPU_FEATURE_3DNOW)	
+		strcat			(features,", 3DNow!");
 
-	_control87( _PC_53,   MCW_PC );
-	_control87( _RC_CHOP, MCW_RC );
-	FPU::_53  = wfGetFPU_SW();	// 53, chop
-	_control87( _RC_NEAR, MCW_RC );
-	FPU::_53r = wfGetFPU_SW();	// 53, rounding
+	if (CPU::processor_info.features() & CProcessorInfo::CPU_FEATURE_SSE)	
+		strcat			(features,", SSE");
 
-	_control87( _PC_64,   MCW_PC );
-	_control87( _RC_CHOP, MCW_RC );
-	FPU::_64  = wfGetFPU_SW();	// 64, chop
-	_control87( _RC_NEAR, MCW_RC );
-	FPU::_64r = wfGetFPU_SW();	// 64, rounding
+	if (CPU::processor_info.features() & CProcessorInfo::CPU_FEATURE_SSE2)	
+		strcat			(features,", SSE2");
 
-	FPU::m24r();
+	ui().log			("  CPU Features: %s\n", features);
 }
-/**/

@@ -47,6 +47,12 @@ protected:
 
 public:
 	IC				CProcessorInfo	();
+	IC		LPCSTR	vendor_name		() const;
+	IC		LPCSTR	model_name		() const;
+	IC		int		family			() const;
+	IC		int		model			() const;
+	IC		int		stepping		() const;
+	IC		int		features		() const;
 	IC		bool	detected		() const;
 };
 

@@ -45,5 +45,7 @@ namespace FPU {
 	{
 		__asm fldcw _64r
 	}
+
+		void			init();
 };
 

@@ -8,12 +8,42 @@
 
 #pragma once
 
-IC	CProcessorInfo::CProcessorInfo	()
+IC	CProcessorInfo::CProcessorInfo		()
 {
 	fill	();
 }
 
-IC	bool CProcessorInfo::detected	() const
+IC	LPCSTR CProcessorInfo::vendor_name	() const
+{
+	return	(m_vendor_name);
+}
+
+IC	LPCSTR CProcessorInfo::model_name	() const
+{
+	return	(m_model_name);
+}
+
+IC	int	 CProcessorInfo::family			() const
+{
+	return	(m_family);
+}
+
+IC	int	 CProcessorInfo::model			() const
+{
+	return	(m_model);
+}
+
+IC	int	 CProcessorInfo::stepping		() const
+{
+	return	(m_stepping);
+}
+
+IC	int	 CProcessorInfo::features		() const
+{
+	return	(m_feature);
+}
+
+IC	bool CProcessorInfo::detected		() const
 {
 	return	(m_detected);
 }

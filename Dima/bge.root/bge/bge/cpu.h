@@ -13,8 +13,7 @@
 namespace CPU {
 	CProcessorInfo		processor_info;
 	u64					cycles_per_second;
-	u64					cycles_overhead;
-	u64					timer_overhead;
+	u64					cycles_per_rdtsc;
 	float				cycles2seconds;
 	float				cycles2milisec;
 
@@ -25,4 +24,6 @@ namespace CPU {
 		_asm _emit 0x31;
 	}
 	#pragma warning(default:4035)
+
+		void			init	();
 }
