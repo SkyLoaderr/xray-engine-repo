@@ -72,6 +72,11 @@ function act_state_mgr_to_idle:initialize()
 end
 function act_state_mgr_to_idle:execute()
 	action_base.execute(self)
+	if self.object:best_enemy() then
+		self.st:set_state("idle", nil, nil, nil, {animation = true})	
+	else
+		self.st:set_state("idle")	
+	end
 end
 function act_state_mgr_to_idle:finalize()
 	action_base.finalize(self)
