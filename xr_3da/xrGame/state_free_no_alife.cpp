@@ -52,16 +52,28 @@ void CStateFreeNoAlife::execute			()
 {
 //	m_object->play					(eStalkerSoundHumming,60000,10000);
 //	m_object->vfSetParameters		(0,0,0,MonsterSpace::eObjectActionStrap,CMovementManager::ePathTypeGamePath,CMovementManager::eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
+
+//	m_object->CStalkerMovementManager::update	(0,0,0,
+//		CMovementManager::ePathTypeGamePath,
+//		CMovementManager::eDetailPathTypeSmooth,
+//		eBodyStateStand,
+//		eMovementTypeStand,
+//		eMentalStateDanger
+//	);
+//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle,m_object->best_weapon());
+
 	m_object->CStalkerMovementManager::update	(0,0,0,
 		CMovementManager::ePathTypeGamePath,
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
 		eMovementTypeStand,
-//		eMentalStateFree
-		eMentalStateDanger
+		eMentalStateFree
 	);
 	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->get_best_weapon());
+//	m_object->CSightManager::update				(eLookTypePathDirection);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
+	m_object->play								(eStalkerSoundHumming,60000,10000);
 }
 
 void CStateFreeNoAlife::finalize		()

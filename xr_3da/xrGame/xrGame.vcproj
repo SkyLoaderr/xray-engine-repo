@@ -1765,48 +1765,6 @@
 		<Filter
 			Name="Core"
 			Filter="">
-			<File
-				RelativePath=".\clsid_game.h">
-			</File>
-			<File
-				RelativePath="GamePersistent.cpp">
-			</File>
-			<File
-				RelativePath="GamePersistent.h">
-			</File>
-			<File
-				RelativePath=".\StdAfx.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\StdAfx.h">
-			</File>
-			<File
-				RelativePath="xr_level_controller.cpp">
-			</File>
-			<File
-				RelativePath="xr_level_controller.h">
-			</File>
-			<File
-				RelativePath=".\xrGame.cpp">
-			</File>
 			<Filter
 				Name="Client"
 				Filter="">
@@ -3153,6 +3111,52 @@
 						</File>
 					</Filter>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Global"
+				Filter="">
+				<File
+					RelativePath=".\clsid_game.h">
+				</File>
+				<File
+					RelativePath="GamePersistent.cpp">
+				</File>
+				<File
+					RelativePath="GamePersistent.h">
+				</File>
+				<File
+					RelativePath=".\StdAfx.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\StdAfx.h">
+				</File>
+				<File
+					RelativePath="xr_level_controller.cpp">
+				</File>
+				<File
+					RelativePath="xr_level_controller.h">
+				</File>
+				<File
+					RelativePath=".\xrGame.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="Server"

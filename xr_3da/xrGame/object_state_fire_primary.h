@@ -13,7 +13,7 @@
 
 class CObjectStateFirePrimary : public CObjectStateBase {
 public:
-						CObjectStateFirePrimary	(CInventoryItem *inventory_item, const CWeapon::EWeaponStates weapon_state, bool equality = false) :
+						CObjectStateFirePrimary	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false) :
 							CObjectStateBase(inventory_item,weapon_state,equality)
 	{
 	}
@@ -30,5 +30,12 @@ public:
 //		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
 //		if (weapon && (weapon->STATE != CWeapon::eFire) && !weapon->IsWorking())
 			m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+	}
+
+	virtual	void		finalize			()
+	{
+//		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
+//		if (weapon && (weapon->STATE != CWeapon::eFire) && !weapon->IsWorking())
+		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 	}
 };

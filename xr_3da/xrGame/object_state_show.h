@@ -13,7 +13,7 @@
 
 class CObjectStateShow : public CObjectStateBase {
 public:
-						CObjectStateShow	(CInventoryItem *inventory_item, const CWeapon::EWeaponStates weapon_state, bool equality = false) :
+						CObjectStateShow	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false) :
 							CObjectStateBase(inventory_item,weapon_state,equality)
 	{
 	}
@@ -23,10 +23,5 @@ public:
 		VERIFY			(m_inventory_item);
 		m_object->inventory().Slot(m_inventory_item);
 		m_object->inventory().Activate(m_inventory_item->GetSlot());
-	}
-
-	virtual bool		completed		() const
-	{
-		return			(m_object->inventory().ActiveItem()->ID() == m_inventory_item->ID());
 	}
 };

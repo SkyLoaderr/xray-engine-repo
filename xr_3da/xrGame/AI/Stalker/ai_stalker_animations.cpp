@@ -11,6 +11,7 @@
 #include "ai_stalker_animations.h"
 #include "../../../motion.h"
 #include "../../weapon.h"
+#include "../../missile.h"
 #include "../../ai_script_actions.h"
 
 static const float y_spin_factor			= 0.25f;
@@ -47,6 +48,8 @@ LPCSTR caWeaponNames		[] = {
 	"2_",
 	"3_",
 	"4_",
+	"5_",
+	"6_",
 	0
 };
 
@@ -216,9 +219,11 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		return;
 	
 	CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
+	CMissile				*missile = dynamic_cast<CMissile*>(stalker->inventory().ActiveItem());
+	CLASS_ID				clsid = tpWeapon ? tpWeapon->SUB_CLS_ID : missile ? missile->SUB_CLS_ID : 0;
 	u32						dwCurrentAniSlot = 0;
-	if (tpWeapon)
-		switch (tpWeapon->SUB_CLS_ID) {
+	if (tpWeapon || missile)
+		switch (clsid) {
 			case CLSID_OBJECT_W_VINTOREZ	:
 			case CLSID_OBJECT_W_VAL			:
 			case CLSID_OBJECT_W_GROZA		:
@@ -252,6 +257,11 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				dwCurrentAniSlot = 2;
 				break;
 			}
+			case CLSID_GRENADE_F1		:
+			case CLSID_GRENADE_RGD5		: {
+				dwCurrentAniSlot = 6;
+				break;
+			}
 			default : {
 #pragma todo("Dima to Dima : Return nodefault")
 				dwCurrentAniSlot = 1;
@@ -265,7 +275,6 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 
 	EBodyState l_tBodyState = (eBodyStateStand == stalker->body_state()) && stalker->IsLimping() ? eBodyStateStandDamaged : stalker->body_state();
 	if (stalker->inventory().ActiveItem()) {
-		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
 				case CWeapon::eReload : {
@@ -293,49 +302,92 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
+			}
+		}
+		if (missile) {
+			switch (missile->State()) {
+				case MS_SHOWING	 : {
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Showing");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[0].A[0];
+					break;
+				}
+				case MS_HIDING	 : {
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Hiding");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
+					break;
+				}
+				case MS_THREATEN : {
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire start");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
+					break;
+				}
+				case MS_READY	 : {
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire idle");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[1];
+					break;
+				}
+				case MS_THROW	 :
+				case MS_END		 : {
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire end");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[2];
+					break;
+				}
+				case MS_PLAYING	 : {
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire end1");
+					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[2];
+					break;
+				}
+				case MS_IDLE	 :
+				case MS_HIDDEN	 :
+				case MS_EMPTY	 :
+				default			 : {
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
+					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
+					break;
+				}
+			}
+		}
+		if (!tpTorsoAnimation) {
+			switch (stalker->CObjectHandler::current_state_state_id()) {
+				case eObjectActionAim1 :
+				case eObjectActionAim2 :
+				case eObjectActionFire1 :
+				case eObjectActionFire2 :
+				{
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
+					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
+					break;
+				}
 				default : {
-					switch (stalker->CObjectHandler::current_state_state_id()) {
-						case eObjectActionAim1 :
-						case eObjectActionAim2 :
-						case eObjectActionFire1 :
-						case eObjectActionFire2 :
-						{
-							Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
+					Msg				("%6d : weapon state %s",Level().timeServer(),"Idle");
+					if (eMentalStateFree == stalker->mental_state()) {
+						tpTorsoAnimation = 0;
+						R_ASSERT2(eBodyStateStand == stalker->body_state(),"Cannot run !free! animation when body state is not stand!");
+						if ((eMovementTypeStand == stalker->movement_type()) || fis_zero(stalker->speed()))
+							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
+						else
+							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : (7 + stalker->movement_type())].A[stalker->IsLimping() ? 0 : 1];
+						return;
+					}
+					else {
+						if (fis_zero(stalker->speed())) {
 							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
-							break;
+							return;
 						}
-						default : {
-							Msg				("%6d : weapon state %s",Level().timeServer(),"Idle");
-							if (eMentalStateFree == stalker->mental_state()) {
-								tpTorsoAnimation = 0;
-								R_ASSERT2(eBodyStateStand == stalker->body_state(),"Cannot run !free! animation when body state is not stand!");
-								if ((eMovementTypeStand == stalker->movement_type()) || fis_zero(stalker->speed()))
-									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
-								else
-									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : (7 + stalker->movement_type())].A[stalker->IsLimping() ? 0 : 1];
-								return;
+						switch (stalker->movement_type()) {
+							case eMovementTypeStand : {
+								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
+								break;
 							}
-							else {
-								if (fis_zero(stalker->speed())) {
-									tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
-									return;
-								}
-								switch (stalker->movement_type()) {
-									case eMovementTypeStand : {
-										tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];
-										break;
-									}
-									case eMovementTypeWalk : {
-										tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
-										break;
-									}
-									case eMovementTypeRun : {
-										tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 7 : 8].A[0];
-										break;
-									}
-									default : NODEFAULT;
-								}
+							case eMovementTypeWalk : {
+								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+								break;
 							}
+							case eMovementTypeRun : {
+								tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 7 : 8].A[0];
+								break;
+							}
+							default : NODEFAULT;
 						}
 					}
 				}

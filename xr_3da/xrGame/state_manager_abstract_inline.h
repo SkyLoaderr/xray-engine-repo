@@ -127,7 +127,10 @@ IC	void CAbstractStateManager::set_dest_state			(const u32 dest_state_id)
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractStateManager::set_current_state		(const u32 current_state_id)
 {
-	set_current_vertex_id	(current_state_id);
+	if (current_state_id != current_vertex_id()) {
+		set_current_vertex_id	(current_state_id);
+		current_state().initialize();
+	}
 }
 
 TEMPLATE_SPECIALIZATION

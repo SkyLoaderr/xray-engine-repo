@@ -20,6 +20,8 @@ CMissile::CMissile(void)
 	m_pInventory = 0;
 
 	m_bPending = false;
+
+	m_offset.identity();
 }
 
 CMissile::~CMissile(void) 
@@ -29,12 +31,19 @@ CMissile::~CMissile(void)
 
 void CMissile::Load(LPCSTR section) 
 {
-	inherited::Load(section);
-	LPCSTR hud_sect = pSettings->r_string(section,"hud");
-	m_pHUD->Load(hud_sect);
-	m_minForce = pSettings->r_float(section,"force_min");
-	m_maxForce = pSettings->r_float(section,"force_max");
-	m_forceGrowSpeed = pSettings->r_float(section,"force_grow_speed");
+	inherited::Load		(section);
+	LPCSTR hud_sect		= pSettings->r_string(section,"hud");
+	m_pHUD->Load		(hud_sect);
+	m_minForce			= pSettings->r_float(section,"force_min");
+	m_maxForce			= pSettings->r_float(section,"force_max");
+	m_forceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
+	
+	Fvector				position_offset, angle_offset;
+	position_offset		= pSettings->r_fvector3(section,"position_offset");
+	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
+	
+	m_offset.setHPB			(VPUSH(angle_offset));
+	m_offset.translate_over	(position_offset);
 }
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -311,8 +320,9 @@ u32 CMissile::State(u32 state)
 
 void CMissile::UpdatePosition(const Fmatrix& trans)
 {
-	Position().set	(trans.c);
-//	XFORM().mul	(trans,m_Offset);
+//	Position().set	(trans.c);
+//	XFORM().mul		(trans,m_offset);
+	XFORM().mul		(trans,m_offset);
 }
 
 void CMissile::UpdateXForm()
@@ -333,6 +343,7 @@ void CMissile::UpdateXForm()
 		// Get matrices
 		int				boneL,boneR,boneR2;
 		E->g_WeaponBones(boneL,boneR,boneR2);
+
 //		if ((STATE == eReload) || (!E->g_Alive()))
 			boneL = boneR2;
 		V->Calculate	();

@@ -683,7 +683,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionFire1,id),		u32(eObjectActionNoItems),		1);
 
 		state(uid(eObjectActionSwitch1,id)).set_inertia_time(1000);
-		state(uid(eObjectActionFire1,id)).set_inertia_time(700);
+		state(uid(eObjectActionFire1,id)).set_inertia_time(500);
 	}
 
 	// нож, (еда, питьё), приборы

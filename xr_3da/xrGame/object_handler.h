@@ -70,7 +70,7 @@ public:
 	IC		u32		current_state_state_id	() const;
 			u32		object_state			() const;
 			u32		weapon_state			(const CWeapon *weapon) const;
-			CInventoryItem *get_best_weapon	() const;
+			CInventoryItem *best_weapon		() const;
 #ifdef DEBUG
 			void	show_graph				();
 #endif

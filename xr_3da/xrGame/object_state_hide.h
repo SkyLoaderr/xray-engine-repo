@@ -13,7 +13,7 @@
 
 class CObjectStateHide : public CObjectStateBase {
 public:
-						CObjectStateHide	(CInventoryItem *inventory_item, const CWeapon::EWeaponStates weapon_state, bool equality = false) :
+						CObjectStateHide	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false) :
 							CObjectStateBase(inventory_item,weapon_state,equality)
 	{
 	}

@@ -61,5 +61,5 @@ public:
 
 private:
 	u32						dwXF_Frame;
-
+	Fmatrix					m_offset;
 };

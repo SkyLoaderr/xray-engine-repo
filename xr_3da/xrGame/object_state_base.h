@@ -18,7 +18,7 @@ class CObjectStateBase : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
 	CInventoryItem			*m_inventory_item;
-	CWeapon::EWeaponStates	m_weapon_state;
+	u32						m_weapon_state;
 	bool					m_equality;
 	bool					m_started;
 
@@ -27,9 +27,9 @@ private:
 	u32						m_priority;
 
 public:
-						CObjectStateBase	(CInventoryItem *inventory_item, const CWeapon::EWeaponStates weapon_state, bool equality = false);
+						CObjectStateBase	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false);
 	virtual				~CObjectStateBase	();
-			void		Init				(CInventoryItem *inventory_item, const CWeapon::EWeaponStates weapon_state, bool equality);
+			void		Init				(CInventoryItem *inventory_item, const u32 weapon_state, bool equality);
 	virtual	void		Load				(LPCSTR section);
 	virtual	void		reinit				(CAI_Stalker *object);
 	virtual	void		reload				(LPCSTR section);

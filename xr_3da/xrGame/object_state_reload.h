@@ -13,7 +13,7 @@
 
 class CObjectStateReload : public CObjectStateBase {
 public:
-							CObjectStateReload	(CInventoryItem *inventory_item, const CWeapon::EWeaponStates weapon_state, bool equality = false) :
+							CObjectStateReload	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false) :
 								CObjectStateBase(inventory_item,weapon_state,equality)
 	  {
 	  }
@@ -36,7 +36,7 @@ public:
 			  return		(inherited::completed());
 
 		  return					(
-			  ((CWeapon::EWeaponStates(weapon->STATE) != m_weapon_state) && !m_equality)
+			  ((weapon->STATE != m_weapon_state) && !m_equality)
 			  );
 	  }
 };
