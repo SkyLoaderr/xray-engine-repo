@@ -84,9 +84,9 @@ void CSector::Render(CFrustum &F)
 				if (Occluders.visibleSphereNC(Tpos,pV->bv_Radius)!=fcvNone)
 				{
 					O->OnMoveVisible		();
-					float&	LL	= O->AI_Lighting;
-					NodeCompressed* NODE = O->AI_Node;
-					float	CL	= NODE?float(NODE->light):255;
+					float&	LL				= O->AI_Lighting;
+					NodeCompressed* NODE	= O->AI_Node;
+					float	CL				= NODE?float(NODE->light):255;
 					LL	= l_i*LL + l_f*CL; 
 					::Render.set_Transform		(&(O->clTransform));
 					::Render.set_LightLevel		(iFloor(LL));
