@@ -133,7 +133,7 @@
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_wpn_beretta \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_spas12 \n
 			ammo_12x76_dart = 1 \n
@@ -162,7 +162,7 @@
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
 			[spawn] \n
-			wpn_wpn_beretta \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_spas12 \n
 			ammo_12x76_zhekan = 1 \n
@@ -191,7 +191,7 @@
 		<visual>actors\svoboda\stalker_sv_balon_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_wpn_beretta \n
+			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			wpn_spas12 = 1 \n
 			ammo_12x76_zhekan = 1 \n
