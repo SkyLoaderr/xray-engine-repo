@@ -686,7 +686,9 @@ void CLocatorAPI::rescan_path(LPCSTR full_path, BOOL bRecurse)
 		const char* entry_begin = entry.name+base_len;
         if (!bRecurse&&strstr(entry_begin,"\\")) continue;
         // erase item
-		files.erase			(cur_item);
+		char* str		= LPSTR(cur_item->name);
+		xr_free			(str);
+		files.erase		(cur_item);
 	}
     bNoRecurse	= !bRecurse;
     Recurse		(full_path);
