@@ -69,6 +69,7 @@ public:
 	virtual void						_restart				( );
 
 	// Sound interface
+			void						verify_refsound			( ref_sound& S);
 	virtual void						create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0);
 	virtual void						destroy					( ref_sound& S);
 	virtual void						play					( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f);

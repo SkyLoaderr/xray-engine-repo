@@ -294,9 +294,19 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 #endif
 }
 
+void	CSoundRender_Core::verify_refsound		( ref_sound& S)
+{
+	int			local_value		= 0;
+	void*		ptr_refsound	= &S;
+	void*		ptr_local		= &local_value;
+	ptrdiff_t	difference		= _abs	( ptrdiff_t(ptr_local) - ptrdiff_t(ptr_refsound) );
+	VERIFY2		(difference > (64*1024), "local/stack-based ref_sound passed. memory corruption will accur.");
+}
+
 void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, int type )
 {
 	if (!bPresent)					return;
+	verify_refsound					(S);
 
 	string256	fn;
 	strcpy		(fn,fName);
@@ -309,6 +319,7 @@ void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, i
 void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float delay)
 {
 	if (!bPresent || 0==S.handle)	return;
+	verify_refsound					(S);
 
 	S.g_object		= O;
 	if (S.feedback)	{
@@ -320,13 +331,15 @@ void	CSoundRender_Core::play					( ref_sound& S, CObject* O, u32 flags, float de
 }
 void	CSoundRender_Core::play_unlimited		( ref_sound& S, CObject* O, u32 flags, float delay)
 {
-	if (!bPresent || 0==S.handle) return;
+	if (!bPresent || 0==S.handle)	return;
+	verify_refsound					(S);
 	i_play					(&S,flags&sm_Looped,delay);
 	if (flags&sm_2D)		S.feedback->switch_to_2D();
 }
 void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
 {
-	if (!bPresent || 0==S.handle) return;
+	if (!bPresent || 0==S.handle)	return;
+	verify_refsound					(S);
 	S.g_object		= O;
 	if (S.feedback)	{
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
@@ -338,18 +351,20 @@ void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector 
 }
 void	CSoundRender_Core::play_at_pos_unlimited	( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
 {
-	if (!bPresent || 0==S.handle) return;
-	i_play						(&S,flags&sm_Looped,delay);
-	S.feedback->set_position	(pos);
-	if (flags&sm_2D)			S.feedback->switch_to_2D();
+	if (!bPresent || 0==S.handle)	return;
+	verify_refsound					(S);
+	i_play							(&S,flags&sm_Looped,delay);
+	S.feedback->set_position		(pos);
+	if (flags&sm_2D)				S.feedback->switch_to_2D();
 }
 void	CSoundRender_Core::destroy(ref_sound& S )
 {
-	if (!bPresent || 0==S.handle) {
+	if (!bPresent || 0==S.handle)	{
 		S.handle	= 0;
 		S.feedback	= 0;
 		return;
 	}
+	verify_refsound					(S);
 	if (S.feedback)		
 	{
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;

@@ -51,12 +51,13 @@ int			phIterations	= 18;
 float		phTimefactor	= 1.f;
 int			phIterationCycle= 5;
 
-static int IterationCycleI= 0;
+static int	IterationCycleI	= 0;
 dWorldID	phWorld;
+
 /////////////////////////////////////
-dJointGroupID ContactGroup;
-CBlockAllocator<dJointFeedback,128>			ContactFeedBacks;
-CBlockAllocator<CPHContactBodyEffector,128> ContactEffectors;
+dJointGroupID	ContactGroup;
+CBlockAllocator	<dJointFeedback,128>		ContactFeedBacks;
+CBlockAllocator	<CPHContactBodyEffector,128> ContactEffectors;
 #ifdef DRAW_CONTACTS
 CONTACT_VECTOR Contacts;
 #endif
