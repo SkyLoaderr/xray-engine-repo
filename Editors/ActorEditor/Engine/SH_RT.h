@@ -37,9 +37,9 @@ public:
 	u32						dwSize;
 	D3DFORMAT				fmt;
 
-	CRT						()
+	CRTC					()
 	{
-		Memory.mem_fill		(this,0,sizeof(CRT));
+		Memory.mem_fill		(this,0,sizeof(CRTC));
 	}
 
 	void				Create	(LPCSTR name, u32 size, D3DFORMAT f);
