@@ -638,7 +638,7 @@ function process_map_spot(info_id)
 		      add_location (702, "mil_max_location") 
 		   end     
 		   
-	elseif info_id == "mil_max_job_complete" then   
+	elseif info_id == "mil_max_job_complete" or info_id == "mil_freedom_cook_rg6_ask" then   
 	       add_location (706, "mil_rg6_location") 	 
 	       remove_location (702, "mil_max_location")  
 	       
