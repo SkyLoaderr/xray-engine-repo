@@ -264,11 +264,14 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				};
 
 				s16 lt = local_player->team;
-				sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
-								teams[lt-1].score, 
-								teams[(lt==1)?0:1].score, 
-								artefactsNum);
-				m_gameUI->SetScoreCaption(S);
+				if (lt>=0)
+				{
+					sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
+									teams[lt-1].score, 
+									teams[(lt==1)?0:1].score, 
+									artefactsNum);
+					m_gameUI->SetScoreCaption(S);
+				};
 	
 			if ( (artefactBearerID==0))// && (artefactID!=0) )
 				{
