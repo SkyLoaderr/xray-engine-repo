@@ -337,9 +337,13 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 
 void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	
+	if(WheelHit(P,element,hit_type)) P=0.f;
+	float hitScale=1.f,woundScale=1.f;
+	if(hit_type!=ALife::eHitTypeStrike) HitScale(element, hitScale, woundScale);
+	P *= m_HitTypeK[hit_type]*hitScale;
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	HitEffect();
-	WheelHit(P,element,hit_type);
 	DoorHit(P,element,hit_type);
 	HUD().GetUI()->UIMainIngameWnd.SetCarHealth(fEntityHealth/100.f);
 }
@@ -360,8 +364,6 @@ void CCar::ApplyDamage(u16 level)
 		case 2: 
 			{
 				m_damage_particles.Play2(this);
-				xr_map<u16,SDoor>::iterator	   i=m_doors.begin(),e=m_doors.end();
-				for(;e!=i;++i)i->second.Open();
 			}
 											   break;
 		case 3: m_fuel=0.f;					   break;	
@@ -694,6 +696,14 @@ void CCar::Init()
 		}
 	}
 	CPHCollisionDamageReceiver::Init();
+
+	if(ini->section_exist("immunities"))
+	{
+		InitImmunities("immunities",ini);
+	}
+
+	CDamageManager::reload("car_definition",ini);
+	
 	Break();
 	Transmision(1);
 }

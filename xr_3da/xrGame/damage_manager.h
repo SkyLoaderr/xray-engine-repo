@@ -19,7 +19,7 @@ public:
 			void	init					();
 	virtual	void	Load					(LPCSTR section);
 	virtual	void	reinit					();
-	virtual	void	reload					(LPCSTR section);
+	virtual	void	reload					(LPCSTR section,CInifile* ini);
 };
 
 #include "damage_manager_inline.h"

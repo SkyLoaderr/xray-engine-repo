@@ -299,7 +299,7 @@ void CEntity::reinit			()
 void CEntity::reload			(LPCSTR section)
 {
 	inherited::reload			(section);
-	CDamageManager::reload		(section);
+	CDamageManager::reload		(section,pSettings);
 }
 
 void CEntity::set_death_time	()

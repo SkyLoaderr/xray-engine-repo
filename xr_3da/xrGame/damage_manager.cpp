@@ -34,7 +34,7 @@ void CDamageManager::reinit				()
 {
 }
 
-void CDamageManager::reload				(LPCSTR section)
+void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 {
 	string32						buffer;
 
@@ -50,8 +50,8 @@ void CDamageManager::reload				(LPCSTR section)
 		bone_instance.set_param	(2,1.f);
 	}
 
-	if (pSettings->line_exist(section,"damage")) {
-		CInifile::Sect					&damages = pSettings->r_section(pSettings->r_string(section,"damage"));
+	if (ini->line_exist(section,"damage")) {
+		CInifile::Sect					&damages = ini->r_section(ini->r_string(section,"damage"));
 		for (CInifile::SectIt i=damages.begin(); damages.end() != i; ++i) {
 			if (!xr_strcmp(*(*i).first,"default"))
 			{
