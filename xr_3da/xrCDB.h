@@ -71,8 +71,9 @@ namespace CDB
 		MODEL();
 		~MODEL();
 
-		IC TRI*					get_tris	()	{ return tris;	}
-		IC void					syncronize	()	const
+		IC TRI*					get_tris		()			{ return tris;		}
+		IC int					get_tris_count	()	const	{ return tris_count;}
+		IC void					syncronize		()	const
 		{
 			if (S_READY!=status)
 			{
