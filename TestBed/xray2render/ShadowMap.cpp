@@ -215,7 +215,7 @@ CMyD3DApplication::CMyD3DApplication()
 	m_dwCreationWidth							= OUT_WIDTH;
 	m_dwCreationHeight							= OUT_HEIGHT;
 
-	m_pFont								= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
+	m_pFont										= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
 
 	m_pModelVB							= NULL;
 	m_pModelIB							= NULL;
