@@ -32,7 +32,7 @@ void __stdcall CCustomMonster::SpinCallback(CBoneInstance* B)
 	CCustomMonster*		M = (CCustomMonster*)B->Callback_Param;
 
 	Fmatrix				spin;
-	spin.rotateY		(M->NET_Last.o_torso.pitch);
+	spin.setXYZ			(-M->NET_Last.o_torso.yaw, M->NET_Last.o_torso.pitch, 0);
 	B->mTransform.mul_43(spin);
 /*
 	Fmatrix				spin;
