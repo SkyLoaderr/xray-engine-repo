@@ -103,11 +103,11 @@ void __fastcall TfraPS::FormShow(TObject *Sender)
     m_Items->LoadSelection	(fsStorage);
     ListItemsVec items;
     for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++){
-    	ListItem* I=LHelper.CreateItem(items,(*E)->m_Name,0,0,*E);
+    	ListItem* I=LHelper.CreateItem(items,*(*E)->m_Name,0,0,*E);
         I->SetIcon(1);
     }
     for (PS::PGDIt G=::Render->PSLibrary.FirstPGD(); G!=::Render->PSLibrary.LastPGD(); G++){
-    	ListItem* I=LHelper.CreateItem(items,(*G)->m_Name,0,0,*G);
+    	ListItem* I=LHelper.CreateItem(items,*(*G)->m_Name,0,0,*G);
         I->SetIcon(2);
     }
     m_Items->AssignItems	(items,false,true);

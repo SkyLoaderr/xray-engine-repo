@@ -20,7 +20,7 @@ public:
 	virtual         	~EParticlesObject  	();
 
     IParticleCustom*	GetParticles		(){return m_Particles;}
-	LPCSTR				GetReferenceName	(){return m_Particles?m_Particles->Name():0;}
+	LPCSTR				GetReferenceName	(){return m_Particles?*m_Particles->Name():0;}
 
     void				RenderSingle		();
 	virtual void    	Render      		(int priority, bool strictB2F);
