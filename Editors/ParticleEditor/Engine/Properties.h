@@ -91,46 +91,46 @@ public:
 	virtual 	LPCSTR		getName			()								= 0;
 	virtual		LPCSTR		getComment		()								= 0;
 
-	virtual		void		Save			(IWriter&  FS)					= 0;
-	virtual		void		Load			(IReader&	FS, WORD version)	= 0;
+	virtual		void		Save			(IWriter&	fs)					= 0;
+	virtual		void		Load			(IReader&	fs, WORD version)	= 0;
 };
 
 // Writers
-IC void		xrPWRITE		(IWriter& FS, u32 ID, LPCSTR name, LPCVOID data, u32 size )
+IC void		xrPWRITE		(IWriter& fs, u32 ID, LPCSTR name, LPCVOID data, u32 size )
 {
-	FS.w_u32			(ID);
-	FS.w_stringZ		(name);
-	if (data && size)	FS.w(data,size);
+	fs.w_u32			(ID);
+	fs.w_stringZ		(name);
+	if (data && size)	fs.w(data,size);
 }
-IC void		xrPWRITE_MARKER	(IWriter& FS, LPCSTR name)
+IC void		xrPWRITE_MARKER	(IWriter& fs, LPCSTR name)
 {
-	xrPWRITE	(FS,xrPID_MARKER,name,0,0);
+	xrPWRITE	(fs,xrPID_MARKER,name,0,0);
 }
 
 #define xrPWRITE_PROP(FS,name,ID,data)\
 {\
-	xrPWRITE	(FS,ID,name,&data,sizeof(data));\
+	xrPWRITE	(fs,ID,name,&data,sizeof(data));\
 }
 
 // Readers
-IC u32	xrPREAD			(IReader& FS)
+IC u32	xrPREAD			(IReader& fs)
 {
-	u32 T		= FS.r_u32();
-	FS.skip_stringZ	();
+	u32 T		= fs.r_u32();
+	fs.skip_stringZ	();
 	return		T;
 }
-IC void		xrPREAD_MARKER	(IReader& FS)
+IC void		xrPREAD_MARKER	(IReader& fs)
 {
-	R_ASSERT(xrPID_MARKER==xrPREAD(FS));
+	R_ASSERT(xrPID_MARKER==xrPREAD(fs));
 }
 
-#define xrPREAD_PROP(FS,ID,data) \
+#define xrPREAD_PROP(fs,ID,data) \
 { \
-	R_ASSERT(ID==xrPREAD(FS)); FS.r(&data,sizeof(data)); \
+	R_ASSERT(ID==xrPREAD(fs)); fs.r(&data,sizeof(data)); \
 	switch (ID) \
 	{ \
-	case xrPID_TOKEN:	FS.advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break; \
-	case xrPID_CLSID:	FS.advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break; \
+	case xrPID_TOKEN:	fs.advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break; \
+	case xrPID_CLSID:	fs.advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break; \
 	}; \
 }
 
