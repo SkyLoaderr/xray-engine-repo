@@ -58,10 +58,33 @@ float	CalculateHeight(Fbox& BB)
 	return BB.max.y-BB.min.y+EPS_L;
 }
 
+bool neighbour(const vertex &v0, const vertex &v1)
+{
+	return	(v0.Pos.distance_to_xz(v1.Pos) < (0.7f + EPS_L));
+}
+
+bool neighbour(u32 index)
+{
+	for (int i=0; i<4; ++i)
+		if ((g_nodes[index].n[i] < g_nodes.size()) && !neighbour(g_nodes[index],g_nodes[g_nodes[index].n[i]]))
+			return(false);
+	return	(true);
+}
+
+bool neighbour()
+{
+	for (u32 i=0; i<g_nodes.size(); ++i)
+		if (!neighbour(i)) {
+			return	(neighbour(i));
+		}
+	return	(true);
+}
+
 void xrSaveNodes(LPCSTR N)
 {
 	Msg				("NS: %d, CNS: %d, ratio: %f%%",sizeof(vertex),sizeof(CLevelGraph::CVertex),100*float(sizeof(CLevelGraph::CVertex))/float(sizeof(vertex)));
 
+	neighbour		();
 	string256		fName; 
 	strconcat		(fName,N,"level.ai");
 

@@ -9,7 +9,7 @@ IC	const Fvector vertex_position(const CLevelGraph::CPosition &Psrc, const Fbox 
 {
 	Fvector				Pdest;
 	int	x,z, row_length;
-	row_length			= iFloor((bb.max.z - bb.min.z)/params.fPatchSize + EPS_L + .5f);
+	row_length			= iFloor((bb.max.z - bb.min.z)/params.fPatchSize + EPS_L + 1.5f);
 	x					= Psrc.xz() / row_length;
 	z					= Psrc.xz() % row_length;
 	Pdest.x =			float(x)*params.fPatchSize + bb.min.x;
@@ -37,6 +37,10 @@ IC CNodePositionConverter::CNodePositionConverter(const SNodePositionOld &Psrc, 
 	CNodePositionCompressor(np,Pdest,m_header);
 	np.y		(Psrc.y);
 }
+
+extern bool neighbour(const vertex &v0, const vertex &v1);
+extern bool neighbour(u32 index);
+extern bool neighbour();
 
 void xrLoad(LPCSTR name)
 {
@@ -180,14 +184,10 @@ void xrLoad(LPCSTR name)
 			SNodePositionOld 	_np;
 			NodePosition 		np;
 			
-			F->r			(&id,3);
-			g_nodes[i].n1	= (*LPDWORD(&id)) & 0x00ffffff;
-			F->r			(&id,3);
-			g_nodes[i].n2	= (*LPDWORD(&id)) & 0x00ffffff;
-			F->r			(&id,3);
-			g_nodes[i].n3	= (*LPDWORD(&id)) & 0x00ffffff;
-			F->r			(&id,3);
-			g_nodes[i].n4	= (*LPDWORD(&id)) & 0x00ffffff;
+			for (int j=0; j<4; ++j) {
+				F->r			(&id,3);
+				g_nodes[i].n[j]	= (*LPDWORD(&id)) & 0x00ffffff;
+			}
 
 			pl				= F->r_u16();
 			pvDecompress	(g_nodes[i].Plane.n,pl);
@@ -195,9 +195,21 @@ void xrLoad(LPCSTR name)
 			CNodePositionConverter(_np,H,np);
 			g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
 
+			Fvector			Pdest;
+			Pdest.x			= float(_np.x)*H.size;
+			Pdest.y			= 0;
+			Pdest.z			= float(_np.z)*H.size;
+
+			if (Pdest.distance_to_xz(g_nodes[i].Pos) > (H.size + EPS_L)) {
+				CNodePositionConverter(_np,H,np);
+				g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
+			}
+
 			g_nodes[i].Plane.build(g_nodes[i].Pos,g_nodes[i].Plane.n);
 		}
 
 		F->close			();
+
+		neighbour			();
 	}
 }
