@@ -17,10 +17,14 @@ public:
 	void				_initialize		(BOOL _debug_mode=FALSE);
 	void				_destroy		();
 
+#ifdef DEBUG
 	BOOL				debug_mode;
 	xrCriticalSection	debug_cs;
 	std::vector<mdbg>	debug_info;
 	u32					debug_info_update;
+
+	u32					stat_strcmp;
+#endif
 
 	u32					stat_calls;
 	s32					stat_counter;

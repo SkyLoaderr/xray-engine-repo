@@ -6,8 +6,11 @@
 #ifdef BREAK_AT_STRCMP
 int								xr_strcmp				( const char* S1, const char* S2 )
 {
-	int res		= (int)strcmp(S1,S2);
-	return		res;
+#ifdef DEBUG
+	Memory.stat_strcmp	++;
+#endif
+	int res				= (int)strcmp(S1,S2);
+	return				res;
 }
 #endif
 
