@@ -22,12 +22,12 @@
 #include "path_manager.h"
 
 // allocators
-#include "data_storage_allocator.h"
-#include "data_storage_fixed_allocator.h"
+#include "vertex_allocator_generic.h"
+#include "vertex_allocator_fixed.h"
 
 // vertex managers
-#include "data_storage_vertex_manager.h"
-#include "data_storage_fixed_vertex_manager.h"
+#include "vertex_manager_generic.h"
+#include "vertex_manager_fixed.h"
 
 //		lists
 #include "data_storage_bucket_list.h"
@@ -260,8 +260,8 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 	path_params.resize		(_min(path_params.size(),test_count));
 				
-	typedef CFixedVertexManager<u32,u32,8>				CVertexManager;
-	typedef CFixedAllocator<1048576>					CVertexAllocator;
+	typedef CVertexManagerFixed<u32,u32,8>				CVertexManager;
+	typedef CVertexAllocatorFixed<1048576>				CVertexAllocator;
 //	typedef CDataStorageAllocator CVertexAllocator;
 
 	test<_dist_type,CDataStorageSingleLinkedList<false>,				CVertexManager,CVertexAllocator>	(graph,path_params);
