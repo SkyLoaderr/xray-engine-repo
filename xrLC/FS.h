@@ -108,7 +108,7 @@ public:
 	IC u8*			pointer		()			{	return data;				}
 	IC u32			size		() const 	{	return file_size;			}
 	IC void			clear		()			{	file_size=0; position=0;	}
-	void			save_to		(const char* fn);
+	bool			save_to		(LPCSTR fn);
 };
 
 //------------------------------------------------------------------------------------

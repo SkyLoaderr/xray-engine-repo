@@ -144,6 +144,11 @@ public:
 	const file*					exist			(LPSTR fn, LPCSTR path, LPCSTR name);
 	const file*					exist			(LPSTR fn, LPCSTR path, LPCSTR name, LPCSTR ext);
 
+    BOOL 						can_write_to_folder	(LPCSTR path); 
+    BOOL 						can_write_to_alias	(LPCSTR path); 
+    BOOL						can_modify_file	(LPCSTR fname);
+    BOOL						can_modify_file	(LPCSTR path, LPCSTR name);
+
     BOOL 						dir_delete		(LPCSTR path,LPCSTR nm,BOOL remove_files);
     BOOL 						dir_delete		(LPCSTR full_path,BOOL remove_files){return dir_delete(0,full_path,remove_files);}
     void 						file_delete		(LPCSTR path,LPCSTR nm);

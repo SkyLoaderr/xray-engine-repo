@@ -41,7 +41,7 @@ public:
 
 private:
 	BOOL				Create				();
-	BOOL				NeedPostProcess		()	{ return (param_blur>0.001f)||(param_gray>0.001f)||(param_noise>0.001f)||(param_duality_h>0.001f)||(param_duality_v>0.001f); }
+	BOOL				NeedPostProcess		()	{ return (param_blur>0.001f)||(param_gray>0.001f)||(param_noise>0.001f)||(param_duality_h>0.001f)||(param_duality_v>0.001f)||(param_color_base!=0x007f7f7f)||(param_color_add!=0x00000000); }
 	BOOL				Available			()	{ return bAvailable; }
 	BOOL				Perform				();
 

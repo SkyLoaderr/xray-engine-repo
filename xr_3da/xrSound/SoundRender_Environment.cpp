@@ -136,16 +136,20 @@ void	SoundEnvironment_LIB::Load	(LPCSTR name)
 	}
 	FS.r_close			(F);
 }
-void	SoundEnvironment_LIB::Save	(LPCSTR name)
+bool	SoundEnvironment_LIB::Save	(LPCSTR name)
 {
 	IWriter* F			= FS.w_open(name);
-	for (u32 chunk=0; chunk<library.size(); chunk++)
-	{
-		F->open_chunk		(chunk);
-		library[chunk]->save(F);
-		F->close_chunk		();
-	}
-	FS.w_close			(F);
+    if (F){
+        for (u32 chunk=0; chunk<library.size(); chunk++)
+        {
+            F->open_chunk		(chunk);
+            library[chunk]->save(F);
+            F->close_chunk		();
+        }
+        FS.w_close		(F);
+        return 			true;
+    }   
+    return 				false;
 }
 void	SoundEnvironment_LIB::Unload	()
 {

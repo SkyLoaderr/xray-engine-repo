@@ -41,7 +41,7 @@ private:
 	SE_VEC						library;
 public:
 	void						Load	(LPCSTR name);
-	void						Save	(LPCSTR name);
+	bool						Save	(LPCSTR name);
 	void						Unload	();
 	int							GetID	(LPCSTR name);
 	CSoundRender_Environment*	Get		(LPCSTR name);

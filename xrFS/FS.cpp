@@ -106,26 +106,15 @@ void CMemoryWriter::w	(const void* ptr, u32 count)
 }
 
 //static const u32 mb_sz = 0x1000000;
-void CMemoryWriter::save_to	(LPCSTR fn)
+bool CMemoryWriter::save_to	(LPCSTR fn)
 {
-	IWriter* F 	= FS.w_open(fn);
-    F->w		(pointer(),size());
-    FS.w_close	(F);
-/*
-	if (sign) FileCompress(fn,sign,pointer(),size());
-	else {
-		int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
-		R_ASSERT(H>0);
-        LPBYTE ptr 		= pointer();
-        for (int req_size = size(); req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
-			int W = _write(H,ptr,mb_sz);
-			R_ASSERT2(W==mb_sz,"Can't write mem block to file.");
-        }
-        int W = _write(H,ptr,req_size);
-		R_ASSERT2(W==req_size,"Can't write mem block to file.");
-		_close(H);
-	}
-*/
+	IWriter* F 		= FS.w_open(fn);
+    if (F){
+	    F->w		(pointer(),size());
+    	FS.w_close	(F);
+        return 		true;
+    }
+    return false;
 }
 
 

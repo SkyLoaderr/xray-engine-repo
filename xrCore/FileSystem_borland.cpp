@@ -125,7 +125,7 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool 
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		CloseHandle(handle);
         if (INVALID_HANDLE_VALUE==handle){
-			if (bMsg)	Msg("#!Access denied. File: '%s'currently locked by user: '%s'.",fn,GetLockOwner(0,fn));
+			if (bMsg)	Msg("#!Access denied. File: '%s' currently locked by user: '%s'.",fn,GetLockOwner(0,fn).c_str());
             if (owner) 	*owner = GetLockOwner(0,fn);
         }
 		return (INVALID_HANDLE_VALUE==handle);

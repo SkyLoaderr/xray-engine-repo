@@ -177,7 +177,6 @@ IReader* open_chunk(void* ptr, u32 ID)
 			} else {
 				return xr_new<CTempReader>(src_data,dwSize,0);
 			}
-			break;
 		}else{ 
 			pt		= SetFilePointer(ptr,dwSize,0,FILE_CURRENT); 
 			if (pt==INVALID_SET_FILE_POINTER) return 0;
@@ -230,25 +229,6 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
 	}
 	hdr->close			();
-
-	// Seek to zero for safety
-//	A.vfs->seek			(0);
-
-//del
-/*	for(RStringVecIt it=fv.begin();it!=fv.end();++it){
-		if(!FS.path_exist("$s_dir$"))
-			continue;
-
-		IReader* ird = r_open(**it);
-		LPCSTR pth = **it + xr_strlen(base);
-		
-		IWriter* iwr = w_open("$s_dir$",pth);//**it);
-
-		iwr->w(ird->pointer(),ird->length());
-		w_close(iwr);
-		r_close(ird);
-	}
-*/
 }
 
 void CLocatorAPI::ProcessOne	(const char* path, void* _F)
@@ -682,7 +662,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 						if (fit!=files.end())	
 						{
 							// use
-							file&	fc	= *fit;
+							const file&	fc	= *fit;
 							if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
 								// use
 							} else {
@@ -745,8 +725,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	}
 
 #ifdef DEBUG
-	if ( R && m_Flags.is(flBuildCopy|flReady) )
-	{
+	if ( R && m_Flags.is(flBuildCopy|flReady) ){
 		string_path	cpy_name;
 		string_path	e_cpy_name;
 		FS_Path* 	P; 
@@ -754,45 +733,49 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
         	source_name==strstr(source_name,(P=get_path("$server_data_root$"))->m_Path)){
 			update_path			(cpy_name,"$build_copy$",source_name+xr_strlen(P->m_Path));
 			IWriter* W = w_open	(cpy_name);
-			W->w				(R->pointer(),R->length());
-			w_close				(W);
-			set_file_age(cpy_name,get_file_age(source_name));
-			if (m_Flags.is(flEBuildCopy)){
-				LPCSTR ext		= strext(cpy_name);
-				if (ext){
-					IReader* R		= 0;
-					if (0==xr_strcmp(ext,".dds")){
-						P			= get_path("$game_textures$");               
-						update_path	(e_cpy_name,"$textures$",source_name+xr_strlen(P->m_Path));
-						// tga
-						*strext		(e_cpy_name) = 0;
-						strcat		(e_cpy_name,".tga");
-						r_close		(R=r_open(e_cpy_name));
-						// thm
-						*strext		(e_cpy_name) = 0;
-						strcat		(e_cpy_name,".thm");
-						r_close		(R=r_open(e_cpy_name));
-					}else if (0==xr_strcmp(ext,".ogg")){
-						P			= get_path("$game_sounds$");                               
-						update_path	(e_cpy_name,"$sounds$",source_name+xr_strlen(P->m_Path));
-						// wav
-						*strext		(e_cpy_name) = 0;
-						strcat		(e_cpy_name,".wav");
-						r_close		(R=r_open(e_cpy_name));
-						// thm
-						*strext		(e_cpy_name) = 0;
-						strcat		(e_cpy_name,".thm");
-						r_close		(R=r_open(e_cpy_name));
-					}else if (0==xr_strcmp(ext,".object")){
-						strcpy		(e_cpy_name,source_name);
-						// object thm
-						*strext		(e_cpy_name) = 0;
-						strcat		(e_cpy_name,".thm");
-						R			= r_open(e_cpy_name);
-						if (R)		r_close	(R);
-					}
-				}
-			}
+            if (W){
+                W->w				(R->pointer(),R->length());
+                w_close				(W);
+                set_file_age(cpy_name,get_file_age(source_name));
+                if (m_Flags.is(flEBuildCopy)){
+                    LPCSTR ext		= strext(cpy_name);
+                    if (ext){
+                        IReader* R		= 0;
+                        if (0==xr_strcmp(ext,".dds")){
+                            P			= get_path("$game_textures$");               
+                            update_path	(e_cpy_name,"$textures$",source_name+xr_strlen(P->m_Path));
+                            // tga
+                            *strext		(e_cpy_name) = 0;
+                            strcat		(e_cpy_name,".tga");
+                            r_close		(R=r_open(e_cpy_name));
+                            // thm
+                            *strext		(e_cpy_name) = 0;
+                            strcat		(e_cpy_name,".thm");
+                            r_close		(R=r_open(e_cpy_name));
+                        }else if (0==xr_strcmp(ext,".ogg")){
+                            P			= get_path("$game_sounds$");                               
+                            update_path	(e_cpy_name,"$sounds$",source_name+xr_strlen(P->m_Path));
+                            // wav
+                            *strext		(e_cpy_name) = 0;
+                            strcat		(e_cpy_name,".wav");
+                            r_close		(R=r_open(e_cpy_name));
+                            // thm
+                            *strext		(e_cpy_name) = 0;
+                            strcat		(e_cpy_name,".thm");
+                            r_close		(R=r_open(e_cpy_name));
+                        }else if (0==xr_strcmp(ext,".object")){
+                            strcpy		(e_cpy_name,source_name);
+                            // object thm
+                            *strext		(e_cpy_name) = 0;
+                            strcat		(e_cpy_name,".thm");
+                            R			= r_open(e_cpy_name);
+                            if (R)		r_close	(R);
+                        }
+                    }
+                }
+            }else{
+            	Log			("!Can't build:",source_name);
+            }
 		}
 	}
 #endif
@@ -809,18 +792,24 @@ IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 	string_path	fname;
 	xr_strlwr(strcpy(fname,_fname));//,".$");
 	if (path&&path[0]) update_path(fname,path,fname);
-	return xr_new<CFileWriter>(fname);
+    CFileWriter* W 	= xr_new<CFileWriter>(fname); 
+#ifdef _EDITOR
+	if (!W->valid()) xr_delete(W);
+#endif    
+	return W;
 }
 
 void	CLocatorAPI::w_close(IWriter* &S)
 {
-	R_ASSERT	(S->fName.size());
-	string_path	fname;
-	strcpy		(fname,*S->fName);
-	xr_delete	(S);
-    struct _stat st;
-    _stat		(fname,&st);
-    Register	(fname,0xffffffff,0,st.st_size,st.st_size,(u32)st.st_mtime);
+	if (S){
+        R_ASSERT	(S->fName.size());
+        string_path	fname;
+        strcpy		(fname,*S->fName);
+        xr_delete	(S);
+        struct _stat st;
+        _stat		(fname,&st);
+        Register	(fname,0xffffffff,0,st.st_size,st.st_size,(u32)st.st_mtime);
+    }
 }
 
 CLocatorAPI::files_it CLocatorAPI::file_find_it(LPCSTR fname)
@@ -895,10 +884,14 @@ void CLocatorAPI::file_copy(LPCSTR src, LPCSTR dest)
 {
 	if (exist(src)){
         IReader* S		= r_open(src);
-        IWriter* D		= w_open(dest);
-        D->w			(S->pointer(),S->length());
-        w_close			(D);
-        r_close			(S);
+        if (S){
+            IWriter* D	= w_open(dest);
+            if (D){
+                D->w	(S->pointer(),S->length());
+                w_close	(D);
+            }
+            r_close		(S);
+        }
 	}
 }
 
@@ -990,14 +983,14 @@ void CLocatorAPI::set_file_age(LPCSTR nm, u32 age)
     tm.modtime	= age;
     int res 	= _utime(nm,&tm);
     if (0!=res){
-    	Msg			("File: '%s' - error: '%s'",nm,_sys_errlist[errno]);
-    	R_ASSERT3	(0==res,"Can't set file age:",nm);
-    }    
-    // update record
-	files_it I 		= file_find_it(nm);
-    if (I!=files.end()){
-    	file& F		= (file&)*I;
-    	F.modif		= age;
+    	Msg			("!Can't set file age: '%s'. Error: '%s'",nm,_sys_errlist[errno]);
+    }else{
+        // update record
+        files_it I 		= file_find_it(nm);
+        if (I!=files.end()){
+            file& F		= (file&)*I;
+            F.modif		= age;
+        }
     }
 }
 
@@ -1050,5 +1043,48 @@ void CLocatorAPI::check_pathes()
 void CLocatorAPI::register_archieve(LPCSTR path)
 {
 	ProcessArchive(path);
+}
+
+BOOL CLocatorAPI::can_write_to_folder(LPCSTR path)
+{
+	if (path&&path[0]){
+		string_path		temp;       
+        LPCSTR fn		= "$!#%TEMP%#!$.$$$";
+	    strconcat		(temp,path,path[xr_strlen(path)-1]!='\\'?"\\":"",fn);
+		FILE* hf		= fopen	(temp, "wb");
+		if (hf==0)		return FALSE;
+        else{
+        	fclose 		(hf);
+	    	unlink		(temp);
+            return 		TRUE;
+        }
+    }else{
+    	return 			FALSE;
+    }
+}
+
+BOOL CLocatorAPI::can_write_to_alias(LPCSTR path)
+{
+	string_path			temp;       
+    update_path			(temp,path,"");
+	return can_write_to_folder(temp);
+}
+
+BOOL CLocatorAPI::can_modify_file(LPCSTR fname)
+{
+	FILE* hf			= fopen	(fname, "r+b");
+    if (hf){	
+    	fclose			(hf);
+        return 			TRUE;
+    }else{
+    	return 			FALSE;
+    }
+}
+
+BOOL CLocatorAPI::can_modify_file(LPCSTR path, LPCSTR name)
+{
+	string_path			temp;       
+    update_path			(temp,path,name);
+	return can_modify_file(temp);
 }
 
