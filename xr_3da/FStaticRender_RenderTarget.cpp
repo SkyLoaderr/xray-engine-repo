@@ -14,7 +14,7 @@ CRenderTarget::CRenderTarget()
 	pVS				= 0;
 
 	param_blur		= 1.f;
-	param_gray		= 0.5f;
+	param_gray		= 0.0f;
 	param_noise		= 1.f;
 }
 
@@ -73,8 +73,8 @@ void CRenderTarget::e_render_noise	()
 	Device.Shader.set_Shader		(pShaderNoise);
 
 	CTexture*	T					= Device.Shader.get_ActiveTexture	(0);
-	u32			tw					= T->get_Width	()*2;
-	u32			th					= T->get_Height	()*2;
+	u32			tw					= T->get_Width	()*3;
+	u32			th					= T->get_Height	()*3;
 	u32			shift_w				= ::Random.randI(tw);
 	u32			shift_h				= ::Random.randI(th);
 	float		start_u				= (float(shift_w)+.5f)/(tw);
@@ -90,11 +90,13 @@ void CRenderTarget::e_render_noise	()
 	p0.set		(start_u,	start_v	);
 	p1.set		(end_u,		end_v	);
 
-	DWORD		Cgray				= D3DCOLOR_RGBA	(255,255,255,255);
+	DWORD		Cblend				= iFloor		(param_gray*255.f);
+	clamp		(Cblend,0u,255u);
+	DWORD		Cgray				= D3DCOLOR_RGBA	(255,255,255,128);
 
 	// 
 	u32			Offset;
-	FVF::TL* pv			= (FVF::TL*) Device.Streams.Vertex.Lock	(12,pVS->dwStride,Offset);
+	FVF::TL* pv			= (FVF::TL*) Device.Streams.Vertex.Lock	(4,pVS->dwStride,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
