@@ -55,7 +55,7 @@ function HeliManager:HeliOnPoint(p)
 
    if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
       self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0)  --0==from_idx
-      self.m_heliObject:SetCurrVelocity(5.0)  -- m/sec (max)
+      self.m_heliObject:SetCurrVelocity(0.5)  -- m/sec (max)
    end
 
 end
