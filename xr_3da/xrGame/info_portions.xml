@@ -27,8 +27,8 @@
   </info_portion>
 
   <info_portion id="test_info">
-       <dialog>net_deneg</dialog>
-       <dialog>vodka_est</dialog>
+       <actor_dialog>test1</actor_dialog>
+       <actor_dialog>vodka</actor_dialog>
   </info_portion>
 
 </game_information_portions>
