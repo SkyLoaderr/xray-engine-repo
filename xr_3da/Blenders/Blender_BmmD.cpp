@@ -13,7 +13,7 @@
 
 CBlender_BmmD::CBlender_BmmD	()
 {
-	description.CLS		= B_LaEmB;
+	description.CLS		= B_BmmD;
 	strcpy				(oT2_Name,	"$null");
 	strcpy				(oT2_xform,	"$null");
 }
