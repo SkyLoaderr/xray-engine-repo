@@ -96,6 +96,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		// enemy
 		CEntity*        m_tEnemy;
 		NodeCompressed* m_tpEnemyNode;
+		DWORD			m_dwEnemyNode;
 		Fvector			m_tEnemyPosition;
 		Fvector			m_tEnemyDirection;
 		Fvector			m_tEnemySurroundDirection;

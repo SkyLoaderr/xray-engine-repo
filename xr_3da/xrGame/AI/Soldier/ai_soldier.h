@@ -524,6 +524,8 @@ class CAI_Soldier : public CCustomMonster
 		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		float ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCompressed *tpNode, float fEyeFov);
+		void vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group, bool bMinimum = true);
 		int	 ifFindDynamicObject(CEntity *tpEntity);
 		bool bfSaveFromEnemy(CEntity *tpEntity);
 		bool bfSetLookToDangerPlace();

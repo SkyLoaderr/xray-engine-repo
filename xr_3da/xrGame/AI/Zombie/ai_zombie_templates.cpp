@@ -110,11 +110,13 @@ void CAI_Zombie::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Lea
 		
 		S.m_tEnemy			= Enemy.Enemy;
 		S.m_tEnemyPosition	= Enemy.Enemy->Position();
+		S.m_dwEnemyNode		= Enemy.Enemy->AI_NodeID;
 		S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 	}
 	else {
 		S.m_tEnemy			= tSavedEnemy;
 		S.m_tEnemyPosition	= tSavedEnemyPosition;
+		S.m_dwEnemyNode		= dwSavedEnemyNodeID;
 		S.m_tpEnemyNode		= tpSavedEnemyNode;
 	}
 	

@@ -23,10 +23,17 @@ enum	EGroupTriggers
 
 DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 
+#define MAX_SUSPICIOUS_NODE_COUNT 32
 #define MAX_GROUP_SIZE 256
 
-typedef svector<Fvector,MAX_GROUP_SIZE>		MemberPlacement;
-typedef svector<DWORD,MAX_GROUP_SIZE>		MemberNodes;
+typedef struct tagSSearchPlace {
+	DWORD	dwNodeID:31;
+	DWORD	bSearched:1;
+} SSearchPlace;
+
+typedef svector<Fvector,MAX_GROUP_SIZE>				MemberPlacement;
+typedef svector<DWORD,MAX_GROUP_SIZE>				MemberNodes;
+typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousNodes;
 class CGroup
 {
 public:
@@ -50,6 +57,7 @@ public:
 	DWORD						m_dwFiring;
 	bool						m_bLessCoverLook;
 	DWORD						m_dwLastViewChange;
+	SuspiciousNodes				m_tpaSuspiciousNodes;
 	// Constructor
 								CGroup				();
 	

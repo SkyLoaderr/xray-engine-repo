@@ -956,3 +956,125 @@ bool CAI_Soldier::bfSetLookToDangerPlace()
 	else
 		return(false);
 }
+
+float CAI_Soldier::ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCompressed *tNode, float fEyeFov)
+{
+	Fvector tP0,tP1;
+	AI.UnpackPosition(tP0,tNode->p0);
+	AI.UnpackPosition(tP1,tNode->p1);
+	tP0.add(tP1);
+	tP0.mul(.5f);
+	tP1.sub(tPosition,tP0);
+	tP1.normalize();
+	SRotation tRotation;
+	mk_rotation(tP1,tRotation);
+	return(ffCalcSquare(tRotation.yaw,fEyeFov,FN(0),FN(1),FN(2),FN(3)));
+}
+
+void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group, bool bMinimum)
+{
+	Device.Statistic.AI_Range.Begin	();
+
+	Group.m_tpaSuspiciousNodes.clear();
+	
+	BOOL bStop = FALSE;
+	
+	CAI_Space &AI = Level().AI;
+	NodePosition QueryPos;
+	AI.PackPosition(QueryPos,BasePos);
+
+	AI.q_stack.clear();
+	AI.q_stack.push_back(StartNode);
+	AI.q_mark [StartNode]	+= 1;
+	
+	NodeCompressed*	Base = AI.Node(StartNode);
+	
+	float range_sqr		= Range*Range;
+	float fEyeFov;
+//	CEntityAlive *tpEnemy = dynamic_cast<CEntityAlive*>(tSavedEnemy);
+//	if (tpEnemy)
+//		fEyeFov = tpEnemy->ffGetFov();
+//	else
+		fEyeFov = ffGetFov();
+	fEyeFov *=PI/180.f;
+	for (DWORD it=0; it<AI.q_stack.size(); it++) {
+		DWORD ID = AI.q_stack[it];
+		NodeCompressed*	N = AI.Node(ID);
+		DWORD L_count	= DWORD(N->links);
+		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
+		NodeLink* L_end	= L_it+L_count;
+		for( ; L_it!=L_end; L_it++) {
+			if (bStop)			
+				break;
+			// test node
+			DWORD Test = AI.UnpackLink(*L_it);
+			if (AI.q_mark[Test])
+				continue;
+
+			NodeCompressed*	T = AI.Node(Test);
+
+			float distance_sqr = AI.u_SqrDistance2Node(BasePos,T);
+			if (distance_sqr>range_sqr)	
+				continue;
+
+			// register
+			AI.q_mark[Test]		+= 1;
+			AI.q_stack.push_back	(Test);
+
+			// estimate
+			SSearchPlace tSearchPlace;
+			float fCost = ffGetCoverFromNode(AI,tPointPosition,T,fEyeFov);
+			if (bMinimum) {
+				if (fCost < .5f)
+					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
+						tSearchPlace.dwNodeID = Test;
+						tSearchPlace.bSearched = 0;
+						Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
+					}
+					else {
+						float fMax = 0.f;
+						for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+							float fTempCost = ffGetCoverFromNode(AI,tPointPosition,AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID),fEyeFov);
+							if (fTempCost > fMax) {
+								fMax = fTempCost;
+								iIndex = i;
+							}
+						}
+						if (fMax > fCost)
+							Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
+					}
+			}
+			else {
+				if (fCost > .5f)
+					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
+						tSearchPlace.dwNodeID = Test;
+						tSearchPlace.bSearched = 0;
+						Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
+					}
+					else {
+						float fMin = 100.f;
+						for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+							float fTempCost = ffGetCoverFromNode(AI,tPointPosition,AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID),fEyeFov);
+							if (fTempCost < fMin) {
+								fMin = fTempCost;
+								iIndex = i;
+							}
+						}
+						if (fMin < fCost)
+							Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
+					}
+			}
+		}
+		if (bStop)
+			break;
+	}
+
+	{
+		DWORD* it = AI.q_stack.begin();
+		DWORD* end = AI.q_stack.end();
+		for ( ; it!=end; it++)	
+			AI.q_mark[*it] -= 1;
+	}
+
+	Device.Statistic.AI_Range.End();
+}

@@ -47,15 +47,15 @@ private:
 	BYTE*							m_nodes;		// virtual nodes DATA array
 	NodeCompressed**				m_nodes_ptr;	// pointers to node's data
 
-	// Query
-	vector<BYTE>					q_mark;			// temporal usage mark for queries
-	vector<bool>					q_mark_bit;		// temporal usage mark for queries
-	vector<bool>					q_mark_bit_x;		// temporal usage mark for queries
-	vector<DWORD>					q_stack;
-	
 	// Debug
 	Shader*							sh_debug;
 public:
+	// Query
+	vector<bool>					q_mark_bit;		// temporal usage mark for queries
+	vector<bool>					q_mark_bit_x;		// temporal usage mark for queries
+	vector<BYTE>					q_mark;			// temporal usage mark for queries
+	vector<DWORD>					q_stack;
+	
 	CAI_Space		();
 	~CAI_Space		();
 
