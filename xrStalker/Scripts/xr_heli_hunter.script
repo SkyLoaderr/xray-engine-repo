@@ -1,0 +1,97 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Схема "Охотник на вертолёты"
+Чугай Саша
+
+Сделать:
+--------------------------------------------------------------------------------------------------------------------]]
+
+local attack_dist_sqr = 70 * 70 -- квадрат расстояния, на котором вертолёт может быть атакован
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "можно пострелять по вертолёту"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_shoot" ( property_evaluator )
+
+function evaluator_shoot:__init( name, a ) super( nil, name )
+	self.a = a
+end
+
+function evaluator_shoot:evaluate()
+	if not self.a.heli then
+		self.a.heli = level.object( "heli" ) or level.object( "heli1" )
+		return false
+	else
+		return xr_logic.is_active( self.object, self.a ) and
+		       self.a.heli:position():distance_to_sqr( self.object:position() ) <= attack_dist_sqr
+	end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Действие "стрелять по вертолёту"
+----------------------------------------------------------------------------------------------------------------------
+class "action_shoot" ( action_base )
+
+function action_shoot:__init( name, a )  super ( nil, name )
+	self.a = a
+end
+
+function action_shoot:initialize()
+	action_base.initialize( self )
+
+	self.object:set_movement_type       ( move.stand )
+	self.object:set_mental_state        ( anim.danger )
+
+	self.bw = self.object:best_weapon()
+	if self.bw then
+		self.object:set_item ( object.idle, self.bw )
+	end
+
+	self.aim_end = device():time_global() + 3000
+end
+
+function action_shoot:execute()
+	action_base.execute( self )
+
+	self.object:set_sight( look.fire_point, self.a.heli:position(), 0 )
+
+	if self.aim_end < device():time_global() then
+		self.bw = self.object:best_weapon()
+		if self.bw then
+			self.object:set_item ( object.fire1, self.bw )
+		end
+	end
+end
+
+function action_shoot:finalize()
+	action_base.finalize( self )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+
+function add_to_binder( npc, ini, scheme, section, storage )
+	printf( "DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section )
+
+	local manager = npc:motivation_action_manager()
+
+	manager:add_evaluator( xr_evaluators_id.chugai_heli_hunter_base, evaluator_shoot( "heli_hunter", storage ) )
+
+	local action = this.action_shoot( "action_shoot", storage )
+	action:add_precondition( world_property(stalker_ids.property_alive,               true  ) )
+	action:add_precondition( world_property(stalker_ids.property_enemy,               false ) )
+	action:add_precondition( world_property(xr_evaluators_id.chugai_heli_hunter_base, true  ) )
+	action:add_effect      ( world_property(xr_evaluators_id.chugai_heli_hunter_base, false ) )
+	manager:add_action( xr_actions_id.chugai_heli_hunter_base, action )
+
+	action = manager:action( stalker_ids.action_puzzle_solver )
+	action:add_precondition( world_property( xr_evaluators_id.chugai_heli_hunter_base, false ) )
+end
+
+function set_scheme( npc, ini, scheme, section, gulag_name )
+	printf( "DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section )
+	local a = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
+	printf( "DEBUG: set_scheme: storage assigned" )
+
+	a.logic = xr_logic.cfg_get_switch_conditions( ini, section, npc )
+
+	a.heli = nil
+end

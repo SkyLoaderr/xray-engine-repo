@@ -1,26 +1,96 @@
 --[[------------------------------------------------------------------------------------------------------------------
-Управление вертолётом для Escape
+Управление вертолётом для Escape. Патрулирование, убийство новичков возле вагончика.
 Чугай Саша
 --------------------------------------------------------------------------------------------------------------------]]
 
 local heli_mgr
+local actor
+
+function cb( zone, obj )
+	if obj:id() == actor:id() then
+		actor:give_info( "tutorial_artefact_gain" )
+	end
+end
 
 function main()
-	heli_mgr = xr_heli.HeliManager()
-	heli_mgr:initialize( "heli", "way_raid_heli" )
---	heli_mgr:initialize( "heli", "w" )
+	actor = get_actor()
 
---	local t = device():time_global() + 10000
-	while true do
-		if not heli_mgr:update() then
-			break
+	heli_mgr = xr_heli.HeliManager()
+	heli_mgr:initialize( "heli" )
+
+	get_level_object( "z" ):set_callback( cb, true )
+
+	if actor:dont_has_info( "tutorial_artefact_gain" ) then
+		-- вертолёт летает неподалёку
+		heli_mgr:set_path( "heli_path_tutorial" )
+		while actor:dont_has_info( "tutorial_artefact_gain" ) do
+			if not heli_mgr:update() then
+				return
+			end
+			wait()
 		end
 
---		if t and t < device():time_global() then
---			t = nil
---			heli_mgr:send_to_stay_point()
---			printf( "TO STAY POINT" )
+		-- вертолёт начинает гатить по новичкам
+		local newbies = {}
+		local victim
+
+--		for i = 1, 3 do
+--			table.insert( newbies, get_level_object( "newbie_" .. i ) )
 --		end
+
+		victim = newbies[1]
+		heli_mgr:set_enemy( victim )
+
+		-- появить раненного
+		-- ...
+
+		-- новички после паузы (чтоб успели долететь ракеты :) атакуют вертолёт
+		local time_end = device():time_global() + 10000
+
+		while time_end > device():time_global() do
+			if not heli_mgr:update() then
+				return
+			end
+
+			wait()
+		end
+
+		-- даётся отмашка новичкам на стрельбу по вертолёту
+		actor:give_info( "tutorial_newbies_attack_heli" )
+
+		-- атаковать их пока все не помрут
+		local all_dead
+
+		repeat
+			all_dead = true
+
+			for i, npc in newbies do
+				if npc:alive() then
+					if npc:id() ~= victim:id() then
+						victim = npc
+						heli_mgr:set_enemy( victim )
+						all_dead = false
+					else
+						break
+					end
+				end
+			end
+
+			if not heli_mgr:update() then
+				return
+			end
+
+			wait( 500 )
+		until all_dead
+	end
+
+	-- отправить вертолёт патрулировать уровень
+	heli_mgr:set_path( "heli_path_patrol" )
+
+	while true do
+		if not heli_mgr:update() then
+			return
+		end
 
 		wait()
 	end
