@@ -82,9 +82,12 @@ void CRenderDevice::overdrawEnd		()
 	Shader.SetNULL	();
 	Shader.SetupPass(0);
 
-	for (int I=1; I<16; I++ ) 
+	CHK_DX(HW.pDevice->SetVertexShader	( FVF::F_TL ));
+
+	// Render gradients
+	for (int I=1; I<8; I++ ) 
 	{
-		DWORD	_c	= I*256/17;
+		DWORD	_c	= I*256/9;
 		DWORD	c	= D3DCOLOR_XRGB(_c,_c,_c);
 		
 		FVF::TL	pv[4];
@@ -94,11 +97,23 @@ void CRenderDevice::overdrawEnd		()
 		pv[3].set(float(dwWidth),	float(0),			c,0,0);
 		
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		I	));
-		CHK_DX(HW.pDevice->SetVertexShader	( FVF::F_TL ));
 		CHK_DX(HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(FVF::TL) ));
 	}
 
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,    FALSE ));
+	// Render FATAL overdraw
+	DWORD	c	= D3DCOLOR_XRGB(255,0,0);
+	FVF::TL	pv	[4];
+	
+	pv[0].set(float(0),			float(dwHeight),	c,0,0);			
+	pv[1].set(float(0),			float(0),			c,0,0);					
+	pv[2].set(float(dwWidth),	float(dwHeight),	c,0,0);	
+	pv[3].set(float(dwWidth),	float(0),			c,0,0);
+	
+    CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,	D3DCMP_GREATER	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		8	));
+	CHK_DX(HW.pDevice->DrawPrimitiveUP	( D3DPT_TRIANGLESTRIP,	2,	pv, sizeof(FVF::TL) ));
+	
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,		FALSE ));
 }
 
 void CRenderDevice::Begin(void)

@@ -7,7 +7,7 @@
 #include "..\customhud.h"
 #include "ai_console.h"
 #include "Actor_Flags.h"
- 
+  
 extern int					psPhysicsFPS;
 extern float				psSqueezeVelocity;
 ENGINE_API extern DWORD		psAlwaysRun;
