@@ -82,7 +82,7 @@ void occRasterizer::propagade	()
 		{
 			int					ox=x+2, oy=y+2;
 			
-			// Y-connect
+			// Y2-connect
 			int	pos		= oy*occ_dim+ox;
 			int	pos_up	= pos-occ_dim;
 			int	pos_up2	= pos_up-occ_dim;
