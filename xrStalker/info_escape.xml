@@ -32,7 +32,7 @@
         <location>
             <level>l01_escape</level>
             <object>000</object>
-			<icon name="ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<icon name="ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
             <text>”красть €щик с блокпоста</text>
         </location>
         <task>escape_blockpost_case</task>
