@@ -8,7 +8,7 @@
 		</level_frame>
 	</background>
 	
-	<compass x="175" y="185" width="32" height="32">
+	<compass x="145" y="155" width="32" height="32">
 		<texture >ui\hud_map_arrow</texture>
 	</compass>
 	
