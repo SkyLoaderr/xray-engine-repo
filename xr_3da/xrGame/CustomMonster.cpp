@@ -293,9 +293,7 @@ void CCustomMonster::Update	( DWORD DT )
 	
 	if (Remote())		{
 	} else {
-		// State parsing
-		//R_ASSERT			(!STATE.empty());
-		//while				(State_Get()->Parse(this)) ;
+		// here is monster AI call
 		Think();
 		
 		// Look and action streams
@@ -312,7 +310,7 @@ void CCustomMonster::Update	( DWORD DT )
 			uNext.p_pos			= vPosition;
 			NET.push_back		(uNext);
 		}
-		Exec_Action			(dt);
+		Exec_Action	(dt);
 	}
 
 	// weapons
