@@ -98,10 +98,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				EnableIntrinsicFunctions="FALSE"
+				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="0"
+				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;_DEBUG,DEBUG;_WINDOWS;_USRDLL;XRCPU_PIPE_EXPORTS"
-				StringPooling="TRUE"
+				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
@@ -113,11 +115,13 @@
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/xrCPU_Pipe.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
+				AssemblerListingLocation="Debug\"
+				ObjectFile="Debug\"
 				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="2"
+				BrowseInformation="0"
+				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
 				CallingConvention="2"/>
 			<Tool
@@ -132,6 +136,9 @@
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\xrCPU_Pipe.pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="x:\xrCPU_Pipe.map"
+				MapExports="FALSE"
 				ImportLibrary="x:\xrCPU_Pipe.lib"/>
 			<Tool
 				Name="VCMIDLTool"
