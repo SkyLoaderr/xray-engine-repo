@@ -53,5 +53,8 @@
     </string>
 	<string id="gar_dolg_warning">
 		<text>Stalker, you’ve have intruded territory under Duty control… Any assault attempt on our people will be punished by the mere death.</text>
-	</string>     
+	</string>
+	<string id="tips_garbage_rush_starter">
+		<text>Attention everyone!!! Duty outpost online. The pack of mutants is moving towards the Bar from the Black Valley. Everyone who will help us to shoot out that scums will be granted gratitude from our side. You have Duty word.</text>
+	</string> 	    
 </string_table>
