@@ -2,6 +2,7 @@
 #include "upd_task.h"
 #include "FileOperations.h"
 #include <direct.h>
+#include "process.h"
 
 //for batch task
 CString parseParams(LPCSTR fn, LPCSTR params);
@@ -49,7 +50,7 @@ void CTaskCopyFiles::run()
 		strconcat(dst_file_name, target_folder(), "\\", file_name, ext );
 		BOOL res = copy_file( (*it).c_str(), target_folder(), dst_file_name );
 		if(res==FALSE){
-			Msg("-------------------WARNING---------------------------------" );
+			Msg("-------------------ERROR-----------------------------------" );
 			Msg("unable to copy file %s to %s",(*it).c_str(), target_folder() );
 			Msg("the error is %s",fo.m_sError.GetBuffer());
 			Msg("-----------------------------------------------------------" );
@@ -101,7 +102,6 @@ void CTaskBatchExecute::run					()
 
 	CFileNamesArray::iterator it = m_file_names.begin();
 	CString		params;
-//	CString		command;
 
 	if( 0==strstr(*m_params,"$") ){
 		Msg("[%s]:Executing %s", name(), params.GetBuffer() );
@@ -112,8 +112,6 @@ void CTaskBatchExecute::run					()
 
 		for(;it!=m_file_names.end();++it){
 			params = parseParams((*it).c_str(), *m_params);
-	//		spawnl(_P_WAIT, *m_app_name, (params.IsEmpty())?" ":params.GetBuffer() );
-	//		command.Format( "%s %s",*m_app_name,params.GetBuffer() );
 			Msg("[%s]:Executing %s", name(), params.GetBuffer() );
 			system(params.GetBuffer());
 			Msg("[%s]:Done.",name());
@@ -219,33 +217,12 @@ BOOL mk_bk_rename(LPCSTR src)
 		strconcat(new_file_name,drive,dir,"backup\\",file_name,ext,new_ext);
 		if( !file_exist(new_file_name) ){
 			_VerifyPath(new_file_name);
-			rename_file(src, new_file_name);
-			break;
+			if( rename_file(src, new_file_name) )
+				break;
 		}
 		++start_from;
 	}
 	return TRUE;
-/*
-	char* f = 0;
-	if( f = strstr(ext,"_old") ){ //its a bk_copy !!!
-		string16 ext_orig;
-		ZeroMemory(ext_orig,sizeof(ext_orig));
-		strncpy(ext_orig,ext, f-ext);
-		strconcat(new_ext,ext_orig,"_old",num);
-		strconcat(new_file_name,drive,dir,file_name,new_ext);
-	}else{
-		strconcat(new_ext,"_old",num);
-		strconcat(new_file_name,drive,dir,"backup\\",file_name,ext,new_ext);
-	}
-
-
-	if( file_exist(new_file_name) )
-		if( !mk_bk_rename(new_file_name, ++start_from) )
-			return FALSE;
-	
-	_VerifyPath(new_file_name);
-	return rename_file(src, new_file_name);
-*/
 }
 
 BOOL rename_file(LPCSTR src, LPCSTR dst)
@@ -257,12 +234,13 @@ BOOL rename_file(LPCSTR src, LPCSTR dst)
 	if( fo.Rename(src, dst) ){
 		Msg("Done.");
 		return TRUE;
-	}else
+	}else{
 		Msg("----------------------------------------------------" );
 		Msg("Cann't rename  file %s to %s.",src,dst);
 		Msg("the error is: %s", fo.m_sError.GetBuffer() );
 		Msg("----------------------------------------------------" );
-
+		return FALSE;
+	}
 	return TRUE;
 }
 
