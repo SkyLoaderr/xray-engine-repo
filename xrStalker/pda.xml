@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 	<!-- MAIN PDA WINDOW FRAME -->
 	<background_static x="57" y="56" width="891" height="643">
@@ -24,7 +24,7 @@
 	</timer_frame_line>
                    
 	<!-- TAB CONTROL -->
-	<tab x="10" y="8" width="320" height="30">
+	<tab x="0" y="8" width="400" height="30">
 		<!-- BUTTONS -->
 		<button x="0" y="10" width="55" height="20">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Events</text>
