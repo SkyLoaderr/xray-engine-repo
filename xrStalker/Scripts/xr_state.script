@@ -260,22 +260,22 @@ function anims:__init(npc)
 				{name = "idle_0_idle_2", flag = true },
 				{name = "idle_0_idle_3", flag = true },
 				{name = "idle_0_idle_4", flag = true }}
-	self.idle[1] = { 	{name = "idle_1_idle_0", flag = false },
-				{name = "idle_1_idle_2", flag = false },
-				{name = "idle_1_idle_3", flag = false },
-				{name = "idle_1_idle_4", flag = false }}
-	self.idle[2] = { 	{name = "idle_2_idle_0", flag = false },
-				{name = "idle_2_idle_2", flag = false },
-				{name = "idle_2_idle_3", flag = false },
-				{name = "idle_2_idle_4", flag = false },
-				{name = "idle_2_idle_5", flag = false },
-				{name = "idle_2_idle_6", flag = false },
-				{name = "idle_2_idle_7", flag = false },
-				{name = "idle_2_idle_8", flag = false },
-				{name = "idle_2_idle_9", flag = false }}
+	self.idle[1] = { 	{name = "idle_1_idle_0", flag = true },
+				{name = "idle_1_idle_2", flag = true },
+				{name = "idle_1_idle_3", flag = true },
+				{name = "idle_1_idle_4", flag = true }}
+	self.idle[2] = { 	{name = "idle_2_idle_0", flag = true },
+				{name = "idle_2_idle_2", flag = true },
+				{name = "idle_2_idle_3", flag = true },
+				{name = "idle_2_idle_4", flag = true },
+				{name = "idle_2_idle_5", flag = true },
+				{name = "idle_2_idle_6", flag = true },
+				{name = "idle_2_idle_7", flag = true },
+				{name = "idle_2_idle_8", flag = true },
+				{name = "idle_2_idle_9", flag = true }}
 	self.idle[3] = { 	{name = "idle_3_idle_0", flag = true },
 				{name = "idle_3_idle_2", flag = true },
-				{name = "idle_3_idle_3", flag = false },
+				{name = "idle_3_idle_3", flag = true },
 				{name = "idle_3_idle_4", flag = true }}
 	self.idle[4] = { 	{name = "idle_4_idle_0", flag = true },
 				{name = "idle_4_idle_2", flag = true },
