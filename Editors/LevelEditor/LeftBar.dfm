@@ -1609,8 +1609,6 @@ object fraLeftBar: TfraLeftBar
     Options = []
     RegistryRoot = prLocalMachine
     Version = 11
-    OnSavePlacement = fsStorageSavePlacement
-    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
