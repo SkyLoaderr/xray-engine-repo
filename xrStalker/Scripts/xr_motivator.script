@@ -333,7 +333,7 @@ xr_motivator.storage[self.object:id ()].sos =
     {
     enabled = false,
     npc = nil,
-    intialized = false
+    initialized = false
     }
 xr_sos.add_to_binder (self.object, char_ini)
  
