@@ -15,7 +15,7 @@ bool CAI_Biting::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	if (l_tMovementAction.completed()) return false;
 
 	
-	if (CDetailPathManager::time_path_built() > tpEntityAction->m_tActionCondition.m_tStartTime) {
+	if (CDetailPathManager::time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
 		if ((l_tMovementAction.m_fDistToEnd > 0) && IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
 			return false;
@@ -33,6 +33,8 @@ bool CAI_Biting::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	}
 
 	CMonsterMovement::set_path_targeted();
+	
+	force_real_speed = (l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
 
 	return			(true);		
 }
