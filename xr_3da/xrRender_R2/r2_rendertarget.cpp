@@ -173,7 +173,7 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 		*dest	= color_rgba(samples[2*it].x,samples[2*it].y,samples[2*it+1].y,samples[2*it+1].x);
 }
 
-void	CRenderTarget::OnDeviceCreate	()
+CRenderTarget::CRenderTarget		()
 {
 	dwAccumulatorClearMark			= 0;
 	Device.Resources->Evict			();
@@ -408,7 +408,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	dwHeight	= Device.dwHeight;
 }
 
-void	CRenderTarget::OnDeviceDestroy	()
+CRenderTarget::~CRenderTarget	()
 {
 	// Textures
 	t_material->surface_set		(NULL);

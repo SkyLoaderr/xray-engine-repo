@@ -128,8 +128,8 @@ private:
 	u32							param_color_gray;
 	u32							param_color_add;
 public:
-	void						OnDeviceCreate			();
-	void						OnDeviceDestroy			();
+								CRenderTarget			();
+								~CRenderTarget			();
 	void						accum_point_geom_create	();
 	void						accum_point_geom_destroy();
 	void						accum_omnip_geom_create	();
