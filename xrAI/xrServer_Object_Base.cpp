@@ -294,11 +294,6 @@ LPCSTR		CSE_Abstract::name			()
 	return	(*s_name);
 }
 
-void		CSE_Abstract::set_name		(LPCSTR new_name)
-{
-	s_name	;
-}
-
 LPCSTR		CSE_Abstract::name_replace	()
 {
 	return	(s_name_replace);
