@@ -296,6 +296,7 @@ void CSightManager::update		(MonsterSpace::ELookType tLookType, const Fvector *t
 	}
 	
 	if (stalker->speed() < EPS_L)
-		if (angle_difference(stalker->m_body.target.yaw,stalker->m_head.target.yaw) > 2*PI_DIV_6)
+		if (angle_difference(stalker->m_body.target.yaw,stalker->m_head.target.yaw) > PI_DIV_2) {
 			stalker->m_body.target.yaw = stalker->m_head.target.yaw;
+		}
 }

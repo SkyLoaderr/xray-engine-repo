@@ -103,7 +103,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 	
 	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 
-	float			yaw = m_head.target.yaw, pitch = m_head.target.pitch;
+//	float			&yaw = m_head.target.yaw, &pitch = m_head.target.pitch;
 
 	switch (l_tWatchAction.m_tGoalType) {
 		case CWatchAction::eGoalTypeObject : {
@@ -118,23 +118,11 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 
 				l_tWatchAction.m_tWatchVector	= l_tMatrix.c;
 			}
-			if (eLookTypeFirePoint == l_tWatchAction.m_tWatchType)
-				SetFirePointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
-			else
-				SetPointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
+			CSightManager::update(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
 		case CWatchAction::eGoalTypeDirection : {
-			if (eLookTypeDirection == l_tWatchAction.m_tWatchType) {
-				l_tWatchAction.m_tWatchVector.getHP(yaw,pitch);
-				yaw				*= -1;
-				pitch			*= -1;
-			}
-			else
-				if (eLookTypeFirePoint == l_tWatchAction.m_tWatchType)
-					SetFirePointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
-				else
-					SetPointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
+			CSightManager::update(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
 		case CWatchAction::eGoalTypeWatchType : {
@@ -148,7 +136,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 		default : NODEFAULT;
 	}
 
-	if ((CWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(yaw,m_head.current.yaw) < EPS_L) && (angle_difference(pitch,m_head.current.pitch) < EPS_L))
+	if ((CWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(m_head.target.yaw,m_head.current.yaw) < EPS_L) && (angle_difference(m_head.target.pitch,m_head.current.pitch) < EPS_L))
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;
