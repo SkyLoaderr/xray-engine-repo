@@ -173,7 +173,8 @@ function action_door:close_door(disable_snd)
 	-- —тавим коллбек дл€ отлова окончани€ закрыти€ двери (чтобы заблокировать ее и проиграть звук, если нужно):
 	printf("_bp: action_door: setting physics callback from close_door")
 	level.add_call(self, "close_check", "close_action")
-
+	level.add_call(self, "close_check", "close_action")
+	
 	printf("_bp: action_door:close_door()")
 	self.joint:set_max_force_and_velocity(300, 3, 1)
 	self.block = true -- «акрываем и блокируем	
