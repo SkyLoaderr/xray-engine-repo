@@ -293,8 +293,3 @@ BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup
 		return FALSE;
 	}
 }
-
-void	CResourceManager::SetShaderPath	(LPCSTR path)
-{
-	ShaderPath	= path;
-}

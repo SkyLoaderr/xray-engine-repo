@@ -66,7 +66,6 @@ public:
 	xr_vector<std::pair<ref_str,R_constant_setup*> >	v_constant_setup;
 	lua_State*											LSVM;
 	BOOL												bDeferredLoad;
-	ref_str												ShaderPath;
 private:
 	void							LS_Load				();
 	void							LS_Unload			();
@@ -163,8 +162,6 @@ public:
 	void			DeferredUpload			();
 	void			DeferredUnload			();
 	void			Evict					();
-
-	void			SetShaderPath			(LPCSTR path);
 };
 
 #endif //ResourceManagerH

@@ -88,6 +88,7 @@ public:
 	virtual void					level_Unload				();
 
 	// Information
+	virtual LPCSTR					getShaderPath				()									{ return "xr2_r3xx\\";	}
 	virtual ref_shader				getShader					(int id);
 	virtual IRender_Sector*			getSector					(int id);
 	virtual IRender_Visual*			getVisual					(int id);

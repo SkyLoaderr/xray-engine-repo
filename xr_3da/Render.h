@@ -105,6 +105,7 @@ public:
 	virtual void					level_Unload			()											= 0;
 
 	// Information
+	virtual LPCSTR					getShaderPath			()											= 0;
 	virtual ref_shader				getShader				(int id)									= 0;
 	virtual IRender_Sector*			getSector				(int id)									= 0;
 	virtual IRender_Visual*			getVisual				(int id)									= 0;

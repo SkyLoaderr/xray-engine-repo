@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include	"render.h"
 #include	"ResourceManager.h"
 #include	"tss.h"
 #include	"blenders\blender.h"
@@ -151,7 +152,7 @@ void	CResourceManager::LS_Load			()
 	];
 
 	// load shaders
-	xr_vector<char*>*	folder	= FS.file_list_open	("$game_shaders$",*ShaderPath?*ShaderPath:"",FS_ListFiles|FS_RootOnly);
+	xr_vector<char*>*	folder	= FS.file_list_open	("$game_shaders$",::Render->getShaderPath(),FS_ListFiles|FS_RootOnly);
 	for (u32 it=0; it<folder->size(); it++)	{
 		string256						namesp,fn;
 		strcpy							(namesp,(*folder)[it]);
