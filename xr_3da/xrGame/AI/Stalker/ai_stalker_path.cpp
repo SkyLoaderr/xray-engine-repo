@@ -168,12 +168,13 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 				if (tpDestinationPosition)
 					if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
 						//VERIFY(false);
-						//if (dwCurNode != AI_Path.DestNode)
-						//	m_tpaPointNodes.push_back(AI_Path.DestNode);
-						//m_tpaPoints.push_back(*tpDestinationPosition);
+						if (dwCurNode != AI_Path.DestNode)
+							m_tpaPointNodes.push_back(AI_Path.DestNode);
+						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 					else {
 						//if (dwCurNode != AI_Path.DestNode)
+						dwCurNode = AI_Path.DestNode;
 						if (getAI().bfInsideNode(getAI().Node(dwCurNode),*tpDestinationPosition)) {
 							tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tpDestinationPosition->x,tpDestinationPosition->z);
 							m_tpaPointNodes.push_back(AI_Path.DestNode);
@@ -214,8 +215,8 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 				AI_Path.Nodes.push_back(m_tpaNodes[j]);
 			}
 		}
-		AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 		if ((N > 1) && (m_tPathType == ePathTypeStraight)) {
+			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 			if (tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
 				if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1) {
 					T.P = *tpDestinationPosition;
