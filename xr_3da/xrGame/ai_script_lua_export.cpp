@@ -550,6 +550,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 		class_<CEntityAction>("entity_action")
 			.def(								constructor<>())
+			.def(								constructor<const CEntityAction *>())
 			.def("set_action",					(void (CEntityAction::*)(const CMovementAction	&tMovementAction))	(CEntityAction::SetAction))
 			.def("set_action",					(void (CEntityAction::*)(const CWatchAction		&tWatchAction))		(CEntityAction::SetAction))
 			.def("set_action",					(void (CEntityAction::*)(const CAnimationAction &tAnimationAction))	(CEntityAction::SetAction))

@@ -669,6 +669,12 @@ public:
 		m_bFirstTime				= true;
 	}
 
+							CEntityAction		(const CEntityAction *entity_action)
+	{
+		*this						= *entity_action;
+		m_bFirstTime				= true;
+	}
+
 	virtual					~CEntityAction		()
 	{
 	}
