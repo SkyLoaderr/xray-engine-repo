@@ -46,7 +46,7 @@ C3DSound::~C3DSound	()
 	_FREE				( fName );
 }
 
-void C3DSound::Update()
+void C3DSound::Update_Params()
 {
 //	if (dwStatus&DSBSTATUS_BUFFERLOST) pBuffer->Restore();
 	if (bNeedUpdate) 
@@ -87,7 +87,7 @@ void C3DSound::OnMove		()
 			bMustPlay			= false;
 			ps.dwMode			= DS3DMODE_NORMAL;
 			bNeedUpdate			= true;
-			Update				( );
+			Update_Params		();
 			dwTimeStarted		= dwTime;
 			if (bMustLoop)		{
 				dwTimeToStop		= dwTime + dwTimeTotal*(iLoopCount?iLoopCount:100000) - dwLoopAheadMS;
@@ -103,7 +103,7 @@ void C3DSound::OnMove		()
 				dwState				= bMustLoop?stSimulatingLooped:stSimulating;
 			}
 		} else {
-			Update				( );
+			Update_Params			( );
 		}
 		break;
 	case stPlaying:
@@ -119,7 +119,7 @@ void C3DSound::OnMove		()
 				dwState						=	stSimulating;		// switch state
 			}
 		}
-		Update			();
+		Update_Params		();
 		break;
 	case stSimulating:
 		if (dwTime>=dwTimeToStop)	{
@@ -135,7 +135,7 @@ void C3DSound::OnMove		()
 				dwState						=	stPlaying;			// switch state
 			}
 		}
-		Update			();
+		Update_Params		();
 		break;
 	case stPlayingLooped:
 		if (dwTime>=dwTimeToStop)	{
@@ -152,7 +152,7 @@ void C3DSound::OnMove		()
 				dwState						=	stSimulatingLooped;	// switch state
 			}
 		}
-		Update			();
+		Update_Params		();
 		break;
 	case stSimulatingLooped:
 		if (dwTime>=dwTimeToStop)	{
@@ -169,7 +169,7 @@ void C3DSound::OnMove		()
 				dwState						=	stPlaying;			// switch state
 			}
 		}
-		Update			();
+		Update_Params		();
 		break;
 	}
 }

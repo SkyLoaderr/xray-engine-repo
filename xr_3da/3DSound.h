@@ -70,9 +70,9 @@ public:
 	void					SetVolume				(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 
 	void					OnMove					(void);
-	void					Update					(void);
-	BOOL					Update_Volume			(void);			// returns TRUE if "audible"
+	void					Update_Params			(void);
 	void					Update_Occlusion		(void);
+	BOOL					Update_Volume			(void);			// returns TRUE if "audible"
 
 	C3DSound();
 	~C3DSound();
