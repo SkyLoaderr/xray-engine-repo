@@ -27,6 +27,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 	switch		(type)
 	{
+	case GEG_PLAYER_CHANGE_TEAM:
+		{
+			game_PlayerState *l_pPS = game->get_id(ID_to_client(sender)->ID);
+			l_pPS->team = (l_pPS->team+1)%2;
+		}
+		break;
 	case GEG_PLAYER_READY:
 		{
 			xrServerEntity*		E			= ID_to_entity	(destination);
