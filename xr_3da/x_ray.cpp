@@ -89,7 +89,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	mmgrInitialize	(0);
 
-	CreateLog	(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q"));
+	CreateLog	(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 	Debug.Start	();
 
 #ifndef DEBUG
