@@ -234,12 +234,6 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	if (monster) {
 		switch (key) {
-		case DIK_1:
-			monster->Hide();
-			break;
-		case DIK_2:
-			monster->Show();
-			break;
 		case DIK_0:
 			monster->FireFlame(Level().CurrentEntity());
 			break;

@@ -2069,6 +2069,16 @@
 										</FileConfiguration>
 									</File>
 								</Filter>
+								<Filter
+									Name="Energy Holder"
+									Filter="">
+									<File
+										RelativePath=".\ai\energy_holder.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\energy_holder.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="Event Handler"
@@ -2811,6 +2821,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_movement.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_manager.h">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_telekinesis.cpp">
