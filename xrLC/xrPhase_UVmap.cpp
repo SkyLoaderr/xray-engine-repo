@@ -122,8 +122,8 @@ void	CBuild::xrPhase_UVmap()
 void CBuild::mem_CompactSubdivs()
 {
 	// Memory compact
-	DWORD dwT = timeGetTime	();
 	/*
+	DWORD dwT = timeGetTime	();
 	vecFace		temp;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
@@ -132,9 +132,9 @@ void CBuild::mem_CompactSubdivs()
 		g_XSplit[SP].clear	();
 		g_XSplit[SP].assign	(temp.begin(),temp.end());
 	}
+	Msg("%d ms for memory compacting...",timeGetTime()-dwT);
 	*/
 	mem_Compact				();
-	Msg("%d ms for memory compacting...",timeGetTime()-dwT);
 }
 void CBuild::mem_Compact()
 {
