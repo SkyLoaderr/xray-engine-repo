@@ -561,6 +561,12 @@ function loadJob(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
+		t = { section = "zoneguard1@gar_dolg",
+			idle = 0,
+			prior = 10, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
 		
     end	    
 
