@@ -480,8 +480,10 @@ CSE_ALifePHSkeletonObject::~CSE_ALifePHSkeletonObject()
 void CSE_ALifePHSkeletonObject::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read(tNetPacket,size);
-if(m_wVersion<64)		return;
-if(m_wVersion>64)
+
+	if (m_wVersion<64)
+		return;
+
 	tNetPacket.r_string		(startup_animation);
 	tNetPacket.r_u8			(flags.flags);
 	tNetPacket.r_u16		(source_id);
