@@ -120,8 +120,7 @@ void			CLight_DB::add_light		(light* L)
 	if (Device.dwFrame==L->frame_render)	return;
 	L->frame_render							=	Device.dwFrame;
 	if (L->flags.bStatic)					return;	// skip static lighting, 'cause they are in lmaps
-
-	RImplementation.L_Dynamic->add			(L);
+	if (ps_r1_flags.test(R1FLAG_DLIGHTS))	RImplementation.L_Dynamic->add	(L);
 }
 #endif
 

@@ -32,9 +32,10 @@ float		ps_r1_ssaLOD_B				= 48.f	;
 float		ps_r1_ssaHZBvsTEX			= 256.f	;
 int			ps_r1_tf_Anisotropic		= 0		;
 float		ps_r1_tf_Mipbias			= -0.5f	;
+Flags32		ps_r1_flags					= { R1FLAG_DLIGHTS };		// r1-only
 
 // R1-specific
-int			ps_r1_GlowsPerFrame			= 16	;	// r1-only
+int			ps_r1_GlowsPerFrame			= 16	;					// r1-only
 
 // R2
 float		ps_r2_ssaDISCARD			= 4.f	;
@@ -193,6 +194,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r1_ssa_hzb_vs_tex",	&ps_r1_ssaHZBvsTEX,			16,		512		);
 	CMD2(CCC_tf_Aniso,	"r1_tf_aniso",			&ps_r1_tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r1_tf_mipbias",		&ps_r1_tf_Mipbias			);
+	CMD3(CCC_Mask,		"r1_dlights",			&ps_r1_flags,				R1FLAG_DLIGHTS	);
 
 	// R1-specific
 	CMD4(CCC_Integer,	"r1_glows_per_frame",	&ps_r1_GlowsPerFrame,		2,		32		);

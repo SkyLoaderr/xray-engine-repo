@@ -32,6 +32,11 @@ extern ECORE_API	int			ps_r1_tf_Anisotropic;
 
 // R1-specific
 extern ECORE_API	int			ps_r1_GlowsPerFrame;	// r1-only
+extern ECORE_API	Flags32		ps_r1_flags;			// r1-only
+enum
+{
+	R1FLAG_DLIGHTS				= (1<<0),
+};
 
 // R2
 extern ECORE_API	float		ps_r2_ssaDISCARD;
