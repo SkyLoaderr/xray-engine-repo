@@ -248,4 +248,20 @@
 		<class>Dolg_specnaz_cherep</class>
 	</character>
 
+
+	<!-- БАР -->
+	<character id="bar_white_novice">
+		<class>stalker_bar_white_novice</class>
+	</character>
+	<character id="bar_brown_novice">
+		<class>stalker_bar_brown_novice</class>
+	</character>
+	<character id="bar_general">
+		<class>stalker_bar_general</class>
+	</character>
+	<character id="bar_dolg">
+		<class>stalker_bar_dolg</class>
+	</character>
+	
+	
 </xml>
