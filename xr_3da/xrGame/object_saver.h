@@ -89,7 +89,7 @@ struct CSaver {
 
 	IC	static void save_data(const shared_str &data, M &stream, const P &p)
 	{
-		stream.w_stringZ				(*data);
+		stream.w_stringZ				(data);
 	}
 
 	template <typename T1, typename T2>
