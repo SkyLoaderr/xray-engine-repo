@@ -971,7 +971,7 @@ function events:isTrash(obj)
 end
 
 function add_rule(obj, rule)
-	if xr_motivator.storage[obj:id()].reactions.rules.evn:ruleExist(rule) == false then
+	if xr_motivator.storage[obj:id()].reactions.evn:ruleExist(rule) == false then
 		table.insert(xr_motivator.storage[obj:id()].reactions.rules, rule)
 	end
 end
