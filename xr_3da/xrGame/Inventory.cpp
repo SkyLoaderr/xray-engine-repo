@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "inventory.h"
 #include "actor.h"
+#include "trade.h"
 
 // CInventoryItem class ///////////////////////////////////////////////////////////////////////////////
 
@@ -427,9 +428,14 @@ void CInventory::Clear()
 
 CInventoryOwner::CInventoryOwner() {
 	m_inventory.m_pOwner = this;
+
+	m_trade = xr_new<CTrade>(this);
 }
 
-CInventoryOwner::~CInventoryOwner() {}
+CInventoryOwner::~CInventoryOwner() 
+{
+	xr_delete(m_trade); 
+}
 
 // CInventorySlot class //////////////////////////////////////////////////////////////////////////
 

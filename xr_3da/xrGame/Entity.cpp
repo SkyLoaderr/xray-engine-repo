@@ -124,12 +124,13 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	CSE_Abstract	*e	= (CSE_Abstract*)(DC);
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureAbstract	*E	= dynamic_cast<CSE_ALifeCreatureAbstract*>(e);
 	if (!E) {
-		// Car only!!!!
-		CSE_ALifeItemCar		*C	= dynamic_cast<CSE_ALifeItemCar*>(e);
-		R_ASSERT2			(C,"Invalid entity (no inheritance from xrSE_Teamed and CSE_ALifeItemCar)!");
+		// Car or trader only!!!!
+		CSE_ALifeItemCar	*C	= dynamic_cast<CSE_ALifeItemCar*>(e);
+		CSE_ALifeTrader		*T	= dynamic_cast<CSE_ALifeTrader*>(e);
+		R_ASSERT2			(C || T,"Invalid entity (no inheritance from CSE_CreatureAbstract, CSE_ALifeItemCar and CSE_ALifeTrader)!");
 		id_Team				= id_Squad = id_Group = 0;
 	}
 	else {
@@ -205,7 +206,7 @@ void CEntityAlive::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
 
-	m_fFood					= 100*pSettings->r_float	(section,"ph_mass"			);
+	//m_fFood					= 100*pSettings->r_float	(section,"ph_mass"			);
 
 	/*
 	// Movement: General

@@ -13,6 +13,7 @@
 #include "PhysicsShell.h"
 #include "inventory.h"
 #include "Car.h"
+
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
@@ -261,6 +262,7 @@ private:
 	void					attach_Vehicle			(CCar* vehicle);
 	void					use_Vehicle				();
 	CCar*					pick_VehicleObject		();
+
 
 public:
 	void					detach_Vehicle			();

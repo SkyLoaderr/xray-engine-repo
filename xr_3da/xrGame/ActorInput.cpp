@@ -5,6 +5,9 @@
 #include "..\xr_input.h"
 #include "..\xr_creator.h"
 #include "..\CameraBase.h"
+#include "trade.h"
+
+
 void CActor::OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
@@ -22,6 +25,19 @@ void CActor::OnKeyboardPress(int cmd)
 	}
 
 	if (!g_Alive())												return;
+
+//	if (IsInTradeState()) {
+//		return;
+//	}
+//
+	if (cmd == kUSE) {
+		if (m_trade->CanTrade()) {
+			m_trade->StartTrade();			
+		}
+	}
+
+
+
 
 	if(m_vehicle)
 	{

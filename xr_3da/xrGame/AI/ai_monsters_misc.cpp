@@ -602,28 +602,28 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		}
 
 	WRITE_QUERY_TO_LOG("\nNew query");
-	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability0,getAI().pfVictoryProbability)) {
+	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability0,*getAI().pfVictoryProbability)) {
 		Group.m_dwLastActionTime	= Level().timeServer();
 		Group.m_dwLastAction		= 0;
 		WRITE_QUERY_TO_LOG			("Attack");
 		return						(a0);
 	}
 	else
-		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability1,getAI().pfVictoryProbability)) {
+		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability1,*getAI().pfVictoryProbability)) {
 			Group.m_dwLastActionTime	= Level().timeServer();
 			Group.m_dwLastAction		= 1;
 			WRITE_QUERY_TO_LOG			("Attack 1");
 			return						(a1);
 		}
 		else
-			if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability2,getAI().pfVictoryProbability)) {
+			if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability2,*getAI().pfVictoryProbability)) {
 				Group.m_dwLastActionTime	= Level().timeServer();
 				Group.m_dwLastAction		= 2;
 				WRITE_QUERY_TO_LOG			("Defend");
 				return						(a2);
 			}
 			else
-				if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability3,getAI().pfVictoryProbability)) {
+				if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability3,*getAI().pfVictoryProbability)) {
 					Group.m_dwLastActionTime	= Level().timeServer();
 					Group.m_dwLastAction		= 3;
 					WRITE_QUERY_TO_LOG			("Defend 1");

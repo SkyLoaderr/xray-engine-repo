@@ -98,10 +98,14 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+class CTrade;
+
 class CInventoryOwner {									// Примесь для актеров и неписей имеющих инвентарь
 public:
 	CInventoryOwner();
 	virtual ~CInventoryOwner();
 
-	CInventory m_inventory;									// Инвентарь
+	CInventory	m_inventory;									// Инвентарь
+
+	CTrade		*m_trade;
 };

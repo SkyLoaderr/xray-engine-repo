@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "..\\..\\actor.h"
+//#include "..\\..\\actor.h"
 #include "..\\rat\\ai_rat.h"
 
 using namespace AI_Biting;
@@ -153,8 +153,8 @@ void CAI_Biting::ForwardStraight()
 	float tDist2 = 3.8f;
 
 	if (bAttackRat) {
-		tDist1 = 0.7f;
-		tDist2 = 2.7f;
+		tDist1 = 1.0f;
+		tDist2 = 2.5f;
 	}
 
 	m_tActionState = ((EnemyPosition.distance_to(vPosition) > tDist1) ? eActionStateRun : eActionStateStand);	
@@ -177,26 +177,45 @@ void CAI_Biting::ForwardStraight()
 		case eActionStateStand:			// аттаковать
 			
 			if (bAttackRat) {
+					
 					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 											eMovementDirectionNone, eStateTypeNormal, eActionTypeAttack);
 					vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,0);
+					
+					m_AttackInterval = 500;
+					if ((m_AttackLastTime + m_AttackInterval) < m_dwCurrentUpdate) {
+						if (EnemyPosition.distance_to(m_AttackLastPosition) < 0.7f) {
+							DoDamage(m_tSavedEnemy);
+						}
+						m_AttackLastTime = m_dwCurrentUpdate;
+						m_AttackLastPosition = EnemyPosition;
+					}
 			}
 			else {
 					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 											eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
 					vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,&EnemyPosition);
+
+					m_AttackInterval = 500;
+					if ((m_AttackLastTime + m_AttackInterval) < m_dwCurrentUpdate) {
+						if (EnemyPosition.distance_to(m_AttackLastPosition) < 0.7f) {
+							DoDamage(m_tSavedEnemy);
+						}
+						m_AttackLastTime = m_dwCurrentUpdate;
+						m_AttackLastPosition = EnemyPosition;
+					}
 			}	
 
-				if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-					if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
-						m_tpSoundBeingPlayed = 0;
-						m_dwLastVoiceTalk = m_dwCurrentUpdate;
-					}
-					if (m_dwCurrentUpdate - m_dwLastVoiceTalk > (u32)::Random.randI(500,2000)) {
-						m_tpSoundBeingPlayed = &(m_tpaSoundAttack[::Random.randI(SND_ATTACK_COUNT)]);
-						::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-					}
+			if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+				if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+					m_tpSoundBeingPlayed = 0;
+					m_dwLastVoiceTalk = m_dwCurrentUpdate;
 				}
+				if (m_dwCurrentUpdate - m_dwLastVoiceTalk > (u32)::Random.randI(500,2000)) {
+					m_tpSoundBeingPlayed = &(m_tpaSoundAttack[::Random.randI(SND_ATTACK_COUNT)]);
+					::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+				}
+			}
 			
 			
 			break;
@@ -314,8 +333,29 @@ void CAI_Biting::ExploreDE()
 void CAI_Biting::ExploreDNE()
 {
 	WRITE_TO_LOG("Explore danger-non-expedient enemy");
-	ExploreDE();
+
+	m_dwInertion				= 30000;
+	
+
+	if (m_bStateChanged) {
+		u32		time;
+		time =  m_dwCurrentUpdate;
+		_CAction.Add(ePostureStand, eActionAttackTurnLeft, (time += 900), angle_normalize(r_torso_target.yaw + 3*PI_DIV_4), PI_MUL_2);
+		_CAction.Add(ePostureStand, eActionScared, (time += 1400),r_torso_target.yaw);
+		_CAction.Switch();
+		if (m_tLastSound.tpEntity)
+			m_AttackLastPosition = m_tLastSound.tpEntity->Position();
+		else m_AttackLastPosition = vPosition;
+	}
+
+	vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
+
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_AttackLastPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_AttackLastPosition.distance_to(vPosition) + 10.f;
+	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
 }
+
 
 void CAI_Biting::ExploreNDE()
 {
@@ -345,7 +385,6 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 // Choose branch
 
 	bool	bCorpseFound = false;
-	float   turn_side;
 
 	// проверка на видимость трупов
 	SelectCorp(m_tEnemy);
@@ -404,9 +443,9 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 				case 5: case 6: case 7: case 8: case 9:
 						m_tActionState = eActionStateStand;
 						
-						turn_side = ((::Random.randI(2)) ? 1.f : (-1.f));
-						
-						r_torso_target.yaw += (PI_DIV_2) * turn_side;
+						if (!::Random.randI(2))	r_torso_target.yaw += PI_DIV_2;
+						else r_torso_target.yaw -= PI_DIV_2;
+							
 						r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 						dwMinRand = 3000;
 						dwMaxRand = 4000;
@@ -534,17 +573,15 @@ void CAI_Biting::Think()
 
 	if (!g_Alive()) {
 		Death				();
-	}				   
-	else
+	} else 				   
+
 	if (C && H && I) {
-		m_dwRandomFactor	= 50;
 		Panic			();
 	} else
 	if (C && H && !I) {
 		Panic();
 	} else
 	if (C && !H && I) {
-		m_dwRandomFactor	= 50;
 		Panic			();
 	} else
 	if (C && !H && !I) {
@@ -552,25 +589,21 @@ void CAI_Biting::Think()
 	} else
 	
 	if (D && H && I) {
-		m_dwRandomFactor	= 50;
 		Panic	();
 	} else
 	if (D && H && !I) {
 		ForwardStraight	(); //тихо подобраться и начать аттаку
 	} else
 	if (D && !H && I) {
-		m_dwRandomFactor	= 50;
 		Panic	();
 	} else
 	if (D && !H && !I) {
 		Hide	();			// отход перебежками через укрытия
 	} else
 	if (E && H && I) {
-		m_dwRandomFactor	= 0;
 		ForwardStraight	();
 	} else
 	if (E && H && !I) {
-		m_dwRandomFactor	= 0;
 		ForwardStraight	(); //тихо подобраться и начать аттаку
 	} else
 	if (E && !H && I) {
@@ -581,11 +614,9 @@ void CAI_Biting::Think()
 	} else
 	
 	if (F && H && I) {
-		m_dwRandomFactor	= 75;
 		ForwardStraight	();
 	} else
 	if (F && H && !I) {
-		m_dwRandomFactor	= 100;
 		ForwardStraight	();
 	} else
 	if (F && !H && I) {

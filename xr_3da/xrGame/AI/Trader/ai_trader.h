@@ -11,32 +11,29 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\inventory.h"
 
-class CAI_Idol : public CCustomMonster, public CInventoryOwner 
+class CAI_Trader : public CEntityAlive, public CInventoryOwner 
 {
 public:
-	typedef CCustomMonster inherited;
-	xr_vector<CMotionDef*>	m_tpaAnims;
-	CBlend				*m_tpCurrentBlend;
+	typedef CEntityAlive inherited;
+	CMotionDef*			m_tAnimation;
 	bool				m_bPlaying;
-	u32					m_dwAnyPlayType;
-	u32					m_dwCurrentAnimationIndex;
 	
-						CAI_Idol		();
-	virtual				~CAI_Idol		();
+						CAI_Trader		();
+	virtual				~CAI_Trader		();
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
-	virtual void		net_Export		(NET_Packet& P){};
-	virtual void		net_Import		(NET_Packet& P){};
+	virtual void		net_Export		(NET_Packet& P);
+	virtual void		net_Import		(NET_Packet& P);
 	virtual void		Die				(){};
-	virtual void		Think			(){};
+	virtual void		Think			();
 	virtual void		HitSignal		(float P, Fvector &local_dir,	CObject* who, s16 element){};
 	virtual void		HitImpulse		(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){};
 	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);
 	
 	static void			AnimCallback	(CBlend* B)
 	{
-		CAI_Idol		*tpIdol = (CAI_Idol*)B->CallbackParam;
-		tpIdol->m_bPlaying = false;
+		CAI_Trader		*tpTrader = (CAI_Trader*)B->CallbackParam;
+		tpTrader->m_bPlaying = false;
 	}
 
 	virtual void		g_fireParams	(Fvector& P, Fvector& D);

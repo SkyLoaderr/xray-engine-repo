@@ -636,6 +636,16 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="ai_trader"
+						Filter="">
+						<File
+							RelativePath="AI\Trader\ai_trader.cpp">
+						</File>
+						<File
+							RelativePath="AI\Trader\ai_trader.h">
+						</File>
+					</Filter>
+					<Filter
 						Name="ai_zombie"
 						Filter="">
 						<File
@@ -812,6 +822,12 @@
 					</File>
 					<File
 						RelativePath="Inventory.h">
+					</File>
+					<File
+						RelativePath="trade.cpp">
+					</File>
+					<File
+						RelativePath="trade.h">
 					</File>
 				</Filter>
 				<Filter
@@ -1483,6 +1499,9 @@
 				Name="UI"
 				Filter="">
 				<File
+					RelativePath=".\HitMarker.cpp">
+				</File>
+				<File
 					RelativePath=".\HitMarker.h">
 				</File>
 				<File
@@ -1817,10 +1836,19 @@
 				Name="AEval"
 				Filter="">
 				<File
+					RelativePath="ai_base_funcs.h">
+				</File>
+				<File
 					RelativePath="ai_funcs.cpp">
 				</File>
 				<File
 					RelativePath="ai_funcs.h">
+				</File>
+				<File
+					RelativePath="ai_primary_funcs.cpp">
+				</File>
+				<File
+					RelativePath="ai_primary_funcs.h">
 				</File>
 			</Filter>
 			<Filter

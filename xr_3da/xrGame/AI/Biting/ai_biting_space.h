@@ -63,6 +63,7 @@ namespace AI_Biting {
 		eActionTypeLieDown,
 		eActionTypeStandUp,
 		eActionTypeLie,
+
 	};
 
 	// Paths

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
+#include "..\\..\\weapon.h"
 
 CAI_Stalker::CAI_Stalker			()
 {

@@ -94,7 +94,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 void CAI_Biting::feel_touch_new	(CObject* O)
 {
 	if (!g_Alive()) return;
-
+/*
 	CEntity *pEntity = dynamic_cast<CEntity *>(O);
 
  	if (m_tSavedEnemy && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY) && (pEntity == m_tSavedEnemy)) {
@@ -109,6 +109,27 @@ void CAI_Biting::feel_touch_new	(CObject* O)
 		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
 		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 
+	}
+	*/
+}
+
+void CAI_Biting::DoDamage(CEntity *pEntity)
+{
+	if (!g_Alive()) return;
+	if (!pEntity) return;
+
+	
+	if (m_tSavedEnemy && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY) && (pEntity == m_tSavedEnemy)) {
+		Fvector tDirection;
+		Fvector position_in_bone_space;
+		position_in_bone_space.set(0.f,0.f,0.f);
+		tDirection.sub(m_tSavedEnemy->Position(),this->Position());
+		tDirection.normalize();
+
+		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
+		
+		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
+		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 	}
 }
 

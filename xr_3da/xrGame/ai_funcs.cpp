@@ -8,8 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_funcs.h"
+#include "ai_primary_funcs.h"
 #include "ai_space.h"
-#include "inventory.h"
 
 //#define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
@@ -18,7 +18,7 @@
 	#undef WRITE_TO_LOG
 #endif
 
-CPatternFunction::CPatternFunction()
+CPatternFunction::CPatternFunction() : CBaseFunction()
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
 	m_dwaVariableTypes = 0;
@@ -29,7 +29,7 @@ CPatternFunction::CPatternFunction()
 	m_dwaVariableValues = 0;
 }
 
-CPatternFunction::CPatternFunction(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
+CPatternFunction::CPatternFunction(LPCSTR caFileName, CAI_DDD *tpAI_DDD) : CBaseFunction()
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
 	m_dwaVariableTypes = 0;
@@ -55,7 +55,6 @@ CPatternFunction::~CPatternFunction()
 
 void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 {
-	inherited::vfLoadEF		(caFileName,tpAI_DDD);
 	char			caPath	[260];
 	strconcat		(caPath,AI_PATH,caFileName);
 	if (!FS.exist	(caPath, "$game_data$", caPath)) {
@@ -119,8 +118,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	
 	xr_free(m_dwaAtomicIndexes);
     
-	m_tpAI_DDD = tpAI_DDD;
-	m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
+	tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
 	
 	_splitpath(caPath,0,0,m_caName,0);
 
@@ -138,9 +136,9 @@ float CPatternFunction::ffEvaluate()
 float CPatternFunction::ffGetValue()
 {
 	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
+	m_tpLastMonster = getAI().m_tpCurrentMember;
 	for (u32 i=0; i<m_dwVariableCount; i++)
-		m_dwaVariableValues[i] = m_tpAI_DDD->fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
+		m_dwaVariableValues[i] = getAI().fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 #ifndef WRITE_TO_LOG
 	return(m_fLastValue = ffEvaluate());
 #else
@@ -155,403 +153,40 @@ float CPatternFunction::ffGetValue()
 #endif
 }
 
-// primary functions
-float CDistanceFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = getAI().m_tpCurrentMember->Position().distance_to(getAI().m_tpCurrentEnemy->Position()));
-};
+CAI_DDD::CAI_DDD()
+{	
+	Memory.mem_fill						(fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
+	fpaBaseFunctions[0]					= pfDistance = xr_new<CDistanceFunction>();
+										  
+	fpaBaseFunctions[21]				= pfPersonalHealth = xr_new<CPersonalHealthFunction>();
+	fpaBaseFunctions[22]				= pfPersonalMorale = xr_new<CPersonalMoraleFunction>();			
+	fpaBaseFunctions[23]				= pfPersonalCreatureType = xr_new<CPersonalCreatureTypeFunction>();	
+	fpaBaseFunctions[24]				= pfPersonalWeaponType = xr_new<CPersonalWeaponTypeFunction>();		
+	fpaBaseFunctions[25]				= pfPersonalAccuracy = xr_new<CPersonalAccuracyFunction>();		
+	fpaBaseFunctions[26]				= pfPersonalIntelligence = xr_new<CPersonalIntelligenceFunction>();	
+	fpaBaseFunctions[27]				= pfPersonalRelation = xr_new<CPersonalRelationFunction>();		
+	fpaBaseFunctions[28]				= pfPersonalGreed = xr_new<CPersonalGreedFunction>();			
+	fpaBaseFunctions[29]				= pfPersonalAggressiveness = xr_new<CPersonalAggressivenessFunction>();	
+										  
+	fpaBaseFunctions[41]				= pfEnemyHealth = xr_new<CEnemyHealthFunction>();			
+	fpaBaseFunctions[42]				= pfEnemyCreatureType = xr_new<CEnemyCreatureTypeFunction>();		
+	fpaBaseFunctions[43]				= pfEnemyWeaponType = xr_new<CEnemyWeaponTypeFunction>();		
+	fpaBaseFunctions[44]				= pfEnemyEquipmentCost = xr_new<CEnemyEquipmentCostFunction>();		
+	fpaBaseFunctions[45]				= pfEnemyRukzakWeight = xr_new<CEnemyRukzakWeightFunction>();		
+	fpaBaseFunctions[46]				= pfEnemyAnomality = xr_new<CEnemyAnomalityFunction>();			
 
-float CPersonalHealthFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	m_fMaxResultValue = getAI().m_tpCurrentMember->g_MaxHealth();
-	return(m_fLastValue = getAI().m_tpCurrentMember->g_Health());
-};
-
-float CPersonalMoraleFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = getAI().m_tpCurrentMember->m_fMorale);
-};
-
-float CPersonalCreatureTypeFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	switch (getAI().m_tpCurrentMember->SUB_CLS_ID) {
-		case CLSID_AI_RAT				: {
-			m_fLastValue =  1;
-			break;
-		}
-		case CLSID_AI_RAT_WOLF			: {
-			m_fLastValue =  2;
-			break;
-		}
-		case CLSID_AI_ZOMBIE			: {
-			m_fLastValue =  3;
-			break;
-		}
-		case CLSID_AI_ZOMBIE_HUMAN		: {
-			m_fLastValue =  4;
-			break;
-		}
-		case CLSID_AI_POLTERGEIST		: {
-			m_fLastValue =  5;
-			break;
-		}
-		case CLSID_AI_DOG				: {
-			m_fLastValue =  6;
-			break;
-		}
-		case CLSID_AI_FLESH				: {
-			m_fLastValue =  7;
-			break;
-		}
-		case CLSID_AI_DWARF				: {
-			m_fLastValue =  8;
-			break;
-		}
-		case CLSID_AI_SCIENTIST			: {
-			m_fLastValue =  9;
-			break;
-		}
-		case CLSID_AI_PHANTOM			: {
-			m_fLastValue = 10;
-			break;
-		}
-		case CLSID_AI_SPONGER			: {
-			m_fLastValue = 11;
-			break;
-		}
-		case CLSID_AI_CONTROLLER		: {
-			m_fLastValue = 12;
-			break;
-		}
-		case CLSID_AI_BLOODSUCKER		: {
-			m_fLastValue = 13;
-			break;
-		}
-		case CLSID_AI_SOLDIER			: {
-			m_fLastValue = 14;
-			break;
-		}
-		case CLSID_AI_STALKER_DARK		: {
-			m_fLastValue = 15;
-			break;
-		}
-		case CLSID_AI_STALKER_MILITARY	: {
-			m_fLastValue = 16;
-			break;
-		}
-		case CLSID_OBJECT_ACTOR			: 
-		case CLSID_AI_STALKER			: {
-			m_fLastValue = 17;
-			break;
-		}
-		case CLSID_AI_BURER				: {
-			m_fLastValue = 18;
-			break;
-		}
-		case CLSID_AI_GIANT				: {
-			m_fLastValue = 19;
-			break;
-		}
-		case CLSID_AI_CHIMERA	: {
-			m_fLastValue = 20;
-			break;
-		}
-		case CLSID_AI_FRACTURE	:
-		case CLSID_AI_DOG_BLACK	: {
-			m_fLastValue = 21;
-			break;
-		}
-	}
-	return(m_fLastValue);
-};
-
-float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
-{
-	u32 dwBestWeapon = 0;
-	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
-	if (tpInventoryOwner) {
-		xr_vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
-		xr_vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
-//		u32 best_slot = (u32)(-1);
-		for ( ; I != E; I++)
-			if ((*I).m_pIItem) {
-				CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
-				if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
-					u32 dwCurrentBestWeapon = 0;
-					switch (tpCustomWeapon->SUB_CLS_ID) {
-						case CLSID_OBJECT_W_RPG7:
-						case CLSID_OBJECT_W_M134: {
-							dwCurrentBestWeapon = 9;
-							break;
-						}
-						case CLSID_OBJECT_W_FN2000:
-						case CLSID_OBJECT_W_SVD:
-						case CLSID_OBJECT_W_SVU:
-						case CLSID_OBJECT_W_VINTOREZ: {
-							dwCurrentBestWeapon = 8;
-							break;
-						}
-						case CLSID_OBJECT_W_SHOTGUN:
-						case CLSID_OBJECT_W_AK74:
-						case CLSID_OBJECT_W_VAL:
-						case CLSID_OBJECT_W_LR300:		{
-							dwCurrentBestWeapon = 6;
-							break;
-						}
-						case CLSID_OBJECT_W_HPSA:		
-						case CLSID_OBJECT_W_PM:			
-						case CLSID_OBJECT_W_FORT:		
-						case CLSID_OBJECT_W_WALTHER:	
-						case CLSID_OBJECT_W_USP45:		{
-							dwCurrentBestWeapon = 5;
-							break;
-						}
-						default						: {
-							dwCurrentBestWeapon = 0;
-							break;
-						}
-					}
-					if (dwCurrentBestWeapon > dwBestWeapon)
-						dwBestWeapon = dwCurrentBestWeapon;
-				}
-			}
-	}	
-	return(float(dwBestWeapon));
+	pfWeaponEffectiveness				= xr_new<CPatternFunction>("common\\WeaponEffectiveness.dat",this);
+	pfCreatureEffectiveness				= xr_new<CPatternFunction>("common\\CreatureEffectiveness.dat",this);
+	pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>("common\\IntCreatureEffectiveness.dat",this);
+	pfAccuracyWeaponEffectiveness		= xr_new<CPatternFunction>("common\\AccWeaponEffectiveness.dat",this);
+	pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>("common\\FinCreatureEffectiveness.dat",this);
+	pfVictoryProbability				= xr_new<CPatternFunction>("common\\VictoryProbability.dat",this);
+	pfEntityCost						= xr_new<CPatternFunction>("common\\EntityCost.dat",this);
+	pfExpediency						= xr_new<CPatternFunction>("common\\Expediency.dat",this);
 }
 
-float CPersonalWeaponTypeFunction::ffGetValue()
+CAI_DDD::~CAI_DDD()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	switch (getAI().m_tpCurrentMember->SUB_CLS_ID) {
-		case CLSID_AI_RAT				: {
-			m_fLastValue =  1;
-			break;
-		}
-		case CLSID_AI_RAT_WOLF			: {
-			m_fLastValue =  2;
-			break;
-		}
-		case CLSID_AI_ZOMBIE			: {
-			m_fLastValue =  1;
-			break;
-		}
-		case CLSID_AI_ZOMBIE_HUMAN		: {
-			m_fLastValue =  1;
-			break;
-		}
-		case CLSID_AI_POLTERGEIST		: {
-			// 1 or 12
-			m_fLastValue =  12;
-			break;
-		}
-		case CLSID_AI_DOG				: {
-			m_fLastValue =  2;
-			break;
-		}
-		case CLSID_AI_FLESH				: {
-			m_fLastValue =  2;
-			break;
-		}
-		case CLSID_AI_DWARF				: {
-			m_fLastValue =  1;
-			break;
-		}
-		case CLSID_AI_SCIENTIST			: {
-			m_fLastValue =  ffGetTheBestWeapon();
-			break;
-		}
-		case CLSID_AI_PHANTOM			: {
-			m_fLastValue =  3;
-			break;
-		}
-		case CLSID_AI_SPONGER			: {
-			m_fLastValue =  2;
-			break;
-		}
-		case CLSID_AI_CONTROLLER		: {
-			//2 or 11
-			m_fLastValue =  11;
-			break;
-		}
-		case CLSID_AI_BLOODSUCKER		: {
-			m_fLastValue =  3;
-			break;
-		}
-		case CLSID_AI_SOLDIER			: {
-			m_fLastValue =  ffGetTheBestWeapon();
-			break;
-		}
-		case CLSID_AI_STALKER_DARK		: {
-			m_fLastValue =  ffGetTheBestWeapon();
-			break;
-		}
-		case CLSID_AI_STALKER_MILITARY	: {
-			m_fLastValue =  ffGetTheBestWeapon();
-			break;
-		}
-		case CLSID_OBJECT_ACTOR			: 
-		case CLSID_AI_STALKER			: {
-			m_fLastValue =  ffGetTheBestWeapon();
-			break;
-		}
-		case CLSID_AI_BURER				: {
-			m_fLastValue =  3;
-			break;
-		}
-		case CLSID_AI_GIANT				: {
-			m_fLastValue =  3;
-			break;
-		}
-		case CLSID_AI_CHIMERA	: {
-			m_fLastValue =  3;
-			break;
-		}
-		case CLSID_AI_FRACTURE	: {
-			m_fLastValue =  4;
-			break;
-		}
-		case CLSID_AI_DOG_BLACK	: {
-			m_fLastValue =  4;
-			break;
-		}
-	}
-	return(m_fLastValue -= 1.f);
-};
-
-float CPersonalAccuracyFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = getAI().m_tpCurrentMember->m_fAccuracy);
-};
-
-float CPersonalIntelligenceFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
-};
-
-float CPersonalRelationFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = 0);
+	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; i++)
+		xr_delete(fpaBaseFunctions[i]);
 }
-
-float CPersonalGreedFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = 0);
-}
-
-float CPersonalAggressivenessFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentMember;
-	return(m_fLastValue = 0);
-}
-
-// enemy inversion functions	
-float CEnemyHealthFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalHealth.ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
-	return(m_fLastValue);
-};
-
-float CEnemyCreatureTypeFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalCreatureType.ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
-	return(m_fLastValue);
-};
-
-float CEnemyWeaponTypeFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
-	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalWeaponType.ffGetValue();
-	getAI().m_tpCurrentMember = tpEntity;
-	return(m_fLastValue);
-};
-
-float CEnemyEquipmentCostFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate	= Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	m_fLastValue	= 0;
-	return			(m_fLastValue);
-};
-
-float CEnemyRukzakWeightFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate	= Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	CInventoryOwner* tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpLastMonster);
-	if (tpInventoryOwner)
-		m_fLastValue	= tpInventoryOwner->m_inventory.TotalWeight();
-	else
-		m_fLastValue	= 0;
-	return			(m_fLastValue);
-};
-
-float CEnemyAnomalityFunction::ffGetValue()
-{
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
-		return(m_fLastValue);
-	m_dwLastUpdate	= Device.dwTimeGlobal;
-	m_tpLastMonster = getAI().m_tpCurrentEnemy;
-	m_fLastValue	= 0;
-	return			(m_fLastValue);
-};

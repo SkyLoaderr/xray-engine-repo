@@ -50,6 +50,7 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 	
 	tpBiting->m_tpCurrentGlobalAnimation = 0;
 	if (tpBiting->_CA.Playing)tpBiting->_CA.Finished = true;
+	if (tpBiting->_CAction.Playing) tpBiting->_CAction.Switch();
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
@@ -109,7 +110,8 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tMovementDir == eMovementDirectionLeft &&
 		m_tActionType == eActionTypeTurn) 
 
-		m_tActionAnim = eActionAttackTurnLeft;		// поворот влево на месте во врем€ аттаки
+		m_tActionAnim = eActionAttackTurnLeft;		// поворот влево на месте во врем€ аттаки (быстрый)
+
 
 	else if (m_tMovementType == eMovementTypeWalk && 
 	//	m_tStateType == eStateTypeNormal &&  
@@ -194,6 +196,24 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tActionAnim = eActionIdle;			// лежать
 
 
+//*
+	// ”правление критическим состо€нием
+	if (_CAction.Started) {
+		m_tPostureAnim = _CAction.it->Posture;
+		m_tActionAnim = _CAction.it->Action;
+		_CAction.Playing = true;
+		_CAction.Started = false;
+		_CAction.Finished = false;	
+		FORCE_ANIMATION_SELECT();
+	} 
+
+	if (_CAction.Playing) {
+		return;
+	}
+//**
+
+
+	// ”правление критической анимацией
 	if (_CA.Started) {
 		m_tPostureAnim = _CA.Posture;
 		m_tActionAnim = _CA.Action;

@@ -10,6 +10,7 @@
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
 #include "..\..\..\motion.h"
+#include "..\\..\\weapon.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;

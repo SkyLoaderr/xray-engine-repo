@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "..\\..\\actor.h"
-
 #include "..\\..\\hudmanager.h"
 
 using namespace AI_Biting;
@@ -45,6 +44,19 @@ void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_
 // построение пути и установка параметров скорости 
 void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback, bool bSelectorPath)
 {
+
+	//*
+	if (_CAction.Active()) {
+
+		r_torso_target.yaw = _CAction.it->yaw;
+		m_fCurSpeed = _CAction.it->speed;
+		r_torso_speed = _CAction.it->r_speed;
+		_CAction.Cycle(m_dwCurrentUpdate);
+		return;
+	}
+	//**
+
+
 
 	//bool bMoveLeft = false;
 	bool bPathBuilt = false;
@@ -133,7 +145,9 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 	else {		// если пути нет
 		m_fCurSpeed		= 0.f;
 
-		if (m_tActionType != eActionTypeAttack && m_tActionType != eActionTypeLie) 
+		if (m_tActionType != eActionTypeAttack && m_tActionType != eActionTypeLie && 
+			!(m_tStateType == eStateTypePanic && m_tActionType == eActionTypeStand) && 
+			!(m_tStateType == eStateTypeDanger && m_tActionType == eActionTypeTurn)) 
 			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
 	}
@@ -197,6 +211,13 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 			}
 		} else {				// поворот на месте
 				m_fCurSpeed		= 0;
+			
+			if (m_tActionType == eActionTypeTurn && m_tStateType == eStateTypeDanger) {
+				r_torso_speed	= 3 * PI_DIV_4;
+
+			} else {
+
+				m_fCurSpeed		= 0;
 				r_torso_speed	= PI_DIV_4;
 				
 				if (m_tActionType == eActionTypeAttack) {
@@ -208,7 +229,8 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 						if (bMoveLeft) vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);
 						else vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, eMovementDirectionLeft, eStateTypeNormal, eActionTypeTurn);		
 				}
-		}  
+			}  
+		}
 	}
 
 	//vfAssignPitch();
@@ -315,7 +337,7 @@ void CAI_Biting::vfUpdateParameters()
 	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
 		if (0 == (getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
 			continue;
-		if ((E || F || G) && (0 != (H = !!getAI().pfExpediency.dwfGetDiscreteValue(2))))
+		if ((E || F || G) && (0 != (H = !!getAI().pfExpediency->dwfGetDiscreteValue(2))))
 			break;
 		else
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
@@ -327,7 +349,7 @@ void CAI_Biting::vfUpdateParameters()
 //		H = true; I = false;
 
 	// temp
-	H = true;
+	H = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -335,23 +357,41 @@ void CAI_Biting::vfUpdateParameters()
 void CAI_Biting::SetText()
 {
 
-#ifndef SILENCE
-//	HUD().pFontSmall->OutSet	(300,380);	
-//	HUD().pFontSmall->OutNext	("Health = [%f]", g_Health());
-	
-	
-	if (m_tCorpse.Enemy) 
-		if (m_tCorpse.Enemy->m_fFood >= 0) {	
-			HUD().pFontSmall->OutSet	(300,400);	
-			HUD().pFontSmall->OutNext	("Food = [%f]", m_tCorpse.Enemy->m_fFood);
-		}
-/*
-	HUD().pFontSmall->OutSet	(300,420);	
-	HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
+//#ifndef SILENCE
+////	HUD().pFontSmall->OutSet	(300,380);	
+////	HUD().pFontSmall->OutNext	("Health = [%f]", g_Health());
+//	
+//	
+//	if (m_tCorpse.Enemy) 
+//		if (m_tCorpse.Enemy->m_fFood >= 0) {	
+//			HUD().pFontSmall->OutSet	(300,400);	
+//			HUD().pFontSmall->OutNext	("Food = [%f]", m_tCorpse.Enemy->m_fFood);
+//		}
+///*
+//	HUD().pFontSmall->OutSet	(300,420);	
+//	HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
+//
+//	HUD().pFontSmall->OutSet	(300,440);	
+//	HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.pitch), R2D(r_torso_target.pitch));*/
+//#endif
 
-	HUD().pFontSmall->OutSet	(300,440);	
-	HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.pitch), R2D(r_torso_target.pitch));*/
-#endif
+	
+	
+	float yaw, pitch;
+	float yaw2, pitch2;
+
+	Direction().getHP(yaw,pitch);
+	Level().CurrentEntity()->Direction().getHP(yaw2,pitch2);
+	yaw = angle_normalize(yaw);
+	yaw2 = angle_normalize(yaw2);
+	
+	float Res = R2D(_abs(yaw - yaw2) < PI ? _abs(yaw - yaw2) : PI_MUL_2 - _abs(yaw - yaw2));
+
+	HUD().pFontSmall->OutSet (300,420);	
+	HUD().pFontSmall->OutNext("Current angle = [%f][%f][%f]", R2D(yaw),R2D(yaw2),Res);
+
+	if (Res > 165.f && Res < 195) HUD().pFontSmall->OutNext("CanTrade ?      YESSS");
+	else HUD().pFontSmall->OutNext("CanTrade ?      NOOO");
 
 }
 

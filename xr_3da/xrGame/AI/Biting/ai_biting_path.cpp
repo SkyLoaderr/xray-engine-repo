@@ -13,7 +13,7 @@
 
 using namespace AI_Biting;
 
-#define MIN_RANGE_SEARCH_TIME_INTERVAL	 2000		// 2 сек
+#define MIN_RANGE_SEARCH_TIME_INTERVAL	 4000		// 2 сек
 #define TIME_TO_SEARCH					60000
 #define DODGE_AMPLITUDE					.5f
 #define MAX_DODGE_DISTANCE				1.5f

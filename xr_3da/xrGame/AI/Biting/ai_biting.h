@@ -27,6 +27,7 @@ class CAI_Biting : public CCustomMonster, public CBitingAnimations
 		SND_VOICE_COUNT=2,
 	};
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	typedef struct tagCriticalAnimation {
 		bool Playing;
 		bool Started;
@@ -44,6 +45,60 @@ class CAI_Biting : public CCustomMonster, public CBitingAnimations
 
 		bool Active() {return (Playing || Started);}
 	}_TCA;
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	typedef struct tagCriticalAction {
+		
+		struct State {
+			AI_Biting::EActionAnim		Action;
+			AI_Biting::EPostureAnim		Posture;
+			float						speed;
+			float						r_speed;
+			float						yaw;
+			u32							time;
+		};
+
+		bool Playing;
+		bool Started;						// true, если новое состо€ние готово к выполнению
+		bool Finished;
+										
+		xr_vector<State>::iterator it;		// указатель на текущий элемент
+		xr_vector<State> States;
+
+		void Init() {
+			States.clear();
+			it = 0;
+			Playing = Started = Finished = false;
+		}
+		void Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, u32 t, float y = 0, float r_s = 0, float s = 0) {
+			State tS;
+			tS.Posture = p;  tS.Action = a; tS.time = t; tS.yaw = y; tS.r_speed = r_s; tS.speed = s;
+
+			States.push_back(tS);
+		}   
+
+		// ѕерейти в следующее состо€ние, иначе завершить
+		void Switch() {			
+			Started = true;
+			if (!it) it = States.begin();
+			else {
+				it++; 
+				if (it != States.end()) Started = true;	
+				else Finish();
+			}
+		}
+		
+		void Finish() {
+			Init(); Finished = true;
+		}
+		void Cycle(u32 cur_time) {
+			if (cur_time > it->time) Switch();
+		}
+		bool Active() {return (Playing || Started);}
+
+	}_TCAction;
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 public:
 
@@ -116,7 +171,8 @@ private:
 			void			SelectCorp						(SEnemySelected& S);
 			float			CorpHeuristics					(CEntity* E);
 
-			
+
+			void			DoDamage						(CEntity *pEntity);
 
 // members
 public:
@@ -134,6 +190,8 @@ public:
 	bool					bStartPlayDeath;
 	
 	_TCA					_CA;
+	_TCAction				_CAction;
+
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
@@ -284,4 +342,10 @@ private:
 
 	u32						m_dwPointCheckLastTime;
 	u32						m_dwPointCheckInterval;
+
+	u32						m_AttackLastTime;			// последнее врем€ аттаки
+	u32						m_AttackInterval;
+	Fvector					m_AttackLastPosition;		// последн€€ позици€ врага во врем€ аттаки
+
+
 };

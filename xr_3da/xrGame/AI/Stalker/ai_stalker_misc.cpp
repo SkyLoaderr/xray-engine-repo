@@ -353,7 +353,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
 		if (0 == (getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
 			continue;
-		if ((E || F || G) && (true == (H = !!getAI().pfExpediency.dwfGetDiscreteValue(2))))
+		if ((E || F || G) && (true == (H = !!getAI().pfExpediency->dwfGetDiscreteValue(2))))
 			break;
 		else
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)

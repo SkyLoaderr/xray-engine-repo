@@ -49,9 +49,17 @@ void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 }
 #endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTrader
 ////////////////////////////////////////////////////////////////////////////
+
+CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
+{
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+		set_visual				(pSettings->r_string(caSection,"visual"));
+}
+
 void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);

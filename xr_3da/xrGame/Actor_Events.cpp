@@ -86,7 +86,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 			
-			if(m_inventory.Drop(dynamic_cast<CGameObject*>(O))) {
+			if (m_inventory.Drop(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(0);
 				feel_touch_deny(O,2000);
 			}

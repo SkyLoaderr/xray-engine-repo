@@ -12,6 +12,7 @@
 #include "..\\ai_selector_template.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
+#include "..\\..\\inventory.h"
 
 //#define LOG_PARAMETERS
 

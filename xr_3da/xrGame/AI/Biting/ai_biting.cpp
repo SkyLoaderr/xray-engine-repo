@@ -102,6 +102,13 @@ void CAI_Biting::Init()
 	m_dwPointCheckInterval			= 1500;
 	
 	m_dwActionIndex					= 0;
+
+	m_AttackLastTime				= 0;			
+	m_AttackInterval				= 500;
+	m_AttackLastPosition.set		(0,0,0);		
+
+
+	_CAction.Init();
 }
 
 void CAI_Biting::Die()

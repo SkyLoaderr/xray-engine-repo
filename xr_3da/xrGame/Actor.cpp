@@ -14,6 +14,7 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
+
 // breakpoints
 #include "..\xr_input.h"
 
@@ -27,6 +28,8 @@
 
 #include "ai_sounds.h"
 #include "ai_space.h"
+
+#include "trade.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -103,6 +106,8 @@ CActor::CActor() : CEntityAlive()
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
+
+	m_trade->UpdateInventoryOwnerInfo();
 }
 
 CActor::~CActor()

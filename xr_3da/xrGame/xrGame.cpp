@@ -18,6 +18,7 @@
 #include "ai\\zombie\\ai_zombie.h"
 #include "ai\\idol\\ai_idol.h"
 #include "ai\\biting\\ai_biting.h"
+#include "ai\\trader\\ai_trader.h"
 #include "car.h"
 #include "dummyobject.h"
 #include "customtarget.h"
@@ -567,6 +568,17 @@ public:
 	}
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Trader
+class CCC_Trader : public CConsoleCommand {
+public:
+	CCC_Trader(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		Msg("Trader test activated!!!");
+	}
+};
+
+
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
                        LPVOID lpReserved
@@ -626,6 +638,9 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,				"ai_dbg_brain",			&psAI_Flags,	aiBrain);
 		CMD3(CCC_Mask,				"ai_dbg_motion",		&psAI_Flags,	aiMotion);
 		CMD3(CCC_Mask,				"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
+
+		// Trader
+		CMD1(CCC_Trader,			"trader"				);		
 
 		// keyboard binding
 		CCC_RegisterInput			();
@@ -708,6 +723,9 @@ extern "C" {
 		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
 		case CLSID_AI_IDOL:				P = xr_new<CAI_Idol>();				break;
 		
+		// Trader
+		case CLSID_AI_TRADER:			P = xr_new<CAI_Trader>();			break;
+
 		case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
 		case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
 

@@ -11,6 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\bolt.h"
+#include "..\\..\\weapon.h"
 
 #define AI_BEST
 /**
