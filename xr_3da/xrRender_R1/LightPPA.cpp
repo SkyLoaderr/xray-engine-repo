@@ -152,7 +152,7 @@ void CLightR_Manager::render_point	()
 		VERIFY						(L->spatial.sector);
 
 		//		0. Dimm & Clip
-		float	lc_dist				= lc_COP.distance_to	(L->spatial.center);
+		float	lc_dist				= lc_COP.distance_to	(L->spatial.center) - L->spatial.radius;
 		float	lc_scale			= 1 - lc_dist/lc_limit;
 		if		(lc_scale<EPS)		continue;
 
@@ -224,7 +224,7 @@ void CLightR_Manager::render_spot	()
 		light*	L					= *it;
 
 		//		0. Dimm & Clip
-		float	lc_dist				= lc_COP.distance_to	(L->spatial.center);
+		float	lc_dist				= lc_COP.distance_to	(L->spatial.center) - L->spatial.radius;
 		float	lc_scale			= 1 - lc_dist/lc_limit;
 		if		(lc_scale<EPS)		continue;
 
