@@ -165,70 +165,94 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 
 	switch (type)
 	{
-	case M_UPDATE:	Process_update		(P,sender);	break;		// No broadcast
+	case M_UPDATE:	
+		{
+			Process_update			(P,sender);						// No broadcast
+			VERIFY					(verify_entities());
+		}break;
 	case M_SPAWN:	
 		{
 //			R_ASSERT(CL->flags.bLocal);
 			if (CL->flags.bLocal)
 				Process_spawn		(P,sender);	
+
+			VERIFY					(verify_entities());
 		}break;
-	case M_EVENT:	Process_event		(P,sender); break;	
+	case M_EVENT:	
+		{
+			Process_event			(P,sender);
+			VERIFY					(verify_entities());
+		}break;
 	case M_CL_UPDATE:
+		{
+			xrClientData* CL		= ID_to_client	(sender);
+			if (CL)	CL->net_Ready	= TRUE;
+			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
+			VERIFY					(verify_entities());
+		}break;
 	case M_CL_INPUT:
 		{
 			xrClientData* CL		= ID_to_client	(sender);
 			if (CL)	CL->net_Ready	= TRUE;
 			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
+			VERIFY					(verify_entities());
 		}break;
 	case M_GAMEMESSAGE:
 		{
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+			VERIFY					(verify_entities());
 		}break;
 	case M_CLIENTREADY:
 		{
 			xrClientData* CL		= ID_to_client(sender);
 			if (CL)	CL->net_Ready	= TRUE;
-			game->signal_Syncronize();
+			game->signal_Syncronize	();
+			VERIFY					(verify_entities());
 ///			SendConnectionData		(CL);
 //			game->OnPlayerReady		(CL->ID);			
 		}break;
 	case M_SWITCH_DISTANCE:
 		{
-			game->switch_distance(P,sender);
+			game->switch_distance	(P,sender);
+			VERIFY					(verify_entities());
 		}break;
 	case M_CHANGE_LEVEL:
 		{
 			if (game->change_level(P,sender))
 				SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			VERIFY					(verify_entities());
 		}break;
 	case M_SAVE_GAME:
 		{
 			game->save_game			(P,sender);
+			VERIFY					(verify_entities());
 		}break;
 	case M_LOAD_GAME:
 		{
 			game->load_game			(P,sender);
 			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+			VERIFY					(verify_entities());
 		}break;
 	case M_RELOAD_GAME:
 		{
 			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+			VERIFY					(verify_entities());
 		}break;
 	case M_SAVE_PACKET:
 		{
-			Process_save		(P,sender);
+			Process_save			(P,sender);
+			VERIFY					(verify_entities());
 		}break;
-
-
 	}
 
-	VERIFY						(verify_entities());
+	VERIFY							(verify_entities());
 
-	csPlayers.Leave				();
+	csPlayers.Leave					();
 
-	return 0;
+	return							(0);
 }
-void			xrServer::SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
+
+void xrServer::SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
 	if (SV_Client && SV_Client->ID==ID)
 	{
