@@ -75,7 +75,6 @@ function act_state_mgr_animation_start:__init(name, st) super (nil, name)
 end
 function act_state_mgr_animation_start:initialize()
 	action_base.initialize(self)
-	printf("111")
 	self.st.animation:set_state(state_lib.states[self.st.target_state].animation)
 end
 function act_state_mgr_animation_start:execute()
@@ -91,7 +90,6 @@ function act_state_mgr_animation_reset:__init(name, st) super (nil, name)
 end
 function act_state_mgr_animation_reset:initialize()
 	action_base.initialize(self)
-	printf("444")
 	self.st.animation:set_state(state_lib.states[self.st.target_state].animation, true)
 	self.st.reset_state = false
 end
@@ -108,7 +106,6 @@ function act_state_mgr_animation_stop:__init(name, st) super (nil, name)
 end
 function act_state_mgr_animation_stop:initialize()
 	action_base.initialize(self)
-	printf("222")
 	self.st.animation:set_state(nil)
 end
 function act_state_mgr_animation_stop:execute()
