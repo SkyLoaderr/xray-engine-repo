@@ -468,11 +468,13 @@ function loadStates(gname, type)
 			end
 		
 			for k,v in gulag.Object do
+				printf	("before stalker %s asked for the enemy",v:name())
 				enemy = v:best_enemy()
+				printf	("after stalker %s asked for the enemy",v:name())
 				if enemy ~= nil then
 --					level.check_object(enemy)
 --					printf("%s",enemy:name())
-					printf	("stalker %s asked for the enemy",v:name())
+					printf	("stalker %s asked for the enemy clsid",v:name())
 					enemy_type = get_clsid(enemy)
 					if enemy_type == clsid.actor or
 	  	   			   enemy_type == clsid.soldier or
