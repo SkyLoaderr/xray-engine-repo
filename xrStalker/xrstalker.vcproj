@@ -167,6 +167,9 @@
 					RelativePath=".\Config\creatures\m_stalker.ltx">
 				</File>
 				<File
+					RelativePath=".\config\creatures\M_tushkano.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\creatures\M_Zombie.ltx">
 				</File>
 				<File
