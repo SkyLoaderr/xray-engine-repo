@@ -2,6 +2,8 @@
 
 #include "WaveForm.h"
 
+class	ENGINE_API	CStream;
+
 class	ENGINE_API	CMatrix
 {
 public:
@@ -85,4 +87,6 @@ public:
 			return;
 		}
 	}
+
+	void Load(CStream* fs);
 };
