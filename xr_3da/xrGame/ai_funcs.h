@@ -77,7 +77,6 @@ private:
 	}
 	
 	float		ffEvaluate();
-	void		vfReadEFHeader(FILE *fFile, SEFHeader &tEFHeader);
 
 public:
 	

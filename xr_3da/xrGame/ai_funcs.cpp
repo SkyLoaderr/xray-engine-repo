@@ -45,12 +45,6 @@ CPatternFunction::~CPatternFunction()
 	_FREE(m_dwaVariableValues);
 }
 
-
-void CPatternFunction::vfReadEFHeader(FILE *fFile, SEFHeader &tEFHeader)
-{
-	fread(&tEFHeader,1,sizeof(SEFHeader),fFile);
-}
-	
 void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
 	FILE *fTestParameters = fopen(caFileName,"rb");
@@ -59,7 +53,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 		return;
 	}
 	
-	vfReadEFHeader(fTestParameters,m_tEFHeader);
+	fread(&m_tEFHeader,1,sizeof(SEFHeader),fTestParameters);
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
 		fclose(fTestParameters);
 		Msg("EvaluationFunction (%s): Not supported version of the Evaluation Function Contructor",caFileName);
