@@ -447,15 +447,23 @@ void	R_dsgraph_structure::r_dsgraph_render_distort	()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// sub-space rendering
+// sub-space rendering - shortcut to render with frustum extracted from matrix
 void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
+{
+	CFrustum	temp;
+	temp.CreateFromMatrix			(mCombined,	FRUSTUM_P_ALL);
+	r_dsgraph_render_subspace		(_sector,&temp,mCombined,_cop,_dynamic);
+}
+
+// sub-space rendering - main procedure
+void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, CFrustum* _frustum, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
 {
 	VERIFY							(_sector);
 	RImplementation.marker			++;			// !!! critical here
 
-	// Save and build _new frustum, disable HOM
+	// Save and build new frustum, disable HOM
 	CFrustum	ViewSave			= ViewBase;
-	ViewBase.CreateFromMatrix		(mCombined,	FRUSTUM_P_ALL);
+	ViewBase						= *_frustum;
 	View							= &ViewBase;
 
 	// Traverse sector/portal structure
@@ -484,10 +492,6 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fm
 			STYPE_RENDERABLE,
 			ViewBase
 			);
-
-		// Exact sorting order (front-to-back)
-		// lstRenderables.swap				(g_SpatialSpace->q_result);
-		// std::sort						(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)

@@ -181,6 +181,10 @@ void CRender::Render		()
 	LP_normal.sort			();
 	LP_pending.sort			();
 
+	// Wall marks
+	Target.phase_wallmarks					();
+	Wallmarks->Render						();				// wallmarks has priority as normal geometry
+
 	// Update incremental shadowmap-visibility solver
 	{
 		for (u32 it=0; it<Lights_LastFrame.size(); it++)
@@ -188,9 +192,8 @@ void CRender::Render		()
 		Lights_LastFrame.clear	();
 	}
 
-	// Wall marks
-	Target.phase_wallmarks					();
-	Wallmarks->Render						();				// wallmarks has priority as normal geometry
+	// Directional light - fucking sun
+	render_sun								();
 
 	// Lighting, non dependant on OCCQ
 	Target.phase_accumulator				();
@@ -215,7 +218,6 @@ void CRender::Render		()
 	render_lights							(LP_pending);
 
 	// Postprocess
-	// Target.phase_bloom					();
 	Target.phase_combine					();
 
 	//******* Main render - second order geometry (the one, that doesn't support deffering)
