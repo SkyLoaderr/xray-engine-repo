@@ -36,6 +36,7 @@ RAPID::Model			Level;
 Fbox					LevelBB;
 CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
+DetailSlot*				dtS;
 
 //-----------------------------------------------------------------
 #define HEMI1_LIGHTS	26
@@ -101,6 +102,9 @@ void xrLoad(LPCSTR name)
 		dtFS				= new CVirtualFileStreamRW(N);
 		dtFS->ReadChunk		(0,&dtH);
 		R_ASSERT			(dtH.version==DETAIL_VERSION);
+
+		dtFS->FindChunk		(2);
+		dtS					= (DetailSlot*)dtFS->Pointer();
 	}
 	
 	// Load lights
@@ -250,52 +254,102 @@ public:
 
 		vector<R_Light>	Lights = g_lights;
 
-		Fvector			P,D,PLP;
-		D.set			(0,1,0);
-		float coeff		= 0.5f*DETAIL_SLOT_SIZE/float(LIGHT_Count);
-		
 		LSelection		Selected;
-		float			LperN	= float(g_lights.size());
-		for (DWORD i=Nstart; i<Nend; i++)
+		for (DWORD _z=Nstart; _z<Nend; _z++)
 		{
-			Node& N = g_nodes[i];
-			
-			// select lights
-			Selected.clear();
-			for (DWORD L=0; L<Lights.size(); L++)
+			for (DWORD _x=0; _x<dtH.size_x; _x++)
 			{
-				R_Light&	R = g_lights[L];
-				if (R.type==LT_DIRECT)	Selected.push_back(&R);
-				else {
-					float dist = N.Pos.distance_to(R.position);
-					if (dist-g_params.fPatchSize < R.range)
-						Selected.push_back(&R);
-				}
-			}
-			LperN = 0.9f*LperN + 0.1f*float(Selected.size());
-			
-			// lighting itself
-			float amount=0;
-			for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
-			{
-				P.x = N.Pos.x + coeff*float(x);
-				for (int z=-LIGHT_Count; z<=LIGHT_Count; z++) 
+				DetailSlot&	DS = dtS[_z*dtH.size_x+_x];
+
+				if ((DS.items[0].id==0xff)&&(DS.items[1].id==0xff)&&(DS.items[2].id==0xff)&&(DS.items[3].id==0xff))
+					continue;
+
+				// Build slot BB & sphere
+				int slt_z = int(_z)-int(dtH.offs_z);
+				int slt_x = int(_x)-int(dtH.offs_x);
+				
+				Fbox		BB;
+				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.y_min,	slt_z*DETAIL_SLOT_SIZE);
+				BB.max.set	(BB.min.x+DETAIL_SLOT_SIZE,	DS.y_max,	BB.min.z+DETAIL_SLOT_SIZE);
+				BB.grow		(EPS_L);
+				
+				Fsphere		S;
+				BB.getsphere(S.P,S.R);
+				
+				// Select polygons
+				Fmatrix				ident; ident.identity();
+				DB.BBoxMode			(0); // BBOX_TRITEST
+				DB.BBoxCollide		(ident,&Level,ident,BB);
+				DWORD	triCount	= DB.GetBBoxContactCount	();
+				if (0==triCount)	continue;
+				RAPID::tri* tris	= Level.GetTris();
+				
+				// select lights
+				Selected.clear();
+				for (DWORD L=0; L<Lights.size(); L++)
 				{
-					// compute position
-					P.z = N.Pos.z + coeff*float(z);
-					P.y = N.Pos.y;
-					N.Plane.intersectRayPoint(P,D,PLP);	// "project" position
-					P.y = PLP.y;
-					
-					// light point
-					amount += LightPoint(DB,P,N.Plane.n,Selected);
+					R_Light&	R = g_lights[L];
+					if (R.type==LT_DIRECT)	Selected.push_back(&R);
+					else {
+						float dist = S.P.distance_to(R.position);
+						if ((dist - S.R) < R.range)	Selected.push_back(&R);
+					}
 				}
+				
+				// lighting itself
+				float amount	= 0;
+				float coeff		= 0.5f*DETAIL_SLOT_SIZE/float(LIGHT_Count);
+				DWORD count		= 0;
+				for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
+				{
+					Fvector		P;
+					P.x			= S.P.x + coeff*float(x);
+
+					for (int z=-LIGHT_Count; z<=LIGHT_Count; z++) 
+					{
+						// compute position
+						Fvector t_n;  t_n.set(0,1,0);
+						P.z			= S.P.z + coeff*float(z);
+						P.y			= BB.max.y;
+						float y		= BB.min.y-5;
+						Fvector	dir; dir.set(0,-1,0);
+						
+						float		r_u,r_v,r_range;
+						for (DWORD tid=0; tid<triCount; tid++)
+						{
+							RAPID::tri&	T		= tris[DB.BBoxContact[tid].id];
+							if (RAPID::TestRayTri(P,dir,T.verts,r_u,r_v,r_range,TRUE))
+							{
+								if (r_range>=0)	{
+									float y_test	= P.y - r_range;
+									if (y_test>y)	{
+										y = y_test;
+										t_n.mknormal(*T.verts[0],*T.verts[1],*T.verts[2]);
+									}
+								}
+							}
+						}
+						if (y<BB.min.y)	continue;
+						P.y		= y;
+						count	++;
+						
+						// light point
+						amount	+= LightPoint(DB,P,t_n,Selected);
+					}
+				}
+				
+				// calculation of luminocity
+				int LightLevel	= iFloor(15.f*amount/float(LIGHT_Total)+.5f);
+				clamp(LightLevel,0,15);
+				
+				DetailPalette* dc = (DetailPalette*)&DS.color;
+				dc->a0			= LightLevel;
+				dc->a1			= LightLevel;
+				dc->a2			= LightLevel;
+				dc->a3			= LightLevel;
+
+				thProgress		= float(_z-Nstart)/float(Nend-Nstart);
 			}
-			
-			// calculation of luminocity
-			N.LightLevel	= amount/float(LIGHT_Total);
-			
-			thProgress		= float(i-Nstart)/float(Nend-Nstart);
 		}
 	}
 };
@@ -303,16 +357,19 @@ public:
 #define NUM_THREADS	8
 void	xrLight			()
 {
+	DWORD	range			= dtH.size_z;
+
 	// Start threads, wait, continue --- perform all the work
-	DWORD	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= g_nodes.size()/NUM_THREADS;
-	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
+	DWORD	start_time		= timeGetTime();
+	DWORD	stride			= range/NUM_THREADS;
+	DWORD	last			= range-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
+	/*
 	// Smooth
 	Status("Smoothing lighting...");
 	for (int pass=0; pass<3; pass++) {
@@ -335,6 +392,7 @@ void	xrLight			()
 			clamp(Dest.LightLevel,0.f,1.f);
 		}
 	}
+	*/
 }
 
 void xrCompiler(LPCSTR name)
@@ -344,4 +402,6 @@ void xrCompiler(LPCSTR name)
 
 	Phase("Lighting nodes...");
 	xrLight		();
+
+	if (dtFS)	_DELETE(dtFS);
 }
