@@ -107,11 +107,13 @@ function action_follow:__init (name, storage) super (nil, name)
     self.vertex_id = nil
     self.index = nil
     self.state = 0 -- 0 - идем, 1 - стоим
+    self.st.signals = {}
+    self.st.signals["leader_section_changed"] = false
+    self.st.signals["leader_dead"] = false
 end
 --------
 function action_follow:initialize ()
     action_base.initialize (self)
-    self.st.signals = {}
     self.st.signals["leader_section_changed"] = false
     self.st.signals["leader_dead"] = false
 end
