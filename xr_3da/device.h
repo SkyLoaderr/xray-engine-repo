@@ -101,6 +101,7 @@ public:
 
 	// Mode control
 	void DumpFlags							();
+	IC CTimer* GetTimerGlobal				(){return &TimerGlobal;}
 	u32	 TimerAsync							()
 	{
 		u64	qTime		= TimerGlobal.GetElapsed_clk();
