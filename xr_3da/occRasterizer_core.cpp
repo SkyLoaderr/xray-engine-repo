@@ -49,10 +49,10 @@ void occRasterizer::i_order	(float* A, float* B, float* C)
 }
 
 // Find the closest min/max pixels of a point
-float minPixel(float v)
-{	return ceilf(v);	}
-float maxPixel(float v)
-{	return floorf(v);	}
+int minPixel(float v)
+{	return int(ceilf(v));	}
+int maxPixel(float v)
+{	return int(floorf(v));	}
 
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
@@ -63,7 +63,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startX, float endX, 
 	float*		pDepth	= OCC->get_depth();
 
 	// guard-banding and clipping
-	float minX	= minPixel(startX), maxX = maxPixel(endX);
+	int minX	= minPixel(startX), maxX = maxPixel(endX);
 	if (minX >= occ_dim0)	return;
 	if (maxX <= 0)			return;
 	if (minX <= 0)			minX = 0;
@@ -119,22 +119,23 @@ void i_iterate	(occRasterizer* OCC, occTri* T, int startY, int endY, float leftX
 void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int Sect)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
-	float startY, endY, *startp1, *startp2;
+	int		startY, endY;
+	float	*startp1, *startp2;
 	if (Sect == BOTTOM) { 
 		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
 		startp1 = startp2 = A;
 		
 		// check 'endY' for out-of-tiangle 
-		float test = maxPixel(C[1]);
-		if (int(endY)>=int(test)) endY --;
+		int test = maxPixel(C[1]);
+		if (endY>=test) endY --;
 	}
 	else { 
 		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
 		startp1 = A; startp2 = B;
 		
 		// check 'startY' for out-of-tiangle 
-		float test = minPixel(A[1]);
-		if (int(startY)<int(test)) startY ++;
+		int test = minPixel(A[1]);
+		if (startY<test) startY ++;
 	}
 	if (startY > endY) return;
 	
