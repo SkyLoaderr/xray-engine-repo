@@ -19,7 +19,7 @@
  * LICENSE.TXT and LICENSE-BSD.TXT for more details.                     *
  *                                                                       *
  *************************************************************************/
- 
+
 #include <ode/config.h>
 #include <ode/memory.h>
 #include <ode/error.h>

@@ -1255,21 +1255,14 @@ static void contactGetInfo2 (dxJointContact *j, dxJoint::Info2 *info)
   dReal erp = info->erp;
   if (j->contact.surface.mode & dContactSoftERP)
     erp = j->contact.surface.soft_erp;
-  
   dReal k = info->fps * erp;
-  //////////////////////////////new version/////////////////////
   dReal depth = j->contact.geom.depth - j->world->contactp.min_depth;
   if (depth < 0) depth = 0;
   dReal maxvel = j->world->contactp.max_vel;
   if (k*depth > maxvel) info->c[0] = maxvel; else info->c[0] = k*depth;
   if (j->contact.surface.mode & dContactSoftCFM)
-  info->cfm[0] = j->contact.surface.soft_cfm;
-  ///////////////////////////////////////////////////////
-  ///////////////old version///////////////////////////
-//	info->c[0]=k*j->contact.geom.depth;
-//	if (j->contact.surface.mode & dContactSoftCFM)
-//		info->cfm[0]=j->contact.surface.soft_cfm;
-/////////////////////////////////////////
+    info->cfm[0] = j->contact.surface.soft_cfm;
+
   // deal with bounce
   if (j->contact.surface.mode & dContactBounce) {
     // calculate outgoing velocity (-ve for incoming contact)
