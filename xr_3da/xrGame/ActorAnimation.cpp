@@ -242,6 +242,13 @@ void CActor::steer_Vehicle(float angle)
 	else				smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(anims.steer_left);
 }
 
+void legs_play_callback		(CBlend *blend)
+{
+	CActor					*object = (CActor*)blend->CallbackParam;
+	VERIFY					(object);
+	object->m_current_legs	= 0;
+}
+
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (g_Alive())
@@ -344,7 +351,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			m_current_torso=M_torso;
 		}
 		if (m_current_legs!=M_legs){
-			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs);
+			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
 			m_current_legs=M_legs;
 		}
 
