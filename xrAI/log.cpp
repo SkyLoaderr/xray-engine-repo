@@ -57,6 +57,15 @@ static VOID _process_messages(VOID)
 	}
 }
 
+string make_time(DWORD sec)
+{
+	char buf[64];
+	sprintf(buf,"%2.0d:%2.0d:%2.0d",sec/3600,(sec%3600)/60,sec%60);
+	int len = strlen(buf);
+	for (int i=0; i<len; i++) if (buf[i]==' ') buf[i]='0';
+	return string(buf);
+}
+
 void __cdecl Status	(const char *format, ...)
 {
 	EnterCriticalSection(&csLog);
@@ -125,15 +134,6 @@ void LOut(const char *s) {
 
 	LeaveCriticalSection(&csLog);
 };
-
-string make_time(DWORD sec)
-{
-	char buf[64];
-	sprintf(buf,"%2.0d:%2.0d:%2.0d",sec/3600,(sec%3600)/60,sec%60);
-	int len = strlen(buf);
-	for (int i=0; i<len; i++) if (buf[i]==' ') buf[i]='0';
-	return string(buf);
-}
 
 HWND logWindow=0;
 void __cdecl logThread(void *dummy)
