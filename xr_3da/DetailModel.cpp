@@ -4,9 +4,6 @@
    
 void CDetail::Load		(CStream* S)
 {
-	DWORD			aaa		= 0xf0f0f0f0;
-	DWORD			a		= color_get_A_(aaa);
-
 	// Shader
 	FILE_NAME		fnT,fnS;
 	S->RstringZ		(fnS);
