@@ -93,12 +93,12 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 	EntityVec	Members;
 	if (!tpEntity)
 		for (int k=0; k<(int)Group.Members.size(); ++k) {
-			if (Group.Members[k]->g_Alive())
+			if (Group.Members[k]->g_Alive() && ((Group.Members[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
 				Members.push_back(Group.Members[k]);
 		}
 	else
 		for (int k=0; k<(int)Group.Members.size(); ++k) {
-			if (Group.Members[k]->g_Alive())
+			if (Group.Members[k]->g_Alive() && ((Group.Members[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
 				if (tpEntity->Position().distance_to(Group.Members[k]->Position()) < fGroupDistance)
 					Members.push_back(Group.Members[k]);
 		}

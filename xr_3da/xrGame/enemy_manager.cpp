@@ -18,6 +18,9 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if (!entity_alive->g_Alive())
 		return				(false);
 
+	if ((entity_alive->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
+		return				(false);
+
 	return					(true);
 }
 

@@ -76,7 +76,7 @@ bool CAbstractObjectManager::useful					(const T *object) const
 	if (!self)
 		return				(false);
 
-	if ((self->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
+	if ((object->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
 		return				(false);
 
 	return					(true);
