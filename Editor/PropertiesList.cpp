@@ -52,17 +52,43 @@ __fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
+TfrmProperties* TfrmProperties::CreateProperties	(TWinControl* parent, TAlign align)
+{
+	TfrmProperties* props = new TfrmProperties(parent);
+    if (parent){
+		props->Parent = parent;
+    	props->Align = align;
+	    props->BorderStyle = bsNone;
+        props->ShowProperties();
+    }
+	return props;
+}
+
+void TfrmProperties::DestroyProperties(TfrmProperties* props)
+{
+	VERIFY(props);
+	props->Close();
+}
 void __fastcall TfrmProperties::ShowProperties(){
 	Show();
 }
 
 void __fastcall TfrmProperties::HideProperties(){
-	Close();
+	Hide();
 }
 
 void __fastcall TfrmProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+	for (TElTreeItem* node=tvProperties->Items->GetFirstNode(); node; node=node->GetNext()){
+    	DWORD type = (DWORD)node->Tag;
+        LPVOID P=0;
+        switch(type){
+	    case PROP_FLOAT:	P = node->ColumnText->Objects[0]; delete (FParam*)P; break;
+    	case PROP_INTEGER:	P = node->ColumnText->Objects[0]; delete (IParam*)P; break;
+        }
+    }
+
 	Action = caFree;
     _DELETE(m_BMEllipsis);
 }
@@ -101,8 +127,8 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_FLAG:		CS->CellType = sftUndef;	TI->ColumnText->AddObject (BOOLString[!!((*value)&(DWORD)param)],(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
     case PROP_TOKEN:	CS->CellType = sftUndef;	TI->ColumnText->AddObject (GetToken2((xr_token*)param,*value),(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
     case PROP_MARKER:	CS->CellType = sftUndef;	break;
-    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->Add	(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000));  break;
-    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->Add	(AnsiString(*((int*)value)));  break;
+    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject (AnsiString(double(iFloor(double(*(float*)value)*10000))/10000),(TObject*)param); break;
+    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->AddObject (AnsiString(*((int*)value)),(TObject*)param);  break;
     case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add	((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
     case PROP_EXEC:		CS->CellType = sftUndef; 	TI->ColumnText->AddObject ("...",(TObject*)param); CS->Style = ElhsOwnerDraw; break;
@@ -127,12 +153,17 @@ void __fastcall TfrmProperties::InplaceFloatBeforeOperation(
       TObject *Sender, bool &DefaultConversion)
 {
 	TElFloatSpinEdit* E = InplaceFloat->Editor;
-	if (PROP_FLOAT==InplaceFloat->Item->Tag){
+	FParam* P = (FParam*)InplaceFloat->Item->ColumnText->Objects[0];
+	VERIFY(PROP_FLOAT==InplaceFloat->Item->Tag);
+    if (P){
+        E->MinValue = P->lim_mn;
+        E->MaxValue = P->lim_mx;
+    }else{
         E->MinValue = 0.;
-        E->MaxValue = 1.;
-        E->Increment= 0.01;
-        E->LargeIncrement = E->Increment*10;
+        E->MaxValue = 0.;
     }
+    E->Increment= 0.01;
+    E->LargeIncrement = E->Increment*10;
 }
 //---------------------------------------------------------------------------
 
@@ -151,8 +182,15 @@ void __fastcall TfrmProperties::InplaceNumberBeforeOperation(
       TObject *Sender, bool &DefaultConversion)
 {
 	TElSpinEdit* E = InplaceNumber->Editor;
-//    E->MinValue = P->min;
-//    E->MaxValue = P->max;
+	IParam* P = (IParam*)InplaceNumber->Item->ColumnText->Objects[0];
+	VERIFY(PROP_INTEGER==InplaceFloat->Item->Tag);
+    if (P){
+        E->MinValue = P->lim_mn;
+        E->MaxValue = P->lim_mx;
+    }else{
+        E->MinValue = 0.;
+        E->MaxValue = 0.;
+    }
     E->Increment= 1;
     E->LargeIncrement = E->Increment*10;
 }

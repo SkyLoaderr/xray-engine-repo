@@ -39,6 +39,17 @@
 #ifdef _LEVEL_EDITOR
  #include "CustomObject.h"
 #endif
+struct IParam{
+	int lim_mn;
+    int lim_mx;
+    IParam(int mn, int mx):lim_mn(mn),lim_mx(mx){;}
+};
+
+struct FParam{
+	float lim_mn;
+    float lim_mx;
+    FParam(float mn, float mx):lim_mn(mn),lim_mx(mx){;}
+};
 //---------------------------------------------------------------------------
 class TfrmProperties : public TForm
 {
@@ -78,6 +89,8 @@ public:		// User declarations
 #ifdef _LEVEL_EDITOR
     int  __fastcall ShowPropertiesModal		(ObjectList& lst);
 #endif
+	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone);
+	static void 	DestroyProperties		(TfrmProperties* props);
     void __fastcall ShowProperties			();
     void __fastcall HideProperties			();
     void __fastcall Clear					();
@@ -86,6 +99,8 @@ public:		// User declarations
     void __fastcall BeginFillMode			(const AnsiString& title="Properties");
     void __fastcall EndFillMode				();
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
+    static FParam*	GetFParam				(float mn, float mx){ return new FParam(mn,mx); }
+    static IParam*	GetIParam				(float mn, float mx){ return new IParam(mn,mx); }
 };
 //---------------------------------------------------------------------------
 
@@ -100,6 +115,8 @@ public:		// User declarations
 #define PROP_COLOR		0x1008
 #define PROP_TEXT		0x1009
 #define PROP_EXEC		0x1010
+#define PROP_SHADER		0x1011
+#define PROP_TEXTURE	0x1012
 
 typedef void PROP_EXEC_CB(LPDWORD p1);
 //---------------------------------------------------------------------------
