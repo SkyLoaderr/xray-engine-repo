@@ -39,6 +39,11 @@
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>mil_flash_ugrumy</text>
     </article>
+    
+    <article id="mil_courier_doc" name="Courier document" group="Diary">
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+        <text>mil_courier_doc</text>
+    </article>
 
     <article id="mil_flash_bandit" name="Bandit flash" group="Diary">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>

@@ -52,5 +52,20 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+	
+	<game_task id="mil_courier_job">
+		<title>mil_intersept_courier</title>
+		<objective>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_intersept_courier</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_finalize_quest2</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
 
 </game_tasks_data>

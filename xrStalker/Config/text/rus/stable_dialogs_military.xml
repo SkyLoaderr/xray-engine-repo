@@ -151,7 +151,79 @@
         <text>Снайпера я не убил, а вот Лукаша...</text>
     </string>
     <string id="mil_dolg_dialog_9001">
-        <text>Ты  завалил Лукаша ?!! Ну ты даешь ! Спасибо, братан.</text>
+        <text>Ты завалил Лукаша ?!! Ну ты даешь ! Спасибо, братан.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1001">
+        <text>Привет, сталкер. Что, захотел к нам присоединиться ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_1100">
+        <text>А каковы ваши задачи ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_1101">
+        <text>Задачи наши просты - дать возможность людям узнать о Зоне и обо всем, что здесь творится. Об экспериментах военных над людьми и животными, о том, как Зона стала Зоной. Всегда есть кому нам мешать - те же военные, ученые, братва из группировки "Долг". Ты с нами ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_1102">
+        <text>Я подумаю.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1103">
+        <text>Ну думай...</text>
+    </string>
+    <string id="mil_leader_start_dialog_1200">
+        <text>Да, я с вами. Будут какие-то проверки ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_1210">
+        <text>Естественно, мы должны тебя проверить в деле. Итак - первая задача. Рядом с базой, на хуторе окопались парни из "Долга", грохнули наш патруль. Их нужно оттуда выкурить. Дуй к Максу, он на площадке ребят собирает и идите займитесь этой проблемой. Как закончите - подойдешь ко мне - продолжим разговор.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1211">
+        <text>Уже в пути.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1212">
+        <text>Удачи.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1221">
+        <text>Я уже с ними разобрался.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1222">
+        <text>Ну, ты даешь.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1223">
+        <text>Так получилось...</text>
+    </string>
+    <string id="mil_leader_start_dialog_1224">
+        <text>Итак - задача выполнена. Неплохо. Теперь слушай следующее. Мне сообщили, что со стороны Радара к Мертвому городу будет идти курьер "Долга" с какими-то документами для наемников. Судя по всему - его будут встречать на хуторе, возле прохода к Мертвому городу, так что смотри - осторожнее. Можешь перехватить его по пути. Если он уйдет, то все - документы мы получить не сможем. Вперед - он с минуты на минуту появится.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1225">
+        <text>Ок.</text>
+    </string>
+    <string id="mil_leader_start_dialog_1226">
+        <text>Торопись.</text>
+    </string>
+    <string id="mil_leader_start_dialog_2001">
+        <text>Я же говорю - иди к Максу.</text>
+    </string>
+    <string id="mil_leader_start_dialog_3001">
+        <text>Итак - задача выполнена. Неплохо. Теперь слушай следующее. Мне сообщили, что со стороны Радара к Мертвому городу будет идти курьер наемников с какими-то документами. Судя по всему - его будут встречать на хуторе, возле прохода к Мертвому городу, так что смотри - осторожнее. Можешь перехватить его по пути. Если он уйдет, то все - документы мы получить не сможем. Вперед - он с минуты на минуту появится.</text>
+    </string>
+    <string id="mil_leader_start_dialog_3002">
+        <text>А что может быть в этих документах ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_3003">
+        <text>Я подозреваю, что там отчеты ученых с Радара. Может быть там описание пси-установки и циклах ее работы. Мы на Радар пока не суемся, так как излучение, которое дает установка зомбирует людей. Чтобы пройти дальше нам нужно знать график ее работы, возможные варианты защиты и принципы работы.</text>
+    </string>
+    <string id="mil_leader_start_dialog_4001">
+        <text>Ты еще здесь ? Бегом ! Курьер уйдет.</text>
+    </string>
+    <string id="mil_leader_start_dialog_5001">
+        <text>Ну, ты крут. Отныне ты член группировки "Свобода". Поздравляю.</text>
+    </string>
+    <string id="mil_leader_start_dialog_5002">
+        <text>Еще работа есть ?</text>
+    </string>
+    <string id="mil_leader_start_dialog_5003">
+        <text>Пока нет.</text>
+    </string>
+    <string id="mil_leader_start_dialog_6001">
+        <text>Отдыхай. Работы пока нет.</text>
     </string>
     <string id="mil_lukash_dialog_after_0">
         <text>Как видишь. Итак, продолжим разговор об РГ6 ?</text>
@@ -224,6 +296,117 @@
     </string>
     <string id="mil_lukash_dialog_start_51">
         <text>Вали отсюда.</text>
+    </string>
+    <string id="mil_max_dialog_1001">
+        <text>Лукаш сообщил, что ты подойдешь. Ты видел эту братву на хуторе ?</text>
+    </string>
+    <string id="mil_max_dialog_1100">
+        <text>Нет.</text>
+    </string>
+    <string id="mil_max_dialog_1101">
+        <text>Хреново. Ладно, идем.</text>
+    </string>
+    <string id="mil_max_dialog_1102">
+        <text>Идем.</text>
+    </string>
+    <string id="mil_max_dialog_1200">
+        <text>Видел.</text>
+    </string>
+    <string id="mil_max_dialog_1201">
+        <text>И много их там ?</text>
+    </string>
+    <string id="mil_max_dialog_1210">
+        <text>А хрен его знает.</text>
+    </string>
+    <string id="mil_max_dialog_1220">
+        <text>Человек шесть. Неплохо экипированы.</text>
+    </string>
+    <string id="mil_max_dialog_2001">
+        <text>Иди к Лукашу.</text>
+    </string>
+    <string id="mil_max_dialog_3001">
+        <text>Есть вопросы ?</text>
+    </string>
+    <string id="mil_max_dialog_3002">
+        <text>Да. Лукаш поставил задачу - перехватить курьера "Долга" по пути с Радара в Мертвый город. Не поскажешь, где лучше это сделать ?</text>
+    </string>
+    <string id="mil_max_dialog_3003">
+        <text>Хм. Лучше его перехватить до того, как он дойдет до хутора у прохода на Мертвый город. Там его явно будут ждать и ты вряд ли справишься. Да и через деревню идти надо будет, а там лучше не показываться. Двигай восточнее деревни и быстрее.</text>
+    </string>
+    <string id="mil_max_dialog_3004">
+        <text>А что там в деревне ?</text>
+    </string>
+    <string id="mil_max_dialog_3005">
+        <text>Поверь - ничего хорошего. Тварей много лазит, аномалий тоже хватает. Потом расскажу.</text>
+    </string>
+    <string id="mil_max_dialog_4001">
+        <text>Тебя можно поздравить ?</text>
+    </string>
+    <string id="mil_max_dialog_4002">
+        <text>Можно.</text>
+    </string>
+    <string id="mil_max_dialog_4003">
+        <text>Ты себя неплохо проявил. Не сделаешь ли для меня одну работенку ?</text>
+    </string>
+    <string id="mil_max_dialog_4004">
+        <text>Какой мне в этом интерес ?</text>
+    </string>
+    <string id="mil_max_dialog_4005">
+        <text>В обмен я тебе подскажу место, где можно взять гранатомет типа РГ6.</text>
+    </string>
+    <string id="mil_max_dialog_4006">
+        <text>И что я должен сделать ?</text>
+    </string>
+    <string id="mil_max_dialog_4007">
+        <text>Тут на болоте засел один парень, из наших. У него сорвало крышу после похода в деревню и к нему никто не может подобраться. Отчасти из-за того, что он обстреливает всех, кого видит. Отчасти из-за того, что вокруг его болота есть старое минное поле. Этот парень может знать, что случилось с моим корешем, с которым они ходили в деревню. Этот безбашенный - единственный, кто остался в живых.</text>
+    </string>
+    <string id="mil_max_dialog_4008">
+        <text>А сам чего не сходишь ?</text>
+    </string>
+    <string id="mil_max_dialog_4009">
+        <text>Лукаш запретил к нему соваться - людей и так мало.</text>
+    </string>
+    <string id="mil_max_dialog_4010">
+        <text>Ну, что же. Схожу пожалуй...</text>
+    </string>
+    <string id="mil_max_dialog_4011">
+        <text>Да, нафиг - жизнь дороже.</text>
+    </string>
+    <string id="mil_max_dialog_4012">
+        <text>Как знаешь...</text>
+    </string>
+    <string id="mil_max_dialog_4020">
+        <text>Тогда - удачи.</text>
+    </string>
+    <string id="mil_max_dialog_4100">
+        <text>Да ну его.</text>
+    </string>
+    <string id="mil_max_dialog_4101">
+        <text>Ну, как хочешь...</text>
+    </string>
+    <string id="mil_max_dialog_4200">
+        <text>Вот флешка, я ее взял у безумца.</text>
+    </string>
+    <string id="mil_max_dialog_4201">
+        <text>Ну, спасибо, братан. А насчет гранатомета... В деревне, в одном из домов лежит в подвале РГ6 и несколько зарядов. Ты мужик шустрый - прорвешься. Только не задерживайся там до ночи - ночью там вообще хрен знает что происходит. Я тебе дам наводку на ПДА - найдешь.</text>
+    </string>
+    <string id="mil_max_dialog_4202">
+        <text>Ну, ты даешь... Местечко же выбрал. Ладно.</text>
+    </string>
+    <string id="mil_max_dialog_4203">
+        <text>Еще раз, спасибо.</text>
+    </string>
+    <string id="mil_max_dialog_5001">
+        <text>Как дела ?</text>
+    </string>
+    <string id="mil_max_dialog_5002">
+        <text>Вот твоя флешка.</text>
+    </string>
+    <string id="mil_max_dialog_6001">
+        <text>Что, уже ?</text>
+    </string>
+    <string id="mil_max_dialog_7001">
+        <text>Что ты хочешь знать ?</text>
     </string>
     <string id="mil_max_dialog_common1_0">
         <text>У вас тут база ?</text>
@@ -394,37 +577,37 @@
         <text>Здорово, брат.</text>
     </string>
     <string id="mil_zoneguard_dialog_10">
-        <text>Тамбовский волк тебе брат. Это территория "Свободы" и чужих здесь не любят. Что надо ?\n</text>
+        <text>Тебе того же. Что тебя сюда привело ?\n</text>
     </string>
     <string id="mil_zoneguard_dialog_100">
         <text>Кто у вас тут старший ? Дело к нему есть.</text>
     </string>
     <string id="mil_zoneguard_dialog_1000">
-        <text>Старший у нас Лукаш, но сперва придется тебе идти к Максу и, если он решит, что дело стоящее, то сообщит Лукашу.\n</text>
+        <text>Старший у нас Лукаш, находится в главном здании. Но, когда в него войдешь - спрячь оружие, а то могут и пристрелить.\n</text>
     </string>
     <string id="mil_zoneguard_dialog_10000">
-        <text>А кто такой Макс ?</text>
+        <text>Чего так ?</text>
     </string>
     <string id="mil_zoneguard_dialog_100000">
-        <text>Типа бригадира нашего. Тертый мужик.</text>
+        <text>Да был прецедент - Лукаша чуть было не грохнул какой-то наемник. С тех пор и перестраховываемся.</text>
     </string>
     <string id="mil_zoneguard_dialog_1000000">
-        <text>А где его найти ?</text>
+        <text>Ясно.</text>
     </string>
     <string id="mil_zoneguard_dialog_10000000">
-        <text>Дуй к костру у барака. Он чаще всего там сидит.</text>
+        <text>Ладно, иди.</text>
     </string>
     <string id="mil_zoneguard_dialog_2">
         <text>Как служба движется ?</text>
     </string>
     <string id="mil_zoneguard_dialog_20">
-        <text>Как всегда - хреново. Иди, куда шел…</text>
+        <text>Да так себе. Не мешай...</text>
     </string>
     <string id="mil_zoneguard_dialog_3">
         <text>Как служба движется ?</text>
     </string>
     <string id="mil_zoneguard_dialog_30">
-        <text>Как всегда - хреново. Иди, куда шел…</text>
+        <text>Да так себе. Не мешай...</text>
     </string>
     <string id="mil_zoneguard_dialog_4">
         <text>Что тут за болото рядом ?</text>

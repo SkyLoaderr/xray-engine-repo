@@ -22,7 +22,7 @@
         <text>Уничтожить группу Долга.</text>
     </string>
     <string id="mil_return_lukash">
-        <text>Вернуться к Лукашу за РГ6.</text>
+        <text>Вернуться к Лукашу.</text>
     </string>
 
     <string id="mil_crazy">
@@ -52,5 +52,17 @@
     <string id="mil_dolg">
         <text>Группа "Долга".</text>
     </string>
+	
+	<string id="mil_courier">
+		<text>Курьер наемников</text>
+	</string>
+	
+	<string id="mil_intersept_courier">
+		<text>Перехватить курьера наемников и забрать у него документы</text>
+	</string>
+	
+	<string id="mil_finalize_quest2">
+		<text>Отнести документы Лукашу</text>
+	</string>
 	
 </string_table>

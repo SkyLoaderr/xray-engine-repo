@@ -15,58 +15,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_lukash_dialog_after">
-        <precondition>dialogs.dialog_allowed</precondition>
-        <has_info>mil_lukash_job_complete</has_info>
-        <has_info>mil_lukash_get_job</has_info>
-        <dont_has_info>mil_lukash_final</dont_has_info>
-        <phrase_list>
-            <phrase id="5">
-                <text>mil_lukash_dialog_first_5</text>
-            </phrase>
-            <phrase id="31">
-                <text />
-                <next>311</next>
-                <next>321</next>
-            </phrase>
-            <phrase id="311">
-                <text>mil_lukash_dialog_first_311</text>
-                <give_info>mil_lukash_go_to_max</give_info>
-                <give_info>mil_lukash_get_job</give_info>
-                <next>3111</next>
-            </phrase>
-            <phrase id="3111">
-                <text>mil_lukash_dialog_first_3111</text>
-            </phrase>
-            <phrase id="321">
-                <text>mil_lukash_dialog_first_321</text>
-                <give_info>mil_lukash_job_failed</give_info>
-                <next>3211</next>
-            </phrase>
-            <phrase id="3211">
-                <text>mil_lukash_dialog_first_3211</text>
-            </phrase>
-            <phrase id="0">
-                <text>mil_lukash_dialog_after_0</text>
-                <action>dialogs_military.set_task3_complete</action>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_lukash_dialog_after_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="411">
-                <text>mil_lukash_dialog_after_411</text>
-            </phrase>
-            <phrase id="41">
-                <text>mil_lukash_dialog_after_41</text>
-                <disable_info>mil_lukash_get_job</disable_info>
-                <disable_info>mil_lukash_job_complete</disable_info>
-                <give_info>mil_lukash_job_failed</give_info>
-                <next>411</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_max_dialog_flash">
         <has_info>mil_max_job</has_info>
         <has_info>mil_max_flash_get</has_info>
@@ -179,92 +127,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_zoneguard_dialog">
-        <phrase_list>
-            <phrase id="30">
-                <text>mil_zoneguard_dialog_30</text>
-            </phrase>
-            <phrase id="20">
-                <text>mil_zoneguard_dialog_20</text>
-            </phrase>
-            <phrase id="10000000">
-                <text>mil_zoneguard_dialog_10000000</text>
-            </phrase>
-            <phrase id="1000000">
-                <text>mil_zoneguard_dialog_1000000</text>
-                <next>10000000</next>
-            </phrase>
-            <phrase id="100000">
-                <text>mil_zoneguard_dialog_100000</text>
-                <next>1000000</next>
-            </phrase>
-            <phrase id="10000">
-                <text>mil_zoneguard_dialog_10000</text>
-                <next>100000</next>
-            </phrase>
-            <phrase id="1000">
-                <text>mil_zoneguard_dialog_1000</text>
-                <next>10000</next>
-            </phrase>
-            <phrase id="100">
-                <text>mil_zoneguard_dialog_100</text>
-                <next>1000</next>
-            </phrase>
-            <phrase id="10">
-                <text>mil_zoneguard_dialog_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="1">
-                <text>mil_zoneguard_dialog_1</text>
-                <dont_has_info>mil_zoneguard_talk</dont_has_info>
-                <dont_has_info>mil_max_talk</dont_has_info>
-                <give_info>mil_zoneguard_talk</give_info>
-                <next>10</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_zoneguard_dialog_2</text>
-                <dont_has_info>mil_zoneguard_talk</dont_has_info>
-                <has_info>mil_max_talk</has_info>
-                <next>20</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_zoneguard_dialog_3</text>
-                <dont_has_info>mil_max_talk</dont_has_info>
-                <has_info>mil_zoneguard_talk</has_info>
-                <next>30</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_zoneguard_dialog_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="41">
-                <text>mil_zoneguard_dialog_41</text>
-                <next>42</next>
-            </phrase>
-            <phrase id="42">
-                <text>mil_zoneguard_dialog_42</text>
-                <next>43</next>
-            </phrase>
-            <phrase id="43">
-                <text>mil_zoneguard_dialog_43</text>
-                <next>44</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_zoneguard_dialog_0</text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="44">
-                <text>mil_zoneguard_dialog_44</text>
-                <next>45</next>
-            </phrase>
-            <phrase id="45">
-                <text>mil_zoneguard_dialog_45</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_max_dialog_first">
         <precondition>dialogs.dialog_allowed</precondition>
         <has_info>mil_lukash_get_job</has_info>
@@ -294,137 +156,6 @@
                 <text>mil_max_dialog_first_0</text>
                 <action>dialogs_military.set_task1_complete</action>
                 <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_max_dialog_common1">
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_max_dialog_common1_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_max_dialog_common1_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_max_dialog_common1_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_max_dialog_common1_3</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_max_dialog_common2">
-        <phrase_list>
-            <phrase id="3">
-                <text>mil_max_dialog_common2_3</text>
-            </phrase>
-            <phrase id="2">
-                <text>mil_max_dialog_common2_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_max_dialog_common2_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_max_dialog_common2_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_max_dialog_common2_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="7">
-                <text>mil_max_dialog_common2_7</text>
-            </phrase>
-            <phrase id="8">
-                <text>mil_max_dialog_common2_8</text>
-                <next>80</next>
-            </phrase>
-            <phrase id="80">
-                <text>mil_max_dialog_common2_80</text>
-            </phrase>
-            <phrase id="1">
-                <text>mil_max_dialog_common2_1</text>
-                <next>2</next>
-                <next>4</next>
-                <next>8</next>
-                <next>9</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_max_dialog_common2_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="9">
-                <text>mil_max_dialog_common2_9</text>
-                <next>90</next>
-            </phrase>
-            <phrase id="90">
-                <text>mil_max_dialog_common2_90</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_lukash_dialog_start">
-        <phrase_list>
-            <phrase id="3">
-                <text />
-                <dont_has_info>mil_lukash_job_complete</dont_has_info>
-                <has_info>mil_lukash_get_job</has_info>
-                <next>30</next>
-            </phrase>
-            <phrase id="4">
-                <text />
-                <dont_has_info>mil_lukash_job_failed</dont_has_info>
-                <has_info>mil_lukash_job_complete</has_info>
-                <has_info>mil_lukash_get_job</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <dont_has_info>mil_lukash_get_job</dont_has_info>
-                <dont_has_info>mil_lukash_job_failed</dont_has_info>
-                <give_info>mil_lukash_arrive</give_info>
-                <has_info>mil_max_lukash_call</has_info>
-                <next>20</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>mil_max_lukash_call</dont_has_info>
-                <dont_has_info>mil_lukash_get_job</dont_has_info>
-                <dont_has_info>mil_lukash_job_failed</dont_has_info>
-                <give_info>mil_max_first</give_info>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text>mil_lukash_dialog_start_10</text>
-            </phrase>
-            <phrase id="20">
-                <text>mil_lukash_dialog_start_20</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-            </phrase>
-            <phrase id="30">
-                <text>mil_lukash_dialog_start_30</text>
-            </phrase>
-            <phrase id="41">
-                <text>mil_lukash_dialog_start_41</text>
-            </phrase>
-            <phrase id="5">
-                <text />
-                <has_info>mil_lukash_job_failed</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>mil_lukash_dialog_start_51</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -603,12 +334,191 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_bodyguard_dialog">
+    <dialog id="mil_lukash_dialog_start">
         <phrase_list>
+            <phrase id="3">
+                <text />
+                <dont_has_info>mil_lukash_job_complete</dont_has_info>
+                <has_info>mil_lukash_get_job</has_info>
+                <next>30</next>
+            </phrase>
+            <phrase id="4">
+                <text />
+                <dont_has_info>mil_lukash_job_failed</dont_has_info>
+                <has_info>mil_lukash_job_complete</has_info>
+                <has_info>mil_lukash_get_job</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <dont_has_info>mil_lukash_get_job</dont_has_info>
+                <dont_has_info>mil_lukash_job_failed</dont_has_info>
+                <give_info>mil_lukash_arrive</give_info>
+                <has_info>mil_max_lukash_call</has_info>
+                <next>20</next>
+            </phrase>
+            <phrase id="20">
+                <text>mil_lukash_dialog_start_20</text>
+            </phrase>
+            <phrase id="30">
+                <text>mil_lukash_dialog_start_30</text>
+            </phrase>
+            <phrase id="41">
+                <text>mil_lukash_dialog_start_41</text>
+            </phrase>
+            <phrase id="5">
+                <text />
+                <has_info>mil_lukash_job_failed</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>mil_lukash_dialog_start_51</text>
+            </phrase>
             <phrase id="0">
-                <text>mil_bodyguard_dialog_0</text>
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <dont_has_info>mil_max_lukash_call</dont_has_info>
+                <dont_has_info>mil_lukash_get_job</dont_has_info>
+                <dont_has_info>mil_lukash_job_failed</dont_has_info>
+                <give_info>mil_max_first</give_info>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>mil_lukash_dialog_start_10</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_lukash_dialog_after">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <has_info>mil_lukash_job_complete</has_info>
+        <has_info>mil_lukash_get_job</has_info>
+        <dont_has_info>mil_lukash_final</dont_has_info>
+        <phrase_list>
+            <phrase id="5">
+                <text>mil_lukash_dialog_first_5</text>
+            </phrase>
+            <phrase id="31">
+                <text />
+                <next>311</next>
+                <next>321</next>
+            </phrase>
+            <phrase id="311">
+                <text>mil_lukash_dialog_first_311</text>
+                <give_info>mil_lukash_go_to_max</give_info>
+                <give_info>mil_lukash_get_job</give_info>
+                <next>3111</next>
+            </phrase>
+            <phrase id="3111">
+                <text>mil_lukash_dialog_first_3111</text>
+            </phrase>
+            <phrase id="321">
+                <text>mil_lukash_dialog_first_321</text>
+                <give_info>mil_lukash_job_failed</give_info>
+                <next>3211</next>
+            </phrase>
+            <phrase id="3211">
+                <text>mil_lukash_dialog_first_3211</text>
+            </phrase>
+            <phrase id="4">
+                <text>mil_lukash_dialog_after_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="411">
+                <text>mil_lukash_dialog_after_411</text>
+            </phrase>
+            <phrase id="41">
+                <text>mil_lukash_dialog_after_41</text>
+                <disable_info>mil_lukash_get_job</disable_info>
+                <disable_info>mil_lukash_job_complete</disable_info>
+                <give_info>mil_lukash_job_failed</give_info>
+                <next>411</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_lukash_dialog_after_0</text>
+                <action>dialogs_military.set_task3_complete</action>
+                <next>4</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_max_dialog_common2">
+        <phrase_list>
+            <phrase id="3">
+                <text>mil_max_dialog_common2_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>mil_max_dialog_common2_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_max_dialog_common2_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_max_dialog_common2_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_max_dialog_common2_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="7">
+                <text>mil_max_dialog_common2_7</text>
+            </phrase>
+            <phrase id="8">
+                <text>mil_max_dialog_common2_8</text>
+                <next>80</next>
+            </phrase>
+            <phrase id="80">
+                <text>mil_max_dialog_common2_80</text>
+            </phrase>
+            <phrase id="1">
+                <text>mil_max_dialog_common2_1</text>
+                <next>2</next>
+                <next>4</next>
+                <next>8</next>
+                <next>9</next>
+            </phrase>
+            <phrase id="9">
+                <text>mil_max_dialog_common2_9</text>
+                <next>90</next>
+            </phrase>
+            <phrase id="90">
+                <text>mil_max_dialog_common2_90</text>
+            </phrase>
+            <phrase id="0">
+                <text>mil_max_dialog_common2_0</text>
                 <next>1</next>
             </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_max_dialog_common1">
+        <phrase_list>
+            <phrase id="1">
+                <text>mil_max_dialog_common1_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_max_dialog_common1_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_max_dialog_common1_3</text>
+            </phrase>
+            <phrase id="0">
+                <text>mil_max_dialog_common1_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_bodyguard_dialog">
+        <phrase_list>
             <phrase id="1">
                 <text>mil_bodyguard_dialog_1</text>
                 <next>2</next>
@@ -630,11 +540,208 @@
             <phrase id="4">
                 <text>mil_bodyguard_dialog_4</text>
             </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_dolg_dialog" priority="10">
-        <dont_has_info>mil_dolg_mission_complete</dont_has_info>
+    <dialog id="mil_max_dialog">
         <phrase_list>
+            <phrase id="4101">
+                <text>mil_max_dialog_4101</text>
+            </phrase>
+            <phrase id="4012">
+                <text>mil_max_dialog_4012</text>
+            </phrase>
+            <phrase id="4011">
+                <text>mil_max_dialog_4011</text>
+                <next>4012</next>
+            </phrase>
+            <phrase id="4020">
+                <text>mil_max_dialog_4020</text>
+            </phrase>
+            <phrase id="4009">
+                <text>mil_max_dialog_4009</text>
+                <next>4010</next>
+                <next>4011</next>
+            </phrase>
+            <phrase id="4007">
+                <text>mil_max_dialog_4007</text>
+                <next>4008</next>
+            </phrase>
+            <phrase id="4003">
+                <text>mil_max_dialog_4003</text>
+                <next>4004</next>
+            </phrase>
+            <phrase id="4002">
+                <text>mil_max_dialog_4002</text>
+                <next>4003</next>
+            </phrase>
+            <phrase id="1220">
+                <text>mil_max_dialog_1220</text>
+                <next>1101</next>
+            </phrase>
+            <phrase id="1210">
+                <text>mil_max_dialog_1210</text>
+                <next>1101</next>
+            </phrase>
+            <phrase id="1201">
+                <text>mil_max_dialog_1201</text>
+                <next>1210</next>
+                <next>1220</next>
+            </phrase>
+            <phrase id="1200">
+                <text>mil_max_dialog_1200</text>
+                <next>1201</next>
+            </phrase>
+            <phrase id="1101">
+                <text>mil_max_dialog_1101</text>
+                <next>1102</next>
+            </phrase>
+            <phrase id="1100">
+                <text>mil_max_dialog_1100</text>
+                <next>1101</next>
+            </phrase>
+            <phrase id="2001">
+                <text>mil_max_dialog_2001</text>
+            </phrase>
+            <phrase id="3001">
+                <text>mil_max_dialog_3001</text>
+                <next>3002</next>
+            </phrase>
+            <phrase id="3002">
+                <text>mil_max_dialog_3002</text>
+                <next>3003</next>
+            </phrase>
+            <phrase id="3003">
+                <text>mil_max_dialog_3003</text>
+                <next>3004</next>
+            </phrase>
+            <phrase id="3005">
+                <text>mil_max_dialog_3005</text>
+            </phrase>
+            <phrase id="4001">
+                <text>mil_max_dialog_4001</text>
+                <next>4002</next>
+            </phrase>
+            <phrase id="4010">
+                <text>mil_max_dialog_4010</text>
+                <give_info>mil_max_job</give_info>
+                <next>4020</next>
+            </phrase>
+            <phrase id="4008">
+                <text>mil_max_dialog_4008</text>
+                <next>4009</next>
+            </phrase>
+            <phrase id="4004">
+                <text>mil_max_dialog_4004</text>
+                <next>4005</next>
+            </phrase>
+            <phrase id="4006">
+                <text>mil_max_dialog_4006</text>
+                <dont_has_info>mil_max_flash_get</dont_has_info>
+                <next>4007</next>
+            </phrase>
+            <phrase id="4100">
+                <text>mil_max_dialog_4100</text>
+                <dont_has_info>mil_max_flash_get</dont_has_info>
+                <next>4101</next>
+            </phrase>
+            <phrase id="4005">
+                <text>mil_max_dialog_4005</text>
+                <next>4006</next>
+                <next>4100</next>
+                <next>4200</next>
+            </phrase>
+            <phrase id="1001">
+                <text>mil_max_dialog_1001</text>
+                <next>1100</next>
+                <next>1200</next>
+            </phrase>
+            <phrase id="1102">
+                <text>mil_max_dialog_1102</text>
+                <action>dialogs.break_dialog</action>
+                <action>dialogs_military.set_task1_complete</action>
+                <give_info>mil_freedom_attack</give_info>
+            </phrase>
+            <phrase id="3004">
+                <text>mil_max_dialog_3004</text>
+                <next>3005</next>
+            </phrase>
+            <phrase id="5001">
+                <text>mil_max_dialog_5001</text>
+                <next>5002</next>
+            </phrase>
+            <phrase id="4200">
+                <text>mil_max_dialog_4200</text>
+                <action>dialogs_military.transfer_flash</action>
+                <give_info>mil_max_job_complete</give_info>
+                <has_info>mil_max_flash_get</has_info>
+                <next>4201</next>
+            </phrase>
+            <phrase id="5002">
+                <text>mil_max_dialog_5002</text>
+                <action>dialogs_military.transfer_flash</action>
+                <give_info>mil_max_job_complete</give_info>
+                <next>4201</next>
+            </phrase>
+            <phrase id="4201">
+                <text>mil_max_dialog_4201</text>
+                <next>4202</next>
+            </phrase>
+            <phrase id="6001">
+                <text>mil_max_dialog_6001</text>
+            </phrase>
+            <phrase id="6000">
+                <text></text>
+                <dont_has_info>mil_max_flash_get</dont_has_info>
+                <has_info>mil_max_job</has_info>
+                <next>6001</next>
+            </phrase>
+            <phrase id="5000">
+                <text></text>
+                <dont_has_info>mil_max_job_complete</dont_has_info>
+                <has_info>mil_max_flash_get</has_info>
+                <next>5001</next>
+            </phrase>
+            <phrase id="4000">
+                <text></text>
+                <dont_has_info>mil_max_job</dont_has_info>
+                <dont_has_info>mil_max_job_complete</dont_has_info>
+                <has_info>mil_leader_attach_community</has_info>
+                <next>4001</next>
+            </phrase>
+            <phrase id="3000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <dont_has_info>mil_leader_attach_community</dont_has_info>
+                <has_info>mil_leader_quest2_start</has_info>
+                <next>3001</next>
+            </phrase>
+            <phrase id="2000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_start</dont_has_info>
+                <dont_has_info>mil_leader_attach_community</dont_has_info>
+                <has_info>mil_leader_quest1_complete</has_info>
+                <next>2001</next>
+            </phrase>
+            <phrase id="1000">
+                <text></text>
+                <dont_has_info>mil_leader_attach_community</dont_has_info>
+                <dont_has_info>mil_leader_quest1_complete</dont_has_info>
+                <give_info>mil_max_arrive</give_info>
+                <has_info>mil_leader_quest1_start</has_info>
+                <next>1001</next>
+            </phrase>
+            <phrase id="7000">
+                <text></text>
+                <has_info>mil_max_job_complete</has_info>
+                <next>7001</next>
+            </phrase>
+            <phrase id="7001">
+                <text>mil_max_dialog_7001</text>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1000</next>
@@ -644,10 +751,105 @@
                 <next>5000</next>
                 <next>6000</next>
                 <next>7000</next>
-                <next>8000</next>
-                <next>9000</next>
+            </phrase>
+            <phrase id="4202">
+                <text>mil_max_dialog_4202</text>
+                <next>4203</next>
+            </phrase>
+            <phrase id="4203">
+                <text>mil_max_dialog_4203</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_zoneguard_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>mil_zoneguard_dialog_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_zoneguard_dialog_1</text>
+                <dont_has_info>mil_zoneguard_talk</dont_has_info>
+                <dont_has_info>mil_max_talk</dont_has_info>
+                <give_info>mil_zoneguard_talk</give_info>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>mil_zoneguard_dialog_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="100">
+                <text>mil_zoneguard_dialog_100</text>
+                <next>1000</next>
+            </phrase>
+            <phrase id="1000">
+                <text>mil_zoneguard_dialog_1000</text>
                 <next>10000</next>
             </phrase>
+            <phrase id="10000">
+                <text>mil_zoneguard_dialog_10000</text>
+                <next>100000</next>
+            </phrase>
+            <phrase id="100000">
+                <text>mil_zoneguard_dialog_100000</text>
+                <next>1000000</next>
+            </phrase>
+            <phrase id="1000000">
+                <text>mil_zoneguard_dialog_1000000</text>
+                <next>10000000</next>
+            </phrase>
+            <phrase id="10000000">
+                <text>mil_zoneguard_dialog_10000000</text>
+            </phrase>
+            <phrase id="20">
+                <text>mil_zoneguard_dialog_20</text>
+            </phrase>
+            <phrase id="2">
+                <text>mil_zoneguard_dialog_2</text>
+                <dont_has_info>mil_zoneguard_talk</dont_has_info>
+                <has_info>mil_max_talk</has_info>
+                <next>20</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_zoneguard_dialog_3</text>
+                <dont_has_info>mil_max_talk</dont_has_info>
+                <has_info>mil_zoneguard_talk</has_info>
+                <next>30</next>
+            </phrase>
+            <phrase id="30">
+                <text>mil_zoneguard_dialog_30</text>
+            </phrase>
+            <phrase id="4">
+                <text>mil_zoneguard_dialog_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>mil_zoneguard_dialog_41</text>
+                <next>42</next>
+            </phrase>
+            <phrase id="42">
+                <text>mil_zoneguard_dialog_42</text>
+                <next>43</next>
+            </phrase>
+            <phrase id="43">
+                <text>mil_zoneguard_dialog_43</text>
+                <next>44</next>
+            </phrase>
+            <phrase id="44">
+                <text>mil_zoneguard_dialog_44</text>
+                <next>45</next>
+            </phrase>
+            <phrase id="45">
+                <text>mil_zoneguard_dialog_45</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_dolg_dialog" priority="10">
+        <dont_has_info>mil_dolg_mission_complete</dont_has_info>
+        <phrase_list>
             <phrase id="10001">
                 <text>mil_dolg_dialog_10001</text>
                 <action>dialogs_military.mil_dolg_payment</action>
@@ -901,6 +1103,177 @@
                 <has_info>mil_sniper_dead</has_info>
                 <has_info>mil_lukash_dead</has_info>
                 <next>10001</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1000</next>
+                <next>2000</next>
+                <next>3000</next>
+                <next>4000</next>
+                <next>5000</next>
+                <next>6000</next>
+                <next>7000</next>
+                <next>8000</next>
+                <next>9000</next>
+                <next>10000</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_leader_start_dialog">
+        <phrase_list>
+            <phrase id="1226">
+                <text>mil_leader_start_dialog_1226</text>
+            </phrase>
+            <phrase id="1223">
+                <text>mil_leader_start_dialog_1223</text>
+                <next>1224</next>
+            </phrase>
+            <phrase id="1224">
+                <text>mil_leader_start_dialog_1224</text>
+                <next>1225</next>
+            </phrase>
+            <phrase id="1225">
+                <text>mil_leader_start_dialog_1225</text>
+                <give_info>mil_leader_quest1_complete</give_info>
+                <give_info>mil_leader_quest2_start</give_info>
+                <give_info>mil_courier_start</give_info>
+                <next>1226</next>
+            </phrase>
+            <phrase id="4001">
+                <text>mil_leader_start_dialog_4001</text>
+            </phrase>
+            <phrase id="5001">
+                <text>mil_leader_start_dialog_5001</text>
+                <next>5002</next>
+            </phrase>
+            <phrase id="5003">
+                <text>mil_leader_start_dialog_5003</text>
+            </phrase>
+            <phrase id="5002">
+                <text>mil_leader_start_dialog_5002</text>
+                <action>dialogs_military.set_courier_task_complete</action>
+                <next>5003</next>
+            </phrase>
+            <phrase id="6001">
+                <text>mil_leader_start_dialog_6001</text>
+            </phrase>
+            <phrase id="6000">
+                <text></text>
+                <has_info>mil_leader_attach_community</has_info>
+                <next>6001</next>
+            </phrase>
+            <phrase id="5000">
+                <text></text>
+                <dont_has_info>mil_leader_attach_community</dont_has_info>
+                <give_info>mil_leader_attach_community</give_info>
+                <has_info>mil_leader_quest2_complete</has_info>
+                <next>5001</next>
+            </phrase>
+            <phrase id="4000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <has_info>mil_leader_quest2_start</has_info>
+                <next>4001</next>
+            </phrase>
+            <phrase id="1000">
+                <text></text>
+                <dont_has_info>mil_leader_quest1_complete</dont_has_info>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <dont_has_info>mil_leader_quest1_start</dont_has_info>
+                <dont_has_info>mil_leader_quest2_start</dont_has_info>
+                <next>1001</next>
+            </phrase>
+            <phrase id="1001">
+                <text>mil_leader_start_dialog_1001</text>
+                <next>1100</next>
+            </phrase>
+            <phrase id="1100">
+                <text>mil_leader_start_dialog_1100</text>
+                <next>1101</next>
+            </phrase>
+            <phrase id="1101">
+                <text>mil_leader_start_dialog_1101</text>
+                <next>1102</next>
+                <next>1200</next>
+            </phrase>
+            <phrase id="1102">
+                <text>mil_leader_start_dialog_1102</text>
+                <next>1103</next>
+            </phrase>
+            <phrase id="1103">
+                <text>mil_leader_start_dialog_1103</text>
+            </phrase>
+            <phrase id="1200">
+                <text>mil_leader_start_dialog_1200</text>
+                <next>1210</next>
+            </phrase>
+            <phrase id="1210">
+                <text>mil_leader_start_dialog_1210</text>
+                <next>1211</next>
+                <next>1221</next>
+            </phrase>
+            <phrase id="1211">
+                <text>mil_leader_start_dialog_1211</text>
+                <dont_has_info>mil_dolg_dead</dont_has_info>
+                <give_info>mil_leader_quest1_start</give_info>
+                <give_info>mil_lukash_go_to_max</give_info>
+                <next>1212</next>
+            </phrase>
+            <phrase id="1212">
+                <text>mil_leader_start_dialog_1212</text>
+            </phrase>
+            <phrase id="1221">
+                <text>mil_leader_start_dialog_1221</text>
+                <give_info>mil_leader_quest1_complete</give_info>
+                <give_info>mil_leader_quest1_start</give_info>
+                <has_info>mil_dolg_dead</has_info>
+                <next>1222</next>
+            </phrase>
+            <phrase id="1222">
+                <text>mil_leader_start_dialog_1222</text>
+                <next>1223</next>
+            </phrase>
+            <phrase id="2000">
+                <text></text>
+                <dont_has_info>mil_leader_quest1_complete</dont_has_info>
+                <dont_has_info>mil_leader_quest2_start</dont_has_info>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <has_info>mil_leader_quest1_start</has_info>
+                <next>2001</next>
+            </phrase>
+            <phrase id="2001">
+                <text>mil_leader_start_dialog_2001</text>
+            </phrase>
+            <phrase id="3002">
+                <text>mil_leader_start_dialog_3002</text>
+                <next>3003</next>
+            </phrase>
+            <phrase id="3003">
+                <text>mil_leader_start_dialog_3003</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1000</next>
+                <next>2000</next>
+                <next>3000</next>
+                <next>4000</next>
+                <next>5000</next>
+                <next>6000</next>
+            </phrase>
+            <phrase id="3000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_start</dont_has_info>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <give_info>mil_leader_quest2_start</give_info>
+                <give_info>mil_lukash_arrive</give_info>
+                <give_info>mil_courier_start</give_info>
+                <has_info>mil_leader_quest1_complete</has_info>
+                <next>3001</next>
+            </phrase>
+            <phrase id="3001">
+                <text>mil_leader_start_dialog_3001</text>
+                <action>dialogs_military.set_task3_complete</action>
+                <next>3002</next>
             </phrase>
         </phrase_list>
     </dialog>

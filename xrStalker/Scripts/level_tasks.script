@@ -179,6 +179,10 @@ function proceed(actor)
 	if actor:object ("wpn_rg-6") then 
 	   db.actor:give_info_portion("mil_rg6_gain")  
 	end
+	
+	if actor:object ("mil_courier_doc") and actor:has_info ("mil_leader_quest2_start") then
+	   actor:give_info_portion ("mil_leader_quest2_complete") 
+	end    
 	   
 		
 	-- Laboratory X18
@@ -426,6 +430,7 @@ function process_map_spot(info_id)
 	       remove_location (707, "mil_lukash_location")
 	elseif info_id == "mil_max_arrive" then
 		   remove_location (702, "mil_max_location")
+		   db.actor:disable_info_portion ("mil_lukash_go_to_max")
 		   
     elseif info_id == "mil_max_job_complete" then
            remove_location (702, "mil_max_location")
@@ -438,8 +443,8 @@ function process_map_spot(info_id)
 	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
 	       remove_location (707, "mil_lukash_location")
 
-	elseif info_id == "mil_lukash_job_complete" then
-	       if db.actor:dont_has_info ("mil_lukash_dead") and db.actor:has_info ("mil_lukash_get_job") then
+	elseif info_id == "mil_leader_quest1_complete" then
+	       if db.actor:dont_has_info ("mil_lukash_dead") and db.actor:has_info ("mil_leader_quest1_start") then
 	          add_location (707, "mil_lukash_location")
 	       end   
 	       remove_location (708, "mil_dolg_location")
@@ -454,6 +459,19 @@ function process_map_spot(info_id)
 	       add_location (708, "mil_dolg_location")
 	       remove_location (702, "mil_max_location")
 	       
+    elseif info_id == "mil_leader_quest2_start" then
+           add_location (710, "mil_courier_location")
+      
+    elseif info_id == "mil_leader_quest2_failed" then   
+           if db.actor:has_info ("mil_leader_quest2_start") then
+              db.actor:set_task_state (task.fail, "mil_courier_job", 0)
+           end   
+           remove_location (710, "mil_courier_location")
+           
+    elseif info_id == "mil_leader_quest2_complete" then
+           remove_location (710, "mil_courier_location")
+           add_location (707, "mil_lukash_location")
+           db.actor:set_task_state (task.completed, "mil_courier_job", 1)
 	--elseif info_id == "mil_lukash_job_complete" then
 	       --remove_location (1008, "mil_dolg_location")
 	       
