@@ -43,25 +43,12 @@ vector3	xform			(const vector3& v, const matrix& m)
 	float	y = v.x*m._12 + v.y*m._22 + v.z*m._32 + m._42;
 	float	z = v.x*m._13 + v.y*m._23 + v.z*m._33 + m._43;
 	float	w = v.x*m._14 + v.y*m._24 + v.z*m._34 + m._44;
-	assert	(w>0);
+//	assert	(w>0);
 	return	vector3(x/w,y/w,z/w);	// RVO
 }
 void	xform_array		(vector3* dst, const vector3* src, const matrix& m, int count)
 {
 	for (int p=0; p<count; p++)	dst[p] = xform(src[p],m);
-}
-void	calc_aabb		(vector3& min, vector3 &max, const vector3* ps, int count) 
-{
-	min = max = ps[0];
-	for (int i=1; i<count; i++)
-	{
-		const vector3&	p = ps[i];
-		for (int j=0; j<3; j++)
-		{
-			if (p[j]<min[j])		min[j]=p[j];
-			else if (p[j]>max[j])	max[j]=p[j];
-		}
-	}
 }
 void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, int count) 
 {
@@ -75,6 +62,22 @@ void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m
 			else if (p[j]>max[j])	max[j]=p[j];
 		}
 	}
+}
+// refit to unit cube (in D3D way :)
+// this operation calculates a scale translate matrix that
+// maps the two extreme points min and max into (-1,-1,0) and (1,1,1)
+matrix	calc_refit		(vector3& min, vector3& max)
+{
+	matrix	refit;
+	vector3	size			=	max - min;
+	vector3	center			=	(max+min)/2.f;
+			center.z		-=	size.z/2.f;
+
+	matrix	translate,scale;
+	D3DXMatrixTranslation	(&translate,-center.x,-center.y,-center.z);		//*. translate center to (0,0,0)
+	D3DXMatrixScaling		(&scale,	2.f/size.x,2.f/size.y,1.f/size.z);	//*. scale: sx=2,sy=2,sz=1
+	D3DXMatrixMultiply		(&refit,	&translate, &scale);					//*. final: first-translate, then scale
+	return refit;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -275,20 +278,18 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 	A[4]= vector3( +1, +1, +1);	A[5]= vector3( +1, +1,  0);
 	A[6]= vector3( +1, -1, +1);	A[7]= vector3( +1, -1,  0);
 
-	std::vector<vector3>	points_receivers;
-	std::vector<vector3>	points_casters;
+	std::vector<vector3>			points;		//
 
 	// Perform approximate clipping if requisted
 	// This is similar to focusing shadowmap to the interesting parts only
 	if (!m_bUnitCubeClip)			{
-		points_receivers.resize		(8);
-		xform_array					(&*points_receivers.begin(),A,modelViewProjection_inv,8);
-		points_casters				= points_receivers;		//. !!!!!!!!! totaly incorrect. Anyone willing to fix? :)
+		//. !!!!!!!!! totaly incorrect. Anyone willing to fix? :)
+		points.resize				(8);
+		xform_array					(&*points.begin(),A,modelViewProjection_inv,8);
 	} else {
 		// Create convex volume enclosing the primary frustum and extended up to infinity
 		// in the direction inverse to light's direction. Create simple clippers;
-		DumbClipper				clipper_receivers;
-		DumbClipper				clipper_casters;
+		DumbClipper					clipper_casters;
 		{
 			// Lets begin from base frustum
 			DumbConvexVolume		hull;
@@ -306,18 +307,14 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			}
 
 			// Compute volume(s)
-			hull.compute_receiver_model	(clipper_receivers);
 			hull.compute_caster_model	(clipper_casters,m_lightDir);
 		}
 
 		// Searching for extreme points  (approximately linear time)
 		// note: Gary stores points in eye-space, we will convert them back to world :)
 		// 
-		// 1. receivers. clip them agains our volume
-		clipper_receivers.clipboxes	(points_receivers,m_ShadowReceiverPoints,modelView_inv);
-
-		// 2. use shadow casters, clip them agains our volume
-		clipper_casters.clipboxes	(points_casters,m_ShadowCasterPoints,modelView_inv);
+		// use shadow casters, clip them agains our volume
+		clipper_casters.clipboxes		(points,m_ShadowCasterPoints,modelView_inv);
 	}
 
 	// this is the algorithm discussed in the paper
@@ -339,6 +336,7 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			vector3				left;	//?
 			//left is the normalized vector perpendicular to lightDir and viewDir
 			//this means left is the normalvector of the yz-plane from the paper
+			//assert			(D3DXVec3Dot(&dir_light,&dir_view)<.99f);
 			D3DXVec3Cross		(&left,&dir_light,&dir_view);
 			//we now can calculate the rotated(in the yz-plane) viewDir vector
 			//and use it as up vector in further transformations
@@ -346,26 +344,24 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			D3DXVec3Normalize	(&up,&up);
 		}
 
-		// relation
-		float	dotProd		= D3DXVec3Dot	(&dir_light,&dir_view);
-		float	cosGamma	= sqrt			(1.0f-dotProd*dotProd);
-
 		// temporal light view
 		matrix		lightview;
 		D3DXMatrixLookAtLH	(&lightview,&pos_view,&(pos_view+dir_light),&up);
 
 		//transform the light volume points from world into light space
-		//calculate the AABB of the light space extents of the intersection body
+		//calculate the AABB of the light space extents of the body
 		//and save the two extreme points min and max
-		vector3			min,max,minz,maxz;
-		calc_xaabb		(min,max,&*points_receivers.begin(),lightview,points_receivers.size());
+		vector3			min,max;
+		calc_xaabb		(min,max,&*points.begin(),lightview,points.size());
 		{
-			float	_z_near			=	ZNEAR_MIN;	//m_bUnitCubeClip?min.y:ZNEAR_MIN;
-			float	_z_far			=	ZFAR_MAX;	//m_bUnitCubeClip?max.y:ZFAR_MAX;
-					_z_near			=	max(_z_near,ZNEAR_MIN);	//??? unnecessary?
-					_z_far			=	min(_z_far, ZFAR_MAX);	//??? unnecessary?
+			// relation
+			float	dotProd			=	D3DXVec3Dot	(&dir_light,&dir_view);
+			float	cosGamma		=	sqrt		(1.0f-dotProd*dotProd) + 0.001f;
+
+			float	_z_near			=	ZNEAR_MIN;
+			float	_z_far			=	ZFAR_MAX;
 			float	factor			=	1.0f/cosGamma;
-			float	z_n				=	factor*_z_near;			//often 1 
+			float	z_n				=	factor*_z_near;			//
 			float	d				=	fabsf(max.y-min.y);		//perspective transform depth - light space y extents
 			float	z_f				=	z_n + d*cosGamma;
 			float	n = m_fLiSPSM_N =	m_fBiasLiSPSM * (z_n+sqrt(z_f*z_n))/cosGamma;	// m_fLiSPSM_N - for display purposes only
@@ -375,47 +371,23 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			vector3		pos			= pos_view - up * (n-_z_near);	// minz.z?
 			D3DXMatrixLookAtLH		(&lightview,&pos,&(pos+dir_light),&up);
 
-			// find z-extents and shift points, so that we avoid clipping of occluders
-			calc_xaabb				(minz,maxz,&*points_casters.begin(),lightview,points_casters.size());
-
 			//one possibility for a simple perspective transformation matrix
 			//with the two parameters n(near) and f(far) in y direction
-			D3DXMatrixIdentity	(&lispsm);	// a = (f+n)/(f-n); b = -2*f*n/(f-n);
-			lispsm._22	= (f+n)/(f-n);		// [ 1 0 0 0] 
-			lispsm._24	= -2*f*n/(f-n);		// [ 0 a 0 b]
-			lispsm._42	= 1;				// [ 0 0 1 0]
-			lispsm._44	= 0;				// [ 0 1 0 0]
-			D3DXMatrixTranspose	(&lispsm,&lispsm);
-
-			//temporal arrangement for the transformation of the points to post-perspective space
-			D3DXMatrixMultiply	(&lispsm, &lightview, &lispsm);
-
-			//transform the light volume points from world into the distorted light space
-			//calculate the AABB of the light space extents of the intersection body
-			//and then find the casters depth bounds, of course in the painfully slow way :)
-			//replace receciver bounds depth with casters
-			calc_xaabb			(min,max,	&*points_receivers.begin(),	lispsm,points_receivers.size());
-			calc_xaabb			(minz,maxz,	&*points_casters.begin(),	lispsm,points_casters.size());
-			min.z=minz.z; max.z=maxz.z;		// avoid clipping
+			D3DXMatrixIdentity		(&lispsm);	// a = (f+n)/(f-n); b = -2*f*n/(f-n);
+			lispsm._22		= (f+n)/(f-n);		// [ 1 0 0 0] 
+			lispsm._24		= -2*f*n/(f-n);		// [ 0 a 0 b]
+			lispsm._42		= 1;				// [ 0 0 1 0]
+			lispsm._44		= 0;				// [ 0 1 0 0]
+			D3DXMatrixTranspose		(&lispsm,&lispsm);
+			D3DXMatrixMultiply		(&lispsm,&lightview, &lispsm);
 		}
 
+		// transform the light volume points from world into the distorted light space
 		// refit to unit cube (in D3D way :)
 		// this operation calculates a scale translate matrix that
 		// maps the two extreme points min and max into (-1,-1,0) and (1,1,1)
-		matrix	refit;
-		{
-			vector3	size			=	max - min;
-			vector3	center			=	(max+min)/2.f;
-					center.z		-=	size.z/2.f;
-			
-			matrix	translate,scale;
-			D3DXMatrixTranslation	(&translate,-center.x,-center.y,-center.z);		//*. translate center to (0,0,0)
-			D3DXMatrixScaling		(&scale,	2.f/size.x,2.f/size.y,1.f/size.z);	//*. scale: sx=2,sy=2,sz=1
-			D3DXMatrixMultiply		(&refit,	&translate, &scale);					//*. final: first-translate, then scale
-		}
-
-		//together
-		D3DXMatrixMultiply			(&lispsm, &lispsm, &refit);						// ligthProjection = scaleTranslate*lispMtx
+		calc_xaabb				(min,max, &*points.begin(),	lispsm,points.size());
+		D3DXMatrixMultiply		(&lispsm, &lispsm, &calc_refit(min,max));	// ligthProjection = scaleTranslate*lispMtx
 	}
 
 	m_LightViewProj		= lispsm;
