@@ -61,7 +61,7 @@ CCustomMonster::~CCustomMonster	()
 
 void CCustomMonster::OnDeviceCreate()
 {
-	inherited::OnDeviceCreate();
+	inherited::OnDeviceCreate	();
 	R_ASSERT					(pVisual->Type==MT_SKELETON);
 	
 	// Eyes
@@ -79,7 +79,6 @@ void CCustomMonster::OnDeviceCreate()
 	//"torso1"
 //	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_torso"));
 //	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
-
 }
 
 void CCustomMonster::Load		(LPCSTR section)
