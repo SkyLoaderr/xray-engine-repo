@@ -99,7 +99,7 @@ function action_sniper_idle:initialize ()
     self.last_point	= path:level_vertex_id  (path:count() - 1)      --Последняя точка пути
     self.point_path = patrol(self.a.point_path)
     self.rest_point	= point_with_bit_id(self.point_path, 0)  --Точка, в которой будем сидеть
-	printf("rest point __________%d", self.rest_point)
+	//printf("rest point __________%d", self.rest_point)
     self.prev_point = -1
 
     action_base.initialize (self)
@@ -114,11 +114,9 @@ function action_sniper_idle:initialize ()
     end 
     
      self.object:set_callback (self, "move_callback", game_object.movement)
-     printf("1")
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_sit_down  ()
-     printf("2")
     if( self.object:level_vertex_id() ~= self.rest_point ) then
 		//printf("rest point __________%d", self.rest_point)
 		self.object:set_dest_level_vertex_id(self.rest_point)
@@ -138,7 +136,6 @@ function action_sniper_idle:init_state_sit_down  ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_walk()
-     printf("3")
     self.state      = walk
     self.time       = 0
 
@@ -158,16 +155,13 @@ function action_sniper_idle:init_state_walk()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:state_sit_down    ()
-     printf("4")
   --Подходит с точки сидения, садится, а потом проигруется idle анимация
     if(self.object:level_vertex_id() == self.rest_point) then
 
-        printf("_1")
         self.object:set_movement_type	(move.stand)
 
 		if(xr_state.change_state(self.object, 2) == false) then
 			//self.animation:update		("idle")
-			printf("_2")
             if(self.time == 0) then
 				--Запоминаем время, когда присели
 				self.time = device():time_global()
@@ -176,22 +170,17 @@ function action_sniper_idle:state_sit_down    ()
             if( self.time ~= 0 and device():time_global() > (self.time + time_to_rest) and self.object:animation_count() <= 1 )then
 				--Когда насиделись, встаем и идем
 				//self.animation:update (nil)
-				printf("_3")
 				self:init_state_walk	()
-				printf("_4")
 				end
 		else
 			--Когда садимся, убераем оружие
-			printf("_5")
 			self.object:set_item            (object.deactivate, self.object:best_weapon())
-			printf("_6")
 		end
 
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:state_walk      ()
-     printf("5")
   --Идем до конца маршрута, если остановились, то стоим некоторое время, а потом идем
     if(self.state == LOOK) then
         if(device():time_global() > self.time_sight and self.object:is_body_turning() == false) then
@@ -215,7 +204,6 @@ function action_sniper_idle:state_walk      ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:execute       ()
-     printf("6")
     action_base.execute             (self)
 
     if(self.state == sit_idle) then
@@ -223,11 +211,9 @@ function action_sniper_idle:execute       ()
     else
         self:state_walk			()
     end
-    printf("10")
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:move_callback(obj, action_type, index)
-     printf("7")
     if(index == patrol(self.a.rest_path):count() - 1)then          --Дошли до последней точки пути
       self:init_state_sit_down  ()
       return
@@ -245,7 +231,6 @@ function action_sniper_idle:move_callback(obj, action_type, index)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:finalize ()
-     printf("8")
     action_base.finalize       (self)
     self.object:clear_callback  (game_object.movement)
 	xr_state.change_state(self.object, 0)							//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
@@ -491,12 +476,9 @@ end
 --sniper binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(obj, char_ini)
-    if(char_ini == nil) then printf("char ini is nil") else printf("char ini not nil") end
-    if(char_ini:section_exist("sniper")) then printf("section is") else printf("section not") end
-    
+   
     if char_ini == nil or char_ini:section_exist("sniper") == true then
     
-    printf("bind sniper")
     local operators     = {}
     local properties    = {}
 
@@ -606,7 +588,6 @@ function set_sniper(object, enabled, rest_path, camper_path, point_path)
     if point_path == nil then
 		if (char_ini:line_exist ("sniper", "point_path") == true) then
 			st.point_path = char_ini:r_string("sniper", "point_path")
-			printf("Point path = %s", st.point_path)
 		else		
 			st.enabled = false
 		end
