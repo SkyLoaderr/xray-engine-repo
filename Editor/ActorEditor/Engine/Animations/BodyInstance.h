@@ -179,6 +179,7 @@ public:
 	{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return WORD(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
+	void		Load		(CKinematics* P, CStream* MP, BOOL bCycle);
 	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
 	CBlend*		PlayFX		(CKinematics* P);
 };

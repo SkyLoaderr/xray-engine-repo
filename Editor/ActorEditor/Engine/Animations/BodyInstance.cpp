@@ -11,6 +11,18 @@ int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
 
 // High level control
+void CMotionDef::Load(CKinematics* P, CStream* MP, BOOL bCycle)
+{
+	// params
+	bone_or_part= MP->Rword(); // bCycle?part_id:bone_id;
+	motion		= MP->Rword(); // motion_id
+	speed		= Quantize(MP->Rfloat());
+	power		= Quantize(MP->Rfloat());
+	accrue		= Quantize(MP->Rfloat());
+	falloff		= Quantize(MP->Rfloat());
+	noloop		= MP->Rbyte();
+	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
+}
 void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycle)
 {
 	int	b = -1;
@@ -607,59 +619,92 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 	MS->Close();
 
 	// Load definitions
-	R_ASSERT(N && N[0]);
-	char def_N[MAX_PATH];
-	if (0==strext(N))	strconcat(def_N,N,".ltx");
-	else				{
-		strcpy(def_N,N);
-		strcpy(strext(def_N),".ltx");
-	}
-	m_cycle = new mdef;
-	m_fx	= new mdef;
+	CStream* MP = data->OpenChunk(OGF_SMPARAMS);
+	if (MP){
+		// partitions
+		WORD part_count;
+		part_count = MP->Rword();
+		string128 buf;
+		for (WORD part_i=0; part_i<part_count; part_i++){
+			CPartDef&	PART	= (*partition)[part_i];
+			MP->RstringZ(buf);
+			PART.Name			= _strlwr(strdup(buf));
+			PART.bones.resize	(MP->Rword());
+			MP->Read			(PART.bones.begin(),PART.bones.size()*sizeof(WORD));
+		}
 
-	CInifile DEF(def_N);
-	CInifile::SectIt I;
+		// cycles
+		WORD cycle_count		= MP->Rword();
+		for (WORD cycle_i=0; cycle_i<cycle_count; cycle_i++){
+			MP->RstringZ(buf);
+			CMotionDef	D;		D.Load(this,MP,true);
+			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+		}
 
-	// partitions
-	CInifile::Sect& S = DEF.ReadSection("partition");
-	int pid = 0;
-	for (I=S.begin(); I!=S.end(); I++,pid++) 
-	{
-		if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
-		CPartDef&	PART		= (*partition)[pid];
-		LPSTR	N				= _strlwr(strdup(I->first));
-		PART.Name				= N;
-		CInifile::Sect&		P	= DEF.ReadSection(N);
-		CInifile::SectIt	B	= P.begin();
-		for (; B!=P.end(); B++)
+		// FXes
+		WORD fx_count			= MP->Rword();
+		for (WORD fx_i=0; fx_i<fx_count; fx_i++){
+			MP->RstringZ(buf);
+			CMotionDef	D;		D.Load(this,MP,false);
+			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+		}
+	}else{
+		// old variant (read params from ltx)
+		R_ASSERT(N && N[0]);
+		char def_N[MAX_PATH];
+		if (0==strext(N))	strconcat(def_N,N,".ltx");
+		else				{
+			strcpy(def_N,N);
+			strcpy(strext(def_N),".ltx");
+		}
+		m_cycle = new mdef;
+		m_fx	= new mdef;
+		
+		CInifile DEF(def_N);
+		CInifile::SectIt I;
+		
+		// partitions
+		CInifile::Sect& S = DEF.ReadSection("partition");
+		int pid = 0;
+		for (I=S.begin(); I!=S.end(); I++,pid++) 
 		{
-			int bone			= LL_BoneID(B->first);
-			if (bone<0)			Device.Fatal("Partition '%s' has incorrect bone name ('%s')",N,B->first);
-			PART.bones.push_back(bone);
+			if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
+			CPartDef&	PART		= (*partition)[pid];
+			LPSTR	N				= _strlwr(strdup(I->first));
+			PART.Name				= N;
+			CInifile::Sect&		P	= DEF.ReadSection(N);
+			CInifile::SectIt	B	= P.begin();
+			for (; B!=P.end(); B++)
+			{
+				int bone			= LL_BoneID(B->first);
+				if (bone<0)			Device.Fatal("Partition '%s' has incorrect bone name ('%s')",N,B->first);
+				PART.bones.push_back(bone);
+			}
+		}
+		
+		// cycles
+		{
+			CInifile::Sect& S = DEF.ReadSection("cycle");
+			for (I=S.begin(); I!=S.end(); I++) 
+			{
+				CMotionDef	D;
+				D.Load(this,&DEF,I->first, true);
+				m_cycle->insert(make_pair(_strlwr(strdup(I->first)),D));
+			}
+		}
+		
+		// FXes
+		{
+			CInifile::Sect& F = DEF.ReadSection("fx");
+			for (I=F.begin(); I!=F.end(); I++) 
+			{
+				CMotionDef	D;
+				D.Load(this,&DEF,I->first, false);
+				m_fx->insert(make_pair(_strlwr(strdup(I->first)),D));
+			}
 		}
 	}
 	
-	// cycles
-	{
-		CInifile::Sect& S = DEF.ReadSection("cycle");
-		for (I=S.begin(); I!=S.end(); I++) 
-		{
-			CMotionDef	D;
-			D.Load(this,&DEF,I->first, true);
-			m_cycle->insert(make_pair(_strlwr(strdup(I->first)),D));
-		}
-	}
-	
-	// FXes
-	{
-		CInifile::Sect& F = DEF.ReadSection("fx");
-		for (I=F.begin(); I!=F.end(); I++) 
-		{
-			CMotionDef	D;
-			D.Load(this,&DEF,I->first, false);
-			m_fx->insert(make_pair(_strlwr(strdup(I->first)),D));
-		}
-	}
 
 	// Init blend pool
 	IBlend_Startup();
