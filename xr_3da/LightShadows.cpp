@@ -125,7 +125,7 @@ IC DWORD PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 {
 	float	A		= 1.f-.5f*PLC_energy(P,N,L,E);
 	int		iA		= iCeil(255.f*A);
-	clamp	(iA,0,255);
+	clamp	(iA,64,255);
 	return	D3DCOLOR_RGBA	(iA,iA,iA,iA);
 }
 
