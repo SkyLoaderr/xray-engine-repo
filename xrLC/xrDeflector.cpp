@@ -4,7 +4,7 @@
 #include "xrIsect.h"
 #include "math.h"
 
-void blit	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py)
+void blit	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF)
 {
 	R_ASSERT(ds_x>=(ss_x+px));
 	R_ASSERT(ds_y>=(ss_y+py));
@@ -13,10 +13,13 @@ void blit	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD 
 		{
 			DWORD dx = px+x;
 			DWORD dy = py+y;
-			dest[dy*ds_x+dx] = src[y*ss_x+x];
+			DWORD sc = src[y*ss_x+x];
+			if (RGBA_GETALPHA(sc)<aREF)	sc=0;
+			dest[dy*ds_x+dx] = sc;
 		}
 }
-void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py)
+
+void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF)
 {
 	R_ASSERT(ds_x>=(ss_y+px));
 	R_ASSERT(ds_y>=(ss_x+py));
@@ -25,7 +28,9 @@ void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWOR
 		{
 			DWORD dx = px+y;
 			DWORD dy = py+x;
-			dest[dy*ds_x+dx] = src[y*ss_x+x];
+			DWORD sc = src[y*ss_x+x];
+			if (RGBA_GETALPHA(sc)<aREF)	sc=0;
+			dest[dy*ds_x+dx] = sc;
 		}
 }
 
@@ -213,10 +218,10 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 	{
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v);
+		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,255-BORDER);
 	} else {
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v);
+		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,255-BORDER);
 	}
 }

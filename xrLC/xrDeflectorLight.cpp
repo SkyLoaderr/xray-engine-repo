@@ -275,7 +275,7 @@ VOID CDeflector::Light()
 	DWORD size	= s_x*s_y*4;
 	lm.pSurface	= LPDWORD(malloc(size));
 	ZeroMemory	(lm.pSurface,size);
-	blit		(lm.pSurface,s_x,s_y,old,o_x,o_y,BORDER,BORDER);
+	blit		(lm.pSurface,s_x,s_y,old,o_x,o_y,BORDER,BORDER,1);
 	_FREE		(old);
 
 	// Calculate color of border pixels
