@@ -62,12 +62,12 @@ BOOL APIENTRY DllMain		(HANDLE module_handle, DWORD call_reason, LPVOID reserved
 	switch (call_reason) {
 		case DLL_PROCESS_ATTACH: {
  			Core._initialize			("xrSE_Factory",NULL);
-			char						SYSTEM_LTX[256];
+			string_path					SYSTEM_LTX;
 			FS.update_path				(SYSTEM_LTX,"$game_data$","system.ltx");
 			pSettings					= xr_new<CInifile>(SYSTEM_LTX);
+			load_prop_helper			();
 			if (_PHelper)
 				g_property_list_helper	= xr_new<CScriptPropertiesListHelper>();
-			load_prop_helper			();
 			ai().script_engine().export	();
 			break;
 		}
