@@ -109,6 +109,15 @@ public:
 	float					fTimeFactor;
 	ref_texture				tonemap;
 
+	// music interface
+	struct	music
+	{
+		ref_sound			left;
+		ref_sound			right;
+		bool				playing		()		{ return left.feedback && right.feedback; }
+	};
+	xr_deque<music*>		playlist;
+
     void					SelectEnvs			(float gt);
 public:
 							CEnvironment		();

@@ -277,6 +277,8 @@ void CEnvironment::load		()
         R_ASSERT2	(!Weathers.empty(),"Empty weathers.");
         SetWeather	(first_weather);
     }
+
+	// music
 }
 
 void CEnvironment::unload	()
