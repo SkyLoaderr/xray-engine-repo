@@ -9,10 +9,16 @@
     <string id="dar_explorer_dialog_11">
         <text>„то же ты ищешь?.. € слыхал здесь много интересного можно найти...</text>
     </string>
+    <string id="dar_explorer_dialog_111">
+        <text>Ќичего особенного, удачи...</text>
+    </string>
     <string id="dar_explorer_dialog_2">
         <text>—ам не знаю как сюда занесло, убратьс€ бы отсюда поскорее.</text>
     </string>
     <string id="dar_explorer_dialog_21">
         <text>¬али отсюда пока жив. Ёто место не дл€ таких как ты...</text>
+    </string>
+    <string id="dar_explorer_dialog_211">
+        <text>ѕока</text>
     </string>
 </string_table>
