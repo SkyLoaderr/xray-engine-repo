@@ -28,6 +28,7 @@ void  CRocketLauncher::Load	(LPCSTR section)
 void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_rocket_launcher)
 {
 //	VERIFY(m_pRocket == NULL);
+	if (OnClient()) return;
 
 	CSE_Abstract*		D	= F_entity_Create(rocket_section);
 	R_ASSERT			(D);

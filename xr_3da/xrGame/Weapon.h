@@ -137,12 +137,16 @@ public:
 	BOOL					IsMisfire			() const;
 	BOOL					CheckForMisfire		();
 
+
+	BOOL					AutoSpawnAmmo		() const		{ return m_bAutoSpawnAmmo; };
+
 protected:
 	// Weapon fires now
 	bool					bWorking2;
 	// a misfire happens, you'll need to rearm weapon
 	bool					bMisfire;				
 
+	BOOL					m_bAutoSpawnAmmo;
 //////////////////////////////////////////////////////////////////////////
 //  Weapon Addons
 //////////////////////////////////////////////////////////////////////////

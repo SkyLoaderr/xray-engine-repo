@@ -97,6 +97,8 @@ void CCustomRocket::create_physic_shell	()
 
 void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c) 
 {
+	if (OnClient()) return;
+
 	do_colide = false;
 
 

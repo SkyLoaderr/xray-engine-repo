@@ -1203,19 +1203,18 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 	if (!pIItem) return;
 
 	CWeaponMagazined* pWM = dynamic_cast<CWeaponMagazined*> (pIItem);
-	if (pWM)
+	if (!pWM || !pWM->AutoSpawnAmmo()) return;
+	
+	bool UsableAmmoExist = false;
+	for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
 	{
-		bool UsableAmmoExist = false;
-		for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
-		{
-			CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
-			if (!pAmmo) continue;
-					
-			UsableAmmoExist = true;
-			break;
-		};
-		if (!UsableAmmoExist) pWM->SpawnAmmo(0xffffffff, NULL, ID());
+		CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
+		if (!pAmmo) continue;
+
+		UsableAmmoExist = true;
+		break;
 	};
+	if (!UsableAmmoExist) pWM->SpawnAmmo(0xffffffff, NULL, ID());
 };
 
 void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
@@ -1223,23 +1222,22 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 	if (!pIItem) return;
 
 	CWeaponMagazined* pWM = dynamic_cast<CWeaponMagazined*> (pIItem);
-	if (pWM)
+	if (!pWM || !pWM->AutoSpawnAmmo()) return;
+
+	NET_Packet			P;
+	bool UsableAmmoExist = false;
+
+	for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
 	{
-		NET_Packet			P;
-		bool UsableAmmoExist = false;
+		CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
+		if (!pAmmo || !pAmmo->m_bCanBeUnlimited) break;
 
-		for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
-		{
-			CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
-			if (!pAmmo) break;
+		UsableAmmoExist = true;
 
-			UsableAmmoExist = true;
-			
-			u_EventGen			(P,GE_DESTROY,pAmmo->ID());
-//			Msg					("ge_destroy: [%d] - %s",pAmmo->ID(),*(pAmmo->cName()));
-		};
-		if (UsableAmmoExist) u_EventSend			(P);
+		u_EventGen			(P,GE_DESTROY,pAmmo->ID());
+		//			Msg					("ge_destroy: [%d] - %s",pAmmo->ID(),*(pAmmo->cName()));
 	};
+	if (UsableAmmoExist) u_EventSend			(P);
 };
 
 void	CActor::SetZoomRndSeed		(s32 Seed)
