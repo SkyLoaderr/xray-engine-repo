@@ -35,7 +35,11 @@ void CBaseMonster::vfUpdateParameters()
 	}
 
 	// Setup is own additional flags
-	m_bDamaged = ((conditions().GetHealth() < get_sd()->m_fDamagedThreshold) ? true : false);
+	m_bDamaged		= ((conditions().GetHealth() < get_sd()->m_fDamagedThreshold) ? true : false);
+	
+	m_bAggressive	=	hear_dangerous_sound || (EnemyMan.get_enemies_count() > 0) || 
+						HitMemory.is_hit();
+
 }
 
 

@@ -60,19 +60,19 @@ void CStateMonsterAttackAbstract::execute()
 {
 	bool selected = false;
 	
-	//if (check_steal_state()) {
-	//	select_state	(eStateSteal);
-	//	selected		= true;
-	//} else if (check_find_enemy_state()) {
-	//	select_state	(eStateFindEnemy);
-	//	selected		= true;
-	//} else if (check_run_away_state()) {
-	//	select_state	(eStateRunAway);
-	//	selected		= true;
-	//} else if (check_run_attack_state()) {
-	//	select_state	(eStateRunAttack);
-	//	selected		= true;
-	//}
+	if (check_steal_state()) {
+		select_state	(eStateSteal);
+		selected		= true;
+	} else if (check_find_enemy_state()) {
+		select_state	(eStateFindEnemy);
+		selected		= true;
+	} else if (check_run_away_state()) {
+		select_state	(eStateRunAway);
+		selected		= true;
+	} else if (check_run_attack_state()) {
+		select_state	(eStateRunAttack);
+		selected		= true;
+	}
 	
 	if (!selected) {
 		// определить тип атаки

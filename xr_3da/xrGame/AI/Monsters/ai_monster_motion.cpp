@@ -143,6 +143,8 @@ bool CMotionManager::PrepareAnimation()
 // проверить существует ли переход из анимации from в to
 void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
+	if (pMonster->m_bAggressive) return;
+	
 	// поиск соответствующего перехода
 	bool		b_activated	= false;
 	EMotionAnim cur_from = from; 

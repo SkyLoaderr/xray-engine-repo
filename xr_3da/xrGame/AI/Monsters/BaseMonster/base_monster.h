@@ -234,6 +234,7 @@ public:
 	
 	u32							m_dwHealth;				
 
+	// --------------------------------------------------------------------------------------
 	// State flags
 	bool						m_bDamaged;
 	bool						m_bAngry;
@@ -241,7 +242,13 @@ public:
 	bool						m_bAggressive;
 	bool						m_bSleep;
 
-	bool						flagEatNow;				// true - сейчас монстр ест
+	bool						flagEatNow;				// true - сейчас монстр ест (todo: remove it)
+
+	
+	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
+
+	//---------------------------------------------------------------------------------------
+
 
 	CMonsterCorpseCoverEvaluator	*m_corpse_cover_evaluator;
 	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;
