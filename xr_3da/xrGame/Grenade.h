@@ -50,9 +50,22 @@ protected:
 	struct	net_update 		
 	{
 		u32					dwTimeStamp;
-		Fvector				pos,angles;
+		u64					CurPhStep;
+		u64					RPhStep;
+
+//		u8					enabled;
+//		Fvector				pos;//,angles;
+//		Fquaternion			quaternion;
+
+//		Fvector		linear_vel;
+//		Fvector		angular_vel;
+
+		SPHNetState			State;
 	};
 
 	xr_deque<net_update>	NET;
 	net_update				NET_Last;
+
+	u64						LastCPhStep;
+	u64						LastAPhStep;
 };

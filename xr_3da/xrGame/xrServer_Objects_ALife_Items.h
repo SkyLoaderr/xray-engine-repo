@@ -10,6 +10,7 @@
 #define xrServer_Objects_ALife_ItemsH
 
 #include "xrServer_Objects_ALife.h"
+#include "PHSynchronize.h"
 
 class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
 public:
@@ -130,6 +131,14 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
 	u32								m_dwTimeStamp;
+	u64								m_RPhStep;
+//	u8								m_bEnabled;
+//	Fquaternion						m_oQuat;
+	
+//	Fvector		m_vlinear_vel;
+//	Fvector		m_vangular_vel;
+	SPHNetState						State;
+
 									CSE_ALifeItemGrenade(LPCSTR caSection);
 	virtual							~CSE_ALifeItemGrenade();
 SERVER_ENTITY_DECLARE_END

@@ -613,13 +613,29 @@ void CSE_ALifeItemGrenade::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 
-
 	tNetPacket.r_u32			(m_dwTimeStamp);
-	tNetPacket.r_vec3			(o_Position	);
-	tNetPacket.r_angle8			(o_Angle.x	);
-	tNetPacket.r_angle8			(o_Angle.y	);
-	tNetPacket.r_angle8			(o_Angle.z	);
+	tNetPacket.r_u64			(m_RPhStep);
 
+	tNetPacket.r_vec3				( State.angular_vel);
+	tNetPacket.r_vec3				( State.linear_vel);
+
+	tNetPacket.r_vec3				( State.force);
+	tNetPacket.r_vec3				( State.torque);
+
+	tNetPacket.r_vec3				( State.position);
+	tNetPacket.r_vec3				( State.previous_position);
+
+	tNetPacket.r_float				( State.quaternion.x );
+	tNetPacket.r_float				( State.quaternion.y );
+	tNetPacket.r_float				( State.quaternion.z );
+	tNetPacket.r_float				( State.quaternion.w );
+
+	tNetPacket.r_float				( State.previous_quaternion.x );
+	tNetPacket.r_float				( State.previous_quaternion.y );
+	tNetPacket.r_float				( State.previous_quaternion.z );
+	tNetPacket.r_float				( State.previous_quaternion.w );
+
+	tNetPacket.r_u8					( *((u8*)&(State.enabled)) );
 }
 
 void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -627,10 +643,28 @@ void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 
 	tNetPacket.w_u32			(m_dwTimeStamp);
-	tNetPacket.w_vec3			(o_Position	);
-	tNetPacket.w_angle8			(o_Angle.x	);
-	tNetPacket.w_angle8			(o_Angle.y	);
-	tNetPacket.w_angle8			(o_Angle.z	);
+	tNetPacket.w_u64			(m_RPhStep);
+
+	tNetPacket.w_vec3				( State.angular_vel);
+	tNetPacket.w_vec3				( State.linear_vel);
+
+	tNetPacket.w_vec3				( State.force);
+	tNetPacket.w_vec3				( State.torque);
+
+	tNetPacket.w_vec3				( State.position);
+	tNetPacket.w_vec3				( State.previous_position);
+
+	tNetPacket.w_float				( State.quaternion.x );
+	tNetPacket.w_float				( State.quaternion.y );
+	tNetPacket.w_float				( State.quaternion.z );
+	tNetPacket.w_float				( State.quaternion.w );
+
+	tNetPacket.w_float				( State.previous_quaternion.x );
+	tNetPacket.w_float				( State.previous_quaternion.y );
+	tNetPacket.w_float				( State.previous_quaternion.z );
+	tNetPacket.w_float				( State.previous_quaternion.w );
+
+	tNetPacket.w_u8					( State.enabled );
 }
 
 #ifdef _EDITOR
