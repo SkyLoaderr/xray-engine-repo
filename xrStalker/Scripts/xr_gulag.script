@@ -84,7 +84,6 @@ function fract:calculate()
 		end
 	end
 	if self.calculateStates ~= nil then 
-		printf("calculate_state")
 		self.state = self.calculateStates(self.Object, self.music) 
 	end
 
@@ -94,7 +93,7 @@ function fract:calculate()
 	end
 	
 	self:updateJob()
-	self:print()
+	--self:print()
 end
 function fract:updateJob()
 	for k,v in self.Job do
