@@ -234,6 +234,7 @@ public:
 	// Team	
 	virtual void			ChangeTeam						(int team, int squad, int group);
 
+			bool			IsVisibleObject					(const CGameObject *object);
 
 // members
 public:

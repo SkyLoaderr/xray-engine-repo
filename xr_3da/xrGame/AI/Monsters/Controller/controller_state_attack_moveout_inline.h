@@ -28,7 +28,7 @@ void CStateControlMoveOutAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateControlMoveOutAbstract::check_start_conditions()
 {
-	if (object->EnemyMan.see_enemy_now()) return false;
+	if (object->IsVisibleObject(object->EnemyMan.get_enemy())) return false;
 	return true;
 }
 
@@ -36,7 +36,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateControlMoveOutAbstract::check_completion()
 {
 	if (object->HitMemory.get_last_hit_time() > time_state_started) return true;
-	if (object->EnemyMan.see_enemy_now()) return true;
+	if (object->IsVisibleObject(object->EnemyMan.get_enemy())) return true;
 	if (time_state_started + MAX_STATE_TIME < object->m_current_update) return true;
 
 	return false;

@@ -121,13 +121,13 @@ void CBitingControlled::ExecuteFollow()
 {
 	float dist = pMonster->Position().distance_to(enemy->Position());	
 	
-	if ((pMonster->MotionMan.m_tAction == ACT_STAND_IDLE) && (dist < 8.f)) 
+	if ((pMonster->MotionMan.m_tAction == ACT_STAND_IDLE) && (dist < 15.f)) 
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 	else 
-		pMonster->MotionMan.m_tAction = ((dist > 2.0f) ? ACT_WALK_FWD : ACT_STAND_IDLE);
+		pMonster->MotionMan.m_tAction = ((dist > 10.0f) ? ACT_WALK_FWD : ACT_STAND_IDLE);
 
 	if (pMonster->MotionMan.m_tAction == ACT_WALK_FWD){
-		pMonster->MoveToTarget(random_position(enemy->Position(), 3.f));
+		pMonster->MoveToTarget(random_position(enemy->Position(), 10.f));
 	}
 
 }

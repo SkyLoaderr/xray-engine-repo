@@ -193,7 +193,7 @@ bool CPoltergeist::UpdateStateManager()
 
 void CPoltergeist::on_activate()
 {
-	///Hide();
+	Hide();
 	
 	m_height			= 0.3f;
 	time_height_updated = 0;

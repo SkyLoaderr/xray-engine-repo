@@ -650,5 +650,8 @@ void CAI_Biting::ProcessTurn()
 
 }
 
-
+bool CAI_Biting::IsVisibleObject(const CGameObject *object)
+{
+	return CMemoryManager::visible_now(object);
+}
 

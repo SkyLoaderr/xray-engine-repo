@@ -299,7 +299,7 @@ void CController::UpdateCL()
 	}
 	
 	if (active_control_fx) {
-		u32 time_to_show	= 50;
+		u32 time_to_show	= 150;
 		float percent		= float((Level().timeServer() - time_control_hit_started)) / float(time_to_show);
 		float percent2		= 1 - (percent - TEXTURE_SIZE_PERCENT) / 2 ;
 
