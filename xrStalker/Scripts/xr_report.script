@@ -1,5 +1,5 @@
-local timeout = 60000
-local dist_for_report = 30
+local timeout = 30000
+local dist_for_report = 40
 local min_dist_to_report = 1
 
 local operators     = {}
@@ -221,7 +221,7 @@ function action_report_soldier:create_report ()
     if self.theme == "commander_agroprom" then
 		table.insert (self.phrases, {our = true})
 		table.insert (self.phrases, {our = true})
-		for i = 1, 6 do
+		for i = 1, 5 do
 			table.insert (self.phrases, {our = false})
 		end
 	else
