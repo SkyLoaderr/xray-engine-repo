@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_action_planner_wrapper.h"
 #include "script_game_object.h"
+#include "ai_debug.h"
 
 void CScriptActionPlannerWrapper::setup			(CScriptGameObject *object)
 {
@@ -22,6 +23,11 @@ void CScriptActionPlannerWrapper::setup_static	(CScriptActionPlanner *planner, C
 
 void CScriptActionPlannerWrapper::update		()
 {
+#ifdef LOG_ACTION
+	if ((psAI_Flags.test(aiGOAP) && !m_use_log) || (!psAI_Flags.test(aiGOAP) && m_use_log))
+		set_use_log							(!!psAI_Flags.test(aiGOAP));
+#endif
+
 	luabind::call_member<void>				(this,"update");
 }
 
