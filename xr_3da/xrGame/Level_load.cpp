@@ -33,6 +33,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 	// AI space
 	pApp->LoadTitle	("Loading AI objects...");
 	string256		fn_game;
+	
 	if (!ai().get_alife() && FS.exist(fn_game,"$level$","level.ai"))
 		ai().load	(net_SessionName());
 
