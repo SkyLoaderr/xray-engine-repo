@@ -247,7 +247,7 @@ function anims:__init(npc)
    		     	rnd = 30,
 			lastanim = nil,
 		     	base_state = nil,  -- базова€ анимаци€ ( nil - никаких базовых анимаций нет)
-			curent_state = nil	-- оверрайдинг базового состо€ни€. ≈сли он nil - то играем базовую
+			current_state = nil	-- оверрайдинг базового состо€ни€. ≈сли он nil - то играем базовую
 			}
 	self.idle = {}
 	self.idle[0] = { 	{name = "idle_0_idle_0", flag = true },
@@ -275,30 +275,66 @@ function anims:__init(npc)
 				{name = "idle_4_idle_2", flag = true },
 				{name = "idle_4_idle_3", flag = true },
 				{name = "idle_4_idle_4", flag = true }}
+	self.hello = {}
+	self.hello[0] =  	{name = "hello_0_idle_0", flag = true }
+	self.hello[1] =  	{name = "hello_1_idle_0", flag = true }
+	self.hello[2] =  	{name = "hello_2_idle_0", flag = true }
+	self.hello[3] =  	{name = "hello_3_idle_0", flag = true }
+	self.hello[4] =  	{name = "hello_4_idle_0", flag = true }
 			
 end
 -- основна€ функци€	
 function anims:update(type)
-	-- если curent_state не нулевой и доступен при данном base_state - играем его.
-	-- если он нулевой - играем base_state
-
-	-- если мы доиграли curent_state - нужно обнулить его.
-
-	-- если тип соответствует текущей анимации - играть его, если нет - зафиналить предидущий и засетить новый.
-	if type ~= self.anim.base_state then
-		-- финалим предидущий
-		if self.anim.base_state == "idle" then
-			self:remove_idle()
+	--ќпредел€ем, относитс€ ли запрашиваемых тип ко временным
+	if type == "hello"
+	then
+		-- мен€ем настройки временной анимации
+		if self.anim.current_state ~= nil then
+			-- финалайзим предидущий каррент стэйт
+			self.npc:clear_animations()
 		end
+		self.anim.current_state = type
+	end
 
-		-- устанавливаем новый
-		self.anim.base_state = type
-		if self.anim.base_state == "idle" then
-			self:set_idle()
+	-- определ€ем, относитс€ ли запрашиваемый тип к базовым
+	if type == "idle"
+	then
+		-- если тип соответствует текущей анимации - играть его, если нет - зафиналить предидущий и засетить новый.
+		if type ~= self.anim.base_state then
+			-- финалим предидущий
+			if self.anim.base_state == "idle" then
+				self:remove_idle()
+			end
+
+			-- устанавливаем новый
+			self.anim.base_state = type
+			if self.anim.base_state == "idle" then
+				self:set_idle()
+			end
 		end
 	end
 
-	-- вызвать апдейт у текущего типа.
+	-- ќпредел€ем, закончилс€ ли каррент стейт
+	if self.anim.current_state ~= nil and
+	   self.npc:animation_coun() <= 1 
+	then
+		self.anim.current_state = nil 
+	end
+
+	-- если curent_state не нулевой - играем его.
+	-- если он нулевой - играем base_state
+	if self.anim.current_state ~= nil then
+		if self.anim.current_state == "hello" then			
+			self:update_hello()
+		end
+	else
+		self:update_base()
+	end
+
+
+end
+-- апдейт базового класса
+function anims:update_base()
 	if self.anim.base_state == "idle" then
 		self:update_idle()
 	end
@@ -343,6 +379,9 @@ function anims:weapon_slot()
 	end
 	return 0
 end
+----------------------------------------------------------------------------------------------------------------------
+-- —то€чий идл
+----------------------------------------------------------------------------------------------------------------------
 -- проигрывает идловые анимации
 function anims:set_idle()
 	-- выбирает нужную анимацию дл€ данного положени€ тела
@@ -398,12 +437,20 @@ function anims:remove_idle()
 	self.anim.lastanim = nil
 	self.npc:clear_animations()
 end
+----------------------------------------------------------------------------------------------------------------------
+-- ѕриветствие
+----------------------------------------------------------------------------------------------------------------------
+function anims:update_hello()
+	self.anim.begin = nil
+	local animslot = self:weapon_slot()
 
+	self.anim.lastanim = nil
+	self.npc:clear_animations()
+	self.npc:add_animation (self.hello[animslot].name, self.hello[animslot].flag)
 
-
-
-
-
+	-- ¬ызвать апдейт базового класса
+	self:update_base()
+end                            
 
 
 
