@@ -35,8 +35,8 @@ void CBuild::Flex2OGF()
 			//pOGF->shader		= M->shader;
 			//pOGF->shader_xrlc	= &F->Shader();
 			
-			TRY(strcpy(T.name,textures[M->surfidx].name));
-			TRY(T.pSurface = &(textures[M->surfidx]));
+			TRY(T.name		= textures[M->surfidx].name));
+			TRY(T.pSurface	= &(textures[M->surfidx]));
 			TRY(pOGF->textures.push_back(T));
 			
 			try {
@@ -53,7 +53,7 @@ void CBuild::Flex2OGF()
 					// If lightmaps persist
 					CLightmap*	LM	= F->lmap_layer;
 					if (LM)		{
-						strcpy			(T.name, LM->lm_texture.name);
+						T.name			= LM->lm_texture.name;
 						T.pSurface		= &(LM->lm_texture);
 						R_ASSERT		(T.pSurface);
 						R_ASSERT		(pOGF);

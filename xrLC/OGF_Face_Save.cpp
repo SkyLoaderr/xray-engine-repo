@@ -103,9 +103,10 @@ void OGF::Save			(IWriter &fs)
 	std::string			Tname;
 	for (u32 i=0; i<textures.size(); i++)	{
 		if (!Tname.empty()) Tname += ',';
-		char *fname = textures[i].name;
-		if (strchr(fname,'.')) *strchr(fname,'.')=0;
-		Tname += fname;
+		string256		t;
+		strcpy			(t,*textures[i].name);
+		if (strchr(t,'.')) *strchr(t,'.')=0;
+		Tname			+= fname;
 	}
 	string1024			sid;
 	strconcat			(sid,
