@@ -1,0 +1,151 @@
+object frmNumericVector: TfrmNumericVector
+  Left = 316
+  Top = 177
+  BorderStyle = bsDialog
+  Caption = 'Numeric'
+  ClientHeight = 70
+  ClientWidth = 183
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  Scaled = False
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 123
+    Height = 70
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 0
+    object gbTitle: TGroupBox
+      Left = 0
+      Top = 0
+      Width = 123
+      Height = 70
+      Align = alClient
+      TabOrder = 0
+      object RxLabel3: TLabel
+        Left = 8
+        Top = 13
+        Width = 10
+        Height = 13
+        Caption = 'X:'
+      end
+      object RxLabel1: TLabel
+        Left = 8
+        Top = 31
+        Width = 10
+        Height = 13
+        Caption = 'Y:'
+      end
+      object RxLabel2: TLabel
+        Left = 8
+        Top = 49
+        Width = 10
+        Height = 13
+        Caption = 'Z:'
+      end
+      object seX: TMultiObjSpinEdit
+        Left = 23
+        Top = 11
+        Width = 83
+        Height = 18
+        LWSensitivity = 0.1
+        ButtonKind = bkLightWave
+        Decimal = 3
+        Increment = 0.1
+        ValueType = vtFloat
+        AutoSize = False
+        TabOrder = 0
+        OnChange = OnModified
+      end
+      object seY: TMultiObjSpinEdit
+        Left = 23
+        Top = 29
+        Width = 83
+        Height = 18
+        LWSensitivity = 0.1
+        ButtonKind = bkLightWave
+        Decimal = 3
+        Increment = 0.1
+        ValueType = vtFloat
+        AutoSize = False
+        TabOrder = 1
+        OnChange = OnModified
+      end
+      object seZ: TMultiObjSpinEdit
+        Left = 23
+        Top = 47
+        Width = 83
+        Height = 18
+        LWSensitivity = 0.1
+        ButtonKind = bkLightWave
+        Decimal = 3
+        Increment = 0.1
+        ValueType = vtFloat
+        AutoSize = False
+        TabOrder = 2
+        OnChange = OnModified
+      end
+    end
+  end
+  object paBottom: TPanel
+    Left = 123
+    Top = 0
+    Width = 60
+    Height = 70
+    Align = alRight
+    BevelOuter = bvNone
+    TabOrder = 1
+    object ebOk: TExtBtn
+      Left = 3
+      Top = 33
+      Width = 56
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Ok'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebOkClick
+    end
+    object ebCancel: TExtBtn
+      Left = 3
+      Top = 51
+      Width = 56
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Cancel'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebCancelClick
+    end
+    object ebReset: TExtBtn
+      Left = 3
+      Top = 5
+      Width = 56
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Reset'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebResetClick
+    end
+  end
+end

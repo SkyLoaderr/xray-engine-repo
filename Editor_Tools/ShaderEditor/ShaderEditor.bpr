@@ -50,7 +50,7 @@
       Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
       Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
       Intermediate\UI_MainShader.obj Intermediate\EditMeshPick.obj 
-      Intermediate\TopBar.obj"/>
+      Intermediate\TopBar.obj Intermediate\EditObjectEditor.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
