@@ -100,11 +100,19 @@ void CSE_Visual::OnChangeVisual	(PropValue* sender)
 	abstract->set_editor_flag	(ISE_Abstract::flVisualChange);
 }
 
+void CSE_Visual::OnChangeAnim(PropValue* sender)
+{
+	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
+	abstract->set_editor_flag	(ISE_Abstract::flVisualAnimationChange);
+}
+
 void CSE_Visual::FillProps		(LPCSTR pref, PropItemVec &items)
 {
 	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
 	ChooseValue *V 				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Model\\Visual"),	&visual_name,	smVisual);
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
+	ChooseValue* V				= PHelper().CreateChoose	(values,	PrepareKey(pref,s_name,"Model\\Animation"),		&startup_animation, smSkeletonAnims,0,(u32)visual()->get_visual());
+	V->OnChangeEvent.bind		(this,&CSE_ALifeObjectPhysic::OnChangeAnim);
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -767,11 +767,6 @@ xr_token po_types[]={
 	{ 0,				0				}
 };
 
-void CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
-{
-	set_editor_flag				(flVisualAnimationChange);
-}
-
 void CSE_ALifeObjectPhysic::FillProps		(LPCSTR pref, PropItemVec& values) 
 {
 	inherited1::FillProps		(pref,	 values);
@@ -782,8 +777,6 @@ void CSE_ALifeObjectPhysic::FillProps		(LPCSTR pref, PropItemVec& values)
     PHelper().CreateFlag8		(values, PrepareKey(pref,s_name,"Active"), &_flags, flActive);
 
     // motions & bones
-    ChooseValue* V				= PHelper().CreateChoose	(values,	PrepareKey(pref,s_name,"Model\\Animation"),		&startup_animation, smSkeletonAnims,0,(u32)visual()->get_visual());
-    V->OnChangeEvent.bind		(this,&CSE_ALifeObjectPhysic::OnChangeAnim);
 	V 							= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(u32)visual()->get_visual());
     V->Owner()->subitem			= 8;
 }
@@ -943,10 +936,6 @@ void CSE_ALifeObjectHangingLamp::load(NET_Packet &tNetPacket)
 	inherited1::load(tNetPacket);
 	inherited2::load(tNetPacket);
 }
-void CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
-{
-	set_editor_flag				(flVisualAnimationChange);
-}
 
 void CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 {
@@ -978,9 +967,7 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
     if (flags.is(flTypeSpot))
 		PHelper().CreateAngle	(values, PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 
-	// motions && bones
-    ChooseValue* V				= PHelper().CreateChoose	(values,	PrepareKey(pref,s_name,"Model\\Animation"),		&startup_animation, smSkeletonAnims,0,(u32)visual()->get_visual());
-    V->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeAnim);
+	// bones
     V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(u32)visual()->get_visual());
     V->Owner()->subitem			= 8;
     V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(u32)visual()->get_visual());
@@ -1130,20 +1117,11 @@ void CSE_ALifeHelicopter::load		(NET_Packet &tNetPacket)
 	inherited3::load(tNetPacket);
 }
 
-void CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
-{
-	set_editor_flag				(flVisualAnimationChange);
-}
-
 void CSE_ALifeHelicopter::FillProps(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProps		(pref,	values);
 	inherited2::FillProps		(pref,	values);
 	inherited3::FillProps		(pref,	values);
-
-	// motions
-    ChooseValue* V				= PHelper().CreateChoose	(values,	PrepareKey(pref,s_name,"Model\\Animation"), &startup_animation, smSkeletonAnims,0,(u32)visual()->get_visual());
-    V->OnChangeEvent.bind		(this,&CSE_ALifeHelicopter::OnChangeAnim);
 
     PHelper().CreateChoose		(values,	PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
 }
