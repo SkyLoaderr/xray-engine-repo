@@ -412,7 +412,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
            xr_motivator.storage[self.object:id()].followers[a].raid_enabled = true
        end
     end   
-    self.object:set_movement_type (move.walk)
+    --self.object:set_movement_type (move.walk)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:set_look_dir ()
