@@ -11,6 +11,7 @@
 #include "script_properties_list_helper.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "script_token_list.h"
 
 using namespace luabind;
 
