@@ -693,12 +693,11 @@
         <dont_has_info>tutorial_artefact_done</dont_has_info>
         <phrase_list>
             <phrase id="11">
-                <text />
                 <dont_has_info>tutorial_end</dont_has_info>
+                <give_info>tutorial_help_wounded_start</give_info>
                 <next>1</next>
             </phrase>
             <phrase id="12">
-                <text />
                 <has_info>tutorial_end</has_info>
                 <next>2</next>
             </phrase>
