@@ -320,7 +320,7 @@ void	CRender::Render		()
 	Target.Begin	();
 
 	// Environment render
-	// pCreator->Environment.RenderFirst		();
+	pCreator->Environment.RenderFirst		();
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
