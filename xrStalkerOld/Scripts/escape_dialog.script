@@ -195,10 +195,6 @@ function transfer_wolf_ammo_to_actor(first_speaker, second_speaker)
 	if obj ~= nil then
 		first_speaker:transfer_item (obj, second_speaker)
 	end
-	obj = first_speaker:object("ammo_9x19_fmj")
-	if obj ~= nil then
-		first_speaker:transfer_item (obj, second_speaker)
-	end
 end
 
 function have_dynamite(first_speaker, second_speaker)
