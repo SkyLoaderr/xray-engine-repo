@@ -216,7 +216,7 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 	if (_3D)			LoadWaveAs3D		( fn );
 	else				LoadWaveAs2D		( fn );
 	R_ASSERT			(wave);
-	SoundRender.cache.cat_create			(CAT,dwTimeTotal);
+	SoundRender.cache.cat_create			( CAT, dwBytesTotal );
 
 	if (dwTimeTotal<100)
 	{
