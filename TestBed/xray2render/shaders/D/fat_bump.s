@@ -19,11 +19,11 @@ struct 	v2p_out
 
 struct 	v2p_in
 {
-  float2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling diffuse+normal map)
-  float3 Pe: 		TEXCOORD1;	// Eye-space position 	(for lighting)
-  float3 M1:		TEXCOORD2;	// nmap 2 eye - 1
-  float3 M2:		TEXCOORD3;	// nmap 2 eye - 2
-  float3 M3:		TEXCOORD4;	// nmap 2 eye - 3
+  half2	tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling diffuse+normal map)
+  half3	Pe: 		TEXCOORD1;	// Eye-space position 	(for lighting)
+  half3 M1:			TEXCOORD2;	// nmap 2 eye - 1
+  half3 M2:			TEXCOORD3;	// nmap 2 eye - 2
+  half3 M3:			TEXCOORD4;	// nmap 2 eye - 3
 };
 
 struct 	p2f
