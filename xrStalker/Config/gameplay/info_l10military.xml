@@ -79,6 +79,7 @@
 	<info_portion id="mil_leader_task_set"><task>mil_lukash_job</task></info_portion>
 	
 	<info_portion id="mil_courier_start"></info_portion>
+	<info_portion id="mil_courier_death"></info_portion>
 	
 	
 </game_information_portions>
