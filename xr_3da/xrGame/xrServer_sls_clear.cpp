@@ -16,8 +16,15 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode)
 
 void xrServer::SLS_Clear		()
 {
-	u32					mode	= net_flags(TRUE,TRUE);
+	// Don't do anything if game in ALife mode
+	if (game->type == GAME_SINGLE) {
+		game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(game);
+		if (tpGame && tpGame->m_tpALife)
+			return;
+	}
+
 	// Collect entities
+	u32					mode	= net_flags(TRUE,TRUE);
 	xrS_entities::iterator		I=entities.begin(),E=entities.end();
 	for ( ; I!=E; I++)
 		Perform_destroy			(I->second,mode);
