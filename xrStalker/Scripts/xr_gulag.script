@@ -553,7 +553,7 @@ function fract:setJob(npc, job)
 		end
 	end
 	if job.group ~= nil then
-		self.object:change_team(self.object:team(), self.object:squad(), job.group)
+		job.object:change_team(job.object:team(), job.object:squad(), job.group)
 	end
 end
 function fract:getJobLabel()
