@@ -174,8 +174,8 @@ void CAI_Stalker::Camp(bool bWeapon)
 			m_tpaDynamicObjects[iIndex].tMySavedPosition.mul((fDistanceToCover - .5f)/fDistance);
 			m_tpaDynamicObjects[iIndex].tMySavedPosition.add(vPosition);
 			m_tpaDynamicObjects[iIndex].dwMyNodeID			= AI_Path.DestNode;
-			AI_Path.TravelPath.clear();
-			AI_Path.Nodes.clear();
+			//AI_Path.TravelPath.clear();
+			//AI_Path.Nodes.clear();
 			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2))
 				m_inventory.Action(kWPN_RELOAD,CMD_START);
@@ -310,7 +310,7 @@ void CAI_Stalker::Detour()
 	if (m_bStateChanged) {
 		m_tActionState = eActionStateWatchLook;
 		m_dwActionStartTime = Level().timeServer();
-		AI_Path.TravelPath.clear();
+		//AI_Path.TravelPath.clear();
 	}
 	
 	Fvector tPoint;
@@ -394,7 +394,7 @@ void CAI_Stalker::ForwardCover()
 		m_tSelectorCover.m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
 		m_tSelectorCover.m_fMinEnemyDistance = _max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 		m_dwLastRangeSearch		= 0;
-		AI_Path.TravelPath.clear();
+		//AI_Path.TravelPath.clear();
 	}
 
 	Fvector						tPoint;
@@ -692,7 +692,7 @@ void CAI_Stalker::ExploreDNE()
 	if (m_bStateChanged) {
 		m_tActionState		= eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer();
-		AI_Path.TravelPath.clear();
+		//AI_Path.TravelPath.clear();
 	}
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = _max(25.f,vPosition.distance_to(tPoint));
 	switch (m_tActionState) {
@@ -858,7 +858,7 @@ void CAI_Stalker::ExploreNDNE()
 	if (m_bStateChanged) {
 		m_tActionState = eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer();
-		AI_Path.TravelPath.clear();
+		//AI_Path.TravelPath.clear();
 	}
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
@@ -925,7 +925,7 @@ void CAI_Stalker::TakeItems()
 
 	// taking items
 	if (m_bStateChanged) {
-		AI_Path.TravelPath.clear();
+		//AI_Path.TravelPath.clear();
 	}
 	Fvector					tPoint;
 
@@ -972,8 +972,8 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	vfUpdateSearchPosition	();
 
 	if (m_bStateChanged || AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode)) {
-		AI_Path.Nodes.clear();
-		AI_Path.TravelPath.clear();
+		//AI_Path.Nodes.clear();
+		//AI_Path.TravelPath.clear();
 		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
 	}
@@ -1073,8 +1073,8 @@ void CAI_Stalker::Think()
 	}
 	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 
-	if (m_tEnemy.Enemy && (_K != K))
-		AI_Path.TravelPath.clear();
+//	if (m_tEnemy.Enemy && (_K != K))
+//		AI_Path.TravelPath.clear();
 
 	m_dwUpdateCount++;
 

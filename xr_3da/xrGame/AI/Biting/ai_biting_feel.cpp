@@ -125,3 +125,38 @@ objQualifier* CAI_Biting::GetQualifier	()
 {
 	return(&BitingQualifier);
 }
+
+void CAI_Biting::vfAssignPitch			()
+{
+	if (getAI().bfInsideNode(AI_Node,vPosition)) {
+		Fvector l_tDirection, l_tEdgePosition, l_tEdgePosition1;
+		float fRadius;
+		u32 l_dwNodeID;
+		Movement.GetBoundingSphere	(l_tDirection,fRadius);
+		l_tDirection.setHP			(-r_torso_current.yaw,0);
+		l_tDirection.normalize		();
+		l_tDirection.mul			(fRadius);
+		l_tEdgePosition.add			(vPosition,l_tDirection);
+		l_dwNodeID					= getAI().q_Node(AI_NodeID,l_tEdgePosition,true);
+		if (l_dwNodeID == u32(-1))
+			l_dwNodeID = AI_NodeID;
+		l_tEdgePosition.y			= getAI().ffGetY(*getAI().Node(l_dwNodeID),l_tEdgePosition.x,l_tEdgePosition.z);
+		
+		l_tEdgePosition1			= l_tEdgePosition;
+
+		l_tDirection.setHP			(r_torso_current.yaw,0);
+		l_tDirection.normalize		();
+		l_tDirection.mul			(fRadius);
+		l_tEdgePosition.add			(vPosition,l_tDirection);
+		l_dwNodeID					= getAI().q_Node(AI_NodeID,l_tEdgePosition,true);
+		if (l_dwNodeID == u32(-1))
+			l_dwNodeID = AI_NodeID;
+		l_tEdgePosition.y			= getAI().ffGetY(*getAI().Node(l_dwNodeID),l_tEdgePosition.x,l_tEdgePosition.z);
+
+		l_tEdgePosition.sub			(l_tEdgePosition1);
+
+		float						fYaw, fPitch;
+		l_tEdgePosition.getHP		(fYaw,fPitch);
+		r_torso_target.pitch		= fPitch;
+	}
+}

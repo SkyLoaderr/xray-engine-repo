@@ -43,12 +43,13 @@ void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_
 }
 
 // построение пути и установка параметров скорости 
-void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback, bool bSelectorPath)
+void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback, bool bSelectorPath)
 {
 
 	//bool bMoveLeft = false;
 	bool bPathBuilt = false;
 	
+	m_tPathType = path_type;
 	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode, bSelectorPath);
 	bPathBuilt = AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart);
 	
@@ -144,11 +145,12 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 
 			Fvector tTemp;
 			Fvector tTemp2;
+			float pitch;
 
 			clCenter(tTemp2);
 
 			tTemp.sub	(*tpPoint,tTemp2);
-			tTemp.getHP	(r_torso_target.yaw,r_torso_target.pitch);
+			tTemp.getHP	(r_torso_target.yaw,pitch);
 			r_torso_target.yaw *= -1;
 
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
@@ -209,6 +211,9 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 		}  
 	}
 
+	//vfAssignPitch();
+//	r_torso_target.pitch = PI_DIV_6;
+
 	r_target = r_torso_target;
 }
 
@@ -256,10 +261,10 @@ void CAI_Biting::vfUpdateParameters()
 	K					= C | D | E | F;
 	
 	// temp!!!!
-	if (K) {
-		C = true;
-		F = D = E = false;
-	}
+//	if (K) {
+//		E = true;
+//		C = F = D = false;
+//	}
 
 	// does enemy see me?
 	SelectEnemy			(m_tEnemy);
@@ -316,8 +321,13 @@ void CAI_Biting::vfUpdateParameters()
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
 				H = true;
 	}
-	// temp!!!
-	H = true; I = false;
+
+//	if (Level().iGetKeyState(DIK_H)) {
+//		K = C = D = E = F = false;
+//		H = true; I = false;
+
+	// temp
+	H = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -338,6 +348,10 @@ void CAI_Biting::SetText()
 
 		HUD().pFontSmall->OutSet	(300,420);	
 		HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
+
+		HUD().pFontSmall->OutSet	(300,440);	
+		HUD().pFontSmall->OutNext	("Current = [%f] Target = [%f]", R2D(r_torso_current.pitch), R2D(r_torso_target.pitch));
+
 }
 
 

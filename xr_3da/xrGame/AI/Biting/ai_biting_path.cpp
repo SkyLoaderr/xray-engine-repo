@@ -168,9 +168,10 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 				if (tpDestinationPosition)
 					if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
 						//VERIFY(false);
-						//if (dwCurNode != AI_Path.DestNode)
-						//	m_tpaPointNodes.push_back(AI_Path.DestNode);
-						//m_tpaPoints.push_back(*tpDestinationPosition);
+						if (dwCurNode != AI_Path.DestNode)
+							m_tpaPointNodes.push_back(AI_Path.DestNode);
+						tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(dwCurNode),tpDestinationPosition->x,tpDestinationPosition->z);
+						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 					else {
 						//if (dwCurNode != AI_Path.DestNode)
@@ -262,7 +263,7 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 				if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
 					vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
 				else
-					if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {
+					if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
 						AI_Path.Nodes.clear();
 						AI_Path.Nodes.push_back(AI_NodeID);
 						m_tPathState = ePathStateBuildTravelLine;

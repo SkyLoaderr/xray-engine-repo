@@ -124,6 +124,7 @@ namespace AI_Biting {
 		eActionStateWatchGo,
 		eActionStateWatchLook,
 		eActionStateLie,
+		eActionStateScared
 	};
 
 };

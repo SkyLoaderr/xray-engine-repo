@@ -106,7 +106,7 @@ void CCustomMonster::Exec_Look		( float dt )
 
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 	
-	mRotate.setHPB					(-NET_Last.o_model,0,0);
+	mRotate.setHPB					(-NET_Last.o_model,-NET_Last.o_torso.pitch,0);
 	
 	//
 	Engine.Sheduler.Slice			();

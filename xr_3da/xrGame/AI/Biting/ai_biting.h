@@ -89,9 +89,10 @@ private:
 			float			EnemyHeuristics					(CEntity* E);
 			// построение пути и установка параметров скорости
 			// tpPoint - куда смотреть при движении
-			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0, bool moveback=false, bool bSelectorPath = false);
+			void			vfSetParameters					(AI_Biting::EPathType path_type,IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0, bool moveback=false, bool bSelectorPath = false);
 			void			vfSetMotionActionParams			(AI_Biting::EBodyState, AI_Biting::EMovementType, AI_Biting::EMovementDir, AI_Biting::EStateType, AI_Biting::EActionType);
 			void			vfSetAnimation					(bool bForceChange = false);
+			void			vfAssignPitch					();
 
 			void			SetDirectionLook				();
 			void			SetReversedDirectionLook		();
@@ -279,7 +280,8 @@ private:
 	AI_Biting::EPostureAnim		m_tPostureAnim;
 	
 	u32						m_dwLieIndex;
-	
+	u32						m_dwActionIndex;
+
 	u32						m_dwPointCheckLastTime;
 	u32						m_dwPointCheckInterval;
 };

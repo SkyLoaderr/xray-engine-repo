@@ -100,7 +100,8 @@ void CAI_Biting::Init()
 
 	m_dwPointCheckLastTime			= 0;
 	m_dwPointCheckInterval			= 1500;
-
+	
+	m_dwActionIndex					= 0;
 }
 
 void CAI_Biting::Die()
@@ -272,7 +273,7 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-	P.r_float_q16		(fHealth,-1000,1000);
+	P.r_float_q16			(fHealth,-1000,1000);
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);

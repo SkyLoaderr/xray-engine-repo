@@ -49,7 +49,7 @@ void CAI_Biting::Panic()
 			case eActionStateWatch : {
 				vfSetMotionActionParams	(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 
-				vfSetParameters			(0,0,false,0);
+				vfSetParameters			(ePathTypeStraight,0,0,false,0);
 
 				if (r_torso_current.yaw == r_torso_target.yaw) {
 					m_ls_yaw = r_torso_current.yaw;
@@ -78,7 +78,7 @@ void CAI_Biting::Panic()
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
 
 	vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
-	vfSetParameters				(&m_tSelectorFreeHunting,0,true,0);
+	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
 }
 
 void CAI_Biting::BackCover(bool bFire)
@@ -101,12 +101,12 @@ void CAI_Biting::BackCover(bool bFire)
 			if (m_dwCurrentUpdate - m_dwActionStartTime < 8500) {
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, eMovementDirectionForward, 
 										eStateTypeDanger,eActionTypeRun);
-				vfSetParameters			(&m_tSelectorCover,0,true,0);
+				vfSetParameters			(ePathTypeStraight,&m_tSelectorCover,0,true,0);
 			}
 			else {
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionForward, 
 										eStateTypeDanger,eActionTypeWalk);
-				vfSetParameters			(0,0,true,0);
+				vfSetParameters			(ePathTypeStraight,0,0,true,0);
 			}
 
 
@@ -163,24 +163,26 @@ void CAI_Biting::ForwardStraight()
 
 // -----------------------------------------------------------------------------
 // Process branch
+	Msg("EnemyNode : %d [%d]",m_tSavedEnemy->AI_NodeID,AI_Path.DestNode);
 	switch (m_tActionState) {
 
 		case eActionStateRun:			// бежать к врагу
-			vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
+			AI_Path.DestNode		= m_tSavedEnemy->AI_NodeID;
+			vfSetMotionActionParams	(eBodyStateStand, eMovementTypeRun, 
 									eMovementDirectionForward, eStateTypeDanger, eActionTypeRun);
-			vfSetParameters			(0,&EnemyPosition,false,0);
+			vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,0);
 			break;
 		case eActionStateStand:			// аттаковать
 			
 			if (bAttackRat) {
 					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 											eMovementDirectionNone, eStateTypeNormal, eActionTypeAttack);
-					vfSetParameters			(0,&EnemyPosition,false,0);
+					vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,0);
 			}
 			else {
 					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 											eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
-					vfSetParameters			(0,&EnemyPosition,false,&EnemyPosition);
+					vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,&EnemyPosition);
 			}	
 
 				if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
@@ -217,7 +219,7 @@ void CAI_Biting::Hide()
 	vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
 							eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
 
-	vfSetParameters	(&m_tSelectorCover,0,true,0);
+	vfSetParameters	(ePathTypeStraight,&m_tSelectorCover,0,true,0);
 }
 
 void CAI_Biting::Detour()
@@ -226,9 +228,9 @@ void CAI_Biting::Detour()
 
 	m_dwInertion				= 60000;
 	if (m_bStateChanged) {
-		m_tActionState = eActionStateWatchLook;
+//		m_tActionState = eActionStateWatchLook;
 		m_dwActionStartTime = m_dwCurrentUpdate;
-		AI_Path.TravelPath.clear();
+		//AI_Path.TravelPath.clear();
 	}
 
 	Fvector		EnemyPosition;
@@ -238,57 +240,79 @@ void CAI_Biting::Detour()
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = 15;
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
 
-	u32 dwDelay1, dwDelay2;
-	float f = 0;
-	if (C)	f =100.f;
-	if (D)	f =80.f;
-	if (E)	f =60.f;
-	if (F)	f =40.f;
-	if (G)	f =20.f;
-
-	float fDistance = _min(vPosition.distance_to(EnemyPosition),f);
-	dwDelay1 = iFloor((fDistance / f) * 20000);
-	dwDelay2 = _max(u32(20000 - dwDelay1),u32(2000));
-	
-	switch (m_tActionState) {
-		case eActionStateWatchGo : 
-			WRITE_TO_LOG			("WatchGo : Detour");
-			AccomplishTask			((F || G) ? 0 : &m_tSelectorFreeHunting);
-			if ((m_dwCurrentUpdate - m_dwActionStartTime > dwDelay1) && (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,EnemyPosition) != u32(-1))) {
-				m_tActionState		= eActionStateWatchLook;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-								  
-		case eActionStateWatchLook : 
-			WRITE_TO_LOG			("WatchLook : Detour");
-			
-			vfUpdateDetourPoint();
-			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-			if (!AI_Path.DestNode) {
-				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
-				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
-					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
-			}
-			
-			//vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint,false,true);
-			if ((m_dwCurrentUpdate - m_dwActionStartTime > dwDelay2) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,EnemyPosition) == u32(-1))) {
-				m_tActionState		= eActionStateWatchGo;
-				m_dwActionStartTime = m_dwCurrentUpdate;
-			}
-			break;
+	vfUpdateDetourPoint();
+	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	if (!AI_Path.DestNode) {
+		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+		for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
+			Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 	}
+
+	vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
+	vfSetParameters	 (ePathTypeCriteria,&m_tSelectorFreeHunting,0,false,0,false,true);
 }
 
 
 void CAI_Biting::ExploreDE()
 {
 	WRITE_TO_LOG("Explore danger-expedient enemy");
+
+	float		turn_side;
+
+	m_dwInertion				= 30000;
+
+// -----------------------------------------------------------------------------
+// Choose branch
+	if (m_bStateChanged) {
+		m_dwActionIndex	= 0;
+		m_dwActionStartTime = m_dwCurrentUpdate;
+	}
+
+	if (m_dwActionStartTime <= m_dwCurrentUpdate) {		
+		switch (m_dwActionIndex) {
+			case 0:					// turn once
+			case 1:					// turn twice
+				turn_side = ((::Random.randI(2)) ? 1.f : (-1.f));
+
+				r_torso_target.yaw += (PI_DIV_2) * turn_side;
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+				
+				m_dwActionStartTime = m_dwCurrentUpdate + 2000; 
+				break;
+			
+			case 2:
+				m_dwActionStartTime = m_dwCurrentUpdate + 20000; 
+				break;
+		}
+		m_dwActionIndex ++;
+	}
+
+
+// -----------------------------------------------------------------------------
+// Process branch
+	
+
+	switch (m_dwActionIndex) {
+		case 1:
+		case 2:
+			WRITE_TO_LOG("Explore DE :: Turning");
+			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+				eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+
+			vfSetParameters			(ePathTypeStraight,0,0,false,0);
+			break;
+		case 3:
+			WRITE_TO_LOG("Explore DE :: Hide");
+			Hide();
+			break;
+	}
+
 }
 
 void CAI_Biting::ExploreDNE()
 {
 	WRITE_TO_LOG("Explore danger-non-expedient enemy");
+	ExploreDE();
 }
 
 void CAI_Biting::ExploreNDE()
@@ -301,13 +325,14 @@ void CAI_Biting::ExploreNDE()
 	
 
 	AI_Path.DestNode		= m_dwLastSoundNodeID;
-	vfSetParameters			(0,0,false,0);
+	vfSetParameters			(ePathTypeStraight,0,0,false,0);
 
 }
 
 void CAI_Biting::ExploreNDNE()
 {
 	WRITE_TO_LOG("Explore non-danger-non-expedient enemy");
+	ExploreNDE();
 }
 // Walking Around
 void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
@@ -348,48 +373,46 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 			// проверка лежания
 			m_tActionState	= eActionStateStand;
 			
-			AI_Path.TravelPath.clear();
+			//AI_Path.TravelPath.clear();
 			AI_Path.DestNode = AI_NodeID;
 
-			vfSetParameters(0, 0, false, 0);
+			vfSetParameters(ePathTypeStraight,0, 0, false, 0);
 
 
 			u32		dwMinRand, dwMaxRand;
 			dwMinRand = dwMaxRand = 1;
 
-			switch (::Random.randI(8)) {
+			switch (::Random.randI(11)) {
 				
 				case 0: m_tActionState = eActionStateStand;
 						dwMinRand = 2000;
 						dwMaxRand = 3000;
 						
 						break;
-				case 1:
-				case 2:
-				case 3: m_tActionState = eActionStateWatchGo; // бродить по точкам графа?
+				case 1: case 2: case 3: case 4:
+				
+				 m_tActionState = eActionStateWatchGo; // бродить по точкам графа?
 						vfUpdateDetourPoint();	
 
 						AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-						vfSetParameters(0, 0, false, 0);
+						vfSetParameters(ePathTypeStraight,0, 0, false, 0);
 						dwMinRand = 7000;
 						dwMaxRand = 15000;
 						break;
-				case 4: 
-				case 5:
-				case 6:
+				case 5: case 6: case 7: case 8: case 9:
 						m_tActionState = eActionStateStand;
 						
 						turn_side = ((::Random.randI(2)) ? 1.f : (-1.f));
 						
 						r_torso_target.yaw += (PI_DIV_2) * turn_side;
 						r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-						dwMinRand = 2000;
-						dwMaxRand = 3000;
+						dwMinRand = 3000;
+						dwMaxRand = 4000;
 						break;
-				case 7: m_tActionState = eActionStateLie;
+				case 10: m_tActionState = eActionStateLie;
 						if (!_CA.Active()) _CA.Set(ePostureStand,eActionLieDown);
-						dwMinRand = 7000;
-						dwMaxRand = 15000;
+						dwMinRand = 15000;
+						dwMaxRand = 30000;
 						break;
 			}
 
@@ -459,32 +482,9 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 			}
 			break;
 	}
-	vfSetParameters(0, tpDesiredPosition, false, 0);	
+	vfSetParameters(ePathTypeStraight,0, tpDesiredPosition, false, 0);	
 
 	// Play sound
-/*	
-	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
-			m_tpSoundBeingPlayed = 0;
-			m_dwLastVoiceTalk = m_dwCurrentUpdate;
-		}
-		if ((m_dwCurrentUpdate - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && 
-			((m_dwCurrentUpdate - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || 
-			((m_dwCurrentUpdate - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && 
-			(::Random.randF(0,1) > (m_dwCurrentUpdate - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
-			
-			m_dwLastSoundRefresh = m_dwCurrentUpdate;
-
-			// Play voice-sound
-			m_tpSoundBeingPlayed = &(m_tpaSoundVoice[Random.randI(SND_VOICE_COUNT)]);
-
-			if (!m_tpSoundBeingPlayed->feedback)
-				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-			else
-				m_tpSoundBeingPlayed->feedback->set_position(eye_matrix.c);
-		}
-	}
-*/
 }
 
 
@@ -539,14 +539,14 @@ void CAI_Biting::Think()
 		Panic			();
 	} else
 	if (C && H && !I) {
-		Hide();
+		Panic();
 	} else
 	if (C && !H && I) {
 		m_dwRandomFactor	= 50;
 		Panic			();
 	} else
 	if (C && !H && !I) {
-		Hide();
+		Panic();
 	} else
 	
 	if (D && H && I) {
@@ -554,23 +554,22 @@ void CAI_Biting::Think()
 		Panic	();
 	} else
 	if (D && H && !I) {
-		Hide		();
+		ForwardStraight	(); //тихо подобраться и начать аттаку
 	} else
 	if (D && !H && I) {
 		m_dwRandomFactor	= 50;
 		Panic	();
 	} else
 	if (D && !H && !I) {
-		Hide	();
+		Hide	();			// отход перебежками через укрытия
 	} else
-	
 	if (E && H && I) {
 		m_dwRandomFactor	= 0;
 		ForwardStraight	();
 	} else
 	if (E && H && !I) {
 		m_dwRandomFactor	= 0;
-		ForwardStraight	();
+		ForwardStraight	(); //тихо подобраться и начать аттаку
 	} else
 	if (E && !H && I) {
 		Detour			();
@@ -594,6 +593,7 @@ void CAI_Biting::Think()
 		Detour			();
 	} else
 	
+
 	if (A && !K && !H) {	// слышу опасный звук, но не вижу, враг не выгодный
 		ExploreDNE();
 	} else
@@ -601,13 +601,13 @@ void CAI_Biting::Think()
 		ExploreDE();
 	} else
 	
-	if (B && !K && !H) {
+	if (B && !K && !H) {	// слышу не опасный звук, но не вижу, враг не выгодный
 		ExploreNDNE();
 	} else
-	if (B && !K && H) {
+	if (B && !K && H) {		// слышу не опасный звук, но не вижу, враг выгодный
 		ExploreNDE();
 	} else {
-		AccomplishTask();
+		AccomplishTask();   // гулять
 	}
 	
 	_A	= A;
