@@ -944,7 +944,7 @@ void CRender::render_sun_near	()
 		float	c1					= _D/_cos(a1);
 		float	k0					= 2.f*c0*_sin(a0);
 		float	k1					= 2.f*c1*_sin(a1);
-		float	spherical_range		= _max(_max(c0,c1), _max(k0,k1)*1.414213562373f );
+		float	spherical_range		= ps_r2_sun_near_border * _max(_max(c0,c1), _max(k0,k1)*1.414213562373f );
 		Fbox	frustum_bb;			frustum_bb.invalidate	();
 		hull.points.push_back		(Device.vCameraPosition);
 		for (int it=0; it<9; it++)	{
@@ -953,8 +953,8 @@ void CRender::render_sun_near	()
 		}
 		float	size_x				= frustum_bb.max.x - frustum_bb.min.x;
 		float	size_y				= frustum_bb.max.y - frustum_bb.min.y;
-		float	diff_x				= (spherical_range - size_x)/2.f;	VERIFY(diff_x>=0);
-		float	diff_y				= (spherical_range - size_y)/2.f;	VERIFY(diff_y>=0);
+		float	diff_x				= (spherical_range - size_x)/2.f;	//VERIFY(diff_x>=0);
+		float	diff_y				= (spherical_range - size_y)/2.f;	//VERIFY(diff_y>=0);
 		frustum_bb.min.x -= diff_x; frustum_bb.max.x += diff_x;
 		frustum_bb.min.y -= diff_y; frustum_bb.max.y += diff_y;
 		Fbox&	bb					= frustum_bb;
