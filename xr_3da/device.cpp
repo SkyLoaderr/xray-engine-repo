@@ -13,8 +13,8 @@ void CRenderDevice::Begin	()
 		Create	();
 	}
 
-	CHK_DX		(HW.pDevice->BeginScene());
-	RCache.OnFrameBegin	();
+	CHK_DX					(HW.pDevice->BeginScene());
+	RCache.OnFrameBegin		();
 	if (HW.Caps.SceneMode)	overdrawBegin	();
 	FPU::m24r();
 }
