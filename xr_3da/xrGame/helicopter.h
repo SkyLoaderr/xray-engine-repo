@@ -42,13 +42,17 @@ protected:
 	Fvector							m_fire_pos;
 	Fvector							m_fire_dir;
 	Fmatrix							m_fire_bone_xform;
-	Fmatrix							m_bind_y_xform;
+	Fmatrix							m_i_bind_x_xform, m_i_bind_y_xform;
+	Fvector2						m_lim_x_rot, m_lim_y_rot;
+	float							m_tgt_x_rot, m_tgt_y_rot;
+	float							m_cur_x_rot, m_cur_y_rot;
+	float							m_bind_x_rot, m_bind_y_rot;
+	Fvector							m_bind_x, m_bind_y;
+	BOOL							m_allow_fire;
 
 	u16								m_fire_bone;
 	u16								m_rotate_x_bone;
 	u16								m_rotate_y_bone;
-	float							m_bone_x_angle;
-	float							m_bone_y_angle;
 
 	ref_str							m_sAmmoType;
 	CCartridge						m_CurrentAmmo;

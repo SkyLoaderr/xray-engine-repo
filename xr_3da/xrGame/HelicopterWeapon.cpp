@@ -5,7 +5,7 @@ void __stdcall
 CHelicopter::BoneMGunCallbackX(CBoneInstance *B)
 {
 	CHelicopter	* P = dynamic_cast<CHelicopter*> (static_cast<CObject*>(B->Callback_Param));
-	Fmatrix rX;		rX.rotateX		(P->m_bone_x_angle);
+	Fmatrix rX;		rX.rotateX		(P->m_cur_x_rot);
 	B->mTransform.mulB(rX);
 }
 
@@ -13,8 +13,8 @@ void __stdcall
 CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 {
 	CHelicopter	* P = dynamic_cast<CHelicopter*> (static_cast<CObject*>(B->Callback_Param));
-	Fmatrix rY;		rY.rotateY		(P->m_bone_y_angle);
-	B->mTransform.mul(P->m_bind_y_xform,rY);
+	Fmatrix rY;		rY.rotateY		(P->m_cur_y_rot);
+	B->mTransform.mulB(rY);
 }
 
 
@@ -91,30 +91,25 @@ CHelicopter::FireEnd()
 void					
 CHelicopter::updateMGunDir()
 {
-	if(!m_destEnemy)
-		return;
-	//		повернуть пулемет
-	//		m_destEnemyPos
-	//		m_bone_x_angle = 0.03f;
+	if(!m_destEnemy)	return;
 
-	CKinematics* K	= PKinematics(Visual());
-
-	Fmatrix M;//	= K->LL_GetTransform(m_rotate_x_bone);
-	M.mul(XFORM(), m_bind_y_xform);
-//	M.mulA(XFORM());
-
-	Fmatrix Mi;
-	Mi.invert(M);
-	Fvector A_;
-	A_.sub(m_destEnemyPos, M.c);
-	Mi.transform_tiny(A_);
-	A_.normalize();
-	Fvector B_ = M.k;
-	
-//	A_.y = 0; A_.normalize();
-//	B_.y = 0; B_.normalize();
-
-	m_bone_y_angle = acos( A_.dotproduct(B_) );
-//	Log("-----m_bone_y_angle", m_bone_y_angle);
-
+	m_allow_fire		= TRUE;
+	Fmatrix XFi;
+	XFi.invert			(XFORM());
+	Fvector dep;
+	XFi.transform_tiny	(dep,m_destEnemyPos);
+	{// x angle
+		Fvector A_;		A_.sub(dep,m_bind_x);	m_i_bind_x_xform.transform_dir(A_); A_.normalize();
+		m_tgt_x_rot		= angle_normalize_signed(m_bind_x_rot-A_.getP());
+		float sv_x		= m_tgt_x_rot;
+		clamp			(m_tgt_x_rot,-m_lim_x_rot.y,-m_lim_x_rot.x);
+		if (!fsimilar(sv_x,m_tgt_x_rot,EPS_L)) m_allow_fire=FALSE;
+	}
+	{// y angle
+		Fvector A_;		A_.sub(dep,m_bind_y);	m_i_bind_y_xform.transform_dir(A_); A_.normalize();
+		m_tgt_y_rot		= angle_normalize_signed(m_bind_y_rot-A_.getH());
+		float sv_y		= m_tgt_y_rot;
+		clamp			(m_tgt_y_rot,-m_lim_y_rot.y,-m_lim_y_rot.x);
+		if (!fsimilar(sv_y,m_tgt_y_rot,EPS_L)) m_allow_fire=FALSE;
+	}
 }

@@ -64,9 +64,14 @@ CHelicopter::init()
 //	m_velocity = 5.0f;
 	m_velocity = 33.0f;
 	m_altitude = 20.0f;
-	m_bone_x_angle = 0.0f;
-	m_bone_y_angle = 0.0f;
+	m_cur_x_rot = 0.0f;
+	m_cur_y_rot = 0.0f;
+	m_tgt_x_rot = 0.0f;
+	m_tgt_y_rot = 0.0f;
+	m_bind_x_rot= 0.f;
+	m_bind_y_rot= 0.f;
 	m_maxFireDist = 100.0f;
+	m_allow_fire= FALSE;
 	m_movementMngr.init(this);
 	setState(CHelicopter::eInitiatePatrolZone);
 	SetfHealth(100.0f);
@@ -134,18 +139,25 @@ CHelicopter::net_Spawn(LPVOID	DC)
 		}
 	}
 	
-/*	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
-	biX.set_callback		(BoneMGunCallbackX,this,TRUE);
-*/
+	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
+	biX.set_callback		(BoneMGunCallbackX,this);
 	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
 	biY.set_callback		(BoneMGunCallbackY,this);
+	CBoneData& bdX			= K->LL_GetData(m_rotate_x_bone); VERIFY(bdX.IK_data.type==jtJoint);
+	m_lim_x_rot.set			(bdX.IK_data.limits[0].limit.x,bdX.IK_data.limits[0].limit.y);
+	CBoneData& bdY			= K->LL_GetData(m_rotate_y_bone); VERIFY(bdY.IK_data.type==jtJoint);
+	m_lim_y_rot.set			(bdY.IK_data.limits[1].limit.x,bdY.IK_data.limits[1].limit.y);
 
 	xr_vector<Fmatrix> matrices;
-	K->LL_GetBindTransform (matrices);
-	m_bind_y_xform = matrices[m_rotate_y_bone];
-
+	K->LL_GetBindTransform	(matrices);
+	m_i_bind_x_xform.invert	(matrices[m_rotate_x_bone]);
+	m_i_bind_y_xform.invert	(matrices[m_rotate_y_bone]);
+	m_bind_x_rot			= matrices[m_rotate_x_bone].k.getP();
+	m_bind_y_rot			= matrices[m_rotate_y_bone].k.getH();
+	m_bind_x.set			(matrices[m_rotate_x_bone].c);
+	m_bind_y.set			(matrices[m_rotate_y_bone].c);
 	
-	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
+	CSkeletonAnimated	*A	= PSkeletonAnimated(Visual());
 	if (A) {
 		A->PlayCycle	(*heli->startup_animation);
 		A->Calculate	();
@@ -216,7 +228,9 @@ CHelicopter::UpdateCL()
 			setState(CHelicopter::eInitiatePatrolZone);
 		};
 	}
-
+	// lerp angle
+	angle_lerp	(m_cur_x_rot, m_tgt_x_rot, PI, Device.fTimeDelta);
+	angle_lerp	(m_cur_y_rot, m_tgt_y_rot, PI, Device.fTimeDelta);
 }
 
 void		
@@ -298,7 +312,7 @@ CHelicopter::doHunt(CObject* dest)
 		return;
 
 	m_destEnemy = dest;
-	m_destEnemyPos = dest->XFORM().c;
+	dest->Center	(m_destEnemyPos);
 
 	setState(CHelicopter::eInitiateHunt);
 //
