@@ -33,13 +33,18 @@ public:
 		DWORD	dwTime;
 		Fvector	vPosition;
 	};
-protected:
-	// some property variables
+private:
+	// Some property variables
 	BOOL								bEnabled;
 	BOOL								bVisible;
 	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	LPSTR								NameObject;
 	LPSTR								NameSection;
+
+	// Visibility detection
+	CSector*							pSector;
+	ESectorMode							SectorMode;
+	CLightTrack*						pLights;
 protected:
 	// Geometric (transformation)
 	Fvector								vPosition;
@@ -51,11 +56,6 @@ protected:
 	// Model
 	LPSTR								pVisualName;
 	CVisual*							pVisual;
-
-	// Visibility detection
-	CSector*							pSector;
-	ESectorMode							SectorMode;
-	CLightTrack*						pLights;
 
 	// Information and status
 	void								StatusBegin			();
@@ -88,41 +88,41 @@ public:
 	void								UpdateTransform		(void);
 	void								svCenter			(Fvector& C) const;
 	void								clCenter			(Fvector& C) const;
-	IC const Fmatrix&					svXFORM				()			 const	{ return svTransform;	}
-	IC const Fmatrix&					clXFORM				()			 const	{ return clTransform;	}
+	IC const Fmatrix&					svXFORM				()			 const	{ return svTransform;		}
+	IC const Fmatrix&					clXFORM				()			 const	{ return clTransform;		}
 
-	IC Fvector&							Direction			() 					{ return mRotate.k;		}
-	IC Fmatrix&							Rotation			()					{ return mRotate;		}
+	IC Fvector&							Direction			() 					{ return mRotate.k;			}
+	IC Fmatrix&							Rotation			()					{ return mRotate;			}
 	virtual float						Radius				() const;
-	virtual Fvector&					Position			() 					{ return vPosition;		}
+	virtual Fvector&					Position			() 					{ return vPosition;			}
 	
-	IC CSector*							Sector				()					{ return pSector;		}
-	IC CLightTrack*						Lights				()					{ return pLights;		}
-	virtual float						Ambient				()					{ return 0.f;		 	}
-	virtual BOOL						ShadowGenerate		()					{ return TRUE;			}
-	virtual BOOL						ShadowReceive		()					{ return TRUE;			}
+	IC CSector*							Sector				()					{ return H_Root()->pSector;	}
+	IC CLightTrack*						Lights				()					{ return pLights;			}
+	virtual float						Ambient				()					{ return 0.f;		 		}
+	virtual BOOL						ShadowGenerate		()					{ return TRUE;				}
+	virtual BOOL						ShadowReceive		()					{ return TRUE;				}
 
 	// SLS
 	virtual void						SLS_Save			(CFS_Base& fs)		{};
 	virtual void						SLS_Load			(CStream& fs)		{};
 	
 	// Accessors
-	IC CVisual*							Visual				()					{ return pVisual;		}
-	IC CCFModel*						CFORM				() const			{ return cfModel;		}
+	IC CVisual*							Visual				()					{ return pVisual;			}
+	IC CCFModel*						CFORM				() const			{ return cfModel;			}
 
 	// Name management
-	virtual LPCSTR						cName				()					{ return NameObject;	}
+	virtual LPCSTR						cName				()					{ return NameObject;		}
 	void								cName_set			(LPCSTR N);
-	IC LPCSTR							cNameSect			()					{ return NameSection;	}
+	IC LPCSTR							cNameSect			()					{ return NameSection;		}
 	void								cNameSect_set		(LPCSTR N);
 	
 	// Visible property
-	IC void								setVisible			(BOOL _visible)		{ bVisible = _visible;	}
-	IC BOOL								getVisible			()					{ return bVisible;		}
+	IC void								setVisible			(BOOL _visible)		{ bVisible = _visible;		}
+	IC BOOL								getVisible			()					{ return bVisible;			}
 
 	// Enabled property
 	void								setEnabled			(BOOL _enabled);
-	IC BOOL								getEnabled			()					{ return bEnabled;		}
+	IC BOOL								getEnabled			()					{ return bEnabled;			}
 
 	//---------------------------------------------------------------------
 										CObject				();

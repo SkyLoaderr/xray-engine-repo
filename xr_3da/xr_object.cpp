@@ -28,13 +28,13 @@ void CObject::StatusBegin	()
 
 void CObject::cName_set			(LPCSTR N)
 { 
-	_FREE(NameObject);
-	NameObject=xr_strdup(N); 
+	_FREE					(NameObject);
+	NameObject=xr_strdup	(N); 
 }
 void CObject::cNameSect_set		(LPCSTR N)
 { 
-	_FREE(NameObject);
-	NameObject=xr_strdup(N); 
+	_FREE					(NameSection);
+	NameSection=xr_strdup	(N); 
 }
 void CObject::setEnabled		(BOOL _enabled)
 {

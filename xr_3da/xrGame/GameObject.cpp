@@ -51,7 +51,7 @@ void CGameObject::Sector_Detect	()
 		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
 		AI_NodeID		= O->AI_NodeID;
 		AI_Node			= O->AI_Node;
-		Sector_Move		(O->Sector());
+		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find new AI-Node
 		if (AI_Node)
