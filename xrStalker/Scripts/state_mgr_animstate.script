@@ -16,7 +16,6 @@ function eva_state_mgr_animstate_locked:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animstate_locked:evaluate()
-	self.st.animstate:update()
 	return self.st.animstate:state() == "busy"
 end
 

@@ -7,7 +7,6 @@ function eva_state_mgr_animation:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation:evaluate()
-	self.st.animation:update()
 	return state_lib.states[self.st.target_state].animation == self.st.animation:state()
 end
 --' нужно ли нам отыгрывать извращенную анимацию
@@ -48,7 +47,8 @@ function eva_state_mgr_animation_locked:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation_locked:evaluate()
-	return self.st.animation:state() == "wait"
+	return self.st.animation:state() == "wait" or
+		   self.st.animation:state() == "new"
 end
 
 
@@ -399,166 +399,6 @@ function animation:__init(npc, mgr)
 		idle = nil
 	}		
 end
---' апдейт
-function animation:update()
---	printf("update")
---	printf("		time %s", device():time_global())				
---	printf("		%s", utils.to_str(self.states.current_state))
-	self.is_called = false
-	if self.states.current_state == nil then
-		self:callback_process()
-		return
-	end
-
-	-- проверка закончился ли переход в состояние
-	if self.states.current_state == "new" then
-		local nnum = 0
-		if (self.animations[self.states.target_state] ~= nil and
-		   self.animations[self.states.target_state].idle ~= nil) or
-		   self.mgr.animstate:idle_animation_present()
-		then
-			nnum = 1
-		end
-		if self.npc:animation_count() <= nnum then
-			self.states.current_state = self.states.target_state
-			self:callback_init()
-		end
-	end
-	
-	--' ожидаем окончания перехода.
-	if self.states.current_state == "wait" then
-		local nnum = 0
-		if (self.animations[self.states.target_state] ~= nil and
-		   self.animations[self.states.target_state].idle ~= nil) or
-		   self.mgr.animstate:idle_animation_present()
-		then
-			nnum = 1
-		end
-		if self.npc:animation_count() <= nnum then
-			self.states.current_state = self.states.target_state
-		end
-	end
-	
-	-- Отыгрыш рандомных анимашек, если они есть
-	if 	self.states.current_state == self.states.target_state then		
-		--' проверка на экстренный ресет схемы
-		if self.mgr.reset_state == true then
-			local nn = 0
-			self.npc:clear_animations()
-			if self.animations[self.states.target_state].into ~= nil then
-				if type(self.animations[self.states.target_state].into[self:weapon_slot()]) == "table" then
-					for k,v in self.animations[self.states.target_state].into[self:weapon_slot()] do
-						self.npc:add_animation(v, true)
-					end
-					nn = nn +1
-				else
-					self.npc:add_animation(self.animations[self.states.target_state].into[self:weapon_slot()], true)
-					nn = nn +1
-				end
-			end
-			if self.animations[self.states.target_state].idle ~= nil then
-				self.npc:add_animation(self.animations[self.states.target_state].idle[self:weapon_slot()], true)
-				nn = nn + 1
-			else
-				-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
-				self.mgr.animstate:add_idle_animation()
-			end
-			self.mgr.reset_state = false
-			if nn > 0 then 
-				self.states.current_state = "new"
-			end
-		end
-		
-		self.is_called = self:callback_process()
-	
-		--' Определяем нужно ли добавлять анимацию или ждать
-		if	self.is_called == false and
-			self.animations[self.states.current_state] ~= nil and
-			self.animations[self.states.current_state].rnd ~= nil and
-			(self.states.begin == nil or
-			device():time_global() - self.states.begin > self.states.idle)
-		then
-			--' Определение промежутков времени между анимациями		
-			self.states.begin = device():time_global()
-			self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
-											self.animations[self.states.current_state].prop.sumidle) * 1000
-			if math.random(100) < self.animations[self.states.current_state].prop.rnd then
-				local r
-				if table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]) > 1 then			
-					if self.states.last_id == nil then
-						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]))
-					else
-						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()])-1)
-						if r >= self.states.last_id then
-							r = r + 1
-						end
-					end
-					self.states.last_id = r
-				else
-					r = 1
-				end		
-				self.npc:clear_animations()
-				if self.animations[self.states.current_state].rnd[self:weapon_slot()][r] ~= nil then
-				   self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
-				else
-					printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
-								table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]),
-								self.states.current_state, self:weapon_slot() )
-				end
-				if self.animations[self.states.current_state].idle ~= nil then
-					self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
-				else
-					-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
-					self.mgr.animstate:add_idle_animation()
-				end				
-				self.states.current_state = "wait"				
-			end
-		end		
-	
-	end
-end
--- Инициализация коллбека
-function animation:callback_init()
---		printf("callback init")
-		
-		if self.mgr.callback ~= nil and
-		   self.mgr.callback.func ~= nil and
-		   state_lib.states[self.mgr.target_state].animation == self.states.current_state	   
-		then
-				self.mgr.callback.begin = device():time_global()
---				printf("		Callback initialized %s", device():time_global())				
-		end
-end
---' обработка колбека на время
-function animation:callback_process()
-		local ret = false
-		
-		if self.mgr.callback ~= nil and
-		   self.mgr.callback.func ~= nil and
-		   self.mgr.callback.begin ~= nil
-		then
---			printf("callback process")
---			printf("	%s - %s ? %s", device():time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
-			if device():time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
---				printf("		Callback called %s", device():time_global())
-				self.mgr.callback.func(self.mgr.callback.obj)
-				if self.mgr.callback then
-					self.mgr.callback.func = nil
-				end
-				ret = true
-			end
-		end
-		return ret
-end
---' в каком состоянии мы находимся
-function animation:anim_callback()
-	printf("callback_called")
-	return true
-end
---' в каком состоянии мы находимся
-function animation:state()
-	return self.states.current_state
-end
 --' установка нового состояния
 function animation:set_state(id)
 	printf("set new animation %s", utils.to_str(id))
@@ -591,6 +431,9 @@ function animation:set_state(id)
 				nn = nn +1
 			end
 		end
+		if self.mgr.reset_state == true then
+			self.mgr.callback.begin = nil
+		end
 		self.mgr.reset_state = false
 		if self.animations[id].idle ~= nil then
 			self.npc:add_animation(self.animations[id].idle[self:weapon_slot()], true)
@@ -603,12 +446,160 @@ function animation:set_state(id)
 		-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
 		self.mgr.animstate:add_idle_animation()
 	end
---	if nn > 0 then
-		self.states.current_state = "new"
---	else
---		self.states.current_state = id
---	end
+
+	self.states.current_state = "new"
 	self.states.target_state = id
+end
+--' апдейт
+function animation:update()
+--	printf("update")
+--	printf("		time %s", device():time_global())				
+--	printf("		%s", utils.to_str(self.states.current_state))
+--	printf("		anims %s", self.npc:animation_count())
+	self.is_called = false
+	if self.states.current_state == nil then
+		self:callback_process()
+		return
+	end
+
+	-- проверка закончился ли переход в состояние
+	if self.states.current_state == "new" then
+		local nnum = 0
+		if (self.animations[self.states.target_state] ~= nil and
+		   self.animations[self.states.target_state].idle ~= nil) or
+		   self.mgr.animstate:idle_animation_present()
+		then
+			nnum = 1
+		end
+		if self.npc:animation_count() <= nnum then
+			self.states.current_state = self.states.target_state
+			self:callback_init()
+		end
+		return
+	end
+	
+	--' ожидаем окончания перехода.
+	if self.states.current_state == "wait" then		
+		local nnum = 0
+		if (self.animations[self.states.target_state] ~= nil and
+		   self.animations[self.states.target_state].idle ~= nil) or
+		   self.mgr.animstate:idle_animation_present()
+		then
+			nnum = 1
+		end
+		if self.npc:animation_count() <= nnum then
+			self.states.current_state = self.states.target_state
+		end
+		self:callback_process()
+		return
+	end
+	
+	-- Отыгрыш рандомных анимашек, если они есть
+	if 	self.states.current_state == self.states.target_state then		
+		--' проверка на экстренный ресет схемы
+		if self.mgr.reset_state == true and
+		   state_lib.states[self.states.current_state] ~= nil and
+		   state_lib.states[self.states.current_state].reset == true
+		then
+--			printf("call emerg reset")
+			self:set_state(self.states.current_state)
+		end
+		
+		if self:callback_process() == true then
+--			printf("call back process")
+			return
+		end
+	
+		--' Определяем нужно ли добавлять анимацию или ждать
+		if	self.animations[self.states.current_state] ~= nil and
+			self.animations[self.states.current_state].rnd ~= nil and
+			(self.states.begin == nil or
+			device():time_global() - self.states.begin > self.states.idle)
+		then
+--			printf("try to add rnd animation")
+			--' Определение промежутков времени между анимациями		
+			self.states.begin = device():time_global()
+			self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
+											self.animations[self.states.current_state].prop.sumidle) * 1000
+			if math.random(100) < self.animations[self.states.current_state].prop.rnd then
+				local r
+				if table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]) > 1 then			
+					if self.states.last_id == nil then
+						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]))
+					else
+						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()])-1)
+						if r >= self.states.last_id then
+							r = r + 1
+						end
+					end
+					self.states.last_id = r
+				else
+					r = 1
+				end		
+				self.npc:clear_animations()
+--				printf("rnd animations added")
+				if self.animations[self.states.current_state].rnd[self:weapon_slot()][r] ~= nil then
+				   self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
+				else
+					printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
+								table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]),
+								self.states.current_state, self:weapon_slot() )
+				end
+				if self.animations[self.states.current_state].idle ~= nil then
+					self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
+				else
+					-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+					self.mgr.animstate:add_idle_animation()
+				end				
+				self.states.current_state = "wait"				
+			end
+		end		
+	
+	end
+end
+-- Инициализация коллбека
+function animation:callback_init()
+--		printf("callback init")
+		
+		if self.mgr.callback ~= nil and
+		   self.mgr.callback.func ~= nil and
+		   state_lib.states[self.mgr.target_state].animation == self.states.current_state and
+		   self.mgr.callback.begin == nil
+		then
+				self.mgr.callback.begin = device():time_global()
+--				printf("		Callback initialized %s", device():time_global())				
+		end
+end
+--' обработка колбека на время
+function animation:callback_process()
+		local ret = false
+		
+		if self.mgr.callback ~= nil and
+		   self.mgr.callback.func ~= nil and
+		   self.mgr.callback.begin ~= nil
+		then
+--			printf("callback process")
+--			printf("	%s - %s ? %s", device():time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
+			if device():time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
+--				printf("		Callback called %s", device():time_global())
+				self.mgr.callback.func(self.mgr.callback.obj)
+				self.mgr.callback.begin = nil
+				if self.mgr.callback then
+					self.mgr.callback.func = nil
+				end
+				ret = true
+			end
+		end
+		return ret
+end
+--' в каком состоянии мы находимся
+function animation:anim_callback()
+	printf("callback_called")
+	return true
+end
+--' в каком состоянии мы находимся
+function animation:state()
+	return self.states.current_state
 end
 --' оружейный слот
 function animation:weapon_slot()

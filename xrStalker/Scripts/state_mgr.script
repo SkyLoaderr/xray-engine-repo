@@ -28,6 +28,10 @@ function evaluator_state_mgr_idle_alife:__init(name, state_manager) super (nil, 
 	self.st = state_manager
 end
 function evaluator_state_mgr_idle_alife:evaluate()
+	-- апдейт менеджера анимаций
+	self.st.animstate:update()	
+	self.st.animation:update()
+
 --	printf("SECTION %s", utils.to_str(db.storage[self.st.npc:id()].active_section))
 	mgr = self.object:motivation_action_manager()
 	if mgr:initialized() then
@@ -131,9 +135,6 @@ function act_state_mgr_end:execute()
 			self.object:set_item(object.idle, self.object:best_weapon())
 		end	
 	end
-		
-	self.st.animstate:update()
-	self.st.animation:update()
 end
 function act_state_mgr_end:finalize()
 	action_base.finalize(self)
@@ -148,9 +149,7 @@ function act_state_mgr_locked:initialize()
 	action_base.initialize(self)
 end
 function act_state_mgr_locked:execute()
-	action_base.execute(self)
-	self.st.animstate:update()
-	self.st.animation:update()
+	action_base.execute(self)	
 end
 function act_state_mgr_locked:finalize()
 	action_base.finalize(self)
@@ -555,8 +554,9 @@ function state_manager:__init(npc)
 	self.target_position = nil
 	self.combat = false
 	self.alife = true
+	self.emerg = {}
 end
-function state_manager:set_state(state_name, callback, timeout, target)
+function state_manager:set_state(state_name, callback, timeout, target, emerg)
 	printf("Set Stated called: %s for %s", state_name, self.npc:name())
 	if state_lib.states[state_name] == nil then
 		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
@@ -588,6 +588,9 @@ function state_manager:set_state(state_name, callback, timeout, target)
 		self.reset_state = false
 	end
 	
+	if emerg ~= nil then
+		self.emerg = emerg
+	end
 	
 	if target ~= nil then
 		self.look_position = target.look_position
@@ -622,9 +625,9 @@ end
 
 
 
-function set_state(npc, state_name, callback, timeout, target)
+function set_state(npc, state_name, callback, timeout, target, emerg)
 	if db.storage[npc:id()].state_mgr then
-		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target)
+		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg)
 	end
 end
 

@@ -163,7 +163,9 @@ function check_spawn (s_object)
                   spawn_list[s_object.id].npc = db.obj_by_id[s_object.id]
                end
             end   
-			if spawn_list[s_object.id].online == true and xr_logic.pick_section_from_condlist (actor, spawn_list[s_object.id].npc, spawn_list[s_object.id].cond.condlist) ~= nil then
+			if xr_logic.pick_section_from_condlist(actor, spawn_list[s_object.id].npc, 
+			 								   spawn_list[s_object.id].cond.condlist) ~= nil 
+		    then
 				return true
 			else
 			    spawn_list[s_object.id].npc = nil
