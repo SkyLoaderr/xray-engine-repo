@@ -80,7 +80,7 @@ function options_base_tab:OnKeyboard(dik, keyboard_action)
 	
 	local bind = dik_to_bind(dik)
 	if bind == key_bindings.kQUIT then
-		local parent = GetParent()
+		local parent = self:GetParent()
 		if parent == nil then
 			level.start_stop_menu(self,true)
 		end
