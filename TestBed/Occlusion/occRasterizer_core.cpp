@@ -73,8 +73,15 @@ void occRasterizer::i_scan(int curY, float startX, float endX, float startZ, flo
 	occTri**	pFrame	= &(bufFrame[0][0]);
 	float*		pDepth	= &(bufDepth0[0][0]);
 
-	float minX	= minPixel(startX), maxX = maxPixel(endX);						// X boundary in pixel coords
-	if (minX > maxX) return;													// some test cases gave min > max (ie pixel should not be plotted)
+	// guard-banding and clipping
+	float minX	= minPixel(startX), maxX = maxPixel(endX);
+	if (minX >= occ_dim0)	return;
+	if (maxX <= 0)			return;
+	if (minX <= 0)			minX = 0;
+	if (maxX >= occ_dim0)	maxX = occ_dim0-1;
+	if (minX >= maxX)		return;
+
+	// interpolate
 	float Z		= startZ + (minX - startX)/(endX - startX) * (endZ - startZ);	// interpolate Z to this start of boundary
 	float dZ	= (endZ-startZ)/(endX-startX);									// incerement in Z / pixel wrt dX
 	int initX	= int(minX), finalX = int(maxX), i = curY*occ_dim0+initX;		// trunc the 0.5 in pixel coords to int, setup starting conditons
