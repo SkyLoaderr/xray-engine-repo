@@ -77,7 +77,7 @@ public:
 	virtual ~CEntity	();
 
 	virtual void		Load				(CInifile* ini, LPCSTR section);
-	virtual BOOL		Spawn				(BOOL bLocal, int server_id, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle);
+	virtual BOOL		Spawn				(BOOL bLocal, int server_id, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle, NET_Packet& P);
 	virtual float		OnVisible			();
 
 	bool				IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}
