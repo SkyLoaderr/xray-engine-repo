@@ -12,13 +12,6 @@ static const float p_head_factor		= 0.1f;
 
 #include "hudmanager.h"
 
-float angle_normalize_signed	(float a)
-{
-	float angle = angle_normalize(a);
-	if (angle>PI) angle-=PI_MUL_2;
-	return angle;
-}
-
 void __stdcall CActor::SpinCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
