@@ -757,3 +757,38 @@ void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 	load_data					(m_tDiscoveryRegistry,tFileStream,false);
 	load_data					(m_tArtefactRegistry,tFileStream);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CSE_ALifeNewsRegistry
+//////////////////////////////////////////////////////////////////////////
+
+CSE_ALifeNewsRegistry::CSE_ALifeNewsRegistry	()
+{
+	m_last_id					= 0;
+}
+
+CSE_ALifeNewsRegistry::~CSE_ALifeNewsRegistry	()
+{
+	clear						();
+}
+
+void CSE_ALifeNewsRegistry::clear				()
+{
+	m_last_id					= 0;
+	delete_data					(m_news);
+}
+
+void CSE_ALifeNewsRegistry::Save				(IWriter &tMemoryStream)
+{
+	tMemoryStream.open_chunk	(NEWS_CHUNK_DATA);
+	tMemoryStream.w				(&m_last_id,sizeof(m_last_id));
+	save_data					(m_news,tMemoryStream);
+	tMemoryStream.close_chunk	();
+}
+
+void CSE_ALifeNewsRegistry::Load				(IReader &tFileStream)
+{
+	R_ASSERT2					(tFileStream.find_chunk(NEWS_CHUNK_DATA),"Can't find chunk NEWS_CHUNK_DATA!");
+	tFileStream.r				(&m_last_id,sizeof(m_last_id));
+	load_data					(m_news,tFileStream,CNewsPredicate());
+}

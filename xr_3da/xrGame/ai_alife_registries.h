@@ -185,3 +185,34 @@ public:
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual	void					Load						(IReader &tFileStream);
 };
+
+class CSE_ALifeNewsRegistry : public IPureALifeLSObject {
+public:
+	typedef xr_map<ALife::_NEWS_ID,ALife::SGameNews*> NEWS_REGISTRY;
+
+	struct CNewsPredicate {
+		ALife::_NEWS_ID operator				()(const ALife::SGameNews *news) const
+		{
+			return					(news->m_news_id);
+		}
+	};
+
+protected:
+	NEWS_REGISTRY					m_news;
+	ALife::_NEWS_ID					m_last_id;
+
+protected:
+	IC		void					add							(const ALife::SGameNews &news);
+	IC		void					remove						(const ALife::_NEWS_ID &news_id);
+
+public:
+									CSE_ALifeNewsRegistry		();
+	virtual							~CSE_ALifeNewsRegistry		();
+	virtual	void					Save						(IWriter &tMemoryStream);
+	virtual	void					Load						(IReader &tFileStream);
+			void					clear						();
+	IC		const NEWS_REGISTRY		&news						() const;
+	IC		const ALife::SGameNews	*news						(const ALife::_NEWS_ID &news_id) const;
+};
+
+#include "ai_alife_registries_inline.h"

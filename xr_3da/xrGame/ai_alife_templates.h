@@ -165,6 +165,18 @@ void save_data(xr_vector<T> *&tpVector, M &tStream, bool bSaveCount = true)
 };
 
 // load data
+template <class T1, class T2, class T3, class M, class P>
+void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, const P &predicate)
+{
+	tpMap.clear					();
+	u32							dwCount	= tStream.r_u32();
+	for (int i=0 ; i<(int)dwCount; ++i) {
+		T2						T;
+		load_data				(T,tStream);
+		tpMap.insert			(mk_pair(predicate(T),T));
+	}
+};
+
 template <class T1, class T2, class T3, class M>
 void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, const T1 tfGetKey(const T2))
 {
@@ -271,6 +283,14 @@ void load_data(xr_map<T1,T2,T3> *&tpMap, M &tStream, const T1 tfGetKey(const T2)
 	if (bSaveCount)
 		tpData = xr_new<T>();
 	load_data					(*tpMap,tStream,tfGetKey);
+};
+
+template <class T1, class T2, class T3, class M, class P>
+void load_data(xr_map<T1,T2,T3> *&tpMap, M &tStream, const P &predicate)
+{
+	if (bSaveCount)
+		tpData = xr_new<T>();
+	load_data					(*tpMap,tStream,predicate);
 };
 
 template <class T1, class T2, class T3, class M>

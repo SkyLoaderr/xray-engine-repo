@@ -31,6 +31,7 @@ class CSE_ALifeSimulator :
 	public CSE_ALifeScheduleRegistry,
 	public CSE_ALifeAnomalyRegistry,
 	public CSE_ALifeOrganizationRegistry,
+	public CSE_ALifeNewsRegistry,
 	public ISheduled,
 	public CRandom 
 {

@@ -13,7 +13,7 @@
 #define SPAWN_POINT_VERSION			0x0001
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
 // ALife objects, events and tasks
-#define ALIFE_VERSION				0x0001
+#define ALIFE_VERSION				0x0002
 #define ALIFE_CHUNK_DATA			0x0000
 #define OBJECT_CHUNK_DATA			0x0001
 #define EVENT_CHUNK_DATA			0x0002
@@ -21,6 +21,7 @@
 #define GAME_TIME_CHUNK_DATA		0x0004
 #define ANOMALY_CHUNK_DATA			0x0005
 #define DISCOVERY_CHUNK_DATA		0x0006
+#define NEWS_CHUNK_DATA				0x0007
 #define LOCATION_TYPE_COUNT			4
 #define SECTION_HEADER				"location_"
 #define SAVE_EXTENSION				".sav"
@@ -59,6 +60,7 @@ namespace ALife {
 	typedef u8	_LOCATION_ID;								// Location ID
 	typedef u32 _LEVEL_ID;									// Level ID
 	typedef u32	_ORGANIZATION_ID;							// Organization ID
+	typedef u32	_NEWS_ID;									// News ID
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
@@ -261,6 +263,13 @@ namespace ALife {
 		eAddonAttachable			= 2		//можно присоединять
 	};
 
+	enum ENewsType {
+		eNewsType1Kill2 = u32(0),
+		eNewsTypeDie,
+		eNewsTypeSpottedObject,
+		eNewsTypeDummy = u32(-1),
+	};
+
 	IC EHitType	g_tfString2HitType(LPCSTR caHitType)
 	{
 		if (!stricmp(caHitType,"burn"))
@@ -310,6 +319,26 @@ namespace ALife {
 		return(0);
 #endif
 	}
+
+	struct SGameNews {
+		_NEWS_ID				m_news_id;
+		_TIME_ID				m_game_time;
+		_GRAPH_ID				m_game_vertex_id;
+		ENewsType				m_news_type;
+		_OBJECT_ID				m_object_id[2];
+		_CLASS_ID				m_class_id;
+
+		void Load	(IReader &tFileStream)
+		{
+			tFileStream.r		(this,sizeof(*this));
+		}
+
+		void Save	(IWriter &tMemoryStream)
+		{
+			tMemoryStream.w		(this,sizeof(*this));
+		}
+	};
+	DEFINE_MAP		(_NEWS_ID,					SGameNews*,						NEWS_REGISTRY,				NEWS_REGISTRY_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
 	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
