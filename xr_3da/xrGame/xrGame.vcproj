@@ -766,13 +766,13 @@
 					Name="ObjectHandler"
 					Filter="">
 					<File
-						RelativePath=".\object_handler_goap.cpp">
+						RelativePath=".\object_handler.cpp">
 					</File>
 					<File
-						RelativePath=".\object_handler_goap.h">
+						RelativePath=".\object_handler.h">
 					</File>
 					<File
-						RelativePath=".\object_handler_goap_inline.h">
+						RelativePath=".\object_handler_inline.h">
 					</File>
 					<File
 						RelativePath=".\object_handler_space.h">

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "object_handler_goap.h"
+#include "object_handler.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionBase

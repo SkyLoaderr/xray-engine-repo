@@ -23,7 +23,7 @@
 #include "missile.h"
 #include "script_binder.h"
 #include "motivation_action_manager.h"
-#include "object_handler_goap.h"
+#include "object_handler.h"
 #include "ai_script_snd_info.h"
 
 class CInventoryItem;

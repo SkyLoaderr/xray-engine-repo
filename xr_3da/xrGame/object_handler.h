@@ -1,28 +1,41 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: object_handler.h
-//	Created 	: 02.10.2001
-//  Modified 	: 16.01.2004
+//	Created 	: 11.03.2004
+//  Modified 	: 11.03.2004
 //	Author		: Dmitriy Iassenev
 //	Description : Object handler
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
+#include "object_handler_space.h"
 #include "ai_monster_space.h"
-#include "state_manager_state.h"
 #include "inventoryowner.h"
+#include "action_planner.h"
+
+template<typename _container_type>
+struct CMapLocator {
+	bool operator()(const typename _container_type::value_type &I, u32 id) const
+	{
+		return		(I.first < id);
+	}
+};
 
 class CAI_Stalker;
 class CWeapon;
+class CMissile;
+class CEatableItem;
 
 class CObjectHandler : 
-	public CStateManagerState<
-		CAI_Stalker
-	>,
+	public CActionPlanner<CAI_Stalker>,
 	public CInventoryOwner
 
 {
-	typedef CStateManagerState<CAI_Stalker> inherited;
+protected:
+	typedef CActionPlanner<CAI_Stalker>				inherited;
+	typedef CGraphEngine::_solver_value_type		_value_type;
+	typedef CGraphEngine::_solver_condition_type	_condition_type;
+
 protected:
 	bool						m_bHammerIsClutched;
 
@@ -44,35 +57,47 @@ private:
 	float						m_fMaxMissFactor;
 	MonsterSpace::EObjectAction	m_tWeaponState;
 
-public:
-					CObjectHandler			();
-	virtual			~CObjectHandler			();
-			void	init					();
-	virtual	void	Load					(LPCSTR section);
-	virtual	void	reinit					(CAI_Stalker *object);
-	virtual	void	reload					(LPCSTR section);
-	virtual	void	update					(u32 time_delta);
-	virtual	bool	check_if_can_kill_enemy	(const SRotation &orientation) const;
-	virtual	bool	check_if_can_kill_member() const;
-	virtual	bool	check_if_can_kill_target(const CEntity *tpEntity, const Fvector &target_pos, float yaw2, float pitch2, float fSafetyAngle = FIRE_SAFETY_ANGLE) const;
-	virtual void	OnItemTake				(CInventoryItem *inventory_item);
-	virtual void	OnItemDrop				(CInventoryItem *inventory_item);
-	virtual void	OnItemDropUpdate		();
-	IC		bool	firing					() const;
-	IC		u32		uid						(const u32 id0, const u32 id1) const;
-			void	add_item				(CInventoryItem *inventory_item);
-			void	remove_item				(CInventoryItem *inventory_item);
-			void	set_dest_state			(const MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
-	IC		bool	object_state			(u32 state_id, CObject *object);
-	IC		u32		current_object_state_id	() const;
-	IC		u32		current_state_state_id	() const;
-			u32		object_state			() const;
-			u32		weapon_state			(const CWeapon *weapon) const;
-			CInventoryItem *best_weapon		() const;
-	IC		bool	goal_reached			() const;
-#ifdef DEBUG
-			void	show_graph				();
+protected:
+			void			add_evaluators			(CWeapon		*weapon);
+			void			add_operators			(CWeapon		*weapon);
+			void			add_evaluators			(CMissile		*missile);
+			void			add_operators			(CMissile		*missile);
+			void			add_evaluators			(CEatableItem	*eatable_item);
+			void			add_operators			(CEatableItem	*eatable_item);
+			void			remove_evaluators		(CObject		*object);
+			void			remove_operators		(CObject		*object);
+	IC		ObjectHandlerSpace::EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
+#ifdef LOG_ACTION
+	virtual LPCSTR			action2string			(const _action_id_type &action_id);
+	virtual LPCSTR			property2string			(const _condition_type &property_id);
 #endif
+
+public:
+							CObjectHandler		();
+	virtual					~CObjectHandler		();
+			void			init					();
+	virtual	void			Load					(LPCSTR section);
+	virtual	void			reinit					(CAI_Stalker *object);
+	virtual	void			reload					(LPCSTR section);
+	virtual	void			update					(u32 time_delta);
+	virtual void			OnItemTake				(CInventoryItem *inventory_item);
+	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
+	virtual void			OnItemDropUpdate		();
+	IC		bool			firing					() const;
+	IC		_condition_type	uid						(const u32 id1, const u32 id0) const;
+	IC		bool			object_action			(_condition_type action_id, CObject *object);
+	IC		u32				current_action_object_id() const;
+	IC		u32				current_action_state_id	() const;
+	IC		u32				action_object_id		(_condition_type action_id) const;
+	IC		u32				action_state_id			(_condition_type action_id) const;
+	IC		bool			goal_reached			() const;
+			CInventoryItem	*best_weapon			() const;
+			u32				weapon_state			(const CWeapon *weapon) const;
+			void			add_item				(CInventoryItem *inventory_item);
+			void			remove_item				(CInventoryItem *inventory_item);
+			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
+	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
+	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
 };
 
 #include "object_handler_inline.h"

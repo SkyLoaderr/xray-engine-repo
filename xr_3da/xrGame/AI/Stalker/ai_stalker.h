@@ -15,7 +15,7 @@
 #include "../../setup_manager.h"
 #include "../../setup_action.h"
 #include "../../cover_manager.h"
-#include "../../object_handler_goap.h"
+#include "../../object_handler.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
