@@ -31,6 +31,7 @@
 
 #include "ui/UIMainIngameWnd.h"
 #include "game_object_space.h"
+#include "script_callback_ex.h"
 
 //static LPCSTR	m_sMapSpotAnimEnemy = NULL;
 //static LPCSTR	m_sMapSpotAnimNeutral = NULL;
