@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<game_dialogs>
+    <dialog id="New">
+        <phrase_list>
+            <phrase id="21">
+                <text>New_21</text>
+            </phrase>
+            <phrase id="2">
+                <text>New_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>New_3</text>
+            </phrase>
+            <phrase id="1">
+                <text>New_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="1121">
+                <text>New_1121</text>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="11">
+                <text>New_11</text>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="113">
+                <text>New_113</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1111">
+                <text>New_1111</text>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="112">
+                <text>New_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="111">
+                <text>New_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="0">
+                <text>New_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+</game_dialogs>
