@@ -50,6 +50,25 @@ void __fastcall TfraObject::ebDeselectByRefsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraObject::ebMultiSelectByRefClick(TObject *Sender)
+{
+    ObjectList objlist;
+    if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1)){
+    	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
+	        LPCSTR N = ((CSceneObject*)*it)->GetRefName();
+            ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
+            ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
+            for(;_F!=_E;_F++){
+                if((*_F)->Visible()){
+                    CSceneObject *_O = (CSceneObject *)(*_F);
+                    if(_O->RefCompare(N)) _O->Select( true );
+                }
+            }
+        }
+    }
+}
+//---------------------------------------------------------------------------
+
 void TfraObject::SelByRefObject( bool flag )
 {
     ObjectList objlist;
@@ -118,4 +137,5 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 

@@ -53,6 +53,10 @@ public:
 	DWORD		dwShader_Constants;	// Number of times the shader-consts changes
 	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
     DWORD		dwTotalLight,dwLightInScene;
+	DWORD		dwLevelFaceCount;	// Number of faces in scene
+	DWORD		dwLevelVertexCount;	// Number of vertices in scene
+	DWORD		dwLevelSelFaceCount;	// Number of faces in scene
+	DWORD		dwLevelSelVertexCount;	// Number of vertices in scene
 
 	CStatTimer	RenderDUMP_RT;
 	CStatTimer	RenderTOTAL;		//

@@ -20,16 +20,17 @@ object fraObject: TfraObject
     Left = 0
     Top = 33
     Width = 123
-    Height = 32
+    Height = 47
     Align = alTop
     ParentColor = True
     TabOrder = 0
     object Label5: TLabel
-      Left = 2
+      Left = 5
       Top = 16
-      Width = 58
-      Height = 13
-      Caption = 'Ref'#39's select:'
+      Width = 48
+      Height = 26
+      Caption = 'Select by reference:'
+      WordWrap = True
     end
     object ebSelectByRefs: TExtBtn
       Left = 65
@@ -103,6 +104,24 @@ object fraObject: TfraObject
       ParentFont = False
       OnClick = PaneMinClick
     end
+    object ebMultiSelectByRef: TExtBtn
+      Left = 65
+      Top = 31
+      Width = 26
+      Height = 14
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = '++'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = ebMultiSelectByRefClick
+    end
   end
   object paCommands: TPanel
     Left = 0
@@ -170,7 +189,7 @@ object fraObject: TfraObject
   end
   object paAddObject: TPanel
     Left = 0
-    Top = 65
+    Top = 80
     Width = 123
     Height = 32
     Align = alTop

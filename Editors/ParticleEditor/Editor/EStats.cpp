@@ -14,6 +14,10 @@ CStats::CStats()
 	fFPS		= 30.f;
 	fRFPS		= 30.f;
 	fTPS		= 0;
+	dwLevelFaceCount	= 0;
+	dwLevelVertexCount	= 0;
+	dwLevelSelFaceCount	= 0;
+	dwLevelSelVertexCount=0;
 }
 
 CStats::~CStats()
@@ -80,6 +84,12 @@ void CStats::Show(CFontBase* font)
 		F.OutNext	("clBOX:       %2.2fms, %d",	clBOX.result,clBOX.count);
         F.OutNext	("clFRUSTUM:   %2.2fms, %d",	clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
+		F.OutSkip	();
+        F.OutNext	("Level summary:");
+        F.OutNext	(" Polygons:   %d",				dwLevelFaceCount);
+        F.OutNext	(" Vertices:   %d",				dwLevelVertexCount);
+		dwLevelSelFaceCount
+		dwLevelSelVertexCount
 	}
 
 	{
@@ -108,4 +118,7 @@ void CStats::Show(CFontBase* font)
 	DPS.stat_vs		= 0;
 	DPS.stat_vb		= 0;
 	DPS.stat_ib		= 0;
+
+	dwLevelFaceCount= 0;
+	dwLevelVertexCount=0;
 }

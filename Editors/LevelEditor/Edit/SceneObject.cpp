@@ -254,6 +254,10 @@ void CSceneObject::OnFrame(){
         m_OMParam.Update(Device.fTimeDelta);
         UpdateTransform(true);
 	}
+	if (psDeviceFlags & rsStatistic){
+	    Device.Statistic.dwLevelFaceCount 	+= GetFaceCount();
+	    Device.Statistic.dwLevelVertexCount += GetVertexCount();
+    }
 }
 //S	SetActiveOMotion(0,false);
 
