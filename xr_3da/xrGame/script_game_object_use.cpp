@@ -221,16 +221,16 @@ CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObje
 CScriptSoundInfo CScriptGameObject::GetSoundInfo()
 {
 	CScriptSoundInfo	ret_val;
-	
+
 	CAI_Biting *l_tpMonster = smart_cast<CAI_Biting *>(m_tpGameObject);
 	if (l_tpMonster) {
 		if (l_tpMonster->SoundMemory.IsRememberSound()) {
 			SoundElem se; 
 			bool bDangerous;
 			l_tpMonster->SoundMemory.GetSound(se, bDangerous);
-			
+
 			const CGameObject *pO = smart_cast<const CGameObject *>(se.who);
-			ret_val.set((pO) ?  pO->lua_game_object() : 0, bDangerous, se.position, se.power, int(se.time));
+			ret_val.set((pO && !pO->getDestroy()) ?  pO->lua_game_object() : 0, bDangerous, se.position, se.power, int(se.time));
 		}
 	} else {
 		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member GetSoundInfo!");
@@ -246,7 +246,7 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 	if (l_tpMonster) {
 		if (l_tpMonster->HitMemory.is_hit()) {
 			CGameObject *pO = smart_cast<CGameObject *>(l_tpMonster->HitMemory.get_last_hit_object());
-			ret_val.set((pO) ?  pO->lua_game_object() : 0, l_tpMonster->HitMemory.get_last_hit_dir(), l_tpMonster->HitMemory.get_last_hit_time());
+			ret_val.set((pO && !pO->getDestroy()) ?  pO->lua_game_object() : 0, l_tpMonster->HitMemory.get_last_hit_dir(), l_tpMonster->HitMemory.get_last_hit_time());
 		}
 	} else {
 		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member GetMonsterHitInfo!");

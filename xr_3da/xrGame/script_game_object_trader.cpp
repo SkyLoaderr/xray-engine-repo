@@ -357,7 +357,7 @@ CScriptGameObject *CScriptGameObject::GetEnemy() const
 {
 	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(m_tpGameObject);
 	if (l_tpCustomMonster) {
-		if (l_tpCustomMonster->GetCurrentEnemy()) return (l_tpCustomMonster->GetCurrentEnemy()->lua_game_object());
+		if (l_tpCustomMonster->GetCurrentEnemy() && !l_tpCustomMonster->GetCurrentEnemy()->getDestroy()) return (l_tpCustomMonster->GetCurrentEnemy()->lua_game_object());
 		else return (0);
 	} else {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member GetEnemy!");
@@ -369,14 +369,13 @@ CScriptGameObject *CScriptGameObject::GetCorpse() const
 {
 	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(m_tpGameObject);
 	if (l_tpCustomMonster)
-		if (l_tpCustomMonster->GetCurrentCorpse()) return (l_tpCustomMonster->GetCurrentCorpse()->lua_game_object());
+		if (l_tpCustomMonster->GetCurrentCorpse() && !l_tpCustomMonster->GetCurrentCorpse()->getDestroy()) return (l_tpCustomMonster->GetCurrentCorpse()->lua_game_object());
 		else return (0);
 	else {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member GetCorpse!");
 		return			(0);
 	}
 }
-
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

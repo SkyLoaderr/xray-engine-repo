@@ -1262,6 +1262,19 @@
 						</Filter>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Step Manager"
+					Filter="">
+					<File
+						RelativePath=".\step_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\step_manager.h">
+					</File>
+					<File
+						RelativePath=".\step_manager_defs.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="ACover"
@@ -1948,12 +1961,6 @@
 						</File>
 						<File
 							RelativePath=".\ai\monster_enemy_manager.h">
-						</File>
-						<File
-							RelativePath=".\step_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\step_manager.h">
 						</File>
 						<Filter
 							Name="Components"
