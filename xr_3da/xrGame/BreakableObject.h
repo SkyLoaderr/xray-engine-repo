@@ -39,7 +39,6 @@ public:
 	virtual BOOL	net_Spawn			( CSE_Abstract* DC);
 	virtual	void	net_Destroy			();
 	virtual void	shedule_Update		( u32 dt);							// Called by sheduler
-	virtual void	UpdateCL			( );								// Called each frame, so no need for dt
 	virtual void	renderable_Render	( );
 
 	virtual BOOL	renderable_ShadowGenerate	( ) { return FALSE;	}
@@ -63,6 +62,7 @@ private:
 	void			CheckHitBreak		(float power,ALife::EHitType hit_type);
 	void			ProcessDamage		();
 	void			SendDestroy			();
+	void			enable_notificate	();
 static 	void __stdcall ObjectContactCallback(bool& /**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 };
 

@@ -57,7 +57,7 @@ int			phIterations											= 18;
 float		phTimefactor											= 1.f;
 float		phBreakCommonFactor										= 0.01f;
 float		phRigidBreakWeaponFactor								= 1.f;
-
+Fbox		phBoundaries											={1000.f,1000.f,-1000.f,-1000.f};
 dWorldID	phWorld;
 
 /////////////////////////////////////

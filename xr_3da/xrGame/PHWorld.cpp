@@ -3,7 +3,7 @@
 #include "PHWorld.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PhysicsCommon.h"
-
+#include "Level.h"
 #include "ExtendedGeom.h"
 #include "draymotions.h"
 #ifdef    DEBUG
@@ -97,6 +97,8 @@ void CPHWorld::Create()
 	//dWorldSetCFM(phWorld,  0.000001f);
 	disable_count=0;
 	m_motion_ray=dCreateRayMotions(0);
+	phBoundaries.set(Level().ObjectSpace.GetBoundingVolume());
+	phBoundaries.y1-=30.f;
 }
 
 /////////////////////////////////////////////////////////////////////////////

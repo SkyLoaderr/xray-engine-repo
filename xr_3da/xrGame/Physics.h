@@ -78,7 +78,7 @@ void CollideStatic(dGeomID o2,CPHObject* obj2);
 class CPHElement;
 class CPHShell;
 extern dJointGroupID ContactGroup;
-
+extern Fbox			 phBoundaries;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

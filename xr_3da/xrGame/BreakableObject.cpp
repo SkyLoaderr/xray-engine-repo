@@ -34,6 +34,8 @@ void CBreakableObject::Load		(LPCSTR section)
 	m_health_threshhold=pSettings	->r_float(section,"hit_break_threthhold");
 	m_damage_threshold=pSettings	->r_float(section,"collision_break_threthhold");
 	m_immunity_factor  =pSettings	->r_float(section,"immunity_factor");
+	this->shedule.t_min	= 1000;
+	this->shedule.t_max	= 1000;
 }
 
 BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
@@ -48,7 +50,7 @@ BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
 	R_ASSERT				(Visual()&&smart_cast<CKinematics*>(Visual()));
 //	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	fHealth					= obj->m_health;
-	
+	processing_deactivate	();
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 	CreateUnbroken			();
@@ -64,10 +66,8 @@ void CBreakableObject::shedule_Update	(u32 dt)
 	if(m_pPhysicsShell&&!bRemoved&&Device.dwTimeGlobal-m_break_time>m_remove_time) SendDestroy();
 }
 
-void CBreakableObject::UpdateCL	()
+void CBreakableObject::enable_notificate()
 {
-	inherited::UpdateCL		();
-
 	if(b_resived_damage)ProcessDamage();
 }
 
@@ -150,6 +150,7 @@ void CBreakableObject::DestroyUnbroken()
 //}
 void CBreakableObject::CreateBroken()
 {
+	processing_activate();
 	m_Shell=P_create_splited_Shell();
 	m_Shell->preBuild_FromKinematics(smart_cast<CKinematics*>(Visual()));
 	m_Shell->mXFORM.set(XFORM());

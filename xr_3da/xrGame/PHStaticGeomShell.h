@@ -11,7 +11,7 @@ class CPHStaticGeomShell:
 			void			get_spatial_params	();	
 virtual		void			EnableObject		(CPHObject* obj){CPHUpdateObject::Activate();}
 virtual		dGeomID			dSpacedGeom			(){return dSpacedGeometry();}
-virtual		void			PhDataUpdate		(dReal step){Island().Step(step);Island().Unmerge();CPHUpdateObject::Deactivate();}
+virtual		void			PhDataUpdate		(dReal step);
 virtual		void			PhTune				(dReal step){}
 virtual		void			InitContact			(dContact* c,bool& do_collide,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/){}
 public:

@@ -11,6 +11,13 @@ void CPHStaticGeomShell::get_spatial_params()
 	spatialParsFromDGeom	(dSpacedGeometry(),spatial.center,AABB,spatial.radius);
 }
 
+void	CPHStaticGeomShell::PhDataUpdate		(dReal step)
+{
+	Island().Step(step);
+	Island().Unmerge();
+	PhysicsRefObject()->enable_notificate();
+	CPHUpdateObject::Deactivate();
+}
 void CPHStaticGeomShell::Activate(const Fmatrix& form)
 {
 	build();
@@ -72,3 +79,4 @@ CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbac
 	}
 	return pUnbrokenObject;
 }
+

@@ -132,7 +132,7 @@ void CWeaponHUD::animDisplay		(MotionID M,	BOOL bMixIn)
 	{
 		CSkeletonAnimated* pSkeletonAnimated			= smart_cast<CSkeletonAnimated*>(Visual());
 		VERIFY(pSkeletonAnimated);
-		pSkeletonAnimated->Update						();
+		//pSkeletonAnimated->Update						();
 		pSkeletonAnimated->PlayCycle					(M,bMixIn);
 		pSkeletonAnimated->CalculateBones_Invalidate	();
 	}

@@ -8,6 +8,11 @@
 #include "PhysicsShellHolder.h"
 #include "../skeletoncustom.h"
 
+
+IC		bool	PhOutOfBoundaries			(const Fvector& v)
+{
+	return v.y < phBoundaries.y1;
+}
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -522,7 +527,8 @@ void CPHElement::PhDataUpdate(dReal step){
 		-linear_velocity[1]*l_air,
 		-linear_velocity[2]*l_air
 		);
-
+	if(PhOutOfBoundaries(cast_fv(dBodyGetPosition(m_body))))
+											m_shell->Disable();
 	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
 	VERIFY2(dV_valid(dBodyGetQuaternion(m_body)),"invalid body rotation");
 	UpdateInterpolation				();

@@ -39,6 +39,7 @@ public:
 	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
 	virtual IDamageSource*				cast_IDamageSource			()	{return NULL;}
 	virtual CPHSoundPlayer*				ph_sound_player				()  {return NULL;}	
+	virtual void						enable_notificate			()	{}
 public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);
