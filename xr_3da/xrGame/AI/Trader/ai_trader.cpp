@@ -154,7 +154,7 @@ void CAI_Trader::AssignHeadAnimation()
 {
 	// назначить анимацию головы
 	if (!m_tpHeadDef)	{
-		if ( m_cur_head_anim_type != u32(-1)) {
+		if (m_cur_head_anim_type != MonsterSpace::eHeadAnimNone) {
 			select_head_anim(m_cur_head_anim_type);
 			smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_tpHeadDef,TRUE,AnimHeadCallback,this);	
 		}
@@ -164,8 +164,10 @@ void CAI_Trader::AssignHeadAnimation()
 
 bool CAI_Trader::bfAssignSound(CScriptEntityAction *tpEntityAction)
 {
-	if (!CScriptEntity::bfAssignSound(tpEntityAction))
-		return			(false);
+	if (!CScriptEntity::bfAssignSound(tpEntityAction)) {
+		m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
+		return					(false);
+	}
 
 	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
 	m_cur_head_anim_type = l_tAction.m_tHeadAnimType;
