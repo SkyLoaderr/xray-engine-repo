@@ -89,7 +89,7 @@ function mob_walker:update(delta)
 		if h.who:id() == actor:id() and self.st.actor_friendly then
 			self.st.actor_friendly = false
 		end
-		printf("_bp [%s]: h.who:name() = %s", self.object:name(), h.who:name())
+		--printf("_bp [%s]: h.who:name() = %s", self.object:name(), h.who:name())
 		xr_logic.mob_release(self.object)
 		return
 	end
@@ -147,29 +147,7 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 		return
 	end
 
-	local this_val -- значение флагов текущей точки
-	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
-	local pt_chosen_idx = nil -- индекс выбранной точки
-	local r
-	for look_idx = 0, self.patrol_look:count() - 1 do
-		this_val = self.path_look_info[look_idx].flags
-		if this_val:equal(search_for) then
-			-- Ќашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
-			-- точки, возьмем текущую только с некоторой веро€тностью:
-			-- Ўанс, с которым на точку посмотрит персонаж:
-			local point_look_weight = self.path_look_info[look_idx]["p"]
-			if point_look_weight then
-				point_look_weight = tonumber(point_look_weight)
-			else
-				point_look_weight = 100 -- по умолчанию у всех точек вес = 100
-			end
-			pts_found_total_weight = pts_found_total_weight + point_look_weight
-			r = math.random(1, pts_found_total_weight)
-			if r <= point_look_weight then
-				pt_chosen_idx = look_idx
-			end
-		end
-	end
+	local pt_chosen_idx = move_mgr.choose_look_point(self.patrol_look, self.path_look_info, search_for)
 	if pt_chosen_idx then
 		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
 		if suggested_wait_time then

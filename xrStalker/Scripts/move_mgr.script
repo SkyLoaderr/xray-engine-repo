@@ -21,6 +21,35 @@ rotation_start_time = 700
 
 local sync = {}
 
+-------------------------------------------------------------------------------------------------------------------------
+function choose_look_point(patrol_look, path_look_info, search_for)
+	local this_val -- значение флагов текущей точки
+	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
+	local pt_chosen_idx = nil -- индекс выбранной точки
+	local r
+	for look_idx = 0, patrol_look:count() - 1 do
+		this_val = path_look_info[look_idx].flags
+		if this_val:equal(search_for) then
+			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
+			-- точки, возьмем текущую только с некоторой вероятностью:
+			-- Шанс, с которым на точку посмотрит персонаж:
+			local point_look_weight = path_look_info[look_idx]["p"]
+			if point_look_weight then
+				point_look_weight = tonumber(point_look_weight)
+			else
+				point_look_weight = 100 -- по умолчанию у всех точек вес = 100
+			end
+			pts_found_total_weight = pts_found_total_weight + point_look_weight
+			r = math.random(1, pts_found_total_weight)
+			if r <= point_look_weight then
+				pt_chosen_idx = look_idx
+			end
+		end
+	end
+	return pt_chosen_idx
+end
+
+-------------------------------------------------------------------------------------------------------------------------
 class "move_mgr"
 
 function move_mgr:__init(npc)
@@ -697,46 +726,15 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		return
 	end
 
-	local search_for = 0 -- значение флагов точки, которую будем искать
-	for f = 0, 31 do
-		if self.path_walk_info[index].flags:test(f) then
-			search_for = search_for + (2 ^ f)
-		end
-	end
+	-- Значение флагов точки, которую будем искать:
+	local search_for = self.path_walk_info[index].flags
 
-	if search_for == 0 then
+	if search_for:get() == 0 then
 		self:update_movement_state() -- идти дальше
 		return
 	end
 
-	local this_val -- значение флагов текущей точки
-	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
-	local pt_chosen_idx = nil -- индекс выбранной точки
-	local r
-	for look_idx = 0, self.patrol_look:count() - 1 do
-		this_val = 0
-		for f = 0, 31 do
-			if self.path_look_info[look_idx].flags:test(f) then
-				this_val = this_val + (2 ^ f)
-			end
-		end
-		if this_val == search_for then
-			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
-			-- точки, возьмем текущую только с некоторой вероятностью:
-			-- Шанс, с которым на точку посмотрит персонаж:
-			local point_look_weight = self.path_look_info[look_idx]["p"]
-			if point_look_weight then
-				point_look_weight = tonumber(point_look_weight)
-			else
-				point_look_weight = 100 -- по умолчанию у всех точек вес = 100
-			end
-			pts_found_total_weight = pts_found_total_weight + point_look_weight
-			r = math.random(1, pts_found_total_weight)
-			if r <= point_look_weight then
-				pt_chosen_idx = look_idx
-			end
-		end
-	end
+	local pt_chosen_idx = choose_look_point(self.patrol_look, self.path_look_info, search_for)
 	if pt_chosen_idx then
 		local suggested_crouch = self.path_look_info[pt_chosen_idx]["c"]
 		if suggested_crouch == "true" then
