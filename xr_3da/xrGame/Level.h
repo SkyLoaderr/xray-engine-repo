@@ -173,6 +173,8 @@ public:
 	void						SLS_Load				(LPCSTR name);		// Game Load
 	void						SLS_Default				();					// Default/Editor Load
 
+	void						vfMergeKnownEnemies		();
+
 	// C/D
 	CLevel();
 	virtual ~CLevel();
