@@ -224,7 +224,8 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
     DWORD version = 0;
 
-	VERIFY(map_name);
+	if (!map_name||(0==map_name[0])) return false;
+    
     AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
 	ELog.Msg( mtInformation, "EScene: loading '%s'", map_name);
     if (FS.exist(full_name.c_str())){
