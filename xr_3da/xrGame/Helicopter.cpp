@@ -229,6 +229,17 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	setEnabled			(true);
 
 	setState			(eWaitForStart);
+
+
+	Fbox b = Level().ObjectSpace.GetBoundingVolume();
+	if(!b.contains( XFORM().c ) ){
+		if( (b.min.y > XFORM().c.y) || (b.max.y < XFORM().c.y) )
+			XFORM().c.y = (b.max.y-b.min.y)/2.0f;
+	};
+	if(!b.contains( XFORM().c ) ){
+		Debug.fatal("helicopter spawned out of level bounding box");
+	};
+	b.getcenter(XFORM().c);
 	m_stayPos			= XFORM().c;
 
 
