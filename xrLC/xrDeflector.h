@@ -42,7 +42,6 @@ public:
 	vector<UVtri>		tris;
 	Fvector				N;
 	b_texture			lm;
-	Fvector*			lm_rad;
 
 	Fvector				Center;
 	float				Radius;
