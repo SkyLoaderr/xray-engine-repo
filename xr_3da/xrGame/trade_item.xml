@@ -22,8 +22,8 @@
 	</static>
 
 	<!-- DESCRIPTION -->
-	<d	<descr_list x="20" y="70" width="289" height="130" item_height="17">
-		<font font="medium" r="240" g="217" b="182"/>
-descr_list>
+	<descr_list x="20" y="70" width="289" height="130" item_height="15">
+		<font font="letterica16" r="240" g="217" b="182"/>
+	</descr_list>
    indow>
 
