@@ -61,6 +61,8 @@ protected:
 	float					die_respawn_delay;
 	float					die_respawn_auto;
 
+	float					hit_slowmo;
+
 	// media
 	BOOL					bStep;
 	sound					sndStep[2];

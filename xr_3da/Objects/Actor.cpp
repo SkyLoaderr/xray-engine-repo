@@ -245,6 +245,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
 
+	hit_slowmo				= 0.f;
+
 	return					TRUE;
 }
 
@@ -274,7 +276,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 		if (S.feedback) return;
 
 		// Play hit-sound
-		pSounds->PlayAtPos(S,this,vPosition);
+		pSounds->PlayAtPos	(S,this,vPosition);
 
 		// hit marker
 		if (Local() && (who!=this))	
@@ -286,6 +288,15 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 			else		id = (vLocalDir.x<0)?3:1;
 			Level().HUD()->Hit(id);
 		}
+
+		// stop-motion
+		if (Movement.Environment()==CMovementControl::peOnGround)
+		{
+			Fvector zeroV;
+			zeroV.set			(0,0,0);
+			Movement.SetVelocity(zeroV);
+		}
+		hit_slowmo				= 1.f;
 	}
 }
 
@@ -308,11 +319,17 @@ void CActor::Die	( )
 	die_respawn_auto		= respawn_auto;
 }
 
-void CActor::g_Physics			(Fvector& accel, float jump, float dt)
+void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {
 	if (!g_Alive())					return;
-
 	if (patch_frame<patch_frames)	return;
+
+	// Correct accel
+	Fvector		accel;
+	accel.set					(_accel);
+	hit_slowmo					-=	dt;
+	if (hit_slowmo<0)			hit_slowmo = 0.f;
+	accel.mul					(1.f-hit_slowmo);
 
 	// Calculate physics
 	Movement.SetPosition		(vPosition);
