@@ -213,6 +213,10 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 			return	FALSE;
 		}
 	}
+
+	// *** Mask check
+	// ???
+
 	return TRUE;
 }
 
