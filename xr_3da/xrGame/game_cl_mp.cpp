@@ -15,7 +15,7 @@
 #include "ui/UIInventoryUtilities.h"
 #include "CustomZone.h"
 
-#define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
+#define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
 #define RADIATION_ICONS "ui\\ui_mn_radiations_hard"
 #define BLOODLOSS_ICONS "ui\\ui_mn_wounds_hard"
@@ -420,26 +420,35 @@ ref_shader game_cl_mp::GetEquipmentIconsShader	()
 
 ref_shader game_cl_mp::GetKillEventIconsShader	()
 {
+	return GetEquipmentIconsShader();
+	/*
 	if (m_KillEventIconsShader) return m_KillEventIconsShader;
 
 	m_KillEventIconsShader.create("hud\\default", KILLEVENT_ICONS);
 	return m_KillEventIconsShader;
+	*/
 }
 
 ref_shader game_cl_mp::GetRadiationIconsShader	()
 {
+	return GetEquipmentIconsShader();
+	/*
 	if (m_RadiationIconsShader) return m_RadiationIconsShader;
 
 	m_RadiationIconsShader.create("hud\\default", RADIATION_ICONS);
 	return m_RadiationIconsShader;
+	*/
 }
 
 ref_shader game_cl_mp::GetBloodLossIconsShader	()
 {
+	return GetEquipmentIconsShader();
+	/*
 	if (m_BloodLossIconsShader) return m_BloodLossIconsShader;
 
 	m_BloodLossIconsShader.create("hud\\default", BLOODLOSS_ICONS);
 	return m_BloodLossIconsShader;
+	*/
 }
 
 void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
