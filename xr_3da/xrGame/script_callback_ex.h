@@ -32,11 +32,20 @@ IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
 		try {					\
 			try {				\
 				if (m_functor) {\
-					if (m_object)\
+					VERIFY		(m_functor->lua_state());\
+					if (m_object) {\
+						VERIFY	(m_object->lua_state());\
 						macros_return_operator ((*m_functor)(*m_object _5 _6));\
+					}\
 					else\
 						macros_return_operator ((*m_functor)(_6));\
 				}\
+			}\
+			catch(luabind::error &e) {\
+				if (e.state())\
+					ai().script_engine().print_output(e.state(),"",LUA_ERRRUN);\
+				else\
+					ai().script_engine().print_output(ai().script_engine().lua(),"",LUA_ERRRUN);\
 			}\
 			catch(std::exception &) {\
 				ai().script_engine().print_output(ai().script_engine().lua(),"",LUA_ERRRUN);\
