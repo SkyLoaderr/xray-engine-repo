@@ -251,9 +251,20 @@ void CUIInventoryWnd::InitInventory()
 
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 				
-				UIDragDropItem.Init(pInv->m_slots[i].m_pIItem->m_sIconTexture, 0,0, 50,50);
+				//UIDragDropItem.Init(pInv->m_slots[i].m_pIItem->m_sIconTexture, 0,0, 50,50);
+				
+				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
 				UIDragDropItem.SetGridHeight(pInv->m_slots[i].m_pIItem->m_iGridHeight);
 				UIDragDropItem.SetGridWidth(pInv->m_slots[i].m_pIItem->m_iGridWidth);
+
+				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										pInv->m_slots[i].m_pIItem->m_iXPos*INV_GRID_WIDTH,
+										pInv->m_slots[i].m_pIItem->m_iYPos*INV_GRID_HEIGHT,
+										pInv->m_slots[i].m_pIItem->m_iGridWidth*INV_GRID_WIDTH,
+										pInv->m_slots[i].m_pIItem->m_iGridHeight*INV_GRID_HEIGHT);
+
 
 				UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 				
@@ -267,9 +278,20 @@ void CUIInventoryWnd::InitInventory()
 	{
 		CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 		
-		UIDragDropItem.Init(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_sIconTexture, 0,0, 50,50);
+//		UIDragDropItem.Init(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_sIconTexture, 0,0, 50,50);
+
+		UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+		UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
 		UIDragDropItem.SetGridHeight(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridHeight);
 		UIDragDropItem.SetGridWidth(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridWidth);
+
+		UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iXPos*INV_GRID_WIDTH,
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iYPos*INV_GRID_HEIGHT,
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridWidth*INV_GRID_WIDTH,
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridHeight*INV_GRID_HEIGHT);
+
 
 		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
 				
@@ -284,9 +306,20 @@ void CUIInventoryWnd::InitInventory()
 			{
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 				
-				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+//				UIDragDropItem.Init("ui\\ui_inv_quick_slots", 0,0, 50,50);
+				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
 				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
 				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+
+				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										(*it)->m_iXPos*INV_GRID_WIDTH,
+										(*it)->m_iYPos*INV_GRID_HEIGHT,
+										(*it)->m_iGridWidth*INV_GRID_WIDTH,
+										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
+
 
 				UIDragDropItem.SetData((*it));
 
@@ -311,10 +344,22 @@ void CUIInventoryWnd::InitInventory()
 			if((*it)) 
 			{
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+				
+//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+//				UIDragDropItem.Init("ui\\ui_inv_quick_slots", 0,0, 50,50);
+				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
 				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
 				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
 
+				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										(*it)->m_iXPos*INV_GRID_WIDTH,
+										(*it)->m_iYPos*INV_GRID_HEIGHT,
+										(*it)->m_iGridWidth*INV_GRID_WIDTH,
+										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
+
+				
 				UIDragDropItem.SetData((*it));
 
 				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));

@@ -66,7 +66,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	LTt.set			(fScale* float(x1)/float(ts.x)+hp.x,
 					 fScale* float(y1)/float(ts.y)+hp.y);
 	RBt.set			(fScale*float(x2)/float(ts.x)+hp.x,
-					fScale*float(y2)/float(ts.y)+hp.y);
+					 fScale*float(y2)/float(ts.y)+hp.y);
 
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;
 	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
@@ -149,7 +149,7 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 	Pointer->set	(RBp.x,	LTp.y,	color, RTt.x, RTt.y); Pointer++;
 }
 
-Irect CUICustomItem::GetOriginalRect()
+Irect CUICustomItem::GetOriginalRectScaled()
 {
 	Irect rect;
 	rect.x1 = iOriginalRect.x1;
@@ -160,3 +160,13 @@ Irect CUICustomItem::GetOriginalRect()
 	return rect;
 }
 
+Irect CUICustomItem::GetOriginalRect()
+{
+	Irect rect;
+	rect.x1 = iOriginalRect.x1;
+	rect.y1 = iOriginalRect.y1;
+	rect.x2 = int(rect.x1 + float(iOriginalRect.x2-iOriginalRect.x1));
+	rect.y2 = int(rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1));
+
+	return rect;
+}

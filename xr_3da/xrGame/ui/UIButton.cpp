@@ -295,7 +295,4 @@ void  CUIButton::Update()
 	GetFont()->Out((float)rect.left + right_offset  +  TEXT_OFFSET_RIGHT, 
 				   (float)rect.top + down_offset  + TEXT_OFFSET_DOWN,
 				    m_str);
-
-
-
 }

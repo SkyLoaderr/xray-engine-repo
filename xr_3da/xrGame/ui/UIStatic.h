@@ -58,8 +58,10 @@ public:
 						RECT* pClipRect = NULL);
 
 
-	void SetTextureScale		(float new_scale);
-	float GetTextureScale		();
+	void	SetTextureScale		(float new_scale);
+	float	GetTextureScale		();
+	void	SetShader			(const ref_shader& sh);
+	CUIStaticItem& GetUIStaticItem() {return m_UIStaticItem;}
 
 protected:
 	bool m_bClipper;	

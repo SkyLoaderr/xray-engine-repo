@@ -72,10 +72,14 @@ public:
 	bool m_drop;
 
 	
-	const char* m_sIconTexture;								//текстура с иконкой для меню
+	//const char* m_sIconTexture;								//текстура с иконкой для меню
 	
 	int m_iGridWidth;										//ширина в сетке инвенторя
 	int m_iGridHeight;										//высота в сетке инвенторя
+
+	int m_iXPos;											//позиция X в сетке инвенторя
+	int m_iYPos;											//позиция Y в сетке инвенторя
+
 
 	float GetCondition() {return m_fCondition;}
 	void  ChangeCondition(float fDeltaCondition);

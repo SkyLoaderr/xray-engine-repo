@@ -30,6 +30,13 @@ CInventoryItem::CInventoryItem()
 	m_fK_ChemicalBurn = 1.0f;
 	m_fK_Explosion = 1.0f;
 	m_fK_FireWound = 1.0f;
+
+
+	m_iGridWidth = 1;
+	m_iGridHeight = 1;
+
+	m_iXPos = 0;
+	m_iYPos = 0;
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -48,9 +55,11 @@ void CInventoryItem::Load(LPCSTR section)
 	m_cost = pSettings->r_u32(section, "cost");
 
 	//properties used by inventory menu
-	m_sIconTexture = pSettings->r_string(section, "inv_icon");
 	m_iGridWidth = pSettings->r_u32(section, "inv_grid_width");
 	m_iGridHeight = pSettings->r_u32(section, "inv_grid_height");
+
+	m_iXPos = pSettings->r_u32(section, "inv_grid_x");
+	m_iYPos = pSettings->r_u32(section, "inv_grid_y");
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)

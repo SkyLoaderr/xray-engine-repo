@@ -24,6 +24,7 @@ protected:
 	//оригинальный размер текстуры в пикселях
 	Irect			iOriginalRect;
 
+
 	float			fScale;
 
 	u32				uFlags;
@@ -34,9 +35,12 @@ public:
 	virtual			~CUICustomItem	();
 	IC void			SetRect			(int x1, int y1, int x2, int y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
 	IC void			SetRect			(const Irect& r){iVisRect.set(r); uFlags|=flValidRect; }
+	IC void			SetOriginalRect	(int x1, int y1, int x2, int y2){iOriginalRect.set(x1,y1,x2,y2); uFlags|=flValidOriginalRect; }
 
-	IC Irect		GetRect			() {return iVisRect;}
-	   Irect		GetOriginalRect	();
+	IC Irect		GetRect					() {return iVisRect;}
+	   Irect		GetOriginalRect			();
+	   Irect		GetOriginalRectScaled	();
+
 
 	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 
 														int x1, int y1, 

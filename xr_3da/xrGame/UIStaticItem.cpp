@@ -13,8 +13,10 @@ CUIStaticItem::CUIStaticItem()
 	iTileY		= 1;
 	iRemX		= 0;
 	iRemY		= 0;
-	hGeom.create(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 
+	hShader = NULL;
+
+	hGeom.create(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 //--------------------------------------------------------------------
 CUIStaticItem::~CUIStaticItem()
@@ -25,6 +27,12 @@ CUIStaticItem::~CUIStaticItem()
 void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 {
 	if (!hShader)	hShader.create	(sh,tex);
+}
+
+void CUIStaticItem::SetShader(const ref_shader& sh)
+{
+	hShader.destroy();
+	hShader = sh;
 }
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
@@ -105,7 +113,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	u32			vOffset;
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4,hGeom.stride(),vOffset);
 	
-	inherited::Render(pv,bp,dwColor,angle);	
+	inherited::Render(pv,bp,dwColor,angle);
 
 	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(4,hGeom.stride());

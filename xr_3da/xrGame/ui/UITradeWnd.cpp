@@ -572,9 +572,19 @@ void CUITradeWnd::UpdateLists()
 			if((*it)) 
 			{
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+
+				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
 				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
 				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+
+				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										(*it)->m_iXPos*INV_GRID_WIDTH,
+										(*it)->m_iYPos*INV_GRID_HEIGHT,
+										(*it)->m_iGridWidth*INV_GRID_WIDTH,
+										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
 
 				UIDragDropItem.SetData((*it));
 
@@ -597,11 +607,11 @@ void CUITradeWnd::UpdateLists()
 	//ruck_list = m_pOthersInv->m_ruck;
 	ruck_list.clear();
 	ruck_list.insert(ruck_list.begin(),
-					 m_pOthersInv->m_ruck.begin(),
-					 m_pOthersInv->m_ruck.end());
+					 m_pOthersInvOwner->m_inventory.m_ruck.begin(),
+					 m_pOthersInvOwner->m_inventory.m_ruck.end());
 	ruck_list.insert(ruck_list.end(),
-					 m_pOthersInv->m_belt.begin(),
-					 m_pOthersInv->m_belt.end());
+					 m_pOthersInvOwner->m_inventory.m_belt.begin(),
+					 m_pOthersInvOwner->m_inventory.m_belt.end());
 
 					 /*m_pOthersInv->m_ruck.begin(),
 					 m_pOthersInv->m_ruck.end());*/
@@ -616,9 +626,18 @@ void CUITradeWnd::UpdateLists()
 			if((*it)) 
 			{
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
+				
+				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
 				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
 				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+
+				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										(*it)->m_iXPos*INV_GRID_WIDTH,
+										(*it)->m_iYPos*INV_GRID_HEIGHT,
+										(*it)->m_iGridWidth*INV_GRID_WIDTH,
+										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
 
 				UIDragDropItem.SetData((*it));
 

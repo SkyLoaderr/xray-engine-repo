@@ -200,8 +200,8 @@ void CUIDragDropItem::Draw()
 	RECT rect = GetAbsoluteRect();
 
 	//отцентрировать текстуру по центру ее окна
-	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRect().width())/2;
-	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRect().height())/2;
+	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
+	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
 
 	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
 	

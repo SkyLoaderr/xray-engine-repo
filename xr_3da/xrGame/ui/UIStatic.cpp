@@ -441,6 +441,14 @@ float CUIStatic::GetTextureScale()
 {
 	return m_UIStaticItem.GetScale();
 }
+
+void  CUIStatic::SetShader(const ref_shader& sh)
+{
+	m_UIStaticItem.SetShader(sh);
+	m_bAvailableTexture = true;
+}
+
+
 void CUIStatic::SetText(LPSTR str) 
 {
 	m_sEdit.clear();

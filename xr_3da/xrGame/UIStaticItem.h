@@ -23,6 +23,8 @@ public:
 	virtual			~CUIStaticItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh, int left, int top, u32 align);
 	void			CreateShader	(LPCSTR tex, LPCSTR sh);
+	void			SetShader		(const ref_shader& sh);
+	
 	void			Render			(const ref_shader& sh=ref_shader(0));
 	void			Render			(float angle, const ref_shader& sh=ref_shader(0));
 	
