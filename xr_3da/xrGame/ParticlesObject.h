@@ -46,7 +46,10 @@ public:
 	}
 	static void					Destroy		(CParticlesObject*& p)
 	{
-		xr_delete				(p);
+		if (p){ 
+			p->PSI_Destroy		();
+			p					= 0;
+		}
 	}
 };
 
