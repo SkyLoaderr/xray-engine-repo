@@ -565,8 +565,14 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="string library"
+			Name="shared memory/string library"
 			Filter="">
+			<File
+				RelativePath=".\xrsharedmem.cpp">
+			</File>
+			<File
+				RelativePath=".\xrsharedmem.h">
+			</File>
 			<File
 				RelativePath=".\xrstring.cpp">
 			</File>

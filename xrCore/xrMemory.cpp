@@ -47,16 +47,17 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	}
 #endif    
 
-	g_pStringContainer	= xr_new<str_container>		();
-
-	mem_initialized	= TRUE;
+	g_pStringContainer			= xr_new<str_container>		();
+	g_pSharedMemoryContainer	= xr_new<smem_container>	();
+	mem_initialized				= TRUE;
 }
 
 void	xrMemory::_destroy()
 {
-	xr_delete		(g_pStringContainer);
+	xr_delete					(g_pSharedMemoryContainer);
+	xr_delete					(g_pStringContainer);
 
-	mem_initialized	= FALSE;
+	mem_initialized				= FALSE;
 }
 
 void	xrMemory::mem_compact	()

@@ -185,6 +185,7 @@
 
 #include "_stl_extensions.h"
 #include "xrstring.h"
+#include "xrsharedmem.h"
 #include "rt_compressor.h"
 
 #include "FS.h"

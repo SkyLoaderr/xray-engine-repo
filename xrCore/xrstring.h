@@ -11,10 +11,10 @@ typedef const char*		str_c;
 struct		XRCORE_API	str_value
 {
 	u32					dwReference		;
-	u32					dwStrLen		;
+	u32					dwLength		;
 	char				value		[]	;
 };
-struct		XRCORE_API	str_value_cmp
+struct		XRCORE_API	str_value_cmp	// less
 {
 	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return strcmp(A->value,B->value)<0;	};
 };
@@ -62,7 +62,7 @@ public:
 	char				operator[]	(size_t id)						{	return p_->value[id];							}
 
 	// misc func
-	u32					length		()								{	if (0==p_) return 0; else return p_->dwStrLen;	}
+	u32					size		()								{	if (0==p_) return 0; else return p_->dwLength;	}
 	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
 	bool				equal		(ref_str & rhs)					{
 		if (p_ == rhs.p_)	return true;
@@ -85,7 +85,7 @@ IC bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get() >  
 
 // externally visible standart functionality
 IC void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);		}
-IC u32	xr_strlen		(ref_str & a)								{ return a.length();	}
+IC u32	xr_strlen		(ref_str & a)								{ return a.size();		}
 
 #pragma pack(pop)
 
