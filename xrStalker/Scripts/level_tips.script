@@ -14,7 +14,7 @@ function get_tips(actor)
 	for k,v in tips do
 		if v.done ~= true then
 			if actor:position():distance_to(v.position) <= v.radius then
-				actor:give_game_news(v.info, "", 0,0,0,0)
+				actor:give_info_portion_via_pda(v.info, actor)
 				v.done = true
 			end
 		end
