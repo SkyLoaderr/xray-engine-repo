@@ -412,7 +412,7 @@ VOID CDeflector::Light(HASH& H)
 		{
 			LightsSelected.clear	();
 			R_Light*	L			= layer_lights.begin();
-			for (; L!=pBuild->layer_lights.end(); L++)
+			for (; L!=layer_lights.end(); L++)
 			{
 				if (L->type==LT_POINT) {
 					float dist = Center.distance_to(L->position);

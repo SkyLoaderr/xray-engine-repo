@@ -100,7 +100,6 @@ struct b_params
 
 	// Light maps
 	BOOL		m_bLightMaps;
-	BOOL		m_bRadiosity;		// radiosity vs direct lighting
 	float		m_lm_split_angle;	// deflectors split angle	- 89.0
 	float		m_lm_pixels_per_meter;// LM - by default: 4 ppm
 	float		m_lm_dither;		// amount of distortion		- 0.02
