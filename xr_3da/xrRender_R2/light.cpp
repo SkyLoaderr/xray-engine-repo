@@ -116,7 +116,7 @@ void	light::spatial_move			()
 	case IRender_Light::SPOT		:	
 		{
 			// minimal enclosing sphere around cone
-			VERIFY2						(cone < deg2rad(121), "Too large light-cone angle. Maybe you have passed it in 'degrees'?");
+			VERIFY2						(cone < deg2rad(121.f), "Too large light-cone angle. Maybe you have passed it in 'degrees'?");
 			if (cone>=PI_DIV_2)			{
 				// obtused-angled
 				spatial.center.mad			(position,direction,range);
