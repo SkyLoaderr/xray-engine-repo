@@ -41,9 +41,9 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 			return			(&m_part_animations.A[l_tBodyState].m_in_place->A[object().movement().mental_state() == eMentalStateFree ? 1 : 0]);
 		else
 			if (left_angle(-object().movement().body_orientation().target.yaw,-object().movement().body_orientation().current.yaw))
-				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 3 : 1]);
-			else
 				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 4 : 2]);
+			else
+				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[(object().movement().mental_state() == eMentalStateFree) ? 5 : 3]);
 	}
 
 	float					fAnimationSwitchFactor = 1.f;
