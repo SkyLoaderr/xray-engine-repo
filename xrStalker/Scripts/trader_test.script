@@ -1,2 +1,11 @@
+
 function main ()
+
+    local trader = trader.Trader (get_level_object ("trader"), get_level_object ("trader_zone"),       
+                                  trader_test.script_name ())
+
+    while true do
+          trader:process ()
+          wait ()
+    end                                  
 end
