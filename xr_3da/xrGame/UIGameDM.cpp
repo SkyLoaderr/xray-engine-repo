@@ -427,7 +427,7 @@ void		CUIGameDM::FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu)
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, SingleItem);
-		pMenu->MoveWeapon(SingleItem);
+		pMenu->MoveWeapon(SingleItem, false);
 	};
 };
 //--------------------------------------------------------------------
@@ -516,6 +516,6 @@ void		CUIGameDM::SetBuyMenuItems		()
 	{
 		PIItem pItem = (*I);
 		if ((*I)->getDestroy() || (*I)->m_drop) continue;
-		pCurBuyMenu->MoveWeapon(*pItem->cNameSect());
+		pCurBuyMenu->MoveWeapon(*pItem->cNameSect(), true);
 	};
 };
