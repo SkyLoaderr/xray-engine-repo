@@ -2,21 +2,15 @@
 #include "zombie.h"
 #include "zombie_state_manager.h"
 #include "../states/monster_state_rest.h"
-#include "../states/monster_state_rest_sleep.h"
-#include "../states/monster_state_rest_walk_graph.h"
-
+#include "../states/monster_state_attack.h"
 #include "../../ai_monster_debug.h"
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {
-	add_state(
-		eStateRest, 
-			xr_new<CStateMonsterRest<CZombie> > (obj, 
-			xr_new<CStateMonsterRestSleep<CZombie> >(obj), 
-			xr_new<CStateMonsterRestWalkGraph<CZombie> >(obj)
-			)
-		);
+	add_state(eStateRest,	xr_new<CStateMonsterRest<CZombie> >	(obj));
+	add_state(eStateAttack, xr_new<CStateMonsterAttack<CZombie> > (obj)); 
 
+	
 
 	//add_state(
 	//	eStateAttack, 
@@ -81,9 +75,14 @@ void CStateManagerZombie::initialize()
 
 void CStateManagerZombie::execute()
 {
-	//u32 state_id = u32(-1);
+	u32 state_id = u32(-1);
+	
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 
-	select_state(eStateRest); 
+	if (enemy) state_id = eStateAttack;
+	else state_id =  eStateRest;
+	
+	select_state(state_id); 
 
 	// выполнить текущее состояние
 	get_state_current()->execute();

@@ -25,11 +25,9 @@ void CZombie::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
 	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
 	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::get_sd()->m_fsVelocityWalkFwdNormal,	PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_walk_fwd_",		-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimMiscAction_01,	"fly_",					-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			0, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
@@ -45,6 +43,8 @@ void CZombie::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
+
+	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 
 	MotionMan.finish_load_shared();
 }

@@ -1,10 +1,21 @@
 #pragma once
 
+#include "monster_state_rest_sleep.h"
+#include "monster_state_rest_walk_graph.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
 
 #define CStateMonsterRestAbstract CStateMonsterRest<_Object>
+
+
+TEMPLATE_SPECIALIZATION
+CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
+{
+	add_state	(eStateSleep,			xr_new<CStateMonsterRestSleep<_Object> >(obj));
+	add_state	(eStateWalkGraphPoint,	xr_new<CStateMonsterRestWalkGraph<_Object> >(obj));
+}
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj, state_ptr state_sleep, state_ptr state_walk) : inherited(obj)

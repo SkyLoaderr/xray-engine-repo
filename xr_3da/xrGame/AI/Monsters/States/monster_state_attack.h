@@ -14,6 +14,7 @@ protected:
 	};
 
 public:
+						CStateMonsterAttack		(_Object *obj);
 						CStateMonsterAttack		(_Object *obj, state_ptr state_run, state_ptr state_melee);
 	virtual				~CStateMonsterAttack	();
 	
