@@ -25,30 +25,6 @@ IC	const xr_vector<u32> &CSpaceRestriction::border	()
 	return							(m_border);
 }
 
-template <typename T>
-IC	bool CSpaceRestriction::accessible				(T position_or_vertex_id, float radius)
-{
-	if (!initialized()) {
-		initialize					();
-		if (!initialized())
-			return					(true);
-	}
-
-	return							(
-		(
-			m_out_space_restriction ? 
-			m_out_space_restriction->inside(position_or_vertex_id,radius) :
-			true
-		)
-		&&
-		(
-			m_in_space_restriction ? 
-			!m_in_space_restriction->inside(position_or_vertex_id,radius) :
-			true
-		)
-	);
-}
-
 IC	bool CSpaceRestriction::initialized				() const
 {
 	return							(m_initialized);

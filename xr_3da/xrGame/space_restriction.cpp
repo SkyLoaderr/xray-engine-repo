@@ -8,8 +8,6 @@
 
 #include "stdafx.h"
 #include "space_restriction.h"
-#include "space_restriction_base.h"
-#include "space_restriction_bridge.h"
 #include "space_restriction_manager.h"
 #include "ai_space.h"
 #include "level_graph.h"
@@ -31,7 +29,7 @@ struct CMergeInOutPredicate {
 	{
 		if (!m_out || !m_in)
 			return					(false);
-		return						(a ? m_in->inside(level_vertex_id) : !m_out->inside(level_vertex_id) || m_in->inside(level_vertex_id));
+		return						(a ? m_in->inside(level_vertex_id,true) : !m_out->inside(level_vertex_id,true) || m_in->inside(level_vertex_id,true));
 	}
 };
 
@@ -49,15 +47,61 @@ struct CRemoveMergedFreeInRestrictions {
 	}
 };
 
+bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
+{
+	if (!initialized()) {
+		initialize					();
+		if (!initialized())
+			return					(true);
+	}
+
+	return							(
+		(
+			m_out_space_restriction ? 
+			m_out_space_restriction->inside(position,radius) :
+			true
+		)
+		&&
+		(
+			m_in_space_restriction ? 
+			!m_in_space_restriction->inside(position,radius) :
+			true
+		)
+	);
+}
+
+bool CSpaceRestriction::accessible				(u32 level_vertex_id, float radius)
+{
+	if (!initialized()) {
+		initialize					();
+		if (!initialized())
+			return					(true);
+	}
+
+	return							(
+		(
+			m_out_space_restriction ? 
+			m_out_space_restriction->inside(level_vertex_id,true,radius) :
+			true
+		)
+		&&
+		(
+			m_in_space_restriction ? 
+			!m_in_space_restriction->inside(level_vertex_id,false,radius) :
+			true
+		)
+	);
+}
+
 IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictionPtr bridge0, bool out_restriction0, SpaceRestrictionHolder::CBaseRestrictionPtr bridge1, bool out_restriction1)
 {
 	xr_vector<u32>::const_iterator	I = bridge1->border(out_restriction1).begin();
 	xr_vector<u32>::const_iterator	E = bridge1->border(out_restriction1).end();
 	for ( ; I != E; ++I)
-		if (bridge0->inside(*I))
+		if (bridge0->inside(*I,true))
 			return					(true);
 	
-	if (!bridge0->border(out_restriction0).empty() && bridge1->inside(bridge0->border(out_restriction0).front()))
+	if (!bridge0->border(out_restriction0).empty() && bridge1->inside(bridge0->border(out_restriction0).front(),true))
 		return						(true);
 
 	m_temp.resize					(bridge0->border(out_restriction0).size() + bridge1->border(out_restriction1).size());
@@ -204,14 +248,14 @@ void CSpaceRestriction::remove_border			()
 
 IC	bool CSpaceRestriction::accessible_neighbours	(u32 level_vertex_id)
 {
-	if (!accessible(level_vertex_id))
+	if (!accessible(level_vertex_id,true))
 		return				(false);
 
 	CLevelGraph::const_iterator	i,e;
 	ai().level_graph().begin(level_vertex_id,i,e);
 	for ( ; i != e; ++i) {
 		u32					neighbour_vertex_id = ai().level_graph().value(level_vertex_id,i);
-		if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && accessible(neighbour_vertex_id))
+		if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && accessible(neighbour_vertex_id,true))
 			return			(true);
 	}
 	return					(false);

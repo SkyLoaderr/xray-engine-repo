@@ -13,7 +13,6 @@
 #include "space_restriction_bridge.h"
 
 class CSpaceRestrictionManager;
-class CSpaceRestrictionBridge;
 
 class CSpaceRestriction : public RestrictionSpace::CTimeIntrusiveBase {
 	friend struct CRemoveMergedFreeInRestrictions;
@@ -75,8 +74,8 @@ public:
 	IC		void					add_border					(T1 p1, T2 p2);
 	IC		const xr_vector<u32>	&border						();
 			u32						accessible_nearest			(const Fvector &position, Fvector &result);
-	template <typename T>
-	IC		bool					accessible					(T position_or_vertex_id, float radius = EPS_L);
+			bool					accessible					(const Fvector &position, float radius);
+			bool					accessible					(u32 level_vertex_id, float radius);
 	IC		ref_str					out_restrictions			() const;
 	IC		ref_str					in_restrictions				() const;
 	IC		bool					applied						() const;

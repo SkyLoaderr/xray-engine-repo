@@ -297,7 +297,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 	Fbox2					box;
 	Fvector2				identity, start, dest, dir;
 
-	identity.x = identity.y	= header().cell_size()/2.f;
+	identity.x = identity.y	= header().cell_size()*.5f;
 	start					= start_position;
 	dest					= finish_position;
 	dir.sub					(dest,start);
@@ -311,7 +311,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id) || !is_accessible(next_vertex_id))
+			if ((next_vertex_id == prev_vertex_id) || !is_accessible(next_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;
@@ -349,7 +349,7 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 	Fbox2					box;
 	Fvector2				identity, start, dest, dir;
 
-	identity.x = identity.y	= header().cell_size()/2.f;
+	identity.x = identity.y	= header().cell_size()*.5f;
 	start					= start_position;
 	dest.set				(finish_position.x,finish_position.z);
 	dir.sub					(dest,start);
@@ -363,7 +363,7 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id) || !is_accessible(next_vertex_id))
+			if ((next_vertex_id == prev_vertex_id) || !is_accessible(next_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;
@@ -410,7 +410,7 @@ bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector2 &star
 	Fbox2					box;
 	Fvector2				identity, start, dest, dir;
 
-	identity.x = identity.y	= header().cell_size()/2.f;
+	identity.x = identity.y	= header().cell_size()*.5f;
 	start					= start_point;
 	dest					= finish_point;
 	dir.sub					(dest,start);

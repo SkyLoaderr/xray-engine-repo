@@ -19,9 +19,3 @@ IC	CSpaceRestrictionBase &CSpaceRestrictionBridge::object	() const
 	VERIFY		(m_object);
 	return		(*m_object);
 }
-
-template <typename T>
-IC	bool CSpaceRestrictionBridge::inside					(T position_or_vertex_id, float radius)
-{
-	return		(object().inside(position_or_vertex_id,radius));
-}

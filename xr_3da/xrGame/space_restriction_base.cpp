@@ -11,17 +11,26 @@
 #include "ai_space.h"
 #include "level_graph.h"
 
-bool CSpaceRestrictionBase::inside			(u32 level_vertex_id, float radius)
+bool CSpaceRestrictionBase::inside			(u32 level_vertex_id, bool out, float radius)
 {
 	const Fvector					&position = ai().level_graph().vertex_position(level_vertex_id);
 	float							offset = ai().level_graph().header().cell_size()*.5f - 3*flt_eps;
-	return							(
-		inside(Fvector().set(position.x + offset,position.y,position.z + offset),radius) || 
-		inside(Fvector().set(position.x + offset,position.y,position.z - offset),radius) || 
-		inside(Fvector().set(position.x - offset,position.y,position.z + offset),radius) || 
-		inside(Fvector().set(position.x - offset,position.y,position.z - offset),radius) ||
-		inside(Fvector().set(position.x,position.y,position.z),radius)
-	);
+	if (out)
+		return							(
+			inside(Fvector().set(position.x + offset,position.y,position.z + offset),radius) || 
+			inside(Fvector().set(position.x + offset,position.y,position.z - offset),radius) || 
+			inside(Fvector().set(position.x - offset,position.y,position.z + offset),radius) || 
+			inside(Fvector().set(position.x - offset,position.y,position.z - offset),radius) ||
+			inside(Fvector().set(position.x,position.y,position.z),radius)
+		);
+	else
+		return							(
+			inside(Fvector().set(position.x + offset,position.y,position.z + offset),radius) && 
+			inside(Fvector().set(position.x + offset,position.y,position.z - offset),radius) && 
+			inside(Fvector().set(position.x - offset,position.y,position.z + offset),radius) && 
+			inside(Fvector().set(position.x - offset,position.y,position.z - offset),radius) &&
+			inside(Fvector().set(position.x,position.y,position.z),radius)
+		);
 }
 
 u32	CSpaceRestrictionBase::accessible_nearest	(const Fvector &position, Fvector &result, bool out_restriction)
@@ -49,7 +58,7 @@ u32	CSpaceRestrictionBase::accessible_nearest	(const Fvector &position, Fvector 
 			u32	current = ai().level_graph().value(selected,I);
 			if (!ai().level_graph().valid_vertex_id(current))
 				continue;
-			if (!inside(current))
+			if (!inside(current,true))
 				continue;
 			float	distance_sqr = ai().level_graph().vertex_position(current).distance_to_sqr(position);
 			if (distance_sqr < min_dist_sqr) {

@@ -10,7 +10,6 @@
 
 #include "space_restriction_base.h"
 #include "space_restriction_holder.h"
-#include "space_restriction_bridge.h"
 
 class CSpaceRestrictionBridge;
 class CSpaceRestrictionHolder;

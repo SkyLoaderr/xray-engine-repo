@@ -10,7 +10,6 @@
 #include "space_restriction.h"
 #include "restriction_space.h"
 #include "space_restriction_manager.h"
-#include "space_restriction_base.h"
 #include "space_restriction_bridge.h"
 #include "object_broker.h"
 

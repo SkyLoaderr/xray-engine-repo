@@ -78,6 +78,10 @@ Fvector CDetailPathManager::direction() const
 void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 intermediate_index)
 {
 	if (valid(m_start_position) && valid(m_dest_position)) {
+		bool				in = ai().level_graph().inside(level_path.front(),m_start_position);
+		bool				alvi = m_restricted_object->accessible(level_path.front());
+		bool				asp = m_restricted_object->accessible(m_start_position);
+		VERIFY				(in && ((alvi && asp) || !asp));
 		if (m_restricted_object)
 			m_restricted_object->add_border(m_start_position,m_dest_position);
 		switch (m_path_type) {
@@ -97,6 +101,10 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 		}
 		if (m_restricted_object)
 			m_restricted_object->remove_border();
+
+		if (failed())
+			Msg						("! DetailPathManager has failed!");
+
 		if (valid()) {
 			m_actuality				= true;
 			m_current_travel_point	= 0;

@@ -27,7 +27,7 @@ struct CBorderMergePredicate {
 
 	IC	bool	operator()				(u32 vertex_id)
 	{
-		if (m_restriction->inside(vertex_id) == out)
+		if (m_restriction->inside(vertex_id,true) == out)
 			return				(true);
 
 		vertex					= ai().level_graph().vertex(vertex_id);
@@ -38,7 +38,7 @@ struct CBorderMergePredicate {
 			if (!ai().level_graph().valid_vertex_id(neighbour))
 				continue;
 
-			if (m_restriction->inside(neighbour) == out)
+			if (m_restriction->inside(neighbour,true) == out)
 				return			(false);
 		}
 

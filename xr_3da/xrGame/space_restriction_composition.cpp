@@ -24,7 +24,7 @@ struct CMergeOutPredicate {
 
 	IC	bool operator()	(u32 level_vertex_id) const
 	{
-		return			(m_restriction->CSpaceRestrictionBase::inside(level_vertex_id));
+		return			(m_restriction->CSpaceRestrictionBase::inside(level_vertex_id,true));
 	}
 };
 
@@ -42,7 +42,7 @@ struct CMergeInPredicate {
 		ai().level_graph().begin(level_vertex_id,i,e);
 		for ( ; i != e; ++i) {
 			u32					neighbour_vertex_id = ai().level_graph().value(level_vertex_id,i);
-			if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && !m_restriction->CSpaceRestrictionBase::inside(neighbour_vertex_id))
+			if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && !m_restriction->CSpaceRestrictionBase::inside(neighbour_vertex_id,true))
 				return			(false);
 		}
 		return					(true);

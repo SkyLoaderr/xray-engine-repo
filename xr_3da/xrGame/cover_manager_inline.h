@@ -22,7 +22,7 @@ IC	CCoverManager::CPointQuadTree *CCoverManager::get_covers	()
 template <typename _evaluator_type, typename _restrictor_type>
 IC	CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const
 {
-	if (evaluator.inertia() && evaluator.accessible(evaluator.selected()->position()))
+	if (evaluator.inertia() && (!evaluator.selected() || evaluator.accessible(evaluator.selected()->position())))
 		return				(evaluator.selected());
 
 	evaluator.initialize	(position);

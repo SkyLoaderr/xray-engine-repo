@@ -55,3 +55,13 @@ bool CSpaceRestrictionBridge::default_restrictor		() const
 {
 	return				(object().default_restrictor());
 }
+
+bool CSpaceRestrictionBridge::inside					(const Fvector &position, float radius)
+{
+	return		(object().inside(position,radius));
+}
+
+bool CSpaceRestrictionBridge::inside					(u32 level_vertex_id, bool out, float radius)
+{
+	return		(object().inside(level_vertex_id,out,radius));
+}

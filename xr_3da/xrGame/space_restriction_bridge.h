@@ -26,8 +26,8 @@ public:
 			const xr_vector<u32>	&border						(bool out_restriction) const;
 			bool					initialized					() const;
 			void					initialize					();
-	template <typename T>
-	IC		bool					inside						(T position_or_vertex_id, float radius = EPS_L);
+			bool					inside						(const Fvector &position, float radius = EPS_L);
+			bool					inside						(u32 level_vertex_id, bool out, float radius = EPS_L);
 			ref_str					name						() const;
 			u32						accessible_nearest			(const Fvector &position, Fvector &result, bool out_restriction);
 			bool					shape						() const;
