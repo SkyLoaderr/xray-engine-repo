@@ -16,7 +16,7 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	R_ASSERT				(c!=C.end());
 	C.erase					(c);
 	P.w_begin				(M_EVENT);
-	P.w_u32					(time);
+	P.w_u32					(time-1);
 	P.w_u16					(GE_OWNERSHIP_REJECT);
 	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
@@ -31,7 +31,7 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	what->ID_Parent			= to->ID;
 	to->children.push_back	(what->ID);
 	P.w_begin				(M_EVENT);
-	P.w_u32					(time);
+	P.w_u32					(time+1);
 	P.w_u16					(GE_OWNERSHIP_TAKE);
 	P.w_u16					(to->ID);
 	P.w_u16					(what->ID);

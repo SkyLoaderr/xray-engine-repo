@@ -6,8 +6,6 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
-#include "net_queue.h"
-
 class CGameObject : public CObject  
 #ifdef DEBUG
 	, public pureRender
@@ -16,10 +14,9 @@ class CGameObject : public CObject
 	typedef CObject inherited;
 public:
 	// AI connection
-	u32										AI_NodeID;
+	u32											AI_NodeID;
 	NodeCompressed*								AI_Node;
-	NET_Queue_Event								net_Events;
-	u32										respawnPhantom;
+	u32											respawnPhantom;
 
 	// Utilities
 	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);

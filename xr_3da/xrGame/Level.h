@@ -13,6 +13,7 @@
 #include "rain.h"
 #include "ai_space.h"
 #include "ai_sounds.h"
+#include "net_queue.h"
 
 class CAI_DDD;
 class CHUDManager;
@@ -56,6 +57,7 @@ protected:
 public:
 	game_cl_GameState			game;
 	BOOL						game_configured;
+	NET_Queue_Event				game_events;
 
 	CAI_DDD*					m_tpAI_DDD;
 	xrServer*					Server;

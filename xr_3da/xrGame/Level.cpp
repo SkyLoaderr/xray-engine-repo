@@ -75,6 +75,7 @@ int	CLevel::get_RPID(LPCSTR name)
 
 void CLevel::OnFrame	()
 {
+	// Client receive
 	if (net_isDisconnected())	
 	{
 		Engine.Event.Defer			("kernel:disconnect");
@@ -83,6 +84,23 @@ void CLevel::OnFrame	()
 		Device.Statistic.netClient.Begin();
 		ClientReceive					();
 		Device.Statistic.netClient.End	();
+	}
+
+	// Game events
+	{
+		NET_Packet			P;
+		u32 svT				= timeServer()-NET_Latency;
+		while	(game_events.available(svT))
+		{
+			u16 dest,type;
+			game_events.get	(dest,type,P);
+
+			CObject*	 O	= Objects.net_Find	(dest);
+			if (0==O)		continue;
+			CGameObject* GO = dynamic_cast<CGameObject*>(O);
+			if (0==GO)		continue;
+			GO->OnEvent		(P,type);
+		}
 	}
 
 	// Inherited update

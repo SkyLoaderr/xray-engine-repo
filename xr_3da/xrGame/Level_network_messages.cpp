@@ -24,17 +24,7 @@ void CLevel::ClientReceive()
 			game_configured			= TRUE;
 			break;
 		case M_EVENT:
-			{
-				u32	time; u16 type;
-				P->r_u32		(time);
-				P->r_u16		(type);
-				P->r_u16		(ID);
-				CObject*	 O	= Objects.net_Find	(ID);
-				if	(0==O)		break;
-				CGameObject* GO = dynamic_cast<CGameObject*>(O);
-				if	(0==GO)		break;
-				GO->net_Event	(*P);
-			}
+			game_events.insert		(P);
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
 			{

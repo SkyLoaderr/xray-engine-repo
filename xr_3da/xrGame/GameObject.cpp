@@ -155,31 +155,9 @@ CObject::SavedPosition CGameObject::ps_Element(u32 ID)
 	return SP;
 }
 
-void CGameObject::net_Event	(NET_Packet& Pe)
-{
-	net_Events.insert	(Pe);
-
-	// Check for immediate execution
-	NET_Packet			P;
-	u32 svT				= Level().timeServer()-NET_Latency;
-	while	(net_Events.available(svT))
-	{
-		u16	type		= net_Events.get(P);
-		OnEvent			(P,type);
-	}
-}
-
 void CGameObject::UpdateCL	()
 {
 	inherited::UpdateCL	();
-
-	NET_Packet			P;
-	u32 svT				= Level().timeServer()-NET_Latency;
-	while	(net_Events.available(svT))
-	{
-		u16	type		= net_Events.get(P);
-		OnEvent			(P,type);
-	}
 }
 
 void CGameObject::u_EventGen(NET_Packet& P, u32 type, u32 dest)

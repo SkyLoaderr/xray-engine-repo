@@ -58,16 +58,12 @@ public:
 		if (queue.empty() || (T<queue.begin()->timestamp))	return FALSE;
 		else												return TRUE;
 	}
-	IC u16				get			(NET_Packet& P)
+	IC void				get			(u16& dest, u16& type, NET_Packet& P)
 	{
 		const NET_Event& E	= *queue.begin();
-		u16 type			= E.type;
+		dest				= E.destination;
+		type				= E.type;
 		E.implication		(P);
 		queue.erase			(queue.begin());
-		return				type;
 	}
-};
-
-class	NET_Queue_Update
-{
 };
