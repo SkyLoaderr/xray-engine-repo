@@ -60,9 +60,9 @@ function main ()
 	
 	action (
 		stalker, 
-		move		(move.standing, move.walk, move.line, patrol ("way0000")),
+		move		(move.standing, move.run, move.line, patrol ("way0000")),
 		look		(look.path_dir),
-		anim		(anim.free),
+		anim		(anim.danger),
 		cond		(cond.move_end)
 	)
 	
