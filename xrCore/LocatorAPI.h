@@ -98,7 +98,6 @@ private:
     Flags32						m_Flags			;
     int							m_iLockRescan	;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
-    void						rescan_pathes	();
     void						check_pathes	();
 
 	files_set					files			;
@@ -183,10 +182,11 @@ public:
 	u64							auth_get			();
 	void						auth_runtime		(void*);
 
+    void						rescan_pathes	();
+
 	// editor functions
 	void						lock_rescan			();
 	void						unlock_rescan		();
-
 };
 
 extern XRCORE_API	CLocatorAPI*			xr_FS;
