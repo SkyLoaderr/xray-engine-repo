@@ -16,16 +16,30 @@ void psLibrary_Sort(PS::PSVec &LIB)
 
 BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 {
+	// Check if file is compressed already
+	string32	ID			= PS_LIB_SIGN;
+	string32	id;
+	CStream*	F			= Engine.FS.Open(Name);
+	F->Read		(&id,8);
+	if (0==strcmp(id,ID))	
+	{
+		Engine.FS.Close			(F);
+		F						= new CCompressedStream(Name,ID);
+	}
+	CStream&				FS	= *F;
+	
+	// Load
 	LIB.clear			();
-    CCompressedStream F	(Name,PS_LIB_SIGN);
-    WORD version = F.Rword();
+    WORD version		= FS.Rword();
     if (version!=PARTICLESYSTEM_VERSION) return false;
-    u32 count = F.Rdword();
+    u32 count = FS.Rdword();
     if (count){
         LIB.resize		(count);
-        F.Read			(&*LIB.begin(), count*sizeof(PS::SDef));
+        FS.Read			(&*LIB.begin(), count*sizeof(PS::SDef));
     }
     psLibrary_Sort		(LIB);
+
+	Engine.FS.Close		(F);
     return true;
 }
 

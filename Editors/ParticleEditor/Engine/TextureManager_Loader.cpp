@@ -253,8 +253,20 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 #ifdef _EDITOR
 	if (!Engine.FS.Exist(shName)) return;
 #endif
-	CCompressedStream		FS		(shName,		"shENGINE");
-    OnDeviceCreate			(&FS);
+
+	// Check if file is compressed already
+	string32	ID			= "shENGINE";
+	string32	id;
+	CStream*	F			= Engine.FS.Open(shName);
+	F->Read		(&id,8);
+	if (0==strcmp(id,ID))	
+	{
+		Engine.FS.Close			(F);
+		F						= new CCompressedStream(shName,ID);
+	}
+	CStream&				FS	= *F;
+
+	OnDeviceCreate			(&FS);
 }
 
 void CShaderManager::xrStartUp()
