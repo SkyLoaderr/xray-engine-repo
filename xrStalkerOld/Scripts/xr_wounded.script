@@ -287,9 +287,11 @@ function action_idle:execute ()
        self.object:add_animation ("waunded_idle_0", true)
     end    
     xr_sound.sound_update(self.object, self.sounds)		
-    if self.a.on_medikit ~= nil then
-       self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
-    end   
+    --if self.a.on_medikit ~= nil then
+    
+       --self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
+    --end   
+    self.object:send_pda_message (4, level.actor ())    
 end    
 ------------
 function action_idle:finalize ()
