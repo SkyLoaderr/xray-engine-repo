@@ -356,14 +356,12 @@ public:
 		u32						dwDummy;
 		P.r_u32					(dwDummy);
 		m_bCreateSpawnPositions = !!dwDummy;
-		P.r_u16					(m_wCount);
 	};
 
 	virtual void UPDATE_Write	(NET_Packet& P)
 	{
 		save_base_vector		(m_tpMembers,P);
 		P.w_u32					(m_bCreateSpawnPositions);
-		P.w_u16					(m_wCount);
 	};
 
 	#ifdef _EDITOR
