@@ -999,16 +999,7 @@
 					RelativePath=".\scripts\car.script">
 				</File>
 				<File
-					RelativePath=".\scripts\ce_new_attachable_item.script">
-				</File>
-				<File
 					RelativePath=".\scripts\ce_new_game_dm.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ce_switcher.script">
-				</File>
-				<File
-					RelativePath=".\scripts\class_registrator.script">
 				</File>
 				<File
 					RelativePath=".\scripts\Copy of _test.script">
@@ -1050,39 +1041,6 @@
 					RelativePath=".\scripts\fs_test.script">
 				</File>
 				<File
-					RelativePath=".\scripts\game_last.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_charselect_dlg.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_cl.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_dialog.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_header_wnd.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_ps.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_sv.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_tmp.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_last_ui.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_registrator.script">
-				</File>
-				<File
-					RelativePath=".\scripts\game_types.script">
-				</File>
-				<File
 					RelativePath=".\scripts\h.script">
 				</File>
 				<File
@@ -1120,15 +1078,6 @@
 				</File>
 				<File
 					RelativePath=".\scripts\script_object_registry.script">
-				</File>
-				<File
-					RelativePath=".\scripts\se_new_attachable_item.script">
-				</File>
-				<File
-					RelativePath=".\scripts\se_stalker.script">
-				</File>
-				<File
-					RelativePath=".\scripts\se_switcher.script">
 				</File>
 				<File
 					RelativePath=".\scripts\sound_megafon.script">
@@ -1203,9 +1152,6 @@
 				<Filter
 					Name="Binders"
 					Filter="">
-					<File
-						RelativePath=".\scripts\_G.script">
-					</File>
 					<File
 						RelativePath=".\scripts\modules.script">
 					</File>
@@ -1304,9 +1250,6 @@
 					Filter="">
 					<File
 						RelativePath=".\scripts\gulag_tasks.script">
-					</File>
-					<File
-						RelativePath=".\scripts\smart_terrain.script">
 					</File>
 					<File
 						RelativePath=".\scripts\xr_gulag.script">
@@ -1479,6 +1422,95 @@
 						</File>
 					</Filter>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Multiplayer"
+				Filter="">
+				<File
+					RelativePath=".\scripts\game_registrator.script">
+				</File>
+				<File
+					RelativePath=".\scripts\game_types.script">
+				</File>
+			</Filter>
+			<Filter
+				Name="objects"
+				Filter="">
+				<File
+					RelativePath=".\scripts\class_registrator.script">
+				</File>
+				<Filter
+					Name="game_last_standing"
+					Filter="">
+					<File
+						RelativePath=".\scripts\game_last.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_charselect_dlg.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_cl.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_dialog.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_header_wnd.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_ps.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_sv.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_tmp.script">
+					</File>
+					<File
+						RelativePath=".\scripts\game_last_ui.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="switcher"
+					Filter="">
+					<File
+						RelativePath=".\Scripts\ce_switcher.script">
+					</File>
+					<File
+						RelativePath=".\scripts\se_switcher.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="stalker"
+					Filter="">
+					<File
+						RelativePath=".\scripts\se_stalker.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="new_attachable_item"
+					Filter="">
+					<File
+						RelativePath=".\scripts\ce_new_attachable_item.script">
+					</File>
+					<File
+						RelativePath=".\scripts\se_new_attachable_item.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="smart_terrain"
+					Filter="">
+					<File
+						RelativePath=".\scripts\smart_terrain.script">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="common"
+				Filter="">
+				<File
+					RelativePath=".\scripts\_G.script">
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
