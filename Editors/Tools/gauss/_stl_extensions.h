@@ -5,7 +5,11 @@ using std::swap;
 
 #include "_type_traits.h"
 
-#ifdef __BORLANDC__
+#ifdef	__BORLANDC__
+#define M_NOSTDCONTAINERS_EXT
+#endif
+
+#ifdef	M_NOSTDCONTAINERS_EXT
 
 #define xr_vector std::vector
 #define xr_list std::list
