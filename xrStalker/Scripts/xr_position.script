@@ -14,7 +14,9 @@ function evaluator_on_position:__init(storage) super()
 end
 function evaluator_on_position:evaluate()
 	local tt
-	local dd = self.a.position:position():distance_to(self.object:position())
+	if self.a.position == nil then return true end
+
+	local dd = self.object:position():distance_to(level.vertex_position(self.a.position))
 	tt = dd < self.a.dist
 	return tt
 end
@@ -33,24 +35,39 @@ function action_go_position:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
-	
-	self.object:set_sight(look.path_dir, nil, 0)
-	self.object:set_movement_type(move.walk)
-	self.object:set_path_type(game_object.level_path)
 
-        self.object:set_dest_level_vertex_id(self.a.position)
-	self.object:set_desired_direction()
+	xr_state.change_state(self.object, 0)
+	self.object:set_item(object.idle, self.object:best_weapon())
+	if xr_state.finish_state(self.object) == true then
+		self.object:set_mental_state(anim.free)
+		self.object:set_sight(look.path_dir, nil, 0)
+		self.object:set_movement_type(move.walk)
+		self.object:set_path_type(game_object.level_path)
+
+	        self.object:set_dest_level_vertex_id(self.a.position)
+		self.object:set_desired_direction()
+	end
 end
 function action_go_position:execute ()
 	action_base.execute (self)
 end
 function action_go_position:finalize ()
+	self.object:set_movement_type(move.stand)
 	action_base.finalize (self)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
+function onPosition (obj)
+	st = xr_motivator.storage[obj:id()].state
+
+	if st.position == nil then return true end
+
+	local dd = obj:position():distance_to(level.vertex_position(st.position))
+	tt = dd < st.dist
+	return tt
+end
 function setPosition(obj, position)
 	xr_motivator.storage[obj:id()].state.position = position
 end

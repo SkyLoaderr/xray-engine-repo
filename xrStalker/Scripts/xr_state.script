@@ -16,6 +16,15 @@ function evaluator_state_end:evaluate()
 	return self.a.body_state == self.a.target_state
 end
 
+-- стоим лимы
+class "evaluator_standing" (property_evaluator)
+function evaluator_standing:__init(storage) super()
+	self.a = storage
+end
+function evaluator_standing:evaluate()
+	return self.a.body_state == 0
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
@@ -25,7 +34,6 @@ function action_change_state:__init (npc_name,action_name,storage) super (nil,ac
 	self.a = storage
 end
 function action_change_state:initialize()
-	printf("[ACT] State: Start")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -46,7 +54,26 @@ function action_change_state:execute ()
 	action_base.execute (self)
 end
 function action_change_state:finalize ()
-	printf("[ACT] State: Finish")
+	action_base.finalize (self)
+end
+
+-- Вставание
+class "action_stand_up" (action_base)
+function action_stand_up:__init (npc_name,action_name,storage) super (nil,action_name)
+	self.a = storage
+end
+function action_stand_up:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()  
+	xr_state.change_state(self.object, 0, true)
+end
+function action_stand_up:execute ()
+	action_base.execute (self)
+end
+function action_stand_up:finalize ()
 	action_base.finalize (self)
 end
 
@@ -169,8 +196,10 @@ function add_to_binder(object)
 	local properties	= {}
 
 	properties["state_end"]		= xr_evaluators_id.state_change
+	properties["stand"]		= xr_evaluators_id.stohe_state_base + 1
 
 	operators["state"]		= xr_actions_id.stohe_state_base + 1
+	operators["stand"]		= xr_actions_id.stohe_state_base + 2
 
 	local manager = object:motivation_action_manager()
 --	local action_pl = manager:get_action(xr_actions_id.action_planner) 
@@ -178,19 +207,30 @@ function add_to_binder(object)
 --		local act_pl = cast_action_to_planner(action_pl)
 --		if act_pl ~= nil then
 
-			-- Evaluators                                                                            
-			manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
+	-- Evaluators                                                                            
+	manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
+	manager:add_evaluator (properties["stand"], 			this.evaluator_standing			(xr_motivator.storage[object:id()].state))
 
-			-- Actions
-			local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
-			action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-			action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-			action:add_precondition		(world_property(properties["state_end"],	false))
-			action:add_effect 		(world_property(properties["state_end"],	true))
-			manager:add_action (operators["state"], action)
+	-- Actions
+	local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["state_end"],	false))
+	action:add_effect 		(world_property(properties["state_end"],	true))
+	manager:add_action (operators["state"], action)
+
+	action = this.action_stand_up (object:name(),"action_stand_up", xr_motivator.storage[object:id()].state)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(properties["stand"],		false))
+	action:add_effect 		(world_property(properties["stand"],		true))
+	manager:add_action (operators["stand"], action)
 
 	action = manager:action (stalker_ids.action_puzzle_solver)	
-	action:add_precondition		(world_property(properties["state_end"],		true))
+	action:add_precondition		(world_property(properties["state_end"],	true))
+--	action:add_precondition		(world_property(properties["stand"],		true))
+
+	action = manager:action (stalker_ids.action_combat_planner)	
+	action:add_precondition		(world_property(properties["stand"],		true))
 
 --		end
 --	end
