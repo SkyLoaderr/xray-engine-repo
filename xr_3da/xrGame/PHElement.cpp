@@ -587,9 +587,7 @@ void		CPHElement::Deactivate(){
 	bActivating=false;
 }
 void CPHElement::SetTransform(const Fmatrix &m0){
-	Fmatrix m;
-	m.set(m0);
-	R_ASSERT2(_valid(m),"invalid_form_in_set_transform");
+	VERIFY2(_valid(m0),"invalid_form_in_set_transform");
 	Fvector mc;
 	mc.set(m_mass_center);
 	m0.transform_tiny(mc);
@@ -599,10 +597,6 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetRotation(m_body,R);
-
-
-	R_ASSERT2(dV_valid(dBodyGetPosition(m_body)),"invalid body position ");
-	R_ASSERT2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation in update interpolation");
 
 }
 
@@ -722,7 +716,7 @@ void CPHElement::Update(){
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
-	R_ASSERT2(_valid(mXFORM),"invalid position in update");
+	VERIFY2(_valid(mXFORM),"invalid position in update");
 }
 
 
@@ -836,8 +830,8 @@ void CPHElement::PhDataUpdate(dReal step){
 	//dBodyAddForce(m_body,-pos[0]*mag*k_l,-pos[1]*mag*k_l,-pos[2]*mag*k_l);
 	if(!fis_zero(l_air))
 		dBodyAddForce(m_body,-pos[0]*l_air,-pos[1]*l_air,-pos[2]*l_air);
-R_ASSERT2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
-R_ASSERT2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
+VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
+VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdateRotations();
 

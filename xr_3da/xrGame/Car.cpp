@@ -150,7 +150,8 @@ void	CCar::net_Destroy()
 	ph_world->RemoveObject(m_ident);
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
-	pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
+	if(ini->line_exist("car_definition","steer"))
+		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
 }
 #ifdef DEBUG
 void	CCar::shedule_Update		(u32 dt)
@@ -356,6 +357,7 @@ void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object
 void CCar::detach_Actor()
 {
 	if(!m_owner) return;
+	m_owner->setVisible(1);
 	m_owner->detach_Vehicle();
 	m_owner=NULL;
 }
@@ -367,7 +369,14 @@ bool CCar::attach_Actor(CActor* actor)
 	
 	CKinematics* K= PKinematics(Visual());
 	CInifile* ini = K->LL_UserData();
-	int id=K->LL_BoneID(ini->r_string("car_definition","driver_place"));
+	int id;
+	if(ini->line_exist("car_definition","driver_place"))
+		id=K->LL_BoneID(ini->r_string("car_definition","driver_place"));
+	else
+	{	
+		m_owner->setVisible(0);
+		id=K->LL_BoneRoot();
+	}
 	CBoneInstance& instance=K->LL_GetInstance				(id);
 	m_sits_transforms.push_back(instance.mTransform);
 
@@ -442,8 +451,8 @@ void CCar::CreateSkeleton()
 	K->PlayCycle("idle");
 	K->Calculate();
 
-	CInifile* ini=K->LL_UserData();
-	K->LL_GetInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
+	//CInifile* ini=K->LL_UserData();
+	//K->LL_GetInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(K,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
@@ -458,7 +467,8 @@ void CCar::InitWheels()
 CKinematics* pKinematics=PKinematics(Visual());
 CInifile* ini = pKinematics->LL_UserData();
 SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
-pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
+if(ini->line_exist("car_definition","steer"))
+	pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
 ref_wheel.Init();
 m_ref_radius=ref_wheel.radius;
 m_power/=m_driving_wheels.size();

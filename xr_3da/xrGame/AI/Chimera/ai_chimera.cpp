@@ -252,10 +252,11 @@ void CAI_Chimera::Exec_Movement		(float dt)
 void CAI_Chimera::UpdateCL()
 {
 	inherited::UpdateCL();
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
 	{
-		XFORM().set(m_pPhysicsShell->mXFORM);
 
+		//XFORM().set(m_pPhysicsShell->mXFORM);
+		m_pPhysicsShell->InterpolateGlobalPosition(&(XFORM().c));
 	}
 
 	// Проверка состояния анимации (атака)

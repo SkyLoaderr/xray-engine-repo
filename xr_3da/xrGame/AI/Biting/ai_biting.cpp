@@ -303,10 +303,11 @@ void CAI_Biting::UpdateCL()
 	SetText();
 	inherited::UpdateCL();
 
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
 	{
-		XFORM().set(m_pPhysicsShell->mXFORM);
 
+		//XFORM().set(m_pPhysicsShell->mXFORM);
+		m_pPhysicsShell->InterpolateGlobalPosition(&(XFORM().c));
 	}
 	// Проверка состояния анимации (атака)
 	TTime cur_time = Level().timeServer();
