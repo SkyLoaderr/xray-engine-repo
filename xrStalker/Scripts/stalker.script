@@ -1,3 +1,26 @@
+class stalker_script
+
+function stalker_script::__init() super()
+end
+
+function stalker_script::reinit()
+end
+
+function stalker_script::reload(section)
+end
+
+function stalker_script::net_spawn(server_object)
+end
+
+function stalker_script::net_destroy()
+end
+
+function stalker_script::net_export(packet)
+end
+
+function stalker_script::net_import(packet)
+end
+
 function init()
-	printf		("init is run!!!")
+	return	stalker.stalker_script()
 end
