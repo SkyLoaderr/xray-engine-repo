@@ -12,6 +12,7 @@
 
 #include "3dsound.h"
 #include "collide\cl_rapid.h"
+#include "collide\cl_intersect.h"
 
 CSoundManager*		pSounds = NULL;
 
