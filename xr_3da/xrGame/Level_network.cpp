@@ -16,17 +16,20 @@ void CLevel::ClientSend	()
 {
 	if (!net_HasBandwidth() || OnClient())	return;
 	NET_Packet				P;
-	P.w_begin				(M_UPDATE);
-	Objects.net_Export		(&P);
-//	Msg						("%6d : %d",timeServer(),P.w_tell());
-	if (P.B.count>2)		Send(P,net_flags(FALSE));
+	u32						start	= 0;
+	while (1)				{
+		P.w_begin						(M_UPDATE);
+		start	= Objects.net_Export	(&P, start, 48);
+		if (P.B.count>2)				Send	(P, net_flags(FALSE));
+		else							break	;
+	}
 }
 
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory
 	if (Server && game_configured && OnServer())	Server->OnMessage	(P,Game().local_svdpnid	);
-	else							IPureClient::Send	(P,dwFlags,dwTimeout	);
+	else											IPureClient::Send	(P,dwFlags,dwTimeout	);
 }
 
 void CLevel::net_Update	()

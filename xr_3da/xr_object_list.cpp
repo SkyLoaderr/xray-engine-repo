@@ -107,13 +107,12 @@ void CObjectList::net_Unregister(CObject* O)
 	}
 }
 
-void CObjectList::net_Export	(NET_Packet* _Packet)
+u32	CObjectList::net_Export	(NET_Packet* _Packet,	u32 start, u32 count	)
 {
 	NET_Packet& Packet	= *_Packet;
 	u32			position;
-	for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
-	{
-		CObject* P = *O;
+	for (; start<objects.size(); start++)	{
+		CObject* P = objects[start];
 		if (P->net_Relevant() && !P->getDestroy())	{
 			Packet.w_u16			(u16(P->ID())	);
 			Packet.w_chunk_open8	(position);
@@ -126,8 +125,10 @@ void CObjectList::net_Export	(NET_Packet* _Packet)
 			}
 #endif
 			Packet.w_chunk_close8	(position);
+			if (0==(--count))		break;
 		}
 	}
+	return	start;
 }
 
 void CObjectList::net_Import		(NET_Packet* Packet)
