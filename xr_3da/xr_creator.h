@@ -28,8 +28,7 @@ protected:
 	typedef vector<char *>		vecC;
 	typedef vecC::iterator		vecCIT;
 	CStream*					LL_Stream;
-	vecC						LL_textures;
-	vecC						LL_shaders;
+	vecC						LL_strings;
 
 	// Network interface
 	CObject*					pCurrentEntity;

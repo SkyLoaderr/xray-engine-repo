@@ -91,21 +91,11 @@ BOOL CCreator::Load(DWORD dwNum)
 	pApp->LoadTitle("Description string: ",H.name);
 	
 	// Textures
-	chunk = fs.OpenChunk(fsL_TEXTURES);
-	count = chunk->Rdword();
-	LL_textures.resize(count);
+	chunk = fs.OpenChunk	(fsL_STRINGS);
+	count = chunk->Rdword	();
+	LL_strings.resize		(count);
 	for(i=0; i<count; i++) {
-		LL_textures[i] = (char *) chunk->Pointer();
-		chunk->SkipStringZ();
-	}
-	chunk->Close();
-	
-	// Shaders
-	chunk = fs.OpenChunk(fsL_SHADERS);
-	count = chunk->Rdword();
-	LL_shaders.resize(count);
-	for(i=0; i<count; i++) {
-		LL_shaders[i] = (char *) chunk->Pointer();
+		LL_strings[i] = (char *) chunk->Pointer();
 		chunk->SkipStringZ();
 	}
 	chunk->Close();

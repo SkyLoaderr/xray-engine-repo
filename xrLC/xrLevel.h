@@ -2,8 +2,7 @@
 
 enum fsL_Chunks {
 	fsL_HEADER=1,		//*
-	fsL_TEXTURES,		//*
-	fsL_SHADERS,		//*
+	fsL_STRINGS,		//*
 	fsL_VISUALS,		//*
 	fsL_VBUFFERS,		//*
 	fsL_CFORM,			//*
