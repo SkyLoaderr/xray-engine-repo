@@ -26,6 +26,6 @@
 		<static x="420" y="80" width="4" height="430">
 			<texture>ui\ui_pda_vertical_line_l_r</texture>
 		</static>
-	<auto_statics>
+	</auto_statics>
 
 </window>
