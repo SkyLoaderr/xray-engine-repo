@@ -18,14 +18,14 @@ public:
 		u32 m;
 
 		// Light models
-		for (m=0; m<mu_models.size(); m++)
-			mu_models[m]->calc_lighting	();
+		for (m=0; m<pBuild->mu_models.size(); m++)
+			pBuild->mu_models[m]->calc_lighting	();
 
 		// Light references
-		for (m=0; m<mu_refs.size(); m++)
+		for (m=0; m<pBuild->mu_refs.size(); m++)
 		{
-			mu_refs[m]->calc_lighting	();
-			thProgress					= (float(m)/float(mu_refs.size()));
+			pBuild->mu_refs[m]->calc_lighting	();
+			thProgress					= (float(m)/float(pBuild->mu_refs.size()));
 		}
 	}
 };
