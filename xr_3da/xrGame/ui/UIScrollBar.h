@@ -24,7 +24,7 @@ public:
 	virtual void Init(int x, int y, int length, bool bIsHorizontal);
 
 	//сообщени€, отправл€емые родительскому окну
-	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
+//	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 

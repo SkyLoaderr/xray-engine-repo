@@ -53,7 +53,7 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &m_UIListWnd)
 	{
-		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
+		if(msg == LIST_ITEM_CLICKED)
 		{
 			m_iClickedElement = ((CUIListItem*)pData)->GetIndex();
 			GetMessageTarget()->SendMessage(this, PROPERTY_CLICKED);
@@ -121,7 +121,7 @@ void CUIPropertiesBox::Hide()
 	GetParent()->SetCapture(this, false);
 }
 
-void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIPropertiesBox::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	bool cursor_on_box;
 
@@ -132,7 +132,7 @@ void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		cursor_on_box = false;
 
 
-	if(mouse_action == LBUTTON_DOWN && !cursor_on_box)
+	if(mouse_action == WINDOW_LBUTTON_DOWN && !cursor_on_box)
 	{
 		Hide();
 	}

@@ -114,16 +114,16 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == &UIQuestionsList)
 	{
-		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
+		if(msg == LIST_ITEM_CLICKED)
 		{
 			m_iClickedQuestion = ((CUIListItem*)pData)->GetValue();
 			//m_pClickedQuestion =(SInfoQuestion*) (((CUIListItem*)pData)->GetData());
-			GetMessageTarget()->SendMessage(this, QUESTION_CLICKED);
+			GetMessageTarget()->SendMessage(this, TALK_DIALOG_QUESTION_CLICKED);
 		}
 	}
-	else if(pWnd == &UIToTradeButton && msg == CUIButton::BUTTON_CLICKED)
+	else if(pWnd == &UIToTradeButton && msg == BUTTON_CLICKED)
 	{
-		GetTop()->SendMessage(this, TRADE_BUTTON_CLICKED);
+		GetTop()->SendMessage(this, TALK_DIALOG_TRADE_BUTTON_CLICKED);
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);

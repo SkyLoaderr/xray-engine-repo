@@ -83,7 +83,7 @@ void CUIButton::Init(int x, int y, int width, int height)
 }
 
 
-void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	//проверить попадает ли курсор на кнопку
 	//координаты заданы относительно самой кнопки
@@ -112,7 +112,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	m_bButtonClicked = false;
 
 
-	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
+	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 			GetParent()->SetCapture(this, cursor_on_button);
 
 
@@ -126,7 +126,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	case NORMAL_PRESS:
 		if(m_eButtonState == BUTTON_NORMAL)
 		{
-			if(mouse_action == LBUTTON_DOWN || mouse_action == LBUTTON_DB_CLICK)
+			if(mouse_action == WINDOW_LBUTTON_DOWN || mouse_action == WINDOW_LBUTTON_DB_CLICK)
 			{
 				m_eButtonState = BUTTON_PUSHED;
 				GetMessageTarget()->SendMessage(this, BUTTON_DOWN, NULL);
@@ -135,7 +135,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		}
 		else if(m_eButtonState == BUTTON_PUSHED)
 		{
-			if(mouse_action == LBUTTON_UP)
+			if(mouse_action == WINDOW_LBUTTON_UP)
 			{
 				if(cursor_on_button)
 				{
@@ -149,7 +149,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 				//освободить мышь
 				GetParent()->SetCapture(this, false);
 			}
-			else if(mouse_action == MOUSE_MOVE)
+			else if(mouse_action == WINDOW_MOUSE_MOVE)
 			{
 				if(!cursor_on_button)
 					m_eButtonState = BUTTON_UP;
@@ -157,12 +157,12 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		}
 		else if(m_eButtonState == BUTTON_UP)
 		{
-			if(mouse_action == MOUSE_MOVE)
+			if(mouse_action == WINDOW_MOUSE_MOVE)
 			{
 				if(cursor_on_button)
 					m_eButtonState = BUTTON_PUSHED;
 			}
-			else if(mouse_action == LBUTTON_UP)
+			else if(mouse_action == WINDOW_LBUTTON_UP)
 			{
 				m_eButtonState = BUTTON_NORMAL;
 				GetParent()->SetCapture(this, false);
@@ -172,7 +172,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	////////////////////////////////
 	//нужно только подвести и нажать
 	case DOWN_PRESS:
-        if(mouse_action == MOUSE_MOVE)
+        if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			if(cursor_on_button)
 			{
@@ -188,7 +188,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 			}
 		}
-		else if(mouse_action == LBUTTON_DOWN || mouse_action == LBUTTON_DB_CLICK)
+		else if(mouse_action == WINDOW_LBUTTON_DOWN || mouse_action == WINDOW_LBUTTON_DB_CLICK)
 		{
 			if(cursor_on_button)
 			{
@@ -201,7 +201,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	///////////////////////////////////
 	//нужно только подвести и отпустить
 	case UP_PRESS:
-        if(mouse_action == MOUSE_MOVE)
+        if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			if(cursor_on_button)
 			{
@@ -216,7 +216,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 				GetParent()->SetCapture(this, false);
 			}
 		}
-		else if(mouse_action == LBUTTON_UP)
+		else if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			if(cursor_on_button)
 			{

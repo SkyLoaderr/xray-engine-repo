@@ -28,10 +28,10 @@ public:
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init(int x, int y, int width, int height, int item_height);
 
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	//сообщени€, отправл€емые родительскому окну
-	typedef enum{LIST_ITEM_CLICKED} E_MESSAGE;
+//	typedef enum{LIST_ITEM_CLICKED} E_MESSAGE;
 			 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
@@ -226,7 +226,8 @@ public:
 	xr_vector<int> AddInteractiveItem(const char *str2, const int shift = 0,
 		const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
 
-	void SetNewRenderMethod(bool value) { m_bNewRenderMethod = value; }
+	void	SetNewRenderMethod(bool value) { m_bNewRenderMethod = value; }
+	int		GetListPosition() const { return m_iFirstShownIndex; }
 
 protected:
 

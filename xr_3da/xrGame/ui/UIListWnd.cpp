@@ -239,10 +239,11 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &m_ScrollBar)
 	{
-		if(msg == CUIScrollBar::VSCROLL)
+		if(msg == SCROLLBAR_VSCROLL)
 		{
 			m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 			UpdateList();
+			GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL, NULL);
 		}
 	}
 	else 
@@ -257,11 +258,11 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			CUIListItem* pListItem2, *pListItem = dynamic_cast<CUIListItem*>(*it);
 			R_ASSERT(pListItem);
 
-			if(CUIListItem::BUTTON_CLICKED == msg)
+			if(BUTTON_CLICKED == msg)
 			{
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 			}
-			else if(CUIListItem::BUTTON_FOCUS_RECEIVED == msg)
+			else if(BUTTON_FOCUS_RECEIVED == msg)
 			{
 				if (!m_bForceFocusedItem)
 				{
@@ -286,7 +287,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				}
 				// end prototype code
 			}
-			else if(CUIListItem::BUTTON_FOCUS_LOST == msg)
+			else if(BUTTON_FOCUS_LOST == msg)
 			{
 				if(pListItem->GetIndex() == m_iFocusedItem && !m_bForceFocusedItem) m_iFocusedItem = -1;
 
@@ -376,11 +377,11 @@ int CUIListWnd::FindItem(void* pData)
 	return -1;
 }
 
-void CUIListWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	if(mouse_action == LBUTTON_DB_CLICK) 
+	if(mouse_action == WINDOW_LBUTTON_DB_CLICK) 
 	{
-		mouse_action = CUIWindow::LBUTTON_DOWN;
+		mouse_action = WINDOW_LBUTTON_DOWN;
 	}
 
 	inherited::OnMouse(x, y, mouse_action);
@@ -457,7 +458,7 @@ void CUIListWnd::Update()
 {
 	if(m_bUpdateMouseMove)
 	{
-		OnMouse(cursor_pos.x, cursor_pos.y, MOUSE_MOVE);
+		OnMouse(cursor_pos.x, cursor_pos.y, WINDOW_MOUSE_MOVE);
 		m_bUpdateMouseMove = false;
 	}
 

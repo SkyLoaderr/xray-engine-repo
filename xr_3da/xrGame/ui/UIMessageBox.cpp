@@ -88,45 +88,45 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 	case MESSAGEBOX_OK:
 		if(pWnd == &m_UIButton1)
-			if(msg == CUIButton::BUTTON_CLICKED)
-				GetMessageTarget()->SendMessage(this, OK_CLICKED);
+			if(msg == BUTTON_CLICKED)
+				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_OK_CLICKED);
 		break;
 	case MESSAGEBOX_YES_NO:
 		if(pWnd == &m_UIButton1)
 		{
-			if(msg == CUIButton::BUTTON_CLICKED)
+			if(msg == BUTTON_CLICKED)
 			{
-				GetMessageTarget()->SendMessage(this, YES_CLICKED);
+				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_YES_CLICKED);
 			}
 		}
 		else if(pWnd == &m_UIButton2)
 		{
-			if(msg == CUIButton::BUTTON_CLICKED)
+			if(msg == BUTTON_CLICKED)
 			{
-				GetMessageTarget()->SendMessage(this, NO_CLICKED);
+				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_NO_CLICKED);
 			}
 		}
 		break;
 	case MESSAGEBOX_YES_NO_CANCEL:
 		if(pWnd == &m_UIButton1)
 		{
-			if(msg == CUIButton::BUTTON_CLICKED)
+			if(msg == BUTTON_CLICKED)
 			{
-				GetMessageTarget()->SendMessage(this, YES_CLICKED);
+				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_YES_CLICKED);
 			}
 		}
 		else if(pWnd == &m_UIButton2)
 		{
-			if(msg == CUIButton::BUTTON_CLICKED)
+			if(msg == BUTTON_CLICKED)
 			{
-				GetMessageTarget()->SendMessage(this, NO_CLICKED);
+				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_NO_CLICKED);
 			}
 		}
 		else if(pWnd == &m_UIButton3)
 		{
-			if(msg == CUIButton::BUTTON_CLICKED)
+			if(msg == BUTTON_CLICKED)
 			{
-				GetMessageTarget()->SendMessage(this, CANCEL_CLICKED);
+				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_CANCEL_CLICKED);
 			}
 		}
 		break;
@@ -198,7 +198,7 @@ void CUIMessageBox::SetText(LPSTR str)
 	}
 	m_UIStatic.SetText(str);
 }
-void CUIMessageBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIMessageBox::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x, y, mouse_action);
 }

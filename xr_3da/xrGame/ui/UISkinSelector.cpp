@@ -146,7 +146,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 
 void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if (&UIOkBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	if (&UIOkBtn == pWnd && BUTTON_CLICKED == msg)
 	{
 		// Нажали ОК.
 		Game().StartStopMenu(this);
@@ -155,7 +155,7 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		dm->OnSkinMenu_Ok();
 
 	}
-	else if (&UICancelBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	else if (&UICancelBtn == pWnd && BUTTON_CLICKED == msg)
 	{
 		// Нажали Cancel.
 		Game().StartStopMenu(this);
@@ -187,7 +187,7 @@ u32 CUISkinSelectorWnd::CalculateSkinWindowWidth() const
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUISkinSelectorWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUISkinSelectorWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	POINT activePoint;
 
@@ -197,7 +197,7 @@ void CUISkinSelectorWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	RECT rect;
 
 	// При нажатии на окно со скином, мы делаем его активным
-	if (mouse_action == LBUTTON_DOWN)
+	if (mouse_action == WINDOW_LBUTTON_DOWN)
 	{
 		for (int i = 0; i < SKINS_COUNT; ++i)
 		{
@@ -304,21 +304,21 @@ void CUISkinSelectorWnd::InitializeSkins()
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool CUISkinSelectorWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (dik > DIK_ESCAPE && dik < SKINS_COUNT + 2 && KEY_PRESSED == keyboard_action)
+	if (dik > DIK_ESCAPE && dik < SKINS_COUNT + 2 && WINDOW_KEY_PRESSED == keyboard_action)
 	{
 		SwitchSkin(static_cast<u8>(dik - 2));
 		return true;
 	}
-	if (DIK_RETURN == dik && KEY_PRESSED == keyboard_action)
+	if (DIK_RETURN == dik && WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		SendMessage(&UIOkBtn, CUIButton::BUTTON_CLICKED, NULL);
+		SendMessage(&UIOkBtn, BUTTON_CLICKED, NULL);
 		return true;
 	}
-	if (DIK_ESCAPE == dik && KEY_PRESSED == keyboard_action)
+	if (DIK_ESCAPE == dik && WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		SendMessage(&UICancelBtn, CUIButton::BUTTON_CLICKED, NULL);
+		SendMessage(&UICancelBtn, BUTTON_CLICKED, NULL);
 		return true;
 	}
 	return false;

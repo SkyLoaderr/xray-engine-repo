@@ -15,7 +15,7 @@ public:
 	virtual ~CUIOutfitSlot();
 
 	virtual void Init(int x, int y, int width, int height);
-	virtual void OnMouse(int x, int y, CUIWindow::E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	virtual void AttachChild(CUIWindow *pChild);
 	virtual void DetachChild(CUIWindow *pChild);
@@ -35,7 +35,7 @@ public:
 	// Для мультиплеера отдельная процедрура назначения иконки персвонажа
 	void	SetMPOutfit();
 
-	typedef enum{UNDRESS_OUTFIT = 6000, OUTFIT_RETURNED_BACK} E_OUTFIT_ACTION;
+//	typedef enum{UNDRESS_OUTFIT = 6000, OUTFIT_RETURNED_BACK} E_OUTFIT_ACTION;
 
 protected:
 	//иконка с изображение сталкера в полный рост

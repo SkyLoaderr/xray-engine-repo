@@ -143,16 +143,16 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &m_ScrollBar)
 	{
-		if(msg == CUIScrollBar::VSCROLL)
+		if(msg == SCROLLBAR_VSCROLL)
 		{
 			m_iCurrentFirstRow = m_ScrollBar.GetScrollPos();
 			UpdateList();
 			// Теперь надо переинициализировать подсветку активного элемента
 			HighlightAllCells(false);
-			GetMessageTarget()->SendMessage(this, CUIDragDropList::REFRESH_ACTIVE_ITEM , NULL);
+			GetMessageTarget()->SendMessage(this, DRAG_DROP_REFRESH_ACTIVE_ITEM , NULL);
 		}
 	}
-	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == CUIDragDropItem::ITEM_DRAG)
+	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DRAG)
 	{
 		//принадлежит ли элемент отправивший сообщение ITEM_DRAG нашему списку
 		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),
@@ -175,7 +175,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			
 		}
 	}
-	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == CUIDragDropItem::ITEM_DROP)
+	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DROP)
 	{	
 		//принадлежит ли элемент отправивший сообщение ITEM_DROP нашему списку
 		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
@@ -292,7 +292,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pItem->GetParent()->SetCapture(pItem, false);
 			pItem->Highlight(true);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
-			pItem->GetMessageTarget()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
+			pItem->GetMessageTarget()->SendMessage(pItem , OUTFIT_RETURNED_BACK, NULL);
 			UpdateList();
 		}
 	}

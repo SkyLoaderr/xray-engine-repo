@@ -29,7 +29,7 @@ public:
 	virtual void Init(int x, int y, int width, int height);
 
 	//сообщени€, отправл€емые родительскому окну
-	typedef enum{CONTACT_SELECTED} E_MESSAGE;
+//	typedef enum{CONTACT_SELECTED} E_MESSAGE;
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 

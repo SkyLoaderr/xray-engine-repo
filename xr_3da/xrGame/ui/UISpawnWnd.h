@@ -22,7 +22,7 @@ public:
 						const char *strCaptionSecondary, const u32 ColorSecondary, 
 						bool bDual = false);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 
 	// Установка нового режима отображения
 	void SetDisplayMode(bool bDual = false);

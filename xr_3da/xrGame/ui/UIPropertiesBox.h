@@ -28,10 +28,10 @@ public:
 
 
 	//сообщени€, отправл€емые родительскому окну
-	typedef enum{PROPERTY_CLICKED} E_MESSAGE;
+//	typedef enum{PROPERTY_CLICKED} E_MESSAGE;
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
 	void RemoveItem(int index);

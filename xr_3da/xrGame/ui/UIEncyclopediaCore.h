@@ -40,6 +40,7 @@ public:
 	// Добавлем 1 энциклопедиционную статью
 	void			AddArticle(ARTICLE_INDEX);
 	void			DeleteArticles();
+	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
 
 
 	// Хранилище статей
@@ -52,7 +53,7 @@ public:
 	u32				m_uTreeItemColor;
 
 private:
-	static void		RescaleStatic(CUIStatic &s);
+	void			AdjustImagePos(CUIStatic &s);
 
 	CUIListWnd		*pInfoList, *pIdxList;
 	ArticlesDB		m_ArticlesDB;
@@ -62,6 +63,12 @@ private:
 	int				m_iItemX;
 	int				m_iItemY;
 
+	// Текущая выбранная статья
+	CEncyclopediaArticle	*m_pCurrArticle;
+	CUIStatic		*pItemImage;
+
+	// Текущая позиция листа с информацией
+    int				m_iCurrentInfoListPos;
 };
 
 #endif	//UI_ENCYCLOPEDIA_CORE_H_

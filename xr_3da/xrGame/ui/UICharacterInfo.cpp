@@ -132,8 +132,8 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	else
 	{
 		UIRelationCaption.Enable(false);
+		UIRelationCaption.Show(false);
 	}
-	UIRelationCaption.Show(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -173,6 +173,13 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefix
 	VERIFY(pInvOwner);
 	InitCharacter(&pInvOwner->CharacterInfo(), withPrefixes);
 
+	CActor *m_pActor = dynamic_cast<CActor *>(pInvOwner);
+	if (m_pActor)
+	{
+		UIRelationCaption.Show(false);
+		UIRelation.Show(false);
+	}
+
 	CEntityAlive	*entity_alive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
 	VERIFY			(entity_alive);
 
@@ -205,7 +212,6 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, bool withPref
 		NODEFAULT;
 	}
 
-	UIRelationCaption.Show(true);
 	UIRelation.SetText(*relation_str);
 	int offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);
 	UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);

@@ -117,7 +117,7 @@ void CUISpawnWnd::SetDisplayMode(bool bDual)
 
 void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if (CUIButton::BUTTON_CLICKED == msg)
+	if (BUTTON_CLICKED == msg)
 	{
 		if (pWnd == &UIButtonPrimary)
 			m_iResult = 0;
@@ -138,9 +138,9 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool CUISpawnWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
+	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
 	{
 		Game().StartStopMenu(this);
 		return true;

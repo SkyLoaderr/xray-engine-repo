@@ -249,7 +249,7 @@ void CUICarBodyWnd::UpdateLists()
 void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 
-	if(msg == CUIDragDropItem::ITEM_DRAG)
+	if(msg == DRAG_DROP_ITEM_DRAG)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
@@ -257,7 +257,7 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem->Rescale(1.0f);
 	}
-	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
+	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();

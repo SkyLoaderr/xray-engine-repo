@@ -707,7 +707,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 	TABS_VECTOR_it	it;
 
-	if(msg == CUIDragDropItem::ITEM_DRAG)
+	if(msg == DRAG_DROP_ITEM_DRAG)
 	{
 //		PIItem pInvItem = (PIItem)((CUIDragDropItemMP*)pWnd)->GetData();
 
@@ -727,7 +727,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			UITopList[i].HighlightAllCells(false);
 		}
 	}
-	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
+	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
 		CUIDragDropItemMP	*pAddonOwner;
 
@@ -739,7 +739,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			ApplyFilter(RIFLE_SLOT, weaponFilterName, m_pCurrentDragDropItem->GetSectionName());
 			if (mlRoot == m_mlCurrLevel) MenuLevelUp();
-			OnKeyboard(m_pCurrentDragDropItem->GetPosInSectionsGroup() + 2, KEY_PRESSED);
+			OnKeyboard(m_pCurrentDragDropItem->GetPosInSectionsGroup() + 2, WINDOW_KEY_PRESSED);
 		}
 
 		// Проверяем на возможность покупки этой вещи
@@ -749,7 +749,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
 
 			// "Поднять" вещь для освобождения занимаемого места
-			SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
+			SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DRAG, NULL);
 	
 			//попытаться закинуть элемент в слот, рюкзак или на пояс
 			if(!ToSlot())
@@ -766,7 +766,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 	//по нажатию правой кнопки
-	else if(msg == CUIDragDropItem::ITEM_RBUTTON_CLICK)
+	else if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
 	{
 		m_pCurrentDragDropItem = (CUIDragDropItemMP*)pWnd;
 
@@ -774,18 +774,18 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	//сообщение от меню вызываемого правой кнопкой
 	else if(pWnd == &UIPropertiesBox &&
-		msg == CUIPropertiesBox::PROPERTY_CLICKED)
+		msg == PROPERTY_CLICKED)
 	{
 		if(UIPropertiesBox.GetClickedItem())
 		{
 			switch(UIPropertiesBox.GetClickedItem()->GetValue())
 			{
 			case BUY_ITEM_ACTION:
-				SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+				SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
 				break;
 			case CANCEL_BUYING_ACTION:
 				m_pCurrentDragDropItem->MoveOnNextDrop();
-				UIBagWnd.SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DROP, NULL);
+				UIBagWnd.SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DROP, NULL);
 				break;
 			case ATTACH_SCOPE_ADDON:
 				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
@@ -808,7 +808,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
 	}
-	else if (&UIWeaponsTabControl == pWnd && CUITabControl::TAB_CHANGED == msg)
+	else if (&UIWeaponsTabControl == pWnd && TAB_CHANGED == msg)
 	{
 //		if (mlAddons == m_mlCurrLevel)
 //		{
@@ -844,7 +844,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //			}
 	}
 	// Кнопки ОК и Отмена
-	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg && CanBuyAllItems())
+	else if (&UIBtnOK == pWnd && BUTTON_CLICKED == msg && CanBuyAllItems())
 	{
 //		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
@@ -852,14 +852,14 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		game_cl_Deathmatch * dm = dynamic_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnBuyMenu_Ok();
 	}
-	else if (&UIBtnCancel == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	else if (&UIBtnCancel == pWnd && BUTTON_CLICKED == msg)
 	{
 //		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
 		Game().StartStopMenu(this);
 	}
 	// Так как у нас при наведении меняется текстура, то обрабатываем эту ситуацию
-	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)
+	else if (BUTTON_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)
 	{
 		if (pData)
 		{
@@ -868,7 +868,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				Init(*activeItems[idx], "hud\\default", 0, 0, alNone);
 		}
 	}
-	else if (CUIButton::BUTTON_FOCUS_LOST == msg && &UIWeaponsTabControl == pWnd)
+	else if (BUTTON_FOCUS_LOST == msg && &UIWeaponsTabControl == pWnd)
 	{
 		if (pData)
 		{
@@ -877,24 +877,24 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				Init(*inactiveItems[idx], "hud\\default", 0, 0, alNone);
 		}
 	}
-	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIBtnOK == pWnd)
+	else if (BUTTON_FOCUS_RECEIVED == msg && &UIBtnOK == pWnd)
 	{
 		UIBtnOK.SetTextColor(0xFFF0D9B6);
 	}
-	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIBtnCancel == pWnd)
+	else if (BUTTON_FOCUS_RECEIVED == msg && &UIBtnCancel == pWnd)
 	{
 		UIBtnCancel.SetTextColor(0xFFF0D9B6);
 	}
-	else if (CUIButton::BUTTON_FOCUS_LOST == msg && &UIBtnOK == pWnd)
+	else if (BUTTON_FOCUS_LOST == msg && &UIBtnOK == pWnd)
 	{
 		UIBtnOK.SetTextColor(0xFFEE9B17);
 	}
-	else if (CUIButton::BUTTON_FOCUS_LOST == msg && &UIBtnCancel == pWnd)
+	else if (BUTTON_FOCUS_LOST == msg && &UIBtnCancel == pWnd)
 	{
 		UIBtnCancel.SetTextColor(0xFFEE9B17);
 	}
 	// Если костюмчик вернулся в слот, то спрятать его
-	else if (CUIOutfitSlot::OUTFIT_RETURNED_BACK == msg && pWnd->GetParent() == &UITopList[OUTFIT_SLOT])
+	else if (OUTFIT_RETURNED_BACK == msg && pWnd->GetParent() == &UITopList[OUTFIT_SLOT])
 	{
 		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pWnd);
 		if (pDDItemMP && OUTFIT_SLOT == pDDItemMP->GetSlot())
@@ -902,7 +902,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pDDItemMP->Show(false);
 		}
 	}
-	else if (CUIDragDropList::REFRESH_ACTIVE_ITEM == msg)
+	else if (DRAG_DROP_REFRESH_ACTIVE_ITEM == msg)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(true);
 	}
@@ -911,10 +911,10 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 }
 
 
-void CUIBuyWeaponWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIBuyWeaponWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	//вызов дополнительного меню по правой кнопке
-	if(mouse_action == RBUTTON_DOWN)
+	if(mouse_action == WINDOW_RBUTTON_DOWN)
 	{
 		if(UIPropertiesBox.IsShown())
 		{
@@ -1134,7 +1134,7 @@ bool CUIBuyWeaponWnd::ToSlot()
 		SlotToSection(m_pCurrentDragDropItem->GetSlot());
 
 		m_pCurrentDragDropItem->MoveOnNextDrop();
-		UITopList[m_pCurrentDragDropItem->GetSlot()].SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DROP, NULL);
+		UITopList[m_pCurrentDragDropItem->GetSlot()].SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DROP, NULL);
 
 		m_pMouseCapturer = NULL;
 		return true;
@@ -1480,7 +1480,7 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 //		m_pCurrentDragDropItem = pDDItemMP;
 		// и посылаем ему сообщение переместиться в сумку
 		m_WeaponSubBags[pDDItemMP->GetSectionGroupID()]->SendMessage(pDDItemMP, 
-									CUIDragDropItem::ITEM_DROP, NULL);
+									DRAG_DROP_ITEM_DROP, NULL);
 	}
 
 	return true;
@@ -1639,7 +1639,7 @@ bool CUIBuyWeaponWnd::BeltToSection(CUIDragDropItemMP *pDDItemMP)
 	// Берем вещь
 	pDDItemMP->MoveOnNextDrop();
 	// ...и посылаем ему сообщение переместиться в сумку
-	m_WeaponSubBags[pDDItemMP->GetSectionGroupID()]->SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DROP, NULL);
+	m_WeaponSubBags[pDDItemMP->GetSectionGroupID()]->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DROP, NULL);
 	return true;
 }
 
@@ -1711,9 +1711,9 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 
 //////////////////////////////////////////////////////////////////////////
 
-bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (KEY_RELEASED == keyboard_action) return false;
+	if (WINDOW_KEY_RELEASED == keyboard_action) return false;
 
 	switch (m_mlCurrLevel)
 	{
@@ -1761,7 +1761,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 					if (pDDItemMP->GetPosInSectionsGroup() == static_cast<u32>(dik - 2))
 					{
 						// Муваем ее в слот
-						SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+						SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
 						MenuLevelDown();
 						MenuLevelDown();
 						return true;
@@ -1785,7 +1785,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 	if (dik == g_iOkAccelerator)
 	{
-		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
+		SendMessage(&UIBtnOK, BUTTON_CLICKED, NULL);
 //		CUIDragDropItemMP *p = GetAddonByID(dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front()), CUIDragDropItemMP::ID_SILENCER);
 		return true;
 	}
@@ -1797,7 +1797,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 			//--------------------- for E3 ---------------------
 ///			SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
 			//--------------------------------------------------
-			SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
+			SendMessage(&UIBtnCancel, BUTTON_CLICKED, NULL);
 			return true;
 		}
 	}
@@ -2075,7 +2075,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
 				{
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
-					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+					SendMessage(&DDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
 				}
 				break;
 			}
@@ -2113,7 +2113,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 
 					
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
-					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+					SendMessage(&DDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
 					// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 					// аттачим аддоны к мувнутому оружию
 					if (uAddonFlags != 0)

@@ -44,7 +44,7 @@ void CUIRadioGroup::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if(this != pWnd->GetParent()) return;
 
 	//переустановить флажки на кнопках в группе
-	if(msg == CUIRadioButton::RADIO_BUTTON_SET)
+	if(msg == RADIOBUTTON_SET)
 	{
 		//сбросить флажки на всех кнопках
 		for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)

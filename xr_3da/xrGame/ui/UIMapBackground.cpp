@@ -108,12 +108,12 @@ void CUIMapBackground::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	//проверить сообщение от иконок на карте
 	if(m_vMapSpots.end() != std::find(m_vMapSpots.begin(), m_vMapSpots.end(), pWnd))
 	{
-		if(CUIButton::BUTTON_FOCUS_RECEIVED == msg)
+		if(BUTTON_FOCUS_RECEIVED == msg)
 		{
 			m_pActiveMapSpot = dynamic_cast<CUIMapSpot*>(pWnd);
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED);
 		}
-		else if(CUIButton::BUTTON_FOCUS_LOST == msg)
+		else if(BUTTON_FOCUS_LOST == msg)
 		{
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_LOST);
 			m_pActiveMapSpot = NULL;
@@ -320,7 +320,7 @@ void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 	m_fogOfWarCell.Draw();
 }
 
-void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	CUIWindow::OnMouse( x, y, mouse_action);
 	
@@ -348,7 +348,7 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	m_bButtonClicked = false;
 
 
-	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
+	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 	{
 		GetParent()->SetCapture(this, cursor_on_button);
 		// Check for spot arrow hit
@@ -382,11 +382,11 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		}
 	}
 
-	if(mouse_action == LBUTTON_DB_CLICK && m_bCursorOverButton)
+	if(mouse_action == WINDOW_LBUTTON_DB_CLICK && m_bCursorOverButton)
 	{
 		GetParent()->SetCapture(this, false);
 	}
-	else if(mouse_action == RBUTTON_DOWN && m_bCursorOverButton)
+	else if(mouse_action == WINDOW_RBUTTON_DOWN && m_bCursorOverButton)
 	{
 //		GetTop()->SendMessage(this, ITEM_RBUTTON_CLICK);
 	}
@@ -394,7 +394,7 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 	if(m_eButtonState == BUTTON_NORMAL)
 	{
-		if(mouse_action == LBUTTON_DOWN)
+		if(mouse_action == WINDOW_LBUTTON_DOWN)
 		{
 			m_eButtonState = BUTTON_PUSHED;
 			
@@ -405,7 +405,7 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 	else if(m_eButtonState == BUTTON_PUSHED)
 	{
-		if(mouse_action == LBUTTON_UP)
+		if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			if(cursor_on_button)
 			{
@@ -417,24 +417,24 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			//освободить мышь
 			GetParent()->SetCapture(this, false);
 		}
-		else if(mouse_action == MOUSE_MOVE)
+		else if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			deltaX = x - m_iOldMouseX;
 			deltaY = y - m_iOldMouseY;
 			MoveMap(deltaX, deltaY);
 			if (m_pActiveMapSpot)
-				SendMessage(m_pActiveMapSpot, CUIButton::BUTTON_FOCUS_RECEIVED, NULL);
+				SendMessage(m_pActiveMapSpot, BUTTON_FOCUS_RECEIVED, NULL);
 			GetMessageTarget()->SendMessage(this, MAP_MOVED, NULL);
 		}
 	}
 	else if(m_eButtonState == BUTTON_UP)
 	{
-		if(mouse_action == MOUSE_MOVE)
+		if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			if(cursor_on_button)
 				m_eButtonState = BUTTON_PUSHED;
 		}
-		else if(mouse_action == LBUTTON_UP)
+		else if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			m_eButtonState = BUTTON_NORMAL;
 			GetParent()->SetCapture(this, false);

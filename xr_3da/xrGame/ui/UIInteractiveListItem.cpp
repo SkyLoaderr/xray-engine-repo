@@ -71,7 +71,7 @@ void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data
 //-----------------------------------------------------------------------------/
 //  Обработка событий мыши
 //-----------------------------------------------------------------------------/
-void CUIInteractiveListItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIInteractiveListItem::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	std::pair<int, int> tmpPair(x, y);
 	itCurrIItem = std::find_if(vPositions.begin(), vPositions.end(), 
@@ -79,7 +79,7 @@ void CUIInteractiveListItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 	// Смотрим на какой интерактивный элемент куазывает курсор во время нажатия, 
 	// и рапортуем об этом родителю
-	if (m_bInteractiveBahaviour && CUIWindow::LBUTTON_DOWN == mouse_action && itCurrIItem != vPositions.end())
+	if (m_bInteractiveBahaviour && WINDOW_LBUTTON_DOWN == mouse_action && itCurrIItem != vPositions.end())
 	{
 		GetMessageTarget()->SendMessage(this, INTERACTIVE_ITEM_CLICK, (void*)&(*itCurrIItem).ID);
 	}

@@ -82,17 +82,17 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIListWnd)
 	{
-		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
+		if(msg == LIST_ITEM_CLICKED)
 		{
 			CPda* pda = (CPda*)((CUIListItem*)pData)->GetData();
 			R_ASSERT(pda);
 			m_idContact = pda->GetOriginalOwnerID();
 
-			GetTop()->SendMessage(this, CONTACT_SELECTED);
+			GetTop()->SendMessage(this, PDA_CONTACTS_WND_CONTACT_SELECTED);
 		}
 	}
 
-	if (pWnd->GetParent() == &UIListWnd && CUIButton::BUTTON_FOCUS_RECEIVED)
+	if (pWnd->GetParent() == &UIListWnd && BUTTON_FOCUS_RECEIVED)
 	{
 		CUIPdaListItem *pPLIItem = dynamic_cast<CUIPdaListItem*>(pWnd);
 		R_ASSERT(pPLIItem);

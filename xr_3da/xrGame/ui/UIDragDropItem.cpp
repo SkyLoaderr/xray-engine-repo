@@ -78,7 +78,7 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	CUIButton::Init(tex_name, x, y, width, height);
 }
 
-void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 
 	int deltaX = 0;
@@ -105,27 +105,27 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	m_bButtonClicked = false;
 
 
-	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
+	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 			GetParent()->SetCapture(this, cursor_on_button);
 
-	if(mouse_action == LBUTTON_DB_CLICK && m_bCursorOverButton)
+	if(mouse_action == WINDOW_LBUTTON_DB_CLICK && m_bCursorOverButton)
 	{
-		GetTop()->SendMessage(this, ITEM_DB_CLICK);
+		GetTop()->SendMessage(this, DRAG_DROP_ITEM_DB_CLICK);
 		GetParent()->SetCapture(this, false);
 	}
-	else if(mouse_action == RBUTTON_DOWN && m_bCursorOverButton)
+	else if(mouse_action == WINDOW_RBUTTON_DOWN && m_bCursorOverButton)
 	{
-		GetTop()->SendMessage(this, ITEM_RBUTTON_CLICK);
+		GetTop()->SendMessage(this, DRAG_DROP_ITEM_RBUTTON_CLICK);
 	}
 
 
 	if(m_eButtonState == BUTTON_NORMAL)
 	{
-		if(mouse_action == LBUTTON_DOWN)
+		if(mouse_action == WINDOW_LBUTTON_DOWN)
 		{
 			m_eButtonState = BUTTON_PUSHED;
 			
-			GetTop()->SendMessage(this, ITEM_DRAG);
+			GetTop()->SendMessage(this, DRAG_DROP_ITEM_DRAG);
 			GetParent()->SetCapture(this, true);
 
 			ClipperOff();
@@ -140,11 +140,11 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 	else if(m_eButtonState == BUTTON_PUSHED)
 	{
-		if(mouse_action == LBUTTON_UP)
+		if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			if(cursor_on_button)
 			{
-				GetTop()->SendMessage(this, ITEM_DROP);
+				GetTop()->SendMessage(this, DRAG_DROP_ITEM_DROP);
 				
 				m_bButtonClicked = true;
 				ClipperOn();
@@ -155,7 +155,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			//освободить мышь
 			GetParent()->SetCapture(this, false);
 		}
-		else if(mouse_action == MOUSE_MOVE)
+		else if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 		//	if(!cursor_on_button)
 		//		m_eButtonState = BUTTON_UP;
@@ -177,24 +177,24 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 				
 				MoveWindow(GetWndRect().left+deltaX,  GetWndRect().top+deltaY);
 
-				GetTop()->SendMessage(this, ITEM_MOVE);
+				GetTop()->SendMessage(this, DRAG_DROP_ITEM_MOVE);
 			}
 		}
 	}
 	else if(m_eButtonState == BUTTON_UP)
 	{
-		if(mouse_action == MOUSE_MOVE)
+		if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			if(cursor_on_button)
 				m_eButtonState = BUTTON_PUSHED;
 		}
-		else if(mouse_action == LBUTTON_UP)
+		else if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			m_eButtonState = BUTTON_NORMAL;
 			GetParent()->SetCapture(this, false);
 
 
-			GetTop()->SendMessage(this, ITEM_DROP);
+			GetTop()->SendMessage(this, DRAG_DROP_ITEM_DROP);
 			ClipperOn();
 			
 			/////

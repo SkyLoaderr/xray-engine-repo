@@ -8244,6 +8244,9 @@
 			<Filter
 				Name="UIWindows"
 				Filter="">
+				<File
+					RelativePath=".\ui\UIMessages.h">
+				</File>
 				<Filter
 					Name="XML"
 					Filter="">

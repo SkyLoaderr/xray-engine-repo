@@ -92,10 +92,6 @@ public:
 
 	const int GetCurrentFirstRow() const { return m_iCurrentFirstRow; }
 
-	// Сообщение высылаемое родительскому окну с нотификацией, что необходимо переинициализировать
-	// подсветку активной вещи
-	enum EMessage { REFRESH_ACTIVE_ITEM = 4999 };
-
 	// Отсортировать элементы в листе, чтобы они компактно разместились в клиентской области
 	// листа
 	void RearrangeItems();

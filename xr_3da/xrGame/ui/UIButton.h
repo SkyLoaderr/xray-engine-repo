@@ -28,10 +28,10 @@ public:
 	virtual void	Init(LPCSTR tex_name, int x, int y, int width, int height);
 	virtual void	Init(int x, int y, int width, int height);
 	
-	virtual void	OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
 
 	//сообщения, отправляемые родительскому окну
-	typedef enum{BUTTON_CLICKED, BUTTON_FOCUS_RECEIVED, BUTTON_FOCUS_LOST, BUTTON_DOWN} E_MESSAGE;
+//	typedef enum{BUTTON_CLICKED, BUTTON_FOCUS_RECEIVED, BUTTON_FOCUS_LOST, BUTTON_DOWN} E_MESSAGE;
 
 	//прорисовка окна
 	virtual void	Draw();

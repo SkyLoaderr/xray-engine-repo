@@ -129,7 +129,7 @@ void CUIDiaryWnd::Init()
 
 void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if (&UITreeView == pWnd && CUIListWnd::LIST_ITEM_CLICKED == msg)
+	if (&UITreeView == pWnd && LIST_ITEM_CLICKED == msg)
 	{
 		// для начала проверим, что нажатый элемент не рутовый
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);

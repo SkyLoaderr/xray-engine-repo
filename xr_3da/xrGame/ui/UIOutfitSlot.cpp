@@ -124,9 +124,9 @@ void CUIOutfitSlot::DropAll()
 	inherited::AttachChild(&UIOutfitIcon);
 }
 
-void CUIOutfitSlot::OnMouse(int x, int y, CUIWindow::E_MOUSEACTION mouse_action)
+void CUIOutfitSlot::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	if (CUIWindow::LBUTTON_DB_CLICK == mouse_action)
+	if (WINDOW_LBUTTON_DB_CLICK == mouse_action)
 	{
 		GetMessageTarget()->SendMessage(this, UNDRESS_OUTFIT, NULL);
 	}
@@ -135,7 +135,7 @@ void CUIOutfitSlot::OnMouse(int x, int y, CUIWindow::E_MOUSEACTION mouse_action)
 //		CUIDragDropItem *pDDItem = GetCurrentOutfit();
 //		pDDItem->Show(true);
 //	}
-	else if (CUIWindow::LBUTTON_UP == mouse_action && GetCurrentOutfit())
+	else if (WINDOW_LBUTTON_UP == mouse_action && GetCurrentOutfit())
 	{
 		CUIDragDropItem *pDDItem = GetCurrentOutfit();
 		pDDItem->Show(false);

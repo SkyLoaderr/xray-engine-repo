@@ -17,7 +17,7 @@ CUIRadioButton::~CUIRadioButton(void)
 }
 
 //реакция на мышь
-void CUIRadioButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIRadioButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	CUIButton::OnMouse(x, y, mouse_action);
 	
@@ -25,7 +25,7 @@ void CUIRadioButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	if(m_bButtonClicked)
 		if(!m_bIsChecked) 
 		{
-			GetMessageTarget()->SendMessage(this, CUIRadioButton::RADIO_BUTTON_SET);
+			GetMessageTarget()->SendMessage(this, RADIOBUTTON_SET);
 		}
 }
 

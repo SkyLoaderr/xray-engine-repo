@@ -18,10 +18,10 @@ public:
 	virtual void Init(int x, int y, int length, int broad, bool bIsHorizontal);
 
 	//сообщени€, отправл€емые родительскому окну
-	typedef enum{SCROLLBOX_MOVE, SCROLLBOX_STOP} E_MESSAGE;
+//	typedef enum{SCROLLBOX_MOVE, SCROLLBOX_STOP} E_MESSAGE;
 
 
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	virtual void Draw();
 						

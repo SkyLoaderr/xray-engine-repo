@@ -9,23 +9,23 @@
 #include "uibutton.h"
 #include "../ArtifactMerger.h"
 
-class CUIArtefactMerger: public CUIFrameWindow
+class CUIArtifactMerger: public CUIFrameWindow
 {
 private:
 	typedef CUIFrameWindow inherited;
 public:
-	CUIArtefactMerger();
-	virtual ~CUIArtefactMerger();
+	CUIArtifactMerger();
+	virtual ~CUIArtifactMerger();
 	
 	
 	virtual void Init(int x, int y, int width, int height);
 
-	typedef enum{CLOSE_BUTTON_CLICKED,
-				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
+//	typedef enum{CLOSE_BUTTON_CLICKED,
+//				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	void InitArtefactMerger(CArtefactMerger* pArtefactMerger);
-	void PerformArtefactMerger();
+	void InitArtifactMerger(CArtifactMerger* pArtifactMerger);
+	void PerformArtifactMerger();
 
 	void Show();
 	void Hide();
@@ -34,13 +34,13 @@ public:
 
 
 	//места для артефактов в приборе
-	CUIDragDropList		UIArtefactList;
+	CUIDragDropList		UIArtifactList;
 protected:
 	CUIButton UIPerformButton;
 	CUIButton UICloseButton;
 
-	static bool ArtefactProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
+	static bool ArtifactProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
 	//указатель на устройство сочетания артефактов
-	CArtefactMerger* m_pArtefactMerger;
+	CArtifactMerger* m_pArtifactMerger;
 };

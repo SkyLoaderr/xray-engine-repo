@@ -42,9 +42,9 @@ void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
 	SetPushOffsetY(0);
 }
 
+//////////////////////////////////////////////////////////////////////////
 
-
-void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIScrollBox::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	int deltaX = 0;
 	int deltaY = 0;
@@ -61,7 +61,7 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 	if(m_eButtonState == BUTTON_NORMAL)
 	{
-		if(mouse_action == LBUTTON_DOWN)
+		if(mouse_action == WINDOW_LBUTTON_DOWN)
 		{
 			m_eButtonState = BUTTON_PUSHED;
 		
@@ -70,7 +70,7 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 	else if(m_eButtonState == BUTTON_PUSHED)
 	{
-		if(mouse_action == LBUTTON_UP)
+		if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			if(cursor_on_button)
 			{
@@ -85,7 +85,7 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 			GetMessageTarget()->SendMessage(this, SCROLLBOX_STOP);
 		}
-		else if(mouse_action == MOUSE_MOVE)
+		else if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 //			if(!cursor_on_button)
 //				m_eButtonState = BUTTON_UP;
@@ -107,12 +107,12 @@ void CUIScrollBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 	else if(m_eButtonState == BUTTON_UP)
 	{
-		if(mouse_action == MOUSE_MOVE)
+		if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			if(cursor_on_button)
 				m_eButtonState = BUTTON_PUSHED;
 		}
-		else if(mouse_action == LBUTTON_UP)
+		else if(mouse_action == WINDOW_LBUTTON_UP)
 		{
 			m_eButtonState = BUTTON_NORMAL;
 			GetParent()->SetCapture(this, false);

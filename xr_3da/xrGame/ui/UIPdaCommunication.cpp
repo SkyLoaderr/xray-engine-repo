@@ -92,7 +92,7 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == &UIPdaContactsWnd)
 	{
-		if(msg == CUIPdaContactsWnd::CONTACT_SELECTED)
+		if(msg == PDA_CONTACTS_WND_CONTACT_SELECTED)
 		{
 			UIPdaContactsWnd.Show(false);
 			UIPdaDialogWnd.ContactRestore();
@@ -110,7 +110,7 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		}
 		else 
 		*/
-		if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
+		if(msg == PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED)
 		{
 			EPdaMsg pda_msg = ePdaMsgDialog;
 			u32 id_pda_contact = m_pContactPda->ID();

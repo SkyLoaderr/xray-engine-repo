@@ -106,7 +106,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == &UITabControl)
 	{
-		if (CUITabControl::TAB_CHANGED == msg)
+		if (TAB_CHANGED == msg)
 		{
 			if (m_pActiveDialog)
 				m_pActiveDialog->Show(false);
@@ -138,11 +138,11 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if (&UIOffButton == pWnd)
 	{
-		if (CUIButton::BUTTON_FOCUS_RECEIVED == msg)
+		if (BUTTON_FOCUS_RECEIVED == msg)
 			UIOffButton.TextureOn();
-		else if (CUIButton::BUTTON_FOCUS_LOST == msg)
+		else if (BUTTON_FOCUS_LOST == msg)
 			UIOffButton.TextureOff();
-		else if (CUIButton::BUTTON_CLICKED == msg)
+		else if (BUTTON_CLICKED == msg)
 			Game().StartStopMenu(this);
 			//HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
@@ -174,7 +174,7 @@ void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 {
 	Fvector a;
 	a.set(static_cast<float>(x), static_cast<float>(y), static_cast<float>(z));
-	SendMessage(this, CUIPdaWnd::PDA_MAP_SET_ACTIVE_POINT, &a);
+	SendMessage(this, PDA_MAP_SET_ACTIVE_POINT, &a);
 	ChangeActiveTab(CUIPdaWnd::TAB_MAP);
 }
 

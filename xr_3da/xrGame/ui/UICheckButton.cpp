@@ -16,7 +16,7 @@ CUICheckButton::~CUICheckButton(void)
 }
 
 //реакция на мышь
-void CUICheckButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUICheckButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x, y, mouse_action);
 	

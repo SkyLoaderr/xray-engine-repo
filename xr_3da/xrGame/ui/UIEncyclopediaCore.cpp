@@ -24,10 +24,12 @@ static const int		MIN_PICTURE_FRAME_HEIGHT	= 64;
 //////////////////////////////////////////////////////////////////////////
 
 CUIEncyclopediaCore::CUIEncyclopediaCore()
-	:	m_pTreeItemFont		(NULL),
-		m_pTreeRootFont		(NULL),
-		m_uTreeRootColor	(0xffffffff),
-		m_uTreeItemColor	(0xffffffff)
+	:	m_pTreeItemFont			(NULL),
+		m_pTreeRootFont			(NULL),
+		m_uTreeRootColor		(0xffffffff),
+		m_uTreeItemColor		(0xffffffff),
+		m_pCurrArticle			(NULL),
+		m_iCurrentInfoListPos	(0)
 {
 }
 
@@ -50,6 +52,7 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 //	m_iItemY = uiXml.ReadAttribInt("item_static", 0, "y", 0);
 	m_iItemY = 0;
 	m_iItemX = 0;
+	m_iCurrentInfoListPos = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,21 +67,34 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 	if (!pTVItem->IsRoot())
 	{
 		// Удаляем текущую картинку и текст
-//		if (m_pCurrArticle)
-//		{
-//			UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->data()->image);
-//			m_pCurrArticle->data()->image.SetMask(NULL);
-//		}
+		if (m_pCurrArticle)
+		{
+			pInfoList->DetachChild(&m_pCurrArticle->data()->image);
+			m_pCurrArticle->data()->image.SetMask(NULL);
+		}
 		pInfoList->RemoveAll();
 
 		// Image
-		CUIListItem *pItemImg = xr_new<CUIListItem>();
-		m_ArticlesDB[pTVItem->GetValue()]->data()->image.ClipperOff();
-		m_ArticlesDB[pTVItem->GetValue()]->data()->image.Show(true);
-		m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetClipRect(pInfoList->GetAbsoluteRect());
-		pItemImg->AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
+		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
 
-		pInfoList->AddItem(pItemImg);
+//		img.ClipperOn();
+//		img.Enable(false);
+//		img.SetClipRect(pInfoList->GetWndRect());
+//		pItemImage = xr_new<CUIStatic>();
+//		pItemImage->Init("ui\\ui_inv_box_heavy_weapons", 0, 0, 1000, 1000);
+//		pItemImage->Enable(false);
+//		pItemImage->ClipperOn();
+
+//		RECT r;
+//		r.left		= 0;
+//		r.top		= 0;
+//		r.right		= pInfoList->GetWndRect().right;
+//		r.bottom	= pInfoList->GetWndRect().bottom;
+
+//		pItemImage->SetClipRect(r);
+//		pInfoList->AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
+
+		pInfoList->AttachChild(&img);
 
 		// Добавляем текст
 		CUIString str;
@@ -87,14 +103,14 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		pInfoList->AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
 		
 //		m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
-
+//
 //		if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
 //			UIImgMask.Show(false);
 //		else
 //			UIImgMask.Show(true);
 
 		// Запоминаем текущий эдемент
-//		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
+		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 	}
 	return pTVItem->GetHierarchyAsText().c_str();
 }
@@ -126,7 +142,7 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 	CEncyclopediaArticle*& a = m_ArticlesDB.back();
 	a = xr_new<CEncyclopediaArticle>();
 	a->Load(article_index);
-	RescaleStatic(a->data()->image);
+//	RescaleStatic(a->data()->image);
 	a->data()->image.MoveWindow(m_iItemX, m_iItemY);
 
 	// Теперь создаем иерархию вещи по заданному пути
@@ -137,7 +153,7 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaCore::RescaleStatic(CUIStatic &s)
+void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 {
 	Irect	r		= s.GetUIStaticItem().GetOriginalRect();
 
@@ -165,5 +181,22 @@ void CUIEncyclopediaCore::RescaleStatic(CUIStatic &s)
 	if (r.width() < MAX_PICTURE_WIDTH)
 	{
 		s.SetTextureOffset((MAX_PICTURE_WIDTH - r.width()) / 2, s.GetTextureOffeset()[1]);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	if (pInfoList == pWnd && SCROLLBAR_VSCROLL == msg)
+	{
+		RECT r = m_pCurrArticle->data()->image.GetWndRect();
+		m_pCurrArticle->data()->image.MoveWindow(r.left,
+			r.top + (m_iCurrentInfoListPos - pInfoList->GetListPosition()) * pInfoList->GetItemHeight());
+		m_iCurrentInfoListPos = pInfoList->GetListPosition();
+//		RECT r = pItemImage->GetWndRect();
+//		pItemImage->MoveWindow(r.left,
+//			r.top + (m_iCurrentInfoListPos - pInfoList->GetListPosition()) * pInfoList->GetItemHeight());
+//		m_iCurrentInfoListPos = pInfoList->GetListPosition();
 	}
 }

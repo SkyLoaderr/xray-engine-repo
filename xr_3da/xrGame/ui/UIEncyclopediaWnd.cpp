@@ -85,6 +85,7 @@ void CUIEncyclopediaWnd::Init()
 	UIInfoList.EnableScrollBar(true);
 	UIInfoList.SetNewRenderMethod(true);
 	UIInfoList.ActivateList(false);
+	UIInfoList.SetMessageTarget(&UIInfo);
 
 	UIInfo.Init(&UIInfoList, &UIIdxList);
 
@@ -104,7 +105,7 @@ void CUIEncyclopediaWnd::Init()
 
 void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 {
-	if (&UIIdxList == pWnd && CUIListWnd::LIST_ITEM_CLICKED == msg)
+	if (&UIIdxList == pWnd && LIST_ITEM_CLICKED == msg)
 	{
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
 		R_ASSERT(pTVItem);
@@ -140,6 +141,8 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 //			m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 //		}
 	}
+
+	inherited::SendMessage(pWnd, msg, pData);
 }
 
 //////////////////////////////////////////////////////////////////////////

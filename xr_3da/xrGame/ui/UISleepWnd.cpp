@@ -70,24 +70,24 @@ void CUISleepWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	const s8 deltaMinutes = 30;
 
-	if(pWnd == &UIRestBtn && msg == CUIButton::BUTTON_CLICKED)
+	if(pWnd == &UIRestBtn && msg == BUTTON_CLICKED)
 	{
 		u32 restMsec = (m_Hours * 3600 + m_Minutes * 60) * 1000;
 		if (restMsec != 0)
-			GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED, reinterpret_cast<void*>(&restMsec));
+			GetMessageTarget()->SendMessage(this, SLEEP_WND_PERFORM_BUTTON_CLICKED, reinterpret_cast<void*>(&restMsec));
 
 	}
-	else if(pWnd == &UIPlusBtn && msg == CUIButton::BUTTON_CLICKED)
+	else if(pWnd == &UIPlusBtn && msg == BUTTON_CLICKED)
 	{
 		// Add fixed amount of minutes and hours
 		ModifyRestTime(0, deltaMinutes);
 	}
-	else if(pWnd == &UIMinusBtn && msg == CUIButton::BUTTON_CLICKED)
+	else if(pWnd == &UIMinusBtn && msg == BUTTON_CLICKED)
 	{
 		// Add fixed amount of minutes and hours
 		ModifyRestTime(0, -deltaMinutes);
 	}
-	else if ((&UIPlusBtn == pWnd || &UIMinusBtn == pWnd || &UIRestBtn == pWnd) && CUIButton::BUTTON_DOWN == msg)
+	else if ((&UIPlusBtn == pWnd || &UIMinusBtn == pWnd || &UIRestBtn == pWnd) && BUTTON_DOWN == msg)
 	{
 		CUIButton *pBtn = dynamic_cast<CUIButton*>(pWnd);
 		R_ASSERT(pBtn);
@@ -95,7 +95,7 @@ void CUISleepWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		pBtn->EnableTextHighlighting(false);
 	}
 	
-	if ((&UIPlusBtn == pWnd || &UIMinusBtn == pWnd || &UIRestBtn == pWnd) && CUIButton::BUTTON_CLICKED == msg)
+	if ((&UIPlusBtn == pWnd || &UIMinusBtn == pWnd || &UIRestBtn == pWnd) && BUTTON_CLICKED == msg)
 	{
 		CUIButton *pBtn = dynamic_cast<CUIButton*>(pWnd);
 		R_ASSERT(pBtn);

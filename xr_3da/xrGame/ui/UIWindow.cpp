@@ -142,7 +142,7 @@ RECT CUIWindow::GetAbsoluteRect()
 
 #define DOUBLE_CLICK_TIME 250
 
-void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 {	
 	//определить DoubleClick
 
@@ -152,12 +152,12 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 //	static CUIWindow *pWnd = NULL;
 
-	if(mouse_action == LBUTTON_DOWN)
+	if(mouse_action == WINDOW_LBUTTON_DOWN)
 	{
 		u32 dwCurTime = Device.TimerAsync();
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
 		{
-			 mouse_action = LBUTTON_DB_CLICK;
+			 mouse_action = WINDOW_LBUTTON_DB_CLICK;
 		}
 //		else
 //			pWnd = this;
@@ -231,7 +231,7 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 	{
 		//оповестить дочернее окно о потере фокуса мыши
 		if(NULL!=m_pMouseCapturer)
-			m_pMouseCapturer->SendMessage(this, MOUSE_CAPTURE_LOST);
+			m_pMouseCapturer->SendMessage(this, WINDOW_MOUSE_CAPTURE_LOST);
 
 		m_pMouseCapturer = pChildWindow;
 	}
@@ -244,7 +244,7 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 
 
 //реакция на клавиатуру
-bool CUIWindow::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	bool result;
 
@@ -282,7 +282,7 @@ void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 	{
 		//оповестить дочернее окно о потере фокуса клавиатуры
 		if(NULL!=m_pKeyboardCapturer)
-			m_pKeyboardCapturer->SendMessage(this, KEYBOARD_CAPTURE_LOST);
+			m_pKeyboardCapturer->SendMessage(this, WINDOW_KEYBOARD_CAPTURE_LOST);
 			
 		m_pKeyboardCapturer = pChildWindow;
 	}

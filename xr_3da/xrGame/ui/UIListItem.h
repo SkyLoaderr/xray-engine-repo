@@ -20,7 +20,7 @@ public:
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init(const char* str, int x, int y, int width, int height);
 	
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 	virtual void Draw();
 
 	virtual void* GetData() {return m_pData;}

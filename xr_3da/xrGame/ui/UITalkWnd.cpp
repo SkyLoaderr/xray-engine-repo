@@ -83,8 +83,6 @@ void CUITalkWnd::InitTalkDialog()
 
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
-	UITalkDialogWnd.UICharacterInfoLeft.UIRelation.Show(false);
-	UITalkDialogWnd.UICharacterInfoLeft.UIRelationCaption.Show(false);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 	UITalkDialogWnd.UIDialogFrame.UITitleText.SetText(m_pOthersInvOwner->CharacterInfo().Name());
 	UITalkDialogWnd.UIOurPhrasesFrame.UITitleText.SetText(m_pOurInvOwner->CharacterInfo().Name());
@@ -175,7 +173,7 @@ void CUITalkWnd::UpdateQuestions()
 
 void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if(pWnd == &UITalkDialogWnd && msg == CUITalkDialogWnd::TRADE_BUTTON_CLICKED)
+	if(pWnd == &UITalkDialogWnd && msg == TALK_DIALOG_TRADE_BUTTON_CLICKED)
 	{
 //		UITalkDialogWnd.Hide();
 //
@@ -184,11 +182,11 @@ void CUITalkWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 //		UITradeWnd.BringAllToTop();
 		SwitchToTrade();
 	}
-	else if(pWnd == &UITalkDialogWnd && msg == CUITalkDialogWnd::QUESTION_CLICKED)
+	else if(pWnd == &UITalkDialogWnd && msg == TALK_DIALOG_QUESTION_CLICKED)
 	{
 		AskQuestion();
 	}
-	else if(pWnd == &UITradeWnd && msg == CUITradeWnd::TRADE_WND_CLOSED)
+	else if(pWnd == &UITradeWnd && msg == TRADE_WND_CLOSED)
 	{
 		UITalkDialogWnd.Show();
 		UITradeWnd.Hide();

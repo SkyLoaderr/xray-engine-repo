@@ -23,7 +23,7 @@ public:
 	virtual void Update();
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST, MAP_MOVED } E_MESSAGE;
+//	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST, MAP_MOVED } E_MESSAGE;
 
 
 	void ConvertToLocal(const Fvector& src, Ivector2& dest);
@@ -92,7 +92,7 @@ protected:
 
 public:
 	//для перетаскивания карты при помощи мыши
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 protected:
 	int m_iOldMouseX;

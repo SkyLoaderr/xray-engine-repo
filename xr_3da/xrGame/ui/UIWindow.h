@@ -5,10 +5,16 @@
 
 #pragma once
 
+//////////////////////////////////////////////////////////////////////////
+
+#include "UIMessages.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 #define SHOW_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(true); (UI_WINDOW).Enable(true);
 #define HIDE_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(false); (UI_WINDOW).Enable(false);
 
+//////////////////////////////////////////////////////////////////////////
 
 class CUIWindow  
 {
@@ -52,10 +58,10 @@ public:
 	//работа с внешними сообщениями (мышь, клавиатура, другие окна)
 
 	//реакция на мышь
-	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE,
-				 LBUTTON_DB_CLICK} E_MOUSEACTION;
+//	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE,
+//				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
@@ -68,14 +74,14 @@ public:
 	virtual CUIWindow* GetMessageTarget();
 
 	//реакция на клавиатуру
-	typedef enum{KEY_PRESSED, KEY_RELEASED} E_KEYBOARDACTION;
-	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+//	typedef enum{KEY_PRESSED, KEY_RELEASED} E_KEYBOARDACTION;
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	virtual void SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status);
 
 	
 	//список перечисление, на которые должна быть предусмотрена реакция
-	typedef enum{MOUSE_CAPTURE_LOST, 
-				 KEYBOARD_CAPTURE_LOST} E_MESSAGE;
+//	typedef enum{MOUSE_CAPTURE_LOST, 
+//				 KEYBOARD_CAPTURE_LOST} E_MESSAGE;
 	
 	//обработка сообщений не предусмотреных стандартными обработчиками
 	//ф-ция должна переопределяться

@@ -240,18 +240,18 @@ void CUITreeViewItem::SetText(LPCSTR str)
 
 void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if (pWnd == this && CUIListWnd::LIST_ITEM_CLICKED == msg)
+	if (pWnd == this && BUTTON_CLICKED == msg)
 	{
 		if (IsRoot())
 		{
 			IsOpened() ? Close() : Open();
 		}
 	}
-	else if (pWnd == this && CUIButton::BUTTON_FOCUS_RECEIVED == msg)
+	else if (pWnd == this && BUTTON_FOCUS_RECEIVED == msg)
 	{
 		UIBkg.TextureOn();
 	}
-	else if (pWnd == this && CUIButton::BUTTON_FOCUS_LOST == msg)
+	else if (pWnd == this && BUTTON_FOCUS_LOST == msg)
 	{
 		UIBkg.TextureOff();
 	}

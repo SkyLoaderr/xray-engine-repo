@@ -17,10 +17,10 @@ public:
 	CUICheckButton(void);
 	virtual ~CUICheckButton(void);
 
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	//сообщения, отправляемые родительскому окну
-	typedef enum{BUTTON_CLICKED, CHECK_BUTTON_SET, CHECK_BUTTON_RESET} E_MESSAGE;
+//	typedef enum{BUTTON_CLICKED, CHECK_BUTTON_SET, CHECK_BUTTON_RESET} E_MESSAGE;
 
 	//прорисовка окна
 	virtual void Draw();

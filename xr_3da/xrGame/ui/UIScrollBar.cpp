@@ -126,29 +126,29 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &m_DecButton)
 	{
-		if(msg == CUIButton::BUTTON_CLICKED)
+		if(msg == BUTTON_CLICKED)
 		{
 			if(ScrollDec())
 				if(m_bIsHorizontal)
-					GetMessageTarget()->SendMessage(this, HSCROLL);
+					GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
 				else
-					GetMessageTarget()->SendMessage(this, VSCROLL);
+					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 		}
 	}
 	else if(pWnd == &m_IncButton)
 	{
-		if(msg == CUIButton::BUTTON_CLICKED)
+		if(msg == BUTTON_CLICKED)
 		{
 			if(ScrollInc())
 				if(m_bIsHorizontal)
-					GetMessageTarget()->SendMessage(this, HSCROLL);
+					GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
 				else
-					GetMessageTarget()->SendMessage(this, VSCROLL);
+					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 		}
 	}	
 	else if(pWnd == &m_ScrollBox)
 	{
-		if(msg == CUIScrollBox::SCROLLBOX_MOVE)
+		if(msg == SCROLLBOX_MOVE)
 		{
 			//вычислить новое положение прокрутки
 			if(m_bIsHorizontal)
@@ -173,7 +173,7 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 
 				if (GetMessageTarget())
-					GetMessageTarget()->SendMessage(this, HSCROLL);
+					GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
 			}
 			//вертикальный
 			else
@@ -196,19 +196,19 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
 
 				if (GetMessageTarget())
-					GetMessageTarget()->SendMessage(this, VSCROLL);
+					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 			}
 			
 		}
-		else if(msg == CUIScrollBox::SCROLLBOX_STOP)
+		else if(msg == SCROLLBOX_STOP)
 		{
 			//вычислить новое положение прокрутки
 //			UpdateScrollBar();
 
 			if(m_bIsHorizontal && GetMessageTarget())
-				GetMessageTarget()->SendMessage(this, HSCROLL);
+				GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
 			else
-				GetMessageTarget()->SendMessage(this, VSCROLL);
+				GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 		}
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
@@ -283,6 +283,6 @@ void CUIScrollBar::Draw()
 
 void CUIScrollBar::Refresh()
 {
-	SendMessage(&m_ScrollBox, CUIScrollBox::SCROLLBOX_MOVE, NULL);
+	SendMessage(&m_ScrollBox, SCROLLBOX_MOVE, NULL);
 }
 

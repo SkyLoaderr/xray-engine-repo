@@ -44,7 +44,7 @@ void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	if(pWnd == GetParent())
 	{
 		//кто-то другой захватил клавиатуру
-		if(msg == CUIWindow::KEYBOARD_CAPTURE_LOST)
+		if(msg == WINDOW_KEYBOARD_CAPTURE_LOST)
 		{
 			m_bInputFocus = false;
 			m_iKeyPressAndHold = 0;
@@ -52,9 +52,9 @@ void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 }
 
-void CUIEditBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIEditBox::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	if(mouse_action == LBUTTON_DOWN && !m_bInputFocus)
+	if(mouse_action == WINDOW_LBUTTON_DOWN && !m_bInputFocus)
 	{
 		GetParent()->SetKeyboardCapture(this, true);
 		m_bInputFocus = true;
@@ -67,19 +67,19 @@ void CUIEditBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 }
 
 
-bool CUIEditBox::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+bool CUIEditBox::OnKeyboard(int dik, EUIMessages keyboard_action)
 {	
 	if(!m_bInputFocus) return false;
 
 
-	if(keyboard_action == KEY_PRESSED)	
+	if(keyboard_action == WINDOW_KEY_PRESSED)	
 	{
 		m_iKeyPressAndHold = dik;
 		m_bHoldWaitMode = true;
 
 		if(KeyPressed(dik))	return true;
 	}
-	else if(keyboard_action == KEY_RELEASED)	
+	else if(keyboard_action == WINDOW_KEY_RELEASED)	
 	{
 		if(m_iKeyPressAndHold == dik)
 		{

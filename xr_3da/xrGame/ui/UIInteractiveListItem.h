@@ -35,11 +35,11 @@ public:
 	typedef FIELDS_COORDS_VECTOR::iterator FIELDS_COORDS_VECTOR_it;
 	typedef FIELDS_COORDS_VECTOR::const_iterator FIELDS_COORDS_VECTOR_c_it;
 	// Сообщение
-	typedef enum { INTERACTIVE_ITEM_CLICK = 7011 } E_MESSAGE;
+//	typedef enum { INTERACTIVE_ITEM_CLICK = 7011 } E_MESSAGE;
 
 	CUIInteractiveListItem();
 	virtual ~CUIInteractiveListItem() {}
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 	virtual void Update();
 	virtual void Draw();
 

@@ -178,9 +178,6 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	UIOthersPriceCaption.GetPhraseByIndex(0)->SetText(*CStringTable()("Opponent Items"));
 
 	UICharacterInfoLeft.InitCharacter(m_pInvOwner);
-	UICharacterInfoLeft.UIRelationCaption.Show(false);
-	UICharacterInfoLeft.UIRelation.Show(false);
-
 	UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 
 	m_pInv = &m_pInvOwner->inventory();
@@ -203,20 +200,20 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 //как только подн€ли элемент, сделать его текущим
 void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(pWnd == &UIToTalkButton && msg == CUIButton::BUTTON_CLICKED)
+	if(pWnd == &UIToTalkButton && msg == BUTTON_CLICKED)
 	{
 		SwitchToTalk();
 	}
-	else if(pWnd == &UIDealClose && msg == CUIButton::BUTTON_CLICKED)
+	else if(pWnd == &UIDealClose && msg == BUTTON_CLICKED)
 	{
 		SwitchDealControls(false);
 		EnableAll();
 	}
-	else if(pWnd == &UIPerformTradeButton && msg == CUIButton::BUTTON_CLICKED)
+	else if(pWnd == &UIPerformTradeButton && msg == BUTTON_CLICKED)
 	{
 		PerformTrade();
 	}
-	else if(msg == CUIDragDropItem::ITEM_DRAG)
+	else if(msg == DRAG_DROP_ITEM_DRAG)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
@@ -224,7 +221,7 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem->Rescale(1.0f);
 	}
-	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
+	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();

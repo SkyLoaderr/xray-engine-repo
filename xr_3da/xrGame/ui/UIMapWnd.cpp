@@ -405,7 +405,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	if(pWnd == &UILocalMapBackground)
 	{
-		if(CUIMapBackground::MAPSPOT_FOCUS_RECEIVED == msg)
+		if(MAPSPOT_FOCUS_RECEIVED == msg)
 		{
 			if(m_pCurrentMap->m_pActiveMapSpot)
 			{
@@ -435,7 +435,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				}
             }
 		}
-		else if(CUIMapBackground::MAPSPOT_FOCUS_LOST == msg)
+		else if(MAPSPOT_FOCUS_LOST == msg)
 		{
 			UIStaticInfo.Show(false);
 		}
@@ -444,7 +444,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	if (&UIGlobalMapBackground == pWnd)
 	{
 		static CUIMapSpot *prevSpot = NULL;
-		if (CUIMapBackground::MAPSPOT_FOCUS_RECEIVED == msg)
+		if (MAPSPOT_FOCUS_RECEIVED == msg)
 		{
 			if (UIGlobalMapBackground.m_pActiveMapSpot && prevSpot != UIGlobalMapBackground.m_pActiveMapSpot)
 			{
@@ -463,7 +463,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			UIMapName.Show(true);
 		}
 
-		if (CUIMapBackground::MAPSPOT_FOCUS_LOST == msg)
+		if (MAPSPOT_FOCUS_LOST == msg)
 		{
 			UIMapGoals.Show(false);
 			UIMapGoals.RemoveAll();
@@ -480,7 +480,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	if (&UIMapBgndV == pWnd)
 	{
-		if (CUIScrollBar::VSCROLL == msg)
+		if (SCROLLBAR_VSCROLL == msg)
 		{
 			m_pCurrentMap->MoveMap(0, -VSCROLLBAR_STEP * (UIMapBgndV.GetScrollPos() - prevScrollPosV));
 			prevScrollPosV = UIMapBgndV.GetScrollPos();
@@ -490,7 +490,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	if (&UIMapBgndH == pWnd)
 	{
-		if (CUIScrollBar::HSCROLL == msg)
+		if (SCROLLBAR_HSCROLL == msg)
 		{
 			m_pCurrentMap->MoveMap(-HSCROLLBAR_STEP * (UIMapBgndH.GetScrollPos() - prevScrollPosH), 0);
 			prevScrollPosH = UIMapBgndH.GetScrollPos();
@@ -498,7 +498,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		}
 	}
 
-	if (m_pCurrentMap == pWnd && CUIMapBackground::MAP_MOVED == msg)
+	if (m_pCurrentMap == pWnd && MAP_MOVED == msg)
 	{
 		Fvector2	dest;
 		m_pCurrentMap->ConvertFromLocalToMap(HSCROLLBAR_STEP, VSCROLLBAR_STEP, dest);
@@ -512,7 +512,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		m_pCurrentMap->Update();
 	}
 	
-	if (&UIMapTypeSwitch == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	if (&UIMapTypeSwitch == pWnd && BUTTON_CLICKED == msg)
 	{
 		if (emmGlobal == m_eCurrentMode)
 			SwitchMapMode(emmLocal);
@@ -609,7 +609,7 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 	else
 		UIMapBgndH.Show(false);
 
-	SendMessage(m_pCurrentMap, CUIMapBackground::MAP_MOVED, NULL);
+	SendMessage(m_pCurrentMap, MAP_MOVED, NULL);
 
 	m_iMapWidth = m_pCurrentMap->GetWidth();
 	m_iMapHeight = m_pCurrentMap->GetHeight();

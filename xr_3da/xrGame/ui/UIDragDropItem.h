@@ -27,19 +27,19 @@ public:
 
 	virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
 
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	//сообщения, отправляемые родительскому окну
 	
 	//сообщения будут идти на TOP так что нужно 
 	//обеспечить их уникальность (исправить! и пронумеровать все
 	//сообщения где-то в глобальном ENUM или отслеживать через DynamicCast)
-	typedef enum{BUTTON_CLICKED, 
-					ITEM_DRAG = 0xFF0, 
-					ITEM_DROP, 
-					ITEM_MOVE,
-					ITEM_DB_CLICK,
-					ITEM_RBUTTON_CLICK} E_MESSAGE;
+//	typedef enum{BUTTON_CLICKED, 
+//					ITEM_DRAG = 0xFF0, 
+//					ITEM_DROP, 
+//					ITEM_MOVE,
+//					ITEM_DB_CLICK,
+//					ITEM_RBUTTON_CLICK} E_MESSAGE;
 
 
 	virtual void Draw();

@@ -24,8 +24,8 @@ public:
 	CUITalkDialogWnd();
 	virtual ~CUITalkDialogWnd();
 	
-	typedef enum{TRADE_BUTTON_CLICKED,
-				 QUESTION_CLICKED} E_MESSAGE;
+//	typedef enum{TRADE_BUTTON_CLICKED,
+//				 QUESTION_CLICKED} E_MESSAGE;
 
 	virtual void Init(int x, int y, int width, int height);
 	

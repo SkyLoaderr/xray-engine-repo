@@ -100,7 +100,7 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIPhrasesListWnd)
 	{
-		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
+		if(msg == LIST_ITEM_CLICKED)
 		{
 			//m_iMsgNum = EPdaMsg(((CUIListItem*)pData)->GetValue());
 			m_iClickedQuestion = ((CUIListItem*)pData)->GetValue();
@@ -108,7 +108,7 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			//if(m_iMsgNum == ePdaMsgMax)
 			//	GetTop()->SendMessage(this, BACK_BUTTON_CLICKED);
 			//else
-			GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
+			GetTop()->SendMessage(this, PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED);
 		}
 	}
 

@@ -24,8 +24,8 @@ public:
 
 	virtual void Init(int x, int y, int width, int height);
 
-	typedef enum{BACK_BUTTON_CLICKED,
-				 MESSAGE_BUTTON_CLICKED} E_MESSAGE;
+//	typedef enum{BACK_BUTTON_CLICKED,
+//				 MESSAGE_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	void Show(bool status);

@@ -23,12 +23,12 @@ public:
 	// »нициализаци€  из XML
 	virtual void Init(int x, int y, int width, int height);
 	// обработка нажатий клавиш
-	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	// обновление 
 	virtual void Update();
 
 	// —ообщение отправл€емое родительскому окну, когда произошла смена активной раскладки
-	typedef enum{TAB_CHANGED = 8500} E_MESSAGE;
+//	typedef enum{TAB_CHANGED = 8500} E_MESSAGE;
 
 	// ƒобавление кнопки-закладки в список закладок контрола
 	bool AddItem(const char *pItemName, const char *pTexName, int x, int y, int width, int height);

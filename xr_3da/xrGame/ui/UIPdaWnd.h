@@ -42,7 +42,7 @@ public:
 	
 	// Специфичные для родительского окна PDA сообщения:
 	// Смена точки центрирования карты
-	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
+//	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
 	// Список закладок
 	typedef enum { TAB_EVENTS, TAB_COMM, TAB_MAP, TAB_NEWS } E_PDA_TABS;
 	// Принудительно сменить активную закладку

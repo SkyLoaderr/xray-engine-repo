@@ -43,7 +43,7 @@ bool CUITabControl::AddItem(CUIButton *pButton)
 	// Нажимаем кнопку по умолчанию
 	if (m_iPushedIndex == static_cast<int>(m_TabsArr.size() - 1))
 	{
-		m_TabsArr[m_iPushedIndex]->OnMouse(1, 1, CUIWindow::LBUTTON_DOWN);
+		m_TabsArr[m_iPushedIndex]->OnMouse(1, 1, WINDOW_LBUTTON_DOWN);
 		SetCapture(m_TabsArr[m_iPushedIndex], false);
 	}
 
@@ -83,13 +83,13 @@ void CUITabControl::RemoveAll()
 // переключение закладок.
 void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if (CUIButton::BUTTON_CLICKED == msg)
+	if (BUTTON_CLICKED == msg)
 	{
 		// если нажали на активную кнопку, то ничего не делать.
 		TABS_VECTOR::value_type pushedItem = dynamic_cast<TABS_VECTOR::value_type>(pWnd);
 		if (!pushedItem) return;
 
-		if (msg != CUIButton::BUTTON_CLICKED		||
+		if (msg != BUTTON_CLICKED		||
 			m_iPushedIndex > -1						&&
 			pushedItem == m_TabsArr[m_iPushedIndex])
 			return;
@@ -101,14 +101,14 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				int iPrevPushedIndex = m_iPushedIndex;
 				m_iPushedIndex = i;
 				m_TabsArr[iPrevPushedIndex]->SetButtonMode(CUIButton::BUTTON_NORMAL);
-				m_TabsArr[iPrevPushedIndex]->OnMouse(-1, -1, CUIWindow::MOUSE_MOVE);
+				m_TabsArr[iPrevPushedIndex]->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
 				GetMessageTarget()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
 				break;
 			}
 		}
 	}
-	else if (CUIButton::BUTTON_FOCUS_RECEIVED	== msg	||
-			 CUIButton::BUTTON_FOCUS_LOST		== msg)
+	else if (BUTTON_FOCUS_RECEIVED	== msg	||
+			 BUTTON_FOCUS_LOST		== msg)
 	{
 		for (u8 i = 0; i < m_TabsArr.size(); ++i)
 		{
@@ -134,14 +134,14 @@ void CUITabControl::Init(int x, int y, int width, int height)
 void CUITabControl::SetNewActiveTab(const int iNewTab)
 {
 	R_ASSERT(iNewTab > 0 || iNewTab < GetTabsCount());
-	m_TabsArr[iNewTab]->OnMouse(1, 1, LBUTTON_DOWN);
+	m_TabsArr[iNewTab]->OnMouse(1, 1, WINDOW_LBUTTON_DOWN);
 
-	SendMessage(m_TabsArr[iNewTab], CUIButton::BUTTON_CLICKED, NULL);
+	SendMessage(m_TabsArr[iNewTab], BUTTON_CLICKED, NULL);
 }
 
-bool CUITabControl::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (m_bAcceleratorsEnable && KEY_PRESSED == keyboard_action)
+	if (m_bAcceleratorsEnable && WINDOW_KEY_PRESSED == keyboard_action)
 	{
 		for (u32 i = 0; i < m_TabsArr.size(); ++i)
 		{

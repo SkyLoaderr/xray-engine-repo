@@ -34,7 +34,7 @@ public:
 
 	virtual void Init();
 
-	typedef enum{TRADE_WND_CLOSED} E_MESSAGE;
+//	typedef enum{TRADE_WND_CLOSED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	void InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers);

@@ -21,8 +21,8 @@ public:
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init();
 
-	typedef enum{CLOSE_BUTTON_CLICKED,
-				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
+//	typedef enum{CLOSE_BUTTON_CLICKED,
+//				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
 	// Изменяем текущее установленное время отдыха на дельта-значения
