@@ -1346,6 +1346,9 @@
 						RelativePath=".\ChooseTypes.h">
 					</File>
 					<File
+						RelativePath=".\DrawUtils.h">
+					</File>
+					<File
 						RelativePath=".\InfoPortionDefs.h">
 					</File>
 					<File
