@@ -32,7 +32,7 @@ REAL dfComputeEvalResults(vector<vector<REAL> >	&daEvalResults, vector<vector<RE
 	return					(dResult);
 }
 
-vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &daResult, vector<vector<REAL> > &B)
+vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &daResult, vector<vector<REAL> > &B, REAL dNormaFactor)
 {
 	REAL					dNorma = 0.0;
 	u32						dwTestCount = B.size();
@@ -47,12 +47,12 @@ vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &da
 	dNorma					= _sqrt(dNorma);
 
 	for ( i=0; i<dwParameterCount; i++)
-		daResult[i]			/= (dNorma > 1.f ? dNorma : 1.f)*100;
+		daResult[i]			/= (dNorma > 1.f ? dNorma : 1.f)*dNormaFactor;
 
 	return					(daResult);
 }
 
-void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D, REAL dEpsilon, REAL dAlpha, REAL dBeta, u32 dwMaxIterationCount)
+void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D, REAL dEpsilon, REAL dAlpha, REAL dBeta, REAL dNormaFactor, u32 dwMaxIterationCount)
 {
 	u32						dwTestCount	= B.size();
 	vector<REAL>			daGradient;
@@ -71,12 +71,12 @@ void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, ve
 		for (u32 i=0; i<dwTestCount; i++)
 			daEvalResults[i].resize(dwParameterCount);
 	}
-	
-	REAL					dFunctional = dfComputeEvalResults(daEvalResults,A,B,C,D), dPreviousFunctional;
 	u32						i = 0;
+	REAL					dFunctional = dfComputeEvalResults(daEvalResults,A,B,C,D), dPreviousFunctional;
+	clMsg					("%6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
 	do {
 		dPreviousFunctional = dFunctional;
-		dafGradient			(daEvalResults,			daGradient,			B);
+		dafGradient			(daEvalResults,			daGradient,			B,					dNormaFactor);
 		transform			(daGradient.begin(),	daGradient.end(),	daGradient.begin(),	bind2nd(multiplies<REAL>(), -dAlpha));
 		transform			(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	bind2nd(multiplies<REAL>(), dBeta));
 		transform			(daGradient.begin(),	daGradient.end(),	daDelta.begin(),	daDelta.begin(),	plus<REAL>());
