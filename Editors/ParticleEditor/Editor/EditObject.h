@@ -235,7 +235,7 @@ protected:
 
     void 			ClearGeometry			();
 
-	void 			UpdateBoneParenting		();
+	void 			PrepareBones			();
     void			DefferedLoadRP			();
     void			DefferedUnloadRP		();
 
@@ -311,7 +311,8 @@ public:
 	void 			SaveBoneData			(IWriter& F);
     void			ResetBones				();
 	CSMotion*		ResetSAnimation			(bool bGotoBindPose=true);
-    void			CalculateAnimation		(bool bGenInvMat=false);
+	void 			CalculateAnimation		(CBone* bone, CSMotion* motion, bool bGenInvMat=false, bool bCalcRest=false);
+    void			CalculateAnimation		(CSMotion* motion, bool bGenInvMat=false, bool bCalcRest=false);
 	void			GotoBindPose			();
 
     // statistics methods

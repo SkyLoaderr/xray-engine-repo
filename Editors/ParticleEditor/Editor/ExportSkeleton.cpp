@@ -363,7 +363,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     int bone_idx=0;
     for (BoneIt bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
         F.w_stringZ	((*bone_it)->Name());
-        F.w_stringZ	(((*bone_it)->ParentIndex()==-1)?"":(*bone_it)->Parent());
+        F.w_stringZ	((*bone_it)->Parent()?(*bone_it)->ParentName():"");
         Fobb	obb;
         ComputeOBB	(obb,bone_points[bone_idx]);
         F.w			(&obb,sizeof(Fobb));
@@ -371,18 +371,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     F.close_chunk();
                      
     F.open_chunk(OGF_IKDATA);
-    for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
-    	CBone* B = (*bone_it);
-        F.w_stringZ(B->game_mtl);
-        F.w(&B->shape,sizeof(SBoneShape));
-        F.w(&B->IK_data,sizeof(SJointIKData));
-        Fvector hpb; B->LTransform().getHPB(hpb);
-//        hpb.mul(B->Rotate(),-1.f);
-        F.w_fvector3(hpb);
-        F.w_fvector3(B->LTransform().c);
-        F.w_float	(B->mass);
-        F.w_fvector3(B->center_of_mass);
-    }
+    for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
+        (*bone_it)->ExportOGF(F);
     F.close_chunk();
     
     if (!m_Source->GetClassScript().IsEmpty()){
@@ -433,20 +423,21 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
         int bone_id = 0;
         for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
             Flags8 flags = motion->GetMotionFlags(bone_id);
-            CBone* B = m_Source->GetBone(bone_id);
-            int parent_idx = B->ParentIndex();
+            CBone* B 	= m_Source->GetBone(bone_id);
+            CBone* PB 	= B->Parent();
             for (int frm=motion->FrameStart(); frm<motion->FrameEnd(); frm++){
                 float t = (float)frm/motion->FPS();
                 Fvector T,R;
-                Fmatrix mat;
                 Fquaternion q;
                 motion->Evaluate	(bone_id,t,T,R);
-
+                B->Update			(T,R);
+                m_Source->CalculateAnimation(B,motion,true);
+                Fmatrix mat			= B->MTransform();
                 if (flags.is(st_BoneMotion::flWorldOrient)){
                     Fmatrix 	parent;
                     Fmatrix 	inv_parent;
-                    if(parent_idx>-1){
-                        m_Source->GetBoneWorldTransform(parent_idx,t,motion,parent);
+                    if(PB){
+                        m_Source->GetBoneWorldTransform(PB->index,t,motion,parent);
                         inv_parent.invert(parent);
                     }else{
                         parent 		= Fidentity;
@@ -455,10 +446,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                     Fmatrix 	rot;
                     rot.setHPB	(-R.x,-R.y,-R.z);
                     mat.mul		(inv_parent,rot);
-                }else{
-                    mat.setHPB	(-R.x,-R.y,-R.z);
                 }
-
                 // apply global transform
                 if (B->IsRoot()){
                 	mGT.transform_tiny(T);

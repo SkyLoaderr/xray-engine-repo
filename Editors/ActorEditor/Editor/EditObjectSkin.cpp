@@ -97,9 +97,9 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
     	        p2.mad			(p1,d,(*b_it)->Length());
         	    DU.DrawLine		(p1,p2,c_joint);
             }
-            if ((*b_it)->ParentIndex()>-1){
+            if ((*b_it)->Parent()){
 		        Device.SetShader(Device.m_SelectionShader);
-				Fvector& p2 = lst[(*b_it)->ParentIndex()]->LTransform().c;
+				Fvector& p2 = (*b_it)->Parent()->LTransform().c;
         	    DU.DrawLine	(p1,p2,color_bone_link_color);
             }
 			if (fraBottomBar->miDrawBoneAxis->Checked){ 
@@ -114,13 +114,13 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             }
 			if (fraBottomBar->miDrawBoneShapes->Checked){ 
 		        Device.SetShader(Device.m_SelectionShader);
-                Fmatrix M 	= (*b_it)->LTransform();
-                M.mulA		(parent);
+                Fmatrix mat	= M;
+                mat.mulA	(parent);
                 u32 c 		= (*b_it)->flags.is(CBone::flSelected)?0x80ffffff:0x300000ff;
                 switch ((*b_it)->shape.type){
-                case SBoneShape::stBox: 	DU.DrawOBB		(M,(*b_it)->shape.box,c);	break;
-                case SBoneShape::stSphere:	DU.DrawSphere   (M,(*b_it)->shape.sphere,c);break;
-                case SBoneShape::stCylinder:DU.DrawCylinder (M,(*b_it)->shape.cylinder.m_center,(*b_it)->shape.cylinder.m_direction,(*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius,c);break;
+                case SBoneShape::stBox: 	DU.DrawOBB		(mat,(*b_it)->shape.box,c);	break;
+                case SBoneShape::stSphere:	DU.DrawSphere   (mat,(*b_it)->shape.sphere,c);break;
+                case SBoneShape::stCylinder:DU.DrawCylinder (mat,(*b_it)->shape.cylinder.m_center,(*b_it)->shape.cylinder.m_direction,(*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius,c);break;
                 }
             }
         }
@@ -345,9 +345,7 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
 		FaceVec& _faces		= MESH->GetFaces();
         for (FaceIt f_it=_faces.begin(); f_it!=_faces.end(); f_it++){
-            st_Face& face 	= *f_it;
             for (int k=0; k<3; k++){
-                st_FaceVert& 	fv = face.pv[k];
                 st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
 		        bone_points[sv.bone0].push_back(sv.offs0);       
 //		        if (sv.bone1!=-1) bone_points[sv.bone1].push_back(sv.offs1);

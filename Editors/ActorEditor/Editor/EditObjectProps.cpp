@@ -58,19 +58,19 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 }
 //---------------------------------------------------------------------------
 
-AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone)
+AnsiString MakeFullBoneName(CBone* bone)
 {
-	if ((bone->ParentIndex()!=-1)){
-    	return MakeFullBoneName(lst,lst[bone->ParentIndex()])+"\\"+bone->Name();
+	if (bone->Parent()){
+    	return MakeFullBoneName(bone->Parent())+"\\"+bone->Name();
     }else{
     	return bone->Name();
     }
 }
 
-AnsiString MakeFullBonePath(BoneVec& lst, CBone* bone)
+AnsiString MakeFullBonePath(CBone* bone)
 {
-	if ((bone->ParentIndex()!=-1)){
-    	return MakeFullBoneName(lst,lst[bone->ParentIndex()]);
+	if (bone->Parent()){
+    	return MakeFullBoneName(bone->Parent());
     }else{
     	return "";
     }
@@ -90,7 +90,7 @@ void CEditableObject::FillBoneList(LPCSTR pref, ListItemsVec& items, int modeID)
     BoneVec& b_lst 		= Bones();
 	if (pref) LHelper.CreateItem(items, pref, modeID, ListItem::flSorted);
     for(BoneIt b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++){
-    	AnsiString pt	= MakeFullBonePath(b_lst,*b_it);
+    	AnsiString pt	= MakeFullBonePath(*b_it);
     	LPCSTR path		= pt.IsEmpty()?pref:FHelper.PrepareKey(pref, pt.c_str());
         LHelper.CreateItem(items, FHelper.PrepareKey(path, (*b_it)->Name()), modeID, 0, *b_it);
     }

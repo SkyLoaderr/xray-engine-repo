@@ -440,7 +440,7 @@ void CActorTools::ChangeAction(EAction action)
     fraTopBar->ChangeAction(m_Action);
 }
 
-extern AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone);
+extern AnsiString MakeFullBoneName(CBone* bone);
 bool __fastcall CActorTools::MouseStart(TShiftState Shift)
 {
 	switch(m_Action){
@@ -449,7 +449,7 @@ bool __fastcall CActorTools::MouseStart(TShiftState Shift)
         case emBone:{
 	        CBone* B 	= m_pEditObject->PickBone(UI.m_CurrentRStart,UI.m_CurrentRNorm,m_AVTransform);
             bool bVal 	= B?Shift.Contains(ssAlt)?false:(Shift.Contains(ssCtrl)?!B->Selected():true):false;
-            SelectListItem(BONES_PREFIX,B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0,bVal,Shift.Contains(ssCtrl)||Shift.Contains(ssAlt),true);
+            SelectListItem(BONES_PREFIX,B?MakeFullBoneName(B).c_str():0,bVal,Shift.Contains(ssCtrl)||Shift.Contains(ssAlt),true);
         }break;
         }
     return false;
@@ -494,7 +494,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
         break;
         case emBone:	
 			if (Shift.Contains(ssCtrl))
-        		OnBoneModified();		
+        		OnBoneModified();
         break;
         }
     }break;
@@ -583,6 +583,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                 }else{
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->BoneRotate(m_RotateVector,amount);
+	            	RefreshSubProperties();
                 }
             }
         }break;

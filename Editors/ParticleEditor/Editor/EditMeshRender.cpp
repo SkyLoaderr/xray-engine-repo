@@ -291,7 +291,7 @@ void CEditableMesh::RenderSkeleton(const Fmatrix& parent, CSurface* S)
                 pv->P.lerp		(P0,P1,SV.w);
                 pv->N.lerp		(N0,N1,SV.w);
                 pv->uv.set		(SV.uv);
-            }else{
+            }else{                 
                 Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->LTransform();
                 M0.transform_tiny(pv->P,SV.offs0);
                 M0.transform_dir (pv->N,SV.norm0);

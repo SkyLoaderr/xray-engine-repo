@@ -178,14 +178,14 @@ bool CEditableObject::Load(IReader& F){
                 O->close();
             }
             B_CHUNK->close();
-            UpdateBoneParenting();
+            PrepareBones();
         }else if (F.find_chunk(EOBJ_CHUNK_BONES)){
             m_Bones.resize(F.r_u32());
             for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
                 *b_it = xr_new<CBone>();
                 (*b_it)->Load_0(F);
             }
-            UpdateBoneParenting();
+            PrepareBones();
         }
 
         // skeleton motions

@@ -152,7 +152,7 @@ void CEditableMesh::GenerateSVertices()
 	if (!m_Parent->IsSkeleton()) return;
 
     CSMotion* active_motion=m_Parent->ResetSAnimation();
-    m_Parent->CalculateAnimation(true);
+    m_Parent->CalculateAnimation(0,true);
 	m_SVertices.resize(m_Faces.size()*3);
 
     // generate normals

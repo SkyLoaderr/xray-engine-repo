@@ -62,7 +62,7 @@ void CEditableObject::OnFrame()
         }else{
 		    //for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
         }
-        CalculateAnimation();
+        CalculateAnimation(m_ActiveSMotion);
     }
 }
 #endif
@@ -71,7 +71,7 @@ void CEditableObject::GotoBindPose()
 {
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
-    CalculateAnimation();
+    CalculateAnimation(0);
 #ifdef _EDITOR
     UI.RedrawScene();
 #endif
@@ -88,49 +88,63 @@ CSMotion* CEditableObject::ResetSAnimation(bool bGotoBindPose)
 //----------------------------------------------------
 // Skeletal motion
 //----------------------------------------------------
-void CEditableObject::CalculateAnimation(bool bGenInvMat)
+static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRest)
 {
-    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        Flags8 flags; flags.zero();
-        if (m_ActiveSMotion) flags = m_ActiveSMotion->GetMotionFlags(b_it-m_Bones.begin());
-//        else if (bGenInvMat) flag = m_SMotions[0]->GetMotionFlag(b_it-m_Bones.begin());
-        Fmatrix& M = (*b_it)->MTransform();
-        Fmatrix& L = (*b_it)->LTransform();
-        Fmatrix& parent = ((*b_it)->ParentIndex()>-1)?m_Bones[(*b_it)->ParentIndex()]->LTransform():Fidentity;
-        const Fvector& r = (*b_it)->Rotate();
-        if (flags.is(st_BoneMotion::flWorldOrient)){
-	        M.setHPB(-r.x,-r.y,-r.z);
-            M.c.set((*b_it)->Offset());
-			L.mul(parent,M);
-            L.i.set(M.i);
-            L.j.set(M.j);
-            L.k.set(M.k);
-        }else{
-            M.setHPB(-r.x,-r.y,-r.z);
-            M.c.set((*b_it)->Offset());
-            L.mul(parent,M);
+    Flags8 flags; flags.zero();
+    if (motion) flags = motion->GetMotionFlags(bone->index);
+    
+    CBone* parent_bone = bone->Parent();
+
+    if (parent_bone&&!parent_bone->flags.is(CBone::flCalculate))
+	    Calculate(parent_bone,motion,bCalcInv,bCalcRest); 
+
+    Fmatrix& M 		= bone->MTransform();
+    Fmatrix& L 		= bone->LTransform();
+    Fmatrix& parent = parent_bone?parent_bone->LTransform():Fidentity;
+    
+    const Fvector& r = bone->Rotate();
+    if (flags.is(st_BoneMotion::flWorldOrient)){
+        M.setHPB	(-r.x,-r.y,-r.z);
+        M.c.set		(bone->Offset());
+        L.mul		(parent,M);
+        L.i.set		(M.i);
+        L.j.set		(M.j);
+        L.k.set		(M.k);
+		if (parent_bone){ 
+            M.setHPB	(r.x,r.y,r.z);
+            M.c.set		(bone->Offset());
+        	M.mulA	(parent_bone->LITransform());
         }
-/*
-        {
-            ELog.Msg(mtInformation,"A: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
-                        M.i.x,M.i.y,M.i.z,M._14_,
-                        M.j.x,M.j.y,M.j.z,M._24_,
-                        M.k.x,M.k.y,M.k.z,M._34_,
-                        M.c.x,M.c.y,M.c.z,M._44_);
-        }
-        if (m_ActiveSMotion){
-			GetBoneWorldTransform(b_it-m_Bones.begin(),m_SMParam.Frame(),m_ActiveSMotion,M);
-    	    {
-        	    ELog.Msg(mtInformation,"B: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
-            	            M.i.x,M.i.y,M.i.z,M._14_,
-                	        M.j.x,M.j.y,M.j.z,M._24_,
-                    	    M.k.x,M.k.y,M.k.z,M._34_,
-                        	M.c.x,M.c.y,M.c.z,M._44_);
-	        }
-        }
-*/
-        if (bGenInvMat) (*b_it)->LITransform().invert((*b_it)->LTransform());
+    }else{
+        M.setHPB	(-r.x,-r.y,-r.z);
+        M.c.set		(bone->Offset());
+        L.mul		(parent,M);
     }
+	if (bCalcInv) bone->LITransform().invert(L);
+    if (bCalcRest){
+	    Fmatrix& parent 	= parent_bone?parent_bone->RTransform():Fidentity;
+	    const Fvector& r 	= bone->get_rest_rotate();
+    	Fmatrix& R			= bone->RTransform();
+        R.setHPB			(r.x,r.y,r.z);
+        R.c.set				(bone->get_rest_rotate());
+    	bone->RITransform().invert(bone->RTransform());
+    }
+    bone->flags.set(CBone::flCalculate,TRUE);
+}
+
+void CEditableObject::CalculateAnimation(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRest)
+{
+	Calculate(bone,motion,bCalcInv,bCalcRest);
+    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+		(*b_it)->flags.set(CBone::flCalculate,FALSE);
+}
+
+void CEditableObject::CalculateAnimation(CSMotion* motion, bool bCalcInv, bool bCalcRest)
+{
+    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+		if (!(*b_it)->flags.is(CBone::flCalculate)) Calculate(*b_it,motion,bCalcInv,bCalcRest);
+    for(b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+		(*b_it)->flags.set(CBone::flCalculate,FALSE);
 }
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot)
@@ -259,13 +273,15 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
     strlwr(buffer);
 }
 
-void CEditableObject::UpdateBoneParenting()
+void CEditableObject::PrepareBones()
 {
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        BoneIt parent=std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->Parent()));
-        (*b_it)->ParentIndex()=(parent==m_Bones.end())?-1:parent-m_Bones.begin();
+        (*b_it)->index 		= b_it-m_Bones.begin();
+        BoneIt parent		= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
+        (*b_it)->parent 	= (parent==m_Bones.end())?0:*parent;
     }
+    CalculateAnimation		(0,false,true);
 }
 
 CBone* CEditableObject::FindBoneByName(const char* name)
@@ -312,7 +328,7 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
     int idx	= bone_idx;
     matrix.identity();
     IntVec lst;
-    do{ lst.push_back(idx); }while((idx=m_Bones[idx]->ParentIndex())>-1);
+    do{ lst.push_back(idx); }while((idx=m_Bones[idx]->Parent()?m_Bones[idx]->Parent()->index:-1)>-1);
     for (int i=lst.size()-1; i>=0; i--){
     	idx = lst[i];
 	    Flags8 flags	= motion->GetMotionFlags(idx);
