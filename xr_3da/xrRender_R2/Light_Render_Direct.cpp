@@ -21,8 +21,8 @@ void	CLight_Render_Direct::Create		()
 
 void	CLight_Render_Direct::Destroy		()
 {
-	Device.Shader.DeleteGeom	(g_combine);
-	Device.Shader.Delete		(s_combine_dbg_Position);
+	Device.Shader.DeleteGeom	(g_debug);
+	Device.Shader.Delete		(s_debug);
 	Device.Shader._DeleteRT		(rt_smap);
 	_RELEASE					(rt_ZB);
 }

@@ -78,7 +78,7 @@ void	CLight_Render_Direct::compute_xf_1	()
 	bb.get_CD				(bbc,bbd);
 
 	// L_project
-	float				d	= 2*p_FAR/cosf(p_FOV/2);	
+	float				d	= 2*DSM_distance/cosf(p_FOV/2);	
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
 	D3DXMatrixOrthoLH		((D3DXMATRIX*)&L_project,dx,dy,1.f,10);
