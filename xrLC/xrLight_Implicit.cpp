@@ -307,7 +307,7 @@ void CBuild::ImplicitLighting()
 		Progress					(0);
 		Fbox2 bounds;
 		defl.Bounds_Summary			(bounds);
-		ImplicitHash.initialize		(bounds);
+		ImplicitHash.initialize		(bounds,defl.faces.size());
 		for (DWORD fid=0; fid<defl.faces.size(); fid++)
 		{
 			Face* F				= defl.faces[fid];
@@ -389,4 +389,7 @@ void CBuild::ImplicitLighting()
 		_FREE(markup)
 		*/
 	}
+
+	ImplicitHash.clear	();
+	calculator.clear	();
 }
