@@ -90,6 +90,8 @@ class "action_wait" (action_base)
 --------
 function action_wait:__init (name, storage) super (nil, name)
     self.st = storage
+    self.was_reset  = false
+    self:reset_scheme()
 end
 --------
 function action_wait:initialize ()
@@ -98,10 +100,22 @@ end
 --------
 function action_wait:execute ()
     action_base.execute (self)
+    if not self.was_reset then
+       self:reset_scheme ()
+    end
+    
 end
 --------
 function action_wait:finalize ()
     action_base.finalize (self)
+end
+--------
+function action_wait:reset_scheme ()
+    self.was_reset = true
+end
+--------
+function action_wait:activate_scheme ()
+    self.was_reset = false
 end
 -----------------------------------------------------------------------------------
 
@@ -326,6 +340,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_effect           (world_property (properties["attendant_leader"], true))
     manager:add_action (operators["attendant_wait"], action)
     military_radio.add (npc, action)
+   	xr_logic.subscribe_action_for_events (npc, storage, action)
 
     action = this.action_follow ("attendant_follow", storage)
     action:add_precondition     (world_property (stalker_ids.property_alive, true))
@@ -335,6 +350,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_effect           (world_property (properties["attendant_follow"], false))
     manager:add_action (operators["attendant_follow"], action)
     military_radio.add (npc, action)
+   	xr_logic.subscribe_action_for_events (npc, storage, action)
     
     --xr_logic.subscribe_action_for_events (npc, storage, action)
     
