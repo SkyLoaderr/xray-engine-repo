@@ -46,7 +46,7 @@ void CSHCompilerTools::RealUpdateProperties()
         PHelper().CreateFlag32	(items, "Flags\\OptimizeUV",	&L.m_Flags,   	Shader_xrLC::flOptimizeUV);
         PHelper().CreateFlag32	(items, "Flags\\Vertex light",	&L.m_Flags,   	Shader_xrLC::flLIGHT_Vertex);
         PHelper().CreateFlag32	(items, "Flags\\Cast shadow",	&L.m_Flags,   	Shader_xrLC::flLIGHT_CastShadow);
-        PHelper().CreateFlag32	(items, "Flags\\Sharp",			&L.m_Flags,   	Shader_xrLC::flLIGHT_Sharp);
+//.		PHelper().CreateFlag32	(items, "Flags\\Sharp",			&L.m_Flags,   	Shader_xrLC::flLIGHT_Sharp);
     }
     Ext.m_ItemProps->AssignItems		(items);
     Ext.m_ItemProps->SetModifiedEvent	(TOnModifiedEvent().bind(this,&CSHCompilerTools::Modified));
