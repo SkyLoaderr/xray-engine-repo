@@ -35,43 +35,56 @@ public:
 
 		edge_info(		edge_info(unsigned int D) : target(D) { }
 ge_info*, 6> edge_list;
-	MxBlock<edge_list> edge_links;	//il 1 per vertex
+	MxBlock<edge_list> edge_links;	// 1 per vertex
 	MxBlock<MxQuadric*> __quadrics;	// 1 per vertex
 
 	void				mark_face				(MxFaceID, float err);
 	//
-	// Temporary variables used 	MxVertexList star, star2;
-	MxPairContraction conx_tmp;
-il	conx_tmp;
-	unsigned int compute_dimension(MxStdModel *);
-	void pack_to_vector(MxVertexID, MxVector&);
-	void unpack_from_vector(MxVertexID, MxVector&);
-	unsigned int prop_count();
-	void pack_prop_to_vector(MxVertexID, MxVector&, unsigned int);
-	void unpack_prop_from_vector(MxVertexID, MxVector&, unsigned int);
-il	void compute_face_quadric(MxFaceID, MxQuadric&);
-	void collect_quadrics();
-il	void create_edge(MxVertexID, MxVertexID);
-	void collect_edges();
-	void constrain_boundaries();
-	void discontinuity_constraint(MxVertexID, MxVertexID, const MxFaceList&);
-	void compute_edge_info(edge_info *);
-	void finalize_edge_update(edge_info *);
-	void compute_target_placement(edge_info *);
-il	void apply_contraction(const MxPairContraction&, edge_info *);
-	void update_pre_contract(const MxPairContraction&);
-raction&);	bool will_decouple_quadrics;
-raction&);	MxPropSlim(MxStdModel *);
-il	unsigned int dim() const { return D; }
-il	void consider_color(bool will=true);
-	void consider_texture(bool will=true);
-	void consider_normals(bool will=true);
-il	unsigned int quadric_count() const { return __quadrics.length(); }
-	MxQuadric&       quadric(unsigned int i)       { return *(__quadrics(i)); }
-	const MxQuadric& quadric(unsigned int i) const { return *(__quadrics(i)); }
-ilil	void initialize();
-	bool decimate(unsigned int, float max_error);
-ics(i)); }
+	// Temporary variables used by methods
+	MxVertexList		star, star2;
+	MxPairContraction	conx_tmp;
+protected:
+	unsigned int		compute_dimension		(MxStdModel *);
+	void				pack_to_vector			(MxVertexID, MxVector&);
+	void				unpack_from_vector		(MxVertexID, MxVector&);
+	unsigned int		prop_count				();
+	void				pack_prop_to_vector		(MxVertexID, MxVector&, unsigned int);
+	void				unpack_prop_from_vector	(MxVertexID, MxVector&, unsigned int);
+
+	void 				compute_face_quadric	(MxFaceID, MxQuadric&);
+	void 				collect_quadrics		();
+
+	void 				create_edge				(MxVertexID, MxVertexID);
+	void 				constrain_boundaries	();
+	void 				discontinuity_constraint(MxVertexID, MxVertexID, MxFaceID);
+	void 				discontinuity_constraint(MxVertexID, MxVertexID, const MxFaceList&);
+	void 				compute_edge_info		(edge_info *);
+	void 				finalize_edge_update	(edgat *vnew);
+	void 				compute_target_placement(edge_info *);
+
+	void 				apply_contraction		(const MxPairContraction&, edge_info *);
+	void				update_pre_contract		(const MxPairContraction&);
+
+public:
+	bool				will_decouple_quadrics;
+public:
+						MxPropSlim				(MxStdModel *);
+
+	void				initialize				();
+
+	void				collect_edges			();
+	void				constraint_manual		(MxVertexID, MxVertexID, Mx	bool				decimate				(unsigned int, float max_error);
+params=0);
+
+	unsigned int		dim						() const { return D; }
+
+	void				consider_color			(bool will=true);
+	void				consider_texture		(bool will=true);
+	void				consider_normals		(bool will=true);
+
+	unsigned int		quadric_count			() const { return __quadrics.length(); }
+	MxQuadric&			quadric					(unsigned int i)       { return *(__quadrics(i)); }
+	const MxQuadric&	quadric					(unsigned int i) const { return *(__quadrics(i)); }
 };
 
 // MXPROPSLIM_INCLUD

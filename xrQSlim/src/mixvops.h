@@ -25,6 +25,8 @@
 
  ************************************************************************/
 
+#include "MxDefines.h"
+
 #ifdef MIXVOPS_DEFAULT_DIM
 #  define __DIM const int N=MIXVOPS_DEFAULT_DIM
 #else

@@ -22,25 +22,9 @@
 // characters.  Unfortunately, this may limit the debugability of
 // code that uses STL.
 #pragma warning (disable : 4786)
-
-#include <cstdlib>
-#include <cmath>
-#include <climits>
-//#include <iostream>
 #endif
 
-////////////////////////////////////////////////////////////////////////
-//
-//
-//
-
-const double FEQ_EPS = 1e-6;
-const double FEQ_EPS2 = 1e-12;
-
-inline bool  FEQ(double a, double b, double e=FEQ_EPS)  {return _abs(a-b)<e;}
-inline bool FEQ2(double a, double b, double e=FEQ_EPS2) {return _abs(a-b)<e;}
-
-inline bool streq(const char *a, const char *b) { return !strcmp(a,b); }
+inline bool streq(const char *a, const char *b) { return !xr_strcmp(a,b); }
 
 // STDMIX_INCLUDED
 #endif

@@ -14,7 +14,7 @@
 static
 void symmetric_subfrom(MxMatrix& A, const MxVector& a, const MxVector& b)
 {
-    for(int i=0; i<A.dim(); i++)  for(int j=0; j<A.dim(); j++)
+    for(unsigned int i=0; i<A.dim(); i++)  for(unsigned int j=0; j<A.dim(); j++)
 	A(i,j) -= a[i]*b[j];
 }
 

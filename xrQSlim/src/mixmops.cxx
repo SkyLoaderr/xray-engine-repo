@@ -36,8 +36,8 @@ double internal_solve(double *_a, double *b, const int N)
     for (i=0; i<N; i++) {		/* eliminate in column i */
 	max = -1.0;
 	for (k=i; k<N; k++)		/* find pivot for column i */
-	    if (fabs(A(k, i)) > max) {
-		max = fabs(A(k, i));
+	    if (_abs(A(k, i)) > max) {
+		max = _abs(A(k, i));
 		j = k;
 	    }
 	if (max<=0.) return 0.0;	/* if no nonzero pivot, PUNT */
@@ -87,39 +87,39 @@ double internal_invert(double *_a, double *_b, const int N)
 
     /*---------- forward elimination ----------*/
 
-    for (i=0; i<N; i++)                 /* put identity matrix in B */
-        for (j=0; j<N; j++)
+    for (i=0; i<(unsigned int)N; i++)                 /* put identity matrix in B */
+        for (j=0; j<(unsigned int)N; j++)
             B(i, j) = (double)(i==j);
 
     det = 1.0;
-    for (i=0; i<N; i++) {               /* eliminate in column i, below diag */
+    for (i=0; i<(unsigned int)N; i++) {               /* eliminate in column i, below diag */
         max = -1.;
-        for (k=i; k<N; k++)             /* find pivot for column i */
-            if (fabs(A(k, i)) > max) {
-                max = fabs(A(k, i));
+        for (k=i; k<(unsigned int)N; k++)             /* find pivot for column i */
+            if (_abs(A(k, i)) > max) {
+                max = _abs(A(k, i));
                 j = k;
             }
         if (max<=0.) return 0.;         /* if no nonzero pivot, PUNT */
         if (j!=i) {                     /* swap rows i and j */
-            for (k=i; k<N; k++)
+            for (k=i; k<(unsigned int)N; k++)
                 SWAP(A(i, k), A(j, k), t);
-            for (k=0; k<N; k++)
+            for (k=0; k<(unsigned int)N; k++)
                 SWAP(B(i, k), B(j, k), t);
             det = -det;
         }
         pivot = A(i, i);
         det *= pivot;
-        for (k=i+1; k<N; k++)           /* only do elems to right of pivot */
+        for (k=i+1; k<(unsigned int)N; k++)           /* only do elems to right of pivot */
             A(i, k) /= pivot;
-        for (k=0; k<N; k++)
+        for (k=0; k<(unsigned int)N; k++)
             B(i, k) /= pivot;
         /* we know that A(i, i) will be set to 1, so don't bother to do it */
 
-        for (j=i+1; j<N; j++) {         /* eliminate in rows below i */
+        for (j=i+1; j<(unsigned int)N; j++) {         /* eliminate in rows below i */
             t = A(j, i);                /* we're gonna zero this guy */
-            for (k=i+1; k<N; k++)       /* subtract scaled row i from row j */
+            for (k=i+1; k<(unsigned int)N; k++)       /* subtract scaled row i from row j */
                 A(j, k) -= A(i, k)*t;   /* (ignore k<=i, we know they're 0) */
-            for (k=0; k<N; k++)
+            for (k=0; k<(unsigned int)N; k++)
                 B(j, k) -= B(i, k)*t;
         }
     }
@@ -129,7 +129,7 @@ double internal_invert(double *_a, double *_b, const int N)
     for (i=N-1; i>0; i--) {             /* eliminate in column i, above diag */
         for (j=0; j<i; j++) {           /* eliminate in rows above i */
             t = A(j, i);                /* we're gonna zero this guy */
-            for (k=0; k<N; k++)         /* subtract scaled row i from row j */
+            for (k=0; k<(unsigned int)N; k++)         /* subtract scaled row i from row j */
                 B(j, k) -= B(i, k)*t;
         }
     }
@@ -147,9 +147,9 @@ float mxm_invert(float *r, const float *a, const int N)
     mxm_local_block(r2, double, N);
 
     unsigned int i;
-    for(i=0; i<N*N; i++) a2[i] = a[i];
-    float det = internal_invert(a2, r2, N);
-    for(i=0; i<N*N; i++) r[i] = r2[i];
+    for(i=0; i<(unsigned int)N*N; i++) a2[i] = a[i];
+    float det = (float)internal_invert(a2, r2, N);
+    for(i=0; i<(unsigned int)N*N; i++) r[i] = (float)r2[i];
 
     mxm_free_local(a2);
     mxm_free_local(r2);
@@ -198,7 +198,7 @@ int mxm_cholesky(double *U, const double *A, const int N)
 
 	if( sum > 0 )
 	{
-	    mxm_ref(U, i, i, N) = sqrt(sum);
+	    mxm_ref(U, i, i, N) = _sqrt(sum);
 
 	    /* Now find elements U[i][k], k > i. */
 	    for(int k=(i+1); k<N; k++)

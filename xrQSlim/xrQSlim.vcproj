@@ -136,6 +136,9 @@
 				RelativePath=".\src\MxBlock2.h">
 			</File>
 			<File
+				RelativePath=".\src\MxDefines.h">
+			</File>
+			<File
 				RelativePath=".\src\MxGeom3D.cxx">
 			</File>
 			<File

@@ -9,6 +9,7 @@
  ************************************************************************/
 
 #include "stdmix.h"
+#include "MxDefines.h"
 #include "MxQMetric3.h"
 
 #include "MxMat2.h"

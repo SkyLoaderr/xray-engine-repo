@@ -325,7 +325,7 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 		//        if( ratio*cmin_before > cmin_after ) apply penalty;
 		//
 		if( c_min < compactness_ratio ) 
-			_scale += ((compactness_ratio-c_min)/compactness_ratio);
+			_scale += float((compactness_ratio-c_min)/compactness_ratio);
 		// bias += (1-c_min);
 	}
 
@@ -336,7 +336,7 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 		bias += meshing_penalty;
 #endif
 
-	info->heap_key( (base_error-EDGE_BASE_ERROR)*_scale - bias);
+	info->heap_key(float((base_error-EDGE_BASE_ERROR)*_scale - bias));
 //	info->heap_key(float(base_error - bias));
 }
 

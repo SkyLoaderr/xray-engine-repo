@@ -73,7 +73,7 @@ MxVertexID MxBlockModel::add_vertex(float x, float y, float z)
 
 void MxBlockModel::remove_vertex(MxVertexID v)
 {
-    VERIFY( v < vertices.length() );
+    VERIFY( v < (unsigned int)vertices.length() );
 
     free_vertex(v);
     vertices.remove(v);
@@ -84,7 +84,7 @@ void MxBlockModel::remove_vertex(MxVertexID v)
 
 void MxBlockModel::remove_face(MxFaceID f)
 {
-    VERIFY( f < faces.length() );
+    VERIFY( f < (unsigned int)faces.length() );
 
     free_face(f);
     faces.remove(f);

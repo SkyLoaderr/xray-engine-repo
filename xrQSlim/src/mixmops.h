@@ -25,7 +25,7 @@
 #  define __T double
 #endif
 
-#define forall(i, N) for(unsigned int i=0; i<N*N; i++)
+#define forall(i, N) for(unsigned int i=0; i<(unsigned int)N*N; i++)
 
 
 #define def3(name, op) inline __T *name(__T *r, const __T *a, const __T *b, __DIM) { forall(i,N) op; return r; }
@@ -63,17 +63,17 @@ inline const __T *mxm_row(const __T *A, unsigned int i, __DIM) { return A + i*N;
 inline __T *mxm_identity(__T *A, __DIM)
 {
     mxm_set(A, 0.0, N);
-    for(unsigned int i=0; i<N; i++) mxm_ref(A, i, i, N) = 1.0;
+    for(unsigned int i=0; i<(unsigned int)N; i++) mxm_ref(A, i, i, N) = 1.0;
     return A;
 }
 
 inline __T *mxm_xform(__T *r, const __T *A, const __T *x, __DIM)
 {
     const __T *a = A;
-    for(unsigned int i=0; i<N; i++)
+    for(unsigned int i=0; i<(unsigned int)N; i++)
     {
 	r[i] = 0.0;
-	for(unsigned int j=0; j<N; j++)
+	for(unsigned int j=0; j<(unsigned int)N; j++)
 	    r[i] += (*a++) * x[j];
     }
     return r;
@@ -87,7 +87,7 @@ inline __T *mxm_xform(__T *r, const __T *A, const __T *x, __DIM)
 //
 inline __T *mxm_outerprod(__T *A, const __T *u, const __T *v, __DIM)
 {
-    for(unsigned int i=0; i<N; i++) for(unsigned int j=0; j<N; j++)
+    for(unsigned int i=0; i<(unsigned int)N; i++) for(unsigned int j=0; j<(unsigned int)N; j++)
 	mxm_ref(A, i, j, N) = u[i] * v[j];
     return A;
 }
@@ -96,9 +96,9 @@ inline __T *mxm_mul(__T *r, const __T *a, const __T *b, __DIM)
 {
     mxm_set(r, 0.0, N);
 
-    for(unsigned int i=0; i<N; i++) for(unsigned int j=0; j<N; j++)
+    for(unsigned int i=0; i<(unsigned int)N; i++) for(unsigned int j=0; j<(unsigned int)N; j++)
     {
-	for(unsigned int k=0; k<N; k++)
+	for(unsigned int k=0; k<(unsigned int)N; k++)
 	    mxm_ref(r, i, j, N) += mxm_ref(a, i, k, N) * mxm_ref(b, k, j, N);
     }
 

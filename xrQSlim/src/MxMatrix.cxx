@@ -35,8 +35,8 @@ static double internal_invert(MxMatrix& A, MxMatrix& B)
     for (i=0; i<N; i++) {               /* eliminate in column i, below diag */
         max = -1.;
         for (k=i; k<N; k++)             /* find pivot for column i */
-            if (fabs(A(k, i)) > max) {
-                max = fabs(A(k, i));
+            if (_abs(A(k, i)) > max) {
+                max = _abs(A(k, i));
                 j = k;
             }
         if (max<=0.) return 0.;         /* if no nonzero pivot, PUNT */

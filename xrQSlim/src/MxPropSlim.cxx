@@ -145,9 +145,9 @@ void MxPropSlim::unpack_from_vector(MxVertexID id, MxVector& v)
 	VERIFY( v.dim() == D );
 	VERIFY( id < m->vert_count() );
 
-	m->vertex(id)[0] = v[0];
-	m->vertex(id)[1] = v[1];
-	m->vertex(id)[2] = v[2];
+	m->vertex(id)[0] = (float)v[0];
+	m->vertex(id)[1] = (float)v[1];
+	m->vertex(id)[2] = (float)v[2];
 
 	unsigned int i = 3;
 	if( use_color )
@@ -155,17 +155,17 @@ void MxPropSlim::unpack_from_vector(MxVertexID id, MxVector& v)
 		CLAMP(v[i], 0, 1);
 		CLAMP(v[i+1], 0, 1);
 		CLAMP(v[i+2], 0, 1);
-		m->color(id).set(v[i], v[i+1], v[i+2]);
+		m->color(id).set((float)v[i], (float)v[i+1], (float)v[i+2]);
 		i += 3;
 	}
 	if( use_texture )
 	{
-		m->texcoord(id)[0] = v[i++];
-		m->texcoord(id)[1] = v[i++];
+		m->texcoord(id)[0] = (float)v[i++];
+		m->texcoord(id)[1] = (float)v[i++];
 	}
 	if( use_normals )
 	{
-		float n[3];  n[0]=v[i++];  n[1]=v[i++];  n[2]=v[i++];
+		float n[3];  n[0]=(float)v[i++];  n[1]=(float)v[i++];  n[2]=(float)v[i++];
 		mxv_unitize(n, 3);
 		m->normal(id).set(n[0], n[1], n[2]);
 	}
@@ -175,9 +175,9 @@ void MxPropSlim::unpack_prop_from_vector(MxVertexID id,MxVector& v,unsigned int 
 {
 	if( target == 0 )
 	{
-		m->vertex(id)[0] = v[0];
-		m->vertex(id)[1] = v[1];
-		m->vertex(id)[2] = v[2];
+		m->vertex(id)[0] = (float)v[0];
+		m->vertex(id)[1] = (float)v[1];
+		m->vertex(id)[2] = (float)v[2];
 		return;
 	}
 
@@ -188,7 +188,7 @@ void MxPropSlim::unpack_prop_from_vector(MxVertexID id,MxVector& v,unsigned int 
 	{
 		if( target == 0 )
 		{
-			m->color(id).set(v[i], v[i+1], v[i+2]);
+			m->color(id).set((float)v[i], (float)v[i+1], (float)v[i+2]);
 			return;
 		}
 		i+=3;
@@ -198,8 +198,8 @@ void MxPropSlim::unpack_prop_from_vector(MxVertexID id,MxVector& v,unsigned int 
 	{
 		if( target == 0 )
 		{
-			m->texcoord(id)[0] = v[i];
-			m->texcoord(id)[1] = v[i+1];
+			m->texcoord(id)[0] = (float)v[i];
+			m->texcoord(id)[1] = (float)v[i+1];
 			return;
 		}
 		i += 2;
@@ -209,7 +209,7 @@ void MxPropSlim::unpack_prop_from_vector(MxVertexID id,MxVector& v,unsigned int 
 	{
 		if( target == 0 )
 		{
-			float n[3];  n[0]=v[i];  n[1]=v[i+1];  n[2]=v[i+2];
+			float n[3];  n[0]=(float)v[i];  n[1]=(float)v[i+1];  n[2]=(float)v[i+2];
 			mxv_unitize(n, 3);
 			m->normal(id).set(n[0], n[1], n[2]);
 			return;
@@ -294,9 +294,6 @@ void MxPropSlim::initialize()
 	if( boundary_weight > 0.0 )
 		constrain_boundaries();
 
-
-		collect_edges();
-
 	is_initialized = true;
 }
 
@@ -332,7 +329,7 @@ r(MxV		else
 
 	//     if( weight_by_area )
 	// 	err / Q.area();
-	info->heap_key(-err);
+	info->heap_key(float(-err));
 );
 }bool MxPropSlim::decimate(unsigned int target, float max_error)
 s)
@@ -352,13 +349,15 @@ s)
 
 		if( m->vertex_is_valid(v1) && m->vertex_is_valid(v2) ){
 			m->compute_contraction				(v1, v2, &conx);
-et			conx.dv1[0] = info->target[0] - m->vertex(v1)[0];
-			conx.dv1[1] = info->target[1] - m->vertex(v1)[1];
-			conx.dv1[2] = info->target[2] - m->vertex(v1)[2];
-			conx.dv2[0] = info->target[0] - m->vertex(v2)[0];
-			conx.dv2[1] = info->target[1] - m->vertex(v2)[1];
-			conx.dv2[2] = info->target[2] - m->vertex(v2)[2];
-o);
+et[0] - m->vertex(v1)[0]);
+			conx.dv1[1] = float(info->target[1] - m->vertex(v1)[1]);
+			conx.dv1[2] = float(info->target[2] - m->vertex(v1)[2]);
+			conx.dv2[0] = float(info->target[0] - m->vertex(v2)[0]);
+			conx.dv2[1] = float(info->target[1] - m->vertex(v2)[1]);
+			conx.dv2[2] = float(info->target[2] - m->vertex(v2)[2]);
+
+			if( contraction_callback )
+		o);
 
 			const MxFaceList& N2			= conx.delta_faces;
 			for (u32 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++)
@@ -381,7 +380,21 @@ void MxPropSlim::mark_face(MxFaceID id, float err)
 {
 	MxFace& F = m->face(id);
 
-	.add(info);
+	unsigned int i;
+	for(i=0; i<(unsigned int)edge_links(F.v[0]).length(); i++)
+		aaaa(edge_links(F.v[0])[i],F[1],F[2]);
+	for(i=0; i<(unsigned int)edge_links(F.v[1]).length(); i++)
+		aaaa(edge_links(F.v[1])[i],F[0],F[2]);
+	for(i=0; i<(unsigned int)edge_links(F.v[2]).length(); i++)
+		aaaa(edge_links(F.v[2])[i],F[0],F[1]);
+}
+
+
+
+/////////////////////////////////////////////////////////////////// xr_new<edge_info>(dim());
+
+	edge_links(i).add(info);
+	edge_links(j).add(info);
 
 	info->v1 = i;
 	info->v2 = j;
@@ -389,27 +402,10 @@ void MxPropSlim::mark_face(MxFaceID id, float err)
 	compute_edge_info(info);
 }
 
-void MxPropSlim::discontinuity_	for(unsigned int f=0; f<faces.length(); f++)
-
-		c		Vec3 org(m->vertex(i)), dest(m->vertex(j));
-		Vec3 e = dest - org;
-
-			Vec3 v1(m->vertex(m->face(faces(f))(0)));
-		Vec3 v2(m->vertex(m->face(faces(f))(1)));
-		Vec3 v3(m->vertex(m->face(faces(f))(2)));
-		Vec3 n = triangle_normal(v1,v2,v3);
-
-			Vec3 n2 = e ^ n;
-		unitize(n2);
-
-			MxQuadric3 Q3(n2, -(n2*org));
-		Q3 *= boundary_weight;
-
-			MxQuadric Q(Q3, dim());
-
-			quadric(i) += Q;
-		quadric(j) += Q;
-ertexID i;
+void MxPropSlim::discontinuity_constraint(MxVertexID i, MxVertexID j, MxFaceID f)
+{
+	Vec3 org(m->vertex(i)), dest(m->vertex(j));
+	Vec3 e ;
 	Vec3 n = triangle_normal(v1,v2,v3);
 
 	Vec3 n2 = e ^ n;
@@ -432,8 +428,9 @@ ertexID i;
 }
 
 void MxPropSlim::discontinuity_constraint(MxVertexID i, MxVertexID j,
-										  const Mx	for(unsigned int i=0; i<edge_links(conx.v1).length(); i++)
- f++)
+										  const MxFaceList& faces)
+{
+	for(unsigned int f=0; f<(unsigned int)faces.length(); f++)
 		discontinuity_constraint(i,j,faces[f]);
 }
 
@@ -449,8 +446,11 @@ void MxPropSlim::apply_contraction(const MxPairContraction& conx,
 	valid_faces -= conx.dead_faces.length();
 	quadric(conx.v1) += quadric(conx.v2);
 
-	update_pre_contract(conx);		for(unsigned int j=0; j<star.length(); j++)
-1, info->target);
+	update_pre_contract(conx);
+
+	m->apply_contraction(conx);
+
+	unpack_from_vector(conx.v1, info->target);
 
 	// Must update edge_info here so that the meshing penalties
 	// will be computed with respect to the new mesh rather than the old
@@ -460,8 +460,11 @@ void MxPropSlim::apply_contraction(const MxPairContraction& conx,
 
 
 
-//		for(unsigned int j=0; j<star.length(); j++)
-////////
+//
+
+	m->apply_contraction(conx);
+
+	unpack_from_vector(conx.v////////
 //
 // These were copied *unmodified* from MxEdgeQSlim
 // (with some unsupported features commented out).
@@ -506,8 +509,9 @@ th(); j++){
 
 void MxPropSlim::compute_edge_info(edge_info *info)
 {
-		for(i=0; i<edge_links(v2).length(); i++)
-lize_error )
+	compute_target_placement(info);
+
+	//     if( will_normalize_error )
 	//     {
 	//         double e_max = Q_max(info->vnew);
 	//         if( weight_by_area )

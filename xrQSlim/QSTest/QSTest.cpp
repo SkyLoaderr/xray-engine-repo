@@ -1,7 +1,7 @@
 #include "xrCore.h"
 
 #include "../src/MxStdModel.h"
-#include "../src/MxQSlim.h"
+#include "../src/MxPropSlim.h"
 
 #pragma comment(lib,"x:/xrCore.lib")
 
@@ -14,6 +14,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	FS._initialize	(CLocatorAPI::flTargetFolderOnly,"x:/import");
 
 	MxStdModel* m	= xr_new<MxStdModel>(100,100);
+/*
 	m->add_vertex	(-1,0,1);	// 0
 	m->add_vertex	(0,0,1);	// 1
 	m->add_vertex	(1,0,1);	// 2
@@ -32,7 +33,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	m->add_face		(6,4,7);
 	m->add_face		(7,4,5);
 	m->add_face		(7,5,8);
-/*
+//*/
 	m->add_vertex	(0,0,0);	// 0
 	m->add_vertex	(1,0,0);	// 1
 	m->add_vertex	(0,1,0);	// 2	
@@ -53,7 +54,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	m->add_face		(3,6,7);
 	m->add_face		(2,0,4);
 	m->add_face		(2,4,6);
-	m->color_binding('v');
+	m->color_binding(MX_PERVERTEX);
 	m->add_color	(0,0,0);
 	m->add_color	(1,0,0);
 	m->add_color	(0,1,0);
@@ -62,15 +63,15 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	m->add_color	(1,0,1);
 	m->add_color	(0,1,1);
 	m->add_color	(1,1,1);
-*/
-	MxEdgeQSlim* slim		= xr_new<MxEdgeQSlim>(m);
+
+	MxPropSlim* slim		= xr_new<MxPropSlim>(m);
 	slim->compactness_ratio	= 0.5f;
 	slim->initialize		();
 //	slim->constraint_manual	(0,3,0);
 //	slim->constraint_manual	(4,5,2);
 	slim->collect_edges		();
 
-	slim->decimate			(0,0.1f);
+	slim->decimate			(0,1.f);
 	m->compact_vertices		();
 
 	IWriter* W		= FS.w_open("x:/import/test.smf");

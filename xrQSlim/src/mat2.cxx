@@ -7,6 +7,7 @@
  ************************************************************************/
 
 #include "stdmix.h"
+#include "MxDefines.h"
 #include "mat2.h"
 
 Mat2 Mat2::I() { return Mat2(1,0,  0,1); }
