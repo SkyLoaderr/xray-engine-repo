@@ -286,6 +286,8 @@ protected:
 
 	//буфферный список
 	TIItemList l_subs; 
+
+	void		SendActionEvent		(s32 cmd, u32 flags);
 };
 
 
