@@ -43,7 +43,7 @@ void	CCustomItem::SetState(EItemState e)
 		bVisible = true;
 		break;
 	case esHidding:	
-		pSounds->Play3DAtPos(sndTake,vPosition);
+		pSounds->Play3DAtPos(sndTake,this,vPosition);
 		vScale.set(SM,SM,SM);
 		UpdateTransform();
 		bVisible = true;

@@ -34,13 +34,13 @@ void CCustomDoor::Load(CInifile* ini, const char * section)
 void CCustomDoor::Open(){
 	PKinematics(pVisual)->PlayCycle("open");
 	Fsphere& S = CFORM()->GetSphere();
-	pSounds->Play3DAtPos(sndOpenClose,S.P);
+	pSounds->Play3DAtPos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::Close(){
 	PKinematics(pVisual)->PlayCycle("close");
 	Fsphere& S = CFORM()->GetSphere();
-	pSounds->Play3DAtPos(sndOpenClose,S.P);
+	pSounds->Play3DAtPos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::OnMove()

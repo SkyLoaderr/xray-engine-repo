@@ -75,7 +75,7 @@ void CAI_Crow::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
-	pSounds->Play3DAtPos(S,vPosition);
+	pSounds->Play3DAtPos	(S,this,vPosition);
 }
 
 // when someone hit crow
@@ -104,7 +104,7 @@ void CAI_Crow::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
 	// Play sound
-	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
+	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
 // crow update

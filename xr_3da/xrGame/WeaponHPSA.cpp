@@ -35,7 +35,7 @@ void CWeaponHPSA::switch2_Fire	(BOOL bHUDView)
 }
 void CWeaponHPSA::switch2_Empty	(BOOL bHUDView)
 {
-	pSounds->Play3DAtPos(sndEmptyClick,vLastFP);
+	pSounds->Play3DAtPos(sndEmptyClick,this,vLastFP);
 }
 void CWeaponHPSA::OnEmptyClick	(BOOL bHUDView)
 {

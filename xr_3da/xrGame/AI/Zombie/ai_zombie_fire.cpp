@@ -89,7 +89,7 @@ void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
-	pSounds->Play3DAtPos(S,vPosition);
+	pSounds->Play3DAtPos	(S,this,vPosition);
 	
 	if (iHealth > 0) {
 		/**

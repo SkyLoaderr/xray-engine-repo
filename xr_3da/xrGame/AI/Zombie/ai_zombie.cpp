@@ -65,7 +65,7 @@ void CAI_Zombie::Death()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
-	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
+	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
 void CAI_Zombie::vfLoadSelectors(CInifile *ini, const char *section)

@@ -135,7 +135,7 @@ BOOL CCreator::Load(DWORD dwNum)
 			if (0==stricmp(fname,"ambient"))	continue;
 			Sounds.push_back	(sound3D());
 			pSounds->Create3D	(Sounds.back(),fname);
-			pSounds->Play3DAtPos(Sounds.back(),pos,true);
+			pSounds->Play3DAtPos(Sounds.back(),0,pos,true);
 		}
 		if (pLevel->LineExists("static_sounds","ambient"))
 		{
@@ -205,6 +205,6 @@ void CCreator::OnFrame	( void )
 		pos.normalize			();
 		pos.mul					(::Random.randF(10,50));
 		pos.add					(Device.vCameraPosition);
-		pSounds->Play3DAtPos	(Sounds_Random[::Random.randI(Sounds_Random.size())],pos,false);
+		pSounds->Play3DAtPos	(Sounds_Random[::Random.randI(Sounds_Random.size())],0,pos,false);
 	}
 }

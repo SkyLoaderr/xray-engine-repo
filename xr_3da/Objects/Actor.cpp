@@ -260,7 +260,7 @@ void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 	if (S.feedback) return;
 
 	// Play hit-sound
-	pSounds->Play3DAtPos(S,vPosition);
+	pSounds->Play3DAtPos(S,this,vPosition);
 
 	// hit marker
 	if (net_Local && (who!=this))	
@@ -278,7 +278,7 @@ void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
 void CActor::Die	( )
 {
 	// Play sound
-	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
+	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	cam_Set		(eacFreeLook);
 	g_fireEnd	();
 	bAlive		= FALSE;

@@ -248,8 +248,8 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 			bPending		= TRUE;
 			fTime			= 0;
 			// play start fire sound
-			pSounds->Play3DAtPos(sndFireStart,	vLastFP,false);
-			pSounds->Play3DAtPos(sndServo,		vLastFP,true);
+			pSounds->Play3DAtPos(sndFireStart,	this,vLastFP,false);
+			pSounds->Play3DAtPos(sndServo,		this,vLastFP,true);
 			break;
 		case eM134Brake:
 			// sound fire loop
@@ -257,8 +257,8 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 
 			// play end fire sound
 			if (st_current==eM134Fire)
-				pSounds->Play3DAtPos(sndFireEnd,vLastFP,false);
-			pSounds->Play3DAtPos(sndServo,vLastFP,true);
+				pSounds->Play3DAtPos	(sndFireEnd,this,vLastFP,false);
+			pSounds->Play3DAtPos	(sndServo,this,vLastFP,true);
 			break;
 		case eM134Idle:
 			bPending		= FALSE;
@@ -270,7 +270,7 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 			if (st_current==eM134Spinup)
 			{
 				m_pHUD->animPlay		(mhud_fire);
-				pSounds->Play3DAtPos	(sndFireLoop,vLastFP,true);
+				pSounds->Play3DAtPos	(sndFireLoop,this,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
 			break;
@@ -387,7 +387,7 @@ void CWeaponM134::Show			()
 void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
-	pSounds->Play3DAtPos		(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+	pSounds->Play3DAtPos		(sndRicochet[Random.randI(SND_RIC_COUNT)], H_Root(), vEnd,false);
 
 	// particles
 	Fvector N,D;
