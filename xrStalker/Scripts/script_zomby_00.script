@@ -26,6 +26,8 @@ function main()
 		if stalker1:see(actor) then
 			printf("script 2!")
 			flush()
+			stalker1:script	(false,this.script_name())
+			stalker1:script	(true,this.script_name())
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
@@ -37,6 +39,7 @@ function main()
 			wait(3000)			
 			prof_privet_hosh_potorgovat:play_at_pos		(stalker1,stalker1:position(),0);
 			wait(2000)			
+			stalker1:script	(false,this.script_name())
 			prof_zomby:play_at_pos						(stalker1,stalker1:position(),0);
 			break
 		end
@@ -45,6 +48,8 @@ function main()
 
 	while true do
 		if actor.health <= 0 and stalker1.health > 0 and stalker1:see(actor) then
+			stalker1:script	(false,this.script_name())
+			stalker1:script	(true,this.script_name())
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
