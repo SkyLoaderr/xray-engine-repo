@@ -16,6 +16,13 @@
 					- VLIGHT geom:	3*4(pos) + 4(norm)      + 2*4(tc0) + 4(diffuse.rgb + hemi)		= 28bytes = ~ideal
 		*	xrLC - hemisphere (R1)
 		*	wallmarks shouldn't use connectivity		( - 16 bytes per CFORM triangle)
+		*	уменьшить/палеттизировать level.details
+		*	точное освещение level.details
+		*	более точное освещение моделей
+		*	string-docking / sharing
+
+	bugs/features:
+		*	models/model_trans 			- черный
 
 ***[OLES]*** In progress:
 -------------------------
@@ -37,7 +44,7 @@
 			подумать насчет декомпрессии (кеш?непрерывная?при загрузке?)
 		*	#include in "system.ltx"
 
-***[???]*** TODO:		
+***[???]*** TODO:
 ---------------------------
 		new:
 		*	save material-translate table in xrLC and use in xr3DA (level_load.cpp) - u16(trans)-u32(global)-u16(index)
@@ -70,11 +77,9 @@
 
 		bugs/features:
 		* 	трава и лоды в Zoom-е
-		*	models/model_trans 			- черный
 		*	dynamic_cast<ISpatial>(this) в конструкторе
 
 		to think:
-		*	палеттизировать level.details ???
 		*	разрушаемые обьекты
 		* 	фонарик
 		*	освещение партиклов
