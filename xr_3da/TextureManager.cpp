@@ -292,24 +292,32 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	CBlender*	B		= _GetBlender	(s_shader);
 	CBlender_Recorder	Recorder		(&S);
 	B->Compile			(Recorder, L_textures, L_constants, L_matrices);
-
+	
 	// Search equal in shaders array
 	for (DWORD it=0; it<shaders.size(); it++)
 		if (S.equal(*(shaders[it])))	{
 			shaders[it]->dwReference	++;
 			return shaders[it];
 		}
-
-	// Create new entry
-	Shader*		N		= new Shader(S);
-	N->dwReference		= 1;
-	shaders.push_back	(N);
-	return N;
+		
+		// Create new entry
+		Shader*		N		= new Shader(S);
+		N->dwReference		= 1;
+		shaders.push_back	(N);
+		return N;
 }
 
 void CShaderManager::Delete(Shader* &S) 
 {
 	R_ASSERT		(S);
+	for (DWORD p=0; p<S->Passes.size(); p++)
+	{
+		CPass& P = S->Passes[p];
+		_DeleteCode			(P.dwStateBlock);
+		_DeleteTextureList	(P.T);
+		_DeleteMatrixList	(P.M);
+		_DeleteConstantList	(P.C);
+	}
 	S->dwReference	--;
 	S				= 0;
 }
@@ -329,14 +337,6 @@ void	CShaderManager::OnDeviceDestroy(void)
 			STextureList*		T = S.Passes.front().T;
 			if (T)	Device.Fatal	("Shader still referenced. Texture: %s",DBG_GetTextureName(T->front()));
 			else	Device.Fatal	("Shader still referenced.");
-		}
-		for (DWORD p=0; p<S.Passes.size(); p++)
-		{
-			CPass& P = S.Passes[p];
-			_DeleteCode			(P.dwStateBlock);
-			_DeleteTextureList	(P.T);
-			_DeleteMatrixList	(P.M);
-			_DeleteConstantList	(P.C);
 		}
 		_DELETE(shaders[it]);
 	}
