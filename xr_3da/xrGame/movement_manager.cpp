@@ -27,6 +27,7 @@ CMovementManager::~CMovementManager	()
 void CMovementManager::Init			()
 {
 	m_time_work						= 300*CPU::cycles_per_microsec;
+	m_speed							= 2.15f;
 	
 	set_enabled						(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
