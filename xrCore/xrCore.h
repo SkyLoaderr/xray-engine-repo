@@ -165,6 +165,7 @@ struct XRCORE_API xr_shortcut{
     u16	 		key;
                 xr_shortcut		(u16 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
                 xr_shortcut		(){}
+    bool		similar			(const xr_shortcut& v)const{return ext.equal(v.ext)&&(key==v.key);}
 };
 
 DEFINE_VECTOR	(shared_str,RStringVec,RStringVecIt);
