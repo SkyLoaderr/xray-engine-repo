@@ -11,18 +11,7 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\ai_selector_template.h"
 #include "ai_stalker_animations.h"
-
-#define MAX_STATE_LIST_SIZE				256
-#define MAX_DYNAMIC_OBJECTS 			32
-#define MAX_DYNAMIC_SOUNDS  			32
-#define MAX_HURT_COUNT					32
-#define MAX_SEARCH_COUNT				32
-
-#define MAX_STATE_LIST_SIZE				256
-#define MAX_TIME_RANGE_SEARCH			5000.f
-#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
-
-#define R2D(x)							(angle_normalize(x)*180.f/PI)
+#include "ai_stalker_space.h"
 
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations {
 private:
@@ -45,41 +34,6 @@ private:
 		eStalkerStateDropItem,
 	};
 
-	enum EBodyState {
-		eBodyStateCrouch = 0,
-		eBodyStateStand,
-	};
-
-	enum EMovementType {
-		eMovementTypeWalk = 0,
-		eMovementTypeRun,
-		eMovementTypeStand,
-	};
-
-	enum EMovementDirection {
-		eMovementDirectionForward = 0,
-		eMovementDirectionBack,
-		eMovementDirectionLeft,
-		eMovementDirectionRight,
-	};
-
-	enum ELookType {
-		eLookTypeDirection = 0,
-		eLookTypeSearch,
-		eLookTypeDanger,
-		eLookTypePoint,
-		eLookTypeFirePoint,
-	};
-
-	enum EDirectionType {
-		eDirectionTypeForward = 0,
-		eDirectionTypeForwardDodge,
-		eDirectionTypeForwardCover,
-		eDirectionTypeBack,
-		eDirectionTypeBackDodge,
-		eDirectionTypeBackCover,
-	};
-
 	typedef struct tagSStalkerStates {
 		EStalkerStates		eState;
 		u32					dwTime;
@@ -94,6 +48,19 @@ private:
 		u32	dwTime;
 		u32	dwNodeID;
 	} SSearch;
+
+	// path structures
+	EPathState				m_tPathState;	
+	EPathType				m_tPathType;
+	EPathType				m_tPrevPathType;
+
+	vector<Fvector>			m_tpaPoints;
+	vector<Fvector>			m_tpaDeviations;
+	vector<Fvector>			m_tpaTravelPath;
+	vector<u32>				m_tpaPointNodes;
+	vector<Fvector>			m_tpaLine;
+	vector<u32>				m_tpaNodes;
+	vector<Fvector>			m_tpaTempPath;
 
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
@@ -217,29 +184,44 @@ private:
 	u32						m_dwLastRangeSearch;
 
 			// state machine
-			void			vfAddStateToList				(EStalkerStates eState);
-			// states
-			void			AccomplishTask					();
-			void			Attack							();
-			void			Defend							();
-			void			RetreatKnown					();
-			void			RetreatUnknown					();
-			void			PursuitKnown					();
-			void			PursuitUnknown					();
-			void			SearchCorp						();
 
-			void			Recharge						();
-			void			HolsterItem						();
-			void			TakeItem						();
-			void			DropItem						();
+	IC		void			vfAddStateToList(EStalkerStates eState)
+	{
+		if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
+			m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
+			return;
+		}
+		if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
+			m_tStateList.erase(u32(0));
+		SStalkerStates tStalkerStates;
+		tStalkerStates.dwTime = m_dwCurrentUpdate;
+		tStalkerStates.eState = eState;
+		m_tStateList.push_back(tStalkerStates);
+	}
+			// states
+//			void			AccomplishTask					();
+//			void			Attack							();
+//			void			Defend							();
+//			void			RetreatKnown					();
+//			void			RetreatUnknown					();
+//			void			PursuitKnown					();
+//			void			PursuitUnknown					();
+//			void			SearchCorp						();
+//
+//			void			Recharge						();
+//			void			HolsterItem						();
+//			void			TakeItem						();
+//			void			DropItem						();
 
 			void			BackDodge						();
 
 			// selectors
-			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *S, bool bCanStraighten = false, Fvector *tpDestinationPosition = 0);
-			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator &tSelector, bool bCanStraighten = false, bool bWalkAround = false);
+			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
+			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *S);
+			void			vfBuildTravelLine				(Fvector *tpDestinationPosition = 0);
+			void			vfDodgeTravelLine				();
+			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator &tSelector, Fvector *tpDestinationPosition = 0);
 			// animations
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
@@ -342,6 +324,17 @@ private:
 		m_dwLostEnemyTime		= Level().timeServer();
 		m_tMySavedPosition		= vPosition;
 		m_dwMyNodeID			= AI_NodeID;
+	}
+
+	IC		void		vfAddToSearchList()
+	{
+		if (m_tpaSearchPositions.size() >= MAX_SEARCH_COUNT)
+			m_tpaSearchPositions.erase(u32(0));
+
+		SSearch							tSearch;
+		tSearch.dwTime					= m_dwCurrentUpdate;
+		tSearch.dwNodeID				= AI_Path.DestNode;
+		m_tpaSearchPositions.push_back	(tSearch);
 	}
 
 public:

@@ -23,7 +23,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwAnimationSwitchInterval		= 500;
 	r_torso_speed					= PI_MUL_2;
 	r_head_speed					= 3*PI_DIV_2;
-	
+																				  
 	m_dwTimeToChange				= 0;
 	m_dwHitTime						= 0;
 
@@ -42,6 +42,10 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwSoundTime					= 0;
 
 	m_dwLastRangeSearch				= 0;
+
+	m_tPathState					= ePathStateSearchNode;
+
+	AI_Path.TravelStart				= 0;
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;
