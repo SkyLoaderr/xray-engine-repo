@@ -5,17 +5,21 @@
 		<phrase_list>
 			<phrase id="0">
 				<text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
-				<give_info>escape_novice_need_weapon</give_info>
 				<next>1</next>
+				<next>3</next>
+				<give_info>escape_novice_need_weapon</give_info>
 			</phrase>
 			<phrase id="1">
 				<text>Возьми эту пушку, может тебе она подойдет...</text>
-				<action>escape.give_weapon_to_loser</action>
 				<next>2</next>
+				<action>escape.give_weapon_to_loser</action>
 			</phrase>
 			<phrase id="2">
 				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
 				<give_info>escape_novice_has_weapon</give_info>
+			</phrase>
+			<phrase id="3">
+				<text>Как нибудь в другой раз.</text>
 			</phrase>
 		</phrase_list>
 	</dialog>
@@ -404,7 +408,6 @@
 			</phrase>
 		</phrase_list>
 	</dialog>
-	
 
 
 </game_dialogs>
