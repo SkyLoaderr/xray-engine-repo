@@ -55,4 +55,9 @@ public:
 	{
 		return	(m_fMinResultValue);
 	}
+
+	IC		LPCSTR	Name()
+	{
+		return	(m_caName);
+	}
 };
