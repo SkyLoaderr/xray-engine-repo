@@ -37,7 +37,17 @@ struct SBreakPoint{
 	string256	fileName;
 	s32			nLine;
 	SBreakPoint(){fileName[0]=0;nLine=0;};
-	SBreakPoint(const SBreakPoint& other):nLine(other.nLine){fileName[0]=0;strcat(fileName,other.fileName);};
+	SBreakPoint(const SBreakPoint& other)
+	{
+		operator = (other);
+	};
+	SBreakPoint& operator = (const SBreakPoint& other){
+		fileName[0]=0;
+		strcat(fileName,other.fileName);
+		nLine = other.nLine;
+		return *this;
+	}
+
 };
 
 class CScriptDebugger

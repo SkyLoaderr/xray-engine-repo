@@ -341,7 +341,7 @@ int CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 	switch(nType) {
 	case DMSG_DEBUG_GO:
 		m_nMode = DMOD_NONE;
-		return DMOD_BREAK;
+		return DMOD_NONE;
 		break;
 
 	case DMSG_DEBUG_BREAK:
@@ -394,10 +394,13 @@ bool CScriptDebugger::HasBreakPoint(const char* fileName, s32 lineNum)
 
 	for(s32 i=0; i< m_breakPoints.size(); ++i)
 	{
-		if(m_breakPoints[i].nLine == lineNum)
-			if( strlen(m_breakPoints[i].fileName) == strlen(fileName) )
-				if( strstr(m_breakPoints[i].fileName, fileName)==0 )
+		SBreakPoint bp(m_breakPoints[i]);
+		if(bp.nLine == lineNum)
+			if( strlen(bp.fileName) == strlen(sFileName) )
+			{
+				if( strstr(bp.fileName, sFileName)==bp.fileName )
 					return true;
+			}
 	}
 	return false;
 }
