@@ -120,10 +120,16 @@
 			Name="Kernel"
 			Filter="">
 			<File
+				RelativePath="FTimer.h">
+			</File>
+			<File
 				RelativePath="Sound.h">
 			</File>
 			<File
 				RelativePath="SoundRender.h">
+			</File>
+			<File
+				RelativePath="cl_intersect.h">
 			</File>
 			<File
 				RelativePath="stdafx.cpp">
@@ -142,6 +148,9 @@
 			</File>
 			<File
 				RelativePath="stdafx.h">
+			</File>
+			<File
+				RelativePath="xrCDB.h">
 			</File>
 		</Filter>
 		<Filter
@@ -274,16 +283,6 @@
 			</File>
 			<File
 				RelativePath="xr_streamsnd.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="Collider"
-			Filter="">
-			<File
-				RelativePath="cl_intersect.h">
-			</File>
-			<File
-				RelativePath="xrCDB.h">
 			</File>
 		</Filter>
 	</Files>
