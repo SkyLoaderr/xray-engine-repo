@@ -285,5 +285,5 @@ void CGlowManager::render_sw		()
 			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		}
 	}
-	Selected.clear							();
+	Selected.clear				();
 }
