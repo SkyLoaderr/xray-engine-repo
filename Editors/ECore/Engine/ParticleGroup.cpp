@@ -146,7 +146,7 @@ void CParticleGroup::OnFrame(u32 u_dt)
         bool bPlaying = false;
         Fbox box; box.invalidate();
         for (u32 i=0; i<children.size(); i++){
-            CParticleEffect* E	= children[i];
+            CParticleEffect* E	= (CParticleEffect*)children[i];
             if (E){
                 E->OnFrame		(u_dt);
                 if (E->IsPlaying()){ 
