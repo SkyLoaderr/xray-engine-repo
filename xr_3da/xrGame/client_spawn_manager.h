@@ -18,6 +18,11 @@ class CClientSpawnManager {
 	struct CSpawnCallback {
 		CGameObject		*m_object;
 		CScriptCallback	m_callback;
+
+		IC	CSpawnCallback	()
+		{
+			m_object = 0;
+		}
 	};
 public:
 	typedef xr_map<ALife::_OBJECT_ID,CSpawnCallback>		REQUESTED_REGISTRY;
