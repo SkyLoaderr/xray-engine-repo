@@ -1,7 +1,8 @@
 #pragma once
 
 template <class T, DWORD s_X, DWORD s_Y>
-class hash2D {
+class hash2D 
+{
 	vector<T>	table[s_Y][s_X];
 	Fbox2		bounds;
 	Fvector2	size;
