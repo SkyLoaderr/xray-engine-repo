@@ -27,6 +27,9 @@ struct EV_LIST	{
 
 class CCustomEvent		: public CObject, public pureRender
 {
+private:
+	typedef CObject			inherited;
+protected:
 	EV_LIST					OnEnter;
 	EV_LIST					OnExit;
 	CLASS_ID				clsid_Target;

@@ -102,7 +102,7 @@ CCustomEvent::~CCustomEvent		()
 	OnExit.Destroy				();
 }
 
-void CCustomEvent::Load(CInifile* ini, const char * section)
+void CCustomEvent::Load			(CInifile* ini, const char * section)
 {
 	// Name
 	R_ASSERT					(section);
@@ -146,6 +146,11 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	// Sheduler
 	dwMinUpdate	= 300;
 	dwMaxUpdate	= 1000;
+}
+
+BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
+{
+	return inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
 }
 
 void CCustomEvent::Update (DWORD dt)
