@@ -670,7 +670,7 @@ void CScriptMonster::sound_callback	(const CObject *object, int sound_type, cons
 
 	SCRIPT_CALLBACK_EXECUTE_5(m_tSoundCallback, 
 		lua_game_object(),
-		const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(object))->lua_game_object(),
+		dynamic_cast<const CGameObject*>(object)->lua_game_object(),
 		sound_type,
 		position,
 		sound_power
@@ -686,7 +686,7 @@ void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, const
 		lua_game_object(),
 		amount,
 		vLocalDir,
-		const_cast<CGameObject*>(dynamic_cast<const CGameObject*>(who))->lua_game_object(),
+		dynamic_cast<const CGameObject*>(who)->lua_game_object(),
 		element
 	);
 }

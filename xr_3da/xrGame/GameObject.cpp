@@ -559,10 +559,10 @@ void CGameObject::create_physic_shell	()
 		shell_creator->CreatePhysicsShell();
 }
 
-CLuaGameObject *CGameObject::lua_game_object		()
+CLuaGameObject *CGameObject::lua_game_object		() const
 {
 	if (!m_lua_game_object)
-		m_lua_game_object			= xr_new<CLuaGameObject>(this);
+		m_lua_game_object			= xr_new<CLuaGameObject>(const_cast<CGameObject*>(this));
 	return							(m_lua_game_object);
 }
 

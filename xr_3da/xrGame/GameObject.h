@@ -154,10 +154,10 @@ public:
 	virtual void			setup_physic_shell		();
 
 private:
-	CLuaGameObject			*m_lua_game_object;
+	mutable CLuaGameObject	*m_lua_game_object;
 	int						m_script_clsid;
 public:
-			CLuaGameObject	*lua_game_object();
+			CLuaGameObject	*lua_game_object() const;
 			int				clsid			() const
 	{
 		VERIFY				(m_script_clsid >= 0);

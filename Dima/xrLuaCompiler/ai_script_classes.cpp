@@ -341,7 +341,7 @@ CLuaSoundInfo CLuaGameObject::GetSoundInfo()
 			bool bDangerous;
 			l_tpMonster->SoundMemory.GetSound(se, bDangerous);
 			
-			CGameObject *pO = const_cast<CGameObject*>(dynamic_cast<const CGameObject *>(se.who));
+			const CGameObject *pO = dynamic_cast<const CGameObject *>(se.who);
 			ret_val.set((pO) ?  pO->lua_game_object() : 0, bDangerous, se.position, se.power, int(se.time));
 		}
 	} else {

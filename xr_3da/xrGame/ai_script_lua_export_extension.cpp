@@ -227,6 +227,12 @@ int bit_not(int i)
 
 struct SSoundType{};
 
+template <typename T>
+CLuaGameObject *get_memory_object(const MemorySpace::CMemoryObject<T> &memory_object)
+{
+	return			(memory_object.m_object->lua_game_object());
+}
+
 void CScriptEngine::export_memory_objects()
 {
 	module(lua())
@@ -247,11 +253,13 @@ void CScriptEngine::export_memory_objects()
 
 		class_<MemorySpace::CMemoryObject<CEntityAlive>,MemorySpace::SMemoryObject>("entity_memory_object")
 			.def_readonly("object_info",	&MemorySpace::CMemoryObject<CEntityAlive>::m_object_params)
-			.def_readonly("self_info",		&MemorySpace::CMemoryObject<CEntityAlive>::m_self_params),
+			.def_readonly("self_info",		&MemorySpace::CMemoryObject<CEntityAlive>::m_self_params)
+			.def("object",					&get_memory_object<CEntityAlive>),
 
 		class_<MemorySpace::CMemoryObject<CGameObject>,MemorySpace::SMemoryObject>("game_memory_object")
 			.def_readonly("object_info",	&MemorySpace::CMemoryObject<CGameObject>::m_object_params)
-			.def_readonly("self_info",		&MemorySpace::CMemoryObject<CGameObject>::m_self_params),
+			.def_readonly("self_info",		&MemorySpace::CMemoryObject<CGameObject>::m_self_params)
+			.def("object",					&get_memory_object<CGameObject>),
 
 		class_<MemorySpace::CHitObject,MemorySpace::CMemoryObject<CEntityAlive> >("hit_memory_object")
 			.def_readonly("direction",		&MemorySpace::CHitObject::m_direction)
