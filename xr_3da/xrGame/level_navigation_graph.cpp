@@ -404,7 +404,9 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id, u32 link)
 		if (!valid_vertex_id(vertex_id))
 			break;
 
-		VERIFY				(!m_cross[vertex_id].m_mark);
+//		VERIFY				(!m_cross[vertex_id].m_mark);
+		if (link == 1)
+			m_cross[current_vertex_id].m_right_next = &m_cross[vertex_id];
 
 		if (vertex(vertex_id)->link((link + 2) & 3) != current_vertex_id)
 			break;
@@ -513,13 +515,17 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		down				= v->m_down;
 	}
 
-	for	(u32 current_down = v->m_down, right_id = vertex(vertex_id(v))->link(1), i=2; i<=v->m_right; right_id = vertex(right_id)->link(1), ++i) {
+	u32						current_down = v->m_down;
+	CCellVertex				*right_id = v->m_right_next;
+	u32						i = 2;
+	for	( ; i<=v->m_right; right_id = right_id->m_right_next, ++i) {
 //#ifdef _DEBUG
 //		VERIFY				(valid_vertex_id(right_id));
 //		VERIFY				(!m_cross[right_id].m_mark);
 //#endif
+//		VERIFY				(right_id);
 
-		current_down		= _min(current_down,m_cross[right_id].m_down_left);
+		current_down		= _min(current_down,right_id->m_down_left);
 
 		if (current_down*v->m_right <= max_square)
 			break;

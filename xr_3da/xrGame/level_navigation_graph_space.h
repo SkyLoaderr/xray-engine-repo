@@ -45,6 +45,7 @@ namespace LevelNavigationGraph {
 			u16			m_dirs[2];
 			u32			m_all_dirs;
 		};
+		CCellVertexEx	*m_right_next;
 		union {
 			typedef u8	_use_type;
 
@@ -59,7 +60,8 @@ namespace LevelNavigationGraph {
 		ICF CCellVertexEx	() :
 			m_data		(0),
 			m_all_dirs	(0),
-			m_down_left	(0)
+			m_down_left	(0),
+			m_right_next(0)
 		{
 		}
 	};
