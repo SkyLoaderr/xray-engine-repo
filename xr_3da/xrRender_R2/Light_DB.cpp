@@ -174,7 +174,7 @@ void			CLight_DB::Update()
 	for (set<light*>::iterator it=v_dynamic_active.begin(); it!=v_dynamic_active.end(); it++)
 	{
 		light* T = *it;
-		if (RImplementation.View->testSphere_dirty	(T->position, T->range))
+		if (RImplementation.ViewBase.testSphere_dirty	(T->position, T->range))
 		{
 			T->dwFrame				=Device.dwFrame;
 			if (T->flags.bShadow)	v_selected_shadowed.push_back	(T);

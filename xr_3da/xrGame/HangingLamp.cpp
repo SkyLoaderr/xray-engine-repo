@@ -79,10 +79,19 @@ void CHangingLamp::OnVisible()
 	inherited::OnVisible	();
 
 	if (Alive()){
-		Fmatrix& M = (light_bone_idx>=0)?PKinematics(pVisual)->LL_GetTransform(light_bone_idx):clXFORM();
-		light_render->set_direction	(M.k);
-		light_render->set_position	(M.c);
-		if (lanim){
+		Fmatrix xf;
+		if (light_bone_idx>=0)
+		{
+			Fmatrix& M = PKinematics(pVisual)->LL_GetTransform(light_bone_idx);
+			xf.mul		(clXFORM(),M);
+		} else {
+			xf.set		(clXFORM());
+		}
+
+		light_render->set_direction	(xf.k);
+		light_render->set_position	(xf.c);
+		if (lanim)
+		{
 			int frame;
 			u32 clr		= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
 			light_render->set_color(color_get_B(clr),color_get_G(clr),color_get_R(clr));
