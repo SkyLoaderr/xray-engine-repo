@@ -47,6 +47,7 @@ void CSE_ALifeSimulator::Save(LPCSTR caSaveName)
 	CSE_ALifeEventRegistry::Save(tStream);
 	CSE_ALifeTaskRegistry::Save	(tStream);
 	CSE_ALifeAnomalyRegistry::Save(tStream);
+	CSE_ALifeOrganizationRegistry::Save(tStream);
 	string256					S;
 	strconcat					(S,SAVE_PATH,caSaveName);
 	tStream.save_to				(S);
@@ -104,6 +105,8 @@ void CSE_ALifeSimulator::Load(LPCSTR caSaveName)
 	CSE_ALifeTaskRegistry::Load	(*tpStream);
 	Log							("* Loading anomly map...");
 	CSE_ALifeAnomalyRegistry::Load(*tpStream);
+	Log							("* Loading organizations and discoveries...");
+	CSE_ALifeOrganizationRegistry::Load(*tpStream);
 	Log							("* Building dynamic objects...");
 	vfUpdateDynamicData			();
 	m_tpChildren.reserve		(128);
