@@ -56,7 +56,7 @@ bool CPortal::GetBox( Fbox& box ){
 	return true;
 }
 
-void CPortal::Render( Fmatrix& parent, ERenderPriority flag ){
+void CPortal::Render( ERenderPriority flag ){
 	if (flag==rpAlphaNormal){
         Fcolor 				col;
 		col.set				(color.r,color.g,color.b,Selected()?0.6f:0.6f);
@@ -94,13 +94,13 @@ void CPortal::Move( Fvector& amount ){
     m_Center.add(amount);
 }
 
-bool CPortal::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CPortal::FrustumPick(const CFrustum& frustum){
     sPoly s(m_Vertices.begin(),m_Vertices.size());
 	if (frustum.testPoly(s)) return true;
     return false;
 }
 
-bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector p[3];
     float range;
     bool bPick=false;

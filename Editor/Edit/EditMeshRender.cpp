@@ -194,26 +194,6 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 
 void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
 	if (!m_Visible) return;
-/*
-	Device.SetTransform(D3DTS_WORLD,parent);
-	Device.Shader.Set(Device.m_WireShader);
-	Device.RenderNearer(0.001);
-
-    RB_cnt = 0;
-    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
-    for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-        for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[f_it->pv[k].pindex]);
-        if (RB_cnt==MAX_VERT_COUNT){
-        	DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
-			RB_cnt = 0;
-        }
-    }
-    if (RB_cnt) DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
-
-    Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
-    Device.ResetNearer();
-*/
-
 	Device.SetTransform(D3DTS_WORLD,parent);
 	Device.Shader.Set(Device.m_WireShader);
 	Device.RenderNearer(0.001);

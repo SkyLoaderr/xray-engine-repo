@@ -27,10 +27,10 @@ public:
 	void 			Construct	();
 	virtual 		~CPortal	();
 
-    virtual void 	Render		(Fmatrix& parent, ERenderPriority flag);
+    virtual void 	Render		(ERenderPriority flag);
 	virtual bool 	RayPick		(float& distance,Fvector& start,Fvector& direction,
-								Fmatrix& parent, SRayPickInfo* pinf = NULL);
-    virtual bool 	FrustumPick	(const CFrustum& frustum, const Fmatrix& parent);
+								SRayPickInfo* pinf = NULL);
+    virtual bool 	FrustumPick	(const CFrustum& frustum);
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);

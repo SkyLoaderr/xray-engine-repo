@@ -76,7 +76,7 @@ void CAITPoint::DrawLinks(Fcolor& c){
 }
 //----------------------------------------------------
 
-void CAITPoint::Render( Fmatrix& parent, ERenderPriority flag ){
+void CAITPoint::Render( ERenderPriority flag ){
     if (flag==rpNormal){
         if (Device.m_Frustum.testSphere(m_Position,AITPOINT_SIZE)){
             Fcolor c1,c2;
@@ -94,17 +94,14 @@ void CAITPoint::Render( Fmatrix& parent, ERenderPriority flag ){
 }
 //----------------------------------------------------
 
-bool CAITPoint::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CAITPoint::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere(m_Position,AITPOINT_SIZE))?true:false;
 }
 //----------------------------------------------------
 
-bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
-	Fvector transformed;
-	parent.transform_tiny(transformed, m_Position);
-
+bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf){
 	Fvector ray2;
-	ray2.sub( transformed, S );
+	ray2.sub( m_Position, S );
 
     float d = ray2.dotproduct(D);
     if( d > 0  ){

@@ -347,7 +347,7 @@ void TUI::Idle()
 {
     if (g_ErrorMode) return;
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
-    Sleep(2);
+    Sleep(5);
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditShaders)||(est==esEditParticles)||(est==esEditImages)){
     	switch(est){

@@ -53,7 +53,7 @@ bool CGlow::GetBox( Fbox& box ){
 	return true;
 }
 
-void CGlow::Render( Fmatrix& parent, ERenderPriority flag ){
+void CGlow::Render( ERenderPriority flag ){
     if (flag==rpAlphaNormal){
     	// определяем параметры для RayPick
     	Fvector D;
@@ -85,16 +85,13 @@ void CGlow::Render( Fmatrix& parent, ERenderPriority flag ){
     }
 }
 
-bool CGlow::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CGlow::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere(m_Position,m_Range))?true:false;
 }
 
-bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
-	Fvector transformed;
-	parent.transform_tiny(transformed,m_Position);
-
+bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
-	ray2.sub( transformed, start );
+	ray2.sub( m_Position, start );
 
     float d = ray2.dotproduct(direction);
     if( d > 0  ){

@@ -57,7 +57,7 @@ bool CSound::GetBox( Fbox& box ){
 	return true;
 }
 
-void CSound::Render( Fmatrix& parent, ERenderPriority flag ){
+void CSound::Render( ERenderPriority flag ){
     if(flag==rpNormal){
         DWORD clr=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL_COLOR:SOUND_NORM_COLOR);
         if (Selected()) DU::DrawLineSphere( m_Position, m_Range, clr, true );
@@ -65,16 +65,13 @@ void CSound::Render( Fmatrix& parent, ERenderPriority flag ){
     }
 }
 
-bool CSound::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CSound::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere(m_Position,VIS_RADIUS))?true:false;
 }
 
-bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
-	Fvector transformed;
-	parent.transform_tiny(transformed,m_Position);
-
+bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
-	ray2.sub( transformed, start );
+	ray2.sub( m_Position, start );
 
 	float d = ray2.dotproduct(direction);
 	if( d > 0  ){

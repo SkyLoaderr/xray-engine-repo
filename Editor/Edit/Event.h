@@ -56,21 +56,21 @@ public:
     virtual void 	SetRotate		(Fvector& rot){vRotate.set(rot);}
     virtual void 	SetScale		(Fvector& scale){vScale.set(scale);}
 
-	virtual void 	Render		( Fmatrix& parent, ERenderPriority flag );
-	virtual bool 	RayPick 	( float& distance, Fvector& start,
-								Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf = NULL);
-    virtual bool 	FrustumPick	( const CFrustum& frustum, const Fmatrix& parent );
+	virtual void 	Render			( ERenderPriority flag );
+	virtual bool 	RayPick 		( float& distance, Fvector& start,
+									Fvector& direction, SRayPickInfo* pinf = NULL);
+    virtual bool 	FrustumPick		( const CFrustum& frustum );
 
-	virtual void 	Move		( Fvector& amount );
-	virtual void 	Rotate		( Fvector& center, Fvector& axis, float angle );
-	virtual void 	Scale		( Fvector& center, Fvector& amount );
-	virtual void 	LocalRotate	( Fvector& axis, float angle );
-	virtual void 	LocalScale	( Fvector& amount );
+	virtual void 	Move			( Fvector& amount );
+	virtual void 	Rotate			( Fvector& center, Fvector& axis, float angle );
+	virtual void 	Scale			( Fvector& center, Fvector& amount );
+	virtual void 	LocalRotate		( Fvector& axis, float angle );
+	virtual void 	LocalScale		( Fvector& amount );
 
-  	virtual bool 	Load		( CStream& );
-	virtual void 	Save		( CFS_Base& );
+  	virtual bool 	Load			( CStream& );
+	virtual void 	Save			( CFS_Base& );
 
-	virtual bool 	GetBox		( Fbox& box );
+	virtual bool 	GetBox			( Fbox& box );
 };
 
 #endif /*_INCDEF_CEvent_H_*/

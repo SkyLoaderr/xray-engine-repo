@@ -312,7 +312,7 @@ bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
 	return true;
 }
 
-void CSector::Render( Fmatrix& parent, ERenderPriority flag ){
+void CSector::Render( ERenderPriority flag ){
     if (flag==rpAlphaNormal){
         Fmatrix matrix;
         Fcolor color;
@@ -354,7 +354,7 @@ void CSector::Move( Fvector& amount ){
     UpdatePlanes();
 }
 
-bool CSector::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CSector::FrustumPick(const CFrustum& frustum){
 	if (!frustum.testSphere(m_SectorCenter,m_SectorRadius)) return false;
 	Fvector p[3];
     for(CHFaceIt it=m_CHSectorFaces.begin(); it!=m_CHSectorFaces.end(); it++){
@@ -365,7 +365,7 @@ bool CSector::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	return false;
 }
 
-bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector p[3];
     float u,v;
     float range;
@@ -483,7 +483,7 @@ void CSector::CaptureAllUnusedFaces(){
 }
 
 //----------------------------------------------------
-bool CSector::SpherePick(const Fvector& center, float radius, const Fmatrix& parent){
+bool CSector::SpherePick(const Fvector& center, float radius){
 	float R=radius+m_SectorRadius;
     float dist_sqr=center.distance_to_sqr(m_SectorCenter);
     if (dist_sqr<R*R) return true;
@@ -494,7 +494,7 @@ bool CSector::SpherePick(const Fvector& center, float radius, const Fmatrix& par
 EVisible CSector::TestCHullSphereIntersection(const Fvector&P, float R){
 	bool bPartialInside=false;
 	bool bPartialOutside=false;
-	if (SpherePick(P,R,precalc_identity)){
+	if (SpherePick(P,R)){
         for(PlaneIt pl_it=m_CHSectorPlanes.begin(); pl_it!=m_CHSectorPlanes.end(); pl_it++){
         	float dist=pl_it->classify(P);
             if (dist>R) return fvNone;

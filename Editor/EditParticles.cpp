@@ -135,7 +135,7 @@ void __fastcall TfrmEditParticles::ZoomObject(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditParticles::OnRender(){
 	if (!Visible()) return;
-	if (form->m_TestObject) form->m_TestObject->RenderSingle(precalc_identity);
+	if (form->m_TestObject) form->m_TestObject->RenderSingle();
 }
 
 //---------------------------------------------------------------------------

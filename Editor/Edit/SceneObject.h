@@ -44,13 +44,13 @@ public:
     int 			GetSurfFaceCount		(const char* surf_name);
 
     // render methods
-	virtual bool 	IsRender				(Fmatrix& parent);
-	virtual void 	Render					(Fmatrix& parent, ERenderPriority flag);
-	void 			RenderSelection			(Fmatrix& parent);
-	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
-	void 			RenderBones				(const Fmatrix& parent);
-	void 			RenderAnimation			(const Fmatrix& parent);
-	void 			RenderSingle			(Fmatrix& parent);
+	virtual bool 	IsRender				();
+	virtual void 	Render					(ERenderPriority flag);
+	void 			RenderSelection			();
+	void 			RenderEdge				(CEditableMesh* m=0);
+	void 			RenderBones				();
+	void 			RenderAnimation			();
+	void 			RenderSingle			();
 
     // update methods
 	virtual void 	RTL_Update				(float dT);
@@ -58,10 +58,10 @@ public:
 	void		    LightenObject			();
 
     // pick methods
-    void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
-	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
-	virtual bool 	FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
-    virtual bool 	SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
+    void 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);
+	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf=0);
+	virtual bool 	FrustumPick				(const CFrustum& frustum);
+    virtual bool 	SpherePick				(const Fvector& center, float radius);
 
     // change position/orientation methods
 	virtual void 	Move					(Fvector& amount);

@@ -55,7 +55,7 @@ bool CRPoint::GetBox( Fbox& box ){
 	return true;
 }
 
-void CRPoint::Render( Fmatrix& parent, ERenderPriority flag ){
+void CRPoint::Render( ERenderPriority flag ){
     if (flag==rpNormal){
         if (Device.m_Frustum.testSphere(m_Position,RPOINT_SIZE)){
 		    DU::DrawFlag(m_Position,m_fHeading,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID]);
@@ -68,11 +68,11 @@ void CRPoint::Render( Fmatrix& parent, ERenderPriority flag ){
     }
 }
 
-bool CRPoint::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CRPoint::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere(m_Position,RPOINT_SIZE))?true:false;
 }
 
-bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector pos,ray2;
     pos.set(m_Position.x,m_Position.y+RPOINT_SIZE,m_Position.z);
 	ray2.sub( pos, start );

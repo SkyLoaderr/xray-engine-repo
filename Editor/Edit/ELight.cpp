@@ -123,7 +123,7 @@ bool CLight::GetBox( Fbox& box ){
 	return true;
 }
 
-void CLight::Render( Fmatrix& parent, ERenderPriority flag ){
+void CLight::Render( ERenderPriority flag ){
     if (flag==rpNormal){
     	DWORD clr;
         clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_D3D.flags&XRLIGHT_MODELS?NORM_DYN_COLOR:NORM_COLOR));
@@ -164,12 +164,12 @@ void CLight::UnSet(){
 	Device.LightEnable(m_D3DIndex,FALSE);
 }
 
-bool CLight::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CLight::FrustumPick(const CFrustum& frustum){
 //    return (frustum.testSphere(m_Position,m_Range))?true:false;
     return (frustum.testSphere(m_D3D.position,VIS_RADIUS))?true:false;
 }
 
-bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
 	ray2.sub( m_D3D.position, start );
 

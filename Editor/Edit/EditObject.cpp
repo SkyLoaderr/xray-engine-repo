@@ -212,14 +212,6 @@ void CEditableObject::RenderAnimation(const Fmatrix& parent){
             v.push_back(T);
         }
 
-        // update transform matrix
-//        Fmatrix	M,mScale,mTranslate,mRotate;
-//        mRotate.setHPB			(vRotate.y, vRotate.x, vRotate.z);
-//        mScale.scale			(vScale);
-//        mTranslate.translate	(vPosition);
-//        M.mul					(mTranslate,mRotate);
-//        M.mul					(mScale);
-
         Device.Shader.Set		(Device.m_WireShader);
         Device.SetTransform		(D3DTS_WORLD,parent);
         DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);

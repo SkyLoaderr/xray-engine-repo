@@ -190,7 +190,7 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if((*_F)->Visible()){
-                    if( (*_F)->FrustumPick(frustum, precalc_identity) ){
+                    if( (*_F)->FrustumPick(frustum) ){
                         (*_F)->Select( flag );
 				        if((*_F)->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down)
                         	Scene->GroupSelect((*_F)->GetGroupIndex(),flag,false);
@@ -208,7 +208,7 @@ int EScene::FrustumPick( const CFrustum& frustum, EObjClass classfilter, ObjectL
 	ObjectIt _F = lst.begin();
 	for(;_F!=lst.end();_F++)
 		if((*_F)->Visible()){
-			if( (*_F)->FrustumPick(frustum, precalc_identity) ){
+			if( (*_F)->FrustumPick(frustum) ){
             	ol.push_back(*_F);
 				count++;
 			}
@@ -222,7 +222,7 @@ int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilt
 	ObjectIt _F = lst.begin();
 	for(;_F!=lst.end();_F++)
 		if((*_F)->Visible()){
-			if( (*_F)->SpherePick(center, radius, precalc_identity) ){
+			if( (*_F)->SpherePick(center, radius) ){
             	ol.push_back(*_F);
 				count++;
 			}
@@ -369,7 +369,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
         	        for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
             	        if((*_F)->Visible()){
                 	        if((classfilter==OBJCLASS_SCENEOBJECT)&&!bDynamicTest&&((CSceneObject*)(*_F))->IsDynamic()) continue;
-                    	    if((*_F)->RayPick(nearest_dist,start,direction,precalc_identity,pinf))
+                    	    if((*_F)->RayPick(nearest_dist,start,direction,pinf))
                         	    nearest_object = (*_F);
 	                    }
                     }
@@ -383,7 +383,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
 int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list){
 	ObjectList& lst = (snap_list)?*snap_list:ListObj(OBJCLASS_SCENEOBJECT);
 	for(ObjectIt _F=lst.begin();_F!=lst.end();_F++)
-        ((CSceneObject*)*_F)->BoxPick(box,precalc_identity,pinf);
+        ((CSceneObject*)*_F)->BoxPick(box,pinf);
     return pinf.size();
 }
 
@@ -408,17 +408,17 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter){
 //----------------------------------------------------
 void __fastcall object_Normal(EScene::mapObject_Node *N)
 {
-    ((CSceneObject*)N->val)->Render( precalc_identity, rpNormal );
+    ((CSceneObject*)N->val)->Render( rpNormal );
 }
 //----------------------------------------------------
 void __fastcall object_AlphaNormal(EScene::mapObject_Node *N)
 {
-    ((CSceneObject*)N->val)->Render( precalc_identity, rpAlphaNormal );
+    ((CSceneObject*)N->val)->Render( rpAlphaNormal );
 }
 //----------------------------------------------------
 void __fastcall object_AlphaLast(EScene::mapObject_Node *N)
 {
-    ((CSceneObject*)N->val)->Render( precalc_identity, rpAlphaLast );
+    ((CSceneObject*)N->val)->Render( rpAlphaLast );
 }
 //----------------------------------------------------
 
@@ -426,13 +426,13 @@ void __fastcall object_AlphaLast(EScene::mapObject_Node *N)
  	Device.Shader.Set(Device.m_WireShader);\
     Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpNormal);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(rpNormal);
 
 #define RENDER_CLASS_ALPHA(C)\
  	Device.Shader.Set(Device.m_SelectionShader);\
     Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaNormal);
+    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(rpAlphaNormal);
 
 void EScene::Render( Fmatrix *_Camera ){
 	if( !valid() )	return;
@@ -448,7 +448,7 @@ void EScene::Render( Fmatrix *_Camera ){
         st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
         mat.translate(Device.m_Camera.GetPosition());
 		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
-    	m_SkyDome->RenderSingle(mat);
+    	m_SkyDome->RenderSingle();
     }
 
 // draw lights, sounds, respawn points, pclipper, sector, event
@@ -467,7 +467,7 @@ void EScene::Render( Fmatrix *_Camera ){
         ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
         ObjectIt _E=lst.end(); _F=lst.begin();
         for(;_F!=_E;_F++){
-            if( (*_F)->Visible()&& (*_F)->IsRender( precalc_identity ) ){
+            if( (*_F)->Visible()&& (*_F)->IsRender( ) ){
                 CSceneObject* _pT = (CSceneObject*)(*_F);
                 Fmatrix m; _pT->GetFullTransformToWorld(m);
                 float distSQ = cam_pos.distance_to_sqr(m.c);
@@ -488,7 +488,7 @@ void EScene::Render( Fmatrix *_Camera ){
 
     // render snap
     if (fraLeftBar->ebEnableSnapList->Down)
-		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection(precalc_identity);
+		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection();
 
     // draw detail objects (alpha)
     m_DetailObjects->Render(rpAlphaNormal);
@@ -500,7 +500,7 @@ void EScene::Render( Fmatrix *_Camera ){
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
     _F = FirstObj(OBJCLASS_PS);
     _E = LastObj(OBJCLASS_PS);
-   	for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaNormal);
+   	for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(rpAlphaNormal);
 
 	// draw clip planes, glows, event, sectors, portals
 	RENDER_CLASS_ALPHA(OBJCLASS_OCCLUDER);

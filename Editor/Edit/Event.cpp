@@ -93,7 +93,7 @@ void CEvent::RenderBox(bool bAlpha ){
     }
 }
 
-void CEvent::Render( Fmatrix& parent, ERenderPriority flag ){
+void CEvent::Render( ERenderPriority flag ){
 	switch(eEventType){
     case eetBox: RenderBox(flag!=rpNormal); break;
     }
@@ -109,7 +109,7 @@ void GetBoxTri(int index, Fvector* v){
 	box_identity.getpoint(idx[index][2],v[2]);
 }
 
-bool CEvent::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CEvent::FrustumPick(const CFrustum& frustum){
 	if (eEventType==eetBox){
         Fvector v[3];
         for (int i=0; i<12; i++){
@@ -124,7 +124,7 @@ bool CEvent::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return false;
 }
 
-bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
     float range;
     bool bPick=false;
 

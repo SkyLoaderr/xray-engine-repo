@@ -24,15 +24,15 @@ public:
 		if (strchr(m_fName,'.')) *strchr(m_fName,'.')=0;
 	}
 
-	virtual void Render( Fmatrix& parent, ERenderPriority flag );
+	virtual void Render( ERenderPriority flag );
 
 	virtual bool RayPick(
 		float& distance,
 		Fvector& start,
 		Fvector& direction,
-		Fmatrix& parent, SRayPickInfo* pinf = NULL );
+		SRayPickInfo* pinf = NULL );
 
-    virtual bool 	FrustumPick	( const CFrustum& frustum, const Fmatrix& parent );
+    virtual bool 	FrustumPick	( const CFrustum& frustum );
 	virtual void 	Move( Fvector& amount );
 	virtual void 	Rotate( Fvector& center, Fvector& axis, float angle );
 	virtual void 	LocalRotate( Fvector& axis, float angle );

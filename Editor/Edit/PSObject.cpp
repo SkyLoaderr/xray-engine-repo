@@ -160,7 +160,7 @@ void CPSObject::DrawPS(){
 }
 //----------------------------------------------------
 
-void CPSObject::Render( Fmatrix& parent, ERenderPriority flag ){
+void CPSObject::Render( ERenderPriority flag ){
     if (flag==rpNormal){
     	// draw emitter
        	DWORD C = 0xFFFFEBAA;
@@ -191,18 +191,18 @@ void CPSObject::Render( Fmatrix& parent, ERenderPriority flag ){
 }
 //----------------------------------------------------
 
-void CPSObject::RenderSingle(Fmatrix& parent){
-	Render(parent,rpNormal);
-	Render(parent,rpAlphaNormal);
+void CPSObject::RenderSingle(){
+	Render(rpNormal);
+	Render(rpAlphaNormal);
 }
 //----------------------------------------------------
 
-bool CPSObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CPSObject::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))?true:false;
 }
 //----------------------------------------------------
 
-bool CPSObject::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CPSObject::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector pos,ray2;
     pos.set(m_Emitter.m_Position);
 	ray2.sub( pos, start );

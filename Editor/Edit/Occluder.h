@@ -30,11 +30,11 @@ public:
 	                COccluder   (char *name);
 	virtual         ~COccluder  ();
 
-	virtual void    Render      (Fmatrix& parent, ERenderPriority flag);
+	virtual void    Render      (ERenderPriority flag);
 
-	virtual bool    RayPick		(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf = NULL);
+	virtual bool    RayPick		(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf = NULL);
 
-    virtual bool    FrustumPick (const CFrustum& frustum, const Fmatrix& parent);
+    virtual bool    FrustumPick (const CFrustum& frustum);
 
 	virtual void    Move        (Fvector& amount);
 	virtual void    Rotate      (Fvector& center, Fvector& axis, float angle);

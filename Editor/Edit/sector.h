@@ -80,11 +80,11 @@ public:
 	void 			Construct	();
 	virtual 		~CSector	();
 
-    virtual void 	Render		(Fmatrix& parent, ERenderPriority flag);
+    virtual void 	Render		(ERenderPriority flag);
 	virtual bool 	RayPick 	(float& distance,Fvector& start,Fvector& direction,
-								Fmatrix& parent, SRayPickInfo* pinf = NULL);
-    virtual bool 	FrustumPick	(const CFrustum& frustum, const Fmatrix& parent);
-    virtual bool 	SpherePick	(const Fvector& center, float radius, const Fmatrix& parent);
+								SRayPickInfo* pinf = NULL);
+    virtual bool 	FrustumPick	(const CFrustum& frustum);
+    virtual bool 	SpherePick	(const Fvector& center, float radius);
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
 	virtual bool 	GetBox		(Fbox& box);

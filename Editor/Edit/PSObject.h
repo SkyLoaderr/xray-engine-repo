@@ -34,12 +34,12 @@ public:
     void            	Construct   ();
 	virtual         	~CPSObject  ();
 
-    void				RenderSingle(Fmatrix& parent);
-	virtual void    	Render      ( Fmatrix& parent, ERenderPriority flag );
-	virtual bool    	RayPick     ( float& distance,	Fvector& start,	Fvector& direction,
-		                          	Fmatrix& parent, SRayPickInfo* pinf = NULL );
-    virtual bool 		FrustumPick	( const CFrustum& frustum, const Fmatrix& parent );
-	virtual void    	Move        ( Fvector& amount );
+    void				RenderSingle();
+	virtual void    	Render      (ERenderPriority flag );
+	virtual bool    	RayPick     (float& distance,	Fvector& start,	Fvector& direction,
+		                          	SRayPickInfo* pinf = NULL );
+    virtual bool 		FrustumPick	(const CFrustum& frustum);
+	virtual void    	Move        (Fvector& amount);
 	virtual void 		Rotate		(Fvector& center, Fvector& axis, float angle);
 	virtual void 		Scale	  	(Fvector& center, Fvector& amount );
 	virtual void 		LocalRotate	(Fvector& axis, float angle);

@@ -9,6 +9,7 @@
 #include "UI_Main.h"
 #include "bottombar.h"
 #include "scene.h"
+#include "d3dutils.h"
 
 //----------------------------------------------------
 CSceneObject::CSceneObject( char *name ):CCustomObject(){
@@ -76,59 +77,70 @@ bool CSceneObject::GetBox( Fbox& box ){
 	return true;
 }
 
-bool __inline CSceneObject::IsRender(Fmatrix& parent){
+bool __inline CSceneObject::IsRender(){
     bool bRes = Device.m_Frustum.testSphere(m_Center,m_fRadius);
-    if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(precalc_identity);
+    if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation();
     return bRes;
 }
 
-void CSceneObject::Render(Fmatrix& parent, ERenderPriority flag){
+void CSceneObject::Render(ERenderPriority flag){
     Scene->TurnLightsForObject(this);
-	m_pRefs->Render(parent, flag);
+	m_pRefs->Render(mTransform, flag);
+    if (flag==rpNormal){
+        if (Selected()){
+	        Device.Shader.Set(Device.m_WireShader);
+    	    Device.SetTransform(D3DTS_WORLD,mTransform);
+        	DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+	        DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
+        }
+    }
 }
 
-void CSceneObject::RenderSingle(Fmatrix& parent){
-	m_pRefs->RenderSingle(parent);
+void CSceneObject::RenderSingle(){
+	m_pRefs->RenderSingle(mTransform);
 }
 
-void CSceneObject::RenderAnimation(const Fmatrix& parent){
-	m_pRefs->RenderAnimation(parent);
+void CSceneObject::RenderAnimation(){
+	m_pRefs->RenderAnimation(mTransform);
 }
 
-void CSceneObject::RenderBones(const Fmatrix& parent){
-	m_pRefs->RenderBones(parent);
+void CSceneObject::RenderBones(){
+	m_pRefs->RenderBones(mTransform);
 }
 
-void CSceneObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
+void CSceneObject::RenderEdge(CEditableMesh* mesh){
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		m_pRefs->RenderEdge(parent, mesh);
+		m_pRefs->RenderEdge(mTransform, mesh);
 }
 
-void CSceneObject::RenderSelection(Fmatrix& parent){
-	m_pRefs->RenderSelection(parent);
+void CSceneObject::RenderSelection(){
+	m_pRefs->RenderSelection(mTransform);
 }
 
-bool CSceneObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CSceneObject::FrustumPick(const CFrustum& frustum){
     if(Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		return m_pRefs->FrustumPick(frustum, parent);
+		return m_pRefs->FrustumPick(frustum, mTransform);
     return false;
 }
 
-bool CSceneObject::SpherePick(const Fvector& center, float radius, const Fmatrix& parent){
+bool CSceneObject::SpherePick(const Fvector& center, float radius){
 	float R=radius+m_fRadius;
     float dist_sqr=center.distance_to_sqr(m_Center);
     if (dist_sqr<R*R) return true;
     return false;
 }
 
-bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
+bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf){
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		return m_pRefs->RayPick(dist, S, D, parent, pinf);
+		if (m_pRefs->RayPick(dist, S, D, mTransform, pinf)){
+        	if (pinf) pinf->s_obj = this;
+            return true;
+        }
 	return false;
 }
 
-void CSceneObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
-	m_pRefs->BoxPick(box, parent, pinf);
+void CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
+	m_pRefs->BoxPick(box, mTransform, pinf);
 }
 
 void CSceneObject::Move(Fvector& amount){

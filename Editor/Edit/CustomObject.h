@@ -44,13 +44,13 @@ public:
     IC BOOL 		IsInGroup		()			{return m_GroupIndex>=0;}
     IC int 			GetGroupIndex	()			{return m_GroupIndex;}
 
-	IC virtual bool IsRender		(Fmatrix& parent){return true;}
-	virtual void 	Render			(Fmatrix& parent, ERenderPriority flag){};
+	IC virtual bool IsRender		(){return true;}
+	virtual void 	Render			(ERenderPriority flag){};
 	virtual void 	RTL_Update		(float dT)	{};
 
-	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf=NULL){ return false; };
-    virtual bool 	FrustumPick		(const CFrustum& frustum, const Fmatrix& parent){ return false; };
-    virtual bool 	SpherePick		(const Fvector& center, float radius, const Fmatrix& parent){ return false; };
+	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, SRayPickInfo* pinf=NULL){ return false; };
+    virtual bool 	FrustumPick		(const CFrustum& frustum){ return false; };
+    virtual bool 	SpherePick		(const Fvector& center, float radius){ return false; };
 
 	virtual void 	Select			(BOOL flag);
 	virtual void 	Show			(BOOL flag);

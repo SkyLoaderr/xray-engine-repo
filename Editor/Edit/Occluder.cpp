@@ -143,7 +143,7 @@ bool COccluder::GetBox( Fbox& box ){
 	return true;
 }
 
-void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
+void COccluder::Render( ERenderPriority flag ){
 	Device.SetRS(D3DRS_FILLMODE,D3DFILL_SOLID);
 	if (flag==rpAlphaNormal){
 		DWORD C=D3DCOLOR_RGBA( 128, 255, 128, Selected()?BYTE(255*0.3f):BYTE(255*0.15f) );
@@ -200,14 +200,14 @@ void COccluder::UpdatePoints3D(){
     }
 }
 
-bool COccluder::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool COccluder::FrustumPick(const CFrustum& frustum){
 	UpdatePoints3D();
 	sPoly s(m_3DPoints.m_Points.begin(),m_3DPoints.m_Points.size());
 	if (frustum.testPoly(s)) return true;
     return false;
 }
 
-bool COccluder::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool COccluder::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
     float range;
     bool bPick=false;
 
@@ -232,7 +232,7 @@ bool COccluder::SelectPoint(Fvector& start, Fvector& direction, bool bLeaveSel){
 	float distance=flt_max;
     UpdatePoints3D();
 	if (!bLeaveSel) m_SelPoints.clear();
-    if(RayPick(distance,start, direction,precalc_identity,0)){
+    if(RayPick(distance,start, direction,0)){
         Fvector I;
         I.direct(start,direction,distance);
         TfraOccluder* F = (TfraOccluder*)UI->m_Tools->GetFrame();

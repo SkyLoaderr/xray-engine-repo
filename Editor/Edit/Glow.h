@@ -26,10 +26,10 @@ public:
 
     void			Compile		();
 
-	virtual void    Render      ( Fmatrix& parent, ERenderPriority flag );
+	virtual void    Render      ( ERenderPriority flag );
 	virtual bool    RayPick     ( float& distance,	Fvector& start,	Fvector& direction,
-		                          Fmatrix& parent, SRayPickInfo* pinf = NULL );
-    virtual bool 	FrustumPick	( const CFrustum& frustum, const Fmatrix& parent );
+		                          SRayPickInfo* pinf = NULL );
+    virtual bool 	FrustumPick	( const CFrustum& frustum );
 	virtual void    Move        ( Fvector& amount );
 	virtual void 	Rotate		(Fvector& center, Fvector& axis, float angle);
   	virtual bool 	Load		(CStream&);

@@ -52,8 +52,8 @@ public:
 
     // pick functions
 	virtual bool 	RayPick		(float& distance, Fvector& start, Fvector& direction,
-								Fmatrix& parent, SRayPickInfo* pinf = NULL );
-    virtual bool 	FrustumPick	(const CFrustum& frustum, const Fmatrix& parent);
+								SRayPickInfo* pinf = NULL );
+    virtual bool 	FrustumPick	(const CFrustum& frustum);
 
     // placement functions
 	virtual bool 	GetBox		(Fbox& box);
@@ -77,7 +77,7 @@ public:
     void 			Enable		(BOOL flag);
     void 			AffectD3D	(BOOL flag);
 
-	virtual void 	Render		(Fmatrix& parent, ERenderPriority flag);
+	virtual void 	Render		(ERenderPriority flag);
 	virtual void 	RTL_Update	(float dT);
     void 			Update		();
 
