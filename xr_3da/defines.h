@@ -43,6 +43,7 @@ ENGINE_API extern DWORD	psSoundModel	;
 ENGINE_API extern float	psSoundVMaster	;
 ENGINE_API extern float	psSoundVEffects	;
 ENGINE_API extern float	psSoundVMusic	;
+ENGINE_API extern float psSoundRolloff	;
 
 // textures
 enum {

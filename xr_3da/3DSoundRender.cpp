@@ -83,9 +83,9 @@ void C3DSoundRender::OnMove()
 	Listener.vPosition.set		(Device.vCameraPosition);
 	Listener.vOrientFront.set	(Device.vCameraDirection);
 	Listener.vOrientTop.set		(Device.vCameraTop);
-	VERIFY(pListener);
-	pListener->SetAllParameters	(Listener.d3d(), DS3D_DEFERRED );
-	pListener->CommitDeferredSettings( );
+	Listener.flRolloffFactor	= psSoundRolloff;
+	pListener->SetAllParameters			(Listener.d3d(), DS3D_DEFERRED );
+	pListener->CommitDeferredSettings	();
 }
 
 int C3DSoundRender::FindByName(LPCSTR name, BOOL bFreq) {

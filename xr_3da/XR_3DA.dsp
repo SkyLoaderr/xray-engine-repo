@@ -2278,6 +2278,10 @@ SOURCE=.\FStaticRender_RenderTarget.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FStaticRender_RenderTarget.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\FStaticRender_SceneGraph.cpp
 # End Source File
 # Begin Source File

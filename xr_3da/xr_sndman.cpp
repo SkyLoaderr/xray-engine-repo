@@ -20,6 +20,7 @@ DWORD	psSoundModel		= 0;
 float	psSoundVMaster		= 0.7f;
 float	psSoundVEffects		= 1.0f;
 float	psSoundVMusic		= 0.7f;
+float	psSoundRolloff		= 0.5f;
 
 //-----------------------------------------------------------------------------
 
