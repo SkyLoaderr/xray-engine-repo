@@ -74,11 +74,14 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	if (CL) 
 	{
 		E->Spawn_Write		(Packet,TRUE	);
-		SendTo				(sender,Packet,net_flags(TRUE));
-	}
+		SendTo				(CL->ID,Packet,net_flags(TRUE,TRUE));
 
-	E->Spawn_Write			(Packet,FALSE	);
-	SendBroadcast			(sender,Packet,net_flags(TRUE));
+		E->Spawn_Write		(Packet,FALSE	);
+		SendBroadcast		(CL->ID,Packet,net_flags(TRUE,TRUE));
+	} else {
+		E->Spawn_Write		(Packet,FALSE	);
+		SendBroadcast		(0,		Packet,net_flags(TRUE,TRUE));
+	}
 
 	// log
 	Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL?CL->Name:"*SERVER*");
