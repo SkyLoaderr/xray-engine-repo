@@ -4,9 +4,10 @@
 
 #include "stdafx.h"
 #include "Tracer.h"
+#include "..\fstaticrender.h"
 
 const DWORD	MAX_TRACERS	= 1024;
-const DWORD TRACER_SIZE = 0.1f;
+const float TRACER_SIZE = 0.1f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -23,7 +24,7 @@ CTracer::~CTracer()
 	Device.Shader.Delete	(sh_Tracer);
 }
 
-void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, DWORD color)
+void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, const Fcolor& color)
 {
 	bullets.push_back	(Bullet());
 	Bullet&	B			= bullets.back();
@@ -74,7 +75,7 @@ void	CTracer::Render	()
 		sC.mul	(.5f);
 		sR		= sC.magnitude();
 		sC.add	(B.pos_trail);
-		if (!::Render.ViewBase->testSphereDirty(sC,sR))	continue;
+		if (!::Render.ViewBase.testSphereDirty(sC,sR))	continue;
 
 		// Everything OK - build vertices
 		Fvector	P;
