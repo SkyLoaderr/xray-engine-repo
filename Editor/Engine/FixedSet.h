@@ -1,3 +1,5 @@
+#ifndef _FIXEDSET_H
+#define _FIXEDSET_H
 #pragma once
 
 #ifndef SG_REALLOC_ADVANCE
@@ -167,3 +169,4 @@ public:
 			CB(nodes+i);
 	}
 };
+#endif
