@@ -51,7 +51,7 @@ protected:
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 	};
 private:
-	bool				m_client_update_activated;
+//	bool				m_client_update_activated;
 
 public:
 	// Eyes
