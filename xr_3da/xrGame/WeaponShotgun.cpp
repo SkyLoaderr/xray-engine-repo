@@ -2,7 +2,6 @@
 #include "weaponshotgun.h"
 #include "WeaponHUD.h"
 #include "entity.h"
-#include "effectorshot.h"
 #include "ParticlesObject.h"
 
 CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")

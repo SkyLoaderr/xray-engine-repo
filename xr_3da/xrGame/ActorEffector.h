@@ -1,7 +1,12 @@
 // ActorEffector.h:	 менеджер эффекторов актера
 //////////////////////////////////////////////////////////////////////
 
-#include "..\\CameraDefs.h"
+#include "../CameraDefs.h"
+
+
+class CCameraEffector;
+DEFINE_VECTOR(CCameraEffector*,CameraEffectorVec,CameraEffectorIt);
+
 
 class CActor;
 
@@ -14,7 +19,7 @@ class CActorEffector
 	Fvector					vNormal;
 	Fvector					vRight;
 
-	EffectorVec				m_Effectors;
+	CameraEffectorVec		m_Effectors;
 
 	float					fFov;
 	float					fFar;
@@ -36,8 +41,8 @@ public:
 	virtual ~CActorEffector();
 
 
-	CEffector*				AddEffector			(CEffector* ef);
-	CEffector*				GetEffector			(EEffectorType type);
+	CCameraEffector*		AddEffector			(CCameraEffector* ef);
+	CCameraEffector*		GetEffector			(EEffectorType type);
 	void					RemoveEffector		(EEffectorType type);
 
 	IC void					affected_Matrix		(Fmatrix& M)

@@ -3,18 +3,15 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "effectorshot.h"
 #include "Weapon.h"
 #include "WeaponHUD.h"
-#include "WeaponRecoil.h"
-
 #include "ParticlesObject.h"
-
 #include "HUDManager.h"
 #include "entity.h"
 #include "actor.h"
-#include "actoreffector.h"
 
+#include "actoreffector.h"
+#include "effectorshot.h"
 
 #define FLAME_TIME 0.05f
 
@@ -306,15 +303,6 @@ void CWeapon::UpdateFlameParticles2	()
 // Для эффекта отдачи оружия
 void CWeapon::AddShotEffector		()
 {
-/*	if(!m_pWeaponRecoil)
-		m_pWeaponRecoil = xr_new<CWeaponRecoil> (camMaxAngle,camRelaxSpeed);
-	VERIFY(m_pWeaponRecoil);
-	m_pWeaponRecoil->Shot(camDispersion);
-	*/
-
-/*	if(!hud_mode) return;
-*/
-
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
@@ -327,10 +315,6 @@ void CWeapon::AddShotEffector		()
 
 void  CWeapon::RemoveShotEffector	()
 {
-//	xr_delete(m_pWeaponRecoil);
-
-/*	if (Local()) 
-		Level().Cameras.RemoveEffector	(cefShot);*/
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
    	if(pActor)
 		pActor->EffectorManager().RemoveEffector	(cefShot);

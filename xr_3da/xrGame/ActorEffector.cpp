@@ -5,12 +5,12 @@
 
 #include "ActorEffector.h"
 
-#include "stdafx.h"
+#include "../Environment.h"
+#include "../CameraBase.h"
+#include "../CameraManager.h"
 
-#include "..\\Environment.h"
-#include "..\\CameraBase.h"
-#include "..\\CameraManager.h"
-#include "..\\Effector.h"
+
+#include "CameraEffector.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -29,28 +29,28 @@ CActorEffector::CActorEffector()
 
 CActorEffector::~CActorEffector()
 {
-	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
+	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
 		xr_delete(*it);
 }
 
-CEffector* CActorEffector::GetEffector(EEffectorType type)	
+CCameraEffector* CActorEffector::GetEffector(EEffectorType type)	
 { 
-	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
-		if ((*it)->eType==type) return *it;
+	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
+		if ((*it)->GetType()==type) return *it;
 	return 0;
 }
 
-CEffector* CActorEffector::AddEffector(CEffector* ef)
+CCameraEffector* CActorEffector::AddEffector(CCameraEffector* ef)
 {
-	RemoveEffector(ef->eType);
+	RemoveEffector(ef->GetType());
 	m_Effectors.push_back(ef);
 	return m_Effectors.back();
 }
 
 void CActorEffector::RemoveEffector(EEffectorType type)
 {
-	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
-		if ((*it)->eType==type)
+	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
+		if ((*it)->GetType()==type)
 		{ 
 			xr_delete(*it);
 			m_Effectors.erase(it);
@@ -109,11 +109,11 @@ void CActorEffector::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	{
 		for (int i=m_Effectors.size()-1; i>=0; i--)
 		{
-			CEffector* eff = m_Effectors[i];
+			CCameraEffector* eff = m_Effectors[i];
 			Fvector sp=vPosition;
 			Fvector sd=vDirection;
 			Fvector sn=vNormal;
-			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect))
+			if ((eff->LifeTime()>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect))
 			{
 				if (eff->Affected())
 				{

@@ -2955,22 +2955,16 @@
 							Name="Effectors"
 							Filter="">
 							<File
+								RelativePath=".\CameraEffector.cpp">
+							</File>
+							<File
+								RelativePath=".\CameraEffector.h">
+							</File>
+							<File
 								RelativePath=".\EffectorBobbing.cpp">
 							</File>
 							<File
 								RelativePath=".\EffectorBobbing.h">
-							</File>
-							<File
-								RelativePath="EffectorHit.cpp">
-							</File>
-							<File
-								RelativePath="EffectorHit.h">
-							</File>
-							<File
-								RelativePath="EffectorPPHit.cpp">
-							</File>
-							<File
-								RelativePath="EffectorPPHit.h">
 							</File>
 							<File
 								RelativePath=".\ShootingHitEffector.cpp">
@@ -3249,12 +3243,6 @@
 									<File
 										RelativePath=".\WeaponFire.cpp">
 									</File>
-									<File
-										RelativePath=".\WeaponRecoil.cpp">
-									</File>
-									<File
-										RelativePath=".\WeaponRecoil.h">
-									</File>
 								</Filter>
 								<Filter
 									Name="Ammo"
@@ -3344,18 +3332,6 @@
 							<Filter
 								Name="Effectors"
 								Filter="">
-								<File
-									RelativePath=".\EffectorNoise.cpp">
-								</File>
-								<File
-									RelativePath=".\EffectorNoise.h">
-								</File>
-								<File
-									RelativePath=".\EffectorRecoil.cpp">
-								</File>
-								<File
-									RelativePath=".\EffectorRecoil.h">
-								</File>
 								<File
 									RelativePath=".\EffectorShot.cpp">
 								</File>

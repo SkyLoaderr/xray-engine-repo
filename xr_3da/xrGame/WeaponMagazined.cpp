@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "effectorshot.h"
+
 #include "PSObject.h"
 #include "hudmanager.h"
 #include "WeaponHUD.h"

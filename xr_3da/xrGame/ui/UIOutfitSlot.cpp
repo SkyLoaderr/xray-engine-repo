@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "UIOutfitSlot.h"
 
-#include "..\\CustomOutfit.h"
+#include "../CustomOutfit.h"
 
 
 #include "UIInventoryUtilities.h"

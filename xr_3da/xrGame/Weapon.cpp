@@ -13,9 +13,6 @@
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 
-#include "effectorshot.h"
-#include "WeaponRecoil.h"
-
 #define WEAPON_REMOVE_TIME		600000
 
 //////////////////////////////////////////////////////////////////////
@@ -82,8 +79,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
 	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
 	m_sShellParticles = NULL;
-
-	m_pWeaponRecoil = NULL;
 }
 
 CWeapon::~CWeapon		()

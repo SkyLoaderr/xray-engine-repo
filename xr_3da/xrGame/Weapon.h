@@ -21,7 +21,6 @@ class CEntity;
 class ENGINE_API CMotionDef;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeItemWeaponAmmo;
-class CWeaponRecoil;
 
 class CWeapon : public CHudItem,
 				public CShootingObject
@@ -330,9 +329,7 @@ public:
 	xr_stack<CCartridge> m_magazine;
 
 	//для отдачи оружия
-	CWeaponRecoil*		m_pWeaponRecoil;
 	Fvector				m_vRecoilDeltaAngle;
-	
 	const Fvector&		GetRecoilDeltaAngle();
 
 	//////////////////////////////////

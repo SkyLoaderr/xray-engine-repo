@@ -861,10 +861,6 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	if(Level().CurrentEntity() == this) {
 		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_pShootingEffector->ppi,		m_pShootingEffector->time,		m_pShootingEffector->time_attack,		m_pShootingEffector->time_release));
 		Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_pShootingEffector->ce_time,	m_pShootingEffector->ce_amplitude,m_pShootingEffector->ce_period_number,m_pShootingEffector->ce_power));
-
-		//Fvector l_d; l_d.set(dir); l_d.normalize();
-		//Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
-		//Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
 	}
 
 	
@@ -1291,7 +1287,7 @@ void CActor::shedule_Update	(u32 DT)
 		if (!pCamBobbing)
 		{
 			pCamBobbing = xr_new<CEffectorBobbing>	();
-			Level().Cameras.AddEffector			(pCamBobbing);
+			EffectorManager().AddEffector			(pCamBobbing);
 		}
 		pCamBobbing->SetState					(mstate_real);
 		//cam_Update								(dt,Weapons->getZoomFactor());
