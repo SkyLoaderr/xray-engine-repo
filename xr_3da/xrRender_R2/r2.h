@@ -86,7 +86,7 @@ public:
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();
 	IRender_Visual*					model_CreatePE				(LPCSTR name);
-	IRender_Sector*					detectSector				(Fvector& P, Fvector& D);
+	IRender_Sector*					detectSector				(const Fvector& P, Fvector& D);
 
 	// HW-occlusion culling
 	IC u32							occq_begin					(u32&	ID		)	{ return HWOCC.occq_begin	(ID);	}

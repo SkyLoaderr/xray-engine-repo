@@ -17,7 +17,7 @@ IRender_Sector* CRender::detectSector(const Fvector& P)
 	return S;
 }
 
-IRender_Sector* CRender::detectSector(Fvector& P, Fvector& dir)
+IRender_Sector* CRender::detectSector(const Fvector& P, Fvector& dir)
 {
 	// Portals model
 	int		id1		= -1;
