@@ -206,6 +206,16 @@ IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex *vertex) const
 	return				(vertex_plane_y(*vertex));
 }
 
+IC float CLevelGraph::vertex_plane_y	(const u32 vertex_id, float X, float Z) const
+{
+	return				(vertex_plane_y(vertex(vertex_id),X,Z));
+}
+
+IC float CLevelGraph::vertex_plane_y	(const u32 vertex_id) const
+{
+	return				(vertex_plane_y(vertex(vertex_id)));
+}
+
 IC	u32	CLevelGraph::CHeader::version() const
 {
 	return				(hdrNODES::version);

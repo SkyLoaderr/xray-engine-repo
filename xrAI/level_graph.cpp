@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "level_graph.h"
+#include "ai_space.h"
+#include "graph_search_engine.h"
 
 #ifndef AI_COMPILER
 CLevelGraph::CLevelGraph					()
@@ -83,9 +85,22 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 	}
 
 #pragma todo("Dima to Dima : implement pathfinding search here!")
+	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 1;
+	float					distance = dInfinity;
+	CGraphSearchEngine::CPositionParameters	position_params(position,1.f,30.f);
+	xr_vector<u32>			temp;
+
+	if (ai().graph_search_engine().build_path(*this,id_prev,id_prev,temp,position_params)) {
+		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
+		return				(position_params.m_vertex_id);
+	}
+
+	if (position_params.m_distance < 1.f) {
+		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
+		return				(position_params.m_vertex_id);
+	}
 	
-	u32						id = vertex(position);
-	
+	id						= vertex(position);
 	if (valid_vertex_id(id))
 		return				(id);
 

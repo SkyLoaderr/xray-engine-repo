@@ -115,9 +115,11 @@ public:
 	IC		const	Fvector						vertex_position	(const CVertex &vertex) const;
 	IC		const	Fvector						vertex_position	(const CVertex *vertex) const;
 	IC		float	vertex_plane_y				(const CVertex &vertex, float X, float Z) const;
-	IC		float	vertex_plane_y				(const CVertex &vertex) const;
 	IC		float	vertex_plane_y				(const CVertex *vertex, float X, float Z) const;
+	IC		float	vertex_plane_y				(const u32 vertex_id, float X, float Z) const;
+	IC		float	vertex_plane_y				(const CVertex &vertex) const;
 	IC		float	vertex_plane_y				(const CVertex *vertex) const;
+	IC		float	vertex_plane_y				(const u32 vertex_id) const;
 	IC		bool	inside						(const CVertex &vertex, const CLevelGraph::CPosition &vertex_position) const;
 	IC		bool	inside						(const CVertex &vertex, const Fvector &vertex_position) const;
 	IC		bool	inside						(const CVertex *vertex, const CLevelGraph::CPosition &vertex_position) const;

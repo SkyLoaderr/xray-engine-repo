@@ -755,10 +755,7 @@ template <
 				_iteration_type
 			> inherited;
 protected:
-	Fvector				m_position;
-	float				m_epsilon;
-	_dist_type			m_min_distance;
-	_index_type			m_vertex_id;
+	_Parameters			*m_params;
 
 public:
 	virtual				~CPathManager	()
@@ -782,27 +779,26 @@ public:
 			_goal_node_index,
 			parameters
 		);
-		m_position		= parameters.m_position;
-		m_epsilon		= parameters.m_epsilon;
+		m_params		= &parameters;
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
-		if (!graph->inside(node_index,m_position)) {
-			float				distance = graph->distance(m_vertex_id,m_position);
-			if (distance < m_min_distance) {
-				m_min_distance	= distance;
-				m_vertex_id		= node_index;
+		if (!graph->inside(node_index,m_params->m_position)) {
+			float				distance = graph->distance(node_index,m_params->m_position);
+			if (distance < m_params->m_distance) {
+				m_params->m_distance	= distance;
+				m_params->m_vertex_id	= node_index;
 			}
-			return				(false);
+			return					(false);
 		}
 
-		if ((_abs(m_position.y - ai().level_graph().vertex_plane_y(node_index,m_position.x,m_position.z)) >= m_epsilon))
-			return				(false);
+		if ((_abs(m_params->m_position.y - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon))
+			return					(false);
 		else {
-			m_min_distance		= 0.f;
-			m_vertex_id			= node_index;
-			return				(true);
+			m_params->m_distance	= 0.f;
+			m_params->m_vertex_id	= node_index;
+			return					(true);
 		}
 	}
 };

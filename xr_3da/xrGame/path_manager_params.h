@@ -41,8 +41,10 @@ namespace PathManagers {
 		_index_type,
 		_iteration_type
 	> {
-		const Fvector	&m_position;
+		Fvector			m_position;
 		float			m_epsilon;
+		_index_type		m_vertex_id;
+		_dist_type		m_distance;
 
 		IC	SPosition (
 				const Fvector			&position,
