@@ -4,7 +4,7 @@
     <info_portion id="escape_novice_need_weapon">
         <location>
             <level></level>
-            <object>trivial_novice3_0_1</object>
+            <object>001</object>
             <icon name="unknown" x="2" y="3" width="1" height="1"></icon>
             <text>Помочь ограбленному новичку</text>
         </location>
@@ -21,7 +21,7 @@
         <location>
             <level></level>
             <object>000</object>
-			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+			<icon name="Case" x="5" y="1" width="1" height="1"></icon>
             <text>Украсть ящик с блокпоста</text>
         </location>
         <task>escape_blockpost_case</task>

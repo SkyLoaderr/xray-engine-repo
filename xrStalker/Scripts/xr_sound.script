@@ -49,7 +49,7 @@ function load_sound(obj)
 	end
 	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
 	function load_theme(name)
-		local file = this.snd_files[name]
+		local file = snd_files[name]
 		if file ~= nil then
 			local sid = id()
 			return { id = sid, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
@@ -59,86 +59,86 @@ function load_sound(obj)
 	end
 
 	-- фразы о погоде
-	this.theme["weather"] = { exec = this.weather_class, types = {}}
-	this.theme["weather"].types["bad"] = { exec = this.npc_class, types = {}}
-	this.theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier")
-	this.theme["weather"].types["good"] = { exec = this.npc_class, types = {}}
-	this.theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier")
+	theme["weather"] = { exec = weather_class, types = {}}
+	theme["weather"].types["bad"] = { exec = npc_class, types = {}}
+	theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier")
+	theme["weather"].types["good"] = { exec = npc_class, types = {}}
+	theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier")
 
 	-- состояния тела
-	this.theme["state"] = { exec = this.state_class, types = {}}
-	this.theme["state"].types["health"] = { exec = this.npc_class, types = {}}
-	this.theme["state"].types["health"].types["soldier"] = load_theme("state_health_soldier")
-	this.theme["state"].types["fatique"] = { exec = this.npc_class, types = {}}
-	this.theme["state"].types["fatique"].types["soldier"] = load_theme("state_fatique_soldier")
-	this.theme["state"].types["starvation"] = { exec = this.npc_class, types = {}}
-	this.theme["state"].types["starvation"].types["soldier"] = load_theme("state_starvation_soldier")
-	this.theme["state"].types["sleep"] = { exec = this.npc_class, types = {}}
-	this.theme["state"].types["sleep"].types["soldier"] = load_theme("state_sleep_soldier")
-	this.theme["state"].types["idle"] = { exec = this.npc_class, types = {}}
-	this.theme["state"].types["idle"].types["soldier"] = load_theme("state_idle_soldier")
+	theme["state"] = { exec = state_class, types = {}}
+	theme["state"].types["health"] = { exec = npc_class, types = {}}
+	theme["state"].types["health"].types["soldier"] = load_theme("state_health_soldier")
+	theme["state"].types["fatique"] = { exec = npc_class, types = {}}
+	theme["state"].types["fatique"].types["soldier"] = load_theme("state_fatique_soldier")
+	theme["state"].types["starvation"] = { exec = npc_class, types = {}}
+	theme["state"].types["starvation"].types["soldier"] = load_theme("state_starvation_soldier")
+	theme["state"].types["sleep"] = { exec = npc_class, types = {}}
+	theme["state"].types["sleep"].types["soldier"] = load_theme("state_sleep_soldier")
+	theme["state"].types["idle"] = { exec = npc_class, types = {}}
+	theme["state"].types["idle"].types["soldier"] = load_theme("state_idle_soldier")
 
 	-- просьба о помощи
-	this.theme["help"] = { exec = this.npc_class, types = {}}
-	this.theme["help"].types["soldier"] = load_theme("help_soldier")
+	theme["help"] = { exec = npc_class, types = {}}
+	theme["help"].types["soldier"] = load_theme("help_soldier")
 
 	-- окрик
-	this.theme["hail"] = { exec = this.npc_class, types = {}}
-	this.theme["hail"].types["soldier"] = load_theme("hail_soldier")
+	theme["hail"] = { exec = npc_class, types = {}}
+	theme["hail"].types["soldier"] = load_theme("hail_soldier")
 
 	-- ожидание
-	this.theme["wait"] = { exec = this.npc_class, types = {}}
-	this.theme["wait"].types["soldier"] = load_theme("wait_soldier")
+	theme["wait"] = { exec = npc_class, types = {}}
+	theme["wait"].types["soldier"] = load_theme("wait_soldier")
 
 	-- угрозы
-	this.theme["threat_weap"] = { exec = this.npc_class, types = {}}
-	this.theme["threat_weap"].types["soldier"] = load_theme("threat_weap_soldier")
-	this.theme["threat_back"] = { exec = this.npc_class, types = {}}
-	this.theme["threat_back"].types["soldier"] = load_theme("threat_back_soldier")
-	this.theme["threat_stop"] = { exec = this.npc_class, types = {}}
-	this.theme["threat_stop"].types["soldier"] = load_theme("threat_stop_soldier")
+	theme["threat_weap"] = { exec = npc_class, types = {}}
+	theme["threat_weap"].types["soldier"] = load_theme("threat_weap_soldier")
+	theme["threat_back"] = { exec = npc_class, types = {}}
+	theme["threat_back"].types["soldier"] = load_theme("threat_back_soldier")
+	theme["threat_stop"] = { exec = npc_class, types = {}}
+	theme["threat_stop"].types["soldier"] = load_theme("threat_stop_soldier")
 
 	-- реакции
-	this.theme["reac_hear"] = { exec = this.npc_class, types = {}}
-	this.theme["reac_hear"].types["soldier"] = load_theme("reac_hear_soldier")
-	this.theme["reac_see"] = { exec = this.npc_class, types = {}}
-	this.theme["reac_see"].types["soldier"] = load_theme("reac_see_soldier")
-	this.theme["reac_search"] = { exec = this.npc_class, types = {}}
-	this.theme["reac_search"].types["soldier"] = load_theme("reac_search_soldier")
-	this.theme["reac_find_monstr"] = { exec = this.state_class, types = {}}
-	this.theme["reac_find_monstr"].types["soldier"] = load_theme("reac_monstr_soldier")
-	this.theme["reac_find_enemy"] = { exec = this.state_class, types = {}}
-	this.theme["reac_find_enemy"].types["soldier"] = load_theme("reac_enemy_soldier")
-	this.theme["reac_crps_monstr"] = { exec = this.state_class, types = {}}
-	this.theme["reac_crps_monstr"].types["soldier"] = load_theme("reac_cmonstr_soldier")
-	this.theme["reac_crps_enemy"] = { exec = this.state_class, types = {}}
-	this.theme["reac_crps_enemy"].types["soldier"] = load_theme("reac_cenemy_soldier")
-	this.theme["reac_crps_neutral"] = { exec = this.state_class, types = {}}
-	this.theme["reac_crps_neutral"].types["soldier"] = load_theme("reac_cneutral_soldier")
-	this.theme["reac_crps_friend"] = { exec = this.state_class, types = {}}
-	this.theme["reac_crps_friend"].types["soldier"] = load_theme("reac_cfriend_soldier")
-	this.theme["reac_nothing"] = { exec = this.state_class, types = {}}
-	this.theme["reac_nothing"].types["soldier"] = load_theme("reac_nothing_soldier")
+	theme["reac_hear"] = { exec = npc_class, types = {}}
+	theme["reac_hear"].types["soldier"] = load_theme("reac_hear_soldier")
+	theme["reac_see"] = { exec = npc_class, types = {}}
+	theme["reac_see"].types["soldier"] = load_theme("reac_see_soldier")
+	theme["reac_search"] = { exec = npc_class, types = {}}
+	theme["reac_search"].types["soldier"] = load_theme("reac_search_soldier")
+	theme["reac_find_monstr"] = { exec = npc_class, types = {}}
+	theme["reac_find_monstr"].types["soldier"] = load_theme("reac_monstr_soldier")
+	theme["reac_find_enemy"] = { exec = npc_class, types = {}}
+	theme["reac_find_enemy"].types["soldier"] = load_theme("reac_enemy_soldier")
+	theme["reac_crps_monstr"] = { exec = npc_class, types = {}}
+	theme["reac_crps_monstr"].types["soldier"] = load_theme("reac_cmonstr_soldier")
+	theme["reac_crps_enemy"] = { exec = npc_class, types = {}}
+	theme["reac_crps_enemy"].types["soldier"] = load_theme("reac_cenemy_soldier")
+	theme["reac_crps_neutral"] = { exec = npc_class, types = {}}
+	theme["reac_crps_neutral"].types["soldier"] = load_theme("reac_cneutral_soldier")
+	theme["reac_crps_friend"] = { exec = npc_class, types = {}}
+	theme["reac_crps_friend"].types["soldier"] = load_theme("reac_cfriend_soldier")
+	theme["reac_nothing"] = { exec = npc_class, types = {}}
+	theme["reac_nothing"].types["soldier"] = load_theme("reac_nothing_soldier")
 
 	-- болтовня
-	this.theme["talk_hello"] = { exec = this.npc_class, types = {}}
-	this.theme["talk_hello"].types["soldier"] = load_theme("talk_hello_soldier")
-	this.theme["talk_bye"] = { exec = this.npc_class, types = {}}
-	this.theme["talk_bye"].types["soldier"] = load_theme("talk_bye_soldier")
-	this.theme["talk_accept"] = { exec = this.npc_class, types = {}}
-	this.theme["talk_accept"].types["soldier"] = load_theme("talk_accept_soldier")
-	this.theme["talk_reject"] = { exec = this.npc_class, types = {}}
-	this.theme["talk_reject"].types["soldier"] = load_theme("talk_reject_soldier")
-	this.theme["talk_abuse"] = { exec = this.npc_class, types = {}}
-	this.theme["talk_abuse"].types["soldier"] = load_theme("talk_abus_soldier")
+	theme["talk_hello"] = { exec = npc_class, types = {}}
+	theme["talk_hello"].types["soldier"] = load_theme("talk_hello_soldier")
+	theme["talk_bye"] = { exec = npc_class, types = {}}
+	theme["talk_bye"].types["soldier"] = load_theme("talk_bye_soldier")
+	theme["talk_accept"] = { exec = npc_class, types = {}}
+	theme["talk_accept"].types["soldier"] = load_theme("talk_accept_soldier")
+	theme["talk_reject"] = { exec = npc_class, types = {}}
+	theme["talk_reject"].types["soldier"] = load_theme("talk_reject_soldier")
+	theme["talk_abuse"] = { exec = npc_class, types = {}}
+	theme["talk_abuse"].types["soldier"] = load_theme("talk_abus_soldier")
 
 	-- торговля
-	this.theme["trade_yes"] = { exec = this.npc_class, types = {}}
-	this.theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier")
-	this.theme["trade_no"] = { exec = this.npc_class, types = {}}
-	this.theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier")
+	theme["trade_yes"] = { exec = npc_class, types = {}}
+	theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier")
+	theme["trade_no"] = { exec = npc_class, types = {}}
+	theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier")
 	         
---	print_table(this.theme)
+	print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -175,7 +175,6 @@ function sound_update(npc, sound, target)
 
 		function get_sound(path)
 			if path == nil then return nil end
-
 			if path.exec == nil then
 				sounds_ids[path.id] = path.max
 			else
@@ -191,7 +190,7 @@ function sound_update(npc, sound, target)
 		end
 
 		for k,v in sound.themes do
-			get_sound(this.theme[v])
+			get_sound(theme[v])
 		end
 
 		-- проиграть один звук
@@ -203,9 +202,8 @@ function sound_update(npc, sound, target)
 			for k, w in sounds_ids do
 				sum = sum + w
 			end
-
 			repeat
-				local r = math.random(sum - 1)
+				local r = math.random(0, sum - 1)
 				local cur_sum = 0
 
 				for k, w in sounds_ids do

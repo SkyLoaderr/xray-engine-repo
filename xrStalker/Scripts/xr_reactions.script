@@ -58,6 +58,27 @@ function action_wait:initialize()
    		     rnd = 100,
 		     lastsound = nil,	
 		     themes = {"reac_crps_neutral"} }
+	self.sound_crps_friend = {idle = 0,
+		     begin = nil,
+		     maxidle = 2, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,	
+		     themes = {"reac_crps_friend"} }
+	self.sound_crps_enemy = {idle = 0,
+		     begin = nil,
+		     maxidle = 2, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,	
+		     themes = {"reac_crps_enemy"} }
+	self.sound_crps_mutant = {idle = 0,
+		     begin = nil,
+		     maxidle = 2, 
+		     sumidle = 1,
+   		     rnd = 100,
+		     lastsound = nil,	
+		     themes = {"reac_crps_monstr"} }
 	self.sound_watch = {idle = 0,
 		     begin = nil,
 		     maxidle = 5, 
@@ -77,20 +98,17 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "watch" then
-		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markAsUsed(self.a.obj.id)
-			self:set_prisluh(false)	
+			if self.a.evn:isEvents() == false then self:set_prisluh(false) end
 			return
 		end
-
 		--' если прошло много времени, прекращаем
 		if game.time() - self.a.obj.time >= self.a.time_wait then
 			self.a.evn:removeFromWatch(self.a.obj.id)
-			self:set_prisluh(false)	
+			if self.a.evn:isEvents() == false then self:set_prisluh(false) end
 			return
 		end
-
 		self.a.evn:markAsWatch(self.a.obj.id)
 		--' определяем позицию чувака и втыкаем в нее
 		self.object:set_movement_type(move.stand)
@@ -103,32 +121,14 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "explore" then
-		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self.a.evn:markAsUsed(self.a.obj.id)
-			self:set_prisluh(false)	
+			if self.a.evn:isEvents() == false then self:set_prisluh(false) end
 			return
 		end
 	end
 
 	if self.a.obj.type == "corpse_monstr" then
-		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
-		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self.a.evn:markCorpse(self.a.obj.id)
-			return
-		end
-	end
-
-	if self.a.obj.type == "corpse_friend" then
-		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
-		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self.a.evn:markCorpse(self.a.obj.id)
-			return
-		end
-	end
-
-	if self.a.obj.type == "corpse_neutral" then
-		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			--' подойти к трупу
@@ -140,7 +140,53 @@ function action_wait:execute()
 				self.object:set_desired_direction()
 				--' Если мы подошли к трупу - поплакать и уйти			
 				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
-					if self.a.evn:ruleExist("silence") ~= true then xr_sound.sound_update(self.object, self.sound_crps_neutral) end
+					if self.a.evn:ruleExist("silence") ~= true then 
+						xr_sound.sound_update(self.object, self.sound_crps_mutant) 
+					end
+					self.a.evn:markCorpse(self.a.obj.id)
+				end
+			end			
+			return
+		end
+	end
+
+	if self.a.obj.type == "corpse_friend" then
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			--' подойти к трупу
+			if self.object:animation_count() == 0 then
+				self.object:set_path_type(game_object.level_path)
+				self.object:set_dest_level_vertex_id(self.a.obj.position)
+				self.object:set_movement_type(move.walk)
+				self.object:set_sight(look.path_dir, nil, 0)
+				self.object:set_desired_direction()
+				--' Если мы подошли к трупу - поплакать и уйти			
+				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+					if self.a.evn:ruleExist("silence") ~= true then 
+						xr_sound.sound_update(self.object, self.sound_crps_friend) 
+					end
+					self.a.evn:markCorpse(self.a.obj.id)
+				end
+			end			
+			return
+		end
+	end
+
+	if self.a.obj.type == "corpse_neutral" then
+		if self.a.obj.visibility >= self.object:visibility_threshold() then
+			self:set_prisluh(false)
+			--' подойти к трупу
+			if self.object:animation_count() == 0 then
+				self.object:set_path_type(game_object.level_path)
+				self.object:set_dest_level_vertex_id(self.a.obj.position)
+				self.object:set_movement_type(move.walk)
+				self.object:set_sight(look.path_dir, nil, 0)
+				self.object:set_desired_direction()
+				--' Если мы подошли к трупу - поплакать и уйти			
+				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+					if self.a.evn:ruleExist("silence") ~= true then 
+						xr_sound.sound_update(self.object, self.sound_crps_neutral) 
+					end
 					self.a.evn:markCorpse(self.a.obj.id)
 				end
 			end			
@@ -149,9 +195,23 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "corpse_enemy" then
-		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self.a.evn:markCorpse(self.a.obj.id)
+			self:set_prisluh(false)
+			--' подойти к трупу
+			if self.object:animation_count() == 0 then
+				self.object:set_path_type(game_object.level_path)
+				self.object:set_dest_level_vertex_id(self.a.obj.position)
+				self.object:set_movement_type(move.walk)
+				self.object:set_sight(look.path_dir, nil, 0)
+				self.object:set_desired_direction()
+				--' Если мы подошли к трупу - поплакать и уйти			
+				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+					if self.a.evn:ruleExist("silence") ~= true then 
+						xr_sound.sound_update(self.object, self.sound_crps_enemy) 
+					end
+					self.a.evn:markCorpse(self.a.obj.id)
+				end
+			end			
 			return
 		end
 	end
@@ -289,7 +349,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		end
 	end
 	for k,v in dt do
-		self:removeFromUsed(v)
+		self:removeFromUsed(v) 
 	end
 
 	-- удалять из self.hear звуки старше x секунд
@@ -303,6 +363,38 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		table.remove(self.hear, v)
 	end
 
+	--' определяем что нам известно о слышимости объекта
+	local stable = self.npc:memory_sound_objects()
+	if   stable == nil then return false end
+	for s in stable do
+		local so = s:object()
+		local continue = true
+		local type = nil
+
+		if continue then
+			-- заносим раздражитель в память
+			if self.arhive[so:id()] == nil then
+				self.arhive[so:id()] = {visibility = self.descr.visibility,
+							name = vo:name(),
+							sound_kat = self.descr.sound_kat,
+							sound_power = self.descr.sound_power,
+							object_type = self.descr.object_type,
+							distance = self.descr.distance,
+							time = self.descr.time,
+							stalker = { relation = self.descr.stalker.relation},
+							monstr	= { power = self.descr.monstr.power},
+							item 	= { power = self.descr.item.power},
+							corpse	= { type = self.descr.corpse.type,
+								    relation = self.descr.corpse.relation,
+								    monstr_power = self.descr.corpse.monstr_power }}
+			end
+			-- указываем, что нам о нем известно
+			self.arhive[vo:id()].point 		= vo:level_vertex_id()
+			self.arhive[vo:id()].time		= game.time()
+		end
+	end
+
+--[[
 	-- определяем что нам известно о видимости объекта
 	local vtable = self.npc:not_yet_visible_objects()
 	if vtable == nil then return false end
@@ -395,6 +487,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			end
 		end
 	end
+]]
 end
 function events:isRuled(obj)
 	if self.npc == nil then return false end
