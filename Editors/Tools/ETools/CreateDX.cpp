@@ -103,6 +103,24 @@ extern "C"{
 	}
 
 	ETOOLS_API HRESULT WINAPI
+		D3DX_CompileShader(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		CONST D3DXMACRO*                pDefines,
+		LPD3DXINCLUDE                   pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		LPD3DXBUFFER*                   ppShader,
+		LPD3DXBUFFER*                   ppErrorMsgs,
+		LPD3DXCONSTANTTABLE*            ppConstantTable)
+	{
+		return D3DXCompileShader(
+			pSrcData, SrcDataLen, pDefines, pInclude, pFunctionName,
+			pTarget, Flags, ppShader, ppErrorMsgs, ppConstantTable);
+	}
+
+	ETOOLS_API HRESULT WINAPI
 		D3DX_CompileShaderFromFile(
 		LPCSTR                          pSrcFile,
 		CONST D3DXMACRO*                pDefines,

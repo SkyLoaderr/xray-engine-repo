@@ -77,6 +77,19 @@ extern "C" {
 		D3DCOLOR				ColorKey);
 
 	ETOOLS_API HRESULT WINAPI
+		D3DX_CompileShader(
+		LPCSTR                  pSrcData,
+		UINT                    SrcDataLen,
+		CONST D3DXMACRO*        pDefines,
+		LPD3DXINCLUDE           pInclude,
+		LPCSTR                  pFunctionName,
+		LPCSTR                  pTarget,
+		DWORD                   Flags,
+		LPD3DXBUFFER*           ppShader,
+		LPD3DXBUFFER*           ppErrorMsgs,
+		LPD3DXCONSTANTTABLE*    ppConstantTable);
+
+	ETOOLS_API HRESULT WINAPI
 		D3DX_CompileShaderFromFile(
 		LPCSTR                  pSrcFile,
 		CONST D3DXMACRO*        pDefines,
@@ -128,6 +141,7 @@ extern "C" {
 	#define D3DXCreateTexture						D3DX_CreateTexture
 	#define D3DXLoadSurfaceFromSurface				D3DX_LoadSurfaceFromSurface
 	#define D3DXCompileShaderFromFile				D3DX_CompileShaderFromFile
+	#define D3DXCompileShader						D3DX_CompileShader
 	#define D3DXFindShaderComment					D3DX_FindShaderComment
 	#define D3DXDeclaratorFromFVF					D3DX_DeclaratorFromFVF
 	#define D3DXGetDeclVertexSize					D3DX_GetDeclVertexSize
