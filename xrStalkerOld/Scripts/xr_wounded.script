@@ -413,18 +413,18 @@ function action_enemy:execute ()
     
     local enemy = self.object:best_enemy ()
     state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy})
-    if enemy and distance_between (self.object, enemy) < 20 and self.object:see (self.object:best_enemy ()) and self.object:see (enemy) == true then
-       if enemy:alive () == true then 
-          self.object:set_item (object.fire1, self.object:best_weapon ()) 
-       else   
-          self.object:set_item (object.activate, self.object:best_weapon ()) 
-       end   
-       if self.object:active_sound_count () ~= 0 then
-          return 
-       end     
+	
+	if enemy and distance_between(self.object, enemy) < 20 and self.object:see(enemy) == true then
+		if enemy:alive() == true then 
+			state_mgr.set_state(self.object, "hide_fire", nil,nil, {look_object = enemy})
+		else   
+			state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy, look_position = enemy:position()})
+		end	
     end
-    
-    xr_sound.sound_update(self.object, self.sounds)		
+
+	if self.object:active_sound_count() == 0 then
+		xr_sound.sound_update(self.object, self.sounds)		
+	end     
     
     if device ():time_global () - self.send_time > 15000 then    
        this.send_sos (self.object) 
