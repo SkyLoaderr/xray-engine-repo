@@ -11,6 +11,7 @@
 #include "ui/UISpawnWnd.h"
 
 #include "ui/UIBuyWeaponWnd.h"
+#include "ui/UITextBanner.h"
 
 // refs 
 class CUIAHuntFragList;
@@ -63,5 +64,6 @@ protected:
 	/////////
 	CUIInventoryWnd		InventoryMenu;
 	CUIMapWnd			MapMenu;
+	CUITextBanner		StaticMsg, BuyMsg, WarningMsg, WarningMsg2;
 };
 #endif // __XR_UIGAMEAHUNT_H__

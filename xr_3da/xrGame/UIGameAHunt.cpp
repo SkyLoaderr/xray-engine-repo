@@ -72,12 +72,25 @@ void		CUIGameAHunt::Init				()
 	std::strcpy(Team2, TEAM2_MENU);
 	m_aTeamSections.push_back(Team1);
 	m_aTeamSections.push_back(Team2);
-	//--------------------------------------------------------------------
+	//----------------------------------------------------------------
 	pBuyMenuTeam1 = InitBuyMenu(1);
 	pBuyMenuTeam2 = InitBuyMenu(2);
-	//-----------------------------------------------------------
+	//----------------------------------------------------------------
 	pSkinMenuTeam1 = InitSkinMenu(1);
 	pSkinMenuTeam2 = InitSkinMenu(2);
+	//----------------------------------------------------------------
+	BuyMsg.SetStyleParams		(CUITextBanner::tbsFade, 1);
+	BuyMsg.SetFont				(HUD().pFontDI);
+	BuyMsg.SetTextColor			(0xffffff00);
+
+	StaticMsg.SetFont			(HUD().pFontDI);
+
+	WarningMsg.SetStyleParams	(CUITextBanner::tbsFade, 1);
+	WarningMsg.SetFont			(HUD().pFontDI);
+	WarningMsg.SetTextColor		(0xffff0000);
+
+	WarningMsg2.SetStyleParams	(CUITextBanner::tbsFlicker, 0.5);
+	WarningMsg2.SetFont			(HUD().pFontDI);
 };
 //--------------------------------------------------------------------
 
@@ -105,7 +118,7 @@ void		CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTe
 //--------------------------------------------------------------------
 void			CUIGameAHunt::OnFrame()
 {
-	inherited::OnFrame();	
+	inherited::OnFrame();
 
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 	switch (Game().phase)
@@ -118,8 +131,8 @@ void			CUIGameAHunt::OnFrame()
 			{
 				if (pCurActor && pCurActor->g_Alive() && !pCurBuyMenu->IsShown())
 				{
-					HUD().pFontDI->SetColor		(0xffffff00);
-					HUD().pFontDI->Out			(0.f,0.9f,"Press B to access Buy Menu");
+					BuyMsg.Out					(0.0f,0.9f,"Press B to access Buy Menu");
+					BuyMsg.Update				();
 				};
 			};
 
@@ -128,32 +141,34 @@ void			CUIGameAHunt::OnFrame()
 				game_TeamState team0 = Game().teams[0];
 				game_TeamState team1 = Game().teams[1];
 
-				HUD().pFontDI->SetColor		(0xffffffff);
-				HUD().pFontDI->Out			(0.f,-0.9f,"Your Team has : %3d Artefacts from %3d", 
+				StaticMsg.Out					(0.0f, -0.9f, "Your Team has : %3d Artefacts from %3d",
 					Game().teams[pCurActor->g_Team()-1].score, Game().m_ArtefactsNum);
-				
+				StaticMsg.Update				();
+
 				if (Game().m_ArtefactBearerID == 0)
 				{
-					HUD().pFontDI->SetColor		(0xffffffff);
-					HUD().pFontDI->Out			(0.f,-0.85f,"Grab the Artefact");
+					StaticMsg.Out				(0.0f, -0.85f, "Grab the Artefact");
+					StaticMsg.Update			();
 				}
 				else
 				{
 					if (Game().m_TeamInPosession != pCurActor->g_Team())
 					{
-						HUD().pFontDI->SetColor		(0xffff0000);
-						HUD().pFontDI->Out			(0.f,-0.85f,"Stop ArtefactBearer.");
+						WarningMsg.Out				(0.f,-0.85f,"Stop ArtefactBearer.");
+						WarningMsg.Update			();
 					}
 					else
 					{
-						HUD().pFontDI->SetColor		(0xff00ff00);
+						WarningMsg2.SetTextColor		(0xff00ff00);
 						if (pCurActor->ID() == Game().m_ArtefactBearerID)
 						{
-							HUD().pFontDI->Out			(0.f,-0.85f,"You got the Artefact. Bring it to your base.");
+							WarningMsg2.Out			(0.f,-0.85f,"You got the Artefact. Bring it to your base.");
+							WarningMsg2.Update		();
 						}
 						else
 						{
-							HUD().pFontDI->Out			(0.f,-0.85f,"Protect your ArtefactBearer.");
+							WarningMsg2.Out			(0.f,-0.85f,"Protect your ArtefactBearer.");
+							WarningMsg2.Update		();
 						};
 					};
 				};
@@ -163,15 +178,15 @@ void			CUIGameAHunt::OnFrame()
 		{
 			HUD().GetUI()->HideIndicators();
 
-			HUD().pFontDI->SetColor		(0xfff0fff0);
-			HUD().pFontDI->Out			(0.f,0.0f,"Team Red WINS!");
+			StaticMsg.SetTextColor		(0xfff0fff0);
+			StaticMsg.Out				(0.f,0.0f,"Team Red WINS!");
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
 
-			HUD().pFontDI->SetColor		(0xfff0fff0);
-			HUD().pFontDI->Out			(0.f,0.0f,"Team Blue WINS!");
+			StaticMsg.SetTextColor		(0xfff0fff0);
+			StaticMsg.Out				(0.f,0.0f,"Team Blue WINS!");
 		}break;
 	default:
 		{
