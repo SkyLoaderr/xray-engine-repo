@@ -529,6 +529,8 @@ xr_motivator.storage[self.object:id()].reactions = {
         xr_follower.set_follower (self.object)
     xr_commander.set_commander(self.object)
     end
+    
+    escape.raid_init (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)

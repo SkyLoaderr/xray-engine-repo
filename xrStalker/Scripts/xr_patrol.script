@@ -213,8 +213,7 @@ function action_single_patrol:execute ()
     elseif self.stage == 1 then
         if self.object:animation_count () == 0 then
            self.stage = 0
-           self.object:set_movement_type (move.walk) 
-           --self.object:add_animation ("walk_poisk_0", true)    --!!!
+           self.object:set_movement_type (move.walk)  
            self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 2, 0)
@@ -223,8 +222,7 @@ function action_single_patrol:execute ()
     elseif self.stage == 2 then
         if self:process_radio () == true then
            self.stage = 0
-           self.object:set_movement_type (move.walk) 
-           --self.object:add_animation ("walk_poisk_0", true)    --!!!
+           self.object:set_movement_type (move.walk)
            self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
            if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 1, 0)
@@ -340,6 +338,23 @@ function action_single_patrol:set_command (command)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
+function action_single_patrol:free ()
+    local ini = self.object:spawn_ini ()
+    if ini == nil or ini:section_exist ("escape_raid") == false or 
+       ini:line_exist ("escape_raid", "raider") == false or ini:r_bool ("escape_raid", "raider") == false then
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       end   
+    else
+       local sim = alife ()
+       if sim ~= nil then
+          sim:set_switch_online  (self.object:id (), false) 
+          sim:set_switch_offline (self.object:id (), true)
+       end   
+    end   
+end
+---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:move_callback (obj, action_type, index)
     if index == -1 then return end
     self.waypoint = index
@@ -350,10 +365,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
           self.a.enabled = false
           self.stage = 0
           self:set_command (leader_free)
-          local st = xr_gulag.isUnderFraction (self.object)
-          if st ~= nil then
-             xr_gulag.resetJob (st, self.object)
-          end   
+          self:free ()
        return
        end           
   --  end    
@@ -672,6 +684,9 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].patrol
 	
+	st.npc_id = npc:id ()
+	st.first_init = true
+	
     if enabled == nil then
        if char_ini:section_exist ("patrol") == true and char_ini:line_exist("patrol", "enabled") == true then
           st.enabled = char_ini:r_bool("patrol", "enabled")
@@ -724,7 +739,7 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
     if raid_process == nil then
        st.raid_process = false
     else
-       st.raid_process =raid_process
+       st.raid_process = raid_process
     end      
 	xr_motivator.checkStorage (npc)
 	

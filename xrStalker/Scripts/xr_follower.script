@@ -209,6 +209,23 @@ function action_follow:initialize ()
     
     self.last_time = 0
 end
+---------------------------------------------------------------------------------------------------------------------
+function action_follow:free ()
+    local ini = self.object:spawn_ini ()
+    if ini == nil or ini:section_exist ("escape_raid") == false or 
+       ini:line_exist ("escape_raid", "raider") == false or ini:r_bool ("escape_raid", "raider") == false then
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       end   
+    else
+       local sim = alife ()
+       if sim ~= nil then
+          sim:set_switch_online  (self.object:id (), false) 
+          sim:set_switch_offline (self.object:id (), true)
+       end   
+    end   
+end
 --------------
 function action_follow:execute ()
     action_base.execute                 (self)
@@ -223,10 +240,7 @@ function action_follow:execute ()
     if self.a.leader_command == leader_free then
        self.a.stage = 0 
        self.a.enabled = false
-       local st = xr_gulag.isUnderFraction (self.object)
-       if st ~= nil then
-          xr_gulag.resetJob (st, self.object)
-       end   
+       self:free ()
        return 
     end   
     
