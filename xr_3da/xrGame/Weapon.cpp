@@ -328,6 +328,7 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	setVisible						(true);
 	setEnabled						(true);
 
+	/*
 	// Physics (Box)
 	Fobb								obb;
 	Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
@@ -346,6 +347,7 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
 	m_pPhysicsShell->mDesired.identity	();
 	m_pPhysicsShell->fDesiredStrength	= 0.f;
+	*/
 
 	return bResult;
 }
@@ -418,10 +420,12 @@ void CWeapon::Update		(DWORD dT)
 	if (light_time>0)		light_time -= dt;
 
 	// svMatrix
+	/*
 	if (0==H_Parent())		{
 		svTransform.set		(m_pPhysicsShell->mXFORM);
 		vPosition.set		(svTransform.c);
 	}
+	*/
 
 	// Inherited
 	inherited::Update		(dT);
@@ -434,7 +438,7 @@ void CWeapon::OnH_B_Independent	()
 	setEnabled					(true);
 	hud_mode					= FALSE;
 	UpdateXForm					();
-	m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
+	// m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
 }
 
 void CWeapon::OnH_B_Chield		()
@@ -442,7 +446,7 @@ void CWeapon::OnH_B_Chield		()
 	inherited::OnH_B_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
-	m_pPhysicsShell->Deactivate	();
+	// m_pPhysicsShell->Deactivate	();
 }
 
 void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
@@ -464,10 +468,12 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
+	/*
 	if (0==H_Parent())		{
 		m_pPhysicsShell->Update	();
 		clTransform.set			(m_pPhysicsShell->mXFORM);
 	}
+	*/
 
 	if (Remote() && NET.size())
 	{
