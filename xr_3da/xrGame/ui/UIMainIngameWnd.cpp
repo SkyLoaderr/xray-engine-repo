@@ -103,26 +103,37 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIStaticHealth);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticHealth);
+
+	AttachChild(&UIStaticArmor);
+	xml_init.InitStatic(uiXml, "static", 13, &UIStaticArmor);
+
+	// Надпись "health"
 	UIStaticHealth.AttachChild(&UIHealthString);
 	xml_init.InitStatic(uiXml, "static", 11, &UIHealthString);
 	
+	// Надпись "armor"
+	UIStaticArmor.AttachChild(&UIArmorString);
+	xml_init.InitStatic(uiXml, "static", 12, &UIArmorString);
 /*	AttachChild(&UIStaticMapBack);
 	xml_init.InitStatic(uiXml, "static", 1, &UIStaticMapBack);*/
 
-	AttachChild(&UIStaticRadiationLow);
-	xml_init.InitStatic(uiXml, "static", 2, &UIStaticRadiationLow);
-	AttachChild(&UIStaticRadiationMedium);
-	xml_init.InitStatic(uiXml, "static", 3, &UIStaticRadiationMedium);
-	AttachChild(&UIStaticRadiationHigh);
-	xml_init.InitStatic(uiXml, "static", 4, &UIStaticRadiationHigh);
+//	AttachChild(&UIStaticRadiationLow);
+//	xml_init.InitStatic(uiXml, "static", 2, &UIStaticRadiationLow);
+//	AttachChild(&UIStaticRadiationMedium);
+//	xml_init.InitStatic(uiXml, "static", 3, &UIStaticRadiationMedium);
+//	AttachChild(&UIStaticRadiationHigh);
+//	xml_init.InitStatic(uiXml, "static", 4, &UIStaticRadiationHigh);
+//
+//	AttachChild(&UIStaticWound);
+//	xml_init.InitStatic(uiXml, "static", 5, &UIStaticWound);
 
-	AttachChild(&UIStaticWound);
-	xml_init.InitStatic(uiXml, "static", 5, &UIStaticWound);
+#pragma todo ("Vortex to Vortex: не забыть убрать из mainingame_new.xml лишние статики")
 
 	AttachChild(&UIWeaponBack);
 	xml_init.InitStatic(uiXml, "static", 6, &UIWeaponBack);
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
 	xml_init.InitStatic(uiXml, "static", 7, &UIWeaponSignAmmo);
+//	UIWeaponBack.Show(true);
 //	UIWeaponBack.AttachChild(&UIWeaponSignName);
 //	xml_init.InitStatic(uiXml, "static", 8, &UIWeaponSignName);
 	UIWeaponBack.AttachChild(&UIWeaponIcon);
@@ -158,15 +169,18 @@ void CUIMainIngameWnd::Init()
 
 	UIPdaMsgListWnd.SetVertFlip(true);
 		
-	AttachChild(&UITextWound);
-	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
-						UIStaticWound.GetWndRect().top+40,
-						30,30);
-
+//	AttachChild(&UITextWound);
+//	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
+//						UIStaticWound.GetWndRect().top+40,
+//						30,30);
 
 	//Полоса прогресса здоровья
 	AttachChild(&UIHealthBar);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIHealthBar);
+
+	//Полоса прогресса армора
+	AttachChild(&UIArmorBar);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIArmorBar);
 
 	//индикаторы 
 	UIZoneMap.Init();
@@ -200,31 +214,76 @@ void CUIMainIngameWnd::Init()
 		m_strTips.insert(tmpTip);
 	}
 
+	uiXml.SetLocalRoot(uiXml.GetRoot());
+
+	// Загружаем иконки 
+	AttachChild(&UIWeaponJammedIcon);
+	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
+
+	AttachChild(&UIRadiaitionIcon);
+	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
+
+	AttachChild(&UIWoundIcon);
+	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
+
+	AttachChild(&UIStarvationIcon);
+	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
+
+	AttachChild(&UIFatigueIcon);
+	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
+
 	// Загружаем заготовки собщений ньюсов
 	LoadNewsTemplates();
+
+	ref_str warningStrings[5] = 
+		{	"jammed",
+			"radiation",
+			"wounds",
+			"starvation",
+			"fatigue" };
+
+	// Загружаем пороговые значения для индикаторов
+	EWarningIcons j = ewiWeaponJammed;
+	while (j <= ewiFatigue)
+	{
+		// Читаем данные порогов для каждого индикатора
+		ref_str cfgRecord = pSettings->r_string("main_ingame_indicators_thresholds", *warningStrings[static_cast<int>(j) - 1]);
+		u32 count = _GetItemCount(*cfgRecord);
+
+		char	singleThreshold[8];
+		float	f = 0;
+		for (u32 k = 0; k < count; ++k)
+		{
+			_GetItem(*cfgRecord, k, singleThreshold);
+			sscanf(singleThreshold, "%f", &f);
+
+			m_Thresholds[j].push_back(f);
+		}
+
+		j = static_cast<EWarningIcons>(j + 1);
+	}
 }
 
 void CUIMainIngameWnd::Draw()
 {
-	if(m_bShowHudInfo)
-	{
+//	if(m_bShowHudInfo)
+//	{
+//
+//		static float radiation_alpha = 254.f;
+//		static float radiation_alpha_inc = 0.5;
+//
+//		radiation_alpha += radiation_alpha_inc;
+//		if(radiation_alpha > 255.f || radiation_alpha < 60.0f) 
+//		{
+//			radiation_alpha_inc *=-1;
+//			radiation_alpha += radiation_alpha_inc;
+//		}
 
-		static float radiation_alpha = 254.f;
-		static float radiation_alpha_inc = 0.5;
+//		UIStaticRadiationLow.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
+//		UIStaticRadiationMedium.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
+//		UIStaticRadiationHigh.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
 
-		radiation_alpha += radiation_alpha_inc;
-		if(radiation_alpha > 255.f || radiation_alpha < 60.0f) 
-		{
-			radiation_alpha_inc *=-1;
-			radiation_alpha += radiation_alpha_inc;
-		}
-
-		UIStaticRadiationLow.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-		UIStaticRadiationMedium.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-		UIStaticRadiationHigh.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-
-	}
-
+//	}
 
 	bool zoom_mode = false;
 	bool scope_mode = false;
@@ -293,6 +352,21 @@ void CUIMainIngameWnd::Update()
 		UIPdaOnline.SetText("");
 	}
 
+	// Armor indicator stuff
+	PIItem	pItem = m_pActor->inventory().ItemFormSlot(OUTFIT_SLOT);
+	if (pItem)
+	{
+		UIArmorBar.Show(true);
+		UIArmorString.Show(true);
+		UIStaticArmor.Show(true);
+		UIArmorBar.SetProgressPos(static_cast<s16>(pItem->GetCondition() * 100));
+	}
+	else
+	{
+		UIArmorBar.Show(false);
+		UIArmorString.Show(false);
+		UIStaticArmor.Show(false);
+	}
 
 	if(m_pActor->inventory().GetActiveSlot() < m_pActor->inventory().m_slots.size()) 
 	{
@@ -375,6 +449,7 @@ void CUIMainIngameWnd::Update()
 		UIWeaponBack.SetText("");
 	}
 
+
 	//сбросить индикаторы
 	if(!m_pWeapon)
 	{
@@ -397,52 +472,59 @@ void CUIMainIngameWnd::Update()
 	// health&armor
 	//	UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
 	UIHealthBar.SetProgressPos((s16)m_pActor->g_Health());
+	EWarningIcons i = ewiWeaponJammed;
 		
-	//radiation
-	float radiation = m_pActor->GetRadiation();
+	while (i <= ewiFatigue)
+	{
+		float value = 0;
+		switch (i)
+		{
+		//radiation
+		case ewiRadiation:
+			value = m_pActor->GetRadiation();
+			break;
+		case ewiWound:
+			value = m_pActor->BleedingSpeed();
+			break;
+		case ewiWeaponJammed:
+			value = 0.0f;
+			break;
+		case ewiStarvation:
+			value = 0.0f;
+			break;
+		case ewiFatigue:
+			value = 0.0f;
+			break;
+		default:
+			R_ASSERT(!"Unknown type of warning icon");
+		}
 
-	if(radiation<RADIATION_ABSENT)	
-	{
-		UIStaticRadiationLow.Show(false);
-		UIStaticRadiationMedium.Show(false);
-		UIStaticRadiationHigh.Show(false);
-	}
-	else if(radiation<RADIATION_SMALL)	
-	{
-		UIStaticRadiationLow.Show(true);
-		UIStaticRadiationMedium.Show(false);
-		UIStaticRadiationHigh.Show(false);
-	}
-	else if(radiation<RADIATION_MEDIUM)	
-	{
-		UIStaticRadiationLow.Show(false);
-		UIStaticRadiationMedium.Show(true);
-		UIStaticRadiationHigh.Show(false);
-	}
-	else 
-	{
-		UIStaticRadiationLow.Show(false);
-		UIStaticRadiationMedium.Show(false);
-		UIStaticRadiationHigh.Show(true);
+		xr_vector<float>::reverse_iterator	rit;
+
+		// Сначала проверяем на точное соответсвие
+		rit  = std::find(m_Thresholds[i].rbegin(),
+						 m_Thresholds[i].rend(),
+						 value);
+
+		// Если его нет, то берем последнее меньшее значение ()
+		if (rit == m_Thresholds[i].rend())
+		{
+			rit = std::find_if(m_Thresholds[i].rbegin(),
+						m_Thresholds[i].rend(),
+						std::bind2nd(std::less<float>(), value));
+		}
+
+
+		if (rit != m_Thresholds[i].rend())
+			SetWarningIconColor(i, RGB_ALPHA(0xFF, 255 * (*rit), 255 * (1.0f - *rit), 0));
+		else
+			TurnOffWarningIcon(i);
+
+		i = static_cast<EWarningIcons>(i + 1);
 	}
 
 	// weapon
 		
-	//Wounds bleeding speed
-	if(m_pActor->BleedingSpeed()>0)
-	{
-		sprintf(text_str, "%3.3f",m_pActor->BleedingSpeed());
-		UITextWound.SetText(text_str);
-		UITextWound.Show(true);
-		UIStaticWound.Show(true);
-	}
-	else
-	{
-		UITextWound.Show(false);
-		UIStaticWound.Show(false);
-	}
-
-
 	for(int i=0; i<UIPdaMsgListWnd.GetSize(); i++)
 	{
 		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(i));
@@ -943,4 +1025,42 @@ bool CUIMainIngameWnd::CheckForNewNews()
 	}
 
 	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
+{
+	bool bMagicFlag = true;
+
+	// Задаем цвет требуемой иконки
+	switch(icon)
+	{
+	case ewiAll:
+		bMagicFlag = false;
+	case ewiWeaponJammed:
+		UIWeaponJammedIcon.SetColor(cl);
+		if (bMagicFlag) break;
+	case ewiRadiation:
+		UIRadiaitionIcon.SetColor(cl);
+		if (bMagicFlag) break;
+	case ewiWound:
+		UIWoundIcon.SetColor(cl);
+		if (bMagicFlag) break;
+	case ewiStarvation:
+		UIStarvationIcon.SetColor(cl);
+		if (bMagicFlag) break;
+	case ewiFatigue:
+		UIFatigueIcon.SetColor(cl);
+		if (bMagicFlag) break;
+	default:
+		R_ASSERT(!"Unknown warning icon type");
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
+{
+	SetWarningIconColor(icon, 0x00ffffff);
 }

@@ -49,11 +49,12 @@ protected:
 	bool m_bShowHudCrosshair;
 
 	CUIStatic	UIStaticHealth;
+	CUIStatic	UIStaticArmor;
 	CUIStatic	UIStaticMapBack;
-	CUIStatic	UIStaticRadiationLow;
-	CUIStatic	UIStaticRadiationMedium;
-	CUIStatic	UIStaticRadiationHigh;
-	CUIStatic	UIStaticWound;
+//	CUIStatic	UIStaticRadiationLow;
+//	CUIStatic	UIStaticRadiationMedium;
+//	CUIStatic	UIStaticRadiationHigh;
+//	CUIStatic	UIStaticWound;
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
 	CUIButton	UIStaticQuickHelp;
@@ -61,6 +62,7 @@ protected:
 	CUIStatic	UITextWound;
 
 	CUIProgressBar UIHealthBar;
+	CUIProgressBar UIArmorBar;
 
 	CUIZoneMap UIZoneMap;
 
@@ -78,10 +80,47 @@ protected:
 	CUIStatic			UIWeaponBack;
 	CUIStatic			UIWeaponSignAmmo;
 	CUIStatic			UIWeaponIcon;
+
+	// Надписи armor & health
 	CUIStatic			UIHealthString;
+	CUIStatic			UIArmorString;
 	//CUIDragDropItem	UIWeaponIcon;
 
+	// 5 статиков для отображения иконок:
+	// - сломанного оружия
+	// - радиации
+	// - ранения
+	// - голода
+	// - усталости
+	CUIStatic			UIWeaponJammedIcon;
+	CUIStatic			UIRadiaitionIcon;
+	CUIStatic			UIWoundIcon;
+	CUIStatic			UIStarvationIcon;
+	CUIStatic			UIFatigueIcon;
+
+public:
 	
+	// Енумы соответсвующие предупреждающим иконкам 
+	enum EWarningIcons
+	{
+		ewiAll				= 0,
+		ewiWeaponJammed,
+		ewiRadiation,
+		ewiWound,
+		ewiStarvation,
+		ewiFatigue
+	};
+
+	// Задаем цвет соответствующей иконке
+	void SetWarningIconColor(EWarningIcons icon, const u32 cl);
+	void TurnOffWarningIcon(EWarningIcons icon);
+
+	// Пороги изменения цвета индикаторов, загружаемые из system.ltx
+	typedef std::map<EWarningIcons, xr_vector<float> >	Thresholds;
+	typedef Thresholds::iterator						Thresholds_it;
+	Thresholds	m_Thresholds;
+
+protected:
 
 	//для текущего активного актера и оружия
 	CActor*				m_pActor;	
