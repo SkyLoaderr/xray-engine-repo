@@ -384,13 +384,6 @@ bool CDetailPathManager::compute_path(
 	return					(true);
 }
 
-void write_trajectory_point(const CDetailPathManager::STrajectoryPoint point, LPCSTR point_desc)
-{
-	Msg						("\n%s",point_desc);
-	Msg						("[%f][%f][%f]",VPUSH(ai().level_graph().v3d(point.position)));
-	Msg						("[%f][%f][%f]",VPUSH(ai().level_graph().v3d(point.direction)));
-}
-
 void CDetailPathManager::build_smooth_path		(
 	const xr_vector<u32>	&level_path, 
 	u32						intermediate_index
@@ -431,7 +424,7 @@ void CDetailPathManager::build_smooth_path		(
 	else
 		dest.direction.normalize			();
 
-	// fiiling velocity parameters
+	// filling velocity parameters
 	m_start_params.clear					();
 	if (m_try_desirable_speed) {
 		xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
@@ -464,10 +457,8 @@ void CDetailPathManager::build_smooth_path		(
 	if (m_start_params.empty())
 		return;
 
-
 	m_dest_params.push_back						(STravelParamsIndex(0.f,PI_MUL_2,u32(-1)));
 	xr_vector<STravelParamsIndex>				&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
-//	m_dest_params								= m_start_params;
 
 	if (level_path.size() == 1) {
 		if (!compute_path(start,dest,&m_path,m_start_params,finish_params)) {
