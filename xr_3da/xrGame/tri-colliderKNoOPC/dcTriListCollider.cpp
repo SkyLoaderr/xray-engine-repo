@@ -736,7 +736,7 @@ extern "C" int dSortTriSphereCollide (
 		tri.depth=sidePr-tri.dist;
 		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
 		if(tri.dist<0.f){
-			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
+			if( (!(dDOT(last_pos,tri.norm)-tri.pos<0.f)&& last_pos[0]!=-dInfinity) ||*pushing_neg||*pushing_b_neg)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
 					if(TriContainPoint((dReal*)tri.T->verts[0],(dReal*)tri.T->verts[1],(dReal*)tri.T->verts[2],

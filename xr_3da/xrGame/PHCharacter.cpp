@@ -54,8 +54,10 @@ b_meet_control=false;
 b_jumping=false;
 m_contact_velocity=0.f;
 jump_up_velocity=6.f;
+
+previous_p[0]=dInfinity;
 dis_count_f=0;
-dis_count_f1=0;
+
 }
 
 CPHCharacter::~CPHCharacter(void)
@@ -104,9 +106,9 @@ m_update_time=0.f;
 b_meet_control=false;
 m_contact_velocity=0.f;
 //////////////////////////////////////
-
-
-
+previous_p[0]=dInfinity;
+dis_count_f=0;
+//////////////////////////
 m_radius=min(sizes[0],sizes[2])/2.f;
 m_cyl_hight=sizes[1]-2.f*m_radius;
 if (m_cyl_hight<0.f) m_cyl_hight=0.01f;

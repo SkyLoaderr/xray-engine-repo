@@ -55,9 +55,9 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	dGeomSetData(geom,new dxGeomUserData());
 	((dxGeomUserData*)dGeomGetData(geom))->pushing_neg=false;
 	((dxGeomUserData*)dGeomGetData(geom))->pushing_b_neg=false;
-	((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=dInfinity;
-	((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=dInfinity;
-	((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=-dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=-dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=-dInfinity;
 	((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
 	((dxGeomUserData*)dGeomGetData(geom))->material=0;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
