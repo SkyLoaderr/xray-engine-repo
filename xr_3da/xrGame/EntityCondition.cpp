@@ -508,5 +508,5 @@ void CEntityCondition::Awoke()
 
 bool CEntityCondition::IsLimping()
 {
-	return (true);//m_fPower*m_fHealth <= .5f);
+	return (false);//m_fPower*m_fHealth <= .5f);
 }
