@@ -243,7 +243,7 @@ void CLightShadows::calculate	()
 	{
 		float						dim				= S_rt_size;
 		Fvector2					shift,p0,p1,t0,t1;
-		shift.set					(.7f/dim, .7f/dim);
+		shift.set					(.5f/dim, .5f/dim);
 		p0.set						(.5f/dim, .5f/dim);
 		p1.set						((dim+.5f)/dim, (dim+.5f)/dim);
 		p0.add						(shift);
