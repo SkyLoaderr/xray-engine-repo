@@ -376,6 +376,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 
 	if (who == Level().CurrentEntity())
 		return;
+
 	if (!g_Alive()) {
 		m_tpaDynamicSounds.clear();
 		m_iSoundIndex = -1;
@@ -391,65 +392,68 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 
 	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
 		if (!who || ((this != who) && (!who->H_Parent() || (who->H_Parent() != this)))) {
-			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			Msg("* %s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
-			for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
-				if (who == m_tpaDynamicSounds[j].tpEntity) {
-					m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);
-					m_tpaDynamicSounds[j].dwTime			= dwTime;
-					m_tpaDynamicSounds[j].fPower			= power;
-					m_tpaDynamicSounds[j].dwUpdateCount++;
-					m_tpaDynamicSounds[j].tSavedPosition	= Position;
-					m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
-					m_tpaDynamicSounds[j].tMySavedPosition	= vPosition;
-					m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
-					m_tpaDynamicSounds[j].tpEntity			= tpEntity;
-					m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
-					m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
-					if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Fvector(Position)))
-						m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
-				}
-			if (j >= (int)m_tpaDynamicSounds.size()) {
-				if ((int)m_tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
-					u32 dwBest = dwTime + 1, dwIndex = u32(-1);
-					for (int j=0; j<(int)m_tpaDynamicSounds.size(); j++)
-						if (m_tpaDynamicSounds[j].dwTime < dwBest) {
-							dwIndex = j;
-							dwBest = m_tpaDynamicSounds[j].dwTime;
-						}
-					if (dwIndex < (int)m_tpaDynamicSounds.size()) {
-						m_tpaDynamicSounds[dwIndex].eSoundType			= ESoundTypes(eType);
-						m_tpaDynamicSounds[dwIndex].dwTime				= dwTime;
-						m_tpaDynamicSounds[dwIndex].fPower				= power;
-						m_tpaDynamicSounds[dwIndex].dwUpdateCount		= 1;
-						m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
-						m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
-						m_tpaDynamicSounds[dwIndex].tMySavedPosition	= vPosition;
-						m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
-						m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
-						m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
-						m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
-						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
-							m_tpaDynamicSounds[dwIndex].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[dwIndex].dwNodeID);
+			int iIndex = ifFindDynamicObject(tpEntity);
+			if ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_dwCurrentUpdate)) {
+				int j;
+				Msg("* %s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+				for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
+					if (who == m_tpaDynamicSounds[j].tpEntity) {
+						m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);
+						m_tpaDynamicSounds[j].dwTime			= dwTime;
+						m_tpaDynamicSounds[j].fPower			= power;
+						m_tpaDynamicSounds[j].dwUpdateCount++;
+						m_tpaDynamicSounds[j].tSavedPosition	= Position;
+						m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
+						m_tpaDynamicSounds[j].tMySavedPosition	= vPosition;
+						m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
+						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
+						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+						m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
+						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Fvector(Position)))
+							m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
 					}
-				}
-				else {
-					SDynamicSound					tDynamicSound;
-					tDynamicSound.eSoundType		= ESoundTypes(eType);
-					tDynamicSound.dwTime			= dwTime;
-					tDynamicSound.fPower			= power;
-					tDynamicSound.dwUpdateCount		= 1;
-					tDynamicSound.tSavedPosition	= Position;
-					tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
-					tDynamicSound.tMySavedPosition	= vPosition;
-					tDynamicSound.tMyOrientation	= r_torso_current;
-					tDynamicSound.tpEntity			= tpEntity;
-					tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
-					tDynamicSound.dwMyNodeID		= AI_NodeID;
-					if (tpEntity && !getAI().bfInsideNode(getAI().Node(tDynamicSound.dwNodeID),Fvector(Position)))
-						tDynamicSound.tSavedPosition	= getAI().tfGetNodeCenter(tDynamicSound.dwNodeID);
-					m_tpaDynamicSounds.push_back	(tDynamicSound);
+				if (j >= (int)m_tpaDynamicSounds.size()) {
+					if ((int)m_tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
+						u32 dwBest = dwTime + 1, dwIndex = u32(-1);
+						for (int j=0; j<(int)m_tpaDynamicSounds.size(); j++)
+							if (m_tpaDynamicSounds[j].dwTime < dwBest) {
+								dwIndex = j;
+								dwBest = m_tpaDynamicSounds[j].dwTime;
+							}
+						if (dwIndex < (int)m_tpaDynamicSounds.size()) {
+							m_tpaDynamicSounds[dwIndex].eSoundType			= ESoundTypes(eType);
+							m_tpaDynamicSounds[dwIndex].dwTime				= dwTime;
+							m_tpaDynamicSounds[dwIndex].fPower				= power;
+							m_tpaDynamicSounds[dwIndex].dwUpdateCount		= 1;
+							m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
+							m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
+							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= vPosition;
+							m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
+							m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
+							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+							m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
+							if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
+								m_tpaDynamicSounds[dwIndex].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[dwIndex].dwNodeID);
+						}
+					}
+					else {
+						SDynamicSound					tDynamicSound;
+						tDynamicSound.eSoundType		= ESoundTypes(eType);
+						tDynamicSound.dwTime			= dwTime;
+						tDynamicSound.fPower			= power;
+						tDynamicSound.dwUpdateCount		= 1;
+						tDynamicSound.tSavedPosition	= Position;
+						tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
+						tDynamicSound.tMySavedPosition	= vPosition;
+						tDynamicSound.tMyOrientation	= r_torso_current;
+						tDynamicSound.tpEntity			= tpEntity;
+						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+						tDynamicSound.dwMyNodeID		= AI_NodeID;
+						if (tpEntity && !getAI().bfInsideNode(getAI().Node(tDynamicSound.dwNodeID),Fvector(Position)))
+							tDynamicSound.tSavedPosition	= getAI().tfGetNodeCenter(tDynamicSound.dwNodeID);
+						m_tpaDynamicSounds.push_back	(tDynamicSound);
+					}
 				}
 			}
 		}
