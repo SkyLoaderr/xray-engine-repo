@@ -25,14 +25,14 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 	m_tGraphHeader.dwEdgeCount		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwDeathPointCount= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.tpLevels.clear	();
-	for (u32 i=0; i<header().dwLevelCount; i++) {
+	for (u32 i=0; i<header().level_count(); i++) {
 		ALife::SLevel			l_tLevel;
 		m_tpGraphVFS->r_stringZ	(l_tLevel.caLevelName);
 		m_tpGraphVFS->r_fvector3(l_tLevel.tOffset);
 		m_tpGraphVFS->r			(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
 		m_tGraphHeader.tpLevels.insert(mk_pair(l_tLevel.tLevelID,l_tLevel));
 	}
-	R_ASSERT2					(header().dwVersion == XRAI_CURRENT_VERSION,"Graph version mismatch!");
+	R_ASSERT2					(header().version() == XRAI_CURRENT_VERSION,"Graph version mismatch!");
 	m_tpaGraph					= (CVertex*)m_tpGraphVFS->pointer();
 }
 
