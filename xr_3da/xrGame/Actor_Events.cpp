@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "actor.h"
-
-#include "xr_weapon_list.h"
 #include "targetcs.h"
 #include "customdetector.h"
 #include "uigamesp.h"
