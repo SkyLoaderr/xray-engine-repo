@@ -83,8 +83,8 @@ void CStats::Show()
 	{
 		static float	r_ps		= 0;
 		static float	b_ps		= 0;
-		r_ps						= .95f*r_ps + .05f*(clRAY.count/clRAY.result);
-		b_ps						= .95f*b_ps + .05f*(clBOX.count/clBOX.result);
+		r_ps						= .99f*r_ps + .01f*(clRAY.count/clRAY.result);
+		b_ps						= .99f*b_ps + .01f*(clBOX.count/clBOX.result);
 		
 		CFontHUD&	F = *((CFontHUD*)font);
 		F.Color		(0xFFFFFFFF	);
@@ -130,8 +130,8 @@ void CStats::Show()
 		F.OutNext	("  SP/SA:     %d/%d",  dwSND_Played,dwSND_Allocated);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
-		F.OutNext	("clRAY:       %2.2fms, %d, %2.1f",clRAY.result,clRAY.count,r_ps);
-		F.OutNext	("clBOX:       %2.2fms, %d, %2.1f",clBOX.result,clBOX.count,b_ps);
+		F.OutNext	("clRAY:       %2.2fms, %d, %2.0fK",clRAY.result,clRAY.count,r_ps);
+		F.OutNext	("clBOX:       %2.2fms, %d, %2.0fK",clBOX.result,clBOX.count,b_ps);
 		F.OutNext	("clFRUSTUM:   %2.2fms, %d",clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
