@@ -18,8 +18,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_dwDirectionStartTime			= 0;
 	m_dwAnimationSwitchInterval		= 2000;
-	r_torso_speed					= PI;
-	r_head_speed					= PI;
+	r_torso_speed					= PI_DIV_6;
+	r_head_speed					= PI_DIV_6;
 }
 
 CAI_Stalker::~CAI_Stalker			()

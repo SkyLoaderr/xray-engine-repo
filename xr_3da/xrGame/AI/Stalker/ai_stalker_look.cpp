@@ -124,36 +124,6 @@ void CAI_Stalker::SetLook(Fvector tPosition)
 	r_target.yaw = r_torso_target.yaw;
 }
 
-void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode)
-{
-	SetLessCoverLook(tpNode,MAX_HEAD_TURN_ANGLE);
-}
-
-void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAngle)
-{
-	int i = ps_Size();
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.square_magnitude() > 0.000001) {
-			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_torso_target);
-			
-			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_target.yaw;
-			
-			for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tpNode);
-				if (fSquare > fMaxSquare) {
-					fMaxSquare = fSquare;
-					fBestAngle = fIncrement;
-				}
-			}
-			
-			r_target.yaw = fBestAngle;
-		}
-	}
-}
-
 void CAI_Stalker::SetLessCoverLook()
 {
 	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1))
@@ -200,15 +170,73 @@ void CAI_Stalker::SetLessCoverLook()
 	}
 }
 
-void CAI_Stalker::Exec_Look(float dt)
+void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode)
 {
-	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt,true);
-	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
-
-	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,dt,true);
-	angle_lerp_bounds		(r_current.pitch,r_target.pitch,r_head_speed,dt);
-
-	mRotate.setHPB			(-NET_Last.o_model,0,0);
-	Engine.Sheduler.Slice	();
+	SetLessCoverLook(tpNode,MAX_HEAD_TURN_ANGLE);
 }
 
+void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAngle)
+{
+	int i = ps_Size();
+	if (i > 1) {
+		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		if (tWatchDirection.square_magnitude() > 0.000001) {
+			tWatchDirection.normalize();
+			mk_rotation(tWatchDirection,r_torso_target);
+			
+			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_target.yaw;
+			
+			for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tpNode);
+				if (fSquare > fMaxSquare) {
+					fMaxSquare = fSquare;
+					fBestAngle = fIncrement;
+				}
+			}
+			
+			r_target.yaw = fBestAngle;
+		}
+	}
+}
+
+void CAI_Stalker::Exec_Look(float dt)
+{
+	// normalizing torso angles
+	r_torso_current.yaw		= angle_normalize_signed	(r_torso_current.yaw);
+	r_torso_current.pitch	= angle_normalize_signed	(r_torso_current.pitch);
+	r_torso_target.yaw		= angle_normalize_signed	(r_torso_target.yaw);
+	r_torso_target.pitch	= angle_normalize_signed	(r_torso_target.pitch);
+	
+	// normalizing head angles
+	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
+	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
+	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
+	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
+
+	// updating torso angles
+	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt,true);
+	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
+	
+	// updating head angles
+	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,r_head_speed,true);
+	angle_lerp_bounds		(r_current.pitch,r_target.pitch,r_head_speed,dt);
+
+	// normalizing torso angles
+	r_torso_current.yaw		= angle_normalize_signed	(r_torso_current.yaw);
+	r_torso_current.pitch	= angle_normalize_signed	(r_torso_current.pitch);
+	r_torso_target.yaw		= angle_normalize_signed	(r_torso_target.yaw);
+	r_torso_target.pitch	= angle_normalize_signed	(r_torso_target.pitch);
+	
+	// normalizing head angles
+	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
+	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
+	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
+	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
+	
+	// updating rotation matrix
+	mRotate.setHPB			(-NET_Last.o_model,0,0);
+	
+	// checking if we have to switch onto another task
+	Engine.Sheduler.Slice	();
+}

@@ -140,7 +140,7 @@ private:
 		Fvector					tDirection;
 		
 		int						i = ps_Size	();
-		if (!i) 
+		if (i < 2) 
 			return;
 		
 		CObject::SavedPosition	tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
