@@ -119,7 +119,10 @@
 	<info_portion id="mil_svoboda_rg6_gain"></info_portion>
 	<info_portion id="bar_svoboda_rg6_done"></info_portion>
 
-	<info_portion id="bar_kill_borov_start"></info_portion>
+	<info_portion id="bar_kill_borov_start">
+		<task>bar_dolg_borov_quest</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="val_kill_borov_killed"></info_portion>
 	<info_portion id="bar_kill_borov_done"></info_portion>
 
