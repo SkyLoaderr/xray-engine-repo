@@ -170,9 +170,10 @@ void CInfoPortion::load_shared	(LPCSTR)
 
 
 			//присоединить к объекту на уровне, если тот задан
-			if(uiXml.NavigateToNode(pMapNode,"object",0))
+			XML_NODE* object_node = uiXml.NavigateToNode(pMapNode, "object", 0);
+			if(object_node)
 			{
-				int story_id = uiXml.ReadAttribInt(pMapNode, "object", -1, "story_id");
+				int story_id = uiXml.ReadInt(object_node,-1);
 				
 				if (story_id != -1 && ai().get_alife())
 				{

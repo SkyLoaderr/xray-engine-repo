@@ -31,7 +31,10 @@ void CGraviZone::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
+	
 	m_fThrowInImpulse = pSettings->r_float(section,	"throw_in_impulse");//800.f;
+	m_fThrowInImpulseAlive = pSettings->r_float(section,	"throw_in_impulse_alive");//800.f;
+	m_fThrowInAtten = pSettings->r_float(section,	"throw_in_atten");
 	m_fBlowoutRadiusPercent = pSettings->r_float(section,"blowout_radius_percent");//0.3f;
 
 	m_fTeleHeight = pSettings->r_float(section,		 "tele_height");//1.5f;
@@ -156,7 +159,7 @@ void CGraviZone::Affect(CObject* O)
 		if(EA && EA->g_Alive())
 		{
 			float rel_power = RelativePower(dist);
-			float throw_power = m_fThrowInImpulse*rel_power*rel_power*rel_power*rel_power*rel_power;
+			float throw_power = m_fThrowInImpulseAlive*rel_power*rel_power*rel_power*rel_power*rel_power;
 			throw_in_dir.normalize();
 
 			Fvector vel;
@@ -166,7 +169,7 @@ void CGraviZone::Affect(CObject* O)
 		}
 		else if(GO && GO->PPhysicsShell())
 		{
-///			GO->PPhysicsShell()->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/500.f);
+			GO->PPhysicsShell()->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/100.f);
 		}
 	}
 	else
@@ -262,5 +265,15 @@ void CGraviZone::StopTeleParticles(CGameObject* pObject)
 
 	//остановить партиклы
 	pObject->StopParticles	(*particle_str);
+}
+
+float CGraviZone::RelativePower(float dist)
+{
+	float radius = Radius();
+	if(dist<radius*m_fBlowoutRadiusPercent) return 0.f;
+
+	radius = Radius()*m_fThrowInAtten;
+	float power = radius < dist ? 0 : (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
+	return power < 0 ? 0 : power;
 }
 

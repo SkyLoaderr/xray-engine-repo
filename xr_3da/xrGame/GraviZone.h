@@ -34,9 +34,15 @@ public:
 	virtual bool	BlowoutState();
 	virtual bool	IdleState();
 
+	virtual float	RelativePower(float dist);
+
 protected:
-	//сила импульса вт€гивани€ в зону
+	//сила импульса вт€гивани€ в зону (дл€ веса 100 кг)
 	float			m_fThrowInImpulse;
+	//сила импульса вт€гивани€ в зону дл€ живых существ
+	float			m_fThrowInImpulseAlive;
+	//коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гивает)
+	float			m_fThrowInAtten;
 	//радиус действи€ выброса (в процентах от всего)
 	float			m_fBlowoutRadiusPercent;
 

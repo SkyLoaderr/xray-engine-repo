@@ -540,10 +540,12 @@ BOOL CCustomZone::feel_touch_contact(CObject* O)
 	return ((CCF_Shape*)CFORM())->Contact(O);
 }
 
+#define REL_POWER_COEFF 0.75f
+
 
 float CCustomZone::RelativePower(float dist)
 {
-	float radius = Radius()*3/4.f;
+	float radius = Radius()*REL_POWER_COEFF;
 	float power = radius < dist ? 0 : (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
 	return power < 0 ? 0 : power;
 }
