@@ -61,25 +61,6 @@ gradient_center_radius  = 2.000, 1.000
 gradient_center_texture = fx\fx_gradient
 gradient_center_shader 	= effects\sun
 
-[flares_aaa]
-flares                  = off
-gradient                = off
-source                  = on
-source_radius           = 0.05
-source_texture          = fx\fx_moon.tga
-source_shader			= effects\moon
-source_ignore_color		= true
-blend_time				= 1 ;(сек)
-
-[flares_bbb]
-flares                  = off
-gradient                = off
-source                  = on
-source_radius           = 0.05
-source_texture          = fx\fx_moon.tga
-source_shader			= effects\moon
-source_ignore_color		= true
-blend_time				= 1 ;(сек)
 
 [flares_default]
 flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
@@ -139,7 +120,7 @@ blend_time				= 10
 ;groza          = sect_groza
 default			= sect_default
 ;normal			= sect_normal
-;all            = sect_all
+all            = sect_all
 
 
 
@@ -257,22 +238,26 @@ sun_dir			=	-3.0, 292
 [sect_all]
 
 
-05:00:00			=	e_05
-06:00:00			=	e_06
-07:00:00			=	e_07
-08:00:00			=	e_08
-09:00:00			=	e_09
-10:00:00			=	e_10
-11:00:00			=	e_11
-12:00:00			=	e_12
-13:00:00			=	e_13
-14:00:00			=	e_14
-15:00:00			=	e_15
-17:00:00			=	e_17
-18:00:00			=	e_18
-19:00:00			=	e_19
-20:00:00  			=	e_20
-21:00:00	   		=	e_21
+;05:00:00			=	e_05
+;06:00:00			=	e_06
+06:30:00			=	e_07
+07:45:00			=	e_071
+07:00:00			=	e_072
+07:15:00			=	e_073
+07:30:00			=	e_074
+;08:00:00			=	e_08
+;09:00:00			=	e_09
+;10:00:00			=	e_10
+;11:00:00			=	e_11
+;12:00:00			=	e_12
+;13:00:00			=	e_13
+;14:00:00			=	e_14
+;15:00:00			=	e_15
+;17:00:00			=	e_17
+;18:00:00			=	e_18
+;19:00:00			=	e_19
+;20:00:00  			=	e_20
+;21:00:00	   		=	e_21
 
 
 
@@ -339,7 +324,91 @@ ambient			=	0.06,   0.06,  	0.06
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	1.90,	1.90,	2.0
 sun_color		=	1.000,  0.875,  0.576
+sun_dir			=	-13.0, 292
+
+[e_071]
+flares			=	flares_default
+sky_texture		=	sky\sky_2_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	450
+fog_color		=   0.322, 0.298, 0.345
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	1.90,	1.90,	2.0
+sun_color		=	1.000,  0.875,  0.576
+sun_dir			=	-14.50, 292
+
+[e_072]
+flares			=	flares_default
+sky_texture		=	sky\sky_2_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	450
+fog_color		=   0.322, 0.298, 0.345
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	1.90,	1.90,	2.0
+sun_color		=	1.000,  0.875,  0.576
 sun_dir			=	-16.0, 292
+
+[e_073]
+flares			=	flares_default
+sky_texture		=	sky\sky_2_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	450
+fog_color		=   0.322, 0.298, 0.345
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	1.90,	1.90,	2.0
+sun_color		=	1.000,  0.875,  0.576
+sun_dir			=	-17.50, 292
+
+[e_074]
+flares			=	flares_default
+sky_texture		=	sky\sky_2_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	450
+fog_color		=   0.322, 0.298, 0.345
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	1.90,	1.90,	2.0
+sun_color		=	1.000,  0.875,  0.576
+sun_dir			=	-19.0, 292
 
 [e_08]
 flares			=	flares_default	
