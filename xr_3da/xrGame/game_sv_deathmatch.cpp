@@ -8,7 +8,8 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	switch_Phase(GAME_PHASE_PENDING);
+//	switch_Phase(GAME_PHASE_PENDING);
+	switch_Phase(GAME_PHASE_INPROGRESS);
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -186,17 +187,43 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 		{
 			LPCSTR	options			=	get_name_id	(id);
 			Msg		("* [%s] respawned ",get_option_s(options,"name","Player"));
-			//------------------------------------------------------------			
-			AllowDeadBodyRemove(id);
 			//------------------------------------------------------------
-			// Spawn "actor"
-			CSE_Abstract			*E	=	spawn_begin	("actor");													// create SE
-			CSE_ALifeCreatureActor				*A	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
-			strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-			A->s_team				=	u8(0);																	// no-team
-			A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
-			assign_RP				(A);
-			spawn_end				(A,id);
+			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
+			if (!xrCData) break;
+			CSE_Abstract* pOwner = xrCData->owner;
+			if (!xrCData->owner) break;
+			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
+			CSE_Spectator			*pS =	dynamic_cast<CSE_Spectator*>(pOwner);
+
+			if (pA)
+			{
+				//------------------------------------------------------------			
+				AllowDeadBodyRemove(id);
+				//------------------------------------------------------------
+				SpawnActor(id, "spectator");
+				//------------------------------------------------------------
+			}
+			else
+			{
+				R_ASSERT2	(pS,"Respawned Client is not Actor nor Spectator");
+				if (pS)
+				{
+					//------------------------------------------------------------
+					if (pS->owner != Level().Server->GetServer_client())
+					{
+						pS->owner = Level().Server->GetServer_client();
+					};
+					//------------------------------------------------------------
+					//remove spectator entity
+					NET_Packet			P;
+					u_EventGen			(P,GE_DESTROY,pS->ID);
+					//		pObject->u_EventSend		(P);
+					Level().Send(P,net_flags(TRUE,TRUE));
+					//------------------------------------------------------------
+					SpawnActor(id, "actor");
+					//------------------------------------------------------------
+				};				
+			};			
 		}break;
 	};
 }
@@ -204,7 +231,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 {
 	__super::OnPlayerConnect	(id_who);
-	LPCSTR	options			=	get_name_id	(id_who);
+//	LPCSTR	options			=	get_name_id	(id_who);
 /*
 
 	// Spawn "actor"
@@ -216,7 +243,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	assign_RP				(A);
 	spawn_end				(A,id_who);
 */
-
+/*
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 //	ps_who->money_total			=	money.startup;
 	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
@@ -231,6 +258,9 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
+	*/
+//	SpawnSpectator(id_who);
+	SpawnActor(id_who, "spectator");
 }
 
 
@@ -311,3 +341,49 @@ void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
 		};
 	};
 };
+/*
+void	game_sv_Deathmatch::SpawnSpectator			(u32 id)
+{
+	LPCSTR	options			=	get_name_id	(id);
+
+	game_PlayerState*	ps_who	=	get_id	(id);
+	//	ps_who->money_total			=	money.startup;
+	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+	//	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
+	ps_who->kills				=	0;
+	ps_who->deaths				=	0;
+	
+	CSE_Spectator*		A	=	(CSE_Spectator*)spawn_begin	("spectator");															// create SE
+	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+	//	A->s_team				=	u8(0);
+	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+	assign_RP				(A);
+	spawn_end				(A,id);
+}
+*/
+void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
+{
+	game_PlayerState*	ps_who	=	get_id	(id);
+	//	ps_who->money_total			=	money.startup;
+	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+	//	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
+	ps_who->kills				=	0;
+	ps_who->deaths				=	0;
+
+	// Spawn "actor"
+	LPCSTR	options			=	get_name_id	(id);
+	CSE_Abstract			*E	=	spawn_begin	(N);//"actor");													// create SE
+	strcpy					(E->s_name_replace,get_option_s(options,"name","Player"));					// name
+
+	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+
+	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
+//	CSE_Spectator			*pS	=	dynamic_cast<CSE_Spectator*>(E);
+
+	
+	if (pA) pA->s_team				=	u8(0);																	// no-team
+
+	assign_RP				(E);
+	spawn_end				(E,id);
+}
+

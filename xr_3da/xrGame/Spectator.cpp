@@ -80,7 +80,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
 
-	if (GAME_PHASE_PENDING	== Game().phase){
+	if (GAME_PHASE_PENDING	== Game().phase || GAME_PHASE_INPROGRESS	== Game().phase ){
 		if (kWPN_FIRE == cmd){
 			// Switch our "ready" status
 			NET_Packet			P;
@@ -205,7 +205,8 @@ void CSpectator::cam_Update	(CActor* A)
 		cam->Update					(point,dangle);
 		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
-		HUD().pFontDI->Out			(0.f,0.9f,"Free-fly camera");
+		HUD().pFontDI->SetColor		(0xffffffff);
+		HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
 	}
 }
 
@@ -221,5 +222,10 @@ BOOL			CSpectator::net_Spawn				( LPVOID	DC )
 	look_idx				= 0;
 
 	cameras[cam_active]->Set		(-E->o_Angle.y,-E->o_Angle.x,0);		// set's camera orientation
+
+	if (OnServer())
+	{
+		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
+	};
 	return TRUE;
 };

@@ -6,6 +6,8 @@ class	game_sv_Deathmatch			: public game_sv_GameState
 {
 protected:
 	void							AllowDeadBodyRemove		(u32 id);
+//	void							SpawnSpectator			(u32 id);
+	void							SpawnActor				(u32 id, LPCSTR N);
 public:
 	virtual		void				Create					(LPSTR &options);
 
@@ -29,4 +31,5 @@ public:
 	// Main
 	virtual		void				Update					();
 				BOOL				AllPlayers_Ready		();
+				
 };
