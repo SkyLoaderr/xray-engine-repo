@@ -6,7 +6,7 @@ $npc					= on
 $prefetch 				= 8
 scheduled				= off               ;[] option for ALife Simulator
 cform               	= skeleton
-class               	= W_LR300			; class of the weapon that corresponding to CPP class
+class               	= W_AK74			; class of the weapon that corresponding to CPP class
 min_radius          	= 30				; [] for AI
 max_radius          	= 100				; [] for AI
 	
@@ -87,19 +87,14 @@ fire_distance            	= 450						; maximum fire distance that bullet can fly
 bullet_speed				= 900						; starting bullet speed
 rpm                      	= 600						; max round per minute
 
-;----------------------------------------------------------
 
 hud                      	= wpn_ak74u_hud				; name of the section of the hud
 
-;----------------------------------------------------------
 position         	        = -0.026,-0.215,0			; position (offset) and orientation of the weapon in the hands of character
 orientation      	        = 0,0,0						; (3rd person view)
 
-;----------------------------------------------------------
-visual         		        = weapons\ak-74u\ak74u.ogf		; name of the model for 3rd person view
+visual         		        = weapons\ak-74u\ak74u.ogf	; name of the model for 3rd person view
 
-;----------------------------------------------------------
-	
 light_color					= 0.6,0.5,0.3				; params for light during the fire
 light_range					= 5							; radius
 light_var_color				= 0.05						
@@ -112,7 +107,7 @@ ph_mass						= 5							; physic mass (kg)
 
 ;addons
 scope_status				= 0							; 0 - no addon
-silencer_status				= 1							; 1 - permanent
+silencer_status				= 2							; 1 - permanent
 grenade_launcher_status		= 0							; 2 - attachable
 
 zoom_enabled				= true						; (on,off)zoom mode (right mouse button)
@@ -121,9 +116,9 @@ scope_zoom_factor	    	= 50						; fov for zoom mode
 ;scope_name 				= wpn_addon_scope			; section name for the attachable scope
 ;scope_x 					= 60						; offset in inventory icon
 ;scope_y 					= -2
-;silencer_name  			= wpn_addon_silencer		; section name for the attachable silencer
-;silencer_x 				= 212						; offset in inventory icon
-;silencer_y 				= 10					
+silencer_name  			= wpn_addon_silencer			; section name for the attachable silencer
+silencer_x 				= 212							; offset in inventory icon
+silencer_y 				= 10					
 ;grenade_launcher_name 		= wpn_addon_grenade_launcher; section name for the attachable grenade launcher
 ;grenade_launcher_x 		= 112						; offset in inventory icon
 ;grenade_launcher_y 		= 17
@@ -171,8 +166,8 @@ silencer_light_time 		= 0.2
 shell_point     	   	 	= 0.15, 0.0, -0.05
 shell_dir			     	= 0.0, 1.0, 0.0
 
-fire_point               	= 0.090000,0.020000,-0.060000
-;fire_point2              	= 0.30, 0.00, 0.05 ;0.45, -0.07, -0.05	;0.45, 0.0, 0.04
+fire_point               	= 0.09,0.02,-0.06
+fire_point2              	= 0.30, 0.00, 0.05
 fire_bone               	= wpn_body
 
 orientation             	= 0, 0, 0		
