@@ -128,6 +128,7 @@ public:
 	virtual		void		ApplyForce							(const Fvector& force);
 	virtual		void		ApplyForce							(const Fvector& dir,float force);
 	virtual		void		ApplyForce							(float x,float y, float z);
+	virtual		void		AddControlVel						(const Fvector& vel);
 	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel;}
 	virtual		dReal		GetMaximumVelocity					()					{ return m_max_velocity;}
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}

@@ -73,6 +73,7 @@ virtual		void		ApplyImpulse						(const Fvector& /**dir/**/,const dReal /**P/**/
 virtual		void		ApplyForce							(const Fvector& force)										=0 ;
 virtual		void		ApplyForce							(const Fvector& dir,float force)							=0 ;
 virtual		void		ApplyForce							(float x,float y, float z)									=0 ;
+virtual		void		AddControlVel						(const Fvector& vel)										=0 ;
 virtual		void		Jump								(const Fvector& jump_velocity)								=0 ;
 virtual		bool		JumpState							()															=0 ;
 virtual		EEnvironment CheckInvironment					()															=0 ;

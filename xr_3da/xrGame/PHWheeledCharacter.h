@@ -35,5 +35,6 @@ public:
 	virtual		void		SetMas								(dReal mass)		;
 	virtual		bool		TryPosition							(Fvector /**pos/**/)	{return false;};
 	virtual		void		SetPhysicsRefObject					(CGameObject* /**ref_object/**/){};
+	virtual		void		AddControlVel						(const Fvector& vel){};
 };
 

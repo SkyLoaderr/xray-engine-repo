@@ -66,8 +66,9 @@ CPHMovementControl::~CPHMovementControl(void)
 //static bool bFirst=true;
 void CPHMovementControl::AddControlVel	(const Fvector& vel)
 {
-	
+	m_character->AddControlVel(vel);
 }
+
 void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
 
 	

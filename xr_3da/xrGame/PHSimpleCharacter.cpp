@@ -1339,3 +1339,9 @@ float CPHSimpleCharacter::FootRadius()
 	else		return 0.f;
 
 }
+void	CPHSimpleCharacter::	AddControlVel						(const Fvector& vel)
+{
+	m_acceleration.add(vel);
+	 m_max_velocity+=vel.magnitude();
+}
+
