@@ -19,6 +19,7 @@ class CTestPhysics :
 	FBasicVisual*			V;
 	bkRBController*			C;
 	Fmatrix					mXForm;
+	EVENT					E;
 public:
 	virtual void OnFrame	();
 	virtual void OnRender	();

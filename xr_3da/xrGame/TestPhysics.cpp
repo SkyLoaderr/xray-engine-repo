@@ -54,7 +54,7 @@ CTestPhysics::CTestPhysics(	Fvector& pos)
 
 	bkRBShapeData l_data;
 	l_data.type		= BKRB_BSPHERE;
-	l_data.center	= bkVector3	(0, 0, 0); // положение относительно центра масс
+	l_data.center	= bkVector3	(0.f, 0.f, 0.f); // положение относительно центра масс
 	l_data.radius	= .5f;
 	C->SetMassAndShape(100.f, l_data);
 
@@ -65,10 +65,14 @@ CTestPhysics::CTestPhysics(	Fvector& pos)
 	// 
 	Device.seqFrame.Add	(this);
 	Device.seqRender.Add(this);
+
+	E				= Engine.Event.Handler_Attach("test",this);
 }
 
 CTestPhysics::~CTestPhysics()
 {
+	Engine.Event.Handler_Detach(E,this);
+
 	Device.seqFrame.Remove		(this);
 	Device.seqRender.Remove		(this);
 	::Render.Models.Delete		(V);
@@ -77,15 +81,23 @@ CTestPhysics::~CTestPhysics()
 
 void CTestPhysics::OnFrame()
 {
-	ENV.Update					(Device.fTimeDelta);
+	static DWORD dwFrame		= 0xffffffff;
+	if (dwFrame != Device.dwFrame)	{
+		dwFrame = Device.dwFrame;
+		ENV.Update					(Device.fTimeDelta);
+	}
 }
+
 void CTestPhysics::OnRender()
 {
 	C->GetBodyPos				(*((bkMatrix4*)&mXForm));
 	::Render.set_Transform		(&mXForm);
 	::Render.add_leafs_Dynamic	(V);
 }
-void CTestPhysics::OnEvent(	EVENT E, DWORD P1, DWORD P2)
+void CTestPhysics::OnEvent(	EVENT _E, DWORD P1, DWORD P2)
 {
-	
+	VERIFY(E==_E);
+	C->m_rigidBody.m_sticked	= FALSE;
+	C->m_rigidBody.m_P			+= bkVector3 (0,1000.f,100.f);
+	C->m_rigidBody.m_L			+= bkVector3 (0,10.f,10.f);
 }
