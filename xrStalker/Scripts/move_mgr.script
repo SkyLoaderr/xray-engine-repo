@@ -32,7 +32,7 @@ end
 -- »з move_cb вернуть true, чтобы приостановить работу схемы. „тобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, mode, move_cb)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, mode, move_cb_info)
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	--printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -92,7 +92,8 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.play_sound_after_anim_start = false
 	self.play_once = false
 
-	self.move_cb = move_cb
+	self.move_cb_obj = move_cb_info.obj
+	self.move_cb_func = move_cb_info.func
 
 	-- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
 	-- если собираемс€ смотреть в ту же самую точку, не поворачива€сь никуда...
@@ -280,12 +281,12 @@ function move_mgr:update(no_dialog_mgr_update)
 	   self.expiration_time and device():time_global() >= self.expiration_time and
 	   not self.object:is_body_turning() then
 		if self.retval_after_rotation then
-			if not self.move_cb then
+			if not self.move_cb_func then
 				utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
 					"callback function wasn't registered in move_mgr:reset()",
 					self.object:name(), self.path_look)
 			end
-			if self.move_cb(this.arrival_after_rotation, self.retval_after_rotation) then
+			if self.move_cb_func(self.move_cb_obj, this.arrival_after_rotation, self.retval_after_rotation) then
 				-- »дти сразу дальше
 				self.expiration_time = 0
 				self.state = state_anim_playing
@@ -510,12 +511,12 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 	local retv = self.path_walk_info[index]["ret"]
 	if retv then
-		if not self.move_cb then
+		if not self.move_cb_func then
 			utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_walk)
 		end
-		if self.move_cb(this.arrival_before_rotation, tonumber(retv)) then
+		if self.move_cb_func(self.move_cb_obj, this.arrival_before_rotation, tonumber(retv)) then
 			return
 		end
 	end
