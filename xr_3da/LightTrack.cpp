@@ -10,6 +10,14 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+CLightTrack::CLightTrack()
+{
+	ambient				= 0;
+	dwFrame				= u32(-1);
+	Shadowed_dwFrame	= u32(-1);
+	Shadowed_Slot		= -1;
+}
+
 void CLightTrack::add	(R1_light* source)
 {
 	// Search

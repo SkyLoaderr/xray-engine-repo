@@ -38,6 +38,7 @@ public:
 	void					add				(R1_light* L);
 	void					remove			(R1_light* id);
 
+	CLightTrack				();
 	virtual ~CLightTrack	()	{};
 };
 

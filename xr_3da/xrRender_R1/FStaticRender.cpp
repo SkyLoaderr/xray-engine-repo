@@ -168,7 +168,8 @@ IC		void		gm_SetLighting		(IRenderable* O)
 		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
 		
 		// shadowing
-		if (LT.Shadowed_dwFrame==Device.dwFrame)	{
+		if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
+		{
 			gm_SetAmbient		(0);
 			RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
 		} else {
