@@ -26,7 +26,6 @@ public:
 		pDevice		= NULL;
 		pBaseRT		= NULL;
 		pBaseZB		= NULL;
-		pTempZB		= NULL;
 	};
 
 	void					CreateD3D				();
