@@ -152,6 +152,14 @@ function proceed(actor)
 	end 
 
 
+	if	actor:has_info("bar_bar_drunk_dolg_quest_start") and 
+ 		actor:dont_has_info("bar_bar_drunk_dolg_quest_finish") and
+		actor:object("bar_sniper_pda") ~= nil 
+	then		
+		actor:give_info_portion("bar_bar_drunk_dolg_quest_gain")
+		set_task_state(task.completed, "bar_drunk_dolg_quest", 1)
+	end 
+
 
 	
 	
@@ -400,6 +408,20 @@ function process_map_spot(info_id)
 
 	elseif info_id == "bar_dolg_community_leader" then
 		remove_location(505, "bar_dolg_captain_ivancov_location")
+
+
+
+
+
+	elseif info_id == "bar_bar_drunk_dolg_quest_start" then
+		add_location(508, "bar_killer_sniper_location")
+	
+	elseif info_id == "bar_bar_drunk_dolg_quest_gain" then
+		remove_location(508, "bar_killer_sniper_location")
+		add_location(510, "bar_bar_drunk_dolg_location")
+
+	elseif info_id == "bar_bar_drunk_dolg_quest_finish" then
+		remove_location(510, "bar_bar_drunk_dolg_location")
 
 
 
