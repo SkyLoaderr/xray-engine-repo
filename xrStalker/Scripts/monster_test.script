@@ -43,6 +43,8 @@ end
 function callback1(obj, action_type, index)
 	last_index		= index
 	callback_var	= 1
+
+	printf			("callback!!!")
 end
 ////////////////////////////////////////////////////////////////////////////////////////////
 
