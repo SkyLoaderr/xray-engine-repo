@@ -50,15 +50,6 @@ private:
 	u32							m_dwBornTime;
 	bool						m_bCanFire;
 
-	// ALife members
-//	xr_vector<Fvector>			m_tpaPoints;
-//	xr_vector<Fvector>			m_tpaDeviations;
-//	xr_vector<Fvector>			m_tpaTravelPath;
-//	xr_vector<u32>				m_tpaPointNodes;
-//	xr_vector<Fvector>			m_tpaLine;
-//	xr_vector<u32>				m_tpaNodes;
-//	xr_vector<Fvector>			m_tpaTempPath;
-
 	// ref_sound
 	ref_sound				m_tpSoundStep[STALKER_SND_STEP_COUNT];
 	SOUND_VECTOR			m_tpSoundDie;

@@ -12,7 +12,7 @@
 #include "../../weapon.h"
 #include "../../WeaponMagazined.h"
 
-void CAI_Stalker::UseObject(const CObject * /**tpObject/**/)
+void CAI_Stalker::UseObject(const CObject *tpObject)
 {
 #pragma todo("Dima to Dima : Use object specified by script")
 }
@@ -56,33 +56,12 @@ CInventoryItem *CAI_Stalker::GetFood() const
 void CAI_Stalker::ResetScriptData(void *P)
 {
 	inherited::ResetScriptData	(P);
-//	if (P)
-//		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
 }
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
-	
-//	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-//	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
-//	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
-//	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
-
-//	vfSetParameters	(0,
-//		&l_tMovementAction.m_tDestinationPosition,
-//		false,
-//		l_tObjectAction.m_tGoalType,
-//		l_tMovementAction.m_tPathType,
-//		l_tMovementAction.m_tBodyState,
-//		l_tMovementAction.m_tMovementType,
-//		l_tAnimationAction.m_tMentalState,
-//		l_tWatchAction.m_tWatchType,
-//		l_tWatchAction.m_tWatchVector,
-//		0
-//	);
-
 	return			(true);
 }
 

@@ -398,12 +398,12 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		case CMovementAction::eGoalTypeNoPathPosition : {
 			l_tMovementAction.m_tNodeID	= 1;
 			if (l_tpCustomMonster) {
-//				if (l_tpCustomMonster->CDetailPathManager::path().empty() || (l_tpCustomMonster->CDetailPathManager::path()[l_tpCustomMonster->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
-//					l_tpCustomMonster->CDetailPathManager::path().resize(2);
-//					l_tpCustomMonster->CDetailPathManager::path()[0].m_position = Position();
-//					l_tpCustomMonster->CDetailPathManager::path()[1].m_position = l_tMovementAction.m_tDestinationPosition;
-//					l_tpCustomMonster->CDetailPathManager::m_current_travel_point	= 0;
-//				}
+				if (l_tpCustomMonster->CDetailPathManager::path().empty() || (l_tpCustomMonster->CDetailPathManager::path()[l_tpCustomMonster->CDetailPathManager::path().size() - 1].m_position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
+					l_tpCustomMonster->CDetailPathManager::m_path.resize(2);
+					l_tpCustomMonster->CDetailPathManager::m_path[0].m_position = Position();
+					l_tpCustomMonster->CDetailPathManager::m_path[1].m_position = l_tMovementAction.m_tDestinationPosition;
+					l_tpCustomMonster->CDetailPathManager::m_current_travel_point	= 0;
+				}
 			}
 			break;
 		}

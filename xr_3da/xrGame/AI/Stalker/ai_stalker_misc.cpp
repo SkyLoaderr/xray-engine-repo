@@ -20,9 +20,22 @@ void CAI_Stalker::vfSetParameters(PathManagers::CAbstractVertexEvaluator *tpNode
 	vfSetParameters	(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
 }
 
-void CAI_Stalker::vfSetParameters(PathManagers::CAbstractVertexEvaluator * /**tpNodeEvaluator/**/, Fvector * /**tpDesiredPosition/**/, bool /**bSearchNode/**/, EObjectAction /**tWeaponState/**/, EPathType /**tPathType/**/, EBodyState /**tBodyState/**/, EMovementType /**tMovementType/**/, EMentalState /**tMentalState/**/, ELookType /**tLookType/**/, const Fvector &/**tPointToLook/**/, u32 /**dwLookOverDelay/**/)
+void CAI_Stalker::vfSetParameters(
+	PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator, 
+	Fvector									*tpDesiredPosition, 
+	bool									bSearchNode, 
+	EObjectAction							tWeaponState, 
+	EPathType								tPathType, 
+	EBodyState								tBodyState, 
+	EMovementType							tMovementType, 
+	EMentalState							tMentalState, 
+	ELookType								tLookType, 
+	const Fvector							&tPointToLook, 
+	u32										dwLookOverDelay
+)
 {
-//	m_tPathType		= tPathType;
+//	CMovementManager::set_path_type(tPathType)
+//	m_tPathType		= ;
 //	m_tBodyState	= tBodyState;
 //	m_tMovementType = tMovementType;
 //	m_tMentalState	= tMentalState;
@@ -201,7 +214,6 @@ void CAI_Stalker::vfSetParameters(PathManagers::CAbstractVertexEvaluator * /**tp
 //	if (!GetScriptControl())
 //		vfSetWeaponState(tWeaponState);
 }
-
 
 void CAI_Stalker::vfSelectItemToTake(CInventoryItem *&tpItemToTake)
 {
