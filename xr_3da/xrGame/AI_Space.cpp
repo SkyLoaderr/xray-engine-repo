@@ -65,8 +65,8 @@ void CAI_Space::Render()
 	Fvector P			= POSITION;
 	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 
-	NodePosition	Local;
-	PackPosition	(Local,P);
+	NodePosition		Local;
+	PackPosition		(Local,P);
 
 	DWORD ID			= O->AI_NodeID;
 
