@@ -744,14 +744,21 @@ HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderLight_Direct	()
 {
-	// samplers and texture
+	LPDIRECT3DSURFACE9						pBaseTarget;
+
+	// Set new render targets
+	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
+	m_pd3dDevice->SetRenderTarget			(0, d_Accumulator_S	);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L);
+
+	// samplers and texture (POS)
 	m_pd3dDevice->SetTexture				(0, d_Position);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
-	// samplers and texture
+	// samplers and texture (NORM)
 	m_pd3dDevice->SetTexture				(0, d_Normal);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
@@ -778,6 +785,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
+	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 
 	return S_OK;
 }
