@@ -7,7 +7,7 @@
 BOOL	hasImplicitLighting(Face* F)
 {
 	if (0==F)									return FALSE;
-	
+	if (!F->Shader().flags.bRendering)			return FALSE;
 	b_material& M = pBuild->materials			[F->dwMaterial];
 	b_BuildTexture&	T  = pBuild->textures		[M.surfidx];
 	return (T.THM.flag&STextureParams::flImplicitLighted);

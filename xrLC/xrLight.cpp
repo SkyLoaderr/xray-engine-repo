@@ -184,10 +184,11 @@ void CBuild::LightVertex()
 	for (DWORD I = 0; I<g_faces.size(); I++)
 	{
 		Face* F = g_faces[I];
-		if (F->pDeflector)				continue;
-		if (hasImplicitLighting(F))		continue;
-	
-		VL_faces.push_back				(F);
+		if (F->pDeflector)					continue;
+		if (hasImplicitLighting(F))			continue;
+		if (!F->Shader().flags.bRendering)	continue;
+
+		VL_faces.push_back					(F);
 	}
 	Msg("%d/%d selected.",VL_faces.size(),g_faces.size());
 

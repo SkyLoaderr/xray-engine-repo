@@ -63,6 +63,7 @@ void	CBuild::xrPhase_UVmap()
 		R_ASSERT	(!g_XSplit[SP]->empty());
 		Face*		Fvl = g_XSplit[SP]->front();
 		if (Fvl->Shader().flags.bLIGHT_Vertex) 	continue;	// do-not touch (skip)
+		if (!Fvl->Shader().flags.bRendering) 	continue;	// do-not touch (skip)
 		if (hasImplicitLighting(Fvl))			continue;
 		
 		//   find first poly that doesn't has mapping and start recursion
