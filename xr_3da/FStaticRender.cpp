@@ -399,25 +399,42 @@ void	CRender::rmNormal	()
 	CHK_DX(HW.pDevice->SetViewport(&VP));
 }
 
-IC	bool	cmp_codes		(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNormalCodes::TNode* N2)
+IC	bool	cmp_codes			(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNormalCodes::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_matrices	(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::mapNormalMatrices::TNode* N2)
+IC	bool	cmp_matrices		(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::mapNormalMatrices::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_constants	(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
+IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_textures	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_lex	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
 {	
 	STextureList*	t1	= N1->key;
 	STextureList*	t2	= N2->key;
 	return			lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
-//	return (N1->val.ssa > N2->val.ssa);		
 }
-IC	bool	cmp_textures_2	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
 {	
 	return (N1->val.ssa > N2->val.ssa);		
+}
+
+const float	ssa_important		= .3f;
+IC	bool	fnd_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, const float val)
+{
+	return	(N1->val.ssa > ssa_important);
+}
+
+void		sort_tlist			(vector<SceneGraph::mapNormalTextures::TNode*>& lst)
+{
+	// sort 
+	std::sort					(lst.begin(),lst.end(), cmp_textures_ssa);
+
+	// find delimiter
+	vector<SceneGraph::mapNormalTextures::TNode*>::iterator	it = std::lower_bound	(lst.begin(),lst.end(),ssa_important,fnd_textures_ssa);
+
+	// sort remainder lexicographically
+	std::sort					(it, lst.end(), cmp_textures_lex);
 }
 
 void	CRender::Render		()
@@ -477,10 +494,7 @@ void	CRender::Render		()
 				Device.Shader.set_Code	(Ncode->key);
 
 				textures.getANY_P	(lstTextures);
-				if (sort) {
-					if (psDeviceFlags&rsOverdrawView)	std::sort	(lstTextures.begin(),lstTextures.end(), cmp_textures_2);
-					else								std::sort	(lstTextures.begin(),lstTextures.end(), cmp_textures);
-				}
+				if (sort)			sort_tlist	(lstTextures); 
 				for (DWORD texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
