@@ -64,6 +64,7 @@ public:
 	virtual void					tempRemove			(CTempObject*)	= 0;
 	virtual void					objectAdd			(CObject*)		= 0;
 	virtual void					objectRemove		(CObject*)		= 0;
+	virtual void					get_objects			(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
 	virtual ~IRender_Sector()		{};
 };
 

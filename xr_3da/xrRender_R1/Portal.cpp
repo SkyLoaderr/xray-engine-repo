@@ -209,7 +209,7 @@ void CSector::Render(CFrustum &F)
 
 static CSector::objQuery	oQuery = { 0xfefefefe, 0, 0, 0 };
 
-void CSector::GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P)
+void CSector::get_objects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P)
 {
 	oQuery.dwMark		++;
 	oQuery.Collector	= &D;

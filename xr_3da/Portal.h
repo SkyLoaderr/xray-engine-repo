@@ -94,7 +94,7 @@ public:
 	void					DebugDump	();
 	CVisual*				Root		()	{ return pRoot; }
 
-	void					GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
+	void					get_objects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
 
 	CSector					(int ID)	{SelfID=ID; pRoot = 0;	}
 	virtual					~CSector	();
