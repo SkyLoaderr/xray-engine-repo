@@ -5,6 +5,7 @@
 #include "soundrender_environment.h"
 #include "EThumbnail.h"
 #include "ui_main.h"
+
 CSoundManager* SndLib=0;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -127,6 +128,7 @@ int CSoundManager::GetLocalNewSounds(FS_QueryMap& files)
 // копирует обновленные звуки с Import'a в Sounds
 // files - список файлов для копирование
 //------------------------------------------------------------------------------
+/*
 void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
 {
     std::string p_import,p_sounds;
@@ -148,15 +150,17 @@ void CSoundManager::SafeCopyLocalToServer(FS_QueryMap& files)
 		src_name 		= p_import	+ fn;
 		UpdateFileName	(fn);
 		dest_name 		= p_sounds	+ fn;
-        if (FS.exist(dest_name.c_str()))
+        if (FS.exist(dest_name.c_str())){
 	        EFS.BackupFile	(_sounds_,EFS.ChangeFileExt(fn,".wav").c_str());
+	        EFS.BackupFile	(_sounds_,EFS.ChangeFileExt(fn,".thm").c_str());
+        }
         FS.file_copy		(src_name.c_str(),dest_name.c_str());
         FS.set_file_age		(dest_name.c_str(),FS.get_file_age(src_name.c_str()));
         EFS.WriteAccessLog	(dest_name.c_str(),"Replace");
         EFS.MarkFile		(src_name.c_str(),true);
     }
 }    
-
+*/
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
@@ -214,6 +218,8 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     // lock rescanning
     FS.lock_rescan	();
     
+    int m_age					= time(NULL);
+    
     SPBItem* pb = 0;
     if (bProgress) pb = UI->ProgressStart(M_BASE.size(),"Synchronize sounds...");
     FS_QueryPairIt it=M_BASE.begin();
@@ -226,22 +232,22 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	if (!FS.exist(fn.c_str())) continue;
 
 		FS_QueryPairIt th 		= M_THUM.find(base_name);
-    	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
-  		FS_QueryPairIt gm = M_GAME.find(base_name);
-    	bool bGame= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
+    	bool bThm 				= ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
+  		FS_QueryPairIt gm 		= M_GAME.find(base_name);
+    	bool bGame				= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
 
 		ESoundThumbnail* THM	= 0;
 
-        // register modified base texture
+        // backup base sound
         if (bThm){
 	        EFS.BackupFile		(_sounds_,EFS.ChangeFileExt(base_name,".wav").c_str(),false);
 	        EFS.BackupFile		(_sounds_,EFS.ChangeFileExt(base_name,".thm").c_str(),false);
         }
     	// check thumbnail
     	if (sync_thm&&bThm){
-        	THM = xr_new<ESoundThumbnail>(it->first.c_str());
-            THM->Save	(it->second.modif);
-            bUpdated = TRUE;
+        	THM 				= xr_new<ESoundThumbnail>(it->first.c_str());
+            THM->Save			(m_age);
+            bUpdated 			= TRUE;
         }
         // check game sounds
     	if (bForceGame||(sync_game&&bGame)){
@@ -252,15 +258,24 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
             std::string game_name	= base_name+".ogg";
             FS.update_path			(game_name,_game_sounds_,game_name.c_str());
             MakeGameSound			(THM,src_name.c_str(),game_name.c_str());
-            FS.set_file_age			(game_name.c_str(), it->second.modif);
             if (sync_list) 			sync_list->push_back(base_name.c_str());
             if (modif_map) 			modif_map->insert(*it);
             bUpdated = TRUE;
 		}
+        
 		if (THM) xr_delete(THM);
 		if (UI->NeedAbort()) 	break;
         if (bProgress) 
 		    pb->Inc		(bUpdated?std::string(base_name+" - UPDATED.").c_str():"",bUpdated);
+        if (bUpdated){
+            std::string				wav_fn,thm_fn,ogg_fn;
+            FS.update_path			(wav_fn,_sounds_,		EFS.ChangeFileExt(base_name,".wav").c_str());
+            FS.update_path			(thm_fn,_sounds_,		EFS.ChangeFileExt(base_name,".thm").c_str());
+            FS.update_path			(ogg_fn,_game_sounds_,	EFS.ChangeFileExt(base_name,".ogg").c_str());
+            FS.set_file_age			(wav_fn.c_str(),m_age);
+            FS.set_file_age			(thm_fn.c_str(),m_age);
+            FS.set_file_age			(ogg_fn.c_str(),m_age);
+        }
     }
     if (bProgress) UI->ProgressEnd(pb);
     // lock rescanning
@@ -328,6 +343,7 @@ void CSoundManager::CleanupSounds()
     FS.unlock_rescan			();
 }
 
+/*
 void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
 {
 	VERIFY(tgt_map);
@@ -355,7 +371,7 @@ void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
     // lock rescanning
     FS.unlock_rescan			();
 }
-
+*/
 //------------------------------------------------------------------------------
 // если передан параметр modif - обновляем DX-Surface only и только из списка
 // иначе полная синхронизация

@@ -77,7 +77,7 @@ void __fastcall TfrmSoundLib::UpdateLib()
         AStringVec 			modif;
         LockForm			();
         SndLib->SynchronizeSounds	(true,true,true,&modif_map,0);
-        SndLib->ChangeFileAgeTo		(&modif_map,time(NULL));
+//		SndLib->ChangeFileAgeTo		(&modif_map,time(NULL));
         UnlockForm			();
         SndLib->RefreshSounds(false);
 		modif_map.clear		();
@@ -205,8 +205,9 @@ ESoundThumbnail* TfrmSoundLib::FindUsedTHM(LPCSTR name)
 void TfrmSoundLib::SaveUsedTHM()
 {
 	FS.lock_rescan	();
+    int m_age 		= time(NULL);
 	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
-		(*t_it)->Save(0,0);
+		(*t_it)->Save(m_age,0);
 	FS.unlock_rescan();
 }
 //---------------------------------------------------------------------------

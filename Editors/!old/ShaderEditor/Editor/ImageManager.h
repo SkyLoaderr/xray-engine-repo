@@ -35,7 +35,7 @@ public:
 
 	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_map, AStringVec* sync_list_without_extention, FS_QueryMap* modif_map=0);
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
-    void		ChangeFileAgeTo		(FS_QueryMap* source_map, int age);
+//	void		ChangeFileAgeTo		(FS_QueryMap* source_map, int age);
 	// make/update routines
     bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, STextureParams::ETType, u32 flags=0);
     void		CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);

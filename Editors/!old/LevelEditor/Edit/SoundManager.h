@@ -21,9 +21,9 @@ public:
     int			GetSoundEnvs		(AStringVec& items);
 
 	int 		GetLocalNewSounds	(FS_QueryMap& files);
-	void		SafeCopyLocalToServer(FS_QueryMap& files);
+//	void		SafeCopyLocalToServer(FS_QueryMap& files);
 	void		SynchronizeSounds	(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_map, AStringVec* sync_list_without_extention, FS_QueryMap* modif_map=0);
-	void 		ChangeFileAgeTo		(FS_QueryMap* tgt_map, int age);
+//	void 		ChangeFileAgeTo		(FS_QueryMap* tgt_map, int age);
     void		CreateSoundThumbnail(ESoundThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);
 	void		CleanupSounds		();
 

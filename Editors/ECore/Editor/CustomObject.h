@@ -174,7 +174,7 @@ public:
 
 	virtual bool 	Load			(IReader&);
 	virtual void 	Save			(IWriter&);
-    virtual bool	ExportGame		(SExportStreams& data){return false;}
+    virtual bool	ExportGame		(SExportStreams& data){return true;}
 
 	virtual bool 	GetBox			(Fbox& box){return false;}
 	virtual bool 	GetUTBox		(Fbox& box){return false;}

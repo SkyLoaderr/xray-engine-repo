@@ -1,5 +1,5 @@
 object frmImageLib: TfrmImageLib
-  Left = 818
+  Left = 930
   Top = 539
   Width = 350
   Height = 455

@@ -292,6 +292,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     // lock rescanning
     FS.lock_rescan	();
     
+    int m_age		= time(NULL);
+
     // sync assoc
 	std::string 	ltx_nm;
     FS.update_path	(ltx_nm,_game_textures_,"textures.ltx");
@@ -337,7 +339,6 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 std::string game_name	= base_name+".dds";
                 FS.update_path			(game_name,_game_textures_,game_name.c_str());
                 if (MakeGameTexture(THM,game_name.c_str(),data.begin())){
-                    FS.set_file_age		(game_name.c_str(), it->second.modif);
                     if (sync_list) 		sync_list->push_back(base_name.c_str());
                     if (modif_map) 		modif_map->insert(*it);
                     // save to assoc ltx
@@ -355,6 +356,16 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
         
         if (bProgress) 
 		    pb->Inc(bUpdated?std::string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
+            
+        if (bUpdated){
+            std::string	tga_fn,thm_fn,dds_fn;
+            FS.update_path			    (tga_fn,_textures_,		EFS.ChangeFileExt(base_name,".tga").c_str());
+            FS.update_path			    (thm_fn,_textures_,		EFS.ChangeFileExt(base_name,".thm").c_str());
+            FS.update_path			    (dds_fn,_game_textures_,EFS.ChangeFileExt(base_name,".dds").c_str());
+            FS.set_file_age			    (tga_fn.c_str(),m_age);
+            FS.set_file_age			    (thm_fn.c_str(),m_age);
+            FS.set_file_age			    (dds_fn.c_str(),m_age);
+        }
     }
 
     xr_delete(ltx_ini);
@@ -363,7 +374,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     // lock rescanning
     FS.unlock_rescan	();
 }
-
+/*
 void CImageManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
 {
 	VERIFY(tgt_map);
@@ -391,7 +402,7 @@ void CImageManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
     // lock rescanning
     FS.unlock_rescan			();
 }
-
+*/
 void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt)
 {
 	if (STextureParams::ttImage==fmt.type){
