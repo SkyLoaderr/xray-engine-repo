@@ -1525,16 +1525,6 @@ void setup_table(LPCSTR namespace_name, luabind::object table)
 //	for ( ; I != E; ++I)
 }
 
-template <int i>
-struct CLuabindClass {
-	bool foo(int a, LPCSTR b/**, CLuabindClass *c, CLuabindClass &d, const CLuabindClass *e, const CLuabindClass &f/**/){return true;};
-	bool foo1(int a, LPCSTR b, CLuabindClass *c, float &d){return true;};
-	bool operator == (const CLuabindClass<i> &) const
-	{
-		return true;
-	}
-};
-
 void print_help(lua_State *L);
 void time_smart_ptr_test();
 
@@ -1789,15 +1779,62 @@ extern void lesha_test();
 void bug_test();
 extern void test_smart_container();
 
+struct CRedundant {};
+
+template <int i>
+struct CLuabindClass {
+	bool foo(int a, LPCSTR b/**, CLuabindClass *c, CLuabindClass &d, const CLuabindClass *e, const CLuabindClass &f/**/){return true;};
+	bool foo1(int a, LPCSTR b, CLuabindClass *c, float &d){return true;};
+	bool operator == (const CLuabindClass<i> &) const
+	{
+		return true;
+	}
+
+	virtual void foo2(CRedundant &)
+	{
+		printf	("CLuabindClass<%d>::foo2 called!\n",i);
+	}
+
+	virtual void foo2(CRedundant &, CRedundant &)
+	{
+		printf	("CLuabindClass<%d>::foo2(2) called!\n",i);
+	}
+};
+
+template <typename T>
+struct CLuabindClassWrapper : public T, public luabind::wrap_base {
+	virtual void foo2(CRedundant &p)
+	{
+		call<void>("foo2",&p);
+	}
+
+	static void foo2_static(T *object, CRedundant *p)
+	{
+		printf	("CLuabindClassWrapper::foo2_static called!\n");
+		object->T::foo2(*p);
+	}
+
+	virtual void foo2(CRedundant &p1, CRedundant &p2)
+	{
+		call<void>("foo2",&p1,p2);
+	}
+
+	static void foo2_static(T *object, CRedundant *p1, CRedundant *p2)
+	{
+		printf	("CLuabindClassWrapper::foo2_static(2) called!\n");
+		object->T::foo2(*p1,*p2);
+	}
+};
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
 //	test0();
-	time_smart_ptr_test();
+//	time_smart_ptr_test();
 //	lesha_test();
 //	bug_test();
 //	test_smart_container();
-	return 0;
+//	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");
 //	if (argc < 2) {
@@ -1845,10 +1882,15 @@ int __cdecl main(int argc, char* argv[])
 //			.def("factory_method",&CBaseClass::factory_method,&CBaseClassWrapper::factory_method_static,adopt(result))
 //			.def("update",&CBaseClass::update),
 //
-		class_<CLuabindClass<0> >("CLuabindClass0")
+		class_<CRedundant>("redundant")
+			.def(constructor<>()),
+
+		class_<CLuabindClass<0>,CLuabindClassWrapper<CLuabindClass<0> > >("CLuabindClass0")
 			.def(constructor<>())
 			.def("foo",&CLuabindClass<0>::foo)
-			.def("foo",&CLuabindClass<0>::foo1),
+			.def("foo",&CLuabindClass<0>::foo1)
+			.def("foo2",(void (CLuabindClass<0>::*)(CRedundant&))(&CLuabindClass<0>::foo2),(void (*)(CLuabindClass<0>*,CRedundant*))(&CLuabindClassWrapper<CLuabindClass<0> >::foo2_static))
+			.def("foo2",(void (CLuabindClass<0>::*)(CRedundant&,CRedundant&))(&CLuabindClass<0>::foo2),(void (*)(CLuabindClass<0>*,CRedundant*,CRedundant*))(&CLuabindClassWrapper<CLuabindClass<0> >::foo2_static)),
 
 		class_<CLuabindClass<1> >("CLuabindClass1")
 			.def(constructor<>())
@@ -1861,6 +1903,15 @@ int __cdecl main(int argc, char* argv[])
 				value("_2",2)
 			]
 	];
+
+	lua_dofile					(L,"x:\\bug7.script");
+
+	if (xr_strlen(g_ca_stdout)) {
+		printf		("\n%s\n",g_ca_stdout);
+		strcpy		(g_ca_stdout,"");
+	}
+	else
+		printf		("0 syntax errors\n");
 
 //	module(L,"test_module")
 //	[
@@ -1929,7 +1980,7 @@ int __cdecl main(int argc, char* argv[])
 //	}
 //	lua_pcall			(L,0,0,0);
 
-/**/
+/**
 	LPCSTR					s = "main()";
 	lua_dofile				(L,"x:\\bug6.script");
 	for (int i=0; ;++i) {
