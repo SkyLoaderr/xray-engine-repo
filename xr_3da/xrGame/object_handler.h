@@ -35,6 +35,12 @@ protected:
 	typedef GraphEngineSpace::_solver_value_type		_value_type;
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 
+private:
+	int								m_r_hand;
+	int								m_l_finger1;
+	int								m_r_finger2;
+
+
 protected:
 	bool							m_hammer_is_clutched;
 	bool							m_infinite_ammo;
@@ -56,6 +62,7 @@ public:
 			bool					goal_reached		();
 	IC		bool					hammer_is_clutched	() const;
 	IC		CObjectHandlerPlanner	&planner			() const;
+			void					weapon_bones		(int &b0, int &b1, int &b2) const;
 };
 
 #include "object_handler_inline.h"

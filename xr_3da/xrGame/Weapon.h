@@ -31,6 +31,7 @@ class CWeapon : public CHudItem,
 //////////////////////////////////////////////////////////////////////////
 private:
 	typedef CHudItem inherited;
+
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
@@ -263,15 +264,25 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 public:
-
-
     virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
 	virtual bool				IsSingleHanded		()	const		{	return m_bIsSingleHanded; }
+
+public:
+	IC		LPCSTR			strap_bone0			() const {return m_strap_bone0;}
+	IC		LPCSTR			strap_bone1			() const {return m_strap_bone1;}
+	IC		void			strapped_mode		(bool value) {m_strapped_mode = value;}
+	IC		bool			strapped_mode		() const {return m_strapped_mode;}
+
 protected:
+	LPCSTR					m_strap_bone0;
+	LPCSTR					m_strap_bone1;
+	Fmatrix					m_StrapOffset;
+	bool					m_strapped_mode;
+
+	Fmatrix					m_Offset;
 	// 0-используется без участия рук, 1-одна рука, 2-две руки
 	EHandDependence			eHandDependence;
 	bool					m_bIsSingleHanded;
-	Fmatrix					m_Offset;
 	//направление для партиклов огня и дыма
 	Fmatrix					m_FireParticlesXForm;
 

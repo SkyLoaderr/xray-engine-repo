@@ -16,10 +16,29 @@
 #include "object_handler_space.h"
 #include "object_handler_planner.h"
 
+bool CStalkerAnimationManager::strapped				() const
+{
+	VERIFY					(m_weapon);
+	
+	if	(
+			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
+			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
+			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
+			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
+		)
+		return				(false);
+	
+	return					(m_weapon->strapped_mode());
+}
+
 void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 {
 	CAI_Stalker				*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY					(object);
+	if (object->animation_manager().setup_flag()) {
+		object->CObjectHandler::planner().m_storage.set_property(object->animation_manager().property_id(),object->animation_manager().property_value());
+		return;
+	}
 	object->animation_manager().torso().reset();
 }
 
@@ -35,7 +54,7 @@ const CAnimationPair *CStalkerAnimationManager::no_object_animation(const EBodyS
 	if (eMentalStateFree == object()->mental_state()) {
 		R_ASSERT2(eBodyStateStand == object()->body_state(),"Cannot run !free! animation when body state is not stand!");
 		if ((eMovementTypeStand == object()->movement_type()) || fis_zero(object()->speed()))
-			return			(&m_part_animations.A[body_state].m_torso.A[0].A[9].A[0]);
+			return			(&m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
 		else
 			return			(&m_part_animations.A[body_state].m_torso.A[0].A[object()->IsLimping() ? 9 : (7 + object()->movement_type())].A[object()->IsLimping() ? 0 : 1]);
 	}
@@ -63,9 +82,13 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
 		}
 		case ObjectHandlerSpace::eWorldOperatorStrapping :
-			return &m_part_animations.A[body_state].m_torso.A[slot].A[13].A[object()->mental_state() == eMentalStateFree ? 1 : 0];
+			return &m_part_animations.A[body_state].m_torso.A[slot].A[11].A[0];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
-			return &m_part_animations.A[body_state].m_torso.A[slot].A[14].A[object()->mental_state() == eMentalStateFree ? 1 : 0];
+			return &m_part_animations.A[body_state].m_torso.A[slot].A[12].A[0];
+		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
+			return &m_part_animations.A[body_state].m_torso.A[slot].A[11].A[1];
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
+			return &m_part_animations.A[body_state].m_torso.A[slot].A[12].A[1];
 		default : {
 			if (eMentalStateFree == object()->mental_state()) {
 				//. hack
@@ -201,7 +224,10 @@ const CAnimationPair *CStalkerAnimationManager::assign_torso_animation	()
 	fill_object_info();
 
 	if (m_weapon)
-		return		(weapon_animation(object_slot(),body_state()));
+		if (!strapped())
+			return	(weapon_animation(object_slot(),body_state()));
+		else
+			return	(no_object_animation(body_state()));
 
 	if (m_missile)
 		return		(missile_animation(object_slot(),body_state()));

@@ -34,7 +34,9 @@ CWeapon::CWeapon(LPCSTR name)
 
 	SetDefaults			();
 
-	m_Offset.identity	();
+	m_Offset.identity		();
+	m_StrapOffset.identity	();
+	m_strapped_mode		= false;
 
 	vLastFP.set			(0,0,0);
 	vLastFP2.set		(0,0,0);
@@ -211,14 +213,28 @@ void CWeapon::Load		(LPCSTR section)
 	if(pSettings->line_exist(section, "flame_particles_2"))
 		m_sFlameParticles2 = pSettings->r_string(section, "flame_particles_2");
 
+#ifdef DEBUG
+	{
+		Fvector				pos,ypr;
+		pos					= pSettings->r_fvector3		(section,"position");
+		ypr					= pSettings->r_fvector3		(section,"orientation");
+		ypr.mul				(PI/180.f);
 
-	Fvector				pos,ypr;
-	pos					= pSettings->r_fvector3		(section,"position");
-	ypr					= pSettings->r_fvector3		(section,"orientation");
-	ypr.mul				(PI/180.f);
+		m_Offset.setHPB			(ypr.x,ypr.y,ypr.z);
+		m_Offset.translate_over	(pos);
+	}
 
-	m_Offset.setHPB			(ypr.x,ypr.y,ypr.z);
-	m_Offset.translate_over	(pos);
+	m_StrapOffset			= m_Offset;
+	if (pSettings->line_exist(section,"strap_position") && pSettings->line_exist(section,"strap_orientation")) {
+		Fvector				pos,ypr;
+		pos					= pSettings->r_fvector3		(section,"strap_position");
+		ypr					= pSettings->r_fvector3		(section,"strap_orientation");
+		ypr.mul				(PI/180.f);
+
+		m_StrapOffset.setHPB			(ypr.x,ypr.y,ypr.z);
+		m_StrapOffset.translate_over	(pos);
+	}
+#endif
 
 	// load ammo classes
 	m_ammoTypes.clear	(); 
@@ -619,8 +635,8 @@ void CWeapon::SetDefaults()
 void CWeapon::UpdatePosition(const Fmatrix& trans)
 {
 	Position().set	(trans.c);
-	XFORM().mul	(trans,m_Offset);
-	VERIFY							(!fis_zero(DET(renderable.xform)));
+	XFORM().mul		(trans,m_strapped_mode ? m_StrapOffset : m_Offset);
+	VERIFY			(!fis_zero(DET(renderable.xform)));
 }
 
 
@@ -959,6 +975,32 @@ void CWeapon::reload			(LPCSTR section)
 {
 	CShootingObject::reload		(section);
 	CHudItem::reload			(section);
+	m_strapped_mode				= false;
+	if (pSettings->line_exist(section,"strap_bone0"))
+		m_strap_bone0			= pSettings->r_string(section,"strap_bone0");
+	if (pSettings->line_exist(section,"strap_bone1"))
+		m_strap_bone1			= pSettings->r_string(section,"strap_bone1");
+
+	{
+		Fvector				pos,ypr;
+		pos					= pSettings->r_fvector3		(section,"position");
+		ypr					= pSettings->r_fvector3		(section,"orientation");
+		ypr.mul				(PI/180.f);
+
+		m_Offset.setHPB			(ypr.x,ypr.y,ypr.z);
+		m_Offset.translate_over	(pos);
+	}
+
+	m_StrapOffset			= m_Offset;
+	if (pSettings->line_exist(section,"strap_position") && pSettings->line_exist(section,"strap_orientation")) {
+		Fvector				pos,ypr;
+		pos					= pSettings->r_fvector3		(section,"strap_position");
+		ypr					= pSettings->r_fvector3		(section,"strap_orientation");
+		ypr.mul				(PI/180.f);
+
+		m_StrapOffset.setHPB			(ypr.x,ypr.y,ypr.z);
+		m_StrapOffset.translate_over	(pos);
+	}
 }
 
 void CWeapon::create_physic_shell()

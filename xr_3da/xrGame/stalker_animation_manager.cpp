@@ -21,6 +21,7 @@ void CStalkerAnimationManager::reinit				()
 	m_legs.step_dependence		(true);
 	m_global.step_dependence	(true);
 	m_script.step_dependence	(true);
+	m_setup_flag				= false;
 }
 
 void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
@@ -28,17 +29,17 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 	m_object					= _object;
 	m_visual					= object()->Visual();
 
-	m_part_animations.Load		(smart_cast<CSkeletonAnimated*>(m_visual),"");
-	m_head_animations.Load		(smart_cast<CSkeletonAnimated*>(m_visual),"");
-	m_global_animations.Load	(smart_cast<CSkeletonAnimated*>(m_visual),"item_");
+	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_visual);
+	VERIFY						(m_skeleton_animated);
+
+	m_part_animations.Load		(m_skeleton_animated,"");
+	m_head_animations.Load		(m_skeleton_animated,"");
+	m_global_animations.Load	(m_skeleton_animated,"item_");
 	
 	if (!object()->g_Alive())
 		return;
 
 	assign_bone_callbacks		();
-
-	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_visual);
-	VERIFY						(m_skeleton_animated);
 
 #ifdef DEBUG
 	global().set_dbg_info		(*object()->cName(),"Global");

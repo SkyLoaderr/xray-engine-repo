@@ -39,7 +39,7 @@ const CAnimationPair *CStalkerAnimationManager::assign_global_animation	()
 		case FOOD_IDLE	 :
 			return				(&m_global_animations.A[slot].A[6].A[0]);
 		case FOOD_PREPARE:
-			return				(&m_global_animations.A[slot].A[11].A[0]);
+			return				(&m_global_animations.A[slot].A[10].A[0]);
 		case FOOD_EATING :
 			return				(&m_global_animations.A[slot].A[1].A[0]);
 		default					: NODEFAULT;

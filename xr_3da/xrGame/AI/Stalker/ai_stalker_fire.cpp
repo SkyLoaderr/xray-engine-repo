@@ -57,8 +57,10 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 
 void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 {
-	R1				= m_r_hand;
-	R2				= m_r_finger2;
+	int				r_hand, r_finger2, l_finger1;
+	CObjectHandler::weapon_bones(r_hand, r_finger2, l_finger1);
+	R1				= r_hand;
+	R2				= r_finger2;
 	if	(
 			(IsLimping() && (mental_state() == eMentalStateFree)) || 
 			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
@@ -68,7 +70,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 			L		= R2;
 	}
 	else {
-		L			= m_l_finger1;
+		L			= l_finger1;
 	}
 }
 

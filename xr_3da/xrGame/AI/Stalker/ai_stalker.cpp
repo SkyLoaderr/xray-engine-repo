@@ -32,6 +32,8 @@
 #include "../../script_game_object.h"
 #include "../../detail_path_manager.h"
 #include "../../agent_manager.h"
+#include "../../object_handler_planner.h"
+#include "../../object_handler_space.h"
 
 extern int g_AI_inactive_time;
 
@@ -143,10 +145,6 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_disp_stand_stand				= pSettings->r_float(section,"disp_stand_stand");
 	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
 	
-	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone0"));
-	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone1"));
-	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
-
 	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
 
 }
@@ -162,7 +160,7 @@ void CAI_Stalker::Die				(CObject* who)
 		play						(eStalkerSoundDie);
 	
 	inherited::Die					(who);
-	m_hammer_is_clutched			= !::Random.randI(0,2);
+	m_hammer_is_clutched			= !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
@@ -402,6 +400,9 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 void CAI_Stalker::UpdateCL()
 {
+	if (g_Alive())
+		CObjectHandler::update		();
+
 	inherited::UpdateCL				();
 	m_pPhysics_support->in_UpdateCL	();
 
@@ -412,7 +413,6 @@ void CAI_Stalker::UpdateCL()
 //		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
 //		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
 		CSightManager::update		();
-		CObjectHandler::update		();
 		Exec_Look					(Device.fTimeDelta);
 		CStepManager::update		();
 	}

@@ -63,3 +63,32 @@ IC	void CStalkerAnimationManager::clear_script_animations	()
 	script().reset();
 }
 
+IC	void CStalkerAnimationManager::setup_flag				(bool value)
+{
+	m_setup_flag	= value;
+}
+
+IC	bool CStalkerAnimationManager::setup_flag				() const
+{
+	return			(m_setup_flag);
+}
+
+IC	CStalkerAnimationManager::_condition_type CStalkerAnimationManager::property_id	() const
+{
+	return			(m_property_id);
+}
+
+IC	void CStalkerAnimationManager::property_id				(_condition_type value)
+{
+	m_property_id	= value;
+}
+
+IC	CStalkerAnimationManager::_value_type CStalkerAnimationManager::property_value	() const
+{
+	return			(m_property_value);
+}
+
+IC	void CStalkerAnimationManager::property_value			(_value_type value)
+{
+	m_property_value= value;
+}

@@ -13,6 +13,7 @@
 #include "stalker_animation_pair.h"
 #include "stalker_animation_script.h"
 #include "ai_monster_space.h"
+#include "graph_engine_space.h"
 
 class CMotionDef;
 class CBlend;
@@ -29,6 +30,8 @@ public:
 	typedef xr_deque<CStalkerAnimationScript>					SCRIPT_ANIMATIONS;
 	typedef MonsterSpace::EMovementDirection					EMovementDirection;
 	typedef MonsterSpace::EBodyState							EBodyState;
+	typedef GraphEngineSpace::_solver_value_type				_value_type;
+	typedef GraphEngineSpace::_solver_condition_type			_condition_type;
 
 public:
 	PART_ANIMATIONS			m_part_animations;
@@ -59,6 +62,11 @@ private:
 	CWeapon					*m_weapon;
 	CMissile				*m_missile;
 
+private:
+	bool					m_setup_flag;
+	_condition_type			m_property_id;
+	_value_type				m_property_value;
+
 protected:
 			void			fill_object_info				();
 			EBodyState		body_state						() const;
@@ -67,6 +75,7 @@ protected:
 	const CAnimationPair	*unknown_object_animation		(u32 slot, const EBodyState &body_state) const;
 	const CAnimationPair	*weapon_animation				(u32 slot, const EBodyState &body_state) const;
 	const CAnimationPair	*missile_animation				(u32 slot, const EBodyState &body_state) const;
+			bool			strapped						() const;
 
 protected:
 			void			assign_bone_callbacks			();
@@ -103,6 +112,14 @@ public:
 	IC		CStalkerAnimationPair	&script					();
 	IC		CAI_Stalker				*object					();
 	IC		const CAI_Stalker		*object					() const;
+
+public:
+	IC		void					setup_flag				(bool value);
+	IC		bool					setup_flag				() const;
+	IC		_condition_type			property_id				() const;
+	IC		void					property_id				(_condition_type value);
+	IC		_value_type				property_value			() const;
+	IC		void					property_value			(_value_type value);
 };
 
 #include "stalker_animation_manager_inline.h"

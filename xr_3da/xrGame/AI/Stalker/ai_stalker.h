@@ -71,12 +71,6 @@ private:
 	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
 	CALifeTask						*m_current_alife_task;
 
-	// bones
-private:
-	int								m_r_hand;
-	int								m_l_finger1;
-	int								m_r_finger2;
-
 	// weapon dispersion
 private:
 	float							m_disp_walk_stand;

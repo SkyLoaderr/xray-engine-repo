@@ -985,7 +985,19 @@
 							RelativePath=".\object_handler_planner.h">
 						</File>
 						<File
+							RelativePath=".\object_handler_planner_food.cpp">
+						</File>
+						<File
+							RelativePath=".\object_handler_planner_impl.h">
+						</File>
+						<File
 							RelativePath=".\object_handler_planner_inline.h">
+						</File>
+						<File
+							RelativePath=".\object_handler_planner_missile.cpp">
+						</File>
+						<File
+							RelativePath=".\object_handler_planner_weapon.cpp">
 						</File>
 						<Filter
 							Name="actions"

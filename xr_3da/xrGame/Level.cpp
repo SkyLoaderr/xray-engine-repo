@@ -110,6 +110,13 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	pActors4CrPr.clear();
 	//---------------------------------------------------------
 	pCurrentControlEntity = NULL;
+
+#ifdef DEBUG
+	xr_delete		(pSettings);
+	string256		file_name;
+	FS.update_path	(file_name,"$game_config$","system.ltx");
+	pSettings		= xr_new<CInifile>(file_name);
+#endif
 }
 
 extern CAI_Space *g_ai_space;

@@ -16,6 +16,7 @@
 #include "weapon.h"
 #include "weaponmagazined.h"
 #include "object_handler_space.h"
+#include "stalker_animation_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand
@@ -159,6 +160,10 @@ CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalke
 void CObjectActionStrapping::initialize		()
 {
 	inherited::initialize				();
+	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
+	m_object->animation_manager().setup_flag(true);
+	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
+	m_object->animation_manager().property_value(true);
 }
 
 void CObjectActionStrapping::execute			()
@@ -167,6 +172,33 @@ void CObjectActionStrapping::execute			()
 }
 
 void CObjectActionStrapping::finalize		()
+{
+	inherited::finalize();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionStrappingToIdle
+//////////////////////////////////////////////////////////////////////////
+
+CObjectActionStrappingToIdle::CObjectActionStrappingToIdle	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
+{
+}
+
+void CObjectActionStrappingToIdle::initialize		()
+{
+	inherited::initialize				();
+	m_object->animation_manager().setup_flag(true);
+	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
+	m_object->animation_manager().property_value(false);
+}
+
+void CObjectActionStrappingToIdle::execute			()
+{
+	inherited::execute();
+}
+
+void CObjectActionStrappingToIdle::finalize		()
 {
 	inherited::finalize();
 }
@@ -183,6 +215,10 @@ CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_St
 void CObjectActionUnstrapping::initialize		()
 {
 	inherited::initialize();
+	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
+	m_object->animation_manager().setup_flag(true);
+	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
+	m_object->animation_manager().property_value(false);
 }
 
 void CObjectActionUnstrapping::execute			()
@@ -191,6 +227,33 @@ void CObjectActionUnstrapping::execute			()
 }
 
 void CObjectActionUnstrapping::finalize		()
+{
+	inherited::finalize();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionUnstrappingToIdle
+//////////////////////////////////////////////////////////////////////////
+
+CObjectActionUnstrappingToIdle::CObjectActionUnstrappingToIdle	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
+{
+}
+
+void CObjectActionUnstrappingToIdle::initialize		()
+{
+	inherited::initialize				();
+	m_object->animation_manager().setup_flag(true);
+	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
+	m_object->animation_manager().property_value(false);
+}
+
+void CObjectActionUnstrappingToIdle::execute			()
+{
+	inherited::execute();
+}
+
+void CObjectActionUnstrappingToIdle::finalize		()
 {
 	inherited::finalize();
 }

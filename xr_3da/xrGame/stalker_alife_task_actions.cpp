@@ -38,10 +38,10 @@ CStalkerActionSolveZonePuzzle::CStalkerActionSolveZonePuzzle	(CAI_Stalker *objec
 void CStalkerActionSolveZonePuzzle::initialize	()
 {
 	inherited::initialize			();
-	m_stop_weapon_handling_time		= Level().timeServer();
 
+	m_stop_weapon_handling_time		= Level().timeServer();
 	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
-		m_stop_weapon_handling_time	+= ::Random.randI(120000,180000);
+		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
@@ -68,6 +68,13 @@ void CStalkerActionSolveZonePuzzle::finalize	()
 void CStalkerActionSolveZonePuzzle::execute		()
 {
 	inherited::execute				();
+	if (Level().timeServer() >= m_stop_weapon_handling_time)
+		if (!m_object->best_weapon())
+			m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+		else
+			m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+	else
+		m_object->CObjectHandler::set_goal		(eObjectActionIdle,m_object->best_weapon());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,7 +100,10 @@ void CStalkerActionReachTaskLocation::initialize	()
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateFree);
 	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePathDirection));
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	if (!m_object->best_weapon())
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	else
+		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
 }
 
 void CStalkerActionReachTaskLocation::finalize	()
@@ -147,9 +157,12 @@ void CStalkerActionAccomplishTask::initialize	()
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateFree);
 	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeSearch,false,true));
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	m_object->extrapolate_path			(true);
 	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	if (!m_object->best_weapon())
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	else
+		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
 }
 
 void CStalkerActionAccomplishTask::finalize	()
@@ -215,7 +228,10 @@ void CStalkerActionReachCustomerLocation::initialize	()
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateFree);
 	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePathDirection));
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	if (!m_object->best_weapon())
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	else
+		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
 }
 
 void CStalkerActionReachCustomerLocation::finalize	()

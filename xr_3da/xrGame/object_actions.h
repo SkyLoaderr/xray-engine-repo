@@ -151,6 +151,21 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
+// CObjectActionStrappingToIdle
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectActionStrappingToIdle : public CObjectActionBase<CInventoryItem> {
+protected:
+	typedef CObjectActionBase<CInventoryItem> inherited;
+
+public:
+						CObjectActionStrappingToIdle(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
 // CObjectActionUnstrapping
 //////////////////////////////////////////////////////////////////////////
 
@@ -163,6 +178,21 @@ public:
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionUnstrappingToIdle
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectActionUnstrappingToIdle : public CObjectActionBase<CInventoryItem> {
+protected:
+	typedef CObjectActionBase<CInventoryItem> inherited;
+
+public:
+						CObjectActionUnstrappingToIdle	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
+	virtual void		initialize						();
+	virtual void		execute							();
+	virtual void		finalize						();
 };
 
 //////////////////////////////////////////////////////////////////////////

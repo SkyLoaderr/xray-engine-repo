@@ -96,6 +96,10 @@ void CStalkerActionNoALife::initialize	()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+	
+	m_stop_weapon_handling_time		= Level().timeServer();
+	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
+		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 #else
 //	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCurrentDirection));
@@ -147,20 +151,28 @@ void CStalkerActionNoALife::finalize	()
 	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
+IC	u32 get_value(u32 diff)
+{
+	return	((diff / 5000) % 6);
+}
+
 void CStalkerActionNoALife::execute		()
 {
 	inherited::execute				();
 #ifndef STALKER_DEBUG_MODE
 	m_object->play					(eStalkerSoundHumming,60000,10000);
 	if (Level().timeServer() >= m_stop_weapon_handling_time)
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+		if (!m_object->best_weapon())
+			m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+		else
+			m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
 	else
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
+		m_object->CObjectHandler::set_goal		(eObjectActionIdle,m_object->best_weapon());
 #else
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	Fvector							dest_position = actor->Position();
-//	u32								dest_vertex = actor->level_vertex_id();
-//	if (!ai().level_graph().inside(dest_vertex,dest_position))
+//	u32								dest_vertex = dddddactor->level_vertex_id();
+//	if (!ai().level_graph().inside(dest_vertex,dest_position))d
 //		dest_position				= ai().level_graph().vertex_position(dest_vertex);
 //
 //	if (m_object->accessible(dest_position)) {
@@ -184,11 +196,50 @@ void CStalkerActionNoALife::execute		()
 //	start_position.set				(-123.55067,-4.5493350);
 //	finish_position.set				(-102.20000,-20.300003);
 //	ai().level_graph().check_position_in_direction_slow(8053,start_position,finish_position);
+//	m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+//	return;
+
 	u32		time_diff = Device.dwTimeGlobal - m_start_level_time;
-	if ((time_diff / 10000) % 2)
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
-	else
-		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+	const u32 diff = 300;
+	u32		iter = get_value(time_diff);
+	switch (iter) {
+		case 0 : {
+			if (get_value(time_diff-diff) != 0)
+				Msg	("IDLE");
+			m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
+			break;
+		}
+		case 1 : {
+			if (get_value(time_diff-diff) != 1)
+				Msg	("STRAPPED");
+			m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+			break;
+		}
+		case 2 : {
+			if (get_value(time_diff-diff) != 2)
+				Msg	("AIM");
+			m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+			break;
+		}
+		case 3 : {
+			if (get_value(time_diff-diff) != 3)
+				Msg	("STRAPPED");
+			m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+			break;
+		}
+		case 4 : {
+			if (get_value(time_diff-diff) != 4)
+				Msg	("AIM");
+			m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+			break;
+		}
+		case 5 : {
+			if (get_value(time_diff-diff) != 5)
+				Msg	("STRAPPED");
+			m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+			break;
+		}
+	}
 #endif
 }
 

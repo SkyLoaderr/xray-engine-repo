@@ -136,13 +136,19 @@
 			enum { value = sizeof(detail::yes) == sizeof(select(detail::other<T>()))};
 		};
 
-		template <typename T1, typename T2>
+		template <typename _T1, typename _T2>
 		struct is_same {
+			typedef typename remove_const<_T1>::type T1;
+			typedef typename remove_const<_T2>::type T2;
+
 			enum { value = is_type<T1,T2>::value };
 		};
 
-		template <typename T1, typename T2>
+		template <typename _T1, typename _T2>
 		struct is_base_and_derived {
+			typedef typename remove_const<_T1>::type T1;
+			typedef typename remove_const<_T2>::type T2;
+
 			static detail::yes	select(T1*);
 			static detail::no	select(...);
 
@@ -153,14 +159,6 @@
 					!is_same<T1,T2>::value &&
 					sizeof(detail::yes) == sizeof(select((T2*)(0)))
 			};
-		};
-
-		template <template <typename _1> class T1, typename T2>
-		struct is_base_and_derived_or_same_from_template_1 {
-			template <typename P> static object_type_traits::detail::yes select(T1<P>*);
-			static object_type_traits::detail::no select(...);
-
-			enum { value = sizeof(object_type_traits::detail::yes) == sizeof(select((T2*)0))};
 		};
 
 		template <template <typename _1> class T1, typename T2, typename T3>

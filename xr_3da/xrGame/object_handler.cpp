@@ -18,6 +18,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "inventory.h"
 #include "torch.h"
+#include "../skeletoncustom.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -39,6 +40,10 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 	inherited::reinit			();
 	m_hammer_is_clutched		= false;
 	planner().setup				(object);
+	CKinematics					*kinematics = smart_cast<CKinematics*>(planner().m_object->Visual());
+	m_r_hand					= kinematics->LL_BoneID(pSettings->r_string(*planner().m_object->cNameSect(),"weapon_bone0"));
+	m_l_finger1					= kinematics->LL_BoneID(pSettings->r_string(*planner().m_object->cNameSect(),"weapon_bone1"));
+	m_r_finger2					= kinematics->LL_BoneID(pSettings->r_string(*planner().m_object->cNameSect(),"weapon_bone2"));
 }
 
 void CObjectHandler::reload			(LPCSTR section)
@@ -134,4 +139,23 @@ void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameO
 bool CObjectHandler::goal_reached	()
 {
 	return					(planner().solution().size() < 2);
+}
+
+void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
+{
+	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
+	if (!weapon || !planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped)) {
+		if (weapon)
+			weapon->strapped_mode	(false);
+		b0						= m_r_hand;
+		b1						= m_r_finger2;
+		b2						= m_l_finger1;
+		return;
+	}
+
+	weapon->strapped_mode		(true);
+	CKinematics					*kinematics = smart_cast<CKinematics*>(planner().m_object->Visual());
+	b0							= kinematics->LL_BoneID(weapon->strap_bone0());
+	b1							= kinematics->LL_BoneID(weapon->strap_bone1());
+	b2							= b1;
 }
