@@ -22,7 +22,7 @@ ENGINE_API extern DWORD		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
-DWORD						GAME;
+DWORD						GAME			= GAME_SINGLE;
 int							g_fraglimit		= 0;
 int							g_timelimit		= 0;
 

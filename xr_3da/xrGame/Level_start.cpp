@@ -35,9 +35,9 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 		// Analyze game and perform apropriate SERVER spawning
 
 		// Start client
-		bResult						= net_Client("localhost");
+		bResult						= net_Start_client("localhost");
 	} else {
-		bResult						= net_Client(name);
+		bResult						= net_Start_client(name);
 	}
 
 	// Analyze game and perform apropriate CLIENT spawning
