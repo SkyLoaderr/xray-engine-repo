@@ -160,55 +160,6 @@ bool Place(_rect &R, vecRIT CIT)
 
 BOOL _rect_place(_rect &r)
 {
-/*
-	_rect	R;
-	_point	S,T;
-	
-	for (vecRIT CR=collected.begin(); CR!=collected.end(); CR++) 
-	{
-		if (CR->mask == (USED_P1|USED_P2) ) continue;
-
-		CR->GetAB(S,T); 
-		S.x++; T.y++;
-		
-		if ((CR->mask & USED_P1) == 0) {
-			// Try normal
-			R.init(S.x,S.y,S.x + r.b.x,S.y + r.b.y);
-			if (Place(R,CR)) {
-				CR->mask |= USED_P1;
-				_rect_register(R);
-				return TRUE;
-			}
-			
-			// Now rotate
-			R.init(S.x,S.y,S.x + r.b.y,S.y + r.b.x);
-			if (Place(R,CR)) {
-				CR->mask |= USED_P1;
-				_rect_register(R);
-				return TRUE;
-			}
-		}
-		
-		if ((CR->mask & USED_P2) == 0) {
-			// Try normal - second
-			R.init(T.x,T.y,T.x + r.b.x,T.y + r.b.y);
-			if (Place(R,CR)) {
-				CR->mask |= USED_P2;
-				_rect_register(R);
-				return TRUE;
-			}
-			
-			// Now rotate - second
-			R.init(T.x,T.y,T.x + r.b.y,T.y + r.b.x);
-			if (Place(R,CR)) {
-				CR->mask |= USED_P2;
-				_rect_register(R);
-				return TRUE;
-			}
-		}
-	}
-	*/
-
 	// Normal
 	{
 		_rect R;
