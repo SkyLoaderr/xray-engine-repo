@@ -652,7 +652,6 @@ void	CRender::Render		()
 	
 	// Postprocess
 	Target.End				();
-	// HOM.Debug			();
 	L_Projector.finalize	();
 	
 	// HUD

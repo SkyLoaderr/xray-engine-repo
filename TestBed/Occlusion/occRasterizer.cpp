@@ -7,8 +7,9 @@
 
 ENGINE_API occRasterizer	Raster;
 
-void __stdcall fillDW_8x	(LPDWORD ptr, u32 size, u32 value)
+void __stdcall fillDW_8x	(void* p, u32 size, u32 value)
 {
+	LPDWORD ptr = LPDWORD	(_p);
 	LPDWORD end = ptr+size;
 	for (; ptr!=end; ptr+=2)
 	{
@@ -60,8 +61,8 @@ void occRasterizer::clear		()
 {
 	u32 size		= occ_dim*occ_dim;
 	float f			= 1.f;
-	Memory.mem_fill32	(bufFrame,0,size);
-	Memory.mem_fill32	(bufDepth,*LPDWORD(&f),size);
+	fillDW_8x		(bufFrame,size,0);
+	fillDW_8x		(bufDepth,size,*LPDWORD(&f));
 }
 
 IC BOOL shared(occTri* T1, occTri* T2)
