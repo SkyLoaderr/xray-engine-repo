@@ -95,8 +95,7 @@
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
 	
-	<info_portion id="bar_dolg_petrenko">
-	</info_portion>
+	<info_portion id="bar_dolg_petrenko"></info_portion>
 	
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
 
