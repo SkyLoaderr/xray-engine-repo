@@ -40,8 +40,8 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 		C.r2_End			();
 		break;
 	case 3:		// smap-spot
-		if (RImplementation.b_nv3x)	C.r2_Pass			(r2v("r2_shadow_spot_base"),r2p("r2_shadow_spot_base"),TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
-		else						C.r2_Pass			(r2v("r2_shadow_spot_base"),r2p("r2_shadow_spot_base"));
+		if (RImplementation.b_nv3x)	C.r2_Pass			(r2v("r2_shadow_spot_base"),r2p("r2_shadow_direct_base"),TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
+		else						C.r2_Pass			(r2v("r2_shadow_spot_base"),r2p("r2_shadow_direct_base"));
 		C.r2_Sampler		("s_base",C.L_textures[0]);
 		C.r2_End			();
 		break;
