@@ -31,7 +31,7 @@ function load_dialog:SetClGame  (game_cl)
    self.m_game_cl = game_cl
 end
 
-function save_dialog:FillList()
+function load_dialog:FillList()
 	local f = getFS()
 	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
 	local f_cnt = flist:Size()

@@ -17,7 +17,6 @@ end
 class "save_dialog" (CUIScriptWnd)
 
 function save_dialog:__init() super()
-	self.FileTable = {}
 	self.new_save = ""
 	
 	self:SetFont(GetFontMedium()) --set base font for dialog.
@@ -44,7 +43,6 @@ function save_dialog:FillList()
 		local ext = string.sub(file, string.len(file) - 3)
 		if ext == ".sav" then
 			file = string.sub(file,0 , (string.len(file) - 4))
-			table.insert(self.FileTable,file)
 			self:AddItemToList(file)
 		end
 	end
