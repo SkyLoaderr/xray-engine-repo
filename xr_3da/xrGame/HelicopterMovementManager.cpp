@@ -25,8 +25,9 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 	
 	m_maxKeyDist				= 35.0f;
 	m_startDir.set				(1.0f,0.0f,2.0f);
+	m_pitch_k					= 0.006f;
 
-
+	m_pitch_k					= pSettings->r_float(section,"pitch_koef");
 	m_baseAltitude				= pSettings->r_float(section,"altitude");
 	m_attackAltitude			= pSettings->r_float(section,"attack_altitude");
 	m_basePatrolSpeed			= pSettings->r_float(section,"velocity");
@@ -49,7 +50,7 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 			m_boundingVolume.min.add(b);
 		};
 
-
+	m_pitch_k *= -1.0f;
 /*	m_korridor					= pSettings->r_float(section,"alt_korridor");
 */
 
@@ -365,7 +366,7 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 	p0_phb_res.z = ang_diff*sign*0.4f;
 
 	//x
-	p0_phb_res.x = -p1;
+	p0_phb_res.x = -p1*m_pitch_k*m_basePatrolSpeed;
 	clamp(p0_phb_res.x, -PI_DIV_8, PI_DIV_8);
 
 }

@@ -24,6 +24,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	float							m_baseAltitude;
 	float							m_attackAltitude;
 	float							m_basePatrolSpeed;
+	float							m_pitch_k;
 	Fbox							m_boundingVolume;
 	float							m_maxKeyDist;
 	float							m_endAttackTime;
