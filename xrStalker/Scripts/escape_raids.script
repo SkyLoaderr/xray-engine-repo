@@ -38,7 +38,6 @@ local patrol_params =
                 }
                 --second path
                 }
-
 -------------------------------------------------------------------------------------------
 local wait_for_start_patrol     =   0
 local wait_for_patrol_finish    =   1
@@ -81,9 +80,10 @@ function wait_for_start ()
            for b = 1, table.getn (patrols[a]), 1 do
                time_delay = device ():time_global () + 300000
                this.switch_online (a, b)           
-               patrols[a][b].on_move = true        
+               patrols[a][b].on_move = true
            end
            if raid_moved == false then
+              escape_raid_heli.activate ()
               xr_gulag.startRaid ("blockpost")
               raid_moved = true
            end   
@@ -126,6 +126,7 @@ function on_enter (zone, obj)
                if patrols[a][b].on_move == true then
                   patrols[a][b].on_move = false
                   this.switch_offline (obj, a, b) 
+                  escape_raid_heli.deactivate ()
                   this.check_for_return ()
                end   
             end      
