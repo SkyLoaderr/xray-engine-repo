@@ -13,25 +13,19 @@ IC	CSpaceRestrictionBase::CSpaceRestrictionBase		()
 	m_initialized				= false;
 }
 
-IC	const xr_vector<u32> &CSpaceRestrictionBase::border	(bool out_restriction)
+IC	const xr_vector<u32> &CSpaceRestrictionBase::border	()
 {
 	if (!initialized())
 		initialize				();
 	VERIFY						(initialized());
-	return						(out_restriction ? m_out_border : m_in_border);
+	return						(m_border);
 }
 
 IC	void CSpaceRestrictionBase::process_borders			()
 {
-	process_borders				(m_out_border);
-	process_borders				(m_in_border);
-}
-
-IC	void CSpaceRestrictionBase::process_borders			(xr_vector<u32> &border)
-{
-	std::sort					(border.begin(),border.end());
-	xr_vector<u32>::iterator	I = unique(border.begin(),border.end());
-	border.erase				(I,border.end());
+	std::sort					(m_border.begin(),m_border.end());
+	xr_vector<u32>::iterator	I = unique(m_border.begin(),m_border.end());
+	m_border.erase				(I,m_border.end());
 }
 
 IC	bool CSpaceRestrictionBase::initialized				() const

@@ -12,3 +12,8 @@ IC	CRestrictedObject::CRestrictedObject	()
 {
 }
 
+IC	bool CRestrictedObject::applied			() const
+{
+	return				(m_applied);
+}
+

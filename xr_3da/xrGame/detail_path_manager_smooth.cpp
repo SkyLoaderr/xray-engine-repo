@@ -781,7 +781,7 @@ void CDetailPathManager::build_smooth_path		(
 		bool							alvi = m_restricted_object->accessible(start.vertex_id);
 		bool							asp = m_restricted_object->accessible(start_pos);
 		VERIFY							((alvi && asp) || !asp);
-		m_restricted_object->add_border	(start_pos,ai().level_graph().v3d(dest.position));
+		m_restricted_object->add_border	(start.vertex_id,dest.vertex_id);
 	}
 
 	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;

@@ -14,46 +14,24 @@
 #include "ai_space.h"
 #include "level_graph.h"
 
-struct CMergeOutPredicate {
+struct CMergePredicate {
 	CSpaceRestrictionComposition *m_restriction;
 
-	IC	CMergeOutPredicate(CSpaceRestrictionComposition *restriction)
+	IC	CMergePredicate	(CSpaceRestrictionComposition *restriction)
 	{
 		m_restriction	= restriction;
 	}
 
 	IC	bool operator()	(u32 level_vertex_id) const
 	{
-		return			(m_restriction->CSpaceRestrictionBase::inside(level_vertex_id,true));
-	}
-};
-
-struct CMergeInPredicate {
-	CSpaceRestrictionComposition *m_restriction;
-
-	IC	CMergeInPredicate(CSpaceRestrictionComposition *restriction)
-	{
-		m_restriction	= restriction;
-	}
-
-	IC	bool operator()	(u32 level_vertex_id) const
-	{
-		CLevelGraph::const_iterator	i,e;
-		ai().level_graph().begin(level_vertex_id,i,e);
-		for ( ; i != e; ++i) {
-			u32					neighbour_vertex_id = ai().level_graph().value(level_vertex_id,i);
-			if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && !m_restriction->CSpaceRestrictionBase::inside(neighbour_vertex_id,true))
-				return			(false);
-		}
-		return					(true);
+		return			(m_restriction->CSpaceRestrictionBase::inside(level_vertex_id,false));
 	}
 };
 
 IC	void CSpaceRestrictionComposition::merge	(CBaseRestrictionPtr restriction)
 {
 	m_restrictions.push_back	(restriction);
-	m_out_border.insert			(m_out_border.begin(),restriction->border(true).begin(),restriction->border(true).end());
-	m_in_border.insert			(m_in_border.begin(),restriction->border(false).begin(),restriction->border(false).end());
+	m_border.insert				(m_border.begin(),restriction->border().begin(),restriction->border().end());
 }
 
 bool CSpaceRestrictionComposition::inside					(const Fvector &position, float radius)
@@ -98,11 +76,8 @@ void CSpaceRestrictionComposition::initialize	()
 	
 	m_initialized				= true;
 
-	xr_vector<u32>::iterator	I = remove_if(m_out_border.begin(),m_out_border.end(),CMergeOutPredicate(this));
-	m_out_border.erase			(I,m_out_border.end());
-
-	I							= remove_if(m_in_border.begin(),m_in_border.end(),CMergeInPredicate(this));
-	m_in_border.erase			(I,m_in_border.end());
+	xr_vector<u32>::iterator	I = remove_if(m_border.begin(),m_border.end(),CMergePredicate(this));
+	m_border.erase				(I,m_border.end());
 
 	process_borders				();
 }

@@ -187,7 +187,7 @@ void CMovementManager::verify_detail_path	()
 
 	float distance = 0.f;
 	for (u32 i=CDetailPathManager::curr_travel_point_index() + 1, n=CDetailPathManager::path().size(); i<n; ++i) {
-		if (!accessible(CDetailPathManager::path()[i].position)) {
+		if (!accessible(CDetailPathManager::path()[i].position,EPS_L)) {
 			m_path_actuality	= false;
 			return;
 		}

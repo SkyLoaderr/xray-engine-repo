@@ -66,8 +66,8 @@ public:
 			void				remove_restrictions				(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
 			void				change_restrictions				(ALife::_OBJECT_ID id, ref_str add_out_restrictions, ref_str add_in_restrictions, ref_str remove_out_restrictions, ref_str remove_in_restrictions);
 			void				remove_border					(ALife::_OBJECT_ID id);
-			bool				accessible						(ALife::_OBJECT_ID id, const Fvector &position, float radius = EPS_L);
-			bool				accessible						(ALife::_OBJECT_ID id, u32 level_vertex_id, float radius = EPS_L);
+			bool				accessible						(ALife::_OBJECT_ID id, const Fvector &position, float radius);
+			bool				accessible						(ALife::_OBJECT_ID id, u32 level_vertex_id, float radius);
 			u32					accessible_nearest				(ALife::_OBJECT_ID id, const Fvector &position, Fvector &result);
 			ref_str				in_restrictions					(ALife::_OBJECT_ID id);
 			ref_str				out_restrictions				(ALife::_OBJECT_ID id);

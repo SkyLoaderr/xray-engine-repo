@@ -30,7 +30,7 @@ protected:
 public:
 	IC						CSpaceRestrictionComposition	(CSpaceRestrictionHolder *space_restriction_holder, ref_str space_restrictors);
 		virtual void		initialize						();
-		virtual bool		inside							(const Fvector &position, float radius = EPS_L);
+		virtual bool		inside							(const Fvector &position, float radius);
 	IC	virtual ref_str		name							() const;
 	IC	virtual bool		shape							() const;
 	IC	virtual bool		default_restrictor				() const;

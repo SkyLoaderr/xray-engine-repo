@@ -208,6 +208,7 @@ void CStalkerMovementManager::setup_movement_params	()
 				Fvector	new_dest_position;
 				u32	level_vertex_id = m_stalker->accessible_nearest(dest_position,new_dest_position);
 				VERIFY	(level_vertex_id == CLevelPathManager::dest_vertex_id());
+				VERIFY	(accessible(dest_position));
 				dest_position = new_dest_position;
 			}
 			CDetailPathManager::set_dest_position		(dest_position);

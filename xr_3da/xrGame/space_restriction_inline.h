@@ -50,7 +50,10 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 
 	m_applied						= true;
 
-	ai().level_graph().set_mask		(border());
+	if (m_out_space_restriction) {
+		ai().level_graph().set_mask	(border());
+		return;
+	}
 
 	FREE_IN_RESTRICTIONS::iterator	I = m_free_in_restrictions.begin();
 	FREE_IN_RESTRICTIONS::iterator	E = m_free_in_restrictions.end();
@@ -58,11 +61,33 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 		if (affect((*I).m_restriction,p1,p2)) {
 			VERIFY							(!(*I).m_enabled);
 			(*I).m_enabled					= true;
-			ai().level_graph().set_mask		((*I).m_restriction->border(false));
+			ai().level_graph().set_mask		((*I).m_restriction->border());
 		}
 }
 
 IC	bool CSpaceRestriction::applied					() const
 {
 	return							(m_applied);
+}
+
+IC	bool CSpaceRestriction::inside					(const Fvector &position)
+{
+	return							(accessible(position,EPS_L));
+}
+
+IC	bool CSpaceRestriction::inside					(u32 level_vertex_id, bool out_restriction)
+{
+	return							(
+		(
+			m_out_space_restriction ? 
+			m_out_space_restriction->inside(level_vertex_id,out_restriction) :
+			true
+		)
+		&&
+		(
+			m_in_space_restriction ? 
+			!m_in_space_restriction->inside(level_vertex_id,!out_restriction) :
+			true
+		)
+	);
 }

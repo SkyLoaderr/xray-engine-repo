@@ -28,7 +28,7 @@ protected:
 public:
 	IC					CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor, bool default_restrictor);
 	IC	virtual void	initialize				();
-		virtual bool	inside					(const Fvector &position, float radius = EPS_L);
+		virtual bool	inside					(const Fvector &position, float radius);
 		virtual ref_str	name					() const;
 	IC	virtual bool	shape					() const;
 	IC	virtual bool	default_restrictor		() const;

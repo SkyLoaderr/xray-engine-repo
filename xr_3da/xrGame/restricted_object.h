@@ -27,13 +27,16 @@ public:
 			void		add_border				(u32 start_vertex_id, u32 dest_vertex_id) const;
 			void		remove_border			() const;
 			u32			accessible_nearest		(const Fvector &position, Fvector &result) const;
-			bool		accessible				(const Fvector &position, float radius = EPS_L) const;
-			bool		accessible				(u32 level_vertex_id, float radius = EPS_L) const;
+			bool		accessible				(const Fvector &position) const;
+			bool		accessible				(const Fvector &position, float radius) const;
+			bool		accessible				(u32 level_vertex_id) const;
+			bool		accessible				(u32 level_vertex_id, float radius) const;
 			void		add_restrictions		(ref_str out_restrictions, ref_str in_restrictions);
 			void		remove_restrictions		(ref_str out_restrictions, ref_str in_restrictions);
 			void		remove_all_restrictions	();
 			ref_str		in_restrictions			() const;
 			ref_str		out_restrictions		() const;
+	IC		bool		applied					() const;
 };
 
 #include "restricted_object_inline.h"

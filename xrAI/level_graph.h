@@ -103,7 +103,9 @@ public:
 #endif
 	virtual			~CLevelGraph				();
 	IC		void	set_mask					(const xr_vector<u32> &mask);
+	IC		void	set_mask					(u32 vertex_id);
 	IC		void	clear_mask					(const xr_vector<u32> &mask);
+	IC		void	clear_mask					(u32 vertex_id);
 	IC		bool	is_accessible				(const u32 vertex_id) const;
 	IC		u8		ref_add						(u32 vertex_id);
 	IC		u8		ref_dec						(u32 vertex_id);

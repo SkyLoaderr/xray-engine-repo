@@ -77,8 +77,10 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 	if (restriction->inside(m_object->Position()))
 		m_object->add_restrictions		("",m_temp);
 
-	if (m_object->accessible(m_object->Position()))
+	if (m_object->accessible(m_object->Position())) {
+//		if (m_object->use_desired_position() && !m_object->accessible(m_object->desired_position()))
 		return;
+	}
 
 	Fvector								dest_pos = m_object->Position();
 	u32 dest_vertex_id					= m_object->accessible_nearest(m_object->Position(),dest_pos);

@@ -15,6 +15,7 @@
 #include "level_graph.h"
 #include "space_restriction.h"
 #include "space_restriction_bridge.h"
+#include "space_restriction_base.h"
 
 CRestrictedObject::~CRestrictedObject		()
 {
@@ -42,9 +43,19 @@ u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &res
 	return						(Level().space_restriction_manager().accessible_nearest(ID(),position,result));
 }
 
+bool CRestrictedObject::accessible			(const Fvector &position) const
+{
+	return						(accessible(position,EPS_L));
+}
+
 bool CRestrictedObject::accessible			(const Fvector &position, float radius) const
 {
 	return						(Level().space_restriction_manager().accessible(ID(),position,radius));
+}
+
+bool CRestrictedObject::accessible			(u32 level_vertex_id) const
+{
+	return						(accessible(level_vertex_id,EPS_L));
 }
 
 bool CRestrictedObject::accessible			(u32 level_vertex_id, float radius) const

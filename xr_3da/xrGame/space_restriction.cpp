@@ -11,6 +11,7 @@
 #include "space_restriction_manager.h"
 #include "ai_space.h"
 #include "level_graph.h"
+#include "space_restriction_base.h"
 
 const float dependent_distance = 100.f;
 
@@ -29,7 +30,7 @@ struct CMergeInOutPredicate {
 	{
 		if (!m_out || !m_in)
 			return					(false);
-		return						(a ? m_in->inside(level_vertex_id,true) : !m_out->inside(level_vertex_id,true) || m_in->inside(level_vertex_id,true));
+		return						(a ? m_in->inside(level_vertex_id,false) : !m_out->inside(level_vertex_id,true));
 	}
 };
 
@@ -58,13 +59,13 @@ bool CSpaceRestriction::accessible				(const Fvector &position, float radius)
 	return							(
 		(
 			m_out_space_restriction ? 
-			m_out_space_restriction->inside(position,radius) :
+			(m_out_space_restriction->inside(position,radius) && !m_out_space_restriction->on_border(position)) :
 			true
 		)
 		&&
 		(
 			m_in_space_restriction ? 
-			!m_in_space_restriction->inside(position,radius) :
+			(!m_in_space_restriction->inside(position,radius) && !m_in_space_restriction->on_border(position)) :
 			true
 		)
 	);
@@ -81,35 +82,35 @@ bool CSpaceRestriction::accessible				(u32 level_vertex_id, float radius)
 	return							(
 		(
 			m_out_space_restriction ? 
-			m_out_space_restriction->inside(level_vertex_id,true,radius) :
+			m_out_space_restriction->inside(level_vertex_id,false,radius) :
 			true
 		)
 		&&
 		(
 			m_in_space_restriction ? 
-			!m_in_space_restriction->inside(level_vertex_id,false,radius) :
+			!m_in_space_restriction->inside(level_vertex_id,true,radius) :
 			true
 		)
 	);
 }
 
-IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictionPtr bridge0, bool out_restriction0, SpaceRestrictionHolder::CBaseRestrictionPtr bridge1, bool out_restriction1)
+IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictionPtr bridge0, SpaceRestrictionHolder::CBaseRestrictionPtr bridge1)
 {
-	xr_vector<u32>::const_iterator	I = bridge1->border(out_restriction1).begin();
-	xr_vector<u32>::const_iterator	E = bridge1->border(out_restriction1).end();
+	xr_vector<u32>::const_iterator	I = bridge1->border().begin();
+	xr_vector<u32>::const_iterator	E = bridge1->border().end();
 	for ( ; I != E; ++I)
 		if (bridge0->inside(*I,true))
 			return					(true);
 	
-	if (!bridge0->border(out_restriction0).empty() && bridge1->inside(bridge0->border(out_restriction0).front(),true))
+	if (!bridge0->border().empty() && bridge1->inside(bridge0->border().front(),true))
 		return						(true);
 
-	m_temp.resize					(bridge0->border(out_restriction0).size() + bridge1->border(out_restriction1).size());
+	m_temp.resize					(bridge0->border().size() + bridge1->border().size());
 	xr_vector<u32>::iterator		J = set_intersection(
-		bridge0->border(out_restriction0).begin(),
-		bridge0->border(out_restriction0).end(),
-		bridge1->border(out_restriction1).begin(),
-		bridge1->border(out_restriction1).end(),
+		bridge0->border().begin(),
+		bridge0->border().end(),
+		bridge1->border().begin(),
+		bridge1->border().end(),
 		m_temp.begin()
 	);
 	return							(J != m_temp.begin());
@@ -120,32 +121,15 @@ IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictio
 	if (!m_out_space_restriction)
 		return						(false);
 
-	return							(intersects(m_out_space_restriction,true,bridge,false));
+	return							(intersects(m_out_space_restriction,bridge));
 }
 
 void CSpaceRestriction::merge_in_out_restrictions	()
 {
-	RESTRICTIONS					intersected_in_restrictions;
 	xr_vector<u32>					temp_border;
 
-	string256						temp;
-	for (u32 i=0, n=_GetItemCount(*m_in_restrictions); i<n ;++i) {
-		SpaceRestrictionHolder::CBaseRestrictionPtr bridge = m_space_restriction_manager->restriction(ref_str(_GetItem(*m_in_restrictions,i,temp)));
-		if (!intersects(bridge))
-			m_free_in_restrictions.push_back		(CFreeInRestriction(bridge,false));
-		else
-			intersected_in_restrictions.push_back	(bridge);
-	}
-
-	if (m_out_space_restriction)
-		m_border					= m_out_space_restriction->border(true);
-
-	{
-		RESTRICTIONS::iterator		I = intersected_in_restrictions.begin();
-		RESTRICTIONS::iterator		E = intersected_in_restrictions.end();
-		for ( ; I != E; ++I)
-			temp_border.insert		(temp_border.end(),(*I)->border(false).begin(),(*I)->border(false).end());
-	}
+	m_border						= m_out_space_restriction->border();
+	temp_border						= m_in_space_restriction->border();
 	
 	xr_vector<u32>::iterator		I;
 
@@ -162,7 +146,6 @@ void CSpaceRestriction::merge_in_out_restrictions	()
 	m_border.erase					(I,m_border.end());
 }
 
-
 CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const
 {
 	string256						S;
@@ -176,6 +159,12 @@ CSpaceRestriction::CBaseRestrictionPtr CSpaceRestriction::merge	(CBaseRestrictio
 
 void CSpaceRestriction::merge_free_in_retrictions	()
 {
+	string256								temp;
+	for (u32 i=0, n=_GetItemCount(*m_in_restrictions); i<n ;++i) {
+		SpaceRestrictionHolder::CBaseRestrictionPtr bridge = m_space_restriction_manager->restriction(ref_str(_GetItem(*m_in_restrictions,i,temp)));
+		m_free_in_restrictions.push_back	(CFreeInRestriction(bridge,false));
+	}
+
 	RESTRICTIONS					temp_restrictions;
 	for (bool ok = false; !ok; ) {
 		ok							= true;
@@ -185,7 +174,7 @@ void CSpaceRestriction::merge_free_in_retrictions	()
 		FREE_IN_RESTRICTIONS::iterator	E = m_free_in_restrictions.end();
 		for ( ; I != E; ++I) {
 			for (J = I + 1; J != E; ++J)
-				if (intersects((*I).m_restriction,false,(*J).m_restriction,false))
+				if (intersects((*I).m_restriction,(*J).m_restriction))
 					temp_restrictions.push_back	((*J).m_restriction);
 
 			if (!temp_restrictions.empty()) {
@@ -219,8 +208,10 @@ void CSpaceRestriction::initialize					()
 	if ((m_out_space_restriction && !m_out_space_restriction->initialized()) || (m_in_space_restriction && !m_in_space_restriction->initialized()))
 		return;
 
-	merge_in_out_restrictions		();
-	merge_free_in_retrictions		();
+	if (m_out_space_restriction)
+		merge_in_out_restrictions	();
+	else
+		merge_free_in_retrictions	();
 
 	m_initialized					= true;
 }
@@ -234,7 +225,10 @@ void CSpaceRestriction::remove_border			()
 	
 	m_applied						= false;
 	
-	ai().level_graph().clear_mask	(border());
+	if (m_out_space_restriction) {
+		ai().level_graph().clear_mask	(border());
+		return;
+	}
 
 	FREE_IN_RESTRICTIONS::iterator	I = m_free_in_restrictions.begin();
 	FREE_IN_RESTRICTIONS::iterator	E = m_free_in_restrictions.end();
@@ -242,74 +236,27 @@ void CSpaceRestriction::remove_border			()
 		if ((*I).m_enabled) {
 			VERIFY							((*I).m_restriction);
 			(*I).m_enabled					= false;
-			ai().level_graph().clear_mask	((*I).m_restriction->border(false));
+			ai().level_graph().clear_mask	((*I).m_restriction->border());
 		}
-}
-
-IC	bool CSpaceRestriction::accessible_neighbours	(u32 level_vertex_id)
-{
-	if (!accessible(level_vertex_id,true))
-		return				(false);
-
-	CLevelGraph::const_iterator	i,e;
-	ai().level_graph().begin(level_vertex_id,i,e);
-	for ( ; i != e; ++i) {
-		u32					neighbour_vertex_id = ai().level_graph().value(level_vertex_id,i);
-		if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && accessible(neighbour_vertex_id,true))
-			return			(true);
-	}
-	return					(false);
-}
-
-u32 CSpaceRestriction::accessible_nearest		(CBaseRestrictionPtr restriction, const Fvector &position)
-{
-	u32								result = u32(-1);
-	float							min_dist_sqr = flt_max;
-	xr_vector<u32>::const_iterator	I = restriction->border(true).begin();
-	xr_vector<u32>::const_iterator	E = restriction->border(true).end();
-	for ( ; I != E; ++I) {
-		float						cur_dist_sqr = ai().level_graph().vertex_position(*I).distance_to_sqr(position);
-		if (cur_dist_sqr < min_dist_sqr) {
-			bool					found = false;
-			CLevelGraph::const_iterator	i,e;
-			ai().level_graph().begin(*I,i,e);
-			for ( ; i != e; ++i) {
-				u32					level_vertex_id = ai().level_graph().value(*I,i);
-				if (ai().level_graph().valid_vertex_id(level_vertex_id) && accessible_neighbours(level_vertex_id)) {
-					found			= true;
-					result			= level_vertex_id;
-					break;
-				}
-			}
-			if (!found)
-				continue;
-			min_dist_sqr			= cur_dist_sqr;
-		}
-	}
-	VERIFY							(ai().level_graph().valid_vertex_id(result));
-	return							(result);
 }
 
 u32	CSpaceRestriction::accessible_nearest		(const Fvector &position, Fvector &result)
 {
 	if (m_out_space_restriction)
-		return						(m_out_space_restriction->accessible_nearest(position,result,true));
+		return						(m_out_space_restriction->accessible_nearest(this,position,result,true));
 
 	u32								vertex_result = u32(-1);
-	if (m_in_space_restriction && m_in_space_restriction->inside(position))
-		vertex_result				= accessible_nearest(m_in_space_restriction,position);
-	else {
-		FREE_IN_RESTRICTIONS::const_iterator	I = m_free_in_restrictions.begin();
-		FREE_IN_RESTRICTIONS::const_iterator	E = m_free_in_restrictions.end();
-		for ( ; I != E; ++I)
-			if ((*I).m_restriction->inside(position)) {
-				vertex_result		= accessible_nearest((*I).m_restriction,position);
-				break;
-			}
-	}
+	FREE_IN_RESTRICTIONS::const_iterator	I = m_free_in_restrictions.begin();
+	FREE_IN_RESTRICTIONS::const_iterator	E = m_free_in_restrictions.end();
+	for ( ; I != E; ++I)
+		if ((*I).m_restriction->inside(position) || (*I).m_restriction->on_border(position)) {
+			vertex_result			= (*I).m_restriction->accessible_nearest(position,result,false);
+			break;
+		}
 
 	VERIFY							(ai().level_graph().valid_vertex_id(vertex_result));
 	result							= ai().level_graph().vertex_position(vertex_result);
+	VERIFY							(accessible(result,EPS_L));
 	return							(vertex_result);
 }
 

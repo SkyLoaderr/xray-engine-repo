@@ -52,12 +52,10 @@ protected:
 
 private:
 	IC		bool					intersects					(CBaseRestrictionPtr bridge);
-	IC		bool					intersects					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge0, bool out_restriction0, SpaceRestrictionHolder::CBaseRestrictionPtr bridge1, bool out_restriction1);
+	IC		bool					intersects					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge0, SpaceRestrictionHolder::CBaseRestrictionPtr bridge1);
 			CBaseRestrictionPtr		merge						(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const;
 			void					merge_in_out_restrictions	();
 			void					merge_free_in_retrictions	();
-	IC		bool					accessible_neighbours		(u32 level_vertex_id);
-			u32						accessible_nearest			(CBaseRestrictionPtr restriction, const Fvector &position);
 
 protected:
 	IC		bool					initialized					() const;
@@ -79,6 +77,8 @@ public:
 	IC		ref_str					out_restrictions			() const;
 	IC		ref_str					in_restrictions				() const;
 	IC		bool					applied						() const;
+	IC		bool					inside						(const Fvector &position);
+	IC		bool					inside						(u32 level_vertex_id, bool out_restriction);
 };
 
 #include "space_restriction_inline.h"
