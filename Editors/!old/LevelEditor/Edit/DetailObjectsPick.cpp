@@ -67,7 +67,7 @@ int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
             bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->r_ybase(), 					fz-DETAIL_SLOT_SIZE_2);
             bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->r_ybase()+slot->r_yheight(), 	fz+DETAIL_SLOT_SIZE_2);
 			u32 mask	= 0xff;
-            bool bRes 	= !!frustum.testAABB(bbox.min,bbox.max,mask);
+            bool bRes 	= !!frustum.testAABB(bbox.data(),mask);
             if (bRes==flag){
 	            m_Selected[z*dtH.size_x+x] = flag;
             	count++;

@@ -252,7 +252,7 @@ bool CEditShape::FrustumPick(const CFrustum& frustum)
             B.mulA	 		(_Transform());
             box.xform		(B);
 			u32 mask		= 0xff;
-            if (frustum.testAABB(box.min,box.max,mask)) return true;
+            if (frustum.testAABB(box.data(),mask)) return true;
 		}break;
 		}
     }

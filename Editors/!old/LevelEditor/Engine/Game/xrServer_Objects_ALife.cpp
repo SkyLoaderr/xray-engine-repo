@@ -939,15 +939,10 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
+    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&brightness,		0.1f, 5.f);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	&color_animator, 	smLAnim);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			&spot_texture,		smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
-    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
-    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	&glow_texture,		smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
 
     // motions
@@ -962,8 +957,6 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     if (visual && PKinematics(visual))
     {
 	    RChooseValue* V;
-		V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Guide bone"),		&spot_bone, smCustom);
-        V->OnChooseEvent		= OnChooseBone;
         V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
         V->OnChooseEvent		= OnChooseBone;
         V->Owner()->subitem		= 8;

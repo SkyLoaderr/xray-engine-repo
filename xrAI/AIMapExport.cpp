@@ -10,7 +10,7 @@ void ESceneAIMapTools::UnpackPosition(Fvector& Pdest, const NodePosition& Psrc, 
     Pdest.y = (float(Psrc.y)/65535)*(bb.max.y-bb.min.y) + bb.min.y;
     Pdest.z = float(Psrc.z)*params.fPatchSize;
 }
-
+                                     
 u32 ESceneAIMapTools::UnpackLink(u32& L)   
 {	
 	return L&0x00ffffff;	

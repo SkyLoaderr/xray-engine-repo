@@ -330,7 +330,7 @@ bool CSpawnPoint::FrustumPick(const CFrustum& frustum)
     if (m_AttachedObject&&m_AttachedObject->FrustumPick(frustum)) return true;
     Fbox bb; GetBox(bb);
     u32 mask=0xff;
-    return (frustum.testAABB(bb.min,bb.max,mask));
+    return (frustum.testAABB(bb.data(),mask));
 }
 
 bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)

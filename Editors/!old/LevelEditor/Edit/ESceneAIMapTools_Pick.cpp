@@ -83,7 +83,7 @@ int ESceneAIMapTools::FrustumSelect(bool flag, const CFrustum& frustum)
             SAINode& N 	= **it;
             u32 mask 	= 0xffff;
             Fbox bb; bb.set(N.Pos,N.Pos); bb.min.sub(m_Params.fPatchSize*0.35f); bb.max.add(m_Params.fPatchSize*0.35f);
-            if (frustum.testSAABB(N.Pos,m_Params.fPatchSize,bb.min,bb.max,mask)){
+            if (frustum.testSAABB(N.Pos,m_Params.fPatchSize,bb.data(),mask)){
                 (*it)->flags.set(SAINode::flSelected,flag);
                 count++;
             }
