@@ -198,6 +198,7 @@ class CAI_Zombie : public CCustomMonster
 		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();
 		void vfSaveEnemy();
+		void vfStopFire();
 		void vfSetFire(bool bFire, CGroup &Group);
 		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();

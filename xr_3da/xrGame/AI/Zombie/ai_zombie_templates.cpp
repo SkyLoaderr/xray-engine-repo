@@ -190,6 +190,13 @@ void CAI_Zombie::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squa
 		m_dwLastSuccessfullSearch = S.m_dwCurTime;
 }
 
+void CAI_Zombie::vfStopFire()
+{
+	if (m_bActionStarted)
+		m_bActionStarted = false;
+	q_action.setup(AI::AIC_Action::AttackEnd);
+}
+
 void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
 {
 	if (bFire) {
