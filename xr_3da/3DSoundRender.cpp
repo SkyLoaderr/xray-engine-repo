@@ -11,7 +11,7 @@
 
 int		psSoundRelaxTime		= 3;
 DWORD	psSoundFlags			= ssWaveTrace;
-float	psSoundOcclusionCoeff	= 0.7f;
+float	psSoundOcclusionScale	= 0.7f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -19,13 +19,14 @@ float	psSoundOcclusionCoeff	= 0.7f;
 
 C3DSoundRender::C3DSoundRender()
 {
-	pListener		= NULL;
-	pExtensions		= NULL;
+	pListener					= NULL;
+	pExtensions					= NULL;
 
     // Get listener interface.
-	R_ASSERT		(pSounds);
-	R_ASSERT		(pSounds->pBuffer);
+	R_ASSERT					(pSounds);
+	R_ASSERT					(pSounds->pBuffer);
     pSounds->pBuffer->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
+	R_ASSERT					(pListener);
 
 	// Initialize listener data
 	Listener.dwSize				= sizeof(DS3DLISTENER);
