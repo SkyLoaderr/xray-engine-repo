@@ -316,9 +316,10 @@ public:
 				BB.getsphere(S.P,S.R);
 				
 				// Select polygons
-				Fmatrix				ident; ident.identity();
-				DB.box_options		(0); // BBOX_TRITEST
-				DB.box_query		(&Level,BB);
+				Fvector				bbC,bbD;
+				BB.get_CD			(bbC,bbD);
+				DB.box_options		(0);
+				DB.box_query		(&Level,bbC,bbD);
 				DWORD	triCount	= DB.r_count	();
 				if (0==triCount)	continue;
 				CDB::tri* tris	= Level.GetTris();
