@@ -18,6 +18,8 @@ void CSheduler::Initialize		()
 	fiber_main			= ConvertThreadToFiber	(0);
 	fiber_thread		= CreateFiber			(0,t_process,0);
 	fibered				= FALSE;
+	slowdown			= FALSE;
+	if (0==xr_strcmp(Core.UserName,"jim"))		slowdown = TRUE;
 }
 
 void CSheduler::Destroy			()
@@ -150,6 +152,8 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule.b_locked	= TRUE;
 		T.Object->shedule_Update	(Elapsed);
 		T.Object->shedule.b_locked	= FALSE;
+		if (slowdown)				Sleep	(30);
+
 #ifdef DEBUG
 		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
