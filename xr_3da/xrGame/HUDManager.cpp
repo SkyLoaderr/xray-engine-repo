@@ -76,11 +76,12 @@ ENGINE_API extern float psHUD_FOV;
 
 void CHUDManager::Render_Calcualte()
 {
-	if (0==pUI)	return;
-	CObject*	O	= pCreator->CurrentViewEntity()->H_Root();
-	if (0==O)	return;
+	if (0==(psHUD_Flags&HUD_DRAW))	return;
+	if (0==pUI)						return;
+	CObject*	O					= pCreator->CurrentViewEntity();
+	if (0==O)						return;
 
-	::Render->set_Object		(O);
+	::Render->set_Object		(O->H_Root());
 	::Render->set_HUD			(TRUE);
 	O->OnHUDDraw				(this);
 	::Render->set_HUD			(FALSE);

@@ -413,16 +413,14 @@ void CDetailManager::UpdateCache	(int limit)
 				
 				// Angles and scale
 				Item.scale	= r_scale.randF		(Dobj.s_min,Dobj.s_max);
-				Item.phase_x= ::Random.randFs	(phase_range);
-				Item.phase_z= ::Random.randF	(phase_range);
-				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
 				
 				// X-Form BBox
 				Fmatrix		mScale,mXform;
 				Fbox		ItemBB;
+				Item.mRotY.rotateY				(r_yaw.randF	(0,PI_MUL_2));
+				Item.mRotY.translate_over		(Item.P);
 				mScale.scale					(Item.scale,Item.scale,Item.scale);
 				mXform.mul_43					(Item.mRotY,mScale);
-				mXform.translate_over			(Item.P);
 				ItemBB.xform					(Dobj.bv_bb,mXform);
 				Bounds.merge					(ItemBB);
 				
@@ -433,9 +431,10 @@ void CDetailManager::UpdateCache	(int limit)
 				gray255[1]		= 255.f*float(c_pal->a1)/15.f;
 				gray255[2]		= 255.f*float(c_pal->a2)/15.f;
 				gray255[3]		= 255.f*float(c_pal->a3)/15.f;
-				int c_dw		= iFloor(Interpolate(gray255,x,z,d_size)+.5f);
-				clamp			(c_dw,0,255);
-				Item.C			= D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
+				Item.C			= Interpolate		(gray255,x,z,d_size)+.5f;
+				DWORD c_dw		= iFloor			(Item.C);
+				Item.C_dw		= D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
+				clamp			(Item.C,0.f,1.f);
 				
 				// Save it
 				D.G[index].items.push_back(Item);

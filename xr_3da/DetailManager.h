@@ -23,10 +23,8 @@ public:
 	{
 		Fvector	P;
 		float	scale;
-		float	phase_x;
-		float	phase_z;
-		DWORD	C;
-		
+		float	C;
+		DWORD	C_dw;
 		float	scale_calculated;
 		Fmatrix	mRotY;
 	};

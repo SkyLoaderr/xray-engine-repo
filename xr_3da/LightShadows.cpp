@@ -16,7 +16,7 @@ int		psSH_Blur			= 1;
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 
-const	float	S_fade		= 3;
+const	float	S_fade		= 3.5;
 const	float	S_fade2		= S_fade*S_fade;
 
 const	float	S_level		= .1f;
@@ -140,7 +140,7 @@ IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
 	float	E		= PLC_energy(P,N,L,energy);
 	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
 	float	C2		= O.distance_to_sqr(P)/S_fade2;
-	float	A		= 1.f-E*(1.f-C1)*(1.f-C2);
+	float	A		= 1.f-1.5f*E*(1.f-C1)*(1.f-C2);
 	return			iCeil(255.f*A);
 }
 

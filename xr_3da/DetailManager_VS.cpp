@@ -131,7 +131,6 @@ void CDetailManager::VS_Render()
 	VSC.flush				(0,c_hdr);
 	
 	// Matrices and offsets
-	Fmatrix		mXform,	mTemp;
 	DWORD		vOffset	=	0;
 	DWORD		iOffset	=	0;
 	
@@ -153,26 +152,14 @@ void CDetailManager::VS_Render()
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
 				DWORD	cBase			= dwBatch*c_size+c_base;
+				float	C				= Instance.C;
 				
 				// Build matrix
-				if (scale>0.7f)	
-				{
-					mTemp.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
-					mXform.mul_43			(mTemp,Instance.mRotY);
-					mXform._11				*= scale;
-					mXform._22				*= scale;
-					mXform._33				*= scale;
-					mXform.translate_over	(Instance.P);
-				} else {
-					Fmatrix& M = Instance.mRotY;
-					Fvector& P = Instance.P;
-					mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
-					mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
-					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
-					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
-				}
-				VSC.set					(cBase,		mXform);
-				VSC.set					(cBase+3,	Instance.C);
+				Fmatrix& M				= Instance.mRotY;
+				VSC.set					(cBase+0,	M._11*scale,	M._21*scale,	M._31*scale,	M._41	);
+				VSC.set					(cBase+1,	M._12*scale,	M._22*scale,	M._32*scale,	M._42	);
+				VSC.set					(cBase+2,	M._13*scale,	M._23*scale,	M._33*scale,	M._43	);
+				VSC.set					(cBase+3,	C,				C,				C,				1.f		);
 				
 				dwBatch	++;
 				if (dwBatch == VS_BatchSize)	
