@@ -302,3 +302,20 @@ void __stdcall xr_aligned_free(void *memblock)
 	ptr = *((uintptr_t *)ptr);
 	free((void *)ptr);
 }
+
+u32 __stdcall xr_aligned_msize(void *memblock)
+{
+	uintptr_t ptr;
+
+	if (memblock == NULL)
+		return	0;
+
+	ptr = (uintptr_t)memblock;
+
+	/* ptr points to the pointer to starting of the memory block */
+	ptr = (ptr & ~(PTR_SZ -1)) - PTR_SZ;
+
+	/* ptr is the pointer to the start of memory block*/
+	ptr = *((uintptr_t *)ptr);
+	return	(u32)	_msize	((void *)ptr);
+}

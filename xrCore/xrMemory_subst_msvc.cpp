@@ -35,18 +35,20 @@ void*	xrMemory::mem_alloc		(size_t size)
 	}
 
 	//	accelerated
-	u32	pool					= get_pool	(size);
+	u32	pool					=	get_pool	(size);
 	if (mem_generic==pool)		
 	{
 		// generic
-		void*	_real			= xr_aligned_offset_malloc	(size,16,0x1);
-		_ptr					= (void*)(((u8*)_real)+1);
-		*acc_header(_ptr)		= mem_generic;
+		stat_counter			+=	size;
+		void*	_real			=	xr_aligned_offset_malloc	(size,16,0x1);
+		_ptr					=	(void*)(((u8*)_real)+1);
+		*acc_header(_ptr)		=	mem_generic;
 	} else {
 		// pooled
-		void*	_real			= mem_pools[pool].create();
-		_ptr					= (void*)(((u8*)_real)+1);
-		*acc_header(_ptr)		= (u8)pool;
+		stat_counter			+=	mem_pools[pool].get_element	();
+		void*	_real			=	mem_pools[pool].create();
+		_ptr					=	(void*)(((u8*)_real)+1);
+		*acc_header(_ptr)		=	(u8)pool;
 	}
 	return	_ptr;
 }
@@ -59,11 +61,13 @@ void	xrMemory::mem_free		(void* P)
 	if (mem_generic==pool)		
 	{
 		// generic
-		xr_aligned_free				(_real);
+		stat_counter			-=	xr_aligned_msize	(_real);
+		xr_aligned_free			(_real);
 	} else {
 		// pooled
-		R_ASSERT2					(pool<mem_pools_count,"Memory corruption");
-		mem_pools[pool].destroy		(_real);
+		R_ASSERT2				(pool<mem_pools_count,"Memory corruption");
+		stat_counter			-=	mem_pools[pool].get_element	();
+		mem_pools[pool].destroy	(_real);
 	}
 }
 

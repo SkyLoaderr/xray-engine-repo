@@ -26,6 +26,9 @@ xrMemory::xrMemory()
 void	xrMemory::_initialize	(BOOL bDebug)
 {
 	debug_mode				= bDebug;
+	stat_calls				= 0;
+	stat_counter			= 0;
+
 	DWORD	features		= CPU::ID.feature & CPU::ID.os_support;
 	if (features & _CPU_FEATURE_MMX)
 	{

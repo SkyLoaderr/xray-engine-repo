@@ -14,10 +14,13 @@ public:
 
 	BOOL				debug_mode;
 	u32					stat_calls;
+	s32					stat_counter;
 public:
 	u32					mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
 	void				mem_compact		();
 	void				mem_statistic	();
+	void				mem_counter_set	(u32 _val)	{ stat_counter = _val;	}
+	u32					mem_counter_get	()			{ return stat_counter;	}
 
 	void*				mem_alloc		(size_t	size				);
 	void				mem_free		(void*	p					);
