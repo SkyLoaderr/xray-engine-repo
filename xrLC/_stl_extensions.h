@@ -37,6 +37,7 @@ public:
 	explicit xr_vector			(size_t _count)					: std::vector<T> 	(_count)		{}
 	void	clear				()								{ erase(begin(),end());				} 
 	void	clear_and_free		()								{ std::vector<T>::clear();			}
+	void	clear_not_free()									{ erase(begin(),end());	}
 	const_reference operator[]	(size_type _Pos) const			{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 	reference operator[]		(size_type _Pos)				{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 };
