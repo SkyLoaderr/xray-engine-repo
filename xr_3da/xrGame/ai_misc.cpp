@@ -1473,3 +1473,78 @@ float CAI_Space::ffFindFarthestNodeInDirection(u32 dwStartNode, Fvector tStartPo
 	}
 	return(fCurDistance);
 }
+
+bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<Fvector> &tpaOutputPoints, vector<u32> &tpaOutputNodes)
+{
+	PContour				tCurContour;
+	NodeCompressed			*tpNode;
+	NodeLink				*taLinks;
+	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
+	Fvector					tTempPoint = tStartPoint;
+	float					fDistance = tStartPoint.distance_to(tFinishPoint), fCurDistance = 0.f;
+	u32						dwCurNode = dwStartNode;
+
+	tpaOutputPoints.clear	();
+	tpaOutputNodes.clear	();
+	tpaOutputPoints.push_back(tStartPoint);
+	tpaOutputNodes.push_back(dwStartNode);
+
+	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {
+		tpNode				= Node(dwCurNode);
+		taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+		iCount				= tpNode->links;
+		iSavedIndex			= -1;
+		UnpackContour		(tCurContour,dwCurNode);
+		for ( i=0; i < iCount; i++)
+			if ((iNextNode = UnpackLink(taLinks[i])) != iPrevIndex)
+				vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
+
+		if (iSavedIndex > -1) {
+			fCurDistance		= tStartPoint.distance_to_xz(tTempPoint);
+			PContour			tNextContour;
+			PSegment			tNextSegment;
+			Fvector				tIntersectPoint;
+			UnpackContour		(tNextContour,iSavedIndex);
+			vfIntersectContours	(tNextSegment,tNextContour,tCurContour);
+			u32					dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
+			VERIFY				(dwIntersect);
+			tIntersectPoint.y	= ffGetY(*tpNode,tIntersectPoint.x,tIntersectPoint.z);
+			
+			tpaOutputPoints.push_back(tIntersectPoint);
+			tpaOutputNodes.push_back(iSavedIndex);
+			
+			iPrevIndex			= dwCurNode;
+			dwCurNode			= iSavedIndex;
+		}
+		else {
+			int					iNodeIndex;
+			taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+			for ( i=0; i < iCount; i++) {
+				NodeCompressed *tpLastNode = Node(iNodeIndex = UnpackLink(taLinks[i]));
+				if (bfInsideNode(tpLastNode,tFinishPoint)) {
+					PContour			tNextContour;
+					PSegment			tNextSegment;
+					UnpackContour		(tNextContour,iNodeIndex);
+					vfIntersectContours	(tNextSegment,tNextContour,tCurContour);
+					Fvector				tAdditionalPoint = tFinishPoint.distance_to_xz(tNextSegment.v1) < tFinishPoint.distance_to_xz(tNextSegment.v2) ? tNextSegment.v1 : tNextSegment.v2;
+					tAdditionalPoint.y	= ffGetY(*tpNode,tAdditionalPoint.x,tAdditionalPoint.z);
+					
+					tpaOutputPoints.push_back(tAdditionalPoint);
+					tpaOutputNodes.push_back(iNodeIndex);
+					
+					fCurDistance		= fDistance;
+					dwCurNode			= iNodeIndex;
+					break;
+				}
+			}
+			return(false);
+		}
+	}
+
+	if (bfInsideNode(Node(dwCurNode),tFinishPoint)) {
+		tpaOutputPoints.push_back(tFinishPoint);
+		return(true);
+	}
+	else
+		return(false);
+}

@@ -178,6 +178,8 @@ public:
 	u32		dwfCheckPositionInDirection		(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
 
 	float	ffFindFarthestNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, u32 &dwFinishNode, vector<bool> *tpaMarks = 0);
+
+	bool	bfCreateStraightPTN_Path		(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<Fvector> &tpaOutputPoints, vector<u32> &tpaOutputNodes);
 	
 	// Device dependance
 	virtual void	OnDeviceCreate			();
