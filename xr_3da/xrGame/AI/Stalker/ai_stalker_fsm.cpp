@@ -128,7 +128,7 @@ void CAI_Stalker::ForwardCover()
 			vfSetParameters				(
 				m_tSelectorCover,
 				0,
-				eWeaponStatePrimaryFire,
+				eWeaponStateIdle,
 				ePathTypeCriteria,
 				tBodyState,
 				eMovementTypeRun,

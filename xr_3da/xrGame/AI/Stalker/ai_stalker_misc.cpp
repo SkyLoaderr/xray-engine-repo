@@ -33,9 +33,11 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector
 		switch (m_tBodyState) {
 			case eBodyStateCrouch : {
 				m_fCurSpeed *= m_fCrouchFactor;
+				Movement.ActivateBox(1);
 				break;
 			}
 			case eBodyStateStand : {
+				Movement.ActivateBox(0);
 				break;
 			}
 			default : NODEFAULT;
