@@ -92,6 +92,7 @@ int CTreeViewFiles::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_pTree = &GetTreeCtrl();
 
 	m_images.Create (IDB_IL_FILE, 16, 1, RGB(0,255,0));
+	int cc = m_images.GetImageCount();
 	m_pTree->SetImageList (&m_images, TVSIL_NORMAL);
 
 	return 0;
@@ -359,10 +360,19 @@ void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
 		switch (stat)
 		{
 		
-		case -1:
+		case -1:{
+			m_pTree->SetItemImage(itm, 4, 4);
+			DWORD_PTR pp = m_pTree->GetItemData(itm);
+			if(pp){
+				CProjectFile* pf = (CProjectFile*)pp;
+				if(pf->m_lua_view)
+					pf->m_lua_view->GetEditor()->SetReadOnly(stat!=-1);
+			}
+		}break;
+
 		case VSSFILE_NOTCHECKEDOUT:{
 			
-			m_pTree->SetItemImage(itm, 4, 4);
+			m_pTree->SetItemImage(itm, 5, 5);
 			DWORD_PTR pp = m_pTree->GetItemData(itm);
 			if(pp){
 				CProjectFile* pf = (CProjectFile*)pp;
@@ -374,7 +384,7 @@ void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
 		case VSSFILE_CHECKEDOUT:
 			break;
 		case VSSFILE_CHECKEDOUT_ME :{
-			m_pTree->SetItemImage(itm, 0, 0);
+			m_pTree->SetItemImage(itm, 6, 6);
 			DWORD_PTR pp = m_pTree->GetItemData(itm);
 			if(pp){
 				CProjectFile* pf = (CProjectFile*)pp;

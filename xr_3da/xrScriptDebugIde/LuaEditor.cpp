@@ -83,7 +83,7 @@ int CLuaEditor::Sci(int nCmd, int wParam, int lParam)
 	static int nLineTotal = 0;
 	int cnt = m_fnScintilla(m_ptrScintilla, SCI_GETLINECOUNT, 0, 0);
 	
-	if(m_lua_view->GetDoc()){
+/*	if(m_lua_view->GetDoc()){
 	
 		CProjectFile* pF = m_lua_view->GetDocument()->GetProjectFile();
 		if(SCI_MARKERNEXT != nCmd && nLineTotal && nLineTotal != cnt && pF && pF->m_bBreakPointsSaved)
@@ -91,6 +91,7 @@ int CLuaEditor::Sci(int nCmd, int wParam, int lParam)
 		
 		nLineTotal = cnt;
 	}
+*/
 	return m_fnScintilla(m_ptrScintilla, nCmd, wParam, lParam);
 }
 

@@ -167,13 +167,15 @@ void CLuaView::OnSize(UINT nType, int cx, int cy)
 BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
 {
 	NMHDR *lpnmhdr = (LPNMHDR) lParam; 
-
 	if (lpnmhdr->hwndFrom == m_editor.m_hWnd)
 	{
-		if(lpnmhdr->code == SCN_CHARADDED ){
-			int o = 0;
+/*		if(lpnmhdr->code == SCN_CHARADDED ){
+			SCNotification* n = (SCNotification*)lParam;
+			if(n->ch==13){
+				GetEditor()->SetBreakPointsIn(m_pf);
+			}
 		}
-
+*/
 		*pResult = OnSci((SCNotification*)lParam);
 		return TRUE;
 	}
@@ -364,6 +366,8 @@ void CLuaView::Serialize(CArchive& ar)
 	{
 		CLuaEditor* pEditor = GetEditor();
 		pEditor->Save(ar.GetFile());
+		pEditor->SetBreakPointsIn(m_pf);
+
 	}
 	else
 	{
