@@ -10,15 +10,8 @@ private:
 	typedef CWeaponCustomPistol inherited;
 protected:
 	// Media :: sounds
-	ref_sound		sndZoomIn;
-	ref_sound		sndZoomOut;
-	ref_sound		sndGyro;
-	ref_sound		sndShow;
-	ref_sound		sndHide;
-
-	ESoundTypes		m_eSoundShow;
-	ESoundTypes		m_eSoundHide;
-
+	HUD_SOUND		sndZoomIn;
+	HUD_SOUND		sndZoomOut;
 public:
 					CWeaponBinoculars(); 
 	virtual			~CWeaponBinoculars();
@@ -27,6 +20,10 @@ public:
 
 	virtual void	Hide			();
 	virtual void	Show			();
+
+	virtual void	OnZoomIn		();
+	virtual void	OnZoomOut		();
+
 
 	virtual bool	Action			(s32 cmd, u32 flags);
 };

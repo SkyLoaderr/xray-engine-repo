@@ -8,14 +8,6 @@ class CWeaponKnife: public CWeapon
 private:
 	typedef CWeapon inherited;
 protected:
-
-	// Media :: sounds
-	ref_sound			sndZoomIn;
-	ref_sound			sndZoomOut;
-	ref_sound			sndGyro;
-	ref_sound			sndShow;
-	ref_sound			sndHide;
-
 	// HUD :: Animations
 	MotionSVec		mhud_idle;
 	MotionSVec		mhud_hide;

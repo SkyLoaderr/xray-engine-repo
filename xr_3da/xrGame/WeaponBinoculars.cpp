@@ -3,23 +3,19 @@
 
 #include "xr_level_controller.h"
 
+#include "level.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 CWeaponBinoculars::CWeaponBinoculars() : CWeaponCustomPistol("BINOCULARS")
 {
-
-	m_eSoundShow		= ESoundTypes(SOUND_TYPE_ITEM_TAKING | SOUND_TYPE_ITEM_USING);
-	m_eSoundHide		= ESoundTypes(SOUND_TYPE_ITEM_HIDING | SOUND_TYPE_ITEM_USING);
 }
 
 CWeaponBinoculars::~CWeaponBinoculars()
 {
-	sndShow.destroy();
-	sndHide.destroy();	
-	sndGyro.destroy();
-	sndZoomIn.destroy();
-	sndZoomOut.destroy();
+	HUD_SOUND::DestroySound(sndZoomIn);
+	HUD_SOUND::DestroySound(sndZoomOut);
 }
 
 void CWeaponBinoculars::Load	(LPCSTR section)
@@ -27,11 +23,8 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	inherited::Load(section);
 
 	// Sounds
-	sndShow.create(TRUE, pSettings->r_string(section,	"snd_draw"), m_eSoundShow);
-	sndHide.create(TRUE, pSettings->r_string(section,	"snd_holster"), m_eSoundHide);
-	sndGyro.create(TRUE, pSettings->r_string(section,	"snd_gyro"), st_SourceType);
-	sndZoomIn.create(TRUE, pSettings->r_string(section,	"snd_zoomin"), st_SourceType);
-	sndZoomOut.create(TRUE, pSettings->r_string(section,"snd_zoomout"), st_SourceType);
+	HUD_SOUND::LoadSound(section, "snd_zoomin",  sndZoomIn,		TRUE, SOUND_TYPE_ITEM_USING);
+	HUD_SOUND::LoadSound(section, "snd_zoomout", sndZoomOut,	TRUE, SOUND_TYPE_ITEM_USING);
 }
 
 void CWeaponBinoculars::Hide		()
@@ -53,3 +46,27 @@ bool CWeaponBinoculars::Action(s32 cmd, u32 flags)
 
 	return inherited::Action(cmd, flags);
 }
+
+void CWeaponBinoculars::OnZoomIn		()
+{
+	if(H_Parent() && !IsZoomed())
+	{
+		HUD_SOUND::StopSound(sndZoomOut);
+		bool hud_mode = (Level().CurrentEntity() == H_Parent());
+		HUD_SOUND::PlaySound(sndZoomIn, H_Parent()->Position(), H_Parent(), hud_mode);
+	}
+
+	inherited::OnZoomIn();
+}
+void CWeaponBinoculars::OnZoomOut		()
+{
+	if(H_Parent() && IsZoomed() && !IsRotatingToZoom())
+	{
+		HUD_SOUND::StopSound(sndZoomIn);
+		bool hud_mode = (Level().CurrentEntity() == H_Parent());	
+		HUD_SOUND::PlaySound(sndZoomOut, H_Parent()->Position(), H_Parent(), hud_mode);
+	}
+
+	inherited::OnZoomOut();
+}
+
