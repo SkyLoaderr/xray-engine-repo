@@ -91,7 +91,7 @@ function CNecrophil:reload(section)
 	
 	self.hit			= hit()
 	self.hit.power		= 10
-	self.hit.impulse    = 6000
+	self.hit.impulse    = 4000
 	self.hit.draftsman  = self.object
 	self.hit.type       = hit.wound
 	self.hit:bone("bip01_spine")
@@ -165,7 +165,7 @@ end
 
 function CNecrophil:action()
 	if(self.state == 0 and self.object:action() == nil) then
-		action(self.object, move(move.run_fwd, self.enemy), sound(sound.attack), cond(cond.time_end, 10000))
+		action(self.object, move(move.run_fwd, self.enemy), sound(sound.attack), cond(cond.move_end))
 	end
 
 	if(device():time_global() > self.time_play) then
@@ -177,7 +177,7 @@ function CNecrophil:action()
 				self.state 		= 1
 				self.temp_time 	= device():time_global() + 00
 			elseif(self.state == 1 and self.object:action() == nil) then
-				action(self.object, anim(anim.attack, 0), cond(cond.time_end, 600))
+				action(self.object, anim(anim.attack, 0), cond(cond.time_end, 900))
 				self.temp_time 	= device():time_global() + 400
 				self.state		= 2
 			elseif(self.state == 2 and device():time_global() > self.temp_time) then
@@ -198,7 +198,7 @@ function CNecrophil:play()
 	end
 	self.hit.dir.y  = 0.5
 	self.enemy:hit(self.hit)
-	self.time_play	= device():time_global() + 400
+	self.time_play	= device():time_global() + 500
 end 
 
 function CNecrophil:set_script_control(value)

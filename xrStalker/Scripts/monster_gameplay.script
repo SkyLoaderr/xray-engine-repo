@@ -1,0 +1,17 @@
+module("bind_escape")
+
+// биндятся различные одноразовые скрипты
+
+function bind(obj, char_ini)
+	local script_name = utils.conf_get_string(char_ini, "gameplay", "script", nil, obj, true)
+	
+	// Плоть на ескейпе, которая при приближении актера бежит в аномалию.
+	if(script_name == "escape_flesh") then
+		obj:bind_object(bind_escape.CDeadFlesh(obj))
+	elseif(script_name == "escape_boar") then
+		obj:bind_object(bind_escape.CBoarPlayWithCorpse(obj))
+	elseif(script_name == "escape_dogs") then
+		obj:bind_object(bind_escape.CDangerDogs(obj))
+	end 
+end 
+

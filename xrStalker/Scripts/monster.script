@@ -1,6 +1,7 @@
 module("bloodsucker")
 module("monster_bind")
 module("pripyat_football")
+module("monster_gameplay")
 
 function bind(obj)
 	local char_ini	= obj:spawn_ini()
@@ -34,6 +35,12 @@ function bind(obj)
 	if(char_ini:section_exist("controler_trainer")) then
 		obj:bind_object(pripyat_football.CControlerTrainer(obj))
 	end
+	
+	// —южетные и не только скрипты
+	if(char_ini:section_exist("gameplay")) then
+		monster_gameplay.bind(obj, char_ini)
+	end
+
 end
 	
 
