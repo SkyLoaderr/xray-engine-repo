@@ -19,6 +19,10 @@
 #include "missile.h"
 #include "fooditem.h"
 
+#ifdef _DEBUG
+#	define USE_LOG
+#endif
+
 using namespace ObjectHandlerSpace;
 
 IC	ObjectHandlerSpace::EWorldProperties CObjectHandlerPlanner::object_property(MonsterSpace::EObjectAction object_action) const
@@ -218,8 +222,12 @@ void CObjectHandlerPlanner::setup(CAI_Stalker *object)
 
 	set_goal					(eObjectActionIdle);
 
-#ifdef LOG_ACTION
-//	m_use_log					= true;
+#ifdef USE_LOG
+#	ifdef LOG_ACTION
+		set_use_log				(!!psAI_Flags.test(aiGOAP));
+#	endif
+#else
+	set_use_log					(false);
 #endif
 }
 
@@ -249,4 +257,15 @@ void CObjectHandlerPlanner::remove_item		(CInventoryItem *inventory_item)
 {
 	remove_evaluators		(inventory_item);
 	remove_operators		(inventory_item);
+}
+
+void CObjectHandlerPlanner::update			()
+{
+#ifdef USE_LOG
+#	ifdef LOG_ACTION
+		if ((psAI_Flags.test(aiGOAP) && !m_use_log) || (!psAI_Flags.test(aiGOAP) && m_use_log))
+			set_use_log			(!!psAI_Flags.test(aiGOAP));
+#	endif
+#endif
+	inherited::update		();
 }

@@ -58,6 +58,7 @@ public:
 
 public:
 	virtual	void			setup					(CAI_Stalker *object);
+	virtual	void			update					();
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
