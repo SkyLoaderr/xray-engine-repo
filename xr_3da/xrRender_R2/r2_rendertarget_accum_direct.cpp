@@ -9,8 +9,8 @@ void CRenderTarget::accum_direct		()
 
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / float(RImplementation.o.smapsize));
-	float			fRange				= 1.f;	//float(1.f)*ps_r2_ls_depth_scale;
-	float			fBias				= 0.f;	//ps_r2_ls_depth_bias;
+	float			fRange				= ps_r2_sun_depth_scale;
+	float			fBias				= ps_r2_sun_depth_bias;
 	Fmatrix			m_TexelAdjust		= 
 	{
 		0.5f,				0.0f,				0.0f,			0.0f,
