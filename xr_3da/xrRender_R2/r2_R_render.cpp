@@ -229,6 +229,7 @@ void CRender::Render		()
 	Target->phase_combine					();
 
 	//******* Main render - second order geometry (the one, that doesn't support deffering)
+	//.todo: should be done inside "combine" with estimation of of luminance, tone-mapping, etc.
 	{
 		// level
 		r_pmask									(false,true);	// enable priority "1"
