@@ -187,7 +187,7 @@ public:
 					fDistance = m_tpSpawnPoints[i]->o_Position.distance_to(tpaGameGraph[I - BB].tLocalPoint);
 				if (fDistance < fCurrentBestDistance) {
 					fCurrentBestDistance = fDistance;
-					dwBest = I - B;
+					dwBest = I - BB;
 				}
 			}
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
