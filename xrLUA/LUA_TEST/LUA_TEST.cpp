@@ -1787,6 +1787,7 @@ void print_help(lua_State *L)
 
 extern void lesha_test();
 void bug_test();
+extern void test_smart_container();
 
 int __cdecl main(int argc, char* argv[])
 {
@@ -1794,7 +1795,8 @@ int __cdecl main(int argc, char* argv[])
 //	test0();
 //	time_smart_ptr_test();
 //	lesha_test();
-	bug_test();
+//	bug_test();
+	test_smart_container();
 	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");

@@ -451,6 +451,19 @@
 				RelativePath=".\time_smart_ptr_inline.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="smart_container"
+			Filter="">
+			<File
+				RelativePath=".\smart_container.cpp">
+			</File>
+			<File
+				RelativePath=".\smart_container.h">
+			</File>
+			<File
+				RelativePath=".\smart_container_types.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
