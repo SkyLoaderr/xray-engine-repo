@@ -318,6 +318,8 @@ end
 
 function CGarbageRunMonster:update()
 	
+	if(self.end_work == true) then return end             // ѕо логике, не должно быть, но почему-то иногда случаетс€
+	
 	// Ќа вс€кий случай, чтоб не вывалилось
 	if(self.object == nil) then
 		self.object = level.object_by_id(self.id)
@@ -423,5 +425,6 @@ function CGarbageRunMonster:finalize()
 		self.sim:set_interactive	(self.id, true)
 	end
 	
-	self.sim	= nil
+	self.sim		= nil
+	self.end_work	= true
 end 
