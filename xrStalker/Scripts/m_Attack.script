@@ -38,11 +38,11 @@ function stateAttack:testing()
   --Проверяем, не поменялся ли враг
   if( self.enemy ) then
       if( self.memory.enemy == nil ) then
-          self.enemy = nil
+          	self.enemy = nil
             return
         end
         if( self.enemy:id() ~= self.memory.enemy:id() ) then
-          self.enemy = self.memory.enemy
+          	self.enemy = self.memory.enemy
             printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
             self:update()
         end
@@ -190,19 +190,27 @@ function stateAttackArtful:testing()
             self.enemy = nil
             return
         end
-        if( self.enemy:id() ~= self.memory.enemy:id() ) then
+
+		if( self.enemy:id() ~= self.memory.enemy:id() ) then
             self.enemy = self.memory.enemy
-      if(level.actor() and self.enemy:id() == level.actor():id())then
-          self.attack_actor = true
-            else
-                 self.attack_actor = false
-            end
+      		if(level.actor() and self.enemy:id() == level.actor():id())then
+       			self.attack_actor = true
+      		else
+            	self.attack_actor = false
+      		end
             printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
             self:update()
         end
     else
         if( self.memory.enemy ) then
             self.enemy = self.memory.enemy
+
+            if(level.actor() and self.enemy:id() == level.actor():id())then
+                self.attack_actor = true
+            else
+                self.attack_actor = false
+            end
+
             self:update()
         end
     end
@@ -217,19 +225,19 @@ end
 --------------------------------------------------------------------------------
 
 function stateAttackArtful:check_complited()
-  if(self.attack_actor)then
+	if(self.attack_actor)then
         --Если атакуем актера, то конец состояния если актер мертв, либо долго сидим на нычке
         if(level.actor():alive() == false) then
            return true
-         end
+        end
 
     if(self.time ~= 0 and self.angry == false and device():time_global() > self.time + 40000)then
-      printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
-          return true
+      	printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
+        	return true
         end
-    else
-      return ( self.memory.enemy == nil )
-    end
+   	else
+    	return ( self.memory.enemy == nil )
+   	end
 end
 
 --------------------------------------------------------------------------------
