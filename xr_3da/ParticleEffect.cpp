@@ -83,7 +83,17 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 {
 	if (m_Def && m_RT_Flags.is(flRT_Playing)){
 		m_MemDT			+= frame_dt;
-		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
+
+		int	StepCount	= 0;
+		if (m_MemDT>=uDT_STEP)	{
+			// allow maximum of three steps (99ms) to avoid slowdown after loading
+			// it will really skip updates at less than 10fps, which is unplayable
+			StepCount	= m_MemDT/uDT_STEP;
+			m_MemDT		= m_MemDT%uDT_STEP;
+			clamp		(StepCount,0,3);
+		}
+
+		for (;StepCount; StepCount--)	{
 			if (m_Def->m_Flags.is(CPEDef::dfTimeLimit)){ 
 				if (!m_RT_Flags.is(flRT_DefferedStop)){
 					m_fElapsedLimit -= fDT_STEP;
