@@ -22,14 +22,15 @@ function main()
 	GiveInfoViaPda(actor, stalker5, 1)
 	wait(3000)
 	GiveInfoViaPda(actor, stalker6, 1)
-
-	wait(3000)
+	wait(2000)
 	GiveInfoViaPda(actor, stalker1, 1)
+	wait(2000)
 	GiveInfoViaPda(actor, stalker2, 1)
+	wait(2000)
 	GiveInfoViaPda(actor, stalker3, 1)
+	wait(2000)
 	GiveInfoViaPda(actor, stalker4, 1)
-	GiveInfoViaPda(actor, stalker5, 1)
-	GiveInfoViaPda(actor, stalker6, 1)
+	wait(2000)
 
 
 	while true do
