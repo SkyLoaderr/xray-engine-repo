@@ -101,7 +101,7 @@ IC	void CAbstractGraph::add_edge			(const _vertex_id_type vertex_id0, const _ver
 	VERIFY				(vertex(vertex_id0));
 	xr_map<_vertex_id_type,_vertex_index_type>::iterator I = m_index_by_id.find(vertex_id1);
 	VERIFY				(m_index_by_id.end() != I);
-	vertex(vertex_id0)->add_edge((*I).second,edge_weight);
+	vertex(vertex_id0)->add_edge(vertex_id1,(*I).second,edge_weight);
 	++m_edge_count;
 }
 

@@ -324,6 +324,7 @@ bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 {
 	// updating vertex if it is invalid and object is not attached and online
+	Msg		("%6d [LSS] : updating object %s",Level().timeServer(),I->s_name_replace);
 	if (!synchronize_location(I))
 		return;
 

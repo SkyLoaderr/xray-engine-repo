@@ -164,7 +164,7 @@ IC	void CSMotivationManager::update_motivations()
 		xr_vector<CSGraphAbstract::CEdge>::const_iterator i = (*I).edges().begin();
 		xr_vector<CSGraphAbstract::CEdge>::const_iterator e = (*I).edges().end();
 		for ( ; i != e; ++i)
-			m_temp.insert	((*i).vertex_index());
+			m_temp.insert	((*i).vertex_id());
 	}
 	
 	I = graph().vertices().begin();

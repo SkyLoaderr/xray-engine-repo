@@ -24,6 +24,8 @@ IC	CSSafeMapIterator::CSafeMapIterator			()
 {
 	m_cycle_count			= _cycle_type(-1);
 	m_first_update			= use_first_update;
+	m_start_time			= 0;
+	m_max_process_time		= 0;
 	update_next				();
 }
 
@@ -94,7 +96,7 @@ IC	void CSSafeMapIterator::start_timer			()
 TEMPLATE_SPEZIALIZATION
 IC	bool CSSafeMapIterator::time_over			()
 {
-	return				(!m_first_update && (CPU::GetCycleCount() >= m_start_time + m_max_process_time));
+	return				(!m_first_update && (CPU::GetCycleCount() >= (m_start_time + m_max_process_time)));
 }
 
 TEMPLATE_SPEZIALIZATION

@@ -20,13 +20,16 @@ class CGraphAbstract {
 public:
 	class CEdge {
 	private:
-		_edge_weight_type	m_weight;
-		_vertex_index_type	m_vertex_index;
 		friend class CVertex;
+	private:
+		_edge_weight_type	m_weight;
+		_vertex_id_type		m_vertex_id;
+		_vertex_index_type	m_vertex_index;
 	public:
 
-		IC					CEdge	(const _edge_weight_type weight, const _vertex_index_type vertex_index) :
+		IC					CEdge	(const _edge_weight_type weight, const _vertex_id_type vertex_id, const _vertex_index_type vertex_index) :
 								m_weight(weight),
+								m_vertex_id(vertex_id),
 								m_vertex_index(vertex_index)
 		{
 		}
@@ -50,7 +53,12 @@ public:
 			return			(m_weight);
 		}
 
-		IC	_vertex_id_type vertex_index() const
+		IC	_vertex_id_type vertex_id() const
+		{
+			return			(m_vertex_id);
+		}
+
+		IC	_vertex_index_type vertex_index() const
 		{
 			return			(m_vertex_index);
 		}
@@ -132,11 +140,11 @@ public:
 			m_data			= data;
 		}
 
-		IC	void			add_edge(const _vertex_index_type vertex_index, const _edge_weight_type edge_weight)
+		IC	void			add_edge(const _vertex_id_type vertex_id, const _vertex_index_type vertex_index, const _edge_weight_type edge_weight)
 		{
 			xr_vector<CEdge>::iterator I = std::find_if(m_edges.begin(),m_edges.end(),SEdgeFindPredicate(vertex_index));
 			VERIFY			(m_edges.end() == I);
-			m_edges.push_back(CEdge(edge_weight,vertex_index));
+			m_edges.push_back(CEdge(edge_weight,vertex_id,vertex_index));
 		}
 
 		IC	void			remove_edge(const _vertex_index_type vertex_index)

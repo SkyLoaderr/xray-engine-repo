@@ -254,7 +254,7 @@ bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
 	{
 		string256				temp,file_name;
 		strconcat				(temp,game_name,SAVE_EXTENSION);
-		FS.update_path			(file_name,"$saved_games$",temp);
+		FS.update_path			(file_name,"$game_saves$",temp);
 		if (!FS.exist(file_name)) {
 			R_ASSERT3			(no_assert,"There is no saved game ",file_name);
 			return				(false);
