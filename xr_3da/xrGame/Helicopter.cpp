@@ -579,8 +579,8 @@ if(who==this)
 		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: 
 //				doHunt(who);
-//				doHunt2(who, 5, 5);
-				goPatrolByPatrolPath("heli_way_1");
+				doHunt2(who, 5, 5);
+//				goPatrolByPatrolPath("heli_way_1");
 			break;
 		default:
 			break;
