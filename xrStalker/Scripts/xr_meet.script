@@ -456,7 +456,6 @@ function add_to_binder(object, char_ini)
 	properties["threat"]		= xr_evaluators_id.stohe_meet_base + 3
 	properties["talk"]			= xr_evaluators_id.stohe_meet_base + 6
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
-	properties["state_end"]		= xr_evaluators_id.state_change
 
 	operators["wait_buyer"] 		= xr_actions_id.stohe_tradeseller_base + 2
 	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
