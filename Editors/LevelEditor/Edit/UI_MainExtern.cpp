@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "UI_MainExtern.h"
+
 #include "UI_Tools.h"
 #include "EditLibrary.h"
 #include "ImageEditor.h"

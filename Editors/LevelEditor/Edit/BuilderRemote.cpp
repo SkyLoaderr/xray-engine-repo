@@ -97,6 +97,8 @@ void SceneBuilder::SaveBuild()
         // faces
         F.Wdword	(m.face_cnt);
 	    F.write		(m.faces,sizeof(b_face)*m.face_cnt);
+        // lod_id
+        F.Wword		(m.lod_id);
     }
     F.close_chunk	();
     
