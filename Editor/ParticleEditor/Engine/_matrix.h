@@ -71,7 +71,7 @@ public:
 	}
 
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
-	IC void mul	(const _matrix &A,const _matrix &B)
+	IC void mul		(const _matrix &A,const _matrix &B)
 	{
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2] + A.m[3][0] * B.m[0][3];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2] + A.m[3][1] * B.m[0][3];
@@ -95,7 +95,7 @@ public:
 	}
 
 	// Multiply RES = A[4x3]*B[4x3] (no projection), faster than ordinary multiply
-	IC void mul_43(const _matrix &A,const _matrix &B)
+	IC void mul_43	(const _matrix &A,const _matrix &B)
 	{
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2];
@@ -117,25 +117,21 @@ public:
 		m[3][2] = A.m[0][2] * B.m[3][0] + A.m[1][2] * B.m[3][1] + A.m[2][2] * B.m[3][2] + A.m[3][2];
 		m[3][3] = 1;
 	}
-	IC	void mul2	( const _matrix& A )
+	IC	void mulA	( const _matrix& A )	// mul after 
 	{
-    	_matrix B; B.set( *this );
-    	mul( A, B );
+    	_matrix B; B.set( *this ); 	mul		( A, B );
     };
-	IC	void mul	( const _matrix& B )
+	IC	void mulB	( const _matrix& B )	// mul before
 	{
-		_matrix	A; A.set( *this );
-    	mul( A, B );
+		_matrix	A; A.set( *this ); 	mul		( A, B );
 	};
-	IC	void mul2_43( const _matrix& A )
+	IC	void mulA_43( const _matrix& A )	// mul after (no projection)
 	{
-    	_matrix B; B.set( *this );
-    	mul_43( A, B );
+    	_matrix B; B.set( *this ); 	mul_43	( A, B );
     };
-	IC	void mul_43	( const _matrix& B )
+	IC	void mulB_43( const _matrix& B )	// mul before (no projection)
 	{
-		_matrix	A; A.set( *this );
-    	mul_43( A, B );
+		_matrix	A; A.set( *this ); 	mul_43	( A, B );
 	};
 	IC	void	invert(const _matrix & a ) 
 	{	
