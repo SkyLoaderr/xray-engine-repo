@@ -492,7 +492,7 @@ function action_alarm:initialize()
 
 	local enemy = self.object:best_enemy()
     	if enemy and is_object_online( enemy:id() ) then
-        	if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
+        	if get_clsid(enemy) == clsid.stalker or get_clsid(enemy) == clsid.actor then
 			local f = xr_gulag.isUnderFraction(self.object)
 
 			if f ~= nil then
