@@ -546,7 +546,7 @@ function try_switch_to_another_section(npc, st, actor)
 	end
 
 	if not l then
-		utils.abort("Can't find script switching information in storage, scheme '%s'", st.scheme)
+		utils.abort("Can't find script switching information in storage, scheme '%s'", st.active_scheme)
 	end
 
 	local switched = false

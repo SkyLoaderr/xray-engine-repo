@@ -101,6 +101,16 @@ function action_meet_wait:execute ()
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_w)		
 	end
+
+	local tt = db.storage[self.object:id()]
+	if tt.active_scheme then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
+				return
+			end
+		end
+	end
+		
 	action_base.execute (self)
 end
 function action_meet_wait:finalize ()
@@ -133,6 +143,16 @@ function action_weapon:execute ()
 		xr_sound.sound_update(self.object, self.sound_e)		
 	end	
 	xr_meet.attack(self.object, self.a)
+
+	local tt = db.storage[self.object:id()]
+	if tt.active_scheme then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
+				return
+			end
+		end
+	end
+	
 	action_base.execute (self)
 end
 function action_weapon:finalize ()
@@ -209,13 +229,43 @@ function action_state_talk:initialize()
 
 	local overrides = xr_logic.generic_scheme_overrides(self.object)
 	if overrides ~= nil and overrides.meet_state ~= nil then 
-		state_mgr.set_state(self.object, overrides.meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})		
+		self.overrides_meet_state = overrides.meet_state
+	else	
+		self.overrides_meet_state = nil
+	end
+
+	if self.overrides_meet_state then
+		state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 	else
 		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 	end
 end
 function action_state_talk:execute()
 	action_base.execute(self)
+	local tt = db.storage[self.object:id()]
+	if tt.active_scheme then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(self.object, tt[tt.active_scheme], db.actor) then
+				return
+			end
+		end
+	end
+
+
+	local overrides = xr_logic.generic_scheme_overrides(self.object)
+	if overrides ~= nil then 
+		if overrides.meet_state ~= self.overrides_meet_state then
+			-- новое значение не равно текущему
+			self.overrides_meet_state = overrides.meet_state
+			state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		end
+	else	
+		if self.overrides_meet_state ~= nil then
+			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})	
+			self.overrides_meet_state = nil
+		end
+	end
+	
 end
 function action_state_talk:finalize()
 	action_base.finalize(self)
