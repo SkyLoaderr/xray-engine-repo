@@ -8,12 +8,6 @@
 #define PARTICLEDLL_API __declspec(dllimport)
 #endif
 
-#ifdef _EDITOR
-	#define PARTICLEDLL_EDITOR_API PARTICLEDLL_API
-#else
-	#define PARTICLEDLL_EDITOR_API
-#endif
-
 // Actually this must be < sqrt(MAXFLOAT) since we store this value squared.
 #define P_MAXFLOAT 1.0e16f
 
@@ -526,10 +520,6 @@ namespace PAPI{
 
 	struct PASource : public ParticleAction
 	{
-		enum{
-			flVertexB_tracks	= (1<<0),// True to get positionB from position.
-			flStopPlaying		= (1<<1),
-		};
 		pDomain positionL;	// Choose a position in this domain. (local_space)
 		pDomain velocityL;	// Choose a velocity in this domain. (local_space)
 		pDomain position;	// Choose a position in this domain.
@@ -541,7 +531,7 @@ namespace PAPI{
 		float particle_rate;// Particles to generate per unit time
 		float age;			// Initial age of the particles
 		float age_sigma;	// St. dev. of initial age of the particles
-		Flags32 flags;
+		BOOL vertexB_tracks;// True to get positionB from position.
 		pVector parent_vel;	
 		float parent_motion;
 
@@ -616,7 +606,7 @@ namespace PAPI{
 		static int alist_count;
 
 		// state part
-		Flags32	flags;
+		BOOL	vertexB_tracks;
 		pDomain Size;
 		pDomain Vel;
 		pDomain VertexB;
@@ -678,11 +668,6 @@ namespace PAPI{
 
 	PARTICLEDLL_API void pVelocity(float x, float y, float z);
 
-	PARTICLEDLL_API void __cdecl pVelocityD(PDomainEnum dtype,
-		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
-		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
-
 	PARTICLEDLL_API void pVertexB(float x, float y, float z);
 
 	PARTICLEDLL_API void pVertexBD(PDomainEnum dtype,
@@ -707,10 +692,6 @@ namespace PAPI{
 	PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& velocity);
 
 	PARTICLEDLL_API void pAddActionToList(PAHeader *S);		
-
-	PARTICLEDLL_API void pStopPlaying(int action_list_num);
-
-	PARTICLEDLL_API void pStartPlaying(int action_list_num);
 
 	// Particle Group Calls
 
@@ -817,6 +798,9 @@ namespace PAPI{
 	PARTICLEDLL_API void pSpeedLimit(float min_speed, float max_speed = P_MAXFLOAT);
 
 	PARTICLEDLL_API void pTargetColor(float color_x, float color_y, float color_z,
+		float alpha, float scale);
+
+	PARTICLEDLL_API void pTargetColorD(float color_x, float color_y, float color_z,
 		float alpha, float scale);
 
 	PARTICLEDLL_API void pTargetSize(float size_x, float size_y, float size_z,

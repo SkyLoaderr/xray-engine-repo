@@ -407,6 +407,9 @@
 			<File
 				RelativePath="Sound.h">
 			</File>
+			<File
+				RelativePath="psystem.h">
+			</File>
 			<Filter
 				Name="Execution &amp; 3D"
 				Filter="">
