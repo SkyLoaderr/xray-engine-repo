@@ -44,20 +44,22 @@ p2f 	p_main	( v2p_in IN )
   p2f		OUT;
 
   // Sample the fat framebuffer:
-  float4 P	= tex2D 	(s_position, float2(IN.Tex0.x, IN.Tex0.y)); 
-  float4 N 	= tex2D 	(s_normal,   float2(IN.Tex0.x, IN.Tex0.y)); 
+  float4 _P	= tex2D 	(s_position, float2(IN.Tex0.x, IN.Tex0.y)); 
+  float4 _N	= tex2D 	(s_normal,   float2(IN.Tex0.x, IN.Tex0.y)); 
+  float3 P	= float3	(_P.x,_P.y,_P.z);
+  float3 N	= float3	(_N.x,_N.y,_N.z);
 
   // Vector to the eye:
-  float4 V 	= normalize(-P);
+  float3 V 	= normalize	(-P);
 
   // Vector to the light:
-  float4 L 	= -light_direction;
+  float3 L 	= -float3(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
   float D 	= max(0,dot(L, N));
 
   // Half-angle vector:
-  float4 H 	= normalize(L + V);
+  float3 H 	= normalize(L + V);
 
   // Specular = (H • N)^m
   float S 	= pow(max(0,dot(H, N)), 32);
