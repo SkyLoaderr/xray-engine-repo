@@ -4,7 +4,7 @@
 #include "detailmanager.h"
 
 const int			quant	= 16384;
-const int			c_hdr	= 13;
+const int			c_hdr	= 14;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
@@ -74,7 +74,7 @@ void CDetailManager::hw_Load()
 			CDetail& D		=	*objects[o];
 			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
-				DWORD mid	=	batch*c_size;
+				DWORD mid	=	batch*c_size+c_base;
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
 					Fvector&	vP = D.vertices[v].P;
@@ -134,19 +134,19 @@ void CDetailManager::hw_Render()
 
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	float scale			=	1.f/float(quant);
-	VSC.set				(0,	scale,		scale,		scale,		1.f);						// consts
+	VSC.set				(0,	scale,		scale,		scale,		.9f);						// consts
 	VSC.set				(1,	1.f/5.f,	1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*2.f);	// wave
 	VSC.set				(2,	dir2D);															// wind-dir
 	VSC.set				(3,	Device.mFullTransform);
-	VSC.set				(7,	0,			.5f,		1,			0);
-	VSC.set				(8,	0.25f,		-9,			0.75f,		0.1591549f);
-	VSC.set				(9, 24.9808f,	-24.9808f,	-60.14581f,	60.14581f);
-	VSC.set				(10,85.45379f,	-85.45379f,	-64.93935f,	64.93935f);
-	VSC.set				(11,19.73921f,	-19.73921f,	-1,			1);
-	VSC.set				(12,0.1f,		0,			2,			0);
-	VSC.set				(13,0,			0,			0,			0);
+	VSC.set				(7,	1,			.1f,		0,			2);				//const c[7] = 1 0.1 0 2
+	VSC.set				(8,	0,			0.5f,		1.f,		0);				//const c[8] = 0 0.5 1 0
+	VSC.set				(9, 0.25f,		-9.f,		0.75f,		0.1591549f);	//const c[9] = 0.25 -9 0.75 0.1591549
+	VSC.set				(10,24.9808f,	-24.9808f,	-60.14581f,	60.14581f);		//const c[10] = 24.9808 -24.9808 -60.14581 60.14581
+	VSC.set				(11,85.45379f,	-85.45379f, -64.93935f, 64.93935f);		//const c[11] = 85.45379 -85.45379 -64.93935 64.93935
+	VSC.set				(12,19.73921f,	-19.73921f,	-1,			1);				//const c[12] = 19.73921 -19.73921 -1 1
+	VSC.set				(13,0,			0,			0,			0);				//const c[13] = 0 0 0 0
 	VSC.flush			(0,	c_hdr);
-	
+
 	// Matrices and offsets
 	DWORD		vOffset	=	0;
 	DWORD		iOffset	=	0;
