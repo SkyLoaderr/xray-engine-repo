@@ -131,8 +131,9 @@ bool CMotionManager::PrepareAnimation()
 	}
 
 	// Заполнить текущую анимацию
-	string64 st;
-	sprintf(st, "%s%d", *anim_it->second.target_name, index);
+	string64	st,tmp;
+	strconcat	(st,*anim_it->second.target_name,itoa(index,tmp,10));
+//	sprintf		(st, "%s%d", *anim_it->second.target_name, index);
 	m_cur_anim.name				= st; 
 	m_cur_anim.index			= u8(index);
 	m_cur_anim.time_started		= Device.dwTimeGlobal;

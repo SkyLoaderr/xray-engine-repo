@@ -167,11 +167,12 @@ LPCSTR CInventoryItem::NameComplex()
 
 	if(m_bUsingCondition){
 		string32		cond;
-		if(GetCondition()<0.33)		strcpy		(cond, "[poor]");
-		else if(GetCondition()<0.66)strcpy		(cond, "[bad]");
-		else						strcpy		(cond, "[good]");
+		if(GetCondition()<0.33)		strcpy		(cond,	"[poor]");
+		else if(GetCondition()<0.66)strcpy		(cond,	"[bad]"	);
+		else						strcpy		(cond,	"[good]");
 		string256		temp;
-		sprintf			(temp,"%s %s",*m_nameComplex,cond);
+		strconcat		(temp,*m_nameComplex," ",cond)	;
+		// sprintf			(temp,"%s %s",*m_nameComplex,cond);
 		m_nameComplex	= temp;
 	}
 

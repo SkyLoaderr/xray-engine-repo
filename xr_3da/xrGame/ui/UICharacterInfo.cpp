@@ -186,7 +186,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	VERIFY(pCharInfo);
 
 	string256		str;
-	sprintf			(str, "%s", pCharInfo->Name());
+	strcpy			(str,pCharInfo->Name());
 	UIName.SetText	(str);
 	CStringTable	stbl;
 
