@@ -38,6 +38,8 @@ protected:
 	virtual void	OnStateSwitch	(u32 S);
 
 	void			state_Attacking	(float dt);
+
+	float			fWallmarkSize;
 public:
 	CWeaponKnife(); 
 	virtual			~CWeaponKnife();

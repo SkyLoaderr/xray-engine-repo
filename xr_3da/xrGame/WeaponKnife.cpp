@@ -23,7 +23,9 @@ void CWeaponKnife::Load	(LPCSTR section)
 {
 	// verify class
 	inherited::Load		(section);
-	
+
+	fWallmarkSize = pSettings->r_float(section,"wm_size");
+
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_idle"));
@@ -146,6 +148,7 @@ void CWeaponKnife::OnAnimationEnd()
 				cartridge.m_kImpulse = 1;
 				cartridge.m_kPierce = 1;
 				cartridge.m_tracer = 0;
+				cartridge.fWallmarkSize = fWallmarkSize;
 
 				while(m_magazine.size() < 2) m_magazine.push(cartridge);
 				FireTrace(p1,vLastFP,d);
@@ -176,6 +179,7 @@ void CWeaponKnife::OnAnimationEnd()
 				cartridge.m_kImpulse = 1;
 				cartridge.m_kPierce = 1;
 				cartridge.m_tracer = 0;
+				cartridge.fWallmarkSize = fWallmarkSize;
 
 				while(m_magazine.size() < 2) m_magazine.push(cartridge);
 				FireTrace(p1,vLastFP,d);
