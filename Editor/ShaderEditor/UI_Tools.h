@@ -47,7 +47,7 @@ public:
     void				Render				();
     void				Update				();
 
-    void				OnCreate			();
+    bool				OnCreate			();
     void				OnDestroy			();
 
     bool				IfModified			(){return Engine.IfModified()&&Compiler.IfModified();}

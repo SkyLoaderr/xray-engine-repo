@@ -51,14 +51,26 @@ void CShaderTools::Modified(){
 }
 //---------------------------------------------------------------------------
 
-void CShaderTools::OnCreate(){
+bool CShaderTools::OnCreate(){
+	// test locking
+	AnsiString fn = "shaders.xr";
+    FS.m_GameRoot.Update(fn);
+	if (FS.IsFileLocking(fn.c_str())) return false;
+	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
 	Engine.OnCreate();
     Compiler.OnCreate();
+	// lock
+    FS.LockFile(fn.c_str());
 }
 
 void CShaderTools::OnDestroy(){
+	// unlock
+	AnsiString fn = "shaders.xr";
+    FS.m_GameRoot.Update(fn);
+    FS.UnlockFile(fn.c_str());
+	//
     Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);

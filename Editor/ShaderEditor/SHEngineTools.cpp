@@ -274,7 +274,10 @@ void CSHEngineTools::Save(BOOL bForVisUpdate){
     // copy exist file
     FS.MarkFile(fn);
     // save new file
+    if (!bForVisUpdate) FS.UnlockFile(fn.c_str());
     F.SaveTo(fn.c_str(), "shENGINE");
+    if (!bForVisUpdate) FS.LockFile(fn.c_str());
+
 	m_bUpdateCurrent		= true;
 	SetCurrentBlender		(name);
 

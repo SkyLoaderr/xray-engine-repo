@@ -30,7 +30,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    fraTopBar   		= new TfraTopBar(0);
 		//----------------
         if (UI.OnCreate()){
-            Tools.OnCreate	();
+			if (!Tools.OnCreate()){
+				AnsiString fn = "shaders.xr";
+			    FS.m_GameRoot.Update(fn);
+            	ELog.DlgMsg(mtError,"Access denied. Shaders currently locked by user '%s'.\nEditor aborted.",FS.GetLockOwner(fn.c_str()));
+                bRes=false;
+            	break;
+            }
             Lib.OnCreate	();
 
 		    Command			(COMMAND_CLEAR);

@@ -22,6 +22,7 @@ public:
 };
 
 DEFINE_MAP(AnsiString,int,FileMap,FilePairIt);
+DEFINE_MAP(AnsiString,HANDLE,HANDLEMap,HANDLEPairIt);
 
 class CFileSystem {
 	void 	ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir);
@@ -31,6 +32,8 @@ class CFileSystem {
     LPSTR 	ext_mask;
 	bool 	bClampExt;
     int		path_size;
+
+    HANDLEMap m_LockFiles;
 public:
 	char 	m_Root[MAX_PATH];
 	char 	m_Server[MAX_PATH];
@@ -86,6 +89,11 @@ public:
 
     void	VerifyPath		(LPCSTR path);
 	LPSTR	UpdateTextureNameWithFolder(LPSTR tex_name);
+
+    bool	IsFileLocking	(LPCSTR fn);
+    bool	LockFile		(LPCSTR fn);
+    bool	UnlockFile		(LPCSTR fn);
+    LPCSTR	GetLockOwner	(LPCSTR fn);
 };
 extern CFileSystem FS;
 #endif /*_INCDEF_FileSystem_H_*/

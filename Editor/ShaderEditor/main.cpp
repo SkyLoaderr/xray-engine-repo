@@ -18,7 +18,7 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
-    if (!UI.Command(COMMAND_INITIALIZE)) exit(-1);
+    if (!UI.Command(COMMAND_INITIALIZE)) TerminateProcess(GetCurrentProcess(),-1);
 	fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------

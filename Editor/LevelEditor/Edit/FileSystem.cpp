@@ -449,3 +449,37 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 	return tex_name;
 }
 
+bool CFileSystem::IsFileLocking(LPCSTR fn)
+{
+	HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+    CloseHandle(handle);
+    return (INVALID_HANDLE_VALUE==handle); 
+}
+
+bool CFileSystem::LockFile(LPCSTR fn)
+{
+	if (m_LockFiles.find(fn)==m_LockFiles.end()){
+		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+    	if (INVALID_HANDLE_VALUE!=handle){
+	 	   	m_LockFiles.insert(make_pair(fn,handle));
+           	return true;
+        }
+    }
+    return false;
+}
+
+bool CFileSystem::UnlockFile(LPCSTR fn)
+{
+	HANDLEPairIt it = m_LockFiles.find(fn);
+	if (it!=m_LockFiles.end()){
+		m_LockFiles.erase(it);
+    	return CloseHandle(it->second);
+    }
+    return false;
+}
+
+LPCSTR CFileSystem::GetLockOwner(LPCSTR fn)
+{
+	return "Unknown";
+}
+
