@@ -54,6 +54,11 @@ private:
 	C2DSound*			snd_Ambient_control;
 	float				snd_Ambient_volume;
 
+	// Utilities
+	Particle*			p_allocate		();
+	Particle*			p_free			();
+
+	// Some methods
 	void				Born			(Item& dest, float radius, float height);
 	void				Hit				(Fvector& pos);
 public:
