@@ -179,6 +179,7 @@ function Monster:__init (npc, attack_way, script_name)
 	self.first_start = true
 	self.target = nil
 	self.targets = {}
+	self.freemove = false
 end
 
 
@@ -221,6 +222,8 @@ end
 
 function Monster:process ()
 
+	if self.freemove == true then return end
+
 --	printf ("Process object %s : ", self.npc:name ())
 
 	if self.first_start == true then
@@ -233,13 +236,17 @@ function Monster:process ()
 
 	if self.moving == true then 
 	   if self.npc:action () then 
---		  printf ("Attacker %s in move", self.npc:name ())
 		  return 
        end
-	   printf ("Attacker %s is end move", self.npc:name ())	
 	   self.moving = false
     end	 
 
+	--если больше нет целей, то отпускаем зверя и флаг ему в руки :)
+	if table.getn (self.targets) == 0 then 
+	   self.npc:script (false, self.script)
+	   self.freemove = true
+	end
+	
 	local enemy = nil
 	if self.target == nil or self.target:is_alive () == false then enemy = self:find_enemy () end
 	if enemy == nil then return 
