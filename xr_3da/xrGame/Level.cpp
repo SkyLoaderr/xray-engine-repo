@@ -219,7 +219,7 @@ void CLevel::OnRender()
 	}
 }
 
-void CLevel::OnEvent(EVENT E, size_t P1, size_t P2)
+void CLevel::OnEvent(EVENT E, u32 P1, u32 P2)
 {
 	if (E==eEntitySpawn)	{
 		char	Name[128];	Name[0]=0;
