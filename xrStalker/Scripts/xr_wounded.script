@@ -446,8 +446,9 @@ function action_stand:initialize ()
     action_base.initialize (self)
     self.stage = 0
     xr_meet.override_meet (self.object, true)
-    if self.a.on_medikit ~= nil then
-       xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist) 
+    local actor = level.actor ()
+    if self.a.on_medikit ~= nil and actor then
+       xr_logic.pick_section_from_condlist (actor, self.object, self.a.on_medikit.condlist) 
     end   
     
     if self.object:object ("medkit") ~= nil then
@@ -491,8 +492,9 @@ function action_stand:execute ()
 end    
 ------------
 function action_stand:finalize ()
-    if self.a.on_medikit ~= nil then
-       xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist)
+    local actor = level.actor ()
+    if self.a.on_medikit ~= nil and actor then
+       xr_logic.pick_section_from_condlist (actor, self.object, self.a.on_medikit.condlist)
     end 
     
     xr_meet.override_meet (self.object, false)
