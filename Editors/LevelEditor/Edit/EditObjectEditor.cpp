@@ -402,7 +402,7 @@ bool CEditableObject::CheckShaderCompatible()
         Shader_xrLC* 	C = Device.ShaderXRLC.Get((*s_it)->m_ShaderXRLCName.c_str());
         R_ASSERT(B&&C);
     	if (!BE(B->canBeLMAPped(),!C->flags.bLIGHT_Vertex)){ 
-        	ELog.DlgMsg	(mtError,"Engine shader '%s' non compatible with compiler shader '%s'",(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
+        	ELog.DlgMsg	(mtError,"Error in object: '%s'.\nEngine shader '%s' non compatible with compiler shader '%s'",GetName(),(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
         	return false;
         }
     }

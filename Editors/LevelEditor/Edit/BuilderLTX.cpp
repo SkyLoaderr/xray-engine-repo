@@ -9,7 +9,7 @@
 #include "Scene.h"
 #include "EditObject.h"
 #include "SceneObject.h"
-#include "Sound.h"
+#include "ESound.h"
 #include "ELight.h"
 #include "SpawnPoint.h"
 #include "Event.h"
@@ -27,7 +27,7 @@ BOOL SceneBuilder::ParseLTX(CInifile* pIni, ObjectList& lst, LPCSTR prefix)
 	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
 		switch ((*it)->ClassID){
         case OBJCLASS_SOUND:{
-            CSound *s = (CSound *)(*it);
+            ESound *s = (ESound *)(*it);
             if (s->m_WAVName.IsEmpty()){
             	ELog.DlgMsg(mtError,"*ERROR: Sound '%s'. Not assigned wave file!", s->Name);
                 bResult=FALSE;

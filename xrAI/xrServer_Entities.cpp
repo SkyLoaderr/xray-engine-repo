@@ -106,7 +106,7 @@ void xrSE_WeaponAmmo::UPDATE_Write(NET_Packet& P) {inherited::UPDATE_Write(P); P
 void xrSE_WeaponAmmo::FillProp(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp(pref,values);
 	m_boxSize = pSettings->r_s32(s_name, "box_size");
-	PHelper.CreateU16(items, PHelper.PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
+	PHelper.CreateU16(values, PHelper.PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
 #endif
 

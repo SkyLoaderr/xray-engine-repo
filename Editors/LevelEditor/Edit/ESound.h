@@ -1,4 +1,4 @@
-// Sound.h: interface for the CSound class.
+// Sound.h: interface for the ESound class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -8,7 +8,7 @@
 
 class CFrustum;
 
-class CSound : public CCustomObject
+class ESound : public CCustomObject
 {
 	typedef CCustomObject inherited;
 	friend class TfrmPropertiesSound;
@@ -17,9 +17,9 @@ protected:
 	float			m_Range;
 	AnsiString		m_WAVName;
 public:
-					CSound		(LPVOID data, LPCSTR name);
+					ESound		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
-	virtual 		~CSound		();
+	virtual 		~ESound		();
 
 	virtual void 	Render		(int priority, bool strictB2F);
 

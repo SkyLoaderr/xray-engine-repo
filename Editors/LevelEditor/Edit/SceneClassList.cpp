@@ -9,7 +9,7 @@
 #include "SceneObject.h"
 #include "ELight.h"
 #include "EShape.h"
-#include "Sound.h"
+#include "ESound.h"
 #include "glow.h"
 #include "spawnpoint.h"
 #include "WayPoint.h"
@@ -62,7 +62,7 @@ CCustomObject *NewObjectFromClassID( int _ClassID, LPVOID data, LPCSTR name ){
 		case OBJCLASS_SCENEOBJECT: 	return xr_new<CSceneObject>(data,name);
 		case OBJCLASS_LIGHT:    	return xr_new<CLight>(data,name);
         case OBJCLASS_SHAPE:		return xr_new<CEditShape>(data,name);
-		case OBJCLASS_SOUND:    	return xr_new<CSound>(data,name);
+		case OBJCLASS_SOUND:    	return xr_new<ESound>(data,name);
 		case OBJCLASS_GLOW:     	return xr_new<CGlow>(data,name);
         case OBJCLASS_SPAWNPOINT:	return xr_new<CSpawnPoint>(data,name);
         case OBJCLASS_WAY:			return xr_new<CWayObject>(data,name);
