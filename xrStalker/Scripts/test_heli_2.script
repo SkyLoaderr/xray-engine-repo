@@ -9,20 +9,87 @@ end
 
 function HeliManager:Init()
    self.m_heli = get_level_object( "helicopter" )
-   self.m_heli:AddEventCallback(1,self,"onHeliEvent")
+   self.m_heliObject = self.m_heli:get_helicopter()
+   self.m_heli:AddEventCallback(CHelicopter.on_point,self,"HeliOnPoint")
+   self.m_heli:AddEventCallback(CHelicopter.on_hit,self,"HeliOnHit")
 end
 
-function HeliManager:onHeliEvent(p)
-		local str = p:r_stringZ()
-      printf(str)
-      local player = get_actor()
-      
-      self.m_heli:heli_go_to_point(player:position(),player:position(),6)
+function HeliManager:HeliOnHit(p)
+   if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
+      return --already on attack trajectory
+   end
+
+
+
+--      format:
+   local power = p:r_float()
+   local impulse = p:r_float()
+   local hit_type = p:r_u32()
+   local enemy_name = p:r_stringZ()
+
+   local enemy = level.object( enemy_name )
+   if enemy == nil then 
+      return
+   end
+--   self.m_heliObject:SetEnemy(enemy)
+--   self.m_heliObject:SetDestPosition(enemy:position())
+--   self.m_heliObject:SetState(CHelicopter.eMovingByAttackTraj)
+--   self.m_heliObject:SetCurrVelocity(30.0) -- m/sec (max)
+   
+ 
+end
+
+
+
+function HeliManager:HeliOnPoint(p)
+--      format:
+--		   local dist_to_point =	p:r_float()
+--      local point  = p:r_vec3()
+--      local path_idx = p:r_s16() ; -- ==-1 if no path moving
+
+
+   if self.m_heliObject:GetState() == CHelicopter.eMovingToPoint then
+   --select next point
+   end
+
+   if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
+      self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0)  --0==from_idx
+--      self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
+   end
+
 end
 
 function HeliManager:Start()
+      self.m_b_exploded             = false
+      self.m_b_prepered_to_die   = false
 	while true do
+   local state = self.m_heliObject:GetState()
+   if state == CHelicopter.eIdleState then
+      self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0) --0==from_idx
+      self.m_heliObject:SetCurrVelocity(20.0) -- m/sec (max)
+   end
 
+   local health = self.m_heliObject:GetfHealth()
+   if self.m_b_prepered_to_die==false and state ~= CHelicopter.eDead and  health < 30.0 then
+         self.m_b_prepered_to_die = true
+         self.m_heliObject:PrepareDie()
+   end
+
+   if state ~= CHelicopter.eDead and health <= 0.0 then
+         printf("------------DIE----------------------")
+		self.m_heliObject:Die()
+   end
+
+   if (self.m_b_exploded==false) and (state == CHelicopter.eDead)  then
+      local altitude = self.m_heliObject:GetRealAltitude()
+      printf("---altitude = %f", altitude)
+      if altitude < 3.0 then
+      self.m_b_exploded = true
+         printf("------------EXPLODE----------------------")
+         self.m_heliObject:Explode()
+      end
+   end
+		
    wait()
    end
 end
