@@ -214,7 +214,7 @@ void	IReader::r	(void *p,int cnt)
 IC BOOL			is_term		(char a) { return (a==13)||(a==10); };
 void	IReader::r_string	(char *dest)
 {
-	char *src = (char *) data;
+	char *src 	= (char *) data;
 	while (!eof()) {
 		if (is_term(src[Pos])) {
 			*dest = 0;
@@ -224,15 +224,20 @@ void	IReader::r_string	(char *dest)
 		}
 		*dest++ = src[Pos++];
 	}
-	*dest	=	0;
-};
+	*dest		=	0;
+}
 void	IReader::r_stringZ	(char *dest)
 {
-	char *src = (char *) data;
+	char *src 	= (char *) data;
 	while ((src[Pos]!=0) && (!eof())) *dest++ = src[Pos++];
-	*dest	=	0;
-	Pos		++;
-};
+	*dest		=	0;
+	Pos++;
+}
+void 	IReader::r_stringZ	(ref_str& dest)
+{
+	dest	= (char*)data;
+    Pos		+=(xr_strlen((char*)data)+1);
+}
 void	IReader::skip_stringZ	()
 {
 	char *src = (char *) data;
