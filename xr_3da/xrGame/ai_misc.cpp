@@ -1548,6 +1548,7 @@ bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, F
 
 	if (bfInsideNode(Node(dwCurNode),tFinishPoint)) {
 		tpaOutputPoints.push_back(tFinishPoint);
+		tpaOutputNodes.push_back(dwCurNode);
 		return(true);
 	}
 	else

@@ -663,6 +663,10 @@ void CPHWorld::Create(){
 
 	phWorld = dWorldCreate();
 	Space = dHashSpaceCreate(0);
+#ifdef ODE_SLOW_SOLVER
+#else
+	dWorldSetAutoEnableDepth(phWorld, 3);
+#endif
 	ContactGroup = dJointGroupCreate(0);		
 	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
@@ -761,8 +765,11 @@ void CPHWorld::Step(dReal step)
 			(*iter)->PhTune(fixed_step);	
 
 		Device.Statistic.ph_core.Begin		();
-		//dWorldStep			(phWorld, fixed_step);
-		dWorldStepFast (phWorld,fixed_step,10);
+		#ifdef ODE_SLOW_SOLVER
+		dWorldStep			(phWorld, fixed_step);
+		#else
+		dWorldStepFast (phWorld,fixed_step,15);
+		#endif
 		Device.Statistic.ph_core.End		();
 
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
@@ -1374,6 +1381,22 @@ Fvector mc;
 mc.set(0.f,0.f,0.f);
 return mc;
 }
+void CPHElement::set_BoxMass(const Fobb& box, float mass)
+{
+	dMass m;
+	dMassSetZero(&m_mass);
+	
+		m_mass_center.set(box.m_translate);
+		const Fvector& hside=box.m_halfsize;
+		dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+		dMassAdjust(&m_mass,mass);
+		dMatrix3 DMatx;
+		PHDynamicData::FMX33toDMX(box.m_rotate,DMatx);
+		dMassRotate(&m_mass,DMatx);
+
+		
+
+}
 
 void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 	dMass m;
@@ -1913,7 +1936,7 @@ void	CPHElement::Disabling(){
 					deviation/=dis_count_f;
 					if(mag_v<0.005f* dis_frames && deviation<0.00005f*dis_frames)
 						Disable();//dBodyDisable(m_body);//
-					if((previous_dev+0.005f* dis_frames>deviation&&previous_v+0.00005f*dis_frames>mag_v)
+					if((!(previous_dev<deviation)&&!(previous_v<mag_v))//
 					  ) 
 					{
 					dis_count_f++;
@@ -2979,6 +3002,8 @@ void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,
 
 void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 {
+	if(!(pFirst_element&&pSecond_element))return;
+
 	int ax=axis_num;
 
 	switch(eType){

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\PGObject.h"
 #include "car.h"
 #include "hudmanager.h"
 #include "..\camerabase.h"
@@ -46,6 +47,7 @@ CCar::~CCar(void)
 	xr_delete			(camera[0]);
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
+	xr_delete			(m_pExhaustPG);
 	snd_engine.destroy	();
 	m_jeep.Destroy();
 
@@ -177,6 +179,10 @@ void	CCar::Load					( LPCSTR section )
 	inherited::Load					(section);
 
 	snd_engine.create				(TRUE,"car\\car1");
+
+	m_pExhaustPG					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
+	m_pExhaustPG->SetTransform		(clTransform);
+	m_pExhaustPG->Play				();
 }
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
@@ -264,6 +270,7 @@ void	CCar::UpdateCL				( )
 		cam_Update	(Device.fTimeDelta);
 	}
 
+	m_pExhaustPG->UpdateParent(clTransform,m_jeep.GetVelocity());
 }
 
 void	CCar::OnVisible				( )
@@ -472,7 +479,14 @@ void CCar::ActivateJeep()
 	M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback			(cb_Steer,this);
 	m_doors_ids[1]					=M->LL_BoneID("phy_door_left");
 	m_doors_ids[0]					=M->LL_BoneID("phy_door_right");
+	m_exhaust_ids[0]				=M->LL_BoneID("exhaust1");
+	m_exhaust_ids[1]				=M->LL_BoneID("exhaust2");
+	
 
+	
+//IRender_Sector* S=0;
+
+	
 	 ///clTransform.set					( m_jeep.DynamicData.BoneTransform	);
 }
 

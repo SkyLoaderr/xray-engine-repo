@@ -28,6 +28,8 @@ float DriveForce;
 float VelocityRate;
 CPhysicsJoint* weels[4];
 int	  m_doors_ids[2];
+int	  m_exhaust_ids[2];
+CPGObject* m_pExhaustPG;
 ////////////////////////////////////////////////////
 void Steer(const char& steering);
 float GetSteerAngle();

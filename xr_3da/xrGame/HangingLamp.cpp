@@ -107,8 +107,9 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	CPhysicsElement* E	= P_create_Element();
 	CBoneInstance& B	= K->LL_GetInstance(id);
 	E->mXFORM.set		(K->LL_GetTransform(id));
-	Fobb& bb			= K->LL_GetBox(id);
-	bb.m_halfsize.add	(0.05f);
+	Fobb bb			= K->LL_GetBox(id);
+	//if(bb.m_halfsize.magnitude()<0.05f)
+		bb.m_halfsize.add(0.05f);
 	E->add_Box			(bb);
 	E->setMass			(10.f);
 	E->set_ParentElement(root_e);
@@ -120,6 +121,9 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 		J->SetAnchorVsSecondElement	(0,0,0);
 		J->SetAxisVsSecondElement	(1,0,0,0);
 		J->SetAxisVsSecondElement	(0,1,0,2);
+	//	J->SetLimits				(-M_PI/2,M_PI/2,0);
+	//	J->SetLimits				(-M_PI/2,M_PI/2,1);
+	//	J->SetLimits				(-M_PI/2,M_PI/2,2);
 		m_pPhysicsShell->add_Joint	(J);
 	}
 

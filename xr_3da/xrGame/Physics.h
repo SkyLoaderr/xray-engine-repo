@@ -18,8 +18,8 @@ const int dis_frames=11;
 
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
-const dReal world_cfm=1.1363636e-007f;
-const dReal world_erp=0.74545456f;
+const dReal world_cfm=1.1363636e-006f;
+const dReal world_erp=0.54545456f;
 const dReal world_spring=SPRING(world_cfm,world_erp);
 const dReal world_damping=DAMPING(world_cfm,world_erp);
 
@@ -314,6 +314,7 @@ public:
 	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
 	virtual void			set_PushOut				 (u32 time);
 	virtual void			get_LinearVel			 (Fvector& velocity);
+	virtual	void			set_BoxMass				 (const Fobb& box, float mass);
 
 	void			SetShell						(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData			(CPHObject* O);

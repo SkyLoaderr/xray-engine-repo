@@ -11,6 +11,8 @@ class CPhysicsRefObject
 public:
 	virtual ~CPhysicsRefObject() {}
 };
+
+
 // ABSTRACT:
 class	CPhysicsBase
 {
@@ -27,6 +29,7 @@ public:
 	virtual void			Enable					()											= 0;
 	
 	virtual void			setMass					(float M)									= 0;
+
 	virtual void			setDensity				(float M)									= 0;
 	virtual float			getMass					()											= 0;
 
@@ -56,6 +59,7 @@ public:
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
+	virtual	void			set_BoxMass				(const Fobb& box, float mass)				= 0;
 
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 
