@@ -39,6 +39,8 @@ function PsyAntenna:__init				()
 	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
 	self.stopping_anim					= color_animator			("levels\\psy_antenna\\stopping");
 	self.stopping_time					= self.stopping_anim:length();
+	self.hit_time						= 0;
+	self.intensity						= 0;
 	self.pp 							= PsyAntennaPP();
 	self.pp:start						();
 end
@@ -71,6 +73,7 @@ function PsyAntenna:switch_to_phase		(ph)
 	self.power_factor:set				(0,0,0,0);
 end
 function PsyAntenna:phase_starting		()
+	self.intensity						= self.eff_time/self.starting_time;
 	if self.eff_time>self.starting_time then
 		self:switch_to_phase			(pa_phase.phWorking);
 	else
@@ -78,15 +81,18 @@ function PsyAntenna:phase_starting		()
 	end;
 end
 function PsyAntenna:phase_working		()
+	self.intensity						= 1.0;
 	local h								= level.get_time_hours();
 	if self:is_idle_time(h) then 				
 		self:switch_to_phase			(pa_phase.phStopping);
 	else
 		self.power_factor:set 			(self.working_anim:calculate(self.eff_time/1000));
+		self:generate_phantoms 			();
 	end;
 end
 function PsyAntenna:phase_stopping		()
-	if self.eff_time>self.starting_time then
+	self.intensity						= 1.0-self.eff_time/self.stopping_time;
+	if self.eff_time>self.stopping_time then
 		self:switch_to_phase			(pa_phase.phIdle);
 	else
 		self.power_factor:set			(self.stopping_anim:calculate(self.eff_time/1000));
@@ -99,10 +105,17 @@ function PsyAntenna:phase_idle			()
 	end;
 end
 function PsyAntenna:update_postprocess	()
-	self.pp.params.color_add 			= color():set(self.power_factor.r,self.power_factor.g,self.power_factor.b);
+	self.pp.params.color_base			= color(0.5+0.2*self.intensity,0.5+0.15*self.intensity,0.5);
+	self.pp.params.color_gray			= color(0.33,0.333,	0.333);
+	self.pp.params.color_add 			= color(self.power_factor.r*0.3,self.power_factor.g*0.3,self.power_factor.b*0.3);
+	self.pp.params.gray					= 0.5*self.intensity;
+	self.pp.params.dual					= duality(0.05*self.power_factor.a,0.05*self.power_factor.a);
+//	self.pp.params.noise				= noise(0.9,0.3,30); // intensity, grain, fps	
 end
 function PsyAntenna:update_psy_hit		(dt)
-	if self.power_factor.a>0.001 then
+	local d_time						= device():time_global()-self.hit_time;
+	if d_time>200 and self.power_factor.a>0.01 then
+		self.hit_time					= device():time_global();
 		local psy_hit 					= hit();
 		psy_hit.power 					= self.power_factor.a*self.hit_amplitude;
 		psy_hit.direction 				= vector():set( 0, 0, 0 );
@@ -112,7 +125,7 @@ function PsyAntenna:update_psy_hit		(dt)
 		db.actor:hit					(psy_hit);
 	end;
 end
-function PsyAntenna:update_phantoms 	()
+function PsyAntenna:generate_phantoms 	()
 	if self.power_factor.a>0.1 then
 		if math.random()<self.phantom_spawn_probability then
 			if phantom_manager:phantom_count()<self.phantom_max then
@@ -133,9 +146,10 @@ function PsyAntenna:update				(dt)
 	elseif self.phase==pa_phase.phWorking	then self:phase_working		();
 	elseif self.phase==pa_phase.phStopping	then self:phase_stopping	();
 	elseif self.phase==pa_phase.phIdle 		then self:phase_idle		(); end;
+	if (self.intensity<0.0)				then self.intensity=0.0; end;
+	if (self.intensity>1.0)				then self.intensity=1.0; end;
 	self:update_postprocess 			();
 	self:update_psy_hit					(dt);
-	self:update_phantoms 				();
 end
 
 function main()
