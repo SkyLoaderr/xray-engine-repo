@@ -4,13 +4,12 @@
 --Stalker_zombe    - и ежу понятно, что это сталкер новичок
 
 local time_walk 	= 100000
-local time_rest 	= 15000         --Сколько анимаций сидения сидим
-local novice_speak  = 10000     --Через какое время примерно новичок произносит фразы
+local time_rest 	= 30000         --Сколько времени сидим
+local novice_speak  = 15000     --Через какое время примерно новичок произносит фразы
 
-local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
---local time_to_speak = 1000     --Через какое время примерно зомби произносит фразы
+local time_to_speak = 12000     --Через какое время примерно зомби произносит фразы
 
-local time_walk2    = 15000     --Время ходьбы для навичка номер2
+local time_walk2    = 10000     --Время ходьбы для навичка номер2
 
 local time_to_look  = 20000     --Время, через которое обиженный новичок смотрит по сторонам
 
@@ -101,17 +100,17 @@ function stalker_zombe_action:execute ()
     end
 
 
-    if( self.a.stand and device():time_global() > self.time ) then
+    if( self.a.stand and device():time_global() > self.time and self.object:active_sound_count() == 0 ) then
         --Если остановились и проиграли до конца звук, то снова идем
         self.a.stand = false
         self.object:clear_animations()
         self.object:set_movement_type( move.walk )
+        self.a.time = device():time_global() + 8000 + 0.4*math.random(time_to_speak)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:speak()
-    if( math.random() < 0 ) then
-    	self.object:play_sound( stand_speak, 1, 0, 1, 0, math.random( 0, 6 ) )
+    if( math.random() < 0.33 ) then
 		xr_sounds.play_sound(self.object, 0, "trivial", 1)
     else
         self.object:set_movement_type ( move.stand )
@@ -159,10 +158,7 @@ function add_zombe(obj)
     xr_motivator.storage[obj:id()] 		 = { zombe = {} }
     xr_motivator.storage[obj:id()].zombe = st
 
-	printf( "11")
     xr_sounds.load_sounds(obj)
-	printf( "22" )
-    printf( "binding stalker zombe" )
 
     properties[ "zombee_alife" ]      = xr_evaluators_id.jon_stalker_zombe
     operators [ "stalker_zombe" ]     = xr_actions_id.jon_stalker_zombe
@@ -233,7 +229,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:state_walk( param )
 	if( param ) then                        --Init state walk
-        printf( "init state walk" )
         self.a.curState = walk
 		self.a.time = device():time_global()
     	self.speak_time = self.a.time + (math.random()+0.5) * novice_speak		--Когда произнесу некоторую фразу
@@ -242,7 +237,7 @@ function stalker_novice_action:state_walk( param )
             xr_state.change_state( self.object, 0 )
             return
         end
-        printf( "Walk" )
+
         self.object:clear_animations()
 		self.object:set_desired_direction()
         self.object:set_detail_path_type ( move.line )
@@ -380,7 +375,6 @@ end
 function stalker_novice2_action:walk( param )
 
     if( param ) then
-        printf( "init walk" )
         self.a.curState 				= 1
         self:new_time					()
         self.look						= 2
@@ -412,10 +406,8 @@ function stalker_novice2_action:action( param )
   	if( self.a.curState == 2 and                                     --Повернули ли мы
        yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) < 0.3 ) then
 
-    	printf( "Play sound" )
         if( math.random() < 0.5 ) then
 			xr_sounds.play_sound_rnd    (self.object, 2000, 5000, "trivial", 3,1)
---        	self.object:play_sound      ( walk_speak2, 5000, 2000, 1, 0, math.random( 0, 5 ) )
 	        self.object:add_animation   ( "prisluh_2_idle_0", true )
             self.object:add_animation   ( "prisluh_2_idle_3", true )
             self.object:add_animation   ( "prisluh_2_idle_6", true )
@@ -424,7 +416,6 @@ function stalker_novice2_action:action( param )
             self.state  = 8
         else
             xr_sounds.play_sound_rnd    (self.object, 2000, 3000, "trivial", 3,1)
---        	self.object:play_sound      ( walk_speak2, 3000, 2000, 1, 0, math.random( 0, 5 ) )
             self.object:add_animation   ( "prisluh_9_0", true )
 	        self.object:add_animation   ( "prisluh_9_2", true )
         	self.time   = device():time_global() + 5000--+ math.random(6000, 10000)
@@ -475,10 +466,6 @@ end
 function add_novice2(obj)
     local operators     = {}
     local properties    = {}
-
-    printf( "binding stalker novice2" )
-
-    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_phrase_artifact_", 20, snd_type.talk, 2, 1, walk_speak2 )
 
     properties[ "novice2_alife" ]      = xr_evaluators_id.jon_stalker_novice2
     operators [ "stalker_novice2" ]    = xr_actions_id.jon_stalker_novice2
@@ -564,7 +551,6 @@ function stalker_novice3_action:state_walk( param )
 
     if( device():time_global() > self.b.speak_time ) then
     --Произносим фразу
---       	self.object:play_sound( walk_speak + math.random( 0, 1 ), 1, 0, 1, 0, 0  )
         xr_sounds.play_sound    (self.object, 0, "trivial", 4,1)
         self.b.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
     end
@@ -608,12 +594,14 @@ function stalker_novice3_action:init_state_walk()
     self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
     self.object:set_path_type        ( game_object.patrol_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
+    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:init_state_actor()
     local pos = level.actor():position()
     pos.y  = pos.y + 1.6
 
+	self.object:clear_animations	()
     self.object:set_sight			(look.point, pos, 0)
 	self.object:set_movement_type   (move.stand)
     self.a.curState        = say_hello
@@ -621,8 +609,14 @@ function stalker_novice3_action:init_state_actor()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:state_actor()
+	--Условия окончания работы этого состояния
     if(level.actor() == nil) then
     	self:init_state_walk()
+        return
+    end
+    if(distance_between(self.object, level.actor()) > 13 and
+       self.object:see(level.actor()) == false) then
+        self:init_state_walk()
         return
     end
 
@@ -631,23 +625,31 @@ function stalker_novice3_action:state_actor()
     end
 
     if(self.a.curState == say_hello) then
-		--Зовем актера
-    	if(device():time_global() > self.a.time and self.object:is_body_turning() == false) then
+    	if(device():time_global() > self.a.time and self.object:is_body_turning() ) then
             xr_sounds.play_sound_rnd    (self.object, 1000, 1200, "trivial", 4,2)
---            self.object:play_sound( phrase_help, 1200, 1000, 1, 0, 0 )
             self.a.curState    = wait_actor
-            self.a.time		   = device():time_global()
+            self.a.time		   = device():time_global() + 10000
         end
+    end
+
+    if(self.a.curState == wait_actor and self.b.talk == false) then
+    	--Изредка зовем актера
+        if(device():time_global() > self.a.time and distance_between(self.object, level.actor()) > 4) then
+            xr_sounds.play_sound_rnd    (self.object, 1000, 1200, "trivial", 4, 2)
+            self.a.curState    = wait_actor
+            self.a.time        = device():time_global() + 10000
+		end
     end
 
 	if(self.b.talk and self.object:is_talking() == false) then
     	--Если закончили говорить
     	self:init_state_walk()
         self.b.time_actor = device():time_global()
+        self.b.talk = false
 		return
     end
 
-    if(device():time_global() > self.a.time + 20000) then
+    if(device():time_global() > self.a.time + 60000) then
     	self:init_state_walk()
         self.b.time_actor = device():time_global()
     	return
@@ -671,6 +673,8 @@ class "novice3_attack" (action_base)
 function novice3_attack:__init (name, storage) super (nil, name)
     self.a    = storage
     self.time = 0
+	self.start_run = false
+    self.end_run   = false
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:initialize ()
@@ -684,29 +688,41 @@ function novice3_attack:initialize ()
     self.object:set_movement_type    ( move.walk )
     self.object:set_body_state       ( move.standing )
     self.object:set_mental_state     ( anim.danger )
-    self.object:set_dest_level_vertex_id(enemy:level_vertex_id())
     self.object:set_path_type        ( game_object.level_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
     self.object:set_item             ( object.idle, self.object:best_weapon() )
-    self.a.time             = device():time_global() + 5000                     --Через сколько обновляем точку, куда идти
+    self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
     xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
 
-    if(device():time_global() > self.a.time) then
-    --Давно не обновляли точку, в которую надо идти. Обновим.
-        self.object:set_dest_level_vertex_id(level.object(self.a.enemy):level_vertex_id())
-        self.a.time             = device():time_global() + 5000                     --Через сколько обновляем точку, куда идти
+	if(self.object:active_sound_count() ~= 0)then
+    	return
     end
+
+    if(self.start_run == false and self.end_run == false) then
+	    self.object:set_movement_type    ( move.run )
+		self.start_run = true
+    end
+
+    if(self.start_run and self.object:level_vertex_id() == patrol(self.a.enemy_path):level_vertex_id(0) ) then
+        self.object:set_movement_type    ( move.walk )
+        self.object:set_patrol_path      ( self.a.enemy_path, patrol.nearest, patrol.continue, true )
+        self.object:set_path_type        ( game_object.patrol_path )
+		self.start_run = false
+        self.end_run   = true
+    end
+
+    if(self.end_run and
+    	self.object:level_vertex_id() == patrol(self.a.enemy_path):level_vertex_id(patrol(self.a.enemy_path):count() -1 ) ) then
+		--Если пришли, то схема заканчивает работу
+		self.a.enabled = false
+	end
 
     self.object:set_mental_state     ( anim.danger )
     self.object:set_item             ( object.idle, self.object:best_weapon() )
-
-    if(level.object(self.a.enemy):alive() == false) then
-        self.a.enabled = false
-    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
@@ -725,11 +741,6 @@ function add_novice3(obj)
     local operators     = {}
     local properties    = {}
 
-
-    if( obj:is_talk_enabled() ) then printf( "enabled_____________________") end
-    obj:add_sound( "script_replics\\stalker_1\\newbie\\newbie_where_artifacts_1", 20, snd_type.talk, 2, 1, walk_speak )
-    obj:add_sound( "script_replics\\stalker_1\\newbie\\newbie_no_luck_2", 20, snd_type.talk, 2, 1, walk_speak + 1 )
-    obj:add_sound( "script_replics\\stalker_1\\talk\\stalker_help_3", 20, snd_type.talk, 2, 1, phrase_help )
 
     properties["state_end"]     	= xr_evaluators_id.state_change
     properties["work"]              = xr_evaluators_id.jon_stalker_novice3
@@ -772,7 +783,6 @@ end
 
 
 function bind_object( obj, name )
-	printf( "Name == %s", name )
     if( name == "zombe" ) then
     	this.add_zombe ( obj )
     elseif( name == "novice" ) then
