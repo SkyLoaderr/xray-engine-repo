@@ -54,10 +54,11 @@ v2p_out v_main	( a2v  	IN )
 	// Calculate the 3x3 transform from tangent space to eye-space
 	// TangentToEyeSpace = object2eye * tangent2object
 	//					 = object2eye * transpose(object2tangent) (since the inverse of a rotation is its transpose)
-	float3x3 xform	= mul	(m_model2view, float3x3(
+	float3x3 xform	= mul	(float3x3(
 								IN.T.x,IN.B.y,IN.N.z,
 								IN.T.x,IN.B.y,IN.N.z,
-								IN.T.x,IN.B.y,IN.N.z) 
+								IN.T.x,IN.B.y,IN.N.z),
+								m_model2view
 							);
   
 	// Feed this transform to pixel shader

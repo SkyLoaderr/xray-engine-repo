@@ -262,7 +262,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
-		RenderCombine				(CM_DBG_BASE);
+		RenderCombine				(CM_DBG_NORMALS);
 		// RenderOverlay				();
 
 		// Output statistics
@@ -773,11 +773,12 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
 
 	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_Scene2fat_bump.ps);
-	m_pd3dDevice->SetVertexShader			(s_Scene2fat_bump.vs);
+	R_shader&	S							= s_Scene2fat_base;
+	m_pd3dDevice->SetPixelShader			(S.ps);
+	m_pd3dDevice->SetVertexShader			(S.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
-	cc.set									(s_Scene2fat_bump.constants.get("m_model2view"),			*((Fmatrix*)&dm_model2world2view));
-	cc.set									(s_Scene2fat_bump.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
+	cc.set									(S.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
+	cc.set									(S.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
 	cc.flush								(m_pd3dDevice);
 
 	// Render model
