@@ -66,7 +66,7 @@ function send_help(actor)
 	if snd_obj ~= nil then
 		snd_obj:play(db.actor, 0, sound_object.s2d)
 	end
-	db.actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500, 0)
+	db.actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,50, 0)
 end
 
 function send_task(actor, type)
@@ -77,13 +77,13 @@ function send_task(actor, type)
 		snd_obj:play(db.actor, 0, sound_object.s2d)
 	end
 	if type == "new" then
-		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
+		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,50, 0)
 	elseif type == "update" then
-		db.actor:give_game_news("general_update_task", "ui\\ui_icons_task", 250,100,50,500, 0)
+		db.actor:give_game_news("general_update_task", "ui\\ui_icons_task", 250,100,50,50, 0)
 	elseif type == "complete" then
-		db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", 350,100,50,50, 0)
 	elseif type == "fail" then
-		db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", 300,100,50,50, 0)
 	end
 	
 end
@@ -92,9 +92,9 @@ function relocate_item(actor, type)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	if type == "in" then
-		db.actor:give_game_news("general_in_item", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_in_item", "ui\\ui_icons_task", 400,100,50,50, 0)
 	elseif type == "out" then
-		db.actor:give_game_news("general_out_item", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_out_item", "ui\\ui_icons_task", 400,100,50,50, 0)
 	end
 	
 end
@@ -102,9 +102,9 @@ function relocate_money(actor, type)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	if type == "in" then
-		db.actor:give_game_news("general_in_money", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_in_money", "ui\\ui_icons_task", 450,50,50,50, 0)
 	elseif type == "out" then
-		db.actor:give_game_news("general_out_money", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_out_money", "ui\\ui_icons_task", 450,50,50,50, 0)
 	end
 	
 end
