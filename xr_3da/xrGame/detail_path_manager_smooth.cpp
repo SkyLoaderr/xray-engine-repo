@@ -176,7 +176,7 @@ bool CDetailPathManager::build_circle_trajectory(
 			*vertex_id		= position.vertex_id;
 
 		t.position		= ai().level_graph().v3d(position.position);
-		if (vertex_id || !path->back().position.similar(t.position)) {
+		if (vertex_id || (!path->empty() && !path->back().position.similar(t.position))) {
 			t.vertex_id		= position.vertex_id;
 			path->push_back	(t);
 		}
@@ -644,9 +644,6 @@ void CDetailPathManager::build_path_via_key_points(
 		m_path.clear					();
 		return;
 	}
-
-	if (m_path.size() > 1)
-		m_path.back().velocity			= m_path[m_path.size() - 2].velocity;
 
 	add_patrol_point					();
 	ai().level_graph().assign_y_values	(m_path);
