@@ -13,6 +13,7 @@
 #define Msg //
 
 #include <xrCore.h>
+#include "FS.h"
 
 #pragma comment( lib, "x:\\xrCore.lib"	)
 

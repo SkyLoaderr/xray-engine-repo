@@ -144,7 +144,7 @@ inline void _PUnLock()
 #else
 // This is the global state.
 _ParticleState __ps;
-_ParticleState& __stdcall _GetPState()
+_ParticleState& _GetPState()
 {
 	// This is the global state.
 	extern _ParticleState __ps;
@@ -152,11 +152,11 @@ _ParticleState& __stdcall _GetPState()
 	return __ps;
 }
 // Get a pointer to the particles in gp memory
-ParticleGroup* __stdcall _GetGroupPtr(int p_group_num)
+ParticleGroup* _GetGroupPtr(int p_group_num)
 {
 	return __ps.GetGroupPtr(p_group_num);
 }
-PAHeader* __stdcall _GetListPtr(int action_list_num)
+PAHeader* _GetListPtr(int action_list_num)
 {
 	return __ps.GetListPtr(action_list_num);
 }
@@ -175,18 +175,18 @@ _ParticleState::_ParticleState()
 	in_call_list	= FALSE;
 	in_new_list		= FALSE;
 	
-	dt			= 1.0f;
+	dt				= 1.0f;
 	
-	group_id	= -1;
-	list_id		= -1;
-	pgrp		= NULL;
-	pact		= NULL;
-	tid			= 0; // This will be filled in above if we're MP.
+	group_id		= -1;
+	list_id			= -1;
+	pgrp			= NULL;
+	pact			= NULL;
+	tid				= 0; // This will be filled in above if we're MP.
 
-	ResetState	();
+	ResetState		();
 }
 
-void _ParticleState::StateData::ResetState()
+void _ParticleState::ResetState()
 {
 	vertexB_tracks	= TRUE;
 	Size			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
@@ -442,113 +442,113 @@ void _pAddActionToList(ParticleAction *S, int size)
 
 ////////////////////////////////////////////////////////
 // State setting calls
-PARTICLEDLL_API void __stdcall pResetState()
+PARTICLEDLL_API void pResetState()
 {
 	_ParticleState &_ps = _GetPState();
 	_ps.ResetState	();
 }
 
-PARTICLEDLL_API void __stdcall pColor(float red, float green, float blue, float alpha)
+PARTICLEDLL_API void pColor(float red, float green, float blue, float alpha)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Alpha = alpha;
 	_ps.Color = pDomain(PDPoint, red, green, blue);
 }
 
-PARTICLEDLL_API void __stdcall pColorD(float alpha, PDomainEnum dtype,
+PARTICLEDLL_API void pColorD(float alpha, PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
 			 float a6, float a7, float a8)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Alpha = alpha;
 	_ps.Color = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
-PARTICLEDLL_API void __stdcall pVelocity(float x, float y, float z)
+PARTICLEDLL_API void pVelocity(float x, float y, float z)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Vel = pDomain(PDPoint, x, y, z);
 }
 
-PARTICLEDLL_API void __stdcall pVertexB(float x, float y, float z)
+PARTICLEDLL_API void pVertexB(float x, float y, float z)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.VertexB = pDomain(PDPoint, x, y, z);
 }
 
-PARTICLEDLL_API void __stdcall pVertexBD(PDomainEnum dtype,
+PARTICLEDLL_API void pVertexBD(PDomainEnum dtype,
 			   float a0, float a1, float a2,
 			   float a3, float a4, float a5,
 			   float a6, float a7, float a8)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.VertexB = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
 
-PARTICLEDLL_API void __stdcall pVertexBTracks(BOOL trackVertex)
+PARTICLEDLL_API void pVertexBTracks(BOOL trackVertex)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.vertexB_tracks = trackVertex;
 }
 
-PARTICLEDLL_API void __stdcall pParentMotion(float scale)
+PARTICLEDLL_API void pParentMotion(float scale)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.parent_motion = scale;
 }
 
-PARTICLEDLL_API void __stdcall pSize(float size_x, float size_y, float size_z)
+PARTICLEDLL_API void pSize(float size_x, float size_y, float size_z)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Size = pDomain(PDPoint, size_x, size_y, size_z);
 }
 
-PARTICLEDLL_API void __stdcall pSizeD(PDomainEnum dtype,
+PARTICLEDLL_API void pSizeD(PDomainEnum dtype,
 			   float a0, float a1, float a2,
 			   float a3, float a4, float a5,
 			   float a6, float a7, float a8)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Size = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
-PARTICLEDLL_API void __stdcall pRotate(float x, float y, float z)
+PARTICLEDLL_API void pRotate(float x, float y, float z)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Rot = pDomain(PDPoint, x, y, z);
 }
 
-PARTICLEDLL_API void __stdcall pRotateD(PDomainEnum dtype,
+PARTICLEDLL_API void pRotateD(PDomainEnum dtype,
 									  float a0, float a1, float a2,
 									  float a3, float a4, float a5,
 									  float a6, float a7, float a8)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Rot = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
-PARTICLEDLL_API void __stdcall pStartingAge(float age, float sigma)
+PARTICLEDLL_API void pStartingAge(float age, float sigma)
 {
-	_ParticleState::StateData &_ps = _GetPState().SP;
+	_ParticleState &_ps = _GetPState();
 
 	_ps.Age = age;
 	_ps.AgeSigma = sigma;
 }
 
-PARTICLEDLL_API void __stdcall pTimeStep(float newDT)
+PARTICLEDLL_API void pTimeStep(float newDT)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -558,7 +558,7 @@ PARTICLEDLL_API void __stdcall pTimeStep(float newDT)
 ////////////////////////////////////////////////////////
 // Action List Calls
 
-PARTICLEDLL_API int __stdcall pGenActionLists(int action_list_count)
+PARTICLEDLL_API int pGenActionLists(int action_list_count)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -582,7 +582,7 @@ PARTICLEDLL_API int __stdcall pGenActionLists(int action_list_count)
 	return ind;
 }
 
-PARTICLEDLL_API void __stdcall pNewActionList(int action_list_num)
+PARTICLEDLL_API void pNewActionList(int action_list_num)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -601,7 +601,7 @@ PARTICLEDLL_API void __stdcall pNewActionList(int action_list_num)
 	_ps.pact->count = 1;
 }
 
-PARTICLEDLL_API void __stdcall pEndActionList()
+PARTICLEDLL_API void pEndActionList()
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -614,7 +614,7 @@ PARTICLEDLL_API void __stdcall pEndActionList()
 	_ps.list_id = -1;
 }
 
-PARTICLEDLL_API void __stdcall pDeleteActionLists(int action_list_num, int action_list_count)
+PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_count)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -646,7 +646,7 @@ PARTICLEDLL_API void __stdcall pDeleteActionLists(int action_list_num, int actio
 	_PUnLock();
 }
 
-PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num)
+PARTICLEDLL_API void pCallActionList(int action_list_num)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -679,7 +679,7 @@ PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num)
 	}
 }
 
-PARTICLEDLL_API void __stdcall pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& vel)
+PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& vel)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -766,11 +766,79 @@ PARTICLEDLL_API void __stdcall pSetActionListParenting(int action_list_num, cons
 	}
 }
 
+#define ACTION_LIST_VERSION		0x0001
+//----------------------------------------------------
+#define AL_CHUNK_VERSION		0x0001
+#define AL_CHUNK_ACTIONS		0x0002
+
+PARTICLEDLL_API BOOL pSaveActionList(int action_list_num, CFS_Base& F)
+{
+	_ParticleState &_ps = _GetPState();
+
+	if(_ps.in_new_list)
+		return FALSE; // ERROR
+
+	// get pointer to specified action list.
+	PAHeader *pa	= _ps.GetListPtr(action_list_num);
+
+	if(pa == NULL)
+		return FALSE; // ERROR
+
+	int num_actions = pa->count-1;
+	PAHeader *action= pa+1;
+
+	// save actions
+	F.open_chunk	(AL_CHUNK_VERSION);
+	F.Wword			(ACTION_LIST_VERSION);
+	F.close_chunk	();
+
+	F.open_chunk	(AL_CHUNK_ACTIONS);
+	F.write			(action,num_actions*sizeof(PAHeader));
+	F.close_chunk	();
+
+	return TRUE;
+}
+
+PARTICLEDLL_API BOOL pLoadActionList(int action_list_num, CStream& F)
+{
+	_ParticleState &_ps = _GetPState();
+
+	if(_ps.in_new_list)
+		return FALSE; // ERROR
+
+	// get pointer to specified action list.
+	PAHeader *pa	= _ps.GetListPtr(action_list_num);
+
+	if(pa == NULL)
+		return FALSE; // ERROR
+
+	R_ASSERT(F.FindChunk(AL_CHUNK_VERSION));
+	u16 version		= F.Rword();
+
+	if (version!=ACTION_LIST_VERSION) return FALSE;
+	// 
+	R_ASSERT(F.FindChunk(AL_CHUNK_ACTIONS));
+	u32 a_count			=	F.Length()/sizeof(PAHeader);
+
+	pNewActionList(action_list_num);
+
+	for (u32 k=0; k<a_count; k++){
+		PAHeader S;
+		F.Read				(&S,sizeof(PAHeader));
+		_pAddActionToList	(&S,sizeof(PAHeader));
+	}
+
+	pEndActionList();
+
+	return TRUE;
+}
+
+
 ////////////////////////////////////////////////////////
 // Particle Group Calls
 
 // Create particle groups, each with max_particles allocated.
-PARTICLEDLL_API int __stdcall pGenParticleGroups(int p_group_count, int max_particles)
+PARTICLEDLL_API int pGenParticleGroups(int p_group_count, int max_particles)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -796,7 +864,7 @@ PARTICLEDLL_API int __stdcall pGenParticleGroups(int p_group_count, int max_part
 	return ind;
 }
 
-PARTICLEDLL_API void __stdcall pDeleteParticleGroups(int p_group_num, int p_group_count)
+PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -826,7 +894,7 @@ PARTICLEDLL_API void __stdcall pDeleteParticleGroups(int p_group_num, int p_grou
 }
 
 // Change which group is current.
-PARTICLEDLL_API void __stdcall pCurrentGroup(int p_group_num)
+PARTICLEDLL_API void pCurrentGroup(int p_group_num)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -841,7 +909,7 @@ PARTICLEDLL_API void __stdcall pCurrentGroup(int p_group_num)
 }
 
 // Change the maximum number of particles in the current group.
-PARTICLEDLL_API int __stdcall pSetMaxParticles(int max_count)
+PARTICLEDLL_API int pSetMaxParticles(int max_count)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -896,7 +964,7 @@ PARTICLEDLL_API int __stdcall pSetMaxParticles(int max_count)
 }
 
 // Copy from the specified group to the current group.
-PARTICLEDLL_API void __stdcall pCopyGroup(int p_src_group_num, int index, int copy_count)
+PARTICLEDLL_API void pCopyGroup(int p_src_group_num, int index, int copy_count)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -934,7 +1002,7 @@ PARTICLEDLL_API void __stdcall pCopyGroup(int p_src_group_num, int index, int co
 }
 
 // Copy from the current group to application memory.
-PARTICLEDLL_API int __stdcall pGetParticles(int index, int count, float *verts,
+PARTICLEDLL_API int pGetParticles(int index, int count, float *verts,
 				  float *color, float *vel, float *size, float *age)
 {
 	_ParticleState &_ps = _GetPState();
@@ -1005,7 +1073,7 @@ PARTICLEDLL_API int __stdcall pGetParticles(int index, int count, float *verts,
 }
 
 // Returns the number of particles currently in the group.
-PARTICLEDLL_API int __stdcall pGetGroupCount()
+PARTICLEDLL_API int pGetGroupCount()
 {
 	_ParticleState &_ps = _GetPState();
 

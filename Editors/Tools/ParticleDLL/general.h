@@ -158,9 +158,9 @@ namespace PAPI{
 		PActionEnum		type;	// Type field
 	};
 
-	// This method actually does the particle's action.
-#define ExecMethod	void Execute	(ParticleGroup *pg);\
-	void Transform	(const Fmatrix& m);
+	// This Methods actually does the particle's action.
+	#define Methods	void Execute	(ParticleGroup *pg);\
+					void Transform	(const Fmatrix& m);
 
 	struct PAHeader : public ParticleAction
 	{
@@ -168,7 +168,7 @@ namespace PAPI{
 		int count;			// Total actions in the list.
 		float padding[126];	// This must be the largest action.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAAvoid : public ParticleAction
@@ -179,7 +179,7 @@ namespace PAPI{
 		float magnitude;	// what percent of the way to go each time
 		float epsilon;		// add to r^2 for softening
 
-		ExecMethod
+		Methods
 	};
 
 	struct PABounce : public ParticleAction
@@ -190,14 +190,14 @@ namespace PAPI{
 		float resilience;	// Resilence perpendicular to surface
 		float cutoffSqr;	// cutoff velocity; friction applies iff v > cutoff
 
-		ExecMethod
+		Methods
 	};
 
 	struct PACallActionList : public ParticleAction
 	{
 		int action_list_num;	// The action list number to call
 
-		ExecMethod
+		Methods
 	};
 
 	struct PACopyVertexB : public ParticleAction
@@ -205,7 +205,7 @@ namespace PAPI{
 		BOOL copy_pos;		// True to copy pos to posB.
 		BOOL copy_vel;		// True to copy vel to velB.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PADamping : public ParticleAction
@@ -214,7 +214,7 @@ namespace PAPI{
 		float vlowSqr;		// Low and high cutoff velocities
 		float vhighSqr;
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAExplosion : public ParticleAction
@@ -227,7 +227,7 @@ namespace PAPI{
 		float age;			// How long it's been going on
 		float epsilon;		// Softening parameter
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAFollow : public ParticleAction
@@ -236,7 +236,7 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAGravitate : public ParticleAction
@@ -245,7 +245,7 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAGravity : public ParticleAction
@@ -253,7 +253,7 @@ namespace PAPI{
 		pVector directionL;	// Amount to increment velocity (in local space)
 		pVector direction;	// Amount to increment velocity
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAJet : public ParticleAction
@@ -266,7 +266,7 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAKillOld : public ParticleAction
@@ -274,7 +274,7 @@ namespace PAPI{
 		float age_limit;		// Exact age at which to kill particles.
 		BOOL kill_less_than;	// True to kill particles less than limit.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAMatchVelocity : public ParticleAction
@@ -283,13 +283,13 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAMove : public ParticleAction
 	{
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAOrbitLine : public ParticleAction
@@ -300,7 +300,7 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAOrbitPoint : public ParticleAction
@@ -311,7 +311,7 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	struct PARandomAccel : public ParticleAction
@@ -319,7 +319,7 @@ namespace PAPI{
 		pDomain gen_accL;	// The domain of random accelerations.(in local space)
 		pDomain gen_acc;	// The domain of random accelerations.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PARandomDisplace : public ParticleAction
@@ -327,7 +327,7 @@ namespace PAPI{
 		pDomain gen_dispL;	// The domain of random displacements.(in local space)
 		pDomain gen_disp;	// The domain of random displacements.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PARandomVelocity : public ParticleAction
@@ -335,14 +335,14 @@ namespace PAPI{
 		pDomain gen_velL;	// The domain of random velocities.(in local space)
 		pDomain gen_vel;	// The domain of random velocities.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PARestore : public ParticleAction
 	{
 		float time_left;		// Time remaining until they should be in position.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PASink : public ParticleAction
@@ -351,7 +351,7 @@ namespace PAPI{
 		pDomain positionL;	// Disposal region (in local space)
 		pDomain position;	// Disposal region
 
-		ExecMethod
+		Methods
 	};
 
 	struct PASinkVelocity : public ParticleAction
@@ -360,7 +360,7 @@ namespace PAPI{
 		pDomain velocityL;	// Disposal region (in local space)
 		pDomain velocity;	// Disposal region
 
-		ExecMethod
+		Methods
 	};
 
 	struct PASpeedLimit : public ParticleAction
@@ -368,7 +368,7 @@ namespace PAPI{
 		float min_speed;		// Clamp speed to this minimum.
 		float max_speed;		// Clamp speed to this maximum.
 
-		ExecMethod
+		Methods
 	};
 
 	struct PASource : public ParticleAction
@@ -388,7 +388,7 @@ namespace PAPI{
 		pVector parent_vel;	
 		float parent_motion;
 
-		ExecMethod
+		Methods
 	};
 
 	struct PATargetColor : public ParticleAction
@@ -397,7 +397,7 @@ namespace PAPI{
 		float alpha;		// Alpha value to shift towards
 		float scale;		// Amount to shift by (1 == all the way)
 
-		ExecMethod
+		Methods
 	};
 
 	struct PATargetSize : public ParticleAction
@@ -405,7 +405,7 @@ namespace PAPI{
 		pVector size;		// Size to shift towards
 		pVector scale;		// Amount to shift by per frame (1 == all the way)
 
-		ExecMethod
+		Methods
 	};
 
 	struct PATargetRotate : public ParticleAction
@@ -413,7 +413,7 @@ namespace PAPI{
 		pVector rot;		// Rotation to shift towards
 		float scale;		// Amount to shift by per frame (1 == all the way)
 
-		ExecMethod
+		Methods
 	};
 
 	struct PATargetVelocity : public ParticleAction
@@ -422,7 +422,7 @@ namespace PAPI{
 		pVector velocity;	// Velocity to shift towards
 		float scale;		// Amount to shift by (1 == all the way)
 
-		ExecMethod
+		Methods
 	};
 
 	struct PAVortex : public ParticleAction
@@ -435,7 +435,7 @@ namespace PAPI{
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
 
-		ExecMethod
+		Methods
 	};
 
 	// Global state vector
@@ -459,30 +459,27 @@ namespace PAPI{
 		static int alist_count;
 
 		// state part
-		struct StateData{
-			BOOL	vertexB_tracks;
-			pDomain Size;
-			pDomain Vel;
-			pDomain VertexB;
-			pDomain Color;
-			pDomain Rot;
-			float Alpha;
-			float Age;
-			float AgeSigma;
-			float parent_motion;
-			void ResetState();
-		};
-		StateData SP;
+		BOOL	vertexB_tracks;
+		pDomain Size;
+		pDomain Vel;
+		pDomain VertexB;
+		pDomain Color;
+		pDomain Rot;
+		float	Alpha;
+		float	Age;
+		float	AgeSigma;
+		float	parent_motion;
 
 		_ParticleState();
 
-		void ResetState(){SP.ResetState();}
 		// Return an index into the list of particle groups where
 		// p_group_count groups can be added.
-		int GenerateGroups(int p_group_count);
-		int GenerateLists(int alist_count);
-		ParticleGroup *GetGroupPtr(int p_group_num);
-		PAHeader *GetListPtr(int action_list_num);
+		int			GenerateGroups	(int p_group_count);
+		int			GenerateLists	(int alist_count);
+		ParticleGroup *GetGroupPtr	(int p_group_num);
+		PAHeader	*GetListPtr		(int action_list_num);
+		// 
+		void		ResetState		();
 	};
 
 #ifdef PARTICLE_MP
@@ -499,9 +496,9 @@ namespace PAPI{
 
 	// All entry points call this to get their particle state.
 	// For the non-MP case this is practically a no-op.
-	extern "C" PARTICLEDLL_API _ParticleState& __stdcall _GetPState();
-	extern "C" PARTICLEDLL_API ParticleGroup* __stdcall _GetGroupPtr(int p_group_num);
-	extern "C" PARTICLEDLL_API PAHeader* __stdcall _GetListPtr(int action_list_num);
+	extern "C" PARTICLEDLL_API _ParticleState& _GetPState();
+	extern "C" PARTICLEDLL_API ParticleGroup* _GetGroupPtr(int p_group_num);
+	extern "C" PARTICLEDLL_API PAHeader* _GetListPtr(int action_list_num);
 #endif
 
 #pragma pack( pop ) // push 4
