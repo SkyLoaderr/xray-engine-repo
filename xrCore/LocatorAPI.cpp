@@ -269,6 +269,7 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy)
     // set event handlers
     SetEventNotification();
 #endif
+	m_Flags.set		(flReady,TRUE);
 }
 void CLocatorAPI::_destroy		()
 {
@@ -422,12 +423,15 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 			R = xr_new<IReader>		(ptr,desc.size);
 		}
 	}
-	if (R&&m_Flags.is(flBuildCopy)){
+	if (R&&m_Flags.is(flBuildCopy|flReady)){
 		string512 cpy_name;
-		update_path(cpy_name,"$build_copy$",fname);
-		IWriter* W = w_open(cpy_name);
-		W->w(R->pointer(),R->length());
-		w_close(W);
+		FS_Path* P = get_path("$server_root$"); R_ASSERT(P);
+		if (fname==strstr(fname,P->m_Path)){
+			update_path(cpy_name,"$build_copy$",fname+strlen(P->m_Path));
+			IWriter* W = w_open(cpy_name);
+			W->w(R->pointer(),R->length());
+			w_close(W);
+		}
 	}
 	return R;
 }

@@ -117,6 +117,7 @@ public:
     	flNeedRescan	= (1<<0),
         flLockRescan	= (1<<1),
 		flBuildCopy		= (1<<2),
+		flReady			= (1<<3),
     };    
     Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
