@@ -73,7 +73,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 	Device.Statistic.AI_Node.Begin	();
 
 	if (valid_vertex_id(current_node_id) && 
-		inside			(vertex(current_node_id),position)) {
+		inside				(vertex(current_node_id),position)) {
 		Device.Statistic.AI_Node.End();
 		return				(current_node_id);
 	}
