@@ -7,7 +7,7 @@ class "CSE_NewAttachableItem"				(cse_alife_item)
 function CSE_NewAttachableItem:__init		(section) super(section)
 	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self.script_property0		= flags32()
-	self.script_property1		= "script_string"
+	self.script_property1		= true
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -46,9 +46,9 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
 	log							("Props1")
-	properties_helper():create_flag32(items,pref,self.script_property0)
+//	properties_helper():create_flag32(items,pref,self.script_property0)
 	log							("Props2")
-//	properties_helper():create_text(items,pref,self.script_property1)
+	properties_helper():create_text(items,pref,self.script_property1)
 	log							("Props3")
 	log							("Props4")
 	log							("Props5")
