@@ -413,15 +413,11 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 
 	switch (restriction_type) {
 		case RestrictionSpace::eRestrictorTypeOut : {
-			if (std::find(creature->m_dynamic_out_restrictions.begin(),creature->m_dynamic_out_restrictions.end(),restriction_id) != creature->m_dynamic_out_restrictions.end()) {
 #ifdef DEBUG
+			if (std::find(creature->m_dynamic_out_restrictions.begin(),creature->m_dynamic_out_restrictions.end(),restriction_id) != creature->m_dynamic_out_restrictions.end()) {
 				Msg							("! cannot add out-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
-#endif
 				return;
 			}
-
-#ifdef _DEBUG
-			Msg								("Adding out-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
 #endif
 
 			creature->m_dynamic_out_restrictions.push_back(restriction_id);
@@ -429,15 +425,11 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 			break;
 		}
 		case RestrictionSpace::eRestrictorTypeIn : {
-			if (std::find(creature->m_dynamic_in_restrictions.begin(),creature->m_dynamic_in_restrictions.end(),restriction_id) != creature->m_dynamic_in_restrictions.end()) {
 #ifdef DEBUG
+			if (std::find(creature->m_dynamic_in_restrictions.begin(),creature->m_dynamic_in_restrictions.end(),restriction_id) != creature->m_dynamic_in_restrictions.end()) {
 				Msg							("! cannot add in-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
-#endif
 				return;
 			}
-
-#ifdef _DEBUG
-			Msg								("Adding in-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
 #endif
 
 			creature->m_dynamic_in_restrictions.push_back(restriction_id);
@@ -504,5 +496,32 @@ void CALifeUpdateManager::remove_restriction(ALife::_OBJECT_ID id, ALife::_OBJEC
 			Msg								("! Invalid restriction type!");
 			return;
 		}
+	}
+}
+
+void CALifeUpdateManager::remove_all_restrictions	(ALife::_OBJECT_ID id, const RestrictionSpace::ERestrictorTypes &restriction_type)
+{
+	CSE_ALifeDynamicObject					*object = objects().object(id,true);
+	if (!object) {
+		Msg									("! cannot remove restrictions to the entity with id %d, because there is no creature with the specified id",id);
+		return;
+	}
+
+	CSE_ALifeCreatureAbstract				*creature = smart_cast<CSE_ALifeCreatureAbstract*>(object);
+	if (!creature) {
+		Msg									("! cannot remove restriction to the entity with id %d, because there is an object with the specified id, but it is not a creature",id);
+		return;
+	}
+
+	switch (restriction_type) {
+		case RestrictionSpace::eRestrictorTypeOut : {
+			creature->m_dynamic_out_restrictions.clear();
+			break;
+		}
+		case RestrictionSpace::eRestrictorTypeIn : {
+			creature->m_dynamic_in_restrictions.clear();
+			break;
+		}
+		default : NODEFAULT;
 	}
 }

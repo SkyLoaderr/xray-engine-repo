@@ -366,90 +366,6 @@
 				Name="AComponents"
 				Filter="">
 				<Filter
-					Name="AgentManager"
-					Filter="">
-					<File
-						RelativePath=".\agent_manager.cpp">
-					</File>
-					<File
-						RelativePath=".\agent_manager.h">
-					</File>
-					<File
-						RelativePath=".\agent_manager_enemy.cpp">
-					</File>
-					<File
-						RelativePath=".\agent_manager_inline.h">
-					</File>
-					<File
-						RelativePath=".\agent_manager_space.h">
-					</File>
-					<Filter
-						Name="member_order"
-						Filter="">
-						<File
-							RelativePath=".\member_order.cpp">
-						</File>
-						<File
-							RelativePath=".\member_order.h">
-						</File>
-						<File
-							RelativePath=".\member_order_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="motivation_planner"
-						Filter="">
-						<File
-							RelativePath=".\agent_manager_motivation_planner.cpp">
-						</File>
-						<File
-							RelativePath=".\agent_manager_motivation_planner.h">
-						</File>
-						<File
-							RelativePath=".\agent_manager_motivation_planner_inline.h">
-						</File>
-						<Filter
-							Name="actions"
-							Filter="">
-							<File
-								RelativePath=".\agent_manager_actions.cpp">
-							</File>
-							<File
-								RelativePath=".\agent_manager_actions.h">
-							</File>
-							<File
-								RelativePath=".\agent_manager_actions_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="motivations"
-							Filter="">
-							<File
-								RelativePath=".\agent_manager_motivations.cpp">
-							</File>
-							<File
-								RelativePath=".\agent_manager_motivations.h">
-							</File>
-							<File
-								RelativePath=".\agent_manager_motivations_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="properties"
-							Filter="">
-							<File
-								RelativePath=".\agent_manager_properties.cpp">
-							</File>
-							<File
-								RelativePath=".\agent_manager_properties.h">
-							</File>
-							<File
-								RelativePath=".\agent_manager_properties_inline.h">
-							</File>
-						</Filter>
-					</Filter>
-				</Filter>
-				<Filter
 					Name="DamageManager"
 					Filter="">
 					<File
@@ -923,6 +839,19 @@
 						RelativePath=".\movement_manager_space.h">
 					</File>
 					<Filter
+						Name="LocationManager"
+						Filter="">
+						<File
+							RelativePath=".\location_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\location_manager.h">
+						</File>
+						<File
+							RelativePath=".\location_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
 						Name="LocationSelectors"
 						Filter="">
 						<Filter
@@ -1049,19 +978,6 @@
 						</File>
 						<File
 							RelativePath=".\selector_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="LocationManager"
-						Filter="">
-						<File
-							RelativePath=".\location_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\location_manager.h">
-						</File>
-						<File
-							RelativePath=".\location_manager_inline.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -1460,6 +1376,238 @@
 					<File
 						RelativePath=".\ef_storage_script.cpp">
 					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="AGroup"
+				Filter="">
+				<Filter
+					Name="AgentManager"
+					Filter="">
+					<File
+						RelativePath=".\agent_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\agent_manager.h">
+					</File>
+					<File
+						RelativePath=".\agent_manager_inline.h">
+					</File>
+					<File
+						RelativePath=".\agent_manager_space.h">
+					</File>
+					<Filter
+						Name="agent_corpse_manager"
+						Filter="">
+						<File
+							RelativePath=".\agent_corpse_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_corpse_manager.h">
+						</File>
+						<File
+							RelativePath=".\agent_corpse_manager_inline.h">
+						</File>
+						<Filter
+							Name="member_corpse"
+							Filter="">
+							<File
+								RelativePath=".\member_corpse.h">
+							</File>
+							<File
+								RelativePath=".\member_corpse_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="agent_enemy_manager"
+						Filter="">
+						<File
+							RelativePath=".\agent_enemy_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_enemy_manager.h">
+						</File>
+						<File
+							RelativePath=".\agent_enemy_manager_inline.h">
+						</File>
+						<Filter
+							Name="member_enemy"
+							Filter="">
+							<File
+								RelativePath=".\member_enemy.h">
+							</File>
+							<File
+								RelativePath=".\member_enemy_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="agent_explosive_manager"
+						Filter="">
+						<File
+							RelativePath=".\agent_explosive_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_explosive_manager.h">
+						</File>
+						<File
+							RelativePath=".\agent_explosive_manager_inline.h">
+						</File>
+						<Filter
+							Name="danger_explosive"
+							Filter="">
+							<File
+								RelativePath=".\danger_explosive.h">
+							</File>
+							<File
+								RelativePath=".\danger_explosive_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="agent_location_manager"
+						Filter="">
+						<File
+							RelativePath=".\agent_location_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_location_manager.h">
+						</File>
+						<File
+							RelativePath=".\agent_location_manager_inline.h">
+						</File>
+						<Filter
+							Name="danger_location"
+							Filter="">
+							<File
+								RelativePath=".\danger_location.cpp">
+							</File>
+							<File
+								RelativePath=".\danger_location.h">
+							</File>
+							<File
+								RelativePath=".\danger_location_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="danger_cover_location"
+							Filter="">
+							<File
+								RelativePath=".\danger_cover_location.cpp">
+							</File>
+							<File
+								RelativePath=".\danger_cover_location.h">
+							</File>
+							<File
+								RelativePath=".\danger_cover_location_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="danger_object_location"
+							Filter="">
+							<File
+								RelativePath=".\danger_object_location.cpp">
+							</File>
+							<File
+								RelativePath=".\danger_object_location.h">
+							</File>
+							<File
+								RelativePath=".\danger_object_location_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="agent_member_manager"
+						Filter="">
+						<File
+							RelativePath=".\agent_member_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_member_manager.h">
+						</File>
+						<File
+							RelativePath=".\agent_member_manager_inline.h">
+						</File>
+						<Filter
+							Name="member_order"
+							Filter="">
+							<File
+								RelativePath=".\member_order.cpp">
+							</File>
+							<File
+								RelativePath=".\member_order.h">
+							</File>
+							<File
+								RelativePath=".\member_order_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="agent_memory_manager"
+						Filter="">
+						<File
+							RelativePath=".\agent_memory_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_memory_manager.h">
+						</File>
+						<File
+							RelativePath=".\agent_memory_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="agent_motivation_planner"
+						Filter="">
+						<File
+							RelativePath=".\agent_manager_motivation_planner.cpp">
+						</File>
+						<File
+							RelativePath=".\agent_manager_motivation_planner.h">
+						</File>
+						<File
+							RelativePath=".\agent_manager_motivation_planner_inline.h">
+						</File>
+						<Filter
+							Name="actions"
+							Filter="">
+							<File
+								RelativePath=".\agent_manager_actions.cpp">
+							</File>
+							<File
+								RelativePath=".\agent_manager_actions.h">
+							</File>
+							<File
+								RelativePath=".\agent_manager_actions_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="motivations"
+							Filter="">
+							<File
+								RelativePath=".\agent_manager_motivations.cpp">
+							</File>
+							<File
+								RelativePath=".\agent_manager_motivations.h">
+							</File>
+							<File
+								RelativePath=".\agent_manager_motivations_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="properties"
+							Filter="">
+							<File
+								RelativePath=".\agent_manager_properties.cpp">
+							</File>
+							<File
+								RelativePath=".\agent_manager_properties.h">
+							</File>
+							<File
+								RelativePath=".\agent_manager_properties_inline.h">
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -3556,6 +3704,9 @@
 							RelativePath=".\ai\stalker\ai_stalker_inline.h">
 						</File>
 						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
+						</File>
+						<File
 							RelativePath=".\Ai\Stalker\ai_stalker_space.h">
 						</File>
 						<Filter
@@ -3659,9 +3810,6 @@
 							</File>
 							<File
 								RelativePath=".\motivation_action_manager_stalker_inline.h">
-							</File>
-							<File
-								RelativePath=".\motivation_action_manager_stalker_script.cpp">
 							</File>
 							<File
 								RelativePath=".\stalker_decision_space.h">
@@ -3952,7 +4100,7 @@
 								RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
 							</File>
 							<File
-								RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
+								RelativePath=".\ai\stalker\ai_stalker_script_entity.cpp">
 							</File>
 						</Filter>
 					</Filter>

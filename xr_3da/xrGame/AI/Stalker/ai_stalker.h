@@ -17,6 +17,7 @@
 #include "../../squad_hierarchy_holder.h"
 #include "../../group_hierarchy_holder.h"
 #include "../../step_manager.h"
+#include "../../script_export_space.h"
 
 using namespace StalkerSpace;
 
@@ -346,6 +347,10 @@ private:
 	IC		bool						frame_check						(u32 &frame);
 	virtual bool						natural_weapon					() const {return false;}
 	virtual bool						natural_detector				() const {return false;}
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CAI_Stalker)
+#undef script_type_list
+#define script_type_list save_type_list(CAI_Stalker)
 
 #include "ai_stalker_inline.h"

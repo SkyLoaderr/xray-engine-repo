@@ -622,6 +622,10 @@ void game_sv_GameState::remove_restriction(NET_Packet &packet, u16 id)
 {
 }
 
+void game_sv_GameState::remove_all_restrictions	(NET_Packet &packet, u16 id)
+{
+}
+
 void game_sv_GameState::MapRotation_AddMap		(LPCSTR MapName)
 {
 	m_pMapRotation_List.push_back(MapName);

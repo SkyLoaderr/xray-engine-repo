@@ -8,85 +8,93 @@
 
 #include "stdafx.h"
 #include "agent_manager.h"
-#include "ai/stalker/ai_stalker.h"
+#include "agent_corpse_manager.h"
+#include "agent_enemy_manager.h"
+#include "agent_explosive_manager.h"
+#include "agent_location_manager.h"
+#include "agent_member_manager.h"
+#include "agent_memory_manager.h"
 #include "agent_manager_motivation_planner.h"
 
-#define SECTION				"agent_manager"
-//#define IMPORTANT_BUILD
+LPCSTR SECTION = "agent_manager";
 
-CAgentManager::CAgentManager		()
+CAgentManager::CAgentManager			()
+{
+	init_scheduler				();
+	init_components				();
+}
+
+CAgentManager::~CAgentManager			()
+{
+	VERIFY						(member().members().empty());
+	remove_scheduler			();
+	remove_components			();
+}
+
+void CAgentManager::init_scheduler		()
 {
 	shedule.t_min				= pSettings->r_s32	(SECTION,"schedule_min");
 	shedule.t_max				= pSettings->r_s32	(SECTION,"schedule_max");
 	shedule_register			();
+}
+
+void CAgentManager::init_components		()
+{
+	m_corpse					= xr_new<CAgentCorpseManager>			(this);
+	m_enemy						= xr_new<CAgentEnemyManager>			(this);
+	m_explosive					= xr_new<CAgentExplosiveManager>		(this);
+	m_location					= xr_new<CAgentLocationManager>			(this);
+	m_member					= xr_new<CAgentMemberManager>			(this);
+	m_memory					= xr_new<CAgentMemoryManager>			(this);
 	m_brain						= xr_new<CAgentManagerMotivationPlanner>();
 	brain().setup				(this);
 }
 
-CAgentManager::~CAgentManager		()
+void CAgentManager::remove_scheduler	()
 {
 	shedule_unregister			();
-	xr_delete					(m_brain);
-	VERIFY						(m_members.empty());
 }
 
-float CAgentManager::shedule_Scale	()
+void CAgentManager::remove_components	()
+{
+	xr_delete					(m_corpse);
+	xr_delete					(m_enemy);
+	xr_delete					(m_explosive);
+	xr_delete					(m_location);
+	xr_delete					(m_member);
+	xr_delete					(m_memory);
+	xr_delete					(m_brain);
+}
+
+void CAgentManager::remove_links		(CObject *object)
+{
+	corpse().remove_links		(object);
+	enemy().remove_links		(object);
+	explosive().remove_links	(object);
+	location().remove_links		(object);
+	member().remove_links		(object);
+	memory().remove_links		(object);
+	brain().remove_links		(object);
+}
+
+void CAgentManager::shedule_Update		(u32 time_delta)
+{
+	ISheduled::shedule_Update	(time_delta);
+	memory().update				();
+	corpse().update				();
+	enemy().update				();
+	explosive().update			();
+	location().update			();
+	member().update				();
+	brain().update				();
+}
+
+float CAgentManager::shedule_Scale		()
 {
 	return						(.5f);
 }
 
-void CAgentManager::shedule_Update	(u32 time_delta)
+BOOL CAgentManager::shedule_Ready		()
 {
-	ISheduled::shedule_Update	(time_delta);
-	reset_memory_masks			();
-	remove_old_danger_covers	();
-	brain().update				();
+	return						(!member().members().empty());
 }
-
-BOOL CAgentManager::shedule_Ready	()
-{
-	return						(!m_members.empty());
-}
-
-void CAgentManager::add				(CEntity *member)
-{
-	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(member);
-	if (!stalker || !stalker->g_Alive())
-		return;
-
-	VERIFY2						(sizeof(squad_mask_type)*8 > members().size(),"Too many stalkers in squad!");
-
-	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
-#ifndef IMPORTANT_BUILD
-	VERIFY						(I == m_members.end());
-#else
-	if (I != m_members.end())
-		return;
-#endif
-	
-	m_members.push_back			(CMemberOrder(stalker));
-}
-
-void CAgentManager::remove			(CEntity *member, bool no_assert)
-{
-	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(member);
-	if (!stalker)
-		return;
-
-	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
-	if (I == m_members.end()) {
-#ifndef IMPORTANT_BUILD
-		R_ASSERT				(no_assert);
-#endif
-		return;
-	}
-	m_members.erase				(I);
-}
-
-void CAgentManager::remove_links	(CObject *object)
-{
-	xr_vector<u16>::iterator		I = std::find(m_grenades_to_remove.begin(),m_grenades_to_remove.end(),object->ID());
-	if (I != m_grenades_to_remove.end())
-		m_grenades_to_remove.erase	(I);
-}
-

@@ -397,6 +397,8 @@ public:
 			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor);
 			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object);
 			void				set_patrol_extrapolate_callback();
+			void				extrapolate_length		(float extrapolate_length);
+			float				extrapolate_length		() const;
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			int					active_sound_count		(bool only_playing);

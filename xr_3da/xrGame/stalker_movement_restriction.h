@@ -10,6 +10,7 @@
 
 #include "ai/stalker/ai_stalker_impl.h"
 #include "agent_manager.h"
+#include "agent_location_manager.h"
 
 class CAI_Stalker;
 
@@ -27,11 +28,11 @@ struct CMovementRestrictor {
 
 	IC		bool		operator()			(CCoverPoint *cover) const
 	{
-		return			(m_agent_manager->suitable_location(m_object,cover,m_use_enemy_info));
+		return			(m_agent_manager->location().suitable(m_object,cover,m_use_enemy_info));
 	}
 
 	IC		float		weight				(CCoverPoint *cover) const
 	{
-		return			(m_agent_manager->cover_danger(cover));
+		return			(m_agent_manager->location().danger(cover));
 	}
 };

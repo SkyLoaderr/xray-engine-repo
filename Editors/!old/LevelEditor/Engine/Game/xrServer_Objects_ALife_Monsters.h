@@ -220,6 +220,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual u8						g_squad					();
 	virtual u8						g_group					();
 	IC		float					g_Health				() const								{ return fHealth;}
+	IC		float					g_Alive					() const								{ return (g_Health() <= 0.f);}
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_switch_online		() const;
 	virtual bool					can_switch_offline		() const;

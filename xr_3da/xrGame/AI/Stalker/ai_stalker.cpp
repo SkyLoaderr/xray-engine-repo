@@ -32,6 +32,7 @@
 #include "../../script_game_object.h"
 #include "../../detail_path_manager.h"
 #include "../../agent_manager.h"
+#include "../../agent_corpse_manager.h"
 #include "../../object_handler_planner.h"
 #include "../../object_handler_space.h"
 #include "../../memory_manager.h"
@@ -42,6 +43,8 @@
 #include "../../script_engine.h"
 #include "ai_stalker_impl.h"
 #include "../../sound_player.h"
+#include "../../setup_action.h"
+#include "../../script_space.h"
 
 #define IMPORTANT_BUILD
 
@@ -162,7 +165,7 @@ void CAI_Stalker::Die				(CObject* who)
 	else
 		sound().play				(eStalkerSoundDie);
 	
-	agent_manager().register_corpse	(this);
+	agent_manager().corpse().register_corpse	(this);
 
 	inherited::Die					(who);
 	m_hammer_is_clutched			= !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
@@ -656,26 +659,35 @@ void CAI_Stalker::OnRender			()
 
 void CAI_Stalker::Think			()
 {
+	u32							update_delta = Device.dwTimeGlobal - m_dwLastUpdateTime;
 	try {
-		brain().update			(Device.dwTimeGlobal - m_dwLastUpdateTime);
-	}
-	catch (std::string &message) {
-		Msg						("! Expression \"%s\"",message.c_str());
-		brain().setup			(this);
-		brain().update			(Device.dwTimeGlobal - m_dwLastUpdateTime);
+		try {
+			brain().update			(update_delta);
+		}
+		catch (std::string &message) {
+			Msg						("! Expression \"%s\"",message.c_str());
+			throw;
+		}
+		catch (luabind::cast_failed &message) {
+			Msg						("! Expression \"%s\" from luabind::object to %s",message.what(),message.info()->name());
+			throw;
+		}
+		catch (std::exception &message) {
+			Msg						("! Expression \"%s\"",message.what());
+			throw;
+		}
 	}
 	catch(...) {
 		brain().setup			(this);
-		brain().update			(Device.dwTimeGlobal - m_dwLastUpdateTime);
+		brain().update			(update_delta);
 	}
 
 	try {
-		movement().update		(Device.dwTimeGlobal - m_dwLastUpdateTime);
+		movement().update		(update_delta);
 	}
 	catch(...) {
-		
 		movement().initialize	();
-		movement().update		(Device.dwTimeGlobal - m_dwLastUpdateTime);
+		movement().update		(update_delta);
 	}
 
 	try {

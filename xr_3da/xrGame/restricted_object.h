@@ -51,6 +51,7 @@ public:
 			bool		accessible						(u32 level_vertex_id, float radius) const;
 			void		add_restrictions				(const xr_vector<ALife::_OBJECT_ID> &out_restrictions, const xr_vector<ALife::_OBJECT_ID> &in_restrictions);
 			void		remove_restrictions				(const xr_vector<ALife::_OBJECT_ID> &out_restrictions, const xr_vector<ALife::_OBJECT_ID> &in_restrictions);
+			void		remove_all_restrictions			(const RestrictionSpace::ERestrictorTypes &restrictor_type);
 			void		remove_all_restrictions			();
 			shared_str	in_restrictions					() const;
 			shared_str	out_restrictions				() const;

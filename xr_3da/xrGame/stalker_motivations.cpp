@@ -12,6 +12,8 @@
 #include "ai/stalker/ai_stalker_impl.h"
 #include "stalker_decision_space.h"
 #include "agent_manager.h"
+#include "agent_manager_space.h"
+#include "agent_member_manager.h"
 #include "script_game_object.h"
 
 using namespace StalkerDecisionSpace;
@@ -49,13 +51,13 @@ float CMotivationAlive::evaluate	(u32 sub_motivation_id)
 {
 	VERIFY				(m_object);
 	if (eMotivationSolveZonePuzzle == sub_motivation_id)
-		if (m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeNoOrder)
+		if (m_object->agent_manager().member().member(m_object).order_type() == AgentManager::eOrderTypeNoOrder)
 			return		(1.f);
 		else
 			return		(0.f);
 	else
 		if (eMotivationSquadCommand == sub_motivation_id)
-			if (m_object->agent_manager().member(m_object).order_type() != AgentManager::eOrderTypeNoOrder)
+			if (m_object->agent_manager().member().member(m_object).order_type() != AgentManager::eOrderTypeNoOrder)
 				return	(1.f);
 			else
 				return	(0.f);
@@ -74,13 +76,13 @@ float CMotivationSquad::evaluate	(u32 sub_motivation_id)
 {
 	VERIFY				(m_object);
 	if (eMotivationSquadGoal == sub_motivation_id)
-		if (m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeGoal)
+		if (m_object->agent_manager().member().member(m_object).order_type() == AgentManager::eOrderTypeGoal)
 			return		(1.f);
 		else
 			return		(0.f);
 	else
 		if (eMotivationSquadAction == sub_motivation_id)
-			if (m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction)
+			if (m_object->agent_manager().member().member(m_object).order_type() == AgentManager::eOrderTypeAction)
 				return	(1.f);
 			else
 				return	(0.f);
@@ -97,7 +99,7 @@ float CMotivationSquad::evaluate	(u32 sub_motivation_id)
 
 void CMotivationSquadGoal::update	()
 {
-	VERIFY				(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeGoal);
-	m_goal				= m_object->agent_manager().member(m_object).goal();
+	VERIFY				(m_object->agent_manager().member().member(m_object).order_type() == AgentManager::eOrderTypeGoal);
+	m_goal				= m_object->agent_manager().member().member(m_object).goal();
 }
 

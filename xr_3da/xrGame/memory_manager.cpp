@@ -17,6 +17,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/stalker/ai_stalker_impl.h"
 #include "agent_manager.h"
+#include "agent_member_manager.h"
 #include "memory_space_impl.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
@@ -113,7 +114,7 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 		if (!(*I).m_enabled)
 			continue;
 		
-		if (m_stalker && !(*I).m_squad_mask.is(m_stalker->agent_manager().mask(m_stalker)))
+		if (m_stalker && !(*I).m_squad_mask.is(m_stalker->agent_manager().member().mask(m_stalker)))
 			continue;
 		
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);

@@ -211,7 +211,18 @@ IC	const CDetailPathManager::STravelParams &CDetailPathManager::velocity	(const 
 	return										((*I).second);
 }
 
-IC	void CDetailPathManager::add_velocity	(const u32 &velocity_id, const STravelParams &params)
+IC	void CDetailPathManager::add_velocity				(const u32 &velocity_id, const STravelParams &params)
 {
-	m_movement_params.insert	(std::make_pair(velocity_id,params));
+	m_movement_params.insert(std::make_pair(velocity_id,params));
+}
+
+IC	void CDetailPathManager::extrapolate_length			(float extrapolate_length)
+{
+	m_actuality				= m_actuality && (fsimilar(m_extrapolate_length,extrapolate_length));
+	m_extrapolate_length	= extrapolate_length;
+}
+
+IC	float CDetailPathManager::extrapolate_length		() const
+{
+	return					(m_extrapolate_length);
 }

@@ -43,7 +43,7 @@ IC	void construct_string					(LPSTR result, const xr_vector<ALife::_OBJECT_ID> &
 	}
 }
 
-#ifdef _DEBUG
+#if 0
 IC	void construct_id_string					(LPSTR result, const xr_vector<ALife::_OBJECT_ID> &restrictions)
 {
 	strcpy			(result,"");
@@ -80,7 +80,7 @@ BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 		construct_string		(temp1,monster->m_dynamic_in_restrictions);
 	}
 
-#ifdef _DEBUG
+#if 0
 	string4096					temp2;
 	string4096					temp3;
 
@@ -193,13 +193,6 @@ void CRestrictedObject::remove_border		() const
 	STOP_PROFILE;
 }
 
-void CRestrictedObject::remove_all_restrictions	()
-{
-	START_PROFILE("AI/Restricted Object/Remove Restrictions");
-	Level().space_restriction_manager().restrict(object().ID(),"","");
-	STOP_PROFILE;
-}
-
 shared_str	CRestrictedObject::in_restrictions	() const
 {
 	return						(Level().space_restriction_manager().in_restrictions(object().ID()));
@@ -301,6 +294,25 @@ void CRestrictedObject::remove_restrictions	(const xr_vector<ALife::_OBJECT_ID> 
 	construct_restriction_string<CRestrictionPredicate<false>,false>(temp_in_restrictions,in_restrictions,this->in_restrictions(),CRestrictionPredicate<false>(RestrictionSpace::eRestrictorTypeIn));
 
 	Level().space_restriction_manager().remove_restrictions	(object().ID(),temp_out_restrictions,temp_in_restrictions);
+	
+	STOP_PROFILE;
+}
+
+void CRestrictedObject::remove_all_restrictions	(const RestrictionSpace::ERestrictorTypes &restrictor_type)
+{
+	NET_Packet			net_packet;
+	object().u_EventGen	(net_packet,GE_REMOVE_ALL_RESTRICTIONS,object().ID());
+	net_packet.w		(&restrictor_type,sizeof(restrictor_type));
+	Level().Send		(net_packet,net_flags(TRUE,TRUE));
+}
+
+void CRestrictedObject::remove_all_restrictions	()
+{
+	START_PROFILE("AI/Restricted Object/Remove Restrictions");
+	
+	remove_all_restrictions	(RestrictionSpace::eRestrictorTypeOut);
+	remove_all_restrictions	(RestrictionSpace::eRestrictorTypeIn);
+	Level().space_restriction_manager().restrict(object().ID(),"","");
 	
 	STOP_PROFILE;
 }

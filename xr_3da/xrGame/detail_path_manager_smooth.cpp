@@ -768,7 +768,7 @@ void CDetailPathManager::postprocess_key_points(
 void CDetailPathManager::add_patrol_point()
 {
 	m_last_patrol_point					= m_path.size() - 1;
-	if ((m_path.size() > 1) && m_state_patrol_path) {
+	if ((m_path.size() > 1) && m_state_patrol_path && !fis_zero(extrapolate_length())) {
 		STravelPathPoint				t;
 		Fvector							v;
 		v.sub							(m_path.back().position,m_path[m_last_patrol_point - 1].position);
@@ -778,7 +778,7 @@ void CDetailPathManager::add_patrol_point()
 		else
 			return;
 
-		v.mul							(8.f);
+		v.mul							(extrapolate_length());
 		t								= m_path.back();
 		t.position.add					(v);
 		ai().level_graph().create_straight_path<false>(

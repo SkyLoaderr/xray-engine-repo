@@ -44,10 +44,6 @@ public:
 #ifdef LOG_ACTION
 	virtual	LPCSTR			object_name							() const;
 #endif
-	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-add_to_type_list(CMotivationActionManagerStalker)
-#undef script_type_list
-#define script_type_list save_type_list(CMotivationActionManagerStalker)
 
 #include "motivation_action_manager_stalker_inline.h"

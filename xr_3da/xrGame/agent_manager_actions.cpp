@@ -9,6 +9,11 @@
 #include "stdafx.h"
 #include "agent_manager_actions.h"
 #include "agent_manager.h"
+#include "agent_member_manager.h"
+#include "agent_location_manager.h"
+#include "agent_corpse_manager.h"
+#include "agent_explosive_manager.h"
+#include "agent_enemy_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "sight_action.h"
 #include "inventory.h"
@@ -51,15 +56,15 @@ void CAgentManagerActionNoOrders::initialize		()
 
 void CAgentManagerActionNoOrders::finalize			()
 {
-	m_object->member_corpses().clear	();
+	m_object->corpse().clear();
 }
 
 void CAgentManagerActionNoOrders::execute			()
 {
 //	CGraphEngine::CWorldState	goal;
 //	goal.add_condition			(CGraphEngine::CWorldProperty(StalkerDecisionSpace::eWorldPropertyEnemy,true));
-	CAgentManager::iterator		I = m_object->members().begin();
-	CAgentManager::iterator		E = m_object->members().end();
+	CAgentMemberManager::iterator		I = m_object->member().members().begin();
+	CAgentMemberManager::iterator		E = m_object->member().members().end();
 	for ( ; I != E; ++I) {
 #ifndef TEST
 		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
@@ -99,8 +104,8 @@ void CAgentManagerActionGatherItems::finalize			()
 
 void CAgentManagerActionGatherItems::execute			()
 {
-	CAgentManager::iterator		I = m_object->members().begin();
-	CAgentManager::iterator		E = m_object->members().end();
+	CAgentMemberManager::iterator		I = m_object->member().members().begin();
+	CAgentMemberManager::iterator		E = m_object->member().members().end();
 	for ( ; I != E; ++I)
 		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
 }
@@ -117,7 +122,7 @@ CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *objec
 void CAgentManagerActionKillEnemy::initialize		()
 {
 	m_level_time					= Device.dwTimeGlobal + 10000;
-	m_object->clear_danger_covers	();
+	m_object->location().clear		();
 }
 
 void CAgentManagerActionKillEnemy::finalize			()
@@ -126,14 +131,12 @@ void CAgentManagerActionKillEnemy::finalize			()
 
 void CAgentManagerActionKillEnemy::execute			()
 {
-	m_object->distribute_enemies	();
-	m_object->distribute_locations	();
-	m_object->setup_actions			();
-	m_object->react_on_grenades		();
-	m_object->react_on_member_death	();
+	m_object->enemy().distribute_enemies		();
+	m_object->explosive().react_on_explosives	();
+	m_object->corpse().react_on_member_death	();
 
-	CAgentManager::iterator			I = m_object->members().begin();
-	CAgentManager::iterator			E = m_object->members().end();
+	CAgentMemberManager::iterator	I = m_object->member().members().begin();
+	CAgentMemberManager::iterator	E = m_object->member().members().end();
 	for ( ; I != E; ++I) {
 #ifndef TEST
 		(*I).order_type				(AgentManager::eOrderTypeNoOrder);

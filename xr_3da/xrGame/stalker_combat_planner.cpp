@@ -24,6 +24,9 @@
 #include "sound_player.h"
 #include "missile.h"
 #include "explosive.h"
+#include "agent_manager.h"
+#include "agent_member_manager.h"
+#include "member_order.h"
 
 const u32 TOLLS_INTERVAL	= 2000;
 const u32 GRENADE_INTERVAL	= 0*1000;
@@ -86,7 +89,7 @@ IC	void CStalkerCombatPlanner::update_cover	()
 
 void CStalkerCombatPlanner::react_on_grenades		()
 {
-	CMemberOrder::CGrenadeReaction	&reaction = m_object->agent_manager().member(m_object).grenade_reaction();
+	CMemberOrder::CGrenadeReaction	&reaction = m_object->agent_manager().member().member(m_object).grenade_reaction();
 	if (!reaction.m_processing)
 		return;
 
@@ -99,7 +102,7 @@ void CStalkerCombatPlanner::react_on_grenades		()
 //		interval				= missile->destroy_time() - Device.dwTimeGlobal + AFTER_GRENADE_DESTROYED_INTERVAL;
 //	m_object->agent_manager().add_danger_location(reaction.m_game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
 
-	if (missile && m_object->agent_manager().group_behaviour()) {
+	if (missile && m_object->agent_manager().member().group_behaviour()) {
 //		Msg						("%6d : Stalker %s : grenade reaction",Device.dwTimeGlobal,*m_object->cName());
 		CEntityAlive			*initiator = smart_cast<CEntityAlive*>(Level().Objects.net_Find(reaction.m_grenade->CurrentParentID()));
 		if (m_object->tfGetRelationType(initiator) == ALife::eRelationTypeEnemy)
@@ -114,14 +117,14 @@ void CStalkerCombatPlanner::react_on_grenades		()
 
 void CStalkerCombatPlanner::react_on_member_death	()
 {
-	CMemberOrder::CMemberDeathReaction	&reaction = m_object->agent_manager().member(m_object).member_death_reaction();
+	CMemberOrder::CMemberDeathReaction	&reaction = m_object->agent_manager().member().member(m_object).member_death_reaction();
 	if (!reaction.m_processing)
 		return;
 
 	if (Device.dwTimeGlobal < reaction.m_time + TOLLS_INTERVAL)
 		return;
 
-	if (m_object->agent_manager().group_behaviour())
+	if (m_object->agent_manager().member().group_behaviour())
 		m_object->sound().play(StalkerSpace::eStalkerSoundTolls);
 
 	reaction.clear			();
@@ -253,5 +256,6 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyEnemyDetoured,true);
 	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyEnemy,		false);
+	action->set_inertia_time(120000);
 	add_operator			(eWorldOperatorSearchEnemy,			action);
 }

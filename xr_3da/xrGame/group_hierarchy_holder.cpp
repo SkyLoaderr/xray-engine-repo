@@ -11,6 +11,8 @@
 #include "squad_hierarchy_holder.h"
 #include "entity.h"
 #include "agent_manager.h"
+#include "agent_member_manager.h"
+#include "agent_memory_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "memory_manager.h"
 #include "visual_memory_manager.h"
@@ -72,14 +74,14 @@ void CGroupHierarchyHolder::register_in_squad			(CEntity *member)
 void CGroupHierarchyHolder::register_in_agent_manager	(CEntity *member)
 {
 	if (!get_agent_manager() && smart_cast<CAI_Stalker*>(member)) {
-		m_agent_manager						= xr_new<CAgentManager>();
-		agent_manager().set_squad_objects	(&visible_objects());
-		agent_manager().set_squad_objects	(&sound_objects());
-		agent_manager().set_squad_objects	(&hit_objects());
+		m_agent_manager								= xr_new<CAgentManager>();
+		agent_manager().memory().set_squad_objects	(&visible_objects());
+		agent_manager().memory().set_squad_objects	(&sound_objects());
+		agent_manager().memory().set_squad_objects	(&hit_objects());
 	}
 
 	if (get_agent_manager())
-		agent_manager().add					(member);
+		agent_manager().member().add				(member);
 }
 
 void CGroupHierarchyHolder::register_in_group_senses	(CEntity *member)
@@ -127,7 +129,7 @@ void CGroupHierarchyHolder::unregister_in_squad			(CEntity *member)
 void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 {
 	if (get_agent_manager())
-		agent_manager().remove	(member);
+		agent_manager().member().remove	(member);
 
 	if (m_members.empty() && get_agent_manager())
 		xr_delete				(m_agent_manager);

@@ -35,6 +35,7 @@ void CDetailPathManager::reinit			()
 	m_use_dest_orientation	= false;
 	m_state_patrol_path		= false;
 	m_time_path_built		= 0;
+	m_extrapolate_length	= 8.f;
 }
 
 bool CDetailPathManager::valid			() const

@@ -31,6 +31,7 @@
 #include "entitycondition.h"
 #include "space_restrictor.h"
 #include "script_callback_ex.h"
+#include "detail_path_manager.h"
 
 class CScriptBinderObject;
 
@@ -554,4 +555,24 @@ void CScriptGameObject::set_patrol_extrapolate_callback()
 		return;
 	}
 	monster->movement().patrol().set_extrapolate_callback();
+}
+
+void CScriptGameObject::extrapolate_length		(float extrapolate_length)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member extrapolate_length!");
+		return;
+	}
+	monster->movement().detail().extrapolate_length(extrapolate_length);
+}
+
+float CScriptGameObject::extrapolate_length		() const
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member extrapolate_length!");
+		return				(0.f);
+	}
+	return					(monster->movement().detail().extrapolate_length());
 }

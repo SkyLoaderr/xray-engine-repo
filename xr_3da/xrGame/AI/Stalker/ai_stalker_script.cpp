@@ -8,305 +8,126 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../../stalker_animation_manager.h"
-#include "../../script_entity_action.h"
-#include "../../torch.h"
-#include "../../inventory.h"
-#include "../../weapon.h"
-#include "../../weaponmagazined.h"
-#include "../../../skeletoncustom.h"
-#include "../../script_engine.h"
-#include "../../sight_manager.h"
-#include "../../stalker_movement_manager.h"
+#include "../../script_space.h"
+#include "../../stalker_decision_space.h"
+#include "ai_stalker_space.h"
+#include "../../script_game_object.h"
+#include "../../motivation_action_manager_stalker.h"
 
-void CAI_Stalker::UseObject(const CObject *tpObject)
+using namespace luabind;
+
+void CAI_Stalker::script_register(lua_State *L)
 {
-#pragma todo("Dima to Dima : Use object specified by script")
-}
+	module(L)
+	[
+		class_<CMotivationActionManagerStalker>("stalker_ids")
+			.enum_("motivations")
+			[
+				luabind::value("motivation_global",							StalkerDecisionSpace::eMotivationGlobal),
+				luabind::value("motivation_alive",							StalkerDecisionSpace::eMotivationAlive),
+				luabind::value("motivation_dead",							StalkerDecisionSpace::eMotivationDead),
+				luabind::value("motivation_solve_zone_puzzle",				StalkerDecisionSpace::eMotivationSolveZonePuzzle),
+				luabind::value("motivation_squad_command",					StalkerDecisionSpace::eMotivationSquadCommand),
+				luabind::value("motivation_squad_goal",						StalkerDecisionSpace::eMotivationSquadGoal),
+				luabind::value("motivation_squad_action",					StalkerDecisionSpace::eMotivationSquadAction),
+				luabind::value("motivation_script",							StalkerDecisionSpace::eMotivationScript)
+			]
 
-CWeapon	*CAI_Stalker::GetCurrentWeapon() const
-{
-	return			(smart_cast<CWeapon*>(inventory().ActiveItem()));
-}
+			.enum_("properties")
+			[
+				luabind::value("property_alive",							StalkerDecisionSpace::eWorldPropertyAlive),
+				luabind::value("property_dead",								StalkerDecisionSpace::eWorldPropertyDead),
+				luabind::value("property_already_dead",						StalkerDecisionSpace::eWorldPropertyAlreadyDead),
+				luabind::value("property_human_to_dialog",					StalkerDecisionSpace::eWorldPropertyHumanToDialog),
+				luabind::value("property_alife",							StalkerDecisionSpace::eWorldPropertyALife),
+				luabind::value("property_puzzle_solved",					StalkerDecisionSpace::eWorldPropertyPuzzleSolved),
+				luabind::value("property_reached_task_location",			StalkerDecisionSpace::eWorldPropertyReachedTaskLocation),
+				luabind::value("property_task_completed",					StalkerDecisionSpace::eWorldPropertyTaskCompleted),
+				luabind::value("property_reached_customer_location",		StalkerDecisionSpace::eWorldPropertyReachedCustomerLocation),
+				luabind::value("property_customer_satisfied",				StalkerDecisionSpace::eWorldPropertyCustomerSatisfied),
+				luabind::value("property_not_enough_food",					StalkerDecisionSpace::eWorldPropertyNotEnoughFood),
+				luabind::value("property_can_buy_food",						StalkerDecisionSpace::eWorldPropertyCanBuyFood),
+				luabind::value("property_not_enough_medikits",				StalkerDecisionSpace::eWorldPropertyNotEnoughMedikits),
+				luabind::value("property_can_buy_medikits",					StalkerDecisionSpace::eWorldPropertyCanBuyMedikit),
+				luabind::value("property_no_or_bad_weapon",					StalkerDecisionSpace::eWorldPropertyNoOrBadWeapon),
+				luabind::value("property_can_buy_weapon",					StalkerDecisionSpace::eWorldPropertyCanBuyWeapon),
+				luabind::value("property_not_enough_ammo",					StalkerDecisionSpace::eWorldPropertyNotEnoughAmmo),
+				luabind::value("property_can_buy_ammo",						StalkerDecisionSpace::eWorldPropertyCanBuyAmmo),
+				luabind::value("property_items",							StalkerDecisionSpace::eWorldPropertyItems),
+				luabind::value("property_enemy",							StalkerDecisionSpace::eWorldPropertyEnemy),
+				luabind::value("property_item_to_kill",						StalkerDecisionSpace::eWorldPropertyItemToKill),
+				luabind::value("property_found_item_to_kill",				StalkerDecisionSpace::eWorldPropertyFoundItemToKill),
+				luabind::value("property_item_can_kill",					StalkerDecisionSpace::eWorldPropertyItemCanKill),
+				luabind::value("property_found_ammo",						StalkerDecisionSpace::eWorldPropertyFoundAmmo),
+				luabind::value("property_ready_to_kill",					StalkerDecisionSpace::eWorldPropertyReadyToKill),
+				luabind::value("property_see_enemy",						StalkerDecisionSpace::eWorldPropertySeeEnemy),
+				luabind::value("property_panic",							StalkerDecisionSpace::eWorldPropertyPanic),
+				luabind::value("property_in_cover",							StalkerDecisionSpace::eWorldPropertyInCover),
+				luabind::value("property_looked_out",						StalkerDecisionSpace::eWorldPropertyLookedOut),
+				luabind::value("property_position_holded",					StalkerDecisionSpace::eWorldPropertyPositionHolded),
+				luabind::value("property_enemy_detoured",					StalkerDecisionSpace::eWorldPropertyEnemyDetoured),
+				luabind::value("property_squad_action",						StalkerDecisionSpace::eWorldPropertySquadAction),
+				luabind::value("property_squad_goal",						StalkerDecisionSpace::eWorldPropertySquadAction),
+				luabind::value("property_anomaly",							StalkerDecisionSpace::eWorldPropertyAnomaly),
+				luabind::value("property_inside_anomaly",					StalkerDecisionSpace::eWorldPropertyInsideAnomaly),
+				luabind::value("property_script",							StalkerDecisionSpace::eWorldPropertyScript)
+			]
+			
+			.enum_("action")
+			[
+				luabind::value("action_already_dead",						StalkerDecisionSpace::eWorldOperatorAlreadyDead),
+				luabind::value("action_dead",								StalkerDecisionSpace::eWorldOperatorDead),
+				luabind::value("action_gather_items",						StalkerDecisionSpace::eWorldOperatorGatherItems),
+				luabind::value("action_no_alife",							StalkerDecisionSpace::eWorldOperatorALifeEmulation),
+				luabind::value("action_solve_zone_puzzle",					StalkerDecisionSpace::eWorldOperatorSolveZonePuzzle),
+				luabind::value("action_reach_task_location",				StalkerDecisionSpace::eWorldOperatorReachTaskLocation),
+				luabind::value("action_accomplish_task",					StalkerDecisionSpace::eWorldOperatorAccomplishTask),
+				luabind::value("action_reach_customer_location",			StalkerDecisionSpace::eWorldOperatorReachCustomerLocation),
+				luabind::value("action_communicate_with_customer",			StalkerDecisionSpace::eWorldOperatorCommunicateWithCustomer),
+				luabind::value("action_dialog",								StalkerDecisionSpace::eWorldOperatorDialog),
+				luabind::value("get_out_of_anomaly",						StalkerDecisionSpace::eWorldOperatorGetOutOfAnomaly),
+				luabind::value("detect_anomaly",							StalkerDecisionSpace::eWorldOperatorDetectAnomaly),
+				luabind::value("action_get_item_to_kill",					StalkerDecisionSpace::eWorldOperatorGetItemToKill),
+				luabind::value("action_find_item_to_kill",					StalkerDecisionSpace::eWorldOperatorFindItemToKill),
+				luabind::value("action_make_item_killing",					StalkerDecisionSpace::eWorldOperatorMakeItemKilling),
+				luabind::value("action_find_ammo",							StalkerDecisionSpace::eWorldOperatorFindAmmo),
+				luabind::value("action_aim_enemy",							StalkerDecisionSpace::eWorldOperatorAimEnemy),
+				luabind::value("action_get_ready_to_kill",					StalkerDecisionSpace::eWorldOperatorGetReadyToKill),
+				luabind::value("action_kill_enemy",							StalkerDecisionSpace::eWorldOperatorKillEnemy),
+				luabind::value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy),
+				luabind::value("action_take_cover",							StalkerDecisionSpace::eWorldOperatorTakeCover),
+				luabind::value("action_look_out",							StalkerDecisionSpace::eWorldOperatorLookOut),
+				luabind::value("action_hold_position",						StalkerDecisionSpace::eWorldOperatorHoldPosition),
+				luabind::value("action_detour_enemy",						StalkerDecisionSpace::eWorldOperatorDetourEnemy),
+				luabind::value("action_search_enemy",						StalkerDecisionSpace::eWorldOperatorSearchEnemy),
+				luabind::value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction),
+				luabind::value("action_death_planner",						StalkerDecisionSpace::eWorldOperatorDeathPlanner),
+				luabind::value("action_alife_planner",						StalkerDecisionSpace::eWorldOperatorALifePlanner),
+				luabind::value("action_alife_dialog_planner",				StalkerDecisionSpace::eWorldOperatorALifeDialogPlanner),
+				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner),
+				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorAnomalyPlanner),
+				luabind::value("action_script",								StalkerDecisionSpace::eWorldOperatorScript)
+			]
 
-u32 CAI_Stalker::GetWeaponAmmo() const
-{
-	if (!GetCurrentWeapon())
-		return		(0);
-	return			(GetCurrentWeapon()->GetAmmoCurrent());	
-}
-
-CInventoryItem *CAI_Stalker::GetCurrentEquipment() const
-{
-#pragma todo("Dima to Dima : Return correct equipment")
-	return			(0);
-}
-
-CInventoryItem *CAI_Stalker::GetMedikit() const
-{
-#pragma todo("Dima to Dima : Return correct medikit")
-	return			(0);
-}
-
-CInventoryItem *CAI_Stalker::GetFood() const
-{
-#pragma todo("Dima to Dima : Return correct food")
-	return			(0);
-}
-
-void CAI_Stalker::ResetScriptData(void *P)
-{
-	inherited::ResetScriptData	(P);
-}
-
-bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)
-{
-	if (!inherited::bfAssignMovement(tpEntityAction))
-		return						(false);
-	
-	CScriptMovementAction			&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	CScriptWatchAction				&l_tWatchAction		= tpEntityAction->m_tWatchAction;
-	CScriptAnimationAction			&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
-	CScriptObjectAction				&l_tObjectAction	= tpEntityAction->m_tObjectAction;
-
-	CObjectHandler::set_goal		(l_tObjectAction.m_tGoalType);
-	
-	movement().set_path_type		(movement().path_type());
-	movement().set_detail_path_type	(l_tMovementAction.m_tPathType);
-	movement().set_body_state		(l_tMovementAction.m_tBodyState);
-	movement().set_movement_type	(l_tMovementAction.m_tMovementType);
-	movement().set_mental_state		(l_tAnimationAction.m_tMentalState);
-	sight().setup					(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
-	movement().update				(Device.dwTimeDelta);
-	sight().update					();
-
-	return							(true);
-}
-
-bool CAI_Stalker::bfAssignWatch(CScriptEntityAction *tpEntityAction)
-{
-	if (!inherited::bfAssignWatch(tpEntityAction))
-		return		(false);
-	
-	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
-
-//	float			&yaw = movement().m_head.target.yaw, &pitch = movement().m_head.target.pitch;
-
-	switch (l_tWatchAction.m_tGoalType) {
-		case CScriptWatchAction::eGoalTypeObject : {
-			if (!xr_strlen(l_tWatchAction.m_bone_to_watch))
-				l_tWatchAction.m_tpObjectToWatch->Center(l_tWatchAction.m_tWatchVector);
-			else {
-				CBoneInstance	&l_tBoneInstance = smart_cast<CKinematics*>(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_BoneID(l_tWatchAction.m_bone_to_watch));
-				Fmatrix			l_tMatrix;
-
-				l_tMatrix		= l_tBoneInstance.mTransform;
-				l_tMatrix.mulA	(l_tWatchAction.m_tpObjectToWatch->XFORM());
-
-				l_tWatchAction.m_tWatchVector	= l_tMatrix.c;
-			}
-			sight().setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
-			break;
-		}
-		case CScriptWatchAction::eGoalTypeDirection : {
-			sight().setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
-			break;
-		}
-		case CScriptWatchAction::eGoalTypeWatchType : {
-			break;
-		}
-		case CScriptWatchAction::eGoalTypeCurrent : {
-			l_tWatchAction.m_tWatchType	= SightManager::eSightTypeCurrentDirection;
-			l_tWatchAction.m_bCompleted = true;
-			return						(false);
-		}
-		default : NODEFAULT;
-	}
-
-	if ((CScriptWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(movement().m_head.target.yaw,movement().m_head.current.yaw) < EPS_L) && (angle_difference(movement().m_head.target.pitch,movement().m_head.current.pitch) < EPS_L))
-		l_tWatchAction.m_bCompleted = true;
-	else
-		l_tWatchAction.m_bCompleted = false;
-	
-	return		(!l_tWatchAction.m_bCompleted);
-}
-
-bool CAI_Stalker::bfAssignObject(CScriptEntityAction *tpEntityAction)
-{
-	CScriptObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
-	CInventoryItem	*l_tpInventoryItem	= smart_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
-
-	if (!inherited::bfAssignObject(tpEntityAction) || !l_tObjectAction.m_tpObject || !l_tpInventoryItem) {
-		if (!inventory().ActiveItem()) {
-			CObjectHandler::set_goal	(eObjectActionIdle);
-		}
-		else {
-			CObjectHandler::set_goal	(eObjectActionIdle,inventory().ActiveItem());
-		}
-
-		return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
-	}
-
-	if (!l_tpInventoryItem->object().H_Parent())
-		return			(true);
-
-	CWeapon				*l_tpWeapon				= smart_cast<CWeapon*>(inventory().ActiveItem());
-	CWeaponMagazined	*l_tpWeaponMagazined	= smart_cast<CWeaponMagazined*>(inventory().ActiveItem());
-
-	if (l_tpWeaponMagazined)
-		l_tpWeaponMagazined->SetQueueSize		(l_tObjectAction.m_dwQueueSize);
-
-	switch (l_tObjectAction.m_tGoalType) {
-		case eObjectActionIdle : {
-			if (!l_tpWeapon)
-				return	((l_tObjectAction.m_bCompleted = true) == false);
-			CObjectHandler::set_goal	(eObjectActionIdle,l_tpInventoryItem);
-//			inventory().Action	(kWPN_FIRE,	CMD_STOP);
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
-			break;
-		}
-		case eObjectActionFire1 : {
-			CObjectHandler::set_goal	(eObjectActionFire1,l_tpInventoryItem);
-//			if (!l_tpWeapon)
-//				return	((l_tObjectAction.m_bCompleted = true) == false);
-			if (inventory().ActiveItem() && l_tpWeapon) {
-				if (l_tpWeapon->GetAmmoElapsed()) {
-//					if (l_tpWeapon->GetAmmoMagSize() > 1)
-//						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
-//					else
-//						l_tpWeaponMagazined->SetQueueSize(1);
-//					inventory().Action(kWPN_FIRE,	CMD_START);
-				}
-				else {
-//					inventory().Action(kWPN_FIRE,	CMD_STOP);
-					if (l_tpWeapon->GetAmmoCurrent()) {
-//						CObjectHandler::set_goal	(eObjectActionFire1,l_tObjectAction.m_tpObject);
-//						inventory().Action(kWPN_RELOAD, CMD_START);
-					}
-					else
-						l_tObjectAction.m_bCompleted = true;
-				}
-			}
-			break;
-		}
-		case eObjectActionFire2 : {
-			CObjectHandler::set_goal	(eObjectActionFire2,l_tpInventoryItem);
-//			if (!l_tpWeapon)
-//				return	((l_tObjectAction.m_bCompleted = true) == false);
-			if (inventory().ActiveItem()) {
-				if (l_tpWeapon->GetAmmoElapsed()) {
-//					if (l_tpWeapon->GetAmmoMagSize() > 1)
-//						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
-//					else
-//						l_tpWeaponMagazined->SetQueueSize(1);
-//					inventory().Action(kWPN_FIRE,	CMD_START);
-				}
-				else {
-//					inventory().Action(kWPN_FIRE,	CMD_STOP);
-					if (l_tpWeapon->GetAmmoCurrent()) {
-//						CObjectHandler::set_goal	(eObjectActionFire1,l_tObjectAction.m_tpObject);
-//						inventory().Action(kWPN_RELOAD, CMD_START);
-					}
-					else
-						l_tObjectAction.m_bCompleted = true;
-				}
-			}
-			break;
-		}
-		case eObjectActionReload2 :
-		case eObjectActionReload1 : {
-			if (!l_tpWeapon)
-				return	((l_tObjectAction.m_bCompleted = true) == false);
-			CObjectHandler::set_goal	(eObjectActionReload1,l_tpInventoryItem);
-			if (inventory().ActiveItem()->object().ID() == l_tObjectAction.m_tpObject->ID()) {
-//				inventory().Action(kWPN_FIRE,	CMD_STOP);
-				if (CWeapon::eReload != l_tpWeapon->STATE) {
-//					inventory().Action(kWPN_RELOAD,	CMD_START);
-				}
-				else
-					l_tObjectAction.m_bCompleted = true;
-			}
-			else
-				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
-
-//			if (inventory().ActiveItem()) {
-//				inventory().Action(kWPN_FIRE,	CMD_STOP);
-//				if (CWeapon::eReload != l_tpWeapon->STATE)
-//					inventory().Action(kWPN_RELOAD,	CMD_START);
-//				else
-//					l_tObjectAction.m_bCompleted = true;
-//			}
-//			else
-//				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
-			break;
-		}
-		case eObjectActionActivate : {
-			CTorch			*torch = smart_cast<CTorch*>(l_tObjectAction.m_tpObject);
-			if (torch) {
-				torch->Switch(true);
-				break;
-			}
-			CObjectHandler::set_goal	(eObjectActionIdle,l_tpInventoryItem);
-//				inventory().Slot(l_tpInventoryItem);
-//				inventory().Activate(l_tpInventoryItem->GetSlot());
-//			if (inventory().ActiveItem() && (inventory().ActiveItem()->ID() == l_tpInventoryItem->ID()))
-//				if (l_tpWeapon && (CWeapon::eIdle == l_tpWeapon->STATE))
-//				l_tObjectAction.m_bCompleted = true;
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
-
-			break;
-		}
-		case eObjectActionDeactivate : {
-			CTorch			*torch = smart_cast<CTorch*>(l_tObjectAction.m_tpObject);
-			if (torch) {
-				torch->Switch(false);
-				break;
-			}
-//				inventory().Activate(u32(-1));
-			CObjectHandler::set_goal	(eObjectActionIdle);
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
-			break;
-		}
-		case eObjectActionUse : {
-			CObjectHandler::set_goal	(eObjectActionUse);
-			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
-			break;
-		}
-		case eObjectActionTake : {
-			if (inventory().GetItemFromInventory(*l_tObjectAction.m_tpObject->cName())) {
-				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"item is already in the inventory!");
-				return	((l_tObjectAction.m_bCompleted = true) == false);
-			}
-			feel_touch_new(l_tObjectAction.m_tpObject);
-			l_tObjectAction.m_bCompleted = true;
-			break;
-		}
-		case eObjectActionDrop : {
-			if (!inventory().GetItemFromInventory(*l_tObjectAction.m_tpObject->cName())) {
-				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"item is not in the inventory!");
-				return	((l_tObjectAction.m_bCompleted = true) == false);
-			}
-			DropItemSendMessage(l_tObjectAction.m_tpObject);
-			break;
-		}
-		default : NODEFAULT;
-	}
-
-	return	(true);
-}
-
-bool CAI_Stalker::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
-{
-	if (!inherited::bfAssignAnimation(tpEntityAction))
-		return			(false);
-
-	if (xr_strlen(tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
-#ifdef _DEBUG
-//		Msg				("%6d Assigning animation : %s",Device.dwTimeGlobal,*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
-#endif
-		animation().torso().reset();
-		animation().legs().reset();
-	}
-
-	return				(true);
+			.enum_("sounds")
+			[
+				luabind::value("sound_die",									StalkerSpace::eStalkerSoundDie),
+				luabind::value("sound_die_in_anomaly",						StalkerSpace::eStalkerSoundDieInAnomaly),
+				luabind::value("sound_injuring",							StalkerSpace::eStalkerSoundInjuring),
+				luabind::value("sound_humming",								StalkerSpace::eStalkerSoundHumming),
+				luabind::value("sound_alarm",								StalkerSpace::eStalkerSoundAlarm),
+				luabind::value("sound_attack",								StalkerSpace::eStalkerSoundAttack),
+				luabind::value("sound_backup",								StalkerSpace::eStalkerSoundBackup),
+				luabind::value("sound_detour",								StalkerSpace::eStalkerSoundDetour),
+				luabind::value("sound_search",								StalkerSpace::eStalkerSoundSearch),
+				luabind::value("sound_injuring_by_friend",					StalkerSpace::eStalkerSoundInjuringByFriend),
+				luabind::value("sound_panic_human",							StalkerSpace::eStalkerSoundPanicHuman),
+				luabind::value("sound_panic_monster",						StalkerSpace::eStalkerSoundPanicMonster),
+				luabind::value("sound_tolls",								StalkerSpace::eStalkerSoundTolls),
+				luabind::value("sound_script",								StalkerSpace::eStalkerSoundScript)
+			],
+		
+		class_<CAI_Stalker,CGameObject>("CAI_Stalker")
+			.def(constructor<>())
+	];
 }

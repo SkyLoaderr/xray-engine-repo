@@ -28,6 +28,9 @@
 #include "../../entitycondition.h"
 #include "../../sound_player.h"
 #include "../../cover_point.h"
+#include "../../agent_member_manager.h"
+#include "../../agent_location_manager.h"
+#include "../../danger_cover_location.h"
 
 const float DANGER_DISTANCE = 5.f;
 const u32	DANGER_INTERVAL = 30000;
@@ -89,9 +92,9 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	if (g_Alive()) {
-		CCoverPoint				*cover = agent_manager().member(this).cover();
+		CCoverPoint				*cover = agent_manager().member().member(this).cover();
 		if (cover && who && (who->ID() != ID()) && !fis_zero(amount) && brain().affect_cover())
-			agent_manager().add_danger_location	(cover->position(),Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE);
+			agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
 
 		// Play hit-ref_sound
 		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);

@@ -109,6 +109,7 @@ private:
 	bool										m_state_patrol_path;
 	u32											m_last_patrol_point;
 	u32											m_time_path_built;
+	float										m_extrapolate_length;
 
 private:
 	IC	STravelPoint compute_better_key_point	(const STravelPoint		&point0,	const STravelPoint					&point1,		const STravelPoint					&point2,				bool								reverse_order);
@@ -180,6 +181,8 @@ public:
 	IC		void								set_use_dest_orientation(const bool use_dest_orientation);
 	IC		void								set_state_patrol_path	(const bool state_patrol_path);
 	IC		bool								state_patrol_path		() const;
+	IC		void								extrapolate_length		(float extrapolate_length);
+	IC		float								extrapolate_length		() const;
 };
 
 #include "detail_path_manager_inline.h"

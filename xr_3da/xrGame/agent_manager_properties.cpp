@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "agent_manager_properties.h"
 #include "agent_manager.h"
+#include "agent_member_manager.h"
 #include "agent_manager_space.h"
 #include "ai/stalker/ai_stalker.h"
 #include "memory_manager.h"
@@ -21,8 +22,8 @@
 
 CAgentManagerPropertyEvaluatorItem::_value_type CAgentManagerPropertyEvaluatorItem::evaluate	()
 {
-	CAgentManager::iterator	I = m_object->members().begin();
-	CAgentManager::iterator	E = m_object->members().end();
+	CAgentMemberManager::iterator	I = m_object->member().members().begin();
+	CAgentMemberManager::iterator	E = m_object->member().members().end();
 	for ( ; I != E; ++I)
 		if ((*I).object().memory().item().selected())
 			return			(true);
@@ -35,8 +36,8 @@ CAgentManagerPropertyEvaluatorItem::_value_type CAgentManagerPropertyEvaluatorIt
 
 CAgentManagerPropertyEvaluatorEnemy::_value_type CAgentManagerPropertyEvaluatorEnemy::evaluate	()
 {
-	CAgentManager::iterator	I = m_object->members().begin();
-	CAgentManager::iterator	E = m_object->members().end();
+	CAgentMemberManager::iterator	I = m_object->member().members().begin();
+	CAgentMemberManager::iterator	E = m_object->member().members().end();
 	for ( ; I != E; ++I)
 		if ((*I).object().memory().enemy().selected())
 			return			(true);

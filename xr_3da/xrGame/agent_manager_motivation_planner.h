@@ -11,6 +11,7 @@
 #include "motivation_action_manager.h"
 
 class CAgentManager;
+class CObject;
 
 class CAgentManagerMotivationPlanner : public CMotivationActionManager<CAgentManager> {
 private:
@@ -21,4 +22,5 @@ public:
 			void		add_motivations	();
 			void		add_evaluators	();
 			void		add_actions		();
+			void		remove_links	(CObject *object);
 };

@@ -27,6 +27,7 @@
 #include "stalker_movement_manager.h"
 #include "sound_player.h"
 #include "motivation_action_manager_stalker.h"
+#include "agent_member_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -61,7 +62,7 @@ void CStalkerActionCombatBase::finalize				()
 IC	void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
 {
 	*m_last_cover				= last_cover;
-	object().agent_manager().member(m_object).cover(last_cover);
+	object().agent_manager().member().member(m_object).cover(last_cover);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -397,7 +398,7 @@ void CStalkerActionTakeCover::initialize		()
 	m_storage->set_property				(eWorldPropertyEnemyDetoured,false);
 
 	if (object().memory().enemy().selected()->human_being()) {
-		if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().group_behaviour())
+		if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
 //			if (::Random.randI(2))
 				object().sound().play				(eStalkerSoundBackup);
 //			else
@@ -543,7 +544,7 @@ void CStalkerActionHoldPosition::initialize		()
 	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateDanger);
 	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
-	if (object().agent_manager().group_behaviour())
+	if (object().agent_manager().member().group_behaviour())
 		object().sound().play					(eStalkerSoundDetour,5000);
 	set_inertia_time					(5000 + ::Random32.random(5000));
 	object().brain().affect_cover		(true);
@@ -607,7 +608,7 @@ void CStalkerActionDetourEnemy::execute			()
 {
 	inherited::execute					();
 
-	if (object().memory().enemy().selected()->human_being() && object().agent_manager().group_behaviour())
+	if (object().memory().enemy().selected()->human_being() && object().agent_manager().member().group_behaviour())
 		object().sound().play					(eStalkerSoundDetour,5000);
 	
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
@@ -693,8 +694,8 @@ void CStalkerActionSearchEnemy::execute			()
 		else
 			object().movement().set_nearest_accessible_position	();
 
-//		if (object().movement().path_completed())
-//			object().memory().enable(object().memory().enemy().selected(),false);
+		if (object().movement().path_completed() && completed())
+			object().memory().enable(object().memory().enemy().selected(),false);
 	}
 
 	object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));

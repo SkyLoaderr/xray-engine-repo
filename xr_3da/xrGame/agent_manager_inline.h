@@ -8,131 +8,49 @@
 
 #pragma once
 
-IC	const CAgentManager::MEMBER_STORAGE	&CAgentManager::members	() const
+IC	shared_str CAgentManager::cName						() const
 {
-	return				(m_members);
+	return		("agent_manager");
 }
 
-IC	CAgentManager::MEMBER_STORAGE	&CAgentManager::members	()
+IC	CAgentCorpseManager	&CAgentManager::corpse			() const
 {
-	return				(m_members);
+	VERIFY		(m_corpse);
+	return		(*m_corpse);
 }
 
-IC	const CSetupAction &CAgentManager::action	(CAI_Stalker *object) const
+IC	CAgentEnemyManager &CAgentManager::enemy			() const
 {
-	return				(member(object).action());
+	VERIFY		(m_enemy);
+	return		(*m_enemy);
 }
 
-IC	const CMemberOrder &CAgentManager::member	(const CAI_Stalker *object) const
+IC	CAgentExplosiveManager &CAgentManager::explosive	() const
 {
-	const_iterator		I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));
-	VERIFY				(I != members().end());
-	return				(*I);
+	VERIFY		(m_explosive);
+	return		(*m_explosive);
 }
 
-IC	MemorySpace::squad_mask_type CAgentManager::mask(const CAI_Stalker *object) const
+IC	CAgentLocationManager &CAgentManager::location		() const
 {
-	const_iterator		I = std::find_if(members().begin(),members().end(), CMemberPredicate(object));
-	VERIFY				(I != members().end());
-	return				(MemorySpace::squad_mask_type(1) << (I - members().begin()));
+	VERIFY		(m_location);
+	return		(*m_location);
 }
 
-IC	void CAgentManager::set_squad_objects		(xr_vector<CVisibleObject> *objects)
+IC	CAgentMemberManager	&CAgentManager::member			() const
 {
-	m_visible_objects	= objects;
+	VERIFY		(m_member);
+	return		(*m_member);
 }
 
-IC	void CAgentManager::set_squad_objects		(xr_vector<CSoundObject> *objects)
+IC	CAgentMemoryManager	&CAgentManager::memory			() const
 {
-	m_sound_objects		= objects;
-}
-
-IC	void CAgentManager::set_squad_objects		(xr_vector<CHitObject> *objects)
-{
-	m_hit_objects		= objects;
-}
-
-IC	xr_vector<CVisibleObject> &CAgentManager::visibles	() const
-{
-	VERIFY				(m_visible_objects);
-	return				(*m_visible_objects);
-}
-
-IC	xr_vector<CSoundObject> &CAgentManager::sounds		() const
-{
-	VERIFY				(m_sound_objects);
-	return				(*m_sound_objects);
-}
-
-IC	xr_vector<CHitObject> &CAgentManager::hits			() const
-{
-	VERIFY				(m_hit_objects);
-	return				(*m_hit_objects);
-}
-
-IC	CAgentManager::iterator CAgentManager::member		(MemorySpace::squad_mask_type mask)
-{
-	iterator			I = m_members.begin();
-	iterator			E = m_members.end();
-	for ( ; I != E; ++I, mask >>= 1)
-		if (mask == 1)
-			return		(I);
-	NODEFAULT;
-#ifdef DEBUG
-	return				(E);
-#endif
-}
-
-template <typename T>
-IC	void CAgentManager::reset_memory_masks				(xr_vector<T> &objects)
-{
-	xr_vector<CVisibleObject>::iterator	I = m_visible_objects->begin();
-	xr_vector<CVisibleObject>::iterator	E = m_visible_objects->end();
-	for ( ; I != E; ++I)
-		(*I).m_squad_mask.one		();
-}
-
-IC	void CAgentManager::reset_memory_masks				()
-{
-	reset_memory_masks				(*m_visible_objects);
-	reset_memory_masks				(*m_sound_objects);
-	reset_memory_masks				(*m_hit_objects);
-}
-
-IC	bool CAgentManager::group_behaviour					() const
-{
-	return							(members().size() > 1);
-}
-
-IC	void CAgentManager::clear_danger_covers	()
-{
-	m_danger_covers.clear			();
-}
-
-IC	shared_str CAgentManager::cName	() const
-{
-	return							("agent_manager");
+	VERIFY		(m_memory);
+	return		(*m_memory);
 }
 
 IC	CAgentManagerMotivationPlanner &CAgentManager::brain() const
 {
-	VERIFY							(m_brain);
-	return							(*m_brain);
-}
-
-IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse)
-{
-	xr_vector<CMemberCorpse>::iterator	I = std::find(m_corpses.begin(),m_corpses.end(),corpse);
-	VERIFY2								(I == m_corpses.end(),"Cannot register corpse more than a time!");
-	m_corpses.push_back					(CMemberCorpse(corpse,0,Device.dwTimeGlobal));
-}
-
-IC	xr_vector<CAgentManager::CMemberCorpse> &CAgentManager::member_corpses	()
-{
-	return								(m_corpses);
-}
-
-IC	xr_vector<CAgentManager::CMemberGrenade> &CAgentManager::member_grenades	()
-{
-	return								(m_grenades);
+	VERIFY		(m_brain);
+	return		(*m_brain);
 }

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "agent_manager.h"
+#include "agent_manager_space.h"
 #include "agent_manager_actions.h"
 #include "agent_manager_motivations.h"
 #include "agent_manager_properties.h"
@@ -61,4 +62,8 @@ void CAgentManagerMotivationPlanner::add_actions		()
 	add_condition			(action,ePropertyEnemy,				true);
 	add_effect				(action,ePropertyEnemy,				false);
 	add_operator			(eOperatorKillEnemy,				action);
+}
+
+void CAgentManagerMotivationPlanner::remove_links		(CObject *object)
+{
 }
