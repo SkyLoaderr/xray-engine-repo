@@ -38,7 +38,7 @@ function save_dialog:FillList()
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)	
 		
-		printf("file[%d]=%s",it,file)
+	
 		
 		local ext = string.sub(file, string.len(file) - 3)
 		if ext == ".sav" then
@@ -212,7 +212,6 @@ function save_dialog:OnListItemClicked()
 	
 	local item_text = item:GetText()
 	edit_box:SetText(item_text)
-	printf(item_text)
 end
 
 function save_dialog:OnMsgOk()

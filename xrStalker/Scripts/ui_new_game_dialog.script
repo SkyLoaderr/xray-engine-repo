@@ -33,7 +33,6 @@ function new_game_dlg:SetClGame(game_cl)
 end
 
 function new_game_dlg:InitControls()
-	printf("hello bill gates")
 	----- DATA ----
 	local indent          = 35
 	local button_indent   = 7
