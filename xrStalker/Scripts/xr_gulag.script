@@ -211,7 +211,8 @@ end
 function fract:add_restrictor(npc, r_out, r_in)
 	if string.find(npc:in_restrictions(), r_in) then r_in = "" end
 	if string.find(npc:out_restrictions(), r_out) then r_out = "" end
-	
+	printf("RESTR HAVE: in:%s out:%s", npc:in_restrictions(), npc:out_restrictions())
+	printf("RESTR NEED: in:%s out:%s", r_in, r_out)
 	npc:add_restrictions(r_out, r_in)
 end
 function fract:getJob(npc)
