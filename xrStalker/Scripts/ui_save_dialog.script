@@ -13,7 +13,7 @@ end
 class "save_dialog" (CUIScriptWnd)
 
 function save_dialog:__init() super()
-	self:FileTable = {}
+	self.FileTable = {}
 	
 	self:SetFont(GetFontMedium()) --set base font for dialog.
 	
@@ -34,7 +34,7 @@ function save_dialog:FillList()
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)
 		printf("file[%d]=%s",it,file)
-		table.insert(self:FileTable,file)
+		table.insert(self.FileTable,file)
 		self:AddItemToList(file)		
 	end
 	
