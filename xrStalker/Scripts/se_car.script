@@ -2,19 +2,24 @@
 class "se_car" (cse_alife_car)
 --------------------
 function se_car:__init (section) super (section)
-	log("_bp: set_car:__init")
+	--log("_bp: set_car:__init")
+	self.ini = nil
+	self.spawner_present = false
 end
 --------------------
 function se_car:can_switch_offline ()
-    return true
+	return cse_alife_car.can_switch_offline(self)
 end
 --------------------
 function se_car:can_switch_online ()
-    if self:spawn_ini () == nil then 
-       return self:can_switch_online ()
-    end    
-    
-    return xr_spawner.check_spawn (self)
-end    
----------------------------------------------------------------------
+	if self.ini == nil then
+		self.ini = self:spawn_ini() 
+		self.spawner_present = self.ini:section_exist("spawner")
+	end
 
+	if self.ini == nil or self.spawner_present == false then 
+		return cse_alife_car.can_switch_online(self)
+	end    
+	return xr_spawner.check_spawn (self)
+end    
+--------------------
