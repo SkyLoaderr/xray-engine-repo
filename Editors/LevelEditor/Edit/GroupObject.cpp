@@ -347,7 +347,7 @@ void CGroupObject::FillProp(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp(pref, items);
 
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-	    PHelper().CreateCaption	(items,	PHelper().PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),ParentTools->ClassDesc(),(*it)->Name), "");
+	    PHelper().CreateCaption	(items,	PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),ParentTools->ClassDesc(),(*it)->Name), "");
 }
 //----------------------------------------------------
 

@@ -5,8 +5,13 @@
 #ifndef SpawnPointH
 #define SpawnPointH
 
-#include "xrServer_Objects_Abstract.h"
 #include "LevelGameDef.h"
+
+// refs
+class CSE_Visual;
+class CSE_Motion;
+class CObjectAnimator;
+class ISE_Abstract;
 
 DEFINE_MAP(AnsiString,ref_shader,ShaderMap,ShaderPairIt);
 
@@ -15,13 +20,37 @@ class CSpawnPoint : public CCustomObject {
 
     friend class    SceneBuilder;
 public:                           
+    class CLE_Visual{
+    public:
+    	CSE_Visual*		source;
+        IRender_Visual*	visual;
+        void 			OnChangeVisual	();  
+        void 			PlayAnimation	();
+    public:
+						CLE_Visual		(CSE_Visual* src);
+        virtual			~CLE_Visual		();
+    };
+    class CLE_Motion{
+    public:
+    	CSE_Motion*		source;
+        CObjectAnimator*animator;
+        void 			OnChangeMotion	();
+        void 			PlayMotion		();
+    public:
+						CLE_Motion		(CSE_Motion* src);
+        virtual			~CLE_Motion		();
+    };
 	struct SSpawnData{
 		CLASS_ID		m_ClassID;
-		CSE_Abstract*	m_Data;
+		ISE_Abstract*	m_Data;
+        CLE_Visual*		m_Visual;
+        CLE_Motion*		m_Motion;
         SSpawnData	()
         {
 			m_ClassID	= 0;
 			m_Data		= 0;
+            m_Visual	= 0;
+            m_Motion	= 0;
         }
         ~SSpawnData	()
         {
@@ -39,9 +68,6 @@ public:
 
 		void    	Render	(bool bSelected, const Fmatrix& parent,int priority, bool strictB2F);
 		void    	OnFrame	();
-
-    	void		OnDeviceCreate	();
-		void		OnDeviceDestroy	();
 	};
 
 	SSpawnData    	m_SpawnData;
@@ -80,8 +106,8 @@ public:
     virtual         ~CSpawnPoint   	();
     virtual bool	CanAttach		() {return true;}
     
-	IC bool 		RefCompare		(LPCSTR ref){return ref&&ref[0]&&m_SpawnData.Valid()?(strcmp(ref,m_SpawnData.m_Data->s_name)==0):false; }
-    IC LPCSTR		GetRefName		() 			{return m_SpawnData.Valid()?m_SpawnData.m_Data->s_name:0;}
+	bool 			RefCompare		(LPCSTR ref);
+    LPCSTR			GetRefName		();
 
     bool			CreateSpawnData	(LPCSTR entity_ref);
 	virtual void    Render      	( int priority, bool strictB2F );
@@ -98,9 +124,6 @@ public:
     virtual bool	ExportGame		(SExportStreams& data);
 
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& values);
-
-    virtual void	OnDeviceCreate	();
-    virtual void	OnDeviceDestroy	();
 
     bool			AttachObject	(CCustomObject* obj);
     void			DetachObject	();

@@ -62,10 +62,6 @@
       intermediate\DetailManager.obj intermediate\DetailManager_CACHE.obj 
       intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
-      intermediate\xrServer_Objects_ALife_Monsters.obj 
-      intermediate\xrServer_Factory.obj intermediate\xrServer_Objects.obj 
-      intermediate\xrServer_Objects_ALife.obj 
-      intermediate\xrServer_Objects_ALife_Items.obj 
       intermediate\ESceneGlowToolsIO.obj intermediate\EScenePortalToolsIO.obj 
       intermediate\ESceneSectorToolsIO.obj intermediate\ESceneSpawnToolsIO.obj 
       intermediate\ESceneObjectToolsIO.obj intermediate\EScenePSToolsIO.obj 
@@ -76,10 +72,10 @@
       intermediate\ESceneDOTools_Generate.obj intermediate\ObjectAnimator.obj 
       intermediate\ELight_props.obj intermediate\ELight_IO.obj 
       intermediate\ESceneObjectToolsExportBreakable.obj 
-      intermediate\xrHemisphere.obj intermediate\object_factory.obj 
-      intermediate\object_factory_register.obj intermediate\PHNetState.obj 
-      intermediate\alife_event_personal.obj intermediate\LevelGameDef.obj 
-      intermediate\ESceneWallmarkTools.obj intermediate\ESceneWallmarkControls.obj"/>
+      intermediate\xrHemisphere.obj intermediate\LevelGameDef.obj 
+      intermediate\ESceneWallmarkTools.obj 
+      intermediate\ESceneWallmarkControls.obj 
+      intermediate\xrServer_Objects_Abstract.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -244,11 +240,6 @@
       <FILE FILENAME="Engine\DetailManager_Decompress.cpp" FORMNAME="" UNITNAME="DetailManager_Decompress.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_soft.cpp" FORMNAME="" UNITNAME="DetailManager_soft.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_VS.cpp" FORMNAME="" UNITNAME="DetailManager_VS.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Monsters.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Monsters.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Factory.cpp" FORMNAME="" UNITNAME="xrServer_Factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects.cpp" FORMNAME="" UNITNAME="xrServer_Objects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneGlowToolsIO.cpp" FORMNAME="" UNITNAME="ESceneGlowToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\EScenePortalToolsIO.cpp" FORMNAME="" UNITNAME="EScenePortalToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneSectorToolsIO.cpp" FORMNAME="" UNITNAME="ESceneSectorToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -270,53 +261,16 @@
       <FILE FILENAME="Edit\ESceneObjectToolsExportBreakable.cpp" FORMNAME="" UNITNAME="ESceneObjectToolsExportBreakable" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\xrHemisphere.cpp" FORMNAME="" UNITNAME="xrHemisphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="EditorChooseEvents.h" FORMNAME="" UNITNAME="EditorChooseEvents.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_broker_inline.h" FORMNAME="" UNITNAME="object_broker_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\alife_interfaces.h" FORMNAME="" UNITNAME="alife_interfaces.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\alife_space.h" FORMNAME="" UNITNAME="alife_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\inventory_space.h" FORMNAME="" UNITNAME="inventory_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_broker.h" FORMNAME="" UNITNAME="object_broker.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_factory_inline.h" FORMNAME="" UNITNAME="object_factory_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_factory.cpp" FORMNAME="" UNITNAME="object_factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_factory_register.cpp" FORMNAME="" UNITNAME="object_factory_register" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\PHNetState.cpp" FORMNAME="" UNITNAME="PHNetState" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\alife_event_personal.cpp" FORMNAME="" UNITNAME="alife_event_personal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\LevelGameDef.cpp" FORMNAME="" UNITNAME="LevelGameDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneWallmarkTools.cpp" FORMNAME="" UNITNAME="ESceneWallmarkTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneWallmarkControls.cpp" FORMNAME="" UNITNAME="ESceneWallmarkControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_Abstract.h" FORMNAME="" UNITNAME="xrServer_Objects_Abstract.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\game_base_space.h" FORMNAME="" UNITNAME="game_base_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Space.h" FORMNAME="" UNITNAME="xrServer_Space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\alife_event_personal.h" FORMNAME="" UNITNAME="alife_event_personal.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\alife_event_personal_inline.h" FORMNAME="" UNITNAME="alife_event_personal_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\clsid_game.h" FORMNAME="" UNITNAME="clsid_game.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_factory.h" FORMNAME="" UNITNAME="object_factory.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_factory_space.h" FORMNAME="" UNITNAME="object_factory_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_item_abstract.h" FORMNAME="" UNITNAME="object_item_abstract.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_item_abstract_inline.h" FORMNAME="" UNITNAME="object_item_abstract_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_item_single.h" FORMNAME="" UNITNAME="object_item_single.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_item_single_inline.h" FORMNAME="" UNITNAME="object_item_single_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\PHNetState.h" FORMNAME="" UNITNAME="PHNetState.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\PHSynchronize.h" FORMNAME="" UNITNAME="PHSynchronize.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\script_export_space.h" FORMNAME="" UNITNAME="script_export_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrMessages.h" FORMNAME="" UNITNAME="xrMessages.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects.h" FORMNAME="" UNITNAME="xrServer_Objects.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.h" FORMNAME="" UNITNAME="xrServer_Objects_ALife.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_All.h" FORMNAME="" UNITNAME="xrServer_Objects_ALife_All.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.h" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Monsters.h" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Monsters.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_factory_impl.h" FORMNAME="" UNITNAME="object_factory_impl.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_item_client_server_inline.h" FORMNAME="" UNITNAME="object_item_client_server_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_item_client_server.h" FORMNAME="" UNITNAME="object_item_client_server.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_saver_inline.h" FORMNAME="" UNITNAME="object_saver_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_destroyer.h" FORMNAME="" UNITNAME="object_destroyer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_destroyer_inline.h" FORMNAME="" UNITNAME="object_destroyer_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_loader.h" FORMNAME="" UNITNAME="object_loader.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_loader_inline.h" FORMNAME="" UNITNAME="object_loader_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_saver.h" FORMNAME="" UNITNAME="object_saver.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_type_traits.h" FORMNAME="" UNITNAME="object_type_traits.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_cloner.h" FORMNAME="" UNITNAME="object_cloner.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\object_comparer.h" FORMNAME="" UNITNAME="object_comparer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ShapeData.h" FORMNAME="" UNITNAME="ShapeData.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Objects_Abstract.cpp" FORMNAME="" UNITNAME="xrServer_Objects_Abstract" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -130,7 +130,7 @@ void TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
             }break;
         	case PROP_CHOOSE:{                                                             
 		    	ChooseValue* V		= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); VERIFY(V);
-                if (smTexture==V->choose_id){
+                if (smTexture==V->m_ChooseID){
                     LPCSTR nm 				= TProperties::GetItemColumn(item,0);
                     if (nm&&nm[0]){
                         m_Thumbnail = xr_new<ETextureThumbnail>(nm);

@@ -134,19 +134,19 @@ void 	CLight::OnPointDataTestEqual(CanvasValue* a, CanvasValue* b, bool& res)
 void CLight::FillAttProp(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V;
-    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Range"),					&m_Range,		0.1f,1000.f);
+    V=PHelper().CreateFloat	(items,	PrepareKey(pref, "Range"),					&m_Range,		0.1f,1000.f);
     V->OnChangeEvent.bind	(this,&CLight::OnPointDataChange);
-    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Attenuation\\Constant"),	&m_Attenuation0,0.f,1.f,0.0001f,6);
+    V=PHelper().CreateFloat	(items,	PrepareKey(pref, "Attenuation\\Constant"),	&m_Attenuation0,0.f,1.f,0.0001f,6);
     V->OnChangeEvent.bind	(this,&CLight::OnPointDataChange);
-    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Attenuation\\Linear"),		&m_Attenuation1,0.f,1.f,0.0001f,6);
+    V=PHelper().CreateFloat	(items,	PrepareKey(pref, "Attenuation\\Linear"),		&m_Attenuation1,0.f,1.f,0.0001f,6);
     V->OnChangeEvent.bind	(this,&CLight::OnPointDataChange);
-    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Attenuation\\Quadratic"),	&m_Attenuation2,0.f,1.f,0.0001f,6);
+    V=PHelper().CreateFloat	(items,	PrepareKey(pref, "Attenuation\\Quadratic"),	&m_Attenuation2,0.f,1.f,0.0001f,6);
     V->OnChangeEvent.bind	(this,&CLight::OnPointDataChange);
 	ButtonValue* B=0;
-    B=PHelper().CreateButton(items,	PHelper().PrepareKey(pref, "Attenuation\\Auto"),"Linear,Quadratic",0);
+    B=PHelper().CreateButton(items,	PrepareKey(pref, "Attenuation\\Auto"),"Linear,Quadratic",0);
     B->OnBtnClickEvent.bind	(this,&CLight::OnAutoClick);
 	CanvasValue* C=0;
-    C=PHelper().CreateCanvas	(items,	PHelper().PrepareKey(pref, "Attenuation\\Graphic"),	"", 64);
+    C=PHelper().CreateCanvas	(items,	PrepareKey(pref, "Attenuation\\Graphic"),	"", 64);
     C->tag					= (int)this;
     C->OnDrawCanvasEvent.bind(this,&CLight::OnAttenuationDraw);
     C->OnTestEqual.bind		(this,&CLight::OnPointDataTestEqual);
@@ -160,31 +160,31 @@ xr_token fuzzy_shape_types[]={
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
 	// flags
-    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
-    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
-    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
-//    PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+    PHelper().CreateFlag32(items,	PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
+    PHelper().CreateFlag32(items,	PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
+    PHelper().CreateFlag32(items,	PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
+//    PHelper().CreateFlag32	(items,	PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp			(pref,items);
     PropValue* 			P=0;
     ButtonValue* 		B=0;
-    P=PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref, "Fuzzy"),				&m_Flags,	ELight::flPointFuzzy);
+    P=PHelper().CreateFlag32(items,	PrepareKey(pref, "Fuzzy"),				&m_Flags,	ELight::flPointFuzzy);
     P->OnChangeEvent.bind	(this,&CLight::OnFuzzyFlagChange);
 	if (m_Flags.is(ELight::flPointFuzzy)){
         VERIFY				(m_FuzzyData);
-        P=PHelper().CreateS16		(items,	PHelper().PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,0,100);
+        P=PHelper().CreateS16		(items,	PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,0,100);
         P->OnChangeEvent.bind		(this,&CLight::OnFuzzyDataChange);
-	    B=PHelper().CreateButton	(items,	PHelper().PrepareKey(pref, "Fuzzy\\Generate"),"Random",0);
+	    B=PHelper().CreateButton	(items,	PrepareKey(pref, "Fuzzy\\Generate"),"Random",0);
     	B->OnBtnClickEvent.bind		(this,&CLight::OnFuzzyGenerateClick);
-        P=PHelper().CreateToken8	(items,	PHelper().PrepareKey(pref, "Fuzzy\\Shape"),		(u8*)&m_FuzzyData->m_ShapeType,	fuzzy_shape_types);
+        P=PHelper().CreateToken8	(items,	PrepareKey(pref, "Fuzzy\\Shape"),		(u8*)&m_FuzzyData->m_ShapeType,	fuzzy_shape_types);
         P->OnChangeEvent.bind		(this,&CLight::OnFuzzyTypeChange);
         switch (m_FuzzyData->m_ShapeType){
         case CLight::SFuzzyData::fstSphere: 
-            P=PHelper().CreateFloat(items,	PHelper().PrepareKey(pref, "Fuzzy\\Radius"),		&m_FuzzyData->m_SphereRadius,0.01f,100.f,0.01f,2);
+            P=PHelper().CreateFloat(items,	PrepareKey(pref, "Fuzzy\\Radius"),		&m_FuzzyData->m_SphereRadius,0.01f,100.f,0.01f,2);
             P->OnChangeEvent.bind	(this,&CLight::OnFuzzyDataChange);
         break;
         case CLight::SFuzzyData::fstBox: 
-            P=PHelper().CreateVector(items,	PHelper().PrepareKey(pref, "Fuzzy\\Half Dimension"),&m_FuzzyData->m_BoxDimension,0.01f,100.f,0.01f,2);
+            P=PHelper().CreateVector(items,	PrepareKey(pref, "Fuzzy\\Half Dimension"),&m_FuzzyData->m_BoxDimension,0.01f,100.f,0.01f,2);
             P->OnChangeEvent.bind	(this,&CLight::OnFuzzyDataChange);
         break;
         }
@@ -195,14 +195,14 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
 	// flags
-    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
-    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
-    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
+    PHelper().CreateFlag32(items,	PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
+    PHelper().CreateFlag32(items,	PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
+    PHelper().CreateFlag32(items,	PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
 //    PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp				(pref,items);
-	PHelper().CreateAngle  	(items,	PHelper().PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
-	PHelper().CreateChoose	(items,	PHelper().PrepareKey(pref, "Spot R1\\Texture"),		&m_FalloffTex, 	smTexture);
+	PHelper().CreateAngle  	(items,	PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
+	PHelper().CreateChoose	(items,	PrepareKey(pref, "Spot R1\\Texture"),  	&m_FalloffTex, 	smTexture);
 }
 //----------------------------------------------------
 
@@ -218,22 +218,22 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 
     PropValue* V=0;
 
-    V=PHelper().CreateToken32	(items,	PHelper().PrepareKey(pref,"Type"),		(u32*)&m_Type,token_light_type);
+    V=PHelper().CreateToken32	(items,	PrepareKey(pref,"Type"),		(u32*)&m_Type,token_light_type);
     V->OnChangeEvent.bind	(this,&CLight::OnTypeChange);
-    V=PHelper().CreateFColor(items,	PHelper().PrepareKey(pref,"Color"),			&m_Color);
+    V=PHelper().CreateFColor(items,	PrepareKey(pref,"Color"),			&m_Color);
 	V->OnChangeEvent.bind	(this,&CLight::OnNeedUpdate);
-    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
+    V=PHelper().CreateFloat	(items,	PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
     V->OnChangeEvent.bind	(this,&CLight::OnPointDataChange);
 
     ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
-	PHelper().CreateRToken32	(items,PHelper().PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
+	PHelper().CreateRToken32(items,PrepareKey(pref,"Light Control"),	&m_LControl, &*lt->lcontrols.begin(), lt->lcontrols.size());
 
     switch(m_Type){
     case ELight::ltPoint:	FillPointProp	(pref, items);	break;
     case ELight::ltSpot: 	FillSpotProp 	(pref, items);	break;
     default: THROW;
     }
-    PHelper().CreateBOOL		(items,	PHelper().PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
+    PHelper().CreateBOOL		(items,	PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
 }
 
 void 	CLight::OnTypeChange(PropValue* value)

@@ -547,13 +547,13 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                 // export spawn object
                 {
                     AnsiString entity_ref		= "breakable_object";
-                    CSE_Abstract*	m_Data		= create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
+                    ISE_Abstract*	m_Data		= create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
                     CSE_Visual* m_Visual		= dynamic_cast<CSE_Visual*>(m_Data);	VERIFY(m_Visual);
                     // set params
-                    strcpy	  					(m_Data->s_name,entity_ref.c_str());
-                    strcpy	  					(m_Data->s_name_replace,sn.c_str());
-                    m_Data->o_Position.set		(P->m_RefOffset); 
-                    m_Data->o_Angle.set			(P->m_RefRotate);
+                    strcpy	  					(m_Data->name(),entity_ref.c_str());
+                    strcpy	  					(m_Data->name_replace(),sn.c_str());
+                    m_Data->position().set		(P->m_RefOffset); 
+                    m_Data->angle().set			(P->m_RefRotate);
                     m_Visual->set_visual		(sn.c_str(),false);
 
                     NET_Packet					Packet;

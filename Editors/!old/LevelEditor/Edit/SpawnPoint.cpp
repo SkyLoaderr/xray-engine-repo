@@ -17,6 +17,9 @@
 #include "ObjectAnimator.h"
 #include "xrSE_Factory_import_export.h"
 #include "xrMessages.h"
+#include "ui_main.h"
+#include "SkeletonAnimated.h"
+#include "xrServer_Objects_Abstract.h"
 
 #include "eshape.h"
 #include "sceneobject.h"
@@ -51,10 +54,79 @@ const u32 RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff
 ShaderMap CSpawnPoint::m_Icons;
 //----------------------------------------------------
 
+//------------------------------------------------------------------------------
+// CLE_Visual
+//------------------------------------------------------------------------------
+CSpawnPoint::CLE_Visual::CLE_Visual(CSE_Visual* src)
+{
+	source			= src;
+    visual			= 0;
+    OnChangeVisual	();
+}
+CSpawnPoint::CLE_Visual::~CLE_Visual()
+{
+	::Render->model_Delete	(visual,TRUE);
+}
+void CSpawnPoint::CLE_Visual::OnChangeVisual	()
+{
+	::Render->model_Delete	(visual,TRUE);
+    if (source->visual_name.size()) {
+        visual				= ::Render->model_Create(source->visual_name.c_str());
+        PlayAnimation		();
+    }
+	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+}
+void CSpawnPoint::CLE_Visual::PlayAnimation ()
+{
+    // play motion if skeleton
+    if (PSkeletonAnimated(visual)){ 
+        CMotionDef			*M = PSkeletonAnimated(visual)->ID_Cycle_Safe(source->startup_animation.c_str());
+        if (M)				PSkeletonAnimated(visual)->PlayCycle(M); 
+    }
+    if (PKinematics(visual))PKinematics(visual)->CalculateBones();
+}
+
+//------------------------------------------------------------------------------
+// CLE_Motion
+//------------------------------------------------------------------------------
+CSpawnPoint::CLE_Motion::CLE_Motion	(CSE_Motion* src)
+{
+	source			= src;
+    animator		= 0;
+    OnChangeMotion	();
+}
+CSpawnPoint::CLE_Motion::~CLE_Motion()
+{
+}
+void __stdcall	CSpawnPoint::CLE_Motion::OnChangeMotion	()
+{
+	xr_delete					(animator);
+    if (source->motion_name.size()){
+        animator				= xr_new<CObjectAnimator>();
+        animator->Load			(*source->motion_name);
+        PlayMotion				();
+    }
+	UI->Command					(COMMAND_UPDATE_PROPERTIES);
+}
+void CSpawnPoint::CLE_Motion::PlayMotion()
+{
+    // play motion if skeleton
+    if (animator) animator->Play(true);
+}
+//------------------------------------------------------------------------------
+// SpawnData
+//------------------------------------------------------------------------------
 void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 {
     m_Data 	= create_entity(entity_ref);
 
+    if (m_Data->visual()){
+    	m_Visual	= xr_new<CLE_Visual>(m_Data->visual());
+    }
+    if (m_Data->motion()){
+    	m_Motion	= xr_new<CLE_Motion>(m_Data->motion());
+    }
+/*
     CShapeData* cform = dynamic_cast<CShapeData*>(m_Data);
 //    if (cform) cform->shapes.push_back(xrSE_CFormed::shape_def());
     if (cform){
@@ -63,25 +135,27 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 //	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
 //	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
     }
-
+*/
     if (m_Data){
         if (pSettings->line_exist(entity_ref,"$player")){
             if (pSettings->r_bool(entity_ref,"$player")){
-//.				m_Data->s_flags.set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
+				m_Data->flags().set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
             }
         }
         m_ClassID = pSettings->r_clsid(entity_ref,"class");
-        strcpy(m_Data->s_name,entity_ref);
+        strcpy(m_Data->name(),entity_ref);
     }
 }
 void CSpawnPoint::SSpawnData::Destroy()
 {
     destroy_entity		(m_Data);
+    xr_delete			(m_Visual);
+    xr_delete			(m_Motion);
 }
 void CSpawnPoint::SSpawnData::Save(IWriter& F)
 {
     F.open_chunk		(SPAWNPOINT_CHUNK_ENTITYREF);
-    F.w_stringZ			(m_Data->s_name);
+    F.w_stringZ			(m_Data->name());
     F.close_chunk		();
 
     F.open_chunk		(SPAWNPOINT_CHUNK_SPAWNDATA);
@@ -110,9 +184,9 @@ bool CSpawnPoint::SSpawnData::Load(IReader& F)
 bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 {
 	// set params
-    strcpy	  					(m_Data->s_name_replace,owner->Name);
-    m_Data->o_Position.set		(owner->PPosition);
-    m_Data->o_Angle.set			(owner->PRotation);
+    strcpy	  					(m_Data->name_replace(),owner->Name);
+    m_Data->position().set		(owner->PPosition);
+    m_Data->angle().set			(owner->PRotation);
 
     // export cform (if needed)
     CSE_Shape* cform 			= dynamic_cast<CSE_Shape*>(m_Data);
@@ -139,45 +213,39 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 }
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	m_Data->FillProp	(pref,items);
+	m_Data->FillProp			(pref,items);
+    ref_str pref1				= PrepareKey(pref,m_Data->name());
 }
 void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
 {
-/*
-//.
-    CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-	if (V&&V->visual)			::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
-    if (bSelected&&(1==priority)&&(false==strictB2F)){
-        CSE_Motion* M			= dynamic_cast<CSE_Motion*>(m_Data);
-        if (M&&M->animator)		M->animator->DrawPath();
-    }
-*/
+	if (m_Visual&&m_Visual->visual)	
+    	::Render->model_Render	(m_Visual->visual,parent,priority,strictB2F,1.f);
+    if (m_Motion&&m_Motion->animator&&bSelected&&(1==priority)&&(false==strictB2F))
+        m_Motion->animator->DrawPath();
 }
 void CSpawnPoint::SSpawnData::OnFrame()
 {
-/*
-//.
-    CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->CalculateBones();
-    CSE_Motion* M				= dynamic_cast<CSE_Motion*>(m_Data);
-	if (M&&M->animator)			M->animator->OnFrame();
-*/
+	if (m_Data->m_editor_flags.is(ISE_Abstract::flUpdateProperties))
+    	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+    // visual part
+	if (m_Visual){
+	    if (m_Data->m_editor_flags.is(ISE_Abstract::flVisualChange))
+        	m_Visual->OnChangeVisual();
+	    if (m_Data->m_editor_flags.is(ISE_Abstract::flVisualAnimationChange))
+        	m_Visual->PlayAnimation();
+    	if (m_Visual->visual&&PKinematics(m_Visual->visual))
+	    	PKinematics			(m_Visual->visual)->CalculateBones();
+    }
+    // motion part
+    if (m_Motion){
+	    if (m_Data->m_editor_flags.is(ISE_Abstract::flMotionChange))
+        	m_Motion->OnChangeMotion();
+    	if (m_Motion->animator)
+    		m_Motion->animator->OnFrame();
+    }
+    // reset editor flags
+    m_Data->m_editor_flags.zero	();
 }
-void CSpawnPoint::SSpawnData::OnDeviceCreate()
-{
-    // if visualed
-//.	CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-//.	if (V)						V->OnChangeVisual(0);
-}
-//----------------------------------------------------
-
-void CSpawnPoint::SSpawnData::OnDeviceDestroy()
-{
-    // if visualed
-//.	CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-//.	if (V&&V->visual)			::Render->model_Delete(V->visual);
-}
-//----------------------------------------------------
 //------------------------------------------------------------------------------
 CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
 {
@@ -276,6 +344,16 @@ void CSpawnPoint::DetachObject()
     }
 }
 
+bool CSpawnPoint::RefCompare	(LPCSTR ref)
+{
+	return ref&&ref[0]&&m_SpawnData.Valid()?(strcmp(ref,m_SpawnData.m_Data->name())==0):false; 
+}
+
+LPCSTR CSpawnPoint::GetRefName	() 			
+{
+	return m_SpawnData.Valid()?m_SpawnData.m_Data->name():0;
+}
+
 bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
 {
 	R_ASSERT(entity_ref&&entity_ref[0]);
@@ -304,15 +382,11 @@ bool CSpawnPoint::GetBox( Fbox& box )
     break;
     case ptSpawnPoint:
     	if (m_SpawnData.Valid()){
-/*
-//.		    CSE_Visual* V		= dynamic_cast<CSE_Visual*>(m_SpawnData.m_Data);
-			if (V&&V->visual)
+			if (m_SpawnData.m_Visual&&m_SpawnData.m_Visual->visual)
             {
-            	box.set		(V->visual->vis.box);
+            	box.set		(m_SpawnData.m_Visual->visual->vis.box);
                 box.xform	(FTransform);
-            }else
-*/
-            {
+            }else{
 			    CEditShape* shape	= dynamic_cast<CEditShape*>(m_AttachedObject);
                 if (shape&&!shape->GetShapes().empty()){
                 	CSE_Shape::ShapeVec& SV	= shape->GetShapes();
@@ -374,7 +448,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
             RCache.set_xform_world(FTransformRP);
             if (m_SpawnData.Valid()){
                 // render icon
-                ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->s_name);
+                ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->name());
                 DU.DrawEntity		(0xffffffff,s);
             }else{
                 switch (m_Type){
@@ -400,7 +474,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
             if (st->m_Flags.is(ESceneSpawnTools::flShowSpawnType)){ 
                 AnsiString s_name;
                 if (m_SpawnData.Valid()){
-                    s_name	= m_SpawnData.m_Data->s_name;
+                    s_name	= m_SpawnData.m_Data->name();
                 }else{
                     switch (m_Type){
                     case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_RP_TeamID); break;
@@ -634,37 +708,21 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper().CreateU8	(items, PHelper().PrepareKey(pref,"Respawn Point\\Team"), 	&m_RP_TeamID, 	0,7);
-			PHelper().CreateToken8(items, PHelper().PrepareKey(pref,"Respawn Point\\Type"), 	&m_RP_Type, 	rpoint_type);
+			PHelper().CreateU8	(items, PrepareKey(pref,"Respawn Point\\Team"), 	&m_RP_TeamID, 	0,7);
+			PHelper().CreateToken8(items, PrepareKey(pref,"Respawn Point\\Type"), 	&m_RP_Type, 	rpoint_type);
         }break;
         case ptEnvMod:{
-        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
-        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	0,1.f);
-        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
-        	PHelper().CreateColor	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
-        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
-        	PHelper().CreateColor	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
-        	PHelper().CreateColor	(items, PHelper().PrepareKey(pref,"Environment Modificator\\LMap Color"), 	&m_EM_LMapColor);
+        	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
+        	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	0,1.f);
+        	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
+        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
+        	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
+        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
+        	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\LMap Color"), 		&m_EM_LMapColor);
         }break;
         default: THROW;
         }
     }
-}
-//----------------------------------------------------
-
-void CSpawnPoint::OnDeviceCreate()
-{
-	m_SpawnData.OnDeviceCreate	();
-}
-//----------------------------------------------------
-
-void CSpawnPoint::OnDeviceDestroy()
-{
-	m_SpawnData.OnDeviceDestroy	();
-	if (m_Icons.empty()) return;
-	for (ShaderPairIt it=m_Icons.begin(); it!=m_Icons.end(); it++)
-    	it->second.destroy();
-    m_Icons.clear();
 }
 //----------------------------------------------------
 
@@ -691,36 +749,13 @@ ref_shader CSpawnPoint::GetIcon(LPCSTR name)
 
 bool CSpawnPoint::OnChooseQuery(LPCSTR specific)
 {
-	return (m_SpawnData.Valid()&&(0==strcmp(m_SpawnData.m_Data->s_name,specific)));
+	return (m_SpawnData.Valid()&&(0==strcmp(m_SpawnData.m_Data->name(),specific)));
 }
 
 
 ///-----------------------------------------------------------------------------
 /*
-SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
-private:
-	ref_str							visual_name;
-public:
-#ifdef _EDITOR
-	AnsiString						play_animation;
-	IRender_Visual*		   			visual;
-    void __stdcall					OnChangeVisual	(PropValue* sender);
-    void 							PlayAnimation	(LPCSTR name);
-#endif
-public:
-									CSE_Visual		(LPCSTR name=0);
-	virtual							~CSE_Visual		();
 
-	void							visual_read		(NET_Packet& P);
-	void							visual_write	(NET_Packet& P);
-
-    void							set_visual		(LPCSTR name, bool load=true);
-	LPCSTR							get_visual		() const {return *visual_name;};
-    
-#ifdef _EDITOR
-    void 							FillProp		(LPCSTR pref, PropItemVec& values);
-#endif
-};
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
 private:
 	ref_str							motion_name;
@@ -744,47 +779,4 @@ public:
     void 							FillProp		(LPCSTR pref, PropItemVec& values);
 #endif
 };
-
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Shape,CShapeData)
-public:
-	void							cform_read		(NET_Packet& P);
-	void							cform_write		(NET_Packet& P);
-									CSE_Shape		();
-	virtual							~CSE_Shape		();
-};
-add_to_type_list(CSE_Shape)
-#define script_type_list save_type_list(CSE_Shape)
-
-SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
-private:
-	ref_str							visual_name;
-public:
-									CSE_Visual		(LPCSTR name=0);
-	virtual							~CSE_Visual		();
-
-	void							visual_read		(NET_Packet& P);
-	void							visual_write	(NET_Packet& P);
-
-    void							set_visual		(LPCSTR name, bool load=true);
-	LPCSTR							get_visual		() const {return *visual_name;};
-};
-add_to_type_list(CSE_Visual)
-#define script_type_list save_type_list(CSE_Visual)
-
-SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
-private:
-	ref_str							motion_name;
-public:
-									CSE_Motion 		(LPCSTR name=0);
-	virtual							~CSE_Motion		();
-
-	void							motion_read		(NET_Packet& P);
-	void							motion_write	(NET_Packet& P);
-
-    void							set_motion		(LPCSTR name);
-	LPCSTR							get_motion		() const {return *motion_name;};
-};
-add_to_type_list(CSE_Motion)
-#define script_type_list save_type_list(CSE_Motion)
 */

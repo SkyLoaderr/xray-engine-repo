@@ -50,15 +50,15 @@ void SSceneSummary::FillProp(PropItemVec& items)
             base_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Base\\")+**t_it;
             PropValue* V=0;
-            V=PHelper().CreateChoose(items,PHelper().PrepareKey(pref.c_str(),"Texture"), 		(ref_str*)&*t_it, smTexture); V->Owner()->Enable(FALSE);
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Format"),			T->FormatString());
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
+            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		(ref_str*)&*t_it, smTexture); V->Owner()->Enable(FALSE);
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
             if (T->_Format().flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
             	if (*T->_Format().detail_name){
 	            	std::pair<RStringSetIt, bool> I=det_textures.insert(*T->_Format().detail_name);
-		            V=PHelper().CreateChoose(items,PHelper().PrepareKey(pref.c_str(),"Detail\\Texture"),	(ref_str*)&*I.first,smTexture); 	V->Owner()->Enable(FALSE);
-	    	        PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Detail\\Scale"),		ref_str().sprintf("%3.2f",T->_Format().detail_scale));
+		            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Detail\\Texture"),	(ref_str*)&*I.first,smTexture); 	V->Owner()->Enable(FALSE);
+	    	        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Detail\\Scale"),		ref_str().sprintf("%3.2f",T->_Format().detail_scale));
                 }else{
 		        	ELog.Msg(mtError,"Empty details on texture: '%s'",t_it->c_str());
                 }
@@ -83,10 +83,10 @@ void SSceneSummary::FillProp(PropItemVec& items)
             det_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Detail\\")+**t_it;
             PropValue*	V	= 0;
-            V=PHelper().CreateChoose(items,PHelper().PrepareKey(pref.c_str(),"Texture"), 		(ref_str*)&*t_it, smTexture); 	V->Owner()->Enable(FALSE);
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Format"),			T->FormatString());
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
+            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		(ref_str*)&*t_it, smTexture); 	V->Owner()->Enable(FALSE);
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
         }
         xr_delete			(T);
     }
@@ -110,10 +110,10 @@ void SSceneSummary::FillProp(PropItemVec& items)
             do_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Detail Objects\\Textures\\")+**t_it;
             PropValue*	V	= 0;
-            V=PHelper().CreateChoose(items,PHelper().PrepareKey(pref.c_str(),"Texture"), 		(ref_str*)&*t_it, smTexture); 	V->Owner()->Enable(FALSE);
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Format"),			T->FormatString());
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
-            PHelper().CreateCaption(items,PHelper().PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
+            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		(ref_str*)&*t_it, smTexture); 	V->Owner()->Enable(FALSE);
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
         }
         xr_delete			(T);
     }
@@ -124,13 +124,13 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper().CreateCaption(items,"Sounds\\Sources",				ref_str().sprintf("%d",sound_source_cnt));
     PHelper().CreateCaption(items,"Sounds\\Waves\\Count",			ref_str().sprintf("%d",waves.size()));
     for (RStringSetIt w_it=waves.begin(); w_it!=waves.end(); w_it++)
-        PHelper().CreateCaption(items,PHelper().PrepareKey("Sounds\\Waves",w_it->c_str()),"-");
+        PHelper().CreateCaption(items,PrepareKey("Sounds\\Waves",w_it->c_str()),"-");
 
     // particles
     PHelper().CreateCaption(items,"Particle System\\Sources",		ref_str().sprintf("%d",pe_static_cnt));
     PHelper().CreateCaption(items,"Particle System\\Refs\\Count",	ref_str().sprintf("%d",pe_static.size()));
     for (RStringSetIt pe_it=pe_static.begin(); pe_it!=pe_static.end(); pe_it++)
-        PHelper().CreateCaption(items,PHelper().PrepareKey("Particle System\\Refs",pe_it->c_str()),"-");
+        PHelper().CreateCaption(items,PrepareKey("Particle System\\Refs",pe_it->c_str()),"-");
 }
 
 static SSceneSummary s_summary;

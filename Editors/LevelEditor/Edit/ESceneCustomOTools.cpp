@@ -265,7 +265,7 @@ CCustomObject* ESceneCustomOTools::FindObjectByName(LPCSTR name, CCustomObject* 
 void ESceneCustomOTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)  
-    	if ((*it)->Selected()) (*it)->FillProp	(PHelper().PrepareKey(pref,"Items").c_str(),items);
+    	if ((*it)->Selected()) (*it)->FillProp	(PrepareKey(pref,"Items").c_str(),items);
 }
 
 bool ESceneCustomOTools::GetSummaryInfo(SSceneSummary* inf)

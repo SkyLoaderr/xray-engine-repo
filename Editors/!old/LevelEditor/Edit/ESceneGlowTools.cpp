@@ -19,7 +19,7 @@ void ESceneGlowTools::RemoveControls()
 
 void ESceneGlowTools::FillProp(LPCSTR pref, PropItemVec& items)
 {                      
-    PHelper().CreateFlag32(items, PHelper().PrepareKey(pref,"Common\\Test Visibility"),		&m_Flags,			flTestVisibility);
+    PHelper().CreateFlag32(items, PrepareKey(pref,"Common\\Test Visibility"),		&m_Flags,			flTestVisibility);
 	inherited::FillProp	(pref, items);
 }
 //------------------------------------------------------------------------------

@@ -577,11 +577,11 @@ void CWayObject::FillProp(LPCSTR pref, PropItemVec& items)
         for(WPIt it=m_WayPoints.begin();it!=m_WayPoints.end();it++){
         	CWayPoint* W = *it;
             if ((*it)->m_bSelected){
-            	PHelper().CreateNameCB	(items, PHelper().PrepareKey(pref,"Way Point\\Name"),&W->m_Name,0,0,RTextValue::TOnAfterEditEvent().bind(this,&CWayObject::OnWayPointNameAfterEdit));
+            	PHelper().CreateNameCB	(items, PrepareKey(pref,"Way Point\\Name"),&W->m_Name,0,0,RTextValue::TOnAfterEditEvent().bind(this,&CWayObject::OnWayPointNameAfterEdit));
                 for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++)
-                    PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref,"Way Point\\Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
+                    PHelper().CreateFloat	(items,	PrepareKey(pref,"Way Point\\Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
                 for (int k=0; k<32; k++)
-                    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
+                    PHelper().CreateFlag32(items,	PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
             }
     	}
     }

@@ -445,12 +445,12 @@ void CSector::Save(IWriter& F){
 void CSector::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);        
-    PHelper().CreateFColor(items, PHelper().PrepareKey(pref,"Color"), &sector_color);
+    PHelper().CreateFColor(items, PrepareKey(pref,"Color"), &sector_color);
     int faces, objects, meshes;
     GetCounts(&objects,&meshes,&faces);
-    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,Name,"Contents\\Objects"), AnsiString(objects).c_str());
-    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,Name,"Contents\\Meshes"), AnsiString(meshes).c_str());
-    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,Name,"Contents\\Faces"), AnsiString(faces).c_str());
+    PHelper().CreateCaption(items,PrepareKey(pref,Name,"Contents\\Objects"),	AnsiString(objects).c_str());
+    PHelper().CreateCaption(items,PrepareKey(pref,Name,"Contents\\Meshes"), 	AnsiString(meshes).c_str());
+    PHelper().CreateCaption(items,PrepareKey(pref,Name,"Contents\\Faces"), 	AnsiString(faces).c_str());
 }
 //----------------------------------------------------
 

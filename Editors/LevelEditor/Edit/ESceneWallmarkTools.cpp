@@ -592,10 +592,10 @@ void ESceneWallmarkTools::RemoveControls()
 
 void ESceneWallmarkTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper().CreateFlag32		(items, PHelper().PrepareKey(pref,"Common\\Draw Wallmarks"),	&m_Flags, 		flDrawWallmark);
-    PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,"Common\\Default Size"),	&m_MarkSize, 	0.01f, 10.f);
-    PHelper().CreateAngle			(items, PHelper().PrepareKey(pref,"Common\\Default Rotate"),	&m_MarkRotate);
-    PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,"Common\\Default Texture"),	&m_TexName, 	smTexture);
+    PHelper().CreateFlag32		(items, PrepareKey(pref,"Common\\Draw Wallmarks"),	&m_Flags, 		flDrawWallmark);
+    PHelper().CreateFloat	 	(items, PrepareKey(pref,"Common\\Default Size"),		&m_MarkSize, 	0.01f, 10.f);
+    PHelper().CreateAngle	 	(items, PrepareKey(pref,"Common\\Default Rotate"),	&m_MarkRotate);
+    PHelper().CreateChoose		(items, PrepareKey(pref,"Common\\Default Texture"),	&m_TexName, 	smTexture);
 }
 //----------------------------------------------------
 

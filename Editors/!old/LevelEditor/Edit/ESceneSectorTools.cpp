@@ -46,7 +46,7 @@ void ESceneSectorTools::OnObjectRemove(CCustomObject* O)
 
 void ESceneSectorTools::FillProp(LPCSTR pref, PropItemVec& items)
 {            
-	PHelper().CreateFlag32(items, PHelper().PrepareKey(pref,"Common\\Draw Solid"),&m_Flags,			flDrawSolid);
+	PHelper().CreateFlag32(items, PrepareKey(pref,"Common\\Draw Solid"),&m_Flags,			flDrawSolid);
 	inherited::FillProp	(pref, items);
 }
 
