@@ -22,6 +22,7 @@
 #include "space_restriction_manager.h"
 #include "space_restriction_bridge.h"
 #include "space_restriction_base.h"
+#include "inventory.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -30,7 +31,6 @@ using namespace StalkerDecisionSpace;
 #endif
 
 #ifdef STALKER_DEBUG_MODE
-#	include "inventory.h"
 #	include "attachable_item.h"
 #endif
 
