@@ -211,3 +211,8 @@ void CMovementManager::teleport				(u32 game_vertex_id)
 	net_packet.w_vec3	(position);
 	Level().Send		(net_packet,net_flags(TRUE,TRUE));
 }
+
+void CMovementManager::UpdateCL			()
+{
+	CPhysicsShellHolder::UpdateCL();
+}

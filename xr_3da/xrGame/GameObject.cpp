@@ -122,10 +122,6 @@ void CGameObject::net_Destroy	()
 	Parent = 0;
 
 
-
-	//удалить партиклы из ParticlePlayer
-	CParticlesPlayer::net_DestroyParticles	();
-	
 	CScriptBinder::net_Destroy				();
 
 	xr_delete								(m_lua_game_object);
@@ -410,10 +406,6 @@ void CGameObject::UpdateCL	()
 {
 	if (!frame_check(m_dwFrameClient))
 		return;
-
-	//обновить присоединенные партиклы
-	UpdateParticles	();
-
 	inherited::UpdateCL	();
 }
 

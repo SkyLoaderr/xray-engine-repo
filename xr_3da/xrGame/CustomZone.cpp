@@ -699,7 +699,7 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 	// play particles
 	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pObject);
 	if (PP){
-		u16 play_bone = pObject->GetRandomBone(); 
+		u16 play_bone = PP->GetRandomBone(); 
 		if (play_bone!=BI_NONE)
 			PP->StartParticles	(*particle_str,play_bone,Fvector().set(0,1,0), ID());
 	}
@@ -733,7 +733,7 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 	//выбрать случайную косточку на объекте
 	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pObject);
 	if (PP){
-		u16 play_bone = pObject->GetRandomBone(); 
+		u16 play_bone = PP->GetRandomBone(); 
 		if (play_bone!=BI_NONE){
 			CParticlesObject* pParticles = CParticlesObject::Create(*particle_str);
 			Fmatrix xform;
@@ -775,6 +775,9 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 
 void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 {
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pObject);
+	if(!PP) return;
+
 	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
@@ -791,12 +794,16 @@ void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 
 	
 	//запустить партиклы на объекте
-	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
+	PP->StartParticles (particle_str, Fvector().set(0,1,0), ID());
 	if (!IsEnabled())
-		pObject->StopParticles	(particle_str);
+		PP->StopParticles	(particle_str);
 }
 void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 {
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pObject);
+	if(!PP) return;
+
+
 	OBJECT_INFO_MAP_IT it	= m_ObjectInfoMap.find(pObject);
 	if(m_ObjectInfoMap.end() == it) return;
 	
@@ -815,7 +822,7 @@ void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 	}
 
 	//остановить партиклы
-	pObject->StopParticles	(particle_str);
+	PP->StopParticles	(particle_str);
 }
 
 

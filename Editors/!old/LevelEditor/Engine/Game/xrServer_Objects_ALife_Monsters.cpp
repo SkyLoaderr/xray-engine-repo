@@ -279,11 +279,6 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	m_tRank						= ALife::EStalkerRank(m_tRank);
 };
 
-void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
-{
-	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
-}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTrader

@@ -9,7 +9,6 @@
 #include "level_graph.h"
 #include "ai_object_location.h"
 #include "prefetch_manager.h"
-#include "ParticlesPlayer.h"
 #include "xrServer_Space.h"
 #include "alife_space.h"
 #include "UsableScriptObject.h"
@@ -31,7 +30,6 @@ class CGameObject :
 	public CObject, 
 	virtual public CAI_ObjectLocation,
 	public CPrefetchManager,
-	public CParticlesPlayer,
 	public CUsableScriptObject,
 	public CScriptBinder
 {
@@ -85,26 +83,18 @@ public:
 	virtual void			spatial_move		();
 	virtual BOOL			Ready				()	{ return getReady();	}	// update only if active and fully initialized by/for network
 	virtual float			renderable_Ambient	();
-	//virtual f32				GetMass				(){return 0.f;};
+
 	virtual void			shedule_Update		(u32 dt);	
 	virtual void			renderable_Render	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
-		s16 element,Fvector p_in_object_space, 
-		float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound){};
+													s16 element,Fvector p_in_object_space, 
+													float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound){};
 	virtual void			UpdateCL			();
-	//virtual CPhysicsShell	*&PPhysicsShell		()																										
-	/*											{
-												R_ASSERT2(false,"Must never be colled. This object does not support physics shell!");
-												static CPhysicsShell* no_shell=0; 
-												return no_shell;
-												}*/
-	
+
+
 	//игровое имя объекта
 	virtual LPCSTR			Name                () const;
-	
-	//для наследования CParticlesPlayer
-	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}
 	
 	//virtual void			OnH_A_Independent	();
 	virtual void			OnH_B_Chield		();

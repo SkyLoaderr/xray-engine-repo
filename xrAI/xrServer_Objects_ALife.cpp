@@ -9,9 +9,11 @@
 #include "stdafx.h"
 #include "net_utils.h"
 #include "xrServer_Objects_ALife.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 #include "game_base_space.h"
 #include "object_broker.h"
 #include "restriction_space.h"
+#include "character_info.h"
 
 #ifndef XRGAME_EXPORTS
 #	include "bone.h"
@@ -23,7 +25,9 @@
 struct SFillPropData{
     RTokenVec 	locations[4];
     RStringVec	level_ids;
-    RTokenVec 	story_names;
+	RTokenVec 	story_names;
+	RTokenVec	character_profile_indxs;
+
     u32			counter;
                 SFillPropData	()
     {
@@ -62,6 +66,15 @@ struct SFillPropData{
         R_ASSERT				(Ini->section_exist(section));
         for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
             story_names.push_back	(xr_rtoken(V,atoi(N)));
+
+
+		//character profiles indexes
+		VERIFY					(character_profile_indxs.empty());
+		for(PROFILE_INDEX i = 0; i<CCharacterInfo::GetMaxIndex(); i++)
+		{
+			character_profile_indxs.push_back(xr_rtoken(*CCharacterInfo::IndexToId(i),i));
+		}
+		
         // destroy ini
         xr_delete				(Ini);
     }
@@ -1484,4 +1497,15 @@ float CSE_ALifeSmartZone::detect_probability()
 
 void CSE_ALifeSmartZone::smart_touch	(CSE_ALifeMonsterAbstract *monster)
 {
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
+{
+	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
+
+	PHelper().CreateRToken16	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
+		(u16*)&m_iCharacterProfile, 
+		&*fp_data.character_profile_indxs.begin(), fp_data.character_profile_indxs.size());
 }

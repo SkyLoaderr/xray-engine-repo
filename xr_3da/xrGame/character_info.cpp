@@ -10,6 +10,7 @@
 
 #include "alife_registry_container_composition.h"
 
+#ifdef XRGAME_EXPORTS
 
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
@@ -41,14 +42,6 @@ CCharacterInfo::~CCharacterInfo()
 {
 }
 
-
-void CCharacterInfo::InitXmlIdToIndex()
-{
-	if(!id_to_index::tag_name)
-		id_to_index::tag_name = "character";
-	if(!id_to_index::file_str)
-		id_to_index::file_str = pSettings->r_string("profiles", "files");
-}
 
 void CCharacterInfo::Load(PROFILE_ID id)
 {
@@ -193,4 +186,16 @@ void CCharacterInfo::load	(IReader& stream)
 void CCharacterInfo::save	(NET_Packet& stream)
 {
 	stream.w_s16((s16)StartDialog());
+}
+
+#endif
+
+
+
+void CCharacterInfo::InitXmlIdToIndex()
+{
+	if(!id_to_index::tag_name)
+		id_to_index::tag_name = "character";
+	if(!id_to_index::file_str)
+		id_to_index::file_str = pSettings->r_string("profiles", "files");
 }

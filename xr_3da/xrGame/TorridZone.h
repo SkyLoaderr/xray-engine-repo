@@ -14,6 +14,9 @@ public:
 	virtual void		UpdateCL			();
 	virtual void		shedule_Update		(u32 dt);
 	BOOL				net_Spawn			(LPVOID DC);
+
+
+	virtual bool		IsVisibleForZones() { return true;		}
 /*	virtual void Load(LPCSTR section);
 	virtual void Postprocess(f32 val);
 	virtual bool EnableEffector() {return true;}

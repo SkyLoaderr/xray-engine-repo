@@ -47,7 +47,7 @@ CParticlesPlayer::~CParticlesPlayer ()
 {
 }
 
-void CParticlesPlayer::Load(CKinematics* K)
+void CParticlesPlayer::LoadParticles(CKinematics* K)
 {
 	VERIFY				(K);
 	//считать список косточек и соответствующих
@@ -231,7 +231,9 @@ void CParticlesPlayer::UpdateParticles()
 
 void CParticlesPlayer::GetBonePos	(CObject* pObject, u16 bone_id, const Fvector& offset, Fvector& result)
 {
-	CBoneInstance&		l_tBoneInstance = smart_cast<CKinematics*>(pObject->Visual())->LL_GetBoneInstance(bone_id);
+	VERIFY(pObject);
+	CKinematics* pKinematics = smart_cast<CKinematics*>(pObject->Visual()); VERIFY(pKinematics);
+	CBoneInstance&		l_tBoneInstance = pKinematics->LL_GetBoneInstance(bone_id);
 
 	result = offset;
 	l_tBoneInstance.mTransform.transform_tiny(result);

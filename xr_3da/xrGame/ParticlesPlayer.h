@@ -62,7 +62,7 @@ public:
 public:
 							CParticlesPlayer		(void);
 	virtual					~CParticlesPlayer		(void);
-	void					Load					(CKinematics* K);
+	void					LoadParticles			(CKinematics* K);
 	void					net_DestroyParticles	();
 	
 	void					UpdateParticles			();

@@ -258,6 +258,9 @@ void CBaseGraviZone ::	AffectThrow(CPhysicsShellHolder* GO,const Fvector& throw_
 
 void CBaseGraviZone ::PlayTeleParticles(CGameObject* pObject)
 {
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pObject);
+	if(!PP) return;
+
 	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
@@ -272,10 +275,13 @@ void CBaseGraviZone ::PlayTeleParticles(CGameObject* pObject)
 		particle_str = m_sTeleParticlesBig;
 	}
 
-	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
+	PP->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
 }
 void CBaseGraviZone ::StopTeleParticles(CGameObject* pObject)
 {
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pObject);
+	if(!PP) return;
+
 	shared_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
@@ -294,7 +300,7 @@ void CBaseGraviZone ::StopTeleParticles(CGameObject* pObject)
 	if(m_ObjectInfoMap.end() == it) return;
 
 	//остановить партиклы
-	pObject->StopParticles	(*particle_str);
+	PP->StopParticles	(*particle_str);
 }
 
 float CBaseGraviZone ::RelativePower(float dist)

@@ -314,11 +314,15 @@ void CBurer::StopGraviPrepare()
 
 void CBurer::StartTeleObjectParticle(CGameObject *pO) 
 {
-	pO->CParticlesPlayer::StartParticles(particle_tele_object,Fvector().set(0.0f,0.1f,0.0f),pO->ID());
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pO);
+	if(!PP) return;
+	PP->StartParticles(particle_tele_object,Fvector().set(0.0f,0.1f,0.0f),pO->ID());
 }
 void CBurer::StopTeleObjectParticle(CGameObject *pO) 
 {
-	pO->CParticlesPlayer::StopParticles(particle_tele_object);
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pO);
+	if(!PP) return;
+	PP->StopParticles(particle_tele_object);
 }
 
 void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)

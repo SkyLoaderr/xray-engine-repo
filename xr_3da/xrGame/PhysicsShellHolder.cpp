@@ -13,6 +13,9 @@
 
 void CPhysicsShellHolder::net_Destroy()
 {
+	//удалить партиклы из ParticlePlayer
+	CParticlesPlayer::net_DestroyParticles	();
+
 	inherited::net_Destroy						();
 	xr_delete									(m_pPhysicsShell);
 }
@@ -138,3 +141,9 @@ void	CPhysicsShellHolder::PHFreeze()
 	if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
 }
 
+void CPhysicsShellHolder::UpdateCL	()
+{
+	inherited::UpdateCL	();
+	//обновить присоединенные партиклы
+	UpdateParticles	();
+}

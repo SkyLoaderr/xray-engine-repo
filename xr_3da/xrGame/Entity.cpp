@@ -204,7 +204,7 @@ void CEntity::Load		(LPCSTR section)
 			m_iMapIconY = 4;
 		}
 
-		CParticlesPlayer::Load(pKinematics);
+		CParticlesPlayer::LoadParticles(pKinematics);
 	}
 	//////////////////////////////////////
 	//время убирания тела с уровня

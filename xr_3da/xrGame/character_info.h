@@ -6,15 +6,16 @@
 #pragma		once
 
 #include "character_info_defs.h"
-#include "PhraseDialogDefs.h"
-
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
 
-#include "specific_character.h"
-#include "relation_registry.h"
-#include "character_community.h"
 
+#ifdef XRGAME_EXPORTS
+	#include "PhraseDialogDefs.h"
+	#include "specific_character.h"
+	#include "relation_registry.h"
+	#include "character_community.h"
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -22,6 +23,7 @@
 //////////////////////////////////////////////////////////////////////////
 struct SCharacterProfile : CSharedResource
 {
+#ifdef XRGAME_EXPORTS
 	SCharacterProfile ();
 	virtual ~SCharacterProfile ();
 
@@ -33,6 +35,7 @@ struct SCharacterProfile : CSharedResource
 	CHARACTER_COMMUNITY		m_Community;
 	CHARACTER_RANK			m_Rank;
 	CHARACTER_REPUTATION	m_Reputation;
+#endif
 };
 
 
@@ -50,7 +53,9 @@ private:
 	friend CInventoryOwner;
 	friend CSE_ALifeTraderAbstract;
 public:
-	
+
+#ifdef XRGAME_EXPORTS
+
 	CCharacterInfo();
 	~CCharacterInfo();
 
@@ -65,14 +70,17 @@ public:
 	//загрузку соответствующего CSpecificCharacter, по 
 	//указанному индексу
 	void InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index);
+#endif
 
 protected:
 	const SCharacterProfile* data() const	{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 	SCharacterProfile* data()				{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
+	static void	 InitXmlIdToIndex	();
+
+#ifdef XRGAME_EXPORTS
 	//загрузка из XML файла
 	virtual void load_shared		(LPCSTR);
-	static void	 InitXmlIdToIndex	();
 
 	//индекс загруженного профиля
 	PROFILE_INDEX m_iProfileIndex;
@@ -113,4 +121,5 @@ protected:
 	CHARACTER_RANK					m_CurrentRank;
 	CHARACTER_REPUTATION			m_CurrentReputation;
 	CHARACTER_COMMUNITY				m_CurrentCommunity;
+#endif
 };

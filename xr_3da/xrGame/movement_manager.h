@@ -154,6 +154,8 @@ public:
 
 	template <typename T>
 	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;
+
+	virtual void	UpdateCL				();
 };
 
 #include "movement_manager_inline.h"

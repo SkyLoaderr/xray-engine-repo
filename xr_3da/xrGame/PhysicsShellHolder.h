@@ -1,9 +1,16 @@
 #ifndef PHYSICSSHELL_HOLDER_H
 #define PHYSICSSHELL_HOLDER_H
+
 #include "GameObject.h"
+#include "ParticlesPlayer.h"
+
+
 class CPHDestroyable;
-class CPhysicsShellHolder: 
-	virtual public CGameObject
+
+
+class CPhysicsShellHolder:  virtual public CGameObject,
+									public CParticlesPlayer
+	
 {
 public:
 	typedef CGameObject inherited;
@@ -50,6 +57,10 @@ public:
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Spawn			(LPVOID	DC);
 			void			init				();
+
+	//для наследования CParticlesPlayer
+	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}
+	virtual void			UpdateCL			();
 
 protected:
 private:
