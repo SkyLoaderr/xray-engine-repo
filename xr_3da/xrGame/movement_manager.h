@@ -92,11 +92,12 @@ public:
 					CMovementManager		();
 	virtual			~CMovementManager		();
 	virtual void	Init					();
-			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_node		(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_node		(const u32 level_vertex_id);
+			
 			void	build_path				();
+			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 };
 
 #include "movement_manager_inline.h"
