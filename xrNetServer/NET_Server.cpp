@@ -447,6 +447,7 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 
 void	IPureServer::ClearStatistic	()
 {
+	stats.clear();
 	for (u32 I=0; I<net_Players.size(); I++)
 	{
 		net_Players[I]->stats.Clear();
