@@ -172,6 +172,7 @@ BOOL _rect_place(_rect &r)
 				return TRUE;
 			}
 			
+			/*
 			// Now rotate
 			R.init(S.x,S.y,S.x + r.b.y,S.y + r.b.x);
 			if (Place(R,CR)) {
@@ -179,6 +180,7 @@ BOOL _rect_place(_rect &r)
 				_rect_register(R);
 				return TRUE;
 			}
+			*/
 		}
 		
 		if ((CR->mask & USED_P2) == 0) {
@@ -190,6 +192,7 @@ BOOL _rect_place(_rect &r)
 				return TRUE;
 			}
 			
+			/*
 			// Now rotate - second
 			R.init(T.x,T.y,T.x + r.b.y,T.y + r.b.x);
 			if (Place(R,CR)) {
@@ -197,6 +200,7 @@ BOOL _rect_place(_rect &r)
 				_rect_register(R);
 				return TRUE;
 			}
+			*/
 		}
 	}
 	return FALSE;
@@ -215,7 +219,7 @@ void CBuild::MergeLM()
 		Deflector = g_deflectors[0];
 		if (g_deflectors.size()>1) {
 			std::sort(g_deflectors.begin()+1,g_deflectors.end(),cmp_defl);
-			int maxarea = 1024*1024;
+			int maxarea = 512*512*16;	// Max up to 16 lm selected
 			int curarea = 0;
 			for (int i=1; i<(int)g_deflectors.size(); i++)
 			{
@@ -223,7 +227,8 @@ void CBuild::MergeLM()
 				curarea += g_deflectors[i]->iArea;
 				SEL.push_back(g_deflectors[i]);
 			}
-			if (SEL.empty()) {
+			if (SEL.empty()) 
+			{
 				// No deflectors found to merge
 				// Simply transfer base deflector to new list
 				deflNew.push_back(Deflector);
