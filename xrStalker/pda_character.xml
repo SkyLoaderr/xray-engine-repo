@@ -30,7 +30,7 @@
 	</reputation_static>
 
 	<!-- REPUTATION CAPTION -->
-	<reputation_caption x="0" y="56" width="240" height="15">
+	<reputation_caption x="0" y="38" width="240" height="15">
 		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">reputation</text>
 	</reputation_caption>
 	
@@ -40,7 +40,7 @@
 	</relation_static>
 
 	<!-- RELATION CAPTION -->
-	<relation_caption x="0" y="38" width="240" height="15">
+	<relation_caption x="0" y="56" width="240" height="15">
 		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">relation</text>
 	</relation_caption>
 
