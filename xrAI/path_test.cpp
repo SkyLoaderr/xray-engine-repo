@@ -41,7 +41,7 @@ typedef CAI_Map																CGraph;
 //typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
 //typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
-typedef CDataStorageCheapList<25,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
+typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
