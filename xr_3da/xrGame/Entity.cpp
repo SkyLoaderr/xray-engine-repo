@@ -115,7 +115,7 @@ void CEntity::Load(CInifile* ini, const char* section)
 	Fvector	vFOOT_center= ini->ReadVECTOR	(section,"ph_foot_center"	);
 	Fvector	vFOOT_size	= ini->ReadVECTOR	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	Movement.SetFoots	(bb);
+	Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
 	// Movement: Crash speed and mass
 	float	cs_min		= ini->ReadFLOAT	(section,"ph_crash_speed_min"	);
