@@ -33,7 +33,7 @@ function main ()
     action				(
 		stalker,
 		anim			("prisluh"),
-		cond			(cond.time_end,2000)
+		cond			(cond.anim_end)
     )
     
     action				(
