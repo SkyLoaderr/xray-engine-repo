@@ -46,13 +46,16 @@ void	IGame_Level::SoundEvent_Dispatch	( )
 {
 	while	(!snd_Events.empty())	{
 		_esound_delegate&	D	= snd_Events.back	();
-		D.dest->feel_sound_new	(
-			D.source->g_object,
-			D.source->g_type,
-			D.source->g_userdata,
-			D.source->feedback->get_params()->position,
-			D.power
-			);
+		VERIFY				(D.dest && D.source);
+		if (D.source->feedback)	{
+			D.dest->feel_sound_new	(
+				D.source->g_object,
+				D.source->g_type,
+				D.source->g_userdata,
+				D.source->feedback->get_params()->position,
+				D.power
+				);
+		}
 		snd_Events.pop_back		();
 	}
 }
