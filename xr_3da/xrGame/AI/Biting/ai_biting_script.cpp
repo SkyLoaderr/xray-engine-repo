@@ -111,12 +111,13 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 
 bool CAI_Biting::bfAssignSound(CEntityAction *tpEntityAction)
 {
-	if (!inherited::bfAssignSound(tpEntityAction))
-		return			(false);
-
-	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
+	CScriptSoundAction	&l_tAction = tpEntityAction->m_tSoundAction;
 	if (l_tAction.completed()) return false;
 
+	if (l_tAction.m_monster_sound == MonsterSpace::eMonsterSoundDummy) {
+		if (!inherited::bfAssignSound(tpEntityAction))
+			return			(false);
+	}
 
 	switch (l_tAction.m_monster_sound) {
 	case	eMonsterSoundIdle:			CSoundPlayer::play(eMonsterSoundIdle,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwIdleSndDelay		: l_tAction.m_monster_sound_delay);		break;

@@ -171,6 +171,8 @@ bool CAI_Trader::bfAssignSound(CEntityAction *tpEntityAction)
 	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
 	m_cur_head_anim_type = l_tAction.m_tHeadAnimType;
 
+	Msg("Completed = [%u]", l_tAction.m_bCompleted);
+
 	return				(true);
 }
 
