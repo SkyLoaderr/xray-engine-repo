@@ -87,10 +87,10 @@ CObject::~CObject( )
 	Device.seqDevDestroy.Remove	(this);
 
 	OnDeviceDestroy				();
-	_DELETE	( cfModel		);
-	_FREE	( NameObject	);
-	_FREE	( NameSection	);
-	_FREE	( pVisualName	);
+	_DELETE						( cfModel		);
+	_FREE						( NameObject	);
+	_FREE						( NameSection	);
+	_FREE						( pVisualName	);
 }
 
 void CObject::UpdateTransform( )
