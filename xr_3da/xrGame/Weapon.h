@@ -92,9 +92,11 @@ protected:
 	float					tracerWidth;
 	u32						tracerFrame;
 							
-	CLightPPA				light_base;
-	CLightPPA				light_build;
-	CLightPPA				light_render;
+	Fcolor					light_base_color;
+	float					light_base_range;
+	Fcolor					light_build_color;
+	float					light_build_range;
+	IRender_Light*			light_render;
 	float					light_var_color;
 	float					light_var_range;
 	float					light_lifetime;

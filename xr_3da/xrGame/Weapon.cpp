@@ -24,7 +24,7 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire			= 0;
 	iHitPower			= 0;
-	STATE		= NEXT_STATE		= 0;
+	STATE				= NEXT_STATE		= 0;
 
 	SetDefaults			();
 	m_pHUD				= xr_new<CWeaponHUD> ();
@@ -48,13 +48,11 @@ CWeapon::CWeapon(LPCSTR name)
 	dispJumpFactor		= 4.f;
 	dispCrouchFactor	= 0.75f;
 
-	//iAmmoLimit			= -1;
-	//iAmmoCurrent		= -1;
 	iAmmoElapsed		= -1;
 	iMagazineSize		= -1;
-	iBuckShot = 1;
-	m_ammoType = 0;
-	m_ammoName = NULL;
+	iBuckShot			= 1;
+	m_ammoType			= 0;
+	m_ammoName			= NULL;
 
 	m_pPhysicsShell		= 0;
 	hud_mode			= FALSE;
@@ -63,11 +61,15 @@ CWeapon::CWeapon(LPCSTR name)
 
 	fZoomFactor			= DEFAULT_FOV;
 
-	m_pAmmo = NULL;
+	m_pAmmo				= NULL;
+
+	light_render		= ::Render->light_create();
 }
 
 CWeapon::~CWeapon		()
 {
+	::Render->light_destroy	(light_render);
+
 	xr_free				(m_WpnName);
 	xr_delete			(pVisual);
 	xr_delete			(m_pHUD);
@@ -328,8 +330,8 @@ void CWeapon::Load		(LPCSTR section)
 
 	// light
 	Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
-	light_base.SetColor	(clr.x,clr.y,clr.z);
-	light_base.SetRange	(pSettings->r_float		(section,"light_range"		));
+	light_base_color.set(clr.x,clr.y,clr.z,1);
+	light_base_range	= pSettings->r_float		(section,"light_range"		);
 	light_var_color		= pSettings->r_float		(section,"light_var_color"	);
 	light_var_range		= pSettings->r_float		(section,"light_var_range"	);
 	light_lifetime		= pSettings->r_float		(section,"light_time"		);
@@ -551,7 +553,11 @@ void CWeapon::UpdateCL		()
 	float dt				= Device.fTimeDelta;
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
-	if (light_time>0)		light_time -= dt;
+	if (light_time>0)		{
+		light_time -= dt;
+		if (light_time<=0)
+			light_render->set_mode(IRender_Light::LIGHT_DISABLED);
+	}
 
 	if (Remote() && NET.size())
 	{
@@ -752,8 +758,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	
 	// Ammo
 	if(Local()) {
-		m_abrasion = __max(0, m_abrasion - l_cartridge.m_impair);
-		m_magazine.pop();
+		m_abrasion		= _max(0.f, m_abrasion - l_cartridge.m_impair);
+		m_magazine.pop	();
 		if(!(--iAmmoElapsed)) OnMagazineEmpty();
 	}
 	
@@ -767,19 +773,19 @@ void CWeapon::Light_Start	()
 		light_frame					= Device.dwFrame;
 		light_time					= light_lifetime;
 		
-		light_build.SetColor		(Random.randFs(light_var_color,light_base.color.r),Random.randFs(light_var_color,light_base.color.g),Random.randFs(light_var_color,light_base.color.b));
-		light_build.SetRange		(Random.randFs(light_var_range,light_base.sphere.R));
+		light_build_color.set		(Random.randFs(light_var_color,light_base_color.r),Random.randFs(light_var_color,light_base_color.g),Random.randFs(light_var_color,light_base_color.b),1);
+		light_build_range			= Random.randFs(light_var_range,light_base_range);
+
+		light_render->set_mode		(IRender_Light::LIGHT_ENABLED_SHADOWED);
 	}
 }
 
 void CWeapon::Light_Render	(Fvector& P)
 {
 	float light_scale			= light_time/light_lifetime;
-	light_render.SetPosition	(P);
-	light_render.SetColor		(light_build.color.r*light_scale,light_build.color.g*light_scale,light_build.color.b*light_scale);
-	light_render.SetRange		(light_build.sphere.R*light_scale);
-	
-	::Render->L_add				(&light_render);
+	light_render->set_position	(P);
+	light_render->set_color		(light_build_color.r*light_scale,light_build_color.g*light_scale,light_build_color.b*light_scale);
+	light_render->set_range		(light_build_range*light_scale);
 }
 
 void CWeapon::OnDrawFlame	()
