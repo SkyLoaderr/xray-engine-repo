@@ -45,7 +45,7 @@ CAI_Rat::CAI_Rat()
 	q_look.o_look_speed		= PI;
 	m_pPhysicsShell			= NULL;
 	m_saved_impulse			= 0.f;
-	m_dwTimeToChange		= 0;
+	m_dwTimeToChange		= 120000;
 }
 
 CAI_Rat::~CAI_Rat()
