@@ -8,10 +8,10 @@ function test_callback:__init()
 end
 
 function test_callback:callback(obj,action_type,index)
-	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
-	ptr			= patrol(obj:patrol())
-	pos			= ptr:point(ptr:index("wp06"))
-	printf		("[%f][%f][%f]",pos.x,pos.y,pos.z)
+--	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
+--	ptr			= patrol(obj:patrol())
+--	pos			= ptr:point(ptr:index("wp06"))
+--	printf		("[%f][%f][%f]",pos.x,pos.y,pos.z)
 end
 
 function main ()
@@ -54,8 +54,8 @@ function main ()
 
 --	stalker:set_callback(stalker_test.movement_callback,game_object.movement)
 	
-	local test		= stalker_test.test_callback()
-	stalker:set_callback(test,"callback",game_object.movement)
+--	local test		= stalker_test.test_callback()
+--	stalker:set_callback(test,"callback",game_object.movement)
 	
 	action (
 		stalker, 
