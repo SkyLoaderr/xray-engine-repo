@@ -76,6 +76,19 @@ public:
 		CLevelGraph				*l_tpAI_Map = xr_new<CLevelGraph>(S);
 		u32						l_dwPointOffset = 0;
 
+		VERIFY					(l_tpAI_Map->header().vertex_count() == l_tpCrossTable->header().level_vertex_count());
+		VERIFY					(m_tpGraph->header().vertex_count() == l_tpCrossTable->header().game_vertex_count());
+
+		{
+			for (_GRAPH_ID i=0, n = m_tpGraph->header().vertex_count(); i<n; ++i)
+				if ((!l_tpAI_Map->valid_vertex_id(m_tpGraph->vertex(i)->level_vertex_id()) ||
+					(l_tpCrossTable->vertex(m_tpGraph->vertex(i)->level_vertex_id()).game_vertex_id() != i) ||
+					!l_tpAI_Map->inside(m_tpGraph->vertex(i)->level_vertex_id(),m_tpGraph->vertex(i)->level_point()))) {
+						Msg				("! Graph doesn't correspond to the cross table");
+						R_ASSERT2		(false,"Graph doesn't correspond to the cross table");
+				}
+		}
+
 		m_tpVertices.resize		(m_tpGraph->header().vertex_count());
 		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			I = B;
@@ -110,7 +123,11 @@ public:
 			tCrossTableUpdate.resize(tpCrossTable->header().level_vertex_count());
 			for (int i=0; i<(int)tpCrossTable->header().level_vertex_count(); i++) {
 				tCrossTableUpdate[i] = tpCrossTable->vertex(i);
+				VERIFY				(u32(tCrossTableUpdate[i].tGraphIndex) < tpCrossTable->header().game_vertex_count());
 				tCrossTableUpdate[i].tGraphIndex += dwOffset;
+				if (tCrossTableUpdate[i].tGraphIndex == 953) {
+					tCrossTableUpdate[i].tGraphIndex = tCrossTableUpdate[i].tGraphIndex;
+				}
 			}
 
 			CMemoryWriter					tMemoryStream;
@@ -150,7 +167,7 @@ public:
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
 				P.r_string							(fName);
-				CSE_Abstract				*E = F_entity_Create	(fName);
+				CSE_Abstract						*E = F_entity_Create	(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);
 				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
@@ -323,6 +340,33 @@ public:
 	CGraphMerger(LPCSTR name);
 };
 
+struct CLevelInfo {
+	u32				id;
+	LPCSTR			name;
+	Fvector			offset;
+
+					CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset) :
+						id(_id),
+						name(_name),
+						offset(_offset)
+	{
+	}
+
+	IC	bool	operator< (const CLevelInfo &info) const
+	{
+		return		(id < info.id);
+	}
+};
+
+void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
+{
+	LPCSTR	N,V;
+	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+		R_ASSERT		(Ini->section_exist(N));
+		levels.insert	(CLevelInfo(Ini->r_s32(N,"id"),Ini->r_string(N,"name"),Ini->r_fvector3(N,"offset")));
+	}
+}
+
 CGraphMerger::CGraphMerger(LPCSTR name)
 {
 	// load all the graphs
@@ -340,24 +384,43 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	u32								l_dwPointOffset = 0;
 	xr_vector<CGameGraph::CLevelPoint>			l_tpLevelPoints;
 	l_tpLevelPoints.clear			();
-    LPCSTR							N,V;
 
-    for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-		R_ASSERT					(Ini->section_exist(N));
-		tLevel.tOffset				= Ini->r_fvector3(N,"offset");
-		V							= Ini->r_string(N,"name");
-		Memory.mem_copy				(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
-		Memory.mem_copy				(S1,V,(u32)xr_strlen(V) + 1);
+	xr_set<CLevelInfo>				levels;
+	read_levels						(Ini,levels);
+
+	xr_set<CLevelInfo>::const_iterator	I = levels.begin();
+	xr_set<CLevelInfo>::const_iterator	E = levels.end();
+	for ( ; I != E; ++I) {
+		tLevel.tOffset				= (*I).offset;
+		strcpy						(tLevel.caLevelName,(*I).name);
+		strcpy						(S1,(*I).name);
 		strconcat					(S2,name,S1);
-		strconcat					(S1,S2,"\\");//level.graph");
-		tLevel.tLevelID				= Ini->r_s32(N,"id");
-		Msg							("%9s %2d %s","level",tLevel.tLevelID,V);
+		strconcat					(S1,S2,"\\");
+		tLevel.tLevelID				= (*I).id;
+		Msg							("%9s %2d %s","level",tLevel.tLevelID,(*I).name);
 		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
 		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
 		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
-    }
+	}
+	
+//	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+//		R_ASSERT					(Ini->section_exist(N));
+//		tLevel.tOffset				= Ini->r_fvector3(N,"offset");
+//		V							= Ini->r_string(N,"name");
+//		Memory.mem_copy				(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
+//		Memory.mem_copy				(S1,V,(u32)xr_strlen(V) + 1);
+//		strconcat					(S2,name,S1);
+//		strconcat					(S1,S2,"\\");//level.graph");
+//		tLevel.tLevelID				= Ini->r_s32(N,"id");
+//		Msg							("%9s %2d %s","level",tLevel.tLevelID,V);
+//		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
+//		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
+//		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
+//		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
+//		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
+//    }
 	R_ASSERT(tpGraphs.size());
 	
 	Phase("Adding interconnection points");
@@ -371,7 +434,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 				if ((*i).second.caConnectName[0]) {
 					GRAPH_P_PAIR_IT				K;
 					VERTEX_PAIR_IT				M;
-					CGameGraph::CEdge		tGraphEdge;
+					CGameGraph::CEdge			tGraphEdge;
 					SConnectionVertex			&tConnectionVertex = (*i).second;
 					R_ASSERT					((K = tpGraphs.find(tConnectionVertex.dwLevelID)) != tpGraphs.end());
 					R_ASSERT					((M = (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName)) != (*K).second->m_tVertexMap.end());
@@ -418,6 +481,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		}
 	}
 
+	u32							vertex_count = 0;
 	dwOffset					*= sizeof(CGameGraph::CVertex);
 	u32							l_dwOffset = F.size();
 	l_dwPointOffset				= dwOffset + tGraphHeader.edge_count()*sizeof(CGameGraph::CEdge);
@@ -425,8 +489,10 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	{
 		GRAPH_P_PAIR_IT			I = tpGraphs.begin();
 		GRAPH_P_PAIR_IT			E = tpGraphs.end();
-		for ( ; I != E; I++)
+		for ( ; I != E; I++) {
 			(*I).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset,&l_tpLevelPoints);
+			vertex_count		+= (*I).second->m_tpGraph->header().vertex_count();
+		}
 	}
 	{
 		GRAPH_P_PAIR_IT			I = tpGraphs.begin();
