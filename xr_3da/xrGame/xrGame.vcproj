@@ -5266,6 +5266,12 @@
 						<File
 							RelativePath=".\PHShellNetState.cpp">
 						</File>
+						<File
+							RelativePath=".\PHSplitedShell.cpp">
+						</File>
+						<File
+							RelativePath=".\PHSplitedShell.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="BaseShell"

@@ -138,7 +138,7 @@ void CBreakableObject::DestroyUnbroken()
 
 void CBreakableObject::CreateBroken()
 {
-	m_Shell=P_create_Shell();
+	m_Shell=P_create_splited_Shell();
 	m_Shell->preBuild_FromKinematics(PKinematics(Visual()));
 	m_Shell->mXFORM.set(XFORM());
 	//m_Shell->SetAirResistance(0.002f*skel_airr_lin_factor,

@@ -46,7 +46,7 @@ public:
 virtual		void		Activate		()										;
 		IC	bool		IsActive		()										{return b_activated;}
 			void		Deactivate		()										;
-			void		Collide			()										;
+virtual		void		Collide			()										;
 
 
 };

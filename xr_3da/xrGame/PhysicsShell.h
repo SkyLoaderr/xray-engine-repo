@@ -251,5 +251,6 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 CPhysicsElement*			P_create_Element		();
 CPhysicsShell*				P_create_Shell			();
+CPhysicsShell*				P_create_splited_Shell	();
 
 #endif // PhysicsShellH

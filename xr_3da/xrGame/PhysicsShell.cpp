@@ -7,6 +7,7 @@
 #include "PHShell.h"
 #include "PHJoint.h"
 #include "PHJointDestroyInfo.h"
+#include "PHSplitedShell.h"
 CPhysicsElement*			P_create_Element		()
 {
 	CPHElement* element=xr_new<CPHElement>	();
@@ -16,6 +17,12 @@ CPhysicsElement*			P_create_Element		()
 CPhysicsShell*				P_create_Shell			()
 {
 	CPhysicsShell* shell=xr_new<CPHShell>	();
+	return shell;
+}
+
+CPhysicsShell*				P_create_splited_Shell	()
+{
+	CPhysicsShell* shell=xr_new<CPHSplitedShell>	();
 	return shell;
 }
 
