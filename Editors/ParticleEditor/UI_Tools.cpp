@@ -25,7 +25,6 @@
 #include "engine/particles/general.h"
 //------------------------------------------------------------------------------
 CParticleTools Tools;
-#pragma comment(lib,"ParticleDLL.lib")
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 

@@ -199,6 +199,7 @@ struct st_Version{
 #pragma comment(lib,"ETools.lib")
 #pragma comment(lib,"LWO.lib")
 #pragma comment(lib,"xrHemisphere.lib")
+#pragma comment(lib,"ParticleDLLB.lib")
 
 #endif
 

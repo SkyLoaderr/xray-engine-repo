@@ -243,18 +243,18 @@ void __fastcall TfrmPropertiesPSDef::clColorMouseDown(TObject *Sender,
 {
 	bSetMode = true;
 	if (X<grColor->Width/2){
-		DWORD color = grColor->BeginColor;
+		u32 color = grColor->BeginColor;
 		if (SelectColorWin(&color)){
-            grColor->BeginColor = color;
+            grColor->BeginColor = (TColor)color;
             Fcolor C; C.set_windows(grColor->BeginColor);
             seColorStartR->Value = C.r*255;
             seColorStartG->Value = C.g*255;
             seColorStartB->Value = C.b*255;
         }
     }else{
-		DWORD color = grColor->EndColor;
+		u32 color = grColor->EndColor;
 		if (SelectColorWin(&color)){
-            grColor->EndColor = color;
+            grColor->EndColor = (TColor)color;
             Fcolor C; C.set_windows(grColor->EndColor);
             seColorEndR->Value = C.r*255;
             seColorEndG->Value = C.g*255;
