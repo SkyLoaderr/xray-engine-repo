@@ -7,6 +7,8 @@
 #include "ParticleGroup.h"
 #include "engine/particles/papi.h"
 #include "engine/particles/general.h"
+
+using namespace PAPI;
               
 xr_token					domain_token		[ ]={
 	{ "PDPoint",	  		PDPoint				},
@@ -241,6 +243,7 @@ public:
         else if (command=="pSetMaxParticles")	pSetMaxParticles(P1);
         else if (command=="pSprite")        	parent->pSprite	(AnsiString(params[0].data).c_str(),AnsiString(params[1].data).c_str());
         else if (command=="pFrame")				parent->pFrame	(P6);
+        else if (command=="pParentMotion")		pParentMotion	(P1);
         // actions
         else if (command=="pAnimate")			parent->pAnimate(P2);		
         else if (command=="pAvoid")				pAvoid			(P14);
@@ -273,6 +276,7 @@ public:
         else if (command=="pTargetVelocity")	pTargetVelocity	(P5);
         else if (command=="pTargetVelocityD")	pTargetVelocityD(P12);
         else if (command=="pVortex")			pVortex			(P10);
+        else THROW2("Unknown Command.");
 		#undef p
         #undef P1
         #undef P2
@@ -300,6 +304,7 @@ static LPCSTR PStateCommands[]={
 	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha = 1.0f);",
 	"pColorD(float alpha, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pParentMotion(float scale);"
 	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
 	"pRotateD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pSize(float size_x, float size_y = 1.0f, float size_z = 1.0f);",
@@ -307,7 +312,6 @@ static LPCSTR PStateCommands[]={
 	"pStartingAge(float age, float sigma = 1.0f);",
 	"pTimeStep(float new_dt);",
 	"pVelocity(float x, float y, float z);",
-	"pVelocityD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pVertexB(float x, float y, float z);",
 	"pVertexBD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pVertexBTracks(BOOL track_vertex = TRUE);",

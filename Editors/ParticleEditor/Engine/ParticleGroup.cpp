@@ -8,6 +8,8 @@
 #include "engine/particles/general.h"
 #include "TLSprite.h"
 
+using namespace PAPI;
+
 CParticleGroup::CParticleGroup()
 {
 	m_HandleGroup 		= pGenParticleGroups(1, 100);
@@ -55,14 +57,19 @@ void CParticleGroup::pAnimate(float speed, BOOL random_playback)
 	m_Flags.set			(flAnimated,TRUE);
 	m_Flags.set			(flRandomPlayback,random_playback);
 }
-void CParticleGroup::pFrameExec(Particle *m)
+void CParticleGroup::pFrameInitExecute(ParticleGroup *group)
 {
-    if (m_Flags.test(flRandomFrame))
-    	m->frame	= Random.randI(m_Animation.m_iFrameCount);
-    if (m_Flags.test(flAnimated)&&m_Flags.test(flRandomPlayback)&&Random.randI(2))	
-    	m->flags.set(Particle::ANIMATE_CCW,TRUE);
+	for(int i = 0; i < group->p_count; i++){
+		Particle &m = group->list[i];
+        if (m_Flags.is(Particle::BIRTH)){
+            if (m_Flags.is(flRandomFrame))
+                m.frame	= Random.randI(m_Animation.m_iFrameCount);
+            if (m_Flags.is(flAnimated)&&m_Flags.is(flRandomPlayback)&&Random.randI(2))	
+                m.flags.set(Particle::ANIMATE_CCW,TRUE);
+        }
+    }
 }
-void CParticleGroup::pAnimateExec(ParticleGroup *group)
+void CParticleGroup::pAnimateExecute(ParticleGroup *group)
 {
 	float speedFac = m_Animation.m_fSpeed * Device.fTimeDelta;
 	for(int i = 0; i < group->p_count; i++){
@@ -73,39 +80,27 @@ void CParticleGroup::pAnimateExec(ParticleGroup *group)
 	}
 }
 
-static float phase = 0.f;
+void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
+{
+    pSetActionListParenting(m_HandleActionList,m,velocity);
+}
 
 void CParticleGroup::OnFrame()
 {
     pTimeStep			(Device.fTimeDelta);
 	pCurrentGroup		(m_HandleGroup);
-
-    Fmatrix M;
-    phase				+= 0.5f*Device.fTimeDelta;
-	if (phase>10) phase = -10;
-    M.translate			(phase,0,0);
-//    M.rotateY			(phase);
-//    M.translate_over	(10*sin(phase),0,10*cos(phase));
-//    Log("M.c: ",M.c);
-    pSetActionListTransform(m_HandleActionList,M);
-//	Fvector src;
-    
-//	PASource* source	= ;
     
     // execute action list
 	pCallActionList		(m_HandleActionList);
-    // 
-	ParticleGroup *pg = _GetGroupPtr(m_HandleGroup);
-    if (m_Flags.is(flFramed)&&m_Flags.is(flAnimated)) 
-    	pAnimateExec(pg);
-
+	ParticleGroup *pg 	= _GetGroupPtr(m_HandleGroup);
+    // our actions
+    if (m_Flags.is(flFramed))    						pFrameInitExecute	(pg);
+    if (m_Flags.is(flFramed)&&m_Flags.is(flAnimated))   pAnimateExecute		(pg);
+    //-move action
 	for(int i = 0; i < pg->p_count; i++){
         Particle &m 	= pg->list[i];
         if (m.flags.is(Particle::DYING)){}
-        if (m.flags.is(Particle::BIRTH)){
-	        if (m_Flags.is(flFramed)) pFrameExec(&m);
-			m.flags.set(Particle::BIRTH,FALSE);
-        }
+        if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
 	}
 }
           

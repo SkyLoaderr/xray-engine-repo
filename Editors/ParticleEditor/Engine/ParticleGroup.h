@@ -3,8 +3,10 @@
 #define ParticleGroupH
 
 // refs
+namespace PAPI{
 class Particle;
 class ParticleGroup;
+}
 
 class CParticleGroup
 {
@@ -57,13 +59,15 @@ class CParticleGroup
     
     SAnimation	m_Animation;
     
-    void		pFrameExec		(Particle *particle);
-    void		pAnimateExec	(ParticleGroup *group);
+    // action 
+    void		pFrameInitExecute	(PAPI::ParticleGroup *group);
+    void		pAnimateExecute		(PAPI::ParticleGroup *group);
 public: 
-	// state
+    // api function
+	// state api
     void		pSprite			(LPCSTR sh_name, LPCSTR tex_name);
     void		pFrame			(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
-    // action
+    // action api
 	void 		pAnimate		(float speed=24.f, BOOL random_playback=FALSE);
 public: 
 				CParticleGroup	();
@@ -75,6 +79,8 @@ public:
 
     void 		OnDeviceCreate	();
     void 		OnDeviceDestroy	();
+
+    void		UpdateParent	(const Fmatrix& m, const Fvector& velocity);
 };
 
 //---------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 object fraEmitter: TfraEmitter
   Left = 0
   Top = 0
-  Width = 781
-  Height = 384
+  Width = 530
+  Height = 390
   Color = 10528425
   ParentColor = False
   TabOrder = 0
@@ -474,8 +474,7 @@ object fraEmitter: TfraEmitter
           ButtonKind = bkLightWave
           Decimal = 1
           Increment = 0.1
-          MaxValue = 360
-          MinValue = -360
+          MaxValue = 10000
           ValueType = vtFloat
           AutoSize = False
           Color = 10526880
@@ -496,8 +495,7 @@ object fraEmitter: TfraEmitter
           ButtonKind = bkLightWave
           Decimal = 1
           Increment = 0.1
-          MaxValue = 360
-          MinValue = -360
+          MaxValue = 10000
           ValueType = vtFloat
           AutoSize = False
           Color = 10526880
@@ -518,8 +516,7 @@ object fraEmitter: TfraEmitter
           ButtonKind = bkLightWave
           Decimal = 1
           Increment = 0.1
-          MaxValue = 360
-          MinValue = -360
+          MaxValue = 10000
           ValueType = vtFloat
           AutoSize = False
           Color = 10526880

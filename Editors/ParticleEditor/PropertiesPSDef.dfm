@@ -37,7 +37,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
     RaggedRight = False
     ScrollOpposite = False
     Style = etsNetTabs
-    TabIndex = 3
+    TabIndex = 4
     TabPosition = etpTop
     TabWidth = 64
     HotTrackFont.Charset = DEFAULT_CHARSET
@@ -46,7 +46,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsEmitter
+    ActivePage = tsFrame
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -1453,6 +1453,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
       ImageIndex = -1
       TabVisible = True
       Caption = 'Emitter'
+      Visible = False
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -1553,7 +1554,6 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
       ImageIndex = -1
       TabVisible = True
       Caption = 'Frame'
-      Visible = False
       object Panel4: TPanel
         Left = 0
         Top = 0

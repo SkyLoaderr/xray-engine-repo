@@ -504,7 +504,7 @@ void __fastcall CParticleTools::EditActionList()
 
 void __fastcall CParticleTools::ResetState()
 {
-	pResetState();
+	PAPI::pResetState();
 }
 
 void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)

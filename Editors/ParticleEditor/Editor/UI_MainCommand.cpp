@@ -34,13 +34,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    fraTopBar   		= xr_new<TfraTopBar>((TComponent*)0);
 		//----------------
         if (UI.OnCreate()){
+            PSLib.OnCreate	();
+            Lib.OnCreate	();
+            LALib.OnCreate	();
 			if (!Tools.OnCreate()){
                 bRes=false;
             	break;
             }
-            PSLib.OnCreate	();
-            Lib.OnCreate	();
-            LALib.OnCreate	();
 
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);

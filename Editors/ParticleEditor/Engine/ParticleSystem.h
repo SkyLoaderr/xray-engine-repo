@@ -48,7 +48,7 @@ struct ENGINE_API SEmitterDef
     WaveForm		m_BirthFunc;
     float			m_ParticleLimit;
 
-	u32			m_dwFlag;
+	Flags32			m_Flags;
     void			Reset()			{ ZeroMemory(this, sizeof(SEmitterDef));}
     void			InitDefault()	
 	{
@@ -67,6 +67,7 @@ struct ENGINE_API SEmitterDef
         M.setHPB(m_ConeHPB.x,m_ConeHPB.y,m_ConeHPB.z);
         M.transform_tiny(m_ConeDirection);
     }
+    void 			FillProp(LPCSTR pref, PropItemVec& items);
 };
 
 struct ENGINE_API SAnimation
@@ -101,6 +102,7 @@ struct ENGINE_API SAnimation
     	rb.x        = lt.x+m_TexSize.x;
 	    rb.y        = lt.y+m_TexSize.y;
     }
+    void 			FillProp(LPCSTR pref, PropItemVec& items);
 };
 
 struct ENGINE_API 	SParams
@@ -127,7 +129,8 @@ struct ENGINE_API 	SParams
     SAnimation		m_Animation;
 
 	//member variables
-	u32			m_dwFlag;
+	Flags32			m_Flags;
+    void 			FillProp(LPCSTR pref, PropItemVec& items);
 };
 
 struct ENGINE_API SDef: public SParams
@@ -154,7 +157,7 @@ struct ENGINE_API SDef: public SParams
 
         m_Animation.InitDefault();
 
-        m_dwFlag			= PS_RND_INIT_ANGLE;
+        m_Flags.set			(PS_RND_INIT_ANGLE);
 
         m_fLife		 		= 5.600000f;
         m_fLifeVar 			= 0.100000f;
@@ -220,6 +223,7 @@ struct ENGINE_API SDef: public SParams
     	VERIFY(strlen(tx)<64);
         strcpy(m_TextureName,tx);
     }
+    void 				FillProp(LPCSTR pref, PropItemVec& items);
 };
 #pragma pack( pop )
 
@@ -235,12 +239,12 @@ public:
         m_iPlayResidue		= 0;
 	}
     IC BOOL IsPlaying(){
-		if (m_dwFlag&PS_EM_PLAY_ONCE)	return (m_iPlayResidue!=0);
-		else							return m_bPlaying;
+		if (m_Flags.is(PS_EM_PLAY_ONCE))	return (m_iPlayResidue!=0);
+		else								return m_bPlaying;
     }
     IC void Play(){
 		m_bPlaying 		= true;
-		if (m_dwFlag&PS_EM_PLAY_ONCE)
+		if (m_Flags.is(PS_EM_PLAY_ONCE))
 			m_iPlayResidue = iFloor(m_ParticleLimit);
     }
     IC void Stop(){
@@ -293,24 +297,24 @@ public:
 		P.m_Velocity.end.mul(P.m_Velocity.start,rel);
                                                                 
 		int sign[2]		= {-1,1};
-        // Angular
-		if (m_Definition->m_dwFlag&PS_ALIGNTOPATH){
+        // Angular                            
+		if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)){
 	        P.m_fAngle 		= 0;
     	    P.m_ASpeed.start= 0;
 			P.m_ASpeed.end	= 0;
         }else{
-            P.m_fAngle = (m_Definition->m_dwFlag&PS_RND_INIT_ANGLE)?Random.randF(-PI,PI):-PI_DIV_4;
+            P.m_fAngle = (m_Definition->m_Flags.is(PS_RND_INIT_ANGLE))?Random.randF(-PI,PI):-PI_DIV_4;
 	        int iSide 		= sign[Random.randI(2)];
     	    P.m_ASpeed.start= iSide*m_Definition->m_ASpeed.start * (1+Random.randF(-0.5f,0.5f)*m_Definition->m_fASpeedVar);
 			P.m_ASpeed.end	= iSide*m_Definition->m_ASpeed.end * (1+Random.randF(-0.5f,0.5f)*m_Definition->m_fASpeedVar);
         }
 
         // Animation
-		if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
-			if (m_Definition->m_dwFlag&PS_FRAME_RND_INIT)
+		if (m_Definition->m_Flags.is(PS_FRAME_ENABLED)){
+			if (m_Definition->m_Flags.is(PS_FRAME_RND_INIT))
 				P.m_iAnimStartFrame	= Random.randI(m_Definition->m_Animation.m_iFrameCount);
-			if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE){
-				int iSide 		= (m_Definition->m_dwFlag&PS_FRAME_RND_PLAYBACK_DIR)?sign[Random.randI(2)]:1;
+			if (m_Definition->m_Flags.is(PS_FRAME_ANIMATE)){
+				int iSide 		= (m_Definition->m_Flags.is(PS_FRAME_RND_PLAYBACK_DIR))?sign[Random.randI(2)]:1;
 				P.m_fAnimSpeed	= iSide*m_Definition->m_Animation.m_fSpeed * (1+Random.randF(-0.5f,0.5f)*m_Definition->m_Animation.m_fSpeedVar);
             }
 		}
@@ -346,7 +350,7 @@ public:
     	if (!m_bPlaying) return 0;
 		// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the
 		// previous frame's EmissionResidue into account.
-		float fBK = (m_dwFlag&PS_EM_BIRTHFUNC)?m_BirthFunc.Calculate(fTime):1;
+		float fBK = (m_Flags.is(PS_EM_BIRTHFUNC))?m_BirthFunc.Calculate(fTime):1;
 		float fParticlesNeeded = m_fBirthRate * fBK * dT + m_fEmissionResidue;
 
 		// cast the float fparticlesNeeded to a INT to see how many particles we really need to create.
@@ -357,7 +361,7 @@ public:
 		if (iParticlesCreated<0) iParticlesCreated = 0;
 
 		// burst effect
-		if (m_dwFlag&PS_EM_BURST){
+		if (m_Flags.is(PS_EM_BURST)){
         	if ((p_present==0)&&(iParticlesCreated>=m_ParticleLimit))	m_fEmissionResidue 	= 0;
             else{
 				m_fEmissionResidue = fParticlesNeeded;
@@ -367,7 +371,7 @@ public:
 			m_fEmissionResidue = fParticlesNeeded - iParticlesCreated;
 
         // play once
-		if (m_dwFlag&PS_EM_PLAY_ONCE){
+		if (m_Flags.is(PS_EM_PLAY_ONCE)){
         	m_iPlayResidue -= iParticlesCreated;
             if (m_iPlayResidue<=0){
                 iParticlesCreated+=m_iPlayResidue;

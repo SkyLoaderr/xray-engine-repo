@@ -97,10 +97,10 @@ void TfrmPropertiesPSDef::GetObjectsInfo(){
         fraEmitter->GetInfoFirst		(m_PS->m_DefaultEmitter);
 
         // animation
-        cbAnimEnabled->Checked			= m_PS->m_dwFlag&PS_FRAME_ENABLED;
-        cbAnimAnimate->Checked			= m_PS->m_dwFlag&PS_FRAME_ANIMATE;
-        cbAnimRandomInitialFrame->Checked=m_PS->m_dwFlag&PS_FRAME_RND_INIT;
-        cbAnimRandomPlaybackDir->Checked= m_PS->m_dwFlag&PS_FRAME_RND_PLAYBACK_DIR;
+        cbAnimEnabled->Checked			= m_PS->m_Flags.is(PS_FRAME_ENABLED);
+        cbAnimAnimate->Checked			= m_PS->m_Flags.is(PS_FRAME_ANIMATE);
+        cbAnimRandomInitialFrame->Checked=m_PS->m_Flags.is(PS_FRAME_RND_INIT);
+        cbAnimRandomPlaybackDir->Checked= m_PS->m_Flags.is(PS_FRAME_RND_PLAYBACK_DIR);
         seAnimFrameCount->ObjFirstInit	(m_PS->m_Animation.m_iFrameCount);
         seAnimSpeed->ObjFirstInit		(m_PS->m_Animation.m_fSpeed);
         seAnimSpeedVar->ObjFirstInit	(m_PS->m_Animation.m_fSpeedVar);
@@ -112,9 +112,9 @@ void TfrmPropertiesPSDef::GetObjectsInfo(){
         seAnimTexHeight->ObjFirstInit	((1.f/m_PS->m_Animation.m_TexSize.y)*m_PS->m_Animation.m_FrameSize.y);
 
         // flags
-        cbMotionBlur->Checked			= m_PS->m_dwFlag&PS_MOTIONBLUR;
-        cbAlignToPath->Checked			= m_PS->m_dwFlag&PS_ALIGNTOPATH;
-        cbRandomInitAngle->Checked		= m_PS->m_dwFlag&PS_RND_INIT_ANGLE;
+        cbMotionBlur->Checked			= m_PS->m_Flags.is(PS_MOTIONBLUR);
+        cbAlignToPath->Checked			= m_PS->m_Flags.is(PS_ALIGNTOPATH);
+        cbRandomInitAngle->Checked		= m_PS->m_Flags.is(PS_RND_INIT_ANGLE);
 
         pcPS->Enabled					= true;
 //        gbBase->Enabled					= true;
@@ -166,9 +166,10 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
         m_PS->m_BlurSubdiv.end			= seBlurSubdivEnd->Value;
 
         // flags
-        m_PS->m_dwFlag					= 0|(cbMotionBlur->Checked?PS_MOTIONBLUR:0);
-        m_PS->m_dwFlag					|= (cbAlignToPath->Checked?PS_ALIGNTOPATH:0);
-		m_PS->m_dwFlag					|= (cbRandomInitAngle->Checked?PS_RND_INIT_ANGLE:0);
+        m_PS->m_Flags.zero				();
+        m_PS->m_Flags.set				(PS_MOTIONBLUR,cbMotionBlur->Checked);
+        m_PS->m_Flags.set				(PS_ALIGNTOPATH,cbAlignToPath->Checked);
+		m_PS->m_Flags.set				(PS_RND_INIT_ANGLE,cbRandomInitAngle->Checked);
 
         // emitter
         fraEmitter->SetInfo				(m_PS->m_DefaultEmitter);
@@ -179,10 +180,10 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
         seAnimFrameCount->ObjApplyInt	(m_PS->m_Animation.m_iFrameCount);
         seAnimSpeed->ObjApplyFloat		(m_PS->m_Animation.m_fSpeed);
         seAnimSpeedVar->ObjApplyFloat	(m_PS->m_Animation.m_fSpeedVar);
-        m_PS->m_dwFlag					|= (cbAnimEnabled->Checked?PS_FRAME_ENABLED:0);
-        m_PS->m_dwFlag					|= (cbAnimAnimate->Checked?PS_FRAME_ANIMATE:0);
-        m_PS->m_dwFlag					|= (cbAnimRandomInitialFrame->Checked?PS_FRAME_RND_INIT:0);
-        m_PS->m_dwFlag					|= (cbAnimRandomPlaybackDir->Checked?PS_FRAME_RND_PLAYBACK_DIR:0);
+        m_PS->m_Flags.set				(PS_FRAME_ENABLED,cbAnimEnabled->Checked);
+        m_PS->m_Flags.set				(PS_FRAME_ANIMATE,cbAnimAnimate->Checked);
+        m_PS->m_Flags.set				(PS_FRAME_RND_INIT,cbAnimRandomInitialFrame->Checked);
+        m_PS->m_Flags.set				(PS_FRAME_RND_PLAYBACK_DIR,cbAnimRandomPlaybackDir->Checked);
 
 		Tools.Modified();
 

@@ -68,7 +68,7 @@
       Intermediate\du_sphere.obj Intermediate\du_box.obj 
       Intermediate\PropertiesListHelper.obj Intermediate\ParticleGroup.obj 
       Intermediate\ParticleGroupParser.obj Intermediate\c_dinput.obj 
-      Intermediate\UI_MainCommand.obj"/>
+      Intermediate\UI_MainCommand.obj Intermediate\ParticleSystem.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -255,6 +255,7 @@
       <FILE FILENAME="ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleSystem.cpp" FORMNAME="" UNITNAME="ParticleSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -105,7 +105,7 @@ void CPSObject::DrawPS(){
 		DWORD 	C;
 		float 	sz, angl;
 		float 	angle, ang_vel;
-        if (m_Definition->m_dwFlag&PS_MOTIONBLUR){
+        if (m_Definition->m_Flags.is(PS_MOTIONBLUR)){
             float T 	= fTime-P->m_Time.start;
             float k 	= T/(P->m_Time.end-P->m_Time.start);
             float k_inv = 1-k;
@@ -119,7 +119,7 @@ void CPSObject::DrawPS(){
             if (T<0) continue;
             float mb_v	= 1-float(sample)/float(mb_samples);
             float k 	= T/(P->m_Time.end-P->m_Time.start);
-			if ((m_Emitter.m_dwFlag&PS_EM_PLAY_ONCE) && (k>1)) continue;
+			if (m_Emitter.m_Flags.is(PS_EM_PLAY_ONCE) && (k>1)) continue;
             float k_inv = 1-k;
 
             Fvector Pos;
@@ -131,7 +131,7 @@ void CPSObject::DrawPS(){
             PS::SimulateSize(sz,P,k,k_inv);
 
             Fvector D;
-			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH){
+			if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)){
 				Fvector p;
                 float PT = T-0.1f;
 	            float kk = PT/(P->m_Time.end-P->m_Time.start);
@@ -146,14 +146,14 @@ void CPSObject::DrawPS(){
             Fvector2 lt,rb;
             lt.set(0.f,0.f);
             rb.set(1.f,1.f);
-	        if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
+	        if (m_Definition->m_Flags.is(PS_FRAME_ENABLED)){
 				int frame;
-				if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,P,T);
+				if (m_Definition->m_Flags.is(PS_FRAME_ANIMATE))PS::SimulateAnimation(frame,m_Definition,P,T);
 				else										frame = P->m_iAnimStartFrame;
                 m_Definition->m_Animation.CalculateTC(frame,lt,rb);
             }
-			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) 	m_Sprite.Render(Pos,C,sz*0.5f,D,lt,rb);
-            else                                     	m_Sprite.Render(Pos,C,sz*0.5f,angle,lt,rb);
+			if (m_Definition->m_Flags.is(PS_ALIGNTOPATH)) 	m_Sprite.Render(Pos,C,sz*0.5f,D,lt,rb);
+            else                                     		m_Sprite.Render(Pos,C,sz*0.5f,angle,lt,rb);
         }
     }
 }
