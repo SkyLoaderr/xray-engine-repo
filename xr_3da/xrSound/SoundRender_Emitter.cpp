@@ -77,6 +77,7 @@ void CSoundRender_Emitter::switch_to_2D()
 {
  	b2D 						= TRUE;	
     set_position				(SoundRender->listener_position()); 
+	set_priority				(100.f);
 }
 
 void CSoundRender_Emitter::switch_to_3D()						

@@ -333,7 +333,9 @@ void CStats::OnDeviceCreate			()
 	eval_line_3 = pSettings->r_string_wb("evaluation","line3");
 
 	// 
+#ifdef DEBUG
 	SetLogCB	(_LogCallback);
+#endif
 }
 
 void CStats::OnDeviceDestroy		()
