@@ -76,11 +76,12 @@ function evaluator_threat:evaluate()
 	if self.a.actor then
 		if self.a.actor:alive() and
 		   self.object:see(self.a.actor) and
-		   self.object:relation(self.a.actor) == game_object.neutral and
-		   (self.object:character_community() == "dolg" or
-		    self.object:character_community() == "freedom" or
-		    self.object:character_community() == "killer") and
-		    self.object:character_community() ~= self.a.actor:character_community()		    
+		   self.object:relation(self.a.actor) == game_object.neutral 
+--		   and
+--		   (self.object:character_community() == "dolg" or
+--		    self.object:character_community() == "freedom" or
+--		    self.object:character_community() == "killer") and
+--		    self.object:character_community() ~= self.a.actor:character_community()		    
 		then 
 			return true
 		end
