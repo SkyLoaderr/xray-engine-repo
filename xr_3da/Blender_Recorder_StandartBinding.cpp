@@ -51,8 +51,8 @@ class cl_fog_params	: public R_constant_setup {
 	{
 		if (marker!=Device.dwFrame)
 		{
-			f_near	= g_pGamePersistent->Environment.Current.fog_near;
-			f_far	= 1/(g_pGamePersistent->Environment.Current.fog_far - f_near);
+			f_near	= g_pGamePersistent->Environment.CurrentEnv.fog_near;
+			f_far	= 1/(g_pGamePersistent->Environment.CurrentEnv.fog_far - f_near);
 		}
 		RCache.set_c	(C,f_near,f_far,0,0);
 	}
@@ -95,7 +95,7 @@ class cl_sun0_color	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 			result.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z,	0);
 		}
 		RCache.set_c	(C,result);
@@ -106,7 +106,7 @@ class cl_sun0_dir_w	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 			result.set				(desc.sun_dir.x,	desc.sun_dir.y, desc.sun_dir.z,	0);
 		}
 		RCache.set_c	(C,result);
@@ -118,7 +118,7 @@ class cl_sun0_dir_e	: public R_constant_setup {
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
 			Fvector D;
-			CEnvDescriptor&	desc		= g_pGamePersistent->Environment.Current;
+			CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
 			Device.mView.transform_dir	(D,desc.sun_dir);
 			D.normalize					();
 			result.set					(D.x,D.y,D.z,0);
@@ -133,7 +133,7 @@ class cl_lm_color	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 			result.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z,	0);
 		}
 		RCache.set_c	(C,result);
@@ -144,7 +144,7 @@ class cl_amb_color	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 			result.set				(desc.ambient.x, desc.ambient.y, desc.ambient.z, 0);
 		}
 		RCache.set_c	(C,result);
@@ -155,7 +155,7 @@ class cl_hemi_color	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 			result.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z, 0);
 		}
 		RCache.set_c	(C,result);
