@@ -21,7 +21,7 @@ struct CProfilePortion : public CProfileResultPortion {
 
 struct CProfileStats {
 	float			m_time;
-	shared_str			m_name;
+	shared_str		m_name;
 	u32				m_update_time;
 
 	IC				CProfileStats		();

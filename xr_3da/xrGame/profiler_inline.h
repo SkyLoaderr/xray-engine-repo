@@ -17,7 +17,8 @@ IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)
 IC	CProfilePortion::~CProfilePortion	()
 {
 	m_stop							= CPU::GetCycleCount();
-	profiler().add_profile_portion	(*this);
+	if (psAI_Flags.test(aiStats))
+		profiler().add_profile_portion	(*this);
 }
 
 IC	void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
