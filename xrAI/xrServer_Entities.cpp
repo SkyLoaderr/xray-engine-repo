@@ -1059,7 +1059,7 @@ void xrGraphPoint::UPDATE_Write		(NET_Packet& P)
 #ifdef _EDITOR
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"ConnectionPoint"),m_caConnectionPointName,sizeof(m_caConnectionPointName));
+    PHelper.CreateText(items,PHelper.PrepareKey(pref,s_name,"ConnectionPoint"),m_caConnectionPointName,sizeof(m_caConnectionPointName));
 }
 #endif
 //--------------------------------------------------------------------
