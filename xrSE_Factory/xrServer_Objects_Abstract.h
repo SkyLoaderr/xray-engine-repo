@@ -12,6 +12,9 @@
 #include "alife_interfaces.h"
 #include "xrServer_Space.h"
 #include "xrCDB.h"
+#ifdef XRSE_FACTORY_EXPORTS
+#	include "Sound.h"
+#endif
 #include "xrEProps.h"
 #include "PropertiesListHelper.h"
 
