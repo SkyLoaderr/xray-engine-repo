@@ -276,7 +276,6 @@ function NPC:look(whom)
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
-	       move(move.standing, move.stand, move.line, whom),
 	       cond(cond.time_end, time_infinite)
 	)
 	self.last_action = self.action_looking
@@ -291,7 +290,6 @@ function NPC:shoot_then_reload_actions(whom)
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
-	       move(move.standing, move.stand, move.line, whom),
 	       object(self.wpn, object.fire1),
 	       cond(cond.move_end)
 	)
@@ -306,7 +304,6 @@ function NPC:shoot_then_reload_actions(whom)
 		action(self.npc,
 		       look(look.fire_point, whom),
                        anim(anim.danger),
-		       move(move.standing, move.stand, move.line, whom),
 		       object(self.wpn, object.fire1),
 		       cond(cond.time_end, 3000)
 		)
@@ -321,7 +318,6 @@ function NPC:shoot_then_reload_actions(whom)
 		action(self.npc,
 		       --look(look.fire_point, whom),
 		       --anim(anim.danger),
-		       --move(move.standing, move.stand, move.line, whom),
 		       object(self.wpn, object.reload),
 		       cond(cond.time_end, 2000)
 		)
@@ -331,7 +327,6 @@ function NPC:shoot_then_reload_actions(whom)
 		action(self.npc,
 		       look(look.fire_point, whom),
 		       anim(anim.danger),
-		       move(move.standing, move.stand, move.line, whom),
 		       cond(cond.time_end, 2000)
 		)
 		--]]
@@ -354,7 +349,6 @@ function NPC:shoot(whom)
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
-	       move(move.standing, move.stand, move.line, whom),
 	       object(self.wpn, object.fire1),
 	       cond(cond.time_end, time_infinite)
 	)
@@ -390,7 +384,6 @@ function NPC:talk(to_whom, snd, animat, bone)
 		act:set_action( look(look.fire_point, to_whom) )
 	end
 	act:set_action( anim(use_anim) )
-	act:set_action( move(move.standing, move.stand, move.line, to_whom) )
 	if snd ~= nil then
 		act:set_action( sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"),
 			vector():set(0,0,0), vector():set(0,0,0), false) )
@@ -438,7 +431,6 @@ function NPC:talk_dialogue(to_whom)
 			act:set_action( look(look.fire_point, to_whom) )
 		end
 		act:set_action( anim(self.default_anim) )
-		act:set_action( move(move.standing, move.stand, move.line, to_whom) )
 		act:set_action( cond(cond.time_end, delay) )
 		self.npc:command(act, false)
 		printf("_bp: talk_dialogue: delay=%d", delay)
