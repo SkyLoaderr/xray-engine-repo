@@ -7,7 +7,7 @@ CUIGameSP::CUIGameSP(CUI* parent) : CUIGameCustom(parent)
 {
 	m_pUserMenu = NULL;
 
-	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch");
+	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch_team0");
 }
 
 CUIGameSP::~CUIGameSP(void) 

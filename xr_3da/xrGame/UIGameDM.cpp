@@ -28,7 +28,7 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 
 	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
-	pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch");
+	pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch_team0");
 }
 //--------------------------------------------------------------------
 
@@ -164,7 +164,7 @@ bool		CUIGameDM::CanBeReady				()
 	res &=	pBuyMenu->GetWeaponIndex(PISTOL_SLOT);
 	res &=	pBuyMenu->GetWeaponIndex(RIFLE_SLOT);
 	res &=	pBuyMenu->GetWeaponIndex(GRENADE_SLOT);
-	res &=	pBuyMenu->GetBeltSize();
+	res &=	~(pBuyMenu->GetBeltSize());
 
 	if (res != 0xff) return true;
 

@@ -301,7 +301,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 		};
 		*/
 		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
-		S->Perform_destroy				(from,net_flags(TRUE, TRUE));
+		S->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
 	}
 //	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
 };
@@ -562,9 +562,15 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 	
 	if (0xff == ps->Slots[SlotNum]) return NULL;
 
+	if (!(ps->team < s16(wpnTeamsSectStorage.size()))) return NULL;
+    
 	WPN_LISTS	WpnList = wpnTeamsSectStorage[ps->team];
 
+	if (!(SlotNum<WpnList.size())) return NULL;
+
 	WPN_SECT_NAMES WpnSectNames = WpnList[SlotNum];
+
+	if (!((Item & 0x1f) < u8(WpnSectNames.size()))) return NULL;
 
 	std::string Wpn = WpnSectNames[Item & 0x1f];
 
@@ -587,7 +593,11 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSect
 
 		// Имя поля
 		sprintf(wpnSection, "slot%i", i);
-		if (!pSettings->line_exist(caSection, wpnSection)) break;
+		if (!pSettings->line_exist(caSection, wpnSection)) 
+		{
+			pTeamList->push_back(wpnOneType);
+			continue;
+		}
 
 		// Читаем данные этого поля
 		std::strcpy(wpnNames, pSettings->r_string(caSection, wpnSection));
@@ -599,8 +609,8 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSect
 			wpnOneType.push_back(wpnSingleName);
 		}
 
-		if (!wpnOneType.empty())
-			pTeamList->push_back(wpnOneType);
+//		if (!wpnOneType.empty())
+		pTeamList->push_back(wpnOneType);
 	}
 };
 
@@ -608,7 +618,7 @@ void	game_sv_Deathmatch::LoadWeapons				()
 {
 	//Loading Weapons List
 	WPN_LISTS		DefaultTeam;
-	LoadWeaponsForTeam				(&DefaultTeam, "deathmatch");
+	LoadWeaponsForTeam				(&DefaultTeam, "deathmatch_team0");
 
 	wpnTeamsSectStorage.push_back(DefaultTeam);
 };
@@ -642,7 +652,7 @@ void	game_sv_Deathmatch::LoadSkins				()
 {
 	//Loading Skins List
 	SkinsStruct		DefaultTeam;
-	LoadSkinsForTeam				(&DefaultTeam, "deathmatch");
+	LoadSkinsForTeam				(&DefaultTeam, "deathmatch_team0");
 
 	SkinsTeamSectStorage.push_back(DefaultTeam);
 };
