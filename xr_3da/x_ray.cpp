@@ -86,6 +86,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 {
     // Init COM so we can use CoCreateInstance
     CoInitializeEx			(NULL, COINIT_MULTITHREADED);
+	Core._initialize		("xray");
 
 	// mmgrInitialize	(0);
 
@@ -99,22 +100,21 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	GetUserName					(psSystemUserName,&sz_user);
 	
 	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
-	Debug.Start	();
 
 	// _CrtSetDbgFlag( _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_LEAK_CHECK_DF);
 	if (bCaptureExceptions)	
 	{
-		__try {
+		// __try {
 			Startup	();
-			
+		/*
 		} __except(Debug.LogStack(GetExceptionInformation())) {
 			MessageBox(0,"Unhandled exception. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
 		}
+		*/
 	} else {
 		Startup();
 	}
 	
-	Debug.Stop	();
 	CloseLog	();
 	// mmgrDone	();
 
