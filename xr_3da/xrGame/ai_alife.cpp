@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
-#define WRITE_TO_LOG
+//#define WRITE_TO_LOG
 
 CAI_ALife::CAI_ALife()
 {
@@ -140,9 +140,9 @@ void CAI_ALife::vfSaveSpawnPoints()
 void CAI_ALife::Load()
 {
 	shedule_Min					=   100;
-	shedule_Max					= 10000;
+	shedule_Max					=    20;
 	m_dwNPCBeingProcessed		=     0;
-	m_qwMaxProcessTime			= 100000*CPU::cycles_per_microsec;
+	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
 	
 	m_tNPCHeader.dwVersion		= ALIFE_VERSION;
 	m_tNPCHeader.dwCount		= 0;
@@ -157,7 +157,7 @@ void CAI_ALife::Load()
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn")) {
 //		THROW;
 #ifdef DEBUG
-		vfGenerateSpawnPoints(10);
+		vfGenerateSpawnPoints(30);
 		vfSaveSpawnPoints();
 #else
 		return;
@@ -216,6 +216,7 @@ void CAI_ALife::Load()
 		m_tpNPC[i].wPrevGraphPoint		= tpStream->Rword();
 		m_tpNPC[i].fSpeed				= tpStream->Rfloat();
 		m_tpNPC[i].fDistanceFromPoint	= tpStream->Rfloat();
+		m_tpNPC[i].fDistanceToPoint		= tpStream->Rfloat();
 		m_tpNPC[i].iHealth				= tpStream->Rint();
 		m_tpNPC[i].tpUsefulObject.resize(tpStream->Rword());
 		for (int j=0; j<(int)m_tpNPC[i].tpUsefulObject.size(); j++)
@@ -251,6 +252,7 @@ void CAI_ALife::Save()
 		tStream.Wword	(m_tpNPC[i].wPrevGraphPoint);
 		tStream.Wfloat	(m_tpNPC[i].fSpeed);
 		tStream.Wfloat	(m_tpNPC[i].fDistanceFromPoint);
+		tStream.Wfloat	(m_tpNPC[i].fDistanceToPoint);
 		tStream.Wdword	(m_tpNPC[i].iHealth);
 		tStream.Wword	((u16)m_tpNPC[i].tpUsefulObject.size());
 		for (int j=0; j<(int)m_tpNPC[i].tpUsefulObject.size(); j++)
@@ -288,6 +290,7 @@ void CAI_ALife::Generate()
 		tALifeNPC.wPrevGraphPoint		= tALifeNPC.wGraphPoint;
 		tALifeNPC.fSpeed				= 0.f;
 		tALifeNPC.fDistanceFromPoint	= 0.f;
+		tALifeNPC.fDistanceToPoint		= 0.f;
 		tALifeNPC.iHealth				= pSettings->ReadINT(m_tpSpawnPoint[i].caModel, "Health");
 		tALifeNPC.tpUsefulObject.clear	();
 
@@ -324,27 +327,34 @@ void CAI_ALife::Update(u32 dt)
 
 void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
 {
-	Msg						("* Monster %d",dwNPCIndex);
+//	Msg						("* Monster %d",dwNPCIndex);
 //	Msg						("* * Time       : %d",m_tpNPC[dwNPCIndex].dwLastUpdateTime);
 //	Msg						("* * Spawn      : %d",m_tpNPC[dwNPCIndex].wSpawnPoint);
 //	Msg						("* * Count      : %d",m_tpNPC[dwNPCIndex].wCount);
 	vfCheckForTheBattle		(dwNPCIndex);
 	vfChooseNextRoutePoint	(dwNPCIndex);
 	m_tpNPC[dwNPCIndex].dwLastUpdateTime = Level().timeServer();
-	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
-	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
-	Msg						("* * NextPoint  : %d",m_tpNPC[dwNPCIndex].wNextGraphPoint);
-	Msg						("* * Speed      : %5.2f",m_tpNPC[dwNPCIndex].fSpeed);
-	Msg						("* * Distance   : %5.2f",m_tpNPC[dwNPCIndex].fDistanceFromPoint);
+//	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
+//	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
+//	Msg						("* * NextPoint  : %d",m_tpNPC[dwNPCIndex].wNextGraphPoint);
+//	Msg						("* * Speed      : %5.2f",m_tpNPC[dwNPCIndex].fSpeed);
+//	Msg						("* * Distance   : %5.2f",m_tpNPC[dwNPCIndex].fDistanceFromPoint);
+//	Msg						("* * Path       : %5.2f",m_tpNPC[dwNPCIndex].fDistanceToPoint);
 //	Msg						("* * Health     : %d",m_tpNPC[dwNPCIndex].iHealth);
-}
-
-void CAI_ALife::vfCheckForTheBattle(u32 dwNPCIndex)
-{
 }
 
 void CAI_ALife::vfChooseNextRoutePoint(u32 dwNPCIndex)
 {
+	if (m_tpNPC[dwNPCIndex].wNextGraphPoint != m_tpNPC[dwNPCIndex].wGraphPoint) {
+		u32 dwCurTime = Level().timeServer();
+		m_tpNPC[dwNPCIndex].fDistanceFromPoint += float(dwCurTime - m_tpNPC[dwNPCIndex].dwLastUpdateTime)/1000.f * m_tpNPC[dwNPCIndex].fSpeed;
+		if (m_tpNPC[dwNPCIndex].fDistanceToPoint - m_tpNPC[dwNPCIndex].fDistanceFromPoint < EPS_L) {
+			vfChangeGraphPoint(dwNPCIndex,m_tpNPC[dwNPCIndex].wGraphPoint,m_tpNPC[dwNPCIndex].wNextGraphPoint);
+			m_tpNPC[dwNPCIndex].fDistanceToPoint	= m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
+			m_tpNPC[dwNPCIndex].wPrevGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
+			m_tpNPC[dwNPCIndex].wGraphPoint			= m_tpNPC[dwNPCIndex].wNextGraphPoint;
+		}
+	}
 	if (m_tpNPC[dwNPCIndex].wNextGraphPoint == m_tpNPC[dwNPCIndex].wGraphPoint) {
 		u16					wGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
 		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
@@ -352,25 +362,18 @@ void CAI_ALife::vfChooseNextRoutePoint(u32 dwNPCIndex)
 		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wGraphPoint].dwEdgeOffset);
 		int					iPointCount		= (int)m_tpSpawnPoint[m_tpNPC[dwNPCIndex].wSpawnPoint].ucRoutePointCount;
 		vector<u16>			&wpaVertexes	= m_tpSpawnPoint[m_tpNPC[dwNPCIndex].wSpawnPoint].wpRouteGraphPoints;
-		bool				bOk				= false;
-		float				fDistance		= 0.0f;
-		for (int i=0; i<wNeighbourCount; i++) {
+		int					iBranches		= 0;
+		bool bOk = false;
+		for (int i=0; i<wNeighbourCount; i++)
 			for (int j=0; j<iPointCount; j++)
-				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != m_tpNPC[dwNPCIndex].wPrevGraphPoint)) {
-					m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
-					fDistance = tpaEdges[i].fPathDistance;
-					bOk = true;
-					break;
-				}
-			if (bOk)
-				break;
-		}
-		if (!bOk) {
+				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != m_tpNPC[dwNPCIndex].wPrevGraphPoint))
+					iBranches++;
+		if (!iBranches) {
 			for (int i=0; i<wNeighbourCount; i++) {
 				for (int j=0; j<iPointCount; j++)
 					if (tpaEdges[i].dwVertexNumber == wpaVertexes[j]) {
 						m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
-						fDistance = tpaEdges[i].fPathDistance;
+						m_tpNPC[dwNPCIndex].fDistanceToPoint = tpaEdges[i].fPathDistance;
 						bOk = true;
 						break;
 					}
@@ -378,22 +381,38 @@ void CAI_ALife::vfChooseNextRoutePoint(u32 dwNPCIndex)
 					break;
 			}
 		}
+		else {
+			int iChosenBranch = ::Random.randI(0,iBranches);
+			iBranches = 0;
+			for (int i=0; i<wNeighbourCount; i++) {
+				for (int j=0; j<iPointCount; j++)
+					if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != m_tpNPC[dwNPCIndex].wPrevGraphPoint)) {
+						if (iBranches == iChosenBranch) {
+							m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
+							m_tpNPC[dwNPCIndex].fDistanceToPoint = tpaEdges[i].fPathDistance;
+							bOk = true;
+							break;
+						}
+						iBranches++;
+					}
+				if (bOk)
+					break;
+			}
+		}
+		m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
 		if (!bOk) {
-			m_tpNPC[dwNPCIndex].fSpeed = 0.0f;
-			m_tpNPC[dwNPCIndex].fDistanceFromPoint = 0.0f;
+			m_tpNPC[dwNPCIndex].fSpeed				= 0.0f;
+			m_tpNPC[dwNPCIndex].fDistanceToPoint	= 0.0f;
 		}
 		else {
 			m_tpNPC[dwNPCIndex].fSpeed = 1.5f;
-			m_tpNPC[dwNPCIndex].fDistanceFromPoint = fDistance;
 		}
 	}
-	else {
-		u32 dwCurTime = Level().timeServer();
-		m_tpNPC[dwNPCIndex].fDistanceFromPoint -= float(dwCurTime)/1000.f * m_tpNPC[dwNPCIndex].fSpeed;
-		if (m_tpNPC[dwNPCIndex].fDistanceFromPoint < EPS_L) {
-			m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
-			m_tpNPC[dwNPCIndex].wPrevGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
-			m_tpNPC[dwNPCIndex].wGraphPoint			= m_tpNPC[dwNPCIndex].wNextGraphPoint;
-		}
-	}
+}
+
+void CAI_ALife::vfCheckForTheBattle(u32 dwNPCIndex)
+{
+//	for (int i=0; i<(int)m_tpGraphObject[m_tpNPC[dwNPCIndex].wGraphPoint].size(); i++)
+//		if (m_tpGraphObject[m_tpNPC[dwNPCIndex].wGraphPoint][i] != (u16)dwNPCIndex) {
+//		}
 }

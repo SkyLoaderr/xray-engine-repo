@@ -60,6 +60,7 @@ public:
 		u16						wPrevGraphPoint;
 		float					fSpeed;
 		float					fDistanceFromPoint;
+		float					fDistanceToPoint;
 		s32						iHealth;
 		vector<SUsefulObject>	tpUsefulObject;
 	} SALifeNPC;
@@ -79,6 +80,26 @@ public:
 	// dynamic
 	vector<SALifeNPC>			m_tpNPC;				// массив NPC-й
 	vector<vector<u16> >		m_tpGraphObject;		// по точке графа получить все динамические
+
+	IC void vfRemoveFromGraphPoint(u32 dwNPCIndex, u16 wGraphPoint)
+	{
+		for (int i=0; i<(int)m_tpGraphObject[wGraphPoint].size(); i++)
+			if (m_tpGraphObject[wGraphPoint][i] == dwNPCIndex) {
+				m_tpGraphObject[wGraphPoint].erase(m_tpGraphObject[m_tpNPC[dwNPCIndex].wGraphPoint].begin() + i);
+				break;
+			}
+	}
+	
+	IC void vfAddToGraphPoint(u32 dwNPCIndex, u16 wNextGraphPoint)
+	{
+		m_tpGraphObject[wNextGraphPoint].push_back((u16)dwNPCIndex);
+	}
+
+	IC void vfChangeGraphPoint(u32 dwNPCIndex, u16 wGraphPoint, u16 wNextGraphPoint)
+	{
+		vfRemoveFromGraphPoint	(dwNPCIndex,wGraphPoint);
+		vfAddToGraphPoint		(dwNPCIndex,wNextGraphPoint);
+	}
 
 	void						vfCheckForTheBattle		(u32 dwNPCIndex);
 	void						vfChooseNextRoutePoint	(u32 dwNPCIndex);
