@@ -244,6 +244,8 @@ private:
 	CVehicleCustom*			m_pVehicleWeLookingAt;
 	//режим подбирания предметов
 	bool					m_bPickupMode;
+	//расстояние подсветки предметов
+	float					m_fPickupInfoRadius;
 
 	void					PickupModeOn();
 	void					PickupModeOff();

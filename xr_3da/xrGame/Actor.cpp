@@ -250,6 +250,8 @@ void CActor::Load	(LPCSTR section )
 	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
 	m_PhysicMovementControl->SetJumpUpVelocity(m_fJumpSpeed);
 
+	m_fPickupInfoRadius	= pSettings->r_float(section,"pickup_info_radius");
+
 	//actor condition variables
 	CActorCondition::Load(section);
 	

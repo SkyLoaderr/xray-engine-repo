@@ -2,9 +2,12 @@
 #include "customdetector.h"
 #include "hudmanager.h"
 #include "artifact.h"
+#include "inventory.h"
 
 CCustomDetector::CCustomDetector(void) 
 {
+	TurnOn();
+	m_belt = true;
 }
 
 CCustomDetector::~CCustomDetector(void) 
@@ -82,6 +85,13 @@ void CCustomDetector::shedule_Update(u32 dt)
 
 	if(!H_Parent()) return;
 
+	//если не на поясе у актера то не издавать звук
+	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
+	if(pActor && !pActor->m_inventory->Get(ID(),false))
+		return;
+	bool sound_2d = pActor && pActor->HUDview();
+
+
 	Position().set(H_Parent()->Position());
 
 	Fvector					P; 
@@ -127,7 +137,9 @@ void CCustomDetector::shedule_Update(u32 dt)
 		if((float)zone_info.snd_time > current_snd_time)
 		{
 			zone_info.snd_time = 0;
-			Sound->play_at_pos(*zone_type.detect_snd, this, P);
+			//zone_type.detect_snd->play_at_pos(this,	P, sound_2d);
+			zone_type.detect_snd->play_at_pos(this, P, sound_2d?sm_2D:0);
+			//Sound->play_at_pos(*zone_type.detect_snd, this, P);
 		} 
 		else 
 			zone_info.snd_time += dt;
