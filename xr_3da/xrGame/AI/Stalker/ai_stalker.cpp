@@ -346,18 +346,6 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 	}
 
-	if (ai().game_graph().valid_vertex_id(m_tGraphID)) {
-		f1							= Position().distance_to	(ai().game_graph().vertex(m_tGraphID)->level_point());
-		P.w							(&f1,						sizeof(f1));
-		f1							= Position().distance_to	(ai().game_graph().vertex(m_tNextGraphID)->level_point());
-		P.w							(&f1,						sizeof(f1));
-	}
-	else {
-		f1							= 0;
-		P.w							(&f1,						sizeof(f1));
-		P.w							(&f1,						sizeof(f1));
-	}
-
 	P.w_u32							(0);
 	P.w_u32							(0);
 	P.w_u32							(0);
