@@ -54,7 +54,8 @@ p2f 	p_main	( v2p_in IN )
   float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float	l_D 	= saturate	(dot	(L, N));
+  float	l_D 	= dot		(L, N);
+  clip			(l_D);
 
   // Specular = (H • N)^m
   float l_S 	= tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
