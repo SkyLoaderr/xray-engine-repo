@@ -71,7 +71,7 @@ void	CBlender_Compile::PassEnd			()
 	SPass					P;
 	P.ps					= ps->ps;
 	P.vs					= vs->vs;
-	P.constants				= Device.Shader._CreateConstantTable(ps->constants,vs->constants);
+	P.constants				= Device.Shader._CreateConstantTable(&ps->constants,&vs->constants);
 	P.state					= Device.Shader._CreateState		(RS.GetContainer());
 	P.T						= Device.Shader._CreateTextureList	(passTextures);
 	P.M						= Device.Shader._CreateMatrixList	(passMatrices);
