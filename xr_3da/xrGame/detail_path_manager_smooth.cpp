@@ -539,12 +539,6 @@ void CDetailPathManager::build_path_via_key_points(
 			d.direction.sub				((I + 1)->position,d.position);
 			VERIFY						(!fis_zero(d.direction.magnitude()));
 			d.direction.normalize		();
-			if (!m_path.empty()) {
-				xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(m_path.back().velocity);
-				VERIFY					(m_movement_params.end() != I);
-				if (!fis_zero((*I).second.linear_velocity) && ((*I).second.linear_velocity < 0.f))
-					d.direction.mul		(-1.f);
-			}
 		}
 		else
 			d							= dest;
@@ -559,12 +553,6 @@ void CDetailPathManager::build_path_via_key_points(
 			(STravelPoint&)d			= *(I - 1);
 			d.direction.sub				((*I).position,d.position);
 			VERIFY						(!fis_zero(d.direction.magnitude()));
-			if (!m_path.empty()) {
-				xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(m_path.back().velocity);
-				VERIFY					(m_movement_params.end() != I);
-				if (!fis_zero((*I).second.linear_velocity) && ((*I).second.linear_velocity < 0.f))
-					d.direction.mul		(-1.f);
-			}
 			d.direction.normalize		();
 			if (!compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
 				compute_path			(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
@@ -574,6 +562,13 @@ void CDetailPathManager::build_path_via_key_points(
 			P							= I - 1;
 			d							= p;
 			s							= t;
+			if (!m_path.empty()) {
+				xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(m_path.back().velocity);
+				VERIFY				(m_movement_params.end() != I);
+				if (!fis_zero((*I).second.linear_velocity) && ((*I).second.linear_velocity < 0.f))
+					s.direction.mul		(-1.f);
+			}
+
 			VERIFY						(!fis_zero(s.direction.magnitude()));
 			if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
 				m_path.clear			();
@@ -582,6 +577,7 @@ void CDetailPathManager::build_path_via_key_points(
 		}
 		t								= d;
 	}
+
 	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
 		compute_path(s,d,0,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
 		compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
