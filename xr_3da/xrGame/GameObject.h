@@ -15,6 +15,10 @@ public:
 	DWORD										AI_NodeID;
 	NodeCompressed*								AI_Node;
 	NET_Queue_Event								net_Events;
+
+	// Utilities
+	void					u_EventGen			(NET_Packet& P, u16 type, u16 dest=ID());
+	void					u_EventSend			(NET_Packet& P);
 	
 	// Methods
 	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);

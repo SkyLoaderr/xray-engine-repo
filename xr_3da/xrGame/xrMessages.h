@@ -208,21 +208,19 @@ GE_OWNERSHIP_REJECT
 }
 GE_TRANSFER_AMMO
 {
-	u16			from;
-	u16			to;
+	u16			from;					// от кого
+	u16			to;						// кому
 }
 GE_HIT									// попадание (пулей)
 {
-	u16			id_entity;
+	u16			id_entity;				// кто попал
 	direction	dir;
 	float		impulse;
 	float		power;
 }
-GE_PUSH
+GE_DIE
 {
-	u16			id_entity;
-	direction	dir;
-	float		impulse;
+	u16			id_entity;				// кому обязаны этим счастьем
 }
 */
 

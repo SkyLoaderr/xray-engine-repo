@@ -291,25 +291,16 @@ void CActor::feel_touch_new				(CObject* O)
 		if (T)	
 		{
 			// We have similar weapon - just get ammo out of it
-			P.w_begin	(M_EVENT);
-			P.w_u32		(Level().timeServer());
-			P.w_u16		(GE_TRANSFER_AMMO);
-			P.w_u16		(ID());
-
+			u_EventGen	(P,GE_TRANSFER_AMMO);
 			P.w_u16		(W->ID());
 			P.w_u16		(T->ID());
-			Level().Send(P,net_flags(TRUE,TRUE));
+			u_EventSend	(P);
 			return;
 		} else {
 			// We doesn't have similar weapon - pick up it
-			NET_Packet	P;
-			P.w_begin	(M_EVENT);
-			P.w_u32		(Level().timeServer());
-			P.w_u16		(GE_OWNERSHIP_TAKE);
-			P.w_u16		(ID());
-
+			u_EventGen	(P,GE_OWNERSHIP_TAKE);
 			P.w_u16		(u16(W->ID()));
-			Level().Send(P,net_flags(TRUE,TRUE));
+			u_EventSend	(P);
 			return;
 		}
 	}
@@ -741,13 +732,13 @@ void CActor::g_PerformDrop	( )
 {
 	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
+	CObject*		O		= Weapons->ActiveWeapon();
 
 	// We doesn't have similar weapon - pick up it
 	NET_Packet		P;
-	P.w_begin		(M_EVENT);
-	P.w_u16			(u16(ID()));
-	P.w_u16			(u16(W->ID()));
-	Level().Send	(P,net_flags(TRUE,TRUE));
+	u_EventGen		(P,GE_OWNERSHIP_REJECT);
+	P.w_u16			(u16(O->ID()));
+	u_EventSend		(P);
 }
 
 void CActor::g_WeaponBones	(int& L, int& R)

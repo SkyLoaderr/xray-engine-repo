@@ -52,25 +52,8 @@ void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 	}
 }
 
-BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who) 
+BOOL CEntity::Hit			(int perc, Fvector &dir, CEntity* who) 
 {
-	if (who->Local())
-	{
-		// *** we are REMOTE/LOCAL, attacker is LOCAL
-		// send, update
-		// *** signal to everyone
-		NET_Packet	P;
-		P.w_begin	(M_HIT				);
-		P.w_u16		(u16(net_ID)		);
-		P.w_u16		(u16(who->net_ID)	);
-		P.w_u8		(u8(perc)			);
-		P.w_dir		(dir				);
-		Level().Send(P,net_flags(TRUE)	);
-	} else {
-		// *** we are REMOTE/LOCAL, attacker is REMOTE
-		// update
-	}
-	
 	// *** process hit calculations
 	// Calc impulse
 	Fvector					vLocalDir;
@@ -87,15 +70,18 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 	HitImpulse				(dir,vLocalDir,float(perc));
 	
 	// Calc HitAmount
-	int iHitAmount, iOldHealth=iHealth;
-	if (iArmor)
+	if (Local()) 
 	{
-		iHealth		-=	(iMAX_Armor-iArmor)/iMAX_Armor*perc;
-		iHitAmount	=	(perc*9)/10;
-		iArmor		-=	iHitAmount;
-	} else {
-		iHitAmount	=	perc;
-		iHealth		-=	iHitAmount;
+		int iHitAmount, iOldHealth=iHealth;
+		if (iArmor)
+		{
+			iHealth		-=	(iMAX_Armor-iArmor)/iMAX_Armor*perc;
+			iHitAmount	=	(perc*9)/10;
+			iArmor		-=	iHitAmount;
+		} else {
+			iHitAmount	=	perc;
+			iHealth		-=	iHitAmount;
+		}
 	}
 	
 	// Update state and play sounds, etc

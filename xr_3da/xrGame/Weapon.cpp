@@ -585,11 +585,17 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	end_point.mad		(P,D,RQ.range);
 	if (bResult)
 	{
-		if (RQ.O) {
-			if (H_Parent()->Local() && (RQ.O->CLS_ID==CLSID_ENTITY))
+		if (RQ.O) 
+		{
+			if (Local() && (RQ.O->CLS_ID==CLSID_ENTITY))
 			{
-				CEntity* E =	dynamic_cast<CEntity*>(RQ.O);
-				E->Hit			(iHitPower,D,dynamic_cast<CEntity*>(H_Parent()));
+				// 
+				NET_Packet		P;
+				u_EventGen		(P,GE_HIT,E->ID());
+				P.w_u16			(H_Root()->ID());
+				P.w_dir			(D);
+				P.w_float		(iHitPower);
+				u_EventSend		(P);
 			}
 		}
 		FireShotmark		(D,end_point,RQ);
