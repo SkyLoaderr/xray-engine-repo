@@ -52,7 +52,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_float_q16		(fHealth,-1000,1000);
 	P.w_float_q16		(fArmor,-1000,1000);
 
-	int w_id = Weapons->SelectedWeaponID	();
+	int w_id = Weapons->ActiveWeaponID	();
 	if (w_id<0)			P.w_u8(0xff);
 	else				P.w_u8(u8(w_id&0xff));
 }
