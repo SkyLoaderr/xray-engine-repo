@@ -11,6 +11,10 @@
 class CLocationManager {
 private:
 	ALife::TERRAIN_VECTOR	m_vertex_types;
+
+protected:
+			void	setup_location_types	(LPCSTR S, LPCSTR section);
+
 public:
 					CLocationManager		();
 	virtual			~CLocationManager		();

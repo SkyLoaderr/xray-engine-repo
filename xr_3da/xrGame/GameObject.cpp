@@ -44,6 +44,8 @@ void CGameObject::Init			()
 	m_dwFrameDestroy			= u32(-1);
 	m_dwFrameClient				= u32(-1);
 	m_dwFrameSchedule			= u32(-1);
+	m_dwFrameBeforeChild		= u32(-1);
+	m_dwFrameBeforeIndependent	= u32(-1);
 	m_script_clsid				= -1;
 	m_ini_file					= 0;
 }
@@ -452,6 +454,9 @@ void CGameObject::PHSetLinearVell(Fvector& velocity)
 #include "bolt.h"
 void CGameObject::OnH_B_Chield()
 {
+	if (!frame_check(m_dwFrameBeforeChild))
+		return;
+
 	inherited::OnH_B_Chield();
 	///PHSetPushOut();????
 	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
@@ -460,6 +465,9 @@ void CGameObject::OnH_B_Chield()
 
 void CGameObject::OnH_B_Independent()
 {
+	if (!frame_check(m_dwFrameBeforeIndependent))
+		return;
+
 	inherited::OnH_B_Independent();
 	setup_parent_ai_locations	(false);
 	validate_ai_locations		(false);

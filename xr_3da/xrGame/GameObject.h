@@ -33,6 +33,8 @@ class CGameObject :
 	u32						m_dwFrameDestroy;
 	u32						m_dwFrameClient;
 	u32						m_dwFrameSchedule;
+	u32						m_dwFrameBeforeChild;
+	u32						m_dwFrameBeforeIndependent;
 
 protected:
 	CSE_ALifeSimulator		*m_tpALife;
