@@ -457,8 +457,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				if (pIItem)
 				{
 					KMS.m_initiator.m_shader = GetEquipmentIconsShader();
-					KMS.m_initiator.m_rect.add(pIItem->GetXPos()*INV_GRID_WIDTH, pIItem->GetYPos()*INV_GRID_HEIGHT);
-					KMS.m_initiator.m_rect.add(pIItem->GetGridWidth()*INV_GRID_WIDTH, pIItem->GetGridHeight()*INV_GRID_HEIGHT);
+					KMS.m_initiator.m_rect.x1 = pIItem->GetXPos()*INV_GRID_WIDTH;
+					KMS.m_initiator.m_rect.y1 = pIItem->GetYPos()*INV_GRID_HEIGHT;
+					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1+pIItem->GetGridWidth()*INV_GRID_WIDTH;
+					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1+pIItem->GetGridHeight()*INV_GRID_HEIGHT;
 
 					KMS.m_ext_info = KMS.m_initiator;
 				};
