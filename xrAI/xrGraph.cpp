@@ -219,6 +219,8 @@ bool bfCheckForGraphConnectivity()
 
 void xrBuildGraph(LPCSTR name)
 {
+	Msg("Building Level %s",name);
+
 	Phase("Loading AI map");
 	vfLoafAIMap(name);
 	Msg("%d nodes loaded",int(m_header.count));
@@ -258,8 +260,10 @@ void xrBuildGraph(LPCSTR name)
 	
 	Phase("Freeing graph being built");
 	Progress(0.0f);
-	for (i=0; i<(int)tpaGraph.size(); Progress(float(i)/(tpaGraph.size() - 1)),i++)
+	for (i=0; i<(int)tpaGraph.size(); Progress(float(++i)/(tpaGraph.size() - 1)))
 		_FREE(tpaGraph[i].tpaEdges);
 	tpaGraph.clear();
 	Progress(1.0f);
+	
+	Msg("\nBuilding level %s successfully completed",name);
 }
