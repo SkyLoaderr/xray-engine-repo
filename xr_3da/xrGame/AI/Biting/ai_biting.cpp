@@ -13,7 +13,6 @@ using namespace AI_Biting;
 
 CAI_Biting::CAI_Biting()
 {
-	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 	stateRest			= xr_new<CBitingRest>		(this);
@@ -26,6 +25,8 @@ CAI_Biting::CAI_Biting()
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
+
+	Init();
 }
 
 CAI_Biting::~CAI_Biting()

@@ -13,7 +13,6 @@ using namespace AI_Chimera;
 
 CAI_Chimera::CAI_Chimera()
 {
-	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 	stateRest			= xr_new<CChimeraRest>		(this);
@@ -26,6 +25,7 @@ CAI_Chimera::CAI_Chimera()
 	stateExploreDE		= xr_new<CChimeraExploreDE>	(this);
 	stateExploreNDE		= xr_new<CChimeraExploreNDE>	(this);
 	CurrentState		= stateRest;
+	Init();
 }
 
 CAI_Chimera::~CAI_Chimera()
