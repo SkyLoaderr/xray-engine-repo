@@ -59,11 +59,13 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 void  CExplosiveItem::OnEvent (NET_Packet& P, u16 type)
 {
 	CExplosive::OnEvent (P, type);
+	CInventoryItem::OnEvent (P, type);
 
 }
 void CExplosiveItem::UpdateCL()
 {
 	CExplosive::UpdateCL();
+	CInventoryItem::UpdateCL();
 }
 void CExplosiveItem::renderable_Render()
 {
