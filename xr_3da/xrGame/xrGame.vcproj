@@ -9673,6 +9673,13 @@
 						RelativePath=".\ui\UIComboBox_script.cpp">
 					</File>
 				</Filter>
+				<Filter
+					Name="InteractiveBackground"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIInteractiveBackground.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="HUD"
