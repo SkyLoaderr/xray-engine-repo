@@ -222,7 +222,7 @@ function Trader:set_wait ()
        self.current.repeats = 1
     end
     self.current.use_start_end = false
-    action (self.npc, anim (self.current.process_anim), cond (cond.anim_free))
+    action (self.npc, anim (self.current.process_anim), cond (cond.anim_end))
     self.current_state = trader_wait
     self.current.end_current = false
 end
@@ -243,7 +243,7 @@ function Trader:set_trade_end ()
     end
     self.current.end_current = false
     self.current.use_start_end = true
-    action (self.npc, anim (self.current.process_anim), cond (cond.anim_free))
+    action (self.npc, anim (self.current.process_anim), cond (cond.anim_end))
     self.current_state = trader_wait
 end
 ----------------------------------------------------------------------------------------------------------------------
