@@ -134,6 +134,7 @@ public:
 	void	Evict			();
 	
 	// API
+	IC void set_RT			(IDirect3DSurface8* RT, IDirect3DSurface8* ZB);
 	IC void	set_Code		(DWORD dwCode);
 	IC void set_Textures	(STextureList* T);
 	IC void set_Matrices	(SMatrixList* M);

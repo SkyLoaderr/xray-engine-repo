@@ -84,4 +84,10 @@ IC void CShaderManager::set_Constants	(SConstantList* C, BOOL bPS)
 		}
 	}
 }
+IC void CShaderManager::set_RT			(IDirect3DSurface8* RT, IDirect3DSurface8* ZB)
+{
+	Device.Statistic.RenderDUMP_RT.Begin();
+	R_CHK								(HW.pDevice->SetRenderTarget(RT,ZB));
+	Device.Statistic.RenderDUMP_RT.End	();
+}
 #endif
