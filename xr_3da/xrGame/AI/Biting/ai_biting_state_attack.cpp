@@ -236,6 +236,7 @@ void CBitingAttack::Run()
 					dir.normalize();
 					pos.mad(pMonster->Position(), dir, 15.f);
 					pMonster->Path_ApproachPoint(0, pos);
+					pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 				}
 			}
 

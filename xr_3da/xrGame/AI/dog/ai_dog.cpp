@@ -129,26 +129,10 @@ void CAI_Dog::StateSelector()
 	if (C || D || E || F) SetBkgndSound();
 	else SetBkgndSound(false);
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
-	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	if (C)						SetState(statePanic);
+	else if (D || E || F)		SetState(stateAttack);
+	else if (A && !K)			SetState(statePanic);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 

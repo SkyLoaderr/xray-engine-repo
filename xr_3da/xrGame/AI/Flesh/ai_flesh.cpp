@@ -135,8 +135,6 @@ void CAI_Flesh::Load(LPCSTR section)
 void CAI_Flesh::StateSelector()
 {
 	
-	LOG_EX("Oh no :(");
-
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);
@@ -160,10 +158,8 @@ void CAI_Flesh::StateSelector()
 	else if (F && !H && !I) 	SetState(stateAttack);
 //	else if (F && !H && I)  	SetState(stateDetour); 
 //	else if (F && !H && !I) 	SetState(stateHide);
-	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	else if (A && !K)			SetState(statePanic);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	
 #ifdef TEST_EAT_STATE	
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))

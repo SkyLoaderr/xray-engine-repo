@@ -309,7 +309,7 @@ class CBitingExploreDE : public IState {
 public:
 					CBitingExploreDE	(CAI_Biting *p);
 
-	virtual void	Reset				();
+//	virtual void	Reset				();
 	virtual bool	CheckCompletion		();
 
 private:

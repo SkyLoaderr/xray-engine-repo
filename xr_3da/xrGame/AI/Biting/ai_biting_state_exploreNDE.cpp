@@ -5,7 +5,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingExploreNDE class  
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 {
 	pMonster = p;
@@ -15,7 +14,7 @@ CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 void CBitingExploreNDE::Init()
 {
 	LOG_EX("nde init");
-
+	
 	inherited::Init();
 
 	bool bTemp;
@@ -37,25 +36,28 @@ void CBitingExploreNDE::Run()
 
 	switch (m_tAction) {
 	case ACTION_LOOK_DESTINATION:			// повернуться в сторону звука
+		LOG_EX("nde: LOOK DEST");
 		pMonster->enable_movement(false);
-		pMonster->FaceTarget(m_tSound.position);
-	
+		
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 		pMonster->LookPosition(m_tSound.position);
-
-		if (m_dwStateStartedTime + 3000 < m_dwCurrentTime) m_tAction = ACTION_GOTO_SOUND_SOURCE;
+		
+		if (angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
 		break;
 	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику
+		LOG_EX("nde: GOTO_SOUND_SOURCE");
 		
-		pMonster->Path_ApproachPoint(0, m_tSound.position);
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		pMonster->Path_ApproachPoint(0, m_tSound.position);
 		
 		// если монстр дошел до конца пути, перейти к следующему заданию
 		if (IS_NEED_REBUILD()) m_tAction = ACTION_LOOK_AROUND; 
 
 		break;
 	case ACTION_LOOK_AROUND:
+		LOG_EX("nde: LOOK_AROUND");
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
+		pMonster->enable_movement(false);
 		break;
 	}
 

@@ -13,19 +13,9 @@ CBitingExploreDE::CBitingExploreDE(CAI_Biting *p)
 	SetPriority(PRIORITY_NORMAL);
 }
 
-void CBitingExploreDE::Reset()
-{
-	inherited::Reset();
-	m_tEnemy.obj = 0;
-	m_tAction = ACTION_LOOK_AROUND;
-	m_dwTimeToTurn	= 0;	
-}
-
 void CBitingExploreDE::Init()
 {
-
 	inherited::Init();
-
 	R_ASSERT(pMonster->IsRememberSound());
 
 	SoundElem se;
@@ -33,24 +23,14 @@ void CBitingExploreDE::Init()
 	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
 	m_tEnemy.obj = dynamic_cast<const CEntity *>(se.who);
 	m_tEnemy.position = se.position;
-	m_dwSoundTime	  = se.time;
-
-	float	yaw,pitch;
-	Fvector dir;
-	dir.sub(m_tEnemy.position,pMonster->Position());
-	dir.getHP(yaw,pitch);
-
-	pMonster->m_body.target.yaw = yaw;
-	m_dwTimeToTurn = (TTime)(_abs(angle_normalize_signed(yaw - pMonster->m_body.current.yaw)) / pMonster->_sd->m_fsTurnNormalAngular * 1000);
-
-	SetInertia(20000);
-	pMonster->SetMemoryTime(20000);
 }
 
 void CBitingExploreDE::Run()
 {
-	// определение состояния
-	if (ACTION_LOOK_AROUND == m_tAction && (m_dwStateStartedTime + m_dwTimeToTurn < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
+//	SoundElem	se;
+//	bool		bTemp;
+//	pMonster->GetSound(se, bTemp);
+//	if (m_tSound.time + 2000 < se.time) Init();
 
 	SoundElem se;
 	bool bDangerous;
@@ -61,11 +41,7 @@ void CBitingExploreDE::Run()
 		// look round here
 		break;
 	case ACTION_HIDE:
-		pMonster->m_tSelectorCover->m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover->m_fSearchRange;
-		pMonster->m_tSelectorCover->m_fOptEnemyDistance = pMonster->m_tSelectorCover->m_fMaxEnemyDistance;
-		pMonster->m_tSelectorCover->m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
-
-	//	pMonster->vfChoosePointAndBuildPath(pMonster->m_tSelectorCover, 0, true, 0,2000);
+		//pMonster->vfChoosePointAndBuildPath(pMonster->m_tSelectorCover, 0, true, 0,2000);
 
 		// Установить параметры движения
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
