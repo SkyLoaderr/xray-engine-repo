@@ -18,9 +18,10 @@ class ENGINE_API CLocatorAPI
 public:
 	struct	file
 	{
-		LPCSTR	name;	// low-case name
-		DWORD	vfs;	// 0xffff - standart file
-		DWORD	ptr;	// pointer inside vfs
+		LPCSTR	name;			// low-case name
+		DWORD	vfs;			// 0xffff - standart file
+		DWORD	ptr;			// pointer inside vfs
+		BOOL	bCompressed;
 		
 		IC bool operator < (CLocatorAPI& other) const
 		{	return strcmp(name,other.name)<0;	}
