@@ -6,6 +6,7 @@ const float		tess	= 32.0001f;
 void CBuild::Tesselate	()
 {
 	BOOL	bTesselate	= TRUE;
+	DWORD	cnt_splits	= 0;
 	
 	while (bTesselate)	
 	{
@@ -31,7 +32,11 @@ void CBuild::Tesselate	()
 			}
 			if (max_len<tess)	continue;
 
-			// Split this edge
+			// Split edge
+			bTesselate			= TRUE;
+			cnt_splits	++;
+
+			// 
 		}
 	}
 }
