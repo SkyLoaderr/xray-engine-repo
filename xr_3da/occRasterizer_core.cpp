@@ -98,10 +98,9 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	// interpolate
 	float lenR		= endR - startR;
 	float Zlen		= endZ - startZ;
-	float Zstart	= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
+	float Z			= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
 	float Zend		= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
-	float dZ		= (Zend-Zstart)/(maxT-minT);				// incerement in Z / pixel wrt dX
-	float Z			= Zstart;
+	float dZ		= (Zend-Z)/(maxT-minT);						// incerement in Z / pixel wrt dX
 	
 	// left connector
 	int	i_base		= curY*occ_dim0;
