@@ -119,6 +119,7 @@ private:
 	void							add_leafs_Dynamic			(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static			(IRender_Visual	*pVisual);					// if detected node's full visibility
 
+public:
 	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
 	void							render_main					();
 	void							render_forward				();
