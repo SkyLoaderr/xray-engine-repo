@@ -442,7 +442,7 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 
 void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
 {
-	Msg("%d : searching for suspicious nodes",Level().timeServer());
+	// Msg("%d : searching for suspicious nodes",Level().timeServer());
 
 	Device.Statistic.AI_Range.Begin	();
 

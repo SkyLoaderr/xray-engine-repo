@@ -61,14 +61,14 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &
 	if (FAILED(acmStreamSize(hc,dwLen,&dwNewLen,ACM_STREAMSIZEF_SOURCE))) return NULL;
 	if (!dwNewLen) return NULL;
 
-	void *dest		= xr_malloc(dwNewLen);
-	ACMSTREAMHEADER acmhdr;
-	acmhdr.cbStruct	=sizeof(acmhdr);
-	acmhdr.fdwStatus=0;
-	acmhdr.pbSrc=(BYTE *)data;
-	acmhdr.cbSrcLength=dwLen;
-	acmhdr.pbDst=(BYTE *)dest;
-	acmhdr.cbDstLength=dwNewLen;
+	ACMSTREAMHEADER		acmhdr;
+	void *dest			= xr_malloc(dwNewLen);
+	acmhdr.cbStruct		=sizeof(acmhdr);
+	acmhdr.fdwStatus	=0;
+	acmhdr.pbSrc		=(BYTE *)data;
+	acmhdr.cbSrcLength	=dwLen;
+	acmhdr.pbDst		=(BYTE *)dest;
+	acmhdr.cbDstLength	=dwNewLen;
 
 	if (FAILED(acmStreamPrepareHeader(hc,&acmhdr,0))) {
 		acmStreamClose			(hc,0);
@@ -140,19 +140,19 @@ void CSoundRender_Source::LoadWaveAs2D	(LPCSTR pName)
 void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
 {
 	// Load file into memory and parse WAV-format
-	R_ASSERT2			(FS.exist(pName),pName);
-	destructor<IReader>	data(FS.r_open(pName));
-	WAVEFORMATEX*	pFormat;
-	u32				dwLen;
-	void *			wavedata = ParseWave	(&data(),pFormat,dwLen);
-	if (!wavedata)	return;
+	R_ASSERT2				(FS.exist(pName),pName);
+	destructor<IReader>		data(FS.r_open(pName));
+	WAVEFORMATEX*			pFormat;
+	u32						dwLen;
+	void *					wavedata = ParseWave	(&data(),pFormat,dwLen);
+	if (!wavedata)			return;
 
 	// Parsing OK, converting to best format
 	WAVEFORMATEX			wfxdest;
 	void*					converted;
 
 	SoundRender.pBuffer->GetFormat	(&wfxdest,sizeof(wfxdest),0);
-	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec))
+	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=44100))
 	{
 		Msg("! WARNING: Invalid wave format (must be 44KHz,16bit,mono), file: %s",pName);
 	}
