@@ -63,7 +63,7 @@ void CStalkerActionCombatBase::finalize				()
 
 IC	void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
 {
-	*m_last_cover				= last_cover;
+	*m_last_cover			= last_cover;
 	object().agent_manager().member().member(m_object).cover(last_cover);
 }
 
@@ -524,7 +524,7 @@ void CStalkerActionLookOut::execute		()
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_close->setup			(position,10.f,170.f,10.f);
 	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
-	if (!point) {
+	if (!point || (object().movement().desired_position().similar(object().Position()) && object().movement().path_completed())) {
 		object().m_ce_close->setup		(position,10.f,170.f,10.f);
 		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
 	}
@@ -533,11 +533,10 @@ void CStalkerActionLookOut::execute		()
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 	}
-	else {
-		if (object().movement().path_completed()) {
-			m_storage->set_property			(eWorldPropertyLookedOut,true);
-			object().movement().set_nearest_accessible_position	();
-		}
+
+	if ((object().movement().desired_position().similar(object().Position()) && object().movement().path_completed())) {
+		m_storage->set_property			(eWorldPropertyLookedOut,true);
+		object().movement().set_nearest_accessible_position	();
 	}
 }
 
@@ -605,17 +604,17 @@ CStalkerActionDetourEnemy::CStalkerActionDetourEnemy(CCoverPoint **last_cover, C
 
 void CStalkerActionDetourEnemy::initialize		()
 {
-	inherited::initialize				();
+	inherited::initialize						();
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
-	object().movement().set_desired_direction		(0);
-	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type			(eMovementTypeRun);
-	object().movement().set_mental_state			(eMentalStateDanger);
-	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
-	last_cover							(0);
+	object().movement().set_movement_type		(eMovementTypeRun);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
+	last_cover									(0);
 }
 
 void CStalkerActionDetourEnemy::finalize		()

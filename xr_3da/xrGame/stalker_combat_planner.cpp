@@ -70,6 +70,9 @@ IC	void CStalkerCombatPlanner::update_cover	()
 	if ((memory_object.m_last_level_time == m_last_level_time) && (m_object->memory().enemy().selected()->ID() == m_last_enemy_id))
 		return;
 
+	if (!m_last_cover)
+		return;
+
 	m_last_enemy_id					= m_object->memory().enemy().selected()->ID();
 	m_last_level_time				= memory_object.m_last_level_time;
 
