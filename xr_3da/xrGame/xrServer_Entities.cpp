@@ -234,7 +234,7 @@ void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateGameObject(sizeof(s_Model)));
 }
 #endif
 //
@@ -313,15 +313,15 @@ xrSE_Target_CSCask::xrSE_Target_CSCask()
 {
 	s_Model[0]	=	0;
 }
-void	xrSE_Target_CSCask::UPDATE_Read	(NET_Packet& P)				{}
+void	xrSE_Target_CSCask::UPDATE_Read		(NET_Packet& P)				{}
 void	xrSE_Target_CSCask::UPDATE_Write	(NET_Packet& P)				{}
-void	xrSE_Target_CSCask::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
-void	xrSE_Target_CSCask::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
+void	xrSE_Target_CSCask::STATE_Read		(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
+void	xrSE_Target_CSCask::STATE_Write		(NET_Packet& P)				{ P.w_string(s_Model); }
 
 #ifdef _EDITOR
 void	xrSE_Target_CSCask::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateGameObject(sizeof(s_Model)));
 }
 #endif
 //
@@ -339,7 +339,7 @@ void	xrSE_Target_CS::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 #ifdef _EDITOR
 void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateGameObject(sizeof(s_Model)));
 }
 #endif
 //
@@ -650,7 +650,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
 {
    	inherited::FillProp(pref, values);
 	// model
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateLibObject(sizeof(caModel)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
@@ -761,7 +761,7 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropValueVec& values)
 {
    	inherited::FillProp(pref, values);
 	// model
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateLibObject(sizeof(caModel)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
@@ -812,6 +812,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_TARGET_ASSAULT:		return new	xrSE_Target_Assault;
 	case CLSID_TARGET_CS_BASE:		return new	xrSE_Target_CSBase;
 	case CLSID_TARGET_CS:			return new	xrSE_Target_CS;
+	case CLSID_TARGET_CS_CASK:		return new	xrSE_Target_CSCask;
 	}
 	return 0;
 }
