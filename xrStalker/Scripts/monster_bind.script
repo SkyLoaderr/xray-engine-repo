@@ -172,12 +172,13 @@ function CNecrophil:action()
 	if(device():time_global() > self.time_play) then
 		if(distance_between(self.object, self.enemy) < 2) then
 			if(self.state == 0) then
-				// Проигруем анимацию
+				// Поворачиваемся в сторону жертвы
 				reset_action(self.object, script_name())
 				action(self.object, look(look.point, self.enemy:position()), anim(anim.turn, 0), cond(cond.look_end))
 				self.state 		= 1
 				self.temp_time 	= device():time_global() + 00
 			elseif(self.state == 1 and self.object:action() == nil) then
+				// Проигруем анимацию
 				action(self.object, anim(anim.attack, 0), cond(cond.time_end, 900))
 				self.temp_time 	= device():time_global() + 400
 				self.state		= 2
