@@ -16,7 +16,10 @@ public:
 	DWORD						seqMSPF;	// milliseconds per frame
 	vector<IDirect3DTexture8*>	seqDATA;
 	BOOL						seqCycles;
-
+	
+	// User-data
+	BOOL						bUser;
+	
 	DWORD						Calculate_MemUsage(IDirect3DTexture8* T);
 public:
 	void						Load		(LPCSTR Name);
@@ -25,6 +28,8 @@ public:
 	
 	void						surface_set	(IDirect3DTexture8* surf);
 	IDirect3DTexture8*			surface_get ();
+
+	IC BOOL						isUser		()	{return bUser;};
 
 	CTexture					();
 	virtual ~CTexture			();

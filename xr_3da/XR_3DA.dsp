@@ -2629,6 +2629,30 @@ SOURCE=.\GlowManager.cpp
 SOURCE=.\GlowManager.h
 # End Source File
 # End Group
+# Begin Group "RTarget"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FStaticRender_RenderTarget.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FStaticRender_RenderTarget.h
+# End Source File
+# End Group
+# Begin Group "Model Pool"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ModelPool.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ModelPool.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\DetailModel.cpp
@@ -2673,27 +2697,11 @@ SOURCE=.\FStaticRender_Loader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\FStaticRender_RenderTarget.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\FStaticRender_RenderTarget.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\FStaticRender_SceneGraph.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\FStaticRender_Types.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ModelPool.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ModelPool.h
 # End Source File
 # Begin Source File
 

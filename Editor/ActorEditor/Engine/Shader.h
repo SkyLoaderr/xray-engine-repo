@@ -64,11 +64,12 @@ public:
 		Flags.bPixelShader	= FALSE;
 	}
 public:
-	DWORD				dwReference;
-	SFlags				Flags;
-	svector<CPass,8>	Passes;
+	DWORD					dwReference;
+	SFlags					Flags;
+	svector<CPass,8>		Passes;
+	svector<CTexture*,8>	userTex;
 	
-	IC BOOL				equal	(Shader& S)
+	IC BOOL					equal	(Shader& S)
 	{
 		if (Flags.iPriority != S.Flags.iPriority)	return FALSE;
 		if (Flags.bStrictB2F != S.Flags.bStrictB2F)	return FALSE;
