@@ -76,7 +76,7 @@ void CRender::Screenshot		(BOOL bSquare)
 	}
 
 	string64		buf,buf1;
-	strconcat		(buf,Path.SShot,"ss_",psSystemUserName,"_",itoa(timeGetTime(),buf1,10));
+	strconcat		(buf,Path.SShot,"ss_",Core.UserName,"_",itoa(timeGetTime(),buf1,10));
 
 	TGAdesc			p;
 	p.format		= IMG_24B;
