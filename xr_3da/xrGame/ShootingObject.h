@@ -153,7 +153,7 @@ protected:
 protected:
 	//имя пратиклов для гильз
 	shared_str				m_sShellParticles;
-	Fvector					vShellPoint;
+	Fvector					vLoadedShellPoint;
 
 protected:
 	//имя пратиклов для огня

@@ -190,9 +190,9 @@ void CWeapon::UpdateFP		()
 		} else {
 			// 3rd person or no parent
 			Fmatrix& parent			= XFORM();
-			Fvector& fp				= vFirePoint;
-			Fvector& fp2			= vFirePoint2;
-			Fvector& sp				= vShellPoint;
+			Fvector& fp				= vLoadedFirePoint;
+			Fvector& fp2			= vLoadedFirePoint2;
+			Fvector& sp				= vLoadedShellPoint;
 
 			parent.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP2,fp2);
@@ -291,16 +291,14 @@ void CWeapon::Load		(LPCSTR section)
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
 	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
 	conditionDecreasePerShot	  = pSettings->r_float(section,"condition_shot_dec"); 
-
 		
-	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
+	vLoadedFirePoint	= pSettings->r_fvector3		(section,"fire_point"		);
 	
 	if(pSettings->line_exist(section,"fire_point2")) 
-		vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
+		vLoadedFirePoint2= pSettings->r_fvector3	(section,"fire_point2");
 	else 
-		vFirePoint2 = vFirePoint;
+		vLoadedFirePoint2= vLoadedFirePoint;
 
-	
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 	m_bIsSingleHanded	= true;

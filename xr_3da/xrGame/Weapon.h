@@ -301,8 +301,8 @@ protected:
 	Fvector					vLastSP, vLastSD;  //гильз	
 
 	//загружаемые параметры
-	Fvector					vFirePoint;
-	Fvector					vFirePoint2;
+	Fvector					vLoadedFirePoint;
+	Fvector					vLoadedFirePoint2;
 
 protected:
 	virtual void			UpdatePosition		(const Fmatrix& transform);

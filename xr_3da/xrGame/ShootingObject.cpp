@@ -199,8 +199,8 @@ void CShootingObject::LoadShellParticles (LPCSTR section, LPCSTR prefix)
 
 	if(pSettings->line_exist(section,full_name)) 
 	{
-		m_sShellParticles = pSettings->r_string (section,full_name);
-		vShellPoint	= pSettings->r_fvector3	(section,strconcat(full_name, prefix, "shell_point"));
+		m_sShellParticles	= pSettings->r_string	(section,full_name);
+		vLoadedShellPoint	= pSettings->r_fvector3	(section,strconcat(full_name, prefix, "shell_point"));
 	}
 }
 
