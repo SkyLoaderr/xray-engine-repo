@@ -119,7 +119,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** MercuryBall
-xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeItem)
+xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeDynamicObject)
 	string64				s_Model;
     xrSE_MercuryBall		();
 xrSE_DECLARE_END
