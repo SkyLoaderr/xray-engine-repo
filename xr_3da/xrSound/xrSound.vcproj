@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<VisualStudioProject 
+<VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="xrSound"
@@ -10,17 +10,17 @@
 	SccProvider="SAK"
 	Keyword="Win32Proj">
 	<Platforms>
-		<Platform 
+		<Platform
 			Name="Win32"/>
 	</Platforms>
 	<Configurations>
-		<Configuration 
+		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
-			<Tool 
+			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableIntrinsicFunctions="FALSE"
@@ -45,26 +45,10 @@
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
-				CallingConvention="2">
-				<IntelOptions 
-					Optimization="0"
-					EnableIntrinsicFunctions="0"
-					FavorSizeOrSpeed="0"
-					EnableFiberSafeOptimizations="1"
-					OptimizeForProcessor="3"
-					StringPooling="0"
-					MinimalRebuild="1"
-					ExceptionHandling="0"
-					SmallerTypeCheck="1"
-					BasicRuntimeChecks="3"
-					RuntimeLibrary="3"
-					EnableFunctionLevelLinking="1"
-					RuntimeTypeInfo="1"
-					AllOptions="/c  /ZI /nologo /W4 /Wp64 /Od /GT /G7 /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /Gm /RTCc /RTC1 /MDd /Gy /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/xrSound.pch&quot; /Fo&quot;Debug/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-			</Tool>
-			<Tool 
+				CallingConvention="2"/>
+			<Tool
 				Name="VCCustomBuildTool"/>
-			<Tool 
+			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				OutputFile="$(OutDir)/xrSound.dll"
@@ -77,39 +61,36 @@
 				MapExports="FALSE"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="1">
-				<IntelOptions 
-					AllOptions="/NOLOGO /DLL /OUT:&quot;x:\/xrSound.dll&quot; /INCREMENTAL /DEBUG /PDB:&quot;x:\xrSound.pdb&quot; /MAP:&quot;x:\xrSound.map&quot; /SUBSYSTEM:WINDOWS /TLBID:1 /IMPLIB:&quot;x:\/xrSound.lib&quot; /MACHINE:IX86  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"/>
-			</Tool>
-			<Tool 
+				TargetMachine="1"/>
+			<Tool
 				Name="VCMIDLTool"/>
-			<Tool 
+			<Tool
 				Name="VCPostBuildEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCPreBuildEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCPreLinkEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCResourceCompilerTool"/>
-			<Tool 
+			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool 
+			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
-		<Configuration 
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE">
-			<Tool 
+			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				GlobalOptimizations="TRUE"
@@ -135,72 +116,48 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2">
-				<IntelOptions 
-					WholeProgramOptimization="1"
-					Optimization="3"
-					GlobalOptimizations="1"
-					InlineFunctionExpansion="2"
-					EnableIntrinsicFunctions="1"
-					FavorSizeOrSpeed="1"
-					OmitFramePointers="1"
-					EnableFiberSafeOptimizations="1"
-					OptimizeForProcessor="3"
-					StringPooling="1"
-					ExceptionHandling="0"
-					RuntimeLibrary="2"
-					BufferSecurityCheck="0"
-					EnableFunctionLevelLinking="0"
-					RuntimeTypeInfo="1"
-					AllOptions="/c  /GL /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Release/xrSound.pch&quot; /Fo&quot;Release/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-			</Tool>
-			<Tool 
+				CallingConvention="2"/>
+			<Tool
 				Name="VCCustomBuildTool"/>
-			<Tool 
+			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="1">
-				<IntelOptions 
-					AllOptions="/NOLOGO /DLL /LTCG /OUT:&quot;x:\/xrSound.dll&quot; /INCREMENTAL:NO /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /TLBID:1 /IMPLIB:&quot;x:\/xrSound.lib&quot; /MACHINE:IX86  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"/>
-			</Tool>
-			<Tool 
+				TargetMachine="1"/>
+			<Tool
 				Name="VCMIDLTool"/>
-			<Tool 
+			<Tool
 				Name="VCPostBuildEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCPreBuildEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCPreLinkEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCResourceCompilerTool"/>
-			<Tool 
+			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool 
+			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-			<IntelOptions 
-				WholeProgramOptimization="1"/>
 		</Configuration>
-		<Configuration 
+		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="FALSE">
-			<Tool 
+			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				GlobalOptimizations="TRUE"
@@ -228,328 +185,259 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2">
-				<IntelOptions 
-					Optimization="3"
-					GlobalOptimizations="1"
-					InlineFunctionExpansion="2"
-					EnableIntrinsicFunctions="1"
-					FavorSizeOrSpeed="1"
-					OmitFramePointers="0"
-					EnableFiberSafeOptimizations="1"
-					OptimizeForProcessor="3"
-					StringPooling="1"
-					ExceptionHandling="0"
-					RuntimeLibrary="2"
-					BufferSecurityCheck="0"
-					EnableFunctionLevelLinking="0"
-					RuntimeTypeInfo="1"
-					AllOptions="/c  /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /GT /G7 /D &quot;MIXED&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Mixed/xrSound.pch&quot; /Fo&quot;Mixed/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-			</Tool>
-			<Tool 
+				CallingConvention="2"/>
+			<Tool
 				Name="VCCustomBuildTool"/>
-			<Tool 
+			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrSound.lib"
-				TargetMachine="1">
-				<IntelOptions 
-					AllOptions="/NOLOGO /DLL /OUT:&quot;x:\/xrSound.dll&quot; /INCREMENTAL:NO /DEBUG /PDB:&quot;x:\/xrSound.pdb&quot; /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /TLBID:1 /IMPLIB:&quot;x:\/xrSound.lib&quot; /MACHINE:IX86  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"/>
-			</Tool>
-			<Tool 
+				TargetMachine="1"/>
+			<Tool
 				Name="VCMIDLTool"/>
-			<Tool 
+			<Tool
 				Name="VCPostBuildEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCPreBuildEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCPreLinkEventTool"/>
-			<Tool 
+			<Tool
 				Name="VCResourceCompilerTool"/>
-			<Tool 
+			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool 
+			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool 
+			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-			<IntelOptions 
-				CompilerName="1"/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
-		<Filter 
+		<Filter
 			Name="Kernel"
 			Filter="">
-			<File 
+			<File
 				RelativePath="cl_intersect.h">
 			</File>
-			<File 
+			<File
 				RelativePath="guids.cpp">
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Debug|Win32">
-					<Tool 
+					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0">
-						<IntelOptions 
-							AllOptions="/c  /ZI /nologo /W4 /Wp64 /Od /GT /G7 /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /Gm /RTCc /RTC1 /MDd /Gy /GR /Fo&quot;Debug/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Release|Win32">
-					<Tool 
+					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0">
-						<IntelOptions 
-							AllOptions="/c  /GL /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Fo&quot;Release/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Mixed|Win32">
-					<Tool 
+					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0">
-						<IntelOptions 
-							AllOptions="/c  /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /GT /G7 /D &quot;MIXED&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Fp&quot;Mixed/xrSound.pch&quot; /Fo&quot;Mixed/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
-			<File 
+			<File
 				RelativePath="Sound.h">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender.h">
 			</File>
-			<File 
+			<File
 				RelativePath="stdafx.cpp">
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Debug|Win32">
-					<Tool 
+					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1">
-						<IntelOptions 
-							AllOptions="/c  /ZI /nologo /W4 /Wp64 /Od /GT /G7 /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /Gm /RTCc /RTC1 /MDd /Gy /GR /Yc&quot;StdAfx.h&quot; /Fp&quot;./Debug/xrSound.pch&quot; /Fo&quot;Debug/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Release|Win32">
-					<Tool 
+					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1">
-						<IntelOptions 
-							AllOptions="/c  /GL /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yc&quot;StdAfx.h&quot; /Fp&quot;Release/xrSound.pch&quot; /Fo&quot;Release/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Mixed|Win32">
-					<Tool 
+					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1">
-						<IntelOptions 
-							AllOptions="/c  /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /GT /G7 /D &quot;MIXED&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yc&quot;StdAfx.h&quot; /Fp&quot;Mixed/xrSound.pch&quot; /Fo&quot;Mixed/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
-			<File 
+			<File
 				RelativePath="stdafx.h">
 			</File>
-			<File 
+			<File
 				RelativePath="xrCDB.h">
 			</File>
-			<File 
+			<File
 				RelativePath="xrLevel.h">
 			</File>
 		</Filter>
-		<Filter 
+		<Filter
 			Name="Core"
 			Filter="">
-			<File 
+			<File
 				RelativePath="SoundRender_Core.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Core.h">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Core_Processor.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Core_SourceManager.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Core_StartStop.cpp">
 			</File>
 		</Filter>
-		<Filter 
+		<Filter
 			Name="Emitter"
 			Filter="">
-			<File 
+			<File
 				RelativePath="SoundRender_Emitter.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Emitter.h">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Emitter_FSM.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Emitter_StartStop.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Emitter_streamer.cpp">
 			</File>
 		</Filter>
-		<Filter 
+		<Filter
 			Name="Source"
 			Filter="">
-			<File 
+			<File
 				RelativePath="SoundRender_Source.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Source.h">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Source_loader.cpp">
 			</File>
 		</Filter>
-		<Filter 
+		<Filter
 			Name="Target"
 			Filter="">
-			<File 
+			<File
 				RelativePath="SoundRender_Target.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Target.h">
 			</File>
 		</Filter>
-		<Filter 
+		<Filter
 			Name="Environment"
 			Filter="">
-			<File 
+			<File
 				RelativePath="SoundRender_Environment.cpp">
 			</File>
-			<File 
+			<File
 				RelativePath="SoundRender_Environment.h">
 			</File>
 		</Filter>
-		<Filter 
+		<Filter
 			Name="Misc (or old)"
 			Filter="">
-			<File 
+			<File
 				RelativePath="MusicStream.cpp">
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /ZI /nologo /W4 /Wp64 /Od /GT /G7 /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /Gm /RTCc /RTC1 /MDd /Gy /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/xrSound.pch&quot; /Fo&quot;Debug/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Release|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /GL /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Release/xrSound.pch&quot; /Fo&quot;Release/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Mixed|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /GT /G7 /D &quot;MIXED&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Mixed/xrSound.pch&quot; /Fo&quot;Mixed/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
-			<File 
+			<File
 				RelativePath="MusicStream.h">
 			</File>
-			<File 
+			<File
 				RelativePath="xr_cda.cpp">
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /ZI /nologo /W4 /Wp64 /Od /GT /G7 /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /Gm /RTCc /RTC1 /MDd /Gy /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/xrSound.pch&quot; /Fo&quot;Debug/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Release|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /GL /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Release/xrSound.pch&quot; /Fo&quot;Release/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Mixed|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /GT /G7 /D &quot;MIXED&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Mixed/xrSound.pch&quot; /Fo&quot;Mixed/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
-			<File 
+			<File
 				RelativePath="xr_cda.h">
 			</File>
-			<File 
+			<File
 				RelativePath="xr_streamsnd.cpp">
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /ZI /nologo /W4 /Wp64 /Od /GT /G7 /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /Gm /RTCc /RTC1 /MDd /Gy /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/xrSound.pch&quot; /Fo&quot;Debug/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Release|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /GL /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Release/xrSound.pch&quot; /Fo&quot;Release/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
-				<FileConfiguration 
+				<FileConfiguration
 					Name="Mixed|Win32"
 					ExcludedFromBuild="TRUE">
-					<Tool 
-						Name="VCCLCompilerTool">
-						<IntelOptions 
-							AllOptions="/c  /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /GT /G7 /D &quot;MIXED&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_WINDOWS&quot; /D &quot;_USRDLL&quot; /D &quot;XRSOUND_EXPORTS&quot; /D &quot;_WINDLL&quot; /D &quot;_MBCS&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;Mixed/xrSound.pch&quot; /Fo&quot;Mixed/&quot; /Fd&quot;x:/xrSound.pdb&quot; /Gz /TP"/>
-					</Tool>
+					<Tool
+						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
-			<File 
+			<File
 				RelativePath="xr_streamsnd.h">
 			</File>
 		</Filter>
 	</Files>
 	<Globals>
-		<Global 
+		<Global
 			Name="DevPartner_IsInstrumented"
 			Value="1"/>
 	</Globals>
 </VisualStudioProject>
-
