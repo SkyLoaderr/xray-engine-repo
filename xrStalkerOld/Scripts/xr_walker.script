@@ -7,7 +7,7 @@
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_walker" (property_evaluator)
 
-function evaluator_need_walker:__init(storage) super()
+function evaluator_need_walker:__init(storage, name) super(nil, name)
   	self.st = storage
 end
 
@@ -92,7 +92,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	 	operators["action_walker"] = xr_actions_id.zmey_walker_base + 1
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_walker"], this.evaluator_need_walker(storage))
+		manager:add_evaluator(properties["need_walker"], this.evaluator_need_walker(storage, "walker_need"))
 
 		local new_action = this.action_walker_activity(npc, "action_walker_activity", storage)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
