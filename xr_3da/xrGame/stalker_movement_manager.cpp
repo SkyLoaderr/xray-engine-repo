@@ -17,9 +17,10 @@ using namespace StalkerMovement;
 
 IC	void CStalkerMovementManager::setup_head_speed		()
 {
-	if (mental_state() == eMentalStateFree)
+	if (mental_state() == eMentalStateFree) {
 		if (m_stalker->CSightManager::enabled())
 			m_head.speed		= PI_DIV_2;
+	}
 	else
 		m_head.speed			= 3*PI_DIV_2;
 }
@@ -34,7 +35,7 @@ IC	void CStalkerMovementManager::setup_body_orientation	()
 		);
 		float					y,p;
 		t.getHP					(y,p);
-		m_body.target.yaw		= -y;//m_head.current.yaw;
+		m_body.target.yaw		= -y;
 		m_head.target.yaw		= -y;
 		m_head.speed			= m_body.speed;
 	}

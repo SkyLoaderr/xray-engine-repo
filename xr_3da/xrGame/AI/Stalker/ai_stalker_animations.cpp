@@ -125,7 +125,8 @@ void __stdcall CStalkerAnimations::HeadCallback(CBoneInstance *B)
 		yaw_factor			= y_head_factor;
 		pitch_factor		= p_head_factor;
 	}
-	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
+//	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->head_orientation().current.yaw - (A->body_orientation().current.yaw)));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
 
 	spin.setXYZ				(pitch, yaw, 0);
@@ -150,7 +151,8 @@ void __stdcall CStalkerAnimations::ShoulderCallback(CBoneInstance *B)
 		yaw_factor			= y_shoulder_factor;
 		pitch_factor		= p_shoulder_factor;
 	}
-	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
+//	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->head_orientation().current.yaw - (A->body_orientation().current.yaw)));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
@@ -172,7 +174,8 @@ void __stdcall CStalkerAnimations::SpinCallback(CBoneInstance *B)
 		yaw_factor			= y_spin_factor;
 		pitch_factor		= p_spin_factor;
 	}
-	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
+//	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
+	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->head_orientation().current.yaw - (A->body_orientation().current.yaw)));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
