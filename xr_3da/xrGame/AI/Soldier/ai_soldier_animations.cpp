@@ -17,8 +17,8 @@ void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
 	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
 	
-	int legs_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_legs"));
-	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(LegsSpinCallback,this);
+//	int legs_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_legs"));
+//	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(LegsSpinCallback,this);
 }
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
@@ -35,8 +35,8 @@ void __stdcall CAI_Soldier::LegsSpinCallback(CBoneInstance* B)
 	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
 	
 //	Fmatrix				spin;
-//	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
-//	float				bone_pitch	= A->r_torso.pitch;
+//	float				bone_yaw	= A->r_torso_current.yaw - A->r_model_yaw - A->r_model_yaw_delta;
+//	float				bone_pitch	= A->r_torso_current.pitch;
 //	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
 //	spin.setXYZ			(bone_yaw,bone_pitch,0);
 //	B->mTransform.mulB_43(spin);
