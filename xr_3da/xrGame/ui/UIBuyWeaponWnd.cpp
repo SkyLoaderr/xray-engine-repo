@@ -844,7 +844,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 //		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnBuyMenu_Ok();
 	}
@@ -852,7 +852,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 //		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 	}
 	// “ак как у нас при наведении мен€етс€ текстура, то обрабатываем эту ситуацию
 	else if (STATIC_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)

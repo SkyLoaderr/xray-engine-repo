@@ -149,7 +149,7 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if (&UIOkBtn == pWnd && BUTTON_CLICKED == msg)
 	{
 		// Нажали ОК.
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 //		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
 		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnSkinMenu_Ok();
@@ -158,7 +158,7 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	else if (&UICancelBtn == pWnd && BUTTON_CLICKED == msg)
 	{
 		// Нажали Cancel.
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 //		HUD().GetUI()->UIGame()->OnSkinMenu_Cancel();
 	}
 

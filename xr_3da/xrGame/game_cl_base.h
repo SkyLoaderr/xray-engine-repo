@@ -46,8 +46,8 @@ protected:
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 				void				CommonMessageOut		(LPCSTR msg);
 
-				void				StartMenu				(CUIDialogWnd* pDialog);
-				void				StopMenu				(CUIDialogWnd* pDialog);
+				void				StartMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+				void				StopMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 
 	virtual		float				shedule_Scale			();
 
@@ -82,7 +82,7 @@ public:
 	virtual		void				GetMapEntities			(xr_vector<SZoneMapEntityData>& dst)	{};
 
 
-				void				StartStopMenu			(CUIDialogWnd* pDialog);
+				void				StartStopMenu			(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 	virtual		void				shedule_Update			(u32 dt);
 
 	void							u_EventGen				(NET_Packet& P, u16 type, u16 dest);

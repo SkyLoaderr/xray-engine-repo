@@ -34,21 +34,21 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	switch (key_binding[dik])
 	{
 	case kINVENTORY: 
-		m_game->StartStopMenu(&InventoryMenu);
+		m_game->StartStopMenu(&InventoryMenu,true);
 		return true;
 		break;
 	case kACTIVE_JOBS:
-		m_game->StartStopMenu(&PdaMenu);
+		m_game->StartStopMenu(&PdaMenu,true);
 		PdaMenu.SetActiveSubdialog(epsActiveJobs);
 		return true;
 		break;
 	case kMAP:
-		m_game->StartStopMenu(&PdaMenu);
+		m_game->StartStopMenu(&PdaMenu,true);
 		PdaMenu.SetActiveSubdialog(epsMap);
 		return true;
 		break;
 	case kCONTACTS:
-		m_game->StartStopMenu(&PdaMenu);
+		m_game->StartStopMenu(&PdaMenu,true);
 		PdaMenu.SetActiveSubdialog(epsContacts);
 		return true;
 		break;
@@ -62,7 +62,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	case kQUIT:
 		if(m_pMainInputReceiver)//m_pUserMenu)
 		{
-			m_game->StartStopMenu(m_pMainInputReceiver);//m_pUserMenu);
+			m_game->StartStopMenu(m_pMainInputReceiver,true);//m_pUserMenu);
 			return true;
 		}
 		break;
@@ -78,7 +78,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			if(m_pMainInputReceiver/*m_pUserMenu*/ == NULL)
 			{
 				//start the inventory menu
-				m_game->StartStopMenu(&InventoryMenu);
+				m_game->StartStopMenu(&InventoryMenu,true);
 				return true;
 			}
 	}
@@ -96,12 +96,12 @@ bool CUIGameSP::IR_OnKeyboardRelease(int dik)
 
 void CUIGameSP::StartTalk()
 {
-	m_game->StartStopMenu(&TalkMenu);
+	m_game->StartStopMenu(&TalkMenu,true);
 }
 void CUIGameSP::StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 							 CInventory* pOthersInv, CGameObject* pOthersObject)
 {
 	UICarBodyMenu.InitCarBody(pOurInv,  pOurObject,
 		                      pOthersInv, pOthersObject);
-	m_game->StartStopMenu(&UICarBodyMenu);
+	m_game->StartStopMenu(&UICarBodyMenu,true);
 }

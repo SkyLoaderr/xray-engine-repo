@@ -213,7 +213,7 @@ function uiDialog:OnKeyboard(dik, keyboard_action)  --virtual function
    end
 
    if bind == key_bindings.kQUIT then
-      self.m_game_cl:StopMenu(self) --close dialog
+      self.m_game_cl:StopMenu(self, true) --close dialog
    end
    return true --catch all keys.
 end

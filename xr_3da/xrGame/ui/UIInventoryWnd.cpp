@@ -738,7 +738,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(sleep_msg)
 			HUD().GetUI()->UIMainIngameWnd.AddInfoMessage(sleep_msg);
 
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 	}
 	else if (UNDRESS_OUTFIT == msg)
 	{
@@ -754,7 +754,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if (&UIExitButton == pWnd && BUTTON_CLICKED == msg)
 	{
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);

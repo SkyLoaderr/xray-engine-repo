@@ -175,7 +175,7 @@ bool game_cl_Deathmatch::CanBeReady				()
 
 	if (!m_bSkinSelected)
 	{
-		StartStopMenu(pCurSkinMenu);
+		StartStopMenu(pCurSkinMenu,true);
 		return false;
 	};
 
@@ -187,7 +187,7 @@ bool game_cl_Deathmatch::CanBeReady				()
 
 	if (res == 0xff || !pCurBuyMenu->CanBuyAllItems())
 	{
-		StartStopMenu(pCurBuyMenu);
+		StartStopMenu(pCurBuyMenu,true);
 		return false;
 	};
 
@@ -302,7 +302,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 	if (kINVENTORY == key )
 	{
-		StartStopMenu(pInventoryMenu);
+		StartStopMenu(pInventoryMenu,true);
 		return true;
 	};
 
@@ -313,7 +313,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 			if (pCurBuyMenu && !pCurBuyMenu->IsShown())
 				SetBuyMenuItems		();
-			StartStopMenu(pCurBuyMenu);
+			StartStopMenu(pCurBuyMenu,true);
 		}
 
 		return true;
@@ -322,7 +322,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 	if (kSKIN == key )
 	{
 		if(!pCurSkinMenu) SetCurrentSkinMenu();
-		StartStopMenu(pCurSkinMenu);
+		StartStopMenu(pCurSkinMenu,true);
 
 		return true;
 	};

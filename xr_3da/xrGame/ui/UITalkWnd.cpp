@@ -204,7 +204,7 @@ void CUITalkWnd::Update()
 	{
 //		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 //		if(pGameSP) pGameSP->StartStopMenu(this);
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 	}
 
 	inherited::Update();

@@ -176,7 +176,7 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 	end
 
    if key_bindings.kINVENTORY == key then
-      self:StartStopMenu(self.m_inventory_wnd)
+      self:StartStopMenu(self.m_inventory_wnd,true)
       return true
    end
 
@@ -193,13 +193,13 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 
 --see bind commands in user.lxt (bind ext_1 kY and bind ext_2 kU)
    if key_bindings.kEXT_1 == key then
---      self:StartStopMenu(self.m_testWnd)
-      self:StartStopMenu(self.m_dlg_)
+--      self:StartStopMenu(self.m_testWnd,true)
+      self:StartStopMenu(self.m_dlg, true)
       return true
    end
 
    if key_bindings.kEXT_2 == key then
-      self:StartStopMenu(self.m_char_dlg)
+      self:StartStopMenu(self.m_char_dlg,true)
       return true
    end
 

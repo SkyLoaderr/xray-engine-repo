@@ -256,7 +256,7 @@ void CActor::RunTalkDialog(CInventoryOwner* talk_partner)
 		if(pGameSP)
 		{
 			if(pGameSP->MainInputReceiver())
-				Game().StartStopMenu(pGameSP->MainInputReceiver());
+				Game().StartStopMenu(pGameSP->MainInputReceiver(),true);
 			pGameSP->StartTalk();
 		}
 	}

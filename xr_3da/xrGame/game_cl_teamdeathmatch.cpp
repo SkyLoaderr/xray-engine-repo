@@ -194,7 +194,7 @@ void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
 	else pNewSkinMenu = pSkinMenuTeam2;
 
 	if (pNewSkinMenu != pCurSkinMenu)
-		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu);
+		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu,true);
 
 	pCurSkinMenu = pNewSkinMenu;
 	pCurSkinMenu->SwitchSkin(local_player->skin);
@@ -204,7 +204,7 @@ bool game_cl_TeamDeathmatch::CanBeReady				()
 {
 	if (!m_bTeamSelected)
 	{
-		StartStopMenu(pUITeamSelectWnd);
+		StartStopMenu(pUITeamSelectWnd,true);
 		return false;
 	}
 
@@ -238,7 +238,7 @@ bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 {
 	if (kTEAM == key )
 	{
-		StartStopMenu(pUITeamSelectWnd);
+		StartStopMenu(pUITeamSelectWnd,true);
 
 		return true;
 	};

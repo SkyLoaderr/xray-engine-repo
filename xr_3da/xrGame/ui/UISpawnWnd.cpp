@@ -128,7 +128,7 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //			pCallbackFunc(m_iResult+1);
 //			m_iResult = -1;
 //		};
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 		game_cl_TeamDeathmatch * dm = smart_cast<game_cl_TeamDeathmatch *>(&(Game()));
 		dm->OnTeamSelect(m_iResult);
 	}
@@ -142,7 +142,7 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
 	{
-		Game().StartStopMenu(this);
+		Game().StartStopMenu(this,true);
 		return true;
 	}
 

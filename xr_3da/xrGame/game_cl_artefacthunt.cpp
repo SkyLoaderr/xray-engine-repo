@@ -409,7 +409,7 @@ bool game_cl_ArtefactHunt::CanBeReady				()
 
 	if (!m_bTeamSelected)
 	{
-		StartStopMenu(pUITeamSelectWnd);
+		StartStopMenu(pUITeamSelectWnd,true);
 		return false;
 	};
 
