@@ -324,6 +324,7 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 
 void CCar::PhDataUpdate(dReal step){
 	m_jeep.DynamicData.CalculateData();
+	m_jeep.LimitWeels();
 
 }
 void CCar:: PhTune(dReal step){
