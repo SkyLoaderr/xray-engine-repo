@@ -187,4 +187,8 @@
 		<class>Actor</class>
 		<specific_character>actor</specific_character>
 	</character>
+	
+	<character id="test_character">
+		<specific_character>test_character</specific_character>
+	</character>
 </xml>
