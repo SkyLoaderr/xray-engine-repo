@@ -165,8 +165,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 
 			xrClientData *l_pC	= ID_to_client(sender);
-			VERIFY				(game && l_pC && l_pC->owner);
-			Msg					("* [%2d] killed by [%2d] - sended by [%s:%2d]", id_dest, id_src, game->get_option_s(l_pC->Name,"name","Player"), l_pC->owner->ID);
+//			VERIFY				(game && l_pC && l_pC->owner);
+			VERIFY				(game && l_pC);
+			if (l_pC && l_pC->owner)
+			{
+				Msg					("* [%2d] killed by [%2d] - sended by [%s:%2d]", id_dest, id_src, game->get_option_s(l_pC->Name,"name","Player"), l_pC->owner->ID);
+			}
 
 			CSE_Abstract*		e_dest		= game->get_entity_from_eid	(id_dest);	// кто умер
 			VERIFY				(e_dest);
