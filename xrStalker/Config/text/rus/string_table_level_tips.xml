@@ -1,8 +1,13 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
 	<string id="tips_zone_danger">
-		<text>Default news</text>
+		<text>Default tips</text>
 		<text ln="rus">Не ходите, дети, в Африку гулять.</text>
+	</string>
+
+	<string id="tips_stalker_danger">
+		<text>Default tips</text>
+		<text ln="rus">Бэрэгись мандавошек.</text>
 	</string>
 	
 </string_table>
