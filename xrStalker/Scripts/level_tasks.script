@@ -13,6 +13,7 @@ function main()
        		then
        			actor:give_info_portion("escape_trader_find_artefact")
 				actor:set_task_state(task.completed, "escape_trader_need_artefact", 1)
+				printf("FIND NIGHT STAR")
        		end       	
        	end
 
@@ -22,6 +23,7 @@ function main()
        		then
        			actor:give_info_portion("escape_take_blockpost_case")
 				actor:set_task_state(task.completed, "escape_blockpost_case", 1)
+				printf("FIND BLOCKPOST CASE")
        		end       	
        	end
 
