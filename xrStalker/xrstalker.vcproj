@@ -288,6 +288,9 @@
 					RelativePath=".\Config\gameplay\npc_profile.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\storyline_info_to_diary.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\tasks_escape.xml">
 				</File>
 				<Filter
@@ -394,7 +397,7 @@
 						RelativePath=".\Config\text\rus\stable_dialogs_test.xml">
 					</File>
 					<File
-						RelativePath=".\Config\text\rus\string_table_artefacts.xml">
+						RelativePath=".\Config\text\rus\stable_storyline_info_to_diary.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_enc_equipment.xml">
@@ -456,9 +459,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_test.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\eng\string_table_artefacts.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\string_table_enc_equipment.xml">

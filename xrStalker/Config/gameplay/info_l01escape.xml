@@ -162,6 +162,7 @@
 	</info_portion>
 	<info_portion id="escape_stalker_give">	
 		<disable>escape_stalker_meet</disable>
+		<article>storyline_fox_flash_info</article>
 	</info_portion>	
 	<info_portion id="escape_stalker_done">
 		<disable>escape_stalker_meet</disable>

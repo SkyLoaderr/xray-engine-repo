@@ -291,7 +291,6 @@ function action_weapon:initialize()
 	stop_play_sound(self.object)
 end
 function action_weapon:execute ()
-	printf("unstrap weapon1")
    	self.object:set_item(object.idle, self.object:best_weapon())
 	
 	-- нужно остановиться и посмотреть в сторону актора
@@ -335,7 +334,6 @@ function action_threat:initialize()
 	stop_play_sound(self.object)
 end
 function action_threat:execute ()
-	printf("unstrap weapon2")
    	self.object:set_item(object.idle, self.object:best_weapon())
 
 	-- нужно остановиться и посмотреть в сторону актора
