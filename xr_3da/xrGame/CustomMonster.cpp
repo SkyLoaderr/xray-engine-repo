@@ -261,12 +261,14 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		// here is monster AI call
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
+		Device.Statistic.TEST1.Begin();
 		if (GetScriptControl())
 			ProcessScripts();
 		else {
 			Think						();
 		}
 		m_dwLastUpdateTime				= Level().timeServer();
+		Device.Statistic.TEST1.End();
 		Device.Statistic.AI_Think.End	();
 
 		Engine.Sheduler.Slice			();

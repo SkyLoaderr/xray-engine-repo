@@ -65,8 +65,8 @@ public:
 	float	m_tele_find_radius;
 
 
-	
-
+	bool	m_shield_active;
+	LPCSTR	particle_fire_shield;
 public:
 					CBurer				();
 	virtual			~CBurer				();	
@@ -79,6 +79,7 @@ public:
 
 	virtual	void	shedule_Update		(u32 dt);
 	virtual void	UpdateCL			();
+	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);
 
 	virtual void	StateSelector		();
 			void	ProcessTurn			();
@@ -96,6 +97,9 @@ public:
 
 			void	StartTeleObjectParticle(CGameObject *pO);
 			void	StopTeleObjectParticle(CGameObject *pO);
+
+			void	ActivateShield		() {m_shield_active = true;}
+			void	DeactivateShield	() {m_shield_active = false;}
 
 private:
 

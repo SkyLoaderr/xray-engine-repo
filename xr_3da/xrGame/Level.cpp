@@ -288,9 +288,9 @@ void CLevel::OnRender()
 	inherited::OnRender	();
 	
 	//отрисовать трассы пуль
-	Device.Statistic.TEST1.Begin();
+	//Device.Statistic.TEST1.Begin();
 	BulletManager().Render();
-	Device.Statistic.TEST1.End();
+	//Device.Statistic.TEST1.End();
 	//отрисовать интерфейc пользователя
 	HUD().RenderUI();
 

@@ -39,7 +39,8 @@ void CBurer::reinit()
 {
 	inherited::reinit			();
 
-	
+	//DeactivateShield			();
+	ActivateShield				();
 }
 
 
@@ -108,6 +109,8 @@ void CBurer::Load(LPCSTR section)
 	m_tele_object_max_mass			= pSettings->r_float(section,"Tele_Object_Max_Mass");
 	m_tele_find_radius				= pSettings->r_float(section,"Tele_Find_Radius");
 
+	particle_fire_shield			= pSettings->r_string(section,"Particle_Shield");
+	
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
@@ -362,4 +365,31 @@ void CBurer::StopTeleObjectParticle(CGameObject *pO)
 	pO->CParticlesPlayer::StopParticles(particle_tele_object);
 }
 
+void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+{
+	if (m_shield_active && (hit_type == ALife::eHitTypeFireWound)) {
+		// установить particles
+		CParticlesObject* ps = xr_new<CParticlesObject>(particle_fire_shield);
+
+		// вычислить позицию и направленность партикла
+		Fmatrix pos; 
+
+		// установить направление
+		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+		// установить позицию
+		pos.c.set(p_in_object_space);
+		
+		Fmatrix transformed;
+		transformed.set(XFORM());
+		transformed.mulB(pos);
+
+		ps->UpdateParent(transformed,Fvector().set(0.f,0.f,0.f));
+		Level().ps_needtoplay.push_back(ps);
+
+		return;
+	}
+		
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+}
 

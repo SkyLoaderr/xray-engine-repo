@@ -70,7 +70,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	Fvector				target;
 	
 	// обновить CDetailPathManager::m_current_travel_point в соответствие с текущей позицией
-	while (CDetailPathManager::m_current_travel_point < CDetailPathManager::path().size() - 1) {
+	while (CDetailPathManager::m_current_travel_point < CDetailPathManager::path().size() - 2) {
 
 		float pos_dist_to_cur_point			= dest_position.distance_to(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point].position);
 		float pos_dist_to_next_point		= dest_position.distance_to(CDetailPathManager::path()[CDetailPathManager::m_current_travel_point+1].position);
