@@ -36,6 +36,17 @@ void CAI_Stalker::OnVisible	()
 		m_inventory.ActiveItem()->OnVisible();
 }
 
+bool CAI_Stalker::bfIf_I_SeePosition(Fvector tPosition)
+{
+	float	yaw, pitch;
+	Fvector	tVector;
+	tVector.sub(tPosition,vPosition);
+	tVector.getHP(yaw,pitch);
+	yaw		= angle_normalize_signed(-yaw);
+	pitch	= angle_normalize_signed(-pitch);
+	return	(getAI().bfTooSmallAngle(yaw,r_current.yaw,PI_DIV_6) && getAI().bfTooSmallAngle(pitch,r_current.pitch,PI_DIV_6));
+}
+
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 {
 	return(true);

@@ -337,7 +337,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty()))
+			if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart)))
 				vfBuildPathToDestinationPoint(tpNodeEvaluator);
 			else
 				if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {

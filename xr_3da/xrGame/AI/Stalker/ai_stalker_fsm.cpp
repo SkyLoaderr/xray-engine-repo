@@ -287,6 +287,7 @@ void CAI_Stalker::ForwardCover()
 		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
 		m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 		m_dwLastRangeSearch		= 0;
+		AI_Path.TravelPath.clear();
 	}
 
 	Fvector						tPoint;
@@ -367,7 +368,7 @@ void CAI_Stalker::SearchEnemy()
 					m_iCurrentSuspiciousNodeIndex = -1;
 				}
 			}
-			if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && getAI().bfTooSmallAngle(r_current.yaw,r_target.yaw,PI_DIV_6))
+			if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && bfIf_I_SeePosition(m_tSavedEnemyPosition))
 				m_tActionState = eActionStateWatchGo;
 			else {
 				bool bOk = false;	
@@ -376,7 +377,7 @@ void CAI_Stalker::SearchEnemy()
 						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
 							bOk = true;
 							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-							if (getAI().bfTooSmallAngle(r_current.yaw,r_target.yaw,PI_DIV_6))
+							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 							break;
 						}
@@ -417,7 +418,7 @@ void CAI_Stalker::SearchEnemy()
 						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
 							bOk = true;
 							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-							if (getAI().bfTooSmallAngle(r_current.yaw,r_target.yaw,PI_DIV_6))
+							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 							break;
 						}
@@ -519,6 +520,7 @@ void CAI_Stalker::ExploreDE()
 	if (m_bStateChanged) {
 		m_tActionState		= eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer();
+		AI_Path.TravelPath.clear();
 	}
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = max(15.f,vPosition.distance_to(tPoint));
 	switch (m_tActionState) {
@@ -592,6 +594,7 @@ void CAI_Stalker::ExploreNDNE()
 	if (m_bStateChanged) {
 		m_tActionState = eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer();
+		AI_Path.TravelPath.clear();
 	}
 	switch (m_tActionState) {
 		case eActionStateDontWatch : {
@@ -640,6 +643,9 @@ void CAI_Stalker::TakeItems()
 {
 	WRITE_TO_LOG			("Taking items");
 	// taking items
+	if (m_bStateChanged) {
+		AI_Path.TravelPath.clear();
+	}
 	Fvector					tPoint;
 	m_tpItemToTake->svCenter(tPoint);
 	AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;

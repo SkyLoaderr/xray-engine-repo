@@ -1521,6 +1521,7 @@ bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, F
 		else {
 			int					iNodeIndex;
 			taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+			bool				bOk = false;
 			for ( i=0; i < iCount; i++) {
 				NodeCompressed *tpLastNode = Node(iNodeIndex = UnpackLink(taLinks[i]));
 				if (bfInsideNode(tpLastNode,tFinishPoint)) {
@@ -1536,9 +1537,12 @@ bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, F
 					
 					fCurDistance		= fDistance;
 					dwCurNode			= iNodeIndex;
+					bOk					= true;
 					break;
 				}
 			}
+			if (!bOk)
+				return(false);
 		}
 	}
 
