@@ -342,15 +342,6 @@ IC	bool	cmp_nodes(SceneGraph::mapNormal_Node* N1, SceneGraph::mapNormal_Node* N2
 
 void	CRender::Render()
 {
-	static	CLightPPA	TEST;
-
-	Fvector	P;
-	P.direct			(Device.vCameraPosition,Device.vCameraDirection,0);
-	TEST.SetPosition	(P);
-	TEST.SetRange		(4.f);
-	TEST.SetColor		(0,0,.5f);
-	Lights_Dynamic.Add	(&TEST);
-
 	Device.Statistic.RenderDUMP.Begin();
 	
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));

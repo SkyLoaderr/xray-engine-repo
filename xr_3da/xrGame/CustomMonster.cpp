@@ -457,13 +457,13 @@ void CCustomMonster::Exec_Visibility	( float dt )
 void CCustomMonster::OnMoveVisible()
 {
 	inherited::OnMoveVisible	();
-
+/*
 	Fvector P;	clCenter(P);
 	TEST.SetPosition	(P);
 	TEST.SetRange		(4.f);
 	TEST.SetColor		(0,0,.7f);
 	::Render.Lights_Dynamic.Add	(&TEST);
-
+*/
 	// weapons
 	Weapons->OnRender			(false);
 }

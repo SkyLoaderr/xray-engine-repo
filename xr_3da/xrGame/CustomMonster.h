@@ -7,7 +7,7 @@
 #pragma once
 
 #include "..\portal.h"
-#include "..\lightPPA.h"
+//#include "..\lightPPA.h"
 #include "entity.h"
 #include "custommonster_vistrack.h"
 #include "ai_commands.h"
@@ -45,7 +45,7 @@ protected:
 	static void	__stdcall SpinCallback(CBoneInstance*);
 public:
 	// Lighting and effects
-	CLightPPA			TEST;
+//	CLightPPA			TEST;
 
 	// Pathfinding cache
 	CPathNodes			AI_Path;
