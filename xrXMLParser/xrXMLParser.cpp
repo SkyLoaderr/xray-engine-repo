@@ -10,6 +10,8 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+static CTimer T;
+static float parse_time = 0;
 
 XRXMLPARSER_API void XML_DisableStringCaching()
 {
@@ -18,6 +20,7 @@ XRXMLPARSER_API void XML_DisableStringCaching()
 
 XRXMLPARSER_API void XML_CleanUpMemory()
 {
+	Msg("------Parse XML file total time=%f",parse_time);
 //	CkSettings::cleanupMemory();
 }
 
@@ -50,7 +53,25 @@ bool CUIXml::Init(LPCSTR path_alias, LPCSTR path1, LPCSTR path2, LPCSTR xml_file
 	return Init(path_alias, str);
 }
 
+void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F )
+{
+	string4096	str;
+	
+	while( !F->eof() ){
+		F->r_string		(str,sizeof(str));
 
+		if (str[0] && (str[0]=='#') && strstr(str,"#include") ){
+			string256	inc_name;	
+			if (_GetItem	(str,1,inc_name,'"')){
+				IReader* I 	= FS.r_open(path, inc_name); R_ASSERT3(I,"Can't find include file:",inc_name);
+				ParseFile(path, W, I);
+				FS.r_close	(I);
+			}
+			F->r_string		(str,sizeof(str));
+		}else
+			W.w_string		(str);
+	}
+}
 //инициализация и загрузка XML файла
 bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 {
@@ -60,7 +81,10 @@ bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 	if(F==NULL) return false;
 
 	CMemoryWriter W;
-	W.w(F->pointer(),F->length());
+	T.Start();
+	ParseFile(path, W, F);
+	parse_time += T.GetElapsed_sec();
+//	W.w(F->pointer(),F->length());
 	W.w_stringZ("");
 	FS.r_close(F);
 
