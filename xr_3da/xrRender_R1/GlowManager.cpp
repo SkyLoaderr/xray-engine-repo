@@ -10,7 +10,8 @@
 #include "GlowManager.h"
 #include "..\xr_object.h"
 
-#define FADE_SCALE			1024.f
+#define FADE_SCALE_UP		4096.f
+#define FADE_SCALE_DOWN		1024.f
 #define MAX_GlowsDist1		float(g_pGamePersistent->Environment.CurrentEnv.far_plane)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
@@ -155,17 +156,17 @@ void CGlowManager::add	(CGlow *G)
 	{
 		// 2. Use result of test
 		if (G->bTestResult) {
-			G->fade -= dt*FADE_SCALE;
+			G->fade -= dt*FADE_SCALE_DOWN;
 			if (G->fade<1.)		G->fade = 1;
 		} else {
-			G->fade	+= dt*FADE_SCALE;
+			G->fade	+= dt*FADE_SCALE_UP;
 			if (G->fade>255.f)	G->fade = 255.f;
 		}
 
 		Selected.push_back(G);
 		return;
 	}
-	G->fade -= dt*FADE_SCALE;
+	G->fade -= dt*FADE_SCALE_DOWN;
 	if (G->fade<1.) G->fade = 1;
 
 	Device.Statistic.RenderDUMP_Glows.End();

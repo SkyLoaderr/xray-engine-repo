@@ -67,11 +67,14 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated(Visual())->PlayCycle("idle");
 	
-	//PKinematics(Visual())->Calculate();
+	PKinematics(Visual())->Calculate();
 	
 	if (Alive())			TurnOn	();
 	else					TurnOff	();
 	
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
+
 	return					(TRUE);
 }
 
@@ -83,6 +86,7 @@ void CHangingLamp::shedule_Update	(u32 dt)
 void CHangingLamp::UpdateCL	()
 {
 	inherited::UpdateCL		();
+
 	if(m_pPhysicsShell)
 		renderable.xform.set	(m_pPhysicsShell->mXFORM);
 
