@@ -196,7 +196,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrCore.dll"
 				LinkIncremental="2"
-				SuppressStartupBanner="FALSE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				SubSystem="2"
