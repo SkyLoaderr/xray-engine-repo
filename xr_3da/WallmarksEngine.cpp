@@ -191,7 +191,7 @@ void CWallmarksEngine::Render()
 		for (DWORD i=0; i<marks.size(); i++)
 		{
 			CWallmark& W = marks[i];
-			if (::Render.ViewBase.testSphereDirty(W.S.P,W.S.R)) 
+			if (::Render.ViewBase.testSphere_dirty(W.S.P,W.S.R)) 
 			{
 				float dst = Device.vCameraPosition.distance_to_sqr(W.S.P);
 				float ssa = g_fSCREEN * W.S.R * W.S.R / dst;

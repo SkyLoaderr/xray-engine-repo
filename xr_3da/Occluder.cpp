@@ -67,7 +67,7 @@ IC  float		triArea(Fvector &p0, Fvector &p1, Fvector &p2)
 	return	sqrtf( p*(p-e1)*(p-e2)*(p-e3) );
 }
 
-void COccluderSystem::Select(CFrustum& F)
+void COccluderSystem::Select(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 {
 	// Build base frustum
 	baseF = &F;
@@ -95,7 +95,7 @@ void COccluderSystem::Select(CFrustum& F)
 				sPoly&	S = *R;
 				sPoly&	D = (R==&poly_src)?poly_dest:poly_src;	D.clear();
 				for (DWORD i=0; i<S.size(); i++) {
-					Device.mFullTransform.transform(D.last(),S[i]);
+					mFullXFORM.transform(D.last(),S[i]);
 					D.inc();
 				}
 				VERIFY(D.size()==S.size());
@@ -108,8 +108,8 @@ void COccluderSystem::Select(CFrustum& F)
 				// 3. save it and build volume
 				Fplane	P;
 				P.build	(S[0],S[1],S[2]);
-				if (P.classify(Device.vCameraPosition)<0) reverse(S.begin(),S.end());
-				O.F.CreateOccluder(S.begin(),S.size(),*baseF);
+				if (P.classify(vBase)<0) reverse(S.begin(),S.end());
+				O.F.CreateOccluder(S.begin(),S.size(),vBase,*baseF);
 				inside.inc();
 			}
 		}
@@ -193,7 +193,7 @@ EFC_Visible	COccluderSystem::visibleSphere	(CVisiCache &T, Fvector &C, float r)
 }
 EFC_Visible	COccluderSystem::visibleSphereNC(Fvector &C, float r)
 {
-	return baseF->testSphereDirty(C,r)?fcvFully:fcvNone;
+	return baseF->testSphere_dirty(C,r)?fcvFully:fcvNone;
 }
 EFC_Visible COccluderSystem::visibleVisual(CVisiCache &T, FBasicVisual* V)
 {

@@ -157,7 +157,7 @@ void CLightsController::BuildSelection()
 	// first
 	for (i=0; i<LightsDynamic.size(); i++) {
 		xrLIGHT &L = LightsDynamic[i];
-		if (::Render.ViewBase.testSphereDirty(L.position, L.range))
+		if (::Render.ViewBase.testSphere_dirty(L.position, L.range))
 		{
 			DWORD idx=i+Lights.size();
 			Distance[idx]=iFloor(1000.0f*Device.vCameraPosition.distance_to_sqr(L.position));

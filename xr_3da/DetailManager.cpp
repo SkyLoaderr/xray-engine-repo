@@ -177,7 +177,7 @@ void CDetailManager::Render		(Fvector& EYE)
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 							
-							if (::Render.ViewBase.testSphereDirty(siIT->P,R*Item.scale))	
+							if (::Render.ViewBase.testSphere_dirty(siIT->P,R*Item.scale))	
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);

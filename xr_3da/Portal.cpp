@@ -143,7 +143,7 @@ void CSector::Render(CFrustum &F)
 			sPoly*	P = Occluders.clipPortal(S,D);
 			if (P) {
 				CFrustum Clip;
-				Clip.CreateFromPortal(P);
+				Clip.CreateFromPortal(P,Device.vCameraPosition,Device.mFullTransform);
 				PORTAL->dwFrame		= Device.dwFrame;
 				PORTAL->bDualRender	= FALSE;
 				pSector->Render(Clip);
@@ -164,7 +164,7 @@ void CSector::GetObjects	(CFrustum& F, objSET &D, objQualifier* Q, void* P)
 	ll_GetObjects		(F);
 }
 
-void CSector::ll_GetObjects	(CFrustum& F)
+void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 {
 	// Occluders
 	Occluders.Select(F);
@@ -194,7 +194,7 @@ void CSector::ll_GetObjects	(CFrustum& F)
 			sPoly*	P = Occluders.clipPortal(S,D);
 			if (P) {
 				CFrustum Clip;
-				Clip.CreateFromPortal		(P);
+				Clip.CreateFromPortal		(P,vBase,mFullXFORM);
 				Portals[I]->dwFrameObject	= oQuery.dwMark;
 				Portals[I]->getSector(this)->ll_GetObjects(Clip);
 			}
