@@ -8,24 +8,27 @@
 
 #pragma once
 
-#include "path_manager_game_selector.h"
+#include "abstract_location_selector.h"
+#include "game_graph.h"
 
-class CGameLocationSelector {
-protected:
-	u32										m_game_locate_query_time;
-	u32										m_game_location_query_interval;
-	bool									m_game_selector_failed;
-	PathManagers::SVertexType				*m_game_selector_evaluator;
-	ALife::_GRAPH_ID						m_selected_game_vertex_id;
-
+template <
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+class 
+	CBaseLocationSelector<
+		CGameGraph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	> :
+	public CAbstractLocationSelector <
+		CGameGraph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	>
+{
 public:
-					CGameLocationSelector	();
-	virtual			~CGameLocationSelector	();
-			void	select_game_vertex		();
-			bool	game_vertex_selection_actual();
-//	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
-//	template <u64 flags>
-//			void	select_location			(PathManagers::CVertexEvaluator<flags> *node_evaluator);
-private:
-			void perform_search				(const ALife::_GRAPH_ID game_vertex_id);
+
 };
+
+#include "game_location_selector_inline.h"

@@ -42,3 +42,22 @@ public:
 };
 
 #include "abstract_location_selector_inline.h"
+
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+class 
+	CBaseLocationSelector<
+		typename _Graph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	> :
+	public CAbstractLocationSelector <
+		typename _Graph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	>
+{
+};

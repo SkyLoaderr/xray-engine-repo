@@ -8,31 +8,27 @@
 
 #pragma once
 
-#include "path_manager_level_selector.h"
-#include "gameobject.h"
+#include "abstract_location_selector.h"
+#include "level_graph.h"
 
-class CLevelLocationSelector : virtual public CGameObject {
-protected:
-	struct SEnemySelected {
-		CEntity*							m_enemy;
-		bool								m_visible;
-		float								m_cost;
-	};
-
-	Fvector									m_hit_direction;
-	u32										m_hit_time;
-	SEnemySelected							m_selected_enemy;
-	u32										m_level_locate_query_time;
-	u32										m_level_location_query_interval;
-	bool									m_level_selector_failed;
-	PathManagers::CAbstractNodeEvaluator	*m_level_selector_evaluator;
-
+template <
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+class 
+	CBaseLocationSelector<
+		CLevelGraph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	> :
+	public CAbstractLocationSelector <
+		CLevelGraph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	>
+{
 public:
-					CLevelLocationSelector	();
-	virtual			~CLevelLocationSelector	();
-//	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
-//	template <u64 flags>
-//			void	select_location			(PathManagers::CVertexEvaluator<flags> *node_evaluator);
-			void	select_level_vertex		();
-			bool	level_vertex_selection_actual();
+
 };
+
+#include "level_location_selector_inline.h"
