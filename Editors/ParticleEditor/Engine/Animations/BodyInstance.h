@@ -293,7 +293,7 @@ public:
 	IC int						LL_BoneRoot		()
 	{	return iRoot; }
 	IC int						LL_BoneCount	()
-	{	return bones->size(); 	}
+	{	return (int)bones->size(); 	}
 
 	Fmatrix&					LL_GetTransform	(int bone_id)
 	{
