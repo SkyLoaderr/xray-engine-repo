@@ -73,7 +73,7 @@ function is_day (actor, npc)
 end    
 
 function bar_no_sniper_time (actor, npc)
-    return level.get_time_hours() >= 5 and level.get_time_hours() < 00
+    return level.get_time_hours() >= 5
 end 
 
 function mob_has_enemy(actor, npc)
