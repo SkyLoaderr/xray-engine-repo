@@ -34,8 +34,8 @@ void CAI_ALife::vfInitLocationOwners()
 {
 	m_tpLocationOwners.resize(Level().AI.GraphHeader().dwVertexCount);
 	for (m_tObjectRegistry.m_tpIterator = m_tObjectRegistry.m_tppMap.begin(); m_tObjectRegistry.m_tpIterator != m_tObjectRegistry.m_tppMap.end(); m_tObjectRegistry.m_tpIterator++) {
-		ALife::SPAWNID	tSpawnID	= (*m_tObjectRegistry.m_tpIterator).second->m_tSpawnID;
-		ALife::OBJECTID	tObjectID	= (*m_tObjectRegistry.m_tpIterator).second->m_tObjectID;
+		_SPAWN_ID	tSpawnID	= (*m_tObjectRegistry.m_tpIterator).second->m_tSpawnID;
+		_OBJECT_ID	tObjectID	= (*m_tObjectRegistry.m_tpIterator).second->m_tObjectID;
 		for (int j=0, iCount = (int)m_tpSpawnPoints[tSpawnID].ucRoutePointCount; j<iCount; j++)
 			m_tpLocationOwners[m_tpSpawnPoints[tSpawnID].wpRouteGraphPoints[j]].push_back(tObjectID);
 	}
@@ -53,7 +53,7 @@ void CAI_ALife::vfInitScheduledObjects()
 }
 
 // temporary
-IC bool	bfSpawnPointPredicate(ALife::SSpawnPoint v1, ALife::SSpawnPoint v2)
+IC bool	bfSpawnPointPredicate(SSpawnPoint v1, SSpawnPoint v2)
 {
 	return(v1.wGroupID <= v2.wGroupID);
 }
@@ -257,15 +257,15 @@ void CAI_ALife::Save()
 
 void CAI_ALife::Generate()
 {
-	for (ALife::SPAWNID i=0; i<(ALife::SPAWNID)m_tSpawnHeader.dwCount; ) {
+	for (_SPAWN_ID i=0; i<(_SPAWN_ID)m_tSpawnHeader.dwCount; ) {
 		u16	wGroupID = m_tpSpawnPoints[i].wGroupID;
 		float fSum = m_tpSpawnPoints[i].fBirthProbability;
-		for (ALife::SPAWNID j= i + 1; (j<(ALife::SPAWNID)m_tSpawnHeader.dwCount) && (m_tpSpawnPoints[j].wGroupID == wGroupID); j++)
+		for (_SPAWN_ID j= i + 1; (j<(_SPAWN_ID)m_tSpawnHeader.dwCount) && (m_tpSpawnPoints[j].wGroupID == wGroupID); j++)
 			fSum += m_tpSpawnPoints[j].fBirthProbability;
 		float fProbability = ::Random.randF(0,fSum);
 		fSum = m_tpSpawnPoints[i].fBirthProbability;
-		ALife::SPAWNID m = j, k = i;
-		for ( j= i + 1; (j<(ALife::SPAWNID)m_tSpawnHeader.dwCount) && (m_tpSpawnPoints[j].wGroupID == wGroupID); j++) {
+		_SPAWN_ID m = j, k = i;
+		for ( j= i + 1; (j<(_SPAWN_ID)m_tSpawnHeader.dwCount) && (m_tpSpawnPoints[j].wGroupID == wGroupID); j++) {
 			fSum += m_tpSpawnPoints[j].fBirthProbability;
 			if (fSum > fProbability) {
 				k = j;
