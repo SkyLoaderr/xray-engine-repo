@@ -736,6 +736,9 @@ function get_clsid(npc)
     if npc == nil then return nil end
 
     if is_object_online(npc:id()) then
+        printf("proba get clsid")
+        npc:clsid()
+        printf("proba successful")
         return npc:clsid()
     else
         return nil
