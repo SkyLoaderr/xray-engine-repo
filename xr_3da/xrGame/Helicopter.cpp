@@ -30,6 +30,11 @@ void
 CHelicopter::Load(LPCSTR section)
 {
 	inherited::Load		(section);
+	CShootingObject::Load	(section);
+
+	m_sAmmoType = pSettings->r_string(section, "ammo_class");
+	m_CurrentAmmo.Load(*m_sAmmoType);
+
 }
 
 void		
@@ -54,6 +59,10 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	CInifile* pUserData	= K->LL_UserData();
 	int id;
 
+	m_rotate_x_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_x_bone"));
+	m_rotate_y_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_y_bone"));
+	m_fire_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_fire_bone"));
+
 	LPCSTR s = pUserData->r_string("helicopter_definition","hit_section");
 
 	if( pUserData->section_exist(s) )
@@ -70,6 +79,10 @@ CHelicopter::net_Spawn(LPVOID	DC)
 		}
 	}
 	
+	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
+	biX.set_callback		(BoneCallbackX,this);
+	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
+	biY.set_callback		(BoneCallbackY,this);
 
 	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
 	if (A) {
@@ -78,7 +91,6 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	}
 	m_engine_sound.create(TRUE,*heli->engine_sound);
 	m_engine_sound.play_at_pos(0,XFORM().c,sm_Looped);
-
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -116,6 +128,30 @@ CHelicopter::UpdateCL()
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
 	m_engine_sound.set_position(XFORM().c);
+
+	//weapon
+	CKinematics* K	= PKinematics(Visual());
+	K->Calculate	();
+
+	m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
+
+	m_fire_bone_xform.mulA(XFORM());
+	m_fire_pos.set(0,0,0); 
+	m_fire_bone_xform.transform_tiny(m_fire_pos);
+	m_fire_dir.set(0,0,1); 
+	m_fire_bone_xform.transform_dir(m_fire_dir);
+
+	UpdateFire();
+
+	if(Device.dwFrame == 1000)
+	{
+		FireStart();
+	}
+
+	if(Device.dwFrame == 10000)
+	{
+//		FireEnd();
+	}
 }
 
 void		
@@ -136,7 +172,6 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end())
 	{

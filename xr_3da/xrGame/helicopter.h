@@ -2,9 +2,12 @@
 
 #include "gameobject.h"
 #include "HelicopterMovementManager.h"
+#include "shootingobject.h"
+#include "weaponammo.h"
 
 class CHelicopter : 
-	public CEntity
+	public CEntity,
+	public CShootingObject
 
 {
 	typedef CGameObject inherited;
@@ -12,6 +15,21 @@ protected:
 	ref_sound						m_engine_sound;
 	CHelicopterMovementManager		m_movementMngr;
 	xr_map<s16,float>				m_hitBones;
+
+	Fvector							m_fire_pos;
+	Fvector							m_fire_dir;
+	Fmatrix							m_fire_bone_xform;
+
+	u16								m_fire_bone;
+	u16								m_rotate_x_bone;
+	u16								m_rotate_y_bone;
+
+	ref_str							m_sAmmoType;
+	CCartridge						m_CurrentAmmo;
+
+	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
+	static void __stdcall	BoneCallbackY		(CBoneInstance *B);
+
 	typedef xr_map<s16,float>::iterator bonesIt;
 public:
 	CHelicopter();
@@ -43,4 +61,14 @@ public:
 	virtual void		HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
 	virtual void		Die					(){;}
 
+protected:
+	//CShootingObject
+	virtual const Fmatrix&	ParticlesXFORM()	 const;
+	virtual IRender_Sector*	Sector();
+	virtual const Fvector&	CurrentFirePoint();
+
+	virtual	void			FireStart	();
+	virtual	void			FireEnd		();
+	virtual	void			UpdateFire	();
+	virtual	void			OnShot		();
 };

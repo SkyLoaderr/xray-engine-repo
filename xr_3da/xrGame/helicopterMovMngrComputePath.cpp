@@ -380,6 +380,8 @@ CHelicopterMovementManager::build_circle_trajectory(
 		cosi			= cos_apb(sinb,cosb,sini,cosi);
 		sini			= temp;
 		
+		if( curr_pos.distance_to(t.position)<0.01f )
+			continue;
 
 		Fvector last_dir,new_dir,cp;
 		last_dir.sub(v3d(position.center), curr_pos);
@@ -389,7 +391,10 @@ CHelicopterMovementManager::build_circle_trajectory(
 		(fromCenter)?t.clockwise=t.clockwise:t.clockwise=!t.clockwise;
 		
 		if( last_dir.similar(new_dir) )
+		{
 			t.angularVelocity = 0.0f;
+			t.clockwise = true;
+		};
 
 		if (path) {
 			path->push_back	(t);
@@ -525,10 +530,17 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld)
 				b_xyz.y =  h ;
 				b_xyz.x =  m_velocity*PITCH_K ;
 				b_xyz.z =  computeB((*B).angularVelocity) ;
-				R_ASSERT( b_xyz.z<PI_DIV_3+EPS );
+				if (!(*B).clockwise )
+					b_xyz.z = -b_xyz.z;
 			}else
 				b_xyz = prev_xyz;
-		
+
+			if( !	((prev_xyz.z>0.0f)&&(b_xyz.z>0.0f))||
+						((prev_xyz.z<0.0f)&&(b_xyz.z<0.0f))  )
+			{
+				int i = 0;
+			};
+
 			prev_xyz = b_xyz;
 		};
 		(*B).xyz = prev_xyz;

@@ -24,7 +24,7 @@ CHelicopterMovementManager::~CHelicopterMovementManager()
 void 
 CHelicopterMovementManager::OnRender()
 {
-	Fvector pos, prev_pos;
+	Fvector pos, prev_pos, lastDir;
 
 	RCache.OnFrameEnd	();
 
@@ -37,12 +37,35 @@ CHelicopterMovementManager::OnRender()
 		pos = m_path[i].position;
 		(i!=0)?prev_pos = m_path[i-1].position:prev_pos=pos;
 		
+		
 		if(m_path[i].clockwise)
 			RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
 		else
 			RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(255,0,0));
+		
+		if(m_path[i].angularVelocity>0.0001f)
+		{
+			RCache.dbg_DrawAABB  (pos,path_box_size-0.05f,path_box_size-0.05f,path_box_size-0.05f,D3DCOLOR_XRGB(255,255,0));
+		}
 
 		RCache.dbg_DrawLINE  (Fidentity,prev_pos,pos,D3DCOLOR_XRGB(0,255,0));
+
+/*		if ( (i!=0))
+		{
+			u32 c = D3DCOLOR_XRGB(0,255,0);
+			Fvector2 last_dir,new_dir;
+			new_dir = v2d( Fvector().sub(pos, prev_pos) );
+			last_dir = v2d(lastDir);
+			float cp = last_dir.cross_product(new_dir);
+
+			if(_abs(cp)>0.0001 &&cp<0.0f)
+				c = D3DCOLOR_XRGB(255,0,0);
+
+			RCache.dbg_DrawAABB  (pos.add(Fvector().set(0,1,0)),path_box_size,path_box_size,path_box_size,c);
+			
+			lastDir.sub(pos, prev_pos);
+		}
+*/		
 
 	}
 
@@ -74,7 +97,7 @@ CHelicopterMovementManager::init(CHelicopter* heli)
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
 #endif
 //	m_velocity = 33.0f;//120km4
-	m_velocity = 10.0f;//120km4
+	m_velocity = 5.0f;//120km4
 	m_curState = eIdleState;
 }
 
@@ -124,9 +147,10 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 	{
 	case eIdleState: 
 		{
+			break;
 			Fmatrix M, D, R;
 			D.set( xform );
-			M.rotateY(0.005f);
+			M.rotateY(0.0005f);
 			R.mul(D, M);
 			xform.set( R );
 			break;
@@ -196,51 +220,22 @@ CHelicopterMovementManager::getPosition(u32 timeCurr,
 	xyz.y = angle_normalize_signed(xyz.y);
 	xyz.z = angle_normalize_signed(xyz.z);
 
-	bool bClockwise = (*b).clockwise;
-	if (!bClockwise)
-		xyz.z = -xyz.z;
-
 	m_lastXYZ.x = angle_normalize_signed(m_lastXYZ.x);//-PI..PI
 	m_lastXYZ.y = angle_normalize_signed(m_lastXYZ.y);
 	m_lastXYZ.z = angle_normalize_signed(m_lastXYZ.z);
 
-
 	float ang_delta = PI_DIV_3*(fTimeDelta);
-	
-	float max_angle = PI_DIV_2;
 
-	R_ASSERT( _abs(m_lastXYZ.z)<max_angle );
 
 	if(!fsimilar(m_lastXYZ.z, xyz.z))
 	{
 		if(m_lastXYZ.z < xyz.z)
 		{
 			m_lastXYZ.z += ang_delta;
-
-/*			if( !is_negative(xyz.z) )
-			{
-				R_ASSERT( _abs(m_lastXYZ.z+ang_delta)< max_angle);
-				m_lastXYZ.z += ang_delta;
-			}
-			else
-			{
-				R_ASSERT( _abs(m_lastXYZ.z+ang_delta)<max_angle );
-				m_lastXYZ.z += ang_delta;
-			}*/
 		}
 		else			
 		{
 			m_lastXYZ.z -= ang_delta;
-/*			if( !is_negative(xyz.z) )
-			{
-				R_ASSERT( _abs(m_lastXYZ.z-ang_delta)<max_angle );
-				m_lastXYZ.z -= ang_delta;
-			}
-			else
-			{
-				R_ASSERT( _abs(m_lastXYZ.z-ang_delta)<max_angle );
-				m_lastXYZ.z -= ang_delta;
-			}*/
 		}
 
 		xyz.z = m_lastXYZ.z;
