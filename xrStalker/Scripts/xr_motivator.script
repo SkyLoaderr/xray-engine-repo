@@ -529,9 +529,9 @@ xr_motivator.storage[self.object:id()].reactions = {
         xr_follower.add_to_binder (self.object)
     end
 
-    if char_ini:section_exist("report") then
+--    if char_ini:section_exist("report") then
         xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
-    end
+--    end
 
     if char_ini:section_exist("kamp") then
         xr_kamp.add_to_binder(self.object)
