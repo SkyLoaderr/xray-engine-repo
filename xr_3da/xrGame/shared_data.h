@@ -2,11 +2,24 @@
 
 // Singleton template definition 
 template <class T> class CSingleton {
+private:
 	static T*	_self;
 	static int	_refcount;
+public:	
+	//whether singleton will delete itself on FreeInst
+	//when _refcount = 0
+	//otherwise user should call DestroySingleton() manually
+	static bool _on_self_delete;
 public:
-					CSingleton	()	{}
-	virtual			~CSingleton	()	{_self=NULL;}
+					CSingleton			()	{}
+	virtual			~CSingleton			()	{_self=NULL;}
+	
+	static			void DestroySingleton	()	{
+		VERIFY(_on_self_delete == false); 
+		VERIFY(_refcount == 0);
+		VERIFY(_self);
+		xr_delete(_self);
+	};
 public:
 	static	T*		Instance	() {
 		if(!_self) _self=xr_new<T>(); 
@@ -15,14 +28,17 @@ public:
 	}
 	void			FreeInst	() {
 		if(0 == --_refcount) {
-			CSingleton<T> *ptr = this;
-			xr_delete(ptr);
+			if(_on_self_delete){
+				CSingleton<T> *ptr = this;
+				xr_delete(ptr);
+			}
 		} 
 	}
 };
 
-template <class T> T*	CSingleton<T>::_self		= NULL;
-template <class T> int	CSingleton<T>::_refcount	= 0;
+template <class T> T*	CSingleton<T>::_self			= NULL;
+template <class T> int	CSingleton<T>::_refcount		= 0;
+template <class T> bool CSingleton<T>::_on_self_delete	= true;
 
 
 template<class SHARED_TYPE, class KEY_TYPE> class CSharedObj : public CSingleton<CSharedObj<SHARED_TYPE, KEY_TYPE> >
@@ -64,12 +80,17 @@ public:
 };
 
 
-template<class SHARED_TYPE, class KEY_TYPE> class CSharedClass {
+template<class SHARED_TYPE, class KEY_TYPE, bool auto_delete = true> class CSharedClass {
 	SHARED_TYPE							*_sd;
 	CSharedObj<SHARED_TYPE, KEY_TYPE>	*pSharedObj;
 public:
-					CSharedClass	():_sd(NULL) {pSharedObj	= CSharedObj<SHARED_TYPE,KEY_TYPE>::Instance();}
+					CSharedClass	():_sd(NULL) {pSharedObj	= CSharedObj<SHARED_TYPE,KEY_TYPE>::Instance(); pSharedObj->_on_self_delete = auto_delete;}
 	virtual			~CSharedClass	() {pSharedObj->FreeInst();}
+
+	
+	static			void DeleteSharedData () {
+		CSharedObj<SHARED_TYPE, KEY_TYPE>::DestroySingleton();
+	}
 
 	void			load_shared		(KEY_TYPE key, LPCSTR section) {
 		_sd = pSharedObj->get_shared(key);

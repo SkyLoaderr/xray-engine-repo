@@ -22,7 +22,6 @@
 
 SInfoPortionData::SInfoPortionData ()
 {
-	m_InfoIndex	= NO_INFO_INDEX;
 }
 SInfoPortionData::~SInfoPortionData ()
 {

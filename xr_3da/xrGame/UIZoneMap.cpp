@@ -276,7 +276,8 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 	{
 		SMapLocation& map_location = *(*it);
 
-		if (!(Level().name() == map_location.LevelName())) continue;
+		if (!(Level().name() == map_location.LevelName())) 
+			continue;
 
 		entity_color = map_location.icon_color;
 		if(map_location.attached_to_object)
@@ -371,10 +372,6 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 
 
 	// draw self
-/*	bool b;
-	ConvertToLocal	(LM,pActor->Position(),P, map_radius, b);
-	entity.Out		(map_center.x,P.y,COLOR_SELF);
-*/
 	entity.Out		(map_center.x, map_center.y,COLOR_SELF);
 
 	/////////////////////

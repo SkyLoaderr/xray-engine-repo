@@ -45,11 +45,11 @@ struct SCharacterProfile : CSharedResource
 class CInventoryOwner;
 class CSE_ALifeTraderAbstract;
 
-class CCharacterInfo: public CSharedClass<SCharacterProfile, PROFILE_INDEX>,
+class CCharacterInfo: public CSharedClass<SCharacterProfile, PROFILE_INDEX, false>,
 					  public CXML_IdToIndex<PROFILE_ID, PROFILE_INDEX, CCharacterInfo>
 {
 private:
-	typedef CSharedClass	<SCharacterProfile, PROFILE_INDEX>			inherited_shared;
+	typedef CSharedClass	<SCharacterProfile, PROFILE_INDEX, false>	inherited_shared;
 	typedef CXML_IdToIndex	<PROFILE_ID, PROFILE_INDEX, CCharacterInfo>	id_to_index;
 
 	friend id_to_index;

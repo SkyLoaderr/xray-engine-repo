@@ -85,11 +85,11 @@ class CCharacterInfo;
 class CSE_ALifeTraderAbstract;
 
 
-class CSpecificCharacter: public CSharedClass<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX>,
+class CSpecificCharacter: public CSharedClass<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX, false>,
 						  public CXML_IdToIndex<SPECIFIC_CHARACTER_ID, SPECIFIC_CHARACTER_INDEX, CSpecificCharacter>
 {
 private:
-	typedef CSharedClass	<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX>							inherited_shared;
+	typedef CSharedClass	<SSpecificCharacterData, SPECIFIC_CHARACTER_INDEX, false>				inherited_shared;
 	typedef CXML_IdToIndex	<SPECIFIC_CHARACTER_ID, SPECIFIC_CHARACTER_INDEX, CSpecificCharacter>	id_to_index;
 
 	friend id_to_index;

@@ -12,10 +12,16 @@
 #include "PhraseDialog.h"
 #include "GameTask.h"
 #include "encyclopedia_article.h"
+
 #include "character_info.h"
 #include "specific_character.h"
 #include "character_community.h"
+#include "character_rank.h"
+#include "character_reputation.h"
+
 #include "profiler.h"
+
+
 
 extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();
@@ -37,13 +43,29 @@ void clean_game_globals()
 	InventoryUtilities::DestroyShaders				();
 
 	//XML indexes
+	CInfoPortion::DeleteSharedData					();
 	CInfoPortion::DeleteIdToIndexData				();
+
+	CEncyclopediaArticle::DeleteSharedData			();
 	CEncyclopediaArticle::DeleteIdToIndexData		();
-	CCharacterInfo::DeleteIdToIndexData				();
-	CSpecificCharacter::DeleteIdToIndexData			();
-	CHARACTER_COMMUNITY::DeleteIdToIndexData		();
+
+	CPhraseDialog::DeleteSharedData					();
 	CPhraseDialog::DeleteIdToIndexData				();
+
+	CGameTask::DeleteSharedData						();
 	CGameTask::DeleteIdToIndexData					();
+
+
+	CCharacterInfo::DeleteSharedData				();
+	CCharacterInfo::DeleteIdToIndexData				();
+	
+	CSpecificCharacter::DeleteSharedData			();
+	CSpecificCharacter::DeleteIdToIndexData			();
+	
+	CHARACTER_COMMUNITY::DeleteIdToIndexData		();
+	CHARACTER_RANK::DeleteIdToIndexData				();
+	CHARACTER_REPUTATION::DeleteIdToIndexData		();
+
 
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks				();

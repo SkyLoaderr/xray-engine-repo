@@ -27,9 +27,6 @@ struct SInfoPortionData : CSharedResource
 	SInfoPortionData ();
 	virtual ~SInfoPortionData ();
 
-	//уникальный индекс порции информации
-	INFO_INDEX	m_InfoIndex;
-
 	//массив с именами диалогов, которые могут быть инициированы
 	//из этого InfoPortion
 	DIALOG_ID_VECTOR m_DialogNames;
@@ -62,11 +59,11 @@ struct SInfoPortionData : CSharedResource
 class CInfoPortion;
 
 //квант  - порция информации
-class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_INDEX>,
+class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_INDEX, false>,
 					 public CXML_IdToIndex<INFO_STR_ID,	INFO_INDEX, CInfoPortion>
 {
 private:
-	typedef CSharedClass<SInfoPortionData, INFO_INDEX> inherited_shared;
+	typedef CSharedClass<SInfoPortionData, INFO_INDEX, false> inherited_shared;
 	typedef CXML_IdToIndex<INFO_STR_ID, INFO_INDEX, CInfoPortion>	id_to_index;
 
 	friend id_to_index;

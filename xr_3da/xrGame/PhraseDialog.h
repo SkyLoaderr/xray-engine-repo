@@ -45,11 +45,11 @@ DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
 class CPhraseDialog;
 class CPhraseDialogManager;
 
-class CPhraseDialog	: public CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX>,
+class CPhraseDialog	: public CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX, false>,
 					  public CXML_IdToIndex<PHRASE_DIALOG_ID, PHRASE_DIALOG_INDEX, CPhraseDialog>
 {
 private:
-	typedef CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX>					inherited_shared;
+	typedef CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX, false>				inherited_shared;
 	typedef CXML_IdToIndex<PHRASE_DIALOG_ID, PHRASE_DIALOG_INDEX, CPhraseDialog>	id_to_index;
 
 	friend id_to_index;

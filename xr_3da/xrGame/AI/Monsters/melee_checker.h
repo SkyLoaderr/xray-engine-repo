@@ -1,5 +1,6 @@
 #pragma once
 class CBaseMonster;
+class CEntity;
 
 #define HIT_STACK_SIZE	2
 
@@ -39,4 +40,3 @@ public:
 };
 
 #include "melee_checker_inline.h"
-

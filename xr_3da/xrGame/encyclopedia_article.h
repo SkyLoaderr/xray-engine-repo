@@ -34,11 +34,11 @@ struct SArticleData : CSharedResource
 
 class CEncyclopediaArticle;
 
-class CEncyclopediaArticle : public CSharedClass<SArticleData, ARTICLE_INDEX>,
+class CEncyclopediaArticle : public CSharedClass<SArticleData, ARTICLE_INDEX, false>,
 							 public CXML_IdToIndex<ARTICLE_STR_ID,	ARTICLE_INDEX, CEncyclopediaArticle>
 {
 private:
-	typedef CSharedClass<SArticleData, ARTICLE_INDEX> inherited_shared;
+	typedef CSharedClass<SArticleData, ARTICLE_INDEX, false> inherited_shared;
 	typedef CXML_IdToIndex<ARTICLE_STR_ID, ARTICLE_INDEX, CEncyclopediaArticle>	id_to_index;
 
 	friend id_to_index;

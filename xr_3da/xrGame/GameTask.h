@@ -44,11 +44,11 @@ struct SGameTaskData : CSharedResource
 };
 
 
-class CGameTask: public CSharedClass<SGameTaskData, TASK_INDEX>,
+class CGameTask: public CSharedClass<SGameTaskData, TASK_INDEX, false>,
 				 public CXML_IdToIndex<TASK_ID, TASK_INDEX, CGameTask>
 {
 private:
-	typedef CSharedClass<SGameTaskData, TASK_INDEX>			inherited_shared;
+	typedef CSharedClass<SGameTaskData, TASK_INDEX, false>	inherited_shared;
 	typedef CXML_IdToIndex<TASK_ID, TASK_INDEX, CGameTask>	id_to_index;
 
 	friend id_to_index;

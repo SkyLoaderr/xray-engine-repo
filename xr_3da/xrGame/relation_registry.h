@@ -87,6 +87,7 @@ public:
 		u16					defender;
 		float				total_hit;
 		u32					time;
+		u32					time_old;
 	};
 
 
@@ -99,7 +100,7 @@ private:
 	static FIGHT_VECTOR*						m_fight_registry;
 	static FIGHT_VECTOR&						fight_registry();
 	
-	FIGHT_DATA*									FindFight(u16 attacker);
+	FIGHT_DATA*									FindFight(u16 object_id, bool by_attacker = true);
 	
 public:
 	static CRelationRegistryWrapper&			relation_registry();

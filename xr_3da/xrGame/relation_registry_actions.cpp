@@ -34,13 +34,16 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 	static CHARACTER_GOODWILL friend_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_kill_goodwill");
 	static CHARACTER_GOODWILL neutral_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_kill_goodwill");
 	static CHARACTER_GOODWILL enemy_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_kill_goodwill");
+	static CHARACTER_GOODWILL community_member_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "community_member_kill_goodwill");
 
 	static CHARACTER_REPUTATION_VALUE friend_kill_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_kill_reputation");
 	static CHARACTER_REPUTATION_VALUE neutral_kill_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_kill_reputation");
 	static CHARACTER_REPUTATION_VALUE enemy_kill_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_kill_reputation");
 
 	//порог величины хита, после которого регистрируется помощь актера персонажу
-	static float help_hit_threshold= pSettings->r_float(ACTIONS_POINTS_SECT, "help_hit_threshold");
+	static float help_hit_threshold		= pSettings->r_float(ACTIONS_POINTS_SECT, "help_hit_threshold");
+	//(с) мин. время через которое снова будет зарегестрировано сообщение об атаке на персонажа
+	static u32	 min_attack_delta_time	= u32(1000.f * pSettings->r_float(ACTIONS_POINTS_SECT, "min_attack_delta_time"));	
 
 	static CHARACTER_GOODWILL friend_fight_help_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_fight_help_goodwill");
 	static CHARACTER_GOODWILL neutral_fight_help_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_fight_help_goodwill");
@@ -71,6 +74,13 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 	{
 	case ATTACK:
 		{
+			//учитывать ATTACK и FIGHT_HELP, только если прошло время
+			//спрашиваем time_old, а не time так как time уже должен 
+			//обновиться для текущего ATTACK
+			FIGHT_DATA* fight_data_from = FindFight (from->ID());
+			if(Device.dwTimeGlobal - fight_data_from->time_old < min_attack_delta_time)
+				break;
+			
 			//если мы атаковали персонажа или монстра, который 
 			//кого-то атаковал, то мы помогли тому, кто защищался
 			FIGHT_DATA* fight_data = FindFight (to->ID());
@@ -137,10 +147,12 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					delta_reputation = friend_attack_reputation;
 				}
 
+
 				if(delta_goodwill)
 				{
 					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), 
-						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*(float)delta_goodwill));
+						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
+							(float)(delta_goodwill+community_member_kill_goodwill)));
 				}
 
 				if(delta_reputation)
