@@ -291,7 +291,7 @@ function action_idle:execute ()
     
        --self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
     --end   
-    self.object:send_pda_message (4, level.actor ())    
+    self.object:send_pda_message (help_pda_msg, level.actor ())    
 end    
 ------------
 function action_idle:finalize ()
