@@ -137,7 +137,8 @@ void CLightShadows::calculate	()
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;	if (p_near<eps)			p_near	= eps;
 			float		p_far	=	L->range;		if (p_far<(p_near+eps))	p_far	= p_near+eps;
-			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
+			if (L->type==D3DLIGHT_DIRECTIONAL)		D3DXMatrixOrthoLH		((D3DXMATRIX*)&mProject,1,1,p_near,p_far);
+			else									mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
 			// calculate view-matrix
@@ -285,7 +286,7 @@ void CLightShadows::render	()
 	shadows.clear			();
 
 	// Debug
-/*
+//*
 	{
 		// UV
 		Fvector2				p0,p1;
@@ -306,7 +307,7 @@ void CLightShadows::render	()
 		Device.Shader.set_Shader(sh_Screen);
 		Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
 	}
-*/
+//*/
 
 	// Projection
 	Device.mProject._43 = _43;
