@@ -12,13 +12,12 @@
 #pragma once
 
 #include "object_factory.h"
+#include "object_item_single.h"
 
 #ifndef NO_XR_GAME
 #	include <boost/type_traits/is_base_and_derived.hpp>
+#	include "object_item_client_server.h"
 #endif
-
-#include "object_item_client_server.h"
-#include "object_item_single.h"
 
 #ifndef NO_XR_GAME
 /**
