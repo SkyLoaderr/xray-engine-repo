@@ -190,7 +190,7 @@ void __fastcall TfraBottomBar::miWeatherClick(TObject *Sender)
             PHelper.CreateTime	(items,"From Time", 	&ft);
             PHelper.CreateTime	(items,"To Time",   	&tt);
             PHelper.CreateFloat	(items,"Speed",			&sp, 		1.f,10000.f,1.f,1);
-            P->AssignItems		(items,true);
+            P->AssignItems		(items);
             if (mrOk==P->ShowPropertiesModal()){
                 env.ed_from_time	= ft;
                 env.ed_to_time		= tt;
