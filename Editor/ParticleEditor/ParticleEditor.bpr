@@ -60,7 +60,8 @@
       Intermediate\xrXRC.obj Intermediate\Blender_Blur.obj 
       Intermediate\SH_RT.obj Intermediate\SH_VS.obj 
       Intermediate\Blender_Shadow_World.obj 
-      Intermediate\Blender_Shadow_Texture.obj Intermediate\CustomObjectMisc.obj"/>
+      Intermediate\Blender_Shadow_Texture.obj Intermediate\CustomObjectMisc.obj 
+      Intermediate\Blender_Model.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

@@ -133,6 +133,7 @@ USEUNIT("Engine\SH_VS.cpp");
 USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
 USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
 USEUNIT("Editor\CustomObjectMisc.cpp");
+USEUNIT("Engine\Blenders\Blender_Model.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -157,8 +158,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Particle Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
-		frmMain->SetHInst(hInst);
+         Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+         frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);
 
