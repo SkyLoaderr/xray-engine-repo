@@ -11,6 +11,8 @@
 #include "../xrserver.h"
 #include "../xrServer_Objects_ALife.h"
 #include "../ai_object_location.h"
+#include "../ai_space.h"
+#include "../game_graph.h"
 
 //////////////////////////////////////////////////////////////////////////
 

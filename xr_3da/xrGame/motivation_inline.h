@@ -14,18 +14,12 @@
 TEMPLATE_SPECIALIZATION
 IC	CSMotivation::CMotivation		()
 {
-	init				();
+	m_object			= 0;
 }
 
 TEMPLATE_SPECIALIZATION
 CSMotivation::~CMotivation			()
 {
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CSMotivation::init			()
-{
-	m_object			= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -38,6 +32,13 @@ TEMPLATE_SPECIALIZATION
 float CSMotivation::evaluate		(u32 sub_motivation_id)
 {
 	return				(0.f);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	_object_type &CSMotivation::object	() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
 }
 
 #undef TEMPLATE_SPECIALIZATION

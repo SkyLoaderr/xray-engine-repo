@@ -61,3 +61,9 @@ IC	const StalkerSpace::EBodyAction	&CAI_Stalker::body_action() const
 {
 	return			(m_body_action);
 }
+
+IC	CStalkerMovementManager	&CAI_Stalker::movement	() const
+{
+	VERIFY			(CAI_Stalker::m_movement_manager);
+	return			(*CAI_Stalker::m_movement_manager);
+}

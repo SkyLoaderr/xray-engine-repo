@@ -22,7 +22,7 @@ void CStateMonsterEatingAbstract::initialize()
 	cur_state = prev_state = eStateWalkCloser;
 	time_last_eat = 0;
 
-	object->CMonsterMovement::initialize_movement();	
+	object->movement().initialize_movement();	
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
@@ -78,8 +78,8 @@ void CStateMonsterEatingAbstract::execute()
 	} else {
 		object->set_action									(ACT_WALK_FWD);
 		object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
-		object->CMonsterMovement::set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
-		object->CMonsterMovement::set_generic_parameters	();
+		object->movement().set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
+		object->movement().set_generic_parameters	();
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {

@@ -8,7 +8,9 @@
 
 #pragma once
 
-#include "gameobject.h"
+#include "alife_space.h"
+
+class CGameObject;
 
 namespace RestrictionSpace {
 	enum ERestrictorTypes;
@@ -16,13 +18,14 @@ namespace RestrictionSpace {
 
 template <bool add> struct CRestrictionPredicate;
 
-class CRestrictedObject : virtual public CGameObject {
+class CRestrictedObject {
 	friend struct CRestrictionPredicate<true>;
 	friend struct CRestrictionPredicate<false>;
 private:
 	typedef CGameObject inherited;
 
 private:
+	CGameObject			*m_object;
 	mutable bool		m_applied;
 	mutable bool		m_removed;
 
@@ -33,7 +36,7 @@ protected:
 	IC		void		remove_object_restriction		(ALife::_OBJECT_ID id, const RestrictionSpace::ERestrictorTypes &restrictor_type);
 
 public:
-	IC					CRestrictedObject				();
+	IC					CRestrictedObject				(CGameObject *object);
 	virtual				~CRestrictedObject				();
 	virtual BOOL		net_Spawn						(LPVOID data);
 			void		add_border						(u32 start_vertex_id, float radius) const;
@@ -51,6 +54,7 @@ public:
 			shared_str	in_restrictions					() const;
 			shared_str	out_restrictions				() const;
 	IC		bool		applied							() const;
+	IC		CGameObject	&object							() const;
 };
 
 #include "restricted_object_inline.h"

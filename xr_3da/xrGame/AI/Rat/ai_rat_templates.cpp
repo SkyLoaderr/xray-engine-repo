@@ -14,6 +14,8 @@
 #include "../../clsid_game.h"
 #include "../../../fbasicvisual.h"
 #include "../../ai_object_location.h"
+#include "../../level_graph.h"
+#include "../../movement_manager.h"
 
 IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 {
@@ -66,7 +68,7 @@ void CAI_Rat::vfAdjustSpeed()
 		if (fAngle >= 2*PI_DIV_3) {
 			m_fSpeed = 0;
 			m_fASpeed = m_fNullASpeed;
-			m_body.target.yaw = -y;
+			movement().m_body.target.yaw = -y;
 		}
 		else 
 		{
@@ -79,7 +81,7 @@ void CAI_Rat::vfAdjustSpeed()
 			if (fAngle >= 2*PI_DIV_3) {
 				m_fSpeed = 0;
 				m_fASpeed = m_fNullASpeed;
-				m_body.target.yaw = -y;
+				movement().m_body.target.yaw = -y;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
@@ -96,7 +98,7 @@ void CAI_Rat::vfAdjustSpeed()
 //				if (fAngle >= 2*PI_DIV_3) {
 //					m_fSpeed = 0;
 //					m_fASpeed = m_fNullASpeed;
-//					m_body.target.yaw = -y;
+//					movement().m_body.target.yaw = -y;
 //				}
 //				else
 					if (fAngle >= PI_DIV_2) {
@@ -114,7 +116,7 @@ void CAI_Rat::vfAdjustSpeed()
 						}
 			}
 			else {
-				m_body.target.yaw = -y;
+				movement().m_body.target.yaw = -y;
 				m_fSpeed = 0;
 				m_fASpeed = m_fNullASpeed;
 			}
@@ -148,19 +150,19 @@ void CAI_Rat::vfAdjustSpeed()
 void CAI_Rat::make_turn()
 {
 	m_fSpeed			= m_fCurSpeed = 0.f;
-	if (m_bFiring && (angle_difference(m_body.target.yaw,m_body.current.yaw) < PI_DIV_6)) {
-//		m_body.speed	= 0.f;
+	if (m_bFiring && (angle_difference(movement().m_body.target.yaw,movement().m_body.current.yaw) < PI_DIV_6)) {
+//		movement().m_body.speed	= 0.f;
 		return;
 	}
 
-//	Msg					("%6d : Rat %s, %f -> %f [%f]",Level().timeServer(),*cName(),m_body.current.pitch,m_body.target.pitch,get_custom_pitch_speed(0.f));
+//	Msg					("%6d : Rat %s, %f -> %f [%f]",Level().timeServer(),*cName(),movement().m_body.current.pitch,movement().m_body.target.pitch,get_custom_pitch_speed(0.f));
 
 	m_turning			= true;
-	m_body.speed		= PI_MUL_2;
+	movement().m_body.speed		= PI_MUL_2;
 
 	Fvector				tSavedPosition = Position();
-	m_tHPB.x			= -m_body.current.yaw;
-	m_tHPB.y			= -m_body.current.pitch;
+	m_tHPB.x			= -movement().m_body.current.yaw;
+	m_tHPB.y			= -movement().m_body.current.pitch;
 
 	XFORM().setHPB		(m_tHPB.x,m_tHPB.y,0.f);//m_tHPB.z);
 	Position()			= tSavedPosition;
@@ -174,21 +176,21 @@ void CAI_Rat::vfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	if (m_thinking)
 		return;
 
-//	Msg					("RAT : %6d : %f -> %f [%f][%f][%f]",Level().timeServer(),m_body.current.yaw,m_body.target.yaw,VPUSH(m_tGoalDir));
+//	Msg					("RAT : %6d : %f -> %f [%f][%f][%f]",Level().timeServer(),movement().m_body.current.yaw,movement().m_body.target.yaw,VPUSH(m_tGoalDir));
 	Fvector tSafeHPB = m_tHPB;
 	Fvector tSavedPosition = Position();
-	SRotation tSavedTorsoTarget = m_body.target;
+	SRotation tSavedTorsoTarget = movement().m_body.target;
 	float fSavedDHeading = m_fDHeading;
 
 	if (bCanAdjustSpeed)
 		vfAdjustSpeed();
 
-	if ((angle_difference(m_body.target.yaw, m_body.current.yaw) > PI_DIV_6)){
+	if ((angle_difference(movement().m_body.target.yaw, movement().m_body.current.yaw) > PI_DIV_6)){
 		make_turn	();
 		return;
 	}
 
-//	m_body.target.yaw	= m_body.current.yaw;
+//	movement().m_body.target.yaw	= movement().m_body.current.yaw;
 
 	if (fis_zero(m_fSpeed))
 		return;
@@ -263,18 +265,18 @@ void CAI_Rat::vfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	PitchCorrection		();
 	m_tHPB.x			= angle_normalize_signed(m_tHPB.x);
 //	m_tHPB.y			= angle_normalize_signed(m_tHPB.y);
-	m_tHPB.y			= -m_body.current.pitch;
+	m_tHPB.y			= -movement().m_body.current.pitch;
 
 	// Build the local matrix for the plane
 	XFORM().setHPB		(m_tHPB.x,m_tHPB.y,0.f);//m_tHPB.z);
 	Position()			= tSavedPosition;
 	Position().mad		(tDirection,m_fSpeed*m_fTimeUpdateDelta);
 //	Msg					("[%f][%f][%f]",VPUSH(Position()));
-	m_body.target.yaw	= -m_tHPB.x;
-//	m_body.target.pitch	= -m_tHPB.y;
+	movement().m_body.target.yaw	= -m_tHPB.x;
+//	movement().m_body.target.pitch	= -m_tHPB.y;
 
 //	Fvector tAcceleration;
-//	tAcceleration.setHP(-m_body.current.yaw,-m_body.current.pitch);
+//	tAcceleration.setHP(-movement().m_body.current.yaw,-movement().m_body.current.pitch);
 //	tAcceleration.normalize_safe();
 //	tAcceleration.mul(m_fSpeed*12.f);
 //	m_PhysicMovementControl->SetPosition(Position());
@@ -304,17 +306,17 @@ void CAI_Rat::vfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 		m_tHPB			= tSafeHPB;
 		XFORM().setHPB	(m_tHPB.x,m_tHPB.y,0.f);//m_tHPB.y,m_tHPB.z);
 		Position()		= tSavedPosition;
-		m_body.target	= tSavedTorsoTarget;
+		movement().m_body.target	= tSavedTorsoTarget;
 		m_fDHeading		= fSavedDHeading;
 	}
 
-	if (m_bNoWay && (!m_turning || (angle_difference(m_body.target.yaw, m_body.current.yaw) < EPS_L))) {
+	if (m_bNoWay && (!m_turning || (angle_difference(movement().m_body.target.yaw, movement().m_body.current.yaw) < EPS_L))) {
 		if ((Level().timeServer() - m_previous_query_time > TIME_TO_RETURN) || (!m_previous_query_time)) {
 			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			m_body.target.yaw = m_body.current.yaw + fAngle;
-			m_body.target.yaw = angle_normalize(m_body.target.yaw);
+			movement().m_body.target.yaw = movement().m_body.current.yaw + fAngle;
+			movement().m_body.target.yaw = angle_normalize(movement().m_body.target.yaw);
 			Fvector tTemp;
-			tTemp.setHP(-m_body.target.yaw,-m_body.target.pitch);
+			tTemp.setHP(-movement().m_body.target.yaw,-movement().m_body.target.pitch);
 			tTemp.mul(100.f);
 			m_tGoalDir.add(Position(),tTemp);
 			m_previous_query_time = Level().timeServer();
@@ -326,7 +328,7 @@ void CAI_Rat::vfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 
 void CAI_Rat::vfChooseNextGraphPoint()
 {
-	ALife::_GRAPH_ID	tGraphID		= m_tNextGP;
+	GameGraph::_GRAPH_ID	tGraphID		= m_tNextGP;
 	CGameGraph::const_iterator	i,e;
 	ai().game_graph().begin		(tGraphID,i,e);
 	int					iPointCount		= (int)vertex_types().size();

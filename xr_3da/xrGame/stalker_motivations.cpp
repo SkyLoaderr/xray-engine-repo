@@ -23,13 +23,13 @@ float CMotivationGlobal::evaluate	(u32 sub_motivation_id)
 {
 	VERIFY				(m_object);
 	if (eMotivationAlive == sub_motivation_id)
-		if (m_object->g_Alive())
+		if (object().g_Alive())
 			return		(1.f);
 		else
 			return		(0.f);
 	else
 		if (eMotivationDead == sub_motivation_id)
-			if (!m_object->g_Alive())
+			if (!object().g_Alive())
 				return	(1.f);
 			else
 				return	(0.f);

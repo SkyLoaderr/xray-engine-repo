@@ -10,7 +10,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointAbstract::initialize()
 {
 	inherited::initialize();
-	object->CMonsterMovement::initialize_movement();	
+	object->movement().initialize_movement();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -19,8 +19,8 @@ void CStateMonsterMoveToPointAbstract::execute()
 	object->set_action									(data.action.action);
 	object->MotionMan.SetSpecParams						(data.action.spec_params);
 
-	object->CMonsterMovement::set_target_point			(data.point,data.vertex);
-	object->CMonsterMovement::set_generic_parameters	();
+	object->movement().set_target_point			(data.point,data.vertex);
+	object->movement().set_generic_parameters	();
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
@@ -54,7 +54,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointExAbstract::initialize()
 {
 	inherited::initialize();
-	object->CMonsterMovement::initialize_movement();	
+	object->movement().initialize_movement();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -63,11 +63,11 @@ void CStateMonsterMoveToPointExAbstract::execute()
 	object->set_action									(data.action.action);
 	object->MotionMan.SetSpecParams						(data.action.spec_params);
 
-	object->CMonsterMovement::set_target_point			(data.point,data.vertex);
-	object->CMonsterMovement::set_rebuild_time			(data.time_to_rebuild);
-	object->CMonsterMovement::set_distance_to_end		(2.5f);
-	object->CMonsterMovement::set_use_covers			();
-	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
+	object->movement().set_target_point			(data.point,data.vertex);
+	object->movement().set_rebuild_time			(data.time_to_rebuild);
+	object->movement().set_distance_to_end		(2.5f);
+	object->movement().set_use_covers			();
+	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));

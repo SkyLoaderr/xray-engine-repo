@@ -54,6 +54,7 @@ public:
 	IC	virtual	bool	completed					() const;
 	IC			bool	failed						() const;
 	IC	virtual	void	select_intermediate_vertex	();
+	IC	CRestrictedObject &object					() const;
 
 	friend class CMovementManager;
 };

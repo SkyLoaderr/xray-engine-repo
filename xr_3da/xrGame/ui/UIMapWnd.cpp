@@ -772,13 +772,13 @@ void CUIMapWnd::InitLocalMaps()
 	R_ASSERT(ai().get_game_graph());
 
 	// Получаем список уровней игры
-	const CGameGraph::LEVEL_MAP &levelMap		= ai().game_graph().header().levels();
+	const GameGraph::LEVEL_MAP &levelMap		= ai().game_graph().header().levels();
 	
 	string256			gameLtxPath;
 	FS.update_path					(gameLtxPath, CONFIG_PATH, "game.ltx");
 	CInifile			gameLtx		(gameLtxPath);
 	// Loop through all levels in graph and initialize its map data
-	for (CGameGraph::LEVEL_MAP::const_iterator it = levelMap.begin(); it != levelMap.end(); ++it)
+	for (GameGraph::LEVEL_MAP::const_iterator it = levelMap.begin(); it != levelMap.end(); ++it)
 	{
 		shared_str		levelLtxRecord	= it->second.section	();
  		string32    levelName;

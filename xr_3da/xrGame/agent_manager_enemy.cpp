@@ -75,16 +75,16 @@ void CAgentManager::exchange_enemies	(CMemberOrder &member0, CMemberOrder &membe
 {
 	u32								enemy0 = member0.selected_enemy();
 	u32								enemy1 = member1.selected_enemy();
-	MemorySpace::squad_mask_type	mask0 = mask(member0.object());
-	MemorySpace::squad_mask_type	mask1 = mask(member1.object());
+	MemorySpace::squad_mask_type	mask0 = mask(&member0.object());
+	MemorySpace::squad_mask_type	mask1 = mask(&member1.object());
 	m_enemies[enemy0].m_distribute_mask.set(mask0,FALSE);
 	m_enemies[enemy1].m_distribute_mask.set(mask1,FALSE);
 	m_enemies[enemy0].m_distribute_mask.set(mask1,TRUE);
 	m_enemies[enemy1].m_distribute_mask.set(mask0,TRUE);
 	member0.selected_enemy			(enemy1);
 	member1.selected_enemy			(enemy0);
-//	Msg								("Member %s changed enemy from %s to %s",*member0.object()->cName(),*m_enemies[enemy0].m_object->cName(),*m_enemies[enemy1].m_object->cName());
-//	Msg								("Member %s changed enemy from %s to %s",*member1.object()->cName(),*m_enemies[enemy1].m_object->cName(),*m_enemies[enemy0].m_object->cName());
+//	Msg								("Member %s changed enemy from %s to %s",*member0.object().cName(),*m_enemies[enemy0].m_object->cName(),*m_enemies[enemy1].m_object->cName());
+//	Msg								("Member %s changed enemy from %s to %s",*member1.object().cName(),*m_enemies[enemy1].m_object->cName(),*m_enemies[enemy0].m_object->cName());
 }
 
 void CAgentManager::fill_enemies		()
@@ -94,7 +94,7 @@ void CAgentManager::fill_enemies		()
 	iterator						E = members().end();
 	for ( ; I != E; ++I) {
 		(*I).probability			(1.f);
-		(*I).object()->memory().fill_enemies	(CEnemyFiller(&m_enemies,mask((*I).object())));
+		(*I).object().memory().fill_enemies	(CEnemyFiller(&m_enemies,mask(&(*I).object())));
 	}
 }
 
@@ -107,7 +107,7 @@ void CAgentManager::compute_enemy_danger()
 		xr_vector<CMemberOrder>::const_iterator	i = members().begin();
 		xr_vector<CMemberOrder>::const_iterator	e = members().end();
 		for ( ; i != e; ++i) {
-			float					value = evaluate((*I).m_object,(*i).object());
+			float					value = evaluate((*I).m_object,&(*i).object());
 			if (value > best)
 				best				= value;
 		}
@@ -133,7 +133,7 @@ void CAgentManager::assign_enemies		()
 				iterator				i = member(K);
 				if (!fsimilar((*i).probability(),1.f))
 					continue;
-				float					value = evaluate((*i).object(),(*I).m_object);
+				float					value = evaluate(&(*i).object(),(*I).m_object);
 				if (value > best) {
 					best				= value;
 					N					= K;
@@ -173,7 +173,7 @@ void CAgentManager::permutate_enemies	()
 		// setup procesed flag
 		(*I).processed			(false);
 		// get member squad mask
-		MemorySpace::squad_mask_type		member_mask = mask((*I).object());
+		MemorySpace::squad_mask_type		member_mask = mask(&(*I).object());
 		// setup if player has enemy
 		bool								enemy_selected = false;
 		// iterate on enemies
@@ -206,14 +206,14 @@ void CAgentManager::permutate_enemies	()
 			if ((*I).processed())
 				continue;
 
-			float				best = (*I).object()->Position().distance_to(m_enemies[(*I).selected_enemy()].m_object->Position());
+			float				best = (*I).object().Position().distance_to(m_enemies[(*I).selected_enemy()].m_object->Position());
 			bool				found = false;
 			xr_vector<u32>::const_iterator	i = (*I).enemies().begin();
 			xr_vector<u32>::const_iterator	e = (*I).enemies().end();
 			for ( ; i != e; ++i) {
 				if ((*I).selected_enemy() == *i)
 					continue;
-				float			my_distance = (*I).object()->Position().distance_to(m_enemies[*i].m_object->Position());
+				float			my_distance = (*I).object().Position().distance_to(m_enemies[*i].m_object->Position());
 				if (my_distance < best) {
 					// check if we can exchange enemies
 					MemorySpace::squad_mask_type	J = m_enemies[*i].m_distribute_mask.get(), K;
@@ -227,13 +227,13 @@ void CAgentManager::permutate_enemies	()
 							continue;
 
 						// check if I'm closer to the enemy
-						float		member_distance = (*j).object()->Position().distance_to(m_enemies[*i].m_object->Position());
+						float		member_distance = (*j).object().Position().distance_to(m_enemies[*i].m_object->Position());
 						if (member_distance <= my_distance)
 							continue;
 
 						// check if our effectiveness is near the same
-						float		my_to_his = evaluate((*I).object(),m_enemies[(*j).selected_enemy()].m_object);
-						float		his_to_my = evaluate((*j).object(),m_enemies[(*I).selected_enemy()].m_object);
+						float		my_to_his = evaluate(&(*I).object(),m_enemies[(*j).selected_enemy()].m_object);
+						float		his_to_my = evaluate(&(*j).object(),m_enemies[(*I).selected_enemy()].m_object);
 						if (!fsimilar(my_to_his,(*j).probability()) || !fsimilar(his_to_my,(*I).probability()))
 							continue;
 
@@ -266,8 +266,8 @@ void CAgentManager::permutate_enemies	()
 			xr_vector<CEnemy>::iterator	i = m_enemies.begin();
 			xr_vector<CEnemy>::iterator	e = m_enemies.end();
 			for ( ; i != e; ++i)
-				if ((*I).object()->memory().visual().visible_now((*i).m_object))
-					(*i).m_distribute_mask.assign((*i).m_distribute_mask.get() | mask((*I).object()));
+				if ((*I).object().memory().visual().visible_now((*i).m_object))
+					(*i).m_distribute_mask.assign((*i).m_distribute_mask.get() | mask(&(*I).object()));
 		}
 	}
 }
@@ -294,14 +294,14 @@ bool CAgentManager::suitable_location	(CAI_Stalker *object, CCoverPoint *locatio
 	const_iterator					I = members().begin();
 	const_iterator					E = members().end();
 	for ( ; I != E; ++I) {
-		if ((*I).object()->ID() == object->ID())
+		if ((*I).object().ID() == object->ID())
 			continue;
 
 		if (!(*I).cover())
 			continue;
 
 		if ((*I).cover()->m_position.distance_to(location->position()) <= 5.f)
-			if ((*I).object()->Position().distance_to(location->position()) <= object->Position().distance_to(location->position()))
+			if ((*I).object().Position().distance_to(location->position()) <= object->Position().distance_to(location->position()))
 				return				(false);
 	}
 
@@ -368,10 +368,10 @@ bool CAgentManager::process_corpse			(CMemberOrder &member)
 	xr_vector<CMemberCorpse>::iterator	I = m_corpses.begin();
 	xr_vector<CMemberCorpse>::iterator	E = m_corpses.end();
 	for ( ; I != E; ++I) {
-		if (!member.object()->memory().visual().visible_now(member.object()))
+		if (!member.object().memory().visual().visible_now(&member.object()))
 			continue;
 
-		float		dist_sqr = (*I).m_member->Position().distance_to_sqr(member.object()->Position());
+		float		dist_sqr = (*I).m_member->Position().distance_to_sqr(member.object().Position());
 		if (dist_sqr < min_dist_sqr) {
 			if	(
 					(*I).m_reactor && 
@@ -386,7 +386,7 @@ bool CAgentManager::process_corpse			(CMemberOrder &member)
 	if (!best_corpse)
 		return				(false);
 
-	best_corpse->m_reactor	= member.object();
+	best_corpse->m_reactor	= &member.object();
 	return					(true);
 }
 

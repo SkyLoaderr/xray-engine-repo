@@ -12,6 +12,7 @@
 #include "../../../WeaponMagazined.h"
 #include "../../../inventory.h"
 #include "../../../detail_path_manager.h"
+#include "../ai_monster_movement.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -86,7 +87,7 @@ void CBaseMonsterAttack::Init()
 	time_next_attack_run		= 0;
 	time_next_psi_attack		= 0;
 
-	pMonster->CMonsterMovement::initialize_movement();
+	pMonster->movement().initialize_movement();
 	
 }
 
@@ -169,12 +170,12 @@ void CBaseMonsterAttack::Run()
 			pMonster->MotionMan.accel_activate				(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking			(false);
 
-			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy()->Position(), pMonster->EnemyMan.get_enemy()->ai_location().level_vertex_id());
-			pMonster->CMonsterMovement::set_rebuild_time	(pMonster->get_attack_rebuild_time());
-			pMonster->CMonsterMovement::set_distance_to_end	(2.5f);
-			pMonster->CMonsterMovement::set_use_covers		();
-			pMonster->CMonsterMovement::set_cover_params	(5.f, 30.f, 1.f, 30.f);
-			pMonster->CMonsterMovement::set_try_min_time	(false);
+			pMonster->movement().set_target_point	(pMonster->EnemyMan.get_enemy()->Position(), pMonster->EnemyMan.get_enemy()->ai_location().level_vertex_id());
+			pMonster->movement().set_rebuild_time	(pMonster->get_attack_rebuild_time());
+			pMonster->movement().set_distance_to_end	(2.5f);
+			pMonster->movement().set_use_covers		();
+			pMonster->movement().set_cover_params	(5.f, 30.f, 1.f, 30.f);
+			pMonster->movement().set_try_min_time	(false);
 			pMonster->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
 
 			pSquad = monster_squad().get_squad(pMonster);
@@ -187,8 +188,8 @@ void CBaseMonsterAttack::Run()
 
 
 			if (squad_active) {
-				pMonster->set_use_dest_orient	(true);
-				pMonster->set_dest_direction	(command.direction);
+				pMonster->movement().set_use_dest_orient	(true);
+				pMonster->movement().set_dest_direction	(command.direction);
 			}
 			
 			
@@ -235,8 +236,8 @@ void CBaseMonsterAttack::Run()
 
 			LOG_EX("ATTACK: STEAL");
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
-			pMonster->CMonsterMovement::set_target_point		(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
-			pMonster->CMonsterMovement::set_generic_parameters	();
+			pMonster->movement().set_target_point		(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
+			pMonster->movement().set_generic_parameters	();
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
@@ -262,8 +263,8 @@ void CBaseMonsterAttack::Run()
 		// **********************************
 			LOG_EX("ATTACK: ENEMY_POSITION_APPROACH");
 			pMonster->MotionMan.m_tAction		= ACT_RUN;
-			pMonster->CMonsterMovement::set_target_point		(enemy->Position());
-			pMonster->CMonsterMovement::set_generic_parameters	();
+			pMonster->movement().set_target_point		(enemy->Position());
+			pMonster->movement().set_generic_parameters	();
 			pMonster->MotionMan.accel_activate					(eAT_Calm);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
@@ -276,8 +277,8 @@ void CBaseMonsterAttack::Run()
 			LOG_EX("ATTACK: ENEMY_WALK_AWAY");
 
 			pMonster->MotionMan.m_tAction						= ACT_WALK_FWD;
-			pMonster->CMonsterMovement::set_retreat_from_point	(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
-			pMonster->CMonsterMovement::set_generic_parameters	();
+			pMonster->movement().set_retreat_from_point	(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
+			pMonster->movement().set_generic_parameters	();
 			pMonster->CSoundPlayer::play						(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			pMonster->MotionMan.accel_activate					(eAT_Calm);
 		
@@ -290,7 +291,7 @@ void CBaseMonsterAttack::Run()
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundLanding);
 			pMonster->MotionMan.SetSpecParams	(ASP_ROTATION_JUMP);
 			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
-			pMonster->disable_path				();
+			pMonster->movement().disable_path				();
 			break;
 		
 		// ********************		
@@ -300,7 +301,7 @@ void CBaseMonsterAttack::Run()
 
 			pMonster->CSoundPlayer::play				(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);			
 			pMonster->MotionMan.m_tAction				= ACT_RUN;
-			pMonster->CMonsterMovement::set_try_min_time(false);
+			pMonster->movement().set_try_min_time(false);
 
 			pMonster->MotionMan.accel_activate			(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking		(false);
@@ -313,8 +314,8 @@ void CBaseMonsterAttack::Run()
 				dir.normalize();
 				target_point.mad(pMonster->Position(),dir,1.0f);
 			
-				pMonster->CMonsterMovement::set_target_point		(target_point);
-				pMonster->CMonsterMovement::set_generic_parameters	();
+				pMonster->movement().set_target_point		(target_point);
+				pMonster->movement().set_generic_parameters	();
 			}
 			
 			pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RUN);
@@ -381,7 +382,7 @@ bool CBaseMonsterAttack::CheckStartThreaten()
 	// проверка угла
 	float h,p;
 	Fvector().sub(enemy->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(angle_normalize(-pMonster->CMovementManager::m_body.current.yaw),h) > PI / 15) {
+	if (angle_difference(angle_normalize(-pMonster->movement().m_body.current.yaw),h) > PI / 15) {
 		return false;
 	}
 
@@ -400,7 +401,7 @@ bool CBaseMonsterAttack::CheckEndThreaten()
 
 	float h,p;
 	Fvector().sub(enemy->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(angle_normalize(-pMonster->CMovementManager::m_body.current.yaw),h) > PI_DIV_6) return true;
+	if (angle_difference(angle_normalize(-pMonster->movement().m_body.current.yaw),h) > PI_DIV_6) return true;
 	
 	// проверка флагов
 	if (!flags.is(AF_LOW_MORALE) || flags.is(AF_ENEMY_DOESNT_SEE_ME) || flags.is(AF_ENEMY_GO_FARTHER_FAST) || flags.is(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
@@ -443,12 +444,12 @@ bool CBaseMonsterAttack::CheckSteal()
 		
 		// Вычислить отклонение по пути
 		float path_angle = 0.f;
-		if (pMonster->IsMovingOnPath() && (pMonster->detail_path_manager().curr_travel_point_index() < pMonster->detail_path_manager().path().size()-3)) {
-			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->detail_path_manager().path();
+		if (pMonster->movement().IsMovingOnPath() && (pMonster->movement().detail_path_manager().curr_travel_point_index() < pMonster->movement().detail_path_manager().path().size()-3)) {
+			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->movement().detail_path_manager().path();
 
 			float prev_yaw, prev_h;
-			pMonster->detail_path_manager().direction().getHP(prev_yaw,prev_h);
-			for (u32 i=pMonster->detail_path_manager().curr_travel_point_index()+1; i<path.size()-1;i++) {
+			pMonster->movement().detail_path_manager().direction().getHP(prev_yaw,prev_h);
+			for (u32 i=pMonster->movement().detail_path_manager().curr_travel_point_index()+1; i<path.size()-1;i++) {
 				float h,p;
 				Fvector().sub(path[i+1].position, path[i].position).getHP(h,p);
 
@@ -532,11 +533,11 @@ void CBaseMonsterAttack::UpdateFrameFlags()
 	if (pMonster->EnemyMan.get_enemies_count()==1)		
 		frame_flags.or(AF_THIS_IS_THE_ONLY_ENEMY);
 	
-	if (pMonster->ObjectNotReachable(enemy)) 
+	if (pMonster->movement().ObjectNotReachable(enemy)) 
 		frame_flags.or(AF_ENEMY_IS_NOT_REACHABLE);
 
 	// флаги движения по пути
-	if (pMonster->IsMovingOnPath())			frame_flags.or(AF_GOOD_MOVEMENT_ON_PATH);
+	if (pMonster->movement().IsMovingOnPath())			frame_flags.or(AF_GOOD_MOVEMENT_ON_PATH);
 	if (IS_NEED_REBUILD())					frame_flags.or(AF_NEED_REBUILD_PATH);
 
 	if (pMonster->GetEntityMorale() < 0.8f) frame_flags.or(AF_LOW_MORALE);
@@ -549,7 +550,7 @@ void CBaseMonsterAttack::UpdateFrameFlags()
 	if (pMonster->CanExecRotationJump() && CheckRotationJump()) 
 											frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
 
-	if (!pMonster->MotionStats->is_good_motion(3))	
+	if (!pMonster->movement().MotionStats->is_good_motion(3))	
 											frame_flags.or(AF_BAD_MOTION);
 
 	if (CanAttackRun())						frame_flags.or(AF_CAN_ATTACK_RUN);
@@ -569,7 +570,7 @@ bool CBaseMonsterAttack::CheckRotationJump()
 	Fvector().sub(enemy->Position(), pMonster->Position()).getHP(yaw,pitch);
 	yaw *= -1;	yaw = angle_normalize(yaw);
 
-	if (angle_difference(yaw,pMonster->m_body.current.yaw) < MIN_ROTATION_JUMP_ANGLE) return false;
+	if (angle_difference(yaw,pMonster->movement().m_body.current.yaw) < MIN_ROTATION_JUMP_ANGLE) return false;
 
 	// timing
 	if (next_rot_jump_enabled > m_dwCurrentTime)  return false;

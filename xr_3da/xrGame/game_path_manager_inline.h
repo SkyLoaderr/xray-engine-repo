@@ -25,7 +25,7 @@ IC	void CGameManagerTemplate::reinit(CRestrictedObject *object, const CGameGraph
 TEMPLATE_SPECIALIZATION
 IC	bool CGameManagerTemplate::actual() const
 {
-	return				(inherited::actual(m_object->ai_location().game_vertex_id(),dest_vertex_id()));
+	return				(inherited::actual(m_object->object().ai_location().game_vertex_id(),dest_vertex_id()));
 }
 
 TEMPLATE_SPECIALIZATION

@@ -25,6 +25,7 @@
 #include "game_location_selector.h"
 #include "sight_manager.h"
 #include "ai_object_location.h"
+#include "stalker_movement_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -42,41 +43,41 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	inherited::initialize			();
 
 	m_stop_weapon_handling_time		= Level().timeServer();
-	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
-	m_object->sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
+	object().movement().set_node_evaluator	(0);
+	object().movement().set_path_evaluator	(0);
+	object().movement().set_desired_position	(0);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state		(eBodyStateStand);
+	object().movement().set_movement_type		(eMovementTypeWalk);
+	object().movement().set_mental_state		(eMentalStateFree);
+	object().sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
 }
 
 void CStalkerActionSolveZonePuzzle::finalize	()
 {
 	inherited::finalize				();
 
-	if (!m_object->g_Alive())
+	if (!object().g_Alive())
 		return;
 
-	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+	object().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionSolveZonePuzzle::execute		()
 {
 	inherited::execute				();
 	if (Level().timeServer() >= m_stop_weapon_handling_time)
-		if (!m_object->best_weapon())
-			m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+		if (!object().best_weapon())
+			object().CObjectHandler::set_goal	(eObjectActionIdle);
 		else
-			m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+			object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
 	else
-		m_object->CObjectHandler::set_goal		(eObjectActionIdle,m_object->best_weapon());
+		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,35 +92,35 @@ CStalkerActionReachTaskLocation::CStalkerActionReachTaskLocation	(CAI_Stalker *o
 void CStalkerActionReachTaskLocation::initialize	()
 {
 	inherited::initialize				();
-	m_object->set_node_evaluator		(0);
-	m_object->set_path_evaluator		(0);
-	m_object->set_desired_position		(0);
-	m_object->set_desired_direction		(0);
-	m_object->game_location_selector().set_selection_type		(eSelectionTypeMask);
-	m_object->set_path_type				(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state			(eBodyStateStand);
-	m_object->set_movement_type			(eMovementTypeWalk);
-	m_object->set_mental_state			(eMentalStateFree);
-	m_object->sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
-	if (!m_object->best_weapon())
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
+	object().movement().set_desired_position		(0);
+	object().movement().set_desired_direction		(0);
+	object().movement().game_location_selector().set_selection_type		(eSelectionTypeMask);
+	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_mental_state			(eMentalStateFree);
+	object().sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
+	if (!object().best_weapon())
+		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
-		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
 }
 
 void CStalkerActionReachTaskLocation::finalize	()
 {
 	inherited::finalize					();
-	m_object->game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
+	object().movement().game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 
 void CStalkerActionReachTaskLocation::execute		()
 {
 	inherited::execute					();
-	m_object->play						(eStalkerSoundHumming,60000,10000);
-	m_object->set_game_dest_vertex		(m_object->current_alife_task().m_tGraphID);
-	if (m_object->path_completed() || m_object->alife_task_completed())
+	object().play						(eStalkerSoundHumming,60000,10000);
+	object().movement().set_game_dest_vertex		(m_object->current_alife_task().m_tGraphID);
+	if (object().movement().path_completed() || m_object->alife_task_completed())
 		m_storage->set_property			(eWorldPropertyReachedTaskLocation,true);
 }
 
@@ -149,33 +150,33 @@ void CStalkerActionAccomplishTask::setup	(CAI_Stalker *object, CPropertyStorage 
 void CStalkerActionAccomplishTask::initialize	()
 {
 	inherited::initialize				();
-	m_object->set_node_evaluator		(0);
-	m_object->set_path_evaluator		(0);
-	m_object->set_desired_position		(0);
-	m_object->set_desired_direction		(0);
-	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state			(eBodyStateStand);
-	m_object->set_movement_type			(eMovementTypeWalk);
-	m_object->set_mental_state			(eMentalStateFree);
-	m_object->sight().setup				(CSightAction(SightManager::eSightTypeSearch,false,true));
-	m_object->extrapolate_path			(true);
-	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
-	if (!m_object->best_weapon())
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
+	object().movement().set_desired_position		(0);
+	object().movement().set_desired_direction		(0);
+	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_mental_state			(eMentalStateFree);
+	object().sight().setup				(CSightAction(SightManager::eSightTypeSearch,false,true));
+	object().movement().extrapolate_path			(true);
+	object().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	if (!object().best_weapon())
+		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
-		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
 }
 
 void CStalkerActionAccomplishTask::finalize	()
 {
 	inherited::finalize					();
-	m_object->extrapolate_path			(false);
+	object().movement().extrapolate_path			(false);
 
-	if (!m_object->g_Alive())
+	if (!object().g_Alive())
 		return;
 
-	m_object->set_sound_mask			(0);
+	object().set_sound_mask			(0);
 }
 
 void CStalkerActionAccomplishTask::execute		()
@@ -185,7 +186,7 @@ void CStalkerActionAccomplishTask::execute		()
 	if (m_object->alife_task_completed())
 		m_storage->set_property			(eWorldPropertyTaskCompleted,true);
 
-	if (!m_object->path_completed())
+	if (!object().movement().path_completed())
 		return;
 	
 	Fvector position					= ai().game_graph().vertex(m_object->current_alife_task().m_tGraphID)->level_point();
@@ -193,8 +194,8 @@ void CStalkerActionAccomplishTask::execute		()
 	CCoverPoint							*point = ai().cover_manager().best_cover(position,m_max_search_distance,*m_object->m_ce_random_game);
 
 	if (point && !completed()) {
-		m_object->set_level_dest_vertex	(point->level_vertex_id());
-		m_object->set_desired_position	(&point->position());
+		object().movement().set_level_dest_vertex	(point->level_vertex_id());
+		object().movement().set_desired_position	(&point->position());
 	}
 	else {
 		if (!m_object->alife_task_completed()) {
@@ -219,53 +220,53 @@ CStalkerActionReachCustomerLocation::CStalkerActionReachCustomerLocation	(CAI_St
 void CStalkerActionReachCustomerLocation::initialize	()
 {
 	inherited::initialize				();
-	m_object->set_node_evaluator		(0);
-	m_object->set_path_evaluator		(0);
-	m_object->set_desired_position		(0);
-	m_object->set_desired_direction		(0);
-	m_object->game_location_selector().set_selection_type		(eSelectionTypeMask);
-	m_object->set_path_type				(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state			(eBodyStateStand);
-	m_object->set_movement_type			(eMovementTypeWalk);
-	m_object->set_mental_state			(eMentalStateFree);
-	m_object->sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
-	if (!m_object->best_weapon())
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
+	object().movement().set_desired_position		(0);
+	object().movement().set_desired_direction		(0);
+	object().movement().game_location_selector().set_selection_type		(eSelectionTypeMask);
+	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_mental_state			(eMentalStateFree);
+	object().sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
+	if (!object().best_weapon())
+		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
-		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
 }
 
 void CStalkerActionReachCustomerLocation::finalize	()
 {
 	inherited::finalize					();
-	m_object->game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
+	object().movement().game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 
 void CStalkerActionReachCustomerLocation::execute		()
 {
 	inherited::execute					();
 
-	m_object->play						(eStalkerSoundHumming,60000,10000);
+	object().play						(eStalkerSoundHumming,60000,10000);
 
 	CSE_ALifeDynamicObject				*customer = ai().alife().objects().object(m_object->current_alife_task().m_tCustomerID);
 	if (m_object->ai_location().game_vertex_id() != customer->m_tGraphID) {
-		m_object->set_game_dest_vertex	(customer->m_tGraphID);
+		object().movement().set_game_dest_vertex	(customer->m_tGraphID);
 		return;
 	}
 
-	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
+	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 
 	Fvector								dest_position = customer->o_Position;
 	u32									level_vertex_id = customer->m_tNodeID;
 
-	if (!m_object->accessible(customer->o_Position))
-		level_vertex_id					= m_object->accessible_nearest(customer->o_Position,dest_position);
+	if (!object().movement().restrictions().accessible(customer->o_Position))
+		level_vertex_id					= object().movement().restrictions().accessible_nearest(customer->o_Position,dest_position);
 
-	m_object->set_level_dest_vertex		(level_vertex_id);
-	m_object->set_desired_position		(&dest_position);
+	object().movement().set_level_dest_vertex		(level_vertex_id);
+	object().movement().set_desired_position		(&dest_position);
 
-	if (m_object->path_completed())
+	if (object().movement().path_completed())
 		m_storage->set_property			(eWorldPropertyReachedCustomerLocation,true);
 }
 
@@ -281,19 +282,19 @@ CStalkerActionCommunicateWithCustomer::CStalkerActionCommunicateWithCustomer	(CA
 void CStalkerActionCommunicateWithCustomer::initialize	()
 {
 	inherited::initialize				();
-	m_object->set_node_evaluator		(0);
-	m_object->set_path_evaluator		(0);
-	m_object->set_desired_direction		(0);
-	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_level_dest_vertex		(m_object->ai_location().level_vertex_id());
-	m_object->set_desired_position		(&m_object->Position());
-	m_object->set_body_state			(eBodyStateStand);
-	m_object->set_movement_type			(eMovementTypeStand);
-	m_object->set_mental_state			(eMentalStateFree);
-	m_object->sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
+	object().movement().set_desired_direction		(0);
+	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_level_dest_vertex		(m_object->ai_location().level_vertex_id());
+	object().movement().set_desired_position		(&m_object->Position());
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeStand);
+	object().movement().set_mental_state			(eMentalStateFree);
+	object().sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
+	object().CObjectHandler::set_goal	(eObjectActionIdle);
+	object().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(m_object->current_alife_task().m_tCustomerID));
 	VERIFY								(m_trader);
 }
@@ -302,10 +303,10 @@ void CStalkerActionCommunicateWithCustomer::finalize	()
 {
 	inherited::finalize					();
 	
-	if (!m_object->g_Alive())
+	if (!object().g_Alive())
 		return;
 
-	m_object->set_sound_mask			(0);
+	object().set_sound_mask			(0);
 }
 
 void CStalkerActionCommunicateWithCustomer::execute		()

@@ -2,6 +2,7 @@
 #include "poltergeist.h"
 #include "../../../xrmessages.h"
 #include "../../../ai_object_location.h"
+#include "../../../level_graph.h"
 
 #define FIND_POINT_ATTEMPT_COUNT	5
 #define MIN_FLAME_DIST				2.f

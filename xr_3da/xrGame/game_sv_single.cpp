@@ -226,7 +226,7 @@ void game_sv_Single::teleport_object	(NET_Packet &net_packet, u16 id)
 	if (!ai().get_alife())
 		return;
 	
-	ALife::_GRAPH_ID		game_vertex_id;
+	GameGraph::_GRAPH_ID		game_vertex_id;
 	u32						level_vertex_id;
 	Fvector					position;
 

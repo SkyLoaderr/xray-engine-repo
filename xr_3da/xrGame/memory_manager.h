@@ -67,6 +67,8 @@ public:
 	IC		CEnemyManager		&enemy			() const;
 	IC		CItemManager		&item			() const;
 	IC		CGreetingManager	&greeting		() const;
+	IC		CCustomMonster		&object			() const;
+	IC		CAI_Stalker			&stalker		() const;
 };
 
 #include "memory_manager_inline.h"

@@ -22,6 +22,7 @@ public:
 	IC		void		initialize		();
 	IC		void		execute			();
 	IC		void		finalize		();
+	IC		CAI_Stalker &object			() const;
 };
 
 #include "control_action_inline.h"

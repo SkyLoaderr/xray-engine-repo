@@ -23,22 +23,22 @@ void CMonsterMovement::get_intermediate()
 
 	Fvector	dir;
 	if (m_target_type == eMoveToTarget) {
-		dir.sub						(m_target.position, Position());
+		dir.sub						(m_target.position, object().Position());
 		dir.normalize_safe			();
 		m_intermediate.position		= m_target.position;
 	} else if (m_target_type == eRetreatFromTarget){
 		VERIFY(m_intermediate.node == u32(-1));
 		
-		dir.sub						(Position(), m_target.position);
+		dir.sub						(object().Position(), m_target.position);
 		dir.normalize_safe			();
-		m_intermediate.position.mad	(Position(), dir, MAX_PATH_DISTANCE - 1.f);
+		m_intermediate.position.mad	(object().Position(), dir, MAX_PATH_DISTANCE - 1.f);
 	}
 	
-	float dist = Position().distance_to(m_intermediate.position);		
+	float dist = object().Position().distance_to(m_intermediate.position);		
 
 	// лимитировать по расстоянию
 	if (dist > MAX_PATH_DISTANCE) {
-		m_intermediate.position.mad	(Position(), dir, MAX_PATH_DISTANCE);
+		m_intermediate.position.mad	(object().Position(), dir, MAX_PATH_DISTANCE);
 		m_intermediate.node			= u32(-1);
 	} else {
 		// если задана нода, то выходим
@@ -58,7 +58,7 @@ void CMonsterMovement::get_intermediate()
 	// используем прикрытия?
 	if (m_cover_info.use_covers) {
 		if (dist > MAX_COVER_DISTANCE) {
-			m_intermediate.position.mad	(Position(), dir, MAX_COVER_DISTANCE);
+			m_intermediate.position.mad	(object().Position(), dir, MAX_COVER_DISTANCE);
 			m_intermediate.node			= u32(-1);
 		}
 
@@ -73,7 +73,7 @@ void CMonsterMovement::get_intermediate()
 
 	// лимитировать по расстоянию
 	if (dist > MAX_SELECTOR_DISTANCE) {
-		m_intermediate.position.mad	(Position(), dir, MAX_SELECTOR_DISTANCE);
+		m_intermediate.position.mad	(object().Position(), dir, MAX_SELECTOR_DISTANCE);
 		m_intermediate.node			= u32(-1);
 	}
 
@@ -89,9 +89,9 @@ void CMonsterMovement::get_intermediate()
 bool CMonsterMovement::position_in_direction(const Fvector &target, u32 &node) 
 {
 	// нода в прямой видимости?
-	CRestrictedObject::add_border(Position(), target);
-	node = ai().level_graph().check_position_in_direction(ai_location().level_vertex_id(),Position(),target);
-	CRestrictedObject::remove_border();
+	restrictions().add_border(object().Position(), target);
+	node = ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),target);
+	restrictions().remove_border();
 	if (ai().level_graph().valid_vertex_id(node) && accessible(node)) {
 		return true;
 	}
@@ -120,7 +120,7 @@ void CMonsterMovement::set_parameters()
 	// находим с помощью каверов
 	if (m_cover_info.use_covers) {
 		m_cover_approach->setup	(m_intermediate.position, m_cover_info.min_dist, m_cover_info.max_dist, m_cover_info.deviation);
-		CCoverPoint	*point = ai().cover_manager().best_cover(Position(),m_cover_info.radius,*m_cover_approach);
+		CCoverPoint	*point = ai().cover_manager().best_cover(object().Position(),m_cover_info.radius,*m_cover_approach);
 		if (point) {
 			m_intermediate.node		= point->m_level_vertex_id;
 			m_intermediate.position	= point->m_position;	
@@ -172,11 +172,11 @@ void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 		Fvector	pos_random			= position;	
 		Fvector dir; dir.random_dir	();
 
-		pos_random.mad( Position(), dir, RANDOM_POINT_DISTANCE);
+		pos_random.mad( object().Position(), dir, RANDOM_POINT_DISTANCE);
 		
 		// установить m_target.position
 		if (!accessible(pos_random)) {
-			m_target.node		= accessible_nearest(pos_random, m_target.position);	
+			m_target.node		= restrictions().accessible_nearest(pos_random, m_target.position);	
 		} else {
 			m_target.node		= u32(-1);
 			m_target.position	= pos_random;
@@ -203,7 +203,7 @@ void CMonsterMovement::set_retreat_from_point(const Fvector &position)
 
 		// если путь завершен или failed - выбрать другую случайную точку
 		Fvector dir; dir.random_dir	();
-		m_target.position.mad( Position(), dir, RANDOM_POINT_DISTANCE);
+		m_target.position.mad( object().Position(), dir, RANDOM_POINT_DISTANCE);
 	} else {
 		m_target.position	= position;
 		m_force_rebuild		= false;
@@ -232,7 +232,7 @@ bool CMonsterMovement::check_build_conditions()
 		return		true;
 	}
 	
-	if (Position().similar(m_target.position)) {
+	if (object().Position().similar(m_target.position)) {
 		m_path_end	= true;
 		return false;
 	}
@@ -261,7 +261,7 @@ void CMonsterMovement::fix_position(const Fvector &pos, u32 node, Fvector &res_p
 	VERIFY(accessible(node));
 
 	if (!accessible(pos)) {
-		u32	level_vertex_id = accessible_nearest(pos,res_pos);
+		u32	level_vertex_id = restrictions().accessible_nearest(pos,res_pos);
 		VERIFY	(level_vertex_id == node);
 	}
 }

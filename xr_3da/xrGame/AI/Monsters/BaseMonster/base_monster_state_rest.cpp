@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "base_monster_state.h"
+#include "../ai_monster_movement.h"
 
 #define DELTA_NEXT_THINK	5000
 
@@ -21,13 +22,13 @@ void CBaseMonsterRest::Init()
 	IState::Init();
 
 	// если есть путь - дойти до конца (последствия преследования врага) FIXME
-	if (pMonster->IsMovingOnPath()) m_bFollowPath = true;
+	if (pMonster->movement().IsMovingOnPath()) m_bFollowPath = true;
 	else m_bFollowPath = false;
 
 	m_dwLastPlanTime	= 0;
 	m_tAction			= ACTION_WALK;
 
-	pMonster->CMonsterMovement::initialize_movement();
+	pMonster->movement().initialize_movement();
 }
 
 void CBaseMonsterRest::Replanning()
@@ -60,7 +61,7 @@ void CBaseMonsterRest::Replanning()
 void CBaseMonsterRest::Run()
 {
 	if (m_bFollowPath) 
-		if (pMonster->CMonsterMovement::path_completed()) m_bFollowPath = false;
+		if (pMonster->movement().path_completed()) m_bFollowPath = false;
 
 	if (m_bFollowPath) {
 		m_tAction = ACTION_WALK_PATH_END;
@@ -80,7 +81,7 @@ void CBaseMonsterRest::Run()
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			
 			// ходить по точкам графа
-			pMonster->detour_graph_points();
+			pMonster->movement().detour_graph_points();
 
 			break;
 		case ACTION_SATIETY_GOOD:				// стоять, ничего не делать
@@ -93,7 +94,7 @@ void CBaseMonsterRest::Run()
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 			// ходить по точкам графа
-			pMonster->detour_graph_points();
+			pMonster->movement().detour_graph_points();
 			break;
 		case ACTION_WALK_PATH_END:
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

@@ -80,9 +80,9 @@ void CStateManagerBoar::execute()
 		yaw *= -1;
 		yaw = angle_normalize(yaw);
 
-		if (from_right(yaw,object->m_body.current.yaw)) {
-			object->_target_delta = angle_difference(yaw,object->m_body.current.yaw);
-		} else object->_target_delta = -angle_difference(yaw,object->m_body.current.yaw);
+		if (from_right(yaw,object->movement().m_body.current.yaw)) {
+			object->_target_delta = angle_difference(yaw,object->movement().m_body.current.yaw);
+		} else object->_target_delta = -angle_difference(yaw,object->movement().m_body.current.yaw);
 
 		clamp(object->_target_delta, -PI_DIV_4, PI_DIV_4);
 	}

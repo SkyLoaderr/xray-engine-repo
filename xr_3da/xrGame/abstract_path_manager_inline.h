@@ -152,5 +152,12 @@ IC	bool CPathManagerTemplate::check_vertex					(const _vertex_id_type vertex_id)
 	return					(m_graph->valid_vertex_id(vertex_id));
 }
 
+TEMPLATE_SPECIALIZATION
+IC	CRestrictedObject &CPathManagerTemplate::object			() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
+}
+
 #undef CPathManagerTemplate
 #undef TEMPLATE_SPECIALIZATION

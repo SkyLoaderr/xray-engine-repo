@@ -19,7 +19,7 @@ using namespace ALife;
 
 void CSE_ALifeMonsterAbstract::update		()
 {
-	ALife::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
+	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bContinue = true;
 	while (
 		bContinue && 
@@ -47,9 +47,9 @@ void CSE_ALifeMonsterAbstract::update		()
 			}
 		}
 		if (!move_offline() && (m_tNextGraphID == m_tGraphID)) {
-			_GRAPH_ID			tGraphID = m_tNextGraphID;
+			GameGraph::_GRAPH_ID tGraphID = m_tNextGraphID;
 			CGameGraph::const_iterator	i,e;
-			TERRAIN_VECTOR		&tpaTerrain = m_tpaTerrain;
+			GameGraph::TERRAIN_VECTOR	&tpaTerrain = m_tpaTerrain;
 			int							iPointCount = (int)tpaTerrain.size();
 			int							iBranches = 0;
 			ai().game_graph().begin		(tGraphID,i,e);

@@ -12,10 +12,10 @@
 #include "ai_space.h"
 #include "script_engine.h"
 
-IC	CGameObject *CScriptGameObject::object	() const
+IC	CGameObject &CScriptGameObject::object	() const
 {
 	if (m_game_object && m_game_object->lua_game_object() == this)
-		return	(m_game_object);
+		return	(*m_game_object);
 
 #ifdef DEBUG
 	ai().script_engine().script_stack_tracker().print_stack(
@@ -25,6 +25,6 @@ IC	CGameObject *CScriptGameObject::object	() const
 	);
 	VERIFY2	(m_game_object && m_game_object->lua_game_object() == this,"Probably, you are trying to use a destroyed object!");
 #endif
-	return	(m_game_object);
+	return	(*m_game_object);
 }
 

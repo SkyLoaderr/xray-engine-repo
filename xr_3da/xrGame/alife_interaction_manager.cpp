@@ -41,7 +41,7 @@ void CALifeInteractionManager::check_for_interaction(CSE_ALifeSchedulable *tpALi
 		return;
 	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
 	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");
-	_GRAPH_ID					l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
+	GameGraph::_GRAPH_ID		l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	check_for_interaction		(tpALifeSchedulable,l_tGraphID);
 	
 	if (!l_tpALifeDynamicObject->interactive())
@@ -55,15 +55,15 @@ void CALifeInteractionManager::check_for_interaction(CSE_ALifeSchedulable *tpALi
 
 class CCheckForInteractionPredicate {
 public:
-	CALifeInteractionManager	*manager;
-	mutable CSE_ALifeSchedulable*tpALifeSchedulable;
-	mutable _GRAPH_ID			tGraphID;
+	CALifeInteractionManager	*	manager;
+	mutable CSE_ALifeSchedulable	*tpALifeSchedulable;
+	mutable GameGraph::_GRAPH_ID	tGraphID;
 	mutable int						l_iGroupIndex;
 	mutable bool					l_bMutualDetection;
 	mutable CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract;
 	mutable CSE_ALifeMonsterAbstract*l_tpALifeMonsterAbstract;
 
-	IC	CCheckForInteractionPredicate(CALifeInteractionManager *manager, CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID) :
+	IC	CCheckForInteractionPredicate(CALifeInteractionManager *manager, CSE_ALifeSchedulable *tpALifeSchedulable, GameGraph::_GRAPH_ID tGraphID) :
 		manager(manager),
 		tpALifeSchedulable(tpALifeSchedulable),
 		tGraphID(tGraphID)
@@ -252,7 +252,7 @@ public:
 	}
 };
 
-void CALifeInteractionManager::check_for_interaction(CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID)
+void CALifeInteractionManager::check_for_interaction(CSE_ALifeSchedulable *tpALifeSchedulable, GameGraph::_GRAPH_ID tGraphID)
 {
 	graph().iterate_objects(
 		tGraphID,

@@ -11,14 +11,9 @@
 
 CEnemyLocationPredictor::CEnemyLocationPredictor		()
 {
-	init				();
 }
 
 CEnemyLocationPredictor::~CEnemyLocationPredictor		()
-{
-}
-
-void CEnemyLocationPredictor::init						()
 {
 }
 

@@ -18,7 +18,6 @@
 TEMPLATE_SPECIALIZATION
 IC	CGameLocationSelector::CBaseLocationSelector	()
 {
-	init				();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -33,22 +32,18 @@ IC	void CGameLocationSelector::set_selection_type	(const ESelectionType selectio
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameLocationSelector::init			()
+IC	void CGameLocationSelector::reinit			(CRestrictedObject *object, CSelectorManager *selector_manager, CLocationManager *location_manager, const CGameGraph *graph)
 {
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CGameLocationSelector::reinit			(CRestrictedObject *object, const CGameGraph *graph)
-{
-	inherited::reinit				(object,graph);
+	inherited::reinit				(object,selector_manager,graph);
+	m_location_manager				= location_manager;
+	VERIFY							(location_manager);
 	m_selection_type				= eSelectionTypeRandomBranching;
-	m_location_manager				= smart_cast<CLocationManager*>(object);
 	VERIFY							(m_location_manager);
 	m_time_to_change				= 0;
 	if (graph)
 		graph->set_invalid_vertex	(m_previous_vertex_id);
 	else
-		m_previous_vertex_id		= ALife::_GRAPH_ID(-1);
+		m_previous_vertex_id		= GameGraph::_GRAPH_ID(-1);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -76,7 +71,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CGameLocationSelector::select_random_location(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id)
 {
 	if (!m_graph->valid_vertex_id(m_previous_vertex_id))
-		m_previous_vertex_id	= ALife::_GRAPH_ID(start_vertex_id);
+		m_previous_vertex_id	= GameGraph::_GRAPH_ID(start_vertex_id);
 	_Graph::const_iterator		i,e;
 	int							k = -1;
 	VERIFY						(m_graph);
@@ -131,7 +126,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 				break;
 		}
 	}
-	m_previous_vertex_id		= ALife::_GRAPH_ID(start_vertex_id);
+	m_previous_vertex_id		= GameGraph::_GRAPH_ID(start_vertex_id);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -8,8 +8,10 @@
 
 #pragma once
 
-IC	CRestrictedObject::CRestrictedObject	()
+IC	CRestrictedObject::CRestrictedObject	(CGameObject *object)
 {
+	VERIFY				(object);
+	m_object			= object;
 }
 
 IC	bool CRestrictedObject::applied			() const
@@ -17,3 +19,8 @@ IC	bool CRestrictedObject::applied			() const
 	return				(m_applied);
 }
 
+IC	CGameObject &CRestrictedObject::object	() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
+}

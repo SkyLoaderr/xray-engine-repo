@@ -16,8 +16,8 @@ IC	CHitMemoryManager::CHitMemoryManager						(CCustomMonster *object)
 
 IC	const CHitMemoryManager::HITS &CHitMemoryManager::objects	() const
 {
-	VERIFY				(m_hits);
-	return				(*m_hits);
+	VERIFY					(m_hits);
+	return					(*m_hits);
 }
 
 IC	const CHitMemoryManager::CHitObject *CHitMemoryManager::hit	() const
@@ -28,4 +28,10 @@ IC	const CHitMemoryManager::CHitObject *CHitMemoryManager::hit	() const
 IC	void CHitMemoryManager::set_squad_objects					(xr_vector<CHitObject> *squad_objects)
 {
 	m_hits				= squad_objects;
+}
+
+IC	CCustomMonster &CHitMemoryManager::object					() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
 }

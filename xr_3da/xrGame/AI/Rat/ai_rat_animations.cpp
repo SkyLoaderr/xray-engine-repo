@@ -10,6 +10,7 @@
 #include "ai_rat.h"
 #include "../../../skeletonanimated.h"
 #include "../../ai_debug.h"
+#include "../../movement_manager.h"
 
 #define MIN_TURN_ANGLE PI_DIV_6*.5f
 
@@ -61,7 +62,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 		if (m_bFiring)
 			tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		else
-			if (angle_difference(m_body.target.yaw,m_body.current.yaw) <= MIN_TURN_ANGLE)
+			if (angle_difference(movement().m_body.target.yaw,movement().m_body.current.yaw) <= MIN_TURN_ANGLE)
 				if (m_fSpeed < 0.2f) {
 					if (m_bStanding)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
@@ -77,7 +78,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 						else
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else {
-				if (left_angle(-m_body.target.yaw,-m_body.current.yaw))
+				if (left_angle(-movement().m_body.target.yaw,-movement().m_body.current.yaw))
 //					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
 					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 				else
@@ -89,6 +90,6 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))
-		Msg			("%6d %s animation : %s (%f,%f)",Level().timeServer(),"Global",smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),m_body.current.yaw,m_body.target.yaw);
+		Msg			("%6d %s animation : %s (%f,%f)",Level().timeServer(),"Global",smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),movement().m_body.current.yaw,movement().m_body.target.yaw);
 #endif
 }

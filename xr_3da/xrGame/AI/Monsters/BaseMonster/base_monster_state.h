@@ -12,7 +12,7 @@
 
 class CBaseMonster;
 
-#define IS_NEED_REBUILD() pMonster->IsPathEnd(2,0.5f)
+#define IS_NEED_REBUILD() pMonster->movement().IsPathEnd(2,0.5f)
 
 #include "base_monster_state_attack.h"
 #include "base_monster_state_exploreNDE.h"

@@ -37,11 +37,13 @@
 #include "../../memory_manager.h"
 #include "../../sight_manager.h"
 #include "../../ai_object_location.h"
+#include "../../stalker_movement_manager.h"
 
 extern int g_AI_inactive_time;
 
 CAI_Stalker::CAI_Stalker			()
 {
+	m_movement_manager				= 0;
 	init							();
 	InitTrade						();
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
@@ -79,8 +81,8 @@ void CAI_Stalker::reinit			()
 	CObjectHandler::reinit			(this);
 	sight().reinit					();
 	CCustomMonster::reinit			();
-	animation().reinit		();
-	CStalkerMovementManager::reinit	();
+	animation().reinit				();
+	movement().reinit				();
 	CStepManager::reinit			();
 
 	m_pPhysics_support->in_Init		();
@@ -91,13 +93,13 @@ void CAI_Stalker::reinit			()
 	m_best_found_item_to_kill		= 0;
 	m_best_found_ammo				= 0;
 	m_item_actuality				= false;
-	m_ce_close						= xr_new<CCoverEvaluatorCloseToEnemy>(this);
-	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>(this);
-	m_ce_best						= xr_new<CCoverEvaluatorBest>(this);
-	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(this);
-	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(this);
-	m_ce_random_game				= xr_new<CCoverEvaluatorRandomGame>(this);
-	m_ce_ambush						= xr_new<CCoverEvaluatorAmbush>(this);
+	m_ce_close						= xr_new<CCoverEvaluatorCloseToEnemy>(&movement().restrictions());
+	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>(&movement().restrictions());
+	m_ce_best						= xr_new<CCoverEvaluatorBest>(&movement().restrictions());
+	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(&movement().restrictions());
+	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(&movement().restrictions());
+	m_ce_random_game				= xr_new<CCoverEvaluatorRandomGame>(&movement().restrictions());
+	m_ce_ambush						= xr_new<CCoverEvaluatorAmbush>(&movement().restrictions());
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
@@ -146,7 +148,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
 //	sight().reload					(section);
-	CStalkerMovementManager::reload	(section);
+	movement().reload				(section);
 
 	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
 	m_disp_walk_crouch				= pSettings->r_float(section,"disp_walk_crouch");
@@ -161,7 +163,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 
 void CAI_Stalker::Die				(CObject* who)
 {
-	SelectAnimation					(XFORM().k,detail_path_manager().direction(),speed());
+	SelectAnimation					(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
 
 	set_sound_mask					(0);
 	if (is_special_killer(who))
@@ -185,7 +187,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CCustomMonster::Load			(section);
 	CObjectHandler::Load			(section);
 	sight().Load					(section);
-	CStalkerMovementManager::Load	(section);
+	movement().Load	(section);
 	CStepManager::load				(section);
 	
 	// skeleton physics
@@ -202,7 +204,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	if (!inherited::net_Spawn(DC) || 
 		!CObjectHandler::net_Spawn(DC) ||
-		!CStalkerMovementManager::net_Spawn(DC)
+		!movement().net_Spawn(DC)
 		)
 		return						(FALSE);
 
@@ -212,13 +214,13 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	animation().reload		(this);
 
-	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
-	m_body.current.pitch			= m_body.target.pitch	= 0;
+	movement().m_head.current.yaw = movement().m_head.target.yaw = movement().m_body.current.yaw = movement().m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
+	movement().m_body.current.pitch			= movement().m_body.target.pitch	= 0;
 
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
 		ai_location().game_vertex	(tpHuman->m_tGraphID);
-	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
-		set_game_dest_vertex		(tpHuman->m_tNextGraphID);
+	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && movement().restrictions().accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
+		movement().set_game_dest_vertex		(tpHuman->m_tNextGraphID);
 
 	m_current_alife_task			= 0;
 
@@ -291,7 +293,6 @@ void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy				();
 	CInventoryOwner::net_Destroy		();
-	CStalkerMovementManager::net_Destroy();
 	m_pPhysics_support->in_NetDestroy	();
 
 	xr_delete							(m_ce_close);
@@ -338,7 +339,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	
 
 	float					f1 = 0;
-	ALife::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
+	GameGraph::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 //	P.w						(&f1,						sizeof(f1));
@@ -386,10 +387,10 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	id_Group						= P.r_u8();
 
 
-	ALife::_GRAPH_ID				graph_vertex_id = game_dest_vertex_id();
-	P.r								(&graph_vertex_id,		sizeof(ALife::_GRAPH_ID));
+	GameGraph::_GRAPH_ID				graph_vertex_id = movement().game_dest_vertex_id();
+	P.r								(&graph_vertex_id,		sizeof(GameGraph::_GRAPH_ID));
 	graph_vertex_id					= ai_location().game_vertex_id();
-	P.r								(&graph_vertex_id,		sizeof(ALife::_GRAPH_ID));
+	P.r								(&graph_vertex_id,		sizeof(GameGraph::_GRAPH_ID));
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back				(N);
@@ -420,7 +421,7 @@ void CAI_Stalker::UpdateCL()
 		VERIFY						(!m_pPhysicsShell);
 //		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
 //		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
-//		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
+//		float						step_time = !fis_zero(movement().speed()) ? .725f/movement().speed() : 1.f;
 //		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
 		sight().update				();
 		Exec_Look					(Device.fTimeDelta);
@@ -504,8 +505,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
-			uNext.o_model			= m_body.current.yaw;
-			uNext.o_torso			= m_head.current;
+			uNext.o_model			= movement().m_body.current.yaw;
+			uNext.o_torso			= movement().m_head.current;
 			uNext.p_pos				= vNewPosition;
 			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
@@ -514,8 +515,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		{
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
-			uNext.o_model		= m_body.current.yaw;
-			uNext.o_torso		= m_head.current;
+			uNext.o_model		= movement().m_body.current.yaw;
+			uNext.o_torso		= movement().m_head.current;
 			uNext.p_pos			= vNewPosition;
 			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
@@ -602,12 +603,12 @@ void CAI_Stalker::OnRender			()
 	{
 		Fvector					c0 = Position(),c1,t0 = Position(),t1;
 		c0.y					+= 2.f;
-		c1.setHP				(-m_body.current.yaw,-m_body.current.pitch);
+		c1.setHP				(-movement().m_body.current.yaw,-movement().m_body.current.pitch);
 		c1.add					(c0);
 		RCache.dbg_DrawLINE		(Fidentity,c0,c1,D3DCOLOR_XRGB(0,255,0));
 		
 		t0.y					+= 2.f;
-		t1.setHP				(-m_body.target.yaw,-m_body.target.pitch);
+		t1.setHP				(-movement().m_body.target.yaw,-movement().m_body.target.pitch);
 		t1.add					(t0);
 		RCache.dbg_DrawLINE		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
 	}
@@ -649,9 +650,9 @@ void CAI_Stalker::OnRender			()
 
 void CAI_Stalker::Think			()
 {
-	brain().update					(Level().timeServer() - m_dwLastUpdateTime);
-	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
-	setup().update					();
+	brain().update				(Level().timeServer() - m_dwLastUpdateTime);
+	movement().update			(Level().timeServer() - m_dwLastUpdateTime);
+	setup().update				();
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)
@@ -669,4 +670,18 @@ void CAI_Stalker::load (IReader &input_packet)
 void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, float speed)
 {
 	animation().update();
+}
+
+CMovementManager *CAI_Stalker::create_movement_manager()
+{
+	return		(m_movement_manager = xr_new<CStalkerMovementManager>(this));
+}
+
+const SRotation CAI_Stalker::Orientation	() const
+{
+	return		(movement().m_head.current);
+};
+const MonsterSpace::SBoneRotation &CAI_Stalker::head_orientation	() const
+{
+	return movement().head_orientation();
 }

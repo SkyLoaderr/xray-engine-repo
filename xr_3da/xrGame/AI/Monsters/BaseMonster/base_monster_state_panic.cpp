@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "base_monster_state.h"
+#include "../ai_monster_movement.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBaseMonsterPanic class
@@ -23,7 +24,7 @@ void CBaseMonsterPanic::Init()
 	target_vertex_id			= u32(-1);
 	last_time_cover_selected	= 0;
 
-	pMonster->CMonsterMovement::initialize_movement	();
+	pMonster->movement().initialize_movement	();
 }
 
 void CBaseMonsterPanic::Run()
@@ -61,18 +62,18 @@ void CBaseMonsterPanic::Run()
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 
 			if (target_vertex_id != u32(-1)) {
-				pMonster->CMonsterMovement::set_target_point		(target_pos, target_vertex_id);
+				pMonster->movement().set_target_point		(target_pos, target_vertex_id);
 			} else {
-				pMonster->CMonsterMovement::set_retreat_from_point	(position);
+				pMonster->movement().set_retreat_from_point	(position);
 			}
 			
-			pMonster->CMonsterMovement::set_generic_parameters	();
+			pMonster->movement().set_generic_parameters	();
 
 			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking	(false);
 			
 			if (pMonster->EnemyMan.get_enemy_time_last_seen() + 10000 < m_dwCurrentTime) m_tAction = ACTION_FACE_BACK_SCARED;
-			if (pMonster->IsPathEnd(2.5f)) target_vertex_id = u32(-1);
+			if (pMonster->movement().IsPathEnd(2.5f)) target_vertex_id = u32(-1);
 			
 			break;
 		/***************************/
@@ -84,7 +85,7 @@ void CBaseMonsterPanic::Run()
 
 			pMonster->DirMan.face_target(position);
 
-			if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(10)) {
+			if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(10)) {
 				if (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime) m_tAction = ACTION_RUN;
 			}
 

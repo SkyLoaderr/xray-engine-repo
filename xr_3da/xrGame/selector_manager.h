@@ -22,9 +22,9 @@ protected:
 	CCustomMonster		*m_object;
 
 public:
-						CSelectorManager	();
+						CSelectorManager	(CCustomMonster *object);
 	virtual				~CSelectorManager	();
-	virtual	void		reinit				(CCustomMonster *object);
+	virtual	void		reinit				();
 			void		init_selector		(evaluator &S);
 	template <typename T> 
 	IC		void		add					(LPCSTR section, LPCSTR selector_name);

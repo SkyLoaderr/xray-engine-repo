@@ -24,7 +24,7 @@ void CSE_ALifeHumanAbstract::update			()
 		return;
 	m_dwTotalMoney		= u32(-1);
 	R_ASSERT3			(!m_bOnline,"Can't update online object ",name_replace());
-	ALife::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
+	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bOk;
 	do {
 		switch (m_tTaskState) {
@@ -96,7 +96,7 @@ void CSE_ALifeHumanAbstract::vfChooseTask()
 			}
 		}
 		else {
-			m_tDestGraphPointIndex	= _GRAPH_ID(-1);
+			m_tDestGraphPointIndex	= GameGraph::_GRAPH_ID(-1);
 			vfChooseHumanTask		();
 			CALifeTask			*l_tpTask = ai().alife().tasks().task(m_dwCurTaskID);
 			switch (l_tpTask->m_tTaskType) {

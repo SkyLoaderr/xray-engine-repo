@@ -9,8 +9,9 @@
 #include "stdafx.h"
 #include "animation_action.h"
 #include "ai/stalker/ai_stalker.h"
+#include "stalker_movement_manager.h"
 
 void CAnimationAction::execute	()
 {
-	m_object->set_mental_state	(m_mental_state);
+	object().movement().set_mental_state	(m_mental_state);
 }

@@ -16,8 +16,9 @@
 #include "greeting_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "agent_manager.h"
-#include "ai_object_location.h"
 #include "memory_space_impl.h"
+#include "ai_object_location.h"
+#include "level_graph.h"
 
 CMemoryManager::CMemoryManager		(CCustomMonster *monster)
 {
@@ -130,7 +131,7 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
 	CMemoryInfo						result;
 	result.m_object					= 0;
-	if (!m_object->g_Alive())
+	if (!this->object().g_Alive())
 		return						(result);
 
 	ALife::_TIME_ID					game_time = 0;

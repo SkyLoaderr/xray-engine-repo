@@ -40,10 +40,10 @@ public:
 	};
 	
 	class  CCell {
-		ALife::_GRAPH_ID	tGraphIndex;
+		GameGraph::_GRAPH_ID	tGraphIndex;
 		float				fDistance;
 	public:
-		IC	ALife::_GRAPH_ID game_vertex_id			() const;
+		IC	GameGraph::_GRAPH_ID game_vertex_id			() const;
 		IC	float			distance				() const;
 #ifdef AI_COMPILER		
 		friend class CLevelGameGraph;

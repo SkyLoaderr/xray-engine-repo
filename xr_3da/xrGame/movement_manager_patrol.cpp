@@ -12,6 +12,7 @@
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "ai_object_location.h"
+#include "custommonster.h"
 
 void CMovementManager::process_patrol_path()
 {
@@ -19,7 +20,7 @@ void CMovementManager::process_patrol_path()
 	for (;;) {
 		switch (m_path_state) {
 			case ePathStateSelectPatrolPoint : {
-				patrol_path_manager().select_point(Position(),level_path_manager().m_dest_vertex_id);
+				patrol_path_manager().select_point(object().Position(),level_path_manager().m_dest_vertex_id);
 				if (patrol_path_manager().failed())
 					break;
 
@@ -33,7 +34,7 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStateBuildLevelPath : {
-				level_path_manager().build_path(ai_location().level_vertex_id(),level_dest_vertex_id());
+				level_path_manager().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
 				if (level_path_manager().failed())
 					break;
 				m_path_state		= ePathStateContinueLevelPath;
@@ -48,7 +49,7 @@ void CMovementManager::process_patrol_path()
 			}
 			case ePathStateBuildDetailPath : {
 				detail_path_manager().set_state_patrol_path(true);
-				detail_path_manager().set_start_position(Position());
+				detail_path_manager().set_start_position(object().Position());
 				detail_path_manager().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 				detail_path_manager().set_dest_position(patrol_path_manager().destination_position());
 				detail_path_manager().build_path(
@@ -76,7 +77,7 @@ void CMovementManager::process_patrol_path()
 				if (!detail_path_manager().actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-					if (detail_path_manager().completed(Position(),!detail_path_manager().state_patrol_path())) {
+					if (detail_path_manager().completed(object().Position(),!detail_path_manager().state_patrol_path())) {
 						m_path_state	= ePathStateContinueLevelPath;
 						if (level_path_manager().completed()) {
 							m_path_state	= ePathStateSelectPatrolPoint;

@@ -5,6 +5,7 @@
 #include "../ai_monster_debug.h"
 #include "../../../detail_path_manager_space.h"
 #include "../../../detail_path_manager.h"
+#include "../ai_monster_movement.h"
 
 CSnork::CSnork() 
 {
@@ -78,8 +79,8 @@ void CSnork::reinit()
 {
 	inherited::reinit	();
 	
-	detail_path_manager().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
-	detail_path_manager().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
+	movement().detail_path_manager().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
+	movement().detail_path_manager().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 }
 
 void CSnork::UpdateCL()

@@ -31,7 +31,7 @@ void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand
 {
 	CMotionDef						*motion = m_skeleton_animated->ID_Cycle_Safe(animation);
 	if (!motion) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object()->cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object().cName());
 		return;
 	}
 	m_script_animations.push_back	(CStalkerAnimationScript(hand_usage,CAnimationPair(motion,shared_str(animation))));

@@ -16,14 +16,14 @@
 #include "alife_trader_registry.h"
 
 #include "ai/stalker/ai_stalker.h"
-//#include "weapon.h"
+#include "stalker_movement_manager.h"
 
 class CWeapon;
 
 void CScriptGameObject::SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
 {
-	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(object());
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(object());
+	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(&object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(&object());
 
 	if (!l_tpScriptZone && !l_tpTrader)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
@@ -33,8 +33,8 @@ void CScriptGameObject::SetCallback(const luabind::functor<void> &tpZoneCallback
 
 void CScriptGameObject::SetCallback(const luabind::object &lua_object, LPCSTR method, bool bOnEnter)
 {
-	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(object());
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(object());
+	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(&object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(&object());
 
 	if (!l_tpScriptZone && !l_tpTrader)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
@@ -44,8 +44,8 @@ void CScriptGameObject::SetCallback(const luabind::object &lua_object, LPCSTR me
 
 void CScriptGameObject::ClearCallback(bool bOnEnter)
 {
-	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(object());
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(object());
+	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(&object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(&object());
 
 	if (!l_tpScriptZone && !l_tpTrader)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
@@ -56,7 +56,7 @@ void CScriptGameObject::ClearCallback(bool bOnEnter)
 
 
 void CScriptGameObject::SetTradeCallback(const luabind::functor<void> &tpTradeCallback) {
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(&object());
 
 	if (!l_tpTrader) 
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
@@ -64,7 +64,7 @@ void CScriptGameObject::SetTradeCallback(const luabind::functor<void> &tpTradeCa
 }
 
 void CScriptGameObject::SetTradeCallback(const luabind::object &lua_object, LPCSTR method) {
-	CAI_Trader	*l_tpTrader	= smart_cast<CAI_Trader*>	(object());
+	CAI_Trader	*l_tpTrader	= smart_cast<CAI_Trader*>	(&object());
 
 	if (!l_tpTrader) 
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
@@ -73,7 +73,7 @@ void CScriptGameObject::SetTradeCallback(const luabind::object &lua_object, LPCS
 
 
 void CScriptGameObject::ClearTradeCallback() {
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(&object());
 
 	if (!l_tpTrader) 
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
@@ -86,16 +86,17 @@ void CScriptGameObject::ClearTradeCallback() {
 
 bool CScriptGameObject::is_body_turning		() const
 {
-	CMovementManager	*movement_manager = smart_cast<CMovementManager*>(object());
-	if (!movement_manager) {
+	CCustomMonster		*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member is_turning!");
 		return			(false);
 	}
-	CStalkerMovementManager	*stalker_movement_manager = smart_cast<CStalkerMovementManager*>(object());
-	if (!stalker_movement_manager)
-		return			(!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
+
+	CAI_Stalker			*stalker = smart_cast<CAI_Stalker*>(monster);
+	if (!stalker)
+		return			(!fsimilar(monster->movement().body_orientation().target.yaw,monster->movement().body_orientation().current.yaw));
 	else
-		return			(!fsimilar(stalker_movement_manager->head_orientation().target.yaw,stalker_movement_manager->head_orientation().current.yaw) || !fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
+		return			(!fsimilar(stalker->movement().head_orientation().target.yaw,stalker->movement().head_orientation().current.yaw) || !fsimilar(monster->movement().body_orientation().target.yaw,monster->movement().body_orientation().current.yaw));
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -104,7 +105,7 @@ bool CScriptGameObject::is_body_turning		() const
 
 u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster) {
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 		return					(0);
@@ -115,7 +116,7 @@ u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes typ
 
 u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster) {
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 		return					(0);
@@ -131,7 +132,7 @@ u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes typ
 
 void CScriptGameObject::remove_sound	(u32 internal_type)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 	else
@@ -140,7 +141,7 @@ void CScriptGameObject::remove_sound	(u32 internal_type)
 
 void CScriptGameObject::set_sound_mask	(u32 sound_mask)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
 	else {
@@ -154,7 +155,7 @@ void CScriptGameObject::set_sound_mask	(u32 sound_mask)
 
 void CScriptGameObject::play_sound		(u32 internal_type)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -163,7 +164,7 @@ void CScriptGameObject::play_sound		(u32 internal_type)
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -172,7 +173,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time)
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -181,7 +182,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -190,7 +191,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -199,7 +200,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time, u32 id)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -208,7 +209,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 int  CScriptGameObject::active_sound_count		(bool only_playing)
 {
-	CCustomMonster				*monster = smart_cast<CCustomMonster*>(object());
+	CCustomMonster				*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member active_sound_count!");
 		return								(-1);

@@ -980,6 +980,19 @@
 							RelativePath=".\restricted_object_inline.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="SelectorManager"
+						Filter="">
+						<File
+							RelativePath=".\selector_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\selector_manager.h">
+						</File>
+						<File
+							RelativePath=".\selector_manager_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ObjectHandler"
@@ -1123,19 +1136,6 @@
 							</File>
 						</Filter>
 					</Filter>
-				</Filter>
-				<Filter
-					Name="SelectorManager"
-					Filter="">
-					<File
-						RelativePath=".\selector_manager.cpp">
-					</File>
-					<File
-						RelativePath=".\selector_manager.h">
-					</File>
-					<File
-						RelativePath=".\selector_manager_inline.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="SetupManager"
@@ -3737,6 +3737,9 @@
 					<File
 						RelativePath=".\game_graph_inline.h">
 					</File>
+					<File
+						RelativePath=".\game_graph_space.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="GameLevelCrossTable"
@@ -3821,6 +3824,9 @@
 					Filter="">
 					<File
 						RelativePath=".\ai_object_location.h">
+					</File>
+					<File
+						RelativePath=".\ai_object_location_impl.h">
 					</File>
 					<File
 						RelativePath=".\ai_object_location_inline.h">
@@ -5932,40 +5938,6 @@
 									RelativePath=".\WeaponMounted.h">
 								</File>
 							</Filter>
-						</Filter>
-						<Filter
-							Name="Target"
-							Filter="">
-							<File
-								RelativePath="CustomTarget.cpp">
-							</File>
-							<File
-								RelativePath="CustomTarget.h">
-							</File>
-							<File
-								RelativePath="TargetAssault.cpp">
-							</File>
-							<File
-								RelativePath="TargetAssault.h">
-							</File>
-							<File
-								RelativePath="TargetCS.cpp">
-							</File>
-							<File
-								RelativePath="TargetCS.h">
-							</File>
-							<File
-								RelativePath="TargetCSBase.cpp">
-							</File>
-							<File
-								RelativePath="TargetCSBase.h">
-							</File>
-							<File
-								RelativePath="TargetCSCask.cpp">
-							</File>
-							<File
-								RelativePath="TargetCSCask.h">
-							</File>
 						</Filter>
 						<Filter
 							Name="Artifacts"

@@ -133,3 +133,74 @@ IC	bool CStalkerMovementManager::use_desired_direction					() const
 {
 	return						(m_current.m_use_desired_direction);
 }
+
+IC	CAI_Stalker &CStalkerMovementManager::object						() const
+{
+	VERIFY						(m_object);
+	return						(*m_object);
+}
+
+IC	float CStalkerMovementManager::crouch_factor			() const
+{
+	return						(m_crouch_factor);
+}
+
+IC	float CStalkerMovementManager::walk_factor				() const
+{
+	return						(m_walk_factor);
+}
+
+IC	float CStalkerMovementManager::walk_back_factor			() const
+{
+	return						(m_walk_back_factor);
+}
+
+IC	float CStalkerMovementManager::run_factor				() const
+{
+	return						(m_run_factor);
+}
+
+IC	float CStalkerMovementManager::run_back_factor			() const
+{
+	return						(m_run_back_factor);
+}
+
+IC	float CStalkerMovementManager::walk_free_factor			() const
+{
+	return						(m_walk_free_factor);
+}
+
+IC	float CStalkerMovementManager::run_free_factor			() const
+{
+	return						(m_run_free_factor);
+}
+
+IC	float CStalkerMovementManager::panic_factor				() const
+{
+	return						(m_panic_factor);
+}
+
+IC	float CStalkerMovementManager::damaged_walk_factor		() const
+{
+	return						(m_damaged_walk_factor);
+}
+
+IC	float CStalkerMovementManager::damaged_run_factor		() const
+{
+	return						(m_damaged_run_factor);
+}
+
+IC	float CStalkerMovementManager::damaged_walk_free_factor	() const
+{
+	return						(m_damaged_walk_free_factor);
+}
+
+IC	float CStalkerMovementManager::damaged_run_free_factor	() const
+{
+	return						(m_damaged_run_free_factor);
+}
+
+IC	float CStalkerMovementManager::damaged_panic_factor		() const
+{
+	return						(m_damaged_panic_factor);
+}

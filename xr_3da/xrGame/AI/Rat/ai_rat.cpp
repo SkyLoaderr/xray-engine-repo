@@ -17,6 +17,7 @@
 #include "../../../skeletoncustom.h"
 #include "../../detail_path_manager.h"
 #include "../../ai_object_location.h"
+#include "../../movement_manager.h"
 
 using namespace RatSpace;
 
@@ -84,7 +85,7 @@ void CAI_Rat::Die(CObject* who)
 	inherited::Die(who);
 	m_eCurrentState = aiRatDie;
 
-	SelectAnimation(XFORM().k,detail_path_manager().direction(),speed());
+	SelectAnimation(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
 
 	CSoundPlayer::play		(eRatSoundDie);
 
@@ -166,9 +167,9 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	if (!CEatableItem::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics
-	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
-	m_body.current.pitch			= m_body.target.pitch	= 0;
-	m_body.speed					= PI_MUL_2;
+	movement().m_body.current.yaw				= movement().m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
+	movement().m_body.current.pitch			= movement().m_body.target.pitch	= 0;
+	movement().m_body.speed					= PI_MUL_2;
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
@@ -222,11 +223,11 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 		m_bStateChanged					= true;
 		ai_location().game_vertex		(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
 
-	m_tHPB.x						= -m_body.current.yaw;
-	m_tHPB.y						= -m_body.current.pitch;
+	m_tHPB.x						= -movement().m_body.current.yaw;
+	m_tHPB.y						= -movement().m_body.current.pitch;
 	m_tHPB.z						= 0;
 
-	enable_movement					(false);
+	movement().enable_movement		(false);
 
 	vfLoadAnimations				();
 
@@ -261,7 +262,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	P.w_u8					(u8(g_Squad()));
 	P.w_u8					(u8(g_Group()));
 
-	ALife::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
+	GameGraph::_GRAPH_ID		l_game_vertex_id = ai_location().game_vertex_id();
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 //	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
@@ -303,7 +304,7 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	id_Squad				= P.r_u8();
 	id_Group				= P.r_u8();
 
-	ALife::_GRAPH_ID		t;
+	GameGraph::_GRAPH_ID		t;
 	P.r						(&t,				sizeof(t));
 	P.r						(&t,				sizeof(t));
 	ai_location().game_vertex	(t);

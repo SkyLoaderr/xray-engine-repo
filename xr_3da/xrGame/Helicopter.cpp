@@ -857,7 +857,7 @@ void CHelicopter::SetEnemy(CScriptGameObject* e)
 		m_data.m_destEnemy = NULL;
 		return;
 	};
-	m_data.m_destEnemy = e->object();
+	m_data.m_destEnemy = &e->object();
 }
 
 float CHelicopter::GetDistanceToDestPosition()
@@ -977,7 +977,7 @@ bool CHelicopter::isObjectVisible			(CObject* O)
 
 bool CHelicopter::isVisible			(CScriptGameObject* O)
 {
-	return isObjectVisible(O->object());
+	return isObjectVisible	(&O->object());
 }
 
 void CHelicopter::goByRoundPath(Fvector center, float radius, bool clockwise)

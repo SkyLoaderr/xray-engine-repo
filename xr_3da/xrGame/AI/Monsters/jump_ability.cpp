@@ -7,6 +7,7 @@
 #include "custom_events.h"
 #include "critical_action_info.h"
 #include "../../detail_path_manager.h"
+#include "ai_monster_movement.h"
 
 CJumpingAbility::CJumpingAbility()
 {
@@ -78,7 +79,7 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_blend_speed					= -1.f;
 	m_target_position				= point;
 
-	m_object->m_velocity_angular	= 3.f;
+	m_object->movement().m_velocity_angular	= 3.f;
 	m_object->DirMan.face_target	(point);
 
 	m_active			= true;
@@ -99,14 +100,14 @@ void CJumpingAbility::update_frame()
 	if (!m_active) return;
 	
 	if (!m_object->MotionMan.TA_IsActive())	stop();
-	if (m_velocity_bounced && m_object->CMonsterMovement::enabled() && m_object->detail_path_manager().completed(m_object->Position())) stop();
+	if (m_velocity_bounced && m_object->movement().enabled() && m_object->movement().detail_path_manager().completed(m_object->Position())) stop();
 
 	if (is_landing()) pointbreak();
 	
 	set_animation_speed	();
 	hit_test			();
 
-	m_object->CMonsterMovement::set_velocity_from_path	();
+	m_object->movement().set_velocity_from_path	();
 }
 
 bool CJumpingAbility::is_landing()
@@ -142,8 +143,8 @@ void CJumpingAbility::build_line()
 	Fvector target_position;
 	target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
 
-	if (!m_object->CMonsterMovement::build_special(target_position, u32(-1), m_velocity_mask)) stop();
-	else m_object->CMonsterMovement::enable_path();
+	if (!m_object->movement().build_special(target_position, u32(-1), m_velocity_mask)) stop();
+	else m_object->movement().enable_path();
 }
 
 
@@ -164,7 +165,7 @@ void CJumpingAbility::stop()
 {
 	m_active = false;
 	if (m_object->MotionMan.TA_IsActive())	m_object->MotionMan.TA_Deactivate();
-	m_object->CMonsterMovement::stop_now();
+	m_object->movement().stop_now();
 
 	// unlock control blocks
 	m_object->CriticalActionInfo->clear(CAF_LockFSM | CAF_LockPath);
@@ -292,7 +293,7 @@ bool CJumpingAbility::can_jump(CObject *target)
 	yaw			= angle_normalize(yaw);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->CMovementManager::m_body.current.yaw, yaw) > m_max_angle) return false;
+	if (angle_difference(m_object->movement().m_body.current.yaw, yaw) > m_max_angle) return false;
 
 	return true;
 }
@@ -325,7 +326,7 @@ Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
 	yaw			= angle_normalize(yaw);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->CMovementManager::m_body.current.yaw, yaw) > m_max_angle) return pos;
+	if (angle_difference(m_object->movement().m_body.current.yaw, yaw) > m_max_angle) return pos;
 	
 	return prediction_pos;
 }

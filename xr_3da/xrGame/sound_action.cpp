@@ -18,7 +18,7 @@ CSoundAction::~CSoundAction	()
 void CSoundAction::initialize		()
 {
 	if (m_use_init_mask)
-		m_object->set_sound_mask	(m_init_mask);
+		object().set_sound_mask	(m_init_mask);
 }
 
 void CSoundAction::execute			()
@@ -26,7 +26,7 @@ void CSoundAction::execute			()
 	if (!m_use_params)
 		return;
 	
-	m_object->play					(
+	object().play					(
 		m_type,
 		m_max_start_time,
 		m_min_start_time,
@@ -39,5 +39,5 @@ void CSoundAction::execute			()
 void CSoundAction::finalize			()
 {
 	if (m_use_finish_mask)
-		m_object->set_sound_mask	(m_finish_mask);
+		object().set_sound_mask	(m_finish_mask);
 }

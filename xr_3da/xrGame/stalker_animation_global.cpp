@@ -12,6 +12,7 @@
 #include "inventory.h"
 #include "fooditem.h"
 #include "property_storage.h"
+#include "stalker_movement_manager.h"
 
 void	CStalkerAnimationManager::global_play_callback(CBlend *blend)
 {
@@ -26,13 +27,13 @@ void	CStalkerAnimationManager::global_play_callback(CBlend *blend)
 
 const CAnimationPair *CStalkerAnimationManager::assign_global_animation	()
 {
-	if ((eMentalStatePanic == object()->mental_state()) && !fis_zero(object()->speed()))
+	if ((eMentalStatePanic == object().movement().mental_state()) && !fis_zero(object().movement().speed()))
 		return					(&m_part_animations.A[body_state()].m_global.A[1].A[0]);
 
-	if ((eBodyActionHello == object()->body_action()))
+	if ((eBodyActionHello == object().body_action()))
 		return					(&m_part_animations.A[eBodyStateStand].m_global.A[3].A[0]);
 
-	CFoodItem					*food_item = smart_cast<CFoodItem*>(object()->inventory().ActiveItem());
+	CFoodItem					*food_item = smart_cast<CFoodItem*>(object().inventory().ActiveItem());
 	if (!food_item)
 		return					(0);
 

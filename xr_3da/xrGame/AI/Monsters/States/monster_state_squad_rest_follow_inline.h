@@ -79,8 +79,8 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 		SStateDataMoveToPointEx data;
 
 		Fvector dest_pos = monster_squad().get_squad(object)->GetCommand(object).position;
-		if (!object->accessible(dest_pos)) {
-			data.vertex		= object->accessible_nearest(dest_pos, data.point);
+		if (!object->movement().restrictions().accessible(dest_pos)) {
+			data.vertex		= object->movement().restrictions().accessible_nearest(dest_pos, data.point);
 		} else {
 			data.point		= dest_pos;
 			data.vertex		= u32(-1);

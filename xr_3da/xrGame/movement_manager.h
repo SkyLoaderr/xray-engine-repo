@@ -10,8 +10,8 @@
 
 #include "physicsshellholder.h"
 #include "ai_monster_space.h"
-#include "restricted_object.h"
 #include "graph_engine_space.h"
+#include "game_graph_space.h"
 
 namespace MovementManager {
 	enum EPathType;
@@ -57,17 +57,18 @@ class CPHMovementControl;
 class CGameGraph;
 class CLevelGraph;
 class CAbstractVertexEvaluator;
+class CRestrictedObject;
+class CSelectorManager;
+class CCustomMonster;
 
 namespace DetailPathManager {
 	struct STravelPathPoint;
 };
 
-class CMovementManager : 
-	public CRestrictedObject,
-	virtual public CPhysicsShellHolder
-{
+class CMovementManager {
 	friend class CScriptMonster;
 	friend class CGroup;
+	friend class CPoltergeist;
 
 protected:
 	typedef MonsterSpace::SBoneRotation			CBoneRotation;
@@ -145,13 +146,6 @@ public:
 	CBoneRotation			m_body;
 
 private:
-	u32						m_dwFrameLoad;
-	u32						m_dwFrameReinit;
-	u32						m_dwFrameReload;
-	u32						m_dwFrameNetSpawn;
-	u32						m_dwFrameNetDestroy;
-
-private:
 	EPathState				m_path_state;
 	EPathType				m_path_type;
 	bool					m_path_actuality;
@@ -175,6 +169,9 @@ public:
 	CDetailPathManager		*m_detail_path_manager;
 	CPatrolPathManager		*m_patrol_path_manager;
 	CEnemyLocationPredictor	*m_enemy_location_predictor;
+	CRestrictedObject		*m_restricted_object;
+	CSelectorManager		*m_selector_manager;
+	CCustomMonster			*m_object;
 
 private:
 	IC		void	time_start				();
@@ -190,26 +187,21 @@ protected:
 
 public:
 
-					CMovementManager		();
+					CMovementManager		(CCustomMonster *object);
 	virtual			~CMovementManager		();
-			void	init					();
 	virtual void	Load					(LPCSTR caSection);
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR caSection);
 	virtual BOOL	net_Spawn				(LPVOID data);
-	virtual void	net_Destroy				();
-	virtual	void	Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer	*cast_particles_player		()	{return this;}
 	IC		bool	actual					() const;
 			bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);
-			void	set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id);
+			void	set_game_dest_vertex	(const GameGraph::_GRAPH_ID game_vertex_id);
 			void	set_level_dest_vertex	(const u32 level_vertex_id);
 	IC		void	set_build_path_at_once	();
 	IC		void	enable_movement			(bool enabled);
 			EPathType path_type				() const;
-			ALife::_GRAPH_ID game_dest_vertex_id	() const;
+			GameGraph::_GRAPH_ID game_dest_vertex_id	() const;
 			u32		level_dest_vertex_id	() const;
 	IC		bool	enabled					() const;
 	IC		bool	path_completed			() const;
@@ -231,11 +223,10 @@ public:
 	template <typename T>
 	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;
 
-	virtual void	UpdateCL				();
-
 	IC		void	extrapolate_path		(bool value);
 	IC		bool	extrapolate_path		() const;
 
+public:
 	IC		CBaseParameters			*base_game_selector			() const;
 	IC		CBaseParameters			*base_level_selector		() const;
 	IC		CGameLocationSelector	&game_location_selector		() const;
@@ -245,6 +236,9 @@ public:
 	IC		CDetailPathManager		&detail_path_manager		() const;
 	IC		CPatrolPathManager		&patrol_path_manager		() const;
 	IC		CEnemyLocationPredictor	&enemy_location_predictor	() const;
+	IC		CRestrictedObject		&restrictions				() const;
+	IC		CSelectorManager		&selectors					() const;
+	IC		CCustomMonster			&object						() const;
 };
 
 #include "movement_manager_inline.h"

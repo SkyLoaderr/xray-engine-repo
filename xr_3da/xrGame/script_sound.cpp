@@ -44,25 +44,25 @@ const Fvector &CScriptSound::GetPosition() const
 void CScriptSound::Play			(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
-	m_sound.play		(object->object(),flags,delay);
+	m_sound.play		(&object->object(),flags,delay);
 }
 
 void CScriptSound::PlayUnlimited	(CScriptGameObject *object, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
 	VERIFY				((flags & sm_Looped) != sm_Looped);
-	m_sound.play_unlimited(object->object(),flags,delay);
+	m_sound.play_unlimited(&object->object(),flags,delay);
 }
 
 void CScriptSound::PlayAtPos		(CScriptGameObject *object, const Fvector &position, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
-	m_sound.play_at_pos(object->object(), position,flags,delay);
+	m_sound.play_at_pos(&object->object(), position,flags,delay);
 }
 
 void CScriptSound::PlayAtPosUnlimited(CScriptGameObject *object, const Fvector &position, float delay, int flags)
 {
 	VERIFY				(m_sound.handle);
 	VERIFY				((flags & sm_Looped) != sm_Looped);
-	m_sound.play_at_pos_unlimited(object->object(), position,flags,delay);
+	m_sound.play_at_pos_unlimited(&object->object(), position,flags,delay);
 }

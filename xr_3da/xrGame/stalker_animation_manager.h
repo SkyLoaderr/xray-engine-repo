@@ -111,8 +111,7 @@ public:
 	IC		CStalkerAnimationPair	&torso					();
 	IC		CStalkerAnimationPair	&legs					();
 	IC		CStalkerAnimationPair	&script					();
-	IC		CAI_Stalker				*object					();
-	IC		const CAI_Stalker		*object					() const;
+	IC		CAI_Stalker				&object					() const;
 
 public:
 	IC		void					setup_storage			(CPropertyStorage *storage);

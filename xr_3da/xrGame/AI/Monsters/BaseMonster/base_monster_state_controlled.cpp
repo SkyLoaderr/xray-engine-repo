@@ -4,8 +4,8 @@
 #include "../controlled_entity.h"
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
-
 #include "../ai_monster_utils.h"
+#include "../ai_monster_movement.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBaseMonsterControlled class
@@ -24,7 +24,7 @@ void CBaseMonsterControlled::Init()
 	m_tAction			= m_tPrevAction = ACTION_RUN;
 	LastTimeRebuild		= 0;
 
-	pMonster->CMonsterMovement::initialize_movement();
+	pMonster->movement().initialize_movement();
 
 }
 
@@ -76,12 +76,12 @@ void CBaseMonsterControlled::ExecuteAttack()
 			pMonster->MotionMan.accel_activate				(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking			(false);
 
-			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
-			pMonster->CMonsterMovement::set_rebuild_time	(100 + u32(50.f * dist));
-			pMonster->CMonsterMovement::set_distance_to_end	(2.5f);
-			pMonster->CMonsterMovement::set_use_covers		();
-			pMonster->CMonsterMovement::set_cover_params	(5.f, 30.f, 1.f, 30.f);
-			pMonster->CMonsterMovement::set_try_min_time	(false);
+			pMonster->movement().set_target_point	(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
+			pMonster->movement().set_rebuild_time	(100 + u32(50.f * dist));
+			pMonster->movement().set_distance_to_end	(2.5f);
+			pMonster->movement().set_use_covers		();
+			pMonster->movement().set_cover_params	(5.f, 30.f, 1.f, 30.f);
+			pMonster->movement().set_try_min_time	(false);
 
 			pSquad = monster_squad().get_squad(pMonster);
 			squad_active = pSquad && pSquad->SquadActive();
@@ -93,8 +93,8 @@ void CBaseMonsterControlled::ExecuteAttack()
 
 
 			if (squad_active) {
-				pMonster->set_use_dest_orient	(true);
-				pMonster->set_dest_direction	(command.direction);
+				pMonster->movement().set_use_dest_orient	(true);
+				pMonster->movement().set_dest_direction	(command.direction);
 			}
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
@@ -124,7 +124,7 @@ void CBaseMonsterControlled::ExecuteFollow()
 		pMonster->MotionMan.m_tAction = ((dist > 10.0f) ? ACT_WALK_FWD : ACT_STAND_IDLE);
 
 	if (pMonster->MotionMan.m_tAction == ACT_WALK_FWD){
-		pMonster->CMonsterMovement::set_target_point	(random_position(enemy->Position(), 10.f));	
+		pMonster->movement().set_target_point	(random_position(enemy->Position(), 10.f));	
 	}
 
 }

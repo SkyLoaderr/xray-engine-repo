@@ -11,6 +11,9 @@
 #include "inventory_item.h"
 #include "custommonster.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
+#include "restricted_object.h"
+#include "movement_manager.h"
 
 bool CItemManager::is_useful		(const CGameObject *object) const
 {
@@ -22,21 +25,21 @@ bool CItemManager::useful			(const CGameObject *object) const
 	if (!inherited::is_useful(object))
 		return				(false);
 
-	if (object->getDestroy())
+	if (m_object->getDestroy())
 		return				(false);
 
 	// we do not want to keep in memory attached objects
-	if (object->H_Parent())
+	if (m_object->H_Parent())
 		return				(false);
 
-	if (m_object->accessible(object->Position()))
+	if (m_object->movement().restrictions().accessible(m_object->Position()))
 		return				(false);
 
 	const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(object);
 	if (inventory_item && !inventory_item->useful_for_NPC())
 		return				(false);
 
-	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(object->ai_location().level_vertex_id()))
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(m_object->ai_location().level_vertex_id()))
 		return				(false);
 
 	return					(true);

@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
+#include "stalker_movement_manager.h"
 
 CMovementAction::CMovementAction	()
 {
@@ -27,21 +28,21 @@ CMovementAction::CMovementAction	()
 
 void CMovementAction::execute		()
 {
-	m_object->set_path_type			(m_path_type);
-	m_object->set_detail_path_type	(m_detail_path_type);
-	m_object->set_body_state		(m_body_state);
-	m_object->set_movement_type		(m_movement_type);
-	m_object->set_level_dest_vertex	(m_level_dest_vertex_id);
-	m_object->set_desired_position	(m_desired_position);
-	m_object->set_desired_direction	(m_desired_direction);
-	m_object->set_node_evaluator	(m_node_evaluator);
-	m_object->set_node_evaluator	(m_path_evaluator);
+	object().movement().set_path_type			(m_path_type);
+	object().movement().set_detail_path_type	(m_detail_path_type);
+	object().movement().set_body_state			(m_body_state);
+	object().movement().set_movement_type		(m_movement_type);
+	object().movement().set_level_dest_vertex	(m_level_dest_vertex_id);
+	object().movement().set_desired_position	(m_desired_position);
+	object().movement().set_desired_direction	(m_desired_direction);
+	object().movement().set_node_evaluator		(m_node_evaluator);
+	object().movement().set_node_evaluator		(m_path_evaluator);
 }
 
 void CMovementAction::finalize	()
 {
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_node_evaluator	(0);
-	m_object->set_node_evaluator	(0);
+	object().movement().set_desired_position	(0);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_node_evaluator	(0);
+	object().movement().set_node_evaluator	(0);
 }

@@ -24,7 +24,6 @@
 #define DISCOVERY_CHUNK_DATA		0x0007
 #define NEWS_CHUNK_DATA				0x0008
 #define REGISTRY_CHUNK_DATA			0x0009
-#define LOCATION_TYPE_COUNT			4
 #define SECTION_HEADER				"location_"
 #define SAVE_EXTENSION				".sav"
 #define SPAWN_NAME					"game.spawn"
@@ -57,22 +56,11 @@ namespace ALife {
 	typedef u64	_TIME_ID;									// Time  ID
 	typedef u32	_EVENT_ID;									// Event ID
 	typedef u32	_TASK_ID;									// Event ID
-	typedef u16	_GRAPH_ID;									// Graph ID
 	typedef u16	_SPAWN_ID;									// Spawn ID
 	typedef u16	_TERRAIN_ID;								// Terrain ID
-	typedef u8	_LOCATION_ID;								// Location ID
-	typedef u32 _LEVEL_ID;									// Level ID
 	typedef u32	_ORGANIZATION_ID;							// Organization ID
 	typedef u32	_NEWS_ID;									// News ID
 	typedef u32 _STORY_ID;								// Subject ID
-
-	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
-
-	typedef struct tagSTerrainPlace{
-		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
-		u32											dwMinTime;
-		u32											dwMaxTime;
-	} STerrainPlace;
 
 	struct SOrganizationOrder {
 		CALifeOrganization		*m_tpALifeOrganization;
@@ -332,7 +320,6 @@ namespace ALife {
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);
 	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,					TASK_IT);
-	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,					GRAPH_IT);
 	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeMonsterAbstract*,	MONSTER_P_VECTOR,				MONSTER_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
@@ -341,7 +328,6 @@ namespace ALife {
 	DEFINE_VECTOR	(CALifeKnownAnomaly*,		ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
 	DEFINE_VECTOR	(CALifeArtefactDemand*,		DEMAND_P_VECTOR,				DEMAND_P_IT);
-	DEFINE_VECTOR	(STerrainPlace,				TERRAIN_VECTOR,					TERRAIN_IT);
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
 	DEFINE_VECTOR	(SArtefactTraderOrder,		ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);

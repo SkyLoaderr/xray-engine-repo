@@ -10,6 +10,7 @@
 
 #include "level.h"
 #include "restricted_object.h"
+#include "game_graph_space.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorBase
@@ -37,6 +38,7 @@ public:
 	IC		void		initialize			(const Fvector &start_position);
 	virtual void		finalize			();
 	IC		bool		accessible			(const Fvector &position);
+	IC		CRestrictedObject &object		() const;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -138,14 +140,14 @@ protected:
 	typedef CCoverEvaluatorBase inherited;
 
 protected:
-	ALife::_GRAPH_ID		m_game_vertex_id;
+	GameGraph::_GRAPH_ID	m_game_vertex_id;
 	Fvector					m_start_position;
 	float					m_max_distance_sqr;
 	xr_vector<CCoverPoint*>	m_covers;
 
 public:
 	IC					CCoverEvaluatorRandomGame	(CRestrictedObject *object);
-			void		setup						(ALife::_GRAPH_ID game_vertex_id, float max_distance);
+			void		setup						(GameGraph::_GRAPH_ID game_vertex_id, float max_distance);
 			void		evaluate					(CCoverPoint *cover_point, float weight);
 	virtual	void		finalize					();
 };

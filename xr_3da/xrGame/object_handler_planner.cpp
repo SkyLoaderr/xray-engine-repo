@@ -61,7 +61,7 @@ void CObjectHandlerPlanner::set_goal	(MonsterSpace::EObjectAction object_action,
 
 #ifdef LOG_ACTION
 	if (m_use_log) {
-//		Msg					("%6d : Active item %s",Level().timeServer(),object()->inventory().ActiveItem() ? *object()->inventory().ActiveItem()->cName() : "no active items");
+//		Msg					("%6d : Active item %s",Level().timeServer(),object().inventory().ActiveItem() ? *object().inventory().ActiveItem()->cName() : "no active items");
 //		Msg					("%6d : Goal %s",Level().timeServer(),property2string(condition_id));
 	}
 #endif

@@ -15,19 +15,19 @@ void CStatePoltergeistAttackHiddenAbstract::initialize()
 {
 	inherited::initialize();
 	select_target_point();
-	object->CMonsterMovement::initialize_movement();
+	object->movement().initialize_movement();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStatePoltergeistAttackHiddenAbstract::execute()
 {
 	// проверить на завершение пути
-	if (object->detail_path_manager().time_path_built() > time_state_started) {
-		if (object->IsPathEnd(DIST_TO_PATH_END)) select_target_point();
+	if (object->movement().detail_path_manager().time_path_built() > time_state_started) {
+		if (object->movement().IsPathEnd(DIST_TO_PATH_END)) select_target_point();
 	}
 	
-	object->CMonsterMovement::set_target_point			(m_target.point, m_target.node);
-	object->CMonsterMovement::set_generic_parameters	();
+	object->movement().set_target_point			(m_target.point, m_target.node);
+	object->movement().set_generic_parameters	();
 
 	object->MotionMan.m_tAction			= ACT_RUN;
 	object->MotionMan.accel_activate	(eAT_Aggressive);

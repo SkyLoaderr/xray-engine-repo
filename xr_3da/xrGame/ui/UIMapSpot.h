@@ -7,8 +7,8 @@
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIColorAnimatorWrapper.h"
-
 #include "../InfoPortion.h"
+#include "../game_graph.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +43,7 @@ public:
 
 private:
 	//id текущего уровня
-	ALife::_LEVEL_ID		m_our_level_id;
+	GameGraph::_LEVEL_ID	m_our_level_id;
 	//id объекта, который показывается
 	//на карте, если такого нет то 0xffff
 	u16						m_object_id;

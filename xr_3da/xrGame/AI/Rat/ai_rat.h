@@ -77,8 +77,8 @@ protected:
 	};
 
 	ERatAction					m_tAction;
-	ALife::_GRAPH_ID			m_tCurGP;
-	ALife::_GRAPH_ID			m_tNextGP;
+	GameGraph::_GRAPH_ID			m_tCurGP;
+	GameGraph::_GRAPH_ID			m_tNextGP;
 	u32							m_dwTimeToChange;
 //	float						m_fGoingSpeed;
 	bool						m_thinking;

@@ -18,6 +18,7 @@
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "ai_object_location.h"
+#include "custommonster.h"
 
 void CMovementManager::process_game_path()
 {
@@ -27,7 +28,7 @@ void CMovementManager::process_game_path()
 	for (;;) {
 		switch (m_path_state) {
 			case ePathStateSelectGameVertex : {
-				game_location_selector().select_location(ai_location().game_vertex_id(),game_path_manager().m_dest_vertex_id);
+				game_location_selector().select_location(object().ai_location().game_vertex_id(),game_path_manager().m_dest_vertex_id);
 
 				if (game_location_selector().failed())
 					break;
@@ -38,7 +39,7 @@ void CMovementManager::process_game_path()
 					break;
 			}
 			case ePathStateBuildGamePath : {
-				game_path_manager().build_path(ai_location().game_vertex_id(),game_dest_vertex_id());
+				game_path_manager().build_path(object().ai_location().game_vertex_id(),game_dest_vertex_id());
 
 				if (game_path_manager().failed())
 					break;
@@ -50,10 +51,10 @@ void CMovementManager::process_game_path()
 			}
 			case ePathStateContinueGamePath : {
 				game_path_manager().select_intermediate_vertex();
-				if (ai().game_graph().vertex(ai_location().game_vertex_id())->level_id() != ai().game_graph().vertex(game_path_manager().intermediate_vertex_id())->level_id()) {
+				if (ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id() != ai().game_graph().vertex(game_path_manager().intermediate_vertex_id())->level_id()) {
 					m_path_state	= ePathStateTeleport;
 					VERIFY			(ai().get_alife());
-					VERIFY			(ai().alife().graph().level().level_id() == ai().game_graph().vertex(ai_location().game_vertex_id())->level_id());
+					VERIFY			(ai().alife().graph().level().level_id() == ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id());
 					teleport		(game_path_manager().intermediate_vertex_id());
 					break;
 				}
@@ -70,14 +71,14 @@ void CMovementManager::process_game_path()
 
 				if (!accessible(dest_level_vertex_id)) {
 					Fvector					dest_pos;
-					dest_level_vertex_id	= accessible_nearest(
+					dest_level_vertex_id	= restrictions().accessible_nearest(
 						ai().level_graph().vertex_position(dest_level_vertex_id),
 						dest_pos
 					);
 				}
 
 				level_path_manager().build_path(
-					ai_location().level_vertex_id(),
+					object().ai_location().level_vertex_id(),
 					dest_level_vertex_id
 				);
 
@@ -99,7 +100,7 @@ void CMovementManager::process_game_path()
 			}
 			case ePathStateBuildDetailPath : {
 				detail_path_manager().set_state_patrol_path(true);
-				detail_path_manager().set_start_position(Position());
+				detail_path_manager().set_start_position(object().Position());
 				detail_path_manager().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 				detail_path_manager().set_dest_position( 
 					ai().level_graph().vertex_position(
@@ -122,7 +123,7 @@ void CMovementManager::process_game_path()
 				break;
 			}
 			case ePathStatePathVerification : {
-				if (!game_location_selector().actual(ai_location().game_vertex_id(),path_completed()))
+				if (!game_location_selector().actual(object().ai_location().game_vertex_id(),path_completed()))
 					m_path_state	= ePathStateSelectGameVertex;
 				else
 				if (!game_path_manager().actual())
@@ -134,7 +135,7 @@ void CMovementManager::process_game_path()
 				if (!detail_path_manager().actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-					if (detail_path_manager().completed(Position(),!detail_path_manager().state_patrol_path())) {
+					if (detail_path_manager().completed(object().Position(),!detail_path_manager().state_patrol_path())) {
 						m_path_state	= ePathStateContinueLevelPath;
 						if (level_path_manager().completed()) {
 							m_path_state	= ePathStateContinueGamePath;
@@ -145,7 +146,7 @@ void CMovementManager::process_game_path()
 				break;
 			}
 			case ePathStatePathCompleted : {
-				if (!game_location_selector().actual(ai_location().game_vertex_id(),path_completed()))
+				if (!game_location_selector().actual(object().ai_location().game_vertex_id(),path_completed()))
 					m_path_state	= ePathStateSelectGameVertex;
 				break;
 			}

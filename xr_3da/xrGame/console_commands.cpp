@@ -450,7 +450,7 @@ public:
 				if (id1 >= ai().game_graph().header().vertex_count())
 					Msg("Invalid task ID! (%d)",id1);
 				else {
-					ALife::_GRAPH_ID id = ALife::_GRAPH_ID(id1);
+					GameGraph::_GRAPH_ID id = GameGraph::_GRAPH_ID(id1);
 					tpGame->alife().vfGraphVertexInfo(id);
 				}
 			}
@@ -1442,8 +1442,8 @@ struct CCC_JumpToLevel : public IConsole_Command {
 		string256		level;
 		sscanf(args,"%s",level);
 
-		CGameGraph::LEVEL_MAP::const_iterator	I = ai().game_graph().header().levels().begin();
-		CGameGraph::LEVEL_MAP::const_iterator	E = ai().game_graph().header().levels().end();
+		GameGraph::LEVEL_MAP::const_iterator	I = ai().game_graph().header().levels().begin();
+		GameGraph::LEVEL_MAP::const_iterator	E = ai().game_graph().header().levels().end();
 		for ( ; I != E; ++I)
 			if (!xr_strcmp((*I).second.name(),level)) {
 				ai().alife().jump_to_level(level);

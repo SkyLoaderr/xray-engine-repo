@@ -332,7 +332,7 @@ bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 				// checking if position is inside the current vertex
 				I->m_tNodeID		= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 				// validating graph point and changing it if needed
-				_GRAPH_ID			tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
+				GameGraph::_GRAPH_ID	tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
 				if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
 					if (!I->m_bOnline)
 						graph().change	(I,I->m_tGraphID,tGraphID);
@@ -350,7 +350,7 @@ bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 			// checking if position is inside the current vertex
 			I->m_tNodeID			= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 			// validating graph point and changing it if needed
-			_GRAPH_ID				tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
+			GameGraph::_GRAPH_ID	tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
 			if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
 				if (!I->m_bOnline)
 					graph().change	(I,I->m_tGraphID,tGraphID);

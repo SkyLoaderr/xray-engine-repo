@@ -8,6 +8,7 @@
 #include "ai_monster_debug.h"
 #include "../../../skeletonanimated.h"
 #include "../../detail_path_manager.h"
+#include "ai_monster_movement.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -178,8 +179,8 @@ void CMotionManager::ApplyParams()
 	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-	pMonster->m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
-	if (!b_forced_velocity) pMonster->m_velocity_angular = item_it->second.velocity->velocity.angular_real;
+	pMonster->movement().m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
+	if (!b_forced_velocity) pMonster->movement().m_velocity_angular = item_it->second.velocity->velocity.angular_real;
 }
 
 // Callback на завершение анимации
@@ -194,7 +195,7 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
-//	if (!pMonster->MotionStats->is_good_motion(3) || (IsMoving() && !pMonster->IsMovingOnPath())) {
+//	if (!pMonster->movement().MotionStats->is_good_motion(3) || (IsMoving() && !pMonster->movement().IsMovingOnPath())) {
 //		cur_anim = eAnimStandIdle;
 //	}
 }
@@ -367,7 +368,7 @@ float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 
 void CMotionManager::ForceAngularSpeed(float vel)
 {
-	pMonster->m_velocity_angular = vel;
+	pMonster->movement().m_velocity_angular = vel;
 	b_forced_velocity = true;
 }
 
@@ -401,15 +402,15 @@ EAction CMotionManager::GetActionFromPath()
 {
 	EAction action;
 	
-	u32 cur_point_velocity_index = pMonster->detail_path_manager().path()[pMonster->detail_path_manager().curr_travel_point_index()].velocity;
+	u32 cur_point_velocity_index = pMonster->movement().detail_path_manager().path()[pMonster->movement().detail_path_manager().curr_travel_point_index()].velocity;
 	action = VelocityIndex2Action(cur_point_velocity_index);
 
 	u32 next_point_velocity_index = u32(-1);
-	if (pMonster->detail_path_manager().path().size() > pMonster->detail_path_manager().curr_travel_point_index() + 1) 
-		next_point_velocity_index = pMonster->detail_path_manager().path()[pMonster->detail_path_manager().curr_travel_point_index() + 1].velocity;
+	if (pMonster->movement().detail_path_manager().path().size() > pMonster->movement().detail_path_manager().curr_travel_point_index() + 1) 
+		next_point_velocity_index = pMonster->movement().detail_path_manager().path()[pMonster->movement().detail_path_manager().curr_travel_point_index() + 1].velocity;
 
 	if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-		if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(1)) 
+		if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 
 			action = VelocityIndex2Action(next_point_velocity_index);
 	}
 
@@ -482,7 +483,7 @@ void CMotionManager::ValidateAnimation()
 	
 	ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
-	bool is_moving_on_path	= pMonster->IsMovingOnPath();
+	bool is_moving_on_path	= pMonster->movement().IsMovingOnPath();
 
 	if (is_moving_on_path && is_moving_anim) {
 		pMonster->DirMan.use_path_direction(item_it->first == eAnimDragCorpse);
@@ -492,16 +493,16 @@ void CMotionManager::ValidateAnimation()
 	if (!is_moving_on_path && is_moving_anim) {
 		m_tpCurAnim							= 0;
 		cur_anim_info().motion				= eAnimStandIdle;
-		pMonster->stop_now();
+		pMonster->movement().stop_now();
 		return;
 	}
 
 	if (is_moving_on_path && !is_moving_anim) {
-		pMonster->stop_now();
+		pMonster->movement().stop_now();
 		return;
 	}
 
-	float angle_diff = angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw);
+	float angle_diff = angle_difference(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw);
 	if (angle_diff < deg(1) && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
 		m_tpCurAnim					= 0;
 		cur_anim_info().motion		= eAnimStandIdle;

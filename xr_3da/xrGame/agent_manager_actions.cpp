@@ -66,7 +66,7 @@ void CAgentManagerActionNoOrders::execute			()
 #else
 		(*I).order_type			(AgentManager::eOrderTypeAction);
 		(*I).action				(CSetupAction(0.f,0));
-		(*I).action().movement().set_level_dest_vertex_id((*I).object()->ai_location().level_vertex_id());
+		(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
 #endif
 
 //		(*I).order_type			(AgentManager::eOrderTypeGoal);
@@ -74,8 +74,8 @@ void CAgentManagerActionNoOrders::execute			()
 
 //		(*I).order_type			(AgentManager::eOrderTypeAction);
 //		(*I).action				(CSetupAction(0.f,0));
-//		(*I).action().movement().set_level_dest_vertex_id((*I).object()->ai_location().level_vertex_id());
-//		(*I).action().object	(CObjectAction(MonsterSpace::eObjectActionUse,(*I).object()->inventory().item(CLSID_IITEM_BOTTLE)));
+//		(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
+//		(*I).action().object	(CObjectAction(MonsterSpace::eObjectActionUse,(*I).object().inventory().item(CLSID_IITEM_BOTTLE)));
 //		(*I).action().sight		(CSightAction(smart_cast<CGameObject*>(Level().CurrentEntity()),false,""));
 	}
 }
@@ -137,14 +137,14 @@ void CAgentManagerActionKillEnemy::execute			()
 #ifndef TEST
 		(*I).order_type				(AgentManager::eOrderTypeNoOrder);
 #else
-		if ((*I).object()->enemy())
-			Msg						("%6d : %s vs %s",Level().timeServer(),*(*I).object()->cName(),*(*I).object()->enemy()->cName());
+		if ((*I).object().enemy())
+			Msg						("%6d : %s vs %s",Level().timeServer(),*(*I).object().cName(),*(*I).object().enemy()->cName());
 		if (m_level_time >= Level().timeServer()) {
 			(*I).order_type			(AgentManager::eOrderTypeAction);
 			(*I).action				(CSetupAction(0.f,0));
-			(*I).action().movement().set_level_dest_vertex_id((*I).object()->ai_location().level_vertex_id());
-			if ((*I).object()->enemy())
-			(*I).action().sight		(CSightAction((*I).object()->enemy(),true));
+			(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());
+			if ((*I).object().enemy())
+			(*I).action().sight		(CSightAction((*I).object().enemy(),true));
 		}
 		else
 			(*I).order_type			(AgentManager::eOrderTypeNoOrder);

@@ -11,6 +11,7 @@
 
 #include "xrServer_Objects.h"
 #include "alife_space.h"
+#include "game_graph_space.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -54,7 +55,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
 	shared_str						m_caConnectionLevelName;
 	shared_str						m_caConnectionPointName;
-	u8								m_tLocations[LOCATION_TYPE_COUNT];
+	u8								m_tLocations[GameGraph::LOCATION_TYPE_COUNT];
 
 									CSE_ALifeGraphPoint(LPCSTR caSection);
 	virtual							~CSE_ALifeGraphPoint();
@@ -75,7 +76,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 
 public:
 	typedef CSE_Abstract inherited;
-	ALife::_GRAPH_ID				m_tGraphID;
+	GameGraph::_GRAPH_ID				m_tGraphID;
 	float							m_fDistance;
 	bool							m_bOnline;
 	bool							m_bDirectControl;
@@ -237,7 +238,7 @@ add_to_type_list(CSE_ALifeSpaceRestrictor)
 #define script_type_list save_type_list(CSE_ALifeSpaceRestrictor)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeSpaceRestrictor)
-	ALife::_GRAPH_ID				m_tNextGraphID;
+	GameGraph::_GRAPH_ID				m_tNextGraphID;
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	Fvector							m_tAngles;

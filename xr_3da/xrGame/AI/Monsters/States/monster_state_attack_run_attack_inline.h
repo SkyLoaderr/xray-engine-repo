@@ -60,8 +60,8 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 	Fvector target_position;
 	target_position.mad(object->Position(), object->Direction(), object->get_sd()->m_run_attack_path_dist);
 	
-	if (!object->CMonsterMovement::build_special(target_position, u32(-1), object->eVelocityParamsRunAttack)) return false;
-	else object->CMonsterMovement::enable_path();
+	if (!object->movement().build_special(target_position, u32(-1), object->eVelocityParamsRunAttack)) return false;
+	else object->movement().enable_path();
 
 	return true;
 }
@@ -69,7 +69,7 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackRunAttackAbstract::check_completion()
 {
-	if (!object->CMonsterMovement::IsMovingOnPath() || (object->m_time_last_attack_success != 0)) return true;
+	if (!object->movement().IsMovingOnPath() || (object->m_time_last_attack_success != 0)) return true;
 	return false;
 }
 

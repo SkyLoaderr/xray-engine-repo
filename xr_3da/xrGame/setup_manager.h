@@ -31,6 +31,7 @@ public:
 	IC		const _action_id_type	&current_action_id	() const;
 	IC		void					select_action		();
 	IC		void					clear				();
+	IC		_object_type			&object				() const;
 };
 
 #include "setup_manager_inline.h"

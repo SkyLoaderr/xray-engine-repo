@@ -24,9 +24,11 @@
 #include "../../../memory_manager.h"
 #include "../../../visual_memory_manager.h"
 #include "../../../ai_debug.h"
+#include "../ai_monster_movement.h"
 
 CBaseMonster::CBaseMonster()
 {
+	m_movement_manager				= 0;
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 
@@ -45,7 +47,6 @@ CBaseMonster::CBaseMonster()
 
 	// Components external init 
 
-	CMonsterMovement::InitExternal	(this);
 	EnemyMemory.init_external		(this, 20000);
 	SoundMemory.init_external		(this, 20000);
 	CorpseMemory.init_external		(this, 20000);
@@ -57,9 +58,9 @@ CBaseMonster::CBaseMonster()
 	// »нициализаци€ параметров анимации	
 	MotionMan.Init					(this);
 
-	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>	(this);
-	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>	(this);
-	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>	(this);
+	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>	(&movement().restrictions());
+	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>	(&movement().restrictions());
+	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>	(&movement().restrictions());
 
 	StateMan						= 0;
 
@@ -109,7 +110,7 @@ void CBaseMonster::UpdateCL()
 		PitchCorrection						();
 
 		// ќбновить угловую и линейную скорости движени€
-		CMonsterMovement::update_velocity	();
+		movement().update_velocity	();
 
 		Exec_Look							(Device.fTimeDelta);
 		
@@ -215,7 +216,7 @@ float CBaseMonster::evaluate(const CGameObject *object) const
 
 float CBaseMonster::get_custom_pitch_speed(float def_speed)
 {
-	float cur_speed = angle_difference(m_body.current.pitch, m_body.target.pitch) * 4.0f;
+	float cur_speed = angle_difference(movement().m_body.current.pitch, movement().m_body.target.pitch) * 4.0f;
 	clamp(cur_speed, PI_DIV_6, 5 * PI_DIV_6);
 
 	return cur_speed;
@@ -247,17 +248,17 @@ bool CBaseMonster::IsVisibleObject(const CGameObject *object)
 
 void CBaseMonster::Exec_Look		( float dt )
 {
-	m_body.current.yaw		= angle_normalize			(m_body.current.yaw);
-	m_body.target.yaw		= angle_normalize			(m_body.target.yaw);
-	m_body.current.pitch	= angle_normalize_signed	(m_body.current.pitch);
-	m_body.target.pitch		= angle_normalize_signed	(m_body.target.pitch);
+	movement().m_body.current.yaw		= angle_normalize			(movement().m_body.current.yaw);
+	movement().m_body.target.yaw		= angle_normalize			(movement().m_body.target.yaw);
+	movement().m_body.current.pitch	= angle_normalize_signed	(movement().m_body.current.pitch);
+	movement().m_body.target.pitch		= angle_normalize_signed	(movement().m_body.target.pitch);
 
-	float pitch_speed		= get_custom_pitch_speed(m_body.speed);
-	angle_lerp_bounds		(m_body.current.yaw,m_body.target.yaw,m_body.speed,dt);
-	angle_lerp_bounds		(m_body.current.pitch,m_body.target.pitch,pitch_speed,dt);
+	float pitch_speed		= get_custom_pitch_speed(movement().m_body.speed);
+	angle_lerp_bounds		(movement().m_body.current.yaw,movement().m_body.target.yaw,movement().m_body.speed,dt);
+	angle_lerp_bounds		(movement().m_body.current.pitch,movement().m_body.target.pitch,pitch_speed,dt);
 
 	Fvector P				= Position();
-	XFORM().setHPB			(-m_body.current.yaw,-m_body.current.pitch,0);
+	XFORM().setHPB			(-movement().m_body.current.yaw,-movement().m_body.current.pitch,0);
 	Position()				= P;
 
 }
@@ -311,7 +312,7 @@ bool CBaseMonster::can_eat_now()
 
 void CBaseMonster::TranslateActionToPathParams()
 {
-	if (!CMonsterMovement::b_enable_movement) return;
+	if (!movement().b_enable_movement) return;
 
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
@@ -373,11 +374,11 @@ void CBaseMonster::TranslateActionToPathParams()
 	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		detail_path_manager().set_velocity_mask	(vel_mask);	
-		detail_path_manager().set_desirable_mask	(des_mask);
-		enable_path			();		
+		movement().detail_path_manager().set_velocity_mask	(vel_mask);	
+		movement().detail_path_manager().set_desirable_mask	(des_mask);
+		movement().enable_path	();		
 	} else {
-		disable_path		();
+		movement().disable_path	();
 	}
 }
 
@@ -403,4 +404,9 @@ void CBaseMonster::on_first_update()
 {
 	// HUD уже загружен, подгрузить дополнительные данные
 	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect ("monster", "controller\\controller_blood_01");
+}
+
+CMovementManager *CBaseMonster::create_movement_manager	()
+{
+	return		(m_movement_manager = xr_new<CMonsterMovement>(this));
 }

@@ -8,6 +8,7 @@
 #include "../../../detail_path_manager.h"
 #include "../../../actor.h"
 #include "../../../../skeletonanimated.h"
+#include "../ai_monster_movement.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -33,7 +34,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
 	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
-	detail_path_manager().add_velocity(eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
+	movement().detail_path_manager().add_velocity(eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
 	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
 
@@ -172,7 +173,7 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	to_dir.getHP(yaw,pitch);
 
 	// установить параметры вращения по yaw
-	float cur_yaw = -m_body.current.yaw;						// текущий мировой угол монстра
+	float cur_yaw = -movement().m_body.current.yaw;						// текущий мировой угол монстра
 	float bone_angle;											// угол для боны	
 
 	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
@@ -180,7 +181,7 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
 		bone_angle = dy;
 	} else {													// torso & bone turn 
-		if (IsMoveAlongPathFinished() || !CMovementManager::enabled()) m_body.target.yaw = angle_normalize(-yaw);
+		if (movement().IsMoveAlongPathFinished() || !movement().enabled()) movement().m_body.target.yaw = angle_normalize(-yaw);
 		if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
 		else bone_angle = MAX_BONE_ANGLE;
 	}

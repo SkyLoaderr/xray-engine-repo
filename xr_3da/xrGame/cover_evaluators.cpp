@@ -175,7 +175,7 @@ void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point, float weight)
 // CCoverEvaluatorRandomGame
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorRandomGame::setup		(ALife::_GRAPH_ID game_vertex_id, float max_distance)
+void CCoverEvaluatorRandomGame::setup		(GameGraph::_GRAPH_ID game_vertex_id, float max_distance)
 {
 	inherited::setup		();
 	m_game_vertex_id		= game_vertex_id;

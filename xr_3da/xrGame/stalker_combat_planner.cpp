@@ -105,15 +105,15 @@ void CStalkerCombatPlanner::initialize			()
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
 	if (m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) && m_object->memory().enemy().selected()->human_being())
-		m_object->play		(eStalkerSoundAlarm);
+		object().CSoundPlayer::play		(eStalkerSoundAlarm);
 }
 
 void CStalkerCombatPlanner::finalize			()
 {
-	if (!m_object->g_Alive())
+	if (!object().g_Alive())
 		return;
 
-	m_object->remove_active_sounds	(u32(-1));
+	object().CSoundPlayer::remove_active_sounds	(u32(-1));
 }
 
 void CStalkerCombatPlanner::add_evaluators		()

@@ -6,6 +6,7 @@
 #include "../ai_monster_debug.h"
 #include "../../../detail_path_manager.h"
 #include "../../../ai_object_location.h"
+#include "../ai_monster_movement.h"
 
 //////////////////////////////////////////////////////////////////////////
 bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
@@ -16,8 +17,8 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	CScriptMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 	if (l_tMovementAction.completed()) return false;
 
-	if (detail_path_manager().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
-		if ((l_tMovementAction.m_fDistToEnd > 0) && IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
+	if (movement().detail_path_manager().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
+		if ((l_tMovementAction.m_fDistToEnd > 0) && movement().IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
 			return false;
 		}
@@ -34,7 +35,7 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
 	}
 
-	CMonsterMovement::set_path_targeted();
+	movement().set_path_targeted();
 	
 	force_real_speed = (l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
 
@@ -42,12 +43,12 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 		
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
-			CMonsterMovement::set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
+			movement().set_target_point	(l_tpGameObject->Position(), l_tpGameObject->ai_location().level_vertex_id());
 			break;
 													  }
 		case CScriptMovementAction::eGoalTypePathPosition :
 		case CScriptMovementAction::eGoalTypeNoPathPosition :
-			CMonsterMovement::set_target_point	(l_tMovementAction.m_tDestinationPosition);
+			movement().set_target_point	(l_tMovementAction.m_tDestinationPosition);
 			break;
 	}
 	return			(true);		
@@ -101,7 +102,7 @@ bool CBaseMonster::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 	}
 
 
-	if (angle_difference(m_body.target.yaw,m_body.current.yaw) < deg(2))
+	if (angle_difference(movement().m_body.target.yaw,movement().m_body.current.yaw) < deg(2))
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;
@@ -210,7 +211,7 @@ void CBaseMonster::ProcessScripts()
 	// Инициализировать action
 	MotionMan.m_tAction = ACT_STAND_IDLE;
 
-	CMonsterMovement::Update_Initialize			();
+	movement().Update_Initialize			();
 	
 	// Выполнить скриптовые actions
 	b_script_state_must_execute					= false;
@@ -230,12 +231,12 @@ void CBaseMonster::ProcessScripts()
 	TranslateActionToPathParams					();
 
 	// обновить путь
-	CMonsterMovement::Update_Execute			();
+	movement().Update_Execute			();
 
 	MotionMan.Update							();
 	
 	// установить текущую скорость
-	CMonsterMovement::Update_Finalize			();
+	movement().Update_Finalize			();
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия

@@ -1022,13 +1022,13 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fGoingSpeed				= pSettings->r_float(caSection, "going_speed");
 	LPCSTR						S = pSettings->r_string(caSection,"terrain");
 	u32							N = _GetItemCount(S);
-	R_ASSERT					(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-	ALife::STerrainPlace		tTerrainPlace;
-	tTerrainPlace.tMask.resize	(LOCATION_TYPE_COUNT);
+	R_ASSERT					(((N % (GameGraph::LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	GameGraph::STerrainPlace	tTerrainPlace;
+	tTerrainPlace.tMask.resize	(GameGraph::LOCATION_TYPE_COUNT);
 	string16					I;
 	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; ++j, ++i)
-			tTerrainPlace.tMask[j] = ALife::_LOCATION_ID(atoi(_GetItem(S,i,I)));
+		for (u32 j=0; j<GameGraph::LOCATION_TYPE_COUNT; ++j, ++i)
+			tTerrainPlace.tMask[j] = GameGraph::_LOCATION_ID(atoi(_GetItem(S,i,I)));
 		tTerrainPlace.dwMinTime	= atoi(_GetItem(S,i++,I))*1000;
 		tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back	(tTerrainPlace);

@@ -54,7 +54,7 @@ public:
 	IC		u32				action_state_id			(_condition_type action_id) const;
 	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
 	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
-	IC		CAI_Stalker		*object					() const;
+	IC		CAI_Stalker		&object					() const;
 
 public:
 	virtual	void			setup					(CAI_Stalker *object);

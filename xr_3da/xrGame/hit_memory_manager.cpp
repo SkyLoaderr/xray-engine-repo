@@ -11,6 +11,7 @@
 #include "memory_space_impl.h"
 #include "custommonster.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;
@@ -64,7 +65,7 @@ void CHitMemoryManager::reload				(LPCSTR section)
 void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
 	VERIFY						(m_hits);
-	if (!m_object->g_Alive()) {
+	if (!object().g_Alive()) {
 		m_hits->clear			();
 		return;
 	}
@@ -104,7 +105,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 void CHitMemoryManager::add(const CHitObject &hit_object)
 {
 	VERIFY						(m_hits);
-	if (!m_object->g_Alive()) {
+	if (!object().g_Alive()) {
 		m_hits->clear			();
 		return;
 	}

@@ -33,6 +33,7 @@ public:
 	IC					CObjectActionBase	(_item_type *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize			();
 	IC		void		set_property		(_condition_type condition_id, _value_type value);
+	IC		CAI_Stalker &object				() const;
 };
 
 class CGameObject;

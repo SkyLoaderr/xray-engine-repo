@@ -150,7 +150,7 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 	}
 	else {
 		if (++m_dwCurNode < m_tpPath.size()) {
-			m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
+			m_tNextGraphID		= GameGraph::_GRAPH_ID(m_tpPath[m_dwCurNode]);
 			m_fDistanceToPoint	= ai().game_graph().distance(m_tGraphID,m_tNextGraphID);
 			bContinue			= true;
 		}

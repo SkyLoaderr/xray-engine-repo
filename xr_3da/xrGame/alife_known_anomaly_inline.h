@@ -27,7 +27,7 @@ IC	float						CALifeKnownAnomaly::distance			() const
 	return						(m_distance);
 }
 
-IC	ALife::_GRAPH_ID			CALifeKnownAnomaly::game_vertex_id		() const
+IC	GameGraph::_GRAPH_ID			CALifeKnownAnomaly::game_vertex_id		() const
 {
 	return						(m_game_vertex_id);
 }
@@ -47,7 +47,7 @@ IC	void						CALifeKnownAnomaly::set_distance		(float distance)
 	m_distance					= distance;
 }
 
-IC	void						CALifeKnownAnomaly::set_game_vertex_id	(const ALife::_GRAPH_ID &game_vertex_id)
+IC	void						CALifeKnownAnomaly::set_game_vertex_id	(const GameGraph::_GRAPH_ID &game_vertex_id)
 {
 	m_game_vertex_id			= game_vertex_id;
 }

@@ -3,6 +3,7 @@
 #include "../custommonster.h"
 #include "../phmovementcontrol.h"
 #include "../../skeletoncustom.h"
+#include "../movement_manager.h"
 
 CJumping::CJumping()
 {
@@ -78,7 +79,7 @@ void CJumping::OnAnimationEnd()
 void CJumping::ApplyParams()
 {
 	pMonster->m_fCurSpeed		= ptr_cur->speed.linear;
-	pMonster->CMovementManager::m_body.speed		= ptr_cur->speed.angular;
+	pMonster->movement().m_body.speed		= ptr_cur->speed.angular;
 }
 
 void CJumping::NextState()
@@ -152,7 +153,7 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, const CObject *pO)
 	dest_yaw = angle_normalize(dest_yaw);
 
 	// проверка на max_angle и на dist
-	if ((angle_difference(pMonster->CMovementManager::m_body.current.yaw, dest_yaw) > m_fJumpMaxAngle)|| !(m_fJumpMinDist <=dist && dist <= m_fJumpMaxDist)) return false;
+	if ((angle_difference(pMonster->movement().m_body.current.yaw, dest_yaw) > m_fJumpMaxAngle)|| !(m_fJumpMinDist <=dist && dist <= m_fJumpMaxDist)) return false;
 
 	// можно прыгать; инициализировать параметры прыжка
 	active			= true;
@@ -163,8 +164,8 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, const CObject *pO)
 	entity			= pO;
 	ph_time			= 0.f;
 
-	pMonster->CMovementManager::m_body.target.yaw = target_yaw;
-	pMonster->enable_movement(false);
+	pMonster->movement().m_body.target.yaw = target_yaw;
+	pMonster->movement().enable_movement(false);
 
 	Start();
 	return true;

@@ -11,7 +11,6 @@
 #include "../../../CustomMonster.h"
 #include "../ai_monster_motion.h"
 #include "../ai_monster_shared_data.h"
-#include "../ai_monster_movement.h"
 #include "../state_manager.h"
 
 #include "../monster_enemy_memory.h"
@@ -37,12 +36,14 @@ class CCoverEvaluatorCloseToEnemy;
 class CMonsterEventManager;
 class CCriticalActionInfo;
 class CJumping;
+class CMovementManager;
+class CMonsterMovement;
 
-class CBaseMonster : public CCustomMonster, 
-				   public CMonsterMovement,
-				   public CSharedClass<_base_monster_shared, CLASS_ID>, 
-				   public CStepManager {
-
+class CBaseMonster : 
+	public CCustomMonster, 
+	public CSharedClass<_base_monster_shared, CLASS_ID>, 
+	public CStepManager
+{
 	typedef	CCustomMonster								inherited;
 	typedef CSharedClass<_base_monster_shared,CLASS_ID>	inherited_shared;
 	typedef CSharedClass<_base_monster_shared,CLASS_ID>	_sd_base;
@@ -326,7 +327,12 @@ IC	void					wake_up				(){m_bSleep = false;}
 private:
 	bool					m_first_update_initialized;
 
-
+private:
+	CMonsterMovement			*m_movement_manager;
+protected:
+	virtual CMovementManager	*create_movement_manager();
+public:
+	IC		CMonsterMovement	&movement				() const;
 };
 
 #include "base_monster_inline.h"

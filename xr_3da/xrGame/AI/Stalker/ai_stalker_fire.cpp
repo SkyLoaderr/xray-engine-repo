@@ -23,6 +23,7 @@
 #include "../../hit_memory_manager.h"
 #include "../../enemy_manager.h"
 #include "../../item_manager.h"
+#include "../../stalker_movement_manager.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -31,19 +32,19 @@ float CAI_Stalker::GetWeaponAccuracy	() const
 	//влияние ранга на меткость
 	base *= m_fRankDisperison;
 
-	if (movement_type() == eMovementTypeWalk)
-		if (body_state() == eBodyStateStand)
+	if (movement().movement_type() == eMovementTypeWalk)
+		if (movement().body_state() == eBodyStateStand)
 			return		(base*m_disp_walk_stand);
 		else
 			return		(base*m_disp_walk_crouch);
 	else
-		if (movement_type() == eMovementTypeRun)
-			if (body_state() == eBodyStateStand)
+		if (movement().movement_type() == eMovementTypeRun)
+			if (movement().body_state() == eBodyStateStand)
 				return	(base*m_disp_run_stand);
 			else
 				return	(base*m_disp_run_crouch);
 		else
-			if (body_state() == eBodyStateStand)
+			if (movement().body_state() == eBodyStateStand)
 				return	(base*m_disp_stand_stand);
 			else
 				return	(base*m_disp_stand_crouch);
@@ -52,10 +53,10 @@ float CAI_Stalker::GetWeaponAccuracy	() const
 void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
-		D.setHP			(-m_head.current.yaw,-m_head.current.pitch);
+		D.setHP			(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
 		Center			(P);
 		P.mad			(D,.5f);
-		P.y				+= body_state() == eBodyStateStand ? .75f : .15f;
+		P.y				+= movement().body_state() == eBodyStateStand ? .75f : .15f;
 	}
 }
 
@@ -66,7 +67,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	R1				= r_hand;
 	R2				= r_finger2;
 	if	(
-			(IsLimping() && (mental_state() == eMentalStateFree)) || 
+			(IsLimping() && (movement().mental_state() == eMentalStateFree)) || 
 			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
 			(!animation().script_animations().empty() && animation().script_animations().front().hand_usage())
 		)
@@ -98,7 +99,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		float				power_factor = 3.f*amount/100.f;
 		clamp				(power_factor,0.f,1.f);
 		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
-		animation().play_fx(power_factor,iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1)));
+		animation().play_fx	(power_factor,iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1)));
 	}
 	
 	if (g_Alive())
@@ -323,7 +324,7 @@ bool CAI_Stalker::can_kill_enemy		()
 //		return				(false);
 //
 //	return					(ray_query_result.O->ID() == enemy()->ID());
-	return					(angle_difference(m_head.current.yaw,m_head.target.yaw) < PI_DIV_8);
+	return					(angle_difference(movement().m_head.current.yaw,movement().m_head.target.yaw) < PI_DIV_8);
 }
 
 bool CAI_Stalker::undetected_anomaly	()

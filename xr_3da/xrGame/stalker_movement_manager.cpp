@@ -23,7 +23,7 @@ using namespace StalkerMovement;
 IC	void CStalkerMovementManager::setup_head_speed		()
 {
 	if (mental_state() == eMentalStateFree) {
-		if (m_stalker->sight().enabled())
+		if (object().sight().enabled())
 			m_head.speed		= PI_DIV_2;
 	}
 	else
@@ -54,7 +54,7 @@ void CStalkerMovementManager::set_desired_position(const Fvector *desired_positi
 {
 	if (desired_position) {
 		m_target.m_use_desired_position	= true;
-		VERIFY2							(m_stalker->accessible(*desired_position),*m_stalker->cName());
+		VERIFY2							(object().movement().accessible(*desired_position),*object().cName());
 		m_target.m_desired_position		= *desired_position;
 	}
 	else {
@@ -83,45 +83,41 @@ IC	void CStalkerMovementManager::setup_body_orientation	()
 
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerMovementManager::CStalkerMovementManager	()
+CStalkerMovementManager::CStalkerMovementManager	(CAI_Stalker *object) :
+	inherited					(object)
 {
-	init							();
+	VERIFY						(object);
+	m_object					= object;
 }
 
 CStalkerMovementManager::~CStalkerMovementManager	()
 {
 }
 
-void CStalkerMovementManager::init					()
-{
-}
-
 void CStalkerMovementManager::Load					(LPCSTR section)
 {
-	inherited::Load					(section);
-	m_stalker						= smart_cast<CAI_Stalker*>(this);
-	VERIFY							(m_stalker);
+	inherited::Load				(section);
 }
 
 void CStalkerMovementManager::reload				(LPCSTR section)
 {
-	inherited::reload				(section);
+	inherited::reload			(section);
 	
-	m_fCrouchFactor					= pSettings->r_float(section,"CrouchFactor");
-	m_fWalkFactor					= pSettings->r_float(section,"WalkFactor");
-	m_fWalkBackFactor				= pSettings->r_float(section,"WalkBackFactor");
-	m_fRunFactor					= pSettings->r_float(section,"RunFactor");
-	m_fRunBackFactor				= pSettings->r_float(section,"RunBackFactor");
-	m_fWalkFreeFactor				= pSettings->r_float(section,"WalkFreeFactor");
-	m_fRunFreeFactor				= pSettings->r_float(section,"RunFreeFactor");
-	m_fPanicFactor					= pSettings->r_float(section,"PanicFactor");
-	m_fDamagedWalkFactor			= pSettings->r_float(section,"DamagedWalkFactor");
-	m_fDamagedRunFactor				= pSettings->r_float(section,"DamagedRunFactor");
-	m_fDamagedWalkFreeFactor		= pSettings->r_float(section,"DamagedWalkFreeFactor");
-	m_fDamagedRunFreeFactor			= pSettings->r_float(section,"DamagedRunFreeFactor");
-	m_fDamagedPanicFactor			= pSettings->r_float(section,"DamagedPanicFactor");
+	m_crouch_factor				= pSettings->r_float(section,"CrouchFactor");
+	m_walk_factor				= pSettings->r_float(section,"WalkFactor");
+	m_walk_back_factor			= pSettings->r_float(section,"WalkBackFactor");
+	m_run_factor				= pSettings->r_float(section,"RunFactor");
+	m_run_back_factor			= pSettings->r_float(section,"RunBackFactor");
+	m_walk_free_factor			= pSettings->r_float(section,"WalkFreeFactor");
+	m_run_free_factor			= pSettings->r_float(section,"RunFreeFactor");
+	m_panic_factor				= pSettings->r_float(section,"PanicFactor");
+	m_damaged_walk_factor		= pSettings->r_float(section,"DamagedWalkFactor");
+	m_damaged_run_factor		= pSettings->r_float(section,"DamagedRunFactor");
+	m_damaged_walk_free_factor	= pSettings->r_float(section,"DamagedWalkFreeFactor");
+	m_damaged_run_free_factor	= pSettings->r_float(section,"DamagedRunFreeFactor");
+	m_damaged_panic_factor		= pSettings->r_float(section,"DamagedPanicFactor");
 
-	init_velocity_masks				();
+	init_velocity_masks			();
 }
 
 void CStalkerMovementManager::init_velocity_masks	()
@@ -142,43 +138,43 @@ void CStalkerMovementManager::init_velocity_masks	()
 	add_velocity	(eVelocityStandingPanicCrouchDamaged			,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingDangerCrouchDamaged			,0.f							,PI_MUL_2	);
 
-	add_velocity	(eVelocityWalkFreePositive						,m_fWalkFreeFactor				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-	add_velocity	(eVelocityRunFreePositive						,m_fRunFreeFactor				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandPositive				,m_fWalkFactor					,100*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchPositive				,m_fWalkFactor*m_fCrouchFactor	,100*PI_DIV_2,cf*100*PI_DIV_2);
-	add_velocity	(eVelocityRunDangerStandPositive				,m_fRunFactor					,100*PI		,2*cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchPositive				,m_fRunFactor*m_fCrouchFactor	,100*PI		,cf*100*PI		);
-	add_velocity	(eVelocityRunPanicStandPositive					,m_fPanicFactor					,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkFreePositive						,walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
+	add_velocity	(eVelocityRunFreePositive						,run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkDangerStandPositive				,walk_factor()					,100*PI		,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchPositive				,walk_factor()*crouch_factor()	,100*PI_DIV_2,cf*100*PI_DIV_2);
+	add_velocity	(eVelocityRunDangerStandPositive				,run_factor()					,100*PI		,2*cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerCrouchPositive				,run_factor()*crouch_factor()	,100*PI		,cf*100*PI		);
+	add_velocity	(eVelocityRunPanicStandPositive					,panic_factor()					,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 																																							
-	add_velocity	(eVelocityWalkFreeDamagedPositive				,m_fDamagedWalkFreeFactor		,PI_DIV_8	,cf*PI_DIV_8	);
-	add_velocity	(eVelocityRunFreeDamagedPositive				,m_fDamagedRunFreeFactor		,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandDamagedPositive		,m_fDamagedWalkFactor			,PI			,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchDamagedPositive		,m_fWalkFactor*m_fCrouchFactor	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandDamagedPositive			,m_fDamagedRunFactor			,PI_DIV_2	,2*cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchDamagedPositive		,m_fRunFactor*m_fCrouchFactor	,PI			,cf*PI			);
-	add_velocity	(eVelocityRunPanicDamagedStandPositive			,m_fDamagedPanicFactor			,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkFreeDamagedPositive				,damaged_walk_free_factor()		,PI_DIV_8	,cf*PI_DIV_8	);
+	add_velocity	(eVelocityRunFreeDamagedPositive				,damaged_run_free_factor()		,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkDangerStandDamagedPositive		,damaged_walk_factor()			,PI			,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchDamagedPositive		,walk_factor()*crouch_factor()	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerStandDamagedPositive			,damaged_run_factor()			,PI_DIV_2	,2*cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerCrouchDamagedPositive		,run_factor()*crouch_factor()	,PI			,cf*PI			);
+	add_velocity	(eVelocityRunPanicDamagedStandPositive			,damaged_panic_factor()			,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 																																							
-//	add_velocity	(eVelocityWalkFreeNegative						,-m_fWalkFreeFactor				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-//	add_velocity	(eVelocityRunFreeNegative						,-m_fRunFreeFactor				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandNegative				,-m_fWalkFactor					,PI			,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchNegative				,-m_fWalkFactor*m_fCrouchFactor	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandNegative				,-m_fRunFactor					,PI_DIV_2	,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchNegative				,-m_fRunFactor*m_fCrouchFactor	,PI			,cf*PI			);
-//	add_velocity	(eVelocityRunPanicStandNegative					,-m_fPanicFactor				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+//	add_velocity	(eVelocityWalkFreeNegative						,-walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
+//	add_velocity	(eVelocityRunFreeNegative						,-run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkDangerStandNegative				,-walk_factor()					,PI			,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchNegative				,-walk_factor()*crouch_factor()	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerStandNegative				,-run_factor()					,PI_DIV_2	,cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerCrouchNegative				,-run_factor()*crouch_factor()	,PI			,cf*PI			);
+//	add_velocity	(eVelocityRunPanicStandNegative					,-panic_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 																																							
-//	add_velocity	(eVelocityWalkFreeDamagedNegative				,-m_fDamagedWalkFreeFactor		,PI_DIV_8	,cf*PI_DIV_8	);
-//	add_velocity	(eVelocityRunFreeDamagedNegative				,-m_fDamagedRunFreeFactor		,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandDamagedNegative		,-m_fDamagedWalkFactor			,PI			,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchDamagedNegative		,-m_fWalkFactor*m_fCrouchFactor	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandDamagedNegative			,-m_fDamagedRunFactor			,PI_DIV_2	,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchDamagedNegative		,-m_fRunFactor*m_fCrouchFactor	,PI			,cf*PI			);
-//	add_velocity	(eVelocityRunPanicDamagedStandNegative			,-m_fDamagedPanicFactor			,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+//	add_velocity	(eVelocityWalkFreeDamagedNegative				,-damaged_walk_free_factor()		,PI_DIV_8	,cf*PI_DIV_8	);
+//	add_velocity	(eVelocityRunFreeDamagedNegative				,-damaged_run_free_factor()		,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkDangerStandDamagedNegative		,-damaged_walk_factor()			,PI			,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchDamagedNegative		,-walk_factor()*crouch_factor()	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerStandDamagedNegative			,-damaged_run_factor()			,PI_DIV_2	,cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerCrouchDamagedNegative		,-run_factor()*crouch_factor()	,PI			,cf*PI			);
+//	add_velocity	(eVelocityRunPanicDamagedStandNegative			,-damaged_panic_factor()			,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 }
 
 void CStalkerMovementManager::reinit				()
 {
 	inherited::reinit					();
-	m_stalker->m_body.speed				= PI_MUL_2;
+	m_body.speed						= PI_MUL_2;
 	m_head.speed						= 3*PI_DIV_2;
 
 	m_current.m_use_desired_position	= false;
@@ -200,27 +196,27 @@ void CStalkerMovementManager::reinit				()
 
 bool CStalkerMovementManager::script_control		()
 {
-	if (!m_stalker->GetScriptControl())
+	if (!object().GetScriptControl())
 		return						(false);
 
-	if (!m_stalker->GetCurrentAction())
+	if (!object().GetCurrentAction())
 		return						(false);
 
-	if (fis_zero(m_stalker->GetCurrentAction()->m_tMovementAction.m_fSpeed))
+	if (fis_zero(object().GetCurrentAction()->m_tMovementAction.m_fSpeed))
 		return						(false);
 
-	m_stalker->m_fCurSpeed			= m_stalker->GetCurrentAction()->m_tMovementAction.m_fSpeed;
-	set_desirable_speed				(m_stalker->m_fCurSpeed);
+	object().m_fCurSpeed			= object().GetCurrentAction()->m_tMovementAction.m_fSpeed;
+	set_desirable_speed				(object().m_fCurSpeed);
 	return							(true);
 }
 
 void CStalkerMovementManager::setup_movement_params	()
 {
-	m_current											= m_target;
-	CMovementManager::set_path_type						(path_type());
-	detail_path_manager().set_path_type					(detail_path_type());
-	level_location_selector().set_evaluator				(node_evaluator());
-	level_path_manager().set_evaluator					(path_evaluator() ? path_evaluator() : base_level_selector());
+	m_current								= m_target;
+	inherited::set_path_type				(path_type());
+	detail_path_manager().set_path_type		(detail_path_type());
+	level_location_selector().set_evaluator	(node_evaluator());
+	level_path_manager().set_evaluator		(path_evaluator() ? path_evaluator() : base_level_selector());
 
 	if (use_desired_position()) {
 		VERIFY											(_valid(desired_position()));
@@ -250,7 +246,7 @@ void CStalkerMovementManager::setup_velocities		()
 	int						velocity_mask = eVelocityPositiveVelocity;
 
 	// setup health state
-	if (m_stalker->IsLimping())
+	if (object().IsLimping())
 		velocity_mask		|= eVelocityDamaged;
 
 	// setup body state
@@ -326,7 +322,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	if (path().empty() || (detail_path_manager().curr_travel_point_index() != m_last_turn_index))
 		m_last_turn_index				= u32(-1);
 
-	m_stalker->sight().enable	(true);
+	object().sight().enable	(true);
 
 	if (fis_zero(speed())) {
 		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
@@ -334,12 +330,12 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	}
 
 	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail_path_manager().curr_travel_point_index())) {
-		m_stalker->m_fCurSpeed			= 0;
+		object().m_fCurSpeed			= 0;
 		if (mental_state() != eMentalStateDanger)
-			m_stalker->m_body.speed		= 1*PI_DIV_2;
+			m_body.speed		= 1*PI_DIV_2;
 		else
-			m_stalker->m_body.speed		= PI_MUL_2;
-		set_desirable_speed				(m_stalker->m_fCurSpeed);
+			m_body.speed		= PI_MUL_2;
+		set_desirable_speed				(object().m_fCurSpeed);
 		setup_head_speed				();
 		return;
 	}
@@ -350,11 +346,11 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	if (fis_zero(current_velocity.linear_velocity)) {
 		if (mental_state() != eMentalStateDanger) {
 			setup_body_orientation			();
-			m_stalker->sight().enable(false);
+			object().sight().enable(false);
 		}
 		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail_path_manager().curr_travel_point_index())) {
 			m_last_turn_index			= detail_path_manager().curr_travel_point_index();
-			m_stalker->sight().enable(true);
+			object().sight().enable(true);
 			if (detail_path_manager().curr_travel_point_index() + 1 < path().size()) {
 				point				= path()[detail_path_manager().curr_travel_point_index() + 1];
 				current_velocity	= detail_path_manager().velocity(point.velocity);
@@ -362,9 +358,9 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		}
 	}
 	
-	m_stalker->m_fCurSpeed	= current_velocity.linear_velocity;
-	m_stalker->m_body.speed	= current_velocity.real_angular_velocity;
-	set_desirable_speed		(m_stalker->m_fCurSpeed);
+	object().m_fCurSpeed	= current_velocity.linear_velocity;
+	m_body.speed	= current_velocity.real_angular_velocity;
+	set_desirable_speed		(object().m_fCurSpeed);
 
 	switch (point.velocity & eVelocityBodyState) {
 		case eVelocityStand : {

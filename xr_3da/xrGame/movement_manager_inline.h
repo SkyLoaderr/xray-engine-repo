@@ -1,3 +1,11 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: movement_manager_inline.h
+//	Created 	: 02.10.2001
+//  Modified 	: 12.11.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Movement manager inline functions
+////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 IC	bool CMovementManager::actual() const
@@ -85,7 +93,7 @@ IC	u32	 CMovementManager::refresh_rate			() const
 template <typename T>
 IC	bool CMovementManager::accessible			(T position_or_vertex_id, float radius) const
 {
-	return				(CRestrictedObject::accessible(position_or_vertex_id,radius));
+	return				(restrictions().accessible(position_or_vertex_id,radius));
 }
 
 IC	void CMovementManager::extrapolate_path		(bool value)
@@ -154,4 +162,22 @@ IC	CEnemyLocationPredictor	&CMovementManager::enemy_location_predictor	() const
 {
 	VERIFY					(m_enemy_location_predictor);
 	return					(*m_enemy_location_predictor);
+}
+
+IC	CRestrictedObject &CMovementManager::restrictions					() const
+{
+	VERIFY					(m_restricted_object);
+	return					(*m_restricted_object);
+}
+
+IC	CSelectorManager &CMovementManager::selectors						() const
+{
+	VERIFY					(m_selector_manager);
+	return					(*m_selector_manager);
+}
+
+IC	CCustomMonster &CMovementManager::object							() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
 }

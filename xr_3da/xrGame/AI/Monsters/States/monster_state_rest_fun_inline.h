@@ -41,10 +41,10 @@ void CStateMonsterRestFunAbstract::execute()
 	point.mad		(object->CorpseMan.get_corpse_position(), dir, 2.0f);
 
 	object->set_action									(ACT_RUN);
-	object->CMonsterMovement::set_target_point			(point);
-	object->CMonsterMovement::set_rebuild_time			(100 + u32(50.f * dist));
-	object->CMonsterMovement::set_use_covers			(false);
-	object->CMonsterMovement::set_distance_to_end		(0.5f);
+	object->movement().set_target_point			(point);
+	object->movement().set_rebuild_time			(100 + u32(50.f * dist));
+	object->movement().set_use_covers			(false);
+	object->movement().set_distance_to_end		(0.5f);
 	object->MotionMan.accel_activate					(eAT_Calm);
 	object->MotionMan.accel_set_braking					(false);
 	

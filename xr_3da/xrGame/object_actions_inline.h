@@ -37,6 +37,13 @@ void CObjectActionBase<_item_type>::initialize	()
 	set_property			(ObjectHandlerSpace::eWorldPropertyAimed2,false);
 }
 
+template <typename _item_type>
+IC	CAI_Stalker &CObjectActionBase<_item_type>::object	() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionMember
 //////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@
 #include "direction_manager.h"
 #include "basemonster/base_monster.h"
 #include "../../detail_path_manager.h"
+#include "ai_monster_movement.h"
 
 void CDirectionManager::reinit()
 {
@@ -23,7 +24,7 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 	yaw			*= -1;
 	yaw			= angle_normalize(yaw);
 	
-	m_object->m_body.target.yaw	= yaw;
+	m_object->movement().m_body.target.yaw	= yaw;
 
 	m_time_last_faced			= Level().timeServer();
 }
@@ -31,11 +32,11 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 void CDirectionManager::use_path_direction(bool reversed)
 {
 	float yaw,pitch;
-	m_object->detail_path_manager().direction().getHP	(yaw,pitch);
+	m_object->movement().detail_path_manager().direction().getHP	(yaw,pitch);
 
 	if (fsimilar(yaw,0.f,EPS_S)) return;
 
-	m_object->m_body.target.yaw = angle_normalize((reversed) ? (-yaw + PI) : (-yaw));
+	m_object->movement().m_body.target.yaw = angle_normalize((reversed) ? (-yaw + PI) : (-yaw));
 }
 
 bool CDirectionManager::is_face_target(const Fvector &position, float eps_angle)

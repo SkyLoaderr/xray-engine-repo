@@ -72,7 +72,7 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 	inherited::OnItemTake		(inventory_item);
 	planner().add_item			(inventory_item);
 
-	if (planner().object()->g_Alive()) {
+	if (planner().object().g_Alive()) {
 		CTorch					*torch = smart_cast<CTorch*>(inventory_item);
 		if (torch)
 			torch->Switch		(true);
@@ -82,10 +82,10 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	inherited::OnItemDrop	(inventory_item);
-	if (m_infinite_ammo && planner().object()->g_Alive()) {
+	if (m_infinite_ammo && planner().object().g_Alive()) {
 		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
 		if (weapon_ammo)
-			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object()->Position(),planner().object()->ai_location().level_vertex_id(),planner().object()->ID());
+			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object().Position(),planner().object().ai_location().level_vertex_id(),planner().object().ID());
 	}
 	planner().remove_item		(inventory_item);
 
@@ -103,13 +103,13 @@ CInventoryItem *CObjectHandler::best_weapon() const
 {
 	CInventoryItem	*best_weapon = 0;
 
-	if (!planner().object()->g_Alive())
+	if (!planner().object().g_Alive())
 		return		(0);
 
 	ai().ef_storage().alife().clear		();
 	ai().ef_storage().non_alife().clear	();
-	ai().ef_storage().non_alife().member()	= planner().object();
-	ai().ef_storage().non_alife().enemy()	= planner().object()->memory().enemy().selected() ? planner().object()->memory().enemy().selected() : planner().object();
+	ai().ef_storage().non_alife().member()	= &planner().object();
+	ai().ef_storage().non_alife().enemy()	= planner().object().memory().enemy().selected() ? planner().object().memory().enemy().selected() : &planner().object();
 
 	float										best_value = 0;
 	TIItemSet::const_iterator	I = inventory().m_all.begin();

@@ -47,6 +47,7 @@ public:
 public:
 			bool			hit					(const CEntityAlive *object) const;
 			void			enable				(const CObject *object, bool enable);
+			CCustomMonster	&object				() const;
 };
 
 #include "hit_memory_manager_inline.h"

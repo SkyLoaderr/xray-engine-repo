@@ -20,7 +20,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::initialize()
 {
 	inherited::initialize();
-	object->CMonsterMovement::initialize_movement	();	
+	object->movement().initialize_movement	();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -30,12 +30,12 @@ void CStateMonsterAttackRunAbstract::execute()
 	object->set_action									(ACT_RUN);
 	object->MotionMan.accel_activate					(eAT_Aggressive);
 	object->MotionMan.accel_set_braking					(false);
-	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->ai_location().level_vertex_id());
-	object->CMonsterMovement::set_rebuild_time			(object->get_attack_rebuild_time());
-	object->CMonsterMovement::set_distance_to_end		(2.5f);
-	object->CMonsterMovement::set_use_covers			();
-	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
-	object->CMonsterMovement::set_try_min_time			(false);
+	object->movement().set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->ai_location().level_vertex_id());
+	object->movement().set_rebuild_time			(object->get_attack_rebuild_time());
+	object->movement().set_distance_to_end		(2.5f);
+	object->movement().set_use_covers			();
+	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
+	object->movement().set_try_min_time			(false);
 	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
 
 #ifdef DEBUG

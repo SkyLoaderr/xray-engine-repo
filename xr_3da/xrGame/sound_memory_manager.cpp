@@ -14,6 +14,7 @@
 #include "memory_space_impl.h"
 #include "custommonster.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
 
 #define SILENCE
 //#define SAVE_OWN_SOUNDS

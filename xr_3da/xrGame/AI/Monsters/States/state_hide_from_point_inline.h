@@ -12,7 +12,7 @@ void CStateMonsterHideFromPointAbstract::initialize()
 {
 	inherited::initialize();
 
-	object->CMonsterMovement::initialize_movement();	
+	object->movement().initialize_movement();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -21,8 +21,8 @@ void CStateMonsterHideFromPointAbstract::execute()
 	object->set_action									(data.action.action);
 	object->MotionMan.SetSpecParams						(data.action.spec_params);
 	
-	object->CMonsterMovement::set_retreat_from_point	(data.point);
-	object->CMonsterMovement::set_generic_parameters	();
+	object->movement().set_retreat_from_point	(data.point);
+	object->movement().set_generic_parameters	();
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));

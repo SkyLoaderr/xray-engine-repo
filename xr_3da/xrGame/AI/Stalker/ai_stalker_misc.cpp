@@ -14,6 +14,7 @@
 #include "../../relation_registry.h"
 #include "../../memory_manager.h"
 #include "../../item_manager.h"
+#include "../../stalker_movement_manager.h"
 
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
@@ -60,20 +61,20 @@ ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEnti
 
 void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection &movement_direction)
 {
-	if (body_state() == eBodyStateStand) {
+	if (movement().body_state() == eBodyStateStand) {
 		if (movement_direction != eMovementDirectionBack) {
-			if (movement_type() == eMovementTypeWalk)
-				set_desirable_speed(m_fCurSpeed = m_fWalkFactor);
+			if (movement().movement_type() == eMovementTypeWalk)
+				movement().set_desirable_speed(m_fCurSpeed = movement().walk_factor());
 			else
-				if (movement_type() == eMovementTypeRun)
-					set_desirable_speed(m_fCurSpeed = m_fRunFactor);
+				if (movement().movement_type() == eMovementTypeRun)
+					movement().set_desirable_speed(m_fCurSpeed = movement().run_factor());
 		}
 		else {
-			if (movement_type() == eMovementTypeWalk)
-				set_desirable_speed(m_fCurSpeed = m_fWalkBackFactor);
+			if (movement().movement_type() == eMovementTypeWalk)
+				movement().set_desirable_speed(m_fCurSpeed = movement().walk_back_factor());
 			else
-				if (movement_type() == eMovementTypeRun)
-					set_desirable_speed(m_fCurSpeed = m_fRunBackFactor);
+				if (movement().movement_type() == eMovementTypeRun)
+					movement().set_desirable_speed(m_fCurSpeed = movement().run_back_factor());
 		}
 	}
 }

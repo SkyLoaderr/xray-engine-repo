@@ -2,8 +2,6 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)
-#define AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_
 #pragma once
 
 #include "../feel_vision.h"
@@ -19,8 +17,6 @@
 #include "event_memory_manager.h"
 #include "location_manager.h"
 #include "material_manager.h"
-#include "movement_manager.h"
-#include "selector_manager.h"
 #include "sound_player.h"
 
 using namespace MonsterSpace;
@@ -29,24 +25,24 @@ class CAI_Rat;
 class CMotionDef;
 class CSkeletonAnimated;
 class CMemoryManager;
+class CMovementManager;
 
 class CCustomMonster : 
-			public CEntityAlive, 
-			public CScriptMonster,
-			public Feel::Vision,
-			public Feel::Sound,
-			public Feel::Touch,
-			public CLocationManager,
-			public CMaterialManager,
-	virtual	public CMovementManager,
-			public CSelectorManager,
-			public CSoundPlayer
+	public CEntityAlive, 
+	public CScriptMonster,
+	public Feel::Vision,
+	public Feel::Sound,
+	public Feel::Touch,
+	public CLocationManager,
+	public CMaterialManager,
+	public CSoundPlayer
 {
 private:
 	typedef	CEntityAlive	inherited;
 
 private:
 	CMemoryManager		*m_memory_manager;
+	CMovementManager	*m_movement_manager;
 
 protected:
 	
@@ -187,10 +183,7 @@ public:
 	virtual void				Load					(LPCSTR	section);				
 	virtual	void				reinit					();
 	virtual void				reload					(LPCSTR	section);				
-	virtual const SRotation		Orientation				() const
-	{
-		return					(m_body.current);
-	};
+	virtual const SRotation		Orientation				() const;
 	virtual bool				use_model_pitch			() const;
 	virtual float				get_custom_pitch_speed	(float def_speed) {return def_speed;}
 	virtual bool				human_being				() const
@@ -205,7 +198,7 @@ public:
 	virtual void				load					(IReader &input_packet)		{inherited::load(input_packet);}
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
 	
-	virtual	const MonsterSpace::SBoneRotation &head_orientation		() const		{return m_body;}
+	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const;
 	
 	virtual CAI_Rat				*dcast_Rat				() {return 0;}
 	
@@ -226,8 +219,11 @@ public:
 	virtual float				evaluate				(const CGameObject *object) const;
 	virtual bool				useful					(const CEntityAlive *object) const;
 	virtual float				evaluate				(const CEntityAlive *object) const;
+
+protected:
+	virtual CMovementManager	*create_movement_manager();
+public:
+	IC		CMovementManager	&movement				() const;
 };
 
 #include "custommonster_inline.h"
-
-#endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

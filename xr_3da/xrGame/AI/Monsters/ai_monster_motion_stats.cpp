@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "ai_monster_motion_stats.h"
 #include "BaseMonster/base_monster.h"
+#include "ai_monster_movement.h"
 
 void CMotionStats::update()
 {
 	elem _new;
-	_new.speed		= pMonster->m_velocity_linear.current;
+	_new.speed		= pMonster->movement().m_velocity_linear.current;
 	_new.position	= pMonster->Position();
 	_new.time		= pMonster->m_dwCurrentTime;	
 	_data[index]	= _new;

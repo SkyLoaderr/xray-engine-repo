@@ -79,9 +79,9 @@ void CStateManagerDog::execute()
 
 		yaw = angle_normalize(-yaw);
 
-		if (angle_difference(yaw, object->m_body.current.yaw) > PI_DIV_2) {
+		if (angle_difference(yaw, object->movement().m_body.current.yaw) > PI_DIV_2) {
 
-			if (from_right(yaw, object->m_body.current.yaw)) object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_RIGHT);
+			if (from_right(yaw, object->movement().m_body.current.yaw)) object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_RIGHT);
 			else object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_LEFT);
 		}
 	}

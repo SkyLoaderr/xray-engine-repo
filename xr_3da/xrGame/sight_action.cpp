@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "sight_manager.h"
 #include "ai_object_location.h"
+#include "stalker_movement_manager.h"
 
 //#define SIGHT_TEST
 
@@ -18,23 +19,23 @@ void CSightAction::execute		()
 {
 	switch (m_sight_type) {
 		case SightManager::eSightTypeCurrentDirection : {
-			m_object->m_head.target	= m_object->m_head.current;
+			object().movement().m_head.target	= object().movement().m_head.current;
 #ifdef SIGHT_TEST
 			Msg					("%6d eSightTypeCurrentDirection",Level().timeServer());
 #endif
 			break;
 		}
 		case SightManager::eSightTypePathDirection : {
-			m_object->sight().SetDirectionLook();
+			object().sight().SetDirectionLook();
 #ifdef SIGHT_TEST
 			Msg					("%6d eSightTypePathDirection",Level().timeServer());
 #endif
 			break;
 		}
 		case SightManager::eSightTypeDirection : {
-			m_vector3d.getHP	(m_object->m_head.target.yaw,m_object->m_head.target.pitch);
-			m_object->m_head.target.yaw		*= -1;
-			m_object->m_head.target.pitch	*= -1;
+			m_vector3d.getHP	(object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
+			object().movement().m_head.target.yaw		*= -1;
+			object().movement().m_head.target.pitch	*= -1;
 #ifdef SIGHT_TEST
 			Msg					("%6d eSightTypeDirection",Level().timeServer());
 #endif
@@ -42,9 +43,9 @@ void CSightAction::execute		()
 		}
 		case SightManager::eSightTypePosition : {
 			if (m_torso_look)
-				m_object->sight().SetFirePointLookAngles	(m_vector3d,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+				object().sight().SetFirePointLookAngles	(m_vector3d,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 			else
-				m_object->sight().SetPointLookAngles		(m_vector3d,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+				object().sight().SetPointLookAngles		(m_vector3d,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 #ifdef SIGHT_TEST
 			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFirePosition" : "eSightTypePosition");
 #endif
@@ -56,9 +57,9 @@ void CSightAction::execute		()
 			look_pos.x				= m_object_to_look->Position().x;
 			look_pos.z				= m_object_to_look->Position().z;
 			if (m_torso_look)
-				m_object->sight().SetFirePointLookAngles	(look_pos,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+				object().sight().SetFirePointLookAngles	(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 			else
-				m_object->sight().SetPointLookAngles		(look_pos,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+				object().sight().SetPointLookAngles		(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 #ifdef SIGHT_TEST
 			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFireObject" : "eSightTypeObject");
 #endif
@@ -66,9 +67,9 @@ void CSightAction::execute		()
 		}
 		case SightManager::eSightTypeCover : {
 			if (m_torso_look)
-				m_object->sight().SetLessCoverLook(m_object->ai_location().level_vertex(),PI,m_path);
+				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),PI,m_path);
 			else
-				m_object->sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
+				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
 #ifdef SIGHT_TEST
 			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFireCover" : "eSightTypeCover");
 #endif
@@ -77,10 +78,10 @@ void CSightAction::execute		()
 		case SightManager::eSightTypeSearch : {
 			m_torso_look					= false;
 			if (m_torso_look)
-				m_object->sight().SetLessCoverLook(m_object->ai_location().level_vertex(),PI,m_path);
+				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),PI,m_path);
 			else
-				m_object->sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
-			m_object->m_head.target.pitch	= PI_DIV_4;
+				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
+			object().movement().m_head.target.pitch	= PI_DIV_4;
 #ifdef SIGHT_TEST
 			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFireSearch" : "eSightTypeSearch");
 #endif

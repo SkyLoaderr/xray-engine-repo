@@ -50,7 +50,7 @@ CStalkerPropertyEvaluatorAlive::CStalkerPropertyEvaluatorAlive	(CAI_Stalker *obj
 
 _value_type CStalkerPropertyEvaluatorAlive::evaluate	()
 {
-	return			(!!m_object->g_Alive());
+	return			(!!object().g_Alive());
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -3,6 +3,7 @@
 #include "cat_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_utils.h"
+#include "../ai_monster_movement.h"
 
 CCat::CCat()
 {
@@ -128,7 +129,7 @@ void CCat::CheckSpecParams(u32 spec_params)
 		yaw = angle_normalize(yaw);
 
 		EMotionAnim anim = eAnimJumpLeft;
-		if (from_right(yaw,m_body.current.yaw)) {
+		if (from_right(yaw,movement().m_body.current.yaw)) {
 			anim = eAnimJumpRight;
 			yaw = angle_normalize(yaw + PI / 20);	
 		} else yaw = angle_normalize(yaw - PI / 20);
@@ -136,12 +137,12 @@ void CCat::CheckSpecParams(u32 spec_params)
 		MotionMan.Seq_Add(anim);
 		MotionMan.Seq_Switch();
 
-		CMonsterMovement::stop_linear		();
-		CMovementManager::m_body.target.yaw = yaw;
+		movement().stop_linear		();
+		movement().m_body.target.yaw = yaw;
 
 		// calculate angular speed
 		float new_angular_velocity; 
-		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+		float delta_yaw = angle_difference(yaw,movement().m_body.current.yaw);
 		float time = MotionMan.GetCurAnimTime();
 		new_angular_velocity = delta_yaw / time; 
 

@@ -4,6 +4,7 @@
 #include "../ai_monster_debug.h"
 #include "../../../profiler.h"
 #include "../../../../skeletonanimated.h"
+#include "../ai_monster_movement.h"
 
 CZombie::CZombie()
 {
@@ -151,7 +152,7 @@ void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 					
 					active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));
 					MotionMan.TA_Activate		(&anim_triple_death[active_triple_idx]);
-					CMonsterMovement::stop_now	();
+					movement().stop_now	();
 					time_dead_start				= Level().timeServer();
 
 					last_health_fake_death		= GetHealth();

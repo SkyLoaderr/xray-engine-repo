@@ -3,6 +3,7 @@
 #include "snork_jump.h"
 #include "../jump_ability.h"
 #include "../../../../skeletonanimated.h"
+#include "../ai_monster_movement.h"
 
 CSnorkJump::CSnorkJump(CSnork *monster)
 {
@@ -83,7 +84,7 @@ void CSnorkJump::try_to_jump(u32 velocity_mask)
 	yaw			= angle_normalize(yaw);
 
 	// проверка на angle и на dist
-	if (angle_difference(m_object->CMovementManager::m_body.current.yaw, yaw) < PI_DIV_6) {
+	if (angle_difference(m_object->movement().m_body.current.yaw, yaw) < PI_DIV_6) {
 		try_jump_normal();
 		return;
 	}
@@ -111,7 +112,7 @@ void CSnorkJump::try_jump_specific()
 	yaw				= angle_normalize(yaw);
 
 	//// проверка на angle и на dist
-	//if (angle_difference(m_object->CMovementManager::m_body.current.yaw, yaw) < PI_DIV_2) {
+	//if (angle_difference(m_object->movement().m_body.current.yaw, yaw) < PI_DIV_2) {
 	//	return;
 	//}
 	

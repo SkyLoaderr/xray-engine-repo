@@ -129,5 +129,12 @@ IC	void CSSetupManager::select_action				()
 	}
 }
 
+TEMPLATE_SPECIALIZATION
+IC	_object_type &CSSetupManager::object	() const
+{
+	VERIFY		(m_object);
+	return		(*m_object);
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSSetupManager

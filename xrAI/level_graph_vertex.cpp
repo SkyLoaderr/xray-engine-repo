@@ -256,7 +256,7 @@ bool CLevelGraph::create_straight_path(u32 start_vertex_id, const Fvector &start
 }
 
 #ifndef AI_COMPILER
-void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, ALife::_GRAPH_ID tGraphID) const
+void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, GameGraph::_GRAPH_ID tGraphID) const
 {
 	SContour				_contour;
 	const_iterator			I, E;

@@ -16,6 +16,7 @@
 #include "ef_pattern.h"
 #include "autosave_manager.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
 
 #define USE_EVALUATOR
 

@@ -10,10 +10,10 @@ class CAbstractVertexEvaluator;
 class CBaseMonster;
 class CCoverEvaluatorCloseToEnemy;
 
-class CMonsterMovement : virtual public CMovementManager {
+class CMonsterMovement : public CMovementManager {
 	typedef CMovementManager inherited;
 public:
-	CBaseMonster			*m_object;
+	CBaseMonster		*m_object;
 	bool				b_try_min_time;
 	bool				b_enable_movement;
 	bool				b_use_dest_orient;
@@ -23,9 +23,6 @@ public:
 
 	bool				b_targeted_path;		// предположительно путь ведёт к целевой точке
 
-	u32					m_dwFrameReinit;
-	u32					m_dwFrameLoad;
-
 	SVelocity			m_velocity_linear;
 	float				m_velocity_angular;
 
@@ -34,6 +31,7 @@ public:
 		bool	IsMoveAlongPathFinished	();
 		bool	IsMovingOnPath			();
 		bool	ObjectNotReachable		(const CEntity *entity);
+	IC	CBaseMonster	&object			() const;
 
 	// -------------------------------------------------------------------
 
@@ -60,10 +58,8 @@ public:
 	IC	void	stop_angular			() {m_velocity_angular			= 0.f;}		// set to zero	
 
 public:
-						CMonsterMovement	();
+						CMonsterMovement	(CBaseMonster *base_monster);
 	virtual				~CMonsterMovement	();
-			
-			void		InitExternal		(CBaseMonster	*pM);
 	virtual void		reinit				();
 	virtual void		Load				(LPCSTR section);	
 

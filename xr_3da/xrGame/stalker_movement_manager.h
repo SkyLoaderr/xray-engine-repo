@@ -15,9 +15,13 @@ using namespace MonsterSpace;
 
 class CAI_Stalker;
 
-class CStalkerMovementManager : virtual public CMovementManager {
+class CStalkerMovementManager : public CMovementManager {
+protected:
+	typedef CMovementManager inherited;
+
 public:
 	typedef DetailPathManager::EDetailPathType EDetailPathType;
+
 public:
 	struct CMovementParams {
 		Fvector						m_desired_position;
@@ -34,31 +38,28 @@ public:
 	};
 
 protected:
-	typedef CMovementManager inherited;
+	float							m_crouch_factor;
+	float							m_walk_factor;
+	float							m_walk_back_factor;
+	float							m_run_factor;
+	float							m_run_back_factor;
+	float							m_walk_free_factor;
+	float							m_run_free_factor;
+	float							m_panic_factor;
+	float							m_damaged_walk_factor;
+	float							m_damaged_run_factor;
+	float							m_damaged_walk_free_factor;
+	float							m_damaged_run_free_factor;
+	float							m_damaged_panic_factor;
 
 protected:
-	float								m_fCrouchFactor;
-	float								m_fWalkFactor;
-	float								m_fWalkBackFactor;
-	float								m_fRunFactor;
-	float								m_fRunBackFactor;
-	float								m_fWalkFreeFactor;
-	float								m_fRunFreeFactor;
-	float								m_fPanicFactor;
-	float								m_fDamagedWalkFactor;
-	float								m_fDamagedRunFactor;
-	float								m_fDamagedWalkFreeFactor;
-	float								m_fDamagedRunFreeFactor;
-	float								m_fDamagedPanicFactor;
-
-protected:
-	CMovementParams						m_current;
-	CMovementParams						m_target;
-	CAI_Stalker							*m_stalker;
+	CMovementParams					m_current;
+	CMovementParams					m_target;
+	CAI_Stalker						*m_object;
 
 public:
-	MonsterSpace::SBoneRotation			m_head;
-	u32									m_last_turn_index;
+	MonsterSpace::SBoneRotation		m_head;
+	u32								m_last_turn_index;
 
 protected:
 	IC		void	setup_head_speed		();
@@ -72,9 +73,8 @@ protected:
 			void	parse_velocity_mask		();
 
 public:
-					CStalkerMovementManager	();
+					CStalkerMovementManager	(CAI_Stalker *object);
 	virtual			~CStalkerMovementManager();
-			void	init					();
 	virtual	void	Load					(LPCSTR section);
 	virtual	void	reinit					();
 	virtual	void	reload					(LPCSTR section);
@@ -93,6 +93,22 @@ public:
 	IC		void	set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
 	IC		void	set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 
+public:
+	IC		float	crouch_factor			() const;
+	IC		float	walk_factor				() const;
+	IC		float	walk_back_factor		() const;
+	IC		float	run_factor				() const;
+	IC		float	run_back_factor			() const;
+	IC		float	walk_free_factor		() const;
+	IC		float	run_free_factor			() const;
+	IC		float	panic_factor			() const;
+	IC		float	damaged_walk_factor		() const;
+	IC		float	damaged_run_factor		() const;
+	IC		float	damaged_walk_free_factor() const;
+	IC		float	damaged_run_free_factor	() const;
+	IC		float	damaged_panic_factor	() const;
+
+public:
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;
 	IC		const Fvector							&desired_position		() const;
 	IC		const Fvector							&desired_direction		() const;
@@ -105,6 +121,7 @@ public:
 	IC		CAbstractVertexEvaluator				*path_evaluator			() const;
 	IC		bool									use_desired_position	() const;
 	IC		bool									use_desired_direction	() const;
+	IC		CAI_Stalker								&object					() const;
 };
 
 #include "stalker_movement_manager_inline.h"

@@ -37,6 +37,7 @@
 #include "enemy_manager.h"
 #include "memory_space.h"
 #include "ai_object_location.h"
+#include "movement_manager.h"
 
 void CLevelGraph::on_render1()
 {
@@ -1260,8 +1261,8 @@ void CLevelGraph::on_render5	()
 		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
-			if (!tpCustomMonster->detail_path_manager().path().empty()) {
-				Fvector temp = tpCustomMonster->detail_path_manager().path()[tpCustomMonster->detail_path_manager().path().size() - 1].position;
+			if (!tpCustomMonster->movement().detail_path_manager().path().empty()) {
+				Fvector temp = tpCustomMonster->movement().detail_path_manager().path()[tpCustomMonster->movement().detail_path_manager().path().size() - 1].position;
 				RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 			}
 		}
@@ -1324,8 +1325,8 @@ void CLevelGraph::on_render6	()
 		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
-			if (!tpCustomMonster->detail_path_manager().path().empty()) {
-				Fvector temp = tpCustomMonster->detail_path_manager().path()[tpCustomMonster->detail_path_manager().path().size() - 1].position;
+			if (!tpCustomMonster->movement().detail_path_manager().path().empty()) {
+				Fvector temp = tpCustomMonster->movement().detail_path_manager().path()[tpCustomMonster->movement().detail_path_manager().path().size() - 1].position;
 				RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 			}
 		}

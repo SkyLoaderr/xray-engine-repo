@@ -10,6 +10,7 @@
 
 #include "random32.h"
 #include "alife_space.h"
+#include "game_graph_space.h"
 
 class xrServer;
 class CALifeSimulatorHeader;
@@ -108,14 +109,14 @@ protected:
 	virtual	void								reload						(LPCSTR section);
 	IC		void								setup_command_line			(shared_str &command_line);
 	IC		shared_str							*server_command_line		() const;
-			void								assign_death_position		(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, ALife::_GRAPH_ID tGraphID,	CSE_ALifeSchedulable *tpALifeSchedulable = 0);
+			void								assign_death_position		(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, GameGraph::_GRAPH_ID tGraphID,	CSE_ALifeSchedulable *tpALifeSchedulable = 0);
 	virtual void								setup_simulator				(CSE_ALifeObject *object) = 0;
 
 public:
 			void								release						(CSE_Abstract			*object, bool alife_query = true);
 			void								create						(CSE_ALifeObject		*object);
 			CSE_Abstract						*create						(CSE_ALifeGroupAbstract	*object, CSE_ALifeDynamicObject	*j);
-			CSE_Abstract						*spawn_item					(LPCSTR section,		const Fvector &position, u32 level_vertex_id, ALife::_GRAPH_ID game_vertex_id, u16 parent_id);
+			CSE_Abstract						*spawn_item					(LPCSTR section,		const Fvector &position, u32 level_vertex_id, GameGraph::_GRAPH_ID game_vertex_id, u16 parent_id);
 			void								append_item_vector			(ALife::OBJECT_VECTOR	&tObjectVector,	ALife::ITEM_P_VECTOR &tItemList);
 
 public:

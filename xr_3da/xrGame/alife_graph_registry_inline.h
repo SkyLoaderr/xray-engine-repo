@@ -14,7 +14,7 @@ IC	CALifeLevelRegistry &CALifeGraphRegistry::level	() const
 	return						(*m_level);
 }
 
-IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID tGraphPointID, ALife::_GRAPH_ID tNextGraphPointID)
+IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, GameGraph::_GRAPH_ID tGraphPointID, GameGraph::_GRAPH_ID tNextGraphPointID)
 {
 	VERIFY3						(object->used_ai_locations()/** && (object->interactive() || object->m_bOnline)/**/,*object->s_name,object->name_replace());
 	remove						(object,tGraphPointID);
@@ -24,7 +24,7 @@ IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, ALife::_GRA
 	object->m_tNodeID			= ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
 }
 
-IC	void CALifeGraphRegistry::remove	(CALifeEvent *event, ALife::_GRAPH_ID game_vertex_id)
+IC	void CALifeGraphRegistry::remove	(CALifeEvent *event, GameGraph::_GRAPH_ID game_vertex_id)
 {
 	m_objects[game_vertex_id].events().remove(event->m_tEventID);
 #ifdef DEBUG
@@ -34,7 +34,7 @@ IC	void CALifeGraphRegistry::remove	(CALifeEvent *event, ALife::_GRAPH_ID game_v
 #endif
 }
 
-IC	void CALifeGraphRegistry::add	(CALifeEvent *event, ALife::_GRAPH_ID game_vertex_id)
+IC	void CALifeGraphRegistry::add	(CALifeEvent *event, GameGraph::_GRAPH_ID game_vertex_id)
 {
 	m_objects[game_vertex_id].events().add(event->m_tEventID,event);
 #ifdef DEBUG
@@ -44,7 +44,7 @@ IC	void CALifeGraphRegistry::add	(CALifeEvent *event, ALife::_GRAPH_ID game_vert
 #endif
 }
 
-IC	void CALifeGraphRegistry::change	(CALifeEvent *event, ALife::_GRAPH_ID game_vertex_id, ALife::_GRAPH_ID next_game_vertex_id)
+IC	void CALifeGraphRegistry::change	(CALifeEvent *event, GameGraph::_GRAPH_ID game_vertex_id, GameGraph::_GRAPH_ID next_game_vertex_id)
 {
 	remove						(event,game_vertex_id);
 	add							(event,next_game_vertex_id);
@@ -81,13 +81,13 @@ IC	const CALifeGraphRegistry::GRAPH_REGISTRY &CALifeGraphRegistry::objects	() co
 }
 
 template <typename F>
-IC	void CALifeGraphRegistry::iterate_objects			(ALife::_GRAPH_ID game_vertex_id, const F& f)
+IC	void CALifeGraphRegistry::iterate_objects			(GameGraph::_GRAPH_ID game_vertex_id, const F& f)
 {
 	iterate						(((CGraphPointInfo&)(objects()[game_vertex_id])).objects(),f);
 }
 
 template <typename F>
-IC	void CALifeGraphRegistry::iterate_events			(ALife::_GRAPH_ID game_vertex_id, const F& f)
+IC	void CALifeGraphRegistry::iterate_events			(GameGraph::_GRAPH_ID game_vertex_id, const F& f)
 {
 	iterate						(((CGraphPointInfo&)(objects()[game_vertex_id])).events(),f);
 }

@@ -8,164 +8,34 @@
 
 #pragma once
 
-#ifdef AI_COMPILER
-	#include "xrLevel.h"
-#else
-	#include "../xrLevel.h"
-#endif
+#include "game_graph_space.h"
 
-#include "alife_space.h"
-
-#define GRAPH_NAME							"game.graph"
+#define GRAPH_NAME			"game.graph"
 
 class CGameGraph {
+private:
 	friend class CRenumbererConverter;
+
 public:
+	typedef GameGraph::_GRAPH_ID    _GRAPH_ID;
+	typedef GameGraph::_LEVEL_ID	_LEVEL_ID;
+	typedef GameGraph::_LOCATION_ID	_LOCATION_ID;
+	typedef GameGraph::SLevel		SLevel;
+	typedef GameGraph::CEdge		CEdge;
+	typedef GameGraph::CVertex		CVertex;
+	typedef GameGraph::CHeader		CHeader;
+	typedef GameGraph::CLevelPoint	CLevelPoint;
 
-	class SLevel {
-		shared_str				caLevelName;
-		Fvector					tOffset;
-		ALife::_LEVEL_ID		tLevelID;
-		shared_str				m_section;
-
-	public:
-		IC shared_str name() const {
-			return				caLevelName;
-		}
-
-		IC const Fvector &offset() const {
-			return				(tOffset);
-		}
-
-		IC ALife::_LEVEL_ID id() const {
-			return				(tLevelID);
-		}
-
-		IC shared_str section() const {
-			return				(m_section);
-		}
-
-		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CGraphSaver;
-		friend class CGraphMerger;
-		friend class CSpawn;
-		friend class CSpawnMerger;
-		friend class CRenumbererConverter;
-		friend class CLevelSpawnConstructor;
-		friend class CGameSpawnConstructor;
-#endif
-	};
-
-	DEFINE_MAP		(ALife::_LEVEL_ID,SLevel,LEVEL_MAP,LEVEL_PAIR_IT);
-
-#pragma pack(push,4)
-	class CEdge {
-		u32							dwVertexNumber;
-		float						fPathDistance;
-	public:
-		IC	ALife::_GRAPH_ID		vertex_id			() const;
-		IC	float					distance			() const;
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-		friend class CGraphThread;
-		friend class CGraphMerger;
-		friend class CRenumbererConverter;
-#endif
-	};
-
-	class CVertex {
-		Fvector						tLocalPoint;
-		Fvector						tGlobalPoint;
-		u32							tLevelID:8;
-		u32							tNodeID:24;
-		u8							tVertexTypes[LOCATION_TYPE_COUNT];
-		u32							tNeighbourCount:8;
-		u32							dwEdgeOffset:24;
-		u32							tDeathPointCount:8;
-		u32							dwPointOffset:24;
-	public:
-		IC	const Fvector			&level_point		() const;
-		IC	const Fvector			&game_point			() const;
-		IC	ALife::_LEVEL_ID		level_id			() const;
-		IC	u32						level_vertex_id		() const;
-		IC	const u8				*vertex_type		() const;
-		IC	ALife::_GRAPH_ID		edge_count			() const;
-		IC	u32						edge_offset			() const;
-		IC	u32						death_point_count	() const;
-		IC	u32						death_point_offset	() const;
-		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-		friend class CGraphSaver;
-		friend class CRenumbererConverter;
-#endif
-	};
-
-	class CHeader {
-		u32							dwVersion;
-		u32							dwLevelCount;
-		u32							dwVertexCount;
-		u32							dwEdgeCount;
-		u32							dwDeathPointCount;
-		LEVEL_MAP					tpLevels;
-
-	public:
-		IC	u32						version				() const;
-		IC	ALife::_LEVEL_ID		level_count			() const;
-		IC	ALife::_GRAPH_ID		vertex_count		() const;
-		IC	ALife::_GRAPH_ID		edge_count			() const;
-		IC	u32						death_point_count	() const;
-		IC	const LEVEL_MAP			&levels				() const;
-		IC	const SLevel			&level				(const ALife::_LEVEL_ID &id) const;
-		IC	const SLevel			&level				(LPCSTR level_name) const;
-		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CGraphSaver;
-		friend class CGraphMerger;
-		friend class CRenumbererConverter;
-#endif
-	};
-#pragma pack(pop)
-
-	class CLevelPoint  {
-		Fvector		tPoint;
-		u32			tNodeID;
-		float		fDistance;	
-	public:
-		IC const Fvector			&level_point		() const
-		{
-			return				(tPoint);
-		}
-
-		IC u32						level_vertex_id		() const
-		{
-			return				(tNodeID);
-		}
-
-		IC float					distance			() const
-		{
-			return				(fDistance);
-		}
-
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-		friend class CSpawn;
-		friend class CLevelSpawnConstructor;
-		friend class CRenumbererConverter;
-#endif
-	};
-
-	DEFINE_VECTOR	(CLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
-	
+public:		
 	typedef const CEdge				*const_iterator;
 	typedef const CLevelPoint		*const_spawn_iterator;
+	typedef xr_vector<CLevelPoint>	LEVEL_POINT_VECTOR;
 
 protected:
-	CHeader							m_header;	// graph header
-	IReader							*m_reader;	// virtual file
+	CHeader							m_header;
+	IReader							*m_reader;
 	CVertex							*m_nodes;
-	ALife::_GRAPH_ID				m_current_level_some_vertex_id;
+	_GRAPH_ID						m_current_level_some_vertex_id;
 
 public:
 #ifndef AI_COMPILER
@@ -174,10 +44,10 @@ public:
 	IC 								CGameGraph			(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
 #endif
 	IC virtual						~CGameGraph			();
-	IC const CHeader				&header				() const;
-	IC		bool					mask				(const svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
-	IC		bool					mask				(const ALife::_LOCATION_ID M[LOCATION_TYPE_COUNT], const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
-	IC		float					distance			(const ALife::_GRAPH_ID tGraphID0, const ALife::_GRAPH_ID tGraphID1) const;
+	IC		const CHeader			&header				() const;
+	IC		bool					mask				(const svector<_LOCATION_ID,GameGraph::LOCATION_TYPE_COUNT> &M, const _LOCATION_ID E[GameGraph::LOCATION_TYPE_COUNT]) const;
+	IC		bool					mask				(const _LOCATION_ID M[GameGraph::LOCATION_TYPE_COUNT], const _LOCATION_ID E[GameGraph::LOCATION_TYPE_COUNT]) const;
+	IC		float					distance			(const _GRAPH_ID tGraphID0, const _GRAPH_ID tGraphID1) const;
 	IC		bool					accessible			(const u32 vertex_id) const;
 	IC		bool					valid_vertex_id		(const u32 vertex_id) const;
 	IC		void					begin				(const u32 vertex_id, const_iterator &start, const_iterator &end) const;
@@ -185,11 +55,11 @@ public:
 	IC		u32						value				(const u32 vertex_id, const_iterator &i) const;
 	IC		float					edge_weight			(const_iterator i) const;
 	IC		const CVertex			*vertex				(u32 vertex_id) const;
-	IC		void					set_invalid_vertex	(ALife::_GRAPH_ID &vertex_id) const;
-	IC		const ALife::_GRAPH_ID	vertex_id			(const CVertex *vertex) const;
-//	IC		const ALife::_GRAPH_ID	nearest				(const Fvector &position, u32 level_id) const;
+	IC		void					set_invalid_vertex	(_GRAPH_ID &vertex_id) const;
+	IC		const _GRAPH_ID			vertex_id			(const CVertex *vertex) const;
+//	IC		const _GRAPH_ID			nearest				(const Fvector &position, u32 level_id) const;
 	IC		void					set_current_level	(u32 level_id);
-	IC		const ALife::_GRAPH_ID	current_level_vertex() const;
+	IC		const _GRAPH_ID			current_level_vertex() const;
 };
 
 #include "game_graph_inline.h"

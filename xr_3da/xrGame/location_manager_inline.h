@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	const ALife::TERRAIN_VECTOR	&CLocationManager::vertex_types	() const
+IC	const GameGraph::TERRAIN_VECTOR	&CLocationManager::vertex_types	() const
 {
 	return					(m_vertex_types);
 }

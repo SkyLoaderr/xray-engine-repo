@@ -56,7 +56,7 @@ bool CStateMonsterLookToUnprotectedAreaAbstract::check_completion()
 {	
 	if (data.time_out !=0) {
 		if (time_state_started + data.time_out < object->m_current_update) return true;
-	} else 	if (angle_difference(object->m_body.current.yaw, object->m_body.target.yaw) < deg(1)) return true;
+	} else 	if (angle_difference(object->movement().m_body.current.yaw, object->movement().m_body.target.yaw) < deg(1)) return true;
 
 	return false;
 }

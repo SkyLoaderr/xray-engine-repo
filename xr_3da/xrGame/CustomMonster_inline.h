@@ -36,8 +36,14 @@ IC	bool left_angle(float y1, float y2)
 	return			(dir.y <= 0.f);
 }
 
-IC	CMemoryManager &CCustomMonster::memory	() const
+IC	CMemoryManager &CCustomMonster::memory		() const
 {
 	VERIFY			(m_memory_manager);
 	return			(*m_memory_manager);
+}
+
+IC	CMovementManager &CCustomMonster::movement	() const
+{
+	VERIFY			(m_movement_manager);
+	return			(*m_movement_manager);
 }

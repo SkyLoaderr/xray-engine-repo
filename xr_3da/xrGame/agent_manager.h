@@ -35,7 +35,7 @@ public:
 
 		IC		bool	operator()			(const CMemberOrder &order) const
 		{
-			return			(order.object() == m_object);
+			return			(&order.object() == m_object);
 		}
 	};
 

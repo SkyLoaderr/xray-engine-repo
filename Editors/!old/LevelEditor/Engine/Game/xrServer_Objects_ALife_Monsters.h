@@ -13,7 +13,6 @@
 #include "xrServer_Objects_ALife_Items.h"
 #include "character_info_defs.h"
 
-
 #pragma warning(push)
 #pragma warning(disable:4005)
 
@@ -221,13 +220,13 @@ add_to_type_list(CSE_ALifeCreatureAbstract)
 #define script_type_list save_type_list(CSE_ALifeCreatureAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
-	ALife::_GRAPH_ID				m_tNextGraphID;
-	ALife::_GRAPH_ID				m_tPrevGraphID;
+	GameGraph::_GRAPH_ID				m_tNextGraphID;
+	GameGraph::_GRAPH_ID				m_tPrevGraphID;
 	float							m_fGoingSpeed;
 	float							m_fCurSpeed;
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
-	ALife::TERRAIN_VECTOR			m_tpaTerrain;
+	GameGraph::TERRAIN_VECTOR		m_tpaTerrain;
 	float							m_fMaxHealthValue;
 	float							m_fRetreatThreshold;
 	float							m_fEyeRange;
@@ -368,7 +367,7 @@ add_to_type_list(CSE_ALifeMonsterBase)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpPath;
 	u32								m_dwCurNode;
-	ALife::_GRAPH_ID				m_tDestGraphPointIndex;								
+	GameGraph::_GRAPH_ID				m_tDestGraphPointIndex;								
 	xr_vector<bool>					m_baVisitedVertices;
 	ALife::ETaskState				m_tTaskState;
 	u32								m_dwCurTaskLocation;

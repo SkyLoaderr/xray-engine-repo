@@ -20,15 +20,15 @@ void CMonsterMovement::detour_graph_points()
 	game_location_selector().set_selection_type	(eSelectionTypeRandomBranching);
 }
 
-CMonsterMovement::CMonsterMovement()
+CMonsterMovement::CMonsterMovement(CBaseMonster *base_monster) :
+	inherited				(base_monster)
 {
-	m_selector_approach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
-	m_cover_approach		= xr_new<CCoverEvaluatorCloseToEnemy>(this);
-	
-	m_object				= 0;
+	VERIFY					(base_monster);
+	m_object				= base_monster;
+	MotionStats				= xr_new<CMotionStats>(m_object);
 
-	m_dwFrameReinit			= u32(-1);
-	m_dwFrameLoad			= u32(-1);
+	m_selector_approach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	m_cover_approach		= xr_new<CCoverEvaluatorCloseToEnemy>(&restrictions());
 }
 
 CMonsterMovement::~CMonsterMovement()
@@ -40,9 +40,6 @@ CMonsterMovement::~CMonsterMovement()
 
 void CMonsterMovement::Load(LPCSTR section)
 {
-	if (!frame_check(m_dwFrameLoad))
-		return;
-	
 	inherited::Load(section);
 
 	m_selector_approach->Load(section,"selector_approach");
@@ -50,9 +47,6 @@ void CMonsterMovement::Load(LPCSTR section)
 
 void CMonsterMovement::reinit()
 {
-	if (!frame_check(m_dwFrameReinit))
-		return;
-	
 	inherited::reinit();
 
 	b_try_min_time					= false;
@@ -65,38 +59,29 @@ void CMonsterMovement::reinit()
 	initialize_movement				();
 }
 
-void CMonsterMovement::InitExternal(CBaseMonster *pM)
-{
-	m_object	= pM;
-	VERIFY		(m_object);
-
-	MotionStats	= xr_new<CMotionStats> (m_object);
-}
-
 //////////////////////////////////////////////////////////////////////////
 // Services
 
 void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_pos)
 {
-	S.m_dwCurTime		= m_object->m_dwCurrentTime;
+	S.m_dwCurTime		= object().m_dwCurrentTime;
 	S.m_tMe				= m_object;
-	S.m_tpMyNode		= ai_location().level_vertex();
-	S.m_tMyPosition		= Position();
-	S.m_dwStartNode		= ai_location().level_vertex_id();
-	S.m_tStartPosition	= Position();
-
+	S.m_tpMyNode		= object().ai_location().level_vertex();
+	S.m_tMyPosition		= object().Position();
+	S.m_dwStartNode		= object().ai_location().level_vertex_id();
+	S.m_tStartPosition	= object().Position();
 	S.m_tEnemyPosition	= target_pos;
 	S.m_tEnemy			= 0;
 }
 
 bool CMonsterMovement::IsMoveAlongPathFinished()
 {
-	return (detail_path_manager().completed(Position()));
+	return (detail_path_manager().completed(object().Position()));
 }
 
 bool CMonsterMovement::IsMovingOnPath()
 {
-	return (!IsMoveAlongPathFinished() && CMovementManager::enabled() && b_enable_movement);
+	return (!IsMoveAlongPathFinished() && enabled() && b_enable_movement);
 }
 
 //-------------------------------------------------------------------------------------------
@@ -134,7 +119,7 @@ bool CMonsterMovement::ObjectNotReachable(const CEntity *entity)
 	if (!object_position_valid(entity)) return true;
 	
 	// Commented because of Acceleration Conflict
-	//if (m_object->MotionMan.BadMotionFixed()) return true;
+	//if (object()MotionMan.BadMotionFixed()) return true;
 
 	return false;
 }
@@ -160,13 +145,13 @@ void CMonsterMovement::update_velocity()
 {
 	// Обновить линейную скорость движения
 	float t_accel = ((m_velocity_linear.target < m_velocity_linear.current) ? 
-										m_object->MotionMan.accel_get(eAV_Braking) :
-										m_object->MotionMan.accel_get(eAV_Accel));
+										object().MotionMan.accel_get(eAV_Braking) :
+										object().MotionMan.accel_get(eAV_Accel));
 		
 	velocity_lerp		(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
 	
 	// установить линейную скорость движения
-	set_desirable_speed	(m_object->m_fCurSpeed = m_velocity_linear.current);
+	set_desirable_speed	(object().m_fCurSpeed = m_velocity_linear.current);
 
 	// установить угловую скорость движения
 	if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
@@ -195,9 +180,9 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 {
 	if (node == u32(-1)) {
 		// нода в прямой видимости?
-		CRestrictedObject::add_border(Position(), target);
-		node = ai().level_graph().check_position_in_direction(ai_location().level_vertex_id(),Position(),target);
-		CRestrictedObject::remove_border();
+		restrictions().add_border(object().Position(), target);
+		node = ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),target);
+		restrictions().remove_border();
 		
 		if (!ai().level_graph().valid_vertex_id(node) || !accessible(node)) return false;
 	}
@@ -245,7 +230,7 @@ float CMonsterMovement::get_path_angle()
 
 bool CMonsterMovement::is_path_built()
 {
-	return (!CMovementManager::path_completed() && (detail_path_manager().time_path_built() >= Level().timeServer()));
+	return (!path_completed() && (detail_path_manager().time_path_built() >= Level().timeServer()));
 }
 
 void CMonsterMovement::set_velocity_from_path() 

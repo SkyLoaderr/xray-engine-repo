@@ -10,6 +10,7 @@
 
 #include "object_interfaces.h"
 #include "alife_space.h"
+#include "game_graph_space.h"
 
 class CALifeTask : public IPureSerializeObject<IReader,IWriter> {
 public:
@@ -24,8 +25,8 @@ public:
 		ALife::_OBJECT_ID		m_tObjectID;
 	};
 	union {
-		ALife::_LOCATION_ID		m_tLocationID[LOCATION_TYPE_COUNT];
-		ALife::_GRAPH_ID		m_tGraphID;
+		GameGraph::_LOCATION_ID	m_tLocationID[GameGraph::LOCATION_TYPE_COUNT];
+		GameGraph::_GRAPH_ID	m_tGraphID;
 	};
 
 public:

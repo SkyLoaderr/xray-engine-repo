@@ -19,9 +19,10 @@
 #include "memory_space.h"
 #include "ai_object_location.h"
 
-CSelectorManager::CSelectorManager		()
+CSelectorManager::CSelectorManager		(CCustomMonster *object)
 {
-	m_object					= 0;
+	VERIFY						(object);
+	m_object					= object;
 }
 
 CSelectorManager::~CSelectorManager		()
@@ -29,11 +30,8 @@ CSelectorManager::~CSelectorManager		()
 	remove_all					();
 }
 
-void CSelectorManager::reinit			(CCustomMonster *object)
+void CSelectorManager::reinit			()
 {
-	VERIFY						(object);
-	m_object					= object;
-	
 	remove_all					();
 }
 

@@ -3,6 +3,7 @@
 #include "../ai_monster_utils.h"
 #include "dog_state_manager.h"
 #include "../../../../skeletonanimated.h"
+#include "../ai_monster_movement.h"
 
 CAI_Dog::CAI_Dog()
 {
@@ -135,10 +136,10 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
 		yaw *= -1;
 
-		if (angle_difference(angle_normalize(yaw), m_body.current.yaw) > 120 * PI / 180) {
+		if (angle_difference(angle_normalize(yaw), movement().m_body.current.yaw) > 120 * PI / 180) {
 			
 			EMotionAnim anim;
-			if (from_right(yaw,m_body.current.yaw)) {
+			if (from_right(yaw,movement().m_body.current.yaw)) {
 				anim = eAnimJumpRight;
 				yaw = angle_normalize(yaw + 15 * PI / 180);	
 			} else {
@@ -149,11 +150,11 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 			MotionMan.Seq_Add(anim);
 			MotionMan.Seq_Switch();
 
-			CMovementManager::m_body.target.yaw = yaw;
+			movement().m_body.target.yaw = yaw;
 
 			// calculate angular speed
 			float new_angular_velocity; 
-			float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+			float delta_yaw = angle_difference(yaw,movement().m_body.current.yaw);
 			float time = MotionMan.GetCurAnimTime();
 			new_angular_velocity = 1.5f * delta_yaw / time; 
 

@@ -13,6 +13,7 @@
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "ai_object_location.h"
+#include "custommonster.h"
 
 void CMovementManager::process_level_path()
 {
@@ -20,7 +21,7 @@ void CMovementManager::process_level_path()
 
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
-			level_location_selector().select_location(ai_location().level_vertex_id(), true);
+			level_location_selector().select_location(object().ai_location().level_vertex_id(), true);
 			if (level_location_selector().failed())
 				break;
 
@@ -30,9 +31,9 @@ void CMovementManager::process_level_path()
 										   }
 		case ePathStateBuildLevelPath : {
 			if (!level_location_selector().used() || !m_selector_path_usage)
-				level_path_manager().build_path(ai_location().level_vertex_id(),level_dest_vertex_id());
+				level_path_manager().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
 			else
-				level_path_manager().build_path(ai_location().level_vertex_id(),level_dest_vertex_id(),m_selector_path_usage);
+				level_path_manager().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id(),m_selector_path_usage);
 
 			if (level_path_manager().failed())
 				break;
@@ -47,7 +48,7 @@ void CMovementManager::process_level_path()
 										   }
 		case ePathStateBuildDetailPath : {
 			detail_path_manager().set_state_patrol_path(extrapolate_path());
-			detail_path_manager().set_start_position(Position());
+			detail_path_manager().set_start_position(object().Position());
 			detail_path_manager().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 
 			detail_path_manager().build_path(
@@ -66,7 +67,7 @@ void CMovementManager::process_level_path()
 				break;
 										 }
 		case ePathStatePathVerification : {
-			if (!level_location_selector().actual(ai_location().level_vertex_id(),path_completed()))
+			if (!level_location_selector().actual(object().ai_location().level_vertex_id(),path_completed()))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 				if (!level_path_manager().actual())
@@ -75,7 +76,7 @@ void CMovementManager::process_level_path()
 					if (!detail_path_manager().actual())
 						m_path_state	= ePathStateBuildLevelPath;
 					else
-						if (detail_path_manager().completed(Position(),!extrapolate_path())) {
+						if (detail_path_manager().completed(object().Position(),!extrapolate_path())) {
 							m_path_state	= ePathStateContinueLevelPath;
 							if (level_path_manager().completed()) {
 								if (level_location_selector().used())

@@ -7,7 +7,6 @@
 #include "CustomMonster.h"
 #include "hudmanager.h"
 #include "ai_space.h"
-//#include "ai/rat/ai_rat.h"
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "xrserver.h"
@@ -25,6 +24,9 @@
 #include "enemy_manager.h"
 #include "item_manager.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
+#include "game_graph.h"
+#include "movement_manager.h"
 
 extern int g_AI_inactive_time;
 
@@ -56,23 +58,26 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 CCustomMonster::CCustomMonster()
 {
+	m_movement_manager			= 0;
 }
 
 CCustomMonster::~CCustomMonster	()
 {
 	xr_delete					(m_memory_manager);
+	xr_delete					(m_movement_manager);
 }
 
 void CCustomMonster::Load		(LPCSTR section)
 {
 	m_memory_manager			= xr_new<CMemoryManager>(this);
+	m_movement_manager			= create_movement_manager();
 
 	inherited::Load				(section);
 	CScriptMonster::Load		(section);
 	CLocationManager::Load		(section);
 	CMaterialManager::Load		(section);
 	memory().Load				(section);
-	CMovementManager::Load		(section);
+	movement().Load				(section);
 
 	ISpatial*		self				= smart_cast<ISpatial*> (this);
 	if (self)		{
@@ -153,8 +158,7 @@ void CCustomMonster::reinit()
 	CLocationManager::reinit	();
 	CMaterialManager::reinit	();
 	memory().reinit				();
-	CMovementManager::reinit	();
-	CSelectorManager::reinit	(this);
+	movement().reinit	();
 	CSoundPlayer::reinit		();
 
 	eye_pp_stage				= 0;
@@ -172,7 +176,7 @@ void CCustomMonster::reload		(LPCSTR section)
 	CLocationManager::reload	(section);
 	CMaterialManager::reload	(section);
 	memory().reload				(section);
-	CMovementManager::reload	(section);
+	movement().reload			(section);
 	load_killer_clsids			(section);
 }
 
@@ -307,8 +311,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
-			uNext.o_model			= m_body.current.yaw;
-			uNext.o_torso			= m_body.current;
+			uNext.o_model			= movement().m_body.current.yaw;
+			uNext.o_torso			= movement().m_body.current;
 			uNext.p_pos				= Position();
 			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
@@ -317,8 +321,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		{
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
-			uNext.o_model		= m_body.current.yaw;
-			uNext.o_torso		= m_body.current;
+			uNext.o_model		= movement().m_body.current.yaw;
+			uNext.o_torso		= movement().m_body.current;
 			uNext.p_pos			= Position();
 			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
@@ -379,7 +383,7 @@ void CCustomMonster::UpdateCL	()
 			}
 			else {
 				if (!bfScriptAnimation())
-					SelectAnimation	(XFORM().k,detail_path_manager().direction(),speed());
+					SelectAnimation	(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
 			}
 
 			// Signal, that last time we used interpolation
@@ -409,9 +413,9 @@ void CCustomMonster::UpdateCL	()
 
 void CCustomMonster::UpdatePositionAnimation()
 {
-	move_along_path			(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
+	movement().move_along_path	(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
 	if (!bfScriptAnimation())
-		SelectAnimation		(XFORM().k,detail_path_manager().direction(),speed());
+		SelectAnimation		(XFORM().k,movement().detail_path_manager().direction(),movement().speed());
 }
 
 BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
@@ -501,8 +505,8 @@ void CCustomMonster::OnRender()
 
 	RCache.OnFrameEnd				();
 	for (int i=0; i<1; ++i) {
-		const xr_vector<CDetailPathManager::STravelPoint>		&keys	= !i ? detail_path_manager().m_key_points					: detail_path_manager().m_key_points;
-		const xr_vector<DetailPathManager::STravelPathPoint>	&path	= !i ? detail_path_manager().path()	: detail_path_manager().path();
+		const xr_vector<CDetailPathManager::STravelPoint>		&keys	= !i ? movement().detail_path_manager().m_key_points					: movement().detail_path_manager().m_key_points;
+		const xr_vector<DetailPathManager::STravelPathPoint>	&path	= !i ? movement().detail_path_manager().path()	: movement().detail_path_manager().path();
 		u32									color0	= !i ? D3DCOLOR_XRGB(0,255,0)		: D3DCOLOR_XRGB(0,0,255);
 		u32									color1	= !i ? D3DCOLOR_XRGB(255,0,0)		: D3DCOLOR_XRGB(255,255,0);
 		u32									color2	= !i ? D3DCOLOR_XRGB(0,0,255)		: D3DCOLOR_XRGB(0,255,255);
@@ -538,7 +542,7 @@ void CCustomMonster::OnRender()
 		}
 	}
 	{
-		Fvector				P1 = ai().level_graph().vertex_position(level_dest_vertex_id());
+		Fvector				P1 = ai().level_graph().vertex_position(movement().level_dest_vertex_id());
 		P1.y				+= 1.f;
 		RCache.dbg_DrawAABB	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
 	}
@@ -555,12 +559,12 @@ void CCustomMonster::OnRender()
 	*/
 	{
 
-		//	for (int I=0, N = (int)detail_path_manager().path().size(); I<N - 1; ++I)
+		//	for (int I=0, N = (int)movement().detail_path_manager().path().size(); I<N - 1; ++I)
 		//	{
-		//		Fvector P1 = detail_path_manager().path()[I].position;		P1.y+=0.1f;
-		//		Fvector P2 = detail_path_manager().path()[I + 1].position;	P2.y+=0.1f;
+		//		Fvector P1 = movement().detail_path_manager().path()[I].position;		P1.y+=0.1f;
+		//		Fvector P2 = movement().detail_path_manager().path()[I + 1].position;	P2.y+=0.1f;
 		//		{
-		//			const STravelParams&		i = velocity(detail_path_manager().path()[I].velocity);
+		//			const STravelParams&		i = velocity(movement().detail_path_manager().path()[I].velocity);
 		//			float	r = i.linear_velocity/i.angular_velocity;
 		//			Fmatrix						V = Fidentity;
 		//			V.c							= P1;
@@ -571,7 +575,7 @@ void CCustomMonster::OnRender()
 		//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
 		//		}
 		//		{
-		//			const STravelParams&		i = velocity(detail_path_manager().path()[I + 1].velocity);
+		//			const STravelParams&		i = velocity(movement().detail_path_manager().path()[I + 1].velocity);
 		//			float	r = i.linear_velocity/i.angular_velocity;
 		//			Fmatrix						V = Fidentity;
 		//			V.c							= P2;
@@ -655,15 +659,15 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CMovementManager::net_Spawn(DC))
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !movement().net_Spawn(DC))
 		return					(FALSE);
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= smart_cast<CSE_ALifeMonsterAbstract*>(e);
 
 	eye_matrix.identity			();
-	m_body.current.yaw			= m_body.target.yaw	= -E->o_Angle.y;
-	m_body.current.pitch		= m_body.target.pitch	= 0;
+	movement().m_body.current.yaw			= movement().m_body.target.yaw	= -E->o_Angle.y;
+	movement().m_body.current.pitch		= movement().m_body.target.pitch	= 0;
 	fEntityHealth				= E->fHealth;
 	if (!g_Alive())
 		set_death_time			();
@@ -672,16 +676,16 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 		if (ai().game_graph().valid_vertex_id(E->m_tGraphID))
 			ai_location().game_vertex			(E->m_tGraphID);
 
-		if (ai().game_graph().valid_vertex_id(E->m_tNextGraphID) && accessible(ai().game_graph().vertex(E->m_tNextGraphID)->level_vertex_id()))
-			set_game_dest_vertex	(E->m_tNextGraphID);
+		if (ai().game_graph().valid_vertex_id(E->m_tNextGraphID) && movement().restrictions().accessible(ai().game_graph().vertex(E->m_tNextGraphID)->level_vertex_id()))
+			movement().set_game_dest_vertex	(E->m_tNextGraphID);
 
-		if (accessible(ai_location().level_vertex_id()))
-			set_level_dest_vertex	(ai_location().level_vertex_id());
+		if (movement().restrictions().accessible(ai_location().level_vertex_id()))
+			movement().set_level_dest_vertex	(ai_location().level_vertex_id());
 		else {
 			Fvector					dest_position;
-			u32						level_vertex_id = accessible_nearest(Position(),dest_position);
-			set_level_dest_vertex	(level_vertex_id);
-			detail_path_manager().set_dest_position		(dest_position);
+			u32						level_vertex_id = movement().restrictions().accessible_nearest(Position(),dest_position);
+			movement().set_level_dest_vertex	(level_vertex_id);
+			movement().detail_path_manager().set_dest_position		(dest_position);
 		}
 	}
 
@@ -761,7 +765,6 @@ void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy			();
 	CScriptMonster::net_Destroy		();
-	CMovementManager::net_Destroy	();
 }
 
 BOOL CCustomMonster::UsedAI_Locations()
@@ -812,7 +815,7 @@ void CCustomMonster::PitchCorrection()
 	float yaw,pitch;
 	target_dir.getHP(yaw,pitch);
 
-	m_body.target.pitch = -pitch;
+	movement().m_body.target.pitch = -pitch;
 
 }
 
@@ -888,4 +891,19 @@ bool CCustomMonster::useful			(const CEntityAlive *object) const
 float CCustomMonster::evaluate		(const CEntityAlive *object) const
 {
 	return	(memory().enemy().evaluate(object));
+}
+
+CMovementManager *CCustomMonster::create_movement_manager	()
+{
+	return	(xr_new<CMovementManager>(this));
+}
+
+const SRotation CCustomMonster::Orientation	() const
+{
+	return					(movement().m_body.current);
+};
+
+const MonsterSpace::SBoneRotation &CCustomMonster::head_orientation	() const
+{
+	return					(movement().m_body);
 }

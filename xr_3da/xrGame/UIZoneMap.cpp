@@ -5,10 +5,6 @@
 
 #include "levelFogOfWar.h"
 
-#include "targetcs.h"
-#include "targetcscask.h"
-#include "targetcsbase.h"
-
 #include "InfoPortion.h"
 #include "Pda.h"
 
@@ -77,7 +73,7 @@ struct FindLevelByName
 	FindLevelByName(const shared_str &l)
 		:	levelName(l)
 	{}
-	bool operator ()(const CGameGraph::LEVEL_MAP::value_type &lhs)
+	bool operator ()(const GameGraph::LEVEL_MAP::value_type &lhs)
 	{
 		return 0 == xr_strcmp(levelName, lhs.second.name());
 	}
@@ -114,10 +110,10 @@ void CUIZoneMap::Init()
 	back.SetRect(0,0,180,180);
 
 	// Получаем список уровней игры
-	const CGameGraph::LEVEL_MAP &levelMap = ai().game_graph().header().levels();
+	const GameGraph::LEVEL_MAP &levelMap = ai().game_graph().header().levels();
 
 	FindLevelByName currentLevel(Level().name());
-	CGameGraph::LEVEL_MAP::const_iterator currLIt = std::find_if(levelMap.begin(), levelMap.end(), currentLevel);
+	GameGraph::LEVEL_MAP::const_iterator currLIt = std::find_if(levelMap.begin(), levelMap.end(), currentLevel);
 
 	shared_str				map_texture;
 	string256			gameLtxPath;

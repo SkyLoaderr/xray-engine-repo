@@ -9,7 +9,6 @@
 #pragma once
 
 #include "../../CustomMonster.h"
-#include "../../stalker_movement_manager.h"
 #include "../../object_handler.h"
 #include "ai_stalker_space.h"
 #include "../../AI_PhraseDialogManager.h"
@@ -38,6 +37,7 @@ class CMotionDef;
 class CStalkerAnimationManager;
 class CMotivationActionManagerStalker;
 class CSightManager;
+class CStalkerMovementManager;
 
 template <
 	typename _action_type,
@@ -52,7 +52,6 @@ class CAI_Stalker;
 class CAI_Stalker : 
 	public CCustomMonster, 
 	public CObjectHandler,
-	public CStalkerMovementManager,
 	public CAI_PhraseDialogManager,
 	public CStepManager
 {
@@ -67,6 +66,7 @@ private:
 	CMotivationActionManagerStalker	*m_brain;
 	CSightManager					*m_sight_manager;
 	CSSetupManager					*m_setup_manager;
+	CStalkerMovementManager			*m_movement_manager;
 
 private:
 	EBodyAction						m_body_action;
@@ -210,18 +210,8 @@ public:
 			void						DropItemSendMessage		(CObject *O);
 			bool						bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRyPick = false);
 	virtual	ALife::ERelationType 		tfGetRelationType		(const CEntityAlive *tpEntityAlive) const;
-
-	virtual const SRotation				Orientation				() const
-	{
-		return							(m_head.current);
-	};
-
-	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const
-	{
-			return CStalkerMovementManager::head_orientation();
-	}
-
-
+	virtual const SRotation				Orientation				() const;
+	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const;
 	virtual bool						use_model_pitch			() const;
 
 	//////////////////////////////////////////////////////////////////////////
@@ -342,6 +332,11 @@ public:
 	IC		float						panic_threshold					() const;
 	IC		void						body_action						(const EBodyAction &body_action);
 	IC		const EBodyAction			&body_action					() const;
+
+protected:
+	virtual CMovementManager			*create_movement_manager		();
+public:
+	IC		CStalkerMovementManager		&movement						() const;
 };
 
 #include "ai_stalker_inline.h"

@@ -27,6 +27,7 @@ public:
 	virtual			~CActionPlannerActionScript	();
 	virtual	void	setup						(_object_type *object, CPropertyStorage *storage);
 	virtual	void	setup						(CScriptGameObject *object, CPropertyStorage *storage);
+	IC		_object_type &object				() const;
 };
 
 #include "action_planner_action_script_inline.h"

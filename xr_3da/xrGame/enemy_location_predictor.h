@@ -14,7 +14,6 @@ class CEnemyLocationPredictor {
 public:
 					CEnemyLocationPredictor			();
 	virtual			~CEnemyLocationPredictor		();
-			void	init							();
 	virtual void	reinit							(CRestrictedObject *object);
 			void	predict_enemy_locations			();
 			bool	enemy_prediction_actual			() const;

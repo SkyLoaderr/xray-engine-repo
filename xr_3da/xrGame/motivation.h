@@ -20,9 +20,9 @@ public:
 public:
 	IC				CMotivation		();
 	virtual			~CMotivation	();
-	IC		void	init			();
 	virtual void	setup			(_object_type *object);
 	virtual float	evaluate		(u32 sub_motivation_id);
+	IC		_object_type &object	() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CMotivation<CScriptGameObject> CScriptMotivation;

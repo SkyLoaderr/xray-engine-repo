@@ -66,6 +66,7 @@ public:
 				void				select_point			(const Fvector &position, u32 &dest_vertex_id);
 	IC			const Fvector		&destination_position	() const;
 	IC			u32					get_current_point_index	() const;
+	IC			CRestrictedObject	&object					() const;
 };
 
 #include "patrol_path_manager_inline.h"

@@ -6,6 +6,7 @@
 #include "ai_monster_jump.h"
 #include "custom_events.h"
 #include "../../detail_path_manager.h"
+#include "ai_monster_movement.h"
 
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
@@ -17,7 +18,7 @@ void CMotionManager::Update()
 	if (TA_IsActive()) return;
 
 	// Установка Yaw
-	if (pMonster->IsMovingOnPath()) pMonster->DirMan.use_path_direction( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+	if (pMonster->movement().IsMovingOnPath()) pMonster->DirMan.use_path_direction( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 	SelectAnimation		();
 	SelectVelocities	();
@@ -31,7 +32,7 @@ void CMotionManager::Update()
 void CMotionManager::SelectAnimation()
 {
 	EAction							action = m_tAction;
-	if (pMonster->IsMovingOnPath()) action = GetActionFromPath();
+	if (pMonster->movement().IsMovingOnPath()) action = GetActionFromPath();
 
 	cur_anim_info().motion			= get_sd()->m_tMotions[action].anim;
 	
@@ -51,17 +52,17 @@ void CMotionManager::SelectAnimation()
 
 void CMotionManager::SetTurnAnimation()
 {
-	float delta_yaw = angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw);
+	float delta_yaw = angle_difference(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw);
 
 	bool turn_left = true;
-	if (from_right(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw)) turn_left = false; 
+	if (from_right(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw)) turn_left = false; 
 
 	if (IsStandCurAnim() && (delta_yaw > STAND_TURN_ANGLE)) {
 		pMonster->SetTurnAnimation(turn_left);
 		return;
 	}
 	
-	if (pMonster->IsMovingOnPath() && (delta_yaw > MOVE_TURN_ANGLE)) {
+	if (pMonster->movement().IsMovingOnPath() && (delta_yaw > MOVE_TURN_ANGLE)) {
 		pMonster->SetTurnAnimation(turn_left);
 		return;
 	}
@@ -78,26 +79,26 @@ void CMotionManager::SetTurnAnimation()
 void CMotionManager::SelectVelocities()
 {
 	// получить скорости движения по пути
-	bool		b_moving = pMonster->IsMovingOnPath();
+	bool		b_moving = pMonster->movement().IsMovingOnPath();
 	SMotionVel	path_vel;	path_vel.set(0.f,0.f);
 	SMotionVel	anim_vel;	anim_vel.set(0.f,0.f);
 
 	if (b_moving) {
 
-		u32 cur_point_velocity_index = pMonster->detail_path_manager().path()[pMonster->detail_path_manager().curr_travel_point_index()].velocity;
+		u32 cur_point_velocity_index = pMonster->movement().detail_path_manager().path()[pMonster->movement().detail_path_manager().curr_travel_point_index()].velocity;
 
 		u32 next_point_velocity_index = u32(-1);
-		if (pMonster->detail_path_manager().path().size() > pMonster->detail_path_manager().curr_travel_point_index() + 1) 
-			next_point_velocity_index = pMonster->detail_path_manager().path()[pMonster->detail_path_manager().curr_travel_point_index() + 1].velocity;
+		if (pMonster->movement().detail_path_manager().path().size() > pMonster->movement().detail_path_manager().curr_travel_point_index() + 1) 
+			next_point_velocity_index = pMonster->movement().detail_path_manager().path()[pMonster->movement().detail_path_manager().curr_travel_point_index() + 1].velocity;
 
 		// если сейчас стоит на месте и есть след точка (т.е. должен быть в движении),
 		// то реализовать поворот на месте, а дальше форсировать скорость со следующей точки
 		if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-			if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(1)) 
+			if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) < deg(1)) 
 				cur_point_velocity_index = next_point_velocity_index;
 		} 
 
-		const CDetailPathManager::STravelParams &current_velocity = pMonster->detail_path_manager().velocity(cur_point_velocity_index);
+		const CDetailPathManager::STravelParams &current_velocity = pMonster->movement().detail_path_manager().velocity(cur_point_velocity_index);
 		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.real_angular_velocity);
 	}
 
@@ -115,14 +116,14 @@ void CMotionManager::SelectVelocities()
 	// - проверить на возможность торможения
 	if (!accel_check_braking(0.f)) {
 
-		pMonster->m_velocity_linear.target	= _abs(anim_vel.linear);
-		if (fis_zero(pMonster->m_velocity_linear.target)) pMonster->stop_linear();
+		pMonster->movement().m_velocity_linear.target	= _abs(anim_vel.linear);
+		if (fis_zero(pMonster->movement().m_velocity_linear.target)) pMonster->movement().stop_linear();
 	} else {
-		pMonster->stop_linear_accel();
+		pMonster->movement().stop_linear_accel();
 	}
 
 	// если невидимый, то установить скорость из пути
-	if (pMonster->state_invisible) pMonster->m_velocity_linear.target	= _abs(path_vel.linear);
+	if (pMonster->state_invisible) pMonster->movement().m_velocity_linear.target	= _abs(path_vel.linear);
 
 	// финальная корректировка скорости анимации по физической скорости
 	if (b_moving) {
@@ -147,7 +148,7 @@ void CMotionManager::SelectVelocities()
 		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 		VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-		pMonster->m_velocity_angular = item_it->second.velocity->velocity.angular_real;
+		pMonster->movement().m_velocity_angular = item_it->second.velocity->velocity.angular_real;
 	}
 
 	// применить 
@@ -171,7 +172,7 @@ void CMotionManager::FrameUpdate()
 	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
 		Update();
 	} else {
-		pMonster->disable_path();	
+		pMonster->movement().disable_path();	
 	}
 
 	// raise event on velocity bounce
@@ -218,6 +219,6 @@ void CMotionManager::UpdateScheduled()
 		b_forced_velocity	= false;
 		Update				();	
 	} else {
-		pMonster->disable_path();
+		pMonster->movement().disable_path();
 	}
 }

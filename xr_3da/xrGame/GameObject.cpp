@@ -20,7 +20,8 @@
 #include "game_cl_base.h"
 #include "object_factory.h"
 #include "../skeletoncustom.h"
-#include "ai_object_location.h"
+#include "ai_object_location_impl.h"
+#include "game_graph.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////

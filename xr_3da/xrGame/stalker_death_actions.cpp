@@ -13,6 +13,7 @@
 #include "script_game_object.h"
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
+#include "stalker_movement_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -28,6 +29,6 @@ CStalkerActionDead::CStalkerActionDead	(CAI_Stalker *object, LPCSTR action_name)
 void CStalkerActionDead::execute		()
 {
 	inherited::execute		();
-	m_object->CMovementManager::enable_movement(false);
+	m_object->movement().enable_movement(false);
 	set_property			(eWorldPropertyDead,true);
 }

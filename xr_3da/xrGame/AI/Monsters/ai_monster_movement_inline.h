@@ -50,3 +50,9 @@ IC void CMonsterMovement::set_generic_parameters()
 	CMonsterMovement::set_use_covers			();
 	CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
 }
+
+IC	CBaseMonster &CMonsterMovement::object		() const
+{
+	VERIFY			(m_object);
+	return			(*m_object);
+}

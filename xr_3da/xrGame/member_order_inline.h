@@ -24,9 +24,10 @@ IC	bool CMemberOrder::initialized				() const
 	return			(m_initialized);
 }
 
-IC	CAI_Stalker *CMemberOrder::object			() const
+IC	CAI_Stalker &CMemberOrder::object			() const
 {
-	return			(m_object);
+	VERIFY			(m_object);
+	return			(*m_object);
 }
 
 IC	const CSetupAction &CMemberOrder::action	() const

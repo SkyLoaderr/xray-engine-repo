@@ -3,6 +3,7 @@
 #include "../ai_monster_utils.h"
 #include "boar_state_manager.h"
 #include "../../../../skeletoncustom.h"
+#include "../ai_monster_movement.h"
 
 CAI_Boar::CAI_Boar()
 {
@@ -124,7 +125,7 @@ void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
 	float yaw,pitch;
 	dir.getHP(yaw,pitch);
 
-	CMovementManager::m_body.target.yaw = angle_normalize(-yaw);
+	movement().m_body.target.yaw = angle_normalize(-yaw);
 }
 
 
@@ -137,7 +138,7 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		yaw = angle_normalize(yaw);
 
 		EMotionAnim anim = eAnimJumpLeft;
-		if (from_right(yaw,m_body.current.yaw)) {
+		if (from_right(yaw,movement().m_body.current.yaw)) {
 			anim = eAnimJumpRight;
 			yaw = angle_normalize(yaw + PI / 20);	
 		} else yaw = angle_normalize(yaw - PI / 20);
@@ -145,11 +146,11 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		MotionMan.Seq_Add(anim);
 		MotionMan.Seq_Switch();
 
-		CMovementManager::m_body.target.yaw = yaw;
+		movement().m_body.target.yaw = yaw;
 
 		// calculate angular speed
 		float new_angular_velocity; 
-		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+		float delta_yaw = angle_difference(yaw,movement().m_body.current.yaw);
 		float time = MotionMan.GetCurAnimTime();
 		new_angular_velocity = 2.5f * delta_yaw / time; 
 

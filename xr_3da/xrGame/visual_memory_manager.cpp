@@ -13,6 +13,8 @@
 #include "../skeletoncustom.h"
 #include "clsid_game.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
+#include "stalker_movement_manager.h"
 
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const
@@ -97,7 +99,7 @@ void CVisualMemoryManager::reload				(LPCSTR section)
 
 IC	const CVisionParameters &CVisualMemoryManager::current_state() const
 {
-	return				(!m_stalker || (m_stalker->mental_state() != eMentalStateDanger) ? m_free : m_danger);
+	return				(!m_stalker || (m_stalker->movement().mental_state() != eMentalStateDanger) ? m_free : m_danger);
 }
 
 IC	u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *object) const
@@ -130,7 +132,7 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 
 	eye_matrix.transform_tiny			(temp,eye_position);
 	m_object->XFORM().transform_tiny	(eye_position,temp);
-	eye_direction.setHP					(-m_stalker->m_head.current.yaw, -m_stalker->m_head.current.pitch);
+	eye_direction.setHP					(-m_stalker->movement().m_head.current.yaw, -m_stalker->movement().m_head.current.pitch);
 
 	Fvector								object_direction;
 	game_object->Center					(object_direction);

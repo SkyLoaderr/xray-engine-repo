@@ -31,7 +31,7 @@ CObjectActionCommand::CObjectActionCommand(CInventoryItem *item, CAI_Stalker *ow
 void CObjectActionCommand::initialize	()
 {
 	inherited::initialize();
-	m_object->inventory().Action(m_command,CMD_START);
+	object().inventory().Action(m_command,CMD_START);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,11 +47,11 @@ void CObjectActionShow::initialize		()
 {
 	inherited::initialize			();
 	VERIFY							(m_item);
-	if (m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem)
-		m_object->inventory().Ruck	(m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem);
-	m_object->inventory().SetActiveSlot(NO_ACTIVE_SLOT);
-	m_object->inventory().Slot		(m_item);
-	bool							result = m_object->inventory().Activate	(m_item->GetSlot());
+	if (object().inventory().m_slots[m_item->GetSlot()].m_pIItem)
+		object().inventory().Ruck	(object().inventory().m_slots[m_item->GetSlot()].m_pIItem);
+	object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+	object().inventory().Slot		(m_item);
+	bool							result = object().inventory().Activate	(m_item->GetSlot());
 	VERIFY							(result);
 }
 
@@ -59,15 +59,15 @@ void CObjectActionShow::execute		()
 {
 	inherited::execute				();
 	VERIFY							(m_item);
-	if (!m_object->inventory().ActiveItem() || (m_object->inventory().ActiveItem()->ID() != m_item->ID())) {
-		CHudItem					*hud_item = smart_cast<CHudItem*>(m_object->inventory().ActiveItem());
+	if (!object().inventory().ActiveItem() || (object().inventory().ActiveItem()->ID() != m_item->ID())) {
+		CHudItem					*hud_item = smart_cast<CHudItem*>(object().inventory().ActiveItem());
 		if (!hud_item)
 			return;
 		if (!hud_item->IsPending()) {
-			if (m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem)
-				m_object->inventory().Ruck	(m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem);
-			m_object->inventory().SetActiveSlot(NO_ACTIVE_SLOT);
-			m_object->inventory().Slot		(m_item);
+			if (object().inventory().m_slots[m_item->GetSlot()].m_pIItem)
+				object().inventory().Ruck	(object().inventory().m_slots[m_item->GetSlot()].m_pIItem);
+			object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+			object().inventory().Slot		(m_item);
 		}
 	}
 }
@@ -85,7 +85,7 @@ void CObjectActionHide::execute		()
 {
 	inherited::execute				();
 	VERIFY							(m_item);
-	m_object->inventory().Activate	(NO_ACTIVE_SLOT);
+	object().inventory().Activate	(NO_ACTIVE_SLOT);
 	set_property					(ObjectHandlerSpace::eWorldPropertyUseEnough,false);
 }
 
@@ -102,16 +102,16 @@ CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *own
 void CObjectActionReload::initialize		()
 {
 	inherited::initialize		();
-	m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
+	object().inventory().Action(kWPN_RELOAD,	CMD_START);
 }
 
 void CObjectActionReload::execute			()
 {
 	inherited::execute();
-	CWeapon			*weapon = smart_cast<CWeapon*>(m_object->inventory().ActiveItem());
+	CWeapon			*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
 	VERIFY			(weapon);
 	if (!weapon->IsPending() && !weapon->GetAmmoElapsed())
-		m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
+		object().inventory().Action(kWPN_RELOAD,	CMD_START);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,24 +128,24 @@ void CObjectActionFire::initialize		()
 {
 	inherited::inherited::initialize	();
 	if (!m_object->can_kill_member())
-		m_object->inventory().Action	(kWPN_FIRE,	CMD_START);
+		object().inventory().Action	(kWPN_FIRE,	CMD_START);
 	else
-		m_object->inventory().Action	(kWPN_FIRE,	CMD_STOP);
+		object().inventory().Action	(kWPN_FIRE,	CMD_STOP);
 }
 
 void CObjectActionFire::execute			()
 {
 	inherited::execute					();
 	if (!m_object->can_kill_member())
-		m_object->inventory().Action	(kWPN_FIRE,	CMD_START);
+		object().inventory().Action	(kWPN_FIRE,	CMD_START);
 	else
-		m_object->inventory().Action	(kWPN_FIRE,	CMD_STOP);
+		object().inventory().Action	(kWPN_FIRE,	CMD_STOP);
 }
 
 void CObjectActionFire::finalize		()
 {
 	inherited::finalize					();
-	m_object->inventory().Action		(kWPN_FIRE,	CMD_STOP);
+	object().inventory().Action		(kWPN_FIRE,	CMD_STOP);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -161,9 +161,9 @@ void CObjectActionStrapping::initialize		()
 {
 	inherited::initialize				();
 	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
-	m_object->animation().setup_storage(m_storage);
-	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
-	m_object->animation().property_value(true);
+	object().animation().setup_storage(m_storage);
+	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
+	object().animation().property_value(true);
 }
 
 void CObjectActionStrapping::execute			()
@@ -174,7 +174,7 @@ void CObjectActionStrapping::execute			()
 void CObjectActionStrapping::finalize		()
 {
 	inherited::finalize();
-	m_object->animation().setup_storage(0);
+	object().animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -189,9 +189,9 @@ CObjectActionStrappingToIdle::CObjectActionStrappingToIdle	(CInventoryItem *item
 void CObjectActionStrappingToIdle::initialize		()
 {
 	inherited::initialize				();
-	m_object->animation().setup_storage(m_storage);
-	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
-	m_object->animation().property_value(false);
+	object().animation().setup_storage(m_storage);
+	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
+	object().animation().property_value(false);
 }
 
 void CObjectActionStrappingToIdle::execute			()
@@ -202,7 +202,7 @@ void CObjectActionStrappingToIdle::execute			()
 void CObjectActionStrappingToIdle::finalize		()
 {
 	inherited::finalize();
-	m_object->animation().setup_storage(0);
+	object().animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -218,9 +218,9 @@ void CObjectActionUnstrapping::initialize		()
 {
 	inherited::initialize();
 	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
-	m_object->animation().setup_storage(m_storage);
-	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
-	m_object->animation().property_value(false);
+	object().animation().setup_storage(m_storage);
+	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
+	object().animation().property_value(false);
 }
 
 void CObjectActionUnstrapping::execute			()
@@ -231,7 +231,7 @@ void CObjectActionUnstrapping::execute			()
 void CObjectActionUnstrapping::finalize		()
 {
 	inherited::finalize();
-	m_object->animation().setup_storage(0);
+	object().animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -246,9 +246,9 @@ CObjectActionUnstrappingToIdle::CObjectActionUnstrappingToIdle	(CInventoryItem *
 void CObjectActionUnstrappingToIdle::initialize		()
 {
 	inherited::initialize				();
-	m_object->animation().setup_storage(m_storage);
-	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
-	m_object->animation().property_value(false);
+	object().animation().setup_storage(m_storage);
+	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
+	object().animation().property_value(false);
 }
 
 void CObjectActionUnstrappingToIdle::execute			()
@@ -259,7 +259,7 @@ void CObjectActionUnstrappingToIdle::execute			()
 void CObjectActionUnstrappingToIdle::finalize		()
 {
 	inherited::finalize();
-	m_object->animation().setup_storage(0);
+	object().animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -349,7 +349,7 @@ void CObjectActionThreaten::execute			()
 {
 	inherited::execute		();
 	if (completed())
-		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
+		object().inventory().Action(kWPN_FIRE,	CMD_STOP);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -383,7 +383,7 @@ CObjectActionPrepare::CObjectActionPrepare(CInventoryItem *item, CAI_Stalker *ow
 void CObjectActionPrepare::execute	()
 {
 	inherited::execute();
-	m_object->inventory().Action(kWPN_FIRE,CMD_START);
+	object().inventory().Action(kWPN_FIRE,CMD_START);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -398,7 +398,7 @@ CObjectActionUse::CObjectActionUse(CFoodItem *item, CAI_Stalker *owner, CPropert
 void CObjectActionUse::execute	()
 {
 	inherited::execute();
-	m_object->inventory().Action(kWPN_FIRE,CMD_START);
+	object().inventory().Action(kWPN_FIRE,CMD_START);
 	if (m_item->State() != FOOD_EATING)
 		m_storage->set_property(ObjectHandlerSpace::eWorldPropertyUseEnough,true);
 }
@@ -416,6 +416,6 @@ void CObjectActionIdle::initialize	()
 {
 	inherited::initialize();
 	if (m_storage->property(ObjectHandlerSpace::eWorldPropertyUseEnough))
-		m_object->CObjectHandler::set_goal(MonsterSpace::eObjectActionActivate,m_object->inventory().ActiveItem());
+		object().CObjectHandler::set_goal(MonsterSpace::eObjectActionActivate,object().inventory().ActiveItem());
 	m_storage->set_property	(ObjectHandlerSpace::eWorldPropertyUseEnough,false);
 }

@@ -22,7 +22,6 @@
 #	include "gamepersistent.h"
 #	include "hudmanager.h"
 #	include "actor.h"
-#	include "customtarget.h"
 #	include "spectator.h"
 
 #	include "ai/rat/ai_rat.h"
@@ -30,7 +29,6 @@
 #	include "ai/monsters/chimera/chimera.h"
 #	include "ai/monsters/dog/dog.h"
 #	include "ai/stalker/ai_stalker.h"
-#	include "ai/idol/ai_idol.h"
 #	include "ai/monsters/bloodsucker/bloodsucker.h"
 #	include "ai/monsters/boar/boar.h"
 #	include "ai/monsters/pseudodog/pseudodog.h"
@@ -62,11 +60,6 @@
 #	include "RustyHairArtifact.h"
 #	include "GalantineArtifact.h"
 #	include "GraviArtifact.h"
-
-#	include "targetassault.h"
-#	include "targetcsbase.h"
-#	include "targetcs.h"
-#	include "targetcscask.h"
 
 #	include "weaponFN2000.h"
 #	include "weaponAK74.h"
@@ -168,7 +161,6 @@ void CObjectFactory::register_classes	()
 	add<CLevel>													(CLSID_GAME_LEVEL				,"level");
 	add<CGamePersistent>										(CLSID_GAME_PERSISTANT			,"game");
 	add<CHUDManager>											(CLSID_HUDMANAGER				,"hud_manager");
-	add<CCustomTarget>											(CLSID_TARGET					,"custom_target");
 
 	//Server Game type
 	add<game_sv_Single>											(CLSID_SV_GAME_SINGLE			,"game_sv_single");
@@ -242,12 +234,6 @@ void CObjectFactory::register_classes	()
 	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI					,"art_gravi");
 	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_ARTEFACT					,"artefact");
 
-	// Targets
-	ADD(CTargetAssault			,CSE_TargetAssault				,CLSID_TARGET_ASSAULT			,"net_target_assault");
-	ADD(CTargetCSBase			,CSE_Target_CS_Base				,CLSID_TARGET_CS_BASE			,"net_target_cs_base");
-	ADD(CTargetCSCask			,CSE_Target_CS_Cask				,CLSID_TARGET_CS_CASK			,"net_target_cs_cask");
-	ADD(CTargetCS				,CSE_Target_CS					,CLSID_TARGET_CS				,"net_target_cs");
-	
 	ADD(CWeaponFN2000			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FN2000			,"wpn_fn2000");
 	ADD(CWeaponAK74				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_AK74			,"wpn_ak74");
 	ADD(CWeaponLR300			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_LR300			,"wpn_lr300");

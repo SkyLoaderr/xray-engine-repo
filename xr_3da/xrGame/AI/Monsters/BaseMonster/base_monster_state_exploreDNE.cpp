@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "base_monster_state.h"
+#include "../ai_monster_movement.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBaseMonsterExploreDNE class
@@ -30,7 +31,7 @@ void CBaseMonsterExploreDNE::Init()
 
 	m_tAction				= ACTION_RUN_AWAY;
 	
-	pMonster->CMonsterMovement::initialize_movement	();
+	pMonster->movement().initialize_movement	();
 }
 
 void CBaseMonsterExploreDNE::Run()
@@ -45,8 +46,8 @@ void CBaseMonsterExploreDNE::Run()
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
 		
 		pMonster->MotionMan.m_tAction						= ACT_RUN;
-		pMonster->CMonsterMovement::set_retreat_from_point	(m_tSound.position);
-		pMonster->CMonsterMovement::set_generic_parameters	();
+		pMonster->movement().set_retreat_from_point	(m_tSound.position);
+		pMonster->movement().set_generic_parameters	();
 
 		break;
 	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
@@ -57,7 +58,7 @@ void CBaseMonsterExploreDNE::Run()
 		DO_ONCE_END();
 
 		// если уже повернулся, перейти в след. состояние
-		if (angle_difference(pMonster->CMovementManager::m_body.current.yaw, pMonster->CMovementManager::m_body.target.yaw) <= PI_DIV_6/6) m_tAction = ACTION_LOOK_AROUND;
+		if (angle_difference(pMonster->movement().m_body.current.yaw, pMonster->movement().m_body.target.yaw) <= PI_DIV_6/6) m_tAction = ACTION_LOOK_AROUND;
 		break;
 
 	case ACTION_LOOK_AROUND:

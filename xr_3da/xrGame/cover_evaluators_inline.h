@@ -60,7 +60,13 @@ IC	bool CCoverEvaluatorBase::initialized		() const
 
 IC	bool CCoverEvaluatorBase::accessible		(const Fvector &position)
 {
-	return					(m_object ? m_object->accessible(position) : true);
+	return					(m_object ? object().accessible(position) : true);
+}
+
+IC	CRestrictedObject &CCoverEvaluatorBase::object	() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
 }
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorCloseToEnemy

@@ -60,7 +60,7 @@ IC	u32	CGameLevelCrossTable::CHeader::game_vertex_count() const
 	return								(dwGraphPointCount);
 }
 
-IC	ALife::_GRAPH_ID CGameLevelCrossTable::CCell::game_vertex_id() const
+IC	GameGraph::_GRAPH_ID CGameLevelCrossTable::CCell::game_vertex_id() const
 {
 	return			(tGraphIndex);
 }

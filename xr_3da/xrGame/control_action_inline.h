@@ -39,3 +39,9 @@ IC	void CControlAction::execute	()
 IC	void CControlAction::finalize	()
 {
 }
+
+IC	CAI_Stalker &CControlAction::object	() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
+}

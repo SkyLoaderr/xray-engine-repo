@@ -60,8 +60,15 @@ void CWrapper::setup				(CScriptGameObject *object)
 {
 	VERIFY					(object);
 	inherited::setup		(object);
-	m_object				= smart_cast<_object_type*>(object->object());
+	m_object				= smart_cast<_object_type*>(&object->object());
 	VERIFY					(m_object);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	_object_type &CWrapper::object	() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,6 +87,13 @@ IC	CWrapper2::CWrapperAbstract2	(T1 t1) :
 	inherited			(t1)
 {
 	m_object			= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	_object_type &CWrapper2::object	() const
+{
+	VERIFY				(m_object);
+	return				(*m_object);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -124,7 +138,7 @@ void CWrapper2::setup				(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	VERIFY					(object);
 	inherited::setup		(object,storage);
-	m_object				= smart_cast<_object_type*>(object->object());
+	m_object				= smart_cast<_object_type*>(&object->object());
 	VERIFY					(m_object);
 }
 

@@ -101,5 +101,11 @@ IC	void CPatrolPathManager::set_path				(shared_str path_name, const EPatrolStar
 }
 IC	u32	CPatrolPathManager::get_current_point_index() const
 {
-	return m_curr_point_index;
+	return					(m_curr_point_index);
+}
+
+IC	CRestrictedObject &CPatrolPathManager::object	() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
 }

@@ -11,6 +11,7 @@
 #include "PHMovementControl.h"
 #include "detail_path_manager.h"
 #include "level.h"
+#include "custommonster.h"
 
 #define DISTANCE_PHISICS_ENABLE_CHARACTERS 2.f
 
@@ -18,7 +19,7 @@
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	Fvector				motion;
-	dest_position		= Position();
+	dest_position		= object().Position();
 
 	float				precision = 0.5f;
 	
@@ -49,7 +50,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) {
 			Fvector		d;
 			d.set		(0,1,0);
-			Hit			(movement_control->gcontact_HealthLost,d,this,movement_control->ContactBone(),dest_position,0);
+			object().Hit(movement_control->gcontact_HealthLost,d,m_object,movement_control->ContactBone(),dest_position,0);
 		}
 		return;
 	}
@@ -121,10 +122,10 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	Device.Statistic.Physics.Begin	();
 
 	// получить физ. объекты в радиусе
-	setEnabled(false);
+	object().setEnabled(false);
 	Level().ObjectSpace.GetNearest		(dest_position,DISTANCE_PHISICS_ENABLE_CHARACTERS + (movement_control->IsCharacterEnabled() ? 0.5f : 0.f)); 
 	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
-	setEnabled(true);
+	object().setEnabled(true);
 
 	// установить позицию
 	motion.mul			(dir_to_target, dist / dist_to_target);
@@ -142,7 +143,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			movement_control->Calculate		(detail_path_manager().path(),desirable_speed,detail_path_manager().m_current_travel_point,precision);
 			movement_control->GetPosition	(dest_position);
 			// проверка на хит
-			if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) Hit	(movement_control->gcontact_HealthLost,dir_to_target,this,movement_control->ContactBone(),dest_position,0);
+			if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) object().Hit	(movement_control->gcontact_HealthLost,dir_to_target,m_object,movement_control->ContactBone(),dest_position,0);
 
 		} else {
 			movement_control->b_exect_position	=	true;
@@ -155,7 +156,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		movement_control->GetPosition			(dest_position);
 		
 		// проверка на хит
-		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) Hit	(movement_control->gcontact_HealthLost,dir_to_target,this,movement_control->ContactBone(),dest_position,0);
+		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) object().Hit	(movement_control->gcontact_HealthLost,dir_to_target,m_object,movement_control->ContactBone(),dest_position,0);
 	}
 	
 	// установить скорость

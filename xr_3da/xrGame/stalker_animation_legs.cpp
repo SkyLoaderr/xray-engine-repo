@@ -10,6 +10,7 @@
 #include "stalker_animation_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "sight_manager.h"
+#include "stalker_movement_manager.h"
 
 float faTurnAngles	[] = {
 	0.f,
@@ -31,15 +32,15 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 	
 	// moving
 	float					yaw, pitch;
-	object()->sight().GetDirectionAngles	(yaw,pitch);
+	object().sight().GetDirectionAngles	(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
 
-	if ((object()->speed() < EPS_L) || (eMovementTypeStand == object()->movement_type())) {
+	if ((object().movement().speed() < EPS_L) || (eMovementTypeStand == object().movement().movement_type())) {
 		// standing
-		if (angle_difference(object()->body_orientation().current.yaw,object()->body_orientation().target.yaw) <= EPS_L)
+		if (angle_difference(object().movement().body_orientation().current.yaw,object().movement().body_orientation().target.yaw) <= EPS_L)
 			return			(&m_part_animations.A[l_tBodyState].m_in_place->A[0]);
 		else
-			if (left_angle(-object()->body_orientation().target.yaw,-object()->body_orientation().current.yaw))
+			if (left_angle(-object().movement().body_orientation().target.yaw,-object().movement().body_orientation().current.yaw))
 				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[1]);
 			else
 				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[2]);
@@ -52,24 +53,24 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 	if	(((eMovementDirectionRight == m_desirable_direction) && (eMovementDirectionLeft == m_movement_direction))	||	((eMovementDirectionLeft == m_desirable_direction) && (eMovementDirectionRight == m_movement_direction)))
 		fAnimationSwitchFactor = .0f;
 
-	if ((object()->body_state() != eBodyStateStand) && (eMentalStateDanger != object()->mental_state()))
-		object()->set_mental_state	(eMentalStateDanger);
+	if ((object().movement().body_state() != eBodyStateStand) && (eMentalStateDanger != object().movement().mental_state()))
+		object().movement().set_mental_state	(eMentalStateDanger);
 
-	if (eMentalStateDanger != object()->mental_state()) {
-		if (angle_difference(object()->body_orientation().current.yaw,yaw) <= PI_DIV_6)
-			return			(&m_part_animations.A[l_tBodyState].m_movement.A[object()->movement_type()].A[eMovementDirectionForward].A[object()->mental_state()]);
+	if (eMentalStateDanger != object().movement().mental_state()) {
+		if (angle_difference(object().movement().body_orientation().current.yaw,yaw) <= PI_DIV_6)
+			return			(&m_part_animations.A[l_tBodyState].m_movement.A[object().movement().movement_type()].A[eMovementDirectionForward].A[object().movement().mental_state()]);
 		fAnimationSwitchFactor	= .0f;
 	}
 
 	bool	forward_direction = false;
-	bool	left = left_angle(-yaw,-object()->head_orientation().current.yaw);
+	bool	left = left_angle(-yaw,-object().head_orientation().current.yaw);
 
 	if (left) {
-		if (angle_difference(yaw,object()->head_orientation().current.yaw) <= 2*PI_DIV_3)
+		if (angle_difference(yaw,object().head_orientation().current.yaw) <= 2*PI_DIV_3)
 			forward_direction = true;
 	}
 	else
-		if (angle_difference(yaw,object()->head_orientation().current.yaw) <= PI_DIV_3)
+		if (angle_difference(yaw,object().head_orientation().current.yaw) <= PI_DIV_3)
 			forward_direction = true;
 
 	if (forward_direction) {
@@ -90,11 +91,11 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 	else {
 		bool	back = false;
 		if (left) {
-			if (angle_difference(object()->head_orientation().current.yaw,yaw) > 2*PI_DIV_3)
+			if (angle_difference(object().head_orientation().current.yaw,yaw) > 2*PI_DIV_3)
 				back = true;
 		}
 		else {
-			if (angle_difference(object()->head_orientation().current.yaw,yaw) > PI_DIV_3)
+			if (angle_difference(object().head_orientation().current.yaw,yaw) > PI_DIV_3)
 				back = true;
 		}
 		if (!back)
@@ -146,29 +147,29 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 		}
 	}
 
-	MonsterSpace::SBoneRotation		body_orientation = object()->body_orientation();
+	MonsterSpace::SBoneRotation		body_orientation = object().movement().body_orientation();
 	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_movement_direction]);
-	object()->set_body_orientation	(body_orientation);
+	object().movement().set_body_orientation	(body_orientation);
 	
 	forward_direction	= false;
-	left				= left_angle(-yaw,-object()->body_orientation().current.yaw);
+	left				= left_angle(-yaw,-object().movement().body_orientation().current.yaw);
 
 	if (left) {
-		if (angle_difference(yaw,object()->body_orientation().current.yaw) <= PI_DIV_3)
+		if (angle_difference(yaw,object().movement().body_orientation().current.yaw) <= PI_DIV_3)
 			forward_direction = true;
 	}
 	else
-		if (angle_difference(yaw,object()->body_orientation().current.yaw) <= PI_DIV_3)
+		if (angle_difference(yaw,object().movement().body_orientation().current.yaw) <= PI_DIV_3)
 			forward_direction = true;
 
 	bool				back = false;
 
 	if (left) {
-		if (angle_difference(object()->body_orientation().current.yaw,yaw) > 2*PI_DIV_3)
+		if (angle_difference(object().movement().body_orientation().current.yaw,yaw) > 2*PI_DIV_3)
 			back = true;
 	}
 	else {
-		if (angle_difference(object()->body_orientation().current.yaw,yaw) > PI_DIV_3)
+		if (angle_difference(object().movement().body_orientation().current.yaw,yaw) > PI_DIV_3)
 			back = true;
 	}
 	
@@ -190,6 +191,6 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 			else
 				direction			= eMovementDirectionLeft;
 
-	object()->adjust_speed_to_animation	(direction);
-	return							(&m_part_animations.A[l_tBodyState].m_movement.A[object()->movement_type()].A[direction].A[0]);
+	object().adjust_speed_to_animation	(direction);
+	return							(&m_part_animations.A[l_tBodyState].m_movement.A[object().movement().movement_type()].A[direction].A[0]);
 }

@@ -10,12 +10,12 @@
 
 #include "ai_space.h"
 
-IC	CALifeLevelRegistry::CALifeLevelRegistry	(const ALife::_LEVEL_ID &level_id)
+IC	CALifeLevelRegistry::CALifeLevelRegistry	(const GameGraph::_LEVEL_ID &level_id)
 {
 	m_level_id			= level_id;
 }
 
-IC	ALife::_LEVEL_ID CALifeLevelRegistry::level_id	() const
+IC	GameGraph::_LEVEL_ID CALifeLevelRegistry::level_id	() const
 {
 	return				(m_level_id);
 }

@@ -2,6 +2,7 @@
 #include "ai_monster_motion.h"
 #include "BaseMonster/base_monster.h"
 #include "../../detail_path_manager.h"
+#include "ai_monster_movement.h"
 
 void CMotionManager::accel_init()
 {
@@ -119,24 +120,24 @@ bool CMotionManager::accel_chain_test()
 
 bool CMotionManager::accel_check_braking(float before_interval)
 {
-	if (!pMonster->IsMovingOnPath())	return false;
+	if (!pMonster->movement().IsMovingOnPath())	return false;
 	if (!accel_active(eAV_Braking))		return false;
 
 	float acceleration = accel_get(eAV_Braking);
-	float braking_dist	= (pMonster->m_velocity_linear.current * pMonster->m_velocity_linear.current) / acceleration;
+	float braking_dist	= (pMonster->movement().m_velocity_linear.current * pMonster->movement().m_velocity_linear.current) / acceleration;
 	braking_dist += before_interval;
 
 	// проверить точки пути, где необходимо остановиться
 	float dist = 0.f;	// дистанция до найденной точки	
-	for (u32 i=pMonster->detail_path_manager().curr_travel_point_index()+1; i < pMonster->detail_path_manager().path().size(); i++) {
-		dist += pMonster->detail_path_manager().path()[i].position.distance_to(pMonster->detail_path_manager().path()[i-1].position);
+	for (u32 i=pMonster->movement().detail_path_manager().curr_travel_point_index()+1; i < pMonster->movement().detail_path_manager().path().size(); i++) {
+		dist += pMonster->movement().detail_path_manager().path()[i].position.distance_to(pMonster->movement().detail_path_manager().path()[i-1].position);
 
-		if ((pMonster->detail_path_manager().path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
+		if ((pMonster->movement().detail_path_manager().path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
 			return true;
 		}
 	}
 
-	if (pMonster->CMonsterMovement::IsPathEnd(braking_dist)) return true;
+	if (pMonster->movement().IsPathEnd(braking_dist)) return true;
 
 	return false;
 }

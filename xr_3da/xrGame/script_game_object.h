@@ -86,7 +86,7 @@ public:
 	virtual					~CScriptGameObject		();
 							operator CObject*		();
 
-	IC		CGameObject		*object					() const;
+	IC		CGameObject		&object					() const;
 	typedef xr_map<s16,ScriptCallbackInfo*>	CALLBACKS;
 	typedef CALLBACKS::iterator				CALLBACK_IT;
 	CALLBACKS							m_callbacks;

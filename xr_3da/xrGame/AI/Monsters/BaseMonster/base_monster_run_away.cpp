@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "base_monster_state.h"
+#include "../ai_monster_movement.h"
 
 CBaseMonsterRunAway::CBaseMonsterRunAway(CBaseMonster *p)
 {
@@ -16,7 +17,7 @@ void CBaseMonsterRunAway::Init()
 
 	m_tAction = ACTION_RUN;
 
-	pMonster->CMonsterMovement::initialize_movement();	
+	pMonster->movement().initialize_movement();	
 }
 
 void CBaseMonsterRunAway::Run()
@@ -24,8 +25,8 @@ void CBaseMonsterRunAway::Run()
 	switch (m_tAction) {
 	case ACTION_RUN:	// идти к источнику
 		pMonster->set_action								(ACT_RUN);
-		pMonster->CMonsterMovement::set_retreat_from_point	(danger_pos);
-		pMonster->CMonsterMovement::set_generic_parameters	();
+		pMonster->movement().set_retreat_from_point	(danger_pos);
+		pMonster->movement().set_generic_parameters	();
 		break;
 	case ACTION_LOOK_AROUND:
 		pMonster->set_action		(ACT_LOOK_AROUND);

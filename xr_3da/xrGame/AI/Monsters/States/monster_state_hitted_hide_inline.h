@@ -14,7 +14,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterHittedHideAbstract::initialize()
 {
 	inherited::initialize();
-	object->CMonsterMovement::initialize_movement	();	
+	object->movement().initialize_movement	();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -24,8 +24,8 @@ void CStateMonsterHittedHideAbstract::execute()
 	object->set_state_sound								(MonsterSpace::eMonsterSoundPanic);
 	object->MotionMan.accel_activate					(eAT_Aggressive);
 	object->MotionMan.accel_set_braking					(false);
-	object->CMonsterMovement::set_retreat_from_point	(object->HitMemory.get_last_hit_position());
-	object->CMonsterMovement::set_generic_parameters	();
+	object->movement().set_retreat_from_point	(object->HitMemory.get_last_hit_position());
+	object->movement().set_generic_parameters	();
 	
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {

@@ -114,12 +114,12 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 
 	m_changing_level			= true;
 	
-	ALife::_GRAPH_ID			safe_graph_vertex_id	= graph().actor()->m_tGraphID;
+	GameGraph::_GRAPH_ID			safe_graph_vertex_id	= graph().actor()->m_tGraphID;
 	u32							safe_level_vertex_id	= graph().actor()->m_tNodeID;
 	Fvector						safe_position			= graph().actor()->o_Position;
 	Fvector						safe_angles				= graph().actor()->o_Angle;
 	
-	ALife::_GRAPH_ID			holder_safe_graph_vertex_id = ALife::_GRAPH_ID(-1);
+	GameGraph::_GRAPH_ID			holder_safe_graph_vertex_id = GameGraph::_GRAPH_ID(-1);
 	u32							holder_safe_level_vertex_id = u32(-1);
 	Fvector						holder_safe_position = Fvector().set(flt_max,flt_max,flt_max);
 	Fvector						holder_safe_angles = Fvector().set(flt_max,flt_max,flt_max);
@@ -314,15 +314,15 @@ void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 {
 	const CGameGraph::SLevel		&level = ai().game_graph().header().level(level_name);
-	ALife::_GRAPH_ID				dest = ALife::_GRAPH_ID(-1);
+	GameGraph::_GRAPH_ID				dest = GameGraph::_GRAPH_ID(-1);
 	GraphEngineSpace::CGameLevelParams	evaluator(level.id());
-	bool							failed = !ai().graph_engine().search(ai().game_graph(),graph().actor()->m_tGraphID,ALife::_GRAPH_ID(-1),0,evaluator);
+	bool							failed = !ai().graph_engine().search(ai().game_graph(),graph().actor()->m_tGraphID,GameGraph::_GRAPH_ID(-1),0,evaluator);
 	if (failed) {
 		Msg							("! Cannot build path via game graph from the current level to the level %s!",level_name);
 		float						min_dist = flt_max;
 		Fvector						current = ai().game_graph().vertex(graph().actor()->m_tGraphID)->game_point();
-		ALife::_GRAPH_ID			n = ai().game_graph().header().vertex_count();
-		for (ALife::_GRAPH_ID i=0; i<n; ++i)
+		GameGraph::_GRAPH_ID			n = ai().game_graph().header().vertex_count();
+		for (GameGraph::_GRAPH_ID i=0; i<n; ++i)
 			if (ai().game_graph().vertex(i)->level_id() == level.id()) {
 				float				distance = ai().game_graph().vertex(i)->game_point().distance_to_sqr(current);
 				if (distance < min_dist) {
@@ -336,7 +336,7 @@ void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 		}
 	}
 	else
-		dest						= (ALife::_GRAPH_ID)evaluator.selected_vertex_id();
+		dest						= (GameGraph::_GRAPH_ID)evaluator.selected_vertex_id();
 	NET_Packet						net_packet;
 	net_packet.w_begin				(M_CHANGE_LEVEL);
 	net_packet.w					(&dest,sizeof(dest));
@@ -350,7 +350,7 @@ void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 	Level().Send					(net_packet,net_flags(TRUE));
 }
 
-void CALifeUpdateManager::teleport_object	(ALife::_OBJECT_ID id, ALife::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position)
+void CALifeUpdateManager::teleport_object	(ALife::_OBJECT_ID id, GameGraph::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position)
 {
 	CSE_ALifeDynamicObject					*object = objects().object(id,true);
 	if (!object) {

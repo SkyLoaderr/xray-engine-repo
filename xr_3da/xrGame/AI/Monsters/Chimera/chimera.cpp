@@ -3,6 +3,7 @@
 #include "chimera_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../../../detail_path_manager.h"
+#include "../../ai_monster_movement.h"
 
 CChimera::CChimera()
 {
@@ -111,9 +112,9 @@ void CChimera::reinit()
 	inherited::reinit();
 	b_upper_state					= false;
 
-	detail_path_manager().add_velocity(eVelocityParameterUpperWalkFwd,	CDetailPathManager::STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real));
-	detail_path_manager().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
-	detail_path_manager().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
+	movement().detail_path_manager().add_velocity(eVelocityParameterUpperWalkFwd,	CDetailPathManager::STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real));
+	movement().detail_path_manager().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
+	movement().detail_path_manager().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 
 	CMotionDef			*def1, *def2, *def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
@@ -170,7 +171,7 @@ EAction CChimera::CustomVelocityIndex2Action(u32 velocity_index)
 
 void CChimera::TranslateActionToPathParams()
 {
-	if (!CMonsterMovement::b_enable_movement) return;
+	if (!movement().b_enable_movement) return;
 
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
@@ -236,11 +237,11 @@ void CChimera::TranslateActionToPathParams()
 	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		detail_path_manager().set_velocity_mask	(vel_mask);	
-		detail_path_manager().set_desirable_mask	(des_mask);
-		enable_path			();		
+		movement().detail_path_manager().set_velocity_mask	(vel_mask);	
+		movement().detail_path_manager().set_desirable_mask	(des_mask);
+		movement().enable_path	();		
 	} else {
-		disable_path		();
+		movement().disable_path	();
 	}
 }
 

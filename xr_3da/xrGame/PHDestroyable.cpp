@@ -9,6 +9,8 @@
 #include "Actor.h"
 #include "CharacterPhysicsSupport.h"
 #include "ai_object_location.h"
+#include "ai_space.h"
+#include "game_graph.h"
 
 CPHDestroyable::CPHDestroyable()
 {

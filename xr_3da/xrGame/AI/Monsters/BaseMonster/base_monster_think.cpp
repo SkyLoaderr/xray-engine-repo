@@ -5,6 +5,7 @@
 #include "../ai_monster_squad_manager.h"
 #include "../profiler.h"
 #include "../critical_action_info.h"
+#include "../ai_monster_movement.h"
 
 void CBaseMonster::Think()
 {
@@ -18,7 +19,7 @@ void CBaseMonster::Think()
 	// Инициализировать
 	InitThink								();
 	MotionMan.ScheduledInit					();
-	CMonsterMovement::Update_Initialize		();
+	movement().Update_Initialize		();
 
 	// Обновить память
 	START_PROFILE("AI/Base Monster/Think/Update Memory");
@@ -37,14 +38,14 @@ void CBaseMonster::Think()
 	
 	// Построить путь
 	START_PROFILE("AI/Base Monster/Think/Build Path");
-	CMonsterMovement::Update_Execute		();
+	movement().Update_Execute		();
 	STOP_PROFILE;
 
 	// Обновить анимации в соответствие с путем и action
 	MotionMan.UpdateScheduled				();
 
 	// установить текущую скорость
-	CMonsterMovement::Update_Finalize		();
+	movement().Update_Finalize		();
 
 	// Debuging
 #ifdef DEBUG

@@ -14,11 +14,12 @@
 #include "../../../cover_manager.h"
 #include "../../../cover_point.h"
 #include "../../../detail_path_manager.h"
+#include "../ai_monster_movement.h"
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 {
-	// по-умолчанию просто изменить m_body.target.yaw
+	// по-умолчанию просто изменить movement().m_body.target.yaw
 	Fvector	dir;
 	dir.set(to_point);
 	dir.sub(Position());	
@@ -28,15 +29,15 @@ void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)
 	dir.getHP(yaw,p);
 
 	// установить текущий угол
-	m_body.target.yaw = angle_normalize(-yaw);
+	movement().m_body.target.yaw = angle_normalize(-yaw);
 }
 
 void CBaseMonster::on_travel_point_change()
 {
-	if (IsMovingOnPath()) {
-		u32 cur_point_velocity_index = detail_path_manager().path()[detail_path_manager().curr_travel_point_index()].velocity;		
-		if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(m_velocity_linear.current) && !b_velocity_reset) {
-			stop_linear		();
+	if (movement().IsMovingOnPath()) {
+		u32 cur_point_velocity_index = movement().detail_path_manager().path()[movement().detail_path_manager().curr_travel_point_index()].velocity;		
+		if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(movement().m_velocity_linear.current) && !b_velocity_reset) {
+			movement().stop_linear		();
 			b_velocity_reset = true;
 		}
 		if (cur_point_velocity_index != eVelocityParameterStand) b_velocity_reset = false;

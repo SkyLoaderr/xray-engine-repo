@@ -9,6 +9,7 @@
 #pragma once
 
 #include "path_manager_params.h"
+#include "game_graph_space.h"
 
 template <
 	typename _dist_type,
@@ -20,7 +21,7 @@ struct SVertexType : public SBaseParameters<
 	_index_type,
 	_iteration_type
 > {
-	u8				m_vertex_types[LOCATION_TYPE_COUNT];
+	u8				m_vertex_types[GameGraph::LOCATION_TYPE_COUNT];
 	_index_type		m_vertex_id;
 	xr_vector<_index_type> *m_path;
 

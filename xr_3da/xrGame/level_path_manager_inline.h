@@ -27,7 +27,7 @@ IC	void CLevelManagerTemplate::reinit(CRestrictedObject *object, const CLevelGra
 TEMPLATE_SPECIALIZATION
 IC	bool CLevelManagerTemplate::actual() const
 {
-	return		(inherited::actual(m_object->ai_location().level_vertex_id(),dest_vertex_id()));
+	return		(inherited::actual(m_object->object().ai_location().level_vertex_id(),dest_vertex_id()));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -74,7 +74,7 @@ IC	void CLevelManagerTemplate::after_search			()
 TEMPLATE_SPECIALIZATION
 IC	bool CLevelManagerTemplate::check_vertex			(const _vertex_id_type vertex_id) const
 {
-	return						(inherited::check_vertex(vertex_id) && (!m_object || m_object->accessible(vertex_id)));
+	return						(inherited::check_vertex(vertex_id) && (!m_object || object().accessible(vertex_id)));
 }
 
 #undef TEMPLATE_SPECIALIZATION

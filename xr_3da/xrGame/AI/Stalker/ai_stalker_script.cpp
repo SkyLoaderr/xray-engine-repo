@@ -17,6 +17,7 @@
 #include "../../../skeletoncustom.h"
 #include "../../script_engine.h"
 #include "../../sight_manager.h"
+#include "../../stalker_movement_manager.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {
@@ -70,14 +71,14 @@ bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 
 	CObjectHandler::set_goal		(l_tObjectAction.m_tGoalType);
 	
-	set_path_type					(CMovementManager::path_type());
-	set_detail_path_type			(l_tMovementAction.m_tPathType);
-	set_body_state					(l_tMovementAction.m_tBodyState);
-	set_movement_type				(l_tMovementAction.m_tMovementType);
-	set_mental_state				(l_tAnimationAction.m_tMentalState);
+	movement().set_path_type		(movement().path_type());
+	movement().set_detail_path_type	(l_tMovementAction.m_tPathType);
+	movement().set_body_state		(l_tMovementAction.m_tBodyState);
+	movement().set_movement_type	(l_tMovementAction.m_tMovementType);
+	movement().set_mental_state		(l_tAnimationAction.m_tMentalState);
 	sight().setup					(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
-	CStalkerMovementManager::update	(Device.dwTimeDelta);
-	sight().update			();
+	movement().update				(Device.dwTimeDelta);
+	sight().update					();
 
 	return							(true);
 }
@@ -89,7 +90,7 @@ bool CAI_Stalker::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 	
 	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 
-//	float			&yaw = m_head.target.yaw, &pitch = m_head.target.pitch;
+//	float			&yaw = movement().m_head.target.yaw, &pitch = movement().m_head.target.pitch;
 
 	switch (l_tWatchAction.m_tGoalType) {
 		case CScriptWatchAction::eGoalTypeObject : {
@@ -122,7 +123,7 @@ bool CAI_Stalker::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 		default : NODEFAULT;
 	}
 
-	if ((CScriptWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(m_head.target.yaw,m_head.current.yaw) < EPS_L) && (angle_difference(m_head.target.pitch,m_head.current.pitch) < EPS_L))
+	if ((CScriptWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(movement().m_head.target.yaw,movement().m_head.current.yaw) < EPS_L) && (angle_difference(movement().m_head.target.pitch,movement().m_head.current.pitch) < EPS_L))
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;

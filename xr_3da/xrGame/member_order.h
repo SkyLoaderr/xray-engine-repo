@@ -57,7 +57,7 @@ protected:
 public:
 	IC							CMemberOrder			(CAI_Stalker *object);
 	IC		bool				initialized				() const;
-	IC		CAI_Stalker			*object					() const;
+	IC		CAI_Stalker			&object					() const;
 	IC		const CSetupAction	&action					() const;
 	IC		const EOrderType	&order_type				() const;
 	IC		const CWorldState	&goal					() const;

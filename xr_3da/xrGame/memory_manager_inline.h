@@ -66,3 +66,15 @@ IC	CGreetingManager		&CMemoryManager::greeting	() const
 	VERIFY					(m_greeting);
 	return					(*m_greeting);
 }
+
+IC	CCustomMonster &CMemoryManager::object				() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
+}
+
+IC	CAI_Stalker	&CMemoryManager::stalker				() const
+{
+	VERIFY					(m_stalker);
+	return					(*m_stalker);
+}

@@ -28,5 +28,5 @@ public:
 									CALifeInteractionManager	(xrServer *server, LPCSTR section);
 	virtual							~CALifeInteractionManager	();
 			void					check_for_interaction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
-			void					check_for_interaction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		ALife::_GRAPH_ID		tGraphID);
+			void					check_for_interaction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		GameGraph::_GRAPH_ID		tGraphID);
 };

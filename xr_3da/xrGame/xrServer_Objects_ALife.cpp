@@ -52,7 +52,7 @@ struct SFillPropData{
         // location type
         LPCSTR					N,V;
         u32 					k;
-        for (int i=0; i<LOCATION_TYPE_COUNT; ++i){
+		for (int i=0; i<GameGraph::LOCATION_TYPE_COUNT; ++i){
             VERIFY				(locations[i].empty());
             string256			caSection, T;
             strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
@@ -86,7 +86,7 @@ struct SFillPropData{
     }
     void		unload			()
     {
-        for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
+        for (int i=0; i<GameGraph::LOCATION_TYPE_COUNT; ++i)
             locations[i].clear	();
         level_ids.clear			();
         story_names.clear		();
@@ -176,7 +176,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_bOnline					= false;
 	m_fDistance					= 0.0f;
 	ID							= ALife::_OBJECT_ID(-1);
-	m_tGraphID					= ALife::_GRAPH_ID(-1);
+	m_tGraphID					= GameGraph::_GRAPH_ID(-1);
 	m_tSpawnID					= ALife::_SPAWN_ID(-1);
 	m_bDirectControl			= true;
 	m_bALifeControl				= true;
@@ -613,7 +613,7 @@ void CSE_ALifeSpaceRestrictor::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection)
 {
-	m_tNextGraphID				= ALife::_GRAPH_ID(-1);
+	m_tNextGraphID				= GameGraph::_GRAPH_ID(-1);
 	m_dwNextNodeID				= u32(-1);
 	m_tNextPosition.set			(0.f,0.f,0.f);
 	m_tAngles.set				(0.f,0.f,0.f);

@@ -12,6 +12,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "detail_path_manager.h"
 #include "level_graph.h"
+#include "stalker_movement_manager.h"
 
 //#define SIGHT_DEBUG
 
@@ -62,11 +63,11 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 
 void CSightManager::SetDirectionLook()
 {
-	MonsterSpace::SBoneRotation		orientation = m_object->m_head, body_orientation = m_object->body_orientation();
-	GetDirectionAngles				(m_object->m_head.target.yaw,m_object->m_head.target.pitch);
-	m_object->m_head.target.yaw		*= -1;
-	m_object->m_head.target.pitch	*= 0;//-1;
-	m_object->m_body.target			= m_object->m_head.target;
+	MonsterSpace::SBoneRotation		orientation = object().movement().m_head, body_orientation = object().movement().body_orientation();
+	GetDirectionAngles				(object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
+	object().movement().m_head.target.yaw		*= -1;
+	object().movement().m_head.target.pitch	*= 0;//-1;
+	object().movement().m_body.target			= object().movement().m_head.target;
 }
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook)
@@ -77,12 +78,12 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bD
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
 {
-	float fAngleOfView		= m_object->eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = m_object->m_head.target.yaw;
+	float fAngleOfView		= m_object->eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = object().movement().m_head.target.yaw;
 
 	CLevelGraph::CVertex	*tpNextNode = 0;
 	u32						node_id;
 	bool bOk = false;
-	if (bDifferenceLook && !m_object->detail_path_manager().path().empty() && (m_object->detail_path_manager().path().size() - 1 > m_object->detail_path_manager().curr_travel_point_index())) {
+	if (bDifferenceLook && !m_object->movement().detail_path_manager().path().empty() && (m_object->movement().detail_path_manager().path().size() - 1 > m_object->movement().detail_path_manager().curr_travel_point_index())) {
 		CLevelGraph::const_iterator	i, e;
 		ai().level_graph().begin(tpNode,i,e);
 		for ( ; i != e; ++i) {
@@ -90,7 +91,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			if (!ai().level_graph().valid_vertex_id(node_id))
 				continue;
 			tpNextNode = ai().level_graph().vertex(node_id);
-			if (ai().level_graph().inside(tpNextNode,m_object->detail_path_manager().path()[m_object->detail_path_manager().curr_travel_point_index() + 1].position)) {
+			if (ai().level_graph().inside(tpNextNode,m_object->movement().detail_path_manager().path()[m_object->movement().detail_path_manager().curr_travel_point_index() + 1].position)) {
 				bOk = true;
 				break;
 			}
@@ -98,7 +99,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 	}
 
 	if (!bDifferenceLook || !bOk) 
-		for (float fIncrement = m_object->m_body.target.yaw - fMaxHeadTurnAngle; fIncrement <= m_object->m_body.target.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+		for (float fIncrement = object().movement().m_body.target.yaw - fMaxHeadTurnAngle; fIncrement <= object().movement().m_body.target.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
 			float fSquare = ai().level_graph().compute_square(-fIncrement + PI,fAngleOfView,tpNode);
 			if (fSquare > fMaxSquare) {
 				fMaxSquare = fSquare;
@@ -106,15 +107,15 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			}
 		}
 	else {
-		float fMaxSquareSingle = -1.f, fSingleIncrement = m_object->m_head.target.yaw;
-		for (float fIncrement = m_object->m_body.target.yaw - fMaxHeadTurnAngle; fIncrement <= m_object->m_body.target.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+		float fMaxSquareSingle = -1.f, fSingleIncrement = object().movement().m_head.target.yaw;
+		for (float fIncrement = object().movement().m_body.target.yaw - fMaxHeadTurnAngle; fIncrement <= object().movement().m_body.target.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
 			float fSquare0 = ai().level_graph().compute_square(-fIncrement + PI,fAngleOfView,tpNode);
 			float fSquare1 = ai().level_graph().compute_square(-fIncrement + PI,fAngleOfView,tpNextNode);
 			if	(
 					(fSquare1 - fSquare0 > fMaxSquare) || 
 					(
 						fsimilar(fSquare1 - fSquare0,fMaxSquare,EPS_L) && 
-						(_abs(fIncrement - m_object->m_body.target.yaw) < _abs(fBestAngle - m_object->m_body.target.yaw))
+						(_abs(fIncrement - object().movement().m_body.target.yaw) < _abs(fBestAngle - object().movement().m_body.target.yaw))
 					)
 				)
 			{
@@ -131,9 +132,9 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			fBestAngle = fSingleIncrement;
 	}
 
-	m_object->m_head.target.yaw = angle_normalize_signed(fBestAngle);
-	m_object->m_head.target.pitch = 0;
-	VERIFY					(_valid(m_object->m_head.target.yaw));
+	object().movement().m_head.target.yaw = angle_normalize_signed(fBestAngle);
+	object().movement().m_head.target.pitch = 0;
+	VERIFY					(_valid(object().movement().m_head.target.yaw));
 }
 
 bool CSightManager::bfIf_I_SeePosition(Fvector tPosition) const
@@ -144,7 +145,7 @@ bool CSightManager::bfIf_I_SeePosition(Fvector tPosition) const
 	tVector.getHP		(yaw,pitch);
 	yaw					= angle_normalize_signed(-yaw);
 	pitch				= angle_normalize_signed(-pitch);
-	return				(angle_difference(yaw,m_object->m_head.current.yaw) <= PI_DIV_6);// && angle_difference(pitch,m_object->m_head.current.pitch,PI_DIV_6));
+	return				(angle_difference(yaw,object().movement().m_head.current.yaw) <= PI_DIV_6);// && angle_difference(pitch,object().movement().m_head.current.pitch,PI_DIV_6));
 }
 
 void CSightManager::vfValidateAngleDependency(float x1, float &x2, float x3)
@@ -167,51 +168,51 @@ bool CSightManager::need_correction	(float x1, float x2, float x3)
 void CSightManager::Exec_Look		(float dt)
 {
 	// normalizing torso angles
-	m_object->m_body.current.yaw	= angle_normalize_signed	(m_object->m_body.current.yaw);
-	m_object->m_body.current.pitch	= angle_normalize_signed	(m_object->m_body.current.pitch);
-	m_object->m_body.target.yaw		= angle_normalize_signed	(m_object->m_body.target.yaw);
-	m_object->m_body.target.pitch	= angle_normalize_signed	(m_object->m_body.target.pitch);
+	object().movement().m_body.current.yaw	= angle_normalize_signed	(object().movement().m_body.current.yaw);
+	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
+	object().movement().m_body.target.yaw		= angle_normalize_signed	(object().movement().m_body.target.yaw);
+	object().movement().m_body.target.pitch	= angle_normalize_signed	(object().movement().m_body.target.pitch);
 
 	// normalizing head angles
-	m_object->m_head.current.yaw	= angle_normalize_signed	(m_object->m_head.current.yaw);
-	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
-	m_object->m_head.target.yaw		= angle_normalize_signed	(m_object->m_head.target.yaw);
-	m_object->m_head.target.pitch	= angle_normalize_signed	(m_object->m_head.target.pitch);
+	object().movement().m_head.current.yaw	= angle_normalize_signed	(object().movement().m_head.current.yaw);
+	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
+	object().movement().m_head.target.yaw		= angle_normalize_signed	(object().movement().m_head.target.yaw);
+	object().movement().m_head.target.pitch	= angle_normalize_signed	(object().movement().m_head.target.pitch);
 
 	// updating torso angles
 	float							fSpeedFactor = 1.f;
 
 #ifdef SIGHT_DEBUG
-//	Msg								("%6d BEFORE BODY [%f] -> [%f]",Level().timeServer(),m_object->m_body.current.yaw,m_object->m_body.target.yaw);
-//	Msg								("%6d BEFORE HEAD [%f] -> [%f]",Level().timeServer(),m_object->m_head.current.yaw,m_object->m_head.target.yaw);
+//	Msg								("%6d BEFORE BODY [%f] -> [%f]",Level().timeServer(),object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+//	Msg								("%6d BEFORE HEAD [%f] -> [%f]",Level().timeServer(),object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
-	vfValidateAngleDependency		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
-	if (fis_zero(m_object->speed()))
-		vfValidateAngleDependency	(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
+	vfValidateAngleDependency		(object().movement().m_body.current.yaw,object().movement().m_body.target.yaw,object().movement().m_head.current.yaw);
+	if (fis_zero(object().movement().speed()))
+		vfValidateAngleDependency	(object().movement().m_head.current.yaw,object().movement().m_head.target.yaw,object().movement().m_body.target.yaw);
 
-	m_object->angle_lerp_bounds		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,fSpeedFactor*m_object->m_body.speed,dt);
-	m_object->angle_lerp_bounds		(m_object->m_body.current.pitch,m_object->m_body.target.pitch,m_object->m_body.speed,dt);
+	m_object->angle_lerp_bounds		(object().movement().m_body.current.yaw,object().movement().m_body.target.yaw,fSpeedFactor*object().movement().m_body.speed,dt);
+	m_object->angle_lerp_bounds		(object().movement().m_body.current.pitch,object().movement().m_body.target.pitch,object().movement().m_body.speed,dt);
 
-	m_object->angle_lerp_bounds		(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_head.speed,dt);
-	m_object->angle_lerp_bounds		(m_object->m_head.current.pitch,m_object->m_head.target.pitch,m_object->m_head.speed,dt);
+	m_object->angle_lerp_bounds		(object().movement().m_head.current.yaw,object().movement().m_head.target.yaw,object().movement().m_head.speed,dt);
+	m_object->angle_lerp_bounds		(object().movement().m_head.current.pitch,object().movement().m_head.target.pitch,object().movement().m_head.speed,dt);
 
 	// normalizing torso angles
-	m_object->m_body.current.yaw	= angle_normalize_signed	(m_object->m_body.current.yaw);
-	m_object->m_body.current.pitch	= angle_normalize_signed	(m_object->m_body.current.pitch);
+	object().movement().m_body.current.yaw	= angle_normalize_signed	(object().movement().m_body.current.yaw);
+	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
 
 	// normalizing head angles
-	m_object->m_head.current.yaw	= angle_normalize_signed	(m_object->m_head.current.yaw);
-	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
+	object().movement().m_head.current.yaw	= angle_normalize_signed	(object().movement().m_head.current.yaw);
+	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
 
 #ifdef SIGHT_DEBUG
-//	Msg								("%6d AFTER  BODY [%f] -> [%f]",Level().timeServer(),m_object->m_body.current.yaw,m_object->m_body.target.yaw);
-//	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Level().timeServer(),m_object->m_head.current.yaw,m_object->m_head.target.yaw);
+//	Msg								("%6d AFTER  BODY [%f] -> [%f]",Level().timeServer(),object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+//	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Level().timeServer(),object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
 	Fmatrix							mXFORM;
 //	mXFORM.setHPB					(-m_object->NET_Last.o_model,0,0);
-	mXFORM.setHPB					(-m_object->body_orientation().current.yaw,0,0);
+	mXFORM.setHPB					(-object().movement().body_orientation().current.yaw,0,0);
 	mXFORM.c.set					(m_object->Position());
 	m_object->XFORM().set			(mXFORM);
 }
@@ -232,21 +233,21 @@ void CSightManager::update			()
 		inherited::update	();
 	
 //	if (m_object->turn_in_place())
-//		m_object->m_body.target.yaw		= m_object->m_head.current.yaw;
+//		object().movement().m_body.target.yaw		= object().movement().m_head.current.yaw;
 //	else
-//		if (m_object->speed() < EPS_L) {
-//			if (angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_6)
-//				m_object->m_body.target.yaw = m_object->m_head.current.yaw;
+//		if (object().movement().speed() < EPS_L) {
+//			if (angle_difference(object().movement().m_body.target.yaw,object().movement().m_head.target.yaw) > PI_DIV_6)
+//				object().movement().m_body.target.yaw = object().movement().m_head.current.yaw;
 //		}
 }
 
 void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
 {
-	if (!m_object->path().empty() && (m_object->detail_path_manager().curr_travel_point_index() + 1 < m_object->detail_path_manager().path().size())) {
+	if (!object().movement().path().empty() && (m_object->movement().detail_path_manager().curr_travel_point_index() + 1 < m_object->movement().detail_path_manager().path().size())) {
 		Fvector				t;
 		t.sub					(
-			m_object->path()[m_object->detail_path_manager().curr_travel_point_index() + 1].position,
-			m_object->path()[m_object->detail_path_manager().curr_travel_point_index()].position
+			object().movement().path()[m_object->movement().detail_path_manager().curr_travel_point_index() + 1].position,
+			object().movement().path()[m_object->movement().detail_path_manager().curr_travel_point_index()].position
 		);
 		t.getHP				(yaw,pitch);
 		return;

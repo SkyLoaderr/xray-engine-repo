@@ -38,16 +38,10 @@ IC	CStalkerAnimationPair &CStalkerAnimationManager::script	()
 	return	(m_script);
 }
 
-IC	CAI_Stalker	*CStalkerAnimationManager::object			()
+IC	CAI_Stalker	&CStalkerAnimationManager::object			() const
 {
 	VERIFY	(m_object);
-	return	(m_object);
-}
-
-IC	const CAI_Stalker *CStalkerAnimationManager::object		() const
-{
-	VERIFY	(m_object);
-	return	(m_object);
+	return	(*m_object);
 }
 
 IC	void CStalkerAnimationManager::pop_script_animation		()

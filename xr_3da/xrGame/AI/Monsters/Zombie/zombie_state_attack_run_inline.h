@@ -27,7 +27,7 @@ void CStateZombieAttackRunAbstract::initialize()
 	} else {
 		action = ACT_WALK_FWD;
 	}
-	object->CMonsterMovement::initialize_movement();
+	object->movement().initialize_movement();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -35,13 +35,13 @@ void CStateZombieAttackRunAbstract::execute()
 {
 	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
 	
-	object->CMonsterMovement::set_try_min_time	(false);
+	object->movement().set_try_min_time	(false);
 	
 	// установка параметров функциональных блоков
-	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
-	object->CMonsterMovement::set_rebuild_time			(100 + u32(50.f * dist));
-	object->CMonsterMovement::set_distance_to_end		(2.5f);
-	object->CMonsterMovement::set_use_covers			(false);
+	object->movement().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->movement().set_rebuild_time			(100 + u32(50.f * dist));
+	object->movement().set_distance_to_end		(2.5f);
+	object->movement().set_use_covers			(false);
 
 	//////////////////////////////////////////////////////////////////////////
 	// обработать squad-данные
@@ -56,14 +56,14 @@ void CStateZombieAttackRunAbstract::execute()
 	//////////////////////////////////////////////////////////////////////////
 
 	if (squad_active) {
-		object->set_use_dest_orient	(true);
-		object->set_dest_direction	(command.direction);
+		object->movement().set_use_dest_orient	(true);
+		object->movement().set_dest_direction	(command.direction);
 	}
 	
 	// установка параметров функциональных блоков
 	object->MotionMan.m_tAction					= action;	
 	if (action == ACT_RUN) 
-		object->CMonsterMovement::set_try_min_time	(true);
+		object->movement().set_try_min_time	(true);
 	
 	object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 	object->MotionMan.accel_activate			(eAT_Aggressive);

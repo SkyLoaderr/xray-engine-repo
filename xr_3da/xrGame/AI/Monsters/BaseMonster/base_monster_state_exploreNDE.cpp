@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "base_monster_state.h"
+#include "../ai_monster_movement.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Описание состояния <Слышу выгодный и неопасный звук>
@@ -27,7 +28,7 @@ void CBaseMonsterExploreNDE::Init()
 
 	m_tAction = ACTION_LOOK_DESTINATION;
 
-	pMonster->CMonsterMovement::initialize_movement	();
+	pMonster->movement().initialize_movement	();
 }
 
 void CBaseMonsterExploreNDE::Run()
@@ -43,18 +44,18 @@ void CBaseMonsterExploreNDE::Run()
 		LOG_EX("nde: LOOK DEST");
 		
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-		pMonster->disable_path();
+		pMonster->movement().disable_path();
 		pMonster->LookPosition(m_tSound.position);
 		
-		if (angle_difference(pMonster->CMovementManager::m_body.target.yaw, pMonster->CMovementManager::m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
+		if (angle_difference(pMonster->movement().m_body.target.yaw, pMonster->movement().m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
 		break;
 	
 	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику
 		LOG_EX("nde: GOTO_SOUND_SOURCE");
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-		pMonster->CMonsterMovement::set_target_point		(m_tSound.position);
-		pMonster->CMonsterMovement::set_generic_parameters	();
+		pMonster->movement().set_target_point		(m_tSound.position);
+		pMonster->movement().set_generic_parameters	();
 
 		// если монстр дошел до позиции звука, перейти к следующему заданию
 		if (m_tSound.position.distance_to(pMonster->Position()) < 1.0f) m_tAction = ACTION_LOOK_AROUND; 

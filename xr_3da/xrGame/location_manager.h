@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "alife_space.h"
+#include "game_graph_space.h"
 
 class CLocationManager {
 private:
-	ALife::TERRAIN_VECTOR	m_vertex_types;
+	GameGraph::TERRAIN_VECTOR	m_vertex_types;
 
 protected:
 			void	setup_location_types	(LPCSTR S, LPCSTR section);
@@ -24,7 +24,7 @@ public:
 	virtual void	Load					(LPCSTR section);
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR section);
-	IC		const ALife::TERRAIN_VECTOR &vertex_types	() const;
+	IC		const GameGraph::TERRAIN_VECTOR &vertex_types	() const;
 };
 
 #include "location_manager_inline.h"
