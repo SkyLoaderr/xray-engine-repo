@@ -123,9 +123,9 @@ bool CSE_ALifeSimulator::bfCheckForItems(CSE_ALifeHumanAbstract	*tpALifeHumanAbs
 	}
 }
 
-bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
+bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &CSE_Abstract, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
 {
-	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&tServerEntity);
+	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
 	VERIFY(tpALifeTraderParams);
 	//DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	//DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
@@ -141,19 +141,19 @@ bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &tServerEntity, _GRAPH_ID t
 			// adding _new item to the item list
 			if (tpALifeTraderParams->m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 				if (randF(1.0f) < fProbability) {
-					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
+					vfAttachItem(CSE_Abstract,tpALifeItem,tGraphID);
 					bOk = true;
 					I--;
 					continue;
 				}
 			}
 			else {
-				std::sort(tServerEntity.children.begin(),tServerEntity.children.end(),CSortItemPredicate(m_tObjectRegistry));
+				std::sort(CSE_Abstract.children.begin(),CSE_Abstract.children.end(),CSortItemPredicate(m_tObjectRegistry));
 				float		fItemMass = tpALifeTraderParams->m_fCumulativeItemMass;
-				u32			dwCount = (u32)tServerEntity.children.size();
+				u32			dwCount = (u32)CSE_Abstract.children.size();
 				int			i;
 				for ( i=(int)dwCount - 1; i>=0; i--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.find(tServerEntity.children[i]);
+					OBJECT_PAIR_IT II = m_tObjectRegistry.find(CSE_Abstract.children[i]);
 					VERIFY(II != m_tObjectRegistry.end());
 					CSE_ALifeItem *tpALifeItemIn = dynamic_cast<CSE_ALifeItem *>((*II).second);
 					VERIFY(tpALifeItemIn);
@@ -165,8 +165,8 @@ bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &tServerEntity, _GRAPH_ID t
 				}
 				if (tpALifeTraderParams->m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 					for (int j=i + 1 ; j < (int)dwCount; j++)
-						vfDetachItem(tServerEntity,tpALifeItem,tGraphID);
-					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
+						vfDetachItem(CSE_Abstract,tpALifeItem,tGraphID);
+					vfAttachItem(CSE_Abstract,tpALifeItem,tGraphID);
 					//return(true);
 					bOk = true;
 					I--;

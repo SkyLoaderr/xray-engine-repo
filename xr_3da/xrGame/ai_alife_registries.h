@@ -68,9 +68,9 @@ public:
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
 			// create entity
-			CSE_Abstract			*tpServerEntity = F_entity_Create	(s_name);
-			R_ASSERT2				(tpServerEntity,"Can't create entity.");
-			CSE_ALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpServerEntity);
+			CSE_Abstract			*tpSE_Abstract = F_entity_Create	(s_name);
+			R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
+			CSE_ALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 			R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
 			tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
@@ -86,12 +86,12 @@ public:
 		}
 	};
 
-	IC bool bfCheckIfTaskCompleted(CSE_Abstract &tServerEntity, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(CSE_Abstract &CSE_Abstract, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
 	{
 		if (tpALifeHumanAbstract->m_dwCurTask >= tpALifeHumanAbstract->m_tpTasks.size())
 			return(false);
-		I = tServerEntity.children.begin();
-		OBJECT_IT	E = tServerEntity.children.end();
+		I = CSE_Abstract.children.begin();
+		OBJECT_IT	E = CSE_Abstract.children.end();
 		CSE_ALifePersonalTask	&tPersonalTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
 		for ( ; I != E; I++) {
 			switch (tPersonalTask.m_tTaskType) {
@@ -330,27 +330,27 @@ public:
 		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	};
 
-	IC void vfAttachItem(CSE_Abstract &tServerEntity, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
+	IC void vfAttachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
 	{
 		if (bAddChild) {
-//.			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
-			tServerEntity.children.push_back(tpALifeItem->ID);
-			tpALifeItem->ID_Parent = tServerEntity.ID;
+//.			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
+			CSE_Abstract.children.push_back(tpALifeItem->ID);
+			tpALifeItem->ID_Parent = CSE_Abstract.ID;
 		}
 //.		else
-//.			Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
+//.			Msg("ALife : (ONLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,CSE_Abstract.s_name_replace);
 
 		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 		
-		CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&tServerEntity);
+		CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
 		VERIFY(tpALifeTraderParams);
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(CSE_Abstract &tServerEntity, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
+	IC void vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
 	{
 		if (bRemoveChild) {
-			xr_vector<u16>				&tChildren = tServerEntity.children;
+			xr_vector<u16>				&tChildren = CSE_Abstract.children;
 			xr_vector<u16>::iterator	I = std::find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
 			VERIFY					(I != tChildren.end());
 			tChildren.erase			(I);
@@ -359,7 +359,7 @@ public:
 
 		vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
 		
-		CSE_ALifeTraderAbstract *tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&tServerEntity);
+		CSE_ALifeTraderAbstract *tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&CSE_Abstract);
 		VERIFY(tpTraderParams);
 		tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 	}

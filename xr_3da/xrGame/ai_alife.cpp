@@ -68,9 +68,9 @@ void CSE_ALifeSimulator::vfNewGame()
 			}
 		}
 		
-		CSE_Abstract			*tpServerEntity = F_entity_Create	((*I)->s_name);
-		R_ASSERT2				(tpServerEntity,"Can't create entity.");
-		CSE_ALifeDynamicObject		*i = dynamic_cast<CSE_ALifeDynamicObject*>(tpServerEntity);
+		CSE_Abstract			*tpSE_Abstract = F_entity_Create	((*I)->s_name);
+		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
+		CSE_ALifeDynamicObject	*i = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 		R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
 		
 		NET_Packet				tNetPacket;
@@ -271,11 +271,11 @@ CSE_ALifeTrader *CSE_ALifeSimulator::tpfGetNearestSuitableTrader(CSE_ALifeHumanA
 	return			(tpBestTrader);
 }
 
-void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpServerEntity)
+void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpSE_Abstract)
 {
-	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
+	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
 	VERIFY						(tpALifeDynamicObject);
-	m_tObjectRegistry.erase		(tpServerEntity->ID);
+	m_tObjectRegistry.erase		(tpSE_Abstract->ID);
 	
 	vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 
@@ -308,7 +308,7 @@ void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpServerEntity)
 			}
 	}
 
-	tpServerEntity->m_bALifeControl = false;
+	tpSE_Abstract->m_bALifeControl = false;
 }
 
 
