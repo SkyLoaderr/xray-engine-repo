@@ -37,7 +37,8 @@ void CUIListWndEx::script_register(lua_State *L)
 			.def("GetExItem",				&CUIListWndEx::GetExItem),
 			
 			class_<CUIListItemEx, CUIListItem>("CUIListItemEx")
-			.def(							constructor<>()),
+			.def(							constructor<>())
+			.def("SetSelectionColor",		&CUIListItemEx::SetSelectionColor),
 //			.def("SetPerformTextLimit",		&CUIListItemPair::SetPerformTextLimit),
 
 
