@@ -92,7 +92,7 @@ void CBuild::BuildRapid()
 	
 	// Saving for AI/DO usage
 	Status					("Saving...");
-	CFS_File		MFS		((pBuild->path+"build.cform").c_str());
+	CFileWriter		MFS		((pBuild->path+"build.cform").c_str());
 
 	vector<b_rc_face>		rc_faces;
 	rc_faces.resize			(CL.getTS());
@@ -117,14 +117,14 @@ void CBuild::BuildRapid()
 	hdr.vertcount			= CL.getVS();
 	hdr.facecount			= CL.getTS();
 	hdr.aabb				= scene_bb;
-	MFS.write				(&hdr,sizeof(hdr));
+	MFS.w					(&hdr,sizeof(hdr));
 
 	// Data
-	MFS.write				(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS.write				(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS.w					(CL.getV(),CL.getVS()*sizeof(Fvector));
+	MFS.w					(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
 	MFS.close_chunk			();
 
 	MFS.open_chunk			(1);
-	MFS.write				(rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
+	MFS.w					(rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
 	MFS.close_chunk			();
 }

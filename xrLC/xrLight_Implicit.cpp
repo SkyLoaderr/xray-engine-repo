@@ -257,18 +257,6 @@ public:
 
 //#pragma optimize( "g", off )
 
-void VerifyPath	(LPCSTR path)
-{
-	char tmp[MAX_PATH];
-	for(int i=0;path[i];i++){
-		if( path[i]!='\\' || i==0 )
-			continue;
-		CopyMemory		( tmp, path, i );
-		tmp[i] = 0;
-		CreateDirectory	( tmp, 0 );
-	}
-}
-
 #define	NUM_THREADS	8
 void CBuild::ImplicitLighting()
 {
