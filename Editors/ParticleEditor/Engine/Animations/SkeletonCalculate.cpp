@@ -39,7 +39,9 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 // Calculation
 void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 {
-	if (Callback_overwrite && INST.Callback)
+	CBoneInstance& INST			= K->LL_GetInstance(SelfID);
+
+	if (INST.Callback_overwrite && INST.Callback)
 	{
 		INST.Callback		(&INST);
 	} else {
@@ -47,8 +49,7 @@ void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 		ConsistantKey		S[MAX_BLENDED];
 
 		// Calculate all keys
-		CKey*	D			= R;
-		CBoneInstance& INST			= K->LL_GetInstance(SelfID);
+		CKey*	D					= R;
 		BlendListIt					BI;
 		for (BI=INST.Blend.begin(); BI!=INST.Blend.end(); BI++,D++)
 		{
