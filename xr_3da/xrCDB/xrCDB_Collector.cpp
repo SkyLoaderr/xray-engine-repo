@@ -128,6 +128,7 @@ namespace CDB
                 TRI& T2	= faces[t];
                 if (similar(T1,T2)){
                 	faces[t] = faces.back();
+                    faces.pop_back();
                 }else{
                 	t++;
                 }
