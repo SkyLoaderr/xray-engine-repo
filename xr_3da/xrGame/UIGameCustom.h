@@ -53,8 +53,6 @@ public:
 
 	virtual CUIDialogWnd*	GetBuyWnd			()	{ return NULL; };
 
-	virtual void		
-
 
 	//для остановки и запуска дополнительных меню
 	virtual void StartStopMenu(CUIDialogWnd* pDialog);
