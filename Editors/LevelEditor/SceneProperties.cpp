@@ -83,8 +83,6 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     edLevelPrefix->Text		= Scene->m_LevelOp.m_LevelPrefix.c_str();
 	mmText->Text			= Scene->m_LevelOp.m_BOPText.c_str();
 
-	rgLODQuality->ItemIndex	= LODQ2[iFloor(Scene->m_LevelOp.m_LOD_Quality+0.5f)];
-
     tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
 
@@ -166,7 +164,6 @@ void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text.c_str();	// Path
     Scene->m_LevelOp.m_LevelPrefix	= edLevelPrefix->Text.LowerCase().c_str();	// Prefix
 	Scene->m_LevelOp.m_BOPText		= mmText->Text.c_str();			// Text
-	Scene->m_LevelOp.m_LOD_Quality 	= LODQ[rgLODQuality->ItemIndex];
 #endif
     SetSceneParams					();
     Close							();

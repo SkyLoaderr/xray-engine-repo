@@ -37,7 +37,6 @@ struct st_LevelOptions{
     shared_str	m_LevelPrefix;
 	shared_str 	m_BOPText;
 
-    float		m_LOD_Quality;
     b_params	m_BuildParams;
 
     st_LevelOptions();
