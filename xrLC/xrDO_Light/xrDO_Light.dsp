@@ -42,7 +42,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /G6 /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -67,7 +67,7 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
+# ADD CPP /nologo /GB /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -91,6 +91,14 @@ LINK32=link.exe
 # Begin Group "Resources"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.rc
+# End Source File
 # End Group
 # Begin Group "Math"
 
@@ -113,6 +121,10 @@ SOURCE=.\cpuid.h
 # Begin Source File
 
 SOURCE=.\FixedVector.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_list.h
 # End Source File
 # End Group
 # Begin Source File
@@ -231,10 +243,22 @@ SOURCE=.\_vector3d.h
 
 SOURCE=.\_vector4.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\vector.h
+# End Source File
 # End Group
 # Begin Group "Log"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\log.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\log.h
+# End Source File
 # End Group
 # Begin Group "Debug"
 
@@ -315,6 +339,14 @@ SOURCE=.\FS.cpp
 
 SOURCE=.\FS.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\LzHuf.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\lzhuf.h
+# End Source File
 # End Group
 # Begin Group "Generic"
 
@@ -329,45 +361,15 @@ SOURCE=.\clsid.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\defines.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\FTimer.h
 # End Source File
-# End Group
 # Begin Source File
 
 SOURCE=.\Image.cpp
 # End Source File
-# End Group
 # Begin Source File
 
 SOURCE=.\Image.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\log.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\log.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\LzHuf.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\lzhuf.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\resource.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\resource.rc
 # End Source File
 # Begin Source File
 
@@ -375,23 +377,21 @@ SOURCE=.\std_classes.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\xr_func.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\defines.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
+# ADD CPP /Yc"stdafx.h"
 # End Source File
 # Begin Source File
 
 SOURCE=.\StdAfx.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\vector.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_func.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_list.h
 # End Source File
 # Begin Source File
 
@@ -404,6 +404,11 @@ SOURCE=.\xrThread.cpp
 # Begin Source File
 
 SOURCE=.\xrThread.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\xrDO_Light.cpp
 # End Source File
 # End Target
 # End Project
