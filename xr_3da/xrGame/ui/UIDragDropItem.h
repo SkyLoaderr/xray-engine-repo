@@ -86,6 +86,9 @@ public:
 	// Проверка необходимости перемещения вещи без проверки находжения вещи над контролом
 	bool NeedMoveWithoutRectCheck() { return m_bMoveOnNextDrop ? m_bMoveOnNextDrop = false, true : false; }
 
+	// Пропорционально скейлим себя по типу зума
+	void Rescale(float scale);
+
 protected:
 	
 	int m_iOldMouseX;

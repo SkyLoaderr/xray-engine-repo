@@ -380,6 +380,10 @@ protected:
 	
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
 	int			m_iIconTextureX, m_iIconTextureY;
+	// Функция проверки пренадлежности вещи секции (магазину а не слоту)
+	// Params:	idx		- индекс в массиве оружия, который требуется проверить
+	// Return:	true если оружие находится в магазине.
+	bool		IsItemInShop(int idx);
 public:
 	// Получаем количество денег
 	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
@@ -426,10 +430,20 @@ public:
 	// Params:	grpNum					- номер группы секций
 	//			uIndexInSlot			- порядковый уровень оружия в списке группы секций
 	//			bRealRepresentationSet	- новое флага , который указывает на наличие у вещи реального 
-	//									  предсьавления
-	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot, bool bRealRepresentationSet);
+	//									  представления
+	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot, bool bRealRepresentationSet) {}
 	// Params:	sectionName		- имя конфигурационной секции оружия
-	void		MoveWeapon(const char *sectionName, bool bRealRepresentationSet);
+	void		MoveWeapon(const char *sectionName, bool bRealRepresentationSet) {}
+
+	// Принудительное перемещение оружия из секций в слоты (покупка), посредством даблклика
+	// Params:	grpNum					- номер группы секций
+	//			uIndexInSlot			- порядковый уровень оружия в списке группы секций.
+	//									  Возможны установленные флаги аддонов.
+	//			bRealRepresentationSet	- флаг, который указывает на наличие у вещи реального 
+	//									  представления
+	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
+	// Params:	sectionName				- имя конфигурационной секции оружия
+	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
 
 	// Функция перемещения всех вещей из слотов обратно в секции
 	void		ClearSlots();

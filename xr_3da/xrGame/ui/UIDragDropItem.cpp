@@ -245,3 +245,18 @@ void CUIDragDropItem::Update()
 {
 	inherited::Update();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropItem::Rescale(float scale)
+{
+	SetTextureScale(scale);
+	int newW	= static_cast<int>(GetGridWidth() * scale * INV_GRID_WIDTH);
+	int newH	= static_cast<int>(GetGridHeight() * scale * INV_GRID_HEIGHT);
+	int deltaW	= (GetWndRect().right - GetWndRect().left - newW) / 2;
+	int deltaH	= (GetWndRect().bottom - GetWndRect().top - newH) / 2;
+
+	SetWidth(newW);
+	SetHeight(newH);
+	MoveWindow(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
+}

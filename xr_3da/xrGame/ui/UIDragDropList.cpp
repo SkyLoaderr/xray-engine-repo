@@ -171,9 +171,6 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		//элемени чужой, надо взять его себе, 
 		//но только если он в нашей области
 
-		int newW, newH;
-		int deltaW, deltaH;
-
 		if( it == m_ChildWndList.end())
 		{
 			RECT rect = GetAbsoluteRect();
@@ -234,15 +231,17 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						AttachChild(pItem);
 						pItem->BringAllToTop(); 
 
-						pItem->SetTextureScale(m_fItemsScale);
-						newW	= static_cast<int>(pItem->GetGridWidth() * m_fItemsScale * INV_GRID_WIDTH);
-						newH	= static_cast<int>(pItem->GetGridHeight() * m_fItemsScale * INV_GRID_HEIGHT);
-						deltaW	= (pItem->GetWndRect().right - pItem->GetWndRect().left - newW) / 2;
-						deltaH	= (pItem->GetWndRect().bottom - pItem->GetWndRect().top - newH) / 2;
+//						pItem->SetTextureScale(m_fItemsScale);
+//						newW	= static_cast<int>(pItem->GetGridWidth() * m_fItemsScale * INV_GRID_WIDTH);
+//						newH	= static_cast<int>(pItem->GetGridHeight() * m_fItemsScale * INV_GRID_HEIGHT);
+//						deltaW	= (pItem->GetWndRect().right - pItem->GetWndRect().left - newW) / 2;
+//						deltaH	= (pItem->GetWndRect().bottom - pItem->GetWndRect().top - newH) / 2;
+//
+//						pItem->SetWidth(newW);
+//						pItem->SetHeight(newH);
+//						pItem->MoveWindow(pItem->GetWndRect().left + deltaW, pItem->GetWndRect().top + deltaH);
 
-						pItem->SetWidth(newW);
-						pItem->SetHeight(newH);
-						pItem->MoveWindow(pItem->GetWndRect().left + deltaW, pItem->GetWndRect().top + deltaH);
+						pItem->Rescale(m_fItemsScale);
 
 					}
 					else
@@ -266,15 +265,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			PlaceItemInGrid(pItem);
 			OffCustomPlacement();
 
-			pItem->SetTextureScale(m_fItemsScale);
-			newW	= static_cast<int>(pItem->GetGridWidth() * m_fItemsScale * INV_GRID_WIDTH);
-			newH	= static_cast<int>(pItem->GetGridHeight() * m_fItemsScale * INV_GRID_HEIGHT);
-			deltaW	= (pItem->GetWndRect().right - pItem->GetWndRect().left - newW) / 2;
-			deltaH	= (pItem->GetWndRect().bottom - pItem->GetWndRect().top - newH) / 2;
-
-			pItem->SetWidth(newW);
-			pItem->SetHeight(newH);
-			pItem->MoveWindow(pItem->GetWndRect().left + deltaW, pItem->GetWndRect().top + deltaH);
+			pItem->Rescale(m_fItemsScale);
 
 			pItem->GetParent()->SetCapture(pItem, false);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
