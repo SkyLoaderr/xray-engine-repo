@@ -222,14 +222,14 @@ void CMovementManager::process_game_path()
 					CGamePathManager::get_intermediate_vertex_id()
 				).level_vertex_id()
 			);
+			f1 = CPU::GetCycleCount();
+			m_test_time += f1 - s1;
+			++m_test_count;
 			if (CLevelPathManager::failed()) {
 				Device.Statistic.TEST1.End();
 				break;
 			}
 			m_path_state		= ePathStateContinueLevelPath;
-			f1 = CPU::GetCycleCount();
-			m_test_time += f1 - s1;
-			++m_test_count;
 			Device.Statistic.TEST1.End();
 			if (time_over())
 				break;
