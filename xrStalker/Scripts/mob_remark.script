@@ -13,6 +13,9 @@ end
 
 function mob_remark:reset_scheme()
 	printf("_bp: mob_remark:reset_scheme: %s", self.object:name())
+	
+	mob_state_mgr.set_state(self.object, db.actor, self.st.state)
+	
 	self.object:disable_talk()
 
 	xr_logic.mob_capture(self.object, not self.st.no_reset)
@@ -147,6 +150,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
+	st.state           = mob_state_mgr.get_state(ini, section, npc)
+
 	st.dialog_cond    = xr_logic.cfg_get_condlist(ini, section, "dialog_cond", npc)
 	-- Не работает, т.к. при переключении схем в данный момент монстр всегда
 	-- уходит из под скрипта, соответственно, сбрасывает свою очередь actions.
@@ -157,4 +162,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.tip            = utils.cfg_get_string(ini, section, "tip", npc, false, "")
 	st.snd            = utils.cfg_get_string(ini, section, "snd", npc, false, "")
 	st.time           = utils.cfg_get_string(ini, section, "time", npc, false, "")
+
 end

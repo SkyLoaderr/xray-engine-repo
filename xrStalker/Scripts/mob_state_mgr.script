@@ -1,0 +1,23 @@
+function get_state(ini, section, npc)
+	return utils.cfg_get_string(ini, section, "state", npc, false, "")
+end
+
+function set_state(obj, actor, state)
+	if not state then
+		return
+	end
+	
+	if get_clsid(obj) == clsid.bloodsucker_s then
+		if state == "invis" then
+			obj:set_invisible(true)
+			return
+		elseif state == "vis" then
+			npc:set_invisible(false)
+			return
+		end
+	end
+
+	utils.abort("mob_state_mgr: object '%s': unknown state '%s' requested",
+		obj:name(), state)
+end
+

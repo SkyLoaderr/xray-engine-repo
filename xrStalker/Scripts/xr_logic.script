@@ -353,7 +353,8 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme)
 				npc:set_manual_invisibility(false)
 			else
 				npc:set_manual_invisibility(true)
-				npc:set_invisible(false)
+				-- Видимый или нет определяет схема, которая возьмет его под контроль:
+				--npc:set_invisible(false)
 			end
 		end
 	elseif st.stype == modules.stype_item then
