@@ -33,7 +33,10 @@ public:
 	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
+	
 	virtual bool				CheckObjectVisibility	(const CObject		*tpObject);
+	virtual bool				CheckTypeVisibility		(const char* section_name);
+
 	virtual bool				CheckIfCompleted		() const										{return false;};
 	virtual	CEntityAction		*GetCurrentAction		();
 	virtual	void				AddAction				(const CEntityAction*tpEntityAction);

@@ -64,6 +64,26 @@ bool CScriptMonster::CheckObjectVisibility(const CObject *tpObject)
 	return				(false);
 }
 
+//определяет видимость определенного типа объектов, 
+//заданного через section_name
+bool CScriptMonster::CheckTypeVisibility(const char* section_name)
+{
+	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
+	if (!l_tpCustomMonster)
+		return			(false);
+	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_tpaVisibleObjects);
+	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_tpaVisibleObjects.begin();
+	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_tpaVisibleObjects.end();
+	for ( ; I != E; I++)
+	{
+		CObject* pObject = dynamic_cast<CObject*>(*I);
+		if (strcmp(section_name, pObject->cNameSect()))
+			return		(true);
+	}
+	return				(false);
+}
+
+
 void CScriptMonster::UseObject(const CObject *tpObject)
 {
 #pragma todo("Dima to Dima : Use object specified by script")
