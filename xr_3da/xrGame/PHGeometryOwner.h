@@ -6,15 +6,15 @@ class CPHGeometryOwner
 {
 public:
 	///
-		//virtual	void			add_Sphere						(const Fsphere&		V);															//aux
-		//virtual	void			add_Box							(const Fobb&		V);															//aux
-		//virtual	void			add_Cylinder					(const Fcylinder&	V);															//aux
-		//virtual void			add_Shape						(const SBoneShape& shape);														//aux
-		//virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
-		//virtual CODEGeom*		last_geom						(){if(m_geoms.empty())return NULL; return m_geoms.back();}						//aux
-		//virtual bool			has_geoms						(){return !m_geoms.empty();}
-		//virtual void			set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
-		//virtual float			getRadius						();	
+		//void					add_Sphere						(const Fsphere&		V);															//aux
+		//void					add_Box							(const Fobb&		V);															//aux
+		//void					add_Cylinder					(const Fcylinder&	V);															//aux
+		// void					add_Shape						(const SBoneShape& shape);														//aux
+		// void					add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
+		// CODEGeom*				last_geom						(){if(m_geoms.empty())return NULL; return m_geoms.back();}						//aux
+		// bool					has_geoms						(){return !m_geoms.empty();}
+		// void					set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
+		// float					getRadius						();	
 protected:
 		GEOM_STORAGE			m_geoms;					//e					//bl
 		dSpaceID				m_group;					//e					//bl
