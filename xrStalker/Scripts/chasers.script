@@ -31,6 +31,10 @@ function main ()
     printf ("Number monsters - %d", table.getn (monsters))
     
     while true do
+    
+          if scr_monster ~= nil then
+             printf ("Attacker %s has move to player. Distance : %f", scr_monster:name (),   distance_between (scr_monster, actor))
+          end               
           
           if scr_monster ~= nil and distance_between (scr_monster, actor) < 10 then
              scr_monster:script (false, chasers.script_name ())
@@ -58,6 +62,7 @@ function main ()
                     end   
                  end   
              end
+             
              if scr_monster ~= nil then
                 printf ("Attacker %s", scr_monster:name ())
                 scr_monster:script (true, chasers.script_name ())
