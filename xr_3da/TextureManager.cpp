@@ -343,21 +343,24 @@ void	CShaderManager::OnDeviceDestroy(void)
 	//************************************************************************************
 	// Texture List
 	for (it=0; it<lst_textures.size(); it++)	{
-		R_ASSERT(0==lst_textures[it]->dwReference);
+		if (0!=lst_textures[it]->dwReference)
+			Device.Fatal("Texture still referenced: %s",DBG_GetTextureName(lst_textures[it]));
 		_DELETE (lst_textures[it]);
 	}
 	lst_textures.clear	();
 
 	// Matrix List
 	for (it=0; it<lst_matrices.size(); it++)	{
-		R_ASSERT(0==lst_matrices[it]->dwReference);
+		if (0!=lst_matrices[it]->dwReference)
+			Device.Fatal("Matrix still referenced: %s",DBG_GetMatrixName(lst_matrices[it]));
 		_DELETE (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
 
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	{
-		R_ASSERT(0==lst_constants[it]->dwReference);
+		if (0!=lst_constants[it]->dwReference)
+			Device.Fatal("Constant still referenced: %s",DBG_GetConstantName(lst_constants[it]));
 		_DELETE (lst_constants[it]);
 	}
 	lst_constants.clear	();
