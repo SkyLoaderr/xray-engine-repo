@@ -74,6 +74,7 @@ function Trader:__init( npc_o, zone_o, scr_name_o )
     self.script_name = scr_name_o
 
     self.mem         = {
+    					npc			  = nil,
     					state         = idle,
     					new_state     = idle,
                         event         = non,
@@ -150,12 +151,14 @@ function Trader:is_on_line()
         printf( "Off line ________________________________________trader" )
         self.on_line  = false
         self.npc      = nil
+        self.mem.npc  = nil
     else
         if( level.object( self.npc_name ) == nil or level.object( self.zone_name ) == nil ) then return end
         printf( "In line ________________________________________trader" )
         self.on_line  = true
         self.npc      = level.object( self.npc_name )
         self.npc:script( true, self.script_name )
+        self.mem.npc  = self.npc
         self.zone     = level.object( self.zone_name )
         self.zone:set_callback( self, "on_enter", true )
         self.zone:set_callback( self, "on_exit", false )
@@ -540,7 +543,7 @@ function t_Life:sound_with_anim()
     end
 
 	//'Сколько можно тут стоять
-    if( device():time_global() > self.mem.time + pause_time ) then
+    if( device():time_global() > self.mem.time + pause_time and level.actor() and self.mem.npc:see(level.actor())) then
          self.mem.anim_snd   = random_choice( Trader_Wait1, Trader_Wait2, Trader_Wait3, Trader_Wait4, Trader_Wait5, Trader_Wait6 )
          self.mem.repeats    = 1
          self.mem.time       = device():time_global()
