@@ -30,6 +30,7 @@ public:
 protected:
 	// Collider
 	CDB::COLLIDER						geom_DB;
+	CDB::MODEL*							geom_SOM;
 	CDB::MODEL*							geom_MODEL;
 	CDB::MODEL*							geom_ENV;
 
@@ -68,6 +69,7 @@ public:
 	virtual void						play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f);
 	virtual void						set_volume				( float			f )=0;
 	virtual void						set_geometry_env		( IReader*		I );
+	virtual void						set_geometry_som		( IReader*		I );
 	virtual void						set_geometry_occ		( CDB::MODEL*	M );
 	virtual void						set_handler				( sound_event*	E );
 
@@ -100,7 +102,7 @@ public:
 	void								i_rewind				( CSoundRender_Emitter* E	);
 	BOOL								i_allow_play			( CSoundRender_Emitter* E	);
 
-	BOOL								get_occlusion			( Fvector& P, float R, Fvector* occ );
+	float								get_occlusion			( Fvector& P, float R, Fvector* occ );
 	CSoundRender_Environment*			get_environment			( const Fvector& P );
 
 	void								env_load				();

@@ -77,16 +77,21 @@ BOOL CLevel::Load_GameSpecific_After()
 		}
 		FS.r_close				(F);
 	}
-	// loading static sounds
+	// loading sound environment
 	if (FS.exist(fn_game, "$level$", "level.sound_environment")) {
 		IReader *F				= FS.r_open	(fn_game);
 		::Sound->set_geometry_env(F);
 		FS.r_close				(F);
 	}
+	// loading SOM
+	if (FS.exist(fn_game, "$level$", "level.som")) {
+		IReader *F				= FS.r_open	(fn_game);
+		::Sound->set_geometry_som(F);
+		FS.r_close				(F);
+	}
 
 	// loading random (around player) sounds
-	if (pSettings->section_exist("sounds_random"))	
-	{ 
+	if (pSettings->section_exist("sounds_random")){ 
 		CInifile::Sect& S		= pSettings->r_section("sounds_random");
 		Sounds_Random.reserve	(S.size());
 		for (CInifile::SectIt I=S.begin(); S.end()!=I; ++I) {

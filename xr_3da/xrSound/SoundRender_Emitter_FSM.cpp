@@ -24,8 +24,9 @@ void CSoundRender_Emitter::update	(float dt)
 		dwTimeStarted		= dwTime;
 		dwTimeToStop		= dwTime + source->dwTimeTotal;
 		dwTimeToPropagade	= dwTime;
-		occluder_volume		= (SoundRender->get_occlusion	(p_source.position,.2f,occluder))?0.f:1.f;
-		smooth_volume		= p_source.volume*psSoundVEffects*(occluder_volume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale);
+		fade_volume			= 1.f;
+		occluder_volume		= SoundRender->get_occlusion	(p_source.position,.2f,occluder);
+		smooth_volume		= p_source.volume*psSoundVEffects*occluder_volume;
 		e_current = e_target= *SoundRender->get_environment	(p_source.position);
 		if (update_culling(dt))	
 		{
@@ -44,43 +45,38 @@ void CSoundRender_Emitter::update	(float dt)
 		dwTimeStarted		= dwTime;
 		dwTimeToStop		= 0xffffffff;
 		dwTimeToPropagade	= dwTime;
-		occluder_volume		= (SoundRender->get_occlusion	(p_source.position,.2f,occluder))?0.f:1.f;
-		smooth_volume		= p_source.volume*psSoundVEffects*(occluder_volume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale);
+		fade_volume			= 1.f;
+		occluder_volume		= SoundRender->get_occlusion	(p_source.position,.2f,occluder);
+		smooth_volume		= p_source.volume*psSoundVEffects*occluder_volume;
 		e_current = e_target= *SoundRender->get_environment	(p_source.position);
-		if (update_culling(dt))	
-		{
+		if (update_culling(dt)){
 			state		  	=	stPlayingLooped;
 			position	  	=	0;
 			SoundRender->i_start(this);
-		}
-		else state		  	=	stSimulatingLooped;
+		}else state		  	=	stSimulatingLooped;
 		break;
 	case stPlaying:
-		if (dwTime>=dwTimeToStop)	
-		{
+		if (dwTime>=dwTimeToStop){
 			// STOP
 			state					=	stStopped;
 			SoundRender->i_stop		(this);
-		} else {
+		}else{
 			if (!update_culling(dt)) {
 				// switch to: SIMULATE
 				state					=	stSimulating;		// switch state
 				SoundRender->i_stop		(this);
-			}
-			else 
-			{
+			}else{
 				// We are still playing
 				update_environment	(dt);
 			}
 		}
 		break;
 	case stSimulating:
-		if (dwTime>=dwTimeToStop)	
-		{
+		if (dwTime>=dwTimeToStop){
 			// STOP
 			state					=	stStopped;
-		} else {
-			if (update_culling(dt)) {
+		}else{
+			if (update_culling(dt)){
 				// switch to: PLAY
 				state					=	stPlaying;
 				position				= 	(((dwTime-dwTimeStarted)%source->dwTimeTotal)*source->dwBytesPerMS);
@@ -90,21 +86,17 @@ void CSoundRender_Emitter::update	(float dt)
 		}
 		break;
 	case stPlayingLooped:
-		if (!update_culling(dt)) 
-		{
+		if (!update_culling(dt)){
 			// switch to: SIMULATE
 			state					=	stSimulatingLooped;	// switch state
 			SoundRender->i_stop		(this);
-		}
-		else 
-		{
+		}else{
 			// We are still playing
 			update_environment	(dt);
 		}
 		break;
 	case stSimulatingLooped:
-		if (update_culling(dt)) 
-		{
+		if (update_culling(dt)){
 			// switch to: PLAY
 			state					=	stPlayingLooped;	// switch state
 			position				= (((dwTime-dwTimeStarted)%source->dwTimeTotal)*source->dwBytesPerMS);
@@ -116,10 +108,19 @@ void CSoundRender_Emitter::update	(float dt)
 
 	// footer
 	bMoved				= FALSE;
-	if (state != stStopped)
-	{
+	if (state != stStopped){
 		if (dwTime	>=	dwTimeToPropagade)		Event_Propagade();
 	} else if (owner)	{ owner->feedback = 0; owner	= 0; }
+}
+
+IC void	volume_lerp		(float& c, float t, float s, float dt)
+{
+	float diff		= t - c;
+	float diff_a	= _abs(diff);
+	if (diff_a<EPS_S) return;
+	float mot		= s*dt;
+	if (mot>diff_a) mot=diff_a;
+	c				+= (diff/diff_a)*mot;
 }
 
 BOOL	CSoundRender_Emitter::update_culling	(float dt)
@@ -130,20 +131,18 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 
 	// Calc attenuated volume
 	float att			= p_source.min_distance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
-    float scale			= 1.f;
-    float occ_scale		= psSoundOcclusionScale;
-	if (att*p_source.volume*psSoundVEffects<psSoundCull)				{ scale = -1.0f; occ_scale = 0.f;/*return FALSE;*/ }
-    
+	float fade_scale	= (att*p_source.volume*psSoundVEffects<psSoundCull)?-1.f:1.f;
+	fade_volume			+=	dt*1.f*fade_scale;
+	clamp				(fade_volume,0.f,1.f);
+
 	// Update occlusion
-	float occ			=	_min(scale, (SoundRender->get_occlusion	(p_source.position,.2f,occluder))?-1.f:1.f);
-	occluder_volume		+=	dt*1.f*occ;
+	volume_lerp			(occluder_volume,SoundRender->get_occlusion	(p_source.position,.2f,occluder),1.f,dt);
 	clamp				(occluder_volume,0.f,1.f);
 
 	// Update smoothing
-	float vol_occ		=	occluder_volume*(1.f-occ_scale)+occ_scale;
-	smooth_volume		=	.9f*smooth_volume + .1f*(p_source.volume*psSoundVEffects*vol_occ);
+	smooth_volume		= .9f*smooth_volume + .1f*(p_source.volume*psSoundVEffects*occluder_volume*fade_volume);
 
-	if (smooth_volume<psSoundCull)									return FALSE;	// allow volume to go up
+	if (smooth_volume<psSoundCull)							return FALSE;	// allow volume to go up
 
 	// Here we has enought "PRIORITY" to be soundable
 	// If we are playing already, return OK

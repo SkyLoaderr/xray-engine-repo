@@ -40,6 +40,7 @@ public:
 	float						priority_scale;
 	float						smooth_volume;
 	float 						occluder_volume;		// USER
+	float						fade_volume;
 	Fvector						occluder	[3];
 
 	State						state;

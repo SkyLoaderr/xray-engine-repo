@@ -28,6 +28,7 @@ CSoundRender_Core::CSoundRender_Core	()
 	bUserEnvironment			= FALSE;
 	geom_MODEL					= NULL;
 	geom_ENV					= NULL;
+	geom_SOM					= NULL;
 	s_environment				= NULL;
 	Handler						= NULL;
 	s_targets_pu				= 0;
@@ -40,6 +41,8 @@ CSoundRender_Core::CSoundRender_Core	()
 
 CSoundRender_Core::~CSoundRender_Core()
 {
+	xr_delete					(geom_ENV);
+	xr_delete					(geom_SOM);
 }
 
 void CSoundRender_Core::_initialize	(u64 window)
@@ -107,14 +110,47 @@ void CSoundRender_Core::_restart		()
 	env_apply					();
 }
 
+void CSoundRender_Core::set_handler(sound_event* E)
+{
+	Handler			= E;
+}
+
 void CSoundRender_Core::set_geometry_occ(CDB::MODEL* M)
 {
 	geom_MODEL		= M;
 }
 
-void CSoundRender_Core::set_handler(sound_event* E)
+void CSoundRender_Core::set_geometry_som(IReader* I)
 {
-	Handler			= E;
+	xr_delete		(geom_SOM);
+	if (0==I)		return;
+
+	// check version
+	R_ASSERT		(I->find_chunk(0));
+	u32 version		= I->r_u32(); 
+	VERIFY2			(version==0,"Invalid SOM version");
+	// load geometry	
+	IReader* geom	= I->open_chunk(1); 
+	VERIFY2			(geom,"Corrupted SOM file");
+	// Load tris and merge them
+	CDB::Collector	CL;
+	struct SOM_poly{
+		Fvector3	v1;
+		Fvector3	v2;
+		Fvector3	v3;
+		u32			b2sided;
+		float		occ;
+	};
+	while (!geom->eof()){
+		SOM_poly				P;
+		geom->r					(&P,sizeof(P));
+		CL.add_face_packed_D	(P.v1,P.v2,P.v3,*(u32*)&P.occ,0.01f);
+		if (P.b2sided)
+			CL.add_face_packed_D(P.v3,P.v2,P.v1,*(u32*)&P.occ,0.01f);
+	}
+	// Create AABB-tree
+	geom_SOM			= xr_new<CDB::MODEL> ();
+	geom_SOM->build		(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
 }
 
 void CSoundRender_Core::set_geometry_env(IReader* I)
@@ -166,7 +202,7 @@ void	CSoundRender_Core::verify_refsound		( ref_sound& S)
 	int			local_value		= 0;
 	void*		ptr_refsound	= &S;
 	void*		ptr_local		= &local_value;
-	ptrdiff_t	difference		= _abs	( s64(ptrdiff_t(ptr_local) - ptrdiff_t(ptr_refsound)) );
+	ptrdiff_t	difference		= (ptrdiff_t)_abs(s64(ptrdiff_t(ptr_local) - ptrdiff_t(ptr_refsound)));
 	VERIFY2		(difference > (64*1024), "local/stack-based ref_sound passed. memory corruption will accur.");
 #endif
 }
@@ -247,40 +283,32 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( const Fvector& 
 {
 	static CSoundRender_Environment	identity;
 
-	if (bUserEnvironment)
-	{
+	if (bUserEnvironment){
 		return &s_user_environment;
-	} 
-	else 
-	{
-		if (geom_ENV)
-		{
+	}else{
+		if (geom_ENV){
 			geom_DB.ray_options		(CDB::OPT_ONLYNEAREST);
 			Fvector	dir				= {0,-1,0};
 			geom_DB.ray_query		(geom_ENV,P,dir,1000.f);
-			if (geom_DB.r_count())
-			{
+			if (geom_DB.r_count()){
 				CDB::RESULT*		r	= geom_DB.r_begin();
 				CDB::TRI*			T	= geom_ENV->get_tris()+r->id;
 				Fvector*			V	= geom_ENV->get_verts();
 				Fvector tri_norm;
 				tri_norm.mknormal		(V[T->verts[0]],V[T->verts[1]],V[T->verts[2]]);
 				float	dot				= dir.dotproduct(tri_norm);
-				if (dot<0)
-				{
+				if (dot<0){
 					u16		id_front	= (u16)((T->dummy&0x0000ffff)>>0);		//	front face
 					return	s_environment->Get(id_front);
-				} else {
+				}else{
 					u16		id_back		= (u16)((T->dummy&0xffff0000)>>16);	//	back face
 					return	s_environment->Get(id_back);
 				}
-			} else
-			{
+			}else{
 				identity.set_identity	();
 				return &identity;
 			}
-		} else
-		{
+		}else{
 			identity.set_identity	();
 			return &identity;
 		}
