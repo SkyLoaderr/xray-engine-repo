@@ -6,7 +6,7 @@ function update_action (npc, script, ...)
 	end
 
 	for a = 1, arg.n, 1 do
-		if (arg[a] ~= nil then action:set (arg[i])
+		if arg[a] ~= nil then action:set (arg[i])
 	end		
 	reset_action (npc, script)
     npc:command (action, false)
