@@ -99,7 +99,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			iBase				= data->r_u32			();
 			iCount				= data->r_u32			();
 			dwPrimitives		= iCount/3;
-			pIndices			= ::Render->getIB		(ID);
+			pIndices			= RImplementation.getIB	(ID);
 			pIndices->AddRef	();
 #endif
 		} else {
