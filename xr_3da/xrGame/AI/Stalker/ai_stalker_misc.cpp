@@ -9,15 +9,16 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
-void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
+void CAI_Stalker::vfSetMovementType(EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
 {
 	VERIFY(tLookType != eLookTypePoint);
 	Fvector tDummy;
-	vfSetMovementType(tBodyState,tMovementType,tLookType,tDummy);
+	vfSetMovementType(tPathType,tBodyState,tMovementType,tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+void CAI_Stalker::vfSetMovementType(EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
 {
+	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tLookType		= tLookType;

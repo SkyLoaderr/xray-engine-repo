@@ -76,7 +76,8 @@
 				TargetEnvironment="1"
 				TypeLibraryName="x:\xrGame.tlb"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="D:\Program Files\Microsoft Visual Studio\Common\VSS\win32\SS.EXE Checkin x:\gamedata\system.ltx"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool

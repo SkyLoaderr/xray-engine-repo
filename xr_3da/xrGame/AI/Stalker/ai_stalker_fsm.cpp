@@ -11,17 +11,16 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
-//#define WRITE_TO_LOG(s) m_bStopThinking = true;
-//Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);
 #define WRITE_TO_LOG(s) {\
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
 }
 
-//#ifndef DEBUG
-//	#undef	WRITE_TO_LOG
-//	#define WRITE_TO_LOG(s) m_bStopThinking = true;
-//#endif
+#ifndef DEBUG
+	#undef	WRITE_TO_LOG
+	#define WRITE_TO_LOG(s) m_bStopThinking = true;
+#endif
 
 void CAI_Stalker::vfUpdateSearchPosition()
 {
@@ -66,14 +65,13 @@ void CAI_Stalker::BackDodge()
 	
 	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
 
-	m_tPathType					= ePathTypeDodge;
 	vfChoosePointAndBuildPath	(m_tSelectorRetreat);
 
 	vfSetFire					(false,*getGroup());
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
+	vfSetMovementType			(ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
@@ -85,14 +83,43 @@ void CAI_Stalker::BackCover()
 	
 	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
 
-	m_tPathType					= ePathTypeCriteria;
-	vfChoosePointAndBuildPath	(m_tSelectorReload);
+	m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
+	vfChoosePointAndBuildPath	(m_tSelectorCover);
 
 	vfSetFire					(false,*getGroup());
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
+	vfSetMovementType			(ePathTypeCriteria,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
+void CAI_Stalker::ForwardCover()
+{
+	WRITE_TO_LOG("Back cover");
+	
+	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
+
+	m_tPathType					= ePathTypeDodge;
+	
+	float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) - 3.f;
+	
+	if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
+		m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
+	else {
+		m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
+		m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+	}	
+	
+	vfChoosePointAndBuildPath	(m_tSelectorCover);
+
+	vfSetFire					(false,*getGroup());
+
+	Fvector						tPoint;
+	m_tEnemy.Enemy->svCenter	(tPoint);
+	vfSetMovementType			(ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
@@ -117,7 +144,7 @@ void CAI_Stalker::Think()
 //							eMovementTypeRun, 
 //							eLookTypePoint, 
 //							tPoint);
-		BackCover();
+		ForwardCover();
 		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
 	}
 	while (!m_bStopThinking);

@@ -12,11 +12,12 @@
 
 #define CHECK_CONDITION(A)				((qwFlags & A) == A)
 
+//		if (m_fResult > m_fBestCost)
+//			return(m_fResult);
+
 #define CALL_FUNCTION(A,B)				{\
 	if (CHECK_CONDITION(A)) {\
 		B();\
-		if (m_fResult > m_fBestCost)\
-			return(m_fResult);\
 	}\
 }
 
@@ -243,7 +244,7 @@ public:
 						}
 					}
 				}
-				vfCheckForEpsilon();
+				//vfCheckForEpsilon();
 				return(m_fResult);
 			}
 
