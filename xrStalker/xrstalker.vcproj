@@ -970,6 +970,18 @@
 						RelativePath=".\config\scripts\mil\mil_dolg_kamper2.ltx">
 					</File>
 					<File
+						RelativePath=".\config\scripts\mil\mil_dolg_kamper3.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_dolg_kamper4.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_dolg_kamper5.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_dolg_kamper6.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\mil\mil_dolg_zoneguard.ltx">
 					</File>
 				</Filter>
