@@ -107,7 +107,8 @@
 			<texture_h>ui\ui_btn_mp_h</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_pistols</text>
 			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text_t r="181" g="170" b="148"/>
+			<text_d r="181" g="170" b="148"/>
 		</button>
 		<button x="202" y="0" width="150" height="52" accel="3">
 			<texture_offset x="-18" y="-62"/>
@@ -117,7 +118,8 @@
 			<texture_h>ui\ui_btn_mp_h</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_primary_weapons</text>
 			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text_t r="181" g="170" b="148"/>
+			<text_d r="181" g="170" b="148"/>
 		</button>
 		<button x="386" y="0" width="150" height="52" accel="4">
 			<texture_offset x="-18" y="-62"/>
@@ -127,7 +129,8 @@
 			<texture_h>ui\ui_btn_mp_h</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_granades</text>
 			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text_t r="181" g="170" b="148"/>
+			<text_d r="181" g="170" b="148"/>
 		</button>
 		<button x="570" y="0" width="150" height="52" accel="5">
 			<texture_offset x="-18" y="-62"/>
@@ -137,7 +140,8 @@
 			<texture_h>ui\ui_btn_mp_h</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_outfits</text>
 			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text_t r="181" g="170" b="148"/>
+			<text_d r="181" g="170" b="148"/>
 		</button>
 		<button x="753" y="0" width="150" height="52" accel="6">
 			<texture_offset x="-18" y="-62"/>
@@ -147,14 +151,15 @@
 			<texture_h>ui\ui_btn_mp_h</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_equipment</text>
 			<text_h r="255" g="187" b="51"/>
-			<text_t r="255" g="187" b="51"/>
+			<text_t r="181" g="170" b="148"/>
+			<text_d r="181" g="170" b="148"/>
 		</button>
 	</tab>
 		
 	<btn_bag_shotgun x="5" y="30" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_shotgun_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_shotgun_t</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_shotgun</text>
 			<text_h r="255" g="187" b="51"/>
@@ -163,7 +168,7 @@
 	<btn_bag_assault x="5" y="120" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_assault_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_assault_t</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_assault</text>
 			<text_h r="255" g="187" b="51"/>
@@ -172,7 +177,7 @@
 	<btn_bag_sniper x="5" y="210" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_sniper_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_sniper_t</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_sniper</text>
 			<text_h r="255" g="187" b="51"/>
@@ -181,7 +186,7 @@
 	<btn_bag_heavy x="5" y="300" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_heavy_t</texture_t>
-			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_heavy_t</texture_h>
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_heavy</text>
 			<text_h r="255" g="187" b="51"/>
