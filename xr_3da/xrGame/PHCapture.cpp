@@ -8,6 +8,11 @@
 #include "PHCapture.h"
 
 
+void _stdcall object_contactCallbackFun(bool& do_colide,dContact& c)
+{
+do_colide=false;
+}
+
 CPHCapture::CPHCapture									(CPHCharacter   *a_character, 
 														 CPhysicsElement*a_taget,
 														 CBoneInstance  *a_capture_bone,
@@ -29,6 +34,7 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 	
 	b_failed				=false;
 	e_state					=cstPulling;
+	m_taget->set_ObjectContactCallback(object_contactCallbackFun);
 	CPHObject::Activate();
 	
 }
@@ -36,6 +42,10 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 CPHCapture::~CPHCapture()
 {
 	CPHObject::Deactivate();
+	if(m_joint) dJointDestroy(m_joint);
+	m_joint=NULL;
+	m_taget->set_ObjectContactCallback(0);
+
 }
 void CPHCapture::PhDataUpdate(dReal step)
 {
@@ -70,6 +80,7 @@ if(dist<m_capture_distance)
 m_joint=dJointCreateBall(phWorld,0);
 dJointSetBallAnchor(m_joint,bone_position.x,bone_position.y,bone_position.z);
 dJointAttach(m_joint,m_character->GetBody(),m_taget->get_body());
+dJointSetFeedback (m_joint, &m_joint_feedback);
 e_state=cstCaptured;
 return;
 }
@@ -79,5 +90,10 @@ m_taget->applyForce(dir,m_pull_force);
 
 void CPHCapture::CapturedUpdate()
 {
-
+	if(dDOT(m_joint_feedback.f2,m_joint_feedback.f2)>m_capture_force*m_capture_force) 
+	{
+		b_failed=true;
+		dJointDestroy(m_joint);
+		m_joint=NULL;
+	}
 }

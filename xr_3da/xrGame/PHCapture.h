@@ -18,6 +18,7 @@ protected:
 CPHCharacter		*m_character;
 CPhysicsElement		*m_taget;
 dJointID			m_joint;
+dJointFeedback		m_joint_feedback;
 Fvector				m_capture_pos;
 float				m_pull_force;
 float				m_capture_force;
