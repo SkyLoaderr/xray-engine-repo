@@ -316,7 +316,7 @@ void CPHElement::getQuaternion(Fquaternion& quaternion)
 void CPHElement::setQuaternion(const Fquaternion& quaternion)
 {
 	if(!bActive) return;
-	dQuaternion q={-quaternion.x,quaternion.y,quaternion.z,quaternion.w};
+	dQuaternion q={-quaternion.w,quaternion.x,quaternion.y,quaternion.z};
 	dBodySetQuaternion(m_body,q);
 }
 void CPHElement::GetGlobalPositionDynamic(Fvector* v)
