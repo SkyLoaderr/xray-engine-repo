@@ -19,6 +19,8 @@ function main ()
 	stalker:script (true, s_test.script_name ())
 	action (stalker, object (torch, object.activate), cond (cond.time_end, time_infinite))
 
+	wait (5000)
+
 	while stalker:action () do wait () end
 
 	stalker:script (false, s_test.script_name ())
