@@ -128,6 +128,7 @@ void CPHWorld::Destroy(){
 	ContactEffectors.clear();
 	dCloseODE();
 	dCylinderClassUser=-1;
+	dRayMotionsClassUser=-1;
 	Device.seqFrameMT.Remove	(this);
 	Device.seqFrame.Remove		(this);
 }
