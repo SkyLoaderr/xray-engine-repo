@@ -4,8 +4,8 @@
 void CDetailManager::cache_Initialize	()
 {
 	// Centroid
-	cache_cx			= 0;
-	cache_cz			= 0;
+	cache_cx			= 1000;
+	cache_cz			= 1000;
 
 	// Initialize cache-grid
 	Slot*	slt = cache_pool;
@@ -15,6 +15,7 @@ void CDetailManager::cache_Initialize	()
 			cache			[i][j]	= slt;
 			cache_Task		(j,i,slt);
 		}
+	R_ASSERT	(cache_Validate());
 }
 
 CDetailManager::Slot*	CDetailManager::cache_Query	(int r_x, int r_z)
@@ -52,16 +53,32 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 	}
 }
 
+
+BOOL	CDetailManager::cache_Validate	()
+{
+	for (int z=0; z<dm_cache_line; z++)
+	{
+		for (int x=0; x<dm_cache_line; x++)
+		{
+			int		w_x		= cg2w_X(x);
+			int		w_z		= cg2w_Z(z);
+			Slot*	D		= cache[z][x];
+
+			if (D->sx	!= w_x)	return FALSE;
+			if (D->sz	!= w_z)	return FALSE;
+		}
+	}
+	return TRUE;
+}
+
 void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 {
 	// *****	Cache shift
-	int		c_x		= cache_cx;
-	int		c_z		= cache_cz;
-	while (c_x!=v_x)
+	while (cache_cx!=v_x)
 	{
-		if (v_x>c_x)	{
+		if (v_x>cache_cx)	{
 			// shift matrix to left
-			c_x ++;
+			cache_cx ++;
 			for (int z=0; z<dm_cache_line; z++)
 			{
 				Slot*	S	= cache[z][0];
@@ -69,9 +86,10 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 				cache		[z][dm_cache_line-1] = S;
 				cache_Task	(dm_cache_line-1, z, S);
 			}
+			R_ASSERT	(cache_Validate());
 		} else {
 			// shift matrix to right
-			c_x --;
+			cache_cx --;
 			for (int z=0; z<dm_cache_line; z++)
 			{
 				Slot*	S	= cache[z][dm_cache_line-1];
@@ -79,13 +97,14 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 				cache		[z][0]	= S;
 				cache_Task	(0,z,S);
 			}
+			R_ASSERT	(cache_Validate());
 		}
 	}
-	while (c_z!=v_z)	
+	while (cache_cz!=v_z)	
 	{
-		if (v_z>c_z)	{
+		if (v_z>cache_cz)	{
 			// shift matrix down a bit
-			c_z ++;
+			cache_cz ++;
 			for (int x=0; x<dm_cache_line; x++)
 			{
 				Slot*	S	= cache[dm_cache_line-1][x];
@@ -93,9 +112,10 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 				cache		[0][x]	= S;
 				cache_Task	(x,0,S);
 			}
+			R_ASSERT	(cache_Validate());
 		} else {
 			// shift matrix up
-			c_z --;
+			cache_cz --;
 			for (int x=0; x<dm_cache_line; x++)
 			{
 				Slot*	S	= cache[0][x];
@@ -103,10 +123,9 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 				cache		[dm_cache_line-1][x]	= S;
 				cache_Task	(x,dm_cache_line-1,S);
 			}
+			R_ASSERT	(cache_Validate());
 		}
 	}
-	cache_cx	= c_x;
-	cache_cz	= c_z;
 
 	// Task performer
 	for (int iteration=0; cache_task.size() && (iteration<limit); iteration++)

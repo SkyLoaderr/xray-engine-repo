@@ -183,6 +183,7 @@ BOOL	CDebugKernel::Stop()
 //------------------------------------------------------------------------------------------------------------------------
 void    CDebugKernel::Update()
 {
+	/*
 	__try
 	{
 		RaiseException(0, 0, 0, NULL);
@@ -190,6 +191,7 @@ void    CDebugKernel::Update()
 	__except(UpdateStack(GetExceptionInformation()))
 	{
 	}
+	*/
 }
 int	CDebugKernel::LogStack(EXCEPTION_POINTERS *pex)
 {
