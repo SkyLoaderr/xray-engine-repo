@@ -457,6 +457,9 @@
 					RelativePath="Actor_Events.cpp">
 				</File>
 				<File
+					RelativePath="Actor_Feel.cpp">
+				</File>
+				<File
 					RelativePath=".\Actor_Flags.h">
 				</File>
 				<File
@@ -1144,6 +1147,9 @@
 			</File>
 			<File
 				RelativePath="xrServer_process_event.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_process_event_ownership.cpp">
 			</File>
 			<File
 				RelativePath="xrServer_process_spawn.cpp">

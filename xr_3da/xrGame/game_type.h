@@ -21,3 +21,5 @@ extern int		g_fraglimit;
 extern int		g_timelimit;
 extern DWORD	g_flags;
 #endif
+
+// Assault - team0 must capture target (setted as team1)

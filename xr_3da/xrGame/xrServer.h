@@ -53,8 +53,7 @@ private:
 	void					Process_spawn			(NET_Packet& P, DPNID sender);
 	void					Process_update			(NET_Packet& P, DPNID sender);
 	void					Process_event			(NET_Packet& P, DPNID sender);
-	void					Process_ownership		(NET_Packet& P, DPNID sender);
-	void					Process_rejecting		(NET_Packet& P, DPNID sender);
+	void					Process_event_ownership	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
 
 	xrClientData*			SelectBestClientToMigrateTo		(xrServerEntity* E);
 

@@ -270,11 +270,12 @@ void CSound::SetMinMax		(float min, float max)
 
 void CSound::Play			(sound* P, BOOL bLoop, int LoopCount)
 {
-	R_ASSERT	(dwState == stStopped);
-	owner		= P;
-	bMustPlay	= true;
-	iLoopCount	= LoopCount;
-	bMustLoop	= bLoop?((1==LoopCount)?FALSE:TRUE):FALSE;
+	R_ASSERT			(dwState == stStopped);
+	owner				= P;
+	bMustPlay			= true;
+	iLoopCount			= LoopCount;
+	bMustLoop			= bLoop?((1==LoopCount)?FALSE:TRUE):FALSE;
+	bNeedUpdate			= true;
 }
 
 void CSound::Stop			()

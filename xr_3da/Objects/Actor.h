@@ -51,8 +51,15 @@ public:
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 	};
 protected:
-	// weapons
+	// Weapons
 	CWeaponList*			Weapons;
+
+	// Respawning after DIE
+	BOOL					die_bWantRespawn;
+	BOOL					die_bRespawned;
+	float					die_hide;
+	float					die_respawn_delay;
+	float					die_respawn_auto;
 
 	// media
 	BOOL					bStep;
@@ -102,8 +109,6 @@ protected:
 
 	DWORD					patch_frame;
 	Fvector					patch_position;
-
-	float					die_hide;
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
 	static void	__stdcall ShoulderCallback(CBoneInstance*);

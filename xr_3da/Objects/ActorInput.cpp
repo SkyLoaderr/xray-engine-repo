@@ -75,7 +75,7 @@ void CActor::OnKeyboardRelease(int cmd)
 	} else if (kWPN_FIRE == cmd)
 	{
 		// We want to respawn
-		Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
+		die_bWantRespawn	= TRUE;
 	}
 }
 

@@ -13,7 +13,9 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-const DWORD    patch_frames = 50;
+const DWORD		patch_frames	= 50;
+const float		respawn_delay	= 1.f;
+const float		respawn_auto	= 7.f;
 
 // breakpoints
 #include "..\xr_input.h"
@@ -295,60 +297,15 @@ void CActor::Die	( )
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
-	die_hide				= 1.f;
 
 	// Drop active weapon
 	if (Local())			Weapons->weapon_die	();
-}
 
-void CActor::feel_touch_new				(CObject* O)
-{
-	if (!g_Alive())		return;
-
-	NET_Packet	P;
-
-	// Test for weapon
-	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-	if (W)
-	{
-		// Search if we have similar type of weapon
-		CWeapon* T = Weapons->getWeaponByWeapon	(W);
-		if (T)	
-		{
-			// We have similar weapon - just get ammo out of it
-			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
-			P.w_u16		(u16(W->ID()));
-			u_EventSend	(P);
-			return;
-		} else {
-			// We doesn't have similar weapon - pick up it
-			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-			P.w_u16		(u16(W->ID()));
-			u_EventSend	(P);
-			return;
-		}
-		return;
-	}
-
-	// Test for GAME-specific events
-	switch (GAME)
-	{
-	case GAME_ASSAULT:
-		{
-			CTargetAssault*		T	= dynamic_cast<CTargetAssault*>	(O);
-			if (g_Team() && T)
-			{
-				// Target acomplished
-				u_EventGen	(P,GEG_ASSAULT_ACOMPLISHED,ID());
-				u_EventSend	(P);
-				return;
-			}
-		}
-	}
-}
-
-void CActor::feel_touch_delete	(CObject* O)
-{
+	die_hide				= 1.f;
+	die_bWantRespawn		= FALSE;
+	die_bRespawned			= FALSE;
+	die_respawn_delay		= respawn_delay;
+	die_respawn_auto		= respawn_auto;
 }
 
 void CActor::g_Physics			(Fvector& accel, float jump, float dt)
@@ -435,6 +392,7 @@ void CActor::UpdateCL()
 	// Analyze Die-State
 	if (!g_Alive())			
 	{
+		setEnabled	(FALSE);
 		if (die_hide>0)		
 		{
 			float dt			=	Device.fTimeDelta;
@@ -454,6 +412,25 @@ void CActor::UpdateCL()
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
 				u_EventSend			(P);
+			}
+		}
+
+		if (Local() && !die_bRespawned)
+		{
+			// Request respawn (?)
+			die_respawn_delay	-=	dt;
+			die_respawn_auto	-=	dt;
+
+			if (die_bWantRespawn && (die_respawn_delay<0))
+			{
+				// Manual respawn
+				die_bRespawned		= TRUE;
+				Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
+			} else if (die_respawn_auto<0)
+			{
+				// Auto-respawn
+				die_bRespawned		= TRUE;
+				Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
 			}
 		}
 	}
@@ -821,10 +798,10 @@ void CActor::g_PerformDrop	( )
 	if (0==O)				return;
 
 	// We doesn't have similar weapon - pick up it
-	NET_Packet		P;
-	u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
-	P.w_u16			(u16(O->ID()));
-	u_EventSend		(P);
+	NET_Packet				P;
+	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+	P.w_u16					(u16(O->ID()));
+	u_EventSend				(P);
 }
 
 void CActor::g_WeaponBones	(int& L, int& R)
@@ -834,7 +811,7 @@ void CActor::g_WeaponBones	(int& L, int& R)
 	R		=	Weapons->m_iACTboneR;
 }
 
-void CActor::Statistic	( )
+void CActor::Statistic		()
 {
 	//-------------------------------------------------------------------
 	pApp->pFont->OutSet(0,0);
