@@ -93,7 +93,7 @@ void	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	OPCC.NbVerts	= verts_count;
 	OPCC.Tris		= (unsigned*)temp_tris;
 	OPCC.Verts		= (Point*)verts;
-	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS;
+	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_BESTAXIS; //SPLIT_SPLATTERPOINTS;
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
 	tree			= new OPCODE_Model;
