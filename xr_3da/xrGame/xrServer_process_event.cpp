@@ -276,7 +276,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			if (e_dest->m_bALifeControl && ai().get_alife()) {
 				game_sv_Single	*_game = dynamic_cast<game_sv_Single*>(game);
 				VERIFY			(_game);
-				_game->alife().release	(e_dest,false);
+				if (_game->alife().object(e_dest,true))
+					_game->alife().release	(e_dest,false);
 			}
 
 			if (game) game->OnDestroyObject	(e_dest->ID);
