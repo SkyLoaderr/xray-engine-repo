@@ -10,6 +10,7 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 	return	d1<d2;
 }
 
+int							emapslice		= 0;
 void CRender::Render		()
 {
 	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);

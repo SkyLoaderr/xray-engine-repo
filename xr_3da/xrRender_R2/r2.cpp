@@ -59,12 +59,13 @@ static class cl_lhdrscale		: public R_constant_setup		{	virtual void setup	(R_co
 	RCache.set_c				(C,	dr,dr,dr,dr);
 }}	binder_lhdrscale;
 
-extern	float					emapslice;
+int								emapslice;
 static class cl_emap			: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
 	// x=clip factor, y=position shift
-	float	shift				= emapslice;
-	float	clip				= emapslice/0.05f;	// 5cm
+	float	factor				= float(emapslice)/float(ps_r2_emap_slices);
+	float	shift				= factor*ps_r2_emap_height;
+	float	clip				= factor;				// 5cm
 	RCache.set_c				(C,	clip,shift,shift,shift);
 }}	binder_emap;
 
