@@ -8,8 +8,14 @@ void CRenderTarget::accum_spot	(light* L)
 
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
-	ref_shader		shader		= L->s_spot;
-	if (!shader)	shader		= s_accum_spot;
+	ref_shader			shader;
+	if (IRender_Light::OMNIPART == L->flags.type)	{
+			shader		= L->s_point;
+		if (!shader)	shader		= s_accum_point;
+	} else {
+			shader		= L->s_spot;
+		if (!shader)	shader		= s_accum_spot;
+	}
 
 	BOOL	bIntersect			= FALSE; //enable_scissor(L);
 	{
