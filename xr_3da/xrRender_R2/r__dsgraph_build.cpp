@@ -252,7 +252,7 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 			// Calculate distance to it's center
 			Fvector							Tpos;
 			val_pTransform->transform_tiny	(Tpos, pVisual->vis.sphere.P);
-			r_dsgraph_insert_dynamic				(pVisual,Tpos);
+			r_dsgraph_insert_dynamic		(pVisual,Tpos);
 		}
 		return;
 	}
@@ -271,6 +271,7 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				#pragma todo("serious performance problem here")
 				xr_vector<IRender_Visual*>	visuals;
 				i_it->GetVisuals			(visuals);
 				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
@@ -349,6 +350,7 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				#pragma todo("serious performance problem here")
 				xr_vector<IRender_Visual*>	visuals;
 				i_it->GetVisuals			(visuals);
 				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++){
@@ -417,6 +419,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			// Add all children, doesn't perform any tests
 			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
 			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				#pragma todo("serious performance problem here")
 				xr_vector<IRender_Visual*>	visuals;
 				i_it->GetVisuals			(visuals);
 				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++){
