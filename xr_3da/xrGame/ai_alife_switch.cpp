@@ -21,7 +21,7 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
 	if (!tpALifeDynamicObject->m_bOnline) {
-		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 	}
 	else

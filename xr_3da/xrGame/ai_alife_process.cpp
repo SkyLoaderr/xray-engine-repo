@@ -15,26 +15,11 @@
 void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 {
 	// processing online/offline switches
-	D_OBJECT_PAIR_IT					I = 0;
+	D_OBJECT_PAIR_IT					I = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID);;
 	u64									qwStartTime	= CPU::GetCycleCount();
 	u64									l_qwMaxProcessTime = m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
 	R_ASSERT2							(m_tpCurrentLevel,"There is no actor in the game!");
-	m_bSwitchChanged					= true;
 	for (int i=1; ; i++) {
-		if (m_bSwitchChanged) {
-			I							= m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID);
-			R_ASSERT2					(I != m_tpCurrentLevel->end(),"Cannot find specified object on the current level map");
-		}
-		else {
-			if (++I == m_tpCurrentLevel->end()) {
-				// this map cannnot be empty, because at least actor must belong to it
-				R_ASSERT2				(!m_tpCurrentLevel->empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
-				m_tNextFirstSwitchObjectID = (*m_tpCurrentLevel->begin()).second->ID;
-				m_bSwitchChanged		= true;
-				continue;
-			}
-		}
-		
 		m_bSwitchChanged				= false;
 		if ((*I).second->m_qwSwitchCounter == m_qwCycleCounter) {
 #ifdef ALIFE_LOG
@@ -43,8 +28,23 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 			return;
 		}
 
+		_OBJECT_ID						l_tSaveObjectID = m_tNextFirstSwitchObjectID;
 		(*I).second->m_qwSwitchCounter	= m_qwCycleCounter;
 		ProcessOnlineOfflineSwitches	((*I).second);
+		
+		if (m_bSwitchChanged) {
+			I							= m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID);
+			R_ASSERT2					(I != m_tpCurrentLevel->end(),"Cannot find specified object on the current level map");
+		}
+		I++;
+		if (!m_bSwitchChanged || (l_tSaveObjectID == m_tNextFirstSwitchObjectID))
+			if (I == m_tpCurrentLevel->end()) {
+				// this map cannnot be empty, because at least actor must belong to it
+				R_ASSERT2					(!m_tpCurrentLevel->empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
+				I							= m_tpCurrentLevel->begin();
+			}
+		m_tNextFirstSwitchObjectID		= (*I).first;
+
 		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 #ifdef ALIFE_LOG
 			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
@@ -59,23 +59,8 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 	u64							qwStartTime	= CPU::GetCycleCount();
 	u64							l_qwMaxProcessTime = m_qwMaxProcessTime - m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
 	if (m_tpScheduledObjects.size()) {
-		SCHEDULE_P_PAIR_IT		I = 0;
-		m_bUpdateChanged		= true;
+		SCHEDULE_P_PAIR_IT		I = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
 		for (int i=1; ; i++) {
-			if (m_bUpdateChanged) {
-				I							= m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
-				R_ASSERT2					(I != m_tpScheduledObjects.end(),"Cannot find specified object on the current level map");
-			}
-			else {
-				if (++I == m_tpScheduledObjects.end()) {
-					// this map cannnot be empty, because at least actor must belong to it
-					R_ASSERT2				(!m_tpScheduledObjects.empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
-					m_tNextFirstProcessObjectID = (*m_tpScheduledObjects.begin()).second->ID;
-					m_bUpdateChanged		= true;
-					continue;
-				}
-			}
-			
 			m_bUpdateChanged				= false;
 			if ((*I).second->m_qwUpdateCounter == m_qwCycleCounter) {
 	#ifdef ALIFE_LOG
@@ -84,8 +69,28 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 				return;
 			}
 
+			_OBJECT_ID						l_tSaveObjectID = m_tNextFirstSwitchObjectID;
+			
 			(*I).second->m_qwUpdateCounter	= m_qwCycleCounter;
 			(*I).second->Update				();
+
+			if (m_bUpdateChanged) {
+				I							= m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
+				R_ASSERT2					(I != m_tpScheduledObjects.end(),"Cannot find specified object on the current level map");
+			}
+			I++;
+			if (!m_bUpdateChanged || (l_tSaveObjectID == m_tNextFirstSwitchObjectID))
+				if (I == m_tpScheduledObjects.end()) {
+					I						= m_tpScheduledObjects.begin();
+					if (I == m_tpScheduledObjects.end()) {
+#ifdef ALIFE_LOG
+						Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+#endif
+						return;
+					}
+				}
+			m_tNextFirstProcessObjectID		= (*I).first;
+
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 	#ifdef ALIFE_LOG
 				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());

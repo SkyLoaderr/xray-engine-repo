@@ -259,6 +259,9 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 
 void CSE_ALifeGraphRegistry::vfAddObjectToCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
+#ifdef ALIFE_LOG
+	Msg("[LSS] : adding object [%s][%d] to current level",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
+#endif
 	D_OBJECT_PAIR_IT			I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID);
 	R_ASSERT2					(I == m_tpCurrentLevel->end(),"Specified object has been already found in the current level map");
 	m_tpCurrentLevel->insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
@@ -269,6 +272,9 @@ void CSE_ALifeGraphRegistry::vfAddObjectToCurrentLevel(CSE_ALifeDynamicObject *t
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
+#ifdef ALIFE_LOG
+	Msg("[LSS] : removing object [%s][%d] from current level",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
+#endif
 	D_OBJECT_PAIR_IT			I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
 	R_ASSERT2					(I != m_tpCurrentLevel->end(),"Specified object hasn't been already found in the current level map");
 	if (m_tNextFirstSwitchObjectID == tpALifeDynamicObject->ID) {
@@ -357,6 +363,9 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 #endif
 	if (bALifeRequest)
 		vfRemoveObjectFromGraphPoint	(tpALifeItem,tGraphID);
+	else
+		if (m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeItem->ID) != m_tpGraphObjects[tGraphID].tpObjects.end())
+			vfRemoveObjectFromCurrentLevel(tpALifeItem);
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
@@ -378,6 +387,9 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 #endif
 	if (bALifeRequest)
 		vfAddObjectToGraphPoint	(tpALifeItem,tGraphID);
+	else
+		if (m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeItem->ID) == m_tpGraphObjects[tGraphID].tpObjects.end())
+			vfAddObjectToCurrentLevel(tpALifeItem);
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
