@@ -34,10 +34,9 @@ public:
 	
 	void			Allocate()
 	{
-		DWORD size	= Width()*Height();
+		DWORD size	= Width()*Height()*sizeof(ImplicitLumel);
 		lmap		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(lmap);
 		temp		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(temp);
-		size		*= sizeof(ImplicitLumel);
 		ZeroMemory	(lmap,size);
 		ZeroMemory	(temp,size);
 	}
