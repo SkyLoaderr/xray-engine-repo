@@ -28,11 +28,11 @@ void CSun::OnMove( ){
 }
 
 void CSun::RenderSource( ) {
-	LensFlare.Render	(true,false);
+	LensFlare.Render	(true,false,false);
 }
 
 void CSun::RenderFlares( ) {
-	LensFlare.Render	(false,true);
+	LensFlare.Render	(false,true,true);
 }
 
 void CSun::Update() 
