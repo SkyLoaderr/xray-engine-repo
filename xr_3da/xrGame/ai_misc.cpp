@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "WayPointDef.h"
+#include "LevelGameDef.h"
 #include "ai_space.h"
 #include "ai_pathnodes.h"
 
