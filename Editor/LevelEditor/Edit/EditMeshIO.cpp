@@ -124,7 +124,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
     }
 
     R_ASSERT(F.FindChunk(EMESH_CHUNK_SFACE));
-    char surf_name[MAX_OBJ_NAME];
+    string128 surf_name;
     DWORD sface_cnt		= F.Rword(); // surface-face count
     for (DWORD sp_i=0; sp_i<sface_cnt; sp_i++){
         F.RstringZ		(surf_name);

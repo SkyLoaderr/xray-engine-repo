@@ -16,6 +16,7 @@ class 	CCustomMotion;
 class	CBone;
 class	Mtl;
 struct	FSChunkDef;
+struct	st_ObjectDB;
 
 class CSurface
 {
@@ -152,6 +153,7 @@ public:
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
     IC BoneIt		FirstBone				()	{return m_Bones.begin();}
     IC BoneIt		LastBone				()	{return m_Bones.end();}
+	IC BoneVec&		Bones					()	{return m_Bones;}
     IC int			BoneCount				()	{return m_Bones.size();}
     IC CBone*		GetBone					(DWORD idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}
     void			GetBoneWorldTransform	(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix);

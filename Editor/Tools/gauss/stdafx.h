@@ -148,6 +148,20 @@ DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
 DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
 DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 
+struct st_Version{
+    union{
+        struct{
+            int f_age;
+            int res0;
+        };
+        __int64 ver;
+    };
+    st_Version   (){reset();}
+    int size	(){return sizeof(st_Version);}
+    bool operator == (st_Version& v)	{return v.f_age==f_age;}
+    void reset	(){ver=0;}
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

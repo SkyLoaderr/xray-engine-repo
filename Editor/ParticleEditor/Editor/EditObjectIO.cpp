@@ -60,10 +60,13 @@ void CEditableObject::SaveObject(const char* fname){
     Save(F);
     F.close_chunk();
 
-	AnsiString save_nm = ChangeFileExt(fname,".object");
-    FS.VerifyPath(save_nm.c_str());
+	string256 save_nm,dir,path,nm;
+    _splitpath( fname, dir, path, nm, 0 );
+	strconcat(save_nm,dir,path,nm,".object");
 
-    F.SaveTo(save_nm.c_str(),0);
+    FS.VerifyPath(save_nm);
+
+    F.SaveTo(save_nm,0);
 	m_LoadName = save_nm;
 }
 

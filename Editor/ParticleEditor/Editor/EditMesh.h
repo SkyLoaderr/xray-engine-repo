@@ -31,7 +31,7 @@ struct st_VMapPt{
 class st_VMap{
     FloatVec    	vm;			// u,v - координаты или weight
 public:
-	char			name[MAX_OBJ_NAME];	// vertex uv map name
+	string128		name;		// vertex uv map name
     BYTE			dim;
     EVMType			type;
 public:
@@ -113,7 +113,7 @@ class CEditableMesh {
     friend class SceneBuilder;
     friend class CDetail;
 
-	char m_Name[MAX_OBJ_NAME];
+	string128		m_Name;
 
     CEditableObject*	m_Parent;
 
@@ -216,6 +216,9 @@ public:
 	bool			ExtractTexName			(char *dest, Texmap *map);
 	bool			ExtractMaterial			(CSurface *surf, StdMat *smtl);
 	bool			Convert					(INode *node);
+#endif
+#ifdef _LWO_EXPORT
+	st_VMap*		FindVMapByName			(const char* name, EVMType t);
 #endif
 };
 //----------------------------------------------------

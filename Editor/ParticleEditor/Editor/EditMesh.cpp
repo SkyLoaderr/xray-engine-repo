@@ -231,3 +231,13 @@ void CEditableMesh::DumpAdjacency(){
     }
 }
 
+//----------------------------------------------------------------------------
+
+#ifdef _LWO_EXPORT
+st_VMap* CEditableMesh::FindVMapByName(const char* name, EVMType t){
+	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
+		if ((vm_it->type==t)&&(stricmp(vm_it->name,name)==0)) return vm_it;
+	}
+	return 0;
+}
+#endif
