@@ -11,7 +11,7 @@
 #define VERIFY(expr) if (!(expr)) Debug.fail(#expr,__FILE__, __LINE__)
 #define VERIFY2(expr, e2) if (!(expr)) Debug.fail(#expr,e2,__FILE__, __LINE__)
 #define VERIFY3(expr, e2, e3) if (!(expr)) Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-#define CHK_DX(a) { HRESULT hr = expr; if (FAILED(hr)) Debug.error(hr,#expr,__FILE__, __LINE__); }
+#define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) Debug.error(hr,#expr,__FILE__, __LINE__); }
 #else
 #define NODEFAULT __assume(0)
 #define VERIFY(expr)
