@@ -9,9 +9,9 @@ xr_vector<int>						task_pool;
 class CLMThread : public CThread
 {
 public:
-	HASH							H;
-	CDB::COLLIDER					DB;
-	xr_vector<R_Light>				LightsSelected;
+	HASH			H;
+	CDB::COLLIDER	DB;
+	base_lighting	LightsSelected;
 public:
 	CLMThread	(u32 ID) : CThread(ID)
 	{
@@ -221,26 +221,26 @@ void CBuild::LightVertex()
 	clMsg	("%d/%d selected.",VL_faces->size(),g_faces.size());
 
 	// Start threads, wait, continue --- perform all the work
-	Status					("Calculating...");
+	Status				("Calculating...");
 	u32	start_time		= timeGetTime();
-	CThreadManager			Threads;
+	CThreadManager		Threads;
 	u32	stride			= VL_faces->size()/NUM_THREADS;
 	u32	last			= VL_faces->size()-stride*(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 
 	// Wait other threads
-	Threads.wait			();
+	Threads.wait		();
 	clMsg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
 	// Process all groups
-	Status					("Transluenting...");
+	Status				("Transluenting...");
 	for (mapVertIt it=g_trans->begin(); it!=g_trans->end(); it++)
 	{
 		// Unique
 		vecVertex&	VL		= it->second;
-		std::sort	(VL.begin(),VL.end());
-		VL.erase	(std::unique(VL.begin(),VL.end()),VL.end());
+		std::sort		(VL.begin(),VL.end());
+		VL.erase		(std::unique(VL.begin(),VL.end()),VL.end());
 
 		// Calc summary color
 		Fcolor		C;
