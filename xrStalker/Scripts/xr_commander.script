@@ -497,9 +497,7 @@ end
 
 function action_commander:exec_walk_path()
     if not self.sub_act then
-    	printf( "-------------" )
         if not xr_state.change_state( self.object, 0 ) then
-        	printf( "=============" )
             self.object:clear_animations()
 
             self.object:set_node_evaluator    ()
@@ -593,7 +591,6 @@ function action_commander:exec_stretch_himself()
         end
     else
         if not xr_state.change_state( self.object, 0 ) then
-        	printf( "=-=-=-=-=---=-=-=-=--" )
             self.object:clear_animations()
             self:walk_to_pos( self.a.way, "near_door" )
 --            printf( "[commander] : stretch_himself" )
