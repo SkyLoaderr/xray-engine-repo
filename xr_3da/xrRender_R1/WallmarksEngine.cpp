@@ -248,7 +248,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	}
 
 	// no similar - register _new_
-	slot->static_items.push_back(W);
+	if (W->bounds.R < 2.f)	slot->static_items.push_back(W);
 }
 
 void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
