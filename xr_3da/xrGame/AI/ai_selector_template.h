@@ -275,7 +275,7 @@ public:
 				m_fResult = 0.f;
 				m_tEnemySurroundDirection.set(0,0,0);
 				m_tCurrentPosition = getAI().tfGetNodeCenter(m_tpCurrentNode);
-				m_iAliveMemberCount = m_taMemberPositions.size();
+				m_iAliveMemberCount = (int)m_taMemberPositions.size();
 				m_fFireDispersionAngle = PI/10;
 			}
 

@@ -199,7 +199,7 @@ public:
 
 	float					GetPrecision		();
 	IC LPCSTR				GetName				()				{	return m_WpnName;							}
-	IC int					GetAmmoElapsed		()				{	return m_magazine.size()/*iAmmoElapsed*/;						}
+	IC int					GetAmmoElapsed		()				{	return int(m_magazine.size())/*iAmmoElapsed*/;						}
 	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
 
 	// @@@ WT: Subject to delete

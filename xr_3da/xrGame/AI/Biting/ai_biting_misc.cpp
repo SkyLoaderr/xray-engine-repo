@@ -297,7 +297,7 @@ void CAI_Biting::vfUpdateParameters()
 		pitch1			= angle_normalize_signed(pitch1);
 		yaw2			= angle_normalize_signed(yaw2);
 		pitch2			= angle_normalize_signed(pitch2);
-		if (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || false)))
+		if (0 != (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || false))))
 			break;
 	}
 
@@ -305,9 +305,9 @@ void CAI_Biting::vfUpdateParameters()
 	H = false;
 	getAI().m_tpCurrentMember = this;
 	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
-		if (!(getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
+		if (0 == (getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
 			continue;
-		if ((E || F || G) && (H = !!getAI().pfExpediency.dwfGetDiscreteValue(2)))
+		if ((E || F || G) && (0 != (H = !!getAI().pfExpediency.dwfGetDiscreteValue(2))))
 			break;
 		else
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)

@@ -140,7 +140,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		m_tpaTravelPath.clear		();
 		m_tpaPointNodes.clear		();
 
-		u32							N = AI_Path.Nodes.size();
+		u32							N = (u32)AI_Path.Nodes.size();
 		if (!N) {
 			Msg("! Node list is empty!");
 			AI_Path.Nodes.clear();
@@ -187,7 +187,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		}
 
 		//m_tpaDeviations.resize	(N = m_tpaPoints.size());
-		N = m_tpaPoints.size();
+		N = (u32)m_tpaPoints.size();
 
 		AI_Path.TravelPath.clear();
 		AI_Path.Nodes.clear		();
@@ -198,7 +198,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			m_tpaLine.push_back(m_tpaPoints[i-1]);
 			m_tpaLine.push_back(m_tpaPoints[i]);
 			getAI().bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
-			u32 n = m_tpaTravelPath.size();
+			u32 n = (u32)m_tpaTravelPath.size();
 			for (u32 j= 0; j<n; j++) {
 				T.P = m_tpaTravelPath[j];
 				AI_Path.TravelPath.push_back(T);
@@ -240,7 +240,7 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 	EPathType tPathType = m_tPathType;		// сохраняем текущий тип пути
 
 	if (m_tPathType == ePathTypeStraightCriteria) {
-		(::Random.randI(0,100) < m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
+		(::Random.randI(0,100) < (int)m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
 													  		 m_tPathType = ePathTypeCriteria ;
 	}
 

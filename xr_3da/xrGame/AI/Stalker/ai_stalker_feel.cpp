@@ -50,57 +50,57 @@ bool CAI_Stalker::bfIf_I_SeePosition(Fvector tPosition)
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 {
 	return(true);
-//	if (Level().iGetKeyState(DIK_RCONTROL))
-//		return(false);
-#ifdef LOG_PARAMETERS
-//	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Levsssssssssssssssssssssel().iGetKeyState(DIK_LALT);
-	int			iLogParameters = (g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) ? (Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0) : 0;
-	string4096	S = "";
-#endif
-	float fResult = 0.f;
-	
-	// computing maximum viewable distance in the specified direction
-	float fDistance = vPosition.distance_to(tpEntity->Position()), yaw, pitch;
-	Fvector tDirection;
-	tDirection.sub(tpEntity->Position(),vPosition);
-	tDirection.getHP(yaw,pitch);
-
-	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - r_current.yaw),angle_normalize_signed(pitch - r_current.pitch)));
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
-	
-	// computing distance weight
-	fResult += fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection);
-	
-	// computing movement speed weight
-	float fSpeed = 0;
-	if (tpEntity->ps_Size() > 1) {
-		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-		if (dwTime < m_dwMovementIdleTime) {
-			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition.distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition)/dwTime;
-			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
-		}
-	}
-	
-	// computing my ability to view the enemy
-	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
-	
-	// computing lightness weight
-	fResult += (1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight;
-	
-#ifdef LOG_PARAMETERS
-	if ((g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) && (fResult >= m_fVisibilityThreshold))
-		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
-	Msg("**********");
-	Msg("Distance : %f [%f]",fDistance, fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection));
-	Msg("MySpeed  : %f [%f]",m_fCurSpeed, m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight);
-	Msg("Speed    : %f [%f]",fSpeed, fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight);
-	Msg("Shadow   : %f [%f]",float(tpEntity->AI_Node->light)/255.f,(1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight);
-	Msg("Result   : %f [%f]",fResult,m_fVisibilityThreshold);
-//	if (iLogParameters) {
-//		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+////	if (Level().iGetKeyState(DIK_RCONTROL))
+////		return(false);
+//#ifdef LOG_PARAMETERS
+////	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Levsssssssssssssssssssssel().iGetKeyState(DIK_LALT);
+//	int			iLogParameters = (g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) ? (Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0) : 0;
+//	string4096	S = "";
+//#endif
+//	float fResult = 0.f;
+//	
+//	// computing maximum viewable distance in the specified direction
+//	float fDistance = vPosition.distance_to(tpEntity->Position()), yaw, pitch;
+//	Fvector tDirection;
+//	tDirection.sub(tpEntity->Position(),vPosition);
+//	tDirection.getHP(yaw,pitch);
+//
+//	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - r_current.yaw),angle_normalize_signed(pitch - r_current.pitch)));
+//	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
+//	
+//	// computing distance weight
+//	fResult += fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection);
+//	
+//	// computing movement speed weight
+//	float fSpeed = 0;
+//	if (tpEntity->ps_Size() > 1) {
+//		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
+//		if (dwTime < m_dwMovementIdleTime) {
+//			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition.distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition)/dwTime;
+//			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
+//		}
 //	}
-#endif
-	return(fResult >= m_fVisibilityThreshold);
+//	
+//	// computing my ability to view the enemy
+//	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
+//	
+//	// computing lightness weight
+//	fResult += (1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight;
+//	
+//#ifdef LOG_PARAMETERS
+//	if ((g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) && (fResult >= m_fVisibilityThreshold))
+//		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
+//	Msg("**********");
+//	Msg("Distance : %f [%f]",fDistance, fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection));
+//	Msg("MySpeed  : %f [%f]",m_fCurSpeed, m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight);
+//	Msg("Speed    : %f [%f]",fSpeed, fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight);
+//	Msg("Shadow   : %f [%f]",float(tpEntity->AI_Node->light)/255.f,(1 - float(tpEntity->AI_Node->light)/255.f)*m_fShadowWeight);
+//	Msg("Result   : %f [%f]",fResult,m_fVisibilityThreshold);
+////	if (iLogParameters) {
+////		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+////	}
+//#endif
+//	return(fResult >= m_fVisibilityThreshold);
 }
 
 void CAI_Stalker::SetDirectionLook()
@@ -438,7 +438,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 				}
 			if (bFound) {
 				bFound = false;
-				float yaw1, pitch1;
+				float yaw1 = 0, pitch1 = 0;
 				CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
 				if (tpCustomMonster) {
 					yaw1		= -tpCustomMonster->r_current.yaw;
@@ -490,7 +490,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
 						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : -1;
 						m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
-						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Fvector(Position)))
+						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Position))
 							m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
 					}
 				if (j >= (int)m_tpaDynamicSounds.size()) {

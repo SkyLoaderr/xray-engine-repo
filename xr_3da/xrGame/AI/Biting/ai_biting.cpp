@@ -29,7 +29,7 @@ void CAI_Biting::Init()
 	m_tCurGP						= _GRAPH_ID(-1);
 	m_tNextGP						= _GRAPH_ID(-1);
 	m_fGoingSpeed					= 0.f;
-	m_dwTimeToChange				= 0.f;
+	m_dwTimeToChange				= 0;
 	
 	m_tEnemy.Enemy					= 0;
 	m_tSavedEnemy					= 0;

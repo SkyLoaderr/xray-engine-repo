@@ -128,7 +128,7 @@ public:
 				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
 	}
 	
-	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition)
+	IC bool bfInsideNode(const NodeCompressed *tpNode, const Fvector &tCurrentPosition)
 	{
 		Fvector tP0, tP1;
 		float fHalfSubNodeSize = m_header.size*.5f;

@@ -48,7 +48,7 @@ void CAI_Stalker::Init()
 	m_tpSavedEnemyNode				= 0;
 	m_dwSavedEnemyNodeID			= u32(-1);
 	m_tpItemsToTake.clear			();
-	m_dwItemToTakeIndex				= -1;
+	m_dwItemToTakeIndex				= u32(-1);
 	m_bActionStarted				= false;
 	m_iSoundIndex					= -1;
 	m_dwSoundTime					= 0;
@@ -56,7 +56,7 @@ void CAI_Stalker::Init()
 	m_dwLastRangeSearch				= 0;
 	m_dwRandomFactor				= 100;
 	m_dwInertion					= 20000;
-	m_dwParticularState				= -1;
+	m_dwParticularState				= u32(-1);
 
 	m_tMovementType					= eMovementTypeStand;
 	m_tPathState					= ePathStateSearchNode;
@@ -119,7 +119,7 @@ void CAI_Stalker::Die				()
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
 
-	sound							&S  = m_tpSoundDie[::Random.randI(m_tpSoundDie.size())];
+	sound							&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
 	S.play_at_pos					(this,vPosition);
 	S.feedback->set_volume			(1.f);
 	inherited::Die					();
@@ -278,7 +278,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 				R_ASSERT2(bone!=BONE_NONE,it->first);
 				CBoneInstance& B = PKinematics(pVisual)->LL_GetInstance(bone);
 				B.set_param(0,(float)atof(_GetItem(it->second,0,buf)));
-				B.set_param(1,atoi(_GetItem(it->second,1,buf)));
+				B.set_param(1,(float)atoi(_GetItem(it->second,1,buf)));
 			}
 		}
 	}
@@ -947,7 +947,7 @@ void CAI_Stalker::Update	( u32 DT )
 	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
-			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin();
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
 				m_inventory.Ruck((*I).m_pIItem);
@@ -961,7 +961,7 @@ void CAI_Stalker::Update	( u32 DT )
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				if ((I - B) != m_inventory.m_activeSlot)
+				if ((I - B) != (int)m_inventory.m_activeSlot)
 					m_inventory.Ruck((*I).m_pIItem);
 //			TIItemList &l_list = m_inventory.m_ruck;
 //			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)

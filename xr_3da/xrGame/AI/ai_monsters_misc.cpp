@@ -553,7 +553,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 
 bool bfIsAnyAlive(objVisible &VisibleEnemies)
 {
-	for (int i=0; i<VisibleEnemies.size(); i++) {
+	for (int i=0; i<(int)VisibleEnemies.size(); i++) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key);
 		if (tpEntityAlive && tpEntityAlive->g_Alive())
 			return(true);

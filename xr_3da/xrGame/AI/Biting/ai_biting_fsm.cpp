@@ -200,7 +200,7 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 				//if (!::Random.randI(1))  m_tStateFSM = eRestIdleTurn;
 			}
 			
-			m_dwActionStartTime = m_dwCurrentUpdate + ::Random.randF(5000.f,15000.f); // время брожения или стояния на месте
+			m_dwActionStartTime = m_dwCurrentUpdate + ::Random.randI(5000,15000); // время брожения или стояния на месте
 		}
 	}
 

@@ -89,13 +89,13 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		
 		SHurt	tHurt;
 		tHurt.dwTime	= Level().timeServer();
-		if (tHurt.tpEntity = dynamic_cast<CEntity*>(who))
+		if (0 != (tHurt.tpEntity = dynamic_cast<CEntity*>(who)))
 			vfUpdateHurt(tHurt);
 
 		feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 
 		// Play hit-sound
-		sound& S = m_tpSoundHit[::Random.randI(m_tpSoundHit.size())];
+		sound& S = m_tpSoundHit[::Random.randI((int)m_tpSoundHit.size())];
 		if (!S.feedback && g_Alive()) {
 			S.play_at_pos(this,eye_matrix.c);
 			S.feedback->set_volume(1.f);
@@ -188,13 +188,13 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		return;
 
 	if (m_tStateType == eStateTypePanic) {
-		m_inventory.Activate(-1);
+		m_inventory.Activate(u32(-1));
 		return;
 	}
 
 	bool bSafeFire = m_bFiring;
 
-	u32 dwStartFireAmmo, dwFireDelayMin, dwFireDelayMax;
+	u32 dwStartFireAmmo, dwFireDelayMin = 0, dwFireDelayMax = 0;
 	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
 	if (tpWeaponMagazined && m_tEnemy.Enemy) {
 		float fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
@@ -312,8 +312,8 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 		s32 best_slot = -1;
 		for ( ; I != E; I++)
-			if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
-				best_slot = I - B;
+			if ((*I).m_pIItem && ((I - B) != (int)m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
+				best_slot = u32(I - B);
 		if (best_slot > (int)m_inventory.m_activeSlot)
 			m_inventory.Activate(best_slot);
 	}
@@ -368,10 +368,10 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 						m_inventory.Action(kWPN_FIRE,	CMD_STOP);
 					xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 					xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
-					u32 best_slot = -1;
+					u32 best_slot = u32(-1);
 					for ( ; I != E; I++)
-						if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
-							best_slot = I - B;
+						if ((*I).m_pIItem && ((I - B) != (int)m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
+							best_slot = u32(I - B);
 					if (best_slot != -1)														   
 						m_inventory.Activate(best_slot);
 //					else {

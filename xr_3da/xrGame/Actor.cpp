@@ -404,7 +404,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 				R_ASSERT2(bone!=BONE_NONE,it->first);
 				CBoneInstance& B = V->LL_GetInstance(bone);
 				B.set_param(0,(float)atof(_GetItem(it->second,0,buf)));
-				B.set_param(1,atoi(_GetItem(it->second,1,buf)));
+				B.set_param(1,float(atoi(_GetItem(it->second,1,buf))));
 			}
 		}
 	}
@@ -665,7 +665,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 				pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
 			if (ph_Movement.gcontact_HealthLost)	{
-				Hit	(ph_Movement.gcontact_HealthLost,D,this,6 + 2*::Random.randI(0,2),0);
+				Hit	(ph_Movement.gcontact_HealthLost,D,this,s16(6 + 2*::Random.randI(0,2)),0);
 				if(g_Alive()<=0)
 					ph_Movement.GetDeathPosition(vPosition);
 			}
