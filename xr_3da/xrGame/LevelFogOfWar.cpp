@@ -35,15 +35,15 @@ void CFogOfWar::Init()
 	m_fMapTop = level_box.z1;
 
 	m_iFogWidth = int(m_fMapWidth/FOG_CELL_WIDTH);
-	if(m_fMapWidth - float(m_fMapWidth)*FOG_CELL_WIDTH>0.f) m_iFogWidth++;
+	if(m_fMapWidth - float(m_fMapWidth)*FOG_CELL_WIDTH>0.f) ++m_iFogWidth;
 	
 	m_iFogHeight = int(m_fMapHeight/FOG_CELL_HEIGHT);
-	if(m_fMapHeight - float(m_iFogHeight)*FOG_CELL_HEIGHT>0.f) m_iFogHeight++;
+	if(m_fMapHeight - float(m_iFogHeight)*FOG_CELL_HEIGHT>0.f) ++m_iFogHeight;
 
     
 	m_vFogCells.clear();
 
-	for(int i=0; i<m_iFogWidth*m_iFogHeight; i++)
+	for(int i=0; i<m_iFogWidth*m_iFogHeight; ++i)
 	{
 		SFogOfWarCell fog_cell;
 		fog_cell.opened = 0;

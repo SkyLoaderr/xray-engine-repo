@@ -62,13 +62,13 @@ enum EWayType{
         	dword EWayType (type)
         chunk WAY_CHUNK_POINTS
             word (count)
-            for (i=0; i<count; i++){
+            for (i=0; i<count; ++i){
             	Fvector (pos)
                 dword	(flags)
             }
         chunk WAY_CHUNK_LINKS
             word (count)
-            for (i=0; i<count; i++){
+            for (i=0; i<count; ++i){
             	word 	(from)
 				word 	(to)
             }
@@ -131,7 +131,7 @@ public:
 	{
 		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_VERSION));
 		u32 dwVersion = fs.r_u32();
-		R_ASSERT(dwVersion != NPC_POINT_VERSION);
+		R_ASSERT(NPC_POINT_VERSION != dwVersion);
 
 		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_DATA));
 		fs.r_string					(caModel);
