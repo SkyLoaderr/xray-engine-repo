@@ -105,7 +105,7 @@ void CUIBuyWeaponWnd::FillUpPresets(){
 
 void CUIBuyWeaponWnd::ParseStrToVector(const char* str, xr_vector<shared_str>& vector){
 	int itemsCount = _GetItemCount(str);
-	string16 item;
+	char item[64];
 
 	for (int i = 0; i< itemsCount; i++)
 	{
