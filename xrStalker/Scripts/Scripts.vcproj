@@ -116,27 +116,6 @@
 			Name="behaviour"
 			Filter="">
 			<File
-				RelativePath=".\StateAttack.script">
-			</File>
-			<File
-				RelativePath=".\StateDangerSound.script">
-			</File>
-			<File
-				RelativePath=".\StateEat.script">
-			</File>
-			<File
-				RelativePath=".\StateHit.script">
-			</File>
-			<File
-				RelativePath=".\StateNotDangerSound.script">
-			</File>
-			<File
-				RelativePath=".\StateRest.script">
-			</File>
-			<File
-				RelativePath=".\StateWalk.script">
-			</File>
-			<File
 				RelativePath=".\xr_ambush.script">
 			</File>
 			<File
@@ -183,6 +162,9 @@
 			</File>
 			<File
 				RelativePath=".\xr_swat.script">
+			</File>
+			<File
+				RelativePath=".\xr_walker.script">
 			</File>
 		</Filter>
 		<Filter
@@ -313,6 +295,9 @@
 		<Filter
 			Name="managment"
 			Filter="">
+			<File
+				RelativePath=".\gulag_tasks.script">
+			</File>
 			<File
 				RelativePath=".\xr_bandit.script">
 			</File>
@@ -567,6 +552,27 @@
 				RelativePath=".\stalker_test.script">
 			</File>
 			<File
+				RelativePath=".\StateAttack.script">
+			</File>
+			<File
+				RelativePath=".\StateDangerSound.script">
+			</File>
+			<File
+				RelativePath=".\StateEat.script">
+			</File>
+			<File
+				RelativePath=".\StateHit.script">
+			</File>
+			<File
+				RelativePath=".\StateNotDangerSound.script">
+			</File>
+			<File
+				RelativePath=".\StateRest.script">
+			</File>
+			<File
+				RelativePath=".\StateWalk.script">
+			</File>
+			<File
 				RelativePath=".\test.script">
 			</File>
 			<File
@@ -583,9 +589,6 @@
 			</File>
 			<File
 				RelativePath=".\xr_guide.script">
-			</File>
-			<File
-				RelativePath=".\xr_walker.script">
 			</File>
 		</Filter>
 		<Filter

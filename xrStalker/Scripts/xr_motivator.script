@@ -28,20 +28,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:update(delta)
     object_binder.update(self, delta)
-    --' вызов апдейта у управления группировками
-    local nn = xr_gulag.isUnderFraction(self.object)
-
-    if nn ~= nil then
-        xr_gulag.fraction[nn]:calculate()
-    end
-
-    --' вызов апдейта у управления бандюками
-    local nn = xr_bandit.isBandit(self.object)
-
-    if nn ~= nil then
-        xr_bandit.bandits[nn]:update()
-    end
-
 --' Проверка ТИМ СКВАД ГРУП
 if false then
   if memtsg[self.object:id()] == nil then
@@ -112,90 +98,82 @@ function motivator_binder:reload (section)
             distance = 15,			--' расстояние, в пределах которого мы реагируем
             shoot_distance = 5		--' расстояние, в пределах которого мы стреляем
         }  
-    xr_meet.add_to_binder(self.object, char_ini)
+	xr_meet.add_to_binder(self.object, char_ini)	
+	--' помощник, мля !!!
+	xr_motivator.storage[self.object:id ()].sos = {
+		enabled = false,
+		npc = nil,
+		initialized = false,
+		code = 0,
+		need_follow = false
+    }
+	xr_sos.add_to_binder (self.object, char_ini)
+	--' раненый.
+	xr_motivator.storage[self.object:id ()].wounded = {
+		enabled = false,
+		threshold = 0.2,
+		sit = false,
+		cover = false,
+		npc = nil,
+		ignore_time = 0,
+		final = true,
+		immediate = false
+    }
+	xr_wounded.add_to_binder (self.object, char_ini)
+	xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
 
-	--' Помощник
-    xr_motivator.storage[self.object:id()].helper = {
-			position,
-			enabled = false
-        }
 ----------------------------------------------------------------------------------------------------------------------
 -- Модели поведения
 ----------------------------------------------------------------------------------------------------------------------
-    -- Грабители
+    --' Грабители
     xr_motivator.storage[self.object:id()].robber = { }
-    xr_robbers.add_to_binder(self.object, char_ini)
-
-    -- Поводырь/грабитель
+    --' Поводырь/грабитель
     xr_motivator.storage[self.object:id()].guide = { }
-    xr_guide.add_to_binder(self.object, char_ini)
-
-    -- Охранник на входе в логово бандитов
-    xr_motivator.storage[self.object:id()].robber_guard = { }
-    xr_robber_guard.add_to_binder(self.object, char_ini)
-
-    -- лагерь у костра
+    --' Охранник на входе в логово бандитов
+    xr_motivator.storage[self.object:id()].robber_guard = { }    
+    --' лагерь у костра
     xr_motivator.storage[self.object:id()].kamp = {
-            -- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
-            enabled = false,
-            -- Патрульный путь из 1 вэйпоинта, который указывает на центр лагеря.
-            center_point = nil,
-            -- максимальный радиус, в котором рассаживаются люди вокруг центра лагеря
-            max_rad = 2,
-            -- Идентификатор следующего действия.
-            -- 0 - нет действия
-            -- 1 - пойти обойти территорию
-            action = 0,
-            -- Последний выполненный нами экшн, чтобы не повторяться
+		enabled = false,
+		center_point = nil,
+		max_rad = 2,
+		action = 0,
             last_action = 0,
-            -- Патрульные пути, по которым будут сталкеры обходить лагерь
             patrol_path = {},
-            -- ID позиции, в которую он сядет
             pos_id = -1,
-            -- Положение тела. 0 - стоит, остальное - разные варианты сидения
             body_state = 0,
-            -- Время между повторением действий
             timer = { act1 = {begin = nil, time = 120},
-                          act4 = {begin = nil, time = 60}}
-        }
-xr_kamp.add_to_binder(self.object, char_ini)
-    -- спящий
+						act4 = {begin = nil, time = 60}}
+	}
+    --' спящий
     xr_motivator.storage[self.object:id()].sleeper = {
-            enabled = false,
-                path_main = nil
-        }
-xr_sleeper.add_to_binder(self.object, char_ini)
-
-    -- Часовые
+		enabled = false,
+		path_main = nil
+	}
+    --' Часовые
     xr_motivator.storage[self.object:id()].guard = {
-            enabled = false,
-            action = nil,
-            path_main = nil,
-            path_hideout = nil
-        }
-xr_guard.add_to_binder(self.object, char_ini)
-
-    -- Сталкер, который ходит (версия часовых на новой схеме)
+		enabled = false,
+		action = nil,
+		path_main = nil,
+		path_hideout = nil
+	}
+    --' Сталкер, который ходит (версия часовых на новой схеме)
     xr_motivator.storage[self.object:id()].walker = { }
-    xr_walker.add_to_binder(self.object, char_ini)
-
+	--' Телохранители
     xr_motivator.storage[self.object:id()].bodyguard = {
-            enabled = false,
-            action = nil,
-            path_main = nil,
-            path_side = nil,
-      path_guard = nil,
-      path_guard_radius = 0,
-      path_center = nil
-        }
-xr_bodyguard.add_to_binder(self.object, char_ini)
-    -- схема командира
+		enabled = false,
+		action = nil,
+		path_main = nil,
+		path_side = nil,
+		path_guard = nil,
+		path_guard_radius = 0,
+		path_center = nil
+	}
+    --' схема командира
     xr_motivator.storage[self.object:id()].commander = {
             enabled = false,
             soldiers = {}
     }
-xr_commander.add_to_binder(self.object, char_ini)
-    -- Настройка патруля
+    --' Настройка патруля
     xr_motivator.storage[self.object:id()].patrol = {
         enabled = false,
             patrol_path = nil,
@@ -207,8 +185,7 @@ xr_commander.add_to_binder(self.object, char_ini)
             first_init = false,
             patrol_end = false
     }
-xr_patrol.add_to_binder(self.object, char_ini)
-    -- Настройка follower
+    --' Настройка follower
     xr_motivator.storage[self.object:id()].follower = {
             enabled = false,
             leader_name = nil,
@@ -225,20 +202,18 @@ xr_patrol.add_to_binder(self.object, char_ini)
             look_dir = vector():set(0,0,0),
             npc_id = -1
         }
-xr_follower.add_to_binder(self.object, char_ini)
-        --chaser
-        xr_motivator.storage[self.object:id()].chaser = {
-                enabled = false,        --enabled or disabled
-                npc = nil,              --sacrifice game_object
-                ret_vertex = -1         --level vertex id for return
-        }
-xr_chaser.add_to_binder (self.object, char_ini)
-  -- бандиты в засаде
-  xr_motivator.storage[self.object:id()].ambush = {
-    enabled = false,
-    path = nil,
-    dist_sqr = 0
-  }
+	--' chaser
+	xr_motivator.storage[self.object:id()].chaser = {
+		enabled = false,        --enabled or disabled
+		npc = nil,              --sacrifice game_object
+		ret_vertex = -1         --level vertex id for return
+	}
+	--' бандиты в засаде
+	xr_motivator.storage[self.object:id()].ambush = {
+		enabled = false,
+		path = nil,
+		dist_sqr = 0
+	}
     --‘ Снайпер
 	xr_motivator.storage[self.object:id()].sniper =
 		{
@@ -251,68 +226,35 @@ xr_chaser.add_to_binder (self.object, char_ini)
         enter       = false,
         monster		= nil
 		}
-	xr_sniper.add_to_binder(self.object, char_ini)
-  
-xr_ambush.add_to_binder(self.object, char_ini)
-  -- построение солдат на плацу
-    if char_ini:section_exist("formation") == true then
-		xr_formation.add_to_binder(self.object)
-	end
-
-    --Привязка к организации
-    if char_ini:section_exist ("fraction") == true then
-        if char_ini:line_exist("fraction", "name") == true then
-            xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object, char_ini)
-        end
-    end
-    --Привязка к бандюкам
-    if char_ini:section_exist ("bandit") == true then
-        if char_ini:line_exist("bandit", "name") == true then
-            xr_bandit.addMember(char_ini:r_string("bandit", "name"), self.object, char_ini)
-        end
-    end
-
-
--- помощник, мля !!!
-xr_motivator.storage[self.object:id ()].sos =
-    {
-    enabled = false,
-    npc = nil,
-    initialized = false,
-    code = 0,
-  need_follow = false
-    }
-xr_sos.add_to_binder (self.object, char_ini)
-
--- раненый.
-xr_motivator.storage[self.object:id ()].wounded =
-    {
-    enabled = false,
-    threshold = 0.2,
-    sit = false,
-    cover = false,
-    npc = nil,
-    ignore_time = 0,
-    final = true,
-    immediate = false
-    }
-xr_wounded.add_to_binder (self.object, char_ini)
-
-
--- алкоголики в баре :)
-xr_motivator.storage[self.object:id ()].bar =
-{
-    enabled = false,
-    meat = false,
-    interlocutor = nil,
-    talking = false,
-    pose = nil
-}
-bar_stalker.add_to_binder (self.object, char_ini)
-        
-    xr_storyline.set_storyline(self.object, char_ini)
-    xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
-
+ 
+	--' Привязка к организации
+	if char_ini:section_exist("zones") == true then
+		xr_sleeper.add_to_binder	(self.object, nil)
+		xr_guard.add_to_binder		(self.object, nil)
+		xr_walker.add_to_binder		(self.object, nil)
+		xr_patrol.add_to_binder		(self.object, nil)
+		xr_follower.add_to_binder	(self.object, nil)
+		xr_bodyguard.add_to_binder	(self.object, nil)
+		xr_sniper.add_to_binder		(self.object, nil)
+		xr_kamp.add_to_binder		(self.object, nil)
+		xr_formation.add_to_binder	(self.object)
+	else
+		xr_sniper.add_to_binder			(self.object, char_ini)
+		xr_ambush.add_to_binder			(self.object, char_ini)
+		xr_chaser.add_to_binder			(self.object, char_ini)
+		xr_patrol.add_to_binder			(self.object, char_ini)
+		xr_follower.add_to_binder		(self.object, char_ini)
+		xr_commander.add_to_binder		(self.object, char_ini)
+		xr_bodyguard.add_to_binder		(self.object, char_ini)
+		xr_walker.add_to_binder			(self.object, char_ini)
+		xr_guard.add_to_binder			(self.object, char_ini)
+		xr_sleeper.add_to_binder		(self.object, char_ini)
+		xr_kamp.add_to_binder			(self.object, char_ini)
+		xr_robber_guard.add_to_binder	(self.object, char_ini)
+		xr_guide.add_to_binder			(self.object, char_ini)
+		xr_robbers.add_to_binder		(self.object, char_ini)
+	end        
+    xr_storyline.set_storyline(self.object, char_ini)    
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)

@@ -1,90 +1,73 @@
 fraction = {}
 
 class "fract"
-function fract:__init(name, char_ini)
+function fract:__init(name, type)
 	self.name = name
+	self.type = type
 
 	self.state = 0
 	self.stateBegin = nil
-
-	self.checkTime = 60*60*1000
-	self.checkBegin = nil
-
-	self.broadcastTime = 2*60*1000
-	self.broadcastBegin = nil 
 
 	self.casualities = 0  	
 
 	self.Object = {}        
 	self.Job = {}           
 	self.States = {}	
-	self.Guest = {}		
+	--' Функция для просчета состояний
+	self.calculateStates = nil
 
-	self:loadJob(name)
+	gulag_tasks.loadJob(self.Job, name, type)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
-	self:loadStates(name)
-
-	if self.name == "blockpost" then
-		self.music = gramofon.m_gramofon("blockpost_rupor")
-	end
-
-
-	if char_ini ~= nil and char_ini:line_exist("fraction", "zone") == true then
-		self.territory_name = char_ini:r_string("fraction", "zone")
-	end
-end
-function fract:zone_enter(zone, obj)
-	printf("ENTER %s", obj:name())
-
-	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
-		if self.Guest[obj:id()] == nil then
-			self.Guest[obj:id()] = {object = obj,
-						time = nil,
-						vertex = nil }			
-		end
-	end
-end
-function fract:zone_exit(zone, obj)
-	printf("EXIT %s", obj:name())
-	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
-		if self.Guest[obj:id()] ~= nil then
-			self.Guest[obj:id()] = nil
-		end
-	end
+	gulag_tasks.loadStates(self.States, name, type, self.calculateStates)
 end
 function fract:addObject(npc)
-	if self.Object[npc:id()] == nil then
-		table.insert(self.Object, npc:id(), npc)
-		self.checkBegin = nil
+	if self:checkNpc(npc) == true then
+		if self.Object[npc:id()] == nil then
+			self.Object[npc:id()] = npc
+			return true
+		end
+	else
+		return false
 	end
 end
-function fract:broadcast()
-	self.broadcastBegin = game.time()
-	for k,v in self.Guest do
-	        v.object:give_info_portion_via_pda("dolg_territory", v.object) 
-	end	
-end
-function fract:calculate() 
-	if self.stateBegin ~= nil and self.state ~= 0 then
-		local timeout = 0
-		for k,v in self.States do
-			if v.id == self.state then	
-				timeout = v.timeout
-				break
-			end
-		end
-		
-		if game.time() - self.stateBegin > timeout then
-			self.state = 0
-		    self.music:event(0)
-		end
-	end
-	
-	--' Апдейт матюгальника
-	if self.music ~= nil then
-		self.music:update()
+function fract:checkNpc(npc)
+	local snpc = npc:section()
+	local type = "soldier"
+	if snpc == "m_army_soldier" or
+	   snpc == "m_army_sniper" or
+	   snpc == "m_army_commander" or
+	   snpc == "m_army_specnaz"
+	then
+		type = "soldier"
+	elseif snpc == "m_bandit_bandit" or
+	   snpc == "m_bandit_commander"
+	then
+		type = "bandit"
+	elseif snpc == "m_stalker_wolf"
+	then
+		type = "stalker"
+	elseif snpc == "m_fraction_soldier" or
+	   snpc == "m_fraction_sniper" or
+	   snpc == "m_fraction_commander" or
+	   snpc == "m_fraction_specnaz"
+	then
+		type = "fraction"
 	end
 
+	if self.type == "blockpost" and
+		type == "soldier"
+	then
+		return true
+	end
+
+	return false
+end
+
+function fract:removeObject(npc)
+	self:clearAllJob(npc)
+	self.Object[npc:id()] = nil
+end
+function fract:calculate() 
 	--' Изменение потерь в лагере
 	for k,v in self.Object do
 		if v:alive() ~= true then
@@ -92,638 +75,83 @@ function fract:calculate()
 			self.Object[k] = nil
 		end
 	end
-
 	--' Обнуление работ с несуществующими персонажами
 	for k,v in self.Job do
 		if v.object ~= nil and self.Object[v.object:id()] == nil then
 			v.object = nil				
 		end
 	end
-
-	if self.territory == nil and self.territory_name ~= nil then
-	        self.territory = level.object(self.territory_name)
-		if self.territory ~= nil then
-	        	self.territory:set_callback (self, "zone_enter", true)
-        		self.territory:set_callback (self, "zone_exit", false)
-			printf("TERRITORY ENABLED")
-		end
-	end
-	if self.broadcastBegin == nil or
-	   game.time() - self.broadcastBegin > self.broadcastTime then
-		self:broadcast()
-	end		
-
-	if self.checkBegin == nil or
-	   game.time() - self.checkBegin > self.checkTime then
-		self:updateJob()
-	end
+	if self.calculateStates ~= nil then self.calculateStates(self.Object) end
+	self:updateJob()
+	self:print()
 end
 function fract:updateJob()
-	self.checkBegin = game.time()
-
 	for k,v in self.Job do
-		local npc = nil
-
-		local avail = false
-		for key,stat in v.state do
-			if stat == self.state then
-				avail = true
-				break
-			end
-		end
-
-		if avail == false then
+		if v.state ~= self.state then
 			v.object = nil
 		else
 			if v.object == nil and
-        	           (v.begin == nil or
+        	   (v.begin == nil or
 			   game.time() - v.begin > v.idle)	
-			then
-				for k,v in self.Object do
-					if self:getJob(v) == nil then
-						npc = v
-						break
+			then			
+				for kk,vv in self.Object do
+					if self:getJob(vv) == nil then
+						self:setJob(vv, v) 
+						return
 					end
 				end
-				if npc == nil then
-					for i = table.getn(self.Job), k, -1 do
-						if self.Job[i].object ~= nil then 
-							npc = self.Job[i].object
-							break
-						end			
-					end
-				end
-	        		if npc ~= nil then 
-					self:setJob(npc, v) 
-				end
+				for i = table.getn(self.Job), k, -1 do
+					if self.Job[i].object ~= nil and
+						self.Job[i].prior < v.prior
+					then 
+						self:setJob(self.Job[i].object, v) 
+						return
+					end			
+				end				
 			end
-        	end
+       	end
 	end
---	self:print()
 end
 function fract:print()
-	printf("---------------------- %s ---------------------- State: %d", self.name, self.state)
+	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self:get_capacity(), self:get_population())
 	printf("Resources:")
 	for k,v in self.Object do
 		printf("id: %d name: %s", k, v:name())
 	end
 	printf("Jobs:")
 	for k,v in self.Job do
-		printf("name: %s, prior %d", v.name, v.prior)
+		printf("name: %s, prior %d, state %d", v.name, v.prior, v.state)
 		if v.object ~= nil then
 			printf("    ObjID: %d", v.object:id())
 			printf("    Actor: %s", self.Object[v.object:id()]:name())
 		end
 	end
-	printf("Guest:")
-	for k,v in self.Guest do
-		printf("id: %d name: %s", k, v.object:name())
-	end
 end
-function fract:loadJob(name)
---'-----------------------------------------------------------------------------------------
---' DOLG 
---'-----------------------------------------------------------------------------------------
-	if name == "dolg" then
-		local t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_1",
-			path_hideout = "dolg_sleep_1" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_2",
-			path_hideout = "dolg_sleep_2" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_3",
-			path_hideout = "dolg_sleep_3" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_4",
-			path_hideout = "dolg_sleep_4" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_5",
-			path_hideout = "dolg_sleep_5" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_6",
-			path_hideout = "dolg_sleep_6" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_6",
-			path_hideout = "dolg_sleep_6" }
-		table.insert(self.Job, t)			
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_2_main",
-			path_side = "dolg_guard_2_side",
-			path_guard = "dolg_guard_2_guard",
-			path_guard_radius = 2,
-			path_center = "dolg_guard_2_center"}
-		table.insert(self.Job, t)			
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_1_main",
-			path_side = "dolg_guard_1_side",
-			path_guard = "dolg_guard_1_guard",
-			path_guard_radius = 2,
-			path_center	= "dolg_guard_1_center"}
-		table.insert(self.Job, t)
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_3_main",
-			path_side = "dolg_guard_3_side",
-			path_guard = "dolg_guard_3_4_guard",
-			path_guard_radius = 2,
-			path_center	= "dolg_guard_3_4_center"}
-		table.insert(self.Job, t)			
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_4_main",
-			path_side = "dolg_guard_4_side",
-			path_guard = "dolg_guard_3_4_guard",
-			path_guard_radius = 2,
-			path_center	= "dolg_guard_4_main"}
-		table.insert(self.Job, t)			
+function fract:get_capacity()
+	i = {}
+	for k,v in self.Job do
+		if i[v.state] == nil then i[v.state] = 0 end
+		i[v.state] = i[v.state] + 1
 	end
- 
- --'-----------------------------------------------------------------------------------------
---' ESCAPE BLOCKPOST
---'-----------------------------------------------------------------------------------------
-	if name == "blockpost" then
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 9,
-			state = { 0, 1, 2},
-			group = 0,
-			running = false,
-			search_light = "blockpost_search_light",
-			path_main = "blockpost_guard_light",
-			path_hideout = "blockpost_guard_light" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 10,
-			state = { 0, 1, 2},
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_guard_house",
-			path_hideout = "blockpost_guard_house" }
-		table.insert(self.Job, t)
-		t = { name = "patrol",
-			object = nil,
-			begin = nil, 
-			idle = 6*60*60*1000,
-			prior = 8,
-			state = { 0, 1, 2},
-			group = 1,
-			patrol_path = "blockpost_patrol_0",
-			escape_path = "blockpost_escape_0" }
-		table.insert(self.Job, t)			
-		t = { name = "follower",
-			object = nil,
-			begin = nil, 
-			idle = 6*60*60*1000,
-			prior = 7,
-			state = { 0, 1, 2},
-			group = 1,
-			leader_name = nil,
-			escape_path = "blockpost_escape_0" }
-		table.insert(self.Job, t)			
-		t = { name = "follower",
-			object = nil,
-			begin = nil, 
-			idle = 6*60*60*1000,
-			prior = 7,
-			state = { 0, 1, 2},
-			group = 1,
-			leader_name = nil,
-			escape_path = "blockpost_escape_0" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_1"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_2"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_3"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_4"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_5"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_6"}
-		table.insert(self.Job, t)			
-
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_guard_left",
-			path_hideout = "blockpost_guard_left" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_guard_right",
-			path_hideout = "blockpost_guard_right" }
-		table.insert(self.Job, t)
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 5,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_gb_left",
-			path_hideout = "blockpost_gb_left" }
-		table.insert(self.Job, t)
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 5,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_gb_right",
-			path_hideout = "blockpost_gb_right" }
-		table.insert(self.Job, t)
-
-
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_left",
-			path_hideout = "blockpost_alarm_left" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_right",
-			path_hideout = "blockpost_alarm_right" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_house",
-			path_hideout = "blockpost_alarm_house" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 5,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_center",
-			path_hideout = "blockpost_alarm_center" }
-		table.insert(self.Job, t)
-		
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 2 },
-			group = 0,
-			running = true,
-			search_light = nil,
-			path_main = "blockpost_search1",
-			path_hideout = "blockpost_search1" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 2 },
-			group = 0,
-			running = true,
-			search_light = nil,
-			path_main = "blockpost_search2",
-			path_hideout = "blockpost_search2" }
-		table.insert(self.Job, t)			
+	t = 0
+	for k,v in i do
+		if t == 0 then 
+			t = v 
+		else
+			if v < t then t = v end
+		end
 	end
-
---'-----------------------------------------------------------------------------------------
---' AGROPROM MILITARY BASE
---'-----------------------------------------------------------------------------------------
-	if name == "agroprom_mili" then
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 10,
-			state = { 0 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "mili_root_guard",
-			path_hideout = "mili_root_guard" }
-		table.insert(self.Job, t)			
---[[
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 9,
-			state = { 0 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "mili_2stage_guard",
-			path_hideout = "mili_2stage_guard" }
-		table.insert(self.Job, t)			
-]]
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 8,
-			state = { 0 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "mili_3stage_guard",
-			path_hideout = "mili_3stage_guard" }
-		table.insert(self.Job, t)			
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 0 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "mili_house_guard_1",
-			path_hideout = "mili_house_guard_1" }
-		table.insert(self.Job, t)			
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 0 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "mili_house_guard_2",
-			path_hideout = "mili_house_guard_2" }
-		table.insert(self.Job, t)			
-					
-		t = { name = "patrol",
-			object = nil,
-			begin = nil, 
-			idle = 3*60*60*1000,
-			prior = 5,
-			state = { 0 },
-			group = 1,
-			patrol_path = "mili_patrol_path",
-			escape_path = "mili_patrol_return" }
-		table.insert(self.Job, t)			
-		t = { name = "follower",
-			object = nil,
-			begin = nil, 
-			idle = 3*60*60*1000,
-			prior = 4,
-			state = { 0 },
-			group = 1,
-			leader_name = nil,
-			escape_path = "mili_patrol_return" }
-		table.insert(self.Job, t)			
-		t = { name = "follower",
-			object = nil,
-			begin = nil, 
-			idle = 3*60*60*1000,
-			prior = 4,
-			state = { 0 },
-			group = 1,
-			leader_name = nil,
-			escape_path = "mili_patrol_return" }
-		table.insert(self.Job, t)			
---[[		
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			group = 0,
-			path_main = "mili_sleep_1"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			group = 0,
-			path_main = "mili_sleep_2"}
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			group = 0,
-			path_main = "mili_sleep_3"}
-		table.insert(self.Job, t)			
-]]
-		t = { name = "kamp",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			group = 0,
-			center_point = "mili_kamp_center",
-			patrol_path = { "mili_kamp_patrol" }}
-		table.insert(self.Job, t)			
-		t = { name = "kamp",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			group = 0,
-			center_point = "mili_kamp_center",
-			patrol_path = { "mili_kamp_patrol" }}
-		table.insert(self.Job, t)			
-		t = { name = "kamp",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			group = 0,
-			center_point = "mili_kamp_center",
-			patrol_path = { "mili_kamp_patrol"}}
-		table.insert(self.Job, t)			
-
-		t = { name = "sniper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 7,
-			state = { 0 },
-			group = 0,
-			rest_path = "mili_sniper_rest_way",
-			camper_path = "mili_sniper_camper_way",
-			point_path = "mili_sniper_point_way"}
-		table.insert(self.Job, t)			
-
+	return t
+end
+function fract:get_population()
+	i = 0
+	for k,v in self.Object do
+		i = i + 1
 	end
+	return i
 end
 function fract:setJob(npc, job) 
 	self:clearAllJob(npc)
-
 	if job.name == "guard" then
 		job.object = npc
 		job.begin = game.time()
@@ -767,32 +195,16 @@ function fract:setJob(npc, job)
 		job.begin = game.time()
 			xr_sniper.set_sniper(npc, true, job.rest_path, job.camper_path, job.point_path)
 	end
-
-	
-	
-	if job.group ~= nil then
-		job.object:change_team(job.object:team(), job.object:squad(), job.group)
-	end
-end
-function fract:getJobLabel()
-	local jj = {}
-	for k,v in self.Job do
-		exist = false
-		for kk,vv in jj do
-			if v.name == vv then
-				exist = true
-			end
-		end
-		if exist == false then
-			table.insert(jj, v.name)
-		end
-	end
-	return jj
+	--' Смена тим, сквад, груп
+	job.object:change_team(job.object:team(), job.object:squad(), job.group)
+	--' Спейс рестрикторы
+	job.object:remove_all_restrictions()
+	job.object:add_restrictions(job.out_rest, job.in_rest)
 end
 function fract:getJob(npc)
 	if npc == nil then return nil end
 	for k,v in self.Job do
-		if v.object ~= nil and v.object:id() == npc:id() then	
+		if v.object ~= nil and v.object:id() == npc:id() then
 			return v.name
 		end
 	end
@@ -804,7 +216,6 @@ function fract:clearAllJob(npc)
 			v.object = nil
 		end
 	end
-
 	for k,v in xr_motivator.storage[npc:id()] do
 		if k == "sleeper" or
 		   k == "camper" or
@@ -821,6 +232,12 @@ function fract:clearAllJob(npc)
 		end
 	end
 end
+function fract:stalkerExist(npc)
+	if self.Object[npc:id()] ~= nil then
+		return true
+	end
+	return false
+end
 function fract:nameStalkerOnJob(job_name)
 	for k,v in self.Job do
 		if v.name == job_name then
@@ -831,37 +248,7 @@ function fract:nameStalkerOnJob(job_name)
 	end
 	return nil
 end
-function fract:loadStates(name)
-	if name == "blockpost" then
-		local t = { id = 1,
-			    timeout = 1*60*60*1000 }
-		table.insert(self.States, t)			
-		t = { id = 2,
-			    timeout = 1*60*60*1000 }
-		table.insert(self.States, t)			
-	end
-end
-function fract:setState(id)
-	for k,v in self.States do
-		if v.id == id then	
-			self.stateBegin = game.time()	
-			self.state = id
-		        self.music:event(id)
-			self:calculate()
-			return true
-		end
-	end
-	return false
-end
-function fract:getState()
-	return	self.state
-end
-function fract:stalkerExsist(npc)
-	if self.Object[npc:id()] ~= nil then	
-		return true
-	end
-	return false
-end
+
 function fract:getCasualities()
 	return self.casualities
 end
@@ -869,150 +256,15 @@ function fract:changeCasualities(delta)
 	self.casualities = self.casualities + delta
 end
 ----------------------------------------------------------------------------------------------------------------------
--- Evaluators
-----------------------------------------------------------------------------------------------------------------------
-class "evaluator_alarm" (property_evaluator)
-function evaluator_alarm:__init() super()
-end
-function evaluator_alarm:evaluate()                                                                   
-	local f = xr_gulag.isUnderFraction(self.object)
-	if f ~= nil then
-		if f == "blockpost" then
-			if xr_gulag.getJob(f, self.object) == "patrol" or
-			   xr_gulag.getJob(f, self.object) == "follower"		
-			then
-				return true		
-			end
-
-			local s = xr_gulag.getFractionState(f)
-			if s == 1 then
-				return true
-			else 
-				return false
-			end
-		end
-		return true
-	else
-		return true
-	end
-end
-----------------------------------------------------------------------------------------------------------------------
--- Actions
-----------------------------------------------------------------------------------------------------------------------
-class "action_alarm" (action_base)
-function action_alarm:__init (npc_name,action_name) super (nil, action_name)
-end
-function action_alarm:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	local enemy = self.object:best_enemy()
-    	if enemy and is_object_online( enemy:id() )
-    	then
-        	if get_clsid(enemy) == clsid.stalker or get_clsid(enemy) == clsid.actor then
-			local f = xr_gulag.isUnderFraction(self.object)
-
-			if f ~= nil and f == "blockpost" then
-				xr_gulag.setFractionState(f, 1)
-			end
-		end
-	end
-end
-function action_alarm:execute ()
-	action_base.execute (self)
-end
-function action_alarm:finalize ()
-	action_base.finalize (self)
-end
-----------------------------------------------------------------------------------------------------------------------
--- BLOCKPOST BINDER
-----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object)
-	local operators		= {}
-	local properties	= {}
-
-	local manager = object:motivation_action_manager()
-
-	properties["alarm"]		= xr_evaluators_id.stohe_gulag_base + 0
-	properties["stand"]		= xr_evaluators_id.stohe_state_base + 1
-
-	operators["alarm"]		= xr_actions_id.stohe_gulag_base + 0
-
-	-- Evaluators
-	manager:add_evaluator (properties["alarm"], 		this.evaluator_alarm		())
-
-	-- Actions
-	local action = this.action_alarm (object:name(),"action_alarm")
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(properties["alarm"], 		false))
-	action:add_effect 		(world_property(properties["alarm"], 		true))
-	manager:add_action (operators["alarm"], action)
-
-	action = manager:action (stalker_ids.action_combat_planner)	
-	action:add_precondition		(world_property(properties["alarm"],		true))
-end
-----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
-function addMember(name, npc, char_ini)
+function createGulag(name, type)
 	if xr_gulag.fraction[name] == nil then
-		xr_gulag.fraction[name] = xr_gulag.fract(name, char_ini)
+		xr_gulag.fraction[name] = xr_gulag.fract(name, type)
 	end
-	xr_gulag.fraction[name]:addObject(npc)
+	return xr_gulag.fraction[name]
+end
 
-    xr_gulag.add_to_binder(npc)
-	local jj = xr_gulag.fraction[name]:getJobLabel()
-	for k,v in jj do
-		if v == "sleeper" then
-		        xr_sleeper.add_to_binder (npc, nil)
-		elseif v == "guard" then
-		        xr_guard.add_to_binder   (npc, nil)
-		elseif v == "walker" then
-		        xr_walker.add_to_binder   (npc, nil)
-		elseif v == "patrol" then
-		        xr_patrol.add_to_binder  (npc, nil)
-		elseif v == "follower" then
-		        xr_follower.add_to_binder(npc, nil)
-		elseif v == "bodyguard" then
-		        xr_bodyguard.add_to_binder(npc, nil)
-		elseif v == "sniper" then
-		        xr_sniper.add_to_binder(npc, nil)
-		elseif v == "kamp" then
-		        xr_kamp.add_to_binder(npc, nil)
-		end		        
-	end
-	xr_formation.add_to_binder(npc)
-end
-function setFractionState(name, id)
-	if xr_gulag.fraction[name] ~= nil then
-		xr_gulag.fraction[name]:setState(id)
-	else
-		printf("ERROR MAT VASHU! netu fraction")
-	end
-end
-function getFractionState(name)
-	return xr_gulag.fraction[name]:getState()
-end
-function resetJob(fraction, npc)
-	xr_gulag.fraction[fraction]:clearAllJob(npc)
-	xr_gulag.fraction[fraction]:updateJob()
-end         
-function isUnderFraction(npc)
-	for k,v in xr_gulag.fraction do
-		if v:stalkerExsist(npc) == true then
-			return k
-		end
-	end
-	return nil
-end             
-function getJob(fraction, npc)
-	if fraction ~= nil and npc ~= nil then
-		return xr_gulag.fraction[fraction]:getJob(npc)
-	end
-end
 function needRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
@@ -1020,14 +272,15 @@ function needRaid(fraction)
 	end
 	return false			
 end
-function changeCasualities(fraction, delta)
-	if xr_gulag.fraction[fraction] ~= nil then
-		xr_gulag.fraction[fraction]:changeCasualities(delta)
-	end
-end
 function startRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
 		xr_gulag.fraction[fraction]:changeCasualities(-cc)
+	end
+end
+
+function changeCasualities(fraction, delta)
+	if xr_gulag.fraction[fraction] ~= nil then
+		xr_gulag.fraction[fraction]:changeCasualities(delta)
 	end
 end

@@ -1,372 +1,251 @@
-function loadJob(name)
+function loadJob(sj, gname, type)
 --'-----------------------------------------------------------------------------------------
---' DOLG 
---'-----------------------------------------------------------------------------------------
-	if name == "dolg" then
-		local t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_1",
-			path_hideout = "dolg_sleep_1" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_2",
-			path_hideout = "dolg_sleep_2" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_3",
-			path_hideout = "dolg_sleep_3" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_4",
-			path_hideout = "dolg_sleep_4" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_5",
-			path_hideout = "dolg_sleep_5" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_6",
-			path_hideout = "dolg_sleep_6" }
-		table.insert(self.Job, t)			
-		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0 },
-			running = false,
-			search_light = nil,
-			path_main = "dolg_sleep_6",
-			path_hideout = "dolg_sleep_6" }
-		table.insert(self.Job, t)			
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_2_main",
-			path_side = "dolg_guard_2_side",
-			path_guard = "dolg_guard_2_guard",
-			path_guard_radius = 2,
-			path_center = "dolg_guard_2_center"}
-		table.insert(self.Job, t)			
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_1_main",
-			path_side = "dolg_guard_1_side",
-			path_guard = "dolg_guard_1_guard",
-			path_guard_radius = 2,
-			path_center	= "dolg_guard_1_center"}
-		table.insert(self.Job, t)
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_3_main",
-			path_side = "dolg_guard_3_side",
-			path_guard = "dolg_guard_3_4_guard",
-			path_guard_radius = 2,
-			path_center	= "dolg_guard_3_4_center"}
-		table.insert(self.Job, t)			
-		t = { name = "bodyguard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 2,
-			state = { 0 },
-			path_main = "dolg_guard_4_main",
-			path_side = "dolg_guard_4_side",
-			path_guard = "dolg_guard_3_4_guard",
-			path_guard_radius = 2,
-			path_center	= "dolg_guard_4_main"}
-		table.insert(self.Job, t)			
-	end
- 
- --'-----------------------------------------------------------------------------------------
 --' ESCAPE BLOCKPOST
 --'-----------------------------------------------------------------------------------------
-	if name == "blockpost" then
-		local t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 9,
-			state = { 0, 1, 2},
-			group = 0,
-			running = false,
-			search_light = "blockpost_search_light",
-			path_main = "blockpost_guard_light",
-			path_hideout = "blockpost_guard_light" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 10,
-			state = { 0, 1, 2},
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_guard_house",
-			path_hideout = "blockpost_guard_house" }
-		table.insert(self.Job, t)
+	if type == "blockpost" then
+		--' STATE 0
 		t = { name = "patrol",
-			object = nil,
-			begin = nil, 
-			idle = 6*60*60*1000,
-			prior = 8,
-			state = { 0, 1, 2},
-			group = 1,
-			patrol_path = "blockpost_patrol_0",
-			escape_path = "blockpost_escape_0" }
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 8, state = 0,
+			squad = 0, group = 1,
+			in_rest = "", out_rest = "",
+			patrol_path = gname.."_patrol_0",
+			escape_path = gname.."_escape_0" }
+		table.insert(sj, t)			
 		t = { name = "follower",
-			object = nil,
-			begin = nil, 
-			idle = 6*60*60*1000,
-			prior = 7,
-			state = { 0, 1, 2},
-			group = 1,
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 7, state = 0,
+			squad = 0, group = 1,
+			in_rest = "", out_rest = "",
 			leader_name = nil,
-			escape_path = "blockpost_escape_0" }
-		table.insert(self.Job, t)			
+			escape_path = gname.."_escape_0" }
+		table.insert(sj, t)			
 		t = { name = "follower",
-			object = nil,
-			begin = nil, 
-			idle = 6*60*60*1000,
-			prior = 7,
-			state = { 0, 1, 2},
-			group = 1,
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 7, state = 0,
+			squad = 0, group = 1,
+			in_rest = "", out_rest = "",
 			leader_name = nil,
-			escape_path = "blockpost_escape_0" }
-		table.insert(self.Job, t)			
+			escape_path = gname.."_escape_0" }
+		table.insert(sj, t)			
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 10, state = 0,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_guard_center",
+			path_hideout = gname.."_guard_center" }
+		table.insert(sj, t)			
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = 0,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_guard_left",
+			path_hideout = gname.."_guard_left" }
+		table.insert(sj, t)			
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = 0,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_guard_right",
+			path_hideout = gname.."_guard_right" }
+		table.insert(sj, t)
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 9, state = 0,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_guard_light",
+			path_hideout = gname.."_guard_light" }
+		table.insert(sj, t)			
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = 0,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_gb_left",
+			path_hideout = gname.."_gb_left" }
+		table.insert(sj, t)
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = 0,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_gb_right",
+			path_hideout = gname.."_gb_right" }
+		table.insert(sj, t)
 		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_1"}
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 0,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_1"}
+		table.insert(sj, t)			
 		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_2"}
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 0,
+			squad = 1, group = 0,
+			path_main = gname.."_sleep_2"}
+		table.insert(sj, t)			
 		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_3"}
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 0,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_3"}
+		table.insert(sj, t)			
 		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_4"}
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 0,
+			squad = 1, group = 0,
+			path_main = gname.."_sleep_4"}
+		table.insert(sj, t)			
 		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_5"}
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 0,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_5"}
+		table.insert(sj, t)			
 		t = { name = "sleeper",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 1,
-			state = { 0, 1, 2},
-			group = 0,
-			path_main = "blockpost_sleep_6"}
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 0,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_6"}
+		table.insert(sj, t)			
 
+		--' STATE 1
+		t = { name = "patrol",
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 8, state = 1,
+			squad = 0, group = 1,
+			in_rest = "", out_rest = "",
+			patrol_path = gname.."_patrol_0",
+			escape_path = gname.."_escape_0" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 7, state = 1,
+			squad = 0, group = 1,
+			in_rest = "", out_rest = "",
+			leader_name = nil,
+			escape_path = gname.."_escape_0" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 6*60*60*1000,
+			prior = 7, state = 1,
+			squad = 0, group = 1,
+			in_rest = "", out_rest = "",
+			leader_name = nil,
+			escape_path = gname.."_escape_0" }
+		table.insert(sj, t)			
 		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_guard_left",
-			path_hideout = "blockpost_guard_left" }
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 10, state = 1,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_guard_center",
+			path_hideout = gname.."_guard_center" }
+		table.insert(sj, t)			
 		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_guard_right",
-			path_hideout = "blockpost_guard_right" }
-		table.insert(self.Job, t)
+			object = nil, begin = nil, idle = 0,
+			prior = 9, state = 1,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_guard_light",
+			path_hideout = gname.."_guard_light" }
+		table.insert(sj, t)			
 		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 5,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_gb_left",
-			path_hideout = "blockpost_gb_left" }
-		table.insert(self.Job, t)
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = 1,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_alarm_left",
+			path_hideout = gname.."_alarm_left" }
+		table.insert(sj, t)			
 		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 5,
-			state = { 0, 2 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_gb_right",
-			path_hideout = "blockpost_gb_right" }
-		table.insert(self.Job, t)
-
-
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = 1,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_alarm_right",
+			path_hideout = gname.."_alarm_right" }
+		table.insert(sj, t)			
 		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_left",
-			path_hideout = "blockpost_alarm_left" }
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = 1,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_alarm_house",
+			path_hideout = gname.."_alarm_house" }
+		table.insert(sj, t)			
 		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_right",
-			path_hideout = "blockpost_alarm_right" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_house",
-			path_hideout = "blockpost_alarm_house" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 5,
-			state = { 1 },
-			group = 0,
-			running = false,
-			search_light = nil,
-			path_main = "blockpost_alarm_center",
-			path_hideout = "blockpost_alarm_center" }
-		table.insert(self.Job, t)
-		
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 2 },
-			group = 0,
-			running = true,
-			search_light = nil,
-			path_main = "blockpost_search1",
-			path_hideout = "blockpost_search1" }
-		table.insert(self.Job, t)			
-		t = { name = "guard",
-			object = nil,
-			begin = nil, 
-			idle = 0,
-			prior = 6,
-			state = { 2 },
-			group = 0,
-			running = true,
-			search_light = nil,
-			path_main = "blockpost_search2",
-			path_hideout = "blockpost_search2" }
-		table.insert(self.Job, t)			
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = 1,
+			squad = 0, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			running = false, search_light = nil,
+			path_main = gname.."_alarm_center",
+			path_hideout = gname.."_alarm_center" }
+		table.insert(sj, t)		
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 1,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_1"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 1,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_2"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 1,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_3"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 1,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_4"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 1,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_5"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = 1,
+			squad = 1, group = 0,
+			in_rest = gname.."_zone", out_rest = "",
+			path_main = gname.."_sleep_6"}
+		table.insert(sj, t)			
 	end
+end
 
 --'-----------------------------------------------------------------------------------------
 --' AGROPROM MILITARY BASE
@@ -383,7 +262,7 @@ function loadJob(name)
 			search_light = nil,
 			path_main = "mili_root_guard",
 			path_hideout = "mili_root_guard" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 --[[
 		local t = { name = "guard",
 			object = nil,
@@ -396,7 +275,7 @@ function loadJob(name)
 			search_light = nil,
 			path_main = "mili_2stage_guard",
 			path_hideout = "mili_2stage_guard" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 ]]
 		local t = { name = "guard",
 			object = nil,
@@ -409,7 +288,7 @@ function loadJob(name)
 			search_light = nil,
 			path_main = "mili_3stage_guard",
 			path_hideout = "mili_3stage_guard" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		local t = { name = "guard",
 			object = nil,
 			begin = nil, 
@@ -421,7 +300,7 @@ function loadJob(name)
 			search_light = nil,
 			path_main = "mili_house_guard_1",
 			path_hideout = "mili_house_guard_1" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		local t = { name = "guard",
 			object = nil,
 			begin = nil, 
@@ -433,7 +312,7 @@ function loadJob(name)
 			search_light = nil,
 			path_main = "mili_house_guard_2",
 			path_hideout = "mili_house_guard_2" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 					
 		t = { name = "patrol",
 			object = nil,
@@ -444,7 +323,7 @@ function loadJob(name)
 			group = 1,
 			patrol_path = "mili_patrol_path",
 			escape_path = "mili_patrol_return" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		t = { name = "follower",
 			object = nil,
 			begin = nil, 
@@ -454,7 +333,7 @@ function loadJob(name)
 			group = 1,
 			leader_name = nil,
 			escape_path = "mili_patrol_return" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		t = { name = "follower",
 			object = nil,
 			begin = nil, 
@@ -464,7 +343,7 @@ function loadJob(name)
 			group = 1,
 			leader_name = nil,
 			escape_path = "mili_patrol_return" }
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 --[[		
 		t = { name = "sleeper",
 			object = nil,
@@ -474,7 +353,7 @@ function loadJob(name)
 			state = { 0 },
 			group = 0,
 			path_main = "mili_sleep_1"}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
@@ -483,7 +362,7 @@ function loadJob(name)
 			state = { 0 },
 			group = 0,
 			path_main = "mili_sleep_2"}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
@@ -492,7 +371,7 @@ function loadJob(name)
 			state = { 0 },
 			group = 0,
 			path_main = "mili_sleep_3"}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 ]]
 		t = { name = "kamp",
 			object = nil,
@@ -503,7 +382,7 @@ function loadJob(name)
 			group = 0,
 			center_point = "mili_kamp_center",
 			patrol_path = { "mili_kamp_patrol" }}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil,
 			begin = nil, 
@@ -513,7 +392,7 @@ function loadJob(name)
 			group = 0,
 			center_point = "mili_kamp_center",
 			patrol_path = { "mili_kamp_patrol" }}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil,
 			begin = nil, 
@@ -523,7 +402,7 @@ function loadJob(name)
 			group = 0,
 			center_point = "mili_kamp_center",
 			patrol_path = { "mili_kamp_patrol"}}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
 
 		t = { name = "sniper",
 			object = nil,
@@ -535,7 +414,33 @@ function loadJob(name)
 			rest_path = "mili_sniper_rest_way",
 			camper_path = "mili_sniper_camper_way",
 			point_path = "mili_sniper_point_way"}
-		table.insert(self.Job, t)			
+		table.insert(sj, t)			
+	end
+end
 
+function loadStates(st, gname, type, calculateState)
+	if type == "blockpost" then
+		t = { id = 1,
+		    timeout = 1*60*60*1000 }
+		table.insert(st, t)			
+		t = { id = 2,
+		    timeout = 1*60*60*1000 }
+		table.insert(st, t)			
+		calculateState = function(obj)
+			for k,v in obj
+				enemy = v:best_enemy()
+				if enemy ~= nil then
+					enemy_type = get_clsid(enemy)
+					if 	enemy_type == clsid.actor or
+	  	   				enemy_type == clsid.soldier or
+		   				enemy_type == clsid.stalker or
+	   					enemy_type == clsid.trader
+	   				then
+	   					return 1
+	   				end
+				end
+			end
+			return 0
+		end
 	end
 end
