@@ -13,9 +13,10 @@ function eva_state_mgr_direction:evaluate()
 	end
 
 	if self.st.look_object ~= nil and
-	   self.object:see(self.st.look_object) == true
+	   level.object_by_id(self.st.look_object) ~= nil and
+	   self.object:see(level.object_by_id(self.st.look_object)) == true
 	then
-		self.st.target_position = self.st.look_object:position()
+		self.st.target_position = level.object_by_id(self.st.look_object):position()
 		--printf("changed for object")
 	end
 		

@@ -89,10 +89,6 @@
 	</info_portion>
 
 
-
-bar_drunk_dolg_quest
-
-
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
@@ -138,7 +134,8 @@ bar_drunk_dolg_quest
 	<info_portion id="bar_get_research_done"></info_portion>
 	<info_portion id="bar_get_research_fail"></info_portion>
     
-    
+    <!-- FREEDOM ATTACK ECOLOG -->
+    <info_portion id="bar_freedom_attack_ecolog"></info_portion>
     
     
     

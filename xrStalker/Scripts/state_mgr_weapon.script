@@ -129,14 +129,14 @@ function act_state_mgr_weapon_strapp:__init(name) super (nil, name)
 end
 function act_state_mgr_weapon_strapp:initialize()
 	action_base.initialize(self)
+	printf("*STATE MGR* Weapon Strap action")
 	if strappable_weapon(self.object:best_weapon()) then
 		self.object:set_item(object.strap, self.object:best_weapon())
 	else
 		self.object:set_item(object.idle, nil)
 	end
 end
-function act_state_mgr_weapon_strapp:execute()
-	printf("*STATE MGR* Weapon Strap action")
+function act_state_mgr_weapon_strapp:execute()	
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_strapp:finalize()
