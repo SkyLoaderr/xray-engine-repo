@@ -169,11 +169,11 @@ namespace CDB
 	const u32 clpMX = 28, clpMY=16, clpMZ=28;
 	class XRCDB_API CollectorPacked
 	{
-		typedef xr_vectortor<u32>		DWORDList;
+		typedef xr_vector<u32>		DWORDList;
 		typedef DWORDList::iterator	DWORDIt;
 
-		xr_vectortor<Fvector>	verts;
-		xr_vectortor<TRI>		faces;
+		xr_vector<Fvector>	verts;
+		xr_vector<TRI>		faces;
 
 		Fvector				VMmin, VMscale;
 		DWORDList			VM	[clpMX+1][clpMY+1][clpMZ+1];
