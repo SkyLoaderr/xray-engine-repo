@@ -1,11 +1,243 @@
 -- Помощник, мать его... 
 -- Создано Сидоровичем at 25.08.2004
 
+local   sos_ignore  =   0
+local   sos_help    =   1
+local   sos_mercant =   2
+local   sos_kill    =   3
+
+local   wpn_cool    =   0
+local   wpn_poor    =   1
+local   wpn_bad     =   2
+
+
+
+
+-----------------------------------------------------------------------
+-- Some functions
+-----------------------------------------------------------------------
+function check_weapon (npc)
+    local wpn = npc:best_weapon ()
+    if wpn == nil then return wpn_bad end
+    local num = wpn:get_ammo_total ()
+    if num == 0 then return wpn_bad
+    elseif num <= 30 then return wpn_poor
+    end
+    return wpn_good
+end
+-----------------------------------------------------------------------
+function decide (npc, sos)
+
+    local wpn_code = this.check_weapon (npc)
+    local health = self.object.health
+    local rel = npc:relation (sos)
+    
+    --Если у нас нет оружия или патронов, то пошел он подальше
+    if wpn_code == wpn_bad then return sos_ignore end
+
+    -- Если мужик друг и у нас более 50 оборотов здоровья, то идем на помощь
+    if rel == friend then
+       if health < 0.5 then return sos_ignore end
+       return sos_help
+    end
+    
+    -- Чайник. Идем на помощь, если здоровья 75 и более процентов. 
+    -- Тип помощи 50:50 - или мы ему продадим, то, что ему надо или просто так дадим
+    if rel == dummy then
+       if health < 0.75 return sos_ignore end
+       if math.random (1, 100) < 50 then return sos_help end
+       return sos_mercant 
+    end
+
+    -- Нейтрал. То же, что и с чайником, но помощь продаем
+    if rel == neutral then
+       if health < 0.75 return sos_ignore end
+       return sos_mercant 
+    end
+
+    -- Враг. Идем его мочить, если у нас хорошее вооружение и здоровья не менее 90%       
+    if rel == enemy then
+       if wpn_code == wpn_good and health >= 0.9 then
+          return sos_kill
+       end
+    end      
+    
+    -- не поддается классификации - пошел вон
+    return sos_ignore
+end
+-----------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------
+-- Эвалуатор включения схемы
+class "evaluator_enabled" (property_evaluator)
+-----------------------
+function evaluator_enabled:__init (storage, name) super ()
+    self.a = storage
+end
+-----------------------
+function evaluator_enabled:evaluate ()
+    return self.a.enabled
+end
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+-- Эвалуатор доступности сообщения SOS
+class "evaluator_pda" (property_evaluator)
+-----------------------
+function evaluator_pda:__init (storage, name) super ()
+    self.a = storage
+end
+-----------------------
+function evaluator_pda:evaluate ()
+    if self.a.npc == nil then
+       self.a.initialized = false
+       return false 
+    end   
+    return true
+end
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+-- Эвалуатор выбора действия
+class "evaluator_action" (property_evaluator)
+-----------------------
+function evaluator_action:__init (storage, name) super ()
+    self.a = storage
+end
+-----------------------
+function evaluator_action:evaluate ()
+    if self.a.code == sos_help or self.a.code == sos_mercant then return false end
+    return true 
+end
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+-- Эвалуатор, который говорит, что была (или не была) инициирована система помощи.
+class "evaluator_init" (property_evaluator)
+-----------------------
+function evaluator_init:__init (storage, name) super ()
+    self.a = storage
+end
+-----------------------
+function evaluator_init:evaluate ()
+    return self.a.initialized
+end
+-----------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------
+-- Инициализация помощи (экшен-заглушка, служит только для определения типа помощи.
+class "action_initialize" (action_base)
+-----------------------
+function action_initialize:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+-----------------------
+function action_initialize:initialize ()
+    action_base.initialize (self)
+    self.a.code = decide (self.object, self.a.npc)
+    if self.a.code == sos_ignore then
+       self.a.npc = nil
+    else
+       self.a.initialized = true
+    end        
+end    
+-----------------------
+function action_initialize:execute ()
+    action_base.execute (self)
+end    
+-----------------------
+function action_initialize:finalize ()
+    action_base.finalize (self)
+end    
+-----------------------
+
+
+-----------------------------------------------------------------------
+-- Идем мочить
+class "action_kill" (action_base)
+-----------------------
+function action_kill:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+-----------------------
+function action_kill:initialize ()
+    action_base.initialize (self)
+end    
+-----------------------
+function action_kill:execute ()
+    action_base.execute (self)
+end    
+-----------------------
+function action_kill:finalize ()
+    action_base.finalize (self)
+end    
+-----------------------
+
+
+-----------------------------------------------------------------------
+-- Идем мочить
+class "action_help" (action_base)
+-----------------------
+function action_help:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+-----------------------
+function action_help:initialize ()
+    action_base.initialize (self)
+end    
+-----------------------
+function action_help:execute ()
+    action_base.execute (self)
+end    
+-----------------------
+function action_help:finalize ()
+    action_base.finalize (self)
+end    
+-----------------------
+
 
 
 -----------------------------------------------------------------------
 function add_to_binder (obj, char_ini)
-    
+
+    if char_ini == nil or char_ini:section_exist ("sos") == true then
+
+	local operators		= {}
+	local properties	= {}
+
+	properties["enabled"]           = xr_evaluators_id.sidor_sos + 0
+	properties["pda"]               = xr_evaluators_id.sidor_sos + 1
+	properties["init"]              = xr_evaluators_id.sidor_sos + 2
+	properties["action"]            = xr_evaluators_id.sidor_sos + 3
+
+ 	operators["init"]               = xr_actions_id.sidor_act_sos + 0
+	operators["raid"]               = xr_actions_id.sidor_act_sos + 1
+	operators["kill"]               = xr_actions_id.sidor_act_sos + 2
+	operators["help"]               = xr_actions_id.sidor_act_sos + 3
+	
+	local manager  = obj:motivation_action_manager ()
+  	manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("property_enabled", xr_motivator.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["pda"],     this.evaluator_pda     ("property_pda", xr_motivator.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["init"],    this.evaluator_init    ("property_init", xr_motivator.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["action"],  this.evaluator_init    ("property_action", xr_motivator.storage[obj:id()].sos))
+
+  	local action = this.action_initialize ("action_initialize", xr_motivator.storage[obj:id()].sos)
+   	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["pda"],             true))
+	action:add_precondition		    (world_property (properties["init"], 	        false))
+   	action:add_effect           	(world_property (properties["init"],            true))
+   	manager:add_action              (operators["init"], action)
+  	
+  	action = this.action_kill
+	
 end
 -----------------------------------------------------------------------
 function set_sos (npc, enabled)

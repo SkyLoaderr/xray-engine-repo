@@ -3,10 +3,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scripts", "scripts\scripts.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "D:\new\MyProject\Tutorial\proba\test\test.vcproj", "{D45E15BB-964B-4BD4-98A2-5091F1B88910}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 2
@@ -26,10 +22,6 @@ Global
 		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Debug.Build.0 = Debug|Win32
 		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Release.ActiveCfg = Release|Win32
 		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Release.Build.0 = Release|Win32
-		{D45E15BB-964B-4BD4-98A2-5091F1B88910}.Debug.ActiveCfg = Debug|Win32
-		{D45E15BB-964B-4BD4-98A2-5091F1B88910}.Debug.Build.0 = Debug|Win32
-		{D45E15BB-964B-4BD4-98A2-5091F1B88910}.Release.ActiveCfg = Release|Win32
-		{D45E15BB-964B-4BD4-98A2-5091F1B88910}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
