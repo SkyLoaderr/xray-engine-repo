@@ -363,7 +363,7 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	if (w || h)	{
 		if (0==w)	w = lm.dwWidth;
 		if (0==h)	h = lm.dwHeight;
-		Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
+//		Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
 		return TRUE;
 	}
 	return FALSE;
@@ -435,23 +435,76 @@ VOID CDeflector::Light(HASH& H)
 	}
 
 	// Expand with borders
-	b_texture		lm_old	= lm;
-	b_texture		lm_new;
-	lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
-	lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
-	DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
-	lm_new.pSurface	= LPDWORD(malloc(size));
-	ZeroMemory		(lm_new.pSurface,size);
-	blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
-	_FREE			(lm_old.pSurface);
-	lm				= lm_new;
-	ApplyBorders	(lm,254);
-	ApplyBorders	(lm,253);
-	ApplyBorders	(lm,252);
-	ApplyBorders	(lm,251);
-	for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-	lm.dwWidth		= lm_old.dwWidth;
-	lm.dwHeight		= lm_old.dwHeight;
+	if (lm.dwWidth==1)	
+	{
+		// Horizontal ZERO - vertical line
+		b_texture		T;
+		T.dwWidth		= 2*BORDER;
+		T.dwHeight		= lm.dwHeight+2*BORDER;
+		DWORD size		= T.dwWidth*T.dwHeight*4;
+		T.pSurface		= LPDWORD(malloc(size));
+		ZeroMemory		(T.pSurface,size);
+
+		// Transfer
+		for (DWORD y=0; y<T.dwHeight; y++)
+		{
+			int		py			= int(y)-BORDER;
+			clamp	(py,0,int(lm.dwHeight-1));
+			DWORD	C			= lm.pSurface[py];
+			T.pSurface[y*2+0]	= C;
+			T.pSurface[y*2+1]	= C;
+		}
+
+		// Exchange
+		_FREE			(lm.pSurface);
+		T.dwWidth		= 0;
+		T.dwHeight		= lm.dwHeight;
+		lm				= T;
+	} else if (lm.dwHeight==1) 
+	{
+		// Vertical ZERO - horizontal line
+		b_texture		T;
+		T.dwWidth		= lm.dwWidth+2*BORDER;
+		T.dwHeight		= 2*BORDER;
+		DWORD size		= T.dwWidth*T.dwHeight*4;
+		T.pSurface		= LPDWORD(malloc(size));
+		ZeroMemory		(T.pSurface,size);
+
+		// Transfer
+		for (DWORD x=0; x<T.dwWidth; x++)
+		{
+			int		px			= int(x)-BORDER;
+			clamp	(px,0,int(lm.dwWidth-1));
+			DWORD	C			= lm.pSurface[px];
+			T.pSurface[0*T.dwWidth+x]	= C;
+			T.pSurface[1*T.dwWidth+x]	= C;
+		}
+
+		// Exchange
+		_FREE			(lm.pSurface);
+		T.dwWidth		= lm.dwWidth;
+		T.dwHeight		= 0;
+		lm				= T;
+	} else {
+		// Generic blit
+		b_texture		lm_old	= lm;
+		b_texture		lm_new;
+		lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
+		lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
+		DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
+		lm_new.pSurface	= LPDWORD(malloc(size));
+		ZeroMemory		(lm_new.pSurface,size);
+		blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
+		_FREE			(lm_old.pSurface);
+		lm				= lm_new;
+		ApplyBorders	(lm,254);
+		ApplyBorders	(lm,253);
+		ApplyBorders	(lm,252);
+		ApplyBorders	(lm,251);
+		for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+		lm.dwWidth		= lm_old.dwWidth;
+		lm.dwHeight		= lm_old.dwHeight;
+	}
 
 	// Cleanup
 	LightsSelected.clear	();
