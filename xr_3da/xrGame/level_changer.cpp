@@ -29,16 +29,15 @@ void CLevelChanger::spatial_move()
 	spatial.radius				= CFORM()->getRadius();
 	ISpatial::spatial_move		();
 }*/
-
-void CLevelChanger::Center(Fvector& C)
+ 
+void CLevelChanger::Center(Fvector& C) const
 {
 	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
 }
-float CLevelChanger::Radius()
+float CLevelChanger::Radius() const
 {
 	return CFORM()->getRadius();
 }
-
 
 BOOL CLevelChanger::net_Spawn	(LPVOID DC) 
 {

@@ -22,8 +22,8 @@ public:
 	//virtual void	spatial_register	();
 	//virtual void	spatial_move		();
 
-	virtual void	Center				(Fvector& C);
-	virtual float	Radius				();
+	virtual void	Center				(Fvector& C) const;
+	virtual float	Radius				() const;
 
 			void	UpdateCL			();
 	virtual void	feel_touch_new		(CObject* O);

@@ -68,8 +68,8 @@ public:
 	virtual void spatial_register();
 	virtual void spatial_unregister();*/
 
-	virtual void  Center (Fvector& C);
-	virtual float Radius ();
+	virtual void  Center (Fvector& C)	const;
+	virtual float Radius () const;
 
 #ifdef DEBUG
 	virtual void OnRender();
