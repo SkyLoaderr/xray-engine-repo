@@ -64,7 +64,8 @@ CWeapon::CWeapon(LPCSTR name)
 
 	m_pAmmo				= NULL;
 
-	light_render		= ::Render->light_create();
+	light_render				= ::Render->light_create();
+	light_render->set_shadow	(true);
 }
 
 CWeapon::~CWeapon		()
@@ -561,7 +562,7 @@ void CWeapon::UpdateCL		()
 	if (light_time>0)		{
 		light_time -= dt;
 		if (light_time<=0)
-			light_render->set_mode(IRender_Light::LIGHT_DISABLED);
+			light_render->set_active(false);
 	}
 
 	if (Remote() && NET.size())
