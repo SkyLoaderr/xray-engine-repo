@@ -428,6 +428,10 @@ SOURCE=.\xrDO_Light.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrHemisphere.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrLevel.h
 # End Source File
 # Begin Source File

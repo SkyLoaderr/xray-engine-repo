@@ -5,7 +5,7 @@
 #include "cl_intersect.h"
 #include "xrThread.h"
 #include "detailformat.h"
-
+#include "xrhemisphere.h"
 
 //-----------------------------------------------------------------
 #define LT_DIRECT		0
@@ -23,6 +23,7 @@ struct R_Light
     float	        attenuation0;		// Constant attenuation		
     float	        attenuation1;		// Linear attenuation		
     float	        attenuation2;		// Quadratic attenuation	
+	float			energy;
 	
 	Fvector			tri[3];				// Cached triangle for ray-testing
 };
@@ -38,39 +39,21 @@ DetailHeader			dtH;
 DetailSlot*				dtS;
 
 //-----------------------------------------------------------------
-#define HEMI1_LIGHTS	26
-#define HEMI2_LIGHTS	91
-
-const double hemi_1[HEMI1_LIGHTS][3] = 
+// hemi
+struct		hemi_data
 {
-	{0.00000,	1.00000,	0.00000	},
-	{0.52573,	0.85065,	0.00000	},
-	{0.16246,	0.85065,	0.50000	},
-	{-0.42533,	0.85065,	0.30902	},
-	{-0.42533,	0.85065,	-0.30902},
-	{0.16246,	0.85065,	-0.50000},
-	{0.89443,	0.44721,	0.00000	},
-	{0.27639,	0.44721,	0.85065	},
-	{-0.72361,	0.44721,	0.52573	},
-	{-0.72361,	0.44721,	-0.52573},
-	{0.27639,	0.44721,	-0.85065},
-	{0.68819,	0.52573,	0.50000	},
-	{-0.26287,	0.52573,	0.80902	},
-	{-0.85065,	0.52573,	-0.00000},
-	{-0.26287,	0.52573,	-0.80902},
-	{0.68819,	0.52573,	-0.50000},
-	{0.95106,	0.00000,	0.30902	},
-	{0.58779,	0.00000,	0.80902	},
-	{-0.00000,	0.00000,	1.00000	},
-	{-0.58779,	0.00000,	0.80902	},
-	{-0.95106,	0.00000,	0.30902	},
-	{-0.95106,	0.00000,	-0.30902},
-	{-0.58779,	0.00000,	-0.80902},
-	{0.00000,	0.00000,	-1.00000},
-	{0.58779,	0.00000,	-0.80902},
-	{0.95106,	0.00000,	-0.30902}
+	vector<R_Light>*	dest;
+	R_Light				T;
 };
+void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
+{
+	hemi_data*	H		= (hemi_data*)P;
+	H->T.energy			= E;
+	H->T.direction.set	(x,y,z);
+	H->dest->push_back	(H->T);
+}
 
+// 
 void xrLoad(LPCSTR name)
 {
 	// Load CFORM
@@ -113,51 +96,111 @@ void xrLoad(LPCSTR name)
 		R_ASSERT(XRCL_CURRENT_VERSION==Header._version);
 		Header.lights			= (b_light*)	(DWORD(data)+DWORD(Header.lights));
 
-		// Hemi setup
-		int			h_count, h_table[3];
-		const double (*hemi)[3] = 0;
-		h_count		= HEMI1_LIGHTS;
-		h_table[0]	= 0;
-		h_table[1]	= 1;
-		h_table[2]	= 2;
-		hemi		= hemi_1;
-		
-		// Cycle thru
+		vector<R_Light>*	dest = &g_lights;
 		for (DWORD l=0; l<Header.light_count; l++) 
 		{
-			b_light R = Header.lights[l];
-			if (R.flags.bAffectStatic) 
+			b_light* L = &Header.lights[l];
+			if (L->flags.bAffectStatic) 
 			{
-				R_Light	RL;
-				if (R.type==D3DLIGHT_DIRECTIONAL) {
-					RL.type				= LT_DIRECT;
-				} else {
-					RL.type				= LT_POINT;
-				}
-				RL.amount				=	R.diffuse.magnitude_rgb();
-				RL.position.set				(R.position);
-				RL.direction.normalize_safe	(R.direction);
-				RL.range				=	R.range*1.2f;
+				// generic properties
+				R_Light						RL;
+				RL.amount =					L->diffuse.magnitude_rgb();
+				RL.position.set				(L->position);
+				RL.direction.normalize_safe	(L->direction);
+				RL.range				=	L->range*1.1f;
 				RL.range2				=	RL.range*RL.range;
-				RL.attenuation0			=	R.attenuation0;
-				RL.attenuation1			=	R.attenuation1;
-				RL.attenuation2			=	R.attenuation2;
+				RL.attenuation0			=	L->attenuation0;
+				RL.attenuation1			=	L->attenuation1;
+				RL.attenuation2			=	L->attenuation2;
+				RL.energy				=	L->diffuse.magnitude_rgb();
 				RL.tri[0].set			(0,0,0);
 				RL.tri[1].set			(0,0,0);
 				RL.tri[2].set			(0,0,0);
-				g_lights.push_back		(RL);
-
-				if (RL.type==LT_DIRECT)	
+				
+				if (L->type==D3DLIGHT_DIRECTIONAL) 
 				{
-					R_Light	T			=	RL;
-					T.amount			=	Header.params.area_color.magnitude_rgb()*(Header.params.area_energy_summary)/float(h_count);
-					for (int i=0; i<h_count; i++)
+					RL.type				= LT_DIRECT;
+					R_Light	T			= RL;
+					Fmatrix				rot_y;
+					
+					Fvector				v_top,v_right,v_dir;
+					v_top.set			(0,1,0);
+					v_dir.set			(RL.direction);
+					v_right.crossproduct(v_top,v_dir);
+					v_right.normalize	();
+					
+					// Build jittered light
+					T.energy			= RL.energy/14.f;
+					float angle			= deg2rad(Header.params.area_dispersion);
 					{
-						T.direction.set			(float(hemi[i][0]),float(hemi[i][1]),float(hemi[i][2]));
-						T.direction.invert		();
-						T.direction.normalize	();
-						g_lights.push_back		(T);
+						//*** center
+						dest->push_back	(T);
+						
+						//*** left
+						rot_y.rotateY			(3*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotateY			(2*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotateY			(1*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						//*** right
+						rot_y.rotateY			(-1*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotateY			(-2*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotateY			(-3*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						//*** top 
+						rot_y.rotation			(v_right, 3*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotation			(v_right, 2*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotation			(v_right, 1*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						//*** bottom
+						rot_y.rotation			(v_right,-1*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotation			(v_right,-2*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
+						
+						rot_y.rotation			(v_right,-3*angle/4);
+						rot_y.transform_dir		(T.direction,RL.direction);
+						dest->push_back	(T);
 					}
+					
+					// Build area-lights
+					if (Header.params.area_quality)	
+					{
+						hemi_data				h_data;
+						h_data.dest				= dest;
+						h_data.T				= RL;
+						h_data.T.amount			= Header.params.area_color.magnitude_rgb();
+						xrHemisphereBuild		(Header.params.area_quality,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
+					}
+				} else {
+					RL.type			= LT_POINT;
+					dest->push_back (RL);
 				}
 			}
 		}
@@ -168,7 +211,7 @@ void xrLoad(LPCSTR name)
 const int	LIGHT_Count			=5;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
-typedef	svector<R_Light*,256>	LSelection;
+typedef	svector<R_Light*,1024>	LSelection;
 
 IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
@@ -371,31 +414,6 @@ void	xrLight			()
 		Threads.start(new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
-
-	/*
-	// Smooth
-	Status("Smoothing lighting...");
-	for (int pass=0; pass<3; pass++) {
-		Nodes	Old = g_nodes;
-		for (DWORD N=0; N<g_nodes.size(); N++)
-		{
-			Node&	Base		= Old[N];
-			Node&	Dest		= g_nodes[N];
-			
-			float	val			= 2*Base.LightLevel;
-			float	cnt			= 2;
-			
-			for (int nid=0; nid<4; nid++) {
-				if (Base.n[nid]!=InvalidNode) {
-					val		+=  Old[Base.n[nid]].LightLevel;
-					cnt		+=	1.f;
-				}
-			}
-			Dest.LightLevel		=  val/cnt;
-			clamp(Dest.LightLevel,0.f,1.f);
-		}
-	}
-	*/
 }
 
 void xrCompiler(LPCSTR name)
