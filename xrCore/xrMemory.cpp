@@ -49,16 +49,25 @@ void	xrMemory::mem_compact	()
 	HeapCompact			(GetProcessHeap(),0);
 }
 
-u32		xrMemory::mem_usage		()
+u32		xrMemory::mem_usage		(u32* )
 {
 	_HEAPINFO		hinfo;
 	int				heapstatus;
 	hinfo._pentry	= NULL;
-	size_t	total	= 0;
+	u32	total		= 0;
+	u32	blocks_free	= 0;
+	u32	blocks_used	= 0;
 	while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
 	{ 
-		if (hinfo._useflag == _USEDENTRY)	total += hinfo._size;
+		if (hinfo._useflag == _USEDENTRY)	{
+			total		+= hinfo._size;
+			blocks_used	+= 1;
+		} else {
+			blocks_free	+= 1;
+		}
 	}
+	if (pBlocksFree)	*pBlocksFree= blocks_free;
+	if (pBlocksUsed)	*pBlocksUsed= blocks_used;
 
 	switch( heapstatus )
 	{
