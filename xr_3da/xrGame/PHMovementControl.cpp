@@ -75,10 +75,10 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float 
 	
 	m_character->IPosition(vPosition);
 
-	vAccel.y=jump;
+	//vAccel.y=jump;
 	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
 	m_character->SetAcceleration(vAccel);
-
+	if(!fis_zero(jump)) m_character->Jump(vAccel);
 
 	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
