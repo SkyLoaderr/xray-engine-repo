@@ -1,5 +1,5 @@
 object fraSector: TfraSector
-  Left = 1541
+  Left = 2053
   Top = 222
   Width = 226
   Height = 197

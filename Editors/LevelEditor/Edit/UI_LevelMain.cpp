@@ -231,6 +231,13 @@ void CommandImportCompilerError(u32 p1, u32 p2, u32& res)
         Scene->LoadCompilerError(fn.c_str());
     }
 }
+void CommandExportCompilerError(u32 p1, u32 p2, u32& res)
+{
+    std::string fn;
+    if(EFS.GetSaveName("$logs$", fn, NULL, 0)){
+        Scene->SaveCompilerError(fn.c_str());
+    }
+}
 void CommandValidateScene(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
@@ -659,6 +666,7 @@ void CLevelMain::RegisterCommands()
 	RegisterCommand(COMMAND_LOAD_FIRSTRECENT,           SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandLoadFirstRecent)));
 	RegisterCommand(COMMAND_CLEAR_COMPILER_ERROR,       SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandClearCompilerError)));
 	RegisterCommand(COMMAND_IMPORT_COMPILER_ERROR,      SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandImportCompilerError)));
+	RegisterCommand(COMMAND_EXPORT_COMPILER_ERROR,      SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandExportCompilerError)));
 	RegisterCommand(COMMAND_VALIDATE_SCENE,             SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandValidateScene)));
 	RegisterCommand(COMMAND_REFRESH_LIBRARY,            SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshLibrary)));
 	RegisterCommand(COMMAND_RELOAD_OBJECTS,             SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandReloadObject)));
@@ -1429,7 +1437,8 @@ bool CLevelMain::SelectionFrustum(CFrustum& frustum)
         p[i].mad(st,d,depth);
     }
 
-    frustum.CreateFromPoints(p,4,Device.m_Camera.GetPosition());
+    Fvector pos = Device.m_Camera.GetPosition();
+    frustum.CreateFromPoints(p,4,pos);
 
     Fplane P; P.build(p[0],p[1],p[2]);
     if (P.classify(st)>0) P.build(p[2],p[1],p[0]);

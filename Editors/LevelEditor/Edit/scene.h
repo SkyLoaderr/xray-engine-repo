@@ -145,6 +145,7 @@ public:
 	void 			Unload				();
 	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);
+    void			SaveCompilerError	(LPCSTR fn);
     void 			ClearCompilerErrors	(){m_CompilerErrors.Clear();}
 
 	IC bool 		valid				()           	{ return m_Valid; }

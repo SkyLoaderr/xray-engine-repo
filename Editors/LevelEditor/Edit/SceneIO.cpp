@@ -513,3 +513,29 @@ void EScene::LoadCompilerError(LPCSTR fn)
     FS.r_close(F);
 }
 
+void EScene::SaveCompilerError(LPCSTR fn)
+{
+	IWriter*		fs	= FS.w_open(fn);
+	IWriter&		err = *fs;
+
+	// t-junction
+	err.open_chunk	(0);
+	err.w_u32		(m_CompilerErrors.m_TJVerts.size());
+	err.w			(m_CompilerErrors.m_TJVerts.begin(), m_CompilerErrors.m_TJVerts.size()*sizeof(ERR::Vert));
+	err.close_chunk	();
+
+	// m-edje
+	err.open_chunk	(1);
+	err.w_u32		(m_CompilerErrors.m_MultiEdges.size());
+	err.w			(m_CompilerErrors.m_MultiEdges.begin(), m_CompilerErrors.m_MultiEdges.size()*sizeof(ERR::Edge));
+	err.close_chunk	();
+
+	// invalid
+	err.open_chunk	(2);
+	err.w_u32		(m_CompilerErrors.m_InvalidFaces.size());
+	err.w			(m_CompilerErrors.m_InvalidFaces.begin(), m_CompilerErrors.m_InvalidFaces.size()*sizeof(ERR::Face));
+	err.close_chunk	();
+
+    FS.w_close		(fs);
+}
+

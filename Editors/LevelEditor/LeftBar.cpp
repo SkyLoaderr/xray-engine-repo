@@ -631,6 +631,12 @@ void __fastcall TfraLeftBar::ImportCompilerErrorsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExportErrorList1Click(TObject *Sender)
+{
+	ExecCommand(COMMAND_EXPORT_COMPILER_ERROR);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebIgnoreModeClick(TObject *Sender)
 {
 	ExecCommand(COMMAND_UPDATE_PROPERTIES);
@@ -688,5 +694,6 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
 }
 //---------------------------------------------------------------------------
+
 
 

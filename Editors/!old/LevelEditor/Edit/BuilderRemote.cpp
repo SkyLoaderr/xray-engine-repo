@@ -994,6 +994,7 @@ BOOL SceneBuilder::CompileStatic()
         Fvector2Vec			offsets;
         Fvector2Vec			scales;
         boolVec				rotated;
+        U32Vec				remap;
         SSimpleImageVec		images;
         for (int k=0; k<(int)l_lods.size(); k++){
             images.push_back(SSimpleImage());
@@ -1003,10 +1004,11 @@ BOOL SceneBuilder::CompileStatic()
             I.w				= LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT;
             I.h				= LOD_IMAGE_SIZE;
 	        pb->Inc();
-        }                           
+        }       
+
         SSimpleImage merged_image;
         std::string fn 		= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_TEX_NAME).c_str(),".dds").c_str();
-        if (1==ImageLib.CreateMergedTexture	(images,merged_image,512,2048,64,1024,offsets,scales,rotated)){
+        if (1==ImageLib.CreateMergedTexture	(images,merged_image,512,2048,64,1024,offsets,scales,rotated,remap)){
             // all right, make texture
             ImageLib.MakeGameTexture		(fn.c_str(),merged_image.data.begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
 	        for (k=0; k<(int)l_lods.size(); k++){        
@@ -1014,7 +1016,8 @@ BOOL SceneBuilder::CompileStatic()
                 for (u32 f=0; f<8; f++){
                 	for (u32 t=0; t<4; t++){
                     	Fvector2& uv = l.lod.faces[f].t[t];
-                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[k],scales[k],rotated[k]);
+                        u32 id 		 = remap[k];
+                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[id],scales[id],rotated[id]);
                     }
                 }
 		        pb->Inc();

@@ -1,6 +1,6 @@
 object frmEditLibrary: TfrmEditLibrary
-  Left = 948
-  Top = 526
+  Left = 832
+  Top = 279
   Width = 332
   Height = 468
   BorderIcons = [biSystemMenu, biMinimize]
@@ -76,6 +76,7 @@ object frmEditLibrary: TfrmEditLibrary
       Enabled = False
       Transparent = False
       FlatAlwaysEdge = True
+      Visible = False
       OnClick = ebMakeLODClick
     end
     object Bevel4: TBevel

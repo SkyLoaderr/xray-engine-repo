@@ -2191,6 +2191,10 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Import Error List'
       OnClick = ImportCompilerErrorsClick
     end
+    object ExportErrorList1: TMenuItem
+      Caption = 'Export Error List'
+      OnClick = ExportErrorList1Click
+    end
     object MenuItem34: TMenuItem
       Caption = 'Clear Error List'
       OnClick = miClearErrorListClick
