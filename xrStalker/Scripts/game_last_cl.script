@@ -83,12 +83,13 @@ function game_cl_LastStanding:createGameUI ()
    self.m_char_dlg:SetClGame(self)
 
    self.m_header_wnd = game_last_header_wnd.header_wnd()
-   self.m_game_ui:AddDialogToRender(self.m_header_wnd)
+   self.m_game_ui:AddDialogToRender(self.m_header_wnd)  --always visible.use RemoveDialogToRender to hide this window
    return self.m_game_ui
 end
 
 
 function game_cl_LastStanding:GetMapEntities(ent_container)
+    --draw players on map
    local D = SZoneMapEntityData()
 
    local players_count = self:GetPlayersCount()
@@ -142,6 +143,9 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 		local b_need_to_send_ready = false
 
 		local ps_local	= self:GetLocalPlayer()
+        if ps_local == nil then
+            return false
+        end
 
       local game_object = self:GetObjectByGameID(ps_local.GameID)
 		if game_object == nil then return false end
@@ -187,6 +191,7 @@ function game_cl_LastStanding:OnKeyboardPress(key)
          return  true
       end
 
+--see bind commands in user.lxt (bind ext_1 kY and bind ext_2 kU)
    if key_bindings.kEXT_1 == key then
 --      self:StartStopMenu(self.m_testWnd)
       self:StartStopMenu(self.m_dlg_)

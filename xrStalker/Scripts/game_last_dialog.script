@@ -1,7 +1,26 @@
+--simply user-defined dialog example
+---
+
 class "uiDialog" (CUIScriptWnd)
 
 function uiDialog:__init() super()
-   self:SetFont(GetFontMedium())
+   self:SetFont(GetFontMedium()) --set base font for dialog.
+/*  set of registered in game fonts:
+    function GetFontArialN21Russian();
+    function GetFontGraffiti32Russian();
+    function GetFontDI();
+    function GetFontHeaderRussian();
+    function GetFontGraffiti19Russian();
+    function GetFontLetterica25();
+    function GetFontMedium();
+    function GetFontLetterica16Russian();
+    function GetFontSmall();
+    function GetFontGraffiti22Russian();
+    function GetFontLetterica18Russian();
+    function GetFontBigDigit();
+    function GetFontHeaderEurope();
+    function GetFontGraffiti50Russian();
+*/
    self:InitControls()
    self:InitCallBacks()
 end
@@ -15,25 +34,26 @@ function uiDialog:SetClGame  (game_cl)
 end
 
 function uiDialog:InitControls()
-   self:Init(100,100,257,271) --init position and size
+   self:Init(100,100,257,271) --init self position and size
 
    local txt_main   = CUIStatic()
-   txt_main:SetAutoDelete(true)              --always
+   txt_main:SetAutoDelete(true)              --parent will delete this item on destructor
    txt_main:SetWindowName("static_0")
    txt_main:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
-   txt_main:ClipperOn()
+    --textures name, root is Gamedata\Textures folder
+   txt_main:ClipperOn() --clip texture by window region
    self:AttachChild(txt_main)
----------------------------------------
+--------------------------------------- 
    local btn   = CUIButton()
    btn:SetAutoDelete(true) 
-   btn:SetWindowName("button_ok")
+   btn:SetWindowName("button_ok") --set window name for callback processing
    
    btn:Init("ui\\ui_button_01",10,210,135,40)
 --   btn:Init(10,10,100,100) --or without texture
    btn:SetText("OK")
-   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(20) --vertical align(pixel)
-   self:Register(btn)
+   btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
+   btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
+   self:Register(btn) --for event-handling
    txt_main:AttachChild(btn)
 --------------------------------------
    btn   = CUIButton()
@@ -42,8 +62,8 @@ function uiDialog:InitControls()
    
    btn:Init("ui\\ui_button_01",130,210,135,40) 
    btn:SetText("cancel")
-   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(20) --vertical align(pixel)
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(20)
    self:Register(btn)
    txt_main:AttachChild(btn)
 
@@ -60,8 +80,8 @@ function uiDialog:InitControls()
    
    btn:Init(10,20,190,21) 
    btn:SetText("radio-1")
-   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(10) --vertical align(pixel)
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(10)
    self:Register(btn)
    rg:AttachChild(btn)
 --------------------------------------
@@ -71,8 +91,8 @@ function uiDialog:InitControls()
    
    btn:Init(10,50,190,21) 
    btn:SetText("radio-2")
-   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(10) --vertical align(pixel)
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(10)
    self:Register(btn)
    rg:AttachChild(btn)
 --------------------------------------
@@ -82,8 +102,8 @@ function uiDialog:InitControls()
    
    btn:Init(10,80,190,21) 
    btn:SetText("radio-3")
-   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(10) --vertical align(pixel)
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(10)
    self:Register(btn)
    rg:AttachChild(btn)
 --------------------------------------
@@ -94,8 +114,8 @@ function uiDialog:InitControls()
    edt:Init("ui\\ui_inv_info_over_b",20,140,220,31) 
 --   edt:SetText("some text")
    edt:ClipperOn()
---   edt:SetTextAlign(CGameFont.alCenter) --horizontal align
---   edt:SetTextY(15) --vertical align(pixel)
+--   edt:SetTextAlign(CGameFont.alCenter)
+--   edt:SetTextY(15)
    self:Register(edt)
    txt_main:AttachChild(edt)
 -----------------------------------------
@@ -105,10 +125,10 @@ function uiDialog:InitControls()
    
    btn:Init(10,180,171,21) 
    btn:SetText("check-1")
-   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
-   btn:SetTextY(10) --vertical align(pixel)
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(10)
    self:Register(btn)
-   rg:AttachChild(btn)
+   txt_main:AttachChild(btn)
 ------------------------------------------   
 end
 
@@ -127,40 +147,52 @@ function uiDialog:OnButton_ok_clicked()
    printf("test_dialog:OnButton_ok_clicked()")
 
    local edt = self:GetEditBox("edit_1")
+-- take control by name, dependent on type
+/*
+    function GetCheckButton(string);
+    function GetFrameLineWnd(string);
+    function GetPropertiesBox(string);
+    function GetListWnd(string);
+    function GetStatic(string);
+    function GetEditBox(string);
+    function GetTabControl(string);
+    function GetRadioGroup(string);
+    function GetDialogWnd(string);
+    function GetButton(string);
+    function GetMessageBox(string);
+    function GetProgressBar(string);
+    function GetRadioButton(string);
+    function GetFrameWindow(string);
+
+*/
    local t = edt:GetText()
+
    printf("text is =%s",t)
 
    local r0 = self:GetRadioGroup("rg_1")
    local idx = r0:GetCheckedPos()
-   printf("active idx=%d",idx)
+   printf("group active idx=%d",idx)
 
    r0:SetCheckedPos(2)
    idx = r0:GetCheckedPos()
-   printf("active idx=%d",idx)
+   printf("group active idx=%d",idx)
 
 end
 
 function uiDialog:OnButton_cancel_clicked()
    printf("test_dialog:OnButton_cancel_clicked()")
- --   s0:InitTexture("ui\\ui_map_escape")
 end
 
 function uiDialog:OnButton_radio1_clicked()
    printf("test_dialog:OnButton_radio1_clicked()")
---   local s0 = self:GetStatic("static_0")
---   s0:InitTexture("ui\\ui_map_escape")
 end
 
 function uiDialog:OnButton_radio2_clicked()
    printf("test_dialog:OnButton_radio2_clicked()")
---   local s0 = self:GetStatic("static_0")
---   s0:InitTexture("ui\\ui_map_escape")
 end
 
 function uiDialog:OnButton_radio3_clicked()
    printf("test_dialog:OnButton_radio3_clicked()")
---   local s0 = self:GetStatic("static_0")
---   s0:InitTexture("ui\\ui_map_escape")
 end
 
 function uiDialog:OnButton_check_reset()
@@ -175,7 +207,7 @@ end
 
 function uiDialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
-   local bind = dik_to_bind(dik)
+   local bind = dik_to_bind(dik)  --translate DirectInputKey to user-defined function ("bind command in user ltx")
    if keyboard_action ==ui_events.WINDOW_KEY_PRESSED then
       printf("pressed dik=%d bind=%d",dik,bind)
    elseif keyboard_action ==ui_events.WINDOW_KEY_RELEASED then
@@ -183,8 +215,8 @@ function uiDialog:OnKeyboard(dik, keyboard_action)  --virtual function
    end
 
    if bind == key_bindings.kQUIT then
-      self.m_game_cl:StopMenu(self)
+      self.m_game_cl:StopMenu(self) --close dialog
    end
-   return true
+   return true --catch all keys.
 end
 
