@@ -213,6 +213,9 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	if (m_wVersion > 79)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 
+	if (m_wVersion > 82)
+		tNetPacket.r_float		(m_fProbability);
+
 	u16							size;
 	tNetPacket.r_u16			(size			);	// size
 	STATE_Read					(tNetPacket,size);
