@@ -643,6 +643,16 @@ SOURCE=.\xrHierrarhy.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrMergeGeometry.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrMergeLM.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrPVS.cpp
 # PROP Exclude_From_Build 1
 # End Source File
@@ -713,11 +723,7 @@ SOURCE=.\xrLight_Implicit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrMergeGeometry.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrMergeLM.cpp
+SOURCE=.\xrPhase_MergeGeometry.cpp
 # End Source File
 # Begin Source File
 
