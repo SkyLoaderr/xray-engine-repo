@@ -209,12 +209,16 @@ BOOL IPureClient::Connect(LPCSTR options)
 
 		net_Hosts.push_back			(NODE);
 	} else {
+	
+		string64						EnumData;
+		EnumData[0] = 0;
+		strcat(EnumData, "ToConnect");
 		// We now have the host address so lets enum
 		R_CHK(NET->EnumHosts(
 			&dpAppDesc,				// pApplicationDesc
 			net_Address_server,		// pdpaddrHost
 			net_Address_device,		// pdpaddrDeviceInfo
-			NULL, 0,				// pvUserEnumData, size
+			EnumData, strlen(EnumData)+1,		// pvUserEnumData, size
 			2,						// dwEnumCount
 			0,						// dwRetryInterval
 			1500,					// dwTimeOut
