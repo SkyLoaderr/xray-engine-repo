@@ -121,8 +121,8 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                     ISE_Abstract*	m_Data		= create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
                     CSE_Visual* m_Visual		= m_Data->visual();	VERIFY(m_Visual);
                     // set params
-                    strcpy	  					(m_Data->name(),entity_ref.c_str());
-                    strcpy	  					(m_Data->name_replace(),sn.c_str());
+                    m_Data->set_name			(entity_ref.c_str());
+                    m_Data->set_name_replace	(sn.c_str());
                     m_Data->position().set		(P->m_RefOffset); 
                     m_Data->angle().set			(P->m_RefRotate);
                     m_Visual->set_visual		(sn.c_str(),false);
@@ -230,8 +230,8 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     ISE_Shape* m_Shape			= m_Data->shape();                      VERIFY(m_Shape);
 //					CSE_Visual* m_Visual		= m_Data->visual();	VERIFY(m_Visual);
                     // set params
-                    strcpy	  					(m_Data->name(),entity_ref.c_str());
-                    strcpy	  					(m_Data->name_replace(),sn.c_str());
+                    m_Data->set_name			(entity_ref.c_str());
+                    m_Data->set_name_replace	(sn.c_str());
                     // set shape
                     CShapeData::shape_def		shape;
                     shape.type					= CShapeData::cfBox;
