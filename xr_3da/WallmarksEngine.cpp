@@ -27,7 +27,6 @@ const int	MAX_TRIS		= 512;
 
 CWallmarksEngine::CWallmarksEngine	()
 {
-	VS = Device.Streams.Create		(FVF::F_LIT,MAX_TRIS*3);
 	pool.reserve	(256);
 	marks.reserve	(256);
 }
@@ -44,6 +43,15 @@ CWallmarksEngine::~CWallmarksEngine	()
 			_DELETE	(pool[it]);
 		pool.clear	();
 	}
+}
+
+void CWallmarksEngine::OnDeviceCreate()
+{
+	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
+}
+void CWallmarksEngine::OnDeviceDestroy()
+{
+	Device.Shader._DeleteVS	(VS);
 }
 
 // allocate
@@ -228,7 +236,7 @@ void CWallmarksEngine::Render()
 	Device.Statistic.RenderDUMP_WM.Begin	();
 
 	DWORD				w_offset= 0;
-	FVF::LIT*			w_verts = (FVF::LIT*)	VS->Lock	(MAX_TRIS*3,w_offset);
+	FVF::LIT*			w_verts = (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
 	FVF::LIT*			w_start = w_verts;
 
 	Shader*	w_S			= marks.front()->shader;
@@ -248,12 +256,18 @@ void CWallmarksEngine::Render()
 					if (w_count)	
 					{
 						// Flush stream
-						VS->Unlock					(w_count);
-						Device.Shader.set_Shader	(w_S);
-						Device.Primitive.Draw		(VS,w_count/3,w_offset);
+						Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
+						Device.Shader.set_Shader		(w_S);
+						Device.Primitive.Draw			(VS,w_count/3,w_offset);
+
+						Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+						Device.Primitive.setIndices		(0,0);
+						Device.Primitive.Render			(D3DPT_TRIANGLELIST,dwBase,dwNumPrimitives);
+						UPDATEC							(dwNumPrimitives*3,dwNumPrimitives,1);
+
 
 						// Restart (re-lock/re-calc)
-						w_verts		= (FVF::LIT*)	VS->Lock	(MAX_TRIS*3,w_offset);
+						w_verts		= (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
 						w_start		= w_verts;
 						w_S			= W->shader;
 					}
@@ -267,7 +281,7 @@ void CWallmarksEngine::Render()
 
 	// Flush stream
 	DWORD w_count			= w_verts-w_start;
-	VS->Unlock				(w_count);
+	Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
 	if (w_count)			{
 		Device.Shader.set_Shader(w_S);
 		Device.Primitive.Draw	(VS,w_count/3,w_offset);

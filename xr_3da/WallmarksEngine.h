@@ -17,7 +17,7 @@ public:
 private:
 	vector<wallmark*>				pool;
 	vector<wallmark*>				marks;
-	CVertexStream*					VS;
+	CVS*							VS;
 
 	vector<CDB::TRI*>				sml_processed;
 	Fvector							sml_normal;
@@ -33,6 +33,8 @@ private:
 public:
 	void		AddWallmark			(CDB::TRI* tri, const Fvector &contact_point, Shader* hTexture, float sz);
 	void		Render				();
+	void		OnDeviceCreate		();
+	void		OnDeviceDestroy		();
 
 	CWallmarksEngine				();
 	~CWallmarksEngine				();

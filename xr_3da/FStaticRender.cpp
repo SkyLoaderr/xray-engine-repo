@@ -654,6 +654,8 @@ void CRender::OnDeviceCreate	()
 	PSystems.OnDeviceCreate		();
 	level_Load					();
 	L_Dynamic.Initialize		();
+	Glows.OnDeviceCreate		();
+	Wallmarks.OnDeviceCreate	();
 
 	gm_Nearer					= FALSE;
 	rmNormal					();
@@ -661,6 +663,8 @@ void CRender::OnDeviceCreate	()
 
 void CRender::OnDeviceDestroy	()
 {
+	Wallmarks.OnDeviceDestroy	();
+	Glows.OnDeviceDestroy		();
 	L_Dynamic.Destroy			();
 	level_Unload				();
 	PSystems.OnDeviceDestroy	();

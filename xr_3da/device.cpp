@@ -211,6 +211,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
 	Statistic.OnDeviceCreate	();
+	Streams.OnDeviceCreate		();
 	dwFrame						= 0;
 	
 	// Create TL-primitive
@@ -281,16 +282,17 @@ void CRenderDevice::Create	()
 
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
-	Engine.mem_Compact			();
-
 	// before destroy
 	bReady						= FALSE;
+	Streams.OnDeviceDestroy		();
 	Statistic.OnDeviceDestroy	();
 	Primitive.OnDeviceDestroy	();
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 	Streams.OnDeviceDestroy		();
 	Shader.OnDeviceDestroy		(bKeepTextures);
 	_RELEASE					(Streams_QuadIB);
+
+	Engine.mem_Compact			();
 }
 
 void CRenderDevice::Destroy	(void) {
