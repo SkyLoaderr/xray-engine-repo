@@ -106,10 +106,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	bCaptureExceptions		= FALSE;
 #endif
 
-	// get system user name
-	DWORD	sz_user				= sizeof(psSystemUserName);
-	GetUserName					(psSystemUserName,&sz_user);
-	
 	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 
 	// _CrtSetDbgFlag( _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_LEAK_CHECK_DF);

@@ -38,6 +38,3 @@ Flags32	psDeviceFlags		= {rsFullscreen|rsNoVSync|mtSound};
 
 // textures
 int		psTextureLOD		= 0;
-
-// users
-string64	psSystemUserName	= "";

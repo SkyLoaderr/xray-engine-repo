@@ -84,6 +84,5 @@ enum {
 ENGINE_API extern	u32			psCurrentMode		;
 ENGINE_API extern	u32			psCurrentBPP		;
 ENGINE_API extern	Flags32		psDeviceFlags		;
-ENGINE_API extern	string64	psSystemUserName	;
 
 #endif

@@ -142,7 +142,7 @@ static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 
 void CreateLog(BOOL bQuiet)
 {
-	strconcat			(logFName,"engine_",strlwr(psSystemUserName),".log");
+	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
 
 	FILE *f;
 	f = fopen(logFName, "wt");
