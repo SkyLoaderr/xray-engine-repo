@@ -124,9 +124,9 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 
 			if (F->flags.bOpaque)	{
 				// Opaque poly - cache it
-				L.tri[0].set	(*clT.verts[0]);
-				L.tri[1].set	(*clT.verts[1]);
-				L.tri[2].set	(*clT.verts[2]);
+				L.tri[0].set	(rpinf.verts[0]);
+				L.tri[1].set	(rpinf.verts[1]);
+				L.tri[2].set	(rpinf.verts[2]);
 				return 0;
 			}
 
