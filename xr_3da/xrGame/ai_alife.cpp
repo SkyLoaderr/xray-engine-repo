@@ -140,10 +140,10 @@ void CSE_ALifeSimulator::vfNewGame()
 void CSE_ALifeSimulator::Save(LPCSTR caSaveName)
 {
 	CMemoryWriter				tStream;
-	CSE_ALifeHeader::Save			(tStream);
+	CSE_ALifeHeader::Save		(tStream);
 	CSE_ALifeGameTime::Save		(tStream);
-	CSE_ALifeObjectRegistry::Save	(tStream);
-	CSE_ALifeEventRegistry::Save	(tStream);
+	CSE_ALifeObjectRegistry::Save(tStream);
+	CSE_ALifeEventRegistry::Save(tStream);
 	CSE_ALifeTaskRegistry::Save	(tStream);
 	string256					S;
 	strconcat					(S,SAVE_PATH,caSaveName);
@@ -215,7 +215,7 @@ void CSE_ALifeSimulator::vfUpdateDynamicData()
 	// initialize
 	CSE_ALifeGraphRegistry::Init	();
 	CSE_ALifeTraderRegistry::Init	();
-	CSE_ALifeScheduleRegistry::Init();
+	CSE_ALifeScheduleRegistry::Init	();
 	// update objects
 	{
 		OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
