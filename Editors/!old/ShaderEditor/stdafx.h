@@ -131,8 +131,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 	DEFINE_VECTOR(shared_str,RStrVec,RStrVecIt);
 
-	#include "xrXRC.h"
-
 	#include "CustomObject.h"
 	#include "EditorPreferences.h"
 #endif

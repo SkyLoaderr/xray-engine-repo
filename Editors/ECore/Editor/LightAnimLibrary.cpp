@@ -268,28 +268,17 @@ CLAItem* ELightAnimLibrary::FindItem(LPCSTR name)
 	return (it!=Items.end())?*it:0;
 }
 
-LPCSTR ELightAnimLibrary::GenerateName(LPSTR name, LPCSTR source)
+CLAItem* ELightAnimLibrary::AppendItem(LPCSTR name, CLAItem* src)
 {
-    int cnt = 0;
-	char fld[128]; strcpy(fld,name);
-    if (source) strcpy(name,source); else sprintf(name,"%sanim_%02d",fld,cnt++);
-	while (FindItem(name))
-    	if (source) sprintf(name,"%s_%02d",source,cnt++);
-        else sprintf(name,"%sanim_%02d",fld,cnt++);
-	return name;
-}
-
-CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
-{
-    CLAItem* I=xr_new<CLAItem>();
-    I->InitDefault();
-    string256 new_name; new_name[0]=0;
-    if (folder_name) strcpy(new_name,folder_name);
-    GenerateName(new_name,parent?*parent->cName:0);
-    I->cName		= new_name;
-    Items.push_back	(I);
+    VERIFY2				(FindItem(name)==0,"Duplicate name found.");
+    CLAItem* I			= xr_new<CLAItem>();
+    if (src)			*I = *src;
+    else			    I->InitDefault();
+    I->cName			= name;
+    Items.push_back		(I);
 	return I;
 }
+
 #ifdef _EDITOR
 void ELightAnimLibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)   
 {

@@ -49,8 +49,7 @@ void CEditableMesh::UnloadCForm     ()
 {
 	if (!m_LoadState.is(LS_CF_MODEL)) return;
 #ifdef _EDITOR
-	xr_delete(m_CFModel);
-    m_CFModel = 0;
+	ETOOLS::destroy_model(m_CFModel);
 #endif
     m_LoadState.set(LS_CF_MODEL,FALSE);
 }

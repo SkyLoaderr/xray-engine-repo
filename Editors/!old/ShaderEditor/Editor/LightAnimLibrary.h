@@ -16,7 +16,7 @@ public:
     int				iFrameCount;
 public:
                 	CLAItem				();
-
+                    
 	void			InitDefault			();
     void			Load				(IReader& F);
     void			Save				(IWriter& F);
@@ -38,7 +38,6 @@ public:
 DEFINE_VECTOR(CLAItem*,LAItemVec,LAItemIt);
 
 class ENGINE_API ELightAnimLibrary{
-    LPCSTR			GenerateName		(LPSTR name, LPCSTR source);
 public:
     LAItemVec       Items;
     LAItemIt		FindItemI			(LPCSTR name);
@@ -57,7 +56,7 @@ public:
     void			Save				();
     void			Reload				();
     void			Unload				();
-    CLAItem*		AppendItem			(LPCSTR folder_name, CLAItem* parent);
+    CLAItem*		AppendItem			(LPCSTR name, CLAItem* src);
     LAItemVec&		Objects				(){return Items;}
 };
 

@@ -18,6 +18,7 @@
 #define GAMEMTL_CHUNK_FACTORS        	0x1003
 #define GAMEMTL_CHUNK_FLOTATION   		0x1004
 #define GAMEMTL_CHUNK_DESC				0x1005
+#define GAMEMTL_CHUNK_INJURIOUS			0x1006
 //----------------------------------------------------
 #define GAMEMTLPAIR_CHUNK_PAIR   		0x1000
 //#define GAMEMTLPAIR_CHUNK_FLOTATION   0x1001 - obsolete
@@ -76,14 +77,16 @@ public:
 //		flWalkOn		= (1ul<<6ul), // obsolette
         flPassable		= (1ul<<7ul),
         flDynamic		= (1ul<<8ul),
+        flLiquid 		= (1ul<<9ul),
 
+        flInjurious		= (1ul<<28ul),// flInjurious = fInjuriousSpeed > 0.f
 		flShootable 	= (1ul<<29ul),
         flTransparent	= (1ul<<30ul),
         flSlowDown		= (1ul<<31ul) // flSlowDown = (fFlotationFactor<1.f)
     };
 public:
-	shared_str				m_Name;
-    shared_str				m_Desc;
+	shared_str			m_Name;
+    shared_str			m_Desc;
 
     Flags32				Flags;
     // physics part
@@ -96,6 +99,7 @@ public:
     float		    	fFlotationFactor;		// 0.f - 1.f   	(1.f-полностью проходимый)
     float				fShootFactor;			// 0.f - 1.f	(1.f-полностью простреливаемый)
     float				fBounceDamageFactor;	// 0.f - 100.f
+    float				fInjuriousSpeed; 		// 0.f - ...	(0.f-не отбирает здоровье (скорость уменьшения здоровья))
     float				fVisTransparencyFactor;	// 0.f - 1.f	(1.f-полностью прозрачный)
     float				fSndOcclusionFactor;	// 0.f - 1.f    (1.f-полностью слышен)
 public:
@@ -108,6 +112,7 @@ public:
         fFlotationFactor		= 1.f;
         fShootFactor			= 0.f;
         fBounceDamageFactor		= 1.f;
+        fInjuriousSpeed 		= 0.f;
         fVisTransparencyFactor	= 0.f;
         fSndOcclusionFactor		= 0.f;
         // physics

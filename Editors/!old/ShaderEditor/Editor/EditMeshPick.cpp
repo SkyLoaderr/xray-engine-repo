@@ -38,7 +38,6 @@ void CEditableMesh::GenerateCFModel()
 {
 	SPBItem* pb		= UI->ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
 	UnloadCForm		();
-	m_CFModel 		= xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
 	// Collect faces
 	CDB::Collector CL;
 	// double sided
@@ -52,9 +51,9 @@ void CEditableMesh::GenerateCFModel()
 				CL.add_face_D(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], *it);
 		}
 	}
-    m_CFModel->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+	m_CFModel 		= ETOOLS::create_model(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState.set	(LS_CF_MODEL,TRUE);
-    UI->ProgressEnd		(pb);
+    UI->ProgressEnd	(pb);
 }
 
 void CEditableMesh::RayQuery(SPickQuery& pinf)
@@ -88,9 +87,9 @@ void CEditableMesh::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, S
 void CEditableMesh::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
 {
     if (!m_CFModel) GenerateCFModel();
-    XRC.box_query(inv_parent, m_CFModel, pinf.m_BB);
-    for (int r=0; r<XRC.r_count(); r++)
-        pinf.append_mtx(parent,XRC.r_begin()+r,m_Parent,this);
+    ETOOLS::box_query_m(inv_parent, m_CFModel, pinf.m_BB);
+    for (int r=0; r<ETOOLS::r_count(); r++)
+        pinf.append_mtx(parent,ETOOLS::r_begin()+r,m_Parent,this);
 }
 
 static const float _sqrt_flt_max = _sqrt(flt_max*0.5f);
@@ -102,11 +101,11 @@ bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector
     if (!m_CFModel) GenerateCFModel();
 //.	float m_r 		= pinf?pinf->inf.range+EPS_L:UI->ZFar();// (bugs: не всегда выбирает) //S ????
 
-	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
-	XRC.ray_query	(inv_parent, m_CFModel, start, direction, _sqrt_flt_max);
+	ETOOLS::ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
+	ETOOLS::ray_query_m	(inv_parent, m_CFModel, start, direction, _sqrt_flt_max);
 
-    if (XRC.r_count()){
-		CDB::RESULT* I	= XRC.r_begin	();
+    if (ETOOLS::r_count()){
+		CDB::RESULT* I	= ETOOLS::r_begin	();
 		if (I->range<distance) {
 	        if (pinf){
             	pinf->SetRESULT	(m_CFModel,I);
@@ -182,12 +181,12 @@ bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& inv_parent, SBoxPick
 {
     if (!m_CFModel) GenerateCFModel();
 
-    XRC.box_query(inv_parent, m_CFModel, box);
-    if (XRC.r_count()){
+    ETOOLS::box_query_m(inv_parent, m_CFModel, box);
+    if (ETOOLS::r_count()){
     	pinf.push_back(SBoxPickInfo());
 		pinf.back().e_obj 	= m_Parent;
 	    pinf.back().e_mesh	= this;
-	    for (CDB::RESULT* I=XRC.r_begin(); I!=XRC.r_end(); I++) pinf.back().AddRESULT(m_CFModel,I);
+	    for (CDB::RESULT* I=ETOOLS::r_begin(); I!=ETOOLS::r_end(); I++) pinf.back().AddRESULT(m_CFModel,I);
         return true;
     }
     return false;

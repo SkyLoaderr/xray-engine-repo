@@ -501,7 +501,7 @@ bool TUI::OnCreate(TD3DWindow* w, TPanel* p)
     Device.Initialize();
     
 	// Creation
-	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
+	ETOOLS::ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
     pInput			= xr_new<CInput>(FALSE,mouse_device_key);
     UI->IR_Capture	();

@@ -34,6 +34,9 @@ void SGameMtl::Load(IReader& fs)
 
 	if(fs.find_chunk(GAMEMTL_CHUNK_FLOTATION))
 	    fFlotationFactor	= fs.r_float();
+
+    if(fs.find_chunk(GAMEMTL_CHUNK_INJURIOUS))
+    	fInjuriousSpeed		= fs.r_float();
 }
 
 void CGameMtlLibrary::Load()
