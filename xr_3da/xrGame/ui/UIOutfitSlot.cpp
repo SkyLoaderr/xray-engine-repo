@@ -101,8 +101,8 @@ void CUIOutfitSlot::SetOriginalOutfit()
 		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
 			m_iNoOutfitX*ICON_GRID_WIDTH,
 			m_iNoOutfitY*ICON_GRID_HEIGHT,
-			m_iNoOutfitX+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-			m_iNoOutfitY+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+			CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
+			CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
 	}
 }
 

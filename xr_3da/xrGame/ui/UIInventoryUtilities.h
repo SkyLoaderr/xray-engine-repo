@@ -23,7 +23,7 @@
 
 //размер иконки персонажа в полный рост
 #define CHAR_ICON_FULL_WIDTH	2
-#define CHAR_ICON_FULL_HEIGHT	8	
+#define CHAR_ICON_FULL_HEIGHT	5
 
 #define TRADE_ICONS_SCALE		(4.f/5.f)
 
