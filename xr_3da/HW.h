@@ -14,6 +14,7 @@ public:
 
 	IDirect3DSurface8*		pBaseRT;
 	IDirect3DSurface8*		pBaseZB;
+	IDirect3DSurface8*		pTempZB;
 	
 	CHWCaps					Caps;
 

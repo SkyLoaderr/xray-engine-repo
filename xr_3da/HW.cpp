@@ -54,6 +54,7 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 
 void	CHW::DestroyDevice	()
 {
+	_RELEASE				(pTempZB);
 	_RELEASE				(pBaseZB);
 	_RELEASE				(pBaseRT);
 	R_CHK					(HW.pDevice->DeleteStateBlock(dwDebugSB));
@@ -134,7 +135,7 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	R_ASSERT(fDepth  != D3DFMT_UNKNOWN);
 
     // Set up the presentation parameters
-	D3DPRESENT_PARAMETERS P;
+	D3DPRESENT_PARAMETERS	P;
     ZeroMemory				( &P, sizeof(P) );
 
 	// Back buffer
@@ -199,9 +200,10 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	}
 
 	// Capture misc data
-	R_CHK	(pDevice->CreateStateBlock		(D3DSBT_ALL,&dwDebugSB));
-	R_CHK	(pDevice->GetRenderTarget		(&pBaseRT));
-	R_CHK	(pDevice->GetDepthStencilSurface(&pBaseZB));
+	R_CHK	(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
+	R_CHK	(pDevice->GetRenderTarget			(&pBaseRT));
+	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
+	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));
 	
 	return dwWindowStyle;
 }
