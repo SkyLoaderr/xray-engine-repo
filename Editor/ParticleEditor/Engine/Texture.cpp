@@ -499,8 +499,10 @@ _TGA:
 		fmt = Image.bAlpha?D3DFMT_DXT3:D3DFMT_DXT1;
 		break;
 	}
+	/*
 	if (fmt==D3DFMT_DXT1 && HW.Caps.bForceDXT3)
 		fmt = D3DFMT_DXT3;
+	*/
 	
 	dwWidth = Image.dwWidth;
 	dwHeight= Image.dwHeight;
