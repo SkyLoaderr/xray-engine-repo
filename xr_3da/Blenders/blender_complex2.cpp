@@ -24,6 +24,10 @@ CBlender_complex2::~CBlender_complex2	()
 void	CBlender_complex2::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
+	xrPWRITE_MARKER	(FS,"Secondary texture");
+	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
+	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
+	xrPWRITE_PROP	(FS,"Constant",			xrPID_CONSTANT,	oT_xform);
 }
 void	CBlender_complex2::Load(	CStream& FS )
 {

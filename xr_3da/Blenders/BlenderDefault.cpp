@@ -20,7 +20,6 @@ CBlender_default::~CBlender_default	()
 {
 
 }
-
 void	CBlender_default::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
