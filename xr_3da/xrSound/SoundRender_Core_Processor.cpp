@@ -5,6 +5,7 @@
 #include "SoundRender_Core.h"
 #include "SoundRender_Emitter.h"
 #include "SoundRender_Target.h"
+#include "SoundRender_Source.h"
 
 CSoundRender_Emitter*	CSoundRender_Core::i_play(sound* S, BOOL _loop )
 {
@@ -100,10 +101,16 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 u32		CSoundRender_Core::stat_render	()
 {
 	u32 counter		= 0;
+	Msg	("- --------------------");
 	for (u32 it=0; it<s_targets.size(); it++)
 	{
 		CSoundRender_Target*	T	= s_targets	[it];
-		if (T->get_emitter() && T->get_Rendering())	counter++;
+		if (T->get_emitter() && T->get_Rendering())	
+		{
+			counter++;
+
+			Msg	("* %2d -- %2d[%2.2f] : %s",it,T->get_emitter()->dbg_ID,T->priority,T->get_emitter()->source->fname);
+		}
 	}
 	return counter;
 }

@@ -25,6 +25,8 @@ public:
 		stFORCEDWORD	= u32(-1)
 	};
 public:
+	u32							dbg_ID;
+
 	CSoundRender_Target*		target;
 	CSoundRender_Source*		source;
 	sound*						owner;
