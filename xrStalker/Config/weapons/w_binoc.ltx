@@ -39,20 +39,22 @@ max_zoom_factor			 = 40
 
 cost					 = 200
 
-cam_relax_speed          = 5.5
-cam_dispersion           = 2
-cam_max_angle			 = 5
-cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
+;-----------------------------------------------------------------------------------
+;базовая дисперсия
+fire_dispersion_base		= 0.15  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
-;;;destroy it
-cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
-cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
+;отдача
+cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
+cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle				= 4		;максимальный угол отдачи
+cam_max_angle_horz			= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz			= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
+fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+;-----------------------------------------------------------------------------------
 
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.75
-disp_jump_factor	 = 3
 
 ph_mass			 = 1
 ;cost			 = 120
