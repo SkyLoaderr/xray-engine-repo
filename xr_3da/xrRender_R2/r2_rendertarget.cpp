@@ -124,15 +124,17 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_bloom							= xr_new<CBlender_bloom_build>			();
 	b_luminance						= xr_new<CBlender_luminance>			();
 	b_combine						= xr_new<CBlender_combine>				();
-	b_decompress					= xr_new<CBlender_decompress>			();
 
 	//	NORMAL
 	{
-		u32	w=Device.dwWidth, h=Device.dwHeight;
+		u32		w=Device.dwWidth, h=Device.dwHeight;
+		BOOL	Xdepth				= RImplementation.o.mrtmixdepth;
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16F);
+		if (Xdepth) rt_Color.create	(r2_RT_albedo,	w,h,D3DFMT_A8R8G8B8);
+		else		rt_Color.create	(r2_RT_albedo,	w,h,D3DFMT_A16B16G16R16F);
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
+		
 		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8		);
 		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8		);
 	}

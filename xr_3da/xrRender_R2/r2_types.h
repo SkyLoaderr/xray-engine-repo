@@ -4,7 +4,7 @@
 #define		r2_RT_depth			"$user$depth"			// MRT
 #define		r2_RT_P				"$user$position"		// MRT
 #define		r2_RT_N				"$user$normal"			// MRT
-#define		r2_RT_D_G			"$user$color_gloss"		// MRT
+#define		r2_RT_albedo		"$user$albedo"			// MRT
 
 // other
 #define		r2_RT_accum			"$user$accum"			// ---	16 bit fp or 16 bit fx
@@ -27,7 +27,6 @@
 #define		r2_float2B			"$user$float2b"			// --- compression/encoding table
 #define		r2_ds2_fade			"$user$ds2_fade"		// ---
 
-const		u32					SMAP_size			= 1536	;
 const		float				SMAP_near_plane		= .1f	;
 
 const		u32					SMAP_adapt_min		= 32	;

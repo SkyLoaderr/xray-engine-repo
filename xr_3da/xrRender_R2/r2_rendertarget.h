@@ -26,10 +26,11 @@ public:
 	IBlender*					b_bloom;
 	IBlender*					b_luminance;
 	IBlender*					b_combine;
-	IBlender*					b_decompress;
+#ifdef DEBUG
 	xr_vector<std::pair<Fsphere,Fcolor> >		dbg_spheres;
+#endif
 
-	// MRT-path (or decompressed MET)
+	// MRT-path
 	ref_rt						rt_Depth;		// Z-buffer like - initial depth
 	ref_rt						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)
 	ref_rt						rt_Normal;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)

@@ -199,12 +199,21 @@ void					CRender::rmNormal			()
 CRender::CRender()
 {
 	// hardware
+	o.smapsize			= 1536;
 	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
 	o.mrtmixdepth		= (HW.Caps.raster.b_MRT_mixdepth);
 	o.HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
 	o.fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
 	o.fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_SURFACE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
 	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum feature-level");
+
+	// options (smap-pool-size)
+	if (strstr(Core.Params,"-smap1024"))	o.smapsize	= 1024;
+	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
+	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
+	if (strstr(Core.Params,"-smap2560"))	o.smapsize	= 2560;
+	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
+	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
 
 	// options
 	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE:FALSE;
@@ -263,6 +272,7 @@ HRESULT	CRender::shader_compile			(
 	D3DXMACRO						defines			[128];
 	int								def_it			= 0;
     CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+	char							c_smapsize		[32];
 	if (pDefines)	{
 		// transfer existing defines
 		for (;;def_it++)	{
@@ -271,6 +281,12 @@ HRESULT	CRender::shader_compile			(
 		}
 	}
 	// options
+	{
+		sprintf						(c_smapsize,"%d",u32(o.smapsize));
+		defines[def_it].Name		=	"SMAP_size";
+		defines[def_it].Definition	=	c_smapsize;
+		def_it						++;
+	}
 	if (o.fp16_filter)		{
 		defines[def_it].Name		=	"FP16_FILTER";
 		defines[def_it].Definition	=	"1";
