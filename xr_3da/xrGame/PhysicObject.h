@@ -49,6 +49,8 @@ public:
 	virtual void	OnEvent				(NET_Packet& P, u16 type)														;
 	virtual void	net_Export			(NET_Packet& P)																	;
 	virtual void	net_Import			(NET_Packet& P)																	;
+	virtual void	net_Save			(NET_Packet& P)																	;
+	virtual	BOOL	net_SaveRelevant	()																				;
 	virtual BOOL	UsedAI_Locations	()																				;
 	virtual void	OnH_A_Independent	()																				;
 

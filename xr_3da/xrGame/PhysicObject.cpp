@@ -21,7 +21,7 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 {
 
 	CKinematics* K	=PKinematics(Visual());
-	P.w_u32(m_unsplit_time);
+	P.w_u8 (m_flags.get());
 	P.w_u64(K->LL_GetBonesVisible());
 	P.w_u16(K->LL_GetBoneRoot());
 }
@@ -30,8 +30,7 @@ void CPhysicObject::LoadNetState(NET_Packet& P)
 {
 
 	CKinematics* K=PKinematics(Visual());
-	m_unsplit_time=P.r_u32();
-	b_removing=(m_unsplit_time!=u32(-1));
+	P.r_u8 (m_flags.flags);
 	K->LL_SetBonesVisible(P.r_u64());
 	K->LL_SetBoneRoot(P.r_u16());
 }
@@ -72,8 +71,6 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 	m_startup_anim=po->startup_animation;
-	m_unsplit_time=po->unsplit_time;
-	b_removing=(m_unsplit_time!=u32(-1));
 	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
@@ -144,14 +141,7 @@ void CPhysicObject::UpdateCL	()
 		else
 			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 	}
-	else
-	{
-		//if(m_source)
-		//{
-		//	m_source->UnsplitSingle(this);
-		//	m_source=NULL;
-		//}
-	}
+
 
 }
 
@@ -289,8 +279,8 @@ void CPhysicObject::net_Export(NET_Packet& P)
 {
 	inherited::net_Export			(P);
 	R_ASSERT						(Local());
-	SaveNetState					(P);
-//	P.w_u8							(m_flags.get());
+
+//	
 	//m_pPhysicsShell->net_Export(P);
 }
 
@@ -325,7 +315,17 @@ void CPhysicObject::shedule_Update(u32 dt)
 
 
 }
+ 
+void CPhysicObject::net_Save(NET_Packet &P)
+{
+	inherited::net_Save(P);
+	SaveNetState	   (P);
+}
 
+BOOL CPhysicObject::net_SaveRelevant()
+{
+	return TRUE;//!m_flags.test(CSE_ALifeObjectPhysic::flSpawnCopy);
+}
 void CPhysicObject::SpawnCopy()
 {
 	if(Local()) {
@@ -459,7 +459,7 @@ void CPhysicObject::SetAutoRemove()
 {
 	b_removing=true;
 	m_unsplit_time=Device.dwTimeGlobal;
-
+	//m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
 }
 //////////////////////////////////////////////////////////////////////////
 /*
