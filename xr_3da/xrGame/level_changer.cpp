@@ -65,6 +65,15 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 	return						(bOk);
 }
 
+void CLevelChanger::UpdateCL	()
+{
+	inherited::UpdateCL			();
+	const Fsphere				&s = CFORM()->getSphere();
+	Fvector						P;
+	XFORM().transform_tiny		(P,s.P);
+	feel_touch_update			(P,s.R);
+}
+
 void CLevelChanger::feel_touch_new	(CObject *tpObject)
 {
 	CActor				*l_tpActor = dynamic_cast<CActor*>(tpObject);

@@ -20,5 +20,6 @@ public:
 	virtual BOOL	net_Spawn			(LPVOID DC);
 	virtual void	spatial_register	();
 	virtual void	spatial_move		();
+			void	UpdateCL			();
 	virtual void	feel_touch_new		(CObject* O);
 };
