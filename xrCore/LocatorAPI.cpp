@@ -516,7 +516,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
                 	bool bNM		= true;
                     bool bEXT		= true;
                     if (it->b_cmp_nm)	if (nm!=*it->nm) 					bNM =false;
-                    if (it->b_cmp_ext)	if (!ext||(0!=strcmp(ext,*it->ext)))bEXT=false;
+                    if (it->b_cmp_ext)	if (!ext||(0!=xr_strcmp(ext,*it->ext)))bEXT=false;
                     bOK				= bNM&&bEXT;
                     if (bOK)		break;
                 }

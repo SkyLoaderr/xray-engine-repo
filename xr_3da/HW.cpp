@@ -131,7 +131,7 @@ u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	for (UINT Adapter=0;Adapter<pD3D->GetAdapterCount();Adapter++)	{
 		D3DADAPTER_IDENTIFIER9 Identifier;
 		HRESULT Res=pD3D->GetAdapterIdentifier(Adapter,0,&Identifier);
-		if (SUCCEEDED(Res) && (strcmp(Identifier.Description,"NVIDIA NVPerfHUD")==0))
+		if (SUCCEEDED(Res) && (xr_strcmp(Identifier.Description,"NVIDIA NVPerfHUD")==0))
 		{
 			DevAdapter	=Adapter;
 			DevT		=D3DDEVTYPE_REF;

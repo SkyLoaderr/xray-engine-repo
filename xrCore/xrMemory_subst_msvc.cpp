@@ -63,8 +63,10 @@ void*	xrMemory::mem_alloc		(size_t size)
 void	xrMemory::mem_free		(void* P)
 {
 	stat_calls++;
-	if		(debug_mode)		debug_cs.Enter	();
-	if		(debug_mode)		dbg_unregister	(P);
+	if		(debug_mode)		{
+		debug_cs.Enter	();
+		dbg_unregister	(P);
+	}
 	u32	pool					= get_header	(P);
 	void* _real					= (void*)(((u8*)P)-1);
 	if (mem_generic==pool)		
@@ -73,7 +75,7 @@ void	xrMemory::mem_free		(void* P)
 		xr_aligned_free			(_real);
 	} else {
 		// pooled
-		R_ASSERT2				(pool<mem_pools_count,"Memory corruption");
+		VERIFY2					(pool<mem_pools_count,"Memory corruption");
 		mem_pools[pool].destroy	(_real);
 	}
 	if		(debug_mode)		debug_cs.Leave	();
