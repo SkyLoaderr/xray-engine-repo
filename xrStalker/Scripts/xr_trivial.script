@@ -15,8 +15,8 @@ local time_walk2    = 10000     --Время ходьбы для навичка номер2
 
 local time_to_look  = 30000     --Время, через которое обиженный новичок смотрит по сторонам
 
-local walk_speak  = xr_sounds_id.zombe_walk_speak
-local stand_speak   = xr_sounds_id.zombe_stand_speak
+local walk_speak  = xr_sounds_id.zombie_walk_speak
+local stand_speak   = xr_sounds_id.zombie_stand_speak
 
 local walk_speak2   = walk_speak +2
 local stand_speak2  = stand_speak +2
@@ -81,13 +81,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 -- Actions
 ---------------------------------------------------------------------------------------------------------------------
-class "stalker_zombe_action" (action_base)
-function stalker_zombe_action:__init (name, storage) super (nil, name)
+class "stalker_zombie_action" (action_base)
+function stalker_zombie_action:__init (name, storage) super (nil, name)
     self.a     = storage
     self.time = 0
 end
 ---------------------------------------------------------------------------------------------------------------------
-function stalker_zombe_action:initialize ()
+function stalker_zombie_action:initialize ()
     action_base.initialize       (self)
     self.a.time      = device():time_global() + time_to_speak
     self.a.stand     = false                     --Стоим или идем, служит для того, чтоб запомнить, что стоим и говорим.
@@ -103,7 +103,7 @@ function stalker_zombe_action:initialize ()
     self.object:set_item            ( object.idle, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
-function stalker_zombe_action:execute ()
+function stalker_zombie_action:execute ()
     --Ходим, изредка произносим фразы
     action_base.execute       (self)
 
@@ -125,7 +125,7 @@ function stalker_zombe_action:execute ()
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
-function stalker_zombe_action:speak()
+function stalker_zombie_action:speak()
     if( math.random() < 0.33 ) then
     xr_sounds.play_sound(self.object, 0, "trivial", 1)
     else
@@ -140,7 +140,7 @@ function stalker_zombe_action:speak()
     self.a.time = device():time_global() + ( 0.8 + math.random() ) * time_to_speak          --Запоминаем время, когда надо сказать следующую фразу( время всегда разное )
 end
 ---------------------------------------------------------------------------------------------------------------------
-function stalker_zombe_action:finalize ()
+function stalker_zombie_action:finalize ()
     action_base.finalize (self)
 end
 
@@ -148,50 +148,28 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --zombi binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_zombe(obj)
+function add_zombie(obj)
     local operators     = {}
     local properties    = {}
 
-    local st      = {
-                            path     = nil,         --Путь, по которому ходить
-                            curState = 1,
-                            time     = 0,
-                            stand    = false,
-                            enabled  = true
-                          }
-    --Чтение данных из кастом даты
-    local char_ini = obj:spawn_ini()
-    if( char_ini:section_exist ("zombie") == true ) then
-        if( char_ini:line_exist("zombie", "path") == true ) then
-            st.path = char_ini:r_string("zombie", "path")
-        else
-          printf( "________Error.    Section zombe/path not found" )
-        end
-    else
-        printf( "________Error.    Section zombe not found" )
-    end
-
-    xr_motivator.storage[obj:id()]      = { zombe = {} }
-    xr_motivator.storage[obj:id()].zombe = st
-
     xr_sounds.load_sounds(obj)
 
-    properties[ "zombee_alife" ]      = xr_evaluators_id.jon_stalker_zombe
-    operators [ "stalker_zombe" ]     = xr_actions_id.jon_stalker_zombe
+    properties[ "zombie_alife" ]      = xr_evaluators_id.jon_stalker_zombie
+    operators [ "stalker_zombie" ]     = xr_actions_id.jon_stalker_zombie
 
 
     local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator ( properties[ "zombee_alife" ], const_evaluator( true )  )
+    manager:add_evaluator ( properties[ "zombie_alife" ], const_evaluator( true )  )
 
-    local action = this.stalker_zombe_action ( "stalker_zombe_action", xr_motivator.storage[obj:id()].zombe )
+    local action = this.stalker_zombie_action ( "stalker_zombie_action", xr_motivator.storage[obj:id()].zombie )
 
     action:add_precondition         (world_property(stalker_ids.property_enemy,   false))
-    action:add_precondition         ( world_property ( properties[ "zombee_alife" ], true ) )
-    action:add_effect               ( world_property ( properties[ "zombee_alife" ], false ) )
-    manager:add_action              ( operators[ "stalker_zombe" ], action)
+    action:add_precondition         ( world_property ( properties[ "zombie_alife" ], true ) )
+    action:add_effect               ( world_property ( properties[ "zombie_alife" ], false ) )
+    manager:add_action              ( operators[ "stalker_zombie" ], action)
 
     action = manager:action (stalker_ids.action_puzzle_solver)
-    action:add_precondition         ( world_property (properties["zombee_alife"],     false ) )
+    action:add_precondition         ( world_property (properties["zombie_alife"],     false ) )
 end
 
 -----------------------===========================------------------------------
@@ -848,7 +826,7 @@ end
 
 function bind_object( obj, name )
     if( name == "zombie" ) then
-      this.add_zombe ( obj )
+      this.add_zombie ( obj )
     elseif( name == "novice" ) then
       this.add_novice( obj )
     elseif( name == "novice2" ) then
