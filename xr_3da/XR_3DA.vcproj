@@ -464,6 +464,12 @@
 				RelativePath=".\IGame_Persistant.h">
 			</File>
 			<File
+				RelativePath=".\IGame_Persistent.cpp">
+			</File>
+			<File
+				RelativePath=".\IGame_Persistent.h">
+			</File>
+			<File
 				RelativePath=".\xrLevel.h">
 			</File>
 			<Filter

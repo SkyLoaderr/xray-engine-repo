@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "..\igame_persistent.h"
 #include "..\environment.h"
 #include "..\fbasicvisual.h"
 #include "..\fcached.h"
