@@ -7,8 +7,9 @@ local heli_mgr
 local actor
 
 local state_before      = 0
-local state_heli_attack = 1
-local state_after       = 2
+local state_heli_fly    = 1
+local state_heli_attack = 2
+local state_after       = 3
 
 local state_init
 
@@ -43,6 +44,27 @@ function update()
 		end
 
 		if actor:has_info( "tutorial_artefact_gain" ) then
+			chst( state_heli_fly )
+		end
+	end
+
+	-- вертолёт летит к новичкам
+	if state == state_heli_fly then
+		if state_init then
+			for i = 1, 2 do
+				table.insert( newbies, get_level_object( "esc_vagon_newbie" .. i ) )
+			end
+
+			heli_mgr:set_enemy( newbies[1], 1000 )
+
+			-- до определённого расстояния не стрелять
+			heli_mgr.heliObject.m_use_rocket_on_attack = false
+			heli_mgr.heliObject.m_use_mgun_on_attack   = false
+
+			state_init = false
+		end
+
+		if heli_mgr.heli:position():distance_to_sqr( newbies[1]:position() ) <= 70 * 70 then
 			chst( state_heli_attack )
 		end
 	end
@@ -50,22 +72,20 @@ function update()
 	-- перестрелка с вертолётом
 	if state == state_heli_attack then
 		if state_init then
-			for i = 1, 2 do
-				table.insert( newbies, get_level_object( "esc_vagon_newbie" .. i ) )
-			end
-
 			attack_end = game.CTime()
 			attack_end:setHMS( 0, 8, 0 )
 			attack_end:add( game.get_game_time() )
 			
 --			printf("_ch: 1 %s", attack_end:timeToString(game.CTime.TimeToMilisecs))
 
-			-- в первом заходе ракетами не стрелять
-			heli_mgr.heliObject.m_use_rocket_on_attack = false
-
 			local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
 			snd:play_at_pos( newbies[1], newbies[1]:position() )
 
+			heli_mgr.heliObject.m_use_mgun_on_attack   = true
+			heli_mgr.heliObject.m_use_rocket_on_attack = true
+
+			actor:give_info_portion( "tutorial_heli_attack" )
+			
 			state_init = false
 		end
 
@@ -77,11 +97,6 @@ function update()
 				table.remove( newbies, 1 )
 				heli_mgr:set_enemy( newbies[1], 1000 )
 			end
-		end
-
-		-- после первого захода стрелять ракетами
-		if heli_mgr.attack_pass_state == 1 then
-			heli_mgr.heliObject.m_use_rocket_on_attack = true
 		end
 
 		-- если все умерли

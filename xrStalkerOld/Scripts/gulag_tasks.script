@@ -728,42 +728,42 @@ function loadJob(sj, gname, type, squad, groups)
 
 	--' Agroprom factory
 	if type == "agr_factory" then
-		t = { section = "walker1@agr_factory_shoot",
+		t = { section = "walker1@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "walker2@agr_factory_shoot",
+		t = { section = "walker2@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "walker3@agr_factory_shoot",
+		t = { section = "walker3@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "walker4@agr_factory_shoot",
+		t = { section = "walker4@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "walker5@agr_factory_shoot",
+		t = { section = "walker5@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "walker6@agr_factory_shoot",
+		t = { section = "walker6@agr_factory",
 			idle = 0,
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
