@@ -136,7 +136,7 @@ CBuild::CBuild(b_transfer * L)
 		{
 			BT.Vflip	();
 		} else {
-			Surface_Free
+			// Free surface memory
 		}
 		
 		// save all the stuff we've created

@@ -113,8 +113,3 @@ DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
 	// return
 	return				LPDWORD(FreeImage_GetScanLine(map32,0));
 }
-
-void	Surface_Free(DWORD* pSurf)
-{
-	
-}
