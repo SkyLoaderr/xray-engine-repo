@@ -238,17 +238,36 @@ void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 	Level().ph_commander().add_call(xr_new<CPHScriptObjectCondition>(lua_object,condition),xr_new<CPHScriptObjectAction>(lua_object,action));
 }
 
+CEnvironment *environment()
+{
+	return		(&g_pGamePersistent->Environment);
+}
+
+CEnvDescriptor *current_environment(CEnvironment *self)
+{
+	return		(&self->CurrentEnv);
+}
+
 void CLevel::script_register(lua_State *L)
 {
+	class_<CEnvDescriptor>("CEnvDescriptor")
+		.def_readonly("fog_density",			&CEnvDescriptor::fog_density)
+		.def_readonly("far_plane",				&CEnvDescriptor::far_plane),
+
+	class_<CEnvironment>("CEnvironment")
+		.def("current",							current_environment);
+
 	module(L,"level")
 	[
-		// declarations
+		// obsolete\deprecated
 		def("object",							get_object_by_name),
 		def("object_by_id",						get_object_by_id),
 		def("actor",							tpfGetActor),
-		//def("set_artifact_merge",				SetArtefactMergeFunctor),
+		
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather),
+
+		def("environment",						environment),
 		
 		def("set_time_factor",					set_time_factor),
 		def("get_time_factor",					get_time_factor),

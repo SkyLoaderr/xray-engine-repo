@@ -120,13 +120,6 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	pCurrentControlEntity = NULL;
 
 #ifdef DEBUG
-	xr_delete		(pSettings);
-	string256		file_name;
-	FS.update_path	(file_name,"$game_config$","system.ltx");
-	pSettings		= xr_new<CInifile>(file_name);
-#endif
-
-#ifdef DEBUG
 	m_level_debug	= xr_new<CLevelDebug>();
 #endif
 }
@@ -193,6 +186,13 @@ CLevel::~CLevel()
 	pActors4CrPr.clear();
 
 	ai().unload					();
+
+#ifdef DEBUG
+	xr_delete		(pSettings);
+	string256		file_name;
+	FS.update_path	(file_name,"$game_config$","system.ltx");
+	pSettings		= xr_new<CInifile>(file_name);
+#endif
 
 	//-----------------------------------------------------------	
 #ifdef DEBUG	

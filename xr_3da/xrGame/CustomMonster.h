@@ -163,6 +163,8 @@ public:
 public:
 	virtual	float				ffGetFov				()	const								{return eye_fov;}	
 	virtual	float				ffGetRange				()	const								{return eye_range;}
+			void				set_fov					(float new_fov);
+			void				set_range				(float new_range);
 //	virtual	void				feel_touch_new			(CObject	*O);
 	virtual BOOL				feel_visible_isRelevant	(CObject		*O);
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
@@ -232,6 +234,13 @@ public:
 	IC		CSoundPlayer			&sound					() const;
 	IC		CMaterialManager		&material				() const;
 	IC		CSoundUserDataVisitor	*sound_user_data_visitor() const;
+
+protected:
+	float							m_far_plane_factor;
+	float							m_fog_density_factor;
+
+protected:
+			void					update_range_fov		(float &new_range, float &new_fov);
 };
 
 #include "custommonster_inline.h"

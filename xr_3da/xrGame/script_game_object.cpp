@@ -576,3 +576,23 @@ float CScriptGameObject::extrapolate_length		() const
 	}
 	return					(monster->movement().detail().extrapolate_length());
 }
+
+void CScriptGameObject::set_fov					(float new_fov)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_fov!");
+		return;
+	}
+	monster->set_fov		(new_fov);
+}
+
+void CScriptGameObject::set_range				(float new_range)
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_range!");
+		return;
+	}
+	monster->set_range		(new_range);
+}

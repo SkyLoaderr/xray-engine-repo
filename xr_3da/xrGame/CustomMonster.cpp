@@ -183,6 +183,9 @@ void CCustomMonster::reload		(LPCSTR section)
 	memory().reload				(section);
 	movement().reload			(section);
 	load_killer_clsids			(section);
+
+	m_far_plane_factor			= READ_IF_EXISTS(pSettings,r_float,section,"far_plane_factor",1.f);
+	m_fog_density_factor		= READ_IF_EXISTS(pSettings,r_float,section,"fog_density_factor",.05f);
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
@@ -442,19 +445,48 @@ void CCustomMonster::eye_pp_s0			( )
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }
 
-void CCustomMonster::eye_pp_s1			( )
+void CCustomMonster::update_range_fov	(float &new_range, float &new_fov)
+{
+	const float	standard_far_plane			= eye_range;
+
+	float	current_fog_density				= g_pGamePersistent->Environment.CurrentEnv.fog_density	;	
+	// 0=no_fog, 1=full_fog, >1 = super-fog
+	float	current_far_plane				= g_pGamePersistent->Environment.CurrentEnv.far_plane	;	
+	// 300=standart, 50=super-fog
+
+	new_fov									= eye_fov;
+	new_range								= 
+		eye_range
+		*
+		(
+			_min(m_far_plane_factor*current_far_plane,standard_far_plane)
+			/
+			standard_far_plane
+		)
+		*
+		(
+			1.f
+			/
+			(
+				1.f + m_fog_density_factor*current_fog_density
+			)
+		)
+	;
+}
+
+void CCustomMonster::eye_pp_s1			()
 {
 	++eye_pp_stage;
 
-	//float	fog			= g_pGamePersistent->Environment.CurrentEnv.fog_density	;	// 0=no_fog, 1=full_fog, >1 = super-fog
-	//float	dist		= g_pGamePersistent->Environment.CurrentEnv.far_plane	;	// 300=standart, 50=super-fog
+	float									new_range, new_fov;
+	update_range_fov						(new_range, new_fov);
 
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
 	Fmatrix									mProject,mFull,mView;
 	mView.build_camera_dir					(eye_matrix.c,eye_matrix.k,eye_matrix.j);
 	VERIFY									(_valid(eye_matrix));
-	mProject.build_projection				(deg2rad(eye_fov),1,0.1f,eye_range);
+	mProject.build_projection				(deg2rad(new_fov),1,0.1f,new_range);
 	mFull.mul								(mProject,mView);
 	feel_vision_query						(mFull,eye_matrix.c);
 	Device.Statistic.AI_Vis_Query.End		();
@@ -941,4 +973,16 @@ void CCustomMonster::net_Relcase	(CObject *object)
 	inherited::net_Relcase		(object);
 	if (g_Alive())
 		memory().remove_links	(object);
+}
+
+void CCustomMonster::set_fov		(float new_fov)
+{
+	VERIFY		(new_fov > 0.f);
+	eye_fov		= new_fov;
+}	
+
+void CCustomMonster::set_range		(float new_range)
+{
+	VERIFY		(new_range > 1.f);
+	eye_range	= new_range;
 }
