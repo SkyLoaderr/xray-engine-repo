@@ -273,7 +273,7 @@ void CMovementManager::process_game_path()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildDetailPath;
 			else
-				if (CDetailPathManager::completed()) {
+				if (CDetailPathManager::completed(Position())) {
 					m_path_state	= ePathStateContinueLevelPath;
 					if (CLevelPathManager::completed()) {
 						m_path_state	= ePathStateContinueGamePath;
@@ -356,7 +356,7 @@ void CMovementManager::process_level_path()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildDetailPath;
 			else
-				if (CDetailPathManager::completed()) {
+				if (CDetailPathManager::completed(Position())) {
 					m_path_state	= ePathStateContinueLevelPath;
 					if (CLevelPathManager::completed())
 						m_path_state	= ePathStateContinueGamePath;
@@ -432,7 +432,7 @@ void CMovementManager::process_enemy_search()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildDetailPath;
 			else
-				if (CDetailPathManager::completed()) {
+				if (CDetailPathManager::completed(Position())) {
 					m_path_state	= ePathStateContinueLevelPath;
 					if (CLevelPathManager::completed())
 						m_path_state	= ePathStateContinueGamePath;

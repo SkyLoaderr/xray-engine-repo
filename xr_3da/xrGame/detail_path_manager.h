@@ -60,7 +60,7 @@ protected:
 			const	Fvector &direction		();
 			bool	actual					() const;
 	IC		bool	failed					() const;
-	IC		bool	completed				() const;
+	IC		bool	completed				(const Fvector &position) const;
 			bool	valid					() const;
 			bool	valid					(const Fvector &position) const;
 	IC		const xr_vector<STravelPoint> &path() const;
