@@ -52,8 +52,6 @@ extern "C"{
 		}
 	__declspec(dllexport) int __cdecl testConnection(char* sName, char* user_name, char* pwd)
 	{
-		USES_CONVERSION;
-
 		LPSQLDMOSERVER pSQLServer;
 		if ( !GetSQLServer(&pSQLServer) )
 			return (-1);
@@ -64,6 +62,7 @@ extern "C"{
 		}
 
 		_Disconnect(pSQLServer);
+
 		pSQLServer->Release();
 		return (0);
 	}

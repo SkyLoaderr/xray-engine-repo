@@ -169,13 +169,13 @@
 		<col def="S255">ISDescription</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S255">ISFolderName</col>
-		<row><td>BINN</td><td>MSSQL</td><td>Binn</td><td/><td>0</td><td/></row>
+		<row><td>BINN</td><td>MSSQL_KAS_SQL_SRV</td><td>Binn</td><td/><td>0</td><td/></row>
 		<row><td>COMMONFILES</td><td>PROGRAMFILES</td><td>Common Files</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td/><td>Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FOLDER_FONTS</td><td>WINDIR</td><td>Fonts Folder</td><td/><td>0</td><td/></row>
 		<row><td>ISRUNTIMETEXTSUBS</td><td/><td>Script-defined Folders</td><td/><td>0</td><td/></row>
 		<row><td>MICROSOFT_SQL_SERVER</td><td>PROGRAMFILES</td><td>Microsoft SQL Server</td><td/><td>0</td><td/></row>
-		<row><td>MSSQL</td><td>MICROSOFT_SQL_SERVER</td><td>MSSQL</td><td/><td>0</td><td/></row>
+		<row><td>MSSQL_KAS_SQL_SRV</td><td>MICROSOFT_SQL_SERVER</td><td>MSSQL$kas_sql_srv</td><td/><td>0</td><td/></row>
 		<row><td>PROGRAMFILES</td><td/><td>Program Files</td><td/><td>0</td><td/></row>
 		<row><td>ProgramMenuFolder</td><td/><td>Programs</td><td/><td>3</td><td/></row>
 		<row><td>SUPPORTDIR</td><td/><td>Support Folder</td><td/><td>0</td><td/></row>
@@ -473,10 +473,10 @@
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AllowXDBChaining</td><td>0,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AutomaticPackageSelection</td><td>-1,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Collation</td><td>""</td></row>
-		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Datadir</td><td>"&lt;PROGRAMFILES&gt;\\Microsoft SQL Server\\Mssql$KAS\\Data\\"</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Datadir</td><td>""</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>DeleteMSDEFiles</td><td>-1,Bool</td></row>
-		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceName</td><td>""</td></row>
-		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceNameWizard</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceName</td><td>"kas_sql_srv"</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceNameWizard</td><td>"kas_sql_srv"</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Logging</td><td>0,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>OverwriteExisting</td><td>-1,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>PackageNumber</td><td>1,Long</td></row>
@@ -919,6 +919,7 @@ UgBlAGwAZQBhAHMAZQAgADEAAQBNAGUAZABpAGEA
 		<row><td>ISEngineBinding</td><td>1</td></row>
 		<row><td>ISMaintenanceExperience</td><td>0</td></row>
 		<row><td>ISOSFilter</td><td>-1</td></row>
+		<row><td>ISSQLBatchMode</td><td>1</td></row>
 		<row><td>ISShowUpdateUI</td><td>0</td></row>
 		<row><td>ISUSLock</td><td>{D4484911-ED1F-449C-9AC1-18C896F492E8}</td></row>
 		<row><td>ISUSSignature</td><td>{AD39F2DC-C0BC-41B6-9011-5DA9217F0B92}</td></row>

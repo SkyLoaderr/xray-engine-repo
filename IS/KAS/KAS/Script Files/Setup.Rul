@@ -310,7 +310,7 @@ prototype CDECL BOOL SQL_CONFIG.detachDatabase	(byval string, byval string, byva
 #define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"    
 #define SQL_USER_NAME_ 			"sa"
 #define SQL_USER_PASS_ 			"KAStorka40"
-#define SQL_SERVER_HOST_ 		"localhost"
+#define SQL_SERVER_HOST_ 		"localhost\\kas_sql_srv"
 #define SQL_STORED_PROC_DLL_   	"xp_indexing.dll"
 
 #define SETUP_INI_FILE      	SRCDIR^"setupMSDE.ini"
@@ -374,11 +374,11 @@ end;
             
 function StartServer()
 begin
-	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssqlserver", WAIT);
+	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
 end;
 function StopServer()
 begin
-	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 6 -Silent 1 -Service mssqlserver", WAIT);
+	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 6 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
 end;
 
 function MSDE_2000_Installed()
@@ -501,10 +501,11 @@ begin
 end;
 
 function MSDE_2000_UnInstalling()
-BOOL 	bRes; 
-NUMBER	nResult; 
+//BOOL 	bRes; 
+//NUMBER	nResult; 
 begin
-	bRes = CheckMSDEStatus();    
+/*
+	bRes = CheckMSDEStatus();
 	if (TRUE=bRes) then
 	    nResult 	= UseDLL (DLL_FILE);
 	    if (nResult != 0) then
@@ -528,6 +529,7 @@ begin
 
 		bRes = SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 	    SetStatusWindow (20, "Проверка соединения.");
+
 		if (bRes = 0) then 
 		    SetStatusWindow (30, "Отключение базы 'KAS'.");
 		    bRes = SQL_CONFIG.detachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS");
@@ -556,22 +558,25 @@ begin
 		else
 	        MessageBox ("Ошибка соединения с сервером.", SEVERE);
 		endif;
-	
+	 	
 	    SetStatusWindow (70, "Отключение сервера.");
 	    SQL_CONFIG.deInitLibrary();
 	                 
 	    SetStatusWindow (70, "Остановка сервера.");
+
 	    StopServer	();
-		// free dll
-	    UnUseDLL 	(DLL_FILE);
 
 	    SetStatusWindow (100, "Удаление настроек завершено.");
+
+		// free dll
+	    UnUseDLL 	(DLL_FILE);
 	endif;
+*/
 end;
 
 function MSDE_2000_UnInstalled()
 begin
-	if (DeleteDir(PROGRAMFILES^"\\Microsoft SQL Server\\Mssql$KAS\\",ALLCONTENTS)<0) then
+	if (DeleteDir(PROGRAMFILES^"Microsoft SQL Server\\Mssql$kas_sql_srv\\",ALLCONTENTS)<0) then
         MessageBox ("Ошибка удаления каталога.", SEVERE);
 	endif;
 end;
