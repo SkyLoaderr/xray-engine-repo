@@ -35,7 +35,7 @@ var _x	= var(x);
 */
 
 //-----------------------------------------------------------------------
-void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, vector<R_Light>& Lights_src, BOOL bDisableFaces)
+void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* MDL, vector<R_Light>& Lights_src, BOOL bDisableFaces)
 {
 	// trans-map
 	typedef	multimap<float,v_vertices>	mapVert;
@@ -100,7 +100,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 
 			Fcolor					C;
 			C.set					(0,0,0,0);
-			LightPoint				(&DB, C, P, N, Lights.begin(), Lights.end(), 0, TRUE);
+			LightPoint				(&DB, MDL, C, P, N, Lights.begin(), Lights.end(), 0, TRUE);
 			vC.r					+=	C.r;
 			vC.g					+=	C.g;
 			vC.b					+=	C.b;
