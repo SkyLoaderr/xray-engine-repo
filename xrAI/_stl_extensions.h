@@ -24,7 +24,7 @@ using std::swap;
 #define xr_multiset std::multiset
 #define xr_map std::map
 #define xr_multimap std::multimap
-#define xr_string xr_string
+#define xr_string std::string
 
 template <class T>
 class xr_vector	: public std::vector<T> {
