@@ -16,16 +16,12 @@
 class CObjectItemAbstract {
 protected:
 	CLASS_ID									m_clsid;
-#ifndef NO_SCRIPTS
 	ref_str										m_script_clsid;
-#endif
 
 public:
 	IC											CObjectItemAbstract	(const CLASS_ID &clsid, LPCSTR script_clsid);
 	IC		const CLASS_ID						&clsid				() const;
-#ifndef NO_SCRIPTS
 	IC		ref_str								script_clsid		() const;
-#endif
 #ifndef NO_XR_GAME
 	virtual ObjectFactory::CLIENT_BASE_CLASS	*client_object		() const = 0;
 #endif

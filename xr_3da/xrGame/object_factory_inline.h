@@ -20,19 +20,17 @@ IC	const CObjectFactory &object_factory()
 	return						(*g_object_factory);
 }
 
-#ifndef NO_SCRIPTS
-#	ifndef NO_XR_GAME
+#ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_SCRIPT_BASE_CLASS *CObjectFactory::client_instance() const
 {
 	return						(m_client_instance);
 }
-#	endif
+#endif
 
 IC	CObjectFactory::SERVER_SCRIPT_BASE_CLASS *CObjectFactory::server_instance() const
 {
 	return						(m_server_instance);
 }
-#endif
 
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
 {
@@ -54,7 +52,6 @@ IC	bool CObjectFactory::CObjectItemPredicateCLSID::operator()	(const CObjectItem
 	return				(m_clsid == item->clsid());
 }
 
-#ifndef NO_SCRIPTS
 IC	CObjectFactory::CObjectItemPredicateScript::CObjectItemPredicateScript	(const ref_str &script_clsid_name) :
 	m_script_clsid_name	(script_clsid_name)
 {
@@ -64,7 +61,6 @@ IC	bool CObjectFactory::CObjectItemPredicateScript::operator()	(const CObjectIte
 {
 	return				(m_script_clsid_name == item->script_clsid());
 }
-#endif
 
 IC	const CObjectFactory::OBJECT_ITEM_STORAGE &CObjectFactory::clsids	() const
 {
@@ -107,14 +103,12 @@ IC	void CObjectFactory::add	(CObjectItemAbstract *item)
 	m_clsids.push_back	(item);
 }
 
-#ifndef NO_SCRIPTS
 IC	int	CObjectFactory::script_clsid	(const CLASS_ID &clsid) const
 {
 	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	VERIFY				((I != clsids().end()) && ((*I)->clsid() == clsid));
 	return				(int(I - clsids().begin()));
 }
-#endif
 
 #ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::client_object	(const CLASS_ID &clsid) const

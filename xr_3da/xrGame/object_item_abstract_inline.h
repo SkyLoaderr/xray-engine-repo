@@ -12,10 +12,8 @@
 #pragma once
 
 IC	CObjectItemAbstract::CObjectItemAbstract	(const CLASS_ID &clsid, LPCSTR script_clsid) :
-	m_clsid				(clsid)
-#ifndef NO_SCRIPTS
-	,m_script_clsid		(script_clsid)
-#endif
+	m_clsid				(clsid),
+	m_script_clsid		(script_clsid)
 {
 }
 
@@ -24,11 +22,9 @@ IC	const CLASS_ID &CObjectItemAbstract::clsid	() const
 	return				(m_clsid);
 }
 
-#ifndef NO_SCRIPTS
 IC	ref_str	CObjectItemAbstract::script_clsid	() const
 {
 	return				(m_script_clsid);
 }
-#endif
 
 #endif

@@ -15,12 +15,6 @@
 #	define NO_XR_GAME
 #endif
 
-#ifdef NO_XR_GAME
-#	ifndef XRSE_FACTORY_EXPORTS
-#		define NO_SCRIPTS
-#	endif
-#endif
-
 #ifndef NO_XR_GAME
 	class CAttachableItem;
 #endif
@@ -34,13 +28,10 @@ namespace ObjectFactory {
 #endif
 	typedef CSE_Abstract		SERVER_BASE_CLASS;
 
-#ifndef NO_SCRIPTS
-#	ifndef NO_XR_GAME
-		typedef DLL_Pure		CLIENT_SCRIPT_BASE_CLASS;
-#	endif
-	typedef CSE_Abstract		SERVER_SCRIPT_BASE_CLASS;
+#ifndef NO_XR_GAME
+	typedef DLL_Pure			CLIENT_SCRIPT_BASE_CLASS;
 #endif
-
+	typedef CSE_Abstract		SERVER_SCRIPT_BASE_CLASS;
 };
 
 #endif

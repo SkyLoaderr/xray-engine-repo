@@ -22,12 +22,10 @@ public:
 #endif
 	typedef ObjectFactory::SERVER_BASE_CLASS			SERVER_BASE_CLASS;
 
-#ifndef NO_SCRIPTS
-#	ifndef NO_XR_GAME
-		typedef ObjectFactory::CLIENT_SCRIPT_BASE_CLASS	CLIENT_SCRIPT_BASE_CLASS;
-#	endif
-		typedef ObjectFactory::SERVER_SCRIPT_BASE_CLASS	SERVER_SCRIPT_BASE_CLASS;
+#ifndef NO_XR_GAME
+	typedef ObjectFactory::CLIENT_SCRIPT_BASE_CLASS	CLIENT_SCRIPT_BASE_CLASS;
 #endif
+	typedef ObjectFactory::SERVER_SCRIPT_BASE_CLASS	SERVER_SCRIPT_BASE_CLASS;
 
 protected:
 	struct CObjectItemPredicate {
@@ -42,14 +40,12 @@ protected:
 		IC	bool					operator()							(const CObjectItemAbstract *item) const;
 	};
 
-#ifndef NO_SCRIPTS
 	struct CObjectItemPredicateScript {
 		ref_str						m_script_clsid_name;
 
 		IC							CObjectItemPredicateScript			(const ref_str &script_clsid_name);
 		IC	bool					operator()							(const CObjectItemAbstract *item) const;
 	};
-#endif
 
 public:
 	typedef xr_vector<CObjectItemAbstract*>		OBJECT_ITEM_STORAGE;
@@ -59,12 +55,10 @@ public:
 protected:
 	OBJECT_ITEM_STORAGE					m_clsids;
 	bool								m_initialized;
-#ifndef NO_SCRIPTS
-#	ifndef NO_XR_GAME
-		mutable CLIENT_SCRIPT_BASE_CLASS*m_client_instance;
-#	endif
-	mutable SERVER_SCRIPT_BASE_CLASS	*m_server_instance;
+#ifndef NO_XR_GAME
+	mutable CLIENT_SCRIPT_BASE_CLASS	*m_client_instance;
 #endif
+	mutable SERVER_SCRIPT_BASE_CLASS	*m_server_instance;
 
 protected:
 			void						register_classes				();
@@ -92,20 +86,17 @@ public:
 	IC		SERVER_BASE_CLASS			*server_object					(const CLASS_ID &clsid, LPCSTR section) const;
 #endif
 
-#ifndef NO_SCRIPTS
 	IC		int							script_clsid					(const CLASS_ID &clsid) const;
 			void						register_script					() const;
 			void						register_script_class			(LPCSTR client_class, LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid);
 			void						register_script_class			(LPCSTR unknown_class, LPCSTR clsid, LPCSTR script_clsid);
 			void						register_script_classes			();
-#	ifndef NO_XR_GAME
+#ifndef NO_XR_GAME
 	IC		void						set_instance					(CLIENT_SCRIPT_BASE_CLASS *instance) const;
 	IC		CLIENT_SCRIPT_BASE_CLASS	*client_instance				() const;
-#	endif
+#endif
 	IC		void						set_instance					(SERVER_SCRIPT_BASE_CLASS *instance) const;
 	IC		SERVER_SCRIPT_BASE_CLASS	*server_instance				() const;
-#endif
-
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CObjectFactory)

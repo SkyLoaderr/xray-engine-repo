@@ -32,9 +32,7 @@ CObjectFactory::~CObjectFactory	()
 
 void CObjectFactory::init		()
 {
-#ifndef NO_SCRIPTS
 	register_script_classes		();
-#endif
 	std::sort					(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
 	m_initialized				= true;
 }
