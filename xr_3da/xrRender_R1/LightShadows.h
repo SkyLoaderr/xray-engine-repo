@@ -38,7 +38,8 @@ private:
 	};
 private:
 	IRenderable*			current;
-	xr_vector<caster>		casters;
+	xr_vector<caster*>		casters_pool;
+	xr_vector<caster*>		casters;
 	xr_vector<shadow>		shadows;
 	xr_vector<tess_tri>		tess;
 	xrXRC					xrc;

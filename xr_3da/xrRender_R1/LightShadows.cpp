@@ -68,6 +68,11 @@ CLightShadows::~CLightShadows()
 	sh_Texture.destroy		();
 	RT_temp.destroy			();
 	RT.destroy				();
+
+	//
+	for (u32 it=0; it<casters_pool.size(); it++)
+		xr_delete(casters_pool[it]);
+	casters_pool.clear		();
 }
 
 void CLightShadows::set_object	(IRenderable* O)
@@ -85,10 +90,20 @@ void CLightShadows::set_object	(IRenderable* O)
 		
 		if (current)
 		{
-			casters.push_back	(caster());
-			casters.back().O	= current;
-			casters.back().C	= C;
-			casters.back().D	= D;
+			// alloc
+			caster*	cs		= NULL;
+			if (casters_pool.empty())	cs	= xr_new<caster> ();
+			else {
+				cs	= casters_pool.back	();
+				casters_pool.pop_back	();
+			}
+				
+			// 
+			casters.push_back	(cs);
+			cs->O				= current;
+			cs->C				= C;
+			cs->D				= D;
+			cs->nodes.clear		();
 		}
 	}
 }
@@ -96,7 +111,7 @@ void CLightShadows::set_object	(IRenderable* O)
 void CLightShadows::add_element	(NODE* N)
 {
 	if (0==current)	return;
-	casters.back().nodes.push_back	(*N);
+	casters.back()->nodes.push_back	(*N);
 }
 
 IC float PLC_energy	(Fvector& P, Fvector& N, Flight* L, float E)
@@ -155,7 +170,7 @@ void CLightShadows::calculate	()
 	const float	eps = 2*EPS_L;
 	for (u32 o_it=0; o_it<casters.size(); o_it++)
 	{
-		caster&	C	= casters	[o_it];
+		caster&	C	= *casters	[o_it];
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
@@ -253,6 +268,10 @@ void CLightShadows::calculate	()
 			slot_id	++;
 		}
 	}
+
+	// clear casters
+	for (u32 cs=0; cs<casters.size(); cs++)
+		casters_pool.push_back(casters[cs]);
 	casters.clear	();
 	
 	// Blur

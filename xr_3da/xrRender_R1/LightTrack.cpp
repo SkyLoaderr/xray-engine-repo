@@ -98,9 +98,9 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	
 	// Trace visibility
 	dest.lights.clear	();
-	xr_vector<CLightTrack::Item>& track		= dest.track;
-	xr_vector<CLightTrack::Item>::iterator I = track.begin(), E=track.end();
-	float R									= fRadius*.5f;
+	xr_vector<CLightTrack::Item>& track			= dest.track;
+	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
+	float R										= fRadius*.5f;
 	for (; I!=E; I++)
 	{
 		float	amount	= 0;
