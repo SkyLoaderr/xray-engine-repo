@@ -18,7 +18,7 @@
 		}
 	}
 #endif
-#ifdef _LW_PLUGIN
+#ifdef _LW_EXPORT
 	#include <lwhost.h>
 	extern "C" LWMessageFuncs	*g_msg;
 	void __stdcall ELogCallback(LPCSTR txt)
@@ -74,7 +74,7 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
         }
     }
 #endif
-#ifdef _LW_PLUGIN
+#ifdef _LW_EXPORT
 	switch(mt){
 	case mtError:		g_msg->error(buf,0);	break;
 	case mtInformation: g_msg->info(buf,0);		break;
@@ -121,7 +121,7 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...)
         }
     }
 #endif
-#ifdef _LW_PLUGIN
+#ifdef _LW_EXPORT
 	switch(mt){
 	case mtError:		g_msg->error(buf,0);	break;
 	case mtInformation: g_msg->info(buf,0);		break;
@@ -157,7 +157,7 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...)
 #ifdef _MAX_EXPORT
 	EConsole.print(mt,buf);
 #endif
-#ifdef _LW_PLUGIN
+#ifdef _LW_EXPORT
 	g_msg->info(buf,0);
 #endif
 
