@@ -331,7 +331,7 @@ CHelicopterMovementManager::build_circle_trajectory(
 	if (position.radius*_abs(position.angle) <= min_dist) 
 	{
 		t.angularVelocity	= 0.0f;
-		t.velocity			= helicopter()->velocity();
+		t.velocity			= (u32)helicopter()->velocity();
 		t.position			= v3d(position.position);
 		path->push_back(t);
 		lastAddedPoint = t;
@@ -373,7 +373,7 @@ CHelicopterMovementManager::build_circle_trajectory(
 		
 
 
-		t.velocity			= helicopter()->velocity();
+		t.velocity			= (u32)helicopter()->velocity();
 
 
 		temp			= sin_apb(sinb,cosb,sini,cosi);
@@ -431,7 +431,7 @@ bool CHelicopterMovementManager::build_line_trajectory(
 		lastAddedPoint.position.add(v);
 		lastAddedPoint.angularVelocity	= 0.0f;
 		lastAddedPoint.clockwise		= true;
-		lastAddedPoint.velocity			= helicopter()->velocity();
+		lastAddedPoint.velocity			= (u32)helicopter()->velocity();
 
 		path->push_back(lastAddedPoint);
 	}
@@ -501,7 +501,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 			Fvector& b_p  = (*B).position;
 			Fvector& e_p  = (*E).position;
 			Fvector& b_xyz = (*B).xyz;
-			Fvector& e_xyz = (*E).xyz;
+//			Fvector& e_xyz = (*E).xyz;
 
 
 			//time
@@ -574,7 +574,7 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 
 	m_cyclePath = true;
 
-	if( startKeyIdx >= m_keyTrajectory.size()-1 )
+	if( startKeyIdx >= (int)m_keyTrajectory.size()-1 )
 	{
 		if(m_cyclePath)
 		{
