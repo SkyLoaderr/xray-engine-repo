@@ -16,7 +16,7 @@ class	adopt_sampler
 	u32						stage;
 public:
 	adopt_sampler			(CBlender_Compile*	_C, u32 _stage)		: C(_C), stage(_stage)		{ }
-	adopt_sampler			(adopt_sampler&	_C)						: C(_C.C), stage(_C.stage)	{ }
+	adopt_sampler			(const adopt_sampler&	_C)				: C(_C.C), stage(_C.stage)	{ }
 
 	adopt_sampler&			_texture		(LPCSTR texture)						{ C->i_Texture	(stage,texture);			return *this;	}
 	adopt_sampler&			_projective		(bool _b)								{ C->i_Projective(stage,_b);				return *this;	}
@@ -44,14 +44,14 @@ class	adopt_compiler
 {
 	CBlender_Compile*		C;
 public:
-	adopt_compiler			(CBlender_Compile*	_C)	: C(_C)		{ }
-	adopt_compiler			(adopt_compiler&	_C)	: C(_C.C)	{ }
+	adopt_compiler			(CBlender_Compile*	_C)	: C(_C)							{ }
+	adopt_compiler			(const adopt_compiler&	_C)	: C(_C.C)					{ }
 
 	adopt_compiler&			_pass			(LPCSTR	vs,		LPCSTR ps)				{	C->r_Pass			(vs,ps,true);	return	*this;			}
-	adopt_compiler&			_fog			(BOOL	_fog)							{	C->PassSET_LightFog	(FALSE,_fog);	return	*this;			}
-	adopt_compiler&			_ZB				(BOOL	_test,	BOOL _write)			{	C->PassSET_ZB		(_test,_write);	return	*this;			}
-	adopt_compiler&			_blend			(BOOL	_blend, u32 abSRC, u32 abDST)	{	C->PassSET_ablend_mode(_blend,abSRC,abDST);	return 	*this;	}
-	adopt_compiler&			_aref			(BOOL	_aref,  u32 aref)				{	C->PassSET_ablend_aref(_aref,aref);	return 	*this;			}
+	adopt_compiler&			_fog			(bool	_fog)							{	C->PassSET_LightFog	(FALSE,_fog);	return	*this;			}
+	adopt_compiler&			_ZB				(bool	_test,	bool _write)			{	C->PassSET_ZB		(_test,_write);	return	*this;			}
+	adopt_compiler&			_blend			(bool	_blend, u32 abSRC, u32 abDST)	{	C->PassSET_ablend_mode(_blend,abSRC,abDST);	return 	*this;	}
+	adopt_compiler&			_aref			(bool	_aref,  u32 aref)				{	C->PassSET_ablend_aref(_aref,aref);	return 	*this;			}
 	adopt_sampler			_sampler		(LPCSTR _name)							{	u32 s = C->r_Sampler(_name,0); return adopt_sampler(C,s);	}
 };
 
@@ -60,7 +60,7 @@ void	export	(lua_State*	LS)
 {
 	open	(LS);
 	class_<adopt_sampler>("_sampler")
-		.def(								constructor<adopt_sampler&>())
+		.def(								constructor<const adopt_sampler&>())
 		.def("texture",						&adopt_sampler::_texture		)
 		.def("project",						&adopt_sampler::_projective		)
 		.def("clamp",						&adopt_sampler::_clamp			)
@@ -83,7 +83,7 @@ void	export	(lua_State*	LS)
 		;
 
 	class_<adopt_compiler>("_compiler")
-		.def(								constructor<adopt_compiler&>())
+		.def(								constructor<const adopt_compiler&>())
 		.def("pass",						&adopt_compiler::_pass			)
 		.def("fog",							&adopt_compiler::_fog			)
 		.def("zb",							&adopt_compiler::_ZB			)
