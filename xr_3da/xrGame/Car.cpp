@@ -60,6 +60,12 @@ CCar::~CCar(void)
 	ClearExhausts();
 }
 
+void CCar::reinit		()
+{
+	CEntity::reinit			();
+	CScriptMonster::reinit	();
+}
+
 void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
 	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));

@@ -15,6 +15,7 @@
 //#include "ai_script_actions.h"
 #include "ai/rat/ai_rat.h"
 #include "ai/biting/ai_biting.h"
+#include "ai/stalker/ai_stalker.h"
 
 Flags32		psAI_Flags	= {0};
  
@@ -40,28 +41,6 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void CCustomMonster::Init()
-{
-	CMovementManager::Init();
-	InitScript			();
-	tWatchDirection		= Direction();
-	m_body.speed		= PI;
-	m_head.speed		= PI;
-	m_fSoundPower		= m_fStartPower = 0;
-	m_dwSoundUpdate		= 0;
-	eye_pp_stage		= 0;
-	m_tpPath			= 0;
-	vfResetPatrolData	();
-	m_dwLastUpdateTime	= 0xffffffff;
-	m_tEyeShift.set		(0,0,0);
-	m_fEyeShiftYaw		= 0.f;
-	NET_WasExtrapolating = FALSE;
-	_FB_hit_RelevantTime	= 10;
-	_FB_sense_RelevantTime	= 10;
-	_FB_look_speed			= PI;
-	_FB_invisible_hscale	= 2.f;
-}
-
 CCustomMonster::CCustomMonster()
 {
 	Init				();
@@ -72,11 +51,21 @@ CCustomMonster::~CCustomMonster	()
 
 }
 
+void CCustomMonster::Init()
+{
+}
+
 void CCustomMonster::Load		(LPCSTR section)
 {
-//////////////////////////////////////////////////////////////////////////
-	inherited::Load		(section);
-	CMovementManager::Load(section);
+	inherited::Load				(section);
+	CScriptMonster::Load		(section);
+	CDamageManager::Load		(section);
+	CEventMemoryManager::Load	(section);
+	CLocationManager::Load		(section);
+	CMaterialManager::Load		(section);
+	CMemoryManager::Load		(section);
+	CMovementManager::Load		(section);
+
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)		{
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
@@ -133,6 +122,12 @@ void CCustomMonster::Load		(LPCSTR section)
 	
 //	m_current			= 0;
 
+	if (pSettings->line_exist(section,"eye_fov"))
+		eye_fov						= pSettings->r_float(section,"eye_fov");
+	else
+		eye_fov						= pSettings->r_float(section,"EyeFov");
+	eye_range						= pSettings->r_float(section,"eye_range");
+
 	// Health & Armor
 	fArmor				= 0;
 	
@@ -141,6 +136,40 @@ void CCustomMonster::Load		(LPCSTR section)
 	shedule.t_max			= 500; // 30 * NET_Latency / 4;
 
 	// Msg				("! cmonster size: %d",sizeof(*this));
+}
+
+void CCustomMonster::reinit()
+{
+	CEntityAlive::reinit		();
+	CScriptMonster::reinit		();
+	CDamageManager::reinit		();
+	CEventMemoryManager::reinit	();
+	CLocationManager::reinit	();
+	CMaterialManager::reinit	();
+	CMemoryManager::reinit		();
+	CMovementManager::reinit	();
+	CSelectorManager::reinit	();
+	CSoundPlayer::reinit		();
+
+	eye_pp_stage				= 0;
+	m_dwLastUpdateTime			= 0xffffffff;
+	m_tEyeShift.set				(0,0,0);
+	m_fEyeShiftYaw				= 0.f;
+	NET_WasExtrapolating		= FALSE;
+}
+
+void CCustomMonster::reload		(LPCSTR section)
+{
+	CEntityAlive::reload		(section);
+	CScriptMonster::reload		(section);
+	CDamageManager::reload		(section);
+	CEventMemoryManager::reload	(section);
+	CLocationManager::reload	(section);
+	CMaterialManager::reload	(section);
+	CMemoryManager::reload		(section);
+	CMovementManager::reload	(section);
+//	CSelectorManager::reload	(section);
+//	CSoundPlayer::reload		(section);
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
@@ -156,57 +185,6 @@ void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
 		Fvector up;	up.set(0,1,0);
 		mR.rotation	(dir,up);
 	}
-}
-
-void CCustomMonster::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
-{
-//	R_ASSERT(fsimilar(_view.magnitude(),1));
-//	R_ASSERT(fsimilar(_move.magnitude(),1));
-//
-//	CMotionDef*	S=0;
-//
-//	if (fEntityHealth<=0) {
-//		// Die
-//		S = m_death;
-//	} else {
-//		if (speed<0.2f) {
-//			// idle
-//			S = m_idle;
-//		} else {
-//			Fvector view = _view; view.y=0; view.normalize_safe();
-//			Fvector move = _move; move.y=0; move.normalize_safe();
-//			float	dot  = view.dotproduct(move);
-//			
-//			SAnimState* AState = &m_walk;
-////			if (bCrouched)	AState = &m_crouch_walk;
-////			else			
-//			AState = &m_walk;
-//			
-//			if (speed>2.f){
-////				if (bCrouched)	AState = &m_crouch_run;
-////				else			
-//				AState = &m_run;
-//			}
-//			
-//			if (dot>0.7f){
-//				S = AState->fwd;
-//			}else if ((dot<=0.7f)&&(dot>=-0.7f)){
-//				Fvector cross; cross.crossproduct(view,move);
-//				if (cross.y>0){
-//					S = AState->rs;
-//				}else{
-//					S = AState->ls;
-//				}
-//			}else //if (dot<-0.7f)
-//			{
-//				S = AState->back;
-//			}
-//		}
-//	}
-//	if (S!=m_current){ 
-//		m_current = S;
-//		if (S) PKinematics(Visual())->PlayCycle(S);
-//	}
 }
 
 void CCustomMonster::net_Export(NET_Packet& P)					// export to server
@@ -273,6 +251,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		return;
 
 	// *** general stuff
+	CMemoryManager::update		();
 	inherited::shedule_Update	(DT);
 
 	m_dwCurrentTime	= Level().timeServer();
@@ -345,8 +324,11 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 
 void CCustomMonster::UpdateCL	()
 { 
-	inherited::UpdateCL();
+	inherited::UpdateCL					();
 	
+	CEventMemoryManager::update			();
+	CSoundPlayer::update				(Device.fTimeDelta);
+
 	if	(NET.empty())	return;
 	
 	m_dwCurrentTime	= Level().timeServer();
@@ -439,19 +421,6 @@ BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 	return TRUE;
 }
 
-void CCustomMonster::GetVisible			(objVisible& R)
-{
-	xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-	for (; I!=E; ++I)
-		if (positive(I->fuzzy))
-#ifdef IGNORE_ACTOR
-			if (dynamic_cast<CEntityAlive *>(I->O) && !dynamic_cast<CActor *>(I->O))
-#else
-			if (dynamic_cast<CEntityAlive *>(I->O))
-#endif
-				R.insert(I->O);
-}
-
 void CCustomMonster::eye_pp_s0			( )
 {
 	++eye_pp_stage;
@@ -462,8 +431,9 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
-	eye_matrix.setHPB						(-m_head.current.yaw + m_fEyeShiftYaw,-m_head.current.pitch,0);
-//	eye_matrix.c.set						(X.c);
+	const CAI_Stalker						*stalker = dynamic_cast<const CAI_Stalker*>(this);
+	const CMovementManager::SBoneRotation	&rotation = stalker ? stalker->head_orientation() : m_body;
+	eye_matrix.setHPB						(-rotation.current.yaw + m_fEyeShiftYaw,-rotation.current.pitch,0);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }
 
@@ -641,15 +611,17 @@ void CCustomMonster::Die	()
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	CMovementManager::Init		();
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))		return FALSE;
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))
+		return					(FALSE);
+	
+	CDamageManager::Load		(cNameSect());
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
-
+	
 	set_level_dest_vertex	(level_vertex_id());
-
+	
 	eye_matrix.identity		();
-
 	m_body.current.yaw		= m_body.target.yaw	= -E->o_Angle.y;
 	m_body.current.pitch	= m_body.target.pitch	= 0;
 	fEntityHealth			= E->fHealth;
@@ -660,9 +632,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	eye_bone				= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
-//	m_tServerTransform		= XFORM();
-	if (Local())	
-	{
+	if (Local()) {
 		net_update				N;
 		N.dwTimeStamp			= Level().timeServer()-NET_Latency;
 		N.o_model				= E->o_Angle.y;
@@ -676,7 +646,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 		setVisible				(TRUE);
 		setEnabled				(TRUE);
-	} else {
 	}
 
 	return TRUE;
@@ -770,7 +739,6 @@ void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
 	CScriptMonster::net_Destroy();
-	Init					();
 }
 
 BOOL CCustomMonster::UsedAI_Locations()

@@ -27,7 +27,7 @@ public:
 	virtual void feel_touch_delete	(CObject* O);
 	virtual BOOL feel_touch_contact	(CObject* O);
 
-	void SoundCreate				(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundCreate				(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy				(ref_sound& dest);
 
 	FLOAT m_radius, m_buzzer_radius;

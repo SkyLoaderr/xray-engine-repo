@@ -7,7 +7,7 @@
 #include "artifact.h"
 #include "../feel_touch.h"
 
-#include "entity.h"
+#include "entity_alive.h"
 
 
 DEFINE_VECTOR (CEntityAlive*, ALIVE_LIST, ALIVE_LIST_it);

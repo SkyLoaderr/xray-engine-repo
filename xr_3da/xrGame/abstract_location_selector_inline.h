@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "selector_manager.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Graph,\
 	typename _VertexEvaluator,\
@@ -28,7 +30,12 @@ IC	CSelectorTemplate::~CAbstractLocationSelector	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::Init					(const _Graph *graph)
+IC	void CSelectorTemplate::Init					()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 {
 	m_failed				= true;
 	m_selected_vertex_id	= _vertex_id_type(-1);
@@ -50,6 +57,11 @@ TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::set_evaluator	(_VertexEvaluator *evaluator)
 {
 	m_evaluator				= evaluator;
+	if (!evaluator)
+		return;
+	CSelectorManager		*selector_manager = dynamic_cast<CSelectorManager*>(this);
+	VERIFY					(selector_manager);
+	selector_manager->init_selector(*evaluator);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -59,7 +71,7 @@ IC	void CSelectorTemplate::set_query_interval(const u32 query_interval)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CSelectorTemplate::actual(const _vertex_id_type start_vertex_id)
+IC	bool CSelectorTemplate::actual(const _vertex_id_type start_vertex_id, bool path_completed)
 {
 	if (!used())
 		return				(true);

@@ -156,7 +156,7 @@ public:
 
 									CSE_ALifeSpawnRegistry		();
 	virtual							~CSE_ALifeSpawnRegistry		();
-	virtual void					Init						();
+			void					Init						();
 	virtual void					Load						(IReader &tFileStream);
 };
 

@@ -33,7 +33,12 @@ IC	CPathManagerTemplate::~CAbstractPathManager	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CPathManagerTemplate::Init				(const _Graph *graph)
+IC	void CPathManagerTemplate::Init				()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::reinit			(const _Graph *graph)
 {
 	m_actuality				= false;
 	m_failed				= false;
@@ -123,6 +128,12 @@ IC	void CPathManagerTemplate::set_dest_vertex(const _vertex_id_type vertex_id)
 {
 	m_actuality				= m_actuality && (dest_vertex_id() == vertex_id);
 	m_dest_vertex_id		= vertex_id;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const _VertexEvaluator *CPathManagerTemplate::evaluator	() const
+{
+	return					(m_evaluator);
 }
 
 #undef CPathManagerTemplate

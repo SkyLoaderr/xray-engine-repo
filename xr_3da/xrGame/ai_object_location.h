@@ -13,13 +13,15 @@
 #include "game_graph.h"
 
 class CAI_ObjectLocation {
-protected:
+private:
 	u32						m_level_vertex_id;
 	ALife::_GRAPH_ID		m_game_vertex_id;
+	u32						m_dwCurrentFrame;
 public:
 	IC										CAI_ObjectLocation	();
 	IC	virtual								~CAI_ObjectLocation	();
 	IC			void						Init				();
+	IC	virtual	void						reinit				();
 	IC			void						set_game_vertex		(const CGameGraph::CVertex *game_vertex);
 	IC			void						set_game_vertex		(const ALife::_GRAPH_ID		game_vertex_id);
 	IC			const CGameGraph::CVertex	*game_vertex		() const;

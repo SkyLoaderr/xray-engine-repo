@@ -40,13 +40,15 @@ protected:
 
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC			void	select_intermediate_vertex	();
+	IC	const _VertexEvaluator	*evaluator			() const;
 
 public:
 
 
 	IC					CAbstractPathManager		();
 	IC	virtual			~CAbstractPathManager		();
-	IC	virtual void	Init						(const _Graph *graph = 0);
+	IC	virtual	void	Init						();
+	IC			void	reinit						(const _Graph *graph = 0);
 
 	friend class CMovementManager;
 };

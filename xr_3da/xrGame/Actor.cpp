@@ -100,8 +100,8 @@ CActor::CActor() : CEntityAlive()
 	m_fFallTime				=	s_fFallTime;
 	m_bAnimTorsoPlayed		=	false;
 
-	self_gmtl_id			=	GAMEMTL_NONE;
-	last_gmtl_id			=	GAMEMTL_NONE;
+//	self_gmtl_id			=	GAMEMTL_NONE;
+//	last_gmtl_id			=	GAMEMTL_NONE;
 	m_pPhysicsShell			=	NULL;
 	bDeathInit				=	false;
 	m_saved_dir.set(0,0,0);
@@ -149,10 +149,27 @@ CActor::~CActor()
 	//xr_delete(m_trade);
 }
 
-void CActor::Load		(LPCSTR section )
+void CActor::reinit	()
 {
-	Msg("Loading actor: %s",section);
-	inherited::Load		(section);
+	CEntityAlive::reinit	();
+	CInventoryOwner::reinit	();
+	CDamageManager::reinit	();
+	CMaterialManager::reinit();
+}
+
+void CActor::reload	(LPCSTR section)
+{
+	CEntityAlive::reload	(section);
+	CInventoryOwner::reload	(section);
+	CDamageManager::reload	(section);
+	CMaterialManager::reload(section);
+}
+
+void CActor::Load	(LPCSTR section )
+{
+	Msg						("Loading actor: %s",section);
+	inherited::Load			(section);
+	CMaterialManager::Load	(section);
 
 	//////////////////////////////////////////////////////////////////////////
 	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
@@ -233,8 +250,6 @@ void CActor::Load		(LPCSTR section )
 	// sounds
 	char buf[256];
 
-	sndStep[0].g_type	= SOUND_TYPE_MONSTER_WALKING_HUMAN;
-	sndStep[1].g_type	= SOUND_TYPE_MONSTER_WALKING_HUMAN;
 	sndLanding.g_type	= SOUND_TYPE_MONSTER_FALLING_HUMAN;
 	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4");
 	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger");
@@ -261,8 +276,8 @@ void CActor::Load		(LPCSTR section )
 	shedule.t_min		= shedule.t_max = 1;
 
 	// get self game material id
-	self_gmtl_id		= GMLib.GetMaterialIdx("creatures\\human"); 
-	last_gmtl_id		= GMLib.GetMaterialIdx("default");
+//	self_gmtl_id		= GMLib.GetMaterialIdx("creatures\\human"); 
+//	last_gmtl_id		= GMLib.GetMaterialIdx("default");
 }
 
 //--------------------------------------------------------------------
@@ -396,7 +411,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	
 	m_PhysicMovementControl.CreateCharacter();
 	m_PhysicMovementControl.SetPhysicsRefObject(this);
-	m_PhysicMovementControl.SetPLastMaterial(&last_gmtl_id);
+	m_PhysicMovementControl.SetPLastMaterial(&m_last_material_id);
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
@@ -491,23 +506,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
 	// load damage params
-	if (pSettings->line_exist(cNameSect(),"damage"))
-	{
-		string32 buf;
-		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
-		for (CInifile::SectIt it=dam_sect.begin(); dam_sect.end() != it; ++it)
-		{
-			if (0==strcmp(*it->first,"default")){
-				hit_factor	= (float)atof(*it->second);
-			}else{
-				int bone	= V->LL_BoneID(*it->first); 
-				R_ASSERT2(BI_NONE!=bone,*it->first);
-				CBoneInstance& B = V->LL_GetBoneInstance(u16(bone));
-				B.set_param(0,(float)atof(_GetItem(*it->second,0,buf)));
-				B.set_param(1,float(atoi(_GetItem(*it->second,1,buf))));
-			}
-		}
-	}
+	CDamageManager::Load	(cNameSect());
 
 	//. temporary
 	//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
@@ -885,8 +884,31 @@ void CActor::UpdateCL()
 		Level().m_pFogOfWar->UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
 	};
 
-	
-	
+	if (g_Alive()) {
+		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
+		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+		float				s_k	= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
+		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(self_material_id(),last_material_id());
+		CMaterialManager::update		(
+			Device.fTimeDelta,
+			s_vol,
+			tm,
+			!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall|mcLanding|mcLanding2))))
+		);
+
+		// landing sounds
+		if (mtl_pair && !sndLanding.feedback && (mstate_real & (mcLanding | mcLanding2))){
+			if (!mtl_pair->CollideSounds.empty()){
+				Fvector	s_pos		=	Position	();
+				s_pos.y				+=	.15f;
+				sndLanding.clone	(mtl_pair->CollideSounds[0]);
+				::Sound->play_at_pos(sndLanding,this,s_pos);
+				sndLanding.feedback->set_volume(.2f);
+			}
+		}
+	}
+		
 	// Analyze Die-State
 		/*
 		if (!g_Alive())			
@@ -1089,49 +1111,39 @@ void CActor::shedule_Update	(u32 DT)
 	if(pWeapon) pWeapon->SetHUDmode(HUDview());
 
 
-	R_ASSERT(GAMEMTL_NONE!=last_gmtl_id);
-	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
-
-	//R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(last_gmtl_id)->m_Name);
-	// ref_sound step
-	if (mtl_pair&&(mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
-		if(m_fTimeToStep<0){
-			bStep				= !bStep;
-			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
-			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
-			m_fTimeToStep		= tm;
-			if (mtl_pair->StepSounds.size()>=2){
-				sndStep[bStep].clone		(mtl_pair->StepSounds[bStep]);
-				sndStep[bStep].play_at_pos	(this,Position());
-			}
-		}
-		m_fTimeToStep -= dt;
-	}
-
-	// sounds update
-	// Дима. Было 1.0(начальная громкость) и 0.85(если сидя), стало 0.2 и 0.5 соответственно
-	float	s_k			=	ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
-	float	s_vol		=	s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
-	Fvector	s_pos		=	Position	();
-	s_pos.y				+=	.15f;
-	if (sndStep[0].feedback)		{
-		sndStep[0].set_position(s_pos);
-		sndStep[0].set_volume	(s_vol);
-	}
-	if (sndStep[1].feedback)		{
-		sndStep[1].set_position(s_pos);
-		sndStep[1].set_volume	(s_vol);
-	}
-
-	// landing sounds
-	if (mtl_pair&&!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
-		if (!mtl_pair->CollideSounds.empty()){
-			sndLanding.clone	(mtl_pair->CollideSounds[0]);
-			::Sound->play_at_pos	(sndLanding,this,s_pos);
-			sndLanding.feedback->set_volume(.2f);
-		}
-	}
-
+//	R_ASSERT(GAMEMTL_NONE!=last_material_id());
+//	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_material_id(),last_material_id());
+//
+//	//R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(last_gmtl_id)->m_Name);
+//	// ref_sound step
+//	if (mtl_pair&&(mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
+//		if(m_fTimeToStep<0){
+//			bStep				= !bStep;
+//			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
+//			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+//			m_fTimeToStep		= tm;
+//			if (mtl_pair->StepSounds.size()>=2){
+//				sndStep[bStep].clone		(mtl_pair->StepSounds[bStep]);
+//				sndStep[bStep].play_at_pos	(this,Position());
+//			}
+//		}
+//		m_fTimeToStep -= dt;
+//	}
+//
+//	// sounds update
+//	// Дима. Было 1.0(начальная громкость) и 0.85(если сидя), стало 0.2 и 0.5 соответственно
+//	float	s_k			=	ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+//	float	s_vol		=	s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
+//	Fvector	s_pos		=	Position	();
+//	s_pos.y				+=	.15f;
+//	if (sndStep[0].feedback)		{
+//		sndStep[0].set_position(s_pos);
+//		sndStep[0].set_volume	(s_vol);
+//	}
+//	if (sndStep[1].feedback)		{
+//		sndStep[1].set_position(s_pos);
+//		sndStep[1].set_volume	(s_vol);
+//	}
 
 
 	// Кто-то или что-то, на что мы смотрим

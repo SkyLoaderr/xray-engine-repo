@@ -1,0 +1,22 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: enemy_manager.h
+//	Created 	: 30.12.2003
+//  Modified 	: 30.12.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Enemy manager
+////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "item_manager.h"
+#include "entity_alive.h"
+
+class CEnemyManager : public CObjectManager<const CEntityAlive> {
+	typedef CObjectManager<const CEntityAlive> inherited;
+public:
+	virtual bool	useful						(const CEntityAlive *object) const;
+	virtual	float	evaluate					(const CEntityAlive *object) const;
+	IC		const xr_set<const CEntityAlive*> &enemies() const;
+};
+
+#include "enemy_manager_inline.h"

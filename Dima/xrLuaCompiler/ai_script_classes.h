@@ -169,7 +169,7 @@ public:
 	{
 		string256			l_caFileName;
 		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".ogg"))
-			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName,0);
+			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName);
 		else {
 			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
 			m_tpSound		= 0;

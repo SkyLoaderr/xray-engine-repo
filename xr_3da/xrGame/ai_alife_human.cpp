@@ -320,7 +320,7 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 	vfCollectAmmoBoxes();
 }
 
-u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector)
+u16	CSE_ALifeHumanAbstract::get_available_ammo_count(const CSE_ALifeItemWeapon *tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector) const
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return(u16(-1));
@@ -335,7 +335,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	return						(u16(l_dwResult));
 }
 
-u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector, OBJECT_VECTOR *tpObjectVector)
+u16	CSE_ALifeHumanAbstract::get_available_ammo_count(const CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector, OBJECT_VECTOR *tpObjectVector)
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return(u16(-1));
@@ -448,7 +448,7 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 			u32						l_dwCurrentValue = iFloor(ai().ef_storage().m_pfDetectorType->ffGetValue()+.5f);
 			if (l_dwCurrentValue > l_dwBestValue) {
 				l_dwBestValue		= l_dwCurrentValue;
-				m_tpBestDetector	= dynamic_cast<CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeObject);
+				m_tpBestDetector	= const_cast<CSE_ALifeDynamicObject*>(dynamic_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeObject));
 			}
 		}
 		return						(m_tpBestDetector);

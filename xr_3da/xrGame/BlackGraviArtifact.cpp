@@ -8,7 +8,7 @@
 #include "BlackGraviArtifact.h"
 #include "PhysicsShell.h"
 #include "GameObject.h"
-#include "Entity.h"
+#include "entity_alive.h"
 #include "ParticlesObject.h"
 
 CBlackGraviArtifact::CBlackGraviArtifact(void) 

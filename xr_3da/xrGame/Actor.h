@@ -6,14 +6,15 @@
 #define AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_
 #pragma once
 
-#include "entity.h"
+#include "entity_alive.h"
 #include "actor_flags.h"
 #include "../feel_touch.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "InventoryOwner.h"
-
 #include "ActorCondition.h"
+#include "damage_manager.h"
+#include "material_manager.h"
 
 // refs
 class ENGINE_API CCameraBase;
@@ -29,7 +30,9 @@ class CActor:
 	public CEntityAlive, 
 	public Feel::Touch,
 	public CInventoryOwner,
-	public CActorCondition
+	public CActorCondition,
+	public CDamageManager,
+	public CMaterialManager
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -78,8 +81,8 @@ protected:
 	float					hit_slowmo;
 	float					hit_factor;
 	bool					bDeathInit;
-	u16						self_gmtl_id;
-	u16						last_gmtl_id;
+//	u16						self_gmtl_id;
+//	u16						last_gmtl_id;
 	//
 	//Death physics			
 	///CPhysicsShell*			m_phSkeleton;
@@ -89,7 +92,6 @@ protected:
 
 	// media
 	BOOL					bStep;
-	ref_sound					sndStep[2];
 	ref_sound					sndLanding;
 	ref_sound					sndZoneHeart;
 	ref_sound					sndZoneDetector;
@@ -332,8 +334,8 @@ public:
 	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
 
-	virtual	float						ffGetFov			()			{ return 90.f;		}	
-	virtual	float						ffGetRange			()			{ return 500.f;		}
+	virtual	float						ffGetFov			()	const	{ return 90.f;		}	
+	virtual	float						ffGetRange			()	const	{ return 500.f;		}
 
 	// misc
 	//virtual CWeaponList*				GetItemList			(){return Weapons;}
@@ -358,6 +360,7 @@ public:
 	virtual void						g_PerformDrop		( );
 	virtual void						g_WeaponBones		(int &L, int &R1, int &R2);
 	
+	const SRotation&					Orientation()		const { return r_torso; };
 	SRotation&							Orientation()		{ return r_torso; };
 
 	virtual void						IR_OnMouseMove		(int x, int y);
@@ -394,6 +397,8 @@ public:
 	virtual void OnReceiveInfo(int info_index);
 	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index);
 
+	virtual void reinit	();
+	virtual void reload	(LPCSTR section);
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

@@ -500,5 +500,6 @@ private:
 
 	//Inventory for the car
 	CInventory	m_inventory;
-
+	
+	virtual	void reinit		();
 };

@@ -27,7 +27,8 @@ protected:
 public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
-	IC	virtual void			Init						(const _Graph *graph = 0);
+	IC			void			Init						();
+	IC	virtual void			reinit						(const _Graph *graph = 0);
 
 	IC			_vertex_id_type get_selected_vertex_id		() const;
 
@@ -35,7 +36,7 @@ public:
 	IC			void			set_evaluator				(_VertexEvaluator *evaluator);
 
 	IC			bool			failed						() const;
-	IC			bool			actual						(const _vertex_id_type start_vertex_id);
+	IC			bool			actual						(const _vertex_id_type start_vertex_id, bool path_completed);
 	IC			bool			used						() const;
 	IC			void			select_location				(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
 	IC			void			set_dest_path				(xr_vector<_vertex_id_type> &path);
