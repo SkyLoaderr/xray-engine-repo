@@ -223,10 +223,17 @@ bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 	if (ApplyGlobalShortCutExt(Key,Shift)) return true;
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-        if (Key=='G')   		{Command(COMMAND_TOGGLE_GRID);                      		bExec=true;}
-        else if (Key=='F')		{Command(COMMAND_TOGGLE_SAFE_RECT);                 		bExec=true;}
+        if (Key=='S'){
+            if (Shift.Contains(ssAlt))  {Command(COMMAND_SAVEAS);               bExec=true;}
+            else                        {Command(COMMAND_SAVE);                 bExec=true;}
+        }
+        else if (Key=='O')   			{Command(COMMAND_LOAD);                 bExec=true;}
+        else if (Key=='N')   			{Command(COMMAND_CLEAR);                bExec=true;}
+        else if (Key=='G')   			{Command(COMMAND_TOGGLE_GRID);          bExec=true;}
+        else if (Key=='F')				{Command(COMMAND_TOGGLE_SAFE_RECT);     bExec=true;}
+		else if (Key=='R')				{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
     }
-    if ((Key==VK_OEM_3)||(Key==VK_SHIFT)){Command(COMMAND_RENDER_FOCUS);            		bExec=true;}
+    if ((Key==VK_OEM_3)||(Key==VK_SHIFT)){Command(COMMAND_RENDER_FOCUS);        bExec=true;}
     return bExec;
 }
 //---------------------------------------------------------------------------
