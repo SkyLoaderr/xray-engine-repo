@@ -310,10 +310,6 @@
 			Name="ui"
 			>
 			<File
-				RelativePath=".\ui.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ui.h"
 				>
 			</File>
@@ -328,14 +324,6 @@
 					RelativePath=".\console_ui.h"
 					>
 				</File>
-				<Filter
-					Name="input"
-					>
-				</Filter>
-				<Filter
-					Name="output"
-					>
-				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
