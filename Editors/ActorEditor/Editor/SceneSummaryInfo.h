@@ -9,7 +9,7 @@ struct SSceneSummary{
 	AStringSet	lod_objects;
 	AStringSet	mu_objects;
 	AStringSet	waves;
-	AStringSet	pg_static;
+	AStringSet	pe_static;
     int			face_cnt;
     int			vert_cnt;
     int			hom_face_cnt;
@@ -27,11 +27,18 @@ struct SSceneSummary{
     int			sector_cnt;
     int			portal_cnt;
     int 		sound_source_cnt;
-    int 		pg_static_cnt;
+    int 		pe_static_cnt;
 
-    			SSceneSummary()
-                {
-                    face_cnt			= 0;
+    			SSceneSummary(){ Clear(); }
+    void		FillProp	(PropItemVec& items);
+    void		Clear(){
+                    textures.clear		();
+                    det_textures.clear	();
+                    lod_objects.clear	();
+                    mu_objects.clear	();
+                    waves.clear			();
+                    pe_static;
+    				face_cnt			= 0;
                     vert_cnt			= 0;
                     hom_face_cnt		= 0;
                     hom_vert_cnt		= 0;
@@ -48,8 +55,7 @@ struct SSceneSummary{
                     sector_cnt			= 0;
                     portal_cnt			= 0;
                     sound_source_cnt	= 0;
-                    pg_static_cnt		= 0;
-                }
-    void		FillProp	(PropItemVec& items);
+                    pe_static_cnt		= 0;
+    }
 };
 #endif

@@ -45,14 +45,14 @@ void __fastcall TfraPS::ebDeselectByRefsClick(TObject *Sender)
 
 void __fastcall TfraPS::SelByRef( bool flag )
 {
-	LPCSTR PG = ::Render->PSystems.ChoosePG();
-	if(PG){
+	LPCSTR PE = ::Render->PSystems.ChoosePE();
+	if(PE){
 		ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
         ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
 		for(;_F!=_E;_F++){
 			if( (*_F)->Visible() ){
 				EParticlesObject *_O = (EParticlesObject *)(*_F);
-				if(_O->RefCompare(PG)) _O->Select( flag );
+				if(_O->RefCompare(PE)) _O->Select( flag );
 			}
 		}
 	}
@@ -62,8 +62,8 @@ void __fastcall TfraPS::SelByRef( bool flag )
 //----------------------------------------------------
 void __fastcall TfraPS::OutCurrentName()
 {
-	LPCSTR PG = ::Render->PSystems.GetCurrentPG(false);
-	ebCurObj->Caption = (PG)?PG:NONE_CAPTION;
+	LPCSTR PE = ::Render->PSystems.GetCurrentPE(false);
+	ebCurObj->Caption = (PE)?PE:NONE_CAPTION;
 }
 
 //---------------------------------------------------------------------------
@@ -71,7 +71,7 @@ void __fastcall TfraPS::OutCurrentName()
 //---------------------------------------------------------------------------
 void __fastcall TfraPS::ebCurObjClick(TObject *Sender)
 {
-	::Render->PSystems.ChoosePG();
+	::Render->PSystems.ChoosePE();
     OutCurrentName();
 }
 //---------------------------------------------------------------------------

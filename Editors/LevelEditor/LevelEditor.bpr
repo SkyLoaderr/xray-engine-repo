@@ -46,15 +46,14 @@
       intermediate\PropertiesDetailObject.obj 
       intermediate\ESceneAIMapTools_Pick.obj intermediate\HWCaps.obj 
       intermediate\EditObject.obj intermediate\Xr_input.obj 
-      intermediate\fcontroller.obj intermediate\pure.obj 
-      intermediate\CustomObject.obj intermediate\SceneObjectIO.obj 
-      intermediate\xrImage_Resampler.obj intermediate\TextureManager_Loader.obj 
-      intermediate\Texture.obj intermediate\Cursor3D.obj 
-      intermediate\SH_Matrix.obj intermediate\SH_Texture.obj 
-      intermediate\Shader.obj intermediate\SH_Constant.obj 
-      intermediate\xr_avi.obj intermediate\Blender_Recorder.obj 
-      intermediate\Blender.obj intermediate\Blender_Vertex.obj 
-      intermediate\Blender_Editor_Selection.obj 
+      intermediate\pure.obj intermediate\CustomObject.obj 
+      intermediate\SceneObjectIO.obj intermediate\xrImage_Resampler.obj 
+      intermediate\TextureManager_Loader.obj intermediate\Texture.obj 
+      intermediate\Cursor3D.obj intermediate\SH_Matrix.obj 
+      intermediate\SH_Texture.obj intermediate\Shader.obj 
+      intermediate\SH_Constant.obj intermediate\xr_avi.obj 
+      intermediate\Blender_Recorder.obj intermediate\Blender.obj 
+      intermediate\Blender_Vertex.obj intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_Screen_GRAY.obj 
       intermediate\Blender_Screen_SET.obj intermediate\Blender_default_aref.obj 
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
@@ -121,7 +120,8 @@
       intermediate\EditObjectProps.obj intermediate\du_cylinder.obj 
       intermediate\ItemListTypes.obj intermediate\ItemList.obj 
       intermediate\ItemListHelper.obj intermediate\CustomObjectAnimation.obj 
-      intermediate\BoneEditor.obj"/>
+      intermediate\BoneEditor.obj intermediate\ParticleEffect.obj 
+      intermediate\IInputReceiver.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -270,7 +270,6 @@
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\fcontroller.cpp" FORMNAME="" UNITNAME="fcontroller" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -417,6 +416,8 @@
       <FILE FILENAME="edit\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleEffect.cpp" FORMNAME="" UNITNAME="ParticleEffect" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\IInputReceiver.cpp" FORMNAME="" UNITNAME="IInputReceiver" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

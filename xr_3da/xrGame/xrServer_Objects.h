@@ -117,7 +117,7 @@ class CSE_Visual
 public:
 #ifdef _EDITOR
 	AnsiString						play_animation;
-	IVisual*						visual;
+	IRender_Visual*		   			visual;
     void __fastcall					OnChangeVisual	(PropValue* sender);
     void 							PlayAnimation	(LPCSTR name);
 #endif

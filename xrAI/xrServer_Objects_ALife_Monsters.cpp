@@ -175,10 +175,10 @@ void CSE_ALifeTrader::FillProp				(LPCSTR pref, PropItemVec& items)
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
 	string64					S;
 	for ( ; I != E; I++) {
-		PHelper.CreateText		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",itoa(int(I - B),S,10)), (*I).m_caSections, sizeof((*I).m_caSections));
-		PHelper.CreateU32		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_dwCount,	1, 256);
-		PHelper.CreateFLOAT		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMinFactor,0.f, 1.f);
-		PHelper.CreateFLOAT		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMaxFactor,0.f, 1.f);
+		PHelper.CreateText		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",itoa(int(I - B),S,10)), (*I).m_caSections, sizeof((*I).m_caSections));
+		PHelper.CreateU32		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_dwCount,	1, 256);
+		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMinFactor,0.f, 1.f);
+		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMaxFactor,0.f, 1.f);
 	}
 }
 #endif

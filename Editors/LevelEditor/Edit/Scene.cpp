@@ -934,23 +934,24 @@ ObjectList* EScene::GetSnapList()
 }
 //--------------------------------------------------------------------------------------------------
 
+static SSceneSummary s_summary;
 void EScene::ShowSummaryInfo()
 {
-	SSceneSummary summary;
+	s_summary.Clear	();
 	bool bRes=false;
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-            if ((*_F)->GetSummaryInfo(&summary)) bRes=true;
+            if ((*_F)->GetSummaryInfo(&s_summary)) bRes=true;
         }
 	}
     // append sky dome
-	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&summary);
+	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&s_summary);
 
 	PropItemVec items;
 	if (bRes){
         // fill items
-        summary.FillProp(items);
+        s_summary.FillProp(items);
         m_SummaryInfo->ShowProperties();
     }else{
     	ELog.DlgMsg(mtInformation,"Summary info empty.");

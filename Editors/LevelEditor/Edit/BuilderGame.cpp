@@ -48,10 +48,10 @@ BOOL SceneBuilder::BuildGame()
     	F.sound_env_geom.stream.save_to(lev_sound_env.c_str());
 
     // save static PG
-    AnsiString lev_pg_static = m_LevelPath+"level.ps_static";
-    EFS.MarkFile	(lev_pg_static,true);
-    if (F.pg_static.chunk)    	
-	    F.pg_static.stream.save_to(lev_pg_static.c_str());
+    AnsiString lev_pe_static = m_LevelPath+"level.ps_static";
+    EFS.MarkFile	(lev_pe_static,true);
+    if (F.pe_static.chunk)    	
+	    F.pe_static.stream.save_to(lev_pe_static.c_str());
     return TRUE;
 }
 

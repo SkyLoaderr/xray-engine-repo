@@ -173,8 +173,7 @@ void ELibrary::Save()
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
     	if (O->second->IsModified()){
-        	AnsiString nm;
-		    FS.update_path(nm,_objects_,O->second->GetName());
+        	AnsiString nm = ChangeFileExt(FS.update_path(nm,_objects_,O->second->GetName()),".object");
         	O->second->SaveObject(nm.c_str());
         }
 }

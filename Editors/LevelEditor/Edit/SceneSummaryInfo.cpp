@@ -32,7 +32,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper.CreateCaption(items,"Glows\\Count",					glow_cnt);
     // textures
     AnsiString temp;
-    int base_mem_usage		= 0;
+    int base_mem_usage		= 0; 
     int det_mem_usage		= 0;
     PropValue* total_count	= PHelper.CreateCaption	(items,"Textures\\Count","");
     PropValue* total_mem	= PHelper.CreateCaption(items,"Textures\\Memory Usage","");
@@ -48,13 +48,15 @@ void SSceneSummary::FillProp(PropItemVec& items)
             int tex_mem		= T->MemoryUsage();
             base_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Base\\")+*t_it;
+            PropValue* V=0;
+            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it); V->Owner()->Enable(FALSE);
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
         	if (T->_Format().flags.is(STextureParams::flHasDetailTexture)){
-            	det_textures.insert(T->_Format().detail_name);
-	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail Texture"),	T->_Format().detail_name);
-	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail Scale"),	T->_Format().detail_scale);
+            	std::pair<AStringSetIt, bool> I=det_textures.insert(T->_Format().detail_name);
+	            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Texture"),	(AnsiString*)&*I.first); 	V->Owner()->Enable(FALSE);
+	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Scale"),		AnsiString().sprintf("%3.2f",T->_Format().detail_scale));
             }
 //            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Used In"),			objects);
         }
@@ -76,6 +78,8 @@ void SSceneSummary::FillProp(PropItemVec& items)
             int tex_mem		= T->MemoryUsage();
             det_mem_usage	+= tex_mem;
             AnsiString pref	= AnsiString("Textures\\Detail\\")+*t_it;
+            PropValue*	V	= 0;
+            V=PHelper.CreateATexture(items,FHelper.PrepareKey(pref.c_str(),"Texture"), 		(AnsiString*)&*t_it); 	V->Owner()->Enable(FALSE);
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
@@ -98,9 +102,9 @@ void SSceneSummary::FillProp(PropItemVec& items)
         PHelper.CreateCaption(items,FHelper.PrepareKey("Sounds\\Waves",w_it->c_str()),"-");
 
     // particles
-    PHelper.CreateCaption(items,"Particle System\\Sources",			pg_static_cnt);
-    PHelper.CreateCaption(items,"Particle System\\Refs\\Count",		pg_static.size());
-    for (AStringSetIt pg_it=pg_static.begin(); pg_it!=pg_static.end(); pg_it++)
-        PHelper.CreateCaption(items,FHelper.PrepareKey("Particle System\\Refs",pg_it->c_str()),"-");
+    PHelper.CreateCaption(items,"Particle System\\Sources",			pe_static_cnt);
+    PHelper.CreateCaption(items,"Particle System\\Refs\\Count",		pe_static.size());
+    for (AStringSetIt pe_it=pe_static.begin(); pe_it!=pe_static.end(); pe_it++)
+        PHelper.CreateCaption(items,FHelper.PrepareKey("Particle System\\Refs",pe_it->c_str()),"-");
 }
  

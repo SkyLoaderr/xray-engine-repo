@@ -218,6 +218,8 @@ public:
 	IC TElTreeItem*		Item			(){return item;}
 	IC TElTreeItem**	LPItem			(){return &item;}
 	IC LPCSTR			Key				(){return key;}
+    IC void				Enable			(BOOL val){m_Flags.set(flDisabled,!val);}
+    IC BOOL				Enabled			(){return !m_Flags.is(flDisabled);}
 
 	IC void				OnBeforeEdit	(LPVOID edit_val)
     {

@@ -38,6 +38,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N2;
 	TMenuItem *miDrawThumbnails;
 	TMxPopupMenu *pmItems;
+	TMenuItem *ExpandSelected1;
+	TMenuItem *CollapseSelected1;
+	TMenuItem *N3;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);
@@ -61,6 +64,8 @@ __published:	// IDE-managed Components
 	void __fastcall 	miDrawThumbnailsClick(TObject *Sender);
 	void __fastcall 	tvPropertiesMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall 	tvPropertiesMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
+	void __fastcall ExpandSelected1Click(TObject *Sender);
+	void __fastcall CollapseSelected1Click(TObject *Sender);
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
@@ -101,8 +106,8 @@ private:	// User declarations
     void 				ApplyEditControl		();
     void 				CancelEditControl		();
 
-	void 				OutBOOL					(BOOL val, TCanvas* Surface, const TRect& R);
-	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g=0, bool bArrow=false);
+	void 				OutBOOL					(BOOL val, TCanvas* Surface, const TRect& R, bool bEnable);
+	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, bool bEnable, TGraphic* g=0, bool bArrow=false);
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
 	static TProperties* CreateForm				(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);

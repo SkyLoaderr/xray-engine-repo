@@ -53,7 +53,7 @@ void EParticlesObject::OnUpdateTransform()
 {
 	inherited::OnUpdateTransform	();
 	Fvector v={0.f,0.f,0.f};
-	PS::CParticleGroup::UpdateParent(_Transform(),v);
+	m_PE.UpdateParent(_Transform(),v);
 }
 //----------------------------------------------------
 
@@ -61,18 +61,17 @@ void EParticlesObject::OnFrame()
 {
 	inherited::OnFrame();
     Fbox bb; GetBox(bb);
-    if (::Render->occ_visible(bb)){
-	    PS::CParticleGroup::OnFrame(Device.dwTimeDelta);
-    }
+    if (::Render->occ_visible(bb))
+	    m_PE.OnFrame(Device.dwTimeDelta);
 }
 //----------------------------------------------------
 
 void EParticlesObject::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority,strictB2F);
-    if (1==priority){
-        Fbox bb; GetBox(bb);
-        if (::Render->occ_visible(bb)){
+    Fbox bb; GetBox(bb);
+	if (::Render->occ_visible(bb)){
+	    if (1==priority){
             if (false==strictB2F){
                 // draw emitter
                 u32 C = 0xFFFFEBAA;
@@ -82,10 +81,9 @@ void EParticlesObject::Render(int priority, bool strictB2F)
                     u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                     DU.DrawSelectionBox(bb,&clr);
                 }
-            }else{
-            	PS::CParticleGroup::Render(1.f);
             }
         }
+	    Device.Models.Render(&m_PE,_Transform(),priority,strictB2F,1.f);
     }
 }
 //----------------------------------------------------
@@ -125,13 +123,13 @@ bool EParticlesObject::RayPick(float& distance, const Fvector& start, const Fvec
 
 void EParticlesObject::Play()
 {
-	PS::CParticleGroup::Play();
+	m_PE.Play();
 }
 //----------------------------------------------------
 
 void EParticlesObject::Stop()
 {
-	PS::CParticleGroup::Stop();
+	m_PE.Stop();
 }
 //----------------------------------------------------
 
@@ -155,7 +153,7 @@ bool EParticlesObject::Load(IReader& F)
     }
 
     if (F.find_chunk(CPSOBJECT_CHUNK_PARAMS)){
-    	m_Flags.set(F.r_u32());
+    	m_PE.m_Flags.set(F.r_u32());
     }
 
     return true;
@@ -170,13 +168,13 @@ void EParticlesObject::Save(IWriter& F)
 	F.w_u16			(CPSOBJECT_VERSION);
 	F.close_chunk	();
 
-    VERIFY(m_Def);
+    VERIFY(m_PE.GetDefinition());
 	F.open_chunk	(CPSOBJECT_CHUNK_REFERENCE);
-    F.w_stringZ		(m_Def->m_Name);
+    F.w_stringZ		(m_PE.GetDefinition()->m_Name);
 	F.close_chunk	();
 
 	F.open_chunk	(CPSOBJECT_CHUNK_PARAMS);
-	F.w_u32			(m_Flags.get());
+	F.w_u32			(m_PE.m_Flags.get());
 	F.close_chunk	();
 }
 //----------------------------------------------------
@@ -191,7 +189,7 @@ void EParticlesObject::OnDeviceDestroy()
 
 bool EParticlesObject::ExportGame(SExportStreams& F)
 {
-	SExportStreamItem& I	= F.pg_static;
+	SExportStreamItem& I	= F.pe_static;
 	I.stream.open_chunk		(I.chunk++);
     I.stream.w_stringZ		(m_RefName.c_str());
     I.stream.w				(&_Transform(),sizeof(Fmatrix));
@@ -202,8 +200,8 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 
 bool EParticlesObject::Compile(LPCSTR ref_name)
 {
-    PS::CPGDef* def 		= ::Render->PSystems.FindPG(ref_name);
-    if (PS::CParticleGroup::Compile(def)){
+    PS::CPEDef* def 		= ::Render->PSystems.FindPE(ref_name);
+    if (m_PE.Compile(def)){
 		m_RefName			= ref_name;
 		UpdateTransform		();
         return true;
@@ -216,7 +214,7 @@ void __fastcall EParticlesObject::OnRefChange(PropValue* V)
 	if (!Compile(m_RefName.c_str())){
         ELog.Msg( mtError, "Can't compile particle system '%s'", m_RefName.c_str() );
     }else{
-		m_RefName	= m_Def?m_Def->m_Name:"";
+		m_RefName	= m_PE.GetDefinition()?m_PE.GetDefinition()->m_Name:"";
         UI.Command(COMMAND_REFRESH_PROPERTIES);
     }
 }
@@ -232,11 +230,11 @@ void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 
 bool EParticlesObject::GetSummaryInfo(SSceneSummary* inf)
 {
-	if (!m_RefName.IsEmpty()&&m_Def){ 
-    	inf->pg_static.insert(m_Def->m_Name);
-		if (m_Def->m_TextureName&&m_Def->m_TextureName[0]) inf->textures.insert(ChangeFileExt(m_Def->m_TextureName,"").LowerCase());
+	if (!m_RefName.IsEmpty()&&m_PE.GetDefinition()){ 
+    	inf->pe_static.insert(m_PE.GetDefinition()->m_Name);
+		if (m_PE.GetDefinition()->m_TextureName&&m_PE.GetDefinition()->m_TextureName[0]) inf->textures.insert(ChangeFileExt(m_PE.GetDefinition()->m_TextureName,"").LowerCase());
     }
-	inf->pg_static_cnt++;
+	inf->pe_static_cnt++;
 	return true;
 }
 //----------------------------------------------------

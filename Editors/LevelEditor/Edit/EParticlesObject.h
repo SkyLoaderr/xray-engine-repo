@@ -8,19 +8,21 @@
 
 #include "ParticleGroup.h"
 
-class EParticlesObject: public CCustomObject, public PS::CParticleGroup
+class EParticlesObject: public CCustomObject
 {
 	typedef CCustomObject inherited;
     Fbox				m_BBox;
     AnsiString			m_RefName;
 
+    PS::CParticleEffect	m_PE;
+    
 	void __fastcall 	OnRefChange			(PropValue* V);
 public:
 	                	EParticlesObject   	(LPVOID data, LPCSTR name);
     void            	Construct   		(LPVOID data);
 	virtual         	~EParticlesObject  	();
 
-	PS::CPGDef*			GetReference		(){return m_Def;}
+	PS::CPEDef*			GetReference		(){return m_PE.GetDefinition();}
 
     void				RenderSingle		();
 	virtual void    	Render      		(int priority, bool strictB2F);
@@ -39,7 +41,7 @@ public:
 
     virtual void 		OnUpdateTransform	();
 
-    IC bool				RefCompare			(LPCSTR ref_name){VERIFY(ref_name&&ref_name[0]); return (0==stricmp(ref_name,m_Def->m_Name));}
+    IC bool				RefCompare			(LPCSTR ref_name){VERIFY(ref_name&&ref_name[0]); return (0==stricmp(ref_name,m_PE.GetDefinition()->m_Name));}
 
     bool				Compile				(LPCSTR ref_name);
     

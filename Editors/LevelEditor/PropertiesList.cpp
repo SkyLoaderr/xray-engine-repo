@@ -300,16 +300,18 @@ void __fastcall TProperties::tvPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TProperties::OutBOOL(BOOL val, TCanvas* Surface, const TRect& R)
+void TProperties::OutBOOL(BOOL val, TCanvas* Surface, const TRect& R, bool bEnable)
 {
-    Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
-    if (val)			Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-    else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+	if (bEnable){
+	    Surface->CopyMode 	= cmSrcAnd;//cmSrcErase;
+    	if (val)			Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+	    else 				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+    }
 }
 
-void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g, bool bArrow)
+void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect R, bool bEnable, TGraphic* g, bool bArrow)
 {
-	if (g||bArrow){
+	if (bEnable&&(g||bArrow)){
 	    R.Right	-=	12;
     	R.Left 	+= 	1;
     }else{
@@ -317,14 +319,16 @@ void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g, b
         R.Left += 1;
     }
     DrawText	(Surface->Handle, text, -1, &R, DT_LEFT | DT_SINGLELINE);
-    if (g){
-	    R.Left 	= 	R.Right;
-    	Surface->CopyMode = cmSrcAnd;
-	    Surface->Draw(R.Left+1,R.Top+5,g);
-    }else if (bArrow){
-        R.Left 	= 	R.Right;
-        R.Right += 	10;
-        DrawArrow	(Surface, eadDown, R, clWindowText, true);
+	if (bEnable){
+        if (g){
+            R.Left 	= 	R.Right;
+            Surface->CopyMode = cmSrcAnd;
+            Surface->Draw(R.Left+1,R.Top+5,g);
+        }else if (bArrow){
+            R.Left 	= 	R.Right;
+            R.Right += 	10;
+            DrawArrow	(Surface, eadDown, R, clWindowText, true);
+        }
     }
 }
 
@@ -372,7 +376,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
   	if (SectionIndex == 1){
     	PropItem* prop 				= (PropItem*)Item->Tag;
         u32 type 					= prop->type;
-        if (!prop->m_Flags.is(PropItem::flDisabled)){
+        if (prop->Enabled()){
             Surface->Font->Color 	= clBlack;
             Surface->Font->Style 	= TFontStyles();
         }else{
@@ -439,24 +443,24 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_FLAG8:{
                 Flag8Value* V		= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValueEx(),Surface,R);
+            	OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_FLAG16:{
                 Flag16Value* V		= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValueEx(),Surface,R);
+            	OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_FLAG32:{
                 Flag32Value* V		= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValueEx(),Surface,R);
+            	OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_BOOLEAN:{
                 BOOLValue* V		= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValue(),Surface,R);
+            	OutBOOL				(V->GetValue(),Surface,R,prop->Enabled());
             }break;
             case PROP_TEXTURE:
             case PROP_TEXTURE2:
             case PROP_A_TEXTURE:
-                OutText(prop->GetText(),Surface,R,m_BMEllipsis);
+                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             	if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->ItemIndent;
                     PHelper.DrawThumbnail	(Surface,R,prop->GetText());
@@ -483,22 +487,22 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_CSHADER:
             case PROP_ESHADER:
             case PROP_CSHADER:
-                OutText(prop->GetText(),Surface,R,m_BMEllipsis);
+                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_TOKEN:
             case PROP_TOKEN2:
             case PROP_TOKEN3:
             case PROP_TOKEN4:
             case PROP_LIST:
-                OutText(prop->GetText(),Surface,R,m_BMEllipsis,true);
+                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag!=(int)Item)
-	                OutText(prop->GetText(),Surface,R);
+	                OutText(prop->GetText(),Surface,R,prop->Enabled());
             break;
             case PROP_VECTOR:
-                OutText(prop->GetText(),Surface,R);
+                OutText(prop->GetText(),Surface,R,prop->Enabled());
             break;
             case PROP_U8:
             case PROP_U16:
@@ -508,7 +512,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_S32:
             case PROP_FLOAT:
                 if (seNumber->Tag!=(int)Item)
-	                OutText(prop->GetText(),Surface,R);
+	                OutText(prop->GetText(),Surface,R,prop->Enabled());
             break;
             default:
 				THROW2("Unknown prop type");
@@ -547,12 +551,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,IP,HC);
   	if (item){
     	if ((HC==1)&&(Button==mbLeft)){
-            if (!item->Enabled) return;
             PropItem* prop = (PropItem*)item->Tag;
             // ѕроверить чтобы не нажимать 2 раза дл€ кнопок
             if (prop&&(PROP_BUTTON==prop->type)) m_FirstClickItem=item;
             if (m_FirstClickItem==item){
-                if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
+				if (!prop||(prop&&!prop->Enabled())) return;
                 pmEnum->Tag = (int)item;
                 switch(prop->type){
                 case PROP_CAPTION: break;
@@ -759,8 +762,7 @@ void __fastcall TProperties::tvPropertiesMouseMove(TObject *Sender,
 	if (tvProperties->Selected){
 		TElTreeItem* item 	= tvProperties->Selected;
 		PropItem* prop 		= (PropItem*)item->Tag;
-		if (!item->Enabled) return;
-		if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
+		if (!prop||(prop&&!prop->Enabled())) return;
         switch(prop->type){
         case PROP_BUTTON:{
         	if (Shift.Contains(ssLeft)){
@@ -787,8 +789,7 @@ void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
 	if (tvProperties->Selected){
 		TElTreeItem* item 	= tvProperties->Selected;
 		PropItem* prop 		= (PropItem*)item->Tag;
-		if (!item->Enabled) return;
-		if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
+		if (!prop||(prop&&!prop->Enabled())) return;
         switch(prop->type){
         case PROP_BUTTON:{
         	if (Button==mbLeft){
@@ -1458,6 +1459,18 @@ void __fastcall TProperties::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TProperties::ExpandSelected1Click(TObject *Sender)
+{
+	if (tvProperties->Selected) tvProperties->Selected->Expand(false);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TProperties::CollapseSelected1Click(TObject *Sender)
+{
+	if (tvProperties->Selected) tvProperties->Selected->Collapse(false);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TProperties::ExpandAll1Click(TObject *Sender)
 {
 	tvProperties->FullExpand();
@@ -1487,6 +1500,7 @@ void __fastcall TProperties::RefreshForm()
 	UnlockUpdating		();
 	tvProperties->Repaint();
 }
+
 
 
 

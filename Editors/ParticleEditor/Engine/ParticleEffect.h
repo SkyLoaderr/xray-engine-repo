@@ -114,17 +114,18 @@ class ENGINE_API CParticleEffect: public IRender_Visual
 protected:
 	CPEDef*				m_Def;
 
-    enum{
-    	flPlaying		= (1<<0),
-        flDefferedStop	= (1<<1)
-    };
-    Flags32				m_Flags;
     s32					m_ElapsedLimit;
 
 	int					m_HandleEffect;
 	int					m_HandleActionList;
 
 	s32					m_MemDT;
+public:
+    enum{
+    	flPlaying		= (1<<0),
+        flDefferedStop	= (1<<1)
+    };
+    Flags32				m_Flags;
 protected:
 	void				ResetParticles		();
 
