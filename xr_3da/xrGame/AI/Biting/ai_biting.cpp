@@ -162,6 +162,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 
 	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	
+	R_ASSERT2						(getAI().bfCheckIfMapLoaded() && getAI().bfCheckIfGraphLoaded() && getAI().bfCheckIfCrossTableLoaded() && (getAI().m_dwCurrentLevelID != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// loading animation stuff
