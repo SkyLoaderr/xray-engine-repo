@@ -112,7 +112,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 
 	// weapons
 	Weapons					= new CWeaponList(this);
-	Weapons->Init			("torso2","head");
+	Weapons->Init			("head","torso2");
 	Weapons->TakeItem		(CLSID_OBJECT_W_M134,0);
 
 	// take index spine bone
