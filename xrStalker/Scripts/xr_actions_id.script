@@ -26,6 +26,7 @@ sidor_act_patrol        = sidor_actions + 0
 sidor_act_wounded_base  = sidor_actions + 10
 sidor_act_bandits_base  = sidor_actions + 20
 sidor_act_swat_base     = sidor_actions + 40
+sidor_act_follower_base = sidor_actions + 50
 
 -- chugai
 chugai_actions         = sidor_actions  + 1024

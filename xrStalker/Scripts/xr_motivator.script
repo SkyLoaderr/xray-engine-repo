@@ -341,6 +341,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_commander.add_to_binder(self.object)
     xr_guard.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
+    xr_follower.add_to_binder (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)

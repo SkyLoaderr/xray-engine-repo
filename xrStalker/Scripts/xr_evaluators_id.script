@@ -24,6 +24,7 @@ sidor_patrol_base_property          =   sidor_evaluator + 0
 sidor_wounded_base                  =   sidor_evaluator + 10
 sidor_bandits_base                  =   sidor_evaluator + 20
 sidor_swat_base                     =   sidor_evaluator + 40
+sidor_follower_base                 =   sidor_evaluator + 50
 
 -- эвалуаторы Чугай
 chugai_evaluators    = sidor_evaluator   + 1024
