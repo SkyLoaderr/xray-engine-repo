@@ -85,13 +85,13 @@ M_SPAWN
 	}
 	dummy
 	{
-		u8				style;				// esAnimated=1<<0,	esSkeleton=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
+		u8				style;				// esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
 
 		esAnimated
 		{
 			stringZ		file;
 		}
-		esSkeleton
+		esModel
 		{
 			stringZ		file;
 		}
