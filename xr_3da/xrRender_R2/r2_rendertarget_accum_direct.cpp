@@ -125,7 +125,9 @@ void CRenderTarget::accum_direct()
 
 	// Constants
 	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.div					(RImplementation.Lights.sun_color, ps_r2_ls_dynamic_range);
+	L_clr.set					(RImplementation.Lights.sun_color);
+	L_clr.set					(1,1,1);
+	L_clr.div					(ps_r2_ls_dynamic_range);
 	L_spec						= L_clr.magnitude()/_sqrt(3.f);
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
 	L_dir.normalize				();
@@ -133,6 +135,6 @@ void CRenderTarget::accum_direct()
 	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
 
 	// Render if stencil >= 0x2
-	//$$$CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
+	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
