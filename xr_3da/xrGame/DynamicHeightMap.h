@@ -18,18 +18,22 @@ class CHM_Static
 	struct	Slot
 	{
 		float		data	[dhm_precision][dhm_precision];
-
+		
 		BOOL		bReady;
 		int			x,z;
-
-		IC			void		set(int _x, int _z)	{ x=_x; z=_z; }
-		Slot()
+		
+		IC			void		set		(int _x, int _z)	{ x=_x; z=_z; }
+		IC			void		clear	()
 		{
 			for (DWORD i=0; i<dhm_precision; i++)
 				for (DWORD j=0; j<dhm_precision; j++)
 					data	[i][j]	= flt_min;
-			bReady = TRUE;
-			x = z = 0;
+		}
+		Slot()
+		{
+			clear	();
+			set		(0,0);
+			bReady	= TRUE;
 		}
 	};
 	Slot						pool	[dhm_matrix*dhm_matrix];			// pool 

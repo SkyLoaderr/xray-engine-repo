@@ -100,7 +100,10 @@ void CHM_Static::Update	()
 		XRC.BBoxMode		(0); // BBOX_TRITEST
 		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,bb);
 		DWORD	triCount	= XRC.GetBBoxContactCount();
-		if (0==triCount)	continue;
+		if (0==triCount)	{
+			S->clear	();
+			continue;
+		}
 		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
 		// Perform testing
