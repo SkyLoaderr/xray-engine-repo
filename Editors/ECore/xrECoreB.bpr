@@ -75,7 +75,7 @@
       Intermediate\nv_algebra.obj Intermediate\NVMeshMender.obj 
       Intermediate\EThumbnailTexture.obj Intermediate\ETextureParams.obj 
       Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
-      Intermediate\EThumbnailSound.obj"/>
+      Intermediate\EThumbnailSound.obj Intermediate\Blender_Particle.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -280,6 +280,7 @@
       <FILE FILENAME="Editor\EThumbnail.h" FORMNAME="" UNITNAME="EThumbnail.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Particle.cpp" FORMNAME="" UNITNAME="Blender_Particle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
