@@ -32,8 +32,9 @@
     	<disable>agr_krot_band</disable>
     </info_portion>
 
-    <info_portion id="agr_find_gunslinger_hide">
-		<task>agroprom_find_gunslinger_hide</task>
+    <info_portion id="agr_find_gunslinger_cache">
+		<task>agroprom_find_gunslinger_cache</task>
+		<article>storyline_gunslinger_cache_info</article>
 		<location>
 			<level>l03_agroprom</level>
 			<object>201</object>
@@ -41,16 +42,17 @@
 			<text>Тайник Стрелка</text>
 		</location>
     </info_portion>
-    <info_portion id="agr_find_gunslinger_hide_done">
-    	<disable>agr_find_gunslinger_hide</disable>
+    <info_portion id="agr_find_gunslinger_cache_done">
+    	<disable>agr_find_gunslinger_cache</disable>
     </info_portion>
 
 
-    <info_portion id="agroprom_find_stalker_ghost">
-    	<task>agroprom_find_stalker_ghost</task>
+    <info_portion id="agroprom_find_stalker_phantom">
+    	<task>agroprom_find_stalker_phantom</task>
+    	<article>storyline_gunslinger_flash_info</article>
     </info_portion>
-    <info_portion id="agroprom_find_stalker_ghost_done">
-    	<disable>agroprom_find_stalker_ghost</disable>
+    <info_portion id="agroprom_find_stalker_phantom_done">
+    	<disable>agroprom_find_stalker_phantom</disable>
     </info_portion>
 
 	<!-- infoportions для ситуации на заводе на агропроме -->

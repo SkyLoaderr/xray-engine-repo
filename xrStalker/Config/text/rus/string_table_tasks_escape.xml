@@ -99,11 +99,17 @@
     <string id="agr_meet_krot_band_0">
         <text>Найти группу Крота и получить от них информацию о пути к центру Зоны.</text>
     </string>
-    <string id="agroprom_find_gunslinger_hide">
+    <string id="agroprom_find_gunslinger_cache">
         <text>Найти тайник группировки Стрелка.</text>
     </string>
-    <string id="agroprom_find_gunslinger_hide_0">
+    <string id="agroprom_find_gunslinger_cache_0">
         <text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom">
+        <text>Найти Призрака.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom_0">
+        <text>Призрак точно знает, где найти Стрелка.</text>
     </string>
     <string id="esc_wounded_to_trader_gift">
         <text>Доставить пакет торговцу.</text>

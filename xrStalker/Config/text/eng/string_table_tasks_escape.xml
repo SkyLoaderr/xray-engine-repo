@@ -99,11 +99,17 @@
     <string id="agr_meet_krot_band_0">
         <text>You found out, that some stalkers gather on the abandoned factory near “Agroprom” institute. They may lead you to Gunslinger.</text>
     </string>
-    <string id="agroprom_find_gunslinger_hide">
+    <string id="agroprom_find_gunslinger_cache">
         <text>Find the secret cache of Gunslinger’s grouping.</text>
     </string>
-    <string id="agroprom_find_gunslinger_hide_0">
+    <string id="agroprom_find_gunslinger_cache_0">
         <text>Find and search the cache of Gunslinger’s clan. There you may get information, where to find Gunslinger himself.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom">
+        <text>Íàéòè Ïğèçğàêà.</text>
+    </string>
+    <string id="agroprom_find_stalker_phantom_0">
+        <text>Ïğèçğàê òî÷íî çíàåò, ãäå íàéòè Ñòğåëêà.</text>
     </string>
     <string id="esc_wounded_to_trader_gift">
         <text>Hand over the package to the merchant.</text>

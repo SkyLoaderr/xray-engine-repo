@@ -236,14 +236,14 @@ a.	Анархистской группировкой «Свобода»
 	</string>
 
  
-	<string id="Ghost">
-		<text>Ghost</text>
-		<text ln="rus">Призрачный сталкер</text>
+	<string id="Phantom">
+		<text>Phantom</text>
+		<text ln="rus">Сталкер Призрак</text>
 	</string>
 
 
-	<string id="enc_social_stalkers_ghost">
-		<text>Ghost</text>
+	<string id="enc_social_stalkers_phantom">
+		<text>Phantom</text>
 		<text ln="rus">2222</text>
 	</string>
 

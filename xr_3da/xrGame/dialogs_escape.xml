@@ -178,7 +178,7 @@
             </phrase>
             <phrase id="6">
                 <text>escape_trader_talk_info_6</text>
-                <has_info>agroprom_find_stalker_ghost</has_info>
+                <has_info>agroprom_find_stalker_phantom</has_info>
                 <next>61</next>
             </phrase>
             <phrase id="10">

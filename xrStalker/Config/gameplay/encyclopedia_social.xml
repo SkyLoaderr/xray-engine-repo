@@ -119,11 +119,11 @@
     <!------------------------------------------------------------------->
 
 
-    <!--------------------------- Ghost --------------------------->
+    <!--------------------------- Phantom --------------------------->
 
-    <article id="social_stalkers_ghost" name="Ghost" group="Social/Stalkers">
+    <article id="social_stalkers_phantom" name="Phantom" group="Social/Stalkers">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_social_stalkers_ghost</text>
+        <text>enc_social_stalkers_phantom</text>
     </article>
 
 
