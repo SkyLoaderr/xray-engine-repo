@@ -19,9 +19,8 @@ function action_process_death:death_callback(victim, who)
 	end
 
 	if db.storage[self.object:id()].active_scheme then
-		local actor = level.actor()
-		if actor then
-			if xr_logic.try_switch_to_another_section(victim, self.st, actor) then
+		if db.actor then
+			if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
 				return
 			end
 		end
