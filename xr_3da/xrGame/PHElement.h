@@ -28,6 +28,8 @@ class CPHElement	:  public CPhysicsElement
 	dSpaceID				m_space;
 	dBodyID					m_body;
 	dGeomID					m_group;
+	dReal					m_l_scale;
+	dReal					m_w_scale;
 	CPhysicsRefObject*		m_phys_ref_object;
 	///////////////////////////////
 	xr_vector<CPHElement*>	m_attached_elements;
@@ -38,6 +40,9 @@ class CPHElement	:  public CPhysicsElement
 	/////disable///////////////////////
 	//dVector3 mean_w;
 	//dVector3 mean_v;
+	dReal m_w_limit ;
+	dReal m_l_limit ;
+
 	dVector3					m_safe_position;
 	dVector3					m_safe_velocity;
 	dVector3					previous_p;
@@ -100,7 +105,8 @@ public:
 	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);
 
 	virtual void			set_ContactCallback				(ContactCallbackFun* callback);
-
+	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);
+	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);
 	virtual void			set_ObjectContactCallback		(ObjectContactCallbackFun* callback);
 	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);
@@ -164,6 +170,11 @@ public:
 	CPHElement(dSpaceID a_space)
 	{ 
 		///	if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
+		m_w_limit = default_w_limit;
+		m_l_limit = default_l_limit;
+		m_l_scale=default_l_scale;
+		m_w_scale=default_w_scale;
+
 		push_untill=0;
 		contact_callback=ContactShotMark;
 		object_contact_callback=NULL;

@@ -18,7 +18,7 @@ static BONE_P_MAP bone_map; //interface for PhysicsShell
 
 xr_list<CPHObject*>::iterator m_ident;
 virtual void PhDataUpdate(dReal step){};
-virtual void PhTune(dReal step){};
+virtual void PhTune(dReal step){if(m_repairing)Revert();};
 virtual void InitContact(dContact* c){};
 virtual void StepFrameUpdate(dReal step){};
 public:

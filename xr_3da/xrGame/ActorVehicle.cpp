@@ -71,7 +71,7 @@ CCar* CActor::pick_VehicleObject()
 	CCar* ret=dynamic_cast<CCar*>(l_rq.O);
 
 	if(!ret)	return NULL;
-	if(!ret->is_Door(l_rq.element)) return NULL;
+	//if(!ret->is_Door(l_rq.element)) return NULL;
 
 	return ret;
 }

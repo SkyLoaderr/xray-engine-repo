@@ -19,10 +19,10 @@
 
 const dReal fixed_step=0.02f;
 const u16 dis_frames=11;
-
-const dReal w_limit = M_PI/16.f/fixed_step;
-const dReal l_limit = 3.f/fixed_step;
-
+const dReal default_w_limit = M_PI/16.f/fixed_step;
+const dReal default_l_limit = 3.f/fixed_step;
+const dReal default_l_scale=1.01f;
+const dReal default_w_scale=1.01f;
 
 // #include "contacts.h"
 
@@ -624,11 +624,11 @@ dBodyAddForce(body,
 }
 */
 //limit for angular accel
-const dReal wa_limit=w_limit/fixed_step;
 
-void BodyCutForce(dBodyID body)
+
+void BodyCutForce(dBodyID body,float l_limit,float w_limit)
 {
-
+	const dReal wa_limit=w_limit/fixed_step;
 	const dReal* force=	dBodyGetForce(body);
 	dReal force_mag=dSqrt(dDOT(force,force));
 

@@ -104,6 +104,8 @@ public:
 		}
 		//(*i)->SetForceAndVelocity(force);
 	}
+	virtual void				set_DynamicLimits		  (float l_limit=default_l_limit,float w_limit=default_w_limit);
+	virtual void				set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale);
 	virtual void				set_ContactCallback		  (ContactCallbackFun* callback)				;
 	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
 	virtual void				set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);

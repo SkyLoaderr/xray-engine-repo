@@ -731,12 +731,13 @@ void CPHElement::PhDataUpdate(dReal step){
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	const dReal scale=1.01f;
-	const dReal scalew=1.01f;
+
+	const dReal m_l_scale=1.01f;
+	const dReal m_w_scale=1.01f;
 	const dReal* vel1= dBodyGetLinearVel(m_body);
-	dBodySetLinearVel(m_body,vel1[0]/scale,vel1[1]/scale,vel1[2]/scale);
+	dBodySetLinearVel(m_body,vel1[0]/m_l_scale,vel1[1]/m_l_scale,vel1[2]/m_l_scale);
 	const dReal* wvel1 = dBodyGetAngularVel(m_body);
-	dBodySetAngularVel(m_body,wvel1[0]/scalew,wvel1[1]/scalew,wvel1[2]/scalew);
+	dBodySetAngularVel(m_body,wvel1[0]/m_w_scale,wvel1[1]/m_w_scale,wvel1[2]/m_w_scale);
 
 
 
@@ -753,8 +754,8 @@ void CPHElement::PhDataUpdate(dReal step){
 		dBodySetLinearVel(m_body,0.f,0.f,0.f);
 		mag=0.f;
 	}
-	else if(mag>l_limit){
-		dReal f=mag/l_limit;
+	else if(mag>m_l_limit){
+		dReal f=mag/m_l_limit;
 		dBodySetLinearVel(m_body,pos[0]/f,pos[1]/f,pos[2]/f);
 	}
 
@@ -774,8 +775,8 @@ void CPHElement::PhDataUpdate(dReal step){
 	dReal w_mag=_sqrt(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
 	if(!dV_valid(rot)) 
 		dBodySetAngularVel(m_body,0.f,0.f,0.f);
-	else if(w_mag>w_limit){
-		dReal f=w_mag/w_limit;
+	else if(w_mag>m_w_limit){
+		dReal f=w_mag/m_w_limit;
 		dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 	}
 
@@ -1020,7 +1021,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 
 	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,body_pos.x, body_pos.y, body_pos.z);
 
-	BodyCutForce(m_body);
+	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
@@ -1527,3 +1528,14 @@ if(m_cylinders_data.size()!=0)return m_cylinders_data.back().m_radius;
 return 0.f;
 }
 
+void CPHElement::set_DynamicLimits(float l_limit,float w_limit)
+{
+m_l_limit=l_limit;
+m_w_limit=w_limit;
+}
+
+void CPHElement::set_DynamicScales(float l_scale/* =default_l_scale */,float w_scale/* =default_w_scale */)
+{
+m_l_scale=l_scale;
+m_w_scale=w_scale;
+}

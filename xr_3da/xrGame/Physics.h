@@ -9,13 +9,15 @@
 #include "_cylinder.h"
 //#define ODE_SLOW_SOLVER
 ///////////////////////////////////////////////////////////////////////////////
-extern const dReal l_limit;
-extern const dReal w_limit;
+extern const dReal default_l_limit;
+extern const dReal default_w_limit;
+extern const dReal default_l_scale;
+extern const dReal default_w_scale;
 extern const dReal fixed_step;
 extern const u16	 dis_frames;
 
 
-void BodyCutForce(dBodyID body);
+void BodyCutForce(dBodyID body,float l_limit,float w_limit);
 void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);
 
 #define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))

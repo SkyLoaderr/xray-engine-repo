@@ -237,8 +237,11 @@ void CPHShell::Enable()
 {
 	if(!bActive)
 		return;
-	xr_vector<CPHElement*>::iterator i;
-	for(i=elements.begin();i!=elements.end();i++)
+
+	xr_vector<CPHElement*>::iterator i,e;
+	i=elements.begin(); e=elements.end();
+	if(dBodyIsEnabled((*i)->get_body())) return;
+	for( ;i!=e;i++)
 		(*i)->Enable();
 }
 
@@ -603,4 +606,20 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
 		AddElementRecursive		(E,(*it)->SelfID,bone_data);
 
+}
+
+void CPHShell::set_DynamicLimits(float l_limit,float w_limit)
+{
+	xr_vector<CPHElement*>::iterator i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;i++)
+		(*i)->set_DynamicLimits(l_limit,w_limit);
+}
+
+void CPHShell::set_DynamicScales(float l_scale/* =default_l_scale */,float w_scale/* =default_w_scale */)
+{
+	xr_vector<CPHElement*>::iterator i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;i++)
+		(*i)->set_DynamicScales(l_scale,w_scale);
 }

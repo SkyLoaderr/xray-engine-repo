@@ -22,6 +22,10 @@ IC float Erp(float k_p,float k_d)		{return ((fixed_step*(k_p)) / (((fixed_step)*
 IC float Cfm(float k_p,float k_d)		{return (1.f / (((fixed_step)*(k_p)) + (k_d)));}
 IC float Spring(float cfm,float erp)	{return ((erp)/(cfm)/fixed_step);}
 IC float Damping(float cfm,float erp)	{return ((1.f-(erp))/(cfm));}
+extern const dReal default_l_limit;
+extern const dReal default_w_limit;
+extern const dReal default_l_scale;
+extern const dReal default_w_scale;
 
 class CPhysicsJoint;
 class CPhysicsElement;
@@ -57,6 +61,8 @@ public:
 	virtual void			applyForce				(float x,float y,float z)								= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)				= 0;
+	virtual void			set_DynamicLimits		(float l_limit=default_l_limit,float w_limit=default_w_limit)					= 0;
+	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)					= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
 	virtual void			set_PhysicsRefObject	(CPhysicsRefObject* ref_object)							= 0;
