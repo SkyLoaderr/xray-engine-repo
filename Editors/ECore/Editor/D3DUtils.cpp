@@ -700,6 +700,7 @@ void CDrawUtilities::DrawCone	(const Fmatrix& parent, const Fvector& apex, const
 
 void CDrawUtilities::DrawPlane	(const Fvector& p, const Fvector& n, const Fvector2& scale, u32 clr_s, u32 clr_w, bool bCull, BOOL bSolid, BOOL bWire)
 {
+	if (n.square_magnitude()<EPS_S) return;
     // build final rotation / translation
     Fvector             L_dir,L_up=n,L_right;
     L_dir.set           (0,0,1);				if (_abs(L_up.dotproduct(L_dir))>.99f)  L_dir.set(1,0,0);

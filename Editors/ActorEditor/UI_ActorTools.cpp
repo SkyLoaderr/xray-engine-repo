@@ -283,7 +283,6 @@ void CActorTools::ZoomObject(bool bSelOnly)
 
 void CActorTools::OnDeviceCreate()
 {
-	VERIFY(m_bReady);
     // add directional light
     Flight L;
     ZeroMemory(&L,sizeof(Flight));

@@ -332,8 +332,8 @@ public:
 
 extern xr_token2	actions_token[];
 
-typedef _CreateEAction EParticleAction* 	pCreateEAction(PAPI::PActionEnum type);
-EParticleAction* 	pCreateEAction(PAPI::PActionEnum type);
+typedef EParticleAction* (*_CreateEAction)(PAPI::PActionEnum type);
+extern ECORE_API _CreateEAction 	pCreateEAction;
 //---------------------------------------------------------------------------
 #endif
 

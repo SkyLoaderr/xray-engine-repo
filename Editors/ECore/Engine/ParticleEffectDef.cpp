@@ -230,8 +230,7 @@ BOOL CPEDef::Load(IReader& F)
 		F.r			(&m_CreateTime,sizeof(m_CreateTime));
 		F.r			(&m_ModifTime,sizeof(m_ModifTime));
 	}
-#ifdef _PARTICLE_EDITOR
-    if (F.find_chunk(PED_CHUNK_EDATA)){
+    if (pCreateEAction&&F.find_chunk(PED_CHUNK_EDATA)){
         m_EActionList.resize(F.r_u32());
         for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++){
             PAPI::PDomainEnum type = (PAPI::PDomainEnum)F.r_u32();
@@ -239,7 +238,6 @@ BOOL CPEDef::Load(IReader& F)
             (*it)->Load		(F);
         }
     } 
-#endif
 #endif
 
 	return TRUE;

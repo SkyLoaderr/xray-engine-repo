@@ -73,8 +73,8 @@
       Intermediate\UI_ToolsCustom.obj Intermediate\ImageManagerDO.obj 
       Intermediate\ParticleEffectDef.obj Intermediate\LevelGameDef.obj 
       Intermediate\ai_sounds.obj Intermediate\GeometryCollector.obj 
-      Intermediate\CustomObjectLE.obj Intermediate\SceneCustom.obj 
-      Intermediate\ResourceManager_Reset.obj"/>
+      Intermediate\SceneCustom.obj Intermediate\ResourceManager_Reset.obj 
+      Intermediate\ParticleEffectActions.obj Intermediate\CustomObjectLE.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -84,7 +84,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
-    <PATHCPP value=".;Engine;Engine\Blenders;Engine\Visuals;Editor;..\LevelEditor\Edit"/>
+    <PATHCPP value=".;Engine;Engine\Blenders;Engine\Visuals;Editor"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -267,10 +267,11 @@
       <FILE FILENAME="Editor\LevelGameDef.cpp" FORMNAME="" UNITNAME="LevelGameDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ai_sounds.cpp" FORMNAME="" UNITNAME="ai_sounds" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\GeometryCollector.cpp" FORMNAME="" UNITNAME="GeometryCollector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="..\LevelEditor\Edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneCustom.h" FORMNAME="" UNITNAME="SceneCustom.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SceneCustom.cpp" FORMNAME="" UNITNAME="SceneCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ResourceManager_Reset.cpp" FORMNAME="" UNITNAME="ResourceManager_Reset" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleEffectActions.cpp" FORMNAME="" UNITNAME="ParticleEffectActions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
