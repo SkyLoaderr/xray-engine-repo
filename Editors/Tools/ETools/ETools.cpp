@@ -131,7 +131,11 @@ namespace ETOOLS{
 	{
 		XRC.ray_options(flags);
 	}
-	ETOOLS_API void	ray_query	(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
+	ETOOLS_API void	ray_query	(const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
+	{
+		XRC.ray_query(m_def,r_start,r_dir,r_range);
+	}
+	ETOOLS_API void	ray_query_m	(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
 	{
 		XRC.ray_query(inv_parent,m_def,r_start,r_dir,r_range);
 	}

@@ -28,6 +28,7 @@
 				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;ETOOLS_EXPORTS"
 				StringPooling="TRUE"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"

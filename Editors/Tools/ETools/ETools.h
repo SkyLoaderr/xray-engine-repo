@@ -23,7 +23,8 @@ extern "C" {
 		ETOOLS_API CDB::RESULT*	r_end	(); 
 		ETOOLS_API int	r_count			();
 		ETOOLS_API void ray_options		(u32 flags);
-		ETOOLS_API void	ray_query		(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range);
+		ETOOLS_API void	ray_query		(const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range);
+		ETOOLS_API void	ray_query_m		(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range);
 	};
 };
 
