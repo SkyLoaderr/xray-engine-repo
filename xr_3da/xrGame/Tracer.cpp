@@ -7,7 +7,7 @@
 #include "..\fstaticrender.h"
 
 const DWORD	MAX_TRACERS	= 1024;
-const float TRACER_SIZE = 0.05f;
+const float TRACER_SIZE = 0.1f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -53,6 +53,7 @@ void	CTracer::Render	()
 	float	dt			=	Device.fTimeDelta;
 
 	Fvector&	vTop	=	Device.vCameraTop;
+	Fvector&	vDir	=	Device.vCameraDirection;
 	Fvector&	vCenter =	Device.vCameraPosition;
 	for (int I=0; I<(int)bullets.size(); I++)
 	{
@@ -70,20 +71,22 @@ void	CTracer::Render	()
 		B.pos_trail.mad	(B.dir,dt*B.speed_trail);
 
 		// Culling
-		Fvector sC;	float sR;
+		Fvector sC,lineD;	float sR; 
 		sC.sub	(B.pos_head,B.pos_trail);
+		lineD.normalize(sC);
 		sC.mul	(.5f);
 		sR		= sC.magnitude();
 		sC.add	(B.pos_trail);
 		if (!::Render.ViewBase.testSphereDirty(sC,sR))	continue;
 
 		// Everything OK - build vertices
-		Fvector	P;
+		Fvector	P,lineTop;
+		lineTop.crossproduct(vDir,lineD);
 		DWORD	C	= B.color.get	();
-		P.mad(B.pos_trail,vTop,-TRACER_SIZE);	verts->set(P,C,0,1);	verts++;
-		P.mad(B.pos_trail,vTop,TRACER_SIZE);	verts->set(P,C,0,0);	verts++;
-		P.mad(B.pos_head, vTop,-TRACER_SIZE);	verts->set(P,C,1,1);	verts++;
-		P.mad(B.pos_head, vTop,TRACER_SIZE);	verts->set(P,C,1,0);	verts++;
+		P.mad(B.pos_trail,lineTop,-TRACER_SIZE);	verts->set(P,C,0,1);	verts++;
+		P.mad(B.pos_trail,lineTop,TRACER_SIZE);		verts->set(P,C,0,0);	verts++;
+		P.mad(B.pos_head, lineTop,-TRACER_SIZE);	verts->set(P,C,1,1);	verts++;
+		P.mad(B.pos_head, lineTop,TRACER_SIZE);		verts->set(P,C,1,0);	verts++;
 	}
 
 	DWORD vCount = verts-start;
