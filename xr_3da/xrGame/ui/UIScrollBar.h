@@ -54,9 +54,11 @@ protected:
 	// internal use
 	int				m_ScrollWorkArea;
 protected:
+	int				ScrollSize			(){return _max(0,m_iMaxPos-m_iMinPos-m_iPageSize);}
 	void			ClampByViewRect		();
 	void			SetPosScrollFromView(int view_pos, int view_width, int view_offs);
 	int				PosViewFromScroll	(int view_size, int view_offs);
+	void			SetScrollPosClamped	(int iPos) { m_iScrollPos = iPos; clamp(m_iScrollPos,m_iMinPos,m_iMaxPos-m_iPageSize); }
 public:
 					CUIScrollBar	(void);
 	virtual			~CUIScrollBar	(void);
@@ -67,8 +69,8 @@ public:
 	//сообщени€, отправл€емые родительскому окну
 //	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
 
 	virtual void	Draw			();
 
@@ -79,22 +81,21 @@ public:
 	// ¬ листбоксе скроллбар глючит если мы удал€ем элементы снизу листа, а скроллбар
 	// в это врем€ был в позиции не 0. Ёта функци€ - фикс
 	void			Refresh			();
-
-	//скролинг
+	// скролинг
+	// величина шага при нажатии кнопок или колеса мыши
 	void			SetStepSize		(int step);
+	// диапазон значений 
 	void 			SetRange		(int iMin, int iMax);
 	void 			GetRange		(int& iMin, int& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
-	int 			GetRangeSize	() {return (m_iMaxPos-m_iMinPos);}
 	int 			GetMaxRange		() {return m_iMaxPos;}
 	int 			GetMinRange		() {return m_iMinPos;}
-
-	void			SetPageSize		(int iPage) { m_iPageSize = iPage; UpdateScrollBar();}
+	// размер страницы (вли€ет на диапазон каретки от (m_iMinPos .. m_iMaxPos-m_iPageSize) )
+	void			SetPageSize		(int iPage) { m_iPageSize = _max(0,iPage); UpdateScrollBar();}
 	int				GetPageSize		() {return m_iPageSize;}
-
-	void			SetScrollPos	(int iPos) { m_iScrollPos = iPos; UpdateScrollBar();}
+	// положение каретки
+	void			SetScrollPos	(int iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
 	int				GetScrollPos	() {return m_iScrollPos;}
-
-	//базовые размеры дл€ кнопок
+	// базовые размеры дл€ кнопок
 	enum {SCROLLBAR_WIDTH = 16, SCROLLBAR_HEIGHT = 16};
 	void			TryScrollInc	();
 	void			TryScrollDec	();

@@ -323,7 +323,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 		//инициализировать скроллинг
 		m_ScrollBar.SetRange(0, GetRows()-1);
-//.		m_ScrollBar.SetPageSize(m_iViewRowsNum);
+		m_ScrollBar.SetPageSize(m_iViewRowsNum);
 		m_ScrollBar.SetScrollPos(0);
 	}
 
@@ -714,8 +714,8 @@ void CUIDragDropList::ScrollBarRecalculate(bool needScrollToTop)
 
 		int min, max;
 		m_ScrollBar.GetRange(min, max);
-		m_ScrollBar.SetRange(0, bottom-m_iViewRowsNum);
-//.		m_ScrollBar.SetPageSize(1);//m_iViewRowsNum);
+		m_ScrollBar.SetRange(0, bottom);
+		m_ScrollBar.SetPageSize(m_iViewRowsNum);
 //.		
 		if (max > bottom) 
 		{

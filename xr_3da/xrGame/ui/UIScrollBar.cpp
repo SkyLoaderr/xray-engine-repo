@@ -16,7 +16,7 @@ CUIScrollBar::CUIScrollBar(void)
 {
 	m_iMinPos		= 1;
 	m_iMaxPos		= 1;
-	m_iPageSize		= 1;
+	m_iPageSize		= 0;
 	m_iStepSize		= 1;
 	m_iScrollPos	= 0;
 }
@@ -59,6 +59,7 @@ void CUIScrollBar::SetWidth(int width)
 	if(width<=0) width = 1;
 	inherited::SetWidth(width);
 }
+
 void CUIScrollBar::SetHeight(int height)
 {
 	if(height<=0) height = 1;
@@ -68,34 +69,38 @@ void CUIScrollBar::SetHeight(int height)
 void CUIScrollBar::SetStepSize(int step)
 {
 	m_iStepSize				= step;
-	if (m_bIsHorizontal){
-		clamp				(m_iStepSize,_min(int(SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
-		m_ScrollBox.SetWidth(m_iStepSize);
-	}else{
-		clamp				(m_iStepSize,_min(int(SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
-		m_ScrollBox.SetHeight(m_iStepSize);
-	}
-	UpdateScrollBar();
+	UpdateScrollBar			();
 }
 
 void CUIScrollBar::SetRange(int iMin, int iMax) 
 {
-	m_iMinPos = iMin;  
-	m_iMaxPos = iMax;
-	R_ASSERT(iMax>=iMin);
-	UpdateScrollBar();
+	m_iMinPos				= iMin;  
+	m_iMaxPos				= iMax;
+	R_ASSERT				(iMax>=iMin);
+	UpdateScrollBar			();
 }
 
 void CUIScrollBar::UpdateScrollBar()
 {	
-	Show						(!!(0!=(m_iMaxPos-m_iMinPos)));
-	//уcтановить размер и положение каретки
-	if(m_bIsHorizontal){	
-		int pos					= PosViewFromScroll(m_ScrollBox.GetWidth(),SCROLLBAR_WIDTH);
-		m_ScrollBox.SetWndPos	(pos, m_ScrollBox.GetWndRect().top);
-	}else{
-		int pos					= PosViewFromScroll(m_ScrollBox.GetHeight(),SCROLLBAR_HEIGHT);
-		m_ScrollBox.SetWndPos	(m_ScrollBox.GetWndRect().left, pos);
+	Show						(!!(0!=ScrollSize()));
+	if (IsShown){
+		//уcтановить размер и положение каретки
+		int box_sz				= iFloor(float(m_ScrollWorkArea)*float(m_iPageSize)/float(m_iMaxPos-m_iMinPos));
+		if(m_bIsHorizontal){	
+			// set width
+			clamp					(box_sz,_min(int(SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
+			m_ScrollBox.SetWidth	(box_sz);
+			// set pos
+			int pos					= PosViewFromScroll(m_ScrollBox.GetWidth(),SCROLLBAR_WIDTH);
+			m_ScrollBox.SetWndPos	(pos, m_ScrollBox.GetWndRect().top);
+		}else{
+			// set height
+			clamp					(box_sz,_min(int(SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
+			m_ScrollBox.SetHeight	(box_sz);
+			// set pos
+			int pos					= PosViewFromScroll(m_ScrollBox.GetHeight(),SCROLLBAR_HEIGHT);
+			m_ScrollBox.SetWndPos	(m_ScrollBox.GetWndRect().left, pos);
+		}
 	}
 }
 
@@ -136,17 +141,16 @@ void CUIScrollBar::ClampByViewRect()
 
 void CUIScrollBar::SetPosScrollFromView(int view_pos, int view_size, int view_offs)
 {
-	int scroll_size	= m_iMaxPos-m_iMinPos;
+	int scroll_size	= ScrollSize();
 	int pos			= view_pos-view_offs;
 	int work_size	= m_ScrollWorkArea-view_size;
-	m_iScrollPos	= work_size?iFloor(((float(pos)/float(work_size))*(scroll_size) + m_iMinPos)):0;
-	clamp			(m_iScrollPos,m_iMinPos,m_iMaxPos);
+	SetScrollPosClamped	(work_size?iFloor(((float(pos)/float(work_size))*(scroll_size) + m_iMinPos)):0);
 }
 
 int CUIScrollBar::PosViewFromScroll(int view_size, int view_offs)
 {
 	int work_size	= m_ScrollWorkArea-view_size;
-	int scroll_size	= m_iMaxPos-m_iMinPos;
+	int scroll_size	= ScrollSize();
 	return			scroll_size?(m_iScrollPos*work_size+scroll_size*view_offs-m_iMinPos*work_size)/scroll_size:0;
 }
 
@@ -176,11 +180,8 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				if (GetMessageTarget())
 					GetMessageTarget()->SendMessage(this, SCROLLBAR_VSCROLL);
 			}
-//			UpdateScrollBar		();
 		}else if(msg == SCROLLBOX_STOP){
 			//вычислить новое положение прокрутки
-//			UpdateScrollBar();
-
 			if(m_bIsHorizontal && GetMessageTarget())
 				GetMessageTarget()->SendMessage(this, SCROLLBAR_HSCROLL);
 			else
@@ -213,9 +214,7 @@ void CUIScrollBar::TryScrollDec()
 bool CUIScrollBar::ScrollDec()
 {
 	if(m_iScrollPos>m_iMinPos){
-		m_iScrollPos	= m_iScrollPos-m_iStepSize;
-		clamp			(m_iScrollPos,m_iMinPos,m_iMaxPos);
-		UpdateScrollBar	();
+		SetScrollPos	(m_iScrollPos-m_iStepSize);
 		return true;
 	}
 
@@ -225,10 +224,8 @@ bool CUIScrollBar::ScrollDec()
 
 bool CUIScrollBar::ScrollInc()
 {
-	if(m_iScrollPos<=m_iMaxPos){
-		m_iScrollPos	= m_iScrollPos+m_iStepSize;
-		clamp			(m_iScrollPos,m_iMinPos,m_iMaxPos);
-		UpdateScrollBar	();
+	if(m_iScrollPos<=(m_iMaxPos-m_iPageSize)){
+		SetScrollPos	(m_iScrollPos+m_iStepSize);
 		return true;
 	}
 
@@ -238,7 +235,6 @@ bool CUIScrollBar::ScrollInc()
 void CUIScrollBar::Reset()
 {
 	ResetAll();
-
 	inherited::Reset();
 }
 

@@ -278,12 +278,16 @@ void CUIMapWnd::Init()
 
 	m_UIMainScrollV.Init			(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
 	m_UIMainScrollV.SetWindowName	("scroll_v");
+	m_UIMainScrollV.SetStepSize		(_max(1,m_UILevelFrame.GetHeight()/10));
+	m_UIMainScrollV.SetPageSize		(m_UILevelFrame.GetHeight());
 	m_UIMainFrame.AttachChild		(&m_UIMainScrollV);
 	Register						(&m_UIMainScrollV);
 	AddCallback						("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIMapWnd::OnScrollV,this));
 
 	m_UIMainScrollH.Init			(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
 	m_UIMainScrollH.SetWindowName	("scroll_h");
+	m_UIMainScrollH.SetStepSize		(_max(1,m_UILevelFrame.GetWidth()/10));
+	m_UIMainScrollH.SetPageSize		(m_UILevelFrame.GetWidth());
 	m_UIMainFrame.AttachChild		(&m_UIMainScrollH);
 	Register						(&m_UIMainScrollH);
 	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,boost::bind(&CUIMapWnd::OnScrollH,this));
@@ -356,15 +360,10 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 
 	m_UILevelFrame.BringToTop	(m_GlobalMap);
 
-	// set scroll range
-	m_UIMainScrollV.SetRange	(0,_max(m_activeLevelMap->GetHeight()-m_UILevelFrame.GetHeight(),0));
-	m_UIMainScrollH.SetRange	(0,_max(m_activeLevelMap->GetWidth()-m_UILevelFrame.GetWidth(),0));
-	m_UIMainScrollV.SetScrollPos(0);
-	m_UIMainScrollH.SetScrollPos(0);
-	m_UIMainScrollV.SetStepSize	(_max(1,m_UILevelFrame.GetHeight()/20));
-	m_UIMainScrollH.SetStepSize	(_max(1,m_UILevelFrame.GetWidth()/20));
-//	m_UIMainScrollV.SetPageSize	(m_UILevelFrame.GetHeight());
-//	m_UIMainScrollH.SetPageSize	(m_UILevelFrame.GetWidth());
+	// set scroll range 
+	m_UIMainScrollV.SetRange	(0,m_activeLevelMap->GetHeight());
+	m_UIMainScrollH.SetRange	(0,m_activeLevelMap->GetWidth());
+	UpdateScroll				();
 }
 
 void CUIMapWnd::Draw()
