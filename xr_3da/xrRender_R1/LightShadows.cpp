@@ -223,8 +223,8 @@ void CLightShadows::calculate	()
 				VERIFY		(_valid(C.C));
 				float		_dist	;
 				while		(true)	{
-					dist	=	C.C.distance_to	(Lpos);
-					if (dist>EPS_L)		break;
+					_dist	=	C.C.distance_to	(Lpos);
+					if (_dist>EPS_L)	break;
 					Lpos.y				+=	.01f;	//. hack to avoid light-in-the-center-of-object
 				}
 				float		_R		=	C.O->renderable.visual->vis.sphere.R+0.1f;
