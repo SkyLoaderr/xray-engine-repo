@@ -20,7 +20,7 @@ void CActor::create_Skeleton(){
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-
+	m_pPhysicsShell->set_JointResistance(0.f);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	//CInifile* ini = PKinematics(Visual())->LL_UserData();
 	//R_ASSERT2(ini,"NO INI FILE IN MODEL");
