@@ -152,7 +152,8 @@ function main ()
 		   local pass = 0
 		   while nz == 0 and pass < 20 do
 		         nz = math.random (1, max)
-		         if flags[nz] == true then nz = 0 end
+		         if flags[nz] == true then nz = 0
+		         else break end
 		         pass = pass + 1
 		   end      
 		   printf ("Number : %d", nz)
