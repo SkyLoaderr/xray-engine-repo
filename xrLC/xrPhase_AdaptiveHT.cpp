@@ -102,7 +102,7 @@ void GSaveAsSMF					(LPCSTR fname)
 
 	// colors
 	for (u32 v_idx=0; v_idx<g_vertices.size(); v_idx++){
-		base_color_c c; g_vertices[v_idx]->C.get(c);
+		base_color_c c; g_vertices[v_idx]->C._get(c);
 		sprintf			(tmp,"v %f %f %f",c.hemi,c.hemi,c.hemi);
 		W->w_string		(tmp);
 	}
