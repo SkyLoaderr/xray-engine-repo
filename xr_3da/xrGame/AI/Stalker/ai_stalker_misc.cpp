@@ -25,7 +25,7 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tStateType	= tStateType;
-	bool			bLookChanged = (m_tLookType == tLookType);
+	bool			bLookChanged = (m_tLookType != tLookType);
 	m_tLookType		= tLookType;
 
 	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
