@@ -1,6 +1,7 @@
 function main()
 	local	script_table = {
 		{"script_object0000","idle"},
+		{"script_object0001","idle"},
 	}
 	
 	local	object_table = {}
