@@ -10,7 +10,7 @@
 
 #include "..\\xrLevel.h"
 #include "ai_alife_space.h"
-nhugygy
+
 #define GRAPH_NAME							"game.graph"
 
 class CALifeGraph {
