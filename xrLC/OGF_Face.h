@@ -148,8 +148,8 @@ struct OGF_Reference : public OGF_Base
 	u32					ib_start;
 
 	Fmatrix				xform;
-	base_color			c_scale;
-	base_color			c_bias;
+	base_color_c		c_scale;
+	base_color_c		c_bias;
 
 	OGF_Reference() : OGF_Base(0) 
 					{

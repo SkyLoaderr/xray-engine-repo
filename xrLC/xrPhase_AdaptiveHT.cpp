@@ -70,8 +70,10 @@ void CBuild::xrPhase_AdaptiveHT	()
 			{
 				Vertex					*V1,*V2;
 				F->EdgeVerts			(e,&V1,&V2);
-				float len				= V1->P.distance_to	(V2->P);		// len
-				float err				= _abs(V1->C.hemi - V2->C.hemi);	// error in hemi-space
+				float len				= V1->P.distance_to	(V2->P);	// len
+				base_color_c			v1c; V1->C._get(v1c);
+				base_color_c			v2c; V2->C._get(v2c);
+				float err				= _abs(v1c.hemi - v2c.hemi);	// error in hemi-space
 				if (len<aht_min_edge)	continue;
 				if (err<aht_min_err)	continue;
 				if (err>max_err)
