@@ -79,6 +79,7 @@ end
 function give_hunters_toz(first_speaker, second_speaker)
 	local hunters_toz = first_speaker:object("hunters_toz")
 	first_speaker:transfer_item(hunters_toz, second_speaker)
+	level_tasks.set_task_state(task.completed, "bar_hunter_rifle", 0)
 end
 
 --PDA ночного снайпера

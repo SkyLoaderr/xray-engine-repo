@@ -151,19 +151,12 @@ function proceed(actor)
 	end
 
 	if	actor:has_info("bar_bar_hunter_quest_start") and 
- 		actor:dont_has_info("bar_bar_hunter_quest_rifle") and
+ 		actor:dont_has_info("bar_bar_hunter_quest_find_rifle") and
 		actor:object("hunters_toz") ~= nil 
 	then		
 		actor:give_info_portion("bar_bar_hunter_quest_find_rifle")
 		set_task_state(task.completed, "bar_hunter_rifle", 1)
 	end 
-
-        if	actor:has_info("bar_bar_hunter_quest_finish") 
-	then		
-		set_task_state(task.completed, "bar_hunter_rifle", 2)
-		set_task_state(task.completed, "bar_hunter_rifle", 0)
-	end
-
 
 	
 	
