@@ -214,6 +214,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	marks.push_back			(W);
 }
 
+extern float ssaLIMIT;
 void CWallmarksEngine::Render()
 {
 	if (marks.empty())			return;
