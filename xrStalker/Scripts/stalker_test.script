@@ -29,7 +29,7 @@ function main ()
 		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 --		look		(look.fire_point, get_level_object("localhost/dima")),
 		look		(look.path_dir),
-		anim		(anim.danger),
+		anim		(anim.free),
 		cond		(cond.move_end)
 	)
 	
