@@ -1194,13 +1194,6 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 	}
 }
 
-
-
-IRender_Sector*	CWeapon::Sector()
-{
-	return inherited::Sector();
-}
-
 void	CWeapon::SetAmmoElapsed	(int ammo_count)
 {
 	iAmmoElapsed = ammo_count;

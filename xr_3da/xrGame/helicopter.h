@@ -238,7 +238,6 @@ public:
 
 protected:
 	//CShootingObject
-	virtual IRender_Sector*	Sector					();
 	virtual const Fvector&	get_CurrentFirePoint	();
 	virtual const Fmatrix&	get_ParticlesXFORM		();
 

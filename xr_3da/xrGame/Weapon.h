@@ -57,9 +57,6 @@ public:
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
 
-
-	virtual IRender_Sector*	Sector				();	//.
-
 	virtual void			renderable_Render	();
 
 	virtual void			OnH_B_Chield		();

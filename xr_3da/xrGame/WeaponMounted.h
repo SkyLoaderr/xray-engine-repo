@@ -35,7 +35,6 @@ public:
 	virtual					~CWeaponMounted		();
 
 	// for shooting object
-	virtual IRender_Sector*	Sector()				{return CGameObject::Sector();}
 	virtual const Fvector&	get_CurrentFirePoint()	{return fire_pos;}
 	virtual const Fmatrix&	get_ParticlesXFORM()	;
 

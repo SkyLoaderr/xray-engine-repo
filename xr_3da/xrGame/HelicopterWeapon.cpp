@@ -28,11 +28,6 @@ const Fmatrix& CHelicopter::get_ParticlesXFORM()
 	return m_fire_bone_xform;
 }
 
-IRender_Sector* CHelicopter::Sector()
-{
-	return 0;
-}
-
 const Fvector&	CHelicopter::get_CurrentFirePoint()
 {
 	return m_fire_pos;

@@ -119,7 +119,6 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 protected:
 	//функции родительского объекта
-	virtual IRender_Sector*	Sector()					= 0;
 	virtual const Fvector&	get_CurrentFirePoint()		= 0;
 	virtual const Fmatrix&	get_ParticlesXFORM()		= 0;
 
