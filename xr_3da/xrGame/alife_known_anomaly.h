@@ -11,7 +11,7 @@
 #include "object_interfaces.h"
 #include "alife_space.h"
 
-class CALifeKnownAnomaly : public IPureSerializeObject {
+class CALifeKnownAnomaly : public IPureSerializeObject<IReader,IWriter> {
 protected:
 	ALife::EAnomalousZoneType			m_type;
 	float								m_power;

@@ -28,7 +28,7 @@ public:
 	IC				CALifeStorageManager	(xrServer *server, LPCSTR section);
 	virtual			~CALifeStorageManager	();
 			bool	load					(LPCSTR	save_name = 0);
-			void	save					(LPCSTR	save_name = 0);
+			void	save					(LPCSTR	save_name = 0, bool update_name = true);
 			void	save					(NET_Packet &net_packet);
 };
 

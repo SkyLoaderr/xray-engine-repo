@@ -207,8 +207,6 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 
 	spawns().load						(save_name);
 
-	strconcat							(m_save_name,save_name,SAVE_EXTENSION);
-
 	server().PerformIDgen				(0x0000);
 
 	time_manager().init					(m_section);

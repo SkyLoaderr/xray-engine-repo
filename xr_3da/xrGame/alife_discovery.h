@@ -13,7 +13,7 @@
 #include "alife_space.h"
 #include "xrserver_space.h"
 
-class CALifeDiscovery : public IPureSerializeObject {
+class CALifeDiscovery : public IPureSerializeObject<IReader,IWriter> {
 public:
 	LPCSTR							m_id;
 	float							m_success_probability;

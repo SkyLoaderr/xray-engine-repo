@@ -33,7 +33,7 @@ struct CSaver {
 		template <bool a>
 		IC	static void save_data(const T &data, M &stream, const P &p)
 		{
-			CHelper1<T>::save_data<object_type_traits::is_base_and_derived<IPureSavableObject,T>::value>(data,stream,p);
+			CHelper1<T>::save_data<object_type_traits::is_base_and_derived<IPureSavableObject<M>,T>::value>(data,stream,p);
 		}
 
 		template <>

@@ -25,7 +25,7 @@ DEFINE_MAP(CHARACTER_COMMUNITY_INDEX,	SRelation, COMMUNITY_RELATION_MAP, COMMUNI
 
 
 //структура, существует для каждого персонажа в игре
-struct RELATION_DATA: IPureSerializeObject
+struct RELATION_DATA : public IPureSerializeObject<IReader,IWriter>
 {
 	virtual void clear();
 

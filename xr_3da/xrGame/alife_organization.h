@@ -12,7 +12,7 @@
 #include "xrserver_space.h"
 #include "alife_space.h"
 
-class CALifeOrganization : public IPureSerializeObject {
+class CALifeOrganization : public IPureSerializeObject<IReader,IWriter> {
 public:
 	LPCSTR							m_name;
 	LPSTR_VECTOR					m_possible_discoveries;

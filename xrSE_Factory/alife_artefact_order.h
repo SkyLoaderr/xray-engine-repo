@@ -10,7 +10,10 @@
 
 #include "object_interfaces.h"
 
-struct SArtefactOrder {// : public IPureSerializeObject {
+struct SArtefactOrder : 
+	public IPureSerializeObject<IReader,IWriter>,
+	public IPureSerializeObject<NET_Packet,NET_Packet>
+{
 	shared_str		m_section;
 	u32				m_count;
 	u32				m_price;

@@ -12,41 +12,45 @@
 #include "alife_space.h"
 #include "object_type_traits.h"
 
-template <typename T1, typename T2, typename Head>
+template <typename T1, typename _T2, typename Head>
 struct CRegistryHelperLoad {
+	typedef typename object_type_traits::remove_reference<_T2>::type T2;
+
 	template <bool loadable>
-	IC	static void do_load(T1 *self, T2 p1)
+	IC	static void do_load(T1 *self, T2 &p1)
 	{
 	}
 
 	template <>
-	IC	static void do_load<true>(T1 *self, T2 p1)
+	IC	static void do_load<true>(T1 *self, T2 &p1)
 	{
 		self->Head::load(p1);
 	}
 
-	IC	static void process(T1 *self, T2 p1)
+	IC	static void process(T1 *self, T2 &p1)
 	{
-		do_load<object_type_traits::is_base_and_derived<IPureLîadableObject,Head>::value>(self,p1);
+		do_load<object_type_traits::is_base_and_derived<IPureLîadableObject<T2>,Head>::value>(self,p1);
 	}
 };
 
-template <typename T1, typename T2, typename Head>
+template <typename T1, typename _T2, typename Head>
 struct CRegistryHelperSave {
+	typedef typename object_type_traits::remove_reference<_T2>::type T2;
+
 	template <bool loadable>
-	IC	static void do_save(T1 *self, T2 p1)
+	IC	static void do_save(T1 *self, T2 &p1)
 	{
 	}
 
 	template <>
-	IC	static void do_save<true>(T1 *self, T2 p1)
+	IC	static void do_save<true>(T1 *self, T2 &p1)
 	{
 		self->Head::save(p1);
 	}
 
-	IC	static void process(T1 *self, T2 p1)
+	IC	static void process(T1 *self, T2 &p1)
 	{
-		do_save<object_type_traits::is_base_and_derived<IPureSavableObject,Head>::value>(self,p1);
+		do_save<object_type_traits::is_base_and_derived<IPureSavableObject<T2>,Head>::value>(self,p1);
 	}
 };
 

@@ -52,17 +52,18 @@ CALifeStorageManager::~CALifeStorageManager	()
 {
 }
 
-void CALifeStorageManager::save	(LPCSTR save_name)
+void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 {
-	if (!save_name) {
+	string256					save;
+	strcpy						(save,m_save_name);
+	if (save_name) {
+		strconcat				(m_save_name,save_name,SAVE_EXTENSION);
+	}
+	else {
 		if (!xr_strlen(m_save_name)) {
 			Log					("There is no file name specified!");
 			return;
 		}
-	}
-	else {
-		VERIFY					(xr_strlen(m_save_name));
-		strconcat				(m_save_name,save_name,SAVE_EXTENSION);
 	}
 
 	CMemoryWriter				stream;
@@ -81,6 +82,8 @@ void CALifeStorageManager::save	(LPCSTR save_name)
 	FS.update_path				(temp,"$game_saves$",m_save_name);
 	stream.save_to				(temp);
 	Msg							("* Game %s is successfully saved to file '%s' (%d bytes)",m_save_name,temp,stream.size());
+	if (!update_name)
+		strcpy					(m_save_name,save);
 }
 
 bool CALifeStorageManager::load	(LPCSTR save_name)
@@ -134,7 +137,7 @@ void CALifeStorageManager::save	(NET_Packet &net_packet)
 
 	shared_str					game_name;
 	net_packet.r_stringZ		(game_name);
-	save						(*game_name);
+	save						(*game_name, false);
 }
 
 void CALifeStorageManager::prepare_objects_for_save	()

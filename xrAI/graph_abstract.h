@@ -18,7 +18,7 @@ template <
 	typename _vertex_id_type,
 	typename _vertex_index_type
 >
-class CGraphAbstract : public IPureSerializeObject {
+class CGraphAbstract : public IPureSerializeObject<IReader,IWriter> {
 public:
 	typedef CGraphEdge<
 		_Data,

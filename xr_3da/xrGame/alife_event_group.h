@@ -10,7 +10,7 @@
 
 #include "object_interfaces.h"
 
-class CALifeEventGroup : public IPureSerializeObject {
+class CALifeEventGroup : public IPureSerializeObject<IReader,IWriter> {
 public:
 	u16				m_wCountBefore;
 	u16				m_wCountAfter;

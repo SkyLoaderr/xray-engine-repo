@@ -26,18 +26,19 @@ private:
 
 protected:
 			void		remove					(REQUESTED_REGISTRY &registry, ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, bool no_warning = false);
+			void		merge_spawn_callbacks	(CSpawnCallback &new_callback, CSpawnCallback &old_callback);
 
 public:
 	IC					CClientSpawnManager		();
 	virtual				~CClientSpawnManager	();
-			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::object &lua_object, LPCSTR method);
-			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function);
-			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &callback);
-			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object);
-			void		remove					(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id);
-			void		clear					(ALife::_OBJECT_ID requested_id);
-			void		callback				(CObject *object);
-			void		callback				(CSpawnCallback &script_callback, CObject *object);
+			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::object &lua_object, LPCSTR method);
+			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function);
+			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &callback);
+			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object);
+			void		remove					(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id);
+			void		clear					(ALife::_OBJECT_ID	requested_id);
+			void		callback				(CObject			*object);
+			void		callback				(CSpawnCallback		&spawn_callback, CObject *object);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CClientSpawnManager)

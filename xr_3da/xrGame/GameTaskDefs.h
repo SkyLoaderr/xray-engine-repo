@@ -25,7 +25,7 @@ enum ETaskState {
 DEFINE_VECTOR		(ETaskState, TASK_STATE_VECTOR, TASK_STATE_IT);
 
 
-struct TASK_DATA : IPureSerializeObject
+struct TASK_DATA : public IPureSerializeObject<IReader,IWriter>
 {
 	TASK_DATA();
 	TASK_DATA(TASK_INDEX idx, ALife::_TIME_ID time);

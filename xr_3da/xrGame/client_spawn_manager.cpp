@@ -40,29 +40,27 @@ void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJEC
 	add								(requesting_id,requested_id,callback);
 }
 
-void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &script_callback)
+void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &spawn_callback)
 {
 	CObject							*object = Level().Objects.net_Find(requesting_id);
 	if (object) {
-		callback					(script_callback,object);
+		callback					(spawn_callback,object);
 		return;
 	}
 
 	REQUEST_REGISTRY::iterator		I = m_registry.find(requesting_id);
 	if (I == m_registry.end()) {
 		REQUESTED_REGISTRY			registry;
-		registry.insert				(std::make_pair(requested_id,script_callback));
+		registry.insert				(std::make_pair(requested_id,spawn_callback));
 		m_registry.insert			(std::make_pair(requesting_id,registry));
 		return;
 	}
 	
 	REQUESTED_REGISTRY::iterator	J = (*I).second.find(requested_id);
-	if (J == (*I).second.end()) {
-		(*I).second.insert			(std::make_pair(requested_id,script_callback));
-		return;
-	}
-	
-	ai().script_engine().script_log	(eLuaMessageTypeError,"Callback on object with id %d by object with id %d has already been setup!",requesting_id,requested_id);
+	if (J == (*I).second.end())
+		(*I).second.insert			(std::make_pair(requested_id,spawn_callback));
+	else
+		merge_spawn_callbacks		(spawn_callback,(*J).second);
 }
 
 void CClientSpawnManager::remove			(REQUESTED_REGISTRY &registry, ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, bool no_warning)
@@ -91,13 +89,13 @@ void CClientSpawnManager::clear				(ALife::_OBJECT_ID requested_id)
 		remove						((*I).second,(*I).first,requested_id,true);
 }
 
-void CClientSpawnManager::callback			(CSpawnCallback &script_callback, CObject *object)
+void CClientSpawnManager::callback			(CSpawnCallback &spawn_callback, CObject *object)
 {
-	if (script_callback.m_object)
-		script_callback.m_object->on_reguested_spawn(object);
+	if (spawn_callback.m_object)
+		spawn_callback.m_object->on_reguested_spawn(object);
 	CGameObject						*game_object = smart_cast<CGameObject*>(object);
 	CScriptGameObject				*script_game_object = !game_object ? 0 : game_object->lua_game_object();
-	SCRIPT_CALLBACK_EXECUTE_2		(script_callback.m_callback,object->ID(),script_game_object);
+	SCRIPT_CALLBACK_EXECUTE_2		(spawn_callback.m_callback,object->ID(),script_game_object);
 }
 
 void CClientSpawnManager::callback			(CObject *object)
@@ -112,4 +110,16 @@ void CClientSpawnManager::callback			(CObject *object)
 		callback					((*i).second,object);
 
 	(*I).second.clear				();
+}
+
+void CClientSpawnManager::merge_spawn_callbacks	(CSpawnCallback &new_callback, CSpawnCallback &old_callback)
+{
+	if (new_callback.m_object)
+		old_callback.m_object = new_callback.m_object;
+
+	if (new_callback.m_callback.get_function())
+		old_callback.m_callback.set(*new_callback.m_callback.get_function());
+
+	if (new_callback.m_callback.get_object())
+		old_callback.m_callback.set(*new_callback.m_callback.get_object(),*new_callback.m_callback.get_method());
 }

@@ -19,7 +19,7 @@
 
 
 
-struct GAME_NEWS_DATA: public IPureSerializeObject
+struct GAME_NEWS_DATA : public IPureSerializeObject<IReader,IWriter>
 {	
 	GAME_NEWS_DATA();
 

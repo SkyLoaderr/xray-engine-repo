@@ -11,31 +11,29 @@
 
 class NET_Packet;
 
-#ifdef XRSE_FACTORY_EXPORTS
-#	define xr_interface __interface
-#else
-#	define xr_interface interface
-#endif
-
-xr_interface IPureDestroyableObject {
+class IPureDestroyableObject {
 public:
 	virtual void					destroy()											= 0;
 };
 
-xr_interface IPureLîadableObject {
+template <typename _storage_type>
+class IPureLîadableObject {
 public:
-	virtual void					load(IReader	&tFileStream)						= 0;
+	virtual void					load(_storage_type	&storage)						= 0;
 };
 
-xr_interface IPureSavableObject {
+template <typename _storage_type>
+class IPureSavableObject {
 public:
-	virtual void					save(IWriter	&tMemoryStream)						= 0;
+	virtual void					save(_storage_type	&storage)						= 0;
 };
 
-xr_interface IPureSerializeObject : public IPureLîadableObject, public IPureSavableObject {
+template <typename _storage_type_load, typename _storage_type_save>
+class IPureSerializeObject : public IPureLîadableObject<_storage_type_load>, public IPureSavableObject<_storage_type_save> {
+public:
 };
 
-xr_interface IPureServerObject : public IPureSerializeObject {
+class IPureServerObject : public IPureSerializeObject<IReader,IWriter> {
 public:
 	virtual void					STATE_Write	(NET_Packet &tNetPacket)				= 0;
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;
@@ -43,10 +41,9 @@ public:
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
 };
 
-xr_interface IPureSchedulableObject {
+class IPureSchedulableObject {
+public:
 	virtual void					update		()										= 0;
 };
-
-#undef xr_interface
 
 #endif
