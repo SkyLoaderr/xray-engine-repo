@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "build.h"
+#include "light.h"
 
 void CBuild::SaveLights(CFS_Base &fs)
 {
