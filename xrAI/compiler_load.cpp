@@ -52,9 +52,9 @@ void xrLoad(LPCSTR name)
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
 		Fvector*	verts	= (Fvector*)fs->Pointer();
-		RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
-		Level.BuildModel	( verts, H.vertcount, tris, H.facecount );
-		Msg("* Level CFORM: %dK",Level.MemoryUsage()/1024);
+		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+		Level.build			( verts, H.vertcount, tris, H.facecount );
+		Msg("* Level CFORM: %dK",Level.memory()/1024);
 		fs->Close			();
 		
 		LevelBB.set			(H.aabb);
@@ -70,9 +70,9 @@ void xrLoad(LPCSTR name)
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
 		Fvector*	verts	= (Fvector*)FS.Pointer();
-		RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
-		LevelLight.BuildModel	( verts, H.vertcount, tris, H.facecount );
-		Msg("* Level CFORM(L-Model): %dK",LevelLight.MemoryUsage()/1024);
+		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
+		Msg("* Level CFORM(L-Model): %dK",LevelLight.memory()/1024);
 	}
 	
 	// Load emitters

@@ -58,7 +58,9 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
     bReadOnly	= ReadOnly;
     bSaveAtEnd	= SaveAtEnd;
 
-    if (bLoad){
+    if (bLoad)
+	{
+#ifdef ENGINE_BUILD
     	R_ASSERT(szFileName&&szFileName[0]);
 	    if (!Engine.FS.Exist(szFileName))
     	{
@@ -66,6 +68,10 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 	        return;
     	}
 		destructor<CStream>	file(Engine.FS.Open(szFileName));
+#else
+		destructor<CStream>	file(new CFileStream(szFileName));
+#endif
+
 
         Sect	Current;	Current.Name = 0;
         char	str			[1024];

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cl_rapid.h"
+#include "xrCDB.h"
 #include "xrLevel.h"
 
 struct Params
@@ -103,8 +103,9 @@ extern	Nodes			g_nodes;
 extern	Merged			g_merged;
 extern	Lights			g_lights;
 extern	Params			g_params;
-extern	RAPID::Model	Level;
-extern	RAPID::Model	LevelLight;
+extern	CDB::MODEL		Level;
+extern	CDB::MODEL		LevelLight;
+extern	CDB::COLLIDER	XRC;
 extern	Fbox			LevelBB;
 extern	Vectors			Emitters;
 

@@ -98,7 +98,7 @@ IC void closestPointOnLine(Fvector& res, const Fvector& a, const Fvector& b, con
 	
 	// Return the point between ‘a’ and ‘b’
 	// set length of V to t. V is normalized so this is easy
-	res.direct(a,V,t);
+	res.mad		(a,V,t);
 }
 IC void closestPointOnEdge(Fvector& res,						// result
 						   const Fvector& a, const Fvector& b,	// points
@@ -114,7 +114,7 @@ IC void closestPointOnEdge(Fvector& res,						// result
 	if (t >= elen)	{ res.set(b); return; }
 	
 	// Return the point between ‘a’ and ‘b’
-	res.direct(a,ED,t);
+	res.mad(a,ED,t);
 }
 
 // ----------------------------------------------------------------------
@@ -243,18 +243,18 @@ void msimulator_CheckCollision(SCollisionData& cl)
 				// plane is embedded in ellipsoid / sphere
 				// find plane intersection point by shooting a ray from the 
 				// sphere intersection point along the planes normal.
-				bInsideTri = RAPID::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
+				bInsideTri = CDB::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
-				pIPoint.direct(sIPoint,T.N,distToPlaneIntersection);
+				pIPoint.mad(sIPoint,T.N,distToPlaneIntersection);
 			}
 			else
 			{ 
 				// shoot ray along the velocity vector
-				bInsideTri = RAPID::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
+				bInsideTri = CDB::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
-				pIPoint.direct(sIPoint,normalizedVelocity,distToPlaneIntersection);
+				pIPoint.mad(sIPoint,normalizedVelocity,distToPlaneIntersection);
 			}
 			
 			
@@ -275,7 +275,7 @@ void msimulator_CheckCollision(SCollisionData& cl)
 				
 				if (distToEllipsoidIntersection >= 0){
 					// calculate true sphere intersection point
-					sIPoint.direct(polyIPoint, normalizedVelocity, -distToEllipsoidIntersection);
+					sIPoint.mad(polyIPoint, normalizedVelocity, -distToEllipsoidIntersection);
 				}
 			} 
 			
@@ -326,13 +326,13 @@ void msimulator_ResolveStuck(SCollisionData& cl, Fvector& position)
 			
 			// find plane intersection point by shooting a ray from the 
 			// sphere intersection point along the planes normal.
-			if (RAPID::TestRayTri2(position,N_inv,T.p,dist)){
+			if (CDB::TestRayTri2(position,N_inv,T.p,dist)){
 				// calculate plane intersection point
-				polyIPoint.direct(position,N_inv,dist);
+				polyIPoint.mad(position,N_inv,dist);
 			}else{
 				// calculate plane intersection point
 				Fvector tmp;
-				tmp.direct(position,N_inv,dist);
+				tmp.mad(position,N_inv,dist);
 				closestPointOnTriangle(polyIPoint, T, tmp);	
 			}
 			if (CheckPointInSphere(polyIPoint, position, safe_R)) 
@@ -430,7 +430,7 @@ Fvector msimulator_CollideWithWorld(SCollisionData& cl, Fvector position, Fvecto
 
 		// We can now calculate a new destination point on the sliding plane
 		Fvector newDestinationPoint;
-		newDestinationPoint.direct(destinationPoint,slidePlaneNormal,l);
+		newDestinationPoint.mad(destinationPoint,slidePlaneNormal,l);
 		
 		// Generate the slide vector, which will become our new velocity vector
 		// for the next iteration
@@ -460,8 +460,10 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 	bb.grow			(0.05f);
 
 	// Collision query
-	XRC.BBoxMode	(BBOX_TRITEST);
-	XRC.BBoxCollide	(precalc_identity,&Level,precalc_identity,bb);
+	Fvector			bbC,bbD;
+	bb.get_CD		(bbC,bbD);
+	XRC.box_options	(0);
+	XRC.box_query	(&Level,bbC,bbD);
 	
 	// XForm everything to ellipsoid space
 	Fvector			xf;
@@ -491,7 +493,7 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			RAPID::tri&	O		= *(Level.GetTris()+XRC.BBoxContact[i_t].id);
+			CDB::TRI&	O		= *(Level.tris()+XRC.BBoxContact[i_t].id);
 
 			T.p[0].mul			(*O.verts[0],xf);
 			T.p[1].mul			(*O.verts[1],xf);

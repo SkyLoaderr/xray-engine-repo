@@ -7,8 +7,9 @@ Nodes			g_nodes;
 Merged			g_merged;
 Lights			g_lights;
 Params			g_params;
-RAPID::Model	Level;
-RAPID::Model	LevelLight;
+CDB::MODEL		Level;
+CDB::MODEL		LevelLight;
+CDB::COLLIDER	XRC;
 Fbox			LevelBB;
 Vectors			Emitters;
 
