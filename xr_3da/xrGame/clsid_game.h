@@ -71,6 +71,7 @@
 // Targets
 #define CLSID_TARGET				MK_CLSID('T','_','B','A','S','E',' ',' ')
 #define CLSID_TARGET_ASSAULT		MK_CLSID('T','_','A','S','S',' ',' ',' ')
+#define CLSID_TARGET_CS_BASE		MK_CLSID('T','_','C','S','B','A','S','E')
 
 // Standart level object
 #define CLSID_OBJECT_ITEM_STD		MK_CLSID('O','_','I','T','E','M',' ',' ')
