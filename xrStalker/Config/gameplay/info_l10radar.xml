@@ -19,4 +19,9 @@
 	<info_portion id="rad_code_door_open">
 	</info_portion>
 
+	<info_portion id="rad_find_stalkers_reward_start">
+	</info_portion>
+	<info_portion id="rad_find_stalkers_free_start">
+	</info_portion>
+
 </game_information_portions>
