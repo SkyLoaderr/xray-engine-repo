@@ -187,10 +187,10 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			Fvector dir;
 			if(mag<mag_eps)
 			{
-				accel=k/mag_eps/mag_eps/mag_eps;
+				accel=0.f;
 				//Fvector zer;zer.set(0,0,0);
 				//E->set_LinearVel(zer);
-				dir.set(0.f,-1.f,0.f);
+				dir.random_dir();
 			}
 			else
 			{
