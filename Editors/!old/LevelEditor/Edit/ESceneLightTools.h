@@ -57,6 +57,7 @@ public:
     IC int				RenderPriority			(){return 10;}
 
     // IO
+    virtual bool   		IsNeedSave				(){return true;}
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);

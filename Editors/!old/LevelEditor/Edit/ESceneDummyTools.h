@@ -19,6 +19,8 @@ public:
     IC LPCSTR			ClassName				(){THROW; return 0;}
     IC LPCSTR			ClassDesc				(){THROW; return 0;}
     IC int				RenderPriority			(){return -1; }
+
+    virtual bool   		IsNeedSave				(){return false;}
 };
 //---------------------------------------------------------------------------
 #endif

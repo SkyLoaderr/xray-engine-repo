@@ -45,7 +45,7 @@ public:
     virtual void		OnRender				(int priority, bool strictB2F);
 
     // IO
-    virtual bool   		IsNeedSave				();
+    virtual bool   		IsNeedSave				()=0;
     virtual bool		Load            		(IReader&);
     virtual void		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);

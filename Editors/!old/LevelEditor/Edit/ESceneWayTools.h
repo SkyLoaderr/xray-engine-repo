@@ -20,6 +20,7 @@ public:
 
     virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);}
     // IO
+    virtual bool   		IsNeedSave				(){return inherited::IsNeedSave();}
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);
