@@ -15,13 +15,13 @@
 
 To OLES : 
 -D	(???)		memory leak during reload (press f7 for reload) ~ 346kb on occ_part
--J	resolved	монстры исчезают в определённых позициях (level - occ_part_jim)
--О	resolved	Обьекты у которых парент - рендерятся
--O	resolved	~160 memory operations per frame
--O	resolved	no particles
--J	resolved	актер не видим для сталкеров и монстров
++J	resolved	монстры исчезают в определённых позициях (level - occ_part_jim)
++О	resolved	Обьекты у которых парент - рендерятся
++O	resolved	~160 memory operations per frame
++O	resolved	no particles
++J	resolved	актер не видим для сталкеров и монстров
++К	resolved	старые партиклы тоже не рисуются
 -K				трасеры не рисуются
--К				старые партиклы тоже не рисуются
 
 -WT				ни хера не работает (level - cs_test)
 -WT				ни хера по прежнему не работает (level - cs_test)
