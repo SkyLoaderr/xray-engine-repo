@@ -51,7 +51,7 @@ void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, floa
 		return;
 	
 	//Msg("%.3f %.3f %.3f %8X [%7.2f,%7.2f,%7.2f] %s",power,ffGetStartVolume(ESoundTypes(eType)),power*ffGetStartVolume(ESoundTypes(eType)),eType,Position.x,Position.y,Position.z,who ? *who->cName() : "world");
-	power *= ffGetStartVolume(ESoundTypes(eType));
+	power *= 1.f;//ffGetStartVolume(ESoundTypes(eType));
 
 	if (power >= m_fSoundThreshold) {
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
