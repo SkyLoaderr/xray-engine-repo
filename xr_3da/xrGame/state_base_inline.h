@@ -15,9 +15,9 @@
 #define CStateBaseAbstract CStateBase<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateBaseAbstract::CStateBase			(LPCSTR state_name)
+CStateBaseAbstract::CStateBase			(LPCSTR state_name, u32 priority)
 {
-	Init				(state_name);
+	Init				(state_name,priority);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -26,9 +26,10 @@ CStateBaseAbstract::~CStateBase			()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBaseAbstract::Init			(LPCSTR state_name)
+void CStateBaseAbstract::Init			(LPCSTR state_name, u32 priority)
 {
 	m_object			= 0;
+	m_priority			= priority;
 #ifdef LOG_STATE
 	m_state_name		= state_name;
 	if (xr_strlen(m_state_name))

@@ -408,13 +408,13 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
 
+	m_PhysicMovementControl.CreateCharacter();
+	m_PhysicMovementControl.SetPhysicsRefObject(this);
+
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	
-	m_PhysicMovementControl.CreateCharacter();
-	m_PhysicMovementControl.SetPhysicsRefObject(this);
-	m_PhysicMovementControl.SetPLastMaterial(&m_last_material_id);
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
@@ -864,7 +864,7 @@ void CActor::UpdateCL()
 			Device.fTimeDelta,
 			s_vol,
 			tm,
-			!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall|mcLanding|mcLanding2))))
+			!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall))))
 		);
 
 		// landing sounds
@@ -872,9 +872,7 @@ void CActor::UpdateCL()
 			if (!mtl_pair->CollideSounds.empty()){
 				Fvector	s_pos		=	Position	();
 				s_pos.y				+=	.15f;
-				//sndLanding.clone	(mtl_pair->CollideSounds[0]);
 				::Sound->play_at_pos(mtl_pair->CollideSounds[0],this,s_pos);
-				///sndLanding.feedback->set_volume(.2f);
 			}
 		}
 	}
