@@ -43,7 +43,7 @@ struct BoxInfo
 };
 
 // custom draw function for DragDropItem
-void WpnDrawIndex(CUIDragDropItem *pDDItem);
+//void WpnDrawIndex(CUIDragDropItem *pDDItem);
 
 class CUIBag : public CUIStatic {	
 public:
