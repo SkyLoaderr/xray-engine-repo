@@ -124,6 +124,16 @@ function give_medkit_to_wounded(first_speaker, second_speaker)
 	first_speaker:transfer_money (1500, second_speaker)
 end
 
+function give_weapon_to_loser(first_speaker, second_speaker)
+	local wpn = nil
+	if(second_speaker:object("wpn_ak74")) then
+		wpn = second_speaker:object("wpn_ak74")
+	else
+		wpn = second_speaker:object("wpn_toz34")
+	end
+	second_speaker:transfer_item (wpn, first_speaker)
+end
+
 
 function give_box02_to_trader(first_speaker, second_speaker)
 	local box02 = second_speaker:object("quest_case_02")
