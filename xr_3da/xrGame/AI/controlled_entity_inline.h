@@ -51,5 +51,15 @@ void CControlledEntityAbstract::set_task_attack(const CEntity *e)
 	m_data.m_task	= eTaskAttack;
 }
 
+TEMPLATE_SPECIALIZATION
+void CControlledEntityAbstract::update()
+{
+	if (!m_controlled) return;
+	if (m_data.m_object && m_data.m_object->getDestroy() && (m_data.m_task != eTaskNone)) {
+		m_data.m_object = 0;
+		m_data.m_task	= eTaskNone;
+	}
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CControlledEntityAbstract

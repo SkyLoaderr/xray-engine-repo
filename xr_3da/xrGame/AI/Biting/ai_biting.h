@@ -187,7 +187,7 @@ public:
 
 	// ---------------------------------------------------------------------------------
 
-	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);
+	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist,const CEntity *enemy = 0);
 	
 	// Other
 			void			vfUpdateParameters				();

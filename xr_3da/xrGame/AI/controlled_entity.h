@@ -60,6 +60,7 @@ public:
 
 protected:
 			void			init_external		(_Object *obj) {m_object = obj;}
+			void			update				();
 
 private:
 	friend	class	CController;

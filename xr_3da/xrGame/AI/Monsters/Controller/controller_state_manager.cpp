@@ -3,12 +3,19 @@
 #include "controller_state_manager.h"
 #include "../../controlled_entity.h"
 
+//#include "../../phmovementcontrol.h"
+#include "../../../PhysicsShell.h"
+#include "../../../phcapture.h"
+
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
 #include "../states/monster_state_rest_walk_graph.h"
 #include "controller_state_attack.h"
 #include "../states/monster_state_attack_melee.h"
 #include "../states/monster_state_attack_run.h"
+#include "../states/monster_state_eat.h"
+#include "../states/monster_state_eat_eat.h"
+
 //#include "../states/monster_state_find_enemy.h"
 //#include "../states/monster_state_find_enemy_run.h"
 //#include "../states/monster_state_find_enemy_look.h"
@@ -21,19 +28,27 @@
 CStateManagerController::CStateManagerController(CController *obj) : inherited(obj)
 {
 	add_state(
-			eStateRest, 
-			xr_new<CStateMonsterRest<CController> > (obj, 
-				xr_new<CStateMonsterRestSleep<CController> >(obj), 
-				xr_new<CStateMonsterRestWalkGraph<CController> >(obj)
-			)
+		eStateRest, 
+		xr_new<CStateMonsterRest<CController> > (obj, 
+			xr_new<CStateMonsterRestSleep<CController> >(obj), 
+			xr_new<CStateMonsterRestWalkGraph<CController> >(obj)
+		)
 	);
 
 	add_state(
-			eStateAttack, 
-			xr_new<CStateControllerAttack<CController> > (obj,
-				xr_new<CStateMonsterAttackRun<CController> >(obj), 
-				xr_new<CStateMonsterAttackMelee<CController> >(obj)
-			)
+		eStateAttack, 
+		xr_new<CStateControllerAttack<CController> > (obj,
+			xr_new<CStateMonsterAttackRun<CController> >(obj), 
+			xr_new<CStateMonsterAttackMelee<CController> >(obj)
+		)
+	);
+
+
+	add_state(
+		eStateEat,
+		xr_new<CStateMonsterEat<CController> >(obj,
+			xr_new<CStateMonsterEating<CController> >(obj)
+		)
 	);
 
 	//add_state(
@@ -82,8 +97,10 @@ void CStateManagerController::execute()
 
 	if (enemy) {
 		state_id = eStateAttack;
+		object->set_controlled_task(eTaskAttack);
 	} else {
 		state_id = eStateRest;
+		object->set_controlled_task(eTaskFollow);
 	}
 
 

@@ -537,19 +537,19 @@ float CAI_Biting::get_custom_pitch_speed(float def_speed)
 
 #define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
 
-float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist)
+float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist, const CEntity *enemy)
 {
 	// обновить минимальную и максимальную дистанции до врага
 	min_dist = m_fCurMinAttackDist;
 	max_dist = get_sd()->m_fMaxAttackDist - (get_sd()->m_fMinAttackDist - m_fCurMinAttackDist);
 
+	const CEntity *t_enemy = (enemy) ? enemy : EnemyMan.get_enemy();
 	// определить расстояние до противника
-	float cur_dist = EnemyMan.get_enemy()->Position().distance_to(Position()); 
-	if (cur_dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) cur_dist = GetRealDistToEnemy(EnemyMan.get_enemy()); 
+	float cur_dist = t_enemy->Position().distance_to(Position()); 
+	if (cur_dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) cur_dist = GetRealDistToEnemy(t_enemy); 
 
 	return cur_dist;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 // Function for foot processing

@@ -10,6 +10,7 @@ TEMPLATE_SPECIALIZATION
 CStateMonsterCustomActionAbstract::CStateMonsterCustomAction(_Object *obj) : inherited(obj, &data)
 {
 	data.action			= ACT_STAND_IDLE; 
+	data.spec_params	= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -21,9 +22,8 @@ CStateMonsterCustomActionAbstract::~CStateMonsterCustomAction()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterCustomActionAbstract::execute()
 {
-	object->MotionMan.m_tAction	= data.action;
-
-	Msg("*MState :: Custom action Executed :: time = [%u]", Level().timeServer());
+	object->MotionMan.m_tAction		= data.action;
+	object->MotionMan.SetSpecParams(data.spec_params);
 }
 
 TEMPLATE_SPECIALIZATION

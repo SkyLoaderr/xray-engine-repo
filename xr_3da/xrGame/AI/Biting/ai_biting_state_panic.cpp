@@ -35,12 +35,10 @@ void CBitingPanic::Run()
 	} 
 
 	if (target_vertex_id == u32(-1) && (last_time_cover_selected + 5000 < m_dwCurrentTime)) {
-		CTimer T; T.Start();
 		if (!pMonster->GetCoverFromEnemy(position, target_pos, target_vertex_id)) {
 			target_vertex_id			= u32(-1);
 			last_time_cover_selected	= m_dwCurrentTime;
 		}
-		//Msg("GetCoverFromEnemy = [%fs]", T.GetElapsed_sec());
 	}
 
 	switch (m_tAction) {
