@@ -665,4 +665,5 @@ public:
 			int					animation_count			() const;
 			CScriptBinderObject	*binded_object			();
 			void				set_previous_point		(int point_index);
+			void				enable_memory_object	(CLuaGameObject *object, bool enable);
 };

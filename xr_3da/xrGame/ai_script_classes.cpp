@@ -679,3 +679,12 @@ void CLuaGameObject::set_previous_point	(int point_index)
 	else
 		movement_manager->set_previous_point(point_index);
 }
+
+void CLuaGameObject::enable_memory_object	(CLuaGameObject *object, bool enable)
+{
+	CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);
+	if (!memory_manager)
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member enable_memory_object!");
+	else
+		memory_manager->enable				(object->m_tpGameObject,enable);
+}

@@ -599,14 +599,9 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 		m_tpCurrentGlobalAnimation	= 0;
 		m_tpCurrentTorsoAnimation	= 0;
 		m_tpCurrentLegsAnimation	= 0;
-		bool				_continue = false;
-		if (m_current_script_animation) {
-			VERIFY			(m_current_script_animation == m_script_animations.front().m_motion);
-			return;
-		}
-		tVisualObject.PlayCycle	(m_current_script_animation = m_script_animations.front().m_motion,TRUE,ScriptPlayCallback,this);
-		if (!_continue)
-			return;
+		if (m_current_script_animation != m_script_animations.front().m_motion)
+			tVisualObject.PlayCycle	(m_current_script_animation = m_script_animations.front().m_motion,TRUE,ScriptPlayCallback,this);
+		return;
 	}
 
 	if (m_tAnims.A.empty())	return;
