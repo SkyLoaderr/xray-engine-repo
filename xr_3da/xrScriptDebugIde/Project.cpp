@@ -24,6 +24,7 @@ static char THIS_FILE[]=__FILE__;
 
 CProject::CProject()
 {
+	m_ss_working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "" );
 	SetModifiedFlag(FALSE);
 }
 
@@ -53,14 +54,12 @@ CProjectFile* CProject::GetProjectFile(CString strPathName)
 {
 	int nSize = m_files.GetSize();
 	for ( int i=0; i<nSize; ++i )
-//		if ( m_files[i]->HasFile(strPathName) )
 		if ( m_files[i]->Is(strPathName) )
 			return m_files[i];
 
 	AddFile(strPathName, FALSE);
 	nSize = m_files.GetSize();
 	for ( int i=0; i<nSize; ++i )
-//		if ( m_files[i]->HasFile(strPathName) )
 		if ( m_files[i]->Is(strPathName) )
 			return m_files[i];
 

@@ -45,7 +45,6 @@ void CProjectFile::FillBreakPoints(CMailSlotMsg* msg)
 CProjectFile::CProjectFile()
 {
 	m_pluaview = NULL;
-	m_ss_working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "" );
 	Change_status(vss_unknown);
 
 	RemoveAllDebugLines();
@@ -227,10 +226,12 @@ BOOL CProjectFile::Save(CArchive &ar)
 	return TRUE;
 }
 
-void CProjectFile::SaveFile()
+bool CProjectFile::SaveFile()
 {
 	if(GetLuaView())
-		GetLuaView()->_save();
+		return GetLuaView()->_save();
+
+	return true;
 }
 
 void CProjectFile::ReloadFile()
@@ -273,7 +274,7 @@ void CProjectFile::UpdateSS_status()
 
 	IVSSItemPtr vssItem;
 	CString str_;
-	str_.Format("%s%s",m_ss_working_folder,str);
+	str_.Format("%s%s",getWorkingFolder(),str);
 	CComBSTR file_name = str_;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 	if(vssItem==NULL){
@@ -302,12 +303,14 @@ void CProjectFile::SS_check_in	()
 	CString str = GetNameExt();
 
 	IVSSItemPtr vssItem;
-	CComBSTR file_name = m_ss_working_folder+str;
+	CComBSTR file_name = getWorkingFolder()+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 
 	CComBSTR bstr_comment("no comment");
 	CComBSTR bstr_localSpec;
-	SaveFile();
+	if(!SaveFile() )
+		return;
+
 	vssItem->get_LocalSpec(&bstr_localSpec);
 	vssItem->Checkin(bstr_comment, bstr_localSpec, 0);
 	if (!b_DisplayAnyError())
@@ -323,7 +326,7 @@ void CProjectFile::SS_check_out	()
 	CString str = GetNameExt();
 
 	IVSSItemPtr vssItem;
-	CComBSTR file_name = m_ss_working_folder+str;
+	CComBSTR file_name = getWorkingFolder()+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 
 	CComBSTR bstr_comment("no comment");
@@ -346,7 +349,7 @@ void CProjectFile::SS_undo_check_out ()
 	CString str = GetNameExt();
 
 	IVSSItemPtr vssItem;
-	CComBSTR file_name = m_ss_working_folder+str;
+	CComBSTR file_name = getWorkingFolder()+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 
 	CComBSTR bstr_localSpec;
@@ -367,7 +370,7 @@ void CProjectFile::SS_difference ()
 	CString str = GetNameExt();
 
 	IVSSItemPtr vssItem;
-	CComBSTR file_name = m_ss_working_folder+str;
+	CComBSTR file_name = getWorkingFolder()+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 
 	CComBSTR bstr_localSpec;
@@ -414,7 +417,7 @@ void CProjectFile::SS_get_latest ()
 	CString str = GetNameExt();
 
 	IVSSItemPtr vssItem;
-	CComBSTR file_name = m_ss_working_folder+str;
+	CComBSTR file_name = getWorkingFolder()+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 
 	CComBSTR bstr_localSpec;
@@ -426,4 +429,8 @@ void CProjectFile::SS_get_latest ()
 		UpdateSS_status();
 	}
 
+}
+const CString&	CProjectFile::getWorkingFolder()
+{
+	return g_mainFrame->GetProject()->m_ss_working_folder;
 }

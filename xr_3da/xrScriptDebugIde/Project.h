@@ -51,6 +51,9 @@ public:
 	CString GetName(){return m_strName;};
 	void	SetName(LPCSTR s){m_strName = s;};
 	void FillBreakPoints(CMailSlotMsg* msg);
+
+	CString							m_ss_working_folder;
+
 protected:
 	BOOL Load(CArchive& ar);
 

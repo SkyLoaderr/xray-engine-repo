@@ -115,6 +115,12 @@ BOOL CLuaDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		GetView()->SetProjectFile(pPF);
 		pPF->SetLuaView( GetView() );
 	}
-	
+//	SetTitle(lpszPathName);
+//	LPCSTR s = GetTitle();
+
 	return TRUE;
+}
+void CLuaDoc::SetTitle(LPCTSTR lpszTitle)
+{
+	CDocument::SetTitle(GetView()->GetProjectFile()->GetPathName());
 }

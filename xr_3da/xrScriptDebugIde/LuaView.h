@@ -26,7 +26,7 @@ public:
 	CLuaDoc* GetDocument();
 	CLuaDoc* GetDoc(){return (CLuaDoc*)m_pDocument;};
 	CLuaEditor* GetEditor() { return &m_editor; };
-	void	_save();
+	bool	_save();
 	CProjectFile*	GetProjectFile(){return m_projFile;}
 	void			SetProjectFile(CProjectFile* p){m_projFile = p;}
 // Operations

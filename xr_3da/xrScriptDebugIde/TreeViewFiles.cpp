@@ -518,6 +518,9 @@ CString str_WhoCheckedOut(IVSSItemPtr vss_item)
 
 EVSSStatus CTreeViewFiles::GetItemStatus(HTREEITEM itm)
 {
+	if(!IsFile(itm))
+		return vss_unknown;
+
 	DWORD_PTR pp = m_pTree->GetItemData(itm);
 	if(pp){
 		CProjectFile* pf = (CProjectFile*)pp;

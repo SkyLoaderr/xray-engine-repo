@@ -723,9 +723,19 @@ LRESULT CLuaView::OnFindReplaceCmd(WPARAM /*wParam*/, LPARAM lParam)
 	return 0;
 }
 
-void CLuaView::_save()
+bool CLuaView::_save()
 {
 	if( GetProjectFile() ){
+
+		CFileStatus fs;
+		CFile::GetStatus(GetProjectFile()->GetPathName(),fs);
+		if (fs.m_attribute & CFile::readOnly){
+			CString str;
+			str.Format("Cannot save file %s\n The file have read-only status.",GetProjectFile()->GetPathName());
+			AfxMessageBox(str);
+			return false;
+		}
+
 		CFile ff;
 		ff.Open(GetProjectFile()->GetPathName(), CFile::modeCreate |
 			CFile::modeWrite | CFile::shareExclusive);
@@ -733,7 +743,9 @@ void CLuaView::_save()
 	CArchive saveArchive(&ff, CArchive::store | CArchive::bNoFlushOnDelete);
 	
 	Serialize(saveArchive);
+	return true;
 	}
+	return false;
 }
 void CLuaView::OnCompleteWord()
 {

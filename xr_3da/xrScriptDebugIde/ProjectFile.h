@@ -19,7 +19,7 @@ class CProjectFile
 public:
 	CLuaView*	GetLuaView(){return m_pluaview;}
 	void		SetLuaView(CLuaView* lw){m_pluaview = lw;}
-	void		SaveFile();
+	bool		SaveFile();
 	void		ReloadFile();
 	BOOL		Save(CArchive& ar);
 	BOOL		Load(CArchive& ar);
@@ -53,10 +53,10 @@ public:
 	void			SS_get_latest		();
 	void			Check_view			();
 protected:
+	const CString&	getWorkingFolder	();
 	void			Change_status(EVSSStatus st);
 	CString			GetFileName(CString& str );
 
-	CString							m_ss_working_folder;
 
 	EVSSStatus						m_ssStatus;
 	CString							m_strPathName;

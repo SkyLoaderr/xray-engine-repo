@@ -40,6 +40,8 @@ public:
 	CProjectFile* GetProjectFile();
 	BOOL IsInProject();
 	virtual ~CLuaDoc();
+	virtual void SetTitle(LPCTSTR lpszTitle);
+
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
