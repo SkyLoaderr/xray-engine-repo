@@ -91,7 +91,6 @@ private:
 	EActionState			m_tLastActionState;
 	float					m_ls_yaw;
 	
-	u32						m_dwDeathTime;
 	bool					m_bHammerIsClutched;
 	u32						m_dwRandomFactor;
 	u32						m_dwInertion;
