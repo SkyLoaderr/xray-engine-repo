@@ -19,28 +19,28 @@ function main ()
     
     action				(
 		stalker,
-		move			(move.stand,move.walk,move.line,patrol("way0000"))
+		move			(move.stand,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.activate),
 		cond			(cond.time_end,2000)
     )
     
     action				(
 		stalker,
-		move			(move.stand,move.walk,move.line,patrol("way0000"))
+		move			(move.stand,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.reload),
 		cond			(cond.time_end,2000)
     )
     
     action				(
 		stalker,
-		move			(move.stand,move.walk,move.line,patrol("way0000"))
+		move			(move.stand,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.fire1),
 		cond			(cond.time_end,2000)
     )
     
     action				(
 		stalker,
-		move			(move.stand,move.walk,move.line,patrol("way0000"))
+		move			(move.stand,move.walk,move.line,patrol("way0000")),
 		object			(ak,object.deactivate),
 		cond			(cond.time_end,2000)
     )
