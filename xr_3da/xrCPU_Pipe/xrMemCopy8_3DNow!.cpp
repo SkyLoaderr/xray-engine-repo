@@ -1,5 +1,11 @@
 #include "stdafx.h"
 
+void	__stdcall xrMemCopy_x86					(LPVOID dest, LPVOID src, DWORD n)
+{
+	CopyMemory(dest,src,n);
+}
+
+//-------------------------------------------------------------------------------------------------
 #define TINY_BLOCK_COPY 64 //upper limit for movsd type copy
 //The smallest copy uses the X86 "movsd"instruction,in an optimized
 //form which is an "unrolled loop".
@@ -20,9 +26,7 @@
 //one address per cache line,for a series of cache lines,in a short loop.
 //This is faster than using software prefetch.The technique is great for
 //getting maximum read bandwidth,especially in DDR memory systems.
-
-
-void a	(LPVOID dest, LPVOID src, DWORD n)
+void __stdcall xrMemCopy_MMXSSE3DNow			(LPVOID dest, LPVOID src, DWORD n)
 {
 	__asm {
 		mov ecx,[n ];							// number of bytes to copy
