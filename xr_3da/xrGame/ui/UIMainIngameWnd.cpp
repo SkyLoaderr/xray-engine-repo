@@ -277,28 +277,17 @@ void CUIMainIngameWnd::Init()
 
 void CUIMainIngameWnd::Draw()
 {
-//	if(m_bShowHudInfo)
-//	{
-//
-//		static float radiation_alpha = 254.f;
-//		static float radiation_alpha_inc = 0.5;
-//
-//		radiation_alpha += radiation_alpha_inc;
-//		if(radiation_alpha > 255.f || radiation_alpha < 60.0f) 
-//		{
-//			radiation_alpha_inc *=-1;
-//			radiation_alpha += radiation_alpha_inc;
-//		}
-
-//		UIStaticRadiationLow.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-//		UIStaticRadiationMedium.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-//		UIStaticRadiationHigh.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-
-//	}
-
 	bool zoom_mode = false;
 	bool scope_mode = false;
 
+	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
+	{
+		CUSTOM_TEXTURE& custom_texture = *it;
+		custom_texture.static_item->SetPos(0,0);
+		custom_texture.static_item->Render(custom_texture.x1, custom_texture.y1,
+									custom_texture.x2, custom_texture.y2);
+	}
+	
 	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && 
 		m_pWeapon->ZoomHideCrosshair())
@@ -1092,3 +1081,8 @@ void CUIMainIngameWnd::DisplayMoneyChange(ref_str deltaMoney)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, int left, int top, int right, int bottom)
+{
+	m_CustomTextures.push_back(CUSTOM_TEXTURE(si, left, top, right, bottom));
+}

@@ -25,6 +25,24 @@ extern int				g_bHudAdjustMode;
 extern float			g_fHudAdjustValue;
 extern int				g_bNewsDisable;
 
+struct CUSTOM_TEXTURE
+{
+	CUSTOM_TEXTURE(CUIStaticItem* si, int left, int top, int right, int bottom)
+	{
+		static_item = si;
+		x1 = left;
+		y1 = top;
+		x2 = right;
+		y2 = bottom;	
+	};
+		
+	CUIStaticItem* static_item;
+	int x1, y1, x2, y2;
+};
+
+DEFINE_VECTOR(CUSTOM_TEXTURE, CUSTOM_TEXTURE_VECTOR, CUSTOM_TEXTURE_IT);
+
+
 class CUIMainIngameWnd: public CUIWindow  
 {
 public:
@@ -42,6 +60,7 @@ public:
 	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_index);
 	
 	void AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage);
+	void AddStaticItem	(CUIStaticItem* si, int left, int top, int right, int bottom);
 
 protected:
 	void HideAll();
@@ -52,10 +71,7 @@ protected:
 	CUIStatic	UIStaticHealth;
 	CUIStatic	UIStaticArmor;
 	CUIStatic	UIStaticMapBack;
-//	CUIStatic	UIStaticRadiationLow;
-//	CUIStatic	UIStaticRadiationMedium;
-//	CUIStatic	UIStaticRadiationHigh;
-//	CUIStatic	UIStaticWound;
+
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
 	CUIButton	UIStaticQuickHelp;
@@ -84,6 +100,10 @@ protected:
 
 	// Для мультиплеера выводим денежки
 	CUIMultiTextStatic	UIMoneyIndicator;
+	
+	//список текстур, задаваемых извне, которые будут отрисованы
+	//на текущем кадре
+	CUSTOM_TEXTURE_VECTOR m_CustomTextures;	
 public:
 	// Изменить индикатор текущего количества денег
 	void ChangeTotalMoneyIndicator(ref_str newMoneyString);
