@@ -149,7 +149,6 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_depth_scale",	&ps_r2_ls_depth_scale,		0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);
 
-	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallaxh,		.0f,	.5f		);
 
 	tw_min.set			(0,0,0);	tw_max.set	(1,1,1);
