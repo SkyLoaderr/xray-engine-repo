@@ -1030,6 +1030,51 @@ void CPHSimpleCharacter::doCaptureExist(bool& do_exist)
 	do_exist=!!m_capture_joint;
 }
 
+void CPHSimpleCharacter::SafeAndLimitVelocity()
+{
+
+	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
+	//limit velocity
+	dReal l_limit;
+	if(is_control&&!b_lose_control) 
+		l_limit = m_max_velocity/phTimefactor;
+	else			
+		l_limit=10.f/fixed_step;
+
+	dReal mag;
+
+	if(dV_valid(linear_velocity))
+	{	
+		mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//
+		if(mag>l_limit)
+		{
+			dReal f=mag/l_limit;
+			if(b_lose_ground&&linear_velocity[1]<0.f)
+				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
+			else			 
+				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
+			if(is_control&&!b_lose_control)
+				dBodySetPosition(m_body,
+				m_safe_position[0]+linear_velocity[0]*fixed_step,
+				m_safe_position[1]+linear_velocity[1]*fixed_step,
+				m_safe_position[2]+linear_velocity[2]*fixed_step);
+		}
+	}
+	else
+	{
+		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
+	}
+
+	if(!dV_valid(dBodyGetPosition(m_body)))
+		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
+		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
+		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
+
+
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,linear_velocity);
+}
+
 void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	m_object_contact_callback=callback;

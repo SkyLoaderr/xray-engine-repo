@@ -509,17 +509,14 @@ void CPHElement::PhDataUpdate(dReal step){
 
 }
 
-
-void CPHElement::Enable(){
-
+void CPHElement::Enable()	{
 	if(!bActive) return;
 	m_shell->EnableObject();
 	if(dBodyIsEnabled(m_body)) return;
 	dBodyEnable(m_body);
 }
 
-
-void CPHElement::Disable(){
+void CPHElement::Disable()	{
 
 //	return;
 	if(!dBodyIsEnabled(m_body)) return;
@@ -538,7 +535,6 @@ void CPHElement::Disable(){
 	//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	dBodyDisable(m_body);
 }
-
 
 void CPHElement::ReEnable(){
 

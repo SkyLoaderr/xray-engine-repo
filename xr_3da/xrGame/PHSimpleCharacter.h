@@ -13,7 +13,6 @@ class CPHSimpleCharacter : public CPHCharacter
 	Fvector m_AABB_forbid;
 #endif
 
-
 protected:
 	////////////////////////////damage////////////////////////////////////////
 	dContact				m_damege_contact;
@@ -157,56 +156,12 @@ public:
 	virtual		void		set_State							(const	SPHNetState&	state)								;
 
 private:
-	void		CheckCaptureJoint					()					;
-	void		ApplyAcceleration					()					;
-	bool		ValidateWalkOn						()					;
-	u16			RetriveContactBone					()					;
-IC	void		SafeAndLimitVelocity						()
-	{
-		
-		const float		*linear_velocity		=dBodyGetLinearVel(m_body);
-		//limit velocity
-		dReal l_limit;
-		if(is_control&&!b_lose_control) 
-			l_limit = m_max_velocity/phTimefactor;
-		else			
-			l_limit=10.f/fixed_step;
+	void		CheckCaptureJoint					()			;
+	void		ApplyAcceleration					()			;
+	bool		ValidateWalkOn						()			;
+	u16			RetriveContactBone					()			;
+	void		SafeAndLimitVelocity				()			;
 
-		dReal mag;
-
-		if(dV_valid(linear_velocity))
-		{	
-			mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//
-			if(mag>l_limit)
-			{
-				dReal f=mag/l_limit;
-				if(b_lose_ground&&linear_velocity[1]<0.f)
-					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
-				else			 
-					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
-				if(is_control&&!b_lose_control)
-										dBodySetPosition(m_body,
-														m_safe_position[0]+linear_velocity[0]*fixed_step,
-														m_safe_position[1]+linear_velocity[1]*fixed_step,
-														m_safe_position[2]+linear_velocity[2]*fixed_step);
-			}
-		}
-		else
-		{
-					dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
-		}
-
-		if(!dV_valid(dBodyGetPosition(m_body)))
-			dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
-			m_safe_position[1]-m_safe_velocity[1]*fixed_step,
-			m_safe_position[2]-m_safe_velocity[2]*fixed_step);
-
-
-		dVectorSet(m_safe_position,dBodyGetPosition(m_body));
-		dVectorSet(m_safe_velocity,linear_velocity);
-
-	}
-	
 public:	
 #ifdef DEBUG
 	virtual		void		OnRender							()					;
