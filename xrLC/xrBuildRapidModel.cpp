@@ -10,6 +10,7 @@ void CBuild::BuildRapid()
 	float	p_cost  = 1.f/(g_faces.size());
 
 	Status("Converting faces...");
+	HeapCompact(GetProcessHeap(),0);
 
 	RAPID::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
 	for (vecFaceIt it=g_faces.begin(); it!=g_faces.end(); it++)
