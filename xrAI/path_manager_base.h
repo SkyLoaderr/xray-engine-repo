@@ -110,7 +110,7 @@ public:
 
 	IC		bool		is_metric_euclidian() const
 	{
-#pragma todo("Dima to Dima : implement path manager for non-euclidian metrics")
+		// #pragma todo("Dima to Dima : implement path manager for non-euclidian metrics")
 		return					(true);
 	}
 
