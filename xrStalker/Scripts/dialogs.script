@@ -6,9 +6,3 @@ end
 function kickass(first_speaker, second_speaker)
 	xr_punch.punch[first_speaker:id()] = second_speaker
 end
-
-function answer_pda(first_speaker, second_speaker)
-	printf("test")
-	second_speaker:answer_pda()
-	printf("test")
-end

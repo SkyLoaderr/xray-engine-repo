@@ -206,7 +206,6 @@
 	   	<phrase id="0">
 			<text>Давай поболтаем.</text>
 			<next>1</next>
-			<action>dialogs.answer_pda</action>
 		</phrase>                                                                                               
 	   	<phrase id="10">
 			<text>Ладно, спасибо.</text>
