@@ -676,11 +676,17 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	HRESULT							hr		= 0;
 	hr = D3DXCreateTextureFromFile		(m_pd3dDevice,"media\\shadowmap.tga",&t_Base);
 	hr = D3DXCreateTextureFromFileEx	(m_pd3dDevice,"media\\shadowmap_height.tga",
-		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,
-		0,NULL,NULL,&height);
+		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,512,512,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
 	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,8.f);
+
+	// Transfer gloss-map
+	{
+
+	}
 	height->Release						();
+
+
 
 	hr = CreatePower					(m_pd3dDevice,256,32.f,&t_SpecularPower_32);
 	hr = CreateNCM						(m_pd3dDevice,64,&t_NCM);
