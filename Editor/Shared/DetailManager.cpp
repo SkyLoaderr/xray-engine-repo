@@ -591,8 +591,6 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 		// Empty slot
 		DS.y_min				= 0;
 		DS.y_max				= EPS_L;
-		DS.r_yaw				= 0xaaaaaaaa;
-		DS.r_scale				= 0xaaaaaaaa;
 		
 		DS.items[0].id			= 0xff;
 		DS.items[1].id			= 0xff;
