@@ -48,20 +48,8 @@ public:
 	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
 	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
 
-///	virtual void		OnBuyMenu_Ok			();
-
 	virtual BOOL		CanCallBuyMenu			();
 
-/*
-	virtual void		Render				();
-	virtual void		OnFrame				();
-
-	virtual bool		IR_OnKeyboardPress		(int dik);
-	virtual bool		IR_OnKeyboardRelease	(int dik);
-
-	virtual void		OnTeamSelect			(int Result);
-	virtual void		OnBuyMenu_Ok			();
-*/
 	virtual bool		CanBeReady				();
 	
 			void		SetScoreCaption			(LPCSTR str);
