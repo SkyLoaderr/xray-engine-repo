@@ -97,7 +97,7 @@ void CUIZoneMap::Init()
 	static LPCSTR	map_arrow_texture			= pSettings->r_string	(MAP_SECTION, "map_arrow");
 
 	DWORD align = alLeft|alTop;
-	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
+	compass.Init("ui\\hud_map_arrow",	"hud\\default",150,150,align);
 	
 	entity.Init			(map_point_texture,			"hud\\default");
 	entity_story.Init	(map_point_info_texture,	"hud\\default");
