@@ -198,7 +198,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 				l_tSoundAction.m_bCompleted = true;
 	}
 	else {
-		if (*l_tSoundAction.m_caSoundToPlay && strlen(*l_tSoundAction.m_caSoundToPlay))
+		if (xr_strlen(l_tSoundAction.m_caSoundToPlay))
 			::Sound->create	(*(l_tSoundAction.m_tpSound = xr_new<ref_sound>()),TRUE,*l_tSoundAction.m_caSoundToPlay);
 		else
 			l_tSoundAction.m_bCompleted = true;
