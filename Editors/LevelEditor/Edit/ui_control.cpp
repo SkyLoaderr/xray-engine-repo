@@ -69,16 +69,16 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
     	SBeforeAppendCallbackParams P;
     	if (before&&!before(&P)) return 0;
 
-		char namebuffer[MAX_OBJ_NAME];
+		string256 namebuffer;
 		Scene.GenObjectName(parent_tool->objclass, namebuffer, P.name_prefix.c_str());
 		obj = NewObjectFromClassID(parent_tool->objclass, P.data, namebuffer);
         if (!obj->Valid()){
-        	_DELETE(obj);
+        	xr_delete(obj);
             return 0;
         }
         // after callback
     	if (after&&!after(Shift, obj)){
-        	_DELETE(obj);
+        	xr_delete(obj);
             return 0;
         } 
 		obj->MoveTo(p,n);

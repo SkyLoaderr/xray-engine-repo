@@ -36,9 +36,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_INITIALIZE:{
 		Engine.Initialize	();
         // make interface
-	    fraBottomBar		= new TfraBottomBar(0);
-    	fraLeftBar  		= new TfraLeftBar(0);
-	    fraTopBar   		= new TfraTopBar(0);
+	    fraBottomBar		= xr_new<TfraBottomBar>((TComponent*)0);
+    	fraLeftBar  		= xr_new<TfraLeftBar>((TComponent*)0);
+	    fraTopBar   		= xr_new<TfraTopBar>((TComponent*)0);
 		//----------------
         if (UI.OnCreate()){
             Tools.OnCreate	();
@@ -68,9 +68,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         UI.OnDestroy		();
 		Engine.Destroy		();
 		//----------------
-        _DELETE(fraLeftBar);
-	    _DELETE(fraTopBar);
-    	_DELETE(fraBottomBar);
+        xr_delete(fraLeftBar);
+	    xr_delete(fraTopBar);
+    	xr_delete(fraBottomBar);
 		//----------------
     	break;
     case COMMAND_EVICT_OBJECTS:

@@ -10,17 +10,17 @@
 //---------------------------------------------------------------------------
 
 TUI_SpawnPointTools::TUI_SpawnPointTools():TUI_CustomTools(OBJCLASS_SPAWNPOINT){
-    AddControlCB(new TUI_ControlSpawnPointAdd(estSelf,eaAdd,	this));
+    AddControlCB(xr_new<TUI_ControlSpawnPointAdd>(estSelf,eaAdd,	this));
 }
 void TUI_SpawnPointTools::OnActivate  (){
-    pFrame = new TfraSpawnPoint(0);
+    pFrame = xr_new<TfraSpawnPoint>((TComponent*)0);
     ((TfraSpawnPoint*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
 void TUI_SpawnPointTools::OnDeactivate(){
     ((TfraSpawnPoint*)pFrame)->fsStorage->SaveFormPlacement();
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 
 //--------------------------------------------------------------------------------------------------

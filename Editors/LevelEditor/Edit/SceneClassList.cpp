@@ -39,37 +39,37 @@ TUI_CustomTools* NewToolFromTarget(int _tgt)
 {
 	ETarget tgt			= ETarget(_tgt);
     switch(tgt){
-	case etGroup:		return new TUI_GroupTools		();
-    case etLight:		return new TUI_LightTools		();
-    case etShape:		return new TUI_ShapeTools		();
-    case etObject:		return new TUI_ObjectTools		();
-    case etSound:		return new TUI_SoundTools		();
-    case etGlow:		return new TUI_GlowTools		();
-    case etSpawnPoint:	return new TUI_SpawnPointTools	();
-    case etSector:		return new TUI_SectorTools		();
-    case etPortal:		return new TUI_PortalTools		();
-    case etEvent:		return new TUI_EventTools		();
-    case etWay:			return new TUI_WayPointTools	();
-    case etPS:			return new TUI_PSTools			();
-    case etDO:			return new TUI_DOTools			();
+	case etGroup:		return xr_new<TUI_GroupTools>		();
+    case etLight:		return xr_new<TUI_LightTools>		();
+    case etShape:		return xr_new<TUI_ShapeTools>		();
+    case etObject:		return xr_new<TUI_ObjectTools>		();
+    case etSound:		return xr_new<TUI_SoundTools>		();
+    case etGlow:		return xr_new<TUI_GlowTools>		();
+    case etSpawnPoint:	return xr_new<TUI_SpawnPointTools>	();
+    case etSector:		return xr_new<TUI_SectorTools>		();
+    case etPortal:		return xr_new<TUI_PortalTools>		();
+    case etEvent:		return xr_new<TUI_EventTools>		();
+    case etWay:			return xr_new<TUI_WayPointTools>	();
+    case etPS:			return xr_new<TUI_PSTools>			();
+    case etDO:			return xr_new<TUI_DOTools>			();
     default: THROW2("Can't find specify tools.");
     }
     return 0;
 }
 CCustomObject *NewObjectFromClassID( int _ClassID, LPVOID data, LPCSTR name ){
 	switch( _ClassID ){
-    	case OBJCLASS_GROUP:		return new CGroupObject(data,name);
-		case OBJCLASS_SCENEOBJECT: 	return new CSceneObject(data,name);
-		case OBJCLASS_LIGHT:    	return new CLight(data,name);
-        case OBJCLASS_SHAPE:		return new CEditShape(data,name);
-		case OBJCLASS_SOUND:    	return new CSound(data,name);
-		case OBJCLASS_GLOW:     	return new CGlow(data,name);
-        case OBJCLASS_SPAWNPOINT:	return new CSpawnPoint(data,name);
-        case OBJCLASS_WAY:			return new CWayObject(data,name);
-        case OBJCLASS_SECTOR:		return new CSector(data,name);
-        case OBJCLASS_PORTAL:		return new CPortal(data,name);
-        case OBJCLASS_EVENT:		return new CEvent(data,name);
-        case OBJCLASS_PS:			return new CPSObject(data,name);
+    	case OBJCLASS_GROUP:		return xr_new<CGroupObject>(data,name);
+		case OBJCLASS_SCENEOBJECT: 	return xr_new<CSceneObject>(data,name);
+		case OBJCLASS_LIGHT:    	return xr_new<CLight>(data,name);
+        case OBJCLASS_SHAPE:		return xr_new<CEditShape>(data,name);
+		case OBJCLASS_SOUND:    	return xr_new<CSound>(data,name);
+		case OBJCLASS_GLOW:     	return xr_new<CGlow>(data,name);
+        case OBJCLASS_SPAWNPOINT:	return xr_new<CSpawnPoint>(data,name);
+        case OBJCLASS_WAY:			return xr_new<CWayObject>(data,name);
+        case OBJCLASS_SECTOR:		return xr_new<CSector>(data,name);
+        case OBJCLASS_PORTAL:		return xr_new<CPortal>(data,name);
+        case OBJCLASS_EVENT:		return xr_new<CEvent>(data,name);
+        case OBJCLASS_PS:			return xr_new<CPSObject>(data,name);
         default: throw -1;
 	}
 }

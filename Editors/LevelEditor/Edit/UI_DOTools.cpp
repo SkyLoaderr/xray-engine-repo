@@ -9,18 +9,18 @@
 //---------------------------------------------------------------------------
 
 TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO){
-    AddControlCB(new TUI_ControlDOAdd	(estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlDOAdd>(estSelf,eaAdd,		this));
 }
 
 void TUI_DOTools::OnActivate(){
-    pFrame = new TfraDetailObject(0);
+    pFrame = xr_new<TfraDetailObject>((TComponent*)0);
     ((TfraDetailObject*)pFrame)->OnEnter();
 	TUI_CustomTools::OnActivate();
 }
 void TUI_DOTools::OnDeactivate(){
     ((TfraDetailObject*)pFrame)->OnExit();
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //--------------------------------------------------------------------------------------------------
 __fastcall TUI_ControlDOAdd::TUI_ControlDOAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
@@ -53,7 +53,7 @@ bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
 //            if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
 //            if (!Shift.Contains(ssAlt)) ResetActionToSelect();
 //        }else{
-            _DELETE(obj);
+            xr_delete(obj);
 //        }
 
     }

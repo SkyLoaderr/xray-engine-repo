@@ -140,11 +140,11 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             string256 namebuffer;
             Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, it->c_str());
-            CSceneObject *obj = new CSceneObject(0,namebuffer);
+            CSceneObject *obj = xr_new<CSceneObject>((LPVOID)0,namebuffer);
             CEditableObject* ref = obj->SetReference(it->c_str());
             if (!ref){
                 ELog.DlgMsg(mtError,"TfraObject:: Can't load reference object.");
-                _DELETE(obj);
+                xr_delete(obj);
                 return;
             }
             

@@ -18,6 +18,7 @@
 #include "cl_collector.h"
 #include "MgcConvexHull3D.h"
 #include "ui_main.h"
+#include "PropertiesListHelper.h"
 
 #define SECTOR_VERSION   					0x0011
 //----------------------------------------------------
@@ -183,7 +184,7 @@ void CSector::OnDestroy( ){
     while(_F!=lst.end()){
     	CPortal* P=(CPortal*)(*_F);
         if((P->m_SectorFront==this)||(P->m_SectorBack==this)){
-            _DELETE((*_F));
+            xr_delete((*_F));
             ObjectIt _D = _F; _F++;
             lst.remove((*_D));
         }else{
@@ -320,8 +321,8 @@ void CSector::GetCounts(int* objects, int* meshes, int* faces)
 //----------------------------------------------------
 
 void CSector::LoadSectorDef( CStream* F ){
-	char o_name[MAX_OBJ_NAME]="";
-	char m_name[MAX_OBJ_NAME]="";
+	string256 o_name="";
+	string256 m_name="";
 
     CSectorItem sitem;
 

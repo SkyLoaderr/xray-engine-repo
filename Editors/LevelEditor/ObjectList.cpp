@@ -17,7 +17,7 @@ void frmObjectListShow(){
 	if (frmObjectList){
     	frmObjectList->SetFocus();
     }else{
-		frmObjectList = new TfrmObjectList(0);
+		frmObjectList = xr_new<TfrmObjectList>((TComponent*)0);
     	frmObjectList->Show();
     }
 }

@@ -27,7 +27,7 @@ TUI_Tools::TUI_Tools()
 TUI_Tools::~TUI_Tools()
 {
 	TProperties::DestroyForm(m_Props);
-    for (DWORD i=0; i<etMaxTarget; i++) _DELETE(m_pTools[i]);
+    for (DWORD i=0; i<etMaxTarget; i++) xr_delete(m_pTools[i]);
 }
 //---------------------------------------------------------------------------
 

@@ -6,6 +6,7 @@
 #include "topbar.h"
 #include "editorpref.h"
 #include "ui_main.h"
+#include "PropertiesListHelper.h"
 
 //------------------------------------------------------------------------------
 // static part

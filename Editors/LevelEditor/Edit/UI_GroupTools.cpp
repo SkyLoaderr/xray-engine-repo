@@ -7,16 +7,16 @@
 
 //----------------------------------------------------------------------
 TUI_GroupTools::TUI_GroupTools():TUI_CustomTools(OBJCLASS_GROUP){
-    AddControlCB(new TUI_ControlGroupAdd   (estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlGroupAdd>(estSelf,eaAdd,		this));
 }
 
 void TUI_GroupTools::OnActivate  (){
-    pFrame = new TfraGroup(0);
+    pFrame = xr_new<TfraGroup>((TComponent*)0);
 	TUI_CustomTools::OnActivate();
 }
 void TUI_GroupTools::OnDeactivate(){
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //------------------------------------------------------------------------------
 //

@@ -40,7 +40,7 @@ void CPortalUtils::RemoveSectorPortal(CSector* S){
     while(_F!=lst.end()){
     	CPortal* P=(CPortal*)(*_F);
         if((P->m_SectorFront==S)||(P->m_SectorBack==S)){
-            _DELETE((*_F));
+            xr_delete((*_F));
             ObjectIt _D = _F; _F++;
             lst.remove((*_D));
         }else{
@@ -69,7 +69,7 @@ int CPortalUtils::CalculateSelectedPortals(){
         	CSector* SF = ((CPortal*)(*_F))->m_SectorFront;
         	CSector* SB = ((CPortal*)(*_F))->m_SectorBack;
             if ((find(s_lst.begin(),s_lst.end(),SF)!=s_lst.end())&&(find(s_lst.begin(),s_lst.end(),SB)!=s_lst.end()))
-				_DELETE(*_F);
+				xr_delete(*_F);
         }
         ObjectIt _E = remove(p_lst.begin(),p_lst.end(),(CCustomObject*)0);
 		p_lst.erase(_E,p_lst.end());
@@ -102,7 +102,7 @@ bool CPortalUtils::CreateDefaultSector(){
 
     Fbox box;
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
-		CSector* sector_def=new CSector(0,DEFAULT_SECTOR_NAME);
+		CSector* sector_def=xr_new<CSector>((LPVOID)0,DEFAULT_SECTOR_NAME);
         sector_def->sector_color.set(1,0,0,0);
         sector_def->m_bDefault=true;
         sector_def->CaptureAllUnusedMeshes();
@@ -124,7 +124,7 @@ bool CPortalUtils::RemoveDefaultSector(){
     CCustomObject* O=Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (O){
     	Scene.RemoveObject(O,false);
-        _DELETE(O);
+        xr_delete(O);
 		Scene.UndoSave();
 		UI.EndEState();
         UI.UpdateScene();
@@ -184,7 +184,7 @@ bool CPortalUtils::Validate(bool bMsg){
     Fbox box;
     bool bResult = false;
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
-		CSector* sector_def=new CSector(0,DEFAULT_SECTOR_NAME);
+		CSector* sector_def=xr_new<CSector>((LPVOID)0,DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedMeshes();
         int f_cnt;
         sector_def->GetCounts(0,0,&f_cnt);
@@ -204,7 +204,7 @@ bool CPortalUtils::Validate(bool bMsg){
             }
         }
 */
-        _DELETE(sector_def);
+        xr_delete(sector_def);
 
         // verify sectors
         ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
@@ -263,7 +263,7 @@ class sCollector
         {
 	        return (E1.s[0]==E2.s[0])&&(E1.s[1]==E2.s[1])&&(E1.v[0]==E2.v[0])&&(E1.v[1]==E2.v[1]);
         }
-        static int compare( const void *arg1, const void *arg2 )
+        static int __cdecl compare( const void *arg1, const void *arg2 )
 		{
         	return memcmp(arg1,arg2,2*2*4);
             /*
@@ -501,9 +501,9 @@ public:
                 vlist.erase(end,vlist.end());
 
                 // append portal
-                char namebuffer[MAX_OBJ_NAME];
+                string256 namebuffer;
                 Scene.GenObjectName( OBJCLASS_PORTAL, namebuffer );
-                CPortal* _O = new CPortal(0,namebuffer);
+                CPortal* _O = xr_new<CPortal>((LPVOID)0,namebuffer);
                 for (DWORD i=0; i<vlist.size(); i++) {
 	                _O->Vertices().push_back(verts[vlist[i]]);
                 }
@@ -525,7 +525,7 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
     // calculate portals
     Fbox bb;
     Scene.GetBox(bb,OBJCLASS_SCENEOBJECT);
-    sCollector* CL = new sCollector(bb);
+    sCollector* CL = xr_new<sCollector>(bb);
     Fmatrix T;
 
     //1. xform + weld
@@ -567,7 +567,7 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
 
     int iRes = CL->portals.size();
 
-    _DELETE(CL);
+    xr_delete(CL);
 
     return iRes;
 }

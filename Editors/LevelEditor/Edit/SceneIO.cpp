@@ -243,7 +243,7 @@ bool EScene::ReadObject(CStream& F, CCustomObject*& O){
     bool bRes = O->Load(*S);
     S->Close();
 
-	if (!bRes) _DELETE(O);
+	if (!bRes) xr_delete(O);
 	return bRes;
 }
 //----------------------------------------------------
@@ -283,12 +283,12 @@ bool EScene::Load(char *_FileName){
 
     if (Engine.FS.Exist(_FileName,true)){
         CStream* F;
-        F = new CFileStream(_FileName);
+        F = xr_new<CFileStream>(_FileName);
 		char MARK[8];
         F->Read(MARK,8);
         if (strcmp(MARK,"LEVEL")==0){
-        	_DELETE(F);
-            F = new CCompressedStream(_FileName,"LEVEL");
+        	xr_delete(F);
+            F = xr_new<CCompressedStream>(_FileName,"LEVEL");
         }
 
         // Version
@@ -296,7 +296,7 @@ bool EScene::Load(char *_FileName){
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI.UpdateScene();
-        	_DELETE(F);
+        	xr_delete(F);
             return false;
         }
 
@@ -351,7 +351,7 @@ bool EScene::Load(char *_FileName){
 
         UI.UpdateScene();
 
-		_DELETE(F);
+		xr_delete(F);
 
         SynchronizeObjects();
 

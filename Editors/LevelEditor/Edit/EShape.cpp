@@ -150,7 +150,7 @@ void CEditShape::Attach(CEditShape* from)
     }
     // common 
     Scene.RemoveObject		(from,true);
-    _DELETE					(from);
+    xr_delete					(from);
     
 	ComputeBounds			();
 }

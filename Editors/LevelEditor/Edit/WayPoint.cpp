@@ -167,7 +167,7 @@ CWayObject::~CWayObject()
 void CWayObject::Clear()
 {
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
-    	_DELETE(*it);
+    	xr_delete(*it);
 }
 
 void CWayObject::InvertLink()
@@ -258,7 +258,7 @@ void CWayObject::RemoveSelectedPoints()
 	for (int i=0; i<(int)m_WayPoints.size(); i++)
     	if (m_WayPoints[i]->m_bSelected){
         	WPIt it = m_WayPoints.begin()+i;
-        	_DELETE(*it);
+        	xr_delete(*it);
 			m_WayPoints.erase(it);
             i--;
         }
@@ -287,7 +287,7 @@ CWayPoint* CWayObject::AppendWayPoint()
 {
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
     	(*it)->Select(0);
-    m_WayPoints.push_back(new CWayPoint());
+    m_WayPoints.push_back(xr_new<CWayPoint>());
     m_WayPoints.back()->m_bSelected=true;
     return m_WayPoints.back();
 }
@@ -418,7 +418,7 @@ bool CWayObject::Load(CStream& F)
 	R_ASSERT(F.FindChunk(WAYOBJECT_CHUNK_POINTS));
     m_WayPoints.resize(F.Rword());
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
-    	CWayPoint* W 	= new CWayPoint(); *it = W;
+    	CWayPoint* W 	= xr_new<CWayPoint>(); *it = W;
     	F.Rvector		(W->m_vPosition);
     	W->m_dwFlags 	= F.Rdword();
         W->m_bSelected	= F.Rword();

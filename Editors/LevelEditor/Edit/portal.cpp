@@ -291,7 +291,9 @@ void SimplifyVertices(Fvector2Vec& vertices)
 }
 //------------------------------------------------------------------------------
 
-void CPortal::Simplify(){
+void CPortal::Simplify()
+{
+/*
 	Fvector rkOffset;
     Fvector rkNormal;
     // compute plane
@@ -318,7 +320,7 @@ void CPortal::Simplify(){
     }
     // compute 2D Convex Hull
     Mgc::ConvexHull2D Hull(points.size(),(const Mgc::Vector2*)points.begin());
-	int Count   = Hull.GetEdgeQuantity();
+	int Count   = Hull.GetQuantity();
 	if (Count==0) return;
     int CurVert = Hull.GetEdge(0).m_aiVertex[0];
 	vertices.push_back(points[CurVert]);
@@ -394,8 +396,7 @@ void CPortal::Simplify(){
     }else{
 	    m_Normal.set(norm);
     }
-
-
+*/
 }
 //------------------------------------------------------------------------------
 

@@ -126,12 +126,12 @@ void SceneBuilder::ResetStructures (){
 	l_face_cnt				= 0;
 	l_vert_it 				= 0;
 	l_face_it				= 0;
-    _DELETEARRAY			(l_verts);
-    _DELETEARRAY			(l_faces);
+    xr_free					(l_verts);
+    xr_free					(l_faces);
     for (int k=0; k<(int)l_mu_models.size(); k++){
     	b_mu_model&	m 		= l_mu_models[k];
-        _DELETEARRAY		(m.verts);
-        _DELETEARRAY		(m.faces);
+        xr_free				(m.verts);
+        xr_free				(m.faces);
     }
     l_mu_models.clear		();
     l_mu_refs.clear			();
@@ -300,8 +300,8 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
         M.face_cnt		= obj->GetFaceCount();
         M.vert_cnt		= obj->GetVertexCount();
         strcpy			(M.name,O->GetName());
-        M.verts			= new b_vertex[M.vert_cnt];
-        M.faces			= new b_face[M.face_cnt];
+        M.verts			= xr_alloc<b_vertex>(M.vert_cnt);
+        M.faces			= xr_alloc<b_face>(M.face_cnt);
 		// parse mesh data
 	    for(EditMeshIt MESH=O->FirstMesh();MESH!=O->LastMesh();MESH++)
 	    	if (!BuildMesh(Fidentity,O,*MESH,sect_num,lod_id,M.verts,M.vert_cnt,vert_it,M.faces,M.face_cnt,face_it)) return FALSE;
@@ -791,8 +791,8 @@ BOOL SceneBuilder::CompileStatic()
 	        }
         }
     }
-	l_faces		= new b_face[l_face_cnt];
-	l_verts		= new b_vertex[l_vert_cnt];
+	l_faces		= xr_alloc<b_face>(l_face_cnt);
+	l_verts		= xr_alloc<b_vertex>(l_vert_cnt);
 
     UI.ProgressStart(Scene.ObjCount(),"Parse static objects...");
 // make hemisphere

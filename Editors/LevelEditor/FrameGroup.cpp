@@ -29,9 +29,9 @@ void __fastcall TfraGroup::ExpandClick(TObject *Sender)
 
 void __fastcall TfraGroup::ebMakeGroupClick(TObject *Sender)
 {
-	char namebuffer[MAX_OBJ_NAME];
+	string256 namebuffer;
 	Scene.GenObjectName(OBJCLASS_GROUP, namebuffer);
-    CGroupObject* group = new CGroupObject(0,namebuffer);
+    CGroupObject* group = xr_new<CGroupObject>((LPVOID)0,namebuffer);
 
 	// validate objects
     ObjectList lst;
@@ -41,7 +41,7 @@ void __fastcall TfraGroup::ebMakeGroupClick(TObject *Sender)
         Scene.AddObject(group,true);
     }else{
 	    ELog.DlgMsg(mtError,"Group can't created.");
-        _DELETE(group);
+        xr_delete(group);
     }
 }
 //---------------------------------------------------------------------------
@@ -53,7 +53,7 @@ void __fastcall TfraGroup::ebUngroupClick(TObject *Sender)
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
             Scene.RemoveObject(*it,false);
 			((CGroupObject*)(*it))->UngroupObjects();
-        	_DELETE(*it);
+        	xr_delete(*it);
         }
         Scene.UndoSave();
     }

@@ -14,12 +14,12 @@
 
 //----------------------------------------------------------------------
 TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT){
-    AddControlCB(new TUI_ControlObjectAdd   (estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlObjectAdd >(estSelf,eaAdd,		this));
 }
 
 void TUI_ObjectTools::OnActivate  ()
 {
-    pFrame = new TfraObject(0);
+    pFrame = xr_new<TfraObject>((TComponent*)0);
     ((TfraObject*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
@@ -27,7 +27,7 @@ void TUI_ObjectTools::OnDeactivate()
 {
 	TUI_CustomTools::OnDeactivate();
     ((TfraObject*)pFrame)->fsStorage->SaveFormPlacement();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //------------------------------------------------------------------------------
 //
@@ -49,13 +49,13 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
     if(!N) return false;
 
     { // pick already executed (see top)
-        char namebuffer[MAX_OBJ_NAME];
+        string256 namebuffer;
         Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
-        CSceneObject *obj = new CSceneObject(0,namebuffer);
+        CSceneObject *obj = xr_new<CSceneObject>((LPVOID)0,namebuffer);
         CEditableObject* ref = obj->SetReference(N);
         if (!ref){
         	ELog.DlgMsg(mtError,"TUI_ControlObjectAdd:: Can't load reference object.");
-        	_DELETE(obj);
+        	xr_delete(obj);
         	return false;
         }
         if (fraLeftBar->ebRandomAdd->Down){

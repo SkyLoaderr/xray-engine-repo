@@ -30,6 +30,8 @@ typedef BYTE T_IDX[3];
 static const T_IDX idx[12]={{0,4,3},{4,7,3},{7,6,2},{7,2,3},{4,5,6},{6,7,4},
 							{6,5,1},{6,1,2},{5,4,0},{5,0,1},{0,3,2},{0,2,1}};
 
+Fbox box_identity={{-0.5f,-0.5f,-0.5f},{0.5f,0.5f,0.5f}};
+                            
 void GetBoxTri(int index, Fvector* v){
 	box_identity.getpoint(idx[index][0],v[0]);
 	box_identity.getpoint(idx[index][1],v[1]);

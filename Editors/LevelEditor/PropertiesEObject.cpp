@@ -30,7 +30,7 @@ __fastcall TfrmPropertiesEObject::TfrmPropertiesEObject(TComponent* Owner)
 
 TfrmPropertiesEObject* TfrmPropertiesEObject::CreateProperties(TWinControl* parent, TAlign align, TOnModifiedEvent modif)
 {
-	TfrmPropertiesEObject* props = new TfrmPropertiesEObject(parent);
+	TfrmPropertiesEObject* props = xr_new<TfrmPropertiesEObject>(parent);
     props->OnModifiedEvent = modif;
     if (parent){
 		props->Parent 	= parent;
@@ -48,7 +48,7 @@ void TfrmPropertiesEObject::DestroyProperties(TfrmPropertiesEObject*& props)
 {
 	VERIFY(props);
 	props->Close();
-    _DELETE(props);
+    xr_delete(props);
 }
 //---------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ void TfrmPropertiesEObject::UpdateProperties(CSceneObject* S)
 
 void __fastcall TfrmPropertiesEObject::FormDestroy(TObject *Sender)
 {
-	_DELETE(m_Thumbnail);
+	xr_delete(m_Thumbnail);
     TProperties::DestroyForm(m_BasicProp);
     TProperties::DestroyForm(m_SurfProp);
 }
@@ -111,14 +111,14 @@ void __fastcall TfrmPropertiesEObject::fsStorageSavePlacement(
 
 void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 {
-	_DELETE(m_Thumbnail);
+	xr_delete(m_Thumbnail);
 	if (item&&item->Tag){
     	EPropType type		= TProperties::GetItemType(item);
     	switch (type){
         	case PROP_A_TEXTURE:{
             	LPCSTR nm = TProperties::GetItemColumn(item,0);
             	if (nm&&nm[0]){
-	                m_Thumbnail = new EImageThumbnail(nm,EImageThumbnail::EITTexture);
+	                m_Thumbnail = xr_new<EImageThumbnail>(nm,EImageThumbnail::EITTexture);
                     lbWidth->Caption 	= m_Thumbnail->_Width();
                     lbHeight->Caption 	= m_Thumbnail->_Height();
                     lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";

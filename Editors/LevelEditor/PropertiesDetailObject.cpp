@@ -12,9 +12,9 @@
 TfrmPropertiesDO *frmPropertiesDO=0;
 //---------------------------------------------------------------------------
 int frmPropertiesSectorRun(DDVec& SrcData, bool& bChange){
-	frmPropertiesDO = new TfrmPropertiesDO(0);
+	frmPropertiesDO = xr_new<TfrmPropertiesDO>((TComponent*)0);
     int res = frmPropertiesDO->Run(SrcData,bChange);
-    _DELETE(frmPropertiesDO);
+    xr_delete(frmPropertiesDO);
     return res;
 }
 //---------------------------------------------------------------------------

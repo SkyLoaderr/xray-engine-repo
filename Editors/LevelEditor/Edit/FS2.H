@@ -1,5 +1,5 @@
-#ifndef FS2_H
-#define FS2_H
+#ifndef fs2H
+#define fs2H
 
 #pragma once
 
@@ -54,7 +54,7 @@ public:
 	IC void			w_u32	(u32 d)				{	revbytes(&d,4,1); write(&d,sizeof(u32));	}
 	IC void			w_u16	(u16 d)				{	revbytes(&d,2,1); write(&d,sizeof(u16));	}
 	IC void			w_float	(float d)			{	revbytes(&d,4,1); write(&d,sizeof(float));	}
-	IC void			w_u8	(u8 d)				{	write(&d,sizeof(BYTE));		}
+	IC void			w_u8	(u8 d)				{	write(&d,sizeof(u8));		}
 	IC void			w_string(const char *p)
 	{
     	write(p,strlen(p));
@@ -109,7 +109,7 @@ public:
 
 class ENGINE_API CMemoryStream : public CCustomStream
 {
-	BYTE*		data;
+	u8*		data;
 	u32		position;
 	u32		mem_size;
 	u32		file_size;
@@ -131,7 +131,7 @@ public:
 	{	return position;	}
 
 	// specific
-	BYTE*	pointer	()	{ return data; }
+	u8*	pointer	()	{ return data; }
 	u32	size	()	{ return file_size;	}
 	void	clear	()  { file_size=0; position=0;	}
 	void	SaveTo	(const char* fn, const char* sign)
@@ -220,7 +220,7 @@ public:
 			close_subchunk();
 			open_subchunk(ID_BLOK);
 				open_subchunk(ID_IMAP);
-					make_ord(128,0,(BYTE*)ord);
+					make_ord(128,0,(u8*)ord);
 					w_stringZ(ord);
 					open_subchunk(ID_CHAN);
 						w_u32(ID_COLR);
@@ -259,7 +259,7 @@ public:
 			// plugins
 /*			open_subchunk(ID_BLOK);
 				open_subchunk(ID_SHDR);
-					make_ord(128,0,(BYTE*)ord);
+					make_ord(128,0,(u8*)ord);
 					w_stringZ(ord);
 					open_subchunk(ID_ENAB);
 						w_u16(1);

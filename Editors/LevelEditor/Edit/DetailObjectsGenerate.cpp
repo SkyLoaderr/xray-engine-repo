@@ -242,8 +242,8 @@ void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
 bool EDetailManager::UpdateSlots()
 {
 	// clear previous slots
-    _DELETEARRAY(dtSlots);
-    dtSlots				= new DetailSlot[dtH.size_x*dtH.size_z];
+    xr_free				(dtSlots);
+    dtSlots				= xr_alloc<DetailSlot>(dtH.size_x*dtH.size_z);
 
     UI.ProgressStart	(dtH.size_x*dtH.size_z,"Updating bounding boxes...");
     for (DWORD z=0; z<dtH.size_z; z++){
@@ -472,9 +472,9 @@ CDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
     CDetail* D=0;
 	if (bTestUnique&&(D=FindObjectByName(name))) return D;
 
-    D = new CDetail();
+    D = xr_new<CDetail>();
     if (!D->Update(name)){
-    	_DELETE(D);
+    	xr_delete(D);
         return 0;
     }
     objects.push_back(D);
@@ -500,7 +500,7 @@ int EDetailManager::RemoveObjects(bool bOnlyMarked)
 	if (bOnlyMarked){
 		for (DWORD i=0; i<objects.size(); i++){  // не менять int i; на DWORD
     		if (objects[i]->m_bMarkDel){
-            	_DELETE(objects[i]);
+            	xr_delete(objects[i]);
 	            objects.erase(objects.begin()+i);
     	        i--;
                 cnt++;
@@ -508,7 +508,7 @@ int EDetailManager::RemoveObjects(bool bOnlyMarked)
         }
     }else{
 		for (DOIt it=objects.begin(); it!=objects.end(); it++)
-    		_DELETE(*it);
+    		xr_delete(*it);
         cnt = objects.size();
 	    objects.clear();
     }

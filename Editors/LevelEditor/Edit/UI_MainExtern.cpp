@@ -84,7 +84,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 bool TUI::SelectionFrustum(CFrustum& frustum){
 	VERIFY(m_bReady);
     Fvector st,d,p[4];
-    Ipoint pt[4];
+    Ivector2 pt[4];
 
     float depth = 0;
 

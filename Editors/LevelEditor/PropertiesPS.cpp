@@ -94,7 +94,7 @@ void __fastcall TfrmPropertiesPS::ebCancelClick(TObject *Sender)
 int __fastcall TfrmPropertiesPS::Run(ObjectList* pObjects, bool& bChange)
 {
 	VERIFY(!form);
-	form = new TfrmPropertiesPS(0);
+	form = xr_new<TfrmPropertiesPS>((TComponent*)0);
     form->m_Objects = pObjects;
     VERIFY(form->m_Objects);
 	form->GetObjectsInfo();

@@ -23,7 +23,7 @@ void __fastcall TfrmPreviewImage::FormKeyDown(TObject *Sender,
 
 //----------------------------------------------------
 int __fastcall TfrmPreviewImage::Run(){
-	form = new TfrmPreviewImage(0);
+	form = xr_new<TfrmPreviewImage>((TComponent*)0);
 
 //S
 /*

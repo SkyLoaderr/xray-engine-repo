@@ -30,7 +30,7 @@ SDOData::SDOData(){
 //---------------------------------------------------------------------------
 bool __fastcall TfrmDOShuffle::Run(){
 	VERIFY(!form);
-	form = new TfrmDOShuffle(0);
+	form = xr_new<TfrmDOShuffle>((TComponent*)0);
 	// show
     return (form->ShowModal()==mrOk);
 }
@@ -55,7 +55,7 @@ void TfrmDOShuffle::GetInfo(){
     VERIFY(DM);
     // objects
     for (DOIt d_it=DM->objects.begin(); d_it!=DM->objects.end(); d_it++){
-    	SDOData* dd 			= new SDOData;
+    	SDOData* dd 			= xr_new<SDOData>();
         dd->m_RefName			= (*d_it)->GetName();
         dd->m_fMinScale 		= (*d_it)->s_min;
         dd->m_fMaxScale 		= (*d_it)->s_max;
@@ -68,7 +68,7 @@ void TfrmDOShuffle::GetInfo(){
     ColorIndexPairIt E = DM->m_ColorIndices.end();
     ColorIndexPairIt it= S;
 	for(; it!=E; it++){
-    	TfrmOneColor* OneColor = new TfrmOneColor(0);
+    	TfrmOneColor* OneColor = xr_new<TfrmOneColor>((TComponent*)0);
 		color_indices.push_back(OneColor);
 		OneColor->Parent = form->sbDO;
 	    OneColor->ShowIndex(this);
@@ -120,12 +120,12 @@ void TfrmDOShuffle::ApplyInfo(){
 void TfrmDOShuffle::ClearInfo()
 {
 	for (DDIt it=DOData.begin(); it!=DOData.end(); it++)
-		_DELETE(*it);
+		xr_delete(*it);
     DOData.clear();
 	for (DWORD k=0; k<color_indices.size(); k++)
-    	_DELETE(color_indices[k]);
+    	xr_delete(color_indices[k]);
     color_indices.clear();
-    _DELETE(m_Thm);
+    xr_delete(m_Thm);
 }
 //---------------------------------------------------------------------------
 
@@ -189,10 +189,10 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item = tvItems->Selected;
-    _DELETE(m_Thm);
+    xr_delete(m_Thm);
 	if (Item&&Item->Data){
 		AnsiString nm 		= Item->Text;
-    	m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
+    	m_Thm 				= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
         SDOData* dd			= (SDOData*)Item->Data;
 		lbItemName->Caption = "\""+dd->m_RefName+"\"";
 		AnsiString temp; 	temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)\nNo waving: %s",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale,(dd->m_dwFlags&DO_NO_WAVING)?"on":"off");
@@ -267,7 +267,7 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
                     ELog.DlgMsg(mtInformation,"Maximum detail objects in scene '%d'",dm_max_objects);
                     return;
                 }
-                SDOData* dd 		= new SDOData;
+                SDOData* dd 		= xr_new<SDOData>();
                 dd->m_RefName 		= s_it->c_str();
                 dd->m_fMinScale 	= 0.5f;
                 dd->m_fMaxScale 	= 2.f;
@@ -293,7 +293,7 @@ void __fastcall TfrmDOShuffle::ebDelObjectClick(TObject *Sender)
 void __fastcall TfrmDOShuffle::ebAppendIndexClick(TObject *Sender)
 {
 	ModifColorInd();
-	color_indices.push_back(new TfrmOneColor(0));
+	color_indices.push_back(xr_new<TfrmOneColor>((TComponent*)0));
 	color_indices.back()->Parent = sbDO;
     color_indices.back()->ShowIndex(this);
 }
@@ -309,7 +309,7 @@ void __fastcall TfrmDOShuffle::ebMultiClearClick(TObject *Sender)
 {
 	ModifColorInd();
 	for (DWORD k=0; k<color_indices.size(); k++)
-    	_DELETE(color_indices[k]);
+    	xr_delete(color_indices[k]);
     color_indices.clear();
 }
 //---------------------------------------------------------------------------

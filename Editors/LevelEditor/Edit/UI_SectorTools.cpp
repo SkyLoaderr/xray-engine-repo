@@ -15,20 +15,20 @@
 
 //---------------------------------------------------------------------------
 TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR){
-    AddControlCB(new TUI_ControlSectorSelect(estSelf,eaSelect,	this));
-    AddControlCB(new TUI_ControlSectorAdd 	(estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlSectorSelect>(estSelf,eaSelect,	this));
+    AddControlCB(xr_new<TUI_ControlSectorAdd>(estSelf,eaAdd,		this));
 }
 void TUI_SectorTools::OnObjectsUpdate(){
     TfraSector* fraSector = (TfraSector*)pFrame; VERIFY(fraSector);
 //    fraSector->OnChange();
 }
 void TUI_SectorTools::OnActivate  (){
-    pFrame = new TfraSector(0);
+    pFrame = xr_new<TfraSector>((TComponent*)0);
 	TUI_CustomTools::OnActivate();
 }
 void TUI_SectorTools::OnDeactivate(){
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //------------------------------------------------------------------------------
 // add
@@ -68,9 +68,9 @@ void TUI_ControlSectorAdd::DelMesh(){
 }
 
 bool TUI_ControlSectorAdd::AddSector(){
-	char namebuffer[MAX_OBJ_NAME];
+	string256 namebuffer;
 	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
-	CSector* _O = new CSector(0,namebuffer);
+	CSector* _O = xr_new<CSector>((LPVOID)0,namebuffer);
     SRayPickInfo pinf;
     if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, 0)&&
     	(_O->AddMesh(pinf.s_obj,pinf.e_mesh)))
@@ -80,7 +80,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 		_O->UpdateVolume();
         return true;
     }else{
-    	_DELETE(_O);
+    	xr_delete(_O);
 		return false;
     }
 }

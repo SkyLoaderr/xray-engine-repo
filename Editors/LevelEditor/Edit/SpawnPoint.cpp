@@ -158,7 +158,7 @@ void CSpawnPoint::Construct(LPVOID data){
 
 CSpawnPoint::~CSpawnPoint()
 {
-	_DELETE(m_AttachedObject);
+	xr_delete(m_AttachedObject);
     OnDeviceDestroy();
 }
 

@@ -11,15 +11,15 @@
 
 //----------------------------------------------------------------------
 TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS){
-    AddControlCB(new TUI_ControlPSAdd   (estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlPSAdd>(estSelf,eaAdd,		this));
 }
 void TUI_PSTools::OnActivate  (){
-    pFrame = new TfraPS(0);
+    pFrame = xr_new<TfraPS>((TComponent*)0);
 	TUI_CustomTools::OnActivate();
 }
 void TUI_PSTools::OnDeactivate(){
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //------------------------------------------------------------------------------
 //
@@ -41,7 +41,7 @@ bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
     if(!PS) return false;
 
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
-        char namebuffer[MAX_OBJ_NAME];
+        string256 namebuffer;
         Scene.GenObjectName( OBJCLASS_PS, namebuffer, PS->m_Name );
         CPSObject *obj = new CPSObject( 0, namebuffer );
         obj->Compile(PS);

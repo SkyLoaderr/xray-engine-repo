@@ -10,18 +10,18 @@
 
 //----------------------------------------------------------------------
 TUI_EventTools::TUI_EventTools():TUI_CustomTools(OBJCLASS_EVENT){
-    AddControlCB(new TUI_ControlEventAdd	(estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlEventAdd>(estSelf,eaAdd,	this));
 }
 
 void TUI_EventTools::OnActivate  (){
-    pFrame = new TfraEvent(0);
+    pFrame = xr_new<TfraEvent>((TComponent*)0);
     ((TfraEvent*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
 void TUI_EventTools::OnDeactivate(){
     ((TfraEvent*)pFrame)->fsStorage->SaveFormPlacement();
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //--------------------------------------------------------------------------------------------------
 __fastcall TUI_ControlEventAdd::TUI_ControlEventAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){

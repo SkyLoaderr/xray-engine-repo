@@ -41,9 +41,9 @@ extern "C" __declspec(dllexport) __cdecl int frmScenePropertiesRun(b_params* par
     	return mrCancel;
     }
 #endif
-	frmSceneProperties = new TfrmSceneProperties(0,params);
+	frmSceneProperties = xr_new<TfrmSceneProperties>((TComponent*)0,params);
     int res = frmSceneProperties->Run(params, bRunBuild);
-    _DELETE(frmSceneProperties);
+    xr_delete(frmSceneProperties);
     return res;
 }
 
@@ -329,11 +329,11 @@ void __fastcall TfrmSceneProperties::EnvsUpdate(){
 	bUpdateMode = true;
 //	SendMessage(sbEnvs->Handle,WM_SETREDRAW,0,0);
 	// delete all created forms
-    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) _DELETE(*f_it);
+    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) xr_delete(*f_it);
 	// create forms
 	m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
     for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++){
-	    *f_it = new TfrmOneEnvironment(sbEnvs);
+	    *f_it = xr_new<TfrmOneEnvironment>(sbEnvs);
         (*f_it)->Parent = sbEnvs;
         AnsiString temp; temp.sprintf("Env #%d", f_it-m_frmEnvs.begin());
         (*f_it)->gbEnv->Caption = temp;
@@ -367,11 +367,11 @@ void __fastcall TfrmSceneProperties::tsLevelEnvironmentShow(
 #ifdef _LEVEL_EDITOR
 	bUpdateMode = true;
 	// delete all created forms
-    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) _DELETE(*f_it);
+    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) xr_delete(*f_it);
 	// create forms
 	m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
     for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++){
-	    *f_it = new TfrmOneEnvironment(sbEnvs);
+	    *f_it = xr_new<TfrmOneEnvironment>(sbEnvs);
         (*f_it)->Parent = sbEnvs;
         AnsiString temp; temp.sprintf("Env #%d", f_it-m_frmEnvs.begin());
         (*f_it)->gbEnv->Caption = temp;
@@ -401,12 +401,12 @@ void __fastcall TfrmSceneProperties::seEnvCountChange(TObject *Sender)
 
     if (m_frmEnvs.size()>Scene.m_LevelOp.m_Envs.size()){
     	// delete unused
-        _DELETE(m_frmEnvs.back());
+        xr_delete(m_frmEnvs.back());
         m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
     }else{
     	// create new form
 		m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
-        m_frmEnvs.back() = new TfrmOneEnvironment(sbEnvs);;
+        m_frmEnvs.back() = xr_new<TfrmOneEnvironment>(sbEnvs);;
         m_frmEnvs.back()->Parent = sbEnvs;
         AnsiString temp; temp.sprintf("Env #%d", m_frmEnvs.size()-1);
         m_frmEnvs.back()->gbEnv->Caption = temp;

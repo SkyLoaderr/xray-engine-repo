@@ -181,19 +181,19 @@ void __fastcall TfrmPropertiesWayPoint::ebCancelClick(TObject *Sender)
 int __fastcall TfrmPropertiesWayPoint::Run(ObjectList* pObjects, bool& bChange)
 {
 	VERIFY(!TfrmPropertiesWayPoint::form);
-	form = new TfrmPropertiesWayPoint(0);
+	form = xr_new<TfrmPropertiesWayPoint>((TComponent*)0);
 	form->m_Objects = pObjects; VERIFY(form->m_Objects);
     form->bPointMode=CWayObject::IsPointMode();
     if (form->bPointMode){
     	if (1!=pObjects->size()){
         	ELog.DlgMsg(mtInformation, "Select one WayObject");
-            _DELETE(form);
+            xr_delete(form);
             return mrCancel;
         }
         ((CWayObject*)pObjects->back())->GetSelectedPoints(form->m_Points);
         if (form->m_Points.empty()){
         	ELog.DlgMsg(mtInformation, "Select at least one WayPoint");
-            _DELETE(form);
+            xr_delete(form);
             return mrCancel;
         }
         form->GetPointInfo();

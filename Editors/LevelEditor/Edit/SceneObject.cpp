@@ -14,6 +14,7 @@
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "render.h"
+#include "PropertiesListHelper.h"
 
 #define BLINK_TIME 300.f
 
@@ -42,7 +43,7 @@ void CSceneObject::Construct(LPVOID data){
 CSceneObject::~CSceneObject(){
 	Lib.RemoveEditObject(m_pReference);
     // object motions
-    for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)_DELETE(*o_it);
+    for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)xr_delete(*o_it);
     m_OMotions.clear();
     m_ActiveOMotion = 0;
 }
@@ -329,7 +330,7 @@ void CSceneObject::RemoveOMotion(const char* name)
     for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((stricmp((*m)->Name(),name)==0)){
         	if (m_ActiveOMotion==*m) SetActiveOMotion(0);
-            _DELETE(*m);
+            xr_delete(*m);
         	lst.erase(m);
             break;
         }
@@ -365,7 +366,7 @@ COMotion* CSceneObject::AppendOMotion(const char* fname)
 void CSceneObject::ClearOMotions()
 {
 	SetActiveOMotion(0);
-    for(OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end();m_it++)_DELETE(*m_it);
+    for(OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end();m_it++)xr_delete(*m_it);
     m_OMotions.clear();
 }
 
@@ -377,7 +378,7 @@ void CSceneObject::LoadOMotions(const char* fname)
     m_OMotions.resize(F.Rdword());
 	SetActiveOMotion(0);
     for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){
-        *m_it = new COMotion();
+        *m_it = xr_new<COMotion>();
         (*m_it)->Load(F);
     }
 }

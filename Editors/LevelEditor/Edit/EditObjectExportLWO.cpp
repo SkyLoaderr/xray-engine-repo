@@ -13,7 +13,7 @@ int FindLPCSTR(LPCSTRVec& vec, LPCSTR key){
 
 bool CEditableObject::ExportLWO(LPCSTR fname)
 {
-	CLWMemoryStream* F = new CLWMemoryStream();
+	CLWMemoryStream* F = xr_new<CLWMemoryStream>();
 
 	LPCSTRVec images;
 
@@ -86,7 +86,7 @@ bool CEditableObject::ExportLWO(LPCSTR fname)
 		}
 	F->end_save(fname);
 
-	_DELETE(F);
+	xr_delete(F);
 	
 	return true;
 }

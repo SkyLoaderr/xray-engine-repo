@@ -11,18 +11,18 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 TUI_PortalTools::TUI_PortalTools():TUI_CustomTools(OBJCLASS_PORTAL){
-    AddControlCB(new TUI_ControlPortalAdd 	(estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlPortalAdd>(estSelf,eaAdd,		this));
 }
 void TUI_PortalTools::OnObjectsUpdate(){
     TfraPortal* fraPortal = (TfraPortal*)pFrame; VERIFY(fraPortal);
 }
 void TUI_PortalTools::OnActivate  (){
-    pFrame = new TfraPortal(0);
+    pFrame = xr_new<TfraPortal>((TComponent*)0);
 	TUI_CustomTools::OnActivate();
 }
 void TUI_PortalTools::OnDeactivate(){
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //------------------------------------------------------------------------------
 // add

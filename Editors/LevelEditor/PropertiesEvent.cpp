@@ -17,9 +17,9 @@ int frmPropertiesEventRun(ObjectList* pObjects, bool& bChange){
     	ELog.DlgMsg(mtError,"Multiple selection not supported.");
     	return mrCancel;
     }
-	frmPropertiesEvent = new TfrmPropertiesEvent(0);
+	frmPropertiesEvent = xr_new<TfrmPropertiesEvent>((TComponent*)0);
     int res = frmPropertiesEvent->Run(pObjects,bChange);
-    _DELETE(frmPropertiesEvent);
+    xr_delete(frmPropertiesEvent);
     return res;
 }
 
@@ -38,7 +38,7 @@ void TfrmPropertiesEvent::GetObjectsInfo(){
 
     CEvent::ActionVec& lst=E->m_Actions;
     for (CEvent::ActionIt it=lst.begin(); it!=lst.end(); it++){
-		m_ActionForms.push_back(new TfrmOneEventAction(0));
+		m_ActionForms.push_back(xr_new<TfrmOneEventAction>((TComponent*)0));
 		m_ActionForms.back()->Parent = sbActions;
 	    m_ActionForms.back()->ShowIndex(this,it);
     }
@@ -132,7 +132,7 @@ void __fastcall TfrmPropertiesEvent::RemoveAction(TfrmOneEventAction* action)
 
 void __fastcall TfrmPropertiesEvent::ebAppendActionClick(TObject *Sender)
 {
-	m_ActionForms.push_back(new TfrmOneEventAction(0));
+	m_ActionForms.push_back(xr_new<TfrmOneEventAction>((TComponent*)0));
 	m_ActionForms.back()->Parent = sbActions;
     m_ActionForms.back()->ShowIndex(this);
     OnModified(Sender);
@@ -142,7 +142,7 @@ void __fastcall TfrmPropertiesEvent::ebAppendActionClick(TObject *Sender)
 void __fastcall TfrmPropertiesEvent::ebMultiClearClick(TObject *Sender)
 {
 	for (ActionFormIt it=m_ActionForms.begin(); it!=m_ActionForms.end(); it++)
-    	_DELETE(*it);
+    	xr_delete(*it);
     m_ActionForms.clear();
     OnModified(Sender);
 }
@@ -152,7 +152,7 @@ void __fastcall TfrmPropertiesEvent::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	for (ActionFormIt it=m_ActionForms.begin(); it!=m_ActionForms.end(); it++)
-    	_DELETE(*it);
+    	xr_delete(*it);
 }
 //---------------------------------------------------------------------------
 

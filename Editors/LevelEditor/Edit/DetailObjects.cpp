@@ -75,7 +75,7 @@ void EDetailManager::ClearColorIndices()
 void EDetailManager::ClearSlots()
 {
     ZeroMemory			(&dtH,sizeof(DetailHeader));
-    _DELETEARRAY		(dtSlots);
+    xr_free				(dtSlots);
 	m_Selected.clear	();
     InvalidateCache		();
 }
@@ -227,7 +227,7 @@ bool EDetailManager::LoadColorIndices(CStream& F)
     if (OBJ){
         CStream* O   	= OBJ->OpenChunk(0);
         for (int count=1; O; count++) {
-            CDetail* DO	= new CDetail();
+            CDetail* DO	= xr_new<CDetail>();
             if (!DO->Load(*O)) ELog.Msg(mtError,"Can't load detail object.");
 			objects.push_back(DO);
             O->Close();
@@ -273,7 +273,7 @@ bool EDetailManager::Load(CStream& F){
     // slots
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_SLOTS));
     int cnt 			= F.Rdword();
-    dtSlots				= new DetailSlot[cnt];
+    dtSlots				= xr_alloc<DetailSlot>(cnt);
     m_Selected.resize	(cnt);
 	F.Read				(dtSlots,cnt*sizeof(DetailSlot));
 

@@ -45,7 +45,7 @@ void __fastcall TfrmEditLightAnim::OnModified()
 void __fastcall TfrmEditLightAnim::ShowEditor()
 {
 	if (!form){
-    	form = new TfrmEditLightAnim(0);
+    	form = xr_new<TfrmEditLightAnim>((TComponent*)0);
 		Scene.lock();
     }
     form->Show();
@@ -322,7 +322,7 @@ void __fastcall TfrmEditLightAnim::ebCreateKeyClick(TObject *Sender)
 void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
 {
 	TRect R 	= pbG->ClientRect;
-    Graphics::TBitmap* B 	= new Graphics::TBitmap();
+    Graphics::TBitmap* B 	= xr_new<Graphics::TBitmap>();
     B->Width 	= R.Width()-2;
     B->Height	= R.Height()-2;
 	pbG->Canvas->Brush->Style 	= bsSolid;
@@ -391,7 +391,7 @@ void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
         //
     }
 	pbG->Canvas->Draw(1,1,B);
-    _DELETE(B);
+    xr_delete(B);
 }
 //---------------------------------------------------------------------------
 

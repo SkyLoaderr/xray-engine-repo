@@ -34,7 +34,7 @@ void CGroupObject::OnDestroy()
 {
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
     	(*it)->m_pOwnerObject=0;	// 
-    	_DELETE(*it);
+    	xr_delete(*it);
     }
     m_Objects.clear();
 }

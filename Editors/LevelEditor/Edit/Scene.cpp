@@ -98,7 +98,6 @@ EScene::EScene(){
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
-    m_DetailObjects	= new EDetailManager();
     m_SkyDome 		= 0;
     ClearSnapList	();
 }
@@ -111,7 +110,8 @@ EScene::~EScene(){
 void EScene::OnCreate(){
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
-	m_LastAvailObject = 0;
+    m_DetailObjects			= xr_new<EDetailManager>();
+	m_LastAvailObject 		= 0;
     m_LevelOp.Reset();
 	ELog.Msg( mtInformation, "Scene: initialized" );
 	m_Valid = true;
@@ -127,8 +127,8 @@ void EScene::OnDestroy(){
 	ELog.Msg( mtInformation, "Scene: cleared" );
 	m_LastAvailObject = 0;
 	m_Valid = false;
-    _DELETE(m_DetailObjects);
-    _DELETE(m_SkyDome);
+    xr_delete(m_DetailObjects);
+    xr_delete(m_SkyDome);
 }
 
 void EScene::AddObject( CCustomObject* object, bool bUndo ){
@@ -314,14 +314,14 @@ int EScene::RemoveSelection( EObjClass classfilter ){
                     count ++;
                     ObjectIt _D = _F; _F++;
                  	RemoveObject(*_D,false);
-                    _DELETE((*_D));
+                    xr_delete((*_D));
             	}else{
                 	_F++;
                 }
 /*
                 if( (*_F)->Selected() && !(*_F)->Locked() ){
                     count ++;
-                    _DELETE((*_F));
+                    xr_delete((*_F));
                     ObjectIt _D = _F; _F++;
                     lst.remove((*_D));
                 }else{
@@ -572,13 +572,13 @@ void EScene::Render( const Fmatrix& camera )
 
 void EScene::UpdateSkydome()
 {
-	_DELETE(m_SkyDome);
+	xr_delete(m_SkyDome);
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
-        m_SkyDome = new CSceneObject(0,"$sky");
+        m_SkyDome = xr_new<CSceneObject>((LPVOID)0,"$sky");
         CEditableObject* EO = m_SkyDome->SetReference(m_LevelOp.m_SkydomeObjName.c_str());
         if (!EO){
         	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
-            _DELETE(m_SkyDome);
+            xr_delete(m_SkyDome);
         }
     }
 }
@@ -602,7 +602,7 @@ void EScene::ClearObjects(bool bDestroy){
         lst.clear();
     }
     m_DetailObjects->Clear();
-    _DELETE(m_SkyDome);
+    xr_delete(m_SkyDome);
     ClearSnapList();
     m_CompilerErrors.Clear();
 }

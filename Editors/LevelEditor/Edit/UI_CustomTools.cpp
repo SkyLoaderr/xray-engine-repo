@@ -15,11 +15,11 @@ TUI_CustomTools::TUI_CustomTools(EObjClass cls){
     pCurControl = 0;
     pFrame		= 0;
     for (int a=0; a<eaMaxActions; a++)
-        m_Controls[EAction(a)]= new TUI_CustomControl(estSelf,a,this);
+        m_Controls[EAction(a)]= xr_new<TUI_CustomControl>(estSelf,a,this);
 }
 
 TUI_CustomTools::~TUI_CustomTools(){
-	for (ControlsPairIt it=m_Controls.begin(); it!=m_Controls.end(); it++) _DELETE(it->second);
+	for (ControlsPairIt it=m_Controls.begin(); it!=m_Controls.end(); it++) xr_delete(it->second);
     m_Controls.clear();
 }
 
@@ -27,7 +27,7 @@ void TUI_CustomTools::AddControlCB(TUI_CustomControl* c){
     VERIFY(c);
 	ControlsPairIt it=m_Controls.find(EAction(c->action));
     VERIFY(it!=m_Controls.end());
-    _DELETE(it->second);
+    xr_delete(it->second);
     it->second = c;
 }
 

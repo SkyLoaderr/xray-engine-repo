@@ -29,15 +29,10 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     Width = 459
     Height = 336
     ActiveTabColor = 10528425
-    BorderWidth = 0
     Color = 10528425
-    DrawFocus = False
     Flat = True
     HotTrack = False
     InactiveTabColor = 10528425
-    Multiline = False
-    RaggedRight = False
-    ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 15
     TabIndex = 1
@@ -49,15 +44,18 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     HotTrackFont.Style = []
     TabBkColor = 10528425
     ActivePage = tsSurfaces
-    FlatTabBorderColor = clBtnShadow
+    ActiveTabFont.Charset = DEFAULT_CHARSET
+    ActiveTabFont.Color = clWindowText
+    ActiveTabFont.Height = -11
+    ActiveTabFont.Name = 'MS Sans Serif'
+    ActiveTabFont.Style = []
     Align = alClient
     ParentColor = False
     TabOrder = 0
     UseXPThemes = False
+    DockOrientation = doNoOrient
     object tsBasic: TElTabSheet
       PageControl = ElPageControl1
-      ImageIndex = -1
-      TabVisible = True
       Caption = 'Main Options'
       Color = 10528425
       Visible = False
@@ -74,8 +72,6 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     end
     object tsSurfaces: TElTabSheet
       PageControl = ElPageControl1
-      ImageIndex = -1
-      TabVisible = True
       Caption = 'Surfaces'
       Color = 10528425
       object paSurfaces: TPanel

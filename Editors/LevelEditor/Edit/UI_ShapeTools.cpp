@@ -11,11 +11,11 @@
 
 TUI_ShapeTools::TUI_ShapeTools():TUI_CustomTools(OBJCLASS_SHAPE)
 {
-    AddControlCB(new TUI_ControlShapeAdd(estSelf,eaAdd,	this));
+    AddControlCB(xr_new<TUI_ControlShapeAdd>(estSelf,eaAdd,	this));
 }
 void TUI_ShapeTools::OnActivate  ()
 {
-    pFrame = new TfraShape(0);
+    pFrame = xr_new<TfraShape>((TComponent*)0);
     ((TfraShape*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
@@ -23,7 +23,7 @@ void TUI_ShapeTools::OnDeactivate()
 {
     ((TfraShape*)pFrame)->fsStorage->SaveFormPlacement();
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 
 //--------------------------------------------------------------------------------------------------

@@ -10,18 +10,18 @@
 //---------------------------------------------------------------------------
 
 TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAY){
-    AddControlCB(new TUI_ControlWayPointAdd	(estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlWayPointAdd>(estSelf,eaAdd,		this));
 }
 
 void TUI_WayPointTools::OnActivate(){
-    pFrame = new TfraWayPoint(0);
+    pFrame = xr_new<TfraWayPoint>((TComponent*)0);
     ((TfraWayPoint*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
 void TUI_WayPointTools::OnDeactivate(){
     ((TfraWayPoint*)pFrame)->fsStorage->SaveFormPlacement();
 	TUI_CustomTools::OnDeactivate();
-    _DELETE(pFrame);
+    xr_delete(pFrame);
 }
 //--------------------------------------------------------------------------------------------------
 __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){

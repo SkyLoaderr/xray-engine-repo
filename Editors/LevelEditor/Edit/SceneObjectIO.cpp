@@ -31,9 +31,9 @@
 //----------------------------------------------------
 COMotion* CSceneObject::LoadOMotion(const char* fname){
 	if (Engine.FS.Exist(fname)){
-    	COMotion* M = new COMotion();
+    	COMotion* M = xr_new<COMotion>();
         if (!M->LoadMotion(fname)){
-        	_DELETE(M);
+        	xr_delete(M);
         }
         return M;
     }
@@ -82,10 +82,10 @@ bool CSceneObject::Load(CStream& F){
         if (F.FindChunk(SCENEOBJ_CHUNK_OMOTIONS)){
             m_OMotions.resize(F.Rdword());
             for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){
-                *o_it = new COMotion();
+                *o_it = xr_new<COMotion>();
                 if (!(*o_it)->Load(F)){
                     ELog.Msg(mtError,"SceneObject: '%s' - motions has different version. Load failed.",Name);
-                    _DELETE(*o_it);
+                    xr_delete(*o_it);
                     m_OMotions.clear();
                     break;
                 }

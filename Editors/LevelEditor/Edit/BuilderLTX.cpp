@@ -97,7 +97,7 @@ BOOL SceneBuilder::BuildLTX(){
 		F.WstringZ( Scene.m_LevelOp.m_BOPText.c_str() );
 	F.SaveTo(ltx_filename,0);
 
-    CInifile* pIni = new CInifile(ltx_filename,false);
+    CInifile* pIni = xr_new<CInifile>(ltx_filename,false);
 
 	Scene.WriteToLTX(pIni);
 

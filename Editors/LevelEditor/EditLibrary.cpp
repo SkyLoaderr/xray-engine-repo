@@ -45,14 +45,14 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-	m_pEditObject = new CSceneObject(0,0);
+	m_pEditObject = xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);     
     m_Props = TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ShowEditor()
 {
 	if (!form){
-    	form = new TfrmEditLibrary(0);
+    	form = xr_new<TfrmEditLibrary>((TComponent*)0);
 		Scene.lock();
     }
     form->Show();
@@ -133,12 +133,12 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
         	Lib.ReloadObject(it->first.c_str());
         UI.SetStatus("");
     }
-    _DELETE(form->m_pEditObject);
+    xr_delete(form->m_pEditObject);
 
     TfrmPropertiesEObject::DestroyProperties(m_Props);
 
 	form = 0;
-	_DELETE(m_Thm);
+	xr_delete(m_Thm);
 	Action = caFree;
 
 	Scene.unlock();
@@ -186,7 +186,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 {
     TElTreeItem* node = tvObjects->Selected;
 
-	_DELETE(m_Thm);
+	xr_delete(m_Thm);
     bool mt=false;
     if (node&&FHelper.IsObject(node)&&UI.ContainEState(esEditLibrary)){
         // change thm
@@ -201,7 +201,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         	// если версии совпадают
             int obj_age 		= Engine.FS.GetFileAge(obj_fn);
             int thm_age 		= Engine.FS.GetFileAge(thm_fn);
-            m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
+            m_Thm 				= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
             if (obj_age&&(obj_age==thm_age)){
             }else{
             	ELog.Msg(mtError,"Update object thumbnail. Stale data.");
@@ -501,7 +501,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             nm = *it;
             nm = nm.Delete(1,strlen(Engine.FS.m_Import.m_Path));
-            CEditableObject* O = new CEditableObject(nm.c_str());
+            CEditableObject* O = xr_new<CEditableObject>(nm.c_str());
             if (O->Load(it->c_str())){
                 O->m_ObjVer.f_age = Engine.FS.GetFileAge(*it);
                 save_nm = ChangeFileExt(nm,".object");
@@ -515,7 +515,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
             }else{
             	ELog.DlgMsg(mtError,"Can't load file '%s'.",it->c_str());
             }
-            _DELETE(O);
+            xr_delete(O);
             if (bNeedBreak) break;
         }
         if (bNeedUpdate){
