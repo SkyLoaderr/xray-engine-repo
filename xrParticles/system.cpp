@@ -20,8 +20,8 @@ namespace PAPI{
 
 // static variables
 float ParticleAction::dt;
-_ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
-_ParticleState::ParticleActionsVec	_ParticleState::alist_vec;
+//_ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
+//_ParticleState::ParticleActionsVec	_ParticleState::alist_vec;
 
 // This is the global state.
 _ParticleState 		__ps;
@@ -124,7 +124,7 @@ int _ParticleState::GenerateLists(int list_count)
 	// Couldn't find a big enough gap. Allocate.
 	first_empty = alist_vec.size();
     for (int k=0; k<list_count; k++)
-		alist_vec.push_back(xr_new<ParticleActions>());
+		alist_vec.push_back(0);
 	
 	return first_empty;
 }
@@ -386,7 +386,14 @@ PARTICLEDLL_API int pGenActionLists(int action_list_count)
 	if(_ps.in_new_list)
 		return -1; // ERROR
 
-	return _ps.GenerateLists(action_list_count);
+	int ind = _ps.GenerateLists(action_list_count);
+
+	for(int i=ind; i<ind+action_list_count; i++)
+	{
+		_ps.alist_vec[i] = xr_new<ParticleActions>();
+	}
+
+    return ind;
 }
 
 PARTICLEDLL_API void pNewActionList(int action_list_num)
@@ -431,7 +438,7 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 		return; // ERROR
 
 	for(int i = action_list_num; i < action_list_num + action_list_count; i++)
-		xr_delete	(_ps.alist_vec[i]);
+		xr_delete(_ps.alist_vec[i]);
 }
 
 void _pSendAction(ParticleAction *S);

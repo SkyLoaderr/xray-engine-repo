@@ -561,8 +561,8 @@ namespace PAPI
 		// All accesses to these should be locked.
 		DEFINE_VECTOR(ParticleEffect*,ParticleEffectVec,ParticleEffectVecIt);
 		DEFINE_VECTOR(ParticleActions*,ParticleActionsVec,ParticleActionsVecIt);
-		static ParticleEffectVec	effect_vec;
-		static ParticleActionsVec	alist_vec;
+		ParticleEffectVec	effect_vec;
+		ParticleActionsVec	alist_vec;
 
 		// state part
 		Flags32			flags;
