@@ -490,6 +490,9 @@
 				RelativePath="ai_a_star.h">
 			</File>
 			<File
+				RelativePath="ai_nodes.cpp">
+			</File>
+			<File
 				RelativePath="ai_nodes.h">
 			</File>
 			<File
