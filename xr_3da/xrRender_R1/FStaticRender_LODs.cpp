@@ -1,17 +1,37 @@
 #include "stdafx.h"
 #include "..\flod.h"
 
+#ifdef _EDITOR
+#include "igame_persistent.h"
+#include "environment.h"
+#else
+#include "..\igame_persistent.h"
+#include "..\environment.h"
+#endif
+
 extern float r_ssaLOD_A;
 extern float r_ssaLOD_B;
 
-#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
-#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
-
-IC u32	color		(u32 Base, u32 Alpha)
+IC u32	color		(u32 rgbh, u8 sun, u32 Alpha)
 {
-	return color_rgba(RGBA_GETRED(Base),RGBA_GETGREEN(Base),RGBA_GETBLUE(Base),Alpha);
+	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.Current;
+	Fvector						c_sun,c_ambient,c_lmap,c_hemi;
+	c_sun.set					(desc.sun_color.x,	desc.sun_color.y,	desc.sun_color.z);
+	c_lmap.set					(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
+	c_ambient.set				(desc.ambient.x,	desc.ambient.y,		desc.ambient.z);
+	c_hemi.set					(desc.hemi_color.x, desc.hemi_color.y,	desc.hemi_color.z);
+
+	Fvector C,rgb; 
+	rgb.set						(float(color_get_R(rgbh)),float(color_get_G(rgbh)),float(color_get_B(rgbh)));
+	rgb.div						(255.f);
+	float h						= float(color_get_A(rgbh))/255.f;
+	float s						= float(sun)/255.f;
+	C.set						(c_ambient);
+	C.mad						(c_lmap,rgb);
+	C.mad						(c_hemi,h);
+	C.mad						(c_sun,	s);
+
+	return subst_alpha			(color_rgba_f(C.x,C.y,C.z,0),Alpha);
 }
 
 void CRender::flush_LODs()
@@ -41,7 +61,7 @@ void CRender::flush_LODs()
 		float	ssaDiff					= P.ssa-r_ssaLOD_B;
 		float	scale					= ssaDiff/ssaRange;
 		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
-		u32	uA						= u32(iA);
+		u32		uA						= u32(iA);
 		// float	shift_scale				= scale;					clamp(shift_scale,0.f,1.f);
 
 		// calculate direction and shift
@@ -66,14 +86,12 @@ void CRender::flush_LODs()
 		dot	= Ldir.dotproduct			(facets[7].N); if (dot>best_dot) { best_id=7; best_dot=dot; }
 
 #pragma todo("Smooth transitions")
-#pragma todo("5-coloring")
-
 		// Fill VB
 		FLOD::_face&	F				= facets[best_id];
-		_P.add(F.v[3].v,shift);	V->set	(_P,color(F.v[3].c_rgb_hemi,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
-		_P.add(F.v[0].v,shift);	V->set	(_P,color(F.v[0].c_rgb_hemi,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
-		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c_rgb_hemi,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
-		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c_rgb_hemi,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
+		_P.add(F.v[3].v,shift);	V->set	(_P,color(F.v[3].c_rgb_hemi,F.v[3].c_sun,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
+		_P.add(F.v[0].v,shift);	V->set	(_P,color(F.v[0].c_rgb_hemi,F.v[0].c_sun,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
+		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
+		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	vecGroups.push_back				(cur_count);
 	RCache.Vertex.Unlock			(lstLODs.size()*4,firstV->hGeom->vb_stride);
