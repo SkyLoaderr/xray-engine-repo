@@ -757,6 +757,60 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	return N;
 }
 
+Shader*	CShaderManager::Create_B	(CBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+{
+	CBlender_Compile	C;
+	Shader				S;
+
+	// Access to template
+	C.BT				= B;
+	C.bEditor			= FALSE;
+	C.iLayers			= 1;
+	C.bDetail			= FALSE;
+#ifdef _EDITOR
+	if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
+	C.bEditor			= TRUE;
+#endif
+
+	// Parse names
+	_ParseList			(C.L_textures,	s_textures	);
+	_ParseList			(C.L_constants,	s_constants	);
+	_ParseList			(C.L_matrices,	s_matrices	);
+
+	// Compile element
+	C.iLOD				= 0;
+	C.bLighting			= FALSE;
+	C.bDetail			= TRUE;
+	S.lod0				= _CreateElement	(C);
+
+	// Compile element
+	C.iLOD				= 1;
+	C.bLighting			= FALSE;
+	C.bDetail			= FALSE;
+	S.lod1				= _CreateElement	(C);
+
+	// Compile element
+	C.iLOD				= 0;
+	C.bLighting			= TRUE;
+	C.bDetail			= FALSE;
+	S.lighting			= _CreateElement	(C);
+
+	// Search equal in shaders array
+	for (u32 it=0; it<v_shaders.size(); it++)
+	{
+		if (S.equal(v_shaders[it]))	{
+			v_shaders[it]->dwReference	++;
+			return v_shaders[it];
+		}
+	}
+
+	// Create _new_ entry
+	Shader*		N		= xr_new<Shader>(S);
+	N->dwReference		= 1;
+	v_shaders.push_back	(N);
+	return N;
+}
+
 void CShaderManager::_DeleteElement(ShaderElement* &S)
 {
 	if (0==S)	return;

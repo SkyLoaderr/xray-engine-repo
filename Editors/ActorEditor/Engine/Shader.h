@@ -103,15 +103,8 @@ public:
 struct ENGINE_API		Shader
 {
 public:
-	u32					dwReference;
-	union {
-		struct {
-			ShaderElement*		lod0;
-			ShaderElement*		lod1;
-			ShaderElement*		lighting;
-		};
-		ShaderElement*		E	[3];
-	};
+	u32						dwReference;
+	ShaderElement*			E		[3];	// R1 - 0=lod0, 1=lod1, 2=lighting
 
 	BOOL					equal	(Shader& S);
 	BOOL					equal	(Shader* S);

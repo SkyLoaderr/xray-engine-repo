@@ -142,6 +142,7 @@ public:
 
 	// Creation/Destroying
 	Shader*			Create				(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	Shader*			Create_B			(CBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void			Delete				(Shader*	&S);
 
 	SGeometry*		CreateGeom			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);

@@ -615,12 +615,6 @@
 						Name="ShaderManager"
 						Filter="">
 						<File
-							RelativePath="ShaderCompiler.cpp">
-						</File>
-						<File
-							RelativePath="ShaderCompiler.h">
-						</File>
-						<File
 							RelativePath=".\TextureManager.cpp">
 							<FileConfiguration
 								Name="Mixed|Win32">
