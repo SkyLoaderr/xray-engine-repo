@@ -67,6 +67,14 @@ void CInfoPortion::load_shared	(LPCSTR)
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
 	R_ASSERT3(pNode, "info_portion id=", *shared_str(item_data.id));
 
+
+	int defer_init = uiXml.ReadAttribInt(pNode, "defer_init", 0);
+	if (1 == defer_init) 
+		info_data()->m_bDeferInit = true;
+	else
+		info_data()->m_bDeferInit = false;
+
+
 	//текст
 	info_data()->m_text = uiXml.Read(pNode, "text", 0);
 
@@ -206,6 +214,11 @@ void CInfoPortion::load_shared	(LPCSTR)
 LPCSTR  CInfoPortion::GetText () const
 {
 	return *info_data()->m_text;
+}
+
+bool CInfoPortion::DeferInit () const
+{
+	return info_data()->m_bDeferInit;
 }
 
 void   CInfoPortion::InitXmlIdToIndex()

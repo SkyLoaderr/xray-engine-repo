@@ -57,6 +57,11 @@ struct SInfoPortionData : CSharedResource
 
 	//текстовое представление информации	
 	shared_str		m_text;
+	
+	//если true, то info_portion будет применена 
+	//(вызвано CInventoryOwner::OnReceiveInfo()) только после получения сообщения
+	//с сервера иначе CInventoryOwner::TransferInfo вызывает мгновенно CInventoryOwner::OnReceiveInfo
+	bool			m_bDeferInit;
 };
 
 
@@ -94,6 +99,7 @@ public:
 
 	//текстовое представление информации
 	virtual LPCSTR GetText () const ;
+	virtual bool   DeferInit () const;
 
 
 protected:

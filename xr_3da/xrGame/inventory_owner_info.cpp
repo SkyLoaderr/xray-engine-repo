@@ -51,11 +51,11 @@ private:
 };
 
 
-bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
+bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index) const
 {
 
 #ifdef DEBUG
-	Msg("CInventoryOwner::OnReceiveInfo info id %s", *CInfoPortion::IndexToId(info_index));
+	Msg("[%s] CInventoryOwner::OnReceiveInfo info id %s", Name(), *CInfoPortion::IndexToId(info_index));
 #endif
 
 	//добавить запись в реестр
@@ -67,7 +67,7 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 		return false;
 
 	//«апустить скриптовый callback
-	CGameObject* pThisGameObject = smart_cast<CGameObject*>(this);
+	const CGameObject* pThisGameObject = smart_cast<const CGameObject*>(this);
 	VERIFY(pThisGameObject);
 
 	SCRIPT_CALLBACK_EXECUTE_2(*m_pInfoCallback, pThisGameObject->lua_game_object(), info_index);
@@ -86,7 +86,7 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 	return true;
 }
 
-void CInventoryOwner::OnDisableInfo(INFO_INDEX info_id)
+void CInventoryOwner::OnDisableInfo(INFO_INDEX info_id) const
 {
 	//удалить запись из реестра
 	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
@@ -107,6 +107,16 @@ void CInventoryOwner::TransferInfo(INFO_INDEX info_index, bool add_info) const
 	P.w_s32			(info_index);							//сообщение
 	P.w_u8			(add_info?1:0);							//добавить/удалить информацию
 	CGameObject::u_EventSend(P);
+
+	CInfoPortion info_portion;
+	info_portion.Load(info_index);
+	if(!info_portion.DeferInit())
+	{
+		if(add_info)
+			OnReceiveInfo	((INFO_INDEX)info_index);
+		else
+			OnDisableInfo	((INFO_INDEX)info_index);
+	}
 }
 
 bool CInventoryOwner::HasInfo(INFO_INDEX info_index) const

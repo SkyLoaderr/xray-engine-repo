@@ -54,11 +54,17 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 
 	for(u32 i=0; i<m_HasInfo.size(); i++)
 		if(!pOwner->HasInfo(CInfoPortion::IdToIndex(m_HasInfo[i])))
+		{
+			Msg("[%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
 			return false;
+		}
 
 	for(i=0; i<m_DontHasInfo.size(); i++)
 		if(pOwner->HasInfo(CInfoPortion::IdToIndex(m_DontHasInfo[i])))
+		{
+			Msg("[%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
 			return false;
+		}
 
 	return true;
 }
