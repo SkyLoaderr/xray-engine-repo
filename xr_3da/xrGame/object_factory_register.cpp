@@ -42,6 +42,8 @@
 #	include "ai/monsters/cat/cat.h"
 #	include "ai/monsters/tushkano/tushkano.h"
 
+#	include "ai/phantom/phantom.h"
+
 #	include "ai/trader/ai_trader.h"
 
 #	include "ai/crow/ai_crow.h"
@@ -209,12 +211,14 @@ void CObjectFactory::register_classes	()
 	ADD(CBurer					,CSE_ALifeMonsterBase			,CLSID_AI_BURER					,"burer");
 	ADD(CPseudoGigant			,CSE_ALifeMonsterBase			,CLSID_AI_GIANT					,"pseudo_gigant");
 	ADD(CController				,CSE_ALifeMonsterBase			,CLSID_AI_CONTROLLER			,"controller");
-	ADD(CPoltergeist			,CSE_ALifeMonsterBase			,CLSID_AI_PHANTOM				,"poltergeist");
+	ADD(CPoltergeist			,CSE_ALifeMonsterBase			,CLSID_AI_POLTERGEIST			,"poltergeist");
 	ADD(CZombie					,CSE_ALifeMonsterBase			,CLSID_AI_ZOMBIE				,"zombie");
 	ADD(CFracture				,CSE_ALifeMonsterBase			,CLSID_AI_FRACTURE				,"fracture");
 	ADD(CSnork					,CSE_ALifeMonsterBase			,CLSID_AI_SNORK					,"snork");
 	ADD(CCat					,CSE_ALifeMonsterBase			,CLSID_AI_CAT					,"cat");
 	ADD(CTushkano				,CSE_ALifeMonsterBase			,CLSID_AI_TUSHKANO				,"tushkano");
+	
+	ADD(CPhantom				,CSE_ALifeCreaturePhantom		,CLSID_AI_PHANTOM				,"phantom");
 
 	// Trader
 	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER				,"trader");

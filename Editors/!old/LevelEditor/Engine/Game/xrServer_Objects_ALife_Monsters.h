@@ -331,6 +331,14 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureCrow)
 #define script_type_list save_type_list(CSE_ALifeCreatureCrow)
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreaturePhantom,CSE_ALifeCreatureAbstract)
+									CSE_ALifeCreaturePhantom	(LPCSTR caSection);
+	virtual							~CSE_ALifeCreaturePhantom	();
+	virtual bool					used_ai_locations			() const;
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeCreaturePhantom)
+#define script_type_list save_type_list(CSE_ALifeCreaturePhantom)
+
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
 	// Personal characteristics:
 	float							fEyeFov;

@@ -62,3 +62,15 @@ void CSE_ALifeZoneVisual::script_register(lua_State *L)
 			)
 	];
 }
+
+void CSE_ALifeCreaturePhantom::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_creature1(
+			CSE_ALifeCreaturePhantom,
+			"cse_alife_creature_phantom",
+			CSE_ALifeCreatureAbstract
+			)
+	];
+}
+

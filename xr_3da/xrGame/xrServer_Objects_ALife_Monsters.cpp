@@ -1470,6 +1470,52 @@ bool CSE_ALifeCreatureCrow::used_ai_locations	() const
 	return						(false);
 }
 
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeCreaturePhantom
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeCreaturePhantom::CSE_ALifeCreaturePhantom(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection)
+{
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+		set_visual				(pSettings->r_string(caSection,"visual"));
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
+}
+
+CSE_ALifeCreaturePhantom::~CSE_ALifeCreaturePhantom()
+{
+}
+
+void CSE_ALifeCreaturePhantom::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeCreaturePhantom::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeCreaturePhantom::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeCreaturePhantom::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeCreaturePhantom::FillProps		(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProps		(pref,values);
+}
+
+bool CSE_ALifeCreaturePhantom::used_ai_locations	() const
+{
+	return						(false);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterRat
 ////////////////////////////////////////////////////////////////////////////
