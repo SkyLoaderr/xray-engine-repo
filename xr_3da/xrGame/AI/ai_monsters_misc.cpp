@@ -579,6 +579,7 @@ DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dw
 			Members.push_back(Group.Members[k]);
 	}
 
+	Msg("\nNew query");
 	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,Level().m_tpAI_DDD->pfAttackSuccessProbability)) {
 		Group.m_dwLastActionTime = Level().timeServer();
 		Group.m_dwLastAction = 0;

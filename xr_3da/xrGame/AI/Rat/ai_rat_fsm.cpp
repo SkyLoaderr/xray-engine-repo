@@ -12,7 +12,8 @@
 
 using namespace NAI_Rat_Constants;
 		   
-#define WRITE_TO_LOG(s) {\
+#define WRITE_TO_LOG(s) bStopThinking = true;
+//{\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
 		Msg("* No objects in frustum",feel_visible.size());\
@@ -260,6 +261,9 @@ void CAI_Rat::FreeHuntingActive()
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
 }
 
 void CAI_Rat::FreeHuntingPassive()
@@ -301,6 +305,9 @@ void CAI_Rat::FreeHuntingPassive()
 
 	vfAddStandingMember();
 	vfAddActiveMember();
+
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
 }
 
 void CAI_Rat::UnderFire()
@@ -341,6 +348,8 @@ void CAI_Rat::UnderFire()
 
 	vfComputeNewPosition();
 
+	SetDirectionLook();
+
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
@@ -353,7 +362,8 @@ void CAI_Rat::UnderFire()
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
-	SetDirectionLook();
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
 }
 
 void CAI_Rat::AttackFire()
@@ -534,6 +544,9 @@ void CAI_Rat::Retreat()
 	else {
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 	}
+
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
 }
 
 void CAI_Rat::Pursuit()
@@ -709,4 +722,7 @@ void CAI_Rat::ReturnHome()
 	}
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
+
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
 }
