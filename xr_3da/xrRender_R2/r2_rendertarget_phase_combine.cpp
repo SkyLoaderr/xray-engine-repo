@@ -83,14 +83,14 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil				(FALSE);
 
 	// ********************* Debug
-	if (0)
+	if (1)
 	{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/2;
 		float	_h					= float(Device.dwHeight)/2;
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
-		if (0) //.
+		if (1) //.
 		{
 			u32							IX=0,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -105,12 +105,12 @@ void	CRenderTarget::phase_combine	()
 			RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 			// Draw COLOR
-			RCache.set_Shader			(s_combine_dbg_Normal);
+			RCache.set_Shader			(s_combine_dbg_0);
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 		// Draw quater-screen quad textured with our accumulator
-		if (0)
+		if (1)
 		{
 			u32							IX=1,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -125,7 +125,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 			// Draw COLOR
-			RCache.set_Shader			(s_combine_dbg_DepthD);
+			RCache.set_Shader			(s_combine_dbg_1);
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}

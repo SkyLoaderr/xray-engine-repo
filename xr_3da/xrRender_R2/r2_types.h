@@ -10,7 +10,7 @@
 #define	r2_RT_accum			"$user$accum"			// ---	16 bit fp or 8 bit
 
 #define	r2_RT_generic0		"$user$generic0"		// ---
-#define	r2_RT_generic1		"$user$generic0"		// ---
+#define	r2_RT_generic1		"$user$generic1"		// ---
 
 #define	r2_RT_bloom1		"$user$bloom1"			// ---
 #define	r2_RT_bloom2		"$user$bloom2"			// ---

@@ -89,8 +89,8 @@ private:
 	ref_geom					g_combine;
 	ref_geom					g_aa_blur;
 	ref_geom					g_aa_AA;
-	ref_shader					s_combine_dbg_DepthD;
-	ref_shader					s_combine_dbg_Normal;
+	ref_shader					s_combine_dbg_0;
+	ref_shader					s_combine_dbg_1;
 	ref_shader					s_combine_dbg_Accumulator;
 	ref_shader					s_combine;
 private:
