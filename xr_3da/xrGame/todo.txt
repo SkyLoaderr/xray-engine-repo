@@ -120,6 +120,8 @@ Oles:
 			. TODO: Parametric shaders 
 -----------------------------------------------------------------------------------------------------------
 Sanya:
+	. BUG:  Run, Press Jump (don't release), after landing - release, try to jump again :)
+	. BUG:	
 	. BUG:	SetHPB(-,-,+)
 	+ BUG:	RayPick -- не всегда выбирает монстрика (FillLine...)
 	+ BUG:	Ќе вращаетс€ пушка (callback??)
