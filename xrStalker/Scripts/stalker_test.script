@@ -75,7 +75,7 @@ function main()
 	
 	action(
 		stalker,
-		move		(move.stand,move.walk,move.line,patrol("way0000",patrol.nearest,patrol.continue)),
+		move		(move.standing,move.walk,move.line,patrol("way0000",patrol.nearest,patrol.continue)),
 		cond		(cond.move_end)
 	)
 
