@@ -28,6 +28,7 @@ public:
 
 public:
 	typedef u8 cell_type;
+	typedef u8 cell_index;
 
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
@@ -37,27 +38,30 @@ private:
 	cell_type		m_color_to_move;
 	u8				m_empties;
 	int				m_difference;
+	cell_index		*m_flip_stack[4096];
+	cell_index		**m_current_flip;
+
 
 protected:
 	IC		void			show_cell				(const cell_type &value) const;
 
 protected:
 	template <cell_type color_to_move>
-	IC		bool			do_move					(const u8 &index);
+	IC		bool			do_move					(const cell_index &index);
 
 public:
 	IC						CBoardClassicOthello	();
 			void			start_position			();
 			void			show					() const;
-			bool			do_move					(const u8 &index);
-	IC		bool			do_move					(const u8 &index0, const u8 &index1);
+			bool			do_move					(const cell_index &index);
+	IC		bool			do_move					(const cell_index &index0, const cell_index &index1);
 
 public:
-	IC		u8				index					(const u8 &index0, const u8 &index1) const;
-	IC		void			cell					(const u8 &index,  const cell_type &value);
-	IC		void			cell					(const u8 &index0, const u8 &index1, const cell_type &value);
-	IC		const cell_type	&cell					(const u8 &index) const;
-	IC		const cell_type	&cell					(const u8 &index0, const u8 &index1) const;
+	IC		cell_index		index					(const cell_index &index0, const cell_index &index1) const;
+	IC		void			cell					(const cell_index &index,  const cell_type &value);
+	IC		void			cell					(const cell_index &index0, const cell_index &index1, const cell_type &value);
+	IC		const cell_type	&cell					(const cell_index &index) const;
+	IC		const cell_type	&cell					(const cell_index &index0, const cell_index &index1) const;
 	IC		const cell_type	&color_to_move			() const;
 	IC		u8				empties					() const;
 	IC		int				difference				() const;
