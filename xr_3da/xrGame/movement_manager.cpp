@@ -246,6 +246,11 @@ void CMovementManager::process_game_path()
 					CLevelPathManager::get_intermediate_vertex_id()
 				)
 			);
+			if (CDetailPathManager::failed()) {
+				m_path_state	= ePathStateBuildLevelPath;
+				Device.Statistic.TEST2.End();
+				break;
+			}
 			m_path_state		= ePathStatePathVerification;
 			Device.Statistic.TEST2.End();
 			break;
@@ -311,6 +316,7 @@ void CMovementManager::process_level_path()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
+			Device.Statistic.TEST2.Begin();
 			if (CLevelLocationSelector::used())
                 CDetailPathManager::build_path(
 					CLevelPathManager::path(),
@@ -325,8 +331,16 @@ void CMovementManager::process_level_path()
 					CLevelPathManager::get_intermediate_index(),
 					m_detail_dest_position
 				);
+			if (CDetailPathManager::failed()) {
+				m_path_state	= ePathStateBuildLevelPath;
+				Device.Statistic.TEST2.End();
+				break;
+			}
 
 			m_path_state		= ePathStatePathVerification;
+
+			Device.Statistic.TEST2.End();
+
 			if (time_over())
 				break;
 		}
@@ -388,6 +402,7 @@ void CMovementManager::process_enemy_search()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
+			Device.Statistic.TEST2.Begin();
 			CDetailPathManager::build_path	(
 				CLevelPathManager::path(),
 				CLevelPathManager::get_intermediate_index(),
@@ -395,7 +410,13 @@ void CMovementManager::process_enemy_search()
 					CLevelPathManager::get_intermediate_vertex_id()
 				)
 			);
+			if (CDetailPathManager::failed()) {
+				m_path_state	= ePathStateBuildLevelPath;
+				Device.Statistic.TEST2.End();
+				break;
+			}
 			m_path_state		= ePathStatePathVerification;
+			Device.Statistic.TEST2.End();
 			if (time_over())
 				break;
 		}

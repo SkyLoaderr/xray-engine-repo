@@ -22,6 +22,7 @@ CDetailPathManager::~CDetailPathManager	()
 void CDetailPathManager::Init			()
 {
 	m_actual				= false;
+	m_failed				= false;
 	m_start_position		= Fvector().set(0,0,0);
 	m_dest_position			= Fvector().set(0,0,0);
 	m_current_travel_point	= u32(-1);

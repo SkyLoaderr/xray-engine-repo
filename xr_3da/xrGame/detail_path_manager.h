@@ -19,6 +19,7 @@ class CDetailPathManager {
 protected:
 	u32										m_current_travel_point;
 	bool									m_actual;
+	bool									m_failed;
 public:
 	enum EMovementType {
 		eMovementTypeStand	= u32(1) << 1,
@@ -63,5 +64,8 @@ public:
 			const	Fvector &direction		();
 			float	speed					();
 			bool	actual					() const;
+	IC		bool	failed					() const;
 			bool	completed				() const;
 };
+
+#include "detail_path_manager_inline.h"
