@@ -290,7 +290,7 @@ void CRender::Render	()
 	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
-	pCreator->Environment.RenderLast		();
+	// pCreator->Environment.RenderLast		();
 	
 	// Postprocess
 	Target.phase_combine					();
