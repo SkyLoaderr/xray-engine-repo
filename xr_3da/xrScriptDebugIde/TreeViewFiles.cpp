@@ -192,6 +192,7 @@ int CTreeViewFiles::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_images.Create (IDB_IL_FILE, 16, 1, RGB(0,255,0));
 	int cc = m_images.GetImageCount();
 	m_pTree->SetImageList (&m_images, TVSIL_NORMAL);
+	
 
 	return 0;
 }
@@ -470,6 +471,12 @@ void CTreeViewFiles::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 			CProject* pProject = g_mainFrame->GetProject();
 			pProject->RemoveFile(pPF);
 		}
+	}
+	if ( hItem && pTVKeyDown->wVKey == VK_F2 )
+	{
+		if(IsFolder(hItem))
+			CEdit * edt = m_pTree->EditLabel(hItem);
+		
 	}
 
 	*pResult = 0;
