@@ -279,27 +279,27 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
 				case CWeapon::eReload : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Reload");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Reload");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[4].A[0];
 					break;
 				}
 				case CWeapon::eShowing : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Showing");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Showing");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[0].A[0];
 					break;
 				}
 				case CWeapon::eHiding : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Hiding");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Hiding");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
 					break;
 				}
 				case CWeapon::eFire: {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire1");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire1");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
 				case CWeapon::eFire2 : {
-					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire2");
+//					Msg				("%6d : weapon state %s",Level().timeServer(),"Fire2");
 					tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}

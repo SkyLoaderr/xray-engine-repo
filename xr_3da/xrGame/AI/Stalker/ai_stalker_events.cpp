@@ -36,7 +36,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #ifndef SILENCE
 			Msg("Trying to take - %s (%d)", O->cName(),O->ID());
 #endif
-			if (m_inventory.Take(dynamic_cast<CGameObject*>(O),true)) {
+			if (m_inventory.Take(dynamic_cast<CGameObject*>(O),GetScriptControl())) {
 				O->H_SetParent(this);
 #ifndef SILENCE
 				Msg("TAKE - %s (%d)", O->cName(),O->ID());

@@ -20,7 +20,7 @@ public:
 	EEffectorPPType		m_tEffectorType;
 	SPPInfo				m_tInfo;
 
-					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time)
+					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time,false)
 	{
 		m_tEffectorType		= EEffectorPPType(iType);
 	}
