@@ -23,8 +23,8 @@ CUIGameCS::CUIGameCS()
 	EnemyBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); EnemyBase.SetColor	(0x80FF0000);
 	BuyZone.Init			("ui\\ui_cs_buyzone",	"font", 5,210,	alLeft|alTop); BuyZone.SetColor		(0x8000FF00);
 	Artifact.Init			("ui\\ui_cs_artefact",	"font",	5,245,	alLeft|alTop); Artifact.SetColor	(0x80FF00A2);
-	m_Parent->m_Parent->ClientToScreen(vMoneyPlace, money_x_offs, money_y_offs, alRight|alBottom);
-	m_Parent->m_Parent->ClientToScreen(vTimePlace, time_x_offs, time_y_offs, alCenter);
+	HUD().ClientToScreen(vMoneyPlace, money_x_offs, money_y_offs, alRight|alBottom);
+	HUD().ClientToScreen(vTimePlace, time_x_offs, time_y_offs, alCenter);
 }
 //--------------------------------------------------------------------
 
@@ -35,8 +35,8 @@ CUIGameCS::~CUIGameCS()
 
 BOOL CUIGameCS::CanBuy()
 {
-	game_cl_GameState::Player* P = Game().local_player;
-	return (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&((Level().timeServer()-Game().start_time)<Game().buy_time);
+	game_cl_GameState::Player* P = m_cl_game->local_player;
+	return (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&((Level().timeServer()-m_cl_game->start_time)<m_cl_game->buy_time);
 }
 //--------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ LPCSTR make_time(string16 buf, DWORD sec)
 
 void CUIGameCS::OnFrame()
 {
-	switch (Game().phase){
+	switch (m_cl_game->phase){
 	case GAME_PHASE_PENDING: {
 		PlayerList.OnFrame();
 		if (CTMenu.Visible())		CTMenu.OnFrame	();
@@ -77,40 +77,40 @@ void CUIGameCS::OnFrame()
 //		if (InventoryMenu.Visible()) InventoryMenu.OnFrame();
 		if (uFlags&flShowFragList) FragList.OnFrame	();
 		string16 buf;
-		game_cl_GameState::Player* P = Game().local_player;
+		game_cl_GameState::Player* P = m_cl_game->local_player;
 		CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 		if (m_Actor){
-			m_Parent->m_Parent->pFontBigDigit->SetColor		(0xA0969678);
-			m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alRight);
-			m_Parent->m_Parent->pFontBigDigit->Out			((float)vMoneyPlace.x,(float)vMoneyPlace.y,"$%d",P->money_total);
-			m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alCenter);
-			m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
+			HUD().pFontBigDigit->SetColor		(0xA0969678);
+			HUD().pFontBigDigit->SetAligment	(CGameFont::alRight);
+			HUD().pFontBigDigit->Out			((float)vMoneyPlace.x,(float)vMoneyPlace.y,"$%d",P->money_total);
+			HUD().pFontBigDigit->SetAligment	(CGameFont::alCenter);
+			HUD().pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(m_cl_game->timelimit-(Level().timeServer()-Game().start_time))/1000));
 		}
 	} break;
 	case GAME_PHASE_TEAM1_SCORES: {
-		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
-		m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
-		m_Parent->m_Parent->pFontDI->SetSize(0.05f);
-		m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 1 SCORES");
+		HUD().pFontDI->SetAligment(CGameFont::alCenter);
+		HUD().pFontDI->SetColor(0xA0969678);
+		HUD().pFontDI->SetSize(0.05f);
+		HUD().pFontDI->Out(0,-0.5f,"TEAM 1 SCORES");
 	} break;
 	case GAME_PHASE_TEAM2_SCORES: {
-		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
-		m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
-		m_Parent->m_Parent->pFontDI->SetSize(0.05f);
-		m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAM 2 SCORES");
+		HUD().pFontDI->SetAligment(CGameFont::alCenter);
+		HUD().pFontDI->SetColor(0xA0969678);
+		HUD().pFontDI->SetSize(0.05f);
+		HUD().pFontDI->Out(0,-0.5f,"TEAM 2 SCORES");
 	} break;
 	case GAME_PHASE_TEAMS_IN_A_DRAW: {
-		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
-		m_Parent->m_Parent->pFontDI->SetColor(0xA0969678);
-		m_Parent->m_Parent->pFontDI->SetSize(0.05f);
-		m_Parent->m_Parent->pFontDI->Out(0,-0.5f,"TEAMS IN A DRAW");
+		HUD().pFontDI->SetAligment(CGameFont::alCenter);
+		HUD().pFontDI->SetColor(0xA0969678);
+		HUD().pFontDI->SetSize(0.05f);
+		HUD().pFontDI->Out(0,-0.5f,"TEAMS IN A DRAW");
 	} break;
 /*	case ÒÐÅÒÜÅ_ÑÎÑÒÎßÍÈÅ:
 		// åñëè èãðà çàêîí÷åíà
-		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
-		m_Parent->m_Parent->pFontDI->SetColor();
-		m_Parent->m_Parent->pFontDI->SetSize(0.2f);
-		m_Parent->m_Parent->pFontDI->Out(0,0.5f,"ÓÐÀ...../dgdfgdg");
+		HUD().pFontDI->SetAligment(CGameFont::alCenter);
+		HUD().pFontDI->SetColor();
+		HUD().pFontDI->SetSize(0.2f);
+		HUD().pFontDI->Out(0,0.5f,"ÓÐÀ...../dgdfgdg");
 	break;
 */	}
 }
@@ -118,7 +118,7 @@ void CUIGameCS::OnFrame()
 
 void CUIGameCS::Render()
 {
-	switch (Game().phase){
+	switch (m_cl_game->phase){
 	case GAME_PHASE_PENDING: 
 		PlayerList.Render();
 		break;
@@ -126,7 +126,7 @@ void CUIGameCS::Render()
 		if (uFlags&flShowFragList) FragList.Render		();
 		CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 		if (m_Actor){
-			game_cl_GameState::Player* P = Game().local_player;
+			game_cl_GameState::Player* P = m_cl_game->local_player;
 			if (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)				OwnBase.Render();
 			else if (P->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE)	EnemyBase.Render();
 			if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.Render();
@@ -165,7 +165,7 @@ bool CUIGameCS::IR_OnKeyboardPress(int dik)
 
 bool CUIGameCS::IR_OnKeyboardRelease(int dik)
 {
-	if (Game().phase==GAME_PHASE_INPROGRESS){
+	if (m_cl_game->phase==GAME_PHASE_INPROGRESS){
 		if (BuyMenu.Visible()&&BuyMenu.IR_OnKeyboardRelease(dik))	return true;
 		if (CTMenu.Visible()&&CTMenu.IR_OnKeyboardRelease(dik))	return true;
 //		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardRelease(dik))		return true;
