@@ -34,6 +34,7 @@ namespace Feel {
 		feel_visible.push_back	(feel_visible_Item());
 		feel_visible_Item&	I	= feel_visible.back();
 		I.O						= O;
+		I.Cache_vis				= 1.f;
 		I.Cache.verts[0].set	(0,0,0);
 		I.Cache.verts[1].set	(0,0,0);
 		I.Cache.verts[2].set	(0,0,0);
@@ -173,7 +174,7 @@ namespace Feel {
 				// check cache
 				if (I->Cache.result&&I->Cache.similar(P,D,f)){
 					// similar with previous query
-					feel_params.vis			= 0.f;
+					feel_params.vis			= I->Cache_vis;
 //					Log("cache 0");
 				}else{
 					float _u,_v,_range;
@@ -182,10 +183,11 @@ namespace Feel {
 //						Log("cache 1");
 					}else{
 						// cache outdated. real query.
-						if (g_pGameLevel->ObjectSpace.RayQuery(RD,feel_vision_callback,&feel_params)&&fis_zero(feel_params.vis)){
-							I->Cache.set		(P,D,f,TRUE);
+						if (g_pGameLevel->ObjectSpace.RayQuery(RD,feel_vision_callback,&feel_params)){
+							I->Cache_vis	= feel_params.vis;
+							I->Cache.set	(P,D,f,TRUE);
 						}else{
-							I->Cache.set		(P,D,f,FALSE);
+							I->Cache.set	(P,D,f,FALSE);
 						}
 //						Log("query");
 					}

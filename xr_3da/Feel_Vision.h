@@ -29,6 +29,7 @@ namespace Feel
 			float				fuzzy;		// note range: (-1[no]..1[yes])
 			CObject*			O;
 			Collide::ray_cache	Cache;
+			float				Cache_vis;
 			Fvector				cp_LP;
 			Fvector				cp_LR_src;
 			Fvector				cp_LR_dst;
