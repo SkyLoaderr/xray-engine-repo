@@ -60,9 +60,9 @@ void CActor::OnReceiveInfo(INFO_ID info_index)
 			pGameSP->TalkMenu.UpdateQuestions();
 		}
 		//если пришло сообщение по PDA когда сам PDA не был запущен
-		else if(!pGameSP->m_pUserMenu->IsShown())
+/*		else if(!pGameSP->m_pUserMenu->IsShown())
 		{
-		}
+		}*/
 	}
 
 	CInventoryOwner::OnReceiveInfo(info_index);
