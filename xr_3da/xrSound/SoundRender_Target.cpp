@@ -52,10 +52,10 @@ void	CSoundRender_Target::_initialize		()
 	dsBD.dwFlags			= 
 		DSBCAPS_CTRL3D | 
 		DSBCAPS_CTRLFREQUENCY | 
-		DSBCAPS_CTRLFX | 
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
-		DSBCAPS_LOCSOFTWARE;
+		psSoundFlags.test(ssHardware) ? 0 : (DSBCAPS_LOCSOFTWARE | DSBCAPS_CTRLFX)
+		;
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
 	dsBD.lpwfxFormat		= &wfx;
@@ -77,22 +77,27 @@ void	CSoundRender_Target::_initialize		()
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
 
 	// DMOs
-	DSEFFECTDESC	desc	[2];
-	desc[0].dwSize			= sizeof(DSEFFECTDESC);
-	desc[0].dwFlags			= DSFX_LOCSOFTWARE;
-	desc[0].guidDSFXClass	= GUID_DSFX_WAVES_REVERB;
-	desc[0].dwReserved1		= 0;
-	desc[0].dwReserved2		= 0;
+	if (!psSoundFlags.test(ssHardware))	{
+		DSEFFECTDESC	desc	[2];
+		desc[0].dwSize			= sizeof(DSEFFECTDESC);
+		desc[0].dwFlags			= DSFX_LOCSOFTWARE;
+		desc[0].guidDSFXClass	= GUID_DSFX_WAVES_REVERB;
+		desc[0].dwReserved1		= 0;
+		desc[0].dwReserved2		= 0;
 
-	desc[1].dwSize			= sizeof(DSEFFECTDESC);
-	desc[1].dwFlags			= DSFX_LOCSOFTWARE;
-	desc[1].guidDSFXClass	= GUID_DSFX_STANDARD_ECHO;
-	desc[1].dwReserved1		= 0;
-	desc[1].dwReserved2		= 0;
+		desc[1].dwSize			= sizeof(DSEFFECTDESC);
+		desc[1].dwFlags			= DSFX_LOCSOFTWARE;
+		desc[1].guidDSFXClass	= GUID_DSFX_STANDARD_ECHO;
+		desc[1].dwReserved1		= 0;
+		desc[1].dwReserved2		= 0;
 
-	R_CHK	(pBuffer->SetFX(2,desc,NULL));
-	R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,(void**)&pFX_Reverb));
-	R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
+		R_CHK	(pBuffer->SetFX(2,desc,NULL));
+		R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,	(void**)&pFX_Reverb));
+		R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
+	} else {
+		pFX_Reverb			= NULL;
+		pFX_Echo			= NULL;
+	}
 }
 
 void	CSoundRender_Target::_destroy		()

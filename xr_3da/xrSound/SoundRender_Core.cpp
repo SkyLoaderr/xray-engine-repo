@@ -11,7 +11,7 @@ CSoundRender_Core				SoundRender;
 CSound_manager_interface*		Sound		= &SoundRender;
 
 int		psSoundTargets			= 12;
-Flags32	psSoundFlags			= {ssWaveTrace | ssHardware};
+Flags32	psSoundFlags			= {ssWaveTrace};
 float	psSoundOcclusionScale	= 0.5f;
 float	psSoundCull				= 0.01f;
 float	psSoundRolloff			= 0.25f;
