@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "d3dx8.h"
+
 BOOL ValidateIndices(u32 vCount, u32 iCount, WORD* pIndices)
 {
 	if (vCount>65535)	return FALSE;
@@ -32,11 +34,11 @@ static u32 dwPositionPart[8] =
 void ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, u32 dwCount)
 // assuming that pDest is large enought to maintain all the data
 {
-	u32	TransferMask[64];
-	u32	tmPos		= 0;
-	u32	tmPosSrc	= 0;
-	u32	dwSizeSrc	= D3DXGetFVFVertexSize(dwTypeSrc)/4;
-	u32	dwSizeDest	= D3DXGetFVFVertexSize(dwTypeDest)/4;
+	u32	TransferMask	[64];
+	u32	tmPos			= 0;
+	u32	tmPosSrc		= 0;
+	u32	dwSizeSrc		= D3DXGetFVFVertexSize(dwTypeSrc)/4;
+	u32	dwSizeDest		= D3DXGetFVFVertexSize(dwTypeDest)/4;
 	u32*	dest		= (u32*)pDest;
 	u32*	src			= (u32*)pSource;
 

@@ -58,5 +58,5 @@ void CLight_rSM::compute_xf_direct	(Fmatrix& L_view, Fmatrix& L_project, Fmatrix
 	}
 
 	// L_project
-	D3DXMatrixPerspectiveOffCenterLH((D3DXMATRIX*)&L_project,vmin.x,vmax.x,vmin.y,vmax.y,vmin.z,vmax.z);
+	// D3DXMatrixPerspectiveOffCenterLH((D3DXMATRIX*)&L_project,vmin.x,vmax.x,vmin.y,vmax.y,vmin.z,vmax.z);
 }

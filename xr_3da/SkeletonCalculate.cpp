@@ -37,8 +37,8 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 }
 
 // Calculation
-typedef D3DXQUATERNION* PQ;
-typedef D3DXMATRIX*		PM;
+// typedef D3DXQUATERNION* PQ;
+// typedef D3DXMATRIX*		PM;
 void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 {
 	ALIGN(16)	static CKey				R[MAX_BLENDED];

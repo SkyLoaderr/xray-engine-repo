@@ -8,6 +8,8 @@
 
 #include "x_ray.h"
 
+#include "d3dx8.h"
+
 extern Shader*	shDEBUG;
 
 void CRender::level_Load()
