@@ -45,7 +45,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TMenuItem *Load1;
 	TMenuItem *Save2;
-	TMenuItem *Export2;
+	TMenuItem *miExportSkeleton;
 	TMenuItem *SaevAs1;
 	TMenuItem *N5;
 	TMenuItem *Import1;
@@ -101,6 +101,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebPreferences;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ebPreviewObjectClick;
+	TMenuItem *miExportObject;
+	TMenuItem *N4;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -144,7 +146,7 @@ __published:	// IDE-managed Components
 	void __fastcall LoadClick(TObject *Sender);
 	void __fastcall miSaveMotionsClick(TObject *Sender);
 	void __fastcall ebMotionsClearClick(TObject *Sender);
-	void __fastcall Export2Click(TObject *Sender);
+	void __fastcall miExportSkeletonClick(TObject *Sender);
 	void __fastcall ebMakePreviewClick(TObject *Sender);
 	void __fastcall ebRenderStyleClick(TObject *Sender);
 	void __fastcall Custom1Click(TObject *Sender);
@@ -153,6 +155,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebPreviewObjectClickMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall Clear1Click(TObject *Sender);
+	void __fastcall miExportObjectClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem		(LPVOID p0, LPVOID p1);

@@ -311,6 +311,7 @@ public:
 
     // export routine
 	bool			ExportSkeletonOGF		(LPCSTR fname);
+    bool			ExportObjectOGF			(LPCSTR fname);
     bool			PrepareSVGeometry		(CFS_Base& F);
     bool			PrepareSVMotions		(CFS_Base& F);
     bool			PrepareSV				(CFS_Base& F);

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ExportSkeleton.h"
+#include "ExportObjectOGF.h"
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "fmesh.h"
@@ -15,7 +15,7 @@
 #include "MgcCont3DMinBox.h"
 #include "UI_Main.h"
 
-DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
+DWORD CObjectOGFCollectorPacked::VPack(SOGFVert& V){
     DWORD P 	= 0xffffffff;
 
     DWORD ix,iy,iz;
@@ -28,7 +28,7 @@ DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
     {
         DWORDVec& vl=m_VM[ix][iy][iz];
         for(DWORDIt it=vl.begin();it!=vl.end(); it++){
-        	SSkelVert& src=m_Verts[*it];
+        	SOGFVert& src=m_Verts[*it];
         	if(src.similar_pos(V)){
 	            if(src.similar(V)){
                     P = *it;
@@ -64,7 +64,7 @@ DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
     return P;
 }
 
-CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces){
+CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces){
     // Params
     m_VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
     m_VMmin.set		(bb.min);
@@ -86,14 +86,14 @@ CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &bb, int apx_verti
 }
 //----------------------------------------------------
 
-CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb):CSkeletonCollectorPacked(bb){
+CExportObjectOGF::SSplit::SSplit(CSurface* surf, const Fbox& bb):CObjectOGFCollectorPacked(bb){
 	strcpy(m_Texture,surf->_Texture());
 	strcpy(m_Shader,surf->_ShaderName());
     I_Current=V_Minimal=-1;
 }
 //----------------------------------------------------
 
-void CExportSkeleton::SSplit::Save(CFS_Base& F)
+void CExportObjectOGF::SSplit::Save(CFS_Base& F)
 {
     // Header
     F.open_chunk		(OGF_HEADER);
@@ -115,13 +115,11 @@ void CExportSkeleton::SSplit::Save(CFS_Base& F)
     F.open_chunk		(OGF_VERTICES);
     F.Wdword			(0x12071980);
     F.Wdword			(m_Verts.size());
-    for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
-        SSkelVert& pV 	= *v_it;
-        m_Box.modify(pV.P);
-        F. write(&(pV.O),sizeof(float)*3);		// position (offset)
+    for (OGFVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
+        SOGFVert& pV 	= *v_it;
+        F.write(&(pV.P),sizeof(float)*3);		// position (offset)
         F.write(&(pV.N),sizeof(float)*3);		// normal
         F.Wfloat(pV.UV.x); F.Wfloat(pV.UV.y);		// tu,tv
-        F.Wdword(pV.B);
     }
     F.close_chunk();
 
@@ -160,7 +158,7 @@ void CExportSkeleton::SSplit::Save(CFS_Base& F)
     F.close_chunk();
 }
 
-void CExportSkeleton::SSplit::MakeProgressive(){
+void CExportObjectOGF::SSplit::MakeProgressive(){
     // Progressive
     I_Current=V_Minimal=-1;
     if (m_Faces.size()>1) {
@@ -168,8 +166,8 @@ void CExportSkeleton::SSplit::MakeProgressive(){
         PM_Init(1,1,4,0.1f,1,1,120,0.15f,0.95f);
 
         // Transfer vertices
-        for (SkelVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++){
-            SSkelVert	&iV = *vert_it;
+        for (OGFVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++){
+            SOGFVert	&iV = *vert_it;
             PM_CreateVertex(iV.P.x,iV.P.y,iV.P.z,vert_it - m_Verts.begin(),(P_UV*)(&iV.UV));
         }
 
@@ -184,7 +182,7 @@ void CExportSkeleton::SSplit::MakeProgressive(){
                 return;
             }
             // Permute vertices
-            SkelVertVec temp_list = m_Verts;
+            OGFVertVec temp_list = m_Verts;
 
             // Perform permutation
             for(DWORD i=0; i<temp_list.size(); i++)
@@ -202,13 +200,13 @@ void CExportSkeleton::SSplit::MakeProgressive(){
     }
 }
 
-CExportSkeleton::CExportSkeleton(CEditableObject* object)
+CExportObjectOGF::CExportObjectOGF(CEditableObject* object)
 {
 	m_Source=object;
 }
 //----------------------------------------------------
 
-void CExportSkeleton::ComputeOBB	(Fobb &B, FvectorVec& V)
+void CExportObjectOGF::ComputeOBB	(Fobb &B, FvectorVec& V)
 {
     if (V.size()<3) { B.invalidate(); return; }
     Mgc::Box3	BOX		= Mgc::MinBox(V.size(), (const Mgc::Vector3*) V.begin());
@@ -220,7 +218,7 @@ void CExportSkeleton::ComputeOBB	(Fobb &B, FvectorVec& V)
 }
 //----------------------------------------------------
 
-int CExportSkeleton::FindSplit(LPCSTR shader, LPCSTR texture)
+int CExportObjectOGF::FindSplit(LPCSTR shader, LPCSTR texture)
 {
 	for (SplitIt it=m_Splits.begin(); it!=m_Splits.end(); it++){
 		if ((0==stricmp(it->m_Texture,texture))&&(0==stricmp(it->m_Shader,shader))) return it-m_Splits.begin();
@@ -229,14 +227,11 @@ int CExportSkeleton::FindSplit(LPCSTR shader, LPCSTR texture)
 }
 //----------------------------------------------------
 
-bool CExportSkeleton::ExportGeometry(CFS_Base& F)
+bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
-    // mem active motion
-    CSMotion* active_motion=m_Source->ResetSAnimation();
-
-    R_ASSERT(m_Source->IsFlag(CEditableObject::eoDynamic)&&m_Source->IsSkeleton());
+    R_ASSERT(m_Source->IsDynamic());
 
     UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
     UI.ProgressInc();
@@ -249,10 +244,8 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
 	UI.SetStatus("Split meshes...");
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
-        // generate vertex offset
-        if (!(MESH->m_LoadState&EMESH_LS_SVERTICES)) MESH->GenerateSVertices();
         // generate normals
-        if (!(MESH->m_LoadState&EMESH_LS_FNORMALS)) MESH->GenerateFNormals();
+        if (!(MESH->m_LoadState&EMESH_LS_FNORMALS)) MESH->Generate();
         vnormals.clear();
         Fvector N;
         for(FvectorIt pt=MESH->m_Points.begin();pt!=MESH->m_Points.end();pt++){
@@ -364,129 +357,8 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     F.close_chunk();
 	UI.ProgressInc();
     UI.ProgressEnd();
-
-    // restore active motion
-    m_Source->SetActiveSMotion(active_motion);
-
+*/
     return true;
 }
-//----------------------------------------------------
-
-bool CExportSkeleton::ExportMotions(CFS_Base& F)
-{
-    if (m_Source->SMotionCount()<=0) return false;
-
-    UI.ProgressStart(3+m_Source->SMotionCount(),"Export skeleton motions...");
-    UI.ProgressInc();
-
-    // mem active motion
-    CSMotion* active_motion=m_Source->ResetSAnimation();
-
-    // Motions
-    F.open_chunk(OGF_MOTIONS);
-    F.open_chunk(0);
-    F.Wdword(m_Source->SMotionCount());
-    F.close_chunk();
-    int smot = 1;
-    for (SMotionIt motion_it=m_Source->FirstSMotion(); motion_it!=m_Source->LastSMotion(); motion_it++, smot++){
-        CSMotion* motion = *motion_it;
-        F.open_chunk(smot);
-        F.WstringZ(motion->Name());
-        F.Wdword(motion->Length());
-        BoneMotionVec& lst=motion->BoneMotions();
-        int bone_id = 0;
-        for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
-            DWORD flag = motion->GetMotionFlag(bone_id);
-            CBone* B = m_Source->GetBone(bone_id);
-            int parent_idx = B->ParentIndex();
-            for (int frm=motion->FrameStart(); frm<motion->FrameEnd(); frm++){
-                float t = (float)frm/motion->FPS();
-                Fvector T,R;
-                Fmatrix mat;
-                Fquaternion q;
-                motion->Evaluate	(bone_id,t,T,R);
-
-                if (flag&WORLD_ORIENTATION){
-                    Fmatrix 	parent;
-                    Fmatrix 	inv_parent;
-                    if(parent_idx>-1){
-                        m_Source->GetBoneWorldTransform(parent_idx,t,motion,parent);
-                        inv_parent.invert(parent);
-                    }else{
-                        parent 		= Fidentity;
-                        inv_parent	= Fidentity;
-                    }
-                    Fmatrix 	rot;
-                    rot.setHPB	(-R.x,-R.y,-R.z);
-                    mat.mul	(inv_parent,rot);
-                }else{
-                    mat.setHPB	(-R.x,-R.y,-R.z);
-                }
-
-                q.set		(mat);
-
-                // Quantize quaternion
-                int	_x = int(q.x*KEY_Quant); clamp(_x,-32767,32767); short x =  _x; F.write(&x,2);
-                int	_y = int(q.y*KEY_Quant); clamp(_y,-32767,32767); short y =  _y; F.write(&y,2);
-                int	_z = int(q.z*KEY_Quant); clamp(_z,-32767,32767); short z =  _z; F.write(&z,2);
-                int	_w = int(q.w*KEY_Quant); clamp(_w,-32767,32767); short w =  _w; F.write(&w,2);
-                F.Wvector(T);
-            }
-        }
-        F.close_chunk();
-	    UI.ProgressInc();
-    }
-    F.close_chunk();
-    UI.ProgressInc();
-
-    // save smparams
-    F.open_chunk(OGF_SMPARAMS);
-    // bone parts
-    BPVec& bp_lst 			= m_Source->BoneParts();
-    if (bp_lst.size()){
-		F.Wword(bp_lst.size());
-    	for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
-    		F.WstringZ(bp_it->alias.c_str());
-            F.Wword(bp_it->bones.size());
-	        F.write(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
-    	}
-    }else{
-		F.Wword(1);
-		F.WstringZ("default");
-		F.Wword(m_Source->BoneCount());
-        for (int i=0; i<m_Source->BoneCount(); i++) F.Wdword(i);
-    }
-    // motion defs
-    SMotionVec& sm_lst 		= m_Source->SMotions();
-	F.Wword(sm_lst.size());
-    for (motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
-        CSMotion* motion = *motion_it;
-        F.WstringZ	(motion->Name());
-        F.Wbyte		(!motion->bFX);
-		F.Wword		(motion->iBoneOrPart);
-        F.Wword		(motion_it-sm_lst.begin());
-        F.Wfloat	(motion->fSpeed);
-        F.Wfloat	(motion->fPower);
-        F.Wfloat	(motion->fAccrue);
-        F.Wfloat	(motion->fFalloff);
-        F.Wbyte		(motion->bStopAtEnd);
-    }
-    F.close_chunk();
-	UI.ProgressInc();
-    UI.ProgressEnd();
-
-    // restore active motion
-    m_Source->SetActiveSMotion(active_motion);
-    return true;
-}
-//----------------------------------------------------
-
-bool CExportSkeleton::Export(CFS_Base& F){
-    if (!ExportGeometry(F)) return false;
-    if (!ExportMotions(F)) return false;
-    return true;
-};
-//----------------------------------------------------
-
 //------------------------------------------------------------------------------
 

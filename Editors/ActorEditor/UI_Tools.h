@@ -152,7 +152,8 @@ public:
 
     bool				Load				(LPCSTR name);
     bool				Save				(LPCSTR name);
-    bool				Export				(LPCSTR name);
+    bool				ExportSkeleton		(LPCSTR name);
+    bool				ExportObject		(LPCSTR name);
     bool				LoadMotions			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name);
     bool				AppendMotion		(LPCSTR name, LPCSTR fn);

@@ -120,11 +120,17 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             }
         }
     	}break;
-    case COMMAND_EXPORT:{
+    case COMMAND_EXPORT_SKELETON:{
     	AnsiString fn;
     	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
-            if (Tools.Export(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-            else			            	ELog.DlgMsg(mtError,"Export failed.");
+            if (Tools.ExportSkeleton(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            else			        		    	ELog.DlgMsg(mtError,"Export failed.");
+    	}break;
+    case COMMAND_EXPORT_OBJECT:{
+    	AnsiString fn;
+    	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
+            if (Tools.ExportObject(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            else			        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_LOAD:{
     	AnsiString fn;

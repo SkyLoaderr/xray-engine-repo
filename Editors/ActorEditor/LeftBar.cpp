@@ -526,9 +526,15 @@ void __fastcall TfraLeftBar::miSaveMotionsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::Export2Click(TObject *Sender)
+void __fastcall TfraLeftBar::miExportSkeletonClick(TObject *Sender)
 {
-	UI.Command( COMMAND_EXPORT );
+	UI.Command( COMMAND_EXPORT_SKELETON );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::miExportObjectClick(TObject *Sender)
+{
+	UI.Command( COMMAND_EXPORT_OBJECT );
 }
 //---------------------------------------------------------------------------
 
@@ -567,6 +573,7 @@ void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
 	UI.Command( COMMAND_PREVIEW_OBJ_PREF );
 }
 //---------------------------------------------------------------------------
+
 
 
 
