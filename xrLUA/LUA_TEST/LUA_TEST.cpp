@@ -886,7 +886,6 @@ int __cdecl main(int argc, char* argv[])
 		string256	l_caScriptName;
 		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\",argv[i],".script");
 		printf		("File %s : ",l_caScriptName);
-		lua_pushstring(L,"test");
 		print_stack	(L);
 		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
 		print_stack	(L);
