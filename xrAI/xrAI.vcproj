@@ -4,7 +4,7 @@
 	Version="7.10"
 	Name="xrAI"
 	ProjectGUID="{EA5932F3-02FE-4AD3-89E8-7072DC465D25}"
-	SccProjectName="&quot;$/xrAI&quot;, KVDAAAAA"
+	SccProjectName="&quot;$/xrAI&quot;, ULAAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
 	SccProvider="MSSCCI:Microsoft Visual SourceSafe">
@@ -545,21 +545,6 @@
 					Filter="">
 					<File
 						RelativePath=".\path_test.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\path_test.h">
