@@ -187,7 +187,7 @@ function sound_update(npc, sound, now)
 			sound.idle = sound.idle + 10
 		end
 
-		if npc:active_sound_count() > 0 and not now then
+		if npc:active_sound_count() > 0 then
 			return
 		end
 
@@ -253,12 +253,12 @@ function sound_update(npc, sound, now)
 			sound.last_id  = id
 			sound.last_num = num
 
-			if type( now ) == "number" then
-				printf("Number")
-				npc:play_sound(id, now+1, now, 1, 0, num)
-			else
+--			if type( now ) == "number" then
+--				printf("Number")
+--				npc:play_sound(id, now+1, now, 1, 0, num)
+--			else
 				npc:play_sound(id, 1, 0, 1, 0, num)
-			end
+--			end
 		end
 	end
 end
