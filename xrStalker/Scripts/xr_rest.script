@@ -89,11 +89,12 @@ function action_rest:initialize ()
     self.object:set_movement_type (move.stand)
     --self.object:set_item (object.hide, self.object:best_weapon ())
     
-    if self.state == 0 then
-       if xr_state.change_state (self.object, xr_state.sit) == true then
-          printf ("CHANGE STATE")  
-       end   
-    end   
+    --if self.state == 0 then
+       --if xr_state.change_state (self.object, xr_state.sit) == true then
+          --printf ("CHANGE STATE")  
+          --return
+       --end   
+    --end   
     
     self.eat_object = self.object:object ("bread")
     if self.eat_object == nil then
@@ -113,22 +114,24 @@ function action_rest:initialize ()
     end
        
     self.time_to_eat = device ():time_global () + 30000
+    self.stage = 0
     
 end
 ----------------------
 function action_rest:execute ()
     action_base.execute (self)
+
+    if xr_state.change_state (self.object, xr_state.sit) == true then
+       --printf ("CHANGE STATE")
+       return 
+    end    
     
     if self.eat_enable == true then
-       if self.stage == 0 then 
-          self.object:set_item (object.activate, self.eat_object)
-          self.stage = 1 
-       else   
-          self.object:set_item (object.use, self.eat_object)
-       end   
-       printf ("Activate eat object")
+       self.object:set_item (object.use, self.eat_object)
+       printf ("EAT object %s", self.eat_object:name ())
        if device ():time_global () - self.time_to_eat > 0 then
-          self.object:set_item (object.deactivate, self.eat_object)
+          printf ("EAT END")
+          --self.object:set_item (object.deactivate, self.eat_object)
           self.eat_enable = false
           self.stage = 0
           self.time_to_eat = device ():time_global () + 20000
@@ -137,17 +140,17 @@ function action_rest:execute ()
     end   
     
     if self.drink_enable == true then
-       self.object:set_item (object.activate, self.drink_object)
-       printf ("Activate drink object")
+       self.object:set_item (object.use, self.drink_object)
+       printf ("USE drink object %s", self.drink_object:name ())
        if device ():time_global () - self.time_to_eat > 0 then
           self.object:set_item (object.deactivate, self.drink_object)
           self.drink_enable = false
-          self.time_to_eat = device ():time_global () + 20000
        end
        return
     else   
        self.drink_enable = false
        self.object:motivation_action_manager ():evaluator (properties["rest"]).value = false
+       self.object:set_item (object.activate, self.object:best_weapon ())
     end
     
 end
