@@ -14,18 +14,18 @@
 class CLevelLocationSelector : virtual public CGameObject {
 protected:
 	struct SEnemySelected {
-		CEntity*			m_enemy;
-		bool				m_visible;
-		float				m_cost;
+		CEntity*							m_enemy;
+		bool								m_visible;
+		float								m_cost;
 	};
 
-	Fvector					m_hit_direction;
-	u32						m_hit_time;
-	SEnemySelected			m_selected_enemy;
-	u32						m_level_locate_query_time;
-	u32						m_level_location_query_interval;
-	bool					m_level_selector_failed;
-	CAbstractNodeEvaluator	*m_level_node_evaluator;
+	Fvector									m_hit_direction;
+	u32										m_hit_time;
+	SEnemySelected							m_selected_enemy;
+	u32										m_level_locate_query_time;
+	u32										m_level_location_query_interval;
+	bool									m_level_selector_failed;
+	PathManagers::CAbstractNodeEvaluator	*m_level_selector_evaluator;
 
 public:
 					CLevelLocationSelector	();

@@ -23,6 +23,8 @@ public:
 	u32										m_game_dest_node;
 	u32										m_game_cur_node_index;
 	EGamePathType							m_game_path_type;
+	PathManagers::CAbstractNodeEvaluator	*m_game_path_evaluator;
+
 
 					CGamePathManager			();
 	virtual			~CGamePathManager			();

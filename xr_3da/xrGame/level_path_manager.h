@@ -34,7 +34,7 @@ public:
 	Fvector									m_enemy_position;
 	float									m_enemy_distance;
 	float									m_enemy_view;
-	CAbstractNodeEvaluator					*m_level_path_node_evaluator;
+	PathManagers::CAbstractNodeEvaluator	*m_level_path_evaluator;
 
 					CLevelPathManager			();
 	virtual			~CLevelPathManager			();
