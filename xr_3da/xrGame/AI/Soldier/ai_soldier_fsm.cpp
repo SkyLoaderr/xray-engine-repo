@@ -35,8 +35,8 @@ void CAI_Soldier::OnFight()
 	WRITE_TO_LOG("fight");
 	
 	switch (tfUpdateActionType()) {
-		case ACTION_TYPE_GROUP  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFightGroup);
-		case ACTION_TYPE_ALONE  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFightAlone);
+		case ACTION_TYPE_GROUP  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFightGroup);
+		case ACTION_TYPE_ALONE  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFightAlone);
 		default				    : GO_TO_PREV_STATE;
 	}
 }
@@ -48,12 +48,12 @@ void CAI_Soldier::OnFightAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionTypeChanged());
 
 	switch (tfUpdateFightTypeAlone()) {
-		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAlone);
-		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAlone);
-		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
-		case FIGHT_TYPE_PURSUIT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierPursuitAlone);
-		case FIGHT_TYPE_FIND	: SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFindAlone);
-		case FIGHT_TYPE_HURT	: SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierHurtAlone);
+		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAlone);
+		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAlone);
+		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatAlone);
+		case FIGHT_TYPE_PURSUIT : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitAlone);
+		case FIGHT_TYPE_FIND	: SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAlone);
+		case FIGHT_TYPE_HURT	: SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierHurtAlone);
 	}
 }
 
@@ -64,12 +64,12 @@ void CAI_Soldier::OnFightGroup()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionTypeChanged());
 
 	switch (tfUpdateFightTypeGroup()) {
-		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackGroup);
-		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendGroup);
-		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatGroup);
-		case FIGHT_TYPE_PURSUIT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierPursuitGroup);
-		case FIGHT_TYPE_FIND	: SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFindGroup);
-		case FIGHT_TYPE_HURT	: SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierHurtGroup);
+		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackGroup);
+		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendGroup);
+		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatGroup);
+		case FIGHT_TYPE_PURSUIT : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitGroup);
+		case FIGHT_TYPE_FIND	: SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindGroup);
+		case FIGHT_TYPE_HURT	: SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierHurtGroup);
 	}
 }
 
@@ -80,9 +80,9 @@ void CAI_Soldier::OnAttackAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if (bfFireEnemy(Enemy.Enemy))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneFire)
 	else
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneNonFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneNonFire)
 }
 
 void CAI_Soldier::OnDefendAlone()
@@ -92,9 +92,9 @@ void CAI_Soldier::OnDefendAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if (bfFireEnemy(Enemy.Enemy))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneFire)
 	else
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneNonFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneNonFire)
 }
 
 void CAI_Soldier::OnPursuitAlone()
@@ -104,9 +104,9 @@ void CAI_Soldier::OnPursuitAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if (bfFireEnemy(Enemy.Enemy))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierPursuitAloneFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitAloneFire)
 	else
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierPursuitAloneNonFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierPursuitAloneNonFire)
 }
 
 void CAI_Soldier::OnFindAlone()
@@ -116,9 +116,9 @@ void CAI_Soldier::OnFindAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if (bfFireEnemy(Enemy.Enemy))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFindAloneFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneFire)
 	else
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFindAloneNonFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneNonFire)
 }
 
 void CAI_Soldier::OnRetreatAlone()
@@ -128,9 +128,9 @@ void CAI_Soldier::OnRetreatAlone()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if (bfFireEnemy(Enemy.Enemy))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAloneFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatAloneFire)
 	else
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAloneNonFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierRetreatAloneNonFire)
 }
 
 void CAI_Soldier::OnHurtAlone()
@@ -161,7 +161,7 @@ void CAI_Soldier::OnHurtAlone()
 		else
 			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
 		Lie();
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierWaitForAnimation);
+		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierWaitForAnimation);
 	}
 	
 	r_torso_speed = TORSO_START_SPEED;
@@ -186,11 +186,11 @@ void CAI_Soldier::OnAttackAloneNonFire()
 
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_NON_FIRE_FIRE_DISTANCE) || bfNeedRecharge(),aiSoldierAttackAloneNonFireRun)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_NON_FIRE_FIRE_DISTANCE) || bfNeedRecharge(),aiSoldierAttackAloneNonFireRun)
 	
-	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneNonFireFire)
+	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneNonFireFire)
 }
 
 void CAI_Soldier::OnAttackAloneFire()
@@ -201,11 +201,11 @@ void CAI_Soldier::OnAttackAloneFire()
 
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierAttackAloneNonFireRun)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierAttackAloneNonFireRun)
 	
-	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAloneNonFireFire)
+	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneNonFireFire)
 }
 
 void CAI_Soldier::OnDefendAloneNonFire()
@@ -216,11 +216,11 @@ void CAI_Soldier::OnDefendAloneNonFire()
 
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_NON_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_NON_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
 	
-	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneNonFireFire)
+	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneNonFireFire)
 }
 
 void CAI_Soldier::OnDefendAloneFire()
@@ -231,11 +231,11 @@ void CAI_Soldier::OnDefendAloneFire()
 
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
 	
-	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAloneNonFireFire)
+	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneNonFireFire)
 }
 
 void CAI_Soldier::OnPursuitAloneNonFire()
@@ -743,7 +743,7 @@ void CAI_Soldier::OnTurnOver()
 	
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 		
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (bfTooBigAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
 		m_ePreviousState = tStateStack.top();
@@ -765,7 +765,7 @@ void CAI_Soldier::OnWaitForAnimation()
 
 	vfSetMovementType(WALK_NO);
 
-	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (m_bStateChanged)
 		m_bActionStarted = true;
@@ -781,7 +781,7 @@ void CAI_Soldier::OnWaitForTime()
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (m_bStateChanged)
 		m_dwLastRangeSearch = Level().timeServer();
@@ -813,7 +813,7 @@ void CAI_Soldier::OnLookingOver()
 	
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((g_Squad() != SPECIAL_SQUAD) && bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE((g_Squad() != SPECIAL_SQUAD) && bfCheckForDanger(),aiSoldierFight)
 	
 	INIT_SQUAD_AND_LEADER;
 	
@@ -847,7 +847,7 @@ void CAI_Soldier::OnPatrolReturnToRoute()
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -918,7 +918,7 @@ void CAI_Soldier::OnPatrolRoute()
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
@@ -1020,7 +1020,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 		
 	INIT_SQUAD_AND_LEADER;
 
