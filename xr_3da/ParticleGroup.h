@@ -16,20 +16,16 @@ namespace PS
 		float				m_fTimeLimit;
 		struct SEffect{
 			enum{
-				flDeferredStop	= (1<<0),
-				flRandomizeTime	= (1<<1),
+				flDefferedStop	= (1<<0),
+				flChild			= (1<<1),
 				flEnabled		= (1<<2),
 			};
-			enum EEffType{
-				etStopEnd		= 0,
-				etMaxType		= u32(-1)
-			};
-			EEffType		m_Type;
 			Flags32			m_Flags;
-			string64		m_EffectName;  
+			ref_str			m_EffectName;  
+			ref_str			m_ChildEffectName;
 			float			m_Time0;
 			float			m_Time1;
-							SEffect				(){m_Flags.set(flEnabled);m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
+							SEffect				(){m_Flags.set(flEnabled);m_Time0=0;m_Time1=0;}
 #ifdef _EDITOR
             BOOL			Equal				(const SEffect&);
 #endif
@@ -66,7 +62,32 @@ namespace PS
 		float				m_CurrentTime;
 		Fvector				m_InitialPosition;
 	public:
-		xr_vector<IRender_Visual*>	children;
+    	DEFINE_VECTOR(IRender_Visual*,VisualVec,VisualVecIt);
+    	struct SItem{
+        	IRender_Visual*	effect;
+            VisualVec		children;
+            VisualVec		children_stopped;
+        public:
+				            SItem			():effect(0){}
+        	void			Set				(IRender_Visual* e){effect=e;}
+            void			Clear			();
+
+            void			OnDeviceCreate	();
+            void			OnDeviceDestroy	();
+
+            void			AppendEmitter	(LPCSTR eff_name);
+            void			RemoveEmitter	(u32 idx);
+
+            void 			UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
+            void			OnFrame			(u32 u_dt, Fbox& box, bool& bPlaying);
+
+            u32				ParticlesCount	();
+            BOOL			IsPlaying		();
+            void			Play			();
+            void			Stop			(BOOL def_stop);
+        };
+        DEFINE_VECTOR(SItem,SItemVec,SItemVecIt)
+		SItemVec			items;
 	public:
 		enum{
 			flRT_Playing		= (1<<0),
@@ -106,9 +127,10 @@ namespace PS
 #define PGD_CHUNK_VERSION		0x0001
 #define PGD_CHUNK_NAME			0x0002
 #define PGD_CHUNK_FLAGS			0x0003
-#define PGD_CHUNK_EFFECTS		0x0004
+#define PGD_CHUNK_EFFECTS		0x0004 // obsolette
 #define PGD_CHUNK_TIME_LIMIT	0x0005
 #define PGD_CHUNK_OWNER			0x0006
+#define PGD_CHUNK_EFFECTS2		0x0007
 
 //---------------------------------------------------------------------------
 #endif

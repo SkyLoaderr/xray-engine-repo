@@ -10,7 +10,7 @@
 using namespace PAPI;
 using namespace PS;
 
-void PS::OnParticleBirth(void* owner, PAPI::Particle& m)
+void PS::OnParticleBirth(void* owner, PAPI::Particle& m, u32 idx)
 {
 	CPEDef* PE = static_cast<CPEDef*>(owner);
     if (PE->m_Flags.is(CPEDef::dfRandomFrame))
@@ -18,7 +18,7 @@ void PS::OnParticleBirth(void* owner, PAPI::Particle& m)
     if (PE->m_Flags.is(CPEDef::dfAnimated)&&PE->m_Flags.is(CPEDef::dfRandomPlayback)&&Random.randI(2))
         m.flags.set(Particle::ANIMATE_CCW,TRUE);
 }
-void PS::OnParticleDead(void* owner, PAPI::Particle& m)
+void PS::OnParticleDead(void* owner, PAPI::Particle& m, u32 idx)
 {
 //	CPEDef* PE = static_cast<CPEDef*>(owner);
 }

@@ -366,12 +366,16 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
         }
     }break;
     case MT_PARTICLE_GROUP:{
-        PS::CParticleGroup* pV			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pV);
-        I = pV->children.begin			();
-        E = pV->children.end			();
-        for (; I!=E; I++){
-            RCache.set_xform_world		(mTransform);
-            Render						(*I,Fidentity,priority,strictB2F,m_fLOD);
+        PS::CParticleGroup* pG			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pG);
+        RCache.set_xform_world			(mTransform);
+	    for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+            PS::CParticleEffect* E		= static_cast<PS::CParticleEffect*>(i_it->effect);
+            Render						(E,Fidentity,priority,strictB2F,m_fLOD);
+            PS::CParticleGroup::VisualVecIt it;
+            for (it=i_it->children.begin(); it!=i_it->children.end(); it++)
+	            Render					(*it,Fidentity,priority,strictB2F,m_fLOD);
+            for (it=i_it->children_stopped.begin(); it!=i_it->children_stopped.end(); it++)
+	            Render					(*it,Fidentity,priority,strictB2F,m_fLOD);
         }
     }break;
     case MT_PARTICLE_EFFECT:{
