@@ -176,6 +176,16 @@ class XRSOUND_API	CSound_stream_interface
 public:
 };
 
+/// definition (Sound Stream Interface)
+class XRSOUND_API	CSound_stats
+{
+public:
+	u32				_rendered;
+	u32				_simulated;
+	u32				_cache_hits;
+	u32				_cache_misses;
+};
+
 /// definition (Sound Callback)
 typedef		void __stdcall sound_event						(ref_sound* S, float range);
 
@@ -192,12 +202,12 @@ public:
 
 	//@{
 	/// Sound interface
-	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)									= 0;
-	virtual void					destroy					( ref_sound& S)																				= 0;
-	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false)					= 0;
-	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false)					= 0;
-	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
-	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
+	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)								= 0;
+	virtual void					destroy					( ref_sound& S)																			= 0;
+	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false)				= 0;
+	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false)				= 0;
+	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)				= 0;
+	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)				= 0;
 
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
 	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
@@ -206,8 +216,7 @@ public:
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
 	virtual void					update_events			( )																						= 0;
-	virtual u32						stat_render				( )																						= 0;
-	virtual u32						stat_simulate			( )																						= 0;
+	virtual void					statistic				( CSound_stats&  dest )																	= 0;
 
 #ifdef __BORLANDC__
 	virtual SoundEnvironment_LIB*	get_env_library			()																						= 0;
