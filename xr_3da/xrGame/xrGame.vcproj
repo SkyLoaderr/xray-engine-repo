@@ -7441,6 +7441,9 @@
 								RelativePath=".\map_location.h">
 							</File>
 							<File
+								RelativePath=".\map_location_defs.h">
+							</File>
+							<File
 								RelativePath=".\map_manager.cpp">
 							</File>
 							<File
