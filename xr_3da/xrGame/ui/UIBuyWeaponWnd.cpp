@@ -67,6 +67,8 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 	SetFont(HUD().pFontMedium);
 
 	m_mlCurrLevel = mlRoot;
+
+	Hide();
 }
 
 CUIBuyWeaponWnd::~CUIBuyWeaponWnd()

@@ -24,6 +24,8 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 	: m_uActiveIndex(0)
 {
 	Init(strSectionName);
+
+	Hide();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
