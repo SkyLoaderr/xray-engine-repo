@@ -93,15 +93,17 @@ void CAI_ALife::Save()
 
 void CAI_ALife::Load()
 {
-	shedule_Min					=     1;
-	shedule_Max					=    20;
-	m_dwObjectsBeingProcessed	=     0;
-	m_dwObjectsBeingSwitched	=	  0;
-	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
-	m_fOnlineDistance			=    10.f;
-	m_tpActor					=	  0;
 	m_tALifeVersion				= ALIFE_VERSION;
-	m_tGameTime					=	  0;
+	m_tpActor					= 0;
+	m_tGameTime					= 0;
+	m_dwObjectsBeingProcessed	= 0;
+	m_dwObjectsBeingSwitched	= 0;
+	
+	shedule_Min					= pSettings->ReadINT	("alife","schedule_min");
+	shedule_Max					= pSettings->ReadINT	("alife","schedule_max");
+	m_qwMaxProcessTime			= pSettings->ReadINT	("alife","procees_time")*CPU::cycles_per_microsec;
+	m_fOnlineDistance			= pSettings->ReadFLOAT	("alife","online_distance");
+	m_dwSwitchDelay				= pSettings->ReadINT	("alife","switch_delay");
 
 #ifdef USE_SINGLE_PLAYER
 	FILE_NAME					caFileName;

@@ -46,9 +46,9 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 
 BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 {
-	OBJECT_PAIR_IT			I = m_tpALife->m_tObjectRegistry.find(eid_what);
-	R_ASSERT				(I != m_tpALife->m_tObjectRegistry.end());
-	(*I).second->ID_Parent	= 0xfffe;
+//	OBJECT_PAIR_IT			I = m_tpALife->m_tObjectRegistry.find(eid_what);
+//	R_ASSERT				(I != m_tpALife->m_tObjectRegistry.end());
+//	(*I).second->ID_Parent	= 0xfffe;
 	return					(TRUE);
 }
 

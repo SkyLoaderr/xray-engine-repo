@@ -195,10 +195,12 @@ public:
 	typedef	CALifeObject inherited;
 	
 	_TIME_ID						m_tTimeID;
+	u32								m_dwLastSwitchTime;
 	
 									CALifeDynamicObject()
 	{
 		m_tTimeID					= 0;
+		m_dwLastSwitchTime			= 1;
 	}
 	
 	virtual void					STATE_Write(NET_Packet &tNetPacket);

@@ -31,6 +31,7 @@ private:
 	u32								m_dwObjectsBeingSwitched;
 	u64								m_qwMaxProcessTime;
 	float							m_fOnlineDistance;
+	u32								m_dwSwitchDelay;
 	
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;

@@ -56,6 +56,7 @@ public:
 	void					Perform_connect_spawn	(xrServerEntity* E, xrClientData* to, NET_Packet& P);
 	void					Perform_transfer		(xrServerEntity* what, xrServerEntity* from, xrServerEntity* to);
 	void					Perform_reject			(xrServerEntity* what, xrServerEntity* from);
+	void					Perform_destroy			(xrServerEntity* tpServerEntity, u32 mode);
 
 	void					Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, xrServerEntity* tpExistedEntity=0);
 	void					Process_update			(NET_Packet& P, DPNID sender);
