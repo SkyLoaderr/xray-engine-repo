@@ -14,9 +14,9 @@ CRenderTarget::CRenderTarget()
 	pShaderGray		= 0;
 	pVS				= 0;
 
-	param_blur		= 1.f;
-	param_gray		= 0.0f;
-	param_noise		= .5f;
+	param_blur		= 0.f;
+	param_gray		= 0.f;
+	param_noise		= 0.f;
 }
 
 BOOL CRenderTarget::Create	()
@@ -83,8 +83,8 @@ void CRenderTarget::e_render_noise	()
 	Device.Shader.set_Shader		(pShaderNoise);
 
 	CTexture*	T					= Device.Shader.get_ActiveTexture	(0);
-	u32			tw					= T->get_Width	()*3;
-	u32			th					= T->get_Height	()*3;
+	u32			tw					= T->get_Width	()*param_noise_scale;
+	u32			th					= T->get_Height	()*param_noise_scale;
 	u32			shift_w				= ::Random.randI(tw);
 	u32			shift_h				= ::Random.randI(th);
 	float		start_u				= (float(shift_w)+.5f)/(tw);
