@@ -52,11 +52,11 @@
 		
 		<visual>actors\bandit\stalker_bandit_1</visual>
 		<supplies>
-		[spawn] &#x0D;&#x0A;
-		wpn_svu &#x0D;&#x0A;
-		ammo_7.62x54_7h15 = 5 &#x0D;&#x0A;
-		ammo_7.62x54_ap = 5 &#x0D;&#x0A;
-		ammo_7.62x54_7h1 = 5 &#x0D;&#x0A;
+		[spawn]
+		wpn_svu \n
+		ammo_7.62x54_7h15 = 5 \n
+		ammo_7.62x54_ap = 5 \n
+		ammo_7.62x54_7h1 = 5 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
