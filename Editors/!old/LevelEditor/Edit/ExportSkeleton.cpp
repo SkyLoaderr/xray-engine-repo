@@ -418,7 +418,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
     if (m_Source->SMotionCount()<1){
     	ELog.Msg(mtError,"Object doesn't have any motion.");
-     	return !m_Source->m_SMotionRefs.IsEmpty();
+     	return !!m_Source->m_SMotionRefs.size();
     }
 
     UI->ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
@@ -572,9 +572,9 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     UI->ProgressStart	(3,"Export skeleton motions defs...");
     UI->ProgressInc		();
 
-    if (!m_Source->m_SMotionRefs.IsEmpty()){
+    if (m_Source->m_SMotionRefs.size()){
 	    F.open_chunk	(OGF_MOTION_REFS);
-    	F.w_stringZ		(m_Source->m_SMotionRefs.c_str());
+    	F.w_stringZ		(m_Source->m_SMotionRefs);
 	    F.close_chunk	();
         UI->ProgressInc	();
     }else{
