@@ -46,7 +46,7 @@ void CALifeSurgeManager::surge		()
 	generate_anomalies					();
 	generate_anomaly_map				();
 	kill_creatures						();
-	ballance_creatures					();
+	//ballance_creatures					();
 	{
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
