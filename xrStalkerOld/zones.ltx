@@ -91,7 +91,7 @@ $spawn 			= "zones\mine_field"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0.15;0.5 ;0.1
-effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
+effective_radius	= 1 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= 
 
 ef_anomaly_type			= 1
@@ -116,17 +116,17 @@ blowout_particles	= explosions\explosion_mine
 ;idle_sound			= 
 blowout_sound		= weapons\f1_explode	;во время выброса(удара) в центре аномалии	
 hit_sound			= anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получает хит
-entrance_sound		= weapons\generic_checkout	;при попадании объекта в аномалию
+entrance_sound		= weapons\mine_on	;при попадании объекта в аномалию
 
 
-awaking_time		= 200
-blowout_time		= 300	
-accamulate_time		= 200000 ;200
+awaking_time		= 150
+blowout_time		= 101	
+accamulate_time		= 10000 ;200
 
-blowout_light_time		= 100
-blowout_explosion_time	= 100
-blowout_particles_time	= 100
-blowout_sound_time  	= 100
+blowout_light_time		= 150
+blowout_explosion_time	= 150
+blowout_particles_time	= 150
+blowout_sound_time  	= 150
 
 disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -159,10 +159,10 @@ spawn_blowout_artefacts = off
 ;; ветер
 blowout_wind		= on
 
-blowout_wind_time_start     = 0
-blowout_wind_time_peak      = 50
-blowout_wind_time_end		= 99
-blowout_wind_power			= 1			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+blowout_wind_time_start     = 150
+blowout_wind_time_peak      = 200
+blowout_wind_time_end		= 1000
+blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
 
@@ -924,7 +924,7 @@ spawn_blowout_artefacts = on
 artefact_spawn_probability = 0.09				;вероятность, что во время срабатывания аномалии будет рожден артефакт
 artefact_spawn_particles = anomaly2\pux_blast	;партиклы, которые отыграются на месте рождения артефакта (опционально)
 artefact_born_sound =  anomaly\pux_blast		;звук, который отыграются на месте рождения артефакта (опционально)
-throw_out_power = 100			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
+throw_out_power = 5			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
 artefact_spawn_height = 10		;(м) высота на центром зоны где будет рожден артефакт
 
 
@@ -1015,7 +1015,7 @@ blowout_wind		= on
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 1500
 blowout_wind_time_end		= 2499
-blowout_wind_power			= 1			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
 
@@ -1028,7 +1028,7 @@ artefact_spawn_particles = anomaly2\gravi_anomaly_shield_00	;партиклы, которые о
 artefact_born_sound =  anomaly\anomaly_gravy_hit1		;звук, который отыграются на месте рождения артефакта (опционально)
 
 throw_out_power = 50			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
-artefact_spawn_height = 0.1		;(м) высота на центром зоны где будет рожден артефакт
+artefact_spawn_height = 0.5		;(м) высота на центром зоны где будет рожден артефакт
 
 
 [zone_flame]
