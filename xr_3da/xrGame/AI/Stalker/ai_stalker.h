@@ -55,15 +55,15 @@ private:
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
 
-	// sound
-	sound					m_tpSoundStep[STALKER_SND_STEP_COUNT];
+	// ref_sound
+	ref_sound					m_tpSoundStep[STALKER_SND_STEP_COUNT];
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
 	SOUND_VECTOR			m_tpSoundHumming;
 	SOUND_VECTOR			m_tpSoundAlarm;
 	SOUND_VECTOR			m_tpSoundSurrender;
 
-	sound					*m_tpCurrentSound;
+	ref_sound					*m_tpCurrentSound;
 	bool					m_bPlayHumming;
 	
 	float					m_fTimeToStep;

@@ -30,7 +30,7 @@ private:
 private:
 	CObjectAnimator*					s_animator;
 	IRender_Visual*						s_particles;
-	sound								s_sound;
+	ref_sound								s_sound;
 	PS::SEmitter						s_emitter;
 
 	Fmatrix								relation;

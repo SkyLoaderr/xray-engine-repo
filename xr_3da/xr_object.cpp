@@ -132,12 +132,14 @@ BOOL CObject::net_Spawn			(LPVOID data)
 		}
 	}
 	spatial_register			();
+	shedule_register			();
 
 	return TRUE;
 }
 
 void CObject::net_Destroy		()
 {
+	shedule_unregister			();
 	spatial_unregister			();
 	FLAGS.bDestroy				= 1;
 }

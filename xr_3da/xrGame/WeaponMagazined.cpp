@@ -264,7 +264,7 @@ void CWeaponMagazined::UpdateCL			()
 
 void CWeaponMagazined::UpdateSounds	()
 {
-	// sound positions
+	// ref_sound positions
 	if (sndShow.feedback || sndHide.feedback || sndShot.feedback || sndReload.feedback || sndEmptyClick.feedback)
 	{
 		UpdateFP					();

@@ -94,7 +94,7 @@ void CWeaponKnife::UpdateCL	()
 	// setVisible			(TRUE);
 	bPending			= FALSE;
 	
-	// sound fire loop
+	// ref_sound fire loop
 	UpdateFP					();
 }
 

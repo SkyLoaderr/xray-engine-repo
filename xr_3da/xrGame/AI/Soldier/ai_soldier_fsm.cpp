@@ -1550,7 +1550,7 @@ void CAI_Soldier::OnDeath()
 //			}
 //			if ((dwCurTime - m_dwLastSoundRefresh > m_fRadioRefreshRate) && ((dwCurTime - m_dwLastRadioTalk > m_fMaxRadioIinterval) || ((dwCurTime - m_dwLastRadioTalk > m_fMinRadioIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - m_fMinRadioIinterval)/(m_fMaxRadioIinterval - m_fMinRadioIinterval))))) {
 //				m_dwLastSoundRefresh = dwCurTime;
-//				// Play radio-sound
+//				// Play radio-ref_sound
 //				m_tpSoundBeingPlayed = &(sndRadio[Random.randI(SND_RADIO_COUNT)]);
 //				
 //				if (m_tpSoundBeingPlayed->feedback)			

@@ -22,8 +22,8 @@ public:
 	CMissile(void);
 	virtual ~CMissile(void);
 
-	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(sound& dest);
+	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy(ref_sound& dest);
 
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);

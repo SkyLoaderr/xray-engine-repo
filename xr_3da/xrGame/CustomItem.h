@@ -23,7 +23,7 @@ private:
 	Fvector				start_pos;
 	EItemState			state;
 
-	sound				sndTake;
+	ref_sound				sndTake;
 public:
 	int					iValue;
 	CLASS_ID			clsid_target;

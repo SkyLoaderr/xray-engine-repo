@@ -95,14 +95,14 @@ class CAI_Zombie : public CCustomMonster
 		CBlend*				m_tpCurrentGlobalBlend;
 		
 		// SOUNDS
-		sound				m_tpaSoundAttack	[SND_ATTACK_COUNT];
-		sound				m_tpaSoundDeath		[SND_DEATH_COUNT];
-		sound				m_tpaSoundHit		[SND_HIT_COUNT];
-		sound				m_tpaSoundIdle		[SND_IDLE_COUNT];
-		sound				m_tpaSoundNotice	[SND_NOTICE_COUNT];
-		sound				m_tpaSoundPursuit	[SND_PURSUIT_COUNT];
-		sound				m_tpaSoundResurrect	[SND_RESURRECT_COUNT];
-		sound*				m_tpSoundBeingPlayed;
+		ref_sound				m_tpaSoundAttack	[SND_ATTACK_COUNT];
+		ref_sound				m_tpaSoundDeath		[SND_DEATH_COUNT];
+		ref_sound				m_tpaSoundHit		[SND_HIT_COUNT];
+		ref_sound				m_tpaSoundIdle		[SND_IDLE_COUNT];
+		ref_sound				m_tpaSoundNotice	[SND_NOTICE_COUNT];
+		ref_sound				m_tpaSoundPursuit	[SND_PURSUIT_COUNT];
+		ref_sound				m_tpaSoundResurrect	[SND_RESURRECT_COUNT];
+		ref_sound*				m_tpSoundBeingPlayed;
 		u32					m_dwLastSoundRefresh;
 		
 		float				m_fMinVoiceIinterval;

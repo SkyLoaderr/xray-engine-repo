@@ -308,7 +308,7 @@ bool CMissile::Action(s32 cmd, u32 flags) {
 	return false;
 }
 
-void CMissile::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CMissile::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",Name(),"_",s_name,".wav");
 	if (FS.exist(temp,"$game_sounds$",name)) 
@@ -325,6 +325,6 @@ void CMissile::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq
 	Debug.fatal	("Can't find sound '%s' for weapon '%s'", name, Name());
 }
 
-void CMissile::SoundDestroy(sound& dest) {
+void CMissile::SoundDestroy(ref_sound& dest) {
 	dest.destroy();
 }

@@ -61,25 +61,25 @@ enum {
 	sq_forcedword = u32(-1)
 };
 
-/*! \class sound
+/*! \class ref_sound
 	\brief Sound source + control
 	
 	The main class respresenting source/emitter interface
 	This class infact just hides internals and redirect calls to 
 	specific sub-systems
 */
-struct	sound
+struct	ref_sound
 {
 	CSound_source*					handle;			//!< Pointer to wave-source interface
 	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
 	int								g_type;			//!< Sound type, usually for AI
-	CObject*						g_object;		//!< Game object that emitts sound
+	CObject*						g_object;		//!< Game object that emitts ref_sound
 
     //! A constructor
     /*!
-		\sa ~sound()
+		\sa ~ref_sound()
 	*/
-	sound()							{ handle = 0; feedback=0; g_type=0; g_object=0; }
+	ref_sound()							{ handle = 0; feedback=0; g_type=0; g_object=0; }
 
 	//! Loader/initializer
 	/*!
@@ -91,14 +91,14 @@ struct	sound
 	*/
 	IC void					create					( BOOL _3D,	LPCSTR name,	int		type=0);
 
-	//! Clones sound from another
+	//! Clones ref_sound from another
 	/*!
 		\sa create()
 		\sa destroy()
 		\param from Source to clone.
 		\param leave_type Controls whenewer to leave game/AI type as is
 	*/
-	IC void					clone					( const sound& from, bool leave_type=true);
+	IC void					clone					( const ref_sound& from, bool leave_type=true);
 
 	//! Destroys and unload wave
 	/*!
@@ -175,7 +175,7 @@ public:
 };
 
 /// definition (Sound Callback)
-typedef		void __stdcall sound_event						(sound* S, float range);
+typedef		void __stdcall sound_event						(ref_sound* S, float range);
 
 /// definition (Sound Manager Interface)
 class XRSOUND_API	CSound_manager_interface
@@ -190,12 +190,12 @@ public:
 
 	//@{
 	/// Sound interface
-	virtual void					create					( sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)									= 0;
-	virtual void					destroy					( sound& S)																				= 0;
-	virtual void					play					( sound& S, CObject* O,								BOOL bLoop=false)					= 0;
-	virtual void					play_unlimited			( sound& S, CObject* O,								BOOL bLoop=false)					= 0;
-	virtual void					play_at_pos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
-	virtual void					play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
+	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)									= 0;
+	virtual void					destroy					( ref_sound& S)																				= 0;
+	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false)					= 0;
+	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false)					= 0;
+	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
+	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
 	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
@@ -215,19 +215,19 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC void	sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
-IC void	sound::destroy						( )														{	::Sound->destroy				(*this);							}
-IC void	sound::play							( CObject* O,						BOOL bLoop)			{	::Sound->play					(*this,O,bLoop);					}
-IC void sound::play_unlimited				( CObject* O,						BOOL bLoop)			{	::Sound->play_unlimited			(*this,O,bLoop);					}
-IC void	sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos			(*this,O,pos,bLoop);				}
-IC void	sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop);				}
-IC void	sound::set_position					( const Fvector &pos)									{	if (feedback)	feedback->set_position(pos);						}
-IC void	sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
-IC void	sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
-IC void	sound::set_volume					( float vol )											{	if (feedback)	feedback->set_volume(vol);							}
-IC void	sound::stop							( )														{	if (feedback)	feedback->stop();									}
-IC const CSound_params*	sound::get_params	( )														{	if (feedback)	return feedback->get_params(); else return NULL;	}
-IC void	sound::set_params					( CSound_params* p )									
+IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);				}
+IC void	ref_sound::destroy						( )														{	::Sound->destroy				(*this);							}
+IC void	ref_sound::play							( CObject* O,						BOOL bLoop)			{	::Sound->play					(*this,O,bLoop);					}
+IC void ref_sound::play_unlimited				( CObject* O,						BOOL bLoop)			{	::Sound->play_unlimited			(*this,O,bLoop);					}
+IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos			(*this,O,pos,bLoop);				}
+IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop)			{	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop);				}
+IC void	ref_sound::set_position					( const Fvector &pos)									{	if (feedback)	feedback->set_position(pos);						}
+IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
+IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
+IC void	ref_sound::set_volume					( float vol )											{	if (feedback)	feedback->set_volume(vol);							}
+IC void	ref_sound::stop							( )														{	if (feedback)	feedback->stop();									}
+IC const CSound_params*	ref_sound::get_params	( )														{	if (feedback)	return feedback->get_params(); else return NULL;	}
+IC void	ref_sound::set_params					( CSound_params* p )									
 {	
 	if (feedback){
     	feedback->set_position	(p->position);
@@ -236,7 +236,7 @@ IC void	sound::set_params					( CSound_params* p )
         feedback->set_volume   	(p->volume);
     }
 }
-IC void	sound::clone						( const sound& from, bool leave_type)		
+IC void	ref_sound::clone						( const ref_sound& from, bool leave_type)		
 {
 	feedback	= 0;
 	g_object	= 0;

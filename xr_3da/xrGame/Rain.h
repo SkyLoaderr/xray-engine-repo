@@ -57,7 +57,7 @@ private:
 	Particle*						particle_idle;
 
 	// Sounds
-	sound							snd_Ambient;
+	ref_sound							snd_Ambient;
 	float							snd_Ambient_volume;
 
 	// Utilities

@@ -91,7 +91,7 @@ void CAI_Soldier::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
 	
-	// Play sound
+	// Play ref_sound
 	::Sound->play_at_pos(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 }
 

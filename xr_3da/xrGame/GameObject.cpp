@@ -38,7 +38,6 @@ void CGameObject::net_Destroy	()
 	inherited::net_Destroy		();
 	setReady									(FALSE);
 	g_pGameLevel->Objects.net_Unregister		(this);
-	shedule_Unregister							();
 	if (this == Level().CurrentEntity())		Level().SetEntity(0);
 	if (!H_Parent()) {
 		Msg										("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);

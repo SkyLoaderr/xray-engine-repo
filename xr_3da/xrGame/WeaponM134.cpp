@@ -235,15 +235,15 @@ void CWeaponM134::Update	(u32 T)
 		case eM134Spinup:
 			bPending		= TRUE;
 			fTime			= 0;
-			// play start fire sound
+			// play start fire ref_sound
 			pSounds->play_at_pos(sndFireStart,	this,vLastFP,false);
 			pSounds->play_at_pos(sndServo,		this,vLastFP,true);
 			break;
 		case eM134Brake:
-			// sound fire loop
+			// ref_sound fire loop
 			sndFireLoop.stop();
 
-			// play end fire sound
+			// play end fire ref_sound
 			if (st_current==eM134Fire)
 				pSounds->play_at_pos	(sndFireEnd,this,vLastFP,false);
 			pSounds->play_at_pos	(sndServo,this,vLastFP,true);
@@ -319,7 +319,7 @@ void CWeaponM134::Update	(u32 T)
 				FireTrace		(p1,vLastFP,d);
 			}
 
-			// sound fire loop
+			// ref_sound fire loop
 			if (sndFireLoop.feedback) sndFireLoop.set_position(vLastFP);
 			if (0==iAmmoElapsed) st_target = eM134Brake;
 		}

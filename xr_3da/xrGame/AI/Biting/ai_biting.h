@@ -296,11 +296,11 @@ private:
 
 	
 	// SOUNDS
-	sound					m_tpaSoundHit[SND_HIT_COUNT];
-	sound					m_tpaSoundDie[SND_DIE_COUNT];
-	sound					m_tpaSoundAttack[SND_ATTACK_COUNT];
-	sound					m_tpaSoundVoice[SND_VOICE_COUNT];
-	sound*					m_tpSoundBeingPlayed;
+	ref_sound					m_tpaSoundHit[SND_HIT_COUNT];
+	ref_sound					m_tpaSoundDie[SND_DIE_COUNT];
+	ref_sound					m_tpaSoundAttack[SND_ATTACK_COUNT];
+	ref_sound					m_tpaSoundVoice[SND_VOICE_COUNT];
+	ref_sound*					m_tpSoundBeingPlayed;
 	u32						m_dwLastSoundRefresh;
 	float					m_fMinVoiceIinterval;
 	float					m_fMaxVoiceIinterval;

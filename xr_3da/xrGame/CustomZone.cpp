@@ -144,16 +144,16 @@ f32 CCustomZone::Power(f32 dist) {
 	return l_pow < 0 ? 0 : l_pow;
 }
 
-void CCustomZone::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256 temp;
 	if (FS.exist(temp,"$game_sounds$",s_name)) {
 		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
-	Debug.fatal	("Can't find sound '%s'",s_name,cName());
+	Debug.fatal	("Can't find ref_sound '%s'",s_name,cName());
 }
 
-void CCustomZone::SoundDestroy(sound& dest) {
+void CCustomZone::SoundDestroy(ref_sound& dest) {
 	Sound->destroy		(dest);
 }
 

@@ -256,7 +256,7 @@ void CAI_Stalker::vfUpdateSearchPosition()
 
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
 {
-	// sound
+	// ref_sound
 	int					iIndex;
 	SelectSound			(iIndex);
 	
@@ -271,7 +271,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		if (((!A && _A) || (!B && _B)) && (!m_tpaDynamicSounds[m_iSoundIndex].tpEntity || m_tpaDynamicSounds[m_iSoundIndex].tpEntity->g_Alive()) && (Level().timeServer() - m_tpaDynamicSounds[m_iSoundIndex].dwTime < m_dwInertion) && (m_tpaDynamicSounds[m_iSoundIndex].dwNodeID < getAI().Header().count)) {
 //		if ((!m_tpaDynamicSounds[m_iSoundIndex].tpEntity || m_tpaDynamicSounds[m_iSoundIndex].tpEntity->g_Alive()) && (Level().timeServer() - m_tpaDynamicSounds[m_iSoundIndex].dwTime < m_dwInertion)) {
 #ifndef SILENCE
-			Msg("Inertion sound from %s",m_tpaDynamicSounds[m_iSoundIndex].tpEntity ? m_tpaDynamicSounds[m_iSoundIndex].tpEntity->cName() : "world");
+			Msg("Inertion ref_sound from %s",m_tpaDynamicSounds[m_iSoundIndex].tpEntity ? m_tpaDynamicSounds[m_iSoundIndex].tpEntity->cName() : "world");
 #endif
 			A = _A;
 			B = _B;

@@ -53,7 +53,7 @@ void SetRotation(dReal* R){}
 	
 
 
-	sound					snd_engine;
+	ref_sound					snd_engine;
 
 	bool					HUDview				( ) { return IsFocused(); }
 	

@@ -522,10 +522,10 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 {
 	if (g_Alive()) 
 	{
-		sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
+		ref_sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
 		if (S.feedback) return;
 
-		// Play hit-sound
+		// Play hit-ref_sound
 		::Sound->play_at_pos	(S,this,Position());
 
 		// hit marker
@@ -570,7 +570,7 @@ void CActor::Die	( )
 	//g_PerformDrop			();
 	// @@@ WT
 	m_inventory.DropAll();
-	// Play sound
+	// Play ref_sound
 	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 	cam_Set					(eacFreeLook);
 	g_fireEnd				();
@@ -941,7 +941,7 @@ void CActor::shedule_Update	(u32 DT)
 	R_ASSERT(last_gmtl_id!=GAMEMTL_NONE);
 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
 	R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(last_gmtl_id)->name);
-	// sound step
+	// ref_sound step
 	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
 			bStep				= !bStep;

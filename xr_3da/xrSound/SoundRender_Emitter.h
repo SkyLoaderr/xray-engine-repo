@@ -29,7 +29,7 @@ public:
 
 	CSoundRender_Target*		target;
 	CSoundRender_Source*		source;
-	sound*						owner;
+	ref_sound*						owner;
 
 	float						smooth_volume;
 	float 						occluder_volume;		// USER
@@ -60,7 +60,7 @@ public:
 	void						fill_block				(void* ptr, u32 size);
 
 	float						priority				();
-	void						start					(sound* _owner, BOOL _loop);
+	void						start					(ref_sound* _owner, BOOL _loop);
 	void						cancel					();						// manager forces out of rendering
 	void						update					(float dt);
 	BOOL						update_culling			(float dt);

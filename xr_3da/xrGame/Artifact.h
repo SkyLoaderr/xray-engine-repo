@@ -18,12 +18,12 @@ public:
 	virtual void renderable_Render	();
 	virtual void net_Destroy		();
 
-	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(sound& dest);
+	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy(ref_sound& dest);
 
 	float m_detectorDist;
 	LPCSTR m_detectorSoundName;
-	sound m_detectorSound;
+	ref_sound m_detectorSound;
 	float m_jumpHeight;
 
 	static xr_set<CArtifact*> m_all;

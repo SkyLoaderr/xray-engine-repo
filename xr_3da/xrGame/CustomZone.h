@@ -30,8 +30,8 @@ public:
 
 	virtual void Postprocess(f32 val) {}
 
-	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(sound& dest);
+	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy(ref_sound& dest);
 
 
 	// debug
@@ -46,7 +46,7 @@ public:
 	f32 m_maxPower, m_attn;
 	u32 m_period;
 	BOOL m_ready;
-	sound m_ambient;
+	ref_sound m_ambient;
 
 	char m_effectsSTR[255];
 	xr_vector<LPCSTR> m_effects;

@@ -66,7 +66,7 @@ void	CSoundRender_Target::_initialize		()
 	case sq_NOVIRT:		dsBD.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION; 	break;
 	case sq_LIGHT:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_LIGHT;			break;
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
-	default:			Debug.fatal("Unknown 3D-sound algorithm");			break;
+	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");			break;
 	}
 	dsBD.guid3DAlgorithm	= DS3DALG_DEFAULT;
 

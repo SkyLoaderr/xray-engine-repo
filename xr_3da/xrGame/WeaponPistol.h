@@ -18,7 +18,7 @@ public:
 	virtual void	net_Destroy		();
 	virtual void	OnH_B_Chield	();
 
-	sound			sndClose;
+	ref_sound			sndClose;
 	ESoundTypes		m_eSoundClose;
 
 	MotionSVec		mhud_empty;

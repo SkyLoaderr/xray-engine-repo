@@ -214,7 +214,7 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 #endif
 }
 
-void	CSoundRender_Core::create				( sound& S, BOOL _3D, const char* fName, int type )
+void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, int type )
 {
 	if (!bPresent)					return;
 
@@ -226,7 +226,7 @@ void	CSoundRender_Core::create				( sound& S, BOOL _3D, const char* fName, int t
 	S.g_type	= type;
 }
 
-void	CSoundRender_Core::play					( sound& S, CObject* O, BOOL bLoop)
+void	CSoundRender_Core::play					( ref_sound& S, CObject* O, BOOL bLoop)
 {
 	if (!bPresent || 0==S.handle)	return;
 
@@ -238,12 +238,12 @@ void	CSoundRender_Core::play					( sound& S, CObject* O, BOOL bLoop)
 	}	
 	else			i_play	(&S,bLoop);
 }
-void	CSoundRender_Core::play_unlimited		( sound& S, CObject* O, BOOL bLoop)
+void	CSoundRender_Core::play_unlimited		( ref_sound& S, CObject* O, BOOL bLoop)
 {
 	if (!bPresent || 0==S.handle) return;
 	i_play				(&S,bLoop);
 }
-void	CSoundRender_Core::play_at_pos			( sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
+void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
 {
 	if (!bPresent || 0==S.handle) return;
 	S.g_object		= O;
@@ -255,13 +255,13 @@ void	CSoundRender_Core::play_at_pos			( sound& S, CObject* O, const Fvector &pos
 	else				i_play				(&S,bLoop);
 	S.feedback->set_position				(pos);
 }
-void	CSoundRender_Core::play_at_pos_unlimited	( sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
+void	CSoundRender_Core::play_at_pos_unlimited	( ref_sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
 {
 	if (!bPresent || 0==S.handle) return;
 	i_play						(&S,bLoop);
 	S.feedback->set_position	(pos);
 }
-void	CSoundRender_Core::destroy(sound& S )
+void	CSoundRender_Core::destroy(ref_sound& S )
 {
 	if (!bPresent || 0==S.handle) {
 		S.handle	= 0;

@@ -53,7 +53,7 @@ u32 Freq2Size(u32 freq) {
 }
 
 // Convert data to SRC bits -MONO- PB Hz
-// MONO - because sound must be 3D source - elsewhere performance penalty occurs
+// MONO - because ref_sound must be 3D source - elsewhere performance penalty occurs
 void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &dwLen)
 {
 	HACMSTREAM	hc;

@@ -45,8 +45,8 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 
 
-	// Play hit-sound
-	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
+	// Play hit-ref_sound
+	ref_sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
 	
 	if (g_Health() > 0) {
 		if (S.feedback)

@@ -278,8 +278,8 @@ BOOL CLevel::Load_GameSpecific_After()
 		string256		wav_name;
 		CSound_params	params;
 		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
-			static_Sounds.push_back	(xr_new<sound>());
-			sound* S			= static_Sounds.back();
+			static_Sounds.push_back	(xr_new<ref_sound>());
+			ref_sound* S			= static_Sounds.back();
 
 			OBJ->r_stringZ		(wav_name);
 			S->create			(TRUE,wav_name);

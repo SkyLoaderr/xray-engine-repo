@@ -225,7 +225,7 @@ void CAI_Zombie::FreeHuntingActive()
 		}
 		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
 			m_dwLastSoundRefresh = dwCurTime;
-			// Play voice-sound
+			// Play voice-ref_sound
 			m_tpSoundBeingPlayed = &(m_tpaSoundIdle[Random.randI(SND_IDLE_COUNT)]);
 			
 			if (!m_tpSoundBeingPlayed->feedback)
@@ -387,7 +387,7 @@ void CAI_Zombie::AttackRun()
 		}
 		if ((dwCurTime - m_dwLastSoundRefresh > m_fPursuitRefreshRate) && ((dwCurTime - m_dwLastPursuitTalk > m_fMaxPursuitIinterval) || ((dwCurTime - m_dwLastPursuitTalk > m_fMinPursuitIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastPursuitTalk - m_fMinPursuitIinterval)/(m_fMaxPursuitIinterval - m_fMinPursuitIinterval))))) {
 			m_dwLastSoundRefresh = dwCurTime;
-			// Play pursuit-sound
+			// Play pursuit-ref_sound
 			m_tpSoundBeingPlayed = &(m_tpaSoundPursuit[Random.randI(SND_PURSUIT_COUNT)]);
 			
 			if (!m_tpSoundBeingPlayed->feedback)

@@ -16,11 +16,12 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_bLoaded			= false;
 	m_tpActor			= 0;
 	m_caSaveName[0]		= 0;
+	shedule_register	();
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
 {
-	shedule_Unregister	();
+	shedule_unregister	();
 }
 
 float CSE_ALifeSimulator::shedule_Scale()

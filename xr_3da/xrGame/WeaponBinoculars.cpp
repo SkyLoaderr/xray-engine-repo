@@ -140,7 +140,7 @@ void CWeaponBinoculars::UpdateCL	()
 	// setVisible			(TRUE);
 	bPending			= FALSE;
 	
-	// sound fire loop
+	// ref_sound fire loop
 	UpdateFP					();
 	sndShow.set_position		(vLastFP);
 	sndHide.set_position		(vLastFP);

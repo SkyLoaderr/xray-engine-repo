@@ -83,7 +83,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 		}
 	}
 	if (style&esSound)			{
-		// Load sound
+		// Load ref_sound
 		::Sound->create			(s_sound,TRUE,E->s_Sound);
 		::Sound->play_at_pos		(s_sound,0,Position(),true);
 	}

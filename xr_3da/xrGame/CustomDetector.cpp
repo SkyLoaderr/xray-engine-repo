@@ -68,7 +68,7 @@ void CCustomDetector::Load(LPCSTR section) {
 			CLASS_ID zone_cls = TEXT2CLSID(pSettings->r_string(z_Class,"class"));
 			sprintf(temp, "zone_sound_%d", i);
 			l_soundName = pSettings->r_string(section,temp);
-			sound *l_pSound = xr_new<sound>();
+			ref_sound *l_pSound = xr_new<ref_sound>();
 			SoundCreate(*l_pSound, l_soundName);
 			m_sounds[zone_cls] = l_pSound;
 			i++;
@@ -82,7 +82,7 @@ void CCustomDetector::net_Destroy() {
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 	SoundDestroy(m_noise);
-	xr_map<CLASS_ID, sound*>::iterator l_it;
+	xr_map<CLASS_ID, ref_sound*>::iterator l_it;
 	for(l_it = m_sounds.begin(); l_it != m_sounds.end(); l_it++) SoundDestroy(*l_it->second);
 }
 
@@ -113,7 +113,7 @@ void CCustomDetector::shedule_Update(u32 dt) {
 			if((f32)l_time > 5000.f * (l_relPow/**l_relPow*l_relPow*l_relPow*/)) {
 				l_time = 0;
 				if(m_sounds.find(l_pZ->SUB_CLS_ID) != m_sounds.end()) {
-					sound *l_pSound = m_sounds[l_pZ->SUB_CLS_ID];
+					ref_sound *l_pSound = m_sounds[l_pZ->SUB_CLS_ID];
 					Sound->play_at_pos(*l_pSound, this, P);
 				}
 			} else l_time += dt;
@@ -184,16 +184,16 @@ BOOL CCustomDetector::feel_touch_contact(CObject* O) {
 	return dynamic_cast<CCustomZone*>(O) != NULL;
 }
 
-void CCustomDetector::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CCustomDetector::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256 temp;
 	if (FS.exist(temp,"$game_sounds$",s_name)) {
 		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
-	Debug.fatal	("Can't find sound '%s'",s_name,cName());
+	Debug.fatal	("Can't find ref_sound '%s'",s_name,cName());
 }
 
-void CCustomDetector::SoundDestroy(sound& dest) {
+void CCustomDetector::SoundDestroy(ref_sound& dest) {
 	::Sound->destroy			(dest);
 }
 

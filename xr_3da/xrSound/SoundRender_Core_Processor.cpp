@@ -7,7 +7,7 @@
 #include "SoundRender_Target.h"
 #include "SoundRender_Source.h"
 
-CSoundRender_Emitter*	CSoundRender_Core::i_play(sound* S, BOOL _loop )
+CSoundRender_Emitter*	CSoundRender_Core::i_play(ref_sound* S, BOOL _loop )
 {
 	CSoundRender_Emitter* E	=	xr_new<CSoundRender_Emitter>();
 	S->feedback				=	E;

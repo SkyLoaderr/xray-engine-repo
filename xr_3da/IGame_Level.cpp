@@ -124,7 +124,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 			string128			fname;
 			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
 			if (0==stricmp(fname,"ambient"))	continue;
-			Sounds.push_back	(sound());
+			Sounds.push_back	(ref_sound());
 			Sound->create		(Sounds.back(),TRUE,fname);
 			Sound->play_at_pos	(Sounds.back(),0,pos,true);
 		}
@@ -141,7 +141,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 			CInifile::Sect& S		= pLevel->r_section("random_sounds");
 			Sounds_Random.reserve	(S.size());
 			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-				Sounds_Random.push_back	(sound());
+				Sounds_Random.push_back	(ref_sound());
 				Sound->create			(Sounds_Random.back(),TRUE,I->second);
 			}
 			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;

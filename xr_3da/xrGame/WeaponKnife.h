@@ -8,11 +8,11 @@ private:
 protected:
 
 	// Media :: sounds
-	sound			sndZoomIn;
-	sound			sndZoomOut;
-	sound			sndGyro;
-	sound			sndShow;
-	sound			sndHide;
+	ref_sound			sndZoomIn;
+	ref_sound			sndZoomOut;
+	ref_sound			sndGyro;
+	ref_sound			sndShow;
+	ref_sound			sndHide;
 
 	// HUD :: Animations
 	MotionSVec		mhud_idle;

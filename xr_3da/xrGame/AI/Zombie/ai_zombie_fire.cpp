@@ -67,8 +67,8 @@ void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	m_tHitDir.normalize();
 	m_tHitPosition = who->Position();
 	
-	// Play hit-sound
-	sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
+	// Play hit-ref_sound
+	ref_sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
 	
 	if (g_Health() > 0) {
 		if (S.feedback)

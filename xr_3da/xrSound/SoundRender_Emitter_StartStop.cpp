@@ -6,7 +6,7 @@
 #include "SoundRender_Source.h"
 
 void CSoundRender_Emitter::start(
-								 sound*							_owner, 
+								 ref_sound*							_owner, 
 								 BOOL							_loop
 								 )
 {
@@ -60,7 +60,7 @@ void CSoundRender_Emitter::cancel()
 		SoundRender.i_stop		(this);
 		break;
 	default:
-		R_ASSERT2	(0, "Non playing sound forced out of render queue");
+		R_ASSERT2	(0, "Non playing ref_sound forced out of render queue");
 		break;
 	}
 }

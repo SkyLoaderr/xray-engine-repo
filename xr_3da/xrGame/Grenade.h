@@ -43,7 +43,7 @@ public:
 	LPSTR pstrWallmark;
 	Shader* hWallmark;
 	float fWallmarkSize;
-	sound sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
+	ref_sound sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
 	u32 m_expoldeTime;
 	char m_effectsSTR[255];

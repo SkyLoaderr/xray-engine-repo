@@ -86,12 +86,12 @@ protected:
 
 	// media
 	BOOL					bStep;
-	sound					sndStep[2];
-	sound					sndLanding;
-	sound					sndZoneHeart;
-	sound					sndZoneDetector;
-	sound					sndHit[SND_HIT_COUNT];
-	sound					sndDie[SND_DIE_COUNT];
+	ref_sound					sndStep[2];
+	ref_sound					sndLanding;
+	ref_sound					sndZoneHeart;
+	ref_sound					sndZoneDetector;
+	ref_sound					sndHit[SND_HIT_COUNT];
+	ref_sound					sndDie[SND_DIE_COUNT];
 
 	struct					SActorMotions
 	{

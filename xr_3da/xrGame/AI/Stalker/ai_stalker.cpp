@@ -122,7 +122,7 @@ void CAI_Stalker::Die				()
 	SelectAnimation					(XFORM().k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
 
-	sound							&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
+	ref_sound							&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
 	S.play_at_pos					(this,Position());
 	S.feedback->set_volume			(1.f);
 	inherited::Die					();
@@ -986,7 +986,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		R_ASSERT					(m_dwLastMaterialID != GAMEMTL_NONE);
 		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
 		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(m_dwLastMaterialID)->name);
-		// sound step
+		// ref_sound step
 		if (m_tMovementType != eMovementTypeStand) {
 			if(m_fTimeToStep < 0) {
 				m_bStep				= !m_bStep;

@@ -95,7 +95,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 	R_ASSERT2(!lst.empty(),prefix);
 }
 
-void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
+void CWeapon::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name,".wav");
@@ -110,10 +110,10 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 		dest.create		(TRUE,name,iType);
 		return;
 	}
-	Debug.fatal	("Can't find sound '%s' for weapon '%s'",name,GetName());
+	Debug.fatal	("Can't find ref_sound '%s' for weapon '%s'",name,GetName());
 }
 
-void CWeapon::SoundDestroy	(	sound& dest)
+void CWeapon::SoundDestroy	(	ref_sound& dest)
 {
 	dest.destroy			();
 }

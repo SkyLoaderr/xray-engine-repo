@@ -29,9 +29,9 @@ protected:
 	CObject*					pCurrentViewEntity;
 
 	// Static sounds
-	sound						Sounds_Ambience;
-	xr_vector<sound>			Sounds;
-	xr_vector<sound>			Sounds_Random;
+	ref_sound						Sounds_Ambience;
+	xr_vector<ref_sound>			Sounds;
+	xr_vector<ref_sound>			Sounds_Random;
 	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;

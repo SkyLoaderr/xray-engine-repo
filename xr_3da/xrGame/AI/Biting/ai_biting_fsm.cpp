@@ -583,7 +583,7 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 	vfSetParameters(ePathTypeStraight,0, tpDesiredPosition, false, 0);	
 
-	// Play sound
+	// Play ref_sound
 }
 
 void CAI_Biting::Think()

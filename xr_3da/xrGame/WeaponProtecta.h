@@ -23,8 +23,8 @@ private:
 	// General
 	float			fTime;
 
-	sound			sndShoot;
-	sound			sndRicochet[SND_RIC_COUNT];
+	ref_sound			sndShoot;
+	ref_sound			sndRicochet[SND_RIC_COUNT];
 
 	Fvector			vFirePoint;
 

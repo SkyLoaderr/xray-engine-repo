@@ -13,7 +13,7 @@ class CCustomDoor : public CObject
 private:
 	typedef CObject	inherited;
 
-	sound			sndOpenClose;
+	ref_sound			sndOpenClose;
 public:
 					CCustomDoor	();
 	virtual			~CCustomDoor();

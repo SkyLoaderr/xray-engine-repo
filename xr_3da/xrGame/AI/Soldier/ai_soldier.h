@@ -335,7 +335,7 @@ class CAI_Soldier : public CCustomMonster
 		u32						m_dwTimeBeingWaited;
 		EMovementTypes			m_cMovementType;
 		CMotionDef*				m_tpaMovementAnimations[3][WALK_NO];
-		sound*					m_tpSoundBeingPlayed;
+		ref_sound*					m_tpSoundBeingPlayed;
 		u32						m_dwLastSoundRefresh;
 		float					m_fMinRadioIinterval;
 		float					m_fMaxRadioIinterval;
@@ -349,10 +349,10 @@ class CAI_Soldier : public CCustomMonster
 		static void	__stdcall LegsSpinCallback(CBoneInstance*);
 		
 		// mea
-		sound					sndHit[SND_HIT_COUNT];
-		sound					sndDie[SND_DIE_COUNT];
-		sound					sndRadio[SND_RADIO_COUNT];
-		sound					sndSteps[SND_STEP_COUNT];
+		ref_sound					sndHit[SND_HIT_COUNT];
+		ref_sound					sndDie[SND_DIE_COUNT];
+		ref_sound					sndRadio[SND_RADIO_COUNT];
+		ref_sound					sndSteps[SND_STEP_COUNT];
 		
 		// events
 		EVENT					m_tpEventSay;

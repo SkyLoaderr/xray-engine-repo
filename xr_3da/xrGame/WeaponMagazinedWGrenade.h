@@ -12,8 +12,8 @@ public:
 	CWeaponFakeGrenade(void);
 	virtual ~CWeaponFakeGrenade(void);
 
-	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(sound& dest);
+	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundDestroy(ref_sound& dest);
 
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
@@ -45,7 +45,7 @@ public:
 	LPSTR			pstrWallmark;
 	Shader*			hWallmark;
 	float			fWallmarkSize;
-	sound			sndRicochet[SND_RIC_COUNT], sndExplode;
+	ref_sound			sndRicochet[SND_RIC_COUNT], sndExplode;
 	ESoundTypes		m_eSoundRicochet, m_eSoundExplode;
 	s32				m_engineTime, m_explodeTime, m_flashTime;
 	char			m_effectsSTR[255];
@@ -90,8 +90,8 @@ public:
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
 	bool m_grenadeMode;
-	sound			sndShotG;
-	sound			sndReloadG;
+	ref_sound			sndShotG;
+	ref_sound			sndReloadG;
 	MotionSVec		mhud_idle_g;
 	MotionSVec		mhud_reload_g;
 	MotionSVec		mhud_shots_g;

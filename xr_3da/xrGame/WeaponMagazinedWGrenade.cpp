@@ -457,7 +457,7 @@ void CWeaponFakeGrenade::UpdateCL() {
 	}
 }
 
-void CWeaponFakeGrenade::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CWeaponFakeGrenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256	name,temp;
 	strconcat	(name,"weapons\\","rpg7","_",s_name,".wav");
 	if (FS.exist(temp,"$game_sounds$",name)) 
@@ -471,10 +471,10 @@ void CWeaponFakeGrenade::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL
 		dest.create		(TRUE,name,iType);
 		return;
 	}
-	Debug.fatal	("Can't find sound '%s' for weapon '%s'", name, "rpg_grenade");
+	Debug.fatal	("Can't find ref_sound '%s' for weapon '%s'", name, "rpg_grenade");
 }
 
-void CWeaponFakeGrenade::SoundDestroy(sound& dest) {
+void CWeaponFakeGrenade::SoundDestroy(ref_sound& dest) {
 	dest.destroy();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -48,6 +48,6 @@ float ffGetStartVolume(ESoundTypes eType)
 					return(.7f);
 			}
 			else
-				Msg("Invalid sound type : %x",eType);
+				Msg("Invalid ref_sound type : %x",eType);
 	return(1.f);
 }

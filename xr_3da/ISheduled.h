@@ -13,8 +13,8 @@ public:
 	ISheduled			();
 	virtual ~ISheduled	();
 
-	void								shedule_Register	();
-	void								shedule_Unregister	();
+	void								shedule_register	();
+	void								shedule_unregister	();
 
 	virtual float						shedule_Scale		()			= 0;
 	virtual void						shedule_Update		(u32 dt)	= 0;
