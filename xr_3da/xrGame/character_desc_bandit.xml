@@ -4,8 +4,8 @@
 <!---------------------------BANDIT NOVICE----------------------->
 	<specific_character id="bandit_novice_default" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="14" y="4"></icon>
+		<map_icon x="3" y="2"></map_icon>
 		<bio>Ничем себя проявить еще не успел.</bio>
 
 		<team>Bandit_novice</team>
@@ -22,8 +22,8 @@
 <!---------------------------BANDIT GENERAL---------------------->
 	<specific_character id="bandit_general_default" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="14" y="4"></icon>
+		<map_icon x="3" y="2"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Bandit_general</team>
@@ -41,8 +41,8 @@
 <!---------------------------BANDIT VETERAN---------------------->
 	<specific_character id="bandit_veteran_default" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="14" y="4"></icon>
+		<map_icon x="3" y="2"></map_icon>
 		<bio>Этот сталкер явно не первый день в Зоне.</bio>
 
 		<team>Bandit_veteran</team>
@@ -59,8 +59,8 @@
 <!---------------------------BANDIT MASTER----------------------->
 	<specific_character id="bandit_master_default" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="14" y="4"></icon>
+		<map_icon x="3" y="2"></map_icon>
 		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
 
 		<team>Bandit_master</team>
