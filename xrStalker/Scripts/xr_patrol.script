@@ -80,7 +80,7 @@ function PrintTable ()
            printf ("Member table is empty")
         else
            for b = 1, table.getn (Patrols[a].members), 1 do
-               printf ("NPC : %s, member %d", Patrols[a].members[b].npc, Patrols[a].members[b].member)
+               printf ("NPC : %s, member %d", Patrols[a].members[b].npc:name (), Patrols[a].members[b].member)
            end
         end
     end
