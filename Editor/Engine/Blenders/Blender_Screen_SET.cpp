@@ -16,6 +16,10 @@ CBlender_Screen_SET::CBlender_Screen_SET()
 	oAREF.value			= 32;
 	oAREF.min			= 0;
 	oAREF.max			= 255;
+	oZTest.value		= FALSE;
+	oZWrite.value		= FALSE;
+	oLighting.value		= FALSE;
+	oFog.value			= FALSE;
 }
 
 CBlender_Screen_SET::~CBlender_Screen_SET()
