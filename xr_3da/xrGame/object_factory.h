@@ -80,30 +80,26 @@ protected:
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
 
-	class CObjectItemPredicate {
-	private:
-		enum ESearchType {
-			eSearchTypeCLSID		= u32(0),
-			eSearchTypeScriptName,
-			eSearchTypeDummy		= u32(-1),
-		};
-
-	private:
-		CLASS_ID					m_clsid;
-		ref_str						m_script_clsid_name;
-		ESearchType					m_search_type;
-
-	public:
-
-		IC							CObjectItemPredicate();
-		IC							CObjectItemPredicate(const CLASS_ID &clsid);
-		IC							CObjectItemPredicate(const ref_str &script_clsid_name);
-		IC	bool					operator()			(const CObjectItemAbstract *item) const;
+	struct CObjectItemPredicate {
 		IC	bool					operator()			(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const;
 		IC	bool					operator()			(const CObjectItemAbstract *item, const CLASS_ID &clsid) const;
 	};
 
+	struct CObjectItemPredicateCLSID {
+		CLASS_ID					m_clsid;
+
+		IC							CObjectItemPredicateCLSID	(const CLASS_ID &clsid);
+		IC	bool					operator()					(const CObjectItemAbstract *item) const;
+	};
+
 #ifndef _EDITOR
+	struct CObjectItemPredicateScript {
+		ref_str						m_script_clsid_name;
+
+		IC							CObjectItemPredicateScript	(const ref_str &script_clsid_name);
+		IC	bool					operator()					(const CObjectItemAbstract *item) const;
+	};
+
 	template <typename _base, typename _derived, typename _default>
 	struct CType {
 		template <typename _derived, typename _default, bool value>

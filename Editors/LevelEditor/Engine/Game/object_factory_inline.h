@@ -28,37 +28,6 @@ IC	ref_str	CObjectFactory::CObjectItemAbstract::script_clsid	() const
 }
 #endif
 
-IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	() :
-	m_clsid				(CLASS_ID(-1)),
-	m_script_clsid_name	(""),
-	m_search_type		(eSearchTypeDummy)
-{
-}
-
-IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	(const CLASS_ID &clsid) :
-	m_clsid				(clsid),
-	m_search_type		(eSearchTypeCLSID)
-{
-}
-
-IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	(const ref_str &script_clsid_name) :
-	m_script_clsid_name	(script_clsid_name),
-	m_search_type		(eSearchTypeScriptName)
-{
-}
-
-IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item) const
-{
-	switch (m_search_type) {
-		case eSearchTypeCLSID :			return	(m_clsid == item->clsid());
-		case eSearchTypeScriptName :	return	(m_script_clsid_name == item->script_clsid());
-		default : NODEFAULT;
-	}
-#ifdef DEBUG
-	return				(false);
-#endif
-}
-
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
 {
 	return				(item1->clsid() < item2->clsid());
@@ -68,6 +37,28 @@ IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstr
 {
 	return				(item->clsid() < clsid);
 }
+
+IC	CObjectFactory::CObjectItemPredicateCLSID::CObjectItemPredicateCLSID	(const CLASS_ID &clsid) :
+	m_clsid				(clsid)
+{
+}
+
+IC	bool CObjectFactory::CObjectItemPredicateCLSID::operator()	(const CObjectItemAbstract *item) const
+{
+	return				(m_clsid == item->clsid());
+}
+
+#ifndef _EDITOR
+IC	CObjectFactory::CObjectItemPredicateScript::CObjectItemPredicateScript	(const ref_str &script_clsid_name) :
+	m_script_clsid_name	(script_clsid_name)
+{
+}
+
+IC	bool CObjectFactory::CObjectItemPredicateScript::operator()	(const CObjectItemAbstract *item) const
+{
+	return				(m_script_clsid_name == item->script_clsid());
+}
+#endif
 
 template <typename _client_type, typename _server_type>
 IC	CObjectFactory::CObjectItem<_client_type,_server_type>::CObjectItem	(const CLASS_ID &clsid, LPCSTR script_clsid) :
@@ -154,11 +145,13 @@ IC	void CObjectFactory::add	(CObjectItemAbstract *item)
 	
 	const_iterator		I;
 	
-	I					= std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicate(item->clsid()));
+	I					= std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicateCLSID(item->clsid()));
 	VERIFY				(I == clsids().end());
 	
-	I					= std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicate(item->script_clsid()));
+#ifndef _EDITOR
+	I					= std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicateScript(item->script_clsid()));
 	VERIFY				(I == clsids().end());
+#endif
 	
 	m_clsids.push_back	(item);
 }
