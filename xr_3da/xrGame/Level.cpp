@@ -73,6 +73,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 	P.w_vec3	(dummyPos);
 	P.w_vec3	(dummyAngle);
 	P.w_u16		(0);		// srv-id	| by server
+	P.w_u16		(0xffff);
 	P.w_u16		(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);
 	P.w_u16		(3);		// data size
 	P.w_u8		(team);
@@ -92,7 +93,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	// Read definition
 	char		s_name[128],s_replace[128];
 	u8			s_rp;
-	u16			s_server_id,s_data_size,s_flags;
+	u16			s_server_id,s_server_parent_id,s_data_size,s_flags;
 	Fvector		o_pos,o_angle;
 	P.r_string	(s_name);
 	P.r_string	(s_replace);
@@ -100,6 +101,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	P.r_vec3	(o_pos);
 	P.r_vec3	(o_angle);
 	P.r_u16		(s_server_id);
+	P.r_u16		(s_server_parent_id);
 	P.r_u16		(s_flags);
 	P.r_u16		(s_data_size);
 
@@ -118,6 +120,12 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	} else {
 		if ((s_flags&M_SPAWN_OBJECT_LOCAL) && (0==CurrentEntity()))	SetEntity		(O);
 		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							O->OnActivate	( );
+		if (0xffff != s_server_parent_id)	
+		{
+			CObject* Parent				= Objects.net_Find	(s_server_parent_id);
+			R_ASSERT					(Parent);
+			Parent->net_OwnershipTake	(O);
+		}
 	}
 }
 
