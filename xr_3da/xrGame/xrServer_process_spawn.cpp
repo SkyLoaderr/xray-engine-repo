@@ -49,7 +49,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 			E->owner				=	CL		= SelectBestClientToMigrateTo	(E);
 			ids_used[E->ID]			=	true;
 			entities.insert			(make_pair(E->ID,E));
-		} else {w
+		} else {
 			// Simple spawn
 			E->ID					=	PerformIDgen(E->ID);
 			E->owner				=	CL;
