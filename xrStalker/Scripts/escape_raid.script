@@ -1,7 +1,6 @@
 local members = {}
 local moved = {}
 
-local spwaned = false
 
 -------------------------------------------------------------------------
 function add_member (npc)
@@ -26,12 +25,10 @@ end
 
 -------------------------------------------------------------------------
 function start_raid ()
-    if spwaned == true then return end
     -- пошла жара !!!
     for a = 1, table.getn (members), 1 do
         this.switch_online (members[a])
     end
-    spwaned = true
     --в идеале, здесь нужно рассортировать команды в случае гибели отдельных мужиков
 end
 
@@ -87,7 +84,6 @@ function escape_raid:on_enter (obj)
     end
     -- реестр умножим на 0
     moved = {}
-    spawned = false
 end
 -----------------------
 function escape_raid:on_leave (obj)
