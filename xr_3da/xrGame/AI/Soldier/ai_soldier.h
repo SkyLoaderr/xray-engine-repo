@@ -111,9 +111,10 @@ class CAI_Soldier : public CCustomMonster
 		#define WRITE_LOG
 
 		#ifdef WRITE_LOG
-			#define WRITE_TO_LOG(S) \
+			#define WRITE_TO_LOG(S) {\
 				Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
-				bStopThinking = true;
+				bStopThinking = true;\
+			}
 		#else
 			#define WRITE_TO_LOG(S) \
 				bStopThinking = true;
@@ -390,6 +391,7 @@ class CAI_Soldier : public CCustomMonster
 		
 		// action data
 		bool			m_bActionStarted;
+		bool			m_bJumping;
 		
 		// hit data
 		DWORD			dwHitTime;

@@ -41,6 +41,7 @@ CAI_Soldier::CAI_Soldier()
 	m_tpCurrentHandsBlend = 
 	m_tpCurrentLegsBlend = 0;
 	m_bActionStarted = false;
+	m_bJumping = false;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -162,14 +163,15 @@ void CAI_Soldier::Exec_Movement	( float dt )
 			Movement.SetPosition(vPosition);
 			Movement.SetVelocity(tVelocity);
 			tAcceleration.set(0,0,0);
-			Movement.Calculate	(tAcceleration,0,1,dt,false);
+			Movement.SetPosition(vPosition);
+			Movement.Calculate	(tAcceleration,0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,dt > .1f ? .1f : dt,false);
 			Movement.GetPosition(vPosition);
 		}
 		else {
 			Fvector tAcceleration;
-			tAcceleration.set(0,5,0);
+			tAcceleration.set(0,-m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
 			Movement.SetPosition(vPosition);
-			Movement.Calculate	(tAcceleration,0,0,dt,false);
+			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
 			Movement.GetPosition(vPosition);
 		}
 		UpdateTransform	();

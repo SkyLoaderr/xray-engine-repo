@@ -7,13 +7,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\..\\3dsound.h"
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
-#include "..\\..\\..\\xr_trims.h"
-#include "..\\..\\hudmanager.h"
 #include "..\\ai_monsters_misc.h"
+#include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\hudmanager.h"
+#include "..\\..\\..\\3dsound.h"
+#include "..\\..\\..\\xr_trims.h"
 
 #define COMPUTE_DISTANCE_2D(t,p) (sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
@@ -23,7 +23,6 @@ void CAI_Soldier::AttackFire()
 
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		
 		return;
 	}
 	
@@ -434,28 +433,32 @@ void CAI_Soldier::Injuring()
 
 void CAI_Soldier::Jumping()
 {
-	WRITE_TO_LOG("Jumping...");
-	
+
+	if (Movement.Environment() == CMovementControl::peInAir)
+		WRITE_TO_LOG("Jumping(air)...")
+	else
+		if (Movement.Environment() == CMovementControl::peOnGround)
+			WRITE_TO_LOG("Jumping(ground)...")
+		else
+			WRITE_TO_LOG("Jumping(unknown)...")
+
 	if (m_bStateChanged) {
 		m_dwLastRangeSearch = Level().timeServer();
 		m_bActionStarted = true;
+		m_bJumping = false;
 	}
 	else {
 		switch (m_cBodyState) {
-			case BODY_STATE_STAND : {
-				if ((m_tpCurrentLegsAnimation == tSoldierAnimations.tNormal.tGlobal.tpJumpIdle) && (m_tpCurrentLegsBlend)) {
-				//if (Level().timeServer() - m_dwLastRangeSearch > 1000) {
-					eCurrentState = tStateStack.top();
-					tStateStack.pop();
-				}
-				break;
-			}
+			case BODY_STATE_STAND : ;
 			case BODY_STATE_CROUCH : {
-				if ((m_tpCurrentLegsAnimation == tSoldierAnimations.tCrouch.tGlobal.tpJumpIdle) && (m_tpCurrentLegsBlend)) {
-				//if (Level().timeServer() - m_dwLastRangeSearch > 1000) {
-					eCurrentState = tStateStack.top();
-					tStateStack.pop();
-				}
+				if ((Movement.Environment() == CMovementControl::peInAir) && (!m_bJumping))
+					m_bJumping = true;
+				else
+					if ((m_bJumping) && (Movement.Environment() == CMovementControl::peOnGround)) {
+						m_bJumping = false;
+						eCurrentState = tStateStack.top();
+						tStateStack.pop();
+					}
 				break;
 			}
 			case BODY_STATE_LIE : {

@@ -156,13 +156,20 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						case aiSoldierJumping : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									if ((m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tGlobal.tpJumpBegin) && (m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tGlobal.tpJumpIdle))
+									if ((m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tGlobal.tpJumpBegin) && (m_tpCurrentLegsAnimation != tSoldierAnimations.tNormal.tGlobal.tpJumpIdle)) {
 										tpLegsAnimation = tSoldierAnimations.tNormal.tGlobal.tpJumpBegin;
+										Msg("Jump begin");
+									}
 									else
-										if (m_tpCurrentLegsBlend->playing)
+										//if ((ps_Size() < 2) || (ps_Element(ps_Size() - 1).vPosition.y - ps_Element(ps_Size() - 2).vPosition.y > -EPS_L)) {
+										if (m_tpCurrentLegsBlend->playing) {
 											tpLegsAnimation = m_tpCurrentLegsAnimation;
-										else
+											Msg("Jump continueing");
+										}
+										else {
 											tpLegsAnimation = tSoldierAnimations.tNormal.tGlobal.tpJumpIdle;
+											Msg("Jump idle");
+										}
 									break;
 								}
 								case BODY_STATE_CROUCH : {
