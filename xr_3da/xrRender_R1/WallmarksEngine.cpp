@@ -51,6 +51,12 @@ CWallmarksEngine::CWallmarksEngine	()
 
 CWallmarksEngine::~CWallmarksEngine	()
 {
+	clear			();
+	hGeom.destroy	();
+}
+
+void CWallmarksEngine::clear()
+{
 	{
 		for (WMSVecIt p_it=marks.begin(); p_it!=marks.end(); p_it++){
 			for (WMVecIt m_it=(*p_it)->items.begin(); m_it!=(*p_it)->items.end(); m_it++)
@@ -64,8 +70,6 @@ CWallmarksEngine::~CWallmarksEngine	()
 			xr_delete	(pool[it]);
 		pool.clear	();
 	}
-
-	hGeom.destroy	();
 }
 
 // allocate
@@ -102,19 +106,6 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 }
 
 //--------------------------------------------------------------------------------
-void AddTri	(CDB::TRI* pTri, Fvector* verts, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
-{
-	Fvector				UV;
-	FVF::LIT			V;
-	for (int i=0; i<3; i++)
-	{
-		mView.transform_tiny	(UV, verts[pTri->verts[i]]);
-		V.p.set					(verts[pTri->verts[i]]);
-		V.t.set					(UV.x,UV.y);
-		W.verts.push_back		(V);
-	}
-}
-
 void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 {
 	CDB::TRI*	T			= sml_collector.getT()+t;
@@ -339,4 +330,41 @@ void CWallmarksEngine::Render()
 	RCache.set_xform_project	(Device.mProject);
 
 	lock.Leave();	// Physics may add wallmarks in parallel with rendering
+}
+
+void CWallmarksEngine::load_LevelWallmarks(LPCSTR fn)
+{
+	// load level marks
+	IReader* F		= FS.r_open(fn);
+	if (F){
+		IReader* OBJ= F->open_chunk(0);
+		if (OBJ){
+			u32 slot_cnt	= F->r_u32();
+			for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
+				u32 item_cnt= F->r_u32();
+				if (item_cnt){
+					ref_str				tex_name;
+					F->r_stringZ		(tex_name);
+					ref_shader	sh;		sh.create		("effects\\wallmark",*tex_name);
+					wm_slot* slot		= AppendSlot	(sh);
+					slot->items.resize	(item_cnt);
+					for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+						*w_it			= wm_allocate	();
+						wallmark* W		= *w_it;
+						W->ttl			= flt_max;
+						F->r			(&W->bounds,sizeof(W->bounds));
+						W->verts.resize	(F->r_u32());
+						F->r			(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+					}
+				}
+			}
+			OBJ->close();
+		}
+	}
+    FS.r_close		(F);
+}
+
+void CWallmarksEngine::unload_LevelWallmarks()
+{
+	clear			();
 }

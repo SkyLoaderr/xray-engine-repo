@@ -131,7 +131,7 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 	r_results.r_clear	();
 	r_temp.r_clear		();
 
-	Flags32		sd_test;	sd_test.set		(R.tgt);
+	Flags32		sd_test;	sd_test.assign	(R.tgt);
 	rq_target	next_test	= R.tgt;
 
 	rq_result	s_res;

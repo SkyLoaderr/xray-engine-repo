@@ -136,6 +136,8 @@ CLevel::~CLevel()
 	xr_delete					(game);
 	xr_delete					(game_events);
 
+	::Render->unload_LevelWallmarks();
+
 	CInfoPortion::DeleteStrToID();
 }
 
@@ -504,7 +506,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	abstract->ID			= 0xffff;
 	abstract->ID_Parent		= parent_id;
 	abstract->ID_Phantom	= 0xffff;
-	abstract->s_flags.set	(M_SPAWN_OBJECT_LOCAL);
+	abstract->s_flags.assign(M_SPAWN_OBJECT_LOCAL);
 	abstract->RespawnTime	= 0;
 	
 	if (!return_item) {

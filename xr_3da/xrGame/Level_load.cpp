@@ -106,6 +106,12 @@ BOOL CLevel::Load_GameSpecific_After()
 	else
 		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",""));
 		
+	// loading level wallmarks
+	if (FS.exist(fn_game, "$level$", "level.wallmarks")) {
+		::Render->load_LevelWallmarks(fn_game);
+	}
+
+
 	BlockCheatLoad();
 	return TRUE;
 }

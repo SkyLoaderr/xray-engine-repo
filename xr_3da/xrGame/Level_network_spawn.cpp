@@ -18,7 +18,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	E->ID				=	0xffff;
 	E->ID_Parent		=	0xffff;
 	E->ID_Phantom		=	0xffff;
-	E->s_flags.set		(flags);
+	E->s_flags.assign	(flags);
 	E->RespawnTime		=	0;
 
 	// Send

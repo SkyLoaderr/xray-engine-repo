@@ -127,7 +127,11 @@ public:
 	virtual	void					add_Occluder			(Fbox2&	bb_screenspace	);			// mask screen region as oclluded
 	virtual void					add_Visual				(IRender_Visual*	V	);			// add visual leaf (no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
+
+	// wallmarks
 	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V);
+	virtual void					load_LevelWallmarks		(LPCSTR fn);
+	virtual void					unload_LevelWallmarks	();
 	
 	//
 	virtual IBlender*				blender_create			(CLASS_ID cls);

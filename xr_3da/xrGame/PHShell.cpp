@@ -471,7 +471,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	fm_position.set(bone_data.bind_transform);
 	fm_position.mulA(global_parent);
 	Flags64 mask;
-	mask.set(m_pKinematics->LL_GetBonesVisible());
+	mask.assign(m_pKinematics->LL_GetBonesVisible());
 	if(!mask.is(1ui64<<(u64)id))
 	{
 		for (vecBonesIt it=bone_data.children.begin(); bone_data.children.end() != it; ++it)
@@ -873,7 +873,7 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
 	Flags64 mask;
-	mask.set(m_pKinematics->LL_GetBonesVisible());
+	mask.assign(m_pKinematics->LL_GetBonesVisible());
 	if(mask.is(1ui64<<(u64)id))
 	{
 		if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1)){
@@ -1130,7 +1130,7 @@ void CPHShell::applyGravityAccel(const Fvector& accel)
 void CPHShell::PlaceBindToElForms()
 {
 	Flags64 mask;
-	mask.set(m_pKinematics->LL_GetBonesVisible());
+	mask.assign(m_pKinematics->LL_GetBonesVisible());
 	PlaceBindToElFormsRecursive(Fidentity,m_pKinematics->LL_GetBoneRoot(),0,mask);
 }
 

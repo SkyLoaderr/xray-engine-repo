@@ -274,9 +274,9 @@ void CPhysicsSkeletonObject::UnsplitSingle(CPhysicsSkeletonObject* O)
 
 	Flags64 mask0,mask1;
 	u16 split_bone=m_unsplited_shels.front().second;
-	mask1.set(pKinematics->LL_GetBonesVisible());//source bones mask
+	mask1.assign(pKinematics->LL_GetBonesVisible());//source bones mask
 	pKinematics->LL_SetBoneVisible(split_bone,FALSE,TRUE);
-	mask0.set(pKinematics->LL_GetBonesVisible());//first part mask
+	mask0.assign(pKinematics->LL_GetBonesVisible());//first part mask
 	VERIFY2(mask0.flags,"mask0 -Zero");
 	mask0.invert();
 	mask1.and(mask0.flags);//second part mask
@@ -327,7 +327,7 @@ void CPhysicsSkeletonObject::RecursiveBonesCheck(u16 id)
 	CBoneData& BD		= K->LL_GetData(u16(id));
 	//////////////////////////////////////////
 	Flags64 mask;
-	mask.set(K->LL_GetBonesVisible());
+	mask.assign(K->LL_GetBonesVisible());
 	///////////////////////////////////////////
 	if(
 		mask.is(1ui64<<(u64)id)&& 
@@ -374,7 +374,7 @@ void CPhysicsSkeletonObject::InitServerObject(CSE_Abstract * D)
 	D->ID_Phantom		=	0xffff;
 	D->o_Position		=	Position();
 	XFORM()				.getHPB(D->o_Angle);
-	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
 }
 

@@ -43,7 +43,7 @@ void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_roc
 	D->ID				=	0xffff;
 	D->ID_Parent		=	parent_rocket_launcher->ID();
 	D->ID_Phantom		=	0xffff;
-	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
 	
 	// Send

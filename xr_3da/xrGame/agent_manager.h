@@ -45,7 +45,7 @@ public:
 		IC				CEnemy			(const CEntityAlive *object, MemorySpace::squad_mask_type	mask)
 		{
 			m_object					= object;
-			m_mask.set					(mask);
+			m_mask.assign				(mask);
 			m_probability				= 1.f;
 			m_distribute_mask.zero		();
 		}

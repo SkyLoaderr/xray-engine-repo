@@ -395,7 +395,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	CSE_Abstract			*E	=	spawn_begin	(N);													// create SE
 	strcpy					(E->s_name_replace,get_option_s(options,"name","Player"));					// name
 
-	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 
 	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 	CSE_Spectator			*pS	=	dynamic_cast<CSE_Spectator*>(E);
@@ -697,7 +697,7 @@ void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
 	CSE_Abstract			*E	=	spawn_begin	(N);
 	E->ID_Parent = u16(actorId);
 
-	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL);	// flags
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//если это оружие - спавним его с полным магазином
@@ -706,7 +706,7 @@ void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
 	{
 		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
 
-		pWeapon->m_addon_flags.set(Addons);
+		pWeapon->m_addon_flags.assign(Addons);
 	};
 	/////////////////////////////////////////////////////////////////////////////////
 

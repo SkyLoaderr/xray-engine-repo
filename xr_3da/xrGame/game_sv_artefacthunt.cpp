@@ -195,7 +195,7 @@ BOOL	game_sv_ArtefactHunt::CheckUpgrades			(CSE_Abstract* pItem, u8 IItem)
 //	u8 Addons = pWeapon->m_addon_flags.get();
 //	u8 Upgrades = IItem >> 0x05;
 //	return Addons == Upgrades;
-	pWeapon->m_addon_flags.set(IItem >> 0x05);
+	pWeapon->m_addon_flags.assign(IItem >> 0x05);
 	return true;
 };
 /*
@@ -455,7 +455,7 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 {
 	if (OnClient()) return;
 	CSE_Abstract			*E	=	spawn_begin	("af_magnet");
-	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL);	// flags
 
 	Assign_Artefact_RPoint	(E);
 

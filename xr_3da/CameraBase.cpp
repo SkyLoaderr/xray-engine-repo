@@ -13,7 +13,7 @@
 
 CCameraBase::CCameraBase(CObject* p, u32 flags)
 {
-	m_Flags.set		(flags);
+	m_Flags.assign	(flags);
 	vPosition.set	(0,0,0);
 	vDirection.set	(0,0,1);
 	vNormal.set		(0,1,0);

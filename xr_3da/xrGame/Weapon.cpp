@@ -719,7 +719,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 	else
 		D->ID_Parent = (u16)ParentID;
 	D->ID_Phantom = 0xffff;
-	D->s_flags.set(M_SPAWN_OBJECT_LOCAL);
+	D->s_flags.assign(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;
 	l_pA->m_tNodeID	= level_vertex_id();
 	

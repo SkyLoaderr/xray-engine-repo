@@ -46,9 +46,14 @@ private:
 	wallmark*	wm_allocate			();
 	void		wm_render			(wallmark*	W, FVF::LIT* &V);
 	void		wm_destroy			(wallmark*	W	);
+
+	void		clear				();
 public:
 	void		AddWallmark			(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hTexture, float sz);
 	void		Render				();
+
+	void		load_LevelWallmarks	(LPCSTR fn);
+	void		unload_LevelWallmarks();
 
 	CWallmarksEngine				();
 	~CWallmarksEngine				();

@@ -124,7 +124,7 @@ void CArtifactMerger::SpawnArtifact(const char* af_section)
 	D->ID_Parent		=	u16(this->H_Parent()->ID());
 	D->ID_Phantom		=	0xffff;
 	D->o_Position		=	Position();
-	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
 	// Send
 	NET_Packet			P;
