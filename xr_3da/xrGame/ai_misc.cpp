@@ -907,7 +907,8 @@ void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwS
 						else
 							fAlpha = -acosf(tCurrentPosition.x);
 						fTemp = fAlpha - fAlpha0;
-						_sincos(fTemp,tCurrentPosition.z,tCurrentPosition.x);
+						tCurrentPosition.z = _sin(fTemp);
+						tCurrentPosition.x = _cos(fTemp);
 						tCurrentPosition.mul(fRadius);
 						tCurrentPosition.add(tCircleCentre);
 						if (tPrevPoint.distance_to_xz(tFinalPosition) < tCurrentPosition.distance_to_xz(tFinalPosition)) {
@@ -915,7 +916,8 @@ void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwS
 							tCurrentPosition.sub(tCircleCentre);
 							tCurrentPosition.normalize();
 							fTemp = fAlpha + fAlpha0;
-							_sincos(fTemp,tCurrentPosition.z,tCurrentPosition.x);
+							tCurrentPosition.z = _sin(fTemp);
+							tCurrentPosition.x = _cos(fTemp);
 							tCurrentPosition.mul(fRadius);
 							tCurrentPosition.add(tCircleCentre);
 						}
