@@ -353,6 +353,9 @@ void CCustomMonster::UpdateCL	()
 		// BAD.	extrapolation
 		//Log("Extrapolation");
 		NET_Last		= N;
+#pragma todo("Dima to All : this is FAKE, network is not supported here!")
+		if (dwTime > N.dwTimeStamp)
+			AI_Path.Calculate(this,N.p_pos,Position(),m_fCurSpeed,float(dwTime - N.dwTimeStamp)/1000.f);
 	}
 	else {
 		// OK.	interpolation
