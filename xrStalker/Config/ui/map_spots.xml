@@ -47,6 +47,18 @@
 		<mini_map  spot="esc_wolf_spot" pointer="quest_pointer"></mini_map>
 	</esc_wolf_location>
 
+<!-- garbage quest locations and spots-->
+	<gar_seriy_location hint="gar_seriy">
+		<level_map spot="gar_seriy_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="gar_seriy_spot" pointer="quest_pointer"></mini_map>
+	</gar_seriy_location>
+
+	<!-- spots -->
+	<gar_seriy_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="32" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</gar_seriy_spot>
+
+
 <!-- agroprom quest locations and spots-->
 	<agr_krot_location hint="agr_krot">
 		<level_map spot="agr_krot_spot" pointer="quest_pointer"></level_map>

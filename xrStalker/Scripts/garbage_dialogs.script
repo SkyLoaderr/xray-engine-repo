@@ -14,3 +14,14 @@ end
 function give_dolg_bribe(actor, npc)	
 	actor:transfer_money(500, npc)
 end
+
+function meet_seriy_done(actor, npc)
+	if db.actor then
+		if db.actor:dont_has_info("garbage_meetstalker_done") and 
+		   db.actor:dont_has_info("garbage_meetstalker_die")
+		then
+			db.actor:give_info_portion("garbage_meetstalker_done")
+			level_tasks.set_task_state(task.completed, "garbage_meet_stalker", 0)
+		end
+	end
+end

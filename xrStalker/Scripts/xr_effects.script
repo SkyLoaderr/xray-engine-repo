@@ -347,3 +347,16 @@ function val_suicide_stalker_died(actor, npc)
 		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
 	end
 end
+
+
+-- GARBAGE
+function meet_seriy_fail(actor, npc)
+	if db.actor then
+		if db.actor:dont_has_info("garbage_meetstalker_done") and 
+		   db.actor:dont_has_info("garbage_meetstalker_die")
+		then
+			db.actor:give_info_portion("garbage_meetstalker_die")
+			level_tasks.set_task_state(task.fail, "garbage_meet_stalker", 0)
+		end
+	end
+end

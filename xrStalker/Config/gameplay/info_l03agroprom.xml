@@ -14,6 +14,7 @@
     <info_portion id="agr_krot_band">
 		<task>agr_meet_krot_band</task>
 		<article>storyline_seriy_flash_info</article>
+		<action>level_tasks.notify_new_task</action>
     </info_portion>
     <info_portion id="agr_krot_band_done">
     	<disable>agr_krot_band</disable>

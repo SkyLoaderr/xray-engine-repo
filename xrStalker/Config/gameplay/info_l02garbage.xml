@@ -2,20 +2,11 @@
 
 <game_information_portions>
 	<info_portion id="garbage_meetstalker_start">
-		<location>
-			<level>l02_garbage</level>
-			<object>100</object>
-			<icon name="" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Встретиться с Серым.</text>
-		</location>
-		<task>garbage_meet_stalker</task>	
+		<task>garbage_meet_stalker</task>
+		<action>level_tasks.notify_new_task</action>
 	</info_portion>
-	<info_portion id="garbage_meetstalker_done">
-		<disable>garbage_meetstalker_start</disable>
-	</info_portion>
-	<info_portion id="garbage_meetstalker_die">
-		<disable>garbage_meetstalker_start</disable>
-	</info_portion>
+	<info_portion id="garbage_meetstalker_done"></info_portion>
+	<info_portion id="garbage_meetstalker_die"></info_portion>
 
 	<!-- атака сталкеров и бандитов -->
 	<info_portion id="gar_stalker_vs_bandit"></info_portion>

@@ -80,28 +80,13 @@ function proceed(actor)
 	end
 
 
-
-
-
-
-
 	--' GARBAGE
-	if actor:has_info("garbage_meetstalker_start") and
-		actor:has_info("garbage_meetstalker_die") 
-	then
-		set_task_state(task.fail, "garbage_meet_stalker", 0)
-	end       	
-	if actor:has_info("garbage_meetstalker_start") and
-		actor:has_info("garbage_meetstalker_done") 
-	then
-		set_task_state(task.completed, "garbage_meet_stalker", 0)
-	end       	
-	
 	if actor:dont_has_info("agr_krot_band") and
 		actor:object("garbage_seriy_flash") ~= nil 
 	then
 		actor:give_info_portion("agr_krot_band")
 	end       	
+
 
 
 	--' AGROPROM
@@ -347,6 +332,17 @@ function process_map_spot(info_id)
 	
 	elseif info_id == "escape_dynamite_done" then
 		remove_location(006, "esc_wolf_location")
+	
+	-- garbage
+	elseif info_id == "garbage_meetstalker_start" then
+		add_location(100, "gar_seriy_location")
+
+	elseif info_id == "garbage_meetstalker_done" then
+		remove_location(100, "gar_seriy_location")
+
+	elseif info_id == "garbage_meetstalker_die" then
+		remove_location(100, "gar_seriy_location")
+	
 	
 	-- agroprom
 	elseif info_id == "agr_krot_band" then
