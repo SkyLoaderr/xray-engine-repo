@@ -18,7 +18,7 @@ class ENGINE_API CEngine
 	HMODULE				hPSGP;
 public:
 	// DLL api stuff
-	string512			Params;
+	char				Params		[512];
 	CEngineAPI			External;
 	CScriptAPI			Scripts;
 	CEventAPI			Event;
