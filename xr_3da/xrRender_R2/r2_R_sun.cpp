@@ -735,14 +735,6 @@ void CRender::render_sun				()
 		// receivers
 		b_receivers.invalidate	();
 		b_receivers		= view_clipper.clipped_AABB	(s_receivers,xform);
-		// calculate view-frustum bounds in world space
-		// note: D3D uses [0..1] range for Z
-		static Fvector3		corners [8]			= {
-			{ -1, -1,  0 },		{ -1, -1, +1},
-			{ -1, +1, +1 },		{ -1, +1,  0},
-			{ +1, +1, +1 },		{ +1, +1,  0},
-			{ +1, -1, +1},		{ +1, -1,  0}
-		};
 		Fmatrix	ex_project, ex_full, ex_full_inverse;
 		{
 			ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,tweak_guaranteed_range); 
