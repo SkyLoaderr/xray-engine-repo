@@ -135,6 +135,11 @@ public:
 		VERIFY		(idx<MAX_BONE_PARAMS);
 		param[idx]	= data;
 	}
+	IC	float		get_param		(DWORD idx)
+	{
+		VERIFY		(idx<MAX_BONE_PARAMS);
+		return		param[idx];
+	}
 };
 #pragma pack(pop)
 
