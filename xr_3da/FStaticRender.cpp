@@ -72,6 +72,7 @@ static	int			gm_Level	= 0;
 static	DWORD		gm_Ambient	= 0;
 static	BOOL		gm_Nearer	= 0;
 static	CObject*	gm_Object	= 0;
+static	int			gm_Lcount	= 0;
 
 IC		void		gm_SetLevel			(int iLevel)
 {
@@ -114,6 +115,9 @@ IC		void		gm_SetLighting		(CObject* O)
 	if (O != gm_Object)
 	{
 		gm_Object	= O;
+		
+		// set up to 8 lights to device
+		CHK_DX(HW.pDevice->SetLight	(i, Lights[i].d3d()) );
 	}
 }
 
@@ -167,7 +171,7 @@ void CRender::Calculate()
 	CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
 	gm_SetAmbient					(0);
 	gm_SetNearer					(FALSE);
-
+		
 	// Render current sector and beyond
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
 	{
