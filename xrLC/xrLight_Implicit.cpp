@@ -250,7 +250,7 @@ void CBuild::ImplicitLighting()
 			u32	pitch				= w*4;
 			STextureParams			fmt	= TEX.THM;
 			fmt.fmt					= STextureParams::tfDXT5;
-			fmt.flags.set			(STextureParams::flDitherColor,		TRUE);
+			fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
 			fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
 			fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
 			DXTCompress				(out_name,raw_data,w,h,pitch,&fmt,4);
