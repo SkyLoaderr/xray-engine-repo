@@ -34,3 +34,10 @@ IC	void CRestrictedObject::actual			(bool value)
 {
 	m_actual			= value;
 }
+
+IC	void CRestrictedObject::initialize		()
+{
+	m_applied			= false;
+}
+
+

@@ -62,6 +62,11 @@ void CStalkerMovementManager::initialize()
 	set_movement_type		(eMovementTypeStand);
 	set_mental_state		(eMentalStateDanger);
 	set_desired_direction	(0);
+
+#ifdef DEBUG
+	restrictions().initialize();
+#endif
+
 	restrictions().remove_all_restrictions();
 	set_nearest_accessible_position();
 }
