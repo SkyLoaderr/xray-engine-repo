@@ -154,7 +154,9 @@ void CScriptEngine::export_motivation_management()
 			.def("load",						&CScriptMotivationActionManager::Load,		&CScriptMotivationActionManagerWrapper::Load_static)
 			.def("reload",						&CScriptMotivationActionManager::reload,	&CScriptMotivationActionManagerWrapper::reload_static)
 			.def("update",						&CScriptMotivationActionManager::update,	&CScriptMotivationActionManagerWrapper::update_static)
-			.def("clear",						&CScriptMotivationActionManager::clear),
+			.def("clear",						&CScriptMotivationActionManager::clear)
+			.def("clear_motivations",			&CScriptMotivationManager::clear)
+			.def("clear_actions",				&CScriptActionPlanner::clear),
 
 		class_<CSE_Abstract>("server_object"),
 			
