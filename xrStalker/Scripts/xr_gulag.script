@@ -682,7 +682,7 @@ function fract:loadJob(name)
 			state = { 0 },
 			group = 0,
 			center_point = "mili_kamp_center",
-			patrol_path = "mili_kamp_patrol"
+			patrol_path = "mili_kamp_patrol"}
 		table.insert(self.Job, t)			
 		t = { name = "kamp",
 			object = nil,
@@ -692,7 +692,7 @@ function fract:loadJob(name)
 			state = { 0 },
 			group = 0,
 			center_point = "mili_kamp_center",
-			patrol_path = "mili_kamp_patrol"
+			patrol_path = "mili_kamp_patrol"}
 		table.insert(self.Job, t)			
 		t = { name = "kamp",
 			object = nil,
@@ -702,7 +702,7 @@ function fract:loadJob(name)
 			state = { 0 },
 			group = 0,
 			center_point = "mili_kamp_center",
-			patrol_path = "mili_kamp_patrol"
+			patrol_path = "mili_kamp_patrol"}
 		table.insert(self.Job, t)			
 
 		
