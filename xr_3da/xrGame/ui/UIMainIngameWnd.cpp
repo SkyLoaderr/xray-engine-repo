@@ -861,6 +861,11 @@ void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 	CUIPdaMsgListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaMsgListItem>();
 	UIInfoMessages.AddItem<CUIListItem>(pItem, 0); 
+	R_ASSERT(UIInfoMessages.GetFont());
+	pItem->UIMsgText.SetFont(UIInfoMessages.GetFont());
+	pItem->UIMsgText.SetTextColor(UIInfoMessages.GetTextColor());
+	pItem->UIMsgText.MoveWindow(-static_cast<int>(UIInfoMessages.GetFont()->SizeOf(message) / 2),
+								pItem->UIMsgText.GetWndRect().top);
 	UIInfoMessages.ScrollToBegin();
 
 	pItem->SetValue(m_iInfosShowTime);
