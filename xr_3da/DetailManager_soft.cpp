@@ -88,7 +88,7 @@ void CDetailManager::soft_Render	()
 					CDetail::fvfVertexOut	*dstIt = vDest;
 
 					//
-					float	tm			= Device.fTimeGlobal*0.1f; 
+					float	tm			= Device.fTimeGlobal; 
 					float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
 					float	cx			= 1.f/5.f;
 					float	cy			= 1.f/7.f;
