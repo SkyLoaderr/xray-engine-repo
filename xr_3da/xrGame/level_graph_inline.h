@@ -286,13 +286,22 @@ IC	const Fbox &CLevelGraph::CHeader::box() const
 
 IC	u8	CLevelGraph::CVertex::light() const
 {
-//	return				(NodeCompressed::light());
-	return				(data[10] >> 4);
+	return				(NodeCompressed::light());
 }
 
 IC	u32	CLevelGraph::CVertex::link(int index) const
 {
-	return		(NodeCompressed::link(u8(index)));
+	switch (index) {
+		case 0 :	return	((*(u32*)data) & 0x007fffff);
+		case 1 :	return	(((*(u32*)(data + 2)) >> 7) & 0x007fffff);
+		case 2 :	return	(((*(u32*)(data + 5)) >> 6) & 0x007fffff);
+		case 3 :	return	(((*(u32*)(data + 8)) >> 5) & 0x007fffff);
+		default :	NODEFAULT;
+	}
+#ifdef DEBUG
+	return			(0);
+#endif
+//	return		(NodeCompressed::link(u8(index)));
 }
 
 IC	u16	CLevelGraph::CVertex::cover(u8 index) const
