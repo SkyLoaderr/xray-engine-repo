@@ -267,7 +267,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:play_queue ()
 
-    --printf ("Play queue called")
     reset_action (self.npc, self.script)
 
     if self.current.repeats == 0 then
