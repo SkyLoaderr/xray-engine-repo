@@ -8,23 +8,29 @@
 
 #pragma once
 
-#include "operator_abstract.h"
-
-#define STRAIGHT_SEARCH
-
 template <
 	typename _operator_condition,
 	typename _condition_state,
 	typename _operator,
 	typename _condition_evaluator,
-	typename _operator_id_type
+	typename _operator_id_type,
+	bool	 _reverse_search = true,
+	typename _operator_ptr = _operator*,
+	typename _condition_evaluator_ptr = _condition_evaluator*
 >
 class CProblemSolver {
+public:
+	enum {
+		reverse_search = _reverse_search,
+	};
+
 public:
 	typedef _operator_condition								COperatorCondition;
 	typedef _operator										COperator;
 	typedef _condition_state								CState;
 	typedef _condition_evaluator							CConditionEvaluator;
+	typedef _operator_ptr									_operator_ptr;
+	typedef _condition_evaluator_ptr						_condition_evaluator_ptr;
 	typedef typename _operator_condition::_condition_type	_condition_type;
 	typedef typename _operator_condition::_value_type		_value_type;
 	typedef typename _operator::_edge_value_type			_edge_value_type;
@@ -33,9 +39,9 @@ public:
 
 	struct SOperator {
 		_operator_id_type	m_operator_id;
-		COperator			*m_operator;
+		_operator_ptr		m_operator;
 
-		IC					SOperator(const _operator_id_type &operator_id, COperator *_operator) :
+		IC					SOperator(const _operator_id_type &operator_id, _operator_ptr _operator) :
 								m_operator_id(operator_id),
 								m_operator(_operator)
 		{
@@ -46,15 +52,14 @@ public:
 			return			(m_operator_id < operator_id);
 		}
 
-		COperator			*get_operator()
+		_operator_ptr		get_operator()
 		{
 			return			(m_operator);
 		}
 	};
 	typedef xr_vector<SOperator>									OPERATOR_VECTOR;
 	typedef typename OPERATOR_VECTOR::const_iterator				const_iterator;
-	typedef xr_map<_condition_type,CConditionEvaluator*>			EVALUATOR_MAP;
-
+	typedef xr_map<_condition_type,_condition_evaluator_ptr>		EVALUATOR_MAP;
 
 protected:
 	OPERATOR_VECTOR				m_operators;
@@ -67,6 +72,23 @@ protected:
 	bool						m_actuality;
 	bool						m_solution_changed;
 	bool						m_failed;
+
+private:
+	template <bool>
+	IC		bool						is_goal_reached_impl	(const _index_type	&vertex_index) const {return is_goal_reached_impl(vertex_index);}
+	template <>
+	IC		bool						is_goal_reached_impl<true>	(const _index_type	&vertex_index) const {return is_goal_reached_impl(vertex_index,true);}
+
+	IC		bool						is_goal_reached_impl	(const _index_type	&vertex_index) const;
+	IC		bool						is_goal_reached_impl	(const _index_type	&vertex_index, bool) const;
+	
+	template <bool>
+	IC		_edge_value_type			estimate_edge_weight_impl(const _index_type	&vertex_index) const {return estimate_edge_weight_impl(vertex_index);}
+	template <>
+	IC		_edge_value_type			estimate_edge_weight_impl<true>(const _index_type	&vertex_index) const {return estimate_edge_weight_impl(vertex_index,true);}
+
+	IC		_edge_value_type			estimate_edge_weight_impl(const _index_type	&vertex_index) const;
+	IC		_edge_value_type			estimate_edge_weight_impl(const _index_type	&vertex_index, bool) const;
 
 protected:
 #ifdef DEBUG
@@ -93,9 +115,9 @@ public:
 	IC		_edge_value_type			estimate_edge_weight	(const _index_type	&vertex_index) const;
 
 	// operator interface
-	IC		void						add_operator			(const _edge_type	&operator_id,	COperator			*_operator);
+	IC		void						add_operator			(const _edge_type	&operator_id,	_operator_ptr _operator);
 	IC		void						remove_operator			(const _edge_type	&operator_id);
-	IC		COperator					*get_operator			(const _operator_id_type &operator_id);
+	IC		_operator_ptr				get_operator			(const _operator_id_type &operator_id);
 	IC		const OPERATOR_VECTOR		&operators				() const;
 
 	// state interface
@@ -104,9 +126,9 @@ public:
 	IC		const CState				&target_state			() const;
 
 	// evaluator interface
-	IC		void						add_evaluator			(const _condition_type &condition_id, CConditionEvaluator *evaluator);
+	IC		void						add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
 	IC		void						remove_evaluator		(const _condition_type &condition_id);
-	IC		CConditionEvaluator			*evaluator				(const _condition_type &condition_id) const;
+	IC		_condition_evaluator_ptr	evaluator				(const _condition_type &condition_id) const;
 	IC		const EVALUATOR_MAP			&evaluators				() const;
 	IC		void						evaluate_condition		(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const;
 
@@ -114,5 +136,12 @@ public:
 	IC		void						solve					();
 	IC		const xr_vector<_edge_type>	&solution				() const;
 };
+
+#ifndef AI_COMPILER
+#	include "ai_space.h"
+#endif
+
+#include "graph_engine.h"
+#include "object_broker.h"
 
 #include "problem_solver_inline.h"

@@ -18,8 +18,11 @@ class CScriptGameObject;
 
 template <
 	typename _object_type,
+	bool	 _reverse_search = false,
 	typename _world_operator = CActionBase<_object_type>,
-	typename _condition_evaluator = CPropertyEvaluator<_object_type>
+	typename _condition_evaluator = CPropertyEvaluator<_object_type>,
+	typename _world_operator_ptr = _world_operator*,
+	typename _condition_evaluator_ptr = _condition_evaluator*
 >
 class CActionPlanner : 
 	public CProblemSolver<
@@ -27,7 +30,10 @@ class CActionPlanner :
 		CGraphEngine::CWorldState,
 		_world_operator,
 		_condition_evaluator,
-		u32
+		u32,
+		_reverse_search,
+		_world_operator_ptr,
+		_condition_evaluator_ptr
 	> 
 {
 public:
@@ -36,7 +42,10 @@ public:
 		CGraphEngine::CWorldState,
 		_world_operator,
 		_condition_evaluator,
-		u32
+		u32,
+		_reverse_search,
+		_world_operator_ptr,
+		_condition_evaluator_ptr
 	>												CProblemSolver;
 	typedef CProblemSolver							inherited;
 	typedef typename inherited::_edge_type			_action_id_type;

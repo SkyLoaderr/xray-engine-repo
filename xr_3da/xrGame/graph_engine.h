@@ -161,14 +161,21 @@ public:
 		typename T3,
 		typename T4,
 		typename T5,
-		typename _Parameters>
+		bool	 T6,
+		typename T7,
+		typename T8,
+		typename _Parameters
+	>
 	IC		bool	search					(
 		const CProblemSolver<
 			T1,
 			T2,
 			T3,
 			T4,
-			T5
+			T5,
+			T6,
+			T7,
+			T8
 		>								&graph, 
 		const _solver_index_type		&start_node,
 		const _solver_index_type		&dest_node,

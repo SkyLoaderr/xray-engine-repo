@@ -19,12 +19,15 @@
 #include "missile.h"
 #include "script_game_object.h"
 
-#include "inventory.h"
-
 using namespace StalkerDecisionSpace;
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
+#endif
+
+#ifdef STALKER_DEBUG_MODE
+#	include "inventory.h"
+#	include "attachable_item.h"
 #endif
 
 #ifdef DEBUG
@@ -106,6 +109,9 @@ void CStalkerActionFreeNoALife::finalize	()
 	inherited::finalize				();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
 	m_object->set_sound_mask		(0);
+#ifdef STALKER_DEBUG_MODE
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+#endif
 }
 
 void CStalkerActionFreeNoALife::execute		()
@@ -156,7 +162,8 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
+//	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
+//	dynamic_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
 #endif
 }
 

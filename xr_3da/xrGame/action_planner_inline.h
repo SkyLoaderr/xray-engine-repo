@@ -11,10 +11,22 @@
 #define TEMPLATE_SPECIALIZATION \
 	template <\
 		typename _object_type,\
+		bool	 _reverse_search,\
 		typename _world_operator,\
-		typename _condition_evaluator\
+		typename _condition_evaluator,\
+		typename _world_operator_ptr,\
+		typename _condition_evaluator_ptr\
 	>
-#define CPlanner				CActionPlanner<_object_type,_world_operator,_condition_evaluator>
+
+#define CPlanner				\
+	CActionPlanner <\
+		_object_type,\
+		_reverse_search,\
+		_world_operator,\
+		_condition_evaluator,\
+		_world_operator_ptr,\
+		_condition_evaluator_ptr\
+	>
 
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::CActionPlanner			()

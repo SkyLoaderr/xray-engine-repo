@@ -27,12 +27,12 @@ class CMissile;
 class CFoodItem;
 
 class CObjectHandler : 
-	public CActionPlanner<CAI_Stalker>,
+	public CActionPlanner<CAI_Stalker,true>,
 	public CInventoryOwner
 
 {
 protected:
-	typedef CActionPlanner<CAI_Stalker>				inherited;
+	typedef CActionPlanner<CAI_Stalker,true>		inherited;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 

@@ -15,6 +15,9 @@
 		typename T3,\
 		typename T4,\
 		typename T5,\
+		bool T6,\
+		typename T7,\
+		typename T8,\
 		typename _DataStorage,\
 		typename _Parameters,\
 		typename _dist_type,\
@@ -22,7 +25,7 @@
 		typename _iteration_type\
 	>
 
-#define CSolverPathManager CPathManager<CProblemSolver<T1,T2,T3,T4,T5>,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
+#define CSolverPathManager CPathManager<CProblemSolver<T1,T2,T3,T4,T5,T6,T7,T8>,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSolverPathManager::~CSolverPathManager			()
@@ -105,11 +108,7 @@ IC	void CSolverPathManager::create_path			(T &vertex)
 {
 	VERIFY					(this->data_storage);
 	if (m_edge_path)
-#ifdef STRAIGHT_SEARCH
-		data_storage->get_edge_path	(*m_edge_path,&vertex,false);
-#else
-		data_storage->get_edge_path	(*m_edge_path,&vertex,true);
-#endif
+		data_storage->get_edge_path	(*m_edge_path,&vertex,typename _Graph::reverse_search);
 }
 
 #undef TEMPLATE_SPECIALIZATION
