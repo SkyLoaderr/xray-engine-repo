@@ -1017,7 +1017,7 @@ void CAI_Zomby::FreeHunting()
 					S.m_tEnemyPosition.set(0,0,0);
 					S.m_tpEnemyNode		= NULL;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
+					//S.taMembers = Squad.Groups[g_Group()].Members;
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {
@@ -1169,7 +1169,7 @@ void CAI_Zomby::UnderFire()
 					S.m_tEnemyPosition.set(0,0,0);
 					S.m_tpEnemyNode		= NULL;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
+					//S.taMembers = Squad.Groups[g_Group()].Members;
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {

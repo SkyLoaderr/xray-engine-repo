@@ -359,7 +359,7 @@ void CAI_Hen::Attack()
 						bCanKillMember = true;
 				if (!bCanKillMember)
 					for (int i=0; i<S.taMemberPositions.size(); i++)
-						if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+						if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
 							bCanKillMember = true;
 							break;
 						}
@@ -1043,12 +1043,12 @@ void CAI_Hen::UnderFire()
 						q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
 						
 						bool bCanKillMember = false;
-						if (Leader != this)
-							if ((Leader->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,Leader->Position())))
+						if (Leader)
+							if ((Leader->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,Leader->Position())))
 								bCanKillMember = true;
 						if (!bCanKillMember)
 							for (int i=0; i<S.taMemberPositions.size(); i++)
-								if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+								if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,S.taMemberPositions[i]))) {
 									bCanKillMember = true;
 									break;
 								}
