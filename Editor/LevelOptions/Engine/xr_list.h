@@ -33,6 +33,15 @@ public:
 		_size				= V;								// initial size
 		_count				= 0;								// initial count
 	}
+	CList					(CList<T>& from)
+	{
+		_size				= from._count;
+		_count				= from._count;
+		data				= (T *) malloc	(_size*sizeof(T));
+		for (int it=0; it<_count; it++)
+			(*this)[it] = from[it];
+	}
+
 	~CList									( )
 	{	_FREE		(data);	}
 
