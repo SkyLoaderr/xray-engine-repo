@@ -29,7 +29,7 @@
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
@@ -5528,6 +5528,12 @@
 							<Filter
 								Name="character_info"
 								Filter="">
+								<File
+									RelativePath=".\character_community.cpp">
+								</File>
+								<File
+									RelativePath=".\character_community.h">
+								</File>
 								<File
 									RelativePath=".\character_info.cpp">
 								</File>
