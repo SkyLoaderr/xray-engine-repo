@@ -87,7 +87,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		SStateDataMoveToPoint data;
 		data.point			= nearest_bone_pos;
 		data.vertex			= u32(-1);
-		data.action			= ((current_substate == eStateCorpseApproachRun) ? ACT_RUN : ACT_WALK_FWD);
+		data.action.action	= ((current_substate == eStateCorpseApproachRun) ? ACT_RUN : ACT_WALK_FWD);
 		data.accelerated	= true;
 		data.braking		= true;
 		data.accel_type 	= eAT_Calm;
@@ -98,23 +98,23 @@ void CStateMonsterEatAbstract::setup_substates()
 	}
 
 	if (current_substate == eStateCheckCorpse) {
-		SStateDataCustomAction data;
+		SStateDataAction data;
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_CHECK_CORPSE;
 		data.time_out		= 1500;
-		state->fill_data_with(&data, sizeof(SStateDataCustomAction));
+		state->fill_data_with(&data, sizeof(SStateDataAction));
 		return;
 	}
 	
 	if (current_substate == eStateWalkAway) {
 		SStateHideFromPoint data;
 		
-		data.point			= object->CorpseMan.get_corpse_position();
-		data.action			= ACT_WALK_FWD;
-		data.distance		= 15.f;	
-		data.accelerated	= true;
-		data.braking		= true;
-		data.accel_type		= eAT_Calm;
+		data.point					= object->CorpseMan.get_corpse_position();
+		data.action.action			= ACT_WALK_FWD;
+		data.distance				= 15.f;	
+		data.accelerated			= true;
+		data.braking				= true;
+		data.accel_type				= eAT_Calm;
 		data.cover_min_dist			= 5.f;
 		data.cover_max_dist			= 10.f;
 		data.cover_search_radius	= 20.f;
@@ -123,11 +123,11 @@ void CStateMonsterEatAbstract::setup_substates()
 	}
 
 	if (current_substate == eStateRest) {
-		SStateDataCustomAction data;
+		SStateDataAction data;
 		data.action			= ACT_REST;
 		data.spec_params	= 0;
 		data.time_out		= 8500;
-		state->fill_data_with(&data, sizeof(SStateDataCustomAction));
+		state->fill_data_with(&data, sizeof(SStateDataAction));
 		return;
 	}
 

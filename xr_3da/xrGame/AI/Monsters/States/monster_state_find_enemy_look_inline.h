@@ -73,11 +73,10 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 		SStateDataMoveToPoint data;
 		data.point			= target_point;
 		data.vertex			= u32(-1);
-		data.action			= ACT_RUN;
 		data.accelerated	= true;
 		data.braking		= false;
 		data.accel_type 	= eAT_Aggressive;
-
+		data.action.action	= ACT_RUN; 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
 
 #ifdef DEBUG
@@ -88,12 +87,12 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 	}
 
 	if (current_substate == eLookAround) {
-		SStateDataCustomAction data;
+		SStateDataAction data;
 		
 		data.action		= ACT_LOOK_AROUND;
 		data.time_out	= 2000;
 		
-		state->fill_data_with(&data, sizeof(SStateDataCustomAction));
+		state->fill_data_with(&data, sizeof(SStateDataAction));
 #ifdef DEBUG
 		object->HDebug->M_Clear();
 		object->HDebug->M_Add(1, "Look Around", D3DCOLOR_XRGB(255,0,0));
@@ -104,8 +103,8 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 	if (current_substate == eTurnToPoint) {
 		SStateDataLookToPoint data;
 
-		data.point	= target_point; 
-		data.action	= ACT_STAND_IDLE;		
+		data.point			= target_point; 
+		data.action.action	= ACT_STAND_IDLE;		
 
 		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
 

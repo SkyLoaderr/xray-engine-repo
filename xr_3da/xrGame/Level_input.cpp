@@ -6,7 +6,7 @@
 #include "alife_simulator.h"
 #include "level_graph.h"
 
-#include "ai/trader/ai_trader.h"
+#include "ai/monsters/poltergeist/poltergeist.h"
 
 #include "../fdemorecord.h"
 #include "level.h"
@@ -217,25 +217,18 @@ void CLevel::IR_OnKeyboardPress(int key)
 //	TEST	
 //////////////////////////////////////////////////////////////////////////
 
-//	CObject			*obj		= Level().Objects.FindObjectByName("trader");
-//	CAI_Trader		*pTrader	= dynamic_cast<CAI_Trader *>(obj);
-//	if (pTrader) {
-//		switch (key) {
-//		case DIK_1:
-//			pTrader->m_bPlaying	= false;
-//			pTrader->SelectAnimation(pTrader->XFORM().k,pTrader->XFORM().k,0.f);
-//			break;
-//		case DIK_2:
-//			pE->m_pPhysicsShell->applyImpulse(dir_inv, 1.5f * pE->m_pPhysicsShell->getMass());
-//			break;
-//		case DIK_9:
-//			pE->m_pPhysicsShell->set_ApplyByGravity(TRUE);
-//			break;
-//		case DIK_0:
-//			pE->m_pPhysicsShell->set_ApplyByGravity(FALSE);
-//			break;
-//		}
-//	}
+	CObject			*obj		= Level().Objects.FindObjectByName("monster");
+	CPoltergeist	*monster	= dynamic_cast<CPoltergeist*>(obj);
+	if (monster) {
+		switch (key) {
+		case DIK_1:
+			monster->Hide();
+			break;
+		case DIK_2:
+			monster->Show();
+			break;
+		}
+	}
 
 }
 

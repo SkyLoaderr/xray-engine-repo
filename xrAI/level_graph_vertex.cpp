@@ -585,3 +585,18 @@ float CLevelGraph::compute_square(float fAngle, float fAngleOfView, float b1, fl
 	return				(fSquare);
 }
 
+float CLevelGraph::vertex_less_cover(u32 vertex_id, float inc_angle) const
+{
+	float best_value	= flt_max;
+	float best_angle	= -1.f;
+
+	for (float angle = 0.f; angle <= PI_MUL_2; angle += inc_angle) {
+		float cover = cover_in_direction(angle, vertex_id);
+		if (cover < best_value) {
+			best_value = cover;
+			best_angle = angle;
+		}
+	}
+	
+	return best_angle;
+}

@@ -62,7 +62,7 @@ void CMovementManager::process_level_path()
 				m_path_state	= ePathStateBuildLevelPath;
 				break;
 			}
-			
+
 			m_path_state		= ePathStatePathVerification;
 
 			if (time_over())

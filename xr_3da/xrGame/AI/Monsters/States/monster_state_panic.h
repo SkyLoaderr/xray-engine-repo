@@ -1,33 +1,25 @@
 #pragma once
 
-#include "../../../state_manager_state.h"
+#include "../../state.h"
 
 template<typename _Object>
-class	CStateMonsterPanic : public CStateManagerState<_Object> {
-protected:
-	typedef CStateManagerState<_Object> inherited;
+class	CStateMonsterPanic : public CState<_Object> {
+	typedef CState<_Object>		inherited;
+	typedef CState<_Object>*	state_ptr;
 
-	enum EAttackStates {
+	enum EPanicStates {
 		eStateRun			= u32(0),
-
-		eStateNumber
+		eStateFaceUnprotectedArea,
 	};
-
-	typedef typename CStateBase<_Object>* SSubStatePtr;
-	SSubStatePtr		states[eStateNumber];
-
+	
 public:
-						CStateMonsterPanic		(LPCSTR state_name, SSubStatePtr state_run);
+						CStateMonsterPanic		(_Object *obj);
 	virtual				~CStateMonsterPanic		();
-	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_Object *object);
 
-	virtual	void		initialize				();
-	virtual	void		execute					();
-	virtual	void		finalize				();
-
-	virtual bool		completed				();
+	virtual void		initialize				();
+	virtual	void		reselect_state			();
+	virtual void		check_force_state		();
+	virtual void		setup_substates			();
 };
 
 #include "monster_state_panic_inline.h"
-

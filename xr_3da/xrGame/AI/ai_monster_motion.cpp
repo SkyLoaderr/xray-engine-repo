@@ -95,6 +95,9 @@ bool CMotionManager::PrepareAnimation()
 	if (TA_IsActive() && pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
 
 	// получить элемент SAnimItem соответствующий cur_anim
+
+	pMonster->ForceFinalAnimation();
+
 	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
 	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 
@@ -241,6 +244,7 @@ void CMotionManager::Seq_Switch()
 	// установить параметры
 	cur_anim	= *seq_it;
 	ApplyParams ();
+	ForceAnimSelect();
 }
 
 

@@ -6,7 +6,7 @@ template<typename _Object>
 class CStateMonsterCustomAction : public CState<_Object> {
 	typedef CState<_Object> inherited;
 
-	SStateDataCustomAction	data;
+	SStateDataAction	data;
 
 public:
 						CStateMonsterCustomAction	(_Object *obj);

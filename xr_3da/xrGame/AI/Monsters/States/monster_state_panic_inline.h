@@ -1,5 +1,11 @@
 #pragma once
 
+#include "state_data.h"
+#include "state_move_to_point.h"
+#include "state_custom_action.h"
+#include "state_look_unprotected_area.h"
+#include "monster_state_panic_run.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -7,30 +13,15 @@
 #define CStateMonsterPanicAbstract CStateMonsterPanic<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterPanicAbstract::CStateMonsterPanic(LPCSTR state_name, SSubStatePtr state_run) : inherited(state_name)
+CStateMonsterPanicAbstract::CStateMonsterPanic(_Object *obj) : inherited(obj)
 {
-	states[eStateRun]		= state_run;
+	add_state(eStateRun,					xr_new<CStateMonsterPanicRun<_Object> >(obj));
+	add_state(eStateFaceUnprotectedArea,	xr_new<CStateMonsterLookToUnprotectedArea<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterPanicAbstract::~CStateMonsterPanic()
 {
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterPanicAbstract::Load(LPCSTR section)
-{
-	add_state				(states[eStateRun],		eStateRun,			1);
-
-	inherited::Load			(section);
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterPanicAbstract::reinit(_Object *object)
-{
-	inherited::reinit		(object);
-	set_current_state		(eStateRun);
-	set_dest_state			(eStateRun);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -40,27 +31,50 @@ void CStateMonsterPanicAbstract::initialize()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateMonsterPanicAbstract::execute()
+void CStateMonsterPanicAbstract::reselect_state()
 {
-	Msg("Panic Executed...");
-	set_dest_state(eStateRun);
-	inherited::execute();
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterPanicAbstract::finalize()
-{
-	inherited::finalize();
-}
-
-TEMPLATE_SPECIALIZATION
-bool CStateMonsterPanicAbstract::completed()
-{
-	bool b_completed = !m_object->EnemyMan.get_enemy();
-	Msg("Panic Completed = [%u]",b_completed);
-
-	if (!m_object->EnemyMan.get_enemy()) return true;
+	if (prev_substate == u32(-1)) {
+		select_state(eStateRun);
+	}
 	
-	return false;
+	if (prev_substate == eStateRun) select_state(eStateFaceUnprotectedArea);
+	else select_state(eStateRun);
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateMonsterPanicAbstract::setup_substates()
+{
+	state_ptr state = get_state_current();
+
+	if (current_substate == eStateFaceUnprotectedArea) {
+		SStateDataAction data;
+		
+		data.action			= ACT_STAND_IDLE;
+		data.spec_params	= ASP_STAND_SCARED;
+		data.time_out		= 3000;		
+
+		state->fill_data_with(&data, sizeof(SStateDataAction));
+		return;
+	}
+
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterPanicAbstract::check_force_state()
+{
+	if ((current_substate == eStateFaceUnprotectedArea)){
+		// если видит врага
+		if (object->EnemyMan.get_enemy_time_last_seen() == object->m_current_update) {
+			select_state(eStateRun);
+			return;
+		}
+		// если получил hit
+		if (object->HitMemory.get_last_hit_time() + 5000 > object->m_current_update) {
+			select_state(eStateRun);
+			return;
+		}
+	}
+}
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateMonsterPanicAbstract

@@ -9,8 +9,6 @@
 TEMPLATE_SPECIALIZATION
 CStateMonsterCustomActionAbstract::CStateMonsterCustomAction(_Object *obj) : inherited(obj, &data)
 {
-	data.action			= ACT_STAND_IDLE; 
-	data.spec_params	= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -32,3 +30,6 @@ bool CStateMonsterCustomActionAbstract::check_completion()
 	if (time_state_started + data.time_out > object->m_current_update) return false;
 	return true;
 }
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateMonsterCustomActionAbstract

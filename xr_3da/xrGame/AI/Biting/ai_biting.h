@@ -161,6 +161,7 @@ public:
 	virtual void			AA_CheckHit						();
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
+	virtual void			ForceFinalAnimation				() {}
 	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 
 	virtual bool			CanExecRotationJump				() {return false;}

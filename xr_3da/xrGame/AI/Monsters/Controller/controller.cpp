@@ -5,7 +5,6 @@
 #include "../../controlled_entity.h"
 #include "../../ai_monster_debug.h"
 
-
 CController::CController()
 {
 	StateMan = xr_new<CStateManagerController>(this);
@@ -143,4 +142,5 @@ void CController::CheckSpecParams(u32 spec_params)
 		MotionMan.Seq_Add(eAnimCheckCorpse);
 		MotionMan.Seq_Switch();
 	}
+
 } 

@@ -7,23 +7,9 @@
 #define CStateMonsterMoveToPointAbstract CStateMonsterMoveToPoint<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterMoveToPointAbstract::CStateMonsterMoveToPoint(_Object *obj) : inherited(obj, &data)
-{
-	data.point.set			(0.f,0.f,0.f);
-	data.action				= ACT_STAND_IDLE;
-	data.accelerated		= false;
-	data.completion_dist	= 1.5f;
-}
-
-TEMPLATE_SPECIALIZATION
-CStateMonsterMoveToPointAbstract::~CStateMonsterMoveToPoint()
-{
-}
-
-TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointAbstract::initialize()
 {
-	
+	inherited::initialize();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -32,7 +18,8 @@ void CStateMonsterMoveToPointAbstract::execute()
 	if (data.vertex != u32(-1)) object->MoveToTarget(data.point, data.vertex);
 	else object->MoveToTarget(data.point);
 
-	object->MotionMan.m_tAction				= data.action;
+	object->MotionMan.m_tAction				= data.action.action;
+	object->MotionMan.SetSpecParams			(data.action.spec_params);
 	
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
@@ -44,7 +31,11 @@ void CStateMonsterMoveToPointAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterMoveToPointAbstract::check_completion()
 {	
-	if (object->Position().distance_to(data.point) > data.completion_dist) return false;
-	return true;
+	if (data.action.time_out !=0) {
+		if (time_state_started + data.action.time_out < object->m_current_update) return true;
+	} 
+	
+	if (object->Position().distance_to(data.point) < data.completion_dist) return true;
+	return false;
 }
 

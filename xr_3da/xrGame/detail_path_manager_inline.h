@@ -197,3 +197,9 @@ IC	bool CDetailPathManager::state_patrol_path			() const
 {
 	return					(m_state_patrol_path);
 }
+
+IC	const u32 CDetailPathManager::time_path_built		() const
+{
+	return	(m_time_path_built);
+}
+

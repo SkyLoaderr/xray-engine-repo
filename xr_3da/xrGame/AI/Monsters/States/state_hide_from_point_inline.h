@@ -8,23 +8,6 @@
 #define COVER_RESELECT_TIME_QUANT 5000
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterHideFromPointAbstract::CStateMonsterHideFromPoint(_Object *obj) : inherited(obj, &data)
-{
-	data.point.set				(0.f,0.f,0.f);
-	data.action					= ACT_STAND_IDLE;
-	data.accelerated			= false;
-	data.distance				= 1.f;
-	data.cover_min_dist			= 30.f;
-	data.cover_max_dist			= 50.f;
-	data.cover_search_radius	= 40.f;
-}
-
-TEMPLATE_SPECIALIZATION
-CStateMonsterHideFromPointAbstract::~CStateMonsterHideFromPoint()
-{
-}
-
-TEMPLATE_SPECIALIZATION
 void CStateMonsterHideFromPointAbstract::initialize()
 {
 	inherited::initialize();
@@ -53,7 +36,8 @@ void CStateMonsterHideFromPointAbstract::execute()
 		object->MoveAwayFromTarget		(data.point);
 	}
 
-	object->MotionMan.m_tAction				= data.action;
+	object->MotionMan.m_tAction				= data.action.action;
+	object->MotionMan.SetSpecParams			(data.action.spec_params);
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
@@ -64,8 +48,14 @@ void CStateMonsterHideFromPointAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterHideFromPointAbstract::check_completion()
 {	
-	float dist = object->Position().distance_to(data.point);
-	if (dist > data.distance) return true;
+	if (data.action.time_out !=0) {
+		if (time_state_started + data.action.time_out < object->m_current_update) return true;
+	} 
+
+	if (!fis_zero(data.distance)) {
+		if (object->Position().distance_to(data.point) > data.distance) return true;
+	}
+		
 	return false;
 }
 

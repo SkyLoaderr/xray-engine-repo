@@ -18,6 +18,7 @@
 #include "../states/monster_state_attack_run.h"
 #include "../states/monster_state_eat.h"
 #include "../states/monster_state_eat_eat.h"
+#include "../states/monster_state_panic.h"
 
 //#include "../states/monster_state_find_enemy.h"
 //#include "../states/monster_state_find_enemy_run.h"
@@ -53,6 +54,12 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 			xr_new<CStateMonsterEating<CController> >(obj)
 		)
 	);
+
+	add_state(
+		eStatePanic,
+		xr_new<CStateMonsterPanic<CController> >(obj)
+	);
+
 
 	//add_state(
 	//	eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
@@ -98,30 +105,34 @@ void CStateManagerController::execute()
 	//	state_id = eStateEat;	
 	//else state_id = eStateRest;
 
-	const CEntityAlive* corpse = object->CorpseMan.get_corpse();
-	bool can_eat = true;
+	//const CEntityAlive* corpse = object->CorpseMan.get_corpse();
+	//bool can_eat = true;
 
-	if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) {
-		can_eat = true;		
-	}
+	//if ((prev_substate == eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMaxSatiety)) {
+	//	can_eat = true;		
+	//}
 
-	if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) {
-		can_eat = true;		
-	}
+	//if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) {
+	//	can_eat = true;		
+	//}
 
 
-	if (enemy) {
-		state_id = eStateAttack;
-		//object->set_controlled_task(eTaskAttack);
-	} else if (corpse && can_eat){
-		state_id = eStateEat;
+	//if (enemy) {
+	//	state_id = eStateAttack;
+	//	//object->set_controlled_task(eTaskAttack);
+	//} else if (corpse && can_eat){
+	//	state_id = eStateEat;
 
-	} else {
+	//} else {
+	//	state_id = eStateRest;
+
+	//	//object->set_controlled_task(eTaskFollow);
+	//}
+
+	if (enemy)
+		state_id = eStatePanic;
+	else 
 		state_id = eStateRest;
-
-		//object->set_controlled_task(eTaskFollow);
-	}
-
 
 	select_state(state_id); 
 
@@ -130,5 +141,3 @@ void CStateManagerController::execute()
 
 	prev_substate = current_substate;
 }
-
-

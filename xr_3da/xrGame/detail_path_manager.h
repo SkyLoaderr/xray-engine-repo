@@ -134,6 +134,8 @@ private:
 	bool										m_state_patrol_path;
 	u32											m_last_patrol_point;
 
+	u32											m_time_path_built;
+
 	// old heritage
 	xr_vector<Fvector>							m_tpaPoints;
 	xr_vector<Fvector>							m_tpaTravelPath;
@@ -206,6 +208,7 @@ public:
 	IC		const u32							desirable_mask			() const;
 	IC		const bool							try_min_time			() const;
 	IC		const bool							use_dest_orientation	() const;
+	IC		const u32							time_path_built			() const;
 };
 
 #include "detail_path_manager_inline.h"

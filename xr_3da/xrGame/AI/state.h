@@ -18,6 +18,7 @@ public:
 	virtual bool 	check_start_conditions	() {return true;}
 
 	virtual void	reselect_state			() {}	
+	virtual void	check_force_state		() {}
 
 			CSState *get_state				(u32 state_id);
 			CSState *get_state_current		();

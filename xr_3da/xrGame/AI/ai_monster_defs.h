@@ -204,6 +204,7 @@ enum EMotionAnim {
 	eAnimThreaten,
 
 	eAnimMiscAction_00,
+	eAnimMiscAction_01,
 
 	eAnimUpperStandIdle,
 	eAnimUpperStandTurnLeft,

@@ -33,6 +33,9 @@ void CStateAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateAbstract::execute() 
 { 
+	// проверить внешние условия изменения состояния
+	check_force_state();
+
 	// если состояние не выбрано, перевыбрать
 	if (current_substate == u32(-1)) {
 		reselect_state();

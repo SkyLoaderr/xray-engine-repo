@@ -180,6 +180,7 @@ public:
 			float	cover_in_direction			(float angle, float b0, float b1, float b2, float b3) const;
 	IC		float	cover_in_direction			(float angle, const CVertex *vertex) const;
 	IC		float	cover_in_direction			(float angle, u32 vertex_id) const;
+			float	vertex_less_cover			(u32 vertex_id, float inc_angle) const;
 	IC		void	set_invalid_vertex			(u32 &vertex_id, CVertex **vertex = NULL) const;
 	IC		const u32 vertex_id					(const CLevelGraph::CVertex *vertex) const;
 			u32		vertex_id					(const Fvector &position) const;
