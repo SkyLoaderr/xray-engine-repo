@@ -1,4 +1,5 @@
 --[[----------------------------------------------------------------------------------------------------------
+Всякие события при входе в скрипт-зоны
 Чугай Саша (chugai)
 ------------------------------------------------------------------------------------------------------------]]
 
@@ -186,11 +187,10 @@ end
 
 class "SoundEvent"
 
-function SoundEvent:__init( zone, sound_name, agent )
-    self.zone       = zone
-    self.agent      = agent
-    self.sound_name = sound_name
-    self.v0         = vector()
+function SoundEvent:__init( zone, agent, ... )
+    self.zone        = zone
+    self.agent       = agent
+    self.sound_names = arg
 
     self.zone:set_callback( self, "on_enter", true )
 end
@@ -198,8 +198,6 @@ end
 function SoundEvent:on_enter( zone, obj )
     ---- если нужный объект вошёл в нужную зону
     if self.agent:id() == obj:id() then
-        printf( "11111" )
-        sound_object( self.sound_name ):play_at_pos( obj, obj:position() )
-        printf( "22222" )
+        sound_object( self.sound_names[math.random(self.sound_names.n)] ):play_at_pos( obj, obj:position() )
     end
 end
