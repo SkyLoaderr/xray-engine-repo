@@ -10,11 +10,7 @@
 #include "..\feel_sound.h"
 #include "..\feel_touch.h"
 #include "entity.h"
-//#include "movementcontrol.h"
 #include "phmovementcontrol.h"
-//#define NO_PHYSICS_IN_AI_MOVE
-#include "ai_commands.h"
-#include "ai_pathnodes.h"
 
 class CCustomMonster : 
 	public CEntityAlive, 
