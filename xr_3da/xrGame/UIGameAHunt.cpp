@@ -112,7 +112,7 @@ void			CUIGameAHunt::OnFrame()
 		if (Game().phase != GAME_PHASE_PENDING)
 		{
 			CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
-			if (pCurActor)
+			if (pCurActor && !pCurBuyMenu->IsShown())
 			{
 				HUD().pFontDI->SetColor		(0xffffff00);
 				HUD().pFontDI->Out			(0.f,0.9f,"Press B to access Buy Menu");
