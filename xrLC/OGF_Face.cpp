@@ -308,7 +308,13 @@ void OGF::MakeProgressive	(float metric_limit)
 		for (u32 f_idx=0;  f_idx<faces.size();    f_idx++)	VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
 
 		// Convert
-		VIPM_Result* VR			= VIPM_Convert			(u32(30),1.f,1);
+		VIPM_Result*	VR		= 0;
+		try						{
+						VR		= VIPM_Convert			(u32(30),1.f,1);
+		} catch (...)			{
+			progressive_clear	()		;
+			clMsg				("* mesh simplification failed: access violation");
+		}
 		if (0==VR)				{
 			progressive_clear	()		;
 			clMsg				("* mesh simplification failed");
