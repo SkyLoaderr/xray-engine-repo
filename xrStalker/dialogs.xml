@@ -179,4 +179,20 @@
         </phrase_list>
     </dialog>
 
+    <dialog id="dolg_leader">
+        <phrase_list>
+            <phrase id="0">
+                <text>Я тут самый главный</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Молодец!</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>Угу</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
 </game_dialogs>
