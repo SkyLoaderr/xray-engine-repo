@@ -9,11 +9,7 @@
 #endif
 
 extern "C" {
-	namespace D3DX{
-		ETOOLS_API UINT WINAPI D3DXGetDriverLevel(LPDIRECT3DDEVICE9 pDevice);
-	}
+	ETOOLS_API UINT WINAPI D3DX_GetDriverLevel(LPDIRECT3DDEVICE9 pDevice);
 }
-
-using namespace D3DX;
-
+#define D3DXGetDriverLevel D3DX_GetDriverLevel
 #endif

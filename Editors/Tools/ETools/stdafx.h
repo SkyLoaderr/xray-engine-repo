@@ -39,6 +39,9 @@
 #include <tchar.h>
 #include <Commdlg.h>
 
+#include "d3dx9.h"
+#pragma comment(lib,"d3dx9.lib")
+
 // Warnings
 #pragma warning (disable : 4786 )		// too long names
 #pragma warning (disable : 4503 )		// decorated name length exceeded
