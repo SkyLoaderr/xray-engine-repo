@@ -151,7 +151,7 @@ int __cdecl main	(int argc, char* argv[])
 	{
 		for (int x=0; x<occ_dim0; x++)
 		{
-			float	A	= Raster.d2float(*(Raster.get_depth() + y*occ_dim0 + x)); if (A<0) A=0; else if (A>1) A=1;
+			float	A	= *(Raster.get_depth() + y*occ_dim0 + x);	if (A<0) A=0; else if (A>1) A=1;
 			DWORD  gray	= iFloor(A*255.f);
 			DWORD  mask	= (*(Raster.get_frame() + y*occ_dim0 + x)) ? 255 : 0;
 			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
