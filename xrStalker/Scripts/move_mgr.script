@@ -7,6 +7,9 @@ local default_anim = "idle"
 local sl_speed_h = 0.52 -- горизонтальна€ скорость вращени€ прожекторов
 local sl_speed_v = 0.22 -- вертикальна€ скорость вращени€ прожекторов
 
+arrival_before_rotation = 0
+arrival_after_rotation = 1
+
 local state_none = 0
 local state_moving = 1
 local state_standing_before_anim = 2
@@ -25,7 +28,11 @@ function move_mgr:initialize(npc)
 	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 end
 
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, enable_dialog)
+-- »з move_cb вернуть true, чтобы приостановить работу схемы. „тобы продолжить движение,
+-- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
+-- скоростью.
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team,
+		run_to_starting_pt, move_cb)
 	xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -67,12 +74,16 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.shall_shoot = nil
 	self.is_shooting = false
 
-	self.running = false
+	self.running = if_then_else(run_to_starting_pt, true, false)
 	self.danger = false
+
+	self.retval_after_rotation = nil
 
 	self.sound = nil
 	self.play_sound_after_anim_start = false
 	self.play_once = false
+
+	self.move_cb = move_cb
 
 	-- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
 	-- если собираемс€ смотреть в ту же самую точку, не поворачива€сь никуда...
@@ -103,10 +114,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 		s[self.object:id()] = -1
 	end
 
-	self.enable_dialog = enable_dialog
-	if self.enable_dialog then
-		dialog_mgr:reset(self.object, team)
-	end
+	--dialog_mgr:reset(self.object, team)
 
 	self.last_index = -1
 	self:simulate_callback_if_neccessary()
@@ -222,9 +230,7 @@ end
 function move_mgr:update()
 	printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
-	if self.enable_dialog then
-		dialog_mgr:update(self.object, self.team)
-	end
+	--dialog_mgr:update(self.object, self.team)
 
 	-- ≈сли это не тот тип звука, который нужно проиграть всего один раз, то играть его:
 	if not self.play_sound_after_anim_start then
@@ -247,6 +253,15 @@ function move_mgr:update()
 	if self.state == state_standing_before_anim and
 	   self.expiration_time and device():time_global() >= self.expiration_time and
 	   not self.object:is_body_turning() then
+		if self.retval_after_rotation then
+			if self.move_cb(move_mgr.arrival_after_rotation, tonumber(retv)) then
+				-- »дти сразу дальше
+				self.expiration_time = 0
+				self.state = state_anim_playing
+				return nil
+			end
+		end
+
 		--printf("_debug_guard [%s]: adding animations", self.object:name())
 		if self.play_sound_after_anim_start then
 			-- ѕроиграть звук после анимации:
@@ -424,6 +439,15 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self.danger = false
 	end
 
+	if self.move_cb then
+		local retv = self.path_walk_info[index]["ret"]
+		if retv then
+			if self.move_cb(move_mgr.arrival_before_rotation, tonumber(retv)) then
+				return
+			end
+		end
+	end
+
 	if not self.patrol_look then
 		self:update_movement_state() -- идти дальше
 		return
@@ -470,6 +494,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 	end
 	if pt_chosen_idx then
+		local retv = self.path_look_info[pt_chosen_idx]["ret"]
+		if retv then
+			self.retval_after_rotation = tonumber(retv)
+		else
+			self.retval_after_rotation = nil
+		end
+
 		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["time"]
 		if suggested_wait_time then
 			self.pt_wait_time = tonumber(suggested_wait_time)
