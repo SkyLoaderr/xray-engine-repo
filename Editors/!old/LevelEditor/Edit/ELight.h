@@ -31,7 +31,7 @@ public:
     CLAItem*		m_pAnimRef;
 
     // spot light
-    ref_str			m_FalloffTex;
+    shared_str		m_FalloffTex;
 
     // controller
     u32				m_LControl;

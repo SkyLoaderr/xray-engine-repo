@@ -90,14 +90,14 @@ friend class TfrmShaderProperties;
     // template
 	void __stdcall  		FillChooseTemplate	(ChooseItemVec& items, void* param);
     // matrix props                                                
-	void __stdcall  		MatrixOnAfterEdit	(PropValue* sender, ref_str& edit_val, bool& res);
+	void __stdcall  		MatrixOnAfterEdit	(PropValue* sender, shared_str& edit_val, bool& res);
 	void __stdcall  		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
-	void __stdcall  		MCOnDraw			(PropValue* sender, ref_str& draw_val);
+	void __stdcall  		MCOnDraw			(PropValue* sender, shared_str& draw_val);
     // constant props
-	void __stdcall  		ConstOnAfterEdit	(PropValue* sender, ref_str& edit_val, bool& res);
+	void __stdcall  		ConstOnAfterEdit	(PropValue* sender, shared_str& edit_val, bool& res);
 	void __stdcall  		FillConstProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
     // name                                 
-	void __stdcall  		NameOnAfterEdit		(PropValue* sender, ref_str& edit_val, bool& res);
+	void __stdcall  		NameOnAfterEdit		(PropValue* sender, shared_str& edit_val, bool& res);
 
     void					RealResetShaders	();
 

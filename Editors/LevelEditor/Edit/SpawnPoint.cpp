@@ -198,7 +198,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	m_Data->FillProp			(pref,items);
-    ref_str pref1				= PrepareKey(pref,m_Data->name());
+    shared_str pref1				= PrepareKey(pref,m_Data->name());
 }
 void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
 {
@@ -685,7 +685,6 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
-static     	ref_str						xxx;
 void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);

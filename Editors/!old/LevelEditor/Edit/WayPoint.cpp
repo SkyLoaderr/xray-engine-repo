@@ -436,7 +436,7 @@ bool CWayObject::Load(IReader& F)
 	Clear();
 
 	u32 version = 0;
-	ref_str buf;
+    shared_str buf;
 
     if (!F.find_chunk(WAYOBJECT_CHUNK_VERSION)) return false;
     R_ASSERT(F.r_chunk(WAYOBJECT_CHUNK_VERSION,&version));
@@ -556,14 +556,14 @@ bool CWayObject::ExportGame(SExportStreams& F){
 }
 //----------------------------------------------------
 
-CWayPoint* CWayObject::FindWayPoint(const ref_str& nm)
+CWayPoint* CWayObject::FindWayPoint(const shared_str& nm)
 {
     for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
     	if ((*it)->m_Name.equal(nm)) return *it;
     return 0;
 }
 
-void CWayObject::OnWayPointNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
+void CWayObject::OnWayPointNameAfterEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
 {
     edit_val 		= AnsiString(edit_val.c_str()).LowerCase().c_str();
     accepted 		= !FindWayPoint(edit_val);

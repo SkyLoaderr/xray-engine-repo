@@ -667,7 +667,7 @@ void CParticleTools::OnChangeMotion	(PropValue* sender)
 void CParticleTools::EditPreviewPrefs()
 {
 	PropItemVec		items;
-    ref_str	motion_name			= m_ParentAnimator->Name();
+    shared_str	motion_name		= m_ParentAnimator->Name();
 	PropValue *V;
     V=PHelper().CreateFlag32	(items, "Parent\\Allow Animated",	&m_Flags, 		flAnimatedParent);
 	V->OnChangeEvent.bind		(this,&CParticleTools::OnChangeMotion);

@@ -18,8 +18,8 @@ public:
     	gfForce_u8	= u8(-1)
     };
     ref_shader     	m_GShader;
-    ref_str			m_ShaderName;
-    ref_str			m_TexName;
+    shared_str		m_ShaderName;
+    shared_str		m_TexName;
     float           m_fRadius;
     Flags8			m_Flags;
 

@@ -76,7 +76,7 @@ void __fastcall TfraSpawn::FormShow(TObject *Sender)
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
     	LPCSTR val;
     	if (it->line_exist	("$spawn",&val)){
-        	ref_str v		= pSettings->r_string_wb(it->Name,"$spawn");
+        	shared_str v	= pSettings->r_string_wb(it->Name,"$spawn");
 	    	LHelper().CreateItem(items,*v,0,0,(LPVOID)*it->Name);
         }
     }

@@ -13,8 +13,8 @@ class ESoundEnvironment: public CEditShape
 
 	friend class		CLevelSoundManager;
 	// Env
-	ref_str				m_EnvInner;
-	ref_str				m_EnvOuter;
+    shared_str			m_EnvInner;
+	shared_str			m_EnvOuter;
 
     void __stdcall 		OnChangeEnvs	(PropValue* prop);
 public:

@@ -275,7 +275,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
         // snap list
         if (F->find_chunk(CHUNK_SNAPOBJECTS)){
-            ref_str 	buf;
+        	shared_str 	buf;
             int cnt 	= F->r_u32();
             if (cnt){
                 for (int i=0; i<cnt; i++){

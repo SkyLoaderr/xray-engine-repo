@@ -52,7 +52,7 @@ bool ESceneLightTools::Load(IReader& F)
 	IReader* R 		= F.open_chunk(CHUNK_LCONTROLS); 
     if (R){
         while (!R->eof()){
-            ref_str		l_name;
+        	shared_str		l_name;
             R->r_stringZ(l_name);
             u32 l_idx	= R->r_u32();
             AppendLightControl(l_name.c_str(),&l_idx);

@@ -122,7 +122,7 @@ void __fastcall PS::CPEDef::CollisionFrictionOnBeforeEdit(PropValue* sender, flo
 {    edit_val = 1.f-edit_val;}
 void __fastcall PS::CPEDef::CollisionFrictionOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
 {    edit_val = 1.f-edit_val;}
-void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, ref_str& draw_val)
+void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, shared_str& draw_val)
 {    
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
 	rstring_sprintf(draw_val,1.f-V->GetValue(),V->dec);
@@ -131,7 +131,7 @@ void __fastcall PS::CPEDef::CollisionCutoffOnBeforeEdit(PropValue* sender, float
 {    edit_val = _sqrt(edit_val);}
 void __fastcall PS::CPEDef::CollisionCutoffOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
 {    edit_val = (edit_val)*(edit_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, ref_str& draw_val)
+void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, shared_str& draw_val)
 {    
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
 	rstring_sprintf(draw_val,_sqrt(V->GetValue()),V->dec);
@@ -172,7 +172,7 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
     }
 }
 
-void PS::CPEDef::OnAfterActionNameEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
+void PS::CPEDef::OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val, bool& accepted)
 {
 	edit_val				= AnsiString(edit_val.c_str()).LowerCase().c_str();
     FindActionByName		(edit_val.c_str(),accepted); accepted = !accepted;
@@ -255,7 +255,7 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     B->OnBtnClickEvent.bind	(this,&PS::CPEDef::OnActionsClick);
 	for (EPAVecIt s_it=m_EActionList.begin(); s_it!=m_EActionList.end(); s_it++){
     	u32 clr				= (*s_it)->flags.is(EParticleAction::flEnabled)?clBlack:clSilver;
-    	ref_str a_pref		= PrepareKey(pref,"Actions",AnsiString().sprintf("%s (%s)",*(*s_it)->actionType,*(*s_it)->actionName).c_str());
+    	shared_str a_pref		= PrepareKey(pref,"Actions",AnsiString().sprintf("%s (%s)",*(*s_it)->actionType,*(*s_it)->actionName).c_str());
         ButtonValue* B		= PHelper().CreateButton(items,a_pref,"Up,Down,Remove",ButtonValue::flFirstOnly); B->tag = (s_it-m_EActionList.begin());
         B->Owner()->prop_color	= clr;
         B->OnBtnClickEvent.bind	(this,&PS::CPEDef::OnActionEditClick);

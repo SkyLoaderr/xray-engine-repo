@@ -21,7 +21,7 @@ DEFINE_VECTOR(SWPLink*,WPLVec,WPLIt);
 class CWayPoint{
     friend class CWayObject;
     friend class TfrmPropertiesWayPoint;
-    ref_str		m_Name;
+    shared_str		m_Name;
     Fvector		m_vPosition;
     Flags32		m_Flags;
     BOOL		m_bSelected;
@@ -54,9 +54,9 @@ protected:
 	EWayType		m_Type;
     WPVec			m_WayPoints;
     typedef CCustomObject inherited;
-    CWayPoint*		FindWayPoint	(const ref_str& nm);
+    CWayPoint*		FindWayPoint	(const shared_str& nm);
 	void __stdcall  FindWPByName	(LPCSTR new_name,bool& res){res=!!FindWayPoint(new_name);}
-	void __stdcall 	OnWayPointNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted);
+	void __stdcall 	OnWayPointNameAfterEdit(PropValue* sender, shared_str& edit_val, bool& accepted);
 public:
 					CWayObject		(LPVOID data, LPCSTR name);
     void            Construct   	(LPVOID data);

@@ -224,7 +224,7 @@ bool ESceneAIMapTools::Load(IReader& F)
     
 	// snap objects
     if (F.find_chunk(AIMAP_CHUNK_SNAP_OBJECTS)){
-    	ref_str 	buf;
+    	shared_str 	buf;
 		int cnt 	= F.r_u32();
         if (cnt){
 	        for (int i=0; i<cnt; i++){

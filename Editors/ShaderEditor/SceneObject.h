@@ -7,7 +7,7 @@
 //----------------------------------------------------
 
 class CSceneObject : public CCustomObject {
-	ref_str			m_ReferenceName;
+	shared_str		m_ReferenceName;
 	CEditableObject*m_pReference;
     int				m_Version;
 	void 			ReferenceChange			(PropValue* sender);

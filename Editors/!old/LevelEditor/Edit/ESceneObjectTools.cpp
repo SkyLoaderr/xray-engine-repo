@@ -62,7 +62,7 @@ void ESceneObjectTools::FillAppendRandomProperties()
 {
     TProperties* m_Props = TProperties::CreateModalForm("Random Append Properties",true);
 
-    ref_str temp;
+    shared_str temp;
    	temp						= _ListToSequence(m_AppendRandomObjects).c_str();
 
     PropValue* V;           

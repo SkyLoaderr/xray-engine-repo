@@ -23,10 +23,10 @@ public:
 	DEFINE_VECTOR		(wallmark*,WMVec,WMVecIt);
 	struct wm_slot
 	{
-    	ref_str			tex_name;
+		shared_str			tex_name;
 		ref_shader		shader;
 		WMVec			items;
-						wm_slot	(ref_str tname)		{tex_name=tname;shader.create("effects\\wallmark",*tex_name);items.reserve(256);}
+						wm_slot	(shared_str tname)		{tex_name=tname;shader.create("effects\\wallmark",*tex_name);items.reserve(256);}
 	};
 	DEFINE_VECTOR		(wm_slot*,WMSVec,WMSVecIt);
 	WMSVec				marks;
@@ -42,8 +42,8 @@ private:
 	CDB::Collector 		sml_collector;
 	xr_vector<u32>		sml_adjacency;
 
-	wm_slot*			FindSlot				(ref_str texture);
-	wm_slot*			AppendSlot				(ref_str texture);
+	wm_slot*			FindSlot				(shared_str texture);
+	wm_slot*			AppendSlot				(shared_str texture);
 
     void 				RecurseTri				(u32 t, Fmatrix &mView, wallmark &W);
 	void 				BuildMatrix				(Fmatrix &mView, float invsz, const Fvector& from);
@@ -64,7 +64,7 @@ public:
 
     float				m_MarkSize;
     float				m_MarkRotate;
-    ref_str				m_TexName;
+    shared_str			m_TexName;
 
     int					ObjectCount				();
 public:

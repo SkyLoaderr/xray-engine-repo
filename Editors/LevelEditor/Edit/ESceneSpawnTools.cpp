@@ -70,7 +70,7 @@ void ESceneSpawnTools::FillProp(LPCSTR pref, PropItemVec& items)
 }
 //------------------------------------------------------------------------------
 
-ref_shader ESceneSpawnTools::CreateIcon(ref_str name)
+ref_shader ESceneSpawnTools::CreateIcon(shared_str name)
 {
     ref_shader S;
     if (pSettings->line_exist(name,"$ed_icon")){
@@ -83,7 +83,7 @@ ref_shader ESceneSpawnTools::CreateIcon(ref_str name)
     return S;
 }
 
-ref_shader ESceneSpawnTools::GetIcon(ref_str name)
+ref_shader ESceneSpawnTools::GetIcon(shared_str name)
 {
 	ShaderPairIt it = m_Icons.find(name);
 	if (it==m_Icons.end())	return CreateIcon(name);

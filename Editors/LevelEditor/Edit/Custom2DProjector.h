@@ -15,7 +15,7 @@ protected:
 public:
     void __stdcall 	OnImageChange		(PropValue* prop);
 public:
-    ref_str			name;
+	shared_str			name;
 public:
                     CCustom2DProjector	();
     IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}

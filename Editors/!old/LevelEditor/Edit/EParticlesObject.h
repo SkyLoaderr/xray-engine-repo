@@ -8,7 +8,7 @@ class EParticlesObject: public CCustomObject
 {
 	typedef CCustomObject inherited;
     Fbox				m_BBox;
-    ref_str				m_RefName;
+    shared_str			m_RefName;
 
     IParticleCustom*	m_Particles;
     

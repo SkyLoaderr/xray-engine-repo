@@ -33,7 +33,7 @@ bool ESceneObjectTools::Load(IReader& F)
         F.r_fvector3(m_AppendRandomMaxRotation);
         int cnt		= F.r_u32();
         if (cnt){
-        	ref_str	buf;
+        	shared_str	buf;
             for (int i=0; i<cnt; i++){
                 F.r_stringZ						(buf);
                 m_AppendRandomObjects.push_back	(buf);

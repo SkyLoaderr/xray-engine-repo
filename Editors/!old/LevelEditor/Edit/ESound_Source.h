@@ -8,7 +8,7 @@ class ESoundSource: public CCustomObject
 	typedef CCustomObject inherited;
 	// static sound
 	ref_sound		m_Source;
-	ref_str			m_WAVName;
+    shared_str		m_WAVName;
     CSound_params	m_Params;
     // edit events
     void __stdcall 	OnChangeWAV		(PropValue* prop);

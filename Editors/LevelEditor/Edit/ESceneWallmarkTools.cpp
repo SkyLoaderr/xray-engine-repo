@@ -243,7 +243,7 @@ bool ESceneWallmarkTools::Load(IReader& F)
     for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
         u32 item_count	= F.r_u32();	
         if (item_count){
-        	ref_str		tex_name;
+        	shared_str		tex_name;
 	        F.r_stringZ	(tex_name);
         	wm_slot* slot	= AppendSlot(tex_name);
             slot->items.resize(item_count);
@@ -383,19 +383,19 @@ void		ESceneWallmarkTools::wm_render			(wallmark*	W, FVF::LIT* &V)
 }
 
 struct SWMSlotFindPredicate {
-	ref_str				tex_name;
-						SWMSlotFindPredicate(ref_str tx):tex_name(tx){}
+	shared_str				tex_name;
+						SWMSlotFindPredicate(shared_str tx):tex_name(tx){}
 	bool				operator()			(ESceneWallmarkTools::wm_slot* slot) const
 	{
 		return			(slot->tex_name == tex_name);
 	}
 };
-ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::FindSlot	(ref_str tex_name)
+ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::FindSlot	(shared_str tex_name)
 {
 	WMSVecIt it					= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(tex_name));
 	return						(it!=marks.end())?*it:0;
 }
-ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::AppendSlot(ref_str tex_name)
+ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::AppendSlot(shared_str tex_name)
 {
 	marks.push_back				(xr_new<wm_slot>(tex_name));
 	return marks.back			();

@@ -11,7 +11,7 @@
 #include "std_classes.h"
 #include "bone.h"
 #include "motion.h"
-#include "MgcCont3DMinBox.h"         
+#include "MgcCont3DBox.h"         
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
 #include "nvMeshMender.h"
@@ -412,7 +412,7 @@ CExportSkeleton::CExportSkeleton(CEditableObject* object)
 void CExportSkeletonCustom::ComputeOBB	(Fobb &B, FvectorVec& V)
 {
     if (V.size()<3) { B.invalidate(); return; }
-    Mgc::Box3	BOX		= Mgc::MinBox(V.size(), (const Mgc::Vector3*) V.begin());
+    Mgc::Box3	BOX		= Mgc::ContOrientedBox(V.size(), (const Mgc::Vector3*) V.begin());
     B.m_rotate.i.set	(BOX.Axis(0));
     B.m_rotate.j.set	(BOX.Axis(1));
     B.m_rotate.k.set	(BOX.Axis(2));

@@ -19,10 +19,10 @@ protected:
     Flags32				m_Flags;
 
     // icon list
-    DEFINE_MAP			(ref_str,ref_shader,ShaderMap,ShaderPairIt);
+    DEFINE_MAP			(shared_str,ref_shader,ShaderMap,ShaderPairIt);
     ShaderMap 			m_Icons;
-    ref_shader 			CreateIcon	(ref_str name);
-    ref_shader 			GetIcon		(ref_str name);
+    ref_shader 			CreateIcon	(shared_str name);
+    ref_shader 			GetIcon		(shared_str name);
 public:
 						ESceneSpawnTools		();
 	virtual				~ESceneSpawnTools		();
