@@ -5,7 +5,7 @@ extern int dRayClass;
 
 // Creates a ray 
 
-dxGeom*  dGeomCreateRay(dSpaceID space, dReal Length);
+dxGeom* FUNCCALL dGeomCreateRay(dSpaceID space, dReal Length);
 
 
 

@@ -55,11 +55,11 @@ inline dContactGeom* CONTACT(int Flags, dContactGeom* Contacts, int Index, int S
 
 
 
-int dCollidePR(dxGeom* RayGeom, dxGeom* PlaneGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  FUNCCALL dCollidePR(dxGeom* RayGeom, dxGeom* PlaneGeom, int Flags, dContactGeom* Contacts, int Stride);
 
-int dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride);
 
-int dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride);
 
-int dCollideCCR(dxGeom* RayGeom, dxGeom* CCylinderGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  FUNCCALL dCollideCCR(dxGeom* RayGeom, dxGeom* CCylinderGeom, int Flags, dContactGeom* Contacts, int Stride);
 ///////

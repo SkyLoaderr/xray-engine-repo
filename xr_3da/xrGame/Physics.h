@@ -58,12 +58,13 @@ static dJointGroupID ContactGroup;
 
 class CPHWorld {
 	dSpaceID Space;
-	CPHGun Gun;
-	CPHJeep Jeep;
+
 	CPHMesh Mesh;
 	
 
 public:
+	CPHGun Gun;
+	CPHJeep Jeep;
 //	CPhysicsWorld(){};
 	~CPHWorld(){};
 

@@ -95,7 +95,7 @@ bool FindIntersection(const dVector3 Origin, const dVector3 Direction, const dVe
 
 
 
-int dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride){
+int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride){
 
 	const dVector3& Position = *(const dVector3*)dGeomGetPosition(BoxGeom);
 

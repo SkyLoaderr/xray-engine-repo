@@ -9,7 +9,7 @@
 
 
 
-int dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride){
+int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride){
 
 	const dVector3& Position = *(const dVector3*)dGeomGetPosition(SphereGeom);
 

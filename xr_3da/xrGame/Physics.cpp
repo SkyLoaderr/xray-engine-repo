@@ -81,11 +81,11 @@ void CPHMesh ::Destroy(){
 
 void CPHJeep::Create(dSpaceID space, dWorldID world){
 	
-	static const dReal scaleParam=1.6f/0.8f;
-	static const dVector3 scaleBox={REAL(2.4)*scaleParam, REAL(0.4)*scaleParam, REAL(1.5)*scaleParam};
+	static const dReal scaleParam=1.f;
+	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
-	jeepBox[0]=scaleBox[0];jeepBox[1]=scaleBox[1];jeepBox[2]=scaleBox[2];
-	cabinBox[0]=scaleBox[0]/1.7;cabinBox[1]=scaleBox[1]*2.;cabinBox[2]=scaleBox[2]/1.01;
+	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
+	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]/1.01;
 
 	static const dReal wheelRadius = REAL(0.28)* scaleParam, wheelWidth = REAL(0.25)* scaleParam;
 	
@@ -269,7 +269,7 @@ void CPHWorld::Create(){
 	dWorldSetGravity(phWorld, 0, -9.81f, 0);
 	Mesh.Create(Space,phWorld);
 	Jeep.Create(Space,phWorld);
-	//Gun.Create(Space);
+	Gun.Create(Space);
 	dWorldSetCFM(phWorld, 0.001f);
 	dWorldSetERP(phWorld, 0.99f);
 }
@@ -279,7 +279,7 @@ void CPHWorld::Create(){
 void CPHWorld::Destroy(){
 	Mesh.Destroy();
 	Jeep.Destroy();
-	//Gun.Destroy();
+	Gun.Destroy();
 	dJointGroupEmpty(ContactGroup);
 	dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);

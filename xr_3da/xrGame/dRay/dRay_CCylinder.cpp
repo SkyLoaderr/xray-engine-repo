@@ -335,7 +335,7 @@ int Find(const dVector3 Origin, dVector3 Direction, dReal Length, const dVector3
 
 
 
-int dCollideCCR(dxGeom* RayGeom, dxGeom* CCGeom, int Flags, dContactGeom* Contacts, int Stride){
+int  FUNCCALL dCollideCCR(dxGeom* RayGeom, dxGeom* CCGeom, int Flags, dContactGeom* Contacts, int Stride){
 
 	const dVector3& CCPos = *(const dVector3*)dGeomGetPosition(CCGeom);
 

@@ -97,7 +97,7 @@ dColliderFn* FUNCCALL dRayColliderFn(int num){
 
 
 
-dxGeom*   dGeomCreateRay(dSpaceID space, dReal Length){
+dxGeom*  FUNCCALL dGeomCreateRay(dSpaceID space, dReal Length){
 
 	if (dRayClass == -1){
 
@@ -175,7 +175,7 @@ void dGeomRaySet(dxGeom* g, dVector3 Origin, dVector3 Direction){
 
 	Rotation[2 * 4 + 0] = Right[2];
 
-	Rotation[3 * 4 + 0] = Right[3];
+	//Rotation[3 * 4 + 0] = Right[3];
 
 
 
@@ -185,7 +185,7 @@ void dGeomRaySet(dxGeom* g, dVector3 Origin, dVector3 Direction){
 
 	Rotation[2 * 4 + 1] = Up[2];
 
-	Rotation[3 * 4 + 1] = Up[3];
+	//Rotation[3 * 4 + 1] = Up[3];
 
 
 
@@ -195,7 +195,7 @@ void dGeomRaySet(dxGeom* g, dVector3 Origin, dVector3 Direction){
 
 	Rotation[2 * 4 + 2] = Direction[2];
 
-	Rotation[3 * 4 + 2] = Direction[3];
+	//Rotation[3 * 4 + 2] = Direction[3];
 
 
 
