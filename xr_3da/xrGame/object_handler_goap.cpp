@@ -73,6 +73,8 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object);
 	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,true));
 	add_operator				(eWorldOperatorNoItemsIdle,action);
+	m_target_state.clear		();
+	m_target_state.add_condition(CWorldProperty(eWorldPropertyNoItemsIdle,true));
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
