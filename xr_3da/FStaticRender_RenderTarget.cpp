@@ -13,8 +13,8 @@ CRenderTarget::CRenderTarget()
 	pShaderGray		= 0;
 	pVS				= 0;
 
-	param_blur		= 0;
-	param_gray		= 0;
+	param_blur		= 1.f;
+	param_gray		= 0.5f;
 	param_noise		= 1.f;
 }
 
@@ -47,7 +47,7 @@ BOOL CRenderTarget::Create	()
 	pShaderSet					= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray					= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend				= Device.Shader.Create			("effects\\screen_blend",	RTname);
-	pShaderNoise				= Device.Shader.Create			("effects\\screen_noise",	"fx\\fx_noise");
+	pShaderNoise				= Device.Shader.Create			("effects\\screen_noise",	"fx\\fx_noise2");
 	return	RT->Valid	();
 }
 
@@ -73,8 +73,8 @@ void CRenderTarget::e_render_noise	()
 	Device.Shader.set_Shader		(pShaderNoise);
 
 	CTexture*	T					= Device.Shader.get_ActiveTexture	(0);
-	u32			tw					= T->get_Width	();
-	u32			th					= T->get_Height	();
+	u32			tw					= T->get_Width	()*2;
+	u32			th					= T->get_Height	()*2;
 	u32			shift_w				= ::Random.randI(tw);
 	u32			shift_h				= ::Random.randI(th);
 	float		start_u				= (float(shift_w)+.5f)/(tw);
@@ -85,12 +85,12 @@ void CRenderTarget::e_render_noise	()
 	u32			cnt_h				= _h / th;
 	float		end_u				= start_u + float(cnt_w) + 1;
 	float		end_v				= start_v + float(cnt_h) + 1;
-
+ 
 	Fvector2	p0,p1;
 	p0.set		(start_u,	start_v	);
 	p1.set		(end_u,		end_v	);
 
-	DWORD		Cgray				= D3DCOLOR_RGBA	(127,127,127,0);
+	DWORD		Cgray				= D3DCOLOR_RGBA	(255,255,255,255);
 
 	// 
 	u32			Offset;
