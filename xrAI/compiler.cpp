@@ -70,9 +70,9 @@ void xrCompiler(LPCSTR name)
 //	Msg("%d nodes created",int(g_nodes.size()));
 //	mem_Optimize();
 //	
-	Phase("Smoothing nodes...");
-	xrSmoothNodes();
-	mem_Optimize();
+//	Phase("Smoothing nodes...");
+//	xrSmoothNodes();
+//	mem_Optimize();
 	
 	Phase("Lighting nodes...");
 	xrLight		();
