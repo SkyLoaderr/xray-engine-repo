@@ -1,29 +1,31 @@
 #include "stdafx.h"
 #include "feel_vision.h"
 #include "xr_object.h"
+#include "xr_collide_form.h"
+#include "xr_creator.h"
 
 namespace Feel {
-	void	Vision::o_new(CObject* E)
+	void	Vision::o_new		(CObject* O)
 	{
-		track.push_back(Item());
-		Item&	I			= track.back();
-		I.E					= E;
-		I.Cache.verts[0].set(0,0,0);
-		I.Cache.verts[1].set(0,0,0);
-		I.Cache.verts[2].set(0,0,0);
-		I.fuzzy				= 0.f;
-		I.cp_LP.set			(0,0,0);
+		feel_visible.push_back	(feel_visible_Item());
+		feel_visible_Item&	I	= feel_visible.back();
+		I.O						= O;
+		I.Cache.verts[0].set	(0,0,0);
+		I.Cache.verts[1].set	(0,0,0);
+		I.Cache.verts[2].set	(0,0,0);
+		I.fuzzy					= 0.f;
+		I.cp_LP.set				(0,0,0);
 	}
-	void	Vision::o_delete(CObject* E)
+	void	Vision::o_delete	(CObject* O)
 	{
-		vector<Item>::iterator I=track.begin(),TE=track.end();
+		vector<feel_visible_Item>::iterator I=feel_visible.begin(),TE=feel_visible.end();
 		for (; I!=TE; I++)
-			if (I->E==E) {
-				track.erase(I);
+			if (I->O==O) {
+				feel_visible.erase(I);
 				return;
 			}
 	}
-	void	Vision::o_update(objSET& seen, CObject* parent, Fvector& P, float dt)
+	void	Vision::feel_visible_update	(objSET& seen, CObject* parent, Fvector& P, float dt)
 	{
 		if (seen.size()>1) 
 		{
@@ -68,21 +70,21 @@ namespace Feel {
 	}
 	void Vision::o_trace(Fvector& P, float dt)
 	{
-		vector<Item>::iterator I=track.begin(),E=track.end();
+		vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 		for (; I!=E; I++)
 		{
 			// verify relation
-			if (positive(I->fuzzy) && I->E->Position().similar(I->cp_LR_dst,lr_granularity) && P.similar(I->cp_LR_src,lr_granularity))
+			if (positive(I->fuzzy) && I->O->Position().similar(I->cp_LR_dst,lr_granularity) && P.similar(I->cp_LR_src,lr_granularity))
 				continue;
 
-			I->cp_LR_dst		= I->E->Position();
+			I->cp_LR_dst		= I->O->Position();
 			I->cp_LR_src		= P;
 
 			// Fetch data
 			Fvector				OP;
 			Fmatrix				mE;
-			const Fbox&			B = I->E->CFORM()->GetBBox();
-			const Fmatrix&		M = I->E->svXFORM();
+			const Fbox&			B = I->O->CFORM()->GetBBox();
+			const Fmatrix&		M = I->O->svXFORM();
 
 			// Build OBB + Ellipse and X-form point
 			Fvector				c,r;
@@ -122,22 +124,6 @@ namespace Feel {
 				I->fuzzy				+=	fuzzy_update_vis*dt;
 				clamp					(I->fuzzy,-.5f,1.f);
 			}
-		}
-	}
-
-	void Vision::o_dump		()
-	{
-		pApp->pFont->Size		(0.015f);
-		pApp->pFont->OutSet		(0.45f,-0.9f);
-		vector<Item>::iterator I=track.begin(),E=track.end();
-		for (; I!=E; I++)
-		{
-			if (I->fuzzy>0)		pApp->pFont->Color(D3DCOLOR_XRGB(0,255,0));
-			else				pApp->pFont->Color(D3DCOLOR_XRGB(255,0,0));
-
-			char cls			[10];
-			CLSID2TEXT			(I->E->SUB_CLS_ID,cls);
-			pApp->pFont->OutNext("%2d %1.3f %-9s %s",I-track.begin(),I->fuzzy,cls,I->E->cName());
 		}
 	}
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xr_collide_defs.h"
+#include "portal.h"
 
 class ENGINE_API CObject;
 
@@ -14,32 +15,29 @@ namespace Feel
 	class Vision
 	{
 	private:
-		struct Item {
-			CObject*			E;
-			Collide::ray_cache	Cache;
+		objSET						query;
+
+		void						o_new	(CObject* E);
+		void						o_delete(CObject* E);
+		void						o_trace	(Fvector& P, float dt);
+	public:
+		struct feel_visible_Item 
+		{
 			float				fuzzy;		// note range: (-1[no]..1[yes])
+			CObject*			O;
+			Collide::ray_cache	Cache;
 			Fvector				cp_LP;
 			Fvector				cp_LR_src;
 			Fvector				cp_LR_dst;
 		};
-		vector<Item>	track;
-		objSET			query;
-
-		void			o_new	(CObject* E);
-		void			o_delete(CObject* E);
-		void			o_trace	(Fvector& P, float dt);
+		vector<feel_visible_Item>	feel_visible;
 	public:
-		void			o_update(objSET& seen, CEntity* parent, Fvector& P, float dt);
-		void			o_get	(objSET& R)
+		void						feel_visible_update	(objSET& seen, CObject* parent, Fvector& P, float dt);
+		void						feel_visible_get	(objSET& R)
 		{
 			R.clear		();
-			vector<Item>::iterator I=track.begin(),E=track.end();
-			for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->E);
-		}
-		void			o_get	(objVisible& R)
-		{
-			vector<Item>::iterator I=track.begin(),E=track.end();
-			for (; I!=E; I++)	if (positive(I->fuzzy)) R.insert(I->E);
+			vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+			for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->O);
 		}
 	};
 };
