@@ -86,14 +86,13 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 // Render of cached meshes
 void __fastcall render_Cached(CList<FCached*>& cache)
 {
-	CVertexStream*			vs	= cache[0]->VS;
 	CIndexStream*			is	= Device.Streams.Get_IB();
 	DWORD dwPassesRequired		= Device.Shader.dwPassesRequired;
 
 	for (DWORD Start=0; Start<cache.size(); Start++)
 	{
-		FCached& V		=	*(cache[Start]);
-		vs				=	V.VS;
+		FCached& V			=	*(cache[Start]);
+		CVertexStream*vs	=	V.VS;
 			
 		// Transfer geometry
 		DWORD	vBase,	iBase;
