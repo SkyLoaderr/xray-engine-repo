@@ -379,6 +379,8 @@ public:
 		xr_set<CLevelInfo>::const_iterator	I = levels.begin();
 		xr_set<CLevelInfo>::const_iterator	E = levels.end();
 		for ( ; I != E; ++I) {
+			if (xr_strlen(name) && xr_strcmp(name,(*I).name))
+				continue;
 			tLevel.tOffset			= (*I).offset;
 			strcpy					(tLevel.caLevelName,(*I).name);
 			tLevel.tLevelID			= (*I).id;
