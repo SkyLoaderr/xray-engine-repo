@@ -74,22 +74,25 @@ public:
 
 protected:
 
-	CUIFrameWindow		UIBagWnd;
-	CUIFrameWindow		UIDescWnd;
+	CUIStatic			UIBagWnd;
+	CUIStatic			UIDescrWnd;
 	CUIFrameWindow		UIPersonalWnd;
 
 	//конпка активации окошка сна
 	CUIButton			UISleepButton;
+	//  нопка выброса активного предмета
+	CUIButton			UIDropButton;
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
-	
+	CUIStatic			UIStaticTime;
 
-	CUIStatic			UIStaticDesc;
+	// Update current time indicator
+	void				UpdateTime();
+
+//	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
-	
-
 		
 	#define SLOTS_NUM 5
 	//слоты дл€ оружи€

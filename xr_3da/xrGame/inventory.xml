@@ -78,7 +78,7 @@
     </drop_button>
     
     <!-- BELT LIST -->
-    <dragdrop_list x="22" y="174" width="1024" height="60"
+    <dragdrop_list x="27" y="174" width="1024" height="60"
             cell_width = "51" cell_height="51"
             rows_num="1" cols_num="18"></dragdrop_list>
     <!-- BAG LIST -->

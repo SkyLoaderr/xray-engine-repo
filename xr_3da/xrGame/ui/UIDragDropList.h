@@ -86,6 +86,16 @@ public:
 	void SetItemsScale(float fItemsScale);
 	float GetItemsScale() const { return m_fItemsScale; }
 
+	// ѕодсветить указанную клеточку в листе
+	void HighlightCell(int row, int col, bool on);
+	void HighlightAllCells(bool on);
+
+	const int GetCurrentFirstRow() const { return m_iCurrentFirstRow; }
+
+	// —ообщение высылаемое родительскому окну с нотификацией, что необходимо переинициализировать
+	// подсветку активной вещи
+	enum EMessage { REFRESH_ACTIVE_ITEM = 4999 };
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;

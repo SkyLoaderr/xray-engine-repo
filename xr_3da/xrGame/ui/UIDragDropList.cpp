@@ -10,6 +10,7 @@
 #define SCROLLBAR_OFFSET_X 5
 #define SCROLLBAR_OFFSET_Y 0
 
+const char * const CELL_TEXTURE		= "ui\\ui_inv_lattice";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -140,6 +141,9 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			m_iCurrentFirstRow = m_ScrollBar.GetScrollPos();
 			UpdateList();
+			// Теперь надо переинициализировать подсветку активного элемента
+			HighlightAllCells(false);
+			GetMessageTarget()->SendMessage(this, CUIDragDropList::REFRESH_ACTIVE_ITEM , NULL);
 		}
 	}
 	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == CUIDragDropItem::ITEM_DRAG)
@@ -223,6 +227,8 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				else
 					additional_check = true;
 
+				pItem->GetParent()->SetCapture(pItem, false);
+
 				if(additional_check)
 				{
 
@@ -233,9 +239,11 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
 						AttachChild(pItem);
+
 						pItem->BringAllToTop(); 
 
 						pItem->Rescale(m_fItemsScale);
+						pItem->Highlight(true);
 
 					}
 					else
@@ -258,6 +266,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pItem->Rescale(m_fItemsScale);
 
 			pItem->GetParent()->SetCapture(pItem, false);
+			pItem->Highlight(true);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
 			pItem->GetMessageTarget()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
 		}
@@ -321,7 +330,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 		//временно!
 		//установить масштаб для клеточки
-		float scale = GetCellWidth()/50.f;
+		float scale = (GetCellWidth() - 3)/51.f;
 		
 		CELL_STATIC_IT it=m_vCellStatic.begin();
 
@@ -330,11 +339,13 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 			for(j=0; j<GetCols(); ++j)
 			{
 
-				(*it).Init("ui\\ui_inv_lattice", 
-								j*GetCellWidth(),
-								i*GetCellHeight(),
-								GetCellWidth(),
-								GetCellHeight());
+				(*it).Init(CELL_TEXTURE,
+								j*(GetCellWidth()),
+								i*(GetCellHeight()),
+								(GetCellWidth()),
+								(GetCellHeight()));
+				(*it).GetUIStaticItem().SetOriginalRect(0, 0, 64, 64);
+				it->ClipperOn();
 
 				AttachChild(&(*it));
 				
@@ -672,5 +683,29 @@ void CUIDragDropList::ScrollBarRecalculate()
 		m_ScrollBar.SetRange(0, s16(bottom));
 		m_ScrollBar.SetPageSize(s16(m_iViewRowsNum));
 		m_ScrollBar.SetScrollPos(0);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropList::HighlightCell(int row, int col, bool on)
+{
+	R_ASSERT(row < m_iRowsNum && col < m_iColsNum);
+
+	if (static_cast<u32>(row*GetCols() + col) >= m_vCellStatic.size()) return;
+	CUIStatic &cell = m_vCellStatic[row*GetCols() + col];
+	cell.GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64, 0, 64, 64);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropList::HighlightAllCells(bool on)
+{
+	for (int i = 0; i < m_iRowsNum; ++i)
+	{
+		for (int j = 0; j < m_iColsNum; ++j)
+		{
+			HighlightCell(i, j, on);
+		}
 	}
 }

@@ -334,9 +334,9 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 {
 	ref_str font_name = xml_doc.ReadAttrib(path, index, "font", NULL);
 
-	int r = xml_doc.ReadAttribInt(path, index, "r");
-	int g = xml_doc.ReadAttribInt(path, index, "g");
-	int b = xml_doc.ReadAttribInt(path, index, "b");
+	int r = xml_doc.ReadAttribInt(path, index, "r", 255);
+	int g = xml_doc.ReadAttribInt(path, index, "g", 255);
+	int b = xml_doc.ReadAttribInt(path, index, "b", 255);
 
 	//чтоб не было тупых ошибок когда забыли поставить альфу
 	ref_str alpha = xml_doc.ReadAttrib(path, index, "a", NULL);
@@ -585,6 +585,12 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 	int y			= xml_doc.ReadAttribInt(buf, 0, "y", 0);
 	int width		= xml_doc.ReadAttribInt(buf, 0, "width", 0);
 	int height		= xml_doc.ReadAttribInt(buf, 0, "height", 0);
+	int	a			= xml_doc.ReadAttribInt(buf, 0, "a", 255);
+	int	r			= xml_doc.ReadAttribInt(buf, 0, "r", 255);
+	int	g			= xml_doc.ReadAttribInt(buf, 0, "g", 255);
+	int	b			= xml_doc.ReadAttribInt(buf, 0, "b", 255);
+
+	pWnd->SetColor(color_rgba(r, g, b, a));
 
 	if (width != 0 && height != 0)
 	{

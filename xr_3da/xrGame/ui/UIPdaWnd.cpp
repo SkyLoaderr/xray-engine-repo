@@ -180,19 +180,13 @@ void CUIPdaWnd::AddNewsItem(const char *sData)
 
 void CUIPdaWnd::UpdateDateTime()
 {
-	string32 buf;
-	ALife::_TIME_ID currMsec = Level().GetGameTime();
+	static ref_str prevStrTime;
+	const ref_str strTime = InventoryUtilities::GetGameTimeAsString(InventoryUtilities::egtpToMinutes);
 
-	static u8 prevCurrSecs = 0xff;
-	u8 currSecs		= static_cast<u8>(currMsec / 1000 % 60 & 0xFF);
-	u8 currMins		= static_cast<u8>(currMsec / (1000 * 60) % 60 & 0xFF);
-	u8 currHours	= static_cast<u8>(currMsec / (1000 * 3600) % 24 & 0xFF);
-
-	if (prevCurrSecs != currSecs)
+	if (strTime != prevStrTime)
 	{
-		sprintf(buf, "%02i:%02i:%02i", currHours, currMins, currSecs);
-		UITimerBackground.UITitleText.SetText(buf);
-		prevCurrSecs = currSecs;
+		UITimerBackground.UITitleText.SetText(*strTime);
+		prevStrTime = strTime;
 	}
 }
 

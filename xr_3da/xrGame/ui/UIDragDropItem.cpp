@@ -12,6 +12,8 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+class CUIDragDropList;
+
 CUIDragDropItem:: CUIDragDropItem()
 {
 	m_eButtonState = BUTTON_NORMAL;
@@ -259,4 +261,23 @@ void CUIDragDropItem::Rescale(float scale)
 	SetWidth(newW);
 	SetHeight(newH);
 	MoveWindow(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropItem::Highlight(bool on)
+{
+	CUIDragDropList *pDDList = dynamic_cast<CUIDragDropList*>(GetParent());
+	if (!pDDList || !IsShown()) return;
+
+	int place_row = GetGridRow();
+	int place_col = GetGridCol();
+
+	for(int k = 0; k < GetGridHeight(); ++k)
+	{
+		for(int m = 0; m < GetGridWidth(); ++m)
+		{
+			pDDList->HighlightCell(k + place_row - pDDList->GetCurrentFirstRow(), m + place_col, on);
+		}
+	}
 }

@@ -340,8 +340,8 @@ void CUIButton::UpdateTextAlign()
 	{
 		m_iTextOffsetX = GetWidth();
 	}
-	else
-	{
-		m_iTextOffsetX = 0;
-	}
+//	else
+//	{
+//		m_iTextOffsetX = 0;
+//	}
 }

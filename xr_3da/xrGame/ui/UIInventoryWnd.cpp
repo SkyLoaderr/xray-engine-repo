@@ -46,6 +46,8 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
+const char * const INVENTORY_ITEM_XML	= "inventory_item.xml";
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -90,7 +92,8 @@ void CUIInventoryWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
 	
 	AttachChild(&UIBagWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIBagWnd);
+//	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIBagWnd);
+	xml_init.InitStatic(uiXml, "bag_static", 0, &UIBagWnd);
 
 	////////////////////////////////////////
 	//окно с описанием активной вещи
@@ -100,14 +103,21 @@ void CUIInventoryWnd::Init()
 	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
 	UIArtifactMergerWnd.Hide();
 
-	AttachChild(&UIDescWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIDescWnd);
-	UIDescWnd.AttachChild(&UIStaticDesc);
-	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
+	AttachChild(&UIDescrWnd);
+	xml_init.InitStatic(uiXml, "descr_static", 0, &UIDescrWnd);
+//	UIDescWnd.AttachChild(&UIStaticDesc);
+//	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
 
 	//информация о предмете
-	UIStaticDesc.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
+	UIDescrWnd.AttachChild(&UIItemInfo);
+	UIItemInfo.Init(0, 195, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
+
+	// Кнопка Drop
+	UIDescrWnd.AttachChild(&UIDropButton);
+	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
+	UIDropButton.SetMessageTarget(this);
+	UIDropButton.SetTextureOffset(5, 10);
+	UIDropButton.SetTextAlign(CGameFont::alLeft);
 
 	////////////////////////////////////
 	//Окно с информации о персонаже
@@ -134,7 +144,7 @@ void CUIInventoryWnd::Init()
 
 	//информация о персонаже
 	UIStaticPersonal.AttachChild(&UICharacterInfo);
-	UICharacterInfo.Init(0,0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
+	UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
 	
 
 
@@ -160,6 +170,7 @@ void CUIInventoryWnd::Init()
 		
 	UIBagWnd.AttachChild(&UIBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIBagList);
+	UIBagList.SetItemsScale(TRADE_ICONS_SCALE);
 
 	AttachChild(&UITopList[0]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UITopList[0]);
@@ -202,6 +213,9 @@ void CUIInventoryWnd::Init()
 	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
 
+	// Time indicator
+	AttachChild(&UIStaticTime);
+	xml_init.InitStatic(uiXml, "time_static", 0, &UIStaticTime);
 }
 
 void CUIInventoryWnd::InitInventory() 
@@ -275,12 +289,14 @@ void CUIInventoryWnd::InitInventory()
 									pInv->m_slots[i].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
 
 			UITopList[i].AttachChild(&UIDragDropItem);
+			UIDragDropItem.Rescale(UITopList[i].GetItemsScale());
 			UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 			UIDragDropItem.Show(true);
 
 			//++m_iUsedItems;
 			//R_ASSERT(m_iUsedItems<MAX_ITEMS);
 		}
+		UITopList[i].HighlightAllCells(false);
 	}
 
 	//Слот с костюмом
@@ -309,6 +325,7 @@ void CUIInventoryWnd::InitInventory()
 
 //		++m_iUsedItems;
 //		R_ASSERT(m_iUsedItems<MAX_ITEMS);
+		UIOutfitSlot.HighlightAllCells(false);
 	}
 
 	//Пояс
@@ -348,9 +365,11 @@ void CUIInventoryWnd::InitInventory()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBeltList.AttachChild(&UIDragDropItem);
+			UIDragDropItem.Rescale(UIBeltList.GetItemsScale());
 			UIDragDropItem.SetData(*it);
 			UIDragDropItem.Show(true);
 
+			UIBeltList.HighlightAllCells(false);
 //			++m_iUsedItems;
 //			R_ASSERT(m_iUsedItems<MAX_ITEMS);
 		}
@@ -396,8 +415,10 @@ void CUIInventoryWnd::InitInventory()
 			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 			UIBagList.AttachChild(&UIDragDropItem);
+			UIDragDropItem.Rescale(UIBagList.GetItemsScale());
 			UIDragDropItem.SetData((*it));
 			UIDragDropItem.Show(true);
+			UIBagList.HighlightAllCells(false);
 
 		//	m_iUsedItems++;
 		//	R_ASSERT(m_iUsedItems<MAX_ITEMS);
@@ -590,8 +611,11 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 				
 		SetCurrentItem(pInvItem);
+		// Гасим предыдущий активный элемент
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-
+		// Cкейлим и увеличиваем текстуру
+		m_pCurrentDragDropItem->Rescale(1.0f);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
@@ -614,6 +638,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
 										AttachChild(m_pCurrentDragDropItem);
 				}
+		m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScale());
     }
 	//по нажатию правой кнопки
 	else if(msg == CUIDragDropItem::ITEM_RBUTTON_CLICK)
@@ -723,6 +748,25 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		UndressOutfit();
 	}
+	else if (&UIDropButton == pWnd)
+	{
+		switch (msg)
+		{
+		case CUIButton::BUTTON_FOCUS_RECEIVED:
+			UIDropButton.SetColor(0xffffffff);
+			break;
+		case CUIButton::BUTTON_FOCUS_LOST:
+			UIDropButton.SetColor(0xc0c8c8c8);
+			break;
+		case CUIButton::BUTTON_CLICKED:
+			if (m_pCurrentDragDropItem && m_pCurrentItem) DropItem();
+			break;
+		}
+	}
+	else if (CUIDragDropList::REFRESH_ACTIVE_ITEM == msg)
+	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(true);
+	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
@@ -783,6 +827,9 @@ void CUIInventoryWnd::Update()
 		}
 	}
 
+	// Update time indicator
+	UpdateTime();
+
 
 	CUIWindow::Update();
 }
@@ -792,10 +839,13 @@ void CUIInventoryWnd::DropItem()
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
-	if (dynamic_cast<CCustomOutfit*>(m_pCurrentItem))
+//	if (dynamic_cast<CCustomOutfit*>(m_pCurrentItem))
+//		SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
+	if (m_pCurrentDragDropItem == UIOutfitSlot.GetDragDropItemsList().front())
 		SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
 
 	m_pCurrentItem->Drop();
+	m_pCurrentDragDropItem->Highlight(false);
 	
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 										DetachChild(m_pCurrentDragDropItem);
@@ -1340,3 +1390,19 @@ void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
 	P.w_u16		(pItem->ID());
 	pItem->u_EventSend(P);
 };
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIInventoryWnd::UpdateTime()
+{
+	static ref_str prevStrTime;
+	const ref_str strTime = InventoryUtilities::GetGameTimeAsString(InventoryUtilities::egtpToMinutes);
+
+	if (strTime != prevStrTime)
+	{
+		string64	buf;
+		strconcat(buf, "Current Time:      ", *strTime);
+		UIStaticTime.SetText(buf);
+		prevStrTime = strTime;
+	}
+}

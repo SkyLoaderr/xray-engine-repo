@@ -196,3 +196,32 @@ void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 		xr_delete(dd_item_vector[i]);
 	dd_item_vector.clear();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+const ref_str InventoryUtilities::GetGameTimeAsString(EGetTimePrecision precision, char separator)
+{
+	string32 buf;
+	ALife::_TIME_ID currMsec = Level().GetGameTime();
+
+	u8 currSecs		= static_cast<u8>(currMsec / 1000 % 60 & 0xFF);
+	u8 currMins		= static_cast<u8>(currMsec / (1000 * 60) % 60 & 0xFF);
+	u8 currHours	= static_cast<u8>(currMsec / (1000 * 3600) % 24 & 0xFF);
+
+	switch (precision)
+	{
+	case egtpToHours:
+		sprintf(buf, "%02i", currHours);
+		break;
+	case egtpToMinutes:
+		sprintf(buf, "%02i%c%02i", currHours, separator, currMins);
+		break;
+	case egtpToSeconds:
+		sprintf(buf, "%02i%c%02i%c%02i", currHours, separator, currMins, separator, currSecs);
+		break;
+	default:
+		R_ASSERT(!"Unknown type of precision");
+	}
+
+	return buf;
+}

@@ -22,8 +22,7 @@
 #define CHAR_ICON_FULL_WIDTH	2
 #define CHAR_ICON_FULL_HEIGHT	8	
 
-
-
+#define TRADE_ICONS_SCALE (4.f/5.f)
 
 class CUIDragDropItem;
 class CUIWpnDragDropItem;
@@ -53,4 +52,16 @@ ref_shader& GetCharIconsShader();
 ref_shader&	GetMPCharIconsShader();
 
 void ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector);
+
+// Получить значение времени в текстовом виде
+
+// Точность возвращаемого функцией GetGameTimeAsString значения: до часов, до минут, до секунд
+enum EGetTimePrecision
+{
+	egtpToHours = 0,
+	egtpToMinutes,
+	egtpToSeconds
+};
+
+const ref_str GetGameTimeAsString(EGetTimePrecision precision, char separator = ':');
 };

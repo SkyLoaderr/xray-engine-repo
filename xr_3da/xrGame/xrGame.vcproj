@@ -8155,16 +8155,10 @@
 				RelativePath=".\inventory_item.xml">
 			</File>
 			<File
-				RelativePath=".\inventoryMP_new.xml">
-			</File>
-			<File
 				RelativePath=".\inventoryMP_new2.xml">
 			</File>
 			<File
 				RelativePath=".\inventoryMP_new2.xml">
-			</File>
-			<File
-				RelativePath=".\maingame.xml">
 			</File>
 			<File
 				RelativePath=".\maingame_character.xml">
@@ -8201,9 +8195,6 @@
 			</File>
 			<File
 				RelativePath=".\pda_dialog_character.xml">
-			</File>
-			<File
-				RelativePath=".\pda_new.xml">
 			</File>
 			<File
 				RelativePath=".\scenery_dialogs.xml">

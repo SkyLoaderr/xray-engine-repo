@@ -89,6 +89,9 @@ public:
 	// Пропорционально скейлим себя по типу зума
 	void Rescale(float scale);
 
+	// Подсвечиваем себя в инвентаре
+	void Highlight(bool on);
+
 protected:
 	
 	int m_iOldMouseX;

@@ -38,7 +38,7 @@ const u32			cAbleToBuy				= cDetached;
 const u32			cAbleToBuyOwned			= 0xff8080ff;
 const u8			uIndicatorWidth			= 17;
 const u8			uIndicatorHeight		= 27;
-const float			SECTION_ICON_SCALE		= 0.8f;
+const float			SECTION_ICON_SCALE		= 4.0f/5.0f;
 const char * const	BUY_WND_XML_NAME		= "inventoryMP_new2.xml";
 const float			fRealItemSellMultiplier	= 0.5f;
 
@@ -625,6 +625,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //		PIItem pInvItem = (PIItem)((CUIDragDropItemMP*)pWnd)->GetData();
 
 //		SetCurrentItem(pInvItem);
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		m_pCurrentDragDropItem = (CUIDragDropItemMP*)pWnd;
 
 		// Cкейлим и увеличиваем текстуру если разрещено перетаскивание
@@ -790,13 +791,10 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pDDItemMP->Show(false);
 		}
 	}
-//	else if (CUIWindow::LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
-//	{
-//		if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
-//		{
-//			UITopList[OUTFIT_SLOT].GetDragDropItemsList().front()->Enable(true);
-//		}
-//	}
+	else if (CUIDragDropList::REFRESH_ACTIVE_ITEM == msg)
+	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(true);
+	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
