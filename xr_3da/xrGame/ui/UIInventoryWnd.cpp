@@ -149,6 +149,7 @@ void CUIInventoryWnd::Init()
 	//окошко для диалога параметров сна
 	AttachChild(&UISleepWnd);
 	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
+	UISleepWnd.Init();
 	UISleepWnd.Hide();
 	
 /*	AttachChild(&UIButton1);
@@ -638,7 +639,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(!pGameSP) return;
 		
-		pActor->GoSleep(1000*3600*5);
+		pActor->GoSleep(*reinterpret_cast<u32*>(pData));
 		StopSleepWnd();
 		pGameSP->StartStopMenu(this);
 

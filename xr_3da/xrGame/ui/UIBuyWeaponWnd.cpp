@@ -234,19 +234,12 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	// Заполняем массив со списком оружия
 	std::strcpy(m_SectionName, strSectionName);
 	InitWpnSectStorage();
+	FillWpnSubBags();
 }
 
 void CUIBuyWeaponWnd::InitInventory() 
 {
 	m_pMouseCapturer = NULL;
-	static bool firstTime = true;
-
-	if (firstTime)
-	{
-		ClearWpnSubBags();
-		FillWpnSubBags();
-		firstTime = false;
-	}
 /*
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
@@ -490,31 +483,30 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 //в рюкзак
 bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent()->GetParent());
-//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-//
-//	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
-//
-//	// У нас не может быть обычная вещь в этом диалоге.
-//	R_ASSERT(pDDItemMP);
-//	
-//	// Применяем хитрый трюк. В этой процедуре переносим вещь, и запрещаем дальнейшую обработку
-//	// SHIT!
+	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
 
-	return true;
+	// У нас не может быть обычная вещь в этом диалоге.
+	R_ASSERT(pDDItemMP);
+	
+	static_cast<CUIDragDropList*>(pDDItemMP->GetParent())->
+		DetachChild(pDDItemMP);
+	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
+
+	return false;
 }
 
 //на пояс
 bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
-//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-//
-//	PIItem pInvItem = (PIItem)pItem->GetData();
-//
-//	if(!this_inventory->GetInventory()->CanPutInBelt(pInvItem)) return false;
-//	return this_inventory->GetInventory()->Belt(pInvItem);
-	return false;
+	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
+
+	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	// У нас не может быть обычная вещь в этом диалоге.
+	R_ASSERT(pDDItemMP);
+
+	if (!this_inventory->CanPutInBelt(pDDItemMP)) return false;
+	return true;
 }
 
 //------------------------------------------------
@@ -540,7 +532,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 		//попытаться закинуть элемент в слот, рюкзак или на пояс
 		if(!ToSlot())
-//			if(!ToBelt())
+			if(!ToBelt())
 				if(!ToBag())
 					//если нельзя, то просто упорядочить элемент в своем списке
 				{
@@ -1014,19 +1006,26 @@ bool CUIBuyWeaponWnd::ToSlot()
 
 bool CUIBuyWeaponWnd::ToBag()
 {
-	SlotToSection(m_pCurrentDragDropItem->GetSlot());
-	return true;
+	// Если вещь на поясе, то выкидываем ее в инвентарь
+	bool retStat = true;
+
+	retStat = BeltToSection(m_pCurrentDragDropItem);
+	if (retStat) return retStat;
+
+	// Если вещь в слоте
+	retStat = SlotToSection(m_pCurrentDragDropItem->GetSlot());
+	if (retStat) return retStat;
+	return false;
 }
 
 bool CUIBuyWeaponWnd::ToBelt()
 {
-	if(!GetInventory()->CanPutInBelt(m_pCurrentItem)) return false;
+	if (!CanPutInBelt(m_pCurrentDragDropItem)) return false;
 
-	bool result = GetInventory()->Belt(m_pCurrentItem);
+	// Если вещь уже на поясе...
+	if (&UIBeltList == m_pCurrentDragDropItem->GetParent()) return false;
 
-	if(!result) return false;
-
-	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
+	static_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
 	UIBeltList.AttachChild(m_pCurrentDragDropItem);
 
 	m_pMouseCapturer = NULL;
@@ -1245,6 +1244,10 @@ void CUIBuyWeaponWnd::FillWpnSubBags()
 			// Количество доступных секций должно быть не больше затребованных
 			R_ASSERT(i < m_WeaponSubBags.size());
 			m_WeaponSubBags[i]->AttachChild(&UIDragDropItem);
+
+			// Сохраняем указатель на лист - "хозяин" веши
+			UIDragDropItem.SetOwner(m_WeaponSubBags[i]);
+
 			UIDragDropItem.SetSectionName(wpnSectStorage[i][j].c_str());
 			m_iUsedItems++;
 		}
@@ -1308,4 +1311,22 @@ const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
 {
 	if (wpnSectStorage.size() <= slotNum || idx > wpnSectStorage[slotNum].size()) return NULL;
 	return wpnSectStorage[slotNum][idx].c_str();
+}
+
+bool CUIBuyWeaponWnd::CanPutInBelt(CUIDragDropItemMP *pDDItemMP)
+{
+	return pDDItemMP->GetSlot() > RIFLE_SLOT;
+}
+
+bool CUIBuyWeaponWnd::BeltToSection(CUIDragDropItemMP *pDDItemMP)
+{
+	R_ASSERT(pDDItemMP);
+
+	if (&UIBeltList != pDDItemMP->GetParent()) return false;
+	// Берем вещь
+	pDDItemMP->MoveOnNextDrop();
+	// ...и посылаем ему сообщение переместиться в сумку
+	m_WeaponSubBags[pDDItemMP->GetSection()]->SendMessage(pDDItemMP, 
+	CUIDragDropItem::ITEM_DROP, NULL);
+	return true;
 }

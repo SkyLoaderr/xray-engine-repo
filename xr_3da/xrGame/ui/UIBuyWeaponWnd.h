@@ -72,6 +72,8 @@ protected:
 		u32 sectionNum;
 		// Имя секции оружия
 		string128 strName;
+		// Запоминаем адрес "хозяина"
+		CUIDragDropList *m_pOwner;
 	public:
 		CUIDragDropItemMP(): slotNum(0), sectionNum(0) {}
 		// Для слота
@@ -80,9 +82,13 @@ protected:
 		// Для секций
 		void SetSection(u32 section) { sectionNum = section; }
 		u32	 GetSection() { return sectionNum; }
-		// изменяем поведение функций SetData, GetData;
-		virtual void SetSectionName(const char *pData) { std::strcpy(strName, pData); }
-		virtual const char *GetSectionName() const { return strName; }
+		// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
+		void SetSectionName(const char *pData) { std::strcpy(strName, pData); }
+		const char *GetSectionName() const { return strName; }
+		// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
+		// вешь
+		void SetOwner(CUIDragDropList *pOwner) { R_ASSERT(pOwner); m_pOwner = pOwner; }
+		CUIDragDropList * GetOwner() { return m_pOwner; }
 	};
 
 	CUIFrameWindow		UIBagWnd;
@@ -232,8 +238,12 @@ protected:
 	void ClearWpnSubBags();
 	// переместить вещь из слота обратно в сответствующую секцию.
 	bool SlotToSection(const u32 SlotNum);
+	// переместить вещь с пояса в сумку
+	bool BeltToSection(CUIDragDropItemMP *pDDItemMP);
 	// Проверка возможности помещения вещи в слот
 	bool CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum);
+	// Проверка возможности помещения вещи на пояс
+	bool CanPutInBelt(CUIDragDropItemMP *pDDItemMP);
 	// Запомнить имя секции из которой читать списки оружия
 	string64	m_SectionName;
 	// Кнопки OK и Cancel
