@@ -189,7 +189,7 @@ void CTorch::UpdateCL()
 
 		light_render->set_direction	(XFORM().k);
 		light_render->set_position	(XFORM().c);
-		glow_render->set_position	(_P);
+		glow_render->set_position	(XFORM().c);
 
 	}
 	
