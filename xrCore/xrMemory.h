@@ -9,18 +9,19 @@ class XRCORE_API	xrMemory
 {
 public:
 	xrMemory			();
-	void				_initialize	();
-	void				_destroy	();
+	void				_initialize		(BOOL _debug_mode=FALSE);
+	void				_destroy		();
 
+	BOOL				debug_mode;
 	u32					stat_calls;
 public:
 	u32					mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
 	void				mem_compact		();
 	void				mem_statistic	();
 
-	void*				mem_alloc	(size_t	size							);
-	void				mem_free	(void*	p								);
-	void*				mem_realloc	(void*	p, size_t size					);
+	void*				mem_alloc		(size_t	size				);
+	void				mem_free		(void*	p					);
+	void*				mem_realloc		(void*	p, size_t size		);
 
 	pso_MemCopy*		mem_copy;
 	pso_MemFill*		mem_fill;
@@ -29,12 +30,12 @@ public:
 
 extern XRCORE_API	xrMemory	Memory;
 
-#undef ZeroMemory
-#undef CopyMemory
-#undef FillMemory
-#define ZeroMemory(a,b)	Memory.mem_fill(a,0,b)
-#define CopyMemory(a,b,c) Memory.mem_copy(a,b,c)
-#define FillMemory(a,b,c) Memory.mem_fill(a,c,b)
+#undef	ZeroMemory
+#undef	CopyMemory
+#undef	FillMemory
+#define ZeroMemory(a,b)		Memory.mem_fill(a,0,b)
+#define CopyMemory(a,b,c)	Memory.mem_copy(a,b,c)
+#define FillMemory(a,b,c)	Memory.mem_fill(a,c,b)
 
 // delete
 #ifdef __BORLANDC__

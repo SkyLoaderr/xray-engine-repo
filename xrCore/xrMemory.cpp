@@ -15,13 +15,15 @@ extern		pso_MemFill32	xrMemFill32_x86;
 
 xrMemory::xrMemory()
 {
+	debug_mode	= FALSE;
 	mem_copy	= xrMemCopy_x86;
 	mem_fill	= xrMemFill_x86;
 	mem_fill32	= xrMemFill32_x86;
 }
 
-void	xrMemory::_initialize	()
+void	xrMemory::_initialize	(BOOL bDebug)
 {
+	debug_mode				= bDebug;
 	DWORD	features		= CPU::ID.feature & CPU::ID.os_support;
 	if (features & _CPU_FEATURE_MMX)
 	{

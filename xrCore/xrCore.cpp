@@ -51,7 +51,8 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_p
 	InitMath				();
 	rtc_initialize			();
 	Debug._initialize		();
-	Memory._initialize		();
+	if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
+	else								Memory._initialize		(FALSE);
 	xr_FS					= xr_new<CLocatorAPI>	();
 	FS._initialize			(0!=strstr(Params,"-build"),root_path);
 	CreateLog				(cb);
