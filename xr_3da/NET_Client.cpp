@@ -359,7 +359,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 				{
 					// It is reverted(server) ping
 					u32		time	= Device.TimerAsync();
-					MSYS_PING*	msg		= (MSYS_PING*)m_data;
+					MSYS_PING*	msg	= (MSYS_PING*)m_data;
 					u32		ping	= time - (msg->dwTime_ClientSend);
 					u32		delta	= msg->dwTime_Server + ping/2 - time;
 					net_DeltaArray.push	(delta);
