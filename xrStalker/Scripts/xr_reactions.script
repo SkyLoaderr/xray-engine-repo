@@ -101,7 +101,7 @@ function action_wait:execute()
 		end
 
 		-- если прошло много времени, прекращаем
-		if device():time_global() - self.a.obj.time >= self.a.time_wait then
+		if game.time() - self.a.obj.time >= self.a.time_wait then
 			self:set_prisluh(false)
 			self.a.evn:removeFromWatch(self.a.obj.id)
 			self.a.obj.id = nil
@@ -326,8 +326,8 @@ function events:__init(npc)
 	self.stype1 = {	snd_type.anomaly,
 			snd_type.monster
 			}
-	self.time_reaction = 1500 	-- 1.5 секунд
-	self.time_memory = 600000 	-- 5 минут
+	self.time_reaction = 60*1000 	-- 1.5 секунд
+	self.time_memory = 5*60*1000
 	self.visio	= 0.25 		-- если объект виден
 	self.hear_distance = 100 	-- на каком рассто€нии мы слышим
 	-- онстанты дл€ настройки реакций
@@ -338,7 +338,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 	-- удал€ть обработанные устаревшие раздражители
 	local dt = {}
 	for k,v in self.used do
-		if device():time_global() - v >= self.time_memory then
+		if game.time() - v >= self.time_memory then
 			table.insert(dt, k)
 		end
 	end
@@ -349,7 +349,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 	-- удал€ть из self.hear звуки старше x секунд
 	dt = {}
 	for k,v in self.hear do
-		if (device():time_global() - v) > 2*self.time_reaction then
+		if (game.time() - v) > 2*self.time_reaction then
 			table.insert(dt, k)
 		end
 	end
@@ -428,7 +428,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			-- указываем, что нам о нем известно
 			self.arhive[vo:id()].point 		= vo:level_vertex_id()
 			self.arhive[vo:id()].visibility		= v.value
-			self.arhive[vo:id()].time		= device():time_global()
+			self.arhive[vo:id()].time		= game.time()
 			if v.value >= self.npc:visibility_threshold() then
 				self.arhive[vo:id()].object_type = self:type(vo)
 
@@ -593,9 +593,9 @@ end
 function events:markAsUsed(npc)
 	if npc ~= nil then
 		if self.used[npc] ~= nil then
-			self.used[npc] = device():time_global()
+			self.used[npc] = game.time()
 		else
-			table.insert(self.used, npc, device():time_global())
+			table.insert(self.used, npc, game.time())
 		end
 	end
 end
@@ -619,9 +619,9 @@ end
 function events:markCorpse(npc)
 	if npc ~= nil then
 		if self.corpse[npc] ~= nil then
-			self.corpse[npc] = device():time_global()
+			self.corpse[npc] = game.time()
 		else
-			table.insert(self.corpse, npc, device():time_global())
+			table.insert(self.corpse, npc, game.time())
 		end
 	end
 end
