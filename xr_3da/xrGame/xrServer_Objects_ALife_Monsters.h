@@ -24,7 +24,14 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	float							m_fMaxItemMass;
 	ALife::PERSONAL_EVENT_P_VECTOR	m_tpEvents;
 
+	////////////////////////////////////////////////////
 	//character profile info
+	PROFILE_INDEX					character_profile		();
+	void							set_character_profile	(PROFILE_INDEX);
+	SPECIFIC_CHARACTER_INDEX		specific_character		();
+	void							set_specific_character	(SPECIFIC_CHARACTER_INDEX);
+private:
+	bool							m_character_profile_init;
 	PROFILE_INDEX					m_iCharacterProfile;
 	SPECIFIC_CHARACTER_INDEX		m_iSpecificCharacter;
 public:	

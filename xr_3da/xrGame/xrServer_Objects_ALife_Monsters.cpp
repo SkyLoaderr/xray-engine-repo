@@ -39,7 +39,8 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_tpEvents.clear			();
 
 	m_iCharacterProfile			= NO_PROFILE;
-	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;	
+	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
+	m_character_profile_init	= false;
 }
 
 CSE_Abstract *CSE_ALifeTraderAbstract::init	()
@@ -47,6 +48,8 @@ CSE_Abstract *CSE_ALifeTraderAbstract::init	()
 	string4096					S;
 	sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
 	base()->m_ini_string		= S;
+	m_character_profile_init	= false;
+
 	return						(base());
 }
 
@@ -76,17 +79,36 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_s32	(m_iSpecificCharacter);
 	}
 
-	//запоминаем index profile
+}
 
+SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
+{
+	return m_iSpecificCharacter;
+}
+
+void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX new_spec_char)
+{
+	m_iSpecificCharacter = new_spec_char;
+}
+
+void CSE_ALifeTraderAbstract::set_character_profile(PROFILE_INDEX new_profile)
+{
+	m_iCharacterProfile = new_profile;
+}
+PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
+{
+	if(m_character_profile_init) return	m_iCharacterProfile;
+
+	//запоминаем index profile
 	if (xr_strlen(base()->m_ini_string)) {
 #pragma warning(push)
 #pragma warning(disable:4238)
-			CInifile					ini(
-				&IReader			(
-				(void*)(*(base()->m_ini_string)),
-				base()->m_ini_string.size()
-				)
-				);
+		CInifile					ini(
+			&IReader			(
+			(void*)(*(base()->m_ini_string)),
+			base()->m_ini_string.size()
+			)
+			);
 #pragma warning(pop)
 
 		LPCSTR profile_id = NULL;
@@ -97,9 +119,12 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if(NULL == profile_id)
 			m_iCharacterProfile = NO_PROFILE;
 		else
-            m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id));
+			m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id));
 #endif
 	}
+
+	m_character_profile_init = true;
+	return	m_iCharacterProfile;
 }
 
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)

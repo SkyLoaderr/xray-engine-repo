@@ -100,11 +100,11 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	if(E) pTrader = dynamic_cast<CSE_ALifeTraderAbstract*>(E);
 	if(!pTrader) return FALSE;
 
-	CharacterInfo().m_iSpecificCharacterIndex = pTrader->m_iSpecificCharacter; 
+	CharacterInfo().m_iSpecificCharacterIndex = pTrader->specific_character(); 
 	
-	if(NO_PROFILE != pTrader->m_iCharacterProfile)
+	if(NO_PROFILE != pTrader->character_profile())
 	{
-		CharacterInfo().Load(pTrader->m_iCharacterProfile);
+		CharacterInfo().Load(pTrader->character_profile());
 
 		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
 		if(dialog_manager && CharacterInfo().StartDialog() != NO_PHRASE_DIALOG)
@@ -115,7 +115,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	}
 	else
 	{
-		pTrader->m_iCharacterProfile = DEFAULT_PROFILE;
+		pTrader->set_character_profile(DEFAULT_PROFILE);
 		CharacterInfo().Load(DEFAULT_PROFILE);
 		/*CharacterInfo().data()->m_sGameName = pThis->cName();
 		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
@@ -125,7 +125,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		CharacterInfo().data()->m_iMapIconX = pEntity->GetMapIconX();
 		CharacterInfo().data()->m_iMapIconY = pEntity->GetMapIconY();*/
 	}
-	pTrader->m_iSpecificCharacter = CharacterInfo().m_iSpecificCharacterIndex; 
+	pTrader->set_specific_character(CharacterInfo().m_iSpecificCharacterIndex); 
 	
 	if(!pThis->Local())  return TRUE;
 

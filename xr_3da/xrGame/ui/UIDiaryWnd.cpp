@@ -257,9 +257,9 @@ void CUIDiaryWnd::SetContractTrader()
 	if(pTrader)
 	{
 		CCharacterInfo character_info;
-		if(NO_PROFILE != pTrader->m_iCharacterProfile)
+		if(NO_PROFILE != pTrader->character_profile())
 		{				
-			character_info.Load(pTrader->m_iCharacterProfile);
+			character_info.Load(pTrader->character_profile());
 			UIContractsWnd.UICharInfo.InitCharacter(&character_info);
 
 			LPCSTR artefact_list_func = pSettings->r_string("artefacts_tasks", "script_func");
@@ -395,9 +395,9 @@ void CUIDiaryWnd::InitDiary()
 				CCharacterInfo character_info;
 				bool init_default_profile =true;
 				
-				if(NO_PROFILE != pTrader->m_iCharacterProfile)
+				if(NO_PROFILE != pTrader->character_profile())
 				{				
-					character_info.Load(pTrader->m_iCharacterProfile);
+					character_info.Load(pTrader->character_profile());
 					init_default_profile = false;
 				}
 
