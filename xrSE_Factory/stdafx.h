@@ -19,3 +19,5 @@
 #include "clsid_game.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
+
+namespace boost {void __stdcall throw_exception(const exception &A);};

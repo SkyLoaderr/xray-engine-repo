@@ -10,12 +10,20 @@
 #include "script_storage.h"
 #include <stdarg.h>
 
-#ifndef ENGINE_BUILD
+#ifdef ENGINE_BUILD
+#	define NO_SCRIPT_ENGINE
+#endif
+
+#ifndef XRGAME_EXPORTS
+#	define NO_SCRIPT_ENGINE
+#endif
+
+#ifndef NO_SCRIPT_ENGINE
 #	include "script_engine.h"
 #	include "ai_debug.h"
 #	include "ai_space.h"
-
 #	include "script_debugger.h"
+#	define USE_DEBUGGER
 #endif
 
 CScriptStorage::CScriptStorage		()
@@ -44,7 +52,7 @@ CScriptStorage::~CScriptStorage		()
 
 int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
-#ifndef ENGINE_BUILD
+#ifndef NO_SCRIPT_ENGINE
 	if (!psAI_Flags.test(aiLua))
 		return(0);
 #endif
@@ -109,7 +117,7 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,l_tMarker);
 
-#ifndef ENGINE_BUILD
+#ifndef NO_SCRIPT_ENGINE
 	ai().script_engine().m_output.w_string(S2);
 #endif
 
@@ -232,9 +240,14 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 
 	if (bCall) {
 //		int			l_iErrorCode = lua_pcall(lua(),0,0,0); //backup___Dima
-		int errFuncId = CScriptDebugger::GetDebugger()->PrepareLua(lua());
+		int errFuncId = -1;
+#ifdef USE_DEBUGGER
+		errFuncId = CScriptDebugger::GetDebugger()->PrepareLua(lua());
+#endif
 		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId); //new_Andy
+#ifdef USE_DEBUGGER
 		CScriptDebugger::GetDebugger()->UnPrepareLua(lua(),errFuncId);
+#endif
 		if (l_iErrorCode) {
 
 #ifdef DEBUG
@@ -416,14 +429,18 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 			LPCSTR	S = lua_tostring(L,i);
 			if (!xr_strcmp(S,"cannot resume dead coroutine")) {
 				VERIFY2	("Please do not return any values from main!!!",caScriptFileName);
+#ifdef USE_DEBUGGER
 				CScriptDebugger::GetDebugger()->Write(S);
+#endif
 				return	(true);
 			}
 			else {
 				if (!i && !iErorCode)
 					script_log	(ScriptStorage::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
 				script_log	(iErorCode ? ScriptStorage::eLuaMessageTypeError : ScriptStorage::eLuaMessageTypeMessage,"%s",S);
+#ifdef USE_DEBUGGER
 				CScriptDebugger::GetDebugger()->Write(S);
+#endif
 			}
 		}
 		else
@@ -457,7 +474,7 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 		default : NODEFAULT;
 	}
 
-#ifndef ENGINE_BUILD
+#ifndef NO_SCRIPT_ENGINE
 	ai().script_engine().script_stack_tracker().print_stack(L);
 #endif
 }

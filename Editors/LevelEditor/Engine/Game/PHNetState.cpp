@@ -62,6 +62,8 @@ static void r_qt_q8(NET_Packet& P,Fquaternion& q)
 	clamp(q.z,-1.f,1.f);
 	clamp(q.w,-1.f,1.f);
 }
+
+#ifdef XRGAME_EXPORTS
 /////////////////////////////////16////////////////////////////////////////////////////////////////
 static void w_vec_q16(NET_Packet& P,const Fvector& vec,const Fvector& min,const Fvector& max)
 {
@@ -113,6 +115,7 @@ static void r_qt_q16(NET_Packet& P,Fquaternion& q)
 	//clamp(q.z,-1.f,1.f);
 	//clamp(q.w,-1.f,1.f);
 }
+#endif
 ///////////////////////////////////////////////////////////////////////////////////
 void	SPHNetState::net_Export(NET_Packet& P)
 {
