@@ -164,7 +164,9 @@ IC	void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, const P &predicate)
 	for (int i=0 ; i<(int)dwCount; ++i) {
 		T2						T;
 		load_data				(T,tStream);
-		tpMap.insert			(mk_pair(predicate(T),T));
+		T1						temp = predicate(T);
+		VERIFY					(tpMap.find(temp) == tpMap.end());
+		tpMap.insert			(mk_pair(temp,T));
 	}
 };
 
@@ -176,7 +178,9 @@ IC	void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, const T1 tfGetKey(const T
 	for (int i=0 ; i<(int)dwCount; ++i) {
 		T2						T;
 		load_data				(T,tStream);
-		tpMap.insert			(mk_pair(tfGetKey(T),T));
+		T1						temp = tfGetKey(T);
+		VERIFY					(tpMap.find(temp) == tpMap.end());
+		tpMap.insert			(mk_pair(temp,T));
 	}
 };
 
@@ -188,7 +192,9 @@ IC	void load_data(xr_map<T1,T2*,T3> &tpMap, M &tStream, const T1 tfGetKey(const 
 	for (int i=0 ; i<(int)dwCount; ++i) {
 		T2						*T;
 		load_data				(T,tStream);
-		tpMap.insert			(mk_pair(tfGetKey(T),T));
+		T1						temp = tfGetKey(T);
+		VERIFY					(tpMap.find(temp) == tpMap.end());
+		tpMap.insert			(mk_pair(temp,T));
 	}
 };
 
