@@ -33,22 +33,12 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 		m_header.tpLevels.insert(mk_pair(l_tLevel.tLevelID,l_tLevel));
 	}
 	R_ASSERT2					(header().version() == XRAI_CURRENT_VERSION,"Graph version mismatch!");
-#ifndef DEBUG
 	m_nodes						= (CVertex*)m_reader->pointer();
-#else
-	m_nodes						= (CVertex*)xr_malloc(m_reader->elapsed()*sizeof(char));
-	Memory.mem_copy				(m_nodes,m_reader->pointer(),m_reader->elapsed()*sizeof(char));
-	xr_delete					(m_reader);
-#endif
 }
 
 IC CGameGraph::~CGameGraph			()
 {
-#ifndef DEBUG
 	xr_delete					(m_reader);
-#else
-	xr_free						(m_nodes);
-#endif
 }
 
 IC const CGameGraph::CHeader &CGameGraph::header() const
