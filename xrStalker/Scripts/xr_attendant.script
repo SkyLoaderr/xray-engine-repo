@@ -259,7 +259,7 @@ function action_follow:free ()
     else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
     end
-    st.leader_section = nil
+    self.st.leader_section = nil
 end
 -----------------------------------------------------------------------------------
 
