@@ -191,7 +191,7 @@ IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
 	xr_vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
-		if (I->name[0]&&(0==strcmp(I->name,N))) {
+		if (I->name[0]&&(0==strcmp(*I->name,N))) {
 			Model = I->model;
 			break;
 		}
@@ -279,7 +279,7 @@ void	CModelPool::Discard	(IRender_Visual* &V)
 		LPCSTR	name	= it->second;
 		for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++)
 		{
-			if (I->name[0] && (0==strcmp(I->name,name))) 
+			if (I->name[0] && (0==strcmp(*I->name,name))) 
 			{
             	VERIFY(I->refs>0);
             	I->refs--; 
