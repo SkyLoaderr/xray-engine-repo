@@ -23,7 +23,7 @@
 			<level>0</level>
 			<object>wounded_stalker_0_1</object>
 			<icon name="unknown" x="2" y="3" width="1" height="1"></icon>
-			<text>medikit...</text>
+			<text>Please... Help me!!! I need medikit...</text>
 		</location>
 		<!-- список диалогов, который может инициировать InfoPortion -->
 		<dialog>job_medkit</dialog>
@@ -54,6 +54,7 @@
 			<level>0</level>
 			<object>quest_case_02</object>
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+			<text>Steal the case...</text>
 		</location>
 	</info_portion>
 
