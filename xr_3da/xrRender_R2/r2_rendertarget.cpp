@@ -363,12 +363,12 @@ void	CRenderTarget::OnDeviceCreate	()
 						u32* pBits = (u32*)((u8*)Locked.pBits + (y * Locked.Pitch) + x*4);
 						switch((D3DCUBEMAP_FACES)i)
 						{
-						case D3DCUBEMAP_FACE_POSITIVE_X:	Normal = {1.0f,		-h,		-w};	break;
-						case D3DCUBEMAP_FACE_NEGATIVE_X:	Normal = {-1.0f,	-h,		w};		break;
-						case D3DCUBEMAP_FACE_POSITIVE_Y:	Normal = {w,		1.0f,	h};		break;
-						case D3DCUBEMAP_FACE_NEGATIVE_Y:	Normal = {w,		-1.0f, -h};		break;
-						case D3DCUBEMAP_FACE_POSITIVE_Z:	Normal = {w,		-h,		1.0f};	break;
-						case D3DCUBEMAP_FACE_NEGATIVE_Z:	Normal = {-w,		-h,		-1.0f};	break;
+						case D3DCUBEMAP_FACE_POSITIVE_X:	Normal.set(	1.0f,	-h,		-w	);	break;
+						case D3DCUBEMAP_FACE_NEGATIVE_X:	Normal.set(	-1.0f,	-h,		w	);	break;
+						case D3DCUBEMAP_FACE_POSITIVE_Y:	Normal.set(	w,		1.0f,	h	);	break;
+						case D3DCUBEMAP_FACE_NEGATIVE_Y:	Normal.set(	w,		-1.0f, -h	);	break;
+						case D3DCUBEMAP_FACE_POSITIVE_Z:	Normal.set(	w,		-h,		1.0f);	break;
+						case D3DCUBEMAP_FACE_NEGATIVE_Z:	Normal.set(	-w,		-h,		-1.0f);	break;
 						default:							break;
 						}
 
