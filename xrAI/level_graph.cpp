@@ -41,7 +41,11 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 	m_reader->advance			(m_palette_size*sizeof(Cover));
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
+	m_column_length				= iFloor((header().box().max.x - header().box().min.x)/header().cell_size() + EPS_L + 1.5f);
 	m_ref_counts.assign			(header().vertex_count(),0);
+	m_valid_nodes.assign		(m_row_length*m_column_length,false);
+	for (u32 i=0, n = header().vertex_count(); i<n; ++i)
+		m_valid_nodes[vertex(i)->position().xz()] = true;
 }
 
 CLevelGraph::~CLevelGraph		()
@@ -87,6 +91,9 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
+	
+	if (!m_valid_nodes[vertex_position(position).xz()])
+		return				(current_node_id);
 
 	u32						id;
 	if (valid_vertex_id(current_node_id)) {

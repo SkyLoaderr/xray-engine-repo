@@ -55,6 +55,9 @@ private:
 	xr_vector<u8>		m_ref_counts;	// reference counters for handling dynamic objects
 	u32					m_level_id;		// unique level identifier
 	u32					m_row_length;
+#pragma todo("Dima to Dima : Optimize the nearest node by position search")
+	xr_vector<bool>		m_valid_nodes;
+	u32					m_column_length;
 public:
 	struct SSegment
 	{
