@@ -2,7 +2,7 @@
 <!-- CHARACTER INFO IN THE MAINGAME WINDOW CONTACT -->
 <window>
 	<!-- ICON -->
-	<icon_static x="0" y="0" width="64" height="64" scale="0.5"></icon_static>
+	<icon_static x="0" y="0" width="50" height="50" scale="1"></icon_static>
 
 	<!-- NAME 
 	<name_static x="70" y="0" width="240" height="60">
@@ -12,7 +12,7 @@
 
 	<!-- MSG TEXT -->
 	<text_static x="70" y="15" width="400" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+		<text x="5" y="0" font="letterica16" r="255" g="255" b="255"></text>
 	</text_static>
 </window>
 
