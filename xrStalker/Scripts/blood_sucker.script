@@ -53,28 +53,28 @@ function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _st
 end
 
 function CBaseBloodsucker:initialize()
-     self.npc:script    (true, this.script_name())
+     self.npc:script    (true, script_name)
 end
 
 function CBaseBloodsucker:execute()
 //  printf("Satiety %f", self.npc.satiety)
-  if(self.npc:alive() == false) then
-      return false
+	if(self.npc:alive() == false) then
+		return false
     end
 
     self:update_memory()
     self:select_state ()
 
-  self.curState:execute()
+	self.curState:execute()
 
     return true
 end
 
 function CBaseBloodsucker:set_state(new_state)
-  if(self.curState) then
+	if(self.curState) then
         //testing curState == newState
-      if(self.curState:id() == new_state) then
-          return
+		if(self.curState:id() == new_state) then
+			return
         end
         self.curState:finalize()
     end
@@ -99,35 +99,35 @@ end
 function CBaseBloodsucker:select_state()
 
     if(self.memory.enemy and self.memory.enemy:alive()) then
-      self:set_state(s_attack)
+		self:set_state(s_attack)
     elseif(self.memory.hit.time ~= 0) then
-      self:set_state(s_hit)
+		self:set_state(s_hit)
     elseif(self.memory.sound.time ~= 0) then
-      self:set_state(s_sound)
+		self:set_state(s_sound)
     elseif(self.eating and self.npc.satiety < 0.2 and self.npc:get_corpse()) then
-      self:set_state(s_eat)
+		self:set_state(s_eat)
     elseif(self.eating and self.curState and self.curState:id() == s_eat and self.npc:get_corpse() and self.npc.satiety < 0.8) then
         //Если текушее состояние еды, еще не наелись и есть труп, то продолжаем кушать
         self:set_state(s_eat)
     else
-      self:set_state(s_rest)
+		self:set_state(s_rest)
     end
 
 end
 
 function CBaseBloodsucker:update_memory()
-  self.memory.enemy = self.npc:best_enemy()
+	self.memory.enemy = self.npc:best_enemy()
     self.memory.sound = self.npc:get_sound_info()
     self.memory.hit   = self.npc:get_monster_hit_info()
 end
 
 function CBaseBloodsucker:finalize()
-  self.curState  = nil
-    self.npc:script(false, this.script_name())
+	self.curState  = nil
+    self.npc:script(false, script_name)
 end
 
 function CBaseBloodsucker:check_completed()
-  return(self.npc:alive() == false)
+	return(self.npc:alive() == false)
 end
 
 
@@ -138,18 +138,18 @@ end
 
 class "CStateAttack"
 function CStateAttack:__init(_npc, _mem)
-  self.npc    = _npc
+	self.npc    = _npc
     self.memory   = _mem
-  self.enemy_id    = -1
+	self.enemy_id    = -1
 end
 
 function CStateAttack:initialize()
-  reset_action(self.npc, this.script_name())
+	reset_action(self.npc, script_name)
     self.enemy_id   = self.memory.enemy:id()
 end
 
 function CStateAttack:execute()
-  self:check_enemy()
+	self:check_enemy()
 
     if(self.npc:action() == nil) then
       action(self.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 60000))
@@ -157,21 +157,21 @@ function CStateAttack:execute()
 end
 
 function CStateAttack:check_enemy()
-  //If enemy new, then reset action
+	//If enemy new, then reset action
 
     if(self.memory.enemy:id() ~= self.enemy_id) then
       //New enemy
-        reset_action(self.npc, this.script_name())
+        reset_action(self.npc, script_name)
         self.enemy_id  = self.memory.enemy:id()
     end
 end
 
 function CStateAttack:finalize()
-  self.enemy_id  = -1
+	self.enemy_id  = -1
 end
 
 function CStateAttack:id()
-  return s_attack
+	return s_attack
 end
 
 
@@ -184,11 +184,11 @@ class "CStateHit"
 function CStateHit:__init(_npc, _mem)
     self.npc        = _npc
     self.memory     = _mem
-  self.hit_time   = 0
+	self.hit_time   = 0
 end
 
 function CStateHit:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.hit_time   = self.memory.hit.time
 end
 
@@ -206,7 +206,7 @@ end
 
 function CStateHit:check_hit()
   if(self.hit_time ~= self.memory.hit.time) then
-      reset_action(self.npc, this.script_name())
+      reset_action(self.npc, script_name)
         self.hit_time  = self.memory.hit.time
     end
 end
@@ -233,7 +233,7 @@ function CStateSound:__init(_npc, _mem)
 end
 
 function CStateSound:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.sound_time = self.memory.sound.time
 end
 
@@ -241,7 +241,7 @@ function CStateSound:execute()
     self:check_sound()
 
     if(self.npc:action() == nil) then
-    local sound_type  = sound.idle
+		local sound_type  = sound.idle
         if(self.memory.sound.danger == 1) then
           sound_type    = sound.attack
         end
@@ -255,7 +255,7 @@ end
 
 function CStateSound:check_sound()
     if(self.memory.sound.time > self.sound_time + 800) then
-        reset_action(self.npc, this.script_name())
+        reset_action(self.npc, script_name)
         self.sound_time  = self.memory.sound.time
     end
 end
@@ -282,7 +282,7 @@ function CStateEat:__init(_npc, _mem)
 end
 
 function CStateEat:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.corpse_id  = self.npc:get_corpse():id()
 end
 
@@ -297,8 +297,8 @@ end
 
 function CStateEat:check_corpse()
     if(self.corpse_id ~= self.npc:get_corpse():id()) then
-        reset_action(self.npc, this.script_name())
-    self.corpse_id   = self.npc:get_corpse():id()
+        reset_action(self.npc, script_name)
+		self.corpse_id   = self.npc:get_corpse():id()
     end
 end
 
@@ -330,7 +330,7 @@ function CStateAttackCoward:__init(_npc, _mem)
 end
 
 function CStateAttackCoward:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.enemy_id     = self.memory.enemy:id()
     self.npc:set_manual_invisibility(true)
     self.npc:set_invisible(true)
@@ -345,25 +345,25 @@ function CStateAttackCoward:execute()
 
   if(self.angry == false and self.state == attack and self.memory.enemy.health < (self.enemy_health - 0.2)) then
       //Немного нанесли повреждение врагу, возращаемся назад
-        reset_action(self.npc, this.script_name())
+        reset_action(self.npc, script_name)
         self.state  = coward
     end
 
     if(device():time_global() < (self.memory.hit.time + 1000)) then
     //Если нам нанесли хит, то атакуем врага
-      self.angry  = true
-        reset_action(self.npc, this.script_name())
+		self.angry  = true
+        reset_action(self.npc, script_name)
         self.state  = attack
         self.npc:set_manual_invisibility(false)
     end
 
     if(self.npc:action() == nil) then
-    if(self.state == attack) then
-          action(self.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 60000))
+		if(self.state == attack) then
+			action(self.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 60000))
         else
-          self.npc:set_manual_invisibility(true)
+			self.npc:set_manual_invisibility(true)
             self.npc:set_invisible      (true)
-          action(self.npc, move(move.run_fwd, self.path:point(0)), sound(sound.panic), cond(cond.move_end))
+			action(self.npc, move(move.run_fwd, self.path:point(0)), sound(sound.panic), cond(cond.move_end))
             action(self.npc, look(look.point, self.path:point(0)), anim(anim.turn, 0), cond(cond.look_end))
             action(self.npc, anim(anim.sit_idle, 0), cond(cond.time_end, 120000))
         end
@@ -376,7 +376,7 @@ function CStateAttackCoward:check_enemy()
 
     if(self.memory.enemy:id() ~= self.enemy_id) then
         //New enemy
-        reset_action(self.npc, this.script_name())
+        reset_action(self.npc, script_name)
         self.enemy_id     = self.memory.enemy:id()
         self.enemy_health = self.memory.enemy.health
     end
@@ -408,7 +408,7 @@ function CStateRest:__init(_npc, _mem)
 end
 
 function CStateRest:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.npc:set_manual_invisibility(true)
     self.npc:set_invisible(true)
 end
@@ -417,7 +417,7 @@ function CStateRest:execute()
 
     if(self.npc:action() == nil) then
         if(self.npc:position():distance_to(self.point_rest) < 1) then
-          action(self.npc, move(move.walk_fwd, self.point_rest), sound(sound.idle), cond(cond.move_end))
+			action(self.npc, move(move.walk_fwd, self.point_rest), sound(sound.idle), cond(cond.move_end))
         end
         action(self.npc, anim(anim.turn, 0), look(look.point, point_with_bit(self.path, 1)), cond(cond.look_end))
         action(self.npc, anim(anim.sit_idle, 0), sound(sound.idle, 10000), cond(cond.time_end, 60000))
@@ -444,15 +444,15 @@ class "CStatePatrol"
 function CStatePatrol:__init(_npc, _mem)
     self.npc        = _npc
     self.memory     = _mem
-  self.way    = self.npc:spawn_ini():r_string("blood_sucker", "path")
+	self.way    = self.npc:spawn_ini():r_string("blood_sucker", "path")
     self.prev_point = 0
 
 end
 
 function CStatePatrol:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.npc:set_callback(self, "movement_callback", game_object.movement)
-  action(self.npc, move(move.walk_fwd, patrol(self.way, patrol.nearest, patrol.continue, true)),
+	action(self.npc, move(move.walk_fwd, patrol(self.way, patrol.nearest, patrol.continue, true)),
              sound(sound.idle), cond(cond.move_end)
         )
 
@@ -467,9 +467,9 @@ function CStatePatrol:execute()
 end
 
 function CStatePatrol:movement_callback(obj, action_type, index)
-  if(self.prev_point == index) then return end
-  if(math.random() < 0.3) then return end
-  reset_action(self.npc, this.script_name())
+	if(self.prev_point == index) then return end
+	if(math.random() < 0.3) then return end
+	reset_action(self.npc, script_name)
     action(self.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, math.random(4000, 8000)))
 
     self.prev_point = index
@@ -480,7 +480,7 @@ end
 
 
 function CStatePatrol:finalize()
-  self.npc:clear_callback      (game_object.movement)
+	self.npc:clear_callback      (game_object.movement)
 end
 
 function CStatePatrol:id()
@@ -513,8 +513,8 @@ function CStatePatrolCorpse:__init(_npc, _mem)
 end
 
 function CStatePatrolCorpse:initialize()
-    reset_action(self.npc, this.script_name())
-  self.time     = device():time_global() + time_walk
+    reset_action(self.npc, script_name)
+	self.time     = device():time_global() + time_walk
     self.state    = lie
 end
 
@@ -558,7 +558,7 @@ function CStateRestPanic:__init(_npc, _mem)
 end
 
 function CStateRestPanic:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
 end
 
 function CStateRestPanic:execute()
@@ -588,7 +588,7 @@ function CStateAmbush:__init(_npc, _mem)
 end
 
 function CStateAmbush:initialize()
-    reset_action(self.npc, this.script_name())
+    reset_action(self.npc, script_name)
     self.npc:set_manual_invisibility(true)
     self.npc:set_invisible(false)
 end
@@ -624,10 +624,10 @@ end
 
 class "CBloodsuckerBox" (CBaseBloodsucker)
 function CBloodsuckerBox:__init(_npc) super(_npc)
-  local ini    = self.npc:spawn_ini()
-  self.box     = level.object(ini:r_string("blood_sucker", "box"))
+	local ini    = self.npc:spawn_ini()
+	self.box     = level.object(ini:r_string("blood_sucker", "box"))
     self.zone    = level.object(ini:r_string("blood_sucker", "zone"))
-  self.dir   = ini:r_vector("blood_sucker", "direction")
+	self.dir   = ini:r_vector("blood_sucker", "direction")
     self.is_box  = true
     self.enter   = false
     self.impulse = ini:r_float("blood_sucker", "impulse")
@@ -650,31 +650,28 @@ function CBloodsuckerBox:execute()
         self.enter  = true
         self.is_box = false
         self.zone:clear_callback(true)
-//      self.npc:set_manual_invisibility(false)
     end
 
-  if(self.is_box and self.enter and self.curState and self.curState:id() == s_rest) then
-      self.hit             = hit()
-      self.hit.power       = 1
-      self.hit.impulse     = self.impulse
-      self.hit.direction   = self.dir
-      self.hit.bone        = "bone01"
-      self.hit.draftsman   = self.npc
-      self.hit.type        = hit.wound
-      self.box:hit(self.hit)
-      self.is_box          = false
+	if(self.is_box and self.enter and self.curState and self.curState:id() == s_rest) then
+		self.hit             = hit()
+		self.hit.power       = 1
+		self.hit.impulse     = self.impulse
+		self.hit.direction   = self.dir
+		self.hit.bone        = "bone01"
+		self.hit.draftsman   = self.npc
+		self.hit.type        = hit.wound
+		self.box:hit(self.hit)
+		self.is_box          = false
         self.enter       = false
-//      self.npc:set_invisible(false)
-    reset_action(self.npc, this.script_name())
+		reset_action(self.npc, script_name)
         action(self.npc, anim(anim.look_around, 0), cond(cond.time_end, 2000))
         action(self.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 9000))
-//        self.npc:set_manual_invisibility(false)
     end
 
     self:update_memory()
     if(self.is_box) then
     //Пока в засаде, на звук не реагируем
-      self.memory.sound.time = 0
+		self.memory.sound.time = 0
     end
 
     self:select_state ()
@@ -686,7 +683,7 @@ end
 function CBloodsuckerBox:enter_callback(_zone, _obj)
     if(level.actor() and level.actor():id() == _obj:id()) then
         if(self.is_box) then
-      self.enter  = true
+			self.enter  = true
         end
     end
 end
@@ -713,14 +710,14 @@ function CBloodsuckerAmbush:__init(_npc, _can_eat, _state_rest, _state_attack, _
     self.start_attack   = false
     if(ini:section_exist ("ambush")) then                    --Если радиус задан в кастом дате, то берем его от туда
         if(ini:line_exist ("ambush", "radius")) then
-      self.radius  = ini:r_float("ambush", "radius")
+			self.radius  = ini:r_float("ambush", "radius")
             printf("name = %s  radius = %f", self.npc:name(), self.radius)
         end
     end
 end
 
 function CBloodsuckerAmbush:initialize()
-  this.CBaseBloodsucker.initialize(self)
+	this.CBaseBloodsucker.initialize(self)
     self.script_zone:set_callback(self, "zone_callback", true)
 end
 
@@ -729,16 +726,16 @@ function CBloodsuckerAmbush:select_state()
 Когда актер входит в скриптовую зону, подходим к заданной точке и ждем подхода остальных членов
 засады к этой точке. Как только все подойдут, атакуем актера.
 */
-  if(self.memory.enemy) then
-      if(self:on_position()) then
-      self:all_on_position()
-          if(self.ambush_attack or distance_between(self.npc, self.memory.enemy) < 3 or self.memory.hit.time ~= 0) then
+	if(self.memory.enemy) then
+		if(self:on_position()) then
+			self:all_on_position()
+			if(self.ambush_attack or distance_between(self.npc, self.memory.enemy) < 3 or self.memory.hit.time ~= 0) then
                 self:set_state(s_attack)
             else
                 if(self.enter) then
-                  self:set_state(s_ambush)
+					self:set_state(s_ambush)
                 else
-                  self:select_standart_state()
+					self:select_standart_state()
                 end
             end
       else
@@ -769,7 +766,7 @@ function CBloodsuckerAmbush:select_state()
 end
 
 function CBloodsuckerAmbush:select_standart_state()
-  if(self.memory.hit.time ~= 0) then
+	if(self.memory.hit.time ~= 0) then
         self:set_state(s_hit)
     elseif(self.memory.sound.time ~= 0) then
         self:set_state(s_sound)
@@ -819,13 +816,13 @@ function CBloodsuckerAmbush:all_on_position()
     if(self.ambush_attack) then return true end
 
     if(self:on_position()) then
-      for i = 1, table.getn(self.friends) do
-          if(self.friends[i] and self.friends[i]:alive() and self.friends[i]:on_position() == false) then
+		for i = 1, table.getn(self.friends) do
+			if(self.friends[i] and self.friends[i]:alive() and self.friends[i]:on_position() == false) then
                 return false
             end
         end
     else
-      return false
+		return false
     end
 
     self.ambush_attack  = true
@@ -833,12 +830,12 @@ function CBloodsuckerAmbush:all_on_position()
 end
 
 function CBloodsuckerAmbush:add_friend(friend)
-  table.insert(self.friends, friend)
+	table.insert(self.friends, friend)
 end
 
 function CBloodsuckerAmbush:on_position()
-  //Возвращает, находится ли данный монстр на позиции
-  if(self.curState and self.curState:id() == s_attack) then return true end          //Если находимся в состоянии атаки, то кому нужна это позиция
+	//Возвращает, находится ли данный монстр на позиции
+	if(self.curState and self.curState:id() == s_attack) then return true end          //Если находимся в состоянии атаки, то кому нужна это позиция
     if(self.ambush_attack) then return true end
     return(self.curState ~= nil and self.curState:id() == s_ambush and self.curState:on_position())
 end
@@ -848,12 +845,12 @@ function CBloodsuckerAmbush:alive()
 end
 
 function CBloodsuckerAmbush:fight()
-  return false
+	return false
 end
 
 function CBloodsuckerAmbush:zone_callback(_zone, _obj)
     if(level.actor() and level.actor():id() == _obj:id()) then
-    printf("callback_________________________ id = %d", self.npc:id())
+		printf("callback_________________________ id = %d", self.npc:id())
         self.enter  = true
     end
 end
@@ -873,7 +870,7 @@ end
 
 function CBloodsuckerCoward:initialize()
     this.CBaseBloodsucker.initialize(self)
-  self.npc:set_manual_invisibility(true)
+	self.npc:set_manual_invisibility(true)
     self.npc:set_invisible(true)
 end
 
@@ -923,14 +920,14 @@ end
 
 class "CObjectHit"
 function CObjectHit:__init(_hit_object)
-  self.object1  = level.object(_hit_object)
+	self.object1  = level.object(_hit_object)
     local ini    = self.object1:spawn_ini()
     self.zone    = level.object(ini:r_string("hit", "zone") )
     self.dir    = ini:r_vector("hit", "direction"       )
     self.bone       = ini:r_string("hit", "bone"         )
-  self.sound    = ini:r_string("hit", "sound"         )
-  self.impulse   = ini:r_float ("hit", "impulse"         )
-  printf("%d",self.impulse)
+	self.sound    = ini:r_string("hit", "sound"         )
+	self.impulse   = ini:r_float ("hit", "impulse"         )
+	printf("%d",self.impulse)
     printf("%s",self.bone)
     printf("%s",self.sound)
     printf("%f  %f  %f",self.dir.x, self.dir.y, self.dir.z)
@@ -938,13 +935,13 @@ function CObjectHit:__init(_hit_object)
 end
 
 function CObjectHit:initialize()
-  self.zone:set_callback(self, "on_enter", true)
+	self.zone:set_callback(self, "on_enter", true)
 end
 
 function CObjectHit:execute()
-  if(self.enter) then
+	if(self.enter) then
     //Наносим хит и проигруем звук
-    local snd     = sound_object(self.sound)
+		local snd     = sound_object(self.sound)
         snd:play_at_pos(self.object1, self.object1:position(), 0, sound_object.s3d)
         local h              = hit()
         h.power       = 1
@@ -968,7 +965,7 @@ function CObjectHit:on_enter(_zone, _obj)
 end
 
 function CObjectHit:finalize()
-  self.zone:clear_callback(true)
+	self.zone:clear_callback(true)
 end
 
 function main1()
@@ -979,31 +976,31 @@ function main1()
     local npc1  = this.CBloodsuckerBox("blood_sucker1", true)
     local npc2  = this.CBaseBloodsucker("blood_sucker2", true, this.CStatePatrol)
 //    local npc3  = this.CBaseBloodsucker("blood_sucker3", true, this.CStatePatrolCorpse)
-  local npc3  = this.CBloodsuckerAmbush("blood_sucker3", true, this.CStatePatrolCorpse)
-  local npc4  = this.CBloodsuckerAmbush("bloodsucker04", false)
-  local npc5  = this.CBloodsuckerCoward("bloodsucker05", true, nil, this.CStateAttackCoward)
+	local npc3  = this.CBloodsuckerAmbush("blood_sucker3", true, this.CStatePatrolCorpse)
+	local npc4  = this.CBloodsuckerAmbush("bloodsucker04", false)
+	local npc5  = this.CBloodsuckerCoward("bloodsucker05", true, nil, this.CStateAttackCoward)
 
     local hit   = this.CObjectHit("stalker")
 
     npc1:initialize()
     npc2:initialize()
-  npc3:add_friend(npc4)      //Создаем засаду
+	npc3:add_friend(npc4)      //Создаем засаду
     npc4:add_friend(npc3)
-  npc3:initialize()
-  npc4:initialize()
+	npc3:initialize()
+	npc4:initialize()
     npc5:initialize()
 
     hit:initialize()
 
     while(true) do
-    npc1:execute()
+		npc1:execute()
         npc2:execute()
         npc3:execute()
         npc4:execute()
         npc5:execute()
         hit:execute()
 
-      wait()
+		wait()
     end
 
     npc1:finalize()
