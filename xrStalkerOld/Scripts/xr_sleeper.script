@@ -80,8 +80,10 @@ function action_sleeper_activity:execute()
 		self.state = 2		
 	end
 
-	if self.state == 3 then	--' спим	
-		self.object:set_sight(look.point, level.vertex_position(self.ptr:level_vertex_id(1)), 0)
+	if self.state == 3 then	--' спим
+		if self.ptr:count() > 1 then
+			self.object:set_sight(look.point, level.vertex_position(self.ptr:level_vertex_id(1)), 0)
+		end
 
 		if self.a.wakeable ~= nil and self.a.wakeable == true then
 			xr_state.change_state(self.object, xr_state.sit)
