@@ -26,9 +26,9 @@ IGame_Level::~IGame_Level	()
 	// Cleanup particles, some of them can be still active
 	while (ps_active.size())
 	{
-		CPS_Instance*	psi						= ps_active.back	();
-		ps_active.pop_back						();
-		xr_delete								(psi);
+		CPS_Instance*	psi		= ps_active.back	();
+		ps_active.pop_back		();
+		xr_delete				(psi);
 	}
 
 	// 
@@ -208,9 +208,6 @@ void IGame_Level::OnFrame		( )
 	while (ps_destoy.size())
 	{
 		CPS_Instance*	psi						= ps_destoy.back	();
-		xr_vector<CPS_Instance*>::iterator it	= find(ps_active.begin(),ps_active.end(),psi);
-		R_ASSERT								(it!=ps_active.end());
-		ps_active.erase							(it);
 		ps_destoy.pop_back						();
 		xr_delete								(psi);
 	}

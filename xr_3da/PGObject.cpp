@@ -81,8 +81,9 @@ void CPGObject::shedule_Update	(u32 dt)
 		spatial.center		= V->vis.sphere.P;
 		spatial.radius		= V->vis.sphere.R;
 		if (0==spatial.type)	{
-			spatial.type		= STYPE_RENDERABLE;
-			spatial_register	();
+			// First 'valid' update - register
+			spatial.type						= STYPE_RENDERABLE;
+			spatial_register					();
 		} else {
 			spatial_move		();
 		}
