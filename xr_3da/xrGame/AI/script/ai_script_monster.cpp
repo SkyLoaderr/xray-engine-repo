@@ -32,9 +32,9 @@ void CScriptMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptN
 	strcpy				(m_caScriptName,caSciptName);
 #ifdef DEBUG
 	if (bScriptControl)
-		Msg				("* Script %s set object %s under its control",caSciptName,cName());
+		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",caSciptName,cName());
 	else
-		Msg				("* Script %s freed object %s from its control",caSciptName,cName());
+		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s freed object %s from its control",caSciptName,cName());
 #endif
 	if (!bScriptControl)
 		ResetScriptData(this);
@@ -137,7 +137,7 @@ void CScriptMonster::ProcessScripts()
 
 	if (m_tpActionQueue.empty()) {
 #ifdef DEBUG
-		Msg			("* Object %s has an empty script queue!",cName());
+		LuaOut		(Lua::eLuaMessageTypeInfo,"Object %s has an empty script queue!",cName());
 #endif
 //		SetScriptControl(false,m_caScriptName);
 		return;
@@ -387,7 +387,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (int(l_tMovementAction.m_tNodeID) > 0)
 		l_tpCustomMonster->AI_Path.DestNode =  l_tMovementAction.m_tNodeID;
 	else {
-		Msg		("! Cannot find a node for the specified position [%f][%f][%f]",VPUSH(l_tMovementAction.m_tDestinationPosition));
+		LuaOut	(Lua::eLuaMessageTypeError,"Cannot find a node for the specified position [%f][%f][%f]",VPUSH(l_tMovementAction.m_tDestinationPosition));
 		l_tMovementAction.m_tDestinationPosition = Position();
 		l_tMovementAction.m_tNodeID = AI_NodeID;
 	}
