@@ -30,11 +30,14 @@ void CController::Load(LPCSTR section)
 
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
 	::Sound->create(control_start_sound,TRUE, pSettings->r_string(section,"sound_control_start"),	SOUND_TYPE_WORLD);
 	::Sound->create(control_hit_sound,	TRUE, pSettings->r_string(section,"sound_control_hit"),		SOUND_TYPE_WORLD);
 
-
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 
 	// Load control postprocess --------------------------------------------------------
 	LPCSTR ppi_section = pSettings->r_string(section, "control_effector");
@@ -96,6 +99,9 @@ void CController::Load(LPCSTR section)
 
 	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,	false);
 	MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,	false);
+
+	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 	MotionMan.finish_load_shared();
 }
