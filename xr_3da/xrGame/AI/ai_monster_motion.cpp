@@ -7,12 +7,12 @@
 
 CMotionManager::CMotionManager() 
 {
-	pSharedObj	= CSharedObj<_motion_shared>::Instance();
+//	pSharedObj	= CSharedObj<_motion_shared>::Instance();
 }
 
 CMotionManager::~CMotionManager()
 {
-	pSharedObj->FreeInst();
+//	pSharedObj->FreeInst();
 }
 
 
@@ -36,7 +36,7 @@ void CMotionManager::Init (CAI_Biting	*pM)
 
 	AA_Clear				();
 
-	_sd						= pSharedObj->get_shared(pMonster->CLS_ID);
+	//_sd						= pSharedObj->get_shared(pMonster->CLS_ID);
 }
 
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load

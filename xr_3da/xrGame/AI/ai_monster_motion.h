@@ -205,7 +205,7 @@ class CMotionManager {
 
 	// sharing
 	_motion_shared				*_sd;
-	CSharedObj<_motion_shared>	*pSharedObj;
+	//CSharedObj<_motion_shared>	*pSharedObj;
 
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
