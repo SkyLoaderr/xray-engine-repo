@@ -4,8 +4,8 @@
 
 class "SPatrol"
 
-local snd_interval      =   5000
-local anim_interval     =   10000
+local snd_interval      =   20000
+local anim_interval     =   30000
 
 function SPatrol:__init (npc, script, way, sounds, anims, flags)
     self.npc = npc
