@@ -187,9 +187,9 @@ void	game_sv_CS::Update			()
 	}
 
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->OutSet(700,100); HUD->pHUDFont->OutNext("Team 0 %d", teams[0].num_targets);
-	HUD->pHUDFont->OutSet(700,120); HUD->pHUDFont->OutNext("Team 1 %d", teams[1].num_targets);
+	HUD->pFontSmall->Color(0xffffffff);
+	HUD->pFontSmall->OutSet(700,100); HUD->pFontSmall->OutNext("Team 0 %d", teams[0].num_targets);
+	HUD->pFontSmall->OutSet(700,120); HUD->pFontSmall->OutNext("Team 1 %d", teams[1].num_targets);
 }
 
 void	game_sv_CS::OnPlayerReady			(u32 id)
