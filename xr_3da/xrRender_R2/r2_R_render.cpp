@@ -200,6 +200,7 @@ void CRender::Render		()
 //		Lights_LastFrame.push_back			(Lights.sun_adapted);
 		render_sun_near						();
 		render_sun							();
+		Target->dwLightMarkerID				+= 2;
 	}
 
 	// Lighting, non dependant on OCCQ

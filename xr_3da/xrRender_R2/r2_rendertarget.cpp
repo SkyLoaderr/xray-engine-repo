@@ -19,7 +19,7 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(NULL,1);
 	if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(NULL,2);
 	RCache.set_ZB							(zb);
-	RImplementation.rmNormal				();
+//	RImplementation.rmNormal				();
 }
 
 void	CRenderTarget::u_setrt			(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb)
@@ -32,7 +32,7 @@ void	CRenderTarget::u_setrt			(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSur
 	RCache.set_RT							(_2,	1);
 	RCache.set_RT							(_3,	2);
 	RCache.set_ZB							(zb);
-	RImplementation.rmNormal				();
+//	RImplementation.rmNormal				();
 }
 
 void	CRenderTarget::u_stencil_optimize	()

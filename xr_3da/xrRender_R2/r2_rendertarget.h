@@ -14,8 +14,8 @@ private:
 	u32							dwHeight;
 	u32							dwAccumulatorClearMark;
 	u32							dwZBufferClearMark;
-	u32							dwLightMarkerID;
 public:
+	u32							dwLightMarkerID;
 	// 
 	IBlender*					b_occq;
 	IBlender*					b_accum_mask;
