@@ -252,6 +252,46 @@ fail:
 	return	FALSE;
 }
 
+IC BOOL		rms_test	(b_texture&	lm, DWORD _r, DWORD _g, DWORD _b, DWORD rms)
+{
+	DWORD x,y;
+	for (y=0; y<lm.dwHeight; y++)
+	{
+		for (x=0; x<lm.dwWidth; x++)
+		{
+			DWORD pixel	= lm.pSurface	[y*lm.dwWidth+x];
+			if (RGBA_GETALPHA(pixel)>=254)	{
+				if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	return FALSE;
+				if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	return FALSE;
+				if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	return FALSE;
+			}
+		}
+	}
+	return TRUE;
+}
+
+IC	DWORD	rms_average	(b_texture& lm, DWORD& _r, DWORD& _g, DWORD& _b)
+{
+	DWORD x,y,_count;
+	_r=0, _g=0, _b=0, _count=0;
+	
+	for (y=0; y<lm.dwHeight; y++)
+	{
+		for (x=0; x<lm.dwWidth; x++)
+		{
+			DWORD pixel	= lm.pSurface[y*lm.dwWidth+x];
+			if ((RGBA_GETALPHA(pixel))>=254)	
+			{
+				_r		+= RGBA_GETRED	(pixel);
+				_g		+= RGBA_GETGREEN(pixel);
+				_b		+= RGBA_GETBLUE	(pixel);
+				_count	++;
+			}
+		}
+	}
+	return	_count;
+}
+
 VOID CDeflector::Light()
 {
 	HASH	hash;
@@ -308,64 +348,28 @@ VOID CDeflector::Light()
 	LightsSelected.clear	();
 
 	// Expand LMap with borders
-	DWORD			ref;
-	b_texture		lm_old	= lm;
-	b_texture		lm_new;
-	lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
-	lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
-	DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
-	lm.pSurface		= LPDWORD(malloc(size));
-	ZeroMemory		(lm_new.pSurface,size);
-	blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,0);
-	for (ref=254; ref>0; ref--) if (!ApplyBorders(lm_new,ref))	break;	// new
-	for (ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref))		break;	// old
+	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref))		break;	// old
 
 	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
 		const DWORD rms		= 4;
-		DWORD _r=0, _g=0, _b=0, _count=0, x,y, bCompress=TRUE;
+		DWORD _r, _g, _b, _count, x,y;
 
-		// Calculate average color
-		for (y=0; y<lm_new.dwHeight; y++)
-		{
-			for (x=0; x<lm_new.dwWidth; x++)
-			{
-				DWORD pixel			= lm_new.pSurface[y*lm_new.dwWidth+x];
-				if ((RGBA_GETALPHA(pixel))>=254)	{
-					_r		+= RGBA_GETRED	(pixel);
-					_g		+= RGBA_GETGREEN(pixel);
-					_b		+= RGBA_GETBLUE	(pixel);
-					_count	++;
-				}
-			}
-		}
+		// Averarge color
+		_count	= rms_average(lm_new,_r,_g,_b);
+
 		if (0==_count)	{
 			Msg("* ERROR: Lightmap not calculated (T:%d)",tris.size());
 			return;
 		} else {
 			_r	/= _count;	_g	/= _count;	_b	/= _count;
-			Msg("* avarage: %d,%d,%d",_r,_g,_b);
-		}
-		
-		// Test for equality
-		for (y=0; y<lm_new.dwHeight; y++)
-		{
-			for (x=0; x<lm_new.dwWidth; x++)
-			{
-				DWORD pixel	= lm_new.pSurface	[y*lm_new.dwWidth+x];
-				if (RGBA_GETALPHA(pixel)>=254)	{
-					if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	{ bCompress=FALSE; break; }
-					if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	{ bCompress=FALSE; break; }
-					if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	{ bCompress=FALSE; break; }
-				}
-			}
-			if (!bCompress) break;
+			Msg("* average: %d,%d,%d",_r,_g,_b);
 		}
 		
 		// Compress if needed
-		if (bCompress)
+		if (rms_test(lm_new,_r,_g,_b,rms))
 		{
-			Msg		("Compressing");
+			Msg		("*** ZERO compress");
 			_FREE	(lm.pSurface);		// release OLD
 			_FREE	(lm_new.pSurface);	// ... and new
 			DWORD	c_x			= BORDER*2;
@@ -378,10 +382,47 @@ VOID CDeflector::Light()
 			lm.pSurface			= compressed;
 			lm.dwHeight			= 0;
 			lm.dwWidth			= 0;
+			return;
 		} else {
 			// *** Try to bilinearly filter lightmap down and up
-			// b_texture			
+			DWORD	w=0, h=0;
+			if (lm.dwWidth>=2)	{
+				w = lm.dwWidth/2;
+				if (!rms_test(lm,w,lm.dwHeight,rms))	w=0;
+			}
+			if (lm.dwHeight>=2)	{
+				h = lm.dwHeight/2;
+				if (!rms_test(lm,lm.dwWidth,h,rms))		h=0;
+			}
+			if (w || h)	{
+				if (0==w)	w = lm.dwWidth;
+				if (0==h)	h = lm.dwHeight;
+				Msg	("* RMS: [%d,%d] => [%d,%d]",lm.dwWidth,lm.dwHeight,w,h);
+
+				LPDWORD		pScaled	= LPDWORD(malloc(w*h*4));
+				imf_Process	(pScaled,w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3);
+				_FREE		(lm.pSurface);	
+				lm.pSurface	= pScaled;
+				lm.dwWidth	= w;
+				lm.dwHeight	= h;
+			}
 		}
 	}
-}
 
+	// Expand with borders
+	b_texture		lm_old	= lm;
+	b_texture		lm_new;
+	lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
+	lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
+	DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
+	lm.pSurface		= LPDWORD(malloc(size));
+	ZeroMemory		(lm_new.pSurface,size);
+	blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
+	_FREE			(lm_old.pSurface);
+	lm				= lm_new;
+	ApplyBorders	(lm,254);
+	ApplyBorders	(lm,253);
+	ApplyBorders	(lm,252);
+	ApplyBorders	(lm,251);
+	for	(DWORD ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+}
