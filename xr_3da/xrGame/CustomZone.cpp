@@ -16,7 +16,7 @@
 //количество предварительно проспавненых артефактов
 #define PREFETCHED_ARTEFACTS_NUM 4
 //расстояние до актера, когда появляется ветер 
-#define WIND_RADIUS (4*Radius())
+#define WIND_RADIUS (2*Radius())
 
 CCustomZone::CCustomZone(void) 
 {
