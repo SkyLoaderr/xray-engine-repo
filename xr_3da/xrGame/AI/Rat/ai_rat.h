@@ -15,7 +15,7 @@
 namespace NAI_Rat_Constants
 {
 	const float TORSO_ANGLE_DELTA				= EPS_L;
-	const float ATTACK_DISTANCE					= .5f;
+	const float ATTACK_DISTANCE					= PI_DIV_2;
 	const float ATTACK_ANGLE					= PI_DIV_6;
 	const DWORD LOST_MEMORY_TIME				= 20000;
 	const DWORD LOST_RECOIL_TIME				=  2000;
