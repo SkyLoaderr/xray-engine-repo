@@ -124,6 +124,7 @@
 		<supplies>
 			[spawn] \n
 			device_torch \n
+			garbage_seriy_flash \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>

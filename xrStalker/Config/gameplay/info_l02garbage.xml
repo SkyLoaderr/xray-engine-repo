@@ -4,8 +4,7 @@
 	<info_portion id="garbage_meetstalker_start">
 		<location>
 			<level>l02_garbage</level>
-			<x>-45</x>
-			<y>262</y>
+			<object>100</object>
 			<icon name="" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Встретиться с Серым.</text>
 		</location>
