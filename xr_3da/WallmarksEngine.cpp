@@ -214,7 +214,6 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	marks.push_back			(W);
 }
 
-extern float g_fSCREEN;
 void CWallmarksEngine::Render()
 {
 	if (marks.empty())			return;
@@ -232,14 +231,16 @@ void CWallmarksEngine::Render()
 	FVF::LIT*			w_start = w_verts;
 
 	Shader*	w_S			= marks.front()->shader;
+	float	ssaCLIP		= ssaLIMIT/4;
 	for (DWORD i=0; i<marks.size(); i++)
 	{
 		wallmark* W		= marks	[i];
 		if (::Render->ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)) 
 		{
 			float dst = Device.vCameraPosition.distance_to_sqr(W->bounds.P);
-			float ssa = g_fSCREEN * W->bounds.R * W->bounds.R / dst;
-			if (ssa>=2)	{
+			float ssa = W->bounds.R * W->bounds.R / dst;
+			if (ssa>=ssaCLIP)	
+			{
 				DWORD w_count	= w_verts-w_start;
 				if (((w_count+W->verts.size())>=(MAX_TRIS*3))||(w_S!=W->shader))
 				{

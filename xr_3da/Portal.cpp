@@ -97,7 +97,6 @@ CSector::~CSector()
 }
 
 //
-extern float g_fSCREEN;
 extern float ssaLIMIT;
 
 void CSector::Render(CFrustum &F)
@@ -183,7 +182,7 @@ void CSector::Render(CFrustum &F)
 			dir2portal.sub		(PORTAL->S.P,Device.vCameraPosition);
 			float R				=	PORTAL->S.R;
 			float distSQ		=	dir2portal.square_magnitude();
-			float ssa			=	g_fSCREEN*R*R/distSQ;
+			float ssa			=	R*R/distSQ;
 			dir2portal.div		(_sqrt(distSQ));
 			ssa					*=	fabsf(PORTAL->P.n.dotproduct(dir2portal));
 			if (ssa<ssaLIMIT)	continue;

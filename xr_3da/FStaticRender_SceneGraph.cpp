@@ -12,15 +12,16 @@ ENGINE_API BOOL	ShowLM	= FALSE;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-float ssaLIMIT		= 5.f;
-float ssaDONTSORT	= 25.f*25.f;
+float ssaLIMIT_SS		= 16.f;
+float ssaDONTSORT_SS	= 25.f*25.f;
+float ssaLIMIT;
+float ssaDONTSORT;
 
-extern float g_fSCREEN;
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {
 	float R	= V->bv_Radius;
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
-	return	g_fSCREEN*R*R/distSQ;
+	return	R*R/distSQ;
 }
 
 void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
