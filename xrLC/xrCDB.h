@@ -54,7 +54,7 @@ namespace CDB
 	typedef		void __stdcall	build_callback	(Fvector* V, int Vcnt, TRI* T, int Tcnt, void* params);
 
 	// Model definition
-	ALIGN(16)	class XRCDB_API MODEL
+	class		XRCDB_API		MODEL
 	{
 		friend class COLLIDER;
 		enum
