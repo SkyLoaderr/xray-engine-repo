@@ -2,27 +2,27 @@
 <!-- ITEM INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- NAME -->
-	<s	<static x="20" y="20" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="128" b="64"></text>
+	<s	<static x="20" y="20" width="240" height="20">
+		<text x="0" y="0" font="letterica16" r="238" g="155" b="23"></text>
 static>
 
 	<!-- WEIGHT -->
-	<s	<static x="20" y="40" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+	<s	<static x="20" y="40" width="240" height="20">
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 static>
 
 	<!-- COST -->
-	<s	<static x="20" y="40" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+	<s	<static x="20" y="60" width="240" height="20">
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 static>
 	
 	<!-- CONDITION -->
-	<s	<static x="20" y="40" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+	<s	<static x="20" y="80" width="240" height="20">
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 static>
 
 	<!-- DESCRIPTION -->
-	<d	<descr_list x="20" y="230" width="100" height="60" item_height="20">
+	<d	<descr_list x="20" y="150" width="300" height="150" item_height="20">
 		<font font="letterica18" r="216" g="186" b="140"/>
 descr_list>
    indow>
