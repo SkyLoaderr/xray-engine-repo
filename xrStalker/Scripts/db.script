@@ -1,11 +1,12 @@
 --[[------------------------------------------------------------------------------------------------
-База данных "живых" объектов
+База данных "живых" объектов, зон и рестрикторов
 Чугай Саша
 --------------------------------------------------------------------------------------------------]]
 
-obj_by_id   = {}
-storage     = {}
-actor       = nil
+obj_by_id    = {}
+zone_by_name = {}
+storage      = {}
+actor        = nil
 
 function add_obj( obj )
 	obj_by_id [obj:id()] = obj
@@ -14,4 +15,14 @@ end
 function del_obj( obj )
 	obj_by_id [obj:id()] = nil
 	storage   [obj:id()] = nil
+end
+
+function add_zone( zone )
+	zone_by_name[zone:name()] = zone
+	add_obj( zone )
+end
+
+function del_zone( zone )
+	zone_by_name[zone:name()] = nil
+	del_obj( zone )
 end
