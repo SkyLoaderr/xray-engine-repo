@@ -309,7 +309,8 @@ void CLuaEditor::SetEditorMargins()
 	Sci(SCI_MARKERDEFINE,  2, SC_MARK_ROUNDRECT);
 	Sci(SCI_MARKERSETBACK, 2, RGB(0x80, 0xff, 0xff));
 	Sci(SCI_MARKERSETFORE, 2, RGB(0x00, 0x00, 0x00));
-
+	Sci(SCI_CALLTIPSETFORE, RGB(0x00, 0x00, 0x00));
+	Sci(SCI_CALLTIPSETBACK, RGB(0xe8, 0xf7, 0xc4));
 }
 
 void CLuaEditor::SetCallStackMargins()
@@ -542,7 +543,7 @@ void CLuaEditor::OnMouseMove(UINT nFlags, CPoint point)
 	if(!(nFlags&MK_CONTROL))
 		{CWnd::OnMouseMove(nFlags, point);return;};
 
-	if ( m_bShowCalltips /*&& g_mainFrame->GetMode()==CMainFrame::modeDebugBreak*/ )
+	if ( m_bShowCalltips && g_mainFrame->GetMode()==CMainFrame::modeDebugBreak )
 	{
 		CharacterRange cr = GetSelection();
 		if(cr.cpMax==cr.cpMin)
@@ -561,7 +562,7 @@ void CLuaEditor::OnMouseMove(UINT nFlags, CPoint point)
 		m_currCallTip = sel_callTip;
 
 		g_mainFrame->GetCalltip(m_currCallTip.GetBuffer() );
-		
+		//g_calltip = "HEllo World";
 		if( g_calltip.GetLength()/* && m_strCallTip!=g_calltip*/ )
 		{
 			if  (Sci(SCI_CALLTIPACTIVE) && m_strCallTip!=g_calltip)
@@ -604,16 +605,6 @@ void CLuaEditor::SetAStyle(int style, COLORREF fore, COLORREF back, int size, co
 	if (face) 
 		StyleSetFont(style, face);
 }
-
-const char cppKeyWords[] = 
-	"and and_eq asm auto bitand bitor bool break "
-  "case catch char class compl const const_cast continue "
-  "default delete do double dynamic_cast else enum explicit export extern false float for "
-  "friend goto if inline int long mutable namespace new not not_eq "
-  "operator or or_eq private protected public "
-  "register reinterpret_cast return short signed sizeof static static_cast struct switch "
-  "template this throw true try typedef typeid typename union unsigned using "
-  "virtual void volatile wchar_t while xor xor_eq ";
 
 void CLuaEditor::StyleSetFore(int style, COLORREF fore, BOOL bDirect)
 {
