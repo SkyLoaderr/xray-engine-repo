@@ -69,8 +69,10 @@ static	Fvector3	hbox_verts[24]	=
 	{ 1.f,	 0.f,	 1.f}, { 1.f,	-1.f,	 1.f},	// half
 	{-1.f,	 0.f,	 1.f}, {-1.f,	-1.f,	 1.f}	// half
 };
-static	u16			hbox_faces[18*3]	=
+static	u16			hbox_faces[20*3]	=
 {
+	0,	 2,	 3,
+	3,	 1,	 0,
 	4,	 5,	 7,
 	7,	 6,	 4,
 	0,	 1,	 9,
@@ -363,9 +365,9 @@ void CEnvironment::RenderFirst	()
 		u32		C					= clr.get	();
 
 		// Fill index buffer
-		u16*	pib					= RCache.Index.Lock	(18*3,i_offset);
-		CopyMemory					(pib,hbox_faces,18*3*2);
-		RCache.Index.Unlock			(18*3);
+		u16*	pib					= RCache.Index.Lock	(20*3,i_offset);
+		CopyMemory					(pib,hbox_faces,20*3*2);
+		RCache.Index.Unlock			(20*3);
 
 		// Fill vertex buffer
 		v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(12,sh_2geom.stride(),v_offset);
@@ -377,7 +379,7 @@ void CEnvironment::RenderFirst	()
 		RCache.set_Geometry			(sh_2geom);
 		RCache.set_Shader			(sh_2sky);
 		RCache.set_Textures			(&CurrentEnv.sky_r_textures);
-		RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,12,i_offset,18);
+		RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,12,i_offset,20);
 
 		::Render->rmNormal			();
 	}
