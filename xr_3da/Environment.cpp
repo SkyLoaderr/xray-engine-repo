@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Environment.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xr_effsun.h"
 #include "xr_trims.h"
 #include "xr_input.h"

@@ -2,7 +2,7 @@
 #include "xr_object.h"
 #include "xr_creator.h"
 #include "xr_area.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xr_tokens.h"
 #include "portal.h"
 #include "xr_ini.h"

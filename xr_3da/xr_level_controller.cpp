@@ -6,7 +6,7 @@
 #include "cameramanager.h"
 #include "xr_input.h"
 #include "xr_ioc_cmd.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xr_object.h"
 #include "std_classes.h"
 #include "CustomHUD.h"

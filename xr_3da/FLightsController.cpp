@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
+#include "render.h"
 
 // Disables all lights
 void CLightDB_Static::UnselectAll	(void) 

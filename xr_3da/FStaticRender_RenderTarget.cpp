@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
-#include "fstaticrender_rendertarget.h"
 
 LPCSTR	RTname	= "$user$rendertarget";
 

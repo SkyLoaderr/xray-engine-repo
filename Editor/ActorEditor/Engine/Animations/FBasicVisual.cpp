@@ -1,11 +1,11 @@
-// FBasicVisual.cpp: implementation of the FBasicVisual class.
+// CVisual.cpp: implementation of the CVisual class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "FBasicVisual.h"
+#include "fbasicvisual.h"
 #include "fmesh.h"
 #ifndef _EDITOR
 	#include "xr_creator.h"
@@ -15,7 +15,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-FBasicVisual::FBasicVisual()
+CVisual::CVisual()
 {
 	Type				= 0;
 	hShader				= 0;
@@ -26,16 +26,16 @@ FBasicVisual::FBasicVisual()
 	dwFrame				= 0xfffffffe;
 }
 
-FBasicVisual::~FBasicVisual()
+CVisual::~CVisual()
 {
 }
 
-void FBasicVisual::Release()
+void CVisual::Release()
 {
 	Device.Shader.Delete(hShader);
 }
 
-void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
+void CVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 {
 	// header
 	VERIFY(data);
@@ -96,7 +96,7 @@ void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	FBasicVisual::Copy(FBasicVisual *pFrom)
+void	CVisual::Copy(CVisual *pFrom)
 {
 	PCOPY(Type);
 	PCOPY(hShader);

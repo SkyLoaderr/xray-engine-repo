@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "fbasicvisual.h"
 #include "fmesh.h"
 #include "xrLevel.h"

@@ -6,6 +6,8 @@
 #define AFX_FSTATICRENDER_H__CC9820C1_A341_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
+#include "render.h"
+
 #include "FLightsController.h"
 #include "scenegraph.h"
 #include "glowmanager.h"
@@ -19,11 +21,6 @@
 #include "lightShadows.h"
 #include "lightPPA.h"
 
-// refs
-class ENGINE_API	CStream;
-class ENGINE_API	FCached;
-class ENGINE_API	FBasicVisual;
-
 // defs
 const int max_patches = 512;
 
@@ -34,20 +31,18 @@ class ENGINE_API CRender			:
 {
 public:
 	// Dynamic scene graph
-	Fmatrix*						pTransform;
-	int								iLightLevel;
-	SceneGraph::mapNormal_T			mapNormal[4];
-	SceneGraph::mapMatrix_T			mapMatrix;
-	SceneGraph::mapSorted_T			mapSorted;
-	SceneGraph::vecPatches_T		vecPatches;
+	SceneGraph::mapNormal_T							mapNormal[4];
+	SceneGraph::mapMatrix_T							mapMatrix;
+	SceneGraph::mapSorted_T							mapSorted;
+	SceneGraph::vecPatches_T						vecPatches;
 
-	CList<FCached*>									vecCached;
-	CList<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
-	CList<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
-	CList<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
-	CList<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
+	vector<FCached*>								vecCached;
+	vector<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
+	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
+	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
+	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
 
-	CVertexStream*					vsPatches;
+	CVertexStream*									vsPatches;
 
 	// Sector detection
 	CDB::MODEL*						rmPortals;
@@ -71,7 +66,6 @@ public:
 
 	vector<CPortal>					Portals;
 	vector<CSector*>				Sectors;
-	CFrustum						ViewBase;
 	CFrustum*						View;
 	CHOM							HOM;
 
@@ -134,7 +128,7 @@ public:
 
 	// Constructor/destructor/loader
 	CRender							();
-	~CRender						();
+	virtual ~CRender				();
 
 	// Device dependance
 	virtual void OnDeviceDestroy	();

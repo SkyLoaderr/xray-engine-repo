@@ -4,7 +4,7 @@
 #include "std_classes.h"
 #include "customHUD.h"
 #include "xr_ini.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xr_sndman.h"
 #include "xr_smallfont.h"
 #include "xrLevel.h"

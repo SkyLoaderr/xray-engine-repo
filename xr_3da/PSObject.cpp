@@ -6,7 +6,7 @@
 
 #include "PSObject.h"
 #include "PSVisual.h"
-#include "fstaticrender.h"
+#include "render.h"
 
 CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
 {

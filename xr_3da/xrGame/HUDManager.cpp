@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\fstaticrender.h"
+#include "..\render.h"
 #include "HUDManager.h"
 #include "hudcursor.h"
 

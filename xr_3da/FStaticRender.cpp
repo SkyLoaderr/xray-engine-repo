@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "xr_ioconsole.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "fbasicvisual.h"
 #include "xr_creator.h"
 #include "CustomHUD.h"

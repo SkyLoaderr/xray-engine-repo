@@ -8,7 +8,7 @@
 #include "fvisual.h"
 #include "fmesh.h"
 #ifndef _EDITOR
-	#include "fstaticrender.h"
+	#include "render.h"
 #endif
 
 FBasicVisual*	Fvisual::CreateInstance(void)

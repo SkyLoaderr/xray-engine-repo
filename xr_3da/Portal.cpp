@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Portal.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xrLevel.h"
 #include "xr_object.h"
 #include "tempobject.h"

@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "GameObject.h"
-#include "..\fstaticrender.h"
+#include "..\render.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

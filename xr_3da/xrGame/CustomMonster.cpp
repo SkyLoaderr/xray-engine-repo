@@ -6,7 +6,7 @@
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 #include "..\xr_hudfont.h"
-#include "..\fstaticrender.h"
+#include "..\render.h"
 #include "ai_console.h"
 #include "CustomMonster.h"
 #include "xr_weapon_list.h"

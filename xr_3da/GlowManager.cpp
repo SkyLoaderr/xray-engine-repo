@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "GlowManager.h"
 #include "xr_creator.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xrlevel.h"
 
 // font

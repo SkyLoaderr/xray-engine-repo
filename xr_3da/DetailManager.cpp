@@ -6,7 +6,7 @@
 #pragma hdrstop
 
 #include "DetailManager.h"
-#include "fstaticrender.h"
+#include "render.h"
 #include "xr_creator.h"
 #include "cl_intersect.h"
 

@@ -9,7 +9,7 @@
 #include "xr_object.h"
 #include "xr_effsun.h"
 
-#include "fstaticrender.h"
+#include "render.h"
 
 #include "x_ray.h"
 #include "xr_smallfont.h"

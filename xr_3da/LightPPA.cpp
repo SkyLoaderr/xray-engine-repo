@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "LightPPA.h"
 #include "xr_creator.h"
-#include "fstaticrender.h"
+#include "render.h"
 
 const DWORD MAX_POLYGONS=1024*8;
 const float MAX_DISTANCE=50.f;

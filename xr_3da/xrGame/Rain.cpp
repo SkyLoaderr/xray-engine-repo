@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Rain.h"
 #include "..\2dsound.h"
-#include "..\fstaticrender.h"
+#include "..\render.h"
 #include "..\psvisual.h"
 
 const float snd_fade		= 0.2f;

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "LightShadows.h"
 #include "xr_object.h"
-#include "fstaticrender.h"
+#include "render.h"
 
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;

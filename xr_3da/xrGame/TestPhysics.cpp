@@ -4,7 +4,7 @@
  
 #include "stdafx.h"
 #include "TestPhysics.h"
-#include "..\fstaticrender.h"
+#include "..\render.h"
 #include "..\physics\bkphysix.hpp"
 
 #pragma comment(lib,"x:\\game\\bkbase.lib")

@@ -5,7 +5,7 @@
 #pragma hdrstop
 
 #include "TempObject.h"
-#include "FStaticRender.h"
+#include "render.h"
 
 CTempObject::CTempObject(){
 	m_pVisual		= 0;

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "effectorshot.h"
 #include "..\bodyinstance.h"
-#include "..\fstaticrender.h"
+#include "..\render.h"
 #include "..\PSObject.h"
 #include "Weapon.h"
 #include "WeaponHUD.h"
