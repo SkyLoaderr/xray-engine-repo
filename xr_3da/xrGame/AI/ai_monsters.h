@@ -102,6 +102,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		Fvector			m_tEnemyDirection;
 		Fvector			m_tEnemySurroundDirection;
 		Fvector			m_tLastEnemyPosition;
+		float			m_fRadius;
 		
 		// postion being tested
 		float			m_fDistance;

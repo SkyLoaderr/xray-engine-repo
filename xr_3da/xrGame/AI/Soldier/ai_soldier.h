@@ -152,6 +152,8 @@ class CAI_Soldier : public CCustomMonster
 		void UnderFire();
 
 		// miscellanious funtions	
+		void vfComputeCircle(DWORD dwNode0, DWORD dwNode1, float &fRadius, Fvector &tPosition);
+		float bfCheckForChange(DWORD dwNode0, DWORD dwNode1, float fSwitchAngle, float fSwitchDistance);
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode);

@@ -125,9 +125,9 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 					komas++;
 		}
 
-		m_iCurrentPoint = 0;
-		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint];
-		AI_Path.bNeedRebuild	= TRUE;
+		SelectorPatrol.m_tpEnemyNode = Level().AI.Node(tpaPatrolPoints[0]);
+		AI_Path.DestNode = tpaPatrolPoints[m_iCurrentPoint = 1];
+		AI_Path.bNeedRebuild = TRUE;
 	}
 }
 
@@ -626,7 +626,8 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squ
 	float fOldCost;
 	Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 	// if search has found new best node then 
-	if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+	//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+	if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){
 		AI_Path.DestNode		= S.BestNode;
 		AI_Path.bNeedRebuild	= TRUE;
 	} 
