@@ -204,7 +204,7 @@ IC bool CLevelGraph::inside				(const u32 vertex_id, const Fvector &position, co
 IC bool	CLevelGraph::inside				(const u32 vertex_id,	const Fvector2 &position) const
 {
 	float				sp = 1/header().cell_size();
-	int					pxz	= iFloor(((position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((position.y - header().box().min.z)*sp   + EPS_S + .5f);
+	int					pxz	= iFloor(((position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((position.y - header().box().min.z)*sp + EPS_S + .5f);
 	clamp				(pxz,0,(1 << 21) - 1);
 	return				(vertex(vertex_id)->position().xz() == u32(pxz));
 }
