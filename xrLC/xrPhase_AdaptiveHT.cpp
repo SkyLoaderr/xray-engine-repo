@@ -193,5 +193,40 @@ void CBuild::xrPhase_AdaptiveHT	()
 		clMsg			("* faces:    was(%d), become(%d)",cnt_faces,cnt_faces2);
 		clMsg			("* vertices: was(%d), become(%d)",cnt_verts,cnt_verts2);
 	}
+
+	//////////////////////////////////////////////////////////////////////////
 	Status				("Gathering lighting information...");
+	{
+		// Gather
+		xr_vector<base_color>	colors;
+		colors.resize			(g_vertices.size());
+		for (int it=0; it<g_vertices.size(); it++)
+		{
+			// Circle
+			xr_vector<Vertex*>	circle;
+			Vertex*		V		= g_vertices[it];
+			for (int fit=0; fit<V->adjacent.size(); fit++)	{
+				Face*	F		= V->adjacent[fit];
+				circle.push_back(F->v[0]);
+				circle.push_back(F->v[1]);
+				circle.push_back(F->v[2]);
+			}
+			std::sort			(circle.begin(),circle.end());
+			adjacent.erase		(std::unique(circle.begin(),circle.end()),circle.end());
+
+			// Average
+			base_color_c		avg,tmp;
+			for (int cit=0; cit<circle.size(); cit++)
+			{
+				circle[cit]->C._get	(tmp);
+				avg.add				(tmp);
+			}
+			avg.scale			(circle.size());
+			colors[it]._set		(avg);
+		}
+
+		// Transfer
+		for (int it=0; it<g_vertices.size(); it++)
+			g_vertices[it]->C	= colors[it];
+	}
 }
