@@ -232,7 +232,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 	m_head.speed					= 3*PI_DIV_2;
 
 	if (m_movement_type != eMovementTypeStand)
-		if ((velocity_mask & eMovementParameterDanger) && (velocity_mask & eMovementParameterWalk))
+		if ((velocity_mask & eMovementParameterDanger))// && (velocity_mask & eMovementParameterWalk))
 			set_velocity_mask		(velocity_mask | eMovementParameterStanding);
 		else
 			set_velocity_mask		(velocity_mask | eMovementParameterWalk | eMovementParameterRun | eMovementParameterStanding | eMovementParameterNegativeVelocity);

@@ -49,9 +49,20 @@ void CScriptProcessor::run_scripts()
 	}
 }
 
+void CScriptProcessor::run_strings()
+{
+	for ( ; !m_strings_to_run.empty(); ) {
+		LPSTR		I = m_strings_to_run.back();
+		lua_dostring(ai().script_engine().lua(),I);
+		xr_free		(I);
+		m_strings_to_run.pop_back();
+	}
+}
+
 void CScriptProcessor::update()
 {
 	run_scripts			();
+	run_strings			();
 	LPSTR	S = g_ca_stdout;
 	for (int i=0, n=(int)m_tpScripts.size(); i<n; ++i) {
 		strcpy	(m_caOutput,"");
@@ -69,7 +80,12 @@ void CScriptProcessor::update()
 	g_ca_stdout		= S;
 }
 
-void CScriptProcessor::add_script(LPCSTR	script_name)
+void CScriptProcessor::add_script	(LPCSTR	script_name)
 {
 	m_scripts_to_run.push_back(xr_strdup(script_name));
+}
+
+void CScriptProcessor::add_string	(LPCSTR	string_to_run)
+{
+	m_strings_to_run.push_back(xr_strdup(string_to_run));
 }

@@ -17,7 +17,7 @@
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
-	float				base = PI/180.f;
+	float				base = 2*PI/180.f;
 	if (movement_type() == eMovementTypeWalk)
 		if (body_state() == eBodyStateStand)
 			return		(base*1.f);
@@ -50,7 +50,7 @@ void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 		D.normalize_safe();
 		Center			(P);
 		P.mad			(D,.5f);
-		P.y				+= .75f;
+		P.y				+= body_state() == eBodyStateStand ? .75f : .15f;
 	}
 }
 

@@ -713,7 +713,7 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 			m_fire_crouch	= ::Random.randF(40.f) < (distance - 5.f);
 		}
 
-	m_fire_crouch = true;
+	m_fire_crouch = distance > 10.f ? true : false;
 }
 
 void CStalkerActionKillEnemyAggressive::finalize	()
@@ -825,6 +825,7 @@ void CStalkerActionAimEnemy::execute		()
 
 	Fvector							position;
 	m_object->enemy()->Center		(position);
+	float							distance = m_object->Position().distance_to(m_object->enemy()->Position());
 
 	if (m_object->Position().distance_to(m_object->enemy()->Position()) > 5.f) {
 		m_object->set_level_dest_vertex	(m_object->enemy()->level_vertex_id());
@@ -836,7 +837,7 @@ void CStalkerActionAimEnemy::execute		()
 
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateCrouch);
+	m_object->set_body_state		(distance > 10.f ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);

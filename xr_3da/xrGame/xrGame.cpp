@@ -750,6 +750,19 @@ public:
 	}
 };
 
+class CCC_ScriptCommand : public IConsole_Command {
+public:
+					CCC_ScriptCommand	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void	Execute				(LPCSTR args) {
+		if (!xr_strlen(args))
+			Log("* Specify string to run!");
+		else {
+			if (ai().script_engine().script_processor("level"))
+				ai().script_engine().script_processor("level")->add_string(args);
+		}
+	}
+};
+
 class CCC_PostprocessTest : public IConsole_Command {
 public:
 	CCC_PostprocessTest(LPCSTR N) : IConsole_Command(N)  { };
@@ -866,6 +879,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD3(CCC_Mask,				"ai_dbg_lua",			&psAI_Flags,	aiLua);
 		CMD3(CCC_Mask,				"ai_dbg_goap",			&psAI_Flags,	aiGOAP);
 		CMD1(CCC_Script,			"run_script");
+		CMD1(CCC_ScriptCommand,		"run_string");
 
 		// Trader
 		CMD1(CCC_Trader,			"trade");
