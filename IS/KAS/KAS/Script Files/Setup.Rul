@@ -13,3 +13,267 @@
 // Included header files ----------------------------------------------------
 #include "ifx.h"
 
+
+#define DEF_FOLDER "KAC"
+//---------------------------------------------------------------------------                                                                        
+// OnFirstUIBefore
+//
+// First Install UI Sequence - Before Move Data
+//
+// The OnFirstUIBefore event is called by OnShowUI when the setup is
+// running in first install mode. By default this event displays UI allowing
+// the end user to specify installation parameters.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnFirstUIBefore()
+    number  nResult, nLevel, nSize, nSetupType, nUser;
+    string  sTitle, sMsg, sOpt1, sOpt2, sLicenseFile;
+    string  sName, sCompany, sTargetPath, sDir, sFeatures, sTargetdir;
+    string  sSetupType, sSerial, sMainDir;
+    BOOL    bLicenseAccepted;	
+    LIST 	listStartCopy;
+begin	
+
+    SetTitle( @IDS_PRODUCT_NAME, 0, BACKGROUNDCAPTION ); 	                  
+   
+    nSetupType = COMPLETE;	
+    sDir = TARGETDIR;
+    sName = "";
+    sCompany = "";
+    bLicenseAccepted = FALSE;
+
+// Beginning of UI Sequence
+Dlg_Start:
+    nResult = 0;
+
+Dlg_SdWelcome:
+    sTitle = "";
+    sMsg = "";
+    //{{IS_SCRIPT_TAG(Dlg_SdWelcome)
+    nResult = SdWelcome( sTitle, sMsg );
+    //}}IS_SCRIPT_TAG(Dlg_SdWelcome)
+    if (nResult = BACK) goto Dlg_Start;
+
+Dlg_SdLicense2:
+    sTitle = "";
+    sOpt1 = "";
+    sOpt2 = "";
+    //{{IS_SCRIPT_TAG(License_File_Path)
+    sLicenseFile = SUPPORTDIR ^ "License.rtf";
+    //}}IS_SCRIPT_TAG(License_File_Path)
+    //{{IS_SCRIPT_TAG(Dlg_SdLicense2)
+    nResult = SdLicense2Rtf( sTitle, sOpt1, sOpt2, sLicenseFile, bLicenseAccepted );
+    //}}IS_SCRIPT_TAG(Dlg_SdLicense2)
+    if (nResult = BACK) then
+        goto Dlg_SdWelcome;
+    else
+        bLicenseAccepted = TRUE;
+    endif;
+             
+Dlg_SetupType:
+    sTitle = "";
+    sMsg   = "";
+    nResult = SetupType(sTitle, sMsg, "", nSetupType, 0);
+    if (nResult = BACK) then
+        goto Dlg_SdLicense2;
+    else
+	    nSetupType 		= nResult;  
+        sTargetPath 	= TARGETDIR;
+		if (nSetupType 	= 301) then     
+			sSetupType 	= "ClientServer";
+		elseif(nSetupType = 302) then
+			sSetupType 	= "Client";
+		else
+			sSetupType 	= "Server";
+		endif;
+		if (FeatureSetupTypeSet (MEDIA, sSetupType) < 0) then
+			MessageBox ("FeatureSetupTypeSet failed.", SEVERE);
+		endif;
+        nSize = 0;
+        FeatureCompareSizeRequired(MEDIA, sTargetPath, nSize);
+        if (nSize != 0) then      
+        	MessageBox(szSdStr_NotEnoughSpace, WARNING);
+            goto Dlg_SetupType;
+        endif;
+    endif;    
+             
+Dlg_SdCustomerInformation:
+	if (nSetupType = 301) then
+		goto Dlg_SdCustomerInformationServer;      
+	elseif(nSetupType = 302) then
+		goto Dlg_SdCustomerInformationClient;
+	else
+		goto Dlg_SdCustomerInformationServer;      
+	endif;
+
+Dlg_SdCustomerInformationServer:
+	sSerial 	="demo-kharkiv";
+	nResult 	= SdCustomerInformationEx(sTitle, sName, sCompany, sSerial,nUser);
+	if (nResult = BACK) then
+		goto Dlg_SetupType;
+	else
+		goto Dlg_SdSelectedFolder;
+	endif;
+
+Dlg_SdCustomerInformationClient:
+	nResult = SdCustomerInformation(sTitle, sName, sCompany, nUser);
+	if (nResult = BACK) then
+		goto Dlg_SetupType;
+	else
+		goto Dlg_SdSelectedFolder;
+	endif;
+
+Dlg_SdSelectedFolder:
+	sMsg   		= "";
+	sMainDir 	= DEF_FOLDER;
+	nResult 	= SdSelectFolder (sTitle, sMsg, sMainDir);
+	if (nResult = BACK) then
+		goto Dlg_SdCustomerInformation;
+	endif;
+	if (sSerial ="demo-demo" ) then 
+		sSerial ="";
+	endif;
+
+Dlg_SdAskDestPath2:
+	sTitle = "";
+    sMsg = "";
+	nResult = SdAskDestPath2( sTitle, sMsg, sDir );
+    TARGETDIR = sDir;
+    if (nResult = BACK) goto Dlg_SdSelectedFolder;
+
+Dlg_SQLServer:
+    nResult 	= OnSQLServerInitialize( nResult );
+    if( nResult = BACK ) goto Dlg_SdAskDestPath2;
+
+Dlg_ObjDialogs:
+    nResult 	= ShowObjWizardPages( nResult );
+    if (nResult = BACK) goto Dlg_SQLServer;
+    
+Dlg_SdStartCopy:
+	sMsg   = "";
+	listStartCopy = ListCreate( STRINGLIST );
+
+    ListAddString(listStartCopy,@IDS_UI_CURDIR,AFTER);
+    ListAddString(listStartCopy,"\t"+TARGETDIR,AFTER);
+   
+    ListAddString(listStartCopy,@IDS_UI_MENU_FOLDER,AFTER);
+    ListAddString(listStartCopy,"\t"+sMainDir,AFTER);
+    
+    ListAddString(listStartCopy,@IDS_UI_SETUP_TYPE,AFTER);
+    
+	if (nSetupType = 301) then
+	    ListAddString(listStartCopy,"\t"+@ID_ST_CLIENT_SERVER_NAME,AFTER);
+	elseif(nSetupType = 302) then
+		ListAddString(listStartCopy,"\t"+@ID_ST_CLIENT_NAME,AFTER);		                                                      
+	else
+		ListAddString(listStartCopy,"\t"+@ID_ST_SERVER_NAME,AFTER);		                                                      
+	endif;
+	
+	nResult = SdStartCopy( sTitle, sMsg, listStartCopy );			
+	ListDestroy(listStartCopy);
+
+	if (nResult = BACK) then
+		goto Dlg_SdAskDestPath2;    
+	endif;
+/*	
+Dlg_SdStartCopy2:
+    sTitle 		= "";
+    sMsg 		= "";
+    //{{IS_SCRIPT_TAG(Dlg_SdStartCopy2)	
+    nResult = SdStartCopy2( sTitle, sMsg );	
+    //}}IS_SCRIPT_TAG(Dlg_SdStartCopy2)
+    if (nResult = BACK) goto Dlg_ObjDialogs;
+ */
+    return 0;
+end;
+//---------------------------------------------------------------------------
+// OnMaintUIBefore
+//
+// Maintenance UI Sequence - Before Move Data
+//
+// The OnMaintUIBefore event is called by OnShowUI when the setup is
+// running in maintenance mode. By default this event displays UI that
+// allows the end user to add or remove features, repair currently
+// installed features or uninstall the application.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMaintUIBefore()
+    number	nResult, nType, nMediaFlags;
+    string	szTitle, szMsg, szIgnore;
+begin
+	
+	// nType defaults to MODIFY.
+	nType = MODIFY;
+
+    //Initialize SQL
+    OnSQLServerInitializeMaint( );
+
+// Beginning of UI Sequence
+Dlg_Start:
+
+    // Hide the initial progress dialog as otherwise the user can
+    // click on it, and hide the MessageBox.
+    Disable( DIALOGCACHE );
+
+    // In RemoveOnly mode, set to remove.
+    nType = REMOVEALL;
+
+	// Show Uninstall Confirmation Dialog
+    if ( nType = REMOVEALL ) then
+		nResult = MessageBox( SdLoadString( IFX_MAINTUI_MSG ), MB_YESNO );
+		if (nResult != IDYES ) then
+            // In REMOVEONLY mode, abort the setup.
+            abort;
+		endif;
+	endif;
+
+Dlg_SdFeatureTree:
+	if ( nType = MODIFY ) then
+		szTitle = "";
+		szMsg = SdLoadString( SD_STR_COMPONENT_MAINT_MSG );
+		nResult = SdFeatureTree( szTitle, szMsg, TARGETDIR, "", -1 );
+		if ( nResult = BACK ) goto Dlg_Start;
+    endif;
+
+Dlg_ObjDialogs:
+    nResult = ShowObjWizardPages( nResult );
+    if ( ( nResult = BACK ) && ( nType != MODIFY ) ) goto Dlg_Start;
+    if ( ( nResult = BACK ) && ( nType = MODIFY ) ) goto Dlg_SdFeatureTree;
+
+	switch(nType)
+
+        case REMOVEALL:
+						
+			// Ensure that all previously installed features are removed
+			// for media that supports updating.
+			MediaGetData( MEDIA, MEDIA_FIELD_MEDIA_FLAGS, nMediaFlags, szIgnore );
+			
+			if( nMediaFlags & MEDIA_FLAG_UPDATEMODE_SUPPORTED ) then
+				FeatureRemoveAllInMediaAndLog();
+			else
+				FeatureRemoveAllInMedia();
+			endif;
+
+        case REPAIR:
+				
+			// Changed for DevStudio 9, Disk1 files are now always updated when installed
+			// so when running from ADDREMOVE we need to prevent these files from being
+			// updated since this will result in files being updated that are locked by the setup.
+			// Updating these files when running from ADDREMOVE should not be needed since updates
+			// are not run directly from Add/Remove.
+            if( ADDREMOVE ) then
+                // Reinstall all previously installed features, except
+                // disk1 features.
+                FeatureUpdate( "" );
+            else
+                // Reinstall all previously installed features.
+                FeatureReinstall();
+            endif;
+
+    endswitch;
+ 
+end;

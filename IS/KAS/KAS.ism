@@ -73,6 +73,7 @@
 		<col key="yes" def="s72">Name</col>
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
+		<row><td>NewBinary1</td><td/><td>&lt;ISProductFolder&gt;Script\Dialogs\BitmapId_103.bmp</td></row>
 	</table>
 
 	<table name="CheckBox">
@@ -122,6 +123,22 @@
 		<col def="I4">ISControlId</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="S72">Binary_</col>
+		<row><td>DialogId_10203</td><td>ControlId_1</td><td>PushButton</td><td>242</td><td>239</td><td>57</td><td>17</td><td>3</td><td/><td>##IDS__DialogId_10203_ControlId_1##</td><td>ControlId_9</td><td/><td>131072</td><td>1</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_12</td><td>PushButton</td><td>187</td><td>239</td><td>57</td><td>17</td><td>3</td><td/><td>##IDS__DialogId_10203_ControlId_12##</td><td>ControlId_1</td><td/><td>0</td><td>12</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_1200</td><td>Text</td><td>0</td><td>0</td><td>374</td><td>44</td><td>65539</td><td/><td>##IDS__DialogId_10203_ControlId_1200##</td><td>ControlId_202</td><td/><td>131072</td><td>1200</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_1300</td><td>Line</td><td>48</td><td>227</td><td>325</td><td>2</td><td>3</td><td/><td/><td>ControlId_7</td><td/><td>131079</td><td>1300</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_1301</td><td>Line</td><td>0</td><td>44</td><td>374</td><td>2</td><td>3</td><td/><td/><td>ControlId_52</td><td/><td>131088</td><td>1301</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_2</td><td>PushButton</td><td>185</td><td>275</td><td>57</td><td>17</td><td>2</td><td/><td>##IDS__DialogId_10203_ControlId_2##</td><td/><td/><td>131072</td><td>2</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_202</td><td>Text</td><td>19</td><td>49</td><td>336</td><td>20</td><td>131075</td><td/><td>##IDS__DialogId_10203_ControlId_202##</td><td>ControlId_301</td><td/><td>131072</td><td>202</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_210</td><td>Text</td><td>135</td><td>81</td><td>235</td><td>30</td><td>131075</td><td/><td>##ID_ST_CLIENT_SERVER_DESC##</td><td>ControlId_220</td><td/><td>131072</td><td>210</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_220</td><td>Text</td><td>135</td><td>126</td><td>235</td><td>30</td><td>131075</td><td/><td>##ID_ST_CLIENT_DESC##</td><td>ControlId_230</td><td/><td>131072</td><td>220</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_230</td><td>Text</td><td>135</td><td>169</td><td>235</td><td>30</td><td>131075</td><td/><td>##ID_ST_SERVER_DESC##</td><td>ControlId_12</td><td/><td>131072</td><td>230</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_301</td><td>RadioButtonGroup</td><td>19</td><td>81</td><td>109</td><td>102</td><td>3</td><td>________2</td><td/><td>ControlId_210</td><td/><td>131072</td><td>301</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_50</td><td>Text</td><td>12</td><td>4</td><td>248</td><td>10</td><td>65539</td><td/><td>##IDS__DialogId_10203_ControlId_50##</td><td>ControlId_51</td><td/><td>131072</td><td>50</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_51</td><td>Text</td><td>19</td><td>19</td><td>269</td><td>24</td><td>65539</td><td/><td>##IDS__DialogId_10203_ControlId_51##</td><td>ControlId_1301</td><td/><td>131072</td><td>51</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_52</td><td>Text</td><td>0</td><td>0</td><td>374</td><td>44</td><td>3</td><td/><td/><td>ControlId_1200</td><td/><td>131072</td><td>52</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_7</td><td>Text</td><td>3</td><td>222</td><td>45</td><td>13</td><td>2</td><td/><td/><td>ControlId_50</td><td/><td>131072</td><td>7</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_9</td><td>PushButton</td><td>305</td><td>239</td><td>57</td><td>17</td><td>3</td><td/><td>##IDS__DialogId_10203_ControlId_9##</td><td>ControlId_1300</td><td/><td>0</td><td>9</td><td/><td/></row>
 	</table>
 
 	<table name="Dialog">
@@ -139,6 +156,7 @@
 		<col def="S72">TextStyle_</col>
 		<col def="I4">ISWindowStyle</col>
 		<col def="I4">ISResourceId</col>
+		<row><td>DialogId_10203</td><td>0</td><td>0</td><td>374</td><td>266</td><td>1</td><td>##IDS__DialogId_10203##</td><td>ControlId_52</td><td>ControlId_1</td><td>ControlId_2</td><td/><td>MSSansSerif8</td><td>-2134376256</td><td>10203</td></row>
 	</table>
 
 	<table name="Directory">
@@ -175,6 +193,9 @@
 		<col def="S255">ISComments</col>
 		<col def="S255">ISFeatureCabName</col>
 		<col def="S255">ISProFeatureName</col>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>##IDS_SERVER_FEATURE_NAME##</td><td/><td>6</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ServerFeature</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>New Merge Module Holder Object 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>New Merge Module Holder Object 1</td></row>
+		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td>##IDS_VLIENT_FEATURE_NAME##</td><td/><td>4</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ClientFeature</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td>DefaultFeature</td><td/><td>2</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>DefaultFeature</td></row>
 	</table>
 
@@ -270,6 +291,9 @@
 		<col def="S255">Password</col>
 		<col def="S50">CDRomFolder</col>
 		<col def="S50">Moniker</col>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
+		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 	</table>
 
@@ -283,6 +307,8 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s255">ISMergeModule_</col>
 		<col key="yes" def="i2">Language_</col>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>VC_User_CRT71.07D8793C_DC93_47EF_8FDA_3517BC941A0F</td><td>0</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>VC_User_STL71.09528776_2EA8_4A65_AA88_693146381D7D</td><td>0</td></row>
 	</table>
 
 	<table name="ISIISCommon">
@@ -364,6 +390,8 @@
 		<col def="s255">Name</col>
 		<col def="S255">Destination</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>VC_User_CRT71.07D8793C_DC93_47EF_8FDA_3517BC941A0F</td><td>0</td><td>VC User CRT71 RTL X86 ---</td><td/><td/></row>
+		<row><td>VC_User_STL71.09528776_2EA8_4A65_AA88_693146381D7D</td><td>0</td><td>VC User STL71 RTL X86 ---</td><td/><td/></row>
 	</table>
 
 	<table name="ISMergeModuleCfgValues">
@@ -401,6 +429,17 @@
 		<col key="yes" def="s72">Feature_</col>
 		<col key="yes" def="s72">Property</col>
 		<col def="L0">Value</col>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Cache</td><td>0,Bool</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>CommandLine</td><td>""</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>InstallStatusText</td><td>""</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Logging</td><td>0,Bool</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Msi12Engine</td><td>3,Long</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Msi20Engine</td><td>3,Long</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>MsiTargetPath</td><td>""</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>ProductCode</td><td>""</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>UIOption</td><td>2,Long</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Uninstall</td><td>-1,Bool</td></row>
+		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>UninstallStatusText</td><td>""</td></row>
 	</table>
 
 	<table name="ISProductConfiguration">
@@ -619,15 +658,23 @@
 		<col def="L255">Display_Name</col>
 		<col def="i2">Display</col>
 		<col def="S255">Comments</col>
-		<row><td>Complete</td><td>##IDPROP_SETUPTYPE_COMPLETE_DESC##</td><td>##IDPROP_SETUPTYPE_COMPLETE##</td><td>1</td><td/></row>
-		<row><td>Custom</td><td>##IDPROP_SETUPTYPE_CUSTOM_DESC_PRO##</td><td>##IDPROP_SETUPTYPE_CUSTOM##</td><td>2</td><td/></row>
+		<row><td>Client</td><td>##ID_ST_CLIENT_DESC##</td><td>##ID_ST_CLIENT_NAME##</td><td>1</td><td/></row>
+		<row><td>ClientServer</td><td>##ID_ST_CLIENT_SERVER_DESC##</td><td>##ID_ST_CLIENT_SERVER_NAME##</td><td>0</td><td/></row>
+		<row><td>Server</td><td>##ID_ST_SERVER_DESC##</td><td>##ID_ST_SERVER_NAME##</td><td>2</td><td/></row>
 	</table>
 
 	<table name="ISSetupTypeFeatures">
 		<col key="yes" def="s38">ISSetupType_</col>
 		<col key="yes" def="s38">Feature_</col>
-		<row><td>Complete</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
-		<row><td>Custom</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
+		<row><td>Client</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
+		<row><td>Client</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
+		<row><td>Client</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
+		<row><td>ClientServer</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
+		<row><td>ClientServer</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
+		<row><td>ClientServer</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
+		<row><td>Server</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
+		<row><td>Server</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
+		<row><td>Server</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 	</table>
 
 	<table name="ISShortcutComponents">
@@ -647,18 +694,64 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>IDPROP_SETUPTYPE_COMPLETE</td><td>1033</td><td>Complete</td><td>0</td><td/><td>-1306993169</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPLETE</td><td>1049</td><td>Complete</td><td>0</td><td/><td>1981287243</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPLETE_DESC</td><td>1033</td><td>Complete</td><td>0</td><td/><td>-1306993169</td></row>
-		<row><td>IDPROP_SETUPTYPE_COMPLETE_DESC</td><td>1049</td><td>Complete</td><td>0</td><td/><td>1981287243</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-1306993169</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM</td><td>1049</td><td>Custom</td><td>0</td><td/><td>1981287243</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM_DESC_PRO</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-1306993169</td></row>
-		<row><td>IDPROP_SETUPTYPE_CUSTOM_DESC_PRO</td><td>1049</td><td>Custom</td><td>0</td><td/><td>1981287243</td></row>
+		<row><td>IDS_PRODUCT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981324427</td></row>
+		<row><td>IDS_PRODUCT_NAME</td><td>1049</td><td>&amp;@0^!#T$001#!#L$3`1"!#`$1@0X!#X$/00]!#X$+0`P!#T$,`0[!#@$0@0X!$&lt;$-01!!#H$,`1/!"``000X!$$$0@0U!#P$,`0`</td><td>37</td><td/><td>1981324427</td></row>
+		<row><td>IDS_SERVER_FEATURE_NAME</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981332620</td></row>
+		<row><td>IDS_SERVER_FEATURE_NAME</td><td>1049</td><td>ServerFeature</td><td>0</td><td/><td>1981332620</td></row>
 		<row><td>IDS_SQLSCRIPT_INSTALLING</td><td>1033</td><td>Executing SQL Install Script...</td><td>0</td><td/><td>-1306991121</td></row>
 		<row><td>IDS_SQLSCRIPT_INSTALLING</td><td>1049</td><td>Executing SQL Install Script...</td><td>0</td><td/><td>1981287243</td></row>
 		<row><td>IDS_SQLSCRIPT_UNINSTALLING</td><td>1033</td><td>Executing SQL Uninstall Script...</td><td>0</td><td/><td>-1306991121</td></row>
 		<row><td>IDS_SQLSCRIPT_UNINSTALLING</td><td>1049</td><td>Executing SQL Uninstall Script...</td><td>0</td><td/><td>1981287243</td></row>
+		<row><td>IDS_UI_CURDIR</td><td>1033</td><td/><td>0</td><td/><td>1981318028</td></row>
+		<row><td>IDS_UI_CURDIR</td><td>1049</td><td>&amp;@0P!$($,`0[!#X$,P0@`#0$.P1/!"``0P1!!$($,`0]!#X$,@0Z!#@$.@``</td><td>22</td><td/><td>1981326284</td></row>
+		<row><td>IDS_UI_MENU_FOLDER</td><td>1033</td><td/><td>0</td><td/><td>1981332364</td></row>
+		<row><td>IDS_UI_MENU_FOLDER</td><td>1049</td><td>'P0P!#\$.@0P!"``-`0[!$\$(`!#!$$$0@0P!#T$/@0R!#H$.`0@`#($(``B`!P$-00]!$X$(@`Z````</td><td>29</td><td/><td>1981336524</td></row>
+		<row><td>IDS_UI_SETUP_TYPE</td><td>1033</td><td/><td>0</td><td/><td>1981344652</td></row>
+		<row><td>IDS_UI_SETUP_TYPE</td><td>1049</td><td>(@0X!#\$(`!#!$$$0@0P!#T$/@0R!#H$.`0Z````</td><td>14</td><td/><td>1981336492</td></row>
+		<row><td>IDS_VLIENT_FEATURE_NAME</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981342860</td></row>
+		<row><td>IDS_VLIENT_FEATURE_NAME</td><td>1049</td><td>ClientFeature</td><td>0</td><td/><td>1981342860</td></row>
+		<row><td>IDS__DialogId_10203</td><td>1033</td><td>InstallShield Wizard</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203</td><td>1049</td><td>InstallShield Wizard</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_1</td><td>1033</td><td dt:dt="bin.base64" md5="ca396e10db0fb260880d223d716f26a3">
+JgAUBDAEOwQ1BDUEIAA+AA==
+			</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_1</td><td>1049</td><td>)@`4!#`$.P0U!#4$(``^````</td><td>8</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_12</td><td>1033</td><td dt:dt="bin.base64" md5="10398ab6ef726bcf407dcefb89ca738b">
+PAAgACYAHQQwBDcEMAQ0BA==
+			</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_12</td><td>1049</td><td>/``@`"8`'00P!#&lt;$,`0T!```</td><td>8</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_1200</td><td>1033</td><td>@10550,10551;1;0;;0,128,128   </td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_1200</td><td>1049</td><td>@10550,10551;1;0;;0,128,128   </td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_2</td><td>1033</td><td>C</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_2</td><td>1049</td><td>C</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_202</td><td>1033</td><td dt:dt="bin.base64" md5="fc05c1389937b69549b028bdc8014cdd">
+EgRLBDEENQRABDgEQgQ1BCAAPQRDBDYEPQRLBDkEIAAyBDgENAQgAEMEQQRCBDAEPQQ+BDIEOgQ4BCAAOAQgAD0EMAQ2BDwEOARCBDUEIAA6BD0EPgQ/BDoEQwQgACcAFAQwBDsENQQ1BCcALgA=
+			</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_202</td><td>1049</td><td>$@1+!#$$-01`!#@$0@0U!"``/01#!#8$/01+!#D$(``R!#@$-`0@`$,$001"!#`$/00^!#($.@0X!"``.`0@`#T$,`0V!#P$.`1"!#4$(``Z!#T$/@0_!#H$0P0@`"&lt;`%`0P!#L$-00U!"&lt;`+@``</td><td>55</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_50</td><td>1033</td><td dt:dt="bin.base64" md5="41ce1b7e9ead5b797e6a950df89f84fe">
+EgQ4BDQEIABDBEEEQgQwBD0EPgQyBDoEOAQ=
+			</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_50</td><td>1049</td><td>$@0X!#0$(`!#!$$$0@0P!#T$/@0R!#H$.`0`</td><td>13</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_51</td><td>1033</td><td dt:dt="bin.base64" md5="95277aa508fffa1c0bf32ef28772d22a">
+EgRLBDEENQRABDgEQgQ1BCAAMgQ4BDQEIABDBEEEQgQwBD0EPgQyBDoEOAQuAA==
+			</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_51</td><td>1049</td><td>$@1+!#$$-01`!#@$0@0U!"``,@0X!#0$(`!#!$$$0@0P!#T$/@0R!#H$.`0N````</td><td>23</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_9</td><td>1033</td><td dt:dt="bin.base64" md5="ffba6b042cf96ec8407bace115c7c5be">
+HgRCBDwENQQ9BDAE
+			</td><td>0</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_10203_ControlId_9</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>1981329227</td></row>
+		<row><td>ID_ST_CLIENT_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981290123</td></row>
+		<row><td>ID_ST_CLIENT_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$($/@0[!$P$.@0^!"``/P1`!#X$,P1`!#`$/`0\!#`$(``T!#L$3P0@`#\$0`0^!$$$/`0^!$($0`0P!"``*`!'!$($-00]!#@$3P0I`"``-`0P!#T$/01+!$4$+@``</td><td>76</td><td/><td>1981290123</td></row>
+		<row><td>ID_ST_CLIENT_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981324875</td></row>
+		<row><td>ID_ST_CLIENT_NAME</td><td>1049</td><td>&amp;@0[!#@$-00]!$($</td><td>6</td><td/><td>1981324875</td></row>
+		<row><td>ID_ST_CLIENT_SERVER_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981330987</td></row>
+		<row><td>ID_ST_CLIENT_SERVER_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$$$-01`!#($-01`!"``-`0P!#T$/01+!$4$+``@`#($(``Z!#X$0@0^!$`$/@0\!"``101`!#`$/00X!$($001/!"``.`0]!$0$/@1`!#P$,`1&amp;!#@$3P0L`"``.`0@`#\$0`0^!#,$0`0P!#P$/`0P!"``-`0[!$\$(``_!$`$/@1!!#P$/@1"!$`$,`0@`"@`1P1"!#4$/00X!$\$*0`@`#0$,`0]!#T$2P1%!"X`</td><td>117</td><td/><td>1981330987</td></row>
+		<row><td>ID_ST_CLIENT_SERVER_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981306411</td></row>
+		<row><td>ID_ST_CLIENT_SERVER_NAME</td><td>1049</td><td>&amp;@0[!#@$-00]!$($(``X!"``(00U!$`$,@0U!$`$(``T!#`$/00]!$L$100`</td><td>22</td><td/><td>1981306411</td></row>
+		<row><td>ID_ST_SERVER_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981329035</td></row>
+		<row><td>ID_ST_SERVER_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$($/@0[!$P$.@0^!"``000U!$`$,@0U!$`$(``T!#`$/00]!$L$100L`"``,@0@`#H$/@1"!#X$0`0^!#P$(`!%!$`$,`0]!#@$0@1!!$\$(``X!#T$1`0^!$`$/`0P!$8$.`1/!"``.`0@`#H$(``Z!#X$0@0^!$`$/@0\!$,$(``R!"``-`0P!#L$3`0]!#4$.01(!#4$/`0@`#$$0P0T!$,$0@0@`#\$/@0T!#H$.P1.!$&lt;$,`1"!$P$001/!"``/P1`!#X$,P1`!#`$/`0\!$L$(``T!#L$3P0@`#\$0`0^!$$$/`0^!$($0`0P!"``*`!'!$($-00]!#@$3P0I`"``-`0P!#T$/01+!$4$+@``</td><td>166</td><td/><td>1981329035</td></row>
+		<row><td>ID_ST_SERVER_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981308555</td></row>
+		<row><td>ID_ST_SERVER_NAME</td><td>1049</td><td>(00U!$`$,@0U!$`$(``T!#`$/00]!$L$100N````</td><td>14</td><td/><td>1981308555</td></row>
 	</table>
 
 	<table name="ISVRoot">
@@ -807,6 +900,15 @@ UgBlAGwAZQBhAHMAZQAgADEAAQBNAGUAZABpAGEA
 		<row><td>ProductCode</td><td>{867BB14B-66E1-432C-BE7B-35ADEBE68D68}</td><td/></row>
 		<row><td>ProductName</td><td>KAS</td><td/></row>
 		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>________</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
+JgAeBDEESwRHBD0EMARPBA==
+			</td><td/></row>
+		<row><td>________1</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
+JgAeBDEESwRHBD0EMARPBA==
+			</td><td/></row>
+		<row><td>________2</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
+JgAeBDEESwRHBD0EMARPBA==
+			</td><td/></row>
 	</table>
 
 	<table name="RadioButton">
@@ -820,6 +922,33 @@ UgBlAGwAZQBhAHMAZQAgADEAAQBNAGUAZABpAGEA
 		<col def="L64">Text</col>
 		<col def="L50">Help</col>
 		<col def="I4">ISControlId</col>
+		<row><td>________</td><td>1</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
+JgAeBDEESwRHBD0EMARPBA==
+			</td><td>0</td><td>0</td><td>59</td><td>14</td><td>##ID_ST_CLIENT_SERVER_NAME##</td><td/><td>501</td></row>
+		<row><td>________</td><td>2</td><td dt:dt="bin.base64" md5="81a3a2485bb2d2e27aebf2b43836a501">
+JgAhBD4EOgRABDAESQQ1BD0EPQQwBE8E
+			</td><td>0</td><td>43</td><td>69</td><td>11</td><td>***IS_STRING_NOT_DEFINED***</td><td/><td>502</td></row>
+		<row><td>________</td><td>3</td><td dt:dt="bin.base64" md5="7cbece47031451a725b444d3fc0b13e9">
+JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
+			</td><td>0</td><td>81</td><td>63</td><td>11</td><td>***IS_STRING_NOT_DEFINED***</td><td/><td>503</td></row>
+		<row><td>________1</td><td>1</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
+JgAeBDEESwRHBD0EMARPBA==
+			</td><td>0</td><td>0</td><td>57</td><td>14</td><td>***IS_STRING_NOT_DEFINED***</td><td/><td>301</td></row>
+		<row><td>________1</td><td>2</td><td dt:dt="bin.base64" md5="81a3a2485bb2d2e27aebf2b43836a501">
+JgAhBD4EOgRABDAESQQ1BD0EPQQwBE8E
+			</td><td>0</td><td>44</td><td>69</td><td>14</td><td>***IS_STRING_NOT_DEFINED***</td><td/><td>302</td></row>
+		<row><td>________1</td><td>3</td><td dt:dt="bin.base64" md5="7cbece47031451a725b444d3fc0b13e9">
+JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
+			</td><td>0</td><td>88</td><td>61</td><td>14</td><td>***IS_STRING_NOT_DEFINED***</td><td/><td>303</td></row>
+		<row><td>________2</td><td>1</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
+JgAeBDEESwRHBD0EMARPBA==
+			</td><td>0</td><td>0</td><td>109</td><td>14</td><td>##ID_ST_CLIENT_SERVER_NAME##</td><td/><td>301</td></row>
+		<row><td>________2</td><td>2</td><td dt:dt="bin.base64" md5="81a3a2485bb2d2e27aebf2b43836a501">
+JgAhBD4EOgRABDAESQQ1BD0EPQQwBE8E
+			</td><td>0</td><td>44</td><td>109</td><td>14</td><td>##ID_ST_CLIENT_NAME##</td><td/><td>302</td></row>
+		<row><td>________2</td><td>3</td><td dt:dt="bin.base64" md5="7cbece47031451a725b444d3fc0b13e9">
+JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
+			</td><td>0</td><td>88</td><td>109</td><td>14</td><td>##ID_ST_SERVER_NAME##</td><td/><td>303</td></row>
 	</table>
 
 	<table name="Registry">
