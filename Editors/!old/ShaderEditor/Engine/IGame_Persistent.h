@@ -37,7 +37,7 @@ public:
 #ifndef _EDITOR
 	= 0;
 #else
-	{}
+	{return 1.f;}
 #endif
 
 	IGame_Persistent				();
