@@ -1,0 +1,37 @@
+--
+-- Передача персонажу информации
+--
+function GiveInfo(obj, info_number)
+
+	local result = obj:give_info_portion(info_number)
+	while not result do
+		wait()
+		result = obj:give_info_portion(info_number)
+	end
+end 
+
+
+function f(a, b)
+	return a + b
+end
+
+
+function artifact_merge()
+	log	("artifact merge in actor01!")
+end
+
+
+
+function main()
+
+	log	("script don't want to work!")
+	printf	("%s",actor01.script_name())
+	local 	actor = get_actor()
+
+	actor01.GiveInfo(actor, 1)	
+
+	while true do
+		wait()
+	end
+
+end

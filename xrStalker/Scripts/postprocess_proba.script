@@ -1,0 +1,34 @@
+function main()
+	local dual		= duality()
+	local noise		= noise()
+	local color		= color()
+	local params		= effector_params()
+	
+	dual.h			= 0.0
+	dual.v			= 0.0
+	noise.grain		= 1.0
+	noise.intensity		= 0.5
+	color.r			= 255
+	color.g			= 255
+	color.b			= 255
+	color.a			= 255
+	params.gray		= 0.7
+	params.blur		= 1.0
+	
+	noise.color		= color
+	params.dual		= dual
+	params.noise		= noise
+
+	wait			()
+	
+	local effect		= pp_effector(4,device().time_global + 10000,params,4000)
+	
+	effect:start	()
+
+	while effect:finished() == false do
+		wait		()
+	end
+
+	effect:finish	()
+	return			1
+end

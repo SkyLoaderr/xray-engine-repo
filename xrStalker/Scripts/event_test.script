@@ -1,0 +1,24 @@
+function on_enter(zone,object)
+	printf("Object %s entered zone %s",object:name(),zone:name())
+end
+
+function on_exit(zone,object)
+	printf("Object %s exited zone %s",object:name(),zone:name())
+end
+
+function main()
+	obj	= get_level_object("script_zone0000")
+
+	obj:clear_callback(true)
+	obj:clear_callback(false)
+
+	obj:set_callback(event_test.on_enter,true)
+	obj:set_callback(event_test.on_exit,false)
+	
+	while true do
+		wait()
+	end
+
+	obj:clear_callback(true)
+	obj:clear_callback(false)
+end

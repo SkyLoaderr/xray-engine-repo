@@ -1,0 +1,25 @@
+function main()
+	obj     	= get_level_object("m_stalker_e0000")
+
+	actor   	= get_level_object("localhost/dima")
+
+	wait		(5000)
+		
+	obj:script	(true,stalker_02.script_name())
+
+	action(                                                                                                       
+	    obj,
+	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+	 	sound	("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+	  	look	(look.point, actor),
+		anim	(anim.danger),
+	    cond	(cond.time_end, 60000)
+	)
+	
+	while obj:action() do
+	    wait	()
+	end
+
+	obj:script	(false, stalker_02.script_name())
+end

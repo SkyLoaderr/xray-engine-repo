@@ -1,0 +1,46 @@
+function main()
+
+	local stalker1	= get_level_object("m_stalker_e0000")
+	local stalker2	= get_level_object("m_stalker_e0001")
+
+	local actor   	= get_actor()
+
+	wait		(5000)
+
+	stalker1:script	(true,stalker_01.script_name())
+	stalker2:script	(true,stalker_01.script_name())
+
+			printf("script 1!")
+			flush()
+
+ 	action(                                                                                                       
+	    stalker1,
+	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+	 	sound	("em1_humming3","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+	  	look	(),
+		anim	(),
+		cond	(cond.time_end, 120000)
+	)
+			printf("script 11!")
+			flush()
+
+	action(                                                                                                       
+	    stalker2,
+	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
+	  	look	(),
+		anim	(),
+		cond	(cond.time_end, 120000)
+	)
+			printf("script 12!")
+			flush()
+
+		wait()			
+	
+	while stalker1:action() and stalker2:action() do
+	    wait	()
+	end
+
+	stalker1:script	(false, stalker_01.script_name())
+	stalker2:script	(false, stalker_01.script_name())
+
+end

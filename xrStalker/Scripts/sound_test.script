@@ -1,0 +1,12 @@
+function main()
+	wait				(3000)
+	for i=1,10 do
+		local 			snd = sound_object("water_bulkaet")
+		actor			= get_level_object("localhost/dima")
+		snd:play		(actor,1);
+		snd:set_position(vector():set(actor:position()):add(vector():set((math.random(0,100)/100-0.5)*10,1.5,(math.random(0,100)/100-0.5)*10)))
+		printf			("[%f][%f][%f]",snd:position().x,snd:position().y,snd:position().z)
+		snd:play_at_pos(actor,actor:position(),1);
+		wait			(5000)
+	end
+end

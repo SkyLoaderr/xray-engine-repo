@@ -1,0 +1,26 @@
+function main()
+
+	local stalker1	= get_level_object("m_stalker_e0001")
+	local stalker2	= get_level_object("m_stalker_e0002")
+
+		wait			(5000)
+
+	stalker1:script	(true,stalker_impulse.script_name())
+	stalker2:script	(true,stalker_impulse.script_name())
+
+	while true do
+		h				= hit()
+		h.power			= 100
+		h.direction:set	(1,0,0)
+		h.bone			= "bip01_head"
+		h.draftsman		= stalker1, stalker2
+		h.impulse		= 1000
+		h.type			= hit.wound
+		stalker1, stalker2:hit	(h)
+		wait			(1000)
+	end
+
+	stalker1:script	(false,stalker_impulse..script_name())
+	stalker2:script	(false,stalker_impulse.script_name())
+
+end

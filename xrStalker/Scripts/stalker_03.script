@@ -1,0 +1,40 @@
+function main()
+
+	local stalker1	= get_level_object("m_stalker_e0001")
+	local stalker2	= get_level_object("m_stalker_e0002")
+
+	local actor   	= get_actor()
+
+	wait		(5000)
+
+	stalker1:script	(true,stalker_01.script_name())
+	stalker2:script	(true,stalker_01.script_name())
+
+	action(                                                                                                       
+	    stalker1,
+	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+	 	sound	("monsters\\Stalker\\Humming\\em1_humming3","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+	  	look	(look.fire_point, stalker2),
+		anim	(anim.danger),
+	    cond	(cond.time_end, 120000)
+	)
+
+	action(                                                                                                       
+	    stalker2,
+	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+	 	sound	("monsters\\Stalker\\Humming\\em1_whistle1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+	  	look	(look.fire_point, stalker1),
+		anim	(anim.danger),
+	    cond	(cond.time_end, 120000)
+	)
+
+	while stalker1:action() and stalker2:action() do
+	    wait	()
+	end
+
+	stalker1:script	(false, stalker_01.script_name())
+	stalker2:script	(false, stalker_01.script_name())
+
+end

@@ -1,0 +1,9 @@
+function main()
+	local 	snd = sound_object("water_bulkaet")
+	local	obj = get_level_object("physic_object0000")
+	wait	(5000)
+	snd:play_at_pos(obj,obj:position(),0);
+	while true do
+		wait()
+	end
+end

@@ -1,0 +1,102 @@
+function main()
+	wait(15000)
+	                                                                                                              
+	obj     = level.object("m_stalker_e0000")                                                                     
+--	wpn		= obj:object("wpn_ak0000")
+	wpn		= level.object("wpn_ak0000") -- obj:object("wpn_ak0000")
+	printf	("%s",wpn:name())
+	obj:script(true,stalker.script_name())                                                                                
+	action(                                                                                                       
+	    obj,                                                                                                      
+ 	--	move(move.standing,move.stand,move.line,level.object("localhost/dima"):position()),                        
+	--  move(move.standing,move.walk,move.line,level.object("localhost/dima"):position()),                        
+	--  move(move.standing,move.walk,move.line,patrol("way0000")),                        
+	--  move(vector():set(level.object("localhost/dima"):position()):add(vector():set(0,30,0)),1),                
+	--  sound("water_bulkaet",vector():set(level.object("localhost/dima"):position()):add(vector():set(0,1.5,0))),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+	  	look(look.point,level.object("localhost/dima")),
+	--	anim(anim.danger),                                                                                    
+		object(wpn,object.deactivate),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+	                                                                                                              
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.activate),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.reload),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.fire1),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.reload),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.deactivate),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.activate),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.drop),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+	action(                                                                                                       
+	    obj,                                                                                                      
+	  	look(look.point,level.object("localhost/dima")),
+	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+		particle("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+		object(wpn,object.take),
+	    cond(cond.time_end,3000)
+	)                                                                                                             
+
+
+	while obj:action() do                                                        
+	    wait			()                                                                                                    
+	end                                                                                                           
+	                                                                                                              
+	obj:script(false,stalker.script_name())                                                                               
+end

@@ -1,0 +1,141 @@
+function main()
+
+	local stalker1	= get_level_object("m_stalker_e0001")
+	local stalker2	= get_level_object("m_stalker_e0002")
+
+	local actor   	= get_actor()
+
+	local fn2000	= get_level_object("wpn_fn0000")
+
+	local h			= hit()
+		h.power		= 200
+		h.direction:set		(0,1,0)
+		h.bone		= "bip01_spine1"
+		h.draftsman	= stalker1
+		h.impulse	= 5
+		h.type		= hit.wound
+
+	local h1		= hit()
+		h1.power		= 200
+		h1.direction:set	(1,0,0)
+		h1.bone		= "bip01_spine1"
+		h1.draftsman	= stalker1
+		h1.impulse	= 5000
+		h1.type		= hit.wound
+
+	local h2		= hit()
+		h2.power	= 200
+		h2.direction:set	(0,-1,0)
+		h2.bone		= "bip01_spine1"
+		h2.draftsman	= stalker1
+		h2.impulse	= 5000
+		h2.type		= hit.wound
+
+	local 	ps = particles("explosions\\explosion-04",false)
+	local 	ps1 = particles("ghoul\\fx-01-camp-fire",false)
+	local 	ps2 = particles("ghoul\\fx-01-camp-fire_00",false)
+
+	ps2:play_at_pos		(fn2000:position());
+
+	wait		(5000)
+
+	stalker1:script	(true,stalker_01.script_name())
+	stalker2:script	(true,stalker_01.script_name())
+
+			printf("script 1!")
+			flush()
+
+	action(                                                                                                       
+	    stalker1,
+	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+	 	sound	("em1_humming3","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+	  	look	(look.fire_point, actor),
+		anim	(anim.danger),
+	    cond	(cond.time_end, 120000)
+	)
+			printf("script 11!")
+			flush()
+
+	fn2000:hit		(h1)
+	wait		(300)			
+	fn2000:hit		(h2)
+	wait		(200)			
+	fn2000:hit		(h)
+
+	while stalker1:action() do		
+		if stalker1:see(actor) == true then
+			printf("script 2!")
+			flush()
+			stalker1:script	(false, stalker_01.script_name())
+			stalker1:script	(true,  stalker_01.script_name())
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000)
+			)
+			wait		(1500)			
+                	break		
+		end
+		wait()			
+	end
+
+	while stalker1:action() do		
+		if stalker1:see(actor) == true then
+			printf("script 3!")
+			flush()
+			stalker1:script	(false, stalker_01.script_name())
+			stalker1:script	(true,  stalker_01.script_name())
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				particle("ghoul\\fx-01-camp-fire","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+				look	(look.fire_point, stalker2),
+				anim	(anim.danger),
+				cond	(cond.time_end, 150000)
+			)
+			ps:play_at_pos		(stalker1:position());
+			wait		(4000)	
+        		stalker1:hit		(h)
+			wait		(10)			
+			stalker1:hit		(h2)
+                	break		
+		end
+		wait()
+	end
+
+	while true do		
+		if stalker1.health <= 0 then
+			printf("script 4!")
+			flush()
+			stalker2:script	(false, stalker_01.script_name())
+			stalker2:script	(true,  stalker_01.script_name())
+			action(
+				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				particle("ghoul\\fx-01-camp-fire","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+				look	(look.fire_point, stalker2),
+				anim	(anim.danger),
+				cond	(cond.time_end, 150000)
+			)
+			ps:play_at_pos		(stalker2:position());
+			wait		(1000)	
+        		stalker2:hit		(h)
+			wait		(10)			
+			stalker2:hit		(h2)
+                	break		
+		end
+		wait()
+	end
+	
+	while stalker1:action() do
+	    wait	()
+	end
+
+	stalker1:script	(false, stalker_01.script_name())
+
+end

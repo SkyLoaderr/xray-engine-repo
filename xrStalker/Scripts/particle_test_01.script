@@ -1,0 +1,9 @@
+function main()
+	local obj = get_level_object("localhost")
+	for i=1,10 do
+		local 			ps = particles("anomaly\\storm_01",false)
+		local			v = obj:position()
+		ps:play_at_pos		(v);
+		wait			(5000)
+	end
+end
