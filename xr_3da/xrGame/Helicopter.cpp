@@ -230,6 +230,11 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	setState			(eWaitForStart);
 	m_stayPos			= XFORM().c;
 
+
+	if ( GetfHealth() <= 0.0f )
+		Die();
+
+	
 	m_movMngr.init		(XFORM());
 
 	return				(TRUE);
@@ -274,17 +279,12 @@ void CHelicopter::renderable_Render()
 void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
-	if(state() == CHelicopter::eDead ) return;
-
-	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
-	if( PPhysicsShell()&&(GetfHealth() < 99.97f) ){
+	if(PPhysicsShell() && (state() == CHelicopter::eDead) ){
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
 		return;
 	}
-//	}else{
-//		PPhysicsShell()->SetTransform(XFORM());
-//		PPhysicsShell()->Disable();
-//	}
+
+	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 
 
 	m_engineSound.set_position(XFORM().c);
@@ -331,6 +331,9 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	inherited::shedule_Update	(time_delta);
 	CPHSkeleton::Update(time_delta);
 //	if( GetfHealth() >= 0.0f ){
+
+	if ( (state() != CHelicopter::eDead) && (GetfHealth() <= 0.0f) )
+		Die();
 
 	if(state() != CHelicopter::eDead)
 		m_movMngr.shedule_Update (time_delta, this);
@@ -410,23 +413,16 @@ if(who==this)
 		curHealth -= P*It->second*10.0f;
 		SetfHealth(curHealth);
 
-/*		Log("----Helicopter::PilotHit(). type=",hit_type);
-		Log("----Helicopter::PilotHit(). power=",P);
 		Log("----Helicopter::PilotHit(). health=",curHealth);
-		Log("----Helicopter::PilotHit(). k=",It->second);
-		Log("----------------------------------------");*/
 
 	}else {
 		float hit_power		= P/100.f;
 		hit_power			*= m_HitTypeK[hit_type];
 
 		SetfHealth(GetfHealth()-hit_power);
-/*		float h= GetfHealth();
-		Log("----Helicopter::Hit(). type=",hit_type);
-		Log("----Helicopter::Hit(). power=",hit_power);
+		float h= GetfHealth();
 		Log("----Helicopter::Hit(). health=",h);
-		Log("----Helicopter::Hit(). k=",m_HitTypeK[hit_type]);
-		Log("----------------------------------------");*/
+		Log("----------------------------------------");
 	};
 	
 	if ( GetfHealth() <= 0.0f ) {
