@@ -114,19 +114,10 @@ public:
 	virtual	void					Load						(IReader &tFileStream);
 };
 
-class CSE_ALifeDiscoveryRegistry : public IPureALifeLSObject {
-public:
-	DISCOVERY_P_MAP					m_tDiscoveryRegsitry;
-
-									CSE_ALifeDiscoveryRegistry	();
-	virtual							~CSE_ALifeDiscoveryRegistry	();
-	virtual	void					Save						(IWriter &tMemoryStream);
-	virtual	void					Load						(IReader &tFileStream);
-};
-
 class CSE_ALifeOrganizationRegistry : public IPureALifeLSObject {
 public:
-	ORGANIZATION_P_MAP				m_tOrganizations;
+	ORGANIZATION_P_MAP				m_tOrganizationRegistry;
+	DISCOVERY_P_MAP					m_tDiscoveryRegistry;
 
 									CSE_ALifeOrganizationRegistry();
 	virtual							~CSE_ALifeOrganizationRegistry();

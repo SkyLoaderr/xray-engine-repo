@@ -7,11 +7,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_alife_objects.h"
+
+#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 #include "ai_alife.h"
 #include "ai_space.h"
 using namespace AI;
 
-#ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 #define NORMALIZE_VARIABLE(a,b,c,d) a = u32(b % c) + d, b /= c;
 
 IC void vfPrintTime(char *S, _TIME_ID tTimeID)

@@ -195,6 +195,14 @@ namespace ALife {
 		eArtefactTypeDummy = u32(-1),
 	};
 		
+	enum EResearchState {
+		eResearchStateLeft = u32(0),
+		eResearchStateJoin,
+		eResearchStateResearch,
+		eResearchStateFreeze,
+		eResearchStateDummy = u32(-1),
+	};
+		
 	typedef struct tagSTerrainPlace{
 		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
 		u32											dwMinTime;

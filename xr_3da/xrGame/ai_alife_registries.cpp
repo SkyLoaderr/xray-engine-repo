@@ -489,53 +489,48 @@ void CSE_ALifeAnomalyRegistry::Load(IReader &tFileStream)
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeDiscoveryRegistry
-////////////////////////////////////////////////////////////////////////////
-CSE_ALifeDiscoveryRegistry::CSE_ALifeDiscoveryRegistry()
-{
-	m_tDiscoveryRegsitry.clear			();
-}
-
-CSE_ALifeDiscoveryRegistry::~CSE_ALifeDiscoveryRegistry()
-{
-	free_map					(m_tDiscoveryRegsitry);
-}
-
-void CSE_ALifeDiscoveryRegistry::Save(IWriter &tMemoryStream)
-{
-	tMemoryStream.open_chunk	(DISCOVERY_CHUNK_DATA);
-	save_map					(m_tDiscoveryRegsitry,tMemoryStream);
-	tMemoryStream.close_chunk	();
-}
-
-void CSE_ALifeDiscoveryRegistry::Load(IReader &tFileStream)
-{ 
-	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	//load_map					(m_tDiscoveryRegsitry,tFileStream,cafChooseDiscoveryKeyPredicate);
-}
-
-////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeOrganizationRegistry
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 {
-	m_tOrganizations.clear			();
+	m_tOrganizationRegistry.clear();
+	m_tDiscoveryRegistry.clear	();
+	
+	R_ASSERT2					(pSettings->section_exist("organizations"),"There is no section 'organizations' in the 'system.ltx'!");
+	LPCSTR						N,V;
+	for (u32 k = 0; pSettings->r_line("organizations",k,&N,&V); k++)
+		m_tOrganizationRegistry.insert(std::make_pair(N,xr_new<CSE_ALifeOrganization>(N)));
+	
+	ORGANIZATION_P_PAIR_IT		I = m_tOrganizationRegistry.begin();
+	ORGANIZATION_P_PAIR_IT		E = m_tOrganizationRegistry.end();
+	for ( ; I != E; I++) {
+		LPCSTR_IT				i = (*I).second->m_tpPossibleDiscoveries.begin();
+		LPCSTR_IT				e = (*I).second->m_tpPossibleDiscoveries.end();
+		for ( ; i != e; i++) {
+			DISCOVERY_P_PAIR_IT j = m_tDiscoveryRegistry.find(*i);
+			if (j == m_tDiscoveryRegistry.end())
+				m_tDiscoveryRegistry.insert(std::make_pair(*i,xr_new<CSE_ALifeDiscovery>(*i)));
+		}
+	}
 }
 
 CSE_ALifeOrganizationRegistry::~CSE_ALifeOrganizationRegistry()
 {
-	free_map					(m_tOrganizations);
+	free_map					(m_tOrganizationRegistry);
+	free_map					(m_tDiscoveryRegistry);
 }
 
 void CSE_ALifeOrganizationRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(DISCOVERY_CHUNK_DATA);
-	save_map					(m_tOrganizations,tMemoryStream);
+	save_map					(m_tOrganizationRegistry,tMemoryStream);
+	save_map					(m_tDiscoveryRegistry,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
 void CSE_ALifeOrganizationRegistry::Load(IReader &tFileStream)
 { 
 	R_ASSERT2					(tFileStream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	//load_map					(m_tOrganizations,tFileStream,cafChooseOrganizationKeyPredicate);
+	load_initialized_map		(m_tOrganizationRegistry,tFileStream,cafChooseOrganizationKeyPredicate);
+	load_initialized_map		(m_tDiscoveryRegistry,tFileStream,cafChooseDiscoveryKeyPredicate);
 }

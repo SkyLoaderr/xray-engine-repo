@@ -179,4 +179,14 @@ void load_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 		tpMap.insert			(mk_pair(tfGetKey(T),T));
 	}
 };
+
+template <class T1, class T2, class M>
+void load_initialized_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
+{
+	R_ASSERT2					(tNetPacket.r_u32() != tpMap.size(),"Initialized and saved map length mismatch!");
+	xr_map<T1,T2 *>::iterator	I = tpMap.begin();
+	xr_map<T1,T2 *>::iterator	E = tpMap.end();
+	for ( ; I != E; I++)
+		(*I).second->Load		(tNetPacket);
+};
 #endif

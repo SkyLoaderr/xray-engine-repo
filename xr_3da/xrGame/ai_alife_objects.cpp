@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 #include "ai_alife_templates.h"
 
@@ -38,6 +39,7 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 	m_fDestroyProbability		= pSettings->r_float	(caSection,"destroy_probability");
 	m_tFreezeTime				= (_TIME_ID)pSettings->r_u32(caSection,"destroy_freeze_time")*24*60*1000;
 	m_tResearchTime				= (_TIME_ID)pSettings->r_u32(caSection,"research_time")*24*60*1000;
+	m_bAlreadyInvented			= !!pSettings->r_bool(caSection,"already_invented");
 
 	LPCSTR						S;
 	string64					S1;
@@ -92,6 +94,7 @@ CSE_ALifeDiscovery::~CSE_ALifeDiscovery()
 
 void CSE_ALifeDiscovery::Save	(IWriter &tMemoryStream)
 {
+	tMemoryStream.w_u32			(u32(m_bAlreadyInvented));
 	{
 		DEMAND_P_IT				I = m_tpArtefactDemand.begin();
 		DEMAND_P_IT				E = m_tpArtefactDemand.end();
@@ -102,6 +105,7 @@ void CSE_ALifeDiscovery::Save	(IWriter &tMemoryStream)
 
 void CSE_ALifeDiscovery::Load	(IReader &tFileStream)
 {
+	m_bAlreadyInvented			= !!tFileStream.r_u32();
 	{
 		DEMAND_P_IT				I = m_tpArtefactDemand.begin();
 		DEMAND_P_IT				E = m_tpArtefactDemand.end();
@@ -137,8 +141,10 @@ CSE_ALifeOrganization::~CSE_ALifeOrganization()
 
 void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)
 {
+	tMemoryStream.w				(&m_tResearchState,sizeof(m_tResearchState));
 }
 
 void CSE_ALifeOrganization::Load(IReader &tFileStream)
 {
+	tFileStream.r				(&m_tResearchState,sizeof(m_tResearchState));
 }

@@ -173,6 +173,7 @@ public:
 	float							m_fDestroyProbability;
 	_TIME_ID						m_tFreezeTime;
 	_TIME_ID						m_tResearchTime;
+	bool							m_bAlreadyInvented;
 	DEMAND_P_VECTOR					m_tpArtefactDemand;
 	NEED_P_VECTOR					m_tpArtefactNeed;
 	LPCSTR_VECTOR					m_tpDependency;
@@ -191,6 +192,7 @@ public:
 	LPCSTR_VECTOR					m_tpPossibleDiscoveries;
 	float							m_fJoinProbability;
 	float							m_fLeftProbability;
+	EResearchState					m_tResearchState;
 
 
 									CSE_ALifeOrganization(LPCSTR caSection);
