@@ -555,44 +555,6 @@ void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
-{
-	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
-    AnsiString fn = MI->Caption;
-    if (FS.exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(u32)fn.c_str());
-    else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
-}
-//---------------------------------------------------------------------------
-
-LPCSTR TfraLeftBar::FirstRecentFile()
-{
-	if (miRecentFiles->Count>0)
-    	return miRecentFiles->Items[0]->Caption.c_str();
-    return 0;
-}
-
-void TfraLeftBar::AppendRecentFile(LPCSTR name)
-{
-	R_ASSERT(miRecentFiles->Count<=frmEditPrefs->seRecentFilesCount->Value);
-
-	for (int i = 0; i < miRecentFiles->Count; i++)
-    	if (miRecentFiles->Items[i]->Caption==name){
-        	miRecentFiles->Items[i]->MenuIndex = 0;
-            return;
-		}
-
-	if (miRecentFiles->Count==frmEditPrefs->seRecentFilesCount->Value) miRecentFiles->Remove(miRecentFiles->Items[frmEditPrefs->seRecentFilesCount->Value-1]);
-
-    TMenuItem *MI 	= xr_new<TMenuItem>((TComponent*)0);
-    MI->Caption 	= name;
-    MI->OnClick 	= miRecentFilesClick;
-    MI->Tag			= 0x1001;
-    miRecentFiles->Insert(0,MI);
-
-    miRecentFiles->Enabled = true;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 {
 	UI.Command(COMMAND_QUIT);

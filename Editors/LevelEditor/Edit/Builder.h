@@ -65,7 +65,7 @@ class SceneBuilder{
     void 	BuildHemiLights	();
 	void	AppendLight		();
     BOOL 	BuildSun		(b_light* b, const Flags32& usage, svector<WORD,16>* sectors);
-    BOOL 	BuildPointLight	(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points);
+    BOOL 	BuildPointLight	(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points, const Fmatrix* soft_transform=0);
     BOOL    BuildLight		(CLight* e);
 
     int     FindInLODs   	(b_lod* s);

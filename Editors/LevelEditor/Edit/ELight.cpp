@@ -23,6 +23,7 @@
 #define LIGHT_CHUNK_ROTATE				0xB437
 #define LIGHT_CHUNK_ANIMREF				0xB438
 #define LIGHT_CHUNK_SPOT_TEXTURE		0xB439
+#define LIGHT_CHUNK_FUZZY_DATA			0xB440
 //----------------------------------------------------
 //----------------------------------------------------
 #define FLARE_CHUNK_FLAG				0x1002
@@ -100,14 +101,21 @@ bool CLight::GetBox( Fbox& box ){
 	return true;
 }
 
-void CLight::Render(int priority, bool strictB2F){
+void CLight::Render(int priority, bool strictB2F)
+{
+	inherited::Render(priority,strictB2F);
     if ((1==priority)&&(false==strictB2F)){
-    	u32 clr;
-        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
+    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
             if (Selected()) DU.DrawLineSphere( m_D3D.position, m_D3D.range, clr, true );
             DU.DrawPointLight(m_D3D.position,VIS_RADIUS, clr);
+            if (m_Flags.is(CLight::flPointFuzzy)){
+			    for (FvectorIt it=m_FuzzyData.m_Positions.begin(); it!=m_FuzzyData.m_Positions.end(); it++){
+                	Fvector tmp; _Transform().transform_tiny(tmp,*it);
+		            DU.DrawPointLight(tmp,VIS_RADIUS/2, clr);
+	            }
+			}
         break;
         case D3DLIGHT_DIRECTIONAL:
             if (Selected()) DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_SELRANGE, clr );
@@ -123,7 +131,28 @@ void CLight::Render(int priority, bool strictB2F){
         }break;
         default: THROW;
         }
-    }else if ((3==priority)&&(true==strictB2F)){
+    }else if ((1==priority)&&(true==strictB2F)){
+    	switch (m_D3D.type){
+        case D3DLIGHT_POINT:
+            if (m_Flags.is(CLight::flPointFuzzy)){
+		    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
+                clr 	= subst_alpha(clr,0x40);
+            	const Fvector zero={0.f,0.f,0.f};
+                switch (m_FuzzyData.m_ShapeType){
+                case CLight::SFuzzyData::fstSphere: 
+                	DU.DrawSphere	(_Transform(),zero,m_FuzzyData.m_SphereRadius,clr);
+                break;
+                case CLight::SFuzzyData::fstBox:
+                	DU.DrawAABB		(_Transform(),zero,m_FuzzyData.m_BoxDimension,clr);
+                break;
+                }
+			}
+        break;
+        case D3DLIGHT_DIRECTIONAL:        break;
+        case D3DLIGHT_SPOT:               break;
+        default: THROW;
+        }
+	}else if ((3==priority)&&(true==strictB2F)){
 		if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Render();
     }
 }
@@ -252,6 +281,9 @@ bool CLight::Load(IReader& F){
     	F.r_stringZ(buf);	m_SpotAttTex = buf;
     }
 
+    if (F.find_chunk(LIGHT_CHUNK_FUZZY_DATA))
+        m_FuzzyData.Load(F);
+    
 	UpdateTransform	();
 
     return true;
@@ -282,6 +314,12 @@ void CLight::Save(IWriter& F){
 	    F.open_chunk(LIGHT_CHUNK_SPOT_TEXTURE);
     	F.w_stringZ	(m_SpotAttTex.c_str());
 	    F.close_chunk();
+    }
+
+	if (m_Flags.is(CLight::flPointFuzzy)){
+        F.open_chunk(LIGHT_CHUNK_FUZZY_DATA);
+        m_FuzzyData.Save(F);
+        F.close_chunk();
     }
 }
 //----------------------------------------------------
@@ -370,15 +408,66 @@ void __fastcall	CLight::OnAutoClick(PropValue* value, bool& bModif)
     }
     bModif = true;
 }
+
+void __fastcall	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif)
+{
+	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
+	switch(B->btn_num){
+    case 0:{
+    	OnFuzzyDataChange(value);
+    }break;
+    }
+    bModif = true;
+}
+
+void __fastcall	CLight::OnFuzzyTypeChange(PropValue* value)
+{
+	OnTypeChange		(value);
+    OnFuzzyDataChange   (value);
+}
+
+void __fastcall	CLight::OnFuzzyDataChange(PropValue* value)
+{
+	m_FuzzyData.m_Positions.resize	(m_FuzzyData.m_PointCount);
+    for (FvectorIt it=m_FuzzyData.m_Positions.begin(); it!=m_FuzzyData.m_Positions.end(); it++)
+    	m_FuzzyData.Generate(*it);
+}
+
+xr_token fuzzy_shape_types[]={
+	{ "Sphere",			CLight::SFuzzyData::fstSphere	},
+	{ "Box",			CLight::SFuzzyData::fstBox		},
+	{ 0,				0				}
+};
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Range"),					&m_D3D.range,		0.1f,1000.f);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Linear"),	&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Quadratic"),&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
-	ButtonValue* V=0;
-    V=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point", "Attenuation\\Auto"),"Linear,Quadratic");
-    V->OnBtnClickEvent		= OnAutoClick;
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Range"),					&m_D3D.range,		0.1f,1000.f);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Linear"),		&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
+    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Quadratic"),	&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+	ButtonValue* B=0;
+    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Auto"),"Linear,Quadratic");
+    B->OnBtnClickEvent		= OnAutoClick;
+    PropValue* P=0;
+    P=PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy"),					&m_Flags,	CLight::flPointFuzzy);
+    P->OnChangeEvent		= OnFuzzyTypeChange;           
+	if (m_Flags.is(CLight::flPointFuzzy)){
+        P=PHelper.CreateS16		(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Count"),			&m_FuzzyData.m_PointCount,0,100);
+        P->OnChangeEvent		= OnFuzzyDataChange;
+	    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Generate"),"Random");
+    	B->OnBtnClickEvent		= OnFuzzyGenerateClick;
+        P=PHelper.CreateToken	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Shape"),				&m_FuzzyData.m_ShapeType,	fuzzy_shape_types, 1);
+        P->OnChangeEvent		= OnFuzzyDataChange;
+        switch (m_FuzzyData.m_ShapeType){
+        case CLight::SFuzzyData::fstSphere: 
+            P=PHelper.CreateFloat(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Radius"),		&m_FuzzyData.m_SphereRadius,0.01f,100.f,0.01f,2);
+            P->OnChangeEvent	= OnFuzzyDataChange;
+        break;
+        case CLight::SFuzzyData::fstBox: 
+            P=PHelper.CreateVector(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Half Dimension"),&m_FuzzyData.m_BoxDimension,0.01f,100.f,0.01f,2);
+            P->OnChangeEvent	= OnFuzzyDataChange;
+        break;
+        }
+    }
 }
 //----------------------------------------------------
 

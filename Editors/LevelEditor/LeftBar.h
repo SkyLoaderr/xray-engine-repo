@@ -239,7 +239,6 @@ __published:	// IDE-managed Components
 	void __fastcall Scale1Click(TObject *Sender);
 	void __fastcall miPropertiesClick(TObject *Sender);
 	void __fastcall RefreshLibrary1Click(TObject *Sender);
-	void __fastcall miRecentFilesClick(TObject *Sender);
 	void __fastcall Quit1Click(TObject *Sender);
 	void __fastcall ebPropertiesClick(TObject *Sender);
 	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
@@ -269,8 +268,6 @@ public:		// User declarations
 	void ChangeTarget(int tgt);
     void UpdateBar();
     void UpdateSnapList();
-    void AppendRecentFile(LPCSTR name);
-    LPCSTR FirstRecentFile();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

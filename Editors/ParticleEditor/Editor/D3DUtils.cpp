@@ -549,11 +549,21 @@ void CDrawUtilities::DrawOBB(const Fmatrix& parent, const Fobb& box, u32 c)
 }
 //----------------------------------------------------
 
-void CDrawUtilities::DrawSphere(const Fmatrix& parent, const Fsphere& S, u32 c)
+void CDrawUtilities::DrawAABB(const Fmatrix& parent, const Fvector& center, const Fvector& size, u32 c)
+{
+    Fmatrix			R,S;
+    S.scale			(size.x*2.f,size.y*2.f,size.z*2.f);
+    S.translate_over(center);
+    R.mul_43		(parent,S); 
+	RCache.set_xform_world(R);
+	DrawIdentBox	(true,true,c);
+}
+
+void CDrawUtilities::DrawSphere(const Fmatrix& parent, const Fvector& center, float radius, u32 c)
 {
     Fmatrix B;
-    B.scale				(S.R,S.R,S.R);
-    B.translate_over	(S.P);
+    B.scale				(radius,radius,radius);
+    B.translate_over	(center);
     B.mulA				(parent);
     RCache.set_xform_world(B);
     DrawIdentSphere		(c);

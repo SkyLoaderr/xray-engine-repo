@@ -31,7 +31,8 @@ public:
 		flAffectStatic	= (1<<0),
 		flAffectDynamic	= (1<<1),
 		flProcedural	= (1<<2),
-        flBreaking 		= (1<<3)
+        flBreaking 		= (1<<3),
+        flPointFuzzy	= (1<<4),
     };
     Flags32			m_Flags;
 	Flight			m_D3D;
@@ -39,6 +40,56 @@ public:
 	// build options
     BOOL 			m_UseInD3D;
     float 			m_Brightness;
+
+    // fuzzy
+    struct SFuzzyData{
+        enum EShapeType{
+            fstSphere,
+            fstBox,
+            fstForceU8 = u8(-1)
+        };
+        EShapeType	m_ShapeType;
+        float		m_SphereRadius;
+        Fvector		m_BoxDimension;
+        s16			m_PointCount;
+        FvectorVec	m_Positions;
+        SFuzzyData	()
+        {
+            m_ShapeType			= fstSphere;
+            m_SphereRadius		= 0.1f;
+            m_BoxDimension.set	(0.1f,0.1f,0.1f);
+            m_PointCount		= 0;
+        }
+        void		Generate(Fvector& p)
+        {
+            switch (m_ShapeType){
+            case fstSphere: 
+               	p.random_point(m_SphereRadius);
+            break;
+            case fstBox: 
+               	p.random_point(m_BoxDimension);
+            break;
+            }
+        }
+        void		Save(IWriter& F)
+        {
+        	F.w_u8		(m_ShapeType);
+        	F.w_float	(m_SphereRadius);
+            F.w_fvector3(m_BoxDimension);
+            F.w_s16		(m_PointCount);
+            F.w			(&*m_Positions.begin(),sizeof(Fvector)*m_PointCount);
+        }
+        void		Load(IReader& F)
+        {
+        	m_ShapeType		= F.r_u8();
+        	m_SphereRadius	= F.r_float();
+            F.r_fvector3	(m_BoxDimension);
+            m_PointCount	= F.r_s16();
+            m_Positions.resize(m_PointCount);
+            F.r				(&*m_Positions.begin(),sizeof(Fvector)*m_PointCount);
+        }
+    };
+    SFuzzyData		m_FuzzyData;
 
     CLAItem*		m_pAnimRef;
 
@@ -51,6 +102,10 @@ public:
     virtual void	OnUpdateTransform();
     void __fastcall	OnTypeChange	(PropValue* value);
 
+    void __fastcall	OnFuzzyDataChange	(PropValue* value);
+    void __fastcall	OnFuzzyTypeChange	(PropValue* value);
+
+    void __fastcall	OnFuzzyGenerateClick(PropValue* value, bool& bModif);
     void __fastcall	OnAutoClick		(PropValue* value, bool& bModif);
     void __fastcall	OnNeedUpdate	(PropValue* value);
 protected:

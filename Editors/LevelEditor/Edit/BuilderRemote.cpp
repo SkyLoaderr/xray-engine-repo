@@ -429,10 +429,11 @@ BOOL SceneBuilder::BuildSun(b_light* b, const Flags32& usage, svector<WORD,16>* 
 	return TRUE;
 }
 
-BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points)
+BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WORD,16>* sectors, FvectorVec* soft_points, const Fmatrix* soft_transform)
 {
     if (usage.is(CLight::flAffectStatic)){
     	if (soft_points){
+        	R_ASSERT(soft_transform);
         // make soft light
             Fcolor color		= b->data.diffuse;
             color.normalize_rgb(b->data.diffuse);
@@ -445,7 +446,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
                 sl.controller_ID 	= b->controller_ID;
                 sl.data				= b->data;
                 sl.data.diffuse.set	(color);
-                sl.data.position.set((*soft_points)[k]);
+                soft_transform->transform_tiny(sl.data.position,(*soft_points)[k]);
             }
         }else{
 	        // make single light
@@ -512,7 +513,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 
     switch (e->m_D3D.type){
     case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_Flags,lpSectors);
-    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,0);
+    case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,&e->m_FuzzyData.m_Positions,&e->_Transform());
     default:
     	THROW2("Invalid light type.");
 	    return FALSE;

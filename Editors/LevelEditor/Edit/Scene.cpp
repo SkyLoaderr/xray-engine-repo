@@ -543,6 +543,7 @@ void EScene::Render( const Fmatrix& camera )
     m_DetailObjects->Render	(1,true);
     m_AIMap->OnRender		(1,true);
 	// draw clip planes, glows, event, sectors, portals
+	RENDER_CLASS_ALPHA		(1,OBJCLASS_LIGHT);
     RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	true);
     RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	true);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_GLOW);

@@ -80,7 +80,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 Command			(COMMAND_CHANGE_ACTION,eaSelect);
                 // lock
                 EFS.LockFile	(0,filebuffer);
-                fraLeftBar->AppendRecentFile(filebuffer);
+                AppendRecentFile(filebuffer);
                 // update props
 		        Command			(COMMAND_UPDATE_PROPERTIES);
                 RedrawScene		();
@@ -136,7 +136,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 EFS.LockFile(0,filebuffer);
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
-                fraLeftBar->AppendRecentFile(filebuffer);
+                AppendRecentFile(filebuffer);
 			}else
             	bRes = false;
 		} else {
@@ -168,9 +168,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
 
     case COMMAND_LOAD_FIRSTRECENT:
-    	if (fraLeftBar->FirstRecentFile()){
-        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
-        }
+    	if (FirstRecentFile())
+        	bRes = Command(COMMAND_LOAD,(int)FirstRecentFile());
     	break;
 
 	case COMMAND_CLEAR_COMPILER_ERROR:

@@ -123,8 +123,10 @@ public:
 	void DrawIdentCylinder(u32 clr);
     void DrawIdentBox(bool bSolid, bool bWire, u32 clr);
     void DrawBox	(const Fvector& offs, const Fvector& Size, bool bWire, u32 c);
+    void DrawAABB	(const Fmatrix& parent, const Fvector& center, const Fvector& size, u32 c);
     void DrawOBB	(const Fmatrix& parent, const Fobb& box, u32 c);
-	void DrawSphere	(const Fmatrix& parent, const Fsphere& S, u32 c);
+	void DrawSphere	(const Fmatrix& parent, const Fvector& center, float radius, u32 c);
+	void DrawSphere	(const Fmatrix& parent, const Fsphere& S, u32 c){DrawSphere(parent,S.P,S.R,c);}
 	void DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 c);
     void DrawPlane	(const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, bool bBorder, u32 cb);
 
