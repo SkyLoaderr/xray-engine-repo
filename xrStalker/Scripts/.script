@@ -9,11 +9,11 @@ end
 function wait_game(time_to_wait)
 	verify_if_thread_is_running()
 	if (time_to_wait == nil) then
-		coroutine.yield()
+		coroutine.yield(1)
 	else
 		local time_to_stop = game.time() + time_to_wait
 		while game.time() <= time_to_stop do
-			coroutine.yield()
+			coroutine.yield(1)
 		end
 	end
 end
@@ -21,11 +21,11 @@ end
 function wait(time_to_wait)
 	verify_if_thread_is_running()
 	if (time_to_wait == nil) then
-		coroutine.yield()
+		coroutine.yield(1)
 	else
 		local time_to_stop = device():time_global() + time_to_wait
 		while device():time_global() <= time_to_stop do
-			coroutine.yield()
+			coroutine.yield(1)
 		end
 	end
 end
